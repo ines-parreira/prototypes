@@ -1,5 +1,6 @@
+import React, { ReactNode } from 'react'
+
 import classnames from 'classnames'
-import React, {ReactNode} from 'react'
 
 import css from './VisualBuilderNodeIconContent.less'
 
@@ -21,7 +22,7 @@ const VisualBuilderNodeIconContent = ({
                     className={classnames(
                         'material-icons',
                         css.icon,
-                        css[type]
+                        css[type],
                     )}
                 >
                     {icon}

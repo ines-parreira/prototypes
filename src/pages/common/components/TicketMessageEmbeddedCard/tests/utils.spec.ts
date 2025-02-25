@@ -3,7 +3,7 @@ import {
     TicketMessageSourceType,
     TicketVia,
 } from '../../../../../business/types/ticket'
-import {mapQuotedTweetTicketMessageToEmbeddedCard} from '../utils'
+import { mapQuotedTweetTicketMessageToEmbeddedCard } from '../utils'
 
 describe('TicketMessageEmbeddedCard utils', () => {
     describe('mapQuotedTweetTicketMessageToEmbeddedCard()', () => {
@@ -126,8 +126,8 @@ describe('TicketMessageEmbeddedCard utils', () => {
         it('should map TicketMessage for Quoted Tweet to EmbeddedCard', () => {
             expect(
                 mapQuotedTweetTicketMessageToEmbeddedCard(
-                    quotedTweetTicketMessage
-                )
+                    quotedTweetTicketMessage,
+                ),
             ).toMatchSnapshot()
         })
     })

@@ -1,5 +1,5 @@
-import {TicketChannel} from 'business/types/ticket'
-import {Language} from 'constants/languages'
+import { TicketChannel } from 'business/types/ticket'
+import { Language } from 'constants/languages'
 import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
@@ -12,13 +12,13 @@ import {
     GorgiasChatPositionAlignmentEnum,
     IntegrationType,
 } from 'models/integration/types'
-import {SelfServiceChatChannel} from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 
 export const mockChatChannels: SelfServiceChatChannel[] = [
     {
         type: TicketChannel.Chat,
         value: {
-            user: {id: 1},
+            user: { id: 1 },
             deleted_datetime: null,
             meta: {
                 self_service: {},
@@ -89,7 +89,7 @@ export const mockChatChannels: SelfServiceChatChannel[] = [
     {
         type: TicketChannel.Chat,
         value: {
-            user: {id: 1},
+            user: { id: 1 },
             deleted_datetime: null,
             meta: {
                 self_service: {},
@@ -159,7 +159,7 @@ export const mockChatChannels: SelfServiceChatChannel[] = [
     {
         type: TicketChannel.Chat,
         value: {
-            user: {id: 1},
+            user: { id: 1 },
             deleted_datetime: null,
             meta: {
                 self_service: {},
@@ -229,7 +229,7 @@ export const mockChatChannels: SelfServiceChatChannel[] = [
     {
         type: TicketChannel.Chat,
         value: {
-            user: {id: 1},
+            user: { id: 1 },
             deleted_datetime: null,
             meta: {
                 self_service: {},

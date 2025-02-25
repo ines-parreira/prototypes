@@ -1,9 +1,9 @@
-import {fromJS, Map, List} from 'immutable'
-import {createSelector} from 'reselect'
+import { fromJS, List, Map } from 'immutable'
+import { createSelector } from 'reselect'
 
-import {TicketVia} from 'business/types/ticket'
-import {EventType} from 'models/event/types'
-import {MacroActionName} from 'models/macroAction/types'
+import { TicketVia } from 'business/types/ticket'
+import { EventType } from 'models/event/types'
+import { MacroActionName } from 'models/macroAction/types'
 import {
     isTicketMessage,
     shouldMessagesBeGrouped,
@@ -14,17 +14,16 @@ import {
     TicketMessage,
     TicketSatisfactionSurvey,
 } from 'models/ticket/types'
+import { UseListVoiceCalls, voiceCallsKeys } from 'models/voiceCall/queries'
+import { VoiceCall } from 'models/voiceCall/types'
+import { AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS } from 'state/agents/constants'
+import { InTicketSuggestionState } from 'state/entities/rules/types'
+import { TopRankMacroState } from 'state/newMessage/ticketReplyCache'
+import { getQueryData } from 'state/queries/selectors'
+import { RootState } from 'state/types'
+import { createImmutableSelector } from 'utils'
 
-import {UseListVoiceCalls, voiceCallsKeys} from 'models/voiceCall/queries'
-import {VoiceCall} from 'models/voiceCall/types'
-import {AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS} from 'state/agents/constants'
-import {InTicketSuggestionState} from 'state/entities/rules/types'
-import {TopRankMacroState} from 'state/newMessage/ticketReplyCache'
-import {getQueryData} from 'state/queries/selectors'
-import {RootState} from 'state/types'
-import {createImmutableSelector} from 'utils'
-
-import {TicketState, TicketStateWithoutImmutable} from './types'
+import { TicketState, TicketStateWithoutImmutable } from './types'
 
 export const getTicketState = (state: RootState): TicketState =>
     state.ticket || fromJS({})
@@ -32,7 +31,7 @@ export const getTicketState = (state: RootState): TicketState =>
 export const getProperty = (property: string) =>
     createSelector(
         getTicketState,
-        (state) => state.get(property) as Map<any, any>
+        (state) => state.get(property) as Map<any, any>,
     )
 
 /**
@@ -42,7 +41,7 @@ export const getProperty = (property: string) =>
  */
 export const DEPRECATED_getTicket = createImmutableSelector(
     getTicketState,
-    (state) => state.delete('_internal').delete('state') || fromJS({})
+    (state) => state.delete('_internal').delete('state') || fromJS({}),
 )
 
 export const getTicket = createImmutableSelector(
@@ -51,12 +50,12 @@ export const getTicket = createImmutableSelector(
         state
             .delete('_internal')
             .delete('state')
-            .toJS() as TicketStateWithoutImmutable
+            .toJS() as TicketStateWithoutImmutable,
 )
 
 export const getTicketId = createSelector(
     getTicketState,
-    (ticket) => ticket.get('id') as number
+    (ticket) => ticket.get('id') as number,
 )
 
 export const getIntegrationsData = createSelector(
@@ -65,37 +64,37 @@ export const getIntegrationsData = createSelector(
         (state.getIn(['customer', 'integrations']) || fromJS({})) as Map<
             any,
             any
-        >
+        >,
 )
 
 export const getIntegrationDataByIntegrationId = (integrationId: number) =>
     createSelector(
         getIntegrationsData,
         (state) =>
-            (state.get(String(integrationId)) || fromJS({})) as Map<any, any>
+            (state.get(String(integrationId)) || fromJS({})) as Map<any, any>,
     )
 
 export const getAppDataByAppId = (appId: string) =>
     createSelector(
         getTicket,
-        (state) => state.customer?.external_data?.[appId] || null
+        (state) => state.customer?.external_data?.[appId] || null,
     )
 
 export const getLoading = createImmutableSelector(
     getTicketState,
     (state) =>
-        (state.getIn(['_internal', 'loading']) || fromJS({})) as Map<any, any>
+        (state.getIn(['_internal', 'loading']) || fromJS({})) as Map<any, any>,
 )
 
 export const getDisplayHistory = createImmutableSelector(
     getTicketState,
-    (state) => state.getIn(['_internal', 'displayHistory']) as boolean
+    (state) => state.getIn(['_internal', 'displayHistory']) as boolean,
 )
 
 export const shouldDisplayAuditLogEvents = createImmutableSelector(
     getTicketState,
     (state) =>
-        state.getIn(['_internal', 'shouldDisplayAuditLogEvents']) as boolean
+        state.getIn(['_internal', 'shouldDisplayAuditLogEvents']) as boolean,
 )
 
 // in props usage
@@ -112,20 +111,20 @@ export const getMessages = createImmutableSelector(getTicketState, (state) => {
     const messages: List<Map<any, any>> = state.get('messages') || fromJS([])
 
     return messages.filter(
-        (message) => !message?.getIn(['meta', 'hidden'])
+        (message) => !message?.getIn(['meta', 'hidden']),
     ) as List<Map<any, any>>
 })
 
 export const getVia = createImmutableSelector(
     getTicketState,
-    (state) => state.get('via') as TicketVia
+    (state) => state.get('via') as TicketVia,
 )
 
 export const getCustomerMessages = createImmutableSelector(
     getMessages,
     (messages) =>
         (messages.filter((m) => m!.get('from_agent') === false) ||
-            fromJS([])) as List<any>
+            fromJS([])) as List<any>,
 )
 
 export const getAIAgentMessages = createImmutableSelector(
@@ -136,17 +135,17 @@ export const getAIAgentMessages = createImmutableSelector(
                 (m) =>
                     m!.get('from_agent') === true &&
                     AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS.includes(
-                        m!.getIn(['sender', 'email'])
-                    )
+                        m!.getIn(['sender', 'email']),
+                    ),
             )
-            .toJS() || []) as TicketMessage[]
+            .toJS() || []) as TicketMessage[],
 )
 
 export const getPendingMessages = createImmutableSelector(
     getTicketState,
     (state) =>
         (state.getIn(['_internal', 'pendingMessages']) ||
-            fromJS([])) as List<any>
+            fromJS([])) as List<any>,
 )
 
 export const getLastCustomerMessage = createImmutableSelector(
@@ -155,9 +154,9 @@ export const getLastCustomerMessage = createImmutableSelector(
         (state
             .sortBy(
                 (message: Map<any, any>) =>
-                    message.get('created_datetime') as string
+                    message.get('created_datetime') as string,
             )
-            .last() || fromJS({})) as Map<any, any>
+            .last() || fromJS({})) as Map<any, any>,
 )
 
 export const getLastMessage = createImmutableSelector(
@@ -165,26 +164,26 @@ export const getLastMessage = createImmutableSelector(
     (state) =>
         state
             .sortBy((message) => message!.get('created_datetime') as string)
-            .last() || fromJS({})
+            .last() || fromJS({}),
 )
 
 export const getReadMessages = createImmutableSelector(
     getMessages,
     (state) =>
         state.filter((message) => message!.get('opened_datetime') as boolean) ||
-        fromJS([])
+        fromJS([]),
 )
 
 export const getLastReadMessage = createImmutableSelector(
     getReadMessages,
     (state) =>
         state.maxBy((message) => message!.get('sent_datetime') as boolean) ||
-        fromJS({})
+        fromJS({}),
 )
 
 export const getEvents = createImmutableSelector(
     getTicketState,
-    (state) => (state.get('events') || fromJS([])) as List<any>
+    (state) => (state.get('events') || fromJS([])) as List<any>,
 )
 
 export const getSatisfactionSurveys = createImmutableSelector(
@@ -193,18 +192,19 @@ export const getSatisfactionSurveys = createImmutableSelector(
         fromJS(
             state.get('satisfaction_survey')
                 ? [state.get('satisfaction_survey')]
-                : []
-        ) as List<any>
+                : [],
+        ) as List<any>,
 )
 
 export const getRuleSuggestion = createImmutableSelector(
     getTicketState,
-    (state) => fromJS(state.getIn(['meta', 'rule_suggestion'])) as Map<any, any>
+    (state) =>
+        fromJS(state.getIn(['meta', 'rule_suggestion'])) as Map<any, any>,
 )
 
 export const getTicketFieldState = createSelector(
     getTicket,
-    (state) => state.custom_fields || {}
+    (state) => state.custom_fields || {},
 )
 
 const getVoiceCalls = createSelector(
@@ -213,9 +213,9 @@ const getVoiceCalls = createSelector(
         getQueryData<UseListVoiceCalls>(
             voiceCallsKeys.list({
                 ticket_id: getTicketState(state).get('id'),
-            })
+            }),
         )(state),
-    (_, queryData) => queryData
+    (_, queryData) => queryData,
 )
 
 // return elements we display in the body of a ticket (messages, events, etc.)
@@ -235,7 +235,7 @@ export const getBody = createImmutableSelector(
         satisfactionSurveys,
         ruleSuggestion,
         ticketFieldState,
-        voiceCallsData
+        voiceCallsData,
     ) => {
         const nextMessages = messages.map((message) => {
             return message!.set('isMessage', true)
@@ -246,17 +246,17 @@ export const getBody = createImmutableSelector(
                 return message
                     .set('isPending', !message.get('failed_datetime'))
                     .set('isMessage', true)
-            }
+            },
         ) as List<any>
         const failedPendingMessages = nextPendingMessages.filter(
             (message: Map<any, any>) =>
-                message.get('failed_datetime') as boolean
+                message.get('failed_datetime') as boolean,
         ) as List<any>
         const activePendingMessages = nextPendingMessages
             .filter((message: Map<any, any>) => !message.get('failed_datetime'))
             .sortBy(
                 (message: Map<any, any>) =>
-                    message.get('created_datetime') as string
+                    message.get('created_datetime') as string,
             ) as List<any>
 
         let hasSatisfactionSurveyRespondedPreviousEvents = false
@@ -282,9 +282,9 @@ export const getBody = createImmutableSelector(
                       (satisfactionSurveys: Map<any, any>) => {
                           return satisfactionSurveys.set(
                               'isSatisfactionSurvey',
-                              true
+                              true,
                           )
-                      }
+                      },
                   ) as List<any>)
 
         let body = nextMessages
@@ -297,7 +297,7 @@ export const getBody = createImmutableSelector(
                     (element.get('isSatisfactionSurvey') &&
                     element.get('scored_datetime')
                         ? element.get('scored_datetime')
-                        : element.get('created_datetime')) as string
+                        : element.get('created_datetime')) as string,
             )
             .concat(activePendingMessages) as List<any>
 
@@ -306,7 +306,7 @@ export const getBody = createImmutableSelector(
                 (message: Map<any, any>) =>
                     !!message.get('isMessage') &&
                     !!message.get('from_agent') &&
-                    message.get('via') !== TicketVia.Rule
+                    message.get('via') !== TicketVia.Rule,
             )
             return index !== -1 ? index : body.size
         }
@@ -314,12 +314,12 @@ export const getBody = createImmutableSelector(
         if (ruleSuggestion) {
             const hasRuleSuggestionApplied = body.some(
                 (element: Map<any, any>) =>
-                    element.hasIn(['meta', 'rule_suggestion_slug'])
+                    element.hasIn(['meta', 'rule_suggestion_slug']),
             )
             if (!hasRuleSuggestionApplied) {
                 body = body.insert(
                     getSuggestionPosition(),
-                    ruleSuggestion.set('isRuleSuggestion', true)
+                    ruleSuggestion.set('isRuleSuggestion', true),
                 )
             }
         }
@@ -331,14 +331,14 @@ export const getBody = createImmutableSelector(
                         0,
                         fromJS({
                             isContactReasonSuggestion: true,
-                        })
+                        }),
                     )
                 }
             })
         }
 
         return body
-    }
+    },
 )
 
 export const getAppliedMacro = createImmutableSelector(
@@ -347,7 +347,7 @@ export const getAppliedMacro = createImmutableSelector(
         state.getIn(['state', 'appliedMacro'], fromJS({})) as Map<
             any,
             any
-        > | null
+        > | null,
 )
 
 export const getTopRankMacroState = createImmutableSelector(
@@ -361,7 +361,7 @@ export const getTopRankMacroState = createImmutableSelector(
             return null
         }
         return topRankMacroState.toJS() as TopRankMacroState
-    }
+    },
 )
 
 export const hasContentlessAction = createImmutableSelector(
@@ -369,16 +369,16 @@ export const hasContentlessAction = createImmutableSelector(
     (ticket) => {
         const actions = ticket.getIn(
             ['state', 'appliedMacro', 'actions'],
-            fromJS([])
+            fromJS([]),
         ) as List<Map<any, any>>
         return actions.some(
             (action) =>
                 ![
                     MacroActionName.SetResponseText,
                     MacroActionName.AddAttachments,
-                ].includes(action?.get('name'))
+                ].includes(action?.get('name')),
         )
-    }
+    },
 )
 
 export const getInTicketSuggestionState = createImmutableSelector(
@@ -390,7 +390,7 @@ export const getInTicketSuggestionState = createImmutableSelector(
         ]) as unknown
 
         return inTicketSuggestionState as InTicketSuggestionState | undefined
-    }
+    },
 )
 
 export const getTicketBodyElements = createSelector(getBody, (body) => {
@@ -399,7 +399,7 @@ export const getTicketBodyElements = createSelector(getBody, (body) => {
     return elements.reduce(
         (
             acc: (TicketElement | TicketMessage[])[],
-            element: TicketElement | TicketMessage[]
+            element: TicketElement | TicketMessage[],
         ) => {
             if (!isTicketMessage(element as TicketElement)) {
                 return [
@@ -417,7 +417,7 @@ export const getTicketBodyElements = createSelector(getBody, (body) => {
             if (
                 shouldMessagesBeGrouped(
                     firstInPrevGroup,
-                    element as TicketMessage
+                    element as TicketMessage,
                 )
             ) {
                 prevGroup.push(element as TicketMessage)
@@ -426,17 +426,17 @@ export const getTicketBodyElements = createSelector(getBody, (body) => {
 
             return [...acc, [element as TicketMessage]]
         },
-        [] as TicketElement[]
+        [] as TicketElement[],
     )
 })
 
 export const getTicketCustomer = createImmutableSelector(
     getTicketState,
-    (state) => state.get('customer' || fromJS({})) as Map<any, any>
+    (state) => state.get('customer' || fromJS({})) as Map<any, any>,
 )
 
 export const getHasAttemptedToCloseTicket = createImmutableSelector(
     getTicketState,
     (state) =>
-        state.getIn(['state', 'hasAttemptedToCloseTicket'], false) as boolean
+        state.getIn(['state', 'hasAttemptedToCloseTicket'], false) as boolean,
 )

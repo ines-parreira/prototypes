@@ -1,23 +1,21 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
-
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {campaign} from 'fixtures/campaign'
-import {shopifyIntegration} from 'fixtures/integrations'
-
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
-import {useGetTableStat} from 'pages/stats/convert/hooks/stats/useGetTableStat'
-import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
-
-import {RootState, StoreDispatch} from 'state/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {saveZippedFiles} from 'utils/file'
-import {flushPromises, assumeMock} from 'utils/testing'
+import { campaign } from 'fixtures/campaign'
+import { shopifyIntegration } from 'fixtures/integrations'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
+import { DOWNLOAD_DATA_BUTTON_LABEL } from 'pages/stats/constants'
+import { useGetTableStat } from 'pages/stats/convert/hooks/stats/useGetTableStat'
+import { useCampaignStatsFilters } from 'pages/stats/convert/hooks/useCampaignStatsFilters'
+import { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { saveZippedFiles } from 'utils/file'
+import { assumeMock, flushPromises } from 'utils/testing'
 
 import DownloadOverviewData from '../DownloadOverviewData'
 
@@ -66,7 +64,7 @@ const renderComponent = () => {
             <QueryClientProvider client={queryClient}>
                 <DownloadOverviewData />
             </QueryClientProvider>
-        </Provider>
+        </Provider>,
     )
 }
 
@@ -153,8 +151,8 @@ describe('<DownloadOverviewData />', () => {
         await waitFor(() => {
             expect(mockSavezippedFiles).toBeCalledTimes(1)
             expect(mockSavezippedFiles).toBeCalledWith(
-                {'performance-2024-09-23.csv': mockedCSV},
-                'campaign-performance-2024-09-23'
+                { 'performance-2024-09-23.csv': mockedCSV },
+                'campaign-performance-2024-09-23',
             )
         })
     })

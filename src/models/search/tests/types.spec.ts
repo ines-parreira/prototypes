@@ -1,4 +1,4 @@
-import {isUserSearchResult} from 'models/search/types'
+import { isUserSearchResult } from 'models/search/types'
 
 describe('isUserSearchResult()', () => {
     it('returns true for valid customer search result', () => {
@@ -10,7 +10,7 @@ describe('isUserSearchResult()', () => {
                     id: 1,
                     name: 'alice',
                 },
-            })
+            }),
         ).toEqual(true)
     })
 
@@ -23,7 +23,7 @@ describe('isUserSearchResult()', () => {
                 id: 1,
                 address: 2,
                 customer: 3,
-            })
+            }),
         ).toEqual(false)
     })
 })

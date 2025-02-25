@@ -1,13 +1,14 @@
-import {screen, render} from '@testing-library/react'
 import React from 'react'
 
-import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import { render, screen } from '@testing-library/react'
+
+import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {
     aiManagedTicketInputFieldDefinition,
     ticketFieldDefinitions,
     ticketInputFieldDefinition,
 } from 'fixtures/customField'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
 import CustomFieldSelect from '../CustomFieldSelect'
 
@@ -17,19 +18,19 @@ const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
 describe('<CustomFieldSelect/>', () => {
     it('should render', () => {
         useCustomFieldDefinitionsMock.mockReturnValue({
-            data: {data: ticketFieldDefinitions},
+            data: { data: ticketFieldDefinitions },
             isLoading: false,
         } as any)
 
-        const {container} = render(
-            <CustomFieldSelect onChange={jest.fn()} value={null} />
+        const { container } = render(
+            <CustomFieldSelect onChange={jest.fn()} value={null} />,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render an alert if no custom field is available', () => {
         useCustomFieldDefinitionsMock.mockReturnValue({
-            data: {data: [ticketFieldDefinitions[0]]},
+            data: { data: [ticketFieldDefinitions[0]] },
             isLoading: false,
         } as any)
 
@@ -38,7 +39,7 @@ describe('<CustomFieldSelect/>', () => {
                 onChange={jest.fn()}
                 value={null}
                 idsAlreadySet={[ticketFieldDefinitions[0].id]}
-            />
+            />,
         )
         expect(screen.getByText(/All the possible/))
     })
@@ -56,12 +57,12 @@ describe('<CustomFieldSelect/>', () => {
             isLoading: false,
         } as any)
 
-        const {container} = render(
+        const { container } = render(
             <CustomFieldSelect
                 onChange={jest.fn()}
                 value={ticketFieldDefinitions[0].id}
                 viewMode
-            />
+            />,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -79,10 +80,10 @@ describe('<CustomFieldSelect/>', () => {
 
         render(<CustomFieldSelect onChange={jest.fn()} value={null} />)
         expect(
-            screen.queryByText(ticketInputFieldDefinition.label)
+            screen.queryByText(ticketInputFieldDefinition.label),
         ).toBeInTheDocument()
         expect(
-            screen.queryByText(aiManagedTicketInputFieldDefinition.label)
+            screen.queryByText(aiManagedTicketInputFieldDefinition.label),
         ).not.toBeInTheDocument()
     })
 })

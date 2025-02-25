@@ -1,15 +1,17 @@
-import {Tag} from '@gorgias/api-queries'
-import {fireEvent, render} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { fireEvent, render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {createTag} from 'models/tag/resources'
+import { Tag } from '@gorgias/api-queries'
+
+import { createTag } from 'models/tag/resources'
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
 
 import TagsSelect from '../TagsSelect'
 
@@ -29,7 +31,7 @@ jest.mock(
                                 ? value
                                 : undefined
                         },
-                        2
+                        2,
                     )}
                     <input
                         data-testid="on-change-input"
@@ -40,7 +42,7 @@ jest.mock(
                 </div>
             )
         }
-    }
+    },
 )
 
 jest.mock('../../../../forms/SelectField/SelectField', () => {
@@ -53,7 +55,7 @@ jest.mock('../../../../forms/SelectField/SelectField', () => {
                     (key, value: unknown) => {
                         return typeof value !== 'function' ? value : undefined
                     },
-                    2
+                    2,
                 )}
                 <input
                     data-testid="on-change-input"
@@ -85,9 +87,9 @@ describe('<TagsSelect />', () => {
         }),
         entities: {
             tags: {
-                [1]: {name: 'billing'} as Tag,
-                [2]: {name: 'refund'} as Tag,
-                [3]: {name: 'question'} as Tag,
+                [1]: { name: 'billing' } as Tag,
+                [2]: { name: 'refund' } as Tag,
+                [3]: { name: 'question' } as Tag,
             },
         },
     } as unknown as RootState
@@ -98,44 +100,44 @@ describe('<TagsSelect />', () => {
 
     describe('when multiple is set to true', () => {
         it('should render array as value', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore(defaultStore)}>
                     <TagsSelect
                         {...commonProps}
                         multiple
                         value={['billing', 'bugs']}
                     />
-                </Provider>
+                </Provider>,
             )
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render string as value', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore(defaultStore)}>
                     <TagsSelect
                         {...commonProps}
                         multiple
                         value="billing,bugs"
                     />
-                </Provider>
+                </Provider>,
             )
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should handle change when value is an array', () => {
-            const {getByTestId} = render(
+            const { getByTestId } = render(
                 <Provider store={mockStore(defaultStore)}>
                     <TagsSelect
                         {...commonProps}
                         multiple
                         value={['billing', 'bugs']}
                     />
-                </Provider>
+                </Provider>,
             )
 
             fireEvent.change(getByTestId('on-change-input'), {
-                target: {value: JSON.stringify(['new', 'value'])},
+                target: { value: JSON.stringify(['new', 'value']) },
             })
 
             expect(commonProps.onChange).toHaveBeenLastCalledWith([
@@ -145,18 +147,18 @@ describe('<TagsSelect />', () => {
         })
 
         it('should handle change when value is a string', () => {
-            const {getByTestId} = render(
+            const { getByTestId } = render(
                 <Provider store={mockStore(defaultStore)}>
                     <TagsSelect
                         {...commonProps}
                         multiple
                         value="billing, bugs"
                     />
-                </Provider>
+                </Provider>,
             )
 
             fireEvent.change(getByTestId('on-change-input'), {
-                target: {value: JSON.stringify(['new', 'value'])},
+                target: { value: JSON.stringify(['new', 'value']) },
             })
 
             expect(commonProps.onChange).toHaveBeenLastCalledWith('new,value')
@@ -167,18 +169,18 @@ describe('<TagsSelect />', () => {
                 typeof createTag
             >
             const store = mockStore(defaultStore)
-            const {getByTestId} = render(
+            const { getByTestId } = render(
                 <Provider store={store}>
                     <TagsSelect
                         {...commonProps}
                         multiple
                         value="billing, bugs"
                     />
-                </Provider>
+                </Provider>,
             )
 
             fireEvent.change(getByTestId('on-change-input'), {
-                target: {value: JSON.stringify(['new'])},
+                target: { value: JSON.stringify(['new']) },
             })
 
             expect(createTagMock.mock.calls).toMatchSnapshot()
@@ -186,23 +188,23 @@ describe('<TagsSelect />', () => {
     })
 
     it('should render a single value', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultStore)}>
                 <TagsSelect {...commonProps} value="billing" />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should handle change', () => {
-        const {getByTestId} = render(
+        const { getByTestId } = render(
             <Provider store={mockStore(defaultStore)}>
                 <TagsSelect {...commonProps} value="billing" />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.change(getByTestId('on-change-input'), {
-            target: {value: JSON.stringify('new')},
+            target: { value: JSON.stringify('new') },
         })
 
         expect(commonProps.onChange).toHaveBeenLastCalledWith('new')
@@ -211,14 +213,14 @@ describe('<TagsSelect />', () => {
     it('should create a new tag', () => {
         const createTagMock = createTag as jest.MockedFunction<typeof createTag>
         const store = mockStore(defaultStore)
-        const {getByTestId} = render(
+        const { getByTestId } = render(
             <Provider store={store}>
                 <TagsSelect {...commonProps} value="billing" />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.change(getByTestId('on-change-input'), {
-            target: {value: JSON.stringify('new')},
+            target: { value: JSON.stringify('new') },
         })
 
         expect(createTagMock.mock.calls).toMatchSnapshot()

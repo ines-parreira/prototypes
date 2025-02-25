@@ -1,14 +1,12 @@
-import {act, renderHook} from '@testing-library/react-hooks'
-
+import { act, renderHook } from '@testing-library/react-hooks'
 import _omit from 'lodash/omit'
 
 import * as revenueBetaHook from 'pages/common/hooks/useIsConvertSubscriber'
 
-import {CampaignTrigger} from '../../types/CampaignTrigger'
-import {CampaignTriggerType} from '../../types/enums/CampaignTriggerType.enum'
-import {createTrigger} from '../../utils/createTrigger'
-
-import {useManageTriggers} from '../useManageTriggers'
+import { CampaignTrigger } from '../../types/CampaignTrigger'
+import { CampaignTriggerType } from '../../types/enums/CampaignTriggerType.enum'
+import { createTrigger } from '../../utils/createTrigger'
+import { useManageTriggers } from '../useManageTriggers'
 
 const removeIds = (triggers: CampaignTrigger[]) =>
     triggers.map((trigger: CampaignTrigger) => _omit(trigger, 'id'))
@@ -18,15 +16,15 @@ describe('useManageTriggers()', () => {
         beforeAll(() => {
             jest.spyOn(
                 revenueBetaHook,
-                'useIsConvertSubscriber'
+                'useIsConvertSubscriber',
             ).mockImplementation(() => false)
         })
 
         it('initialize with current url trigger if no default is provided', () => {
-            const {result} = renderHook(() => useManageTriggers())
+            const { result } = renderHook(() => useManageTriggers())
 
             expect(removeIds(Object.values(result.current.triggers))).toEqual(
-                removeIds([createTrigger(CampaignTriggerType.CurrentUrl)])
+                removeIds([createTrigger(CampaignTriggerType.CurrentUrl)]),
             )
         })
     })
@@ -35,18 +33,18 @@ describe('useManageTriggers()', () => {
         beforeAll(() => {
             jest.spyOn(
                 revenueBetaHook,
-                'useIsConvertSubscriber'
+                'useIsConvertSubscriber',
             ).mockImplementation(() => true)
         })
 
         it('initialize with current url trigger and business hours trigger if no default is provided', () => {
-            const {result} = renderHook(() => useManageTriggers())
+            const { result } = renderHook(() => useManageTriggers())
 
             expect(removeIds(Object.values(result.current.triggers))).toEqual(
                 removeIds([
                     createTrigger(CampaignTriggerType.CurrentUrl),
                     createTrigger(CampaignTriggerType.BusinessHours),
-                ])
+                ]),
             )
         })
 
@@ -56,17 +54,17 @@ describe('useManageTriggers()', () => {
                 createTrigger(CampaignTriggerType.BusinessHours),
             ]
 
-            const {result} = renderHook(() =>
-                useManageTriggers(defaultTriggers)
+            const { result } = renderHook(() =>
+                useManageTriggers(defaultTriggers),
             )
 
             expect(Object.values(result.current.triggers)).toEqual(
-                defaultTriggers
+                defaultTriggers,
             )
         })
 
         it('adds a trigger', () => {
-            const {result} = renderHook(() => useManageTriggers())
+            const { result } = renderHook(() => useManageTriggers())
 
             act(() => {
                 result.current.addTrigger(CampaignTriggerType.TimeSpentOnPage)
@@ -77,7 +75,7 @@ describe('useManageTriggers()', () => {
                     createTrigger(CampaignTriggerType.CurrentUrl),
                     createTrigger(CampaignTriggerType.BusinessHours),
                     createTrigger(CampaignTriggerType.TimeSpentOnPage),
-                ])
+                ]),
             )
 
             const triggerWithPayload = {
@@ -88,7 +86,7 @@ describe('useManageTriggers()', () => {
             act(() => {
                 result.current.addTrigger(
                     CampaignTriggerType.SessionTime,
-                    triggerWithPayload
+                    triggerWithPayload,
                 )
             })
 
@@ -98,12 +96,12 @@ describe('useManageTriggers()', () => {
                     createTrigger(CampaignTriggerType.BusinessHours),
                     createTrigger(CampaignTriggerType.TimeSpentOnPage),
                     triggerWithPayload,
-                ])
+                ]),
             )
         })
 
         it('updates a trigger', () => {
-            const {result} = renderHook(() => useManageTriggers())
+            const { result } = renderHook(() => useManageTriggers())
             const [defaultCurrentTrigger, defaultBusinessHourTrigger] =
                 Object.values(result.current.triggers)
 
@@ -126,7 +124,7 @@ describe('useManageTriggers()', () => {
         })
 
         it('deletes a trigger', () => {
-            const {result} = renderHook(() => useManageTriggers())
+            const { result } = renderHook(() => useManageTriggers())
             const triggersKeys = Object.keys(result.current.triggers)
             act(() => {
                 result.current.deleteTrigger(triggersKeys[0])
@@ -134,7 +132,7 @@ describe('useManageTriggers()', () => {
 
             expect(Object.values(result.current.triggers).length).toEqual(1)
             expect(removeIds(Object.values(result.current.triggers))).toEqual(
-                removeIds([createTrigger(CampaignTriggerType.BusinessHours)])
+                removeIds([createTrigger(CampaignTriggerType.BusinessHours)]),
             )
         })
     })

@@ -1,17 +1,17 @@
-import {useQuery} from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 
-import {StatType} from 'models/stat/types'
-import {getRealisticResponseTime} from 'pages/aiAgent/Overview/getRealisticResponseTime'
-import {KpiMetric} from 'pages/aiAgent/Overview/types'
+import { StatType } from 'models/stat/types'
+import { getRealisticResponseTime } from 'pages/aiAgent/Overview/getRealisticResponseTime'
+import { KpiMetric } from 'pages/aiAgent/Overview/types'
 
 export const useGmvInfluenced = (): KpiMetric => {
     // TODO: replace with Cube hook
     const result = useQuery({
         queryKey: ['gmvInfluenced'],
-        queryFn: (): Promise<{value: number; prevValue: number}> =>
+        queryFn: (): Promise<{ value: number; prevValue: number }> =>
             new Promise((resolve) => {
                 setTimeout(() => {
-                    resolve({value: 12000, prevValue: 10000})
+                    resolve({ value: 12000, prevValue: 10000 })
                 }, getRealisticResponseTime())
             }),
     })

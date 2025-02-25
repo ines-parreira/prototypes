@@ -1,12 +1,12 @@
-import {Statement, Literal} from 'estree'
+import { Literal, Statement } from 'estree'
 
-import {ActionType, Rule} from 'models/rule/types'
-import {RuleDraft} from 'state/rules/types'
+import { ActionType, Rule } from 'models/rule/types'
+import { RuleDraft } from 'state/rules/types'
 
 export const getRuleActions = (draft: RuleDraft | Rule): ActionType[] => {
     const traverseNodes = (
         nodes: Statement[] | undefined,
-        actions: ActionType[]
+        actions: ActionType[],
     ) => {
         if (!nodes) return actions
         return nodes.reduce((acc, node) => {

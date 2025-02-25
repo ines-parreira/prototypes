@@ -1,13 +1,13 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-import {DashboardChartProps} from 'pages/stats/custom-reports/types'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { DashboardChartProps } from 'pages/stats/custom-reports/types'
 import OverviewCard from 'pages/stats/help-center/components/OverviewCard/OverviewCard'
 import {
     HelpCenterMetric,
     HelpCenterMetricConfig,
 } from 'pages/stats/help-center/HelpCenterMetricsConfig'
-import {useArticleViewsTrend} from 'pages/stats/help-center/hooks/useArticleViewsTrend'
+import { useArticleViewsTrend } from 'pages/stats/help-center/hooks/useArticleViewsTrend'
 
 export const ArticleViewsTrendCard = ({
     chartId,
@@ -16,11 +16,11 @@ export const ArticleViewsTrendCard = ({
     // FIXME: revert it to true as soon as the documentation article links are ready
     const [isTipVisible] = useState(false)
 
-    const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone } = useNewStatsFilters()
 
     const articleViewMetricTrend = useArticleViewsTrend(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
 
     return (

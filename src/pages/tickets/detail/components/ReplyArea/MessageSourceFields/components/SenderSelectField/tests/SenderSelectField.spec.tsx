@@ -1,11 +1,12 @@
-import {render, waitFor, fireEvent} from '@testing-library/react'
 import React from 'react'
 
-import {TicketMessageSourceType} from 'business/types/ticket'
-import {useFlag} from 'core/flags'
+import { fireEvent, render, waitFor } from '@testing-library/react'
+
+import { TicketMessageSourceType } from 'business/types/ticket'
+import { useFlag } from 'core/flags'
 import * as useOutboundChannels from 'hooks/useOutboundChannels'
 import history from 'pages/history'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
 import SenderSelectField from '../SenderSelectField'
 
@@ -51,7 +52,7 @@ const useSendersForSelectedChannel = jest
 
 describe('<SenderSelectField />', () => {
     it('should render a list of senders', async () => {
-        const {getByText} = render(<SenderSelectField />)
+        const { getByText } = render(<SenderSelectField />)
         fireEvent.click(getByText('arrow_drop_down'))
         await waitFor(() => {
             expect(getByText('John (john@shop.com)')).toBeInTheDocument()
@@ -60,8 +61,8 @@ describe('<SenderSelectField />', () => {
     })
 
     it('should trigger a sender change when selecting a sender', async () => {
-        const {container, getByText, getByTestId} = render(
-            <SenderSelectField />
+        const { container, getByText, getByTestId } = render(
+            <SenderSelectField />,
         )
         fireEvent.click(getByText('arrow_drop_down'))
         fireEvent.click(getByTestId('John-item'))
@@ -73,7 +74,7 @@ describe('<SenderSelectField />', () => {
 
     it('should render the default tag for the default integration', async () => {
         mockUseFlag.mockReturnValue(true)
-        const {getByText} = render(<SenderSelectField />)
+        const { getByText } = render(<SenderSelectField />)
         fireEvent.click(getByText('arrow_drop_down'))
         await waitFor(() => {
             expect(getByText('DEFAULT')).toBeInTheDocument()
@@ -100,10 +101,10 @@ describe('<SenderSelectField />', () => {
                 selectedSender,
             })
 
-            const {container} = render(<SenderSelectField />)
+            const { container } = render(<SenderSelectField />)
             const [input] = container.getElementsByClassName('input')
             expect(input.textContent).toBe(expected)
-        }
+        },
     )
 
     it('should format addresses (ie. phone numbers)', () => {
@@ -120,7 +121,7 @@ describe('<SenderSelectField />', () => {
             ],
         })
 
-        const {getByText, queryByText} = render(<SenderSelectField />)
+        const { getByText, queryByText } = render(<SenderSelectField />)
         fireEvent.click(getByText('arrow_drop_down'))
         expect(queryByText('John (+1 213 373 4253)')).toBeInTheDocument()
     })
@@ -144,24 +145,24 @@ describe('<SenderSelectField />', () => {
         })
 
         it('it should render deactivated integrations', () => {
-            const {getByText, queryByText} = render(<SenderSelectField />)
+            const { getByText, queryByText } = render(<SenderSelectField />)
             fireEvent.click(getByText('arrow_drop_down'))
             expect(
-                queryByText('Old John (old-john@shop.com)')
+                queryByText('Old John (old-john@shop.com)'),
             ).toBeInTheDocument()
         })
 
         it('it should render a reconnect button for deactivated integrations', () => {
-            const {container, getByText} = render(<SenderSelectField />)
+            const { container, getByText } = render(<SenderSelectField />)
             fireEvent.click(getByText('arrow_drop_down'))
             expect(
-                getByText('Old John (old-john@shop.com)')
+                getByText('Old John (old-john@shop.com)'),
             ).toBeInTheDocument()
             const [button] = container.getElementsByTagName('button')
             expect(button).toBeInTheDocument()
             fireEvent.click(button)
             expect(history.push).toHaveBeenCalledWith(
-                `/app/settings/channels/email`
+                `/app/settings/channels/email`,
             )
         })
     })

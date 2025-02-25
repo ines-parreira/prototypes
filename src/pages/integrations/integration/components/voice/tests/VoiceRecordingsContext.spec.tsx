@@ -1,10 +1,10 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {useVoiceRecordingsContext} from 'pages/common/hooks/useVoiceRecordingsContext'
+import { useVoiceRecordingsContext } from 'pages/common/hooks/useVoiceRecordingsContext'
 
 describe('VoiceRecordingsContext', () => {
     it('should provide the correct initial state', () => {
-        const {result} = renderHook(() => useVoiceRecordingsContext())
+        const { result } = renderHook(() => useVoiceRecordingsContext())
 
         expect(result.current.closedTranscriptions).toEqual([])
         expect(result.current.openedRecordings).toEqual([])

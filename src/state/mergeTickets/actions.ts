@@ -1,15 +1,15 @@
-import {AxiosError} from 'axios'
+import { AxiosError } from 'axios'
 
-import {defaultMergeTicketsView} from 'config/views'
+import { defaultMergeTicketsView } from 'config/views'
 import client from 'models/api/resources'
-import {OrderDirection} from 'models/api/types'
-import {TicketSearchSortableProperties} from 'models/search/types'
-import {searchTickets as modelSearchTickets} from 'models/ticket/resources'
-import {Ticket} from 'models/ticket/types'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {StoreDispatch} from 'state/types'
-import {createErrorNotification} from 'state/utils'
+import { OrderDirection } from 'models/api/types'
+import { TicketSearchSortableProperties } from 'models/search/types'
+import { searchTickets as modelSearchTickets } from 'models/ticket/resources'
+import { Ticket } from 'models/ticket/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { StoreDispatch } from 'state/types'
+import { createErrorNotification } from 'state/utils'
 
 export const LIMIT = 5
 
@@ -19,15 +19,15 @@ export const LIMIT = 5
 export function searchTickets(
     searchQuery: string,
     sourceTicketId: number,
-    customerId: Maybe<number> = null
+    customerId: Maybe<number> = null,
 ) {
     return async (
-        dispatch: StoreDispatch
+        dispatch: StoreDispatch,
     ): Promise<ReturnType<StoreDispatch>> => {
         const view = defaultMergeTicketsView(
             sourceTicketId,
             searchQuery,
-            customerId
+            customerId,
         )
 
         const promise = modelSearchTickets({
@@ -42,7 +42,7 @@ export function searchTickets(
             return resp.data
         } catch (error) {
             dispatch(
-                createErrorNotification(error, 'Failed to search tickets.')
+                createErrorNotification(error, 'Failed to search tickets.'),
             )
             throw error
         }
@@ -55,13 +55,13 @@ export function searchTickets(
 export function mergeTickets(
     sourceTicketId: number,
     targetTicketId: number,
-    ticketData: Ticket
+    ticketData: Ticket,
 ) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         return client
             .put<Ticket>(
                 `/api/tickets/merge?target_id=${targetTicketId}&source_id=${sourceTicketId}`,
-                ticketData
+                ticketData,
             )
             .then(
                 (data) => {
@@ -69,7 +69,7 @@ export function mergeTickets(
                         notify({
                             status: NotificationStatus.Success,
                             message: 'Tickets merged successfully',
-                        })
+                        }),
                     )
                     return Promise.resolve(data.data)
                 },
@@ -77,11 +77,11 @@ export function mergeTickets(
                     dispatch(
                         createErrorNotification(
                             error,
-                            'Could not merge tickets.'
-                        )
+                            'Could not merge tickets.',
+                        ),
                     )
                     return Promise.reject(error)
-                }
+                },
             )
     }
 }

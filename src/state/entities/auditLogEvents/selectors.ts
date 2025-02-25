@@ -1,13 +1,13 @@
-import {createSelector} from 'reselect'
+import { createSelector } from 'reselect'
 
-import {getEntities} from 'state/entities/selectors'
+import { getEntities } from 'state/entities/selectors'
 
 export const getAuditLogs = createSelector(
     getEntities,
-    (entities) => entities.auditLogEvents
+    (entities) => entities.auditLogEvents,
 )
 
 export const getAuditLogEvents = createSelector(
     getAuditLogs,
-    (auditLogEvents) => Object.values(auditLogEvents)
+    (auditLogEvents) => Object.values(auditLogEvents),
 )

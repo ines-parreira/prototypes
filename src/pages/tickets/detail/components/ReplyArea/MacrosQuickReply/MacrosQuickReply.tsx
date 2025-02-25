@@ -1,19 +1,21 @@
-import {Macro} from '@gorgias/api-queries'
+import React, { useCallback, useMemo } from 'react'
+
 import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
-import React, {useCallback, useMemo} from 'react'
-import {UncontrolledTooltip} from 'reactstrap'
+import { UncontrolledTooltip } from 'reactstrap'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { Macro } from '@gorgias/api-queries'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {CurrentAccountState} from 'state/currentAccount/types'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {CurrentUserState} from 'state/currentUser/types'
-import {DEPRECATED_getTicket} from 'state/ticket/selectors'
-import {TicketState} from 'state/ticket/types'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { CurrentAccountState } from 'state/currentAccount/types'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { CurrentUserState } from 'state/currentUser/types'
+import { DEPRECATED_getTicket } from 'state/ticket/selectors'
+import { TicketState } from 'state/ticket/types'
 
-import {MacroButton} from './MacroButton'
+import { MacroButton } from './MacroButton'
 
 import css from './MacrosQuickReply.less'
 
@@ -22,7 +24,7 @@ type Props = {
     applyMacro: (macro: Macro) => void
 }
 
-export const MacrosQuickReply = ({macros, applyMacro}: Props) => {
+export const MacrosQuickReply = ({ macros, applyMacro }: Props) => {
     const ticket = useAppSelector<TicketState>(DEPRECATED_getTicket)
     const account = useAppSelector<CurrentAccountState>(getCurrentAccountState)
     const user = useAppSelector<CurrentUserState>(getCurrentUser)
@@ -33,7 +35,7 @@ export const MacrosQuickReply = ({macros, applyMacro}: Props) => {
             user_id: user.get('id'),
             ticket_id: ticket.get('id'),
         }),
-        [account, user, ticket]
+        [account, user, ticket],
     )
 
     const buttonHandleHover = useCallback(
@@ -44,7 +46,7 @@ export const MacrosQuickReply = ({macros, applyMacro}: Props) => {
                 macroRank,
             })
         },
-        [baseSegmentPayload]
+        [baseSegmentPayload],
     )
 
     return (
@@ -62,7 +64,7 @@ export const MacrosQuickReply = ({macros, applyMacro}: Props) => {
                     onMouseEnter={() =>
                         logEvent(
                             SegmentEvent.MacrosQuickReplyTooltip,
-                            baseSegmentPayload
+                            baseSegmentPayload,
                         )
                     }
                 >
@@ -85,7 +87,7 @@ export const MacrosQuickReply = ({macros, applyMacro}: Props) => {
                         key={macro.id}
                         onHover={_debounce(
                             () => buttonHandleHover(macro.id, macroRank + 1),
-                            500
+                            500,
                         )}
                     />
                 ))}

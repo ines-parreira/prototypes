@@ -1,6 +1,7 @@
-import {CancelToken} from 'axios'
-import React, {ComponentType} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
+import React, { ComponentType } from 'react'
+
+import { CancelToken } from 'axios'
+import { connect, ConnectedProps } from 'react-redux'
 
 import useCancellableRequest from '../../../hooks/useCancellableRequest'
 
@@ -10,7 +11,7 @@ type InjectedRequest<T> = T extends (
     c: infer C,
     d: infer D,
     e: infer E,
-    f: infer F
+    f: infer F,
 ) => (...args: any) => infer R
     ? F extends CancelToken
         ? (a: A, b: B, c: C, d: D, e: E) => R
@@ -31,7 +32,7 @@ export type CancellableRequestInjectedProps<
     Request,
 > = {
     [requestName in RequestName]: InjectedRequest<Request>
-} & {[cancelName in CancelName]: () => void}
+} & { [cancelName in CancelName]: () => void }
 
 const withCancellableRequest =
     <
@@ -42,10 +43,10 @@ const withCancellableRequest =
         ) => (...args: any[]) => Promise<unknown>,
     >(
         requestName: RequestName,
-        request: Request
+        request: Request,
     ) =>
     <P,>(
-        WrappedComponent: ComponentType<P>
+        WrappedComponent: ComponentType<P>,
     ): ComponentType<
         Omit<
             P,
@@ -58,7 +59,7 @@ const withCancellableRequest =
     > => {
         if (requestName.length < 2) {
             throw new Error(
-                'The argument requestName of withCancellableRequest expect a length greater than 1'
+                'The argument requestName of withCancellableRequest expect a length greater than 1',
             )
         }
 
@@ -67,12 +68,12 @@ const withCancellableRequest =
         })
 
         return connector(((props: P & ConnectedProps<typeof connector>) => {
-            const {request: connectedRequest, ...ownProps} = props
-            const initialProps = {...ownProps} as unknown as P
+            const { request: connectedRequest, ...ownProps } = props
+            const initialProps = { ...ownProps } as unknown as P
             const [cancellableRequest, cancel] = useCancellableRequest(
                 (cancelToken) =>
                     async (...args: any[]) =>
-                        await connectedRequest(...args, cancelToken)
+                        await connectedRequest(...args, cancelToken),
             )
             const injectedProps = {
                 [requestName]: cancellableRequest,

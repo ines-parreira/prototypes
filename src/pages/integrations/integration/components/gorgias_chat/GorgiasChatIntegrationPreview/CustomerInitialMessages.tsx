@@ -1,9 +1,11 @@
+import React, { ReactNode } from 'react'
+
 import classnames from 'classnames'
-import React, {ReactNode} from 'react'
+
+import { getTextColorBasedOnBackground } from './color-utils'
+import ConversationTimestamp from './ConversationTimestamp'
 
 import css from './ChatIntegrationPreview.less'
-import {getTextColorBasedOnBackground} from './color-utils'
-import ConversationTimestamp from './ConversationTimestamp'
 
 type Props = {
     conversationColor: string
@@ -27,7 +29,7 @@ const CustomerInitialMessages = ({
                         css.bubble,
                         css.primary,
                         index === 0 ? css.firstMessageOfAppUser : null,
-                        index === messages.length - 1 ? css.lastMessage : null
+                        index === messages.length - 1 ? css.lastMessage : null,
                     )}
                     key={index}
                     style={{

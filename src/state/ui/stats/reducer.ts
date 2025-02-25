@@ -1,31 +1,34 @@
-import {combineReducers} from 'redux'
+import { combineReducers } from 'redux'
 
 import {
     busiestTimesSlice,
     BusiestTimesState,
 } from 'state/ui/stats/busiestTimesSlice'
-import {ChannelsSlice, channelsSlice} from 'state/ui/stats/channelsSlice'
+import { ChannelsSlice, channelsSlice } from 'state/ui/stats/channelsSlice'
 import {
     customReportsSlice,
     CustomReportsSliceState,
 } from 'state/ui/stats/customReportsSlice'
-import {drillDownSlice, DrillDownState} from 'state/ui/stats/drillDownSlice'
+import { drillDownSlice, DrillDownState } from 'state/ui/stats/drillDownSlice'
 import {
     fetchingMapSlice,
     FetchingMapSliceState,
 } from 'state/ui/stats/fetchingMapSlice'
-import {filtersSlice, FiltersSliceState} from 'state/ui/stats/filtersSlice'
+import { filtersSlice, FiltersSliceState } from 'state/ui/stats/filtersSlice'
 import {
     qualityManagementSlice,
     QualityManagementState,
 } from 'state/ui/stats/qualityManagementSlice'
-import {statsTablesReducer} from 'state/ui/stats/statsTablesReducer'
-import {tagsReportSlice, TagsReportState} from 'state/ui/stats/tagsReportSlice'
+import { statsTablesReducer } from 'state/ui/stats/statsTablesReducer'
+import {
+    tagsReportSlice,
+    TagsReportState,
+} from 'state/ui/stats/tagsReportSlice'
 import {
     ticketInsightsSlice,
     TicketInsightsState,
 } from 'state/ui/stats/ticketInsightsSlice'
-import {StatsTablesState} from 'state/ui/stats/types'
+import { StatsTablesState } from 'state/ui/stats/types'
 
 export type StatsState = {
     [fetchingMapSlice.name]: FetchingMapSliceState

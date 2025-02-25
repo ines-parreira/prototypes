@@ -1,4 +1,4 @@
-import {defineConfig} from '@gorgias/static-analysis'
+import { defineConfig } from '@gorgias/static-analysis'
 
 export default defineConfig({
     sourceDir: 'src',

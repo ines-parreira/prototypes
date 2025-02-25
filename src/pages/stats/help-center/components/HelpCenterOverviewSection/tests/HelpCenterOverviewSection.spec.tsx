@@ -1,29 +1,29 @@
-import {render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {ArticleViewsTrendCard} from 'pages/stats/help-center/components/ArticleViewsTrendCard/ArticleViewsTrendCard'
+import { ArticleViewsTrendCard } from 'pages/stats/help-center/components/ArticleViewsTrendCard/ArticleViewsTrendCard'
 import HelpCenterOverviewSection from 'pages/stats/help-center/components/HelpCenterOverviewSection/HelpCenterOverviewSection'
-import {SearchesTrendCard} from 'pages/stats/help-center/components/SearchesTrendCard/SearchesTrendCard'
-import {useReportChartRestrictions} from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
-import {assumeMock} from 'utils/testing'
+import { SearchesTrendCard } from 'pages/stats/help-center/components/SearchesTrendCard/SearchesTrendCard'
+import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('pages/stats/report-chart-restrictions/useReportChartRestrictions')
 const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
 
 jest.mock('pages/stats/help-center/hooks/useArticleViewsTrend', () => ({
-    useArticleViewsTrend: () => ({data: {value: 1}, isFetching: false}),
+    useArticleViewsTrend: () => ({ data: { value: 1 }, isFetching: false }),
 }))
 jest.mock(
-    'pages/stats/help-center/components/ArticleViewsTrendCard/ArticleViewsTrendCard'
+    'pages/stats/help-center/components/ArticleViewsTrendCard/ArticleViewsTrendCard',
 )
 const ArticleViewsTrendCardMock = assumeMock(ArticleViewsTrendCard)
 jest.mock(
-    'pages/stats/help-center/components/SearchesTrendCard/SearchesTrendCard'
+    'pages/stats/help-center/components/SearchesTrendCard/SearchesTrendCard',
 )
 const SearchesTrendCardMock = assumeMock(SearchesTrendCard)
 
@@ -34,7 +34,7 @@ const renderComponent = () => {
     render(
         <Provider store={store}>
             <HelpCenterOverviewSection />
-        </Provider>
+        </Provider>,
     )
 }
 

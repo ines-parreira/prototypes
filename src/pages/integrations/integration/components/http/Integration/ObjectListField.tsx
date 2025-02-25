@@ -1,13 +1,14 @@
+import React, { Component } from 'react'
+
 import _clone from 'lodash/clone'
 import _trim from 'lodash/trim'
-import React, {Component} from 'react'
-import {Row, Col} from 'reactstrap'
+import { Col, Row } from 'reactstrap'
 
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 
-export type Field = {key: any; value: any}
+export type Field = { key: any; value: any }
 
 type Props = {
     title: string
@@ -25,7 +26,7 @@ export default class ObjectListField extends Component<Props> {
                     key: '',
                     value: '',
                 },
-            ])
+            ]),
         )
     }
 
@@ -43,7 +44,7 @@ export default class ObjectListField extends Component<Props> {
     }
 
     render() {
-        const {fields, validate} = this.props
+        const { fields, validate } = this.props
 
         return (
             <div>

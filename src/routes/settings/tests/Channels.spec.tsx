@@ -1,29 +1,32 @@
-import {render} from '@testing-library/react'
 import React from 'react'
-import {Route, useRouteMatch} from 'react-router-dom'
 
-import {PageSection} from 'config/pages'
-import {ADMIN_ROLE} from 'config/user'
-import {RevenueAddonApiClientProvider} from 'pages/convert/common/hooks/useConvertApi'
+import { render } from '@testing-library/react'
+import { Route, useRouteMatch } from 'react-router-dom'
+
+import { PageSection } from 'config/pages'
+import { ADMIN_ROLE } from 'config/user'
+import { RevenueAddonApiClientProvider } from 'pages/convert/common/hooks/useConvertApi'
 import IntegrationDetail from 'pages/integrations/integration/Integration'
-import {HelpCenterApiClientProvider} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import {assumeMock} from 'utils/testing'
+import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import { assumeMock } from 'utils/testing'
 
-import {Channels} from '../Channels'
-import {renderAppSettings} from '../helpers/settingsRenderer'
+import { Channels } from '../Channels'
+import { renderAppSettings } from '../helpers/settingsRenderer'
 
 jest.mock('react-router-dom', () => ({
     Route: jest.fn(() => <div>route</div>),
-    Switch: jest.fn(({children}) => <div>{children}</div>),
+    Switch: jest.fn(({ children }) => <div>{children}</div>),
     useRouteMatch: jest.fn(),
 }))
 jest.mock('pages/convert/common/hooks/useConvertApi', () => ({
-    RevenueAddonApiClientProvider: jest.fn(({children}) => (
+    RevenueAddonApiClientProvider: jest.fn(({ children }) => (
         <div>{children}</div>
     )),
 }))
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
-    HelpCenterApiClientProvider: jest.fn(({children}) => <div>{children}</div>),
+    HelpCenterApiClientProvider: jest.fn(({ children }) => (
+        <div>{children}</div>
+    )),
 }))
 const ComponentToRender = () => <div>OK</div>
 jest.mock('../helpers/settingsRenderer', () => ({

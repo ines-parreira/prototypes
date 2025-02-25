@@ -1,10 +1,10 @@
-import {ContentBlock, ContentState, SelectionState} from 'draft-js'
-import {fromJS} from 'immutable'
+import { ContentBlock, ContentState, SelectionState } from 'draft-js'
+import { fromJS } from 'immutable'
 import _omit from 'lodash/omit'
 
-import {TicketChannel} from 'business/types/ticket'
-import {ticket} from 'fixtures/ticket'
-import {TicketMessage, TicketSatisfactionSurvey} from 'models/ticket/types'
+import { TicketChannel } from 'business/types/ticket'
+import { ticket } from 'fixtures/ticket'
+import { TicketMessage, TicketSatisfactionSurvey } from 'models/ticket/types'
 import {
     getContentStateBlocksSnapshot,
     getContentStateSelectionSnapshot,
@@ -12,14 +12,14 @@ import {
 
 import {
     addEmailExtraContent,
+    deleteEmailExtraContent,
     EmailExtraArgs,
     getReplyThreadMessages,
+    hasEmailExtraContent,
     hasOnlySignatureText,
     isSignatureTextAdded,
-    deleteEmailExtraContent,
     ReplyThreadMessage,
     Signature,
-    hasEmailExtraContent,
     updateEmailExtraOnUserInput,
 } from '../emailExtraUtils'
 
@@ -33,8 +33,8 @@ describe('emailExtraUtils', () => {
             expect(
                 isSignatureTextAdded(
                     ContentState.createFromText('Foo\n\nSignature'),
-                    signature
-                )
+                    signature,
+                ),
             ).toBe(true)
         })
 
@@ -42,8 +42,8 @@ describe('emailExtraUtils', () => {
             expect(
                 isSignatureTextAdded(
                     ContentState.createFromText('Foo'),
-                    signature
-                )
+                    signature,
+                ),
             ).toBe(false)
         })
 
@@ -51,8 +51,8 @@ describe('emailExtraUtils', () => {
             expect(
                 isSignatureTextAdded(
                     ContentState.createFromText('Foo\n\nSignature'),
-                    signature.delete('text')
-                )
+                    signature.delete('text'),
+                ),
             ).toBe(false)
         })
     })
@@ -66,8 +66,8 @@ describe('emailExtraUtils', () => {
             expect(
                 hasOnlySignatureText(
                     ContentState.createFromText('Foo\nSignature'),
-                    signature
-                )
+                    signature,
+                ),
             ).toBe(false)
         })
 
@@ -75,8 +75,8 @@ describe('emailExtraUtils', () => {
             expect(
                 hasOnlySignatureText(
                     ContentState.createFromText('\n\nSignature'),
-                    signature.delete('text')
-                )
+                    signature.delete('text'),
+                ),
             ).toBe(false)
         })
 
@@ -84,8 +84,8 @@ describe('emailExtraUtils', () => {
             expect(
                 hasOnlySignatureText(
                     ContentState.createFromText('\n\nSignature'),
-                    signature
-                )
+                    signature,
+                ),
             ).toBe(true)
         })
     })
@@ -115,7 +115,7 @@ describe('emailExtraUtils', () => {
                         ...messageFixture,
                         sent_datetime: undefined,
                     },
-                ])
+                ]),
             ).toEqual([])
         })
 
@@ -126,7 +126,7 @@ describe('emailExtraUtils', () => {
                         ...messageFixture,
                         public: false,
                     },
-                ])
+                ]),
             ).toEqual([])
         })
 
@@ -148,7 +148,7 @@ describe('emailExtraUtils', () => {
                     middle_message,
                     oldest_message,
                     newest_message,
-                ])
+                ]),
             ).toEqual([newest_message, middle_message, oldest_message])
         })
     })
@@ -168,7 +168,7 @@ describe('emailExtraUtils', () => {
 
         const createLongMessageLines = (
             linesCount: number,
-            wordsPerLine: number
+            wordsPerLine: number,
         ): string[] => {
             return Array.from(Array(linesCount).keys()).map((blockIndex) => {
                 return Array.from(Array(wordsPerLine).keys())
@@ -209,20 +209,20 @@ describe('emailExtraUtils', () => {
                 replyThreadMessages: [],
             })
             expect(
-                getContentStateBlocksSnapshot(newContentState)
+                getContentStateBlocksSnapshot(newContentState),
             ).toMatchSnapshot()
         })
 
         it('should not add the signature if the signature is in the content', () => {
             const contentState = ContentState.createFromText(
-                'Hello\n\nFoo signature'
+                'Hello\n\nFoo signature',
             )
             const newContentState = addEmailExtraContent(
                 contentState,
-                emailExtraArgs
+                emailExtraArgs,
             )
             expect(
-                getContentStateBlocksSnapshot(newContentState)
+                getContentStateBlocksSnapshot(newContentState),
             ).toMatchSnapshot()
         })
 
@@ -233,7 +233,7 @@ describe('emailExtraUtils', () => {
                 signature: fromJS({}),
             })
             expect(
-                getContentStateBlocksSnapshot(newContentState)
+                getContentStateBlocksSnapshot(newContentState),
             ).toMatchSnapshot()
         })
 
@@ -241,10 +241,10 @@ describe('emailExtraUtils', () => {
             const contentState = ContentState.createFromText('Response content')
             const newContentState = addEmailExtraContent(
                 contentState,
-                emailExtraArgs
+                emailExtraArgs,
             )
             expect(
-                getContentStateBlocksSnapshot(newContentState)
+                getContentStateBlocksSnapshot(newContentState),
             ).toMatchSnapshot()
         })
 
@@ -262,7 +262,7 @@ describe('emailExtraUtils', () => {
                 ],
             })
             expect(
-                getContentStateBlocksSnapshot(newContentState)
+                getContentStateBlocksSnapshot(newContentState),
             ).toMatchSnapshot()
         })
 
@@ -279,7 +279,7 @@ describe('emailExtraUtils', () => {
                 ],
             })
             expect(
-                getContentStateBlocksSnapshot(newContentState)
+                getContentStateBlocksSnapshot(newContentState),
             ).toMatchSnapshot()
         })
 
@@ -297,7 +297,7 @@ describe('emailExtraUtils', () => {
                 addEmailExtraContent(contentState, {
                     ...emailExtraArgs,
                     replyThreadMessages: [message],
-                }).getPlainText()
+                }).getPlainText(),
             ).toMatch('Stripped HTML')
 
             expect(
@@ -309,7 +309,7 @@ describe('emailExtraUtils', () => {
                             stripped_html: null,
                         },
                     ],
-                }).getPlainText()
+                }).getPlainText(),
             ).toMatch('Body HTML')
 
             expect(
@@ -322,7 +322,7 @@ describe('emailExtraUtils', () => {
                             body_html: undefined,
                         },
                     ],
-                }).getPlainText()
+                }).getPlainText(),
             ).toMatch('Stripped Text')
 
             expect(
@@ -336,7 +336,7 @@ describe('emailExtraUtils', () => {
                             stripped_text: null,
                         },
                     ],
-                }).getPlainText()
+                }).getPlainText(),
             ).toMatch('Body Text')
         })
 
@@ -357,10 +357,10 @@ describe('emailExtraUtils', () => {
                             stripped_html: 'Second message',
                         },
                     ] as ReplyThreadMessage[],
-                }
+                },
             )
             expect(
-                getContentStateBlocksSnapshot(contentState)
+                getContentStateBlocksSnapshot(contentState),
             ).toMatchSnapshot()
         })
 
@@ -400,10 +400,10 @@ describe('emailExtraUtils', () => {
                             stripped_html: 'Fourth message',
                         },
                     ] as ReplyThreadMessage[],
-                }
+                },
             )
             expect(
-                getContentStateBlocksSnapshot(contentState)
+                getContentStateBlocksSnapshot(contentState),
             ).toMatchSnapshot()
         })
 
@@ -411,7 +411,7 @@ describe('emailExtraUtils', () => {
             const messagesCountLimit = 1
             const contentState = ContentState.createFromText('User response')
             const replyThreadMessages = Array.from(
-                Array(messagesCountLimit + 1).keys()
+                Array(messagesCountLimit + 1).keys(),
             ).map((i) => {
                 return {
                     ...ticket.messages[0],
@@ -427,7 +427,7 @@ describe('emailExtraUtils', () => {
             })
 
             expect(
-                getContentStateBlocksSnapshot(newContentState)
+                getContentStateBlocksSnapshot(newContentState),
             ).toMatchSnapshot()
         })
 
@@ -444,21 +444,21 @@ describe('emailExtraUtils', () => {
                             ...ticket.messages[0],
                             stripped_html: createLongMessageLines(
                                 replyBlocksCountLimit,
-                                1
+                                1,
                             ).join('<br>'),
                         },
                     ] as ReplyThreadMessage[],
-                }
+                },
             )
             expect(
-                getContentStateBlocksSnapshot(contentState)
+                getContentStateBlocksSnapshot(contentState),
             ).toMatchSnapshot()
         })
 
         it('should show at least first 3 words of the entirely trimmed message', () => {
             const contentState = addEmailExtraContent(
                 ContentState.createFromText(
-                    createLongMessageLines(1, 1).join('\n')
+                    createLongMessageLines(1, 1).join('\n'),
                 ),
                 {
                     ...emailExtraArgs,
@@ -468,14 +468,14 @@ describe('emailExtraUtils', () => {
                         {
                             ...ticket.messages[0],
                             stripped_html: createLongMessageLines(1, 4).join(
-                                '<br>'
+                                '<br>',
                             ),
                         },
                     ] as ReplyThreadMessage[],
-                }
+                },
             )
             expect(
-                getContentStateBlocksSnapshot(contentState)
+                getContentStateBlocksSnapshot(contentState),
             ).toMatchSnapshot()
         })
 
@@ -483,7 +483,7 @@ describe('emailExtraUtils', () => {
             const replyWordsCountLimit = 20
             const contentState = addEmailExtraContent(
                 ContentState.createFromText(
-                    createLongMessageLines(1, 1).join('\n')
+                    createLongMessageLines(1, 1).join('\n'),
                 ),
                 {
                     ...emailExtraArgs,
@@ -494,14 +494,14 @@ describe('emailExtraUtils', () => {
                             ...ticket.messages[0],
                             stripped_html: createLongMessageLines(
                                 1,
-                                replyWordsCountLimit
+                                replyWordsCountLimit,
                             ).join('<br>'),
                         },
                     ] as ReplyThreadMessage[],
-                }
+                },
             )
             expect(
-                getContentStateBlocksSnapshot(contentState)
+                getContentStateBlocksSnapshot(contentState),
             ).toMatchSnapshot()
         })
 
@@ -516,14 +516,14 @@ describe('emailExtraUtils', () => {
                         {
                             ...ticket.messages[0],
                             stripped_html: createLongMessageLines(1, 5).join(
-                                '<br>'
+                                '<br>',
                             ),
                         },
                     ] as ReplyThreadMessage[],
-                }
+                },
             )
             expect(
-                getContentStateBlocksSnapshot(contentState)
+                getContentStateBlocksSnapshot(contentState),
             ).toMatchSnapshot()
         })
 
@@ -538,14 +538,14 @@ describe('emailExtraUtils', () => {
                         {
                             ...ticket.messages[0],
                             stripped_html: createLongMessageLines(1, 7).join(
-                                '<br>'
+                                '<br>',
                             ),
                         },
                     ] as ReplyThreadMessage[],
-                }
+                },
             )
             expect(
-                getContentStateBlocksSnapshot(contentState)
+                getContentStateBlocksSnapshot(contentState),
             ).toMatchSnapshot()
         })
 
@@ -593,10 +593,10 @@ describe('emailExtraUtils', () => {
                             },
                         },
                     ] as ReplyThreadMessage[],
-                }
+                },
             )
             expect(
-                getContentStateBlocksSnapshot(contentState)
+                getContentStateBlocksSnapshot(contentState),
             ).toMatchSnapshot()
         })
     })
@@ -628,7 +628,7 @@ describe('emailExtraUtils', () => {
             })
             contentState = deleteEmailExtraContent(contentState)
             expect(
-                getContentStateBlocksSnapshot(contentState)
+                getContentStateBlocksSnapshot(contentState),
             ).toMatchSnapshot()
         })
 
@@ -640,7 +640,7 @@ describe('emailExtraUtils', () => {
             })
             contentState = deleteEmailExtraContent(contentState)
             expect(
-                getContentStateBlocksSnapshot(contentState)
+                getContentStateBlocksSnapshot(contentState),
             ).toMatchSnapshot()
         })
 
@@ -649,7 +649,7 @@ describe('emailExtraUtils', () => {
             contentState = addEmailExtraContent(contentState, emailExtraArgs)
             contentState = deleteEmailExtraContent(contentState)
             expect(
-                getContentStateBlocksSnapshot(contentState)
+                getContentStateBlocksSnapshot(contentState),
             ).toMatchSnapshot()
         })
 
@@ -657,11 +657,11 @@ describe('emailExtraUtils', () => {
             let contentState = ContentState.createFromText('Foo')
             contentState = addEmailExtraContent(contentState, emailExtraArgs)
             contentState = ContentState.createFromBlockArray(
-                contentState.getBlocksAsArray().slice(1)
+                contentState.getBlocksAsArray().slice(1),
             )
             contentState = deleteEmailExtraContent(contentState)
             expect(
-                getContentStateBlocksSnapshot(contentState)
+                getContentStateBlocksSnapshot(contentState),
             ).toMatchSnapshot()
         })
     })
@@ -669,7 +669,7 @@ describe('emailExtraUtils', () => {
     describe('hasEmailExtraContent', () => {
         it('should return false when content state does not contain email extra', () => {
             expect(
-                hasEmailExtraContent(ContentState.createFromText('Foo'))
+                hasEmailExtraContent(ContentState.createFromText('Foo')),
             ).toBe(false)
         })
 
@@ -683,7 +683,7 @@ describe('emailExtraUtils', () => {
                         ticket.messages[0],
                     ] as ReplyThreadMessage[],
                     isForwarded: false,
-                }
+                },
             )
             expect(hasEmailExtraContent(contentState)).toBe(true)
         })
@@ -692,7 +692,7 @@ describe('emailExtraUtils', () => {
     describe('updateEmailExtraOnUserInput', () => {
         const emailExtraArgs: EmailExtraArgs = {
             ticket,
-            signature: fromJS({text: 'Signature', html: 'Signature'}),
+            signature: fromJS({ text: 'Signature', html: 'Signature' }),
             replyThreadMessages: [ticket.messages[0]] as ReplyThreadMessage[],
             isForwarded: false,
         }
@@ -700,12 +700,12 @@ describe('emailExtraUtils', () => {
         it('should return the same content state when no change', () => {
             const contentState = addEmailExtraContent(
                 ContentState.createFromText('Foo\nBar'),
-                emailExtraArgs
+                emailExtraArgs,
             )
 
             const newContentState = updateEmailExtraOnUserInput(
                 contentState,
-                contentState
+                contentState,
             )
 
             expect(newContentState).toBe(contentState)
@@ -714,7 +714,7 @@ describe('emailExtraUtils', () => {
         it('should not clear email extra data when email extra content was not modified', () => {
             const prevContentState = addEmailExtraContent(
                 ContentState.createFromText('Foo\nBar'),
-                emailExtraArgs
+                emailExtraArgs,
             )
             const contentState = ContentState.createFromBlockArray(
                 prevContentState.getBlocksAsArray().map((block, i) => {
@@ -722,12 +722,12 @@ describe('emailExtraUtils', () => {
                         return block.set('text', 'Modified')
                     }
                     return block
-                }) as ContentBlock[]
+                }) as ContentBlock[],
             )
 
             const newContentState = updateEmailExtraOnUserInput(
                 prevContentState,
-                contentState
+                contentState,
             )
 
             expect(newContentState).toBe(contentState)
@@ -736,55 +736,55 @@ describe('emailExtraUtils', () => {
         it('should clear email extra data if new content was added below email extra content', () => {
             const prevContentState = addEmailExtraContent(
                 ContentState.createFromText('Foo\nBar'),
-                emailExtraArgs
+                emailExtraArgs,
             )
             const contentState = ContentState.createFromBlockArray([
                 ...prevContentState.getBlocksAsArray(),
                 prevContentState
                     .getLastBlock()
-                    .merge({key: 'added-content'})
+                    .merge({ key: 'added-content' })
                     .set('data', fromJS({})) as ContentBlock,
             ])
 
             const newContentState = updateEmailExtraOnUserInput(
                 prevContentState,
-                contentState
+                contentState,
             )
 
             expect(newContentState).not.toBe(contentState)
             expect(
-                getContentStateBlocksSnapshot(newContentState)
+                getContentStateBlocksSnapshot(newContentState),
             ).toMatchSnapshot()
         })
 
         it('should preserve the selection state if email extra content was removed', () => {
             const prevContentState = addEmailExtraContent(
                 ContentState.createFromText('Foo\nBar'),
-                emailExtraArgs
+                emailExtraArgs,
             )
             const contentState = ContentState.createFromBlockArray([
                 ...prevContentState.getBlocksAsArray(),
                 prevContentState
                     .getLastBlock()
-                    .merge({key: 'added-content'})
+                    .merge({ key: 'added-content' })
                     .set('data', fromJS({})) as ContentBlock,
             ])
 
             const newContentState = updateEmailExtraOnUserInput(
                 prevContentState,
-                contentState
+                contentState,
             )
 
             expect(newContentState).not.toBe(contentState)
             expect(
-                getContentStateBlocksSnapshot(newContentState)
+                getContentStateBlocksSnapshot(newContentState),
             ).toMatchSnapshot()
         })
 
         it('should not clear email extra data if new content was added below user input', () => {
             const prevContentState = addEmailExtraContent(
                 ContentState.createFromText('Foo\nBar'),
-                emailExtraArgs
+                emailExtraArgs,
             )
             const contentState = ContentState.createFromBlockArray(
                 prevContentState.getBlocksAsArray().map((block, i) => {
@@ -792,31 +792,31 @@ describe('emailExtraUtils', () => {
                         return block.set('text', 'Modified')
                     }
                     return block
-                }) as ContentBlock[]
+                }) as ContentBlock[],
             ).set(
                 'selectionAfter',
                 SelectionState.createEmpty(
-                    prevContentState.getLastBlock().getKey()
-                ).set('focusOffset', 1)
+                    prevContentState.getLastBlock().getKey(),
+                ).set('focusOffset', 1),
             ) as ContentState
 
             const newContentState = updateEmailExtraOnUserInput(
                 prevContentState,
-                contentState
+                contentState,
             )
 
             expect(
                 getContentStateSelectionSnapshot(
                     newContentState,
-                    newContentState.getSelectionAfter()
-                )
+                    newContentState.getSelectionAfter(),
+                ),
             ).toMatchSnapshot()
         })
 
         it('should clear first line email extra data if only the first empty line was modified', () => {
             const prevContentState = addEmailExtraContent(
                 ContentState.createFromText('Foo\nBar'),
-                emailExtraArgs
+                emailExtraArgs,
             )
             const contentState = ContentState.createFromBlockArray(
                 prevContentState.getBlocksAsArray().map((block, i) => {
@@ -824,24 +824,24 @@ describe('emailExtraUtils', () => {
                         return block.set('text', 'Modified')
                     }
                     return block
-                }) as ContentBlock[]
+                }) as ContentBlock[],
             )
 
             const newContentState = updateEmailExtraOnUserInput(
                 prevContentState,
-                contentState
+                contentState,
             )
 
             expect(newContentState).not.toBe(contentState)
             expect(
-                getContentStateBlocksSnapshot(newContentState)
+                getContentStateBlocksSnapshot(newContentState),
             ).toMatchSnapshot()
         })
 
         it('should clear email extra data if more than the first line was modified', () => {
             const prevContentState = addEmailExtraContent(
                 ContentState.createFromText('Foo\nBar'),
-                emailExtraArgs
+                emailExtraArgs,
             )
             const contentState = ContentState.createFromBlockArray(
                 prevContentState.getBlocksAsArray().map((block, i) => {
@@ -849,17 +849,17 @@ describe('emailExtraUtils', () => {
                         return block.set('text', 'Modified')
                     }
                     return block
-                }) as ContentBlock[]
+                }) as ContentBlock[],
             )
 
             const newContentState = updateEmailExtraOnUserInput(
                 prevContentState,
-                contentState
+                contentState,
             )
 
             expect(newContentState).not.toBe(contentState)
             expect(
-                getContentStateBlocksSnapshot(newContentState)
+                getContentStateBlocksSnapshot(newContentState),
             ).toMatchSnapshot()
         })
 
@@ -867,7 +867,7 @@ describe('emailExtraUtils', () => {
             const prevContentState = ContentState.createFromBlockArray(
                 addEmailExtraContent(
                     ContentState.createFromText('Foo\nBar'),
-                    emailExtraArgs
+                    emailExtraArgs,
                 )
                     .getBlocksAsArray()
                     .map((block, i) => {
@@ -875,7 +875,7 @@ describe('emailExtraUtils', () => {
                             return block.set('text', 'Modified')
                         }
                         return block
-                    }) as ContentBlock[]
+                    }) as ContentBlock[],
             )
 
             const contentState = ContentState.createFromBlockArray(
@@ -884,17 +884,17 @@ describe('emailExtraUtils', () => {
                         return block.set('text', 'Modified again')
                     }
                     return block
-                }) as ContentBlock[]
+                }) as ContentBlock[],
             )
 
             const newContentState = updateEmailExtraOnUserInput(
                 prevContentState,
-                contentState
+                contentState,
             )
 
             expect(newContentState).not.toBe(contentState)
             expect(
-                getContentStateBlocksSnapshot(newContentState)
+                getContentStateBlocksSnapshot(newContentState),
             ).toMatchSnapshot()
         })
     })

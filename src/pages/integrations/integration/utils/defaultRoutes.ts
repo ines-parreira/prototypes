@@ -1,8 +1,8 @@
-import {Integration} from 'models/integration/types'
+import { Integration } from 'models/integration/types'
 
 export const getDefaultRoutes = (
     baseURL: string,
-    integrations: Integration[]
+    integrations: Integration[],
 ) => {
     const isAboutDefault = integrations.length === 0
 

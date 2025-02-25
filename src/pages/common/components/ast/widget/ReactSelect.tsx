@@ -1,9 +1,11 @@
-import {List} from 'immutable'
+import React, { Component } from 'react'
+
+import { List } from 'immutable'
 import _noop from 'lodash/noop'
 import sortBy from 'lodash/sortBy'
-import React, {Component} from 'react'
 
 import 'react-select/dist/react-select.css'
+
 import SelectField from '../../../forms/SelectField/SelectField'
 import {
     SelectableOption as SelectOption,
@@ -33,7 +35,7 @@ export default class Select extends Component<Props> {
     }
 
     _getOptions = () => {
-        const {options, hiddenOptions, sortOptions} = this.props
+        const { options, hiddenOptions, sortOptions } = this.props
         let formattedOptions: SelectOption[] = []
 
         if (options) {
@@ -50,7 +52,7 @@ export default class Select extends Component<Props> {
                             }
                         }
                         return option
-                    }
+                    },
                 )
             } else {
                 formattedOptions = Object.keys(options).map<SelectOption>(
@@ -58,13 +60,13 @@ export default class Select extends Component<Props> {
                         value: key.toString(),
                         label: options[key].label,
                         isDeprecated: options[key]?.isDeprecated || false,
-                    })
+                    }),
                 )
             }
         }
         if (hiddenOptions)
             formattedOptions = formattedOptions.filter(
-                (option) => !hiddenOptions.includes(option.value.toString())
+                (option) => !hiddenOptions.includes(option.value.toString()),
             )
 
         if (sortOptions) {
@@ -73,7 +75,7 @@ export default class Select extends Component<Props> {
                 formattedOptions,
                 (option: SelectOption) =>
                     typeof option.label === 'string' &&
-                    option.label.toLowerCase()
+                    option.label.toLowerCase(),
             )
         }
         return formattedOptions

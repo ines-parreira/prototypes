@@ -1,19 +1,19 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {render, screen} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { render, screen } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import {
     useGetAiAgentFeedback,
     useSubmitAIAgentTicketMessagesFeedback,
 } from 'models/aiAgentFeedback/queries'
-import {TicketMessage} from 'models/ticket/types'
-import {RootState, StoreDispatch} from 'state/types'
-import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants'
-
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { TicketMessage } from 'models/ticket/types'
+import { RootState, StoreDispatch } from 'state/types'
+import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constants'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 import AIAgentBanner from '../AIAgentBanner'
 
@@ -24,7 +24,7 @@ jest.mock('../../../hooks/useAIAgentResourcesWithFeedback')
 
 const useGetAiAgentFeedbackMock = assumeMock(useGetAiAgentFeedback)
 const useSubmitAIAgentTicketMessagesFeedbackMock = assumeMock(
-    useSubmitAIAgentTicketMessagesFeedback
+    useSubmitAIAgentTicketMessagesFeedback,
 )
 const queryClient = mockQueryClient()
 
@@ -49,7 +49,11 @@ describe('AIAgentBanner', () => {
     beforeEach(() => {
         useGetAiAgentFeedbackMock.mockReturnValue({
             data: {
-                data: {messages: [], shopName: 'shopName', shopType: 'shopify'},
+                data: {
+                    messages: [],
+                    shopName: 'shopName',
+                    shopType: 'shopify',
+                },
             },
             isLoading: false,
             isError: false,
@@ -70,7 +74,7 @@ describe('AIAgentBanner', () => {
             isLoading: true,
             isError: false,
         } as any)
-        const {container} = render(
+        const { container } = render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={store}>
                     <AIAgentBanner
@@ -78,7 +82,7 @@ describe('AIAgentBanner', () => {
                         messages={[mockMessage]}
                     />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(container).toBeEmptyDOMElement()
@@ -93,9 +97,9 @@ describe('AIAgentBanner', () => {
                             messageId: mockMessage.id,
                             summary: 'summary',
                             feedbackOnResource: [
-                                {resourceId: 1, feedback: 'thumbs_up'},
-                                {resourceId: 2, feedback: 'thumbs_up'},
-                                {resourceId: 3, feedback: 'thumbs_down'},
+                                { resourceId: 1, feedback: 'thumbs_up' },
+                                { resourceId: 2, feedback: 'thumbs_up' },
+                                { resourceId: 3, feedback: 'thumbs_down' },
                             ],
                             allowsFeedback: false,
                         },
@@ -110,9 +114,9 @@ describe('AIAgentBanner', () => {
 
         render(
             <AIAgentBanner
-                message={{...mockMessage, public: false}}
+                message={{ ...mockMessage, public: false }}
                 messages={[mockMessage]}
-            />
+            />,
         )
 
         expect(screen.queryByTestId('feedback')).not.toBeInTheDocument()
@@ -127,9 +131,9 @@ describe('AIAgentBanner', () => {
                             messageId: mockMessage.id,
                             summary: 'summary',
                             feedbackOnResource: [
-                                {resourceId: 1, feedback: 'thumbs_up'},
-                                {resourceId: 2, feedback: 'thumbs_up'},
-                                {resourceId: 3, feedback: 'thumbs_down'},
+                                { resourceId: 1, feedback: 'thumbs_up' },
+                                { resourceId: 2, feedback: 'thumbs_up' },
+                                { resourceId: 3, feedback: 'thumbs_down' },
                             ],
                             allowsFeedback: false,
                         },
@@ -144,9 +148,9 @@ describe('AIAgentBanner', () => {
 
         render(
             <AIAgentBanner
-                message={{...mockMessage, public: true}}
+                message={{ ...mockMessage, public: true }}
                 messages={[mockMessage]}
-            />
+            />,
         )
 
         expect(screen.queryByTestId('feedback')).toBeInTheDocument()
@@ -162,9 +166,9 @@ describe('AIAgentBanner', () => {
                             summary: 'summary',
                             allowsFeedback: true,
                             feedbackOnResource: [
-                                {resourceId: 1, feedback: 'thumbs_up'},
-                                {resourceId: 2, feedback: 'thumbs_up'},
-                                {resourceId: 3, feedback: 'thumbs_up'},
+                                { resourceId: 1, feedback: 'thumbs_up' },
+                                { resourceId: 2, feedback: 'thumbs_up' },
+                                { resourceId: 3, feedback: 'thumbs_up' },
                             ],
                         },
                     ],
@@ -190,9 +194,9 @@ describe('AIAgentBanner', () => {
                             messageId: mockMessage.id,
                             summary: 'summary',
                             feedbackOnResource: [
-                                {resourceId: 1, feedback: 'thumbs_up'},
-                                {resourceId: 2, feedback: 'thumbs_up'},
-                                {resourceId: 3, feedback: 'thumbs_down'},
+                                { resourceId: 1, feedback: 'thumbs_up' },
+                                { resourceId: 2, feedback: 'thumbs_up' },
+                                { resourceId: 3, feedback: 'thumbs_down' },
                             ],
                         },
                     ],
@@ -230,11 +234,11 @@ describe('AIAgentBanner', () => {
             isError: false,
         } as any)
 
-        const {getByText} = render(
+        const { getByText } = render(
             <AIAgentBanner
-                message={{...mockMessage, public: false}}
+                message={{ ...mockMessage, public: false }}
                 messages={[mockMessage]}
-            />
+            />,
         )
 
         const message = getByText('summary')
@@ -261,7 +265,7 @@ describe('AIAgentBanner', () => {
             isError: false,
         } as any)
 
-        const {queryByText} = render(
+        const { queryByText } = render(
             <AIAgentBanner
                 message={{
                     ...mockMessage,
@@ -269,7 +273,7 @@ describe('AIAgentBanner', () => {
                     body_html: 'body_html123',
                 }}
                 messages={[mockMessage]}
-            />
+            />,
         )
 
         const summary = queryByText('summary')
@@ -299,15 +303,15 @@ describe('AIAgentBanner', () => {
             isError: false,
         } as any)
 
-        const {container} = render(
-            <AIAgentBanner message={mockMessage} messages={[mockMessage]} />
+        const { container } = render(
+            <AIAgentBanner message={mockMessage} messages={[mockMessage]} />,
         )
 
         expect(container.firstChild).toHaveClass('hasError')
     })
     it('should render the feedback if at last one message of the group matches with the returned feedback', () => {
-        const messageWithFeedback = {...mockMessage, id: 2}
-        const lastGroupMessageWithoutFeedback = {...mockMessage, id: 3}
+        const messageWithFeedback = { ...mockMessage, id: 2 }
+        const lastGroupMessageWithoutFeedback = { ...mockMessage, id: 3 }
 
         useGetAiAgentFeedbackMock.mockReturnValue({
             data: {
@@ -317,9 +321,9 @@ describe('AIAgentBanner', () => {
                             messageId: messageWithFeedback.id,
                             summary: 'summary',
                             feedbackOnResource: [
-                                {resourceId: 1, feedback: 'thumbs_up'},
-                                {resourceId: 2, feedback: 'thumbs_up'},
-                                {resourceId: 3, feedback: 'thumbs_down'},
+                                { resourceId: 1, feedback: 'thumbs_up' },
+                                { resourceId: 2, feedback: 'thumbs_up' },
+                                { resourceId: 3, feedback: 'thumbs_down' },
                             ],
                             allowsFeedback: true,
                         },
@@ -340,7 +344,7 @@ describe('AIAgentBanner', () => {
                     messageWithFeedback,
                     lastGroupMessageWithoutFeedback,
                 ]}
-            />
+            />,
         )
 
         expect(screen.queryByTestId('feedback')).toBeInTheDocument()

@@ -1,17 +1,19 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
-import {StoreConfiguration} from 'models/aiAgent/types'
+import { StoreConfiguration } from 'models/aiAgent/types'
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
 import Button from 'pages/common/components/button/Button'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 import history from 'pages/history'
-import {getHasAutomate} from 'state/billing/selectors'
+import { getHasAutomate } from 'state/billing/selectors'
 
-import {FormValues, UpdateValue} from '../../types'
-import {isPreviewModeActivated} from '../StoreConfigForm/StoreConfigForm.utils'
+import { FormValues, UpdateValue } from '../../types'
+import { isPreviewModeActivated } from '../StoreConfigForm/StoreConfigForm.utils'
+
 import css from './AiAgentPreviewModeSection.less'
 
 type Props = {
@@ -127,7 +129,7 @@ export const AiAgentPreviewModeSection = ({
                             className={css.bannerButton}
                             onClick={() => {
                                 history.push(
-                                    `/app/views/${aiAgentPreviewTicketViewId}`
+                                    `/app/views/${aiAgentPreviewTicketViewId}`,
                                 )
                             }}
                         >

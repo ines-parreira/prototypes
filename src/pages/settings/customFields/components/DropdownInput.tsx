@@ -1,8 +1,13 @@
-import {Label, Tooltip} from '@gorgias/merchant-ui-kit'
-import uniqueId from 'lodash/uniqueId'
-import React, {memo, useCallback, useState} from 'react'
+import React, { memo, useCallback, useState } from 'react'
 
-import {DROPDOWN_NESTING_DELIMITER, OBJECT_TYPES} from 'custom-fields/constants'
+import uniqueId from 'lodash/uniqueId'
+
+import { Label, Tooltip } from '@gorgias/merchant-ui-kit'
+
+import {
+    DROPDOWN_NESTING_DELIMITER,
+    OBJECT_TYPES,
+} from 'custom-fields/constants'
 import {
     CustomField,
     CustomFieldInput,
@@ -13,9 +18,9 @@ import Button from 'pages/common/components/button/Button'
 import Caption from 'pages/common/forms/Caption/Caption'
 
 import DropdownCSVImport from './DropdownCSVImport'
+import DropdownInputRow from './DropdownInputRow'
 
 import css from './DropdownInput.less'
-import DropdownInputRow from './DropdownInputRow'
 
 interface DropdownInputProps {
     field: CustomField | CustomFieldInput
@@ -34,7 +39,7 @@ interface InternalValue {
 function validate(
     value: CustomFieldValue,
     index: number,
-    values: CustomFieldValue[]
+    values: CustomFieldValue[],
 ): string | undefined {
     // Empty strings are considered valid
     if (!value) {
@@ -76,7 +81,7 @@ export function DropdownInput({
                 value: val.toString(),
                 id: uniqueId('dropdown-choice-'),
                 error: validate(val, index, value),
-            }))
+            })),
     )
 
     // Update the state and add an empty option at the end if necessary
@@ -102,7 +107,7 @@ export function DropdownInput({
                 return next
             })
         },
-        [onChange]
+        [onChange],
     )
 
     const setValue = useCallback(
@@ -124,7 +129,7 @@ export function DropdownInput({
                 return values
             })
         },
-        [customSetValues]
+        [customSetValues],
     )
     const removeValue = useCallback(
         (index: number) => {
@@ -133,7 +138,7 @@ export function DropdownInput({
                 return values
             })
         },
-        [customSetValues]
+        [customSetValues],
     )
 
     const handleHover = useCallback(
@@ -145,7 +150,7 @@ export function DropdownInput({
                 return values
             })
         },
-        [customSetValues]
+        [customSetValues],
     )
     const handleDrop = useCallback(() => {
         customSetValues((values: InternalValue[]) => values)

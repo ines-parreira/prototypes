@@ -1,5 +1,5 @@
-import {deepMapKeysToSnakeCase} from 'models/api/utils'
-import {RevenueAddonClient} from 'rest_api/revenue_addon_api/client'
+import { deepMapKeysToSnakeCase } from 'models/api/utils'
+import { RevenueAddonClient } from 'rest_api/revenue_addon_api/client'
 
 import {
     ABTestCreatePayload,
@@ -11,7 +11,7 @@ import {
 
 export const listABTests = async (
     client: RevenueAddonClient | undefined,
-    options: ABTestListOptions
+    options: ABTestListOptions,
 ) => {
     if (!client) return null
 
@@ -22,7 +22,7 @@ export const listABTests = async (
 
 export const createABTest = async (
     client: RevenueAddonClient | undefined,
-    data: ABTestCreatePayload
+    data: ABTestCreatePayload,
 ) => {
     if (!client) return null
 
@@ -32,7 +32,7 @@ export const createABTest = async (
 export const updateABTest = async (
     client: RevenueAddonClient | undefined,
     params: ABTestParams,
-    data: ABTestUpdatePayload
+    data: ABTestUpdatePayload,
 ) => {
     if (!client) return null
 

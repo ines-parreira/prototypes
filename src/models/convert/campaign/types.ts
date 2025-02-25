@@ -1,11 +1,11 @@
-import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
-import {Components, Paths} from 'rest_api/revenue_addon_api/client.generated'
+import { CampaignVariant } from 'pages/convert/campaigns/types/CampaignVariant'
+import { Components, Paths } from 'rest_api/revenue_addon_api/client.generated'
 
 export type CampaignParams = (
     | Paths.GetCampaign.PathParameters
     | Paths.PatchCampaign.PathParameters
     | Paths.DeleteCampaign.PathParameters
-) & {channelConnectionId?: string}
+) & { channelConnectionId?: string }
 
 export type CampaignListParams = Paths.GetCampaigns.QueryParameters
 

@@ -1,7 +1,8 @@
-import classNames from 'classnames'
 import React from 'react'
 
-import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
+import classNames from 'classnames'
+
+import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 
 import css from './LevelOfCoverage.less'
 

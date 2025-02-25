@@ -1,7 +1,8 @@
-import {fireEvent, render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {EmojiInput} from 'pages/stats/custom-reports/EmojiInput'
+import { fireEvent, render, screen } from '@testing-library/react'
+
+import { EmojiInput } from 'pages/stats/custom-reports/EmojiInput'
 
 const getEmojiInput = (emoji = 'insert_emoticon') => screen.getByText(emoji)
 
@@ -70,7 +71,7 @@ describe('EmojiInput', () => {
     it('should render a hidden input with the `name` prop as the name attribute', () => {
         const name = 'emoji'
 
-        const {container} = render(<EmojiInput name={name} />)
+        const { container } = render(<EmojiInput name={name} />)
 
         const hiddenInput = container.querySelector(`input[name="${name}"]`)
 
@@ -82,12 +83,12 @@ describe('EmojiInput', () => {
 
         const emoji = '🖖'
 
-        const {container} = render(<EmojiInput name={name} />)
+        const { container } = render(<EmojiInput name={name} />)
 
         selectEmoji(emoji)
 
         const hiddenInput = container.querySelector(
-            `input[name="${name}"]`
+            `input[name="${name}"]`,
         ) as HTMLInputElement
 
         expect(hiddenInput.value).toBe(emoji)

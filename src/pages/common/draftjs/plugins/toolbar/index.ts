@@ -1,30 +1,30 @@
-import decorateComponentWithProps from 'decorate-component-with-props'
-import {ContentBlock, EditorState, KeyBindingUtil} from 'draft-js'
-import {ReactNode, ComponentType, KeyboardEvent} from 'react'
+import { ComponentType, KeyboardEvent, ReactNode } from 'react'
 
-import {draftjsGorgiasCustomBlockRenderers} from 'common/editor'
+import decorateComponentWithProps from 'decorate-component-with-props'
+import { ContentBlock, EditorState, KeyBindingUtil } from 'draft-js'
+
+import { draftjsGorgiasCustomBlockRenderers } from 'common/editor'
 
 import {
     EditorHandledNotHandled,
     getSelectedEntityKey,
     getSelectedText,
 } from '../../../../../utils/editor'
-import {Plugin, PluginMethods} from '../types'
-import {removeLink} from '../utils'
-
+import { Plugin, PluginMethods } from '../types'
+import { removeLink } from '../utils'
 import Image from './components/Image'
 import Video from './components/Video'
 import discountCodeLink from './decorators/discountCodeLink'
 import foundUrl from './decorators/foundUrl'
 import link from './decorators/link'
-import {Config, ActionName} from './types'
+import { ActionName, Config } from './types'
 
 // documentation:
 // https://github.com/draft-js-plugins/draft-js-plugins/blob/master/HOW_TO_CREATE_A_PLUGIN.md
 
 export const isDisplayedAction = (
     name: ActionName,
-    displayedActions?: ActionName[] | null
+    displayedActions?: ActionName[] | null,
 ) => {
     if (!displayedActions) {
         return true
@@ -49,7 +49,7 @@ export default function toolbarPlugin(config: Config): Plugin {
 
         blockRendererFn: (
             block: ContentBlock,
-            {getEditorState}: PluginMethods
+            { getEditorState }: PluginMethods,
         ) => {
             const contetState = getEditorState().getCurrentContent()
             // render img (atomic block)
@@ -65,7 +65,7 @@ export default function toolbarPlugin(config: Config): Plugin {
                     }
                     component = decorateComponentWithProps(
                         component as ComponentType<any>,
-                        {theme}
+                        { theme },
                     )
                     return {
                         component,
@@ -80,7 +80,7 @@ export default function toolbarPlugin(config: Config): Plugin {
                     }
                     component = decorateComponentWithProps(
                         component as ComponentType<any>,
-                        {theme}
+                        { theme },
                     )
                     return {
                         component,
@@ -107,9 +107,9 @@ export default function toolbarPlugin(config: Config): Plugin {
         handleKeyCommand: (
             command: string,
             editorState: EditorState,
-            pluginMethods: PluginMethods
+            pluginMethods: PluginMethods,
         ) => {
-            const {setEditorState} = pluginMethods
+            const { setEditorState } = pluginMethods
             const contentState = editorState.getCurrentContent()
             const selection = editorState.getSelection()
 
@@ -123,7 +123,7 @@ export default function toolbarPlugin(config: Config): Plugin {
                     setEditorState(removeLink(entityKey, editorState))
                 } else {
                     config.onLinkCreate(
-                        getSelectedText(contentState, selection)
+                        getSelectedText(contentState, selection),
                     )
                 }
 

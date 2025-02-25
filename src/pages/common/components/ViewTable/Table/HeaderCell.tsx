@@ -1,23 +1,23 @@
+import React, { ComponentType, useCallback, useMemo } from 'react'
+
 import classnames from 'classnames'
-import {fromJS, Map, List} from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 
-import React, {ComponentType, useCallback, useMemo} from 'react'
-
-import {getConfigByName} from 'config/views'
+import { getConfigByName } from 'config/views'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {OrderDirection} from 'models/api/types'
-import {TicketSearchSortableProperties} from 'models/search/types'
-import {EntityType} from 'models/view/types'
+import { OrderDirection } from 'models/api/types'
+import { TicketSearchSortableProperties } from 'models/search/types'
+import { EntityType } from 'models/view/types'
 import ShowMoreFieldsDropdown from 'pages/common/components/ViewTable/ShowMoreFieldsDropdown'
-import {fetchViewItems, setOrderDirection} from 'state/views/actions'
+import { fetchViewItems, setOrderDirection } from 'state/views/actions'
 import {
     getActiveView,
     getActiveViewOrderBy,
     getActiveViewOrderDirection,
     getSelectedItemsIds,
 } from 'state/views/selectors'
-import {fieldPath as getFieldPath} from 'utils'
+import { fieldPath as getFieldPath } from 'utils'
 
 import css from './HeaderCell.less'
 
@@ -45,19 +45,19 @@ const HeaderCell = ({
     const activeView = useAppSelector(getActiveView)
     const config = getConfigByName(type)
     const orderBy = useAppSelector(
-        getActiveViewOrderBy
+        getActiveViewOrderBy,
     ) as TicketSearchSortableProperties
     const orderDirection = useAppSelector(getActiveViewOrderDirection)
     const selectedItemsIds = useAppSelector(getSelectedItemsIds)
 
     const fieldPath = useMemo(
         () => getFieldPath(field),
-        [field]
+        [field],
     ) as TicketSearchSortableProperties
 
     const isSearchSortingEnabled = useMemo(
         () => isSearch && type === EntityType.Ticket,
-        [isSearch, type]
+        [isSearch, type],
     )
 
     const action = useMemo(
@@ -67,7 +67,7 @@ const HeaderCell = ({
                     ? 'sort'
                     : 'filter'
                 : '',
-        [field, isSearch, isSearchSortingEnabled]
+        [field, isSearch, isSearchSortingEnabled],
     )
 
     const renderOrderIcon = useCallback(
@@ -84,7 +84,7 @@ const HeaderCell = ({
 
             return null
         },
-        [orderDirection]
+        [orderDirection],
     )
 
     const onClick = useCallback(() => {
@@ -103,7 +103,7 @@ const HeaderCell = ({
             void dispatch(
                 fetchViewItems(undefined, undefined, undefined, undefined, {
                     orderBy: `${fieldPath}:${newDirection}`,
-                })
+                }),
             )
         }
     }, [
@@ -122,9 +122,9 @@ const HeaderCell = ({
     const selectableFields = useMemo(
         () =>
             (config.get('fields', fromJS([])) as List<any>).filter(
-                (field: Map<any, any>) => field.get('show', true) as boolean
+                (field: Map<any, any>) => field.get('show', true) as boolean,
             ) as List<any>,
-        [config]
+        [config],
     )
 
     return (

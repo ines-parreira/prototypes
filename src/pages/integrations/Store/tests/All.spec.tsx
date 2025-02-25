@@ -1,26 +1,27 @@
-import {screen, waitFor} from '@testing-library/react'
-import MockAdapter from 'axios-mock-adapter'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { screen, waitFor } from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {INTEGRATION_TYPE_CONFIG} from 'config'
-import {dummyAppListData} from 'fixtures/apps'
+import { INTEGRATION_TYPE_CONFIG } from 'config'
+import { dummyAppListData } from 'fixtures/apps'
 import client from 'models/api/resources'
-import {HelpdeskPlan, Cadence, ProductType} from 'models/billing/types'
-import {IntegrationType} from 'models/integration/constants'
-import {Integration} from 'models/integration/types'
+import { Cadence, HelpdeskPlan, ProductType } from 'models/billing/types'
+import { IntegrationType } from 'models/integration/constants'
+import { Integration } from 'models/integration/types'
 import {
     AccountFeature,
     AccountFeatureMetadata,
 } from 'state/currentAccount/types'
-import {IntegrationListItem} from 'state/integrations/types'
-import {renderWithRouter} from 'utils/testing'
+import { IntegrationListItem } from 'state/integrations/types'
+import { renderWithRouter } from 'utils/testing'
 
-import All, {addRequiredPlanToIntegrations} from '../All'
-import {CARD_LINK_TEST_ID, LOADING_TEST_ID} from '../Card'
+import All, { addRequiredPlanToIntegrations } from '../All'
+import { CARD_LINK_TEST_ID, LOADING_TEST_ID } from '../Card'
 import {
     CATEGORY_URL_PARAM,
     MAX_CARDS_DISPLAYED,
@@ -55,12 +56,12 @@ const store = mockStore({
             {
                 type: ProductType.Automation,
                 id: 'don’t care',
-                prices: [{amount: 100}],
+                prices: [{ amount: 100 }],
             },
         ],
     }),
     integrations: fromJS({
-        integrations: Array.from({length: 5}, (_, index) => ({id: index})),
+        integrations: Array.from({ length: 5 }, (_, index) => ({ id: index })),
     }),
 })
 
@@ -82,15 +83,15 @@ const prices = [
 describe('addRequiredPlanToIntegrations()', () => {
     it('should return the required plan', () => {
         const magentoConf = INTEGRATION_TYPE_CONFIG.find(
-            (conf) => conf.type === IntegrationType.Magento2
+            (conf) => conf.type === IntegrationType.Magento2,
         )
         expect(
             addRequiredPlanToIntegrations(
                 [magentoConf as unknown as IntegrationListItem],
                 [{} as Integration],
                 {},
-                prices
-            )[0].requiredPriceName
+                prices,
+            )[0].requiredPriceName,
         ).toBe(prices[0].name)
     })
 })
@@ -106,18 +107,18 @@ describe('<All />', () => {
         renderWithRouter(
             <Provider store={store}>
                 <All />
-            </Provider>
+            </Provider>,
         )
         expect(screen.getAllByTestId(LOADING_TEST_ID))
     })
 
     it('should show static integrations, loaded apps', async () => {
-        mockApi.onGet('/api/apps/').reply(200, {data: [dummyAppListData]})
+        mockApi.onGet('/api/apps/').reply(200, { data: [dummyAppListData] })
 
         renderWithRouter(
             <Provider store={store}>
                 <All />
-            </Provider>
+            </Provider>,
         )
         await waitFor(() => {
             expect(screen.queryAllByTestId(LOADING_TEST_ID).length).toBe(0)
@@ -127,7 +128,7 @@ describe('<All />', () => {
     })
 
     it('should show a message saying the category is empty when a category that has no apps is set', async () => {
-        mockApi.onGet('/api/apps/').reply(200, {data: []})
+        mockApi.onGet('/api/apps/').reply(200, { data: [] })
 
         renderWithRouter(
             <Provider store={store}>
@@ -135,9 +136,9 @@ describe('<All />', () => {
             </Provider>,
             {
                 route: `?${CATEGORY_URL_PARAM}=${encodeURIComponent(
-                    dummyAppListData.categories[0]
+                    dummyAppListData.categories[0],
                 )}`,
-            }
+            },
         )
         await waitFor(() => {
             expect(screen.queryByText(/Loading/)).toBe(null)
@@ -154,12 +155,12 @@ describe('<All />', () => {
                 name: `${dummyAppListData.name}-${i}`,
             })
         }
-        mockApi.onGet('/api/apps/').reply(200, {data: dummyApps})
+        mockApi.onGet('/api/apps/').reply(200, { data: dummyApps })
 
         renderWithRouter(
             <Provider store={store}>
                 <All />
-            </Provider>
+            </Provider>,
         )
         await waitFor(() => {
             expect(screen.queryByText(/Loading/)).toBe(null)
@@ -177,7 +178,7 @@ describe('<All />', () => {
                 name: `${dummyAppListData.name}-${i}`,
             })
         }
-        mockApi.onGet('/api/apps/').reply(200, {data: dummyApps})
+        mockApi.onGet('/api/apps/').reply(200, { data: dummyApps })
 
         renderWithRouter(
             <Provider store={store}>
@@ -185,9 +186,9 @@ describe('<All />', () => {
             </Provider>,
             {
                 route: `?${CATEGORY_URL_PARAM}=${encodeURIComponent(
-                    dummyAppListData.categories[0]
+                    dummyAppListData.categories[0],
                 )}`,
-            }
+            },
         )
         await waitFor(() => {
             expect(screen.queryByText(/Loading/)).toBe(null)
@@ -206,7 +207,7 @@ describe('<All />', () => {
             })
         }
         dummyApps[0].name = dummyApps[0].name.toUpperCase()
-        mockApi.onGet('/api/apps/').reply(200, {data: dummyApps})
+        mockApi.onGet('/api/apps/').reply(200, { data: dummyApps })
 
         renderWithRouter(
             <Provider store={store}>
@@ -214,15 +215,15 @@ describe('<All />', () => {
             </Provider>,
             {
                 route: `?${SEARCH_URL_PARAM}=${encodeURIComponent(
-                    dummyAppListData.name.toLowerCase()
+                    dummyAppListData.name.toLowerCase(),
                 )}`,
-            }
+            },
         )
         await waitFor(() => {
             expect(screen.queryByText(/Loading/)).toBe(null)
         })
         expect(screen.getAllByTestId(CARD_LINK_TEST_ID).length).toBe(
-            dummyAppsNumber
+            dummyAppsNumber,
         )
     })
 
@@ -235,7 +236,7 @@ describe('<All />', () => {
                 name: `${dummyAppListData.name}-${i}`,
             })
         }
-        mockApi.onGet('/api/apps/').reply(200, {data: dummyApps})
+        mockApi.onGet('/api/apps/').reply(200, { data: dummyApps })
 
         renderWithRouter(
             <Provider store={store}>
@@ -243,7 +244,7 @@ describe('<All />', () => {
             </Provider>,
             {
                 route: `?${SEARCH_URL_PARAM}=nada}`,
-            }
+            },
         )
         await waitFor(() => {
             expect(screen.queryByText(/Loading/)).toBe(null)

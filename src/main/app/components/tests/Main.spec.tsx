@@ -1,40 +1,41 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import Main from '../Main'
 
 jest.mock('common/notifications', () => ({
-    NotificationsProvider: ({children}: {children: React.ReactNode}) => (
+    NotificationsProvider: ({ children }: { children: React.ReactNode }) => (
         <div data-testid="notifications-provider">{children}</div>
     ),
 }))
 
 jest.mock('AlertBanners', () => ({
-    BannersContextProvider: ({children}: {children: React.ReactNode}) => (
+    BannersContextProvider: ({ children }: { children: React.ReactNode }) => (
         <div data-testid="banner-provider">{children}</div>
     ),
 }))
 
 jest.mock('pages/ErrorBoundary', () => ({
-    ErrorBoundary: ({children}: {children: React.ReactNode}) => (
+    ErrorBoundary: ({ children }: { children: React.ReactNode }) => (
         <div data-testid="error-boundary">{children}</div>
     ),
 }))
 
 jest.mock('providers/ui/SpotlightProvider', () => ({
-    SpotlightProvider: ({children}: {children: React.ReactNode}) => (
+    SpotlightProvider: ({ children }: { children: React.ReactNode }) => (
         <div data-testid="spotlight-provider">{children}</div>
     ),
 }))
 
 jest.mock('split-ticket-view-toggle', () => ({
-    SplitTicketViewProvider: ({children}: {children: React.ReactNode}) => (
+    SplitTicketViewProvider: ({ children }: { children: React.ReactNode }) => (
         <div data-testid="split-ticket-view-provider">{children}</div>
     ),
 }))
 
 jest.mock('core/theme', () => ({
-    ThemeProvider: ({children}: {children: React.ReactNode}) => (
+    ThemeProvider: ({ children }: { children: React.ReactNode }) => (
         <div data-testid="theme-provider">{children}</div>
     ),
 }))
@@ -43,27 +44,27 @@ jest.mock(
     'pages/integrations/integration/components/voice/VoiceDeviceProvider',
     () => ({
         __esModule: true,
-        default: ({children}: {children: React.ReactNode}) => (
+        default: ({ children }: { children: React.ReactNode }) => (
             <div data-testid="voice-device-provider">{children}</div>
         ),
-    })
+    }),
 )
 
 jest.mock('react-cookie', () => ({
-    CookiesProvider: ({children}: {children: React.ReactNode}) => (
+    CookiesProvider: ({ children }: { children: React.ReactNode }) => (
         <div data-testid="cookies-provider">{children}</div>
     ),
 }))
 
 jest.mock('@gorgias/realtime', () => ({
-    AgentActivityProvider: ({children}: {children: React.ReactNode}) => (
+    AgentActivityProvider: ({ children }: { children: React.ReactNode }) => (
         <div data-testid="realtime-provider">{children}</div>
     ),
 }))
 
 jest.mock('../App', () => ({
     __esModule: true,
-    default: ({children}: {children: React.ReactNode}) => (
+    default: ({ children }: { children: React.ReactNode }) => (
         <div data-testid="app">{children}</div>
     ),
 }))
@@ -74,7 +75,7 @@ describe('Main', () => {
         render(
             <Main>
                 <div>{childrenText}</div>
-            </Main>
+            </Main>,
         )
 
         expect(screen.getByTestId('error-boundary')).toBeInTheDocument()
@@ -84,7 +85,7 @@ describe('Main', () => {
         expect(screen.getByTestId('spotlight-provider')).toBeInTheDocument()
         expect(screen.getByTestId('voice-device-provider')).toBeInTheDocument()
         expect(
-            screen.getByTestId('split-ticket-view-provider')
+            screen.getByTestId('split-ticket-view-provider'),
         ).toBeInTheDocument()
         expect(screen.getByTestId('cookies-provider')).toBeInTheDocument()
         expect(screen.getByTestId('app')).toBeInTheDocument()

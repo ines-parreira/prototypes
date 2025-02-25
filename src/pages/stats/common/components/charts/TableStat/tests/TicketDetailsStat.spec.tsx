@@ -1,19 +1,20 @@
-import {fireEvent, render} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { fireEvent, render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {TicketChannel} from 'business/types/ticket'
-import {logEvent} from 'common/segment'
-import {channels} from 'fixtures/channels'
-import {integrationsState} from 'fixtures/integrations'
-import {LegacyStatsFilters} from 'models/stat/types'
+import { TicketChannel } from 'business/types/ticket'
+import { logEvent } from 'common/segment'
+import { channels } from 'fixtures/channels'
+import { integrationsState } from 'fixtures/integrations'
+import { LegacyStatsFilters } from 'models/stat/types'
 import StatsFiltersContext from 'pages/stats/StatsFiltersContext'
 import * as channelsService from 'services/channels'
-import {RootState, StoreDispatch} from 'state/types'
-import {reportError} from 'utils/errors'
+import { RootState, StoreDispatch } from 'state/types'
+import { reportError } from 'utils/errors'
 
 import ViewLink from '../../../../ViewLink'
 import TicketDetailsStat from '../TicketDetailsStat'
@@ -40,7 +41,7 @@ jest.mock(
                 </span>
                 <span aria-label="children">{children}</span>
             </a>
-        )
+        ),
 )
 jest.spyOn(channelsService, 'getChannels').mockReturnValue(channels)
 
@@ -68,23 +69,23 @@ describe('TicketDetailsStat', () => {
                 acc[channel.slug] = 0
                 return acc
             },
-            {} as Record<string, number>
+            {} as Record<string, number>,
         ),
     }
 
     it('should render a message when no assigned tickets', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <StatsFiltersContext.Provider value={defaultStatsFilters}>
                     <TicketDetailsStat {...minProps} />
                 </StatsFiltersContext.Provider>
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render open tickets and channels breakdown', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <StatsFiltersContext.Provider value={defaultStatsFilters}>
                     <TicketDetailsStat
@@ -97,13 +98,13 @@ describe('TicketDetailsStat', () => {
                         }}
                     />
                 </StatsFiltersContext.Provider>
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should log event on view link click', () => {
-        const {getAllByTestId} = render(
+        const { getAllByTestId } = render(
             <Provider store={mockStore(defaultState)}>
                 <StatsFiltersContext.Provider value={defaultStatsFilters}>
                     <TicketDetailsStat
@@ -116,7 +117,7 @@ describe('TicketDetailsStat', () => {
                         }}
                     />
                 </StatsFiltersContext.Provider>
-            </Provider>
+            </Provider>,
         )
 
         for (const element of getAllByTestId('view-link')) {
@@ -127,7 +128,7 @@ describe('TicketDetailsStat', () => {
     })
 
     it('should handle an unknown channel and report error', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <StatsFiltersContext.Provider value={defaultStatsFilters}>
                     <TicketDetailsStat
@@ -140,7 +141,7 @@ describe('TicketDetailsStat', () => {
                         }}
                     />
                 </StatsFiltersContext.Provider>
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()

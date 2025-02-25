@@ -1,11 +1,12 @@
-import {fireEvent, render} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {getConfigByName, getTicketViewField} from 'config/views'
-import {mockSearchRank} from 'fixtures/searchRank'
+import { fireEvent, render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+
+import { getConfigByName, getTicketViewField } from 'config/views'
+import { mockSearchRank } from 'fixtures/searchRank'
 import useSearchRankScenario from 'hooks/useSearchRankScenario'
-import {EntityType, ViewField} from 'models/view/types'
+import { EntityType, ViewField } from 'models/view/types'
 import FilterDropdownItems from 'pages/common/components/ViewTable/FilterDropdownItems'
 import FilterDropdownSearch from 'pages/common/components/ViewTable/FilterDropdownSearch'
 
@@ -70,7 +71,7 @@ const useSearchRankScenarioMock = useSearchRankScenario as jest.MockedFunction<
 useSearchRankScenarioMock.mockImplementation(() => mockSearchRank)
 
 describe('FilterDropdown', () => {
-    const defaultItem = {id: 1, name: 'Foo', email: 'foo@example.com'}
+    const defaultItem = { id: 1, name: 'Foo', email: 'foo@example.com' }
     const defaultSearchResults = [defaultItem]
     const minProps: ComponentProps<typeof FilterDropdown> = {
         field: getTicketViewField(ViewField.Customer),
@@ -85,37 +86,40 @@ describe('FilterDropdown', () => {
     })
 
     it('should render items from filter enum', () => {
-        const {container} = render(
+        const { container } = render(
             <FilterDropdown
                 {...minProps}
                 field={getTicketViewField(ViewField.Customer).setIn(
                     ['filter', 'enum'],
-                    fromJS(defaultSearchResults)
+                    fromJS(defaultSearchResults),
                 )}
-            />
+            />,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should apply a special style to the language filter', () => {
-        const {container} = render(
+        const { container } = render(
             <FilterDropdown
                 {...minProps}
                 field={getTicketViewField(ViewField.Language)}
-            />
+            />,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render custom menu', () => {
-        const {container} = render(
-            <FilterDropdown {...minProps} menu={() => <div>Custom menu</div>} />
+        const { container } = render(
+            <FilterDropdown
+                {...minProps}
+                menu={() => <div>Custom menu</div>}
+            />,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should set isLoading to true on search start', () => {
-        const {getByTestId} = render(<FilterDropdown {...minProps} />)
+        const { getByTestId } = render(<FilterDropdown {...minProps} />)
 
         fireEvent.click(getByTestId('search-start'))
 
@@ -123,8 +127,8 @@ describe('FilterDropdown', () => {
     })
 
     it('should render the search results', () => {
-        const {container, getByTestId} = render(
-            <FilterDropdown {...minProps} />
+        const { container, getByTestId } = render(
+            <FilterDropdown {...minProps} />,
         )
 
         fireEvent.click(getByTestId('search-success'))
@@ -133,22 +137,22 @@ describe('FilterDropdown', () => {
     })
 
     it('should call updateFieldFilter on item click', () => {
-        const {getByTestId} = render(<FilterDropdown {...minProps} />)
+        const { getByTestId } = render(<FilterDropdown {...minProps} />)
 
         fireEvent.click(getByTestId('item'))
 
         expect(
-            (minProps.updateFieldFilter as jest.Mock).mock.calls
+            (minProps.updateFieldFilter as jest.Mock).mock.calls,
         ).toMatchSnapshot()
     })
 
     it('should call updateFieldFilter on me item click', () => {
-        const {getByTestId} = render(<FilterDropdown {...minProps} />)
+        const { getByTestId } = render(<FilterDropdown {...minProps} />)
 
         fireEvent.click(getByTestId('me-item'))
 
         expect(
-            (minProps.updateFieldFilter as jest.Mock).mock.calls
+            (minProps.updateFieldFilter as jest.Mock).mock.calls,
         ).toMatchSnapshot()
     })
 })

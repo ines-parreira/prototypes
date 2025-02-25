@@ -1,23 +1,23 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment'
 
-import {UserRole} from 'config/types/user'
-import {useCommentHighlights} from 'hooks/reporting/quality-management/satisfaction/useCommentHighlights'
-import {useMetricPerDimensionWithEnrichment} from 'hooks/reporting/useMetricPerDimension'
+import { UserRole } from 'config/types/user'
+import { useCommentHighlights } from 'hooks/reporting/quality-management/satisfaction/useCommentHighlights'
+import { useMetricPerDimensionWithEnrichment } from 'hooks/reporting/useMetricPerDimension'
 import useAppSelector from 'hooks/useAppSelector'
-import {TicketDimension} from 'models/reporting/cubes/TicketCube'
-import {TicketSatisfactionSurveyDimension} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
-import {commentHighlightsQueryFactory} from 'models/reporting/queryFactories/satisfaction/commentHighlightsQueryFactory'
-import {EnrichmentFields} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
-import {getHumanAndAutomationBotAgentsJS} from 'state/agents/selectors'
-import {getTeamsMinimalWithEmojiJS} from 'state/teams/selectors'
-import {formatReportingQueryDate} from 'utils/reporting'
-import {assumeMock} from 'utils/testing'
+import { TicketDimension } from 'models/reporting/cubes/TicketCube'
+import { TicketSatisfactionSurveyDimension } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
+import { commentHighlightsQueryFactory } from 'models/reporting/queryFactories/satisfaction/commentHighlightsQueryFactory'
+import { EnrichmentFields } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
+import { getHumanAndAutomationBotAgentsJS } from 'state/agents/selectors'
+import { getTeamsMinimalWithEmojiJS } from 'state/teams/selectors'
+import { formatReportingQueryDate } from 'utils/reporting'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/useMetricPerDimension')
 const useMetricPerDimensionWithEnrichmentMock = assumeMock(
-    useMetricPerDimensionWithEnrichment
+    useMetricPerDimensionWithEnrichment,
 )
 
 jest.mock('hooks/useAppSelector')
@@ -28,8 +28,8 @@ describe('useCommentHighlights', () => {
         {
             id: 1,
             name: 'John Doe',
-            meta: {profile_picture_url: 'http://image.url'},
-            role: {name: UserRole.Bot},
+            meta: { profile_picture_url: 'http://image.url' },
+            role: { name: UserRole.Bot },
         },
     ]
 
@@ -71,7 +71,7 @@ describe('useCommentHighlights', () => {
 
     beforeEach(() => {
         useMetricPerDimensionWithEnrichmentMock.mockReturnValue(
-            emptyMetricPerDimensionWithEnrichmentReturnValue as any
+            emptyMetricPerDimensionWithEnrichmentReturnValue as any,
         )
 
         useAppSelectorMock.mockImplementation((selector) => {
@@ -86,14 +86,14 @@ describe('useCommentHighlights', () => {
     })
 
     it('should pass query factories with three arguments and return empty data', () => {
-        const {result} = renderHook(() =>
-            useCommentHighlights(statsFilters, timezone, queryScores)
+        const { result } = renderHook(() =>
+            useCommentHighlights(statsFilters, timezone, queryScores),
         )
 
         expect(useMetricPerDimensionWithEnrichmentMock).toHaveBeenCalledWith(
             commentHighlightsQueryFactory(statsFilters, timezone, queryScores),
             [EnrichmentFields.CustomerName, EnrichmentFields.AssigneeName],
-            EnrichmentFields.TicketId
+            EnrichmentFields.TicketId,
         )
         expect(result.current).toEqual({
             isError: false,
@@ -114,11 +114,11 @@ describe('useCommentHighlights', () => {
         ]
         useMetricPerDimensionWithEnrichmentMock.mockReturnValue({
             ...emptyMetricPerDimensionWithEnrichmentReturnValue,
-            data: {allData: emptyAllDataDummy} as any,
+            data: { allData: emptyAllDataDummy } as any,
         })
 
-        const {result} = renderHook(() =>
-            useCommentHighlights(statsFilters, timezone, queryScores)
+        const { result } = renderHook(() =>
+            useCommentHighlights(statsFilters, timezone, queryScores),
         )
 
         expect(result.current).toEqual({
@@ -140,11 +140,11 @@ describe('useCommentHighlights', () => {
     it('should return data formatted when not loading and no error', () => {
         useMetricPerDimensionWithEnrichmentMock.mockReturnValue({
             ...emptyMetricPerDimensionWithEnrichmentReturnValue,
-            data: {allData: allDataDummy} as any,
+            data: { allData: allDataDummy } as any,
         })
 
-        const {result} = renderHook(() =>
-            useCommentHighlights(statsFilters, timezone, queryScores)
+        const { result } = renderHook(() =>
+            useCommentHighlights(statsFilters, timezone, queryScores),
         )
 
         expect(result.current).toEqual({
@@ -161,7 +161,7 @@ describe('useCommentHighlights', () => {
                         isBot: true,
                     },
                     customerName: 'Customer A',
-                    assignedTeam: {name: 'Team A', emoji: '🚀'},
+                    assignedTeam: { name: 'Team A', emoji: '🚀' },
                 },
             ],
         })
@@ -172,8 +172,8 @@ describe('useCommentHighlights', () => {
             {
                 id: 1,
                 name: 'John Doe',
-                meta: {profile_picture_url: 'http://image.url'},
-                role: {name: UserRole.Admin},
+                meta: { profile_picture_url: 'http://image.url' },
+                role: { name: UserRole.Admin },
             },
         ]
 
@@ -189,11 +189,11 @@ describe('useCommentHighlights', () => {
 
         useMetricPerDimensionWithEnrichmentMock.mockReturnValue({
             ...emptyMetricPerDimensionWithEnrichmentReturnValue,
-            data: {allData: allDataDummy} as any,
+            data: { allData: allDataDummy } as any,
         })
 
-        const {result} = renderHook(() =>
-            useCommentHighlights(statsFilters, timezone, queryScores)
+        const { result } = renderHook(() =>
+            useCommentHighlights(statsFilters, timezone, queryScores),
         )
 
         expect(result.current).toEqual({
@@ -210,7 +210,7 @@ describe('useCommentHighlights', () => {
                         isBot: false,
                     },
                     customerName: 'Customer A',
-                    assignedTeam: {name: 'Team A', emoji: '🚀'},
+                    assignedTeam: { name: 'Team A', emoji: '🚀' },
                 },
             ],
         })

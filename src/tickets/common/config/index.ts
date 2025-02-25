@@ -59,7 +59,7 @@ export type Variable = {
     replace?: (
         object: Map<any, any>,
         value: any,
-        currentUserObject?: Map<any, any>
+        currentUserObject?: Map<any, any>,
     ) => string
 }
 

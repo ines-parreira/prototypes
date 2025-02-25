@@ -6,4 +6,3 @@ declare namespace jest {
         toBeAriaEnabled(): R
     }
 }
-

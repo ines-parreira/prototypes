@@ -1,26 +1,26 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
+import { initApp } from 'init'
 
-import {account} from 'fixtures/account'
-import {user} from 'fixtures/users'
-import {initApp} from 'init'
-import {GorgiasInitialState, InitialReactQueryState} from 'types'
-import {initDatadogLogger, initDatadogRum} from 'utils/datadog'
+import { account } from 'fixtures/account'
+import { user } from 'fixtures/users'
+import { GorgiasInitialState, InitialReactQueryState } from 'types'
+import { initDatadogLogger, initDatadogRum } from 'utils/datadog'
 import * as envUtils from 'utils/environment'
-import {initErrorReporter} from 'utils/errors'
-import {identifyUser} from 'utils/hotjar'
-import {assumeMock} from 'utils/testing'
+import { initErrorReporter } from 'utils/errors'
+import { identifyUser } from 'utils/hotjar'
+import { assumeMock } from 'utils/testing'
 
 type fromJSType = typeof fromJS
 
 jest.mock('common/store', () => {
-    const {fromJS} = jest.requireActual('immutable')
+    const { fromJS } = jest.requireActual('immutable')
     return {
         store: {
             dispatch: jest.fn(),
             getState: () => ({
                 billing: (fromJS as fromJSType)([]),
-                currentAccount: (fromJS as fromJSType)({id: 1}),
-                currentUser: (fromJS as fromJSType)({id: 1}),
+                currentAccount: (fromJS as fromJSType)({ id: 1 }),
+                currentUser: (fromJS as fromJSType)({ id: 1 }),
             }),
         },
     }
@@ -62,7 +62,7 @@ describe('init', () => {
             envVarsMock.WEB_APP_RELEASE = defaultWebAppRelease
             window.GORGIAS_STATE = defaultGorgiasState
             getEnvironmentMock.mockReturnValue(
-                envUtils.GorgiasUIEnv.Development
+                envUtils.GorgiasUIEnv.Development,
             )
         })
 
@@ -75,7 +75,7 @@ describe('init', () => {
                 environment: envUtils.GorgiasUIEnv.Production,
                 setup: () => isProductionMock.mockReturnValue(true),
             },
-        ])('$environment environment', ({environment, setup}) => {
+        ])('$environment environment', ({ environment, setup }) => {
             beforeEach(() => {
                 getEnvironmentMock.mockReturnValue(environment)
                 setup()
@@ -95,7 +95,7 @@ describe('init', () => {
                 initApp()
 
                 expect(initDatadogRum).toHaveBeenLastCalledWith(
-                    ...expectedParams
+                    ...expectedParams,
                 )
             })
 
@@ -113,7 +113,7 @@ describe('init', () => {
                 initApp()
 
                 expect(initDatadogLogger).toHaveBeenLastCalledWith(
-                    ...expectedParams
+                    ...expectedParams,
                 )
             })
         })
@@ -140,7 +140,7 @@ describe('init', () => {
             initApp()
 
             expect(initErrorReporter).toHaveBeenLastCalledWith(
-                ...expectedParams
+                ...expectedParams,
             )
         })
 

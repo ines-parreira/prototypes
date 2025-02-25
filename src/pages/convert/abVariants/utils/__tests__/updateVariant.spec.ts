@@ -1,9 +1,9 @@
-import {variants as variantsFixtures} from 'fixtures/abGroup'
-import {campaign} from 'fixtures/campaign'
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
-import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
+import { variants as variantsFixtures } from 'fixtures/abGroup'
+import { campaign } from 'fixtures/campaign'
+import { Campaign } from 'pages/convert/campaigns/types/Campaign'
+import { CampaignVariant } from 'pages/convert/campaigns/types/CampaignVariant'
 
-import {updateVariant} from '../updateVariant'
+import { updateVariant } from '../updateVariant'
 
 describe('updateVariant', () => {
     it('updates variant with new data', () => {
@@ -12,13 +12,13 @@ describe('updateVariant', () => {
         const variants = updateVariant(
             variantsFixtures as CampaignVariant[],
             campaign as Campaign,
-            variantIdToUpdate
+            variantIdToUpdate,
         )
 
         expect(variants).toHaveLength(2)
 
         const variant = variants?.find(
-            (item) => item.id === variantIdToUpdate
+            (item) => item.id === variantIdToUpdate,
         ) as CampaignVariant
         expect(variant.message_html).toEqual(campaign.message_html)
         expect(variant.message_text).toEqual(campaign.message_text)
@@ -29,7 +29,7 @@ describe('updateVariant', () => {
         const variants = updateVariant(
             variantsFixtures as CampaignVariant[],
             campaign as Campaign,
-            'fake-variant-id'
+            'fake-variant-id',
         )
 
         expect(variants).toBeUndefined()

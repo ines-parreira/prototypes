@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 
-import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
-import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
+import { useWorkflowEditorContext } from 'pages/automate/workflows/hooks/useWorkflowEditor'
+import { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
 import Button from 'pages/common/components/button/Button'
 
 import ReplyButtonItem from './ReplyButtonItem'
@@ -10,7 +10,7 @@ import css from './ReplyButtonList.less'
 
 type ReplyButtonListProps = {
     nodeId: string
-    choices: {event_id: string; label: string}[]
+    choices: { event_id: string; label: string }[]
     onReorderChoices: (orderedEventIds: string[]) => void
     onChangeChoiceLabel: (event_id: string, label: string) => void
     onAddChoice: () => void
@@ -34,7 +34,7 @@ export default function ReplyButtonList({
     errors,
     onBlur,
 }: ReplyButtonListProps) {
-    const {dispatch} = useWorkflowEditorContext()
+    const { dispatch } = useWorkflowEditorContext()
     const [choicesDirty, setChoicesDirty] = useState(choices)
 
     const handleMove = (dragIndex: number, hoverIndex: number) => {
@@ -46,7 +46,7 @@ export default function ReplyButtonList({
     }
 
     const handleDrop = () => {
-        onReorderChoices(choicesDirty.map(({event_id}) => event_id))
+        onReorderChoices(choicesDirty.map(({ event_id }) => event_id))
     }
 
     const handleCancel = () => {
@@ -85,15 +85,15 @@ export default function ReplyButtonList({
     const handleChangeChoiceLabel = (event_id: string, label: string) => {
         setChoicesDirty((choicesDirty) =>
             choicesDirty.map((choice) =>
-                choice.event_id === event_id ? {...choice, label} : choice
-            )
+                choice.event_id === event_id ? { ...choice, label } : choice,
+            ),
         )
         onChangeChoiceLabel(event_id, label)
     }
 
     return (
         <div className={css.container} key="ReplyButtonList">
-            {choicesDirty.map(({event_id, label}, index) => (
+            {choicesDirty.map(({ event_id, label }, index) => (
                 <ReplyButtonItem
                     key={event_id}
                     index={index}

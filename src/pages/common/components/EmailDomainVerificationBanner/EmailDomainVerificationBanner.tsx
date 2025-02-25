@@ -1,17 +1,18 @@
-import {Map} from 'immutable'
 import React from 'react'
-import {Link} from 'react-router-dom'
 
-import {AlertBanner, AlertBannerTypes} from 'AlertBanners'
+import { Map } from 'immutable'
+import { Link } from 'react-router-dom'
+
+import { AlertBanner, AlertBannerTypes } from 'AlertBanners'
 import useAppSelector from 'hooks/useAppSelector'
 import useLocalStorage from 'hooks/useLocalStorage'
 import {
     isBaseEmailIntegration,
     isOutboundDomainVerified,
 } from 'pages/integrations/integration/components/email/helpers'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {getEmailIntegrations} from 'state/integrations/selectors'
-import {isAdmin} from 'utils'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { getEmailIntegrations } from 'state/integrations/selectors'
+import { isAdmin } from 'utils'
 
 const BANNER_VISIBILITY_KEY = 'email-domain-verification-banner-visibility'
 
@@ -26,12 +27,12 @@ export default function EmailDomainVerificationBanner() {
 
     const emailIntegrationsBaseExcluded = emailIntegrations.filter(
         (integration: Map<any, any>) =>
-            !isBaseEmailIntegration(integration.toJS())
+            !isBaseEmailIntegration(integration.toJS()),
     )
 
     const allEmailIntegrationsHaveDomainVerified =
         emailIntegrationsBaseExcluded.every((integration: Map<any, any>) =>
-            isOutboundDomainVerified(integration.toJS())
+            isOutboundDomainVerified(integration.toJS()),
         )
 
     if (

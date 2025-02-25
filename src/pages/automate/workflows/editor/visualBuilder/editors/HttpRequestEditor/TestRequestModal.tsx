@@ -1,7 +1,7 @@
 import React from 'react'
 
-import {WorkflowVariable} from 'pages/automate/workflows/models/variables.types'
-import {HttpRequestNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
+import { HttpRequestNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import Modal from 'pages/common/components/modal/Modal'
 
 import TestRequestResult from './TestRequestResult'
@@ -17,7 +17,7 @@ type Props = {
     result: NonNullable<HttpRequestNodeType['data']['testRequestResult']>
     onChangeVariable: (
         index: number,
-        variable: HttpRequestNodeType['data']['variables'][number]
+        variable: HttpRequestNodeType['data']['variables'][number],
     ) => void
 
     onDeleteVariable: (index: number) => void

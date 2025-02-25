@@ -1,7 +1,7 @@
 import React from 'react'
 
-import {PlaygroundTemplateMessage} from '../../types'
-import {PlaygroundActions} from '../PlaygroundActions/PlaygroundActions'
+import { PlaygroundTemplateMessage } from '../../types'
+import { PlaygroundActions } from '../PlaygroundActions/PlaygroundActions'
 
 const TEMPLATE_MESSAGES: PlaygroundTemplateMessage[] = [
     {
@@ -34,7 +34,7 @@ type Props = {
     onMessageSelect: (predefinedMessage: PlaygroundTemplateMessage) => void
 }
 
-export const PlaygroundPredefinedMessages = ({onMessageSelect}: Props) => {
+export const PlaygroundPredefinedMessages = ({ onMessageSelect }: Props) => {
     const actions = TEMPLATE_MESSAGES.map((message) => ({
         id: message.id,
         label: message.title,

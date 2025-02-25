@@ -1,16 +1,17 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import {fromJS, List, Map} from 'immutable'
+import React, { useMemo } from 'react'
 
+import { fromJS, List, Map } from 'immutable'
 import pluralize from 'pluralize'
-import React, {useMemo} from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import Button from 'pages/common/components/button/Button'
-import {getCustomersState, makeIsLoading} from 'state/customers/selectors'
-import {toggleHistory} from 'state/ticket/actions'
-import {getDisplayHistory} from 'state/ticket/selectors'
+import { getCustomersState, makeIsLoading } from 'state/customers/selectors'
+import { toggleHistory } from 'state/ticket/actions'
+import { getDisplayHistory } from 'state/ticket/selectors'
 
 import css from './CustomerTimelineButton.less'
 
@@ -18,7 +19,7 @@ type Props = {
     isEditing: boolean
 }
 
-export function CustomerTimelineButton({isEditing = false}: Props) {
+export function CustomerTimelineButton({ isEditing = false }: Props) {
     const dispatch = useAppDispatch()
 
     const customerTimelineButtonId = 'customer-timeline-button'
@@ -29,7 +30,7 @@ export function CustomerTimelineButton({isEditing = false}: Props) {
     const isCustomersLoading = useAppSelector(makeIsLoading)
     const customerHistory = useMemo(
         () => (customers.get('customerHistory') as Map<any, any>) || fromJS({}),
-        [customers]
+        [customers],
     )
     const historyTickets = (customerHistory.get('tickets') ||
         fromJS([])) as List<any>
@@ -111,14 +112,14 @@ export function CustomerTimelineButton({isEditing = false}: Props) {
                                     {openTicketsCounter > 0 &&
                                         `${openTicketsCounter} open ${pluralize(
                                             'ticket',
-                                            openTicketsCounter
+                                            openTicketsCounter,
                                         )}`}
                                     {openTicketsCounter > 0 &&
                                         closedTicketsCounter > 0 && <br />}
                                     {closedTicketsCounter > 0 &&
                                         `${closedTicketsCounter} closed ${pluralize(
                                             'ticket',
-                                            closedTicketsCounter
+                                            closedTicketsCounter,
                                         )}`}
                                 </>
                             </Tooltip>

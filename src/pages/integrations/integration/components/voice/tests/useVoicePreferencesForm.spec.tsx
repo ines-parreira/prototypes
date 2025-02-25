@@ -1,25 +1,26 @@
+import React from 'react'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
+import { useFormContext } from 'react-hook-form'
+
 import {
     HttpResponse,
     IntegrationType,
     updatePhoneSettings,
     VoiceMessageType,
 } from '@gorgias/api-client'
-import {QueryClientProvider} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
-import React from 'react'
 
-import {useFormContext} from 'react-hook-form'
-
-import {integrationsState} from 'fixtures/integrations'
+import { integrationsState } from 'fixtures/integrations'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {DEFAULT_RECORDING_NOTIFICATION} from 'models/integration/constants'
-import {PhoneIntegration} from 'models/integration/types'
-import {fetchIntegrations} from 'state/integrations/actions'
-import {UPDATE_INTEGRATION_ERROR} from 'state/integrations/constants'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { DEFAULT_RECORDING_NOTIFICATION } from 'models/integration/constants'
+import { PhoneIntegration } from 'models/integration/types'
+import { fetchIntegrations } from 'state/integrations/actions'
+import { UPDATE_INTEGRATION_ERROR } from 'state/integrations/constants'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 import {
     DEFAULT_TRANSCRIBE_PREFERENCES,
@@ -30,7 +31,7 @@ import useVoicePreferencesForm, {
     getDefaultValues,
     useFormSubmit,
 } from '../useVoicePreferencesForm'
-import {getVoiceMessagePayload} from '../utils'
+import { getVoiceMessagePayload } from '../utils'
 
 const queryClient = mockQueryClient()
 
@@ -46,7 +47,7 @@ const notifyMock = assumeMock(notify)
 
 jest.mock('../utils')
 assumeMock(getVoiceMessagePayload).mockReturnValue(
-    'recordingNotificationPayload' as any
+    'recordingNotificationPayload' as any,
 )
 
 jest.mock('state/integrations/actions')
@@ -70,34 +71,34 @@ jest.mock('react-hook-form')
 const useFormContextMock = assumeMock(useFormContext)
 
 const phoneIntegration = integrationsState.integrations.find(
-    (integration) => integration.type === IntegrationType.Phone
+    (integration) => integration.type === IntegrationType.Phone,
 ) as unknown as PhoneIntegration
 
 describe('hooks', () => {
     describe('useFormSubmit', () => {
         const render = () =>
-            renderHook(({integration}) => useFormSubmit(integration), {
-                wrapper: ({children}) => (
+            renderHook(({ integration }) => useFormSubmit(integration), {
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         {children}
                     </QueryClientProvider>
                 ),
-                initialProps: {integration: phoneIntegration},
+                initialProps: { integration: phoneIntegration },
             })
 
         it('should call update with full payload', async () => {
             updatePhoneSettingsMock.mockReturnValue(
-                Promise.resolve({} as HttpResponse<void>)
+                Promise.resolve({} as HttpResponse<void>),
             )
 
-            const {result, waitFor} = render()
+            const { result, waitFor } = render()
 
             result.current.onSubmit({
                 name: 'new name',
                 meta: {
                     emoji: 'new emoji',
                     phone_team_id: 2,
-                    preferences: {test: 'test', record_inbound_calls: true},
+                    preferences: { test: 'test', record_inbound_calls: true },
                     recording_notification: true,
                 },
             } as any)
@@ -109,34 +110,37 @@ describe('hooks', () => {
                         name: 'new name',
                         emoji: 'new emoji',
                         phone_team_id: 2,
-                        preferences: {test: 'test', record_inbound_calls: true},
+                        preferences: {
+                            test: 'test',
+                            record_inbound_calls: true,
+                        },
                         recording_notification: 'recordingNotificationPayload',
                     },
-                    undefined
+                    undefined,
                 )
             })
 
             expect(notifyMock).toHaveBeenCalledWith(
                 expect.objectContaining({
                     status: NotificationStatus.Success,
-                })
+                }),
             )
             expect(fetchIntegrationsMock).toHaveBeenCalled()
         })
 
         it('should not send recording notification if recording is not enabled', async () => {
             updatePhoneSettingsMock.mockReturnValue(
-                Promise.resolve({} as HttpResponse<void>)
+                Promise.resolve({} as HttpResponse<void>),
             )
 
-            const {result, waitFor} = render()
+            const { result, waitFor } = render()
 
             result.current.onSubmit({
                 name: 'new name',
                 meta: {
                     emoji: 'new emoji',
                     phone_team_id: 2,
-                    preferences: {test: 'test', record_inbound_calls: false},
+                    preferences: { test: 'test', record_inbound_calls: false },
                     recording_notification: {},
                 },
             } as any)
@@ -153,7 +157,7 @@ describe('hooks', () => {
                             record_inbound_calls: false,
                         },
                     },
-                    undefined
+                    undefined,
                 )
             })
         })
@@ -161,14 +165,14 @@ describe('hooks', () => {
         it('should dispatch error notification on error', async () => {
             updatePhoneSettingsMock.mockRejectedValue('An error occurred')
 
-            const {result, waitFor} = render()
+            const { result, waitFor } = render()
 
             result.current.onSubmit({
                 name: 'new name',
                 meta: {
                     emoji: 'new emoji',
                     phone_team_id: 2,
-                    preferences: {test: 'test', record_inbound_calls: true},
+                    preferences: { test: 'test', record_inbound_calls: true },
                     recording_notification: true,
                 },
             } as any)
@@ -177,7 +181,7 @@ describe('hooks', () => {
                 expect(dispatchMock).toHaveBeenCalledWith(
                     expect.objectContaining({
                         type: UPDATE_INTEGRATION_ERROR,
-                    })
+                    }),
                 )
             })
         })
@@ -186,15 +190,15 @@ describe('hooks', () => {
     describe('useVoicePreferencesForm', () => {
         const render = () =>
             renderHook(
-                ({integration}) => useVoicePreferencesForm(integration),
+                ({ integration }) => useVoicePreferencesForm(integration),
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
                             {children}
                         </QueryClientProvider>
                     ),
-                    initialProps: {integration: phoneIntegration},
-                }
+                    initialProps: { integration: phoneIntegration },
+                },
             )
 
         beforeEach(() => {
@@ -202,7 +206,7 @@ describe('hooks', () => {
         })
 
         it('should reset form values only when integration changes', () => {
-            const {rerender} = render()
+            const { rerender } = render()
 
             expect(mockMethods.reset).toHaveBeenCalledTimes(1)
 
@@ -211,7 +215,7 @@ describe('hooks', () => {
             expect(mockMethods.reset).toHaveBeenCalledTimes(1)
 
             rerender({
-                integration: {...phoneIntegration, name: 'new name'} as any,
+                integration: { ...phoneIntegration, name: 'new name' } as any,
             })
 
             expect(mockMethods.reset).toHaveBeenCalledTimes(2)
@@ -253,9 +257,9 @@ describe('getDefaultValues', () => {
                     record_inbound_calls: true,
                     record_outbound_calls: true,
                     ring_time: 10,
-                    transcribe: {voicemails: true, recordings: false},
+                    transcribe: { voicemails: true, recordings: false },
                     voicemail_outside_business_hours: true,
-                    wait_time: {enabled: true, value: 20},
+                    wait_time: { enabled: true, value: 20 },
                 },
                 recording_notification: {
                     voice_message_type: VoiceMessageType.TextToSpeech,
@@ -271,9 +275,9 @@ describe('getDefaultValues', () => {
                     record_inbound_calls: true,
                     record_outbound_calls: true,
                     ring_time: 10,
-                    transcribe: {voicemails: true, recordings: false},
+                    transcribe: { voicemails: true, recordings: false },
                     voicemail_outside_business_hours: true,
-                    wait_time: {enabled: true, value: 20},
+                    wait_time: { enabled: true, value: 20 },
                 },
                 recording_notification: {
                     voice_message_type: VoiceMessageType.TextToSpeech,

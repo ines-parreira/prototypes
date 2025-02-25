@@ -4,7 +4,7 @@ import type {
     FeedRealTimeCallback,
 } from '@knocklabs/client'
 
-import type {Notification, RawNotification} from './types'
+import type { Notification, RawNotification } from './types'
 import transformKnockNotification from './utils/transformKnockNotification'
 
 export default class Client {
@@ -21,7 +21,7 @@ export default class Client {
             this.feedClient.on(
                 'items.received.realtime',
                 // remove cast after consultation with knock team
-                this.receive as unknown as FeedRealTimeCallback
+                this.receive as unknown as FeedRealTimeCallback,
             )
         }
 
@@ -34,13 +34,13 @@ export default class Client {
                 this.feedClient.off(
                     'items.received.realtime',
                     // remove cast after consultation with knock team
-                    this.receive as unknown as FeedRealTimeCallback
+                    this.receive as unknown as FeedRealTimeCallback,
                 )
             }
         }
     }
 
-    receive = ({items}: FeedEventPayload<RawNotification>) => {
+    receive = ({ items }: FeedEventPayload<RawNotification>) => {
         const mappedItems = items
             .map(transformKnockNotification)
             .filter((notification) => !!notification) as Notification[]

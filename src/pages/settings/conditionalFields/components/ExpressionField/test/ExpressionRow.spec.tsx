@@ -1,15 +1,17 @@
-import {ExpressionOperator} from '@gorgias/api-queries'
-import {fireEvent, render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {FormField, useWatch} from 'core/forms'
-import {CustomField} from 'custom-fields/types'
-import {assumeMock} from 'utils/testing'
+import { fireEvent, render, screen } from '@testing-library/react'
 
-import {ExpressionRow} from '../ExpressionRow'
-import {FieldField} from '../FieldField'
-import {OperatorField} from '../OperatorField'
-import {ValueField} from '../ValueField'
+import { ExpressionOperator } from '@gorgias/api-queries'
+
+import { FormField, useWatch } from 'core/forms'
+import { CustomField } from 'custom-fields/types'
+import { assumeMock } from 'utils/testing'
+
+import { ExpressionRow } from '../ExpressionRow'
+import { FieldField } from '../FieldField'
+import { OperatorField } from '../OperatorField'
+import { ValueField } from '../ValueField'
 
 jest.mock(
     'core/forms',
@@ -18,7 +20,7 @@ jest.mock(
             ...jest.requireActual('core/forms'),
             useWatch: jest.fn(),
             FormField: jest.fn(() => <div />),
-        }) as Record<string, unknown>
+        }) as Record<string, unknown>,
 )
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions', () => ({
     useCustomFieldDefinitions: jest.fn(),
@@ -27,7 +29,7 @@ jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions', () => ({
 const useWatchMock = assumeMock(useWatch)
 
 describe('ExpressionRow', () => {
-    const definitions = [{id: 1}, {id: 2}] as CustomField[]
+    const definitions = [{ id: 1 }, { id: 2 }] as CustomField[]
 
     beforeEach(() => {
         useWatchMock.mockReturnValue([1, ExpressionOperator.Is])
@@ -48,7 +50,7 @@ describe('ExpressionRow', () => {
     })
 
     it("should render Pills, and 'And' when index is greater than 0", () => {
-        const {rerender} = render(<ExpressionRow {...defaultProps} />)
+        const { rerender } = render(<ExpressionRow {...defaultProps} />)
 
         expect(screen.getByText('Ticket Field')).toBeInTheDocument()
         expect(screen.getByText('And')).toBeInTheDocument()
@@ -70,7 +72,7 @@ describe('ExpressionRow', () => {
                 field: FieldField,
                 customFieldDefinitions: definitions,
             },
-            {}
+            {},
         )
         expect(FormField).toHaveBeenNthCalledWith(
             2,
@@ -80,7 +82,7 @@ describe('ExpressionRow', () => {
                 pickedDefinition: defaultProps.customFieldDefinitions[0],
                 index: 1,
             },
-            {}
+            {},
         )
         expect(FormField).toHaveBeenNthCalledWith(
             3,
@@ -92,7 +94,7 @@ describe('ExpressionRow', () => {
                 isRequired: true,
                 isDisabled: false,
             },
-            {}
+            {},
         )
     })
 

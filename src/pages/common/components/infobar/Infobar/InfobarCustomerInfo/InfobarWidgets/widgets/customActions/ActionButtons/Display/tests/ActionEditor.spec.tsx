@@ -1,8 +1,9 @@
-import {render, fireEvent, screen} from '@testing-library/react'
 import React from 'react'
 
-import {actionFixture} from 'fixtures/infobarCustomActions'
-import {ContentType} from 'models/api/types'
+import { fireEvent, render, screen } from '@testing-library/react'
+
+import { actionFixture } from 'fixtures/infobarCustomActions'
+import { ContentType } from 'models/api/types'
 
 import ActionEditor from '../ActionEditor'
 
@@ -58,17 +59,17 @@ describe('<ActionEditor/>', () => {
 
         expect(
             screen.queryByLabelText(
-                new RegExp(props.action.headers[1].label || '')
-            )
+                new RegExp(props.action.headers[1].label || ''),
+            ),
         ).toBeTruthy()
         expect(screen.queryByLabelText(props.action.headers[1].key)).toBeFalsy()
         expect(
-            screen.queryByLabelText(new RegExp(props.action.params[0].key))
+            screen.queryByLabelText(new RegExp(props.action.params[0].key)),
         ).toBeTruthy()
         expect(
             screen.queryByLabelText(
-                props.action.body[ContentType.Form][0].label || ''
-            )
+                props.action.body[ContentType.Form][0].label || '',
+            ),
         ).toBeTruthy()
     })
 
@@ -83,11 +84,11 @@ describe('<ActionEditor/>', () => {
         render(<ActionEditor {...props} />)
 
         fireEvent.change(screen.getByLabelText(/textLabel/), {
-            target: {value: newValue},
+            target: { value: newValue },
         })
 
         fireEvent.change(screen.getByLabelText(/dropdownLabel/), {
-            target: {value: 'dropdownValue2'},
+            target: { value: 'dropdownValue2' },
         })
 
         fireEvent.click(screen.getByText('Execute'))
@@ -96,7 +97,7 @@ describe('<ActionEditor/>', () => {
             ...props.action,
             headers: [
                 props.action.headers[0],
-                {...props.action.headers[1], value: newValue},
+                { ...props.action.headers[1], value: newValue },
             ],
             body: {
                 ...props.action.body,

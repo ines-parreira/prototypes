@@ -1,5 +1,6 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { Meta, Story } from '@storybook/react'
 
 import AIBanner from './AIBanner'
 
@@ -7,8 +8,8 @@ const storyConfig: Meta = {
     title: 'Data Display/AIBanner',
     component: AIBanner,
     argTypes: {
-        className: {control: 'text'},
-        hasError: {control: 'boolean'},
+        className: { control: 'text' },
+        hasError: { control: 'boolean' },
         fillStyle: {
             control: 'radio',
             options: ['fill', 'ghost'],

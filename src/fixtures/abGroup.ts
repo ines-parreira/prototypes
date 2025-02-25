@@ -1,4 +1,4 @@
-import {campaign} from './campaign'
+import { campaign } from './campaign'
 
 export const campaignId = 'ee869594-65e2-45a5-a759-a4660c9ce677'
 

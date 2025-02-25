@@ -1,11 +1,11 @@
-import {fireEvent, render} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { fireEvent, render } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { fromJS } from 'immutable'
 
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import AddCustomItemPopover from '../AddCustomItemPopover'
 
@@ -32,13 +32,13 @@ describe('<AddCustomItemPopover/>', () => {
 
     describe('render()', () => {
         it('should render', () => {
-            const {container} = render(
+            const { container } = render(
                 <AddCustomItemPopover
                     currencyCode="USD"
                     actionName={ShopifyActionType.DuplicateOrder}
                     id="add-custom-line-popover"
                     onSubmit={onSubmit}
-                />
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -60,13 +60,13 @@ describe('<AddCustomItemPopover/>', () => {
         ])(
             'should call prop `onSubmit` with form values',
             (actionName, openEvent, submitEvent) => {
-                const {getByLabelText, getByText} = render(
+                const { getByLabelText, getByText } = render(
                     <AddCustomItemPopover
                         currencyCode="USD"
                         actionName={actionName}
                         id="add-custom-line-popover"
                         onSubmit={onSubmit}
-                    />
+                    />,
                 )
 
                 userEvent.click(getByText(/Add custom item/i))
@@ -74,13 +74,13 @@ describe('<AddCustomItemPopover/>', () => {
                 expect(logEvent).toHaveBeenCalledWith(openEvent)
 
                 fireEvent.change(getByLabelText(/Line item name/i), {
-                    target: {value: 'foo'},
+                    target: { value: 'foo' },
                 })
                 fireEvent.change(getByLabelText(/Price per item/i), {
-                    target: {value: '5.99'},
+                    target: { value: '5.99' },
                 })
                 fireEvent.change(getByLabelText(/Quantity/i), {
-                    target: {value: '2'},
+                    target: { value: '2' },
                 })
                 userEvent.click(getByLabelText(/Item is taxable/i))
                 userEvent.click(getByText(/Save item/i))
@@ -95,11 +95,11 @@ describe('<AddCustomItemPopover/>', () => {
                         product_exists: false,
                         newly_added: true,
                         localId: 'ulid-generated-id',
-                    })
+                    }),
                 )
 
                 expect(logEvent).toHaveBeenCalledWith(submitEvent)
-            }
+            },
         )
     })
 
@@ -114,13 +114,13 @@ describe('<AddCustomItemPopover/>', () => {
                 SegmentEvent.ShopifyDuplicateOrderCustomItemPopoverCancel,
             ],
         ])('should track', (actionName, event) => {
-            const {getByText} = render(
+            const { getByText } = render(
                 <AddCustomItemPopover
                     currencyCode="USD"
                     actionName={actionName}
                     id="add-custom-line-popover"
                     onSubmit={onSubmit}
-                />
+                />,
             )
 
             userEvent.click(getByText(/Add custom item/i))

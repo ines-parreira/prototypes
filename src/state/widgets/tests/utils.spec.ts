@@ -2,15 +2,15 @@ import {
     CUSTOM_WIDGET_TYPE,
     CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
 } from 'state/widgets/constants'
-import {WidgetEnvironment} from 'state/widgets/types'
+import { WidgetEnvironment } from 'state/widgets/types'
 
-import {getSourcePathFromContext} from '../utils'
+import { getSourcePathFromContext } from '../utils'
 
 describe('getSourcePathFromContext()', () => {
     it('should render defaultSourcePath for ticket context because unknown context type', () => {
         const sourcePath = getSourcePathFromContext(
             'some_random_context' as WidgetEnvironment,
-            ''
+            '',
         )
 
         expect(sourcePath).toMatchSnapshot()
@@ -19,7 +19,7 @@ describe('getSourcePathFromContext()', () => {
     it('should render values of config because unknown widget type', () => {
         const sourcePath = getSourcePathFromContext(
             WidgetEnvironment.Ticket,
-            ''
+            '',
         )
 
         expect(sourcePath).toMatchSnapshot()
@@ -28,14 +28,14 @@ describe('getSourcePathFromContext()', () => {
     it('should not append to the same array', () => {
         const sourcePath = getSourcePathFromContext(
             WidgetEnvironment.Ticket,
-            CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE
+            CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
         ) as string[]
 
         sourcePath.push('1')
 
         const sourcePath2 = getSourcePathFromContext(
             WidgetEnvironment.Ticket,
-            CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE
+            CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
         ) as string[]
 
         sourcePath2.push('2')
@@ -47,7 +47,7 @@ describe('getSourcePathFromContext()', () => {
     it('should render the sourcePath for standalone widget because of wrong widget type', () => {
         const sourcePath = getSourcePathFromContext(
             WidgetEnvironment.Ticket,
-            'abc_random_widget_type'
+            'abc_random_widget_type',
         )
 
         expect(sourcePath).toMatchSnapshot()
@@ -67,12 +67,12 @@ describe('getSourcePathFromContext()', () => {
         (widgetContextType: WidgetEnvironment, widgetType: string) => {
             const sourcePath = getSourcePathFromContext(
                 widgetContextType,
-                widgetType
+                widgetType,
             )
 
             expect(sourcePath).toMatchSnapshot(
-                `getSourcePathFromContext() should render the correct sourcePath DEFAULT_SOURCE_PATHS[${widgetContextType}][${widgetType}]`
+                `getSourcePathFromContext() should render the correct sourcePath DEFAULT_SOURCE_PATHS[${widgetContextType}][${widgetType}]`,
             )
-        }
+        },
     )
 })

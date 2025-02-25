@@ -1,34 +1,33 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {aiManagedTicketInputFieldDefinition} from 'fixtures/customField'
-import {CUSTOM_FIELD_AI_AGENT_HANDOVER} from 'hooks/reporting/automate/types'
-import {useMetric} from 'hooks/reporting/useMetric'
-import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
-import {OrderDirection} from 'models/api/types'
-
+import { aiManagedTicketInputFieldDefinition } from 'fixtures/customField'
+import { CUSTOM_FIELD_AI_AGENT_HANDOVER } from 'hooks/reporting/automate/types'
+import { useMetric } from 'hooks/reporting/useMetric'
+import { useMetricPerDimension } from 'hooks/reporting/useMetricPerDimension'
+import { OrderDirection } from 'models/api/types'
 import {
+    RecommendedResourcesDimension,
     RecommendedResourcesFilterMember,
     RecommendedResourcesMeasure,
-    RecommendedResourcesDimension,
 } from 'models/reporting/cubes/automate_v2/RecommendedResourcesCube'
-import {TicketDimension} from 'models/reporting/cubes/TicketCube'
-import {TicketCustomFieldsMember} from 'models/reporting/cubes/TicketCustomFieldsCube'
-import {customerSatisfactionPerIntentLevelQueryFactory} from 'models/reporting/queryFactories/ai-agent-insights/metrics'
+import { TicketDimension } from 'models/reporting/cubes/TicketCube'
+import { TicketCustomFieldsMember } from 'models/reporting/cubes/TicketCustomFieldsCube'
+import { customerSatisfactionPerIntentLevelQueryFactory } from 'models/reporting/queryFactories/ai-agent-insights/metrics'
 import {
     customFieldsTicketCountQueryFactory,
     customFieldsTicketFactory,
     customFieldsTicketTotalCountQueryFactory,
 } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
-import {ReportingFilterOperator} from 'models/reporting/types'
-import {formatReportingQueryDate} from 'utils/reporting'
-import {assumeMock} from 'utils/testing'
+import { ReportingFilterOperator } from 'models/reporting/types'
+import { formatReportingQueryDate } from 'utils/reporting'
+import { assumeMock } from 'utils/testing'
 
 import {
-    useAIAgentResourcePerTicket,
     useAiAgenTickets,
+    useAIAgentResourcePerTicket,
     useAiAgentTicketCountPerIntent,
-    useTotalAiAgentTicketsByCustomField,
     useCustomerSatisfactionMetricPerIntentLevel,
+    useTotalAiAgentTicketsByCustomField,
 } from '../aiAgentMetrics'
 
 jest.mock('hooks/reporting/useMetric')
@@ -56,9 +55,9 @@ describe('aiAgentMetrics', () => {
                         filters,
                         timezone,
                         customField,
-                        sorting
+                        sorting,
                     ),
-                {}
+                {},
             )
 
             expect(useMetricMock).toHaveBeenCalledWith(
@@ -66,8 +65,8 @@ describe('aiAgentMetrics', () => {
                     filters,
                     timezone,
                     String(customField.id),
-                    sorting
-                )
+                    sorting,
+                ),
             )
         })
     })
@@ -76,15 +75,15 @@ describe('aiAgentMetrics', () => {
         it('should pass the query to useMetricPerDimension hook', () => {
             renderHook(
                 () => useAiAgenTickets(filters, timezone, customField),
-                {}
+                {},
             )
 
             expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
                 customFieldsTicketFactory(
                     filters,
                     timezone,
-                    String(customField.id)
-                )
+                    String(customField.id),
+                ),
             )
         })
 
@@ -97,9 +96,9 @@ describe('aiAgentMetrics', () => {
                         customField,
                         ReportingFilterOperator.Contains,
                         CUSTOM_FIELD_AI_AGENT_HANDOVER,
-                        sorting
+                        sorting,
                     ),
-                {}
+                {},
             )
 
             expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
@@ -112,8 +111,8 @@ describe('aiAgentMetrics', () => {
                         operator: ReportingFilterOperator.Contains,
                         values: [CUSTOM_FIELD_AI_AGENT_HANDOVER],
                     },
-                    sorting
-                )
+                    sorting,
+                ),
             )
         })
     })
@@ -125,17 +124,17 @@ describe('aiAgentMetrics', () => {
                     useAiAgentTicketCountPerIntent(
                         filters,
                         timezone,
-                        customField
+                        customField,
                     ),
-                {}
+                {},
             )
 
             expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
                 customFieldsTicketCountQueryFactory(
                     filters,
                     timezone,
-                    String(customField.id)
-                )
+                    String(customField.id),
+                ),
             )
         })
 
@@ -147,9 +146,9 @@ describe('aiAgentMetrics', () => {
                         timezone,
                         customField,
                         ['1', '2'],
-                        sorting
+                        sorting,
                     ),
-                {}
+                {},
             )
 
             expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
@@ -164,8 +163,8 @@ describe('aiAgentMetrics', () => {
                             operator: ReportingFilterOperator.In,
                             values: ['1', '2'],
                         },
-                    ]
-                )
+                    ],
+                ),
             )
         })
     })
@@ -189,9 +188,9 @@ describe('aiAgentMetrics', () => {
                         timezone,
                         ticketIds,
                         sorting,
-                        false
+                        false,
                     ),
-                {}
+                {},
             )
 
             expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
@@ -210,7 +209,7 @@ describe('aiAgentMetrics', () => {
                             operator: ReportingFilterOperator.AfterDate,
                             values: [
                                 formatReportingQueryDate(
-                                    filters.period.start_datetime
+                                    filters.period.start_datetime,
                                 ),
                             ],
                         },
@@ -219,7 +218,7 @@ describe('aiAgentMetrics', () => {
                             operator: ReportingFilterOperator.BeforeDate,
                             values: [
                                 formatReportingQueryDate(
-                                    filters.period.end_datetime
+                                    filters.period.end_datetime,
                                 ),
                             ],
                         },
@@ -234,7 +233,7 @@ describe('aiAgentMetrics', () => {
                     ],
                 },
                 undefined,
-                false
+                false,
             )
         })
 
@@ -246,9 +245,9 @@ describe('aiAgentMetrics', () => {
                         timezone,
                         [],
                         sorting,
-                        true
+                        true,
                     ),
-                {}
+                {},
             )
 
             expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
@@ -267,7 +266,7 @@ describe('aiAgentMetrics', () => {
                             operator: ReportingFilterOperator.AfterDate,
                             values: [
                                 formatReportingQueryDate(
-                                    filters.period.start_datetime
+                                    filters.period.start_datetime,
                                 ),
                             ],
                         },
@@ -276,7 +275,7 @@ describe('aiAgentMetrics', () => {
                             operator: ReportingFilterOperator.BeforeDate,
                             values: [
                                 formatReportingQueryDate(
-                                    filters.period.end_datetime
+                                    filters.period.end_datetime,
                                 ),
                             ],
                         },
@@ -291,14 +290,14 @@ describe('aiAgentMetrics', () => {
                     ],
                 },
                 undefined,
-                true
+                true,
             )
         })
 
         it('should handle undefined sorting', () => {
             renderHook(
                 () => useAIAgentResourcePerTicket(filters, timezone, ticketIds),
-                {}
+                {},
             )
 
             expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
@@ -317,7 +316,7 @@ describe('aiAgentMetrics', () => {
                             operator: ReportingFilterOperator.AfterDate,
                             values: [
                                 formatReportingQueryDate(
-                                    filters.period.start_datetime
+                                    filters.period.start_datetime,
                                 ),
                             ],
                         },
@@ -326,7 +325,7 @@ describe('aiAgentMetrics', () => {
                             operator: ReportingFilterOperator.BeforeDate,
                             values: [
                                 formatReportingQueryDate(
-                                    filters.period.end_datetime
+                                    filters.period.end_datetime,
                                 ),
                             ],
                         },
@@ -338,7 +337,7 @@ describe('aiAgentMetrics', () => {
                     ],
                 },
                 undefined,
-                undefined
+                undefined,
             )
         })
     })
@@ -351,9 +350,9 @@ describe('aiAgentMetrics', () => {
                         filters,
                         timezone,
                         customField,
-                        sorting
+                        sorting,
                     ),
-                {}
+                {},
             )
 
             expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
@@ -361,8 +360,8 @@ describe('aiAgentMetrics', () => {
                     filters,
                     timezone,
                     sorting,
-                    customField.id
-                )
+                    customField.id,
+                ),
             )
         })
     })

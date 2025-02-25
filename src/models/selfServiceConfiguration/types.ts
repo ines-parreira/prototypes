@@ -1,4 +1,4 @@
-import {IntegrationType} from 'models/integration/constants'
+import { IntegrationType } from 'models/integration/constants'
 
 export type SelfServiceConfigurationFilter = {
     key: string
@@ -73,8 +73,8 @@ export enum JsonLogicOperator {
 }
 
 export type JsonLogicRuleOverVariable<T = ReportIssueVariable> = {
-    [JsonLogicOperator.EQUALS]?: [{var: T}, null]
-    [JsonLogicOperator.IS_ONE_OF]?: [{var: T}, string[]]
+    [JsonLogicOperator.EQUALS]?: [{ var: T }, null]
+    [JsonLogicOperator.IS_ONE_OF]?: [{ var: T }, string[]]
 }
 
 export type JsonLogicOrBlock = {
@@ -133,7 +133,7 @@ export type SelfServiceConfiguration = {
     cancelOrderPolicy: SelfServiceConfigurationCancelOrderPolicy
     returnOrderPolicy: SelfServiceConfigurationReturnOrderPolicy
     articleRecommendationHelpCenterId: Maybe<number>
-    workflowsEntrypoints?: Maybe<{workflow_id: string}[]>
+    workflowsEntrypoints?: Maybe<{ workflow_id: string }[]>
 }
 
 export type PolicyKey =

@@ -1,5 +1,5 @@
-import type {TicketChannel, TicketStatus} from 'business/types/ticket'
-import type {Actor} from 'models/ticket/types'
+import type { TicketChannel, TicketStatus } from 'business/types/ticket'
+import type { Actor } from 'models/ticket/types'
 
 type PickedActor = Pick<Actor, 'id' | 'name' | 'firstname' | 'lastname'>
 

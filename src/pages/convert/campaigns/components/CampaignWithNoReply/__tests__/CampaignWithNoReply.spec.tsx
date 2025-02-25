@@ -1,22 +1,23 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {CampaignWithNoReply} from '../CampaignWithNoReply'
+import { render } from '@testing-library/react'
+
+import { CampaignWithNoReply } from '../CampaignWithNoReply'
 
 describe('CampaignWithNoReply', () => {
     it('should render correctly', () => {
-        const {getByText} = render(
-            <CampaignWithNoReply value={false} onChange={jest.fn()} />
+        const { getByText } = render(
+            <CampaignWithNoReply value={false} onChange={jest.fn()} />,
         )
 
         expect(
-            getByText('Customers can reply to this campaign')
+            getByText('Customers can reply to this campaign'),
         ).toBeInTheDocument()
     })
 
     it('should render correctly when value is true', () => {
-        const {getByRole, rerender} = render(
-            <CampaignWithNoReply value={true} onChange={jest.fn()} />
+        const { getByRole, rerender } = render(
+            <CampaignWithNoReply value={true} onChange={jest.fn()} />,
         )
 
         const toggle = getByRole('switch')
@@ -30,8 +31,8 @@ describe('CampaignWithNoReply', () => {
     it('should call onChange when toggle is clicked', () => {
         const onChange = jest.fn()
 
-        const {getByRole} = render(
-            <CampaignWithNoReply value={false} onChange={onChange} />
+        const { getByRole } = render(
+            <CampaignWithNoReply value={false} onChange={onChange} />,
         )
 
         getByRole('switch').click()

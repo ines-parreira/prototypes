@@ -1,21 +1,23 @@
-import classNames from 'classnames'
-import React, {ComponentProps, useEffect} from 'react'
+import React, { ComponentProps, useEffect } from 'react'
 
-import {User} from 'config/types/user'
-import {RecentItems} from 'hooks/useRecentItems/constants'
+import classNames from 'classnames'
+
+import { User } from 'config/types/user'
+import { RecentItems } from 'hooks/useRecentItems/constants'
 import useRecentItems from 'hooks/useRecentItems/useRecentItems'
-import {Customer} from 'models/customer/types'
-import {VoiceCall, VoiceCallRecordingType} from 'models/voiceCall/types'
+import { Customer } from 'models/customer/types'
+import { VoiceCall, VoiceCallRecordingType } from 'models/voiceCall/types'
 import Avatar from 'pages/common/components/Avatar/Avatar'
-import {useVoiceRecordingsContext} from 'pages/common/hooks/useVoiceRecordingsContext'
+import { useVoiceRecordingsContext } from 'pages/common/hooks/useVoiceRecordingsContext'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 
 import ControlledCollapsibleDetails from './ControlledCollapsibleDetails'
 import TicketVoiceCallAudios from './TicketVoiceCallAudios'
-import css from './TicketVoiceCallContainer.less'
 import TicketVoiceCallDuration from './TicketVoiceCallDuration'
 import TicketVoiceCallSource from './TicketVoiceCallSource'
 import TicketVoiceCallSummary from './TicketVoiceCallSummary'
+
+import css from './TicketVoiceCallContainer.less'
 
 type Props = {
     header: JSX.Element
@@ -36,9 +38,9 @@ export default function TicketVoiceCallContainer({
     icon,
     source,
 }: Props) {
-    const {isRecordingOpened, toggleRecordingOpened} =
+    const { isRecordingOpened, toggleRecordingOpened } =
         useVoiceRecordingsContext()
-    const {setRecentItem} = useRecentItems<VoiceCall>(RecentItems.Calls)
+    const { setRecentItem } = useRecentItems<VoiceCall>(RecentItems.Calls)
 
     useEffect(() => {
         void setRecentItem(voiceCall)

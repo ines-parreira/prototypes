@@ -1,16 +1,17 @@
-import {fromJS} from 'immutable'
-import React, {useState} from 'react'
+import React, { useState } from 'react'
+
+import { fromJS } from 'immutable'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAsyncFn from 'hooks/useAsyncFn'
-import {AircallIntegration} from 'models/integration/types'
+import { AircallIntegration } from 'models/integration/types'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import ToggleInput from 'pages/common/forms/ToggleInput'
-import {formatPhoneNumberInternational} from 'pages/phoneNumbers/utils'
+import { formatPhoneNumberInternational } from 'pages/phoneNumbers/utils'
 import {
-    deleteIntegration,
     activateIntegration,
     deactivateIntegration,
+    deleteIntegration,
 } from 'state/integrations/actions'
 
 type Props = {
@@ -21,12 +22,12 @@ export default function AircallIntegrationListItem({
     integration,
 }: Props): JSX.Element {
     const [isDisabled, setIsDisabled] = useState(
-        integration.deactivated_datetime !== null
+        integration.deactivated_datetime !== null,
     )
 
     const dispatch = useAppDispatch()
 
-    const [{loading: isDeleting}, handleDelete] = useAsyncFn(async () => {
+    const [{ loading: isDeleting }, handleDelete] = useAsyncFn(async () => {
         await dispatch(deleteIntegration(fromJS(integration)))
     }, [integration, dispatch])
 
@@ -47,7 +48,7 @@ export default function AircallIntegrationListItem({
                     <b className="mr-2">{integration.name}</b>
                     <span className="text-faded">
                         {formatPhoneNumberInternational(
-                            integration.meta?.address
+                            integration.meta?.address,
                         )}
                     </span>
                 </div>

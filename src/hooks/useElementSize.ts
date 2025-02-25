@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react'
+import { useEffect, useState } from 'react'
 
 type Listener = (entry: [number, number]) => void
 
@@ -13,7 +13,7 @@ function getResizeObserver() {
         for (const entry of entries) {
             const callback = behaviours.get(entry.target)
             if (callback) {
-                const [{blockSize: height, inlineSize: width}] =
+                const [{ blockSize: height, inlineSize: width }] =
                     entry.borderBoxSize
                 callback([width, height])
             }

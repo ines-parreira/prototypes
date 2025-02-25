@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {useOnClickOutside} from './useOnClickOutside'
+import { useOnClickOutside } from './useOnClickOutside'
 
 type HookApi = {
     isOpen: boolean
@@ -10,7 +10,7 @@ type HookApi = {
 
 export function useOpenToggle(
     ref: React.RefObject<HTMLElement>,
-    defaultValue = false
+    defaultValue = false,
 ): HookApi {
     const [isOpen, setOpen] = React.useState(defaultValue)
 

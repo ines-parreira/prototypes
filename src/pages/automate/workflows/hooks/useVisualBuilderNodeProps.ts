@@ -1,12 +1,12 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
+import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
 
-import {VisualBuilderEdgeProps} from '../editor/visualBuilder/components/EdgeBlock'
-import {VisualBuilderDeleteProps} from '../editor/visualBuilder/components/NodeDeleteIcon'
-import {workflowVariableRegex} from '../models/variables.model'
-import {getIncoming} from '../models/visualBuilderGraph.model'
-import {useVisualBuilderContext} from './useVisualBuilder'
+import { VisualBuilderEdgeProps } from '../editor/visualBuilder/components/EdgeBlock'
+import { VisualBuilderDeleteProps } from '../editor/visualBuilder/components/NodeDeleteIcon'
+import { workflowVariableRegex } from '../models/variables.model'
+import { getIncoming } from '../models/visualBuilderGraph.model'
+import { useVisualBuilderContext } from './useVisualBuilder'
 
 type Node = {
     id: string
@@ -24,18 +24,21 @@ export type VisualBuilderNodeProps = {
 
 export function useVisualBuilderNodeProps({
     id,
-    data: {isGreyedOut},
+    data: { isGreyedOut },
 }: Node): VisualBuilderNodeProps {
-    const {visualBuilderGraph, dispatch, checkNodeHasVariablesUsedInChildren} =
-        useVisualBuilderContext()
+    const {
+        visualBuilderGraph,
+        dispatch,
+        checkNodeHasVariablesUsedInChildren,
+    } = useVisualBuilderContext()
 
     const triggerNode = visualBuilderGraph.nodes[0]
 
-    const {data: steps = []} = useGetWorkflowConfigurationTemplates(
+    const { data: steps = [] } = useGetWorkflowConfigurationTemplates(
         {
             triggers: ['reusable-llm-prompt'],
         },
-        {enabled: triggerNode.type === 'llm_prompt_trigger'}
+        { enabled: triggerNode.type === 'llm_prompt_trigger' },
     )
 
     const isSelected = visualBuilderGraph.nodeEditingId === id
@@ -44,73 +47,73 @@ export function useVisualBuilderNodeProps({
         visualBuilderGraph,
         id,
         'conditions',
-        steps
+        steps,
     )
     const incomingHttpRequestCondition = getIncoming(
         visualBuilderGraph,
         id,
         'http_request',
-        steps
+        steps,
     )
     const incomingCancelOrderCondition = getIncoming(
         visualBuilderGraph,
         id,
         'cancel_order',
-        steps
+        steps,
     )
     const incomingRefundOrderCondition = getIncoming(
         visualBuilderGraph,
         id,
         'refund_order',
-        steps
+        steps,
     )
     const incomingUpdateShippingAddressCondition = getIncoming(
         visualBuilderGraph,
         id,
         'update_shipping_address',
-        steps
+        steps,
     )
     const incomingRemoveItemCondition = getIncoming(
         visualBuilderGraph,
         id,
         'remove_item',
-        steps
+        steps,
     )
     const incomingCreateDiscountCodeCondition = getIncoming(
         visualBuilderGraph,
         id,
         'create_discount_code',
-        steps
+        steps,
     )
     const incomingReshipForFreeCondition = getIncoming(
         visualBuilderGraph,
         id,
         'reship_for_free',
-        steps
+        steps,
     )
     const incomingRefundShippingCostsCondition = getIncoming(
         visualBuilderGraph,
         id,
         'refund_shipping_costs',
-        steps
+        steps,
     )
     const incomingCancelSubscriptionCondition = getIncoming(
         visualBuilderGraph,
         id,
         'cancel_subscription',
-        steps
+        steps,
     )
     const incomingSkipChargeCondition = getIncoming(
         visualBuilderGraph,
         id,
         'skip_charge',
-        steps
+        steps,
     )
     const incomingReusableLLMPromptCallCondition = getIncoming(
         visualBuilderGraph,
         id,
         'reusable_llm_prompt_call',
-        steps
+        steps,
     )
 
     const isEdgeSelected = useMemo(() => {
@@ -195,7 +198,7 @@ export function useVisualBuilderNodeProps({
                     ? {
                           label: incomingChoice.label.replace(
                               workflowVariableRegex,
-                              '{...}'
+                              '{...}',
                           ),
                           eventId: incomingChoice.eventId,
                           nodeId: incomingChoice.nodeId,
@@ -342,7 +345,7 @@ export function useVisualBuilderNodeProps({
             incomingReusableLLMPromptCallCondition?.nodeId,
             incomingReusableLLMPromptCallCondition?.isClickable,
             dispatch,
-        ]
+        ],
     )
 
     const hasMultipleChildren =
@@ -352,7 +355,7 @@ export function useVisualBuilderNodeProps({
 
     const hasVariablesUsedInChildren = useMemo(
         () => checkNodeHasVariablesUsedInChildren(id),
-        [id, checkNodeHasVariablesUsedInChildren]
+        [id, checkNodeHasVariablesUsedInChildren],
     )
     const deleteProps: VisualBuilderDeleteProps = useMemo(
         () => ({
@@ -361,7 +364,7 @@ export function useVisualBuilderNodeProps({
             hasVariablesUsedInChildren,
             dispatch,
         }),
-        [id, hasMultipleChildren, hasVariablesUsedInChildren, dispatch]
+        [id, hasMultipleChildren, hasVariablesUsedInChildren, dispatch],
     )
 
     return {

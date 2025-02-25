@@ -1,16 +1,16 @@
-import {fromJS, List} from 'immutable'
+import React, { useEffect } from 'react'
+
+import { fromJS, List } from 'immutable'
 import _isNumber from 'lodash/isNumber'
-import React, {useEffect} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
+import { connect, ConnectedProps } from 'react-redux'
 
 import TextInput from 'pages/common/forms/input/TextInput'
-
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {RenderLabel} from 'pages/common/utils/labels'
-import {RuleItemActions} from 'pages/settings/rules/types'
-import {fetchIntegrations} from 'state/integrations/actions'
-import {getMessagingAndAppIntegrations} from 'state/integrations/selectors'
-import {RootState} from 'state/types'
+import { RenderLabel } from 'pages/common/utils/labels'
+import { RuleItemActions } from 'pages/settings/rules/types'
+import { fetchIntegrations } from 'state/integrations/actions'
+import { getMessagingAndAppIntegrations } from 'state/integrations/selectors'
+import { RootState } from 'state/types'
 
 type OwnProps = {
     onChange: (value: number) => ReturnType<RuleItemActions['modifyCodeAST']>
@@ -30,7 +30,7 @@ export function IntegrationSelectContainer({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    const field = fromJS({name: 'integrations'})
+    const field = fromJS({ name: 'integrations' })
     let options = fromJS([]) as List<any>
 
     integrations.forEach((integration) => {
@@ -74,6 +74,6 @@ const connector = connect(
     }),
     {
         fetchIntegrations,
-    }
+    },
 )
 export default connector(IntegrationSelectContainer)

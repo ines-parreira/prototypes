@@ -1,9 +1,10 @@
-import React, {memo, useMemo} from 'react'
-import {Route, useHistory, useLocation} from 'react-router-dom'
+import React, { memo, useMemo } from 'react'
+
+import { Route, useHistory, useLocation } from 'react-router-dom'
 
 import {
-    GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
     getPrimaryLanguageFromChatConfig,
+    GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
 } from 'config/integrations/gorgias_chat'
 import {
     GorgiasChatAvatarImageType,
@@ -13,11 +14,10 @@ import {
 } from 'models/integration/types'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 
-import {SELF_SERVICE_PREVIEW_ROUTES} from './constants'
+import { SELF_SERVICE_PREVIEW_ROUTES } from './constants'
 import SelfServiceChatIntegrationArticleRecommendationPage from './SelfServiceChatIntegrationArticleRecommendationPage'
 import SelfServiceChatIntegrationCancelPage from './SelfServiceChatIntegrationCancelPage'
 import SelfServiceChatIntegrationHomePage from './SelfServiceChatIntegrationHomePage'
-
 import SelfServiceChatIntegrationOrdersPage from './SelfServiceChatIntegrationOrdersPage'
 import SelfServiceChatIntegrationReportIssuePage from './SelfServiceChatIntegrationReportIssuePage'
 import SelfServiceChatIntegrationReportIssueReasonsPage from './SelfServiceChatIntegrationReportIssueReasonsPage'
@@ -25,19 +25,19 @@ import SelfServiceChatIntegrationReturnPage from './SelfServiceChatIntegrationRe
 import SelfServiceChatIntegrationReturnPortalPage from './SelfServiceChatIntegrationReturnPortalPage'
 import SelfServiceChatIntegrationTrackPage from './SelfServiceChatIntegrationTrackPage'
 import SelfServiceChatIntegrationTrackUnfulfillResponsePage from './SelfServiceChatIntegrationTrackUnfulfillResponsePage'
-import {useSelfServicePreviewContext} from './SelfServicePreviewContext'
+import { useSelfServicePreviewContext } from './SelfServicePreviewContext'
 
 type Props = {
     integration: GorgiasChatIntegration
 }
 
 const SelfServiceChatIntegrationPreview = (props: Props) => {
-    const {integration} = props
+    const { integration } = props
     const history = useHistory()
     const location = useLocation()
 
-    const {reportOrderIssueReason} = useSelfServicePreviewContext()
-    const {decoration, meta} = integration
+    const { reportOrderIssueReason } = useSelfServicePreviewContext()
+    const { decoration, meta } = integration
 
     const isInitialEntry = history.length === 1
 
@@ -53,7 +53,7 @@ const SelfServiceChatIntegrationPreview = (props: Props) => {
                 decoration.avatar?.name_type ??
                 GorgiasChatAvatarNameType.AGENT_FIRST_NAME,
         }),
-        [decoration.avatar]
+        [decoration.avatar],
     )
 
     return (

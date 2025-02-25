@@ -1,10 +1,11 @@
-import {render, screen} from '@testing-library/react'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
-import {MemoryRouter} from 'react-router-dom'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { render, screen } from '@testing-library/react'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { MemoryRouter } from 'react-router-dom'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import {
     Intent,
     IntentTableColumn,
@@ -12,8 +13,7 @@ import {
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
 import {
     BodyCellWrapper,
@@ -37,7 +37,7 @@ jest.mock(
             useHistory: () => ({
                 push: mockHistoryPush,
             }),
-        }) as Record<string, unknown>
+        }) as Record<string, unknown>,
 )
 
 const renderTableCell = (cellContent: React.ReactNode) => {
@@ -48,7 +48,7 @@ const renderTableCell = (cellContent: React.ReactNode) => {
                     <TableBodyRow>{cellContent}</TableBodyRow>
                 </TableBody>
             </TableWrapper>
-        </MemoryRouter>
+        </MemoryRouter>,
     )
 }
 
@@ -62,15 +62,15 @@ describe('IntentTableCells', () => {
     } as unknown as Intent
 
     const mockAllIntents = [
-        {id: '1', [IntentTableColumn.AutomationOpportunities]: 0.5},
-        {id: '2', [IntentTableColumn.AutomationOpportunities]: 0.7},
-        {id: '3', [IntentTableColumn.AutomationOpportunities]: 0.3},
+        { id: '1', [IntentTableColumn.AutomationOpportunities]: 0.5 },
+        { id: '2', [IntentTableColumn.AutomationOpportunities]: 0.7 },
+        { id: '3', [IntentTableColumn.AutomationOpportunities]: 0.3 },
     ] as unknown as Intent[]
 
     describe('IntentNameCellContent', () => {
         beforeEach(() => {
             mockUseAiAgentNavigation.mockReturnValue({
-                routes: {optimizeIntent: (id: string) => `/optimize/${id}`},
+                routes: { optimizeIntent: (id: string) => `/optimize/${id}` },
             } as unknown as ReturnType<typeof useAiAgentNavigation>)
         })
 
@@ -79,7 +79,7 @@ describe('IntentTableCells', () => {
                 <IntentNameCellContent
                     intent={mockIntent}
                     column={IntentTableColumn.IntentName}
-                />
+                />,
             )
             const link = screen.getByRole('cell')
             expect(link).toHaveTextContent('Mock Intent Name')
@@ -91,13 +91,13 @@ describe('IntentTableCells', () => {
             })
             renderTableCell(
                 <IntentNameCellContent
-                    intent={{...mockIntent, id: '1::2::3'}}
+                    intent={{ ...mockIntent, id: '1::2::3' }}
                     column={IntentTableColumn.IntentName}
                     intentLevel={2}
-                />
+                />,
             )
             const link = screen.getByText(
-                mockIntent[IntentTableColumn.IntentName]
+                mockIntent[IntentTableColumn.IntentName],
             )
             link.click()
             expect(mockHistoryPush).toHaveBeenCalledWith('/optimize/1::2::3')
@@ -106,9 +106,9 @@ describe('IntentTableCells', () => {
         it('does not navigate on click if isL1Drilldown is false', () => {
             renderTableCell(
                 <IntentNameCellContent
-                    intent={{...mockIntent, id: '1'}}
+                    intent={{ ...mockIntent, id: '1' }}
                     column={IntentTableColumn.IntentName}
-                />
+                />,
             )
             const link = screen.getByRole('cell')
             link.click()
@@ -122,7 +122,7 @@ describe('IntentTableCells', () => {
                 <IntentDefaultCellContent
                     intent={mockIntent}
                     column={IntentTableColumn.Tickets}
-                />
+                />,
             )
             expect(screen.getByText('200')).toBeInTheDocument()
         })
@@ -134,18 +134,18 @@ describe('IntentTableCells', () => {
                 <IntentResourcesCellContent
                     intent={mockIntent}
                     column={IntentTableColumn.Resources}
-                />
+                />,
             )
             expect(screen.getByText('Missing')).toBeInTheDocument()
         })
 
         it('renders the resource value if it is greater than 0', () => {
-            const intentWithResources = {...mockIntent, resources: 5}
+            const intentWithResources = { ...mockIntent, resources: 5 }
             renderTableCell(
                 <IntentResourcesCellContent
                     intent={intentWithResources}
                     column={IntentTableColumn.Resources}
-                />
+                />,
             )
             expect(screen.getByText('5')).toBeInTheDocument()
         })
@@ -158,7 +158,7 @@ describe('IntentTableCells', () => {
                     intent={mockIntent}
                     column={IntentTableColumn.AutomationOpportunities}
                     allIntents={mockAllIntents}
-                />
+                />,
             )
             expect(screen.getByText('+50%')).toBeInTheDocument()
         })
@@ -167,9 +167,9 @@ describe('IntentTableCells', () => {
     describe('LoadingIntentCellContent', () => {
         it('renders a Skeleton loader', () => {
             renderTableCell(
-                <LoadingIntentCellContent column={IntentTableColumn.Tickets} />
+                <LoadingIntentCellContent column={IntentTableColumn.Tickets} />,
             )
-            const skeleton = screen.getByRole('cell', {hidden: true})
+            const skeleton = screen.getByRole('cell', { hidden: true })
             expect(skeleton).toBeInTheDocument()
         })
     })
@@ -177,18 +177,18 @@ describe('IntentTableCells', () => {
     describe('BodyCellWrapper', () => {
         it('renders children when not loading', () => {
             renderTableCell(
-                <BodyCellWrapper bodyCellProps={{width: 200}}>
+                <BodyCellWrapper bodyCellProps={{ width: 200 }}>
                     <div>Child Content</div>
-                </BodyCellWrapper>
+                </BodyCellWrapper>,
             )
             expect(screen.getByText('Child Content')).toBeInTheDocument()
         })
 
         it('renders Skeleton when loading', () => {
             renderTableCell(
-                <BodyCellWrapper isLoading bodyCellProps={{width: 200}} />
+                <BodyCellWrapper isLoading bodyCellProps={{ width: 200 }} />,
             )
-            const skeleton = screen.getByRole('cell', {hidden: true})
+            const skeleton = screen.getByRole('cell', { hidden: true })
             expect(skeleton).toBeInTheDocument()
         })
     })
@@ -201,11 +201,11 @@ describe('IntentTableCells', () => {
         } as unknown as Intent
 
         it('formats and displays the value correctly when intent[column] exists', () => {
-            const {getByText} = render(
+            const { getByText } = render(
                 <IntentAvgCsatCellContent
                     intent={mockIntent}
                     column={IntentTableColumn.AvgCustomerSatisfaction}
-                />
+                />,
             )
 
             const formattedValue = 4.6
@@ -219,11 +219,11 @@ describe('IntentTableCells', () => {
                 [IntentTableColumn.IntentName]: 'Mock Intent Name',
             } as unknown as Intent
 
-            const {getByText} = render(
+            const { getByText } = render(
                 <IntentAvgCsatCellContent
                     intent={noDataIntent}
                     column={IntentTableColumn.AvgCustomerSatisfaction}
-                />
+                />,
             )
 
             expect(getByText('-')).toBeInTheDocument()

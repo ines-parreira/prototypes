@@ -1,33 +1,35 @@
-import {ListTagsOrderBy} from '@gorgias/api-queries'
-import {act, fireEvent, render, waitFor} from '@testing-library/react'
+import React, { ComponentProps } from 'react'
+
+import { act, fireEvent, render, waitFor } from '@testing-library/react'
 import _keyBy from 'lodash/keyBy'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
-import {Action} from 'redux'
+import { Provider } from 'react-redux'
+import { Action } from 'redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
-import {tags as tagsFixtures} from 'fixtures/tag'
-import {OrderDirection} from 'models/api/types'
-import {fetchTags} from 'models/tag/resources'
+import { ListTagsOrderBy } from '@gorgias/api-queries'
+
+import { axiosSuccessResponse } from 'fixtures/axiosResponse'
+import { tags as tagsFixtures } from 'fixtures/tag'
+import { OrderDirection } from 'models/api/types'
+import { fetchTags } from 'models/tag/resources'
 import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
 import DEPRECATED_TagsStatsFilter from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
 import * as tagsActions from 'state/entities/tags/actions'
-import {initialState, mergeStatsFilters} from 'state/stats/statsSlice'
-import {RootState} from 'state/types'
+import { initialState, mergeStatsFilters } from 'state/stats/statsSlice'
+import { RootState } from 'state/types'
 
 jest.mock('models/tag/resources')
 jest.mock(
     'pages/common/components/InfiniteScroll/InfiniteScroll',
     () =>
-        ({onLoad, children}: ComponentProps<typeof InfiniteScroll>) => {
+        ({ onLoad, children }: ComponentProps<typeof InfiniteScroll>) => {
             return (
                 <div onClick={onLoad} data-testid="infinite-container">
                     {children}
                 </div>
             )
-        }
+        },
 )
 
 const mockStore = configureMockStore([thunk])
@@ -55,7 +57,7 @@ describe('DEPRECATED_TagsStatsFilter', () => {
                     total_resources: null,
                 },
                 object: 'list',
-            })
+            }),
         )
     })
 
@@ -64,30 +66,30 @@ describe('DEPRECATED_TagsStatsFilter', () => {
     })
 
     it('should render the selected tags', async () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <DEPRECATED_TagsStatsFilter
                     value={[tagsFixtures[0].id, tagsFixtures[2].id]}
                 />
-            </Provider>
+            </Provider>,
         )
 
         await waitFor(() =>
-            expect(tagsFetchedSpy).toHaveBeenCalledWith(tagsFixtures)
+            expect(tagsFetchedSpy).toHaveBeenCalledWith(tagsFixtures),
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render with no selected tags', async () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <DEPRECATED_TagsStatsFilter value={undefined} />
-            </Provider>
+            </Provider>,
         )
 
         await waitFor(() =>
-            expect(tagsFetchedSpy).toHaveBeenCalledWith(tagsFixtures)
+            expect(tagsFetchedSpy).toHaveBeenCalledWith(tagsFixtures),
         )
 
         expect(container.firstChild).not.toBeEmptyDOMElement()
@@ -95,26 +97,26 @@ describe('DEPRECATED_TagsStatsFilter', () => {
 
     it('should merge stats filters on item select', async () => {
         const store = mockStore(defaultState)
-        const {getByLabelText} = render(
+        const { getByLabelText } = render(
             <Provider store={store}>
                 <DEPRECATED_TagsStatsFilter value={[]} />
-            </Provider>
+            </Provider>,
         )
 
         await waitFor(() =>
-            expect(tagsFetchedSpy).toHaveBeenCalledWith(tagsFixtures)
+            expect(tagsFetchedSpy).toHaveBeenCalledWith(tagsFixtures),
         )
         fireEvent.click(getByLabelText(tagsFixtures[0].name))
 
         const mergeStatsFiltersActions = store
             .getActions()
             .filter(
-                (action: Action) => action.type === 'stats/mergeStatsFilters'
+                (action: Action) => action.type === 'stats/mergeStatsFilters',
             )
         expect(mergeStatsFiltersActions).toContainEqual(
             mergeStatsFilters({
                 tags: [tagsFixtures[0].id],
-            })
+            }),
         )
     })
 
@@ -129,26 +131,26 @@ describe('DEPRECATED_TagsStatsFilter', () => {
 
         it('should debounce tag search requests', async () => {
             const store = mockStore(defaultState)
-            const {getByPlaceholderText} = render(
+            const { getByPlaceholderText } = render(
                 <Provider store={store}>
                     <DEPRECATED_TagsStatsFilter value={[1]} />
-                </Provider>
+                </Provider>,
             )
 
             fireEvent.change(getByPlaceholderText('Search tags...'), {
-                target: {value: 'foo'},
+                target: { value: 'foo' },
             })
             act(() => {
                 jest.advanceTimersByTime(100)
             })
             fireEvent.change(getByPlaceholderText('Search tags...'), {
-                target: {value: 'bar'},
+                target: { value: 'bar' },
             })
             act(() => {
                 jest.runOnlyPendingTimers()
             })
             await waitFor(() =>
-                expect(tagsFetchedSpy).toHaveBeenCalledWith(tagsFixtures)
+                expect(tagsFetchedSpy).toHaveBeenCalledWith(tagsFixtures),
             )
 
             expect(fetchTags).toHaveBeenCalledTimes(1)
@@ -158,20 +160,20 @@ describe('DEPRECATED_TagsStatsFilter', () => {
                     order_by: `${ListTagsOrderBy.Name}:${OrderDirection.Asc}`,
                     search: 'bar',
                 },
-                expect.anything()
+                expect.anything(),
             )
         })
 
         it('should fetch tags on scroll', async () => {
             const store = mockStore(defaultState)
-            const {getByPlaceholderText, getByTestId} = render(
+            const { getByPlaceholderText, getByTestId } = render(
                 <Provider store={store}>
                     <DEPRECATED_TagsStatsFilter value={[1]} />
-                </Provider>
+                </Provider>,
             )
 
             fireEvent.change(getByPlaceholderText('Search tags...'), {
-                target: {value: 'foo'},
+                target: { value: 'foo' },
             })
             act(() => {
                 jest.runOnlyPendingTimers()
@@ -185,8 +187,8 @@ describe('DEPRECATED_TagsStatsFilter', () => {
                         order_by: `${ListTagsOrderBy.Name}:${OrderDirection.Asc}`,
                         search: 'foo',
                     },
-                    expect.anything()
-                )
+                    expect.anything(),
+                ),
             )
         })
     })

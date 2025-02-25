@@ -1,18 +1,20 @@
-import {IntegrationType} from '@gorgias/api-queries'
-import {screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useGetOrCreateAccountConfiguration} from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'
-import {getHasAutomate} from 'state/billing/selectors'
-import {renderWithRouter} from 'utils/testing'
+import { IntegrationType } from '@gorgias/api-queries'
 
-import {AiAgentAccountConfigurationProvider} from '../AiAgentAccountConfigurationProvider'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useGetOrCreateAccountConfiguration } from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'
+import { getHasAutomate } from 'state/billing/selectors'
+import { renderWithRouter } from 'utils/testing'
+
+import { AiAgentAccountConfigurationProvider } from '../AiAgentAccountConfigurationProvider'
 
 jest.mock('hooks/aiAgent/useGetOrCreateAccountConfiguration')
 jest.mock('launchdarkly-react-client-sdk')
@@ -38,8 +40,8 @@ const defaultState = {
         helpCenter: {
             helpCenters: {
                 helpCentersById: {
-                    '1': {id: 1, name: 'help center 1', type: 'faq'},
-                    '2': {id: 2, name: 'help center 2', type: 'faq'},
+                    '1': { id: 1, name: 'help center 1', type: 'faq' },
+                    '2': { id: 2, name: 'help center 2', type: 'faq' },
                 },
             },
         },
@@ -57,7 +59,7 @@ const renderComponent = () =>
             <AiAgentAccountConfigurationProvider>
                 <div data-testid="children" />
             </AiAgentAccountConfigurationProvider>
-        </Provider>
+        </Provider>,
     )
 
 describe('AiAgentAccountConfigurationProvider', () => {

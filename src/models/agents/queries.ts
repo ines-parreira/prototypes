@@ -1,16 +1,16 @@
-import {useMutation, UseQueryOptions, useQuery} from '@tanstack/react-query'
+import { useMutation, useQuery, UseQueryOptions } from '@tanstack/react-query'
 
-import {MutationOverrides} from 'types/query'
+import { MutationOverrides } from 'types/query'
 
 import {
+    createAgent,
+    deleteAgent,
     fetchAgent,
     fetchAgents,
-    createAgent,
-    updateAgent,
-    deleteAgent,
     inviteAgent,
+    updateAgent,
 } from './resources'
-import {FetchAgentsOptions} from './types'
+import { FetchAgentsOptions } from './types'
 
 export const agentsKeys = {
     all: () => ['agents'] as const,
@@ -22,7 +22,7 @@ export const agentsKeys = {
 
 export const useListAgent = (
     params?: FetchAgentsOptions,
-    overrides?: UseQueryOptions<Awaited<ReturnType<typeof fetchAgents>>>
+    overrides?: UseQueryOptions<Awaited<ReturnType<typeof fetchAgents>>>,
 ) => {
     return useQuery({
         queryKey: agentsKeys.list(params),
@@ -33,7 +33,7 @@ export const useListAgent = (
 
 export const useGetAgent = (
     id: number,
-    overrides?: UseQueryOptions<Awaited<ReturnType<typeof fetchAgent>>>
+    overrides?: UseQueryOptions<Awaited<ReturnType<typeof fetchAgent>>>,
 ) => {
     return useQuery({
         queryKey: agentsKeys.detail(id),
@@ -43,7 +43,7 @@ export const useGetAgent = (
 }
 
 export const useCreateAgent = (
-    overrides?: MutationOverrides<typeof createAgent>
+    overrides?: MutationOverrides<typeof createAgent>,
 ) => {
     return useMutation({
         mutationFn: (params) => createAgent(...params),
@@ -52,7 +52,7 @@ export const useCreateAgent = (
 }
 
 export const useUpdateAgent = (
-    overrides?: MutationOverrides<typeof updateAgent>
+    overrides?: MutationOverrides<typeof updateAgent>,
 ) => {
     return useMutation({
         mutationFn: (params) => updateAgent(...params),
@@ -61,7 +61,7 @@ export const useUpdateAgent = (
 }
 
 export const useDeleteAgent = (
-    overrides?: MutationOverrides<typeof deleteAgent>
+    overrides?: MutationOverrides<typeof deleteAgent>,
 ) => {
     return useMutation({
         mutationFn: (params) => deleteAgent(...params),
@@ -70,7 +70,7 @@ export const useDeleteAgent = (
 }
 
 export const useInviteAgent = (
-    overrides?: MutationOverrides<typeof inviteAgent>
+    overrides?: MutationOverrides<typeof inviteAgent>,
 ) => {
     return useMutation({
         mutationFn: (params) => inviteAgent(...params),

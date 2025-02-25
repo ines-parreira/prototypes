@@ -1,19 +1,20 @@
-import {Label, Skeleton} from '@gorgias/merchant-ui-kit'
-import _isEqual from 'lodash/isEqual'
-import React, {Dispatch, useCallback, useMemo, useRef, useState} from 'react'
+import React, { Dispatch, useCallback, useMemo, useRef, useState } from 'react'
 
-import {Node} from 'reactflow'
+import _isEqual from 'lodash/isEqual'
+import { Node } from 'reactflow'
+
+import { Label, Skeleton } from '@gorgias/merchant-ui-kit'
 
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import useGetAppFromTemplateApp from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
-import {ActionTemplate} from 'pages/automate/actionsPlatform/types'
+import { ActionTemplate } from 'pages/automate/actionsPlatform/types'
 import {
     getActionsAppFromTemplateApp,
     getGraphAppFromTemplateApp,
 } from 'pages/automate/actionsPlatform/utils'
 import NodeMenu from 'pages/automate/workflows/editor/visualBuilder/components/NodeMenu'
 import NodeEditorDrawer from 'pages/automate/workflows/editor/visualBuilder/NodeEditorDrawer'
-import {VisualBuilderGraphAction} from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
+import { VisualBuilderGraphAction } from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
 import {
     getReusableLLMPromptCallNodeStatuses,
     walkVisualBuilderGraph,
@@ -23,13 +24,14 @@ import {
     ReusableLLMPromptCallNodeType,
     VisualBuilderGraph,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
-import {Separator} from 'pages/common/components/Separator/Separator'
+import { Separator } from 'pages/common/components/Separator/Separator'
 import Caption from 'pages/common/forms/Caption/Caption'
 
+import { StepListItem, StepListItemProps } from './StepListItem'
+
 import css from './SimplifiedStepBuilderSteps.less'
-import {StepListItem, StepListItemProps} from './StepListItem'
 
 type Props = {
     graph: VisualBuilderGraph
@@ -37,15 +39,19 @@ type Props = {
     steps: ActionTemplate[]
 }
 
-export const SimplifiedStepBuilderSteps = ({graph, dispatch, steps}: Props) => {
+export const SimplifiedStepBuilderSteps = ({
+    graph,
+    dispatch,
+    steps,
+}: Props) => {
     const [isStepDropdownOpen, setIsStepDropdownOpen] = useState(false)
     const [dirtyNodes, setDirtyNodes] = useState<
         ReusableLLMPromptCallNodeType[]
     >([])
     const dropdownTargetRef = useRef<HTMLButtonElement>(null)
 
-    const {apps, actionsApps} = useApps()
-    const getAppFromTemplateApp = useGetAppFromTemplateApp({apps})
+    const { apps, actionsApps } = useApps()
+    const getAppFromTemplateApp = useGetAppFromTemplateApp({ apps })
 
     const orderedNodes = useMemo(() => {
         const nodes: ReusableLLMPromptCallNodeType[] = []
@@ -74,7 +80,7 @@ export const SimplifiedStepBuilderSteps = ({graph, dispatch, steps}: Props) => {
 
             setDirtyNodes(nextDirtyNodes)
         },
-        [dirtyNodes, orderedNodes]
+        [dirtyNodes, orderedNodes],
     )
 
     const handleDrop = useCallback(() => {
@@ -99,7 +105,7 @@ export const SimplifiedStepBuilderSteps = ({graph, dispatch, steps}: Props) => {
                 nodeId: node.id,
             })
         },
-        [dispatch]
+        [dispatch],
     )
 
     const nodeId = useMemo(() => {
@@ -115,12 +121,12 @@ export const SimplifiedStepBuilderSteps = ({graph, dispatch, steps}: Props) => {
     }, [graph])
 
     const displayNodesProps = useMemo<
-        ((StepListItemProps & {id: string}) | null)[]
+        ((StepListItemProps & { id: string }) | null)[]
     >(() => {
         return (dirtyNodes.length ? dirtyNodes : orderedNodes).map(
             (node, index) => {
                 const step = steps.find(
-                    (step) => step.id === node.data.configuration_id
+                    (step) => step.id === node.data.configuration_id,
                 )
 
                 if (!step) {
@@ -136,11 +142,11 @@ export const SimplifiedStepBuilderSteps = ({graph, dispatch, steps}: Props) => {
 
                 const graphApp = getGraphAppFromTemplateApp(
                     graph.apps ?? [],
-                    templateApp
+                    templateApp,
                 )
                 const actionsApp = getActionsAppFromTemplateApp(
                     actionsApps,
-                    templateApp
+                    templateApp,
                 )
 
                 const {
@@ -181,7 +187,7 @@ export const SimplifiedStepBuilderSteps = ({graph, dispatch, steps}: Props) => {
                     hasAllValues,
                     hasMissingValues,
                 }
-            }
+            },
         )
     }, [
         dirtyNodes,
@@ -199,10 +205,10 @@ export const SimplifiedStepBuilderSteps = ({graph, dispatch, steps}: Props) => {
     ])
 
     const hasMissingValues = displayNodesProps.some(
-        (props) => props && props.hasMissingValues
+        (props) => props && props.hasMissingValues,
     )
     const hasMissingCredentials = displayNodesProps.some(
-        (props) => props && props.hasMissingCredentials
+        (props) => props && props.hasMissingCredentials,
     )
 
     const visualBuilderNodeEditing = graph.nodeEditingId
@@ -210,7 +216,7 @@ export const SimplifiedStepBuilderSteps = ({graph, dispatch, steps}: Props) => {
         : null
 
     const onDrawerEditorClose = useCallback(() => {
-        dispatch({type: 'CLOSE_EDITOR'})
+        dispatch({ type: 'CLOSE_EDITOR' })
     }, [dispatch])
 
     return (

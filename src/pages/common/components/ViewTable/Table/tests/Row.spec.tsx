@@ -1,26 +1,25 @@
-import {render} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import React, { ComponentProps } from 'react'
 
-import {fromJS, Map, List} from 'immutable'
+import { render } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { fromJS, List, Map } from 'immutable'
 import _noop from 'lodash/noop'
-import React, {ComponentProps} from 'react'
 
 import useAgentsViewing from 'hooks/realtime/useAgentsViewing'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {scrollToReactNode} from 'pages/common/utils/keyboard'
+import { scrollToReactNode } from 'pages/common/utils/keyboard'
 import * as viewsActions from 'state/views/actions'
 
 import * as viewsConfig from '../../../../../../config/views'
 import * as agentsFixtures from '../../../../../../fixtures/agents'
 import * as ticketFixtures from '../../../../../../fixtures/ticket'
-
 import Row from '../Row'
 
 jest.mock(
     'pages/common/components/ViewingIndicator/ViewingIndicator',
     () => () => {
         return <div>ViewingIndicator</div>
-    }
+    },
 )
 
 jest.mock('../Cell', () => () => {
@@ -53,18 +52,18 @@ describe('ViewTable::Table::Row', () => {
 
     beforeEach(() => {
         mockUseAppDispatch.mockReturnValue(jest.fn())
-        mockUseAgentsViewing.mockReturnValue({agentsViewing: []})
+        mockUseAgentsViewing.mockReturnValue({ agentsViewing: [] })
     })
 
     describe('default row', () => {
         it('displays', () => {
-            const {getAllByText, container} = render(<Row {...minProps} />)
+            const { getAllByText, container } = render(<Row {...minProps} />)
             expect(container.querySelector('input')).toBeInTheDocument()
             expect(getAllByText('Cell')[0]).toBeInTheDocument()
         })
 
         it('toggle delete confirmation', () => {
-            const {container} = render(<Row {...minProps} />)
+            const { container } = render(<Row {...minProps} />)
             userEvent.click(container.querySelector('input') as Element)
             expect(viewsActions.toggleIdInSelectedItemsIds).toHaveBeenCalled()
         })
@@ -84,14 +83,14 @@ describe('ViewTable::Table::Row', () => {
         mockUseAgentsViewing.mockReturnValue({
             agentsViewing: agentsFixtures.agents,
         })
-        const {getByText} = render(
+        const { getByText } = render(
             <Row
                 {...minProps}
                 item={(fromJS(ticketFixtures.ticket) as Map<any, any>).set(
                     'id',
-                    1
+                    1,
                 )}
-            />
+            />,
         )
         expect(getByText('ViewingIndicator')).toBeInTheDocument()
     })

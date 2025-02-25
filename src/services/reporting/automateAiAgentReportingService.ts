@@ -1,20 +1,20 @@
 import moment from 'moment/moment'
 
-import {User} from 'config/types/user'
-import {Metric} from 'hooks/reporting/metrics'
-import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
-import {OrderDirection} from 'models/api/types'
-import {Period} from 'models/stat/types'
-import {AutomatedInteractionByFeatures} from 'pages/stats/types'
+import { User } from 'config/types/user'
+import { Metric } from 'hooks/reporting/metrics'
+import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
+import { OrderDirection } from 'models/api/types'
+import { Period } from 'models/stat/types'
+import { AutomatedInteractionByFeatures } from 'pages/stats/types'
 import {
     AgentsPerformanceReportData,
     getData as getPerformanceData,
 } from 'services/reporting/agentsPerformanceReportingService'
-import {formatPerformanceFeatureData} from 'services/reporting/automateOverviewReportingService'
-import {DATE_TIME_FORMAT} from 'services/reporting/constants'
-import {formatData as getTicketInsightsData} from 'services/reporting/ticketFieldsReportingService'
-import {AgentsTableColumn} from 'state/ui/stats/types'
-import {createCsv, saveZippedFiles} from 'utils/file'
+import { formatPerformanceFeatureData } from 'services/reporting/automateOverviewReportingService'
+import { DATE_TIME_FORMAT } from 'services/reporting/constants'
+import { formatData as getTicketInsightsData } from 'services/reporting/ticketFieldsReportingService'
+import { AgentsTableColumn } from 'state/ui/stats/types'
+import { createCsv, saveZippedFiles } from 'utils/file'
 
 export const AI_AGENT_PERFORMANCE_FILENAME = 'ai-agent-performance'
 export const AI_AGENT_TICKET_INSIGHTS_FILENAME = 'ai-agent-ticket-insights'
@@ -41,13 +41,13 @@ export const saveReport = async (
         data: Record<string, TimeSeriesDataItem[][]> | undefined
         dateTimes: string[]
         order?: OrderDirection
-    }
+    },
 ) => {
     const performanceData = getPerformanceData(
         agents,
         performance.data,
         performance.summary,
-        performance.columnsOrder
+        performance.columnsOrder,
     )
 
     const ticketInsightsData =
@@ -55,12 +55,12 @@ export const saveReport = async (
         getTicketInsightsData(
             ticketInsights.data,
             ticketInsights.dateTimes,
-            ticketInsights.order
+            ticketInsights.order,
         )
 
     const automatedTicketsData = formatPerformanceFeatureData(
         automatedTickets.automateStatsMeasureLabelMap,
-        automatedTickets.automatedInteractionByEventTypesTimeSeries
+        automatedTickets.automatedInteractionByEventTypesTimeSeries,
     )
 
     const export_datetime = moment().format(DATE_TIME_FORMAT)
@@ -83,6 +83,6 @@ export const saveReport = async (
             [`${periodPrefix}-${AI_AGENT_AUTOMATED_TICKETS_FILENAME}-${export_datetime}.csv`]:
                 createCsv(automatedTicketsData),
         },
-        `${periodPrefix}-${AI_AGENT_METRICS_FILENAME}-${export_datetime}`
+        `${periodPrefix}-${AI_AGENT_METRICS_FILENAME}-${export_datetime}`,
     )
 }

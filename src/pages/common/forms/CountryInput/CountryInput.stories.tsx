@@ -1,5 +1,6 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps, useState} from 'react'
+import React, { ComponentProps, useState } from 'react'
+
+import { Meta, Story } from '@storybook/react'
 
 import CountryInput from './CountryInput'
 
@@ -15,7 +16,7 @@ const Template: Story<ComponentProps<typeof CountryInput>> = ({
     const [countryCode, setCountryCode] = useState(value || 'US')
 
     return (
-        <div style={{width: '300px'}}>
+        <div style={{ width: '300px' }}>
             <CountryInput
                 {...other}
                 onChange={setCountryCode}

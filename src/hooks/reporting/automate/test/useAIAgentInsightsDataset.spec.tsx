@@ -1,46 +1,47 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
-import moment from 'moment'
 import React from 'react'
 
-import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
+import moment from 'moment'
+
+import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {
     csatPerIntentMetric,
     customFieldsMetric,
     totalTicketsMetric,
 } from 'fixtures/aiAgentInsights'
-import {ticketFieldDefinitions} from 'fixtures/customField'
+import { ticketFieldDefinitions } from 'fixtures/customField'
 import {
     BREAKDOWN_FIELD,
     CUSTOM_FIELD_COUNT,
     TICKET_COUNT,
 } from 'hooks/reporting/automate/types'
 import {
+    addMetricDataToResults,
+    convertResultToTableArrayFormat,
+    useAiAgentKnowledgeResourcePerIntent,
     useAIAgentMetrics,
     useAIAgentTicketsPerIntent,
     useAutomationOpportunityPerIntent,
     useCustomerSatisfactionPerIntent,
     useSuccessRatePerIntent,
-    addMetricDataToResults,
-    convertResultToTableArrayFormat,
-    useAiAgentKnowledgeResourcePerIntent,
 } from 'hooks/reporting/automate/useAIAgentInsightsDataset'
-import {useAIAgentUserId} from 'hooks/reporting/automate/useAIAgentUserId'
-import {useMetric} from 'hooks/reporting/useMetric'
-import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
-import {useMultipleMetricsTrends} from 'hooks/reporting/useMultipleMetricsTrend'
+import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
+import { useMetric } from 'hooks/reporting/useMetric'
+import { useMetricPerDimension } from 'hooks/reporting/useMetricPerDimension'
+import { useMultipleMetricsTrends } from 'hooks/reporting/useMultipleMetricsTrend'
 import {
     RecommendedResourcesDimension,
     RecommendedResourcesMeasure,
 } from 'models/reporting/cubes/automate_v2/RecommendedResourcesCube'
-import {TicketDimension} from 'models/reporting/cubes/TicketCube'
-import {StatsFilters} from 'models/stat/types'
+import { TicketDimension } from 'models/reporting/cubes/TicketCube'
+import { StatsFilters } from 'models/stat/types'
 import {
     IntentMetrics,
     IntentTableColumn,
 } from 'pages/aiAgent/insights/IntentTableWidget/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 const queryClient = mockQueryClient()
 const timezone = 'UTC'
@@ -73,7 +74,7 @@ const statsFilters: StatsFilters = {
 describe('useAiAgentInsightsDataset', () => {
     beforeEach(() => {
         useCustomFieldDefinitionsMock.mockReturnValue({
-            data: {data: ticketFieldDefinitions},
+            data: { data: ticketFieldDefinitions },
             isLoading: false,
         } as any)
 
@@ -130,26 +131,26 @@ describe('useAiAgentInsightsDataset', () => {
                 } as any)
 
             jest.spyOn(queryClient, 'invalidateQueries')
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () => useAIAgentMetrics(statsFilters, timezone),
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
                             {children}
                         </QueryClientProvider>
                     ),
-                }
+                },
             )
 
             expect(result.current.coverageTrend.data?.value).toBeCloseTo(0.5)
             expect(
-                result.current.aiAgentAutomatedInteractionTrend.data
+                result.current.aiAgentAutomatedInteractionTrend.data,
             ).toEqual({
                 prevValue: 0,
                 value: 1000,
             })
             expect(result.current.aiAgentSuccessRate.data?.value).toBeCloseTo(
-                0.91
+                0.91,
             )
             expect(result.current.aiAgentCSAT.data).toEqual({
                 prevValue: 4,
@@ -173,9 +174,9 @@ describe('useAiAgentInsightsDataset', () => {
                     // aiAgentNotAutomatedTicketsData
                     data: {
                         allData: [
-                            {[TicketDimension.TicketId]: '1'},
-                            {[TicketDimension.TicketId]: '2'},
-                            {[TicketDimension.TicketId]: '3'},
+                            { [TicketDimension.TicketId]: '1' },
+                            { [TicketDimension.TicketId]: '2' },
+                            { [TicketDimension.TicketId]: '3' },
                         ],
                     },
                     isFetching: false,
@@ -185,15 +186,15 @@ describe('useAiAgentInsightsDataset', () => {
                 .mockReturnValueOnce(customFieldsMetric)
 
             jest.spyOn(queryClient, 'invalidateQueries')
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () => useAutomationOpportunityPerIntent(statsFilters, timezone),
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
                             {children}
                         </QueryClientProvider>
                     ),
-                }
+                },
             )
 
             expect(result.current.isError).toBe(false)
@@ -236,9 +237,9 @@ describe('useAiAgentInsightsDataset', () => {
                     // aiAgentNotAutomatedTicketsData
                     data: {
                         allData: [
-                            {[TicketDimension.TicketId]: '1'},
-                            {[TicketDimension.TicketId]: '2'},
-                            {[TicketDimension.TicketId]: '3'},
+                            { [TicketDimension.TicketId]: '1' },
+                            { [TicketDimension.TicketId]: '2' },
+                            { [TicketDimension.TicketId]: '3' },
                         ],
                     },
                     isFetching: false,
@@ -248,15 +249,15 @@ describe('useAiAgentInsightsDataset', () => {
                 .mockReturnValueOnce(customFieldsMetric)
 
             jest.spyOn(queryClient, 'invalidateQueries')
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () => useAutomationOpportunityPerIntent(statsFilters, timezone),
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
                             {children}
                         </QueryClientProvider>
                     ),
-                }
+                },
             )
 
             expect(result.current.isError).toBe(false)
@@ -291,9 +292,9 @@ describe('useAiAgentInsightsDataset', () => {
                     // aiAgentTicketsData
                     data: {
                         allData: [
-                            {[TicketDimension.TicketId]: '1'},
-                            {[TicketDimension.TicketId]: '2'},
-                            {[TicketDimension.TicketId]: '3'},
+                            { [TicketDimension.TicketId]: '1' },
+                            { [TicketDimension.TicketId]: '2' },
+                            { [TicketDimension.TicketId]: '3' },
                         ],
                     },
                     isFetching: false,
@@ -303,15 +304,15 @@ describe('useAiAgentInsightsDataset', () => {
                 .mockReturnValueOnce(totalTicketsMetric)
 
             jest.spyOn(queryClient, 'invalidateQueries')
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () => useAIAgentTicketsPerIntent(statsFilters, timezone),
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
                             {children}
                         </QueryClientProvider>
                     ),
-                }
+                },
             )
             expect(result.current).toEqual(totalTicketsMetric)
         })
@@ -326,9 +327,9 @@ describe('useAiAgentInsightsDataset', () => {
                         decile: null,
                         value: null,
                         allData: [
-                            {[TicketDimension.TicketId]: '1'},
-                            {[TicketDimension.TicketId]: '2'},
-                            {[TicketDimension.TicketId]: '3'},
+                            { [TicketDimension.TicketId]: '1' },
+                            { [TicketDimension.TicketId]: '2' },
+                            { [TicketDimension.TicketId]: '3' },
                         ],
                     },
                     isFetching: false,
@@ -340,9 +341,9 @@ describe('useAiAgentInsightsDataset', () => {
                         decile: null,
                         value: null,
                         allData: [
-                            {[TicketDimension.TicketId]: '1'},
-                            {[TicketDimension.TicketId]: '2'},
-                            {[TicketDimension.TicketId]: '3'},
+                            { [TicketDimension.TicketId]: '1' },
+                            { [TicketDimension.TicketId]: '2' },
+                            { [TicketDimension.TicketId]: '3' },
                         ],
                     },
                     isFetching: false,
@@ -354,15 +355,15 @@ describe('useAiAgentInsightsDataset', () => {
                 .mockReturnValueOnce(customFieldsMetric)
 
             jest.spyOn(queryClient, 'invalidateQueries')
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () => useSuccessRatePerIntent(statsFilters, timezone),
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
                             {children}
                         </QueryClientProvider>
                     ),
-                }
+                },
             )
             expect(result.current.data).toEqual([
                 {
@@ -392,15 +393,15 @@ describe('useAiAgentInsightsDataset', () => {
             useMetricPerDimensionMock.mockReturnValueOnce(csatPerIntentMetric)
 
             jest.spyOn(queryClient, 'invalidateQueries')
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () => useCustomerSatisfactionPerIntent(statsFilters, timezone),
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
                             {children}
                         </QueryClientProvider>
                     ),
-                }
+                },
             )
             expect(result.current).toEqual(csatPerIntentMetric)
         })
@@ -462,19 +463,19 @@ describe('useAiAgentInsightsDataset', () => {
                 })
 
             jest.spyOn(queryClient, 'invalidateQueries')
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () =>
                     useAiAgentKnowledgeResourcePerIntent(
                         statsFilters,
-                        timezone
+                        timezone,
                     ),
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
                             {children}
                         </QueryClientProvider>
                     ),
-                }
+                },
             )
             expect(result.current.data).toEqual([
                 {
@@ -508,19 +509,19 @@ describe('useAiAgentInsightsDataset', () => {
                 })
 
             jest.spyOn(queryClient, 'invalidateQueries')
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () =>
                     useAiAgentKnowledgeResourcePerIntent(
                         statsFilters,
-                        timezone
+                        timezone,
                     ),
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
                             {children}
                         </QueryClientProvider>
                     ),
-                }
+                },
             )
             expect(result.current.data).toEqual([])
         })
@@ -543,8 +544,8 @@ describe('useAiAgentInsightsDataset', () => {
             addMetricDataToResults(results, metricData, 'metricKey')
 
             expect(results).toEqual({
-                intentA: {metricKey: 10},
-                intentB: {metricKey: 20},
+                intentA: { metricKey: 10 },
+                intentB: { metricKey: 20 },
             })
         })
 
@@ -565,18 +566,18 @@ describe('useAiAgentInsightsDataset', () => {
                 results,
                 metricData,
                 'ticketCount',
-                'tickets'
+                'tickets',
             )
 
             expect(results).toEqual({
-                intentA: {tickets: 5},
-                intentB: {tickets: 8},
+                intentA: { tickets: 5 },
+                intentB: { tickets: 8 },
             })
         })
 
         it('merges new metrics with existing results', () => {
             const results: Record<string, any> = {
-                intentA: {metricKey: 10},
+                intentA: { metricKey: 10 },
             }
             const metricData = [
                 {
@@ -593,12 +594,12 @@ describe('useAiAgentInsightsDataset', () => {
                 results,
                 metricData,
                 'ticketCount',
-                'tickets'
+                'tickets',
             )
 
             expect(results).toEqual({
-                intentA: {metricKey: 10, tickets: 15},
-                intentB: {tickets: 20},
+                intentA: { metricKey: 10, tickets: 15 },
+                intentB: { tickets: 20 },
             })
         })
 
@@ -613,7 +614,7 @@ describe('useAiAgentInsightsDataset', () => {
 
         it('overwrites existing metric keys with new values', () => {
             const results: Record<string, any> = {
-                intentA: {metricKey: 10},
+                intentA: { metricKey: 10 },
             }
             const metricData: Record<string, string | number | null>[] = [
                 {
@@ -625,7 +626,7 @@ describe('useAiAgentInsightsDataset', () => {
             addMetricDataToResults(results, metricData, 'metricKey')
 
             expect(results).toEqual({
-                intentA: {metricKey: 25},
+                intentA: { metricKey: 25 },
             })
         })
     })

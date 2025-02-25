@@ -1,6 +1,6 @@
-import React, {useEffect} from 'react'
+import React, { useEffect } from 'react'
 
-import {VoiceRecordingsContext} from './VoiceRecordingsContext'
+import { VoiceRecordingsContext } from './VoiceRecordingsContext'
 
 export default function VoiceRecordingsProvider({
     children,
@@ -10,7 +10,7 @@ export default function VoiceRecordingsProvider({
     voiceCallId?: number | null
 }) {
     const [openedRecordings, setOpenedRecordings] = React.useState<number[]>(
-        voiceCallId ? [voiceCallId] : []
+        voiceCallId ? [voiceCallId] : [],
     )
     const [closedTranscriptions, setClosedTranscriptions] = React.useState<
         number[]
@@ -25,12 +25,12 @@ export default function VoiceRecordingsProvider({
 
     const toggleResourceOpened = (
         resourceId: number,
-        setFn: React.Dispatch<React.SetStateAction<number[]>>
+        setFn: React.Dispatch<React.SetStateAction<number[]>>,
     ) => {
         setFn((prev) =>
             prev.includes(resourceId)
                 ? prev.filter((id) => id !== resourceId)
-                : [...prev, resourceId]
+                : [...prev, resourceId],
         )
     }
 

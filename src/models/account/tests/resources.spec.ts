@@ -18,11 +18,11 @@ describe('account resources', () => {
     const mockedData: AccountSetting = {
         data: {
             views: {
-                1: {display_order: 0},
+                1: { display_order: 0 },
             },
             views_top: {},
             views_bottom: {},
-            view_sections: {1: {display_order: 1}},
+            view_sections: { 1: { display_order: 1 } },
         },
         id: 2,
         type: AccountSettingType.ViewsOrdering,
@@ -43,9 +43,9 @@ describe('account resources', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onPost('/api/account/settings/')
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(
-                createAccountSetting(_omit(mockedData, 'id'))
+                createAccountSetting(_omit(mockedData, 'id')),
             ).rejects.toEqual(new Error('Request failed with status code 503'))
         })
     })
@@ -64,9 +64,9 @@ describe('account resources', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onPut('/api/account/settings/2/')
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(updateAccountSetting(mockedData)).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                new Error('Request failed with status code 503'),
             )
         })
     })
@@ -86,9 +86,9 @@ describe('account resources', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onGet(`/api/account/settings/`)
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(
-                getAccountSettings(mockedData['type'])
+                getAccountSettings(mockedData['type']),
             ).rejects.toEqual(new Error('Request failed with status code 503'))
         })
 
@@ -102,9 +102,9 @@ describe('account resources', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onGet(`/api/account/settings/`)
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(getAccountSettings()).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                new Error('Request failed with status code 503'),
             )
         })
     })

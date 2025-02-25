@@ -7,11 +7,11 @@ export type TypingActivityProps = {
     name: string
 }
 
-const TypingActivity = ({name, isTyping}: TypingActivityProps) => {
+const TypingActivity = ({ name, isTyping }: TypingActivityProps) => {
     return (
         <div
             className={css.component}
-            style={isTyping ? {} : {display: 'none'}}
+            style={isTyping ? {} : { display: 'none' }}
         >
             <span className={css.name}>{name}</span>
             <div className={css.wrapper}>

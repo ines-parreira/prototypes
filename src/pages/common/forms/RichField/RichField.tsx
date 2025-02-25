@@ -1,10 +1,12 @@
-import {ContentState, EditorState} from 'draft-js'
+import React, { Component, ComponentProps } from 'react'
+
+import { ContentState, EditorState } from 'draft-js'
 import _isEqual from 'lodash/isEqual'
-import React, {Component, ComponentProps} from 'react'
+
 import 'draft-js/dist/Draft.css'
 
-import {attachEntitiesToVariables} from 'pages/common/draftjs/plugins/variables/utils'
-import {contentStateFromTextOrHTML, convertToHTML} from 'utils/editor'
+import { attachEntitiesToVariables } from 'pages/common/draftjs/plugins/variables/utils'
+import { contentStateFromTextOrHTML, convertToHTML } from 'utils/editor'
 
 import RichFieldEditor from './RichFieldEditor'
 
@@ -26,7 +28,7 @@ type State = {
 export default class RichField extends Component<Props, State> {
     constructor(props: Props) {
         super(props)
-        const {defaultContentState} = props
+        const { defaultContentState } = props
 
         let editorState = EditorState.createEmpty()
 
@@ -62,7 +64,7 @@ export default class RichField extends Component<Props, State> {
 
     // Warning: this method is used by parents through ref
     focusEditor = () => {
-        this.setState({isFocused: true})
+        this.setState({ isFocused: true })
     }
 
     // Warning: this method is used by parent through ref
@@ -84,14 +86,14 @@ export default class RichField extends Component<Props, State> {
             html?: string
             text?: string
         },
-        callback?: () => any
+        callback?: () => any,
     ) => {
         // if incoming value is the same as the current one, don't update the current one
         if (!this._didHTMLChanged(value.html)) {
             return
         }
 
-        let {editorState} = this.state
+        let { editorState } = this.state
 
         // generate a content state from incoming value
         const contentState = contentStateFromTextOrHTML(value.text, value.html)
@@ -99,29 +101,29 @@ export default class RichField extends Component<Props, State> {
         editorState = (
             EditorState.push as (
                 editorState: EditorState,
-                contentState: ContentState
+                contentState: ContentState,
             ) => EditorState
         )(editorState, contentState)
 
         // immutable variables on first load
         editorState = attachEntitiesToVariables(editorState, true)
 
-        this.setState({editorState}, callback)
+        this.setState({ editorState }, callback)
     }
 
     handleEditorChange = (editorState: EditorState) => {
-        this.setState({editorState}, () => {
+        this.setState({ editorState }, () => {
             // notify the parent of the new editor state
             this.props.onChange(editorState)
         })
     }
 
     _onFocus = () => {
-        this.setState({isFocused: true})
+        this.setState({ isFocused: true })
     }
 
     _onBlur = () => {
-        this.setState({isFocused: false})
+        this.setState({ isFocused: false })
         this.props.onBlur?.()
     }
 

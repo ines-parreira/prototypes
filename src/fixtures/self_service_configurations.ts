@@ -1,6 +1,6 @@
 import {
-    ShopType,
     SelfServiceConfiguration,
+    ShopType,
 } from '../models/selfServiceConfiguration/types'
 
 export const selfServiceConfiguration1: SelfServiceConfiguration = {

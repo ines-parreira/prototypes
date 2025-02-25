@@ -1,16 +1,15 @@
-import classnames from 'classnames'
 import React from 'react'
 
+import classnames from 'classnames'
+
 import Avatar from 'pages/common/components/Avatar/Avatar'
-import {FakeOrderTracking} from 'pages/settings/rules/components/FakeOrderTracking'
-import {assetsUrl} from 'utils'
+import { FakeOrderTracking } from 'pages/settings/rules/components/FakeOrderTracking'
+import { assetsUrl } from 'utils'
 
-import {ManagedRuleModalProps} from '../InstallRuleModalBody'
-
-import defaultModalCss from '../RuleRecipeModal.less'
-
+import { ManagedRuleModalProps } from '../InstallRuleModalBody'
 import TargetCount from './components/TargetCount'
 
+import defaultModalCss from '../RuleRecipeModal.less'
 import css from './ManagedRuleModal.less'
 
 export const AutoReplyWismoModal = ({
@@ -54,7 +53,7 @@ export const AutoReplyWismoModal = ({
                     <div
                         className={classnames(
                             css.exampleContainer,
-                            css.bordered
+                            css.bordered,
                         )}
                     >
                         <div className={css.fakeMessage}>
@@ -83,7 +82,7 @@ export const AutoReplyWismoModal = ({
                                 <div
                                     className={classnames(
                                         css.name,
-                                        css.autoResponder
+                                        css.autoResponder,
                                     )}
                                 >
                                     Autoresponder

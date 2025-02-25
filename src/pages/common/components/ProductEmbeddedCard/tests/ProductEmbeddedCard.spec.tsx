@@ -1,5 +1,6 @@
-import {render} from '@testing-library/react'
 import React from 'react'
+
+import { render } from '@testing-library/react'
 
 import ProductEmbeddedCard from 'pages/common/components/ProductEmbeddedCard/ProductEmbeddedCard'
 
@@ -8,7 +9,7 @@ jest.mock('react-rating-stars-component', () => () => null)
 const defaultPropsWithImages = {
     product: {
         average_score: 4.3,
-        category: {name: 'electronics'},
+        category: { name: 'electronics' },
         description: 'economic washing machine',
         images: [
             {
@@ -25,7 +26,7 @@ const defaultPropsWithImages = {
 const defaultPropsEmptyImages = {
     product: {
         average_score: 4.3,
-        category: {name: 'electronics'},
+        category: { name: 'electronics' },
         description: 'economic washing machine',
         images: [],
         name: 'Tandem washing machine',
@@ -37,7 +38,7 @@ const defaultPropsEmptyImages = {
 const defaultPropsNoImages = {
     product: {
         average_score: 4.3,
-        category: {name: 'electronics'},
+        category: { name: 'electronics' },
         description: 'economic washing machine',
         name: 'Tandem washing machine',
         total_reviews: 100,
@@ -51,7 +52,7 @@ describe('<ProductEmbeddedCard/>', () => {
         defaultPropsEmptyImages,
         defaultPropsNoImages,
     ])('Should render a product card', (defaultProps) => {
-        const {container} = render(<ProductEmbeddedCard {...defaultProps} />)
+        const { container } = render(<ProductEmbeddedCard {...defaultProps} />)
 
         expect(container.firstChild).toMatchSnapshot()
     })

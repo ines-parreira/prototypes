@@ -1,9 +1,9 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {campaign, campaignId} from 'fixtures/campaign'
-import {CampaignPreview} from 'models/convert/campaign/types'
-import {useGetCampaignSalesDrillDownData} from 'pages/stats/convert/hooks/useGetCampaignSalesDrillDownData'
-import {ConvertDrillDownRowData} from 'pages/stats/DrillDownFormatters'
+import { campaign, campaignId } from 'fixtures/campaign'
+import { CampaignPreview } from 'models/convert/campaign/types'
+import { useGetCampaignSalesDrillDownData } from 'pages/stats/convert/hooks/useGetCampaignSalesDrillDownData'
+import { ConvertDrillDownRowData } from 'pages/stats/DrillDownFormatters'
 
 describe('useGetCampaignSalesDrillDownData', () => {
     const exampleRow = {
@@ -23,11 +23,11 @@ describe('useGetCampaignSalesDrillDownData', () => {
     it('should return empty array if metricData is empty', () => {
         const campaigns = [campaign] as CampaignPreview[]
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useGetCampaignSalesDrillDownData(
                 [] as ConvertDrillDownRowData[],
-                campaigns
-            )
+                campaigns,
+            ),
         )
 
         expect(result.current).toEqual([])
@@ -36,8 +36,8 @@ describe('useGetCampaignSalesDrillDownData', () => {
     it('should return empty array if campaigns is empty', () => {
         const campaigns = [] as CampaignPreview[]
 
-        const {result} = renderHook(() =>
-            useGetCampaignSalesDrillDownData(metricData, campaigns)
+        const { result } = renderHook(() =>
+            useGetCampaignSalesDrillDownData(metricData, campaigns),
         )
 
         expect(result.current).toEqual([])
@@ -46,8 +46,8 @@ describe('useGetCampaignSalesDrillDownData', () => {
     it('should return array of CampaignSalesDrillDownData', () => {
         const campaigns = [campaign] as CampaignPreview[]
 
-        const {result} = renderHook(() =>
-            useGetCampaignSalesDrillDownData(metricData, campaigns)
+        const { result } = renderHook(() =>
+            useGetCampaignSalesDrillDownData(metricData, campaigns),
         )
 
         expect(result.current).toEqual([
@@ -69,8 +69,8 @@ describe('useGetCampaignSalesDrillDownData', () => {
         }
         const metricData: ConvertDrillDownRowData[] = [row]
 
-        const {result} = renderHook(() =>
-            useGetCampaignSalesDrillDownData(metricData, campaigns)
+        const { result } = renderHook(() =>
+            useGetCampaignSalesDrillDownData(metricData, campaigns),
         )
 
         expect(result.current).toEqual([

@@ -1,5 +1,5 @@
-import {Integration} from 'models/integration/types'
-import {ShopType} from 'models/selfServiceConfiguration/types'
+import { Integration } from 'models/integration/types'
+import { ShopType } from 'models/selfServiceConfiguration/types'
 
 export const shopifyShopIntegrationFixture = {
     type: 'shopify' as ShopType,
@@ -18,8 +18,8 @@ export const workflowsEntrypointsFixture = [
 ]
 
 export const automationSettingsFixture = {
-    order_management: {enabled: true},
-    workflows: workflowsEntrypointsFixture.map(({workflow_id, enabled}) => ({
+    order_management: { enabled: true },
+    workflows: workflowsEntrypointsFixture.map(({ workflow_id, enabled }) => ({
         id: workflow_id,
         enabled,
     })),
@@ -36,7 +36,7 @@ export const selfServiceConfigurationFixture = {
         cases: [],
         enabled: true,
     },
-    trackOrderPolicy: {enabled: true},
+    trackOrderPolicy: { enabled: true },
     cancelOrderPolicy: {
         eligibilities: [],
         enabled: true,

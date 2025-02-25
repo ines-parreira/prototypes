@@ -1,5 +1,6 @@
-import React, {ReactNode} from 'react'
-import {ModalHeader} from 'reactstrap'
+import React, { ReactNode } from 'react'
+
+import { ModalHeader } from 'reactstrap'
 
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'

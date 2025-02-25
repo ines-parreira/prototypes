@@ -1,5 +1,6 @@
+import React, { MouseEvent, ReactNode } from 'react'
+
 import classnames from 'classnames'
-import React, {MouseEvent, ReactNode} from 'react'
 
 import ToggleInput from 'pages/common/forms/ToggleInput'
 
@@ -38,7 +39,7 @@ const OrderManagementFlowItem = ({
 }: Props) => {
     const handleChange = (
         nextValue: boolean,
-        event: MouseEvent<HTMLLabelElement>
+        event: MouseEvent<HTMLLabelElement>,
     ) => {
         event.stopPropagation()
 

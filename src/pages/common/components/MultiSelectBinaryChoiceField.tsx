@@ -1,3 +1,5 @@
+import React, { Component, ReactNode } from 'react'
+
 import classNames from 'classnames'
 import _compact from 'lodash/compact'
 import _find from 'lodash/find'
@@ -7,8 +9,7 @@ import _isEqual from 'lodash/isEqual'
 import _isUndefined from 'lodash/isUndefined'
 import _noop from 'lodash/noop'
 import _pick from 'lodash/pick'
-import React, {ReactNode, Component} from 'react'
-import {FormGroup} from 'reactstrap'
+import { FormGroup } from 'reactstrap'
 
 import {
     CustomerChannel,
@@ -37,9 +38,9 @@ class MultiSelectBinaryChoiceField extends Component<Props> {
         onChange: _noop,
     }
     UNSAFE_componentWillReceiveProps(nextProps: Props) {
-        const {requiredValues} = nextProps
+        const { requiredValues } = nextProps
         const activeIds = nextProps.value.map(
-            (channel: CustomerChannel) => channel.id
+            (channel: CustomerChannel) => channel.id,
         )
 
         // Force selection of non-selected required values
@@ -79,18 +80,18 @@ class MultiSelectBinaryChoiceField extends Component<Props> {
     }
 
     _expandOptionsSet = (
-        optionSet: Array<MultiSelectBinaryChoiceFieldOption>
+        optionSet: Array<MultiSelectBinaryChoiceFieldOption>,
     ) => {
         const requiredValuesIds = this.props.requiredValues.map(
-            (requiredValue) => requiredValue.id
+            (requiredValue) => requiredValue.id,
         )
 
         return optionSet.map((option, idx) => {
             const active = _find(this.props.value, (channel) =>
-                _isEqual(channel, option.value)
+                _isEqual(channel, option.value),
             )
             const disabled = requiredValuesIds.includes(option.value.id)
-            const className = classNames({active, disabled}, 'option')
+            const className = classNames({ active, disabled }, 'option')
 
             return (
                 <div
@@ -109,7 +110,7 @@ class MultiSelectBinaryChoiceField extends Component<Props> {
     }
 
     render() {
-        const {options, label, tooltip} = this.props
+        const { options, label, tooltip } = this.props
 
         return (
             <FormGroup className="multi-select-binary-choice">

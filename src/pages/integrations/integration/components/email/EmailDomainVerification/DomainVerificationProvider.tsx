@@ -1,9 +1,3 @@
-import {
-    EmailDomain,
-    useGetEmailIntegrationDomain,
-    useUpdateEmailIntegrationDomain,
-    useVerifyEmailIntegrationDomain,
-} from '@gorgias/api-queries'
 import React, {
     ReactNode,
     useCallback,
@@ -12,19 +6,26 @@ import React, {
     useState,
 } from 'react'
 
+import {
+    EmailDomain,
+    useGetEmailIntegrationDomain,
+    useUpdateEmailIntegrationDomain,
+    useVerifyEmailIntegrationDomain,
+} from '@gorgias/api-queries'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import useInterval from 'hooks/useInterval'
 import useLocalStorage from 'hooks/useLocalStorage'
-import {DEFAULT_EMAIL_DKIM_KEY_SIZE} from 'models/integration/constants'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { DEFAULT_EMAIL_DKIM_KEY_SIZE } from 'models/integration/constants'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 import {
     isCommonDomain,
     parseRecordsCurrentValues,
     populateCurrentValuesForDNSRecords,
 } from '../helpers'
-import {DomainVerificationContext} from './DomainVerificationContext'
+import { DomainVerificationContext } from './DomainVerificationContext'
 
 type Props = {
     children: ReactNode
@@ -85,7 +86,7 @@ export default function DomainVerificationProvider({
         ) {
             createDomain({
                 domainName,
-                data: {dkim_key_size: DEFAULT_EMAIL_DKIM_KEY_SIZE},
+                data: { dkim_key_size: DEFAULT_EMAIL_DKIM_KEY_SIZE },
             })
         }
     }, [
@@ -108,7 +109,7 @@ export default function DomainVerificationProvider({
 
             const recordsWithCurrentValues =
                 await populateCurrentValuesForDNSRecords(
-                    domain.data?.sending_dns_records ?? []
+                    domain.data?.sending_dns_records ?? [],
                 )
             const records = parseRecordsCurrentValues(recordsWithCurrentValues)
 
@@ -123,7 +124,7 @@ export default function DomainVerificationProvider({
         void transformDomainRecords()
     }, [data?.data])
 
-    const {mutate: triggerVerify, isLoading: isVerifying} =
+    const { mutate: triggerVerify, isLoading: isVerifying } =
         useVerifyEmailIntegrationDomain({
             mutation: {
                 onSuccess: async () => {
@@ -133,7 +134,7 @@ export default function DomainVerificationProvider({
                             message:
                                 'The status of your domain verification is being checked.',
                             status: NotificationStatus.Success,
-                        })
+                        }),
                     )
                 },
                 onError: async () => {
@@ -142,14 +143,14 @@ export default function DomainVerificationProvider({
                             message:
                                 'Requesting a domain verification failed. Please try again.',
                             status: NotificationStatus.Error,
-                        })
+                        }),
                     )
                 },
             },
         })
 
     const verifyDomain = useCallback(() => {
-        triggerVerify({domainName})
+        triggerVerify({ domainName })
     }, [triggerVerify, domainName])
 
     return (
@@ -175,7 +176,7 @@ export default function DomainVerificationProvider({
 function useRequestStatus(domainName: string) {
     const [requestedAt, setRequestedAt] = useLocalStorage<Date | null>(
         domainVerificationStorageKey(domainName),
-        null
+        null,
     )
 
     const [currentTime, setCurrentTime] = useState(new Date())
@@ -183,19 +184,19 @@ function useRequestStatus(domainName: string) {
     const isRequested = !!requestedAt
     const isPending = useMemo(
         () => computeIsPending(requestedAt, currentTime),
-        [requestedAt, currentTime]
+        [requestedAt, currentTime],
     )
 
     useInterval(() => {
         setCurrentTime(new Date())
     }, DOMAIN_VERIFICATION_TIMEOUT_IN_SECONDS * 1000)
 
-    return {isPending, isRequested, setRequestedAt}
+    return { isPending, isRequested, setRequestedAt }
 }
 
 export function computeIsPending(
     requestedAt: Date | null,
-    currentTime: Date
+    currentTime: Date,
 ): boolean {
     if (!requestedAt) {
         return false

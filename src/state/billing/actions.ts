@@ -1,22 +1,21 @@
-import {Map} from 'immutable'
+import { Map } from 'immutable'
 
 import client from '../../models/api/resources'
-import {ApiListResponseLegacyPagination} from '../../models/api/types'
-import {StoreDispatch} from '../types'
-
+import { ApiListResponseLegacyPagination } from '../../models/api/types'
+import { StoreDispatch } from '../types'
 import * as constants from './constants'
 import {
+    CurrentProductsUsages,
     CurrentUsage,
     Invoice,
     PaymentMethod,
-    CurrentProductsUsages,
 } from './types'
 
 /**
  * Update an invoice in the list of invoices.
  */
 export const updateInvoiceInList = (
-    invoice: Map<any, any>
+    invoice: Map<any, any>,
 ): ReturnType<StoreDispatch> => {
     return {
         type: constants.UPDATE_INVOICE_IN_LIST,
@@ -42,7 +41,7 @@ export function fetchCurrentUsage() {
                         error,
                         reason: 'Unable to get current usage information.',
                     })
-                }
+                },
             )
     }
 }
@@ -65,7 +64,7 @@ export function fetchCurrentProductsUsage() {
                         error,
                         reason: 'Unable to get current usage information.',
                     })
-                }
+                },
             )
     }
 }
@@ -74,7 +73,7 @@ export function fetchInvoices() {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         return client
             .get<ApiListResponseLegacyPagination<Invoice[]>>(
-                '/api/billing/invoices/'
+                '/api/billing/invoices/',
             )
             .then((json) => json?.data?.data)
             .then(
@@ -90,7 +89,7 @@ export function fetchInvoices() {
                         error,
                         reason: 'Unable to get invoices.',
                     })
-                }
+                },
             )
     }
 }
@@ -113,7 +112,7 @@ export function fetchPaymentMethod() {
                         error,
                         reason: 'Failed to get payment method information.',
                     })
-                }
+                },
             )
     }
 }

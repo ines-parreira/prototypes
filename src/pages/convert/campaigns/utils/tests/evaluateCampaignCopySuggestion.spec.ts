@@ -1,4 +1,4 @@
-import {computeTextSimilarityScore} from 'pages/convert/campaigns/utils/computeTextSimilarityScore'
+import { computeTextSimilarityScore } from 'pages/convert/campaigns/utils/computeTextSimilarityScore'
 
 import {
     evaluateCampaignCopySuggestion,
@@ -10,12 +10,12 @@ jest.mock('pages/convert/campaigns/utils/computeTextSimilarityScore')
 describe('evaluateCampaignCopySuggestion', () => {
     it('should return the suggestion if similarity score is below the threshold', () => {
         ;(computeTextSimilarityScore as jest.Mock).mockReturnValue(
-            SIMILARITY_THRESHOLD - 0.01
+            SIMILARITY_THRESHOLD - 0.01,
         )
 
         const result = evaluateCampaignCopySuggestion(
             'campaign message',
-            'suggestion'
+            'suggestion',
         )
 
         expect(result).toBe('suggestion')
@@ -23,12 +23,12 @@ describe('evaluateCampaignCopySuggestion', () => {
 
     it('should return null if similarity score is above the threshold', () => {
         ;(computeTextSimilarityScore as jest.Mock).mockReturnValue(
-            SIMILARITY_THRESHOLD + 0.01
+            SIMILARITY_THRESHOLD + 0.01,
         )
 
         const result = evaluateCampaignCopySuggestion(
             'campaign message',
-            'suggestion'
+            'suggestion',
         )
 
         expect(result).toBeNull()

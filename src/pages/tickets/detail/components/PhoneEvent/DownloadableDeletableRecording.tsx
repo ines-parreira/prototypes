@@ -1,19 +1,20 @@
-import {AxiosError} from 'axios'
-import React, {useCallback, useState} from 'react'
+import React, { useCallback, useState } from 'react'
 
-import {appQueryClient} from 'api/queryClient'
-import {UserRole} from 'config/types/user'
+import { AxiosError } from 'axios'
+
+import { appQueryClient } from 'api/queryClient'
+import { UserRole } from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import client from 'models/api/resources'
-import {voiceCallsKeys} from 'models/voiceCall/queries'
+import { voiceCallsKeys } from 'models/voiceCall/queries'
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {notify as notifyAction} from 'state/notifications/actions'
-import {Notification, NotificationStatus} from 'state/notifications/types'
-import {hasRole, replaceAttachmentURL} from 'utils'
-import {saveFileAsDownloaded} from 'utils/file'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { notify as notifyAction } from 'state/notifications/actions'
+import { Notification, NotificationStatus } from 'state/notifications/types'
+import { hasRole, replaceAttachmentURL } from 'utils'
+import { saveFileAsDownloaded } from 'utils/file'
 
 import css from './DownloadableDeletableRecording.less'
 
@@ -45,13 +46,13 @@ function useDeleteRecording(url: string, callId?: number) {
 
             if (callId) {
                 await appQueryClient.refetchQueries(
-                    voiceCallsKeys.listRecordings({call_id: callId})
+                    voiceCallsKeys.listRecordings({ call_id: callId }),
                 )
             }
 
             void (await dispatch(notifyAction(notification)))
         } catch (error) {
-            const {response} = error as AxiosError<{error: {msg: string}}>
+            const { response } = error as AxiosError<{ error: { msg: string } }>
 
             if (response) {
                 const notification: Notification = {
@@ -86,7 +87,7 @@ export function useDownloadRecording(url: string) {
                 responseType: 'blob',
                 transformRequest: (
                     data: Record<string, unknown>,
-                    headers: Record<string, unknown>
+                    headers: Record<string, unknown>,
                 ) => {
                     // We need this in order to prevent CORS policy error.
                     if (headers['X-CSRF-Token']) {
@@ -116,7 +117,7 @@ export function useDownloadRecording(url: string) {
 
             saveFileAsDownloaded(`recording.mp3`, response.data, 'audio/mpeg')
         } catch (error) {
-            const {response} = error as AxiosError<{error: {msg: string}}>
+            const { response } = error as AxiosError<{ error: { msg: string } }>
 
             if (response) {
                 const notification: Notification = {
@@ -139,8 +140,11 @@ export function useDownloadRecording(url: string) {
     }
 }
 
-const DeleteButton = ({url, callId}: ButtonProps) => {
-    const {deleteRecording, isRequestPending} = useDeleteRecording(url, callId)
+const DeleteButton = ({ url, callId }: ButtonProps) => {
+    const { deleteRecording, isRequestPending } = useDeleteRecording(
+        url,
+        callId,
+    )
 
     return (
         <ConfirmButton
@@ -156,8 +160,8 @@ const DeleteButton = ({url, callId}: ButtonProps) => {
     )
 }
 
-const DownloadButton = ({url}: ButtonProps) => {
-    const {downloadRecording, isRequestPending} = useDownloadRecording(url)
+const DownloadButton = ({ url }: ButtonProps) => {
+    const { downloadRecording, isRequestPending } = useDownloadRecording(url)
 
     return (
         <Button

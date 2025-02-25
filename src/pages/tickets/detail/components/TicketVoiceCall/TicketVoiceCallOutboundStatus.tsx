@@ -1,22 +1,22 @@
 import React from 'react'
 
 import {
+    DEPRECATED_VoiceCallDisplayStatus,
     getDisplayOutboundVoiceCallStatus,
     VoiceCall,
-    DEPRECATED_VoiceCallDisplayStatus,
 } from 'models/voiceCall/types'
 import VoiceCallCustomerLabel from 'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel'
 
 import CollapsibleDetails from './CollapsibleDetails'
+import TicketVoiceCallEvents from './TicketVoiceCallEvents'
 
 import css from './TicketVoiceCallContainer.less'
-import TicketVoiceCallEvents from './TicketVoiceCallEvents'
 
 type Props = {
     voiceCall: VoiceCall
 }
 
-export default function TicketVoiceCallOutboundStatus({voiceCall}: Props) {
+export default function TicketVoiceCallOutboundStatus({ voiceCall }: Props) {
     const answeredStatus = (
         <div className={css.statusWrapper}>
             <div>Answered by</div>

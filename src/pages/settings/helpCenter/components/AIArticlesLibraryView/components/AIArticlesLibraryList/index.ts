@@ -1,1 +1,1 @@
-export {default} from './AIArticlesLibraryList'
+export { default } from './AIArticlesLibraryList'

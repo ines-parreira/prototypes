@@ -1,11 +1,11 @@
 import React from 'react'
 
-import {useBillingContact} from 'models/billing/queries'
+import { useBillingContact } from 'models/billing/queries'
 import Loader from 'pages/common/components/Loader/Loader'
-import {StripeElementsProvider} from 'pages/settings/new_billing/components/StripeElementsProvider/StripeElementsProvider'
-import {FormContainer} from 'pages/settings/new_billing/views/PaymentMethodSetupView/components/FormContainer/FormContainer'
-import {useHasCreditCard} from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useHasCreditCard'
-import {useSetupIntent} from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useSetupIntent'
+import { StripeElementsProvider } from 'pages/settings/new_billing/components/StripeElementsProvider/StripeElementsProvider'
+import { FormContainer } from 'pages/settings/new_billing/views/PaymentMethodSetupView/components/FormContainer/FormContainer'
+import { useHasCreditCard } from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useHasCreditCard'
+import { useSetupIntent } from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useSetupIntent'
 
 type IProps = {
     dispatchBillingError: () => void
@@ -15,7 +15,9 @@ export const PaymentMethodSetupView: React.FC<IProps> = ({
     dispatchBillingError,
 }) => {
     const hasCreditCard = useHasCreditCard()
-    const billingInformation = useBillingContact({refetchOnWindowFocus: false})
+    const billingInformation = useBillingContact({
+        refetchOnWindowFocus: false,
+    })
     const setupIntent = useSetupIntent()
 
     if (

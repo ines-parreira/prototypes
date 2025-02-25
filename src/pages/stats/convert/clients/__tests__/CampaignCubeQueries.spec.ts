@@ -1,4 +1,4 @@
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import {
     getCampaignEventsOrdersPerformanceData,
     getCampaignEventsPerformanceData,
@@ -10,8 +10,8 @@ import {
     getRevenueShareGraphData,
     getStoreRevenueTotalData,
 } from 'pages/stats/convert/clients/CampaignCubeQueries'
-import {SharedDimension} from 'pages/stats/convert/clients/constants'
-import {GroupDimension} from 'pages/stats/convert/clients/types'
+import { SharedDimension } from 'pages/stats/convert/clients/constants'
+import { GroupDimension } from 'pages/stats/convert/clients/types'
 
 describe('Getting Cube queries', () => {
     const props = {

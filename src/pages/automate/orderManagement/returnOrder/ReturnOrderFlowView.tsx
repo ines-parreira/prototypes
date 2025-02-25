@@ -1,7 +1,8 @@
+import React, { useEffect, useMemo, useState } from 'react'
+
 import _isEqual from 'lodash/isEqual'
-import React, {useEffect, useMemo, useState} from 'react'
-import {Link, useParams} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
+import { Link, useParams } from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -10,12 +11,12 @@ import {
 } from 'models/selfServiceConfiguration/types'
 import AutomateView from 'pages/automate/common/components/AutomateView'
 import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
-import {ORDER_MANAGEMENT} from 'pages/automate/common/components/constants'
-import {getHasAutomate} from 'state/billing/selectors'
+import { ORDER_MANAGEMENT } from 'pages/automate/common/components/constants'
+import { getHasAutomate } from 'state/billing/selectors'
 
 import ReturnOrderAction from './components/ReturnOrderAction'
 import ReturnOrderEligibility from './components/ReturnOrderEligibility'
-import {DEFAULT_RETURN_ACTION} from './constants'
+import { DEFAULT_RETURN_ACTION } from './constants'
 import useReturnOrderFlow from './hooks/useReturnOrderFlow'
 import ReturnOrderFlowPreview from './ReturnOrderFlowPreview'
 import ReturnOrderFlowViewContext, {
@@ -23,7 +24,7 @@ import ReturnOrderFlowViewContext, {
 } from './ReturnOrderFlowViewContext'
 
 const ReturnOrderFlowView = () => {
-    const {shopName} = useParams<{shopName: string}>()
+    const { shopName } = useParams<{ shopName: string }>()
     const {
         isUpdatePending,
         storeIntegration,
@@ -47,7 +48,7 @@ const ReturnOrderFlowView = () => {
             storeIntegration,
             setError: (path, hasError) => {
                 setErrors((prevErrors) => {
-                    const nextErrors = {...prevErrors}
+                    const nextErrors = { ...prevErrors }
 
                     if (hasError) {
                         nextErrors[path] = true
@@ -61,11 +62,11 @@ const ReturnOrderFlowView = () => {
                 })
             },
         }),
-        [storeIntegration]
+        [storeIntegration],
     )
 
     const handleEligibilityChange = (
-        eligibility?: SelfServiceConfigurationFilter
+        eligibility?: SelfServiceConfigurationFilter,
     ) => {
         if (!dirtyReturnOrderFlow) {
             return
@@ -81,7 +82,7 @@ const ReturnOrderFlowView = () => {
             return
         }
 
-        setDirtyReturnOrderFlow({...dirtyReturnOrderFlow, action})
+        setDirtyReturnOrderFlow({ ...dirtyReturnOrderFlow, action })
     }
     const handleSubmit = () => {
         if (!dirtyReturnOrderFlow) {
@@ -96,7 +97,7 @@ const ReturnOrderFlowView = () => {
 
     const isReturnOrderFlowDirty = !_isEqual(
         dirtyReturnOrderFlow,
-        returnOrderFlow
+        returnOrderFlow,
     )
     const dirtyReturnAction =
         dirtyReturnOrderFlow?.action ?? DEFAULT_RETURN_ACTION

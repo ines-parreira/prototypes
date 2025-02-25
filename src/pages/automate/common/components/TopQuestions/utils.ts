@@ -1,11 +1,11 @@
-import {Dispatch, SetStateAction} from 'react'
+import { Dispatch, SetStateAction } from 'react'
 
-import {AIArticle, HelpCenter} from 'models/helpCenter/types'
-import {StoreIntegration} from 'models/integration/types'
-import {sortAIArticlesByTicketsCount} from 'pages/settings/helpCenter/components/AIArticlesLibraryView/AIArticlesLibraryUtils'
-import {useGetAIArticles} from 'pages/settings/helpCenter/hooks/useGetAIArticles'
+import { AIArticle, HelpCenter } from 'models/helpCenter/types'
+import { StoreIntegration } from 'models/integration/types'
+import { sortAIArticlesByTicketsCount } from 'pages/settings/helpCenter/components/AIArticlesLibraryView/AIArticlesLibraryUtils'
+import { useGetAIArticles } from 'pages/settings/helpCenter/hooks/useGetAIArticles'
 
-import {TopQuestion, TopQuestionsSectionProps} from './TopQuestionsSection'
+import { TopQuestion, TopQuestionsSectionProps } from './TopQuestionsSection'
 
 type FetchedArticles = ReturnType<typeof useGetAIArticles>['fetchedArticles']
 
@@ -20,7 +20,7 @@ const topQuestionFromAIArticle = (article: AIArticle): TopQuestion => ({
 })
 
 export const filteredSortedTopQuestionsFromFetchedArticles = (
-    fetchedArticles: FetchedArticles
+    fetchedArticles: FetchedArticles,
 ): TopQuestionsSectionProps['topQuestions'] => {
     if (!fetchedArticles) {
         return []
@@ -33,7 +33,7 @@ export const filteredSortedTopQuestionsFromFetchedArticles = (
 
 export const makeStoreFilter = (
     stores: StoreIntegration[],
-    setSelectedStore: Dispatch<SetStateAction<StoreIntegration | undefined>>
+    setSelectedStore: Dispatch<SetStateAction<StoreIntegration | undefined>>,
 ): TopQuestionsSectionProps['storeFilter'] =>
     stores.length > 1
         ? {
@@ -44,7 +44,7 @@ export const makeStoreFilter = (
               })),
               setSelectedStoreIntegrationId: (integrationId: number) => {
                   const selectedStore = stores.find(
-                      (store) => store.id === integrationId
+                      (store) => store.id === integrationId,
                   )
                   if (selectedStore) {
                       setSelectedStore(selectedStore)
@@ -55,7 +55,7 @@ export const makeStoreFilter = (
 
 export const makeHelpCenterFilter = (
     helpCenters: HelpCenter[],
-    setSelectedHelpCenter: Dispatch<SetStateAction<HelpCenter | undefined>>
+    setSelectedHelpCenter: Dispatch<SetStateAction<HelpCenter | undefined>>,
 ): TopQuestionsSectionProps['helpCenterFilter'] =>
     helpCenters.length > 1
         ? {
@@ -65,7 +65,7 @@ export const makeHelpCenterFilter = (
               })),
               setSelectedHelpCenterId: (helpCenterId: number) => {
                   const selectedHelpCenter = helpCenters.find(
-                      ({id}) => id === helpCenterId
+                      ({ id }) => id === helpCenterId,
                   )
 
                   if (selectedHelpCenter) {

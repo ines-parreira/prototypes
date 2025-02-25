@@ -1,12 +1,12 @@
-import {Map} from 'immutable'
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
+
+import { Map } from 'immutable'
 
 import shopify from 'assets/img/integrations/shopify.png'
-
 import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationType} from 'models/integration/types'
-import {Option} from 'pages/common/forms/SelectField/types'
-import {DEPRECATED_getIntegrationsByTypes} from 'state/integrations/selectors'
+import { IntegrationType } from 'models/integration/types'
+import { Option } from 'pages/common/forms/SelectField/types'
+import { DEPRECATED_getIntegrationsByTypes } from 'state/integrations/selectors'
 
 type CssClasses = {
     option: string
@@ -17,7 +17,7 @@ type CssClasses = {
 const optionLabel = (
     shop: JSX.Element | string,
     connectedChats = 0,
-    css: CssClasses
+    css: CssClasses,
 ) => (
     <span className={css.option}>
         <span>
@@ -36,11 +36,11 @@ const optionLabel = (
 
 export function useShopifyStoreWithChatConnectionsOptions(css: CssClasses) {
     const shopifyIntegrations = useAppSelector(
-        DEPRECATED_getIntegrationsByTypes(IntegrationType.Shopify)
+        DEPRECATED_getIntegrationsByTypes(IntegrationType.Shopify),
     )
 
     const chatIntegrations = useAppSelector(
-        DEPRECATED_getIntegrationsByTypes(IntegrationType.GorgiasChat)
+        DEPRECATED_getIntegrationsByTypes(IntegrationType.GorgiasChat),
     )
 
     const shopsOptions: Option[] = useMemo(() => {
@@ -57,7 +57,7 @@ export function useShopifyStoreWithChatConnectionsOptions(css: CssClasses) {
                     .filter((chat: Map<any, any>) => {
                         const chatShopName: string | undefined = chat.getIn(
                             ['meta', 'shop_name'],
-                            undefined
+                            undefined,
                         )
 
                         return chatShopName === shopName

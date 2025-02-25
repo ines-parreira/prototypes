@@ -1,4 +1,4 @@
-import {AttachmentPosition} from './CampaignAttachment'
+import { AttachmentPosition } from './CampaignAttachment'
 
 export interface CampaignProduct {
     id: number

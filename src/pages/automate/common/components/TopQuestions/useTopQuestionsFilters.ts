@@ -1,14 +1,14 @@
-import {useCallback, useEffect, useMemo, useState} from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import {HelpCenter} from 'models/helpCenter/types'
-import {StoreIntegration} from 'models/integration/types'
+import { HelpCenter } from 'models/helpCenter/types'
+import { StoreIntegration } from 'models/integration/types'
 
-import {useFirstStoreAndHelpCenterWithTopQuestions} from './useFirstStoreAndHelpCenterWithTopQuestions'
+import { useFirstStoreAndHelpCenterWithTopQuestions } from './useFirstStoreAndHelpCenterWithTopQuestions'
 import {
     StoreWithHelpCenters,
     useTopQuestionsStoresWithHelpCenters,
 } from './useTopQuestionsStoresWithHelpCenters'
-import {makeHelpCenterFilter, makeStoreFilter} from './utils'
+import { makeHelpCenterFilter, makeStoreFilter } from './utils'
 
 type Props = {
     initialStoreId?: number
@@ -19,12 +19,14 @@ type Props = {
 const findInitialStoreAndHelpCenter = (
     storesWithHelpCenters: StoreWithHelpCenters[],
     initialStoreId?: number,
-    initialHelpCenterId?: number
+    initialHelpCenterId?: number,
 ) => {
     const initialStore =
-        storesWithHelpCenters.find(({store: {id}}) => id === initialStoreId) ??
-        storesWithHelpCenters.find(({helpCenters}) =>
-            helpCenters.some(({id}) => id === initialHelpCenterId)
+        storesWithHelpCenters.find(
+            ({ store: { id } }) => id === initialStoreId,
+        ) ??
+        storesWithHelpCenters.find(({ helpCenters }) =>
+            helpCenters.some(({ id }) => id === initialHelpCenterId),
         ) ??
         storesWithHelpCenters[0]
 
@@ -33,14 +35,14 @@ const findInitialStoreAndHelpCenter = (
     }
 
     const initialHelpCenter =
-        initialStore.helpCenters.find(({id}) => id === initialHelpCenterId) ??
+        initialStore.helpCenters.find(({ id }) => id === initialHelpCenterId) ??
         initialStore.helpCenters[0]
 
     if (!initialHelpCenter) {
         return
     }
 
-    return {initialStore: initialStore.store, initialHelpCenter}
+    return { initialStore: initialStore.store, initialHelpCenter }
 }
 
 export const useTopQuestionsFilters = ({
@@ -56,7 +58,7 @@ export const useTopQuestionsFilters = ({
         HelpCenter | undefined
     >(undefined)
 
-    const {isLoading: isLoadingStoresWithHelpCenters, storesWithHelpCenters} =
+    const { isLoading: isLoadingStoresWithHelpCenters, storesWithHelpCenters } =
         useTopQuestionsStoresWithHelpCenters()
 
     const {
@@ -65,7 +67,7 @@ export const useTopQuestionsFilters = ({
     } = useFirstStoreAndHelpCenterWithTopQuestions(
         storesWithHelpCenters,
         !isLoadingStoresWithHelpCenters &&
-            searchFirstMatchingStoreAndHelpCenter === true
+            searchFirstMatchingStoreAndHelpCenter === true,
     )
 
     const isLoading =
@@ -78,10 +80,10 @@ export const useTopQuestionsFilters = ({
 
         if (firstMatchingStoreAndHelpCenter) {
             setSelectedStoreRaw(
-                firstMatchingStoreAndHelpCenter.firstMatchingStore
+                firstMatchingStoreAndHelpCenter.firstMatchingStore,
             )
             setSelectedHelpCenter(
-                firstMatchingStoreAndHelpCenter.firstMatchingHelpCenter
+                firstMatchingStoreAndHelpCenter.firstMatchingHelpCenter,
             )
         }
     }, [isLoading, firstMatchingStoreAndHelpCenter])
@@ -95,9 +97,9 @@ export const useTopQuestionsFilters = ({
                           ...acc,
                           [store.store.id]: store,
                       }),
-                      {}
+                      {},
                   ),
-        [isLoadingStoresWithHelpCenters, storesWithHelpCenters]
+        [isLoadingStoresWithHelpCenters, storesWithHelpCenters],
     )
 
     useEffect(() => {
@@ -112,13 +114,13 @@ export const useTopQuestionsFilters = ({
             const initialStoreAndHelpCenter = findInitialStoreAndHelpCenter(
                 storesWithHelpCenters,
                 initialStoreId,
-                initialHelpCenterId
+                initialHelpCenterId,
             )
 
             if (initialStoreAndHelpCenter) {
                 setSelectedStoreRaw(initialStoreAndHelpCenter.initialStore)
                 setSelectedHelpCenter(
-                    initialStoreAndHelpCenter.initialHelpCenter
+                    initialStoreAndHelpCenter.initialHelpCenter,
                 )
             }
 
@@ -142,18 +144,18 @@ export const useTopQuestionsFilters = ({
                 typeof setter === 'function' ? setter(selectedStore) : setter
 
             const selectedStoreWithHelpCenters = storesWithHelpCenters.find(
-                ({store}) => store.id === newSelectedStore?.id
+                ({ store }) => store.id === newSelectedStore?.id,
             )
 
             if (selectedStoreWithHelpCenters) {
                 const isNotOneOfStoreHelpCenters =
                     !selectedStoreWithHelpCenters.helpCenters.some(
-                        ({id}) => id === selectedHelpCenter?.id
+                        ({ id }) => id === selectedHelpCenter?.id,
                     )
 
                 if (isNotOneOfStoreHelpCenters) {
                     setSelectedHelpCenter(
-                        selectedStoreWithHelpCenters.helpCenters[0]
+                        selectedStoreWithHelpCenters.helpCenters[0],
                     )
                 }
             }
@@ -165,25 +167,25 @@ export const useTopQuestionsFilters = ({
             setSelectedStoreRaw,
             storesWithHelpCenters,
             selectedHelpCenter,
-        ]
+        ],
     )
 
     const storeFilter = useMemo(
         () =>
             makeStoreFilter(
-                storesWithHelpCenters.map(({store}) => store),
-                setSelectedStore
+                storesWithHelpCenters.map(({ store }) => store),
+                setSelectedStore,
             ),
-        [storesWithHelpCenters, setSelectedStore]
+        [storesWithHelpCenters, setSelectedStore],
     )
 
     const helpCenterFilter = useMemo(
         () =>
             makeHelpCenterFilter(
                 selectedStore ? storesById[selectedStore.id].helpCenters : [],
-                setSelectedHelpCenter
+                setSelectedHelpCenter,
             ),
-        [selectedStore, storesById, setSelectedHelpCenter]
+        [selectedStore, storesById, setSelectedHelpCenter],
     )
 
     return {

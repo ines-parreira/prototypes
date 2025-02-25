@@ -1,13 +1,13 @@
-import {render, screen} from '@testing-library/react'
+import React, { ComponentProps } from 'react'
 
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import { render, screen } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {TicketChannel} from 'business/types/ticket'
-import {agents} from 'fixtures/agents'
-import {integrationsState} from 'fixtures/integrations'
+import { TicketChannel } from 'business/types/ticket'
+import { agents } from 'fixtures/agents'
+import { integrationsState } from 'fixtures/integrations'
 import {
     useClosedTicketsTrend,
     useCustomerSatisfactionTrend,
@@ -16,32 +16,31 @@ import {
     useMessagesPerTicketTrend,
     useMessagesSentTrend,
     useOpenTicketsTrend,
+    useTicketHandleTimeTrend,
     useTicketsCreatedTrend,
     useTicketsRepliedTrend,
-    useTicketHandleTimeTrend,
 } from 'hooks/reporting/metricTrends'
-import {useOneTouchTicketsPercentageMetricTrend} from 'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricTrend'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-import {ReportingGranularity} from 'models/reporting/types'
-import {LegacyStatsFilters} from 'models/stat/types'
+import { useOneTouchTicketsPercentageMetricTrend } from 'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricTrend'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { MetricTrend } from 'hooks/reporting/useMetricTrend'
+import { ReportingGranularity } from 'models/reporting/types'
+import { LegacyStatsFilters } from 'models/stat/types'
 import TrendBadge, {
     DEFAULT_BADGE_TEXT,
 } from 'pages/stats/common/components/TrendBadge'
-import {TrendCard} from 'pages/stats/common/components/TrendCard'
-import {NOT_AVAILABLE_PLACEHOLDER} from 'pages/stats/common/utils'
-import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
-import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
+import { TrendCard } from 'pages/stats/common/components/TrendCard'
+import { NOT_AVAILABLE_PLACEHOLDER } from 'pages/stats/common/utils'
+import { DEFAULT_TIMEZONE } from 'pages/stats/convert/constants/components'
+import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
 import {
     OverviewMetric,
     OverviewMetricConfig,
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
-
-import {getBadgeTooltipForPreviousPeriod} from 'pages/stats/utils'
-import {fromLegacyStatsFilters} from 'state/stats/utils'
-import {RootState, StoreDispatch} from 'state/types'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
-import {assumeMock} from 'utils/testing'
+import { getBadgeTooltipForPreviousPeriod } from 'pages/stats/utils'
+import { fromLegacyStatsFilters } from 'state/stats/utils'
+import { RootState, StoreDispatch } from 'state/types'
+import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
@@ -59,17 +58,17 @@ const trendBadgeMock = assumeMock(TrendBadge)
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 jest.mock('hooks/reporting/metricTrends')
 jest.mock(
-    'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricTrend'
+    'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricTrend',
 )
 
 const useCustomerSatisfactionTrendMock = assumeMock(
-    useCustomerSatisfactionTrend
+    useCustomerSatisfactionTrend,
 )
 const useMedianFirstResponseTimeTrendMock = assumeMock(
-    useMedianFirstResponseTimeTrend
+    useMedianFirstResponseTimeTrend,
 )
 const useMedianResolutionTimeTrendMock = assumeMock(
-    useMedianResolutionTimeTrend
+    useMedianResolutionTimeTrend,
 )
 const useMessagesPerTicketTrendMock = assumeMock(useMessagesPerTicketTrend)
 const useOpenTicketsTrendMock = assumeMock(useOpenTicketsTrend)
@@ -79,7 +78,7 @@ const useTicketsRepliedTrendMock = assumeMock(useTicketsRepliedTrend)
 const useMessagesSentTrendMock = assumeMock(useMessagesSentTrend)
 const useTicketHandleTimeTrendMock = assumeMock(useTicketHandleTimeTrend)
 const useOneTouchTicketTrendMock = assumeMock(
-    useOneTouchTicketsPercentageMetricTrend
+    useOneTouchTicketsPercentageMetricTrend,
 )
 jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
 const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
@@ -101,7 +100,7 @@ describe('<TrendCard />', () => {
             filters: fromLegacyStatsFilters(defaultStatsFilters),
         },
         ui: {
-            stats: {filters: uiStatsInitialState},
+            stats: { filters: uiStatsInitialState },
         },
     } as RootState
     const value = 456
@@ -178,16 +177,16 @@ describe('<TrendCard />', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         useCustomerSatisfactionTrendMock.mockReturnValue(
-            customerSatisfactionMetricTrend
+            customerSatisfactionMetricTrend,
         )
         useMedianFirstResponseTimeTrendMock.mockReturnValue(
-            medianFirstResponseTimeMetricTrend
+            medianFirstResponseTimeMetricTrend,
         )
         useMedianResolutionTimeTrendMock.mockReturnValue(
-            medianResolutionTimeMetricTrend
+            medianResolutionTimeMetricTrend,
         )
         useMessagesPerTicketTrendMock.mockReturnValue(
-            messagesPerTicketMetricTrend
+            messagesPerTicketMetricTrend,
         )
         useOpenTicketsTrendMock.mockReturnValue(openTicketsMetricTrend)
         useClosedTicketsTrendMock.mockReturnValue(closedTicketsMetricTrend)
@@ -215,7 +214,7 @@ describe('<TrendCard />', () => {
                         {...OverviewMetricConfig[overviewMetric]}
                         drillDownMetric={overviewMetric}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(trendBadgeMock.mock.calls).toContainEqual(
@@ -225,7 +224,7 @@ describe('<TrendCard />', () => {
                             OverviewMetricConfig[overviewMetric].interpretAs,
                         tooltipData: {
                             period: getBadgeTooltipForPreviousPeriod(
-                                defaultStatsFilters.period
+                                defaultStatsFilters.period,
                             ),
                         },
                         value: defaultMetricTrend?.data?.value,
@@ -234,15 +233,15 @@ describe('<TrendCard />', () => {
                         metricFormat:
                             OverviewMetricConfig[overviewMetric].metricFormat,
                     }),
-                ])
+                ]),
             )
-        }
+        },
     )
 
     it('should render not available placeholder and default badge text if no data available', () => {
         const metric = OverviewMetric.CustomerSatisfaction
         useCustomerSatisfactionTrendMock.mockReturnValue({
-            data: {value: null, prevValue: null},
+            data: { value: null, prevValue: null },
             isFetching: false,
             isError: false,
         })
@@ -253,13 +252,13 @@ describe('<TrendCard />', () => {
                     {...OverviewMetricConfig[metric]}
                     drillDownMetric={metric}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(
             screen.getByText(
-                `${NOT_AVAILABLE_PLACEHOLDER}${DEFAULT_BADGE_TEXT}`
-            )
+                `${NOT_AVAILABLE_PLACEHOLDER}${DEFAULT_BADGE_TEXT}`,
+            ),
         ).toBeInTheDocument()
     })
 
@@ -272,7 +271,7 @@ describe('<TrendCard />', () => {
         })
         const metric = OverviewMetric.CustomerSatisfaction
         const useTrendSpy = jest.fn().mockReturnValue({
-            data: {value: null, prevValue: null},
+            data: { value: null, prevValue: null },
             isFetching: false,
             isError: false,
         })
@@ -284,12 +283,12 @@ describe('<TrendCard />', () => {
                     useTrend={useTrendSpy}
                     drillDownMetric={metric}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(useTrendSpy).toHaveBeenCalledWith(
             defaultStatsFilters,
-            DEFAULT_TIMEZONE
+            DEFAULT_TIMEZONE,
         )
     })
 
@@ -302,7 +301,7 @@ describe('<TrendCard />', () => {
         })
         const metric = OverviewMetric.CustomerSatisfaction
         const useTrendSpy = jest.fn().mockReturnValue({
-            data: {value: null, prevValue: null},
+            data: { value: null, prevValue: null },
             isFetching: false,
             isError: false,
         })
@@ -314,12 +313,12 @@ describe('<TrendCard />', () => {
                     useTrend={useTrendSpy}
                     drillDownMetric={metric}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(useTrendSpy).toHaveBeenCalledWith(
             fromLegacyStatsFilters(defaultStatsFilters),
-            DEFAULT_TIMEZONE
+            DEFAULT_TIMEZONE,
         )
     })
 })

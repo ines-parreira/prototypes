@@ -1,5 +1,6 @@
 import React from 'react'
-import {Prompt} from 'react-router-dom'
+
+import { Prompt } from 'react-router-dom'
 
 import UnsavedChangesModal from './UnsavedChangesModal'
 import useUnsavedChangesPrompt from './useUnsavedChangesPrompt'
@@ -17,8 +18,8 @@ const UnsavedChangesPrompt: React.FC<Props> = ({
     shouldRedirectAfterSave,
     when,
 }) => {
-    const {isOpen, onClose, redirectToOriginalLocation, onNavigateAway} =
-        useUnsavedChangesPrompt({when})
+    const { isOpen, onClose, redirectToOriginalLocation, onNavigateAway } =
+        useUnsavedChangesPrompt({ when })
 
     return (
         <>

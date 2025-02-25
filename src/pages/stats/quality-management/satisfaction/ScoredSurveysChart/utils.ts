@@ -1,10 +1,10 @@
-import React, {HTMLProps} from 'react'
+import React, { HTMLProps } from 'react'
 
 import {
     ScoredSurveyDataKey,
     ScoredSurveysData,
 } from 'hooks/reporting/quality-management/satisfaction/useScoredSurveys'
-import {OrderDirection} from 'models/api/types'
+import { OrderDirection } from 'models/api/types'
 import AssigneeBodyCell, {
     Props as AssigneeBodyCellProps,
 } from 'pages/stats/quality-management/satisfaction/ScoredSurveysChart/AssigneeBodyCell'
@@ -93,7 +93,7 @@ export const SURVEYS_PER_PAGE = 10
 export const sortScoredSurveyData = (
     data: ScoredSurveysData[],
     orderBy: ScoredSurveyDataKey,
-    orderDirection: OrderDirection
+    orderDirection: OrderDirection,
 ) => {
     return [...data].sort((a, b) => {
         const valA = a[orderBy]
@@ -117,7 +117,7 @@ export const sortScoredSurveyData = (
         }
 
         return isAscending
-            ? valA.localeCompare(valB, undefined, {sensitivity: 'base'})
-            : valB.localeCompare(valA, undefined, {sensitivity: 'base'})
+            ? valA.localeCompare(valB, undefined, { sensitivity: 'base' })
+            : valB.localeCompare(valA, undefined, { sensitivity: 'base' })
     })
 }

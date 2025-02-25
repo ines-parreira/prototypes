@@ -1,3 +1,5 @@
+import React from 'react'
+
 import {
     cleanup,
     fireEvent,
@@ -5,21 +7,20 @@ import {
     screen,
     within,
 } from '@testing-library/react'
-import {merge} from 'lodash'
-import React from 'react'
-import {Provider} from 'react-redux'
+import { merge } from 'lodash'
+import { Provider } from 'react-redux'
 
-import {integrationsState} from 'fixtures/integrations'
+import { integrationsState } from 'fixtures/integrations'
 import {
     EmailIntegration,
     OutboundVerificationStatusValue,
 } from 'models/integration/types'
-import {mockStore} from 'utils/testing'
+import { mockStore } from 'utils/testing'
 
-import EmailVerification, {Props} from '../EmailVerification'
+import EmailVerification, { Props } from '../EmailVerification'
 
 const integration = integrationsState.integrations.find(
-    (integration) => integration.meta.address === 'sendgrid@gorgias.io'
+    (integration) => integration.meta.address === 'sendgrid@gorgias.io',
 ) as unknown as EmailIntegration
 
 const mockCreateDomainVerification = jest.fn()
@@ -40,7 +41,7 @@ describe('EmailVerification', () => {
                     integration={integration}
                     {...props}
                 />
-            </Provider>
+            </Provider>,
         )
     }
 
@@ -79,12 +80,12 @@ describe('EmailVerification', () => {
         expect(
             screen.queryByRole('button', {
                 name: /verify domain/i,
-            })
+            }),
         ).toBeFalsy()
         expect(
             screen.queryByRole('button', {
                 name: /verify single sender/i,
-            })
+            }),
         ).toBeFalsy()
     })
 
@@ -102,12 +103,12 @@ describe('EmailVerification', () => {
                 }),
             })
             expect(
-                screen.getAllByTestId('verification-status-label')[0].innerHTML
+                screen.getAllByTestId('verification-status-label')[0].innerHTML,
             ).toBe('Not verified')
             expect(
                 screen.getByRole('button', {
                     name: /verify domain/i,
-                })
+                }),
             ).toBeTruthy()
             expect(screen.queryByText('Required')).toBeInTheDocument()
         })
@@ -146,12 +147,12 @@ describe('EmailVerification', () => {
             })
 
             expect(
-                screen.getAllByTestId('verification-status-label')[0].innerHTML
+                screen.getAllByTestId('verification-status-label')[0].innerHTML,
             ).toBe('Verified')
             expect(
                 screen.queryByRole('button', {
                     name: /verify domain/i,
-                })
+                }),
             ).toBeFalsy()
             expect(screen.queryByText('Required')).not.toBeInTheDocument()
         })
@@ -177,17 +178,19 @@ describe('EmailVerification', () => {
                 })
 
                 const singleSenderCard = screen.queryAllByTestId(
-                    'verification-status-footer'
+                    'verification-status-footer',
                 )[1]
                 const status = within(singleSenderCard).queryByTestId(
-                    'verification-status-label'
+                    'verification-status-label',
                 )
 
                 expect(status).toBeFalsy()
                 expect(
-                    screen.getByRole('button', {name: /verify single sender/i})
+                    screen.getByRole('button', {
+                        name: /verify single sender/i,
+                    }),
                 ).toBeAriaDisabled()
-            }
+            },
         )
     })
 
@@ -208,12 +211,12 @@ describe('EmailVerification', () => {
             })
 
             expect(
-                screen.getAllByTestId('verification-status-label')[1].innerHTML
+                screen.getAllByTestId('verification-status-label')[1].innerHTML,
             ).toBe('Verified')
             expect(
                 screen.queryByRole('button', {
                     name: /verify single sender/i,
-                })
+                }),
             ).toBeFalsy()
         })
 
@@ -236,14 +239,14 @@ describe('EmailVerification', () => {
                 })
                 expect(
                     screen.getAllByTestId('verification-status-label')[1]
-                        .innerHTML
+                        .innerHTML,
                 ).toBe('Not verified')
                 expect(
                     screen.getByRole('button', {
                         name: /verify single sender/i,
-                    })
+                    }),
                 ).toBeTruthy()
-            }
+            },
         )
     })
 })

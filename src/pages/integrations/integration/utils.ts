@@ -1,8 +1,8 @@
-import {INTEGRATION_REMOVAL_CONFIGURATION_TEXT} from 'pages/integrations/integration/constants'
+import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 
 export const getRemovalConfirmationMessageWithSavedFiltersText = (
     isSavedFilters: boolean,
-    additionalText: string
+    additionalText: string,
 ) => {
     if (isSavedFilters) {
         return `${INTEGRATION_REMOVAL_CONFIGURATION_TEXT} ${additionalText}`

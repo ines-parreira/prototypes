@@ -1,19 +1,20 @@
-import moment from 'moment'
-import React, {useEffect, useMemo} from 'react'
-import {Link} from 'react-router-dom'
+import React, { useEffect, useMemo } from 'react'
 
-import {TicketMessageSourceType} from 'business/types/ticket'
+import moment from 'moment'
+import { Link } from 'react-router-dom'
+
+import { TicketMessageSourceType } from 'business/types/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
-import {fetchRule} from 'models/rule/resources'
-import {Meta as MetaType, Source} from 'models/ticket/types'
+import { fetchRule } from 'models/rule/resources'
+import { Meta as MetaType, Source } from 'models/ticket/types'
 import StarRating from 'pages/common/components/StarRating'
-import {useRuleRecipes} from 'state/entities/ruleRecipes/hooks'
-import {ruleFetched} from 'state/entities/rules/actions'
-import {rulesSelector} from 'state/entities/rules/selectors'
-import {ManagedRuleDisplayName} from 'state/rules/constants'
-import {ManagedRule, RuleType} from 'state/rules/types'
+import { useRuleRecipes } from 'state/entities/ruleRecipes/hooks'
+import { ruleFetched } from 'state/entities/rules/actions'
+import { rulesSelector } from 'state/entities/rules/selectors'
+import { ManagedRuleDisplayName } from 'state/rules/constants'
+import { ManagedRule, RuleType } from 'state/rules/types'
 
 import MetaLabel from './MetaLabel'
 import MetaRepliedByLabel from './MetaRepliedByLabel'
@@ -46,7 +47,7 @@ export default function Meta(props: Props) {
     const rules = useAppSelector(rulesSelector)
     const recipes = useRuleRecipes()
 
-    const [{loading: isFetchingRule, value: rule}, startFetchingRule] =
+    const [{ loading: isFetchingRule, value: rule }, startFetchingRule] =
         useAsyncFn(
             async () => {
                 if (props.via === 'rule' && props.ruleId) {
@@ -59,7 +60,7 @@ export default function Meta(props: Props) {
                 }
             },
             [],
-            {loading: true}
+            { loading: true },
         )
 
     useEffect(() => void startFetchingRule(), [startFetchingRule])
@@ -95,7 +96,7 @@ export default function Meta(props: Props) {
                         </>
                     )}
                 </span>
-            </MetaLabel>
+            </MetaLabel>,
         )
     } else if (meta && meta.current_page) {
         widgets.push(
@@ -108,7 +109,7 @@ export default function Meta(props: Props) {
                 >
                     {meta.current_page}
                 </a>
-            </MetaLabel>
+            </MetaLabel>,
         )
     }
 
@@ -318,13 +319,13 @@ export default function Meta(props: Props) {
 
     if (!!meta?.replied_by) {
         widgets.push(
-            <MetaRepliedByLabel reply={meta.replied_by} key="replied-by" />
+            <MetaRepliedByLabel reply={meta.replied_by} key="replied-by" />,
         )
     }
 
     if (!!meta?.replied_to) {
         widgets.push(
-            <MetaRepliedToLabel reply={meta.replied_to} key="replied-to" />
+            <MetaRepliedToLabel reply={meta.replied_to} key="replied-to" />,
         )
     }
 
@@ -332,7 +333,7 @@ export default function Meta(props: Props) {
         widgets.push(
             <span key={yotpoReviewScore}>
                 <StarRating value={yotpoReviewScore || 0} />
-            </span>
+            </span>,
         )
     }
 
@@ -365,7 +366,7 @@ export default function Meta(props: Props) {
                         {ruleName}
                     </Link>
                 </b>
-            </MetaLabel>
+            </MetaLabel>,
         )
     } else if (meta && meta.campaign_id && props.integrationId) {
         const sentViaLink = `/app/convert/${props.integrationId}/campaigns/${meta.campaign_id}`
@@ -378,7 +379,7 @@ export default function Meta(props: Props) {
                         {`"Campaign"`}
                     </Link>
                 </b>
-            </MetaLabel>
+            </MetaLabel>,
         )
     } else if (meta && meta.rule_suggestion_slug) {
         const slug = meta.rule_suggestion_slug
@@ -399,18 +400,21 @@ export default function Meta(props: Props) {
                         {ruleName}
                     </Link>
                 </b>
-            </MetaLabel>
+            </MetaLabel>,
         )
     } else if (meta && meta.ai_suggestion) {
         widgets.push(
             <MetaLabel
                 key="via-widget"
                 label="answer suggested from Gorgias AI"
-            ></MetaLabel>
+            ></MetaLabel>,
         )
     } else if (meta && meta.sms_deflection) {
         widgets.push(
-            <MetaLabel key="via-widget" label={meta.sms_deflection}></MetaLabel>
+            <MetaLabel
+                key="via-widget"
+                label={meta.sms_deflection}
+            ></MetaLabel>,
         )
     }
 

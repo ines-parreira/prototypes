@@ -1,23 +1,24 @@
-import classnames from 'classnames'
 import React, {
-    forwardRef,
     ForwardedRef,
+    forwardRef,
     useImperativeHandle,
     useMemo,
     useRef,
 } from 'react'
-import {Link, useLocation} from 'react-router-dom'
+
+import classnames from 'classnames'
+import { Link, useLocation } from 'react-router-dom'
 
 import navbarCss from 'assets/css/navbar.less'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useScrollActiveItemIntoView from 'hooks/useScrollActiveItemIntoView/useScrollActiveItemIntoView'
 import useViewId from 'hooks/useViewId'
-import {View} from 'models/view/types'
+import { View } from 'models/view/types'
 import ViewCount from 'pages/common/components/ViewCount/ViewCount'
 import ViewName from 'pages/common/components/ViewName/ViewName'
-import {useSplitTicketView} from 'split-ticket-view-toggle'
-import {activeViewIdSet} from 'state/ui/views/actions'
-import {isTicketPath} from 'utils'
+import { useSplitTicketView } from 'split-ticket-view-toggle'
+import { activeViewIdSet } from 'state/ui/views/actions'
+import { isTicketPath } from 'utils'
 
 type Props = {
     className?: string
@@ -27,11 +28,11 @@ type Props = {
 }
 
 const TicketNavbarViewLink = (
-    {className, icon, view, viewCount}: Props,
-    forwardedRef: ForwardedRef<HTMLDivElement>
+    { className, icon, view, viewCount }: Props,
+    forwardedRef: ForwardedRef<HTMLDivElement>,
 ) => {
-    const {isEnabled: splitTicketViewEnabled} = useSplitTicketView()
-    const {pathname: path} = useLocation()
+    const { isEnabled: splitTicketViewEnabled } = useSplitTicketView()
+    const { pathname: path } = useLocation()
 
     const viewId = useViewId()
     const isTicketUrl = useMemo(() => isTicketPath(path), [path])
@@ -61,13 +62,13 @@ const TicketNavbarViewLink = (
                         [navbarCss.isNested]: view.section_id != null,
                         active: isActiveView,
                     },
-                    className
+                    className,
                 )}
                 to={
                     splitTicketViewEnabled
                         ? `/app/views/${view.id}`
                         : `/app/tickets/${view.id}/${encodeURIComponent(
-                              view.slug
+                              view.slug,
                           )}`
                 }
                 onClick={() => dispatch(activeViewIdSet(view.id))}
@@ -77,7 +78,7 @@ const TicketNavbarViewLink = (
                         <i
                             className={classnames(
                                 'material-icons',
-                                navbarCss.icon
+                                navbarCss.icon,
                             )}
                         >
                             {icon}

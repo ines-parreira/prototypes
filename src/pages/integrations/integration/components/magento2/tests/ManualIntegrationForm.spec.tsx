@@ -1,7 +1,8 @@
-import {fireEvent, render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -11,7 +12,7 @@ import ManualIntegrationForm from '../ManualIntegrationForm'
 
 jest.spyOn(actions, 'deleteIntegration')
 jest.spyOn(actions, 'updateOrCreateIntegrationRequest').mockImplementation(
-    () => () => Promise.resolve({})
+    () => () => Promise.resolve({}),
 )
 const deleteIntegration = actions.deleteIntegration as jest.Mock
 const updateOrCreateIntegrationRequest =
@@ -35,32 +36,34 @@ describe('<ManualIntegrationForm/>', () => {
                         integration={fromJS({})}
                         isSubmitting={false}
                     />
-                </Provider>
+                </Provider>,
             )
 
             fireEvent.change(screen.getByLabelText(/Store admin URL/), {
-                target: {value: 'myShopURL/admin'},
+                target: { value: 'myShopURL/admin' },
             })
 
             fireEvent.change(screen.getByLabelText(/Consumer key/), {
-                target: {value: 'consumerkey'},
+                target: { value: 'consumerkey' },
             })
 
             fireEvent.change(screen.getByLabelText(/Consumer secret/), {
-                target: {value: 'consumersecret'},
+                target: { value: 'consumersecret' },
             })
 
             const accesTokens = screen.getAllByLabelText(/Access token/)
 
             fireEvent.change(accesTokens[0], {
-                target: {value: 'accesstoken'},
+                target: { value: 'accesstoken' },
             })
 
             fireEvent.change(accesTokens[1], {
-                target: {value: 'tokensecret'},
+                target: { value: 'tokensecret' },
             })
 
-            fireEvent.submit(screen.getByRole('button', {name: 'Connect App'}))
+            fireEvent.submit(
+                screen.getByRole('button', { name: 'Connect App' }),
+            )
 
             expect(updateOrCreateIntegrationRequest.mock.calls)
                 .toMatchInlineSnapshot(`
@@ -98,36 +101,36 @@ describe('<ManualIntegrationForm/>', () => {
                 <Provider store={store}>
                     <ManualIntegrationForm
                         integration={fromJS({
-                            meta: {admin_url_suffix: 'not-admin'},
+                            meta: { admin_url_suffix: 'not-admin' },
                         })}
                         isSubmitting={false}
                         isUpdate
                     />
-                </Provider>
+                </Provider>,
             )
 
             fireEvent.change(screen.getByLabelText(/Store admin URL/), {
-                target: {value: 'admin'},
+                target: { value: 'admin' },
             })
 
             fireEvent.change(screen.getByLabelText('Consumer key'), {
-                target: {value: 'consumerkey'},
+                target: { value: 'consumerkey' },
             })
 
             fireEvent.change(screen.getByLabelText('Consumer secret'), {
-                target: {value: 'consumersecret'},
+                target: { value: 'consumersecret' },
             })
 
             fireEvent.change(screen.getByLabelText('Access token'), {
-                target: {value: 'accesstoken'},
+                target: { value: 'accesstoken' },
             })
 
             fireEvent.change(screen.getByLabelText('Access token secret'), {
-                target: {value: 'tokensecret'},
+                target: { value: 'tokensecret' },
             })
 
             fireEvent.click(
-                screen.getByRole('button', {name: 'Update Connection'})
+                screen.getByRole('button', { name: 'Update Connection' }),
             )
 
             expect(updateOrCreateIntegrationRequest.mock.calls)
@@ -163,25 +166,25 @@ describe('<ManualIntegrationForm/>', () => {
                 <Provider store={store}>
                     <ManualIntegrationForm
                         integration={fromJS({
-                            meta: {admin_url_suffix: 'admin'},
+                            meta: { admin_url_suffix: 'admin' },
                         })}
                         isSubmitting={false}
                         isUpdate
                     />
-                </Provider>
+                </Provider>,
             )
 
             fireEvent.change(screen.getByLabelText(/Store admin URL/), {
-                target: {value: 'myShopURL1/admin'},
+                target: { value: 'myShopURL1/admin' },
             })
 
-            fireEvent.click(screen.getByRole('button', {name: /Delete/}))
+            fireEvent.click(screen.getByRole('button', { name: /Delete/ }))
 
             await screen.findByText(/Are you sure\?/)
             fireEvent.click(
                 screen.getByRole('button', {
                     name: /Confirm/,
-                })
+                }),
             )
 
             expect(deleteIntegration.mock.calls).toMatchInlineSnapshot(`

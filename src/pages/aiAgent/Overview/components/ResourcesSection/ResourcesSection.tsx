@@ -1,7 +1,7 @@
 import React from 'react'
 
-import {CardTitle} from 'pages/aiAgent/Onboarding/components/Card'
-import {Subtitle} from 'pages/aiAgent/Onboarding/components/Subtitle/Subtitle'
+import { CardTitle } from 'pages/aiAgent/Onboarding/components/Card'
+import { Subtitle } from 'pages/aiAgent/Onboarding/components/Subtitle/Subtitle'
 
 import css from './ResourcesSection.less'
 

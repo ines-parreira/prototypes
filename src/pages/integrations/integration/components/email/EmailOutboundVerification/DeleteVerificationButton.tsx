@@ -1,14 +1,15 @@
-import {AxiosError} from 'axios'
 import React from 'react'
+
+import { AxiosError } from 'axios'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAsyncFn from 'hooks/useAsyncFn'
-import {deleteVerification} from 'models/singleSenderVerification/resources'
-import {SenderVerification} from 'models/singleSenderVerification/types'
+import { deleteVerification } from 'models/singleSenderVerification/resources'
+import { SenderVerification } from 'models/singleSenderVerification/types'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import {removeVerification} from 'state/entities/singleSenderVerification/actions'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { removeVerification } from 'state/entities/singleSenderVerification/actions'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 type Props = {
     isLoading?: boolean
@@ -25,7 +26,7 @@ export default function DeleteVerificationButton({
 }: Props) {
     const dispatch = useAppDispatch()
 
-    const [{loading: isDeleteInProgress}, handleDelete] =
+    const [{ loading: isDeleteInProgress }, handleDelete] =
         useAsyncFn(async () => {
             try {
                 await deleteVerification(verification.integration_id)
@@ -34,11 +35,13 @@ export default function DeleteVerificationButton({
                     notify({
                         message: 'Verification deleted successfully',
                         status: NotificationStatus.Success,
-                    })
+                    }),
                 )
                 dispatch(removeVerification(verification.integration_id))
             } catch (error) {
-                const {response} = error as AxiosError<{error: {msg: string}}>
+                const { response } = error as AxiosError<{
+                    error: { msg: string }
+                }>
                 const errorMsg =
                     response && response.data.error
                         ? response.data.error.msg
@@ -47,7 +50,7 @@ export default function DeleteVerificationButton({
                     notify({
                         message: errorMsg,
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
             }
         }, [verification])

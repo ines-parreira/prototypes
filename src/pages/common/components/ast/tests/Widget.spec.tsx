@@ -1,13 +1,13 @@
-import {fireEvent, render, screen} from '@testing-library/react'
-import {fromJS, List, Map} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render, screen } from '@testing-library/react'
+import { fromJS, List, Map } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import _schemas from 'fixtures/openapi.json'
-
-import {humanizeChannel} from 'state/ticket/utils'
+import { humanizeChannel } from 'state/ticket/utils'
 
 import Widget from '../Widget'
 import _astCodeContains from './fixtures/astCodeContains.json'
@@ -22,7 +22,7 @@ const astCodeReplyToTicket = fromJS(_astCodeReplyToTicket)
 
 const mockStore = configureMockStore([thunk])
 const defaultState = {
-    entities: {tags: []},
+    entities: { tags: [] },
     integrations: fromJS({
         integrations: [],
     }),
@@ -55,7 +55,7 @@ describe('<Widget />', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <Widget {...commonProps} value={value} rule={rule} />
-            </Provider>
+            </Provider>,
         )
         expect(screen.getByText('hello')).toBeInTheDocument()
         expect(screen.getByText('world!')).toBeInTheDocument()
@@ -69,7 +69,7 @@ describe('<Widget />', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <Widget {...commonProps} value={value} rule={rule} />
-            </Provider>
+            </Provider>,
         )
         expect(screen.getByDisplayValue(value)).toBeInTheDocument()
     })
@@ -93,10 +93,10 @@ describe('<Widget />', () => {
                     leftsiblings={leftsiblings}
                     rule={rule}
                 />
-            </Provider>
+            </Provider>,
         )
         expect(
-            screen.getByPlaceholderText('Choose a date...')
+            screen.getByPlaceholderText('Choose a date...'),
         ).toBeInTheDocument()
     })
 
@@ -119,7 +119,7 @@ describe('<Widget />', () => {
                     leftsiblings={leftsiblings}
                     rule={rule}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getAllByText(/day\(s\) ago/)).toHaveLength(2)
@@ -129,7 +129,7 @@ describe('<Widget />', () => {
     it('should render RichFieldWithVariables', () => {
         const leftsiblings = fromJS(['actions', 'replyToTicket', 'body_html'])
         const value = 'hello my good lad'
-        const rule = fromJS({code_ast: astCodeReplyToTicket})
+        const rule = fromJS({ code_ast: astCodeReplyToTicket })
         const parent = fromJS([
             'body',
             0,
@@ -156,12 +156,12 @@ describe('<Widget />', () => {
                     }}
                     properties={[
                         {
-                            key: {name: 'body_text'},
-                            value: {value: 'foo bar'},
+                            key: { name: 'body_text' },
+                            value: { value: 'foo bar' },
                         },
                     ]}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText(value)).toBeInTheDocument()
@@ -191,11 +191,11 @@ describe('<Widget />', () => {
                         leftsiblings={leftsiblings}
                         rule={rule}
                     />
-                </Provider>
+                </Provider>,
             )
             expect(screen.getByText(value)).toBeInTheDocument()
             expect(
-                screen.getByPlaceholderText('Add tags...')
+                screen.getByPlaceholderText('Add tags...'),
             ).toBeInTheDocument()
         })
 
@@ -213,14 +213,14 @@ describe('<Widget />', () => {
                         leftsiblings={leftsiblings}
                         rule={rule}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(screen.getByText('hello')).toBeInTheDocument()
             expect(screen.getByText('world')).toBeInTheDocument()
             expect(screen.getByText('!')).toBeInTheDocument()
             expect(
-                screen.getByPlaceholderText('Add tags...')
+                screen.getByPlaceholderText('Add tags...'),
             ).toBeInTheDocument()
         })
 
@@ -236,7 +236,7 @@ describe('<Widget />', () => {
                         leftsiblings={leftsiblings}
                         rule={rule}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(screen.getByText(/Loading agents/)).toBeInTheDocument()
@@ -254,7 +254,7 @@ describe('<Widget />', () => {
                         leftsiblings={leftsiblings}
                         rule={rule}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(screen.getByText('Select an option')).toBeInTheDocument()
@@ -281,7 +281,7 @@ describe('<Widget />', () => {
                         leftsiblings={leftsiblings}
                         rule={rule}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(screen.getByRole('textbox')).toHaveValue(value)
@@ -296,7 +296,7 @@ describe('<Widget />', () => {
                 'properties',
                 'score',
             ])
-            const rule = fromJS({code_ast: astCodeEq})
+            const rule = fromJS({ code_ast: astCodeEq })
             const value = 3
 
             render(
@@ -307,11 +307,11 @@ describe('<Widget />', () => {
                         leftsiblings={leftsiblings}
                         rule={rule}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(
-                screen.getByText('★★★', {selector: '.label'})
+                screen.getByText('★★★', { selector: '.label' }),
             ).toBeInTheDocument()
 
             fireEvent.click(screen.getByText('★★★★★'))
@@ -319,7 +319,7 @@ describe('<Widget />', () => {
             expect(commonProps.actions.modifyCodeAST).toBeCalledWith(
                 commonProps.parent,
                 5,
-                'UPDATE'
+                'UPDATE',
             )
         })
     })
@@ -333,14 +333,14 @@ describe('<Widget />', () => {
             render(
                 <Provider store={mockStore(defaultState)}>
                     <Widget {...commonProps} value={value} rule={rule} />
-                </Provider>
+                </Provider>,
             )
 
             fireEvent.click(screen.getAllByText('close')[0])
             expect(commonProps.actions.modifyCodeAST).toBeCalledWith(
                 commonProps.parent,
-                [{type: 'Literal', raw: `'${value[1]}'`, value: value[1]}],
-                'UPDATE'
+                [{ type: 'Literal', raw: `'${value[1]}'`, value: value[1] }],
+                'UPDATE',
             )
         })
 
@@ -352,17 +352,17 @@ describe('<Widget />', () => {
             render(
                 <Provider store={mockStore(defaultState)}>
                     <Widget {...commonProps} value={value} rule={rule} />
-                </Provider>
+                </Provider>,
             )
             const newValue = 'hello you!'
             fireEvent.change(screen.getByDisplayValue(value), {
-                target: {value: newValue},
+                target: { value: newValue },
             })
 
             expect(commonProps.actions.modifyCodeAST).toBeCalledWith(
                 commonProps.parent,
                 newValue,
-                'UPDATE'
+                'UPDATE',
             )
         })
     })
@@ -382,7 +382,7 @@ describe('<Widget />', () => {
                     leftsiblings={leftsiblings}
                     rule={rule}
                 />
-            </Provider>
+            </Provider>,
         )
 
         const channels = commonProps.schemas.getIn([
@@ -394,7 +394,7 @@ describe('<Widget />', () => {
 
         channels.forEach((channel) => {
             expect(
-                screen.getByText(humanizeChannel(channel))
+                screen.getByText(humanizeChannel(channel)),
             ).toBeInTheDocument()
         })
     })

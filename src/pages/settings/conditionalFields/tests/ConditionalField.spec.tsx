@@ -1,11 +1,13 @@
-import {useGetCustomFieldCondition} from '@gorgias/api-queries'
-import {render, screen} from '@testing-library/react'
 import React from 'react'
-import {Link, useParams} from 'react-router-dom'
+
+import { render, screen } from '@testing-library/react'
+import { Link, useParams } from 'react-router-dom'
+
+import { useGetCustomFieldCondition } from '@gorgias/api-queries'
 
 import Loader from 'pages/common/components/Loader/Loader'
-import {CUSTOM_FIELD_CONDITIONS_ROUTE} from 'routes/constants'
-import {assumeMock} from 'utils/testing'
+import { CUSTOM_FIELD_CONDITIONS_ROUTE } from 'routes/constants'
+import { assumeMock } from 'utils/testing'
 
 import ConditionForm from '../components/ConditionForm'
 import ConditionalField from '../ConditionalField'
@@ -17,20 +19,20 @@ jest.mock(
         ({
             ...jest.requireActual('react-router-dom'),
             Link: jest.fn(() => <></>),
-            useParams: jest.fn(() => ({id: 10})),
-        }) as Record<string, unknown>
+            useParams: jest.fn(() => ({ id: 10 })),
+        }) as Record<string, unknown>,
 )
 jest.mock('pages/common/components/Loader/Loader')
 jest.mock('../components/ConditionForm', () =>
-    jest.fn(() => <div>ConditionForm</div>)
+    jest.fn(() => <div>ConditionForm</div>),
 )
 
 const useGetCustomFieldConditionMock = assumeMock(useGetCustomFieldCondition)
 
 describe('ConditionalField', () => {
-    const conditionData = {name: 'Condition 10'}
+    const conditionData = { name: 'Condition 10' }
     beforeEach(() => {
-        assumeMock(useParams).mockReturnValue({id: '10'})
+        assumeMock(useParams).mockReturnValue({ id: '10' })
         assumeMock(Loader).mockReturnValue(<div>Loading...</div>)
         useGetCustomFieldConditionMock.mockReturnValue({
             data: conditionData,
@@ -39,12 +41,12 @@ describe('ConditionalField', () => {
     })
 
     it('should set the appropriate page title', () => {
-        const {rerender} = render(<ConditionalField />)
+        const { rerender } = render(<ConditionalField />)
 
         expect(document.title).toEqual(conditionData.name)
         expect(screen.getByText(conditionData.name)).toBeInTheDocument()
 
-        assumeMock(useParams).mockReturnValue({id: 'add'})
+        assumeMock(useParams).mockReturnValue({ id: 'add' })
 
         rerender(<ConditionalField />)
 
@@ -60,7 +62,7 @@ describe('ConditionalField', () => {
                 to: `/app/settings/${CUSTOM_FIELD_CONDITIONS_ROUTE}/`,
                 children: 'Field Conditions',
             },
-            {}
+            {},
         )
     })
 
@@ -79,8 +81,8 @@ describe('ConditionalField', () => {
         render(<ConditionalField />)
 
         expect(ConditionForm).toHaveBeenCalledWith(
-            {condition: conditionData},
-            {}
+            { condition: conditionData },
+            {},
         )
     })
 })

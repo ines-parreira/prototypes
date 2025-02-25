@@ -1,8 +1,9 @@
-import classnames from 'classnames'
-import {List, Map} from 'immutable'
-import React, {ComponentProps, useMemo} from 'react'
+import React, { ComponentProps, useMemo } from 'react'
 
-import {Argument, Properties} from './actions/config'
+import classnames from 'classnames'
+import { List, Map } from 'immutable'
+
+import { Argument, Properties } from './actions/config'
 import Errors from './Errors'
 import Widget from './Widget'
 
@@ -11,12 +12,12 @@ type Props = {
     compact?: boolean
     parent: List<any>
     schemas: Map<any, any>
-    value: {value?: any}
+    value: { value?: any }
 }
 
 function hasValidate(
-    value?: Record<string, unknown>
-): value is {validate: Properties['validate']} {
+    value?: Record<string, unknown>,
+): value is { validate: Properties['validate'] } {
     return !!value && 'validate' in value
 }
 
@@ -34,7 +35,7 @@ export default function Property({
     >) {
     const error = useMemo(
         () => hasValidate(config) && config.validate(value.value, schemas),
-        [config, schemas, value.value]
+        [config, schemas, value.value],
     )
 
     return (

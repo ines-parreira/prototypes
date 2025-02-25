@@ -1,7 +1,8 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
 import Button from '../../../../../common/components/button/Button'
 import Disclaimer from '../UI/Disclaimer'
+
 import css from './CancellationSummaryFooter.less'
 
 type CancellationSummaryFooterProps = {

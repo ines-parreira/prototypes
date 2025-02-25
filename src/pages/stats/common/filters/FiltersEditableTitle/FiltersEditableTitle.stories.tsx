@@ -1,9 +1,10 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { Meta, Story } from '@storybook/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {FiltersEditableTitle} from 'pages/stats/common/filters/FiltersEditableTitle/FiltersEditableTitle'
+import { FiltersEditableTitle } from 'pages/stats/common/filters/FiltersEditableTitle/FiltersEditableTitle'
 
 const storyConfig: Meta = {
     component: FiltersEditableTitle,
@@ -11,7 +12,7 @@ const storyConfig: Meta = {
 }
 
 const Template: Story<ComponentProps<typeof FiltersEditableTitle>> = (
-    props
+    props,
 ) => {
     return (
         <Provider store={configureMockStore()({})}>

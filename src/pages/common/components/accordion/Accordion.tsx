@@ -6,8 +6,9 @@ import React, {
     useState,
 } from 'react'
 
+import AccordionContext, { AccordionContextType } from './AccordionContext'
+
 import css from './Accordion.less'
-import AccordionContext, {AccordionContextType} from './AccordionContext'
 
 export type AccordionProps<T = string | string[] | null> = {
     defaultExpandedItem?: T
@@ -32,7 +33,7 @@ const Accordion = <T extends string | string[] | null>({
             ? expandedItemProp
             : isMulti
               ? ([''] as T)
-              : defaultExpandedItem
+              : defaultExpandedItem,
     )
 
     useEffect(() => {
@@ -58,7 +59,7 @@ const Accordion = <T extends string | string[] | null>({
             }
             onChange?.(newExpandedItem)
         },
-        [expandedItem, isControlled, onChange]
+        [expandedItem, isControlled, onChange],
     )
 
     const accordionContext = useMemo<AccordionContextType>(
@@ -69,7 +70,7 @@ const Accordion = <T extends string | string[] | null>({
                 onHoveredItemChange?.(itemId)
             },
         }),
-        [expandedItem, onHoveredItemChange, toggleItem]
+        [expandedItem, onHoveredItemChange, toggleItem],
     )
 
     return (

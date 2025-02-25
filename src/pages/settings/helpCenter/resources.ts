@@ -2,12 +2,12 @@ import {
     CreateShopifyPageEmbedmentDto,
     UpdateShopifyPageEmbedmentDto,
 } from 'models/contactForm/types'
-import {HelpCenterClient} from 'rest_api/help_center_api/client'
-import {Paths} from 'rest_api/help_center_api/client.generated'
+import { HelpCenterClient } from 'rest_api/help_center_api/client'
+import { Paths } from 'rest_api/help_center_api/client.generated'
 
 export const getShopifyPages = async (
     client: HelpCenterClient | undefined,
-    pathParameters: Paths.ListHelpCenterShopifyPages.PathParameters
+    pathParameters: Paths.ListHelpCenterShopifyPages.PathParameters,
 ) => {
     if (!client) return null
 
@@ -18,7 +18,7 @@ export const getShopifyPages = async (
 
 export const getPageEmbedments = async (
     client: HelpCenterClient | undefined,
-    pathParameters: Paths.ListHelpCenterShopifyPageEmbedments.PathParameters
+    pathParameters: Paths.ListHelpCenterShopifyPageEmbedments.PathParameters,
 ) => {
     if (!client) return null
 
@@ -30,13 +30,13 @@ export const getPageEmbedments = async (
 export const createPageEmbedment = async (
     client: HelpCenterClient | undefined,
     pathParameters: Paths.CreateHelpCenterShopifyPageEmbedment.PathParameters,
-    body: CreateShopifyPageEmbedmentDto
+    body: CreateShopifyPageEmbedmentDto,
 ) => {
     if (!client) return null
 
     const res = await client.createHelpCenterShopifyPageEmbedment(
         pathParameters,
-        body
+        body,
     )
 
     return res.data
@@ -45,13 +45,13 @@ export const createPageEmbedment = async (
 export const updatePageEmbedment = async (
     client: HelpCenterClient | undefined,
     pathParameters: Paths.UpdateHelpCenterShopifyPageEmbedment.PathParameters,
-    body: UpdateShopifyPageEmbedmentDto
+    body: UpdateShopifyPageEmbedmentDto,
 ) => {
     if (!client) return null
 
     const res = await client.updateHelpCenterShopifyPageEmbedment(
         pathParameters,
-        body
+        body,
     )
 
     return res.data
@@ -59,7 +59,7 @@ export const updatePageEmbedment = async (
 
 export const deletePageEmbedment = async (
     client: HelpCenterClient | undefined,
-    pathParameters: Paths.DeleteHelpCenterShopifyPageEmbedment.PathParameters
+    pathParameters: Paths.DeleteHelpCenterShopifyPageEmbedment.PathParameters,
 ) => {
     if (!client) return null
 
@@ -70,7 +70,7 @@ export const deletePageEmbedment = async (
 
 export const getArticleTemplates = async (
     client: HelpCenterClient | undefined,
-    pathParameters: Paths.ListArticleTemplates.QueryParameters
+    pathParameters: Paths.ListArticleTemplates.QueryParameters,
 ) => {
     if (!client) return null
 
@@ -86,10 +86,10 @@ type ExtendedPathParameters = {
 export const getArticleTemplate = async (
     client: HelpCenterClient | undefined,
     pathParameters: ExtendedPathParameters,
-    queryParameters: Paths.GetArticleTemplate.QueryParameters
+    queryParameters: Paths.GetArticleTemplate.QueryParameters,
 ) => {
     const isPathParameter = (
-        pathParameters: ExtendedPathParameters
+        pathParameters: ExtendedPathParameters,
     ): pathParameters is Paths.GetArticleTemplate.PathParameters => {
         return pathParameters.template_key !== null
     }
@@ -107,7 +107,7 @@ export const getArticleTemplate = async (
 }
 
 export const getAIGeneratedArticles = async (
-    client: HelpCenterClient | undefined
+    client: HelpCenterClient | undefined,
 ) => {
     if (!client) return null
 
@@ -118,7 +118,7 @@ export const getAIGeneratedArticles = async (
 
 export const getAIGeneratedArticlesByHelpCenterAndStore = async (
     client: HelpCenterClient | undefined,
-    pathParameters: Paths.ListAIArticleTemplatesByHelpCenterAndStore.PathParameters
+    pathParameters: Paths.ListAIArticleTemplatesByHelpCenterAndStore.PathParameters,
 ) => {
     if (!client) return null
 
@@ -131,7 +131,7 @@ export const getAIGeneratedArticlesByHelpCenterAndStore = async (
 export const upsertArticleTemplateReview = async (
     client: HelpCenterClient | undefined,
     pathParameters: Paths.UpsertArticleTemplateReview.PathParameters,
-    body: Paths.UpsertArticleTemplateReview.RequestBody
+    body: Paths.UpsertArticleTemplateReview.RequestBody,
 ) => {
     if (!client) return null
 

@@ -4,10 +4,10 @@ import {
     BundleOnboardingStatus,
     UsageStatus,
 } from 'pages/convert/common/hooks/useGetConvertStatus'
-import {Components} from 'rest_api/revenue_addon_api/client.generated'
+import { Components } from 'rest_api/revenue_addon_api/client.generated'
 
 export const isExceedingPlanLimit = (
-    status: Components.Schemas.SubscriptionUsageAndBundleStatusSchema
+    status: Components.Schemas.SubscriptionUsageAndBundleStatusSchema,
 ): boolean => {
     const cycleStart = status.cycle_start && moment.utc(status.cycle_start)
     const cycleEnd = status.cycle_end && moment.utc(status.cycle_end)
@@ -26,6 +26,6 @@ export const isExceedingPlanLimit = (
             cycleStart <= lastWarning &&
             lastWarning <= cycleEnd &&
             cycleStart <= estimatedReachDate &&
-            estimatedReachDate <= cycleEnd
+            estimatedReachDate <= cycleEnd,
     )
 }

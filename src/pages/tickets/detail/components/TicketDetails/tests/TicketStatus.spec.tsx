@@ -1,5 +1,6 @@
-import {render} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { render } from '@testing-library/react'
 
 import TicketStatus from '../TicketStatus'
 
@@ -9,14 +10,14 @@ describe('TicketStatus component', () => {
         currentStatus: 'closed',
     }
     it('closed ticket', () => {
-        const {container} = render(<TicketStatus {...minProps} />)
+        const { container } = render(<TicketStatus {...minProps} />)
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('open ticket', () => {
-        const {container} = render(
-            <TicketStatus {...minProps} currentStatus="open" />
+        const { container } = render(
+            <TicketStatus {...minProps} currentStatus="open" />,
         )
 
         expect(container.firstChild).toMatchSnapshot()

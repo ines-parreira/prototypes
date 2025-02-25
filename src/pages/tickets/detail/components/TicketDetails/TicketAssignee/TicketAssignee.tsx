@@ -1,6 +1,3 @@
-import classnames from 'classnames'
-import {Map, List} from 'immutable'
-import _isUndefined from 'lodash/isUndefined'
 import React, {
     ComponentProps,
     KeyboardEvent,
@@ -10,18 +7,27 @@ import React, {
     useRef,
     useState,
 } from 'react'
-import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
-import {Direction} from 'reactstrap/lib/Dropdown'
+
+import classnames from 'classnames'
+import { List, Map } from 'immutable'
+import _isUndefined from 'lodash/isUndefined'
+import {
+    Dropdown,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+} from 'reactstrap'
+import { Direction } from 'reactstrap/lib/Dropdown'
 
 import useAppSelector from 'hooks/useAppSelector'
 import PeopleSearchInput from 'pages/common/forms/PeopleSearchInput/PeopleSearchInput'
 import PeopleSearchResults from 'pages/common/forms/PeopleSearchInput/PeopleSearchResults'
-import {AgentLabel, TeamLabel} from 'pages/common/utils/labels'
+import { AgentLabel, TeamLabel } from 'pages/common/utils/labels'
 import shortcutManager from 'services/shortcutManager/index'
-import {getHumanAgents} from 'state/agents/selectors'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {getTeams} from 'state/teams/selectors'
-import {setAgent, setTeam} from 'state/ticket/actions'
+import { getHumanAgents } from 'state/agents/selectors'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { getTeams } from 'state/teams/selectors'
+import { setAgent, setTeam } from 'state/ticket/actions'
 
 import css from './TicketAssignee.less'
 
@@ -113,7 +119,7 @@ const TicketAssignee = ({
             })
             setSearch('')
         },
-        [setUser]
+        [setUser],
     )
 
     const selectTeam = useCallback(
@@ -125,7 +131,7 @@ const TicketAssignee = ({
             })
             setSearch('')
         },
-        [setTeam]
+        [setTeam],
     )
 
     const filterResults = useCallback(
@@ -137,17 +143,17 @@ const TicketAssignee = ({
                     return agentLabel
                         .toLowerCase()
                         .includes(search.toLowerCase())
-                }) as List<any>
+                }) as List<any>,
             )
             setTeams(
                 allTeams.filter((team) =>
                     ((team as Map<any, any>).get('name') as string)
                         .toLowerCase()
-                        .includes(search.toLowerCase())
-                ) as List<any>
+                        .includes(search.toLowerCase()),
+                ) as List<any>,
             )
         },
-        [allTeams, allUsers]
+        [allTeams, allUsers],
     )
 
     const toggle = (e?: any, visible?: boolean) => {
@@ -166,7 +172,7 @@ const TicketAssignee = ({
             setSearch(search)
             filterResults(search)
         },
-        [filterResults]
+        [filterResults],
     )
 
     const handleSearchKeyDown = useCallback((e: KeyboardEvent) => {
@@ -181,7 +187,7 @@ const TicketAssignee = ({
             currentAssigneeUser &&
             currentUser &&
             currentUser.get('id') === currentAssigneeUser.get('id'),
-        [currentAssigneeUser, currentUser]
+        [currentAssigneeUser, currentUser],
     )
 
     const availableTeams = useMemo(
@@ -190,10 +196,10 @@ const TicketAssignee = ({
                 ? (teams.filter(
                       (team) =>
                           (team as Map<any, any>).get('id') !==
-                          currentAssigneeTeam.get('id')
+                          currentAssigneeTeam.get('id'),
                   ) as List<any>)
                 : teams,
-        [currentAssigneeTeam, teams]
+        [currentAssigneeTeam, teams],
     )
 
     const availableUsers = useMemo(
@@ -201,10 +207,10 @@ const TicketAssignee = ({
             currentAssigneeUser
                 ? (users.filter(
                       (user: Map<any, any>) =>
-                          user.get('id') !== currentAssigneeUser.get('id')
+                          user.get('id') !== currentAssigneeUser.get('id'),
                   ) as List<any>)
                 : users,
-        [currentAssigneeUser, users]
+        [currentAssigneeUser, users],
     )
 
     return (
@@ -254,7 +260,7 @@ const TicketAssignee = ({
                 right={menuDirection === 'right'}
                 container={dropdownContainer}
                 modifiers={{
-                    preventOverflow: {boundariesElement: 'viewport'},
+                    preventOverflow: { boundariesElement: 'viewport' },
                 }}
             >
                 <DropdownItem header>ASSIGN TO:</DropdownItem>
@@ -310,7 +316,7 @@ const TicketAssignee = ({
                                             currentAssigneeUser.get('email')
                                         }
                                         profilePictureUrl={currentAssigneeUser.getIn(
-                                            ['meta', 'profile_picture_url']
+                                            ['meta', 'profile_picture_url'],
                                         )}
                                         className={css.assigneeLabel}
                                         shouldDisplayAvatar

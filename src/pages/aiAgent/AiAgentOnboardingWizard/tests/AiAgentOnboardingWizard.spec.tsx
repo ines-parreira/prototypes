@@ -1,22 +1,23 @@
 import 'tests/__mocks__/intersectionObserverMock'
 
-import {screen} from '@testing-library/react'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { screen } from '@testing-library/react'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useAiAgentStoreConfigurationContext} from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
-import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {mockQueryClientProvider} from 'tests/reactQueryTestingUtils'
-import {assumeMock, renderWithRouter} from 'utils/testing'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
+import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
+import { assumeMock, renderWithRouter } from 'utils/testing'
 
-import {getStoreConfigurationFormValuesFixture} from '../../fixtures/onboardingWizard.fixture'
-import {getStoreConfigurationFixture} from '../../fixtures/storeConfiguration.fixtures'
+import { getStoreConfigurationFormValuesFixture } from '../../fixtures/onboardingWizard.fixture'
+import { getStoreConfigurationFixture } from '../../fixtures/storeConfiguration.fixtures'
 import AiAgentOnboardingWizard from '../AiAgentOnboardingWizard'
-import {useAiAgentOnboardingWizard} from '../hooks/useAiAgentOnboardingWizard'
+import { useAiAgentOnboardingWizard } from '../hooks/useAiAgentOnboardingWizard'
 
 jest.mock('../../providers/AiAgentStoreConfigurationContext', () => ({
     useAiAgentStoreConfigurationContext: jest.fn(),
@@ -32,7 +33,7 @@ jest.mock('../AiAgentOnboardingWizardPersonalize', () => ({
 const QueryClientProvider = mockQueryClientProvider()
 
 const mockUseAiAgentStoreConfigurationContext = assumeMock(
-    useAiAgentStoreConfigurationContext
+    useAiAgentStoreConfigurationContext,
 )
 
 jest.mock('../hooks/useAiAgentOnboardingWizard')
@@ -65,7 +66,7 @@ const renderComponent = () => {
         {
             path: `/:shopType/:shopName/ai-agent/new`,
             route: '/shopify/test-shop/ai-agent/new',
-        }
+        },
     )
 }
 
@@ -79,7 +80,7 @@ describe('<AiAgentOnboardingWizard />', () => {
             isPendingCreateOrUpdate: false,
         })
         mockUseAiAgentOnboardingWizard.mockReturnValue(
-            mockedUseAiAgentOnboardingWizard
+            mockedUseAiAgentOnboardingWizard,
         )
         mockFlags({
             [FeatureFlagKey.AiAgentOnboardingWizardEducationalStep]: true,
@@ -105,7 +106,7 @@ describe('<AiAgentOnboardingWizard />', () => {
         expect(screen.getByText('Set up AI Agent')).toBeInTheDocument()
         expect(screen.queryByText('How AI Agent works')).not.toBeInTheDocument()
         expect(
-            screen.getAllByText('Personalize AI Agent')[0]
+            screen.getAllByText('Personalize AI Agent')[0],
         ).toBeInTheDocument()
     })
 })

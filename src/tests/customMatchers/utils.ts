@@ -1,4 +1,4 @@
-import {MatcherContext, MatcherFunction} from '@jest/expect'
+import { MatcherContext, MatcherFunction } from '@jest/expect'
 import {
     matcherHint,
     printReceived,
@@ -13,7 +13,7 @@ class GenericTypeError extends Error {
         expectedString: string,
         received: unknown,
         matcherFn: MatcherFunction,
-        context: MatcherContext
+        context: MatcherContext,
     ) {
         super()
 
@@ -33,7 +33,7 @@ class GenericTypeError extends Error {
             matcherHint(
                 `${context.isNot ? '.not' : ''}.${matcherFn.name}`,
                 'received',
-                ''
+                '',
             ),
             '',
             `${RECEIVED_COLOR('received')} value must ${expectedString}.`,
@@ -49,7 +49,7 @@ export class HtmlElementTypeError extends GenericTypeError {
 }
 
 const isValidElement = (
-    value: unknown
+    value: unknown,
 ): value is {
     ownerDocument: {
         defaultView: Document['defaultView']
@@ -110,10 +110,10 @@ const FORM_TAGS = [
  */
 function isFirstLegendChildOfFieldset(
     element: HTMLElement,
-    parent: HTMLElement
+    parent: HTMLElement,
 ) {
     const firstLegentChild = Array.from(parent.children).find(
-        (child) => getTag(child as HTMLElement) === 'legend'
+        (child) => getTag(child as HTMLElement) === 'legend',
     )
     return (
         firstLegentChild &&
@@ -125,7 +125,7 @@ function isFirstLegendChildOfFieldset(
 
 function isElementAriaDisabledByParent(
     element: HTMLElement,
-    parent: HTMLElement | null
+    parent: HTMLElement | null,
 ) {
     return (
         parent &&

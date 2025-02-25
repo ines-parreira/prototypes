@@ -6,8 +6,8 @@ import {
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from '../../../../../../config/integrations/gorgias_chat'
-
 import BotMessages from './BotMessages'
+
 import css from './ChatIntegrationPreview.less'
 
 type Props = {

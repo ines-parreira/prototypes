@@ -1,14 +1,14 @@
 import {
-    ModalsList,
-    Modal,
-    ModalParams,
-    OpenModalsList,
-    Event,
-    Callbacks,
-    Subscribers,
     CallbackFunction,
-    OpenModal,
+    Callbacks,
+    Event,
+    Modal,
     ModalInstanceInterface,
+    ModalParams,
+    ModalsList,
+    OpenModal,
+    OpenModalsList,
+    Subscribers,
 } from './typings'
 
 export class ModalManager implements ModalInstanceInterface {
@@ -89,7 +89,7 @@ export class ModalManager implements ModalInstanceInterface {
         }
 
         this.callbacks.beforeOpen.forEach((cb) =>
-            cb(name, this.getParams(name))
+            cb(name, this.getParams(name)),
         )
 
         if (closeOther) {
@@ -121,14 +121,14 @@ export class ModalManager implements ModalInstanceInterface {
         }
 
         this.callbacks.beforeClose.forEach((cb) =>
-            cb(name, this.getParams(name))
+            cb(name, this.getParams(name)),
         )
 
         this.open = this.open.filter((m) => m.name !== name)
         this.callSubscribers(name)
 
         this.callbacks.afterClose.forEach((cb) =>
-            cb(name, this.getParams(name))
+            cb(name, this.getParams(name)),
         )
     }
 
@@ -169,7 +169,7 @@ export class ModalManager implements ModalInstanceInterface {
     removeSubscriber(name: string, subscriber: () => unknown): void {
         if (this.subscribers[name]) {
             this.subscribers[name] = this.subscribers[name].filter(
-                (s) => s !== subscriber
+                (s) => s !== subscriber,
             )
         }
     }

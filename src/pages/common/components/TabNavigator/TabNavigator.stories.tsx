@@ -1,5 +1,6 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps, useState} from 'react'
+import React, { ComponentProps, useState } from 'react'
+
+import { Meta, Story } from '@storybook/react'
 
 import useUpdateEffect from 'hooks/useUpdateEffect'
 import TabNavigator from 'pages/common/components/TabNavigator/TabNavigator'
@@ -8,7 +9,7 @@ const storyConfig: Meta = {
     title: 'General/TabNavigator',
     component: TabNavigator,
     parameters: {
-        backgrounds: {default: 'grey'},
+        backgrounds: { default: 'grey' },
     },
     argTypes: {
         tabs: {
@@ -17,15 +18,15 @@ const storyConfig: Meta = {
                 type: null,
             },
         },
-        activeTab: {description: 'Active tab for controlled navigator.'},
-        className: {control: {type: null}},
+        activeTab: { description: 'Active tab for controlled navigator.' },
+        className: { control: { type: null } },
     },
 }
 
 const tabs = [
-    {label: 'Tab one', value: 'one'},
-    {label: 'Tab two', value: 'two'},
-    {label: 'Tab three', value: 'three'},
+    { label: 'Tab one', value: 'one' },
+    { label: 'Tab two', value: 'two' },
+    { label: 'Tab three', value: 'three' },
 ]
 
 const Template: Story<ComponentProps<typeof TabNavigator>> = ({
@@ -55,6 +56,6 @@ const defaultProps: Omit<
 }
 
 export const ControlledTabNavigator = Template.bind({})
-ControlledTabNavigator.args = {...defaultProps, activeTab: 'one'}
+ControlledTabNavigator.args = { ...defaultProps, activeTab: 'one' }
 
 export default storyConfig

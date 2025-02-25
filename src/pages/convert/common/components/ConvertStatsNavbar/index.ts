@@ -1,1 +1,1 @@
-export {default} from './ConvertStatsNavbar'
+export { default } from './ConvertStatsNavbar'

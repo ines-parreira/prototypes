@@ -4,10 +4,9 @@ import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
-
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 
-import {Section} from '../../../models/section/types'
+import { Section } from '../../../models/section/types'
 
 import css from './DeleteSectionModal.less'
 

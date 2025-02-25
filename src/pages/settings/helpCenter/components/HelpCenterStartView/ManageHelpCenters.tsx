@@ -1,27 +1,28 @@
-import {keyBy as _keyBy} from 'lodash'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+
+import { keyBy as _keyBy } from 'lodash'
 import moment from 'moment'
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
-import {useHistory} from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     PRODUCT_BANNER_KEY,
     useProductBannerStorage,
 } from 'hooks/useProductBannerStorage'
-import {HelpCenter, Locale} from 'models/helpCenter/types'
+import { HelpCenter, Locale } from 'models/helpCenter/types'
 import Button from 'pages/common/components/button/Button'
 import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
 import settingsCss from 'pages/settings/settings.less'
-import {helpCenterCreated} from 'state/entities/helpCenter/helpCenters'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {changeHelpCenterId, changeViewLanguage} from 'state/ui/helpCenter'
+import { helpCenterCreated } from 'state/entities/helpCenter/helpCenters'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { changeHelpCenterId, changeViewLanguage } from 'state/ui/helpCenter'
 
-import {HELP_CENTER_BASE_PATH} from '../../constants'
-import {useHelpCenterApi} from '../../hooks/useHelpCenterApi'
-import {useSupportedLocales} from '../../providers/SupportedLocales'
+import { HELP_CENTER_BASE_PATH } from '../../constants'
+import { useHelpCenterApi } from '../../hooks/useHelpCenterApi'
+import { useSupportedLocales } from '../../providers/SupportedLocales'
 import HelpCenterTable from '../HelpCenterTable'
-import {StandaloneBanner} from '../StandaloneBanner'
+import { StandaloneBanner } from '../StandaloneBanner'
 
 import css from './HelpCenterStartView.less'
 
@@ -43,33 +44,33 @@ export const ManageHelpCenters = ({
     hasMore,
 }: ManageHelpCentersProps) => {
     const [shouldShowProductBanner, setShouldShowProductBanner] = useState(
-        standaloneHelpCenters.length > 0
+        standaloneHelpCenters.length > 0,
     )
 
     const localeOptions = useSupportedLocales()
     const localesByCode = useMemo(
         () => _keyBy<Locale>(localeOptions, 'code'),
-        [localeOptions]
+        [localeOptions],
     )
     const history = useHistory()
     const dispatch = useAppDispatch()
-    const {client} = useHelpCenterApi()
+    const { client } = useHelpCenterApi()
 
-    const {getProductBanner, updateProductBanner} = useProductBannerStorage()
+    const { getProductBanner, updateProductBanner } = useProductBannerStorage()
 
     const navigateToNextPage = useCallback(
         (
             currentHelpCenter: HelpCenter,
-            shouldNavigateToWizardCreation = false
+            shouldNavigateToWizardCreation = false,
         ) => {
             dispatch(changeHelpCenterId(currentHelpCenter.id))
             dispatch(changeViewLanguage(currentHelpCenter.default_locale))
             const path = shouldNavigateToWizardCreation ? 'new' : 'articles'
             history.push(
-                `${HELP_CENTER_BASE_PATH}/${currentHelpCenter.id}/${path}`
+                `${HELP_CENTER_BASE_PATH}/${currentHelpCenter.id}/${path}`,
             )
         },
-        [history, dispatch]
+        [history, dispatch],
     )
 
     const duplicateHelpCenter = useCallback(
@@ -95,18 +96,18 @@ export const ManageHelpCenters = ({
                     dismissible: false,
                     dismissAfter: 0,
                     closeOnNext: true,
-                })
+                }),
             )
 
             void client
                 .duplicateHelpCenter(helpCenter.id)
-                .then(({data: newHelpCenter}) => {
+                .then(({ data: newHelpCenter }) => {
                     void dispatch(
                         notify({
                             status: NotificationStatus.Success,
                             allowHTML: true,
                             message: `<b>${newHelpCenter.name}</b> successfully created.`,
-                        })
+                        }),
                     )
 
                     dispatch(helpCenterCreated(newHelpCenter))
@@ -117,12 +118,12 @@ export const ManageHelpCenters = ({
                     void dispatch(errorNotification)
                 })
         },
-        [client, dispatch, navigateToNextPage]
+        [client, dispatch, navigateToNextPage],
     )
 
     useEffect(() => {
         const productBannerInfo = getProductBanner(
-            PRODUCT_BANNER_KEY.HELP_CENTER_STANDALONE_SSP
+            PRODUCT_BANNER_KEY.HELP_CENTER_STANDALONE_SSP,
         )
 
         if (productBannerInfo?.closedAt) {

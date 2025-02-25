@@ -1,19 +1,19 @@
-import {act} from '@testing-library/react-hooks'
+import { act } from '@testing-library/react-hooks'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
-import {getGorgiasWfApiClient} from 'rest_api/workflows_api/client'
-import {Paths} from 'rest_api/workflows_api/client.generated'
-import {renderHookWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
+import { getGorgiasWfApiClient } from 'rest_api/workflows_api/client'
+import { Paths } from 'rest_api/workflows_api/client.generated'
+import { renderHookWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import {
+    useDeleteWorkflowConfigurationTemplate,
     useGetActionsApp,
-    useListActionsApps,
-    useUpsertActionsApp,
-    useGetConfigurationExecutions,
     useGetConfigurationExecution,
     useGetConfigurationExecutionLogs,
-    useDeleteWorkflowConfigurationTemplate,
+    useGetConfigurationExecutions,
+    useListActionsApps,
+    useUpsertActionsApp,
 } from '../queries'
 
 const mockedServer = new MockAdapter(axios)
@@ -46,8 +46,8 @@ describe('queries', () => {
                 .onGet(/apps/)
                 .reply(200, actionsApps)
 
-            const {result, waitFor} = renderHookWithQueryClientProvider(() =>
-                useListActionsApps()
+            const { result, waitFor } = renderHookWithQueryClientProvider(() =>
+                useListActionsApps(),
             )
 
             await waitFor(() => expect(result.current.isSuccess).toEqual(true))
@@ -71,8 +71,8 @@ describe('queries', () => {
                 .onGet(/apps\/\w+/)
                 .reply(200, actionsApp)
 
-            const {result, waitFor} = renderHookWithQueryClientProvider(() =>
-                useGetActionsApp(actionsApp.id)
+            const { result, waitFor } = renderHookWithQueryClientProvider(() =>
+                useGetActionsApp(actionsApp.id),
             )
 
             await waitFor(() => expect(result.current.isSuccess).toEqual(true))
@@ -80,8 +80,8 @@ describe('queries', () => {
         })
 
         it('should not call API if id is missing', () => {
-            const {result} = renderHookWithQueryClientProvider(() =>
-                useGetActionsApp()
+            const { result } = renderHookWithQueryClientProvider(() =>
+                useGetActionsApp(),
             )
 
             expect(mockedServer.history.get.length).toEqual(0)
@@ -105,12 +105,12 @@ describe('queries', () => {
                 .onPut(/apps\/\w+/)
                 .reply(200, actionsApp)
 
-            const {result, waitFor} = renderHookWithQueryClientProvider(() =>
-                useUpsertActionsApp()
+            const { result, waitFor } = renderHookWithQueryClientProvider(() =>
+                useUpsertActionsApp(),
             )
 
             act(() => {
-                result.current.mutate([{id: actionsApp.id}, actionsApp])
+                result.current.mutate([{ id: actionsApp.id }, actionsApp])
             })
 
             await waitFor(() => expect(result.current.isSuccess).toEqual(true))
@@ -141,7 +141,7 @@ describe('queries', () => {
                 .onGet(/\/configurations\/\w+\/executions/)
                 .reply(200, executionsResponse)
 
-            const {result, waitFor} = renderHookWithQueryClientProvider(() =>
+            const { result, waitFor } = renderHookWithQueryClientProvider(() =>
                 useGetConfigurationExecutions({
                     configurationInternalId: 'someid',
                     from: new Date(),
@@ -149,7 +149,7 @@ describe('queries', () => {
                     page: 1,
                     to: new Date(),
                     success: true,
-                })
+                }),
             )
 
             await waitFor(() => expect(result.current.isSuccess).toEqual(true))
@@ -178,8 +178,8 @@ describe('queries', () => {
                 .onGet(/\/configurations\/\w+\/executions\/\w+/)
                 .reply(200, executionsResponse)
 
-            const {result, waitFor} = renderHookWithQueryClientProvider(() =>
-                useGetConfigurationExecution('configurationId', 'executionId')
+            const { result, waitFor } = renderHookWithQueryClientProvider(() =>
+                useGetConfigurationExecution('configurationId', 'executionId'),
             )
 
             await waitFor(() => expect(result.current.isSuccess).toEqual(true))
@@ -207,11 +207,11 @@ describe('queries', () => {
                 .onGet(/\/configurations\/\w+\/executions\/\w+/)
                 .reply(200, executionLogsResponse)
 
-            const {result, waitFor} = renderHookWithQueryClientProvider(() =>
+            const { result, waitFor } = renderHookWithQueryClientProvider(() =>
                 useGetConfigurationExecutionLogs(
                     'configurationId',
-                    'executionId'
-                )
+                    'executionId',
+                ),
             )
 
             await waitFor(() => expect(result.current.isSuccess).toEqual(true))
@@ -225,11 +225,11 @@ describe('queries', () => {
                 .onGet(/\/configurations\/\w+\/executions\/\w+/)
                 .reply(404)
 
-            const {result, waitFor} = renderHookWithQueryClientProvider(() =>
+            const { result, waitFor } = renderHookWithQueryClientProvider(() =>
                 useGetConfigurationExecutionLogs(
                     'configurationId',
-                    'executionId'
-                )
+                    'executionId',
+                ),
             )
 
             await waitFor(() => expect(result.current.isSuccess).toEqual(true))
@@ -245,12 +245,12 @@ describe('queries', () => {
                 .onDelete(/configuration-templates\/\w+/)
                 .reply(204)
 
-            const {result, waitFor} = renderHookWithQueryClientProvider(() =>
-                useDeleteWorkflowConfigurationTemplate()
+            const { result, waitFor } = renderHookWithQueryClientProvider(() =>
+                useDeleteWorkflowConfigurationTemplate(),
             )
 
             act(() => {
-                result.current.mutate([{internal_id: 'someid'}])
+                result.current.mutate([{ internal_id: 'someid' }])
             })
 
             await waitFor(() => expect(result.current.isSuccess).toEqual(true))

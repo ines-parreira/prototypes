@@ -1,10 +1,10 @@
-import {act, fireEvent, render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {IntegrationType} from 'models/integration/constants'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 
-import {App} from '../../types'
+import { IntegrationType } from 'models/integration/constants'
 
+import { App } from '../../types'
 import ActionsPlatformStepAppSelectBox from '../ActionsPlatformStepAppSelectBox'
 
 describe('<ActionsPlatformStepAppSelectBox />', () => {
@@ -37,7 +37,7 @@ describe('<ActionsPlatformStepAppSelectBox />', () => {
                 apps={apps}
                 value={undefined}
                 onChange={mockOnChange}
-            />
+            />,
         )
 
         act(() => {
@@ -63,7 +63,7 @@ describe('<ActionsPlatformStepAppSelectBox />', () => {
                 value={undefined}
                 onChange={jest.fn()}
                 isDisabled
-            />
+            />,
         )
 
         act(() => {

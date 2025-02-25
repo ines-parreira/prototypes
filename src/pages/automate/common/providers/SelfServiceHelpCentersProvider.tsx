@@ -1,21 +1,22 @@
-import React, {ReactNode, useCallback, useEffect} from 'react'
-import {useParams} from 'react-router-dom'
+import React, { ReactNode, useCallback, useEffect } from 'react'
+
+import { useParams } from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
-import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import {helpCentersFetched} from 'state/entities/helpCenter/helpCenters'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
+import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import { helpCentersFetched } from 'state/entities/helpCenter/helpCenters'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 type Props = {
     children?: ReactNode
 }
 
-const SelfServiceHelpCentersProvider = ({children}: Props) => {
-    const {shopName} = useParams<{shopName: string}>()
+const SelfServiceHelpCentersProvider = ({ children }: Props) => {
+    const { shopName } = useParams<{ shopName: string }>()
 
-    const {client} = useHelpCenterApi()
+    const { client } = useHelpCenterApi()
     const dispatch = useAppDispatch()
 
     const handleFetchHelpCenters = useCallback(async () => {
@@ -25,7 +26,7 @@ const SelfServiceHelpCentersProvider = ({children}: Props) => {
 
         try {
             const {
-                data: {data: fetchedHelpCenters},
+                data: { data: fetchedHelpCenters },
             } = await client.listHelpCenters({
                 shop_name: shopName,
                 per_page: HELP_CENTER_MAX_CREATION,
@@ -37,7 +38,7 @@ const SelfServiceHelpCentersProvider = ({children}: Props) => {
                 notify({
                     message: 'Failed to fetch Help Centers',
                     status: NotificationStatus.Error,
-                })
+                }),
             )
         }
     }, [client, shopName, dispatch])

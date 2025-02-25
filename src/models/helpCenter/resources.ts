@@ -1,12 +1,12 @@
 import axios from 'axios'
 
-import {HelpCenterClient} from 'rest_api/help_center_api/client'
-import {Paths} from 'rest_api/help_center_api/client.generated'
+import { HelpCenterClient } from 'rest_api/help_center_api/client'
+import { Paths } from 'rest_api/help_center_api/client.generated'
 
 export const getHelpCenterArticles = async (
     client: HelpCenterClient | undefined,
     pathParams: Paths.ListArticles.PathParameters,
-    queryParams: Paths.ListArticles.QueryParameters
+    queryParams: Paths.ListArticles.QueryParameters,
 ) => {
     if (!client) return null
 
@@ -21,7 +21,7 @@ export const getHelpCenterArticles = async (
 export const getCategoryTree = async (
     client: HelpCenterClient | undefined,
     pathParams: Paths.GetCategoryTree.PathParameters,
-    queryParams: Paths.GetCategoryTree.QueryParameters
+    queryParams: Paths.GetCategoryTree.QueryParameters,
 ) => {
     if (!client) return null
 
@@ -36,7 +36,7 @@ export const getCategoryTree = async (
 export const getHelpCenterArticle = async (
     client: HelpCenterClient | undefined,
     pathParams: Paths.GetArticle.PathParameters,
-    queryParams: Paths.GetArticle.QueryParameters
+    queryParams: Paths.GetArticle.QueryParameters,
 ) => {
     if (!client) return null
 
@@ -57,7 +57,7 @@ export const getHelpCenterArticle = async (
 export const getHelpCenter = async (
     client: HelpCenterClient | undefined,
     pathParams: Paths.GetHelpCenter.PathParameters,
-    queryParams: Paths.GetHelpCenter.QueryParameters
+    queryParams: Paths.GetHelpCenter.QueryParameters,
 ) => {
     if (!client) return null
 
@@ -70,7 +70,7 @@ export const getHelpCenter = async (
 
 export const createHelpCenter = async (
     client: HelpCenterClient | undefined,
-    data: Paths.CreateHelpCenter.RequestBody
+    data: Paths.CreateHelpCenter.RequestBody,
 ) => {
     if (!client) return null
     const response = await client.createHelpCenter(null, data)
@@ -80,7 +80,7 @@ export const createHelpCenter = async (
 export const updateHelpCenter = async (
     client: HelpCenterClient | undefined,
     pathParams: Paths.UpdateHelpCenter.PathParameters,
-    data: Paths.UpdateHelpCenter.RequestBody
+    data: Paths.UpdateHelpCenter.RequestBody,
 ) => {
     if (!client) return null
     const response = await client.updateHelpCenter(pathParams, data)
@@ -90,7 +90,7 @@ export const updateHelpCenter = async (
 export const createHelpCenterTranslation = async (
     client: HelpCenterClient | undefined,
     pathParams: Paths.CreateHelpCenterTranslation.PathParameters,
-    data: Paths.CreateHelpCenterTranslation.RequestBody
+    data: Paths.CreateHelpCenterTranslation.RequestBody,
 ) => {
     if (!client) return null
     const response = await client.createHelpCenterTranslation(pathParams, data)
@@ -99,7 +99,7 @@ export const createHelpCenterTranslation = async (
 
 export const deleteHelpCenterTranslation = async (
     client: HelpCenterClient | undefined,
-    pathParams: Paths.DeleteHelpCenterTranslation.PathParameters
+    pathParams: Paths.DeleteHelpCenterTranslation.PathParameters,
 ) => {
     if (!client) return null
     const response = await client.deleteHelpCenterTranslation(pathParams)
@@ -108,7 +108,7 @@ export const deleteHelpCenterTranslation = async (
 
 export const checkHelpCenterWithSubdomainExists = async (
     client: HelpCenterClient | undefined,
-    data: Paths.CheckHelpCenterWithSubdomainExists.PathParameters
+    data: Paths.CheckHelpCenterWithSubdomainExists.PathParameters,
 ) => {
     if (!client) return null
 
@@ -119,7 +119,7 @@ export const checkHelpCenterWithSubdomainExists = async (
 export const createArticle = async (
     client: HelpCenterClient | undefined,
     pathParams: Paths.CreateArticle.PathParameters,
-    data: Paths.CreateArticle.RequestBody
+    data: Paths.CreateArticle.RequestBody,
 ) => {
     if (!client) return null
     const response = await client.createArticle(pathParams, data)
@@ -128,7 +128,7 @@ export const createArticle = async (
 
 export const deleteArticle = async (
     client: HelpCenterClient | undefined,
-    pathParams: Paths.DeleteArticle.PathParameters
+    pathParams: Paths.DeleteArticle.PathParameters,
 ) => {
     if (!client) return null
     const response = await client.deleteArticle(pathParams)
@@ -138,7 +138,7 @@ export const deleteArticle = async (
 export const updateArticleTranslation = async (
     client: HelpCenterClient | undefined,
     pathParams: Paths.UpdateArticleTranslation.PathParameters,
-    data: Paths.UpdateArticleTranslation.RequestBody
+    data: Paths.UpdateArticleTranslation.RequestBody,
 ) => {
     if (!client) return null
     const response = await client.updateArticleTranslation(pathParams, data)
@@ -148,7 +148,7 @@ export const updateArticleTranslation = async (
 export const createArticleTranslation = async (
     client: HelpCenterClient | undefined,
     pathParams: Paths.CreateArticleTranslation.PathParameters,
-    data: Paths.CreateArticleTranslation.RequestBody
+    data: Paths.CreateArticleTranslation.RequestBody,
 ) => {
     if (!client) return null
     const response = await client.createArticleTranslation(pathParams, data)
@@ -157,7 +157,7 @@ export const createArticleTranslation = async (
 
 export const deleteArticleTranslation = async (
     client: HelpCenterClient | undefined,
-    pathParams: Paths.DeleteArticleTranslation.PathParameters
+    pathParams: Paths.DeleteArticleTranslation.PathParameters,
 ) => {
     if (!client) return null
     const response = await client.deleteArticleTranslation(pathParams)
@@ -166,7 +166,7 @@ export const deleteArticleTranslation = async (
 
 export const getHelpCenterList = async (
     client: HelpCenterClient | undefined,
-    queryParams: Paths.ListHelpCenters.QueryParameters
+    queryParams: Paths.ListHelpCenters.QueryParameters,
 ) => {
     if (!client) return null
     const response = await client.listHelpCenters(queryParams)
@@ -176,7 +176,7 @@ export const getHelpCenterList = async (
 export const getArticleIngestionLogs = async (
     client: HelpCenterClient | undefined,
     pathParams: Paths.GetArticleIngestionLogs.PathParameters &
-        Paths.GetArticleIngestionLogs.QueryParameters
+        Paths.GetArticleIngestionLogs.QueryParameters,
 ) => {
     if (!client) return null
     const response = await client.getArticleIngestionLogs(pathParams)
@@ -186,7 +186,7 @@ export const getArticleIngestionLogs = async (
 export const startArticleIngestion = async (
     client: HelpCenterClient | undefined,
     pathParams: Paths.StartArticleIngestion.PathParameters,
-    data: Paths.StartArticleIngestion.RequestBody
+    data: Paths.StartArticleIngestion.RequestBody,
 ) => {
     if (!client) return null
     const response = await client.startArticleIngestion(pathParams, data)
@@ -196,7 +196,7 @@ export const startArticleIngestion = async (
 
 export const deleteArticleIngestionLog = async (
     client: HelpCenterClient | undefined,
-    pathParams: Paths.DeleteArticleIngestionLog.PathParameters
+    pathParams: Paths.DeleteArticleIngestionLog.PathParameters,
 ) => {
     if (!client) return null
     const response = await client.deleteArticleIngestionLog(pathParams)
@@ -207,7 +207,7 @@ export const deleteArticleIngestionLog = async (
 export const createFileIngestion = async (
     client: HelpCenterClient | undefined,
     pathParams: Paths.CreateFileIngestion.PathParameters,
-    data: Paths.CreateFileIngestion.RequestBody
+    data: Paths.CreateFileIngestion.RequestBody,
 ) => {
     if (!client) return null
     const response = await client.createFileIngestion(pathParams, data)
@@ -216,7 +216,7 @@ export const createFileIngestion = async (
 
 export const getFileIngestion = async (
     client: HelpCenterClient | undefined,
-    pathParams: Paths.GetFileIngestion.PathParameters
+    pathParams: Paths.GetFileIngestion.PathParameters,
 ) => {
     if (!client) return null
     const response = await client.getFileIngestion(pathParams)
@@ -225,7 +225,7 @@ export const getFileIngestion = async (
 
 export const deleteFileIngestion = async (
     client: HelpCenterClient | undefined,
-    pathParams: Paths.DeleteFileIngestion.PathParameters
+    pathParams: Paths.DeleteFileIngestion.PathParameters,
 ) => {
     if (!client) return null
     const response = await client.deleteFileIngestion(pathParams)

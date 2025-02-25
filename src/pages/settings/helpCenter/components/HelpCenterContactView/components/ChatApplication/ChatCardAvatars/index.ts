@@ -1,1 +1,1 @@
-export {default} from './ChatCardAvatars'
+export { default } from './ChatCardAvatars'

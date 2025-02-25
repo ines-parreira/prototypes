@@ -1,12 +1,14 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import _noop from 'lodash/noop'
 import React from 'react'
 
-import {ConditionsBranchBody} from 'pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/ConditionsBranchBody'
-import {buildConditionSchemaByVariableType} from 'pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/utils'
-import {ConditionSchema} from 'pages/automate/workflows/models/conditions.types'
-import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
-import {LLMPromptTriggerNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import _noop from 'lodash/noop'
+
+import { Label } from '@gorgias/merchant-ui-kit'
+
+import { ConditionsBranchBody } from 'pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/ConditionsBranchBody'
+import { buildConditionSchemaByVariableType } from 'pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/utils'
+import { ConditionSchema } from 'pages/automate/workflows/models/conditions.types'
+import { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
+import { LLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import Alert from 'pages/common/components/Alert/Alert'
 import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 
@@ -18,7 +20,7 @@ type Props = {
     onConditionDelete: (index: number) => void
     onConditionAdd: (condition: ConditionSchema) => void
     onConditionTypeChange: (
-        type: LLMPromptTriggerNodeType['data']['conditionsType']
+        type: LLMPromptTriggerNodeType['data']['conditionsType'],
     ) => void
     onConditionChange: (condition: ConditionSchema, index: number) => void
     onConditionBlur?: (index: number) => void
@@ -70,7 +72,7 @@ const ActionsPlatformTemplateConditions = ({
                     onVariableSelect={(variable) => {
                         const condition = buildConditionSchemaByVariableType(
                             variable.type,
-                            variable.value
+                            variable.value,
                         )
 
                         onConditionAdd(condition)

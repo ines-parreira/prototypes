@@ -1,31 +1,32 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import LD from 'launchdarkly-react-client-sdk'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import LD from 'launchdarkly-react-client-sdk'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {account} from 'fixtures/account'
-import {integrationsState} from 'fixtures/integrations'
-import {ContactForm} from 'models/contactForm/types'
-import {ShopifyIntegration} from 'models/integration/types'
-import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
-import {CONTACT_FORM_AUTO_EMBED_CARD_TEST_ID} from 'pages/settings/contactForm/components/ContactFormAutoEmbedCard'
-import {CONTACT_FORM_PUBLISH_PATH} from 'pages/settings/contactForm/constants'
-import {CurrentContactFormContext} from 'pages/settings/contactForm/contexts/currentContactForm.context'
-import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
-import {useGetPageEmbedments} from 'pages/settings/contactForm/queries'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { account } from 'fixtures/account'
+import { integrationsState } from 'fixtures/integrations'
+import { ContactForm } from 'models/contactForm/types'
+import { ShopifyIntegration } from 'models/integration/types'
+import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
+import { CONTACT_FORM_AUTO_EMBED_CARD_TEST_ID } from 'pages/settings/contactForm/components/ContactFormAutoEmbedCard'
+import { CONTACT_FORM_PUBLISH_PATH } from 'pages/settings/contactForm/constants'
+import { CurrentContactFormContext } from 'pages/settings/contactForm/contexts/currentContactForm.context'
+import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
+import { useGetPageEmbedments } from 'pages/settings/contactForm/queries'
 import ContactFormPublish from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormPublish/ContactFormPublish'
-import {RootState, StoreDispatch} from 'state/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {renderWithRouter} from 'utils/testing'
+import { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { renderWithRouter } from 'utils/testing'
 
 jest.mock('../../../../queries', () => {
     const originalModule: Record<string, unknown> = jest.requireActual(
-        '../../../../queries'
+        '../../../../queries',
     )
 
     return {
@@ -41,7 +42,7 @@ jest.mock('pages/common/hooks/useShopifyIntegrationAndScope', () => ({
     useShopifyIntegrationAndScope: jest.fn(),
 }))
 const mockedUseShopifyIntegrationAndScope = jest.mocked(
-    useShopifyIntegrationAndScope
+    useShopifyIntegrationAndScope,
 )
 
 const SHOP_INTEGRATION = {
@@ -86,7 +87,7 @@ describe('ContactFormPublish', () => {
             {
                 path,
                 route,
-            }
+            },
         )
     }
 
@@ -99,7 +100,7 @@ describe('ContactFormPublish', () => {
     })
 
     it('wording check', () => {
-        renderView({state: defaultState})
+        renderView({ state: defaultState })
 
         screen.getByText('Display the contact form anywhere on your website.')
         screen.getByText('Shareable link')
@@ -108,7 +109,7 @@ describe('ContactFormPublish', () => {
 
     describe('Code snippet', () => {
         it('should provide correct manual embed instructions', () => {
-            const {container} = renderView({state: defaultState})
+            const { container } = renderView({ state: defaultState })
             const instructionsCard = container.querySelector('.card')
             expect(instructionsCard).toMatchSnapshot()
         })
@@ -120,10 +121,10 @@ describe('ContactFormPublish', () => {
                 [FeatureFlagKey.ContactFormAutoEmbed]: false,
             }))
 
-            renderView({state: defaultState})
+            renderView({ state: defaultState })
 
             expect(
-                screen.queryByTestId(CONTACT_FORM_AUTO_EMBED_CARD_TEST_ID)
+                screen.queryByTestId(CONTACT_FORM_AUTO_EMBED_CARD_TEST_ID),
             ).toBeNull()
         })
 
@@ -132,26 +133,26 @@ describe('ContactFormPublish', () => {
                 [FeatureFlagKey.ContactFormAutoEmbed]: true,
             }))
 
-            renderView({state: defaultState})
+            renderView({ state: defaultState })
 
             screen.getByTestId(CONTACT_FORM_AUTO_EMBED_CARD_TEST_ID)
         })
     })
 
     it('should not load page embedments if contact form is not connected to the shop', () => {
-        renderView({state: defaultState})
+        renderView({ state: defaultState })
         expect(useGetPageEmbedments).toHaveBeenCalledWith(
             ContactFormFixture.id,
-            {enabled: false}
+            { enabled: false },
         )
 
         renderView({
             state: defaultState,
-            contactForm: {...ContactFormFixture, shop_name: 'test'},
+            contactForm: { ...ContactFormFixture, shop_name: 'test' },
         })
         expect(useGetPageEmbedments).toHaveBeenLastCalledWith(
             ContactFormFixture.id,
-            {enabled: true}
+            { enabled: true },
         )
     })
 
@@ -165,11 +166,11 @@ describe('ContactFormPublish', () => {
 
             renderView({
                 state: defaultState,
-                contactForm: {...ContactFormFixture, shop_name: 'test'},
+                contactForm: { ...ContactFormFixture, shop_name: 'test' },
             })
 
             expect(
-                screen.getByText(/update your Shopify app permissions/)
+                screen.getByText(/update your Shopify app permissions/),
             ).toBeInTheDocument()
         })
     })
@@ -184,7 +185,7 @@ describe('ContactFormPublish', () => {
 
             renderView({
                 state: defaultState,
-                contactForm: {...ContactFormFixture, shop_name: 'test'},
+                contactForm: { ...ContactFormFixture, shop_name: 'test' },
             })
 
             expect(screen.getByText('Replace email links')).toBeInTheDocument()
@@ -199,11 +200,11 @@ describe('ContactFormPublish', () => {
 
             renderView({
                 state: defaultState,
-                contactForm: {...ContactFormFixture, shop_name: 'test'},
+                contactForm: { ...ContactFormFixture, shop_name: 'test' },
             })
 
             expect(
-                screen.queryByText('Replace email links')
+                screen.queryByText('Replace email links'),
             ).not.toBeInTheDocument()
         })
     })

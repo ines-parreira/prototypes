@@ -1,12 +1,13 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
 import React from 'react'
 
-import {TicketStatus} from 'business/types/ticket'
-import useId from 'hooks/useId'
-import type {ChannelLike} from 'models/channel/types'
-import SourceIcon, {AI_AGENT_ICON} from 'pages/common/components/SourceIcon'
+import classnames from 'classnames'
 
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { TicketStatus } from 'business/types/ticket'
+import useId from 'hooks/useId'
+import type { ChannelLike } from 'models/channel/types'
+import SourceIcon, { AI_AGENT_ICON } from 'pages/common/components/SourceIcon'
 import css from 'pages/common/components/TicketIcon.less'
 
 export default function TicketIcon({
@@ -30,7 +31,7 @@ export default function TicketIcon({
                     [css.isOpen]: isOpen,
                     [css.isAiAgentIcon]: isAiAgentIcon,
                 },
-                className
+                className,
             )}
             id={iconTargetId}
         >

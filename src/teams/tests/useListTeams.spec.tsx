@@ -1,20 +1,22 @@
-import {ListTeamsOrderBy, queryKeys} from '@gorgias/api-queries'
-import {QueryClientProvider} from '@tanstack/react-query'
-import * as reactQuery from '@tanstack/react-query'
-import {waitFor} from '@testing-library/react'
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
 
+import { QueryClientProvider } from '@tanstack/react-query'
+import * as reactQuery from '@tanstack/react-query'
+import { waitFor } from '@testing-library/react'
+import { renderHook } from '@testing-library/react-hooks'
+
+import { ListTeamsOrderBy, queryKeys } from '@gorgias/api-queries'
+
 import {
-    axiosSuccessResponse,
     apiListCursorPaginationResponse,
+    axiosSuccessResponse,
 } from 'fixtures/axiosResponse'
-import {teams} from 'fixtures/teams'
-import {handleError} from 'hooks/agents/errorHandler'
+import { teams } from 'fixtures/teams'
+import { handleError } from 'hooks/agents/errorHandler'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {fetchTeams} from 'models/team/resources'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { fetchTeams } from 'models/team/resources'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 import useListTeams from '../useListTeams'
 
@@ -41,10 +43,10 @@ describe('useListTeams', () => {
             enabled: true,
         }
         mockFetchTeams.mockResolvedValueOnce(
-            axiosSuccessResponse(apiListCursorPaginationResponse(teams))
+            axiosSuccessResponse(apiListCursorPaginationResponse(teams)),
         )
-        const {result} = renderHook(() => useListTeams({orderBy}, query), {
-            wrapper: ({children}) => (
+        const { result } = renderHook(() => useListTeams({ orderBy }, query), {
+            wrapper: ({ children }) => (
                 <QueryClientProvider client={queryClient}>
                     {children}
                 </QueryClientProvider>
@@ -57,12 +59,12 @@ describe('useListTeams', () => {
                 queryFn: expect.any(Function),
                 getNextPageParam: expect.any(Function),
                 ...query,
-            })
+            }),
         )
         expect(mockFetchTeams).toHaveBeenCalledWith(
             expect.objectContaining({
                 orderBy,
-            })
+            }),
         )
 
         await waitFor(() => expect(result.current.isLoading).toBe(false))
@@ -71,7 +73,7 @@ describe('useListTeams', () => {
                 data: expect.objectContaining({
                     data: teams,
                 }),
-            })
+            }),
         )
     })
 
@@ -80,8 +82,8 @@ describe('useListTeams', () => {
         mockFetchTeams.mockRejectedValueOnce({
             response: errorMsgMock,
         })
-        const {result} = renderHook(() => useListTeams(), {
-            wrapper: ({children}) => (
+        const { result } = renderHook(() => useListTeams(), {
+            wrapper: ({ children }) => (
                 <QueryClientProvider client={queryClient}>
                     {children}
                 </QueryClientProvider>
@@ -94,7 +96,7 @@ describe('useListTeams', () => {
                 response: errorMsgMock,
             }),
             expect.any(String),
-            dispatchMock
+            dispatchMock,
         )
         expect(result.current.isLoading).toBe(false)
     })

@@ -1,9 +1,9 @@
-import {render, fireEvent} from '@testing-library/react'
 import React from 'react'
 
-import {getHelpCenterAllNavigationLinksEnglishFixture as mockData} from '../../fixtures/getNavigationLinksResponse.fixtures'
+import { fireEvent, render } from '@testing-library/react'
 
-import {useNavigationLinks} from '../useNavigationLinks'
+import { getHelpCenterAllNavigationLinksEnglishFixture as mockData } from '../../fixtures/getNavigationLinksResponse.fixtures'
+import { useNavigationLinks } from '../useNavigationLinks'
 
 const Example = () => {
     const navigation = useNavigationLinks('header', mockData.data)
@@ -20,7 +20,7 @@ const Example = () => {
                                 navigation.update(
                                     ev.target.value,
                                     link.id,
-                                    'label'
+                                    'label',
                                 )
                             }
                         />
@@ -31,7 +31,7 @@ const Example = () => {
                                 navigation.update(
                                     ev.target.value,
                                     link.id,
-                                    'value'
+                                    'value',
                                 )
                             }
                         />
@@ -60,12 +60,12 @@ const nextId = mockData.data.reduce((sum, link) => {
 
 describe('useNavigationLinks', () => {
     it('renders all the header navigation links', () => {
-        const {getAllByTestId} = render(<Example />)
+        const { getAllByTestId } = render(<Example />)
         expect(getAllByTestId(/link-*/)).toHaveLength(3)
     })
 
     it('adds a new link with empty label and value', () => {
-        const {getByTestId} = render(<Example />)
+        const { getByTestId } = render(<Example />)
 
         fireEvent.click(getByTestId('add'))
 
@@ -79,7 +79,7 @@ describe('useNavigationLinks', () => {
     })
 
     it('removes a link from list', () => {
-        const {getByTestId, getAllByTestId} = render(<Example />)
+        const { getByTestId, getAllByTestId } = render(<Example />)
 
         fireEvent.click(getByTestId('delete-1'))
 
@@ -87,10 +87,10 @@ describe('useNavigationLinks', () => {
     })
 
     it('updates the value of a link', () => {
-        const {getByTestId} = render(<Example />)
+        const { getByTestId } = render(<Example />)
 
         fireEvent.change(getByTestId('value-1'), {
-            target: {value: 'https://nextsite.com'},
+            target: { value: 'https://nextsite.com' },
         })
         getByTestId('value-1').blur()
 

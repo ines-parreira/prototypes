@@ -1,19 +1,18 @@
-import {fromJS, List, Map} from 'immutable'
-import {createSelector} from 'reselect'
+import { fromJS, List, Map } from 'immutable'
+import { createSelector } from 'reselect'
 
-import {DEFAULT_PREFERENCES} from 'config'
-import {UserSetting, UserSettingType} from 'config/types/user'
+import { DEFAULT_PREFERENCES } from 'config'
+import { UserSetting, UserSettingType } from 'config/types/user'
 import {
     DateAndTimeFormatting,
     DateFormatType,
     TimeFormatType,
 } from 'constants/datetime'
-import {createImmutableSelector} from 'utils'
-import {getDateAndTimeFormat} from 'utils/datetime'
+import { createImmutableSelector } from 'utils'
+import { getDateAndTimeFormat } from 'utils/datetime'
 
-import {RootState} from '../types'
-
-import {CurrentUserState} from './types'
+import { RootState } from '../types'
+import { CurrentUserState } from './types'
 
 //$TsFixMe replace with getViews selector once state/views/selectors are migrated
 const typeSafeGetViews = (state: RootState) =>
@@ -24,40 +23,40 @@ export const getCurrentUserState = (state: RootState): Map<any, any> =>
 
 export const getCurrentUser = createSelector(
     getCurrentUserState,
-    (state) => state
+    (state) => state,
 )
 
 export const getCurrentUserId = createSelector(
     getCurrentUserState,
-    (state) => state.get('id') as number
+    (state) => state.get('id') as number,
 )
 
 export const getSettings = createSelector(
     getCurrentUserState,
-    (state) => (state.get('settings') as List<any>) || fromJS([])
+    (state) => (state.get('settings') as List<any>) || fromJS([]),
 )
 
 const _getSettingsByType = (
     views: List<any>,
     settings: List<any>,
-    type: string
+    type: string,
 ) => {
     let formattedSettings =
         (settings.find(
-            (setting: Map<any, any>) => setting.get('type') === type
-        ) as Map<any, any>) || fromJS({type, data: {}})
+            (setting: Map<any, any>) => setting.get('type') === type,
+        ) as Map<any, any>) || fromJS({ type, data: {} })
 
     // add views and update settings according to views configuration
     views.forEach((view: Map<any, any>) => {
         const viewId: number = view.get('id')
         const viewSetting: Map<any, any> = formattedSettings.getIn(
             ['data', 'views', viewId.toString()],
-            fromJS({})
+            fromJS({}),
         )
 
         const displayOrder: number = viewSetting.get(
             'display_order',
-            view.get('display_order', 0)
+            view.get('display_order', 0),
         )
 
         formattedSettings = formattedSettings
@@ -73,18 +72,18 @@ export const makeGetSettingsByType = () =>
         typeSafeGetViews,
         getSettings,
         (state: RootState, type: string) => type,
-        _getSettingsByType
+        _getSettingsByType,
     )
 
 // used to get user preferences
 export const getSettingsByType = (type: string) =>
     createImmutableSelector(typeSafeGetViews, getSettings, (views, settings) =>
-        _getSettingsByType(views, settings, type)
+        _getSettingsByType(views, settings, type),
     )
 
 export const getApiKey = createSelector(
     getCurrentUserState,
-    (state) => (state.getIn(['auths', 0, 'data', 'token']) as string) || ''
+    (state) => (state.getIn(['auths', 0, 'data', 'token']) as string) || '',
 )
 
 export const getPreferences = createSelector(getSettings, (state) => {
@@ -95,56 +94,56 @@ export const getPreferences = createSelector(getSettings, (state) => {
         }) as Map<any, any>
     ).mergeDeep(
         (state.find(
-            (setting: Map<any, any>) => setting.get('type') === 'preferences'
-        ) as Maybe<Map<any, any>>) || fromJS({})
+            (setting: Map<any, any>) => setting.get('type') === 'preferences',
+        ) as Maybe<Map<any, any>>) || fromJS({}),
     )
 })
 
 export const isAvailable = createSelector(
     getPreferences,
-    (state) => state.getIn(['data', 'available']) as boolean
+    (state) => state.getIn(['data', 'available']) as boolean,
 )
 
 export const isHidingTips = createSelector(
     getPreferences,
-    (state) => (state.getIn(['data', 'hide_tips']) as boolean) || false
+    (state) => (state.getIn(['data', 'hide_tips']) as boolean) || false,
 )
 
 export const isActive = createSelector(
     getCurrentUserState,
-    (state) => state.get('is_active') !== false
+    (state) => state.get('is_active') !== false,
 )
 
 export const has2FaEnabled = createSelector(
     getCurrentUserState,
-    (state) => !!state.get('has_2fa_enabled')
+    (state) => !!state.get('has_2fa_enabled'),
 )
 
 export const hasPassword = createSelector(
     getCurrentUserState,
-    (state) => !!state.get('has_password')
+    (state) => !!state.get('has_password'),
 )
 
 export const getTimezone = createSelector(
     getCurrentUserState,
-    (state) => (state.get('timezone') as Maybe<string>) || null
+    (state) => (state.get('timezone') as Maybe<string>) || null,
 )
 
 const createUserSettingSelector = (type: UserSettingType) =>
     createSelector(getCurrentUserState, (state) =>
         ((state.get('settings') as List<any>).toJS() as UserSetting[]).find(
-            (item) => item.type === type
-        )
+            (item) => item.type === type,
+        ),
     )
 
 export const getViewsOrderingUserSetting = createUserSettingSelector(
-    UserSettingType.ViewsOrdering
+    UserSettingType.ViewsOrdering,
 )
 
 export const getLoadingState = createSelector(
     getCurrentUserState,
     (state: CurrentUserState) =>
-        (state.getIn(['_internal', 'loading']) as Map<any, any>) || fromJS({})
+        (state.getIn(['_internal', 'loading']) as Map<any, any>) || fromJS({}),
 )
 
 export const isLoading = (name: string | string[]) =>
@@ -153,8 +152,8 @@ export const isLoading = (name: string | string[]) =>
         (loadingState: Map<any, any>) =>
             loadingState.getIn(
                 typeof name === 'string' ? [name] : name,
-                false
-            ) as boolean
+                false,
+            ) as boolean,
     )
 
 export const getIsPreferencesLoading = isLoading(['settings', 'preferences'])
@@ -165,9 +164,9 @@ export const getNotificationSettings = createSelector(
         notificationSettings.toJS() as
             | Extract<
                   UserSetting,
-                  {type: UserSettingType.NotificationPreferences}
+                  { type: UserSettingType.NotificationPreferences }
               >
-            | undefined
+            | undefined,
 )
 
 export const getDateFormatPreferenceSetting = createSelector(
@@ -175,9 +174,9 @@ export const getDateFormatPreferenceSetting = createSelector(
     (preferencesSettings) =>
         (
             preferencesSettings.toJS() as
-                | Extract<UserSetting, {type: UserSettingType.Preferences}>
+                | Extract<UserSetting, { type: UserSettingType.Preferences }>
                 | undefined
-        )?.data?.date_format || DateFormatType.en_US
+        )?.data?.date_format || DateFormatType.en_US,
 )
 
 export const getTimeFormatPreferenceSetting = createSelector(
@@ -185,14 +184,14 @@ export const getTimeFormatPreferenceSetting = createSelector(
     (preferencesSettings) =>
         (
             preferencesSettings.toJS() as
-                | Extract<UserSetting, {type: UserSettingType.Preferences}>
+                | Extract<UserSetting, { type: UserSettingType.Preferences }>
                 | undefined
-        )?.data?.time_format || TimeFormatType.AmPm
+        )?.data?.time_format || TimeFormatType.AmPm,
 )
 
 export const getDateAndTimeFormatter = createSelector(
     getDateFormatPreferenceSetting,
     getTimeFormatPreferenceSetting,
     (dateFormat, timeFormat) => (format: DateAndTimeFormatting) =>
-        getDateAndTimeFormat(dateFormat, timeFormat, format)
+        getDateAndTimeFormat(dateFormat, timeFormat, format),
 )

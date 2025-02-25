@@ -1,20 +1,21 @@
+import React, { useEffect } from 'react'
+
 import classnames from 'classnames'
-import React, {useEffect} from 'react'
-import {useHistory} from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
-import {HELP_CENTER_TEXTS} from 'config/helpCenter'
-import {HelpCenter} from 'models/helpCenter/types'
+import { HELP_CENTER_TEXTS } from 'config/helpCenter'
+import { HelpCenter } from 'models/helpCenter/types'
 
-import {SELF_SERVICE_PREVIEW_ROUTES} from './constants'
+import { SELF_SERVICE_PREVIEW_ROUTES } from './constants'
+import { useSelfServicePreviewContext } from './SelfServicePreviewContext'
 
 import css from './SelfServiceHelpCenterReportIssueReasonsPage.less'
-import {useSelfServicePreviewContext} from './SelfServicePreviewContext'
 
 type Props = {
     helpCenter: HelpCenter
 }
 
-const SelfServiceHelpCenterReportIssueReasonsPage = ({helpCenter}: Props) => {
+const SelfServiceHelpCenterReportIssueReasonsPage = ({ helpCenter }: Props) => {
     const helpCenterTexts = HELP_CENTER_TEXTS[helpCenter.default_locale]
 
     const history = useHistory()
@@ -39,7 +40,7 @@ const SelfServiceHelpCenterReportIssueReasonsPage = ({helpCenter}: Props) => {
                 <div className={css.description}>
                     {helpCenterTexts.orderNumber.replace(
                         '{{orderNumber}}',
-                        '#3089'
+                        '#3089',
                     )}
                 </div>
             </div>
@@ -59,7 +60,7 @@ const SelfServiceHelpCenterReportIssueReasonsPage = ({helpCenter}: Props) => {
                             {
                                 [css.isHovered]:
                                     reason === hoveredReportOrderIssueReason,
-                            }
+                            },
                         )}
                     >
                         chevron_right
@@ -72,7 +73,7 @@ const SelfServiceHelpCenterReportIssueReasonsPage = ({helpCenter}: Props) => {
                     <i
                         className={classnames(
                             'material-icons',
-                            css.chevronRightIcon
+                            css.chevronRightIcon,
                         )}
                     >
                         chevron_right

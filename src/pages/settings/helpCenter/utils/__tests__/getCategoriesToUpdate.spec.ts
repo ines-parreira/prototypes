@@ -1,9 +1,9 @@
-import {keyBy as _keyBy} from 'lodash'
+import { keyBy as _keyBy } from 'lodash'
 
-import {CategoryTranslation} from 'models/helpCenter/types'
+import { CategoryTranslation } from 'models/helpCenter/types'
 
-import {HELP_CENTER_DEFAULT_LOCALE} from '../../constants'
-import {getCategoriesFlatSorted} from '../../fixtures/getCategoriesTreeFlatSorted.fixtures'
+import { HELP_CENTER_DEFAULT_LOCALE } from '../../constants'
+import { getCategoriesFlatSorted } from '../../fixtures/getCategoriesTreeFlatSorted.fixtures'
 import {
     getCategoriesToUpdate,
     removeElementFromArray,

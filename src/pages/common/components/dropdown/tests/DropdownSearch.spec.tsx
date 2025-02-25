@@ -1,7 +1,8 @@
-import {fireEvent, render} from '@testing-library/react'
-import React, {ComponentProps, useRef, useState} from 'react'
+import React, { ComponentProps, useRef, useState } from 'react'
 
-import Dropdown, {DropdownContext} from '../Dropdown'
+import { fireEvent, render } from '@testing-library/react'
+
+import Dropdown, { DropdownContext } from '../Dropdown'
 import DropdownSearch from '../DropdownSearch'
 
 const MockedComponent = (props: ComponentProps<typeof DropdownSearch>) => {
@@ -26,12 +27,12 @@ const MockedComponent = (props: ComponentProps<typeof DropdownSearch>) => {
                                 option
                                     .toLowerCase()
                                     .includes(
-                                        context.query.toLocaleLowerCase()
+                                        context.query.toLocaleLowerCase(),
                                     ) && (
                                     <div key={option} data-testid="option">
                                         {context.getHighlightedLabel(option)}
                                     </div>
-                                )
+                                ),
                         )
                     }}
                 </DropdownContext.Consumer>
@@ -43,7 +44,7 @@ const MockedComponent = (props: ComponentProps<typeof DropdownSearch>) => {
 
 describe('<DropdownSearch />', () => {
     it('should render', () => {
-        const {container} = render(<MockedComponent />)
+        const { container } = render(<MockedComponent />)
 
         expect(container.parentElement).toMatchSnapshot()
     })
@@ -53,19 +54,19 @@ describe('<DropdownSearch />', () => {
     })
 
     it('should filter and highlight the results when searching', () => {
-        const {getAllByTestId, getByPlaceholderText} = render(
-            <MockedComponent />
+        const { getAllByTestId, getByPlaceholderText } = render(
+            <MockedComponent />,
         )
 
         fireEvent.change(getByPlaceholderText(/Search/), {
-            target: {value: 'ba'},
+            target: { value: 'ba' },
         })
         expect(getAllByTestId('option')).toMatchSnapshot()
     })
 
     it('should be controllable', () => {
         function MockedControlledComponent(
-            props: ComponentProps<typeof MockedComponent>
+            props: ComponentProps<typeof MockedComponent>,
         ) {
             const [value, setValue] = useState('')
 
@@ -78,23 +79,23 @@ describe('<DropdownSearch />', () => {
             )
         }
 
-        const {getAllByTestId, getByPlaceholderText} = render(
-            <MockedControlledComponent />
+        const { getAllByTestId, getByPlaceholderText } = render(
+            <MockedControlledComponent />,
         )
 
         fireEvent.change(getByPlaceholderText(/Search/), {
-            target: {value: 'ba'},
+            target: { value: 'ba' },
         })
         expect(getAllByTestId('option')).toMatchSnapshot()
     })
 
     it('should clear the query when unmounting', () => {
-        const {getAllByTestId, getByPlaceholderText, getByText} = render(
-            <MockedComponent />
+        const { getAllByTestId, getByPlaceholderText, getByText } = render(
+            <MockedComponent />,
         )
 
         fireEvent.change(getByPlaceholderText(/Search/), {
-            target: {value: 'ba'},
+            target: { value: 'ba' },
         })
         fireEvent.click(getByText(/toggle/))
         fireEvent.click(getByText(/toggle/))

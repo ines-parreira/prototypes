@@ -1,17 +1,16 @@
+import React, { useCallback, useContext } from 'react'
+
 import _noop from 'lodash/noop'
-import React, {useCallback, useContext} from 'react'
 
-import {INTEGRATION_DATA_ITEM_TYPE_PRODUCT} from 'constants/integration'
-import {IntegrationDataItem} from 'models/integration/types'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-
-import {SearchResultType} from 'services/gorgiasApi'
+import { INTEGRATION_DATA_ITEM_TYPE_PRODUCT } from 'constants/integration'
+import { IntegrationDataItem } from 'models/integration/types'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
+import { SearchResultType } from 'services/gorgiasApi'
 
 import SearchInput, {
     Props as SearchInputProps,
 } from '../SearchInput/SearchInput'
-
-import Result, {Props as ResultProps} from './Result'
+import Result, { Props as ResultProps } from './Result'
 
 export default function ProductSearchInput<
     ItemType extends IntegrationDataItem<unknown>,
@@ -40,7 +39,7 @@ export default function ProductSearchInput<
     SearchInputProps<ItemType, Variant>,
     'renderResultsAppendix' | 'renderResultItemProps'
 >) {
-    const {integrationId} = useContext(IntegrationContext)
+    const { integrationId } = useContext(IntegrationContext)
 
     const handleProductClicked = useCallback(
         (item: ItemType): Variant[] => {
@@ -52,7 +51,7 @@ export default function ProductSearchInput<
 
             return variants.length > 1 ? variants : []
         },
-        [onVariantClicked, dataMappers]
+        [onVariantClicked, dataMappers],
     )
 
     return (
@@ -68,7 +67,7 @@ export default function ProductSearchInput<
             renderSubResult={(props) => {
                 const resultProps = dataMappers.variants(
                     props.result,
-                    props.subResult
+                    props.subResult,
                 )
                 return <Result ignoreStockAvailability {...resultProps} />
             }}

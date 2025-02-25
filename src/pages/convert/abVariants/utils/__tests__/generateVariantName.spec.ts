@@ -1,4 +1,4 @@
-import {generateVariantName} from '../generateVariantName'
+import { generateVariantName } from '../generateVariantName'
 
 describe('generateVariantName', () => {
     it('generates variant name', () => {

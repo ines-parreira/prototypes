@@ -1,18 +1,19 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {RootState, StoreDispatch} from '../../../../../state/types'
+import { RootState, StoreDispatch } from '../../../../../state/types'
 import StatCurrentDate from '../StatCurrentDate'
 
 jest.mock('moment-timezone', () => {
     const moment: ((
         date?: string,
-        format?: string
-    ) => Record<string, unknown>) & {utc: () => unknown} =
+        format?: string,
+    ) => Record<string, unknown>) & { utc: () => unknown } =
         jest.requireActual('moment-timezone')
     const fn = (...args: any[]) =>
         args.length > 0 ? moment(...args) : moment('2019-09-03')
@@ -65,28 +66,28 @@ describe('<StatCurrentDate />', () => {
     }
 
     it('should display the current date with business hours', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <StatCurrentDate />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should display the current date without business hours', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider
                 store={mockStore({
                     ...defaultState,
                     currentAccount: defaultState.currentAccount?.set(
                         'settings',
-                        fromJS([])
+                        fromJS([]),
                     ),
                 })}
             >
                 <StatCurrentDate />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()

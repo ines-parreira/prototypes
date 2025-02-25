@@ -1,8 +1,8 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
 
-import {initialState} from '../reducers'
+import { initialState } from '../reducers'
 import * as selectors from '../selectors'
 
 describe('facebookAds selectors', () => {
@@ -37,7 +37,7 @@ describe('facebookAds selectors', () => {
 
         it('should return default internals when its value is null', () => {
             state = {
-                facebookAds: initialState.mergeDeep({internals: null}),
+                facebookAds: initialState.mergeDeep({ internals: null }),
             } as RootState
 
             const result = selectors.getFacebookIntegrationInternals(state)
@@ -48,7 +48,7 @@ describe('facebookAds selectors', () => {
 
         it('should return default internals when its value is `{}`', () => {
             state = {
-                facebookAds: initialState.mergeDeep({internals: {}}),
+                facebookAds: initialState.mergeDeep({ internals: {} }),
             } as RootState
 
             const result = selectors.getFacebookIntegrationInternals(state)
@@ -68,7 +68,7 @@ describe('facebookAds selectors', () => {
 
         it('should return loading ads when the value is null', () => {
             state = {
-                facebookAds: initialState.mergeDeep({loadingAds: null}),
+                facebookAds: initialState.mergeDeep({ loadingAds: null }),
             } as RootState
 
             const result = selectors.getFacebookIntegrationLoadingAds(state)
@@ -79,7 +79,7 @@ describe('facebookAds selectors', () => {
 
         it('should return loading ads when the value is `[]`', () => {
             state = {
-                facebookAds: initialState.mergeDeep({loadingAds: []}),
+                facebookAds: initialState.mergeDeep({ loadingAds: [] }),
             } as RootState
 
             const result = selectors.getFacebookIntegrationLoadingAds(state)

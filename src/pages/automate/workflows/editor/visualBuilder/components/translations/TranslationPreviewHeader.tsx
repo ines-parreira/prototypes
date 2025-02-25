@@ -1,10 +1,12 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
-import React, {useRef, useState} from 'react'
-import {ReactCountryFlag} from 'react-country-flag'
+import React, { useRef, useState } from 'react'
 
-import {useTranslationsPreviewContext} from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
-import {supportedLanguages} from 'pages/automate/workflows/models/workflowConfiguration.types'
+import classNames from 'classnames'
+import { ReactCountryFlag } from 'react-country-flag'
+
+import { Label } from '@gorgias/merchant-ui-kit'
+
+import { useTranslationsPreviewContext } from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
+import { supportedLanguages } from 'pages/automate/workflows/models/workflowConfiguration.types'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
@@ -12,7 +14,7 @@ import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import css from './TranslationPreviewHeader.less'
 
 export default function TranslationPreviewHeader() {
-    const {previewLanguageList, previewLanguage, setPreviewLanguage} =
+    const { previewLanguageList, previewLanguage, setPreviewLanguage } =
         useTranslationsPreviewContext()
     const targetRef = useRef<HTMLDivElement>(null)
     const [isSelectOpen, setIsSelectOpen] = useState(false)
@@ -36,7 +38,7 @@ export default function TranslationPreviewHeader() {
                             />
                             {
                                 supportedLanguages.find(
-                                    (l) => l.code === previewLanguage
+                                    (l) => l.code === previewLanguage,
                                 )?.label
                             }
                         </>
@@ -59,7 +61,7 @@ export default function TranslationPreviewHeader() {
                             option={{
                                 label:
                                     supportedLanguages.find(
-                                        (l) => l.code === previewLanguage
+                                        (l) => l.code === previewLanguage,
                                     )?.label ?? '',
                                 value: code,
                             }}
@@ -76,7 +78,7 @@ export default function TranslationPreviewHeader() {
                                 />
                                 {
                                     supportedLanguages.find(
-                                        (l) => l.code === code
+                                        (l) => l.code === code,
                                     )?.label
                                 }
                             </div>

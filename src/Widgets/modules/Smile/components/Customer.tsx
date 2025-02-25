@@ -1,14 +1,13 @@
-import {Map} from 'immutable'
-import React, {Component, ReactNode} from 'react'
+import React, { Component, ReactNode } from 'react'
+
+import { Map } from 'immutable'
 
 import logo from 'assets/img/infobar/smile.svg'
-
-import {renderTemplate} from 'pages/common/utils/template'
-
-import {CardCustomization} from 'Widgets/modules/Template/modules/Card'
-import {CardHeaderIcon} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderIcon'
-import {CardHeaderSubtitle} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderSubtitle'
-import {CardHeaderTitle} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderTitle'
+import { renderTemplate } from 'pages/common/utils/template'
+import { CardCustomization } from 'Widgets/modules/Template/modules/Card'
+import { CardHeaderIcon } from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderIcon'
+import { CardHeaderSubtitle } from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderSubtitle'
+import { CardHeaderTitle } from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderTitle'
 
 type Props = {
     children: ReactNode
@@ -18,14 +17,14 @@ type Props = {
 
 export class TitleWrapper extends Component<Props> {
     render() {
-        const {children, source, template} = this.props
+        const { children, source, template } = this.props
         const customerHash = source.get('hash')
         let link = template.getIn(['meta', 'link'])
 
         if (link) {
             link = renderTemplate(
                 link,
-                source.set('customerHash', customerHash).toJS()
+                source.set('customerHash', customerHash).toJS(),
             )
         }
 

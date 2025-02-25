@@ -1,11 +1,11 @@
-import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
+import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
 
 import {
-    contactFormUpdated,
     contactFormDeleted,
     contactFormsFetched,
+    contactFormUpdated,
 } from '../actions'
-import reducer, {initialState} from '../reducer'
+import reducer, { initialState } from '../reducer'
 
 describe('contactForms reducer', () => {
     describe('contactFormDeleted action', () => {
@@ -17,7 +17,7 @@ describe('contactForms reducer', () => {
                         [666]: ContactFormFixture,
                     },
                 },
-                contactFormDeleted(ContactFormFixture.id)
+                contactFormDeleted(ContactFormFixture.id),
             )
             expect(newState).toMatchSnapshot()
         })
@@ -39,7 +39,7 @@ describe('contactForms reducer', () => {
                         allow_other: true,
                         options: ['TEST'],
                     },
-                })
+                }),
             )
             expect(newState).toMatchSnapshot()
         })
@@ -49,7 +49,7 @@ describe('contactForms reducer', () => {
         it('should add the contact forms to the state', () => {
             const newState = reducer(
                 initialState,
-                contactFormsFetched([ContactFormFixture])
+                contactFormsFetched([ContactFormFixture]),
             )
             expect(newState).toMatchSnapshot()
         })

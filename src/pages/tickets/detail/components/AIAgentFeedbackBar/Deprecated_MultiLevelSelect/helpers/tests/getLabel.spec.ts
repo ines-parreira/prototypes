@@ -1,4 +1,4 @@
-import {getLabel} from '../getLabel'
+import { getLabel } from '../getLabel'
 
 describe('getLabel', () => {
     it.each([
@@ -10,9 +10,9 @@ describe('getLabel', () => {
         'should the correct path',
         (
             input: Parameters<typeof getLabel>[0],
-            output: ReturnType<typeof getLabel>
+            output: ReturnType<typeof getLabel>,
         ) => {
             expect(getLabel(input)).toEqual(output)
-        }
+        },
     )
 })

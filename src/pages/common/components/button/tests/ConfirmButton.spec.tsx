@@ -1,5 +1,6 @@
-import {render} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { render } from '@testing-library/react'
 
 import ConfirmButton from '../ConfirmButton'
 
@@ -15,8 +16,8 @@ describe('<ConfirmButton />', () => {
     }
 
     it('should render', () => {
-        const {container} = render(
-            <ConfirmButton {...defaultProps}>Click me!</ConfirmButton>
+        const { container } = render(
+            <ConfirmButton {...defaultProps}>Click me!</ConfirmButton>,
         )
 
         expect(container.firstChild).toMatchSnapshot()

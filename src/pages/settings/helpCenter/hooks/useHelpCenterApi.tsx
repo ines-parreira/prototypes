@@ -1,17 +1,16 @@
 import React, {
     createContext,
-    useContext,
-    useState,
-    useEffect,
     ReactNode,
     useCallback,
+    useContext,
+    useEffect,
     useMemo,
+    useState,
 } from 'react'
 
-import {getHelpCenterClient} from 'rest_api/help_center_api'
-import {AppAbility} from 'rest_api/help_center_api/ability'
-
-import {HelpCenterClient} from 'rest_api/help_center_api/client'
+import { getHelpCenterClient } from 'rest_api/help_center_api'
+import { AppAbility } from 'rest_api/help_center_api/ability'
+import { HelpCenterClient } from 'rest_api/help_center_api/client'
 
 type UseHelpCenterApiInterface = {
     isReady: boolean
@@ -25,7 +24,7 @@ interface HelpCenterApiClientState {
 }
 
 const HelpCenterApiClientContext = createContext<
-    HelpCenterApiClientState & {agentAbility?: AppAbility}
+    HelpCenterApiClientState & { agentAbility?: AppAbility }
 >({
     isReady: false,
     client: undefined,
@@ -45,7 +44,7 @@ export const HelpCenterApiClientProvider = ({
     })
 
     const [agentAbility, setAgentAbility] = useState<AppAbility | undefined>(
-        undefined
+        undefined,
     )
 
     const initClient = async () => {
@@ -66,7 +65,7 @@ export const HelpCenterApiClientProvider = ({
             ...state,
             agentAbility,
         }),
-        [state, agentAbility]
+        [state, agentAbility],
     )
 
     return (
@@ -77,32 +76,32 @@ export const HelpCenterApiClientProvider = ({
 }
 
 export const useHelpCenterApi = (): UseHelpCenterApiInterface => {
-    const {isReady, client} = useContext(HelpCenterApiClientContext)
+    const { isReady, client } = useContext(HelpCenterApiClientContext)
 
     return useMemo(
         () => ({
             isReady,
             client,
         }),
-        [isReady, client]
+        [isReady, client],
     )
 }
 
 export const useAbilityChecker = () => {
-    const {agentAbility} = useContext(HelpCenterApiClientContext)
+    const { agentAbility } = useContext(HelpCenterApiClientContext)
 
     const isPassingRulesCheck = useCallback(
         (permissionChecker: (ab: AppAbility) => boolean | null) => {
             if (!agentAbility) return null
             return permissionChecker(agentAbility)
         },
-        [agentAbility]
+        [agentAbility],
     )
 
     return useMemo(
         () => ({
             isPassingRulesCheck,
         }),
-        [isPassingRulesCheck]
+        [isPassingRulesCheck],
     )
 }

@@ -1,11 +1,12 @@
-import {fireEvent, render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {RootState, StoreDispatch} from 'state/types'
+import { RootState, StoreDispatch } from 'state/types'
 
 import PrefillMacroAlert from '../PrefillMacroAlert'
 
@@ -26,13 +27,13 @@ describe('<PrefillMacroAlert />', () => {
     } as RootState
 
     it('should render alert', () => {
-        const {baseElement} = render(
+        const { baseElement } = render(
             <Provider store={mockStore(defaultState)}>
                 <PrefillMacroAlert
                     onKeepMacro={jest.fn()}
                     onRemoveMacro={jest.fn()}
                 />
-            </Provider>
+            </Provider>,
         )
         expect(baseElement).toMatchSnapshot()
     })
@@ -47,7 +48,7 @@ describe('<PrefillMacroAlert />', () => {
                     onKeepMacro={handleKeepMacro}
                     onRemoveMacro={handleRemoveMacro}
                 />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(screen.getByText(/close/))

@@ -1,5 +1,6 @@
+import React, { ReactNode } from 'react'
+
 import classnames from 'classnames'
-import React, {ReactNode} from 'react'
 
 import cssNavbar from 'assets/css/navbar.less'
 import NavbarLink, {

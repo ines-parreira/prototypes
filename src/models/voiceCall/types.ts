@@ -1,4 +1,4 @@
-import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
+import { PhoneIntegrationEvent } from 'constants/integrations/types/event'
 
 export type VoiceCallDirection = 'inbound' | 'outbound'
 
@@ -150,7 +150,7 @@ export type OutboundVoiceCall = VoiceCall & {
 }
 
 export const isOutboundVoiceCall = (
-    input: unknown
+    input: unknown,
 ): input is OutboundVoiceCall =>
     isVoiceCall(input) && typeof input.initiated_by_agent_id === 'number'
 
@@ -180,7 +180,7 @@ export const getDisplayOutboundVoiceCallStatus = (status: VoiceCallStatus) => {
 
 export const getDisplayInboundVoiceCallStatus = (
     status: VoiceCallStatus,
-    lastAnsweredByAgentId?: number | null
+    lastAnsweredByAgentId?: number | null,
 ) => {
     switch (status) {
         case VoiceCallStatus.Ringing:

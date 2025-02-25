@@ -1,17 +1,18 @@
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {useFlag} from 'core/flags'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {EmailIntegration} from 'models/integration/types'
-import {submitSetting} from 'state/currentAccount/actions'
-import {AccountSettingType} from 'state/currentAccount/types'
-import {RootState, StoreDispatch} from 'state/types'
-import {assumeMock} from 'utils/testing'
+import { EmailIntegration } from 'models/integration/types'
+import { submitSetting } from 'state/currentAccount/actions'
+import { AccountSettingType } from 'state/currentAccount/types'
+import { RootState, StoreDispatch } from 'state/types'
+import { assumeMock } from 'utils/testing'
 
 import EmailIntegrationAddressField from '../EmailIntegrationAddressField'
 
@@ -45,7 +46,7 @@ describe('<EmailIntegrationAddressField />', () => {
             ...render(
                 <Provider store={store}>
                     <EmailIntegrationAddressField {...props} />
-                </Provider>
+                </Provider>,
             ),
             store,
         }
@@ -69,7 +70,7 @@ describe('<EmailIntegrationAddressField />', () => {
     })
 
     it('should render if the address is missing', () => {
-        renderComponent({integration: {id: 1} as EmailIntegration})
+        renderComponent({ integration: { id: 1 } as EmailIntegration })
         expect(screen.getByText('Email Address')).toBeInTheDocument()
         expect(screen.getByText('Set As Default')).toBeInTheDocument()
     })
@@ -77,7 +78,7 @@ describe('<EmailIntegrationAddressField />', () => {
     it('should render the default badge if the integration is set as default', () => {
         const store = mockStore({
             currentAccount: fromJS({
-                settings: [{type: 'default-integration', data: {email: 1}}],
+                settings: [{ type: 'default-integration', data: { email: 1 } }],
             }),
         })
         renderComponent(minProps, store)
@@ -98,8 +99,8 @@ describe('<EmailIntegrationAddressField />', () => {
         await waitFor(() => {
             expect(
                 screen.getByText(
-                    'Set this email address as your default when creating email tickets or switching to the email channel.'
-                )
+                    'Set this email address as your default when creating email tickets or switching to the email channel.',
+                ),
             ).toBeInTheDocument()
         })
     })
@@ -107,7 +108,7 @@ describe('<EmailIntegrationAddressField />', () => {
     it('should render a tooltip for the default badge', async () => {
         const store = mockStore({
             currentAccount: fromJS({
-                settings: [{type: 'default-integration', data: {email: 1}}],
+                settings: [{ type: 'default-integration', data: { email: 1 } }],
             }),
         })
         renderComponent(minProps, store)
@@ -120,8 +121,8 @@ describe('<EmailIntegrationAddressField />', () => {
         await waitFor(() => {
             expect(
                 screen.getByText(
-                    'This email address is used as the default when creating email tickets or switching to the email channel. To remove this as the default, you must set another email as the default first.'
-                )
+                    'This email address is used as the default when creating email tickets or switching to the email channel. To remove this as the default, you must set another email as the default first.',
+                ),
             ).toBeInTheDocument()
         })
     })
@@ -138,7 +139,7 @@ describe('<EmailIntegrationAddressField />', () => {
             expect(mockDispatch).toHaveBeenCalled()
             expect(mockSubmitSetting).toHaveBeenCalledWith({
                 type: AccountSettingType.DefaultIntegration,
-                data: {email: 1},
+                data: { email: 1 },
             })
         })
     })
@@ -147,7 +148,10 @@ describe('<EmailIntegrationAddressField />', () => {
         const store = mockStore({
             currentAccount: fromJS({
                 settings: [
-                    {type: 'default-integration', data: {email: 2, phone: 3}},
+                    {
+                        type: 'default-integration',
+                        data: { email: 2, phone: 3 },
+                    },
                 ],
             }),
         })
@@ -163,7 +167,7 @@ describe('<EmailIntegrationAddressField />', () => {
             expect(mockDispatch).toHaveBeenCalled()
             expect(mockSubmitSetting).toHaveBeenCalledWith({
                 type: AccountSettingType.DefaultIntegration,
-                data: {email: 1, phone: 3},
+                data: { email: 1, phone: 3 },
             })
         })
     })

@@ -1,23 +1,24 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {fireEvent, screen, act, waitFor} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {account} from 'fixtures/account'
-import {integrationsState} from 'fixtures/integrations'
+import { account } from 'fixtures/account'
+import { integrationsState } from 'fixtures/integrations'
 import ContactFormCreateView from 'pages/settings/contactForm/views/ContactFormCreateView/ContactFormCreateView'
-import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
-import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
-import {RootState, StoreDispatch} from 'state/types'
-import {renderWithRouter} from 'utils/testing'
+import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
+import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
+import { RootState, StoreDispatch } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
-import {buildSDKMocks} from '../../../../../../rest_api/help_center_api/tests/buildSdkMocks'
-import {mockQueryClient} from '../../../../../../tests/reactQueryTestingUtils'
-import {mockResourceServerReplies} from '../../../tests/resource-mocks'
+import { buildSDKMocks } from '../../../../../../rest_api/help_center_api/tests/buildSdkMocks'
+import { mockQueryClient } from '../../../../../../tests/reactQueryTestingUtils'
+import { mockResourceServerReplies } from '../../../tests/resource-mocks'
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi')
 const mockedUseHelpCenterApi = useHelpCenterApi as jest.MockedFunction<
@@ -48,13 +49,13 @@ describe('<ContactFormCreateView />', () => {
         currentAccount: fromJS(account),
     }
 
-    const renderView = ({state}: {state: Partial<RootState>}) => {
+    const renderView = ({ state }: { state: Partial<RootState> }) => {
         return renderWithRouter(
             <QueryClientProvider client={testQueryClient}>
                 <Provider store={mockStore(state)}>
                     <ContactFormCreateView />,
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
     }
 
@@ -67,7 +68,7 @@ describe('<ContactFormCreateView />', () => {
         })
 
         jest.mocked(useSupportedLocales).mockReturnValue(
-            getLocalesResponseFixture
+            getLocalesResponseFixture,
         )
 
         window.GORGIAS_STATE = {
@@ -82,12 +83,12 @@ describe('<ContactFormCreateView />', () => {
     })
 
     it('should preserve valid classnames to have proper distances between sections', () => {
-        const {container} = renderView({state: defaultState})
+        const { container } = renderView({ state: defaultState })
         expect(container).toMatchSnapshot()
     })
 
     it('should not pre-fill default form name', async () => {
-        renderView({state: defaultState})
+        renderView({ state: defaultState })
 
         const nameInput = await screen.findByTestId('name')
         expect(nameInput.getAttribute('value')).toEqual('')
@@ -95,27 +96,27 @@ describe('<ContactFormCreateView />', () => {
 
     describe('Submit form', () => {
         it('should disable the submit button if name is empty', async () => {
-            renderView({state: defaultState})
+            renderView({ state: defaultState })
             const nameInput = await screen.findByTestId('name')
             const submitButton = screen.getByRole('button', {
                 name: /Create Contact Form/,
             })
 
-            fireEvent.change(nameInput, {target: {value: 'Test'}})
-            fireEvent.change(nameInput, {target: {value: ''}})
+            fireEvent.change(nameInput, { target: { value: 'Test' } })
+            fireEvent.change(nameInput, { target: { value: '' } })
 
             expect(submitButton.className).toMatch(/disabled/i)
         })
 
         it('should have an error message if form name is one character long', async () => {
-            renderView({state: defaultState})
+            renderView({ state: defaultState })
 
             const nameInput = await screen.findByTestId('name')
             const submitButton = screen.getByRole('button', {
                 name: /Create Contact Form/,
             })
 
-            fireEvent.change(nameInput, {target: {value: 'X'}})
+            fireEvent.change(nameInput, { target: { value: 'X' } })
             expect(nameInput.getAttribute('value')).toEqual('X')
             expect(submitButton.className).toMatch(/disabled/i)
 
@@ -130,7 +131,7 @@ describe('<ContactFormCreateView />', () => {
             const spy = jest.spyOn(sdkMocks.client, 'createContactForm')
 
             const TEST_NAME = 'Test name'
-            renderView({state: defaultState})
+            renderView({ state: defaultState })
 
             const submitButton = screen.getByRole('button', {
                 name: /Create Contact Form/,
@@ -139,8 +140,8 @@ describe('<ContactFormCreateView />', () => {
             await act(async () => {
                 await waitFor(() =>
                     fireEvent.change(screen.getByTestId('name'), {
-                        target: {value: TEST_NAME},
-                    })
+                        target: { value: TEST_NAME },
+                    }),
                 )
 
                 expect(submitButton.className).not.toMatch(/disabled/i)

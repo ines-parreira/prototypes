@@ -1,4 +1,3 @@
-import classnames from 'classnames'
 import React, {
     ComponentProps,
     ForwardedRef,
@@ -9,6 +8,8 @@ import React, {
     useState,
 } from 'react'
 
+import classnames from 'classnames'
+
 import useEffectOnce from 'hooks/useEffectOnce'
 import usePrevious from 'hooks/usePrevious'
 import useUnmount from 'hooks/useUnmount'
@@ -16,11 +17,14 @@ import useUpdateEffect from 'hooks/useUpdateEffect'
 import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'
 
-import {DropdownContext} from './Dropdown'
+import { DropdownContext } from './Dropdown'
 
 import css from './DropdownSearch.less'
 
-type Props = {value?: string} & Omit<ComponentProps<typeof TextInput>, 'value'>
+type Props = { value?: string } & Omit<
+    ComponentProps<typeof TextInput>,
+    'value'
+>
 
 const DropdownSearch = (
     {
@@ -31,7 +35,7 @@ const DropdownSearch = (
         value,
         ...other
     }: Props,
-    ref: ForwardedRef<HTMLInputElement>
+    ref: ForwardedRef<HTMLInputElement>,
 ) => {
     const inputRef = useRef<HTMLInputElement>(null)
     useImperativeHandle(ref, () => inputRef.current!)
@@ -39,10 +43,10 @@ const DropdownSearch = (
 
     if (!dropdownContext) {
         throw new Error(
-            'DropdownSearch must be used within a DropdownContext.Provider'
+            'DropdownSearch must be used within a DropdownContext.Provider',
         )
     }
-    const {onQueryChange, query} = dropdownContext
+    const { onQueryChange, query } = dropdownContext
     const [localQuery, setLocalQuery] = useState(value || query)
     const previousLocalQuery = usePrevious(localQuery)
 

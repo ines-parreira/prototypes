@@ -1,12 +1,13 @@
-import {fromJS} from 'immutable'
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
+
+import { fromJS } from 'immutable'
 // eslint-disable-next-line no-restricted-imports
-import {useDispatch} from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationType} from 'models/integration/constants'
-import {loadIntegration} from 'models/integration/resources/alloy'
-import {AlloyIntegration} from 'models/integration/types/alloy'
+import { IntegrationType } from 'models/integration/constants'
+import { loadIntegration } from 'models/integration/resources/alloy'
+import { AlloyIntegration } from 'models/integration/types/alloy'
 import Button from 'pages/common/components/button/Button'
 import {
     deleteIntegration,
@@ -45,9 +46,9 @@ export default function AlloyConnectButton({
 
     // Get the first matching Alloy integration with this ID
     const alloyIntegrations = useAppSelector(
-        getIntegrationsByType<AlloyIntegration>(IntegrationType.Alloy)
+        getIntegrationsByType<AlloyIntegration>(IntegrationType.Alloy),
     ).filter(
-        (integration) => integration.meta['integration_id'] === integrationId
+        (integration) => integration.meta['integration_id'] === integrationId,
     )
     const alloyIntegration = alloyIntegrations.length
         ? alloyIntegrations[0]
@@ -98,8 +99,8 @@ export default function AlloyConnectButton({
                         integration,
                         undefined,
                         null,
-                        true
-                    )
+                        true,
+                    ),
                 )
             }
         } finally {

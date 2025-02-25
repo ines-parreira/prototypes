@@ -8,18 +8,18 @@ type Props = {
     isUpdatePending: boolean
 }
 
-const DeleteWorkflowAction = ({onDelete, isUpdatePending}: Props) => {
+const DeleteWorkflowAction = ({ onDelete, isUpdatePending }: Props) => {
     return (
         <ConfirmationPopover
-            buttonProps={{intent: 'destructive'}}
-            cancelButtonProps={{intent: 'secondary'}}
+            buttonProps={{ intent: 'destructive' }}
+            cancelButtonProps={{ intent: 'secondary' }}
             content="Are you sure you want to delete this flow? This action cannot be undone."
             title={<b>Delete flow?</b>}
             onConfirm={onDelete}
             confirmLabel="Delete"
             showCancelButton
         >
-            {({uid, onDisplayConfirmation}) => (
+            {({ uid, onDisplayConfirmation }) => (
                 <IconButton
                     onClick={onDisplayConfirmation}
                     fillStyle="ghost"

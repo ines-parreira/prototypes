@@ -1,4 +1,4 @@
-import {canDrop} from '../canDrop'
+import { canDrop } from '../canDrop'
 
 describe('canDrop', () => {
     it('should return false when source doesn’t match target', () => {

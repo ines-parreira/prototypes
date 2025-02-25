@@ -1,4 +1,4 @@
-import {useCallback, useLayoutEffect, useState} from 'react'
+import { useCallback, useLayoutEffect, useState } from 'react'
 
 export default function useDimensions(): [
     (element: HTMLElement | null) => void,
@@ -14,7 +14,7 @@ export default function useDimensions(): [
         if (element) {
             const measure = () =>
                 window.requestAnimationFrame(() =>
-                    setDimensions(element.getBoundingClientRect())
+                    setDimensions(element.getBoundingClientRect()),
                 )
 
             measure()

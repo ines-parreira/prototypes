@@ -1,13 +1,13 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {AlertBannerTypes, BannerCategories} from 'AlertBanners'
-import {isRecoverableError} from 'hooks/integrations/phone/utils'
+import { AlertBannerTypes, BannerCategories } from 'AlertBanners'
+import { isRecoverableError } from 'hooks/integrations/phone/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {VoiceDeviceActions} from 'pages/integrations/integration/components/voice/types'
-import {State} from 'state/twilio/voiceDevice'
-import {assumeMock} from 'utils/testing'
+import { VoiceDeviceActions } from 'pages/integrations/integration/components/voice/types'
+import { State } from 'state/twilio/voiceDevice'
+import { assumeMock } from 'utils/testing'
 
-import {useErrorHandling} from '../useErrorHandling'
+import { useErrorHandling } from '../useErrorHandling'
 
 jest.mock('hooks/useAppDispatch')
 jest.mock('state/notifications/actions')
@@ -49,7 +49,7 @@ describe('useErrorHandling', () => {
         expect(mockRemoveBanner).toHaveBeenCalledTimes(1)
         expect(mockRemoveBanner).toHaveBeenCalledWith(
             BannerCategories.ERROR_HANDLING,
-            'phone-warning-banner'
+            'phone-warning-banner',
         )
     })
 
@@ -74,7 +74,7 @@ describe('useErrorHandling', () => {
                     text: 'Reload page',
                     onClick: expect.any(Function),
                 }),
-            })
+            }),
         )
     })
 
@@ -85,7 +85,7 @@ describe('useErrorHandling', () => {
         expect(mockRemoveBanner).toHaveBeenCalled()
         expect(mockRemoveBanner).toHaveBeenCalledWith(
             BannerCategories.ERROR_HANDLING,
-            'phone-error-banner'
+            'phone-error-banner',
         )
     })
 
@@ -100,7 +100,7 @@ describe('useErrorHandling', () => {
 
         expect(mockRemoveBanner).toHaveBeenCalledWith(
             BannerCategories.ERROR_HANDLING,
-            'phone-error-banner'
+            'phone-error-banner',
         )
         expect(mockAddBanner).not.toHaveBeenCalled()
     })
@@ -120,7 +120,7 @@ describe('useErrorHandling', () => {
                 message:
                     'Poor network connection detected. Voice calls cannot be properly received or made until connection improves. Try restarting the network on your device.',
                 onClose: expect.any(Function),
-            })
+            }),
         )
     })
 

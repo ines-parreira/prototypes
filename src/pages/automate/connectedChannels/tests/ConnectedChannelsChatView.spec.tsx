@@ -1,37 +1,38 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-import {act} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
-import {keyBy} from 'lodash'
 import React from 'react'
-import {Provider} from 'react-redux'
-import {Router} from 'react-router-dom'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
+import { keyBy } from 'lodash'
+import { Provider } from 'react-redux'
+import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {billingState} from 'fixtures/billing'
-import {selfServiceConfiguration1 as mockSelfServiceConfiguration} from 'fixtures/self_service_configurations'
-import {useGetHelpCenter} from 'models/helpCenter/queries'
+import { billingState } from 'fixtures/billing'
+import { selfServiceConfiguration1 as mockSelfServiceConfiguration } from 'fixtures/self_service_configurations'
+import { useGetHelpCenter } from 'models/helpCenter/queries'
 import {
     applicationAutomationSettingsFixture,
     applicationsAutomationSettingsStateFixture,
 } from 'pages/aiAgent/fixtures/applicationAutomationSettings.fixture'
-import {mockChatChannels} from 'pages/aiAgent/fixtures/chatChannels.fixture'
+import { mockChatChannels } from 'pages/aiAgent/fixtures/chatChannels.fixture'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import useSelfServiceChannels from 'pages/automate/common/hooks/useSelfServiceChannels'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import history from 'pages/history'
-import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
-import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {RootState} from 'state/types'
+import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
+import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { RootState } from 'state/types'
 import {
     mockQueryClient,
     renderWithQueryClientProvider,
 } from 'tests/reactQueryTestingUtils'
 
-import {initialState as articlesState} from '../../../../state/entities/helpCenter/articles'
-import {initialState as categoriesState} from '../../../../state/entities/helpCenter/categories'
-import {ConnectedChannelsChatView} from '../components/ConnectedChannelsChatView'
+import { initialState as articlesState } from '../../../../state/entities/helpCenter/articles'
+import { initialState as categoriesState } from '../../../../state/entities/helpCenter/categories'
+import { ConnectedChannelsChatView } from '../components/ConnectedChannelsChatView'
 
 const queryClient = mockQueryClient()
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
@@ -76,7 +77,7 @@ const mockedStore = mockStore({
                 automationSettingsByContactFormId: {
                     [contactForm.id]: {
                         workflows: [],
-                        order_management: {enabled: false},
+                        order_management: { enabled: false },
                     },
                 },
             },
@@ -274,7 +275,7 @@ describe('ConnectedChannelsView', () => {
                         <ConnectedChannelsChatView />
                     </QueryClientProvider>
                 </Provider>
-            </Router>
+            </Router>,
         )
     })
 
@@ -286,7 +287,7 @@ describe('ConnectedChannelsView', () => {
                         <ConnectedChannelsChatView />
                     </QueryClientProvider>
                 </Provider>
-            </Router>
+            </Router>,
         )
         expect(screen.getByText('Currently viewing')).toBeInTheDocument()
     })
@@ -299,7 +300,7 @@ describe('ConnectedChannelsView', () => {
                         <ConnectedChannelsChatView />
                     </QueryClientProvider>
                 </Provider>
-            </Router>
+            </Router>,
         )
         expect(screen.getByText('chat_bubble')).toBeInTheDocument()
     })
@@ -312,12 +313,12 @@ describe('ConnectedChannelsView', () => {
                         <ConnectedChannelsChatView />
                     </QueryClientProvider>
                 </Provider>
-            </Router>
+            </Router>,
         )
 
         expect(
             // button with aria-label="Currently viewing"
-            screen.getByRole('button', {name: 'Currently viewing'})
+            screen.getByRole('button', { name: 'Currently viewing' }),
         ).toHaveTextContent(mockChatChannels[0].value.name)
     })
 
@@ -329,18 +330,18 @@ describe('ConnectedChannelsView', () => {
                         <ConnectedChannelsChatView />
                     </QueryClientProvider>
                 </Provider>
-            </Router>
+            </Router>,
         )
 
         // click on the dropdown button
-        screen.getByRole('button', {name: 'Currently viewing'}).click()
+        screen.getByRole('button', { name: 'Currently viewing' }).click()
 
         // expect the dropdown to be visible
         expect(screen.getByText('Currently viewing')).toBeInTheDocument()
 
         // expect the dropdown to have the same number of options as the channels
         expect(screen.getAllByRole('option').length).toBe(
-            mockChatChannels.length
+            mockChatChannels.length,
         )
         screen.getAllByRole('option').forEach((option, index) => {
             expect(option).toHaveTextContent(mockChatChannels[index].value.name)
@@ -382,7 +383,7 @@ describe('ConnectedChannelsView', () => {
                         <ConnectedChannelsChatView />
                     </QueryClientProvider>
                 </Provider>
-            </Router>
+            </Router>,
         )
 
         expect(screen.getByText(/Loading/i)).toBeInTheDocument()
@@ -401,7 +402,7 @@ describe('ConnectedChannelsView', () => {
                         <ConnectedChannelsChatView />
                     </QueryClientProvider>
                 </Provider>
-            </Router>
+            </Router>,
         )
 
         expect(screen.getByText(/Loading/i)).toBeInTheDocument()
@@ -423,12 +424,12 @@ describe('ConnectedChannelsView', () => {
                         <ConnectedChannelsChatView />
                     </QueryClientProvider>
                 </Provider>
-            </Router>
+            </Router>,
         )
 
         await act(async () => {
             fireEvent.click(
-                screen.getByLabelText(/Enable Article Recommendation/i)
+                screen.getByLabelText(/Enable Article Recommendation/i),
             )
             await waitFor(() => {
                 expect(handleUpdate).toHaveBeenCalledTimes(1)
@@ -437,7 +438,7 @@ describe('ConnectedChannelsView', () => {
             await act(async () => {
                 await waitFor(() => {
                     fireEvent.click(
-                        screen.getByLabelText(/Enable Order Management/i)
+                        screen.getByLabelText(/Enable Order Management/i),
                     )
                     expect(handleUpdate).toHaveBeenCalledTimes(3)
                 })
@@ -451,14 +452,16 @@ describe('ConnectedChannelsView', () => {
                 <Provider store={mockedStore}>
                     <ConnectedChannelsChatView />
                 </Provider>
-            </Router>
+            </Router>,
         )
 
-        const dropdown = screen.getByRole('button', {name: 'Currently viewing'})
+        const dropdown = screen.getByRole('button', {
+            name: 'Currently viewing',
+        })
         fireEvent.click(dropdown)
         fireEvent(
             screen.getByText(mockChatChannels[1].value.name),
-            new MouseEvent('click', {bubbles: true})
+            new MouseEvent('click', { bubbles: true }),
         )
     })
 
@@ -474,7 +477,7 @@ describe('ConnectedChannelsView', () => {
                 <Provider store={mockedStore}>
                     <ConnectedChannelsChatView />
                 </Provider>
-            </Router>
+            </Router>,
         )
 
         expect(screen.queryByText(/Test/i)).not.toBeInTheDocument()
@@ -499,7 +502,7 @@ describe('ConnectedChannelsView', () => {
                 <Provider store={mockedStore}>
                     <ConnectedChannelsChatView />
                 </Provider>
-            </Router>
+            </Router>,
         )
 
         const toggle = screen.getByLabelText(/Enable Article Recommendation/i)
@@ -507,9 +510,9 @@ describe('ConnectedChannelsView', () => {
 
         expect(handleUpdate).toHaveBeenCalledWith(
             expect.objectContaining({
-                articleRecommendation: {enabled: true},
+                articleRecommendation: { enabled: true },
             }),
-            'Article Recommendation enabled'
+            'Article Recommendation enabled',
         )
     })
 
@@ -528,7 +531,7 @@ describe('ConnectedChannelsView', () => {
                 <Provider store={mockedStore}>
                     <ConnectedChannelsChatView />
                 </Provider>
-            </Router>
+            </Router>,
         )
 
         const toggle = screen.getByLabelText(/Enable Order Management/i)
@@ -536,9 +539,9 @@ describe('ConnectedChannelsView', () => {
 
         expect(handleUpdate).toHaveBeenCalledWith(
             expect.objectContaining({
-                orderManagement: {enabled: true},
+                orderManagement: { enabled: true },
             }),
-            'Order Management enabled'
+            'Order Management enabled',
         )
     })
 
@@ -594,7 +597,7 @@ describe('ConnectedChannelsView', () => {
                 <Provider store={mockedStore}>
                     <ConnectedChannelsChatView />
                 </Provider>
-            </Router>
+            </Router>,
         )
 
         const toggle = screen.getByLabelText(/Enable Order Management/i)
@@ -602,9 +605,9 @@ describe('ConnectedChannelsView', () => {
 
         expect(handleUpdate).toHaveBeenCalledWith(
             expect.objectContaining({
-                orderManagement: {enabled: false},
+                orderManagement: { enabled: false },
             }),
-            'Order Management disabled'
+            'Order Management disabled',
         )
     })
 
@@ -640,16 +643,18 @@ describe('ConnectedChannelsView', () => {
                         hideDropdown
                     />
                 </Provider>
-            </Router>
+            </Router>,
         )
 
         expect(screen.queryByText(/currently viewing/i)).not.toBeInTheDocument()
         expect(screen.queryByText(/chat_bubble/i)).not.toBeInTheDocument()
         expect(
-            screen.getByRole('switch', {name: /enable article recommendation/i})
+            screen.getByRole('switch', {
+                name: /enable article recommendation/i,
+            }),
         ).not.toBeChecked()
         expect(
-            screen.getByRole('switch', {name: /enable order management/i})
+            screen.getByRole('switch', { name: /enable order management/i }),
         ).not.toBeChecked()
         expect(screen.getAllByText(/test 1/i)).toHaveLength(2)
     })
@@ -672,7 +677,7 @@ describe('ConnectedChannelsView', () => {
                 <Provider store={mockedStore}>
                     <ConnectedChannelsChatView />
                 </Provider>
-            </Router>
+            </Router>,
         )
         expect(screen.getByText(/Go to Chat/i)).toBeInTheDocument()
     })
@@ -691,7 +696,7 @@ describe('ConnectedChannelsView', () => {
                 <Provider store={mockedStore}>
                     <ConnectedChannelsChatView />
                 </Provider>
-            </Router>
+            </Router>,
         )
 
         expect(screen.getByText(/Configuration Required/i)).toBeInTheDocument()

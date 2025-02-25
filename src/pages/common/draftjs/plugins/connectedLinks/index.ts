@@ -1,6 +1,6 @@
-import {EditorState} from 'draft-js'
+import { EditorState } from 'draft-js'
 
-import {setConnectedLinks} from './utils'
+import { setConnectedLinks } from './utils'
 
 const connectedLinksPlugin = () => {
     return {

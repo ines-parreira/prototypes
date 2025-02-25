@@ -1,6 +1,8 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+
 import classnames from 'classnames'
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import {
     BigCommerceCart,
@@ -10,9 +12,12 @@ import {
 import Button from 'pages/common/components/button/Button'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import Loader from 'pages/common/components/Loader/Loader'
-import RadioFieldSet, {RadioFieldOption} from 'pages/common/forms/RadioFieldSet'
+import RadioFieldSet, {
+    RadioFieldOption,
+} from 'pages/common/forms/RadioFieldSet'
 
-import {PopoverContainer} from './components/popover-container/PopoverContainer'
+import { PopoverContainer } from './components/popover-container/PopoverContainer'
+
 import css from './OrderTotals.less'
 
 export const useShippingMethods = ({
@@ -23,7 +28,7 @@ export const useShippingMethods = ({
     consignment: Maybe<BigCommerceConsignment>
     currencyCode: string | null
     onUpdateConsignmentShippingMethod: (
-        shippingMethodId: string
+        shippingMethodId: string,
     ) => Promise<void>
 }) => {
     const [isUpdatingConsignment, setIsUpdatingConsignment] = useState(false)
@@ -38,9 +43,9 @@ export const useShippingMethods = ({
             }
             const similarShippingOptions =
                 consignment.available_shipping_options.filter(
-                    ({type, description}) =>
+                    ({ type, description }) =>
                         type === shippingOption.type &&
-                        description === shippingOption.description
+                        description === shippingOption.description,
                 )
 
             // Update consignment and set local shipping method _only_ if we have single match
@@ -49,7 +54,7 @@ export const useShippingMethods = ({
                 setIsUpdatingConsignment(true)
                 try {
                     await onUpdateConsignmentShippingMethod(
-                        similarShippingOptions[0].id
+                        similarShippingOptions[0].id,
                     )
                     return setSelectedShippingMethod(similarShippingOptions[0])
                 } catch (error) {
@@ -59,7 +64,7 @@ export const useShippingMethods = ({
                 }
             }
         },
-        [consignment, onUpdateConsignmentShippingMethod]
+        [consignment, onUpdateConsignmentShippingMethod],
     )
 
     /**
@@ -92,7 +97,7 @@ export const useShippingMethods = ({
                 // and it has to be re-selected.
                 const hasAvailableSelectedShippingMethod =
                     consignment.available_shipping_options.find(
-                        ({id}) => id === selectedShippingMethod.id
+                        ({ id }) => id === selectedShippingMethod.id,
                     )
 
                 if (hasAvailableSelectedShippingMethod) {
@@ -100,7 +105,7 @@ export const useShippingMethods = ({
 
                     try {
                         await onUpdateConsignmentShippingMethod(
-                            selectedShippingMethod.id
+                            selectedShippingMethod.id,
                         )
                     } catch (error) {
                         console.error(error)
@@ -121,16 +126,16 @@ export const useShippingMethods = ({
                 if (
                     consignment.selected_shipping_option.id &&
                     consignment.available_shipping_options.find(
-                        ({id}) =>
-                            id === consignment.selected_shipping_option?.id
+                        ({ id }) =>
+                            id === consignment.selected_shipping_option?.id,
                     )
                 ) {
                     return setSelectedShippingMethod(
-                        consignment.selected_shipping_option
+                        consignment.selected_shipping_option,
                     )
                 }
                 return await selectSimilarShippingOption(
-                    consignment.selected_shipping_option
+                    consignment.selected_shipping_option,
                 )
             }
 
@@ -146,7 +151,7 @@ export const useShippingMethods = ({
                     selectedShippingMethod?.id
                 ) {
                     return await onUpdateConsignmentShippingMethod(
-                        selectedShippingMethod.id
+                        selectedShippingMethod.id,
                     )
                 }
 
@@ -157,7 +162,7 @@ export const useShippingMethods = ({
                     consignment.selected_shipping_option.id ===
                         selectedShippingMethod?.id &&
                     !consignment.available_shipping_options.find(
-                        ({id}) => id === selectedShippingMethod.id
+                        ({ id }) => id === selectedShippingMethod.id,
                     )
                 ) {
                     return setSelectedShippingMethod(null)
@@ -189,13 +194,13 @@ export const useShippingMethods = ({
                     </div>
                 ),
             })),
-        [consignment?.available_shipping_options, currencyCode]
+        [consignment?.available_shipping_options, currencyCode],
     )
 
     const onSelectShippingMethod = (shippingMethodId: string) => {
         const shippingMethod = (
             consignment?.available_shipping_options ?? []
-        ).find(({id}) => shippingMethodId === id)
+        ).find(({ id }) => shippingMethodId === id)
 
         if (shippingMethod) {
             setSelectedShippingMethod(shippingMethod)
@@ -217,7 +222,7 @@ type Props = {
     shippingCost: number
     hasShippingAddress: boolean
     onUpdateConsignmentShippingMethod: (
-        selectedShippingMethodId: Maybe<string>
+        selectedShippingMethodId: Maybe<string>,
     ) => Promise<void>
     hasError?: boolean
 }
@@ -272,7 +277,7 @@ const getDisabledStatus = ({
         }
     }
 
-    return {disabled: false}
+    return { disabled: false }
 }
 
 export function ShippingMethod({
@@ -284,7 +289,7 @@ export function ShippingMethod({
     onUpdateConsignmentShippingMethod,
     hasError = false,
 }: Props) {
-    const {disabled: isDisabled, reason: disabledReason} = getDisabledStatus({
+    const { disabled: isDisabled, reason: disabledReason } = getDisabledStatus({
         hasShippingAddress,
         cart,
     })

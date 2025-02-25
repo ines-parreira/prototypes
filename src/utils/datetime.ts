@@ -1,10 +1,10 @@
 import {
-    DateFormatType,
-    TimeFormatType,
-    DateTimeFormatType,
-    DateTimeFormatMapper,
-    DateTimeResultFormatType,
     DateAndTimeFormatting,
+    DateFormatType,
+    DateTimeFormatMapper,
+    DateTimeFormatType,
+    DateTimeResultFormatType,
+    TimeFormatType,
 } from 'constants/datetime'
 
 /**
@@ -13,7 +13,7 @@ import {
 export function getDateAndTimeFormat(
     dateSetting: DateFormatType,
     timeSetting: TimeFormatType,
-    formatType = DateAndTimeFormatting.RelativeDateAndTime
+    formatType = DateAndTimeFormatting.RelativeDateAndTime,
 ): DateTimeResultFormatType {
     switch (formatType) {
         case DateAndTimeFormatting.Time:

@@ -1,7 +1,8 @@
-import {render, screen, fireEvent, waitFor} from '@testing-library/react'
 import React from 'react'
 
-import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+
+import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 
 import ConditionsNodeEditor from '../ConditionsNodeEditor'
 
@@ -19,7 +20,7 @@ describe('ConditionsNodeEditor', () => {
         ;(useVisualBuilderContext as jest.Mock).mockReturnValue({
             visualBuilderGraph: {
                 edges: [],
-                nodes: [{id: '1', type: 'llm_prompt_trigger'}],
+                nodes: [{ id: '1', type: 'llm_prompt_trigger' }],
             },
             dispatch: mockDispatch,
             getVariableListForNode: mockGetVariableListForNode,
@@ -34,7 +35,7 @@ describe('ConditionsNodeEditor', () => {
         ;(useVisualBuilderContext as jest.Mock).mockReturnValue({
             visualBuilderGraph: {
                 edges: [],
-                nodes: [{id: '1', type}],
+                nodes: [{ id: '1', type }],
             },
             dispatch: mockDispatch,
             getVariableListForNode: mockGetVariableListForNode,
@@ -42,12 +43,12 @@ describe('ConditionsNodeEditor', () => {
         const screen = render(
             <ConditionsNodeEditor
                 nodeInEdition={{
-                    position: {x: 0, y: 0},
+                    position: { x: 0, y: 0 },
                     id: '1',
-                    data: {name: 'Test Node'},
+                    data: { name: 'Test Node' },
                     type: 'conditions',
                 }}
-            />
+            />,
         )
 
         expect(screen.getByText('Step Name')).toBeInTheDocument()
@@ -59,12 +60,12 @@ describe('ConditionsNodeEditor', () => {
         render(
             <ConditionsNodeEditor
                 nodeInEdition={{
-                    position: {x: 0, y: 0},
+                    position: { x: 0, y: 0 },
                     id: '1',
-                    data: {name: 'Test Node'},
+                    data: { name: 'Test Node' },
                     type: 'conditions',
                 }}
-            />
+            />,
         )
 
         const addBranchButton = screen.getByRole('button', {
@@ -85,12 +86,12 @@ describe('ConditionsNodeEditor', () => {
         const screen = render(
             <ConditionsNodeEditor
                 nodeInEdition={{
-                    position: {x: 0, y: 0},
+                    position: { x: 0, y: 0 },
                     id: '1',
-                    data: {name: 'Test Node'},
+                    data: { name: 'Test Node' },
                     type: 'conditions',
                 }}
-            />
+            />,
         )
 
         mockGetVariableListForNode.mockReturnValue([])
@@ -99,15 +100,15 @@ describe('ConditionsNodeEditor', () => {
         await waitFor(() => {
             expect(
                 screen.getByText(
-                    'branches are evaluated in the order below, names not visible to customers'
-                )
+                    'branches are evaluated in the order below, names not visible to customers',
+                ),
             ).toBeInTheDocument()
         })
 
         const conditionInput = screen.container.querySelector('#conditions')
 
         fireEvent.change(conditionInput!, {
-            target: {value: 'Updated Condition Name'},
+            target: { value: 'Updated Condition Name' },
         })
         expect(mockDispatch).toHaveBeenCalledWith({
             type: 'UPDATE_CONDITIONS_NODE_NAME',

@@ -1,12 +1,13 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {NOT_AVAILABLE_PLACEHOLDER} from 'pages/stats/common/utils'
+import { render } from '@testing-library/react'
+
+import { NOT_AVAILABLE_PLACEHOLDER } from 'pages/stats/common/utils'
 import CustomerNameBodyCell from 'pages/stats/quality-management/satisfaction/ScoredSurveysChart/CustomerNameBodyCell'
 
 describe('<CustomerNameBodyCell>', () => {
     it('should render customer name', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <table>
                 <tbody>
                     <tr>
@@ -16,14 +17,14 @@ describe('<CustomerNameBodyCell>', () => {
                         />
                     </tr>
                 </tbody>
-            </table>
+            </table>,
         )
 
         expect(getByText('John Doe')).toBeInTheDocument()
     })
 
     it('should render link', () => {
-        const {container} = render(
+        const { container } = render(
             <table>
                 <tbody>
                     <tr>
@@ -33,7 +34,7 @@ describe('<CustomerNameBodyCell>', () => {
                         />
                     </tr>
                 </tbody>
-            </table>
+            </table>,
         )
 
         const link = container.querySelector('a')
@@ -43,7 +44,7 @@ describe('<CustomerNameBodyCell>', () => {
     })
 
     it('should render NOT_AVAILABLE_PLACEHOLDER when customerName is not provided', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <table>
                 <tbody>
                     <tr>
@@ -53,7 +54,7 @@ describe('<CustomerNameBodyCell>', () => {
                         />
                     </tr>
                 </tbody>
-            </table>
+            </table>,
         )
 
         expect(getByText(NOT_AVAILABLE_PLACEHOLDER)).toBeInTheDocument()

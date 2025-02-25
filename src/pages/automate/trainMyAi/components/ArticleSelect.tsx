@@ -1,6 +1,7 @@
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+
 import classNames from 'classnames'
 import get from 'lodash/get'
-import React, {useCallback, useEffect, useRef, useState} from 'react'
 
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
@@ -17,6 +18,7 @@ import SelectInputBox, {
     SelectInputBoxContext,
 } from '../../../common/forms/input/SelectInputBox'
 import useHelpCenterArticleTree from '../hooks/useHelpCenterArticleTree'
+
 import css from './ArticleSelect.less'
 
 type Props = {
@@ -34,7 +36,7 @@ const ArticleRow = ({
     onClick,
     title,
 }: {
-    article: Partial<Components.Schemas.CategoryTreeArticleDto> & {id: number}
+    article: Partial<Components.Schemas.CategoryTreeArticleDto> & { id: number }
     onClick: (value: number) => void
     title?: string
 }) => {
@@ -97,7 +99,7 @@ const ArticleSelect = ({
     const [value, setValue] = useState<number>()
     const [search, setSearch] = useState<string>('')
 
-    const {data, map} = useHelpCenterArticleTree(helpCenterId, locale)
+    const { data, map } = useHelpCenterArticleTree(helpCenterId, locale)
     const [isOpen, setIsOpen] = useState(false)
     const [path, setPath] = useState<string>('')
     const allArticles = Array.from(map.entries())
@@ -118,7 +120,7 @@ const ArticleSelect = ({
             const i = value.split('_')[1]
             setPath(`${path ? path + '.' : ''}children[${i}]`)
         },
-        [path, setPath]
+        [path, setPath],
     )
 
     const isAtRootLevel = path === ''
@@ -126,7 +128,7 @@ const ArticleSelect = ({
     const currentTreeNode: Components.Schemas.CategoryTreeDto | null = get(
         data,
         path,
-        data
+        data,
     )
 
     useEffect(() => {
@@ -259,7 +261,7 @@ const ArticleSelect = ({
                                             <ArticleRow
                                                 key={id}
                                                 onClick={handleArticleClick}
-                                                article={{id}}
+                                                article={{ id }}
                                                 title={title}
                                             />
                                         ))}

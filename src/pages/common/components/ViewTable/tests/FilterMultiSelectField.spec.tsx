@@ -1,29 +1,30 @@
-import {act, render, waitFor} from '@testing-library/react'
-import {Map, List} from 'immutable'
-import _noop from 'lodash/noop'
 import React from 'react'
 
-import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
-import {Option} from 'pages/common/forms/MultiSelectOptionsField/types'
-import {FieldSearchResult} from 'state/views/types'
-import {assumeMock, getLastMockCall} from 'utils/testing'
+import { act, render, waitFor } from '@testing-library/react'
+import { List, Map } from 'immutable'
+import _noop from 'lodash/noop'
 
-import {FilterMultiSelectField} from '../FilterMultiSelectField'
+import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
+import { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
+import { FieldSearchResult } from 'state/views/types'
+import { assumeMock, getLastMockCall } from 'utils/testing'
+
+import { FilterMultiSelectField } from '../FilterMultiSelectField'
 
 jest.mock(
     'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField',
-    () => jest.fn(() => <div>MultiSelect</div>)
+    () => jest.fn(() => <div>MultiSelect</div>),
 )
 
 const mockedMultiSelectOptionsField = assumeMock(MultiSelectOptionsField)
 
 describe('FilterMultiSelectField', () => {
     const mockedSearchFunction = jest.fn(
-        () => Promise.resolve() as Promise<Maybe<Immutable.List<any>>>
+        () => Promise.resolve() as Promise<Maybe<Immutable.List<any>>>,
     )
 
     const mockedMapSearchResults = jest.fn(
-        (something: FieldSearchResult[]) => something as unknown as Option[]
+        (something: FieldSearchResult[]) => something as unknown as Option[],
     )
 
     const defaultProps = {
@@ -51,7 +52,7 @@ describe('FilterMultiSelectField', () => {
                 onInputChange: expect.any(Function),
                 onChange: expect.any(Function),
             }),
-            {}
+            {},
         )
     })
 
@@ -88,13 +89,13 @@ describe('FilterMultiSelectField', () => {
         render(<FilterMultiSelectField {...defaultProps} />)
         act(() => {
             getLastMockCall(mockedMultiSelectOptionsField)[0].onInputChange!(
-                'f'
+                'f',
             )
             getLastMockCall(mockedMultiSelectOptionsField)[0].onInputChange!(
-                'fo'
+                'fo',
             )
             getLastMockCall(mockedMultiSelectOptionsField)[0].onInputChange!(
-                'foo'
+                'foo',
             )
         })
         jest.runAllTimers()
@@ -103,7 +104,7 @@ describe('FilterMultiSelectField', () => {
     })
 
     it('should do nothing on search if field already had a filter enum', () => {
-        const field = Map({filter: Map({enum: true})})
+        const field = Map({ filter: Map({ enum: true }) })
         render(<FilterMultiSelectField {...defaultProps} field={field} />)
         expect(mockedSearchFunction).toHaveBeenCalledTimes(0)
     })
@@ -112,12 +113,12 @@ describe('FilterMultiSelectField', () => {
         jest.useFakeTimers()
         // Will resolve with data on first call, and return falsy value on second call
         mockedSearchFunction.mockResolvedValueOnce(
-            Promise.resolve(List(['stuff']))
+            Promise.resolve(List(['stuff'])),
         )
         render(<FilterMultiSelectField {...defaultProps} />)
         act(() => {
             getLastMockCall(mockedMultiSelectOptionsField)[0].onInputChange!(
-                'foo'
+                'foo',
             )
         })
         jest.runAllTimers()
@@ -128,7 +129,7 @@ describe('FilterMultiSelectField', () => {
             expect(getLastMockCall(mockedMultiSelectOptionsField)[0]).toEqual(
                 expect.objectContaining({
                     options: ['stuff'],
-                })
+                }),
             )
         })
     })
@@ -137,8 +138,8 @@ describe('FilterMultiSelectField', () => {
         mockedMapSearchResults.mockImplementation(
             (something: FieldSearchResult[]) =>
                 something.map(
-                    (string) => (string as unknown as string) + 'f'
-                ) as unknown as Option[]
+                    (string) => (string as unknown as string) + 'f',
+                ) as unknown as Option[],
         )
         jest.useFakeTimers()
 
@@ -146,7 +147,7 @@ describe('FilterMultiSelectField', () => {
         render(<FilterMultiSelectField {...defaultProps} />)
         act(() => {
             getLastMockCall(mockedMultiSelectOptionsField)[0].onInputChange!(
-                'foo'
+                'foo',
             )
         })
         jest.runAllTimers()
@@ -157,7 +158,7 @@ describe('FilterMultiSelectField', () => {
                 expect.objectContaining({
                     // Options actually go through provided mapper
                     options: ['stufff'],
-                })
+                }),
             )
         })
     })

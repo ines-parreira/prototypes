@@ -1,4 +1,4 @@
-import {shortenUrl} from '../shortenUrl'
+import { shortenUrl } from '../shortenUrl'
 
 describe('shortenUrl()', () => {
     it('should return shortened url when url is longer than 20 characters with protocol', () => {

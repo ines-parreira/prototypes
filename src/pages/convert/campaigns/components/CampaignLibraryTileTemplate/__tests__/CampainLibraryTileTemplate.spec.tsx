@@ -1,5 +1,6 @@
-import {render} from '@testing-library/react'
 import React from 'react'
+
+import { render } from '@testing-library/react'
 
 import {
     CampaignTemplate,
@@ -20,8 +21,11 @@ describe('CampaignLibraryTileTemplate', () => {
     }
 
     it('renders campaign library template correctly', () => {
-        const {getByText, getByAltText} = render(
-            <CampainLibraryTileTemplate template={template} integrationId={1} />
+        const { getByText, getByAltText } = render(
+            <CampainLibraryTileTemplate
+                template={template}
+                integrationId={1}
+            />,
         )
 
         const campaignName = getByText(template.name)

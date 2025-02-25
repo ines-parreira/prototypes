@@ -1,18 +1,19 @@
+import React, { useMemo } from 'react'
+
 import _noop from 'lodash/noop'
-import React, {useMemo} from 'react'
 // eslint-disable-next-line no-restricted-imports
-import {useDispatch} from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {FilterComponentKey} from 'models/stat/types'
+import { FilterComponentKey } from 'models/stat/types'
 import Filter from 'pages/stats/common/components/Filter'
-import {FilterLabels} from 'pages/stats/common/filters/constants'
-import {logSegmentEvent} from 'pages/stats/common/filters/helpers'
+import { FilterLabels } from 'pages/stats/common/filters/constants'
+import { logSegmentEvent } from 'pages/stats/common/filters/helpers'
 import {
     metricLabels,
     metrics,
 } from 'pages/stats/support-performance/busiest-times-of-days/utils'
-import {DropdownOption} from 'pages/stats/types'
+import { DropdownOption } from 'pages/stats/types'
 import {
     getSelectedMetric,
     setSelectedMetric,
@@ -28,11 +29,11 @@ export const BusiestTimesMetricSelectFilter = () => {
                 value: metric,
                 label: metricLabels[metric],
             })),
-        []
+        [],
     )
     const selectedOptions = useMemo(() => {
         const option = options.find((option) => option.value === selectedMetric)
-        return [{value: selectedMetric, label: String(option?.label)}]
+        return [{ value: selectedMetric, label: String(option?.label) }]
     }, [options, selectedMetric])
 
     const onOptionChange = (option: DropdownOption) => {
@@ -52,7 +53,7 @@ export const BusiestTimesMetricSelectFilter = () => {
             isMultiple={false}
             showSearch={false}
             showQuickSelect={false}
-            filterOptionGroups={[{options}]}
+            filterOptionGroups={[{ options }]}
             selectedOptions={selectedOptions}
             logicalOperators={[]}
             selectedLogicalOperator={null}

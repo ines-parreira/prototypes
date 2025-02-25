@@ -1,6 +1,7 @@
-import {useListShopifyOrderMetafields} from '@gorgias/api-queries'
-import {Skeleton} from '@gorgias/merchant-ui-kit'
 import React from 'react'
+
+import { useListShopifyOrderMetafields } from '@gorgias/api-queries'
+import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import {
     Metafield,
@@ -22,8 +23,8 @@ export default function WrappedOrderMetafields(props: Props) {
     )
 }
 
-export function OrderMetafields({integrationId, orderId}: Props) {
-    const {data, isLoading, isError} = useListShopifyOrderMetafields(
+export function OrderMetafields({ integrationId, orderId }: Props) {
+    const { data, isLoading, isError } = useListShopifyOrderMetafields(
         integrationId,
         orderId,
         {
@@ -34,7 +35,7 @@ export function OrderMetafields({integrationId, orderId}: Props) {
                 refetchOnReconnect: false,
                 refetchOnMount: false,
             },
-        }
+        },
     )
 
     if (isLoading) {

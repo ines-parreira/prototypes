@@ -1,19 +1,19 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {useContext} from 'react'
-import {Provider} from 'react-redux'
-import configureMockStore, {MockStore} from 'redux-mock-store'
+import React, { useContext } from 'react'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import configureMockStore, { MockStore } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {IntegrationType} from 'models/integration/constants'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import {initialState} from 'state/infobarActions/shopify/createOrder/reducers'
-import {assumeMock} from 'utils/testing'
+import { IntegrationType } from 'models/integration/constants'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
+import { initialState } from 'state/infobarActions/shopify/createOrder/reducers'
+import { assumeMock } from 'utils/testing'
 
-import {ShopifyContext} from '../../contexts/ShopifyContext'
-import {getShopifyResourceIds} from '../../helpers/getShopifyResourceIds'
-
-import {customerCustomization} from '../Customer'
+import { ShopifyContext } from '../../contexts/ShopifyContext'
+import { getShopifyResourceIds } from '../../helpers/getShopifyResourceIds'
+import { customerCustomization } from '../Customer'
 
 jest.mock('../../helpers/getShopifyResourceIds')
 const getShopifyResourceIdsMock = assumeMock(getShopifyResourceIds)
@@ -32,7 +32,7 @@ describe('Wrapper', () => {
             },
         }
         getShopifyResourceIdsMock.mockReturnValue(
-            contextValue.widget_resource_ids
+            contextValue.widget_resource_ids,
         )
         const Child = () => {
             const data = useContext(ShopifyContext)
@@ -42,7 +42,7 @@ describe('Wrapper', () => {
         render(
             <Wrapper source={fromJS({})}>
                 <Child />
-            </Wrapper>
+            </Wrapper>,
         )
 
         expect(spiedDataFunction).toHaveBeenCalledWith(contextValue)
@@ -84,7 +84,7 @@ describe('<AfterTitle/>', () => {
     })
 
     it('should match snapshot', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <IntegrationContext.Provider
                     value={{
@@ -94,13 +94,13 @@ describe('<AfterTitle/>', () => {
                 >
                     <AfterTitle source={fromJS(integration)} />
                 </IntegrationContext.Provider>
-            </Provider>
+            </Provider>,
         )
         expect(container).toMatchSnapshot()
     })
 
     it('should display GBP(£) as store currency, not USD', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <IntegrationContext.Provider
                     value={{
@@ -110,7 +110,7 @@ describe('<AfterTitle/>', () => {
                 >
                     <AfterTitle source={fromJS(integration)} />
                 </IntegrationContext.Provider>
-            </Provider>
+            </Provider>,
         )
         expect(container.textContent).toContain('Total spent: £100.00')
     })

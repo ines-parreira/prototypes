@@ -1,12 +1,12 @@
-import type {Map} from 'immutable'
 import React from 'react'
 
-import {toJS} from 'utils'
+import type { Map } from 'immutable'
 
-import {CardCustomization} from 'Widgets/modules/Template/modules/Card'
+import { toJS } from 'utils'
+import { CardCustomization } from 'Widgets/modules/Template/modules/Card'
 
-import {CardContentYotpoReviewTopics} from './CardContentYotpoReviewTopics'
-import {CardHeaderYotpoReviewStatistics} from './CardHeaderYotpoReviewStatistics'
+import { CardContentYotpoReviewTopics } from './CardContentYotpoReviewTopics'
+import { CardHeaderYotpoReviewStatistics } from './CardHeaderYotpoReviewStatistics'
 
 type TitleWrapperProps = {
     source: Map<string, any>
@@ -14,7 +14,7 @@ type TitleWrapperProps = {
 
 class TitleWrapper extends React.Component<TitleWrapperProps> {
     render() {
-        const {source} = this.props
+        const { source } = this.props
 
         return (
             <>
@@ -31,7 +31,7 @@ type AfterContentReviewStatisticsProps = {
 }
 class AfterContent extends React.Component<AfterContentReviewStatisticsProps> {
     render() {
-        const {source} = this.props
+        const { source } = this.props
 
         return (
             <>

@@ -1,11 +1,13 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import cn from 'classnames'
 import React from 'react'
-import type {ReactNode} from 'react'
-import {Link} from 'react-router-dom'
+import type { ReactNode } from 'react'
+
+import cn from 'classnames'
+import { Link } from 'react-router-dom'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import navbarCss from 'assets/css/navbar.less'
-import {TooltipDelay, type TooltipDelayValue} from 'core/ui/tooltip.utils'
+import { TooltipDelay, type TooltipDelayValue } from 'core/ui/tooltip.utils'
 import useId from 'hooks/useId'
 
 import css from './GlobalNavigationItem.less'
@@ -45,7 +47,7 @@ export default function GlobalNavigationItem({
                     {...(tooltip && {
                         id: scopedId,
                     })}
-                    className={cn(css.icon, {[css.active]: !!isActive})}
+                    className={cn(css.icon, { [css.active]: !!isActive })}
                     data-candu-id={props['data-candu-id']}
                     to={url}
                     onClick={onClick}
@@ -72,7 +74,7 @@ export default function GlobalNavigationItem({
                 {...(tooltip && {
                     id: scopedId,
                 })}
-                className={cn(css.icon, {[css.active]: !!isActive})}
+                className={cn(css.icon, { [css.active]: !!isActive })}
                 data-candu-id={props['data-candu-id']}
                 onClick={onClick}
             >

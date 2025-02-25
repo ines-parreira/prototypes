@@ -1,12 +1,11 @@
 import React from 'react'
 
-import {AiAgentScopes} from 'pages/aiAgent/Onboarding/types'
+import { AiAgentScopes } from 'pages/aiAgent/Onboarding/types'
 
 import CursorClickIcon from './icons/CursorClickIcon'
 import RocketIcon from './icons/RocketIcon'
 import StarIcon from './icons/StarIcon'
-
-import {GoalType, GoalData} from './types'
+import { GoalData, GoalType } from './types'
 
 export const GoalOption: GoalData[] = [
     {

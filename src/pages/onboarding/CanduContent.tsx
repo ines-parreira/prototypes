@@ -10,7 +10,7 @@ type Props = {
     containerId: string
 }
 
-export const CanduContent = ({title, containerId}: Props) => {
+export const CanduContent = ({ title, containerId }: Props) => {
     const [ref, setRef] = useCallbackRef()
 
     useInjectStyleToCandu(ref)
@@ -18,7 +18,7 @@ export const CanduContent = ({title, containerId}: Props) => {
     return (
         <div className="full-width">
             <PageHeader title={title} />
-            <div id={containerId} ref={setRef} style={{padding: '0 20px'}} />
+            <div id={containerId} ref={setRef} style={{ padding: '0 20px' }} />
         </div>
     )
 }

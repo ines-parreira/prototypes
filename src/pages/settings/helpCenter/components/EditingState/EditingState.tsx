@@ -1,8 +1,10 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
 import React from 'react'
 
-import {EditingStateEnum} from '../../constants'
+import classnames from 'classnames'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { EditingStateEnum } from '../../constants'
 
 import css from './EditingState.less'
 
@@ -10,7 +12,7 @@ export type EditingStateProps = {
     state: EditingStateEnum
 }
 
-const EditingState = ({state}: EditingStateProps) => {
+const EditingState = ({ state }: EditingStateProps) => {
     const options = {
         [EditingStateEnum.PUBLISHED]: {
             icon: 'verified',
@@ -32,7 +34,7 @@ const EditingState = ({state}: EditingStateProps) => {
                 id="editingState"
                 className={classnames(
                     css.editingState,
-                    css[state.toLowerCase()]
+                    css[state.toLowerCase()],
                 )}
             >
                 <i className={classnames('material-icons', css.icon)}>

@@ -1,6 +1,6 @@
-import {useContext} from 'react'
+import { useContext } from 'react'
 
-import {FiltersContext} from '../providers/CampaignStatsFilters'
+import { FiltersContext } from '../providers/CampaignStatsFilters'
 
 export function useCampaignStatsFilters() {
     return useContext(FiltersContext)

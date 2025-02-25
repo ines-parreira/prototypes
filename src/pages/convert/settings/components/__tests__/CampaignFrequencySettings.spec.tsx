@@ -1,9 +1,10 @@
-import {render, act, fireEvent, waitFor} from '@testing-library/react'
 import React from 'react'
 
-import {CampaignFrequencySettings} from 'pages/convert/settings/types'
+import { act, fireEvent, render, waitFor } from '@testing-library/react'
 
-import {CampaignFrequencySetting} from '../CampaignFrequencySetting'
+import { CampaignFrequencySettings } from 'pages/convert/settings/types'
+
+import { CampaignFrequencySetting } from '../CampaignFrequencySetting'
 
 describe('<CampaignFrequencySetting />', () => {
     const defaultProps = {
@@ -12,38 +13,38 @@ describe('<CampaignFrequencySetting />', () => {
     }
 
     it('should render', () => {
-        const {getByText} = render(
-            <CampaignFrequencySetting {...defaultProps} />
+        const { getByText } = render(
+            <CampaignFrequencySetting {...defaultProps} />,
         )
         expect(getByText('Frequency Settings')).toBeInTheDocument()
     })
 
     it('user can toggle', async () => {
         const onSettingsChangeMock = jest.fn()
-        const {container} = render(
+        const { container } = render(
             <CampaignFrequencySetting
                 {...defaultProps}
                 onSettingsChange={onSettingsChangeMock}
-            />
+            />,
         )
 
         act(() => {
             fireEvent.click(
                 container.querySelector(
-                    '#maximum-displayed-campaigns'
-                ) as Element
+                    '#maximum-displayed-campaigns',
+                ) as Element,
             )
             fireEvent.click(
-                container.querySelector('#time-between-campaigns') as Element
+                container.querySelector('#time-between-campaigns') as Element,
             )
         })
 
         await waitFor(() => {
             expect(onSettingsChangeMock).toHaveBeenCalledWith({
-                max_campaign_in_session: {value: 8},
+                max_campaign_in_session: { value: 8 },
             })
             expect(onSettingsChangeMock).toHaveBeenCalledWith({
-                min_time_between_campaigns: {unit: 'seconds', value: 30},
+                min_time_between_campaigns: { unit: 'seconds', value: 30 },
             })
         })
     })
@@ -64,25 +65,25 @@ describe('<CampaignFrequencySetting />', () => {
             } as CampaignFrequencySettings,
         }
 
-        const {container} = render(
+        const { container } = render(
             <CampaignFrequencySetting
                 {...props}
                 onSettingsChange={onSettingsChangeMock}
-            />
+            />,
         )
 
         act(() => {
             fireEvent.click(
                 container.querySelector(
-                    '#maximum-displayed-campaigns'
-                ) as Element
+                    '#maximum-displayed-campaigns',
+                ) as Element,
             )
         })
 
         await waitFor(() => {
             expect(onSettingsChangeMock).toHaveBeenCalledWith({
                 max_campaign_in_session: null,
-                min_time_between_campaigns: {value: 10, unit: 'seconds'},
+                min_time_between_campaigns: { value: 10, unit: 'seconds' },
             })
         })
     })

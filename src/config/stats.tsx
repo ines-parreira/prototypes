@@ -1,24 +1,25 @@
-import {ChartType, Scale, TooltipItem, defaults} from 'chart.js'
+import React, { ComponentType, ReactElement, ReactNode, ReactText } from 'react'
+
+import { ChartType, defaults, Scale, TooltipItem } from 'chart.js'
 import classNames from 'classnames'
-import {Map, List} from 'immutable'
+import { List, Map } from 'immutable'
 import _isString from 'lodash/isString'
 import _merge from 'lodash/merge'
 import moment from 'moment'
-import React, {ComponentType, ReactElement, ReactNode, ReactText} from 'react'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
-import {toImmutable} from 'common/utils'
+import { toImmutable } from 'common/utils'
 import css from 'config/stats.less'
-import {IntentName} from 'models/intent/types'
-import {REASONS_DROPDOWN_OPTIONS} from 'models/selfServiceConfiguration/constants'
-import {ReportIssueReasons} from 'models/selfServiceConfiguration/types'
+import { IntentName } from 'models/intent/types'
+import { REASONS_DROPDOWN_OPTIONS } from 'models/selfServiceConfiguration/constants'
+import { ReportIssueReasons } from 'models/selfServiceConfiguration/types'
 import TicketTag from 'pages/common/components/TicketTag'
-import {SelectableOption} from 'pages/common/forms/SelectField/types'
+import { SelectableOption } from 'pages/common/forms/SelectField/types'
 import StatCurrentDate from 'pages/stats/common/components/StatCurrentDate'
 import TicketsClosedPerAgentViewLink from 'pages/stats/common/TicketsClosedPerAgentViewLink'
 import TicketsCreatedPerTagViewLink from 'pages/stats/common/TicketsCreatedPerTagViewLink'
-import {formatDuration, formatNumber} from 'pages/stats/common/utils'
-import {humanizeString, lightenDarkenColor} from 'utils'
+import { formatDuration, formatNumber } from 'pages/stats/common/utils'
+import { humanizeString, lightenDarkenColor } from 'utils'
 
 // Available Stats. These names should match names in `g/stats/config`
 export const OVERVIEW = 'overview'
@@ -107,7 +108,7 @@ export const SATISFACTION_SURVEY_MAX_COMMENT_LENGTH = 80
 export const LIVE_STATS_MAX_TICKETS = 5000
 export const TICKET_MAX_SUBJECT_LENGTH = 100
 
-type IntentOption = {color: string; label: string}
+type IntentOption = { color: string; label: string }
 
 const getIntentsOptions = (): Record<string, IntentOption> => {
     let colorIdx = -1
@@ -130,7 +131,7 @@ const getIntentsOptions = (): Record<string, IntentOption> => {
             }
             return linesOptions
         },
-        {} as Record<IntentName, {color: string; label: string}>
+        {} as Record<IntentName, { color: string; label: string }>,
     )
 }
 
@@ -193,7 +194,7 @@ _merge(defaults, {
             borderColor: '#e2e3ec',
             borderWidth: 1,
             callbacks: {
-                title: (tooltipItem: {label: string}[]) => {
+                title: (tooltipItem: { label: string }[]) => {
                     return formatDateTooltipCb(parseInt(tooltipItem[0].label))
                 },
             },
@@ -273,7 +274,7 @@ export type StatConfigCellCallbackContext = {
 export type StatConfigCallbacks<T extends ReactNode = ReactNode> = {
     cell: (
         data: StatConfigCellCallbackData,
-        context: StatConfigCellCallbackContext
+        context: StatConfigCellCallbackContext,
     ) => T
 }
 
@@ -305,8 +306,8 @@ export type StatConfig = {
     axisHelpers?: Record<string, string>
     component?: ComponentType
     hasBusinessHoursHighlight?: boolean
-    colorMap?: {[key: string]: string}
-    priority?: {[key: string]: number}
+    colorMap?: { [key: string]: string }
+    priority?: { [key: string]: number }
     totalOptions?: {
         label: string
         tooltip: string
@@ -340,9 +341,9 @@ export const stats = toImmutable<
                             .get('lines')
                             .filter(
                                 (value: List<any>) =>
-                                    value.getIn([1, 'value']) as boolean
+                                    value.getIn([1, 'value']) as boolean,
                             )
-                            .count()
+                            .count(),
                     )
                 },
                 tooltip: (data?: Map<any, any>) => {
@@ -352,14 +353,14 @@ export const stats = toImmutable<
                     const formattedData = (data.get('lines') as List<any>)
                         .filter(
                             (value: List<any>) =>
-                                value.getIn([1, 'value']) as boolean
+                                value.getIn([1, 'value']) as boolean,
                         )
                         .toJS() as [
                         {
                             type: 'user'
-                            value: {id: number; name: string}
+                            value: { id: number; name: string }
                         },
-                        {type: 'bool'; value: boolean},
+                        { type: 'bool'; value: boolean },
                     ][]
                     const dataLength = formattedData.length
 
@@ -394,9 +395,10 @@ export const stats = toImmutable<
                         data
                             .get('lines')
                             .filter(
-                                (value: List<any>) => !value.getIn([1, 'value'])
+                                (value: List<any>) =>
+                                    !value.getIn([1, 'value']),
                             )
-                            .count()
+                            .count(),
                     )
                 },
                 tooltip: (data?: Map<any, any>) => {
@@ -405,14 +407,14 @@ export const stats = toImmutable<
                     }
                     const formattedData = (data.get('lines') as List<any>)
                         .filter(
-                            (value: List<any>) => !value.getIn([1, 'value'])
+                            (value: List<any>) => !value.getIn([1, 'value']),
                         )
                         .toJS() as [
                         {
                             type: 'user'
-                            value: {id: number; name: string}
+                            value: { id: number; name: string }
                         },
-                        {type: 'bool'; value: boolean},
+                        { type: 'bool'; value: boolean },
                     ][]
                     const dataLength = formattedData.length
 
@@ -535,12 +537,12 @@ export const stats = toImmutable<
                         callback: function (
                             this: Scale<any>,
                             val: any,
-                            index: number
+                            index: number,
                         ) {
                             return index % 2 === 0
                                 ? moment
                                       .unix(
-                                          parseInt(this.getLabelForValue(val))
+                                          parseInt(this.getLabelForValue(val)),
                                       )
                                       .format('h a')
                                 : ''
@@ -572,7 +574,7 @@ export const stats = toImmutable<
         style: 'table',
         downloadable: true,
         callbacks: {
-            cell: ({value, axis}) => {
+            cell: ({ value, axis }) => {
                 if (
                     _isString(value) &&
                     value.toLowerCase() === 'without macro'
@@ -613,7 +615,7 @@ export const stats = toImmutable<
         style: 'table',
         downloadable: true,
         callbacks: {
-            cell: ({value, axis, line}) => {
+            cell: ({ value, axis, line }) => {
                 if (_isString(value) && value.toLowerCase() === 'unassigned') {
                     return (
                         <i>
@@ -625,7 +627,7 @@ export const stats = toImmutable<
                     return (
                         <TicketsClosedPerAgentViewLink
                             agentName={(line.get(0) as Map<any, any>).get(
-                                'value'
+                                'value',
                             )}
                         >
                             {value}
@@ -643,8 +645,8 @@ export const stats = toImmutable<
         downloadable: true,
         callbacks: {
             cell: (
-                {line, value, axis}: StatConfigCellCallbackData,
-                {tagColors}
+                { line, value, axis }: StatConfigCellCallbackData,
+                { tagColors },
             ) => {
                 const tagName = line.first() as Map<any, any>
 
@@ -652,7 +654,7 @@ export const stats = toImmutable<
                     return (
                         <TicketsCreatedPerTagViewLink
                             tagName={(line.get(0) as Map<any, any>).get(
-                                'value'
+                                'value',
                             )}
                         >
                             {value}
@@ -1141,7 +1143,7 @@ export const stats = toImmutable<
                 'When an interaction is not successfully automated and the customer is served by an agent, it becomes a billable ticket.',
         },
         callbacks: {
-            cell: ({value}) => {
+            cell: ({ value }) => {
                 return value
             },
         },
@@ -1149,7 +1151,7 @@ export const stats = toImmutable<
     [SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES_AND_RETURN_REQUESTS]: {
         style: 'table',
         downloadable: true,
-        tableOptions: {showLines: 4},
+        tableOptions: { showLines: 4 },
     },
     [SELF_SERVICE_TOP_REPORTED_ISSUES]: {
         axisHelpers: {
@@ -1165,18 +1167,18 @@ export const stats = toImmutable<
             isDeltaPercentage: false,
         },
         callbacks: {
-            cell: ({value, axis}) => {
+            cell: ({ value, axis }) => {
                 if (axis.name === 'Issue') {
                     const translatedIssue = (
                         REASONS_DROPDOWN_OPTIONS as SelectableOption[]
                     ).find(
-                        ({value: dropDownValue}) => value === dropDownValue
+                        ({ value: dropDownValue }) => value === dropDownValue,
                     )?.label
 
                     return value === ReportIssueReasons.REASON_OTHER ? (
                         <div className={css.customizeReportIssues}>
                             <h5
-                                style={{margin: 0, fontStyle: 'italic'}}
+                                style={{ margin: 0, fontStyle: 'italic' }}
                                 className="mr-2"
                             >
                                 {translatedIssue || value}
@@ -1192,7 +1194,9 @@ export const stats = toImmutable<
                             </Link>
                         </div>
                     ) : (
-                        <h5 style={{margin: 0}}>{translatedIssue || value}</h5>
+                        <h5 style={{ margin: 0 }}>
+                            {translatedIssue || value}
+                        </h5>
                     )
                 }
 
@@ -1217,18 +1221,20 @@ export const stats = toImmutable<
                 'When an interaction is not successfully automated and the customer is served by an agent, it becomes a billable ticket.',
         },
         callbacks: {
-            cell: ({value}) => {
+            cell: ({ value }) => {
                 return value
             },
         },
     },
     [SELF_SERVICE_SECTION_REPORT_ISSUE]: {
         style: 'element',
-        component: () => <h3 style={{marginBottom: 6}}>Report issues flow</h3>,
+        component: () => (
+            <h3 style={{ marginBottom: 6 }}>Report issues flow</h3>
+        ),
     },
     [SELF_SERVICE_SECTION_RETURN]: {
         style: 'element',
-        component: () => <h3 style={{marginBottom: 6}}>Returns flow</h3>,
+        component: () => <h3 style={{ marginBottom: 6 }}>Returns flow</h3>,
     },
 })
 

@@ -1,17 +1,19 @@
-import {Label, Tooltip} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
-import React, {memo} from 'react'
-import {Handle, Position, NodeProps, useNodeId} from 'reactflow'
+import React, { memo } from 'react'
 
-import {toPercentage} from 'pages/automate/automate-metrics/utils'
+import classNames from 'classnames'
+import { Handle, NodeProps, Position, useNodeId } from 'reactflow'
+
+import { Label, Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { toPercentage } from 'pages/automate/automate-metrics/utils'
 import VisualBuilderActionIconCondensed from 'pages/automate/workflows/components/VisualBuilderActionIconCondensed'
 import {
-    VisualBuilderNodeProps,
     useVisualBuilderNodeProps,
+    VisualBuilderNodeProps,
 } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
 import useWorkflowDropoffMetricTiers from 'pages/automate/workflows/hooks/useWorkflowDropoffMetricTiers'
-import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
-import {getDropoffColor} from 'pages/automate/workflows/utils/getDropOffColor'
+import { useWorkflowEditorContext } from 'pages/automate/workflows/hooks/useWorkflowEditor'
+import { getDropoffColor } from 'pages/automate/workflows/utils/getDropOffColor'
 
 import {
     AutomatedMessageNodeType,
@@ -26,7 +28,6 @@ import {
     VisualBuilderNode,
 } from '../../../models/visualBuilderGraph.types'
 import EdgeBlock from '../components/EdgeBlock'
-
 import {
     displayMetric,
     displayPercentMetric,
@@ -35,6 +36,7 @@ import {
     isValidNumber,
     shouldDisplayTooltip,
 } from '../utils'
+
 import css from './Node.less'
 
 type NodeType =
@@ -67,14 +69,14 @@ const AnalyticsNode = memo(function AutomatedMessageNode({
     type,
     edgeProps,
 }: Props) {
-    const {workflowStepMetrics} = useWorkflowEditorContext()
+    const { workflowStepMetrics } = useWorkflowEditorContext()
     const metricByNodeId = workflowStepMetrics && workflowStepMetrics[nodeId]
     const dropOffRates = extractUniqueRates(workflowStepMetrics ?? {})
-    const metricTiers = useWorkflowDropoffMetricTiers({dropOffRates})
+    const metricTiers = useWorkflowDropoffMetricTiers({ dropOffRates })
 
     const dropOffTierByNodeId = getDropoffColor(
         metricByNodeId?.dropoffRate ?? 0,
-        metricTiers
+        metricTiers,
     )
 
     const shouldDisplayZero = isValidNumber(metricByNodeId?.views)
@@ -108,7 +110,7 @@ const AnalyticsNode = memo(function AutomatedMessageNode({
                             <span className={css.metricValue}>
                                 {displayMetric(
                                     metricByNodeId?.views,
-                                    shouldDisplayZero
+                                    shouldDisplayZero,
                                 )}
                             </span>
                         </div>
@@ -127,7 +129,7 @@ const AnalyticsNode = memo(function AutomatedMessageNode({
                             >
                                 {displayPercentMetric(
                                     metricByNodeId?.dropoffRate,
-                                    shouldDisplayZero
+                                    shouldDisplayZero,
                                 )}
                             </span>
                         </div>
@@ -138,7 +140,7 @@ const AnalyticsNode = memo(function AutomatedMessageNode({
                     </Tooltip>
                     {shouldDisplayTooltip(
                         metricByNodeId?.viewRate,
-                        shouldDisplayZero
+                        shouldDisplayZero,
                     ) && (
                         <Tooltip
                             target={`node-${nodeId}-metric-view`}
@@ -149,7 +151,7 @@ const AnalyticsNode = memo(function AutomatedMessageNode({
                     )}
                     {shouldDisplayTooltip(
                         metricByNodeId?.dropoff,
-                        shouldDisplayZero
+                        shouldDisplayZero,
                     ) && (
                         <Tooltip
                             target={`node-${nodeId}-metric-dropoff`}
@@ -170,7 +172,7 @@ const AnalyticsNode = memo(function AutomatedMessageNode({
 })
 
 export default function AnalyticsNodeWrapper(
-    node: NodeProps<NodeType['data']>
+    node: NodeProps<NodeType['data']>,
 ) {
     const nodeType = node.type as Exclude<
         NonNullable<VisualBuilderNode['type']>,
@@ -181,8 +183,8 @@ export default function AnalyticsNodeWrapper(
         | 'reusable_llm_prompt_call'
     >
 
-    const {content, name} = node.data as any
-    const {text} = content || {}
+    const { content, name } = node.data as any
+    const { text } = content || {}
     const nodeLabel =
         text ||
         name ||

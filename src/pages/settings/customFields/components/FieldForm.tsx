@@ -1,13 +1,15 @@
-import {Label, Tooltip, Badge} from '@gorgias/merchant-ui-kit'
-import {Location} from 'history'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {cloneDeep, pick, set} from 'lodash'
-import React, {useCallback, useEffect, useRef, useState} from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {OBJECT_TYPES, OBJECT_TYPE_SETTINGS} from 'custom-fields/constants'
-import {getUIDataType} from 'custom-fields/helpers/getUIDataType'
-import {useUpdateCustomFieldArchiveStatus} from 'custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus'
+import { Location } from 'history'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { cloneDeep, pick, set } from 'lodash'
+
+import { Badge, Label, Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { OBJECT_TYPE_SETTINGS, OBJECT_TYPES } from 'custom-fields/constants'
+import { getUIDataType } from 'custom-fields/helpers/getUIDataType'
+import { useUpdateCustomFieldArchiveStatus } from 'custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus'
 import {
     CustomField,
     CustomFieldInput,
@@ -46,13 +48,13 @@ const pickMap = {
 
 function sanitizeInput(
     input: CustomFieldInput,
-    useRequirementType: boolean
+    useRequirementType: boolean,
 ): CustomFieldInput {
     input.definition.input_settings = pick(
         input.definition.input_settings,
         ['input_type'].concat(
-            pickMap[input.definition.input_settings.input_type]
-        )
+            pickMap[input.definition.input_settings.input_type],
+        ),
     ) as CustomFieldInput['definition']['input_settings']
 
     if (!useRequirementType) {
@@ -70,10 +72,10 @@ export default function FieldForm(props: FieldFormProps) {
     const customFieldTypeLabel = objectTypeSettings.LABEL
     const customFieldTitleLabel = objectTypeSettings.TITLE_LABEL
     const isAIManaged = isCustomFieldAIManagedType(props.field.managed_type)
-    const {mutateAsync} = useUpdateCustomFieldArchiveStatus(
+    const { mutateAsync } = useUpdateCustomFieldArchiveStatus(
         // this `: 0` case should never happen
         isCustomField(props.field) ? props.field.id : 0,
-        props.field.object_type
+        props.field.object_type,
     )
 
     const formRef = useRef<HTMLFormElement>(null)
@@ -94,8 +96,8 @@ export default function FieldForm(props: FieldFormProps) {
                 'requirement_type',
                 'managed_type',
                 'definition',
-            ])
-        )
+            ]),
+        ),
     )
 
     // Use an effect since useRef() does not notify when the value is set
@@ -105,7 +107,7 @@ export default function FieldForm(props: FieldFormProps) {
 
     const setValue = useCallback((key: string, value: any) => {
         setIsFormDirty(true)
-        setForm((form) => set({...form}, key, value))
+        setForm((form) => set({ ...form }, key, value))
     }, [])
 
     const save = async () => {
@@ -144,12 +146,12 @@ export default function FieldForm(props: FieldFormProps) {
             await mutateAsync(archived)
             setIsLoading(false)
         },
-        [mutateAsync]
+        [mutateAsync],
     )
 
     const handleChoiceChange = useCallback(
         (val) => setValue('definition.input_settings.choices', val),
-        [setValue]
+        [setValue],
     )
 
     const showRequired =
@@ -224,7 +226,7 @@ export default function FieldForm(props: FieldFormProps) {
                 <TypeSelectInput
                     value={getUIDataType(
                         form.definition.data_type,
-                        form.definition.input_settings.input_type
+                        form.definition.input_settings.input_type,
                     )}
                     onChange={(val) => {
                         const split = val.split('_')
@@ -232,7 +234,7 @@ export default function FieldForm(props: FieldFormProps) {
                         const inputType = split.join('_')
                         setValue(
                             'definition.input_settings.input_type',
-                            inputType
+                            inputType,
                         )
                         setValue('definition.data_type', dataType)
                     }}
@@ -253,7 +255,7 @@ export default function FieldForm(props: FieldFormProps) {
                         onChange={(val) =>
                             setValue(
                                 'definition.input_settings.placeholder',
-                                val
+                                val,
                             )
                         }
                         className={css.formRow}

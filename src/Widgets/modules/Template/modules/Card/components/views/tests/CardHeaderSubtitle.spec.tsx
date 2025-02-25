@@ -1,7 +1,8 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {CardHeaderSubtitle} from '../CardHeaderSubtitle'
+import { render, screen } from '@testing-library/react'
+
+import { CardHeaderSubtitle } from '../CardHeaderSubtitle'
 
 describe('<CardHeaderSubtitle/>', () => {
     it('should set container class to wrapping element', () => {

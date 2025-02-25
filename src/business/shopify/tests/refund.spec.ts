@@ -1,4 +1,4 @@
-import {fromJS, Map, List} from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 
 import {
     shopifyLineItemFixture,
@@ -6,6 +6,8 @@ import {
     shopifySuggestedRefundFixture,
 } from '../../../fixtures/shopify'
 import {
+    aggregateMaximumRefundableByGateway,
+    distributeRefund,
     getRefundAmount,
     getRestockType,
     getSubtotal,
@@ -13,8 +15,6 @@ import {
     getTotalCartDiscountAmount,
     getTotalQuantities,
     getTotalTax,
-    distributeRefund,
-    aggregateMaximumRefundableByGateway,
     getTransactionToRefund,
 } from '../refund'
 
@@ -105,7 +105,9 @@ describe('getTotalQuantities()', () => {
 
     it('should return `0` because `location_id` is `null` in the suggested refund', () => {
         const payload = fromJS(shopifyRefundOrderPayloadFixture())
-        const refund = fromJS(shopifySuggestedRefundFixture({locationId: null}))
+        const refund = fromJS(
+            shopifySuggestedRefundFixture({ locationId: null }),
+        )
         const total = getTotalQuantities(payload, refund)
 
         expect(total).toMatchSnapshot()
@@ -154,14 +156,14 @@ describe('getRestockType()', () => {
 
 describe('distributeRefund()', () => {
     it('should return an empty list with no transactions', () => {
-        const amounts = Map({test: 22.6})
+        const amounts = Map({ test: 22.6 })
         const distributedTransaction = distributeRefund(List(), amounts)
 
         expect(distributedTransaction).toBe(List())
     })
 
     it('should not change transaction with missing gateways', () => {
-        const amounts = Map({test: 22.6})
+        const amounts = Map({ test: 22.6 })
         const transaction = Map({
             gateway: 'other_test',
             maximum_refundable: '1.22',
@@ -169,14 +171,14 @@ describe('distributeRefund()', () => {
         })
         const distributedTransaction = distributeRefund(
             List([transaction]),
-            amounts
+            amounts,
         )
 
         expect(distributedTransaction).toStrictEqual(List([transaction]))
     })
 
     it('should check the maximum refundable', () => {
-        const amounts = Map({test: 22.6})
+        const amounts = Map({ test: 22.6 })
         const transaction = Map({
             gateway: 'test',
             maximum_refundable: '1.22',
@@ -184,7 +186,7 @@ describe('distributeRefund()', () => {
         })
         const distributedTransaction = distributeRefund(
             List([transaction]),
-            amounts
+            amounts,
         )
         const expectTransaction = transaction.set('amount', '1.22')
 
@@ -206,14 +208,14 @@ describe('distributeRefund()', () => {
 
         const distributedTransaction = distributeRefund(
             List([transaction1, transaction2, transaction3]),
-            amounts
+            amounts,
         )
         const expectTransaction1 = transaction1.set('amount', '10.60')
         const expectTransaction2 = transaction2.set('amount', '10.00')
         const expectTransaction3 = transaction3.set('amount', '2.00')
 
         expect(distributedTransaction).toStrictEqual(
-            List([expectTransaction1, expectTransaction2, expectTransaction3])
+            List([expectTransaction1, expectTransaction2, expectTransaction3]),
         )
     })
 })
@@ -242,7 +244,7 @@ describe('aggregateMaximumRefundableByGateway()', () => {
             Map({
                 test: 12.6,
                 other: 10.6,
-            })
+            }),
         )
     })
 
@@ -261,7 +263,7 @@ describe('aggregateMaximumRefundableByGateway()', () => {
         expect(amounts).toStrictEqual(
             Map({
                 test: 10.6,
-            })
+            }),
         )
     })
 })
@@ -304,7 +306,7 @@ describe('getTransactionToRefund()', () => {
         })
 
         expect(() => getTransactionToRefund(refund, 1)).toThrow(
-            new Error('Refund with multiple transaction is not supported')
+            new Error('Refund with multiple transaction is not supported'),
         )
     })
 })

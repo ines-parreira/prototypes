@@ -1,7 +1,8 @@
-import {renderHook} from '@testing-library/react-hooks'
-import moment from 'moment/moment'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { renderHook } from '@testing-library/react-hooks'
+import moment from 'moment/moment'
+import { Provider } from 'react-redux'
 
 import {
     useClosedTicketsMetricPerAgent,
@@ -13,65 +14,64 @@ import {
     useTicketAverageHandleTimePerAgent,
     useTicketsRepliedMetricPerAgent,
 } from 'hooks/reporting/metricsPerAgent'
-import {useAgentsMetrics} from 'hooks/reporting/support-performance/agents/useAgentsMetrics'
-import {useOneTouchTicketsPercentageMetricPerAgent} from 'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricPerAgent'
-import {usePercentageOfClosedTicketsMetricPerAgent} from 'hooks/reporting/support-performance/agents/usePercentageOfClosedTicketsMetricPerAgent'
-import {useMessagesSentPerHourPerAgent} from 'hooks/reporting/useMessagesSentPerHourPerAgent'
-import {useTicketsClosedPerHourPerAgent} from 'hooks/reporting/useTicketsClosedPerHourPerAgent'
-import {useTicketsRepliedPerHourPerAgent} from 'hooks/reporting/useTicketsRepliedPerHourPerAgent'
-import {RootState} from 'state/types'
-import {initialState as agentPerformanceInitialState} from 'state/ui/stats/agentPerformanceSlice'
-import {AGENT_PERFORMANCE_SLICE_NAME} from 'state/ui/stats/constants'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
-
-import {assumeMock, mockStore} from 'utils/testing'
+import { useAgentsMetrics } from 'hooks/reporting/support-performance/agents/useAgentsMetrics'
+import { useOneTouchTicketsPercentageMetricPerAgent } from 'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricPerAgent'
+import { usePercentageOfClosedTicketsMetricPerAgent } from 'hooks/reporting/support-performance/agents/usePercentageOfClosedTicketsMetricPerAgent'
+import { useMessagesSentPerHourPerAgent } from 'hooks/reporting/useMessagesSentPerHourPerAgent'
+import { useTicketsClosedPerHourPerAgent } from 'hooks/reporting/useTicketsClosedPerHourPerAgent'
+import { useTicketsRepliedPerHourPerAgent } from 'hooks/reporting/useTicketsRepliedPerHourPerAgent'
+import { RootState } from 'state/types'
+import { initialState as agentPerformanceInitialState } from 'state/ui/stats/agentPerformanceSlice'
+import { AGENT_PERFORMANCE_SLICE_NAME } from 'state/ui/stats/constants'
+import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
+import { assumeMock, mockStore } from 'utils/testing'
 
 jest.mock('hooks/reporting/metricsPerAgent')
 jest.mock('hooks/reporting/useMessagesSentPerHourPerAgent')
 jest.mock(
-    'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricPerAgent'
+    'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricPerAgent',
 )
 jest.mock(
-    'hooks/reporting/support-performance/agents/usePercentageOfClosedTicketsMetricPerAgent'
+    'hooks/reporting/support-performance/agents/usePercentageOfClosedTicketsMetricPerAgent',
 )
 jest.mock('hooks/reporting/useTicketsClosedPerHourPerAgent')
 jest.mock('hooks/reporting/useTicketsRepliedPerHourPerAgent')
 const useCustomerSatisfactionMetricPerAgentMock = assumeMock(
-    useCustomerSatisfactionMetricPerAgent
+    useCustomerSatisfactionMetricPerAgent,
 )
 const usePercentageOfClosedTicketsMetricPerAgentMock = assumeMock(
-    usePercentageOfClosedTicketsMetricPerAgent
+    usePercentageOfClosedTicketsMetricPerAgent,
 )
 const useClosedTicketsMetricPerAgentMock = assumeMock(
-    useClosedTicketsMetricPerAgent
+    useClosedTicketsMetricPerAgent,
 )
 const useMedianFirstResponseTimeMetricPerAgentMock = assumeMock(
-    useMedianFirstResponseTimeMetricPerAgent
+    useMedianFirstResponseTimeMetricPerAgent,
 )
 const useMessagesSentMetricPerAgentMock = assumeMock(
-    useMessagesSentMetricPerAgent
+    useMessagesSentMetricPerAgent,
 )
 const useMedianResolutionTimeMetricPerAgentMock = assumeMock(
-    useMedianResolutionTimeMetricPerAgent
+    useMedianResolutionTimeMetricPerAgent,
 )
 const useTicketsRepliedMetricPerAgentMock = assumeMock(
-    useTicketsRepliedMetricPerAgent
+    useTicketsRepliedMetricPerAgent,
 )
 const useOneTouchTicketsPercentageMetricPerAgentMock = assumeMock(
-    useOneTouchTicketsPercentageMetricPerAgent
+    useOneTouchTicketsPercentageMetricPerAgent,
 )
 const useTicketsRepliedPerHourPerAgentMock = assumeMock(
-    useTicketsRepliedPerHourPerAgent
+    useTicketsRepliedPerHourPerAgent,
 )
 const useOnlineTimePerAgentMock = assumeMock(useOnlineTimePerAgent)
 const useMessagesSentPerHourPerAgentMock = assumeMock(
-    useMessagesSentPerHourPerAgent
+    useMessagesSentPerHourPerAgent,
 )
 const useTicketsClosedPerHourPerAgentMock = assumeMock(
-    useTicketsClosedPerHourPerAgent
+    useTicketsClosedPerHourPerAgent,
 )
 const useTicketAverageHandleTimePerAgentMock = assumeMock(
-    useTicketAverageHandleTimePerAgent
+    useTicketAverageHandleTimePerAgent,
 )
 
 describe('useAgentsMetric', () => {
@@ -111,7 +111,7 @@ describe('useAgentsMetric', () => {
     }
     const state = {
         stats: {
-            filters: {period},
+            filters: { period },
         },
         ui: {
             stats: {
@@ -127,7 +127,7 @@ describe('useAgentsMetric', () => {
     beforeEach(() => {
         useCustomerSatisfactionMetricPerAgentMock.mockReturnValue(metricData)
         usePercentageOfClosedTicketsMetricPerAgentMock.mockReturnValue(
-            metricData
+            metricData,
         )
         useClosedTicketsMetricPerAgentMock.mockReturnValue(metricData)
         useMedianFirstResponseTimeMetricPerAgentMock.mockReturnValue(metricData)
@@ -135,7 +135,7 @@ describe('useAgentsMetric', () => {
         useMedianResolutionTimeMetricPerAgentMock.mockReturnValue(metricData)
         useTicketsRepliedMetricPerAgentMock.mockReturnValue(metricData)
         useOneTouchTicketsPercentageMetricPerAgentMock.mockReturnValue(
-            metricData
+            metricData,
         )
         useTicketsRepliedPerHourPerAgentMock.mockReturnValue(metricData)
         useOnlineTimePerAgentMock.mockReturnValue(metricData)
@@ -145,8 +145,8 @@ describe('useAgentsMetric', () => {
     })
 
     it('should return agents performance metrics', () => {
-        const {result} = renderHook(() => useAgentsMetrics(), {
-            wrapper: ({children}) => (
+        const { result } = renderHook(() => useAgentsMetrics(), {
+            wrapper: ({ children }) => (
                 <Provider store={mockStore(state)}>{children}</Provider>
             ),
         })

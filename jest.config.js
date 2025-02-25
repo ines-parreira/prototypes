@@ -151,9 +151,7 @@ module.exports = {
     setupFiles: ['jest-launchdarkly-mock', 'construct-style-sheets-polyfill'],
 
     // A list of paths to modules that run some code to configure or set up the testing framework before each test
-    setupFilesAfterEnv: [
-        './tests/setup.tsx',
-    ],
+    setupFilesAfterEnv: ['./tests/setup.tsx'],
 
     // The number of seconds after which a test is considered as slow and reported as such in the results.
     // slowTestThreshold: 5,
@@ -192,11 +190,13 @@ module.exports = {
 
     // A map from regular expressions to paths to transformers
     transform: {
-        '\\.[jt]sx?$': ['babel-jest', {configFile: './babel.config.json'}],
+        '\\.[jt]sx?$': ['babel-jest', { configFile: './babel.config.json' }],
     },
 
     // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
-    transformIgnorePatterns: ['/node_modules/(?!jsonpath-plus|@gorgias|lodash-es)'],
+    transformIgnorePatterns: [
+        '/node_modules/(?!jsonpath-plus|@gorgias|lodash-es)',
+    ],
 
     // An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them
     // unmockedModulePathPatterns: undefined,

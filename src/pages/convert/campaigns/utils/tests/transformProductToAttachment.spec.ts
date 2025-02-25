@@ -1,5 +1,5 @@
-import {shouldAppendUtmParam} from '../attachUtmParams'
-import {transformProductToAttachment} from '../transformProductToAttachment'
+import { shouldAppendUtmParam } from '../attachUtmParams'
+import { transformProductToAttachment } from '../transformProductToAttachment'
 
 jest.mock('../attachUtmParams')
 
@@ -32,8 +32,8 @@ describe('transformProductToAttachment()', () => {
                     campaignName: 'Test 1',
                     currency: 'GBP',
                 },
-                false
-            )
+                false,
+            ),
         ).toMatchSnapshot()
         expect(
             transformProductToAttachment(
@@ -42,8 +42,8 @@ describe('transformProductToAttachment()', () => {
                     campaignName: 'Test 1',
                     currency: 'GBP',
                 },
-                false
-            )
+                false,
+            ),
         ).toMatchSnapshot()
     })
 })

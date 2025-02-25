@@ -1,17 +1,18 @@
-import {render, fireEvent} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
-import {DeepPartial} from 'redux'
+
+import { fireEvent, render } from '@testing-library/react'
+import { Provider } from 'react-redux'
+import { DeepPartial } from 'redux'
 import configureMockStore from 'redux-mock-store'
 
-import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
-import {useHelpCenterIdParam} from 'pages/settings/helpCenter/hooks/useHelpCenterIdParam'
-import {initialState as helpCenterState} from 'state/entities/helpCenter/reducer'
-import {RootState, StoreDispatch} from 'state/types'
-import {initialState as uiState} from 'state/ui/helpCenter/reducer'
+import { useHelpCenterIdParam } from 'pages/settings/helpCenter/hooks/useHelpCenterIdParam'
+import { initialState as helpCenterState } from 'state/entities/helpCenter/reducer'
+import { RootState, StoreDispatch } from 'state/types'
+import { initialState as uiState } from 'state/ui/helpCenter/reducer'
 
-import {getSingleArticleEnglish} from '../../../fixtures/getArticlesResponse.fixture'
+import { getSingleArticleEnglish } from '../../../fixtures/getArticlesResponse.fixture'
 import HelpCenterEditAdvancedArticleForm from '../HelpCenterEditAdvancedArticleForm'
 
 const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>()
@@ -21,12 +22,12 @@ const mockedOnCategoryChange = jest.fn()
 
 jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
 ;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
-    getSingleHelpCenterResponseFixture
+    getSingleHelpCenterResponseFixture,
 )
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterIdParam')
 ;(useHelpCenterIdParam as jest.Mock).mockReturnValue(
-    getSingleHelpCenterResponseFixture.id
+    getSingleHelpCenterResponseFixture.id,
 )
 
 const mockFetchCategories = jest.fn().mockResolvedValue(null)
@@ -46,7 +47,7 @@ const mockedUseEditionManager = {
 
 jest.mock('../../../providers/EditionManagerContext', () => {
     const module: Record<string, unknown> = jest.requireActual(
-        '../../../providers/EditionManagerContext'
+        '../../../providers/EditionManagerContext',
     )
 
     return {
@@ -56,7 +57,7 @@ jest.mock('../../../providers/EditionManagerContext', () => {
 })
 
 describe('<HelpCenterEditAdvancedArticleForm/>', () => {
-    const {translation} = getSingleArticleEnglish
+    const { translation } = getSingleArticleEnglish
     const props = {
         articleId: 1,
         categoryId: 1,
@@ -70,7 +71,7 @@ describe('<HelpCenterEditAdvancedArticleForm/>', () => {
         entities: {
             helpCenter: helpCenterState,
         },
-        ui: {helpCenter: uiState},
+        ui: { helpCenter: uiState },
     }
 
     beforeEach(() => {
@@ -78,22 +79,22 @@ describe('<HelpCenterEditAdvancedArticleForm/>', () => {
     })
 
     it('should display the component correctly', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockedStore(defaultState)}>
                 <HelpCenterEditAdvancedArticleForm {...props} />
-            </Provider>
+            </Provider>,
         )
         expect(container).toMatchSnapshot()
     })
 
     it('should trigger the onChange callback when updating form inputs', () => {
-        const {getByRole} = render(
+        const { getByRole } = render(
             <Provider store={mockedStore(defaultState)}>
                 <HelpCenterEditAdvancedArticleForm {...props} />
-            </Provider>
+            </Provider>,
         )
-        const slugInput = getByRole('textbox', {name: /slug/i})
-        fireEvent.change(slugInput, {target: {value: 'new slug'}})
+        const slugInput = getByRole('textbox', { name: /slug/i })
+        fireEvent.change(slugInput, { target: { value: 'new slug' } })
         expect(mockedOnChange).toHaveBeenCalledWith({
             ...translation,
             slug: 'new-slug',

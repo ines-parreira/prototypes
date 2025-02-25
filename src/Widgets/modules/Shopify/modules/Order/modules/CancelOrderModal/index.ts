@@ -1,1 +1,1 @@
-export {default} from './components/CancelOrderModal'
+export { default } from './components/CancelOrderModal'

@@ -1,14 +1,20 @@
+import React, {
+    ReactNode,
+    useContext,
+    useEffect,
+    useMemo,
+    useState,
+} from 'react'
+
 import cn from 'classnames'
-import {fromJS, List, Map} from 'immutable'
-import React, {ReactNode, useContext, useEffect, useMemo, useState} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
+import { fromJS, List, Map } from 'immutable'
+import { connect, ConnectedProps } from 'react-redux'
 
-import {useDesktopOnlyShowGlobalNavFeatureFlag} from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useFlag} from 'core/flags'
+import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import usePrevious from 'hooks/usePrevious'
-import {EntityType} from 'models/view/types'
-
+import { EntityType } from 'models/view/types'
 import BlankState from 'pages/common/components/BlankState/BlankState'
 import Loader from 'pages/common/components/Loader/Loader'
 import Navigation from 'pages/common/components/Navigation/Navigation'
@@ -18,18 +24,18 @@ import HeaderCell from 'pages/common/components/ViewTable/Table/HeaderCell'
 import Row from 'pages/common/components/ViewTable/Table/Row'
 import ViewSelection from 'pages/common/components/ViewTable/Table/ViewSelection'
 import CheckBox from 'pages/common/forms/CheckBox'
-import {moveIndex, MoveIndexDirection} from 'pages/common/utils/keyboard'
+import { moveIndex, MoveIndexDirection } from 'pages/common/utils/keyboard'
 import history from 'pages/history'
 import shortcutManager from 'services/shortcutManager'
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
 import {
-    toggleViewSelection,
-    toggleIdInSelectedItemsIds,
-    updateSelectedItemsIds,
-    resetView,
     fetchViewItems,
+    resetView,
+    toggleIdInSelectedItemsIds,
+    toggleViewSelection,
+    updateSelectedItemsIds,
 } from 'state/views/actions'
-import {areAllActiveViewItemsSelected} from 'state/views/selectors'
+import { areAllActiveViewItemsSelected } from 'state/views/selectors'
 import {
     FetchViewItemsOptions,
     ViewImmutable,
@@ -97,25 +103,25 @@ const TableContainer = ({
     const fetchParams = useMemo(
         () =>
             orderBy
-                ? {orderBy: `${orderBy}:${view.get('order_dir') as string}`}
+                ? { orderBy: `${orderBy}:${view.get('order_dir') as string}` }
                 : undefined,
-        [orderBy, view]
+        [orderBy, view],
     ) as FetchViewItemsOptions
     const searchOptions = useMemo(
         () =>
             isTrackTotalHitsEnabled && isSearch && type === EntityType.Ticket
-                ? {trackTotalHits: true}
+                ? { trackTotalHits: true }
                 : undefined,
-        [isTrackTotalHitsEnabled, isSearch, type]
+        [isTrackTotalHitsEnabled, isSearch, type],
     )
     const navigationFetchParams = useMemo(
-        () => ({...fetchParams, ...searchOptions}),
-        [fetchParams, searchOptions]
+        () => ({ ...fetchParams, ...searchOptions }),
+        [fetchParams, searchOptions],
     )
 
     const areAllSelected = useMemo(
         () => !!selectedItemsIds && items.size === selectedItemsIds.size,
-        [items, selectedItemsIds]
+        [items, selectedItemsIds],
     )
 
     const indeterminateCheckbox = useMemo(
@@ -124,21 +130,21 @@ const TableContainer = ({
             selectedItemsIds.size > 0 &&
             selectedItemsIds.size < items.size,
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [selectedItemsIds]
+        [selectedItemsIds],
     )
 
     const moveCursor = (
-        direction: MoveIndexDirection = MoveIndexDirection.Next
+        direction: MoveIndexDirection = MoveIndexDirection.Next,
     ) => {
         setRowCursor(
             moveIndex(rowCursor, items.size, {
                 direction,
-            })
+            }),
         )
     }
 
     const movePage = (
-        direction: ViewNavDirection = ViewNavDirection.NextView
+        direction: ViewNavDirection = ViewNavDirection.NextView,
     ) => {
         if (
             (direction === ViewNavDirection.PrevView &&
@@ -217,16 +223,16 @@ const TableContainer = ({
             if (viewSelected) {
                 updatePageSelection(
                     items.map(
-                        (item: Map<any, any>) => item.get('id') as number
-                    ) as List<any>
+                        (item: Map<any, any>) => item.get('id') as number,
+                    ) as List<any>,
                 )
             } else if (selectedItemsIds) {
                 updatePageSelection(
                     selectedItemsIds.filter((itemId) =>
                         items.some(
-                            (item: Map<any, any>) => item.get('id') === itemId
-                        )
-                    ) as List<any>
+                            (item: Map<any, any>) => item.get('id') === itemId,
+                        ),
+                    ) as List<any>,
                 )
             }
         }
@@ -235,7 +241,7 @@ const TableContainer = ({
 
     const toggleSelectAllPageItems = () => {
         const itemsIds = items.map(
-            (item: Map<any, any>) => item.get('id') as number
+            (item: Map<any, any>) => item.get('id') as number,
         ) as List<any>
         if (selectedItemsIds && selectedItemsIds.size > 0) {
             updatePageSelection(List())
@@ -296,7 +302,7 @@ const TableContainer = ({
                     css.table,
                     'view-table',
                     /* istanbul ignore next */
-                    showGlobalNav && css.globalNavStyles
+                    showGlobalNav && css.globalNavStyles,
                 )}
             >
                 <thead className={css.tableHead}>
@@ -308,7 +314,7 @@ const TableContainer = ({
                                     /* istanbul ignore next */
                                     showGlobalNav
                                         ? 'cell-global-nav'
-                                        : 'cell-short'
+                                        : 'cell-short',
                                 )}
                                 onClick={toggleSelectAllPageItems}
                             >
@@ -392,7 +398,7 @@ const TableContainer = ({
                         null,
                         null,
                         searchRank,
-                        navigationFetchParams
+                        navigationFetchParams,
                     )
                 }
                 fetchPrevItems={() =>
@@ -401,7 +407,7 @@ const TableContainer = ({
                         null,
                         null,
                         searchRank,
-                        navigationFetchParams
+                        navigationFetchParams,
                     )
                 }
             />
@@ -418,7 +424,7 @@ const connector = connect(
         toggleIdInPageSelection: toggleIdInSelectedItemsIds,
         toggleViewSelection,
         updatePageSelection: updateSelectedItemsIds,
-    }
+    },
 )
 
 export default connector(TableContainer)

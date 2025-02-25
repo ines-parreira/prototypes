@@ -1,7 +1,8 @@
-import {useQueryClient} from '@tanstack/react-query'
-import {useEffect} from 'react'
+import { useEffect } from 'react'
 
-import {isCustomFieldValueEmpty} from 'custom-fields/helpers/isCustomFieldValueEmpty'
+import { useQueryClient } from '@tanstack/react-query'
+
+import { isCustomFieldValueEmpty } from 'custom-fields/helpers/isCustomFieldValueEmpty'
 import {
     customFieldValueKeys,
     useDeleteCustomFieldValue,
@@ -12,13 +13,13 @@ import {
     updateCustomFieldValue,
 } from 'custom-fields/resources'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {isGorgiasApiError} from 'models/api/types'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {updateCustomFieldPrediction} from 'state/ticket/actions'
-import {StoreDispatch} from 'state/types'
-import {MutationOverrides} from 'types/query'
-import {errorToChildren} from 'utils'
+import { isGorgiasApiError } from 'models/api/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { updateCustomFieldPrediction } from 'state/ticket/actions'
+import { StoreDispatch } from 'state/types'
+import { MutationOverrides } from 'types/query'
+import { errorToChildren } from 'utils'
 
 const onErrorCreator =
     (dispatch: StoreDispatch) => (error: Record<string, unknown>) => {
@@ -30,7 +31,7 @@ const onErrorCreator =
                 message: errorToChildren(error) || undefined,
                 allowHTML: true,
                 status: NotificationStatus.Error,
-            })
+            }),
         )
     }
 
@@ -41,13 +42,13 @@ export const useUpdateOrDeleteTicketFieldValue = (
         typeof updateCustomFieldValue & typeof deleteCustomFieldValue,
         true
     > = {},
-    {isDisabled = false} = {}
+    { isDisabled = false } = {},
 ) => {
     const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
     const internalErrorHandler = onErrorCreator(dispatch)
     const overrides = {
-        onSuccess: (data: unknown, params: [{fieldId: number}]) => {
+        onSuccess: (data: unknown, params: [{ fieldId: number }]) => {
             // queryClient.setQueryData(customFieldValueKeys.value(params[0].id), {...})
             // or the following if we ever fetch value with react query
             void queryClient.invalidateQueries({
@@ -66,13 +67,13 @@ export const useUpdateOrDeleteTicketFieldValue = (
         },
     }
 
-    const {mutate: updateMutate, data: updateData} =
+    const { mutate: updateMutate, data: updateData } =
         useUpdateCustomFieldValue(overrides)
-    const {mutate: deleteMutate} = useDeleteCustomFieldValue(overrides)
+    const { mutate: deleteMutate } = useDeleteCustomFieldValue(overrides)
 
     useEffect(() => {
         if (updateData?.data.prediction) {
-            const {field, prediction} = updateData.data
+            const { field, prediction } = updateData.data
             dispatch(updateCustomFieldPrediction(field.id, prediction))
         }
     }, [updateData, dispatch])
@@ -81,7 +82,7 @@ export const useUpdateOrDeleteTicketFieldValue = (
         mutate: (
             params:
                 | Parameters<typeof updateCustomFieldValue>
-                | Parameters<typeof deleteCustomFieldValue>
+                | Parameters<typeof deleteCustomFieldValue>,
         ) => {
             if (isDisabled) return
             if (

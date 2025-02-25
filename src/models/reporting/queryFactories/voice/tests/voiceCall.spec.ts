@@ -1,20 +1,20 @@
 import moment from 'moment'
 
-import {OrderDirection} from 'models/api/types'
-import {TicketMember} from 'models/reporting/cubes/TicketCube'
+import { OrderDirection } from 'models/api/types'
+import { TicketMember } from 'models/reporting/cubes/TicketCube'
 import {
     VoiceCallDimension,
     VoiceCallMeasure,
     VoiceCallMember,
     VoiceCallSegment,
 } from 'models/reporting/cubes/VoiceCallCube'
-import {ReportingFilterOperator} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
-import {getLiveVoicePeriodFilter} from 'pages/stats/voice/components/LiveVoice/utils'
-import {MIN_DATE_FOR_ADVANCED_VOICE_STATS} from 'pages/stats/voice/constants/voiceOverview'
-import {AccountSettingType} from 'state/currentAccount/types'
-import {formatReportingQueryDate} from 'utils/reporting'
-import {assumeMock} from 'utils/testing'
+import { ReportingFilterOperator } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
+import { getLiveVoicePeriodFilter } from 'pages/stats/voice/components/LiveVoice/utils'
+import { MIN_DATE_FOR_ADVANCED_VOICE_STATS } from 'pages/stats/voice/constants/voiceOverview'
+import { AccountSettingType } from 'state/currentAccount/types'
+import { formatReportingQueryDate } from 'utils/reporting'
+import { assumeMock } from 'utils/testing'
 
 import {
     connectedCallsListQueryFactory,
@@ -82,7 +82,7 @@ describe('voice queries factories', () => {
             const query = voiceCallCountQueryFactory(
                 statsFilters,
                 timezone,
-                segment
+                segment,
             )
 
             expect(query).toEqual({
@@ -103,7 +103,7 @@ describe('voice queries factories', () => {
                 timezone,
                 segments: segment ? [segment] : [],
             })
-        }
+        },
     )
 
     describe('voiceCallListQueryFactory', () => {
@@ -118,7 +118,7 @@ describe('voice queries factories', () => {
                     timezone,
                     segment,
                     limit,
-                    offset
+                    offset,
                 )
 
                 expect(query).toEqual({
@@ -144,7 +144,7 @@ describe('voice queries factories', () => {
                         [VoiceCallDimension.CreatedAt, OrderDirection.Desc],
                     ],
                 })
-            }
+            },
         )
 
         it('should create query with custom order and sorting', () => {
@@ -155,7 +155,7 @@ describe('voice queries factories', () => {
                 undefined,
                 undefined,
                 VoiceCallDimension.Duration,
-                OrderDirection.Desc
+                OrderDirection.Desc,
             )
 
             expect(query).toEqual({
@@ -247,7 +247,7 @@ describe('voice queries factories', () => {
                     operator: ReportingFilterOperator.AfterDate,
                     values: [
                         formatReportingQueryDate(
-                            moment(MIN_DATE_FOR_ADVANCED_VOICE_STATS)
+                            moment(MIN_DATE_FOR_ADVANCED_VOICE_STATS),
                         ),
                     ],
                 },
@@ -256,12 +256,12 @@ describe('voice queries factories', () => {
                     operator: ReportingFilterOperator.BeforeDate,
                     values: [
                         formatReportingQueryDate(
-                            moment(MIN_DATE_FOR_ADVANCED_VOICE_STATS)
+                            moment(MIN_DATE_FOR_ADVANCED_VOICE_STATS),
                         ),
                     ],
                 },
             ])
-        }
+        },
     )
 
     it.each([
@@ -312,9 +312,9 @@ describe('voice queries factories', () => {
                         operator: ReportingFilterOperator.BeforeDate,
                         values: [periodEnd],
                     },
-                ])
+                ]),
             )
-        }
+        },
     )
 
     it.each([undefined, VoiceCallSegment.inboundCalls])(
@@ -323,7 +323,7 @@ describe('voice queries factories', () => {
             const query = voiceCallCountPerFilteringAgentQueryFactory(
                 statsFilters,
                 timezone,
-                segment
+                segment,
             )
             expect(query).toEqual({
                 dimensions: [VoiceCallDimension.FilteringAgentId],
@@ -343,7 +343,7 @@ describe('voice queries factories', () => {
                     },
                 ],
             })
-        }
+        },
     )
 
     it.each([undefined, VoiceCallSegment.inboundCalls])(
@@ -352,7 +352,7 @@ describe('voice queries factories', () => {
             const query = voiceCallCountPerAgentQueryFactory(
                 statsFilters,
                 timezone,
-                segment
+                segment,
             )
             expect(query).toEqual({
                 dimensions: [VoiceCallDimension.AgentId],
@@ -372,7 +372,7 @@ describe('voice queries factories', () => {
                     },
                 ],
             })
-        }
+        },
     )
 
     it.each([undefined, VoiceCallSegment.inboundCalls])(
@@ -381,7 +381,7 @@ describe('voice queries factories', () => {
             const query = voiceCallAverageTalkTimePerAgentQueryFactory(
                 statsFilters,
                 timezone,
-                segment
+                segment,
             )
             expect(query).toEqual({
                 dimensions: [VoiceCallDimension.AgentId],
@@ -401,7 +401,7 @@ describe('voice queries factories', () => {
                     },
                 ],
             })
-        }
+        },
     )
 
     it('connectedCallsListQueryFactory should create a query', () => {
@@ -437,7 +437,7 @@ describe('voice queries factories', () => {
             const query = waitingTimeCallsListQueryFactory(
                 statsFilters,
                 timezone,
-                segment
+                segment,
             )
             expect(query).toEqual({
                 dimensions: voiceCallListDimensions,
@@ -462,7 +462,7 @@ describe('voice queries factories', () => {
                 ],
                 segments: segment ? [segment] : [],
             })
-        }
+        },
     )
 
     describe('liveDashboardConnectedCallsListQueryFactory', () => {
@@ -601,7 +601,7 @@ describe('voice queries factories', () => {
 
             const query = liveDashBoardVoiceCallListQueryFactory(
                 statsFilters,
-                VoiceCallSegment.inboundCalls
+                VoiceCallSegment.inboundCalls,
             )
 
             expect(query).toEqual({
@@ -642,7 +642,7 @@ describe('voice queries factories', () => {
             } as any
             const query = liveDashBoardVoiceCallListQueryFactory(
                 statsFilters,
-                VoiceCallSegment.inboundCalls
+                VoiceCallSegment.inboundCalls,
             )
 
             expect(query.timezone).toEqual('Europe/Paris')

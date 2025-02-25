@@ -1,24 +1,25 @@
-import {fireEvent, render} from '@testing-library/react'
 import React from 'react'
+
+import { fireEvent, render } from '@testing-library/react'
 
 import Foldable from '../Foldable'
 
 describe('Foldable component', () => {
     it('should render open', () => {
-        const {container} = render(
+        const { container } = render(
             <Foldable label={<div>my label</div>}>
                 <div>my children</div>
-            </Foldable>
+            </Foldable>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render closed on toggle', () => {
-        const {container, getByText} = render(
+        const { container, getByText } = render(
             <Foldable label={<div>my label</div>}>
                 <div>my children</div>
-            </Foldable>
+            </Foldable>,
         )
 
         fireEvent.click(getByText('keyboard_arrow_down'))

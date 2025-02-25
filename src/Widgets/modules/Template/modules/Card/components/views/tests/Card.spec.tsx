@@ -1,7 +1,8 @@
-import {act, render, screen} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {assumeMock, getLastMockCall} from 'utils/testing'
+import { act, render, screen } from '@testing-library/react'
+
+import { assumeMock, getLastMockCall } from 'utils/testing'
 
 import Card from '../Card'
 import CardHeader from '../CardHeader'
@@ -10,7 +11,7 @@ const CARD_HEADER_TEST_ID = 'card-header'
 jest.mock('../CardHeader', () =>
     jest.fn(() => {
         return <span data-testid={CARD_HEADER_TEST_ID}>card header</span>
-    })
+    }),
 )
 const CardHeaderMock = assumeMock(CardHeader)
 
@@ -68,8 +69,8 @@ describe('Card', () => {
                 <Card
                     {...defaultProps}
                     isEditionMode={false}
-                    cardData={{...defaultProps.cardData, displayCard: false}}
-                />
+                    cardData={{ ...defaultProps.cardData, displayCard: false }}
+                />,
             )
             const container = document.querySelector('.card')
 
@@ -83,7 +84,7 @@ describe('Card', () => {
                     {...defaultProps}
                     isDefaultOpen={false}
                     isEditionMode={false}
-                />
+                />,
             )
 
             expect(document.querySelector('.cardContent')).toHaveClass('hidden')
@@ -103,11 +104,11 @@ describe('Card', () => {
 
         it('should add the "can-drop" class if "isEditionMode" is true and "canDrop" is true', () => {
             render(
-                <Card {...defaultProps} isEditionMode={true} canDrop={true} />
+                <Card {...defaultProps} isEditionMode={true} canDrop={true} />,
             )
 
             expect(document.querySelector('.cardContent')).toHaveClass(
-                'canDrop'
+                'canDrop',
             )
         })
     })
@@ -146,7 +147,7 @@ describe('Card', () => {
                     onSubmit: defaultProps.onSubmit,
                     renderTitleWrapper:
                         defaultProps.extensions.renderTitleWrapper,
-                })
+                }),
             )
         })
 
@@ -161,8 +162,8 @@ describe('Card', () => {
         })
 
         it("should set isExpandable to false if it's in edition mode and displays header and content", () => {
-            const {rerender} = render(
-                <Card {...defaultProps} isEditionMode={false} />
+            const { rerender } = render(
+                <Card {...defaultProps} isEditionMode={false} />,
             )
             expect(getLastMockCall(CardHeaderMock)[0].isExpandable).toBe(true)
             rerender(<Card {...defaultProps} />)
@@ -185,15 +186,15 @@ describe('Card', () => {
             const containing = Node.DOCUMENT_POSITION_CONTAINED_BY
 
             expect(customActionsEl.compareDocumentPosition(afterTitleEl)).toBe(
-                following
+                following,
             )
             expect(afterTitleEl.compareDocumentPosition(beforeEl)).toBe(
-                following
+                following,
             )
             expect(beforeEl.compareDocumentPosition(childrenEl)).toBe(following)
             expect(childrenEl.compareDocumentPosition(afterEl)).toBe(following)
             expect(wrapperEl.compareDocumentPosition(afterEl)).toBe(
-                containing + following
+                containing + following,
             )
         })
     })

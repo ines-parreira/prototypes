@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {Language} from 'constants/languages'
+import { Language } from 'constants/languages'
 import InstallationStep from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationInstall/GorgiasChatIntegrationManualInstallationTabs/components/InstallationStep'
 
 import {
@@ -9,11 +9,10 @@ import {
     LocaleCode,
     LocalSocialNavigationLink,
 } from '../../../models/helpCenter/types'
-import {isProduction, isStaging} from '../../../utils/environment'
-
-import {HelpCenterTheme} from './types'
-import {HelpCenterLayout} from './types/layout.enum'
-import {emojiRegex} from './utils/emojiRegex'
+import { isProduction, isStaging } from '../../../utils/environment'
+import { HelpCenterTheme } from './types'
+import { HelpCenterLayout } from './types/layout.enum'
+import { emojiRegex } from './utils/emojiRegex'
 
 export const HELP_CENTER_BASE_PATH = '/app/settings/help-center'
 
@@ -293,7 +292,7 @@ export enum NEXT_ACTION {
 }
 
 export const HELP_CENTER_LANGUAGE_DEFAULT_UI = [
-    {value: Language.EnglishUs, label: 'English', isDefault: true},
+    { value: Language.EnglishUs, label: 'English', isDefault: true },
 ]
 
 export const DEFAULT_ARTICLE_GROUP: Record<string, HelpCenterArticleItem[]> = {}
@@ -312,7 +311,7 @@ export const CATEGORY_HASH_PREFIX = 'category'
 export const ARTICLE_HASH_PREFIX = 'article'
 
 export const isHelpCenterWizardCompletedState = (
-    value: string | undefined | null
+    value: string | undefined | null,
 ): value is HELP_CENTER_WIZARD_COMPLETED_STATE => {
     return (
         value === HELP_CENTER_WIZARD_COMPLETED_STATE.AllSet ||

@@ -35,7 +35,7 @@ export const emptyManagedRule = {
     priority: 100,
     type: RuleType.Managed,
     uri: '/api/rule/1',
-    settings: {slug: ManagedRulesSlugs.AutoCloseSpam},
+    settings: { slug: ManagedRulesSlugs.AutoCloseSpam },
 } as ManagedRule
 
 export const rule = {
@@ -364,22 +364,25 @@ export const ruleWithBusinessHourIdentifier = {
     uri: '/api/rules/23/',
     code: 'if (duringBusinessHours(message.created_datetime)) {\n}',
     code_ast: {
-        loc: {start: {line: 1, column: 0}, end: {line: 2, column: 1}},
+        loc: { start: { line: 1, column: 0 }, end: { line: 2, column: 1 } },
         type: 'Program',
         body: [
             {
-                loc: {start: {line: 1, column: 0}, end: {line: 2, column: 1}},
+                loc: {
+                    start: { line: 1, column: 0 },
+                    end: { line: 2, column: 1 },
+                },
                 type: 'IfStatement',
                 test: {
                     loc: {
-                        start: {line: 1, column: 4},
-                        end: {line: 1, column: 49},
+                        start: { line: 1, column: 4 },
+                        end: { line: 1, column: 49 },
                     },
                     type: 'CallExpression',
                     callee: {
                         loc: {
-                            start: {line: 1, column: 4},
-                            end: {line: 1, column: 23},
+                            start: { line: 1, column: 4 },
+                            end: { line: 1, column: 23 },
                         },
                         type: 'Identifier',
                         name: 'duringBusinessHours',
@@ -387,23 +390,23 @@ export const ruleWithBusinessHourIdentifier = {
                     arguments: [
                         {
                             loc: {
-                                start: {line: 1, column: 24},
-                                end: {line: 1, column: 48},
+                                start: { line: 1, column: 24 },
+                                end: { line: 1, column: 48 },
                             },
                             type: 'MemberExpression',
                             computed: false,
                             object: {
                                 loc: {
-                                    start: {line: 1, column: 24},
-                                    end: {line: 1, column: 31},
+                                    start: { line: 1, column: 24 },
+                                    end: { line: 1, column: 31 },
                                 },
                                 type: 'Identifier',
                                 name: 'message',
                             },
                             property: {
                                 loc: {
-                                    start: {line: 1, column: 32},
-                                    end: {line: 1, column: 48},
+                                    start: { line: 1, column: 32 },
+                                    end: { line: 1, column: 48 },
                                 },
                                 type: 'Identifier',
                                 name: 'created_datetime',
@@ -413,8 +416,8 @@ export const ruleWithBusinessHourIdentifier = {
                 },
                 consequent: {
                     loc: {
-                        start: {line: 1, column: 51},
-                        end: {line: 2, column: 1},
+                        start: { line: 1, column: 51 },
+                        end: { line: 2, column: 1 },
                     },
                     type: 'BlockStatement',
                     body: [],
@@ -439,22 +442,25 @@ export const ruleWithContainsAllIdentifier = {
     uri: '/api/rules/48/',
     code: 'if (containsAll(ticket.tags.name, [])) {\n}',
     code_ast: {
-        loc: {start: {line: 1, column: 0}, end: {line: 2, column: 1}},
+        loc: { start: { line: 1, column: 0 }, end: { line: 2, column: 1 } },
         type: 'Program',
         body: [
             {
-                loc: {start: {line: 1, column: 0}, end: {line: 2, column: 1}},
+                loc: {
+                    start: { line: 1, column: 0 },
+                    end: { line: 2, column: 1 },
+                },
                 type: 'IfStatement',
                 test: {
                     loc: {
-                        start: {line: 1, column: 4},
-                        end: {line: 1, column: 37},
+                        start: { line: 1, column: 4 },
+                        end: { line: 1, column: 37 },
                     },
                     type: 'CallExpression',
                     callee: {
                         loc: {
-                            start: {line: 1, column: 4},
-                            end: {line: 1, column: 15},
+                            start: { line: 1, column: 4 },
+                            end: { line: 1, column: 15 },
                         },
                         type: 'Identifier',
                         name: 'containsAll',
@@ -462,30 +468,30 @@ export const ruleWithContainsAllIdentifier = {
                     arguments: [
                         {
                             loc: {
-                                start: {line: 1, column: 16},
-                                end: {line: 1, column: 32},
+                                start: { line: 1, column: 16 },
+                                end: { line: 1, column: 32 },
                             },
                             type: 'MemberExpression',
                             computed: false,
                             object: {
                                 loc: {
-                                    start: {line: 1, column: 16},
-                                    end: {line: 1, column: 27},
+                                    start: { line: 1, column: 16 },
+                                    end: { line: 1, column: 27 },
                                 },
                                 type: 'MemberExpression',
                                 computed: false,
                                 object: {
                                     loc: {
-                                        start: {line: 1, column: 16},
-                                        end: {line: 1, column: 22},
+                                        start: { line: 1, column: 16 },
+                                        end: { line: 1, column: 22 },
                                     },
                                     type: 'Identifier',
                                     name: 'ticket',
                                 },
                                 property: {
                                     loc: {
-                                        start: {line: 1, column: 23},
-                                        end: {line: 1, column: 27},
+                                        start: { line: 1, column: 23 },
+                                        end: { line: 1, column: 27 },
                                     },
                                     type: 'Identifier',
                                     name: 'tags',
@@ -493,8 +499,8 @@ export const ruleWithContainsAllIdentifier = {
                             },
                             property: {
                                 loc: {
-                                    start: {line: 1, column: 28},
-                                    end: {line: 1, column: 32},
+                                    start: { line: 1, column: 28 },
+                                    end: { line: 1, column: 32 },
                                 },
                                 type: 'Identifier',
                                 name: 'name',
@@ -502,8 +508,8 @@ export const ruleWithContainsAllIdentifier = {
                         },
                         {
                             loc: {
-                                start: {line: 1, column: 34},
-                                end: {line: 1, column: 36},
+                                start: { line: 1, column: 34 },
+                                end: { line: 1, column: 36 },
                             },
                             type: 'ArrayExpression',
                             elements: [],
@@ -512,8 +518,8 @@ export const ruleWithContainsAllIdentifier = {
                 },
                 consequent: {
                     loc: {
-                        start: {line: 1, column: 39},
-                        end: {line: 2, column: 1},
+                        start: { line: 1, column: 39 },
+                        end: { line: 2, column: 1 },
                     },
                     type: 'BlockStatement',
                     body: [],

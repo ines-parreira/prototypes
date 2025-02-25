@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {useDesktopOnlyShowGlobalNavFeatureFlag} from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
+import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
 
 import css from './ViewTableHeaderContainer.less'
 

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, { useEffect, useState } from 'react'
 
 import warningIcon from 'assets/img/icons/warning.svg'
 
@@ -6,8 +6,8 @@ import {
     HELP_CENTER_MAX_ARTICLES,
     HELP_CENTER_MAX_ARTICLES_WARNING_THRESHOLD,
 } from '../../constants'
-
 import OpenChatButton from './components/OpenChatButton'
+
 import css from './MaxArticleBanner.less'
 
 type Props = {
@@ -25,7 +25,7 @@ const MaxArticleBanner = ({
     const isLimitReached = nbArticles >= maxArticles
 
     const [isShowingBanner, setIsShowingBanner] = useState(
-        isLimitReached || shouldDisplayWarning
+        isLimitReached || shouldDisplayWarning,
     )
 
     useEffect(() => {

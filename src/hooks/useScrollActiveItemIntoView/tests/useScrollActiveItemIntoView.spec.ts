@@ -1,4 +1,4 @@
-import {renderHook} from '@testing-library/react-hooks/dom'
+import { renderHook } from '@testing-library/react-hooks/dom'
 import scrollIntoView from 'scroll-into-view-if-needed'
 
 import useScrollActiveItemIntoView from '../useScrollActiveItemIntoView'
@@ -28,13 +28,13 @@ describe('useScrollActiveItemIntoView', () => {
     })
 
     it('should not scroll if ref is not defined', () => {
-        renderHook(() => useScrollActiveItemIntoView({current: null}, true))
+        renderHook(() => useScrollActiveItemIntoView({ current: null }, true))
 
         expect(mockScrollIntoView).not.toHaveBeenCalled()
     })
 
     it('should not scroll if element is not active', () => {
-        const elementRef = {current: document.createElement('div')}
+        const elementRef = { current: document.createElement('div') }
 
         renderHook(() => useScrollActiveItemIntoView(elementRef, false))
 
@@ -42,7 +42,7 @@ describe('useScrollActiveItemIntoView', () => {
     })
 
     it('should scroll if element is active', () => {
-        const elementRef = {current: document.createElement('div')}
+        const elementRef = { current: document.createElement('div') }
 
         renderHook(() => useScrollActiveItemIntoView(elementRef, true))
 
@@ -56,7 +56,7 @@ describe('useScrollActiveItemIntoView', () => {
             value: mockScrollParent,
             writable: true,
         })
-        const elementRef = {current: mockElement}
+        const elementRef = { current: mockElement }
 
         renderHook(() => useScrollActiveItemIntoView(elementRef, true, true))
 

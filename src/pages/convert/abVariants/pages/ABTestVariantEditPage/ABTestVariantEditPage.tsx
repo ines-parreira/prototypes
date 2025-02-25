@@ -1,33 +1,30 @@
-import {fromJS, Map} from 'immutable'
-import React, {useCallback, useMemo, useEffect} from 'react'
-import {useParams} from 'react-router-dom'
+import React, { useCallback, useEffect, useMemo } from 'react'
+
+import { fromJS, Map } from 'immutable'
+import { useParams } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationType} from 'models/integration/constants'
-
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-
-import {VARIANT_LIMIT} from 'pages/convert/abVariants/contants'
-import {abVariantsUrl} from 'pages/convert/abVariants/urls'
-
+import { IntegrationType } from 'models/integration/constants'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { VARIANT_LIMIT } from 'pages/convert/abVariants/contants'
+import { abVariantsUrl } from 'pages/convert/abVariants/urls'
 import {
     CampaignDetailsForm,
     Props as CampaignDetailsFormProps,
 } from 'pages/convert/campaigns/providers/CampaignDetailsForm'
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
-import {Label} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
-import {CampaignStepsKeys} from 'pages/convert/campaigns/types/CampaignSteps'
-import {ABGroupStatus} from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
-
-import {chatIsShopifyStore} from 'pages/convert/campaigns/utils/chatIsShopifyStore'
+import { Campaign } from 'pages/convert/campaigns/types/Campaign'
+import { Label } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
+import { CampaignStepsKeys } from 'pages/convert/campaigns/types/CampaignSteps'
+import { ABGroupStatus } from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
+import { chatIsShopifyStore } from 'pages/convert/campaigns/utils/chatIsShopifyStore'
 import {
     CONVERT_ROUTE_CAMPAIGN_PARAM_NAME,
     CONVERT_ROUTE_PARAM_NAME,
     CONVERT_ROUTING_AB_VARIANT_PARAM_NAME,
 } from 'pages/convert/common/constants'
-import {ConvertRouteAbVariantParams} from 'pages/convert/common/types'
+import { ConvertRouteAbVariantParams } from 'pages/convert/common/types'
 import history from 'pages/history'
-import {getHumanAgentsJS} from 'state/agents/selectors'
+import { getHumanAgentsJS } from 'state/agents/selectors'
 import {
     getIntegrationById,
     getIntegrationByIdAndType,
@@ -67,14 +64,14 @@ export const ABTestVariantEditPage: React.FC<Props> = (props) => {
     } = useParams<ConvertRouteAbVariantParams>()
 
     const integration = useAppSelector(
-        getIntegrationById(parseInt(integrationId))
+        getIntegrationById(parseInt(integrationId)),
     )
 
     const shopifyIntegration = useAppSelector(
         getIntegrationByIdAndType(
             integration.getIn(['meta', 'shop_integration_id']),
-            IntegrationType.Shopify
-        )
+            IntegrationType.Shopify,
+        ),
     )
 
     const shopify = fromJS(shopifyIntegration || {})
@@ -91,7 +88,7 @@ export const ABTestVariantEditPage: React.FC<Props> = (props) => {
             // eslint-disable-next-line @typescript-eslint/await-thenable
             onUpdate && (await onUpdate(campaign))
         },
-        [onUpdate]
+        [onUpdate],
     )
 
     const handleUpdateVariant = async (campaign: Map<any, any>) => {
@@ -120,7 +117,7 @@ export const ABTestVariantEditPage: React.FC<Props> = (props) => {
     }, [data])
 
     const campaignVariant = useMemo(() => {
-        let newData = {...data}
+        let newData = { ...data }
         if (newData && !isControlVersion && variantId === undefined) {
             // if creating a new variant clean data
             newData = {
@@ -131,7 +128,7 @@ export const ABTestVariantEditPage: React.FC<Props> = (props) => {
             }
         } else if (newData) {
             const variant = (data?.variants || []).find(
-                (item) => item.id === variantId
+                (item) => item.id === variantId,
             )
             if (variant) {
                 newData.message_html = variant.message_html

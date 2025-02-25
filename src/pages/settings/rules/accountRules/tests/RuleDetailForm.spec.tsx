@@ -1,32 +1,32 @@
-import {fireEvent, render, waitFor} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { fireEvent, render, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import * as ReactRouterDom from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {billingState} from 'fixtures/billing'
-import {emptyRule, rules} from 'fixtures/rule'
-import {user} from 'fixtures/users'
-import {ApiListResponseLegacyPagination} from 'models/api/types'
-import {fetchRules} from 'models/rule/resources'
+import { billingState } from 'fixtures/billing'
+import { emptyRule, rules } from 'fixtures/rule'
+import { user } from 'fixtures/users'
+import { ApiListResponseLegacyPagination } from 'models/api/types'
+import { fetchRules } from 'models/rule/resources'
 import history from 'pages/history'
 import {
-    ruleUpdated,
-    ruleDeleted,
     ruleCreated,
+    ruleDeleted,
     rulesFetched,
+    ruleUpdated,
 } from 'state/entities/rules/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {Rule} from 'state/rules/types'
-import {getEmptyRule} from 'state/rules/utils'
+import { NotificationStatus } from 'state/notifications/types'
+import { Rule } from 'state/rules/types'
+import { getEmptyRule } from 'state/rules/utils'
+import { RootState } from 'state/types'
 
-import {RootState} from 'state/types'
+import { RuleDetailForm } from '../RuleDetailForm'
 
-import {RuleDetailForm} from '../RuleDetailForm'
-
-const {Router} = ReactRouterDom
+const { Router } = ReactRouterDom
 
 jest.mock('state/entities/rules/actions')
 jest.mock('models/rule/resources')
@@ -36,14 +36,14 @@ jest.mock(
         ({
             ...jest.requireActual('react-router'),
             useParams: jest.fn(),
-        }) as Record<string, any>
+        }) as Record<string, any>,
 )
 
 const mockStore = configureMockStore([thunk])
 const defaultStore: Partial<RootState> = {
     billing: fromJS(billingState),
     currentUser: fromJS(user),
-    entities: {rules: {'1': rules[0]}} as any,
+    entities: { rules: { '1': rules[0] } } as any,
 }
 
 describe('<RuleDetailForm />', () => {
@@ -67,7 +67,7 @@ describe('<RuleDetailForm />', () => {
     const notifyMock = jest.fn()
 
     const minProps = {
-        rules: {1: {...emptyRule, ...getEmptyRule()}},
+        rules: { 1: { ...emptyRule, ...getEmptyRule() } },
         ruleCreated: ruleCreatedMock,
         ruleDeleted: ruleDeletedMock,
         ruleUpdated: ruleUpdatedMock,
@@ -77,7 +77,7 @@ describe('<RuleDetailForm />', () => {
     } as any as ComponentProps<typeof RuleDetailForm>
 
     beforeEach(() => {
-        mockUseParams.mockReturnValue({ruleId: '1'})
+        mockUseParams.mockReturnValue({ ruleId: '1' })
     })
 
     afterEach(() => {
@@ -87,23 +87,23 @@ describe('<RuleDetailForm />', () => {
     describe('rendering', () => {
         it('should render an empty form when no rule id', async () => {
             mockUseParams.mockReturnValue({})
-            const {container} = render(
+            const { container } = render(
                 <Router history={history}>
                     <Provider store={mockStore(defaultStore)}>
                         <RuleDetailForm {...minProps} />
                     </Provider>
-                </Router>
+                </Router>,
             )
             await waitFor(() => expect(container.firstChild).toMatchSnapshot())
         })
 
         it('should render a loader when rule id before fetched', () => {
-            const {container} = render(
+            const { container } = render(
                 <Router history={history}>
                     <Provider store={mockStore(defaultStore)}>
                         <RuleDetailForm {...minProps} />
                     </Provider>
-                </Router>
+                </Router>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -112,12 +112,12 @@ describe('<RuleDetailForm />', () => {
             fetchRulesMock.mockResolvedValue({
                 data: [emptyRule],
             } as unknown as ApiListResponseLegacyPagination<Rule[]>)
-            const {container} = render(
+            const { container } = render(
                 <Router history={history}>
                     <Provider store={mockStore(defaultStore)}>
                         <RuleDetailForm {...minProps} />
                     </Provider>
-                </Router>
+                </Router>,
             )
 
             await waitFor(() => {
@@ -130,13 +130,13 @@ describe('<RuleDetailForm />', () => {
     describe('fetching', () => {
         it('should notify user and send them back to rules on failed fetch', async () => {
             fetchRulesMock.mockRejectedValue('error')
-            mockUseParams.mockReturnValue({ruleId: '404'})
+            mockUseParams.mockReturnValue({ ruleId: '404' })
             render(
                 <Router history={history}>
                     <Provider store={mockStore(defaultStore)}>
                         <RuleDetailForm {...minProps} />
                     </Provider>
-                </Router>
+                </Router>,
             )
             await waitFor(() => {
                 expect(notifyMock).toHaveBeenNthCalledWith(1, {
@@ -146,19 +146,19 @@ describe('<RuleDetailForm />', () => {
             })
             expect(history.push).toHaveBeenNthCalledWith(
                 1,
-                '/app/settings/rules'
+                '/app/settings/rules',
             )
         })
     })
 
     describe('navbar', () => {
         it('should navigate to ticket list on click', () => {
-            const {getByText} = render(
+            const { getByText } = render(
                 <Router history={history}>
                     <Provider store={mockStore(defaultStore)}>
                         <RuleDetailForm {...minProps} />
                     </Provider>
-                </Router>
+                </Router>,
             )
             fireEvent.click(getByText('Affected tickets'))
             getByText("This rule hasn't fired yet.")

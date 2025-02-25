@@ -1,12 +1,13 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import _noop from 'lodash/noop'
 import React from 'react'
 
-import type {Option} from '../../../../../common/components/RichDropdown/types'
+import _noop from 'lodash/noop'
 
-import {Messages} from './constants'
-import {DropdownOptionButton} from './DropdownOptionButton'
-import {DropdownOptionItem} from './DropdownOptionItem'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import type { Option } from '../../../../../common/components/RichDropdown/types'
+import { Messages } from './constants'
+import { DropdownOptionButton } from './DropdownOptionButton'
+import { DropdownOptionItem } from './DropdownOptionItem'
 
 type Props = {
     messageId: number

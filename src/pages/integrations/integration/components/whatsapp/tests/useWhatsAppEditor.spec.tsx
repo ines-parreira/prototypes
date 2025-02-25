@@ -1,12 +1,13 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
 
-import {TicketChannel} from 'business/types/ticket'
-import {MacroAction} from 'models/macroAction/types'
-import {TemplateTypeFilterOption} from 'pages/tickets/detail/components/ReplyArea/types'
-import {mockStore} from 'utils/testing'
+import { renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+
+import { TicketChannel } from 'business/types/ticket'
+import { MacroAction } from 'models/macroAction/types'
+import { TemplateTypeFilterOption } from 'pages/tickets/detail/components/ReplyArea/types'
+import { mockStore } from 'utils/testing'
 
 import useWhatsAppEditor from '../useWhatsAppEditor'
 import * as whatsAppUtils from '../utils'
@@ -14,7 +15,7 @@ import WhatsAppEditorProvider from '../WhatsAppEditorProvider'
 
 const isWhatsAppWindowOpenSpy = jest.spyOn(
     whatsAppUtils,
-    'isWhatsAppWindowOpen'
+    'isWhatsAppWindowOpen',
 )
 
 const createStore = ({
@@ -47,7 +48,7 @@ describe('useWhatsAppEditor', () => {
 
     const renderHookWithStore = (store: any) =>
         renderHook(useWhatsAppEditor, {
-            wrapper: ({children}: any) => (
+            wrapper: ({ children }: any) => (
                 <Provider store={createStore(store)}>
                     <WhatsAppEditorProvider>{children}</WhatsAppEditorProvider>
                 </Provider>
@@ -55,7 +56,7 @@ describe('useWhatsAppEditor', () => {
         })
 
     it('WhatsApp template editor should be visible when channel is WhatsApp, template search is selected and new message is public', () => {
-        const {result} = renderHookWithStore({
+        const { result } = renderHookWithStore({
             channel: TicketChannel.WhatsApp,
             actions: null,
             isPublic: true,
@@ -64,7 +65,7 @@ describe('useWhatsAppEditor', () => {
     })
 
     it('WhatsApp template editor should not be visible after selecting Macro search', () => {
-        const {result} = renderHookWithStore({
+        const { result } = renderHookWithStore({
             channel: TicketChannel.WhatsApp,
             actions: null,
             isPublic: true,
@@ -82,24 +83,24 @@ describe('useWhatsAppEditor', () => {
     ])(
         'WhatsApp template editor should not be visible when channel is not WhatsApp',
         (sourceType) => {
-            const {result} = renderHookWithStore({
+            const { result } = renderHookWithStore({
                 channel: sourceType,
                 actions: null,
                 isPublic: true,
             })
             expect(result.current.showWhatsAppTemplateEditor).toBe(false)
-        }
+        },
     )
 
     it('should display Macro search by default when WhatsApp window is open', () => {
         isWhatsAppWindowOpenSpy.mockReturnValue(true)
-        const {result} = renderHookWithStore({
+        const { result } = renderHookWithStore({
             channel: TicketChannel.WhatsApp,
             actions: null,
             isPublic: true,
         })
         expect(result.current.selectedTemplateType).toBe(
-            TemplateTypeFilterOption.Macros
+            TemplateTypeFilterOption.Macros,
         )
     })
 })

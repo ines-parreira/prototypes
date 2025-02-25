@@ -1,8 +1,9 @@
-import {useEffect, useRef, useState} from 'react'
-import {useHistory} from 'react-router-dom'
+import { useEffect, useRef, useState } from 'react'
 
-import {SELF_SERVICE_PREVIEW_ROUTES} from '../constants'
-import {useSelfServicePreviewContext} from '../SelfServicePreviewContext'
+import { useHistory } from 'react-router-dom'
+
+import { SELF_SERVICE_PREVIEW_ROUTES } from '../constants'
+import { useSelfServicePreviewContext } from '../SelfServicePreviewContext'
 
 export enum PreviewStep {
     INITIAL,
@@ -12,7 +13,7 @@ export enum PreviewStep {
 }
 
 const useOrdersPagePreview = () => {
-    const {orderManagementFlow} = useSelfServicePreviewContext()
+    const { orderManagementFlow } = useSelfServicePreviewContext()
     const [previewStep, setPreviewStep] = useState(PreviewStep.INITIAL)
     const timeout = useRef<number>()
     const history = useHistory()
@@ -49,7 +50,7 @@ const useOrdersPagePreview = () => {
         }
     }, [previewStep, orderManagementFlow, history])
 
-    return {previewStep}
+    return { previewStep }
 }
 
 export default useOrdersPagePreview

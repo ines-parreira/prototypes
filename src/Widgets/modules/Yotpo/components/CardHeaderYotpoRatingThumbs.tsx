@@ -7,7 +7,7 @@ type Props = {
     label?: string
 }
 
-export function CardHeaderYotpoRatingThumbs({value, label}: Props) {
+export function CardHeaderYotpoRatingThumbs({ value, label }: Props) {
     const missingData = typeof value === 'undefined'
     let thumb = null
     if (!missingData) {

@@ -1,28 +1,27 @@
-import {fireEvent, render, waitFor} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { fireEvent, render, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {account} from 'fixtures/account'
-import {billingState} from 'fixtures/billing'
-import {emptyManagedRule, emptyRule as ruleFixture} from 'fixtures/rule'
-import {emptyRuleRecipeFixture} from 'fixtures/ruleRecipe'
-
-import {user} from 'fixtures/users'
-import {createRule, deleteRule} from 'models/rule/resources'
-
-import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/reducer'
+import { account } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
+import { emptyManagedRule, emptyRule as ruleFixture } from 'fixtures/rule'
+import { emptyRuleRecipeFixture } from 'fixtures/ruleRecipe'
+import { user } from 'fixtures/users'
+import { createRule, deleteRule } from 'models/rule/resources'
+import { initialState as helpCenterInitialState } from 'state/entities/helpCenter/reducer'
 import {
     ruleCreated,
     ruleDeleted,
     ruleUpdated,
 } from 'state/entities/rules/actions'
-import {ManagedRulesSlugs} from 'state/rules/types'
-import {RootState, StoreDispatch} from 'state/types'
+import { ManagedRulesSlugs } from 'state/rules/types'
+import { RootState, StoreDispatch } from 'state/types'
 
-import {RuleRow} from '../RuleRow'
+import { RuleRow } from '../RuleRow'
 
 jest.mock('models/rule/resources')
 jest.mock('pages/history')
@@ -67,29 +66,29 @@ describe('<RuleRow />', () => {
     } as RootState)
 
     it('should render a row with a rule', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <RuleRow {...minProps} />)
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
     it('should render a row with a managed rule tab', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <RuleRow
                     {...minProps}
                     rule={{
                         ...emptyManagedRule,
-                        settings: {slug: ManagedRulesSlugs.AutoCloseSpam},
+                        settings: { slug: ManagedRulesSlugs.AutoCloseSpam },
                     }}
                 />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
     it('should render a row with an error', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <RuleRow
                     {...minProps}
@@ -102,15 +101,15 @@ describe('<RuleRow />', () => {
                     }}
                     shouldDisplayError={true}
                 />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
     it('should show description on hover', async () => {
-        const {getByText, queryByText} = render(
+        const { getByText, queryByText } = render(
             <Provider store={store}>
                 <RuleRow {...minProps} />)
-            </Provider>
+            </Provider>,
         )
         fireEvent.mouseEnter(getByText(ruleFixture.name))
         await waitFor(() => {
@@ -119,12 +118,12 @@ describe('<RuleRow />', () => {
         })
     })
     it('should not show description on hover if rule has no description', async () => {
-        const rule = {...ruleFixture, description: ''}
+        const rule = { ...ruleFixture, description: '' }
 
-        const {getByText, queryByText} = render(
+        const { getByText, queryByText } = render(
             <Provider store={store}>
                 <RuleRow {...minProps} />)
-            </Provider>
+            </Provider>,
         )
         fireEvent.mouseEnter(getByText(rule.name))
         await waitFor(() => {
@@ -134,10 +133,10 @@ describe('<RuleRow />', () => {
     })
     it('should duplicate rule ', async () => {
         createRuleMock.mockResolvedValue(ruleFixture)
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <RuleRow {...minProps} />)
-            </Provider>
+            </Provider>,
         )
         fireEvent.click(getByText(/file_copy/i))
         await waitFor(() => {
@@ -146,10 +145,10 @@ describe('<RuleRow />', () => {
     })
     it('should prompt confirm and then delete rule on click', async () => {
         deleteRuleMock.mockResolvedValue()
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <RuleRow {...minProps} />)
-            </Provider>
+            </Provider>,
         )
         fireEvent.click(getByText(/delete/i))
         fireEvent.click(getByText(/confirm/i))
@@ -158,10 +157,10 @@ describe('<RuleRow />', () => {
         })
     })
     it('should deactivate on toggle button', async () => {
-        const {getByText, getByRole} = render(
+        const { getByText, getByRole } = render(
             <Provider store={store}>
                 <RuleRow {...minProps} />)
-            </Provider>
+            </Provider>,
         )
         fireEvent.click(getByRole('checkbox'))
         fireEvent.click(getByText(/confirm/i))
@@ -174,10 +173,10 @@ describe('<RuleRow />', () => {
             ...ruleFixture,
             deactivated_datetime: '2020-01-01T00:00:00',
         }
-        const {getByRole} = render(
+        const { getByRole } = render(
             <Provider store={store}>
                 <RuleRow {...minProps} rule={deactivatedRule} />)
-            </Provider>
+            </Provider>,
         )
         fireEvent.click(getByRole('checkbox'))
         await waitFor(() => {

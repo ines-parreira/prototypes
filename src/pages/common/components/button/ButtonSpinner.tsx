@@ -1,8 +1,11 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
-import React, {useContext} from 'react'
+import React, { useContext } from 'react'
 
-import {BaseButtonContext} from './BaseButton'
+import classnames from 'classnames'
+
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+
+import { BaseButtonContext } from './BaseButton'
+
 import css from './ButtonSpinner.less'
 
 const spinnerSize = {
@@ -14,7 +17,7 @@ type Props = {
     className?: string
 }
 
-export default function ButtonSpinner({className}: Props) {
+export default function ButtonSpinner({ className }: Props) {
     const contextValue = useContext(BaseButtonContext)
 
     return (

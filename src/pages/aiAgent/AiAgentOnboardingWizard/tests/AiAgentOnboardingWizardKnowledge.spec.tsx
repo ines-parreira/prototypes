@@ -1,44 +1,45 @@
 import 'tests/__mocks__/intersectionObserverMock'
 
-import {QueryClientProvider} from '@tanstack/react-query'
-import {act, fireEvent, screen, waitFor} from '@testing-library/react'
+import React, { ComponentProps } from 'react'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {createMemoryHistory} from 'history'
-import {mockFlags} from 'jest-launchdarkly-mock'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
-import {Router} from 'react-router-dom'
+import { createMemoryHistory } from 'history'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
+import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {AiAgentNotificationType} from 'automate/notifications/types'
-import {logEvent, SegmentEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
+import { AiAgentNotificationType } from 'automate/notifications/types'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
 import {
     AiAgentOnboardingState,
     AiAgentOnboardingWizardStep,
     AiAgentOnboardingWizardType,
 } from 'models/aiAgent/types'
-import {getOnboardingNotificationStateFixture} from 'pages/aiAgent/fixtures/onboardingNotificationState.fixture'
+import { getOnboardingNotificationStateFixture } from 'pages/aiAgent/fixtures/onboardingNotificationState.fixture'
 import Wizard from 'pages/common/components/wizard/Wizard'
-import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock, renderWithRouter} from 'utils/testing'
+import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock, renderWithRouter } from 'utils/testing'
 
 import {
     ARTICLE_INGESTION_LOGS_STATUS,
     WIZARD_BUTTON_ACTIONS,
     WizardPostCompletionPathway,
 } from '../../constants'
-import {getStoreConfigurationFormValuesFixture} from '../../fixtures/onboardingWizard.fixture'
-import {getStoreConfigurationFixture} from '../../fixtures/storeConfiguration.fixtures'
-import {useAiAgentOnboardingNotification} from '../../hooks/useAiAgentOnboardingNotification'
-import {useFileIngestion} from '../../hooks/useFileIngestion'
-import {usePublicResourcesPooling} from '../../hooks/usePublicResourcesPooling'
+import { getStoreConfigurationFormValuesFixture } from '../../fixtures/onboardingWizard.fixture'
+import { getStoreConfigurationFixture } from '../../fixtures/storeConfiguration.fixtures'
+import { useAiAgentOnboardingNotification } from '../../hooks/useAiAgentOnboardingNotification'
+import { useFileIngestion } from '../../hooks/useFileIngestion'
+import { usePublicResourcesPooling } from '../../hooks/usePublicResourcesPooling'
 import AiAgentOnboardingWizardStepKnowledge from '../AiAgentOnboardingWizardKnowledge'
-import {useAiAgentOnboardingWizard} from '../hooks/useAiAgentOnboardingWizard'
+import { useAiAgentOnboardingWizard } from '../hooks/useAiAgentOnboardingWizard'
 
 const SHOP_NAME = 'test-shop'
 const SHOP_TYPE = 'shopify'
@@ -52,7 +53,7 @@ const mockUseAiAgentOnboardingWizard = assumeMock(useAiAgentOnboardingWizard)
 
 jest.mock('../../hooks/useAiAgentOnboardingNotification')
 const mockUseAiAgentOnboardingNotification = assumeMock(
-    useAiAgentOnboardingNotification
+    useAiAgentOnboardingNotification,
 )
 
 jest.mock('../../hooks/useFileIngestion')
@@ -113,7 +114,7 @@ const defaultProps = {
 const history = createMemoryHistory()
 
 const renderComponent = (
-    props: Partial<ComponentProps<typeof AiAgentOnboardingWizardStepKnowledge>>
+    props: Partial<ComponentProps<typeof AiAgentOnboardingWizardStepKnowledge>>,
 ) => {
     const currentProps = {
         ...defaultProps,
@@ -130,14 +131,14 @@ const renderComponent = (
                     </Wizard>
                 </QueryClientProvider>
             </Provider>
-        </Router>
+        </Router>,
     )
 }
 
 describe('<AiAgentOnboardingWizardKnowledge />', () => {
     beforeEach(() => {
         mockUseAiAgentOnboardingWizard.mockReturnValue(
-            mockedUseAiAgentOnboardingWizard
+            mockedUseAiAgentOnboardingWizard,
         )
         mockFlags({
             [FeatureFlagKey.AiAgentSnippetsFromExternalFiles]: true,
@@ -153,7 +154,7 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
             articleIngestionLogsStatus: [],
         })
         mockUseAiAgentOnboardingNotification.mockReturnValue(
-            mockedUseAiAgentOnboardingNotification
+            mockedUseAiAgentOnboardingNotification,
         )
     })
 
@@ -161,12 +162,12 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
         renderComponent({})
 
         expect(
-            screen.getByText('Add knowledge to AI Agent')
+            screen.getByText('Add knowledge to AI Agent'),
         ).toBeInTheDocument()
         expect(
             screen.getByText(
-                'At least one knowledge source is required for AI Agent to reference when replying to customers. You can always add more later.'
-            )
+                'At least one knowledge source is required for AI Agent to reference when replying to customers. You can always add more later.',
+            ),
         ).toBeInTheDocument()
         expect(screen.getByText('Back')).toBeInTheDocument()
         expect(screen.getByText('Finish')).toBeInTheDocument()
@@ -179,7 +180,7 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
         userEvent.click(screen.getByText('Back'))
 
         expect(
-            mockedUseAiAgentOnboardingWizard.handleAction
+            mockedUseAiAgentOnboardingWizard.handleAction,
         ).toHaveBeenCalledWith(WIZARD_BUTTON_ACTIONS.PREVIOUS_STEP)
     })
 
@@ -189,7 +190,7 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
         userEvent.click(screen.getByText('Save & Customize Later'))
 
         expect(
-            mockedUseAiAgentOnboardingWizard.handleSave
+            mockedUseAiAgentOnboardingWizard.handleSave,
         ).toHaveBeenCalledWith({
             publicUrls: [],
             redirectTo: WIZARD_BUTTON_ACTIONS.SAVE_AND_CUSTOMIZE_LATER,
@@ -202,7 +203,7 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
         userEvent.click(screen.getByText('Finish'))
 
         expect(
-            mockedUseAiAgentOnboardingWizard.handleSave
+            mockedUseAiAgentOnboardingWizard.handleSave,
         ).toHaveBeenCalledWith({
             publicUrls: [],
             hasExternalFiles: false,
@@ -227,7 +228,7 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
         userEvent.click(screen.getByText('Finish'))
 
         expect(
-            mockedUseAiAgentOnboardingWizard.handleSave
+            mockedUseAiAgentOnboardingWizard.handleSave,
         ).toHaveBeenCalledWith({
             publicUrls: [],
             hasExternalFiles: false,
@@ -250,7 +251,7 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
 
         const mockedUseAiAgentOnboardingWizard = {
             storeFormValues: getStoreConfigurationFormValuesFixture(),
-            faqHelpCenters: [{...mockedHelpCenters[0], shop_name: SHOP_NAME}],
+            faqHelpCenters: [{ ...mockedHelpCenters[0], shop_name: SHOP_NAME }],
             snippetHelpCenter: null,
             isLoading: false,
             isUpdateWizardSetup: false,
@@ -262,13 +263,13 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
         }
 
         mockUseAiAgentOnboardingWizard.mockReturnValue(
-            mockedUseAiAgentOnboardingWizard
+            mockedUseAiAgentOnboardingWizard,
         )
 
         renderComponent({})
 
         expect(
-            mockedUseAiAgentOnboardingWizard.handleFormUpdate
+            mockedUseAiAgentOnboardingWizard.handleFormUpdate,
         ).toHaveBeenCalledWith({
             helpCenterId: mockedUseAiAgentOnboardingWizard.faqHelpCenters[0].id,
         })
@@ -285,7 +286,7 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
         })
 
         expect(
-            mockedUseAiAgentOnboardingWizard.handleFormUpdate
+            mockedUseAiAgentOnboardingWizard.handleFormUpdate,
         ).not.toHaveBeenCalledWith({
             helpCenterId: mockedUseAiAgentOnboardingWizard.faqHelpCenters[0].id,
         })
@@ -306,7 +307,7 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
         }
 
         mockUseAiAgentOnboardingWizard.mockReturnValue(
-            mockedUseAiAgentOnboardingWizard
+            mockedUseAiAgentOnboardingWizard,
         )
 
         renderComponent({})
@@ -328,23 +329,23 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
         })
 
         expect(
-            mockedUseAiAgentOnboardingWizard.handleFormUpdate
-        ).toHaveBeenCalledWith({helpCenterId: null})
+            mockedUseAiAgentOnboardingWizard.handleFormUpdate,
+        ).toHaveBeenCalledWith({ helpCenterId: null })
 
         act(() => {
             fireEvent.focus(selectedHelpCenter)
         })
 
         const newSelectedHelpCenter = screen.getByText(
-            mockedHelpCenters[1].name
+            mockedHelpCenters[1].name,
         )
         act(() => {
             fireEvent.click(newSelectedHelpCenter)
         })
 
         expect(
-            mockedUseAiAgentOnboardingWizard.handleFormUpdate
-        ).toHaveBeenCalledWith({helpCenterId: mockedHelpCenters[1].id})
+            mockedUseAiAgentOnboardingWizard.handleFormUpdate,
+        ).toHaveBeenCalledWith({ helpCenterId: mockedHelpCenters[1].id })
     })
 
     it('should include public URL changed in handleSave', async () => {
@@ -354,7 +355,7 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
         }
 
         mockUseAiAgentOnboardingWizard.mockReturnValue(
-            mockedUseAiAgentOnboardingWizardWithSnippet
+            mockedUseAiAgentOnboardingWizardWithSnippet,
         )
 
         renderComponent({})
@@ -362,7 +363,7 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
         const addButton = screen.getByText('Add URL')
         userEvent.click(addButton)
 
-        const syncButton = screen.getByRole('button', {name: /Sync URL/})
+        const syncButton = screen.getByRole('button', { name: /Sync URL/ })
         const input = screen.getByLabelText('Public URL')
 
         await userEvent.type(input, 'https://example.com/faqs')
@@ -371,7 +372,7 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
         userEvent.click(screen.getByText('Save & Customize Later'))
 
         expect(
-            mockedUseAiAgentOnboardingWizard.handleSave
+            mockedUseAiAgentOnboardingWizard.handleSave,
         ).toHaveBeenCalledWith({
             publicUrls: ['https://example.com/faqs'],
             redirectTo: WIZARD_BUTTON_ACTIONS.SAVE_AND_CUSTOMIZE_LATER,
@@ -383,7 +384,7 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
                 step: AiAgentOnboardingWizardStep.Knowledge,
                 version: AiAgentOnboardingWizardType.ThreeSteps,
                 url: 'https://example.com/faqs',
-            }
+            },
         )
     })
 
@@ -405,7 +406,7 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
         const addButton = screen.getByText('Add URL')
         userEvent.click(addButton)
 
-        const syncButton = screen.getByRole('button', {name: /Sync URL/})
+        const syncButton = screen.getByRole('button', { name: /Sync URL/ })
         const input = screen.getByLabelText('Public URL')
 
         await userEvent.type(input, 'https://example.com/faqs')
@@ -414,7 +415,7 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
         userEvent.click(screen.getByText('Finish'))
 
         expect(
-            mockedUseAiAgentOnboardingWizard.handleSave
+            mockedUseAiAgentOnboardingWizard.handleSave,
         ).toHaveBeenCalledWith({
             hasExternalFiles: false,
             publicUrls: ['https://example.com/faqs'],
@@ -443,7 +444,7 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
         }
 
         mockUseAiAgentOnboardingWizard.mockReturnValue(
-            mockedUseAiAgentOnboardingWizardWithSnippet
+            mockedUseAiAgentOnboardingWizardWithSnippet,
         )
 
         renderComponent({})
@@ -451,7 +452,7 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
         const addButton = screen.getByText('Add URL')
         userEvent.click(addButton)
 
-        const syncButton = screen.getByRole('button', {name: /Sync URL/})
+        const syncButton = screen.getByRole('button', { name: /Sync URL/ })
         const input = screen.getByLabelText('Public URL')
 
         await userEvent.type(input, 'https://example.com/faqs')
@@ -465,7 +466,7 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
                 step: AiAgentOnboardingWizardStep.Knowledge,
                 version: AiAgentOnboardingWizardType.TwoSteps,
                 url: 'https://example.com/faqs',
-            }
+            },
         )
     })
 
@@ -478,7 +479,7 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
         })
 
         const newSelectedHelpCenter = screen.getByText(
-            mockedHelpCenters[1].name
+            mockedHelpCenters[1].name,
         )
         act(() => {
             fireEvent.click(newSelectedHelpCenter)
@@ -488,15 +489,15 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
 
         expect(
             screen.getByText(
-                'Your changes to this page will be lost if you don’t save them.'
-            )
+                'Your changes to this page will be lost if you don’t save them.',
+            ),
         ).toBeInTheDocument()
         expect(screen.getByText('Save Changes')).toBeInTheDocument()
         expect(screen.getByText('Discard Changes')).toBeInTheDocument()
 
         userEvent.click(screen.getByText('Save Changes'))
         expect(
-            mockedUseAiAgentOnboardingWizard.handleSave
+            mockedUseAiAgentOnboardingWizard.handleSave,
         ).toHaveBeenCalledWith({
             publicUrls: [],
             redirectTo: WIZARD_BUTTON_ACTIONS.SAVE_AND_CUSTOMIZE_LATER,
@@ -547,13 +548,13 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
 
         await waitFor(() => {
             expect(
-                mockedUseAiAgentOnboardingNotification.handleOnSave
+                mockedUseAiAgentOnboardingNotification.handleOnSave,
             ).toHaveBeenCalledWith({
                 onboardingState: AiAgentOnboardingState.FinishedSetup,
             })
 
             expect(
-                mockedUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
+                mockedUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification,
             ).toHaveBeenCalledWith({
                 aiAgentNotificationType:
                     AiAgentNotificationType.FinishAiAgentSetup,
@@ -578,7 +579,7 @@ describe('<AiAgentOnboardingWizardKnowledge />', () => {
 
         await waitFor(() => {
             expect(
-                mockedUseAiAgentOnboardingNotification.handleOnPerformActionPostReceivedNotification
+                mockedUseAiAgentOnboardingNotification.handleOnPerformActionPostReceivedNotification,
             ).toHaveBeenCalledWith(AiAgentNotificationType.FinishAiAgentSetup)
         })
     })

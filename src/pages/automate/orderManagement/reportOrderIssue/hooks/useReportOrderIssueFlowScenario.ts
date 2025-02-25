@@ -1,19 +1,20 @@
-import {useCallback, useEffect, useMemo} from 'react'
-import {useHistory} from 'react-router-dom'
+import { useCallback, useEffect, useMemo } from 'react'
+
+import { useHistory } from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {SelfServiceReportIssueCase} from 'models/selfServiceConfiguration/types'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {convertFromHTML, convertToHTML} from 'utils/editor'
-import {trimHTML} from 'utils/html'
+import { SelfServiceReportIssueCase } from 'models/selfServiceConfiguration/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { convertFromHTML, convertToHTML } from 'utils/editor'
+import { trimHTML } from 'utils/html'
 
-import {SCENARIO_REASON_DEFAULT_ACTION} from '../constants'
+import { SCENARIO_REASON_DEFAULT_ACTION } from '../constants'
 import useReportOrderIssueFlowScenarios from './useReportOrderIssueFlowScenarios'
 
 const useReportOrderIssueFlowScenario = (
     shopName: string,
-    scenarioIndex: number
+    scenarioIndex: number,
 ) => {
     const history = useHistory()
     const dispatch = useAppDispatch()
@@ -38,8 +39,8 @@ const useReportOrderIssueFlowScenario = (
                         if (reason.action) {
                             const html = convertToHTML(
                                 convertFromHTML(
-                                    reason.action.responseMessageContent.html
-                                )
+                                    reason.action.responseMessageContent.html,
+                                ),
                             )
 
                             action = {
@@ -56,11 +57,11 @@ const useReportOrderIssueFlowScenario = (
                             action = SCENARIO_REASON_DEFAULT_ACTION
                         }
 
-                        return {...reason, action}
-                    }
+                        return { ...reason, action }
+                    },
                 ),
             },
-        [scenarios, scenarioIndex]
+        [scenarios, scenarioIndex],
     )
 
     useEffect(() => {
@@ -69,11 +70,11 @@ const useReportOrderIssueFlowScenario = (
                 notify({
                     message: 'Failed to fetch',
                     status: NotificationStatus.Error,
-                })
+                }),
             )
 
             history.push(
-                `/app/automation/shopify/${shopName}/order-management/report-issue`
+                `/app/automation/shopify/${shopName}/order-management/report-issue`,
             )
         }
     }, [selfServiceConfiguration, scenario, dispatch, history, shopName])
@@ -86,7 +87,7 @@ const useReportOrderIssueFlowScenario = (
 
             void handleScenariosUpdate(nextScenarios)
         },
-        [handleScenariosUpdate, scenarios, scenarioIndex]
+        [handleScenariosUpdate, scenarios, scenarioIndex],
     )
     const handleScenarioDelete = useCallback(async () => {
         const nextScenarios = [...scenarios]
@@ -99,7 +100,7 @@ const useReportOrderIssueFlowScenario = (
         })
 
         history.push(
-            `/app/automation/shopify/${shopName}/order-management/report-issue`
+            `/app/automation/shopify/${shopName}/order-management/report-issue`,
         )
     }, [handleScenariosUpdate, scenarios, scenarioIndex, history, shopName])
 

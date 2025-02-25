@@ -1,15 +1,15 @@
-import {render} from '@testing-library/react'
-import React, {ComponentProps, useContext} from 'react'
+import React, { ComponentProps, useContext } from 'react'
 
-import {assumeMock} from 'utils/testing'
+import { render } from '@testing-library/react'
 
-import Template, {CustomizationContext} from 'Widgets/modules/Template'
+import { assumeMock } from 'utils/testing'
+import Template, { CustomizationContext } from 'Widgets/modules/Template'
 
-import BigCommerceWidget, {customization} from '../BigCommerce'
+import BigCommerceWidget, { customization } from '../BigCommerce'
 
 jest.mock('Widgets/modules/Template', () => {
     const templateExports: Record<string, unknown> = jest.requireActual(
-        'Widgets/modules/Template'
+        'Widgets/modules/Template',
     )
     return {
         ...templateExports,
@@ -58,20 +58,20 @@ describe('card customization', () => {
     ])(
         'should have a dataMatcher that matches the given path, or not',
         (dataPath, output) => {
-            const hasMatch = cardCustomization.some(({dataMatcher}) => {
+            const hasMatch = cardCustomization.some(({ dataMatcher }) => {
                 return dataMatcher.test(dataPath)
             })
             expect(hasMatch).toBe(output)
-        }
+        },
     )
 
     it('should have a templateMatcher that matches the given path, or not', () => {
-        const hasMatch = cardCustomization.some(({templateMatcher}) => {
+        const hasMatch = cardCustomization.some(({ templateMatcher }) => {
             return templateMatcher?.test('1.template.widgets.2.widgets.3')
         })
         expect(hasMatch).toBe(true)
 
-        const hasNoMatch = cardCustomization.some(({templateMatcher}) => {
+        const hasNoMatch = cardCustomization.some(({ templateMatcher }) => {
             return templateMatcher?.test('1.template.widgets.2.widgets.3.smth')
         })
         expect(hasNoMatch).toBe(false)

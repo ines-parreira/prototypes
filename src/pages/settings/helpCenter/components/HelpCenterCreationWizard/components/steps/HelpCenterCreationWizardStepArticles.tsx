@@ -1,7 +1,8 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import {
     ArticleTemplateType,
     HelpCenter,
@@ -18,13 +19,12 @@ import {
     HELP_CENTER_STEPS_TITLES,
     NEXT_ACTION,
 } from 'pages/settings/helpCenter/constants'
-import {ArticleOrigin} from 'pages/settings/helpCenter/types/articleOrigin.enum'
+import { ArticleOrigin } from 'pages/settings/helpCenter/types/articleOrigin.enum'
 
-import {getEnabledArticlesCount} from '../../HelpCenterCreationWizardUtils'
-import {useGetHelpCenterArticles} from '../../hooks/useGetHelpCenterArticles'
-
-import {useHelpCenterArticlesForm} from '../../hooks/useHelpCenterArticlesForm'
-import {useHelpCenterCreationWizard} from '../../hooks/useHelpCenterCreationWizard'
+import { getEnabledArticlesCount } from '../../HelpCenterCreationWizardUtils'
+import { useGetHelpCenterArticles } from '../../hooks/useGetHelpCenterArticles'
+import { useHelpCenterArticlesForm } from '../../hooks/useHelpCenterArticlesForm'
+import { useHelpCenterCreationWizard } from '../../hooks/useHelpCenterCreationWizard'
 import ArticleEditor from '../HelpCenterWizardArticleEditor/HelpCenterWizardArticleEditor'
 import HelpCenterWizardArticlePreview from '../HelpCenterWizardArticlePreview/HelpCenterWizardArticlePreview'
 import ArticleSection from '../HelpCenterWizardArticleSection/HelpCenterWizardArticleSection'
@@ -44,7 +44,7 @@ const HelpCenterCreationWizardStepArticles: React.FC<Props> = ({
         isLoading: isUpdatingHelpCenterLoading,
     } = useHelpCenterCreationWizard(
         helpCenter,
-        HelpCenterCreationWizardStep.Articles
+        HelpCenterCreationWizardStep.Articles,
     )
 
     const {
@@ -54,7 +54,7 @@ const HelpCenterCreationWizardStepArticles: React.FC<Props> = ({
     } = useGetHelpCenterArticles(
         helpCenter.id,
         helpCenter.default_locale,
-        helpCenter.shop_name
+        helpCenter.shop_name,
     )
 
     const {
@@ -73,7 +73,7 @@ const HelpCenterCreationWizardStepArticles: React.FC<Props> = ({
     } = useHelpCenterArticlesForm(
         helpCenter,
         fetchedArticles,
-        ArticleOrigin.HELP_CENTER_WIZARD
+        ArticleOrigin.HELP_CENTER_WIZARD,
     )
 
     const isLoading = useMemo(() => {
@@ -178,7 +178,7 @@ const HelpCenterCreationWizardStepArticles: React.FC<Props> = ({
                                 onSelect={handleArticleSelect}
                                 onHover={handleArticleHover}
                             />
-                        )
+                        ),
                     )}
                     <ArticleEditor
                         article={selectedArticle}

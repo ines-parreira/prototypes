@@ -1,9 +1,10 @@
-import {screen} from '@testing-library/react'
 import React from 'react'
 
-import {renderWithRouter} from 'utils/testing'
+import { screen } from '@testing-library/react'
 
-import {useDisplayAiAgentMovedBanner} from '../../hooks/useDisplayAiAgentMovedBanner'
+import { renderWithRouter } from 'utils/testing'
+
+import { useDisplayAiAgentMovedBanner } from '../../hooks/useDisplayAiAgentMovedBanner'
 import AutomateListView from '../AutomateListView'
 
 jest.mock('../../hooks/useDisplayAiAgentMovedBanner', () => ({
@@ -37,7 +38,7 @@ describe('<AutomateListView />', () => {
                 ]}
             >
                 AutomateListView
-            </AutomateListView>
+            </AutomateListView>,
         )
 
         expect(screen.getByText('Title')).toBeInTheDocument()
@@ -65,7 +66,7 @@ describe('<AutomateListView />', () => {
                 isLoading
             >
                 AutomateListView
-            </AutomateListView>
+            </AutomateListView>,
         )
 
         expect(screen.getByText('Title')).toBeInTheDocument()
@@ -77,7 +78,7 @@ describe('<AutomateListView />', () => {
         ;(useDisplayAiAgentMovedBanner as jest.Mock).mockReturnValue(true)
 
         renderWithRouter(
-            <AutomateListView title="Title">AutomateListView</AutomateListView>
+            <AutomateListView title="Title">AutomateListView</AutomateListView>,
         )
 
         expect(screen.getByText('AI Agent Moved Banner')).toBeInTheDocument()
@@ -87,11 +88,11 @@ describe('<AutomateListView />', () => {
         ;(useDisplayAiAgentMovedBanner as jest.Mock).mockReturnValue(false)
 
         renderWithRouter(
-            <AutomateListView title="Title">AutomateListView</AutomateListView>
+            <AutomateListView title="Title">AutomateListView</AutomateListView>,
         )
 
         expect(
-            screen.queryByText('AI Agent Moved Banner')
+            screen.queryByText('AI Agent Moved Banner'),
         ).not.toBeInTheDocument()
     })
 })

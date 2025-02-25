@@ -1,15 +1,16 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {CardHeaderYotpoReviewStatistics} from '../CardHeaderYotpoReviewStatistics'
+import { render } from '@testing-library/react'
+
+import { CardHeaderYotpoReviewStatistics } from '../CardHeaderYotpoReviewStatistics'
 
 describe('<CardHeaderYotpoReviewStatistics/>', () => {
     describe('render()', () => {
         it('should render children and chat bubble icon', () => {
-            const {container} = render(
+            const { container } = render(
                 <CardHeaderYotpoReviewStatistics>
                     3
-                </CardHeaderYotpoReviewStatistics>
+                </CardHeaderYotpoReviewStatistics>,
             )
 
             expect(container.firstChild).toMatchSnapshot()

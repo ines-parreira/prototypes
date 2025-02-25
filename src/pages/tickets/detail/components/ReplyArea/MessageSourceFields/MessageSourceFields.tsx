@@ -1,30 +1,31 @@
+import React, { useEffect, useRef, useState } from 'react'
+
 import classnames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 import _difference from 'lodash/difference'
 import _uniq from 'lodash/uniq'
 import _upperFirst from 'lodash/upperFirst'
 import _xor from 'lodash/xor'
-import React, {useEffect, useRef, useState} from 'react'
 
-import {TicketMessageSourceType} from 'business/types/ticket'
-import {FeatureFlagKey} from 'config/featureFlags'
+import { TicketMessageSourceType } from 'business/types/ticket'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {SourceAddress} from 'models/ticket/types'
-import {useOnClickOutside} from 'pages/common/hooks/useOnClickOutside'
-import {getPersonLabelFromSource} from 'pages/tickets/common/utils'
-import {setReceivers} from 'state/newMessage/actions'
+import { SourceAddress } from 'models/ticket/types'
+import { useOnClickOutside } from 'pages/common/hooks/useOnClickOutside'
+import { getPersonLabelFromSource } from 'pages/tickets/common/utils'
+import { setReceivers } from 'state/newMessage/actions'
 import {
-    getNewMessageType,
-    makeGetNewMessageSourceProperty,
-    getNewMessageRecipients,
-    getContactProperties,
-    getOptionalContactProperties,
     areNewMessageContactPropertiesFulfilled as getAreNewMessageContactPropertiesFulfilled,
+    getContactProperties,
+    getNewMessageRecipients,
+    getNewMessageType,
+    getOptionalContactProperties,
     isNewMessagePublic,
+    makeGetNewMessageSourceProperty,
 } from 'state/newMessage/selectors'
-import {getTicket} from 'state/ticket/selectors'
-import {RootState} from 'state/types'
+import { getTicket } from 'state/ticket/selectors'
+import { RootState } from 'state/types'
 
 import ReceiversSelectField from './components/ReceiversSelectField'
 import DEPRECATED_SenderSelectField from './components/SenderSelectField/DEPRECATED_SenderSelectField'
@@ -61,19 +62,19 @@ export default function MessageSourceFields() {
 
     const allRecipients = useAppSelector(getNewMessageRecipients)
     const availableContactProperties = useAppSelector(
-        getContactProperties(sourceType)
+        getContactProperties(sourceType),
     )
     const getNewMessageSourceProperty = useAppSelector(
-        makeGetNewMessageSourceProperty
+        makeGetNewMessageSourceProperty,
     )
     const isNewTicket = !ticket?.id
     const areNewMessageContactPropertiesFulfilled = useAppSelector(
         getAreNewMessageContactPropertiesFulfilled as unknown as (
-            state: RootState
-        ) => boolean
+            state: RootState,
+        ) => boolean,
     )
     const optionalContactProperties = useAppSelector(
-        getOptionalContactProperties(sourceType)
+        getOptionalContactProperties(sourceType),
     )
 
     const [displayedFields, setDisplayedFields] = useState<string[]>([]) // optional fields that are displayed
@@ -126,7 +127,7 @@ export default function MessageSourceFields() {
     useEffect(() => {
         // remove unused fields from optional ones
         const displayedOptionalFields = availableContactProperties.filter(
-            (r) => !getNewMessageSourceProperty(r).isEmpty()
+            (r) => !getNewMessageSourceProperty(r).isEmpty(),
         )
 
         setDisplayedFields(displayedOptionalFields)
@@ -139,12 +140,12 @@ export default function MessageSourceFields() {
 
     // fields that are displayed by default
     const mandatoryFields = availableContactProperties.filter(
-        (r) => !optionalContactProperties.includes(r)
+        (r) => !optionalContactProperties.includes(r),
     )
 
     // available optional fields, depends on the fields configuration above (depends on source type or channel)
     const availableOptionalFields = availableContactProperties.filter((r) =>
-        optionalContactProperties.includes(r)
+        optionalContactProperties.includes(r),
     )
 
     // selected optional fields or fields already containing data
@@ -158,18 +159,18 @@ export default function MessageSourceFields() {
     // remaining optional fields not already displayed
     const remainingOptionalFields = _difference(
         availableOptionalFields,
-        displayedOptionalFields
+        displayedOptionalFields,
     )
 
     // final displayed fields
     const finalDisplayedFields = _uniq(
-        mandatoryFields.concat(displayedOptionalFields)
+        mandatoryFields.concat(displayedOptionalFields),
     )
 
     const from = getNewMessageSourceProperty('from').toJS() as SourceAddress
 
     const allDisplayedNames = (allRecipients.toJS() as SourceAddress[]).map(
-        (recipient) => getPersonLabelFromSource(recipient, sourceType)
+        (recipient) => getPersonLabelFromSource(recipient, sourceType),
     )
 
     if (!isMessagePublic) {
@@ -210,7 +211,7 @@ export default function MessageSourceFields() {
                                         sourceType={sourceType}
                                         disabled={!isInputEnabled}
                                         required={mandatoryFields.includes(
-                                            prop
+                                            prop,
                                         )}
                                         value={value}
                                         onChange={(recipients) => {
@@ -219,8 +220,8 @@ export default function MessageSourceFields() {
                                                     {
                                                         [prop]: recipients,
                                                     },
-                                                    false
-                                                )
+                                                    false,
+                                                ),
                                             )
                                         }}
                                     />

@@ -1,33 +1,33 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import * as reactQuery from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {CreatePlaygroundBody} from 'models/aiAgentPlayground/types'
-import {getAIGuidanceFixture} from 'pages/aiAgent/fixtures/aiGuidance.fixture'
-import {customToneOfVoicePreviewFixture} from 'pages/aiAgent/fixtures/customToneOfVoicePreview.fixture'
-import {getOnboardingNotificationStateFixture} from 'pages/aiAgent/fixtures/onboardingNotificationState.fixture'
-import {getStoreConfigurationFixture} from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
-import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import {HelpCenterClient} from 'rest_api/help_center_api/client'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { QueryClientProvider } from '@tanstack/react-query'
+import * as reactQuery from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
+import { mockFlags } from 'jest-launchdarkly-mock'
 
-import {assumeMock} from 'utils/testing'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { CreatePlaygroundBody } from 'models/aiAgentPlayground/types'
+import { getAIGuidanceFixture } from 'pages/aiAgent/fixtures/aiGuidance.fixture'
+import { customToneOfVoicePreviewFixture } from 'pages/aiAgent/fixtures/customToneOfVoicePreview.fixture'
+import { getOnboardingNotificationStateFixture } from 'pages/aiAgent/fixtures/onboardingNotificationState.fixture'
+import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
+import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import { HelpCenterClient } from 'rest_api/help_center_api/client'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 import {
+    CACHE_TIME_MS,
     getWelcomePageAcknowledgedKey,
-    useGetAIGeneratedGuidances,
-    useGetWelcomePageAcknowledged,
+    useCreateOnboardingNotificationState,
     useCreateWelcomePageAcknowledged,
     useGenerateCustomToneOfVoicePreview,
+    useGetAIGeneratedGuidances,
     useGetOnboardingNotificationState,
-    useCreateOnboardingNotificationState,
-    CACHE_TIME_MS,
-    useUpsertOnboardingNotificationState,
     useGetStoreConfigurationPure,
     useGetStoresConfigurationForAccount,
+    useGetWelcomePageAcknowledged,
+    useUpsertOnboardingNotificationState,
 } from '../queries'
 import {
     createOnboardingNotificationState,
@@ -38,7 +38,7 @@ import {
     upsertOnboardingNotificationState,
 } from '../resources/configuration'
 import * as guidanceResources from '../resources/guidances'
-import {createContextAndGenerateCustomToneOfVoicePreview} from '../resources/message-processing'
+import { createContextAndGenerateCustomToneOfVoicePreview } from '../resources/message-processing'
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
     useHelpCenterApi: jest.fn(),
@@ -55,7 +55,7 @@ jest.mock('models/aiAgent/resources/configuration', () => ({
 
 const mockGetStoreConfiguration = assumeMock(getStoreConfiguration)
 const mockGetOnboardingNotificationState = assumeMock(
-    getOnboardingNotificationState
+    getOnboardingNotificationState,
 )
 
 jest.mock('models/aiAgent/resources/message-processing', () => ({
@@ -70,7 +70,7 @@ const mockUseHelpCenterApi = jest.mocked(useHelpCenterApi)
 
 const getAIGeneratedGuidances = jest.spyOn(
     guidanceResources,
-    'getAIGeneratedGuidances'
+    'getAIGeneratedGuidances',
 )
 
 const useQuerySpy = jest.spyOn(reactQuery, 'useQuery')
@@ -78,7 +78,7 @@ const useQuerySpy = jest.spyOn(reactQuery, 'useQuery')
 const useMutationSpy = jest.spyOn(reactQuery, 'useMutation')
 
 const queryClient = mockQueryClient()
-const wrapper = ({children}: any) => (
+const wrapper = ({ children }: any) => (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 )
 
@@ -86,8 +86,14 @@ const helpCenterId = 1
 const storeIntegrationId = 1
 
 const mockedAIGuidances = [
-    {...getAIGuidanceFixture('1'), batch_datetime: '2024-04-18T12:21:00.531Z'},
-    {...getAIGuidanceFixture('2'), batch_datetime: '2024-04-18T12:21:00.531Z'},
+    {
+        ...getAIGuidanceFixture('1'),
+        batch_datetime: '2024-04-18T12:21:00.531Z',
+    },
+    {
+        ...getAIGuidanceFixture('2'),
+        batch_datetime: '2024-04-18T12:21:00.531Z',
+    },
 ]
 
 describe('queries', () => {
@@ -101,28 +107,28 @@ describe('queries', () => {
         const accountDomain = 'test-account'
         const storeName = 'test-store'
 
-        const mockData = getStoreConfigurationFixture({storeName})
-        const overrides = {staleTime: 2000}
+        const mockData = getStoreConfigurationFixture({ storeName })
+        const overrides = { staleTime: 2000 }
         it('should call useQuery with the correct parameters', async () => {
             mockGetStoreConfiguration.mockResolvedValue({
-                data: {storeConfiguration: mockData},
+                data: { storeConfiguration: mockData },
                 status: 200,
             } as unknown as ReturnType<typeof getStoreConfiguration>)
 
             renderHook(
                 () =>
                     useGetStoreConfigurationPure(
-                        {accountDomain, storeName, withWizard: true},
-                        overrides
+                        { accountDomain, storeName, withWizard: true },
+                        overrides,
                     ),
-                {wrapper}
+                { wrapper },
             )
 
             expect(useQuerySpy).toHaveBeenCalledWith({
                 queryKey: [
                     'aiAgentStoreConfigurations',
                     'detail',
-                    {accountDomain, storeName, withWizard: true},
+                    { accountDomain, storeName, withWizard: true },
                 ],
                 queryFn: expect.any(Function),
                 staleTime: 2000,
@@ -137,7 +143,7 @@ describe('queries', () => {
             ).queryFn
 
             await expect(queryFn()).resolves.toEqual({
-                data: {storeConfiguration: mockData},
+                data: { storeConfiguration: mockData },
                 status: 200,
             })
         })
@@ -146,10 +152,10 @@ describe('queries', () => {
             renderHook(
                 () =>
                     useGetStoreConfigurationPure(
-                        {accountDomain, storeName, withWizard: true},
-                        {enabled: false}
+                        { accountDomain, storeName, withWizard: true },
+                        { enabled: false },
                     ),
-                {wrapper}
+                { wrapper },
             )
 
             expect(getStoreConfiguration).not.toHaveBeenCalled()
@@ -163,10 +169,10 @@ describe('queries', () => {
             storeName,
         })
 
-        const overrides = {staleTime: 2000}
+        const overrides = { staleTime: 2000 }
         it('should call useQuery with the correct parameters', async () => {
             mockGetStoreConfiguration.mockResolvedValue({
-                data: {storeConfiguration: mockData},
+                data: { storeConfiguration: mockData },
                 status: 200,
             } as unknown as ReturnType<typeof getStoreConfiguration>)
 
@@ -178,16 +184,20 @@ describe('queries', () => {
                             storesName: [storeName],
                             withWizard: true,
                         },
-                        overrides
+                        overrides,
                     ),
-                {wrapper}
+                { wrapper },
             )
 
             expect(useQuerySpy).toHaveBeenCalledWith({
                 queryKey: [
                     'aiAgentStoreConfigurations',
                     'account',
-                    {accountDomain, storesName: [storeName], withWizard: true},
+                    {
+                        accountDomain,
+                        storesName: [storeName],
+                        withWizard: true,
+                    },
                 ],
                 queryFn: expect.any(Function),
                 staleTime: 2000,
@@ -203,20 +213,20 @@ describe('queries', () => {
 
             await expect(queryFn()).resolves.toEqual([
                 {
-                    data: {storeConfiguration: mockData},
+                    data: { storeConfiguration: mockData },
                     status: 200,
                 },
             ])
         })
         it('should filter out all 404 storeConfigurations', async () => {
             const mockData = {
-                store1: getStoreConfigurationFixture({storeName: 'store1'}),
-                store2: getStoreConfigurationFixture({storeName: 'store2'}),
-                store4: getStoreConfigurationFixture({storeName: 'store4'}),
+                store1: getStoreConfigurationFixture({ storeName: 'store1' }),
+                store2: getStoreConfigurationFixture({ storeName: 'store2' }),
+                store4: getStoreConfigurationFixture({ storeName: 'store4' }),
             }
-            mockGetStoreConfiguration.mockImplementation(({storeName}) => {
+            mockGetStoreConfiguration.mockImplementation(({ storeName }) => {
                 if (storeName === 'should-404') {
-                    return Promise.reject({status: 404})
+                    return Promise.reject({ status: 404 })
                 }
 
                 return Promise.resolve({
@@ -241,9 +251,9 @@ describe('queries', () => {
                             ],
                             withWizard: true,
                         },
-                        overrides
+                        overrides,
                     ),
-                {wrapper}
+                { wrapper },
             )
 
             expect(useQuerySpy).toHaveBeenCalledWith({
@@ -275,23 +285,23 @@ describe('queries', () => {
 
             await expect(queryFn()).resolves.toEqual([
                 {
-                    data: {storeConfiguration: mockData.store1},
+                    data: { storeConfiguration: mockData.store1 },
                     status: 200,
                 },
                 {
-                    data: {storeConfiguration: mockData.store2},
+                    data: { storeConfiguration: mockData.store2 },
                     status: 200,
                 },
                 undefined,
                 {
-                    data: {storeConfiguration: mockData.store4},
+                    data: { storeConfiguration: mockData.store4 },
                     status: 200,
                 },
             ])
         })
         it('should throw any other error than 404', async () => {
             mockGetStoreConfiguration.mockImplementation(() => {
-                return Promise.reject({status: 500})
+                return Promise.reject({ status: 500 })
             })
 
             renderHook(
@@ -302,9 +312,9 @@ describe('queries', () => {
                             storesName: ['storeFail'],
                             withWizard: true,
                         },
-                        overrides
+                        overrides,
                     ),
-                {wrapper}
+                { wrapper },
             )
 
             const queryFn = (
@@ -322,21 +332,21 @@ describe('queries', () => {
     describe('useGetAIGeneratedGuidances', () => {
         it('should return correct params from API', async () => {
             getAIGeneratedGuidances.mockReturnValue(
-                Promise.resolve(mockedAIGuidances)
+                Promise.resolve(mockedAIGuidances),
             )
             mockUseHelpCenterApi.mockReturnValue({
                 client: {} as HelpCenterClient,
                 isReady: true,
             })
-            const {result, waitFor} = renderHook(
+            const { result, waitFor } = renderHook(
                 () =>
                     useGetAIGeneratedGuidances(
                         helpCenterId,
-                        storeIntegrationId
+                        storeIntegrationId,
                     ),
                 {
                     wrapper,
-                }
+                },
             )
 
             await waitFor(() => expect(result.current.isSuccess).toBe(true))
@@ -350,11 +360,11 @@ describe('queries', () => {
                     useGetAIGeneratedGuidances(
                         helpCenterId,
                         storeIntegrationId,
-                        {enabled: false}
+                        { enabled: false },
                     ),
                 {
                     wrapper,
-                }
+                },
             )
 
             expect(getAIGeneratedGuidances).toHaveBeenCalledTimes(0)
@@ -370,11 +380,11 @@ describe('queries', () => {
                 () =>
                     useGetAIGeneratedGuidances(
                         helpCenterId,
-                        storeIntegrationId
+                        storeIntegrationId,
                     ),
                 {
                     wrapper,
-                }
+                },
             )
 
             expect(getAIGeneratedGuidances).toHaveBeenCalledTimes(0)
@@ -397,11 +407,11 @@ describe('queries', () => {
         it('should call useQuery with the correct parameters', async () => {
             const accountDomain = 'myAccountDomain'
             const storeName = 'myStore'
-            const mockData = {acknowledged: true}
-            const overrides = {staleTime: 1000}
+            const mockData = { acknowledged: true }
+            const overrides = { staleTime: 1000 }
 
             ;(getWelcomePageAcknowledged as jest.Mock).mockResolvedValue(
-                mockData
+                mockData,
             )
 
             renderHook(
@@ -409,9 +419,9 @@ describe('queries', () => {
                     useGetWelcomePageAcknowledged(
                         accountDomain,
                         storeName,
-                        overrides
+                        overrides,
                     ),
-                {wrapper}
+                { wrapper },
             )
 
             expect(useQuerySpy).toHaveBeenCalledWith({
@@ -433,11 +443,11 @@ describe('queries', () => {
     describe('useCreateWelcomePageAcknowledged', () => {
         it('should call useMutation with the correct parameters', async () => {
             const storeName = 'myStore'
-            const overrides = {cacheTime: 2000, retry: true}
-            const mockData = {acknowledged: true}
+            const overrides = { cacheTime: 2000, retry: true }
+            const mockData = { acknowledged: true }
 
             ;(createWelcomePageAcknowledged as jest.Mock).mockResolvedValue(
-                mockData
+                mockData,
             )
 
             renderHook(() => useCreateWelcomePageAcknowledged(overrides), {
@@ -462,7 +472,7 @@ describe('queries', () => {
 
     describe('useGenerateCustomToneOfVoicePreview', () => {
         it('should call useMutation with the correct parameters', async () => {
-            const overrides = {cacheTime: 2000, retry: true}
+            const overrides = { cacheTime: 2000, retry: true }
             const mockData = {
                 ai_answer:
                     'Our return policy typically allows returns within a certain timeframe from the purchase date, provided the items are in their original condition. ',
@@ -489,7 +499,7 @@ describe('queries', () => {
             ).mutationFn
 
             await expect(
-                mutationFn(customToneOfVoicePreviewFixture)
+                mutationFn(customToneOfVoicePreviewFixture),
             ).resolves.toEqual(mockData)
         })
     })
@@ -501,26 +511,26 @@ describe('queries', () => {
             const mockData = getOnboardingNotificationStateFixture({
                 shopName: storeName,
             })
-            const overrides = {staleTime: 2000}
+            const overrides = { staleTime: 2000 }
 
             ;(getOnboardingNotificationState as jest.Mock).mockResolvedValue(
-                mockData
+                mockData,
             )
 
             renderHook(
                 () =>
                     useGetOnboardingNotificationState(
-                        {accountDomain, storeName},
-                        overrides
+                        { accountDomain, storeName },
+                        overrides,
                     ),
-                {wrapper}
+                { wrapper },
             )
 
             expect(useQuerySpy).toHaveBeenCalledWith({
                 queryKey: [
                     'aiAgentOnboardingNotificationState',
                     'detail',
-                    {accountDomain, storeName},
+                    { accountDomain, storeName },
                 ],
                 queryFn: expect.any(Function),
                 staleTime: 2000,
@@ -544,27 +554,27 @@ describe('queries', () => {
         const mockData = getOnboardingNotificationStateFixture({
             shopName: storeName,
         })
-        const overrides = {staleTime: 2000}
+        const overrides = { staleTime: 2000 }
         it('should return onboardingNotificationState if it exists', async () => {
             mockGetOnboardingNotificationState.mockResolvedValue({
-                data: {onboardingNotificationState: mockData},
+                data: { onboardingNotificationState: mockData },
                 status: 200,
             } as unknown as ReturnType<typeof getOnboardingNotificationState>)
 
             renderHook(
                 () =>
                     useGetOnboardingNotificationState(
-                        {accountDomain, storeName},
-                        overrides
+                        { accountDomain, storeName },
+                        overrides,
                     ),
-                {wrapper}
+                { wrapper },
             )
 
             expect(useQuerySpy).toHaveBeenCalledWith({
                 queryKey: [
                     'aiAgentOnboardingNotificationState',
                     'detail',
-                    {accountDomain, storeName},
+                    { accountDomain, storeName },
                 ],
                 queryFn: expect.any(Function),
                 staleTime: 2000,
@@ -579,7 +589,7 @@ describe('queries', () => {
             ).queryFn
 
             await expect(queryFn()).resolves.toEqual({
-                data: {onboardingNotificationState: mockData},
+                data: { onboardingNotificationState: mockData },
                 status: 200,
             })
         })
@@ -588,10 +598,10 @@ describe('queries', () => {
             renderHook(
                 () =>
                     useGetOnboardingNotificationState(
-                        {accountDomain, storeName},
-                        {enabled: false}
+                        { accountDomain, storeName },
+                        { enabled: false },
                     ),
-                {wrapper}
+                { wrapper },
             )
 
             expect(getOnboardingNotificationState).not.toHaveBeenCalled()
@@ -602,13 +612,13 @@ describe('queries', () => {
     describe('useCreateOnboardingNotificationState', () => {
         it('should call useMutation with the correct parameters', async () => {
             const storeName = 'test-store'
-            const overrides = {cacheTime: 2000, retry: true}
+            const overrides = { cacheTime: 2000, retry: true }
             const mockData = getOnboardingNotificationStateFixture({
                 shopName: storeName,
             })
 
             ;(createOnboardingNotificationState as jest.Mock).mockResolvedValue(
-                mockData
+                mockData,
             )
 
             renderHook(() => useCreateOnboardingNotificationState(overrides), {
@@ -634,13 +644,13 @@ describe('queries', () => {
     describe('useUpsertOnboardingNotificationState', () => {
         it('should call useMutation with the correct parameters', async () => {
             const storeName = 'test-store'
-            const overrides = {cacheTime: 2000, retry: true}
+            const overrides = { cacheTime: 2000, retry: true }
             const mockData = getOnboardingNotificationStateFixture({
                 shopName: storeName,
             })
 
             ;(upsertOnboardingNotificationState as jest.Mock).mockResolvedValue(
-                mockData
+                mockData,
             )
 
             renderHook(() => useUpsertOnboardingNotificationState(overrides), {

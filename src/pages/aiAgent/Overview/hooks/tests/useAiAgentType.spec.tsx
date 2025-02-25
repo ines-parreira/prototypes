@@ -1,25 +1,25 @@
-import {renderHook} from '@testing-library/react-hooks/dom'
-
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
 
-import {account} from 'fixtures/account'
-import {user} from 'fixtures/users'
-import {useGetStoresConfigurationForAccount} from 'models/aiAgent/queries'
-import {AiAgentScope} from 'models/aiAgent/types'
-import {IntegrationType} from 'models/integration/constants'
+import { renderHook } from '@testing-library/react-hooks/dom'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+
+import { account } from 'fixtures/account'
+import { user } from 'fixtures/users'
+import { useGetStoresConfigurationForAccount } from 'models/aiAgent/queries'
+import { AiAgentScope } from 'models/aiAgent/types'
+import { IntegrationType } from 'models/integration/constants'
 import {
-    useAiAgentTypeForAccount,
     getAiAgentTypeFromScopes,
+    useAiAgentTypeForAccount,
 } from 'pages/aiAgent/Overview/hooks/useAiAgentType'
-import {getIntegration} from 'pages/automate/workflows/hooks/tests/fixtures/utils'
-import {RootState} from 'state/types'
-import {assumeMock, mockStore} from 'utils/testing'
+import { getIntegration } from 'pages/automate/workflows/hooks/tests/fixtures/utils'
+import { RootState } from 'state/types'
+import { assumeMock, mockStore } from 'utils/testing'
 
 jest.mock('models/aiAgent/queries')
 const useGetStoresConfigurationForAccountMock = assumeMock(
-    useGetStoresConfigurationForAccount
+    useGetStoresConfigurationForAccount,
 )
 
 describe('useAiAgentType', () => {
@@ -34,13 +34,13 @@ describe('useAiAgentType', () => {
 
         it('should return sales when scope is sales', () => {
             expect(getAiAgentTypeFromScopes([AiAgentScope.Sales])).toEqual(
-                'sales'
+                'sales',
             )
         })
 
         it('should return support when scope is support', () => {
             expect(getAiAgentTypeFromScopes([AiAgentScope.Support])).toEqual(
-                'support'
+                'support',
             )
         })
 
@@ -49,7 +49,7 @@ describe('useAiAgentType', () => {
                 getAiAgentTypeFromScopes([
                     AiAgentScope.Sales,
                     AiAgentScope.Support,
-                ])
+                ]),
             ).toEqual('mixed')
         })
     })
@@ -68,7 +68,7 @@ describe('useAiAgentType', () => {
 
         const renderUseAiAgentTypeForAccount = () =>
             renderHook(() => useAiAgentTypeForAccount(), {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
@@ -98,7 +98,7 @@ describe('useAiAgentType', () => {
                 ],
             } as any)
 
-            const {result} = renderUseAiAgentTypeForAccount()
+            const { result } = renderUseAiAgentTypeForAccount()
             expect(result.current).toEqual({
                 isLoading: false,
                 aiAgentType: 'sales',
@@ -128,7 +128,7 @@ describe('useAiAgentType', () => {
                 ],
             } as any)
 
-            const {result} = renderUseAiAgentTypeForAccount()
+            const { result } = renderUseAiAgentTypeForAccount()
 
             expect(result.current).toEqual({
                 isLoading: false,
@@ -154,7 +154,7 @@ describe('useAiAgentType', () => {
                 ],
             } as any)
 
-            const {result} = renderUseAiAgentTypeForAccount()
+            const { result } = renderUseAiAgentTypeForAccount()
             expect(result.current).toEqual({
                 isLoading: false,
                 aiAgentType: 'mixed',
@@ -187,7 +187,7 @@ describe('useAiAgentType', () => {
                 ],
             } as any)
 
-            const {result} = renderUseAiAgentTypeForAccount()
+            const { result } = renderUseAiAgentTypeForAccount()
             expect(result.current).toEqual({
                 isLoading: false,
                 aiAgentType: 'mixed',

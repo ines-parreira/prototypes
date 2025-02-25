@@ -1,37 +1,38 @@
-import {fireEvent, render} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { fireEvent, render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {account} from 'fixtures/account'
-import {billingState} from 'fixtures/billing'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { account } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
 import {
     AUTOMATION_PRODUCT_ID,
     basicYearlyAutomationPlan,
     basicYearlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
-import {FilterKey} from 'models/stat/types'
-import {TrendCard} from 'pages/stats/common/components/TrendCard'
-import {AUTO_QA_FILTER_KEYS} from 'pages/stats/common/filters/constants'
+import { FilterKey } from 'models/stat/types'
+import { TrendCard } from 'pages/stats/common/components/TrendCard'
+import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
-import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
-import {OverviewChartCard} from 'pages/stats/support-performance/components/OverviewChartCard'
-import {TicketsCreatedVsClosedChart} from 'pages/stats/support-performance/overview/charts/TicketsCreatedVsClosedChart'
-import {WorkloadPerChannelChart} from 'pages/stats/support-performance/overview/charts/WorkloadPerChannelChart'
+import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
+import { OverviewChartCard } from 'pages/stats/support-performance/components/OverviewChartCard'
+import { TicketsCreatedVsClosedChart } from 'pages/stats/support-performance/overview/charts/TicketsCreatedVsClosedChart'
+import { WorkloadPerChannelChart } from 'pages/stats/support-performance/overview/charts/WorkloadPerChannelChart'
 import {
     OverviewMetric,
     PERFORMANCE_OVERVIEW_OPTIONAL_FILTERS,
     STATS_TIPS_VISIBILITY_KEY,
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import SupportPerformanceOverviewReport from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReport'
-import {SupportPerformanceTip} from 'pages/stats/SupportPerformanceTip'
-import {RootState, StoreDispatch} from 'state/types'
-import {assumeMock} from 'utils/testing'
+import { SupportPerformanceTip } from 'pages/stats/SupportPerformanceTip'
+import { RootState, StoreDispatch } from 'state/types'
+import { assumeMock } from 'utils/testing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -52,7 +53,7 @@ jest.mock(
     'pages/stats/support-performance/overview/DownloadOverviewData.tsx',
     () => ({
         DownloadOverviewData: () => null,
-    })
+    }),
 )
 
 jest.mock('pages/stats/common/components/TrendCard')
@@ -65,14 +66,14 @@ jest.mock('pages/stats/support-performance/components/OverviewChartCard')
 const overviewChartCardMock = assumeMock(OverviewChartCard)
 
 jest.mock(
-    'pages/stats/support-performance/overview/charts/TicketsCreatedVsClosedChart.tsx'
+    'pages/stats/support-performance/overview/charts/TicketsCreatedVsClosedChart.tsx',
 )
 const ticketsCreatedVsClosedChartCardMock = assumeMock(
-    TicketsCreatedVsClosedChart
+    TicketsCreatedVsClosedChart,
 )
 
 jest.mock(
-    'pages/stats/support-performance/overview/charts/WorkloadPerChannelChart'
+    'pages/stats/support-performance/overview/charts/WorkloadPerChannelChart',
 )
 const workloadPerChannelChartMock = assumeMock(WorkloadPerChannelChart)
 
@@ -82,7 +83,7 @@ jest.mock(
         return props.optionalFilters?.map((optionalFilter) => (
             <div key={optionalFilter}>{optionalFilter}</div>
         ))
-    }
+    },
 )
 
 const defaultState = {
@@ -92,7 +93,7 @@ const defaultState = {
 describe('<SupportPerformanceOverview />', () => {
     beforeEach(() => {
         jest.resetAllMocks()
-        trendCardMock.mockImplementation(({tip}) => (
+        trendCardMock.mockImplementation(({ tip }) => (
             <div>TrendCardMock {tip}</div>
         ))
         overviewChartCardMock.mockImplementation(() => (
@@ -123,7 +124,7 @@ describe('<SupportPerformanceOverview />', () => {
             render(
                 <Provider store={mockStore(defaultState)}>
                     <SupportPerformanceOverviewReport />
-                </Provider>
+                </Provider>,
             )
 
             expect(trendCardMock.mock.calls).toContainEqual(
@@ -131,32 +132,32 @@ describe('<SupportPerformanceOverview />', () => {
                     expect.objectContaining({
                         drillDownMetric: customerMetricTrend,
                     }),
-                ])
+                ]),
             )
-        }
+        },
     )
 
     it('should render productivity section with OneTouchTickets TrendCard', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <SupportPerformanceOverviewReport />
-            </Provider>
+            </Provider>,
         )
         expect(trendCardMock.mock.calls).toContainEqual(
             expect.arrayContaining([
                 expect.objectContaining({
                     drillDownMetric: OverviewMetric.OneTouchTickets,
                 }),
-            ])
+            ]),
         )
     })
 
     describe('Performance Tips', () => {
         it('should show tips by default', () => {
-            const {queryAllByText} = render(
+            const { queryAllByText } = render(
                 <Provider store={mockStore(defaultState)}>
                     <SupportPerformanceOverviewReport />
-                </Provider>
+                </Provider>,
             )
 
             expect(queryAllByText(/^Tip:/)).not.toHaveLength(0)
@@ -165,10 +166,10 @@ describe('<SupportPerformanceOverview />', () => {
         it('should show tips and save the value to local storage on show tips button click', () => {
             localStorage.setItem(STATS_TIPS_VISIBILITY_KEY, 'false')
 
-            const {getByText, queryAllByText} = render(
+            const { getByText, queryAllByText } = render(
                 <Provider store={mockStore(defaultState)}>
                     <SupportPerformanceOverviewReport />
-                </Provider>
+                </Provider>,
             )
 
             fireEvent.click(getByText(/Show tips/))
@@ -180,17 +181,17 @@ describe('<SupportPerformanceOverview />', () => {
         it('should hide tips and save the value to local storage on hide tips button click ', () => {
             localStorage.setItem(STATS_TIPS_VISIBILITY_KEY, 'true')
 
-            const {getByText, queryAllByText} = render(
+            const { getByText, queryAllByText } = render(
                 <Provider store={mockStore(defaultState)}>
                     <SupportPerformanceOverviewReport />
-                </Provider>
+                </Provider>,
             )
 
             fireEvent.click(getByText(/Hide tips/))
 
             expect(queryAllByText(/^Tip:/)).toHaveLength(0)
             expect(localStorage.getItem(STATS_TIPS_VISIBILITY_KEY)).toBe(
-                'false'
+                'false',
             )
         })
     })
@@ -203,10 +204,10 @@ describe('<SupportPerformanceOverview />', () => {
         })
 
         it('should show New Filters Panel and render expected filters', () => {
-            const {getByText} = render(
+            const { getByText } = render(
                 <Provider store={mockStore(defaultState)}>
                     <SupportPerformanceOverviewReport />
-                </Provider>
+                </Provider>,
             )
 
             PERFORMANCE_OVERVIEW_OPTIONAL_FILTERS.forEach((filter) => {
@@ -218,10 +219,10 @@ describe('<SupportPerformanceOverview />', () => {
             mockFlags({
                 [FeatureFlagKey.AnalyticsNewFilters]: true,
             })
-            const {getByText} = render(
+            const { getByText } = render(
                 <Provider store={mockStore(defaultState)}>
                     <SupportPerformanceOverviewReport />
-                </Provider>
+                </Provider>,
             )
             const filtersWithScore = [
                 ...PERFORMANCE_OVERVIEW_OPTIONAL_FILTERS,
@@ -251,10 +252,10 @@ describe('<SupportPerformanceOverview />', () => {
             mockFlags({
                 [FeatureFlagKey.AnalyticsNewFilters]: true,
             })
-            const {getByText} = render(
+            const { getByText } = render(
                 <Provider store={mockStore(state)}>
                     <SupportPerformanceOverviewReport />
-                </Provider>
+                </Provider>,
             )
             const filtersWithResolutionCompletenessAndCommunicationSkills = [
                 ...PERFORMANCE_OVERVIEW_OPTIONAL_FILTERS,
@@ -263,7 +264,7 @@ describe('<SupportPerformanceOverview />', () => {
             filtersWithResolutionCompletenessAndCommunicationSkills.forEach(
                 (filter) => {
                     expect(getByText(filter)).toBeInTheDocument()
-                }
+                },
             )
         })
     })

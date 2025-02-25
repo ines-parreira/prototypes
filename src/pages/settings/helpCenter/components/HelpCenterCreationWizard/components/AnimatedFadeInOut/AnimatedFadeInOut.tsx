@@ -1,5 +1,6 @@
-import React, {ReactNode} from 'react'
-import {CSSTransition, SwitchTransition} from 'react-transition-group'
+import React, { ReactNode } from 'react'
+
+import { CSSTransition, SwitchTransition } from 'react-transition-group'
 
 import css from './AnimatedFadeInOut.less'
 
@@ -8,7 +9,7 @@ type Props = {
     children: ReactNode
 }
 
-export const AnimatedFadeInOut = ({isLoading, children}: Props) => (
+export const AnimatedFadeInOut = ({ isLoading, children }: Props) => (
     <SwitchTransition>
         <CSSTransition
             key={isLoading.toString()}

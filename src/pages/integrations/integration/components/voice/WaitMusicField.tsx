@@ -1,15 +1,17 @@
-import {WaitMusicType} from '@gorgias/api-queries'
-import React, {useCallback, useEffect, useState} from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
-import {MAX_WAIT_MUSIC_CUSTOM_RECORDING_FILE_SIZE_MB} from 'models/integration/constants'
-import {LocalWaitMusicPreferences} from 'models/integration/types'
-import {PhoneCountry} from 'models/phoneNumber/types'
+import { WaitMusicType } from '@gorgias/api-queries'
+
+import { MAX_WAIT_MUSIC_CUSTOM_RECORDING_FILE_SIZE_MB } from 'models/integration/constants'
+import { LocalWaitMusicPreferences } from 'models/integration/types'
+import { PhoneCountry } from 'models/phoneNumber/types'
 import RadioButton from 'pages/common/components/RadioButton'
 
 import useVoiceMessageValidation from './hooks/useVoiceMessageValidation'
 import VoiceRecordingInput from './VoiceRecordingInput'
-import css from './WaitMusicField.less'
 import WaitMusicLibrarySelect from './WaitMusicLibrarySelect'
+
+import css from './WaitMusicField.less'
 
 type Props = {
     preferences: LocalWaitMusicPreferences
@@ -17,8 +19,12 @@ type Props = {
     integrationCountry: PhoneCountry
 }
 
-const WaitMusicField = ({preferences, onChange, integrationCountry}: Props) => {
-    const {validateVoiceRecordingUpload} = useVoiceMessageValidation()
+const WaitMusicField = ({
+    preferences,
+    onChange,
+    integrationCountry,
+}: Props) => {
+    const { validateVoiceRecordingUpload } = useVoiceMessageValidation()
     const [customRecordingPath, setCustomRecordingPath] = useState<
         string | undefined
     >()
@@ -30,7 +36,7 @@ const WaitMusicField = ({preferences, onChange, integrationCountry}: Props) => {
             preferences?.custom_recording?.audio_file_path
         ) {
             setCustomRecordingPath(
-                preferences?.custom_recording?.audio_file_path
+                preferences?.custom_recording?.audio_file_path,
             )
         }
     }, [preferences, customRecordingPath, setCustomRecordingPath])
@@ -41,10 +47,10 @@ const WaitMusicField = ({preferences, onChange, integrationCountry}: Props) => {
                 event,
                 undefined,
                 MAX_WAIT_MUSIC_CUSTOM_RECORDING_FILE_SIZE_MB,
-                true
+                true,
             )
             if (voiceRecordingUpload) {
-                const {url, newVoiceFields} = voiceRecordingUpload
+                const { url, newVoiceFields } = voiceRecordingUpload
                 setCustomRecordingPath(url)
 
                 const newValue: LocalWaitMusicPreferences = {
@@ -60,7 +66,7 @@ const WaitMusicField = ({preferences, onChange, integrationCountry}: Props) => {
                 onChange(newValue)
             }
         },
-        [preferences, onChange, validateVoiceRecordingUpload]
+        [preferences, onChange, validateVoiceRecordingUpload],
     )
 
     return (
@@ -71,7 +77,7 @@ const WaitMusicField = ({preferences, onChange, integrationCountry}: Props) => {
                     selectedWaitMusicType={preferences.type}
                     label="Choose from library"
                     onChange={(waitMusicType) => {
-                        onChange({...preferences, type: waitMusicType})
+                        onChange({ ...preferences, type: waitMusicType })
                     }}
                 />
                 <WaitMusicRadioButton
@@ -79,7 +85,7 @@ const WaitMusicField = ({preferences, onChange, integrationCountry}: Props) => {
                     selectedWaitMusicType={preferences.type}
                     label="Custom recording"
                     onChange={(waitMusicType) => {
-                        onChange({...preferences, type: waitMusicType})
+                        onChange({ ...preferences, type: waitMusicType })
                     }}
                 />
             </div>

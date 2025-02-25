@@ -1,19 +1,20 @@
-import {act, fireEvent, render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {StringConditionType} from '../StringConditionType'
+import { act, fireEvent, render, screen } from '@testing-library/react'
+
+import { StringConditionType } from '../StringConditionType'
 
 describe('<StringConditionType />', () => {
     it('should render string condition with options', () => {
         render(
             <StringConditionType
-                condition={{equals: [{var: ''}, 'test1']}}
+                condition={{ equals: [{ var: '' }, 'test1'] }}
                 onChange={jest.fn()}
                 options={[
-                    {value: 'test1', label: 'test 1'},
-                    {value: 'test2', label: 'test 2'},
+                    { value: 'test1', label: 'test 1' },
+                    { value: 'test2', label: 'test 2' },
                 ]}
-            />
+            />,
         )
 
         expect(screen.getByText('test 1')).toBeInTheDocument()
@@ -24,13 +25,13 @@ describe('<StringConditionType />', () => {
 
         render(
             <StringConditionType
-                condition={{equals: [{var: ''}, null]}}
+                condition={{ equals: [{ var: '' }, null] }}
                 onChange={mockOnChange}
                 options={[
-                    {value: 'test1', label: 'test 1'},
-                    {value: 'test2', label: 'test 2'},
+                    { value: 'test1', label: 'test 1' },
+                    { value: 'test2', label: 'test 2' },
                 ]}
-            />
+            />,
         )
 
         act(() => {
@@ -42,7 +43,7 @@ describe('<StringConditionType />', () => {
         })
 
         expect(mockOnChange).toHaveBeenCalledWith({
-            equals: [{var: ''}, 'test2'],
+            equals: [{ var: '' }, 'test2'],
         })
     })
 })

@@ -1,10 +1,11 @@
-import {act} from '@testing-library/react'
-import {createBrowserHistory} from 'history'
-import {fromJS} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
-import React, {ReactNode} from 'react'
-import {Provider} from 'react-redux'
-import {Route, Switch} from 'react-router-dom'
+import React, { ReactNode } from 'react'
+
+import { act } from '@testing-library/react'
+import { createBrowserHistory } from 'history'
+import { fromJS } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
+import { Route, Switch } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -13,21 +14,21 @@ import {
     NavBarContextType,
     NavBarDisplayMode,
 } from 'common/navigation/hooks/useNavBar/context'
-import {FeatureFlagKey} from 'config/featureFlags'
+import { FeatureFlagKey } from 'config/featureFlags'
 import * as billingFixtures from 'fixtures/billing'
-import {user} from 'fixtures/users'
-import {VOICE_OVERVIEW_PAGE_TITLE} from 'pages/stats/voice/constants/voiceOverview'
-import {StatsRoutes} from 'routes/StatsRoutes'
-import {initialState} from 'state/billing/reducers'
-import {RootState} from 'state/types'
-import {renderWithRouter} from 'utils/testing'
+import { user } from 'fixtures/users'
+import { VOICE_OVERVIEW_PAGE_TITLE } from 'pages/stats/voice/constants/voiceOverview'
+import { StatsRoutes } from 'routes/StatsRoutes'
+import { initialState } from 'state/billing/reducers'
+import { RootState } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
 jest.mock('pages/stats/common/StatsNavbarContainer', () => () => (
     <div>Navbar</div>
 ))
 jest.mock(
     'pages/common/components/ScriptTagMigrationBanner/ScriptTagMigrationBanner',
-    () => () => <div>ScriptTagMigrationBanner</div>
+    () => () => <div>ScriptTagMigrationBanner</div>,
 )
 jest.mock('pages/stats/voice/pages/VoiceOverview', () => () => (
     <div>Voice Overview</div>
@@ -41,8 +42,8 @@ jest.mock('pages/stats/automate/ai-agent/AutomateAiAgentStats', () => () => (
 jest.mock(
     'pages/stats/automate/ai-agent/AiAgentStatsFilters',
     () =>
-        ({children}: {children?: ReactNode}) =>
-            children
+        ({ children }: { children?: ReactNode }) =>
+            children,
 )
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 const mockHistory = createBrowserHistory()
@@ -66,7 +67,7 @@ describe('<StatsRoutes/>', () => {
         notifications: fromJS([]),
         ui: {
             stats: {
-                filters: {isFilterDirty: false},
+                filters: { isFilterDirty: false },
             },
         },
     } as RootState
@@ -99,12 +100,12 @@ describe('<StatsRoutes/>', () => {
             </NavBarContext.Provider>,
             {
                 history: mockHistory,
-            }
+            },
         )
     }
 
     it('should make Voice analytics route available', async () => {
-        const {findByText} = renderStatsRoutes()
+        const { findByText } = renderStatsRoutes()
 
         act(() => mockHistory.push('/stats/voice-overview'))
 
@@ -112,7 +113,7 @@ describe('<StatsRoutes/>', () => {
     })
 
     it('should make Voice agents route available', async () => {
-        const {findByText} = renderStatsRoutes()
+        const { findByText } = renderStatsRoutes()
 
         act(() => mockHistory.push('/stats/voice-agents'))
 
@@ -124,7 +125,7 @@ describe('<StatsRoutes/>', () => {
             [FeatureFlagKey.AIAgentStatsPage]: true,
         })
 
-        const {findByText} = renderStatsRoutes()
+        const { findByText } = renderStatsRoutes()
 
         act(() => mockHistory.push('/stats/automate-ai-agent'))
 
@@ -136,7 +137,7 @@ describe('<StatsRoutes/>', () => {
             [FeatureFlagKey.AIAgentStatsPage]: false,
         })
 
-        const {container} = renderStatsRoutes()
+        const { container } = renderStatsRoutes()
 
         act(() => mockHistory.push('/stats/automate-ai-agent'))
 

@@ -1,7 +1,8 @@
-import classnames from 'classnames'
 import React from 'react'
-import type {KeyboardEventHandler} from 'react'
-import {Input} from 'reactstrap'
+import type { KeyboardEventHandler } from 'react'
+
+import classnames from 'classnames'
+import { Input } from 'reactstrap'
 
 import css from './PeopleSearchInput.less'
 

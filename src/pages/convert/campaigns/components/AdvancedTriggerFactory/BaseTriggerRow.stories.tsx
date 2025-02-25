@@ -1,10 +1,11 @@
-import {Meta, StoryObj} from '@storybook/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {CampaignTriggerType} from '../../types/enums/CampaignTriggerType.enum'
-import {createTrigger} from '../../utils/createTrigger'
-import {BaseTriggerRow} from './BaseTriggerRow'
-import {CurrentUrlTrigger} from './CurrentUrlTrigger'
+import { Meta, StoryObj } from '@storybook/react'
+
+import { CampaignTriggerType } from '../../types/enums/CampaignTriggerType.enum'
+import { createTrigger } from '../../utils/createTrigger'
+import { BaseTriggerRow } from './BaseTriggerRow'
+import { CurrentUrlTrigger } from './CurrentUrlTrigger'
 
 const storyConfig: Meta<typeof BaseTriggerRow> = {
     title: 'Convert/AdvancedTriggers/BaseTriggerRow',

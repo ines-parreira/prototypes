@@ -1,6 +1,7 @@
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { renderHook } from '@testing-library/react-hooks'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -14,11 +15,10 @@ import {
     fetchTicketsClosedPerHour,
     useTicketsClosedPerHour,
 } from 'hooks/reporting/useTicketsClosedPerHour'
-
-import {fromLegacyStatsFilters} from 'state/stats/utils'
-import {RootState, StoreDispatch} from 'state/types'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
-import {assumeMock} from 'utils/testing'
+import { fromLegacyStatsFilters } from 'state/stats/utils'
+import { RootState, StoreDispatch } from 'state/types'
+import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/metrics')
 const useClosedTicketsMetricMock = assumeMock(useClosedTicketsMetric)
@@ -39,7 +39,7 @@ describe('TicketsClosedPerHour', () => {
         tags: [123],
     }
     const defaultState = {
-        stats: {filters: fromLegacyStatsFilters(statsFilters)},
+        stats: { filters: fromLegacyStatsFilters(statsFilters) },
         ui: {
             stats: {
                 filters: uiStatsInitialState,
@@ -68,21 +68,21 @@ describe('TicketsClosedPerHour', () => {
     describe('useTicketsClosedPerHour.ts', () => {
         beforeEach(() => {
             useClosedTicketsMetricMock.mockReturnValue(
-                useClosedTicketsMetricReturnValue
+                useClosedTicketsMetricReturnValue,
             )
             useOnlineTimeMock.mockReturnValue(useOnlineTimeReturnValue)
         })
 
         it('should calculate the metric from messages sent and online time', () => {
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () => useTicketsClosedPerHour(statsFilters, timeZone),
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <Provider store={mockStore(defaultState)}>
                             {children}
                         </Provider>
                     ),
-                }
+                },
             )
 
             expect(result.current).toEqual({
@@ -96,7 +96,7 @@ describe('TicketsClosedPerHour', () => {
 
         it('should strip the statsFilters to period and agents only', () => {
             renderHook(() => useTicketsClosedPerHour(statsFilters, timeZone), {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
@@ -108,14 +108,14 @@ describe('TicketsClosedPerHour', () => {
                     period: statsFilters.period,
                     agents: statsFilters.agents,
                 },
-                timeZone
+                timeZone,
             )
             expect(useOnlineTimeMock).toHaveBeenCalledWith(
                 {
                     period: statsFilters.period,
                     agents: statsFilters.agents,
                 },
-                timeZone
+                timeZone,
             )
         })
 
@@ -124,7 +124,7 @@ describe('TicketsClosedPerHour', () => {
                 period: statsFilters.period,
             }
             const state = {
-                stats: {filters: statsFiltersWithoutAgents},
+                stats: { filters: statsFiltersWithoutAgents },
                 ui: {
                     stats: {
                         filters: uiStatsInitialState,
@@ -136,26 +136,26 @@ describe('TicketsClosedPerHour', () => {
                 () =>
                     useTicketsClosedPerHour(
                         statsFiltersWithoutAgents,
-                        timeZone
+                        timeZone,
                     ),
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <Provider store={mockStore(state)}>{children}</Provider>
                     ),
-                }
+                },
             )
 
             expect(useClosedTicketsMetricMock).toHaveBeenCalledWith(
                 {
                     period: statsFilters.period,
                 },
-                timeZone
+                timeZone,
             )
             expect(useOnlineTimeMock).toHaveBeenCalledWith(
                 {
                     period: statsFilters.period,
                 },
-                timeZone
+                timeZone,
             )
         })
 
@@ -169,15 +169,15 @@ describe('TicketsClosedPerHour', () => {
                 data: undefined,
             })
 
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () => useTicketsClosedPerHour(statsFilters, timeZone),
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <Provider store={mockStore(defaultState)}>
                             {children}
                         </Provider>
                     ),
-                }
+                },
             )
 
             expect(result.current).toEqual({
@@ -193,17 +193,17 @@ describe('TicketsClosedPerHour', () => {
     describe('fetchTicketsClosedPerHour.ts', () => {
         beforeEach(() => {
             fetchClosedTicketsMetricMock.mockResolvedValue(
-                useClosedTicketsMetricReturnValue
+                useClosedTicketsMetricReturnValue,
             )
             fetchOnlineTimeMetricMock.mockResolvedValue(
-                useOnlineTimeReturnValue
+                useOnlineTimeReturnValue,
             )
         })
 
         it('should calculate the metric from messages sent and online time', async () => {
             const result = await fetchTicketsClosedPerHour(
                 statsFilters,
-                timeZone
+                timeZone,
             )
 
             expect(result).toEqual({
@@ -223,14 +223,14 @@ describe('TicketsClosedPerHour', () => {
                     period: statsFilters.period,
                     agents: statsFilters.agents,
                 },
-                timeZone
+                timeZone,
             )
             expect(fetchOnlineTimeMetricMock).toHaveBeenCalledWith(
                 {
                     period: statsFilters.period,
                     agents: statsFilters.agents,
                 },
-                timeZone
+                timeZone,
             )
         })
 
@@ -245,13 +245,13 @@ describe('TicketsClosedPerHour', () => {
                 {
                     period: statsFilters.period,
                 },
-                timeZone
+                timeZone,
             )
             expect(fetchOnlineTimeMetricMock).toHaveBeenCalledWith(
                 {
                     period: statsFilters.period,
                 },
-                timeZone
+                timeZone,
             )
         })
 
@@ -267,7 +267,7 @@ describe('TicketsClosedPerHour', () => {
 
             const result = await fetchTicketsClosedPerHour(
                 statsFilters,
-                timeZone
+                timeZone,
             )
 
             expect(result).toEqual({
@@ -291,7 +291,7 @@ describe('TicketsClosedPerHour', () => {
 
             const result = await fetchTicketsClosedPerHour(
                 statsFilters,
-                timeZone
+                timeZone,
             )
 
             expect(result).toEqual({

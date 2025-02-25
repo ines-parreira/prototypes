@@ -1,17 +1,17 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {PerformanceByArticle} from 'pages/stats/help-center/components/PerformanceByArticle/PerformanceByArticle'
-import {PerformanceByArticleChart} from 'pages/stats/help-center/components/PerformanceByArticle/PerformanceByArticleChart'
-import {useSelectedHelpCenter} from 'pages/stats/help-center/hooks/useSelectedHelpCenter'
-import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
+import { render } from '@testing-library/react'
 
-import {assumeMock} from 'utils/testing'
+import { PerformanceByArticle } from 'pages/stats/help-center/components/PerformanceByArticle/PerformanceByArticle'
+import { PerformanceByArticleChart } from 'pages/stats/help-center/components/PerformanceByArticle/PerformanceByArticleChart'
+import { useSelectedHelpCenter } from 'pages/stats/help-center/hooks/useSelectedHelpCenter'
+import { NoDataAvailable } from 'pages/stats/NoDataAvailable'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('pages/stats/help-center/hooks/useSelectedHelpCenter')
 const useSelectedHelpCenterMock = assumeMock(useSelectedHelpCenter)
 jest.mock(
-    'pages/stats/help-center/components/PerformanceByArticle/PerformanceByArticle'
+    'pages/stats/help-center/components/PerformanceByArticle/PerformanceByArticle',
 )
 const PerformanceByArticleMock = assumeMock(PerformanceByArticle)
 jest.mock('pages/stats/NoDataAvailable')

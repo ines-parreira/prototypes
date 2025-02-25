@@ -1,25 +1,27 @@
+import React, { Component } from 'react'
+
 import Clipboard from 'clipboard'
-import React, {Component} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {Link} from 'react-router-dom'
+import { connect, ConnectedProps } from 'react-redux'
+import { Link } from 'react-router-dom'
 import {
-    Button,
     Breadcrumb,
     BreadcrumbItem,
+    Button,
+    Col,
+    Container,
+    FormGroup,
     Input,
     InputGroup,
     InputGroupAddon,
-    Container,
     Row,
-    Col,
-    FormGroup,
 } from 'reactstrap'
 
-import {IntegrationType} from 'models/integration/constants'
+import { IntegrationType } from 'models/integration/constants'
 import PageHeader from 'pages/common/components/PageHeader'
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
 
 import * as integrationsSelectors from '../../../../../state/integrations/selectors'
+
 import css from '../../../../settings/settings.less'
 
 type Props = ConnectedProps<typeof connector>
@@ -38,18 +40,18 @@ export class AircallIntegrationCreate extends Component<Props, State> {
         const clipboard = new Clipboard('#copyWebhookUrl')
 
         clipboard.on('success', () => {
-            this.setState({isCopied: true})
+            this.setState({ isCopied: true })
             setTimeout(() => {
-                this.setState({isCopied: false})
+                this.setState({ isCopied: false })
             }, 1500)
         })
 
         const clipboardNew = new Clipboard('#copyWebhookUrlNew')
 
         clipboardNew.on('success', () => {
-            this.setState({isCopiedNew: true})
+            this.setState({ isCopiedNew: true })
             setTimeout(() => {
-                this.setState({isCopiedNew: false})
+                this.setState({ isCopiedNew: false })
             }, 1500)
         })
     }
@@ -208,7 +210,7 @@ export class AircallIntegrationCreate extends Component<Props, State> {
 
 const connector = connect((state: RootState) => {
     const aircallAuthData = integrationsSelectors.getAuthData(
-        IntegrationType.Aircall
+        IntegrationType.Aircall,
     )(state)
 
     return {

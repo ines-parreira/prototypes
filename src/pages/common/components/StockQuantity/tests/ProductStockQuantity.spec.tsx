@@ -1,7 +1,8 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {ProductStockQuantity} from '../ProductStockQuantity'
+import { render } from '@testing-library/react'
+
+import { ProductStockQuantity } from '../ProductStockQuantity'
 
 describe('<ProductStockQuantity/>', () => {
     describe('rendering', () => {
@@ -13,12 +14,12 @@ describe('<ProductStockQuantity/>', () => {
         ])(
             'should render with given CSS class',
             (value, className, disabled) => {
-                const {getByText} = render(
-                    <ProductStockQuantity value={value} disabled={disabled} />
+                const { getByText } = render(
+                    <ProductStockQuantity value={value} disabled={disabled} />,
                 )
 
                 expect(getByText(value.toString())).toHaveClass(className)
-            }
+            },
         )
     })
 })

@@ -6,16 +6,17 @@ import React, {
     useState,
 } from 'react'
 
-import {Body, Context, focusOnNextItem, Item} from 'components/Dropdown'
-import {User} from 'config/types/user'
+import { Body, Context, focusOnNextItem, Item } from 'components/Dropdown'
+import { User } from 'config/types/user'
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import Button from 'pages/common/components/button/Button'
 import DropdownFooter from 'pages/common/components/dropdown/DropdownFooter'
 import useSearch from 'search/useSearch'
 import useListUsers from 'users/useListUsers'
 
-import css from './style.less'
 import UserDropdownItem from './UserDropdownItem'
+
+import css from './style.less'
 
 type Props = {
     onClick: (item: Item | null) => void
@@ -24,7 +25,7 @@ type Props = {
 const LIMIT_ITEMS_SEARCH = 30
 const STALE_TIME = 5 * 60 * 1000 // 5 minutes
 
-const UserAssigneeDropdownMenu = ({onClick}: Props) => {
+const UserAssigneeDropdownMenu = ({ onClick }: Props) => {
     const wrapperRef = useRef<HTMLDivElement>(null)
     const [search, setSearch] = useState('')
     const [debouncedSearch, setDebouncedSearch] = useState('')
@@ -33,7 +34,7 @@ const UserAssigneeDropdownMenu = ({onClick}: Props) => {
             setDebouncedSearch(search)
         },
         [search],
-        300
+        300,
     )
 
     const usersResponse = useListUsers(
@@ -44,7 +45,7 @@ const UserAssigneeDropdownMenu = ({onClick}: Props) => {
             refetchOnWindowFocus: false,
             staleTime: STALE_TIME,
             enabled: !debouncedSearch,
-        }
+        },
     )
 
     const loadMore = useCallback(() => {
@@ -57,9 +58,9 @@ const UserAssigneeDropdownMenu = ({onClick}: Props) => {
         () =>
             usersResponse.data?.pages?.reduce(
                 (acc, page) => [...acc, ...page.data.data],
-                [] as User[]
+                [] as User[],
             ),
-        [usersResponse.data?.pages]
+        [usersResponse.data?.pages],
     )
 
     const searchResponse = useSearch(
@@ -72,7 +73,7 @@ const UserAssigneeDropdownMenu = ({onClick}: Props) => {
             refetchOnWindowFocus: false,
             staleTime: STALE_TIME,
             enabled: !!debouncedSearch,
-        }
+        },
     )
 
     const data: Pick<User, 'id' | 'name' | 'email'>[] | User[] = useMemo(
@@ -83,7 +84,7 @@ const UserAssigneeDropdownMenu = ({onClick}: Props) => {
                       'id' | 'name' | 'email'
                   >[]) ?? [])
                 : (aggregatedUsersData ?? []),
-        [search, searchResponse, aggregatedUsersData]
+        [search, searchResponse, aggregatedUsersData],
     )
 
     const isLoading = useMemo(
@@ -91,7 +92,7 @@ const UserAssigneeDropdownMenu = ({onClick}: Props) => {
             debouncedSearch !== search ||
             usersResponse.isFetching ||
             searchResponse.isFetching,
-        [debouncedSearch, search, searchResponse, usersResponse]
+        [debouncedSearch, search, searchResponse, usersResponse],
     )
 
     const handleOnClick = useCallback(
@@ -100,7 +101,7 @@ const UserAssigneeDropdownMenu = ({onClick}: Props) => {
             setSearch('')
             setDebouncedSearch('')
         },
-        [onClick]
+        [onClick],
     )
 
     const contextValue = useMemo(
@@ -126,7 +127,7 @@ const UserAssigneeDropdownMenu = ({onClick}: Props) => {
             setSearch,
             usersResponse.isInitialLoading,
             wrapperRef,
-        ]
+        ],
     )
 
     const onKeyDown = (e: KeyboardEvent<HTMLElement>) => {

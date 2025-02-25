@@ -1,6 +1,6 @@
-import {GuidancesDataFixture} from '../../tests/GuidancesData.fixture'
-import {CreateYourFirstGuidanceTask} from '../CreateYourFirstGuidance.task'
-import {buildRuleEngineData, buildRuleEngineRoutes} from './utils'
+import { GuidancesDataFixture } from '../../tests/GuidancesData.fixture'
+import { CreateYourFirstGuidanceTask } from '../CreateYourFirstGuidance.task'
+import { buildRuleEngineData, buildRuleEngineRoutes } from './utils'
 
 describe('CreateYourFirstGuidance', () => {
     it('should display the task if no guidance exists', () => {
@@ -10,7 +10,7 @@ describe('CreateYourFirstGuidance', () => {
             buildRuleEngineData({
                 guidances,
             }),
-            buildRuleEngineRoutes()
+            buildRuleEngineRoutes(),
         )
         expect(task.display).toBe(true)
     })
@@ -30,14 +30,14 @@ describe('CreateYourFirstGuidance', () => {
         },
     ])(
         'should not display the task if any $type guidance exists',
-        ({guidances}) => {
+        ({ guidances }) => {
             const task = new CreateYourFirstGuidanceTask(
                 buildRuleEngineData({
                     guidances,
                 }),
-                buildRuleEngineRoutes()
+                buildRuleEngineRoutes(),
             )
             expect(task.display).toBe(false)
-        }
+        },
     )
 })

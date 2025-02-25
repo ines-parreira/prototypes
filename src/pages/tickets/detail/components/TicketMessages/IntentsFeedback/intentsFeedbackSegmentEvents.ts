@@ -1,4 +1,4 @@
-import {logEvent, SegmentEvent} from 'common/segment'
+import { logEvent, SegmentEvent } from 'common/segment'
 
 type BaseIntentFeedbackProps = {
     account_domain: string

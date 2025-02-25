@@ -1,23 +1,24 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {VoiceCall, VoiceCallStatus} from 'models/voiceCall/types'
+import { render } from '@testing-library/react'
 
-import {TicketVoiceCallInboundStatus} from '../TicketVoiceCallInboundStatus'
+import { VoiceCall, VoiceCallStatus } from 'models/voiceCall/types'
+
+import { TicketVoiceCallInboundStatus } from '../TicketVoiceCallInboundStatus'
 
 jest.mock(
     'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel',
     () =>
-        ({agentId}: {agentId: number}) => (
+        ({ agentId }: { agentId: number }) => (
             <div>VoiceCallAgentLabel {agentId}</div>
-        )
+        ),
 )
 
-jest.mock('../TicketVoiceCallEvents', () => ({callId}: any) => (
+jest.mock('../TicketVoiceCallEvents', () => ({ callId }: any) => (
     <div data-testid="ticket-voice-call-events">{callId}</div>
 ))
 
-jest.mock('../CollapsibleDetails', () => ({title, children}: any) => (
+jest.mock('../CollapsibleDetails', () => ({ title, children }: any) => (
     <div data-testid="collapsible-details">
         <div>{title}</div>
         <div>{children}</div>
@@ -40,7 +41,7 @@ describe('TicketVoiceCallInboundStatus', () => {
             last_answered_by_agent_id: null,
             phone_number_destination: '1234567890',
         } as VoiceCall
-        const {getByText} = renderComponent(voiceCall)
+        const { getByText } = renderComponent(voiceCall)
         expect(getByText('Ringing')).toBeInTheDocument()
     })
 
@@ -50,7 +51,7 @@ describe('TicketVoiceCallInboundStatus', () => {
             last_answered_by_agent_id: null,
             phone_number_destination: '1234567890',
         } as VoiceCall
-        const {getByText} = renderComponent(voiceCall)
+        const { getByText } = renderComponent(voiceCall)
         expect(getByText('Failed')).toBeInTheDocument()
     })
 
@@ -62,10 +63,10 @@ describe('TicketVoiceCallInboundStatus', () => {
                 last_answered_by_agent_id: null,
                 phone_number_destination: '1234567890',
             } as VoiceCall
-            const {getByText, getByTestId} = renderComponent(voiceCall)
+            const { getByText, getByTestId } = renderComponent(voiceCall)
             expect(getByText('Missed call')).toBeInTheDocument()
             expect(getByTestId('collapsible-details')).toBeInTheDocument()
-        }
+        },
     )
 
     it('should render "Answered by" and VoiceCallAgentLabel when voice call status is Answered and last answered by agent is not null', () => {
@@ -74,7 +75,7 @@ describe('TicketVoiceCallInboundStatus', () => {
             last_answered_by_agent_id: 1,
             phone_number_destination: '1234567890',
         } as VoiceCall
-        const {getByText, getByTestId} = renderComponent(voiceCall)
+        const { getByText, getByTestId } = renderComponent(voiceCall)
         expect(getByText('Answered by')).toBeInTheDocument()
         expect(getByText('VoiceCallAgentLabel 1')).toBeInTheDocument()
         expect(getByTestId('collapsible-details')).toBeInTheDocument()
@@ -86,7 +87,7 @@ describe('TicketVoiceCallInboundStatus', () => {
             last_answered_by_agent_id: 1,
             phone_number_destination: '1234567890',
         } as VoiceCall
-        const {container} = renderComponent(voiceCall)
+        const { container } = renderComponent(voiceCall)
         expect(container.firstChild).toBeNull()
     })
 })

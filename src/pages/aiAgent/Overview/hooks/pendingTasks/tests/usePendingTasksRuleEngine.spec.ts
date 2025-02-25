@@ -1,32 +1,31 @@
-import {renderHook} from '@testing-library/react-hooks'
-
+import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment/moment'
 
-import {AiAgentScope} from 'models/aiAgent/types'
-import {ShopifyPermissionsDataFixture} from 'pages/aiAgent/Overview/hooks/pendingTasks/tests/ShopifyPermissionsData.fixture'
-import {assumeMock} from 'utils/testing'
+import { AiAgentScope } from 'models/aiAgent/types'
+import { ShopifyPermissionsDataFixture } from 'pages/aiAgent/Overview/hooks/pendingTasks/tests/ShopifyPermissionsData.fixture'
+import { assumeMock } from 'utils/testing'
 
-import {useFetchActionsData} from '../useFetchActionsData'
-import {useFetchAiAgentPlaygroundExecutionsData} from '../useFetchAiAgentPlaygroundExecutionsData'
-import {useFetchAiAgentStoreConfigurationData} from '../useFetchAiAgentStoreConfigurationData'
-import {useFetchChatIntegrationsStatusData} from '../useFetchChatIntegrationsStatusData'
-import {useFetchEmailIntegrationsData} from '../useFetchEmailIntegrationsData'
-import {useFetchFaqHelpCentersData} from '../useFetchFaqHelpCentersData'
-import {useFetchFileIngestionData} from '../useFetchFileIngestionData'
-import {useFetchGuidancesData} from '../useFetchGuidancesData'
-import {useFetchPageInteractionsData} from '../useFetchPageInteractionsData'
-import {usePendingTasksRuleEngine} from '../usePendingTasksRuleEngine'
-import {useShopifyPermissionsData} from '../useShopifyPermissionsData'
-import {useTicketViewData} from '../useTicketViewData'
-import {ActionsDataFixture} from './ActionsData.fixture'
-import {AiAgentPlaygroundExecutionsDataFixture} from './AiAgentPlaygroundExecutionsData.fixture'
-import {AiAgentStoreConfigurationFixture} from './AiAgentStoreConfiguration.fixture'
-import {ChatIntegrationsStatusDataFixture} from './ChatIntegrationsStatusData.fixture'
-import {EmailIntegrationsDataFixture} from './EmailIntegrationsData.fixture'
-import {FileIngestionDataFixture} from './FileIngestionData.fixture'
-import {GuidancesDataFixture} from './GuidancesData.fixture'
-import {HelpCenterDataFixture} from './HelpCenterData.fixture'
-import {PageInteractionsDataFixture} from './PageInteractionsData.fixture'
+import { useFetchActionsData } from '../useFetchActionsData'
+import { useFetchAiAgentPlaygroundExecutionsData } from '../useFetchAiAgentPlaygroundExecutionsData'
+import { useFetchAiAgentStoreConfigurationData } from '../useFetchAiAgentStoreConfigurationData'
+import { useFetchChatIntegrationsStatusData } from '../useFetchChatIntegrationsStatusData'
+import { useFetchEmailIntegrationsData } from '../useFetchEmailIntegrationsData'
+import { useFetchFaqHelpCentersData } from '../useFetchFaqHelpCentersData'
+import { useFetchFileIngestionData } from '../useFetchFileIngestionData'
+import { useFetchGuidancesData } from '../useFetchGuidancesData'
+import { useFetchPageInteractionsData } from '../useFetchPageInteractionsData'
+import { usePendingTasksRuleEngine } from '../usePendingTasksRuleEngine'
+import { useShopifyPermissionsData } from '../useShopifyPermissionsData'
+import { useTicketViewData } from '../useTicketViewData'
+import { ActionsDataFixture } from './ActionsData.fixture'
+import { AiAgentPlaygroundExecutionsDataFixture } from './AiAgentPlaygroundExecutionsData.fixture'
+import { AiAgentStoreConfigurationFixture } from './AiAgentStoreConfiguration.fixture'
+import { ChatIntegrationsStatusDataFixture } from './ChatIntegrationsStatusData.fixture'
+import { EmailIntegrationsDataFixture } from './EmailIntegrationsData.fixture'
+import { FileIngestionDataFixture } from './FileIngestionData.fixture'
+import { GuidancesDataFixture } from './GuidancesData.fixture'
+import { HelpCenterDataFixture } from './HelpCenterData.fixture'
+import { PageInteractionsDataFixture } from './PageInteractionsData.fixture'
 
 jest.mock('../useFetchFaqHelpCentersData', () => ({
     useFetchFaqHelpCentersData: jest.fn(),
@@ -36,7 +35,7 @@ jest.mock('../useFetchAiAgentStoreConfigurationData', () => ({
     useFetchAiAgentStoreConfigurationData: jest.fn(),
 }))
 const useFetchAiAgentStoreConfigurationDataMock = assumeMock(
-    useFetchAiAgentStoreConfigurationData
+    useFetchAiAgentStoreConfigurationData,
 )
 jest.mock('../useFetchFileIngestionData', () => ({
     useFetchFileIngestionData: jest.fn(),
@@ -54,13 +53,13 @@ jest.mock('../useFetchAiAgentPlaygroundExecutionsData', () => ({
     useFetchAiAgentPlaygroundExecutionsData: jest.fn(),
 }))
 const useFetchAiAgentPlaygroundExecutionsDataMock = assumeMock(
-    useFetchAiAgentPlaygroundExecutionsData
+    useFetchAiAgentPlaygroundExecutionsData,
 )
 jest.mock('../useFetchEmailIntegrationsData', () => ({
     useFetchEmailIntegrationsData: jest.fn(),
 }))
 const useFetchEmailIntegrationsDataMock = assumeMock(
-    useFetchEmailIntegrationsData
+    useFetchEmailIntegrationsData,
 )
 jest.mock('../useShopifyPermissionsData', () => ({
     useShopifyPermissionsData: jest.fn(),
@@ -70,13 +69,13 @@ jest.mock('../useFetchChatIntegrationsStatusData', () => ({
     useFetchChatIntegrationsStatusData: jest.fn(),
 }))
 const useFetchChatIntegrationsStatusDataMock = assumeMock(
-    useFetchChatIntegrationsStatusData
+    useFetchChatIntegrationsStatusData,
 )
 jest.mock('../useFetchPageInteractionsData', () => ({
     useFetchPageInteractionsData: jest.fn(),
 }))
 const useFetchPageInteractionsDataMock = assumeMock(
-    useFetchPageInteractionsData
+    useFetchPageInteractionsData,
 )
 
 jest.mock('../useTicketViewData', () => ({
@@ -165,12 +164,12 @@ describe('usePendingTasksRuleEngine', () => {
         },
     ])(
         'should return valid tasks for scopes $scopes',
-        ({scopes, completedTasks, pendingTasks}) => {
+        ({ scopes, completedTasks, pendingTasks }) => {
             useFetchAiAgentStoreConfigurationDataMock.mockReturnValue({
                 isLoading: false,
                 data: AiAgentStoreConfigurationFixture.start()
                     .withCreatedDatetime(
-                        moment().subtract(10, 'days').toISOString()
+                        moment().subtract(10, 'days').toISOString(),
                     )
                     .withoutConnectedEmailIntegrations()
                     .withScopes(scopes)
@@ -186,18 +185,18 @@ describe('usePendingTasksRuleEngine', () => {
                     accountDomain: 'test',
                     storeName: 'test',
                     storeType: 'shopify',
-                })
+                }),
             )
 
             expect(hook.result.current.isLoading).toBe(false)
             expect(
                 // Mapping on title to ease reading error report
-                hook.result.current.pendingTasks.map((t) => t.title)
+                hook.result.current.pendingTasks.map((t) => t.title),
             ).toHaveLength(pendingTasks)
             expect(
                 // Mapping on title to ease reading error report
-                hook.result.current.completedTasks.map((t) => t.title)
+                hook.result.current.completedTasks.map((t) => t.title),
             ).toHaveLength(completedTasks)
-        }
+        },
     )
 })

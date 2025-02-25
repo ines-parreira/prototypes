@@ -1,9 +1,10 @@
-import {render, screen, fireEvent} from '@testing-library/react'
 import React from 'react'
 
-import {mockChatChannels} from 'pages/aiAgent/fixtures/chatChannels.fixture'
+import { fireEvent, render, screen } from '@testing-library/react'
 
-import {ChatIntegrationListSelection} from './ChatIntegrationListSelection'
+import { mockChatChannels } from 'pages/aiAgent/fixtures/chatChannels.fixture'
+
+import { ChatIntegrationListSelection } from './ChatIntegrationListSelection'
 
 // Mock data
 
@@ -19,7 +20,7 @@ describe('ChatIntegrationListSelection', () => {
                 selectedIds={mockSelectedIds}
                 chatItems={mockChatChannels}
                 hasError={false}
-            />
+            />,
         )
 
         const chatToSelect = mockChatChannels[1]
@@ -42,7 +43,7 @@ describe('ChatIntegrationListSelection', () => {
                 selectedIds={mockSelectedIds}
                 chatItems={mockChatChannels}
                 hasError={false}
-            />
+            />,
         )
 
         const dropdown = screen.getByRole('combobox')

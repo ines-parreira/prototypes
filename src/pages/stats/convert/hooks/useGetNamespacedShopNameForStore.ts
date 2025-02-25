@@ -1,9 +1,9 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {useGetFirstValidIntegration} from 'pages/stats/convert/hooks/useGetFirstValidIntegration'
+import { useGetFirstValidIntegration } from 'pages/stats/convert/hooks/useGetFirstValidIntegration'
 
 export function useGetNamespacedShopNameForStore(
-    selectedIntegrations: number[]
+    selectedIntegrations: number[],
 ) {
     const selectedIntegration =
         useGetFirstValidIntegration(selectedIntegrations)

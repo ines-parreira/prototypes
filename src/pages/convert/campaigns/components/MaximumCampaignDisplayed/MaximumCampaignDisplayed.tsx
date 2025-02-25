@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import ToggleInput from 'pages/common/forms/ToggleInput'
-import {CampaignDisplaysInSession} from 'pages/convert/campaigns/types/CampaignMeta'
+import { CampaignDisplaysInSession } from 'pages/convert/campaigns/types/CampaignMeta'
 
 import css from './MaximumCampaignDisplayed.less'
 
@@ -36,7 +36,7 @@ export const MaximumCampaignDisplayed = ({
 }: Props): JSX.Element => {
     const [isEnabled, setEnabled] = useState<boolean>(!!config?.value)
     const [internalValue, setInternalValue] = useState<number>(
-        config?.value ?? (defaultValue as number)
+        config?.value ?? (defaultValue as number),
     )
 
     const [errorMessage, setErrorMessage] = useState<string | null>(null)
@@ -49,7 +49,7 @@ export const MaximumCampaignDisplayed = ({
 
         if (value < minValue || value > maxValue) {
             setErrorMessage(
-                `Value should be between ${minValue} and ${maxValue}.`
+                `Value should be between ${minValue} and ${maxValue}.`,
             )
             return false
         }
@@ -80,14 +80,14 @@ export const MaximumCampaignDisplayed = ({
 
     const updateCampaignState = (
         isEnabled: boolean,
-        value: number | undefined
+        value: number | undefined,
     ) => {
         onChange(
             isEnabled && value
                 ? {
                       value: value,
                   }
-                : null
+                : null,
         )
     }
 

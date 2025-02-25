@@ -1,12 +1,12 @@
-import {render, screen} from '@testing-library/react'
+import React, { ComponentProps } from 'react'
+
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
+import { fromJS } from 'immutable'
 
-import {SegmentEvent, logEvent} from 'common/segment'
-
+import { logEvent, SegmentEvent } from 'common/segment'
 import EmailInvoicePopover from 'Widgets/modules/Shopify/modules/DraftOrderModal/components/EmailInvoicePopover'
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
+import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 jest.mock('common/segment', () => {
     const SegmentTracker = jest.requireActual('common/segment')
@@ -29,7 +29,7 @@ describe('<EmailInvoicePopover/>', () => {
     describe('render()', () => {
         it('should render', () => {
             const buttonText = 'Email invoice'
-            const {getByRole} = render(
+            const { getByRole } = render(
                 <EmailInvoicePopover
                     id="email-invoice"
                     actionName={ShopifyActionType.DuplicateOrder}
@@ -39,10 +39,12 @@ describe('<EmailInvoicePopover/>', () => {
                     onSubmit={onSubmit}
                 >
                     {buttonText}
-                </EmailInvoicePopover>
+                </EmailInvoicePopover>,
             )
 
-            expect(getByRole('button', {name: buttonText})).toBeInTheDocument()
+            expect(
+                getByRole('button', { name: buttonText }),
+            ).toBeInTheDocument()
         })
     })
 
@@ -71,7 +73,7 @@ describe('<EmailInvoicePopover/>', () => {
                         onSubmit={onSubmit}
                     >
                         Email invoice
-                    </EmailInvoicePopover>
+                    </EmailInvoicePopover>,
                 )
 
                 // Open popover
@@ -86,17 +88,17 @@ describe('<EmailInvoicePopover/>', () => {
                 userEvent.paste(messageField, 'foo bar')
                 // Submit
                 userEvent.click(
-                    screen.getByRole('button', {name: 'Create Draft Order'})
+                    screen.getByRole('button', { name: 'Create Draft Order' }),
                 )
 
                 expect(onSubmit).toHaveBeenCalledWith(
                     fromJS({
                         to: 'abc@foo.xyz',
                         custom_message: 'foo bar',
-                    })
+                    }),
                 )
                 expect(logEvent).toHaveBeenCalledWith(submitEvent)
-            }
+            },
         )
     })
 
@@ -121,12 +123,12 @@ describe('<EmailInvoicePopover/>', () => {
                     onSubmit={onSubmit}
                 >
                     Email invoice
-                </EmailInvoicePopover>
+                </EmailInvoicePopover>,
             )
 
             // Open popover
             userEvent.click(screen.getByRole('button'))
-            userEvent.click(screen.getByRole('button', {name: 'Cancel'}))
+            userEvent.click(screen.getByRole('button', { name: 'Cancel' }))
 
             expect(logEvent).toHaveBeenCalledWith(event)
         })

@@ -1,20 +1,19 @@
-import {fireEvent, render, screen} from '@testing-library/react'
-import {ContentState, EditorState} from 'draft-js'
-import {fromJS} from 'immutable'
+import React, { ComponentProps } from 'react'
+
+import { fireEvent, render, screen } from '@testing-library/react'
+import { ContentState, EditorState } from 'draft-js'
+import { fromJS } from 'immutable'
 import _noop from 'lodash/noop'
-import React, {ComponentProps} from 'react'
+import { Provider } from 'react-redux'
 
-import {Provider} from 'react-redux'
-
-import {RichFieldEditor} from 'pages/common/forms/RichField/RichFieldEditor'
-import {convertFromHTML} from 'utils/editor'
-
-import {mockStore} from 'utils/testing'
+import { RichFieldEditor } from 'pages/common/forms/RichField/RichFieldEditor'
+import { convertFromHTML } from 'utils/editor'
+import { mockStore } from 'utils/testing'
 
 import toolbarPlugin from '../index'
 import Toolbar from '../Toolbar'
 import ToolbarProvider from '../ToolbarProvider'
-import {ActionName} from '../types'
+import { ActionName } from '../types'
 
 // mock random key generation so they match from a snapshot to the other
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
@@ -24,7 +23,7 @@ jest.mock('../components', () => {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return {
         ...jest.requireActual('../components'),
-        AddLink: jest.fn((props: {getWorkflowVariables: () => void}) => (
+        AddLink: jest.fn((props: { getWorkflowVariables: () => void }) => (
             <div onClick={props.getWorkflowVariables}>Click me</div>
         )),
     }
@@ -75,7 +74,7 @@ describe('Toolbar', () => {
     })
 
     it('should render character count if max length is specified', () => {
-        const {container} = render(
+        const { container } = render(
             <ToolbarProvider
                 canAddProductCard={true}
                 onAddProductCardAttachment={jest.fn()}
@@ -89,7 +88,7 @@ describe('Toolbar', () => {
                     editorState={editorState}
                     getEditorState={() => editorState}
                 />
-            </ToolbarProvider>
+            </ToolbarProvider>,
         )
 
         expect(container).toHaveTextContent(/3\/100/)
@@ -112,7 +111,7 @@ describe('Toolbar', () => {
         }
 
         it('should not render tooltip tour', () => {
-            const {queryByText} = render(
+            const { queryByText } = render(
                 <ToolbarProvider
                     canAddProductCard={true}
                     onAddProductCardAttachment={jest.fn()}
@@ -127,14 +126,14 @@ describe('Toolbar', () => {
                         editorState={editorState}
                         getEditorState={() => editorState}
                     />
-                </ToolbarProvider>
+                </ToolbarProvider>,
             )
 
             expect(queryByText('lorem ipsum tooltip')).not.toBeInTheDocument()
         })
 
         it('should render tooltip tour', () => {
-            const {getByText} = render(
+            const { getByText } = render(
                 <ToolbarProvider
                     canAddProductCard={true}
                     onAddProductCardAttachment={jest.fn()}
@@ -153,7 +152,7 @@ describe('Toolbar', () => {
                         editorState={editorState}
                         getEditorState={() => editorState}
                     />
-                </ToolbarProvider>
+                </ToolbarProvider>,
             )
 
             expect(getByText('lorem ipsum tooltip')).toBeInTheDocument()
@@ -181,7 +180,7 @@ describe('Toolbar', () => {
                             getWorkflowVariables={getWorkflowVariablesMock}
                         />
                     </ToolbarProvider>
-                </Provider>
+                </Provider>,
             )
             fireEvent.click(screen.getByText('Click me'))
             expect(getWorkflowVariablesMock).toHaveBeenCalled()

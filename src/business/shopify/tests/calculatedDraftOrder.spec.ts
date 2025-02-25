@@ -1,10 +1,10 @@
-import {fromJS, Map} from 'immutable'
+import { fromJS, Map } from 'immutable'
 
 import {
     shopifyDraftOrderPayloadFixture,
     shopifyShippingLineFixture,
 } from '../../../fixtures/shopify'
-import {getCalculateDraftOrderPayload} from '../calculatedDraftOrder'
+import { getCalculateDraftOrderPayload } from '../calculatedDraftOrder'
 
 describe('getCalculateDraftOrderPayload()', () => {
     function getDraftOrderPayload(): Map<any, any> {
@@ -15,7 +15,7 @@ describe('getCalculateDraftOrderPayload()', () => {
         const shippingLine = fromJS(shopifyShippingLineFixture())
         const draftOrderPayload = getDraftOrderPayload().set(
             'shipping_line',
-            shippingLine
+            shippingLine,
         )
         const payload = getCalculateDraftOrderPayload(draftOrderPayload)
         expect(payload).toMatchSnapshot()
@@ -24,7 +24,7 @@ describe('getCalculateDraftOrderPayload()', () => {
     it('should return payload without shipping line', () => {
         const draftOrderPayload = getDraftOrderPayload().set(
             'shipping_line',
-            null
+            null,
         )
         const payload = getCalculateDraftOrderPayload(draftOrderPayload)
         expect(payload).toMatchSnapshot()
@@ -33,7 +33,7 @@ describe('getCalculateDraftOrderPayload()', () => {
     it('should return payload without applied discount', () => {
         const draftOrderPayload = getDraftOrderPayload().set(
             'applied_discount',
-            null
+            null,
         )
         const payload = getCalculateDraftOrderPayload(draftOrderPayload)
         expect(payload).toMatchSnapshot()
@@ -42,7 +42,7 @@ describe('getCalculateDraftOrderPayload()', () => {
     it('should return payload without shipping address', () => {
         const draftOrderPayload = getDraftOrderPayload().set(
             'shipping_address',
-            null
+            null,
         )
         const payload = getCalculateDraftOrderPayload(draftOrderPayload)
         expect(payload).toMatchSnapshot()

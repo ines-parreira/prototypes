@@ -1,8 +1,8 @@
-import {Map} from 'immutable'
+import { Map } from 'immutable'
 
-import {Product} from 'constants/integrations/types/shopify'
-import {IntegrationDataItem} from 'models/integration/types'
-import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
+import { Product } from 'constants/integrations/types/shopify'
+import { IntegrationDataItem } from 'models/integration/types'
+import { ProductCardAttachment } from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
 import {
     transformProductCardDetailsToProductCardAttachment,
     transformShopifyProductToProductCardDetails,
@@ -14,7 +14,7 @@ import {
 export const pickNRandomShopifyProducts = (
     products: IntegrationDataItem<Product>[],
     shopifyIntegration: Map<string, string>,
-    n: number
+    n: number,
 ): ProductCardAttachment[] => {
     const shuffled = products.sort(() => 0.5 - Math.random())
     return shuffled
@@ -24,8 +24,8 @@ export const pickNRandomShopifyProducts = (
                 transformShopifyProductToProductCardDetails(
                     product,
                     shopifyIntegration,
-                    product.data.variants.length > 1
-                )
-            )
+                    product.data.variants.length > 1,
+                ),
+            ),
         )
 }

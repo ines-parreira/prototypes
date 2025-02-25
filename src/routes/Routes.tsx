@@ -1,6 +1,7 @@
-import {History} from 'history'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useEffect} from 'react'
+import React, { useEffect } from 'react'
+
+import { History } from 'history'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 import {
     Redirect,
     Route,
@@ -10,48 +11,47 @@ import {
     useParams,
     useRouteMatch,
 } from 'react-router-dom'
-import {CompatRoute} from 'react-router-dom-v5-compat'
+import { CompatRoute } from 'react-router-dom-v5-compat'
 
-import {OBS_ADOPT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
-import {logPageChange} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {PageSection} from 'config/pages'
-import {ADMIN_ROLE, AGENT_ROLE} from 'config/user'
-import {useFlag} from 'core/flags'
+import { OBS_ADOPT_SENTRY_TEAM } from 'common/const/sentryTeamNames'
+import { logPageChange } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { PageSection } from 'config/pages'
+import { ADMIN_ROLE, AGENT_ROLE } from 'config/user'
+import { useFlag } from 'core/flags'
 // DON'T add 'pages/*' imports above to ensure CSS ordering is preserved. Placing this import elsewhere
 // may cause unexpected CSS precedence issues, breaking the intended design.
 //
 // cf. https://github.com/gorgias/helpdesk-web-app/pull/6154
-// eslint-disable-next-line import/order
 import ActionEventsViewContainer from 'pages/aiAgent/actions/ActionEventsViewContainer'
 import ActionsTemplatesViewContainer from 'pages/aiAgent/actions/ActionsTemplatesViewContainer'
 import ActionsViewContainer from 'pages/aiAgent/actions/ActionsViewContainer'
 import CreateActionView from 'pages/aiAgent/actions/CreateActionView'
 import EditActionViewContainer from 'pages/aiAgent/actions/EditActionViewContainer'
 import AiAgentConfigurationContainer from 'pages/aiAgent/AiAgentConfigurationContainer'
-import {AiAgentGuidanceAiSuggestionNewContainer} from 'pages/aiAgent/AiAgentGuidanceAiSuggestionNewContainer'
-import {AiAgentGuidanceContainer} from 'pages/aiAgent/AiAgentGuidanceContainer'
-import {AiAgentGuidanceDetailContainer} from 'pages/aiAgent/AiAgentGuidanceDetailContainer'
-import {AiAgentGuidanceLibraryContainer} from 'pages/aiAgent/AiAgentGuidanceLibraryContainer'
-import {AiAgentGuidanceNewContainer} from 'pages/aiAgent/AiAgentGuidanceNewContainer'
-import {AiAgentGuidanceTemplateNewContainer} from 'pages/aiAgent/AiAgentGuidanceTemplateNewContainer'
-import {AiAgentGuidanceTemplatesContainer} from 'pages/aiAgent/AiAgentGuidanceTemplatesContainer'
-import {AiAgentKnowledgeContainer} from 'pages/aiAgent/AiAgentKnowledgeContainer'
+import { AiAgentGuidanceAiSuggestionNewContainer } from 'pages/aiAgent/AiAgentGuidanceAiSuggestionNewContainer'
+import { AiAgentGuidanceContainer } from 'pages/aiAgent/AiAgentGuidanceContainer'
+import { AiAgentGuidanceDetailContainer } from 'pages/aiAgent/AiAgentGuidanceDetailContainer'
+import { AiAgentGuidanceLibraryContainer } from 'pages/aiAgent/AiAgentGuidanceLibraryContainer'
+import { AiAgentGuidanceNewContainer } from 'pages/aiAgent/AiAgentGuidanceNewContainer'
+import { AiAgentGuidanceTemplateNewContainer } from 'pages/aiAgent/AiAgentGuidanceTemplateNewContainer'
+import { AiAgentGuidanceTemplatesContainer } from 'pages/aiAgent/AiAgentGuidanceTemplatesContainer'
+import { AiAgentKnowledgeContainer } from 'pages/aiAgent/AiAgentKnowledgeContainer'
 import AiAgentMainViewContainer from 'pages/aiAgent/AiAgentMainViewContainer'
 import AiAgentOnboardingWizard from 'pages/aiAgent/AiAgentOnboardingWizard/AiAgentOnboardingWizard'
-import {AiAgentPlaygroundContainer} from 'pages/aiAgent/AiAgentPlaygroundContainer'
-import {AiAgentPreviewModeSettingsContainer} from 'pages/aiAgent/AiAgentPreviewModeSettings/AiAgentPreviewModeSettingsContainer'
-import {AiAgentSales} from 'pages/aiAgent/AiAgentSales'
-import {AiAgentNavbar} from 'pages/aiAgent/components/AiAgentNavbar/AiAgentNavbar'
-import {RedirectToAiAgentStore} from 'pages/aiAgent/components/RedirectToAiAgentStore/RedirectToAiAgentStore'
-import {useAiAgentItemEnabled} from 'pages/aiAgent/hooks/useAiAgentItemEnabled'
-import {Level2IntentsContainer} from 'pages/aiAgent/insights/Level2IntentsContainer/Level2IntentsContainer'
-import {OptimizeContainer} from 'pages/aiAgent/insights/OptimizeContainer/OptimizeContainer'
-import {AiAgentOnboarding} from 'pages/aiAgent/Onboarding/components/AiAgentOnboarding/AiAgentOnboarding'
-import {WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
-import {AiAgentOverview} from 'pages/aiAgent/Overview/AiAgentOverview'
-import {AiAgentAccountConfigurationProvider} from 'pages/aiAgent/providers/AiAgentAccountConfigurationProvider'
-import {AiAgentErrorBoundary} from 'pages/aiAgent/providers/AiAgentErrorBoundary'
+import { AiAgentPlaygroundContainer } from 'pages/aiAgent/AiAgentPlaygroundContainer'
+import { AiAgentPreviewModeSettingsContainer } from 'pages/aiAgent/AiAgentPreviewModeSettings/AiAgentPreviewModeSettingsContainer'
+import { AiAgentSales } from 'pages/aiAgent/AiAgentSales'
+import { AiAgentNavbar } from 'pages/aiAgent/components/AiAgentNavbar/AiAgentNavbar'
+import { RedirectToAiAgentStore } from 'pages/aiAgent/components/RedirectToAiAgentStore/RedirectToAiAgentStore'
+import { useAiAgentItemEnabled } from 'pages/aiAgent/hooks/useAiAgentItemEnabled'
+import { Level2IntentsContainer } from 'pages/aiAgent/insights/Level2IntentsContainer/Level2IntentsContainer'
+import { OptimizeContainer } from 'pages/aiAgent/insights/OptimizeContainer/OptimizeContainer'
+import { AiAgentOnboarding } from 'pages/aiAgent/Onboarding/components/AiAgentOnboarding/AiAgentOnboarding'
+import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
+import { AiAgentOverview } from 'pages/aiAgent/Overview/AiAgentOverview'
+import { AiAgentAccountConfigurationProvider } from 'pages/aiAgent/providers/AiAgentAccountConfigurationProvider'
+import { AiAgentErrorBoundary } from 'pages/aiAgent/providers/AiAgentErrorBoundary'
 import AiAgentStoreConfigurationProvider from 'pages/aiAgent/providers/AiAgentStoreConfigurationProvider'
 import App from 'pages/App'
 import ActionsPlatformAppsView from 'pages/automate/actionsPlatform/ActionsPlatformAppsView'
@@ -89,7 +89,7 @@ import withUserRoleRequired from 'pages/common/utils/withUserRoleRequired'
 import UpdateABTestView from 'pages/convert/abTests/components/UpdateABTestView'
 import ABGroupIndexPage from 'pages/convert/abVariants/pages/ABGroupPage'
 import ConvertBundleView from 'pages/convert/bundles/components/ConvertBundleView'
-import {CampaignsView} from 'pages/convert/campaigns/CampaignsView'
+import { CampaignsView } from 'pages/convert/campaigns/CampaignsView'
 import CampaginLibaryView from 'pages/convert/campaigns/components/CampaginLibaryView'
 import CampaignDetailsFactory from 'pages/convert/campaigns/containers/CampaignDetailsFactory'
 import {
@@ -104,11 +104,11 @@ import {
     CONVERT_ROUTING_PARAM,
     CONVERT_ROUTING_TEMPLATE_PARAM,
 } from 'pages/convert/common/constants'
-import {RevenueAddonApiClientProvider} from 'pages/convert/common/hooks/useConvertApi'
+import { RevenueAddonApiClientProvider } from 'pages/convert/common/hooks/useConvertApi'
 import ConvertOnboardingView from 'pages/convert/onboarding/components/ConvertOnboardingView'
 import ConvertOnboardingWizardView from 'pages/convert/onboarding/components/ConvertOnboardingWizardView'
-import {OverviewView} from 'pages/convert/overview/OverviewView'
-import {ConvertSettingsView} from 'pages/convert/settings/ConvertSettingsView'
+import { OverviewView } from 'pages/convert/overview/OverviewView'
+import { ConvertSettingsView } from 'pages/convert/settings/ConvertSettingsView'
 import CustomerNavbarContainer from 'pages/customers/common/CustomerNavbarContainer'
 import CustomerDetailContainer from 'pages/customers/detail/CustomerDetailContainer'
 import CustomerInfobarContainer from 'pages/customers/detail/CustomerInfobarContainer'
@@ -118,7 +118,7 @@ import CanduContent from 'pages/onboarding/CanduContent'
 import PanelLayout from 'pages/PanelLayout'
 import ReferralContent from 'pages/referral/ReferralContent'
 import SettingsNavbar from 'pages/settings/common/SettingsNavbar/SettingsNavbar'
-import {HelpCenterApiClientProvider} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import RevenueCampaignsStats from 'pages/stats/convert/pages/CampaignsStats'
 import CampaignStatsPaywallView from 'pages/stats/convert/pages/CampaignsStats/CampaignStatsPaywallView'
 import DefaultStatsFilters from 'pages/stats/DefaultStatsFilters'
@@ -132,11 +132,11 @@ import TicketPrintContainer from 'pages/tickets/detail/TicketPrintContainer'
 import TicketSourceContainer from 'pages/tickets/detail/TicketSourceContainer'
 import TicketNavbar from 'pages/tickets/navbar/TicketNavbar'
 import SettingsRoutes from 'routes/settings'
-import {StatsRoutes} from 'routes/StatsRoutes'
-import {useSplitTicketPage} from 'tickets/pages/SplitTicketPage'
-import {useSplitViewPage} from 'tickets/pages/SplitViewPage'
-import {useTicketPage} from 'tickets/pages/TicketPage'
-import {useViewPage} from 'tickets/pages/ViewPage'
+import { StatsRoutes } from 'routes/StatsRoutes'
+import { useSplitTicketPage } from 'tickets/pages/SplitTicketPage'
+import { useSplitViewPage } from 'tickets/pages/SplitViewPage'
+import { useTicketPage } from 'tickets/pages/TicketPage'
+import { useViewPage } from 'tickets/pages/ViewPage'
 
 export default function Routes() {
     return (
@@ -147,7 +147,7 @@ export default function Routes() {
 }
 
 export function AppRoutes() {
-    const {path} = useRouteMatch()
+    const { path } = useRouteMatch()
     const location = useLocation()
     const isAiAgentAssistantEnabled = useFlag(FeatureFlagKey.AiAgentAssistant)
 
@@ -220,7 +220,7 @@ export function AppRoutes() {
     )
 }
 
-export function CustomersRoutes({match: {path}}: RouteComponentProps) {
+export function CustomersRoutes({ match: { path } }: RouteComponentProps) {
     return (
         <Switch>
             <Route
@@ -267,7 +267,7 @@ export function CustomersRoutes({match: {path}}: RouteComponentProps) {
     )
 }
 
-export function CustomerRoutes({match: {path}}: RouteComponentProps) {
+export function CustomerRoutes({ match: { path } }: RouteComponentProps) {
     return (
         <Switch>
             <Route
@@ -291,7 +291,7 @@ export function CustomerRoutes({match: {path}}: RouteComponentProps) {
                             CustomerSourceContainer,
                             ADMIN_ROLE,
                             undefined,
-                            location.pathname.replace('/edit-widgets', '')
+                            location.pathname.replace('/edit-widgets', ''),
                         )}
                         navbar={CustomerNavbarContainer}
                         infobar={CustomerInfobarContainer}
@@ -305,7 +305,7 @@ export function CustomerRoutes({match: {path}}: RouteComponentProps) {
     )
 }
 
-export function UsersRoutes({match: {path}}: RouteComponentProps) {
+export function UsersRoutes({ match: { path } }: RouteComponentProps) {
     return (
         <Switch>
             <Route
@@ -352,7 +352,7 @@ export function UsersRoutes({match: {path}}: RouteComponentProps) {
     )
 }
 
-export function UserRoutes({match: {path}}: RouteComponentProps) {
+export function UserRoutes({ match: { path } }: RouteComponentProps) {
     return (
         <Switch>
             <Route
@@ -378,7 +378,7 @@ export function UserRoutes({match: {path}}: RouteComponentProps) {
                             CustomerSourceContainer,
                             ADMIN_ROLE,
                             undefined,
-                            location.pathname.replace('/edit-widgets', '')
+                            location.pathname.replace('/edit-widgets', ''),
                         )}
                         navbar={CustomerNavbarContainer}
                         infobar={CustomerInfobarContainer}
@@ -392,7 +392,10 @@ export function UserRoutes({match: {path}}: RouteComponentProps) {
     )
 }
 
-export function TicketRoutes({location, match: {path}}: RouteComponentProps) {
+export function TicketRoutes({
+    location,
+    match: { path },
+}: RouteComponentProps) {
     return (
         <Switch>
             <Route
@@ -404,7 +407,7 @@ export function TicketRoutes({location, match: {path}}: RouteComponentProps) {
                             TicketSourceContainer,
                             ADMIN_ROLE,
                             undefined,
-                            location.pathname.replace('/edit-widgets', '')
+                            location.pathname.replace('/edit-widgets', ''),
                         )}
                         navbar={TicketNavbar}
                         infobar={TicketInfobarContainer}
@@ -423,8 +426,8 @@ export function TicketRoutes({location, match: {path}}: RouteComponentProps) {
     )
 }
 
-function AiAgentRoutes({match: {path}, location}: RouteComponentProps) {
-    const {shopType} = useParams<{
+function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
+    const { shopType } = useParams<{
         shopType: string
     }>()
 
@@ -466,7 +469,7 @@ function AiAgentRoutes({match: {path}, location}: RouteComponentProps) {
         ) {
             newLocation.pathname = newLocation.pathname.replace(
                 '/guidance',
-                '/knowledge/guidance'
+                '/knowledge/guidance',
             )
         }
 
@@ -476,14 +479,14 @@ function AiAgentRoutes({match: {path}, location}: RouteComponentProps) {
         ) {
             newLocation.pathname = newLocation.pathname.replace(
                 '/actions',
-                '/knowledge/actions'
+                '/knowledge/actions',
             )
         }
 
         if (location.pathname.includes('/preview-mode')) {
             newLocation.pathname = newLocation.pathname.replace(
                 '/preview-mode',
-                '/settings/preview'
+                '/settings/preview',
             )
         }
 
@@ -769,9 +772,9 @@ export function AutomationRoutes() {
 }
 
 function AutomationContent() {
-    const {path} = useRouteMatch()
+    const { path } = useRouteMatch()
     const isActionsInternalPlatformEnabled = useFlag(
-        FeatureFlagKey.ActionsInternalPlatform
+        FeatureFlagKey.ActionsInternalPlatform,
     )
     const isAiAgentItemEnabled = useAiAgentItemEnabled()
 
@@ -845,7 +848,7 @@ function AutomationContent() {
                         exact
                         component={withUserRoleRequired(
                             AutomateAllRecommendationsContainer,
-                            AGENT_ROLE
+                            AGENT_ROLE,
                         )}
                     />
                 </SelfServiceHelpCentersProvider>
@@ -861,7 +864,7 @@ function AutomationContent() {
                 exact
                 component={withUserRoleRequired(
                     WorkflowEditorViewContainer,
-                    AGENT_ROLE
+                    AGENT_ROLE,
                 )}
             />
 
@@ -874,7 +877,7 @@ function AutomationContent() {
                             {React.createElement(
                                 withUserRoleRequired(
                                     WorkflowEditorViewContainer,
-                                    AGENT_ROLE
+                                    AGENT_ROLE,
                                 ),
                                 {
                                     ...props,
@@ -882,7 +885,7 @@ function AutomationContent() {
                                         props.match.params.editWorkflowId,
                                     shopType: props.match.params.shopType,
                                     shopName: props.match.params.shopName,
-                                }
+                                },
                             )}
                         </SelfServiceContactFormsProvider>
                     </SelfServiceHelpCentersProvider>
@@ -902,7 +905,7 @@ function AutomationContent() {
                             }>(
                                 withUserRoleRequired(
                                     WorkflowAnalyticsContainer,
-                                    AGENT_ROLE
+                                    AGENT_ROLE,
                                 ),
                                 {
                                     ...props,
@@ -910,7 +913,7 @@ function AutomationContent() {
                                         props.match.params.editWorkflowId,
                                     shopType: props.match.params.shopType,
                                     shopName: props.match.params.shopName,
-                                }
+                                },
                             )}
                         </SelfServiceContactFormsProvider>
                     </SelfServiceHelpCentersProvider>
@@ -923,13 +926,13 @@ function AutomationContent() {
                     return React.createElement(
                         withUserRoleRequired(
                             WorkflowsViewContainer,
-                            AGENT_ROLE
+                            AGENT_ROLE,
                         ),
                         {
                             ...props,
                             shopType: props.match.params.shopType,
                             shopName: props.match.params.shopName,
-                        }
+                        },
                     )
                 }}
             />
@@ -956,7 +959,7 @@ function AutomationContent() {
                                     exact
                                     component={withUserRoleRequired(
                                         OrderManagementViewContainer,
-                                        AGENT_ROLE
+                                        AGENT_ROLE,
                                     )}
                                 />
                                 <Route
@@ -964,7 +967,7 @@ function AutomationContent() {
                                     exact
                                     component={withUserRoleRequired(
                                         ReturnOrderFlowViewContainer,
-                                        AGENT_ROLE
+                                        AGENT_ROLE,
                                     )}
                                 />
                                 <Route
@@ -972,7 +975,7 @@ function AutomationContent() {
                                     exact
                                     component={withUserRoleRequired(
                                         CancelOrderFlowViewContainer,
-                                        AGENT_ROLE
+                                        AGENT_ROLE,
                                     )}
                                 />
                                 <Route
@@ -980,7 +983,7 @@ function AutomationContent() {
                                     exact
                                     component={withUserRoleRequired(
                                         ReportOrderIssueFlowViewContainer,
-                                        AGENT_ROLE
+                                        AGENT_ROLE,
                                     )}
                                 />
                                 <Route
@@ -988,7 +991,7 @@ function AutomationContent() {
                                     exact
                                     component={withUserRoleRequired(
                                         CreateReportOrderIssueFlowScenarioViewContainer,
-                                        AGENT_ROLE
+                                        AGENT_ROLE,
                                     )}
                                 />
                                 <Route
@@ -996,7 +999,7 @@ function AutomationContent() {
                                     exact
                                     component={withUserRoleRequired(
                                         EditReportOrderIssueFlowScenarioViewContainer,
-                                        AGENT_ROLE
+                                        AGENT_ROLE,
                                     )}
                                 />
                                 <Route
@@ -1004,7 +1007,7 @@ function AutomationContent() {
                                     exact
                                     component={withUserRoleRequired(
                                         TrackOrderFlowViewContainer,
-                                        AGENT_ROLE
+                                        AGENT_ROLE,
                                     )}
                                 />
                             </Switch>
@@ -1032,13 +1035,13 @@ function AutomationContent() {
                     return React.createElement(
                         withUserRoleRequired(
                             ArticleRecommendationViewContainer,
-                            AGENT_ROLE
+                            AGENT_ROLE,
                         ),
                         {
                             ...props,
                             shopType: props.match.params.shopType,
                             shopName: props.match.params.shopName,
-                        }
+                        },
                     )
                 }}
             />
@@ -1050,7 +1053,7 @@ function AutomationContent() {
                             path={`${path}/:shopType/:shopName/connected-channels`}
                             component={withUserRoleRequired(
                                 ConnectedChannelsViewContainer,
-                                AGENT_ROLE
+                                AGENT_ROLE,
                             )}
                         />
                     </SelfServiceContactFormsProvider>
@@ -1068,7 +1071,7 @@ function AutomationContent() {
                     path={`${path}/ai-agent-overview`}
                     component={withUserRoleRequired(
                         AiAgentOverview,
-                        AGENT_ROLE
+                        AGENT_ROLE,
                     )}
                 />
             )}
@@ -1080,7 +1083,7 @@ function AutomationContent() {
     )
 }
 
-export function AiAgentBaseRoutes({match: {path}}: RouteComponentProps) {
+export function AiAgentBaseRoutes({ match: { path } }: RouteComponentProps) {
     const handleRedirect = (history: History, newPath: string) => {
         history.replace(newPath)
         return null
@@ -1093,10 +1096,10 @@ export function AiAgentBaseRoutes({match: {path}}: RouteComponentProps) {
                 <Route
                     exact
                     path={`${path}/onboarding`}
-                    render={({history}) =>
+                    render={({ history }) =>
                         handleRedirect(
                             history,
-                            `${path}/onboarding/${WizardStepEnum.SKILLSET}`
+                            `${path}/onboarding/${WizardStepEnum.SKILLSET}`,
                         )
                     }
                 />
@@ -1105,10 +1108,10 @@ export function AiAgentBaseRoutes({match: {path}}: RouteComponentProps) {
                 <Route
                     exact
                     path={`${path}/:shopType/:shopName/onboarding`}
-                    render={({history, match}) =>
+                    render={({ history, match }) =>
                         handleRedirect(
                             history,
-                            `${path}/${match.params.shopType}/${match.params.shopName}/onboarding/${WizardStepEnum.SKILLSET}`
+                            `${path}/${match.params.shopType}/${match.params.shopName}/onboarding/${WizardStepEnum.SKILLSET}`,
                         )
                     }
                 />
@@ -1124,7 +1127,7 @@ export function AiAgentBaseRoutes({match: {path}}: RouteComponentProps) {
                         exact
                         component={withUserRoleRequired(
                             AiAgentOnboarding,
-                            AGENT_ROLE
+                            AGENT_ROLE,
                         )}
                     />
                 ))}
@@ -1145,7 +1148,7 @@ export function AiAgentBaseRoutes({match: {path}}: RouteComponentProps) {
 }
 
 function AiAgentContent() {
-    const {path} = useRouteMatch()
+    const { path } = useRouteMatch()
     const hasStandaloneConvAiOverviewPage =
         useFlags()[FeatureFlagKey.StandaloneConvAiOverviewPage]
 
@@ -1156,7 +1159,7 @@ function AiAgentContent() {
                     path={`${path}/overview`}
                     component={withUserRoleRequired(
                         AiAgentOverview,
-                        AGENT_ROLE
+                        AGENT_ROLE,
                     )}
                 />
             )}
@@ -1191,7 +1194,7 @@ export function ConvertRoutes() {
 }
 
 export function ConvertContent() {
-    const {path} = useRouteMatch()
+    const { path } = useRouteMatch()
     const convertPathPrefix = `${path}/${CONVERT_ROUTING_PARAM}`
     return (
         <Switch>
@@ -1205,7 +1208,7 @@ export function ConvertContent() {
                 path={`${path}/setup`}
                 component={withUserRoleRequired(
                     ConvertOnboardingView as any,
-                    ADMIN_ROLE
+                    ADMIN_ROLE,
                 )}
             />
             <Route
@@ -1213,7 +1216,7 @@ export function ConvertContent() {
                 path={`${convertPathPrefix}/setup`}
                 component={withUserRoleRequired(
                     ConvertOnboardingView as any,
-                    ADMIN_ROLE
+                    ADMIN_ROLE,
                 )}
             />
             <Route
@@ -1221,7 +1224,7 @@ export function ConvertContent() {
                 path={`${convertPathPrefix}/setup/wizard`}
                 component={withUserRoleRequired(
                     ConvertOnboardingWizardView as any,
-                    ADMIN_ROLE
+                    ADMIN_ROLE,
                 )}
             />
             <Route
@@ -1229,7 +1232,7 @@ export function ConvertContent() {
                 path={`${convertPathPrefix}/setup/wizard/${CONVERT_ROUTING_TEMPLATE_PARAM}`}
                 component={withUserRoleRequired(
                     CampaignTemplateCustomizeRecommendationsView as any,
-                    ADMIN_ROLE
+                    ADMIN_ROLE,
                 )}
             />
             <Route
@@ -1237,7 +1240,7 @@ export function ConvertContent() {
                 path={`${convertPathPrefix}/campaigns`}
                 component={withUserRoleRequired(
                     CampaignsView as any,
-                    ADMIN_ROLE
+                    ADMIN_ROLE,
                 )}
             />
             <Route
@@ -1245,7 +1248,7 @@ export function ConvertContent() {
                 path={`${convertPathPrefix}/campaigns/new`}
                 component={withUserRoleRequired(
                     CampaignDetailsFactory as any,
-                    ADMIN_ROLE
+                    ADMIN_ROLE,
                 )}
             />
             <Route
@@ -1253,7 +1256,7 @@ export function ConvertContent() {
                 exact
                 component={withUserRoleRequired(
                     CampaginLibaryView as any,
-                    ADMIN_ROLE
+                    ADMIN_ROLE,
                 )}
             />
             <Route
@@ -1261,7 +1264,7 @@ export function ConvertContent() {
                 path={`${convertPathPrefix}/campaigns/new/${CONVERT_ROUTING_TEMPLATE_PARAM}`}
                 component={withUserRoleRequired(
                     CampaignTemplateCustomizeLibraryView as any,
-                    ADMIN_ROLE
+                    ADMIN_ROLE,
                 )}
             />
             <Route
@@ -1269,14 +1272,14 @@ export function ConvertContent() {
                 path={`${convertPathPrefix}/campaigns/${CONVERT_ROUTING_CAMPAIGN_PARAM}`}
                 component={withUserRoleRequired(
                     CampaignDetailsFactory as any,
-                    ADMIN_ROLE
+                    ADMIN_ROLE,
                 )}
             />
             <Route
                 path={`${convertPathPrefix}/campaigns/${CONVERT_ROUTING_CAMPAIGN_PARAM}/ab-variants`}
                 component={withUserRoleRequired(
                     ABGroupIndexPage as any,
-                    ADMIN_ROLE
+                    ADMIN_ROLE,
                 )}
             />
             <Route exact path={`${convertPathPrefix}/performance`}>
@@ -1294,7 +1297,7 @@ export function ConvertContent() {
                         path={`${convertPathPrefix}/performance`}
                         component={withUserRoleRequired(
                             RevenueCampaignsStats as any,
-                            ADMIN_ROLE
+                            ADMIN_ROLE,
                         )}
                     />
                 </DefaultStatsFilters>
@@ -1305,7 +1308,7 @@ export function ConvertContent() {
                     path={`${convertPathPrefix}/ab-test-configuration`}
                     component={withUserRoleRequired(
                         UpdateABTestView as any,
-                        ADMIN_ROLE
+                        ADMIN_ROLE,
                     )}
                 />
             )}
@@ -1314,7 +1317,7 @@ export function ConvertContent() {
                 exact
                 component={withUserRoleRequired(
                     CampaignStatsPaywallView as any,
-                    ADMIN_ROLE
+                    ADMIN_ROLE,
                 )}
             />
             <Route
@@ -1322,7 +1325,7 @@ export function ConvertContent() {
                 exact
                 component={withUserRoleRequired(
                     ClickTrackingSettingsView as any,
-                    ADMIN_ROLE
+                    ADMIN_ROLE,
                 )}
             />
             <Route
@@ -1330,7 +1333,7 @@ export function ConvertContent() {
                 exact
                 component={withUserRoleRequired(
                     ClickTrackingPaywallView as any,
-                    ADMIN_ROLE
+                    ADMIN_ROLE,
                 )}
             />
             <Route
@@ -1338,7 +1341,7 @@ export function ConvertContent() {
                 exact
                 component={withUserRoleRequired(
                     ConvertBundleView as any,
-                    ADMIN_ROLE
+                    ADMIN_ROLE,
                 )}
             />
             <Route
@@ -1346,7 +1349,7 @@ export function ConvertContent() {
                 path={`${convertPathPrefix}/settings`}
                 component={withUserRoleRequired(
                     ConvertSettingsView as any,
-                    ADMIN_ROLE
+                    ADMIN_ROLE,
                 )}
             />
 
@@ -1360,7 +1363,7 @@ export function ConvertContent() {
     )
 }
 
-export function AdminTasksRoutes({match: {path}}: RouteComponentProps) {
+export function AdminTasksRoutes({ match: { path } }: RouteComponentProps) {
     return (
         <Switch>
             <Route
@@ -1371,7 +1374,7 @@ export function AdminTasksRoutes({match: {path}}: RouteComponentProps) {
                         content={withUserRoleRequired(
                             ImportPhoneNumber,
                             ADMIN_ROLE,
-                            PageSection.ImportPhoneNumber
+                            PageSection.ImportPhoneNumber,
                         )}
                         navbar={SettingsNavbar}
                     />
@@ -1385,7 +1388,7 @@ export function AdminTasksRoutes({match: {path}}: RouteComponentProps) {
                         content={withUserRoleRequired(
                             TwilioSubaccountStatusForm,
                             ADMIN_ROLE,
-                            PageSection.TwilioSubaccountStatus
+                            PageSection.TwilioSubaccountStatus,
                         )}
                         navbar={SettingsNavbar}
                     />
@@ -1400,7 +1403,7 @@ export function AdminTasksRoutes({match: {path}}: RouteComponentProps) {
                             content={withUserRoleRequired(
                                 CreditShopifyBillingIntegration,
                                 ADMIN_ROLE,
-                                PageSection.CreditShopifyBillingIntegration
+                                PageSection.CreditShopifyBillingIntegration,
                             )}
                             navbar={SettingsNavbar}
                         />
@@ -1416,7 +1419,7 @@ export function AdminTasksRoutes({match: {path}}: RouteComponentProps) {
                             content={withUserRoleRequired(
                                 CreateShopifyCharge,
                                 ADMIN_ROLE,
-                                PageSection.CreateShopifyCharge
+                                PageSection.CreateShopifyCharge,
                             )}
                             navbar={SettingsNavbar}
                         />
@@ -1432,7 +1435,7 @@ export function AdminTasksRoutes({match: {path}}: RouteComponentProps) {
                             content={withUserRoleRequired(
                                 RemoveShopifyBilling,
                                 ADMIN_ROLE,
-                                PageSection.RemoveShopifyBilling
+                                PageSection.RemoveShopifyBilling,
                             )}
                             navbar={SettingsNavbar}
                         />
@@ -1443,7 +1446,7 @@ export function AdminTasksRoutes({match: {path}}: RouteComponentProps) {
     )
 }
 
-export function HomepageRoutes({match: {path}}: RouteComponentProps) {
+export function HomepageRoutes({ match: { path } }: RouteComponentProps) {
     return (
         <Switch>
             <CompatRoute

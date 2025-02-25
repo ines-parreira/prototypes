@@ -1,10 +1,11 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {TicketChannel} from 'business/types/ticket'
+import { render } from '@testing-library/react'
+
+import { TicketChannel } from 'business/types/ticket'
 import useHelpCentersAutomationSettings from 'pages/automate/common/hooks/useHelpCentersAutomationSettings'
-import {SelfServiceHelpCenterChannel} from 'pages/automate/common/hooks/useSelfServiceHelpCenterChannels'
-import {WorkflowConfiguration} from 'pages/automate/workflows/models/workflowConfiguration.types'
+import { SelfServiceHelpCenterChannel } from 'pages/automate/common/hooks/useSelfServiceHelpCenterChannels'
+import { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
 
 import ChannelBlock from '../../helper/ChannelBlock'
 import useOnlySupportedChannels from '../../helper/useOnlySupportedChannels'
@@ -18,12 +19,12 @@ jest.mock(
         __esModule: true,
         default: jest.fn(),
         useHelpCentersAutomationSettings: jest.fn(),
-    })
+    }),
 )
 jest.mock('../../helper/useOnlySupportedChannels', () => jest.fn())
 jest.mock('../ChannelToggle', () => jest.fn(() => <div>ChannelToggle</div>))
 jest.mock('../../helper/ChannelBlock', () =>
-    jest.fn(({children}) => <div>{children}</div>)
+    jest.fn(({ children }) => <div>{children}</div>),
 )
 
 const defaultSelfServiceHelpCenterChannel = {
@@ -54,7 +55,7 @@ describe('HelpCenterChannels', () => {
         ;(useHelpCentersAutomationSettings as jest.Mock).mockReturnValue({
             helpCentersAutomationSettings: {
                 1: {
-                    workflows: [{id: 'workflow-1', enabled: true}],
+                    workflows: [{ id: 'workflow-1', enabled: true }],
                 },
             },
             isUpdatePending: false,
@@ -68,14 +69,14 @@ describe('HelpCenterChannels', () => {
             <HelpCenterChannels
                 configuration={workflowConfiguration}
                 helpCentersChannels={[defaultSelfServiceHelpCenterChannel]}
-            />
+            />,
         )
 
         expect(ChannelBlock).toHaveBeenCalledWith(
             expect.objectContaining({
                 channelType: TicketChannel.HelpCenter,
             }),
-            expect.anything()
+            expect.anything(),
         )
     })
 
@@ -84,7 +85,7 @@ describe('HelpCenterChannels', () => {
             <HelpCenterChannels
                 configuration={workflowConfiguration}
                 helpCentersChannels={[defaultSelfServiceHelpCenterChannel]}
-            />
+            />,
         )
 
         expect(ChannelToggle).toHaveBeenCalledWith(
@@ -92,9 +93,9 @@ describe('HelpCenterChannels', () => {
                 configuration: workflowConfiguration,
                 channel: defaultSelfServiceHelpCenterChannel,
                 isLoading: false,
-                workflows: [{id: 'workflow-1', enabled: true}],
+                workflows: [{ id: 'workflow-1', enabled: true }],
             }),
-            expect.anything()
+            expect.anything(),
         )
     })
 
@@ -104,7 +105,7 @@ describe('HelpCenterChannels', () => {
         ;(useHelpCentersAutomationSettings as jest.Mock).mockReturnValue({
             helpCentersAutomationSettings: {
                 1: {
-                    workflows: [{id: 'workflow-1', enabled: true}],
+                    workflows: [{ id: 'workflow-1', enabled: true }],
                 },
             },
             isUpdatePending: false,
@@ -116,17 +117,17 @@ describe('HelpCenterChannels', () => {
             <HelpCenterChannels
                 configuration={workflowConfiguration}
                 helpCentersChannels={[defaultSelfServiceHelpCenterChannel]}
-            />
+            />,
         )
 
         expect(ChannelToggle).toHaveBeenCalledWith(
             expect.objectContaining({
                 handleAutomationSettingUpdate: expect.any(Function),
-                workflows: [{id: 'workflow-1', enabled: true}],
+                workflows: [{ id: 'workflow-1', enabled: true }],
                 isLoading: false,
                 onlySupportedChannels: [],
             }),
-            expect.anything()
+            expect.anything(),
         )
     })
 
@@ -134,7 +135,7 @@ describe('HelpCenterChannels', () => {
         ;(useHelpCentersAutomationSettings as jest.Mock).mockReturnValue({
             helpCentersAutomationSettings: {
                 1: {
-                    workflows: [{id: 'workflow-1', enabled: true}],
+                    workflows: [{ id: 'workflow-1', enabled: true }],
                 },
             },
             isUpdatePending: true,
@@ -146,14 +147,14 @@ describe('HelpCenterChannels', () => {
             <HelpCenterChannels
                 configuration={workflowConfiguration}
                 helpCentersChannels={[defaultSelfServiceHelpCenterChannel]}
-            />
+            />,
         )
 
         expect(ChannelToggle).toHaveBeenCalledWith(
             expect.objectContaining({
                 isLoading: true,
             }),
-            expect.anything()
+            expect.anything(),
         )
     })
 
@@ -169,10 +170,10 @@ describe('HelpCenterChannels', () => {
         ;(useHelpCentersAutomationSettings as jest.Mock).mockReturnValue({
             helpCentersAutomationSettings: {
                 1: {
-                    workflows: [{id: 'workflow-1', enabled: true}],
+                    workflows: [{ id: 'workflow-1', enabled: true }],
                 },
                 2: {
-                    workflows: [{id: 'workflow-2', enabled: false}],
+                    workflows: [{ id: 'workflow-2', enabled: false }],
                 },
             },
             isUpdatePending: false,
@@ -187,23 +188,23 @@ describe('HelpCenterChannels', () => {
                     defaultSelfServiceHelpCenterChannel,
                     anotherHelpCenterChannel,
                 ]}
-            />
+            />,
         )
 
         expect(ChannelToggle).toHaveBeenCalledTimes(2)
         expect(ChannelToggle).toHaveBeenCalledWith(
             expect.objectContaining({
                 channel: defaultSelfServiceHelpCenterChannel,
-                workflows: [{id: 'workflow-1', enabled: true}],
+                workflows: [{ id: 'workflow-1', enabled: true }],
             }),
-            expect.anything()
+            expect.anything(),
         )
         expect(ChannelToggle).toHaveBeenCalledWith(
             expect.objectContaining({
                 channel: anotherHelpCenterChannel,
-                workflows: [{id: 'workflow-2', enabled: false}],
+                workflows: [{ id: 'workflow-2', enabled: false }],
             }),
-            expect.anything()
+            expect.anything(),
         )
     })
 })

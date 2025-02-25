@@ -1,25 +1,26 @@
-import {render, fireEvent, waitFor} from '@testing-library/react'
-import {fromJS} from 'immutable'
+import React, { ComponentProps } from 'react'
+
+import { fireEvent, render, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
 import _omit from 'lodash/omit'
 import moment from 'moment'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
-import {useParams} from 'react-router-dom'
+import { Provider } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {UserRole} from 'config/types/user'
-import {ticket} from 'fixtures/ticket'
-import {user} from 'fixtures/users'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { UserRole } from 'config/types/user'
+import { ticket } from 'fixtures/ticket'
+import { user } from 'fixtures/users'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useElementSize from 'hooks/useElementSize'
 import shortcutManager from 'services/shortcutManager'
 import * as notificationsActions from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { NotificationStatus } from 'state/notifications/types'
 import * as ticketActions from 'state/ticket/actions'
-import {RootState} from 'state/types'
-import {makeExecuteKeyboardAction} from 'utils/testing'
+import { RootState } from 'state/types'
+import { makeExecuteKeyboardAction } from 'utils/testing'
 
 import Snooze from '../Snooze'
 import TicketHeader from '../TicketHeader'
@@ -31,7 +32,7 @@ useElementSizeMock.mockReturnValue([0, 160])
 
 jest.mock(
     'pages/tickets/detail/components/TicketDetails/TicketAssignee/TicketAssignee',
-    () => () => <div>TicketAssigneeMock</div>
+    () => () => <div>TicketAssigneeMock</div>,
 )
 
 jest.mock('services/shortcutManager')
@@ -79,7 +80,7 @@ jest.mock('common/segment')
 
 const mockMoment = moment
 
-jest.mock('../Snooze', () => ({onUpdate}: ComponentProps<typeof Snooze>) => (
+jest.mock('../Snooze', () => ({ onUpdate }: ComponentProps<typeof Snooze>) => (
     <div onClick={() => onUpdate(mockMoment())}>Snooze</div>
 ))
 
@@ -98,7 +99,7 @@ const mockStore = configureMockStore([thunk])
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())
 jest.mock('split-ticket-view-toggle/hooks/useSplitTicketView', () =>
-    jest.fn().mockReturnValue([true])
+    jest.fn().mockReturnValue([true]),
 )
 
 jest.mock('react-router-dom', () => ({
@@ -130,22 +131,22 @@ describe('<TicketHeader />', () => {
     })
 
     it('should render new ticket', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultStore)}>
                 <TicketHeader {...minProps} />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render existing ticket', () => {
         useAppDispatchMock.mockReturnValue(jest.fn(() => true))
-        const {container, getByText} = render(
+        const { container, getByText } = render(
             <Provider
-                store={mockStore({...defaultStore, ticket: fromJS(ticket)})}
+                store={mockStore({ ...defaultStore, ticket: fromJS(ticket) })}
             >
                 <TicketHeader {...minProps} ticket={fromJS(ticket)} />
-            </Provider>
+            </Provider>,
         )
 
         expect(getByText('keyboard_arrow_left')).toBeInTheDocument()
@@ -155,8 +156,8 @@ describe('<TicketHeader />', () => {
     })
 
     it('should render spam ticket', () => {
-        const spamTicket = fromJS({...ticket, spam: true})
-        const {container} = render(
+        const spamTicket = fromJS({ ...ticket, spam: true })
+        const { container } = render(
             <Provider
                 store={mockStore({
                     ...defaultStore,
@@ -164,15 +165,15 @@ describe('<TicketHeader />', () => {
                 })}
             >
                 <TicketHeader {...minProps} ticket={spamTicket} />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render trashed ticket', () => {
-        const trashedTicket = fromJS({...ticket, trashed_datetime: true})
-        const {container} = render(
+        const trashedTicket = fromJS({ ...ticket, trashed_datetime: true })
+        const { container } = render(
             <Provider
                 store={mockStore({
                     ...defaultStore,
@@ -180,17 +181,17 @@ describe('<TicketHeader />', () => {
                 })}
             >
                 <TicketHeader {...minProps} ticket={trashedTicket} />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should mark a ticket as unread when clicking "Mark as unread" button', async () => {
-        const readTicket = fromJS({...ticket, is_unread: false})
+        const readTicket = fromJS({ ...ticket, is_unread: false })
         const mockOnToggleUnread = jest.fn()
 
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider
                 store={mockStore({
                     ...defaultStore,
@@ -202,7 +203,7 @@ describe('<TicketHeader />', () => {
                     ticket={readTicket}
                     onToggleUnread={mockOnToggleUnread}
                 />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(getByText(/more_vert/))
@@ -212,7 +213,7 @@ describe('<TicketHeader />', () => {
                 1,
                 {
                     is_unread: true,
-                }
+                },
             )
             expect(mockOnToggleUnread).toHaveBeenCalledWith(ticket.id, true)
             return expect(notificationsActions.notify).toHaveBeenNthCalledWith(
@@ -220,16 +221,16 @@ describe('<TicketHeader />', () => {
                 {
                     message: 'Ticket has been marked as unread',
                     status: NotificationStatus.Success,
-                }
+                },
             )
         })
     })
 
     it('should display the delete action for lead and admin agents', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={mockStore(defaultStore)}>
                 <TicketHeader {...minProps} ticket={fromJS(ticket)} />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(getByText(/more_vert/))
@@ -237,7 +238,7 @@ describe('<TicketHeader />', () => {
     })
 
     it('should not display the delete action for basic, lite and observer agents', () => {
-        const {getByText, queryByText} = render(
+        const { getByText, queryByText } = render(
             <Provider
                 store={mockStore({
                     ...defaultStore,
@@ -250,7 +251,7 @@ describe('<TicketHeader />', () => {
                 })}
             >
                 <TicketHeader {...minProps} ticket={fromJS(ticket)} />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(getByText(/more_vert/))
@@ -259,7 +260,7 @@ describe('<TicketHeader />', () => {
     })
 
     it('should not register the shortcut of the delete action for basic, lite and observer agents', () => {
-        const {queryByText} = render(
+        const { queryByText } = render(
             <Provider
                 store={mockStore({
                     ...defaultStore,
@@ -272,13 +273,13 @@ describe('<TicketHeader />', () => {
                 })}
             >
                 <TicketHeader {...minProps} ticket={fromJS(ticket)} />
-            </Provider>
+            </Provider>,
         )
 
         makeExecuteKeyboardAction(
             shortcutManagerMock,
             shortcutEventMock,
-            'TicketDetailContainer'
+            'TicketDetailContainer',
         )('DELETE_TICKET')
 
         expect(queryByText(/You are about to /)).toBeFalsy()
@@ -287,12 +288,12 @@ describe('<TicketHeader />', () => {
     it('should log segment event', () => {
         jest.useFakeTimers()
 
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider
-                store={mockStore({...defaultStore, ticket: fromJS(ticket)})}
+                store={mockStore({ ...defaultStore, ticket: fromJS(ticket) })}
             >
                 <TicketHeader {...minProps} ticket={fromJS(ticket)} />
-            </Provider>
+            </Provider>,
         )
         fireEvent.click(getByText(/more_vert/))
         fireEvent.click(getByText(/Print ticket/))
@@ -305,34 +306,34 @@ describe('<TicketHeader />', () => {
     it('should open the print page', () => {
         jest.useFakeTimers()
 
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider
-                store={mockStore({...defaultStore, ticket: fromJS(ticket)})}
+                store={mockStore({ ...defaultStore, ticket: fromJS(ticket) })}
             >
                 <TicketHeader {...minProps} ticket={fromJS(ticket)} />
-            </Provider>
+            </Provider>,
         )
         fireEvent.click(getByText(/more_vert/))
         fireEvent.click(getByText(/Print ticket/))
 
         jest.runAllTimers()
         expect(window.open).toHaveBeenCalledWith(
-            `/app/ticket/${ticket.id}/print`
+            `/app/ticket/${ticket.id}/print`,
         )
     })
 
     it('should clear ticket and go to next ticket on ticket snooze', async () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={mockStore(defaultStore)}>
                 <TicketHeader {...minProps} ticket={fromJS(ticket)} />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(getByText(/Snooze/))
 
         expect(ticketActions.snoozeTicket).toHaveBeenCalled()
         await waitFor(() =>
-            expect(ticketActions.clearTicket).toHaveBeenCalled()
+            expect(ticketActions.clearTicket).toHaveBeenCalled(),
         )
     })
 })

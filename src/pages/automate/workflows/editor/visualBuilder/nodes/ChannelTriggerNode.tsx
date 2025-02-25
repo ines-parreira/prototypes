@@ -1,12 +1,14 @@
-import {Badge} from '@gorgias/merchant-ui-kit'
-import React, {memo} from 'react'
-import {NodeProps} from 'reactflow'
+import React, { memo } from 'react'
+
+import { NodeProps } from 'reactflow'
+
+import { Badge } from '@gorgias/merchant-ui-kit'
 
 import {
     useVisualBuilderNodeProps,
     VisualBuilderNodeProps,
 } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
-import {ChannelTriggerNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { ChannelTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 import VisualBuilderNode from './VisualBuilderNode'
 import VisualBuilderNodeContent from './VisualBuilderNodeContent'
@@ -38,7 +40,7 @@ const ChannelTriggerNode = memo(function ChannelTriggerNode({
 })
 
 export default function ChannelTriggerNodeWrapper(
-    node: NodeProps<ChannelTriggerNodeType['data']>
+    node: NodeProps<ChannelTriggerNodeType['data']>,
 ) {
     const commonProps = useVisualBuilderNodeProps(node)
 

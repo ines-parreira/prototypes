@@ -1,15 +1,16 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
+import { render, screen } from '@testing-library/react'
+
 import {
-    ServiceLevelAgreementsEmptyState,
-    NO_BANNER_ALT_TEXT,
-    SERVICE_LEVEL_AGREEMENTS_SETTINGS_PATH,
-    PAGE_TITLE,
-    CONTENT_HEADER_TEXT,
     CONTENT_BODY_TEXT_PARAGRAPH_1,
     CONTENT_BODY_TEXT_PARAGRAPH_2,
+    CONTENT_HEADER_TEXT,
     CONTENT_SET_UP_BUTTON_TEXT,
+    NO_BANNER_ALT_TEXT,
+    PAGE_TITLE,
+    SERVICE_LEVEL_AGREEMENTS_SETTINGS_PATH,
+    ServiceLevelAgreementsEmptyState,
 } from 'pages/stats/sla/ServiceLevelAgreementsEmptyState'
 
 describe('ServiceLevelAgreementsEmptyState', () => {
@@ -17,7 +18,7 @@ describe('ServiceLevelAgreementsEmptyState', () => {
         render(<ServiceLevelAgreementsEmptyState />)
 
         expect(
-            screen.getByRole('heading', {name: PAGE_TITLE})
+            screen.getByRole('heading', { name: PAGE_TITLE }),
         ).toBeInTheDocument()
     })
 
@@ -26,7 +27,7 @@ describe('ServiceLevelAgreementsEmptyState', () => {
 
         expect(screen.getByRole('img')).toHaveAttribute(
             'alt',
-            NO_BANNER_ALT_TEXT
+            NO_BANNER_ALT_TEXT,
         )
     })
 
@@ -35,10 +36,10 @@ describe('ServiceLevelAgreementsEmptyState', () => {
 
         expect(screen.getByText(CONTENT_HEADER_TEXT)).toBeInTheDocument()
         expect(
-            screen.getByText(CONTENT_BODY_TEXT_PARAGRAPH_1)
+            screen.getByText(CONTENT_BODY_TEXT_PARAGRAPH_1),
         ).toBeInTheDocument()
         expect(
-            screen.getByText(CONTENT_BODY_TEXT_PARAGRAPH_2)
+            screen.getByText(CONTENT_BODY_TEXT_PARAGRAPH_2),
         ).toBeInTheDocument()
     })
 
@@ -52,7 +53,7 @@ describe('ServiceLevelAgreementsEmptyState', () => {
         expect(linkButton).toBeInTheDocument()
         expect(linkElement).toHaveAttribute(
             'to',
-            SERVICE_LEVEL_AGREEMENTS_SETTINGS_PATH
+            SERVICE_LEVEL_AGREEMENTS_SETTINGS_PATH,
         )
     })
 })

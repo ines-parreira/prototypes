@@ -1,12 +1,12 @@
 import React from 'react'
 
-import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
+import { useCleanStatsFiltersWithLogicalOperators } from 'hooks/reporting/useCleanStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
-import {useGridSize} from 'hooks/useGridSize'
-import {FilterKey} from 'models/stat/types'
-import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
+import { useGridSize } from 'hooks/useGridSize'
+import { FilterKey } from 'models/stat/types'
+import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
-import {CustomReportComponent} from 'pages/stats/custom-reports/CustomReportComponent'
+import { CustomReportComponent } from 'pages/stats/custom-reports/CustomReportComponent'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
 import StatsPage from 'pages/stats/StatsPage'
@@ -14,8 +14,8 @@ import {
     TicketInsightsTagsChart,
     TicketInsightsTagsReportConfig,
 } from 'pages/stats/ticket-insights/tags/TagsReportConfig'
-import {TagsReportDownloadDataButton} from 'pages/stats/ticket-insights/tags/TagsReportDownloadDataButton'
-import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
+import { TagsReportDownloadDataButton } from 'pages/stats/ticket-insights/tags/TagsReportDownloadDataButton'
+import { getPageStatsFiltersWithLogicalOperators } from 'state/stats/selectors'
 
 export function Tags() {
     const getGridCellSize = useGridSize()

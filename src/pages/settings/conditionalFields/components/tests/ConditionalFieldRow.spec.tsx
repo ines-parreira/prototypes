@@ -1,14 +1,15 @@
-import {fireEvent, screen} from '@testing-library/react'
 import React from 'react'
-import {DndProvider} from 'react-dnd'
-import {HTML5Backend} from 'react-dnd-html5-backend'
 
-import {customFieldCondition} from 'fixtures/customFieldCondition'
-import {renderWithStoreAndQueryClientProvider} from 'tests/renderWithStoreAndQueryClientProvider'
+import { fireEvent, screen } from '@testing-library/react'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+
+import { customFieldCondition } from 'fixtures/customFieldCondition'
+import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import ConditionalFieldRow from '../ConditionalFieldRow'
 
-const mockCreateCondition = jest.fn().mockResolvedValue({data: {id: 123}})
+const mockCreateCondition = jest.fn().mockResolvedValue({ data: { id: 123 } })
 const mockUpdateCondition = jest.fn().mockResolvedValue({})
 const mockDeleteCondition = jest.fn().mockResolvedValue({})
 
@@ -30,7 +31,7 @@ jest.mock(
                 mutateAsync: mockDeleteCondition,
                 isLoading: false,
             }),
-        }) as Record<string, unknown>
+        }) as Record<string, unknown>,
 )
 
 const baseProps = {
@@ -47,7 +48,7 @@ describe('<CustomFieldRow />', () => {
                     {...baseProps}
                     condition={customFieldCondition}
                 />
-            </DndProvider>
+            </DndProvider>,
         )
 
         expect(screen.getByText(customFieldCondition.name)).toBeDefined()
@@ -61,7 +62,7 @@ describe('<CustomFieldRow />', () => {
                     condition={customFieldCondition}
                     canDuplicate
                 />
-            </DndProvider>
+            </DndProvider>,
         )
 
         fireEvent.click(screen.getByTitle('Duplicate Condition'))
@@ -75,7 +76,7 @@ describe('<CustomFieldRow />', () => {
                     {...baseProps}
                     condition={customFieldCondition}
                 />
-            </DndProvider>
+            </DndProvider>,
         )
 
         fireEvent.click(screen.getByTitle('Delete Condition'))
@@ -98,7 +99,7 @@ describe('<CustomFieldRow />', () => {
                     {...baseProps}
                     condition={deactivatedCondition}
                 />
-            </DndProvider>
+            </DndProvider>,
         )
 
         fireEvent.click(screen.getByRole('switch'))
@@ -117,7 +118,7 @@ describe('<CustomFieldRow />', () => {
                     {...baseProps}
                     condition={customFieldCondition}
                 />
-            </DndProvider>
+            </DndProvider>,
         )
 
         fireEvent.click(screen.getByRole('switch'))

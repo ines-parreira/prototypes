@@ -1,5 +1,6 @@
-import {Meta, StoryObj} from '@storybook/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { Meta, StoryObj } from '@storybook/react'
 
 import Button from 'pages/common/components/button/Button'
 import ProgressTracker from 'pages/common/components/ProgressTracker/ProgressTracker'
@@ -58,7 +59,7 @@ const defaultProps: ComponentProps<typeof ProgressTracker> = {
 
 /** Default progress tracker */
 export const DefaultProgressTracker: Story = {
-    args: {...defaultProps},
+    args: { ...defaultProps },
     parameters: {
         ...templateParameters,
     },

@@ -1,4 +1,4 @@
-import {TwilioError} from '@twilio/voice-sdk'
+import { TwilioError } from '@twilio/voice-sdk'
 
 export const MAX_DEVICE_RECONNECT_ATTEMPTS = 5
 export const DEFAULT_ERROR_MESSAGE =

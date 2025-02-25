@@ -1,11 +1,11 @@
 import React from 'react'
 
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import {formatNumber} from 'pages/stats/common/utils'
-import {CampaignTableContentCell} from 'pages/stats/convert/types/CampaignTableContentCell'
-import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
-import {ConvertMetrics} from 'state/ui/stats/drillDownSlice'
-import {ConvertMetric} from 'state/ui/stats/types'
+import { formatNumber } from 'pages/stats/common/utils'
+import { CampaignTableContentCell } from 'pages/stats/convert/types/CampaignTableContentCell'
+import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
+import { ConvertMetrics } from 'state/ui/stats/drillDownSlice'
+import { ConvertMetric } from 'state/ui/stats/types'
 
 type Props = {
     cell: CampaignTableContentCell
@@ -14,7 +14,7 @@ type Props = {
     variantId?: string
 }
 
-export const OrdersCell = ({cell, data, variantId, ...props}: Props) => {
+export const OrdersCell = ({ cell, data, variantId, ...props }: Props) => {
     const metricData: ConvertMetrics = {
         ...(cell.drillDownMetricData[
             ConvertMetric.CampaignSalesCount

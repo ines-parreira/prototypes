@@ -1,24 +1,27 @@
-import {Macro} from '@gorgias/api-queries'
-import classNames from 'classnames'
-import {Map} from 'immutable'
-import React, {ReactNode, useCallback} from 'react'
+import React, { ReactNode, useCallback } from 'react'
 
-import {canReply} from 'business/ticket'
+import classNames from 'classnames'
+import { Map } from 'immutable'
+
+import { Macro } from '@gorgias/api-queries'
+
+import { canReply } from 'business/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {useSendersForSelectedChannel} from 'hooks/useOutboundChannels'
+import { useSendersForSelectedChannel } from 'hooks/useOutboundChannels'
 import RichField from 'pages/common/forms/RichField/RichField'
-import {deleteAttachment} from 'state/newMessage/actions'
+import { deleteAttachment } from 'state/newMessage/actions'
 import {
     getNewMessageAttachments,
     getNewMessageType,
 } from 'state/newMessage/selectors'
-import {deleteActionOnApplied} from 'state/ticket/actions'
+import { deleteActionOnApplied } from 'state/ticket/actions'
 
 import TicketAttachments from './TicketAttachments'
-import css from './TicketReply.less'
 import TicketReplyActions from './TicketReplyActions'
 import TicketReplyEditor from './TicketReplyEditor'
+
+import css from './TicketReply.less'
 
 type TicketReplyProps = {
     replyAreaHeader?: ReactNode
@@ -44,12 +47,12 @@ export function TicketReply({
     const dispatch = useAppDispatch()
     const newMessageAttachments = useAppSelector(getNewMessageAttachments)
     const newMessageType = useAppSelector(getNewMessageType)
-    const {selectedSender} = useSendersForSelectedChannel()
+    const { selectedSender } = useSendersForSelectedChannel()
     const canReplyResult = canReply(
         selectedSender,
         newMessageType,
         newMessageAttachments.size,
-        ticket.getIn(['reply_options', newMessageType])
+        ticket.getIn(['reply_options', newMessageType]),
     )
 
     const className = classNames(css.component, passedClassName, {
@@ -58,13 +61,13 @@ export function TicketReply({
 
     const handleDeletion = useCallback(
         (number) => dispatch(deleteAttachment(number)),
-        [dispatch]
+        [dispatch],
     )
 
     const handleActionDeletion = useCallback(
         (actionIndex, ticketId) =>
             dispatch(deleteActionOnApplied(actionIndex, ticketId)),
-        [dispatch]
+        [dispatch],
     )
 
     return (

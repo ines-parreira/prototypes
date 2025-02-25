@@ -1,22 +1,24 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
-import {useParams} from 'react-router-dom'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { useParams } from 'react-router-dom'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useEffectOnce from 'hooks/useEffectOnce'
-import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
-import {AiAgentLayout} from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
-import {ACTIONS, AI_AGENT} from 'pages/aiAgent/constants'
+import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
+import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
+import { ACTIONS, AI_AGENT } from 'pages/aiAgent/constants'
 
-import css from './ActionTemplatesView.less'
 import ActionsUseCaseTemplatesCards from './components/ActionsUseCaseTemplatesCards'
 import BackToActionButton from './components/BackToActionButton'
 import CreateCustomActionButton from './components/CreateCustomActionButton'
 
+import css from './ActionTemplatesView.less'
+
 const ActionTemplatesView = () => {
-    const {shopName} = useParams<{shopName: string}>()
-    const {data: templateConfigurations = [], isInitialLoading} =
+    const { shopName } = useParams<{ shopName: string }>()
+    const { data: templateConfigurations = [], isInitialLoading } =
         useGetWorkflowConfigurationTemplates({
             triggers: ['llm-prompt'],
         })

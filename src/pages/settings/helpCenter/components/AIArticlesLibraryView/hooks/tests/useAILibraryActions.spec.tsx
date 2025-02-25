@@ -1,14 +1,15 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {renderHook, act} from '@testing-library/react-hooks'
 import React from 'react'
 
+import { QueryClientProvider } from '@tanstack/react-query'
+import { act, renderHook } from '@testing-library/react-hooks'
+
 import CurrentHelpCenterContext from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
-import {AILibraryArticleItemsFixture} from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
-import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {EditionManagerContextProvider} from 'pages/settings/helpCenter/providers/EditionManagerContext'
-import {useUpsertArticleTemplateReview} from 'pages/settings/helpCenter/queries'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { AILibraryArticleItemsFixture } from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
+import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { EditionManagerContextProvider } from 'pages/settings/helpCenter/providers/EditionManagerContext'
+import { useUpsertArticleTemplateReview } from 'pages/settings/helpCenter/queries'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 import useAILibraryActions from '../useAILibraryActions'
 
@@ -17,7 +18,7 @@ jest.mock('pages/settings/helpCenter/queries')
 
 const queryClient = mockQueryClient()
 const useUpsertArticleTemplateReviewMock = assumeMock(
-    useUpsertArticleTemplateReview
+    useUpsertArticleTemplateReview,
 )
 
 const mockedDispatch = jest.fn()
@@ -25,7 +26,7 @@ jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 
 const mockedUpsertArticleTemplateReview = jest.fn()
 
-const wrapper = ({children}: any) => (
+const wrapper = ({ children }: any) => (
     <CurrentHelpCenterContext.Provider
         value={getSingleHelpCenterResponseFixture}
     >
@@ -47,7 +48,7 @@ const mockedUseEditionManager = {
 
 jest.mock('../../../../providers/EditionManagerContext', () => {
     const module: Record<string, unknown> = jest.requireActual(
-        '../../../../providers/EditionManagerContext'
+        '../../../../providers/EditionManagerContext',
     )
 
     return {
@@ -70,16 +71,16 @@ describe('useAILibraryActions', () => {
     })
 
     it('should review the article when calling onEditorSave', () => {
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useAILibraryActions(
                     getSingleHelpCenterResponseFixture,
                     AILibraryArticleItemsFixture,
-                    jest.fn()
+                    jest.fn(),
                 ),
             {
                 wrapper,
-            }
+            },
         )
 
         act(() => {
@@ -97,16 +98,16 @@ describe('useAILibraryActions', () => {
     })
 
     it('should archive the article when calling onArchive', () => {
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useAILibraryActions(
                     getSingleHelpCenterResponseFixture,
                     AILibraryArticleItemsFixture,
-                    jest.fn()
+                    jest.fn(),
                 ),
             {
                 wrapper,
-            }
+            },
         )
 
         act(() => {
@@ -117,16 +118,16 @@ describe('useAILibraryActions', () => {
     })
 
     it('should publish the article when calling onPublish', () => {
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useAILibraryActions(
                     getSingleHelpCenterResponseFixture,
                     AILibraryArticleItemsFixture,
-                    jest.fn()
+                    jest.fn(),
                 ),
             {
                 wrapper,
-            }
+            },
         )
 
         act(() => {
@@ -137,16 +138,16 @@ describe('useAILibraryActions', () => {
     })
 
     it('should open the editor when calling onEdit', () => {
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useAILibraryActions(
                     getSingleHelpCenterResponseFixture,
                     AILibraryArticleItemsFixture,
-                    jest.fn()
+                    jest.fn(),
                 ),
             {
                 wrapper,
-            }
+            },
         )
 
         act(() => {
@@ -160,16 +161,16 @@ describe('useAILibraryActions', () => {
     })
 
     it('should close the editor when calling onEditorClose', () => {
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useAILibraryActions(
                     getSingleHelpCenterResponseFixture,
                     AILibraryArticleItemsFixture,
-                    jest.fn()
+                    jest.fn(),
                 ),
             {
                 wrapper,
-            }
+            },
         )
 
         act(() => {

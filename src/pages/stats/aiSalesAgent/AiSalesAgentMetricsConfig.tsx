@@ -1,12 +1,11 @@
-import {MetricTrendHook} from 'hooks/reporting/useMetricTrend'
-import {TimeSeriesHook} from 'hooks/reporting/useTimeSeries'
-
+import { MetricTrendHook } from 'hooks/reporting/useMetricTrend'
+import { TimeSeriesHook } from 'hooks/reporting/useTimeSeries'
 import useGmvInfluecedTrend from 'pages/stats/aiSalesAgent/metrics/useGmvInfluecedTrend'
 import useGmvInfluenceOverTimeSeries from 'pages/stats/aiSalesAgent/metrics/useGmvInfluenceOverTimeSeries'
 import useGmvTrend from 'pages/stats/aiSalesAgent/metrics/useGmvTrend'
 import useRoiRateTrend from 'pages/stats/aiSalesAgent/metrics/useRoiRateTrend'
 import useTotalAIConvTrend from 'pages/stats/aiSalesAgent/metrics/useTotalAIConvTrend'
-import {TooltipData} from 'pages/stats/types'
+import { TooltipData } from 'pages/stats/types'
 
 export enum AiSalesAgentChart {
     AiSalesAgentTotalSalesConv = 'aiSalesTotalSalesConv',

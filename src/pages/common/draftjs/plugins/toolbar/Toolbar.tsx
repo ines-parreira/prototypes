@@ -1,16 +1,17 @@
-import classnames from 'classnames'
-import {EditorState} from 'draft-js'
-import React, {DragEvent, ReactNode, useState} from 'react'
+import React, { DragEvent, ReactNode, useState } from 'react'
 
-import {UploadType} from 'common/types'
-import {toLiquidSyntax} from 'pages/automate/workflows/models/variables.model'
+import classnames from 'classnames'
+import { EditorState } from 'draft-js'
+
+import { UploadType } from 'common/types'
+import { toLiquidSyntax } from 'pages/automate/workflows/models/variables.model'
 import {
     WorkflowVariable,
     WorkflowVariableList,
 } from 'pages/automate/workflows/models/variables.types'
 import Button from 'pages/common/components/button/Button'
-import {ContactFormCaptureFormIconButton} from 'pages/convert/campaigns/components/ContactCaptureForm/ContactCaptureFormIconButton'
-import {insertText} from 'utils'
+import { ContactFormCaptureFormIconButton } from 'pages/convert/campaigns/components/ContactCaptureForm/ContactCaptureFormIconButton'
+import { insertText } from 'utils'
 
 import {
     AddDiscountCode,
@@ -23,12 +24,12 @@ import {
     Italic,
     Underline,
 } from './components/index'
-
 import WorkflowVariablePicker from './components/WorkflowVariablePicker'
-import {isDisplayedAction} from './index'
+import { isDisplayedAction } from './index'
+import { useToolbarContext } from './ToolbarContext'
+import { ActionInjectedProps, ActionName } from './types'
+
 import css from './Toolbar.less'
-import {useToolbarContext} from './ToolbarContext'
-import {ActionInjectedProps, ActionName} from './types'
 
 type Props = {
     buttons?: ReactNode[]
@@ -121,15 +122,15 @@ const Toolbar = ({
         setEditorState(
             EditorState.forceSelection(
                 newEditorState,
-                newEditorState.getSelection()
-            )
+                newEditorState.getSelection(),
+            ),
         )
     }
 
     const isActionDisplayed = (name: ActionName) =>
         isDisplayedAction(name, displayedActions)
 
-    const actionsProps = {getEditorState, setEditorState}
+    const actionsProps = { getEditorState, setEditorState }
 
     return (
         <div

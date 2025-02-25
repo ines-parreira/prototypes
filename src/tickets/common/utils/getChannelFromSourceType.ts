@@ -1,7 +1,7 @@
-import {List} from 'immutable'
+import { List } from 'immutable'
 
-import {TicketMessageSourceType} from 'business/types/ticket'
-import {toImmutable} from 'common/utils'
+import { TicketMessageSourceType } from 'business/types/ticket'
+import { toImmutable } from 'common/utils'
 
 import sourceTypeToChannel from './sourceTypeToChannel'
 
@@ -11,7 +11,7 @@ import sourceTypeToChannel from './sourceTypeToChannel'
  */
 export default function getChannelFromSourceType(
     sourceType: TicketMessageSourceType,
-    messages: List<any> | any[]
+    messages: List<any> | any[],
 ) {
     return sourceTypeToChannel(sourceType, toImmutable(messages))
 }

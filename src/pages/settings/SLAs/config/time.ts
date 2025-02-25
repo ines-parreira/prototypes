@@ -1,4 +1,4 @@
-import {SLAPolicyMetricUnit} from '@gorgias/api-types'
+import { SLAPolicyMetricUnit } from '@gorgias/api-types'
 
 export const timeUnits = {
     second: {
@@ -9,6 +9,6 @@ export const timeUnits = {
         label: 'Minutes',
         value: SLAPolicyMetricUnit.Minute,
     },
-    hour: {label: 'Hours', value: SLAPolicyMetricUnit.Hour},
-    day: {label: 'Days', value: SLAPolicyMetricUnit.Day},
+    hour: { label: 'Hours', value: SLAPolicyMetricUnit.Hour },
+    day: { label: 'Days', value: SLAPolicyMetricUnit.Day },
 }

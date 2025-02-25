@@ -1,18 +1,18 @@
-import {useParams} from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationType} from 'models/integration/constants'
-import {HttpIntegration} from 'models/integration/types'
-import {getIntegrationByIdAndType} from 'state/integrations/selectors'
+import { IntegrationType } from 'models/integration/constants'
+import { HttpIntegration } from 'models/integration/types'
+import { getIntegrationByIdAndType } from 'state/integrations/selectors'
 
 import {
-    INTEGRATIONS_LIST_PATH,
     EVENTS_PATH,
+    INTEGRATIONS_LIST_PATH,
     NEW_INTEGRATION_PATH,
 } from './constants'
 
 export function useRouteParser() {
-    const {integrationId, extra, subId} = useParams<{
+    const { integrationId, extra, subId } = useParams<{
         integrationId: string
         extra: string
         subId: string
@@ -30,8 +30,8 @@ export function useRouteParser() {
     const integration = useAppSelector(
         getIntegrationByIdAndType<HttpIntegration>(
             parseInt(integrationId, 10),
-            IntegrationType.Http
-        )
+            IntegrationType.Http,
+        ),
     )
 
     return {

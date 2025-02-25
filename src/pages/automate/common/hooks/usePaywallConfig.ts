@@ -1,9 +1,9 @@
 import React from 'react'
 
-import {CarouselData} from 'pages/common/components/HeroImageCarousel/HeroImageCarousel'
-import {assetsUrl} from 'utils'
+import { CarouselData } from 'pages/common/components/HeroImageCarousel/HeroImageCarousel'
+import { assetsUrl } from 'utils'
 
-import {AutomateFeatures} from '../types'
+import { AutomateFeatures } from '../types'
 
 export type PaywallFeature = {
     headerTitle: string
@@ -20,7 +20,7 @@ export type PaywallFeature = {
 
 export const usePaywallConfig = (
     automateFeature: AutomateFeatures,
-    customCta?: React.ReactNode
+    customCta?: React.ReactNode,
 ): PaywallFeature => {
     switch (automateFeature) {
         case AutomateFeatures.Automate:
@@ -40,34 +40,34 @@ export const usePaywallConfig = (
                 slidesData: [
                     {
                         imageUrl: assetsUrl(
-                            '/img/paywalls/screens/automate_paywall_ai_agent.gif'
+                            '/img/paywalls/screens/automate_paywall_ai_agent.gif',
                         ),
                         description:
                             "Upgrade your team with AI Agent to instantly answer tickets, perform actions and match your brand's voice.",
                     },
                     {
                         imageUrl: assetsUrl(
-                            '/img/paywalls/screens/automate_paywall_flows.png'
+                            '/img/paywalls/screens/automate_paywall_flows.png',
                         ),
                         description:
                             'Build personalized, automated interactions with Flows.',
                     },
                     {
                         imageUrl: assetsUrl(
-                            '/img/paywalls/screens/automate_paywall_article_recommendation.png'
+                            '/img/paywalls/screens/automate_paywall_article_recommendation.png',
                         ),
                         description: 'Recommend Help Center articles with AI.',
                     },
                     {
                         imageUrl: assetsUrl(
-                            '/img/paywalls/screens/automate_paywall_order_management.png'
+                            '/img/paywalls/screens/automate_paywall_order_management.png',
                         ),
                         description:
                             'Let customers manage and track orders on your Chat, Help Center, and Contact Form.',
                     },
                     {
                         imageUrl: assetsUrl(
-                            '/img/paywalls/screens/automate_paywall_statistics.png'
+                            '/img/paywalls/screens/automate_paywall_statistics.png',
                         ),
                         description:
                             'Track performance and improve your automations with dedicated statistics.',
@@ -91,34 +91,34 @@ export const usePaywallConfig = (
                 slidesData: [
                     {
                         imageUrl: assetsUrl(
-                            '/img/paywalls/screens/automate_paywall_statistics.png'
+                            '/img/paywalls/screens/automate_paywall_statistics.png',
                         ),
                         description:
                             'Track performance and improve your automations with dedicated statistics.',
                     },
                     {
                         imageUrl: assetsUrl(
-                            '/img/paywalls/screens/automate_paywall_flows.png'
+                            '/img/paywalls/screens/automate_paywall_flows.png',
                         ),
                         description:
                             'Build personalized, automated interactions with Flows.',
                     },
                     {
                         imageUrl: assetsUrl(
-                            '/img/paywalls/screens/automate_paywall_article_recommendation.png'
+                            '/img/paywalls/screens/automate_paywall_article_recommendation.png',
                         ),
                         description: 'Recommend Help Center articles with AI.',
                     },
                     {
                         imageUrl: assetsUrl(
-                            '/img/paywalls/screens/automate_paywall_order_management.png'
+                            '/img/paywalls/screens/automate_paywall_order_management.png',
                         ),
                         description:
                             'Let customers manage and track orders on your Chat, Help Center, and Contact Form.',
                     },
                     {
                         imageUrl: assetsUrl(
-                            '/img/paywalls/screens/automate_paywall_autoresponders.png'
+                            '/img/paywalls/screens/automate_paywall_autoresponders.png',
                         ),
                         description:
                             'Leverage AI Autoresponders to reduce and resolve emails tickets.',
@@ -142,7 +142,7 @@ export const usePaywallConfig = (
                 slidesData: [
                     {
                         imageUrl: assetsUrl(
-                            '/img/paywalls/screens/ai_agent_waitwall.gif'
+                            '/img/paywalls/screens/ai_agent_waitwall.gif',
                         ),
                         description: '',
                     },
@@ -166,7 +166,7 @@ export const usePaywallConfig = (
                 slidesData: [
                     {
                         imageUrl: assetsUrl(
-                            '/img/paywalls/screens/chat-preview.png'
+                            '/img/paywalls/screens/chat-preview.png',
                         ),
                         description: '',
                     },
@@ -189,7 +189,7 @@ export const usePaywallConfig = (
                 slidesData: [
                     {
                         imageUrl: assetsUrl(
-                            '/img/paywalls/screens/contact-form-preview.png'
+                            '/img/paywalls/screens/contact-form-preview.png',
                         ),
                         description: '',
                     },
@@ -212,7 +212,7 @@ export const usePaywallConfig = (
                 slidesData: [
                     {
                         imageUrl: assetsUrl(
-                            '/img/paywalls/screens/help-center-preview.png'
+                            '/img/paywalls/screens/help-center-preview.png',
                         ),
                         description: '',
                     },

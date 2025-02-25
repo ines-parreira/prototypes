@@ -1,18 +1,19 @@
-import {render, fireEvent} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { fireEvent, render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {bigCommerceShippingAddressesFixture} from 'fixtures/bigcommerce'
-import {integrationsState} from 'fixtures/integrations'
+import { bigCommerceShippingAddressesFixture } from 'fixtures/bigcommerce'
+import { integrationsState } from 'fixtures/integrations'
 import * as utils from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/utils'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 
-import {AddressesDropdown} from '../AddressesDropdown'
+import { AddressesDropdown } from '../AddressesDropdown'
 
-const integrationContextValue = {integration: fromJS({}), integrationId: 1}
+const integrationContextValue = { integration: fromJS({}), integrationId: 1 }
 
 jest.spyOn(utils, 'addCheckoutBillingAddress')
 const addCheckoutBillingAddress = utils.addCheckoutBillingAddress as jest.Mock
@@ -57,12 +58,12 @@ const selectedShippingAddressProps: Props = {
 
 describe('<ShippingAddressesDropdown/>', () => {
     it('should display `No results` when shippingAddresses = [] & snapshot should render `Select from address book...`', () => {
-        const {container, getByText} = render(
+        const { container, getByText } = render(
             <Provider store={store}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <AddressesDropdown {...emptyProps} />
                 </IntegrationContext.Provider>
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.focus(getByText(/Select from address book.../))
@@ -73,12 +74,12 @@ describe('<ShippingAddressesDropdown/>', () => {
     })
 
     it('should display the shipping addresses as options', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <AddressesDropdown {...shippingAddressesProps} />
                 </IntegrationContext.Provider>
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.focus(getByText(/Select from address book.../))
@@ -89,12 +90,12 @@ describe('<ShippingAddressesDropdown/>', () => {
     })
 
     it('snapshot renders the selected shipping address instead of `Select from address book...`', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <AddressesDropdown {...selectedShippingAddressProps} />
                 </IntegrationContext.Provider>
-            </Provider>
+            </Provider>,
         )
 
         expect(container).toMatchSnapshot()
@@ -103,7 +104,7 @@ describe('<ShippingAddressesDropdown/>', () => {
     it('should call onSelectAddress when address option is selected', () => {
         const onSelectAddress = jest.fn()
 
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <AddressesDropdown
@@ -111,7 +112,7 @@ describe('<ShippingAddressesDropdown/>', () => {
                         onSelectAddress={onSelectAddress}
                     />
                 </IntegrationContext.Provider>
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.focus(getByText(/Select from address book.../))
@@ -121,7 +122,7 @@ describe('<ShippingAddressesDropdown/>', () => {
         expect(onSelectAddress).toHaveBeenCalledWith(
             bigCommerceShippingAddressesFixture[1],
             'shipping',
-            'test2@gorgias.com'
+            'test2@gorgias.com',
         )
     })
 })

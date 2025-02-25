@@ -1,4 +1,4 @@
-import {FlatAlgoliaSearchResults} from '../../providers/SearchContext'
+import { FlatAlgoliaSearchResults } from '../../providers/SearchContext'
 
 export const searchResultsResponseFixture: FlatAlgoliaSearchResults = [
     {
@@ -32,7 +32,7 @@ export const searchResultsResponseFixture: FlatAlgoliaSearchResults = [
                 fullyHighlighted: false,
                 matchedWords: ['sub'],
             },
-            preview: {value: '', matchLevel: 'none', matchedWords: []},
+            preview: { value: '', matchLevel: 'none', matchedWords: [] },
             title_draft: {
                 value: '<span class="search-highlight">Sub</span> cat 5 mod',
                 matchLevel: 'full',
@@ -89,7 +89,7 @@ export const searchResultsResponseFixture: FlatAlgoliaSearchResults = [
                 fullyHighlighted: false,
                 matchedWords: ['sub'],
             },
-            preview: {value: '', matchLevel: 'none', matchedWords: []},
+            preview: { value: '', matchLevel: 'none', matchedWords: [] },
             title_draft: {
                 value: '<span class="search-highlight">Sub</span> cat 4',
                 matchLevel: 'full',
@@ -146,7 +146,7 @@ export const searchResultsResponseFixture: FlatAlgoliaSearchResults = [
                 fullyHighlighted: false,
                 matchedWords: ['sub'],
             },
-            preview: {value: '', matchLevel: 'none', matchedWords: []},
+            preview: { value: '', matchLevel: 'none', matchedWords: [] },
             title_draft: {
                 value: '<span class="search-highlight">Sub</span> cat 3',
                 matchLevel: 'full',
@@ -208,7 +208,7 @@ export const searchResultsResponseFixture: FlatAlgoliaSearchResults = [
                 fullyHighlighted: false,
                 matchedWords: ['sub'],
             },
-            preview: {value: '', matchLevel: 'none', matchedWords: []},
+            preview: { value: '', matchLevel: 'none', matchedWords: [] },
             title_draft: {
                 value: '<span class="search-highlight">Sub</span> <span class="search-highlight">sub</span> cat 2',
                 matchLevel: 'full',
@@ -278,7 +278,7 @@ export const searchResultsResponseFixture: FlatAlgoliaSearchResults = [
                 fullyHighlighted: false,
                 matchedWords: ['sub'],
             },
-            preview: {value: '', matchLevel: 'none', matchedWords: []},
+            preview: { value: '', matchLevel: 'none', matchedWords: [] },
             title_draft: {
                 value: '<span class="search-highlight">Sub</span> cat 2',
                 matchLevel: 'full',
@@ -345,7 +345,7 @@ export const searchResultsResponseFixture: FlatAlgoliaSearchResults = [
                 fullyHighlighted: false,
                 matchedWords: ['sub'],
             },
-            preview: {value: '', matchLevel: 'none', matchedWords: []},
+            preview: { value: '', matchLevel: 'none', matchedWords: [] },
             title_draft: {
                 value: '<span class="search-highlight">Sub</span> <span class="search-highlight">sub</span> <span class="search-highlight">sub</span> cat 1',
                 matchLevel: 'full',
@@ -433,7 +433,7 @@ export const searchResultsResponseFixture: FlatAlgoliaSearchResults = [
                 fullyHighlighted: false,
                 matchedWords: ['sub'],
             },
-            preview: {value: '', matchLevel: 'none', matchedWords: []},
+            preview: { value: '', matchLevel: 'none', matchedWords: [] },
             title_draft: {
                 value: '<span class="search-highlight">Sub</span> <span class="search-highlight">sub</span> cat 1',
                 matchLevel: 'full',
@@ -503,7 +503,7 @@ export const searchResultsResponseFixture: FlatAlgoliaSearchResults = [
                 fullyHighlighted: false,
                 matchedWords: ['sub'],
             },
-            preview: {value: '', matchLevel: 'none', matchedWords: []},
+            preview: { value: '', matchLevel: 'none', matchedWords: [] },
             title_draft: {
                 value: '<span class="search-highlight">Sub</span> cat 1',
                 matchLevel: 'full',
@@ -568,7 +568,7 @@ export const searchResultsResponseFixture: FlatAlgoliaSearchResults = [
                 fullyHighlighted: false,
                 matchedWords: ['sub'],
             },
-            preview: {value: '', matchLevel: 'none', matchedWords: []},
+            preview: { value: '', matchLevel: 'none', matchedWords: [] },
             title_draft: {
                 value: 'art in <span class="search-highlight">sub</span> cat 5 mod',
                 matchLevel: 'full',
@@ -676,7 +676,7 @@ export const searchResultsResponseFixture: FlatAlgoliaSearchResults = [
                 fullyHighlighted: false,
                 matchedWords: ['sub'],
             },
-            preview: {value: '', matchLevel: 'none', matchedWords: []},
+            preview: { value: '', matchLevel: 'none', matchedWords: [] },
             title_draft: {
                 value: 'Article 2 in <span class="search-highlight">sub</span> <span class="search-highlight">sub</span> <span class="search-highlight">sub</span> cat 1 copy new title',
                 matchLevel: 'full',
@@ -948,7 +948,7 @@ export const searchResultsResponseFixture: FlatAlgoliaSearchResults = [
                 fullyHighlighted: false,
                 matchedWords: ['sub'],
             },
-            preview: {value: '', matchLevel: 'none', matchedWords: []},
+            preview: { value: '', matchLevel: 'none', matchedWords: [] },
             title_draft: {
                 value: 'Article 2 in <span class="search-highlight">sub</span> <span class="search-highlight">sub</span> <span class="search-highlight">sub</span> cat 1',
                 matchLevel: 'full',

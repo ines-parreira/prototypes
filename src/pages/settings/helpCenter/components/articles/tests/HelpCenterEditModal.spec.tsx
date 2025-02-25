@@ -1,7 +1,8 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {HelpCenterArticleModalView} from '../HelpCenterEditArticleModalContent/types'
+import { render } from '@testing-library/react'
+
+import { HelpCenterArticleModalView } from '../HelpCenterEditArticleModalContent/types'
 import HelpCenterEditModal from '../HelpCenterEditModal'
 
 const mockedUseEditionManager = {
@@ -14,7 +15,7 @@ const mockedUseEditionManager = {
 
 jest.mock('../../../providers/EditionManagerContext', () => {
     const module: Record<string, unknown> = jest.requireActual(
-        '../../../providers/EditionManagerContext'
+        '../../../providers/EditionManagerContext',
     )
 
     return {
@@ -34,16 +35,16 @@ describe('<HelpCenterEditModal/>', () => {
     })
 
     it('should display the component correctly', () => {
-        const {container} = render(
-            <HelpCenterEditModal {...props}>Modal content</HelpCenterEditModal>
+        const { container } = render(
+            <HelpCenterEditModal {...props}>Modal content</HelpCenterEditModal>,
         )
         expect(container).toMatchSnapshot()
     })
 
     it('should display the component in fullscreen mode correctly', () => {
         mockedUseEditionManager.isFullscreenEditModal = true
-        const {container} = render(
-            <HelpCenterEditModal {...props}>Modal content</HelpCenterEditModal>
+        const { container } = render(
+            <HelpCenterEditModal {...props}>Modal content</HelpCenterEditModal>,
         )
         expect(container).toMatchSnapshot()
     })

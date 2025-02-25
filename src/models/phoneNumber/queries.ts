@@ -1,6 +1,6 @@
-import {UseQueryOptions, useQuery} from '@tanstack/react-query'
+import { useQuery, UseQueryOptions } from '@tanstack/react-query'
 
-import {fetchPhoneCapabilities} from './resources'
+import { fetchPhoneCapabilities } from './resources'
 
 export const phoneNumberKeys = {
     all: () => ['phone-number'] as const,
@@ -10,7 +10,7 @@ export const phoneNumberKeys = {
 export const usePhoneNumberCapabilitiesMap = (
     overrides?: UseQueryOptions<
         Awaited<ReturnType<typeof fetchPhoneCapabilities>>
-    >
+    >,
 ) =>
     useQuery({
         queryKey: phoneNumberKeys.capabilities(),

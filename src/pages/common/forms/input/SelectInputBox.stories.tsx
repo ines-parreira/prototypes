@@ -1,12 +1,13 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps, useRef, useState} from 'react'
+import React, { ComponentProps, useRef, useState } from 'react'
+
+import { Meta, Story } from '@storybook/react'
 
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
 
-import SelectInputBox, {SelectInputBoxContext} from './SelectInputBox'
+import SelectInputBox, { SelectInputBoxContext } from './SelectInputBox'
 
 const storyConfig: Meta = {
     title: 'Data Entry/Input/SelectInputBox',
@@ -16,7 +17,7 @@ const storyConfig: Meta = {
 const options = ['tacos', 'pizza', 'tacos pizza']
 
 const Template: Story<ComponentProps<typeof SelectInputBox>> = (
-    props: ComponentProps<typeof SelectInputBox>
+    props: ComponentProps<typeof SelectInputBox>,
 ) => {
     const [value, setValue] = useState(props.label)
     const [isOpen, setIsOpen] = useState(false)
@@ -45,7 +46,7 @@ const Template: Story<ComponentProps<typeof SelectInputBox>> = (
                             {options.map((option) => (
                                 <DropdownItem
                                     key={option}
-                                    option={{label: option, value: option}}
+                                    option={{ label: option, value: option }}
                                     onClick={() => setValue(option)}
                                     shouldCloseOnSelect
                                 />

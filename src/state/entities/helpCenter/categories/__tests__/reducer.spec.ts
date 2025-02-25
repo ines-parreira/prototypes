@@ -1,28 +1,26 @@
-import {produce} from 'immer'
+import { produce } from 'immer'
 import _keyBy from 'lodash/keyBy'
 
-import {Category} from 'models/helpCenter/types'
-import {HELP_CENTER_ROOT_CATEGORY_ID} from 'pages/settings/helpCenter/constants'
-import {getSingleCategoryEnglish as categoryResponse} from 'pages/settings/helpCenter/fixtures/getCategoriesResponse.fixtures'
-
+import { Category } from 'models/helpCenter/types'
+import { HELP_CENTER_ROOT_CATEGORY_ID } from 'pages/settings/helpCenter/constants'
+import { getSingleCategoryEnglish as categoryResponse } from 'pages/settings/helpCenter/fixtures/getCategoriesResponse.fixtures'
 import {
     getRootCategory,
     getSingleCategory,
 } from 'pages/settings/helpCenter/fixtures/getCategoriesTree.fixtures'
-import {getCategoriesFlatSorted} from 'pages/settings/helpCenter/fixtures/getCategoriesTreeFlatSorted.fixtures'
+import { getCategoriesFlatSorted } from 'pages/settings/helpCenter/fixtures/getCategoriesTreeFlatSorted.fixtures'
 
 import {
+    deleteCategory,
+    pushCategorySupportedLocales,
+    resetCategories,
     saveCategories,
     savePositions,
-    updateCategory,
-    deleteCategory,
-    resetCategories,
-    pushCategorySupportedLocales,
     updateCategoriesArticleCount,
+    updateCategory,
 } from '../actions'
-import reducer, {initialState} from '../reducer'
-
-import {CategoriesAction} from '../types'
+import reducer, { initialState } from '../reducer'
+import { CategoriesAction } from '../types'
 
 const categoriesResponse: Category[] = getCategoriesFlatSorted
 
@@ -38,10 +36,10 @@ describe('Help Center/Categories reducer', () => {
                 saveCategories({
                     categories: categoriesResponse,
                     shouldReset: true,
-                })
+                }),
             )
             const categoriesId = Object.keys(nextState.categoriesById).map(
-                (id) => parseInt(id, 10)
+                (id) => parseInt(id, 10),
             )
 
             // We have the same number of entities
@@ -51,9 +49,9 @@ describe('Help Center/Categories reducer', () => {
             expect(
                 categoriesId.every((id) => {
                     return !!categoriesResponse.find(
-                        (category) => category.id === id
+                        (category) => category.id === id,
                     )
-                })
+                }),
             ).toBeTruthy()
         })
 
@@ -70,11 +68,11 @@ describe('Help Center/Categories reducer', () => {
                 saveCategories({
                     categories: categoriesResponse,
                     shouldReset: true,
-                })
+                }),
             )
 
             expect(
-                nextState.categoriesById[categoryResponse.id].articleCount
+                nextState.categoriesById[categoryResponse.id].articleCount,
             ).toEqual(2)
         })
     })
@@ -93,7 +91,7 @@ describe('Help Center/Categories reducer', () => {
                         [categoryResponse.id]: categoryResponse,
                     },
                 },
-                updateCategory(updatedCategory)
+                updateCategory(updatedCategory),
             )
 
             expect(nextState).toEqual({
@@ -115,7 +113,7 @@ describe('Help Center/Categories reducer', () => {
                         '0': rootCategory,
                     },
                 },
-                deleteCategory(singleCategory.id)
+                deleteCategory(singleCategory.id),
             )
 
             expect(nextState).toEqual({
@@ -123,7 +121,7 @@ describe('Help Center/Categories reducer', () => {
                     '0': {
                         ...rootCategory,
                         children: rootCategory.children.filter(
-                            (categoryId) => categoryId !== singleCategory.id
+                            (categoryId) => categoryId !== singleCategory.id,
                         ),
                     },
                 },
@@ -140,12 +138,12 @@ describe('Help Center/Categories reducer', () => {
                         '0': rootCategory,
                     },
                 },
-                savePositions({categoryId: 0, children: [7, 6, 5]})
+                savePositions({ categoryId: 0, children: [7, 6, 5] }),
             )
 
             expect(nextState).toEqual({
                 categoriesById: {
-                    '0': {...rootCategory, children: [7, 6, 5]},
+                    '0': { ...rootCategory, children: [7, 6, 5] },
                 },
             })
         })
@@ -161,7 +159,7 @@ describe('Help Center/Categories reducer', () => {
             pushCategorySupportedLocales({
                 categoryId: categoryResponse.id,
                 supportedLocales: ['fr-FR'],
-            })
+            }),
         )
 
         expect(nextState).toEqual({
@@ -184,7 +182,7 @@ describe('Help Center/Categories reducer', () => {
                 {
                     categoriesById: _keyBy(categoriesResponse, 'id'),
                 },
-                resetCategories()
+                resetCategories(),
             )
 
             expect(nextState).toEqual(initialState)
@@ -204,7 +202,7 @@ describe('Help Center/Categories reducer', () => {
                         categoryId: categoryResponse.id,
                         articleCount: 10,
                     },
-                ])
+                ]),
             )
 
             expect(nextState).toEqual({
@@ -228,7 +226,7 @@ describe('Help Center/Categories reducer', () => {
                         categoryId: null,
                         articleCount: 10,
                     },
-                ])
+                ]),
             )
 
             expect(nextState).toEqual({

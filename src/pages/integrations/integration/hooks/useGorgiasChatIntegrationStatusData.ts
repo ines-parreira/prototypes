@@ -1,10 +1,11 @@
-import {Map} from 'immutable'
-import {useEffect} from 'react'
+import { useEffect } from 'react'
+
+import { Map } from 'immutable'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {GorgiasChatStatusEnum} from 'models/integration/types'
-import {fetchChatIntegrationStatus} from 'state/integrations/actions'
+import { GorgiasChatStatusEnum } from 'models/integration/types'
+import { fetchChatIntegrationStatus } from 'state/integrations/actions'
 import {
     getIsChatIntegrationStatusError,
     getIsChatIntegrationStatusLoading,
@@ -15,7 +16,7 @@ import {
  */
 export const useGorgiasChatIntegrationStatusData = (
     chat: Map<any, any>,
-    isLoadingIntegrations = false
+    isLoadingIntegrations = false,
 ) => {
     const chatId = chat.get('id')
     const chatStatus: GorgiasChatStatusEnum | undefined = chat.getIn([
@@ -25,10 +26,10 @@ export const useGorgiasChatIntegrationStatusData = (
 
     const dispatch = useAppDispatch()
     const isChatStatusLoading = useAppSelector(
-        getIsChatIntegrationStatusLoading(chatId)
+        getIsChatIntegrationStatusLoading(chatId),
     )
     const isChatStatusError = useAppSelector(
-        getIsChatIntegrationStatusError(chatId)
+        getIsChatIntegrationStatusError(chatId),
     )
 
     useEffect(() => {
@@ -37,5 +38,5 @@ export const useGorgiasChatIntegrationStatusData = (
         }
     }, [dispatch, chatId, chatStatus, isLoadingIntegrations])
 
-    return {chatStatus, isChatStatusLoading, isChatStatusError}
+    return { chatStatus, isChatStatusLoading, isChatStatusError }
 }

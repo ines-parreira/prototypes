@@ -1,5 +1,6 @@
 import React from 'react'
-import {Container} from 'reactstrap'
+
+import { Container } from 'reactstrap'
 
 import settingsCss from 'pages/settings/settings.less'
 
@@ -13,7 +14,7 @@ import DEPRECATED_EmailDomainVerification, {
  * @type feature-component
  */
 export default function DEPRECATED_EmailDomainVerificationContainer(
-    props: Props
+    props: Props,
 ) {
     return (
         <Container fluid className={settingsCss.pageContainer}>

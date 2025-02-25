@@ -1,12 +1,11 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useFlag} from 'core/flags'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
+import { assumeMock } from 'utils/testing'
 
-import {assumeMock} from 'utils/testing'
-
-import {useAiAgentItemEnabled} from '../useAiAgentItemEnabled'
+import { useAiAgentItemEnabled } from '../useAiAgentItemEnabled'
 
 jest.mock('hooks/useAppSelector')
 const useAppSelectorMock = assumeMock(useAppSelector)
@@ -30,17 +29,17 @@ describe('useAiAgentItemEnabled', () => {
         },
     ])(
         'returns true if ConvAiStandaloneMenu is true and one of hasAutomate or hasAiAgentPreview is true (aIAgentPreviewModeAllowed = $aIAgentPreviewModeAllowed, hasAutomate = $hasAutomate)',
-        ({aIAgentPreviewModeAllowed, hasAutomate}) => {
+        ({ aIAgentPreviewModeAllowed, hasAutomate }) => {
             mockFlags({
                 convAiStandaloneMenu: true,
                 aIAgentPreviewModeAllowed,
                 hasAutomate,
             })
 
-            const {result} = renderHook(() => useAiAgentItemEnabled())
+            const { result } = renderHook(() => useAiAgentItemEnabled())
 
             expect(result.current).toBe(true)
-        }
+        },
     )
 
     it.each([
@@ -58,17 +57,17 @@ describe('useAiAgentItemEnabled', () => {
         },
     ])(
         'returns false if ConvAiStandaloneMenu is false, regardless of other conditions (aIAgentPreviewModeAllowed = $aIAgentPreviewModeAllowed, hasAutomate = $hasAutomate)',
-        ({aIAgentPreviewModeAllowed, hasAutomate}) => {
+        ({ aIAgentPreviewModeAllowed, hasAutomate }) => {
             mockFlags({
                 convAiStandaloneMenu: false,
                 aIAgentPreviewModeAllowed,
                 hasAutomate,
             })
 
-            const {result} = renderHook(() => useAiAgentItemEnabled())
+            const { result } = renderHook(() => useAiAgentItemEnabled())
 
             expect(result.current).toBe(false)
-        }
+        },
     )
 
     it('returns false if both hasAutomate and hasAiAgentPreview are false, even if hasAiAgentStandaloneMenu is true', () => {
@@ -78,7 +77,7 @@ describe('useAiAgentItemEnabled', () => {
             hasAutomate: false,
         })
 
-        const {result} = renderHook(() => useAiAgentItemEnabled())
+        const { result } = renderHook(() => useAiAgentItemEnabled())
 
         expect(result.current).toBe(false)
     })
@@ -90,7 +89,7 @@ describe('useAiAgentItemEnabled', () => {
             hasAutomate: false,
         })
 
-        const {result} = renderHook(() => useAiAgentItemEnabled())
+        const { result } = renderHook(() => useAiAgentItemEnabled())
 
         expect(result.current).toBe(false)
     })

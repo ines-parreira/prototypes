@@ -1,16 +1,16 @@
-import {EditorState} from 'draft-js'
-import {Map} from 'immutable'
-import {debounce} from 'lodash'
-import {KeyboardEvent} from 'react'
+import { KeyboardEvent } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {getLDClient} from 'utils/launchDarkly'
+import { EditorState } from 'draft-js'
+import { Map } from 'immutable'
+import { debounce } from 'lodash'
 
-import {Plugin, PluginMethods} from '../types'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { getLDClient } from 'utils/launchDarkly'
 
+import { Plugin, PluginMethods } from '../types'
 import client from './client'
 import decorators from './decorators'
-import {cachedSelection, predictionKey} from './state'
+import { cachedSelection, predictionKey } from './state'
 import {
     createPrediction,
     getPlainTextFromStateWithPrediction,
@@ -55,7 +55,7 @@ const removeExistingPrediction = (editorState: EditorState) => {
 const requestPrediction = async (
     text = '',
     context: Map<any, any>,
-    plugin: PluginMethods
+    plugin: PluginMethods,
 ) => {
     if (!getLDClient()?.variation(FeatureFlagKey.MLFeaturesKillswitch)) return
 
@@ -76,8 +76,8 @@ const requestPrediction = async (
     plugin.setEditorState(
         EditorState.forceSelection(
             insertPrediction(preKey, newEditorState),
-            selection
-        )
+            selection,
+        ),
     )
 
     resetCurrentPrediction(text, predictionText)
@@ -87,7 +87,7 @@ const sendFeedback = async (
     context: Map<any, any>,
     addedText: string,
     editorState: EditorState,
-    tabKeyUsed = false
+    tabKeyUsed = false,
 ) => {
     const preKey = predictionKey.get()
     if (!preKey) {
@@ -126,7 +126,7 @@ const sendFeedback = async (
 const completePrediction = (
     event: KeyboardEvent,
     plugin: PluginMethods,
-    config: {context: Map<any, any>}
+    config: { context: Map<any, any> },
 ) => {
     const preKey = predictionKey.get()
     if (!preKey) {
@@ -139,7 +139,7 @@ const completePrediction = (
         config.context,
         getPredictionText(preKey, editorState),
         editorState,
-        true
+        true,
     )
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -159,7 +159,7 @@ const predictionPlugin = (config: {
         {
             leading: true,
             trailing: true,
-        }
+        },
     )
 
     return {
@@ -187,7 +187,7 @@ const predictionPlugin = (config: {
                 const currentText =
                     getPlainTextFromStateWithPrediction(editorState)
                 const prevText = getPlainTextFromStateWithPrediction(
-                    EditorState.undo(editorState)
+                    EditorState.undo(editorState),
                 )
                 const charNumDiff = currentText.length - prevText.length
                 const addedText =
@@ -204,7 +204,7 @@ const predictionPlugin = (config: {
                     return removeFirstNCharsOfPrediction(
                         preKey,
                         editorState,
-                        addedText.length
+                        addedText.length,
                     )
                 }
 
@@ -246,7 +246,7 @@ const predictionPlugin = (config: {
                     ? void debouncedRequestPrediction(
                           blockText,
                           config.context,
-                          plugin
+                          plugin,
                       )
                     : void requestPrediction(blockText, config.context, plugin)
                 return newEditorState

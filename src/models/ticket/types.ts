@@ -1,4 +1,4 @@
-import {SatisfactionSurvey, Tag} from '@gorgias/api-queries'
+import { SatisfactionSurvey, Tag } from '@gorgias/api-queries'
 
 import {
     TicketChannel,
@@ -6,14 +6,14 @@ import {
     TicketStatus,
     TicketVia,
 } from 'business/types/ticket'
-import {FacebookReactionType} from 'constants/integrations/facebook'
-import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
-import {CustomFields} from 'custom-fields/types'
-import {Customer} from 'models/customer/types'
-import {Event} from 'models/event/types'
-import {Integration} from 'models/integration/types'
-import {MacroActionName} from 'models/macroAction/types'
-import {Team} from 'models/team/types'
+import { FacebookReactionType } from 'constants/integrations/facebook'
+import { PhoneIntegrationEvent } from 'constants/integrations/types/event'
+import { CustomFields } from 'custom-fields/types'
+import { Customer } from 'models/customer/types'
+import { Event } from 'models/event/types'
+import { Integration } from 'models/integration/types'
+import { MacroActionName } from 'models/macroAction/types'
+import { Team } from 'models/team/types'
 
 export type Ticket = {
     id: number
@@ -56,13 +56,13 @@ export type NextPrevTicketPartial = Pick<Ticket, 'id'>
 export type TicketReplyOptions = Record<string, TicketReplyOption>
 export type TicketReplyOption = {
     answerable: boolean
-    integrations?: Array<Pick<Integration, 'id' | 'name'> & {address: string}>
+    integrations?: Array<Pick<Integration, 'id' | 'name'> & { address: string }>
 }
 
 type InternalTicketEvent = Pick<
     Event,
     'id' | 'type' | 'data' | 'created_datetime'
-> & {user: Record<string, unknown> | null}
+> & { user: Record<string, unknown> | null }
 
 export type PhoneTicketEvent = Pick<
     Event,
@@ -297,7 +297,7 @@ export type FacebookReaction = {
 
 export type FacebookReactionCounter = {
     total_reactions: number
-} & Partial<{[key in FacebookReactionType]: number}>
+} & Partial<{ [key in FacebookReactionType]: number }>
 
 export type FacebookCarouselTemplate = {
     type: 'template'
@@ -331,7 +331,7 @@ export type QuotedTweet = {
 
 export type ProductDetails = {
     average_score: number
-    category: {name: string}
+    category: { name: string }
     description: string
     images?: Array<{
         original: string

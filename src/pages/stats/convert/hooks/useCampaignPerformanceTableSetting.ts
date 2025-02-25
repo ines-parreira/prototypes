@@ -1,57 +1,60 @@
-import {useMemo} from 'react'
-import {useParams} from 'react-router-dom'
+import { useMemo } from 'react'
+
+import { useParams } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {useGetSettingsList} from 'models/convert/settings/queries'
-import {SettingRequest} from 'models/convert/settings/types'
-import {GorgiasChatIntegration, IntegrationType} from 'models/integration/types'
-import {CONVERT_ROUTE_PARAM_NAME} from 'pages/convert/common/constants'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import {ConvertRouteParams} from 'pages/convert/common/types'
-import {useUpdateSetting} from 'pages/convert/settings/hooks/useUpdateSetting'
+import { useGetSettingsList } from 'models/convert/settings/queries'
+import { SettingRequest } from 'models/convert/settings/types'
+import {
+    GorgiasChatIntegration,
+    IntegrationType,
+} from 'models/integration/types'
+import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
+import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import { ConvertRouteParams } from 'pages/convert/common/types'
+import { useUpdateSetting } from 'pages/convert/settings/hooks/useUpdateSetting'
 import {
     CampaignPerformanceTableDefaultConfigurationViews,
     CampaignSettingType,
 } from 'pages/stats/convert/components/CampaignTableStats/constants'
-import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
-import {useGetChatForStore} from 'pages/stats/convert/hooks/useGetChatForStore'
-import {CampaignTableKeys} from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
-
-import {getIntegrationByIdAndType} from 'state/integrations/selectors'
-import {TableView} from 'state/ui/stats/types'
+import { useCampaignStatsFilters } from 'pages/stats/convert/hooks/useCampaignStatsFilters'
+import { useGetChatForStore } from 'pages/stats/convert/hooks/useGetChatForStore'
+import { CampaignTableKeys } from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
+import { getIntegrationByIdAndType } from 'state/integrations/selectors'
+import { TableView } from 'state/ui/stats/types'
 
 export const useCampaignPerformanceTableSetting = () => {
-    const {selectedIntegrations} = useCampaignStatsFilters()
+    const { selectedIntegrations } = useCampaignStatsFilters()
 
-    const {[CONVERT_ROUTE_PARAM_NAME]: chatIntegrationId} =
+    const { [CONVERT_ROUTE_PARAM_NAME]: chatIntegrationId } =
         useParams<ConvertRouteParams>()
 
     const storeChatIntegration = useGetChatForStore(selectedIntegrations[0])
     const routeChatIntegration = useAppSelector(
         getIntegrationByIdAndType<GorgiasChatIntegration>(
             parseInt(chatIntegrationId),
-            IntegrationType.GorgiasChat
-        )
+            IntegrationType.GorgiasChat,
+        ),
     )
     const chatIntegration = useMemo(
         () => routeChatIntegration || storeChatIntegration,
-        [routeChatIntegration, storeChatIntegration]
+        [routeChatIntegration, storeChatIntegration],
     )
 
-    const {channelConnection, isLoading: isChannelConnectionLoading} =
+    const { channelConnection, isLoading: isChannelConnectionLoading } =
         useGetOrCreateChannelConnection(chatIntegration)
 
-    const {data: settings, isLoading: isSettingsLoading} = useGetSettingsList(
+    const { data: settings, isLoading: isSettingsLoading } = useGetSettingsList(
         {
             channel_connection_id: channelConnection?.id as string,
             setting_type: CampaignSettingType.PerformanceReportVisibleFields,
         },
         {
             enabled: !!channelConnection,
-        }
+        },
     )
 
-    const {mutateAsync: updateSetting} = useUpdateSetting()
+    const { mutateAsync: updateSetting } = useUpdateSetting()
 
     const currentSettings = useMemo(() => {
         if (!(settings && settings?.length > 0)) {

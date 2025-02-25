@@ -1,19 +1,19 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {render} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
-import {useParams} from 'react-router-dom'
 
+import { QueryClientProvider } from '@tanstack/react-query'
+import { render } from '@testing-library/react'
+import { Provider } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {OBJECT_TYPES} from 'custom-fields/constants'
-import {useCustomFieldDefinition} from 'custom-fields/hooks/queries/useCustomFieldDefinition'
+import { OBJECT_TYPES } from 'custom-fields/constants'
+import { useCustomFieldDefinition } from 'custom-fields/hooks/queries/useCustomFieldDefinition'
 import {
-    ticketInputFieldDefinition,
     managedTicketInputFieldDefinition,
+    ticketInputFieldDefinition,
 } from 'fixtures/customField'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import EditTicketField from '../../EditCustomField'
 
@@ -27,32 +27,32 @@ const queryClient = mockQueryClient()
 
 describe('<EditTicketField/>', () => {
     it('should render a loader', () => {
-        useParamsMock.mockReturnValueOnce({id: 1})
+        useParamsMock.mockReturnValueOnce({ id: 1 })
         useCustomFieldDefinitionMock.mockReturnValueOnce({
             data: null,
             isLoading: true,
         })
 
-        const {container} = render(
-            <EditTicketField objectType={OBJECT_TYPES.TICKET} />
+        const { container } = render(
+            <EditTicketField objectType={OBJECT_TYPES.TICKET} />,
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render no info alert and the edit form because it is not a managed ticket field', () => {
-        useParamsMock.mockReturnValueOnce({id: ticketInputFieldDefinition.id})
+        useParamsMock.mockReturnValueOnce({ id: ticketInputFieldDefinition.id })
         useCustomFieldDefinitionMock.mockReturnValueOnce({
             data: ticketInputFieldDefinition,
             isLoading: false,
         })
 
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockedStore({})}>
                 <QueryClientProvider client={queryClient}>
                     <EditTicketField objectType={OBJECT_TYPES.TICKET} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -67,12 +67,12 @@ describe('<EditTicketField/>', () => {
             isLoading: false,
         })
 
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockedStore({})}>
                 <QueryClientProvider client={queryClient}>
                     <EditTicketField objectType={OBJECT_TYPES.TICKET} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()

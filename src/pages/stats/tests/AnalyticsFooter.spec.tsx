@@ -1,17 +1,18 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render, screen } from '@testing-library/react'
+import { Provider } from 'react-redux'
 
 import {
     AnalyticsFooter,
     generateBusinessHoursTimeZoneMessage,
     generateTimeZoneMessage,
 } from 'pages/stats/AnalyticsFooter'
-import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
-import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
-import {AccountSettingBusinessHours} from 'state/currentAccount/types'
-import {getTimezone} from 'state/currentUser/selectors'
-import {assumeMock, mockStore} from 'utils/testing'
+import { DEFAULT_TIMEZONE } from 'pages/stats/convert/constants/components'
+import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
+import { AccountSettingBusinessHours } from 'state/currentAccount/types'
+import { getTimezone } from 'state/currentUser/selectors'
+import { assumeMock, mockStore } from 'utils/testing'
 
 jest.mock('state/currentUser/selectors')
 jest.mock('state/currentAccount/selectors')
@@ -26,12 +27,12 @@ describe('<AnalyticsFooter />', () => {
         render(
             <Provider store={mockStore({} as any)}>
                 <AnalyticsFooter />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText(new RegExp(timeZone))).toBeInTheDocument()
         expect(
-            screen.getByText(generateTimeZoneMessage(timeZone))
+            screen.getByText(generateTimeZoneMessage(timeZone)),
         ).toBeInTheDocument()
     })
 
@@ -41,11 +42,11 @@ describe('<AnalyticsFooter />', () => {
         render(
             <Provider store={mockStore({} as any)}>
                 <AnalyticsFooter />
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            screen.getByText(new RegExp(DEFAULT_TIMEZONE))
+            screen.getByText(new RegExp(DEFAULT_TIMEZONE)),
         ).toBeInTheDocument()
     })
 
@@ -53,22 +54,22 @@ describe('<AnalyticsFooter />', () => {
         const businessHoursTimezone = 'SomeBusinessHoursTimezone'
         getTimezoneMock.mockReturnValue('SomeTimezone')
         getBusinessHoursSettingsMock.mockReturnValue({
-            data: {timezone: businessHoursTimezone},
+            data: { timezone: businessHoursTimezone },
         } as AccountSettingBusinessHours)
 
         render(
             <Provider store={mockStore({} as any)}>
                 <AnalyticsFooter useBusinessHoursTimezone />
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            screen.getByText(new RegExp(businessHoursTimezone))
+            screen.getByText(new RegExp(businessHoursTimezone)),
         ).toBeInTheDocument()
         expect(
             screen.getByText(
-                generateBusinessHoursTimeZoneMessage(businessHoursTimezone)
-            )
+                generateBusinessHoursTimeZoneMessage(businessHoursTimezone),
+            ),
         ).toBeInTheDocument()
     })
 })

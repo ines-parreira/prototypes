@@ -1,11 +1,12 @@
-import {fireEvent, render, screen} from '@testing-library/react'
-import {act} from '@testing-library/react-hooks'
 import React from 'react'
 
-import {AlwaysDisplayedTask} from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/tests/AlwaysDisplayed.task'
-import {AlwaysHiddenTask} from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/tests/AlwaysHidden.task'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { act } from '@testing-library/react-hooks'
 
-import {PendingTasksSection} from '../PendingTasksSection'
+import { AlwaysDisplayedTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/tests/AlwaysDisplayed.task'
+import { AlwaysHiddenTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/tests/AlwaysHidden.task'
+
+import { PendingTasksSection } from '../PendingTasksSection'
 
 const pendingTasks = [
     new AlwaysDisplayedTask(),
@@ -30,14 +31,14 @@ describe('PendingTasksSection', () => {
                 pendingTasks={pendingTasks}
                 isLoading={true}
                 onStoreChange={() => {}}
-                selectedStore={{id: 1, name: 'test store', type: 'shopify'}}
-                stores={[{id: 1, name: 'test store', type: 'shopify'}]}
-            />
+                selectedStore={{ id: 1, name: 'test store', type: 'shopify' }}
+                stores={[{ id: 1, name: 'test store', type: 'shopify' }]}
+            />,
         )
 
         expect(screen.getAllByRole('link')[0]).toHaveAttribute(
             'aria-busy',
-            'true'
+            'true',
         )
     })
 
@@ -49,9 +50,9 @@ describe('PendingTasksSection', () => {
                 pendingTasks={pendingTasks}
                 isLoading={false}
                 onStoreChange={() => {}}
-                selectedStore={{id: 1, name: 'test store', type: 'shopify'}}
-                stores={[{id: 1, name: 'test store', type: 'shopify'}]}
-            />
+                selectedStore={{ id: 1, name: 'test store', type: 'shopify' }}
+                stores={[{ id: 1, name: 'test store', type: 'shopify' }]}
+            />,
         )
 
         expect(screen.getAllByRole('link')[0]).not.toHaveAttribute('aria-busy')
@@ -66,15 +67,15 @@ describe('PendingTasksSection', () => {
                 pendingTasks={[]}
                 isLoading={false}
                 onStoreChange={() => {}}
-                selectedStore={{id: 1, name: 'test store', type: 'shopify'}}
-                stores={[{id: 1, name: 'test store', type: 'shopify'}]}
-            />
+                selectedStore={{ id: 1, name: 'test store', type: 'shopify' }}
+                stores={[{ id: 1, name: 'test store', type: 'shopify' }]}
+            />,
         )
 
         expect(
             screen.getByText(
-                'Congrats! You’ve finished all tasks for this store.'
-            )
+                'Congrats! You’ve finished all tasks for this store.',
+            ),
         ).toBeInTheDocument()
     })
 
@@ -85,9 +86,9 @@ describe('PendingTasksSection', () => {
                 pendingTasks={pendingTasks}
                 isLoading={false}
                 onStoreChange={() => {}}
-                selectedStore={{id: 1, name: 'test store', type: 'shopify'}}
-                stores={[{id: 1, name: 'test store', type: 'shopify'}]}
-            />
+                selectedStore={{ id: 1, name: 'test store', type: 'shopify' }}
+                stores={[{ id: 1, name: 'test store', type: 'shopify' }]}
+            />,
         )
 
         expect(screen.getByRole('region').childNodes).toHaveLength(3)
@@ -97,10 +98,10 @@ describe('PendingTasksSection', () => {
 
         expect(rendered.container.querySelector('button')!).toHaveAttribute(
             'aria-expanded',
-            'true'
+            'true',
         )
         expect(screen.getByRole('region').childNodes).toHaveLength(
-            pendingTasks.length
+            pendingTasks.length,
         )
         expect(screen.getByText('Collapse')).toBeInTheDocument()
     })

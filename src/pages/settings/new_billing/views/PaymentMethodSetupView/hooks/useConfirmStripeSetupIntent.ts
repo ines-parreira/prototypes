@@ -1,27 +1,30 @@
-import {useElements, useStripe} from '@stripe/react-stripe-js'
+import { useElements, useStripe } from '@stripe/react-stripe-js'
 import {
     SetupIntentResult,
     StripeError,
     type StripeErrorType,
 } from '@stripe/stripe-js'
-import {useMutation} from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {useBillingContact} from 'models/billing/queries'
-import {reportCRMGrowthError} from 'pages/settings/new_billing/utils/reportCRMGrowthError'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
-import {MutationOverrides} from 'types/query'
+import { useBillingContact } from 'models/billing/queries'
+import { reportCRMGrowthError } from 'pages/settings/new_billing/utils/reportCRMGrowthError'
+import { notify } from 'state/notifications/actions'
+import {
+    NotificationStatus,
+    NotificationStyle,
+} from 'state/notifications/types'
+import { MutationOverrides } from 'types/query'
 
 export const useConfirmStripeSetupIntent = (
-    overrides?: MutationOverrides<() => Promise<SetupIntentResult>>
+    overrides?: MutationOverrides<() => Promise<SetupIntentResult>>,
 ) => {
     const dispatch = useAppDispatch()
 
     const stripe = useStripe()
     const elements = useElements()
 
-    const {data: {data: billingContact} = {}} = useBillingContact({
+    const { data: { data: billingContact } = {} } = useBillingContact({
         staleTime: Infinity,
     })
 
@@ -54,7 +57,7 @@ export const useConfirmStripeSetupIntent = (
                     if (result.error) {
                         if (result.error.setup_intent?.status === 'succeeded') {
                             // If the setup intent is successful, we don't want to treat it as an error.
-                            return {setupIntent: result.error.setup_intent}
+                            return { setupIntent: result.error.setup_intent }
                         }
 
                         throw result.error
@@ -79,7 +82,7 @@ export const useConfirmStripeSetupIntent = (
                 // We only want to report errors that are not related to the user's input.
                 reportCRMGrowthError(
                     error,
-                    'Failed to confirm stripe setup intent'
+                    'Failed to confirm stripe setup intent',
                 )
             }
 
@@ -104,7 +107,7 @@ export const useConfirmStripeSetupIntent = (
                     message: errorMessage,
                     style: NotificationStyle.Alert,
                     showDismissButton: true,
-                })
+                }),
             )
 
             overrides?.onError?.(error, ...args)

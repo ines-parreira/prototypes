@@ -1,74 +1,71 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import {zodResolver} from '@hookform/resolvers/zod'
-import {fromJS} from 'immutable'
-import React, {useMemo, useState} from 'react'
+import React, { useMemo, useState } from 'react'
 
-import {FormProvider, useForm} from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { fromJS } from 'immutable'
+import { FormProvider, useForm } from 'react-hook-form'
+import { useParams } from 'react-router-dom'
 
-import {useParams} from 'react-router-dom'
+import { Label } from '@gorgias/merchant-ui-kit'
 
-import {GORGIAS_CHAT_DEFAULT_COLOR} from 'config/integrations/gorgias_chat'
+import { GORGIAS_CHAT_DEFAULT_COLOR } from 'config/integrations/gorgias_chat'
 import {
     EMAIL_INTEGRATION_TYPES,
     SHOPIFY_INTEGRATION_TYPE,
 } from 'constants/integration'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {ShopifyIntegration} from 'models/integration/types'
-import {ChatIntegrationListSelection} from 'pages/aiAgent/components/ChatIntegrationListSelection/ChatIntegrationListSelection'
-import {EmailIntegrationListSelection} from 'pages/aiAgent/components/EmailIntegrationListSelection/EmailIntegrationListSelection'
+import { ShopifyIntegration } from 'models/integration/types'
+import { ChatIntegrationListSelection } from 'pages/aiAgent/components/ChatIntegrationListSelection/ChatIntegrationListSelection'
+import { EmailIntegrationListSelection } from 'pages/aiAgent/components/EmailIntegrationListSelection/EmailIntegrationListSelection'
 import AiAgentChatConversation from 'pages/aiAgent/Onboarding/components/AiAgentChatConversation/AiAgentChatConversation'
-import {Card, CardContent} from 'pages/aiAgent/Onboarding/components/Card'
+import { Card, CardContent } from 'pages/aiAgent/Onboarding/components/Card'
 import MainTitle from 'pages/aiAgent/Onboarding/components/MainTitle/MainTitle'
-import {Separator} from 'pages/aiAgent/Onboarding/components/Separator/Separator'
+import { Separator } from 'pages/aiAgent/Onboarding/components/Separator/Separator'
 import css from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/ChannelsStep.less'
 import {
     ChannelsFormValues,
     useChannelsSchema,
 } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/hooks/useChannelsSchema'
-import {createChatConfiguration} from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/utils/createGorgiasConfiguration'
-import {StepProps} from 'pages/aiAgent/Onboarding/components/steps/types'
+import { createChatConfiguration } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/utils/createGorgiasConfiguration'
+import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
 import useCheckStoreIntegration from 'pages/aiAgent/Onboarding/hooks/useCheckStoreIntegration'
-import {useGetOnboardingData} from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
-import {useSteps} from 'pages/aiAgent/Onboarding/hooks/useSteps'
-import {useUpdateOnboarding} from 'pages/aiAgent/Onboarding/hooks/useUpdateOnboarding'
+import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
+import { useSteps } from 'pages/aiAgent/Onboarding/hooks/useSteps'
+import { useUpdateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useUpdateOnboarding'
 import {
+    LoadingPulserIcon,
     OnboardingBody,
     OnboardingContentContainer,
     OnboardingPreviewContainer,
-    LoadingPulserIcon,
 } from 'pages/aiAgent/Onboarding/layout/ConvAiOnboardingLayout'
-
 import {
     agentChatConversationSettings,
     chatPreviewSettings,
 } from 'pages/aiAgent/Onboarding/settings'
-
-import {AiAgentScopes, WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
+import { AiAgentScopes, WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
 import CheckBox from 'pages/common/forms/CheckBox'
 import ColorField from 'pages/common/forms/ColorField'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
-import {createGorgiasChatIntegration} from 'state/integrations/actions'
+import { createGorgiasChatIntegration } from 'state/integrations/actions'
 import {
     getIntegrationsByTypes,
     getShopifyIntegrationByShopName,
 } from 'state/integrations/selectors'
-
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 export const ChannelsStep: React.FC<StepProps> = ({
     currentStep,
     totalSteps,
     goToStep,
 }) => {
-    const {shopName} = useParams<{shopName: string}>()
+    const { shopName } = useParams<{ shopName: string }>()
 
-    const {validSteps} = useSteps({shopName})
+    const { validSteps } = useSteps({ shopName })
 
-    const {data, isLoading: isLoadingOnboardingData} =
+    const { data, isLoading: isLoadingOnboardingData } =
         useGetOnboardingData(shopName)
 
     const {
@@ -79,7 +76,7 @@ export const ChannelsStep: React.FC<StepProps> = ({
     const isLoading = isLoadingOnboardingData || isUpdatingOnboarding
 
     const storeIntegration: ShopifyIntegration = useAppSelector(
-        getShopifyIntegrationByShopName(shopName)
+        getShopifyIntegrationByShopName(shopName),
     ).toJS()
 
     useCheckStoreIntegration()
@@ -88,11 +85,11 @@ export const ChannelsStep: React.FC<StepProps> = ({
 
     const chatChannels = useSelfServiceChatChannels(
         SHOPIFY_INTEGRATION_TYPE,
-        shopName
+        shopName,
     )
 
     const [newChatColor, setNewChatColor] = useState<string>(
-        GORGIAS_CHAT_DEFAULT_COLOR
+        GORGIAS_CHAT_DEFAULT_COLOR,
     )
 
     const createNewChat = chatChannels.length === 0
@@ -113,7 +110,7 @@ export const ChannelsStep: React.FC<StepProps> = ({
     const {
         watch,
         setValue,
-        formState: {errors, isDirty},
+        formState: { errors, isDirty },
         handleSubmit,
     } = methods
 
@@ -126,7 +123,7 @@ export const ChannelsStep: React.FC<StepProps> = ({
     const [isCreatingChat, setIsCreatingChat] = useState<boolean>(false)
 
     const emailIntegrations = useAppSelector(
-        getIntegrationsByTypes(EMAIL_INTEGRATION_TYPES)
+        getIntegrationsByTypes(EMAIL_INTEGRATION_TYPES),
     )
 
     const emailChannels = useMemo(() => {
@@ -159,8 +156,8 @@ export const ChannelsStep: React.FC<StepProps> = ({
                         notify({
                             status: NotificationStatus.Error,
                             message: 'Could not create chat integration',
-                        })
-                    )
+                        }),
+                    ),
                 )
                 .finally(() => setIsCreatingChat(false))
         } else {
@@ -188,12 +185,12 @@ export const ChannelsStep: React.FC<StepProps> = ({
             }
 
             doUpdateOnboardingMutation(
-                {id: data.id as string, data: updatedData},
+                { id: data.id as string, data: updatedData },
                 {
                     onSuccess: () => {
                         goToNextStep()
                     },
-                }
+                },
             )
         }
     }
@@ -231,7 +228,7 @@ export const ChannelsStep: React.FC<StepProps> = ({
                                     onChange={(nextValue) =>
                                         handleUpdate(
                                             'emailChannelEnabled',
-                                            nextValue
+                                            nextValue,
                                         )
                                     }
                                 >
@@ -257,11 +254,11 @@ export const ChannelsStep: React.FC<StepProps> = ({
                                                 emailIntegrationIds ?? []
                                             }
                                             onSelectionChange={(
-                                                nextSelectedIds
+                                                nextSelectedIds,
                                             ) =>
                                                 handleUpdate(
                                                     'emailIntegrationIds',
-                                                    nextSelectedIds
+                                                    nextSelectedIds,
                                                 )
                                             }
                                             emailItems={emailChannels}
@@ -333,11 +330,11 @@ export const ChannelsStep: React.FC<StepProps> = ({
                                                 chatIntegrationIds ?? []
                                             }
                                             onSelectionChange={(
-                                                nextSelectedIds
+                                                nextSelectedIds,
                                             ) =>
                                                 handleUpdate(
                                                     'chatIntegrationIds',
-                                                    nextSelectedIds
+                                                    nextSelectedIds,
                                                 )
                                             }
                                             chatItems={chatChannels}

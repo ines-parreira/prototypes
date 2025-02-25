@@ -28,7 +28,7 @@ export class IntegrationFixture {
     private integration: Integration
 
     private constructor() {
-        this.integration = {meta: {}} as Partial<Integration> as Integration
+        this.integration = { meta: {} } as Partial<Integration> as Integration
     }
 
     static start() {
@@ -57,7 +57,7 @@ export class IntegrationFixture {
         return this as ConfiguredIntegrationFixture<'withDetails'>
     }
 
-    asChat({appId = 'app_id_123', updatedAt}: AsChatArgs = {}) {
+    asChat({ appId = 'app_id_123', updatedAt }: AsChatArgs = {}) {
         this.integration.type = IntegrationType.GorgiasChat
         this.integration.meta = {
             app_id: appId,

@@ -2,7 +2,6 @@ import React from 'react'
 
 import gorgiasChatSendMessageIcon from 'assets/img/integrations/gorgias-chat-send-message-icon.svg'
 import Button from 'pages/common/components/button/Button'
-
 import {
     CONSTRAST_COLORS,
     getTextColorBasedOnBackground,
@@ -15,7 +14,7 @@ type Props = {
     color: string
 }
 
-const SelfServiceChatIntegrationFooter = ({sspTexts, color}: Props) => {
+const SelfServiceChatIntegrationFooter = ({ sspTexts, color }: Props) => {
     const textColor = getTextColorBasedOnBackground(color)
     return (
         <div className={css.container}>

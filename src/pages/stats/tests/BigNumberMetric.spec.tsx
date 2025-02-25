@@ -1,5 +1,6 @@
-import {render} from '@testing-library/react'
 import React from 'react'
+
+import { render } from '@testing-library/react'
 
 import BigNumberMetric from '../BigNumberMetric'
 
@@ -9,20 +10,20 @@ jest.mock('@gorgias/merchant-ui-kit', () => ({
 
 describe('<BigNumberMetric />', () => {
     it('should render the number metric', () => {
-        const {container} = render(<BigNumberMetric>content</BigNumberMetric>)
+        const { container } = render(<BigNumberMetric>content</BigNumberMetric>)
 
         expect(container).toMatchSnapshot()
     })
 
     it('should render the number metric content from a value', () => {
-        const {container} = render(<BigNumberMetric>content</BigNumberMetric>)
+        const { container } = render(<BigNumberMetric>content</BigNumberMetric>)
 
         expect(container).toMatchSnapshot()
     })
 
     it('should render the loading skeleton', () => {
-        const {getAllByTestId} = render(
-            <BigNumberMetric isLoading>content</BigNumberMetric>
+        const { getAllByTestId } = render(
+            <BigNumberMetric isLoading>content</BigNumberMetric>,
         )
 
         expect(getAllByTestId('skeleton')).toHaveLength(1)

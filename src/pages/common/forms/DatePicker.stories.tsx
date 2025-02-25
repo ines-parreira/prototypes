@@ -1,8 +1,9 @@
-import {Meta, StoryFn} from '@storybook/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {ThemeProvider} from 'core/theme'
-import {DatePicker} from 'pages/common/forms/DatePicker'
+import { Meta, StoryFn } from '@storybook/react'
+
+import { ThemeProvider } from 'core/theme'
+import { DatePicker } from 'pages/common/forms/DatePicker'
 
 const DATE = '2024-04-14T12:34:56.000Z'
 
@@ -10,17 +11,17 @@ const storyConfig: Meta = {
     title: 'Data Entry/DatePicker',
     component: DatePicker,
     parameters: {
-        chromatic: {disableSnapshot: false},
+        chromatic: { disableSnapshot: false },
     },
 }
 
 const Template: StoryFn<ComponentProps<typeof DatePicker>> = (
-    props: ComponentProps<typeof DatePicker>
+    props: ComponentProps<typeof DatePicker>,
 ) => {
     return (
         <ThemeProvider>
             {/** fixes the flaky chromatic tests issue */}
-            <div style={{paddingLeft: '100px'}}>
+            <div style={{ paddingLeft: '100px' }}>
                 <DatePicker {...props}>
                     <input type="text" placeholder="Choose a date..." />
                 </DatePicker>

@@ -1,12 +1,12 @@
-import {useQueryClient} from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     actionsAppDefinitionKeys,
     useUpsertActionsApp,
 } from 'models/workflows/queries'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 const useCreateActionsApp = () => {
     const dispatch = useAppDispatch()
@@ -14,7 +14,7 @@ const useCreateActionsApp = () => {
 
     const queryKey = actionsAppDefinitionKeys.all()
 
-    const {mutateAsync, isLoading} = useUpsertActionsApp({
+    const { mutateAsync, isLoading } = useUpsertActionsApp({
         onSuccess: () => {
             void queryClient.invalidateQueries({
                 queryKey,
@@ -24,12 +24,12 @@ const useCreateActionsApp = () => {
                 notify({
                     status: NotificationStatus.Success,
                     message: 'Successfully created',
-                })
+                }),
             )
         },
     })
 
-    return {isLoading, createActionsApp: mutateAsync}
+    return { isLoading, createActionsApp: mutateAsync }
 }
 
 export default useCreateActionsApp

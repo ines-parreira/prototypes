@@ -1,25 +1,23 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {fromJS} from 'immutable'
-
 import React from 'react'
-import routerDom, {useParams} from 'react-router-dom'
 
-import {campaign} from 'fixtures/campaign'
-import {integrationsState, shopifyIntegration} from 'fixtures/integrations'
-import {CONVERT_ROUTE_PARAM_NAME} from 'pages/convert/common/constants'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fromJS } from 'immutable'
+import routerDom, { useParams } from 'react-router-dom'
+
+import { campaign } from 'fixtures/campaign'
+import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
+import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
 import * as useIsConvertPerformanceViewEnabled from 'pages/convert/common/hooks/useIsConvertPerformanceViewEnabled'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import useCampaignPerformanceTimeSeries from 'pages/stats/convert/hooks/stats/useCampaignPerformanceTimeSeries'
 import useGetCampaignRevenueTimeSeries from 'pages/stats/convert/hooks/stats/useGetCampaignRevenueTimeSeries'
-import {useGetTotalsStat} from 'pages/stats/convert/hooks/stats/useGetTotalsStat'
+import { useGetTotalsStat } from 'pages/stats/convert/hooks/stats/useGetTotalsStat'
+import { useCampaignStatsFilters } from 'pages/stats/convert/hooks/useCampaignStatsFilters'
+import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock, renderWithStore } from 'utils/testing'
 
-import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
-import {useReportChartRestrictions} from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock, renderWithStore} from 'utils/testing'
-
-import {RevenueStatsContent} from '../RevenueStatsContent'
+import { RevenueStatsContent } from '../RevenueStatsContent'
 
 jest.mock('pages/stats/report-chart-restrictions/useReportChartRestrictions')
 const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
@@ -32,7 +30,7 @@ const useGetCampaignRevenueMock = assumeMock(useGetCampaignRevenueTimeSeries)
 
 jest.mock('pages/stats/convert/hooks/stats/useCampaignPerformanceTimeSeries')
 const useCampaignPerformanceTimeSeriesMock = assumeMock(
-    useCampaignPerformanceTimeSeries
+    useCampaignPerformanceTimeSeries,
 )
 
 jest.mock('pages/stats/convert/hooks/stats/useGetTotalsStat')
@@ -73,7 +71,7 @@ describe('<RevenueStatsContent />', () => {
                         shopifyIntegration,
                     ],
                 }),
-            }
+            },
         )
     }
 
@@ -126,10 +124,10 @@ describe('<RevenueStatsContent />', () => {
     it('renders with feature flag disabled', () => {
         jest.spyOn(
             useIsConvertPerformanceViewEnabled,
-            'useIsConvertPerformanceViewEnabled'
+            'useIsConvertPerformanceViewEnabled',
         ).mockImplementation(() => false)
 
-        const {getByText, queryByText} = renderComponent()
+        const { getByText, queryByText } = renderComponent()
 
         expect(getByText('Campaign Performance Table')).toBeInTheDocument()
         expect(queryByText('Revenue Performance')).not.toBeInTheDocument()
@@ -139,10 +137,10 @@ describe('<RevenueStatsContent />', () => {
     it('renders with feature flag enabled', () => {
         jest.spyOn(
             useIsConvertPerformanceViewEnabled,
-            'useIsConvertPerformanceViewEnabled'
+            'useIsConvertPerformanceViewEnabled',
         ).mockImplementation(() => true)
 
-        const {getByText} = renderComponent()
+        const { getByText } = renderComponent()
 
         expect(getByText('Campaign Performance Table')).toBeInTheDocument()
         expect(getByText('Revenue Performance')).toBeInTheDocument()

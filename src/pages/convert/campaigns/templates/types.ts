@@ -1,7 +1,7 @@
-import {Map} from 'immutable'
+import { Map } from 'immutable'
 
-import {CampaignCreatePayload} from 'pages/convert/campaigns/types/Campaign'
-import {WizardConfiguration} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
+import { CampaignCreatePayload } from 'pages/convert/campaigns/types/Campaign'
+import { WizardConfiguration } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
 
 export type CampaignConfiguration = {
     template_id: string
@@ -23,17 +23,17 @@ export type CampaignTemplate = {
     slug: string
     name: string
     preview: string
-    estimation?: {[key: string]: string}
+    estimation?: { [key: string]: string }
     description?: string
     label?: CampaignTemplateLabelType
     onboarding: boolean
     getWizardConfiguration?: () => WizardConfiguration
     getConfiguration: (
         storeIntegration: Map<string, any>,
-        chatIntegration: Map<string, any>
+        chatIntegration: Map<string, any>,
     ) => Promise<CampaignConfiguration>
     postSave?: (
         storeIntegration: Map<string, any>,
-        chatIntegration: Map<string, any>
+        chatIntegration: Map<string, any>,
     ) => Promise<boolean>
 }

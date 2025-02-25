@@ -1,6 +1,6 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
-import {useParams} from 'react-router-dom'
+import { renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
+import { useParams } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
 
@@ -21,19 +21,19 @@ describe('useViewId', () => {
     })
 
     it('should return the view id from the url if it exists', () => {
-        useParamsMock.mockReturnValue({viewId: '789'})
+        useParamsMock.mockReturnValue({ viewId: '789' })
 
-        const {result} = renderHook(() => useViewId())
+        const { result } = renderHook(() => useViewId())
         expect(result.current).toBe(789)
     })
 
     it('should return the view id of the active view if it exists', () => {
         useAppSelectorMock.mockReset()
         useAppSelectorMock
-            .mockReturnValueOnce(fromJS({id: 456}))
-            .mockReturnValueOnce({id: 123})
+            .mockReturnValueOnce(fromJS({ id: 456 }))
+            .mockReturnValueOnce({ id: 123 })
 
-        const {result} = renderHook(() => useViewId())
+        const { result } = renderHook(() => useViewId())
         expect(result.current).toBe(456)
     })
 })

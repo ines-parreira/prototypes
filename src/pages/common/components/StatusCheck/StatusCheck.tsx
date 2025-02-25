@@ -1,9 +1,11 @@
 import React from 'react'
-import {Col, Row} from 'reactstrap'
+
+import { Col, Row } from 'reactstrap'
 
 import Button from 'pages/common/components/button/Button'
 
 import Loader from '../Loader/Loader'
+
 import css from './StatusCheck.less'
 
 type Props = {

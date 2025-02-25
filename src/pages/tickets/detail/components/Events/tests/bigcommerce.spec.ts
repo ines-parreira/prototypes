@@ -1,4 +1,4 @@
-import {fromJS, Map} from 'immutable'
+import { fromJS, Map } from 'immutable'
 
 import bigcommerceEvent from '../bigcommerce'
 
@@ -22,7 +22,7 @@ describe('bigcommerceEvent', () => {
     it('Should return undefined if actionConfig is a bigcommerceRefundOrder but no order id', () => {
         const event = bigcommerceEvent({
             integration: Map(),
-            actionConfig: {...actionConfig, name: 'bigcommerceRefundOrder'},
+            actionConfig: { ...actionConfig, name: 'bigcommerceRefundOrder' },
             payload: Map(),
             data: Map(),
         })
@@ -37,7 +37,7 @@ describe('bigcommerceEvent', () => {
                     store_hash: 'shop_hash',
                 },
             }),
-            actionConfig: {...actionConfig, name: 'bigcommerceRefundOrder'},
+            actionConfig: { ...actionConfig, name: 'bigcommerceRefundOrder' },
             payload: fromJS({
                 bigcommerce_order_id: 1,
             }),
@@ -56,13 +56,13 @@ describe('bigcommerceEvent', () => {
         (actionName) => {
             const event = bigcommerceEvent({
                 integration: Map(),
-                actionConfig: {...actionConfig, name: actionName},
+                actionConfig: { ...actionConfig, name: actionName },
                 payload: Map(),
                 data: Map(),
             })
 
             expect(event).toBeUndefined()
-        }
+        },
     )
 
     it.each(['bigcommerceDuplicateOrder', 'bigcommerceCreateOrder'])(
@@ -70,17 +70,17 @@ describe('bigcommerceEvent', () => {
         (actionName) => {
             const event = bigcommerceEvent({
                 integration: Map(),
-                actionConfig: {...actionConfig, name: actionName},
+                actionConfig: { ...actionConfig, name: actionName },
                 payload: fromJS({
                     bigcommerce_checkout_id: 1,
                 }),
                 data: fromJS({
-                    draft_orders: [{cart_id: 2}],
+                    draft_orders: [{ cart_id: 2 }],
                 }),
             })
 
             expect(event).toBeUndefined()
-        }
+        },
     )
 
     it.each(['bigcommerceDuplicateOrder', 'bigcommerceCreateOrder'])(
@@ -92,12 +92,12 @@ describe('bigcommerceEvent', () => {
                         store_hash: 'shop_hash',
                     },
                 }),
-                actionConfig: {...actionConfig, name: actionName},
+                actionConfig: { ...actionConfig, name: actionName },
                 payload: fromJS({
                     bigcommerce_checkout_id: 1,
                 }),
                 data: fromJS({
-                    draft_orders: [{cart_id: 1, id: 123}],
+                    draft_orders: [{ cart_id: 1, id: 123 }],
                 }),
             })
 
@@ -106,7 +106,7 @@ describe('bigcommerceEvent', () => {
                 objectLink:
                     'https://store-shop_hash.mybigcommerce.com/manage/orders/123',
             })
-        }
+        },
     )
 
     it.each(['bigcommerceDuplicateOrder', 'bigcommerceCreateOrder'])(
@@ -118,12 +118,12 @@ describe('bigcommerceEvent', () => {
                         store_hash: 'shop_hash',
                     },
                 }),
-                actionConfig: {...actionConfig, name: actionName},
+                actionConfig: { ...actionConfig, name: actionName },
                 payload: fromJS({
                     bigcommerce_checkout_id: 1,
                 }),
                 data: fromJS({
-                    orders: [{cart_id: 1, id: 123}],
+                    orders: [{ cart_id: 1, id: 123 }],
                 }),
             })
 
@@ -132,6 +132,6 @@ describe('bigcommerceEvent', () => {
                 objectLink:
                     'https://store-shop_hash.mybigcommerce.com/manage/orders/123',
             })
-        }
+        },
     )
 })

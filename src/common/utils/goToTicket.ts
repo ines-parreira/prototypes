@@ -1,9 +1,9 @@
-import {matchPath} from 'react-router'
+import { matchPath } from 'react-router'
 
 import history from 'pages/history'
 
 export default function goToTicket(ticketId: number | string) {
-    const match = matchPath<{viewId?: string}>(window.location.pathname, {
+    const match = matchPath<{ viewId?: string }>(window.location.pathname, {
         path: '/app/views/:viewId',
         exact: false,
         strict: false,

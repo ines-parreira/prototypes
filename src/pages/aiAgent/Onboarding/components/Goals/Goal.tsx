@@ -1,11 +1,13 @@
-import cn from 'classnames'
 import React from 'react'
 
-import {Card, CardContent} from 'pages/aiAgent/Onboarding/components/Card'
-import {AiAgentScopes} from 'pages/aiAgent/Onboarding/types'
+import cn from 'classnames'
+
+import { Card, CardContent } from 'pages/aiAgent/Onboarding/components/Card'
+import { AiAgentScopes } from 'pages/aiAgent/Onboarding/types'
+
+import { GoalData } from './types'
 
 import css from './Goals.less'
-import {GoalData} from './types'
 
 type Props = {
     goal: GoalData
@@ -13,10 +15,10 @@ type Props = {
     onSelect: (scope: AiAgentScopes[]) => void
 }
 
-const Goal: React.FC<Props> = ({goal, isSelected, onSelect}) => {
+const Goal: React.FC<Props> = ({ goal, isSelected, onSelect }) => {
     return (
         <Card
-            className={cn({[css.selected]: isSelected})}
+            className={cn({ [css.selected]: isSelected })}
             onClick={() => onSelect(goal.scope)}
         >
             <CardContent>

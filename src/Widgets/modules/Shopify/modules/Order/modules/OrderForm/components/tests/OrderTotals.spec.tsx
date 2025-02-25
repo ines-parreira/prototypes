@@ -1,6 +1,7 @@
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-import {fromJS, Map} from 'immutable'
 import React from 'react'
+
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
 
 import {
     shopifyRefundOrderPayloadFixture,
@@ -29,7 +30,7 @@ describe('<OrderTotals/>', () => {
 
     describe('render()', () => {
         it('should render as loading', () => {
-            const {container} = render(
+            const { container } = render(
                 <OrderTotals
                     editable
                     hasShippingLine={false}
@@ -39,14 +40,14 @@ describe('<OrderTotals/>', () => {
                     refund={refund}
                     onPayloadChange={onPayloadChange}
                     hasMultipleGateways={false}
-                />
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render as not loading', () => {
-            const {container} = render(
+            const { container } = render(
                 <OrderTotals
                     editable
                     hasShippingLine={false}
@@ -56,7 +57,7 @@ describe('<OrderTotals/>', () => {
                     refund={refund}
                     onPayloadChange={onPayloadChange}
                     hasMultipleGateways={false}
-                />
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -68,7 +69,7 @@ describe('<OrderTotals/>', () => {
                 .setIn(['shipping', 'amount'], '9.99')
                 .setIn(['shipping', 'maximum_refundable'], '9.99')
 
-            const {container} = render(
+            const { container } = render(
                 <OrderTotals
                     editable
                     hasShippingLine
@@ -78,7 +79,7 @@ describe('<OrderTotals/>', () => {
                     refund={refund}
                     onPayloadChange={onPayloadChange}
                     hasMultipleGateways={false}
-                />
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -100,7 +101,7 @@ describe('<OrderTotals/>', () => {
                     refund={refund}
                     onPayloadChange={onPayloadChange}
                     hasMultipleGateways={true}
-                />
+                />,
             )
 
             screen.getAllByRole('spinbutton').forEach((textbox) => {
@@ -122,11 +123,11 @@ describe('<OrderTotals/>', () => {
                     refund={refund}
                     onPayloadChange={onPayloadChange}
                     hasMultipleGateways={true}
-                />
+                />,
             )
 
             fireEvent.mouseOver(
-                screen.getByLabelText('Order with multiple gateways warning')
+                screen.getByLabelText('Order with multiple gateways warning'),
             )
 
             await waitFor(() => {
@@ -146,11 +147,11 @@ describe('<OrderTotals/>', () => {
                     refund={refund}
                     onPayloadChange={onPayloadChange}
                     hasMultipleGateways={false}
-                />
+                />,
             )
 
             fireEvent.mouseOver(
-                screen.getByLabelText('Order with multiple gateways warning')
+                screen.getByLabelText('Order with multiple gateways warning'),
             )
 
             await waitFor(() => {
@@ -166,7 +167,7 @@ describe('<OrderTotals/>', () => {
                 .setIn(['shipping', 'amount'], '9.99')
                 .setIn(['shipping', 'maximum_refundable'], '9.99')
 
-            const {getByLabelText} = render(
+            const { getByLabelText } = render(
                 <OrderTotals
                     editable
                     hasShippingLine
@@ -176,11 +177,11 @@ describe('<OrderTotals/>', () => {
                     refund={refund}
                     onPayloadChange={onPayloadChange}
                     hasMultipleGateways={false}
-                />
+                />,
             )
 
             fireEvent.change(getByLabelText(/Shipping/i), {
-                target: {value: '9.00'},
+                target: { value: '9.00' },
             })
 
             const newPayload = payload.setIn(['shipping', 'amount'], '9.00')
@@ -193,7 +194,7 @@ describe('<OrderTotals/>', () => {
                 .setIn(['shipping', 'amount'], '9.00')
                 .setIn(['shipping', 'maximum_refundable'], '9.00')
 
-            const {getByLabelText} = render(
+            const { getByLabelText } = render(
                 <OrderTotals
                     editable
                     hasShippingLine
@@ -203,11 +204,11 @@ describe('<OrderTotals/>', () => {
                     refund={refund}
                     onPayloadChange={onPayloadChange}
                     hasMultipleGateways={false}
-                />
+                />,
             )
 
             fireEvent.change(getByLabelText(/Shipping/i), {
-                target: {value: '9'},
+                target: { value: '9' },
             })
 
             expect(onPayloadChange).not.toHaveBeenCalled()

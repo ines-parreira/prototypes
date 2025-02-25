@@ -1,4 +1,4 @@
-import {fromJS, Map} from 'immutable'
+import { fromJS, Map } from 'immutable'
 
 import shopifyEvent from '../shopify'
 
@@ -22,7 +22,7 @@ describe('shopifyEvent', () => {
     it('Should return a draftOrder broken event if actionConfig is a draftOrder', () => {
         const event = shopifyEvent({
             integration: Map(),
-            actionConfig: {...actionConfig, objectType: 'draftOrder'},
+            actionConfig: { ...actionConfig, objectType: 'draftOrder' },
             payload: Map(),
             data: Map(),
         })
@@ -41,7 +41,7 @@ describe('shopifyEvent', () => {
                     shop_name: 'shop_name',
                 },
             }),
-            actionConfig: {...actionConfig, objectType: 'draftOrder'},
+            actionConfig: { ...actionConfig, objectType: 'draftOrder' },
             payload: fromJS({
                 draft_order_id: 1,
                 draft_order_name: 'draft_order_name',
@@ -72,7 +72,7 @@ describe('shopifyEvent', () => {
     it('Should return a broke order event if actionConfig is a order', () => {
         const event = shopifyEvent({
             integration: Map(),
-            actionConfig: {...actionConfig, objectType: 'order'},
+            actionConfig: { ...actionConfig, objectType: 'order' },
             payload: fromJS({
                 order_id: 1,
             }),
@@ -93,7 +93,7 @@ describe('shopifyEvent', () => {
                     shop_name: 'shop_name',
                 },
             }),
-            actionConfig: {...actionConfig, objectType: 'order'},
+            actionConfig: { ...actionConfig, objectType: 'order' },
             payload: fromJS({
                 order_id: 1,
             }),
@@ -116,7 +116,7 @@ describe('shopifyEvent', () => {
     it('Should return a broke item event if actionConfig is a item', () => {
         const event = shopifyEvent({
             integration: Map(),
-            actionConfig: {...actionConfig, objectType: 'item'},
+            actionConfig: { ...actionConfig, objectType: 'item' },
             payload: fromJS({
                 order_id: 1,
             }),
@@ -137,7 +137,7 @@ describe('shopifyEvent', () => {
                     shop_name: 'shop_name',
                 },
             }),
-            actionConfig: {...actionConfig, objectType: 'item'},
+            actionConfig: { ...actionConfig, objectType: 'item' },
             payload: fromJS({
                 order_id: 1,
                 item_id: 1,

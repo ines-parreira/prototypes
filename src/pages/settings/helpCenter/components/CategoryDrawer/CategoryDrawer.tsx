@@ -1,9 +1,9 @@
-import React, {useEffect} from 'react'
+import React, { useEffect } from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
-import {useModalManager} from 'hooks/useModalManager'
+import { useModalManager } from 'hooks/useModalManager'
 import {
     Category,
     CreateCategoryDto,
@@ -11,32 +11,31 @@ import {
     LocaleCode,
     UpdateCategoryTranslationDto,
 } from 'models/helpCenter/types'
-import {HelpCenterCategoryEdit} from 'pages/settings/helpCenter/components/HelpCenterCategoryEdit'
+import { HelpCenterCategoryEdit } from 'pages/settings/helpCenter/components/HelpCenterCategoryEdit'
 import {
     HELP_CENTER_DEFAULT_LOCALE,
     MODALS,
 } from 'pages/settings/helpCenter/constants'
-import {useCategoriesActions} from 'pages/settings/helpCenter/hooks/useCategoriesActions'
+import { useCategoriesActions } from 'pages/settings/helpCenter/hooks/useCategoriesActions'
 import {
     getCategoryById,
     updateCategoryTranslation,
 } from 'state/entities/helpCenter/categories'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {changeViewLanguage, getViewLanguage} from 'state/ui/helpCenter'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { changeViewLanguage, getViewLanguage } from 'state/ui/helpCenter'
+import { reportError } from 'utils/errors'
 
-import {reportError} from 'utils/errors'
-
-import {useSearchContext} from '../../providers/SearchContext'
-import {getGenericMessageFromError} from '../../utils'
+import { useSearchContext } from '../../providers/SearchContext'
+import { getGenericMessageFromError } from '../../utils'
 
 type Props = {
     helpCenter: HelpCenter
 }
 
-export const CategoryDrawer: React.FC<Props> = ({helpCenter}: Props) => {
+export const CategoryDrawer: React.FC<Props> = ({ helpCenter }: Props) => {
     const dispatch = useAppDispatch()
-    const {isOpen, closeModal, getParams} = useModalManager(MODALS.CATEGORY)
+    const { isOpen, closeModal, getParams } = useModalManager(MODALS.CATEGORY)
     // @ts-expect-error
     const params: Category & {
         isCreate?: boolean
@@ -44,23 +43,24 @@ export const CategoryDrawer: React.FC<Props> = ({helpCenter}: Props) => {
     } = getParams()
     const category = useAppSelector(getCategoryById(params?.id))
     const categoriesActions = useCategoriesActions()
-    const {setSearchInput} = useSearchContext()
+    const { setSearchInput } = useSearchContext()
     const viewLanguage =
         useAppSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
 
-    const [{loading, value: translation}, getCategoryTranslation] = useAsyncFn(
-        (categoryId: number, locale: LocaleCode) => {
-            if (category?.available_locales.includes(locale)) {
-                return categoriesActions.getCategoryTranslation(
-                    categoryId,
-                    locale
-                )
-            }
+    const [{ loading, value: translation }, getCategoryTranslation] =
+        useAsyncFn(
+            (categoryId: number, locale: LocaleCode) => {
+                if (category?.available_locales.includes(locale)) {
+                    return categoriesActions.getCategoryTranslation(
+                        categoryId,
+                        locale,
+                    )
+                }
 
-            return Promise.resolve(undefined)
-        },
-        [category, categoriesActions]
-    )
+                return Promise.resolve(undefined)
+            },
+            [category, categoriesActions],
+        )
 
     useEffect(() => {
         if (!category?.id || !category.translation) {
@@ -79,7 +79,7 @@ export const CategoryDrawer: React.FC<Props> = ({helpCenter}: Props) => {
             if (category.translation.locale !== viewLanguage) {
                 const translation = await getCategoryTranslation(
                     category.id,
-                    viewLanguage
+                    viewLanguage,
                 )
 
                 if (translation !== undefined) {
@@ -95,7 +95,7 @@ export const CategoryDrawer: React.FC<Props> = ({helpCenter}: Props) => {
 
     const handleOnSave = async (
         payload: UpdateCategoryTranslationDto,
-        locale: LocaleCode
+        locale: LocaleCode,
     ) => {
         try {
             if (category?.available_locales.includes(locale)) {
@@ -103,7 +103,7 @@ export const CategoryDrawer: React.FC<Props> = ({helpCenter}: Props) => {
                 await categoriesActions.updateCategoryTranslation(
                     params.id,
                     locale,
-                    payload
+                    payload,
                 )
             } else {
                 // Create translation
@@ -125,7 +125,7 @@ export const CategoryDrawer: React.FC<Props> = ({helpCenter}: Props) => {
                 notify({
                     message: 'Category updated with success',
                     status: NotificationStatus.Success,
-                })
+                }),
             )
 
             closeModal()
@@ -137,7 +137,7 @@ export const CategoryDrawer: React.FC<Props> = ({helpCenter}: Props) => {
                 notify({
                     message: `Failed to save the category: ${errorMessage}`,
                     status: NotificationStatus.Error,
-                })
+                }),
             )
 
             reportError(err as Error)
@@ -152,7 +152,7 @@ export const CategoryDrawer: React.FC<Props> = ({helpCenter}: Props) => {
                 notify({
                     message: 'Category created with success',
                     status: NotificationStatus.Success,
-                })
+                }),
             )
 
             closeModal()
@@ -164,7 +164,7 @@ export const CategoryDrawer: React.FC<Props> = ({helpCenter}: Props) => {
                 notify({
                     message: `Failed to create the category: ${errorMessage}`,
                     status: NotificationStatus.Error,
-                })
+                }),
             )
 
             reportError(err as Error)
@@ -179,7 +179,7 @@ export const CategoryDrawer: React.FC<Props> = ({helpCenter}: Props) => {
                 notify({
                     message: 'Category deleted with success',
                     status: NotificationStatus.Success,
-                })
+                }),
             )
             closeModal()
             setSearchInput('')
@@ -188,7 +188,7 @@ export const CategoryDrawer: React.FC<Props> = ({helpCenter}: Props) => {
                 notify({
                     message: 'Failed to delete the category',
                     status: NotificationStatus.Error,
-                })
+                }),
             )
 
             reportError(err as Error)
@@ -197,19 +197,19 @@ export const CategoryDrawer: React.FC<Props> = ({helpCenter}: Props) => {
 
     const handleOnDeleteTranslation = async (
         categoryId: number,
-        locale: LocaleCode
+        locale: LocaleCode,
     ) => {
         try {
             await categoriesActions.deleteCategoryTranslation(
                 categoryId,
-                locale
+                locale,
             )
 
             void dispatch(
                 notify({
                     message: 'Category translation deleted with success',
                     status: NotificationStatus.Success,
-                })
+                }),
             )
             setSearchInput('')
         } catch (err) {
@@ -217,7 +217,7 @@ export const CategoryDrawer: React.FC<Props> = ({helpCenter}: Props) => {
                 notify({
                     message: 'Failed to delete category translation',
                     status: NotificationStatus.Error,
-                })
+                }),
             )
 
             reportError(err as Error)

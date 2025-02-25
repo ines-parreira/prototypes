@@ -1,9 +1,3 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import * as Sentry from '@sentry/react'
-import classnames from 'classnames'
-import {List, Map} from 'immutable'
-import _isNumber from 'lodash/isNumber'
-import pluralize from 'pluralize'
 import React, {
     MouseEvent,
     useCallback,
@@ -13,6 +7,12 @@ import React, {
     useRef,
     useState,
 } from 'react'
+
+import * as Sentry from '@sentry/react'
+import classnames from 'classnames'
+import { List, Map } from 'immutable'
+import _isNumber from 'lodash/isNumber'
+import pluralize from 'pluralize'
 import {
     ButtonDropdown,
     Card,
@@ -23,18 +23,20 @@ import {
     DropdownToggle,
 } from 'reactstrap'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {getConfigByName} from 'config/views'
-import {useFlag} from 'core/flags'
-import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { getConfigByName } from 'config/views'
+import { useFlag } from 'core/flags'
+import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
 import usePrevious from 'hooks/usePrevious'
 import useUnmount from 'hooks/useUnmount'
 import useUpdateEffect from 'hooks/useUpdateEffect'
-import {JobType} from 'models/job/types'
+import { JobType } from 'models/job/types'
 import {
     EntityType,
     View,
@@ -48,23 +50,23 @@ import IconButton from 'pages/common/components/button/IconButton'
 import Group from 'pages/common/components/layout/Group'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
-import {Separator} from 'pages/common/components/Separator/Separator'
+import { Separator } from 'pages/common/components/Separator/Separator'
 import ViewSharingButton from 'pages/common/components/ViewSharing/ViewSharingButton'
 import withCancellableRequest, {
     CancellableRequestInjectedProps,
 } from 'pages/common/utils/withCancellableRequest'
 import history from 'pages/history'
-import {useSplitTicketView} from 'split-ticket-view-toggle'
-import {getCurrentUser} from 'state/currentUser/selectors'
+import { useSplitTicketView } from 'split-ticket-view-toggle'
+import { getCurrentUser } from 'state/currentUser/selectors'
 import {
     viewCreated,
     viewDeleted,
     viewUpdated,
 } from 'state/entities/views/actions'
-import {getSchemas} from 'state/schemas/selectors'
-import {getTickets} from 'state/tickets/selectors'
-import {GorgiasAction} from 'state/types'
-import {activeViewIdSet} from 'state/ui/views/actions'
+import { getSchemas } from 'state/schemas/selectors'
+import { getTickets } from 'state/tickets/selectors'
+import { GorgiasAction } from 'state/types'
+import { activeViewIdSet } from 'state/ui/views/actions'
 import {
     addFieldFilter,
     createJob,
@@ -79,20 +81,20 @@ import {
 } from 'state/views/constants'
 import {
     areFiltersValid as getAreFiltersValid,
+    isDirty as getIsViewDirty,
     getLastViewId,
     getNavigation,
     getPristineActiveView,
     getViewIdToDisplay,
-    isDirty as getIsViewDirty,
 } from 'state/views/selectors'
-import {FetchViewItemsOptions} from 'state/views/types'
-import {fieldPath, getDefaultOperator, slugify} from 'utils'
-import {reportError} from 'utils/errors'
+import { FetchViewItemsOptions } from 'state/views/types'
+import { fieldPath, getDefaultOperator, slugify } from 'utils'
+import { reportError } from 'utils/errors'
 
-import {AddFilterDropdown} from './AddFilterDropdown'
-
-import {getDefaultCustomFieldOperator} from './Filters/utils'
+import { AddFilterDropdown } from './AddFilterDropdown'
+import { getDefaultCustomFieldOperator } from './Filters/utils'
 import Filters from './Filters/ViewFilters'
+
 import css from './FilterTopbar.less'
 
 type Props = {
@@ -130,7 +132,7 @@ export const FilterTopbar = ({
     const schemas = useAppSelector(getSchemas)
     const tickets = useAppSelector(getTickets)
     const suggestedPreviousViewId = useAppSelector((state) =>
-        getViewIdToDisplay(state)(ViewType.TicketList, lastViewId?.toString())
+        getViewIdToDisplay(state)(ViewType.TicketList, lastViewId?.toString()),
     )
     const navigationMeta = useAppSelector(getNavigation)
     const customFields = useCustomFieldDefinitions({
@@ -142,7 +144,7 @@ export const FilterTopbar = ({
     const activeCustomFields = useMemo(() => {
         return (
             customFields.data?.data.filter(
-                (field) => !field.deactivated_datetime
+                (field) => !field.deactivated_datetime,
             ) || []
         )
     }, [customFields.data?.data])
@@ -162,18 +164,18 @@ export const FilterTopbar = ({
                       }`,
                   }
                 : undefined,
-        [activeView, orderBy]
+        [activeView, orderBy],
     ) as FetchViewItemsOptions
     const searchOptions = useMemo(
         () =>
             isTrackTotalHitsEnabled && isSearch && type === EntityType.Ticket
-                ? {trackTotalHits: true}
+                ? { trackTotalHits: true }
                 : {},
-        [isTrackTotalHitsEnabled, isSearch, type]
+        [isTrackTotalHitsEnabled, isSearch, type],
     )
     const combinedFetchParams = useMemo(
-        () => ({...fetchParams, ...searchOptions}),
-        [fetchParams, searchOptions]
+        () => ({ ...fetchParams, ...searchOptions }),
+        [fetchParams, searchOptions],
     )
     const {
         setIsEnabled: setSplitTicketView,
@@ -194,7 +196,7 @@ export const FilterTopbar = ({
             setShouldRedirectToSplitView,
             setSplitTicketView,
             shouldRedirectToSplitView,
-        ]
+        ],
     )
 
     useUpdateEffect(() => {
@@ -211,19 +213,19 @@ export const FilterTopbar = ({
                 undefined,
                 undefined,
                 searchRank,
-                combinedFetchParams
+                combinedFetchParams,
             )
         }
     }, [activeView, areFiltersValid, previousActiveView])
 
-    const [{loading: isSubmitting}, submitView] = useAsyncFn(
+    const [{ loading: isSubmitting }, submitView] = useAsyncFn(
         async (view: Map<any, any>) => {
             try {
                 const resp = await dispatch(submitViewAction(view))
 
                 if (
                     [SUBMIT_UPDATE_VIEW_ERROR, SUBMIT_NEW_VIEW_ERROR].includes(
-                        (resp as GorgiasAction).type
+                        (resp as GorgiasAction).type,
                     )
                 ) {
                     return
@@ -243,7 +245,7 @@ export const FilterTopbar = ({
                 reportError(error)
             }
         },
-        []
+        [],
     )
 
     const handleClickUpdate = async () => {
@@ -277,23 +279,23 @@ export const FilterTopbar = ({
 
         if (newActiveView.get('visibility') === ViewVisibility.Shared) {
             const sharedWithUsers = newActiveView.get(
-                'shared_with_users'
+                'shared_with_users',
             ) as List<any>
             newActiveView = newActiveView.set(
                 'shared_with_users',
                 sharedWithUsers.map(
-                    (user: Map<any, any>) => user.get('id') as number
-                )
+                    (user: Map<any, any>) => user.get('id') as number,
+                ),
             )
 
             const sharedWithTeams = newActiveView.get(
-                'shared_with_teams'
+                'shared_with_teams',
             ) as List<any>
             newActiveView = newActiveView.set(
                 'shared_with_teams',
                 sharedWithTeams.map(
-                    (team: Map<any, any>) => team.get('id') as number
-                )
+                    (team: Map<any, any>) => team.get('id') as number,
+                ),
             )
         }
 
@@ -315,7 +317,7 @@ export const FilterTopbar = ({
 
             dispatch(addFieldFilter(field.toJS(), filter))
         },
-        [dispatch, schemas, firstCustomField, config]
+        [dispatch, schemas, firstCustomField, config],
     )
 
     const cancel = () => {
@@ -327,7 +329,7 @@ export const FilterTopbar = ({
             history.push(
                 `/app/${config.get('routeList') as string}/${
                     suggestedPreviousViewId || ''
-                }`
+                }`,
             )
         }
     }
@@ -358,19 +360,19 @@ export const FilterTopbar = ({
                 setShowNoChangeFeedback(true)
                 timeoutChangeFeedbackRef.current = window.setTimeout(
                     () => setShowNoChangeFeedback(false),
-                    2000
+                    2000,
                 )
                 e.stopPropagation()
             }
         },
-        [isViewDirty]
+        [isViewDirty],
     )
 
     const isSystemView = ViewCategory.System === activeView.get('category')
 
     useUnmount(cancelFetchViewItemsCancellable)
 
-    const [{loading: isLaunchingJob}, createExportTicketJob] =
+    const [{ loading: isLaunchingJob }, createExportTicketJob] =
         useAsyncFn(async () => {
             logEvent(SegmentEvent.TicketExport, {
                 type: 'views-export-button',
@@ -379,7 +381,7 @@ export const FilterTopbar = ({
         }, [dispatch, activeView])
 
     const isTicketFieldsViewFilterEnabled = useFlag(
-        FeatureFlagKey.FilterSearchViewsByTicketFields
+        FeatureFlagKey.FilterSearchViewsByTicketFields,
     )
 
     const filterableFields = (config.get('fields') as List<any>)
@@ -390,7 +392,7 @@ export const FilterTopbar = ({
                     field.getIn(['filter', 'showInModes'], []) as string[]
                 ).includes('search')
                     ? isSearch && isTicketFieldsViewFilterEnabled
-                    : true)
+                    : true),
         )
         .sortBy((field: Map<any, any>) => field.get('title') as string)
 
@@ -512,7 +514,7 @@ export const FilterTopbar = ({
                                                 id="arrow-save-view-button"
                                                 onClick={() =>
                                                     toggleDropdownOpen(
-                                                        !isDropdownOpen
+                                                        !isDropdownOpen,
                                                     )
                                                 }
                                                 isDisabled={
@@ -575,7 +577,7 @@ export const FilterTopbar = ({
                                         css.updateViewFeedback,
                                         {
                                             [css.visible]: showNoChangeFeedback,
-                                        }
+                                        },
                                     )}
                                 >
                                     No changes have been made.
@@ -593,10 +595,10 @@ export const FilterTopbar = ({
                                     }
                                     onConfirm={async () => {
                                         const destinationView = await dispatch(
-                                            deleteView(activeView)
+                                            deleteView(activeView),
                                         )
                                         dispatch(
-                                            viewDeleted(activeView.get('id'))
+                                            viewDeleted(activeView.get('id')),
                                         )
                                         dispatch(
                                             activeViewIdSet(
@@ -605,8 +607,8 @@ export const FilterTopbar = ({
                                                         any,
                                                         any
                                                     >
-                                                ).get('id')
-                                            )
+                                                ).get('id'),
+                                            ),
                                         )
                                     }}
                                     leadingIcon="delete"
@@ -628,5 +630,5 @@ export default withCancellableRequest<
     typeof fetchViewItems
 >(
     'fetchViewItemsCancellable',
-    fetchViewItems
+    fetchViewItems,
 )(FilterTopbar)

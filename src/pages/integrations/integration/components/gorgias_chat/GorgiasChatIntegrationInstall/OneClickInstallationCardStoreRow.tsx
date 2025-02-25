@@ -1,7 +1,9 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
 import React from 'react'
-import {Button} from 'reactstrap'
+
+import classnames from 'classnames'
+import { Button } from 'reactstrap'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import warningIcon from 'assets/img/icons/warning.svg'
 import shopifyLogo from 'assets/img/integrations/shopify.png'
@@ -20,7 +22,10 @@ interface Props {
     onUninstall: (targetIntegrationId: number) => void
     onDisconnect: (targetIntegrationId: number) => void
     loading: {
-        [key: string]: {installation?: boolean; disconnection?: boolean} | null
+        [key: string]: {
+            installation?: boolean
+            disconnection?: boolean
+        } | null
     }
 }
 
@@ -41,7 +46,7 @@ export const OneClickInstallationCardStoreRow = ({
         {
             isLegacyInstallation,
             isIntegrationDeactivated,
-        }: {isLegacyInstallation: boolean; isIntegrationDeactivated: boolean}
+        }: { isLegacyInstallation: boolean; isIntegrationDeactivated: boolean },
     ) => {
         if (isIntegrationDeactivated) {
             return (
@@ -91,12 +96,12 @@ export const OneClickInstallationCardStoreRow = ({
 
     const isInstallationLoading = Boolean(
         loading[targetIntegrationId] &&
-            loading[targetIntegrationId]?.installation
+            loading[targetIntegrationId]?.installation,
     )
 
     const isDisconnectionLoading = Boolean(
         loading[targetIntegrationId] &&
-            loading[targetIntegrationId]?.disconnection
+            loading[targetIntegrationId]?.disconnection,
     )
 
     return (

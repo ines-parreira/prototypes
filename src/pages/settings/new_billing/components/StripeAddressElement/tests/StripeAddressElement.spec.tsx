@@ -1,8 +1,9 @@
-import {AddressElement} from '@stripe/react-stripe-js'
-import {render, screen, waitFor} from '@testing-library/react'
 import React from 'react'
 
-import {StripeAddressElement} from '../StripeAddressElement'
+import { AddressElement } from '@stripe/react-stripe-js'
+import { render, screen, waitFor } from '@testing-library/react'
+
+import { StripeAddressElement } from '../StripeAddressElement'
 
 jest.mock('@stripe/react-stripe-js', () => ({
     AddressElement: jest
@@ -21,12 +22,12 @@ describe('StripeAddressElement', () => {
                 {
                     options: {
                         mode: 'billing',
-                        fields: {phone: 'always'},
-                        display: {name: 'organization'},
-                        validation: {phone: {required: 'never'}},
+                        fields: { phone: 'always' },
+                        display: { name: 'organization' },
+                        validation: { phone: { required: 'never' } },
                     },
                 },
-                {}
+                {},
             )
         })
     })

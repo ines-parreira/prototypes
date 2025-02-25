@@ -1,8 +1,8 @@
-import React, {useRef, useState, useCallback} from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 
-import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
+import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
-import {WorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
+import { WorkflowEditorContext } from 'pages/automate/workflows/hooks/useWorkflowEditor'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
@@ -28,10 +28,10 @@ export default function NodeDeleteIcon({
     hasMultipleChildren,
     hasVariablesUsedInChildren,
 }: VisualBuilderDeleteProps) {
-    const {data: steps = []} = useGetWorkflowConfigurationTemplates({
+    const { data: steps = [] } = useGetWorkflowConfigurationTemplates({
         triggers: ['reusable-llm-prompt'],
     })
-    const {apps} = useApps()
+    const { apps } = useApps()
 
     const [isNodeMenuDropdownOpen, setIsNodeMenuDropdownOpen] = useState(false)
 
@@ -52,7 +52,7 @@ export default function NodeDeleteIcon({
             buttonProps: {
                 intent: 'destructive',
             },
-            cancelButtonProps: {intent: 'secondary'},
+            cancelButtonProps: { intent: 'secondary' },
             showCancelButton: true,
         }
 
@@ -103,7 +103,7 @@ export default function NodeDeleteIcon({
 
     return (
         <ConfirmationPopover {...getConfirmationPopoverProps()}>
-            {({uid, onDisplayConfirmation}) => (
+            {({ uid, onDisplayConfirmation }) => (
                 <>
                     <div
                         ref={ref}

@@ -1,5 +1,6 @@
-import classNames from 'classnames'
 import React from 'react'
+
+import classNames from 'classnames'
 
 import css from './SteppedNavBar.less'
 
@@ -13,7 +14,7 @@ type Props = {
     activeStep: number
 }
 
-export default function SteppedNavBar({steps, activeStep}: Props) {
+export default function SteppedNavBar({ steps, activeStep }: Props) {
     return (
         <div className={css.container}>
             <div className={css.line} />
@@ -30,7 +31,7 @@ export default function SteppedNavBar({steps, activeStep}: Props) {
                                 <i
                                     className={classNames(
                                         'material-icons',
-                                        css.number
+                                        css.number,
                                     )}
                                     data-testid="check-icon"
                                 >

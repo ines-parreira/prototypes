@@ -1,16 +1,16 @@
-import {screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {billingState} from 'fixtures/billing'
-import {RootState, StoreDispatch} from 'state/types'
-import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
+import { billingState } from 'fixtures/billing'
+import { RootState, StoreDispatch } from 'state/types'
+import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
-import {useDisplayAiAgentMovedBanner} from '../../hooks/useDisplayAiAgentMovedBanner'
-
+import { useDisplayAiAgentMovedBanner } from '../../hooks/useDisplayAiAgentMovedBanner'
 import AutomateLandingPage from '../AutomateLandingPage'
 
 jest.mock('hooks/useCallbackRef', () => jest.fn(() => [null, jest.fn()]))
@@ -52,7 +52,7 @@ describe('AutomateLandingPage', () => {
         renderWithQueryClientProvider(
             <Provider store={store}>
                 <AutomateLandingPage />
-            </Provider>
+            </Provider>,
         )
         expect(screen.getByText('Overview')).toBeInTheDocument()
     })
@@ -63,7 +63,7 @@ describe('AutomateLandingPage', () => {
         renderWithQueryClientProvider(
             <Provider store={store}>
                 <AutomateLandingPage />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('AI Agent Moved Banner')).toBeInTheDocument()
@@ -75,11 +75,11 @@ describe('AutomateLandingPage', () => {
         renderWithQueryClientProvider(
             <Provider store={store}>
                 <AutomateLandingPage />
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            screen.queryByText('AI Agent Moved Banner')
+            screen.queryByText('AI Agent Moved Banner'),
         ).not.toBeInTheDocument()
     })
 })

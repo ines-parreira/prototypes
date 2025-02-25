@@ -1,9 +1,10 @@
-import {CursorPaginationMeta} from '@gorgias/api-queries'
-import {useCallback, useEffect, useMemo, useState} from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+
+import { CursorPaginationMeta } from '@gorgias/api-queries'
 
 import TicketUpdatesManager from '../TicketUpdatesManager'
-import {TicketPartial} from '../types'
-import {SortOrder} from './useSortOrder'
+import { TicketPartial } from '../types'
+import { SortOrder } from './useSortOrder'
 
 type State = {
     cursor: CursorPaginationMeta['next_cursor']
@@ -13,9 +14,9 @@ type State = {
 
 export default function useTicketPartials(
     viewId: number,
-    sortOrder: SortOrder
+    sortOrder: SortOrder,
 ) {
-    const [{cursor, initialLoaded, partials}, setState] = useState<State>({
+    const [{ cursor, initialLoaded, partials }, setState] = useState<State>({
         cursor: null,
         initialLoaded: false,
         partials: [],
@@ -23,19 +24,24 @@ export default function useTicketPartials(
 
     const client = useMemo(
         () => new TicketUpdatesManager(viewId, sortOrder),
-        [sortOrder, viewId]
+        [sortOrder, viewId],
     )
 
     useEffect(
         () =>
             client.subscribe((partials, cursor) => {
-                setState((s) => ({...s, cursor, partials, initialLoaded: true}))
+                setState((s) => ({
+                    ...s,
+                    cursor,
+                    partials,
+                    initialLoaded: true,
+                }))
             }),
-        [client]
+        [client],
     )
 
     useEffect(() => {
-        setState((s) => ({...s, initialLoaded: false}))
+        setState((s) => ({ ...s, initialLoaded: false }))
     }, [viewId])
 
     const loadMore = useCallback(() => {
@@ -54,6 +60,6 @@ export default function useTicketPartials(
             resumeUpdates: client.resume,
             setLatest: client.setLatest,
         }),
-        [client, cursor, initialLoaded, loadMore, partials]
+        [client, cursor, initialLoaded, loadMore, partials],
     )
 }

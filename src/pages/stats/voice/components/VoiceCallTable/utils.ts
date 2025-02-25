@@ -1,14 +1,14 @@
-import {ComponentProps} from 'react'
+import { ComponentProps } from 'react'
 
-import {VoiceCallDimension} from 'models/reporting/cubes/VoiceCallCube'
+import { VoiceCallDimension } from 'models/reporting/cubes/VoiceCallCube'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import {VoiceAgentsMetric, VoiceMetric} from 'state/ui/stats/types'
+import { VoiceAgentsMetric, VoiceMetric } from 'state/ui/stats/types'
 
-import {VoiceCallTableColumnName} from './constants'
+import { VoiceCallTableColumnName } from './constants'
 
 export const getVoiceDrillDownColumns = (
-    metricName?: string
+    metricName?: string,
 ): VoiceCallTableColumnName[] => {
     switch (metricName) {
         case VoiceMetric.AverageWaitTime:
@@ -78,7 +78,7 @@ export const filterAndOrderCells = <
     T extends typeof BodyCell | typeof HeaderCellProperty,
 >(
     allColumns: Record<VoiceCallTableColumnName, Pick<Cell<T>, 'props'>>,
-    requiredColumns: VoiceCallTableColumnName[] = getVoiceDrillDownColumns()
+    requiredColumns: VoiceCallTableColumnName[] = getVoiceDrillDownColumns(),
 ): Cell<T>[] => {
     const result = requiredColumns.map((columnName) => {
         const cellProps = allColumns[columnName]
@@ -94,7 +94,7 @@ export const filterAndOrderCells = <
 }
 
 export const voiceCallTableColumnNameToDimension = (
-    columnName: VoiceCallTableColumnName
+    columnName: VoiceCallTableColumnName,
 ): VoiceCallDimension | undefined => {
     switch (columnName) {
         case VoiceCallTableColumnName.Integration:
@@ -119,7 +119,7 @@ export const voiceCallTableColumnNameToDimension = (
 }
 
 export const isVoiceCallTableColumnSortable = (
-    columnName: VoiceCallTableColumnName
+    columnName: VoiceCallTableColumnName,
 ): boolean => {
     switch (columnName) {
         case VoiceCallTableColumnName.Activity:

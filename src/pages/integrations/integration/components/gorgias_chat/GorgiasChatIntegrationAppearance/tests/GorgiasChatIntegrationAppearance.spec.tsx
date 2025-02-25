@@ -1,36 +1,35 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {fireEvent, render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
-import {Router} from 'react-router-dom'
+import React, { ComponentProps } from 'react'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
+import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { FeatureFlagKey } from 'config/featureFlags'
 import {
     GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_MEMBERS,
     GORGIAS_CHAT_WIDGET_AVATAR_TYPE_TEAM_PICTURE,
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
 } from 'config/integrations/gorgias_chat'
 import {
-    SHOPIFY_INTEGRATION_TYPE,
     GORGIAS_CHAT_INTEGRATION_TYPE,
+    SHOPIFY_INTEGRATION_TYPE,
 } from 'constants/integration'
-import {entitiesInitialState} from 'fixtures/entities'
-import {user} from 'fixtures/users'
+import { entitiesInitialState } from 'fixtures/entities'
+import { user } from 'fixtures/users'
 import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
 } from 'models/integration/types'
 import history from 'pages/history'
-
 import * as IntegrationsActions from 'state/integrations/actions'
-import {RootState, StoreDispatch} from 'state/types'
+import { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-
-import {GorgiasChatIntegrationAppearanceComponent} from '../GorgiasChatIntegrationAppearance'
+import { GorgiasChatIntegrationAppearanceComponent } from '../GorgiasChatIntegrationAppearance'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 
@@ -48,7 +47,7 @@ jest.mock('pages/common/forms/FileField', () => {
         required: boolean
     }
 
-    const FileFieldMocked = ({required}: MockedProps) => {
+    const FileFieldMocked = ({ required }: MockedProps) => {
         return (
             <div>
                 FileField component is required ? {required ? 'true' : 'false'}
@@ -72,7 +71,7 @@ jest.mock(
     'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader',
     () => () => {
         return <div data-testid="GorgiasChatIntegrationHeader" />
-    }
+    },
 )
 
 const mockClient = mockQueryClient()
@@ -136,33 +135,33 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
 
     describe('render()', () => {
         it('should display correctly when creating a new chat integration', () => {
-            const {container} = render(
+            const { container } = render(
                 <Router history={history}>
                     <QueryClientProvider client={mockClient}>
                         <Provider store={mockStore(defaultState)}>
                             <GorgiasChatIntegrationAppearanceComponent
                                 {...minProps}
-                                loading={fromJS({updateIntegration: false})}
+                                loading={fromJS({ updateIntegration: false })}
                                 integration={fromJS({})}
                                 currentUser={fromJS({})}
                                 isUpdate={false}
                             />
                         </Provider>
                     </QueryClientProvider>
-                </Router>
+                </Router>,
             )
 
             expect(container).toMatchSnapshot()
         })
 
         it('should display correctly when updating an existing integration', () => {
-            const {container} = render(
+            const { container } = render(
                 <Router history={history}>
                     <QueryClientProvider client={mockClient}>
                         <Provider store={mockStore(defaultState)}>
                             <GorgiasChatIntegrationAppearanceComponent
                                 {...minProps}
-                                loading={fromJS({updateIntegration: false})}
+                                loading={fromJS({ updateIntegration: false })}
                                 integration={fromJS({
                                     id: 2,
                                     name: 'hellochatintegration',
@@ -177,20 +176,20 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                             />
                         </Provider>
                     </QueryClientProvider>
-                </Router>
+                </Router>,
             )
 
             expect(container).toMatchSnapshot()
         })
 
         it('should display correctly when integration is loading', () => {
-            const {container} = render(
+            const { container } = render(
                 <Router history={history}>
                     <QueryClientProvider client={mockClient}>
                         <Provider store={mockStore(defaultState)}>
                             <GorgiasChatIntegrationAppearanceComponent
                                 {...minProps}
-                                loading={fromJS({updateIntegration: 2})}
+                                loading={fromJS({ updateIntegration: 2 })}
                                 integration={fromJS({
                                     id: 2,
                                     name: 'hellochatintegration',
@@ -205,7 +204,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                             />
                         </Provider>
                     </QueryClientProvider>
-                </Router>
+                </Router>,
             )
 
             expect(container).toMatchSnapshot()
@@ -215,13 +214,15 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
             'should mark the file field for team picture as required because the avatar type is `team-picture` and ' +
                 'there is no team picture set',
             () => {
-                const {container} = render(
+                const { container } = render(
                     <Router history={history}>
                         <QueryClientProvider client={mockClient}>
                             <Provider store={mockStore(defaultState)}>
                                 <GorgiasChatIntegrationAppearanceComponent
                                     {...minProps}
-                                    loading={fromJS({updateIntegration: false})}
+                                    loading={fromJS({
+                                        updateIntegration: false,
+                                    })}
                                     integration={fromJS({
                                         id: 2,
                                         name: 'hellochatintegration',
@@ -241,24 +242,26 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                                 />
                             </Provider>
                         </QueryClientProvider>
-                    </Router>
+                    </Router>,
                 )
 
                 expect(container).toMatchSnapshot()
-            }
+            },
         )
 
         it(
             'should not mark the file field for team picture as required because the avatar type is `team-picture` but ' +
                 'there is a team picture set',
             () => {
-                const {container} = render(
+                const { container } = render(
                     <Router history={history}>
                         <QueryClientProvider client={mockClient}>
                             <Provider store={mockStore(defaultState)}>
                                 <GorgiasChatIntegrationAppearanceComponent
                                     {...minProps}
-                                    loading={fromJS({updateIntegration: false})}
+                                    loading={fromJS({
+                                        updateIntegration: false,
+                                    })}
                                     integration={fromJS({
                                         id: 2,
                                         name: 'hellochatintegration',
@@ -279,24 +282,26 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                                 />
                             </Provider>
                         </QueryClientProvider>
-                    </Router>
+                    </Router>,
                 )
 
                 expect(container).toMatchSnapshot()
-            }
+            },
         )
 
         it(
             'should not mark the file field for team picture as required because the avatar type is ' +
                 '`team-members`',
             () => {
-                const {container} = render(
+                const { container } = render(
                     <Router history={history}>
                         <QueryClientProvider client={mockClient}>
                             <Provider store={mockStore(defaultState)}>
                                 <GorgiasChatIntegrationAppearanceComponent
                                     {...minProps}
-                                    loading={fromJS({updateIntegration: false})}
+                                    loading={fromJS({
+                                        updateIntegration: false,
+                                    })}
                                     integration={fromJS({
                                         id: 2,
                                         name: 'hellochatintegration',
@@ -316,19 +321,19 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                                 />
                             </Provider>
                         </QueryClientProvider>
-                    </Router>
+                    </Router>,
                 )
 
                 expect(container).toMatchSnapshot()
-            }
+            },
         )
 
         it('should submit and call the createGorgiasChatIntegration with 2nd store name option selected - myStore2 ', () => {
             const mockCreateGorgiasChatIntegration = jest.fn(() =>
-                Promise.resolve()
+                Promise.resolve(),
             )
 
-            const {container} = render(
+            const { container } = render(
                 <Router history={history}>
                     <QueryClientProvider client={mockClient}>
                         <Provider store={mockStore(defaultState)}>
@@ -339,7 +344,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                                         createGorgiasChatIntegration:
                                             mockCreateGorgiasChatIntegration,
                                         deleteIntegration: jest.fn(() =>
-                                            Promise.resolve()
+                                            Promise.resolve(),
                                         ),
                                     } as unknown as typeof IntegrationsActions
                                 }
@@ -400,7 +405,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                                         },
                                     },
                                 ])}
-                                loading={fromJS({updateIntegration: false})}
+                                loading={fromJS({ updateIntegration: false })}
                                 integration={fromJS({
                                     id: 2,
                                     name: 'hellochatintegration',
@@ -415,7 +420,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                             />
                         </Provider>
                     </QueryClientProvider>
-                </Router>
+                </Router>,
             )
 
             expect(container).toMatchSnapshot()
@@ -425,7 +430,9 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
             const addNewChatButton = screen.getByText(/Add new chat/)
 
             fireEvent.click(optionMyStore2)
-            fireEvent.change(chatTitleInput, {target: {value: 'myTestChat'}})
+            fireEvent.change(chatTitleInput, {
+                target: { value: 'myTestChat' },
+            })
             fireEvent.click(addNewChatButton)
 
             expect(mockCreateGorgiasChatIntegration.mock.calls[0])
@@ -486,10 +493,10 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
 
         it('should submit and call the updateOrCreateIntegration', () => {
             const mockUpdateOrCreateIntegration = jest.fn(() =>
-                Promise.resolve()
+                Promise.resolve(),
             )
 
-            const {container} = render(
+            const { container } = render(
                 <Router history={history}>
                     <QueryClientProvider client={mockClient}>
                         <Provider store={mockStore(defaultState)}>
@@ -500,7 +507,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                                         updateOrCreateIntegration:
                                             mockUpdateOrCreateIntegration,
                                         deleteIntegration: jest.fn(() =>
-                                            Promise.resolve()
+                                            Promise.resolve(),
                                         ),
                                     } as unknown as typeof IntegrationsActions
                                 }
@@ -561,7 +568,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                                         },
                                     },
                                 ])}
-                                loading={fromJS({updateIntegration: false})}
+                                loading={fromJS({ updateIntegration: false })}
                                 integration={fromJS({
                                     id: 1,
                                     name: 'myChat1',
@@ -577,7 +584,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                             />
                         </Provider>
                     </QueryClientProvider>
-                </Router>
+                </Router>,
             )
 
             expect(container).toMatchSnapshot()
@@ -585,7 +592,9 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
             const chatTitleInput = screen.getByLabelText('Chat title')
             const saveChangesButton = screen.getByText(/Save changes/)
 
-            fireEvent.change(chatTitleInput, {target: {value: 'myTestChat'}})
+            fireEvent.change(chatTitleInput, {
+                target: { value: 'myTestChat' },
+            })
             fireEvent.click(saveChangesButton)
 
             expect(mockUpdateOrCreateIntegration.mock.calls[0])
@@ -643,11 +652,11 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
 
         it("should preselect shopify integration if there's only one available", () => {
             const mockUpdateOrCreateIntegration = jest.fn(() =>
-                Promise.resolve()
+                Promise.resolve(),
             )
             const shopifyStoreName = 'MY ONLY SHOPIFY STORE'
 
-            const {container} = render(
+            const { container } = render(
                 <Router history={history}>
                     <QueryClientProvider client={mockClient}>
                         <Provider store={mockStore(defaultState)}>
@@ -658,7 +667,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                                         updateOrCreateIntegration:
                                             mockUpdateOrCreateIntegration,
                                         deleteIntegration: jest.fn(() =>
-                                            Promise.resolve()
+                                            Promise.resolve(),
                                         ),
                                     } as unknown as typeof IntegrationsActions
                                 }
@@ -673,14 +682,14 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                                         },
                                     },
                                 ])}
-                                loading={fromJS({updateIntegration: false})}
+                                loading={fromJS({ updateIntegration: false })}
                                 integration={fromJS({})}
                                 currentUser={fromJS({})}
                                 isUpdate={false}
                             />
                         </Provider>
                     </QueryClientProvider>
-                </Router>
+                </Router>,
             )
 
             expect(container).toMatchSnapshot()
@@ -691,13 +700,13 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                 [FeatureFlagKey.ChatAgentAvatarCustomization]: true,
             })
 
-            const {container} = render(
+            const { container } = render(
                 <Router history={history}>
                     <QueryClientProvider client={mockClient}>
                         <Provider store={mockStore(defaultState)}>
                             <GorgiasChatIntegrationAppearanceComponent
                                 {...minProps}
-                                loading={fromJS({updateIntegration: false})}
+                                loading={fromJS({ updateIntegration: false })}
                                 integration={fromJS({
                                     id: 1,
                                     name: 'Acme Chat',
@@ -722,7 +731,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                             />
                         </Provider>
                     </QueryClientProvider>
-                </Router>
+                </Router>,
             )
 
             expect(container).toMatchSnapshot()
@@ -733,13 +742,13 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                 [FeatureFlagKey.ChatHeaderPictureStyle]: true,
             })
 
-            const {container} = render(
+            const { container } = render(
                 <Router history={history}>
                     <QueryClientProvider client={mockClient}>
                         <Provider store={mockStore(defaultState)}>
                             <GorgiasChatIntegrationAppearanceComponent
                                 {...minProps}
-                                loading={fromJS({updateIntegration: false})}
+                                loading={fromJS({ updateIntegration: false })}
                                 integration={fromJS({
                                     id: 1,
                                     name: 'Acme Chat',
@@ -768,7 +777,7 @@ describe('<GorgiasChatIntegrationAppearance/>', () => {
                             />
                         </Provider>
                     </QueryClientProvider>
-                </Router>
+                </Router>,
             )
 
             expect(container).toMatchSnapshot()

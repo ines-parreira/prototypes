@@ -1,9 +1,9 @@
 import React from 'react'
 
-import {PaginationItem} from './components/PaginationItem'
+import { PaginationItem } from './components/PaginationItem'
+import { NavigationSize } from './types/NavigationSize'
 
 import css from './style.less'
-import {NavigationSize} from './types/NavigationSize'
 
 type Props = {
     /**

@@ -1,14 +1,13 @@
-import React, {useCallback} from 'react'
+import React, { useCallback } from 'react'
 
-import {AlertBanner, BannerCategory} from 'AlertBanners'
-
+import { AlertBanner, BannerCategory } from 'AlertBanners'
 import {
     BannerActionTypes,
     useBannersDispatchContext,
 } from 'AlertBanners/Context'
-import {useDismissedStorage} from 'AlertBanners/Storage'
+import { useDismissedStorage } from 'AlertBanners/Storage'
 
-import {banner} from '../hooks/useDisplayAiAgentMovedBanner'
+import { banner } from '../hooks/useDisplayAiAgentMovedBanner'
 
 export function AiAgentMovedBanner() {
     const bannerDispatch = useBannersDispatchContext()
@@ -21,11 +20,11 @@ export function AiAgentMovedBanner() {
                 instanceId,
             })
         },
-        [bannerDispatch]
+        [bannerDispatch],
     )
 
-    const {setDismissed, isBannerDismissed} = useDismissedStorage(
-        updateCurrentTabState
+    const { setDismissed, isBannerDismissed } = useDismissedStorage(
+        updateCurrentTabState,
     )
 
     const isDismissed = isBannerDismissed(banner.category, banner.instanceId)

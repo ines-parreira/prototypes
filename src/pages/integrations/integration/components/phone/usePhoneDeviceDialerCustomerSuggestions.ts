@@ -1,8 +1,10 @@
-import {SearchType, useSearch} from '@gorgias/api-queries'
-import {debounce, isArray} from 'lodash'
-import React, {useCallback, useState} from 'react'
+import React, { useCallback, useState } from 'react'
 
-import {UserSearchResult, isUserSearchResult} from 'models/search/types'
+import { debounce, isArray } from 'lodash'
+
+import { SearchType, useSearch } from '@gorgias/api-queries'
+
+import { isUserSearchResult, UserSearchResult } from 'models/search/types'
 
 const SEARCH_DEBOUNCE_VALUE = 500
 
@@ -19,7 +21,7 @@ export default function usePhoneDeviceDialerCustomerSuggestions({
 }: UseCustomerSuggestionsArgs) {
     const [query, setQuery] = useState('')
 
-    const {isFetching: isSearchingCustomers, data: data} = useSearch(
+    const { isFetching: isSearchingCustomers, data: data } = useSearch(
         {
             type: SearchType.CustomerChannelPhone,
             query,
@@ -29,7 +31,7 @@ export default function usePhoneDeviceDialerCustomerSuggestions({
                 enabled: query.length >= minSearchInputLength,
                 staleTime: 30 * 1000,
             },
-        }
+        },
     )
     const [highlightedResultIndex, setHighlightedResultIndex] = useState<
         number | null
@@ -74,7 +76,7 @@ export default function usePhoneDeviceDialerCustomerSuggestions({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const debouncedSearchCustomers = useCallback(
         debounce(setQuery, SEARCH_DEBOUNCE_VALUE),
-        [setQuery]
+        [setQuery],
     )
 
     return {

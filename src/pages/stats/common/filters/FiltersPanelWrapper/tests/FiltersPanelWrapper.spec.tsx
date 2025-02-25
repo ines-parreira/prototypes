@@ -1,16 +1,16 @@
-import {screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
-
 import React from 'react'
 
-import {UserRole} from 'config/types/user'
+import { screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+
+import { UserRole } from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
-import {FiltersPanelWrapper} from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
+import { FiltersPanelWrapper } from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import {
     emptyFiltersMock,
     filterKeysMock,
 } from 'pages/stats/common/filters/SavedFiltersActions/tests/helpers.spec'
-import {assumeMock, renderWithStore} from 'utils/testing'
+import { assumeMock, renderWithStore } from 'utils/testing'
 
 jest.mock('hooks/useAppSelector', () => jest.fn())
 const useAppSelectorMock = assumeMock(useAppSelector)
@@ -24,7 +24,7 @@ jest.mock(
     'pages/stats/common/filters/SavedFiltersActions/SavedFiltersActions',
     () => ({
         SavedFiltersActions: () => <>SavedFiltersActionsMock</>,
-    })
+    }),
 )
 
 describe('FiltersPanelWrapper', () => {
@@ -34,7 +34,7 @@ describe('FiltersPanelWrapper', () => {
                 role: {
                     name: UserRole.Agent,
                 },
-            })
+            }),
         )
         useAppSelectorMock.mockReturnValueOnce(emptyFiltersMock)
     })
@@ -44,7 +44,7 @@ describe('FiltersPanelWrapper', () => {
 
         expect(screen.getByText(new RegExp('FiltersPanelMock'))).toBeTruthy()
         expect(
-            screen.getByText(new RegExp('MockedSavedFiltersPanel'))
+            screen.getByText(new RegExp('MockedSavedFiltersPanel')),
         ).toBeTruthy()
     })
 
@@ -54,12 +54,12 @@ describe('FiltersPanelWrapper', () => {
                 optionalFilters={filterKeysMock}
                 withSavedFilters={false}
             />,
-            {}
+            {},
         )
 
         expect(screen.getByText(new RegExp('FiltersPanelMock'))).toBeTruthy()
         expect(
-            screen.queryByText(new RegExp('SavedFiltersFormMock'))
+            screen.queryByText(new RegExp('SavedFiltersFormMock')),
         ).toBeFalsy()
     })
 })

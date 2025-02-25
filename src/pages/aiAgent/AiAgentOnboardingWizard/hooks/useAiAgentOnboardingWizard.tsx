@@ -1,28 +1,29 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {useCallback, useMemo, useState} from 'react'
-import {useParams} from 'react-router-dom'
+import { useCallback, useMemo, useState } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { useParams } from 'react-router-dom'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
-import {useSearchParam} from 'hooks/useSearchParam'
+import { useSearchParam } from 'hooks/useSearchParam'
 import {
     AiAgentOnboardingWizardStep,
     AiAgentOnboardingWizardType,
     StoreConfiguration,
 } from 'models/aiAgent/types'
-import {useGetHelpCenterList} from 'models/helpCenter/queries'
-import {HelpCenter} from 'models/helpCenter/types'
-import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import {useConfigurationForm} from 'pages/aiAgent/hooks/useConfigurationForm'
-import {useGetOrCreateSnippetHelpCenter} from 'pages/aiAgent/hooks/useGetOrCreateSnippetHelpCenter'
-import {getFormValuesFromStoreConfiguration} from 'pages/aiAgent/hooks/utils/configurationForm.utils'
-import {useAiAgentStoreConfigurationContext} from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
+import { useGetHelpCenterList } from 'models/helpCenter/queries'
+import { HelpCenter } from 'models/helpCenter/types'
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { useConfigurationForm } from 'pages/aiAgent/hooks/useConfigurationForm'
+import { useGetOrCreateSnippetHelpCenter } from 'pages/aiAgent/hooks/useGetOrCreateSnippetHelpCenter'
+import { getFormValuesFromStoreConfiguration } from 'pages/aiAgent/hooks/utils/configurationForm.utils'
+import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 import history from 'pages/history'
-import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import {
     DEFAULT_FORM_VALUES_WITH_WIZARD,
@@ -32,7 +33,7 @@ import {
     WIZARD_POST_COMPLETION_STATE,
     WIZARD_UPDATE_QUERY_KEY,
 } from '../../constants'
-import {FormValues, UpdateValue, WizardFormValues} from '../../types'
+import { FormValues, UpdateValue, WizardFormValues } from '../../types'
 
 type handleSaveParams = {
     publicUrls?: string[]
@@ -71,22 +72,22 @@ const INITIAL_WIZARD_FORM_VALUES: WizardFormValues = {
 export const useAiAgentOnboardingWizard = ({
     step,
 }: Props): AiAgentOnboardingWizardOutput => {
-    const {shopType, shopName} = useParams<{
+    const { shopType, shopName } = useParams<{
         shopType: string
         shopName: string
     }>()
     const navigateWizardSteps = useNavigateWizardSteps()
-    const {routes} = useAiAgentNavigation({shopName})
+    const { routes } = useAiAgentNavigation({ shopName })
     const [isLoading, setIsLoading] = useState(false)
-    const {storeConfiguration, isLoading: isLoadingStoreConfiguration} =
+    const { storeConfiguration, isLoading: isLoadingStoreConfiguration } =
         useAiAgentStoreConfigurationContext()
     const [wizardUpdate, setWizardUpdate] = useSearchParam(
-        WIZARD_UPDATE_QUERY_KEY
+        WIZARD_UPDATE_QUERY_KEY,
     )
 
     const isStepAfter = (
         registeredStep: AiAgentOnboardingWizardStep,
-        currentStep: AiAgentOnboardingWizardStep
+        currentStep: AiAgentOnboardingWizardStep,
     ) => {
         const stepOrder = [
             AiAgentOnboardingWizardStep.Education,
@@ -102,23 +103,23 @@ export const useAiAgentOnboardingWizard = ({
     const registeredStep = storeConfiguration?.wizard?.stepName
     const isOnWizardUpdate = useMemo(
         () => registeredStep && isStepAfter(registeredStep, step),
-        [registeredStep, step]
+        [registeredStep, step],
     )
 
-    const {data: helpCenterListData, isLoading: isLoadingHelpCenters} =
+    const { data: helpCenterListData, isLoading: isLoadingHelpCenters } =
         useGetHelpCenterList(
-            {type: 'faq', per_page: HELP_CENTER_MAX_CREATION},
+            { type: 'faq', per_page: HELP_CENTER_MAX_CREATION },
             {
                 staleTime: 1000 * 60 * 5,
-            }
+            },
         )
 
     const faqHelpCenters = useMemo(
         () =>
             (helpCenterListData?.data.data ?? []).filter(
-                (hc) => hc.shop_name === shopName || hc.shop_name === null
+                (hc) => hc.shop_name === shopName || hc.shop_name === null,
             ),
-        [helpCenterListData, shopName]
+        [helpCenterListData, shopName],
     )
 
     const currentAccount = useAppSelector(getCurrentAccountState)
@@ -169,7 +170,7 @@ export const useAiAgentOnboardingWizard = ({
     })
 
     const getPostCompletionSearchParams = (
-        state: WIZARD_POST_COMPLETION_STATE
+        state: WIZARD_POST_COMPLETION_STATE,
     ) => {
         const searchParams = new URLSearchParams({
             [WIZARD_POST_COMPLETION_QUERY_KEY]: state,
@@ -177,7 +178,7 @@ export const useAiAgentOnboardingWizard = ({
         return searchParams.toString()
     }
 
-    const aiAgentNavigation = useAiAgentNavigation({shopName})
+    const aiAgentNavigation = useAiAgentNavigation({ shopName })
     const handleAction = (redirectTo: WIZARD_BUTTON_ACTIONS) => {
         if (!shopType || !shopName) return
 
@@ -227,7 +228,7 @@ export const useAiAgentOnboardingWizard = ({
                         ? routes.knowledge
                         : routes.configuration(),
                     search: getPostCompletionSearchParams(
-                        WIZARD_POST_COMPLETION_STATE.configuration
+                        WIZARD_POST_COMPLETION_STATE.configuration,
                     ),
                 })
                 break
@@ -240,7 +241,7 @@ export const useAiAgentOnboardingWizard = ({
                 history.replace({
                     pathname: routes.test,
                     search: getPostCompletionSearchParams(
-                        WIZARD_POST_COMPLETION_STATE.test
+                        WIZARD_POST_COMPLETION_STATE.test,
                     ),
                 })
                 break
@@ -253,7 +254,7 @@ export const useAiAgentOnboardingWizard = ({
                 history.replace({
                     pathname: routes.guidance,
                     search: getPostCompletionSearchParams(
-                        WIZARD_POST_COMPLETION_STATE.guidance
+                        WIZARD_POST_COMPLETION_STATE.guidance,
                     ),
                 })
                 break
@@ -281,7 +282,7 @@ export const useAiAgentOnboardingWizard = ({
                 ...payload,
             }))
         },
-        [setFormValues]
+        [setFormValues],
     )
 
     const handleSave = async ({

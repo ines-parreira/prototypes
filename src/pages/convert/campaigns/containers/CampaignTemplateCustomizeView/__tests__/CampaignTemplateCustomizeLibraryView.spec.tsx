@@ -1,25 +1,26 @@
-import {render, waitFor, screen, act, fireEvent} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
-import routerDom, {BrowserRouter, useParams} from 'react-router-dom'
+
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import routerDom, { BrowserRouter, useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
-import {campaign} from 'fixtures/campaign'
-import {channelConnection} from 'fixtures/channelConnection'
-import {utmConfiguration} from 'fixtures/utmConfiguration'
-import {useListCampaigns} from 'models/convert/campaign/queries'
+import { campaign } from 'fixtures/campaign'
+import { channelConnection } from 'fixtures/channelConnection'
+import { utmConfiguration } from 'fixtures/utmConfiguration'
+import { useListCampaigns } from 'models/convert/campaign/queries'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
-import {useCreateCampaign} from 'pages/convert/campaigns/hooks/useCreateCampaign'
-import {useUpdateCampaign} from 'pages/convert/campaigns/hooks/useUpdateCampaign'
-import {useUtm} from 'pages/convert/campaigns/hooks/useUtm'
-import {CampaignConfigurationBuilder} from 'pages/convert/campaigns/templates/constructor'
-import {LINK_VALUABLE_RESOURCES_TO_HELP_VISITORS} from 'pages/convert/campaigns/templates/library/linkValuableResourcesToHelpVisitors'
-import {SCHEDULE_LIMITED_TIME_OFFER} from 'pages/convert/campaigns/templates/library/scheduledLimitedTimeOffer'
-import {SUGGEST_BUNDLES_WHEN_SINGLE_PRODUCT_IN_CARD} from 'pages/convert/campaigns/templates/library/suggestBundlesWhenSingleItemInCart'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import {useConvertGeneralSettings} from 'pages/stats/convert/hooks/useConvertGeneralSettings'
-import {assumeMock} from 'utils/testing'
+import { useCreateCampaign } from 'pages/convert/campaigns/hooks/useCreateCampaign'
+import { useUpdateCampaign } from 'pages/convert/campaigns/hooks/useUpdateCampaign'
+import { useUtm } from 'pages/convert/campaigns/hooks/useUtm'
+import { CampaignConfigurationBuilder } from 'pages/convert/campaigns/templates/constructor'
+import { LINK_VALUABLE_RESOURCES_TO_HELP_VISITORS } from 'pages/convert/campaigns/templates/library/linkValuableResourcesToHelpVisitors'
+import { SCHEDULE_LIMITED_TIME_OFFER } from 'pages/convert/campaigns/templates/library/scheduledLimitedTimeOffer'
+import { SUGGEST_BUNDLES_WHEN_SINGLE_PRODUCT_IN_CARD } from 'pages/convert/campaigns/templates/library/suggestBundlesWhenSingleItemInCart'
+import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import { useConvertGeneralSettings } from 'pages/stats/convert/hooks/useConvertGeneralSettings'
+import { assumeMock } from 'utils/testing'
 
 import CampaignTemplateCustomizeLibraryView from '../CampaignTemplateCustomizeLibraryView'
 
@@ -34,7 +35,7 @@ jest.mock('pages/convert/campaigns/hooks/useGetPreviewProducts')
 
 jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')
 const useGetOrCreateChannelConnectionMock = assumeMock(
-    useGetOrCreateChannelConnection
+    useGetOrCreateChannelConnection,
 )
 
 jest.mock('models/convert/campaign/queries')
@@ -116,7 +117,7 @@ describe('CampaignTemplateCustomizeView', () => {
         mockUseConvertGeneralSettings.mockReturnValue({
             emailDisclaimer: {
                 enabled: true,
-                disclaimer: {en: 'foo'},
+                disclaimer: { en: 'foo' },
                 disclaimer_default_accepted: true,
             },
             isLoading: false,
@@ -124,7 +125,7 @@ describe('CampaignTemplateCustomizeView', () => {
         useUtmMock.mockReturnValue(utmConfiguration)
         jest.spyOn(
             isConvertSubscriberHook,
-            'useIsConvertSubscriber'
+            'useIsConvertSubscriber',
         ).mockImplementation(() => true)
 
         window.HTMLElement.prototype.scrollTo = jest.fn()
@@ -143,11 +144,11 @@ describe('CampaignTemplateCustomizeView', () => {
     beforeEach(() => {
         jest.spyOn(
             CampaignConfigurationBuilder.prototype,
-            'attachProductCards'
+            'attachProductCards',
         ).mockImplementation(jest.fn())
         jest.spyOn(
             CampaignConfigurationBuilder,
-            'getOrCreateDiscountCode'
+            'getOrCreateDiscountCode',
         ).mockImplementation(mockGetOrCreateDiscountCode)
     })
 
@@ -163,7 +164,7 @@ describe('CampaignTemplateCustomizeView', () => {
                     <Provider store={mockStore(defaultState)}>
                         <CampaignTemplateCustomizeLibraryView />
                     </Provider>
-                </BrowserRouter>
+                </BrowserRouter>,
             )
         })
 
@@ -185,7 +186,7 @@ describe('CampaignTemplateCustomizeView', () => {
                     <Provider store={mockStore(defaultState)}>
                         <CampaignTemplateCustomizeLibraryView />
                     </Provider>
-                </BrowserRouter>
+                </BrowserRouter>,
             )
         })
 
@@ -213,39 +214,39 @@ describe('CampaignTemplateCustomizeView', () => {
             templateSlug: SUGGEST_BUNDLES_WHEN_SINGLE_PRODUCT_IN_CARD.slug,
         })
 
-        const {container} = render(
+        const { container } = render(
             <BrowserRouter>
                 <Provider store={mockStore(defaultState)}>
                     <CampaignTemplateCustomizeLibraryView />
                 </Provider>
-            </BrowserRouter>
+            </BrowserRouter>,
         )
         await waitFor(() => {
             expect(
                 screen.getByText(
-                    SUGGEST_BUNDLES_WHEN_SINGLE_PRODUCT_IN_CARD.name
-                )
+                    SUGGEST_BUNDLES_WHEN_SINGLE_PRODUCT_IN_CARD.name,
+                ),
             ).toBeInTheDocument()
 
             expect(
-                container.getElementsByClassName('container isExpanded')
+                container.getElementsByClassName('container isExpanded'),
             ).toHaveLength(1)
 
             // Check if audience banner is in the document
             const audienceBanner = screen.getByLabelText(
-                'Banner information for campaign audience step'
+                'Banner information for campaign audience step',
             )
             expect(audienceBanner).toBeInTheDocument()
             expect(audienceBanner).toHaveTextContent(
-                'To target shoppers with a certain item in cart, please insert one of the Shopify product tag of the item to identify it.'
+                'To target shoppers with a certain item in cart, please insert one of the Shopify product tag of the item to identify it.',
             )
 
             const messageBanner = screen.getByLabelText(
-                'Banner information for campaign message step'
+                'Banner information for campaign message step',
             )
             expect(messageBanner).toBeInTheDocument()
             expect(messageBanner).toHaveTextContent(
-                'Please select the bundle you want to recommend from your Shopify catalog.'
+                'Please select the bundle you want to recommend from your Shopify catalog.',
             )
 
             expect(mockGetOrCreateDiscountCode).not.toHaveBeenCalled()
@@ -263,12 +264,12 @@ describe('CampaignTemplateCustomizeView', () => {
                 <Provider store={mockStore(defaultState)}>
                     <CampaignTemplateCustomizeLibraryView />
                 </Provider>
-            </BrowserRouter>
+            </BrowserRouter>,
         )
 
         await waitFor(() => {
             expect(
-                screen.getByText('Back to campaigns library')
+                screen.getByText('Back to campaigns library'),
             ).toBeInTheDocument()
         })
     })

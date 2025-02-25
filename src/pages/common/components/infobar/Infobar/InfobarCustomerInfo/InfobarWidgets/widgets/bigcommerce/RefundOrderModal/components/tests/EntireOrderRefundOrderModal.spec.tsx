@@ -1,14 +1,15 @@
-import {act, fireEvent, render, screen} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { act, fireEvent, render, screen } from '@testing-library/react'
 
 import {
     bigCommerceCalculateOrderRefundDataResponseApiFixture,
     bigCommerceOrderFixture,
 } from 'fixtures/bigcommerce'
-import {BigCommerceOrder} from 'models/integration/types'
+import { BigCommerceOrder } from 'models/integration/types'
 
-import {BigCommerceRefundActionType} from '../../types'
-import {EntireOrderRefundOrderModal} from '../EntireOrderRefundOrderModal'
+import { BigCommerceRefundActionType } from '../../types'
+import { EntireOrderRefundOrderModal } from '../EntireOrderRefundOrderModal'
 
 type Props = ComponentProps<typeof EntireOrderRefundOrderModal>
 
@@ -62,16 +63,16 @@ jest.useFakeTimers()
 
 describe('EntireOrderRefundOrderModal', () => {
     it('snapshot renders the initial disabled state', () => {
-        const {container} = render(
-            <EntireOrderRefundOrderModal {...initialDisabledProps} />
+        const { container } = render(
+            <EntireOrderRefundOrderModal {...initialDisabledProps} />,
         )
 
         expect(container).toMatchSnapshot()
     })
 
     it('snapshot renders the initial state', () => {
-        const {container} = render(
-            <EntireOrderRefundOrderModal {...initialProps} />
+        const { container } = render(
+            <EntireOrderRefundOrderModal {...initialProps} />,
         )
 
         expect(container).toMatchSnapshot()
@@ -84,7 +85,7 @@ describe('EntireOrderRefundOrderModal', () => {
             <EntireOrderRefundOrderModal
                 {...initialProps}
                 dispatchRefundOrderState={dispatchRefundOrderStateMock}
-            />
+            />,
         )
         act(() => jest.runAllTimers())
 

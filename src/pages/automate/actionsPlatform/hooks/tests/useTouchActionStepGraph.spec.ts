@@ -1,4 +1,4 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
 import {
     buildEdgeCommonProperties,
@@ -9,7 +9,7 @@ import useTouchActionStepGraph from '../useTouchActionStepGraph'
 
 describe('useTouchActionStepGraph()', () => {
     it('should touch action step graph', () => {
-        const {result} = renderHook(() => useTouchActionStepGraph())
+        const { result } = renderHook(() => useTouchActionStepGraph())
 
         expect(
             result.current({
@@ -200,7 +200,7 @@ describe('useTouchActionStepGraph()', () => {
                         source: 'conditions1',
                         target: 'end1',
                         data: {
-                            conditions: {and: []},
+                            conditions: { and: [] },
                         },
                     },
                     {
@@ -253,7 +253,7 @@ describe('useTouchActionStepGraph()', () => {
                         type: 'app',
                     },
                 ],
-            })
+            }),
         ).toEqual(
             expect.objectContaining({
                 nodes: [
@@ -389,7 +389,7 @@ describe('useTouchActionStepGraph()', () => {
                     name: true,
                     nodes: true,
                 },
-            })
+            }),
         )
     })
 })

@@ -1,5 +1,6 @@
-import {cleanup, render, screen} from '@testing-library/react'
 import React from 'react'
+
+import { cleanup, render, screen } from '@testing-library/react'
 
 import {
     EmailMigrationInboundVerification,
@@ -8,7 +9,7 @@ import {
 
 import EmailForwardingTable from '../EmailMigration/EmailForwardingTable'
 
-jest.mock('fixtures/emailMigration.ts', () => ({migrations: undefined}))
+jest.mock('fixtures/emailMigration.ts', () => ({ migrations: undefined }))
 
 const mockMigrations = [
     {
@@ -46,7 +47,7 @@ describe('EmailForwardingTable', () => {
         renderComponent()
         mockMigrations.forEach((migration) => {
             expect(
-                screen.getByText(migration.integration.meta.address)
+                screen.getByText(migration.integration.meta.address),
             ).toBeInTheDocument()
         })
     })
@@ -54,7 +55,7 @@ describe('EmailForwardingTable', () => {
     it('renders the verification status for each migration', () => {
         renderComponent()
         const verificationStatuses = screen.getAllByTestId(
-            'email-verification-status'
+            'email-verification-status',
         )
         expect(verificationStatuses.length).toBe(mockMigrations.length)
     })
@@ -69,8 +70,8 @@ describe('EmailForwardingTable', () => {
         renderComponent([])
         expect(
             screen.getByText(
-                "All set! You don't have any email forwarding to set up."
-            )
+                "All set! You don't have any email forwarding to set up.",
+            ),
         )
     })
 })

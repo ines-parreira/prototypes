@@ -1,14 +1,15 @@
-import {Skeleton, Tooltip} from '@gorgias/merchant-ui-kit'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {useHistory, useParams} from 'react-router-dom'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { useHistory, useParams } from 'react-router-dom'
 
-import {SegmentEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
+import { Skeleton, Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useId from 'hooks/useId'
-import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import {BadgeWithTiers} from 'pages/aiAgent/insights/IntentTableWidget/BadgeWithTiers/BadgeWithTiers'
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { BadgeWithTiers } from 'pages/aiAgent/insights/IntentTableWidget/BadgeWithTiers/BadgeWithTiers'
 import {
     getColumnWidth,
     IntentRowConfig,
@@ -19,12 +20,12 @@ import {
     IntentTableColumn,
 } from 'pages/aiAgent/insights/IntentTableWidget/types'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import {DEFAULT_LOCALE, formatMetricValue} from 'pages/stats/common/utils'
+import { DEFAULT_LOCALE, formatMetricValue } from 'pages/stats/common/utils'
+import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
+import { DrillDownMetric } from 'state/ui/stats/drillDownSlice'
 
-import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
-import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
+import { INTENT_LEVEL } from '../OptimizeContainer/OptimizeContainer'
 
-import {INTENT_LEVEL} from '../OptimizeContainer/OptimizeContainer'
 import intentTableCss from './IntentTable.less'
 
 type TableCellProps = {
@@ -41,10 +42,10 @@ export const IntentNameCellContent = ({
     intentLevel,
 }: TableCellProps) => {
     const history = useHistory()
-    const {shopName} = useParams<{
+    const { shopName } = useParams<{
         shopName: string
     }>()
-    const {routes} = useAiAgentNavigation({shopName})
+    const { routes } = useAiAgentNavigation({ shopName })
     const isL1Drilldown = intentLevel === INTENT_LEVEL
     const hasL2DrilldownEnabled =
         useFlags()[FeatureFlagKey.AiAgentOptimizeTabL2Drilldown]
@@ -68,7 +69,10 @@ export const IntentNameCellContent = ({
     )
 }
 
-export const IntentAvgCsatCellContent = ({intent, column}: TableCellProps) => {
+export const IntentAvgCsatCellContent = ({
+    intent,
+    column,
+}: TableCellProps) => {
     const formatedValue = intent[column]
         ? Intl.NumberFormat(DEFAULT_LOCALE, {
               maximumFractionDigits: 1,
@@ -109,7 +113,7 @@ export const IntentDefaultCellContent = ({
                         intent[column] as number,
                         IntentsColumnsConfig[column]?.format,
                         IntentsColumnsConfig[column]?.notAvailableText,
-                        {minimumFractionDigits: 2}
+                        { minimumFractionDigits: 2 },
                     )}
                 </span>{' '}
                 {IntentRowConfig[column]?.hint && (
@@ -160,12 +164,12 @@ export const IntentAutomationOpportunitiesCellContent = ({
         value,
         IntentsColumnsConfig[column]?.format,
         IntentsColumnsConfig[column]?.notAvailableText,
-        {minimumFractionDigits: 2}
+        { minimumFractionDigits: 2 },
     )
 
     const values = useMemo(
         () => allIntents?.map((intent) => intent[column] || 0),
-        [allIntents, column]
+        [allIntents, column],
     ) as number[]
 
     return (

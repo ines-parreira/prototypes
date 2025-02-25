@@ -1,5 +1,6 @@
 import React from 'react'
-import {Col, Row} from 'reactstrap'
+
+import { Col, Row } from 'reactstrap'
 
 import useWhatsAppMigration from 'hooks/useWhatsAppMigration'
 import Button from 'pages/common/components/button/Button'
@@ -64,7 +65,7 @@ export default function WhatsAppMigrationConnect(): JSX.Element {
                                     window.open(
                                         window.GORGIAS_STATE.integrations
                                             .authentication.whatsapp
-                                            ?.redirect_uri ?? ''
+                                            ?.redirect_uri ?? '',
                                     )
                                 }
                             >

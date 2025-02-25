@@ -1,1 +1,1 @@
-export {default} from './ConvertBundleView'
+export { default } from './ConvertBundleView'

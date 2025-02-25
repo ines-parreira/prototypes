@@ -1,9 +1,9 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {render, screen, within} from '@testing-library/react'
+import React from 'react'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { render, screen, within } from '@testing-library/react'
 import user from '@testing-library/user-event'
 import MockDate from 'mockdate'
-
-import React from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
@@ -12,16 +12,16 @@ import {
     SubscriptionStatus,
     UpcomingInvoiceSummary,
 } from 'models/billing/types'
-import {BillingInternalViewUI} from 'pages/settings/new_billing/components/BillingInternalViewUI/BillingInternalViewUI'
+import { BillingInternalViewUI } from 'pages/settings/new_billing/components/BillingInternalViewUI/BillingInternalViewUI'
 import {
-    trial,
     payingWithCreditCard,
+    trial,
     usages,
 } from 'pages/settings/new_billing/fixtures'
-import {useExtendTrialWithSideEffects} from 'pages/settings/new_billing/hooks/useExtendTrialWithSideEffects'
-import {useReactivateTrialWithSideEffects} from 'pages/settings/new_billing/hooks/useReactivateTrialWithSideEffects'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { useExtendTrialWithSideEffects } from 'pages/settings/new_billing/hooks/useExtendTrialWithSideEffects'
+import { useReactivateTrialWithSideEffects } from 'pages/settings/new_billing/hooks/useReactivateTrialWithSideEffects'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 const availableHdAoCoupons = [
     'sales-hd+ao-year-05%-once',
@@ -121,20 +121,20 @@ describe('BillingInternalViewUI', () => {
                     {...BillingInternalViewUIDefaultProps}
                     billingState={payingWithCreditCard}
                 />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         // Then he should not be able to add a coupon or to extend trial or reactivate trial
         expect(
-            screen.queryByRole('button', {name: /Apply coupon/i})
+            screen.queryByRole('button', { name: /Apply coupon/i }),
         ).not.toBeInTheDocument()
 
         expect(
-            screen.queryByRole('button', {name: /Extend trial/i})
+            screen.queryByRole('button', { name: /Extend trial/i }),
         ).not.toBeInTheDocument()
 
         expect(
-            screen.queryByRole('button', {name: /Reactivate trial/i})
+            screen.queryByRole('button', { name: /Reactivate trial/i }),
         ).not.toBeInTheDocument()
 
         // and the invoice card should say "Next invoice"
@@ -148,27 +148,27 @@ describe('BillingInternalViewUI', () => {
                     {...BillingInternalViewUIDefaultProps}
                     billingState={trial}
                 />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         // Then he should be able to add a coupon or to extend trial but NOT to reactivate trial
         expect(
-            screen.queryByRole('button', {name: /Apply coupon/i})
+            screen.queryByRole('button', { name: /Apply coupon/i }),
         ).toBeInTheDocument()
 
         expect(
-            screen.queryByRole('button', {name: /Extend trial/i})
+            screen.queryByRole('button', { name: /Extend trial/i }),
         ).toBeInTheDocument()
 
         expect(
-            screen.queryByRole('button', {name: /Reactivate trial/i})
+            screen.queryByRole('button', { name: /Reactivate trial/i }),
         ).not.toBeInTheDocument()
 
         // and the invoice card should say "Next invoice"
         expect(screen.getByText('Next invoice')).toBeInTheDocument()
 
         // When clicking on 'Extend trial' button
-        user.click(screen.getByRole('button', {name: /Extend trial/i}))
+        user.click(screen.getByRole('button', { name: /Extend trial/i }))
         const confirmButton = await screen.findByRole('button', {
             name: /Confirm/i,
         })
@@ -177,12 +177,12 @@ describe('BillingInternalViewUI', () => {
         expect(useExtendTrialMutateMock).toHaveBeenCalledWith([])
 
         // When clicking on 'Apply coupon' button
-        user.click(screen.getByRole('button', {name: /Apply coupon/i}))
+        user.click(screen.getByRole('button', { name: /Apply coupon/i }))
 
         // Then a modal should show up
         const modal = screen.getByRole('dialog')
         expect(
-            within(modal).getByText(/Apply Helpdesk and Automate coupon/i)
+            within(modal).getByText(/Apply Helpdesk and Automate coupon/i),
         ).toBeInTheDocument()
 
         // with a dropdown having the list of available coupons
@@ -193,10 +193,10 @@ describe('BillingInternalViewUI', () => {
         // with 'Cancel' and 'Apply Coupon' buttons
 
         expect(
-            within(modal).queryByRole('button', {name: 'Delete Coupon'})
+            within(modal).queryByRole('button', { name: 'Delete Coupon' }),
         ).not.toBeInTheDocument()
-        within(modal).getByRole('button', {name: 'Cancel'})
-        within(modal).getByRole('button', {name: 'Apply Coupon'})
+        within(modal).getByRole('button', { name: 'Cancel' })
+        within(modal).getByRole('button', { name: 'Apply Coupon' })
     })
 
     it('When customer has a trialing subscription, which has been already extended', () => {
@@ -206,20 +206,20 @@ describe('BillingInternalViewUI', () => {
                     {...BillingInternalViewUIDefaultProps}
                     billingState={extendedTrial}
                 />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         // Then he should be able to add a coupon or to extend trial but NOT to reactivate trial
         expect(
-            screen.queryByRole('button', {name: /Apply coupon/i})
+            screen.queryByRole('button', { name: /Apply coupon/i }),
         ).toBeInTheDocument()
 
         expect(
-            screen.queryByRole('button', {name: /Extend trial/i})
+            screen.queryByRole('button', { name: /Extend trial/i }),
         ).not.toBeInTheDocument()
 
         expect(
-            screen.queryByRole('button', {name: /Reactivate trial/i})
+            screen.queryByRole('button', { name: /Reactivate trial/i }),
         ).not.toBeInTheDocument()
 
         // and the invoice card should say "Next invoice"
@@ -233,18 +233,18 @@ describe('BillingInternalViewUI', () => {
                     {...BillingInternalViewUIDefaultProps}
                     billingState={trialWithHdAoCoupon}
                 />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
         expect(
-            screen.queryByRole('button', {name: /Apply coupon/i})
+            screen.queryByRole('button', { name: /Apply coupon/i }),
         ).not.toBeInTheDocument()
 
         expect(
-            screen.queryByRole('button', {name: /Edit coupon/i})
+            screen.queryByRole('button', { name: /Edit coupon/i }),
         ).toBeInTheDocument()
 
         expect(
-            screen.queryByRole('button', {name: /Reactivate trial/i})
+            screen.queryByRole('button', { name: /Reactivate trial/i }),
         ).not.toBeInTheDocument()
     })
 
@@ -257,43 +257,43 @@ describe('BillingInternalViewUI', () => {
                     {...BillingInternalViewUIDefaultProps}
                     billingState={trialOverAndUnconverted}
                 />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
         expect(
-            screen.queryByRole('button', {name: /Apply coupon/i})
+            screen.queryByRole('button', { name: /Apply coupon/i }),
         ).not.toBeInTheDocument()
 
         expect(
-            screen.queryByRole('button', {name: /Edit coupon/i})
+            screen.queryByRole('button', { name: /Edit coupon/i }),
         ).not.toBeInTheDocument()
 
         expect(
-            screen.queryByRole('button', {name: /Extend trial/i})
+            screen.queryByRole('button', { name: /Extend trial/i }),
         ).not.toBeInTheDocument()
 
         expect(
-            screen.queryByRole('button', {name: /Reactivate trial/i})
+            screen.queryByRole('button', { name: /Reactivate trial/i }),
         ).toBeInTheDocument()
 
         expect(screen.queryByText('Next invoice')).toBeInTheDocument()
         expect(screen.queryByText('$0')).toBeInTheDocument()
         expect(
-            screen.queryByText(/No active subscription/i)
+            screen.queryByText(/No active subscription/i),
         ).toBeInTheDocument()
         expect(screen.queryByText(/Trial ended on/i)).toBeInTheDocument()
 
         // When clicking on 'Reactivate trial' button
-        user.click(screen.getByRole('button', {name: /Reactivate trial/i}))
+        user.click(screen.getByRole('button', { name: /Reactivate trial/i }))
 
         // Then
         expect(
-            screen.getByText(/Do you want to reactivate trial until/i)
+            screen.getByText(/Do you want to reactivate trial until/i),
         ).toBeInTheDocument()
         expect(screen.getByText(/August 17, 2050/i)).toBeInTheDocument()
         expect(
             screen.getByText(
-                /Note, that once confirmed, the reactivation cannot be undone./i
-            )
+                /Note, that once confirmed, the reactivation cannot be undone./i,
+            ),
         ).toBeInTheDocument()
 
         expect(useReactivateTrialMutateMock).not.toHaveBeenCalledWith([])
@@ -313,31 +313,31 @@ describe('BillingInternalViewUI', () => {
                     {...BillingInternalViewUIDefaultProps}
                     billingState={extendedTrialOverAndUnconverted}
                 />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
         expect(
-            screen.queryByRole('button', {name: /Apply coupon/i})
+            screen.queryByRole('button', { name: /Apply coupon/i }),
         ).not.toBeInTheDocument()
 
         expect(
-            screen.queryByRole('button', {name: /Edit coupon/i})
+            screen.queryByRole('button', { name: /Edit coupon/i }),
         ).not.toBeInTheDocument()
 
         expect(
-            screen.queryByRole('button', {name: /Extend trial/i})
+            screen.queryByRole('button', { name: /Extend trial/i }),
         ).not.toBeInTheDocument()
 
         expect(
-            screen.queryByRole('button', {name: /Reactivate trial/i})
+            screen.queryByRole('button', { name: /Reactivate trial/i }),
         ).not.toBeInTheDocument()
 
         expect(screen.queryByText('Next invoice')).toBeInTheDocument()
         expect(screen.queryByText('$0')).toBeInTheDocument()
         expect(
-            screen.queryByText(/No active subscription/i)
+            screen.queryByText(/No active subscription/i),
         ).toBeInTheDocument()
         expect(
-            screen.queryByText(/Extended trial ended on/i)
+            screen.queryByText(/Extended trial ended on/i),
         ).toBeInTheDocument()
     })
 })

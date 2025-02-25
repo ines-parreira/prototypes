@@ -1,12 +1,13 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-import React, {ComponentProps, ContextType} from 'react'
+import React, { ComponentProps, ContextType } from 'react'
 
-import {focusOnNextItem} from 'components/Dropdown'
-import {DropdownContext} from 'pages/common/components/dropdown/Dropdown'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+
+import { focusOnNextItem } from 'components/Dropdown'
+import { DropdownContext } from 'pages/common/components/dropdown/Dropdown'
 import useSearch from 'search/useSearch'
 import useListTeams from 'teams/useListTeams'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import TeamAssigneeDropdownMenu from '../TeamAssigneeDropdownMenu'
 import TeamDropdownItem from '../TeamDropdownItem'
@@ -28,9 +29,9 @@ const queryClient = mockQueryClient()
 jest.mock(
     '../TeamDropdownItem',
     () =>
-        ({item}: ComponentProps<typeof TeamDropdownItem>) => (
+        ({ item }: ComponentProps<typeof TeamDropdownItem>) => (
             <div>{item.name}</div>
-        )
+        ),
 )
 
 const mockContext: ContextType<typeof DropdownContext> = {
@@ -53,7 +54,7 @@ describe('<TeamAssigneeDropdownMenu />', () => {
                 <QueryClientProvider client={queryClient}>
                     <TeamAssigneeDropdownMenu {...props} />
                 </QueryClientProvider>
-            </DropdownContext.Provider>
+            </DropdownContext.Provider>,
         )
 
     beforeEach(() => {
@@ -63,8 +64,8 @@ describe('<TeamAssigneeDropdownMenu />', () => {
                     {
                         data: {
                             data: [
-                                {id: 11, name: 'Super agents'},
-                                {id: 29, name: 'Chat team'},
+                                { id: 11, name: 'Super agents' },
+                                { id: 29, name: 'Chat team' },
                             ],
                         },
                     },
@@ -104,7 +105,7 @@ describe('<TeamAssigneeDropdownMenu />', () => {
         renderWithWrapper()
 
         fireEvent.change(screen.getByPlaceholderText(/Search/), {
-            target: {value: 'Foo'},
+            target: { value: 'Foo' },
         })
 
         await waitFor(() =>
@@ -114,8 +115,8 @@ describe('<TeamAssigneeDropdownMenu />', () => {
                 }),
                 expect.objectContaining({
                     refetchOnWindowFocus: false,
-                })
-            )
+                }),
+            ),
         )
     })
 
@@ -175,7 +176,7 @@ describe('<TeamAssigneeDropdownMenu />', () => {
     it('should load more data', async () => {
         const originalScrollHeight = Object.getOwnPropertyDescriptor(
             Element.prototype,
-            'scrollHeight'
+            'scrollHeight',
         ) || {
             configurable: true,
             value: 0,
@@ -187,14 +188,14 @@ describe('<TeamAssigneeDropdownMenu />', () => {
 
         renderWithWrapper()
         fireEvent.scroll(screen.getByRole('list'), {
-            target: {scrollTop: 100},
+            target: { scrollTop: 100 },
         })
 
         await waitFor(() => expect(mockFetchNextPage).toBeCalled())
         Object.defineProperty(
             HTMLElement.prototype,
             'scrollHeight',
-            originalScrollHeight
+            originalScrollHeight,
         )
     })
 })

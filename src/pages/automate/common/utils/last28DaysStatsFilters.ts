@@ -1,6 +1,6 @@
 import moment from 'moment'
 
-import {FilterKey, StatsFilters} from 'models/stat/types'
+import { FilterKey, StatsFilters } from 'models/stat/types'
 
 export const last28DaysStatsFilters = (): Pick<
     StatsFilters,

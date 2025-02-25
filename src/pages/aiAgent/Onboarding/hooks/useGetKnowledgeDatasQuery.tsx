@@ -1,4 +1,4 @@
-import {useQuery} from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 
 import {
     mockedAverageOrders,
@@ -6,9 +6,9 @@ import {
     mockedLocations,
     mockedProducts,
 } from 'pages/aiAgent/Onboarding/components/KnowledgePreview/constants'
-import {TopElement} from 'pages/aiAgent/Onboarding/components/TopElementsCard/types'
-import {Product} from 'pages/aiAgent/Onboarding/components/TopProductsCard/types'
-import {TwoDimensionalDataItem} from 'pages/stats/types'
+import { TopElement } from 'pages/aiAgent/Onboarding/components/TopElementsCard/types'
+import { Product } from 'pages/aiAgent/Onboarding/components/TopProductsCard/types'
+import { TwoDimensionalDataItem } from 'pages/stats/types'
 
 type QueryData = {
     locations: TopElement[]

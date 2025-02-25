@@ -1,21 +1,23 @@
-import {LegacyChannelSlug} from '@gorgias/api-queries'
-import {QueryClientProvider} from '@tanstack/react-query'
-import {render, screen} from '@testing-library/react'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
-import {WorkflowConfiguration} from 'pages/automate/workflows/models/workflowConfiguration.types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { render, screen } from '@testing-library/react'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { LegacyChannelSlug } from '@gorgias/api-queries'
+
+import { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import ChannelToggle from '../ChannelToggle'
 
 jest.mock('launchdarkly-react-client-sdk')
 const mockUseFlags = useFlags as jest.MockedFunction<typeof useFlags>
 jest.mock('pages/common/forms/ToggleInput', () =>
-    jest.fn(({children}) => <div>{children}</div>)
+    jest.fn(({ children }) => <div>{children}</div>),
 )
 jest.mock('../../helper/ChannelWarning', () =>
-    jest.fn(() => <div>ChannelWarning</div>)
+    jest.fn(() => <div>ChannelWarning</div>),
 )
 jest.mock('common/segment', () => ({
     SegmentEvent: {
@@ -57,7 +59,7 @@ const chatChannel = {
 const helpCenterProps = {
     channel: helpCenterChannel,
     isLoading: false,
-    workflows: [{id: 'workflow-1', enabled: true}],
+    workflows: [{ id: 'workflow-1', enabled: true }],
     handleAutomationSettingUpdate: jest.fn(),
     onlySupportedChannels: [],
     configuration: defaultWorkflowConfiguration,
@@ -65,7 +67,7 @@ const helpCenterProps = {
 const chatProps = {
     channel: chatChannel,
     isLoading: false,
-    workflows: [{id: 'workflow-1', enabled: true}],
+    workflows: [{ id: 'workflow-1', enabled: true }],
     handleAutomationSettingUpdate: jest.fn(),
     onlySupportedChannels: [],
     configuration: defaultWorkflowConfiguration,
@@ -73,7 +75,7 @@ const chatProps = {
 const queryClient = mockQueryClient()
 describe('ChannelToggle', () => {
     beforeEach(() => {
-        mockUseFlags.mockReturnValue({MLFlowsRecommendation: false})
+        mockUseFlags.mockReturnValue({ MLFlowsRecommendation: false })
     })
 
     const renderWithQueryClient = (children: any) => {
@@ -87,11 +89,11 @@ describe('ChannelToggle', () => {
     it('renders the component with channel warning for Help-Center', () => {
         render(
             renderWithQueryClient(
-                <ChannelToggle {...(helpCenterProps as any)} />
-            )
+                <ChannelToggle {...(helpCenterProps as any)} />,
+            ),
         )
         expect(
-            screen.getByText('Default HelpCenter Integration')
+            screen.getByText('Default HelpCenter Integration'),
         ).toBeInTheDocument()
         expect(screen.getByText('ChannelWarning')).toBeInTheDocument()
     })

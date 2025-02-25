@@ -1,7 +1,8 @@
-import {EditorState} from 'draft-js'
-import {List, Map} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useRef} from 'react'
+import React, { useRef } from 'react'
+
+import { EditorState } from 'draft-js'
+import { List, Map } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 import {
     Button,
     DropdownItem,
@@ -10,18 +11,18 @@ import {
     UncontrolledButtonDropdown,
 } from 'reactstrap'
 
-import {UploadType} from 'common/types'
-import {FeatureFlagKey} from 'config/featureFlags'
+import { UploadType } from 'common/types'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationType} from 'models/integration/constants'
-import {MacroActionName} from 'models/macroAction/types'
-import {attachEntitiesToVariables} from 'pages/common/draftjs/plugins/variables/utils'
+import { IntegrationType } from 'models/integration/constants'
+import { MacroActionName } from 'models/macroAction/types'
+import { attachEntitiesToVariables } from 'pages/common/draftjs/plugins/variables/utils'
 import RichField from 'pages/common/forms/RichField/RichField'
 import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
-import {makeHasIntegrationOfTypes} from 'state/integrations/selectors'
-import {getVariables} from 'tickets/common/utils'
-import {insertText} from 'utils'
-import {convertToHTML, getPlainText} from 'utils/editor'
+import { makeHasIntegrationOfTypes } from 'state/integrations/selectors'
+import { getVariables } from 'tickets/common/utils'
+import { insertText } from 'utils'
+import { convertToHTML, getPlainText } from 'utils/editor'
 
 import MacroMessageActionsHeader, {
     MacroMessageActionsHeaderProps,
@@ -74,7 +75,7 @@ export default function AddInternalNoteAction({
             args.merge({
                 body_text: getPlainText(contentState),
                 body_html: convertToHTML(contentState),
-            })
+            }),
         )
     }
 
@@ -119,7 +120,7 @@ export default function AddInternalNoteAction({
                 <Button
                     key={index}
                     color="link"
-                    style={{color: 'inherit'}}
+                    style={{ color: 'inherit' }}
                     onClick={() => {
                         _insertText(category.value as string)
                     }}

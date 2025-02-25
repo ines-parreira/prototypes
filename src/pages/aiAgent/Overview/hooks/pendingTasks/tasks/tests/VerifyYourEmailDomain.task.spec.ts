@@ -1,7 +1,7 @@
-import {AiAgentStoreConfigurationFixture} from '../../tests/AiAgentStoreConfiguration.fixture'
-import {EmailIntegrationsDataFixture} from '../../tests/EmailIntegrationsData.fixture'
-import {VerifyYourEmailDomainTask} from '../VerifyYourEmailDomain.task'
-import {buildRuleEngineData, buildRuleEngineRoutes} from './utils'
+import { AiAgentStoreConfigurationFixture } from '../../tests/AiAgentStoreConfiguration.fixture'
+import { EmailIntegrationsDataFixture } from '../../tests/EmailIntegrationsData.fixture'
+import { VerifyYourEmailDomainTask } from '../VerifyYourEmailDomain.task'
+import { buildRuleEngineData, buildRuleEngineRoutes } from './utils'
 
 describe('VerifyYourEmailDomain', () => {
     it('should display the task if email channel is enabled, and a not verified email integration is set in store configuration', () => {
@@ -26,7 +26,7 @@ describe('VerifyYourEmailDomain', () => {
                 emailIntegrations,
                 aiAgentStoreConfiguration,
             }),
-            buildRuleEngineRoutes()
+            buildRuleEngineRoutes(),
         )
         expect(task.display).toBe(true)
     })
@@ -42,7 +42,7 @@ describe('VerifyYourEmailDomain', () => {
             buildRuleEngineData({
                 aiAgentStoreConfiguration,
             }),
-            buildRuleEngineRoutes()
+            buildRuleEngineRoutes(),
         )
         expect(task.display).toBe(false)
     })
@@ -62,7 +62,7 @@ describe('VerifyYourEmailDomain', () => {
                 aiAgentStoreConfiguration,
                 emailIntegrations,
             }),
-            buildRuleEngineRoutes()
+            buildRuleEngineRoutes(),
         )
         expect(task.display).toBe(false)
     })
@@ -87,7 +87,7 @@ describe('VerifyYourEmailDomain', () => {
                 aiAgentStoreConfiguration,
                 emailIntegrations,
             }),
-            buildRuleEngineRoutes()
+            buildRuleEngineRoutes(),
         )
         expect(task.display).toBe(false)
     })
@@ -115,7 +115,7 @@ describe('VerifyYourEmailDomain', () => {
                 aiAgentStoreConfiguration,
                 emailIntegrations,
             }),
-            buildRuleEngineRoutes()
+            buildRuleEngineRoutes(),
         )
         expect(task.display).toBe(false)
     })

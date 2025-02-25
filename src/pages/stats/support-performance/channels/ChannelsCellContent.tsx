@@ -1,28 +1,29 @@
-import {Skeleton} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
-
 import React from 'react'
 
-import {MetricPerChannelQueryHook} from 'hooks/reporting/support-performance/channels/metricsPerChannel'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
+import classnames from 'classnames'
+
+import { Skeleton } from '@gorgias/merchant-ui-kit'
+
+import { MetricPerChannelQueryHook } from 'hooks/reporting/support-performance/channels/metricsPerChannel'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
-import {Channel} from 'models/channel/types'
+import { Channel } from 'models/channel/types'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import css from 'pages/stats/AnalyticsTable.less'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
-import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
+import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
 import heatmapCss from 'pages/stats/heatmap.less'
-import {METRIC_COLUMN_WIDTH} from 'pages/stats/support-performance/agents/AgentsTableConfig'
+import { METRIC_COLUMN_WIDTH } from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import {
     ChannelColumnConfig,
     LeadColumn,
 } from 'pages/stats/support-performance/channels/ChannelsTableConfig'
-import {TruncateCellContent} from 'pages/stats/TruncateCellContent'
-import {getHeatmapMode} from 'state/ui/stats/channelsSlice'
-import {ChannelsTableColumns} from 'state/ui/stats/types'
+import { TruncateCellContent } from 'pages/stats/TruncateCellContent'
+import { getHeatmapMode } from 'state/ui/stats/channelsSlice'
+import { ChannelsTableColumns } from 'state/ui/stats/types'
 
 export const ChannelsCellContent = ({
     column,
@@ -40,19 +41,19 @@ export const ChannelsCellContent = ({
     useMetric: MetricPerChannelQueryHook
 }) => {
     const isHeatmapMode = useAppSelector(getHeatmapMode)
-    const {cleanStatsFilters, userTimezone, isAnalyticsNewFilters} =
+    const { cleanStatsFilters, userTimezone, isAnalyticsNewFilters } =
         useNewStatsFilters()
 
-    const {isFetching, data} = useMetric(
+    const { isFetching, data } = useMetric(
         cleanStatsFilters,
         userTimezone,
         undefined,
-        channel.slug
+        channel.slug,
     )
     const formattedValue = formatMetricValue(
         data?.value,
         ChannelColumnConfig[column].format,
-        NOT_AVAILABLE_PLACEHOLDER
+        NOT_AVAILABLE_PLACEHOLDER,
     )
 
     const cellContent = column === LeadColumn ? channel.name : formattedValue
@@ -65,7 +66,7 @@ export const ChannelsCellContent = ({
                 [heatmapCss.heatmap],
                 isHeatmapMode &&
                     !isFetching &&
-                    heatmapCss[`p${String(data?.decile)}`]
+                    heatmapCss[`p${String(data?.decile)}`],
             )}
             innerClassName={classnames(
                 [heatmapCss.heatmap],
@@ -73,7 +74,7 @@ export const ChannelsCellContent = ({
                     !isFetching &&
                     heatmapCss[`p${String(data?.decile)}`],
                 css.cellContent,
-                cellContent === NOT_AVAILABLE_PLACEHOLDER && css.emptyValue
+                cellContent === NOT_AVAILABLE_PLACEHOLDER && css.emptyValue,
             )}
             justifyContent={column === LeadColumn ? 'left' : 'right'}
             size={'small'}

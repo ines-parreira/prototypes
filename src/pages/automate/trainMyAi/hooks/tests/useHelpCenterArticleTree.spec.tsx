@@ -1,22 +1,23 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
 
-import {useGetHelpCenterCategoryTree} from 'models/helpCenter/queries'
-import {Category} from 'models/helpCenter/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
+
+import { useGetHelpCenterCategoryTree } from 'models/helpCenter/queries'
+import { Category } from 'models/helpCenter/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 import useHelpCenterArticleTree from '../useHelpCenterArticleTree'
 
 jest.mock('models/helpCenter/queries')
 
 const mockUseGetHelpCenterCategoryTree = assumeMock(
-    useGetHelpCenterCategoryTree
+    useGetHelpCenterCategoryTree,
 )
 
 const queryClient = mockQueryClient()
-const wrapper = ({children}: any) => (
+const wrapper = ({ children }: any) => (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 )
 
@@ -38,18 +39,18 @@ describe('useHelpCenterArticleTree', () => {
         data,
     } as unknown as ReturnType<typeof useGetHelpCenterCategoryTree>)
     it('should return empty articles', () => {
-        const {result} = renderHook(
+        const { result } = renderHook(
             () => useHelpCenterArticleTree(1, 'en-US'),
             {
                 wrapper,
-            }
+            },
         )
 
         expect(result.current.map).toMatchObject(
             new Map([
                 [-1, 'No relevant articles'],
                 [0, 'All Articles'],
-            ])
+            ]),
         )
     })
 })

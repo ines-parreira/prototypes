@@ -1,7 +1,7 @@
-import {useCreateArticle} from 'models/helpCenter/queries'
-import {HelpCenter, HelpCenterArticleItem} from 'models/helpCenter/types'
+import { useCreateArticle } from 'models/helpCenter/queries'
+import { HelpCenter, HelpCenterArticleItem } from 'models/helpCenter/types'
 
-import {mapHelpCenterArticleItemToArticle} from '../utils/helpCenter.utils'
+import { mapHelpCenterArticleItemToArticle } from '../utils/helpCenter.utils'
 
 export const useCreateArticleUsingTemplate = (helpCenter: HelpCenter) => {
     const {
@@ -11,7 +11,7 @@ export const useCreateArticleUsingTemplate = (helpCenter: HelpCenter) => {
 
     const createArticle = (
         articleTemplate: HelpCenterArticleItem,
-        shouldPublish = false
+        shouldPublish = false,
     ) => {
         const payload = mapHelpCenterArticleItemToArticle({
             article: articleTemplate,
@@ -20,12 +20,12 @@ export const useCreateArticleUsingTemplate = (helpCenter: HelpCenter) => {
         })
         if (!payload)
             return Promise.reject(
-                'No payload provided during article creation.'
+                'No payload provided during article creation.',
             )
 
         return createArticleMutateAsync([
             undefined,
-            {help_center_id: helpCenter.id},
+            { help_center_id: helpCenter.id },
             payload,
         ])
     }

@@ -1,9 +1,10 @@
-import classNames from 'classnames'
-import {Emoji} from 'emoji-mart'
-import pluralize from 'pluralize'
-import React, {useRef, useState} from 'react'
+import React, { useRef, useState } from 'react'
 
-import {useListTeams} from 'models/team/queries'
+import classNames from 'classnames'
+import { Emoji } from 'emoji-mart'
+import pluralize from 'pluralize'
+
+import { useListTeams } from 'models/team/queries'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
@@ -26,7 +27,7 @@ export default function VoiceIntegrationPreferencesTeamSelect({
     onChange,
 }: Props) {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-    const {data, isLoading, error} = useListTeams({limit: 100})
+    const { data, isLoading, error } = useListTeams({ limit: 100 })
     const targetRef = useRef<HTMLDivElement>(null)
     const floatingRef = useRef<HTMLDivElement>(null)
 
@@ -106,7 +107,7 @@ export default function VoiceIntegrationPreferencesTeamSelect({
                                                 {option.members?.length}{' '}
                                                 {pluralize(
                                                     'member',
-                                                    option.members?.length
+                                                    option.members?.length,
                                                 )}
                                             </div>
                                         </div>

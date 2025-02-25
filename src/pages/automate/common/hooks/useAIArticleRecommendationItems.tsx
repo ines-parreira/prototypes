@@ -1,10 +1,10 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {AIArticle, LocaleCode} from 'models/helpCenter/types'
-import {sortAIArticlesByTicketsCount} from 'pages/settings/helpCenter/components/AIArticlesLibraryView/AIArticlesLibraryUtils'
-import {ArticleOrigin} from 'pages/settings/helpCenter/types/articleOrigin.enum'
+import { AIArticle, LocaleCode } from 'models/helpCenter/types'
+import { sortAIArticlesByTicketsCount } from 'pages/settings/helpCenter/components/AIArticlesLibraryView/AIArticlesLibraryUtils'
+import { ArticleOrigin } from 'pages/settings/helpCenter/types/articleOrigin.enum'
 
-import {useTopQuestionsArticles} from '../components/TopQuestions/useTopQuestionsArticles'
+import { useTopQuestionsArticles } from '../components/TopQuestions/useTopQuestionsArticles'
 
 export enum AllRecommendationsStatus {
     All = 'all',
@@ -13,7 +13,7 @@ export enum AllRecommendationsStatus {
 }
 
 export const isAllRecommendationStatus = (
-    status: unknown
+    status: unknown,
 ): status is AllRecommendationsStatus =>
     status === AllRecommendationsStatus.All ||
     status === AllRecommendationsStatus.ArticleCreated ||
@@ -33,7 +33,7 @@ export type AIArticleRecommendationItem = {
 
 const filterAIArticleStatusByReviewAction = (
     article: AIArticle,
-    statusFilter: AllRecommendationsStatus
+    statusFilter: AllRecommendationsStatus,
 ): boolean => {
     switch (statusFilter) {
         case AllRecommendationsStatus.All:
@@ -90,7 +90,7 @@ export const useAIArticleRecommendationItems = ({
 
     const recommendationsItems: AIArticleRecommendationItem[] = useMemo(() => {
         const filteredArticles = sortedFetchedArticles.filter((article) =>
-            filterAIArticleStatusByReviewAction(article, statusFilter)
+            filterAIArticleStatusByReviewAction(article, statusFilter),
         )
 
         return filteredArticles.map((article) => ({

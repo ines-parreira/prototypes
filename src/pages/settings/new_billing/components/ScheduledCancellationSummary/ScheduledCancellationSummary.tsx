@@ -1,8 +1,10 @@
+import React, { useMemo } from 'react'
+
 import classNames from 'classnames'
 import moment from 'moment/moment'
-import React, {useMemo} from 'react'
 
-import {DATE_FORMAT} from '../../constants'
+import { DATE_FORMAT } from '../../constants'
+
 import css from './ScheduledCancellationSummary.less'
 
 type ScheduledCancellationSummaryProps = {
@@ -17,7 +19,7 @@ const ScheduledCancellationSummary = ({
 }: ScheduledCancellationSummaryProps) => {
     const scheduledToCancelAtDate = useMemo(
         () => moment(scheduledToCancelAt).format(DATE_FORMAT),
-        [scheduledToCancelAt]
+        [scheduledToCancelAt],
     )
     const [joinedProducts, lastProduct] = useMemo(() => {
         const lastProduct = cancelledProducts[cancelledProducts.length - 1]

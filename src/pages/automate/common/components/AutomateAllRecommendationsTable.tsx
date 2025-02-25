@@ -1,22 +1,25 @@
-import {LoadingSpinner, Tooltip, Badge} from '@gorgias/merchant-ui-kit'
-import React, {useMemo} from 'react'
-import Skeleton from 'react-loading-skeleton'
-import {Link} from 'react-router-dom'
+import React, { useMemo } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import Skeleton from 'react-loading-skeleton'
+import { Link } from 'react-router-dom'
+
+import { Badge, LoadingSpinner, Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
-import {NumberedPagination} from 'pages/common/components/Paginations'
+import { NumberedPagination } from 'pages/common/components/Paginations'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-import {getHelpCenterFAQList} from 'state/entities/helpCenter/helpCenters'
+import { getHelpCenterFAQList } from 'state/entities/helpCenter/helpCenters'
 
-import {useAIArticlePublishedPreviewUrl} from '../hooks/useAIArticlePublishedPreviewUrl'
-import {AIArticleRecommendationItem} from '../hooks/useAIArticleRecommendationItems'
-import {AllRecomendationsColumn} from './AutomateAllRecommendationsCard'
+import { useAIArticlePublishedPreviewUrl } from '../hooks/useAIArticlePublishedPreviewUrl'
+import { AIArticleRecommendationItem } from '../hooks/useAIArticleRecommendationItems'
+import { AllRecomendationsColumn } from './AutomateAllRecommendationsCard'
+
 import css from './AutomateAllRecommendationsTable.less'
 
 const DEFAULT_COLUMN_WIDTH = 224
@@ -62,10 +65,8 @@ const OpenCreatedArticleIcon = ({
 
     const isHelpCenterLive = !Boolean(helpCenter?.deactivated_datetime)
 
-    const {url: publishedPreviewUrl, article} = useAIArticlePublishedPreviewUrl(
-        helpCenter,
-        templateKey
-    )
+    const { url: publishedPreviewUrl, article } =
+        useAIArticlePublishedPreviewUrl(helpCenter, templateKey)
 
     const isArticleUnlisted =
         article && article.translation.visibility_status === 'UNLISTED'
@@ -76,7 +77,12 @@ const OpenCreatedArticleIcon = ({
             reviewAction === 'publish' &&
             !isArticleUnlisted &&
             publishedPreviewUrl,
-        [isHelpCenterLive, reviewAction, isArticleUnlisted, publishedPreviewUrl]
+        [
+            isHelpCenterLive,
+            reviewAction,
+            isArticleUnlisted,
+            publishedPreviewUrl,
+        ],
     )
 
     return (
@@ -115,7 +121,7 @@ const ArticleTitle = ({
 }: Pick<
     AIArticleRecommendationItem,
     'reviewAction' | 'title' | 'templateKey'
-> & {helpCenterId: number}) => {
+> & { helpCenterId: number }) => {
     return (
         <div className={css.articleTitle}>
             <span className={css.textTruncate}>{title}</span>
@@ -155,7 +161,7 @@ const ArticleStatus = ({
                     setIsCreating(true)
                     await createArticle()
                     logEvent(
-                        SegmentEvent.AutomateTopQuestionsAllRecommendationsCreateArticle
+                        SegmentEvent.AutomateTopQuestionsAllRecommendationsCreateArticle,
                     )
                     setIsCreating(false)
                 }

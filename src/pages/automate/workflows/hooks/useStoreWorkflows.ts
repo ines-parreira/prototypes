@@ -1,8 +1,8 @@
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import useSelfServiceStoreIntegration from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
-import {NotificationStatus} from 'state/notifications/types'
+import { NotificationStatus } from 'state/notifications/types'
 
-import {WorkflowConfigurationShallow} from '../models/workflowConfiguration.types'
+import { WorkflowConfigurationShallow } from '../models/workflowConfiguration.types'
 
 export type UseWorkflowsEntrypointsReturnType = {
     workflows: WorkflowConfigurationShallow[]
@@ -25,7 +25,7 @@ export default function useStoreWorkflows({
 }: Props): UseWorkflowsEntrypointsReturnType {
     const storeIntegration = useSelfServiceStoreIntegration(shopType, shopName)
 
-    const {selfServiceConfiguration, isFetchPending} =
+    const { selfServiceConfiguration, isFetchPending } =
         useSelfServiceConfiguration(shopType, shopName, (notif) => {
             if (notif.status === NotificationStatus.Error && notif.message) {
                 notifyMerchant(notif.message, 'error')

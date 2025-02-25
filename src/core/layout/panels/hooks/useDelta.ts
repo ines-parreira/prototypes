@@ -1,6 +1,6 @@
-import {useEffect, useState} from 'react'
+import { useEffect, useState } from 'react'
 
-import type {Delta, Drag} from '../types'
+import type { Delta, Drag } from '../types'
 
 export default function useDelta(drag: Drag | null) {
     const [delta, setDelta] = useState<Delta | null>(null)

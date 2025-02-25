@@ -1,17 +1,18 @@
-import {render, waitFor} from '@testing-library/react'
-import {act, renderHook} from '@testing-library/react-hooks'
-import {Device} from '@twilio/voice-sdk'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render, waitFor } from '@testing-library/react'
+import { act, renderHook } from '@testing-library/react-hooks'
+import { Device } from '@twilio/voice-sdk'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
-import {connectDevice, disconnectDevice} from 'hooks/integrations/phone/utils'
+import { connectDevice, disconnectDevice } from 'hooks/integrations/phone/utils'
 import useHasPhone from 'hooks/useHasPhone'
-import {isDesktopDevice} from 'utils/device'
-import {assumeMock} from 'utils/testing'
+import { isDesktopDevice } from 'utils/device'
+import { assumeMock } from 'utils/testing'
 
-import {VoiceDeviceContextState} from '../VoiceDeviceContext'
+import { VoiceDeviceContextState } from '../VoiceDeviceContext'
 import VoiceDeviceProvider from '../VoiceDeviceProvider'
 
 jest.mock('hooks/integrations/phone/utils')
@@ -32,11 +33,11 @@ const renderComponent = () => {
             <VoiceDeviceProvider>
                 <div>Test Children</div>
             </VoiceDeviceProvider>
-        </Provider>
+        </Provider>,
     )
 }
 
-const wrapper = ({children}: {children: React.ReactNode}) => (
+const wrapper = ({ children }: { children: React.ReactNode }) => (
     <Provider store={mockStore({} as any)}>
         <VoiceDeviceProvider>{children}</VoiceDeviceProvider>
     </Provider>
@@ -44,7 +45,7 @@ const wrapper = ({children}: {children: React.ReactNode}) => (
 
 describe('VoiceDeviceProvider', () => {
     it('should render children', () => {
-        const {getByText} = renderComponent()
+        const { getByText } = renderComponent()
 
         expect(getByText('Test Children')).toBeInTheDocument()
     })
@@ -76,7 +77,7 @@ describe('VoiceDeviceProvider', () => {
     it(`should only attempt to connect device when it's not already connecting`, async () => {
         useHasPhoneMock.mockReturnValue(true)
         isDesktopDeviceMock.mockReturnValue(true)
-        let result: {current: VoiceDeviceContextState}
+        let result: { current: VoiceDeviceContextState }
 
         act(() => {
             const hookResult = renderHook(useVoiceDevice, {
@@ -96,8 +97,8 @@ describe('VoiceDeviceProvider', () => {
         })
         await waitFor(() =>
             expect(connectDeviceMock.mock.calls.length).toBe(
-                connectDeviceCalls + 1
-            )
+                connectDeviceCalls + 1,
+            ),
         )
     })
 
@@ -105,7 +106,7 @@ describe('VoiceDeviceProvider', () => {
         useHasPhoneMock.mockReturnValue(true)
         isDesktopDeviceMock.mockReturnValue(true)
 
-        let result: {current: VoiceDeviceContextState}
+        let result: { current: VoiceDeviceContextState }
 
         act(() => {
             const hookResult = renderHook(useVoiceDevice, {
@@ -127,7 +128,7 @@ describe('VoiceDeviceProvider', () => {
         useHasPhoneMock.mockReturnValue(true)
         isDesktopDeviceMock.mockReturnValue(true)
 
-        let result: {current: VoiceDeviceContextState}
+        let result: { current: VoiceDeviceContextState }
 
         act(() => {
             const hookResult = renderHook(useVoiceDevice, {
@@ -150,7 +151,7 @@ describe('VoiceDeviceProvider', () => {
             } as any)
         })
         expect(disconnectDeviceMock.mock.calls.length).toBe(
-            disconnectDeviceCalls
+            disconnectDeviceCalls,
         )
 
         act(() => {
@@ -161,8 +162,8 @@ describe('VoiceDeviceProvider', () => {
 
         await waitFor(() =>
             expect(disconnectDeviceMock.mock.calls.length).toBe(
-                disconnectDeviceCalls + 1
-            )
+                disconnectDeviceCalls + 1,
+            ),
         )
     })
 })

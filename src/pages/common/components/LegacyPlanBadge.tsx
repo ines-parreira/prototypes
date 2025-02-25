@@ -1,11 +1,12 @@
-import {Tooltip, Badge} from '@gorgias/merchant-ui-kit'
-import React, {useCallback, useState} from 'react'
+import React, { useCallback, useState } from 'react'
+
+import { Badge, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import css from './LegacyPlanBadge.less'
 
 export default function LegacyPlanBadge() {
     const [tagLegacyRef, setTagLegacyRef] = useState<HTMLDivElement | null>(
-        null
+        null,
     )
     const handleRef = useCallback((ref) => {
         if (ref) {

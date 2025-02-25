@@ -1,16 +1,17 @@
-import {fireEvent, render, screen} from '@testing-library/react'
-import React, {ComponentProps, PropsWithChildren, useRef} from 'react'
+import React, { ComponentProps, PropsWithChildren, useRef } from 'react'
 
-import {PopoverContainer} from './PopoverContainer'
+import { fireEvent, render, screen } from '@testing-library/react'
+
+import { PopoverContainer } from './PopoverContainer'
 
 // We don't care about internals of `Dropdown`, just want to render out the children that we pass
 jest.mock('pages/common/components/dropdown/Dropdown', () => ({
     __esModule: true,
-    default: ({children}: PropsWithChildren<unknown>) => <>{children}</>,
+    default: ({ children }: PropsWithChildren<unknown>) => <>{children}</>,
 }))
 
 const WrapperComponent = (
-    props: Partial<ComponentProps<typeof PopoverContainer>>
+    props: Partial<ComponentProps<typeof PopoverContainer>>,
 ) => {
     const mockReference = useRef<HTMLButtonElement>(null)
 
@@ -36,7 +37,7 @@ const WrapperComponent = (
 
 describe('<PopoverContainer />', () => {
     it('renders', () => {
-        const {container} = render(<WrapperComponent />)
+        const { container } = render(<WrapperComponent />)
 
         expect(container).toMatchSnapshot()
     })

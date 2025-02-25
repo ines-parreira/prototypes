@@ -1,8 +1,8 @@
-import {StoryObj} from '@storybook/react'
+import { StoryObj } from '@storybook/react'
 
-import {StatType} from 'models/stat/types'
+import { StatType } from 'models/stat/types'
 
-import {Kpi} from './Kpi'
+import { Kpi } from './Kpi'
 
 const storyConfig = {
     title: 'AI Agent/Overview/KPI',

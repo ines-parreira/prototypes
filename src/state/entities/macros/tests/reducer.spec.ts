@@ -1,10 +1,10 @@
-import {macros as macrosFixtures} from '../../../../fixtures/macro'
+import { macros as macrosFixtures } from '../../../../fixtures/macro'
 import {
     macroCreated,
     macroDeleted,
     macroFetched,
-    macroUpdated,
     macrosFetched,
+    macroUpdated,
 } from '../actions'
 import reducer from '../reducer'
 
@@ -18,7 +18,10 @@ describe('macros reducer', () => {
 
     describe('deleteMacro action', () => {
         it('should delete a macro from the state', () => {
-            const newState = reducer({'1': macrosFixtures[0]}, macroDeleted(1))
+            const newState = reducer(
+                { '1': macrosFixtures[0] },
+                macroDeleted(1),
+            )
             expect(newState).toMatchSnapshot()
         })
     })
@@ -37,8 +40,8 @@ describe('macros reducer', () => {
                 name: 'bar',
             }
             const newState = reducer(
-                {'1': macrosFixtures[0]},
-                macroUpdated(updatedMacroMock)
+                { '1': macrosFixtures[0] },
+                macroUpdated(updatedMacroMock),
             )
             expect(newState).toMatchSnapshot()
         })

@@ -1,9 +1,9 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {Cadence} from 'models/billing/types'
+import { render } from '@testing-library/react'
 
-import {assumeMock} from 'utils/testing'
+import { Cadence } from 'models/billing/types'
+import { assumeMock } from 'utils/testing'
 
 import SummaryBody from '../SummaryBody'
 import SummaryLineItem from '../SummaryLineItem'
@@ -44,12 +44,12 @@ describe('SummaryBody', () => {
             },
         ]
 
-        const {container, getAllByTestId, getByTestId} = render(
+        const { container, getAllByTestId, getByTestId } = render(
             <SummaryBody
                 items={summaryItems}
                 total={1000}
                 cadence={Cadence.Month}
-            />
+            />,
         )
         const bodyHeaderElement = container.querySelector('div[class="header"]')
         expect(bodyHeaderElement).toHaveTextContent('PRODUCT')
@@ -68,14 +68,14 @@ describe('SummaryBody', () => {
                 total: 1000,
                 cadence: 'month',
             },
-            {}
+            {},
         )
 
         const taxNotionElement = container.querySelector(
-            'div[class="taxNotion"]'
+            'div[class="taxNotion"]',
         )
         expect(taxNotionElement).toHaveTextContent(
-            'Prices exclusive of sales tax'
+            'Prices exclusive of sales tax',
         )
     })
 })

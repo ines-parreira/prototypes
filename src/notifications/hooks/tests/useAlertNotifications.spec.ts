@@ -1,4 +1,4 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
 import useAppSelector from 'hooks/useAppSelector'
 
@@ -11,19 +11,19 @@ const useAppSelectorMock = useAppSelector as jest.Mock
 describe('useAlertNotifications', () => {
     beforeEach(() => {
         useAppSelectorMock.mockReturnValue([
-            {style: 'alert', id: 1},
-            {style: 'banner', id: 2},
-            {style: 'alert', id: 3},
-            {style: 'banner', id: 4},
+            { style: 'alert', id: 1 },
+            { style: 'banner', id: 2 },
+            { style: 'alert', id: 3 },
+            { style: 'banner', id: 4 },
         ])
     })
 
     it('should return all alert notifications', () => {
-        const {result} = renderHook(() => useAlertNotifications())
+        const { result } = renderHook(() => useAlertNotifications())
 
         expect(result.current).toEqual([
-            {style: 'alert', id: 1},
-            {style: 'alert', id: 3},
+            { style: 'alert', id: 1 },
+            { style: 'alert', id: 3 },
         ])
     })
 })

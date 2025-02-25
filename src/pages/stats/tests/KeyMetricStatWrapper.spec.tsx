@@ -1,14 +1,15 @@
-import {render} from '@testing-library/react'
 import React from 'react'
+
+import { render } from '@testing-library/react'
 
 import KeyMetricStatWrapper from '../KeyMetricStatWrapper'
 
 describe('KeyMetricStatWrapper', () => {
     it('should render the key metric wrapper', () => {
-        const {container} = render(
+        const { container } = render(
             <KeyMetricStatWrapper>
                 <div>foo</div>
-            </KeyMetricStatWrapper>
+            </KeyMetricStatWrapper>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })

@@ -1,5 +1,5 @@
-import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-import {formatMetricValue} from 'pages/stats/common/utils'
+import { MetricTrend } from 'hooks/reporting/useMetricTrend'
+import { formatMetricValue } from 'pages/stats/common/utils'
 
 export const getTrendProps = (metricTrend: MetricTrend) => ({
     value: metricTrend.data?.value || 0,

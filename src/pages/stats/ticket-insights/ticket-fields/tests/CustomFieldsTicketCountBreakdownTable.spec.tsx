@@ -1,48 +1,45 @@
-import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-
-import {useCustomFieldsTicketCountPerCustomFields} from 'hooks/reporting/ticket-insights/useCustomFieldsTicketCountPerCustomFields'
-import {getPeriodDateTimes} from 'hooks/reporting/useTimeSeries'
-
-import {BREAKDOWN_FIELD, VALUE_FIELD} from 'hooks/reporting/withBreakdown'
-import {OrderDirection} from 'models/api/types'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useCustomFieldsTicketCountPerCustomFields } from 'hooks/reporting/ticket-insights/useCustomFieldsTicketCountPerCustomFields'
+import { getPeriodDateTimes } from 'hooks/reporting/useTimeSeries'
+import { BREAKDOWN_FIELD, VALUE_FIELD } from 'hooks/reporting/withBreakdown'
+import { OrderDirection } from 'models/api/types'
 import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMeasure,
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
-import {ReportingGranularity} from 'models/reporting/types'
-import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
+import { ReportingGranularity } from 'models/reporting/types'
+import { NoDataAvailable } from 'pages/stats/NoDataAvailable'
 import {
     CUSTOM_FIELD_COLUMN_LABEL,
     CUSTOM_FIELDS_PER_PAGE,
     CustomFieldsTicketCountBreakdownTable,
     TOTAL_COLUMN_LABEL,
 } from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownTable'
-import {formatDates} from 'pages/stats/utils'
-import {RootState, StoreDispatch} from 'state/types'
-
+import { formatDates } from 'pages/stats/utils'
+import { RootState, StoreDispatch } from 'state/types'
 import {
     initialState,
     setOrder,
     ticketInsightsSlice,
 } from 'state/ui/stats/ticketInsightsSlice'
-import {getFilterDateRange} from 'utils/reporting'
-import {assumeMock} from 'utils/testing'
+import { getFilterDateRange } from 'utils/reporting'
+import { assumeMock } from 'utils/testing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 jest.mock(
-    'hooks/reporting/ticket-insights/useCustomFieldsTicketCountPerCustomFields'
+    'hooks/reporting/ticket-insights/useCustomFieldsTicketCountPerCustomFields',
 )
 const useCustomFieldsTicketCountPerCustomFieldsMock = assumeMock(
-    useCustomFieldsTicketCountPerCustomFields
+    useCustomFieldsTicketCountPerCustomFields,
 )
 jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
 const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
@@ -55,13 +52,13 @@ jest.mock(
         ({
             ...jest.requireActual('@gorgias/merchant-ui-kit'),
             Tooltip: () => <div />,
-        }) as typeof import('@gorgias/merchant-ui-kit')
+        }) as typeof import('@gorgias/merchant-ui-kit'),
 )
 
 const componentMock = () => <div />
 
 describe('<CustomFieldsTicketCountBreakdownTable />', () => {
-    const customField = {id: 123, label: 'someLabel'}
+    const customField = { id: 123, label: 'someLabel' }
     const defaultStatsFilters = {
         period: {
             start_datetime: '2021-05-29T00:00:00+02:00',
@@ -73,7 +70,7 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
             filters: defaultStatsFilters,
         },
         ui: {
-            stats: {[ticketInsightsSlice.name]: initialState},
+            stats: { [ticketInsightsSlice.name]: initialState },
         },
     } as RootState
     const exampleData = [
@@ -162,7 +159,7 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
         useCustomFieldsTicketCountPerCustomFieldsMock.mockReturnValue({
             data: exampleData,
             dateTimes,
-            order: {column: 'label', direction: OrderDirection.Asc},
+            order: { column: 'label', direction: OrderDirection.Asc },
             isLoading: false,
         })
         NoDataAvailableMock.mockImplementation(componentMock)
@@ -174,7 +171,7 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
                 <CustomFieldsTicketCountBreakdownTable
                     selectedCustomField={customField}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText(TOTAL_COLUMN_LABEL)).toBeInTheDocument()
@@ -185,7 +182,7 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
         useCustomFieldsTicketCountPerCustomFieldsMock.mockReturnValue({
             data: [],
             dateTimes: [],
-            order: {column: 'label', direction: OrderDirection.Asc},
+            order: { column: 'label', direction: OrderDirection.Asc },
             isLoading: false,
         })
 
@@ -194,7 +191,7 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
                 <CustomFieldsTicketCountBreakdownTable
                     selectedCustomField={customField}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(NoDataAvailableMock).toHaveBeenCalled()
@@ -208,14 +205,14 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
                 <CustomFieldsTicketCountBreakdownTable
                     selectedCustomField={customField}
                 />
-            </Provider>
+            </Provider>,
         )
         act(() => {
             const categoryLabel = screen.getByText(CUSTOM_FIELD_COLUMN_LABEL)
             userEvent.click(categoryLabel)
         })
 
-        expect(store.getActions()).toContainEqual(setOrder({column: 'label'}))
+        expect(store.getActions()).toContainEqual(setOrder({ column: 'label' }))
     })
 
     it('should trigger ordering action when category label clicked', () => {
@@ -223,7 +220,7 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
         useCustomFieldsTicketCountPerCustomFieldsMock.mockReturnValue({
             data: exampleData,
             dateTimes,
-            order: {column: 0, direction: OrderDirection.Desc},
+            order: { column: 0, direction: OrderDirection.Desc },
             isLoading: false,
         })
 
@@ -232,14 +229,14 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
                 <CustomFieldsTicketCountBreakdownTable
                     selectedCustomField={customField}
                 />
-            </Provider>
+            </Provider>,
         )
         act(() => {
             const categoryLabel = screen.getByText(TOTAL_COLUMN_LABEL)
             userEvent.click(categoryLabel)
         })
 
-        expect(store.getActions()).toContainEqual(setOrder({column: 'total'}))
+        expect(store.getActions()).toContainEqual(setOrder({ column: 'total' }))
     })
 
     it('should trigger ordering action when data label clicked', () => {
@@ -268,9 +265,9 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
             data: [dataPoint],
             dateTimes: getPeriodDateTimes(
                 getFilterDateRange(defaultStatsFilters.period),
-                granularity
+                granularity,
             ),
-            order: {column: 'label', direction: OrderDirection.Asc},
+            order: { column: 'label', direction: OrderDirection.Asc },
             isLoading: false,
         })
         const store = mockStore(defaultState)
@@ -280,16 +277,16 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
                 <CustomFieldsTicketCountBreakdownTable
                     selectedCustomField={customField}
                 />
-            </Provider>
+            </Provider>,
         )
         act(() => {
             const categoryLabel = screen.getByText(
-                formatDates(granularity, dataPoint.timeSeries[0].label)
+                formatDates(granularity, dataPoint.timeSeries[0].label),
             )
             userEvent.click(categoryLabel)
         })
 
-        expect(store.getActions()).toContainEqual(setOrder({column: 0}))
+        expect(store.getActions()).toContainEqual(setOrder({ column: 0 }))
     })
 
     it('should handle table scrolling', async () => {
@@ -300,31 +297,31 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
                 <CustomFieldsTicketCountBreakdownTable
                     selectedCustomField={customField}
                 />
-            </Provider>
+            </Provider>,
         )
         act(() => {
             const tableRow = document.getElementsByClassName('container')[0]
-            fireEvent.scroll(tableRow, {target: {scrollLeft: 50}})
+            fireEvent.scroll(tableRow, { target: { scrollLeft: 50 } })
         })
 
         await waitFor(() => {
             expect(
                 screen.getByRole('columnheader', {
                     name: new RegExp(CUSTOM_FIELD_COLUMN_LABEL),
-                })
+                }),
             ).toHaveClass('withShadow')
         })
 
         act(() => {
             const tableRow = document.getElementsByClassName('container')[0]
-            fireEvent.scroll(tableRow, {target: {scrollLeft: 0}})
+            fireEvent.scroll(tableRow, { target: { scrollLeft: 0 } })
         })
 
         await waitFor(() => {
             expect(
                 screen.getByRole('columnheader', {
                     name: new RegExp(CUSTOM_FIELD_COLUMN_LABEL),
-                })
+                }),
             ).not.toHaveClass('withShadow')
         })
     })
@@ -333,7 +330,7 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
         useCustomFieldsTicketCountPerCustomFieldsMock.mockReturnValue({
             data: [],
             dateTimes,
-            order: {column: 'label', direction: OrderDirection.Asc},
+            order: { column: 'label', direction: OrderDirection.Asc },
             isLoading: true,
         })
 
@@ -342,11 +339,11 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
                 <CustomFieldsTicketCountBreakdownTable
                     selectedCustomField={customField}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            document.querySelector('.react-loading-skeleton')
+            document.querySelector('.react-loading-skeleton'),
         ).toBeInTheDocument()
     })
 
@@ -355,7 +352,7 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
             useCustomFieldsTicketCountPerCustomFieldsMock.mockReturnValue({
                 data: Array(CUSTOM_FIELDS_PER_PAGE + 5).fill(exampleData[0]),
                 dateTimes,
-                order: {column: 'label', direction: OrderDirection.Asc},
+                order: { column: 'label', direction: OrderDirection.Asc },
                 isLoading: false,
             })
 
@@ -364,11 +361,11 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
                     <CustomFieldsTicketCountBreakdownTable
                         selectedCustomField={customField}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(screen.getAllByRole('rowgroup')[1].children.length).toEqual(
-                CUSTOM_FIELDS_PER_PAGE
+                CUSTOM_FIELDS_PER_PAGE,
             )
         })
 
@@ -376,10 +373,10 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
             const SECOND_PAGE_ITEMS_COUNT = 5
             useCustomFieldsTicketCountPerCustomFieldsMock.mockReturnValue({
                 data: Array(
-                    CUSTOM_FIELDS_PER_PAGE + SECOND_PAGE_ITEMS_COUNT
+                    CUSTOM_FIELDS_PER_PAGE + SECOND_PAGE_ITEMS_COUNT,
                 ).fill(exampleData[0]),
                 dateTimes,
-                order: {column: 'label', direction: OrderDirection.Asc},
+                order: { column: 'label', direction: OrderDirection.Asc },
                 isLoading: false,
             })
 
@@ -388,7 +385,7 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
                     <CustomFieldsTicketCountBreakdownTable
                         selectedCustomField={customField}
                     />
-                </Provider>
+                </Provider>,
             )
             act(() => {
                 const pageButton = screen.getByText('2')
@@ -397,7 +394,7 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
 
             await waitFor(() => {
                 expect(
-                    screen.getAllByRole('rowgroup')[1].children.length
+                    screen.getAllByRole('rowgroup')[1].children.length,
                 ).toEqual(SECOND_PAGE_ITEMS_COUNT)
             })
         })
@@ -406,19 +403,19 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
             const SECOND_PAGE_ITEMS_COUNT = 5
             useCustomFieldsTicketCountPerCustomFieldsMock.mockReturnValue({
                 data: Array(
-                    CUSTOM_FIELDS_PER_PAGE + SECOND_PAGE_ITEMS_COUNT
+                    CUSTOM_FIELDS_PER_PAGE + SECOND_PAGE_ITEMS_COUNT,
                 ).fill(exampleData[0]),
                 dateTimes,
-                order: {column: 'label', direction: OrderDirection.Asc},
+                order: { column: 'label', direction: OrderDirection.Asc },
                 isLoading: false,
             })
 
-            const {rerender} = render(
+            const { rerender } = render(
                 <Provider store={mockStore(defaultState)}>
                     <CustomFieldsTicketCountBreakdownTable
                         selectedCustomField={customField}
                     />
-                </Provider>
+                </Provider>,
             )
             act(() => {
                 const pageButton = screen.getByText('2')
@@ -426,13 +423,13 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
             })
 
             expect(
-                screen.getByRole('listitem', {name: 'page-2'})
+                screen.getByRole('listitem', { name: 'page-2' }),
             ).toBeInTheDocument()
 
             useCustomFieldsTicketCountPerCustomFieldsMock.mockReturnValue({
                 data: Array(CUSTOM_FIELDS_PER_PAGE - 1).fill(exampleData[0]),
                 dateTimes,
-                order: {column: 'label', direction: OrderDirection.Asc},
+                order: { column: 'label', direction: OrderDirection.Asc },
                 isLoading: false,
             })
             rerender(
@@ -440,7 +437,7 @@ describe('<CustomFieldsTicketCountBreakdownTable />', () => {
                     <CustomFieldsTicketCountBreakdownTable
                         selectedCustomField={customField}
                     />
-                </Provider>
+                </Provider>,
             )
 
             await waitFor(() => {

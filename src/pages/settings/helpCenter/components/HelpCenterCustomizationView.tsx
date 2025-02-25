@@ -1,12 +1,13 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { useEffect, useMemo, useState } from 'react'
+
 import classNames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useEffect, useMemo, useState} from 'react'
-import {FormGroup} from 'reactstrap'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { FormGroup } from 'reactstrap'
+import isURL, { IsURLOptions } from 'validator/lib/isURL'
 
-import isURL, {IsURLOptions} from 'validator/lib/isURL'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -15,37 +16,39 @@ import {
     NavigationLink,
 } from 'models/helpCenter/types'
 import Button from 'pages/common/components/button/Button'
-
 import InputField from 'pages/common/forms/input/InputField'
-import {helpCenterUpdated} from 'state/entities/helpCenter/helpCenters/actions'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {getViewLanguage} from 'state/ui/helpCenter'
-import {reportError} from 'utils/errors'
+import { helpCenterUpdated } from 'state/entities/helpCenter/helpCenters/actions'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { getViewLanguage } from 'state/ui/helpCenter'
+import { reportError } from 'utils/errors'
 
 import CodeEditor from '../../../common/components/CodeEditor/CodeEditor'
 import ToggleInput from '../../../common/forms/ToggleInput'
-import {SocialNavigationLinks} from '../components/SocialNavigationLinks'
-import {HELP_CENTER_DEFAULT_LOCALE, SOCIAL_NAVIGATION_LINKS} from '../constants'
+import { SocialNavigationLinks } from '../components/SocialNavigationLinks'
+import {
+    HELP_CENTER_DEFAULT_LOCALE,
+    SOCIAL_NAVIGATION_LINKS,
+} from '../constants'
 import useCurrentHelpCenter from '../hooks/useCurrentHelpCenter'
-import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
-import {useHelpCenterIdParam} from '../hooks/useHelpCenterIdParam'
+import { useHelpCenterApi } from '../hooks/useHelpCenterApi'
+import { useHelpCenterIdParam } from '../hooks/useHelpCenterIdParam'
 import {
     useNavigationLinks,
     useSocialNavigationLinks,
 } from '../hooks/useNavigationLinks'
-import {getAbsoluteUrl} from '../utils/helpCenter.utils'
-import {saveNavigationLinks, saveSocialLinks} from '../utils/navigationLinks'
+import { getAbsoluteUrl } from '../utils/helpCenter.utils'
+import { saveNavigationLinks, saveSocialLinks } from '../utils/navigationLinks'
+import HelpCenterPageWrapper from './HelpCenterPageWrapper'
+import { LinkList } from './LinkList'
+import { UpdateToggle } from './UpdateToggle'
 
 import css from './HelpCenterCustomizationView.less'
-import HelpCenterPageWrapper from './HelpCenterPageWrapper'
-import {LinkList} from './LinkList'
-import {UpdateToggle} from './UpdateToggle'
 
 export const HelpCenterCustomizationView = () => {
     const dispatch = useAppDispatch()
     const helpCenterId = useHelpCenterIdParam()
-    const {client} = useHelpCenterApi()
+    const { client } = useHelpCenterApi()
     const helpCenter = useCurrentHelpCenter()
     const selectedLocale =
         useAppSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
@@ -112,22 +115,22 @@ export const HelpCenterCustomizationView = () => {
             links.filter((link) =>
                 link.meta?.network
                     ? !Object.keys(SOCIAL_NAVIGATION_LINKS).includes(
-                          link.meta?.network
+                          link.meta?.network,
                       )
-                    : true
+                    : true,
             ),
-        [links]
+        [links],
     )
 
     const socialLinks = useMemo(
         () =>
             Object.entries(
-                SOCIAL_NAVIGATION_LINKS
+                SOCIAL_NAVIGATION_LINKS,
             ).map<LocalSocialNavigationLink>(([socialKey, socialLink]) => {
                 const currentRemoteLink = links.find((link) =>
                     link.meta?.network
                         ? socialKey === link.meta.network.toLowerCase()
-                        : false
+                        : false,
                 )
 
                 if (currentRemoteLink) {
@@ -144,7 +147,7 @@ export const HelpCenterCustomizationView = () => {
 
                 return socialLink
             }),
-        [links]
+        [links],
     )
 
     const headerNavigation = useNavigationLinks('header', linksWithoutSocial)
@@ -167,26 +170,26 @@ export const HelpCenterCustomizationView = () => {
                 client,
                 linksWithoutSocial,
                 headerNavigation.links.filter(
-                    (link) => link.label && link.value
+                    (link) => link.label && link.value,
                 ),
                 {
                     group: 'header',
                     helpCenterId: helpCenterId,
                     locale: selectedLocale,
-                }
+                },
             )
 
             await saveNavigationLinks(
                 client,
                 linksWithoutSocial,
                 footerNavigation.links.filter(
-                    (link) => link.label && link.value
+                    (link) => link.label && link.value,
                 ),
                 {
                     group: 'footer',
                     helpCenterId: helpCenterId,
                     locale: selectedLocale,
-                }
+                },
             )
 
             await saveSocialLinks(client, socialNavigation.links, {
@@ -210,7 +213,7 @@ export const HelpCenterCustomizationView = () => {
                     help_center_id: helpCenterId,
                     locale: selectedLocale,
                 },
-                extraHTML
+                extraHTML,
             )
             const {
                 custom_footer_deactivated_datetime,
@@ -238,14 +241,14 @@ export const HelpCenterCustomizationView = () => {
                     notify({
                         message: 'URL is invalid',
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
 
                 throw new Error('URL is invalid')
             }
 
             let translations = helpCenter.translations
-            const {data: updatedTranslation} =
+            const { data: updatedTranslation } =
                 await client.updateHelpCenterTranslation(
                     {
                         help_center_id: helpCenterId,
@@ -256,19 +259,19 @@ export const HelpCenterCustomizationView = () => {
                             logoHyperlink === ''
                                 ? null
                                 : getAbsoluteUrl(
-                                      {domain: logoHyperlink},
-                                      false
+                                      { domain: logoHyperlink },
+                                      false,
                                   ),
-                    }
+                    },
                 )
 
             translations = helpCenter.translations?.map((translation) =>
                 translation.locale === updatedTranslation.locale
                     ? updatedTranslation
-                    : translation
+                    : translation,
             )
 
-            dispatch(helpCenterUpdated({...helpCenter, translations}))
+            dispatch(helpCenterUpdated({ ...helpCenter, translations }))
         }
     }
 
@@ -284,7 +287,7 @@ export const HelpCenterCustomizationView = () => {
                 notify({
                     message: 'Customizations saved with success',
                     status: NotificationStatus.Success,
-                })
+                }),
             )
         } catch (err) {
             // ?   These messages are not really meaningful because if one request fails,
@@ -293,7 +296,7 @@ export const HelpCenterCustomizationView = () => {
                 notify({
                     message: 'Failed to save the customizations',
                     status: NotificationStatus.Error,
-                })
+                }),
             )
 
             reportError(err as Error)
@@ -378,7 +381,7 @@ export const HelpCenterCustomizationView = () => {
                                     extraHTML && {
                                         ...extraHTML,
                                         custom_header_deactivated: !value,
-                                    }
+                                    },
                             )
                         }}
                         className={css.toggle}
@@ -389,7 +392,7 @@ export const HelpCenterCustomizationView = () => {
                                 id="custom-header-toggle-info"
                                 className={classNames(
                                     'material-icons',
-                                    css.tooltipIcon
+                                    css.tooltipIcon,
                                 )}
                             >
                                 info_outline
@@ -426,7 +429,7 @@ export const HelpCenterCustomizationView = () => {
                                 headerNavigation.update(
                                     ev.target.value,
                                     id,
-                                    key
+                                    key,
                                 )
                             }}
                             onDelete={(id) => {
@@ -449,7 +452,7 @@ export const HelpCenterCustomizationView = () => {
                                     extraHTML && {
                                         ...extraHTML,
                                         custom_header: value,
-                                    }
+                                    },
                             )
                         }}
                         mode="html"
@@ -477,7 +480,7 @@ export const HelpCenterCustomizationView = () => {
                                     extraHTML && {
                                         ...extraHTML,
                                         custom_footer_deactivated: !value,
-                                    }
+                                    },
                             )
                         }}
                         className={css.toggle}
@@ -488,7 +491,7 @@ export const HelpCenterCustomizationView = () => {
                                 id="custom-footer-toggle-info"
                                 className={classNames(
                                     'material-icons',
-                                    css.tooltipIcon
+                                    css.tooltipIcon,
                                 )}
                             >
                                 info_outline
@@ -536,7 +539,7 @@ export const HelpCenterCustomizationView = () => {
                                     footerNavigation.update(
                                         ev.target.value,
                                         id,
-                                        key
+                                        key,
                                     )
                                 }}
                                 onDelete={(id) => {
@@ -557,7 +560,7 @@ export const HelpCenterCustomizationView = () => {
                                 socialNavigation.update(
                                     ev.target.value,
                                     id,
-                                    key
+                                    key,
                                 )
                             }}
                         />
@@ -572,7 +575,7 @@ export const HelpCenterCustomizationView = () => {
                                     extraHTML && {
                                         ...extraHTML,
                                         custom_footer: value,
-                                    }
+                                    },
                             )
                         }}
                         mode="html"
@@ -607,7 +610,7 @@ export const HelpCenterCustomizationView = () => {
                                     extraHTML && {
                                         ...extraHTML,
                                         extra_head_deactivated: !value,
-                                    }
+                                    },
                             )
                         }}
                         className={css.toggle}
@@ -625,7 +628,7 @@ export const HelpCenterCustomizationView = () => {
                                     extraHTML && {
                                         ...extraHTML,
                                         extra_head: value,
-                                    }
+                                    },
                             )
                         }}
                         mode="html"

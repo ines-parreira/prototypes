@@ -1,14 +1,13 @@
-import {TicketChannel} from 'business/types/ticket'
+import { TicketChannel } from 'business/types/ticket'
+import type { Notification } from 'common/notifications'
 
-import type {Notification} from 'common/notifications'
-
-import type {TicketPayload} from '../../types'
+import type { TicketPayload } from '../../types'
 import mapTicketMessageCreatedType from '../mapTicketMessageCreatedType'
 
 describe('mapTicketMessageCreatedType', () => {
     it('should map to a channel-specific type if available', () => {
         const result = mapTicketMessageCreatedType({
-            payload: {ticket: {channel: TicketChannel.Aircall}},
+            payload: { ticket: { channel: TicketChannel.Aircall } },
         } as Notification<TicketPayload>)
         expect(result).toBe('ticket-message.created.aircall')
     })
@@ -16,7 +15,7 @@ describe('mapTicketMessageCreatedType', () => {
     it('should not map if the channel does not have a workflow defined', () => {
         const result = mapTicketMessageCreatedType({
             type: 'ticket-message.created',
-            payload: {ticket: {channel: 'api'}},
+            payload: { ticket: { channel: 'api' } },
         } as Notification<TicketPayload>)
         expect(result).toBe('ticket-message.created')
     })

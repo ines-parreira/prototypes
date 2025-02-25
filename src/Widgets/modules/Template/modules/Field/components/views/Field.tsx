@@ -1,18 +1,19 @@
+import React, { SyntheticEvent, useState } from 'react'
+
 import cs from 'classnames'
-import React, {SyntheticEvent, useState} from 'react'
-import {Popover, PopoverBody} from 'reactstrap'
+import { Popover, PopoverBody } from 'reactstrap'
 
-import {useAppNode} from 'appNode'
+import { useAppNode } from 'appNode'
 import useId from 'hooks/useId'
+import { LeafType } from 'models/widget/types'
 
-import {LeafType} from 'models/widget/types'
-
-import {FieldEditFormData, HiddenFields} from '../../types'
-import css from './Field.less'
+import { FieldEditFormData, HiddenFields } from '../../types'
 import FieldContainer from './FieldContainer'
-import FieldEditForm, {TypeOption} from './FieldEditForm'
+import FieldEditForm, { TypeOption } from './FieldEditForm'
 import FieldLabel from './FieldLabel'
 import FieldValue from './FieldValue'
+
+import css from './Field.less'
 
 export const EDIT_BUTTON_TEXT = 'edit'
 export const DELETE_BUTTON_TEXT = 'delete'

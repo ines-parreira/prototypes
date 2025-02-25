@@ -1,18 +1,19 @@
-import {CursorPaginationMeta} from '@gorgias/api-queries'
 import _omit from 'lodash/omit'
+
+import { CursorPaginationMeta } from '@gorgias/api-queries'
 
 import client from 'models/api/resources'
 import {
     ApiListResponseCursorPagination,
     ApiPaginationParams,
 } from 'models/api/types'
-import {TicketPartial} from 'models/ticket/types'
+import { TicketPartial } from 'models/ticket/types'
 
-import {View, ViewDraft} from './types'
+import { View, ViewDraft } from './types'
 
 type SharedView = View & {
-    shared_with_teams: {id: number}[]
-    shared_with_users: {id: number}[]
+    shared_with_teams: { id: number }[]
+    shared_with_users: { id: number }[]
 }
 
 export const fetchViewsPaginated = async (params: ApiPaginationParams = {}) => {
@@ -20,7 +21,7 @@ export const fetchViewsPaginated = async (params: ApiPaginationParams = {}) => {
         `/api/views/`,
         {
             params,
-        }
+        },
     )
 }
 
@@ -33,17 +34,17 @@ export type ViewTicketUpdatesParams = {
 
 export function getViewTicketUpdates(
     viewId: number,
-    params?: ViewTicketUpdatesParams
+    params?: ViewTicketUpdatesParams,
 ) {
     return client.get<
         ApiListResponseCursorPagination<TicketPartial[], CursorPaginationMeta>
-    >(`/api/views/${viewId}/tickets/updates`, {params})
+    >(`/api/views/${viewId}/tickets/updates`, { params })
 }
 
 export const createView = async (viewDraft: ViewDraft) => {
     const res = await client.post<View>(
         '/api/views/',
-        _omit(viewDraft, 'search')
+        _omit(viewDraft, 'search'),
     )
     return res.data
 }
@@ -51,11 +52,19 @@ export const createView = async (viewDraft: ViewDraft) => {
 export const updateView = async (id: number, view: Partial<View>) => {
     const sharedProps = Object.assign(
         view?.shared_with_teams
-            ? {shared_with_teams: view.shared_with_teams.map((team) => team.id)}
+            ? {
+                  shared_with_teams: view.shared_with_teams.map(
+                      (team) => team.id,
+                  ),
+              }
             : {},
         view?.shared_with_users
-            ? {shared_with_users: view.shared_with_users.map((user) => user.id)}
-            : {}
+            ? {
+                  shared_with_users: view.shared_with_users.map(
+                      (user) => user.id,
+                  ),
+              }
+            : {},
     )
     const res = await client.put<SharedView>(`/api/views/${id}/`, {
         ..._omit(view, 'filters_ast', 'search'),

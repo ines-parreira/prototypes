@@ -1,7 +1,7 @@
-import React, {FunctionComponent} from 'react'
+import React, { FunctionComponent } from 'react'
 
-import {DrillDownDataHook} from 'hooks/reporting/useDrillDownData'
-import {NumberedPagination} from 'pages/common/components/Paginations'
+import { DrillDownDataHook } from 'hooks/reporting/useDrillDownData'
+import { NumberedPagination } from 'pages/common/components/Paginations'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import {
     ConvertDrillDownRowData,
@@ -9,7 +9,7 @@ import {
     VoiceCallDrillDownRowData,
 } from 'pages/stats/DrillDownFormatters'
 import css from 'pages/stats/DrillDownTable.less'
-import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
+import { DrillDownMetric } from 'state/ui/stats/drillDownSlice'
 
 export const DrillDownTable = ({
     metricData,
@@ -27,7 +27,7 @@ export const DrillDownTable = ({
         metricData: DrillDownMetric
     }>
 }) => {
-    const {currentPage, pagesCount, onPageChange} = useDataHook(metricData)
+    const { currentPage, pagesCount, onPageChange } = useDataHook(metricData)
 
     return (
         <>

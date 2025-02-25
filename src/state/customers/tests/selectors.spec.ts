@@ -1,10 +1,10 @@
-import {Map, fromJS} from 'immutable'
+import { fromJS, Map } from 'immutable'
 
-import {TicketChannel} from 'business/types/ticket'
-import {customer} from 'fixtures/customer'
-import {RootState} from 'state/types'
+import { TicketChannel } from 'business/types/ticket'
+import { customer } from 'fixtures/customer'
+import { RootState } from 'state/types'
 
-import {initialState} from '../reducers'
+import { initialState } from '../reducers'
 import * as selectors from '../selectors'
 
 describe('customers selectors', () => {
@@ -14,7 +14,7 @@ describe('customers selectors', () => {
         state = {
             customers: initialState.mergeDeep({
                 active: customer,
-                items: [{id: 1}, {id: 2}],
+                items: [{ id: 1 }, { id: 2 }],
                 _internal: {
                     loading: {
                         loader1: true,
@@ -27,19 +27,19 @@ describe('customers selectors', () => {
 
     it('getCustomersState', () => {
         expect(selectors.getCustomersState(state)).toEqualImmutable(
-            state.customers
+            state.customers,
         )
         expect(selectors.getCustomersState({} as RootState)).toEqualImmutable(
-            fromJS({})
+            fromJS({}),
         )
     })
 
     it('getLoading', () => {
         expect(selectors.getLoading(state)).toEqualImmutable(
-            selectors.getCustomersState(state).getIn(['_internal', 'loading'])
+            selectors.getCustomersState(state).getIn(['_internal', 'loading']),
         )
         expect(selectors.getLoading({} as RootState)).toEqualImmutable(
-            fromJS({})
+            fromJS({}),
         )
     })
 
@@ -51,10 +51,10 @@ describe('customers selectors', () => {
 
     it('getCustomers', () => {
         expect(selectors.getCustomers(state)).toEqualImmutable(
-            selectors.getCustomersState(state).get('items')
+            selectors.getCustomersState(state).get('items'),
         )
         expect(selectors.getCustomers({} as RootState)).toEqualImmutable(
-            fromJS([])
+            fromJS([]),
         )
     })
 
@@ -65,27 +65,27 @@ describe('customers selectors', () => {
                     any,
                     any
                 >
-            ).toJS()
+            ).toJS(),
         )
         expect(
             selectors.getActiveCustomer({
-                customers: fromJS({active: {}}),
-            } as RootState)
+                customers: fromJS({ active: {} }),
+            } as RootState),
         ).toEqual({})
     })
 
     it('DEPRECATED_getActiveCustomer', () => {
         expect(selectors.DEPRECATED_getActiveCustomer(state)).toEqualImmutable(
-            selectors.getCustomersState(state).get('active')
+            selectors.getCustomersState(state).get('active'),
         )
         expect(
-            selectors.DEPRECATED_getActiveCustomer(fromJS({}))
+            selectors.DEPRECATED_getActiveCustomer(fromJS({})),
         ).toEqualImmutable(fromJS({}))
     })
 
     it('getActiveCustomerId', () => {
         expect(selectors.getActiveCustomerId(state)).toEqualImmutable(
-            selectors.getCustomersState(state).getIn(['active', 'id'])
+            selectors.getCustomersState(state).getIn(['active', 'id']),
         )
         expect(selectors.getActiveCustomerId({} as RootState)).toBe(undefined)
     })

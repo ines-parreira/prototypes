@@ -1,9 +1,9 @@
 import {
+    AxiosRequestConfig,
     OpenAPIClient,
+    OperationResponse,
     Parameters,
     UnknownParamsObject,
-    OperationResponse,
-    AxiosRequestConfig,
 } from 'openapi-client-axios'
 
 declare namespace Components {
@@ -894,7 +894,7 @@ export interface OperationMethods {
     'analysis'(
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: Paths.Analysis.RequestBody,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         Paths.Analysis.Responses.$200 | Paths.Analysis.Responses.$401
     >
@@ -904,7 +904,7 @@ export interface OperationMethods {
     'providerStaticList'(
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         | Paths.ProviderStaticList.Responses.$200
         | Paths.ProviderStaticList.Responses.$401
@@ -915,7 +915,7 @@ export interface OperationMethods {
     'providerStaticRetrieve'(
         parameters?: Parameters<Paths.ProviderStaticRetrieve.PathParameters> | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         | Paths.ProviderStaticRetrieve.Responses.$200
         | Paths.ProviderStaticRetrieve.Responses.$401
@@ -926,7 +926,7 @@ export interface OperationMethods {
     'providerValidate'(
         parameters?: Parameters<Paths.ProviderValidate.PathParameters> | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         | Paths.ProviderValidate.Responses.$200
         | Paths.ProviderValidate.Responses.$401
@@ -938,7 +938,7 @@ export interface OperationMethods {
     'sessionList'(
         parameters?: Parameters<Paths.SessionList.QueryParameters> | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         | Paths.SessionList.Responses.$200
         | Paths.SessionList.Responses.$401
@@ -950,7 +950,7 @@ export interface OperationMethods {
     'sessionCreate'(
         parameters?: Parameters<Paths.SessionCreate.QueryParameters> | null,
         data?: Paths.SessionCreate.RequestBody,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         | Paths.SessionCreate.Responses.$200
         | Paths.SessionCreate.Responses.$201
@@ -963,7 +963,7 @@ export interface OperationMethods {
     'sessionRetrieve'(
         parameters?: Parameters<Paths.SessionRetrieve.PathParameters> | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         | Paths.SessionRetrieve.Responses.$200
         | Paths.SessionRetrieve.Responses.$401
@@ -974,7 +974,7 @@ export interface OperationMethods {
     'sessionRetry'(
         parameters?: Parameters<Paths.SessionRetry.PathParameters> | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         Paths.SessionRetry.Responses.$201 | Paths.SessionRetry.Responses.$401
     >
@@ -984,7 +984,7 @@ export interface OperationMethods {
     'sessionRollback'(
         parameters?: Parameters<Paths.SessionRollback.PathParameters> | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         | Paths.SessionRollback.Responses.$201
         | Paths.SessionRollback.Responses.$401
@@ -995,7 +995,7 @@ export interface OperationMethods {
     'echoView'(
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<any>
     /**
      * echoView - echo_view <POST>
@@ -1003,7 +1003,7 @@ export interface OperationMethods {
     'echoView'(
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<any>
     /**
      * errorView - error_view <GET>
@@ -1011,7 +1011,7 @@ export interface OperationMethods {
     'errorView'(
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<any>
     /**
      * health - health <GET>
@@ -1019,7 +1019,7 @@ export interface OperationMethods {
     'health'(
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<any>
 }
 
@@ -1031,7 +1031,7 @@ export interface PathsDictionary {
         'post'(
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: Paths.Analysis.RequestBody,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             Paths.Analysis.Responses.$200 | Paths.Analysis.Responses.$401
         >
@@ -1043,7 +1043,7 @@ export interface PathsDictionary {
         'get'(
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.ProviderStaticList.Responses.$200
             | Paths.ProviderStaticList.Responses.$401
@@ -1056,7 +1056,7 @@ export interface PathsDictionary {
         'get'(
             parameters?: Parameters<Paths.ProviderStaticRetrieve.PathParameters> | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.ProviderStaticRetrieve.Responses.$200
             | Paths.ProviderStaticRetrieve.Responses.$401
@@ -1067,7 +1067,7 @@ export interface PathsDictionary {
         'post'(
             parameters?: Parameters<Paths.ProviderValidate.PathParameters> | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.ProviderValidate.Responses.$200
             | Paths.ProviderValidate.Responses.$401
@@ -1081,7 +1081,7 @@ export interface PathsDictionary {
         'get'(
             parameters?: Parameters<Paths.SessionList.QueryParameters> | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.SessionList.Responses.$200
             | Paths.SessionList.Responses.$401
@@ -1093,7 +1093,7 @@ export interface PathsDictionary {
         'post'(
             parameters?: Parameters<Paths.SessionCreate.QueryParameters> | null,
             data?: Paths.SessionCreate.RequestBody,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.SessionCreate.Responses.$200
             | Paths.SessionCreate.Responses.$201
@@ -1108,7 +1108,7 @@ export interface PathsDictionary {
         'get'(
             parameters?: Parameters<Paths.SessionRetrieve.PathParameters> | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.SessionRetrieve.Responses.$200
             | Paths.SessionRetrieve.Responses.$401
@@ -1121,7 +1121,7 @@ export interface PathsDictionary {
         'post'(
             parameters?: Parameters<Paths.SessionRetry.PathParameters> | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.SessionRetry.Responses.$201
             | Paths.SessionRetry.Responses.$401
@@ -1134,7 +1134,7 @@ export interface PathsDictionary {
         'post'(
             parameters?: Parameters<Paths.SessionRollback.PathParameters> | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.SessionRollback.Responses.$201
             | Paths.SessionRollback.Responses.$401
@@ -1147,7 +1147,7 @@ export interface PathsDictionary {
         'get'(
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<any>
         /**
          * echoView - echo_view <POST>
@@ -1155,7 +1155,7 @@ export interface PathsDictionary {
         'post'(
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<any>
     }
     ['/debug/error']: {
@@ -1165,7 +1165,7 @@ export interface PathsDictionary {
         'get'(
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<any>
     }
     ['/health']: {
@@ -1175,7 +1175,7 @@ export interface PathsDictionary {
         'get'(
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<any>
     }
 }

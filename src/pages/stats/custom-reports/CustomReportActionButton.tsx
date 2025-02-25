@@ -1,8 +1,8 @@
-import React, {useRef, useState} from 'react'
+import React, { useRef, useState } from 'react'
 
 import Button from 'pages/common/components/button/Button'
-import {CustomReportsPageActions} from 'pages/stats/custom-reports/CustomReportsPageActions'
-import {CustomReportSchema} from 'pages/stats/custom-reports/types'
+import { CustomReportsPageActions } from 'pages/stats/custom-reports/CustomReportsPageActions'
+import { CustomReportSchema } from 'pages/stats/custom-reports/types'
 
 export const CUSTOM_REPORT_ID_CTA = 'Actions'
 

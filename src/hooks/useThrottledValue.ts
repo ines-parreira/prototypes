@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react'
+import { useEffect, useState } from 'react'
 
 import useThrottledCallback from './useThrottledCallback'
 
@@ -6,7 +6,7 @@ const useThrottledValue = <T, U extends any[]>(
     callback: (...args: U) => T,
     args: U,
     delay: number,
-    noTrailing = false
+    noTrailing = false,
 ) => {
     const [state, setState] = useState<T | null>(null)
 

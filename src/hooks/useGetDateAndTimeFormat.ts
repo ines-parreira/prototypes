@@ -1,10 +1,9 @@
-import {DateAndTimeFormatting} from 'constants/datetime'
+import { DateAndTimeFormatting } from 'constants/datetime'
 import useAppSelector from 'hooks/useAppSelector'
-
-import {getDateAndTimeFormatter} from 'state/currentUser/selectors'
+import { getDateAndTimeFormatter } from 'state/currentUser/selectors'
 
 export default function useGetDateAndTimeFormat(
-    formatType: DateAndTimeFormatting
+    formatType: DateAndTimeFormatting,
 ) {
     return useAppSelector(getDateAndTimeFormatter)(formatType)
 }

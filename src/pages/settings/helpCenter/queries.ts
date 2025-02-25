@@ -1,23 +1,22 @@
-import {UseQueryOptions, useQuery, useMutation} from '@tanstack/react-query'
-import {useFlags} from 'launchdarkly-react-client-sdk'
+import { useMutation, useQuery, UseQueryOptions } from '@tanstack/react-query'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 
-import {Paths} from '../../../rest_api/help_center_api/client.generated'
-import {MutationOverrides} from '../../../types/query'
-
+import { Paths } from '../../../rest_api/help_center_api/client.generated'
+import { MutationOverrides } from '../../../types/query'
 import {
-    getShopifyPages,
-    getPageEmbedments,
     createPageEmbedment,
-    updatePageEmbedment,
     deletePageEmbedment,
-    getArticleTemplates,
-    getArticleTemplate,
-    upsertArticleTemplateReview,
-    getAIGeneratedArticlesByHelpCenterAndStore,
     getAIGeneratedArticles,
+    getAIGeneratedArticlesByHelpCenterAndStore,
+    getArticleTemplate,
+    getArticleTemplates,
+    getPageEmbedments,
+    getShopifyPages,
+    updatePageEmbedment,
+    upsertArticleTemplateReview,
 } from './resources'
 
 /**
@@ -94,7 +93,7 @@ export const articleTemplateKeys = {
         [...articleTemplateKeys.list(locale), 'detail'] as const,
     detail: (
         locale: Paths.ListArticleTemplates.Parameters.Locale,
-        key: Paths.GetArticleTemplate.Parameters.TemplateKey | null
+        key: Paths.GetArticleTemplate.Parameters.TemplateKey | null,
     ) => [...articleTemplateKeys.details(locale), key] as const,
 }
 
@@ -106,7 +105,7 @@ export const aiArticleKeys = {
     lists: () => [...aiArticleKeys.all(), 'list'],
     listWithStore: (
         helpCenterId: number | null,
-        storeIntegrationId: number | null
+        storeIntegrationId: number | null,
     ) => [...aiArticleKeys.list(helpCenterId), 'store', storeIntegrationId],
     list: (helpCenterId: number | null) => [
         ...aiArticleKeys.lists(),
@@ -127,9 +126,9 @@ export const useGetShopifyPages = <
         Awaited<ReturnType<typeof getShopifyPages>>,
         unknown,
         TData
-    >
+    >,
 ) => {
-    const {client} = useHelpCenterApi()
+    const { client } = useHelpCenterApi()
 
     return useQuery({
         queryKey: helpCenterEmbeddablePageKeys.lists(helpCenterId),
@@ -150,9 +149,9 @@ export const useGetPageEmbedments = <
         Awaited<ReturnType<typeof getPageEmbedments>>,
         unknown,
         TData
-    >
+    >,
 ) => {
-    const {client} = useHelpCenterApi()
+    const { client } = useHelpCenterApi()
 
     return useQuery({
         queryKey: helpCenterPageEmbedmentsKeys.lists(helpCenterId),
@@ -173,9 +172,9 @@ export const useGetArticleTemplates = <
         Awaited<ReturnType<typeof getArticleTemplates>>,
         unknown,
         TData
-    >
+    >,
 ) => {
-    const {client} = useHelpCenterApi()
+    const { client } = useHelpCenterApi()
 
     return useQuery({
         queryKey: articleTemplateKeys.list(locale),
@@ -197,9 +196,9 @@ export const useGetArticleTemplate = <
         Awaited<ReturnType<typeof getArticleTemplate>>,
         unknown,
         TData
-    >
+    >,
 ) => {
-    const {client} = useHelpCenterApi()
+    const { client } = useHelpCenterApi()
 
     return useQuery({
         queryKey: articleTemplateKeys.detail(locale, key),
@@ -211,7 +210,7 @@ export const useGetArticleTemplate = <
                 },
                 {
                     locale,
-                }
+                },
             ),
         enabled: !!client,
         ...overrides,
@@ -226,9 +225,9 @@ export const useGetAIArticles = <
         Awaited<ReturnType<typeof getAIGeneratedArticles>>,
         unknown,
         TData
-    >
+    >,
 ) => {
-    const {client} = useHelpCenterApi()
+    const { client } = useHelpCenterApi()
     const isAIArticlesEnabled =
         useFlags()[FeatureFlagKey.ObservabilityAIArticles] || false
 
@@ -254,9 +253,9 @@ export const useGetAIArticlesByHelpCenterAndStore = <
         Awaited<ReturnType<typeof getAIGeneratedArticlesByHelpCenterAndStore>>,
         unknown,
         TData
-    >
+    >,
 ) => {
-    const {client} = useHelpCenterApi()
+    const { client } = useHelpCenterApi()
 
     return useQuery({
         queryKey: aiArticleKeys.listWithStore(helpCenterId, storeIntegrationId),
@@ -282,9 +281,9 @@ export const useGetAIArticlesByHelpCenterAndStore = <
  * Mutations
  */
 export const useCreatePageEmbedment = (
-    overrides?: MutationOverrides<typeof createPageEmbedment>
+    overrides?: MutationOverrides<typeof createPageEmbedment>,
 ) => {
-    const {client} = useHelpCenterApi()
+    const { client } = useHelpCenterApi()
 
     return useMutation({
         mutationFn: ([, pathParameters, newPageEmbedment]) =>
@@ -294,9 +293,9 @@ export const useCreatePageEmbedment = (
 }
 
 export const useUpdatePageEmbedment = (
-    overrides?: MutationOverrides<typeof updatePageEmbedment>
+    overrides?: MutationOverrides<typeof updatePageEmbedment>,
 ) => {
-    const {client} = useHelpCenterApi()
+    const { client } = useHelpCenterApi()
 
     return useMutation({
         mutationFn: ([, pathParameters, newPageEmbedment]) =>
@@ -306,9 +305,9 @@ export const useUpdatePageEmbedment = (
 }
 
 export const useDeletePageEmbedment = (
-    overrides?: MutationOverrides<typeof deletePageEmbedment>
+    overrides?: MutationOverrides<typeof deletePageEmbedment>,
 ) => {
-    const {client} = useHelpCenterApi()
+    const { client } = useHelpCenterApi()
 
     return useMutation({
         mutationFn: ([, pathParameters]) =>
@@ -318,9 +317,9 @@ export const useDeletePageEmbedment = (
 }
 
 export const useUpsertArticleTemplateReview = (
-    overrides?: MutationOverrides<typeof upsertArticleTemplateReview>
+    overrides?: MutationOverrides<typeof upsertArticleTemplateReview>,
 ) => {
-    const {client} = useHelpCenterApi()
+    const { client } = useHelpCenterApi()
 
     return useMutation({
         mutationFn: ([, pathParameters, body]) =>

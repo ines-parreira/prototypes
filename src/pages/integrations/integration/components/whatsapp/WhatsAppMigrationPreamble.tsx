@@ -1,5 +1,6 @@
 import React from 'react'
-import {Col, Row} from 'reactstrap'
+
+import { Col, Row } from 'reactstrap'
 
 import useWhatsAppMigration from 'hooks/useWhatsAppMigration'
 import Button from 'pages/common/components/button/Button'
@@ -79,7 +80,7 @@ export default function WhatsAppMigrationPreamble(): JSX.Element {
             <Row className="mt-1">
                 <Col>
                     <NumberedList
-                        items={instructions.map(({message}) => message)}
+                        items={instructions.map(({ message }) => message)}
                     />
                 </Col>
             </Row>

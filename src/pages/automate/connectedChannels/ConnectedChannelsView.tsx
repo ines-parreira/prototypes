@@ -1,4 +1,5 @@
 import React from 'react'
+
 import {
     NavLink,
     Route,
@@ -10,18 +11,19 @@ import {
 import PageHeader from 'pages/common/components/PageHeader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 
-import {AiAgentMovedBanner} from '../common/components/AiAgentMovedBanner'
-import {AVAILABLE_CHANNELS, CHANNELS} from '../common/components/constants'
-import {useDisplayAiAgentMovedBanner} from '../common/hooks/useDisplayAiAgentMovedBanner'
-import {ConnectedChannelsChatView} from './components/ConnectedChannelsChatView'
-import {ConnectedChannelsContactFormView} from './components/ConnectedChannelsContactFormView'
-import {ConnectedChannelsEmailView} from './components/ConnectedChannelsEmailView'
-import {ConnectedChannelsHelpCenterView} from './components/ConnectedChannelsHelpCenterView'
+import { AiAgentMovedBanner } from '../common/components/AiAgentMovedBanner'
+import { AVAILABLE_CHANNELS, CHANNELS } from '../common/components/constants'
+import { useDisplayAiAgentMovedBanner } from '../common/hooks/useDisplayAiAgentMovedBanner'
+import { ConnectedChannelsChatView } from './components/ConnectedChannelsChatView'
+import { ConnectedChannelsContactFormView } from './components/ConnectedChannelsContactFormView'
+import { ConnectedChannelsEmailView } from './components/ConnectedChannelsEmailView'
+import { ConnectedChannelsHelpCenterView } from './components/ConnectedChannelsHelpCenterView'
+
 import css from './ConnectedChannelsView.less'
 
 export const ConnectedChannelsView = () => {
     const displayAiAgentMovedBanner = useDisplayAiAgentMovedBanner()
-    const {shopType, shopName} = useParams<{
+    const { shopType, shopName } = useParams<{
         shopType: string
         shopName: string
     }>()
@@ -46,7 +48,7 @@ export const ConnectedChannelsView = () => {
         },
     ]
 
-    const {path} = useRouteMatch()
+    const { path } = useRouteMatch()
 
     return (
         <div className={css.pageContainer}>
@@ -55,7 +57,7 @@ export const ConnectedChannelsView = () => {
                 <PageHeader title={CHANNELS} />
 
                 <SecondaryNavbar>
-                    {headerNavbarItems.map(({route, title}) => (
+                    {headerNavbarItems.map(({ route, title }) => (
                         <NavLink key={route} to={route} exact={true}>
                             {title}
                         </NavLink>

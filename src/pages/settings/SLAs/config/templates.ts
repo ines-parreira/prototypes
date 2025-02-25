@@ -1,4 +1,4 @@
-import {MappedFormSLAPolicy} from 'pages/settings/SLAs/features/SLAForm/controllers/makeMappedFormSLAPolicy'
+import { MappedFormSLAPolicy } from 'pages/settings/SLAs/features/SLAForm/controllers/makeMappedFormSLAPolicy'
 
 export type SLATemplate = Omit<MappedFormSLAPolicy, 'uuid'> & {
     description: string

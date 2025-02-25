@@ -1,8 +1,10 @@
+import React, { HTMLProps, useContext, useEffect, useRef } from 'react'
+
 import classNames from 'classnames'
-import React, {useRef, useEffect, HTMLProps, useContext} from 'react'
+
+import SynchronizedScrollTopContext from './SynchronizedScrollTopContext'
 
 import css from './SynchronizedScrollTopContainer.less'
-import SynchronizedScrollTopContext from './SynchronizedScrollTopContext'
 
 type Props = {
     height?: number
@@ -16,9 +18,8 @@ export default function SynchronizedScrollTopContainer({
     hideScrollbar,
     ...containerProps
 }: Props) {
-    const {setScrollHeight, scrollHeight, setScrollTop, scrollTop} = useContext(
-        SynchronizedScrollTopContext
-    )
+    const { setScrollHeight, scrollHeight, setScrollTop, scrollTop } =
+        useContext(SynchronizedScrollTopContext)
     const containerRef = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
@@ -26,7 +27,7 @@ export default function SynchronizedScrollTopContainer({
             setScrollHeight((currentHeight) => {
                 return Math.max(
                     currentHeight,
-                    containerRef.current?.scrollHeight || 0
+                    containerRef.current?.scrollHeight || 0,
                 )
             })
         }
@@ -44,12 +45,12 @@ export default function SynchronizedScrollTopContainer({
             className={classNames(css.container, className, {
                 [css.hideScrollbar]: hideScrollbar,
             })}
-            style={{height: height || 'auto'}}
+            style={{ height: height || 'auto' }}
             onScroll={() => {
                 setScrollTop(containerRef.current!.scrollTop)
             }}
         >
-            <div style={{height: scrollHeight || 'auto'}}>{children}</div>
+            <div style={{ height: scrollHeight || 'auto' }}>{children}</div>
         </div>
     )
 }

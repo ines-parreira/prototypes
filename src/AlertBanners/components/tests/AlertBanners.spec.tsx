@@ -1,14 +1,18 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {useFlag} from 'core/flags'
-import useLegacyAlertBanners from 'notifications/hooks/useLegacyAlertBanners'
-import {BannerNotification, NotificationStyle} from 'state/notifications/types'
-import {assumeMock} from 'utils/testing'
+import { render } from '@testing-library/react'
 
-import {useBannersContext} from '../../Context'
-import {AlertBannerTypes, BannerCategories, ContextBanner} from '../../types'
-import {AlertBanner} from '../AlertBanner'
+import { useFlag } from 'core/flags'
+import useLegacyAlertBanners from 'notifications/hooks/useLegacyAlertBanners'
+import {
+    BannerNotification,
+    NotificationStyle,
+} from 'state/notifications/types'
+import { assumeMock } from 'utils/testing'
+
+import { useBannersContext } from '../../Context'
+import { AlertBannerTypes, BannerCategories, ContextBanner } from '../../types'
+import { AlertBanner } from '../AlertBanner'
 import AlertBanners from '../AlertBanners'
 
 jest.mock('notifications/hooks/useLegacyAlertBanners', () => jest.fn())
@@ -16,7 +20,7 @@ jest.mock('../../Context', () => ({
     ...jest.requireActual<Record<string, unknown>>('../../Context'),
     useBannersContext: jest.fn(),
 }))
-jest.mock('../AlertBanner', () => ({AlertBanner: jest.fn(() => null)}))
+jest.mock('../AlertBanner', () => ({ AlertBanner: jest.fn(() => null) }))
 jest.mock('core/flags', () => ({
     useFlag: jest.fn(),
 }))
@@ -41,9 +45,9 @@ const banner: ContextBanner = {
 describe('<AlertBanners/>', () => {
     const legacyBanners: BannerNotification[] = [
         legacyBanner,
-        {...legacyBanner, id: '2'},
+        { ...legacyBanner, id: '2' },
     ]
-    const contextBanners = [banner, {...banner, instanceId: '2'}]
+    const contextBanners = [banner, { ...banner, instanceId: '2' }]
 
     beforeEach(() => {
         useLegacyAlertBannersMock.mockReturnValue(legacyBanners)
@@ -65,7 +69,7 @@ describe('<AlertBanners/>', () => {
                     prefix: expect.any(Object),
                     type: expect.any(String),
                 }),
-                {}
+                {},
             )
         })
     })
@@ -84,12 +88,12 @@ describe('<AlertBanners/>', () => {
             expect(AlertBanner).toHaveBeenNthCalledWith(
                 1,
                 contextBanners[0],
-                {}
+                {},
             )
             expect(AlertBanner).toHaveBeenNthCalledWith(
                 2,
                 contextBanners[1],
-                {}
+                {},
             )
             expect(AlertBanner).toHaveBeenNthCalledWith(3, legacyBanners[0], {})
             expect(AlertBanner).toHaveBeenNthCalledWith(4, legacyBanners[1], {})

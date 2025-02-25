@@ -1,20 +1,24 @@
 import React from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
-import {Category as CategoryType} from 'models/integration/types/app'
+import { Category as CategoryType } from 'models/integration/types/app'
 import ArrowLink from 'pages/common/components/ArrowLink/ArrowLink'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+
+import { CATEGORY_DATA } from './constants'
 
 import css from './Category.less'
-import {CATEGORY_DATA} from './constants'
 
 type Props = {
     category: CategoryType
     showCategoryLink?: boolean
 }
 
-export default function Category({category, showCategoryLink = false}: Props) {
+export default function Category({
+    category,
+    showCategoryLink = false,
+}: Props) {
     const domain = useAppSelector(getCurrentAccountState).get('domain')
     return (
         <>

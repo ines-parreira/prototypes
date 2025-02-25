@@ -1,14 +1,14 @@
-import {ContentState} from 'draft-js'
+import { ContentState } from 'draft-js'
 import findWithRegex from 'find-with-regex'
 
-import {workflowVariableRegex} from 'pages/automate/workflows/models/variables.model'
+import { workflowVariableRegex } from 'pages/automate/workflows/models/variables.model'
 
-import {addEntityToVariable} from '../utils'
+import { addEntityToVariable } from '../utils'
 
 describe('addEntityToVariable', () => {
     test('should replace with entity if a flow variable pattern is detected', () => {
         const contentState = ContentState.createFromText(
-            'Hello {{customer.firstname}} {{customer.lastname}}'
+            'Hello {{customer.firstname}} {{customer.lastname}}',
         )
         const block = contentState.getFirstBlock()
         // parsing firstname variable
@@ -18,7 +18,7 @@ describe('addEntityToVariable', () => {
                 block,
                 newContentState,
                 start,
-                end
+                end,
             )
         })
         const firstnameVarEntity = newContentState.getEntity('1')

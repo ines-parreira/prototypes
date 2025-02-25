@@ -1,12 +1,12 @@
 import React from 'react'
 
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import BaseButton from 'pages/common/components/button/BaseButton'
 import Button from 'pages/common/components/button/Button'
 import LinkButton from 'pages/common/components/button/LinkButton'
 
-import {AlertBannerCTATypes} from '../types'
+import { AlertBannerCTATypes } from '../types'
 
 function getOpenInNewTabProps(opensInNewTab?: boolean) {
     if (!opensInNewTab) {

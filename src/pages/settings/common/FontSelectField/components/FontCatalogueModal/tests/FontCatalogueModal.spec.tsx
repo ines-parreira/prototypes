@@ -1,3 +1,5 @@
+import React from 'react'
+
 import {
     fireEvent,
     render,
@@ -6,14 +8,12 @@ import {
     within,
 } from '@testing-library/react'
 import _noop from 'lodash/noop'
-import React from 'react'
-import {Provider} from 'react-redux'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {AGENT_ADDED_FONTS} from '../../../constants'
+import { AGENT_ADDED_FONTS } from '../../../constants'
 import * as hooks from '../../../hooks'
-
 import {
     FontCatalogueModal,
     getFontsAfterSearch,
@@ -25,15 +25,15 @@ const mockStore = configureMockStore([thunk])
 describe('getMultipleFontLink', () => {
     it('should return link with one font', () => {
         expect(getMultipleFontLink(['Roboto'])).toStrictEqual(
-            'https://fonts.googleapis.com/css2?family=Roboto&display=swap'
+            'https://fonts.googleapis.com/css2?family=Roboto&display=swap',
         )
     })
 
     it('should return link with multiple fonts', () => {
         expect(
-            getMultipleFontLink(['Roboto', 'Verdana', 'Mono'])
+            getMultipleFontLink(['Roboto', 'Verdana', 'Mono']),
         ).toStrictEqual(
-            'https://fonts.googleapis.com/css2?family=Roboto&family=Verdana&family=Mono&display=swap'
+            'https://fonts.googleapis.com/css2?family=Roboto&family=Verdana&family=Mono&display=swap',
         )
     })
 })
@@ -68,13 +68,13 @@ describe('getFontsAfterSearch', () => {
 
     it('should not filter if no categories or search', () => {
         expect(
-            getFontsAfterSearch({search: '', fonts, categories: []})
+            getFontsAfterSearch({ search: '', fonts, categories: [] }),
         ).toStrictEqual(fonts)
     })
 
     it('should filter if one category', () => {
         expect(
-            getFontsAfterSearch({search: '', fonts, categories: ['serif']})
+            getFontsAfterSearch({ search: '', fonts, categories: ['serif'] }),
         ).toStrictEqual([
             {
                 family: 'Roboto',
@@ -89,7 +89,7 @@ describe('getFontsAfterSearch', () => {
 
     it('should filter with search ignoring case', () => {
         expect(
-            getFontsAfterSearch({search: 'A', fonts, categories: []})
+            getFontsAfterSearch({ search: 'A', fonts, categories: [] }),
         ).toStrictEqual([
             {
                 family: 'Tata',
@@ -108,7 +108,7 @@ describe('getFontsAfterSearch', () => {
 
     it('should return fonts starting with search first', () => {
         expect(
-            getFontsAfterSearch({search: 't', fonts, categories: []})
+            getFontsAfterSearch({ search: 't', fonts, categories: [] }),
         ).toStrictEqual([
             {
                 family: 'Tata',
@@ -123,7 +123,7 @@ describe('getFontsAfterSearch', () => {
 
     it('should filter if one category and search', () => {
         expect(
-            getFontsAfterSearch({search: '', fonts, categories: ['serif']})
+            getFontsAfterSearch({ search: '', fonts, categories: ['serif'] }),
         ).toStrictEqual([
             {
                 family: 'Roboto',
@@ -153,9 +153,9 @@ describe('<FontCatalogueModal />', () => {
 
     jest.spyOn(hooks, 'useGoogleFonts').mockImplementation(() => ({
         googleFonts: [
-            {family: 'Roboto', category: 'serif'},
-            {family: 'Adriana', category: 'serif'},
-            {family: 'Tambourin', category: 'serif'},
+            { family: 'Roboto', category: 'serif' },
+            { family: 'Adriana', category: 'serif' },
+            { family: 'Tambourin', category: 'serif' },
         ],
     }))
 
@@ -167,7 +167,7 @@ describe('<FontCatalogueModal />', () => {
                     isModalOpen
                     recentlyAddedFonts={['Roboto', 'Adriana']}
                 />
-            </Provider>
+            </Provider>,
         )
 
         const selectedFontsContainer = (
@@ -182,12 +182,12 @@ describe('<FontCatalogueModal />', () => {
         render(
             <Provider store={mockStore({})}>
                 <FontCatalogueModal {...defaultProps} isModalOpen />
-            </Provider>
+            </Provider>,
         )
 
         const link = document.querySelector('link') as HTMLLinkElement
         expect(link.href).toStrictEqual(
-            'https://fonts.googleapis.com/css2?family=Roboto&family=Adriana&family=Tambourin&display=swap'
+            'https://fonts.googleapis.com/css2?family=Roboto&family=Adriana&family=Tambourin&display=swap',
         )
     })
 
@@ -195,7 +195,7 @@ describe('<FontCatalogueModal />', () => {
         render(
             <Provider store={mockStore({})}>
                 <FontCatalogueModal {...defaultProps} isModalOpen />
-            </Provider>
+            </Provider>,
         )
 
         screen.getByText('Roboto')
@@ -203,7 +203,7 @@ describe('<FontCatalogueModal />', () => {
         screen.getByText('Tambourin')
 
         fireEvent.change(screen.getByTestId('Search'), {
-            target: {value: 'a'},
+            target: { value: 'a' },
         })
 
         await waitFor(() => expect(screen.queryByText('Roboto')).toBeNull())
@@ -215,7 +215,7 @@ describe('<FontCatalogueModal />', () => {
         render(
             <Provider store={mockStore({})}>
                 <FontCatalogueModal {...defaultProps} isModalOpen />
-            </Provider>
+            </Provider>,
         )
 
         const selectedFontsContainer = (
@@ -230,8 +230,8 @@ describe('<FontCatalogueModal />', () => {
         fireEvent.click(fontInFontList)
         await waitFor(() =>
             expect(
-                within(selectedFontsContainer).queryByText('Roboto')
-            ).toBeNull()
+                within(selectedFontsContainer).queryByText('Roboto'),
+            ).toBeNull(),
         )
     })
 
@@ -244,7 +244,7 @@ describe('<FontCatalogueModal />', () => {
                     currentPrimaryFont="Roboto"
                     recentlyAddedFonts={['Roboto', 'Adriana']}
                 />
-            </Provider>
+            </Provider>,
         )
 
         const selectedFontsContainer = (
@@ -263,7 +263,7 @@ describe('<FontCatalogueModal />', () => {
         render(
             <Provider store={mockStore({})}>
                 <FontCatalogueModal {...defaultProps} isModalOpen />
-            </Provider>
+            </Provider>,
         )
 
         const selectedFontsContainer = (
@@ -281,8 +281,8 @@ describe('<FontCatalogueModal />', () => {
         fireEvent.click(within(fontInSelectedList).getByText('close'))
         await waitFor(() =>
             expect(
-                within(selectedFontsContainer).queryByText('Roboto')
-            ).toBeNull()
+                within(selectedFontsContainer).queryByText('Roboto'),
+            ).toBeNull(),
         )
     })
 
@@ -295,7 +295,7 @@ describe('<FontCatalogueModal />', () => {
                     currentPrimaryFont="Roboto"
                     recentlyAddedFonts={['Roboto', 'Adriana']}
                 />
-            </Provider>
+            </Provider>,
         )
 
         const selectedFontsContainer = (
@@ -316,7 +316,7 @@ describe('<FontCatalogueModal />', () => {
         render(
             <Provider store={mockStore({})}>
                 <FontCatalogueModal {...defaultProps} isModalOpen />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(screen.getByText('Roboto'))
@@ -325,7 +325,7 @@ describe('<FontCatalogueModal />', () => {
 
         expect(setItem).toHaveBeenCalledWith(
             AGENT_ADDED_FONTS,
-            '["Adriana","Roboto"]'
+            '["Adriana","Roboto"]',
         )
     })
 
@@ -335,7 +335,7 @@ describe('<FontCatalogueModal />', () => {
         render(
             <Provider store={mockStore({})}>
                 <FontCatalogueModal {...defaultProps} isModalOpen />
-            </Provider>
+            </Provider>,
         )
 
         const submitButton = screen.getByRole('button', {

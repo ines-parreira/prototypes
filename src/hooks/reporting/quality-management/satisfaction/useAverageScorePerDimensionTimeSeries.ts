@@ -1,35 +1,34 @@
-import {User} from 'config/types/user'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-
+import { User } from 'config/types/user'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {
     fetchTimeSeriesPerDimension,
     useTimeSeriesPerDimension,
 } from 'hooks/reporting/useTimeSeries'
-import {OrderDirection} from 'models/api/types'
-import {Integration} from 'models/integration/types'
-import {TicketDimension} from 'models/reporting/cubes/TicketCube'
-import {TicketMessagesDimension} from 'models/reporting/cubes/TicketMessagesCube'
-import {averageCSATScorePerDimensionTimeSeriesFactory} from 'models/reporting/queryFactories/satisfaction/averageCSATScorePerDimensionQueryFactory'
-import {ReportingGranularity} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
-import {ReportFetch} from 'pages/stats/custom-reports/types'
+import { OrderDirection } from 'models/api/types'
+import { Integration } from 'models/integration/types'
+import { TicketDimension } from 'models/reporting/cubes/TicketCube'
+import { TicketMessagesDimension } from 'models/reporting/cubes/TicketMessagesCube'
+import { averageCSATScorePerDimensionTimeSeriesFactory } from 'models/reporting/queryFactories/satisfaction/averageCSATScorePerDimensionQueryFactory'
+import { ReportingGranularity } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
+import { ReportFetch } from 'pages/stats/custom-reports/types'
 import {
     getFormattedInfo,
     transformToTimeSeriesData,
 } from 'pages/stats/quality-management/satisfaction/AverageScorePerDimensionTrendChart/utils'
-import {createTimeSeriesPerDimensionReport} from 'services/reporting/SLAsReportingService'
-import {SatisfactionMetric} from 'state/ui/stats/types'
+import { createTimeSeriesPerDimensionReport } from 'services/reporting/SLAsReportingService'
+import { SatisfactionMetric } from 'state/ui/stats/types'
 
 export const SATISFACTION_AVERAGE_CSAT_OVER_TIME = '{metric}-over-time'
 
 export const useAverageCSATPerAssigneeTimeseries = (
     filters: StatsFilters,
-    timezone: string
+    timezone: string,
 ) =>
     useAverageCSATPerDimensionTimeSeries(
         filters,
         timezone,
-        TicketDimension.AssigneeUserId
+        TicketDimension.AssigneeUserId,
     )
 export const fetchAverageCSATPerAssigneeTable: ReportFetch = async (
     filters: StatsFilters,
@@ -38,11 +37,11 @@ export const fetchAverageCSATPerAssigneeTable: ReportFetch = async (
     context: {
         getAgentDetails?: (id: number) => User | undefined
         integrations?: Array<Integration>
-    }
+    },
 ) => {
     const fileName = SATISFACTION_AVERAGE_CSAT_OVER_TIME.replace(
         '{metric}',
-        SatisfactionMetric.AverageCSATPerAssignee
+        SatisfactionMetric.AverageCSATPerAssignee,
     )
     const timeseriesData = await fetchTimeSeriesPerDimension(
         averageCSATScorePerDimensionTimeSeriesFactory(
@@ -50,24 +49,24 @@ export const fetchAverageCSATPerAssigneeTable: ReportFetch = async (
             filters,
             timezone,
             granularity,
-            OrderDirection.Desc
-        )
+            OrderDirection.Desc,
+        ),
     )
 
-    const {dataToRender = [], labels = []} = getFormattedInfo({
+    const { dataToRender = [], labels = [] } = getFormattedInfo({
         dimension: TicketDimension.AssigneeUserId,
         data: timeseriesData,
         integrations: context.integrations,
         getAgentDetails: context.getAgentDetails,
     })
-    const {files} = createTimeSeriesPerDimensionReport(
+    const { files } = createTimeSeriesPerDimensionReport(
         [
             {
-                data: transformToTimeSeriesData({dataToRender, labels}),
+                data: transformToTimeSeriesData({ dataToRender, labels }),
                 label: fileName,
             },
         ],
-        filters.period
+        filters.period,
     )
     return {
         isLoading: false,
@@ -78,12 +77,12 @@ export const fetchAverageCSATPerAssigneeTable: ReportFetch = async (
 
 export const useAverageCSATPerChannelTimeseries = (
     filters: StatsFilters,
-    timezone: string
+    timezone: string,
 ) =>
     useAverageCSATPerDimensionTimeSeries(
         filters,
         timezone,
-        TicketDimension.Channel
+        TicketDimension.Channel,
     )
 export const fetchAverageCSATPerChannelTable: ReportFetch = async (
     filters: StatsFilters,
@@ -92,11 +91,11 @@ export const fetchAverageCSATPerChannelTable: ReportFetch = async (
     context: {
         getAgentDetails: (id: number) => User | undefined
         integrations: Array<Integration>
-    }
+    },
 ) => {
     const fileName = SATISFACTION_AVERAGE_CSAT_OVER_TIME.replace(
         '{metric}',
-        SatisfactionMetric.AverageCSATPerChannel
+        SatisfactionMetric.AverageCSATPerChannel,
     )
     const timeseriesData = await fetchTimeSeriesPerDimension(
         averageCSATScorePerDimensionTimeSeriesFactory(
@@ -104,23 +103,23 @@ export const fetchAverageCSATPerChannelTable: ReportFetch = async (
             filters,
             timezone,
             granularity,
-            OrderDirection.Desc
-        )
+            OrderDirection.Desc,
+        ),
     )
-    const {dataToRender = [], labels = []} = getFormattedInfo({
+    const { dataToRender = [], labels = [] } = getFormattedInfo({
         dimension: TicketDimension.Channel,
         data: timeseriesData,
         integrations: context.integrations,
         getAgentDetails: context.getAgentDetails,
     })
-    const {files} = createTimeSeriesPerDimensionReport(
+    const { files } = createTimeSeriesPerDimensionReport(
         [
             {
-                data: transformToTimeSeriesData({dataToRender, labels}),
+                data: transformToTimeSeriesData({ dataToRender, labels }),
                 label: fileName,
             },
         ],
-        filters.period
+        filters.period,
     )
     return {
         isLoading: false,
@@ -131,12 +130,12 @@ export const fetchAverageCSATPerChannelTable: ReportFetch = async (
 
 export const useAverageCSATPerIntegrationTimeseries = (
     filters: StatsFilters,
-    timezone: string
+    timezone: string,
 ) =>
     useAverageCSATPerDimensionTimeSeries(
         filters,
         timezone,
-        TicketMessagesDimension.Integration
+        TicketMessagesDimension.Integration,
     )
 export const fetchAverageCSATPerIntegrationTable: ReportFetch = async (
     filters: StatsFilters,
@@ -145,11 +144,11 @@ export const fetchAverageCSATPerIntegrationTable: ReportFetch = async (
     context: {
         getAgentDetails: (id: number) => User | undefined
         integrations: Array<Integration>
-    }
+    },
 ) => {
     const fileName = SATISFACTION_AVERAGE_CSAT_OVER_TIME.replace(
         '{metric}',
-        SatisfactionMetric.AverageCSATPerIntegration
+        SatisfactionMetric.AverageCSATPerIntegration,
     )
     const timeseriesData = await fetchTimeSeriesPerDimension(
         averageCSATScorePerDimensionTimeSeriesFactory(
@@ -157,23 +156,23 @@ export const fetchAverageCSATPerIntegrationTable: ReportFetch = async (
             filters,
             timezone,
             granularity,
-            OrderDirection.Desc
-        )
+            OrderDirection.Desc,
+        ),
     )
-    const {dataToRender = [], labels = []} = getFormattedInfo({
+    const { dataToRender = [], labels = [] } = getFormattedInfo({
         dimension: TicketMessagesDimension.Integration,
         data: timeseriesData,
         integrations: context.integrations,
         getAgentDetails: context.getAgentDetails,
     })
-    const {files} = createTimeSeriesPerDimensionReport(
+    const { files } = createTimeSeriesPerDimensionReport(
         [
             {
-                data: transformToTimeSeriesData({dataToRender, labels}),
+                data: transformToTimeSeriesData({ dataToRender, labels }),
                 label: fileName,
             },
         ],
-        filters.period
+        filters.period,
     )
     return {
         isLoading: false,
@@ -187,7 +186,7 @@ export const useAverageCSATScorePerDimensionTimeSeries = (
     filters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ) => {
     return useTimeSeriesPerDimension(
         averageCSATScorePerDimensionTimeSeriesFactory(
@@ -195,23 +194,23 @@ export const useAverageCSATScorePerDimensionTimeSeries = (
             filters,
             timezone,
             granularity,
-            sorting
-        )
+            sorting,
+        ),
     )
 }
 
 export const useAverageCSATPerDimensionTimeSeries = (
     filters: StatsFilters,
     timezone: string,
-    dimension: TicketDimension | TicketMessagesDimension
+    dimension: TicketDimension | TicketMessagesDimension,
 ) => {
-    const {granularity} = useNewStatsFilters()
+    const { granularity } = useNewStatsFilters()
 
     return useAverageCSATScorePerDimensionTimeSeries(
         dimension,
         filters,
         timezone,
         granularity,
-        OrderDirection.Desc
+        OrderDirection.Desc,
     )
 }

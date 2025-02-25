@@ -1,23 +1,22 @@
 import React from 'react'
 
-import {HELP_CENTER_TEXTS} from 'config/helpCenter'
-import {HelpCenter} from 'models/helpCenter/types'
-
+import { HELP_CENTER_TEXTS } from 'config/helpCenter'
+import { HelpCenter } from 'models/helpCenter/types'
 import HelpCenterPreviewAutomation from 'pages/settings/helpCenter/components/HelpCenterPreview/HelpCenterPreviewAutomation'
 import HelpCenterPreviewHomePage from 'pages/settings/helpCenter/components/HelpCenterPreview/HelpCenterPreviewHomePage'
 
 import useWorkflowsEntrypoints from './hooks/useWorkflowsEntrypoints'
-import {useSelfServicePreviewContext} from './SelfServicePreviewContext'
+import { useSelfServicePreviewContext } from './SelfServicePreviewContext'
 
 type Props = {
     helpCenter: HelpCenter
 }
 
-const SelfServiceHelpCenterHomePage = ({helpCenter}: Props) => {
-    const {selfServiceConfiguration, hoveredOrderManagementFlow} =
+const SelfServiceHelpCenterHomePage = ({ helpCenter }: Props) => {
+    const { selfServiceConfiguration, hoveredOrderManagementFlow } =
         useSelfServicePreviewContext()
     const workflowsEntrypoints = useWorkflowsEntrypoints(
-        helpCenter.default_locale
+        helpCenter.default_locale,
     )
 
     const helpCenterTexts = HELP_CENTER_TEXTS[helpCenter.default_locale]

@@ -1,30 +1,33 @@
-import {UseQueryResult} from '@tanstack/react-query'
+import { UseQueryResult } from '@tanstack/react-query'
 
 import {
     TicketCustomFieldsTicketCountData,
     withBreakdown,
 } from 'hooks/reporting/withBreakdown'
-import {withDeciles} from 'hooks/reporting/withDeciles'
+import { withDeciles } from 'hooks/reporting/withDeciles'
 import {
     IDRecord,
     KeyedRecord,
     MergedRecord,
     withEnrichment,
 } from 'hooks/reporting/withEnrichment'
-import {OrderDirection} from 'models/api/types'
-import {DrillDownReportingQuery} from 'models/job/types'
-import {Cubes} from 'models/reporting/cubes'
-import {TicketCustomFieldsCube} from 'models/reporting/cubes/TicketCustomFieldsCube'
+import { OrderDirection } from 'models/api/types'
+import { DrillDownReportingQuery } from 'models/job/types'
+import { Cubes } from 'models/reporting/cubes'
+import { TicketCustomFieldsCube } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {
     fetchPostReporting,
     useEnrichedPostReporting,
     UseEnrichedPostReportingQueryData,
     usePostReporting,
 } from 'models/reporting/queries'
-import {postEnrichedReporting, postReporting} from 'models/reporting/resources'
-import {EnrichmentFields, ReportingQuery} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
-import {WithChildren} from 'pages/common/components/table/TableBodyRowExpandable'
+import {
+    postEnrichedReporting,
+    postReporting,
+} from 'models/reporting/resources'
+import { EnrichmentFields, ReportingQuery } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
+import { WithChildren } from 'pages/common/components/table/TableBodyRowExpandable'
 
 type Requested = {
     isFetching: boolean
@@ -48,7 +51,7 @@ export type MetricWithDecileFetch = (
     statsFilters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
-    agentAssigneeId?: string
+    agentAssigneeId?: string,
 ) => Promise<MetricWithDecile>
 
 export type MetricPerDimensionTrend<TCube extends Cubes = Cubes> = Requested & {
@@ -83,8 +86,8 @@ const selectMeasurePerDimension = <TCube extends Cubes = Cubes>(
     measure: TCube['measures'],
     dimension: TCube['dimensions'],
     dimensionId: string,
-    data: QueryReturnType<TCube>
-): {value: number | null; decile: number | null} => {
+    data: QueryReturnType<TCube>,
+): { value: number | null; decile: number | null } => {
     const dataMeasure =
         data?.find((row) => row[dimension] === dimensionId) || null
 
@@ -104,24 +107,24 @@ const selectMetric =
             query.measures[0],
             query.dimensions[0],
             String(dimensionId),
-            data
+            data,
         )
 
 const formatMetricPerDimension = <TCube extends Cubes>(
     metricData: QueryReturnType<TCube>,
     query: ReportingQuery<TCube>,
-    dimensionId?: string
+    dimensionId?: string,
 ) => ({
     ...(dimensionId
         ? selectMetric(query, dimensionId)(metricData)
-        : {value: null, decile: null}),
+        : { value: null, decile: null }),
     allData: metricData,
 })
 
 const formatMetricPerDimensionResponse = <TCube extends Cubes>(
     metricData: UseQueryResult<QueryReturnType<TCube>, unknown>,
     query: ReportingQuery<TCube>,
-    dimensionId?: string
+    dimensionId?: string,
 ) => ({
     isFetching: metricData.isFetching,
     isError: metricData.isError,
@@ -139,7 +142,7 @@ const queryWithDeciles =
 export function useMetricPerDimension<TCube extends Cubes>(
     query: ReportingQuery<TCube>,
     dimensionId?: string,
-    enabled?: boolean
+    enabled?: boolean,
 ): MetricWithDecile<TCube> {
     const metricData = usePostReporting<
         QueryReturnType<TCube>,
@@ -155,13 +158,13 @@ export function useMetricPerDimension<TCube extends Cubes>(
 
 export const fetchMetricPerDimension = async <TCube extends Cubes>(
     query: ReportingQuery<TCube>,
-    dimensionId?: string
+    dimensionId?: string,
 ): Promise<MetricWithDecile<TCube>> => {
     return fetchPostReporting<QueryReturnType<TCube>, QueryReturnType<TCube>>(
         [query],
         {
             queryFn: queryWithDeciles(query),
-        }
+        },
     )
         .then((res) => ({
             data: formatMetricPerDimension(res.data.data, query, dimensionId),
@@ -176,7 +179,7 @@ export const fetchMetricPerDimension = async <TCube extends Cubes>(
 }
 
 export function useMetricPerDimensionWithBreakdown(
-    query: ReportingQuery<TicketCustomFieldsCube>
+    query: ReportingQuery<TicketCustomFieldsCube>,
 ): MetricWithBreakdown {
     const metricData = usePostReporting<
         WithChildren<TicketCustomFieldsTicketCountData>[],
@@ -192,8 +195,8 @@ export function useMetricPerDimensionWithBreakdown(
                 withBreakdown(
                     data,
                     query['dimensions'][0],
-                    query['measures'][0]
-                )
+                    query['measures'][0],
+                ),
             ),
         queryKey: ['reporting', 'post-reporting-breakdown', query],
     })
@@ -213,7 +216,7 @@ export function useMetricPerDimensionWithBreakdown(
 export function useMetricPerDimensionWithEnrichment(
     query: DrillDownReportingQuery,
     enrichmentFields: EnrichmentFields[],
-    enrichmentIdField: EnrichmentFields
+    enrichmentIdField: EnrichmentFields,
 ): MetricWithEnrichment<
     (typeof query)['measures'][0],
     (typeof query)['dimensions'][0]
@@ -230,7 +233,7 @@ export function useMetricPerDimensionWithEnrichment(
         (MergedRecord<(typeof query)['measures'][0], EnrichmentFields> &
             IDRecord<(typeof query)['dimensions'][0]>)[]
     >(
-        {query, enrichment_fields: enrichmentFields},
+        { query, enrichment_fields: enrichmentFields },
         {
             select: (
                 data: UseEnrichedPostReportingQueryData<{
@@ -239,7 +242,7 @@ export function useMetricPerDimensionWithEnrichment(
                         EnrichmentFields
                     > &
                         IDRecord<(typeof query)['dimensions'][0]>)[]
-                }>
+                }>,
             ): UseEnrichedPostReportingQueryData<{
                 data: (MergedRecord<
                     (typeof query)['measures'][0],
@@ -260,11 +263,11 @@ export function useMetricPerDimensionWithEnrichment(
                         data,
                         idField,
                         enrichmentFields,
-                        enrichmentIdField
-                    )
+                        enrichmentIdField,
+                    ),
                 )
             },
-        }
+        },
     )
 
     return {
@@ -282,7 +285,7 @@ export function useMetricPerDimensionWithEnrichment(
 export const fetchMetricPerDimensionWithEnrichment = (
     query: DrillDownReportingQuery,
     enrichmentFields: EnrichmentFields[],
-    enrichmentIdField: EnrichmentFields
+    enrichmentIdField: EnrichmentFields,
 ): Promise<
     MetricWithEnrichment<
         (typeof query)['measures'][0],
@@ -302,7 +305,7 @@ export const fetchMetricPerDimensionWithEnrichment = (
                 res,
                 idField,
                 enrichmentFields,
-                enrichmentIdField
+                enrichmentIdField,
             )
 
             return {

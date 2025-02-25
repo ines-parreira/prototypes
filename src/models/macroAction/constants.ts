@@ -1,4 +1,4 @@
-import {MacroActionName} from './types'
+import { MacroActionName } from './types'
 
 export const TYPE_TO_IMAGE_PATH: Record<string, string> = {
     http: 'integrations/http.png',

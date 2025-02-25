@@ -1,4 +1,4 @@
-import {isGorgiasApiError} from '../types'
+import { isGorgiasApiError } from '../types'
 
 describe('types', () => {
     describe('isGorgiasApiError', () => {
@@ -55,7 +55,7 @@ describe('types', () => {
                     data: {
                         error: {
                             msg: 'Failed to create.',
-                            data: {foo: 'bar'},
+                            data: { foo: 'bar' },
                         },
                     },
                 },

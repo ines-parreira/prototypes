@@ -1,8 +1,9 @@
-import {render, screen, fireEvent} from '@testing-library/react'
-import {fromJS, Map} from 'immutable'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {toJS} from 'utils'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
+
+import { toJS } from 'utils'
 
 import AddSiblingCondition from '../AddSiblingCondition'
 
@@ -15,7 +16,7 @@ describe('AddSiblingCondition component', () => {
 
     it('should render an option to add AND because existing operator is already AND ', () => {
         const rule = fromJS({
-            code_ast: {body: [{test: {operator: '&&'}}]},
+            code_ast: { body: [{ test: { operator: '&&' } }] },
         }) as Map<any, any>
 
         render(
@@ -30,10 +31,10 @@ describe('AddSiblingCondition component', () => {
                         >) || fromJS({}),
                 }}
                 rule={rule}
-            />
+            />,
         )
 
-        const andButton = screen.getByRole('button', {name: /AND/i})
+        const andButton = screen.getByRole('button', { name: /AND/i })
         expect(andButton).toBeInTheDocument()
 
         fireEvent.click(andButton)
@@ -49,7 +50,7 @@ describe('AddSiblingCondition component', () => {
 
     it('should render an option to add OR because existing operator is already OR ', () => {
         const rule = fromJS({
-            code_ast: {body: [{test: {operator: '||'}}]},
+            code_ast: { body: [{ test: { operator: '||' } }] },
         }) as Map<any, any>
 
         render(
@@ -64,10 +65,10 @@ describe('AddSiblingCondition component', () => {
                         >) || fromJS({}),
                 }}
                 rule={rule}
-            />
+            />,
         )
 
-        const orButton = screen.getByRole('button', {name: /OR/i})
+        const orButton = screen.getByRole('button', { name: /OR/i })
         expect(orButton).toBeInTheDocument()
 
         fireEvent.click(orButton)

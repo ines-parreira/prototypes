@@ -1,11 +1,10 @@
 import React from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { logEvent, SegmentEvent } from 'common/segment'
 import {
-    PaywallConfig,
     paywallConfigs as defaultPaywallConfigs,
+    PaywallConfig,
 } from 'config/paywalls'
-
 import useEffectOnce from 'hooks/useEffectOnce'
 import withStoreIntegration from 'pages/automate/common/utils/withStoreIntegrations'
 import HeaderTitle from 'pages/common/components/HeaderTitle'
@@ -17,7 +16,7 @@ import {
     PAGE_TITLE_OVERVIEW,
 } from 'pages/stats/self-service/constants'
 import SelfServiceStatsPagePaywallCustomCta from 'pages/stats/self-service/SelfServiceStatsPagePaywallCustomCta'
-import {AccountFeature} from 'state/currentAccount/types'
+import { AccountFeature } from 'state/currentAccount/types'
 
 export const AAO_TIPS_VISIBILITY_KEY = 'gorgias-aao-stats-tips-visibility'
 
@@ -42,5 +41,5 @@ export default withFeaturePaywall(
             ),
             customCta: <SelfServiceStatsPagePaywallCustomCta />,
         } as PaywallConfig,
-    }
+    },
 )(withStoreIntegration(PAGE_TITLE_OVERVIEW, AutomateOverview))

@@ -1,15 +1,16 @@
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {tags} from 'fixtures/tag'
+import { tags } from 'fixtures/tag'
 import useAppDispatch from 'hooks/useAppDispatch'
 import Row from 'pages/settings/tags/Row'
-import {cancel, edit, remove, save, select} from 'state/tags/actions'
-import {assumeMock} from 'utils/testing'
+import { cancel, edit, remove, save, select } from 'state/tags/actions'
+import { assumeMock } from 'utils/testing'
 
 const mockStore = configureMockStore([thunk])
 
@@ -27,7 +28,7 @@ const selectMock = assumeMock(select)
 
 const mockDefaultColor = '#ddd'
 jest.mock('@gorgias/design-tokens/dist/tokens/colors.json', () => ({
-    ['🤍 Light']: {Neutral: {Grey_3: {value: '#ddd'}}},
+    ['🤍 Light']: { Neutral: { Grey_3: { value: '#ddd' } } },
 }))
 
 describe('<Row />', () => {
@@ -49,12 +50,12 @@ describe('<Row />', () => {
                 <Row {...defaultProps} />
             </Provider>,
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <table>
                         <tbody>{children}</tbody>
                     </table>
                 ),
-            }
+            },
         )
 
         expect(screen.getByText(defaultTag.name)).toBeInTheDocument()
@@ -63,17 +64,17 @@ describe('<Row />', () => {
     })
 
     it('should update tag', async () => {
-        const {rerender} = render(
+        const { rerender } = render(
             <Provider store={mockStore()}>
                 <Row {...defaultProps} />
             </Provider>,
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <table>
                         <tbody>{children}</tbody>
                     </table>
                 ),
-            }
+            },
         )
 
         fireEvent.click(screen.getByText('edit'))
@@ -84,22 +85,22 @@ describe('<Row />', () => {
             <Provider store={mockStore({})}>
                 <Row
                     {...defaultProps}
-                    meta={fromJS({...defaultMeta, edit: true})}
+                    meta={fromJS({ ...defaultMeta, edit: true })}
                 />
-            </Provider>
+            </Provider>,
         )
 
         const newName = 'billing change'
         fireEvent.change(screen.getByDisplayValue(defaultTag.name), {
-            target: {value: newName},
+            target: { value: newName },
         })
         const newDescription = 'finance change'
         fireEvent.change(screen.getByDisplayValue(defaultTag.description!), {
-            target: {value: newDescription},
+            target: { value: newDescription },
         })
         const newColor = '#123456'
         fireEvent.change(screen.getByPlaceholderText('ex: #eeeeee'), {
-            target: {value: newColor},
+            target: { value: newColor },
         })
         fireEvent.click(screen.getByText('Save'))
 
@@ -107,7 +108,7 @@ describe('<Row />', () => {
             ...defaultTag,
             name: newName,
             description: newDescription,
-            decoration: {color: newColor},
+            decoration: { color: newColor },
         })
         await waitFor(() => expect(defaultProps.refresh).toHaveBeenCalled())
     })
@@ -117,26 +118,26 @@ describe('<Row />', () => {
             <Provider store={mockStore()}>
                 <Row
                     {...defaultProps}
-                    meta={fromJS({...defaultMeta, edit: true})}
+                    meta={fromJS({ ...defaultMeta, edit: true })}
                 />
             </Provider>,
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <table>
                         <tbody>{children}</tbody>
                     </table>
                 ),
-            }
+            },
         )
 
         fireEvent.change(screen.getByPlaceholderText('ex: #eeeeee'), {
-            target: {value: null},
+            target: { value: null },
         })
         fireEvent.click(screen.getByText('Save'))
 
         expect(saveMock).toHaveBeenCalledWith({
             ...defaultTag,
-            decoration: {color: mockDefaultColor},
+            decoration: { color: mockDefaultColor },
         })
     })
 
@@ -145,16 +146,16 @@ describe('<Row />', () => {
             <Provider store={mockStore()}>
                 <Row
                     {...defaultProps}
-                    meta={fromJS({...defaultMeta, edit: true})}
+                    meta={fromJS({ ...defaultMeta, edit: true })}
                 />
             </Provider>,
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <table>
                         <tbody>{children}</tbody>
                     </table>
                 ),
-            }
+            },
         )
 
         fireEvent.click(screen.getByText('Cancel'))
@@ -167,12 +168,12 @@ describe('<Row />', () => {
                 <Row {...defaultProps} />
             </Provider>,
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <table>
                         <tbody>{children}</tbody>
                     </table>
                 ),
-            }
+            },
         )
 
         fireEvent.click(screen.getByRole('checkbox'))
@@ -185,12 +186,12 @@ describe('<Row />', () => {
                 <Row {...defaultProps} />
             </Provider>,
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <table>
                         <tbody>{children}</tbody>
                     </table>
                 ),
-            }
+            },
         )
 
         fireEvent.click(screen.getByText('delete'))
@@ -205,12 +206,12 @@ describe('<Row />', () => {
                 <Row {...defaultProps} />
             </Provider>,
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <table>
                         <tbody>{children}</tbody>
                     </table>
                 ),
-            }
+            },
         )
 
         fireEvent.click(screen.getByText('delete'))
@@ -226,12 +227,12 @@ describe('<Row />', () => {
                 <Row {...defaultProps} />
             </Provider>,
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <table>
                         <tbody>{children}</tbody>
                     </table>
                 ),
-            }
+            },
         )
 
         fireEvent.click(screen.getByText('delete'))
@@ -243,32 +244,32 @@ describe('<Row />', () => {
 
     it('should not update state on props change when props row are the same', () => {
         const newName = 'foo'
-        const {rerender} = render(
+        const { rerender } = render(
             <Provider store={mockStore()}>
                 <Row
                     {...defaultProps}
-                    meta={fromJS({...defaultMeta, edit: true})}
+                    meta={fromJS({ ...defaultMeta, edit: true })}
                 />
             </Provider>,
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <table>
                         <tbody>{children}</tbody>
                     </table>
                 ),
-            }
+            },
         )
 
         fireEvent.change(screen.getByDisplayValue(defaultTag.name), {
-            target: {value: newName},
+            target: { value: newName },
         })
         rerender(
             <Provider store={mockStore({})}>
                 <Row
                     {...defaultProps}
-                    meta={fromJS({...defaultMeta, edit: true})}
+                    meta={fromJS({ ...defaultMeta, edit: true })}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.queryByDisplayValue(newName)).toBeInTheDocument()

@@ -1,10 +1,10 @@
-import {useConfirmBillingPaymentMethodSetupWithSideEffects} from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useConfirmBillingPaymentMethodSetupWithSideEffects'
-import {useConfirmStripeSetupIntent} from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useConfirmStripeSetupIntent'
+import { useConfirmBillingPaymentMethodSetupWithSideEffects } from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useConfirmBillingPaymentMethodSetupWithSideEffects'
+import { useConfirmStripeSetupIntent } from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useConfirmStripeSetupIntent'
 
 export const useSubmitPaymentMethod = (
     overrides?: Parameters<
         typeof useConfirmBillingPaymentMethodSetupWithSideEffects
-    >['0']
+    >['0'],
 ) => {
     const confirmBillingPaymentMethodSetup =
         useConfirmBillingPaymentMethodSetupWithSideEffects(overrides)

@@ -1,9 +1,10 @@
-import React, {useMemo} from 'react'
-import {useRouteMatch} from 'react-router-dom'
+import React, { useMemo } from 'react'
 
-import {globalNavigationPanel} from 'common/navigation'
-import {useDesktopOnlyShowGlobalNavFeatureFlag} from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
-import {PanelLayoutConfig} from 'pages/PanelLayout'
+import { useRouteMatch } from 'react-router-dom'
+
+import { globalNavigationPanel } from 'common/navigation'
+import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
+import { PanelLayoutConfig } from 'pages/PanelLayout'
 import TicketInfobarContainer from 'pages/tickets/detail/TicketInfobarContainer'
 import TicketNavbar from 'pages/tickets/navbar/TicketNavbar'
 import DefaultViewFallback from 'split-ticket-view/components/DefaultViewFallback'
@@ -14,7 +15,7 @@ import {
     DEFAULT_TICKET_PANEL_WIDTH,
     LayoutKeys,
 } from 'split-ticket-view/constants'
-import {useOnToggleUnread} from 'tickets/dtp'
+import { useOnToggleUnread } from 'tickets/dtp'
 
 export default function useSplitTicketPage() {
     const showGlobalNav = useDesktopOnlyShowGlobalNavFeatureFlag()
@@ -25,7 +26,7 @@ export default function useSplitTicketPage() {
     }>('/app/views/:viewId/:ticketId')
     const viewId = match?.params.viewId
     const ticketId = match?.params.ticketId
-    const {onToggleUnread, registerOnToggleUnread} = useOnToggleUnread()
+    const { onToggleUnread, registerOnToggleUnread } = useOnToggleUnread()
 
     const config = useMemo(
         (): PanelLayoutConfig[] => [
@@ -68,7 +69,7 @@ export default function useSplitTicketPage() {
                     DEFAULT_INFOBAR_WIDTH,
                     Math.max(
                         Math.round(window.innerWidth / 2),
-                        DEFAULT_INFOBAR_WIDTH
+                        DEFAULT_INFOBAR_WIDTH,
                     ),
                 ],
             },
@@ -79,8 +80,8 @@ export default function useSplitTicketPage() {
             viewId,
             onToggleUnread,
             registerOnToggleUnread,
-        ]
+        ],
     )
 
-    return useMemo(() => ({config, layoutKey: LayoutKeys.TICKET}), [config])
+    return useMemo(() => ({ config, layoutKey: LayoutKeys.TICKET }), [config])
 }

@@ -1,10 +1,12 @@
-import {TicketQAScoreDimension} from '@gorgias/api-queries'
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import cn from 'classnames'
-import React, {useCallback, useMemo, useRef, useState} from 'react'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
 
-import {dimensionOrderOfManualDimensions} from 'auto_qa/config'
-import {logEvent, SegmentEvent} from 'common/segment'
+import cn from 'classnames'
+
+import { TicketQAScoreDimension } from '@gorgias/api-queries'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { dimensionOrderOfManualDimensions } from 'auto_qa/config'
+import { logEvent, SegmentEvent } from 'common/segment'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
@@ -15,9 +17,10 @@ import SelectInputBox, {
 } from 'pages/common/forms/input/SelectInputBox'
 import TextArea from 'pages/common/forms/TextArea'
 
-import type {DimensionConfig} from '../types'
-import css from './Dimension.less'
+import type { DimensionConfig } from '../types'
 import DimensionUser from './DimensionUser'
+
+import css from './Dimension.less'
 
 type Props = {
     config: DimensionConfig
@@ -35,7 +38,7 @@ export default function Dimension({
     const [isExpanded, setIsExpanded] = useState(
         () =>
             config.autoExpandThreshold !== undefined &&
-            dimension.prediction <= config.autoExpandThreshold
+            dimension.prediction <= config.autoExpandThreshold,
     )
     const [isSelectOpen, setIsSelectOpen] = useState(false)
     const floatingRef = useRef<HTMLDivElement>(null)
@@ -45,7 +48,7 @@ export default function Dimension({
         () =>
             config.options.find((opt) => opt.value === dimension.prediction)
                 ?.label || undefined,
-        [config.options, dimension.prediction]
+        [config.options, dimension.prediction],
     )
 
     const handleSelectBoxClick = useCallback(
@@ -58,7 +61,7 @@ export default function Dimension({
                 })
             }
         },
-        [dimension.name, ticketId]
+        [dimension.name, ticketId],
     )
 
     const handleClickExpand = useCallback(() => {
@@ -79,21 +82,21 @@ export default function Dimension({
         (value) => {
             onChange(value, dimension.explanation)
         },
-        [dimension.explanation, onChange]
+        [dimension.explanation, onChange],
     )
 
     const handleChangeExplanation = useCallback(
         (value: string) => {
             onChange(dimension.prediction, value)
         },
-        [dimension.prediction, onChange]
+        [dimension.prediction, onChange],
     )
 
     const scoreHasBeenSelected =
         dimension.prediction !== null && dimension.prediction !== undefined
 
     const isManualDimension = dimensionOrderOfManualDimensions.includes(
-        dimension.name
+        dimension.name,
     )
     const dimensionFooter = isManualDimension ? (
         <></>
@@ -120,7 +123,7 @@ export default function Dimension({
                         <ButtonIconLabel
                             iconClassName={cn(
                                 'material-icons-round',
-                                css.arrowIcon
+                                css.arrowIcon,
                             )}
                             icon={
                                 isExpanded ? 'arrow_drop_down' : 'arrow_right'

@@ -1,7 +1,7 @@
-import {dummyAppDetail} from 'fixtures/apps'
-import {PricingPlan} from 'models/integration/types/app'
+import { dummyAppDetail } from 'fixtures/apps'
+import { PricingPlan } from 'models/integration/types/app'
 
-import {mapAppToDetail} from '../appToDetail'
+import { mapAppToDetail } from '../appToDetail'
 
 describe(`mapAppToDetail`, () => {
     it('should map data correctly', () => {
@@ -79,13 +79,13 @@ describe(`mapAppToDetail`, () => {
     })
     it('should display correct information in pricing', () => {
         expect(
-            mapAppToDetail({...dummyAppDetail, pricingPlan: PricingPlan.FREE})
-                .infocard.pricing?.detail
+            mapAppToDetail({ ...dummyAppDetail, pricingPlan: PricingPlan.FREE })
+                .infocard.pricing?.detail,
         ).toContain('Free')
 
         expect(
-            mapAppToDetail({...dummyAppDetail, pricingDetails: ''}).infocard
-                .pricing?.detail
+            mapAppToDetail({ ...dummyAppDetail, pricingDetails: '' }).infocard
+                .pricing?.detail,
         ).toContain('for pricing details')
     })
 })

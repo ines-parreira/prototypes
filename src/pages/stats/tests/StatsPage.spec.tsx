@@ -1,5 +1,6 @@
-import {render} from '@testing-library/react'
 import React from 'react'
+
+import { render } from '@testing-library/react'
 
 import StatsPage from '../StatsPage'
 
@@ -8,7 +9,7 @@ jest.mock('pages/stats/DrillDownModal.tsx', () => ({
 }))
 describe('StatsPage', () => {
     it('should render the title, children and filters', () => {
-        const {container} = render(
+        const { container } = render(
             <StatsPage
                 title="Foo"
                 description="Foo statistic page"
@@ -16,13 +17,13 @@ describe('StatsPage', () => {
                 titleExtra={<p>Filters</p>}
             >
                 Children
-            </StatsPage>
+            </StatsPage>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render custom candu header id', () => {
-        const {container} = render(
+        const { container } = render(
             <StatsPage
                 title="Foo"
                 description="Foo statistic page"
@@ -31,10 +32,10 @@ describe('StatsPage', () => {
                 headerCanduId="foo-id"
             >
                 Children
-            </StatsPage>
+            </StatsPage>,
         )
         expect(
-            container.querySelector(`div[data-candu-id="foo-id"]`)
+            container.querySelector(`div[data-candu-id="foo-id"]`),
         ).toBeInTheDocument()
     })
 })

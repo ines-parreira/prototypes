@@ -1,10 +1,10 @@
 import React from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {getHasAutomate} from 'state/billing/selectors'
+import { getHasAutomate } from 'state/billing/selectors'
 
 import AutomatePaywallView from '../common/components/AutomatePaywallView'
-import {AutomateFeatures} from '../common/types'
+import { AutomateFeatures } from '../common/types'
 import ArticleRecommendationView from './ArticleRecommendationView'
 
 const ArticleRecommendationViewContainer = () => {

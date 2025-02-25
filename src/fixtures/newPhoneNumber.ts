@@ -1,8 +1,8 @@
 import {
-    PhoneType,
-    PhoneCountry,
-    PhoneConnectionType,
     NewPhoneNumber,
+    PhoneConnectionType,
+    PhoneCountry,
+    PhoneType,
 } from 'models/phoneNumber/types'
 
 export const phoneNumbers: NewPhoneNumber[] = [

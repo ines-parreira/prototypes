@@ -1,10 +1,11 @@
-import {act, render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {ChartsActionMenu} from 'pages/stats/custom-reports/ChartsActionMenu/ChartsActionMenu'
+import { act, render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { ChartsActionMenu } from 'pages/stats/custom-reports/ChartsActionMenu/ChartsActionMenu'
 import MetricCard from 'pages/stats/MetricCard'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('pages/stats/custom-reports/ChartsActionMenu/ChartsActionMenu')
 const ChartsActionMenuMock = assumeMock(ChartsActionMenu)
@@ -23,12 +24,12 @@ describe('<MetricCard />', () => {
     })
 
     it('should render the metric card hint', async () => {
-        const hint = {title: 'metric hint'}
+        const hint = { title: 'metric hint' }
 
         render(
             <MetricCard hint={hint} title={title}>
                 {childrenContent}
-            </MetricCard>
+            </MetricCard>,
         )
         const icon = document.querySelector('[class*=icon]')
         act(() => {
@@ -44,7 +45,7 @@ describe('<MetricCard />', () => {
         render(
             <MetricCard tip={tooltipText} title={title}>
                 {childrenContent}
-            </MetricCard>
+            </MetricCard>,
         )
 
         expect(screen.getByText(tooltipText)).toBeInTheDocument()
@@ -57,7 +58,7 @@ describe('<MetricCard />', () => {
         render(
             <MetricCard tip={tooltipText} title={title} chartId="123">
                 {childrenContent}
-            </MetricCard>
+            </MetricCard>,
         )
 
         expect(screen.getByText('ChartsActionMenu')).toBeInTheDocument()

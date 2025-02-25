@@ -1,12 +1,13 @@
+import React, { useEffect, useState } from 'react'
+
 import classNames from 'classnames'
-import React, {useEffect, useState} from 'react'
 
 import settingsCss from 'pages/settings/settings.less'
 
 import InputField from '../../../../common/forms/input/InputField'
+import { isValidGaid } from './utils'
 
 import css from './GoogleAnalyticsSection.less'
-import {isValidGaid} from './utils'
 
 type Props = {
     gaid: string
@@ -14,7 +15,7 @@ type Props = {
     onDelete: null | (() => void)
 }
 
-export const GoogleAnalyticsSection = ({onChange, onDelete, gaid}: Props) => {
+export const GoogleAnalyticsSection = ({ onChange, onDelete, gaid }: Props) => {
     const [error, setError] = useState('')
 
     const handleChange = (nextValue: string) => {

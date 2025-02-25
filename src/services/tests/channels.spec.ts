@@ -1,9 +1,10 @@
-// eslint-disable-next-line import/order
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
-import {channels as mockChannels} from 'fixtures/channels'
-import {channelsQueryKeys as mockChannelsQueryKeys} from 'models/channel/queries'
-import {IntegrationType} from 'models/integration/constants'
+// sort-imports-ignore
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+
+import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
+import { channels as mockChannels } from 'fixtures/channels'
+import { channelsQueryKeys as mockChannelsQueryKeys } from 'models/channel/queries'
+import { IntegrationType } from 'models/integration/constants'
 import {
     getChannelById,
     getChannelBySlug,
@@ -33,7 +34,7 @@ describe('services', () => {
         describe('getChannelById()', () => {
             it('should return a channel if given a valid ID', () => {
                 expect(
-                    getChannelById('4a2c595c-99b8-45d4-a6b2-a8541538aab0')
+                    getChannelById('4a2c595c-99b8-45d4-a6b2-a8541538aab0'),
                 ).toBeDefined()
             })
 
@@ -51,7 +52,7 @@ describe('services', () => {
                 expect(getChannelBySlug(TicketChannel.Email)).toBeDefined()
                 expect(getChannelBySlug(IntegrationType.Sms)).toBeDefined()
                 expect(
-                    getChannelBySlug(TicketMessageSourceType.Chat)
+                    getChannelBySlug(TicketMessageSourceType.Chat),
                 ).toBeDefined()
             })
 
@@ -69,7 +70,7 @@ describe('services', () => {
                         id: '123',
                         slug: 'some-channel',
                         name: 'Some Channel',
-                    })
+                    }),
                 ).toBe(true)
             })
 
@@ -80,8 +81,8 @@ describe('services', () => {
                 expect(isChannel(TicketChannel.Email)).toBe(false)
                 expect(isChannel(null)).toBe(false)
                 expect(isChannel(undefined)).toBe(false)
-                expect(isChannel({id: 123, slug: 'x'})).toBe(false)
-                expect(isChannel({slug: 'x'})).toBe(false)
+                expect(isChannel({ id: 123, slug: 'x' })).toBe(false)
+                expect(isChannel({ slug: 'x' })).toBe(false)
                 expect(isChannel('123')).toBe(false)
             })
         })
@@ -91,23 +92,23 @@ describe('services', () => {
                 expect(isLegacyChannel('email')).toBe(true)
                 expect(isLegacyChannel(IntegrationType.Sms)).toBe(true)
                 expect(isLegacyChannel(TicketChannel.FacebookMention)).toBe(
-                    true
+                    true,
                 )
                 expect(
-                    isLegacyChannel(TicketMessageSourceType.FacebookMessenger)
+                    isLegacyChannel(TicketMessageSourceType.FacebookMessenger),
                 ).toBe(true)
                 expect(
-                    isLegacyChannel(TicketMessageSourceType.WhatsAppMessage)
+                    isLegacyChannel(TicketMessageSourceType.WhatsAppMessage),
                 ).toBe(true)
                 expect(isLegacyChannel(getChannelBySlug('whatsapp')!)).toBe(
-                    true
+                    true,
                 )
             })
 
             it('should return false for new channels', () => {
                 expect(isLegacyChannel('tiktok-shop')).toBe(false)
                 expect(isLegacyChannel(getChannelBySlug('tiktok-shop')!)).toBe(
-                    false
+                    false,
                 )
             })
 
@@ -122,10 +123,10 @@ describe('services', () => {
                 expect(isNewChannel(IntegrationType.Sms)).toBe(false)
                 expect(isNewChannel(TicketChannel.FacebookMention)).toBe(false)
                 expect(
-                    isNewChannel(TicketMessageSourceType.FacebookMessenger)
+                    isNewChannel(TicketMessageSourceType.FacebookMessenger),
                 ).toBe(false)
                 expect(
-                    isNewChannel(TicketMessageSourceType.WhatsAppMessage)
+                    isNewChannel(TicketMessageSourceType.WhatsAppMessage),
                 ).toBe(false)
                 expect(isNewChannel(getChannelBySlug('whatsapp')!)).toBe(false)
             })
@@ -135,7 +136,7 @@ describe('services', () => {
                 expect(isNewChannel('google-business-messenger')).toBe(true)
                 expect(isNewChannel(toChannel('tiktok-shop')!)).toBe(true)
                 expect(isNewChannel(getChannelBySlug('tiktok-shop')!)).toBe(
-                    true
+                    true,
                 )
             })
 
@@ -173,7 +174,7 @@ describe('services', () => {
             it('should try to convert a source type > ticket channel > channel', () => {
                 const channel = getChannelBySlug('facebook-recommendations')
                 expect(
-                    toChannel(TicketMessageSourceType.FacebookReviewComment)
+                    toChannel(TicketMessageSourceType.FacebookReviewComment),
                 ).toBe(channel)
             })
 

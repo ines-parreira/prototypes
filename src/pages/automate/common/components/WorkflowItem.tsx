@@ -1,10 +1,12 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { ReactNode, RefObject } from 'react'
+
 import classnames from 'classnames'
-import React, {ReactNode, RefObject} from 'react'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useId from 'hooks/useId'
 import ToggleInput from 'pages/common/forms/ToggleInput'
-import {useReorderDnD} from 'pages/common/hooks/useReorderDnD'
+import { useReorderDnD } from 'pages/common/hooks/useReorderDnD'
 
 import css from './WorkflowItem.less'
 
@@ -38,10 +40,10 @@ const WorkflowItem = ({
     const toggleInputId = `workflow-item-${useId()}`
     const warningIconId = `workflow-item-warning-icon-${useId()}`
 
-    const {dragRef, dropRef, handlerId, isDragging} = useReorderDnD(
-        {type: dndType, position: index},
+    const { dragRef, dropRef, handlerId, isDragging } = useReorderDnD(
+        { type: dndType, position: index },
         [dndType],
-        {onHover: onMove, onDrop, onCancel}
+        { onHover: onMove, onDrop, onCancel },
     )
 
     const handleToggle = (nextValue: boolean) => {
@@ -51,7 +53,7 @@ const WorkflowItem = ({
     return (
         <div
             ref={dropRef as RefObject<HTMLDivElement>}
-            style={{opacity: isDragging ? 0 : 1}}
+            style={{ opacity: isDragging ? 0 : 1 }}
             data-handler-id={handlerId}
             className={css.container}
         >
@@ -75,7 +77,7 @@ const WorkflowItem = ({
                         id={warningIconId}
                         className={classnames(
                             'material-icons',
-                            css.warningIcon
+                            css.warningIcon,
                         )}
                     >
                         error

@@ -1,9 +1,9 @@
 import {
-    ExpressionFieldType,
     CustomFieldDefinition as ApiCustomFieldDefinition,
+    ExpressionFieldType,
 } from '@gorgias/api-types'
 
-import {ApiPaginationParams} from 'models/api/types'
+import { ApiPaginationParams } from 'models/api/types'
 
 import {
     AI_MANAGED_TYPES,
@@ -71,10 +71,10 @@ export type CustomFieldManagedType =
     (typeof MANAGED_TYPES)[keyof typeof MANAGED_TYPES]
 
 export function isCustomFieldAIManagedType(
-    managedType: string | null
+    managedType: string | null,
 ): managedType is CustomFieldAIManagedType {
     return Boolean(
-        managedType && Object.values(AI_MANAGED_TYPES).includes(managedType)
+        managedType && Object.values(AI_MANAGED_TYPES).includes(managedType),
     )
 }
 
@@ -112,7 +112,7 @@ export type CustomFields = {
 }
 
 export function isCustomField(
-    field: CustomField | CustomFieldInput
+    field: CustomField | CustomFieldInput,
 ): field is CustomField {
     return 'id' in field
 }

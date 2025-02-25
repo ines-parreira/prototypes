@@ -1,30 +1,32 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { useCallback, useRef, useState } from 'react'
+
 import classnames from 'classnames'
-import {EditorState} from 'draft-js'
-import {List, Map} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useState, useRef, useCallback} from 'react'
+import { EditorState } from 'draft-js'
+import { List, Map } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 import {
-    UncontrolledButtonDropdown,
-    DropdownToggle,
-    DropdownMenu,
     DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+    UncontrolledButtonDropdown,
 } from 'reactstrap'
 
-import {UploadType} from 'common/types'
-import {FeatureFlagKey} from 'config/featureFlags'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { UploadType } from 'common/types'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationType} from 'models/integration/types'
-import {MacroActionName} from 'models/macroAction/types'
+import { IntegrationType } from 'models/integration/types'
+import { MacroActionName } from 'models/macroAction/types'
 import Button from 'pages/common/components/button/Button'
 import Tip from 'pages/common/components/tip/Tip'
-import {attachEntitiesToVariables} from 'pages/common/draftjs/plugins/variables/utils'
+import { attachEntitiesToVariables } from 'pages/common/draftjs/plugins/variables/utils'
 import RichField from 'pages/common/forms/RichField/RichField'
 import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
 import * as integrationsSelectors from 'state/integrations/selectors'
-import {getVariables} from 'tickets/common/utils'
-import {insertText} from 'utils'
-import {convertToHTML, getPlainText} from 'utils/editor'
+import { getVariables } from 'tickets/common/utils'
+import { insertText } from 'utils'
+import { convertToHTML, getPlainText } from 'utils/editor'
 
 import MacroMessageActionsHeader, {
     MacroMessageActionsHeaderProps,
@@ -62,7 +64,7 @@ const ResponseActionToolbar: React.FC<ToolbarProps> = ({
     insertEditorText,
 }) => {
     const hasIntegrationOfTypes = useAppSelector(
-        integrationsSelectors.makeHasIntegrationOfTypes
+        integrationsSelectors.makeHasIntegrationOfTypes,
     )
 
     const variables = getVariables(null)
@@ -73,7 +75,7 @@ const ResponseActionToolbar: React.FC<ToolbarProps> = ({
                 .filter(
                     (category) =>
                         !ignoredVariables ||
-                        !ignoredVariables?.includes(category.type)
+                        !ignoredVariables?.includes(category.type),
                 )
                 .map((category, index) => {
                     if (
@@ -105,7 +107,7 @@ const ResponseActionToolbar: React.FC<ToolbarProps> = ({
                                                     type="button"
                                                     onClick={() => {
                                                         insertEditorText(
-                                                            variable.value
+                                                            variable.value,
                                                         )
                                                     }}
                                                 >
@@ -121,7 +123,7 @@ const ResponseActionToolbar: React.FC<ToolbarProps> = ({
                                                 )}
                                             </div>
                                         )
-                                    }
+                                    },
                                 )}
                             </DropdownMenu>
                         </UncontrolledButtonDropdown>
@@ -130,7 +132,7 @@ const ResponseActionToolbar: React.FC<ToolbarProps> = ({
                             key={index}
                             fillStyle="ghost"
                             intent="secondary"
-                            style={{color: 'inherit'}}
+                            style={{ color: 'inherit' }}
                             onClick={() => {
                                 insertEditorText(category.value!)
                             }}
@@ -188,7 +190,7 @@ const ResponseAction: React.FC<Props> = ({
             index,
             args.merge({
                 [field]: value,
-            })
+            }),
         )
     }
 
@@ -200,7 +202,7 @@ const ResponseAction: React.FC<Props> = ({
             args.merge({
                 body_text: getPlainText(contentState),
                 body_html: convertToHTML(contentState),
-            })
+            }),
         )
     }
 
@@ -211,7 +213,7 @@ const ResponseAction: React.FC<Props> = ({
         />
     )
 
-    const {to, cc, bcc} = (action.get('arguments') as Map<any, any>).toJS()
+    const { to, cc, bcc } = (action.get('arguments') as Map<any, any>).toJS()
 
     const fields = {
         to: type === MacroActionName.SetResponseText ? undefined : to || '',

@@ -1,30 +1,31 @@
-import {Tooltip, Badge} from '@gorgias/merchant-ui-kit'
+import React from 'react'
+
 import classnames from 'classnames'
 import _noop from 'lodash/noop'
-import React from 'react'
-import {Link, useHistory} from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
-import {SegmentEvent, logEvent} from 'common/segment'
+import { Badge, Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
-import {ContactFormPageEmbedment} from 'models/contactForm/types'
+import { ContactFormPageEmbedment } from 'models/contactForm/types'
 import Button from 'pages/common/components/button/Button'
-import {EmbeddablePage} from 'pages/common/components/PageEmbedmentForm/types'
+import { EmbeddablePage } from 'pages/common/components/PageEmbedmentForm/types'
 import {
     insertContactFormIdParam,
     linkToContactFormPreferences,
     linkToShopifyIntegration,
 } from 'pages/settings/contactForm/utils/navigation'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { getCurrentUser } from 'state/currentUser/selectors'
 
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {getCurrentUser} from 'state/currentUser/selectors'
-
-import {CONTACT_FORM_MANAGE_EMBEDMENTS_PATH} from '../../constants'
-import {useGetShopifyPages} from '../../queries'
+import { CONTACT_FORM_MANAGE_EMBEDMENTS_PATH } from '../../constants'
+import { useGetShopifyPages } from '../../queries'
 import ContactFormAutoEmbedModalAssistant from '../ContactFormAutoEmbedModalAssistant'
 import {
-    CONTACT_FORM_AUTO_EMBED_CARD_TEST_ID,
     CONTACT_FORM_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID,
     CONTACT_FORM_AUTO_EMBED_CARD_ID,
+    CONTACT_FORM_AUTO_EMBED_CARD_TEST_ID,
 } from './constants'
 
 import css from './ContactFormAutoEmbedCard.less'
@@ -33,7 +34,7 @@ const CardContent = (props: {
     hasEmbeddedPages: boolean
     isDisabled: boolean
 }) => {
-    const {hasEmbeddedPages, isDisabled} = props
+    const { hasEmbeddedPages, isDisabled } = props
 
     return (
         <div>
@@ -90,8 +91,8 @@ const ContactFormAutoEmbedCard = ({
     const availablePages = pages.filter((page) =>
         pageEmbedments.every(
             (pageEmbedment) =>
-                pageEmbedment.page_external_id !== page.external_id
-        )
+                pageEmbedment.page_external_id !== page.external_id,
+        ),
     )
 
     if (isNotConnected) {
@@ -172,8 +173,8 @@ const ContactFormAutoEmbedCard = ({
                 history.push(
                     insertContactFormIdParam(
                         CONTACT_FORM_MANAGE_EMBEDMENTS_PATH,
-                        contactFormId
-                    )
+                        contactFormId,
+                    ),
                 )
             }
             return (
@@ -188,7 +189,7 @@ const ContactFormAutoEmbedCard = ({
                 >
                     <i
                         className="material-icons text-success"
-                        style={{fontSize: 24}}
+                        style={{ fontSize: 24 }}
                     >
                         check_circle
                     </i>

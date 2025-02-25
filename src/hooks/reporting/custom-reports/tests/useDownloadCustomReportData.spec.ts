@@ -1,17 +1,17 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {useCustomReportData} from 'hooks/reporting/custom-reports/useCustomReportData'
-import {useDownloadCustomReportData} from 'hooks/reporting/custom-reports/useDownloadCustomReportData'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { useCustomReportData } from 'hooks/reporting/custom-reports/useCustomReportData'
+import { useDownloadCustomReportData } from 'hooks/reporting/custom-reports/useDownloadCustomReportData'
 import {
     CustomReportChartSchema,
     CustomReportChildType,
     CustomReportRowSchema,
     CustomReportSchema,
 } from 'pages/stats/custom-reports/types'
-import {OverviewChart} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
-import {saveZippedFiles} from 'utils/file'
-import {assumeMock} from 'utils/testing'
+import { OverviewChart } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
+import { saveZippedFiles } from 'utils/file'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/custom-reports/useCustomReportData')
 const useCustomReportDataMock = assumeMock(useCustomReportData)
@@ -54,8 +54,8 @@ describe('useDownloadCustomReportData', () => {
     })
 
     it('should download a zipped file', async () => {
-        const {result} = renderHook(() =>
-            useDownloadCustomReportData(exampleCustomReport)
+        const { result } = renderHook(() =>
+            useDownloadCustomReportData(exampleCustomReport),
         )
         await result.current.triggerDownload()
 
@@ -63,8 +63,8 @@ describe('useDownloadCustomReportData', () => {
     })
 
     it('should call useCustomReportData with empty report', async () => {
-        const {result} = renderHook(() =>
-            useDownloadCustomReportData(undefined)
+        const { result } = renderHook(() =>
+            useDownloadCustomReportData(undefined),
         )
         await result.current.triggerDownload()
 
@@ -72,13 +72,13 @@ describe('useDownloadCustomReportData', () => {
             expect.objectContaining({
                 id: 0,
                 children: [],
-            })
+            }),
         )
     })
 
     it('should log Segment event', async () => {
-        const {result} = renderHook(() =>
-            useDownloadCustomReportData(exampleCustomReport)
+        const { result } = renderHook(() =>
+            useDownloadCustomReportData(exampleCustomReport),
         )
         await result.current.triggerDownload()
 
@@ -86,7 +86,7 @@ describe('useDownloadCustomReportData', () => {
             SegmentEvent.StatDownloadClicked,
             expect.objectContaining({
                 name: 'all-metrics',
-            })
+            }),
         )
     })
 })

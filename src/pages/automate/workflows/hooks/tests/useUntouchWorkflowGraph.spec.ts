@@ -1,4 +1,4 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
 import {
     buildEdgeCommonProperties,
@@ -9,7 +9,7 @@ import useUntouchWorkflowGraph from '../useUntouchWorkflowGraph'
 
 describe('useUntouchWorkflowGraph()', () => {
     it('should untouch workflow graph', () => {
-        const {result} = renderHook(() => useUntouchWorkflowGraph())
+        const { result } = renderHook(() => useUntouchWorkflowGraph())
 
         expect(
             result.current({
@@ -123,7 +123,7 @@ describe('useUntouchWorkflowGraph()', () => {
                                 html: '',
                                 text: '',
                             },
-                            choices: [{event_id: 'choice1', label: ''}],
+                            choices: [{ event_id: 'choice1', label: '' }],
                             touched: {
                                 choices: {
                                     choice1: {
@@ -208,7 +208,7 @@ describe('useUntouchWorkflowGraph()', () => {
                         source: 'conditions1',
                         target: 'end1',
                         data: {
-                            conditions: {and: []},
+                            conditions: { and: [] },
                         },
                     },
                     {
@@ -245,7 +245,7 @@ describe('useUntouchWorkflowGraph()', () => {
                 nodeEditingId: null,
                 choiceEventIdEditing: null,
                 branchIdsEditing: [],
-            })
+            }),
         ).toEqual(
             expect.objectContaining({
                 nodes: [
@@ -312,7 +312,7 @@ describe('useUntouchWorkflowGraph()', () => {
                     }),
                 ],
                 touched: null,
-            })
+            }),
         )
     })
 })

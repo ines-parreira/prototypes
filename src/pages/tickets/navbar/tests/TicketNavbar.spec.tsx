@@ -1,28 +1,29 @@
-import {fireEvent} from '@testing-library/react'
-import MockAdapter from 'axios-mock-adapter'
-import {createBrowserHistory} from 'history'
-import {fromJS} from 'immutable'
-import _noop from 'lodash/noop'
-import React, {ComponentProps, ReactNode} from 'react'
-import {DndProvider} from 'react-dnd'
-import {HTML5Backend} from 'react-dnd-html5-backend'
-import {Provider} from 'react-redux'
+import React, { ComponentProps, ReactNode } from 'react'
 
-import {UserRole} from 'config/types/user'
-import {section} from 'fixtures/section'
-import {user} from 'fixtures/users'
-import {view} from 'fixtures/views'
+import { fireEvent } from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
+import { createBrowserHistory } from 'history'
+import { fromJS } from 'immutable'
+import _noop from 'lodash/noop'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+import { Provider } from 'react-redux'
+
+import { UserRole } from 'config/types/user'
+import { section } from 'fixtures/section'
+import { user } from 'fixtures/users'
+import { view } from 'fixtures/views'
 import client from 'models/api/resources'
-import {View, ViewType, ViewVisibility} from 'models/view/types'
+import { View, ViewType, ViewVisibility } from 'models/view/types'
 import NavbarBlock from 'pages/common/components/navbar/NavbarBlock'
-import {useSplitTicketViewSwitcher} from 'split-ticket-view-toggle'
-import {NotificationStatus} from 'state/notifications/types'
-import {TicketNavbarElementType} from 'state/ui/ticketNavbar/types'
-import {mockStore, renderWithRouter} from 'utils/testing'
+import { useSplitTicketViewSwitcher } from 'split-ticket-view-toggle'
+import { NotificationStatus } from 'state/notifications/types'
+import { TicketNavbarElementType } from 'state/ui/ticketNavbar/types'
+import { mockStore, renderWithRouter } from 'utils/testing'
 
 import DeleteSectionModal from '../DeleteSectionModal'
 import SectionFormModal from '../SectionFormModal'
-import {TicketNavbarContainer} from '../TicketNavbar'
+import { TicketNavbarContainer } from '../TicketNavbar'
 import TicketNavbarContent from '../TicketNavbarContent'
 
 jest.mock('launchdarkly-react-client-sdk', () => ({
@@ -30,8 +31,8 @@ jest.mock('launchdarkly-react-client-sdk', () => ({
 }))
 
 jest.mock('common/navigation', () => ({
-    ActiveContent: {Tickets: 'tickets'},
-    Navbar: ({children}: {children: ReactNode}) => <div>{children}</div>,
+    ActiveContent: { Tickets: 'tickets' },
+    Navbar: ({ children }: { children: ReactNode }) => <div>{children}</div>,
 }))
 
 jest.mock('pages/common/components/RecentChats', () => () => (
@@ -40,7 +41,7 @@ jest.mock('pages/common/components/RecentChats', () => () => (
 jest.mock(
     'pages/common/components/navbar/NavbarBlock',
     () =>
-        ({actions, children}: ComponentProps<typeof NavbarBlock>) => (
+        ({ actions, children }: ComponentProps<typeof NavbarBlock>) => (
             <div data-testid="NavbarBlock">
                 NavbarBlock:{' '}
                 {actions?.map((value) => (
@@ -54,13 +55,13 @@ jest.mock(
                 ))}
                 {children}
             </div>
-        )
+        ),
 )
 
 jest.mock('split-ticket-view-toggle')
 const useSplitTicketViewSwitcherMock = useSplitTicketViewSwitcher as jest.Mock
 
-jest.mock('../TicketNavbarViewLink', () => ({view}: {view: View}) => (
+jest.mock('../TicketNavbarViewLink', () => ({ view }: { view: View }) => (
     <span>{view.name}</span>
 ))
 jest.mock(
@@ -90,7 +91,7 @@ jest.mock(
                 <div>isSubmitting: {isSubmitting.toString()}</div>
                 <div>sectionForm: {JSON.stringify(sectionForm)}</div>
             </div>
-        )
+        ),
 )
 jest.mock(
     '../DeleteSectionModal',
@@ -109,7 +110,7 @@ jest.mock(
                 <div>isSubmitting: {isSubmitting.toString()}</div>
                 <div>section: {JSON.stringify(section)}</div>
             </div>
-        )
+        ),
 )
 jest.mock(
     '../TicketNavbarContent',
@@ -138,7 +139,7 @@ jest.mock(
                     />
                 )}
             </div>
-        )
+        ),
 )
 const mockedServer = new MockAdapter(client)
 
@@ -156,7 +157,7 @@ describe('<TicketNavbar/>', () => {
         fetchViewsSuccess: jest.fn(),
         notify: jest.fn(),
         isLoading: false,
-        sections: {[section.id]: section},
+        sections: { [section.id]: section },
         sectionsFetched: jest.fn(),
         sectionCreated: jest.fn(),
         sectionDeleted: jest.fn(),
@@ -209,7 +210,9 @@ describe('<TicketNavbar/>', () => {
             data: [view],
             meta: {},
         })
-        mockedServer.onGet('/api/view-sections/').reply(200, {data: [section]})
+        mockedServer
+            .onGet('/api/view-sections/')
+            .reply(200, { data: [section] })
         mockedServer.onPost('/api/view-sections/').reply(200, section)
         mockedServer.onPut(/\/api\/view-sections\/\d+\//).reply(200, section)
         mockedServer.onDelete(/\/api\/view-sections\/\d+\//).reply(200)
@@ -218,7 +221,7 @@ describe('<TicketNavbar/>', () => {
     })
 
     it('should render', () => {
-        const {container} = renderWithRouter(
+        const { container } = renderWithRouter(
             <DndProvider backend={HTML5Backend}>
                 <Provider store={mockStore(store as any)}>
                     <TicketNavbarContainer {...minProps} />
@@ -227,7 +230,7 @@ describe('<TicketNavbar/>', () => {
             {
                 path: '/foo/:viewId?',
                 route: '/foo/1',
-            }
+            },
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -243,14 +246,14 @@ describe('<TicketNavbar/>', () => {
             {
                 path: '/foo/:viewId?',
                 route: '/foo/1',
-            }
+            },
         )
 
         setImmediate(() => {
             expect(minProps.fetchViewsSuccess).toHaveBeenNthCalledWith(
                 1,
-                {data: [view]},
-                '1'
+                { data: [view] },
+                '1',
             )
             expect(minProps.viewsFetched).toHaveBeenNthCalledWith(1, [view])
             done()
@@ -267,7 +270,7 @@ describe('<TicketNavbar/>', () => {
             {
                 path: '/foo/:viewId?',
                 route: '/foo/1',
-            }
+            },
         )
 
         setImmediate(() => {
@@ -292,21 +295,21 @@ describe('<TicketNavbar/>', () => {
             {
                 history,
                 path: '/foo/:viewId?',
-            }
+            },
         )
 
         setImmediate(() => {
             expect(minProps.fetchViewsSuccess).toHaveBeenNthCalledWith(
                 1,
-                {data: [view]},
-                '2'
+                { data: [view] },
+                '2',
             )
             done()
         })
     })
 
     it('should dispatch a notification when failing to fetch views', (done) => {
-        mockedServer.onGet(/\/api\/views\/.*/).reply(503, {message: 'error'})
+        mockedServer.onGet(/\/api\/views\/.*/).reply(503, { message: 'error' })
         renderWithRouter(
             <DndProvider backend={HTML5Backend}>
                 <Provider store={mockStore(store as any)}>
@@ -316,7 +319,7 @@ describe('<TicketNavbar/>', () => {
             {
                 path: '/foo/:viewId?',
                 route: '/foo/1',
-            }
+            },
         )
 
         setImmediate(() => {
@@ -329,7 +332,7 @@ describe('<TicketNavbar/>', () => {
     })
 
     it('should display shared actions for lead-agent/admin', () => {
-        const {container} = renderWithRouter(
+        const { container } = renderWithRouter(
             <DndProvider backend={HTML5Backend}>
                 <Provider store={mockStore(store as any)}>
                     <TicketNavbarContainer
@@ -341,14 +344,14 @@ describe('<TicketNavbar/>', () => {
             {
                 path: '/foo/:viewId?',
                 route: '/foo/1',
-            }
+            },
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should open a new section modal when clicking create section', () => {
-        const {container, getByTestId} = renderWithRouter(
+        const { container, getByTestId } = renderWithRouter(
             <DndProvider backend={HTML5Backend}>
                 <Provider store={mockStore(store as any)}>
                     <TicketNavbarContainer {...minProps} />
@@ -357,7 +360,7 @@ describe('<TicketNavbar/>', () => {
             {
                 path: '/foo/:viewId?',
                 route: '/foo/1',
-            }
+            },
         )
 
         fireEvent.click(getByTestId('NavbarBlock-Create section'))
@@ -365,7 +368,7 @@ describe('<TicketNavbar/>', () => {
     })
 
     it('should close a new section modal when clicking close section', () => {
-        const {container, getByTestId} = renderWithRouter(
+        const { container, getByTestId } = renderWithRouter(
             <DndProvider backend={HTML5Backend}>
                 <Provider store={mockStore(store as any)}>
                     <TicketNavbarContainer {...minProps} />
@@ -374,7 +377,7 @@ describe('<TicketNavbar/>', () => {
             {
                 path: '/foo/:viewId?',
                 route: '/foo/1',
-            }
+            },
         )
 
         fireEvent.click(getByTestId('NavbarBlock-Create section'))
@@ -383,7 +386,7 @@ describe('<TicketNavbar/>', () => {
     })
 
     it('should update the draft form on change', () => {
-        const {container, getByTestId} = renderWithRouter(
+        const { container, getByTestId } = renderWithRouter(
             <DndProvider backend={HTML5Backend}>
                 <Provider store={mockStore(store as any)}>
                     <TicketNavbarContainer {...minProps} />
@@ -392,7 +395,7 @@ describe('<TicketNavbar/>', () => {
             {
                 path: '/foo/:viewId?',
                 route: '/foo/1',
-            }
+            },
         )
 
         fireEvent.click(getByTestId('NavbarBlock-Create section'))
@@ -406,7 +409,7 @@ describe('<TicketNavbar/>', () => {
     })
 
     it('should create a new section', (done) => {
-        const {getByTestId} = renderWithRouter(
+        const { getByTestId } = renderWithRouter(
             <DndProvider backend={HTML5Backend}>
                 <Provider store={mockStore(store as any)}>
                     <TicketNavbarContainer {...minProps} />
@@ -415,7 +418,7 @@ describe('<TicketNavbar/>', () => {
             {
                 path: '/foo/:viewId?',
                 route: '/foo/1',
-            }
+            },
         )
 
         fireEvent.click(getByTestId('NavbarBlock-Create section'))
@@ -428,7 +431,7 @@ describe('<TicketNavbar/>', () => {
     })
 
     it('should update a section', (done) => {
-        const {getByTestId} = renderWithRouter(
+        const { getByTestId } = renderWithRouter(
             <DndProvider backend={HTML5Backend}>
                 <Provider store={mockStore(store as any)}>
                     <TicketNavbarContainer {...minProps} />
@@ -437,7 +440,7 @@ describe('<TicketNavbar/>', () => {
             {
                 path: '/foo/:viewId?',
                 route: '/foo/1',
-            }
+            },
         )
 
         fireEvent.click(getByTestId('TicketNavbarContent-rename'))
@@ -450,7 +453,7 @@ describe('<TicketNavbar/>', () => {
     })
 
     it('should delete a section', (done) => {
-        const {getByTestId} = renderWithRouter(
+        const { getByTestId } = renderWithRouter(
             <DndProvider backend={HTML5Backend}>
                 <Provider store={mockStore(store as any)}>
                     <TicketNavbarContainer {...minProps} />
@@ -459,7 +462,7 @@ describe('<TicketNavbar/>', () => {
             {
                 path: '/foo/:viewId?',
                 route: '/foo/1',
-            }
+            },
         )
 
         fireEvent.click(getByTestId('TicketNavbarContent-delete'))

@@ -1,6 +1,6 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {useFlag} from 'core/flags'
+import { useFlag } from 'core/flags'
 
 import useCollisionDetection from '../useCollisionDetection'
 import useRealtimePresence from '../useRealtimePresence'
@@ -18,15 +18,15 @@ describe('useCollisionDetection', () => {
     const ticketId = 123
 
     const mockPresence1 = {
-        agentsViewing: [{id: 'agent1'}],
-        agentsViewingNotTyping: [{id: 'agent1'}],
+        agentsViewing: [{ id: 'agent1' }],
+        agentsViewingNotTyping: [{ id: 'agent1' }],
         agentsTyping: [],
         hasBoth: false,
     }
 
     const mockPresence2 = {
-        agentsViewing: [{id: 'agent2'}],
-        agentsViewingNotTyping: [{id: 'agent2'}],
+        agentsViewing: [{ id: 'agent2' }],
+        agentsViewingNotTyping: [{ id: 'agent2' }],
         agentsTyping: [],
         hasBoth: false,
     }
@@ -36,7 +36,7 @@ describe('useCollisionDetection', () => {
         mockUseSocketIOPresence.mockReturnValue(mockPresence1)
         mockUseRealtimePresence.mockReturnValue(mockPresence2)
 
-        const {result} = renderHook(() => useCollisionDetection(ticketId))
+        const { result } = renderHook(() => useCollisionDetection(ticketId))
 
         expect(result.current).toEqual(mockPresence1)
     })
@@ -46,7 +46,7 @@ describe('useCollisionDetection', () => {
         mockUseSocketIOPresence.mockReturnValue(mockPresence2)
         mockUseRealtimePresence.mockReturnValue(mockPresence1)
 
-        const {result} = renderHook(() => useCollisionDetection(ticketId))
+        const { result } = renderHook(() => useCollisionDetection(ticketId))
 
         expect(result.current).toEqual(mockPresence1)
     })

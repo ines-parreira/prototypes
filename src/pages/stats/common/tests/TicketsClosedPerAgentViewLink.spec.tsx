@@ -1,20 +1,20 @@
-import {fireEvent, render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
-import {LinkProps} from 'react-router-dom'
+
+import { fireEvent, render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import { LinkProps } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {TicketChannel} from 'business/types/ticket'
-import {logEvent} from 'common/segment'
-import {agents as agentsFixtures} from 'fixtures/agents'
-import {integrationsState} from 'fixtures/integrations'
-import {LegacyStatsFilters} from 'models/stat/types'
-
+import { TicketChannel } from 'business/types/ticket'
+import { logEvent } from 'common/segment'
+import { agents as agentsFixtures } from 'fixtures/agents'
+import { integrationsState } from 'fixtures/integrations'
+import { LegacyStatsFilters } from 'models/stat/types'
 import TicketsClosedPerAgentViewLink from 'pages/stats/common/TicketsClosedPerAgentViewLink'
 import StatsFiltersContext from 'pages/stats/StatsFiltersContext'
-import {RootState, StoreDispatch} from 'state/types'
+import { RootState, StoreDispatch } from 'state/types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -39,7 +39,7 @@ describe('TicketsClosedPerAgentViewLink', () => {
         agents: [1, 2],
     }
     const defaultState = {
-        agents: fromJS({all: agentsFixtures}),
+        agents: fromJS({ all: agentsFixtures }),
         integrations: fromJS(integrationsState),
         entities: {
             tags: {},
@@ -47,7 +47,7 @@ describe('TicketsClosedPerAgentViewLink', () => {
     } as RootState
 
     it('should render an assignee link', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <StatsFiltersContext.Provider value={defaultStatsFilters}>
                     <TicketsClosedPerAgentViewLink
@@ -56,13 +56,13 @@ describe('TicketsClosedPerAgentViewLink', () => {
                         click me!
                     </TicketsClosedPerAgentViewLink>
                 </StatsFiltersContext.Provider>
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render the unassigned user link', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <StatsFiltersContext.Provider value={defaultStatsFilters}>
                     <TicketsClosedPerAgentViewLink
@@ -72,26 +72,26 @@ describe('TicketsClosedPerAgentViewLink', () => {
                         click me!
                     </TicketsClosedPerAgentViewLink>
                 </StatsFiltersContext.Provider>
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should not render a link for an unknown agent', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <StatsFiltersContext.Provider value={defaultStatsFilters}>
                     <TicketsClosedPerAgentViewLink agentName="Unknown Agent">
                         click me!
                     </TicketsClosedPerAgentViewLink>
                 </StatsFiltersContext.Provider>
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should log the event on click', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <StatsFiltersContext.Provider value={defaultStatsFilters}>
                     <TicketsClosedPerAgentViewLink
@@ -100,7 +100,7 @@ describe('TicketsClosedPerAgentViewLink', () => {
                         click me!
                     </TicketsClosedPerAgentViewLink>
                 </StatsFiltersContext.Provider>
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(container.firstChild!)

@@ -1,4 +1,4 @@
-import {formatPercentage, formatPrice} from '../number'
+import { formatPercentage, formatPrice } from '../number'
 
 describe('formatPrice()', () => {
     describe('with fractional currency', () => {

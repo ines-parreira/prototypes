@@ -1,6 +1,7 @@
-import {act, render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
+
+import { act, render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import MetricTip from 'pages/stats/MetricTip'
 
@@ -23,7 +24,7 @@ describe('<MetricTip />', () => {
         render(
             <MetricTip title={title} hint={hint}>
                 {content}
-            </MetricTip>
+            </MetricTip>,
         )
         const hintIcon = document.querySelector('[class*=icon]')
         if (hintIcon) {

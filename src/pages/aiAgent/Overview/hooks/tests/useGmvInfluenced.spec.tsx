@@ -1,13 +1,12 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {waitFor} from '@testing-library/react'
-import {renderHook, act} from '@testing-library/react-hooks/dom'
-
 import React from 'react'
 
-import {StatType} from 'models/stat/types'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { waitFor } from '@testing-library/react'
+import { act, renderHook } from '@testing-library/react-hooks/dom'
 
-import {useGmvInfluenced} from 'pages/aiAgent/Overview/hooks/kpis/useGmvInfluenced'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { StatType } from 'models/stat/types'
+import { useGmvInfluenced } from 'pages/aiAgent/Overview/hooks/kpis/useGmvInfluenced'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 const queryClient = mockQueryClient()
 
@@ -17,8 +16,8 @@ describe('useGmvInfluenced', () => {
     it('should return correct metric data when the query resolves', async () => {
         act(() => jest.runAllTimers())
 
-        const {result} = renderHook(() => useGmvInfluenced(), {
-            wrapper: ({children}) => (
+        const { result } = renderHook(() => useGmvInfluenced(), {
+            wrapper: ({ children }) => (
                 <QueryClientProvider client={queryClient}>
                     {children}
                 </QueryClientProvider>

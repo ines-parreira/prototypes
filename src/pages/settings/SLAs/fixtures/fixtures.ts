@@ -1,7 +1,7 @@
-import {SLAPolicy} from '@gorgias/api-queries'
+import { SLAPolicy } from '@gorgias/api-queries'
 
-import {TicketChannel} from 'business/types/ticket'
-import {UISLAPolicy} from 'pages/settings/SLAs/features/SLAList/types'
+import { TicketChannel } from 'business/types/ticket'
+import { UISLAPolicy } from 'pages/settings/SLAs/features/SLAList/types'
 
 export const slaPolicy1: SLAPolicy = {
     uuid: '1',

@@ -1,7 +1,7 @@
-import {produce} from 'immer'
-import {ulid} from 'ulidx'
+import { produce } from 'immer'
+import { ulid } from 'ulidx'
 
-import {getWorkflowVariableListForNode} from '../../models/variables.model'
+import { getWorkflowVariableListForNode } from '../../models/variables.model'
 import {
     buildEdgeCommonProperties,
     cleanConditionsFromEmptyVariables,
@@ -11,7 +11,7 @@ import {
     MultipleChoicesNodeType,
     VisualBuilderGraph,
 } from '../../models/visualBuilderGraph.types'
-import {MessageContent} from '../../models/workflowConfiguration.types'
+import { MessageContent } from '../../models/workflowConfiguration.types'
 import {
     buildEndNode,
     buildMultipleChoicesNode,
@@ -85,7 +85,7 @@ export function isVisualBuilderChoiceAction(action: {
 
 export function choicesReducer(
     graph: VisualBuilderGraph,
-    action: VisualBuilderChoicesAction
+    action: VisualBuilderChoicesAction,
 ): VisualBuilderGraph {
     switch (action.type) {
         case 'SET_MULTIPLE_CHOICES_CONTENT':
@@ -93,7 +93,7 @@ export function choicesReducer(
                 const node = draft.nodes.find(
                     (n): n is AutomatedMessageNodeType =>
                         n.id === action.multipleChoicesNodeId &&
-                        n.type === 'multiple_choices'
+                        n.type === 'multiple_choices',
                 )
                 if (node) {
                     node.data.content = action.content
@@ -105,16 +105,16 @@ export function choicesReducer(
             })
         case 'INSERT_MULTIPLE_CHOICES_NODE':
             return computeNodesPositions(
-                insertMultipleChoices(graph, action.beforeNodeId)
+                insertMultipleChoices(graph, action.beforeNodeId),
             )
         case 'DELETE_MULTIPLE_CHOICES_CHOICE': {
             const nextGraph = produce(graph, (draft) => {
                 const node = draft.nodes.find(
-                    (n): n is MultipleChoicesNodeType => n.id === action.nodeId
+                    (n): n is MultipleChoicesNodeType => n.id === action.nodeId,
                 )
                 if (!node) return
                 node.data.choices = node.data.choices.filter(
-                    (c) => c.event_id !== action.eventId
+                    (c) => c.event_id !== action.eventId,
                 )
 
                 // Removes variables from conditions that are associated with the deleted choice
@@ -127,8 +127,8 @@ export function choicesReducer(
                                     draft,
                                     edge.target,
                                     [],
-                                    []
-                                )
+                                    [],
+                                ),
                             )
                         return edge
                     }
@@ -138,12 +138,12 @@ export function choicesReducer(
             const childNodeId = graph.edges.find(
                 (e) =>
                     e.source === action.nodeId &&
-                    e.data?.event?.id === action.eventId
+                    e.data?.event?.id === action.eventId,
             )?.target
 
             if (childNodeId) {
                 return computeNodesPositions(
-                    deleteBranch(nextGraph, childNodeId)
+                    deleteBranch(nextGraph, childNodeId),
                 )
             }
 
@@ -155,7 +155,7 @@ export function choicesReducer(
                     const node = draft.nodes.find(
                         (n): n is MultipleChoicesNodeType =>
                             n.id === action.multipleChoicesNodeId &&
-                            n.type === 'multiple_choices'
+                            n.type === 'multiple_choices',
                     )
                     if (!node) return
                     const eventId = ulid()
@@ -176,7 +176,7 @@ export function choicesReducer(
                             },
                         },
                     })
-                })
+                }),
             )
         case 'REORDER_CHOICES':
             return computeNodesPositions(
@@ -184,43 +184,43 @@ export function choicesReducer(
                     const node = draft.nodes.find(
                         (n): n is MultipleChoicesNodeType =>
                             n.id === action.multipleChoicesNodeId &&
-                            n.type === 'multiple_choices'
+                            n.type === 'multiple_choices',
                     )
                     if (!node) return
                     const choiceByEventId = node.data.choices.reduce(
                         (acc, choice) => {
-                            const {event_id} = choice
-                            return {...acc, [event_id]: choice}
+                            const { event_id } = choice
+                            return { ...acc, [event_id]: choice }
                         },
                         {} as Record<
                             string,
                             MultipleChoicesNodeType['data']['choices'][number]
-                        >
+                        >,
                     )
                     node.data.choices = action.orderedEventIds.map(
-                        (eventId) => choiceByEventId[eventId]
+                        (eventId) => choiceByEventId[eventId],
                     )
                     // reorder edges for the nodes to be ordered in the visual builder
                     const outgoingEdgesSorted = graph.edges
                         .filter(
-                            (e) => e.source === action.multipleChoicesNodeId
+                            (e) => e.source === action.multipleChoicesNodeId,
                         )
                         .sort(
                             (a, b) =>
                                 node.data.choices.findIndex(
-                                    (c) => a.data?.event?.id === c.event_id
+                                    (c) => a.data?.event?.id === c.event_id,
                                 ) -
                                 node.data.choices.findIndex(
-                                    (c) => b.data?.event?.id === c.event_id
-                                )
+                                    (c) => b.data?.event?.id === c.event_id,
+                                ),
                         )
                     draft.edges = [
                         ...graph.edges.filter(
-                            (e) => e.source !== action.multipleChoicesNodeId
+                            (e) => e.source !== action.multipleChoicesNodeId,
                         ),
                         ...outgoingEdgesSorted,
                     ]
-                })
+                }),
             )
         case 'SET_CHOICE_LABEL':
             return produce(graph, (draft) => {
@@ -228,7 +228,7 @@ export function choicesReducer(
                     .find(
                         (n): n is MultipleChoicesNodeType =>
                             n.id === action.multipleChoicesNodeId &&
-                            n.type === 'multiple_choices'
+                            n.type === 'multiple_choices',
                     )
                     ?.data.choices.find((c) => action.eventId === c.event_id)
                 if (choice) choice.label = action.label
@@ -237,7 +237,7 @@ export function choicesReducer(
             const incomingEdge = graph.edges.find(
                 (e) =>
                     e.source === action.multipleChoicesNodeId &&
-                    e.data?.event?.id === action.eventId
+                    e.data?.event?.id === action.eventId,
             )
             if (!incomingEdge) return graph
             return greyOutBranch(graph, incomingEdge.target, action.isGreyedOut)
@@ -247,7 +247,7 @@ export function choicesReducer(
 
 function insertMultipleChoices(
     graph: VisualBuilderGraph,
-    beforeEndNodeId: string
+    beforeEndNodeId: string,
 ) {
     return produce(graph, (draft) => {
         const edge = draft.edges.find((e) => e.target === beforeEndNodeId)
@@ -278,7 +278,7 @@ function insertMultipleChoices(
                         id: multipleChoicesNode.data.choices[1].event_id,
                     },
                 },
-            }
+            },
         )
         draft.nodeEditingId = multipleChoicesNode.id
         draft.choiceEventIdEditing = null

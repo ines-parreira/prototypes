@@ -1,11 +1,10 @@
 import client from '../api/resources'
-
-import {AuthenticatorData, RecoveryCode} from './types'
+import { AuthenticatorData, RecoveryCode } from './types'
 
 export const fetchAuthenticatorData = async (
-    renewed = false
+    renewed = false,
 ): Promise<AuthenticatorData> => {
-    const params = renewed ? {renewed} : {}
+    const params = renewed ? { renewed } : {}
 
     const res = await client.get<AuthenticatorData>('/api/2fa/authenticator', {
         params,
@@ -17,7 +16,7 @@ export const fetchAuthenticatorDataRenewed =
 
 export const validateVerificationCode = async (
     verificationCode: string,
-    existing = false
+    existing = false,
 ): Promise<void> => {
     const params: Record<string, any> = {}
     if (existing) {
@@ -29,7 +28,7 @@ export const validateVerificationCode = async (
         {},
         {
             params,
-        }
+        },
     )
 }
 
@@ -40,7 +39,7 @@ export const saveTwoFASecret = async (): Promise<void> => {
 export const deleteTwoFASecret = async (
     userId?: number,
     verificationCode?: string,
-    userPassword?: string
+    userPassword?: string,
 ): Promise<void> => {
     const params: Record<string, any> = {}
 
@@ -48,21 +47,21 @@ export const deleteTwoFASecret = async (
         params['user_id'] = userId
     }
     const data = {
-        ...(userPassword && {user_password: userPassword}),
-        ...(verificationCode && {verification_code: verificationCode}),
+        ...(userPassword && { user_password: userPassword }),
+        ...(verificationCode && { verification_code: verificationCode }),
     }
 
-    await client.post<void>('/api/2fa/secret/delete', data, {params})
+    await client.post<void>('/api/2fa/secret/delete', data, { params })
 }
 
 export const createRecoveryCodes = async (
-    renewed = false
+    renewed = false,
 ): Promise<RecoveryCode[]> => {
-    const data = renewed ? {renewed} : {}
+    const data = renewed ? { renewed } : {}
 
     const res = await client.post<RecoveryCode[]>(
         '/api/2fa/recovery-codes',
-        data
+        data,
     )
     return res.data
 }

@@ -1,10 +1,10 @@
-import {isGorgiasApiError} from 'models/api/types'
+import { isGorgiasApiError } from 'models/api/types'
 
 export default function handleApiError(error: Error) {
     if (isGorgiasApiError(error) && error.response.status === 400) {
         if (error.response.data.error?.msg) {
             if (error.response.data.error.data) {
-                const {metrics, target_channels} = error.response.data.error
+                const { metrics, target_channels } = error.response.data.error
                     .data as {
                     metrics?: Record<string, string>
                     target_channels?: string[]

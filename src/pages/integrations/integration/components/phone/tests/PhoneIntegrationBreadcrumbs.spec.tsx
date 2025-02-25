@@ -1,17 +1,18 @@
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {PhoneFunction, PhoneCountry} from 'business/twilio'
-import {phoneNumbers} from 'fixtures/phoneNumber'
+import { PhoneCountry, PhoneFunction } from 'business/twilio'
+import { phoneNumbers } from 'fixtures/phoneNumber'
 import {
-    PhoneIntegration,
     IntegrationType,
-    VoiceMessageType,
+    PhoneIntegration,
     PhoneRingingBehaviour,
+    VoiceMessageType,
 } from 'models/integration/types'
-import {RootState, StoreDispatch} from 'state/types'
-import {renderWithRouter} from 'utils/testing'
+import { RootState, StoreDispatch } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
 import PhoneIntegrationBreadcrumbs from '../PhoneIntegrationBreadcrumbs'
 
@@ -19,8 +20,8 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({
     entities: {
         phoneNumbers: phoneNumbers.reduce(
-            (acc, number) => ({...acc, [number.id]: number}),
-            {}
+            (acc, number) => ({ ...acc, [number.id]: number }),
+            {},
         ),
     },
 } as RootState)
@@ -68,26 +69,26 @@ describe('<PhoneIntegrationBreadcrumbs/>', () => {
 
     describe('render()', () => {
         it('should render for voice integrations', () => {
-            const {container} = renderWithRouter(
+            const { container } = renderWithRouter(
                 <Provider store={store}>
                     <PhoneIntegrationBreadcrumbs
                         type={IntegrationType.Phone}
                         integration={integration}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render for SMS integrations', () => {
-            const {container} = renderWithRouter(
+            const { container } = renderWithRouter(
                 <Provider store={store}>
                     <PhoneIntegrationBreadcrumbs
                         type={IntegrationType.Sms}
                         integration={integration}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(container.firstChild).toMatchSnapshot()

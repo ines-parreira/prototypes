@@ -1,15 +1,16 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {Dispatch} from 'react'
+import { Dispatch } from 'react'
+
+import { renderHook } from '@testing-library/react-hooks'
 
 import useLocalStorage from 'hooks/useLocalStorage'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
-import {BannerCategories} from '../../../types'
-import {DISMISSED_BANNER_STORAGE_KEY} from '../../constants'
-import {isBannerDismissed} from '../../helpers/isBannerDismissed'
-import {useDismissedStorage} from '../useDismissedStorage'
-import {useStorageCleanup} from '../useStorageCleanup'
-import {useStorageSync} from '../useStorageSync'
+import { BannerCategories } from '../../../types'
+import { DISMISSED_BANNER_STORAGE_KEY } from '../../constants'
+import { isBannerDismissed } from '../../helpers/isBannerDismissed'
+import { useDismissedStorage } from '../useDismissedStorage'
+import { useStorageCleanup } from '../useStorageCleanup'
+import { useStorageSync } from '../useStorageSync'
 
 jest.mock('hooks/useLocalStorage', () => jest.fn())
 jest.mock('../../helpers/isBannerDismissed', () => ({
@@ -44,7 +45,7 @@ describe('useDismissedStorage', () => {
 
         expect(useLocalStorage).toHaveBeenCalledWith(
             DISMISSED_BANNER_STORAGE_KEY,
-            {}
+            {},
         )
     })
 
@@ -53,7 +54,7 @@ describe('useDismissedStorage', () => {
 
         expect(useStorageCleanup).toHaveBeenCalledWith(
             defaultStorage,
-            setStorageMock
+            setStorageMock,
         )
     })
 
@@ -63,31 +64,31 @@ describe('useDismissedStorage', () => {
 
         expect(useStorageSync).toHaveBeenCalledWith(
             defaultStorage,
-            updateCurrentTabState
+            updateCurrentTabState,
         )
     })
 
     it('should return isBannerDismissed and call the underlying helper', () => {
-        const {result} = renderHook(() => useDismissedStorage(jest.fn()))
+        const { result } = renderHook(() => useDismissedStorage(jest.fn()))
 
         result.current.isBannerDismissed(
             BannerCategories.IMPERSONATION,
-            'instanceId'
+            'instanceId',
         )
 
         expect(isBannerDismissed).toHaveBeenCalledWith(
             defaultStorage,
             BannerCategories.IMPERSONATION,
-            'instanceId'
+            'instanceId',
         )
     })
 
     it('should return setDismissed and call setStorage with the new storage', () => {
-        const {result} = renderHook(() => useDismissedStorage(jest.fn()))
+        const { result } = renderHook(() => useDismissedStorage(jest.fn()))
 
         result.current.setDismissed(
             BannerCategories.IMPERSONATION,
-            'instanceId2'
+            'instanceId2',
         )
 
         expect(setStorageMock.mock.calls[0][0](defaultStorage)).toStrictEqual({
@@ -100,7 +101,7 @@ describe('useDismissedStorage', () => {
 
         result.current.setDismissed(
             BannerCategories.STATUS_PAGE_INCIDENT,
-            'instanceId3'
+            'instanceId3',
         )
 
         expect(setStorageMock.mock.calls[1][0](defaultStorage)).toStrictEqual({

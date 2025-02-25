@@ -1,10 +1,10 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
-import {ISO639English} from 'constants/languages'
+import { ISO639English } from 'constants/languages'
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
-import {detectLanguage} from 'models/language/resources'
+import { detectLanguage } from 'models/language/resources'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {Value} from 'pages/common/forms/SelectField/types'
+import { Value } from 'pages/common/forms/SelectField/types'
 
 import css from './MacroEdit.less'
 
@@ -17,7 +17,7 @@ type Props = {
 const AUTODETECT = ''
 const NO_LANGUAGE = 'null'
 
-const MacroEditLanguage = ({text, language, setLanguage}: Props) => {
+const MacroEditLanguage = ({ text, language, setLanguage }: Props) => {
     const [autoDetect, setAutoDetect] = useState(false)
 
     useDebouncedEffect(
@@ -35,7 +35,7 @@ const MacroEditLanguage = ({text, language, setLanguage}: Props) => {
             })
         },
         [text, autoDetect],
-        1000
+        1000,
     )
 
     const decorate = (text: string) => (
@@ -45,7 +45,7 @@ const MacroEditLanguage = ({text, language, setLanguage}: Props) => {
         </>
     )
 
-    const languages: {[language: string]: string | JSX.Element} = {
+    const languages: { [language: string]: string | JSX.Element } = {
         [NO_LANGUAGE]: <span className="text-muted">- No language -</span>,
         [AUTODETECT]: decorate('Auto detect'),
         ...ISO639English,

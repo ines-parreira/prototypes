@@ -1,13 +1,14 @@
-import {render, screen} from '@testing-library/react'
+import React, { ComponentProps } from 'react'
+
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import React, {ComponentProps} from 'react'
 
-import {bigCommerceAvailablePaymentOptionsDataResponseFixture} from 'fixtures/bigcommerce'
-import {BigCommerceRefundType} from 'models/integration/types'
+import { bigCommerceAvailablePaymentOptionsDataResponseFixture } from 'fixtures/bigcommerce'
+import { BigCommerceRefundType } from 'models/integration/types'
 
-import {defaultBigCommerceRefundType} from '../../consts'
-import {BigCommerceRefundActionType} from '../../types'
-import {RefundMethodPickerSection} from '../RefundMethodPickerSection'
+import { defaultBigCommerceRefundType } from '../../consts'
+import { BigCommerceRefundActionType } from '../../types'
+import { RefundMethodPickerSection } from '../RefundMethodPickerSection'
 
 type Props = ComponentProps<typeof RefundMethodPickerSection>
 
@@ -41,30 +42,30 @@ const refundMethodsProps: Props = {
 
 describe('RefundMethodPickerSection', () => {
     it('snapshot renders the initial disabled state', () => {
-        const {container} = render(
-            <RefundMethodPickerSection {...initialDisabledProps} />
+        const { container } = render(
+            <RefundMethodPickerSection {...initialDisabledProps} />,
         )
 
         expect(container).toMatchSnapshot()
     })
 
     it('snapshot renders the initial state', () => {
-        const {container} = render(
-            <RefundMethodPickerSection {...initialProps} />
+        const { container } = render(
+            <RefundMethodPickerSection {...initialProps} />,
         )
 
         expect(container).toMatchSnapshot()
     })
 
     it('snapshot renders refund methods & selected refund method', () => {
-        const {container} = render(
+        const { container } = render(
             <RefundMethodPickerSection
                 {...refundMethodsProps}
                 selectedPaymentOption={
                     bigCommerceAvailablePaymentOptionsDataResponseFixture
                         .refund_methods[1]
                 }
-            />
+            />,
         )
 
         expect(container).toMatchSnapshot()
@@ -77,7 +78,7 @@ describe('RefundMethodPickerSection', () => {
             <RefundMethodPickerSection
                 {...refundMethodsProps}
                 dispatchRefundOrderState={dispatchRefundOrderStateMock}
-            />
+            />,
         )
 
         // Select second option

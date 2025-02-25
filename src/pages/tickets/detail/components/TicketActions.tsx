@@ -1,5 +1,6 @@
+import React, { useCallback, useRef, useState } from 'react'
+
 import cn from 'classnames'
-import React, {useCallback, useRef, useState} from 'react'
 
 import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
@@ -15,7 +16,7 @@ type Props = {
     actions: Action[]
 }
 
-export default function TicketActions({actions}: Props) {
+export default function TicketActions({ actions }: Props) {
     const [showDropdown, setShowDropdown] = useState(false)
     const toggleRef = useRef<HTMLButtonElement>(null)
 
@@ -55,7 +56,7 @@ export default function TicketActions({actions}: Props) {
                                     className={cn(
                                         css.icon,
                                         css.optionIcon,
-                                        'material-icons'
+                                        'material-icons',
                                     )}
                                 >
                                     {icon}
@@ -69,14 +70,14 @@ export default function TicketActions({actions}: Props) {
                                 onClick={() => {
                                     callback()
                                 }}
-                                option={{label: '', value: ''}}
+                                option={{ label: '', value: '' }}
                                 shouldCloseOnSelect
                             >
                                 {intent === 'delete' ? (
                                     <div
                                         className={cn(
                                             'text-danger',
-                                            css.intentDelete
+                                            css.intentDelete,
                                         )}
                                     >
                                         {content}

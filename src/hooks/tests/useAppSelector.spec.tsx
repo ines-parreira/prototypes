@@ -1,13 +1,14 @@
-import {act, renderHook} from '@testing-library/react-hooks'
+import React, { ComponentType } from 'react'
+
+import { act, renderHook } from '@testing-library/react-hooks'
 import _keyBy from 'lodash/keyBy'
-import React, {ComponentType} from 'react'
-import {Provider} from 'react-redux'
-import {createStore} from 'redux'
+import { Provider } from 'react-redux'
+import { createStore } from 'redux'
 import configureMockStore from 'redux-mock-store'
 
-import {tags} from 'fixtures/tag'
+import { tags } from 'fixtures/tag'
 import useAppSelector from 'hooks/useAppSelector'
-import {RootState, StoreDispatch} from 'state/types'
+import { RootState, StoreDispatch } from 'state/types'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 
@@ -19,15 +20,15 @@ describe('useAppSelector', () => {
     } as RootState
 
     it('should select value from the store', () => {
-        const {result} = renderHook(
+        const { result } = renderHook(
             () => useAppSelector((state) => state.entities.tags['1']),
             {
-                wrapper: (({children}) => (
+                wrapper: (({ children }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
                 )) as ComponentType,
-            }
+            },
         )
 
         expect(result.current).toMatchSnapshot()
@@ -39,14 +40,14 @@ describe('useAppSelector', () => {
         const selector = (state: RootState) => state.entities.tags['1']
 
         renderHook(() => useAppSelector(selector, equalityFn), {
-            wrapper: (({children}) => (
+            wrapper: (({ children }) => (
                 <Provider store={store}>{children}</Provider>
             )) as ComponentType,
         })
 
         equalityFn.mockReset()
         act(() => {
-            store.dispatch({type: 'foo'})
+            store.dispatch({ type: 'foo' })
         })
 
         expect(equalityFn.mock.calls).toMatchSnapshot()

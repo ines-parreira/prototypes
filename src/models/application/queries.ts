@@ -1,6 +1,6 @@
-import {UseQueryOptions, useQuery} from '@tanstack/react-query'
+import { useQuery, UseQueryOptions } from '@tanstack/react-query'
 
-import {listApplications} from './resources'
+import { listApplications } from './resources'
 
 export const applicationsQueryKeys = {
     all: () => ['applications'] as const,
@@ -8,7 +8,7 @@ export const applicationsQueryKeys = {
 }
 
 export const useListApplications = (
-    overrides?: UseQueryOptions<Awaited<ReturnType<typeof listApplications>>>
+    overrides?: UseQueryOptions<Awaited<ReturnType<typeof listApplications>>>,
 ) => {
     return useQuery({
         queryFn: () => listApplications(),

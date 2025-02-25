@@ -1,27 +1,28 @@
-import {ValidationResult, Validator} from '@gorgias/api-validators'
-import {isArray, isObject, capitalize} from 'lodash'
-import type {FieldErrors, FieldValues, ResolverResult} from 'react-hook-form'
+import { capitalize, isArray, isObject } from 'lodash'
+import type { FieldErrors, FieldValues, ResolverResult } from 'react-hook-form'
+
+import { ValidationResult, Validator } from '@gorgias/api-validators'
 
 export type FormErrors<V extends FieldValues> = Partial<
     Record<keyof V, unknown>
 >
 export type FormValidator<V extends FieldValues> = (
-    values: V
+    values: V,
 ) => FormErrors<V> | undefined
 
 export function toFieldErrors<V extends FieldValues>(
-    errors: FormErrors<V>
+    errors: FormErrors<V>,
 ): FieldErrors<V> {
     return Object.entries(errors).reduce((acc, [field, error]) => {
         if (typeof error === 'string') {
-            return {...acc, [field]: {type: 'string', message: error}}
+            return { ...acc, [field]: { type: 'string', message: error } }
         }
 
         if (isArray(error)) {
             if (error.every((error) => typeof error === 'string')) {
                 return {
                     ...acc,
-                    [field]: {type: 'string', message: error[0]},
+                    [field]: { type: 'string', message: error[0] },
                 }
             }
 
@@ -43,19 +44,19 @@ export function toFieldErrors<V extends FieldValues>(
 }
 
 export function toFormErrors<V extends FieldValues>(
-    result: ValidationResult<V>
+    result: ValidationResult<V>,
 ): FormErrors<V> {
     return (result.errors ?? []).reduce(
         (acc, error) => ({
             ...acc,
             [error.path.replace('{base}.', '')]: capitalize(error.message),
         }),
-        {} as FormErrors<V>
+        {} as FormErrors<V>,
     )
 }
 
 export function createResolver<V extends FieldValues>(
-    validator: FormValidator<V>
+    validator: FormValidator<V>,
 ) {
     return (values: V): ResolverResult<V> => {
         const errors = validator(values) ?? {}
@@ -67,7 +68,7 @@ export function createResolver<V extends FieldValues>(
 }
 
 export function createFormValidator<V extends FieldValues>(
-    ajvValidator: Validator<V>
+    ajvValidator: Validator<V>,
 ): FormValidator<V> {
     return (values: V) => toFormErrors(ajvValidator(values))
 }

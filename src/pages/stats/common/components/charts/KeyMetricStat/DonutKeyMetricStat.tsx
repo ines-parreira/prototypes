@@ -1,4 +1,4 @@
-import React, {Component, ReactNode} from 'react'
+import React, { Component, ReactNode } from 'react'
 
 import css from './DonutKeyMetricStat.less'
 
@@ -36,7 +36,8 @@ export default class DonutKeyMetricStat extends Component<Props> {
     }
 
     render() {
-        const {width, height, differenceComponent, formattedValue} = this.props
+        const { width, height, differenceComponent, formattedValue } =
+            this.props
 
         return (
             <div className={css.container}>
@@ -55,7 +56,7 @@ export default class DonutKeyMetricStat extends Component<Props> {
     }
 
     _renderPaths() {
-        const {fill, maxValue, value} = this.props
+        const { fill, maxValue, value } = this.props
         let index = 0
         let startAngle = parseFloat(270 as any)
 
@@ -68,7 +69,7 @@ export default class DonutKeyMetricStat extends Component<Props> {
                     maxValue,
                     startAngle,
                     'empty',
-                    true
+                    true,
                 ),
             ]
         }
@@ -80,7 +81,7 @@ export default class DonutKeyMetricStat extends Component<Props> {
                 maxValue,
                 startAngle,
                 fill,
-                true
+                true,
             )
         }
 
@@ -89,7 +90,7 @@ export default class DonutKeyMetricStat extends Component<Props> {
             value,
             maxValue,
             startAngle,
-            fill
+            fill,
         )
         index += 1
 
@@ -99,7 +100,7 @@ export default class DonutKeyMetricStat extends Component<Props> {
             index,
             maxValue - value,
             maxValue,
-            startAngle
+            startAngle,
         )
 
         return [fullPath, emptyPath]
@@ -111,7 +112,7 @@ export default class DonutKeyMetricStat extends Component<Props> {
         total: number,
         startAngle: number,
         fillType = 'empty',
-        single = false
+        single = false,
     ) => {
         const d = this._getPathData(
             value,
@@ -121,7 +122,7 @@ export default class DonutKeyMetricStat extends Component<Props> {
             this.props.innerRadius!,
             this.props.outerRadius!,
             fillType === 'empty',
-            single
+            single,
         )
 
         return <path key={index} className={css[`path-${fillType}`]} d={d} />
@@ -135,7 +136,7 @@ export default class DonutKeyMetricStat extends Component<Props> {
         innerRadius: number,
         outerRadius: number,
         reverse: boolean,
-        single: boolean
+        single: boolean,
     ) => {
         const activeAngle = (data / total) * 360
         const endAngle = startAngle + activeAngle
@@ -148,13 +149,13 @@ export default class DonutKeyMetricStat extends Component<Props> {
             half,
             outerRadius,
             startAngle,
-            endAngle
+            endAngle,
         )
         const innerCoords = this._getCoordinates(
             half,
             innerRadius,
             startAngle,
-            endAngle
+            endAngle,
         )
 
         let pathData = `M${outerCoords.x1},${outerCoords.y1}
@@ -163,7 +164,7 @@ export default class DonutKeyMetricStat extends Component<Props> {
               outerRadius,
               largeArcFlagOuter,
               parseFloat(outerCoords.x2),
-              parseFloat(outerCoords.y2)
+              parseFloat(outerCoords.y2),
           )}`
 
         if (!single) {
@@ -173,7 +174,7 @@ export default class DonutKeyMetricStat extends Component<Props> {
                     0.3,
                     largeArcFlagInner,
                     parseFloat(innerCoords.x2),
-                    parseFloat(innerCoords.y2)
+                    parseFloat(innerCoords.y2),
                 )
             } else {
                 pathData += this._getArc(
@@ -181,7 +182,7 @@ export default class DonutKeyMetricStat extends Component<Props> {
                     0.3,
                     largeArcFlagOuter,
                     parseFloat(innerCoords.x2),
-                    parseFloat(innerCoords.y2)
+                    parseFloat(innerCoords.y2),
                 )
             }
         } else {
@@ -193,7 +194,7 @@ export default class DonutKeyMetricStat extends Component<Props> {
             innerRadius,
             largeArcFlagInner,
             parseFloat(innerCoords.x1),
-            parseFloat(innerCoords.y1)
+            parseFloat(innerCoords.y1),
         )
 
         if (!single) {
@@ -203,7 +204,7 @@ export default class DonutKeyMetricStat extends Component<Props> {
                     0.3,
                     largeArcFlagInner,
                     parseFloat(outerCoords.x1),
-                    parseFloat(outerCoords.y1)
+                    parseFloat(outerCoords.y1),
                 )
             } else {
                 pathData += this._getArc(
@@ -211,7 +212,7 @@ export default class DonutKeyMetricStat extends Component<Props> {
                     0.3,
                     largeArcFlagOuter,
                     parseFloat(outerCoords.x1),
-                    parseFloat(outerCoords.y1)
+                    parseFloat(outerCoords.y1),
                 )
             }
         } else {
@@ -225,22 +226,22 @@ export default class DonutKeyMetricStat extends Component<Props> {
         half: number,
         radius: number,
         startAngle: number,
-        endAngle: number
+        endAngle: number,
     ) => {
         const x1 = this._toFixed(
-            half + half * radius * Math.cos((Math.PI * startAngle) / 180)
+            half + half * radius * Math.cos((Math.PI * startAngle) / 180),
         )
         const y1 = this._toFixed(
-            half + half * radius * Math.sin((Math.PI * startAngle) / 180)
+            half + half * radius * Math.sin((Math.PI * startAngle) / 180),
         )
         const x2 = this._toFixed(
-            half + half * radius * Math.cos((Math.PI * endAngle) / 180)
+            half + half * radius * Math.cos((Math.PI * endAngle) / 180),
         )
         const y2 = this._toFixed(
-            half + half * radius * Math.sin((Math.PI * endAngle) / 180)
+            half + half * radius * Math.sin((Math.PI * endAngle) / 180),
         )
 
-        return {x1, y1, x2, y2}
+        return { x1, y1, x2, y2 }
     }
 
     _getArc = (
@@ -248,12 +249,12 @@ export default class DonutKeyMetricStat extends Component<Props> {
         radius: number,
         largeArcFlag: string,
         x: number,
-        y: number
+        y: number,
     ) => {
         const z = this._toFixed((width / 2) * radius)
 
         return `A${z},${z} 0 ${largeArcFlag} ${this._toFixed(
-            x
+            x,
         )},${this._toFixed(y)}`
     }
 

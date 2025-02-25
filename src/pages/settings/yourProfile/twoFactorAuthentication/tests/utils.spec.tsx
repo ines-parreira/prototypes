@@ -1,4 +1,4 @@
-import {buildPasswordAnd2FaText, check2FARequired} from '../utils'
+import { buildPasswordAnd2FaText, check2FARequired } from '../utils'
 
 describe('utils.ts', () => {
     describe('buildPasswordAnd2FaText()', () => {
@@ -11,7 +11,7 @@ describe('utils.ts', () => {
                 const passwordAnd2FaText = buildPasswordAnd2FaText(hasPassword)
 
                 expect(passwordAnd2FaText).toEqual(expectedValue)
-            }
+            },
         )
     })
 
@@ -26,15 +26,15 @@ describe('utils.ts', () => {
             (
                 twoFAEnforcedDatetime: Maybe<string>,
                 has2FAEnabled: boolean,
-                expectedValue: boolean
+                expectedValue: boolean,
             ) => {
                 const is2FARequired = check2FARequired(
                     twoFAEnforcedDatetime,
-                    has2FAEnabled
+                    has2FAEnabled,
                 )
 
                 expect(is2FARequired).toEqual(expectedValue)
-            }
+            },
         )
     })
 })

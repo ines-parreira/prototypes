@@ -1,6 +1,6 @@
-import {ListMacrosParams, Macro} from '@gorgias/api-queries'
+import { ListMacrosParams, Macro } from '@gorgias/api-queries'
 
-import {ApiPaginationParams, OrderParams} from 'models/api/types'
+import { ApiPaginationParams, OrderParams } from 'models/api/types'
 
 export type MacroDraft = Pick<Macro, 'actions' | 'language' | 'name'>
 

@@ -1,1 +1,1 @@
-export {default} from './components/AmountInput'
+export { default } from './components/AmountInput'

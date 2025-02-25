@@ -4,7 +4,7 @@ export type ArticleAttachmentSchema = {
 }
 
 export function isArticleAttachment(
-    attachment: Record<string, unknown>
+    attachment: Record<string, unknown>,
 ): attachment is ArticleAttachmentSchema {
     return Object.keys(attachment).includes('title')
 }

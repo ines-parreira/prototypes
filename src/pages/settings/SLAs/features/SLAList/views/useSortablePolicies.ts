@@ -1,10 +1,10 @@
-import {useCallback, useEffect, useState} from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
-import {PolicyDragItem, UISLAPolicy} from '../types'
+import { PolicyDragItem, UISLAPolicy } from '../types'
 
 export default function useSortablePolicies(
     data: UISLAPolicy[],
-    dropCallback: (id: string, priority: number) => void
+    dropCallback: (id: string, priority: number) => void,
 ) {
     const [policies, setSlaPolicies] = useState<UISLAPolicy[]>([])
 
@@ -32,8 +32,8 @@ export default function useSortablePolicies(
 
             dropCallback(item.id, newPriority)
         },
-        [policies, dropCallback]
+        [policies, dropCallback],
     )
 
-    return {policies, handleMovePolicy, handleDropPolicy}
+    return { policies, handleMovePolicy, handleDropPolicy }
 }

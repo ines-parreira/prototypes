@@ -1,42 +1,42 @@
-import {render, fireEvent, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
+import React, { ComponentProps } from 'react'
+
+import { fireEvent, render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
 import _noop from 'lodash/noop'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {TicketChannel} from 'business/types/ticket'
-import {account} from 'fixtures/account'
-import {agents} from 'fixtures/agents'
-import {userPerformanceOverview} from 'fixtures/stats'
-import {teams} from 'fixtures/teams'
+import { TicketChannel } from 'business/types/ticket'
+import { account } from 'fixtures/account'
+import { agents } from 'fixtures/agents'
+import { userPerformanceOverview } from 'fixtures/stats'
+import { teams } from 'fixtures/teams'
 import useStatResource from 'hooks/reporting/useStatResource'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
-
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
 import FeaturePaywall from 'pages/common/components/FeaturePaywall/FeaturePaywall'
 import DEPRECATED_TagsStatsFilter from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
 import LiveAgents from 'pages/stats/LiveAgents'
-import {AccountFeature} from 'state/currentAccount/types'
-import {RootState, StoreDispatch} from 'state/types'
-import {initialState as uiFiltersInitialState} from 'state/ui/stats/filtersSlice'
-import {renderWithRouter} from 'utils/testing'
+import { AccountFeature } from 'state/currentAccount/types'
+import { RootState, StoreDispatch } from 'state/types'
+import { initialState as uiFiltersInitialState } from 'state/ui/stats/filtersSlice'
+import { renderWithRouter } from 'utils/testing'
 
 jest.mock('hooks/reporting/useStatResource')
-jest.mock('react-chartjs-2', () => ({Bar: () => <canvas />}))
+jest.mock('react-chartjs-2', () => ({ Bar: () => <canvas /> }))
 jest.mock(
     'pages/stats/common/filters/DEPRECATED_TagsStatsFilter',
     () =>
-        ({value}: ComponentProps<typeof DEPRECATED_TagsStatsFilter>) => (
+        ({ value }: ComponentProps<typeof DEPRECATED_TagsStatsFilter>) => (
             <div>TagsStatsFilterMock, value: {JSON.stringify(value)}</div>
-        )
+        ),
 )
 jest.mock(
     'pages/common/components/FeaturePaywall/FeaturePaywall',
     () =>
-        ({feature}: ComponentProps<typeof FeaturePaywall>) => {
+        ({ feature }: ComponentProps<typeof FeaturePaywall>) => {
             return <div>Paywall for {feature}</div>
-        }
+        },
 )
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
@@ -44,7 +44,7 @@ jest.mock('pages/stats/DrillDownModal.tsx', () => ({
 jest.spyOn(Date, 'now').mockImplementation(() => 1487076708000)
 jest.mock(
     'pages/stats/common/filters/DEPRECATED_ChannelsStatsFilter',
-    () => () => <div>ChannelsStatsFilter</div>
+    () => () => <div>ChannelsStatsFilter</div>,
 )
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -75,7 +75,7 @@ describe('LiveAgents', () => {
             tags: {},
         },
         ui: {
-            stats: {filters: uiFiltersInitialState},
+            stats: { filters: uiFiltersInitialState },
         },
     } as RootState
 
@@ -88,10 +88,10 @@ describe('LiveAgents', () => {
             return [userPerformanceOverview, false, _noop]
         })
 
-        const {container} = renderWithRouter(
+        const { container } = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <LiveAgents />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -103,13 +103,13 @@ describe('LiveAgents', () => {
             ...defaultState,
             currentAccount: defaultState.currentAccount.setIn(
                 ['features', AccountFeature.UsersLiveStatistics, 'enabled'],
-                false
+                false,
             ),
         })
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <LiveAgents />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -142,10 +142,10 @@ describe('LiveAgents', () => {
             ]
         })
 
-        const {getByText} = renderWithRouter(
+        const { getByText } = renderWithRouter(
             <Provider store={store}>
                 <LiveAgents />
-            </Provider>
+            </Provider>,
         )
         fireEvent.click(getByText('keyboard_arrow_left'))
         fireEvent.click(getByText('keyboard_arrow_right'))
@@ -158,10 +158,10 @@ describe('LiveAgents', () => {
             return [userPerformanceOverview, false, _noop]
         })
 
-        const {getByText} = renderWithRouter(
+        const { getByText } = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <LiveAgents />
-            </Provider>
+            </Provider>,
         )
 
         expect(getByText('ONLINE STATUS')).toBeInTheDocument()

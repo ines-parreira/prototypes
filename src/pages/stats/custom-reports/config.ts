@@ -4,12 +4,11 @@ import {
     AutomateOverviewChart,
     AutomateOverviewReportConfig,
 } from 'pages/stats/automate/overview/AutomateOverviewReportConfig'
-
 import {
     CampaignsChart,
     CampaignsPerformanceReportConfig,
 } from 'pages/stats/convert/campaigns/CampaignsPerformanceReportConfig'
-import {ReportsIDs} from 'pages/stats/custom-reports/constants'
+import { ReportsIDs } from 'pages/stats/custom-reports/constants'
 import {
     ChartConfig,
     ReportConfig,
@@ -47,7 +46,7 @@ import {
     OverviewChart,
     SupportPerformanceOverviewReportConfig,
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
-import {SupportPerformanceRevenueReportConfig} from 'pages/stats/support-performance/revenue/SupportPerformanceRevenueReportConfig'
+import { SupportPerformanceRevenueReportConfig } from 'pages/stats/support-performance/revenue/SupportPerformanceRevenueReportConfig'
 import {
     TicketInsightsTagsChart,
     TicketInsightsTagsReportConfig,
@@ -185,7 +184,7 @@ export const LEGACY_REPORTS_CONFIG: ReportsModalConfig = [
 
 export const getComponentConfig = (
     chartId: string,
-    withLegacyReports?: boolean
+    withLegacyReports?: boolean,
 ): {
     reportConfig: ReportConfig<string> | null
     chartConfig: ChartConfig | null
@@ -194,7 +193,7 @@ export const getComponentConfig = (
         (withLegacyReports
             ? [...REPORTS_CONFIG, ...LEGACY_REPORTS_CONFIG]
             : REPORTS_CONFIG
-        ).map((report) => report.children)
+        ).map((report) => report.children),
     )
     for (const report of availableReports) {
         if (Object.values(report.type).includes(chartId)) {
@@ -205,18 +204,18 @@ export const getComponentConfig = (
         }
     }
 
-    return {reportConfig: null, chartConfig: null}
+    return { reportConfig: null, chartConfig: null }
 }
 
 export const getReportConfig = (
     reportId: string,
-    withLegacyReports?: boolean
+    withLegacyReports?: boolean,
 ): ReportConfig<string> | null => {
     const availableReports = _flatten(
         (withLegacyReports
             ? [...REPORTS_CONFIG, ...LEGACY_REPORTS_CONFIG]
             : REPORTS_CONFIG
-        ).map((report) => report.children)
+        ).map((report) => report.children),
     )
 
     const report = availableReports.find((report) => report.id === reportId)

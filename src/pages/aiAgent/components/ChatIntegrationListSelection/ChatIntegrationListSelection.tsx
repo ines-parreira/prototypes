@@ -1,6 +1,6 @@
-import React, {useRef, useState} from 'react'
+import React, { useRef, useState } from 'react'
 
-import {SelfServiceChatChannel} from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
@@ -9,7 +9,7 @@ import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 
-export type ChatItem = {name: string; id: string}
+export type ChatItem = { name: string; id: string }
 
 type ChatIntegrationListSelectionProps = {
     /**
@@ -47,7 +47,7 @@ export const ChatIntegrationListSelection = ({
     // used to display the list of selected chats when the dropdown is closed
     const selectedChatLabels = selectedIds
         .map((selectedId) =>
-            chatItems.find((chat) => chat.value.id === selectedId)
+            chatItems.find((chat) => chat.value.id === selectedId),
         )
         .filter((input): input is SelfServiceChatChannel => Boolean(input))
         .map((selectedChat) => selectedChat?.value.name)
@@ -56,7 +56,7 @@ export const ChatIntegrationListSelection = ({
     const handleIdToggled = (id: number) => {
         if (selectedIds.includes(id)) {
             const nextSelectedIds = selectedIds.filter(
-                (selectedId) => selectedId !== id
+                (selectedId) => selectedId !== id,
             )
 
             onSelectionChange(nextSelectedIds)
@@ -93,8 +93,8 @@ export const ChatIntegrationListSelection = ({
                         <DropdownSearch autoFocus />
                         <DropdownBody>
                             {chatItems
-                                .filter(({value}) => !!value.meta.app_id)
-                                .map(({value}) => (
+                                .filter(({ value }) => !!value.meta.app_id)
+                                .map(({ value }) => (
                                     <DropdownItem
                                         key={value.id}
                                         option={{

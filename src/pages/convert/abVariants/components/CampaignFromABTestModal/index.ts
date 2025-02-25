@@ -1,1 +1,1 @@
-export {default} from './CampaignFromABTestModal'
+export { default } from './CampaignFromABTestModal'

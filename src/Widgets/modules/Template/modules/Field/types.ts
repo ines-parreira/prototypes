@@ -1,4 +1,4 @@
-import {LeafType} from 'models/widget/types'
+import { LeafType } from 'models/widget/types'
 
 export type FieldEditFormData<T extends LeafType = LeafType> = {
     title: string

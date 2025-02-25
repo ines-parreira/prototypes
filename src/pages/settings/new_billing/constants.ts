@@ -1,9 +1,8 @@
-import {ProductType} from 'models/billing/types'
-import {ProductSubscriptionDescriptions} from 'pages/settings/new_billing/types'
+import { ProductType } from 'models/billing/types'
+import { ProductSubscriptionDescriptions } from 'pages/settings/new_billing/types'
+import { TaxIdType, VATCountries } from 'state/billing/types'
 
-import {TaxIdType, VATCountries} from 'state/billing/types'
-
-import {Reason} from './components/CancelAAOModal/CancelAAOModal'
+import { Reason } from './components/CancelAAOModal/CancelAAOModal'
 
 export const BILLING_BASE_PATH = '/app/settings/billing'
 export const BILLING_INTERNAL_PATH = `${BILLING_BASE_PATH}/internal`
@@ -92,17 +91,17 @@ export const TICKET_SUBJECTS = {
 export const BILLING_SUPPORT_EMAIL = 'billing@gorgias.com'
 
 export const CANCEL_AUTOMATION_REASONS: Reason[] = [
-    {value: false, label: `It's not automating enough`},
-    {value: false, label: `It's missing features`},
-    {value: false, label: `It's too expensive`},
+    { value: false, label: `It's not automating enough` },
+    { value: false, label: `It's missing features` },
+    { value: false, label: `It's too expensive` },
     {
         value: false,
         label: `I don't have capacity to set it up/it's not a priority right now`,
     },
-    {value: false, label: `I'm using an alternative`},
-    {value: false, label: `I'm not using Gorgias Chat or Help Center`},
-    {value: false, label: `I didn't know I purchased it`},
-    {value: false, label: `Other`},
+    { value: false, label: `I'm using an alternative` },
+    { value: false, label: `I'm not using Gorgias Chat or Help Center` },
+    { value: false, label: `I didn't know I purchased it` },
+    { value: false, label: `Other` },
 ]
 
 export const PRODUCT_SUBSCRIPTION_DESCRIPTION: ProductSubscriptionDescriptions =

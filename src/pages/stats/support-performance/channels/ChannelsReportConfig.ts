@@ -1,6 +1,6 @@
-import {fetchChannelsTableReportData} from 'hooks/reporting/support-performance/channels/useChannelsReportMetrics'
-import {FilterKey} from 'models/stat/types'
-import {AUTO_QA_FILTER_KEYS} from 'pages/stats/common/filters/constants'
+import { fetchChannelsTableReportData } from 'hooks/reporting/support-performance/channels/useChannelsReportMetrics'
+import { FilterKey } from 'models/stat/types'
+import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
 import {
     ChartType,
     DataExportFormat,
@@ -10,7 +10,7 @@ import {
     CHANNEL_PERFORMANCE_TABLE_TITLE,
     ChannelsPerformanceTableChart,
 } from 'pages/stats/support-performance/channels/ChannelsPerformanceTableChart'
-import {STATS_ROUTES} from 'routes/constants'
+import { STATS_ROUTES } from 'routes/constants'
 
 export const CHANNEL_REPORT_OPTIONAL_FILTERS = [
     FilterKey.Channels,

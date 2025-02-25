@@ -1,31 +1,33 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import _ from 'lodash'
-import React, {useCallback, useMemo} from 'react'
+import React, { useCallback, useMemo } from 'react'
 
-import {TicketChannel} from 'business/types/ticket'
-import {SegmentEvent, logEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {getLanguagesFromChatConfig} from 'config/integrations/gorgias_chat'
-import {MAX_ACTIVE_FLOWS} from 'pages/automate/common/components/constants'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import _ from 'lodash'
+
+import { TicketChannel } from 'business/types/ticket'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { getLanguagesFromChatConfig } from 'config/integrations/gorgias_chat'
+import { MAX_ACTIVE_FLOWS } from 'pages/automate/common/components/constants'
 import {
     SelfServiceChannel,
     SelfServiceChannelType,
 } from 'pages/automate/common/hooks/useSelfServiceChannels'
-import {ChannelLanguage} from 'pages/automate/common/types'
+import { ChannelLanguage } from 'pages/automate/common/types'
 import useLanguagesMismatchWarnings from 'pages/automate/workflows/hooks/useLanguagesMismatchWarnings'
-import {WorkflowConfiguration} from 'pages/automate/workflows/models/workflowConfiguration.types'
+import { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 
 import ChannelWarning from '../helper/ChannelWarning'
+
 import css from '../WorkflowsPublisher.less'
 
 const getChannelLanguages = (
-    channel: SelfServiceChannel
+    channel: SelfServiceChannel,
 ): ChannelLanguage[] => {
     switch (channel.type) {
         case TicketChannel.Chat:
             return getLanguagesFromChatConfig(
-                channel.value.meta
+                channel.value.meta,
             ) as ChannelLanguage[]
         case TicketChannel.HelpCenter:
             return channel.value.supported_locales
@@ -35,7 +37,7 @@ const getChannelLanguages = (
     return []
 }
 
-type Workflow = {id?: string; workflow_id?: string; enabled: boolean}
+type Workflow = { id?: string; workflow_id?: string; enabled: boolean }
 
 type Props = {
     channel: SelfServiceChannel
@@ -64,20 +66,20 @@ const ChannelToggle = ({
         return _.cloneDeep(workflows || [])
     }, [workflows])
     const currentFlowIndex = clonedWorkflows.findIndex(
-        (entry) => entry[idKey] === configuration.id
+        (entry) => entry[idKey] === configuration.id,
     )
 
     const isWorkflowEnabled =
         currentFlowIndex > -1 && clonedWorkflows[currentFlowIndex]?.enabled
 
-    const {getLanguagesMismatchWarning} = useLanguagesMismatchWarnings(
+    const { getLanguagesMismatchWarning } = useLanguagesMismatchWarnings(
         channel.type,
         channel.value.id,
-        getChannelLanguages(channel)
+        getChannelLanguages(channel),
     )
 
     const languagesMismatchWarning = getLanguagesMismatchWarning(
-        configuration.id
+        configuration.id,
     )
 
     const isLanguageMismatchError =
@@ -106,7 +108,7 @@ const ChannelToggle = ({
     ])
     const maxWorkflowsLimitReached = useMemo(() => {
         const enabledFlowsCount = clonedWorkflows.filter(
-            (workflow) => workflow.enabled
+            (workflow) => workflow.enabled,
         ).length
         if (isChat) {
             if (isMLFlowRecommendationEnabled) return false

@@ -1,13 +1,13 @@
-import {render, fireEvent, screen} from '@testing-library/react'
-import {fromJS, Map} from 'immutable'
 import React from 'react'
+
+import { fireEvent, render, screen } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
 
 import {
     shopifyDraftOrderPayloadFixture,
     shopifyProductFixture,
 } from 'fixtures/shopify'
-
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
+import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import OrderTable from '../OrderTable'
 
@@ -22,8 +22,8 @@ describe('<OrderTable/>', () => {
         .setIn(['line_items', 0, 'product_id'], 1)
         .setIn(['line_items', 1, 'product_id'], 2)
 
-    const product1 = shopifyProductFixture({id: 1, title: 'Product 1'})
-    const product2 = shopifyProductFixture({id: 2, title: 'Product 2'})
+    const product1 = shopifyProductFixture({ id: 1, title: 'Product 1' })
+    const product2 = shopifyProductFixture({ id: 2, title: 'Product 2' })
 
     const products = new window.Map([
         [1, fromJS(product1)],
@@ -41,7 +41,7 @@ describe('<OrderTable/>', () => {
     })
 
     it('should render', () => {
-        const {container} = render(
+        const { container } = render(
             <OrderTable
                 shopName="storegorgias3"
                 isShownInEditOrder={false}
@@ -51,14 +51,14 @@ describe('<OrderTable/>', () => {
                 products={products}
                 onLineItemUpdate={handleLineItemUpdate}
                 onLineItemDelete={handleLineItemDelete}
-            />
+            />,
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render without products', () => {
-        const {container} = render(
+        const { container } = render(
             <OrderTable
                 shopName="storegorgias3"
                 isShownInEditOrder={false}
@@ -68,14 +68,14 @@ describe('<OrderTable/>', () => {
                 products={fromJS({})}
                 onLineItemUpdate={handleLineItemUpdate}
                 onLineItemDelete={handleLineItemDelete}
-            />
+            />,
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render without line items', () => {
-        const {container} = render(
+        const { container } = render(
             <OrderTable
                 shopName="storegorgias3"
                 isShownInEditOrder={false}
@@ -85,7 +85,7 @@ describe('<OrderTable/>', () => {
                 products={products}
                 onLineItemUpdate={handleLineItemUpdate}
                 onLineItemDelete={handleLineItemDelete}
-            />
+            />,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -102,10 +102,10 @@ describe('<OrderTable/>', () => {
                 products={products}
                 onLineItemUpdate={handleLineItemUpdate}
                 onLineItemDelete={handleLineItemDelete}
-            />
+            />,
         )
         fireEvent.change(screen.getAllByRole('spinbutton')[0], {
-            target: {value: 2},
+            target: { value: 2 },
         })
 
         jest.advanceTimersByTime(1000)
@@ -125,7 +125,7 @@ describe('<OrderTable/>', () => {
                 products={products}
                 onLineItemUpdate={handleLineItemUpdate}
                 onLineItemDelete={handleLineItemDelete}
-            />
+            />,
         )
         fireEvent.click(screen.getAllByText('close')[0])
 

@@ -1,8 +1,8 @@
-import {Map} from 'immutable'
+import { Map } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationType} from 'models/integration/types'
-import {getStoreIntegrations} from 'state/integrations/selectors'
+import { IntegrationType } from 'models/integration/types'
+import { getStoreIntegrations } from 'state/integrations/selectors'
 
 /**
  * @param integration - Integration instance.
@@ -16,7 +16,7 @@ export const useStoreIntegration = (integration: Map<any, any>) => {
         'shop_integration_id',
     ])
     const storeIntegration = storeIntegrations.find(
-        (storeIntegration) => storeIntegration.id === storeIntegrationId
+        (storeIntegration) => storeIntegration.id === storeIntegrationId,
     )
 
     return {

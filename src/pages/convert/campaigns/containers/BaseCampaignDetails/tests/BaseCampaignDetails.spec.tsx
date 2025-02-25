@@ -1,14 +1,15 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {campaign as campaignFixture} from 'fixtures/campaign'
-import {entitiesInitialState} from 'fixtures/entities'
-import {RootState, StoreDispatch} from 'state/types'
+import { campaign as campaignFixture } from 'fixtures/campaign'
+import { entitiesInitialState } from 'fixtures/entities'
+import { RootState, StoreDispatch } from 'state/types'
 
-import {BaseCampaignDetails} from '../BaseCampaignDetails'
+import { BaseCampaignDetails } from '../BaseCampaignDetails'
 
 const integration = fromJS({
     type: 'gorgias_chat',
@@ -28,12 +29,12 @@ jest.mock(
     'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader',
     () => () => {
         return <div data-testid="GorgiasChatIntegrationHeader" />
-    }
+    },
 )
 
 describe('<BaseCampaignDetails />', () => {
     it('matches snapshot', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <BaseCampaignDetails
                     integration={integration}
@@ -42,7 +43,7 @@ describe('<BaseCampaignDetails />', () => {
                 >
                     <div>content</div>
                 </BaseCampaignDetails>
-            </Provider>
+            </Provider>,
         )
 
         expect(container).toMatchSnapshot()

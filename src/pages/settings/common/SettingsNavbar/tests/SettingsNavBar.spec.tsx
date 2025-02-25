@@ -1,17 +1,17 @@
-import {screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
-
 import React from 'react'
 
-import {logEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {UserRole} from 'config/types/user'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {closePanels} from 'state/layout/actions'
-import {hasRole} from 'utils'
-import {assumeMock, renderWithRouter} from 'utils/testing'
+import { screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
+
+import { logEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { UserRole } from 'config/types/user'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { closePanels } from 'state/layout/actions'
+import { hasRole } from 'utils'
+import { assumeMock, renderWithRouter } from 'utils/testing'
 
 import * as config from '../config'
 import SettingsNavbar from '../SettingsNavbar'
@@ -19,12 +19,14 @@ import SettingsNavbar from '../SettingsNavbar'
 const mockedDispatch = jest.fn()
 jest.mock('utils')
 jest.mock('common/navigation', () => ({
-    ActiveContent: {Settings: 'settings'},
-    Navbar: ({children}: {children: React.ReactNode}) => <div>{children}</div>,
+    ActiveContent: { Settings: 'settings' },
+    Navbar: ({ children }: { children: React.ReactNode }) => (
+        <div>{children}</div>
+    ),
 }))
 jest.mock('common/segment', () => ({
     logEvent: jest.fn(),
-    SegmentEvent: {SettingsNavigationClicked: 'navEvent'},
+    SegmentEvent: { SettingsNavigationClicked: 'navEvent' },
 }))
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
@@ -60,7 +62,7 @@ describe('<SettingsNavbar />', () => {
 
     it('should dispatch `closePanels` action when a link is clicked and call logEvent', () => {
         mockedGetCurrentAccountState.mockReturnValue(fromJS({}))
-        renderWithRouter(<SettingsNavbar />, {path: '/'})
+        renderWithRouter(<SettingsNavbar />, { path: '/' })
 
         screen.getByText('Link').click()
 
@@ -75,11 +77,11 @@ describe('<SettingsNavbar />', () => {
 
     it("should render links when their `requiredRole` key does match the user's role", () => {
         mockedGetCurrentUser.mockReturnValue(
-            'toto' as unknown as ReturnType<typeof getCurrentUser>
+            'toto' as unknown as ReturnType<typeof getCurrentUser>,
         )
         mockedHasRole.mockReturnValue(false)
 
-        const {rerenderComponent} = renderWithRouter(<SettingsNavbar />, {
+        const { rerenderComponent } = renderWithRouter(<SettingsNavbar />, {
             path: '/',
         })
 
@@ -118,7 +120,7 @@ describe('<SettingsNavbar />', () => {
             ['matchesFalse']: false,
         })
 
-        renderWithRouter(<SettingsNavbar />, {path: '/'})
+        renderWithRouter(<SettingsNavbar />, { path: '/' })
 
         expect(screen.getByText('True')).toBeInTheDocument()
         expect(screen.queryByText('False')).not.toBeInTheDocument()

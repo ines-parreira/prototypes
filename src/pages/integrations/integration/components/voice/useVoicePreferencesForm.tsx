@@ -1,24 +1,25 @@
+import { useEffect } from 'react'
+
+import { isEqual, merge } from 'lodash'
+import { useFormContext } from 'react-hook-form'
+
 import {
     UpdatePhoneIntegrationSettings,
     useUpdatePhoneSettings,
 } from '@gorgias/api-queries'
-import {isEqual, merge} from 'lodash'
-import {useEffect} from 'react'
-
-import {useFormContext} from 'react-hook-form'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {DEFAULT_RECORDING_NOTIFICATION} from 'models/integration/constants'
+import { DEFAULT_RECORDING_NOTIFICATION } from 'models/integration/constants'
 import {
     PhoneIntegration,
     PhoneIntegrationMeta,
     VoiceMessage,
 } from 'models/integration/types'
-import {getVoiceMessagePayload} from 'pages/integrations/integration/components/voice/utils'
-import {fetchIntegrations} from 'state/integrations/actions'
-import {UPDATE_INTEGRATION_ERROR} from 'state/integrations/constants'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { getVoiceMessagePayload } from 'pages/integrations/integration/components/voice/utils'
+import { fetchIntegrations } from 'state/integrations/actions'
+import { UPDATE_INTEGRATION_ERROR } from 'state/integrations/constants'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 import {
     DEFAULT_TRANSCRIBE_PREFERENCES,
@@ -35,14 +36,14 @@ export type FormValues = Pick<PhoneIntegration, 'name'> & {
 export default function useVoicePreferencesForm(integration: PhoneIntegration) {
     const {
         reset,
-        formState: {defaultValues},
+        formState: { defaultValues },
     } = useFormContext<FormValues>()
 
     useEffect(() => {
         const newDefaultValues = getDefaultValues(integration)
         const shouldResetDefaultValues = !isEqual(
             defaultValues,
-            newDefaultValues
+            newDefaultValues,
         )
 
         if (shouldResetDefaultValues) {
@@ -54,14 +55,14 @@ export default function useVoicePreferencesForm(integration: PhoneIntegration) {
 export function useFormSubmit(integration: PhoneIntegration) {
     const dispatch = useAppDispatch()
 
-    const {mutate: updatePhoneSettings} = useUpdatePhoneSettings({
+    const { mutate: updatePhoneSettings } = useUpdatePhoneSettings({
         mutation: {
             onSuccess: () => {
                 void dispatch(
                     notify({
                         status: NotificationStatus.Success,
                         message: 'Integration settings successfully updated.',
-                    })
+                    }),
                 )
                 void dispatch(fetchIntegrations())
             },
@@ -89,7 +90,7 @@ export function useFormSubmit(integration: PhoneIntegration) {
 
         if (data.meta.recording_notification && isRecordingEnabled) {
             const recordingNotificationPayload = getVoiceMessagePayload(
-                data.meta.recording_notification
+                data.meta.recording_notification,
             )
             newSettings = recordingNotificationPayload
                 ? {
@@ -105,7 +106,7 @@ export function useFormSubmit(integration: PhoneIntegration) {
         })
     }
 
-    return {onSubmit}
+    return { onSubmit }
 }
 
 export const getDefaultValues = (integration: PhoneIntegration): FormValues => {

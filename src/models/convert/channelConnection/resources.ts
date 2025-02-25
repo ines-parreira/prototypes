@@ -1,15 +1,15 @@
-import {deepMapKeysToSnakeCase} from 'models/api/utils'
+import { deepMapKeysToSnakeCase } from 'models/api/utils'
 import {
     ChannelConnectionCreatePayload,
     ChannelConnectionListOptions,
     ChannelConnectionParams,
     ChannelConnectionUpdatePayload,
 } from 'models/convert/channelConnection/types'
-import {RevenueAddonClient} from 'rest_api/revenue_addon_api/client'
+import { RevenueAddonClient } from 'rest_api/revenue_addon_api/client'
 
 export const getChannelConnection = async (
     client: RevenueAddonClient | undefined,
-    params: ChannelConnectionParams
+    params: ChannelConnectionParams,
 ) => {
     if (!client) return null
 
@@ -18,7 +18,7 @@ export const getChannelConnection = async (
 
 export const listChannelConnections = async (
     client: RevenueAddonClient | undefined,
-    options: ChannelConnectionListOptions = {}
+    options: ChannelConnectionListOptions = {},
 ) => {
     const parameters: Record<string, unknown> = deepMapKeysToSnakeCase(options)
 
@@ -29,7 +29,7 @@ export const listChannelConnections = async (
 
 export const createChannelConnection = async (
     client: RevenueAddonClient | undefined,
-    data: ChannelConnectionCreatePayload
+    data: ChannelConnectionCreatePayload,
 ) => {
     if (!client) return null
 
@@ -39,7 +39,7 @@ export const createChannelConnection = async (
 export const updateChannelConnection = async (
     client: RevenueAddonClient | undefined,
     params: ChannelConnectionParams,
-    data: ChannelConnectionUpdatePayload
+    data: ChannelConnectionUpdatePayload,
 ) => {
     if (!client) return null
 
@@ -48,7 +48,7 @@ export const updateChannelConnection = async (
 
 export const deleteChannelConnection = async (
     client: RevenueAddonClient | undefined,
-    params: ChannelConnectionParams
+    params: ChannelConnectionParams,
 ) => {
     if (!client) return null
 

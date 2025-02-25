@@ -1,8 +1,9 @@
+import React, { FunctionComponent, useState } from 'react'
+
 import classNames from 'classnames'
-import React, {FunctionComponent, useState} from 'react'
 import Draggable from 'react-draggable'
 
-import {replaceUploadUrls} from '../../../../utils/helpCenter.utils'
+import { replaceUploadUrls } from '../../../../utils/helpCenter.utils'
 import {
     MAX_ABSOLUTE_OFFSET,
     PIXEL_TO_OFFSET_RATIO,
@@ -55,7 +56,7 @@ export const DraggablePreviewImage: FunctionComponent<
                 <img
                     className={classNames(
                         imageRepositioningModalCss.image,
-                        css.image
+                        css.image,
                     )}
                     alt={defaultPreviewUrl}
                     src={defaultPreviewUrl}
@@ -111,11 +112,11 @@ export const DraggablePreviewImage: FunctionComponent<
                     <Draggable
                         axis="y"
                         handle=".handle"
-                        defaultPosition={{x: 0, y: 0}}
+                        defaultPosition={{ x: 0, y: 0 }}
                         grid={[PIXEL_TO_OFFSET_RATIO, PIXEL_TO_OFFSET_RATIO]}
                         scale={1}
                         onDrag={(_, data) => {
-                            const {y} = data
+                            const { y } = data
                             setTop(y)
                             const dividedY =
                                 y / PIXEL_TO_OFFSET_RATIO + verticalOffset
@@ -124,7 +125,7 @@ export const DraggablePreviewImage: FunctionComponent<
                                     ? MAX_ABSOLUTE_OFFSET
                                     : dividedY < -MAX_ABSOLUTE_OFFSET
                                       ? -MAX_ABSOLUTE_OFFSET
-                                      : dividedY
+                                      : dividedY,
                             )
                         }}
                     >
@@ -132,9 +133,9 @@ export const DraggablePreviewImage: FunctionComponent<
                             <div
                                 className={classNames(
                                     imageRepositioningModalCss.boundingBox,
-                                    css.boundingBox
+                                    css.boundingBox,
                                 )}
-                                style={{top: `${0 - top}px`}}
+                                style={{ top: `${0 - top}px` }}
                             >
                                 <p
                                     className={

@@ -1,11 +1,3 @@
-import {
-    ListTagsOrderBy,
-    ListTagsParams,
-    queryKeys,
-    Tag,
-} from '@gorgias/api-queries'
-import {QueryKey, useQueryClient} from '@tanstack/react-query'
-import cn from 'classnames'
 import React, {
     KeyboardEvent,
     useCallback,
@@ -14,14 +6,24 @@ import React, {
     useState,
 } from 'react'
 
-import {Body, Context, focusOnNextItem, Item} from 'components/Dropdown'
-import {UserRole} from 'config/types/user'
+import { QueryKey, useQueryClient } from '@tanstack/react-query'
+import cn from 'classnames'
+
+import {
+    ListTagsOrderBy,
+    ListTagsParams,
+    queryKeys,
+    Tag,
+} from '@gorgias/api-queries'
+
+import { Body, Context, focusOnNextItem, Item } from 'components/Dropdown'
+import { UserRole } from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import dropdownItemCss from 'pages/common/components/dropdown/DropdownItem.less'
-import {getCurrentUserState} from 'state/currentUser/selectors'
+import { getCurrentUserState } from 'state/currentUser/selectors'
 import useListTags from 'tags/useListTags'
-import {hasRole} from 'utils'
+import { hasRole } from 'utils'
 
 import css from './TagDropdownMenu.less'
 
@@ -49,12 +51,12 @@ const removeMatchingQueries = (newTag: string, queryKey: QueryKey) => {
     )
 }
 
-const TagDropdownMenu = ({className, filterBy, onClick}: Props) => {
+const TagDropdownMenu = ({ className, filterBy, onClick }: Props) => {
     const currentUser = useAppSelector(getCurrentUserState)
     const wrapperRef = useRef<HTMLDivElement>(null)
     const hasUserRole = useMemo(
         () => hasRole(currentUser, UserRole.Agent),
-        [currentUser]
+        [currentUser],
     )
     const [search, setSearch] = useState('')
     const [debouncedSearch, setDebouncedSearch] = useState('')
@@ -63,7 +65,7 @@ const TagDropdownMenu = ({className, filterBy, onClick}: Props) => {
             setDebouncedSearch(search)
         },
         [search],
-        300
+        300,
     )
 
     const queryClient = useQueryClient()
@@ -77,7 +79,7 @@ const TagDropdownMenu = ({className, filterBy, onClick}: Props) => {
         {
             refetchOnWindowFocus: false,
             staleTime: STALE_TIME,
-        }
+        },
     )
 
     const loadMore = useCallback(() => {
@@ -91,13 +93,13 @@ const TagDropdownMenu = ({className, filterBy, onClick}: Props) => {
             tagsResponse.data?.pages?.reduce((acc, page) => {
                 return [...acc, ...page.data.data]
             }, [] as Tag[]) ?? [],
-        [tagsResponse.data?.pages]
+        [tagsResponse.data?.pages],
     )
 
     const data = useMemo(
         () =>
             filterBy ? aggregatedTagsData.filter(filterBy) : aggregatedTagsData,
-        [filterBy, aggregatedTagsData]
+        [filterBy, aggregatedTagsData],
     )
 
     const handleOnClick = useCallback(
@@ -106,19 +108,19 @@ const TagDropdownMenu = ({className, filterBy, onClick}: Props) => {
 
             if (isNew) {
                 void queryClient.removeQueries({
-                    predicate: ({queryKey}) =>
+                    predicate: ({ queryKey }) =>
                         removeMatchingQueries(search, queryKey),
                 })
             }
             setSearch('')
             setDebouncedSearch('')
         },
-        [onClick, queryClient, search]
+        [onClick, queryClient, search],
     )
 
     const isLoading = useMemo(
         () => tagsResponse.isFetching || search !== debouncedSearch,
-        [tagsResponse, search, debouncedSearch]
+        [tagsResponse, search, debouncedSearch],
     )
 
     const canCreateTag = useMemo(
@@ -126,12 +128,12 @@ const TagDropdownMenu = ({className, filterBy, onClick}: Props) => {
             hasUserRole &&
             search !== '' &&
             !aggregatedTagsData.find((tag) => tag.name === search),
-        [hasUserRole, search, aggregatedTagsData]
+        [hasUserRole, search, aggregatedTagsData],
     )
 
     const onKeyDown = (e: KeyboardEvent<HTMLElement>) => {
         if (e.key === 'Enter' || e.key === ' ') {
-            handleOnClick({name: search}, true)
+            handleOnClick({ name: search }, true)
         } else {
             focusOnNextItem(e, wrapperRef)
         }
@@ -160,7 +162,7 @@ const TagDropdownMenu = ({className, filterBy, onClick}: Props) => {
             setSearch,
             tagsResponse.isInitialLoading,
             wrapperRef,
-        ]
+        ],
     )
 
     return (
@@ -170,7 +172,7 @@ const TagDropdownMenu = ({className, filterBy, onClick}: Props) => {
                 {isLoading || !canCreateTag ? null : (
                     <div
                         className={cn(dropdownItemCss.item, css.createTag)}
-                        onClick={() => handleOnClick({name: search}, true)}
+                        onClick={() => handleOnClick({ name: search }, true)}
                         role="listitem"
                         onKeyDown={onKeyDown}
                         tabIndex={0}

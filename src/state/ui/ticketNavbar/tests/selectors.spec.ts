@@ -1,13 +1,13 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
-import {UserSettingType} from 'config/types/user'
-import {account} from 'fixtures/account'
-import {user} from 'fixtures/users'
-import {ViewType, ViewVisibility} from 'models/view/types'
-import {AccountSettingType} from 'state/currentAccount/types'
-import {RootState} from 'state/types'
+import { UserSettingType } from 'config/types/user'
+import { account } from 'fixtures/account'
+import { user } from 'fixtures/users'
+import { ViewType, ViewVisibility } from 'models/view/types'
+import { AccountSettingType } from 'state/currentAccount/types'
+import { RootState } from 'state/types'
 
-import {initialState} from '../reducer'
+import { initialState } from '../reducer'
 import {
     getPrivateTicketNavbarElements,
     getPublicTicketNavbarElements,
@@ -83,14 +83,14 @@ describe('selectors', () => {
                     type: AccountSettingType.ViewsOrdering,
                     data: {
                         views: {
-                            1: {display_order: 6},
-                            2: {display_order: 3},
-                            10: {display_order: 2},
-                            4: {display_order: 4},
+                            1: { display_order: 6 },
+                            2: { display_order: 3 },
+                            10: { display_order: 2 },
+                            4: { display_order: 4 },
                         },
                         view_sections: {
-                            1: {display_order: 1},
-                            2: {display_order: 5},
+                            1: { display_order: 1 },
+                            2: { display_order: 5 },
                         },
                     },
                 },
@@ -104,8 +104,8 @@ describe('selectors', () => {
                     type: UserSettingType.ViewsOrdering,
                     data: {
                         views: {
-                            5: {display_order: 7},
-                            123: {display_order: 9},
+                            5: { display_order: 7 },
+                            123: { display_order: 9 },
                         },
                         view_sections: {
                             3: {
@@ -130,8 +130,8 @@ describe('selectors', () => {
             expect(
                 getPrivateTicketNavbarElements({
                     ...state,
-                    entities: {...state.entities, sections: {}},
-                })
+                    entities: { ...state.entities, sections: {} },
+                }),
             ).toMatchSnapshot()
         })
     })
@@ -141,8 +141,8 @@ describe('selectors', () => {
             expect(
                 getPublicTicketNavbarElements({
                     ...state,
-                    entities: {...state.entities, sections: {}},
-                })
+                    entities: { ...state.entities, sections: {} },
+                }),
             ).toMatchSnapshot()
         })
     })

@@ -1,4 +1,4 @@
-import {FETCH_TICKET_REPLY_MACRO} from '../constants'
+import { FETCH_TICKET_REPLY_MACRO } from '../constants'
 
 export default function fetchTicketReplyMacro() {
     return {

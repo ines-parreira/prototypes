@@ -1,28 +1,28 @@
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {useParams} from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
-import {TicketChannel} from 'business/types/ticket'
-import {logEvent, SegmentEvent} from 'common/segment'
+import { TicketChannel } from 'business/types/ticket'
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
-import {HelpCenterAutomationSettings} from 'models/helpCenter/types'
-import {IntegrationType} from 'models/integration/constants'
+import { HelpCenterAutomationSettings } from 'models/helpCenter/types'
+import { IntegrationType } from 'models/integration/constants'
 import useHelpCentersAutomationSettings from 'pages/automate/common/hooks/useHelpCenterAutomationSettings'
-import {SelfServiceHelpCenterChannel} from 'pages/automate/common/hooks/useSelfServiceHelpCenterChannels'
-import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import {getHasAutomate} from 'state/billing/selectors'
-import {helpCenterUpdated} from 'state/entities/helpCenter/helpCenters/actions'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { SelfServiceHelpCenterChannel } from 'pages/automate/common/hooks/useSelfServiceHelpCenterChannels'
+import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import { getHasAutomate } from 'state/billing/selectors'
+import { helpCenterUpdated } from 'state/entities/helpCenter/helpCenters/actions'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 import {
     MAX_ACTIVE_FLOWS,
     ORDER_MANAGEMENT,
 } from '../../common/components/constants'
 import WorkflowsFeatureList from '../../common/components/WorkflowsFeatureList'
-import {useConnectedChannelsViewContext} from '../ConnectedChannelsViewContext'
+import { useConnectedChannelsViewContext } from '../ConnectedChannelsViewContext'
 import AutomateSubscriptionAction from './AutomateSubscriptionAction'
 import ConnectedChannelFeatureToggle from './ConnectedChannelFeatureToggle'
 
@@ -30,15 +30,15 @@ type Props = {
     channel: SelfServiceHelpCenterChannel
 }
 
-const ConnectedChannelAccordionBodyHelpCenter = ({channel}: Props) => {
-    const {client} = useHelpCenterApi()
+const ConnectedChannelAccordionBodyHelpCenter = ({ channel }: Props) => {
+    const { client } = useHelpCenterApi()
     const dispatch = useAppDispatch()
     const hasAutomate = useAppSelector(getHasAutomate)
-    const {shopType} = useParams<{
+    const { shopType } = useParams<{
         shopType: string
     }>()
 
-    const {automationSettings, handleHelpCenterAutomationSettingsUpdate} =
+    const { automationSettings, handleHelpCenterAutomationSettingsUpdate } =
         useHelpCentersAutomationSettings(channel.value.id)
 
     const {
@@ -48,41 +48,41 @@ const ConnectedChannelAccordionBodyHelpCenter = ({channel}: Props) => {
 
     const workflowsEntrypoints = useMemo(() => {
         const availableWorkflowsIds = availableWorkflowsEntrypoints.map(
-            ({workflow_id}) => workflow_id
+            ({ workflow_id }) => workflow_id,
         )
         const existingWorkflows: HelpCenterAutomationSettings['workflows'] = (
             automationSettings?.workflows ?? []
-        ).filter(({id}) => availableWorkflowsIds.includes(id))
+        ).filter(({ id }) => availableWorkflowsIds.includes(id))
 
-        const existingWorkflowsIds = existingWorkflows.map(({id}) => id)
+        const existingWorkflowsIds = existingWorkflows.map(({ id }) => id)
 
         const newWorkflows = availableWorkflowsEntrypoints.filter(
-            ({workflow_id}) => !existingWorkflowsIds.includes(workflow_id)
+            ({ workflow_id }) => !existingWorkflowsIds.includes(workflow_id),
         )
 
         return [
-            ...existingWorkflows.map(({id, enabled}) => ({
+            ...existingWorkflows.map(({ id, enabled }) => ({
                 workflow_id: id,
                 enabled,
             })),
-            ...newWorkflows.map(({workflow_id}) => ({
+            ...newWorkflows.map(({ workflow_id }) => ({
                 workflow_id,
                 enabled: false,
             })),
         ]
     }, [automationSettings, availableWorkflowsEntrypoints])
 
-    const [{loading: updatingHelpCenter}, updateHelpCenter] = useAsyncFn(
+    const [{ loading: updatingHelpCenter }, updateHelpCenter] = useAsyncFn(
         async (orderManagementEnabled: boolean) => {
             if (client) {
                 try {
-                    const {data} = await client.updateHelpCenter(
+                    const { data } = await client.updateHelpCenter(
                         {
                             help_center_id: channel.value.id,
                         },
                         {
                             self_service_deactivated: !orderManagementEnabled,
-                        }
+                        },
                     )
 
                     dispatch(helpCenterUpdated(data))
@@ -91,19 +91,19 @@ const ConnectedChannelAccordionBodyHelpCenter = ({channel}: Props) => {
                         notify({
                             message: 'Successfully updated',
                             status: NotificationStatus.Success,
-                        })
+                        }),
                     )
                 } catch {
                     void dispatch(
                         notify({
                             message: 'Failed to update',
                             status: NotificationStatus.Error,
-                        })
+                        }),
                     )
                 }
             }
         },
-        [client, channel]
+        [client, channel],
     )
 
     return (
@@ -124,10 +124,10 @@ const ConnectedChannelAccordionBodyHelpCenter = ({channel}: Props) => {
                     })
                     void handleHelpCenterAutomationSettingsUpdate({
                         workflows: nextEntrypoints.map(
-                            ({workflow_id, enabled}) => ({
+                            ({ workflow_id, enabled }) => ({
                                 id: workflow_id,
                                 enabled,
-                            })
+                            }),
                         ),
                     })
                 }}

@@ -1,6 +1,6 @@
-import {renderHook} from '@testing-library/react-hooks'
-
 import React from 'react'
+
+import { renderHook } from '@testing-library/react-hooks'
 
 import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'
 
@@ -8,8 +8,8 @@ import useOrdersPagePreview from '../useOrdersPagePreview'
 
 describe('useOrdersPagePreview', () => {
     it('should return preview steps', () => {
-        const {result} = renderHook(() => useOrdersPagePreview(), {
-            wrapper: ({children}) => (
+        const { result } = renderHook(() => useOrdersPagePreview(), {
+            wrapper: ({ children }) => (
                 <SelfServicePreviewContext.Provider
                     value={{
                         reportOrderIssueReason: {

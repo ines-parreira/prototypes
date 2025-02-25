@@ -1,5 +1,6 @@
+import React, { HTMLProps, ReactNode } from 'react'
+
 import classnames from 'classnames'
-import React, {HTMLProps, ReactNode} from 'react'
 
 import css from 'pages/common/components/table/cells/HeaderCell.less'
 
@@ -31,7 +32,7 @@ export default function HeaderCell({
                     [css.isClickable]: !!onClick,
                 },
                 css[size],
-                height && css[height]
+                height && css[height],
             )}
             onClick={onClick}
         >

@@ -1,18 +1,18 @@
-import {FilterKey, StaticFilter} from 'models/stat/types'
+import { FilterKey, StaticFilter } from 'models/stat/types'
 import GmvInfluencedMetricCard from 'pages/stats/aiSalesAgent//charts/GmvInfluencedMetricCard'
 import RoiRateMetricCard from 'pages/stats/aiSalesAgent//charts/RoiRateMetricCard'
 import {
     AiSalesAgentChart,
-    AiSalesAgentMetricConfig,
     AiSalesAgentChartConfig,
+    AiSalesAgentMetricConfig,
 } from 'pages/stats/aiSalesAgent/AiSalesAgentMetricsConfig'
 import AverageOrderValueCard from 'pages/stats/aiSalesAgent/charts/AverageOrderValueCard'
 import GmvInfluencedOverTimeChart from 'pages/stats/aiSalesAgent/charts/GmvInfluencedOverTimeChart'
 import GmvMetricCard from 'pages/stats/aiSalesAgent/charts/GmvMetricCard'
 import TotalAIConvMetricCard from 'pages/stats/aiSalesAgent/charts/TotalAIConvMetricCard'
 import TotalNumberOfOrdersCard from 'pages/stats/aiSalesAgent/charts/TotalNumberOfOrdersCard'
-import {ROUTE_AI_SALES_AGENT_OVERVIEW} from 'pages/stats/aiSalesAgent/constants'
-import {ChartType, ReportConfig} from 'pages/stats/custom-reports/types'
+import { ROUTE_AI_SALES_AGENT_OVERVIEW } from 'pages/stats/aiSalesAgent/constants'
+import { ChartType, ReportConfig } from 'pages/stats/custom-reports/types'
 
 export const AI_SALES_AGENTS_PERSISTENT_FILTERS: StaticFilter[] = [
     FilterKey.Period,

@@ -1,8 +1,9 @@
-import {fireEvent, render} from '@testing-library/react'
 import React from 'react'
 
-import {FieldRow} from '..'
-import {Props as FieldRowProps} from '../FieldRow'
+import { fireEvent, render } from '@testing-library/react'
+
+import { FieldRow } from '..'
+import { Props as FieldRowProps } from '../FieldRow'
 
 const props: FieldRowProps = {
     fieldName: 'Article Title',
@@ -35,12 +36,12 @@ const props: FieldRowProps = {
 
 describe('<FieldRow />', () => {
     it('renders field row', () => {
-        const {container} = render(<FieldRow {...props} />)
+        const { container } = render(<FieldRow {...props} />)
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('returns undefined mapping if - No selection - is clicked in options', () => {
-        const {getByText} = render(<FieldRow {...props} />)
+        const { getByText } = render(<FieldRow {...props} />)
 
         fireEvent.click(getByText('- No selection -'))
 

@@ -14,15 +14,15 @@ export default function DeleteActionConfirmation({
 }: Props) {
     return (
         <ConfirmationPopover
-            buttonProps={{intent: 'destructive'}}
-            cancelButtonProps={{intent: 'secondary'}}
+            buttonProps={{ intent: 'destructive' }}
+            cancelButtonProps={{ intent: 'secondary' }}
             content="Are you sure you want to delete this Action?"
             title={<b>Delete Action?</b>}
             onConfirm={onDelete}
             confirmLabel="Delete"
             showCancelButton
         >
-            {({uid, onDisplayConfirmation}) => (
+            {({ uid, onDisplayConfirmation }) => (
                 <IconButton
                     onClick={onDisplayConfirmation}
                     fillStyle="ghost"

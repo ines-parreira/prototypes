@@ -1,4 +1,4 @@
-import {viewsCountFetched} from '../actions'
+import { viewsCountFetched } from '../actions'
 import reducer from '../reducer'
 
 describe('viewsCount reducer', () => {
@@ -12,7 +12,7 @@ describe('viewsCount reducer', () => {
                 viewsCountFetched({
                     '1': 20,
                     '3': 40,
-                })
+                }),
             )
             expect(newState).toMatchSnapshot()
         })

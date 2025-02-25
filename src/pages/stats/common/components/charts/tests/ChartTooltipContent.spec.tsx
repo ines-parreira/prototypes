@@ -1,7 +1,8 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {ChartTooltipContent} from '../ChartTooltipContent'
+import { render, screen } from '@testing-library/react'
+
+import { ChartTooltipContent } from '../ChartTooltipContent'
 
 describe('<ChartTooltipContent />', () => {
     const tooltip = {

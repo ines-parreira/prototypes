@@ -1,11 +1,12 @@
+import React, { useCallback, useMemo, useRef } from 'react'
+
 import classnames from 'classnames'
-import {LocationDescriptorObject} from 'history'
-import React, {useCallback, useMemo, useRef} from 'react'
-import {NavLink, NavLinkProps, useRouteMatch, match} from 'react-router-dom'
+import { LocationDescriptorObject } from 'history'
+import { match, NavLink, NavLinkProps, useRouteMatch } from 'react-router-dom'
 
 import css from 'assets/css/navbar.less'
 import useScrollActiveItemIntoView from 'hooks/useScrollActiveItemIntoView/useScrollActiveItemIntoView'
-import {ProtectedRoute} from 'pages/stats/report-chart-restrictions/ProtectedRoute'
+import { ProtectedRoute } from 'pages/stats/report-chart-restrictions/ProtectedRoute'
 
 export type NavbarLinkProps = Pick<
     NavLinkProps,
@@ -14,7 +15,11 @@ export type NavbarLinkProps = Pick<
     className?: string
 }
 
-const NavbarLink = ({className, exact = false, ...props}: NavbarLinkProps) => {
+const NavbarLink = ({
+    className,
+    exact = false,
+    ...props
+}: NavbarLinkProps) => {
     const linkRef = useRef<HTMLAnchorElement>(null)
     const path =
         (props.to as LocationDescriptorObject).pathname || (props.to as string)
@@ -28,7 +33,7 @@ const NavbarLink = ({className, exact = false, ...props}: NavbarLinkProps) => {
 
             return !exact || match.isExact
         },
-        [exact]
+        [exact],
     )
     const isActive = useMemo(() => {
         return !!match && computeIsActive(match)

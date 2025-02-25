@@ -1,9 +1,10 @@
-import classnames from 'classnames'
-import React, {useCallback, useMemo} from 'react'
-import {Link} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
+import React, { useCallback, useMemo } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import classnames from 'classnames'
+import { Link } from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import {
     HelpCenter,
     HelpCenterAutomateType,
@@ -12,15 +13,16 @@ import {
 import PageHeader from 'pages/common/components/PageHeader'
 import Wizard from 'pages/common/components/wizard/Wizard'
 import WizardStep from 'pages/common/components/wizard/WizardStep'
-import {ErrorBoundary} from 'pages/ErrorBoundary'
+import { ErrorBoundary } from 'pages/ErrorBoundary'
 
-import {EditionManagerContextProvider} from '../../providers/EditionManagerContext'
+import { EditionManagerContextProvider } from '../../providers/EditionManagerContext'
 import HelpCenterCreationWizardStepArticles from './components/steps/HelpCenterCreationWizardStepArticles'
 import HelpCenterCreationWizardStepAutomate from './components/steps/HelpCenterCreationWizardStepAutomate'
 import HelpCenterCreationWizardStepBasics from './components/steps/HelpCenterCreationWizardStepBasics'
 import HelpCenterCreationWizardStepBranding from './components/steps/HelpCenterCreationWizardStepBranding'
-import css from './HelpCenterCreationWizard.less'
 import useGetAutomateType from './hooks/useGetAutomateType'
+
+import css from './HelpCenterCreationWizard.less'
 
 type Props = {
     helpCenter?: HelpCenter
@@ -44,7 +46,7 @@ const HelpCenterCreationWizardComponent = ({
                 }
                 return true
             }),
-        [automateType]
+        [automateType],
     )
 
     const helpCenterStepName = helpCenter?.wizard?.step_name
@@ -52,7 +54,7 @@ const HelpCenterCreationWizardComponent = ({
     const wizardStep =
         helpCenterStepName &&
         Object.values(HelpCenterCreationWizardStep).includes(
-            helpCenterStepName as HelpCenterCreationWizardStep
+            helpCenterStepName as HelpCenterCreationWizardStep,
         ) &&
         helpCenterStepName !== HelpCenterCreationWizardStep.Initialization
             ? helpCenterStepName
@@ -69,7 +71,7 @@ const HelpCenterCreationWizardComponent = ({
                 type: stepName,
             })
         },
-        [automateType, steps]
+        [automateType, steps],
     )
 
     return (

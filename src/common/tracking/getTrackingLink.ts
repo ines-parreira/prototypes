@@ -7,7 +7,7 @@ import {
 /** Compute the tracking URL based on the tracking number and the shipping provider. **/
 export default function getTrackingLink(
     trackingNumber: string,
-    provider: string
+    provider: string,
 ): string | null {
     switch (provider) {
         case 'fedex': {

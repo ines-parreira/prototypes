@@ -1,8 +1,9 @@
-import {Meta, StoryObj} from '@storybook/react'
 import React from 'react'
 
-import {TimeSeriesDataItem} from '../../../../../hooks/reporting/useTimeSeries'
-import {ArticleViewsGraphComponent} from './ArticleViewsGraph'
+import { Meta, StoryObj } from '@storybook/react'
+
+import { TimeSeriesDataItem } from '../../../../../hooks/reporting/useTimeSeries'
+import { ArticleViewsGraphComponent } from './ArticleViewsGraph'
 
 const meta: Meta<typeof ArticleViewsGraphComponent> = {
     title: 'Help Center Stats/ArticleViewsGraph ',

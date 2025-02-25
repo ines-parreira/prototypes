@@ -1,4 +1,5 @@
-import {Skeleton} from '@gorgias/merchant-ui-kit'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+
 import {
     Chart,
     ChartArea,
@@ -8,27 +9,27 @@ import {
     ScriptableScaleContext,
     TooltipItem,
 } from 'chart.js'
-
 import classNames from 'classnames'
-import {fromJS, Map} from 'immutable'
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
-import {Line} from 'react-chartjs-2'
+import { fromJS, Map } from 'immutable'
+import { Line } from 'react-chartjs-2'
 
-import {GreyArea} from 'pages/stats/ChartPluginGreyArea'
-import {ChartTooltip} from 'pages/stats/ChartTooltip'
+import { Skeleton } from '@gorgias/merchant-ui-kit'
+
+import { GreyArea } from 'pages/stats/ChartPluginGreyArea'
+import { ChartTooltip } from 'pages/stats/ChartTooltip'
 import css from 'pages/stats/common/components/charts/Chart.less'
-import {ChartLegend} from 'pages/stats/common/components/charts/ChartLegend'
-import {ChartTooltipContent} from 'pages/stats/common/components/charts/ChartTooltipContent'
+import { ChartLegend } from 'pages/stats/common/components/charts/ChartLegend'
+import { ChartTooltipContent } from 'pages/stats/common/components/charts/ChartTooltipContent'
 import {
     chartColorsFallbackTokens,
     OPTIONS,
 } from 'pages/stats/common/components/charts/config'
-import {ChartColors} from 'pages/stats/common/components/charts/types'
-import type {AnalyticsTheme} from 'pages/stats/common/theme'
-import {withAnalyticsTheme} from 'pages/stats/common/theme'
-import {useCustomTooltip} from 'pages/stats/common/useCustomTooltip'
-import {TwoDimensionalDataItem} from 'pages/stats/types'
-import {getGradient, renderTickLabelAsNumber} from 'pages/stats/utils'
+import { ChartColors } from 'pages/stats/common/components/charts/types'
+import type { AnalyticsTheme } from 'pages/stats/common/theme'
+import { withAnalyticsTheme } from 'pages/stats/common/theme'
+import { useCustomTooltip } from 'pages/stats/common/useCustomTooltip'
+import { TwoDimensionalDataItem } from 'pages/stats/types'
+import { getGradient, renderTickLabelAsNumber } from 'pages/stats/utils'
 
 type Props = {
     data: TwoDimensionalDataItem[]
@@ -51,7 +52,7 @@ type Props = {
     renderXTickLabel?: (
         this: Scale,
         value: number | string,
-        index: number
+        index: number,
     ) => string
     yAxisScale?: {
         min?: number
@@ -91,7 +92,7 @@ export function LineChart({
     const [chart, setChart] = useState<Chart>()
     const [chartArea, setChartArea] = useState<ChartArea>()
     const [chartContext, setChartContext] = useState<CanvasRenderingContext2D>()
-    const {customTooltip, tooltipData, tooltipStyle} = useCustomTooltip()
+    const { customTooltip, tooltipData, tooltipStyle } = useCustomTooltip()
 
     const statColors: string[] = useMemo(() => {
         const colors = colorTokens.analytics.data
@@ -100,7 +101,7 @@ export function LineChart({
 
     const chartColors = useCallback(
         (index: number) => customColors?.[index] || statColors[index],
-        [customColors, statColors]
+        [customColors, statColors],
     )
 
     const [linesVisibility, setLinesVisibility] = useState<Record<
@@ -110,7 +111,7 @@ export function LineChart({
 
     useEffect(
         () => setLinesVisibility(defaultDatasetVisibility),
-        [defaultDatasetVisibility]
+        [defaultDatasetVisibility],
     )
 
     const isLineHidden = useCallback(
@@ -120,7 +121,7 @@ export function LineChart({
             if (linesVisibility && linesVisibility[index] === false) return true
             return false
         },
-        [defaultDatasetVisibility, linesVisibility]
+        [defaultDatasetVisibility, linesVisibility],
     )
 
     const formattedData = useMemo<ChartData<'line'>>(() => {
@@ -131,9 +132,9 @@ export function LineChart({
                         ...acc,
                         ...item.values.map((value) => value.x),
                     ],
-                    []
-                )
-            )
+                    [],
+                ),
+            ),
         )
 
         return {
@@ -196,7 +197,7 @@ export function LineChart({
                         x: {
                             ticks: {
                                 ...(renderXTickLabel
-                                    ? {callback: renderXTickLabel}
+                                    ? { callback: renderXTickLabel }
                                     : {}),
                             },
                         },
@@ -230,7 +231,7 @@ export function LineChart({
                         setChartContext(chart.ctx)
                     },
                 },
-                fromJS(options)
+                fromJS(options),
             ),
         [
             colorTokens,
@@ -246,7 +247,7 @@ export function LineChart({
             isCurvedLine,
             options,
             data.length,
-        ]
+        ],
     )
 
     if (isLoading) {

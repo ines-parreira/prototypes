@@ -1,10 +1,11 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {waitFor} from '@testing-library/react'
-import {renderHook, act} from '@testing-library/react-hooks/dom'
 import React from 'react'
 
-import {StatsFilters} from 'models/stat/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { waitFor } from '@testing-library/react'
+import { act, renderHook } from '@testing-library/react-hooks/dom'
+
+import { StatsFilters } from 'models/stat/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import useGmvTrend from '../useGmvTrend'
 
@@ -24,8 +25,8 @@ jest.useFakeTimers()
 describe('useGmvTrend', () => {
     it('should return correct metric data when the query resolves', async () => {
         act(() => jest.runAllTimers())
-        const {result} = renderHook(() => useGmvTrend(filters, timezone), {
-            wrapper: ({children}) => (
+        const { result } = renderHook(() => useGmvTrend(filters, timezone), {
+            wrapper: ({ children }) => (
                 <QueryClientProvider client={queryClient}>
                     {children}
                 </QueryClientProvider>

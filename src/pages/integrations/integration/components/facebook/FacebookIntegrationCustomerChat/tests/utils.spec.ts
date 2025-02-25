@@ -1,6 +1,6 @@
-import {fromJS, Map} from 'immutable'
+import { fromJS, Map } from 'immutable'
 
-import {renderFacebookCodeSnippet} from '../utils'
+import { renderFacebookCodeSnippet } from '../utils'
 
 describe('facebook customer chat utils', () => {
     describe('renderFacebookCodeSnippet', () => {

@@ -1,10 +1,11 @@
+import { useQueryClient } from '@tanstack/react-query'
+
 import {
+    CustomFieldCondition,
+    ListCustomFieldConditionsQueryResult,
     queryKeys,
     useUpdateCustomFieldConditions as useBulkUpdate,
-    ListCustomFieldConditionsQueryResult,
-    CustomFieldCondition,
 } from '@gorgias/api-queries'
-import {useQueryClient} from '@tanstack/react-query'
 
 /**
  * Wrapper for the SDK's useUpdateCustomFieldConditions method with:
@@ -17,13 +18,13 @@ export default function useUpdateCustomFieldConditions() {
 
     return useBulkUpdate({
         mutation: {
-            onMutate: async ({data}) => {
+            onMutate: async ({ data }) => {
                 // Cancel outgoing queries (to not overwrite the optimistic update)
-                await queryClient.cancelQueries({queryKey})
+                await queryClient.cancelQueries({ queryKey })
 
                 // Convert the new data from a list to a mapping by ID
                 const newPartialData: Record<number, CustomFieldCondition> =
-                    data.reduce((acc, row) => ({...acc, [row.id]: row}), {})
+                    data.reduce((acc, row) => ({ ...acc, [row.id]: row }), {})
 
                 // Optimistically update each values with the partial new data
                 queryClient.setQueryData<ListCustomFieldConditionsQueryResult>(
@@ -45,11 +46,11 @@ export default function useUpdateCustomFieldConditions() {
                                 data: newData,
                             },
                         }
-                    }
+                    },
                 )
             },
             onSettled: () => {
-                void queryClient.invalidateQueries({queryKey})
+                void queryClient.invalidateQueries({ queryKey })
             },
         },
     })

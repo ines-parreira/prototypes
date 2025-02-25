@@ -1,22 +1,23 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import * as reactQuery from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import * as reactQuery from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
 
 import {
     apiListCursorPaginationResponse,
     axiosSuccessResponse,
 } from 'fixtures/axiosResponse'
-import {integrationDataItemProductFixture} from 'fixtures/shopify'
+import { integrationDataItemProductFixture } from 'fixtures/shopify'
 import {
     useCollectionsFromShopifyIntegration,
     useListProducts,
 } from 'models/integration/queries'
-import {fetchIntegrationProducts} from 'models/integration/resources'
-import {fetchShopifyCollections} from 'models/integration/resources/shopify'
-import {ShopifyCollectionResponse} from 'models/integration/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { fetchIntegrationProducts } from 'models/integration/resources'
+import { fetchShopifyCollections } from 'models/integration/resources/shopify'
+import { ShopifyCollectionResponse } from 'models/integration/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('models/integration/resources/shopify', () => ({
     fetchShopifyCollections: jest.fn(),
@@ -35,7 +36,7 @@ const useInfiniteQuerySpy = jest.spyOn(reactQuery, 'useInfiniteQuery')
 
 const queryClient = mockQueryClient()
 
-const wrapper = ({children}: any) => (
+const wrapper = ({ children }: any) => (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 )
 
@@ -46,11 +47,11 @@ describe('queries', () => {
         it('fetch data', async () => {
             fetchIntegrationProductsMock.mockResolvedValueOnce(
                 axiosSuccessResponse(
-                    apiListCursorPaginationResponse(productsResponse)
-                )
+                    apiListCursorPaginationResponse(productsResponse),
+                ),
             )
 
-            const {result, waitFor} = renderHook(() => useListProducts(1), {
+            const { result, waitFor } = renderHook(() => useListProducts(1), {
                 wrapper,
             })
 
@@ -59,7 +60,7 @@ describe('queries', () => {
                     queryKey: ['integration', 'shopify', 1, 'products', 'list'],
                     queryFn: expect.any(Function),
                     getNextPageParam: expect.any(Function),
-                })
+                }),
             )
 
             await waitFor(() => expect(result.current.isLoading).toBe(false))
@@ -69,15 +70,15 @@ describe('queries', () => {
                     data: expect.objectContaining({
                         data: productsResponse,
                     }),
-                })
+                }),
             )
         })
 
         it('should reject an error on fail', async () => {
             fetchIntegrationProductsMock.mockRejectedValueOnce(
-                Error('test error')
+                Error('test error'),
             )
-            const {result, waitFor} = renderHook(() => useListProducts(1), {
+            const { result, waitFor } = renderHook(() => useListProducts(1), {
                 wrapper,
             })
             await waitFor(() => expect(result.current.isError).toBe(true))
@@ -103,11 +104,11 @@ describe('queries', () => {
                 collectionResponse,
             } as any)
 
-            const {result, waitFor} = renderHook(
+            const { result, waitFor } = renderHook(
                 () => useCollectionsFromShopifyIntegration(1),
                 {
                     wrapper,
-                }
+                },
             )
             await waitFor(() => expect(result.current.isSuccess).toBe(true))
             expect(result.current.data).toStrictEqual({
@@ -117,13 +118,13 @@ describe('queries', () => {
 
         it('should reject an error on fail', async () => {
             fetchShopifyCollectionsMock.mockRejectedValueOnce(
-                Error('test error')
+                Error('test error'),
             )
-            const {result, waitFor} = renderHook(
+            const { result, waitFor } = renderHook(
                 () => useCollectionsFromShopifyIntegration(1),
                 {
                     wrapper,
-                }
+                },
             )
             await waitFor(() => expect(result.current.isError).toBe(true))
 

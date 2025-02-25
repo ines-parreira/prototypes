@@ -1,9 +1,9 @@
-import {ContentBlock, EditorState} from 'draft-js'
-import {Map} from 'immutable'
+import { ContentBlock, EditorState } from 'draft-js'
+import { Map } from 'immutable'
 import JSZip from 'jszip'
 import _get from 'lodash/get'
 
-import {MAX_ATTACHMENTS_SIZE} from '../config/editor'
+import { MAX_ATTACHMENTS_SIZE } from '../config/editor'
 
 export const EOL = '\r\n'
 export const DEFAULT_CSV_EXPORT_FILE = 'export.csv'
@@ -14,7 +14,7 @@ export const DEFAULT_CSV_EXPORT_FILE = 'export.csv'
 export const saveFileAsDownloaded = (
     name: string,
     data: string,
-    contentType?: string
+    contentType?: string,
 ) => {
     const blob = new Blob([data], {
         type: contentType || 'application/octet-stream',
@@ -30,7 +30,7 @@ export const saveFileAsDownloaded = (
 export const saveBlobAsDownloaded = (blob: Blob, fileName: string) => {
     const blobURL = window.URL.createObjectURL(blob)
     const link = document.createElement('a')
-    const {body} = document
+    const { body } = document
 
     link.style.display = 'none'
     link.href = blobURL
@@ -55,7 +55,7 @@ const getFormattedSize = (size: number) => {
         formattedSize = `${parseInt((size / 1000) as unknown as string)}kB.`
     } else {
         formattedSize = `${parseInt(
-            (size / (1000 * 1000)) as unknown as string
+            (size / (1000 * 1000)) as unknown as string,
         )}MB.`
     }
     return formattedSize
@@ -66,7 +66,7 @@ const getFormattedSize = (size: number) => {
  */
 export const getFileTooLargeError = (size: number) => {
     return `Failed to upload files. Attached files must be smaller than ${getFormattedSize(
-        size
+        size,
     )}`
 }
 
@@ -103,11 +103,11 @@ const getInlineImagesSize = (editorState: EditorState): number => {
  */
 export const getMaxAttachmentSize = (
     editorState: EditorState = EditorState.createEmpty(),
-    attachments: Array<File> = []
+    attachments: Array<File> = [],
 ): number => {
     const attachmentsSize = attachments.reduce(
         (sum, file) => sum + (file.size || 0),
-        0
+        0,
     )
     const inlineImagesSize = getInlineImagesSize(editorState)
     return MAX_ATTACHMENTS_SIZE - attachmentsSize - inlineImagesSize
@@ -157,14 +157,14 @@ export const createCsv = (data: unknown[][]) =>
  */
 export async function saveZippedFiles(
     files: Record<string, string>,
-    archiveName = DEFAULT_CSV_EXPORT_FILE
+    archiveName = DEFAULT_CSV_EXPORT_FILE,
 ) {
     const archive = new JSZip()
 
     Object.keys(files).forEach((fileName) =>
-        archive.file(fileName, files[fileName])
+        archive.file(fileName, files[fileName]),
     )
 
-    const zipped = await archive.generateAsync({type: 'blob'})
+    const zipped = await archive.generateAsync({ type: 'blob' })
     saveBlobAsDownloaded(zipped, `${archiveName}.zip`)
 }

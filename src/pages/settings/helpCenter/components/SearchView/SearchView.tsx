@@ -1,30 +1,29 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {FC, useRef} from 'react'
+import React, { FC, useRef } from 'react'
 
-import {SegmentEvent, logEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
-import {Article, HelpCenter} from 'models/helpCenter/types'
-
+import { Article, HelpCenter } from 'models/helpCenter/types'
 import Button from 'pages/common/components/button/Button'
 import DropdownButton from 'pages/common/components/button/DropdownButton'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import UncontrolledDropdown from 'pages/common/components/dropdown/UncontrolledDropdown'
-import {getUncategorizedArticles} from 'state/entities/helpCenter/articles'
+import { getUncategorizedArticles } from 'state/entities/helpCenter/articles'
 import {
     getCategories,
     getRootCategory,
 } from 'state/entities/helpCenter/categories'
 
-import {ArticleRowActionTypes} from '../../constants'
-import {useSearchContext} from '../../providers/SearchContext'
-
-import {CategoriesTableSkeleton} from '../CategoriesTableSkeleton'
-import {ImportSection} from '../Imports/components/ImportSection'
-import {SearchBar} from '../SearchBar'
-import {SearchResults} from '../SearchResults'
-import {NoResult} from './NoResult'
+import { ArticleRowActionTypes } from '../../constants'
+import { useSearchContext } from '../../providers/SearchContext'
+import { CategoriesTableSkeleton } from '../CategoriesTableSkeleton'
+import { ImportSection } from '../Imports/components/ImportSection'
+import { SearchBar } from '../SearchBar'
+import { SearchResults } from '../SearchResults'
+import { NoResult } from './NoResult'
 
 import css from './SearchView.less'
 
@@ -34,7 +33,7 @@ type Props = {
     onArticleClickSettings: (
         action: ArticleRowActionTypes,
         article: Article,
-        isArticleOrAncestorUnlisted: boolean
+        isArticleOrAncestorUnlisted: boolean,
     ) => void
     onArticleCreate: () => void
     onShowTemplates: () => void
@@ -150,7 +149,7 @@ export const SearchView: FC<Props> = ({
     canUpdateArticle,
     canUpdateCategory,
 }) => {
-    const {searchInput, searchResults} = useSearchContext()
+    const { searchInput, searchResults } = useSearchContext()
 
     const categories = useAppSelector(getCategories)
     const uncategorizedArticles = useAppSelector(getUncategorizedArticles)

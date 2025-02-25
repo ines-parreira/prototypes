@@ -38,7 +38,7 @@ export const enrichedPost =
     }
 
 export const postReporting = <TData, TCube extends Cube = Cube>(
-    queries: ReportingParams<TCube>
+    queries: ReportingParams<TCube>,
 ) =>
     post(REPORTING_ENDPOINT)<TData>({
         query: queries,
@@ -46,7 +46,7 @@ export const postReporting = <TData, TCube extends Cube = Cube>(
 
 export const postEnrichedReporting = <TData, TCube extends Cube = Cube>(
     query: ReportingQuery<TCube>,
-    enrichmentFields: EnrichmentFields[]
+    enrichmentFields: EnrichmentFields[],
 ) =>
     enrichedPost(REPORTING_ENRICHED_ENDPOINT)<TData>({
         query,

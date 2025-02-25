@@ -1,10 +1,10 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
-import {CampaignFormExtra} from 'pages/convert/campaigns/types/CampaignAttachment'
-import {CaptureFormDisclaimerSettings} from 'pages/convert/settings/types'
+import { CampaignFormExtra } from 'pages/convert/campaigns/types/CampaignAttachment'
+import { CaptureFormDisclaimerSettings } from 'pages/convert/settings/types'
 
-import {ContactCaptureStep} from './ContactCaptureStep'
-import {Wrapper} from './styled'
+import { ContactCaptureStep } from './ContactCaptureStep'
+import { Wrapper } from './styled'
 
 export const DEFAULT_THANK_YOU_MESSAGE =
     'Thank you for showing your interest! 🤗'

@@ -1,5 +1,6 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import {
     InventoryManagement,
@@ -11,18 +12,18 @@ import {
     shopifyProductFixture,
     shopifyVariantFixture,
 } from 'fixtures/shopify'
-import {IntegrationDataItem} from 'models/integration/types'
+import { IntegrationDataItem } from 'models/integration/types'
 
-import {shopifyDataMappers} from '../Mappings'
+import { shopifyDataMappers } from '../Mappings'
 import Result from '../Result'
 
 describe('<Result/>', () => {
     describe('render()', () => {
         it('should render with image and subtitle', () => {
-            const {container} = render(
+            const { container } = render(
                 <Result
                     title="Title"
-                    image={{src: 'https://foo.bar/image.jpg', alt: 'alt'}}
+                    image={{ src: 'https://foo.bar/image.jpg', alt: 'alt' }}
                     subtitle="Subtitle"
                     stock={{
                         isAvailable: true,
@@ -30,17 +31,17 @@ describe('<Result/>', () => {
                         tracked: true,
                         totalVariants: 1,
                     }}
-                />
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render with disabled style', () => {
-            const {container} = render(
+            const { container } = render(
                 <Result
                     title="Title"
-                    image={{src: 'https://foo.bar/image.jpg', alt: 'alt'}}
+                    image={{ src: 'https://foo.bar/image.jpg', alt: 'alt' }}
                     subtitle="Subtitle"
                     stock={{
                         isAvailable: true,
@@ -49,7 +50,7 @@ describe('<Result/>', () => {
                         totalVariants: 1,
                     }}
                     disabled
-                />
+                />,
             )
 
             expect(screen.getByText(/in stock/i)).toHaveClass('disabled')
@@ -57,7 +58,7 @@ describe('<Result/>', () => {
         })
 
         it('should render with default image', () => {
-            const {container} = render(
+            const { container } = render(
                 <Result
                     title="Title"
                     image={null}
@@ -68,17 +69,17 @@ describe('<Result/>', () => {
                         tracked: true,
                         totalVariants: 1,
                     }}
-                />
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render without subtitle', () => {
-            const {container} = render(
+            const { container } = render(
                 <Result
                     title="Title"
-                    image={{src: 'https://foo.bar/image.jpg', alt: 'alt'}}
+                    image={{ src: 'https://foo.bar/image.jpg', alt: 'alt' }}
                     subtitle={null}
                     stock={{
                         isAvailable: true,
@@ -86,20 +87,20 @@ describe('<Result/>', () => {
                         tracked: true,
                         totalVariants: 1,
                     }}
-                />
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render without product stock quantity', () => {
-            const {container} = render(
+            const { container } = render(
                 <Result
                     title="Title"
-                    image={{src: 'https://foo.bar/image.jpg', alt: 'alt'}}
+                    image={{ src: 'https://foo.bar/image.jpg', alt: 'alt' }}
                     subtitle="Subtitle"
-                    stock={{quantity: 0, tracked: false, totalVariants: 1}}
-                />
+                    stock={{ quantity: 0, tracked: false, totalVariants: 1 }}
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -109,35 +110,35 @@ describe('<Result/>', () => {
             const item: IntegrationDataItem<Product> =
                 integrationDataItemProductFixture()
             const mappedItem = shopifyDataMappers.product(item)
-            const {container} = render(<Result {...mappedItem} />)
+            const { container } = render(<Result {...mappedItem} />)
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render with number of variants as subtitle', () => {
-            const variant1: Variant = shopifyVariantFixture({id: 1})
-            const variant2: Variant = shopifyVariantFixture({id: 2})
+            const variant1: Variant = shopifyVariantFixture({ id: 1 })
+            const variant2: Variant = shopifyVariantFixture({ id: 2 })
             const product: Product = shopifyProductFixture({
                 variants: [variant1, variant2],
             })
             const item: IntegrationDataItem<Product> =
-                integrationDataItemProductFixture({data: product})
+                integrationDataItemProductFixture({ data: product })
             const mappedItem = shopifyDataMappers.product(item)
 
-            const {container} = render(<Result {...mappedItem} />)
+            const { container } = render(<Result {...mappedItem} />)
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render without subtitle', () => {
-            const variant: Variant = shopifyVariantFixture({sku: null} as any)
+            const variant: Variant = shopifyVariantFixture({ sku: null } as any)
             const product: Product = shopifyProductFixture({
                 variants: [variant],
             })
             const item: IntegrationDataItem<Product> =
-                integrationDataItemProductFixture({data: product})
+                integrationDataItemProductFixture({ data: product })
             const mappedItem = shopifyDataMappers.product(item)
-            const {container} = render(<Result {...mappedItem} />)
+            const { container } = render(<Result {...mappedItem} />)
 
             expect(container.firstChild).toMatchSnapshot()
         })
@@ -151,9 +152,9 @@ describe('<Result/>', () => {
                 variants: [variant],
             })
             const item: IntegrationDataItem<Product> =
-                integrationDataItemProductFixture({data: product})
+                integrationDataItemProductFixture({ data: product })
             const mappedItem = shopifyDataMappers.product(item)
-            const {container} = render(<Result {...mappedItem} />)
+            const { container } = render(<Result {...mappedItem} />)
 
             expect(container.firstChild).toMatchSnapshot()
         })
@@ -173,9 +174,9 @@ describe('<Result/>', () => {
                 variants: [variant1, variant2],
             })
             const item: IntegrationDataItem<Product> =
-                integrationDataItemProductFixture({data: product})
+                integrationDataItemProductFixture({ data: product })
             const mappedItem = shopifyDataMappers.product(item)
-            const {container} = render(<Result {...mappedItem} />)
+            const { container } = render(<Result {...mappedItem} />)
 
             expect(container.firstChild).toMatchSnapshot()
         })
@@ -195,9 +196,9 @@ describe('<Result/>', () => {
                 variants: [variant1, variant2],
             })
             const item: IntegrationDataItem<Product> =
-                integrationDataItemProductFixture({data: product})
+                integrationDataItemProductFixture({ data: product })
             const mappedItem = shopifyDataMappers.product(item)
-            const {container} = render(<Result {...mappedItem} />)
+            const { container } = render(<Result {...mappedItem} />)
 
             expect(container.firstChild).toMatchSnapshot()
         })
@@ -208,9 +209,9 @@ describe('<Result/>', () => {
                 variants: [variant],
             })
             const item: IntegrationDataItem<Product> =
-                integrationDataItemProductFixture({data: product})
+                integrationDataItemProductFixture({ data: product })
             const mappedItem = shopifyDataMappers.variants(item, variant)
-            const {container} = render(<Result {...mappedItem} />)
+            const { container } = render(<Result {...mappedItem} />)
             expect(container.firstChild).toMatchSnapshot()
         })
 
@@ -229,24 +230,24 @@ describe('<Result/>', () => {
                 variants: [variant1, variant2],
             })
             const item: IntegrationDataItem<Product> =
-                integrationDataItemProductFixture({data: product})
+                integrationDataItemProductFixture({ data: product })
 
             const mappedItem = shopifyDataMappers.variants(item, variant2)
-            const {container} = render(<Result {...mappedItem} />)
+            const { container } = render(<Result {...mappedItem} />)
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render without subtitle', () => {
-            const variant: Variant = shopifyVariantFixture({sku: null} as any)
+            const variant: Variant = shopifyVariantFixture({ sku: null } as any)
             const product: Product = shopifyProductFixture({
                 variants: [variant],
             })
             const item: IntegrationDataItem<Product> =
-                integrationDataItemProductFixture({data: product})
+                integrationDataItemProductFixture({ data: product })
 
             const mappedItem = shopifyDataMappers.variants(item, variant)
-            const {container} = render(<Result {...mappedItem} />)
+            const { container } = render(<Result {...mappedItem} />)
 
             expect(container.firstChild).toMatchSnapshot()
         })
@@ -260,10 +261,10 @@ describe('<Result/>', () => {
                 variants: [variant],
             })
             const item: IntegrationDataItem<Product> =
-                integrationDataItemProductFixture({data: product})
+                integrationDataItemProductFixture({ data: product })
 
             const mappedItem = shopifyDataMappers.variants(item, variant)
-            const {container} = render(<Result {...mappedItem} />)
+            const { container } = render(<Result {...mappedItem} />)
 
             expect(container.firstChild).toMatchSnapshot()
         })
@@ -277,10 +278,10 @@ describe('<Result/>', () => {
                 variants: [variant],
             })
             const item: IntegrationDataItem<Product> =
-                integrationDataItemProductFixture({data: product})
+                integrationDataItemProductFixture({ data: product })
 
             const mappedItem = shopifyDataMappers.variants(item, variant)
-            const {container} = render(<Result {...mappedItem} />)
+            const { container } = render(<Result {...mappedItem} />)
 
             expect(container.firstChild).toMatchSnapshot()
         })

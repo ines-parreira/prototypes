@@ -1,10 +1,11 @@
-import {render, fireEvent, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { fireEvent, render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {tags} from 'fixtures/tag'
+import { tags } from 'fixtures/tag'
 
 import Row from '../Row'
 import Table from '../Table'
@@ -14,13 +15,13 @@ const mockStore = configureMockStore()
 jest.mock(
     'pages/settings/tags/Row',
     () =>
-        ({meta, row, refresh}: ComponentProps<typeof Row>) => (
+        ({ meta, row, refresh }: ComponentProps<typeof Row>) => (
             <div>
                 RowMock
                 <div onClick={refresh}>{row.name}</div>
                 <div>{JSON.stringify(meta.toJS())}</div>
             </div>
-        )
+        ),
 )
 
 jest.mock('pages/settings/tags/TableActions/TableActions', () => () => (
@@ -44,11 +45,11 @@ describe('<Table />', () => {
         render(
             <Provider store={mockStore()}>
                 <Table {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            screen.getByRole('checkbox', {name: 'select-all'})
+            screen.getByRole('checkbox', { name: 'select-all' }),
         ).not.toBeChecked()
         expect(screen.getByText('arrow_drop_down')).toBeInTheDocument()
         expect(screen.getAllByText('RowMock')).toHaveLength(4)
@@ -58,7 +59,7 @@ describe('<Table />', () => {
         render(
             <Provider store={mockStore()}>
                 <Table {...minProps} sort="name" reverse={false} />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(screen.getByText(/Tag/i))
@@ -77,10 +78,10 @@ describe('<Table />', () => {
                 })}
             >
                 <Table {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
-        const checkbox = screen.getByRole('checkbox', {name: 'select-all'})
+        const checkbox = screen.getByRole('checkbox', { name: 'select-all' })
         expect(checkbox).toBeChecked()
         fireEvent.click(checkbox)
         expect(minProps.onSelectAll).toHaveBeenCalledWith()
@@ -90,7 +91,7 @@ describe('<Table />', () => {
         render(
             <Provider store={mockStore()}>
                 <Table {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(screen.getByText(/Tickets/i))
@@ -101,7 +102,7 @@ describe('<Table />', () => {
         render(
             <Provider store={mockStore()}>
                 <Table {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(screen.getByText(/Description/i))
@@ -112,7 +113,7 @@ describe('<Table />', () => {
         render(
             <Provider store={mockStore()}>
                 <Table {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(screen.getByText(/refund accepted/i))
@@ -123,7 +124,7 @@ describe('<Table />', () => {
         render(
             <Provider store={mockStore()}>
                 <Table {...minProps} tags={[tags[0]]} />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(screen.getByText(/billing/i))
@@ -136,11 +137,11 @@ describe('<Table />', () => {
         render(
             <Provider store={mockStore()}>
                 <Table {...minProps} selectedTagsIds={fromJS([88, 99])} />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText(/You have/).textContent).toBe(
-            'warningYou have 2 tags selected across different pages. Undo selection'
+            'warningYou have 2 tags selected across different pages. Undo selection',
         )
         fireEvent.click(screen.getByText(/Undo selection/))
         expect(minProps.onSelectAll).toHaveBeenCalledWith(false)

@@ -1,18 +1,19 @@
-import {fireEvent, render} from '@testing-library/react'
 import React from 'react'
-import {Provider as ReduxProvider} from 'react-redux'
-import {DeepPartial} from 'redux'
+
+import { fireEvent, render } from '@testing-library/react'
+import { Provider as ReduxProvider } from 'react-redux'
+import { DeepPartial } from 'redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {getSingleArticleEnglish} from 'pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
-import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
-import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
-import {RootState, StoreDispatch} from 'state/types'
+import { getSingleArticleEnglish } from 'pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
+import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
+import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
+import { RootState, StoreDispatch } from 'state/types'
 
-import {getCategoriesFlatSorted} from '../../../../../fixtures/getCategoriesTreeFlatSorted.fixtures'
-import {CategoriesTableBasicRow} from '../../CategoriesTableBasicRow/CategoriesTableBasicRow'
+import { getCategoriesFlatSorted } from '../../../../../fixtures/getCategoriesTreeFlatSorted.fixtures'
+import { CategoriesTableBasicRow } from '../../CategoriesTableBasicRow/CategoriesTableBasicRow'
 
 const mockStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>([
     thunk,
@@ -25,10 +26,10 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterIdParam', () => {
 })
 
 const mockedListArticles = jest.fn().mockResolvedValue({
-    data: {data: [], meta: {item_count: 0}},
+    data: { data: [], meta: { item_count: 0 } },
 })
 const mockedListCategoryArticles = jest.fn().mockResolvedValue({
-    data: {data: [], meta: {item_count: 0}},
+    data: { data: [], meta: { item_count: 0 } },
 })
 const mockGetCategoryArticlesPositions = jest.fn().mockResolvedValue({
     data: [],
@@ -71,7 +72,7 @@ const getInitialState = (rootArticleCount: number): DeepPartial<RootState> => ({
             },
             categories: {
                 categoriesById: {
-                    '0': {...rootCategory, articleCount: rootArticleCount},
+                    '0': { ...rootCategory, articleCount: rootArticleCount },
                 },
             },
         },
@@ -101,7 +102,7 @@ describe('<CategoriesTableRow />', () => {
             },
         })
 
-        const {findByText, getByTestId} = render(
+        const { findByText, getByTestId } = render(
             <ReduxProvider store={mockStore(getInitialState(10))}>
                 <CategoriesTableBasicRow
                     renderArticleList={() => <div />}
@@ -109,7 +110,7 @@ describe('<CategoriesTableRow />', () => {
                     shouldRenderRowWithoutArticles={false}
                     isCountBadgeLoading={false}
                 />
-            </ReduxProvider>
+            </ReduxProvider>,
         )
 
         await findByText('Uncategorized articles')
@@ -137,7 +138,7 @@ describe('<CategoriesTableRow />', () => {
             },
         })
 
-        const {findByText, getByTestId, queryByText} = render(
+        const { findByText, getByTestId, queryByText } = render(
             <ReduxProvider store={mockStore(getInitialState(1))}>
                 <CategoriesTableBasicRow
                     renderArticleList={() => <div />}
@@ -145,7 +146,7 @@ describe('<CategoriesTableRow />', () => {
                     shouldRenderRowWithoutArticles={false}
                     isCountBadgeLoading={false}
                 />
-            </ReduxProvider>
+            </ReduxProvider>,
         )
 
         await findByText('Uncategorized articles')

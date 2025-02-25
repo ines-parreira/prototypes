@@ -1,17 +1,18 @@
-import {render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import {
-    HELPDESK_PRODUCT_ID,
     basicMonthlyHelpdeskPlan,
     basicYearlyAutomationPlan,
+    HELPDESK_PRODUCT_ID,
     products,
 } from 'fixtures/productPrices'
-import {ProductType} from 'models/billing/types'
-import {RootState, StoreDispatch} from 'state/types'
+import { ProductType } from 'models/billing/types'
+import { RootState, StoreDispatch } from 'state/types'
 
 import ProductCard from '../ProductCard'
 
@@ -32,14 +33,14 @@ const store = mockedStore({
 
 describe('ProductCard', () => {
     it('should render a Helpdesk ProductCard component', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <ProductCard
                     type={ProductType.Helpdesk}
                     plan={basicMonthlyHelpdeskPlan}
                     isDisabled={false}
                 />
-            </Provider>
+            </Provider>,
         )
         expect(container).toMatchSnapshot()
     })
@@ -52,7 +53,7 @@ describe('ProductCard', () => {
                     plan={basicYearlyAutomationPlan}
                     isDisabled={false}
                 />
-            </Provider>
+            </Provider>,
         )
         expect(screen.getByText('Active')).toBeInTheDocument()
         expect(screen.getByText('Manage')).toBeInTheDocument()
@@ -62,7 +63,7 @@ describe('ProductCard', () => {
         render(
             <Provider store={store}>
                 <ProductCard type={ProductType.Automation} isDisabled={false} />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('Inactive')).toBeInTheDocument()
@@ -73,13 +74,13 @@ describe('ProductCard', () => {
         render(
             <Provider store={store}>
                 <ProductCard type={ProductType.Automation} isDisabled={true} />
-            </Provider>
+            </Provider>,
         )
 
         expect(
             screen.getByRole('button', {
                 name: 'lock Subscribe',
-            })
+            }),
         ).toBeAriaDisabled()
     })
 })

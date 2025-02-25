@@ -1,5 +1,6 @@
-import {render} from '@testing-library/react'
 import React from 'react'
+
+import { render } from '@testing-library/react'
 
 import {
     advancedMonthlyAutomatePlan,
@@ -22,30 +23,33 @@ const mockUseScheduledDowngrades = useScheduledDowngrades as jest.Mock
 
 describe('BillingScheduledDowngrades', () => {
     beforeEach(() => {
-        mockUseScheduledDowngrades.mockReturnValue({loading: true})
+        mockUseScheduledDowngrades.mockReturnValue({ loading: true })
     })
 
     it('should return null if the scheduled downgrades are still loading', () => {
-        const {container} = render(<BillingScheduledDowngrades />)
+        const { container } = render(<BillingScheduledDowngrades />)
         expect(container).toBeEmptyDOMElement()
     })
 
     it('should render an error if the scheduled downgrades failed to load', () => {
         const error = new Error('Oh no!')
-        mockUseScheduledDowngrades.mockReturnValue({error, loading: false})
+        mockUseScheduledDowngrades.mockReturnValue({ error, loading: false })
 
-        const {getByText} = render(<BillingScheduledDowngrades />)
+        const { getByText } = render(<BillingScheduledDowngrades />)
         expect(
             getByText(
-                'Something went wrong while trying to fetch scheduled downgrades.'
-            )
+                'Something went wrong while trying to fetch scheduled downgrades.',
+            ),
         ).toBeInTheDocument()
     })
 
     it('should return null if there are no scheduled downgrades', () => {
-        mockUseScheduledDowngrades.mockReturnValue({loading: false, value: []})
+        mockUseScheduledDowngrades.mockReturnValue({
+            loading: false,
+            value: [],
+        })
 
-        const {container} = render(<BillingScheduledDowngrades />)
+        const { container } = render(<BillingScheduledDowngrades />)
         expect(container).toBeEmptyDOMElement()
     })
 
@@ -61,7 +65,7 @@ describe('BillingScheduledDowngrades', () => {
             ],
         })
 
-        const {getByText} = render(<BillingScheduledDowngrades />)
+        const { getByText } = render(<BillingScheduledDowngrades />)
         const type = 'Helpdesk'
         expect(getByText(type)).toBeInTheDocument()
         const date = 'March 31st 2023'
@@ -121,7 +125,7 @@ describe('BillingScheduledDowngrades', () => {
                 },
             ],
         })
-        const {getByText} = render(<BillingScheduledDowngrades />)
+        const { getByText } = render(<BillingScheduledDowngrades />)
         expect(getByText(msg)).toBeInTheDocument()
     })
 })

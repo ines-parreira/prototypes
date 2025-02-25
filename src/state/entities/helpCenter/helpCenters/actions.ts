@@ -1,13 +1,13 @@
-import {createAction} from '@reduxjs/toolkit'
+import { createAction } from '@reduxjs/toolkit'
 
-import {HelpCenter} from 'models/helpCenter/types'
+import { HelpCenter } from 'models/helpCenter/types'
 
 import {
-    HELPCENTERS_FETCHED,
     HELPCENTER_CREATED,
+    HELPCENTER_DELETED,
     HELPCENTER_FETCHED,
     HELPCENTER_UPDATED,
-    HELPCENTER_DELETED,
+    HELPCENTERS_FETCHED,
 } from './constants'
 
 export const helpCenterCreated = createAction<HelpCenter>(HELPCENTER_CREATED)

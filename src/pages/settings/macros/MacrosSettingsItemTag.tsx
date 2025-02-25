@@ -1,5 +1,6 @@
-import {Tooltip, Badge} from '@gorgias/merchant-ui-kit'
 import React from 'react'
+
+import { Badge, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import TicketTag from 'pages/common/components/TicketTag'
 
@@ -10,7 +11,7 @@ type Props = {
     tags?: string[]
 }
 
-export function MacrosSettingsItemTag({id, tags}: Props) {
+export function MacrosSettingsItemTag({ id, tags }: Props) {
     return !!tags?.length ? (
         <div className={css.tags} id={id}>
             <TicketTag text={tags[0]} />

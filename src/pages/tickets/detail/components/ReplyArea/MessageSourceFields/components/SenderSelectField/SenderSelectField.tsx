@@ -1,7 +1,6 @@
-import React, {useRef, useState} from 'react'
+import React, { useRef, useState } from 'react'
 
-import {useSendersForSelectedChannel} from 'hooks/useOutboundChannels'
-
+import { useSendersForSelectedChannel } from 'hooks/useOutboundChannels'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import SelectInputBox, {
@@ -9,10 +8,11 @@ import SelectInputBox, {
 } from 'pages/common/forms/input/SelectInputBox'
 
 import SenderDropDownItem from './SenderDropDownItem'
+
 import css from './SenderSelectField.less'
 
 const SenderSelectField = () => {
-    const {selectedSender, senders, selectSender} =
+    const { selectedSender, senders, selectSender } =
         useSendersForSelectedChannel()
 
     const targetRef = useRef<HTMLDivElement>(null)
@@ -48,7 +48,7 @@ const SenderSelectField = () => {
                                     .sort(
                                         (a, b) =>
                                             Number(a?.isDeactivated) -
-                                            Number(b?.isDeactivated)
+                                            Number(b?.isDeactivated),
                                     )
                                     .map((sender) => (
                                         <SenderDropDownItem

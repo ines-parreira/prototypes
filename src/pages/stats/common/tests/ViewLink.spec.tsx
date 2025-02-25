@@ -1,6 +1,7 @@
-import {render} from '@testing-library/react'
 import React from 'react'
-import {LinkProps} from 'react-router-dom'
+
+import { render } from '@testing-library/react'
+import { LinkProps } from 'react-router-dom'
 
 import ViewLink from '../ViewLink'
 
@@ -17,13 +18,13 @@ describe('ViewLink', () => {
     it('should render the component and construct the link for the new view', () => {
         const viewName = `Assigned to: Acme Support`
         const filters = [
-            {left: 'ticket.assignee_user.id', operator: 'eq', right: 8},
+            { left: 'ticket.assignee_user.id', operator: 'eq', right: 8 },
         ]
 
-        const {container} = render(
+        const { container } = render(
             <ViewLink viewName={viewName} filters={filters} className="foo">
                 click here!
-            </ViewLink>
+            </ViewLink>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })

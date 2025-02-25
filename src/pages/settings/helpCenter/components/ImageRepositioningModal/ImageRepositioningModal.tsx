@@ -1,9 +1,9 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
+
 import Draggable from 'react-draggable'
 
 import Button from 'pages/common/components/button/Button'
 import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
-
 import CheckBox from 'pages/common/forms/CheckBox'
 
 import css from './ImageRepositioningModal.less'
@@ -84,16 +84,16 @@ export const ImageRepositioningModal = ({
                     src={localImage ? URL.createObjectURL(localImage) : ''}
                     alt=""
                     className={css.image}
-                    style={{objectPosition: `center ${50 - offset}%`}}
+                    style={{ objectPosition: `center ${50 - offset}%` }}
                 />
                 <Draggable
                     axis="y"
                     handle=".handle"
-                    defaultPosition={{x: 0, y: 0}}
+                    defaultPosition={{ x: 0, y: 0 }}
                     grid={[PIXEL_TO_OFFSET_RATIO, PIXEL_TO_OFFSET_RATIO]}
                     scale={1}
                     onDrag={(_, data) => {
-                        const {y} = data
+                        const { y } = data
                         setTop(y)
                         const dividedY = y / PIXEL_TO_OFFSET_RATIO
                         setOffset(
@@ -101,14 +101,14 @@ export const ImageRepositioningModal = ({
                                 ? MAX_ABSOLUTE_OFFSET
                                 : dividedY < -MAX_ABSOLUTE_OFFSET
                                   ? -MAX_ABSOLUTE_OFFSET
-                                  : dividedY
+                                  : dividedY,
                         )
                     }}
                 >
                     <div className="handle">
                         <div
                             className={css.boundingBox}
-                            style={{top: `${0 - top}px`}}
+                            style={{ top: `${0 - top}px` }}
                         >
                             <p className={css.tooltip}>
                                 Drag image to reposition

@@ -1,4 +1,4 @@
-import {BannerCategory} from '../types'
+import { BannerCategory } from '../types'
 
 export type AlertBannerStorage = {
     [key in BannerCategory]?: {

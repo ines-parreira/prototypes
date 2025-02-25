@@ -1,3 +1,5 @@
+import React from 'react'
+
 import {
     cleanup,
     fireEvent,
@@ -6,23 +8,22 @@ import {
     waitFor,
     within,
 } from '@testing-library/react'
-import {merge} from 'lodash'
-import React from 'react'
-import {Provider} from 'react-redux'
+import { merge } from 'lodash'
+import { Provider } from 'react-redux'
 import createMockStore from 'redux-mock-store'
 
-import {entitiesInitialState} from 'fixtures/entities'
-import {integrationsState} from 'fixtures/integrations'
+import { entitiesInitialState } from 'fixtures/entities'
+import { integrationsState } from 'fixtures/integrations'
 import {
     EmailIntegration,
     OutboundVerificationStatusValue,
 } from 'models/integration/types'
-import {deleteVerification} from 'models/singleSenderVerification/resources'
+import { deleteVerification } from 'models/singleSenderVerification/resources'
 import {
     SenderVerification,
     VerificationStatus,
 } from 'models/singleSenderVerification/types'
-import {RootState, StoreDispatch} from 'state/types'
+import { RootState, StoreDispatch } from 'state/types'
 
 import DeleteVerificationButton from '../DeleteVerificationButton'
 
@@ -33,7 +34,7 @@ const mockStore = createMockStore<RootState, StoreDispatch>()
 const emailAddress = 'sendgrid@gorgias.io'
 
 const integration = integrationsState.integrations.find(
-    (integration) => integration.meta.address === emailAddress
+    (integration) => integration.meta.address === emailAddress,
 ) as unknown as EmailIntegration
 
 const mockVerification = {
@@ -53,7 +54,7 @@ describe('DeleteVerificationButton', () => {
 
     const renderComponent = (
         props?: Partial<typeof DeleteVerificationButton>,
-        singleSenderState = {}
+        singleSenderState = {},
     ) => {
         cleanup()
         return render(
@@ -69,7 +70,7 @@ describe('DeleteVerificationButton', () => {
                     verification={mockVerification as SenderVerification}
                     {...props}
                 />
-            </Provider>
+            </Provider>,
         )
     }
 
@@ -91,24 +92,24 @@ describe('DeleteVerificationButton', () => {
                     ...mockVerification,
                     status: VerificationStatus.Verified,
                 },
-            }
+            },
         )
 
         fireEvent.click(
             await screen.findByRole('button', {
                 name: 'Delete verification',
-            })
+            }),
         )
         const tooltip = screen.getByRole('tooltip')
 
         fireEvent.click(
             within(tooltip).getByRole('button', {
                 name: /confirm/i,
-            })
+            }),
         )
 
         await waitFor(() =>
-            expect(deleteVerification).toHaveBeenCalledWith(integration.id)
+            expect(deleteVerification).toHaveBeenCalledWith(integration.id),
         )
         expect(onConfirm).toHaveBeenCalled()
     })

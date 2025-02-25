@@ -1,10 +1,10 @@
 import moment from 'moment-timezone'
 
-import {Campaign, InferredCampaignStatus} from 'models/convert/campaign/types'
+import { Campaign, InferredCampaignStatus } from 'models/convert/campaign/types'
 
 export const getCampaignStatus = (
     campaign: Campaign,
-    timezone: string
+    timezone: string,
 ): InferredCampaignStatus => {
     const currentDate = moment()
 
@@ -12,7 +12,7 @@ export const getCampaignStatus = (
         if (
             campaign.schedule.end_datetime &&
             currentDate.isAfter(
-                moment.utc(campaign.schedule.end_datetime).tz(timezone)
+                moment.utc(campaign.schedule.end_datetime).tz(timezone),
             )
         ) {
             return InferredCampaignStatus.Inactive

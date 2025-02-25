@@ -1,5 +1,3 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
 import React, {
     ForwardedRef,
     forwardRef,
@@ -8,6 +6,10 @@ import React, {
     useRef,
     useState,
 } from 'react'
+
+import classNames from 'classnames'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import css from 'pages/stats/common/components/Filter/components/FilterValue/FilterValue.less'
 import cssLogicalOperator from 'pages/stats/common/components/Filter/components/LogicalOperator/LogicalOperator.less'
@@ -33,7 +35,7 @@ export const getTooltipLabels = (optionsLabels: string[]) => {
             .slice(0, TOOLTIP_LABELS_TO_SHOW)
             .join(',\n')
             .concat(
-                `,\n${optionsLabels.length - TOOLTIP_LABELS_TO_SHOW} more...`
+                `,\n${optionsLabels.length - TOOLTIP_LABELS_TO_SHOW} more...`,
             )
     }
     return FILTER_VALUE_PLACEHOLDER
@@ -61,7 +63,7 @@ const FilterValue = (
         pressedState = false,
         isDisabled = false,
     }: Props,
-    ref: ForwardedRef<HTMLDivElement>
+    ref: ForwardedRef<HTMLDivElement>,
 ) => {
     const containerRef = useRef<HTMLDivElement>(null)
     useImperativeHandle(ref, () => containerRef.current!)
@@ -94,8 +96,8 @@ const FilterValue = (
                 ref={containerRef}
                 className={classNames(
                     css.container,
-                    {[css.pressedState]: pressedState && !isDisabled},
-                    className
+                    { [css.pressedState]: pressedState && !isDisabled },
+                    className,
                 )}
                 onClick={onChange}
                 data-testid="filter-value"
@@ -130,7 +132,7 @@ const FilterValue = (
                         className={classNames(
                             'material-icons',
                             'rounded',
-                            css.dropdownIcon
+                            css.dropdownIcon,
                         )}
                     >
                         {FILTER_DROPDOWN_ICON}

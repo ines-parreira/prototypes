@@ -1,1 +1,1 @@
-export {default} from './ConvertBundleDetail'
+export { default } from './ConvertBundleDetail'

@@ -1,16 +1,17 @@
-import {render, screen} from '@testing-library/react'
-import {fromJS, Map} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+import React, { ComponentProps } from 'react'
+
+import { render, screen } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
+import { Provider } from 'react-redux'
+import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {billingState} from 'fixtures/billing'
-import {entitiesInitialState} from 'fixtures/entities'
-import {integrationsState} from 'fixtures/integrations'
-import {RootState, StoreDispatch} from 'state/types'
-import {getLDClient} from 'utils/launchDarkly'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { billingState } from 'fixtures/billing'
+import { entitiesInitialState } from 'fixtures/entities'
+import { integrationsState } from 'fixtures/integrations'
+import { RootState, StoreDispatch } from 'state/types'
+import { getLDClient } from 'utils/launchDarkly'
 
 import GorgiasChatIntegrationQuickReplies, {
     GorgiasChatIntegrationQuickRepliesComponent,
@@ -22,7 +23,7 @@ jest.mock(
     'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader',
     () => () => {
         return <div data-testid="GorgiasChatIntegrationHeader" />
-    }
+    },
 )
 
 jest.mock('../GorgiasChatIntegrationConnectedChannel', () => () => {
@@ -70,10 +71,10 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
 
     describe('render()', () => {
         it('should render defaults because there is no quick replies in the integration', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <GorgiasChatIntegrationQuickReplies {...minProps} />
-                </Provider>
+                </Provider>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -85,16 +86,16 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
                 replies: ['foo', 'bar'],
             })
 
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <GorgiasChatIntegrationQuickReplies
                         {...minProps}
                         integration={integration.setIn(
                             ['meta', 'quick_replies'],
-                            quickRepliesState
+                            quickRepliesState,
                         )}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -104,7 +105,7 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
     describe('_submit()', () => {
         it('should trim quick replies in the payload before calling updateOrCreateIntegration', () => {
             const updateOrCreateIntegrationSpy = jest.fn(() =>
-                Promise.resolve()
+                Promise.resolve(),
             )
             const expectedPayload: Map<any, any> = fromJS({
                 id: 7,
@@ -127,17 +128,17 @@ describe('<GorgiasChatIntegrationQuickReplies/>', () => {
                         {...minProps}
                         integration={integration.setIn(
                             ['meta', 'quick_replies'],
-                            quickRepliesState
+                            quickRepliesState,
                         )}
                         updateOrCreateIntegration={updateOrCreateIntegrationSpy}
                     />
-                </Provider>
+                </Provider>,
             )
 
-            screen.getByRole('button', {name: 'Save Changes'}).click()
+            screen.getByRole('button', { name: 'Save Changes' }).click()
 
             expect(updateOrCreateIntegrationSpy).toHaveBeenCalledWith(
-                expectedPayload
+                expectedPayload,
             )
         })
     })

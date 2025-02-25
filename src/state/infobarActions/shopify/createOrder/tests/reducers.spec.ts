@@ -1,4 +1,4 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
 import {
     shopifyCalculatedDraftOrderFixture,
@@ -6,7 +6,7 @@ import {
 } from 'fixtures/shopify'
 
 import * as constants from '../constants'
-import reducer, {initialState} from '../reducers'
+import reducer, { initialState } from '../reducers'
 
 describe('infobarActions.shopify.createOrder reducer', () => {
     describe('SET_LOADING', () => {
@@ -35,7 +35,7 @@ describe('infobarActions.shopify.createOrder reducer', () => {
     describe('SET_PAYLOAD', () => {
         it('should set payload', () => {
             const payload = fromJS(shopifyDraftOrderPayloadFixture())
-            const action = {type: constants.SET_PAYLOAD, payload}
+            const action = { type: constants.SET_PAYLOAD, payload }
             const nextState = reducer(initialState, action)
             expect(nextState.get('payload')).toEqualImmutable(payload)
         })
@@ -44,7 +44,7 @@ describe('infobarActions.shopify.createOrder reducer', () => {
     describe('SET_CALCULATED_DRAFT_ORDER', () => {
         it('should set calculated draft order', () => {
             const calculatedDraftOrder = fromJS(
-                shopifyCalculatedDraftOrderFixture()
+                shopifyCalculatedDraftOrderFixture(),
             )
             const action = {
                 type: constants.SET_CALCULATED_DRAFT_ORDER,
@@ -52,7 +52,7 @@ describe('infobarActions.shopify.createOrder reducer', () => {
             }
             const nextState = reducer(initialState, action)
             expect(nextState.get('calculatedDraftOrder')).toEqualImmutable(
-                calculatedDraftOrder
+                calculatedDraftOrder,
             )
         })
     })
@@ -60,8 +60,8 @@ describe('infobarActions.shopify.createOrder reducer', () => {
     describe('SET_PRODUCTS', () => {
         it('should set products', () => {
             const products = fromJS({
-                1: {id: 1},
-                2: {id: 2},
+                1: { id: 1 },
+                2: { id: 2 },
             })
             const action = {
                 type: constants.SET_PRODUCTS,
@@ -76,7 +76,7 @@ describe('infobarActions.shopify.createOrder reducer', () => {
         it('should set initial state', () => {
             const payload = fromJS(shopifyDraftOrderPayloadFixture())
             const previousState = initialState.set('payload', payload)
-            const action = {type: constants.SET_INITIAL_STATE}
+            const action = { type: constants.SET_INITIAL_STATE }
             const nextState = reducer(previousState, action)
             expect(nextState).toEqualImmutable(initialState)
         })

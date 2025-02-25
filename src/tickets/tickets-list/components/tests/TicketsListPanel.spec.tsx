@@ -1,13 +1,14 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
-import {useParams} from 'react-router-dom'
 
-import {Panels} from 'core/layout/panels'
-import {assumeMock} from 'utils/testing'
+import { render, screen } from '@testing-library/react'
+import { useParams } from 'react-router-dom'
+
+import { Panels } from 'core/layout/panels'
+import { assumeMock } from 'utils/testing'
 
 import TicketsListPanel from '../TicketsListPanel'
 
-jest.mock('react-router-dom', () => ({useParams: jest.fn()}))
+jest.mock('react-router-dom', () => ({ useParams: jest.fn() }))
 const useParamsMock = assumeMock(useParams)
 
 jest.mock('ticket-list-view', () => ({
@@ -25,7 +26,7 @@ jest.mock('ticket-list-view', () => ({
         </div>
     ),
 }))
-jest.mock('tickets/core/hooks', () => ({useViewId: () => 123456}))
+jest.mock('tickets/core/hooks', () => ({ useViewId: () => 123456 }))
 
 describe('TicketsListPanel', () => {
     beforeEach(() => {
@@ -36,7 +37,7 @@ describe('TicketsListPanel', () => {
         render(
             <Panels size={1000}>
                 <TicketsListPanel />
-            </Panels>
+            </Panels>,
         )
         expect(screen.getByText('TicketListView')).toBeInTheDocument()
         expect(screen.getByText('viewId: 123456')).toBeInTheDocument()
@@ -44,11 +45,11 @@ describe('TicketsListPanel', () => {
     })
 
     it('should render the ticket list view with a ticket id', () => {
-        useParamsMock.mockReturnValue({ticketId: '789987'})
+        useParamsMock.mockReturnValue({ ticketId: '789987' })
         render(
             <Panels size={1000}>
                 <TicketsListPanel />
-            </Panels>
+            </Panels>,
         )
         expect(screen.getByText('activeTicketId: 789987')).toBeInTheDocument()
     })

@@ -1,12 +1,11 @@
-import {isObject} from 'lodash'
+import { isObject } from 'lodash'
 
-import {appQueryClient} from 'api/queryClient'
-
-import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
-import {ApiListResponseCursorPagination} from 'models/api/types'
-import {channelsQueryKeys, useListChannels} from 'models/channel/queries'
-import {listChannels} from 'models/channel/resources'
-import {Channel, ChannelLike, LegacyChannel} from 'models/channel/types'
+import { appQueryClient } from 'api/queryClient'
+import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
+import { ApiListResponseCursorPagination } from 'models/api/types'
+import { channelsQueryKeys, useListChannels } from 'models/channel/queries'
+import { listChannels } from 'models/channel/resources'
+import { Channel, ChannelLike, LegacyChannel } from 'models/channel/types'
 import {
     isTicketChannel,
     isTicketMessageSourceType,
@@ -79,7 +78,7 @@ export function isChannel(input: unknown): input is Channel {
 }
 
 export function isLegacyChannel(
-    channel: ChannelLike
+    channel: ChannelLike,
 ): channel is TicketMessageSourceType | TicketChannel | LegacyChannel {
     if (isChannel(channel)) {
         return (
@@ -101,7 +100,7 @@ export function isNewChannel(channel: ChannelLike): boolean {
 }
 
 function mockPaginatedChannelsList(
-    entries: Channel[]
+    entries: Channel[],
 ): ApiListResponseCursorPagination<Channel[]> {
     return {
         meta: {

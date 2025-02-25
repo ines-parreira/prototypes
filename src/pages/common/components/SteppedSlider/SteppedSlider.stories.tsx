@@ -1,7 +1,8 @@
-import {Meta, StoryObj} from '@storybook/react'
-import React, {ComponentProps, useState} from 'react'
+import React, { ComponentProps, useState } from 'react'
 
-import {SteppedSlider} from './SteppedSlider'
+import { Meta, StoryObj } from '@storybook/react'
+
+import { SteppedSlider } from './SteppedSlider'
 
 const storyConfig: Meta<typeof SteppedSlider> = {
     title: 'General/SteppedSlider',
@@ -27,7 +28,7 @@ const storyConfig: Meta<typeof SteppedSlider> = {
                 type: 'color',
             },
         },
-        onChange: {action: 'onChange'},
+        onChange: { action: 'onChange' },
     },
     parameters: {
         layout: 'centered',
@@ -43,11 +44,11 @@ const templateParameters = {
 }
 
 const defaultSteps = [
-    {key: 'start', label: 'Start'},
-    {key: 'step2', label: 'Step 2'},
-    {key: 'step3', label: 'Step 3'},
-    {key: 'step4', label: 'Step 4'},
-    {key: 'finish', label: 'Finish'},
+    { key: 'start', label: 'Start' },
+    { key: 'step2', label: 'Step 2' },
+    { key: 'step3', label: 'Step 3' },
+    { key: 'step4', label: 'Step 4' },
+    { key: 'finish', label: 'Finish' },
 ]
 
 const defaultProps: ComponentProps<typeof SteppedSlider> = {
@@ -78,11 +79,11 @@ const SliderWithState = ({
 /** Default onboarding stepped slider */
 export const DefaultSteppedSlider: Story = {
     render: (args) => (
-        <div style={{width: '400px'}}>
+        <div style={{ width: '400px' }}>
             <SliderWithState {...args} />
         </div>
     ),
-    args: {...defaultProps},
+    args: { ...defaultProps },
     parameters: {
         ...templateParameters,
     },
@@ -91,7 +92,7 @@ export const DefaultSteppedSlider: Story = {
 /** Custom initial value */
 export const CustomInitialValue: Story = {
     render: () => (
-        <div style={{width: '400px'}}>
+        <div style={{ width: '400px' }}>
             <SliderWithState initialValue="step4" />
         </div>
     ),
@@ -100,14 +101,14 @@ export const CustomInitialValue: Story = {
 /** Different widths */
 export const DifferentWidths: Story = {
     render: () => (
-        <div style={{display: 'flex', flexDirection: 'column', gap: '2rem'}}>
-            <div style={{width: '200px'}}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+            <div style={{ width: '200px' }}>
                 <SliderWithState />
             </div>
-            <div style={{width: '400px'}}>
+            <div style={{ width: '400px' }}>
                 <SliderWithState />
             </div>
-            <div style={{width: '600px'}}>
+            <div style={{ width: '600px' }}>
                 <SliderWithState />
             </div>
         </div>

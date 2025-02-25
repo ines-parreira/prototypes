@@ -1,8 +1,9 @@
-import React, {ReactNode} from 'react'
+import React, { ReactNode } from 'react'
 
 import FieldContainer from './FieldContainer'
 import FieldLabel from './FieldLabel'
 import FieldValue from './FieldValue'
+
 import css from './StaticField.less'
 
 type Props = {

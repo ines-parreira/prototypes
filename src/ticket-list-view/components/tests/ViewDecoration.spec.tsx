@@ -1,8 +1,9 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {View, ViewCategory} from 'models/view/types'
-import {systemViewIcons} from 'utils/views'
+import { render } from '@testing-library/react'
+
+import { View, ViewCategory } from 'models/view/types'
+import { systemViewIcons } from 'utils/views'
 
 import ViewDecoration from '../ViewDecoration'
 
@@ -10,10 +11,10 @@ describe('<ViewDecoration />', () => {
     it('should display view emoji decoration', () => {
         const view = {
             name: 'view name',
-            decoration: {emoji: '🎉'},
+            decoration: { emoji: '🎉' },
         } as View
 
-        const {getByText} = render(<ViewDecoration view={view} />)
+        const { getByText } = render(<ViewDecoration view={view} />)
 
         expect(getByText('🎉')).toBeInTheDocument()
     })
@@ -25,7 +26,7 @@ describe('<ViewDecoration />', () => {
             slug: 'inbox',
         } as View
 
-        const {getByText} = render(<ViewDecoration view={view} />)
+        const { getByText } = render(<ViewDecoration view={view} />)
 
         expect(getByText(systemViewIcons.inbox)).toBeInTheDocument()
     })

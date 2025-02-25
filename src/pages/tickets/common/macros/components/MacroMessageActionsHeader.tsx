@@ -1,16 +1,17 @@
+import React, { useCallback } from 'react'
+
 import classNames from 'classnames'
-import {List, Map} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useCallback} from 'react'
+import { List, Map } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 import {
-    UncontrolledTooltip,
-    UncontrolledButtonDropdown,
-    DropdownToggle,
-    DropdownMenu,
     DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+    UncontrolledButtonDropdown,
+    UncontrolledTooltip,
 } from 'reactstrap'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { FeatureFlagKey } from 'config/featureFlags'
 import {
     MacroActionName,
     MacroResponseActionName,
@@ -49,13 +50,13 @@ type MacroMessageActionsHeaderDropdownItemProps = {
 
 const MacroMessageActionsHeaderDropdownItem: React.FC<
     MacroMessageActionsHeaderDropdownItemProps
-> = ({type, current, used, onSelect}) => {
+> = ({ type, current, used, onSelect }) => {
     const id = `macro-action-header-item-${type}`
     const disabled = !current && used
     const onClick = useCallback(() => onSelect(type), [onSelect, type])
     const flags = useFlags()
 
-    const {title, icon, featureFlagKey} = optionsConfig[type]
+    const { title, icon, featureFlagKey } = optionsConfig[type]
 
     if (featureFlagKey && !flags[featureFlagKey]) {
         return null
@@ -104,7 +105,7 @@ const MacroMessageActionsHeaderDropdown: typeof MacroMessageActionsHeader = ({
                         type={key as MacroResponseActionName}
                         used={actions.some(
                             (action: Map<any, any>) =>
-                                action.get('name') === key
+                                action.get('name') === key,
                         )}
                         current={type === key}
                         onSelect={onSelect}

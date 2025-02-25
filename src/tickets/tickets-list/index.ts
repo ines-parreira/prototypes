@@ -1,1 +1,1 @@
-export {default as TicketsListPanel} from './components/TicketsListPanel'
+export { default as TicketsListPanel } from './components/TicketsListPanel'

@@ -1,5 +1,6 @@
+import React, { useState } from 'react'
+
 import moment from 'moment/moment'
-import React, {useState} from 'react'
 
 import {
     CouponSummary,
@@ -8,13 +9,13 @@ import {
 } from 'models/billing/types'
 import Button from 'pages/common/components/button/Button'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
-import {useExtendTrialWithSideEffects} from 'pages/settings/new_billing/hooks/useExtendTrialWithSideEffects'
+import { useExtendTrialWithSideEffects } from 'pages/settings/new_billing/hooks/useExtendTrialWithSideEffects'
+import { useReactivateTrialWithSideEffects } from 'pages/settings/new_billing/hooks/useReactivateTrialWithSideEffects'
+import { formatAmount } from 'pages/settings/new_billing/utils/formatAmount'
 
-import {useReactivateTrialWithSideEffects} from 'pages/settings/new_billing/hooks/useReactivateTrialWithSideEffects'
-import {formatAmount} from 'pages/settings/new_billing/utils/formatAmount'
-
-import {DATE_FORMAT} from '../../constants'
+import { DATE_FORMAT } from '../../constants'
 import AddSalesCouponModal from '../AddSalesCouponModal'
+
 import css from './UpcomingInvoiceCard.less'
 
 interface UpcomingInvoiceCardProps {
@@ -64,10 +65,10 @@ export default function UpcomingInvoiceCard({
                     }
                 }}
                 confirmLabel="Confirm"
-                cancelButtonProps={{intent: 'secondary'}}
+                cancelButtonProps={{ intent: 'secondary' }}
                 showCancelButton
             >
-                {({uid, onDisplayConfirmation, elementRef}) => (
+                {({ uid, onDisplayConfirmation, elementRef }) => (
                     <Button
                         id={uid}
                         ref={elementRef}
@@ -97,7 +98,7 @@ export default function UpcomingInvoiceCard({
                         {'No active subscription, '}
                         {hasExtendedTrial ? 'Extended trial' : 'Trial'}{' '}
                         {`ended on ${moment(endOfTrialDatetime).format(
-                            DATE_FORMAT
+                            DATE_FORMAT,
                         )}`}
                     </span>
                     {hasExtendedTrial ? null : reactivateTrialButton}
@@ -143,7 +144,7 @@ export default function UpcomingInvoiceCard({
 
     const sevenDaysAfterEndOfTrialDatetime = moment(endOfTrialDatetime).add(
         7,
-        'days'
+        'days',
     )
     const extendTrialButton = (
         <ConfirmationPopover
@@ -161,10 +162,10 @@ export default function UpcomingInvoiceCard({
                 extendTrial.mutate([])
             }}
             confirmLabel="Confirm"
-            cancelButtonProps={{intent: 'secondary'}}
+            cancelButtonProps={{ intent: 'secondary' }}
             showCancelButton
         >
-            {({uid, onDisplayConfirmation, elementRef}) => (
+            {({ uid, onDisplayConfirmation, elementRef }) => (
                 <Button
                     id={uid}
                     ref={elementRef}
@@ -189,12 +190,12 @@ export default function UpcomingInvoiceCard({
                         <>
                             <span className={css.subtotal}>
                                 {formatAmount(
-                                    upcomingInvoice.subtotal_in_cents / 100
+                                    upcomingInvoice.subtotal_in_cents / 100,
                                 )}
                             </span>{' '}
                             <span className={css.total}>
                                 {formatAmount(
-                                    upcomingInvoice.total_in_cents / 100
+                                    upcomingInvoice.total_in_cents / 100,
                                 )}
                             </span>
                             {' with '}
@@ -207,12 +208,12 @@ export default function UpcomingInvoiceCard({
                         <>
                             <span className={css.subtotal}>
                                 {formatAmount(
-                                    upcomingInvoice.subtotal_in_cents / 100
+                                    upcomingInvoice.subtotal_in_cents / 100,
                                 )}
                             </span>{' '}
                             <span className={css.total}>
                                 {formatAmount(
-                                    upcomingInvoice.total_in_cents / 100
+                                    upcomingInvoice.total_in_cents / 100,
                                 )}
                             </span>
                         </>

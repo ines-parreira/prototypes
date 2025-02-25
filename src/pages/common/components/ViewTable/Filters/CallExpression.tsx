@@ -1,32 +1,35 @@
-import {Badge} from '@gorgias/merchant-ui-kit'
+import React, { useCallback, useMemo } from 'react'
+
 import {
-    Expression,
     CallExpression as ESCallExpression,
-    LogicalExpression,
+    Expression,
     Identifier,
+    LogicalExpression,
     LogicalOperator,
 } from 'estree'
-import {fromJS, Map, List, Seq} from 'immutable'
+import { fromJS, List, Map, Seq } from 'immutable'
 import _get from 'lodash/get'
 import _pickBy from 'lodash/pickBy'
-import React, {useCallback, useMemo} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
+import { connect, ConnectedProps } from 'react-redux'
 
-import {BASIC_OPERATORS, UNARY_OPERATORS} from 'config'
-import {RootState} from 'state/types'
-import {updateFieldFilter} from 'state/views/actions'
+import { Badge } from '@gorgias/merchant-ui-kit'
+
+import { BASIC_OPERATORS, UNARY_OPERATORS } from 'config'
+import { RootState } from 'state/types'
+import { updateFieldFilter } from 'state/views/actions'
 import * as viewsSelectors from 'state/views/selectors'
-import {fieldPath, findProperty} from 'utils'
+import { fieldPath, findProperty } from 'utils'
 
-import css from './CallExpression.less'
 import useCustomFieldsFilters from './hooks/useCustomFieldsFilters'
 import Left from './Left'
-import {Operator} from './Operator'
-import {OperatorLabel} from './OperatorLabel'
-import {RemoveCallExpression} from './RemoveCallExpression'
+import { Operator } from './Operator'
+import { OperatorLabel } from './OperatorLabel'
+import { RemoveCallExpression } from './RemoveCallExpression'
 import Right from './Right'
-import {OperatorType} from './types'
-import {getCustomFieldOperators, resolveObjectPath} from './utils'
+import { OperatorType } from './types'
+import { getCustomFieldOperators, resolveObjectPath } from './utils'
+
+import css from './CallExpression.less'
 
 type OwnProps = {
     node: ESCallExpression
@@ -69,21 +72,21 @@ export const CallExpression = ({
                     ...(_get(
                         property.meta,
                         'views.additional_operators',
-                        {}
+                        {},
                     ) as Record<string, OperatorType>),
                 }
 
                 const excludedOperators = _get(
                     property.meta,
                     'views.excluded_operators',
-                    {}
+                    {},
                 ) as Record<string, OperatorType>
 
                 if (excludedOperators) {
                     operators = _pickBy(
                         operators,
                         (_, key) =>
-                            !Object.keys(excludedOperators).includes(key)
+                            !Object.keys(excludedOperators).includes(key),
                     )
                 }
 
@@ -92,7 +95,7 @@ export const CallExpression = ({
 
             return BASIC_OPERATORS
         },
-        [schemas]
+        [schemas],
     )
 
     const [left, right] = node.arguments as Expression[]
@@ -107,10 +110,10 @@ export const CallExpression = ({
         (field: Map<any, any>) =>
             objectPath ===
                 `${config.get('singular') as string}.${fieldPath(field)}` ||
-            (isCustomFieldPath && fieldPath(field) === 'custom_fields')
+            (isCustomFieldPath && fieldPath(field) === 'custom_fields'),
     )
 
-    const {customField, onCustomFieldChange} = useCustomFieldsFilters({
+    const { customField, onCustomFieldChange } = useCustomFieldsFilters({
         objectPath,
         index,
         schemas,
@@ -121,7 +124,7 @@ export const CallExpression = ({
             isCustomFieldPath
                 ? getCustomFieldOperators(schemas, customField)
                 : getOperators(objectPath),
-        [customField, getOperators, isCustomFieldPath, objectPath, schemas]
+        [customField, getOperators, isCustomFieldPath, objectPath, schemas],
     )
 
     return (

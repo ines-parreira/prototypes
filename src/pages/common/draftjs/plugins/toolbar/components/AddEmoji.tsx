@@ -1,13 +1,14 @@
-import {EditorState} from 'draft-js'
-import {EmojiData} from 'emoji-mart'
-import React, {Component} from 'react'
+import React, { Component } from 'react'
+
+import { EditorState } from 'draft-js'
+import { EmojiData } from 'emoji-mart'
+
 import 'emoji-mart/css/emoji-mart.css'
 
 import EmojiPicker from 'pages/common/components/EmojiPicker/EmojiPicker'
-import {insertText} from 'utils'
+import { insertText } from 'utils'
 
-import {ActionInjectedProps} from '../types'
-
+import { ActionInjectedProps } from '../types'
 import Popover from './ButtonPopover'
 
 import './AddEmoji.less'
@@ -31,17 +32,17 @@ export default class AddEmoji extends Component<Props, State> {
             // forcing the current selection ensures that it will be at it's right place
             newEditorState = EditorState.forceSelection(
                 newEditorState,
-                newEditorState.getSelection()
+                newEditorState.getSelection(),
             )
 
             this.props.setEditorState(newEditorState)
-            this.setState({isOpen: false})
+            this.setState({ isOpen: false })
         }
     }
 
-    _onPopoverOpen = () => this.setState({isOpen: true})
+    _onPopoverOpen = () => this.setState({ isOpen: true })
 
-    _onPopoverClose = () => this.setState({isOpen: false})
+    _onPopoverClose = () => this.setState({ isOpen: false })
 
     render() {
         return (

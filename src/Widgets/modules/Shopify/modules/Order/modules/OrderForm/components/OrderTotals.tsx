@@ -1,11 +1,13 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
-import {List, Map} from 'immutable'
-import _debounce from 'lodash/debounce'
 import React from 'react'
-import {Label} from 'reactstrap'
 
-import {formatPrice} from 'business/shopify/number'
+import classnames from 'classnames'
+import { List, Map } from 'immutable'
+import _debounce from 'lodash/debounce'
+import { Label } from 'reactstrap'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { formatPrice } from 'business/shopify/number'
 import {
     getSubtotal,
     getTotalAvailableToRefund,
@@ -13,7 +15,6 @@ import {
     getTotalTax,
 } from 'business/shopify/refund'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
-
 import AmountInput from 'Widgets/modules/Shopify/modules/AmountInput'
 
 import css from './OrderTotals.less'
@@ -45,21 +46,21 @@ export default class OrderTotals extends React.PureComponent<Props, State> {
     }
 
     _onShippingChange = (value: number) => {
-        const {refund} = this.props
+        const { refund } = this.props
         const max = Number(refund.getIn(['shipping', 'maximum_refundable']))
         const newValue = value > max ? max : value
         const newShipping = newValue
 
-        this.setState({shipping: newShipping})
+        this.setState({ shipping: newShipping })
     }
 
     _updatePayload = _debounce(() => {
-        const {onPayloadChange, currencyCode, payload} = this.props
-        const {shipping} = this.state
+        const { onPayloadChange, currencyCode, payload } = this.props
+        const { shipping } = this.state
 
         const newPayload = payload.setIn(
             ['shipping', 'amount'],
-            formatPrice(shipping, currencyCode)
+            formatPrice(shipping, currencyCode),
         )
         onPayloadChange(newPayload)
     }, 250)
@@ -73,7 +74,7 @@ export default class OrderTotals extends React.PureComponent<Props, State> {
             currencyCode,
             hasMultipleGateways,
         } = this.props
-        const {shipping} = this.state
+        const { shipping } = this.state
         const shippingMaximumRefundable = refund.getIn([
             'shipping',
             'maximum_refundable',
@@ -82,7 +83,7 @@ export default class OrderTotals extends React.PureComponent<Props, State> {
         const hasGiftCard = (
             refund.get('transactions', List()) as List<Map<any, any>>
         ).find((value) =>
-            value ? value.get('gateway') === 'gift_card' : false
+            value ? value.get('gateway') === 'gift_card' : false,
         )
 
         return (
@@ -107,7 +108,7 @@ export default class OrderTotals extends React.PureComponent<Props, State> {
                             css.grey,
                             !!parseFloat(shippingMaximumRefundable)
                                 ? 'mt-2'
-                                : 'mb-2'
+                                : 'mb-2',
                         )}
                     >
                         <Label for="shipping" className="d-inline">
@@ -133,7 +134,7 @@ export default class OrderTotals extends React.PureComponent<Props, State> {
                             css.value,
                             {
                                 'text-muted': loading,
-                            }
+                            },
                         )}
                     >
                         {!shippingMaximumRefundable ||
@@ -165,7 +166,7 @@ export default class OrderTotals extends React.PureComponent<Props, State> {
                     <MoneyAmount
                         amount={formatPrice(
                             getTotalCartDiscountAmount(refund),
-                            currencyCode
+                            currencyCode,
                         )}
                         currencyCode={currencyCode}
                         negative
@@ -191,7 +192,7 @@ export default class OrderTotals extends React.PureComponent<Props, State> {
                             <span
                                 className={classnames(
                                     'material-icons red ml-2',
-                                    css.tooltip
+                                    css.tooltip,
                                 )}
                                 id="gateways-warning-icon"
                                 aria-label="Order with multiple gateways warning"
@@ -214,7 +215,7 @@ export default class OrderTotals extends React.PureComponent<Props, State> {
                     <MoneyAmount
                         amount={formatPrice(
                             getTotalAvailableToRefund(refund),
-                            currencyCode
+                            currencyCode,
                         )}
                         currencyCode={currencyCode}
                         renderIfZero

@@ -1,26 +1,25 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {useDistributionTrendReportData} from 'hooks/reporting/common/useDistributionTrendReportData'
-
-import {useTables} from 'hooks/reporting/common/useTableReportData'
+import { useDistributionTrendReportData } from 'hooks/reporting/common/useDistributionTrendReportData'
+import { useTables } from 'hooks/reporting/common/useTableReportData'
 import {
     useTimeSeriesPerDimensionReportData,
     useTimeSeriesReportData,
 } from 'hooks/reporting/common/useTimeSeriesReportData'
-import {useTrendReportData} from 'hooks/reporting/common/useTrendReportData'
-import {useSanitizedDashboard} from 'hooks/reporting/custom-reports/useSanitizedDashboard'
-import {MetricPerDimensionFetch} from 'hooks/reporting/distributions'
-import {getCsvFileNameWithDates} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-import {MetricTrendFetch} from 'hooks/reporting/useMetricTrend'
+import { useTrendReportData } from 'hooks/reporting/common/useTrendReportData'
+import { useSanitizedDashboard } from 'hooks/reporting/custom-reports/useSanitizedDashboard'
+import { MetricPerDimensionFetch } from 'hooks/reporting/distributions'
+import { getCsvFileNameWithDates } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { MetricTrendFetch } from 'hooks/reporting/useMetricTrend'
 import {
     TimeSeriesFetch,
     TimeSeriesPerDimensionFetch,
 } from 'hooks/reporting/useTimeSeries'
-import {AutomateOverviewReportConfig} from 'pages/stats/automate/overview/AutomateOverviewReportConfig'
-import {MetricTrendFormat, MetricValueFormat} from 'pages/stats/common/utils'
-import {CampaignsLegacyReportConfig} from 'pages/stats/convert/campaigns/CampaignsLegacyReportConfig'
-import {CampaignsPerformanceReportConfig} from 'pages/stats/convert/campaigns/CampaignsPerformanceReportConfig'
+import { AutomateOverviewReportConfig } from 'pages/stats/automate/overview/AutomateOverviewReportConfig'
+import { MetricTrendFormat, MetricValueFormat } from 'pages/stats/common/utils'
+import { CampaignsLegacyReportConfig } from 'pages/stats/convert/campaigns/CampaignsLegacyReportConfig'
+import { CampaignsPerformanceReportConfig } from 'pages/stats/convert/campaigns/CampaignsPerformanceReportConfig'
 import {
     ChartConfig,
     CustomReportChild,
@@ -29,19 +28,18 @@ import {
     DataExportFormat,
     ReportFetch,
 } from 'pages/stats/custom-reports/types'
-import {SatisfactionReportConfig} from 'pages/stats/quality-management/satisfaction/SatisfactionReportConfig'
-import {ServiceLevelAgreementsReportConfig} from 'pages/stats/sla/ServiceLevelAgreementsReportConfig'
-import {SupportPerformanceAgentsReportConfig} from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReportConfig'
-import {AutoQAReportConfig} from 'pages/stats/support-performance/auto-qa/AutoQAReportConfig'
-import {BusiestTimesReportConfig} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesReportConfig'
-import {ChannelsReportConfig} from 'pages/stats/support-performance/channels/ChannelsReportConfig'
-import {SupportPerformanceOverviewReportConfig} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
-import {TicketInsightsTagsReportConfig} from 'pages/stats/ticket-insights/tags/TagsReportConfig'
-import {TicketFieldsReportConfig} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsReportConfig'
-import {VoiceAgentsReportConfig} from 'pages/stats/voice/pages/VoiceAgentsReportConfig'
-import {VoiceOverviewReportConfig} from 'pages/stats/voice/pages/VoiceOverviewReportConfig'
-import {createTimeSeriesPerDimensionReport} from 'services/reporting/SLAsReportingService'
-
+import { SatisfactionReportConfig } from 'pages/stats/quality-management/satisfaction/SatisfactionReportConfig'
+import { ServiceLevelAgreementsReportConfig } from 'pages/stats/sla/ServiceLevelAgreementsReportConfig'
+import { SupportPerformanceAgentsReportConfig } from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReportConfig'
+import { AutoQAReportConfig } from 'pages/stats/support-performance/auto-qa/AutoQAReportConfig'
+import { BusiestTimesReportConfig } from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesReportConfig'
+import { ChannelsReportConfig } from 'pages/stats/support-performance/channels/ChannelsReportConfig'
+import { SupportPerformanceOverviewReportConfig } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
+import { TicketInsightsTagsReportConfig } from 'pages/stats/ticket-insights/tags/TagsReportConfig'
+import { TicketFieldsReportConfig } from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsReportConfig'
+import { VoiceAgentsReportConfig } from 'pages/stats/voice/pages/VoiceAgentsReportConfig'
+import { VoiceOverviewReportConfig } from 'pages/stats/voice/pages/VoiceOverviewReportConfig'
+import { createTimeSeriesPerDimensionReport } from 'services/reporting/SLAsReportingService'
 import {
     createTimeSeriesReport,
     createTrendReport,
@@ -81,7 +79,7 @@ type Queries = {
         metricFormat: MetricValueFormat
         title: string
     }[]
-    tables: {fetchTable: ReportFetch; title: string}[]
+    tables: { fetchTable: ReportFetch; title: string }[]
     distributions:
         | {
               fetchCurrentDistribution: MetricPerDimensionFetch
@@ -153,7 +151,7 @@ const reduceReport = (acc: Queries, child: CustomReportChild): Queries => {
 }
 
 const getQueryGroupsFromCustomReport = (
-    customReport: CustomReportSchema
+    customReport: CustomReportSchema,
 ): Queries => {
     return customReport.children.reduce<Queries>(reduceReport, {
         timeSeries: [],
@@ -169,60 +167,61 @@ const TIME_SERIES_FILE_SUFFIX = 'timeSeries'
 const DISTRIBUTIONS_FILE_SUFFIX = 'distributions'
 
 export const useCustomReportData = (customReport: CustomReportSchema) => {
-    const {cleanStatsFilters, userTimezone, granularity} = useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone, granularity } =
+        useNewStatsFilters()
 
     const sanitizedDashboard = useSanitizedDashboard(customReport)
 
     const queryGroups = useMemo(
         () => getQueryGroupsFromCustomReport(sanitizedDashboard),
-        [sanitizedDashboard]
+        [sanitizedDashboard],
     )
 
     const trends = useTrendReportData(
         cleanStatsFilters,
         userTimezone,
-        queryGroups.trends
+        queryGroups.trends,
     )
     const trendsReport = createTrendReport(
         trends.data,
-        `${getCsvFileNameWithDates(cleanStatsFilters.period, `${customReport.name} - ${TRENDS_FILE_SUFFIX}`)}`
+        `${getCsvFileNameWithDates(cleanStatsFilters.period, `${customReport.name} - ${TRENDS_FILE_SUFFIX}`)}`,
     )
     const timeSeries = useTimeSeriesReportData(
         cleanStatsFilters,
         userTimezone,
         granularity,
-        queryGroups.timeSeries
+        queryGroups.timeSeries,
     )
     const timeSeriesReport = createTimeSeriesReport(
         timeSeries.data,
-        `${getCsvFileNameWithDates(cleanStatsFilters.period, `${customReport.name} - ${TIME_SERIES_FILE_SUFFIX}`)}`
+        `${getCsvFileNameWithDates(cleanStatsFilters.period, `${customReport.name} - ${TIME_SERIES_FILE_SUFFIX}`)}`,
     )
 
     const timeSeriesPerDimension = useTimeSeriesPerDimensionReportData(
         cleanStatsFilters,
         userTimezone,
         granularity,
-        queryGroups.timeSeriesPerDimension
+        queryGroups.timeSeriesPerDimension,
     )
     const timeSeriesPerDimensionReports = createTimeSeriesPerDimensionReport(
         timeSeriesPerDimension.data,
-        cleanStatsFilters.period
+        cleanStatsFilters.period,
     )
 
     const distributions = useDistributionTrendReportData(
         cleanStatsFilters,
         userTimezone,
-        queryGroups.distributions
+        queryGroups.distributions,
     )
     const distributionsReport = createTrendReport(
         distributions.data,
-        `${getCsvFileNameWithDates(cleanStatsFilters.period, `${queryGroups.distributions?.title} - ${DISTRIBUTIONS_FILE_SUFFIX}`)}`
+        `${getCsvFileNameWithDates(cleanStatsFilters.period, `${queryGroups.distributions?.title} - ${DISTRIBUTIONS_FILE_SUFFIX}`)}`,
     )
     const tables = useTables(
         cleanStatsFilters,
         userTimezone,
         granularity,
-        queryGroups.tables
+        queryGroups.tables,
     )
 
     const loading = useMemo(() => {
@@ -237,7 +236,7 @@ export const useCustomReportData = (customReport: CustomReportSchema) => {
 
     const fileName = getCsvFileNameWithDates(
         cleanStatsFilters.period,
-        customReport.name
+        customReport.name,
     )
 
     const files = useMemo(
@@ -254,8 +253,8 @@ export const useCustomReportData = (customReport: CustomReportSchema) => {
             timeSeriesReport.files,
             trendsReport.files,
             tables.files,
-        ]
+        ],
     )
 
-    return {files, fileName, isLoading: loading}
+    return { files, fileName, isLoading: loading }
 }

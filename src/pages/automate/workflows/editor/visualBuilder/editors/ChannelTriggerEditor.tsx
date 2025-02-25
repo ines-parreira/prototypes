@@ -1,16 +1,17 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 
-import {useTranslationsPreviewContext} from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
-import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
-import {ChannelTriggerNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import {Drawer} from 'pages/common/components/Drawer'
+import { Label } from '@gorgias/merchant-ui-kit'
+
+import { useTranslationsPreviewContext } from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
+import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
+import { ChannelTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { Drawer } from 'pages/common/components/Drawer'
 import Caption from 'pages/common/forms/Caption/Caption'
 import TextInput from 'pages/common/forms/input/TextInput'
 
 import TranslationsPreviewField from '../components/translations/TranslationPreviewField'
 import TranslationPreviewHeader from '../components/translations/TranslationPreviewHeader'
-import {useNodeEditorDrawerContext} from '../NodeEditorDrawerContext'
+import { useNodeEditorDrawerContext } from '../NodeEditorDrawerContext'
 import NodeEditorDrawerHeader from '../NodeEditorDrawerHeader'
 
 import css from './NodeEditor.less'
@@ -22,13 +23,13 @@ export default function ChannelTriggerEditor({
 }: {
     nodeInEdition: ChannelTriggerNodeType
 }) {
-    const {onClose} = useNodeEditorDrawerContext()
-    const {previewLanguage} = useTranslationsPreviewContext()
+    const { onClose } = useNodeEditorDrawerContext()
+    const { previewLanguage } = useTranslationsPreviewContext()
     const [inputRef, setInputRef] = useState<HTMLInputElement | null>(null)
     useEffect(() => {
-        inputRef?.focus({preventScroll: true})
+        inputRef?.focus({ preventScroll: true })
     }, [inputRef])
-    const {dispatch} = useVisualBuilderContext()
+    const { dispatch } = useVisualBuilderContext()
 
     return (
         <>

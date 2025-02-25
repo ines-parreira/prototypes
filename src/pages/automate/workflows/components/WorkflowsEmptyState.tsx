@@ -1,17 +1,20 @@
 import React from 'react'
 
-import {Container} from 'reactstrap'
+import { Container } from 'reactstrap'
 
 import templatesImage from 'assets/img/workflows/templates.png'
 import AutomateViewEmptyStateBanner from 'pages/automate/common/components/AutomateViewEmptyStateBanner'
 import Button from 'pages/common/components/button/Button'
 
-import {WORKFLOWS_DESCRIPTION, WORKFLOWS_MAIN_TITLE} from '../common/constants'
-import {WORKFLOW_TEMPLATES_LIST} from '../workflowTemplates'
+import {
+    WORKFLOWS_DESCRIPTION,
+    WORKFLOWS_MAIN_TITLE,
+} from '../common/constants'
+import { WORKFLOW_TEMPLATES_LIST } from '../workflowTemplates'
+import WorkflowTemplateCard from './WorkflowTemplateCard'
 
 import templatesCss from '../WorkflowTemplatesView.less'
 import css from './WorkflowsEmptyState.less'
-import WorkflowTemplateCard from './WorkflowTemplateCard'
 
 type Props = {
     goToWorkflowTemplatesPage: () => void

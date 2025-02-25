@@ -1,10 +1,10 @@
-import {useCallback, useMemo} from 'react'
+import { useCallback, useMemo } from 'react'
 
-import {IntegrationType} from 'models/integration/constants'
-import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
+import { IntegrationType } from 'models/integration/constants'
+import { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 
-import {DEFAULT_UNFULFILLED_MESSAGE} from '../constants'
+import { DEFAULT_UNFULFILLED_MESSAGE } from '../constants'
 
 export default function useTrackOrderFlow(shopName: string) {
     const {
@@ -21,7 +21,7 @@ export default function useTrackOrderFlow(shopName: string) {
                     trackOrderFlow.unfulfilledMessage
             })
         },
-        [handleSelfServiceConfigurationUpdate]
+        [handleSelfServiceConfigurationUpdate],
     )
 
     const trackOrderFlow = useMemo(
@@ -32,7 +32,7 @@ export default function useTrackOrderFlow(shopName: string) {
                     selfServiceConfiguration.trackOrderPolicy
                         .unfulfilledMessage ?? DEFAULT_UNFULFILLED_MESSAGE,
             },
-        [selfServiceConfiguration?.trackOrderPolicy]
+        [selfServiceConfiguration?.trackOrderPolicy],
     )
 
     return {

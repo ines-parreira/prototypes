@@ -1,10 +1,10 @@
 import {
-    GorgiasUIEnv,
     getEnvironment,
+    getEnvVars,
+    GorgiasUIEnv,
+    isDevelopment,
     isProduction,
     isStaging,
-    isDevelopment,
-    getEnvVars,
     NodeEnv,
 } from '../environment'
 
@@ -83,14 +83,14 @@ describe('environment utils', () => {
         ])(
             'should return %s property with "%s" value from process.env',
             (key, value) => {
-                expect(getEnvVars({[key]: value})).toHaveProperty(key, value)
-            }
+                expect(getEnvVars({ [key]: value })).toHaveProperty(key, value)
+            },
         )
 
         it('should return NODE_ENV property set to undefined if process.env.NODE_ENV does not match the allowed values', () => {
-            expect(getEnvVars({NODE_ENV: 'foo'})).toHaveProperty(
+            expect(getEnvVars({ NODE_ENV: 'foo' })).toHaveProperty(
                 'NODE_ENV',
-                undefined
+                undefined,
             )
         })
     })

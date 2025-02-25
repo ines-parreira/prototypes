@@ -1,32 +1,31 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {useAverageScoreTrend} from 'hooks/reporting/quality-management/satisfaction/useAverageScoreTrend'
-import {useResponseRateTrend} from 'hooks/reporting/quality-management/satisfaction/useResponseRateTrend'
-import {useSatisfactionScoreTrend} from 'hooks/reporting/quality-management/satisfaction/useSatisfactionScoreTrend'
-import {useSurveyScores} from 'hooks/reporting/quality-management/satisfaction/useSurveyScores'
-import {useSurveysSentTrend} from 'hooks/reporting/quality-management/satisfaction/useSurveysSentTrend'
-
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useAverageScoreTrend } from 'hooks/reporting/quality-management/satisfaction/useAverageScoreTrend'
+import { useResponseRateTrend } from 'hooks/reporting/quality-management/satisfaction/useResponseRateTrend'
+import { useSatisfactionScoreTrend } from 'hooks/reporting/quality-management/satisfaction/useSatisfactionScoreTrend'
+import { useSurveyScores } from 'hooks/reporting/quality-management/satisfaction/useSurveyScores'
+import { useSurveysSentTrend } from 'hooks/reporting/quality-management/satisfaction/useSurveysSentTrend'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
 
 export const useSatisfactionMetrics = () => {
-    const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone } = useNewStatsFilters()
 
     const satisfactionScoreTrend = useSatisfactionScoreTrend(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
     const responseRateTrend = useResponseRateTrend(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
     const surveysSentTrend = useSurveysSentTrend(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
 
     const averageScoreTrend = useAverageScoreTrend(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
 
     const surveyScores = useSurveyScores(cleanStatsFilters, userTimezone)

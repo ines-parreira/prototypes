@@ -1,1 +1,1 @@
-export {default} from './CustomerFields'
+export { default } from './CustomerFields'

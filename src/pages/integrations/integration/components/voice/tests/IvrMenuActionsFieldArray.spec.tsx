@@ -1,9 +1,10 @@
-import {fireEvent, render} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import {fromJS} from 'immutable'
-import {times} from 'lodash'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { fromJS } from 'immutable'
+import { times } from 'lodash'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -12,7 +13,7 @@ import {
     IvrMenuActionType,
     VoiceMessageType,
 } from 'models/integration/types'
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
 
 import IvrMenuActionsFieldArray from '../IvrMenuActionsFieldArray'
 
@@ -38,20 +39,20 @@ describe('<IvrMenuActionsFieldArray />', () => {
 
     const renderComponent = (
         options: IvrMenuAction[],
-        integrationsState = []
+        integrationsState = [],
     ) =>
         render(
             <Provider
                 store={mockStore({
-                    integrations: fromJS({integrations: integrationsState}),
+                    integrations: fromJS({ integrations: integrationsState }),
                 } as RootState)}
             >
                 <IvrMenuActionsFieldArray value={options} onChange={onChange} />
-            </Provider>
+            </Provider>,
         )
 
     it('should render with FF on', () => {
-        const {getByText} = renderComponent(options)
+        const { getByText } = renderComponent(options)
 
         expect(getByText('Menu options')).toBeInTheDocument()
         expect(getByText('Forward call to external number')).toBeInTheDocument()
@@ -65,7 +66,7 @@ describe('<IvrMenuActionsFieldArray />', () => {
     })
 
     it('should allow adding menu options', () => {
-        const {getByText} = renderComponent(options)
+        const { getByText } = renderComponent(options)
 
         const addButton = getByText('Add option')
         fireEvent.click(addButton)
@@ -83,7 +84,7 @@ describe('<IvrMenuActionsFieldArray />', () => {
     })
 
     it('should allow removing menu options', () => {
-        const {getByText} = renderComponent(options)
+        const { getByText } = renderComponent(options)
 
         const removeButton = getByText('close')
         fireEvent.click(removeButton)
@@ -100,7 +101,7 @@ describe('<IvrMenuActionsFieldArray />', () => {
             },
         }))
 
-        const {queryByText} = renderComponent(options)
+        const { queryByText } = renderComponent(options)
 
         const addButton = queryByText('Add option')
         expect(addButton).toBeNull()
@@ -120,7 +121,7 @@ describe('<IvrMenuActionsFieldArray />', () => {
             },
         ]
 
-        const {getByText} = renderComponent(options)
+        const { getByText } = renderComponent(options)
 
         expect(getByText('Send call to SMS')).toBeInTheDocument()
     })

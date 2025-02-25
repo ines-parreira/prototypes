@@ -1,15 +1,15 @@
 import React from 'react'
 
-import {useSalesCoupons} from 'models/billing/queries'
-import {BillingInternalViewUI} from 'pages/settings/new_billing/components/BillingInternalViewUI'
-import {useBillingStateWithSideEffects} from 'pages/settings/new_billing/hooks/useBillingStateWithSideEffects'
+import { useSalesCoupons } from 'models/billing/queries'
+import { BillingInternalViewUI } from 'pages/settings/new_billing/components/BillingInternalViewUI'
+import { useBillingStateWithSideEffects } from 'pages/settings/new_billing/hooks/useBillingStateWithSideEffects'
 
 export default React.memo(BillingInternalView)
 
 export function BillingInternalView() {
-    const {data: billingState, ...billingStateQuery} =
+    const { data: billingState, ...billingStateQuery } =
         useBillingStateWithSideEffects()
-    const {data: coupons, ...salesCouponsQuery} = useSalesCoupons()
+    const { data: coupons, ...salesCouponsQuery } = useSalesCoupons()
 
     if (billingStateQuery.isLoading || salesCouponsQuery.isLoading)
         return <div>Loading...</div>
@@ -68,7 +68,7 @@ function groupCoupons(coupons: string[]) {
         .filter((coupon) => coupon.includes(`-hd+ao-month`))
         .sort()
         .concat(
-            coupons.filter((coupon) => coupon.includes(`-hd+ao-year`)).sort()
+            coupons.filter((coupon) => coupon.includes(`-hd+ao-year`)).sort(),
         )
 
     return {

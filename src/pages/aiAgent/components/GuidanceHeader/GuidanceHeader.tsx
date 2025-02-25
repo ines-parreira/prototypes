@@ -1,14 +1,16 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 
 import {
     GUIDANCE_ARTICLE_LIMIT,
     GUIDANCE_ARTICLE_LIMIT_WARNING,
 } from '../../constants'
-import {useGuidanceTemplates} from '../../hooks/useGuidanceTemplates'
+import { useGuidanceTemplates } from '../../hooks/useGuidanceTemplates'
+
 import css from './GuidanceHeader.less'
 
 const CREATE_GUIDANCE_BUTTON_ID = 'create-guidance-button'
@@ -34,7 +36,7 @@ export const GuidanceHeader = ({
         guidanceArticlesLength >= GUIDANCE_ARTICLE_LIMIT
     const isGuidanceArticleLimitWarning =
         guidanceArticlesLength >= GUIDANCE_ARTICLE_LIMIT_WARNING
-    const {guidanceTemplates} = useGuidanceTemplates()
+    const { guidanceTemplates } = useGuidanceTemplates()
     const isGuidanceTemplatesEmpty = guidanceTemplates.length === 0
 
     const displayCreateGuidanceButton =

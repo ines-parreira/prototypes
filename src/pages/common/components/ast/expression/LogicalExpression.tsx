@@ -1,14 +1,15 @@
-import {Map, List} from 'immutable'
 import React from 'react'
+
+import { List, Map } from 'immutable'
 
 import AddSiblingCondition from 'pages/common/components/ast/operations/AddSiblingCondition'
 import {
     getSyntaxTreeLeaves,
     SyntaxTree,
 } from 'pages/common/components/ast/utils'
-import {ExpressionProps} from 'pages/common/hooks/rule/RuleProvider'
-import {useRuleContext} from 'pages/common/hooks/useRuleContext'
-import {RuleItemActions} from 'pages/settings/rules/types'
+import { ExpressionProps } from 'pages/common/hooks/rule/RuleProvider'
+import { useRuleContext } from 'pages/common/hooks/useRuleContext'
+import { RuleItemActions } from 'pages/settings/rules/types'
 
 type LogicalExpressionProps = {
     rule: Map<any, any>
@@ -29,14 +30,14 @@ export default function LogicalExpression({
     leftsiblings,
     schemas,
 }: LogicalExpressionProps) {
-    const {Expression} = useRuleContext()
+    const { Expression } = useRuleContext()
 
     let leftsiblings2
     let leftsiblings3
 
     if (leftsiblings) {
         leftsiblings2 = leftsiblings.concat(
-            getSyntaxTreeLeaves(left)
+            getSyntaxTreeLeaves(left),
         ) as List<any>
         leftsiblings3 = leftsiblings2.push('operator')
     }

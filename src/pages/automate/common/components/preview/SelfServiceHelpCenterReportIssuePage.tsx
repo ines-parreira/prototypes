@@ -1,24 +1,26 @@
-import React, {useEffect} from 'react'
-import {useHistory} from 'react-router-dom'
+import React, { useEffect } from 'react'
 
-import {HELP_CENTER_TEXTS} from 'config/helpCenter'
-import {HelpCenter} from 'models/helpCenter/types'
+import { useHistory } from 'react-router-dom'
 
-import {SELF_SERVICE_PREVIEW_ROUTES} from './constants'
-import css from './SelfServiceHelpCenterReportIssuePage.less'
+import { HELP_CENTER_TEXTS } from 'config/helpCenter'
+import { HelpCenter } from 'models/helpCenter/types'
+
+import { SELF_SERVICE_PREVIEW_ROUTES } from './constants'
 import SelfServiceHelpCenterRequestSentPage from './SelfServiceHelpCenterRequestSentPage'
-import {useSelfServicePreviewContext} from './SelfServicePreviewContext'
+import { useSelfServicePreviewContext } from './SelfServicePreviewContext'
+
+import css from './SelfServiceHelpCenterReportIssuePage.less'
 
 type Props = {
     helpCenter: HelpCenter
 }
 
 const SelfServiceHelpCenterReportIssuePage = (props: Props) => {
-    const {helpCenter} = props
+    const { helpCenter } = props
     const history = useHistory()
     const helpCenterTexts = HELP_CENTER_TEXTS[helpCenter.default_locale]
 
-    const {reportOrderIssueReason} = useSelfServicePreviewContext()
+    const { reportOrderIssueReason } = useSelfServicePreviewContext()
 
     useEffect(() => {
         if (!reportOrderIssueReason) {

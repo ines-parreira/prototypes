@@ -1,5 +1,6 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import HelpCenterPreview from '../HelpCenterPreview'
 
@@ -8,7 +9,7 @@ describe('<HelpCenterPreview />', () => {
         render(
             <HelpCenterPreview name="Help Center Name">
                 <div>Children</div>
-            </HelpCenterPreview>
+            </HelpCenterPreview>,
         )
         expect(screen.getByText('Help Center Name')).toBeInTheDocument()
         expect(screen.getByText('Children')).toBeInTheDocument()
@@ -18,7 +19,7 @@ describe('<HelpCenterPreview />', () => {
         render(
             <HelpCenterPreview logoUrl="logo.png">
                 <div>Children</div>
-            </HelpCenterPreview>
+            </HelpCenterPreview>,
         )
         expect(screen.getByAltText('Help Center Logo')).toBeInTheDocument()
         expect(screen.getByText('Children')).toBeInTheDocument()
@@ -28,7 +29,7 @@ describe('<HelpCenterPreview />', () => {
         render(<HelpCenterPreview>Children</HelpCenterPreview>)
         expect(screen.queryByText('Help Center Name')).not.toBeInTheDocument()
         expect(
-            screen.queryByAltText('Help Center Logo')
+            screen.queryByAltText('Help Center Logo'),
         ).not.toBeInTheDocument()
         expect(screen.getByText('Children')).toBeInTheDocument()
     })

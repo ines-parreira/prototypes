@@ -1,23 +1,24 @@
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-import {fromJS, Map} from 'immutable'
-import {merge} from 'lodash'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+import React, { ComponentProps } from 'react'
+
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
+import { merge } from 'lodash'
+import { Provider } from 'react-redux'
+import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {FACEBOOK_INTEGRATION_TYPE} from 'constants/integration'
-import {Language} from 'constants/languages'
-import {basicMonthlyHelpdeskPlan} from 'fixtures/productPrices'
-import {IntegrationType} from 'models/integration/constants'
+import { FACEBOOK_INTEGRATION_TYPE } from 'constants/integration'
+import { Language } from 'constants/languages'
+import { basicMonthlyHelpdeskPlan } from 'fixtures/productPrices'
+import { IntegrationType } from 'models/integration/constants'
 import {
-    FacebookIntegrationSettings,
     FacebookIntegration,
+    FacebookIntegrationSettings,
 } from 'models/integration/types'
-import {AccountFeature} from 'state/currentAccount/types'
-import {RootState, StoreDispatch} from 'state/types'
+import { AccountFeature } from 'state/currentAccount/types'
+import { RootState, StoreDispatch } from 'state/types'
 
-import {FacebookIntegrationDetail} from '../FacebookIntegrationDetail'
+import { FacebookIntegrationDetail } from '../FacebookIntegrationDetail'
 import {
     ADS_MANAGEMENT,
     ADS_READ,
@@ -130,7 +131,7 @@ describe('<FacebookIntegrationDetail/>', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>(
-            [thunk]
+            [thunk],
         )
         store = mockStore({})
         Date.now = jest.fn(() => 42)
@@ -163,14 +164,14 @@ describe('<FacebookIntegrationDetail/>', () => {
                     {...minProps}
                     integration={integration}
                 />
-            </Provider>
+            </Provider>,
         )
 
-        fireEvent.change(screen.getByRole('combobox', {name: 'Language'}), {
-            target: {value: Language.Danish},
+        fireEvent.change(screen.getByRole('combobox', { name: 'Language' }), {
+            target: { value: Language.Danish },
         })
 
-        screen.getByRole('button', {name: 'Save changes'}).click()
+        screen.getByRole('button', { name: 'Save changes' }).click()
 
         expect(minProps.updateOrCreateIntegration).toHaveBeenCalledTimes(1)
         expect(minProps.updateOrCreateIntegration).toHaveBeenCalledWith(
@@ -179,8 +180,8 @@ describe('<FacebookIntegrationDetail/>', () => {
                     meta: {
                         language: Language.Danish,
                     },
-                })
-            )
+                }),
+            ),
         )
     })
 
@@ -190,24 +191,24 @@ describe('<FacebookIntegrationDetail/>', () => {
             type: FACEBOOK_INTEGRATION_TYPE,
         })
 
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <FacebookIntegrationDetail
                     {...minProps}
                     integration={integration}
-                    loading={fromJS({integration: integration.id})}
+                    loading={fromJS({ integration: integration.id })}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render nothing because the passed integration is empty', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <FacebookIntegrationDetail {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toBeNull()
@@ -247,13 +248,13 @@ describe('<FacebookIntegrationDetail/>', () => {
                     {...minProps}
                     integration={integration}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(
             screen.queryByText(
-                /to be able to enable features for this integration you need/
-            )
+                /to be able to enable features for this integration you need/,
+            ),
         ).toBeNull()
     })
 
@@ -291,13 +292,13 @@ describe('<FacebookIntegrationDetail/>', () => {
                     {...minProps}
                     integration={integration}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(
             screen.getByText(
-                /to be able to enable features for this integration you need/
-            )
+                /to be able to enable features for this integration you need/,
+            ),
         )
     })
 
@@ -308,7 +309,7 @@ describe('<FacebookIntegrationDetail/>', () => {
             const integration = merge(baseIntegration, {
                 meta: {
                     roles: [ADVERTISE_ROLE, ANALYZE_ROLE, MODERATE_ROLE].join(
-                        ','
+                        ',',
                     ),
                     oauth: {
                         scope: [
@@ -338,7 +339,7 @@ describe('<FacebookIntegrationDetail/>', () => {
                         {...minProps}
                         integration={integration}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(
@@ -348,9 +349,9 @@ describe('<FacebookIntegrationDetail/>', () => {
                             'instagram_direct_message_enabled'
                         ],
                     })
-                    .getAttribute('disabled')
+                    .getAttribute('disabled'),
             ).not.toBeNull()
-        }
+        },
     )
 
     it.each([
@@ -367,7 +368,7 @@ describe('<FacebookIntegrationDetail/>', () => {
             const integration = merge(baseIntegration, {
                 meta: {
                     roles: [ADVERTISE_ROLE, ANALYZE_ROLE, MODERATE_ROLE].join(
-                        ','
+                        ',',
                     ),
                     oauth: {
                         scope: PERMISSIONS_PER_INTEGRATION_META_SETTING[
@@ -390,7 +391,7 @@ describe('<FacebookIntegrationDetail/>', () => {
                         {...minProps}
                         integration={integration}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(
@@ -400,9 +401,9 @@ describe('<FacebookIntegrationDetail/>', () => {
                             permission as keyof typeof checkBoxNameEquivalents
                         ],
                     })
-                    [position].getAttribute('disabled')
+                    [position].getAttribute('disabled'),
             ).toBeNull()
-        }
+        },
     )
 
     it.each([
@@ -419,7 +420,7 @@ describe('<FacebookIntegrationDetail/>', () => {
             const integration = merge(baseIntegration, {
                 meta: {
                     roles: [ADVERTISE_ROLE, ANALYZE_ROLE, MODERATE_ROLE].join(
-                        ','
+                        ',',
                     ),
                     oauth: {
                         scope: PERMISSIONS_PER_INTEGRATION_META_SETTING[
@@ -444,7 +445,7 @@ describe('<FacebookIntegrationDetail/>', () => {
                         {...minProps}
                         integration={integration}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(
@@ -454,11 +455,11 @@ describe('<FacebookIntegrationDetail/>', () => {
                             permission as keyof typeof checkBoxNameEquivalents
                         ],
                     })
-                    [position].getAttribute('disabled')
+                    [position].getAttribute('disabled'),
             ).not.toBeNull()
 
             expect(screen.getByText(/some features are disabled/))
-        }
+        },
     )
 
     it(
@@ -468,7 +469,7 @@ describe('<FacebookIntegrationDetail/>', () => {
             const integration = merge(baseIntegration, {
                 meta: {
                     roles: [ADVERTISE_ROLE, ANALYZE_ROLE, MODERATE_ROLE].join(
-                        ','
+                        ',',
                     ),
                     oauth: {
                         scope: [
@@ -500,11 +501,11 @@ describe('<FacebookIntegrationDetail/>', () => {
                         {...minProps}
                         integration={integration}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(screen.getByText(/You cannot activate Instagram/))
-        }
+        },
     )
 
     it('should render an integration with instagram ads enabled', () => {
@@ -544,13 +545,13 @@ describe('<FacebookIntegrationDetail/>', () => {
                     {...minProps}
                     integration={integration}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(
             screen.getByRole('checkbox', {
                 name: checkBoxNameEquivalents.instagram_ads_enabled,
-            })
+            }),
         ).toBeChecked()
     })
 
@@ -562,7 +563,7 @@ describe('<FacebookIntegrationDetail/>', () => {
                 meta: {
                     name: 'My facebook page',
                     roles: [ADVERTISE_ROLE, ANALYZE_ROLE, MODERATE_ROLE].join(
-                        ','
+                        ',',
                     ),
                     oauth: {
                         scope: [
@@ -594,13 +595,13 @@ describe('<FacebookIntegrationDetail/>', () => {
                         })}
                         integration={integration}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(
-                screen.getByRole('button', {name: 'Save changes'})
+                screen.getByRole('button', { name: 'Save changes' }),
             ).toBeAriaDisabled()
-        }
+        },
     )
 
     it.each([
@@ -626,7 +627,7 @@ describe('<FacebookIntegrationDetail/>', () => {
             const integration = merge(baseIntegration, {
                 meta: {
                     roles: [ADVERTISE_ROLE, ANALYZE_ROLE, MODERATE_ROLE].join(
-                        ','
+                        ',',
                     ),
                     oauth: {
                         scope: [
@@ -677,7 +678,7 @@ describe('<FacebookIntegrationDetail/>', () => {
                         currentHelpdeskProduct={currentHelpdeskProduct}
                         hasInstagramDMFeature={priceHasInstagramDmFeature}
                     />
-                </Provider>
+                </Provider>,
             )
 
             if (isIGAccountEligible && priceHasInstagramDmFeature) {
@@ -687,8 +688,8 @@ describe('<FacebookIntegrationDetail/>', () => {
                             .getByRole('checkbox', {
                                 name: checkBoxNameEquivalents.instagram_direct_message_enabled_alt,
                             })
-                            .getAttribute('disabled')
-                    ).toBeNull()
+                            .getAttribute('disabled'),
+                    ).toBeNull(),
                 )
             } else if (!isIGAccountEligible && priceHasInstagramDmFeature) {
                 expect(
@@ -696,7 +697,7 @@ describe('<FacebookIntegrationDetail/>', () => {
                         .getByRole('checkbox', {
                             name: checkBoxNameEquivalents.instagram_direct_message_enabled,
                         })
-                        .getAttribute('disabled')
+                        .getAttribute('disabled'),
                 ).not.toBeNull()
             } else {
                 expect(
@@ -704,9 +705,9 @@ describe('<FacebookIntegrationDetail/>', () => {
                         .getByRole('checkbox', {
                             name: checkBoxNameEquivalents.instagram_direct_message_enabled_alt,
                         })
-                        .getAttribute('disabled')
+                        .getAttribute('disabled'),
                 ).not.toBeNull()
             }
-        }
+        },
     )
 })

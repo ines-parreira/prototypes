@@ -1,14 +1,17 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
-import {fromJS} from 'immutable'
-import {isEmpty} from 'lodash'
 import React from 'react'
 
-import useId from 'hooks/useId'
-import {formatPhoneNumberInternational} from 'pages/phoneNumbers/utils'
-import {useCustomerDetails} from 'pages/tickets/detail/components/TicketVoiceCall/hooks'
+import classNames from 'classnames'
+import { fromJS } from 'immutable'
+import { isEmpty } from 'lodash'
 
-import {CustomerLabel} from '../../utils/labels'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import useId from 'hooks/useId'
+import { formatPhoneNumberInternational } from 'pages/phoneNumbers/utils'
+import { useCustomerDetails } from 'pages/tickets/detail/components/TicketVoiceCall/hooks'
+
+import { CustomerLabel } from '../../utils/labels'
+
 import css from './VoiceCallCustomerLabel.less'
 
 type CustomerLabelProps = {
@@ -26,7 +29,7 @@ export default function VoiceCallCustomerLabel({
     className,
     withTooltip = false,
 }: CustomerLabelProps) {
-    const {customer, error} = useCustomerDetails({
+    const { customer, error } = useCustomerDetails({
         customerId,
         isEnabled: customerName ? false : true,
     })

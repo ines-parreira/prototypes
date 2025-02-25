@@ -1,5 +1,6 @@
-import {Map} from 'immutable'
-import React, {useMemo, useState} from 'react'
+import React, { useMemo, useState } from 'react'
+
+import { Map } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
 import Button from 'pages/common/components/button/Button'
@@ -7,11 +8,10 @@ import {
     CampaignTemplate,
     CampaignTemplateLabelType,
 } from 'pages/convert/campaigns/templates/types'
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
-
+import { Campaign } from 'pages/convert/campaigns/types/Campaign'
 import ConvertSimplifiedEditorModal from 'pages/convert/onboarding/components/ConvertSimplifiedEditorModal'
-import {getCurrentHelpdeskPlan} from 'state/billing/selectors'
-import {convertLegacyPlanNameToPublicPlanName} from 'utils/paywalls'
+import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
+import { convertLegacyPlanNameToPublicPlanName } from 'utils/paywalls'
 
 import css from './ConvertOnboardingCampaignTemplate.less'
 
@@ -24,7 +24,7 @@ type Props = {
 
 const campaignLabelStyles: Record<
     CampaignTemplateLabelType,
-    {color: string; backgroundColor: string}
+    { color: string; backgroundColor: string }
 > = {
     [CampaignTemplateLabelType.IncreaseConversions]: {
         color: 'var(--accessory-blue-3)',
@@ -91,7 +91,7 @@ const ConvertOnboardingCampaignTemplate = ({
                         <div className={css.selected}>
                             <i
                                 className="material-icons text-success"
-                                style={{fontSize: 24}}
+                                style={{ fontSize: 24 }}
                             >
                                 check_circle
                             </i>

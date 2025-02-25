@@ -1,31 +1,34 @@
-import {IntegrationType} from '@gorgias/api-queries'
-import {Map} from 'immutable'
 import React from 'react'
-import {Link} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
-import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
+import { Map } from 'immutable'
+import { Link } from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
+
+import { IntegrationType } from '@gorgias/api-queries'
+
+import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
-import {ConnectedChannelsChatView} from 'pages/automate/connectedChannels/components/ConnectedChannelsChatView'
+import { ConnectedChannelsChatView } from 'pages/automate/connectedChannels/components/ConnectedChannelsChatView'
 import PageHeader from 'pages/common/components/PageHeader'
 
-import {Tab} from '../../types'
-import css from './GorgiasAutomateChatIntegration.less'
+import { Tab } from '../../types'
 import GorgiasChatIntegrationHeader from './GorgiasChatIntegrationHeader'
+
+import css from './GorgiasAutomateChatIntegration.less'
 
 interface Props {
     integration: Map<any, any>
 }
-export const GorgiasAutomateChatIntegration = ({integration}: Props) => {
+export const GorgiasAutomateChatIntegration = ({ integration }: Props) => {
     const storeIntegrations = useStoreIntegrations()
     const shopIntegrationId: number | null = integration.getIn(
         ['meta', 'shop_integration_id'],
-        null
+        null,
     )
     const channelId = integration.getIn(['meta', 'app_id'])
 
     const storeIntegration = storeIntegrations.find(
-        (integration) => integration.id === shopIntegrationId
+        (integration) => integration.id === shopIntegrationId,
     )
     return (
         <div className={css.container}>

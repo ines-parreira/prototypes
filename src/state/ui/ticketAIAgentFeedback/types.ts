@@ -1,8 +1,8 @@
-import {PayloadActionCreator} from '@reduxjs/toolkit'
+import { PayloadActionCreator } from '@reduxjs/toolkit'
 
-import {TicketMessage} from 'models/ticket/types'
+import { TicketMessage } from 'models/ticket/types'
 
-import {TicketAIAgentFeedbackTab} from './constants'
+import { TicketAIAgentFeedbackTab } from './constants'
 
 export enum UIActions {
     ChangeActiveTab = 'CHANGE_ACTIVE_TAB',

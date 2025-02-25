@@ -1,17 +1,18 @@
-import {Label, Skeleton} from '@gorgias/merchant-ui-kit'
-import {zodResolver} from '@hookform/resolvers/zod'
-import cn from 'classnames'
 import React from 'react'
 
-import {FormProvider, useForm} from 'react-hook-form'
-import {useParams} from 'react-router-dom'
-import {z} from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import cn from 'classnames'
+import { FormProvider, useForm } from 'react-hook-form'
+import { useParams } from 'react-router-dom'
+import { z } from 'zod'
 
-import {OnboardingData, SalesSettingsData} from 'models/aiAgent/types'
+import { Label, Skeleton } from '@gorgias/merchant-ui-kit'
+
+import { OnboardingData, SalesSettingsData } from 'models/aiAgent/types'
 import AiAgentChatConversation from 'pages/aiAgent/Onboarding/components/AiAgentChatConversation/AiAgentChatConversation'
 import Card from 'pages/aiAgent/Onboarding/components/Card/Card'
 import MainTitle from 'pages/aiAgent/Onboarding/components/MainTitle/MainTitle'
-import {OnboardingSteppedSlider} from 'pages/aiAgent/Onboarding/components/OnboardingSteppedSlider/OnboardingSteppedSlider'
+import { OnboardingSteppedSlider } from 'pages/aiAgent/Onboarding/components/OnboardingSteppedSlider/OnboardingSteppedSlider'
 import {
     DiscountStrategy,
     DiscountStrategyLabels,
@@ -23,11 +24,11 @@ import {
     PersuasionLevelLabels,
     PersuasionLevelSteps,
 } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
-import {StepProps} from 'pages/aiAgent/Onboarding/components/steps/types'
+import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
 import useCheckStoreIntegration from 'pages/aiAgent/Onboarding/hooks/useCheckStoreIntegration'
-import {useGetOnboardingData} from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
-import {useSteps} from 'pages/aiAgent/Onboarding/hooks/useSteps'
-import {useUpdateOnboarding} from 'pages/aiAgent/Onboarding/hooks/useUpdateOnboarding'
+import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
+import { useSteps } from 'pages/aiAgent/Onboarding/hooks/useSteps'
+import { useUpdateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useUpdateOnboarding'
 import {
     OnboardingBody,
     OnboardingContentContainer,
@@ -37,8 +38,8 @@ import {
     agentChatConversationSettings,
     chatPreviewSettings,
 } from 'pages/aiAgent/Onboarding/settings'
-import {WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
-import {formatDiscountMax} from 'pages/aiAgent/utils/sales-discount.utils'
+import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
+import { formatDiscountMax } from 'pages/aiAgent/utils/sales-discount.utils'
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import IconInput from 'pages/common/forms/input/IconInput'
@@ -69,7 +70,7 @@ const personalitySchema = z
         {
             message: 'Must be a number between 1 and 100',
             path: ['salesDiscountMax'],
-        }
+        },
     )
 
 export const PersonalityStep: React.FC<StepProps> = ({
@@ -77,11 +78,11 @@ export const PersonalityStep: React.FC<StepProps> = ({
     totalSteps,
     goToStep,
 }) => {
-    const {shopName} = useParams<{shopName: string}>()
+    const { shopName } = useParams<{ shopName: string }>()
 
-    const {validSteps} = useSteps({shopName})
+    const { validSteps } = useSteps({ shopName })
 
-    const {data, isLoading: isLoadingOnboardingData} =
+    const { data, isLoading: isLoadingOnboardingData } =
         useGetOnboardingData(shopName)
     const {
         mutate: doUpdateOnboardingMutation,
@@ -99,7 +100,7 @@ export const PersonalityStep: React.FC<StepProps> = ({
             salesDiscountStrategyLevel:
                 data?.salesDiscountStrategyLevel ?? DiscountStrategy.Balanced,
             salesDiscountMax: formatDiscountMax(
-                (data?.salesDiscountMax ?? 0) * 100
+                (data?.salesDiscountMax ?? 0) * 100,
             ),
         },
         mode: 'onChange',
@@ -109,7 +110,7 @@ export const PersonalityStep: React.FC<StepProps> = ({
     const {
         watch,
         setValue,
-        formState: {errors, isDirty},
+        formState: { errors, isDirty },
         handleSubmit,
         trigger,
     } = methods
@@ -121,9 +122,9 @@ export const PersonalityStep: React.FC<StepProps> = ({
 
     const handleSliderChange = (
         field: keyof SalesSettingsData,
-        value: PersuasionLevel | DiscountStrategy | number
+        value: PersuasionLevel | DiscountStrategy | number,
     ) => {
-        setValue(field, value, {shouldValidate: true, shouldDirty: true})
+        setValue(field, value, { shouldValidate: true, shouldDirty: true })
         if (
             field === 'salesDiscountStrategyLevel' &&
             value === DiscountStrategy.NoDiscount
@@ -157,12 +158,12 @@ export const PersonalityStep: React.FC<StepProps> = ({
             }
 
             doUpdateOnboardingMutation(
-                {id: data.id as string, data: updatedData},
+                { id: data.id as string, data: updatedData },
                 {
                     onSuccess: () => {
                         onNextStep()
                     },
-                }
+                },
             )
         }
     }
@@ -217,7 +218,7 @@ export const PersonalityStep: React.FC<StepProps> = ({
                                         onChange={(value: string) => {
                                             handleSliderChange(
                                                 'salesPersuasionLevel',
-                                                value as PersuasionLevel
+                                                value as PersuasionLevel,
                                             )
                                         }}
                                     />
@@ -261,7 +262,7 @@ export const PersonalityStep: React.FC<StepProps> = ({
                                         onChange={(value: string) => {
                                             handleSliderChange(
                                                 'salesDiscountStrategyLevel',
-                                                value as DiscountStrategy
+                                                value as DiscountStrategy,
                                             )
                                         }}
                                     />
@@ -285,7 +286,7 @@ export const PersonalityStep: React.FC<StepProps> = ({
                         <section
                             className={cn(
                                 css.cardSection,
-                                css.percentageSection
+                                css.percentageSection,
                             )}
                         >
                             <Label
@@ -316,7 +317,7 @@ export const PersonalityStep: React.FC<StepProps> = ({
                                         {
                                             shouldValidate: true,
                                             shouldDirty: true,
-                                        }
+                                        },
                                     )
                                 }}
                                 suffix={<IconInput icon="percent" />}

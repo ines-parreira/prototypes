@@ -1,26 +1,26 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {act, fireEvent, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
-import {MemoryRouter} from 'react-router-dom'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { act, fireEvent, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {ulid} from 'ulidx'
+import { ulid } from 'ulidx'
 
 import {
     useGetWorkflowConfigurationTemplates,
     useListActionsApps,
 } from 'models/workflows/queries'
-import {WorkflowConfigurationBuilder} from 'pages/automate/workflows/models/workflowConfiguration.model'
-import {RootState, StoreDispatch} from 'state/types'
+import { WorkflowConfigurationBuilder } from 'pages/automate/workflows/models/workflowConfiguration.model'
+import { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-
-import {renderWithDnD} from '../../../../utils/testing'
+import { renderWithDnD } from '../../../../utils/testing'
 import ActionsPlatformEditUseCaseTemplateView from '../ActionsPlatformEditUseCaseTemplateView'
 import useEditActionTemplate from '../hooks/useEditActionTemplate'
-import {ActionTemplate} from '../types'
+import { ActionTemplate } from '../types'
 
 jest.mock('models/workflows/queries')
 jest.mock('../hooks/useEditActionTemplate')
@@ -29,7 +29,7 @@ const queryClient = mockQueryClient()
 const mockUseEditActionTemplate = jest.mocked(useEditActionTemplate)
 const mockUseListActionsApps = jest.mocked(useListActionsApps)
 const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
-    useGetWorkflowConfigurationTemplates
+    useGetWorkflowConfigurationTemplates,
 )
 const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])({
     integrations: fromJS({
@@ -166,7 +166,7 @@ const b = new WorkflowConfigurationBuilder({
         },
     ],
     category: 'Orders',
-    apps: [{type: 'shopify'}],
+    apps: [{ type: 'shopify' }],
     available_languages: [],
 })
 b.insertReusableLLMPromptCallConditionAndEndStepAndSelect('success', {
@@ -190,7 +190,7 @@ describe('<ActionsPlatformEditUseCaseTemplateView />', () => {
                         />
                     </QueryClientProvider>
                 </MemoryRouter>
-            </Provider>
+            </Provider>,
         )
     }
 
@@ -289,7 +289,7 @@ describe('<ActionsPlatformEditUseCaseTemplateView />', () => {
 
         act(() => {
             fireEvent.change(screen.getByDisplayValue(template.name), {
-                target: {value: ''},
+                target: { value: '' },
             })
         })
 

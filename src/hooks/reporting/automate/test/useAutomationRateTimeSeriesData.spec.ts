@@ -1,13 +1,10 @@
-import {UseQueryResult} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
-
-import {mockFlags} from 'jest-launchdarkly-mock'
-
+import { UseQueryResult } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
+import { mockFlags } from 'jest-launchdarkly-mock'
 import moment from 'moment/moment'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-
-import {getMockData} from 'hooks/reporting/automate/test/useAutomationDataset.spec'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { getMockData } from 'hooks/reporting/automate/test/useAutomationDataset.spec'
 import {
     fetchAutomationDatasetTimeSeries,
     fetchBillableTicketDatasetTimeSeries,
@@ -18,26 +15,26 @@ import {
     fetchAutomationRateTimeSeriesData,
     useAutomationRateTimeSeriesData,
 } from 'hooks/reporting/automate/useAutomationRateTimeSeriesData'
-import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
-import {AutomationDatasetMeasure} from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
-import {BillableTicketDatasetMeasure} from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
-import {ReportingGranularity} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
-import {AUTOMATION_RATE_LABEL} from 'pages/stats/self-service/constants'
-import {assumeMock} from 'utils/testing'
+import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
+import { AutomationDatasetMeasure } from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
+import { BillableTicketDatasetMeasure } from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
+import { ReportingGranularity } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
+import { AUTOMATION_RATE_LABEL } from 'pages/stats/self-service/constants'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/automate/timeSeries')
 const useAutomationDatasetTimeSeriesMock = assumeMock(
-    useAutomationDatasetTimeSeries
+    useAutomationDatasetTimeSeries,
 )
 const useBillableTicketDatasetTimeSeriesMock = assumeMock(
-    useBillableTicketDatasetTimeSeries
+    useBillableTicketDatasetTimeSeries,
 )
 const fetchAutomationDatasetTimeSeriesMock = assumeMock(
-    fetchAutomationDatasetTimeSeries
+    fetchAutomationDatasetTimeSeries,
 )
 const fetchBillableTicketDatasetTimeSeriesMock = assumeMock(
-    fetchBillableTicketDatasetTimeSeries
+    fetchBillableTicketDatasetTimeSeries,
 )
 
 describe('useAutomationRateTimeSeriesData', () => {
@@ -57,13 +54,13 @@ describe('useAutomationRateTimeSeriesData', () => {
         getMockData([2, 3, 7]),
         getMockData(
             [0, 1, 1],
-            AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders
+            AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders,
         ),
     ]
     const billableTicketDatasetTimeSeries = [
         getMockData(
             [1, 2, 6],
-            BillableTicketDatasetMeasure.BillableTicketCount
+            BillableTicketDatasetMeasure.BillableTicketCount,
         ),
     ]
     const expectedResult = [
@@ -103,12 +100,12 @@ describe('useAutomationRateTimeSeriesData', () => {
         })
 
         it('should fetch and format data with a hook', () => {
-            const {result} = renderHook(() =>
+            const { result } = renderHook(() =>
                 useAutomationRateTimeSeriesData(
                     statsFilters,
                     timezone,
-                    granularity
-                )
+                    granularity,
+                ),
             )
 
             expect(result.current).toEqual({
@@ -126,12 +123,12 @@ describe('useAutomationRateTimeSeriesData', () => {
                 isError: false,
             } as UseQueryResult<TimeSeriesDataItem[][]>)
 
-            const {result} = renderHook(() =>
+            const { result } = renderHook(() =>
                 useAutomationRateTimeSeriesData(
                     statsFilters,
                     timezone,
-                    granularity
-                )
+                    granularity,
+                ),
             )
 
             expect(result.current).toEqual({
@@ -147,12 +144,12 @@ describe('useAutomationRateTimeSeriesData', () => {
                     true,
             })
 
-            const {result} = renderHook(() =>
+            const { result } = renderHook(() =>
                 useAutomationRateTimeSeriesData(
                     statsFilters,
                     timezone,
-                    granularity
-                )
+                    granularity,
+                ),
             )
 
             expect(result.current).toEqual({
@@ -166,10 +163,10 @@ describe('useAutomationRateTimeSeriesData', () => {
     describe('fetchAutomationRateTimeSeriesData', () => {
         beforeEach(() => {
             fetchAutomationDatasetTimeSeriesMock.mockResolvedValue(
-                automationDatasetTimeSeries as any
+                automationDatasetTimeSeries as any,
             )
             fetchBillableTicketDatasetTimeSeriesMock.mockResolvedValue(
-                billableTicketDatasetTimeSeries as any
+                billableTicketDatasetTimeSeries as any,
             )
         })
 
@@ -179,7 +176,7 @@ describe('useAutomationRateTimeSeriesData', () => {
                 timezone,
                 granularity,
                 false,
-                undefined
+                undefined,
             )
 
             expect(result).toEqual({
@@ -197,7 +194,7 @@ describe('useAutomationRateTimeSeriesData', () => {
                 timezone,
                 granularity,
                 false,
-                undefined
+                undefined,
             )
 
             expect(result).toEqual({
@@ -213,7 +210,7 @@ describe('useAutomationRateTimeSeriesData', () => {
                 timezone,
                 granularity,
                 true,
-                undefined
+                undefined,
             )
 
             expect(result).toEqual({

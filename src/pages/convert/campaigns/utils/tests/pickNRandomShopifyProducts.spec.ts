@@ -1,11 +1,11 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
-import {AttachmentEnum} from 'common/types'
-import {shopifyIntegration} from 'fixtures/integrations'
-import {shopifyProductResult} from 'fixtures/shopify'
-import {mapIntegrationToPickedShopifyIntegration} from 'pages/common/draftjs/plugins/toolbar/utils'
+import { AttachmentEnum } from 'common/types'
+import { shopifyIntegration } from 'fixtures/integrations'
+import { shopifyProductResult } from 'fixtures/shopify'
+import { mapIntegrationToPickedShopifyIntegration } from 'pages/common/draftjs/plugins/toolbar/utils'
 
-import {pickNRandomShopifyProducts} from '../pickNRandomShopifyProducts'
+import { pickNRandomShopifyProducts } from '../pickNRandomShopifyProducts'
 
 describe('pickNRandomShopifyProducts', () => {
     it('should return n random products from the given list of products', () => {
@@ -15,9 +15,9 @@ describe('pickNRandomShopifyProducts', () => {
         const result = pickNRandomShopifyProducts(
             products as any,
             mapIntegrationToPickedShopifyIntegration(
-                fromJS(shopifyIntegration)
+                fromJS(shopifyIntegration),
             ),
-            1
+            1,
         )
 
         expect(result).toEqual(
@@ -38,7 +38,7 @@ describe('pickNRandomShopifyProducts', () => {
                             'https://cdn.shopify.com/s/files/1/0586/5295/0737/products/black-shirt.jpg?v=1626170834',
                     },
                 },
-            ])
+            ]),
         )
     })
 })

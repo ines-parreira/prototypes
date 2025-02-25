@@ -1,12 +1,14 @@
-import {Badge} from '@gorgias/merchant-ui-kit'
-import cs from 'classnames'
 import React from 'react'
-import {Link} from 'react-router-dom'
 
-import {AvailabilityStatusTag, User} from 'config/types/user'
+import cs from 'classnames'
+import { Link } from 'react-router-dom'
+
+import { Badge } from '@gorgias/merchant-ui-kit'
+
+import { AvailabilityStatusTag, User } from 'config/types/user'
 import Avatar from 'pages/common/components/Avatar/Avatar'
-import {RoleLabel} from 'pages/common/utils/labels'
-import {toJS} from 'utils'
+import { RoleLabel } from 'pages/common/utils/labels'
+import { toJS } from 'utils'
 
 import css from './List.less'
 
@@ -15,7 +17,7 @@ type Props = {
     isAccountOwner?: boolean
 }
 
-const Row = ({agent, isAccountOwner = false}: Props) => {
+const Row = ({ agent, isAccountOwner = false }: Props) => {
     const editLink = `/app/settings/users/${agent.id}`
     const has2FaEnabled = agent.has_2fa_enabled
     const availability = agent.availability_status?.status

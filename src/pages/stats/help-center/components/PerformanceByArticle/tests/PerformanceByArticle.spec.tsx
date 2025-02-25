@@ -1,29 +1,28 @@
-import {render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-import {ReportingGranularity} from 'models/reporting/types'
-
-import {TableCellType} from 'pages/stats/help-center/components/HelpCenterStatsTable/HelpCenterStatsTable'
-import {PerformanceByArticle} from 'pages/stats/help-center/components/PerformanceByArticle/PerformanceByArticle'
-import {usePerformanceByArticleMetrics} from 'pages/stats/help-center/hooks/usePerformanceByArticleMetrics'
-import {assumeMock} from 'utils/testing'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { ReportingGranularity } from 'models/reporting/types'
+import { TableCellType } from 'pages/stats/help-center/components/HelpCenterStatsTable/HelpCenterStatsTable'
+import { PerformanceByArticle } from 'pages/stats/help-center/components/PerformanceByArticle/PerformanceByArticle'
+import { usePerformanceByArticleMetrics } from 'pages/stats/help-center/hooks/usePerformanceByArticleMetrics'
+import { assumeMock } from 'utils/testing'
 
 jest.mock(
     'pages/stats/help-center/hooks/usePerformanceByArticleMetrics',
     () => ({
         usePerformanceByArticleMetrics: jest.fn(),
-    })
+    }),
 )
 jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
 const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
 const mockUsePerformanceByArticleMetrics = jest.mocked(
-    usePerformanceByArticleMetrics
+    usePerformanceByArticleMetrics,
 )
 
 const mockStore = configureMockStore([thunk])
@@ -39,7 +38,7 @@ const renderComponent = () => {
                 helpCenterDomain={helpCenterDomain}
                 helpCenterId={helpCenterId}
             />
-        </Provider>
+        </Provider>,
     )
 }
 
@@ -104,12 +103,12 @@ describe('<PerformanceByArticle/>', () => {
 
         expect(
             screen.getByText(
-                'What are AfterPay, Klarna and ShopPay Installments?'
-            )
+                'What are AfterPay, Klarna and ShopPay Installments?',
+            ),
         ).toBeInTheDocument()
         expect(screen.getByRole('link')).toHaveAttribute(
             'href',
-            'http://acme.gorgias.docker/app/stats/help-center'
+            'http://acme.gorgias.docker/app/stats/help-center',
         )
     })
 

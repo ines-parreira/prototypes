@@ -1,6 +1,6 @@
-import {useQueryClient} from '@tanstack/react-query'
+import { useCallback } from 'react'
 
-import {useCallback} from 'react'
+import { useQueryClient } from '@tanstack/react-query'
 
 import {
     onboardingNotificationStateKeys,
@@ -55,7 +55,7 @@ export const useOnboardingNotificationStateMutation = ({
 
     const createOnboardingNotificationState = useCallback(
         async (
-            fieldsToSubmit: CreateOnboardingNotificationStatePayload
+            fieldsToSubmit: CreateOnboardingNotificationStatePayload,
         ): Promise<OnboardingNotificationState> => {
             const createdOnboardingNotificationState =
                 await createOnboardingNotificationStateAsync([
@@ -67,12 +67,12 @@ export const useOnboardingNotificationStateMutation = ({
             return createdOnboardingNotificationState.data
                 .onboardingNotificationState
         },
-        [accountDomain, createOnboardingNotificationStateAsync]
+        [accountDomain, createOnboardingNotificationStateAsync],
     )
 
     const upsertOnboardingNotificationState = useCallback(
         async (
-            fieldsToSubmit: UpsertOnboardingNotificationStatePayload
+            fieldsToSubmit: UpsertOnboardingNotificationStatePayload,
         ): Promise<OnboardingNotificationState> => {
             const upsertedOnboardingNotificationState =
                 await upsertOnboardingNotificationStateAsync([
@@ -84,7 +84,7 @@ export const useOnboardingNotificationStateMutation = ({
             return upsertedOnboardingNotificationState.data
                 .onboardingNotificationState
         },
-        [accountDomain, upsertOnboardingNotificationStateAsync]
+        [accountDomain, upsertOnboardingNotificationStateAsync],
     )
 
     return {

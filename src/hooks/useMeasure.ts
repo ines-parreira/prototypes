@@ -1,4 +1,4 @@
-import {useLayoutEffect, useMemo, useState} from 'react'
+import { useLayoutEffect, useMemo, useState } from 'react'
 
 type UseMeasureRect = Pick<
     DOMRectReadOnly,
@@ -31,12 +31,12 @@ export default function useMeasure<
         () =>
             new window.ResizeObserver((entries) => {
                 if (entries[0]) {
-                    const {x, y, width, height, top, left, bottom, right} =
+                    const { x, y, width, height, top, left, bottom, right } =
                         entries[0].contentRect
-                    setRect({x, y, width, height, top, left, bottom, right})
+                    setRect({ x, y, width, height, top, left, bottom, right })
                 }
             }),
-        []
+        [],
     )
 
     useLayoutEffect(() => {

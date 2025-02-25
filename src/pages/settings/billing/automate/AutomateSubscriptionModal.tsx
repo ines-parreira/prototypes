@@ -1,17 +1,18 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { ElementType, useEffect, useMemo, useRef, useState } from 'react'
+
 import classnames from 'classnames'
-import React, {ElementType, useEffect, useMemo, useRef, useState} from 'react'
-import {useHistory} from 'react-router-dom'
-import {Modal, ModalFooter} from 'reactstrap'
+import { useHistory } from 'react-router-dom'
+import { Modal, ModalFooter } from 'reactstrap'
 
-import {useAppNode} from 'appNode'
-import {SegmentEvent, logEvent} from 'common/segment'
-import {UserRole} from 'config/types/user'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
+import { useAppNode } from 'appNode'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { UserRole } from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
-import {Plan} from 'models/billing/types'
+import { Plan } from 'models/billing/types'
 import Button from 'pages/common/components/button/Button'
 import ContactSupportModal from 'pages/settings/new_billing/components/ContactSupportModal/ContactSupportModal'
 import {
@@ -20,28 +21,28 @@ import {
     ENTERPRISE_PRICE_ID,
     ZAPIER_BILLING_HOOK,
 } from 'pages/settings/new_billing/constants'
-import {useCurrentPriceIds} from 'pages/settings/new_billing/hooks/useGetCurrentPriceIds'
+import { useCurrentPriceIds } from 'pages/settings/new_billing/hooks/useGetCurrentPriceIds'
 import {
     getAvailableAutomatePlans,
+    getAvailableHelpdeskPlans,
     getCurrentHelpdeskCadence,
     getCurrentHelpdeskPlan,
     getHasAutomate,
-    getAvailableHelpdeskPlans,
 } from 'state/billing/selectors'
-import {updateSubscription} from 'state/currentAccount/actions'
+import { updateSubscription } from 'state/currentAccount/actions'
 import {
     getCurrentAccountState,
     isTrialing,
 } from 'state/currentAccount/selectors'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-
-import {hasRole} from 'utils'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { hasRole } from 'utils'
 
 import AutomateModalStep from './AutomateModalStep'
-import css from './AutomateSubscriptionModal.less'
 import ROICalculatorModalStep from './ROICalculatorModalStep'
+
+import css from './AutomateSubscriptionModal.less'
 
 type Props = {
     confirmLabel: string
@@ -126,17 +127,17 @@ const AutomateSubscriptionModal = ({
     const domain: string = currentAccount.get('domain')
 
     const currentPriceIds: string[] = useCurrentPriceIds()
-    const [{loading: isSubscriptionUpdating}, handleSubscriptionUpdate] =
+    const [{ loading: isSubscriptionUpdating }, handleSubscriptionUpdate] =
         useAsyncFn(async (prices: string[]) => {
             try {
-                await dispatch(updateSubscription({prices}))
+                await dispatch(updateSubscription({ prices }))
                 onClose()
             } catch (error) {
                 void dispatch(
                     notify({
                         status: NotificationStatus.Error,
                         message: String(error),
-                    })
+                    }),
                 )
             }
         }, [])
@@ -164,18 +165,18 @@ const AutomateSubscriptionModal = ({
     }
 
     const automateAvailablePlans = useAppSelector(
-        getAvailableAutomatePlans
+        getAvailableAutomatePlans,
     ).filter((plan) => plan.num_quota_tickets && plan.cadence === cadence)
     const helpdeskOptionIndex = Math.max(
         helpdeskAvailablePlansPriceIds.indexOf(
-            currentHelpdeskPlan?.price_id || ''
+            currentHelpdeskPlan?.price_id || '',
         ),
-        0
+        0,
     )
 
     const automatePreselectedOption = Math.min(5, helpdeskOptionIndex)
     const [selectedPlan, setSelectedPlan] = useState<Plan | undefined>(
-        automateAvailablePlans?.[automatePreselectedOption]
+        automateAvailablePlans?.[automatePreselectedOption],
     )
 
     const [isSubscriptionEnabled, setIsSubscriptionEnabled] = useState(false)
@@ -184,7 +185,7 @@ const AutomateSubscriptionModal = ({
 
     const isEnterprisePlan = useMemo(
         () => selectedPlan?.price_id === ENTERPRISE_PRICE_ID,
-        [selectedPlan]
+        [selectedPlan],
     )
 
     const [showStep, setShowStep] = useState(false)

@@ -1,8 +1,8 @@
-import {renderHook, act} from '@testing-library/react-hooks/dom'
+import { act, renderHook } from '@testing-library/react-hooks/dom'
 
-import {CHOICE_VALUES_SYMBOL} from '../../Deprecated_MultiLevelSelect/constants'
-import {ChoicesTree} from '../../Deprecated_MultiLevelSelect/types'
-import {useSearch} from '../useSearch'
+import { CHOICE_VALUES_SYMBOL } from '../../Deprecated_MultiLevelSelect/constants'
+import { ChoicesTree } from '../../Deprecated_MultiLevelSelect/types'
+import { useSearch } from '../useSearch'
 
 describe('useSearch', () => {
     it('should return the correct state when disabled', () => {
@@ -14,33 +14,33 @@ describe('useSearch', () => {
             valueIsInSearchResults: false,
         }
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useSearch({
                 choices: {
                     [CHOICE_VALUES_SYMBOL]: new Set(['foo', 'bar', 'baz']),
                 },
                 dropdownValue: undefined,
                 isDisabled: true,
-            })
+            }),
         )
         expect(result.current).toEqual(disabledResults)
         act(() => {
             result.current.setSearch('foo')
         })
 
-        expect(result.current).toEqual({...disabledResults, search: 'foo'})
+        expect(result.current).toEqual({ ...disabledResults, search: 'foo' })
     })
 
     describe('search', () => {
         it('should correctly set isSearching to true when search is not empty', () => {
-            const {result} = renderHook(() =>
+            const { result } = renderHook(() =>
                 useSearch({
                     choices: {
                         [CHOICE_VALUES_SYMBOL]: new Set(['foo', 'bar', 'baz']),
                     },
                     dropdownValue: undefined,
                     isDisabled: false,
-                })
+                }),
             )
             expect(result.current.isSearching).toEqual(false)
             act(() => {
@@ -50,7 +50,7 @@ describe('useSearch', () => {
         })
 
         it('should correctly search amongst nested choices and categories of string types', () => {
-            const {result} = renderHook(() =>
+            const { result } = renderHook(() =>
                 useSearch({
                     choices: {
                         [CHOICE_VALUES_SYMBOL]: new Set(['foo', 'bar', 'baz']),
@@ -79,7 +79,7 @@ describe('useSearch', () => {
                     },
                     dropdownValue: undefined,
                     isDisabled: false,
-                })
+                }),
             )
             act(() => {
                 result.current.setSearch('bar')
@@ -124,14 +124,14 @@ describe('useSearch', () => {
         })
 
         it('should indicate that dropdownValue is in current search results', () => {
-            const {result} = renderHook(() =>
+            const { result } = renderHook(() =>
                 useSearch({
                     choices: {
                         [CHOICE_VALUES_SYMBOL]: new Set(['foo', 'bar', 'baz']),
                     } as ChoicesTree,
                     dropdownValue: 'bar',
                     isDisabled: false,
-                })
+                }),
             )
             expect(result.current.valueIsInSearchResults).toEqual(false)
             act(() => {

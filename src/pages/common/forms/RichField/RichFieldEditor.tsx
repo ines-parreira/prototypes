@@ -1,39 +1,42 @@
 import classnames from 'classnames'
 import {
+    ContentState,
     EditorState,
+    KeyBindingUtil,
     Modifier,
     RichUtils,
-    ContentState,
-    KeyBindingUtil,
 } from 'draft-js'
 import createBlockBreakoutPlugin from 'draft-js-block-breakout-plugin'
-import Editor, {composeDecorators} from 'draft-js-plugins-editor'
+import Editor, { composeDecorators } from 'draft-js-plugins-editor'
 import createResizeablePlugin from 'draft-js-resizeable-plugin'
+
 import 'draft-js/dist/Draft.css'
-import {Map, List} from 'immutable'
+
+import React, {
+    Component,
+    ComponentProps,
+    ComponentType,
+    DragEvent,
+    KeyboardEvent,
+    MouseEvent,
+    ReactNode,
+} from 'react'
+
+import { List, Map } from 'immutable'
 import _isEqual from 'lodash/isEqual'
 import _noop from 'lodash/noop'
 import _uniq from 'lodash/uniq'
-import React, {
-    ReactNode,
-    ComponentType,
-    MouseEvent,
-    DragEvent,
-    ComponentProps,
-    Component,
-    KeyboardEvent,
-} from 'react'
 import ReactPlayer from 'react-player'
 
-import {UploadType} from 'common/types'
+import { UploadType } from 'common/types'
 import createWorkflowVariablesPlugin from 'pages/automate/workflows/draftjs/plugins/variables'
-import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
-import {addVideo} from 'pages/common/draftjs/plugins/utils'
+import { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
+import { addVideo } from 'pages/common/draftjs/plugins/utils'
 import shortcutManager from 'services/shortcutManager'
-import {extractUrlsFromString} from 'utils'
+import { extractUrlsFromString } from 'utils'
 
-import {notify} from '../../../../state/notifications/actions'
-import {ConnectedAction} from '../../../../state/types'
+import { notify } from '../../../../state/notifications/actions'
+import { ConnectedAction } from '../../../../state/types'
 import {
     contentStateFromTextOrHTML,
     EditorHandledNotHandled,
@@ -42,20 +45,17 @@ import {
     refreshEditor,
     removeMentions,
 } from '../../../../utils/editor'
-import {scrollToReactNode} from '../../../common/utils/keyboard'
-
+import { scrollToReactNode } from '../../../common/utils/keyboard'
 import createConnectedLinksPlugin from '../../draftjs/plugins/connectedLinks'
 import createDndUploadPlugin from '../../draftjs/plugins/dndUpload'
 import createMentionPlugin from '../../draftjs/plugins/mentions'
 import createPasteImagePlugin from '../../draftjs/plugins/pasteImage'
 import createPredictionPlugin from '../../draftjs/plugins/prediction'
-import {createQuotesPlugin} from '../../draftjs/plugins/quotes/quotesPlugin'
-
+import { createQuotesPlugin } from '../../draftjs/plugins/quotes/quotesPlugin'
 import Toolbar from '../../draftjs/plugins/toolbar/Toolbar'
-import {ActionName} from '../../draftjs/plugins/toolbar/types'
-import {ImagePluginConfig, Plugin} from '../../draftjs/plugins/types'
+import { ActionName } from '../../draftjs/plugins/toolbar/types'
+import { ImagePluginConfig, Plugin } from '../../draftjs/plugins/types'
 import createVariablesPlugin from '../../draftjs/plugins/variables/index'
-
 import EmailExtraButton from './EmailExtraButton'
 import provideMentionFilteredSuggestions, {
     InjectedProps as MentionFilteredSuggestionsProps,
@@ -63,10 +63,11 @@ import provideMentionFilteredSuggestions, {
 import provideToolbarPlugin, {
     InjectedProps as ToolbarPluginProps,
 } from './provideToolbarPlugin'
-import css from './RichFieldEditor.less'
 import withGrammarlyUsageTracking, {
     InjectedProps as GrammarlyUsageTrackingProps,
 } from './withGrammarlyUsageTracking'
+
+import css from './RichFieldEditor.less'
 
 type suggestionsType = List<any>
 type canAddMentionType = boolean
@@ -178,10 +179,10 @@ export class RichFieldEditor extends Component<Props, State> {
         }
 
         this.dndPlugin = createDndUploadPlugin(
-            imagePluginProps as ImagePluginConfig
+            imagePluginProps as ImagePluginConfig,
         )
         this.pasteImage = createPasteImagePlugin(
-            imagePluginProps as ImagePluginConfig
+            imagePluginProps as ImagePluginConfig,
         )
         this.blockBreakoutPlugin = createBlockBreakoutPlugin()
         this.resizeablePlugin = createResizeablePlugin({
@@ -189,7 +190,7 @@ export class RichFieldEditor extends Component<Props, State> {
         })
 
         const imageDecorator = composeDecorators(
-            this.resizeablePlugin.decorator
+            this.resizeablePlugin.decorator,
         )
 
         this.toolbarPlugin = props.createToolbarPlugin(imageDecorator)
@@ -230,7 +231,7 @@ export class RichFieldEditor extends Component<Props, State> {
     }
 
     componentDidUpdate(prevProps: Props) {
-        let {editorState} = this.props
+        let { editorState } = this.props
 
         if (!this.props.canAddMention && prevProps.canAddMention) {
             editorState = removeMentions(editorState)
@@ -258,7 +259,7 @@ export class RichFieldEditor extends Component<Props, State> {
             this.props.isFocused &&
             !isValidSelectionKey(
                 editorState,
-                prevProps.editorState.getSelection()
+                prevProps.editorState.getSelection(),
             )
         ) {
             this._focusEditor()
@@ -276,11 +277,11 @@ export class RichFieldEditor extends Component<Props, State> {
     _getCanInsertInlineImages = () => this.props.canInsertInlineImages
 
     _focusEditor = () => {
-        const {editorState, noAutoScroll} = this.props
-        const {wasEverFocused} = this.state
+        const { editorState, noAutoScroll } = this.props
+        const { wasEverFocused } = this.state
 
         if (!wasEverFocused) {
-            this.setState({wasEverFocused: true})
+            this.setState({ wasEverFocused: true })
             this.handleChildChange(EditorState.moveFocusToEnd(editorState))
         }
         setTimeout(() => {
@@ -301,7 +302,7 @@ export class RichFieldEditor extends Component<Props, State> {
 
     // This is for handling things like Bold, Italic, etc..
     _handleKeyCommand = (command: string) => {
-        const {editorState} = this.props
+        const { editorState } = this.props
         const newState = RichUtils.handleKeyCommand(editorState, command)
         if (newState) {
             this.handleChildChange(newState)
@@ -314,7 +315,7 @@ export class RichFieldEditor extends Component<Props, State> {
     _handlePastedText = (
         text: string,
         html: string | undefined,
-        editorState: EditorState
+        editorState: EditorState,
     ) => {
         if (!this.editor) {
             return
@@ -335,20 +336,20 @@ export class RichFieldEditor extends Component<Props, State> {
         const contentState = Modifier.replaceWithFragment(
             editorState.getCurrentContent(),
             editorState.getSelection(),
-            contentStateFromTextOrHTML(text, html).getBlockMap()
+            contentStateFromTextOrHTML(text, html).getBlockMap(),
         )
 
         let newEditorState = (
             EditorState.push as (
                 editorState: EditorState,
-                contentState: ContentState
+                contentState: ContentState,
             ) => EditorState
         )(editorState, contentState)
 
         // Automatically inject a video player at the bottom when content pasted is a video link. When applicable.
         newEditorState = this._insertExtraVideoOnPastedTextIfApplicable(
             newEditorState,
-            text
+            text,
         )
 
         this.handleChildChange(newEditorState)
@@ -360,7 +361,7 @@ export class RichFieldEditor extends Component<Props, State> {
 
     _insertExtraVideoOnPastedTextIfApplicable = (
         editorState: EditorState,
-        text: string
+        text: string,
     ): EditorState => {
         let newEditorState = editorState
 
@@ -368,8 +369,8 @@ export class RichFieldEditor extends Component<Props, State> {
             const urls =
                 _uniq(
                     extractUrlsFromString(text)?.filter((url) =>
-                        ReactPlayer.canPlay(url)
-                    )
+                        ReactPlayer.canPlay(url),
+                    ),
                 ) || []
 
             urls.forEach((url) => {
@@ -392,7 +393,7 @@ export class RichFieldEditor extends Component<Props, State> {
                 if (plugin.onChange && this.editor) {
                     nextEditorState = plugin.onChange(
                         nextEditorState,
-                        this.editor.getPluginMethods()
+                        this.editor.getPluginMethods(),
                     )
                 }
             })
@@ -406,18 +407,18 @@ export class RichFieldEditor extends Component<Props, State> {
         this.props.onChange(this._runPlugins(editorState))
     }
 
-    _onDragOver = () => this.setState({isDragging: true})
+    _onDragOver = () => this.setState({ isDragging: true })
 
-    _onDragLeave = () => this.setState({isDragging: false})
+    _onDragLeave = () => this.setState({ isDragging: false })
 
     _onDrop = (event: DragEvent<HTMLDivElement>) => {
         event.preventDefault()
-        this.setState({isDragging: false})
+        this.setState({ isDragging: false })
     }
 
     _onEditorFocus = (event: MouseEvent<HTMLDivElement>) => {
         shortcutManager.denylist(['SpotlightModal', 'Dialpad', 'PhoneCall'])
-        const {onFocus, detectGrammarly} = this.props
+        const { onFocus, detectGrammarly } = this.props
         onFocus(event)
         detectGrammarly()
     }
@@ -448,9 +449,9 @@ export class RichFieldEditor extends Component<Props, State> {
             uploadType,
         } = this.props
         // $TsFixMe remove casting after migrating createMentionPlugin
-        const {MentionSuggestions} = this.mentionPlugin as {
+        const { MentionSuggestions } = this.mentionPlugin as {
             MentionSuggestions: ComponentType<{
-                onSearchChange: (arg: {value: string}) => void
+                onSearchChange: (arg: { value: string }) => void
                 suggestions: List<any>
                 canAddMention: boolean
             }>
@@ -553,5 +554,5 @@ export class RichFieldEditor extends Component<Props, State> {
 }
 
 export default withGrammarlyUsageTracking(
-    provideToolbarPlugin(provideMentionFilteredSuggestions(RichFieldEditor))
+    provideToolbarPlugin(provideMentionFilteredSuggestions(RichFieldEditor)),
 )

@@ -1,4 +1,4 @@
-import React, {useCallback, useRef, useState} from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import Avatar from 'pages/common/components/Avatar/Avatar'
@@ -8,8 +8,9 @@ import {
     isAvailable as getIsAvailable,
 } from 'state/currentUser/selectors'
 
-import css from './UserItem.less'
 import UserMenu from './UserMenu'
+
+import css from './UserItem.less'
 
 export default function UserItem() {
     const currentUser = useAppSelector(getCurrentUser)

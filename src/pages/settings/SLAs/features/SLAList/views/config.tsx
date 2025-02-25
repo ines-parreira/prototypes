@@ -1,14 +1,14 @@
+import React, { ComponentProps } from 'react'
+
 import classNames from 'classnames'
-import React, {ComponentProps} from 'react'
 
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-
-import {isExtraLargeScreen} from 'pages/common/utils/mobile'
+import { isExtraLargeScreen } from 'pages/common/utils/mobile'
 import ChannelListCell from 'pages/settings/SLAs/features/SLAList/views/ChannelListCell'
 import DatetimeCell from 'pages/settings/SLAs/features/SLAList/views/DatetimeCell'
 import ToggleCell from 'pages/settings/SLAs/features/SLAList/views/ToggleCell'
 
-import {TableColumn} from '../types'
+import { TableColumn } from '../types'
 
 import css from './SLAListView.less'
 
@@ -21,8 +21,8 @@ export const columnConfig: ComponentProps<typeof HeaderCellProperty>[] = [
             </i>
         ),
     },
-    {title: 'Last updated'},
-    {title: 'Channels'},
+    { title: 'Last updated' },
+    { title: 'Channels' },
 ]
 
 export const columnOrder = [

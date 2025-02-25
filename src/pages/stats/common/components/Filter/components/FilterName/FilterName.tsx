@@ -1,11 +1,13 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { useEffect, useRef, useState } from 'react'
+
 import classNames from 'classnames'
-import React, {useEffect, useRef, useState} from 'react'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import css from 'pages/stats/common/components/Filter/components/FilterName/FilterName.less'
-import {FilterWarningIcon} from 'pages/stats/common/components/Filter/components/FilterWarning/FilterWarningIcon'
-import {FILTER_NAME_MAX_WIDTH} from 'pages/stats/common/components/Filter/constants'
-import {OptionalFilterProps} from 'pages/stats/common/filters/types'
+import { FilterWarningIcon } from 'pages/stats/common/components/Filter/components/FilterWarning/FilterWarningIcon'
+import { FILTER_NAME_MAX_WIDTH } from 'pages/stats/common/components/Filter/constants'
+import { OptionalFilterProps } from 'pages/stats/common/filters/types'
 
 type Props = {
     name: string
@@ -15,7 +17,7 @@ type Props = {
 
 export const getWarningTooltip = (
     warningType: 'non-existent' | 'not-applicable',
-    filterName: string
+    filterName: string,
 ) => {
     if (warningType === 'non-existent') {
         return 'Some filters or values have been archived or deleted. They will be ignored. Check your settings and update your Saved Filters.'

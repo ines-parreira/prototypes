@@ -1,8 +1,8 @@
-import {useQueryClient} from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 
 import {
-    useUpdateSetting as usePureUpdateSetting,
     convertSettingsKeys,
+    useUpdateSetting as usePureUpdateSetting,
 } from 'models/convert/settings/queries'
 
 export const useUpdateSetting = () => {

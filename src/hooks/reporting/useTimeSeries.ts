@@ -1,37 +1,36 @@
-import {UseQueryResult} from '@tanstack/react-query'
+import { UseQueryResult } from '@tanstack/react-query'
 import _groupBy from 'lodash/groupBy'
 import moment from 'moment-timezone'
 
-import {DataResponse} from 'hooks/reporting/withDeciles'
-import {Cubes} from 'models/reporting/cubes'
-import {fetchPostReporting, usePostReporting} from 'models/reporting/queries'
-import {ReportingGranularity, TimeSeriesQuery} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
-
-import {formatReportingQueryDate} from 'utils/reporting'
+import { DataResponse } from 'hooks/reporting/withDeciles'
+import { Cubes } from 'models/reporting/cubes'
+import { fetchPostReporting, usePostReporting } from 'models/reporting/queries'
+import { ReportingGranularity, TimeSeriesQuery } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
+import { formatReportingQueryDate } from 'utils/reporting'
 
 export type TimeSeriesHook = (
     filters: StatsFilters,
     timezone: string,
-    granularity: ReportingGranularity
+    granularity: ReportingGranularity,
 ) => UseQueryResult<TimeSeriesDataItem[][]>
 
 export type TimeSeriesPerDimensionHook = (
     filters: StatsFilters,
     timezone: string,
-    granularity: ReportingGranularity
+    granularity: ReportingGranularity,
 ) => UseQueryResult<TimeSeriesPerDimension>
 
 export type TimeSeriesFetch = (
     filters: StatsFilters,
     timezone: string,
-    granularity: ReportingGranularity
+    granularity: ReportingGranularity,
 ) => Promise<TimeSeriesDataItem[][]>
 
 export type TimeSeriesPerDimensionFetch = (
     filters: StatsFilters,
     timezone: string,
-    granularity: ReportingGranularity
+    granularity: ReportingGranularity,
 ) => Promise<TimeSeriesPerDimension>
 
 export type TimeSeriesDataItem = {
@@ -49,15 +48,15 @@ export type TimeSeriesDataItemWithPercentageAndDecile = TimeSeriesDataItem & {
 const select =
     <TCube extends Cubes>(query: TimeSeriesQuery<TCube>) =>
     (res: DataResponse['data']['data']) => {
-        const {timeDimensions, measures} = query
-        const {dimension, dateRange, granularity} = timeDimensions[0]
+        const { timeDimensions, measures } = query
+        const { dimension, dateRange, granularity } = timeDimensions[0]
 
         const dateTimeToValuesMap = res.reduce<
             Partial<Record<string, number[]>>
         >((acc, item) => {
             const key = formatReportingQueryDate(item[String(dimension)])
             const values = measures.map((measure) =>
-                parseFloat(item[measure] || '0')
+                parseFloat(item[measure] || '0'),
             )
             return {
                 ...acc,
@@ -79,7 +78,7 @@ const select =
 
 const objectMap = <T, S>(
     obj: Record<string, T>,
-    fn: (o: T) => S
+    fn: (o: T) => S,
 ): Record<string, S> => {
     const mapped: Record<string, S> = {}
     Object.keys(obj).forEach((key) => (mapped[key] = fn(obj[key])))
@@ -91,12 +90,12 @@ export type TimeSeriesPerDimension = Record<string, TimeSeriesDataItem[][]>
 const selectPerDimension =
     <TCube extends Cubes>(query: TimeSeriesQuery<TCube>) =>
     (res: DataResponse['data']['data']): TimeSeriesPerDimension => {
-        const {dimensions} = query
+        const { dimensions } = query
         return objectMap(_groupBy(res, dimensions[0]), select(query))
     }
 
 export function useTimeSeries<TCube extends Cubes>(
-    query: TimeSeriesQuery<TCube>
+    query: TimeSeriesQuery<TCube>,
 ) {
     return usePostReporting<
         Record<string, string>[],
@@ -108,7 +107,7 @@ export function useTimeSeries<TCube extends Cubes>(
 }
 
 export async function fetchTimeSeries<TCube extends Cubes>(
-    query: TimeSeriesQuery<TCube>
+    query: TimeSeriesQuery<TCube>,
 ) {
     return fetchPostReporting<
         Record<string, string>[],
@@ -119,7 +118,7 @@ export async function fetchTimeSeries<TCube extends Cubes>(
 
 export function useTimeSeriesPerDimension<TCube extends Cubes>(
     query: TimeSeriesQuery<TCube>,
-    enabled = true
+    enabled = true,
 ) {
     return usePostReporting<
         Record<string, string>[],
@@ -132,24 +131,24 @@ export function useTimeSeriesPerDimension<TCube extends Cubes>(
 }
 
 export async function fetchTimeSeriesPerDimension<TCube extends Cubes>(
-    query: TimeSeriesQuery<TCube>
+    query: TimeSeriesQuery<TCube>,
 ) {
     return fetchPostReporting<
         Record<string, string>[],
         Record<string, TimeSeriesDataItem[][]>,
         TCube
     >([query], {}).then((res) =>
-        selectPerDimension<TCube>(query)(res.data.data)
+        selectPerDimension<TCube>(query)(res.data.data),
     )
 }
 
 export const getMomentGranularityFromReportingGranularity = (
-    granularity: ReportingGranularity
+    granularity: ReportingGranularity,
 ) => (granularity === ReportingGranularity.Week ? 'isoWeek' : granularity)
 
 export function getPeriodDateTimes(
     dateRange: string[],
-    granularity: ReportingGranularity
+    granularity: ReportingGranularity,
 ): string[] {
     // Cube always returns weeks starting with Monday,
     // but Moment.js derives the starting day of the week from
@@ -164,7 +163,7 @@ export function getPeriodDateTimes(
     let currentDate = moment(dateRange[0])
     while (currentDate.isBefore(end)) {
         dates.push(
-            formatReportingQueryDate(currentDate.startOf(momentGranularity))
+            formatReportingQueryDate(currentDate.startOf(momentGranularity)),
         )
         currentDate = currentDate.add(1, granularity)
     }

@@ -1,19 +1,21 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
 import React from 'react'
 
-import {SegmentEvent, logEvent} from 'common/segment'
+import classNames from 'classnames'
 
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
-import {AIArticle} from 'models/helpCenter/types'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import { AIArticle } from 'models/helpCenter/types'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {isAdmin} from 'utils'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { isAdmin } from 'utils'
+
+import AIArticlesLibraryPreviewEmptyState from './AIArticlesLibraryPreviewEmptyState'
 
 import css from './AIArticlesLibraryPreview.less'
-import AIArticlesLibraryPreviewEmptyState from './AIArticlesLibraryPreviewEmptyState'
 
 const editIconId = 'article-preview-edit-icon'
 
@@ -61,14 +63,14 @@ const AIArticlesLibraryPreview: React.FC<Props> = ({
                             className={classNames(
                                 'material-icons',
                                 'rounded',
-                                css.iconEdit
+                                css.iconEdit,
                             )}
                             onClick={() => {
                                 logEvent(
                                     SegmentEvent.HelpCenterAILibraryEditButtonClicked,
                                     {
                                         ml_key: article.key,
-                                    }
+                                    },
                                 )
                                 onEdit(article)
                             }}
@@ -83,7 +85,7 @@ const AIArticlesLibraryPreview: React.FC<Props> = ({
                                     SegmentEvent.HelpCenterAILibraryArchiveButtonClicked,
                                     {
                                         ml_key: article.key,
-                                    }
+                                    },
                                 )
                                 onArchive(article)
                             }}
@@ -94,7 +96,7 @@ const AIArticlesLibraryPreview: React.FC<Props> = ({
                             intent="primary"
                             onClick={() => {
                                 logEvent(
-                                    SegmentEvent.HelpCenterAILibraryPublishButtonClicked
+                                    SegmentEvent.HelpCenterAILibraryPublishButtonClicked,
                                 )
                                 onPublish(article)
                             }}

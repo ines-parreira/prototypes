@@ -1,11 +1,10 @@
 import React from 'react'
 
-import {TicketMessageSourceType} from 'business/types/ticket'
+import { TicketMessageSourceType } from 'business/types/ticket'
+import { Content, Excerpt, Subtitle } from 'common/notifications'
+import type { ContentProps, Notification } from 'common/notifications'
 
-import {Content, Excerpt, Subtitle} from 'common/notifications'
-import type {ContentProps, Notification} from 'common/notifications'
-
-import type {EmailDomainPayload} from '../types'
+import type { EmailDomainPayload } from '../types'
 
 type Props = {
     notification: Notification<EmailDomainPayload>
@@ -15,12 +14,12 @@ export default function DomainVerificationNotification({
     notification,
     ...props
 }: Props) {
-    const {domain} = notification.payload
+    const { domain } = notification.payload
 
     return (
         <Content
             {...props}
-            icon={{type: TicketMessageSourceType.SystemMessage}}
+            icon={{ type: TicketMessageSourceType.SystemMessage }}
             title="Domain verification complete"
             url="/app/settings/channels/email"
         >

@@ -1,5 +1,6 @@
+import React, { useCallback, useMemo, useRef, useState } from 'react'
+
 import classNames from 'classnames'
-import React, {useCallback, useMemo, useRef, useState} from 'react'
 
 import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
@@ -8,14 +9,15 @@ import DropdownFooter from 'pages/common/components/dropdown/DropdownFooter'
 import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 
-import {useSearch} from '../hooks/useSearch'
-import {CHOICE_VALUES_SYMBOL, PREVIOUS_BUTTON_ID} from './constants'
+import { useSearch } from '../hooks/useSearch'
+import { CHOICE_VALUES_SYMBOL, PREVIOUS_BUTTON_ID } from './constants'
+import { buildTreeOfChoices } from './helpers/buildTreeOfChoices'
+import { getFullValueFromCurrentPath } from './helpers/getFullValueFromCurrentPath'
+import { getLabel } from './helpers/getLabel'
+import { SearchInput } from './search/SearchInput'
+import { SearchResult } from './search/SearchResult'
+
 import css from './Deprecated_MultiLevelSelect.less'
-import {buildTreeOfChoices} from './helpers/buildTreeOfChoices'
-import {getFullValueFromCurrentPath} from './helpers/getFullValueFromCurrentPath'
-import {getLabel} from './helpers/getLabel'
-import {SearchInput} from './search/SearchInput'
-import {SearchResult} from './search/SearchResult'
 
 export type MultiLevelSelectProps = {
     id: number
@@ -56,7 +58,7 @@ export default function MultiLevelSelect({
     let currentBranch = choicesTree
     currentPath.forEach(
         (nextBranchPath) =>
-            (currentBranch = currentBranch[nextBranchPath] || currentBranch)
+            (currentBranch = currentBranch[nextBranchPath] || currentBranch),
     )
 
     const isSearchDisabled =
@@ -93,7 +95,7 @@ export default function MultiLevelSelect({
         (newValue: string) => {
             onChange(newValue)
         },
-        [onChange]
+        [onChange],
     )
 
     return (
@@ -174,7 +176,7 @@ export default function MultiLevelSelect({
                                         key={key}
                                         tag="button"
                                         onClick={() => goNext(key)}
-                                        option={{label, value: key}}
+                                        option={{ label, value: key }}
                                         hasSubItems
                                     >
                                         <span className={css.choiceButton}>
@@ -197,7 +199,7 @@ export default function MultiLevelSelect({
                             const label = getLabel(choice)
                             const fullValue = getFullValueFromCurrentPath(
                                 currentPath,
-                                choice
+                                choice,
                             )
                             return (
                                 <DropdownItem
@@ -218,7 +220,7 @@ export default function MultiLevelSelect({
                                     </span>
                                 </DropdownItem>
                             )
-                        }
+                        },
                     )}
                 </DropdownBody>
                 {((!isValueEmpty && !isSearching) ||

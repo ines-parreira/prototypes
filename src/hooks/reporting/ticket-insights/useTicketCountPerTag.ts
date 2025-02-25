@@ -1,10 +1,9 @@
-import {Tag} from '@gorgias/api-queries'
+import { orderBy } from 'lodash'
 
-import {orderBy} from 'lodash'
+import { Tag } from '@gorgias/api-queries'
 
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-
-import {useTagsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useTagsTicketCountTimeSeries } from 'hooks/reporting/timeSeries'
 import {
     getPeriodDateTimes,
     TimeSeriesDataItem,
@@ -12,13 +11,13 @@ import {
 } from 'hooks/reporting/useTimeSeries'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {getEntitiesTags} from 'state/entities/tags/selectors'
+import { getEntitiesTags } from 'state/entities/tags/selectors'
 import {
     getTagsOrder,
     setOrder,
     TagsTableOrder,
 } from 'state/ui/stats/tagsReportSlice'
-import {getFilterDateRange} from 'utils/reporting'
+import { getFilterDateRange } from 'utils/reporting'
 
 export type FormattedDataItem = {
     tagId: string
@@ -29,7 +28,7 @@ export type FormattedDataItem = {
 
 const formatTimeSeriesPerDimension = (
     timeSeriesData: TimeSeriesPerDimension,
-    tags: Record<string, Tag | undefined>
+    tags: Record<string, Tag | undefined>,
 ): FormattedDataItem[] =>
     Object.entries(timeSeriesData).map(([key, value]) => ({
         tagId: key,
@@ -46,14 +45,14 @@ const getOrderBy = (order: TagsTableOrder) => {
                 orderBy(
                     data,
                     (item: FormattedDataItem) => item.tag?.name ?? item.tagId,
-                    order.direction
+                    order.direction,
                 )
         case 'total':
             return (data: FormattedDataItem[]) =>
                 orderBy(
                     data,
                     (item: FormattedDataItem) => item.total,
-                    order.direction
+                    order.direction,
                 )
         default:
             return (data: FormattedDataItem[]) =>
@@ -61,7 +60,7 @@ const getOrderBy = (order: TagsTableOrder) => {
                     data,
                     (item: FormattedDataItem) =>
                         item.timeSeries[orderColumn]?.value,
-                    order.direction
+                    order.direction,
                 )
     }
 }
@@ -69,7 +68,7 @@ const getOrderBy = (order: TagsTableOrder) => {
 export const getFormattedDataWithTotals = (
     timeSeriesData: TimeSeriesPerDimension | undefined,
     tags: Record<string, Tag | undefined>,
-    order: TagsTableOrder
+    order: TagsTableOrder,
 ) => {
     const timeData = timeSeriesData
         ? getOrderBy(order)(formatTimeSeriesPerDimension(timeSeriesData, tags))
@@ -79,7 +78,7 @@ export const getFormattedDataWithTotals = (
     const columnTotals = timeData.reduce<number[]>((totals, item) => {
         item.timeSeries.forEach(
             (dataPoint, index) =>
-                (totals[index] = dataPoint.value + (totals[index] ?? 0))
+                (totals[index] = dataPoint.value + (totals[index] ?? 0)),
         )
         return totals
     }, [])
@@ -94,22 +93,23 @@ export const getFormattedDataWithTotals = (
 export const useTicketCountPerTag = () => {
     const dispatch = useAppDispatch()
     const order = useAppSelector(getTagsOrder)
-    const {cleanStatsFilters, userTimezone, granularity} = useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone, granularity } =
+        useNewStatsFilters()
     const tags = useAppSelector(getEntitiesTags)
-    const {data: timeSeriesData, isLoading} = useTagsTicketCountTimeSeries(
+    const { data: timeSeriesData, isLoading } = useTagsTicketCountTimeSeries(
         cleanStatsFilters,
         userTimezone,
-        granularity
+        granularity,
     )
     const dateTimes = getPeriodDateTimes(
         getFilterDateRange(cleanStatsFilters.period),
-        granularity
+        granularity,
     )
 
     const timeData = getFormattedDataWithTotals(timeSeriesData, tags, order)
 
     const setOrdering = (column: 'tag' | 'total' | number) => {
-        dispatch(setOrder({column}))
+        dispatch(setOrder({ column }))
     }
 
     return {

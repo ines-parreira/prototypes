@@ -1,2 +1,2 @@
-export {default} from './SummaryTotal'
+export { default } from './SummaryTotal'
 export * from './SummaryTotal'

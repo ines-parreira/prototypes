@@ -1,4 +1,4 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
 import {
     fetchFilteredAutomatedInteractions,
@@ -12,15 +12,15 @@ import {
     fetchTicketHandleTimeTrend,
     useTicketHandleTimeTrend,
 } from 'hooks/reporting/metricTrends'
-import {StatsFilters} from 'models/stat/types'
-import {assumeMock} from 'utils/testing'
+import { StatsFilters } from 'models/stat/types'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/automate/automationTrends')
 const useFilteredAutomatedInteractionsMock = assumeMock(
-    useFilteredAutomatedInteractions
+    useFilteredAutomatedInteractions,
 )
 const fetchFilteredAutomatedInteractionsMock = assumeMock(
-    fetchFilteredAutomatedInteractions
+    fetchFilteredAutomatedInteractions,
 )
 
 jest.mock('hooks/reporting/metricTrends')
@@ -58,8 +58,8 @@ describe('TimeSavedByAgentsTrend', () => {
         })
 
         it('should fetch automatedInteractionTrend and TicketHandleTimeTrend and calculate result', () => {
-            const {result} = renderHook(() =>
-                useTimeSavedByAgentsTrend(statsFilters, 'UTC')
+            const { result } = renderHook(() =>
+                useTimeSavedByAgentsTrend(statsFilters, 'UTC'),
             )
 
             expect(result.current).toEqual({
@@ -92,8 +92,8 @@ describe('TimeSavedByAgentsTrend', () => {
                 isError: false,
             })
 
-            const {result} = renderHook(() =>
-                useTimeSavedByAgentsTrend(statsFilters, 'UTC')
+            const { result } = renderHook(() =>
+                useTimeSavedByAgentsTrend(statsFilters, 'UTC'),
             )
 
             expect(result.current).toEqual({
@@ -134,7 +134,7 @@ describe('TimeSavedByAgentsTrend', () => {
         it('should fetch automatedInteractionTrend and TicketHandleTimeTrend and calculate result', async () => {
             const result = await fetchTimeSavedByAgentsTrend(
                 statsFilters,
-                'UTC'
+                'UTC',
             )
 
             expect(result).toEqual({

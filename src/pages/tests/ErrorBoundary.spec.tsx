@@ -1,8 +1,9 @@
-import {fireEvent, render} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
-import {Collapse} from 'reactstrap'
+import React, { ComponentProps } from 'react'
 
-import {reportError} from 'utils/errors'
+import { fireEvent, render } from '@testing-library/react'
+import { Collapse } from 'reactstrap'
+
+import { reportError } from 'utils/errors'
 
 import {
     ErrorBoundary,
@@ -15,7 +16,7 @@ jest.mock('reactstrap', () => {
     const reactstrap: Record<string, unknown> = jest.requireActual('reactstrap')
     return {
         ...reactstrap,
-        Collapse: ({isOpen, children}: ComponentProps<typeof Collapse>) => {
+        Collapse: ({ isOpen, children }: ComponentProps<typeof Collapse>) => {
             return isOpen ? children : null
         },
     }
@@ -31,10 +32,10 @@ describe('<ErrorBoundary/>', () => {
         throw error
     }
     it('should render children when there is no error', () => {
-        const {queryByText} = render(
+        const { queryByText } = render(
             <ErrorBoundary>
                 <NoErrorChild />
-            </ErrorBoundary>
+            </ErrorBoundary>,
         )
 
         expect(queryByText(noErrorChildText)).toBeInTheDocument()
@@ -42,10 +43,10 @@ describe('<ErrorBoundary/>', () => {
     })
 
     it('should render an error message because an error occurred', () => {
-        const {queryByText} = render(
+        const { queryByText } = render(
             <ErrorBoundary>
                 <ErrorChild />
-            </ErrorBoundary>
+            </ErrorBoundary>,
         )
 
         expect(queryByText(noErrorChildText)).not.toBeInTheDocument()
@@ -59,7 +60,7 @@ describe('<ErrorBoundary/>', () => {
         render(
             <ErrorBoundary sentryTags={tags}>
                 <ErrorChild />
-            </ErrorBoundary>
+            </ErrorBoundary>,
         )
 
         expect(reportError).toHaveBeenCalledWith(error, {
@@ -69,27 +70,27 @@ describe('<ErrorBoundary/>', () => {
     })
 
     it('should reload page on reload page button click', () => {
-        const {getByRole} = render(
+        const { getByRole } = render(
             <ErrorBoundary>
                 <ErrorChild />
-            </ErrorBoundary>
+            </ErrorBoundary>,
         )
 
-        fireEvent.click(getByRole('button', {name: RELOAD_BUTTON_TEXT}))
+        fireEvent.click(getByRole('button', { name: RELOAD_BUTTON_TEXT }))
 
         expect(window.location.reload).toHaveBeenCalled()
     })
 
     it('should show the error details on show details button click', () => {
-        const {getByRole, queryByText} = render(
+        const { getByRole, queryByText } = render(
             <ErrorBoundary>
                 <ErrorChild />
-            </ErrorBoundary>
+            </ErrorBoundary>,
         )
 
         expect(queryByText(error.toString())).not.toBeInTheDocument()
 
-        fireEvent.click(getByRole('button', {name: SHOW_DETAILS_BUTTON_TEXT}))
+        fireEvent.click(getByRole('button', { name: SHOW_DETAILS_BUTTON_TEXT }))
 
         expect(queryByText(error.toString())).toBeInTheDocument()
     })

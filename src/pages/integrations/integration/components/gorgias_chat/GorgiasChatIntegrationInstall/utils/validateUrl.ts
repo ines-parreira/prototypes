@@ -1,4 +1,4 @@
-import {GorgiasChatInstallationVisibilityConditionOperator} from 'models/integration/types'
+import { GorgiasChatInstallationVisibilityConditionOperator } from 'models/integration/types'
 
 const urlRegex =
     /^((https?):\/\/(-\.)?)?([^\s/?\.#]+\.)([^\s/?\.#]+\.?)+(\/?[^\s#]*)?$/
@@ -14,7 +14,7 @@ export type UrlValidationResult = 'valid' | 'invalid' | 'unsupported'
  */
 const validateUrl = (
     url: string,
-    operator: GorgiasChatInstallationVisibilityConditionOperator
+    operator: GorgiasChatInstallationVisibilityConditionOperator,
 ): UrlValidationResult => {
     if (url.includes('#')) {
         return 'unsupported'

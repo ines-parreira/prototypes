@@ -1,7 +1,8 @@
-import {fireEvent, render} from '@testing-library/react'
 import React from 'react'
 
-import {DraggablePreviewImage} from '../DraggablePreviewImage'
+import { fireEvent, render } from '@testing-library/react'
+
+import { DraggablePreviewImage } from '../DraggablePreviewImage'
 
 describe('<DraggablePreviewImage />', () => {
     const submitFn = jest.fn()
@@ -19,13 +20,13 @@ describe('<DraggablePreviewImage />', () => {
     })
 
     it('matches snapshot', () => {
-        const {container} = render(<DraggablePreviewImage {...baseProps} />)
+        const { container } = render(<DraggablePreviewImage {...baseProps} />)
 
         expect(container).toMatchSnapshot()
     })
 
     it('does not show buttons if no repositioning in progress and no show action buttons', () => {
-        const {queryByText} = render(<DraggablePreviewImage {...baseProps} />)
+        const { queryByText } = render(<DraggablePreviewImage {...baseProps} />)
 
         expect(queryByText('Cancel')).toBeNull()
         expect(queryByText('Save Position')).toBeNull()
@@ -33,8 +34,8 @@ describe('<DraggablePreviewImage />', () => {
     })
 
     it('shows cancel and save position if repositioning in progress and submits on click', () => {
-        const {getByText, queryByText} = render(
-            <DraggablePreviewImage {...baseProps} repositioningInProgress />
+        const { getByText, queryByText } = render(
+            <DraggablePreviewImage {...baseProps} repositioningInProgress />,
         )
 
         getByText('Cancel')
@@ -53,12 +54,12 @@ describe('<DraggablePreviewImage />', () => {
         const expectedUrl =
             'https://attachments.gorgias.help/uploads.gorgias.io/zKB3oxw4pl6rkVOL/delivery-c2fea9c0-f200-434c-b726-bc89ba74d4f9.png'
 
-        const {findByAltText} = render(
+        const { findByAltText } = render(
             <DraggablePreviewImage
                 {...baseProps}
                 defaultPreview={oldBucketAttachmentUrl}
                 repositioningInProgress
-            />
+            />,
         )
 
         await findByAltText(expectedUrl)

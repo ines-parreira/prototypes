@@ -1,5 +1,6 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import React, {Component} from 'react'
+import React, { Component } from 'react'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 type Props = {
     className?: string

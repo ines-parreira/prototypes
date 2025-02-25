@@ -1,5 +1,6 @@
-import {fireEvent, render, screen} from '@testing-library/react'
 import React from 'react'
+
+import { fireEvent, render, screen } from '@testing-library/react'
 
 import MigrationComplete from '../EmailMigration/MigrationComplete'
 
@@ -20,12 +21,12 @@ describe('MigrationComplete', () => {
         expect(
             screen.getByRole('img', {
                 name: /all done/i,
-            })
+            }),
         ).toBeVisible()
         expect(
             screen.getByRole('heading', {
                 name: /migration complete/i,
-            })
+            }),
         ).toBeVisible()
     })
 
@@ -35,10 +36,10 @@ describe('MigrationComplete', () => {
         fireEvent.click(
             screen.getByRole('button', {
                 name: /go home/i,
-            })
+            }),
         )
         expect(mockHistoryPush).toHaveBeenCalledWith(
-            '/app/settings/channels/email'
+            '/app/settings/channels/email',
         )
     })
 })

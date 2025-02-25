@@ -1,12 +1,13 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
-import React, {ComponentType} from 'react'
-import {Provider} from 'react-redux'
-import {createStore} from 'redux'
+import React, { ComponentType } from 'react'
 
-import {IntegrationType} from 'models/integration/types'
-import {useGetNamespacedShopNameForStore} from 'pages/stats/convert/hooks/useGetNamespacedShopNameForStore'
-import {RootState} from 'state/types'
+import { renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import { createStore } from 'redux'
+
+import { IntegrationType } from 'models/integration/types'
+import { useGetNamespacedShopNameForStore } from 'pages/stats/convert/hooks/useGetNamespacedShopNameForStore'
+import { RootState } from 'state/types'
 
 const defaultState = {
     integrations: fromJS({
@@ -40,7 +41,7 @@ describe('useGetShopNameForStore', () => {
     describe('customer has several integrations', () => {
         const store = createStore((state) => state as RootState, defaultState)
         const hookOptions = {
-            wrapper: (({children}) => (
+            wrapper: (({ children }) => (
                 <Provider store={store}>{children}</Provider>
             )) as ComponentType,
         }
@@ -54,13 +55,13 @@ describe('useGetShopNameForStore', () => {
         ])(
             'For integration IDs "%p" returns namespaced shop name %p',
             (integrationIds, expectedName) => {
-                const {result} = renderHook(
+                const { result } = renderHook(
                     () => useGetNamespacedShopNameForStore(integrationIds),
-                    hookOptions
+                    hookOptions,
                 )
 
                 expect(result.current).toStrictEqual(expectedName)
-            }
+            },
         )
     })
 
@@ -73,13 +74,13 @@ describe('useGetShopNameForStore', () => {
                 }),
             })
             const hookOptions = {
-                wrapper: (({children}) => (
+                wrapper: (({ children }) => (
                     <Provider store={store}>{children}</Provider>
                 )) as ComponentType,
             }
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () => useGetNamespacedShopNameForStore([1, 2]),
-                hookOptions
+                hookOptions,
             )
 
             expect(result.current).toStrictEqual('')

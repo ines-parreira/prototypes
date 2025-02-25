@@ -1,10 +1,10 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
-import {useBannersContext} from '../../../Context'
-import {BannerCategories, ContextBanner} from '../../../types'
-import {useStorageSync} from '../useStorageSync'
+import { useBannersContext } from '../../../Context'
+import { BannerCategories, ContextBanner } from '../../../types'
+import { useStorageSync } from '../useStorageSync'
 
 jest.mock('../../../Context', () => ({
     useBannersContext: jest.fn(),
@@ -58,12 +58,12 @@ describe('useStorageSync', () => {
         expect(updateCurrentTabState).toHaveBeenNthCalledWith(
             1,
             BannerCategories.STATUS_PAGE_INCIDENT,
-            'instanceId1'
+            'instanceId1',
         )
         expect(updateCurrentTabState).toHaveBeenNthCalledWith(
             2,
             BannerCategories.STATUS_PAGE_INCIDENT,
-            'instanceId2'
+            'instanceId2',
         )
     })
 })

@@ -1,14 +1,13 @@
-import React, {useState} from 'react'
-import {Modal, ModalBody, ModalHeader} from 'reactstrap'
+import React, { useState } from 'react'
 
-import {useAppNode} from 'appNode'
+import { Modal, ModalBody, ModalHeader } from 'reactstrap'
+
+import { useAppNode } from 'appNode'
 import Button from 'pages/common/components/button/Button'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-
 import CheckBox from 'pages/common/forms/CheckBox'
-import {LightCampaignModalType} from 'pages/convert/campaigns/types/enums/LightCampaignModalType'
-
-import {CONVERT_PRODUCT_LINK} from 'pages/convert/common/constants'
+import { LightCampaignModalType } from 'pages/convert/campaigns/types/enums/LightCampaignModalType'
+import { CONVERT_PRODUCT_LINK } from 'pages/convert/common/constants'
 
 import css from './LightCampaignModal.less'
 
@@ -47,7 +46,7 @@ const LightCampaignModal = (props: Props) => {
 
     const onDismissClick = () => {
         setIsDismissedChecked(
-            (prevIsDismissedChecked) => !prevIsDismissedChecked
+            (prevIsDismissedChecked) => !prevIsDismissedChecked,
         )
     }
 

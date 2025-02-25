@@ -1,9 +1,9 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {Provider} from 'react-redux'
-import {MemoryRouter} from 'react-router-dom'
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -13,7 +13,7 @@ import {
     YOTPO_INTEGRATION_TYPE,
 } from 'constants/integration'
 import YotpoIntegrationList from 'pages/integrations/integration/components/yotpo/YotpoIntegrationList'
-import {RootState, StoreDispatch} from 'state/types'
+import { RootState, StoreDispatch } from 'state/types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -25,7 +25,7 @@ describe('<YotpoIntegrationList/>', () => {
 
     describe('render()', () => {
         it('should render the Yotpo integration', () => {
-            const {container} = render(
+            const { container } = render(
                 <MemoryRouter>
                     <Provider store={mockStore(defaultState)}>
                         <YotpoIntegrationList
@@ -38,7 +38,7 @@ describe('<YotpoIntegrationList/>', () => {
                                         oauth: {
                                             status: SUCCESS_AUTHENTICATION_STATUS,
                                         },
-                                        import_state: {is_over: true},
+                                        import_state: { is_over: true },
                                     },
                                 },
                             ])}
@@ -48,14 +48,14 @@ describe('<YotpoIntegrationList/>', () => {
                             }
                         />
                     </Provider>
-                </MemoryRouter>
+                </MemoryRouter>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render a loader because the integration is loading', () => {
-            const {container} = render(
+            const { container } = render(
                 <MemoryRouter>
                     <Provider store={mockStore(defaultState)}>
                         <YotpoIntegrationList
@@ -68,24 +68,24 @@ describe('<YotpoIntegrationList/>', () => {
                                         oauth: {
                                             status: SUCCESS_AUTHENTICATION_STATUS,
                                         },
-                                        import_state: {is_over: false},
+                                        import_state: { is_over: false },
                                     },
                                 },
                             ])}
-                            loading={fromJS({updateIntegration: true})}
+                            loading={fromJS({ updateIntegration: true })}
                             redirectUri={
                                 'https://reviews.yotpo.com/#/app_market_authorization?app_market_mode&application_id=test'
                             }
                         />
                     </Provider>
-                </MemoryRouter>
+                </MemoryRouter>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should not render an integration cause the one passed is not a Yotpo integration', () => {
-            const {container} = render(
+            const { container } = render(
                 <MemoryRouter>
                     <Provider store={mockStore(defaultState)}>
                         <YotpoIntegrationList
@@ -98,7 +98,7 @@ describe('<YotpoIntegrationList/>', () => {
                                         oauth: {
                                             status: SUCCESS_AUTHENTICATION_STATUS,
                                         },
-                                        import_state: {is_over: false},
+                                        import_state: { is_over: false },
                                     },
                                 },
                             ])}
@@ -108,14 +108,14 @@ describe('<YotpoIntegrationList/>', () => {
                             }
                         />
                     </Provider>
-                </MemoryRouter>
+                </MemoryRouter>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render a deactivated integration that can be reenabled', () => {
-            const {container} = render(
+            const { container } = render(
                 <MemoryRouter>
                     <Provider store={mockStore(defaultState)}>
                         <YotpoIntegrationList
@@ -128,7 +128,7 @@ describe('<YotpoIntegrationList/>', () => {
                                         oauth: {
                                             status: SUCCESS_AUTHENTICATION_STATUS,
                                         },
-                                        import_state: {is_over: true},
+                                        import_state: { is_over: true },
                                     },
                                     deactivated_datetime: '2018-01-01 10:12',
                                 },
@@ -139,7 +139,7 @@ describe('<YotpoIntegrationList/>', () => {
                             }
                         />
                     </Provider>
-                </MemoryRouter>
+                </MemoryRouter>,
             )
 
             expect(container.firstChild).toMatchSnapshot()

@@ -1,25 +1,25 @@
-import {render, screen} from '@testing-library/react'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render, screen } from '@testing-library/react'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {StatType} from 'models/stat/types'
-
+import { FeatureFlagKey } from 'config/featureFlags'
+import { StatType } from 'models/stat/types'
 import {
     AiAgentType,
     useAiAgentTypeForAccount,
 } from 'pages/aiAgent/Overview/hooks/useAiAgentType'
-import {useMixedKpis} from 'pages/aiAgent/Overview/hooks/useMixedKpis'
-import {useSalesKpis} from 'pages/aiAgent/Overview/hooks/useSalesKpis'
-import {useSupportKpis} from 'pages/aiAgent/Overview/hooks/useSupportKpis'
-import {initialState as initialStatsFiltersState} from 'state/stats/statsSlice'
-import {RootState, StoreDispatch, StoreState} from 'state/types'
-import {initialState} from 'state/ui/stats/filtersSlice'
-import {assumeMock} from 'utils/testing'
+import { useMixedKpis } from 'pages/aiAgent/Overview/hooks/useMixedKpis'
+import { useSalesKpis } from 'pages/aiAgent/Overview/hooks/useSalesKpis'
+import { useSupportKpis } from 'pages/aiAgent/Overview/hooks/useSupportKpis'
+import { initialState as initialStatsFiltersState } from 'state/stats/statsSlice'
+import { RootState, StoreDispatch, StoreState } from 'state/types'
+import { initialState } from 'state/ui/stats/filtersSlice'
+import { assumeMock } from 'utils/testing'
 
-import {KpiSection} from '../KpiSection'
+import { KpiSection } from '../KpiSection'
 
 jest.mock('pages/aiAgent/Overview/hooks/useAiAgentType')
 const useAiAgentTypeMock = assumeMock(useAiAgentTypeForAccount)
@@ -37,14 +37,14 @@ jest.mock(
         ({
             ...jest.requireActual('@gorgias/merchant-ui-kit'),
             Skeleton: () => <div data-testid="skeleton" />,
-        }) as typeof import('@gorgias/merchant-ui-kit')
+        }) as typeof import('@gorgias/merchant-ui-kit'),
 )
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
 const defaultStore = {
     ui: {
-        stats: {filters: initialState},
+        stats: { filters: initialState },
     },
     stats: initialStatsFiltersState,
 } as StoreState
@@ -53,7 +53,7 @@ const renderComponent = () => {
     return render(
         <Provider store={mockStore(defaultStore)}>
             <KpiSection />
-        </Provider>
+        </Provider>,
     )
 }
 
@@ -84,7 +84,7 @@ describe('KpiSection', () => {
 
             renderComponent()
             expect(
-                screen.queryByText(`My ${aiAgentType} metric`)
+                screen.queryByText(`My ${aiAgentType} metric`),
             ).toBeInTheDocument()
             expect(screen.getByTestId('skeleton')).toBeInTheDocument()
         })
@@ -105,7 +105,7 @@ describe('KpiSection', () => {
 
             renderComponent()
             expect(
-                screen.queryByText(`My ${aiAgentType} metric`)
+                screen.queryByText(`My ${aiAgentType} metric`),
             ).toBeInTheDocument()
             expect(screen.queryByText('100')).toBeInTheDocument()
         })
@@ -127,9 +127,9 @@ describe('KpiSection', () => {
             isLoading: false,
         })
 
-        const {queryByRole} = renderComponent()
+        const { queryByRole } = renderComponent()
 
-        expect(queryByRole('button', {name: 'View Full Report'})).toBeNull()
+        expect(queryByRole('button', { name: 'View Full Report' })).toBeNull()
     })
 
     it('should render view report button when given sales analytics feature flag is true', () => {
@@ -141,10 +141,10 @@ describe('KpiSection', () => {
             isLoading: false,
         })
 
-        const {getByRole} = renderComponent()
+        const { getByRole } = renderComponent()
 
         expect(
-            getByRole('button', {name: 'View Full Report'})
+            getByRole('button', { name: 'View Full Report' }),
         ).toBeInTheDocument()
     })
 })

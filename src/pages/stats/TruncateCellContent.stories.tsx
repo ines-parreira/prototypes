@@ -1,7 +1,8 @@
-import {Meta, StoryObj} from '@storybook/react'
 import React from 'react'
 
-import {TruncateCellContent} from 'pages/stats/TruncateCellContent'
+import { Meta, StoryObj } from '@storybook/react'
+
+import { TruncateCellContent } from 'pages/stats/TruncateCellContent'
 
 const storyConfig: Meta = {
     title: 'Stats/TruncateCellContent',
@@ -12,7 +13,7 @@ type Story = StoryObj<typeof TruncateCellContent>
 
 export const Content: Story = {
     render: (args) => (
-        <div style={{maxWidth: '100px'}}>
+        <div style={{ maxWidth: '100px' }}>
             <TruncateCellContent {...args} />
         </div>
     ),

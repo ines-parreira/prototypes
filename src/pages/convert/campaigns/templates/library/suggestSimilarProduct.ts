@@ -1,22 +1,21 @@
 // Suggest similar items for sold-out or back-ordered items
-
-import {ulid} from 'ulidx'
+import { ulid } from 'ulidx'
 
 import {
-    WizardConfiguration,
     BannerType,
     TooltipActionType,
+    WizardConfiguration,
 } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
-import {CampaignStepsKeys} from 'pages/convert/campaigns/types/CampaignSteps'
-import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
-import {CampaignTriggerBusinessHoursValuesEnum} from 'pages/convert/campaigns/types/enums/CampaignTriggerBusinessHoursValues.enum'
-import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
-import {createTriggerRule} from 'pages/convert/campaigns/utils/createTriggerRule'
-import {assetsUrl} from 'utils'
+import { CampaignStepsKeys } from 'pages/convert/campaigns/types/CampaignSteps'
+import { CampaignStatus } from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
+import { CampaignTriggerBusinessHoursValuesEnum } from 'pages/convert/campaigns/types/enums/CampaignTriggerBusinessHoursValues.enum'
+import { CampaignTriggerOperator } from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
+import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import { createTriggerRule } from 'pages/convert/campaigns/utils/createTriggerRule'
+import { assetsUrl } from 'utils'
 
-import {CampaignConfigurationBuilder} from '../constructor'
-import {CampaignConfiguration, CampaignTemplate} from '../types'
+import { CampaignConfigurationBuilder } from '../constructor'
+import { CampaignConfiguration, CampaignTemplate } from '../types'
 
 export const SUGGEST_SIMILAR_PRODUCTS_FOR_SOLD_OUT: CampaignTemplate = {
     slug: 'suggest-similar-products-for-sold-out',
@@ -25,7 +24,7 @@ export const SUGGEST_SIMILAR_PRODUCTS_FOR_SOLD_OUT: CampaignTemplate = {
         'Offer several alternatives when a shopper is visiting the product of a sold-out item',
     onboarding: false,
     preview: assetsUrl(
-        'img/campaigns/library/suggest-similar-products-for-sold-out.png'
+        'img/campaigns/library/suggest-similar-products-for-sold-out.png',
     ),
     getWizardConfiguration: (): WizardConfiguration => {
         return {
@@ -90,7 +89,7 @@ export const SUGGEST_SIMILAR_PRODUCTS_FOR_SOLD_OUT: CampaignTemplate = {
                 meta: {
                     noReply: true,
                 },
-            }
+            },
         )
 
         return Promise.resolve(builder.build())

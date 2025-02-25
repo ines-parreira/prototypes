@@ -1,8 +1,9 @@
-import classnames from 'classnames'
-import {Map} from 'immutable'
-import React, {Component, ComponentType} from 'react'
+import React, { Component, ComponentType } from 'react'
 
-import {MentionPluginTheme} from 'pages/common/draftjs/plugins/mentions/types'
+import classnames from 'classnames'
+import { Map } from 'immutable'
+
+import { MentionPluginTheme } from 'pages/common/draftjs/plugins/mentions/types'
 
 type Props = {
     entryComponent: ComponentType<
@@ -58,7 +59,7 @@ export default class Entry extends Component<Props> {
     }
 
     render() {
-        const {theme = {}, searchValue} = this.props
+        const { theme = {}, searchValue } = this.props
         const EntryComponent = this.props.entryComponent
         return (
             <EntryComponent

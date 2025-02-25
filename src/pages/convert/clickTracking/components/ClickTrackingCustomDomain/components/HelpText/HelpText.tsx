@@ -7,7 +7,7 @@ type Props = {
     domain: string
 }
 
-export const HelpText = ({isHidden, domain}: Props): JSX.Element | null => {
+export const HelpText = ({ isHidden, domain }: Props): JSX.Element | null => {
     if (isHidden) {
         return null
     }

@@ -1,5 +1,5 @@
-import {transformVisualBuilderGraphIntoWfConfiguration} from '../models/visualBuilderGraph.model'
-import {transformWorkflowConfigurationIntoVisualBuilderGraph} from '../models/workflowConfiguration.model'
+import { transformVisualBuilderGraphIntoWfConfiguration } from '../models/visualBuilderGraph.model'
+import { transformWorkflowConfigurationIntoVisualBuilderGraph } from '../models/workflowConfiguration.model'
 import {
     MessageContent,
     WorkflowConfiguration,
@@ -11,7 +11,7 @@ import {
 
 const genStepMessage = (
     id: string,
-    content: MessageContent
+    content: MessageContent,
 ): WorkflowStepMessage => ({
     id,
     kind: 'message',
@@ -30,7 +30,7 @@ const genStepMessage = (
 const genStepChoices = (
     id: string,
     choices: WorkflowStepChoices['settings']['choices'],
-    content: MessageContent
+    content: MessageContent,
 ): WorkflowStepChoices => ({
     id,
     kind: 'choices',
@@ -58,12 +58,12 @@ const genStepHelpfulPrompt = (id: string): WorkflowStepHelpfulPrompt => ({
 const genTransition = (
     fromId: string,
     toId: string,
-    eventId?: Maybe<string>
+    eventId?: Maybe<string>,
 ): WorkflowTransition => ({
     id: `${fromId}-${toId}-${eventId ?? ''}`,
     from_step_id: fromId,
     to_step_id: toId,
-    ...(eventId ? {event: {id: eventId, kind: 'choices'}} : {}),
+    ...(eventId ? { event: { id: eventId, kind: 'choices' } } : {}),
 })
 
 describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
@@ -91,10 +91,10 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
                             event_id: 'eventId2',
                         },
                     ],
-                    {html: 'html', text: 'text'}
+                    { html: 'html', text: 'text' },
                 ),
-                genStepMessage('messages2', {html: 'html', text: 'text'}),
-                genStepMessage('messages3', {html: 'html', text: 'text'}),
+                genStepMessage('messages2', { html: 'html', text: 'text' }),
+                genStepMessage('messages3', { html: 'html', text: 'text' }),
                 genStepHelpfulPrompt('helpfulPrompt1'),
                 genStepHelpfulPrompt('helpfulPrompt2'),
             ],
@@ -111,8 +111,8 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
                 transformVisualBuilderGraphIntoWfConfiguration(
                     transformWorkflowConfigurationIntoVisualBuilderGraph(c),
                     true,
-                    []
-                )
+                    [],
+                ),
             )
         expect(visualBuilderGraph.nodes.length).toBe(6)
         expect(visualBuilderGraph.nodes).toEqual(
@@ -180,15 +180,15 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
                         action: 'ask-for-feedback',
                     },
                 }),
-            ])
+            ]),
         )
         const [
-            {id: channelTriggerNodeId},
-            {id: multipleChoicesId},
-            {id: automatedMessage1NodeId},
-            {id: end1NodeId},
-            {id: automatedMessage2NodeId},
-            {id: end2NodeId},
+            { id: channelTriggerNodeId },
+            { id: multipleChoicesId },
+            { id: automatedMessage1NodeId },
+            { id: end1NodeId },
+            { id: automatedMessage2NodeId },
+            { id: end2NodeId },
         ] = visualBuilderGraph.nodes
         expect(visualBuilderGraph.edges.length).toBe(5)
         expect(visualBuilderGraph.edges).toEqual(
@@ -218,7 +218,7 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
                     source: automatedMessage2NodeId,
                     target: end2NodeId,
                 }),
-            ])
+            ]),
         )
     })
 
@@ -320,15 +320,15 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
                     data_type: 'string',
                 },
             ],
-            values: {string_input: 'test'},
+            values: { string_input: 'test' },
         }
         const visualBuilderGraph =
             transformWorkflowConfigurationIntoVisualBuilderGraph(
                 transformVisualBuilderGraphIntoWfConfiguration(
                     transformWorkflowConfigurationIntoVisualBuilderGraph(c),
                     true,
-                    []
-                )
+                    [],
+                ),
             )
         expect(visualBuilderGraph.nodes.length).toBe(4)
         expect(visualBuilderGraph.edges.length).toBe(3)
@@ -529,8 +529,8 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
                 transformVisualBuilderGraphIntoWfConfiguration(
                     transformWorkflowConfigurationIntoVisualBuilderGraph(c),
                     true,
-                    []
-                )
+                    [],
+                ),
             )
         expect(visualBuilderGraph.nodes.length).toBe(4)
         expect(visualBuilderGraph.edges.length).toBe(3)
@@ -705,8 +705,8 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
                 transformVisualBuilderGraphIntoWfConfiguration(
                     transformWorkflowConfigurationIntoVisualBuilderGraph(c),
                     true,
-                    []
-                )
+                    [],
+                ),
             )
         expect(visualBuilderGraph.nodes.length).toBe(4)
         expect(visualBuilderGraph.edges.length).toBe(3)
@@ -879,8 +879,8 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
                 transformVisualBuilderGraphIntoWfConfiguration(
                     transformWorkflowConfigurationIntoVisualBuilderGraph(c),
                     true,
-                    []
-                )
+                    [],
+                ),
             )
         expect(visualBuilderGraph.nodes.length).toBe(4)
         expect(visualBuilderGraph.edges.length).toBe(3)
@@ -1105,8 +1105,8 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
                 transformVisualBuilderGraphIntoWfConfiguration(
                     transformWorkflowConfigurationIntoVisualBuilderGraph(c),
                     true,
-                    []
-                )
+                    [],
+                ),
             )
         expect(visualBuilderGraph.nodes.length).toBe(4)
         expect(visualBuilderGraph.edges.length).toBe(3)
@@ -1312,8 +1312,8 @@ describe('workflowConfiguration is transformed into visualBuilderGraph', () => {
                 transformVisualBuilderGraphIntoWfConfiguration(
                     transformWorkflowConfigurationIntoVisualBuilderGraph(c),
                     true,
-                    []
-                )
+                    [],
+                ),
             )
         expect(visualBuilderGraph.nodes.length).toBe(4)
         expect(visualBuilderGraph.edges.length).toBe(3)

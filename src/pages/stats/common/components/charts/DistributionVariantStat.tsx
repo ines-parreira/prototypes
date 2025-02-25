@@ -1,6 +1,7 @@
+import React from 'react'
+
 import classNames from 'classnames'
 import _rangeRight from 'lodash/rangeRight'
-import React from 'react'
 
 import emptyStar from 'assets/img/satisfaction-survey/empty-star.svg'
 import fullStar from 'assets/img/satisfaction-survey/full-star.svg'
@@ -47,7 +48,7 @@ const getVariant = (variant: DistributionStatVariant) => {
                         key={key}
                         className={classNames(
                             'material-icons',
-                            css[`${variant}-fill`]
+                            css[`${variant}-fill`],
                         )}
                     >
                         star_rate
@@ -58,7 +59,7 @@ const getVariant = (variant: DistributionStatVariant) => {
                         key={key}
                         className={classNames(
                             'material-icons',
-                            css[`${variant}-empty`]
+                            css[`${variant}-empty`],
                         )}
                     >
                         star_rate
@@ -81,7 +82,7 @@ export default function DistributionVariantStat({
             {_rangeRight(minValue, maxValue + 1).map((index) =>
                 index <= maxValue - currentValue
                     ? variantComponent.empty(index)
-                    : variantComponent.fill(index)
+                    : variantComponent.fill(index),
             )}
         </span>
     )

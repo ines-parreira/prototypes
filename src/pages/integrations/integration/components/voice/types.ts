@@ -1,4 +1,4 @@
-import {Call, Device} from '@twilio/voice-sdk'
+import { Call, Device } from '@twilio/voice-sdk'
 
 export type VoiceDeviceActions = {
     setDevice: (device: Device | null) => void

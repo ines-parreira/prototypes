@@ -1,10 +1,12 @@
-import {LoadingSpinner, Badge} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
-import {KnowledgeSourceType} from '../types'
+import { Badge, LoadingSpinner } from '@gorgias/merchant-ui-kit'
+
+import { KnowledgeSourceType } from '../types'
 import ChatIcon from './icons/ChatIcon'
 import LinkIcon from './icons/LinkIcon'
 import StoreIcon from './icons/StoreIcon'
+
 import css from './KnowledgeResourceLine.less'
 
 type Props = {

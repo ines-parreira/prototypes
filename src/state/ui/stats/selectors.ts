@@ -1,9 +1,9 @@
-import {createSelector} from '@reduxjs/toolkit'
+import { createSelector } from '@reduxjs/toolkit'
 
-import {FilterKey} from 'models/stat/types'
-import {SAVEABLE_FILTERS} from 'pages/stats/common/filters/constants'
-import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
-import {getTimezone} from 'state/currentUser/selectors'
+import { FilterKey } from 'models/stat/types'
+import { SAVEABLE_FILTERS } from 'pages/stats/common/filters/constants'
+import { DEFAULT_TIMEZONE } from 'pages/stats/convert/constants/components'
+import { getTimezone } from 'state/currentUser/selectors'
 import {
     getPageStatsFilters,
     getPageStatsFiltersWithLogicalOperators,
@@ -15,12 +15,12 @@ import {
     fromFiltersWithLogicalOperators,
     statsFiltersWithLogicalOperatorsFromSavedFilters,
 } from 'state/stats/utils'
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
 import {
     getIsSavedFilterApplied,
     getSavedFilterDraft,
 } from 'state/ui/stats/filtersSlice'
-import {periodAndAggregationWindowToReportingGranularity} from 'utils/reporting'
+import { periodAndAggregationWindowToReportingGranularity } from 'utils/reporting'
 
 export const isCleanStatsDirty = (state: RootState) =>
     state.ui.stats.filters.isFilterDirty
@@ -42,17 +42,17 @@ export const getCleanStatsFiltersWithTimezone = createSelector(
             cleanStatsFilters: legacyCleanStatsFilters,
             granularity: periodAndAggregationWindowToReportingGranularity(
                 legacyCleanStatsFilters.period,
-                legacyCleanStatsFilters[FilterKey.AggregationWindow]
+                legacyCleanStatsFilters[FilterKey.AggregationWindow],
             ),
         }
-    }
+    },
 )
 
 export const getCleanStatsFiltersWithLogicalOperators = createSelector(
     getCleanStatsFilters,
     getPageStatsFiltersWithLogicalOperators,
     (cleanStatsFilters, pageStatsFilters) =>
-        cleanStatsFilters || pageStatsFilters
+        cleanStatsFilters || pageStatsFilters,
 )
 
 export const getCleanStatsFiltersWithLogicalOperatorsWithTimezone =
@@ -67,12 +67,12 @@ export const getCleanStatsFiltersWithLogicalOperatorsWithTimezone =
                 const filtersNotSupportedBySavedFilters =
                     excludeFromFiltersWithLogicalOperators(
                         statsFilters,
-                        SAVEABLE_FILTERS
+                        SAVEABLE_FILTERS,
                     )
                 filters = {
                     ...filtersNotSupportedBySavedFilters,
                     ...statsFiltersWithLogicalOperatorsFromSavedFilters(
-                        savedFilterDraft?.filter_group ?? []
+                        savedFilterDraft?.filter_group ?? [],
                     ),
                 }
             }
@@ -81,10 +81,10 @@ export const getCleanStatsFiltersWithLogicalOperatorsWithTimezone =
                 cleanStatsFilters: filters,
                 granularity: periodAndAggregationWindowToReportingGranularity(
                     statsFilters.period,
-                    statsFilters[FilterKey.AggregationWindow]
+                    statsFilters[FilterKey.AggregationWindow],
                 ),
             }
-        }
+        },
     )
 
 export const getStatsFiltersFromSavedFilters = createSelector(
@@ -93,13 +93,13 @@ export const getStatsFiltersFromSavedFilters = createSelector(
     (statsFilters, savedFilterDraft) => {
         const filtersFromSavedFilter =
             statsFiltersWithLogicalOperatorsFromSavedFilters(
-                savedFilterDraft?.filter_group ?? []
+                savedFilterDraft?.filter_group ?? [],
             )
         return {
             period: statsFilters.cleanStatsFilters.period,
             ...filtersFromSavedFilter,
         }
-    }
+    },
 )
 
 export const getCleanStatsFiltersWithInitialStoreIntegration = createSelector(
@@ -107,7 +107,7 @@ export const getCleanStatsFiltersWithInitialStoreIntegration = createSelector(
     getStatsStoreIntegrations,
     getStoreIntegrationsStatsFilter,
     (statsFilters, storeIntegrations, storeStatsFilter) => {
-        const {channels, tags, period, campaigns} =
+        const { channels, tags, period, campaigns } =
             statsFilters.cleanStatsFilters
 
         return {
@@ -122,5 +122,5 @@ export const getCleanStatsFiltersWithInitialStoreIntegration = createSelector(
             },
             storeIntegrations,
         }
-    }
+    },
 )

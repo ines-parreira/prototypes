@@ -1,10 +1,11 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {waitFor} from '@testing-library/react'
-import {renderHook, act} from '@testing-library/react-hooks/dom'
 import React from 'react'
 
-import {StatsFilters} from 'models/stat/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { waitFor } from '@testing-library/react'
+import { act, renderHook } from '@testing-library/react-hooks/dom'
+
+import { StatsFilters } from 'models/stat/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import useRoiRateTrend from '../useRoiRateTrend'
 
@@ -24,13 +25,16 @@ jest.useFakeTimers()
 describe('useRoiRateTrend', () => {
     it('should return correct metric data when the query resolves', async () => {
         act(() => jest.runAllTimers())
-        const {result} = renderHook(() => useRoiRateTrend(filters, timezone), {
-            wrapper: ({children}) => (
-                <QueryClientProvider client={queryClient}>
-                    {children}
-                </QueryClientProvider>
-            ),
-        })
+        const { result } = renderHook(
+            () => useRoiRateTrend(filters, timezone),
+            {
+                wrapper: ({ children }) => (
+                    <QueryClientProvider client={queryClient}>
+                        {children}
+                    </QueryClientProvider>
+                ),
+            },
+        )
 
         await waitFor(() => {
             expect(result.current).toEqual({

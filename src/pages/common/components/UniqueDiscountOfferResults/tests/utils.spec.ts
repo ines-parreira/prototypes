@@ -1,8 +1,8 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
-import {integrationsState} from 'fixtures/integrations'
+import { integrationsState } from 'fixtures/integrations'
 
-import {computeDiscountOfferSummary} from '../utils'
+import { computeDiscountOfferSummary } from '../utils'
 
 describe('UniqueDiscountOffers utils', () => {
     describe('computeDiscountOfferSummary', () => {
@@ -17,7 +17,7 @@ describe('UniqueDiscountOffers utils', () => {
             const res = computeDiscountOfferSummary(
                 'free_shipping',
                 value,
-                integration
+                integration,
             )
             expect(res).toEqual('Free shipping')
         })
@@ -29,7 +29,7 @@ describe('UniqueDiscountOffers utils', () => {
             const res = computeDiscountOfferSummary(
                 'percentage',
                 value,
-                integration
+                integration,
             )
             expect(res).toEqual('20% off')
         })

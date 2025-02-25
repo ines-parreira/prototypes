@@ -1,20 +1,20 @@
-import {renderHook} from '@testing-library/react-hooks'
-
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { renderHook } from '@testing-library/react-hooks'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {useAgentsSortingQuery} from 'hooks/reporting/useAgentsSortingQuery'
-import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
-import {opposite, OrderDirection} from 'models/api/types'
+import { useAgentsSortingQuery } from 'hooks/reporting/useAgentsSortingQuery'
+import { MetricWithDecile } from 'hooks/reporting/useMetricPerDimension'
+import { opposite, OrderDirection } from 'models/api/types'
 import {
     TicketMessagesCube,
     TicketMessagesMeasure,
 } from 'models/reporting/cubes/TicketMessagesCube'
-import {getQuery} from 'pages/stats/support-performance/agents/AgentsTableConfig'
-import {initialState as filtersInitialState} from 'state/stats/statsSlice'
-import {RootState, StoreDispatch} from 'state/types'
+import { getQuery } from 'pages/stats/support-performance/agents/AgentsTableConfig'
+import { initialState as filtersInitialState } from 'state/stats/statsSlice'
+import { RootState, StoreDispatch } from 'state/types'
 import {
     DEFAULT_SORTING_DIRECTION,
     initialState,
@@ -22,9 +22,9 @@ import {
     sortingLoading,
     sortingSet,
 } from 'state/ui/stats/agentPerformanceSlice'
-import {AGENT_PERFORMANCE_SLICE_NAME} from 'state/ui/stats/constants'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
-import {AgentsTableColumn} from 'state/ui/stats/types'
+import { AGENT_PERFORMANCE_SLICE_NAME } from 'state/ui/stats/constants'
+import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
+import { AgentsTableColumn } from 'state/ui/stats/types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -60,13 +60,13 @@ describe('useAgentsSortingQuery', () => {
             const store = mockStore(defaultState)
             const column = AgentsTableColumn.MedianFirstResponseTime
 
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () => useAgentsSortingQuery(column, queryHook, statsFilters),
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <Provider store={store}>{children}</Provider>
                     ),
-                }
+                },
             )
 
             result.current.sortCallback()
@@ -75,7 +75,7 @@ describe('useAgentsSortingQuery', () => {
                 sortingSet({
                     direction: DEFAULT_SORTING_DIRECTION,
                     field: column,
-                })
+                }),
             )
         })
 
@@ -83,26 +83,26 @@ describe('useAgentsSortingQuery', () => {
             const store = mockStore(defaultState)
             const column = initialState.sorting.field
 
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () => useAgentsSortingQuery(column, queryHook, statsFilters),
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <Provider store={store}>{children}</Provider>
                     ),
-                }
+                },
             )
 
             result.current.sortCallback()
 
             const expectedSortingDirection = opposite(
-                initialState.sorting.direction
+                initialState.sorting.direction,
             )
 
             expect(store.getActions()).toContainEqual(
                 sortingSet({
                     direction: expectedSortingDirection,
                     field: column,
-                })
+                }),
             )
         })
     })
@@ -112,7 +112,9 @@ describe('useAgentsSortingQuery', () => {
         const metricData: MetricWithDecile<TicketMessagesCube>['data'] = {
             value: 123,
             decile: 5,
-            allData: [{[TicketMessagesMeasure.MedianFirstResponseTime]: '123'}],
+            allData: [
+                { [TicketMessagesMeasure.MedianFirstResponseTime]: '123' },
+            ],
         }
         const store = mockStore({
             ...defaultState,
@@ -140,14 +142,14 @@ describe('useAgentsSortingQuery', () => {
         renderHook(
             () => useAgentsSortingQuery(column, queryHook, statsFilters),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={store}>{children}</Provider>
                 ),
-            }
+            },
         )
 
         expect(store.getActions()).toContainEqual(
-            sortingLoaded(metricData.allData)
+            sortingLoaded(metricData.allData),
         )
     })
 
@@ -156,7 +158,9 @@ describe('useAgentsSortingQuery', () => {
         const metricData: MetricWithDecile<TicketMessagesCube>['data'] = {
             value: 123,
             decile: 5,
-            allData: [{[TicketMessagesMeasure.MedianFirstResponseTime]: '123'}],
+            allData: [
+                { [TicketMessagesMeasure.MedianFirstResponseTime]: '123' },
+            ],
         }
         const store = mockStore({
             ...defaultState,
@@ -183,14 +187,14 @@ describe('useAgentsSortingQuery', () => {
         renderHook(
             () => useAgentsSortingQuery(column, queryHook, statsFilters),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={store}>{children}</Provider>
                 ),
-            }
+            },
         )
 
         expect(store.getActions()).not.toContainEqual(
-            sortingLoaded(metricData.allData)
+            sortingLoaded(metricData.allData),
         )
     })
 
@@ -220,13 +224,13 @@ describe('useAgentsSortingQuery', () => {
                 useAgentsSortingQuery(
                     AgentsTableColumn.AgentName,
                     getQuery(column),
-                    statsFilters
+                    statsFilters,
                 ),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={store}>{children}</Provider>
                 ),
-            }
+            },
         )
 
         expect(store.getActions()).toContainEqual(sortingLoaded(null))
@@ -260,10 +264,10 @@ describe('useAgentsSortingQuery', () => {
         renderHook(
             () => useAgentsSortingQuery(column, queryHook, statsFilters),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={store}>{children}</Provider>
                 ),
-            }
+            },
         )
 
         expect(store.getActions()).toContainEqual(sortingLoading())

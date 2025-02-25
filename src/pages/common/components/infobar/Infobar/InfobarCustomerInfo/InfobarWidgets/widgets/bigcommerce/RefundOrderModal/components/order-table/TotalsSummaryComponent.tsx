@@ -1,6 +1,8 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
-import React, {Dispatch} from 'react'
-import {Table} from 'reactstrap'
+import React, { Dispatch } from 'react'
+
+import { Table } from 'reactstrap'
+
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import {
     BigCommerceAvailablePaymentOptionsData,
@@ -22,8 +24,9 @@ import {
     BIGCOMMERCE_REFUND_ACTION_TYPE,
     BigCommerceRefundActionType,
 } from '../../types'
+import { RefundableAmountComponent } from './RefundableAmountComponent'
+
 import bigcommerceTableCss from './OrderTable.less'
-import {RefundableAmountComponent} from './RefundableAmountComponent'
 
 type Props = {
     orderLevelRefundData: OrderLevelRefundData
@@ -97,8 +100,8 @@ export function TotalsSummaryComponent({
                                             refundItemsPayload,
                                             productRefundData,
                                             giftWrappingRefundData,
-                                            false
-                                        )
+                                            false,
+                                        ),
                                     )}
                                     currencyCode={
                                         currencyCode ? currencyCode : null
@@ -118,7 +121,7 @@ export function TotalsSummaryComponent({
                             isAmountRefunded={isShippingCostRefunded}
                             setIsAmountRefunded={() => {
                                 setIsShippingCostRefunded(
-                                    !isShippingCostRefunded
+                                    !isShippingCostRefunded,
                                 )
                                 dispatchRefundOrderState({
                                     type: BigCommerceRefundActionType.EntireOrderAddShipping,
@@ -168,7 +171,7 @@ export function TotalsSummaryComponent({
                                 <MoneyAmount
                                     renderIfZero
                                     amount={String(
-                                        availablePaymentOptionsData?.total_refund_tax_amount
+                                        availablePaymentOptionsData?.total_refund_tax_amount,
                                     )}
                                     currencyCode={
                                         currencyCode ? currencyCode : null
@@ -202,8 +205,8 @@ export function TotalsSummaryComponent({
                                             refundItemsPayload,
                                             productRefundData,
                                             giftWrappingRefundData,
-                                            availablePaymentOptionsData
-                                        )
+                                            availablePaymentOptionsData,
+                                        ),
                                     )}
                                     currencyCode={
                                         currencyCode ? currencyCode : null
@@ -233,7 +236,7 @@ export function TotalsSummaryComponent({
                                     <MoneyAmount
                                         renderIfZero
                                         amount={String(
-                                            orderLevelRefundData.refunded_amount
+                                            orderLevelRefundData.refunded_amount,
                                         )}
                                         currencyCode={
                                             currencyCode ? currencyCode : null
@@ -260,7 +263,7 @@ export function TotalsSummaryComponent({
                                 <MoneyAmount
                                     renderIfZero
                                     amount={String(
-                                        orderLevelRefundData.available_amount
+                                        orderLevelRefundData.available_amount,
                                     )}
                                     currencyCode={
                                         currencyCode ? currencyCode : null

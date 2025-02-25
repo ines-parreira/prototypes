@@ -1,5 +1,6 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import TopProductItem from '../TopProductItem'
 
@@ -22,7 +23,7 @@ describe('TopProductItem', () => {
     })
 
     it('renders with different currency', () => {
-        render(<TopProductItem product={{currency: 'JPY', ...product}} />)
+        render(<TopProductItem product={{ currency: 'JPY', ...product }} />)
 
         expect(screen.getByText('Nike Air Max plus')).toBeInTheDocument()
         expect(screen.getByText('¥199')).toBeInTheDocument()

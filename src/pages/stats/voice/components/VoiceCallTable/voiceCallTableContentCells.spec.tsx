@@ -1,17 +1,19 @@
-import {VoiceCallDirection, VoiceCallStatus} from '@gorgias/api-queries'
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {VoiceCallDisplayStatus} from 'models/voiceCall/types'
+import { render, screen } from '@testing-library/react'
+
+import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/api-queries'
+
+import { VoiceCallDisplayStatus } from 'models/voiceCall/types'
 import DEPRECATED_VoiceCallStatusLabel from 'pages/common/components/VoiceCallStatusLabel/DEPRECATED_VoiceCallStatusLabel'
 import VoiceCallStatusLabel from 'pages/common/components/VoiceCallStatusLabel/VoiceCallStatusLabel'
 import VoiceCallTimerBadge from 'pages/common/components/VoiceCallTimerBadge/VoiceCallTimerBadge'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
-import {VoiceCallSummary} from '../../models/types'
+import { VoiceCallSummary } from '../../models/types'
 import LiveVoiceCallStatusLabel from '../LiveVoice/LiveVoiceCallStatusLabel'
 import VoiceCallRecording from '../VoiceCallRecording/VoiceCallRecording'
-import {VoiceCallTableColumnName} from './constants'
+import { VoiceCallTableColumnName } from './constants'
 import {
     getOrderedCells,
     getOrderedHeaderCells,
@@ -21,7 +23,7 @@ jest.mock('pages/stats/voice/components/LiveVoice/LiveVoiceCallStatusLabel')
 jest.mock('pages/common/components/VoiceCallTimerBadge/VoiceCallTimerBadge')
 jest.mock('pages/stats/voice/components/VoiceCallRecording/VoiceCallRecording')
 jest.mock(
-    'pages/common/components/VoiceCallStatusLabel/DEPRECATED_VoiceCallStatusLabel'
+    'pages/common/components/VoiceCallStatusLabel/DEPRECATED_VoiceCallStatusLabel',
 )
 jest.mock('pages/common/components/VoiceCallStatusLabel/VoiceCallStatusLabel')
 
@@ -29,7 +31,7 @@ const LiveVoiceCallStatusLabelMock = assumeMock(LiveVoiceCallStatusLabel)
 const VoiceCallTimerBadgeMock = assumeMock(VoiceCallTimerBadge)
 const VoiceCallRecordingMock = assumeMock(VoiceCallRecording)
 const DEPRECATED_VoiceCallStatusLabelMock = assumeMock(
-    DEPRECATED_VoiceCallStatusLabel
+    DEPRECATED_VoiceCallStatusLabel,
 )
 const VoiceCallStatusLabelMock = assumeMock(VoiceCallStatusLabel)
 
@@ -158,7 +160,7 @@ describe('voiceCallTableContentCells', () => {
                     direction: 'inbound',
                     status: VoiceCallStatus.InProgress,
                 },
-                {}
+                {},
             )
 
             expect(screen.getByText('LiveStatus')).toBeInTheDocument()
@@ -182,7 +184,7 @@ describe('voiceCallTableContentCells', () => {
                 {
                     datetime: '123',
                 },
-                {}
+                {},
             )
             expect(screen.getByText('TimerBadge')).toBeInTheDocument()
         })
@@ -206,7 +208,7 @@ describe('voiceCallTableContentCells', () => {
                         isDownloadable: true,
                         voiceCall: {},
                     },
-                    {}
+                    {},
                 )
                 expect(screen.getByText('Recording')).toBeInTheDocument()
             })
@@ -229,7 +231,7 @@ describe('voiceCallTableContentCells', () => {
                         isDownloadable: false,
                         voiceCall: {},
                     },
-                    {}
+                    {},
                 )
                 expect(screen.getByText('Recording')).toBeInTheDocument()
             })
@@ -237,7 +239,7 @@ describe('voiceCallTableContentCells', () => {
 
         it('should return correct props for the state cell old way', () => {
             DEPRECATED_VoiceCallStatusLabelMock.mockReturnValue(
-                <div>Status</div>
+                <div>Status</div>,
             )
 
             const columns = [VoiceCallTableColumnName.State]
@@ -259,7 +261,7 @@ describe('voiceCallTableContentCells', () => {
                     direction: VoiceCallDirection.Inbound,
                     lastAnsweredByAgentId: 123,
                 },
-                {}
+                {},
             )
             expect(screen.getByText('Status')).toBeInTheDocument()
         })
@@ -283,7 +285,7 @@ describe('voiceCallTableContentCells', () => {
                 {
                     displayStatus: VoiceCallDisplayStatus.Answered,
                 },
-                {}
+                {},
             )
             expect(screen.getByText('Status')).toBeInTheDocument()
         })

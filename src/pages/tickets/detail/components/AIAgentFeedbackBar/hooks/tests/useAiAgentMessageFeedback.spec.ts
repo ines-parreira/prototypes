@@ -1,7 +1,7 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {useGetAiAgentFeedback} from 'models/aiAgentFeedback/queries'
-import {getSelectedAIMessage} from 'state/ui/ticketAIAgentFeedback'
+import { useGetAiAgentFeedback } from 'models/aiAgentFeedback/queries'
+import { getSelectedAIMessage } from 'state/ui/ticketAIAgentFeedback'
 
 import useAiAgentMessageFeedback from '../useAiAgentMessageFeedback'
 
@@ -19,30 +19,30 @@ const getSelectedAIMessageMock = getSelectedAIMessage as unknown as jest.Mock
 describe('getMessageFeedback', () => {
     beforeEach(() => {
         getSelectedAIMessageMock.mockReturnValue(undefined)
-        useGetAiAgentFeedbackMock.mockReturnValue({data: undefined})
+        useGetAiAgentFeedbackMock.mockReturnValue({ data: undefined })
     })
 
     it('should return null if there is no selected message', () => {
         useGetAiAgentFeedbackMock.mockReturnValue({
-            data: {data: {messages: []}},
+            data: { data: { messages: [] } },
         })
-        const {result} = renderHook(() => useAiAgentMessageFeedback())
+        const { result } = renderHook(() => useAiAgentMessageFeedback())
         expect(result.current).toBe(null)
     })
 
     it('should return null if there no ticket feedback', () => {
-        getSelectedAIMessageMock.mockReturnValue({id: 1})
-        const {result} = renderHook(() => useAiAgentMessageFeedback())
+        getSelectedAIMessageMock.mockReturnValue({ id: 1 })
+        const { result } = renderHook(() => useAiAgentMessageFeedback())
         expect(result.current).toBe(null)
     })
 
     it('should return the selected ticket feedback message', () => {
-        const selectedMessageFeedback = {messageId: 1}
+        const selectedMessageFeedback = { messageId: 1 }
         useGetAiAgentFeedbackMock.mockReturnValue({
-            data: {data: {messages: [selectedMessageFeedback]}},
+            data: { data: { messages: [selectedMessageFeedback] } },
         })
-        getSelectedAIMessageMock.mockReturnValue({id: 1})
-        const {result} = renderHook(() => useAiAgentMessageFeedback())
+        getSelectedAIMessageMock.mockReturnValue({ id: 1 })
+        const { result } = renderHook(() => useAiAgentMessageFeedback())
         expect(result.current).toBe(selectedMessageFeedback)
     })
 })

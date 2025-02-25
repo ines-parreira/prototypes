@@ -1,7 +1,8 @@
-import classnames from 'classnames'
 import React from 'react'
 
-import {isSourceArray, Source, Template} from 'models/widget/types'
+import classnames from 'classnames'
+
+import { isSourceArray, Source, Template } from 'models/widget/types'
 
 type Props = {
     source: Source

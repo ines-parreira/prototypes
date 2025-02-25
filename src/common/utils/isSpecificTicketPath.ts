@@ -1,6 +1,6 @@
 export default function isSpecificTicketPath(
     path: string,
-    ticketId: number
+    ticketId: number,
 ): boolean {
     if (path.startsWith(`/app/ticket/${ticketId}`)) {
         return true

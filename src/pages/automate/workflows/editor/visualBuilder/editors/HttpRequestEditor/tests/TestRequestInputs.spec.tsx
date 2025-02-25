@@ -1,9 +1,10 @@
-import {render, screen, fireEvent} from '@testing-library/react'
 import React from 'react'
+
+import { fireEvent, render, screen } from '@testing-library/react'
 
 import '@testing-library/jest-dom/extend-expect'
 
-import {WorkflowVariable} from 'pages/automate/workflows/models/variables.types'
+import { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
 
 import TestRequestInputs from '../TestRequestInputs'
 
@@ -35,11 +36,11 @@ describe('TestRequestInputs Component', () => {
     it('renders correctly for variables as well', () => {
         render(
             <TestRequestInputs
-                {...{...defaultProps, refreshTokenUrl: undefined}}
-            />
+                {...{ ...defaultProps, refreshTokenUrl: undefined }}
+            />,
         )
         expect(
-            screen.getByText('Enter sample values to test request')
+            screen.getByText('Enter sample values to test request'),
         ).toBeInTheDocument()
         defaultProps.inputs.forEach((input) => {
             expect(screen.getByLabelText(input.name)).toBeInTheDocument()
@@ -48,9 +49,9 @@ describe('TestRequestInputs Component', () => {
         expect(screen.getByText('Continue')).toBeInTheDocument()
     })
     it('renders correctly', () => {
-        render(<TestRequestInputs {...{...defaultProps, inputs: []}} />)
+        render(<TestRequestInputs {...{ ...defaultProps, inputs: [] }} />)
         expect(
-            screen.getByText('Enter refresh token to test request')
+            screen.getByText('Enter refresh token to test request'),
         ).toBeInTheDocument()
         expect(screen.getByLabelText('Refresh Token')).toBeInTheDocument()
         expect(screen.getByText('Close')).toBeInTheDocument()
@@ -62,8 +63,8 @@ describe('TestRequestInputs Component', () => {
         // Check for ModalHeader
         expect(
             screen.getByText(
-                'Enter refresh token and sample values to test request'
-            )
+                'Enter refresh token and sample values to test request',
+            ),
         ).toBeInTheDocument()
 
         // Check for Refresh Token input
@@ -92,13 +93,13 @@ describe('TestRequestInputs Component', () => {
 
         // Fill in Refresh Token
         fireEvent.change(screen.getByLabelText('Refresh Token'), {
-            target: {value: 'sample-refresh-token'},
+            target: { value: 'sample-refresh-token' },
         })
 
         // Fill in Input Fields
         defaultProps.inputs.forEach((input) => {
             fireEvent.change(screen.getByLabelText(input.name), {
-                target: {value: `value for ${input.name}`},
+                target: { value: `value for ${input.name}` },
             })
         })
 
@@ -111,7 +112,7 @@ describe('TestRequestInputs Component', () => {
                 input2: 'value for Input 2',
             },
             'sample-refresh-token',
-            'https://example.com/token'
+            'https://example.com/token',
         )
     })
 })

@@ -1,8 +1,8 @@
-import {useState, useEffect, RefObject} from 'react'
+import { RefObject, useEffect, useState } from 'react'
 
 const useIntersectionObserver = (
     ref: RefObject<Element>,
-    observerSettings?: IntersectionObserverInit
+    observerSettings?: IntersectionObserverInit,
 ) => {
     const [observerEntry, setObserverEntry] =
         useState<IntersectionObserverEntry>()

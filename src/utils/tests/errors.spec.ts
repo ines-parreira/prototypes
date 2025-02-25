@@ -1,10 +1,10 @@
-import {captureException, init, setTag, setUser} from '@sentry/react'
-import {BrowserTracing} from '@sentry/tracing'
-import {ScopeContext} from '@sentry/types'
+import { captureException, init, setTag, setUser } from '@sentry/react'
+import { BrowserTracing } from '@sentry/tracing'
+import { ScopeContext } from '@sentry/types'
 
-import {account} from 'fixtures/account'
-import {user} from 'fixtures/users'
-import {GorgiasUIEnv} from 'utils/environment'
+import { account } from 'fixtures/account'
+import { user } from 'fixtures/users'
+import { GorgiasUIEnv } from 'utils/environment'
 import {
     ACCOUNT_DOMAIN_TAG,
     DENY_URLS,
@@ -45,7 +45,7 @@ Object.defineProperty(global.navigator, 'userAgent', {
 describe('errors util', () => {
     beforeEach(() => {
         userAgentMock.mockReturnValue(
-            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.41 Safari/537.36'
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.41 Safari/537.36',
         )
     })
 
@@ -79,7 +79,7 @@ describe('errors util', () => {
 
             expect(setTagMock).toHaveBeenCalledWith(
                 LANGUAGE_TAG,
-                LANGUAGE_TAG_VALUE
+                LANGUAGE_TAG_VALUE,
             )
         })
 
@@ -88,7 +88,7 @@ describe('errors util', () => {
 
             expect(setTagMock).toHaveBeenCalledWith(
                 SERVER_VERSION_TAG,
-                defaultInitOptions.serverVersion
+                defaultInitOptions.serverVersion,
             )
         })
 
@@ -97,7 +97,7 @@ describe('errors util', () => {
 
             expect(setTagMock).toHaveBeenCalledWith(
                 ACCOUNT_DOMAIN_TAG,
-                account.domain
+                account.domain,
             )
         })
 
@@ -122,7 +122,7 @@ describe('errors util', () => {
                 userAgent:
                     'Mozilla/5.0 (iPhone; CPU iPhone OS 15_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.4 Mobile/15E148 Safari/604.1',
             },
-        ])('should disable reporting for $browser', ({userAgent}) => {
+        ])('should disable reporting for $browser', ({ userAgent }) => {
             userAgentMock.mockReturnValue(userAgent)
 
             initErrorReporter(defaultInitOptions)
@@ -130,7 +130,7 @@ describe('errors util', () => {
             expect(initMock).toHaveBeenCalledWith(
                 expect.objectContaining({
                     enabled: false,
-                })
+                }),
             )
         })
     })
@@ -152,7 +152,7 @@ describe('errors util', () => {
             expect(consoleErrorMock).toHaveBeenCalledWith(testError)
             expect(consoleErrorMock).toHaveBeenCalledWith(
                 ERROR_EXTRA_CONSOLE_LOG_MESSAGE,
-                defaultOptions.extra
+                defaultOptions.extra,
             )
         })
 
@@ -164,7 +164,7 @@ describe('errors util', () => {
             expect(consoleErrorMock).not.toHaveBeenCalled()
             expect(captureExceptionMock).toHaveBeenCalledWith(
                 testError,
-                defaultOptions
+                defaultOptions,
             )
         })
 
@@ -175,12 +175,12 @@ describe('errors util', () => {
 
             expect(captureExceptionMock).toHaveBeenCalledWith(
                 testError,
-                defaultOptions
+                defaultOptions,
             )
             expect(consoleErrorMock).toHaveBeenCalledWith(testError)
             expect(consoleErrorMock).toHaveBeenCalledWith(
                 ERROR_EXTRA_CONSOLE_LOG_MESSAGE,
-                defaultOptions.extra
+                defaultOptions.extra,
             )
         })
     })

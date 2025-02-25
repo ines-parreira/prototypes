@@ -1,13 +1,14 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {CardTemplate} from 'models/widget/types'
-import {assumeMock, getLastMockCall} from 'utils/testing'
+import { render } from '@testing-library/react'
+
+import { CardTemplate } from 'models/widget/types'
+import { assumeMock, getLastMockCall } from 'utils/testing'
 
 import ActionButtons from '../ActionButtons/ActionButtons'
 import CustomActions from '../index'
 import Links from '../Links/Links'
-import {Action} from '../types'
+import { Action } from '../types'
 
 jest.mock('../Links/Links', () => jest.fn(() => null))
 jest.mock('../ActionButtons/ActionButtons', () => jest.fn(() => null))
@@ -21,7 +22,7 @@ describe('<CustomActions/>', () => {
         meta: {
             custom: {
                 links: [
-                    {label: 'link', url: 'heaven'},
+                    { label: 'link', url: 'heaven' },
                     {
                         label: 'the link above is a link to heaven',
                         url: 'over the rainbow',
@@ -48,7 +49,7 @@ describe('<CustomActions/>', () => {
                 template={template}
                 source={source}
                 isEditing={false}
-            />
+            />,
         )
         expect(getLastMockCall(LinksMock)[0]).toEqual({
             templatePath: template.templatePath,

@@ -1,13 +1,14 @@
-import {render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {BannerText, SettingsBannerType} from '../constants'
-import {SettingsBanner} from '../FormComponents/SettingsBanner'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { BannerText, SettingsBannerType } from '../constants'
+import { SettingsBanner } from '../FormComponents/SettingsBanner'
 
 // Mock localStorage
 const localStorageMock = (() => {
-    let store: {[key: string]: string} = {}
+    let store: { [key: string]: string } = {}
 
     return {
         getItem: (key: string) => store[key] || null,
@@ -40,7 +41,7 @@ describe('SettingsBanner', () => {
         render(<SettingsBanner type={type} deactivatedDatetime="2024-09-24" />)
         expect(screen.queryByText(BannerText[type])).toBeInTheDocument()
         expect(
-            screen.getByText(/When AI Agent is enabled on Chat/)
+            screen.getByText(/When AI Agent is enabled on Chat/),
         ).toBeInTheDocument()
     })
 
@@ -57,7 +58,7 @@ describe('SettingsBanner', () => {
         userEvent.click(screen.getByText('Got it'))
 
         expect(
-            localStorage.getItem(`ai-settings-${type}-banner-acknowledged`)
+            localStorage.getItem(`ai-settings-${type}-banner-acknowledged`),
         ).toBe('true')
         expect(screen.queryByTestId('alert')).not.toBeInTheDocument()
     })

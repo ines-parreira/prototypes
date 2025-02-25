@@ -1,28 +1,29 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
 
-import {getSingleArticleEnglish} from 'pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
+
+import { getSingleArticleEnglish } from 'pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
 import {
     getHelpCentersResponseFixture,
     getSingleHelpCenterResponseFixture,
 } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import {HelpCenterClient} from 'rest_api/help_center_api/client'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import { HelpCenterClient } from 'rest_api/help_center_api/client'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import {HELP_CENTER_ROOT_CATEGORY_ID} from '../../../pages/settings/helpCenter/constants'
+import { HELP_CENTER_ROOT_CATEGORY_ID } from '../../../pages/settings/helpCenter/constants'
 import {
-    useGetHelpCenterArticleList,
+    useCreateFileIngestion,
+    useDeleteFileIngestion,
+    useGetArticleIngestionLogs,
+    useGetFileIngestion,
     useGetHelpCenter,
     useGetHelpCenterArticle,
+    useGetHelpCenterArticleList,
     useGetHelpCenterCategoryTree,
     useGetHelpCenterList,
-    useGetArticleIngestionLogs,
     useStartArticleIngestion,
-    useCreateFileIngestion,
-    useGetFileIngestion,
-    useDeleteFileIngestion,
 } from '../queries'
 import * as resources from '../resources'
 
@@ -42,7 +43,7 @@ const getFileIngestion = jest.spyOn(resources, 'getFileIngestion')
 const deleteFileIngestion = jest.spyOn(resources, 'deleteFileIngestion')
 
 const queryClient = mockQueryClient()
-const wrapper = ({children}: any) => (
+const wrapper = ({ children }: any) => (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 )
 
@@ -61,11 +62,11 @@ describe('queries', () => {
                 client: {} as HelpCenterClient,
                 isReady: true,
             })
-            const {result, waitFor} = renderHook(
+            const { result, waitFor } = renderHook(
                 () => useGetHelpCenterArticleList(helpCenterId, {}),
                 {
                     wrapper,
-                }
+                },
             )
 
             await waitFor(() => expect(result.current.isSuccess).toBe(true))
@@ -79,11 +80,11 @@ describe('queries', () => {
                     useGetHelpCenterArticleList(
                         helpCenterId,
                         {},
-                        {enabled: false}
+                        { enabled: false },
                     ),
                 {
                     wrapper,
-                }
+                },
             )
 
             expect(getHelpCenterArticles).toHaveBeenCalledTimes(0)
@@ -100,11 +101,11 @@ describe('queries', () => {
                     useGetHelpCenterArticleList(
                         helpCenterId,
                         {},
-                        {enabled: true}
+                        { enabled: true },
                     ),
                 {
                     wrapper,
-                }
+                },
             )
 
             expect(getHelpCenterArticles).toHaveBeenCalledTimes(0)
@@ -118,18 +119,18 @@ describe('queries', () => {
                 client: {} as HelpCenterClient,
                 isReady: true,
             })
-            const {result, waitFor} = renderHook(
+            const { result, waitFor } = renderHook(
                 () =>
                     useGetHelpCenterCategoryTree(
                         helpCenterId,
                         HELP_CENTER_ROOT_CATEGORY_ID,
                         {
                             locale: 'en-US',
-                        }
+                        },
                     ),
                 {
                     wrapper,
-                }
+                },
             )
 
             await waitFor(() => expect(result.current.isSuccess).toBe(true))
@@ -146,11 +147,11 @@ describe('queries', () => {
                         {
                             locale: 'en-US',
                         },
-                        {enabled: false}
+                        { enabled: false },
                     ),
                 {
                     wrapper,
-                }
+                },
             )
 
             expect(getCategoryTree).toHaveBeenCalledTimes(0)
@@ -170,11 +171,11 @@ describe('queries', () => {
                         {
                             locale: 'en-US',
                         },
-                        {enabled: false}
+                        { enabled: false },
                     ),
                 {
                     wrapper,
-                }
+                },
             )
 
             expect(getCategoryTree).toHaveBeenCalledTimes(0)
@@ -184,7 +185,7 @@ describe('queries', () => {
     describe('useGetHelpCenterArticle ', () => {
         it('should return correct data on success', async () => {
             getHelpCenterArticle.mockReturnValue(
-                Promise.resolve(getSingleArticleEnglish)
+                Promise.resolve(getSingleArticleEnglish),
             )
             mockUseHelpCenterApi.mockReturnValue({
                 client: {} as HelpCenterClient,
@@ -192,11 +193,11 @@ describe('queries', () => {
             })
             const articleId = 1
             const locale = 'en-US'
-            const {result, waitFor} = renderHook(
+            const { result, waitFor } = renderHook(
                 () => useGetHelpCenterArticle(articleId, helpCenterId, locale),
                 {
                     wrapper,
-                }
+                },
             )
 
             await waitFor(() => expect(result.current.isSuccess).toBe(true))
@@ -204,7 +205,7 @@ describe('queries', () => {
         })
         it('should return undefined if arguments not provided', async () => {
             getHelpCenterArticle.mockReturnValue(
-                Promise.resolve(getSingleArticleEnglish)
+                Promise.resolve(getSingleArticleEnglish),
             )
             mockUseHelpCenterApi.mockReturnValue({
                 client: {} as HelpCenterClient,
@@ -212,11 +213,11 @@ describe('queries', () => {
             })
             const articleId = 1
             const locale = 'en-US'
-            const {result, waitFor} = renderHook(
+            const { result, waitFor } = renderHook(
                 () => useGetHelpCenterArticle(articleId, helpCenterId, locale),
                 {
                     wrapper,
-                }
+                },
             )
 
             await waitFor(() => expect(result.current.isSuccess).toBe(false))
@@ -225,7 +226,7 @@ describe('queries', () => {
 
         it('should not call the api function when client is not set', () => {
             getHelpCenterArticle.mockReturnValue(
-                Promise.resolve(getSingleArticleEnglish)
+                Promise.resolve(getSingleArticleEnglish),
             )
             mockUseHelpCenterApi.mockReturnValue({
                 client: undefined,
@@ -237,7 +238,7 @@ describe('queries', () => {
                 () => useGetHelpCenterArticle(articleId, helpCenterId, locale),
                 {
                     wrapper,
-                }
+                },
             )
 
             expect(getHelpCenterArticles).toHaveBeenCalledTimes(0)
@@ -246,28 +247,28 @@ describe('queries', () => {
     describe('useGetHelpCenter', () => {
         it('should return correct data on success', async () => {
             getHelpCenter.mockReturnValue(
-                Promise.resolve(getSingleHelpCenterResponseFixture) as any
+                Promise.resolve(getSingleHelpCenterResponseFixture) as any,
             )
             mockUseHelpCenterApi.mockReturnValue({
                 client: {} as HelpCenterClient,
                 isReady: true,
             })
-            const {result, waitFor} = renderHook(
+            const { result, waitFor } = renderHook(
                 () => useGetHelpCenter(helpCenterId, {}),
                 {
                     wrapper,
-                }
+                },
             )
 
             await waitFor(() => expect(result.current.isSuccess).toBe(true))
             expect(result.current.data).toStrictEqual(
-                getSingleHelpCenterResponseFixture
+                getSingleHelpCenterResponseFixture,
             )
         })
 
         it('should not call the api function when client is not set', () => {
             getHelpCenter.mockReturnValue(
-                Promise.resolve(getSingleHelpCenterResponseFixture) as any
+                Promise.resolve(getSingleHelpCenterResponseFixture) as any,
             )
             mockUseHelpCenterApi.mockReturnValue({
                 client: undefined,
@@ -284,25 +285,25 @@ describe('queries', () => {
     describe('useGetHelpCenterList', () => {
         it('should return correct data on success', async () => {
             getHelpCenterList.mockReturnValue(
-                Promise.resolve(getHelpCentersResponseFixture) as any
+                Promise.resolve(getHelpCentersResponseFixture) as any,
             )
             mockUseHelpCenterApi.mockReturnValue({
                 client: {} as HelpCenterClient,
                 isReady: true,
             })
-            const {result, waitFor} = renderHook(
+            const { result, waitFor } = renderHook(
                 () => useGetHelpCenterList({}),
-                {wrapper}
+                { wrapper },
             )
 
             await waitFor(() => expect(result.current.isSuccess).toBe(true))
             expect(result.current.data).toStrictEqual(
-                getHelpCentersResponseFixture
+                getHelpCentersResponseFixture,
             )
         })
         it('should not call the api function when client is not set', () => {
             getHelpCenterList.mockReturnValue(
-                Promise.resolve(getHelpCentersResponseFixture) as any
+                Promise.resolve(getHelpCentersResponseFixture) as any,
             )
             mockUseHelpCenterApi.mockReturnValue({
                 client: undefined,
@@ -323,15 +324,15 @@ describe('queries', () => {
                 client: {} as HelpCenterClient,
                 isReady: true,
             })
-            const {result, waitFor} = renderHook(
+            const { result, waitFor } = renderHook(
                 () =>
                     useGetArticleIngestionLogs(
-                        {help_center_id: helpCenterId},
-                        {}
+                        { help_center_id: helpCenterId },
+                        {},
                     ),
                 {
                     wrapper,
-                }
+                },
             )
             await waitFor(() => expect(result.current.isSuccess).toBe(true))
             expect(result.current.data).toStrictEqual(null)
@@ -342,12 +343,12 @@ describe('queries', () => {
             renderHook(
                 () =>
                     useGetArticleIngestionLogs(
-                        {help_center_id: helpCenterId},
-                        {enabled: false}
+                        { help_center_id: helpCenterId },
+                        { enabled: false },
                     ),
                 {
                     wrapper,
-                }
+                },
             )
             expect(getArticleIngestionLogs).toHaveBeenCalledTimes(0)
         })
@@ -356,15 +357,15 @@ describe('queries', () => {
     describe('useCreateArticleIngestion', () => {
         it('should return correct data on success', async () => {
             startArticleIngestion.mockReturnValue(Promise.resolve(null))
-            const {result, waitFor} = renderHook(
+            const { result, waitFor } = renderHook(
                 () => useStartArticleIngestion(),
-                {wrapper}
+                { wrapper },
             )
 
             await result.current.mutateAsync([
                 undefined,
-                {help_center_id: helpCenterId},
-                {links: []},
+                { help_center_id: helpCenterId },
+                { links: [] },
             ])
 
             await waitFor(() => expect(result.current.isSuccess).toBe(true))
@@ -376,14 +377,14 @@ describe('queries', () => {
     describe('useCreateFileIngestion', () => {
         it('should return correct data on success', async () => {
             createFileIngestion.mockReturnValue(Promise.resolve(null))
-            const {result, waitFor} = renderHook(
+            const { result, waitFor } = renderHook(
                 () => useCreateFileIngestion(),
-                {wrapper}
+                { wrapper },
             )
 
             await result.current.mutateAsync([
                 undefined,
-                {help_center_id: helpCenterId},
+                { help_center_id: helpCenterId },
                 {
                     filename: 'my-file.pdf',
                     type: 'pdf',
@@ -405,11 +406,11 @@ describe('queries', () => {
                 client: {} as HelpCenterClient,
                 isReady: true,
             })
-            const {result, waitFor} = renderHook(
-                () => useGetFileIngestion({help_center_id: helpCenterId}, {}),
+            const { result, waitFor } = renderHook(
+                () => useGetFileIngestion({ help_center_id: helpCenterId }, {}),
                 {
                     wrapper,
-                }
+                },
             )
             await waitFor(() => expect(result.current.isSuccess).toBe(true))
             expect(result.current.data).toStrictEqual(null)
@@ -424,19 +425,19 @@ describe('queries', () => {
             renderHook(
                 () =>
                     useGetFileIngestion(
-                        {help_center_id: helpCenterId, ids: [3, 7, 8]},
-                        {}
+                        { help_center_id: helpCenterId, ids: [3, 7, 8] },
+                        {},
                     ),
                 {
                     wrapper,
-                }
+                },
             )
             expect(getFileIngestion).toHaveBeenCalledWith(
                 {},
                 {
                     help_center_id: 1,
                     ids: [3, 7, 8],
-                }
+                },
             )
         })
 
@@ -445,12 +446,12 @@ describe('queries', () => {
             renderHook(
                 () =>
                     useGetFileIngestion(
-                        {help_center_id: helpCenterId},
-                        {enabled: false}
+                        { help_center_id: helpCenterId },
+                        { enabled: false },
                     ),
                 {
                     wrapper,
-                }
+                },
             )
             expect(getFileIngestion).toHaveBeenCalledTimes(0)
         })
@@ -459,14 +460,14 @@ describe('queries', () => {
     describe('useDeleteFileIngestion', () => {
         it('should return correct data on success', async () => {
             deleteFileIngestion.mockReturnValue(Promise.resolve(null))
-            const {result, waitFor} = renderHook(
+            const { result, waitFor } = renderHook(
                 () => useDeleteFileIngestion(),
-                {wrapper}
+                { wrapper },
             )
 
             await result.current.mutateAsync([
                 undefined,
-                {help_center_id: helpCenterId, file_ingestion_id: 34},
+                { help_center_id: helpCenterId, file_ingestion_id: 34 },
             ])
 
             await waitFor(() => expect(result.current.isSuccess).toBe(true))

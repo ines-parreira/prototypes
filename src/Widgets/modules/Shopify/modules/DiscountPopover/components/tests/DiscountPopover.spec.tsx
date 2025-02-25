@@ -1,17 +1,17 @@
-import {fireEvent, render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import {fromJS} from 'immutable'
 import React from 'react'
+
+import { fireEvent, render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { fromJS } from 'immutable'
 import * as reactstrap from 'reactstrap'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { logEvent, SegmentEvent } from 'common/segment'
 import {
     AppliedDiscount,
     DiscountType,
 } from 'constants/integrations/types/shopify'
-
 import DiscountPopover from 'Widgets/modules/Shopify/modules/DiscountPopover/components/DiscountPopover'
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
+import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 jest.mock('common/segment', () => {
     const segmentTracker: Record<string, unknown> =
@@ -31,12 +31,12 @@ describe('<DiscountPopover/>', () => {
         onChange = jest.fn()
         popoverSpy = jest
             .spyOn(reactstrap, 'Popover')
-            .mockImplementation(({children}): any => <div>{children}</div>)
+            .mockImplementation(({ children }): any => <div>{children}</div>)
     })
 
     describe('render()', () => {
         it('should render without value', () => {
-            const {container} = render(
+            const { container } = render(
                 <DiscountPopover
                     label="order"
                     actionName={ShopifyActionType.DuplicateOrder}
@@ -48,7 +48,7 @@ describe('<DiscountPopover/>', () => {
                     onChange={onChange}
                 >
                     {buttonText}
-                </DiscountPopover>
+                </DiscountPopover>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -62,7 +62,7 @@ describe('<DiscountPopover/>', () => {
                 amount: '5.99',
             }
 
-            const {container} = render(
+            const { container } = render(
                 <DiscountPopover
                     label="order"
                     actionName={ShopifyActionType.DuplicateOrder}
@@ -74,7 +74,7 @@ describe('<DiscountPopover/>', () => {
                     onChange={onChange}
                 >
                     {buttonText}
-                </DiscountPopover>
+                </DiscountPopover>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -113,7 +113,7 @@ describe('<DiscountPopover/>', () => {
                         onChange={onChange}
                     >
                         {buttonText}
-                    </DiscountPopover>
+                    </DiscountPopover>,
                 )
 
                 // Open popover
@@ -122,7 +122,7 @@ describe('<DiscountPopover/>', () => {
 
                 // Change form values
                 fireEvent.change(screen.getByRole('spinbutton'), {
-                    target: {value: 5.99},
+                    target: { value: 5.99 },
                 })
 
                 userEvent.paste(screen.getByRole('textbox'), 'foo')
@@ -135,11 +135,11 @@ describe('<DiscountPopover/>', () => {
                         value_type: 'fixed_amount',
                         amount: '5.99',
                         currency_code: 'USD',
-                    })
+                    }),
                 )
 
                 expect(logEvent).toHaveBeenCalledWith(submitEvent)
-            }
+            },
         )
 
         it('should call prop `onChange` with percentage amount discount', () => {
@@ -155,7 +155,7 @@ describe('<DiscountPopover/>', () => {
                     onChange={onChange}
                 >
                     {buttonText}
-                </DiscountPopover>
+                </DiscountPopover>,
             )
 
             // Open popover
@@ -164,7 +164,7 @@ describe('<DiscountPopover/>', () => {
             // Change form values
             userEvent.click(screen.getByText('%'))
             fireEvent.change(screen.getByRole('spinbutton'), {
-                target: {value: 15},
+                target: { value: 15 },
             })
 
             userEvent.paste(screen.getByRole('textbox'), 'bar')
@@ -178,7 +178,7 @@ describe('<DiscountPopover/>', () => {
                     value_type: 'percentage',
                     amount: '1.50',
                     currency_code: 'USD',
-                })
+                }),
             )
         })
     })
@@ -213,14 +213,14 @@ describe('<DiscountPopover/>', () => {
                     onChange={onChange}
                 >
                     {buttonText}
-                </DiscountPopover>
+                </DiscountPopover>,
             )
 
             // Open popover
             userEvent.click(screen.getByText(buttonText))
             expect(popoverSpy).toHaveBeenCalledWith(
-                expect.objectContaining({isOpen: true}),
-                {}
+                expect.objectContaining({ isOpen: true }),
+                {},
             )
 
             // Click on "Remove"
@@ -254,7 +254,7 @@ describe('<DiscountPopover/>', () => {
                     onChange={onChange}
                 >
                     {buttonText}
-                </DiscountPopover>
+                </DiscountPopover>,
             )
 
             userEvent.click(screen.getByText('Add discount'))

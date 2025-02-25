@@ -1,10 +1,10 @@
-import {TagsOnTicketCube} from 'models/reporting/cubes/TagsOnTicketCube'
-import {TicketCustomFieldsCube} from 'models/reporting/cubes/TicketCustomFieldsCube'
-import {TicketMessagesCube} from 'models/reporting/cubes/TicketMessagesCube'
-import {TicketSatisfactionSurveyCube} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
-import {TicketTagsCube} from 'models/reporting/cubes/TicketTagsCube'
-import {TicketTagsEnrichedCube} from 'models/reporting/cubes/TicketTagsEnrichedCube'
-import {Cube, JoinedCubesWithMapping} from 'models/reporting/types'
+import { TagsOnTicketCube } from 'models/reporting/cubes/TagsOnTicketCube'
+import { TicketCustomFieldsCube } from 'models/reporting/cubes/TicketCustomFieldsCube'
+import { TicketMessagesCube } from 'models/reporting/cubes/TicketMessagesCube'
+import { TicketSatisfactionSurveyCube } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
+import { TicketTagsCube } from 'models/reporting/cubes/TicketTagsCube'
+import { TicketTagsEnrichedCube } from 'models/reporting/cubes/TicketTagsEnrichedCube'
+import { Cube, JoinedCubesWithMapping } from 'models/reporting/types'
 
 export enum TicketMeasure {
     TicketCount = 'TicketEnriched.ticketCount',

@@ -1,7 +1,7 @@
 import React from 'react'
 
-import {HELP_CENTER_TEXTS} from 'config/helpCenter'
-import {HelpCenter} from 'models/helpCenter/types'
+import { HELP_CENTER_TEXTS } from 'config/helpCenter'
+import { HelpCenter } from 'models/helpCenter/types'
 import Button from 'pages/common/components/button/Button'
 
 import useOrderDates from './hooks/useOrderDates'
@@ -12,10 +12,10 @@ type Props = {
     helpCenter: HelpCenter
 }
 
-const SelfServiceHelpCenterReturnPortalPage = ({helpCenter}: Props) => {
+const SelfServiceHelpCenterReturnPortalPage = ({ helpCenter }: Props) => {
     const helpCenterTexts = HELP_CENTER_TEXTS[helpCenter.default_locale]
 
-    const {orderPlacedDate} = useOrderDates(helpCenter.default_locale)
+    const { orderPlacedDate } = useOrderDates(helpCenter.default_locale)
 
     return (
         <div className={css.container}>
@@ -23,7 +23,7 @@ const SelfServiceHelpCenterReturnPortalPage = ({helpCenter}: Props) => {
                 <div className={css.orderNumber}>
                     {helpCenterTexts.orderNumber.replace(
                         '{{orderNumber}}',
-                        '#3089'
+                        '#3089',
                     )}
                 </div>
                 <div className={css.orderDate}>

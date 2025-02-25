@@ -1,18 +1,18 @@
+import React, { useEffect, useState } from 'react'
+
 import toInteger from 'lodash/toInteger'
-import React, {useEffect, useState} from 'react'
 
 import Button from 'pages/common/components/button/Button'
 import InputField from 'pages/common/forms/input/InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {Value} from 'pages/common/forms/SelectField/types'
+import { Value } from 'pages/common/forms/SelectField/types'
+import { isTriggerValueNonNegative } from 'pages/convert/campaigns/utils/isTriggerValueNonNegative'
 
-import {isTriggerValueNonNegative} from 'pages/convert/campaigns/utils/isTriggerValueNonNegative'
+import { AdvancedTriggerBaseProps } from '../../types/AdvancedTriggerBaseProps'
+import { CampaignTriggerOperator } from '../../types/enums/CampaignTriggerOperator.enum'
+import { convertTriggerOperatorsToSelectOptions } from '../../utils/convertTriggerOperatorsToSelectOptions'
+import { handleTriggerOperatorChange } from '../../utils/handleTriggerOperatorChange'
 
-import {AdvancedTriggerBaseProps} from '../../types/AdvancedTriggerBaseProps'
-
-import {CampaignTriggerOperator} from '../../types/enums/CampaignTriggerOperator.enum'
-import {convertTriggerOperatorsToSelectOptions} from '../../utils/convertTriggerOperatorsToSelectOptions'
-import {handleTriggerOperatorChange} from '../../utils/handleTriggerOperatorChange'
 import css from './style.less'
 
 type Props = AdvancedTriggerBaseProps
@@ -24,10 +24,10 @@ export const OrdersCountTrigger = ({
     onUpdateTrigger,
 }: Props): JSX.Element => {
     const [innerOperator, setInnerOperator] = useState<CampaignTriggerOperator>(
-        trigger.operator
+        trigger.operator,
     )
     const [innerValue, setInnerValue] = useState<number | undefined>(
-        toInteger(trigger.value)
+        toInteger(trigger.value),
     )
 
     const handleChangeOperator = (operator: Value) =>
@@ -36,7 +36,7 @@ export const OrdersCountTrigger = ({
             id,
             trigger,
             setInnerOperator,
-            onUpdateTrigger
+            onUpdateTrigger,
         )
 
     const handleChangeValue = (value: string) => {
@@ -80,7 +80,7 @@ export const OrdersCountTrigger = ({
                 onChange={handleChangeOperator}
                 options={convertTriggerOperatorsToSelectOptions(trigger.type)}
             />
-            <div style={{display: 'flex', flexGrow: 1}}>
+            <div style={{ display: 'flex', flexGrow: 1 }}>
                 <InputField
                     className={css.fullWidth}
                     value={innerValue}

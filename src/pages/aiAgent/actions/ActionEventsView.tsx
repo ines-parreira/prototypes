@@ -1,34 +1,35 @@
-import classnames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import moment from 'moment'
 import React, {
-    useReducer,
     useCallback,
-    useMemo,
     useEffect,
+    useMemo,
+    useReducer,
     useState,
 } from 'react'
-import {useParams, useLocation, useHistory} from 'react-router-dom'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import classnames from 'classnames'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import moment from 'moment'
+import { useHistory, useLocation, useParams } from 'react-router-dom'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import useKey from 'hooks/useKey'
 import {
+    useGetConfigurationExecution,
+    useGetConfigurationExecutionLogs,
     useGetConfigurationExecutions,
     useGetWorkflowConfiguration,
-    useGetConfigurationExecutionLogs,
-    useGetConfigurationExecution,
     useGetWorkflowConfigurationTemplates,
 } from 'models/workflows/queries'
-import {AiAgentLayout} from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
-import {ACTIONS, AI_AGENT} from 'pages/aiAgent/constants'
+import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
+import { ACTIONS, AI_AGENT } from 'pages/aiAgent/constants'
 
-import css from './ActionEventsView.less'
 import ActionEventsHeader from './components/ActionEventsHeader'
 import ActionEventSidePanel from './components/ActionEventSidePanel'
 import ActionEventsList from './components/ActionEventsList'
 import ActionEventsNumberedPagination from './components/ActionEventsNumberedPagination'
+import { LlmTriggeredExecution } from './types'
 
-import {LlmTriggeredExecution} from './types'
+import css from './ActionEventsView.less'
 
 export type Filter = Omit<
     Parameters<typeof useGetConfigurationExecutions>[0],
@@ -43,7 +44,7 @@ export default function ActionExecutionsView() {
 
     const queryParams = useMemo(
         () => new URLSearchParams(location.search),
-        [location.search]
+        [location.search],
     )
 
     const [filterState, dispatchFilter] = useReducer(
@@ -60,7 +61,7 @@ export default function ActionExecutionsView() {
             status: undefined,
             orderBy: 'DESC',
             page: 1,
-        }
+        },
     )
 
     const [selectedExecutionId, setSelectedExecutionId] = useState<
@@ -81,15 +82,15 @@ export default function ActionExecutionsView() {
         }
     }, [history, location.pathname, queryParams, selectedExecutionId])
 
-    const {shopName, id: configurationId} = useParams<{
+    const { shopName, id: configurationId } = useParams<{
         id: string
         shopName: string
     }>()
 
-    const {data: actionConfiguration, isFetching} =
+    const { data: actionConfiguration, isFetching } =
         useGetWorkflowConfiguration(configurationId)
 
-    const {data: executionsData, isFetching: isFechingExecutions} =
+    const { data: executionsData, isFetching: isFechingExecutions } =
         useGetConfigurationExecutions(
             {
                 configurationInternalId: actionConfiguration?.internal_id || '',
@@ -102,20 +103,20 @@ export default function ActionExecutionsView() {
             },
             {
                 enabled: !!actionConfiguration?.internal_id,
-            }
+            },
         )
 
-    const {data: httpExecutionLogs, isFetching: isFetchinghttpExecutionLogs} =
+    const { data: httpExecutionLogs, isFetching: isFetchinghttpExecutionLogs } =
         useGetConfigurationExecutionLogs(
             actionConfiguration?.internal_id || '',
             selectedExecutionId || '',
             {
                 enabled:
                     !!selectedExecutionId && !!actionConfiguration?.internal_id,
-            }
+            },
         )
 
-    const {data: execution, isFetching: isFetchingExecution} =
+    const { data: execution, isFetching: isFetchingExecution } =
         useGetConfigurationExecution(
             actionConfiguration?.internal_id || '',
             selectedExecutionId || '',
@@ -123,30 +124,30 @@ export default function ActionExecutionsView() {
                 enabled:
                     !!selectedExecutionId && !!actionConfiguration?.internal_id,
                 initialData: executionsData?.data?.find(
-                    (execution) => execution.id === selectedExecutionId
+                    (execution) => execution.id === selectedExecutionId,
                 ),
-            }
+            },
         )
 
     const handleFilterChange = useCallback(
         (filter: Pick<Filter, 'from' | 'to' | 'success' | 'status'>) => {
             dispatchFilter(filter)
         },
-        [dispatchFilter]
+        [dispatchFilter],
     )
 
     const handleChangeOrder = useCallback(
         (orderBy: 'DESC' | 'ASC') => {
-            dispatchFilter({orderBy})
+            dispatchFilter({ orderBy })
         },
-        [dispatchFilter]
+        [dispatchFilter],
     )
 
     const handleSelectedExecutionIdChange = useCallback(
         (executionId: string) => {
             setSelectedExecutionId(executionId)
         },
-        [setSelectedExecutionId]
+        [setSelectedExecutionId],
     )
 
     const {
@@ -162,7 +163,7 @@ export default function ActionExecutionsView() {
             setSelectedExecutionId(null)
         },
         undefined,
-        [setSelectedExecutionId]
+        [setSelectedExecutionId],
     )
 
     return (
@@ -187,7 +188,7 @@ export default function ActionExecutionsView() {
             <ActionEventsNumberedPagination
                 page={executionsData?.meta.pagination.current_page}
                 count={executionsData?.meta.pagination.total_pages}
-                onChange={(page) => dispatchFilter({page})}
+                onChange={(page) => dispatchFilter({ page })}
             />
 
             <ActionEventSidePanel

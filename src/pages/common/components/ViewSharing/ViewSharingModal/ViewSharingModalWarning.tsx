@@ -1,8 +1,9 @@
-import {List} from 'immutable'
 import React from 'react'
-import {UncontrolledTooltip} from 'reactstrap'
 
-import Alert, {AlertType} from '../../Alert/Alert'
+import { List } from 'immutable'
+import { UncontrolledTooltip } from 'reactstrap'
+
+import Alert, { AlertType } from '../../Alert/Alert'
 
 import css from './ViewSharingModalWarning.less'
 
@@ -22,15 +23,15 @@ export default function ViewSharingModalWarning({
     const missingTeams = initialTeams.filter((team: Map<any, any>) =>
         selectedTeams.every(
             (selectedTeam: Map<any, any>) =>
-                selectedTeam.get('id') !== team.get('id')
-        )
+                selectedTeam.get('id') !== team.get('id'),
+        ),
     )
 
     const missingUsers = initialUsers.filter((user: Map<any, any>) =>
         selectedUsers.every(
             (selectedUser: Map<any, any>) =>
-                selectedUser.get('id') !== user.get('id')
-        )
+                selectedUser.get('id') !== user.get('id'),
+        ),
     )
 
     const isEmpty = !missingTeams.size && !missingUsers.size

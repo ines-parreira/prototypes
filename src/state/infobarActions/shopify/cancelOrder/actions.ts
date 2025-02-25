@@ -1,16 +1,16 @@
 import axios from 'axios'
-import {List, Map} from 'immutable'
+import { List, Map } from 'immutable'
 import _debounce from 'lodash/debounce'
 
 import {
     initCancelOrderPayload,
     initRefundOrderLineItems,
 } from 'business/shopify/order'
-import {getTotalQuantities} from 'business/shopify/refund'
-import {logEvent, SegmentEvent} from 'common/segment'
+import { getTotalQuantities } from 'business/shopify/refund'
+import { logEvent, SegmentEvent } from 'common/segment'
 import GorgiasApi from 'services/gorgiasApi'
-import {StoreDispatch, RootState} from 'state/types'
-import {onApiError} from 'state/utils'
+import { RootState, StoreDispatch } from 'state/types'
+import { onApiError } from 'state/utils'
 
 import {
     SET_INITIAL_STATE,
@@ -19,10 +19,10 @@ import {
     SET_ORDER_ID,
     SET_PAYLOAD,
     SET_REFUND,
-    SET_TRANSACTIONS,
     SET_RESTOCK,
+    SET_TRANSACTIONS,
 } from './constants'
-import {getCancelOrderState} from './selectors'
+import { getCancelOrderState } from './selectors'
 
 let _gorgiasApi: Maybe<GorgiasApi> = null
 
@@ -94,7 +94,7 @@ export const onInit =
             const suggestedRefund = await api.calculateRefund(
                 integrationId,
                 orderId,
-                payload
+                payload,
             )
             const shippingMaximumRefundable = suggestedRefund.getIn([
                 'shipping',
@@ -102,7 +102,7 @@ export const onInit =
             ]) as number
             payload = payload.setIn(
                 ['refund', 'shipping', 'amount'],
-                shippingMaximumRefundable
+                shippingMaximumRefundable,
             )
 
             return Promise.all([
@@ -120,8 +120,8 @@ export const onInit =
                 onApiError(
                     error,
                     'Error while calculating refund',
-                    setLoading(false)
-                )
+                    setLoading(false),
+                ),
             )
         }
     }
@@ -148,17 +148,17 @@ export const onLineItemChange =
                     ).find(
                         (refundLineItem: Map<any, any>) =>
                             refundLineItem.get('line_item_id') ===
-                            lineItem.get('id')
+                            lineItem.get('id'),
                     ) as Maybe<Map<any, any>>
 
                     return refundLineItem
                         ? refundLineItem.set(
                               'quantity',
-                              lineItem.get('quantity')
+                              lineItem.get('quantity'),
                           )
                         : undefined
                 })
-                .filter((lineItem) => !!lineItem)
+                .filter((lineItem) => !!lineItem),
         )
 
         dispatch(setLineItems(newLineItems))
@@ -177,7 +177,7 @@ export const calculateRefund = _debounce(
     async (
         integrationId: number,
         dispatch: StoreDispatch,
-        getState: () => RootState
+        getState: () => RootState,
     ) => {
         try {
             dispatch(setLoading(true, 'Calculating refund...'))
@@ -188,7 +188,7 @@ export const calculateRefund = _debounce(
             const state = getState()
             const orderId = getCancelOrderState(state).get('orderId') as number
             const cancelOrderPayload = getCancelOrderState(state).get(
-                'payload'
+                'payload',
             ) as Map<any, any>
             const refundPayload = (
                 cancelOrderPayload.get('refund') as Map<any, any>
@@ -196,7 +196,7 @@ export const calculateRefund = _debounce(
             const suggestedRefund = await api.calculateRefund(
                 integrationId,
                 orderId,
-                refundPayload
+                refundPayload,
             )
             const promises = [
                 dispatch(setRefund(suggestedRefund)),
@@ -208,7 +208,7 @@ export const calculateRefund = _debounce(
             // Check or uncheck the "Restock" checkbox
             const totalQuantities = getTotalQuantities(
                 refundPayload,
-                suggestedRefund
+                suggestedRefund,
             )
             const restock = totalQuantities > 0
 
@@ -227,12 +227,12 @@ export const calculateRefund = _debounce(
                 onApiError(
                     error,
                     'Error while calculating refund',
-                    setLoading(false)
-                )
+                    setLoading(false),
+                ),
             )
         }
     },
-    500
+    500,
 )
 
 export const onCancel = (via: string) => () => {
@@ -249,5 +249,5 @@ export const onReset = () => (dispatch: StoreDispatch) => resetState(dispatch)
 
 export const resetState = _debounce(
     (dispatch: StoreDispatch) => dispatch(setInitialState()),
-    250
+    250,
 )

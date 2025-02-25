@@ -1,12 +1,12 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 import moment from 'moment'
 
 import {
     MAGENTO2_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
 } from 'constants/integration'
-import {TAGS_ADDED_KEY, TAGS_REMOVED_KEY} from 'models/event/constants'
-import {TICKET_EVENT_TYPES} from 'models/event/types'
+import { TAGS_ADDED_KEY, TAGS_REMOVED_KEY } from 'models/event/constants'
+import { TICKET_EVENT_TYPES } from 'models/event/types'
 
 import {
     deduplicateAuditLogEvents,
@@ -18,13 +18,13 @@ describe('ticket helpers', () => {
     describe('shouldDeduplicateAuditLogEvents()', () => {
         it('should return `True` because the given date is too old', () => {
             expect(
-                shouldDeduplicateAuditLogEvents('2019-12-10T00:00:00Z')
+                shouldDeduplicateAuditLogEvents('2019-12-10T00:00:00Z'),
             ).toBe(true)
         })
 
         it('should return `False` because the given date is not too old', () => {
             expect(
-                shouldDeduplicateAuditLogEvents('2019-12-10T02:00:00Z')
+                shouldDeduplicateAuditLogEvents('2019-12-10T02:00:00Z'),
             ).toBe(false)
         })
     })
@@ -36,12 +36,12 @@ describe('ticket helpers', () => {
                     {
                         created_datetime: 0,
                         type: TICKET_EVENT_TYPES.TicketAssigned,
-                        data: {assignee_user_id: 1},
+                        data: { assignee_user_id: 1 },
                     },
                     {
                         created_datetime: 1,
                         type: TICKET_EVENT_TYPES.TicketAssigned,
-                        data: {assignee_user_id: 1},
+                        data: { assignee_user_id: 1 },
                     },
                 ])
 
@@ -49,7 +49,7 @@ describe('ticket helpers', () => {
                     {
                         created_datetime: 0,
                         type: TICKET_EVENT_TYPES.TicketAssigned,
-                        data: {assignee_user_id: 1},
+                        data: { assignee_user_id: 1 },
                     },
                 ])
 
@@ -171,12 +171,12 @@ describe('ticket helpers', () => {
                     {
                         created_datetime: 0,
                         type: TICKET_EVENT_TYPES.TicketTagsAdded,
-                        data: {[TAGS_ADDED_KEY]: [1]},
+                        data: { [TAGS_ADDED_KEY]: [1] },
                     },
                     {
                         created_datetime: 1,
                         type: TICKET_EVENT_TYPES.TicketTagsAdded,
-                        data: {[TAGS_ADDED_KEY]: [1]},
+                        data: { [TAGS_ADDED_KEY]: [1] },
                     },
                 ])
 
@@ -184,7 +184,7 @@ describe('ticket helpers', () => {
                     {
                         created_datetime: 0,
                         type: TICKET_EVENT_TYPES.TicketTagsAdded,
-                        data: {[TAGS_ADDED_KEY]: [1]},
+                        data: { [TAGS_ADDED_KEY]: [1] },
                     },
                 ])
 
@@ -196,17 +196,17 @@ describe('ticket helpers', () => {
                     {
                         created_datetime: 0,
                         type: TICKET_EVENT_TYPES.TicketTagsAdded,
-                        data: {[TAGS_ADDED_KEY]: [1]},
+                        data: { [TAGS_ADDED_KEY]: [1] },
                     },
                     {
                         created_datetime: 1,
                         type: TICKET_EVENT_TYPES.TicketTagsRemoved,
-                        data: {[TAGS_REMOVED_KEY]: [1]},
+                        data: { [TAGS_REMOVED_KEY]: [1] },
                     },
                     {
                         created_datetime: 2,
                         type: TICKET_EVENT_TYPES.TicketTagsRemoved,
-                        data: {[TAGS_REMOVED_KEY]: [1]},
+                        data: { [TAGS_REMOVED_KEY]: [1] },
                     },
                 ])
 
@@ -214,12 +214,12 @@ describe('ticket helpers', () => {
                     {
                         created_datetime: 0,
                         type: TICKET_EVENT_TYPES.TicketTagsAdded,
-                        data: {[TAGS_ADDED_KEY]: [1]},
+                        data: { [TAGS_ADDED_KEY]: [1] },
                     },
                     {
                         created_datetime: 1,
                         type: TICKET_EVENT_TYPES.TicketTagsRemoved,
-                        data: {[TAGS_REMOVED_KEY]: [1]},
+                        data: { [TAGS_REMOVED_KEY]: [1] },
                     },
                 ])
 
@@ -231,12 +231,12 @@ describe('ticket helpers', () => {
                     {
                         created_datetime: 0,
                         type: TICKET_EVENT_TYPES.TicketTeamAssigned,
-                        data: {assignee_team_id: 1},
+                        data: { assignee_team_id: 1 },
                     },
                     {
                         created_datetime: 1,
                         type: TICKET_EVENT_TYPES.TicketTeamAssigned,
-                        data: {assignee_team_id: 1},
+                        data: { assignee_team_id: 1 },
                     },
                 ])
 
@@ -244,7 +244,7 @@ describe('ticket helpers', () => {
                     {
                         created_datetime: 0,
                         type: TICKET_EVENT_TYPES.TicketTeamAssigned,
-                        data: {assignee_team_id: 1},
+                        data: { assignee_team_id: 1 },
                     },
                 ])
 
@@ -256,7 +256,7 @@ describe('ticket helpers', () => {
                     {
                         created_datetime: 0,
                         type: TICKET_EVENT_TYPES.TicketTeamAssigned,
-                        data: {assignee_team_id: 1},
+                        data: { assignee_team_id: 1 },
                     },
                     {
                         created_datetime: 1,
@@ -272,7 +272,7 @@ describe('ticket helpers', () => {
                     {
                         created_datetime: 0,
                         type: TICKET_EVENT_TYPES.TicketTeamAssigned,
-                        data: {assignee_team_id: 1},
+                        data: { assignee_team_id: 1 },
                     },
                     {
                         created_datetime: 1,
@@ -310,7 +310,7 @@ describe('ticket helpers', () => {
                     {
                         created_datetime: 0,
                         type: TICKET_EVENT_TYPES.TicketAssigned,
-                        data: {assignee_user_id: 1},
+                        data: { assignee_user_id: 1 },
                     },
                     {
                         created_datetime: 1,
@@ -326,7 +326,7 @@ describe('ticket helpers', () => {
                     {
                         created_datetime: 0,
                         type: TICKET_EVENT_TYPES.TicketAssigned,
-                        data: {assignee_user_id: 1},
+                        data: { assignee_user_id: 1 },
                     },
                     {
                         created_datetime: 1,
@@ -389,12 +389,12 @@ describe('ticket helpers', () => {
                         {
                             created_datetime: 0,
                             type: TICKET_EVENT_TYPES.TicketAssigned,
-                            data: {assignee_user_id: 1},
+                            data: { assignee_user_id: 1 },
                         },
                         {
                             created_datetime: 1,
                             type: TICKET_EVENT_TYPES.TicketAssigned,
-                            data: {assignee_user_id: 2},
+                            data: { assignee_user_id: 2 },
                         },
                     ])
 
@@ -406,7 +406,7 @@ describe('ticket helpers', () => {
                         {
                             created_datetime: 0,
                             type: TICKET_EVENT_TYPES.TicketAssigned,
-                            data: {assignee_user_id: 1},
+                            data: { assignee_user_id: 1 },
                         },
                         {
                             created_datetime: 1,
@@ -415,7 +415,7 @@ describe('ticket helpers', () => {
                         {
                             created_datetime: 2,
                             type: TICKET_EVENT_TYPES.TicketAssigned,
-                            data: {assignee_user_id: 1},
+                            data: { assignee_user_id: 1 },
                         },
                     ])
 
@@ -511,12 +511,12 @@ describe('ticket helpers', () => {
                         {
                             created_datetime: 0,
                             type: TICKET_EVENT_TYPES.TicketTagsAdded,
-                            data: {[TAGS_ADDED_KEY]: [1]},
+                            data: { [TAGS_ADDED_KEY]: [1] },
                         },
                         {
                             created_datetime: 1,
                             type: TICKET_EVENT_TYPES.TicketTagsAdded,
-                            data: {[TAGS_ADDED_KEY]: [2]},
+                            data: { [TAGS_ADDED_KEY]: [2] },
                         },
                     ])
 
@@ -528,12 +528,12 @@ describe('ticket helpers', () => {
                         {
                             created_datetime: 0,
                             type: TICKET_EVENT_TYPES.TicketTagsAdded,
-                            data: {[TAGS_ADDED_KEY]: [1]},
+                            data: { [TAGS_ADDED_KEY]: [1] },
                         },
                         {
                             created_datetime: 1,
                             type: TICKET_EVENT_TYPES.TicketTagsAdded,
-                            data: {[TAGS_ADDED_KEY]: [1, 2]},
+                            data: { [TAGS_ADDED_KEY]: [1, 2] },
                         },
                     ])
 
@@ -541,12 +541,12 @@ describe('ticket helpers', () => {
                         {
                             created_datetime: 0,
                             type: TICKET_EVENT_TYPES.TicketTagsAdded,
-                            data: {[TAGS_ADDED_KEY]: [1]},
+                            data: { [TAGS_ADDED_KEY]: [1] },
                         },
                         {
                             created_datetime: 1,
                             type: TICKET_EVENT_TYPES.TicketTagsAdded,
-                            data: {[TAGS_ADDED_KEY]: [2]},
+                            data: { [TAGS_ADDED_KEY]: [2] },
                         },
                     ])
 
@@ -560,17 +560,17 @@ describe('ticket helpers', () => {
                         {
                             created_datetime: 0,
                             type: TICKET_EVENT_TYPES.TicketTagsAdded,
-                            data: {[TAGS_ADDED_KEY]: [1, 2]},
+                            data: { [TAGS_ADDED_KEY]: [1, 2] },
                         },
                         {
                             created_datetime: 1,
                             type: TICKET_EVENT_TYPES.TicketTagsRemoved,
-                            data: {[TAGS_REMOVED_KEY]: [1]},
+                            data: { [TAGS_REMOVED_KEY]: [1] },
                         },
                         {
                             created_datetime: 2,
                             type: TICKET_EVENT_TYPES.TicketTagsRemoved,
-                            data: {[TAGS_REMOVED_KEY]: [2]},
+                            data: { [TAGS_REMOVED_KEY]: [2] },
                         },
                     ])
 
@@ -582,17 +582,17 @@ describe('ticket helpers', () => {
                         {
                             created_datetime: 0,
                             type: TICKET_EVENT_TYPES.TicketTagsAdded,
-                            data: {[TAGS_ADDED_KEY]: [1, 2]},
+                            data: { [TAGS_ADDED_KEY]: [1, 2] },
                         },
                         {
                             created_datetime: 1,
                             type: TICKET_EVENT_TYPES.TicketTagsRemoved,
-                            data: {[TAGS_REMOVED_KEY]: [1]},
+                            data: { [TAGS_REMOVED_KEY]: [1] },
                         },
                         {
                             created_datetime: 2,
                             type: TICKET_EVENT_TYPES.TicketTagsRemoved,
-                            data: {[TAGS_REMOVED_KEY]: [1, 2]},
+                            data: { [TAGS_REMOVED_KEY]: [1, 2] },
                         },
                     ])
 
@@ -600,17 +600,17 @@ describe('ticket helpers', () => {
                         {
                             created_datetime: 0,
                             type: TICKET_EVENT_TYPES.TicketTagsAdded,
-                            data: {[TAGS_ADDED_KEY]: [1, 2]},
+                            data: { [TAGS_ADDED_KEY]: [1, 2] },
                         },
                         {
                             created_datetime: 1,
                             type: TICKET_EVENT_TYPES.TicketTagsRemoved,
-                            data: {[TAGS_REMOVED_KEY]: [1]},
+                            data: { [TAGS_REMOVED_KEY]: [1] },
                         },
                         {
                             created_datetime: 2,
                             type: TICKET_EVENT_TYPES.TicketTagsRemoved,
-                            data: {[TAGS_REMOVED_KEY]: [2]},
+                            data: { [TAGS_REMOVED_KEY]: [2] },
                         },
                     ])
 
@@ -624,12 +624,12 @@ describe('ticket helpers', () => {
                         {
                             created_datetime: 0,
                             type: TICKET_EVENT_TYPES.TicketTeamAssigned,
-                            data: {assignee_team_id: 1},
+                            data: { assignee_team_id: 1 },
                         },
                         {
                             created_datetime: 1,
                             type: TICKET_EVENT_TYPES.TicketTeamAssigned,
-                            data: {assignee_team_id: 2},
+                            data: { assignee_team_id: 2 },
                         },
                     ])
 
@@ -641,7 +641,7 @@ describe('ticket helpers', () => {
                         {
                             created_datetime: 0,
                             type: TICKET_EVENT_TYPES.TicketTeamAssigned,
-                            data: {assignee_team_id: 1},
+                            data: { assignee_team_id: 1 },
                         },
                         {
                             created_datetime: 1,
@@ -650,7 +650,7 @@ describe('ticket helpers', () => {
                         {
                             created_datetime: 2,
                             type: TICKET_EVENT_TYPES.TicketTeamAssigned,
-                            data: {assignee_team_id: 1},
+                            data: { assignee_team_id: 1 },
                         },
                     ])
 
@@ -664,7 +664,7 @@ describe('ticket helpers', () => {
                         {
                             created_datetime: 0,
                             type: TICKET_EVENT_TYPES.TicketTeamAssigned,
-                            data: {assignee_team_id: 1},
+                            data: { assignee_team_id: 1 },
                         },
                         {
                             created_datetime: 1,
@@ -673,7 +673,7 @@ describe('ticket helpers', () => {
                         {
                             created_datetime: 2,
                             type: TICKET_EVENT_TYPES.TicketTeamAssigned,
-                            data: {assignee_team_id: 1},
+                            data: { assignee_team_id: 1 },
                         },
                         {
                             created_datetime: 3,
@@ -712,7 +712,7 @@ describe('ticket helpers', () => {
                         {
                             created_datetime: 0,
                             type: TICKET_EVENT_TYPES.TicketAssigned,
-                            data: {assignee_user_id: 1},
+                            data: { assignee_user_id: 1 },
                         },
                         {
                             created_datetime: 1,
@@ -721,7 +721,7 @@ describe('ticket helpers', () => {
                         {
                             created_datetime: 2,
                             type: TICKET_EVENT_TYPES.TicketAssigned,
-                            data: {assignee_user_id: 1},
+                            data: { assignee_user_id: 1 },
                         },
                         {
                             created_datetime: 3,
@@ -844,9 +844,9 @@ describe('ticket helpers', () => {
             expect(getAllCustomerIdsFromTicket(ticket)).toEqual({
                 gorgias_id: 1,
                 integrations: [
-                    {id: '42', customer_id: 142},
-                    {id: '43', customer_id: 143},
-                    {id: '44', customer_id: 144},
+                    { id: '42', customer_id: 142 },
+                    { id: '43', customer_id: 143 },
+                    { id: '44', customer_id: 144 },
                 ],
             })
         })
@@ -870,8 +870,8 @@ describe('ticket helpers', () => {
             expect(getAllCustomerIdsFromTicket(ticket, filterFn)).toEqual({
                 gorgias_id: 1,
                 integrations: [
-                    {id: '42', customer_id: 142},
-                    {id: '44', customer_id: 144},
+                    { id: '42', customer_id: 142 },
+                    { id: '44', customer_id: 144 },
                 ],
             })
         })
@@ -883,7 +883,7 @@ describe('ticket helpers', () => {
                     integrations: {
                         ...shop_integration_1,
                         ...shop_integration_2,
-                        ...{45: {customer: {some_key: 'some_val'}}},
+                        ...{ 45: { customer: { some_key: 'some_val' } } },
                     },
                 },
             })
@@ -891,9 +891,9 @@ describe('ticket helpers', () => {
             expect(getAllCustomerIdsFromTicket(ticket)).toEqual({
                 gorgias_id: 1,
                 integrations: [
-                    {id: '42', customer_id: 142},
-                    {id: '43', customer_id: 143},
-                    {id: '45', customer_id: null},
+                    { id: '42', customer_id: 142 },
+                    { id: '43', customer_id: 143 },
+                    { id: '45', customer_id: null },
                 ],
             })
         })

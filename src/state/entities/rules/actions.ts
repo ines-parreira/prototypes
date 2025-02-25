@@ -1,7 +1,6 @@
-import {createAction} from '@reduxjs/toolkit'
+import { createAction } from '@reduxjs/toolkit'
 
-import {Rule, RulePriority} from '../../../models/rule/types'
-
+import { Rule, RulePriority } from '../../../models/rule/types'
 import {
     RULE_CREATED,
     RULE_DELETED,

@@ -1,11 +1,12 @@
-import {render} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
-import type {ReactNode} from 'react'
-import {StaticRouter} from 'react-router-dom'
+import type { ReactNode } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {THEME_NAME, themeTokenMap, useTheme} from 'core/theme'
+import { render } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { StaticRouter } from 'react-router-dom'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { THEME_NAME, themeTokenMap, useTheme } from 'core/theme'
 import {
     ActivityEvents,
     clearActivityTrackerSession,
@@ -13,8 +14,8 @@ import {
     unregisterAppActivityTrackerHooks,
 } from 'services/activityTracker'
 import shortcutManager from 'services/shortcutManager'
-import {ignoreHTML} from 'tests/ignoreHTML'
-import {assumeMock} from 'utils/testing'
+import { ignoreHTML } from 'tests/ignoreHTML'
+import { assumeMock } from 'utils/testing'
 
 import UserMenu from '../UserMenu'
 
@@ -24,7 +25,7 @@ jest.mock(
         ({
             ...jest.requireActual('common/segment'),
             logEvent: jest.fn(),
-        }) as typeof import('common/segment')
+        }) as typeof import('common/segment'),
 )
 jest.mock('pages/common/components/NoticeableIndicator', () => () => (
     <div>NoticeableIndicator</div>
@@ -37,7 +38,7 @@ jest.mock(
             clearActivityTrackerSession: jest.fn(),
             logActivityEvent: jest.fn(),
             unregisterAppActivityTrackerHooks: jest.fn(),
-        }) as typeof import('services/activityTracker')
+        }) as typeof import('services/activityTracker'),
 )
 jest.mock('services/shortcutManager', () => ({
     triggerAction: jest.fn(),
@@ -49,7 +50,7 @@ jest.mock(
         ({
             ...jest.requireActual('core/theme'),
             useTheme: jest.fn(),
-        }) as typeof import('core/theme')
+        }) as typeof import('core/theme'),
 )
 const useThemeMock = assumeMock(useTheme)
 
@@ -58,7 +59,7 @@ jest.mock('../MainNavigation', () => () => <div>MainNavigation</div>)
 jest.mock('../OfficeHours', () => () => <div>OfficeHours</div>)
 jest.mock('../ThemeMenu', () => () => <div>ThemeMenu</div>)
 
-const wrapper = ({children}: {children: ReactNode}) => (
+const wrapper = ({ children }: { children: ReactNode }) => (
     <StaticRouter location="/app">{children}</StaticRouter>
 )
 
@@ -75,7 +76,9 @@ describe('UserMenu', () => {
     })
 
     it('should render the main screen', () => {
-        const {getByText} = render(<UserMenu onClose={onClose} />, {wrapper})
+        const { getByText } = render(<UserMenu onClose={onClose} />, {
+            wrapper,
+        })
 
         expect(getByText('AvailabilityToggle')).toBeInTheDocument()
         expect(getByText(ignoreHTML('Theme:Classic'))).toBeInTheDocument()
@@ -91,38 +94,40 @@ describe('UserMenu', () => {
         ['Your profile', 'your-profile'],
         ['Refer a friend & earn', 'referral-program'],
     ])('should handle clicks for %s on the main screen', (label, link) => {
-        const {getByText} = render(<UserMenu onClose={onClose} />, {
+        const { getByText } = render(<UserMenu onClose={onClose} />, {
             wrapper,
         })
 
         userEvent.click(getByText(label))
         expect(logEvent).toHaveBeenCalledWith(
             SegmentEvent.MenuUserLinkClicked,
-            {link}
+            { link },
         )
         expect(onClose).toHaveBeenCalledWith()
     })
 
     it('should log out and stop activity tracking', () => {
-        const {getByText} = render(<UserMenu onClose={onClose} />, {
+        const { getByText } = render(<UserMenu onClose={onClose} />, {
             wrapper,
         })
 
         userEvent.click(getByText('Log out'))
         expect(logEvent).toHaveBeenCalledWith(
             SegmentEvent.MenuUserLinkClicked,
-            {link: 'log-out'}
+            { link: 'log-out' },
         )
 
         expect(logActivityEvent).toHaveBeenCalledWith(
-            ActivityEvents.UserClosedApp
+            ActivityEvents.UserClosedApp,
         )
         expect(unregisterAppActivityTrackerHooks).toHaveBeenCalledWith()
         expect(clearActivityTrackerSession).toHaveBeenCalledWith()
     })
 
     it('should render the learn screen', () => {
-        const {getByText} = render(<UserMenu onClose={onClose} />, {wrapper})
+        const { getByText } = render(<UserMenu onClose={onClose} />, {
+            wrapper,
+        })
         userEvent.click(getByText('Learn'))
 
         expect(getByText('Back')).toBeInTheDocument()
@@ -139,7 +144,7 @@ describe('UserMenu', () => {
         ['Gorgias Academy', 'gorgiasacademy'],
         ['Gorgias Community', 'gorgiascommunity'],
     ])('should handle clicks for %s on the learn screen', (label, link) => {
-        const {getByText} = render(<UserMenu onClose={onClose} />, {
+        const { getByText } = render(<UserMenu onClose={onClose} />, {
             wrapper,
         })
 
@@ -147,14 +152,14 @@ describe('UserMenu', () => {
         userEvent.click(getByText(label))
         expect(logEvent).toHaveBeenCalledWith(
             SegmentEvent.MenuUserLinkClicked,
-            {link}
+            { link },
         )
 
         expect(onClose).toHaveBeenCalledWith()
     })
 
     it('should handle clicks for Keyboard shortcuts on the learn screen', () => {
-        const {getByText} = render(<UserMenu onClose={onClose} />, {
+        const { getByText } = render(<UserMenu onClose={onClose} />, {
             wrapper,
         })
 
@@ -162,17 +167,19 @@ describe('UserMenu', () => {
         userEvent.click(getByText('Keyboard shortcuts'))
         expect(shortcutManager.triggerAction).toHaveBeenCalledWith(
             'KeyboardHelp',
-            'SHOW_HELP'
+            'SHOW_HELP',
         )
         expect(logEvent).toHaveBeenCalledWith(
             SegmentEvent.MenuUserLinkClicked,
-            {link: 'keyboard-shortcuts'}
+            { link: 'keyboard-shortcuts' },
         )
         expect(onClose).toHaveBeenCalledWith()
     })
 
     it('should render the updates screen', () => {
-        const {getByText} = render(<UserMenu onClose={onClose} />, {wrapper})
+        const { getByText } = render(<UserMenu onClose={onClose} />, {
+            wrapper,
+        })
         userEvent.click(getByText('Gorgias updates'))
 
         expect(getByText('Back')).toBeInTheDocument()
@@ -187,17 +194,19 @@ describe('UserMenu', () => {
         window.noticeable = {
             do: jest.fn(),
         } as unknown as typeof window.noticeable
-        const {getByText} = render(<UserMenu onClose={onClose} />, {wrapper})
+        const { getByText } = render(<UserMenu onClose={onClose} />, {
+            wrapper,
+        })
 
         userEvent.click(getByText('Gorgias updates'))
         userEvent.click(getByText('Latest updates'))
         expect(logEvent).toHaveBeenCalledWith(
             SegmentEvent.MenuUserLinkClicked,
-            {link: 'latest-updates'}
+            { link: 'latest-updates' },
         )
         expect(window.noticeable.do).toHaveBeenCalledWith(
             'widget:open',
-            'noticeable-widget-id'
+            'noticeable-widget-id',
         )
     })
 
@@ -205,7 +214,7 @@ describe('UserMenu', () => {
         ['Roadmap', 'roadmap'],
         ['Service status', 'service-status'],
     ])('should handle clicks for %s on the updates screen', (label, link) => {
-        const {getByText} = render(<UserMenu onClose={onClose} />, {
+        const { getByText } = render(<UserMenu onClose={onClose} />, {
             wrapper,
         })
 
@@ -213,13 +222,15 @@ describe('UserMenu', () => {
         userEvent.click(getByText(label))
         expect(logEvent).toHaveBeenCalledWith(
             SegmentEvent.MenuUserLinkClicked,
-            {link}
+            { link },
         )
         expect(onClose).toHaveBeenCalledWith()
     })
 
     it('should render the theme screen', () => {
-        const {getByText} = render(<UserMenu onClose={onClose} />, {wrapper})
+        const { getByText } = render(<UserMenu onClose={onClose} />, {
+            wrapper,
+        })
         userEvent.click(getByText(ignoreHTML('Theme:Classic')))
 
         expect(getByText('Back')).toBeInTheDocument()

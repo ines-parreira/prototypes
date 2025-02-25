@@ -1,15 +1,14 @@
-import {StripeAddressElementChangeEvent} from '@stripe/stripe-js'
+import React, { useMemo } from 'react'
+
+import { StripeAddressElementChangeEvent } from '@stripe/stripe-js'
 import mapValues from 'lodash/mapValues'
-import React, {useMemo} from 'react'
+import { SubmitHandler } from 'react-hook-form'
+import { useHistory } from 'react-router-dom'
 
-import {SubmitHandler} from 'react-hook-form'
-
-import {useHistory} from 'react-router-dom'
-
-import {Form, FormProps} from 'core/forms'
-import {BILLING_PAYMENT_PATH} from 'pages/settings/new_billing/constants'
-import {filterTaxIdsByAddress} from 'pages/settings/new_billing/utils/filterTaxIdsByAddress'
-import {useSubmitBillingAddress} from 'pages/settings/new_billing/views/BillingAddressSetupView/hooks/useSubmitBillingAddress'
+import { Form, FormProps } from 'core/forms'
+import { BILLING_PAYMENT_PATH } from 'pages/settings/new_billing/constants'
+import { filterTaxIdsByAddress } from 'pages/settings/new_billing/utils/filterTaxIdsByAddress'
+import { useSubmitBillingAddress } from 'pages/settings/new_billing/views/BillingAddressSetupView/hooks/useSubmitBillingAddress'
 import {
     BillingContactDetailResponse,
     BillingContactUpdatePayload,
@@ -40,7 +39,7 @@ export const BillingInformationSetupForm = ({
 }: React.PropsWithChildren<Props>) => {
     const defaultValues = useDefaultValues(billingInformation)
 
-    const handleValidSubmit = useHandleValidSubmit({onSuccess})
+    const handleValidSubmit = useHandleValidSubmit({ onSuccess })
 
     return (
         <Form
@@ -87,7 +86,7 @@ const useHandleValidSubmit = ({
             }),
     })
 
-    return ({email, address: {complete: __, ...shipping}, ...taxIds}) => {
+    return ({ email, address: { complete: __, ...shipping }, ...taxIds }) => {
         const payload: BillingContactUpdatePayload = {
             email,
             shipping,

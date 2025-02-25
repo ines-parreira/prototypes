@@ -1,15 +1,17 @@
-import {useListMacros} from '@gorgias/api-queries'
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
-import {useRouteMatch} from 'react-router-dom'
+
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import { useRouteMatch } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
-import {useFlag} from 'core/flags'
-import {macros as macrosFixtures} from 'fixtures/macro'
-import {user} from 'fixtures/users'
+import { useListMacros } from '@gorgias/api-queries'
+
+import { useFlag } from 'core/flags'
+import { macros as macrosFixtures } from 'fixtures/macro'
+import { user } from 'fixtures/users'
 import {
     useBulkArchiveMacros,
     useBulkUnarchiveMacros,
@@ -17,14 +19,14 @@ import {
     useDeleteMacro,
 } from 'hooks/macros'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {OrderDirection} from 'models/api/types'
-import {MacroSortableProperties} from 'models/macro/types'
+import { OrderDirection } from 'models/api/types'
+import { MacroSortableProperties } from 'models/macro/types'
 import history from 'pages/history'
-import {notify} from 'state/notifications/actions'
-import {RootState, StoreDispatch} from 'state/types'
-import {assumeMock} from 'utils/testing'
+import { notify } from 'state/notifications/actions'
+import { RootState, StoreDispatch } from 'state/types'
+import { assumeMock } from 'utils/testing'
 
-import {MacrosSettingsContent} from '../MacrosSettingsContent'
+import { MacrosSettingsContent } from '../MacrosSettingsContent'
 
 const mockProperty = MacroSortableProperties.CreatedDatetime
 const mockOrder = OrderDirection.Asc
@@ -39,7 +41,7 @@ jest.mock('../MacrosCreateDropdown', () => ({
 
 jest.mock(
     'pages/common/components/MacroFilters/MacroFilters',
-    () => () => 'MacroFilters'
+    () => () => 'MacroFilters',
 )
 
 jest.mock('state/notifications/actions')
@@ -58,7 +60,7 @@ jest.mock(
             ...jest.requireActual('react-router-dom'),
             useRouteMatch: jest.fn(),
             Link: jest.fn(
-                ({children}: {children: React.ReactNode}) => children
+                ({ children }: { children: React.ReactNode }) => children,
             ),
             NavLink: ({
                 children,
@@ -67,7 +69,7 @@ jest.mock(
                 children: React.ReactNode
                 onClick: () => void
             }) => <div onClick={onClick}>{children}</div>,
-        }) as Record<string, unknown>
+        }) as Record<string, unknown>,
 )
 const mockUseRouteMatch = useRouteMatch as jest.Mock
 
@@ -81,7 +83,7 @@ jest.mock('@gorgias/api-queries', () => ({
     useListMacros: jest.fn(),
     queryKeys: {
         macros: {
-            listMacros: () => ({pop: () => null}),
+            listMacros: () => ({ pop: () => null }),
         },
     },
 }))
@@ -137,7 +139,7 @@ describe('<MacrosSettingsContent/>', () => {
                 })}
             >
                 <MacrosSettingsContent />
-            </Provider>
+            </Provider>,
         )
 
         expect(useListMacros).toHaveBeenCalledWith(
@@ -148,12 +150,12 @@ describe('<MacrosSettingsContent/>', () => {
                 query: {
                     staleTime: expect.any(Number),
                 },
-            }
+            },
         )
         expect(
             screen.getByText(
-                /Macros are pre-made responses to customer questions/
-            )
+                /Macros are pre-made responses to customer questions/,
+            ),
         ).toBeInTheDocument()
     })
 
@@ -177,7 +179,7 @@ describe('<MacrosSettingsContent/>', () => {
                 })}
             >
                 <MacrosSettingsContent />
-            </Provider>
+            </Provider>,
         )
 
         expect(mockNotify).toHaveBeenCalledWith({
@@ -194,7 +196,7 @@ describe('<MacrosSettingsContent/>', () => {
                 })}
             >
                 <MacrosSettingsContent />
-            </Provider>
+            </Provider>,
         )
 
         screen.getByText('keyboard_arrow_right').click()
@@ -208,7 +210,7 @@ describe('<MacrosSettingsContent/>', () => {
                 query: {
                     staleTime: expect.any(Number),
                 },
-            }
+            },
         )
 
         screen.getByText('keyboard_arrow_left').click()
@@ -222,7 +224,7 @@ describe('<MacrosSettingsContent/>', () => {
                 query: {
                     staleTime: expect.any(Number),
                 },
-            }
+            },
         )
     })
 
@@ -234,7 +236,7 @@ describe('<MacrosSettingsContent/>', () => {
                 })}
             >
                 <MacrosSettingsContent />
-            </Provider>
+            </Provider>,
         )
 
         userEvent.click(screen.getByText('Macro'))
@@ -248,7 +250,7 @@ describe('<MacrosSettingsContent/>', () => {
                 query: {
                     staleTime: expect.any(Number),
                 },
-            }
+            },
         )
     })
 
@@ -272,7 +274,7 @@ describe('<MacrosSettingsContent/>', () => {
                 })}
             >
                 <MacrosSettingsContent />
-            </Provider>
+            </Provider>,
         )
 
         screen.getByText('delete').click()
@@ -280,7 +282,7 @@ describe('<MacrosSettingsContent/>', () => {
 
         expect(mockMutateDelete).toHaveBeenCalled()
         ;(
-            mockMutateDelete.mock.calls[0] as {onSettled: () => void}[]
+            mockMutateDelete.mock.calls[0] as { onSettled: () => void }[]
         )[1].onSettled()
 
         expect(mockUseListMacros).toHaveBeenNthCalledWith(
@@ -293,7 +295,7 @@ describe('<MacrosSettingsContent/>', () => {
                 query: {
                     staleTime: expect.any(Number),
                 },
-            }
+            },
         )
     })
 
@@ -330,14 +332,14 @@ describe('<MacrosSettingsContent/>', () => {
                 })}
             >
                 <MacrosSettingsContent />
-            </Provider>
+            </Provider>,
         )
 
         screen.getByText('keyboard_arrow_right').click()
         screen.getByText('delete').click()
         screen.getByText('Confirm').click()
         ;(
-            mockMutateDelete.mock.calls[0] as {onSettled: () => void}[]
+            mockMutateDelete.mock.calls[0] as { onSettled: () => void }[]
         )[1].onSettled()
 
         expect(mockUseListMacros).toHaveBeenNthCalledWith(
@@ -350,7 +352,7 @@ describe('<MacrosSettingsContent/>', () => {
                 query: {
                     staleTime: expect.any(Number),
                 },
-            }
+            },
         )
     })
 
@@ -362,7 +364,7 @@ describe('<MacrosSettingsContent/>', () => {
                 })}
             >
                 <MacrosSettingsContent />
-            </Provider>
+            </Provider>,
         )
 
         screen.getAllByText('file_copy')[0].click()
@@ -372,7 +374,7 @@ describe('<MacrosSettingsContent/>', () => {
             mockMutateCreate.mock.calls[0] as {
                 onSuccess: (resp: unknown) => void
             }[]
-        )[1].onSuccess({data: {id}})
+        )[1].onSuccess({ data: { id } })
 
         expect(history.push).toHaveBeenCalledWith(`/app/settings/macros/${id}`)
     })
@@ -385,12 +387,12 @@ describe('<MacrosSettingsContent/>', () => {
                 })}
             >
                 <MacrosSettingsContent />
-            </Provider>
+            </Provider>,
         )
 
         const searchTerm = 'foobar'
         fireEvent.change(screen.getByPlaceholderText('Search macros...'), {
-            target: {value: searchTerm},
+            target: { value: searchTerm },
         })
 
         await waitFor(() =>
@@ -404,8 +406,8 @@ describe('<MacrosSettingsContent/>', () => {
                     query: {
                         staleTime: expect.any(Number),
                     },
-                }
-            )
+                },
+            ),
         )
     })
 
@@ -417,12 +419,12 @@ describe('<MacrosSettingsContent/>', () => {
                 })}
             >
                 <MacrosSettingsContent />
-            </Provider>
+            </Provider>,
         )
 
         const searchTerm = 'foobar'
         fireEvent.change(screen.getByPlaceholderText('Search macros...'), {
-            target: {value: searchTerm},
+            target: { value: searchTerm },
         })
 
         userEvent.click(screen.getByText('Macro'))
@@ -437,7 +439,7 @@ describe('<MacrosSettingsContent/>', () => {
                 query: {
                     staleTime: expect.any(Number),
                 },
-            }
+            },
         )
     })
 
@@ -450,7 +452,7 @@ describe('<MacrosSettingsContent/>', () => {
                 })}
             >
                 <MacrosSettingsContent />
-            </Provider>
+            </Provider>,
         )
 
         const checkboxAll = screen.getByLabelText('Select all')
@@ -485,7 +487,7 @@ describe('<MacrosSettingsContent/>', () => {
                 })}
             >
                 <MacrosSettingsContent />
-            </Provider>
+            </Provider>,
         )
 
         expect(useListMacros).toHaveBeenCalledWith(
@@ -497,7 +499,7 @@ describe('<MacrosSettingsContent/>', () => {
                 query: {
                     staleTime: expect.any(Number),
                 },
-            }
+            },
         )
     })
 })

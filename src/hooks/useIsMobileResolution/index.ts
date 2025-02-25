@@ -1,1 +1,1 @@
-export {default as useIsMobileResolution} from './useIsMobileResolution'
+export { default as useIsMobileResolution } from './useIsMobileResolution'

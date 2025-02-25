@@ -1,27 +1,28 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {screen, render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {IntegrationType} from 'models/integration/constants'
-import {getInitialRootCategory} from 'pages/settings/helpCenter/fixtures/getCategoriesTree.fixtures'
-import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
+import { IntegrationType } from 'models/integration/constants'
+import { getInitialRootCategory } from 'pages/settings/helpCenter/fixtures/getCategoriesTree.fixtures'
+import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
-import {EditionManagerContextProvider} from 'pages/settings/helpCenter/providers/EditionManagerContext'
-import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
-import {getValidStoreIntegrationId} from 'pages/settings/helpCenter/utils/helpCenter.utils'
-import {RootState, StoreDispatch} from 'state/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { EditionManagerContextProvider } from 'pages/settings/helpCenter/providers/EditionManagerContext'
+import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
+import { getValidStoreIntegrationId } from 'pages/settings/helpCenter/utils/helpCenter.utils'
+import { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import ArticleLandingPage from '../ArticleLandingPage'
 
 jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
 ;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
-    getSingleHelpCenterResponseFixture
+    getSingleHelpCenterResponseFixture,
 )
 
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
@@ -66,7 +67,9 @@ const initialState: Partial<RootState> = {
         },
     },
     integrations: fromJS({
-        integrations: [{id: 1, type: IntegrationType.Shopify, name: 'My Shop'}],
+        integrations: [
+            { id: 1, type: IntegrationType.Shopify, name: 'My Shop' },
+        ],
     }),
 } as unknown as RootState
 
@@ -85,13 +88,13 @@ describe('<ArticleLandingPage />', () => {
                         />
                     </EditionManagerContextProvider>
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(screen.getByText('Create Article')).toBeInTheDocument()
 
         expect(
-            screen.getByText('Choose a customizable article template:')
+            screen.getByText('Choose a customizable article template:'),
         ).toBeInTheDocument()
     })
 
@@ -111,7 +114,7 @@ describe('<ArticleLandingPage />', () => {
                         />
                     </EditionManagerContextProvider>
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         screen.getByText('Create Article').click()
@@ -132,13 +135,13 @@ describe('<ArticleLandingPage />', () => {
                         />
                     </EditionManagerContextProvider>
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(screen.getByText('Create Article')).toBeInTheDocument()
 
         expect(
-            screen.getByText('Choose a customizable article template:')
+            screen.getByText('Choose a customizable article template:'),
         ).toBeInTheDocument()
     })
     it('should render when help center does not have a store connection', () => {
@@ -156,13 +159,13 @@ describe('<ArticleLandingPage />', () => {
                         />
                     </EditionManagerContextProvider>
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(screen.getByText('Create Article')).toBeInTheDocument()
 
         expect(
-            screen.getByText('Choose a customizable article template:')
+            screen.getByText('Choose a customizable article template:'),
         ).toBeInTheDocument()
     })
 })

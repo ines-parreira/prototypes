@@ -1,15 +1,19 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
 
-import {countries} from 'config/countries'
-import {useBillingContact} from 'models/billing/queries'
+import { Link } from 'react-router-dom'
+
+import { countries } from 'config/countries'
+import { useBillingContact } from 'models/billing/queries'
 import Loader from 'pages/common/components/Loader/Loader'
-import {BILLING_INFORMATION_PATH} from 'pages/settings/new_billing/constants'
-import {DataRow} from 'pages/settings/new_billing/views/PaymentInformationView/components/DataRow'
-import {Description} from 'pages/settings/new_billing/views/PaymentInformationView/components/Description'
-import {Section} from 'pages/settings/new_billing/views/PaymentInformationView/components/Section'
-import {TaxIdRows} from 'pages/settings/new_billing/views/PaymentInformationView/components/TaxIdRows'
-import {BillingContact, BillingContactDetailResponse} from 'state/billing/types'
+import { BILLING_INFORMATION_PATH } from 'pages/settings/new_billing/constants'
+import { DataRow } from 'pages/settings/new_billing/views/PaymentInformationView/components/DataRow'
+import { Description } from 'pages/settings/new_billing/views/PaymentInformationView/components/Description'
+import { Section } from 'pages/settings/new_billing/views/PaymentInformationView/components/Section'
+import { TaxIdRows } from 'pages/settings/new_billing/views/PaymentInformationView/components/TaxIdRows'
+import {
+    BillingContact,
+    BillingContactDetailResponse,
+} from 'state/billing/types'
 
 export const BillingInformationSection = () => {
     return (
@@ -29,14 +33,14 @@ const ContentLoader: React.FC = () => {
     return <Content billingInformation={billingInformation.data.data} />
 }
 
-const Content: React.FC<{billingInformation: BillingContactDetailResponse}> = ({
-    billingInformation,
-}) => {
-    const {name, phone, address} = billingInformation.shipping
+const Content: React.FC<{
+    billingInformation: BillingContactDetailResponse
+}> = ({ billingInformation }) => {
+    const { name, phone, address } = billingInformation.shipping
 
     // Email is not taken into account because it defaults to the user's email
     const hasInformation = Object.values(address).some(
-        (value) => !!value?.length
+        (value) => !!value?.length,
     )
 
     return (
@@ -82,7 +86,7 @@ const getDisplayAddress = (address: BillingContact['shipping']['address']) => {
 }
 
 const getDisplayCountry = (
-    countryCode?: BillingContact['shipping']['address']['country']
+    countryCode?: BillingContact['shipping']['address']['country'],
 ) => {
     if (!countryCode?.length) {
         return ''

@@ -1,5 +1,6 @@
-import {EditorState} from 'draft-js'
-import {ReactNode} from 'react'
+import { ReactNode } from 'react'
+
+import { EditorState } from 'draft-js'
 
 export enum ActionName {
     Bold = 'BOLD',
@@ -32,7 +33,7 @@ export type Config = {
         entityKey: string,
         text: string,
         url: string,
-        target: string
+        target: string,
     ) => void
     onLinkCreate: (text: string) => void
 }

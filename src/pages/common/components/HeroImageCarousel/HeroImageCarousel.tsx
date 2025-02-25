@@ -1,9 +1,11 @@
+import React, { useRef, useState } from 'react'
+
 import classNames from 'classnames'
 import _isString from 'lodash/isString'
-import React, {useRef, useState} from 'react'
 import Slider from 'react-slick'
 
 import Button from '../button/Button'
+
 import css from './HeroImageCarousel.less'
 
 export type CarouselData = {
@@ -50,7 +52,7 @@ const HeroImageCarousel = ({
     }
 
     return (
-        <div style={{maxWidth: `${width}px`}}>
+        <div style={{ maxWidth: `${width}px` }}>
             <div className={css.sliderWrapper}>
                 <Slider
                     beforeChange={(oldIndex, newIndex) => {
@@ -61,14 +63,14 @@ const HeroImageCarousel = ({
                     infinite={false}
                     speed={350}
                 >
-                    {slides.map(({imageUrl, description, header}, i) => {
+                    {slides.map(({ imageUrl, description, header }, i) => {
                         return (
                             <div key={i}>
                                 {header && (
                                     <div
                                         className={classNames(
                                             css.header,
-                                            classNameHeader
+                                            classNameHeader,
                                         )}
                                     >
                                         {header}
@@ -78,7 +80,7 @@ const HeroImageCarousel = ({
                                     width={width}
                                     className={classNames(
                                         css.slideImage,
-                                        classNameImage
+                                        classNameImage,
                                     )}
                                     src={imageUrl}
                                     alt={
@@ -91,9 +93,9 @@ const HeroImageCarousel = ({
                                     <div
                                         className={classNames(
                                             css.slideDescription,
-                                            classNameDescription
+                                            classNameDescription,
                                         )}
-                                        style={{maxWidth: `${width}px`}}
+                                        style={{ maxWidth: `${width}px` }}
                                     >
                                         {description}
                                     </div>
@@ -120,7 +122,7 @@ const HeroImageCarousel = ({
                     <div
                         className={classNames(
                             css.slideAction,
-                            classNameSlideAction
+                            classNameSlideAction,
                         )}
                     >
                         <i
@@ -131,7 +133,7 @@ const HeroImageCarousel = ({
                                 classNameActionIcon,
                                 {
                                     [css.disabled]: currentSlide === 0,
-                                }
+                                },
                             )}
                         >
                             chevron_left
@@ -155,7 +157,7 @@ const HeroImageCarousel = ({
                                 {
                                     [css.disabled]:
                                         currentSlide === slides.length - 1,
-                                }
+                                },
                             )}
                         >
                             chevron_right

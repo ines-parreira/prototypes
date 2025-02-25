@@ -1,20 +1,19 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {Provider} from 'react-redux'
+import { renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {getComponentConfig} from 'pages/stats/custom-reports/config'
-
+import { getComponentConfig } from 'pages/stats/custom-reports/config'
 import {
-    CustomReportSchema,
     CustomReportChildType,
+    CustomReportSchema,
 } from 'pages/stats/custom-reports/types'
-import {useFiltersFromDashboard} from 'pages/stats/custom-reports/useFiltersFromDashboard'
-import {RootState, StoreDispatch} from 'state/types'
-import {assumeMock} from 'utils/testing'
+import { useFiltersFromDashboard } from 'pages/stats/custom-reports/useFiltersFromDashboard'
+import { RootState, StoreDispatch } from 'state/types'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('pages/stats/custom-reports/config')
 const getComponentConfigMock = assumeMock(getComponentConfig)
@@ -84,7 +83,7 @@ const createInitialState = (hasAutomate: boolean) =>
 describe('useFiltersFromDashboard(dashboard)', () => {
     const createWrapper =
         (store: any) =>
-        ({children}: {children: React.ReactNode}) => (
+        ({ children }: { children: React.ReactNode }) => (
             <Provider store={store}>{children}</Provider>
         )
 
@@ -97,11 +96,11 @@ describe('useFiltersFromDashboard(dashboard)', () => {
     it('returns object with persistentFilters and optionalFilters', () => {
         const store = mockStore(createInitialState(false))
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () => useFiltersFromDashboard(mockDashboard),
             {
                 wrapper: createWrapper(store),
-            }
+            },
         )
 
         expect(result.current.persistentFilters).toBeDefined()
@@ -118,11 +117,11 @@ describe('useFiltersFromDashboard(dashboard)', () => {
             children: [],
         }
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () => useFiltersFromDashboard(emptyDashboard),
             {
                 wrapper: createWrapper(store),
-            }
+            },
         )
 
         expect(result.current.persistentFilters.length).toBe(0)
@@ -148,11 +147,11 @@ describe('useFiltersFromDashboard(dashboard)', () => {
             children: [chart1, chart2],
         } satisfies CustomReportSchema
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () => useFiltersFromDashboard(customReport),
             {
                 wrapper: createWrapper(store),
-            }
+            },
         )
 
         expect(result.current.persistentFilters.length).toBe(3)
@@ -169,7 +168,7 @@ describe('useFiltersFromDashboard(dashboard)', () => {
                     'optional_1',
                     'optional_2',
                 ]),
-            })
+            }),
         )
     })
 
@@ -178,15 +177,15 @@ describe('useFiltersFromDashboard(dashboard)', () => {
         const customReport = {
             ...mockDashboard,
             children: [
-                {type: CustomReportChildType.Chart, config_id: 'unknown'},
+                { type: CustomReportChildType.Chart, config_id: 'unknown' },
             ],
         } satisfies CustomReportSchema
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () => useFiltersFromDashboard(customReport),
             {
                 wrapper: createWrapper(store),
-            }
+            },
         )
 
         expect(result.current.persistentFilters.length).toBe(0)

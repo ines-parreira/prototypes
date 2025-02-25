@@ -1,15 +1,15 @@
 import React from 'react'
 
-import {DashboardChartProps} from 'pages/stats/custom-reports/types'
-import {PerformanceByArticle} from 'pages/stats/help-center/components/PerformanceByArticle/PerformanceByArticle'
-import {useSelectedHelpCenter} from 'pages/stats/help-center/hooks/useSelectedHelpCenter'
-import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
+import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { PerformanceByArticle } from 'pages/stats/help-center/components/PerformanceByArticle/PerformanceByArticle'
+import { useSelectedHelpCenter } from 'pages/stats/help-center/hooks/useSelectedHelpCenter'
+import { NoDataAvailable } from 'pages/stats/NoDataAvailable'
 
 export const PerformanceByArticleChart = ({
     chartId,
     dashboard,
 }: DashboardChartProps) => {
-    const {selectedHelpCenterDomain: helpCenterDomain, helpCenterId} =
+    const { selectedHelpCenterDomain: helpCenterDomain, helpCenterId } =
         useSelectedHelpCenter()
 
     return (
@@ -25,7 +25,7 @@ export const PerformanceByArticleChart = ({
                 <NoDataAvailable
                     title="No data available"
                     description="Try adjusting filters to get results."
-                    style={{height: 1156}}
+                    style={{ height: 1156 }}
                 />
             )}
         </>

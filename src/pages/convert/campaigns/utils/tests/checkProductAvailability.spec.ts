@@ -1,11 +1,10 @@
 import {
-    InventoryPolicy as ShipifyInventoryPolicy,
     InventoryManagement as ShipifyInventoryManagement,
+    InventoryPolicy as ShipifyInventoryPolicy,
 } from 'constants/integrations/types/shopify'
+import { shopifyProductFixture, shopifyVariantFixture } from 'fixtures/shopify'
 
-import {shopifyProductFixture, shopifyVariantFixture} from 'fixtures/shopify'
-
-import {isProductAvailable} from '../checkProductAvailability'
+import { isProductAvailable } from '../checkProductAvailability'
 
 describe('isProductAvailable', () => {
     describe('InventoryPolicy is continue', () => {
@@ -15,7 +14,7 @@ describe('isProductAvailable', () => {
                 inventoryManagement: ShipifyInventoryManagement.Shopify,
                 inventoryPolicy: ShipifyInventoryPolicy.Continue,
             })
-            const product = shopifyProductFixture({variants: [variant]})
+            const product = shopifyProductFixture({ variants: [variant] })
 
             expect(isProductAvailable(product)).toBeTruthy()
         })
@@ -26,7 +25,7 @@ describe('isProductAvailable', () => {
                 inventoryManagement: ShipifyInventoryManagement.Shopify,
                 inventoryPolicy: ShipifyInventoryPolicy.Continue,
             })
-            const product = shopifyProductFixture({variants: [variant]})
+            const product = shopifyProductFixture({ variants: [variant] })
 
             expect(isProductAvailable(product)).toBeTruthy()
         })
@@ -39,7 +38,7 @@ describe('isProductAvailable', () => {
                 inventoryManagement: ShipifyInventoryManagement.Shopify,
                 inventoryPolicy: ShipifyInventoryPolicy.Deny,
             })
-            const product = shopifyProductFixture({variants: [variant]})
+            const product = shopifyProductFixture({ variants: [variant] })
             expect(isProductAvailable(product)).toBeTruthy()
         })
 
@@ -49,7 +48,7 @@ describe('isProductAvailable', () => {
                 inventoryManagement: ShipifyInventoryManagement.Shopify,
                 inventoryPolicy: ShipifyInventoryPolicy.Deny,
             })
-            const product = shopifyProductFixture({variants: [variant]})
+            const product = shopifyProductFixture({ variants: [variant] })
 
             expect(isProductAvailable(product)).toBeFalsy()
         })
@@ -60,7 +59,7 @@ describe('isProductAvailable', () => {
                 inventoryQuantity: 10,
                 inventoryManagement: ShipifyInventoryManagement.Shopify,
             })
-            const product = shopifyProductFixture({variants: [variant]})
+            const product = shopifyProductFixture({ variants: [variant] })
 
             expect(isProductAvailable(product)).toBeTruthy()
         })
@@ -70,7 +69,7 @@ describe('isProductAvailable', () => {
                 inventoryQuantity: -1,
                 inventoryManagement: ShipifyInventoryManagement.Shopify,
             })
-            const product = shopifyProductFixture({variants: [variant]})
+            const product = shopifyProductFixture({ variants: [variant] })
 
             expect(isProductAvailable(product)).toBeFalsy()
         })

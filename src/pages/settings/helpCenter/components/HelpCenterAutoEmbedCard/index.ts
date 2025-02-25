@@ -1,2 +1,2 @@
-export {default} from './HelpCenterAutoEmbedCard'
+export { default } from './HelpCenterAutoEmbedCard'
 export * from './constants'

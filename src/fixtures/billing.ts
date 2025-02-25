@@ -1,4 +1,4 @@
-import {products} from 'fixtures/productPrices'
+import { products } from 'fixtures/productPrices'
 
 export const billingState = {
     paymentMethod: 'stripe',

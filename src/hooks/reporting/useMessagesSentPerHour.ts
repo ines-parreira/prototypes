@@ -1,4 +1,4 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
 import {
     fetchMessagesSentMetric,
@@ -9,10 +9,10 @@ import {
 } from 'hooks/reporting/metrics'
 import {
     AgentOnlyFilters,
-    Period,
     LegacyStatsFilters,
-    StatsFiltersWithLogicalOperator,
+    Period,
     StatsFilters,
+    StatsFiltersWithLogicalOperator,
 } from 'models/stat/types'
 
 export const periodAndAgentOnlyFilters = (statsFilters: {
@@ -42,7 +42,7 @@ const formatResult = (messagesSent: Metric, onlineTime: Metric) => {
     if (messagesSent.data?.value && onlineTime.data?.value) {
         metricValue = calculateMetricPerHour(
             messagesSent.data.value,
-            onlineTime.data.value
+            onlineTime.data.value,
         )
     }
 
@@ -53,20 +53,20 @@ const formatResult = (messagesSent: Metric, onlineTime: Metric) => {
 
 export const useMessagesSentPerHour = (
     statsFilters: StatsFilters,
-    timezone: string
+    timezone: string,
 ): Metric => {
     const messagesSent = useMessagesSentMetric(
         periodAndAgentOnlyFilters(statsFilters),
-        timezone
+        timezone,
     )
     const onlineTime = useOnlineTimeMetric(
         periodAndAgentOnlyFilters(statsFilters),
-        timezone
+        timezone,
     )
 
     const data = useMemo(
         () => formatResult(messagesSent, onlineTime),
-        [messagesSent, onlineTime]
+        [messagesSent, onlineTime],
     )
 
     return {
@@ -78,16 +78,16 @@ export const useMessagesSentPerHour = (
 
 export const fetchMessagesSentPerHour = async (
     statsFilters: StatsFilters,
-    timezone: string
+    timezone: string,
 ): Promise<Metric> => {
     return Promise.all([
         fetchMessagesSentMetric(
             periodAndAgentOnlyFilters(statsFilters),
-            timezone
+            timezone,
         ),
         fetchOnlineTimeMetric(
             periodAndAgentOnlyFilters(statsFilters),
-            timezone
+            timezone,
         ),
     ])
         .then(([messagesSent, onlineTime]) => ({
@@ -95,5 +95,9 @@ export const fetchMessagesSentPerHour = async (
             isFetching: false,
             isError: false,
         }))
-        .catch(() => ({data: {value: null}, isFetching: false, isError: false}))
+        .catch(() => ({
+            data: { value: null },
+            isFetching: false,
+            isError: false,
+        }))
 }

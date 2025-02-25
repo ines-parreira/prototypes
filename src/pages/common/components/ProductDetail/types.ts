@@ -1,7 +1,8 @@
-import {ColorType} from '@gorgias/merchant-ui-kit'
-import {ReactNode} from 'react'
+import { ReactNode } from 'react'
 
-import {AlertBannerProps} from 'AlertBanners'
+import { ColorType } from '@gorgias/merchant-ui-kit'
+
+import { AlertBannerProps } from 'AlertBanners'
 
 export type Infocard = {
     isHidden?: boolean
@@ -32,7 +33,7 @@ export type ProductDetail = {
     icon?: string
     description: string
     benefits?: string[]
-    categories?: Array<string | {label: string; type: ColorType}>
+    categories?: Array<string | { label: string; type: ColorType }>
     company?: {
         name: string
         url: string

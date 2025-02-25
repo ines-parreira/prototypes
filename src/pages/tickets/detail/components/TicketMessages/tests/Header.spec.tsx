@@ -1,16 +1,16 @@
-import {render} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
 
+import { render } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import {
-    message,
     duplicatedHiddenFacebookMessage,
+    message,
 } from 'models/ticket/tests/mocks'
 import Meta from 'pages/tickets/detail/components/TicketMessages/Meta'
-import {RootState, StoreDispatch} from 'state/types'
-import {assumeMock} from 'utils/testing'
+import { RootState, StoreDispatch } from 'state/types'
+import { assumeMock } from 'utils/testing'
 
 import Header from '../Header'
 
@@ -22,11 +22,11 @@ jest.mock(
     'pages/tickets/detail/components/TicketMessages/SourceActionsHeader',
     () => ({
         default: () => null,
-    })
+    }),
 )
 jest.mock(
     'pages/tickets/detail/components/TicketMessages/SourceDetailsHeader',
-    () => () => null
+    () => () => null,
 )
 const metaMock = assumeMock(Meta)
 
@@ -36,7 +36,7 @@ describe('Header', () => {
     })
 
     it('should display header', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <Header
                     id="some-header"
@@ -45,14 +45,14 @@ describe('Header', () => {
                     isMessageHidden={false}
                     isMessageDeleted={false}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should display header with metaContent = "Message hidden"', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <Header
                     id="some-header"
@@ -61,14 +61,14 @@ describe('Header', () => {
                     isMessageHidden={true}
                     isMessageDeleted={false}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should not display header with metaContent = "Message hidden" because the message is duplicated', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <Header
                     id="some-header"
@@ -77,14 +77,14 @@ describe('Header', () => {
                     isMessageHidden={true}
                     isMessageDeleted={false}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should display header with metaContent = "Comment deleted on Facebook"', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <Header
                     id="some-header"
@@ -93,7 +93,7 @@ describe('Header', () => {
                     isMessageHidden={false}
                     isMessageDeleted={true}
                 />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -108,17 +108,17 @@ describe('Header', () => {
                     isMessageHidden={false}
                     isMessageDeleted={false}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(metaMock).toHaveBeenCalledWith(
-            expect.objectContaining({messageId: message.message_id}),
-            expect.any(Object)
+            expect.objectContaining({ messageId: message.message_id }),
+            expect.any(Object),
         )
     })
 
     it('should correctly display intents', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <Header
                     id="some-header"
@@ -127,7 +127,7 @@ describe('Header', () => {
                     isMessageHidden={false}
                     isMessageDeleted={false}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()

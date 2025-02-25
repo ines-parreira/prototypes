@@ -1,7 +1,8 @@
-import {produce} from 'immer'
-import {useCallback} from 'react'
+import { useCallback } from 'react'
 
-import {ActionsApp} from 'pages/automate/actionsPlatform/types'
+import { produce } from 'immer'
+
+import { ActionsApp } from 'pages/automate/actionsPlatform/types'
 import {
     getConditionsNodeTouched,
     getGraphAppAppTouched,
@@ -9,7 +10,7 @@ import {
     getHTTPRequestNodeTouched,
     getLLMPromptTriggerNodeTouched,
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import {VisualBuilderGraph} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { VisualBuilderGraph } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 const useTouchActionGraph = (actionsApps: ActionsApp[]) => {
     return useCallback(
@@ -22,12 +23,13 @@ const useTouchActionGraph = (actionsApps: ActionsApp[]) => {
                         case 'app':
                             {
                                 const actionsApp = actionsApps.find(
-                                    (actionsApp) => actionsApp.id === app.app_id
+                                    (actionsApp) =>
+                                        actionsApp.id === app.app_id,
                                 )
 
                                 if (actionsApp) {
                                     app.touched = getGraphAppAppTouched(
-                                        actionsApp.auth_type
+                                        actionsApp.auth_type,
                                     )
                                 }
                             }
@@ -47,7 +49,7 @@ const useTouchActionGraph = (actionsApps: ActionsApp[]) => {
                         case 'conditions':
                             node.data.touched = getConditionsNodeTouched(
                                 draft.edges,
-                                node
+                                node,
                             )
                             break
                         case 'reusable_llm_prompt_call':
@@ -58,7 +60,7 @@ const useTouchActionGraph = (actionsApps: ActionsApp[]) => {
                 })
             })
         },
-        [actionsApps]
+        [actionsApps],
     )
 }
 

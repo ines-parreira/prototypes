@@ -1,16 +1,17 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {fireEvent, render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {billingState} from 'fixtures/billing'
+import { billingState } from 'fixtures/billing'
 import * as metricTrends from 'hooks/reporting/metricTrends'
 import * as useGetCostPerBillableTicket from 'pages/automate/common/hooks/useGetCostPerBillableTicket'
-import {RootState, StoreDispatch} from 'state/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import ROICalculator from '../ROICalculator'
 
@@ -23,7 +24,7 @@ describe('<ROICalculator />', () => {
     beforeEach(() => {
         jest.spyOn(
             useGetCostPerBillableTicket,
-            'useGetCostPerBillableTicket'
+            'useGetCostPerBillableTicket',
         ).mockReturnValue(1)
     })
 
@@ -31,7 +32,7 @@ describe('<ROICalculator />', () => {
         // Arrange
         jest.spyOn(
             metricTrends,
-            'useMedianResolutionTimeTrend'
+            'useMedianResolutionTimeTrend',
         ).mockReturnValue({
             isFetching: false,
             isError: false,
@@ -43,7 +44,7 @@ describe('<ROICalculator />', () => {
 
         jest.spyOn(
             metricTrends,
-            'useMedianFirstResponseTimeTrend'
+            'useMedianFirstResponseTimeTrend',
         ).mockReturnValue({
             isFetching: false,
             isError: false,
@@ -75,12 +76,14 @@ describe('<ROICalculator />', () => {
 
         render(
             <Provider
-                store={mockStore({billing: fromJS(billingState)} as RootState)}
+                store={mockStore({
+                    billing: fromJS(billingState),
+                } as RootState)}
             >
                 <QueryClientProvider client={queryClient}>
                     <ROICalculator />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         // Act
@@ -103,7 +106,7 @@ describe('<ROICalculator />', () => {
             name: 'Ticket handle time',
         })
 
-        fireEvent.change(salaryValueInput, {target: {value: '20'}})
+        fireEvent.change(salaryValueInput, { target: { value: '20' } })
 
         // Assert
         expect(metricsValueInput).toBeDisabled()
@@ -127,7 +130,7 @@ describe('<ROICalculator />', () => {
         // Arrange
         jest.spyOn(
             metricTrends,
-            'useMedianResolutionTimeTrend'
+            'useMedianResolutionTimeTrend',
         ).mockReturnValue({
             isFetching: false,
             isError: true,
@@ -135,7 +138,7 @@ describe('<ROICalculator />', () => {
 
         jest.spyOn(
             metricTrends,
-            'useMedianFirstResponseTimeTrend'
+            'useMedianFirstResponseTimeTrend',
         ).mockReturnValue({
             isFetching: false,
             isError: true,
@@ -148,12 +151,14 @@ describe('<ROICalculator />', () => {
 
         render(
             <Provider
-                store={mockStore({billing: fromJS(billingState)} as RootState)}
+                store={mockStore({
+                    billing: fromJS(billingState),
+                } as RootState)}
             >
                 <QueryClientProvider client={queryClient}>
                     <ROICalculator />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         // Act
@@ -184,13 +189,13 @@ describe('<ROICalculator />', () => {
 
         // Act
 
-        fireEvent.change(metricsValueInput, {target: {value: '2000'}})
-        fireEvent.change(salaryValueInput, {target: {value: '14.88'}})
+        fireEvent.change(metricsValueInput, { target: { value: '2000' } })
+        fireEvent.change(salaryValueInput, { target: { value: '14.88' } })
 
-        fireEvent.change(resolutionTimeInput, {target: {value: '12'}})
+        fireEvent.change(resolutionTimeInput, { target: { value: '12' } })
         fireEvent.blur(resolutionTimeInput)
 
-        fireEvent.change(firstResponseTimeInput, {target: {value: '12'}})
+        fireEvent.change(firstResponseTimeInput, { target: { value: '12' } })
         fireEvent.blur(firstResponseTimeInput)
 
         // Assert
@@ -207,7 +212,7 @@ describe('<ROICalculator />', () => {
         // Arrange
         jest.spyOn(
             metricTrends,
-            'useMedianResolutionTimeTrend'
+            'useMedianResolutionTimeTrend',
         ).mockReturnValue({
             isFetching: false,
             isError: false,
@@ -219,7 +224,7 @@ describe('<ROICalculator />', () => {
 
         jest.spyOn(
             metricTrends,
-            'useMedianFirstResponseTimeTrend'
+            'useMedianFirstResponseTimeTrend',
         ).mockReturnValue({
             isFetching: false,
             isError: false,
@@ -251,12 +256,14 @@ describe('<ROICalculator />', () => {
 
         render(
             <Provider
-                store={mockStore({billing: fromJS(billingState)} as RootState)}
+                store={mockStore({
+                    billing: fromJS(billingState),
+                } as RootState)}
             >
                 <QueryClientProvider client={queryClient}>
                     <ROICalculator />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         // Act
@@ -264,7 +271,7 @@ describe('<ROICalculator />', () => {
             name: 'Tickets closed per hour',
         })
 
-        fireEvent.change(ticketsClosedPerHourInput, {target: {value: ''}})
+        fireEvent.change(ticketsClosedPerHourInput, { target: { value: '' } })
 
         // Assert
         expect(screen.getAllByText('$0')).toHaveLength(2)

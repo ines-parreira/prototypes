@@ -13,7 +13,7 @@ describe('uploadFiles()', () => {
 
     it('should post files to the upload API', () => {
         const name = 'foo.jpg'
-        const uploadedFileData = {data: [{name, foo: 'bar'}]}
+        const uploadedFileData = { data: [{ name, foo: 'bar' }] }
 
         mockServer.onPost('/api/upload/').reply(200, uploadedFileData)
 
@@ -25,10 +25,10 @@ describe('uploadFiles()', () => {
 
     it('should post files to the upload API and pass the passed params', () => {
         const name = 'foo.jpg'
-        const uploadedFileData = {data: [{name, foo: 'bar'}]}
-        const passedParams = {type: 'profile_picture', foo: 'bar'}
+        const uploadedFileData = { data: [{ name, foo: 'bar' }] }
+        const passedParams = { type: 'profile_picture', foo: 'bar' }
 
-        mockServer.onPost('/api/upload/').reply(({params}) => {
+        mockServer.onPost('/api/upload/').reply(({ params }) => {
             expect(params).toEqual(passedParams)
             return [200, uploadedFileData]
         })

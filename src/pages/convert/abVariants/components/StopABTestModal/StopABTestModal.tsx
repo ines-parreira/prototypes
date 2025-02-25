@@ -1,15 +1,13 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
 import Button from 'pages/common/components/button/Button'
-
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import RadioButton from 'pages/common/components/RadioButton'
-
-import {generateVariantName} from 'pages/convert/abVariants/utils/generateVariantName'
-import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
+import { generateVariantName } from 'pages/convert/abVariants/utils/generateVariantName'
+import { CampaignVariant } from 'pages/convert/campaigns/types/CampaignVariant'
 
 import css from './StopABTestModal.less'
 
@@ -41,7 +39,7 @@ const StopABTestModal: React.FC<Props> = (props) => {
     const onSubmitClick = async () => {
         // if user selected `Control Version` send null
         await onSubmit(
-            controlVersionId === selectedVariant ? null : selectedVariant
+            controlVersionId === selectedVariant ? null : selectedVariant,
         )
     }
 

@@ -1,11 +1,12 @@
-import React, {useEffect} from 'react'
+import React, { useEffect } from 'react'
 
-import {Language as LanguageEnum} from 'constants/languages'
+import { Language as LanguageEnum } from 'constants/languages'
 import BadgeItem from 'pages/common/components/BadgetItem'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {Value} from 'pages/common/forms/SelectField/types'
+import { Value } from 'pages/common/forms/SelectField/types'
 
 import DropdownButtonWithSearch from '../DropdownButtonWithSearch/DropdownButtonWithSearch'
+
 import css from './LanguagePicker.less'
 
 export type Language = {
@@ -23,10 +24,10 @@ export interface LanguagePicker {
 export const LanguagePicker: React.FC<LanguagePicker> = (props) => {
     const [defaultLanguage, setDefaultLanguage] = React.useState(
         (props.languages.find((language) => language.isDefault) as Language) ||
-            LanguageEnum.EnglishUs
+            LanguageEnum.EnglishUs,
     )
     const [selectedLanguages, setSelectedLanguages] = React.useState(
-        props.languages.filter((language) => !language.isDefault)
+        props.languages.filter((language) => !language.isDefault),
     )
 
     useEffect(() => {
@@ -40,35 +41,35 @@ export const LanguagePicker: React.FC<LanguagePicker> = (props) => {
 
     const isNotSelectedLanguage = (language: Language) =>
         !selectedLanguages.some(
-            (selectedLang) => selectedLang.value === language.value
+            (selectedLang) => selectedLang.value === language.value,
         )
 
     const filteredList = props.availableLanguages.filter(
         (language) =>
-            isNotDefaultLanguage(language) && isNotSelectedLanguage(language)
+            isNotDefaultLanguage(language) && isNotSelectedLanguage(language),
     )
 
     const onDefaultLanguageChange = (value: Value) => {
         const lang = props.availableLanguages.find(
-            (lang: Language) => lang.value === value
+            (lang: Language) => lang.value === value,
         ) as Language
-        setDefaultLanguage({...lang, isDefault: true})
+        setDefaultLanguage({ ...lang, isDefault: true })
         onRemoveLanguage(null, lang)
     }
 
     const onSelectLanguage = (
         ev: React.MouseEvent | null,
-        language: Language
+        language: Language,
     ) => {
         setSelectedLanguages([...selectedLanguages, language])
     }
 
     const onRemoveLanguage = (
         ev: React.MouseEvent | null,
-        language: Language
+        language: Language,
     ) => {
         const newSelectedLanguages = selectedLanguages.filter(
-            (lang) => lang.value !== language.value
+            (lang) => lang.value !== language.value,
         )
         setSelectedLanguages(newSelectedLanguages)
     }

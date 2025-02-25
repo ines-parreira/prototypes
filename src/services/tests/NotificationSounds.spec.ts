@@ -1,6 +1,6 @@
-import {flushPromises} from 'utils/testing'
+import { flushPromises } from 'utils/testing'
 
-import NotificationSounds, {sounds} from '../NotificationSounds'
+import NotificationSounds, { sounds } from '../NotificationSounds'
 
 describe('NotificationSounds', () => {
     let audioContext: jest.Mock
@@ -8,18 +8,18 @@ describe('NotificationSounds', () => {
     let createGain: jest.Mock
     let decodeAudioData: jest.Mock
     let gainConnect: jest.Mock
-    let gainNode: {connect: jest.Mock; gain: {value: number}}
+    let gainNode: { connect: jest.Mock; gain: { value: number } }
     let sourceConnect: jest.Mock
     let sourceStart: jest.Mock
-    let source: {buffer: string; connect: jest.Mock; start: jest.Mock}
+    let source: { buffer: string; connect: jest.Mock; start: jest.Mock }
 
     let arrayBuffer: jest.Mock
     let fetchMock: jest.Mock
 
     beforeEach(() => {
         gainConnect = jest.fn()
-        const gain = {value: 0}
-        gainNode = {connect: gainConnect, gain}
+        const gain = { value: 0 }
+        gainNode = { connect: gainConnect, gain }
 
         sourceConnect = jest.fn()
         sourceStart = jest.fn()
@@ -44,7 +44,7 @@ describe('NotificationSounds', () => {
         global.AudioContext = audioContext
 
         arrayBuffer = jest.fn()
-        const res = {arrayBuffer}
+        const res = { arrayBuffer }
 
         fetchMock = jest.fn(() => Promise.resolve(res))
         global.fetch = fetchMock as typeof fetch

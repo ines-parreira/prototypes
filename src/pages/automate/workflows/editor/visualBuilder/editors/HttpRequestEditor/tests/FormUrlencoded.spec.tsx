@@ -1,5 +1,6 @@
-import {act, render, fireEvent, screen} from '@testing-library/react'
 import React from 'react'
+
+import { act, fireEvent, render, screen } from '@testing-library/react'
 
 import FormUrlencoded from '../FormUrlencoded'
 
@@ -18,12 +19,12 @@ describe('<FormUrlencoded />', () => {
                 onChange={mockOnChange}
                 onDelete={jest.fn()}
                 onAdd={jest.fn()}
-            />
+            />,
         )
 
         act(() => {
             fireEvent.change(screen.getByDisplayValue('test key'), {
-                target: {value: 'some test key'},
+                target: { value: 'some test key' },
             })
         })
 

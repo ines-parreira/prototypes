@@ -1,5 +1,6 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
 import React from 'react'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import Button from 'pages/common/components/button/Button'
 
@@ -12,7 +13,7 @@ type Props = {
     isDisabled?: boolean
 }
 
-export const SaveFilters = ({onClick, isDisabled}: Props) => {
+export const SaveFilters = ({ onClick, isDisabled }: Props) => {
     return (
         <Button
             fillStyle="fill"

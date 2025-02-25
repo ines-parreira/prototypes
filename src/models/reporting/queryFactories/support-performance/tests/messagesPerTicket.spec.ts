@@ -1,6 +1,6 @@
 import moment from 'moment/moment'
 
-import {OrderDirection} from 'models/api/types'
+import { OrderDirection } from 'models/api/types'
 import {
     TicketDimension,
     TicketMember,
@@ -16,9 +16,9 @@ import {
     messagesPerTicketDrillDownQueryFactory,
     messagesPerTicketQueryFactory,
 } from 'models/reporting/queryFactories/support-performance/messagesPerTicket'
-import {ReportingFilterOperator} from 'models/reporting/types'
-import {LegacyStatsFilters} from 'models/stat/types'
-import {subtractDaysFromDate} from 'utils/date'
+import { ReportingFilterOperator } from 'models/reporting/types'
+import { LegacyStatsFilters } from 'models/stat/types'
+import { subtractDaysFromDate } from 'utils/date'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
@@ -41,7 +41,7 @@ describe('messagesPerTicketQueryFactory', () => {
         const query = messagesPerTicketQueryFactory(statsFilters, timezone)
 
         const hardPeriodStart = formatReportingQueryDate(
-            subtractDaysFromDate(periodStart, 180)
+            subtractDaysFromDate(periodStart, 180),
         )
 
         expect(query).toEqual({
@@ -94,7 +94,7 @@ describe('messagesPerTicketDrillDownQueryFactory', () => {
     it('should create a query', () => {
         const query = messagesPerTicketDrillDownQueryFactory(
             statsFilters,
-            timezone
+            timezone,
         )
 
         expect(query).toEqual({
@@ -119,7 +119,7 @@ describe('messagesPerTicketDrillDownQueryFactory', () => {
         const query = messagesPerTicketDrillDownQueryFactory(
             statsFilters,
             timezone,
-            sorting
+            sorting,
         )
 
         expect(query).toEqual({

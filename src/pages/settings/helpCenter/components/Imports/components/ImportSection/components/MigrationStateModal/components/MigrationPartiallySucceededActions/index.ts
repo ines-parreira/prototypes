@@ -1,1 +1,1 @@
-export {default} from './MigrationPartiallySucceededActions'
+export { default } from './MigrationPartiallySucceededActions'

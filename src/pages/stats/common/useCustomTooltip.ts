@@ -1,6 +1,7 @@
-import {Chart, TooltipModel} from 'chart.js'
+import { useCallback, useState } from 'react'
+
+import { Chart, TooltipModel } from 'chart.js'
 import _isEqual from 'lodash/isEqual'
-import {useCallback, useState} from 'react'
 
 export type TooltipStyle = {
     opacity: number
@@ -17,7 +18,7 @@ export const useCustomTooltip = () => {
     })
 
     const customTooltip = useCallback(
-        (context: {chart: Chart; tooltip: TooltipModel}) => {
+        (context: { chart: Chart; tooltip: TooltipModel }) => {
             const tooltipModel = context.tooltip
             if (!context.chart) return
 
@@ -32,7 +33,7 @@ export const useCustomTooltip = () => {
 
             setTooltipData(tooltipModel)
 
-            const {offsetLeft: positionX, offsetTop: positionY} =
+            const { offsetLeft: positionX, offsetTop: positionY } =
                 context.chart.canvas
 
             const canvasPosition =
@@ -47,8 +48,8 @@ export const useCustomTooltip = () => {
             if (!_isEqual(tooltipStyle, newTooltipStyle))
                 setTooltipStyle(newTooltipStyle)
         },
-        [tooltipStyle]
+        [tooltipStyle],
     )
 
-    return {customTooltip, tooltipData, tooltipStyle}
+    return { customTooltip, tooltipData, tooltipStyle }
 }

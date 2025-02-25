@@ -1,4 +1,4 @@
-import Diff, {diffChars} from '../diffCheck'
+import Diff, { diffChars } from '../diffCheck'
 
 describe('Diff', () => {
     let diffInstance: Diff
@@ -12,7 +12,7 @@ describe('Diff', () => {
         const newStr = 'hello'
         const result = diffInstance.diff(oldStr, newStr)
         expect(result).toEqual([
-            {count: 5, added: false, removed: false, value: 'hello'},
+            { count: 5, added: false, removed: false, value: 'hello' },
         ])
     })
 
@@ -21,8 +21,8 @@ describe('Diff', () => {
         const newStr = 'hello world'
         const result = diffInstance.diff(oldStr, newStr)
         expect(result).toEqual([
-            {count: 5, added: false, removed: false, value: 'hello'},
-            {count: 6, added: true, removed: false, value: ' world'},
+            { count: 5, added: false, removed: false, value: 'hello' },
+            { count: 6, added: true, removed: false, value: ' world' },
         ])
     })
 
@@ -31,8 +31,8 @@ describe('Diff', () => {
         const newStr = 'hello'
         const result = diffInstance.diff(oldStr, newStr)
         expect(result).toEqual([
-            {count: 5, added: false, removed: false, value: 'hello'},
-            {count: 6, added: false, removed: true, value: ' world'},
+            { count: 5, added: false, removed: false, value: 'hello' },
+            { count: 6, added: false, removed: true, value: ' world' },
         ])
     })
 
@@ -41,33 +41,33 @@ describe('Diff', () => {
         const newStr = 'hallo'
         const result = diffInstance.diff(oldStr, newStr)
         expect(result).toEqual([
-            {count: 1, added: false, removed: false, value: 'h'},
-            {count: 1, added: false, removed: true, value: 'e'},
-            {count: 1, added: true, removed: false, value: 'a'},
-            {count: 3, added: false, removed: false, value: 'llo'},
+            { count: 1, added: false, removed: false, value: 'h' },
+            { count: 1, added: false, removed: true, value: 'e' },
+            { count: 1, added: true, removed: false, value: 'a' },
+            { count: 3, added: false, removed: false, value: 'llo' },
         ])
     })
 
     test('should respect ignoreCase option', () => {
         const oldStr = 'Hello'
         const newStr = 'hello'
-        const result = diffInstance.diff(oldStr, newStr, {ignoreCase: true})
+        const result = diffInstance.diff(oldStr, newStr, { ignoreCase: true })
         expect(result).toEqual([
-            {count: 5, added: false, removed: false, value: 'hello'},
+            { count: 5, added: false, removed: false, value: 'hello' },
         ])
     })
 
     test('should respect maxEditLength option', () => {
         const oldStr = 'hello'
         const newStr = 'hello world'
-        const result = diffInstance.diff(oldStr, newStr, {maxEditLength: 5})
+        const result = diffInstance.diff(oldStr, newStr, { maxEditLength: 5 })
         expect(result).toBeUndefined()
     })
 
     test('should respect timeout option', () => {
         const oldStr = 'a'.repeat(10000)
         const newStr = 'b'.repeat(10000)
-        const result = diffInstance.diff(oldStr, newStr, {timeout: 1})
+        const result = diffInstance.diff(oldStr, newStr, { timeout: 1 })
         expect(result).toBeUndefined()
     })
 
@@ -76,8 +76,8 @@ describe('Diff', () => {
         const newStr = 'hello world'
         const result = diffChars(oldStr, newStr, {})
         expect(result).toEqual([
-            {count: 5, added: false, removed: false, value: 'hello'},
-            {count: 6, added: true, removed: false, value: ' world'},
+            { count: 5, added: false, removed: false, value: 'hello' },
+            { count: 6, added: true, removed: false, value: ' world' },
         ])
     })
 })

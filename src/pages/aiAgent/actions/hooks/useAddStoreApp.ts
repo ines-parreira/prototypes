@@ -1,10 +1,11 @@
-import {useQueryClient} from '@tanstack/react-query'
-import {useCallback} from 'react'
+import { useCallback } from 'react'
 
-import {Integration} from 'models/integration/types'
+import { useQueryClient } from '@tanstack/react-query'
+
+import { Integration } from 'models/integration/types'
 import {
-    useUpsertStoreApps,
     storeWorkflowsAppDefinitionKeys,
+    useUpsertStoreApps,
 } from 'models/workflows/queries'
 
 type Props = {
@@ -22,7 +23,7 @@ export default function useAddStoreApp({
 
     const queryKey = storeWorkflowsAppDefinitionKeys.all()
 
-    const {mutateAsync} = useUpsertStoreApps({
+    const { mutateAsync } = useUpsertStoreApps({
         onSuccess: () => {
             void queryClient.invalidateQueries({
                 queryKey,

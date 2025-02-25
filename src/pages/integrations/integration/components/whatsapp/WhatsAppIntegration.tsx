@@ -1,8 +1,12 @@
 import React from 'react'
-import {useParams, Switch, Route} from 'react-router-dom'
+
+import { Route, Switch, useParams } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationType, isWhatsAppIntegration} from 'models/integration/types'
+import {
+    IntegrationType,
+    isWhatsAppIntegration,
+} from 'models/integration/types'
 import PageHeader from 'pages/common/components/PageHeader'
 import PhoneIntegrationBreadcrumbs from 'pages/integrations/integration/components/phone/PhoneIntegrationBreadcrumbs'
 import PhoneIntegrationsList from 'pages/integrations/integration/components/phone/PhoneIntegrationsList'
@@ -12,19 +16,18 @@ import WhatsAppIntegrationMigration from 'pages/integrations/integration/compone
 import WhatsAppIntegrationOnboarding from 'pages/integrations/integration/components/whatsapp/WhatsAppIntegrationOnboarding'
 import WhatsAppIntegrationPreferences from 'pages/integrations/integration/components/whatsapp/WhatsAppIntegrationPreferences'
 import WhatsAppIntegrationSecondaryNavigation from 'pages/integrations/integration/components/whatsapp/WhatsAppIntegrationSecondaryNavigation'
-
-import {getIntegrationById} from 'state/integrations/selectors'
+import { getIntegrationById } from 'state/integrations/selectors'
 
 import WhatsappBusinessManagerLinkButton from './WhatsappBusinessManagerLinkButton'
 import WhatsAppMessageTemplatesList from './WhatsAppMessageTemplatesList'
 
 export default function WhatsAppIntegration() {
-    const {integrationId} = useParams<{integrationId: string}>()
+    const { integrationId } = useParams<{ integrationId: string }>()
 
     const currentIntegration = useAppSelector((state) => {
         if (integrationId) {
             const integration = getIntegrationById(parseInt(integrationId))(
-                state
+                state,
             )?.toJS()
             if (isWhatsAppIntegration(integration)) {
                 return integration

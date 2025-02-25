@@ -1,16 +1,18 @@
-import classnames from 'classnames'
-import React, {ComponentType} from 'react'
+import React, { ComponentType } from 'react'
 
-import {ActionTemplateExecution} from 'config'
-import {MacroDraft} from 'models/macro/types'
-import {MacroAction, MacroActionName} from 'models/macroAction/types'
+import classnames from 'classnames'
+
+import { ActionTemplateExecution } from 'config'
+import { MacroDraft } from 'models/macro/types'
+import { MacroAction, MacroActionName } from 'models/macroAction/types'
 import Preview from 'pages/tickets/common/macros/Preview'
-import {getActionTemplate} from 'utils'
+import { getActionTemplate } from 'utils'
+
+import { ComplexActionPreview } from './ComplexActionPreview'
+import { SimpleActionPreview } from './SimpleActionPreview'
+import TagActionPreview from './TagActionPreview'
 
 import css from './ActionPreviews.less'
-import {ComplexActionPreview} from './ComplexActionPreview'
-import {SimpleActionPreview} from './SimpleActionPreview'
-import TagActionPreview from './TagActionPreview'
 
 type Props = {
     actions: MacroDraft['actions']
@@ -33,7 +35,7 @@ type AvailableActions =
 
 const ACTION_COMPONENT_MAPPER: Record<
     AvailableActions,
-    ComponentType<{action: MacroAction}>
+    ComponentType<{ action: MacroAction }>
 > = {
     [MacroActionName.SetStatus]: SimpleActionPreview,
     [MacroActionName.SnoozeTicket]: SimpleActionPreview,
@@ -49,22 +51,22 @@ const ACTION_COMPONENT_MAPPER: Record<
     [MacroActionName.SetCustomFieldValue]: SimpleActionPreview,
 }
 
-export const ActionPreviews = ({actions, textPreviewMinWidth}: Props) => {
+export const ActionPreviews = ({ actions, textPreviewMinWidth }: Props) => {
     const setResponseTextAction = actions?.find(
-        (action) => action.name === MacroActionName.SetResponseText
+        (action) => action.name === MacroActionName.SetResponseText,
     )
 
     const simpleActions = actions?.filter(
         (action) =>
             action.name !== MacroActionName.SetResponseText &&
             getActionTemplate(action.name)?.execution !==
-                ActionTemplateExecution.External
+                ActionTemplateExecution.External,
     )
 
     const complexActions = actions?.filter(
         (action) =>
             getActionTemplate(action.name)?.execution ===
-            ActionTemplateExecution.External
+            ActionTemplateExecution.External,
     )
 
     const hasSimpleActions = !!simpleActions?.length
@@ -75,7 +77,7 @@ export const ActionPreviews = ({actions, textPreviewMinWidth}: Props) => {
             {setResponseTextAction && (
                 <div
                     className={css.popoverText}
-                    style={{minWidth: textPreviewMinWidth}}
+                    style={{ minWidth: textPreviewMinWidth }}
                 >
                     <Preview actions={[setResponseTextAction]} />
                 </div>

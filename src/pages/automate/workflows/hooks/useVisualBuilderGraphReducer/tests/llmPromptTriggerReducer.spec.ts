@@ -1,6 +1,6 @@
-import {visualBuilderGraphLlmPromptTriggerFixture} from 'pages/automate/workflows/tests/visualBuilderGraph.fixtures'
+import { visualBuilderGraphLlmPromptTriggerFixture } from 'pages/automate/workflows/tests/visualBuilderGraph.fixtures'
 
-import {llmPromptTriggerReducer} from '../llmPromptTriggerReducer'
+import { llmPromptTriggerReducer } from '../llmPromptTriggerReducer'
 
 describe('llmPromptTriggerReducer', () => {
     test('ADD_LLM_PROMPT_TRIGGER_INPUT', () => {
@@ -10,7 +10,8 @@ describe('llmPromptTriggerReducer', () => {
         })
 
         expect(
-            nextG.nodes.find((node) => node.type === 'llm_prompt_trigger')?.data
+            nextG.nodes.find((node) => node.type === 'llm_prompt_trigger')
+                ?.data,
         ).toEqual(
             expect.objectContaining({
                 inputs: [
@@ -27,7 +28,7 @@ describe('llmPromptTriggerReducer', () => {
                         data_type: 'string',
                     },
                 ],
-            })
+            }),
         )
     })
 
@@ -39,11 +40,12 @@ describe('llmPromptTriggerReducer', () => {
         })
 
         expect(
-            nextG.nodes.find((node) => node.type === 'llm_prompt_trigger')?.data
+            nextG.nodes.find((node) => node.type === 'llm_prompt_trigger')
+                ?.data,
         ).toEqual(
             expect.objectContaining({
                 inputs: [],
-            })
+            }),
         )
     })
 
@@ -60,7 +62,8 @@ describe('llmPromptTriggerReducer', () => {
         })
 
         expect(
-            nextG.nodes.find((node) => node.type === 'llm_prompt_trigger')?.data
+            nextG.nodes.find((node) => node.type === 'llm_prompt_trigger')
+                ?.data,
         ).toEqual(
             expect.objectContaining({
                 inputs: [
@@ -71,7 +74,7 @@ describe('llmPromptTriggerReducer', () => {
                         data_type: 'number',
                     },
                 ],
-            })
+            }),
         )
     })
 })

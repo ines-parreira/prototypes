@@ -1,11 +1,12 @@
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import TicketPrintContainer from 'pages/tickets/detail/TicketPrintContainer'
-import {renderWithRouter} from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
 jest.mock('pages/tickets/detail/components/TicketBodyNonVirtualized', () => {
     return () => <div>TicketBodyNonVirtualized</div>
@@ -17,7 +18,7 @@ jest.mock(
         ({
             ...jest.requireActual('state/queries/selectors'),
             getQueryTimestamp: jest.fn(() => jest.fn()),
-        }) as Record<string, unknown>
+        }) as Record<string, unknown>,
 )
 
 jest.mock('services/activityTracker')
@@ -50,7 +51,7 @@ describe('<TicketPrintContainer/>', () => {
     })
 
     it('should render loader', () => {
-        const {container} = renderWithRouter(
+        const { container } = renderWithRouter(
             <Provider
                 store={mockStore({
                     ticket: fromJS(loadingTicket),
@@ -61,27 +62,27 @@ describe('<TicketPrintContainer/>', () => {
             {
                 path: '/foo/:ticketId',
                 route: '/foo/1',
-            }
+            },
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render ticket body and call window.print when loading stops', () => {
-        const {container, rerender} = renderWithRouter(
-            <Provider store={mockStore({ticket: fromJS(loadingTicket)})}>
+        const { container, rerender } = renderWithRouter(
+            <Provider store={mockStore({ ticket: fromJS(loadingTicket) })}>
                 <TicketPrintContainer />
             </Provider>,
             {
                 path: '/foo/:ticketId',
                 route: '/foo/1',
-            }
+            },
         )
 
         rerender(
-            <Provider store={mockStore({ticket: fromJS(nonLoadingTicket)})}>
+            <Provider store={mockStore({ ticket: fromJS(nonLoadingTicket) })}>
                 <TicketPrintContainer />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -101,7 +102,7 @@ describe('<TicketPrintContainer/>', () => {
             {
                 path: '/foo/:ticketId',
                 route: '/foo/1',
-            }
+            },
         )
         jest.runOnlyPendingTimers()
         expect(window.document.title).toEqual('Gorgias')
@@ -119,7 +120,7 @@ describe('<TicketPrintContainer/>', () => {
             {
                 path: '/foo/:ticketId',
                 route: '/foo/1',
-            }
+            },
         )
 
         expect(window.document.title).toEqual('123')
@@ -129,7 +130,7 @@ describe('<TicketPrintContainer/>', () => {
         renderWithRouter(
             <Provider
                 store={mockStore({
-                    ticket: fromJS({...nonLoadingTicket, subject: 'foo'}),
+                    ticket: fromJS({ ...nonLoadingTicket, subject: 'foo' }),
                 })}
             >
                 <TicketPrintContainer />
@@ -137,7 +138,7 @@ describe('<TicketPrintContainer/>', () => {
             {
                 path: '/foo/:ticketId',
                 route: '/foo/1',
-            }
+            },
         )
         expect(window.document.title).toEqual('123_foo')
     })

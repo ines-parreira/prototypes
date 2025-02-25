@@ -1,1 +1,1 @@
-export {default} from './SubjectLine'
+export { default } from './SubjectLine'

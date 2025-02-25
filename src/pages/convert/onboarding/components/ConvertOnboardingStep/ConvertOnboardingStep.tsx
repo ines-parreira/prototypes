@@ -1,5 +1,6 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
+
+import { Link } from 'react-router-dom'
 
 import Button from 'pages/common/components/button/Button'
 
@@ -32,7 +33,7 @@ const ConvertOnboardingStep = ({
                 <div>
                     <i
                         className="material-icons text-success"
-                        style={{fontSize: 24}}
+                        style={{ fontSize: 24 }}
                         aria-label="Step completed"
                     >
                         check_circle

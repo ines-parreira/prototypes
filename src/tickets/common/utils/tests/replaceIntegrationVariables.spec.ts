@@ -1,6 +1,6 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
-import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
+import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
 
 import replaceIntegrationVariables from '../replaceIntegrationVariables'
 
@@ -42,11 +42,11 @@ describe('replaceIntegrationVariables()', () => {
             variable,
             newArg,
             fromJS({}),
-            notifySpy
+            notifySpy,
         )
 
         expect(res).toEqual(
-            'Hello {{ticket.customer.integration.shopify.customer.name}}, what is your {{}}?'
+            'Hello {{ticket.customer.integration.shopify.customer.name}}, what is your {{}}?',
         )
         expect(notifySpy.mock.calls).toMatchSnapshot()
     })
@@ -78,12 +78,12 @@ describe('replaceIntegrationVariables()', () => {
             variable,
             newArg,
             fromJS({}),
-            notifySpy
+            notifySpy,
         )
 
         expect(res).toEqual(
             'Hello {{ticket.customer.integration.shopify.customer.name}}, ' +
-                'what is your {{ticket.customer.integrations[15].customer.foo}}?'
+                'what is your {{ticket.customer.integrations[15].customer.foo}}?',
         )
         expect(notifySpy).not.toHaveBeenCalled()
     })
@@ -116,12 +116,12 @@ describe('replaceIntegrationVariables()', () => {
             variable,
             newArg,
             fromJS({}),
-            notifySpy
+            notifySpy,
         )
 
         expect(res).toEqual(
             'Hello {{ticket.customer.integration.shopify.customer.name}}, ' +
-                'what is your my value?'
+                'what is your my value?',
         )
         expect(notifySpy).not.toHaveBeenCalled()
     })
@@ -159,12 +159,12 @@ describe('replaceIntegrationVariables()', () => {
             variable,
             newArg,
             fromJS({}),
-            notifySpy
+            notifySpy,
         )
 
         expect(res).toEqual(
             'Hello {{ticket.customer.integration.shopify.customer.name}}, ' +
-                'what is your {{ticket.customer.integrations[15].customer.foo}}?'
+                'what is your {{ticket.customer.integrations[15].customer.foo}}?',
         )
         expect(notifySpy).not.toHaveBeenCalled()
     })
@@ -211,12 +211,12 @@ describe('replaceIntegrationVariables()', () => {
             variable,
             newArg,
             fromJS({}),
-            notifySpy
+            notifySpy,
         )
 
         expect(res).toEqual(
             'Hello {{ticket.customer.integration.shopify.customer.name}}, ' +
-                'what is your {{ticket.customer.integrations[16].customer.foo}}?'
+                'what is your {{ticket.customer.integrations[16].customer.foo}}?',
         )
         expect(notifySpy).not.toHaveBeenCalled()
     })
@@ -247,11 +247,11 @@ describe('replaceIntegrationVariables()', () => {
             variable,
             newArg,
             fromJS({}),
-            notifySpy
+            notifySpy,
         )
 
         expect(res).toEqual(
-            '{{ticket.customer.integrations[15].customer.foo|datetime_format("MM")}}'
+            '{{ticket.customer.integrations[15].customer.foo|datetime_format("MM")}}',
         )
         expect(notifySpy).not.toHaveBeenCalled()
     })

@@ -1,5 +1,6 @@
-import React, {useEffect, useState} from 'react'
-import {useHistory} from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+
+import { useHistory } from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -9,14 +10,14 @@ import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import TextArea from 'pages/common/forms/TextArea'
+import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
+import { isTrialing } from 'state/currentAccount/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
-import {getCurrentHelpdeskPlan} from 'state/billing/selectors'
-import {isTrialing} from 'state/currentAccount/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { BILLING_BASE_PATH } from '../../constants'
+import { sendSupportTicket } from '../../utils/sendSupportTicket'
 
-import {BILLING_BASE_PATH} from '../../constants'
-import {sendSupportTicket} from '../../utils/sendSupportTicket'
 import css from './ContactSupportModal.less'
 
 export type ContactSupportModalProps = {
@@ -75,7 +76,7 @@ const ContactSupportModal = ({
                     message: `Your request has been submitted. We'll get back to you by email at ${from} within 24 business hours`,
                     dismissAfter: 5000,
                     showDismissButton: true,
-                })
+                }),
             )
         } catch {
             void dispatch(
@@ -83,7 +84,7 @@ const ContactSupportModal = ({
                     status: NotificationStatus.Error,
                     message:
                         'There was an error sending your message. Please try again later.',
-                })
+                }),
             )
         } finally {
             setMessage('')

@@ -1,7 +1,7 @@
-import React, {ReactNode, useCallback, useState} from 'react'
+import React, { ReactNode, useCallback, useState } from 'react'
 
-import {useCustomReportActions} from 'hooks/reporting/custom-reports/useCustomReportActions'
-import {useDashboardNameValidation} from 'hooks/reporting/custom-reports/useDashboardNameValidation'
+import { useCustomReportActions } from 'hooks/reporting/custom-reports/useCustomReportActions'
+import { useDashboardNameValidation } from 'hooks/reporting/custom-reports/useDashboardNameValidation'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
@@ -33,9 +33,9 @@ export const AddChartToDashboardModal = ({
         emoji: '',
     })
 
-    const {error, isValid} = useDashboardNameValidation(dashboard.name)
+    const { error, isValid } = useDashboardNameValidation(dashboard.name)
 
-    const {createDashboardHandler} = useCustomReportActions()
+    const { createDashboardHandler } = useCustomReportActions()
 
     const handleCreateDashboard = useCallback(() => {
         if (isValid) {

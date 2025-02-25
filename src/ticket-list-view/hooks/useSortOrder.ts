@@ -1,4 +1,4 @@
-import {useCallback, useMemo} from 'react'
+import { useCallback, useMemo } from 'react'
 
 import useLocalStorage from 'hooks/useLocalStorage'
 
@@ -59,24 +59,24 @@ export default function useSortOrder(viewId: number, viewSortOrder: string) {
             sortOrderValues.includes(viewSortOrder as SortOrder)
                 ? (viewSortOrder as SortOrder)
                 : sortOrderValues[0],
-        [viewSortOrder]
+        [viewSortOrder],
     )
 
     const [sortOrders, setSortOrders] = useLocalStorage(
         'ticket-list-view-sort-orders',
-        initialSortOrders
+        initialSortOrders,
     )
 
     const sortOrder = useMemo(
         () => sortOrders[viewId] || defaultSortOrder,
-        [defaultSortOrder, sortOrders, viewId]
+        [defaultSortOrder, sortOrders, viewId],
     )
 
     const setSortOrder = useCallback(
         (order: SortOrder) => {
-            setSortOrders({...sortOrders, [viewId]: order})
+            setSortOrders({ ...sortOrders, [viewId]: order })
         },
-        [setSortOrders, sortOrders, viewId]
+        [setSortOrders, sortOrders, viewId],
     )
 
     return [sortOrder, setSortOrder] as const

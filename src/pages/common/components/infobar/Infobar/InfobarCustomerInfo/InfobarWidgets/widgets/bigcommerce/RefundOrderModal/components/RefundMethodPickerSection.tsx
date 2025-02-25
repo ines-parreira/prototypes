@@ -1,20 +1,23 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
+import React, { Dispatch } from 'react'
+
 import classnames from 'classnames'
-import React, {Dispatch} from 'react'
+
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import {
     BigCommerceAvailablePaymentOptionsData,
     BigCommerceRefundMethod,
     BigCommerceRefundType,
 } from 'models/integration/types'
-import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
+import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 
-import css from '../RefundOrderModal.less'
 import {
     BIGCOMMERCE_REFUND_ACTION_TYPE,
     BigCommerceRefundActionType,
 } from '../types'
-import {buildPaymentOptionLabel} from '../utils'
+import { buildPaymentOptionLabel } from '../utils'
+
+import css from '../RefundOrderModal.less'
 
 type Props = {
     availablePaymentOptionsData: Maybe<BigCommerceAvailablePaymentOptionsData>
@@ -42,7 +45,7 @@ export function RefundMethodPickerSection({
                 </div>
             )}
             {!availablePaymentOptionsData && (
-                <p className={classnames({[css.disabled]: isLoading})}>
+                <p className={classnames({ [css.disabled]: isLoading })}>
                     {refundType === BigCommerceRefundType.ManualAmount
                         ? 'Select an amount to refund.'
                         : 'Select items to refund.'}
@@ -50,7 +53,7 @@ export function RefundMethodPickerSection({
             )}
             {availablePaymentOptionsData &&
                 !availablePaymentOptionsData.refund_methods.length && (
-                    <p className={classnames({[css.disabled]: isLoading})}>
+                    <p className={classnames({ [css.disabled]: isLoading })}>
                         No refund method available.
                     </p>
                 )}
@@ -60,7 +63,7 @@ export function RefundMethodPickerSection({
                     (paymentOption, index) => {
                         const optionLabel = buildPaymentOptionLabel(
                             paymentOption,
-                            currencyCode
+                            currencyCode,
                         )
                         return (
                             <PreviewRadioButton
@@ -81,7 +84,7 @@ export function RefundMethodPickerSection({
                                 }}
                             />
                         )
-                    }
+                    },
                 )}
         </div>
     )

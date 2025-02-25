@@ -1,15 +1,15 @@
-import {useQueryClient} from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     agentsKeys,
     useDeleteAgent as usePureDeleteAgent,
 } from 'models/agents/queries'
-import {DELETE_AGENT_SUCCESS} from 'state/agents/constants'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { DELETE_AGENT_SUCCESS } from 'state/agents/constants'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
-import {handleError} from './errorHandler'
+import { handleError } from './errorHandler'
 
 export const useDeleteAgent = (name: string) => {
     const dispatch = useAppDispatch()
@@ -28,7 +28,7 @@ export const useDeleteAgent = (name: string) => {
                 notify({
                     status: NotificationStatus.Success,
                     message: `${name} user has been deleted`,
-                })
+                }),
             )
         },
         onError: (error) =>

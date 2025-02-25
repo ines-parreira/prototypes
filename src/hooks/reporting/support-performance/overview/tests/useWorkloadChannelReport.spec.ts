@@ -1,25 +1,25 @@
-import {waitFor} from '@testing-library/react'
-import {renderHook} from '@testing-library/react-hooks'
+import { waitFor } from '@testing-library/react'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {TicketChannel} from 'business/types/ticket'
-import {agents} from 'fixtures/agents'
-import {integrationsState} from 'fixtures/integrations'
-import {formatPerDimensionTrendData} from 'hooks/reporting/common/useDistributionTrendReportData'
+import { TicketChannel } from 'business/types/ticket'
+import { agents } from 'fixtures/agents'
+import { integrationsState } from 'fixtures/integrations'
+import { formatPerDimensionTrendData } from 'hooks/reporting/common/useDistributionTrendReportData'
 import {
     fetchWorkloadPerChannelDistribution,
     fetchWorkloadPerChannelDistributionForPreviousPeriod,
 } from 'hooks/reporting/distributions'
-import {useWorkloadChannelReport} from 'hooks/reporting/support-performance/overview/useWorkloadChannelReport'
-import {LegacyStatsFilters} from 'models/stat/types'
-import {WORKLOAD_BY_CHANNEL_LABEL} from 'services/reporting/constants'
-import {assumeMock} from 'utils/testing'
+import { useWorkloadChannelReport } from 'hooks/reporting/support-performance/overview/useWorkloadChannelReport'
+import { LegacyStatsFilters } from 'models/stat/types'
+import { WORKLOAD_BY_CHANNEL_LABEL } from 'services/reporting/constants'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/distributions')
 const fetchWorkloadPerChannelDistributionMock = assumeMock(
-    fetchWorkloadPerChannelDistribution
+    fetchWorkloadPerChannelDistribution,
 )
 const fetchWorkloadPerChannelDistributionForPreviousPeriodMock = assumeMock(
-    fetchWorkloadPerChannelDistributionForPreviousPeriod
+    fetchWorkloadPerChannelDistributionForPreviousPeriod,
 )
 
 describe('useWorkloadChannelReport', () => {
@@ -64,16 +64,16 @@ describe('useWorkloadChannelReport', () => {
 
     beforeEach(() => {
         fetchWorkloadPerChannelDistributionMock.mockResolvedValue(
-            workloadDistribution
+            workloadDistribution,
         )
         fetchWorkloadPerChannelDistributionForPreviousPeriodMock.mockResolvedValue(
-            workloadDistributionPrevious
+            workloadDistributionPrevious,
         )
     })
 
     it('should fetch and format data', async () => {
-        const {result} = renderHook(() =>
-            useWorkloadChannelReport(defaultStatsFilters, 'UTC')
+        const { result } = renderHook(() =>
+            useWorkloadChannelReport(defaultStatsFilters, 'UTC'),
         )
 
         await waitFor(() => {
@@ -83,7 +83,7 @@ describe('useWorkloadChannelReport', () => {
                     workloadDistribution.data,
                     workloadDistributionPrevious.data,
                     WORKLOAD_BY_CHANNEL_LABEL,
-                    'decimal'
+                    'decimal',
                 ),
             })
         })
@@ -91,10 +91,10 @@ describe('useWorkloadChannelReport', () => {
 
     it('should return partial data when fetching limited', async () => {
         fetchWorkloadPerChannelDistributionForPreviousPeriodMock.mockRejectedValue(
-            {}
+            {},
         )
-        const {result} = renderHook(() =>
-            useWorkloadChannelReport(defaultStatsFilters, 'UTC', false)
+        const { result } = renderHook(() =>
+            useWorkloadChannelReport(defaultStatsFilters, 'UTC', false),
         )
 
         await waitFor(() => {
@@ -104,7 +104,7 @@ describe('useWorkloadChannelReport', () => {
                     workloadDistribution.data,
                     [],
                     WORKLOAD_BY_CHANNEL_LABEL,
-                    'decimal'
+                    'decimal',
                 ),
             })
         })
@@ -112,10 +112,10 @@ describe('useWorkloadChannelReport', () => {
 
     it('should return empty on failed request', async () => {
         fetchWorkloadPerChannelDistributionForPreviousPeriodMock.mockRejectedValue(
-            {}
+            {},
         )
-        const {result} = renderHook(() =>
-            useWorkloadChannelReport(defaultStatsFilters, 'UTC')
+        const { result } = renderHook(() =>
+            useWorkloadChannelReport(defaultStatsFilters, 'UTC'),
         )
 
         await waitFor(() => {

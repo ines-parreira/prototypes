@@ -1,20 +1,20 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {waitFor} from '@testing-library/react'
-import {renderHook} from '@testing-library/react-hooks'
-
 import React from 'react'
 
-import {useGetOrCreateAccountConfiguration} from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { waitFor } from '@testing-library/react'
+import { renderHook } from '@testing-library/react-hooks'
+
+import { useGetOrCreateAccountConfiguration } from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
-    getAccountConfiguration,
     createAccountConfiguration,
+    getAccountConfiguration,
 } from 'models/aiAgent/resources/configuration'
-import {getAccountConfigurationFixture} from 'pages/aiAgent/fixtures/accountConfiguration.fixture'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { getAccountConfigurationFixture } from 'pages/aiAgent/fixtures/accountConfiguration.fixture'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 const ACCOUNT_ID = 123
 const ACCOUNT_DOMAIN = 'test-account'
@@ -34,7 +34,7 @@ jest.mock('hooks/useAppDispatch')
 const useAppDispatchMock = assumeMock(useAppDispatch)
 
 const queryClient = mockQueryClient()
-const wrapper = ({children}: any) => (
+const wrapper = ({ children }: any) => (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 )
 
@@ -53,24 +53,24 @@ describe('useGetOrCreateAccountConfiguration', () => {
 
     it('should return account configuration if it exists', async () => {
         mockGetAccountConfiguration.mockResolvedValueOnce({
-            data: {accountConfiguration: mockData},
+            data: { accountConfiguration: mockData },
             status: 200,
         } as unknown as ReturnType<typeof getAccountConfiguration>)
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useGetOrCreateAccountConfiguration({
                     accountId: ACCOUNT_ID,
                     accountDomain: ACCOUNT_DOMAIN,
                     storeNames: STORE_NAMES,
                 }),
-            {wrapper}
+            { wrapper },
         )
 
         await waitFor(() => {
             expect(getAccountConfiguration).toHaveBeenCalledWith(ACCOUNT_DOMAIN)
             expect(result.current.data).toEqual({
-                data: {accountConfiguration: mockData},
+                data: { accountConfiguration: mockData },
                 status: 200,
             })
         })
@@ -79,21 +79,21 @@ describe('useGetOrCreateAccountConfiguration', () => {
     it('should create a new account configuration if 404 is returned', async () => {
         mockGetAccountConfiguration.mockRejectedValueOnce({
             isAxiosError: true,
-            response: {status: 404},
+            response: { status: 404 },
         })
         mockCreateAccountConfiguration.mockResolvedValueOnce({
-            data: {accountConfiguration: mockData},
+            data: { accountConfiguration: mockData },
             status: 201,
         } as unknown as ReturnType<typeof createAccountConfiguration>)
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useGetOrCreateAccountConfiguration({
                     accountId: ACCOUNT_ID,
                     accountDomain: ACCOUNT_DOMAIN,
                     storeNames: STORE_NAMES,
                 }),
-            {wrapper}
+            { wrapper },
         )
 
         await waitFor(() => {
@@ -110,7 +110,7 @@ describe('useGetOrCreateAccountConfiguration', () => {
                 helpdeskOAuth: null,
             })
             expect(result.current.data).toEqual({
-                data: {accountConfiguration: mockData},
+                data: { accountConfiguration: mockData },
                 status: 201,
             })
         })
@@ -118,17 +118,17 @@ describe('useGetOrCreateAccountConfiguration', () => {
 
     it('should notify error if an error that is not an axios error occured', async () => {
         mockGetAccountConfiguration.mockRejectedValueOnce(
-            new Error('API error')
+            new Error('API error'),
         )
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useGetOrCreateAccountConfiguration({
                     accountId: ACCOUNT_ID,
                     accountDomain: ACCOUNT_DOMAIN,
                     storeNames: STORE_NAMES,
                 }),
-            {wrapper}
+            { wrapper },
         )
 
         await waitFor(() => {
@@ -141,7 +141,7 @@ describe('useGetOrCreateAccountConfiguration', () => {
     })
 
     it('should not fetch data when overrides.enabled is false', async () => {
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useGetOrCreateAccountConfiguration(
                     {
@@ -149,9 +149,9 @@ describe('useGetOrCreateAccountConfiguration', () => {
                         accountDomain: ACCOUNT_DOMAIN,
                         storeNames: STORE_NAMES,
                     },
-                    {enabled: false}
+                    { enabled: false },
                 ),
-            {wrapper}
+            { wrapper },
         )
 
         await waitFor(() => {

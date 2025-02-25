@@ -1,17 +1,16 @@
 import moment from 'moment'
 
-import {agents} from 'fixtures/agents'
-
-import {AutomateStatsMeasureLabelMap} from 'hooks/reporting/automate/automateStatsMeasureLabelMap'
-import {OrderDirection} from 'models/api/types'
-import {getData as getPerformanceData} from 'services/reporting/agentsPerformanceReportingService'
-import {saveReport} from 'services/reporting/automateAiAgentReportingService'
-import {formatPerformanceFeatureData} from 'services/reporting/automateOverviewReportingService'
-import {DATE_TIME_FORMAT} from 'services/reporting/constants'
-import {formatData as getTicketInsightsData} from 'services/reporting/ticketFieldsReportingService'
-import {AgentsTableColumn} from 'state/ui/stats/types'
-import {saveZippedFiles} from 'utils/file'
-import {assumeMock} from 'utils/testing'
+import { agents } from 'fixtures/agents'
+import { AutomateStatsMeasureLabelMap } from 'hooks/reporting/automate/automateStatsMeasureLabelMap'
+import { OrderDirection } from 'models/api/types'
+import { getData as getPerformanceData } from 'services/reporting/agentsPerformanceReportingService'
+import { saveReport } from 'services/reporting/automateAiAgentReportingService'
+import { formatPerformanceFeatureData } from 'services/reporting/automateOverviewReportingService'
+import { DATE_TIME_FORMAT } from 'services/reporting/constants'
+import { formatData as getTicketInsightsData } from 'services/reporting/ticketFieldsReportingService'
+import { AgentsTableColumn } from 'state/ui/stats/types'
+import { saveZippedFiles } from 'utils/file'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('utils/file', () => ({
     createCsv: (value: string) => `${value}-csv`,
@@ -73,7 +72,7 @@ const performance = {
         }),
         agents: [],
     },
-    summary: metricBuilder({value: 129}),
+    summary: metricBuilder({ value: 129 }),
     columnsOrder: [AgentsTableColumn.AgentName],
 }
 
@@ -116,23 +115,23 @@ describe('automateAiAgentReportingService', () => {
                 period,
                 performance,
                 automatedTickets,
-                ticketInsights
+                ticketInsights,
             )
 
             expect(getPerformanceDataMock).toHaveBeenCalledWith(
                 agents,
                 performance.data,
                 performance.summary,
-                performance.columnsOrder
+                performance.columnsOrder,
             )
             expect(getTicketInsightsDataMock).toHaveBeenCalledWith(
                 ticketInsights.data,
                 ticketInsights.dateTimes,
-                ticketInsights.order
+                ticketInsights.order,
             )
             expect(getPerformanceFeatureDataMock).toHaveBeenCalledWith(
                 automatedTickets.automateStatsMeasureLabelMap,
-                automatedTickets.automatedInteractionByEventTypesTimeSeries
+                automatedTickets.automatedInteractionByEventTypesTimeSeries,
             )
 
             const downloadDate = moment().format(DATE_TIME_FORMAT)
@@ -146,7 +145,7 @@ describe('automateAiAgentReportingService', () => {
                     [`2024-09-21_2024-09-27-ai-agent-automated-tickets-${downloadDate}.csv`]:
                         'performance-feature-data-csv',
                 },
-                `2024-09-21_2024-09-27-ai-agent-metrics-${downloadDate}`
+                `2024-09-21_2024-09-27-ai-agent-metrics-${downloadDate}`,
             )
         })
 
@@ -169,7 +168,7 @@ describe('automateAiAgentReportingService', () => {
                     [`2024-09-21_2024-09-27-ai-agent-automated-tickets-${downloadDate}.csv`]:
                         'performance-feature-data-csv',
                 },
-                `2024-09-21_2024-09-27-ai-agent-metrics-${downloadDate}`
+                `2024-09-21_2024-09-27-ai-agent-metrics-${downloadDate}`,
             )
         })
     })

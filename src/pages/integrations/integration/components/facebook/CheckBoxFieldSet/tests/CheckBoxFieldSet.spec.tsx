@@ -1,5 +1,6 @@
-import {render} from '@testing-library/react'
 import React from 'react'
+
+import { render } from '@testing-library/react'
 
 import CheckBoxFieldSet from '../CheckBoxFieldSet'
 
@@ -16,12 +17,12 @@ describe('<CheckBoxFieldSet/>', () => {
             },
         ]
 
-        const {container} = render(
+        const { container } = render(
             <CheckBoxFieldSet
                 checkboxes={checkboxes}
                 title="Checkboxes"
                 subtitle="Toggle checkboxes"
-            />
+            />,
         )
 
         expect(container.firstChild).toMatchSnapshot()

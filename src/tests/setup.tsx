@@ -1,30 +1,31 @@
 import '@testing-library/jest-dom'
 import './mockAudioContext'
-import {setImmediate} from 'timers'
-import {TextEncoder, TextDecoder} from 'util'
+
+import React from 'react'
 
 import MutationObserver from '@sheerun/mutationobserver-shim'
-import {mockFlags} from 'jest-launchdarkly-mock'
+import { mockFlags } from 'jest-launchdarkly-mock'
 import mockMoment from 'moment'
-import {MomentTimezone} from 'moment-timezone'
-import React from 'react'
-import {NavLinkProps} from 'react-router-dom'
+import { MomentTimezone } from 'moment-timezone'
+import { NavLinkProps } from 'react-router-dom'
+import { setImmediate } from 'timers'
+import { TextDecoder, TextEncoder } from 'util'
 
 import '@formatjs/intl-displaynames/polyfill'
 import '@formatjs/intl-displaynames/locale-data/en'
 
-import {account} from 'fixtures/account'
-import {user} from 'fixtures/users'
-import {envVars} from 'utils/environment'
+import { account } from 'fixtures/account'
+import { user } from 'fixtures/users'
+import { envVars } from 'utils/environment'
 
 import history from '../pages/history'
-import {mockQueryClient} from './reactQueryTestingUtils'
+import { mockQueryClient } from './reactQueryTestingUtils'
 
 import './customMatchers'
 
 // Set default moment timezone
 const moment = jest.requireActual('moment-timezone')
-;(moment as {tz: MomentTimezone}).tz.setDefault(envVars.TZ || 'UTC')
+;(moment as { tz: MomentTimezone }).tz.setDefault(envVars.TZ || 'UTC')
 
 Object.defineProperty(window, 'ResizeObserver', {
     value: function () {
@@ -103,7 +104,7 @@ class MockSharedWorker {
     }
 }
 
-;(window as unknown as {SharedWorker: typeof MockSharedWorker}).SharedWorker =
+;(window as unknown as { SharedWorker: typeof MockSharedWorker }).SharedWorker =
     MockSharedWorker
 
 class MockBroadcastChannel {
@@ -117,7 +118,7 @@ class MockBroadcastChannel {
 }
 
 ;(
-    window as unknown as {BroadcastChannel: typeof MockBroadcastChannel}
+    window as unknown as { BroadcastChannel: typeof MockBroadcastChannel }
 ).BroadcastChannel = MockBroadcastChannel
 
 jest.mock('push.js', () => {
@@ -148,7 +149,7 @@ jest.mock(
                 'US/Pacific',
                 'Australia/AUR',
             ]),
-        }) as Record<string, unknown>
+        }) as Record<string, unknown>,
 )
 
 jest.mock(
@@ -158,7 +159,12 @@ jest.mock(
             ...jest.requireActual('react-router-dom'),
             /* eslint-disable jsx-a11y/anchor-has-content */
             Link: (props: Record<string, unknown>) => <a {...props} />,
-            NavLink: ({to, activeClassName, exact, ...rest}: NavLinkProps) => (
+            NavLink: ({
+                to,
+                activeClassName,
+                exact,
+                ...rest
+            }: NavLinkProps) => (
                 <a
                     href={to.toString()}
                     data-active-class-name={activeClassName}
@@ -167,12 +173,12 @@ jest.mock(
                 />
             ),
             /* eslint-enable */
-        }) as Record<string, unknown>
+        }) as Record<string, unknown>,
 )
 
 jest.mock('chart.js')
 jest.mock(
-    'pages/common/components/SynchronizedScrollTop/SynchronizedScrollTopProvider'
+    'pages/common/components/SynchronizedScrollTop/SynchronizedScrollTopProvider',
 )
 
 Object.defineProperty(window, 'requestAnimationFrame', {
@@ -203,8 +209,8 @@ global.jestSetTimeout = (body, timeout, done) => {
             body()
             done()
         } catch (error) {
-            ;(done as unknown as {fail: (error: Error) => void}).fail(
-                error as Error
+            ;(done as unknown as { fail: (error: Error) => void }).fail(
+                error as Error,
             )
         }
     }, timeout)
@@ -311,7 +317,7 @@ mockFlags({})
 // Font loading
 Object.defineProperty(document, 'fonts', {
     value: jest.fn(() => {
-        return {ready: Promise.resolve({})}
+        return { ready: Promise.resolve({}) }
     }),
 })
 
@@ -322,11 +328,11 @@ Object.defineProperty(HTMLElement.prototype, 'scrollIntoView', {
 })
 
 global.fetch = jest.fn(() =>
-    Promise.resolve({arrayBuffer: () => ({})} as Response)
+    Promise.resolve({ arrayBuffer: () => ({}) } as Response),
 )
 
 jest.mock('core/theme/useTheme.ts', () => {
-    const {THEME_NAME, themeTokenMap} =
+    const { THEME_NAME, themeTokenMap } =
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         require('core/theme') as typeof import('core/theme')
 

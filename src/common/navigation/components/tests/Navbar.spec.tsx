@@ -1,21 +1,23 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {ActiveContent} from 'common/navigation'
+import { render } from '@testing-library/react'
+
+import { ActiveContent } from 'common/navigation'
 import {
     NavBarContext,
     NavBarContextType,
     NavBarDisplayMode,
 } from 'common/navigation/hooks/useNavBar/context'
-import {useFlag} from 'core/flags'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
 import Navbar from '../Navbar'
-import css from '../Navbar.less'
-import {NavBarProvider} from '../NavBarProvider'
+import { NavBarProvider } from '../NavBarProvider'
 
-jest.mock('core/flags', () => ({useFlag: jest.fn()}))
+import css from '../Navbar.less'
+
+jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
 const useFlagMock = assumeMock(useFlag)
 
 jest.mock('common/notifications', () => ({
@@ -28,7 +30,7 @@ const useAppSelectorMock = assumeMock(useAppSelector)
 
 jest.mock(
     'pages/common/components/CreateTicket/CreateTicketNavbarButton',
-    () => () => <div>CreateTicketNavbarButton</div>
+    () => () => <div>CreateTicketNavbarButton</div>,
 )
 jest.mock('pages/common/components/PlaceCallNavbarButton', () => () => (
     <div>PlaceCallNavbarButton</div>
@@ -39,7 +41,7 @@ jest.mock(
         ({
             ...jest.requireActual('../MainNavigation'),
             default: () => <div>MainNavigation</div>,
-        }) as typeof import('../MainNavigation')
+        }) as typeof import('../MainNavigation'),
 )
 jest.mock('../UserMenuWithToggle', () => () => <div>UserMenuWithToggle</div>)
 
@@ -71,88 +73,88 @@ describe('Navbar', () => {
     })
 
     it('should set the navbar width if resizing is not disabled', () => {
-        const {container} = renderWithContext(<Navbar {...props} />)
+        const { container } = renderWithContext(<Navbar {...props} />)
         expect(container.firstChild).toHaveStyle('width: 238px')
     })
 
     it('should not set the navbar width if resizing is disabled', () => {
-        const {container} = renderWithContext(<Navbar {...props} />)
+        const { container } = renderWithContext(<Navbar {...props} />)
         expect(container.firstChild).not.toHaveStyle('width:')
     })
 
     it('should render the main navigation if the user does not have the global nav flag', () => {
-        const {getByText} = renderWithContext(<Navbar {...props} />)
+        const { getByText } = renderWithContext(<Navbar {...props} />)
         expect(getByText('MainNavigation')).toBeInTheDocument()
     })
 
     it('should render the title if the user has the global nav flag', () => {
         useFlagMock.mockReturnValue(true)
-        const {getByText} = renderWithContext(
-            <Navbar {...props} title="beep-boop-title" />
+        const { getByText } = renderWithContext(
+            <Navbar {...props} title="beep-boop-title" />,
         )
         expect(getByText('beep-boop-title')).toBeInTheDocument()
     })
 
     it('should render the split ticket view toggle', () => {
-        const {getByText} = renderWithContext(
+        const { getByText } = renderWithContext(
             <Navbar
                 {...props}
                 splitTicketViewToggle={<button>SplitTicketView</button>}
-            />
+            />,
         )
         expect(getByText('SplitTicketView')).toBeInTheDocument()
     })
 
     it('should hide the navigation when the panel is opened', () => {
-        const {container} = renderWithContext(<Navbar {...props} />)
+        const { container } = renderWithContext(<Navbar {...props} />)
         expect(
-            container.querySelector(`.${css['hidden-panel']}`)
+            container.querySelector(`.${css['hidden-panel']}`),
         ).toBeInTheDocument()
     })
 
     it('should show the navigation when the panel is opened', () => {
         useAppSelectorMock.mockReturnValue(true)
-        const {container} = renderWithContext(<Navbar {...props} />)
+        const { container } = renderWithContext(<Navbar {...props} />)
         expect(
-            container.querySelector(`.${css['hidden-panel']}`)
+            container.querySelector(`.${css['hidden-panel']}`),
         ).not.toBeInTheDocument()
     })
 
     it('should render header content if given', () => {
-        const {getByText} = renderWithContext(
-            <Navbar {...props} headerContent={<div>HeaderContent</div>} />
+        const { getByText } = renderWithContext(
+            <Navbar {...props} headerContent={<div>HeaderContent</div>} />,
         )
         expect(getByText('HeaderContent')).toBeInTheDocument()
     })
 
     it('should show the user menu if the user does not have the global nav flag', () => {
-        const {getByText} = renderWithContext(
-            <Navbar {...props} activeContent={ActiveContent.Settings} />
+        const { getByText } = renderWithContext(
+            <Navbar {...props} activeContent={ActiveContent.Settings} />,
         )
         expect(getByText('UserMenuWithToggle')).toBeInTheDocument()
     })
 
     it('should hide the user menu if the user has the global nav flag', () => {
         useFlagMock.mockReturnValue(true)
-        const {queryByText} = renderWithContext(<Navbar {...props} />)
+        const { queryByText } = renderWithContext(<Navbar {...props} />)
         expect(queryByText('UserMenuWithToggle')).not.toBeInTheDocument()
     })
 
     it('should have resize when navbarDisplay is Open', () => {
         useFlagMock.mockReturnValue(true)
-        const {container} = render(
+        const { container } = render(
             <NavBarContext.Provider value={mockNavBarContextValues}>
                 <Navbar {...props} />
-            </NavBarContext.Provider>
+            </NavBarContext.Provider>,
         )
         expect(container.firstChild).toHaveAttribute('style')
     })
     it('should not have resize when navbarDisplay is Open but the disableResize prop is true', () => {
         useFlagMock.mockReturnValue(true)
-        const {container} = render(
+        const { container } = render(
             <NavBarContext.Provider value={mockNavBarContextValues}>
                 <Navbar {...props} disableResize={true} />
-            </NavBarContext.Provider>
+            </NavBarContext.Provider>,
         )
         expect(container.firstChild).not.toHaveAttribute('style')
     })
@@ -164,10 +166,10 @@ describe('Navbar', () => {
             navBarDisplay: NavBarDisplayMode.Collapsed,
         }
 
-        const {container} = render(
+        const { container } = render(
             <NavBarContext.Provider value={values}>
                 <Navbar {...props} />
-            </NavBarContext.Provider>
+            </NavBarContext.Provider>,
         )
         expect(container.firstChild).not.toHaveAttribute('style')
     })

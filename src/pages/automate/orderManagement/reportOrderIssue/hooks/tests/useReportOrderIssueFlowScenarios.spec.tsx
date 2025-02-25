@@ -1,6 +1,6 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {selfServiceConfiguration1} from 'fixtures/self_service_configurations'
+import { selfServiceConfiguration1 } from 'fixtures/self_service_configurations'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 
 import useReportOrderIssueFlowScenarios from '../useReportOrderIssueFlowScenarios'
@@ -43,8 +43,8 @@ describe('useReportOrderIssueFlowScenarios', () => {
         })
     })
     it('should return scenarios', () => {
-        const {result} = renderHook(() =>
-            useReportOrderIssueFlowScenarios('shop-name')
+        const { result } = renderHook(() =>
+            useReportOrderIssueFlowScenarios('shop-name'),
         )
 
         expect(result.current.scenarios).toMatchObject([

@@ -1,19 +1,19 @@
-import _isEqual from 'lodash/isEqual'
 import {
     MouseEvent as ReactMouseEvent,
     useCallback,
     useEffect,
     useMemo,
-    useState,
     useRef,
+    useState,
 } from 'react'
+
+import _isEqual from 'lodash/isEqual'
 
 import usePrevious from 'hooks/usePrevious'
 import useUpdateEffect from 'hooks/useUpdateEffect'
 
-import {Config} from '../types'
-import {computeDefaultWidths, mutatePanels, createConfig} from '../utils'
-
+import { Config } from '../types'
+import { computeDefaultWidths, createConfig, mutatePanels } from '../utils'
 import useScreenSize from './useScreenSize'
 
 type Coord = {
@@ -34,7 +34,7 @@ export default function usePanels(config: Config): UsePanelsReturn {
     const panelWidthsStart = useRef<number[] | null>(null)
 
     const [panelWidths, setPanelWidths] = useState(() =>
-        computeDefaultWidths({config, totalWidth: screenWidth})
+        computeDefaultWidths({ config, totalWidth: screenWidth }),
     )
 
     useUpdateEffect(() => {
@@ -43,11 +43,11 @@ export default function usePanels(config: Config): UsePanelsReturn {
                 computeDefaultWidths({
                     config: createConfig(panelWidths, config),
                     totalWidth: screenWidth,
-                })
+                }),
             )
         } else {
             setPanelWidths(
-                computeDefaultWidths({config, totalWidth: screenWidth})
+                computeDefaultWidths({ config, totalWidth: screenWidth }),
             )
         }
     }, [config, screenWidth])
@@ -90,11 +90,11 @@ export default function usePanels(config: Config): UsePanelsReturn {
     const createHandleResizeStart = useCallback(
         (index: number) => (ev: ReactMouseEvent) => {
             ev.preventDefault()
-            dragStart.current = {x: ev.clientX, y: ev.clientY}
+            dragStart.current = { x: ev.clientX, y: ev.clientY }
             panelWidthsStart.current = panelWidths
             setDragHandle(index)
         },
-        [panelWidths]
+        [panelWidths],
     )
 
     // we need one handler less than the amount of panels
@@ -103,11 +103,11 @@ export default function usePanels(config: Config): UsePanelsReturn {
             new Array(config.length - 1)
                 .fill(0)
                 .map((_index, i) => createHandleResizeStart(i)),
-        [config, createHandleResizeStart]
+        [config, createHandleResizeStart],
     )
 
     return useMemo(
-        () => ({panelWidths, resizeStartHandlers}),
-        [panelWidths, resizeStartHandlers]
+        () => ({ panelWidths, resizeStartHandlers }),
+        [panelWidths, resizeStartHandlers],
     )
 }

@@ -1,10 +1,13 @@
-import {useQueryClient} from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {isGorgiasApiError} from 'models/api/types'
-import {getBillingStateQuery, useExtendTrial} from 'models/billing/queries'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
+import { isGorgiasApiError } from 'models/api/types'
+import { getBillingStateQuery, useExtendTrial } from 'models/billing/queries'
+import { notify } from 'state/notifications/actions'
+import {
+    NotificationStatus,
+    NotificationStyle,
+} from 'state/notifications/types'
 
 export const useExtendTrialWithSideEffects = () => {
     const dispatch = useAppDispatch()
@@ -21,7 +24,7 @@ export const useExtendTrialWithSideEffects = () => {
                     showDismissButton: true,
                     noAutoDismiss: false,
                     allowHTML: true,
-                })
+                }),
             )
         },
         onError: (error) => {
@@ -36,7 +39,7 @@ export const useExtendTrialWithSideEffects = () => {
                     showDismissButton: true,
                     noAutoDismiss: false,
                     allowHTML: true,
-                })
+                }),
             )
         },
     })

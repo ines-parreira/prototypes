@@ -1,18 +1,20 @@
-import {Label} from '@gorgias/merchant-ui-kit'
+import React, { FormEvent, useCallback, useMemo, useRef, useState } from 'react'
+
 import classnames from 'classnames'
 import pluralize from 'pluralize'
-import React, {FormEvent, useCallback, useMemo, useRef, useState} from 'react'
 
-import {TicketChannel} from 'business/types/ticket'
-import {logEvent, SegmentEvent} from 'common/segment'
-import {ISO639English} from 'constants/languages'
+import { Label } from '@gorgias/merchant-ui-kit'
+
+import { TicketChannel } from 'business/types/ticket'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { ISO639English } from 'constants/languages'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
 import usePrevious from 'hooks/usePrevious'
 import useUpdateEffect from 'hooks/useUpdateEffect'
-import {createRule} from 'models/rule/resources'
-import {Team} from 'models/team/types'
+import { createRule } from 'models/rule/resources'
+import { Team } from 'models/team/types'
 import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
@@ -26,12 +28,12 @@ import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 import TextInput from 'pages/common/forms/input/TextInput'
-import {IntegrationsDetailLabel} from 'pages/common/utils/labels'
-import {getMessagingAndAppIntegrations} from 'state/integrations/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {getEmptyRule} from 'state/rules/utils'
-import {getAST} from 'utils'
+import { IntegrationsDetailLabel } from 'pages/common/utils/labels'
+import { getMessagingAndAppIntegrations } from 'state/integrations/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { getEmptyRule } from 'state/rules/utils'
+import { getAST } from 'utils'
 
 import css from './RuleCreationModalContent.less'
 
@@ -41,13 +43,13 @@ type Props = {
 }
 
 const keyOptions = [
-    {label: 'Channel', value: 'ticket.channel'},
-    {label: 'Integration', value: 'message.integration_id'},
-    {label: 'Tag', value: 'ticket.tags.name'},
-    {label: 'Language', value: 'ticket.language'},
+    { label: 'Channel', value: 'ticket.channel' },
+    { label: 'Integration', value: 'message.integration_id' },
+    { label: 'Tag', value: 'ticket.tags.name' },
+    { label: 'Language', value: 'ticket.language' },
 ]
 
-type Option<T extends string | number> = {label: string; value: T}
+type Option<T extends string | number> = { label: string; value: T }
 
 const channelOptions = Object.values(TicketChannel).map((channel) => ({
     label: channel,
@@ -67,14 +69,14 @@ function makeRuleCode(teamId: number, conditionStatement: string) {
     }`
 }
 
-export default function RuleCreationModalContent({onClose, team}: Props) {
+export default function RuleCreationModalContent({ onClose, team }: Props) {
     const dispatch = useAppDispatch()
     const integrations = useAppSelector(getMessagingAndAppIntegrations)
     const tags = useAppSelector((state) => state.entities.tags)
     const ref = useRef<HTMLFormElement>(null)
     const defaultTeamName = useMemo(
         () => `[Auto assign] ${team.name}`,
-        [team.name]
+        [team.name],
     )
     const [ruleName, setRuleName] = useState(defaultTeamName)
     const keyFloatingRef = useRef<HTMLDivElement>(null)
@@ -84,7 +86,7 @@ export default function RuleCreationModalContent({onClose, team}: Props) {
     const [isKeySelectOpen, setIsKeySelectOpen] = useState(false)
     const keyLabel = useMemo(
         () => keyOptions.find((option) => option.value === keyRule)?.label,
-        [keyRule]
+        [keyRule],
     )
     const valueFloatingRef = useRef<HTMLDivElement>(null)
     const valueTargetRef = useRef<HTMLDivElement>(null)
@@ -96,11 +98,11 @@ export default function RuleCreationModalContent({onClose, team}: Props) {
 
     const hasSearch = useMemo(
         () => ['ticket.tags.name', 'ticket.language'].includes(keyRule),
-        [keyRule]
+        [keyRule],
     )
     const isValidForm = useMemo(
         () => !!ruleName && value.length > 0,
-        [ruleName, value]
+        [ruleName, value],
     )
     const integrationOptions = useMemo(
         () =>
@@ -112,7 +114,7 @@ export default function RuleCreationModalContent({onClose, team}: Props) {
                     value: integration!.get('id') as number,
                 }))
                 .toJS() as Option<string>[],
-        [integrations]
+        [integrations],
     )
     const tagOptions = useMemo(
         () =>
@@ -120,11 +122,11 @@ export default function RuleCreationModalContent({onClose, team}: Props) {
                 label: tag.name,
                 value: tag.name,
             })),
-        [tags]
+        [tags],
     )
     const keyPlural = useMemo(
         () => pluralize(keyLabel?.toLocaleLowerCase() || 'item'),
-        [keyLabel]
+        [keyLabel],
     )
     const optionsDataSet = useMemo(
         () =>
@@ -137,11 +139,11 @@ export default function RuleCreationModalContent({onClose, team}: Props) {
                     : keyRule === 'ticket.language'
                       ? languageOptions
                       : [],
-        [integrationOptions, keyRule, tagOptions]
+        [integrationOptions, keyRule, tagOptions],
     )
     const valueDataSet = useMemo(
         () => optionsDataSet.map((option) => option.value),
-        [optionsDataSet]
+        [optionsDataSet],
     )
     const valueLabel = useMemo(() => {
         return value.length === 0
@@ -154,16 +156,17 @@ export default function RuleCreationModalContent({onClose, team}: Props) {
 
                         if (keyRule === 'message.integration_id') {
                             const integration = integrations.find(
-                                (integration) => item === integration?.get('id')
+                                (integration) =>
+                                    item === integration?.get('id'),
                             )
 
                             label = integration?.get(
                                 'name',
-                                integration.get('address')
+                                integration.get('address'),
                             ) as string
                         } else {
                             label = optionsDataSet.find(
-                                (option) => option.value === item
+                                (option) => option.value === item,
                             )?.label
                         }
 
@@ -184,7 +187,7 @@ export default function RuleCreationModalContent({onClose, team}: Props) {
         setValue([])
     }, [keyRule, previousKeyRule])
 
-    const [{loading: isSubmitting}, submitRule] = useAsyncFn(async () => {
+    const [{ loading: isSubmitting }, submitRule] = useAsyncFn(async () => {
         const nextRuleCode = makeRuleCode(
             team.id,
             keyRule === 'ticket.tags.name'
@@ -199,11 +202,11 @@ export default function RuleCreationModalContent({onClose, team}: Props) {
                           acc.push(
                               `eq(${keyRule}, ${
                                   typeof item === 'string' ? `'${item}'` : item
-                              })`
+                              })`,
                           )
                           return acc
                       }, [])
-                      .join(' || ')
+                      .join(' || '),
         )
 
         try {
@@ -219,14 +222,14 @@ export default function RuleCreationModalContent({onClose, team}: Props) {
                 notify({
                     status: NotificationStatus.Success,
                     message: 'Rule created',
-                })
+                }),
             )
         } catch {
             void dispatch(
                 notify({
                     status: NotificationStatus.Error,
                     message: 'Failed to create rule',
-                })
+                }),
             )
         }
     }, [keyPlural, keyRule, onClose, ruleName, team, value])
@@ -237,7 +240,7 @@ export default function RuleCreationModalContent({onClose, team}: Props) {
             logEvent(SegmentEvent.TeamWizardCreatedRule)
             void submitRule()
         },
-        [submitRule]
+        [submitRule],
     )
 
     const handleValueChange = useCallback(
@@ -248,7 +251,7 @@ export default function RuleCreationModalContent({onClose, team}: Props) {
                 setValue((prev) => [...prev, nextValue])
             }
         },
-        [value]
+        [value],
     )
 
     return (

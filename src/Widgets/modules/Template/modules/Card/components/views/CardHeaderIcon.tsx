@@ -8,7 +8,11 @@ type Props = {
     color?: string
 }
 
-export function CardHeaderIcon({src, alt, color = 'rgba(0, 0, 0, 0)'}: Props) {
+export function CardHeaderIcon({
+    src,
+    alt,
+    color = 'rgba(0, 0, 0, 0)',
+}: Props) {
     return (
         <img
             src={src}

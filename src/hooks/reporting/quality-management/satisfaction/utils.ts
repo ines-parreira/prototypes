@@ -3,15 +3,15 @@ import {
     useAverageCSATPerChannelTimeseries,
     useAverageCSATPerIntegrationTimeseries,
 } from 'hooks/reporting/quality-management/satisfaction/useAverageScorePerDimensionTimeSeries'
-import {TimeSeriesPerDimensionHook} from 'hooks/reporting/useTimeSeries'
-import {TicketDimension} from 'models/reporting/cubes/TicketCube'
-import {TicketMessagesDimension} from 'models/reporting/cubes/TicketMessagesCube'
+import { TimeSeriesPerDimensionHook } from 'hooks/reporting/useTimeSeries'
+import { TicketDimension } from 'models/reporting/cubes/TicketCube'
+import { TicketMessagesDimension } from 'models/reporting/cubes/TicketMessagesCube'
 
 export const getMetricQuery = (
     dimension:
         | TicketDimension.AssigneeUserId
         | TicketDimension.Channel
-        | TicketMessagesDimension.Integration
+        | TicketMessagesDimension.Integration,
 ): TimeSeriesPerDimensionHook => {
     switch (dimension) {
         case TicketDimension.AssigneeUserId:

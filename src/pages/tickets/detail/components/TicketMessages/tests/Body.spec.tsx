@@ -1,6 +1,7 @@
-import {render} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import {
@@ -8,10 +9,10 @@ import {
     TicketMessageSourceType,
     TicketVia,
 } from 'business/types/ticket'
-import {message as defaultMessage} from 'models/ticket/tests/mocks'
-import {TicketMessage} from 'models/ticket/types'
-import {Account} from 'state/currentAccount/types'
-import {RootState, StoreDispatch} from 'state/types'
+import { message as defaultMessage } from 'models/ticket/tests/mocks'
+import { TicketMessage } from 'models/ticket/types'
+import { Account } from 'state/currentAccount/types'
+import { RootState, StoreDispatch } from 'state/types'
 
 import Body from '../Body'
 
@@ -74,10 +75,10 @@ describe('Body', () => {
                 ],
             },
         }
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <Body message={facebookCarouselMessage} />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -200,10 +201,10 @@ describe('Body', () => {
             isMessage: true,
             rule_id: null,
         }
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <Body message={quotedTweetTicketMessage} />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -308,10 +309,10 @@ describe('Body', () => {
             isMessage: true,
             rule_id: null,
         }
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <Body message={productCardTicketMessage} />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })

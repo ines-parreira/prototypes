@@ -1,7 +1,7 @@
 import moment from 'moment'
 
-import {OrderDirection} from 'models/api/types'
-import {TicketDimension} from 'models/reporting/cubes/TicketCube'
+import { OrderDirection } from 'models/api/types'
+import { TicketDimension } from 'models/reporting/cubes/TicketCube'
 import {
     TicketSatisfactionSurveyDimension,
     TicketSatisfactionSurveyMeasure,
@@ -11,8 +11,8 @@ import {
     averageScoreDrillDownQueryFactory,
     averageScoreQueryFactory,
 } from 'models/reporting/queryFactories/satisfaction/averageScoreQueryFactory'
-import {ReportingFilterOperator} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import { ReportingFilterOperator } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     statsFiltersToReportingFilters,
@@ -40,7 +40,7 @@ describe('averageScoreQueryFactory', () => {
             segments: [],
             filters: statsFiltersToReportingFilters(
                 TicketStatsFiltersMembers,
-                statsFilters
+                statsFilters,
             ),
             timezone,
         })
@@ -55,7 +55,7 @@ describe('averageScoreQueryFactory', () => {
             segments: [],
             filters: statsFiltersToReportingFilters(
                 TicketStatsFiltersMembers,
-                statsFilters
+                statsFilters,
             ),
 
             timezone,
@@ -87,7 +87,7 @@ describe('averageScoreDrillDownQueryFactory', () => {
             filters: [
                 ...statsFiltersToReportingFilters(
                     TicketStatsFiltersMembers,
-                    statsFilters
+                    statsFilters,
                 ),
                 {
                     member: TicketSatisfactionSurveyDimension.SurveyScore,
@@ -103,7 +103,7 @@ describe('averageScoreDrillDownQueryFactory', () => {
         const query = averageScoreDrillDownQueryFactory(
             statsFilters,
             timezone,
-            sorting
+            sorting,
         )
 
         expect(query).toEqual({
@@ -114,7 +114,7 @@ describe('averageScoreDrillDownQueryFactory', () => {
             filters: [
                 ...statsFiltersToReportingFilters(
                     TicketStatsFiltersMembers,
-                    statsFilters
+                    statsFilters,
                 ),
                 {
                     member: TicketSatisfactionSurveyDimension.SurveyScore,

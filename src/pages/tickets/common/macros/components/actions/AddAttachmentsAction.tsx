@@ -1,10 +1,11 @@
-import {fromJS, Map} from 'immutable'
-import React, {Component} from 'react'
-import {Badge} from 'reactstrap'
+import React, { Component } from 'react'
 
-import {Attachment} from 'models/ticket/types'
+import { fromJS, Map } from 'immutable'
+import { Badge } from 'reactstrap'
+
+import { Attachment } from 'models/ticket/types'
 import FileField from 'pages/common/forms/FileField'
-import {fileIconFromContentType} from 'pages/tickets/common/utils'
+import { fileIconFromContentType } from 'pages/tickets/common/utils'
 
 type Props = {
     index: number
@@ -26,7 +27,7 @@ export default class AddAttachmentsAction extends Component<Props> {
     _renderAttachments() {
         const attachments: Map<any, any> = this.props.action.getIn(
             ['arguments', 'attachments'],
-            fromJS([])
+            fromJS([]),
         )
         return attachments.map((file: Map<any, any>, index) => {
             return (

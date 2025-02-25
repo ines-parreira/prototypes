@@ -1,16 +1,19 @@
-import {AutomationDatasetFilterMember} from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
-import {BillableTicketDatasetFilterMember} from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
-import {RecommendedResourcesFilterMember} from 'models/reporting/cubes/automate_v2/RecommendedResourcesCube'
+import { AutomationDatasetFilterMember } from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
+import { BillableTicketDatasetFilterMember } from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
+import { RecommendedResourcesFilterMember } from 'models/reporting/cubes/automate_v2/RecommendedResourcesCube'
 import {
     addOptionalFilter,
     isFilterWithLogicalOperator,
 } from 'models/reporting/queryFactories/utils'
-import {ReportingFilter, ReportingFilterOperator} from 'models/reporting/types'
-import {StatsFilters, WithLogicalOperator} from 'models/stat/types'
-import {formatReportingQueryDate} from 'utils/reporting'
+import {
+    ReportingFilter,
+    ReportingFilterOperator,
+} from 'models/reporting/types'
+import { StatsFilters, WithLogicalOperator } from 'models/stat/types'
+import { formatReportingQueryDate } from 'utils/reporting'
 
 export const automationDatasetDefaultFilters = (
-    filters: StatsFilters
+    filters: StatsFilters,
 ): ReportingFilter[] => [
     {
         member: AutomationDatasetFilterMember.PeriodStart,
@@ -25,7 +28,7 @@ export const automationDatasetDefaultFilters = (
 ]
 
 export const automationDatasetAdditionalFilters = (
-    filters: StatsFilters
+    filters: StatsFilters,
 ): ReportingFilter[] =>
     addOptionalFilter(
         [],
@@ -33,11 +36,11 @@ export const automationDatasetAdditionalFilters = (
         {
             member: AutomationDatasetFilterMember.Channel,
             operator: ReportingFilterOperator.Equals,
-        }
+        },
     )
 
 export const billableTicketDatasetDefaultFilters = (
-    filters: StatsFilters
+    filters: StatsFilters,
 ): ReportingFilter[] => [
     {
         member: BillableTicketDatasetFilterMember.PeriodStart,
@@ -52,7 +55,7 @@ export const billableTicketDatasetDefaultFilters = (
 ]
 
 export const billableTicketDatasetAdditionalFilters = (
-    filters: StatsFilters
+    filters: StatsFilters,
 ): ReportingFilter[] =>
     addOptionalFilter(
         [],
@@ -60,14 +63,14 @@ export const billableTicketDatasetAdditionalFilters = (
         {
             member: BillableTicketDatasetFilterMember.Channel,
             operator: ReportingFilterOperator.Equals,
-        }
+        },
     )
 
 const ticketChannelToAutomateChannel = (channel: string) =>
     channel === 'contact_form' ? 'contact-form' : channel
 
 export const mapTicketChannelsToAutomateChannels = (
-    channels: string[] | undefined
+    channels: string[] | undefined,
 ): string[] => {
     if (channels === undefined) {
         return []
@@ -77,7 +80,7 @@ export const mapTicketChannelsToAutomateChannels = (
 }
 
 export const mapTicketChannelsToAutomateChannelsInFilter = (
-    channels: string[] | WithLogicalOperator<string> | undefined
+    channels: string[] | WithLogicalOperator<string> | undefined,
 ): string[] | WithLogicalOperator<string> => {
     if (channels === undefined) {
         return []
@@ -93,7 +96,7 @@ export const mapTicketChannelsToAutomateChannelsInFilter = (
 }
 
 export const recommendedResourceDatasetDefaultFilters = (
-    filters: StatsFilters
+    filters: StatsFilters,
 ): ReportingFilter[] => [
     {
         member: RecommendedResourcesFilterMember.PeriodStart,

@@ -1,9 +1,8 @@
-import path from 'path'
-
-import {codecovWebpackPlugin} from '@codecov/webpack-plugin'
-import {rspack, Configuration as RspackConfiguration} from '@rspack/core'
+import { codecovWebpackPlugin } from '@codecov/webpack-plugin'
+import { rspack, Configuration as RspackConfiguration } from '@rspack/core'
 import NodePolyfillPlugin from 'node-polyfill-webpack-plugin'
-import {RspackManifestPlugin} from 'rspack-manifest-plugin'
+import path from 'path'
+import { RspackManifestPlugin } from 'rspack-manifest-plugin'
 
 const isProd = process.env.NODE_ENV === 'production'
 const HASH = process.env.RELEASE ? process.env.RELEASE : '[contenthash]'

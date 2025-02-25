@@ -1,19 +1,20 @@
-import {fireEvent, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {account} from 'fixtures/account'
-import {IntegrationType} from 'models/integration/constants'
-import {HELP_CENTER_BASE_PATH} from 'pages/settings/helpCenter/constants'
-import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
-import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
-import {RootState, StoreDispatch} from 'state/types'
-import {assumeMock, renderWithRouter} from 'utils/testing'
+import { account } from 'fixtures/account'
+import { IntegrationType } from 'models/integration/constants'
+import { HELP_CENTER_BASE_PATH } from 'pages/settings/helpCenter/constants'
+import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
+import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
+import { RootState, StoreDispatch } from 'state/types'
+import { assumeMock, renderWithRouter } from 'utils/testing'
 
-import {useHelpCenterList} from '../../../hooks/useHelpCenterList'
+import { useHelpCenterList } from '../../../hooks/useHelpCenterList'
 import HelpCenterStartView from '../HelpCenterStartView'
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
@@ -22,10 +23,10 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
             isReady: true,
             client: {
                 listArticles: jest.fn().mockResolvedValue({
-                    data: {data: [], meta: {item_count: 0}},
+                    data: { data: [], meta: { item_count: 0 } },
                 }),
                 listArticleTranslations: jest.fn().mockResolvedValue({
-                    data: {data: [], meta: {item_count: 0}},
+                    data: { data: [], meta: { item_count: 0 } },
                 }),
             },
             agentAbility: [
@@ -35,7 +36,7 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
                 },
             ],
         }),
-        useAbilityChecker: () => ({isPassingRulesCheck: () => true}),
+        useAbilityChecker: () => ({ isPassingRulesCheck: () => true }),
     }
 })
 
@@ -51,7 +52,7 @@ jest.mock(
             useHistory: () => ({
                 push: mockHistoryPush,
             }),
-        }) as Record<string, unknown>
+        }) as Record<string, unknown>,
 )
 
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
@@ -85,25 +86,25 @@ describe('<HelpCenterStartView />', () => {
         currentAccount: fromJS(account),
         integrations: fromJS({
             integrations: [
-                {id: 1, type: IntegrationType.Shopify, name: 'My Shop'},
-                {id: 2, type: IntegrationType.BigCommerce, name: 'Test Shop'},
+                { id: 1, type: IntegrationType.Shopify, name: 'My Shop' },
+                { id: 2, type: IntegrationType.BigCommerce, name: 'Test Shop' },
             ],
         }),
     }
     const props = {}
 
     it('should render the About component', () => {
-        const {container} = renderWithRouter(
+        const { container } = renderWithRouter(
             <Provider store={mockedStore(defaultState)}>
                 <HelpCenterStartView {...props} />
             </Provider>,
             {
                 route: `${HELP_CENTER_BASE_PATH}`,
-            }
+            },
         )
 
         screen.getByText(
-            /Set up a free Help Center\/FAQ site and let your customers find answers./i
+            /Set up a free Help Center\/FAQ site and let your customers find answers./i,
         )
 
         expect(container).toMatchSnapshot()
@@ -117,13 +118,13 @@ describe('<HelpCenterStartView />', () => {
             helpCenters,
         })
 
-        const {container} = renderWithRouter(
+        const { container } = renderWithRouter(
             <Provider store={mockedStore(defaultState)}>
                 <HelpCenterStartView {...props} />
             </Provider>,
             {
                 route: `${HELP_CENTER_BASE_PATH}`,
-            }
+            },
         )
 
         screen.getByText(/Help Center Name/i)
@@ -138,13 +139,13 @@ describe('<HelpCenterStartView />', () => {
             </Provider>,
             {
                 route: `${HELP_CENTER_BASE_PATH}/manage`,
-            }
+            },
         )
         const newBtn = screen.getByText(/create help center/i)
         fireEvent.click(newBtn)
 
         expect(mockHistoryPush).toHaveBeenLastCalledWith(
-            `${HELP_CENTER_BASE_PATH}/new`
+            `${HELP_CENTER_BASE_PATH}/new`,
         )
     })
 })

@@ -1,17 +1,19 @@
-import {CustomFieldCondition} from '@gorgias/api-queries'
-import classNames from 'classnames'
-import React, {useEffect, useMemo, useState} from 'react'
-import {Link} from 'react-router-dom'
-import {Container} from 'reactstrap'
+import React, { useEffect, useMemo, useState } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {OBJECT_TYPES} from 'custom-fields/constants'
-import {useCustomFieldConditions} from 'custom-fields/hooks/queries/useCustomFieldConditions'
+import classNames from 'classnames'
+import { Link } from 'react-router-dom'
+import { Container } from 'reactstrap'
+
+import { CustomFieldCondition } from '@gorgias/api-queries'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { OBJECT_TYPES } from 'custom-fields/constants'
+import { useCustomFieldConditions } from 'custom-fields/hooks/queries/useCustomFieldConditions'
 import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
 import useCallbackRef from 'hooks/useCallbackRef'
 import useDebouncedValue from 'hooks/useDebouncedValue'
 import useTitle from 'hooks/useTitle'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -22,12 +24,12 @@ import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import Video from 'pages/common/components/Video/Video'
 import settingsCss from 'pages/settings/settings.less'
-
-import {CUSTOM_FIELD_CONDITIONS_ROUTE} from 'routes/constants'
+import { CUSTOM_FIELD_CONDITIONS_ROUTE } from 'routes/constants'
 
 import ConditionalFieldRow from './components/ConditionalFieldRow'
-import css from './ConditionalFields.less'
 import useUpdateCustomFieldConditions from './hooks/useUpdateCustomFieldConditions'
+
+import css from './ConditionalFields.less'
 
 export const MAX_CONDITIONS = 70
 
@@ -56,7 +58,7 @@ export default function ConditionalFields() {
 
     const filteredConditions = useMemo(() => {
         return conditions.filter((condition: CustomFieldCondition) =>
-            condition.name.includes(debouncedSearch)
+            condition.name.includes(debouncedSearch),
         )
     }, [conditions, debouncedSearch])
     const isConditionsListMatchingSearchEmpty =
@@ -89,7 +91,7 @@ export default function ConditionalFields() {
                         fluid
                         className={classNames(
                             css.info,
-                            settingsCss.pageContainer
+                            settingsCss.pageContainer,
                         )}
                     >
                         <div
@@ -209,7 +211,7 @@ const ExistingConditions = ({
     const [draggedConditions, setDraggedConditions] = useState<
         CustomFieldCondition[]
     >([])
-    const {mutate: updateCustomFieldConditions} =
+    const { mutate: updateCustomFieldConditions } =
         useUpdateCustomFieldConditions()
 
     useEffect(() => {
@@ -233,7 +235,7 @@ const ExistingConditions = ({
             sort_order: currentOrder++,
         }))
 
-        updateCustomFieldConditions({data: updatedSortOrders})
+        updateCustomFieldConditions({ data: updatedSortOrders })
     }
 
     return (

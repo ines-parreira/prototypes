@@ -1,7 +1,8 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
 
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import { Link } from 'react-router-dom'
+
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 
 type Props = {
     totalIntegrations: number

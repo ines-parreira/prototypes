@@ -1,10 +1,11 @@
+import React, { Ref, RefObject } from 'react'
+
 import classnames from 'classnames'
 import _noop from 'lodash/noop'
-import React, {Ref, RefObject} from 'react'
 
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import {useReorderDnD} from 'pages/common/hooks/useReorderDnD'
+import { useReorderDnD } from 'pages/common/hooks/useReorderDnD'
 import {
     OnDropPolicyFn,
     OnMovePolicyFn,
@@ -15,7 +16,8 @@ import {
 } from 'pages/settings/SLAs/features/SLAList/types'
 
 import CellLinkWrapper from './CellLinkWrapper'
-import {columnOrder, getTableCell} from './config'
+import { columnOrder, getTableCell } from './config'
+
 import css from './TableRow.less'
 
 type TableRowProps = {
@@ -34,7 +36,7 @@ export default function TableRow({
     onDropPolicy,
     isSubmitting,
 }: TableRowProps) {
-    const {dragRef, dropRef, handlerId, isDragging} =
+    const { dragRef, dropRef, handlerId, isDragging } =
         useReorderDnD<PolicyDragItem>(
             dragItem,
             [dragItem.type],
@@ -42,7 +44,7 @@ export default function TableRow({
                 onHover: onMovePolicy,
                 onDrop: onDropPolicy,
             },
-            !isSubmitting
+            !isSubmitting,
         )
 
     const opacity = isDragging ? 0.5 : 1

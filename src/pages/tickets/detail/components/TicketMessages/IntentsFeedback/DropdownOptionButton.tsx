@@ -1,5 +1,6 @@
-import classnames from 'classnames'
 import React from 'react'
+
+import classnames from 'classnames'
 
 import css from './DropdownOptionButton.less'
 
@@ -19,7 +20,7 @@ export const DropdownOptionButton = ({
     onClick = () => null,
 }: Props) => (
     <span
-        className={classnames(css.dropdownButton, {disabled})}
+        className={classnames(css.dropdownButton, { disabled })}
         id={id}
         onClick={onClick}
     >

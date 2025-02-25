@@ -1,5 +1,6 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { Meta, Story } from '@storybook/react'
 
 import {
     TableBodyRowExpandable,
@@ -115,7 +116,7 @@ const TableWithExpandableRows: Story<
                     title={column.title}
                     colSpan={index === 0 ? 2 : undefined}
                     style={
-                        index === 0 ? {width: '250px', minWidth: '250px'} : {}
+                        index === 0 ? { width: '250px', minWidth: '250px' } : {}
                     }
                 />
             ))}

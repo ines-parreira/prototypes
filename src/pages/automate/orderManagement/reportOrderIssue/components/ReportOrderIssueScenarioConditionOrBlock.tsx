@@ -1,13 +1,15 @@
-import classnames from 'classnames'
 import React from 'react'
+
+import classnames from 'classnames'
 
 import {
     JsonLogicOrBlock,
     JsonLogicRuleOverVariable,
 } from 'models/selfServiceConfiguration/types'
 
-import css from './ReportOrderIssueScenarioConditionOrBlock.less'
 import ReportOrderIssueScenarioConditionRule from './ReportOrderIssueScenarioConditionRule'
+
+import css from './ReportOrderIssueScenarioConditionOrBlock.less'
 
 type Props = {
     value: JsonLogicOrBlock
@@ -24,20 +26,20 @@ const ReportOrderIssueScenarioConditionOrBlock = ({
 
     const handleRuleChange = (
         nextRule: JsonLogicRuleOverVariable,
-        index: number
+        index: number,
     ) => {
         const nextRules = [...rules]
 
         nextRules[index] = nextRule
 
-        onChange({or: nextRules})
+        onChange({ or: nextRules })
     }
     const handleRuleDelete = (index: number) => {
         const nextRules = [...rules]
 
         nextRules.splice(index, 1)
 
-        onChange({or: nextRules})
+        onChange({ or: nextRules })
     }
 
     return (

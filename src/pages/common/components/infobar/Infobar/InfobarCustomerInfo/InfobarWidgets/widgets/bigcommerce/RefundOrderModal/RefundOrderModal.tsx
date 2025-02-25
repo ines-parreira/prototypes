@@ -7,7 +7,7 @@ import React, {
     useState,
 } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -18,7 +18,7 @@ import {
 } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import GeneralErrorPopupModal from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/GeneralErrorPopupModal'
-import {InfobarModalProps} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
+import { InfobarModalProps } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 import {
     GroupContext,
     GroupPositionContext,
@@ -26,22 +26,21 @@ import {
 import Modal from 'pages/common/components/modal/Modal'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
-import {CustomerContext} from 'providers/infobar/CustomerContext'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
+import { CustomerContext } from 'providers/infobar/CustomerContext'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
-import {getIntegrationsByType} from 'state/integrations/selectors'
+import { getIntegrationsByType } from 'state/integrations/selectors'
 
-import {EntireOrderRefundOrderModal} from './components/EntireOrderRefundOrderModal'
-import {ManualAmountRefundOrderModal} from './components/ManualAmountRefundOrderModal'
-import {RefundMethodPickerSection} from './components/RefundMethodPickerSection'
-import {RefundOrderFooter} from './components/RefundOrderFooter'
+import { EntireOrderRefundOrderModal } from './components/EntireOrderRefundOrderModal'
+import { ManualAmountRefundOrderModal } from './components/ManualAmountRefundOrderModal'
+import { RefundMethodPickerSection } from './components/RefundMethodPickerSection'
+import { RefundOrderFooter } from './components/RefundOrderFooter'
 import {
-    initialBigCommerceRefundOrderState,
     bigcommerceRefundOrderReducer,
+    initialBigCommerceRefundOrderState,
 } from './reducer'
-import css from './RefundOrderModal.less'
-import {BigCommerceRefundActionType} from './types'
+import { BigCommerceRefundActionType } from './types'
 import {
     bigcommerceRefundOrder,
     calculateAvailablePaymentOptionsData,
@@ -49,6 +48,8 @@ import {
     formatAmount,
     onReset,
 } from './utils'
+
+import css from './RefundOrderModal.less'
 
 type Props = {
     integration: BigCommerceIntegration
@@ -58,7 +59,7 @@ type Props = {
 export function RefundOrderModal({
     integration,
     customerId,
-    data = {actionName: null, order: null},
+    data = { actionName: null, order: null },
     onClose,
 }: Props) {
     const dispatch = useAppDispatch()
@@ -71,7 +72,7 @@ export function RefundOrderModal({
 
     const [refundOrderState, dispatchRefundOrderState] = useReducer(
         bigcommerceRefundOrderReducer,
-        initialBigCommerceRefundOrderState
+        initialBigCommerceRefundOrderState,
     )
 
     const checkRefundItemsPayloadValidity = useCallback(() => {
@@ -83,7 +84,7 @@ export function RefundOrderModal({
             ? refundOrderState.refundItemsPayload.items.every(
                   (item) =>
                       (item?.amount && item.amount > 0) ||
-                      (item?.quantity && item.quantity > 0)
+                      (item?.quantity && item.quantity > 0),
               )
             : false
     }, [refundOrderState.refundItemsPayload])
@@ -95,7 +96,7 @@ export function RefundOrderModal({
             refundOrderState.selectedPaymentOption &&
             refundOrderState.availablePaymentOptionsData?.refund_methods?.find(
                 (paymentOption) =>
-                    paymentOption === refundOrderState.selectedPaymentOption
+                    paymentOption === refundOrderState.selectedPaymentOption,
             )
         )
     }, [
@@ -112,7 +113,7 @@ export function RefundOrderModal({
 
     const handleCancel = (via: string) => {
         onClose()
-        logEvent(SegmentEvent.BigCommerceRefundOrderCancel, {via})
+        logEvent(SegmentEvent.BigCommerceRefundOrderCancel, { via })
         handleReset()
     }
 
@@ -182,7 +183,7 @@ export function RefundOrderModal({
             refundedAmount: refundOrderState.totalAmountToRefund,
             type: refundOrderState.refundType,
             method: refundOrderState.selectedPaymentOption.map(
-                (option) => option.provider_description
+                (option) => option.provider_description,
             ),
         })
 
@@ -196,7 +197,7 @@ export function RefundOrderModal({
             refundOrderState.refundItemsPayload,
             refundOrderState.selectedPaymentOption,
             refundOrderState.refundReason,
-            refundOrderState.newOrderStatus
+            refundOrderState.newOrderStatus,
         )
 
         handleCancel('refund-order')
@@ -323,7 +324,7 @@ export function RefundOrderModal({
                         >
                             {`Refund ${formatAmount(
                                 currencyCode,
-                                refundOrderState.totalAmountToRefund
+                                refundOrderState.totalAmountToRefund,
                             )}`}
                         </Button>
                     </ModalFooter>
@@ -351,19 +352,19 @@ type ConnectedProps = {
 } & Pick<InfobarModalProps, 'isOpen' | 'onClose'>
 
 export default function RefundOrderModalRenderWrapper(props: ConnectedProps) {
-    const {integrationId} = useContext(IntegrationContext)
-    const {customerId} = useContext(CustomerContext)
+    const { integrationId } = useContext(IntegrationContext)
+    const { customerId } = useContext(CustomerContext)
 
     const integrations = useAppSelector(
-        getIntegrationsByType(IntegrationType.BigCommerce)
+        getIntegrationsByType(IntegrationType.BigCommerce),
     )
 
     const integration = useMemo(
         () =>
             integrations.find(
-                (integration) => integration.id === integrationId
+                (integration) => integration.id === integrationId,
             ),
-        [integrations, integrationId]
+        [integrations, integrationId],
     )
 
     if (!integration || !props.isOpen || !customerId) {

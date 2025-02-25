@@ -1,10 +1,10 @@
-import {ContentType, HttpMethod} from 'models/api/types'
+import { ContentType, HttpMethod } from 'models/api/types'
 import {
     Action,
     Parameter,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 
-export const actionFixture = ({edit = false} = {}): Action => {
+export const actionFixture = ({ edit = false } = {}): Action => {
     const action: Action = {
         method: HttpMethod.Get,
         url: 'www.someurl.com',

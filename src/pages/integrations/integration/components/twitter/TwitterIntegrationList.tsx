@@ -1,18 +1,19 @@
-import {List, Map} from 'immutable'
 import React from 'react'
-import {connect, ConnectedProps} from 'react-redux'
+
+import { List, Map } from 'immutable'
+import { connect, ConnectedProps } from 'react-redux'
 
 import twitterWhiteIcon from 'assets/img/integrations/twitter-white.svg'
 
-import {IntegrationType} from '../../../../../models/integration/types'
-import {getCurrentAccountFeatures} from '../../../../../state/currentAccount/selectors'
-import {AccountFeature} from '../../../../../state/currentAccount/types'
-import {RootState} from '../../../../../state/types'
+import { IntegrationType } from '../../../../../models/integration/types'
+import { getCurrentAccountFeatures } from '../../../../../state/currentAccount/selectors'
+import { AccountFeature } from '../../../../../state/currentAccount/types'
+import { RootState } from '../../../../../state/types'
 import IntegrationList from '../IntegrationList'
 import IntegrationListLimitAlert from '../IntegrationListLimitAlert'
+import TwitterIntegrationListItem from './TwitterIntegrationListItem'
 
 import css from './TwitterIntegrationList.less'
-import TwitterIntegrationListItem from './TwitterIntegrationListItem'
 
 type OwnProps = {
     integrations: List<Map<string, string>>
@@ -29,7 +30,7 @@ export function TwitterIntegrationList({
     maxIntegrations,
 }: Props): JSX.Element {
     const twitterIntegrations = integrations.filter(
-        (v) => v?.get('type') === IntegrationType.Twitter
+        (v) => v?.get('type') === IntegrationType.Twitter,
     ) as List<Map<any, any>>
 
     const _maxIntegrations = maxIntegrations || 2

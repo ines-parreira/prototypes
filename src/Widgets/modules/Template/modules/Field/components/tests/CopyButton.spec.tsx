@@ -1,12 +1,13 @@
-import {fireEvent, render, screen} from '@testing-library/react'
-import copy from 'copy-to-clipboard'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render, screen } from '@testing-library/react'
+import copy from 'copy-to-clipboard'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import {notify} from 'state/notifications/actions'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
+import { notify } from 'state/notifications/actions'
 
 import CopyButton from '../CopyButton'
 
@@ -27,19 +28,19 @@ describe('<Copy/>', () => {
 
     it('should copy on clipboard', () => {
         const store = mockStore({
-            currentAccount: fromJS({domain: 'domain'}),
+            currentAccount: fromJS({ domain: 'domain' }),
         })
         render(
             <Provider store={store}>
                 <IntegrationContext.Provider
                     value={{
-                        integration: fromJS({type: 'type'}),
+                        integration: fromJS({ type: 'type' }),
                         integrationId: 1,
                     }}
                 >
                     <CopyButton value="test" />
                 </IntegrationContext.Provider>
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(screen.getByRole('button'))
@@ -51,7 +52,7 @@ describe('<Copy/>', () => {
         render(
             <Provider store={store}>
                 <CopyButton value="test" />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(screen.getByRole('button'))
@@ -67,7 +68,7 @@ describe('<Copy/>', () => {
         render(
             <Provider store={store}>
                 <CopyButton value="test" onCopyMessage="Test Message" />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(screen.getByRole('button'))
@@ -86,7 +87,7 @@ describe('<Copy/>', () => {
         render(
             <Provider store={store}>
                 <CopyButton value="test" onCopyMessage="Test Message" />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(screen.getByRole('button'))

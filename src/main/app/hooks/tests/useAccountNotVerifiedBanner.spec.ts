@@ -1,13 +1,13 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
+import { renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
 
-import {AlertBannerTypes, BannerCategories, ContextBanner} from 'AlertBanners'
+import { AlertBannerTypes, BannerCategories, ContextBanner } from 'AlertBanners'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {resendVerificationEmail} from 'state/currentAccount/actions'
-import {assumeMock} from 'utils/testing'
+import { resendVerificationEmail } from 'state/currentAccount/actions'
+import { assumeMock } from 'utils/testing'
 
-import {useAccountNotVerifiedBanner} from '../useAccountNotVerifiedBanner'
+import { useAccountNotVerifiedBanner } from '../useAccountNotVerifiedBanner'
 
 const mockedAddBanner = jest.fn<unknown, [ContextBanner]>()
 jest.mock(
@@ -16,9 +16,9 @@ jest.mock(
         ({
             ...jest.requireActual('AlertBanners'),
             useBanners: () => {
-                return {addBanner: mockedAddBanner}
+                return { addBanner: mockedAddBanner }
             },
-        }) as Record<string, unknown>
+        }) as Record<string, unknown>,
 )
 jest.mock('hooks/useAppSelector', () => jest.fn())
 jest.mock('hooks/useAppDispatch', () => jest.fn())
@@ -38,7 +38,7 @@ describe('useAccountNotVerifiedBanner', () => {
                 meta: {
                     verified: false,
                 },
-            })
+            }),
         )
         useAppDispatchMock.mockReturnValue(dispatchMock)
     })
@@ -48,7 +48,7 @@ describe('useAccountNotVerifiedBanner', () => {
                 meta: {
                     verified: true,
                 },
-            })
+            }),
         )
         renderHook(useAccountNotVerifiedBanner)
 

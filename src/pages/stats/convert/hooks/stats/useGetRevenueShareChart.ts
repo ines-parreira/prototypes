@@ -1,8 +1,8 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {usePostReporting} from 'models/reporting/queries'
-import {ReportingGranularity} from 'models/reporting/types'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import { usePostReporting } from 'models/reporting/queries'
+import { ReportingGranularity } from 'models/reporting/types'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import {
     getRevenueGraphData,
     getRevenueShareGraphData,
@@ -17,7 +17,7 @@ import {
     transformToRevenueByDate,
     transformToRevenueShareOverTime,
 } from 'pages/stats/convert/services/CampaignMetricsHelper'
-import {RevenueGraphDataPoint} from 'pages/stats/convert/services/types'
+import { RevenueGraphDataPoint } from 'pages/stats/convert/services/types'
 
 const OVERRIDES = {
     select: getDataFromResult,
@@ -36,7 +36,7 @@ export const useGetRevenueShareChart = (
     startDate: string,
     endDate: string,
     timezone: string,
-    timeGranularity = ReportingGranularity.Day
+    timeGranularity = ReportingGranularity.Day,
 ): GetRevenueShareChartQuery => {
     const attrs: CubeFilterParams = useMemo(
         () => ({
@@ -56,18 +56,18 @@ export const useGetRevenueShareChart = (
             timeGranularity,
             timezone,
             campaignsOperator,
-        ]
+        ],
     )
 
     const revenueShareChartQuery = useMemo(
         () => getRevenueShareGraphData(attrs),
-        [attrs]
+        [attrs],
     )
     const revenueQuery = useMemo(() => getRevenueGraphData(attrs), [attrs])
 
     const revenueShareChart = usePostReporting<[CubeData], CubeData>(
         revenueShareChartQuery,
-        {...OVERRIDES, enabled: campaignIds !== null}
+        { ...OVERRIDES, enabled: campaignIds !== null },
     )
     const revenue = usePostReporting<[CubeData], CubeData>(revenueQuery, {
         ...OVERRIDES,
@@ -82,8 +82,8 @@ export const useGetRevenueShareChart = (
             transformToRevenueShareOverTime(
                 dataPoint,
                 revenueData,
-                timeGranularity
-            )
+                timeGranularity,
+            ),
         )
     }, [revenueShareChart.data, revenue.data, timeGranularity])
 

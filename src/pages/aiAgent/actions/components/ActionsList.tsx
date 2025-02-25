@@ -1,6 +1,6 @@
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {useParams} from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
 import useOrderBy from 'hooks/useOrderBy'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
@@ -10,20 +10,21 @@ import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 
 import StoreAppsProvider from '../providers/StoreAppsProvider'
-import {StoresWorkflowConfiguration} from '../types'
-import css from './ActionsList.less'
+import { StoresWorkflowConfiguration } from '../types'
 import ActionsRow from './ActionsRow'
+
+import css from './ActionsList.less'
 
 type Props = {
     actions: StoresWorkflowConfiguration
 }
 
-export default function ActionsList({actions}: Props) {
-    const {shopName, shopType} = useParams<{
+export default function ActionsList({ actions }: Props) {
+    const { shopName, shopType } = useParams<{
         shopType: 'shopify'
         shopName: string
     }>()
-    const {orderDirection, orderBy, orderParam, toggleOrderBy} =
+    const { orderDirection, orderBy, orderParam, toggleOrderBy } =
         useOrderBy<'updated'>('updated')
 
     const sortedActions = useMemo(() => {

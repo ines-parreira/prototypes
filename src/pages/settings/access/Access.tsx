@@ -1,9 +1,11 @@
-import {Label} from '@gorgias/merchant-ui-kit'
+import React, { FormEvent, useCallback, useState } from 'react'
+
 import classnames from 'classnames'
-import {List} from 'immutable'
-import React, {FormEvent, useCallback, useState} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {Button, Form} from 'reactstrap'
+import { List } from 'immutable'
+import { connect, ConnectedProps } from 'react-redux'
+import { Button, Form } from 'reactstrap'
+
+import { Label } from '@gorgias/merchant-ui-kit'
 
 import googleLogo from 'assets/img/integrations/google.svg'
 import microsoftLogo from 'assets/img/integrations/microsoft.svg'
@@ -12,20 +14,21 @@ import PageHeader from 'pages/common/components/PageHeader'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import TwoFactorAuthenticationEnforcement from 'pages/settings/access/TwoFactorAuthenticationEnforcement'
-import {submitSetting} from 'state/currentAccount/actions'
+import { submitSetting } from 'state/currentAccount/actions'
 import {
     getAccessSettings,
     getTwoFAEnforcedDatetime,
 } from 'state/currentAccount/selectors'
 import {
     AccountSettingAccess,
-    AccountSettingAccessSignupMode as SignupMode,
     AccountSettingType,
+    AccountSettingAccessSignupMode as SignupMode,
 } from 'state/currentAccount/types'
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
+
+import SsoToggleButton from './SsoToggleButton'
 
 import css from '../settings.less'
-import SsoToggleButton from './SsoToggleButton'
 
 type Props = ConnectedProps<typeof connector>
 
@@ -70,7 +73,7 @@ function validateDomains(domains: string): string {
 }
 
 export const AccessContainer = (props: Props) => {
-    const {accountDomain, accessSettings, submitSetting} = props
+    const { accountDomain, accessSettings, submitSetting } = props
 
     const allowedDomainsSetting: string[] =
         (
@@ -80,18 +83,18 @@ export const AccessContainer = (props: Props) => {
         accessSettings.getIn(['data', 'signup_mode']) || SignupMode.Invite
     const googleSsoEnabled: boolean = accessSettings.getIn(
         ['data', 'google_sso_enabled'],
-        false
+        false,
     )
     const office365SsoEnabled: boolean = accessSettings.getIn(
         ['data', 'office365_sso_enabled'],
-        false
+        false,
     )
     const twoFAEnforcedDatetime = useAppSelector(getTwoFAEnforcedDatetime)
 
     const [isLoading, setIsLoading] = useState<LoadingKey>()
     const [signupMode, setSignupMode] = useState(signupModeSetting)
     const [allowedDomains, setAllowedDomains] = useState(
-        allowedDomainsSetting.join('\n')
+        allowedDomainsSetting.join('\n'),
     )
 
     const domainError =
@@ -106,7 +109,7 @@ export const AccessContainer = (props: Props) => {
         async (
             loadingKey: LoadingKey,
             overrides?: Partial<AccountSettingAccess['data']>,
-            notification?: string
+            notification?: string,
         ) => {
             const data = {
                 signup_mode: signupMode,
@@ -121,9 +124,9 @@ export const AccessContainer = (props: Props) => {
                 {
                     id: accessSettings.get('id'),
                     type: AccountSettingType.Access,
-                    data: {...data, ...overrides},
+                    data: { ...data, ...overrides },
                 },
-                notification
+                notification,
             )
             setIsLoading(undefined)
         },
@@ -135,33 +138,33 @@ export const AccessContainer = (props: Props) => {
             googleSsoEnabled,
             office365SsoEnabled,
             twoFAEnforcedDatetime,
-        ]
+        ],
     )
 
     const toggleGoogleSso = useCallback(
         (val: boolean) => {
             return saveSettings(
                 LoadingKey.GoogleSSO,
-                {google_sso_enabled: val},
+                { google_sso_enabled: val },
                 `Google Single Sign-On successfully ${
                     val ? 'activated' : 'deactivated'
-                }`
+                }`,
             )
         },
-        [saveSettings]
+        [saveSettings],
     )
 
     const toggleOffice365Sso = useCallback(
         (val: boolean) => {
             return saveSettings(
                 LoadingKey.Office365SSO,
-                {office365_sso_enabled: val},
+                { office365_sso_enabled: val },
                 `Microsoft 365 Single Sign-On successfully ${
                     val ? 'activated' : 'deactivated'
-                }`
+                }`,
             )
         },
-        [saveSettings]
+        [saveSettings],
     )
 
     const toggleSignupModeAllowedDomains = useCallback((val: boolean) => {
@@ -183,10 +186,10 @@ export const AccessContainer = (props: Props) => {
                     val
                         ? 'successfully enforced for all users.'
                         : 'has successfully been made optional.'
-                }`
+                }`,
             )
         },
-        [saveSettings]
+        [saveSettings],
     )
 
     const handleSubmit = useCallback(
@@ -194,7 +197,7 @@ export const AccessContainer = (props: Props) => {
             evt.preventDefault()
             return saveSettings(LoadingKey.Settings)
         },
-        [saveSettings]
+        [saveSettings],
     )
 
     return (
@@ -270,7 +273,7 @@ export const AccessContainer = (props: Props) => {
                                 type="textarea"
                                 rows={Math.max(
                                     allowedDomainsSetting.length + 1,
-                                    1
+                                    1,
                                 )}
                                 help={
                                     !domainError
@@ -326,7 +329,7 @@ const connector = connect(
     }),
     {
         submitSetting,
-    }
+    },
 )
 
 export default connector(AccessContainer)

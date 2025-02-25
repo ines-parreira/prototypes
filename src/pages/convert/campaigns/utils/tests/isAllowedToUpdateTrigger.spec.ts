@@ -1,8 +1,8 @@
-import {campaignTrigger} from 'fixtures/campaign'
-import {CampaignTrigger} from 'pages/convert/campaigns/types/CampaignTrigger'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import { campaignTrigger } from 'fixtures/campaign'
+import { CampaignTrigger } from 'pages/convert/campaigns/types/CampaignTrigger'
+import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 
-import {isAllowedToUpdateTrigger} from '../isAllowedToUpdateTrigger'
+import { isAllowedToUpdateTrigger } from '../isAllowedToUpdateTrigger'
 
 describe('isAllowedToUpdateTrigger', () => {
     const lightTrigger = campaignTrigger as CampaignTrigger
@@ -20,8 +20,8 @@ describe('isAllowedToUpdateTrigger', () => {
         'for trigger `%s` and isSubscriber `%s` should return `%s`',
         (trigger, isSubscriber, expected) => {
             expect(isAllowedToUpdateTrigger(trigger, isSubscriber)).toBe(
-                expected
+                expected,
             )
-        }
+        },
     )
 })

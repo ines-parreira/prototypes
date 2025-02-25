@@ -1,6 +1,7 @@
-import {render, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
+
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import FilterName, {
     getWarningTooltip,
@@ -13,7 +14,7 @@ import {
 describe('FilterName', () => {
     it('renders the filter name correctly', () => {
         const name = 'Test Filter'
-        const {getByText} = render(<FilterName name={name} />)
+        const { getByText } = render(<FilterName name={name} />)
         const filterNameElement = getByText(name)
         expect(filterNameElement).toBeInTheDocument()
     })
@@ -21,8 +22,8 @@ describe('FilterName', () => {
     it('applies the provided className', () => {
         const name = 'Test Filter'
         const className = 'custom-class'
-        const {container} = render(
-            <FilterName name={name} className={className} />
+        const { container } = render(
+            <FilterName name={name} className={className} />,
         )
         const filterNameElement = container.firstChild
         expect(filterNameElement).toHaveClass(className)
@@ -40,7 +41,7 @@ describe('FilterName', () => {
         userEvent.hover(screen.getByTestId('filter-name'))
 
         await waitFor(() =>
-            expect(screen.getByRole('tooltip')).toBeInTheDocument()
+            expect(screen.getByRole('tooltip')).toBeInTheDocument(),
         )
     })
 
@@ -56,9 +57,9 @@ describe('FilterName', () => {
             expect(warningIcon).toBeInTheDocument()
             await waitFor(() => {
                 expect(
-                    screen.getByText(getWarningTooltip(warningType, name))
+                    screen.getByText(getWarningTooltip(warningType, name)),
                 ).toBeInTheDocument()
             })
-        }
+        },
     )
 })

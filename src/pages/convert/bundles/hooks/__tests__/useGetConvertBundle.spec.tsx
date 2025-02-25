@@ -1,10 +1,10 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {convertBundle} from 'fixtures/convertBundle'
-import {useListBundles} from 'models/convert/bundle/queries'
-import {assumeMock} from 'utils/testing'
+import { convertBundle } from 'fixtures/convertBundle'
+import { useListBundles } from 'models/convert/bundle/queries'
+import { assumeMock } from 'utils/testing'
 
-import {useGetConvertBundle} from '../useGetConvertBundle'
+import { useGetConvertBundle } from '../useGetConvertBundle'
 
 jest.mock('models/convert/bundle/queries')
 const useListBundlesMock = assumeMock(useListBundles)
@@ -15,14 +15,14 @@ describe('useGetConvertBundle', () => {
             data: [convertBundle],
         } as any)
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useGetConvertBundle(
                 convertBundle.shop_integration_id,
-                convertBundle.shop_integration_id
-            )
+                convertBundle.shop_integration_id,
+            ),
         )
 
-        const {bundle} = result.current
+        const { bundle } = result.current
 
         expect(bundle).toBe(convertBundle)
     })
@@ -31,14 +31,14 @@ describe('useGetConvertBundle', () => {
             data: [],
         } as any)
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useGetConvertBundle(
                 convertBundle.shop_integration_id,
-                convertBundle.shop_integration_id
-            )
+                convertBundle.shop_integration_id,
+            ),
         )
 
-        const {bundle} = result.current
+        const { bundle } = result.current
 
         expect(bundle).toBe(undefined)
     })

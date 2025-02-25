@@ -1,19 +1,21 @@
-import {JobType, useCreateJob} from '@gorgias/api-queries'
-import {AxiosError} from 'axios'
-import {useCallback, useMemo} from 'react'
-import {Notification, notify as updateNotification} from 'reapop'
-import {UpsertNotificationAction} from 'reapop/dist/reducers/notifications/actions'
+import { useCallback, useMemo } from 'react'
 
-import {getConfigByType} from 'config/views'
+import { AxiosError } from 'axios'
+import { Notification, notify as updateNotification } from 'reapop'
+import { UpsertNotificationAction } from 'reapop/dist/reducers/notifications/actions'
+
+import { JobType, useCreateJob } from '@gorgias/api-queries'
+
+import { getConfigByType } from 'config/views'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {View} from 'models/view/types'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {getActiveView} from 'state/views/selectors'
-import {getMoment} from 'utils/date'
+import { View } from 'models/view/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { getActiveView } from 'state/views/selectors'
+import { getMoment } from 'utils/date'
 
-import {Update} from './types'
+import { Update } from './types'
 import useCancelJob from './useCancelJob'
 import useNotificationPayload from './useNotificationPayload'
 
@@ -27,7 +29,7 @@ const useBulkAction = (level: 'ticket' | 'view', ticketIds?: number[]) => {
                 dirty?: boolean
                 editMode?: boolean
             },
-        [activeViewImmutable]
+        [activeViewImmutable],
     )
     const viewConfig = getConfigByType(activeView.type)
     const objectType = useMemo(
@@ -35,20 +37,20 @@ const useBulkAction = (level: 'ticket' | 'view', ticketIds?: number[]) => {
             ticketIds && ticketIds.length === 1
                 ? (viewConfig.get('singular') as string)
                 : (viewConfig.get('plural') as string),
-        [ticketIds, viewConfig]
+        [ticketIds, viewConfig],
     )
 
-    const {getNotificationParams, getNotificationPayload} =
+    const { getNotificationParams, getNotificationPayload } =
         useNotificationPayload({
             level,
             objectType,
             ticketIds,
         })
-    const {cancelJob} = useCancelJob({
+    const { cancelJob } = useCancelJob({
         getNotificationPayload,
     })
 
-    const {mutateAsync, isLoading} = useCreateJob({
+    const { mutateAsync, isLoading } = useCreateJob({
         mutation: {
             onSuccess: (response) => {
                 dispatch(
@@ -62,16 +64,18 @@ const useBulkAction = (level: 'ticket' | 'view', ticketIds?: number[]) => {
                                           name: 'Cancel',
                                           primary: true,
                                           onClick: () => {
-                                              cancelJob({id: response.data.id!})
+                                              cancelJob({
+                                                  id: response.data.id!,
+                                              })
                                           },
                                       },
                                   ],
                               }
                             : {}),
-                    })
+                    }),
                 )
             },
-            onError: (error: AxiosError<{error: {msg: string}}>) => {
+            onError: (error: AxiosError<{ error: { msg: string } }>) => {
                 dispatch(
                     updateNotification({
                         ...(getNotificationPayload() as Notification),
@@ -82,7 +86,7 @@ const useBulkAction = (level: 'ticket' | 'view', ticketIds?: number[]) => {
                                 : `Failed to apply action on ${
                                       viewConfig.get('plural') as string
                                   } view. Please try again.`,
-                    })
+                    }),
                 )
             },
         },
@@ -93,17 +97,17 @@ const useBulkAction = (level: 'ticket' | 'view', ticketIds?: number[]) => {
             jobType: JobType,
             params?: {
                 updates: XOR<Update>
-            }
+            },
         ) => {
             dispatch(
                 notify(
                     getNotificationPayload(
-                        getNotificationParams(jobType, params)
-                    )
-                )
+                        getNotificationParams(jobType, params),
+                    ),
+                ),
             ) as unknown as UpsertNotificationAction
         },
-        [dispatch, getNotificationParams, getNotificationPayload]
+        [dispatch, getNotificationParams, getNotificationPayload],
     )
 
     if (level === 'view') {
@@ -127,7 +131,7 @@ const useBulkAction = (level: 'ticket' | 'view', ticketIds?: number[]) => {
                     jobType: JobType,
                     params?: {
                         updates: XOR<Update>
-                    }
+                    },
                 ) => {
                     createNotification(jobType, params)
                     return mutateAsync({
@@ -152,7 +156,7 @@ const useBulkAction = (level: 'ticket' | 'view', ticketIds?: number[]) => {
                 jobType: JobType,
                 params?: {
                     updates: XOR<Update>
-                }
+                },
             ) => {
                 createNotification(jobType, params)
                 return mutateAsync({
@@ -177,7 +181,7 @@ const useBulkAction = (level: 'ticket' | 'view', ticketIds?: number[]) => {
             jobType: JobType,
             params?: {
                 updates: XOR<Update>
-            }
+            },
         ) => {
             createNotification(jobType, params)
             return mutateAsync({

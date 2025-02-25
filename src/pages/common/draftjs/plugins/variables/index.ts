@@ -1,7 +1,7 @@
-import {EditorState} from 'draft-js'
+import { EditorState } from 'draft-js'
 
 import decorators from './decorators'
-import {attachEntitiesToVariables} from './utils'
+import { attachEntitiesToVariables } from './utils'
 
 const variablesPlugin = () => {
     return {

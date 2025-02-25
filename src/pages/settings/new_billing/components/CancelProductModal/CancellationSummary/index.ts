@@ -1,1 +1,1 @@
-export {default} from './CancellationSummary'
+export { default } from './CancellationSummary'

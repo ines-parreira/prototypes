@@ -1,17 +1,18 @@
-import noop from 'lodash/noop'
-import React, {useCallback} from 'react'
-import {connect} from 'react-redux'
+import React, { useCallback } from 'react'
 
-import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import {CustomField} from 'custom-fields/types'
-import {getCustomFieldValueSerializer} from 'models/reporting/queryFactories/utils'
-import {CustomFieldFilter, FilterKey} from 'models/stat/types'
+import noop from 'lodash/noop'
+import { connect } from 'react-redux'
+
+import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import { CustomField } from 'custom-fields/types'
+import { getCustomFieldValueSerializer } from 'models/reporting/queryFactories/utils'
+import { CustomFieldFilter, FilterKey } from 'models/stat/types'
 import Filter from 'pages/stats/common/components/Filter'
 import {
     LogicalOperatorEnum,
     LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'
-import {customFieldsFilterLogicalOperators} from 'pages/stats/common/filters/constants'
+import { customFieldsFilterLogicalOperators } from 'pages/stats/common/filters/constants'
 import {
     emptyCustomFieldFilter,
     logSegmentEvent,
@@ -24,14 +25,14 @@ import {
     activeParams,
     selectDropdownTextFields,
 } from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
-import {DropdownOption} from 'pages/stats/types'
+import { DropdownOption } from 'pages/stats/types'
 import {
     getCustomFieldFilterById,
     getCustomFieldSavedFilterById,
 } from 'state/stats/selectors'
-import {mergeCustomFieldsFilter} from 'state/stats/statsSlice'
-import {RootState} from 'state/types'
-import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
+import { mergeCustomFieldsFilter } from 'state/stats/statsSlice'
+import { RootState } from 'state/types'
+import { statFiltersClean, statFiltersDirty } from 'state/ui/stats/actions'
 import {
     removeFilterFromSavedFilterDraft,
     upsertSavedFilterCustomFieldFilter,
@@ -69,8 +70,8 @@ const getOptions = (activeFields: CustomField[], customFieldId: number) => {
                 (opt) => ({
                     value: getCustomFieldValueSerializer(customFieldId)(opt),
                     label: `${opt}`,
-                })
-            )
+                }),
+            ),
         )
     }
 
@@ -91,13 +92,13 @@ export default function CustomFieldsFilter({
     warningType,
 }: Props) {
     const value = inputValue ?? emptyCustomFieldFilter(customFieldId)
-    const {data: {data: activeFields = []} = {}} =
+    const { data: { data: activeFields = [] } = {} } =
         useCustomFieldDefinitions(activeParams)
 
     const options = getOptions(activeFields, customFieldId)
 
     const selectedOptions = options.filter((option) =>
-        value.values.includes(option.value)
+        value.values.includes(option.value),
     )
 
     const handleFilterValuesChange = useCallback(
@@ -114,7 +115,7 @@ export default function CustomFieldsFilter({
             dispatchStatFiltersDirty,
             dispatchUpdate,
             value.operator,
-        ]
+        ],
     )
 
     const handleFilterOperatorChange = useCallback(
@@ -125,13 +126,13 @@ export default function CustomFieldsFilter({
                 operator: operator,
             })
         },
-        [customFieldId, dispatchUpdate, value.values]
+        [customFieldId, dispatchUpdate, value.values],
     )
 
     const onOptionChange = (opt: DropdownOption) => {
         if (value.values.includes(opt.value)) {
             handleFilterValuesChange(
-                value.values.filter((tagId) => String(tagId) !== opt?.value)
+                value.values.filter((tagId) => String(tagId) !== opt?.value),
             )
         } else {
             handleFilterValuesChange([...value.values, opt.value])
@@ -145,7 +146,7 @@ export default function CustomFieldsFilter({
     const handleDropdownClosed = () => {
         logSegmentEvent(
             `tf_${filterName}`,
-            LogicalOperatorLabel[value.operator]
+            LogicalOperatorLabel[value.operator],
         )
         dispatchStatFiltersClean()
     }
@@ -153,7 +154,7 @@ export default function CustomFieldsFilter({
     return (
         <Filter
             filterName={filterName}
-            filterOptionGroups={[{options}]}
+            filterOptionGroups={[{ options }]}
             selectedOptions={selectedOptions}
             logicalOperators={customFieldsFilterLogicalOperators}
             selectedLogicalOperator={value.operator}
@@ -173,7 +174,7 @@ export default function CustomFieldsFilter({
             onDropdownOpen={handleDropdownOpen}
             onDropdownClosed={handleDropdownClosed}
             initializeAsOpen={initializeAsOpen}
-            filterErrors={{warningType}}
+            filterErrors={{ warningType }}
             isDisabled={isDisabled}
         />
     )
@@ -189,7 +190,7 @@ export const CustomFieldsFilterWithState = connect(
             mergeCustomFieldsFilter(emptyCustomFieldFilter(customFieldId)),
         dispatchStatFiltersDirty: statFiltersDirty,
         dispatchStatFiltersClean: statFiltersClean,
-    }
+    },
 )(CustomFieldsFilter)
 
 export const CustomFieldsFilterWithSavedState = connect(
@@ -204,5 +205,5 @@ export const CustomFieldsFilterWithSavedState = connect(
                 filterKey: FilterKey.CustomFields,
                 customFieldId,
             }),
-    }
+    },
 )(CustomFieldsFilter)

@@ -1,11 +1,11 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {Reason, ReasonsToCanduContent} from '../types'
+import { Reason, ReasonsToCanduContent } from '../types'
 
 const useFindChurnMitigationOfferId = (
     primaryReason: Reason | null,
     secondaryReason: Reason | null,
-    reasonsToCanduContents: ReasonsToCanduContent[]
+    reasonsToCanduContents: ReasonsToCanduContent[],
 ) => {
     return useMemo(
         () =>
@@ -14,9 +14,9 @@ const useFindChurnMitigationOfferId = (
                     reasonToCanduContent.primaryReasonLabel ===
                         primaryReason?.label &&
                     reasonToCanduContent.secondaryReasonLabel ===
-                        secondaryReason?.label
+                        secondaryReason?.label,
             )?.canduContentID || null,
-        [primaryReason, secondaryReason, reasonsToCanduContents]
+        [primaryReason, secondaryReason, reasonsToCanduContents],
     )
 }
 

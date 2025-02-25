@@ -1,17 +1,17 @@
-import {ChatApplicationAutomationSettings} from '../../../../models/chatApplicationAutomationSettings/types'
+import { ChatApplicationAutomationSettings } from '../../../../models/chatApplicationAutomationSettings/types'
 import {
+    chatApplicationAutomationSettingsFetched,
     chatApplicationAutomationSettingsUpdated,
     chatsApplicationAutomationSettingsFetched,
-    chatApplicationAutomationSettingsFetched,
 } from '../actions'
 import reducer from '../reducer'
 
 const applicationAutomationSettings1: ChatApplicationAutomationSettings = {
     id: 1,
     applicationId: 10,
-    articleRecommendation: {enabled: true},
-    orderManagement: {enabled: true},
-    workflows: {enabled: true},
+    articleRecommendation: { enabled: true },
+    orderManagement: { enabled: true },
+    workflows: { enabled: true },
     createdDatetime: '2022-10-08T09:01:01.054322+00:00',
     updatedDatetime: '2022-10-08T09:01:01.054322+00:00',
 }
@@ -19,9 +19,9 @@ const applicationAutomationSettings1: ChatApplicationAutomationSettings = {
 const applicationAutomationSettings2: ChatApplicationAutomationSettings = {
     id: 2,
     applicationId: 15,
-    articleRecommendation: {enabled: false},
-    orderManagement: {enabled: false},
-    workflows: {enabled: false},
+    articleRecommendation: { enabled: false },
+    orderManagement: { enabled: false },
+    workflows: { enabled: false },
     createdDatetime: '2023-01-10T10:11:00.077382+00:00',
     updatedDatetime: '2023-01-10T10:11:00.077382+00:00',
 }
@@ -34,7 +34,7 @@ describe('chatsApplicationAutomationSettings reducers', () => {
                 chatsApplicationAutomationSettingsFetched([
                     applicationAutomationSettings1,
                     applicationAutomationSettings2,
-                ])
+                ]),
             )
 
             expect(state).toEqual({
@@ -76,8 +76,8 @@ describe('chatsApplicationAutomationSettings reducers', () => {
                         applicationAutomationSettings1,
                 },
                 chatApplicationAutomationSettingsFetched(
-                    applicationAutomationSettings2
-                )
+                    applicationAutomationSettings2,
+                ),
             )
 
             expect(state).toEqual({
@@ -122,9 +122,9 @@ describe('chatsApplicationAutomationSettings reducers', () => {
                 },
                 chatApplicationAutomationSettingsUpdated({
                     ...applicationAutomationSettings2,
-                    orderManagement: {enabled: true},
+                    orderManagement: { enabled: true },
                     updatedDatetime: '2023-03-01T11:10:05.000987+00:00',
-                })
+                }),
             )
 
             expect(state).toEqual({
@@ -164,8 +164,8 @@ describe('chatsApplicationAutomationSettings reducers', () => {
                         applicationAutomationSettings1,
                 },
                 chatApplicationAutomationSettingsUpdated(
-                    applicationAutomationSettings2
-                )
+                    applicationAutomationSettings2,
+                ),
             )
 
             expect(state).toEqual({

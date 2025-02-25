@@ -1,23 +1,21 @@
-import {produce} from 'immer'
-import {Map} from 'immutable'
+import { produce } from 'immer'
+import { Map } from 'immutable'
 import _trim from 'lodash/trim'
 
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
+import { Campaign } from 'pages/convert/campaigns/types/Campaign'
 import {
     CampaignContactFormAttachment,
     CampaignProductRecommendation,
 } from 'pages/convert/campaigns/types/CampaignAttachment'
-import {CampaignDiscountOffer} from 'pages/convert/campaigns/types/CampaignDiscountOffer'
-import {CampaignProduct} from 'pages/convert/campaigns/types/CampaignProduct'
-import {CampaignTrigger} from 'pages/convert/campaigns/types/CampaignTrigger'
-
-import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
-
-import {createTriggerRule} from 'pages/convert/campaigns/utils/createTriggerRule'
-import {evaluateCampaignCopySuggestion} from 'pages/convert/campaigns/utils/evaluateCampaignCopySuggestion'
-import {transformDiscountOfferToAttachment} from 'pages/convert/campaigns/utils/transformDiscountOfferToAttachment'
-import {transformProductToAttachment} from 'pages/convert/campaigns/utils/transformProductToAttachment'
+import { CampaignDiscountOffer } from 'pages/convert/campaigns/types/CampaignDiscountOffer'
+import { CampaignProduct } from 'pages/convert/campaigns/types/CampaignProduct'
+import { CampaignTrigger } from 'pages/convert/campaigns/types/CampaignTrigger'
+import { CampaignStatus } from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
+import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import { createTriggerRule } from 'pages/convert/campaigns/utils/createTriggerRule'
+import { evaluateCampaignCopySuggestion } from 'pages/convert/campaigns/utils/evaluateCampaignCopySuggestion'
+import { transformDiscountOfferToAttachment } from 'pages/convert/campaigns/utils/transformDiscountOfferToAttachment'
+import { transformProductToAttachment } from 'pages/convert/campaigns/utils/transformProductToAttachment'
 
 type CreateCampaignPayloadType = {
     campaignData: Campaign
@@ -68,7 +66,7 @@ export const createCampaignPayload = ({
 
         if (discountOffers.length > 0) {
             const discountOfferAttachment = transformDiscountOfferToAttachment(
-                discountOffers[0]
+                discountOffers[0],
             )
 
             draft.attachments = [
@@ -89,7 +87,7 @@ export const createCampaignPayload = ({
                     },
                     isConvertSubscriber,
                     utmEnabled,
-                    utmQueryString
+                    utmQueryString,
                 )
             })
 
@@ -112,7 +110,7 @@ export const createCampaignPayload = ({
                 ...draft.meta,
                 copySuggestion: evaluateCampaignCopySuggestion(
                     campaignData.message_text,
-                    draft.meta.copySuggestion
+                    draft.meta.copySuggestion,
                 ),
             }
         }

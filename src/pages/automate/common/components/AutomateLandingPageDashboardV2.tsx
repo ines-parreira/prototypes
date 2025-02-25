@@ -1,26 +1,28 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
-import React, {useState} from 'react'
-import {useHistory} from 'react-router-dom'
+import React, { useState } from 'react'
 
-import {useAutomateMetricsTrend} from 'hooks/reporting/automate/useAutomationDataset'
-import {useTicketHandleTimeTrend} from 'hooks/reporting/metricTrends'
+import classNames from 'classnames'
+import { useHistory } from 'react-router-dom'
+
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+
+import { useAutomateMetricsTrend } from 'hooks/reporting/automate/useAutomationDataset'
+import { useTicketHandleTimeTrend } from 'hooks/reporting/metricTrends'
 import useAppSelector from 'hooks/useAppSelector'
-import {StatsFilters} from 'models/stat/types'
+import { StatsFilters } from 'models/stat/types'
 import {
     AutomatedInteractionsMetric,
     AutomationRateMetric,
 } from 'pages/automate/automate-metrics'
-import {AGENT_COST_PER_TICKET} from 'pages/automate/automate-metrics/constants'
+import { AGENT_COST_PER_TICKET } from 'pages/automate/automate-metrics/constants'
 import css from 'pages/automate/common/components/AutomateLandingPage.less'
-import {AutomateSavingsCard} from 'pages/automate/common/components/AutomateSavingsCard'
-import {useMoneySavedPerInteractionWithAutomate} from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
+import { AutomateSavingsCard } from 'pages/automate/common/components/AutomateSavingsCard'
+import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
 import Button from 'pages/common/components/button/Button'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
 import TipsToggle from 'pages/stats/TipsToggle'
-import {getAgentCostsSettings} from 'state/currentAccount/selectors'
-import {getTimezone} from 'state/currentUser/selectors'
+import { getAgentCostsSettings } from 'state/currentAccount/selectors'
+import { getTimezone } from 'state/currentUser/selectors'
 
 const DEFAULT_TIMEZONE = 'UTC'
 
@@ -30,9 +32,9 @@ type Props = {
     filters: StatsFilters
 }
 
-const AutomateLandingPageDashboardV2 = ({filters}: Props) => {
+const AutomateLandingPageDashboardV2 = ({ filters }: Props) => {
     const moneySavedPerInteraction = useMoneySavedPerInteractionWithAutomate(
-        AGENT_COST_PER_TICKET
+        AGENT_COST_PER_TICKET,
     )
 
     const agentCosts = useAppSelector(getAgentCostsSettings)
@@ -42,7 +44,7 @@ const AutomateLandingPageDashboardV2 = ({filters}: Props) => {
     const [isTipsVisible, setIsTipVisible] = useState(false)
 
     const userTimezone = useAppSelector(
-        (state) => getTimezone(state) || DEFAULT_TIMEZONE
+        (state) => getTimezone(state) || DEFAULT_TIMEZONE,
     )
 
     const {
@@ -54,7 +56,7 @@ const AutomateLandingPageDashboardV2 = ({filters}: Props) => {
 
     const ticketHandleTimeTrend = useTicketHandleTimeTrend(
         filters,
-        userTimezone
+        userTimezone,
     )
 
     const handleViewFullReport = () => {
@@ -99,7 +101,7 @@ const AutomateLandingPageDashboardV2 = ({filters}: Props) => {
                             View Full Report
                             <i
                                 className="material-icons"
-                                style={{fontSize: 20}}
+                                style={{ fontSize: 20 }}
                                 aria-label="arrow forward"
                             >
                                 arrow_forward

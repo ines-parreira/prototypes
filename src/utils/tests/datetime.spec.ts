@@ -1,11 +1,11 @@
 import {
-    DateFormatType,
-    TimeFormatType,
     DateAndTimeFormatting,
+    DateFormatType,
     DateTimeFormatMapper,
     DateTimeFormatType,
+    TimeFormatType,
 } from 'constants/datetime'
-import {getDateAndTimeFormat} from 'utils/datetime'
+import { getDateAndTimeFormat } from 'utils/datetime'
 
 describe('getDateAndTimeFormat', () => {
     const timeSetting24hour = TimeFormatType.TwentyFourHour
@@ -41,10 +41,10 @@ describe('getDateAndTimeFormat', () => {
                 getDateAndTimeFormat(
                     dateSetting,
                     timeSetting,
-                    DateAndTimeFormatting.Time
-                )
+                    DateAndTimeFormatting.Time,
+                ),
             ).toEqual(expectedFormat)
-        }
+        },
     )
 
     it.each([
@@ -83,10 +83,10 @@ describe('getDateAndTimeFormat', () => {
                 getDateAndTimeFormat(
                     dateSetting,
                     timeSetting,
-                    DateAndTimeFormatting.TimeDoubleDigitHour
-                )
+                    DateAndTimeFormatting.TimeDoubleDigitHour,
+                ),
             ).toEqual(expectedFormat)
-        }
+        },
     )
 
     it.each([
@@ -117,10 +117,10 @@ describe('getDateAndTimeFormat', () => {
                 getDateAndTimeFormat(
                     dateSetting,
                     timeSetting,
-                    DateAndTimeFormatting.TimeHour
-                )
+                    DateAndTimeFormatting.TimeHour,
+                ),
             ).toEqual(expectedFormat)
-        }
+        },
     )
 
     it.each([
@@ -151,10 +151,10 @@ describe('getDateAndTimeFormat', () => {
                 getDateAndTimeFormat(
                     dateSetting,
                     timeSetting,
-                    DateAndTimeFormatting.CompactDate
-                )
+                    DateAndTimeFormatting.CompactDate,
+                ),
             ).toEqual(expectedFormat)
-        }
+        },
     )
 
     it.each([
@@ -193,10 +193,10 @@ describe('getDateAndTimeFormat', () => {
                 getDateAndTimeFormat(
                     dateSetting,
                     timeSetting,
-                    DateAndTimeFormatting.CompactDateWithTime
-                )
+                    DateAndTimeFormatting.CompactDateWithTime,
+                ),
             ).toEqual(expectedFormat)
-        }
+        },
     )
 
     it.each([
@@ -227,10 +227,10 @@ describe('getDateAndTimeFormat', () => {
                 getDateAndTimeFormat(
                     dateSetting,
                     timeSetting,
-                    DateAndTimeFormatting.ShortDate
-                )
+                    DateAndTimeFormatting.ShortDate,
+                ),
             ).toEqual(expectedFormat)
-        }
+        },
     )
 
     it.each([
@@ -269,10 +269,10 @@ describe('getDateAndTimeFormat', () => {
                 getDateAndTimeFormat(
                     dateSetting,
                     timeSetting,
-                    DateAndTimeFormatting.ShortDateWithOrdinalSuffixDay
-                )
+                    DateAndTimeFormatting.ShortDateWithOrdinalSuffixDay,
+                ),
             ).toEqual(expectedFormat)
-        }
+        },
     )
 
     it.each([
@@ -311,10 +311,10 @@ describe('getDateAndTimeFormat', () => {
                 getDateAndTimeFormat(
                     dateSetting,
                     timeSetting,
-                    DateAndTimeFormatting.ShortDateWithDayOfWeek
-                )
+                    DateAndTimeFormatting.ShortDateWithDayOfWeek,
+                ),
             ).toEqual(expectedFormat)
-        }
+        },
     )
 
     it.each([
@@ -345,10 +345,10 @@ describe('getDateAndTimeFormat', () => {
                 getDateAndTimeFormat(
                     dateSetting,
                     timeSetting,
-                    DateAndTimeFormatting.ShortDateWithYear
-                )
+                    DateAndTimeFormatting.ShortDateWithYear,
+                ),
             ).toEqual(expectedFormat)
-        }
+        },
     )
 
     it.each([
@@ -391,10 +391,10 @@ describe('getDateAndTimeFormat', () => {
                 getDateAndTimeFormat(
                     dateSetting,
                     timeSetting,
-                    DateAndTimeFormatting.ShortDateWithYearAndOrdinalSuffixDay
-                )
+                    DateAndTimeFormatting.ShortDateWithYearAndOrdinalSuffixDay,
+                ),
             ).toEqual(expectedFormat)
-        }
+        },
     )
 
     it.each([
@@ -433,10 +433,10 @@ describe('getDateAndTimeFormat', () => {
                 getDateAndTimeFormat(
                     dateSetting,
                     timeSetting,
-                    DateAndTimeFormatting.ShortDateWithDayOfWeekAndYear
-                )
+                    DateAndTimeFormatting.ShortDateWithDayOfWeekAndYear,
+                ),
             ).toEqual(expectedFormat)
-        }
+        },
     )
 
     it.each([
@@ -467,10 +467,10 @@ describe('getDateAndTimeFormat', () => {
                 getDateAndTimeFormat(
                     dateSetting,
                     timeSetting,
-                    DateAndTimeFormatting.LongDate
-                )
+                    DateAndTimeFormatting.LongDate,
+                ),
             ).toEqual(expectedFormat)
-        }
+        },
     )
 
     it.each([
@@ -509,10 +509,10 @@ describe('getDateAndTimeFormat', () => {
                 getDateAndTimeFormat(
                     dateSetting,
                     timeSetting,
-                    DateAndTimeFormatting.LongDateWithDayOfWeek
-                )
+                    DateAndTimeFormatting.LongDateWithDayOfWeek,
+                ),
             ).toEqual(expectedFormat)
-        }
+        },
     )
 
     it.each([
@@ -543,10 +543,10 @@ describe('getDateAndTimeFormat', () => {
                 getDateAndTimeFormat(
                     dateSetting,
                     timeSetting,
-                    DateAndTimeFormatting.LongDateWithYear
-                )
+                    DateAndTimeFormatting.LongDateWithYear,
+                ),
             ).toEqual(expectedFormat)
-        }
+        },
     )
 
     it.each([
@@ -585,10 +585,10 @@ describe('getDateAndTimeFormat', () => {
                 getDateAndTimeFormat(
                     dateSetting,
                     timeSetting,
-                    DateAndTimeFormatting.LongDateWithYearAndTime
-                )
+                    DateAndTimeFormatting.LongDateWithYearAndTime,
+                ),
             ).toEqual(expectedFormat)
-        }
+        },
     )
 
     it.each([
@@ -619,10 +619,10 @@ describe('getDateAndTimeFormat', () => {
                 getDateAndTimeFormat(
                     dateSetting,
                     timeSetting,
-                    DateAndTimeFormatting.MonthAndYearShort
-                )
+                    DateAndTimeFormatting.MonthAndYearShort,
+                ),
             ).toEqual(expectedFormat)
-        }
+        },
     )
 
     it.each([
@@ -653,10 +653,10 @@ describe('getDateAndTimeFormat', () => {
                 getDateAndTimeFormat(
                     dateSetting,
                     timeSetting,
-                    DateAndTimeFormatting.MonthAndYearLong
-                )
+                    DateAndTimeFormatting.MonthAndYearLong,
+                ),
             ).toEqual(expectedFormat)
-        }
+        },
     )
 
     it.each([
@@ -695,9 +695,9 @@ describe('getDateAndTimeFormat', () => {
                 getDateAndTimeFormat(
                     dateSetting,
                     timeSetting,
-                    DateAndTimeFormatting.RelativeDateAndTime
-                )
+                    DateAndTimeFormatting.RelativeDateAndTime,
+                ),
             ).toEqual(expectedFormat)
-        }
+        },
     )
 })

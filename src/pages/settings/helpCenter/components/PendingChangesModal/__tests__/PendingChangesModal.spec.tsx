@@ -1,5 +1,6 @@
-import {act, fireEvent, render} from '@testing-library/react'
 import React from 'react'
+
+import { act, fireEvent, render } from '@testing-library/react'
 
 import PendingChangesModal from '../PendingChangesModal'
 
@@ -16,7 +17,7 @@ describe('<PendingChangesModal />', () => {
     const handleOnDiscard = jest.fn()
 
     it('matches snapshot', () => {
-        const {container} = render(
+        const { container } = render(
             <PendingChangesModal
                 when={true}
                 show
@@ -26,14 +27,14 @@ describe('<PendingChangesModal />', () => {
             />,
             {
                 container: document.body,
-            }
+            },
         )
 
         expect(container).toMatchSnapshot()
     })
 
     it('has the correct wording', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <PendingChangesModal
                 when={true}
                 show
@@ -42,7 +43,7 @@ describe('<PendingChangesModal />', () => {
                 onDiscard={handleOnDiscard}
                 title="Title text"
                 saveText="Save text button"
-            />
+            />,
         )
 
         expect(getByText(/title text/i)).toBeInTheDocument()
@@ -50,54 +51,54 @@ describe('<PendingChangesModal />', () => {
     })
 
     it('calls the onSave callback', () => {
-        const {getByRole} = render(
+        const { getByRole } = render(
             <PendingChangesModal
                 when={true}
                 show
                 onSave={handleOnSave}
                 onContinueEditing={handleOnEdit}
                 onDiscard={handleOnDiscard}
-            />
+            />,
         )
 
         act(() => {
-            fireEvent.click(getByRole('button', {name: /save/i}))
+            fireEvent.click(getByRole('button', { name: /save/i }))
         })
 
         expect(handleOnSave).toHaveBeenCalled()
     })
 
     it('calls the onContinueEditing callback', () => {
-        const {getByRole} = render(
+        const { getByRole } = render(
             <PendingChangesModal
                 when={true}
                 show
                 onSave={handleOnSave}
                 onContinueEditing={handleOnEdit}
                 onDiscard={handleOnDiscard}
-            />
+            />,
         )
 
         act(() => {
-            fireEvent.click(getByRole('button', {name: /back to editing/i}))
+            fireEvent.click(getByRole('button', { name: /back to editing/i }))
         })
 
         expect(handleOnEdit).toHaveBeenCalled()
     })
 
     it('calls the onDiscard callback', () => {
-        const {getByRole} = render(
+        const { getByRole } = render(
             <PendingChangesModal
                 when={true}
                 show
                 onSave={handleOnSave}
                 onContinueEditing={handleOnEdit}
                 onDiscard={handleOnDiscard}
-            />
+            />,
         )
 
         act(() => {
-            fireEvent.click(getByRole('button', {name: /discard/i}))
+            fireEvent.click(getByRole('button', { name: /discard/i }))
         })
 
         expect(handleOnDiscard).toHaveBeenCalled()

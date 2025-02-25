@@ -1,22 +1,23 @@
-import {screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {account} from 'fixtures/account'
-import {billingState} from 'fixtures/billing'
+import { account } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
 import {
     AUTOMATION_PRODUCT_ID,
-    HELPDESK_PRODUCT_ID,
     basicMonthlyAutomationPlan,
     basicMonthlyHelpdeskPlan,
+    HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
-import {selfServiceConfiguration1} from 'fixtures/self_service_configurations'
-import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
+import { selfServiceConfiguration1 } from 'fixtures/self_service_configurations'
+import { IntegrationType, ShopifyIntegration } from 'models/integration/types'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import {RootState, StoreDispatch} from 'state/types'
-import {renderWithRouter} from 'utils/testing'
+import { RootState, StoreDispatch } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
 import ReturnOrderFlowViewContainer from '../ReturnOrderFlowViewContainer'
 
@@ -57,7 +58,7 @@ describe('<ReturnOrderFlowViewContainer />', () => {
         ).mockReturnValue({
             isFetchPending: false,
             isUpdatePending: false,
-            storeIntegration: {id: 1} as ShopifyIntegration,
+            storeIntegration: { id: 1 } as ShopifyIntegration,
             selfServiceConfiguration: selfServiceConfiguration1,
             handleSelfServiceConfigurationUpdate: () => Promise.resolve(),
         })
@@ -67,7 +68,7 @@ describe('<ReturnOrderFlowViewContainer />', () => {
         renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <ReturnOrderFlowViewContainer />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('Redirect')).toBeInTheDocument()
@@ -93,7 +94,7 @@ describe('<ReturnOrderFlowViewContainer />', () => {
                 })}
             >
                 <ReturnOrderFlowViewContainer />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('Return order')).toBeInTheDocument()

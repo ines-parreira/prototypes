@@ -1,13 +1,13 @@
-import {render} from '@testing-library/react'
-import {ContentState} from 'draft-js'
 import * as React from 'react'
+
+import { render } from '@testing-library/react'
+import { ContentState } from 'draft-js'
 
 import LinkPopover from 'pages/common/draftjs/plugins/toolbar/components/LinkPopover'
 import createLink from 'pages/common/draftjs/plugins/toolbar/decorators/link'
-import {DecoratorComponentProps} from 'pages/common/draftjs/plugins/types'
-import {convertFromHTML} from 'utils/editor'
-
-import {assumeMock, renderWithStore} from 'utils/testing'
+import { DecoratorComponentProps } from 'pages/common/draftjs/plugins/types'
+import { convertFromHTML } from 'utils/editor'
+import { assumeMock, renderWithStore } from 'utils/testing'
 
 jest.mock('pages/common/draftjs/plugins/toolbar/components/LinkPopover')
 const LinkPopoverMock = assumeMock(LinkPopover)
@@ -68,14 +68,14 @@ describe('link decorator', () => {
                             isFocused: true,
                         },
                     } as any,
-                }
+                },
             )
 
             expect(LinkPopoverMock).toHaveBeenCalledWith(
                 expect.objectContaining({
                     onEdit: expect.any(Function),
                 }),
-                {}
+                {},
             )
         })
 
@@ -91,14 +91,14 @@ describe('link decorator', () => {
                     {...minProps}
                     contentState={contentState}
                     entityKey={contentState.getFirstBlock().getEntityAt(0)}
-                />
+                />,
             )
 
             expect(LinkPopoverMock).toHaveBeenCalledWith(
                 expect.objectContaining({
                     onEdit: undefined,
                 }),
-                {}
+                {},
             )
         })
 
@@ -125,14 +125,14 @@ describe('link decorator', () => {
                     }
                     entityKey={contentState.getFirstBlock().getEntityAt(0)}
                     decoratedText={url}
-                />
+                />,
             )
 
             expect(LinkPopoverMock).toHaveBeenCalledWith(
                 expect.objectContaining({
                     onDelete: undefined,
                 }),
-                {}
+                {},
             )
         })
     })

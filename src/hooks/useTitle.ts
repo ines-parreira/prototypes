@@ -1,4 +1,4 @@
-import {useEffect} from 'react'
+import { useEffect } from 'react'
 
 export const TITLE_RESET_DELAY = 200
 

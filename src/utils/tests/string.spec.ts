@@ -10,7 +10,7 @@ describe('string util', () => {
     describe('removeSuffix', () => {
         it("should return the data if it's not a string", () => {
             expect(removeSuffix(null as any, 'hey')).toEqual(null)
-            expect(removeSuffix({foo: 'bar'} as any, 'hey')).toEqual({
+            expect(removeSuffix({ foo: 'bar' } as any, 'hey')).toEqual({
                 foo: 'bar',
             })
             expect(removeSuffix(1 as any, 'hey')).toEqual(1)
@@ -62,7 +62,7 @@ describe('string util', () => {
 
         it('should return first n words in a text with newlines', () => {
             expect(truncateWords('   foo  \n\n\r\n bar  \n\n  baz', 2)).toBe(
-                '   foo  \n\n\r\n bar'
+                '   foo  \n\n\r\n bar',
             )
         })
 
@@ -82,7 +82,7 @@ describe('string util', () => {
 
         it('should return first n words in a text with special chars and numbers', () => {
             expect(truncateWords('foo@#123$% bar-_&][ baz', 2)).toBe(
-                'foo@#123$% bar-_&]['
+                'foo@#123$% bar-_&][',
             )
         })
     })
@@ -98,7 +98,7 @@ describe('string util', () => {
 
         it('should return string for array with length > 1', () => {
             expect(humanizeArray(['plop', 'plip', 'plap'])).toBe(
-                'plop, plip and plap'
+                'plop, plip and plap',
             )
         })
     })

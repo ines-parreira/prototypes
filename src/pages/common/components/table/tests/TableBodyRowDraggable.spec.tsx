@@ -1,15 +1,16 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import {useReorderDnD} from 'pages/common/hooks/useReorderDnD'
+import { render, screen } from '@testing-library/react'
 
-import {TableBodyRowDraggable} from '../TableBodyRowDraggable'
+import TableBodyRow from 'pages/common/components/table/TableBodyRow'
+import { useReorderDnD } from 'pages/common/hooks/useReorderDnD'
+
+import { TableBodyRowDraggable } from '../TableBodyRowDraggable'
 
 jest.mock('pages/common/hooks/useReorderDnD', () => ({
     useReorderDnD: jest.fn(() => ({
-        dragRef: {current: null},
-        dropRef: {current: null},
+        dragRef: { current: null },
+        dropRef: { current: null },
         handlerId: 'handlerId',
         isDragging: false,
     })),
@@ -17,7 +18,7 @@ jest.mock('pages/common/hooks/useReorderDnD', () => ({
 
 jest.mock('pages/common/components/table/TableBodyRow', () => ({
     __esModule: true,
-    default: jest.fn(({children}) => (
+    default: jest.fn(({ children }) => (
         <table>
             <tbody>
                 <tr>{children}</tr>
@@ -49,7 +50,7 @@ describe('TableBodyRowDraggable', () => {
                 onHover: defaultProps.onMoveEntity,
                 onDrop: defaultProps.onDropEntity,
                 onCancel: defaultProps.onCancelDnD,
-            }
+            },
         )
     })
 
@@ -57,7 +58,7 @@ describe('TableBodyRowDraggable', () => {
         render(<TableBodyRowDraggable {...defaultProps} />)
         screen.getByText('drag_indicator')
         expect(
-            screen.getByText('drag_indicator').classList.contains('invisible')
+            screen.getByText('drag_indicator').classList.contains('invisible'),
         ).toBe(false)
     })
 
@@ -67,7 +68,7 @@ describe('TableBodyRowDraggable', () => {
             expect.objectContaining({
                 className: defaultProps.className,
             }),
-            {}
+            {},
         )
     })
 
@@ -77,9 +78,9 @@ describe('TableBodyRowDraggable', () => {
             expect.objectContaining({
                 className: defaultProps.className,
                 'data-handler-id': 'handlerId',
-                style: {opacity: 1},
+                style: { opacity: 1 },
             }),
-            {}
+            {},
         )
     })
 
@@ -88,7 +89,7 @@ describe('TableBodyRowDraggable', () => {
         expect(
             screen
                 .getByText('drag_indicator')
-                .classList.contains('dragIndicatorDisabled')
+                .classList.contains('dragIndicatorDisabled'),
         ).toBe(true)
     })
 
@@ -97,10 +98,10 @@ describe('TableBodyRowDraggable', () => {
             <TableBodyRowDraggable
                 {...defaultProps}
                 isDragIndicatorInvisible={true}
-            />
+            />,
         )
         expect(
-            screen.getByText('drag_indicator').classList.contains('invisible')
+            screen.getByText('drag_indicator').classList.contains('invisible'),
         ).toBe(true)
     })
 })

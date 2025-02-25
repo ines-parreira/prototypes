@@ -1,1 +1,1 @@
-export {default} from './FileSelectedArea'
+export { default } from './FileSelectedArea'

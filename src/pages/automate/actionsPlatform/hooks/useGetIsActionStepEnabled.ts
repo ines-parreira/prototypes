@@ -1,9 +1,10 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {useCallback} from 'react'
+import { useCallback } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import {ActionTemplate} from '../types'
+import { FeatureFlagKey } from 'config/featureFlags'
+
+import { ActionTemplate } from '../types'
 
 const useGetIsActionStepEnabled = () => {
     const enabledSteps:
@@ -18,7 +19,7 @@ const useGetIsActionStepEnabled = () => {
                 !enabledSteps.includes(internalId)
             )
         },
-        [enabledSteps]
+        [enabledSteps],
     )
 }
 

@@ -1,4 +1,4 @@
-import React, {ComponentProps, useMemo} from 'react'
+import React, { ComponentProps, useMemo } from 'react'
 
 import UpgradeButton from 'pages/common/components/UpgradeButton'
 

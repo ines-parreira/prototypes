@@ -1,6 +1,7 @@
+import React, { useMemo, useState } from 'react'
+
 import classnames from 'classnames'
-import {Map} from 'immutable'
-import React, {useMemo, useState} from 'react'
+import { Map } from 'immutable'
 
 import {
     GORGIAS_CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
@@ -17,14 +18,12 @@ import {
     GorgiasChatAvatarNameType,
     GorgiasChatLauncherType,
 } from 'models/integration/types'
-
 import * as ToggleButton from 'pages/common/components/ToggleButton'
-import {getCurrentUser} from 'state/currentUser/selectors'
+import { getCurrentUser } from 'state/currentUser/selectors'
 
 import ChatIntegrationPreview from '../../GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 import ChatIntegrationPreviewContent from '../../GorgiasChatIntegrationPreview/ChatIntegrationPreviewContent'
 import ConversationTimestamp from '../../GorgiasChatIntegrationPreview/ConversationTimestamp'
-
 import MessageContent from '../../GorgiasChatIntegrationPreview/MessageContent'
 import OfflineMessages from '../../GorgiasChatIntegrationPreview/OfflineMessages'
 
@@ -94,38 +93,38 @@ const GorgiasChatCreationWizardPreview: React.FC<Props> = ({
         mainColorProp ??
         integration.getIn(
             ['decoration', 'main_color'],
-            GORGIAS_CHAT_DEFAULT_COLOR
+            GORGIAS_CHAT_DEFAULT_COLOR,
         )
 
     const conversationColor: string =
         conversationColorProp ??
         integration.getIn(
             ['decoration', 'conversation_color'],
-            GORGIAS_CHAT_DEFAULT_COLOR
+            GORGIAS_CHAT_DEFAULT_COLOR,
         )
 
     const mainFontFamily: string =
         mainColorProp ??
         integration.getIn(
             ['decoration', 'main_font_family'],
-            GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT
+            GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
         )
 
     const language: string =
         languageProp ??
         integration.getIn(
             ['meta', 'language'],
-            GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT
+            GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
         )
 
     const displayBotLabel: boolean = integration.getIn(
         ['decoration', 'display_bot_label'],
-        true
+        true,
     )
 
     const useMainColorOutsideBusinessHours: boolean = integration.getIn(
         ['decoration', 'use_main_color_outside_business_hours'],
-        false
+        false,
     )
 
     const widgetTranslatedTexts = GORGIAS_CHAT_WIDGET_TEXTS[language]

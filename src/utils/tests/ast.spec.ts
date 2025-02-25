@@ -1,4 +1,4 @@
-import {isTimedelta} from '../ast'
+import { isTimedelta } from '../ast'
 
 describe('ast util', () => {
     describe('isTimedelta', () => {
@@ -6,7 +6,7 @@ describe('ast util', () => {
             expect(isTimedelta(undefined)).toBe(false)
             expect(isTimedelta(null)).toBe(false)
             expect(isTimedelta(1)).toBe(false)
-            expect(isTimedelta({foo: 'bar'})).toBe(false)
+            expect(isTimedelta({ foo: 'bar' })).toBe(false)
         })
 
         it('should return false if data does not match the regex (raw=false)', () => {

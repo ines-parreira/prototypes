@@ -1,6 +1,6 @@
-import {SLAPolicy} from '@gorgias/api-queries'
+import { SLAPolicy } from '@gorgias/api-queries'
 
-import {UISLAPolicy} from 'pages/settings/SLAs/features/SLAList/types'
+import { UISLAPolicy } from 'pages/settings/SLAs/features/SLAList/types'
 
 export default function makeUISLAPolicy(policy: SLAPolicy): UISLAPolicy {
     return {

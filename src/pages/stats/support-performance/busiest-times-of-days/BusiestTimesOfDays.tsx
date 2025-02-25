@@ -1,26 +1,27 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
-import {useGridSize} from 'hooks/useGridSize'
-import {FilterComponentKey, FilterKey} from 'models/stat/types'
-import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
+import { useGridSize } from 'hooks/useGridSize'
+import { FilterComponentKey, FilterKey } from 'models/stat/types'
+import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
-import {CustomReportComponent} from 'pages/stats/custom-reports/CustomReportComponent'
+import { CustomReportComponent } from 'pages/stats/custom-reports/CustomReportComponent'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
 import StatsPage from 'pages/stats/StatsPage'
-import {BusiestTimesOfDaysDownloadDataButton} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysDownloadDataButton'
-import {BusiestTimesOfDaysMetricSelect} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysMetricSelect'
+import { BusiestTimesOfDaysDownloadDataButton } from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysDownloadDataButton'
+import { BusiestTimesOfDaysMetricSelect } from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysMetricSelect'
 import {
     BUSIEST_TIME_OF_DAY_OPTIONAL_FILTERS,
     BusiestTimesChart,
     BusiestTimesReportConfig,
 } from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesReportConfig'
-import {getMetricQuery} from 'pages/stats/support-performance/busiest-times-of-days/utils'
-import {SupportPerformanceFilters} from 'pages/stats/support-performance/SupportPerformanceFilters'
-import {getSelectedMetric} from 'state/ui/stats/busiestTimesSlice'
+import { getMetricQuery } from 'pages/stats/support-performance/busiest-times-of-days/utils'
+import { SupportPerformanceFilters } from 'pages/stats/support-performance/SupportPerformanceFilters'
+import { getSelectedMetric } from 'state/ui/stats/busiestTimesSlice'
 
 export const BusiestTimesOfDays = () => {
     const isAnalyticsNewFilters =

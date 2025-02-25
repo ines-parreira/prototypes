@@ -1,8 +1,9 @@
-import {render, fireEvent, screen} from '@testing-library/react'
-import {fromJS, Map} from 'immutable'
 import React from 'react'
 
-import {initRefundOrderLineItems} from 'business/shopify/order'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
+
+import { initRefundOrderLineItems } from 'business/shopify/order'
 import {
     shopifyLineItemFixture,
     shopifyOrderFixture,
@@ -24,9 +25,9 @@ describe('<OrderLineItemRow/>', () => {
     })
 
     it('should render', () => {
-        const lineItem = fromJS(shopifyLineItemFixture({currencyCode: 'USD'}))
+        const lineItem = fromJS(shopifyLineItemFixture({ currencyCode: 'USD' }))
 
-        const {container} = render(
+        const { container } = render(
             <OrderLineItemRow
                 lineItem={lineItem}
                 index={0}
@@ -35,7 +36,7 @@ describe('<OrderLineItemRow/>', () => {
                 currencyCode="USD"
                 onChange={onChange}
                 hasMultipleGateways={false}
-            />
+            />,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -48,7 +49,7 @@ describe('<OrderLineItemRow/>', () => {
                 currencyCode: 'USD',
                 presentmentCurrencyCode: 'JPY',
                 presentmentAmount: '0',
-            })
+            }),
         )
 
         const lineItem = (
@@ -57,11 +58,11 @@ describe('<OrderLineItemRow/>', () => {
                     currencyCode: 'USD',
                     presentmentCurrencyCode: 'JPY',
                     presentmentPrice: '100',
-                })
+                }),
             ) as Map<any, any>
         ).set('total_discount_set', totalDiscountSet)
 
-        const {container} = render(
+        const { container } = render(
             <OrderLineItemRow
                 lineItem={lineItem}
                 index={0}
@@ -70,7 +71,7 @@ describe('<OrderLineItemRow/>', () => {
                 currencyCode="JPY"
                 onChange={onChange}
                 hasMultipleGateways={false}
-            />
+            />,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -78,16 +79,16 @@ describe('<OrderLineItemRow/>', () => {
 
     it('should render with discounted price', () => {
         const totalDiscountSet = fromJS(
-            shopifyPriceSetFixture({amount: '0.50'})
+            shopifyPriceSetFixture({ amount: '0.50' }),
         )
         const lineItem = (
-            fromJS(shopifyLineItemFixture({currencyCode: 'USD'})) as Map<
+            fromJS(shopifyLineItemFixture({ currencyCode: 'USD' })) as Map<
                 any,
                 any
             >
         ).set('total_discount_set', totalDiscountSet)
 
-        const {container} = render(
+        const { container } = render(
             <OrderLineItemRow
                 lineItem={lineItem}
                 index={0}
@@ -96,7 +97,7 @@ describe('<OrderLineItemRow/>', () => {
                 currencyCode="USD"
                 onChange={onChange}
                 hasMultipleGateways={false}
-            />
+            />,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -107,7 +108,7 @@ describe('<OrderLineItemRow/>', () => {
         const lineItems = initRefundOrderLineItems(order)
         const lineItem = (lineItems.get(0) as Map<any, any>).set('quantity', 0)
 
-        const {container} = render(
+        const { container } = render(
             <OrderLineItemRow
                 lineItem={lineItem}
                 index={0}
@@ -116,7 +117,7 @@ describe('<OrderLineItemRow/>', () => {
                 currencyCode="USD"
                 onChange={onChange}
                 hasMultipleGateways={false}
-            />
+            />,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -124,10 +125,10 @@ describe('<OrderLineItemRow/>', () => {
 
     it('should render with "not restockable" message', () => {
         const totalDiscountSet = fromJS(
-            shopifyPriceSetFixture({amount: '0.00'})
+            shopifyPriceSetFixture({ amount: '0.00' }),
         )
         const lineItem = (
-            fromJS(shopifyLineItemFixture({currencyCode: 'USD'})) as Map<
+            fromJS(shopifyLineItemFixture({ currencyCode: 'USD' })) as Map<
                 any,
                 any
             >
@@ -142,16 +143,16 @@ describe('<OrderLineItemRow/>', () => {
                 currencyCode="USD"
                 onChange={onChange}
                 hasMultipleGateways={false}
-            />
+            />,
         )
 
         expect(screen.getByText("This product can't be restocked."))
     })
 
     it('should render with the zero quantity', () => {
-        const lineItem = fromJS(shopifyLineItemFixture({currencyCode: 'USD'}))
+        const lineItem = fromJS(shopifyLineItemFixture({ currencyCode: 'USD' }))
 
-        const {container} = render(
+        const { container } = render(
             <OrderLineItemRow
                 lineItem={lineItem}
                 index={0}
@@ -161,7 +162,7 @@ describe('<OrderLineItemRow/>', () => {
                 onChange={onChange}
                 keepLineItemQuantityAsDefault={false}
                 hasMultipleGateways={false}
-            />
+            />,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -170,7 +171,7 @@ describe('<OrderLineItemRow/>', () => {
     describe('onQuantityChange()', () => {
         it('should call trigger onChange() with updated line item and index', () => {
             const lineItem = fromJS(
-                shopifyLineItemFixture({currencyCode: 'USD'})
+                shopifyLineItemFixture({ currencyCode: 'USD' }),
             ) as Map<string, any>
             const index = 3
 
@@ -183,22 +184,22 @@ describe('<OrderLineItemRow/>', () => {
                     currencyCode="USD"
                     onChange={onChange}
                     hasMultipleGateways={false}
-                />
+                />,
             )
 
             fireEvent.change(screen.getByRole('textbox'), {
-                target: {value: '0'},
+                target: { value: '0' },
             })
             jest.advanceTimersByTime(300)
             expect(onChange).toHaveBeenCalledWith(
                 lineItem.set('quantity', 0),
-                index
+                index,
             )
         })
 
         it('should use minimum value if the input is empty', () => {
             const lineItem = fromJS(
-                shopifyLineItemFixture({currencyCode: 'USD'})
+                shopifyLineItemFixture({ currencyCode: 'USD' }),
             ) as Map<string, any>
             const index = 0
 
@@ -211,22 +212,22 @@ describe('<OrderLineItemRow/>', () => {
                     currencyCode="USD"
                     onChange={onChange}
                     hasMultipleGateways={false}
-                />
+                />,
             )
 
             fireEvent.change(screen.getByRole('textbox'), {
-                target: {value: ''},
+                target: { value: '' },
             })
             jest.advanceTimersByTime(300)
             expect(onChange).toHaveBeenCalledWith(
                 lineItem.set('quantity', 0),
-                index
+                index,
             )
         })
 
         it('should not call onChange if the value is too big and quantity is already maxed', () => {
             const lineItem = fromJS(
-                shopifyLineItemFixture({currencyCode: 'USD'})
+                shopifyLineItemFixture({ currencyCode: 'USD' }),
             ) as Map<string, any>
 
             const index = 0
@@ -240,11 +241,11 @@ describe('<OrderLineItemRow/>', () => {
                     currencyCode="USD"
                     onChange={onChange}
                     hasMultipleGateways={false}
-                />
+                />,
             )
 
             fireEvent.change(screen.getByRole('textbox'), {
-                target: {value: '4'},
+                target: { value: '4' },
             })
             jest.advanceTimersByTime(300)
             expect(onChange).not.toBeCalled()
@@ -253,7 +254,7 @@ describe('<OrderLineItemRow/>', () => {
 
     it('should not call onChange() when incrementing quantity already maxed', () => {
         const lineItem = fromJS(
-            shopifyLineItemFixture({currencyCode: 'USD'})
+            shopifyLineItemFixture({ currencyCode: 'USD' }),
         ) as Map<string, any>
         const index = 0
 
@@ -266,7 +267,7 @@ describe('<OrderLineItemRow/>', () => {
                 currencyCode="USD"
                 onChange={onChange}
                 hasMultipleGateways={false}
-            />
+            />,
         )
         fireEvent.click(screen.getByText('▲'))
         jest.advanceTimersByTime(300)
@@ -275,7 +276,7 @@ describe('<OrderLineItemRow/>', () => {
 
     it('should call onChange() when incrementing quantity', () => {
         const lineItem = fromJS(
-            shopifyLineItemFixture({currencyCode: 'USD', quantity: 5})
+            shopifyLineItemFixture({ currencyCode: 'USD', quantity: 5 }),
         ) as Map<string, any>
         const index = 0
 
@@ -288,23 +289,23 @@ describe('<OrderLineItemRow/>', () => {
                 currencyCode="USD"
                 onChange={onChange}
                 hasMultipleGateways={false}
-            />
+            />,
         )
         fireEvent.change(screen.getByRole('textbox'), {
-            target: {value: '2'},
+            target: { value: '2' },
         })
         jest.advanceTimersByTime(300)
         fireEvent.click(screen.getByText('▲'))
         jest.advanceTimersByTime(300)
         expect(onChange).toHaveBeenCalledWith(
             lineItem.set('quantity', 3),
-            index
+            index,
         )
     })
 
     it('should call onChange() when decrementing quantity', () => {
         const lineItem = fromJS(
-            shopifyLineItemFixture({currencyCode: 'USD'})
+            shopifyLineItemFixture({ currencyCode: 'USD' }),
         ) as Map<string, any>
         const index = 0
 
@@ -317,18 +318,18 @@ describe('<OrderLineItemRow/>', () => {
                 currencyCode="USD"
                 onChange={onChange}
                 hasMultipleGateways={false}
-            />
+            />,
         )
         fireEvent.click(screen.getByText('▼'))
         jest.advanceTimersByTime(300)
         expect(onChange).toHaveBeenCalledWith(
             lineItem.set('quantity', 0),
-            index
+            index,
         )
     })
 
     it('should disable the inputs when hasMultipleGateways', () => {
-        const lineItem = fromJS(shopifyLineItemFixture({currencyCode: 'USD'}))
+        const lineItem = fromJS(shopifyLineItemFixture({ currencyCode: 'USD' }))
         render(
             <OrderLineItemRow
                 lineItem={lineItem}
@@ -338,11 +339,11 @@ describe('<OrderLineItemRow/>', () => {
                 currencyCode="USD"
                 onChange={onChange}
                 hasMultipleGateways={true}
-            />
+            />,
         )
 
         expect(screen.getByRole('textbox')).toBeDisabled()
-        expect(screen.getByRole('button', {name: '▼'})).toBeAriaDisabled()
-        expect(screen.getByRole('button', {name: '▲'})).toBeAriaDisabled()
+        expect(screen.getByRole('button', { name: '▼' })).toBeAriaDisabled()
+        expect(screen.getByRole('button', { name: '▲' })).toBeAriaDisabled()
     })
 })

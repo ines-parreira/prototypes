@@ -1,8 +1,8 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import {BusiestTimeOfDaysMetrics} from 'pages/stats/support-performance/busiest-times-of-days/types'
-import {metrics} from 'pages/stats/support-performance/busiest-times-of-days/utils'
-import {RootState} from 'state/types'
+import { BusiestTimeOfDaysMetrics } from 'pages/stats/support-performance/busiest-times-of-days/types'
+import { metrics } from 'pages/stats/support-performance/busiest-times-of-days/utils'
+import { RootState } from 'state/types'
 
 export type BusiestTimesState = {
     selectedMetric: BusiestTimeOfDaysMetrics
@@ -18,7 +18,7 @@ export const busiestTimesSlice = createSlice({
     reducers: {
         setSelectedMetric(state, action: PayloadAction<string>) {
             const metric = metrics.find(
-                (metric) => String(metric) === action.payload
+                (metric) => String(metric) === action.payload,
             )
             if (metric) {
                 state.selectedMetric = metric
@@ -27,7 +27,7 @@ export const busiestTimesSlice = createSlice({
     },
 })
 
-export const {setSelectedMetric} = busiestTimesSlice.actions
+export const { setSelectedMetric } = busiestTimesSlice.actions
 
 export const getSelectedMetric = (state: RootState) =>
     state.ui.stats[busiestTimesSlice.name].selectedMetric

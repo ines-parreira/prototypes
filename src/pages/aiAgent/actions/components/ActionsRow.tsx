@@ -1,16 +1,18 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import React, {MouseEvent, useCallback, useMemo, useState} from 'react'
-import {Link, useHistory, useParams} from 'react-router-dom'
+import React, { MouseEvent, useCallback, useMemo, useState } from 'react'
+
+import { Link, useHistory, useParams } from 'react-router-dom'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import webhooksIcon from 'assets/img/icons/webhooks.svg'
-import {DateAndTimeFormatting} from 'constants/datetime'
+import { DateAndTimeFormatting } from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
+import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
 import useDeleteAction from 'pages/aiAgent/actions/hooks/useDeleteAction'
 import useUpsertAction from 'pages/aiAgent/actions/hooks/useUpsertAction'
-import {useStoreAppsContext} from 'pages/aiAgent/actions/providers/StoreAppsContext'
-import {StoreWorkflowsConfiguration} from 'pages/aiAgent/actions/types'
-import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { useStoreAppsContext } from 'pages/aiAgent/actions/providers/StoreAppsContext'
+import { StoreWorkflowsConfiguration } from 'pages/aiAgent/actions/types'
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import AppIcon from 'pages/automate/actionsPlatform/components/AppIcon'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import useGetAppFromTemplateApp from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
@@ -18,37 +20,38 @@ import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import ToggleInput from 'pages/common/forms/ToggleInput'
-import {formatDatetime} from 'utils'
+import { formatDatetime } from 'utils'
+
+import DeleteActionConfirmation from './DeleteActionConfirmation'
 
 import css from './ActionsRow.less'
-import DeleteActionConfirmation from './DeleteActionConfirmation'
 
 type Props = {
     action: StoreWorkflowsConfiguration
 }
 
-export default function ActionsRow({action}: Props) {
-    const {shopName, shopType} = useParams<{
+export default function ActionsRow({ action }: Props) {
+    const { shopName, shopType } = useParams<{
         shopType: 'shopify'
         shopName: string
     }>()
 
-    const {data: templateSteps = []} = useGetWorkflowConfigurationTemplates({
+    const { data: templateSteps = [] } = useGetWorkflowConfigurationTemplates({
         triggers: ['reusable-llm-prompt'],
     })
 
-    const {routes} = useAiAgentNavigation({shopName})
+    const { routes } = useAiAgentNavigation({ shopName })
 
     const history = useHistory()
 
-    const {mutate: deleteAction, isLoading: isDeleteActionLoading} =
+    const { mutate: deleteAction, isLoading: isDeleteActionLoading } =
         useDeleteAction(action.name, shopName, shopType)
 
-    const {mutate: updateAction, isLoading: isEditActionLoading} =
+    const { mutate: updateAction, isLoading: isEditActionLoading } =
         useUpsertAction('update', shopName, shopType)
 
     const datetimeFormat = useGetDateAndTimeFormat(
-        DateAndTimeFormatting.CompactDate
+        DateAndTimeFormatting.CompactDate,
     )
 
     const handleToggleAction = useCallback(
@@ -71,18 +74,18 @@ export default function ActionsRow({action}: Props) {
                                       ? null
                                       : new Date().toISOString(),
                               }
-                            : entrypoint
+                            : entrypoint,
                     ),
                 },
             ])
         },
-        [action, shopName, shopType, updateAction]
+        [action, shopName, shopType, updateAction],
     )
 
-    const {apps} = useApps()
-    const getAppFromTemplateApp = useGetAppFromTemplateApp({apps})
+    const { apps } = useApps()
+    const getAppFromTemplateApp = useGetAppFromTemplateApp({ apps })
 
-    const {recharge: rechargeIntegration} = useStoreAppsContext()
+    const { recharge: rechargeIntegration } = useStoreAppsContext()
 
     const [nameRef, setNameRef] = useState<HTMLSpanElement | null>(null)
 
@@ -92,7 +95,7 @@ export default function ActionsRow({action}: Props) {
             if (step.kind === 'reusable-llm-prompt-call') {
                 const templateStep = templateSteps.find(
                     (templateStep) =>
-                        templateStep.id === step.settings.configuration_id
+                        templateStep.id === step.settings.configuration_id,
                 )
                 if (templateStep) {
                     for (const templateApp of templateStep.apps) {
@@ -196,7 +199,7 @@ export default function ActionsRow({action}: Props) {
             >
                 <DeleteActionConfirmation
                     onDelete={() => {
-                        void deleteAction([{internal_id: action.internal_id}])
+                        void deleteAction([{ internal_id: action.internal_id }])
                     }}
                     isDisabled={isDeleteActionLoading || isEditActionLoading}
                 />

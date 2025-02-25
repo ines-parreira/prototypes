@@ -1,39 +1,41 @@
-import {WaitMusicType} from '@gorgias/api-client'
-import {fireEvent} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {PhoneCountry, PhoneFunction} from 'business/twilio'
-import {phoneNumbers} from 'fixtures/newPhoneNumber'
+import { WaitMusicType } from '@gorgias/api-client'
+
+import { PhoneCountry, PhoneFunction } from 'business/twilio'
+import { phoneNumbers } from 'fixtures/newPhoneNumber'
 import {
     IntegrationType,
     PhoneIntegration,
     PhoneRingingBehaviour,
     VoiceMessageType,
 } from 'models/integration/types'
-import {Account} from 'state/currentAccount/types'
-import {RootState, StoreDispatch} from 'state/types'
-import {assumeMock, renderWithRouter} from 'utils/testing'
+import { Account } from 'state/currentAccount/types'
+import { RootState, StoreDispatch } from 'state/types'
+import { assumeMock, renderWithRouter } from 'utils/testing'
 
 import useVoiceIntegrationGreetingMessage from '../hooks/useVoiceIntegrationGreetingMessage'
 import VoiceIntegrationGreetingMessage from '../VoiceIntegrationGreetingMessage'
-import {STATIC_WAIT_MUSIC_LIBRARY} from '../waitMusicLibraryConstants'
+import { STATIC_WAIT_MUSIC_LIBRARY } from '../waitMusicLibraryConstants'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 const store = mockStore({
     entities: {
         newPhoneNumbers: phoneNumbers.reduce(
-            (acc, number) => ({...acc, [number.id]: number}),
-            {}
+            (acc, number) => ({ ...acc, [number.id]: number }),
+            {},
         ),
     },
 } as RootState)
 
 jest.mock(
-    'pages/integrations/integration/components/voice/hooks/useVoiceIntegrationGreetingMessage'
+    'pages/integrations/integration/components/voice/hooks/useVoiceIntegrationGreetingMessage',
 )
 const defaultUseVoiceIntegrationGreetingMessage = {
     greetingMessagePayload: {
@@ -51,7 +53,7 @@ const defaultUseVoiceIntegrationGreetingMessage = {
     makeApiCalls: jest.fn(),
 }
 assumeMock(useVoiceIntegrationGreetingMessage).mockReturnValue(
-    defaultUseVoiceIntegrationGreetingMessage
+    defaultUseVoiceIntegrationGreetingMessage,
 )
 
 const standardIntegration: PhoneIntegration = {
@@ -98,12 +100,12 @@ const renderVoiceIntegrationGreetingMessage = (integration: PhoneIntegration) =>
     renderWithRouter(
         <Provider store={store}>
             <VoiceIntegrationGreetingMessage integration={integration} />
-        </Provider>
+        </Provider>,
     )
 
 describe('<VoiceIntegrationGreetingMessage /> render', () => {
     it('should render standard integration', () => {
-        const {getByLabelText, queryByText, getByRole, getAllByText} =
+        const { getByLabelText, queryByText, getByRole, getAllByText } =
             renderVoiceIntegrationGreetingMessage(standardIntegration)
         expect(queryByText('Greeting message')).toBeInTheDocument()
         expect(queryByText('Text-to-speech')).toBeInTheDocument()
@@ -118,7 +120,7 @@ describe('<VoiceIntegrationGreetingMessage /> render', () => {
         expect(customRecordingFields[1]).toBeInTheDocument()
         expect(getByLabelText('Choose from library')).toBeChecked()
 
-        expect(getByRole('button', {name: 'Save changes'})).toBeAriaDisabled()
+        expect(getByRole('button', { name: 'Save changes' })).toBeAriaDisabled()
     })
 })
 
@@ -152,13 +154,13 @@ describe('<VoiceIntegrationGreetingMessage /> greeting message', () => {
             isSubmittable: false,
         })
 
-        const {getByLabelText, getByRole} =
+        const { getByLabelText, getByRole } =
             renderVoiceIntegrationGreetingMessage(
-                standardIntegrationWithDifferentSettings
+                standardIntegrationWithDifferentSettings,
             )
 
         expect(getByLabelText('Text-to-speech')).toBeChecked()
-        expect(getByRole('button', {name: 'Save changes'})).toBeAriaDisabled()
+        expect(getByRole('button', { name: 'Save changes' })).toBeAriaDisabled()
 
         fireEvent.click(getByLabelText('None'))
         expect(setGreetingMessagePayloadMock).toHaveBeenCalledWith({
@@ -189,15 +191,15 @@ describe('<VoiceIntegrationGreetingMessage /> greeting message', () => {
             makeApiCalls: makeApiCallsMock,
         })
 
-        const {getByLabelText, getByRole} =
+        const { getByLabelText, getByRole } =
             renderVoiceIntegrationGreetingMessage(
-                standardIntegrationWithDifferentSettings
+                standardIntegrationWithDifferentSettings,
             )
 
         expect(getByLabelText('Text-to-speech')).toBeChecked()
-        expect(getByRole('button', {name: 'Save changes'})).toBeAriaEnabled()
+        expect(getByRole('button', { name: 'Save changes' })).toBeAriaEnabled()
 
-        fireEvent.click(getByRole('button', {name: 'Save changes'}))
+        fireEvent.click(getByRole('button', { name: 'Save changes' }))
         expect(makeApiCallsMock).toHaveBeenCalledWith()
     })
 })
@@ -242,13 +244,13 @@ describe('<VoiceIntegrationGreetingMessage /> wait music', () => {
             isSubmittable: false,
         })
 
-        const {getByLabelText, getByRole, getAllByLabelText} =
+        const { getByLabelText, getByRole, getAllByLabelText } =
             renderVoiceIntegrationGreetingMessage(
-                standardIntegrationWithDifferentSettings
+                standardIntegrationWithDifferentSettings,
             )
 
         expect(getAllByLabelText('Custom recording')[1]).toBeChecked()
-        expect(getByRole('button', {name: 'Save changes'})).toBeAriaDisabled()
+        expect(getByRole('button', { name: 'Save changes' })).toBeAriaDisabled()
 
         fireEvent.click(getByLabelText('Choose from library'))
 
@@ -282,15 +284,15 @@ describe('<VoiceIntegrationGreetingMessage /> wait music', () => {
             makeApiCalls: makeApiCallsMock,
         })
 
-        const {getByLabelText, getByRole} =
+        const { getByLabelText, getByRole } =
             renderVoiceIntegrationGreetingMessage(
-                standardIntegrationWithDifferentSettings
+                standardIntegrationWithDifferentSettings,
             )
 
         expect(getByLabelText('Choose from library')).toBeChecked()
-        expect(getByRole('button', {name: 'Save changes'})).toBeAriaEnabled()
+        expect(getByRole('button', { name: 'Save changes' })).toBeAriaEnabled()
 
-        fireEvent.click(getByRole('button', {name: 'Save changes'}))
+        fireEvent.click(getByRole('button', { name: 'Save changes' }))
         expect(makeApiCallsMock).toHaveBeenCalledWith()
     })
 
@@ -319,9 +321,9 @@ describe('<VoiceIntegrationGreetingMessage /> wait music', () => {
             isSubmittable: false,
         })
 
-        const {getByLabelText, getByText} =
+        const { getByLabelText, getByText } =
             renderVoiceIntegrationGreetingMessage(
-                standardIntegrationWithExistingWaitMusicPreferences
+                standardIntegrationWithExistingWaitMusicPreferences,
             )
 
         expect(getByLabelText('Choose from library')).toBeChecked()

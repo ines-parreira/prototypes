@@ -1,3 +1,5 @@
+import React from 'react'
+
 import {
     act,
     fireEvent,
@@ -6,14 +8,13 @@ import {
     waitFor,
     within,
 } from '@testing-library/react'
-import React from 'react'
-import {Provider} from 'react-redux'
+import { Provider } from 'react-redux'
 import createMockStore from 'redux-mock-store'
 
-import {EmailProvider} from 'models/integration/constants'
-import {resendVerificationEmail} from 'models/singleSenderVerification/resources'
-import {SenderVerification} from 'models/singleSenderVerification/types'
-import {RootState, StoreDispatch} from 'state/types'
+import { EmailProvider } from 'models/integration/constants'
+import { resendVerificationEmail } from 'models/singleSenderVerification/resources'
+import { SenderVerification } from 'models/singleSenderVerification/types'
+import { RootState, StoreDispatch } from 'state/types'
 
 import VerificationEmailSent from '../SingleSenderVerification/VerificationEmailSent'
 
@@ -52,7 +53,7 @@ describe('VerificationEmailSent', () => {
                     refetchVerification={refetchVerification}
                     provider={EmailProvider.Sendgrid}
                 />
-            </Provider>
+            </Provider>,
         )
     })
 
@@ -68,7 +69,7 @@ describe('VerificationEmailSent', () => {
         fireEvent.click(
             screen.getByRole('button', {
                 name: /re\-send verification email/i,
-            })
+            }),
         )
         await waitFor(() => {
             expect(resendVerificationEmail).toHaveBeenCalled()
@@ -79,14 +80,14 @@ describe('VerificationEmailSent', () => {
         fireEvent.click(
             await screen.findByRole('button', {
                 name: 'Delete verification',
-            })
+            }),
         )
         const tooltip = screen.getByRole('tooltip')
 
         fireEvent.click(
             within(tooltip).getByRole('button', {
                 name: /confirm/i,
-            })
+            }),
         )
 
         await waitFor(() => {

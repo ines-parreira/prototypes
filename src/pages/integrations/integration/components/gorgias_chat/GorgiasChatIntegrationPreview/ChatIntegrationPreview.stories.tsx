@@ -1,26 +1,27 @@
-import {Meta, Story} from '@storybook/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { Meta, Story } from '@storybook/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {AttachmentEnum} from 'common/types'
-import {CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES} from 'config/integrations'
+import { AttachmentEnum } from 'common/types'
+import { CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES } from 'config/integrations'
 import {
     GORGIAS_CHAT_DEFAULT_COLOR,
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
 } from 'config/integrations/gorgias_chat'
-import {billingState} from 'fixtures/billing'
-import {user} from 'fixtures/users'
-
+import { billingState } from 'fixtures/billing'
+import { user } from 'fixtures/users'
 import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
 } from 'models/integration/types'
 
 import ChatIntegrationPreview from './ChatIntegrationPreview'
-import css from './ChatIntegrationPreview.less'
 import MessageContent from './MessageContent'
+
+import css from './ChatIntegrationPreview.less'
 
 const defaultState = {
     billing: fromJS(billingState),
@@ -40,7 +41,7 @@ const storyConfig: Meta = {
 }
 
 const Template: Story<ComponentProps<typeof ChatIntegrationPreview>> = (
-    props
+    props,
 ) => (
     <Provider store={configureMockStore()(defaultState)}>
         <ChatIntegrationPreview {...props} />
@@ -58,7 +59,7 @@ const defaultProps: ComponentProps<typeof ChatIntegrationPreview> = {
             currentUser={fromJS(user)}
             customerInitialMessages={['Hello']}
             agentMessages={[
-                {content: 'Nice to meet you', isHtml: false, attachments: []},
+                { content: 'Nice to meet you', isHtml: false, attachments: [] },
             ]}
         />
     ),
@@ -84,10 +85,10 @@ Offline.args = {
 }
 
 export const WithoutButton = Template.bind({})
-WithoutButton.args = {...defaultProps, hideButton: true}
+WithoutButton.args = { ...defaultProps, hideButton: true }
 
 export const WithoutIntroductionText = Template.bind({})
-WithoutIntroductionText.args = {...defaultProps, introductionText: undefined}
+WithoutIntroductionText.args = { ...defaultProps, introductionText: undefined }
 
 export const WithoutMessages = Template.bind({})
 WithoutMessages.args = {

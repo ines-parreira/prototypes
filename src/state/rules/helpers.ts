@@ -1,10 +1,10 @@
-import {Map} from 'immutable'
+import { Map } from 'immutable'
 import _compact from 'lodash/compact'
 import _trim from 'lodash/trim'
 
-import {isImmutable, toImmutable} from 'common/utils'
+import { isImmutable, toImmutable } from 'common/utils'
 
-import {Rule, RuleDraft} from './types'
+import { Rule, RuleDraft } from './types'
 
 /**
  * Return array of event types of a rule (ex: ['ticket-updated', 'ticket-created'])
@@ -29,7 +29,7 @@ export const eventTypes = (rule: Rule | RuleDraft): Array<string> => {
  */
 export const getArraysIntersection = (
     array1: Array<string>,
-    array2: Array<string>
+    array2: Array<string>,
 ) => {
     return array1.filter((value) => array2.includes(value))
 }

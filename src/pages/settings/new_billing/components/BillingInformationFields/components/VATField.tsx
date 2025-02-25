@@ -1,9 +1,9 @@
 import React from 'react'
 
-import {TaxIdField} from 'pages/settings/new_billing/components/BillingInformationFields/components/TaxIdField'
-import {TaxIdType} from 'state/billing/types'
+import { TaxIdField } from 'pages/settings/new_billing/components/BillingInformationFields/components/TaxIdField'
+import { TaxIdType } from 'state/billing/types'
 
-export const VATField: React.FC<{country: string}> = ({country}) => (
+export const VATField: React.FC<{ country: string }> = ({ country }) => (
     <TaxIdField
         type={TaxIdType.eu_vat}
         label="VAT Number"

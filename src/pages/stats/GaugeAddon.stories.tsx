@@ -1,5 +1,6 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { Meta, Story } from '@storybook/react'
 
 import GaugeAddon from 'pages/stats/GaugeAddon'
 
@@ -7,12 +8,12 @@ const storyConfig: Meta = {
     title: 'Stats/GaugeAddon',
     component: GaugeAddon,
     parameters: {
-        chromatic: {disableSnapshot: false},
+        chromatic: { disableSnapshot: false },
     },
 }
 
 const FirstGauge: Story<ComponentProps<typeof GaugeAddon>> = () => (
-    <div style={{width: '200px'}}>
+    <div style={{ width: '200px' }}>
         <GaugeAddon progress={50} color="#EDEAFF">
             Lorem ipsum dolor sit 50%
         </GaugeAddon>

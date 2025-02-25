@@ -1,5 +1,6 @@
-import classnames from 'classnames'
 import React from 'react'
+
+import classnames from 'classnames'
 
 import radioChecked from 'assets/img/icons/radio-checked.svg'
 import radioUnchecked from 'assets/img/icons/radio-unchecked.svg'
@@ -15,7 +16,7 @@ type Props = {
     onChange: (label: string) => void
 }
 
-export default function RadioChoiceField({value, choices, onChange}: Props) {
+export default function RadioChoiceField({ value, choices, onChange }: Props) {
     return (
         <div className={css.container}>
             {choices.map((choice) => (
@@ -38,11 +39,11 @@ type ChoiceProps = {
     onClick: (value: string) => void
 }
 
-function RadioChoice({value, label, isSelected, onClick}: ChoiceProps) {
+function RadioChoice({ value, label, isSelected, onClick }: ChoiceProps) {
     return (
         <div
             tabIndex={0}
-            className={classnames(css.choice, {[css.selected]: isSelected})}
+            className={classnames(css.choice, { [css.selected]: isSelected })}
             onClick={() => onClick(value)}
         >
             <img

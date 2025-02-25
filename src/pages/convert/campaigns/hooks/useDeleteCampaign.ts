@@ -1,10 +1,10 @@
-import {useQueryClient} from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {useDeleteCampaign as usePureDeleteCampaign} from 'models/convert/campaign/queries'
-import {invalidateCacheOnCampaignChange} from 'pages/convert/campaigns/hooks/utils'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { useDeleteCampaign as usePureDeleteCampaign } from 'models/convert/campaign/queries'
+import { invalidateCacheOnCampaignChange } from 'pages/convert/campaigns/hooks/utils'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 export const useDeleteCampaign = () => {
     const dispatch = useAppDispatch()
@@ -16,11 +16,11 @@ export const useDeleteCampaign = () => {
                 notify({
                     status: NotificationStatus.Success,
                     message: 'Campaign successfully deleted',
-                })
+                }),
             )
             return invalidateCacheOnCampaignChange(
                 queryClient,
-                params.campaign_id
+                params.campaign_id,
             )
         },
         onError: () =>
@@ -28,7 +28,7 @@ export const useDeleteCampaign = () => {
                 notify({
                     status: NotificationStatus.Error,
                     message: 'Failed to delete the campaign',
-                })
+                }),
             ),
     })
 }

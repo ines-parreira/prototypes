@@ -1,15 +1,15 @@
 import moment from 'moment'
 
-import {TicketStatus} from 'business/types/ticket'
-import {OrderDirection} from 'models/api/types'
-import {TicketQAScoreMeasure} from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
-import {TicketDimension} from 'models/reporting/cubes/TicketCube'
+import { TicketStatus } from 'business/types/ticket'
+import { OrderDirection } from 'models/api/types'
+import { TicketQAScoreMeasure } from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
+import { TicketDimension } from 'models/reporting/cubes/TicketCube'
 import {
     reviewedClosedTicketsDrillDownQueryFactory,
     reviewedClosedTicketsQueryFactory,
 } from 'models/reporting/queryFactories/auto-qa/reviewedClosedTicketsQueryFactory'
-import {ReportingFilterOperator} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import { ReportingFilterOperator } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     statsFiltersToReportingFilters,
@@ -38,7 +38,7 @@ describe('reviewedClosedTicketsQueryFactory', () => {
             filters: [
                 ...statsFiltersToReportingFilters(
                     TicketStatsFiltersMembers,
-                    statsFilters
+                    statsFilters,
                 ),
                 {
                     member: TicketDimension.Status,
@@ -54,7 +54,7 @@ describe('reviewedClosedTicketsQueryFactory', () => {
         const query = reviewedClosedTicketsQueryFactory(
             statsFilters,
             timezone,
-            sorting
+            sorting,
         )
 
         expect(query).toEqual({
@@ -64,7 +64,7 @@ describe('reviewedClosedTicketsQueryFactory', () => {
             filters: [
                 ...statsFiltersToReportingFilters(
                     TicketStatsFiltersMembers,
-                    statsFilters
+                    statsFilters,
                 ),
                 {
                     member: TicketDimension.Status,
@@ -93,7 +93,7 @@ describe('reviewedClosedTicketsDrillDownQueryFactory', () => {
     it('should produce the query', () => {
         const query = reviewedClosedTicketsDrillDownQueryFactory(
             statsFilters,
-            timezone
+            timezone,
         )
 
         expect(query).toEqual({
@@ -107,7 +107,7 @@ describe('reviewedClosedTicketsDrillDownQueryFactory', () => {
             filters: [
                 ...statsFiltersToReportingFilters(
                     TicketStatsFiltersMembers,
-                    statsFilters
+                    statsFilters,
                 ),
                 {
                     member: TicketDimension.Status,
@@ -123,7 +123,7 @@ describe('reviewedClosedTicketsDrillDownQueryFactory', () => {
         const query = reviewedClosedTicketsDrillDownQueryFactory(
             statsFilters,
             timezone,
-            sorting
+            sorting,
         )
 
         expect(query).toEqual({
@@ -137,7 +137,7 @@ describe('reviewedClosedTicketsDrillDownQueryFactory', () => {
             filters: [
                 ...statsFiltersToReportingFilters(
                     TicketStatsFiltersMembers,
-                    statsFilters
+                    statsFilters,
                 ),
                 {
                     member: TicketDimension.Status,

@@ -1,1 +1,1 @@
-export {ManageRedirects} from './ManageRedirects'
+export { ManageRedirects } from './ManageRedirects'

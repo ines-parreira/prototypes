@@ -1,4 +1,4 @@
-import {ldClientMock} from 'jest-launchdarkly-mock'
+import { ldClientMock } from 'jest-launchdarkly-mock'
 
 export function initLaunchDarkly() {
     return ldClientMock

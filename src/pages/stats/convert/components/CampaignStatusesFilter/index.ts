@@ -3,4 +3,4 @@ import CampaignStatusesFilter, {
 } from 'pages/stats/convert/components/CampaignStatusesFilter/CampaignStatusesFilter'
 
 export default CampaignStatusesFilter
-export {CampaignStatusesFilterFromContext}
+export { CampaignStatusesFilterFromContext }

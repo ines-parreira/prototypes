@@ -1,4 +1,4 @@
-import {fromJS, Map} from 'immutable'
+import { fromJS, Map } from 'immutable'
 
 import {
     shopifyCancelOrderPayloadFixture,
@@ -53,10 +53,10 @@ describe('getLineItemQuantity()', () => {
 
     it('should return adjusted quantity because there is a refund', () => {
         const refundLineItems = fromJS([shopifyRefundLineItemFixture()])
-        const refund = fromJS(shopifyRefundFixture({refundLineItems}))
+        const refund = fromJS(shopifyRefundFixture({ refundLineItems }))
         const order = (fromJS(shopifyOrderFixture()) as Map<any, any>).setIn(
             ['refunds', 0],
-            refund
+            refund,
         )
         const lineItem = order.getIn(['line_items', 0]) as Map<any, any>
         const quantity = getLineItemQuantity(order, lineItem)
@@ -86,7 +86,9 @@ describe('getFinalRefundOrderPayload()', () => {
 
     it('should override `restock_type` to `no_restock` because `location_id` is `null`', () => {
         const payload = fromJS(shopifyRefundOrderPayloadFixture())
-        const refund = fromJS(shopifySuggestedRefundFixture({locationId: null}))
+        const refund = fromJS(
+            shopifySuggestedRefundFixture({ locationId: null }),
+        )
         const finalPayload = getFinalRefundOrderPayload(payload, refund)
 
         expect(finalPayload).toMatchSnapshot()

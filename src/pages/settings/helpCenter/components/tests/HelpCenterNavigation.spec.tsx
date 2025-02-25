@@ -1,18 +1,18 @@
-import {screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
-import {TicketChannel} from 'business/types/ticket'
+import { screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { TicketChannel } from 'business/types/ticket'
 import * as segment from 'common/segment'
-import {billingState} from 'fixtures/billing'
-import {GorgiasChatMinimumSnippetVersion} from 'models/integration/types'
-import {getHasAutomate} from 'state/billing/selectors'
-import {RootState} from 'state/types'
+import { billingState } from 'fixtures/billing'
+import { GorgiasChatMinimumSnippetVersion } from 'models/integration/types'
+import { getHasAutomate } from 'state/billing/selectors'
+import { RootState } from 'state/types'
+import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
-import {renderWithStoreAndQueryClientProvider} from 'tests/renderWithStoreAndQueryClientProvider'
-
-import {HelpCenterNavigation} from '../HelpCenterNavigation'
+import { HelpCenterNavigation } from '../HelpCenterNavigation'
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
 jest.mock('state/billing/selectors', () => ({
@@ -22,7 +22,9 @@ jest.mock('state/billing/selectors', () => ({
 }))
 
 jest.mock('pages/common/components/SecondaryNavbar/SecondaryNavbar', () => {
-    return ({children}: {children: React.ReactNode}) => <div>{children}</div>
+    return ({ children }: { children: React.ReactNode }) => (
+        <div>{children}</div>
+    )
 })
 
 jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => {
@@ -43,7 +45,7 @@ jest.mock('react-router-dom', () => {
             push: jest.fn(),
         }),
         Link: () => 'Link',
-        NavLink: ({children}: {children: React.ReactNode}) => (
+        NavLink: ({ children }: { children: React.ReactNode }) => (
             <div>{children}</div>
         ),
     }
@@ -81,7 +83,7 @@ describe('HelpCenterNavigation', () => {
                 helpCenterId={1}
                 helpCenterShopName={'shopName'}
             />,
-            defaultState
+            defaultState,
         )
     })
 
@@ -92,7 +94,7 @@ describe('HelpCenterNavigation', () => {
                 helpCenterId={1}
                 helpCenterShopName={'shopName'}
             />,
-            defaultState
+            defaultState,
         )
         expect(screen.queryByText(/Automate/i)).not.toBeInTheDocument()
     })
@@ -104,7 +106,7 @@ describe('HelpCenterNavigation', () => {
                 helpCenterId={1}
                 helpCenterShopName={'shopName'}
             />,
-            defaultState
+            defaultState,
         )
         expect(screen.getByText(/Automate/i)).toBeInTheDocument()
     })
@@ -112,7 +114,7 @@ describe('HelpCenterNavigation', () => {
     it('should display a red dot whenever shop name is not provided', () => {
         renderWithStoreAndQueryClientProvider(
             <HelpCenterNavigation helpCenterId={1} />,
-            defaultState
+            defaultState,
         )
         expect(screen.getByAltText('status icon')).toBeInTheDocument()
     })
@@ -128,7 +130,7 @@ describe('HelpCenterNavigation', () => {
         mockGetHasAutomate.mockReturnValue(false)
         renderWithStoreAndQueryClientProvider(
             <HelpCenterNavigation helpCenterId={1} />,
-            defaultState
+            defaultState,
         )
 
         const button = screen.getByText(/Upgrade to automate/i)
@@ -139,7 +141,7 @@ describe('HelpCenterNavigation', () => {
             {
                 channel: TicketChannel.HelpCenter,
                 version: 'Upsell',
-            }
+            },
         )
     })
 })

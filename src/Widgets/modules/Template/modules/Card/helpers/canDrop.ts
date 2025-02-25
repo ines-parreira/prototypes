@@ -1,4 +1,4 @@
-import {Template} from 'models/widget/types'
+import { Template } from 'models/widget/types'
 
 /**
  * Return true if you can drop something at source path to a card in target path
@@ -6,7 +6,7 @@ import {Template} from 'models/widget/types'
 
 export function canDrop(
     sourcePath = '',
-    targetPath: Template['absolutePath'] = []
+    targetPath: Template['absolutePath'] = [],
 ) {
     return sourcePath === targetPath.join('.')
 }

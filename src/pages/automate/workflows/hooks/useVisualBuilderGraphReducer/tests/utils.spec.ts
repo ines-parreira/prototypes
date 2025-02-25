@@ -1,4 +1,4 @@
-import {buildReusableLLMPromptCallNode} from '../utils'
+import { buildReusableLLMPromptCallNode } from '../utils'
 
 describe('visual builder graph utils', () => {
     describe('buildReusableLLMPromptCallNode()', () => {
@@ -8,7 +8,7 @@ describe('visual builder graph utils', () => {
                     configuration_id: 'configurationid',
                     configuration_internal_id: 'configurationinternalid',
                     values: {},
-                })
+                }),
             ).toEqual(
                 expect.objectContaining({
                     id: expect.any(String),
@@ -20,7 +20,7 @@ describe('visual builder graph utils', () => {
                         custom_inputs: {},
                         values: {},
                     },
-                })
+                }),
             )
         })
     })

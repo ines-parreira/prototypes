@@ -1,6 +1,7 @@
-import {fireEvent, render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
+
+import { fireEvent, render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import StealthInput from '../StealthInput'
 
@@ -38,7 +39,7 @@ describe('<StealthInput />', () => {
     it('should handle errors correctly', () => {
         render(<StealthInput {...initialProps} hasError />)
         expect(screen.getByRole('textbox').classList.contains('invalid')).toBe(
-            true
+            true,
         )
     })
 })

@@ -1,21 +1,26 @@
 import React from 'react'
 
-import {useTagsTimeSeries} from 'hooks/reporting/ticket-insights/useTagsTimeSeries'
+import { useTagsTimeSeries } from 'hooks/reporting/ticket-insights/useTagsTimeSeries'
 import ChartCard from 'pages/stats/ChartCard'
 import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
-import {formatLabeledTooltipTimeSeriesData} from 'pages/stats/common/utils'
-import {LINES_COLORS} from 'pages/stats/constants'
-import {DashboardChartProps} from 'pages/stats/custom-reports/types'
+import { formatLabeledTooltipTimeSeriesData } from 'pages/stats/common/utils'
+import { LINES_COLORS } from 'pages/stats/constants'
+import { DashboardChartProps } from 'pages/stats/custom-reports/types'
 import {
     TicketInsightsTagsMetric,
     TicketInsightsTagsMetricConfig,
 } from 'pages/stats/ticket-insights/tags/TagsMetricConfig'
 
-export function TagsTrendChart({chartId, dashboard}: DashboardChartProps) {
-    const {data, legendInfo, legendDatasetVisibility, granularity, isFetching} =
-        useTagsTimeSeries()
+export function TagsTrendChart({ chartId, dashboard }: DashboardChartProps) {
+    const {
+        data,
+        legendInfo,
+        legendDatasetVisibility,
+        granularity,
+        isFetching,
+    } = useTagsTimeSeries()
 
-    const {hint, title} =
+    const { hint, title } =
         TicketInsightsTagsMetricConfig[TicketInsightsTagsMetric.TagsTrendChart]
 
     return (
@@ -31,7 +36,7 @@ export function TagsTrendChart({chartId, dashboard}: DashboardChartProps) {
                 data={formatLabeledTooltipTimeSeriesData(
                     data,
                     legendInfo,
-                    granularity
+                    granularity,
                 )}
                 displayLegend
                 toggleLegend

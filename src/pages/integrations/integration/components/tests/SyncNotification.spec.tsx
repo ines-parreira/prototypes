@@ -1,5 +1,6 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import SyncNotification from '../SyncNotification'
 
@@ -14,7 +15,7 @@ describe('<SyncNotification/>', () => {
                 platform={'Shopify'}
                 shopName={'Very Good Shop'}
                 isSyncComplete={false}
-            />
+            />,
         )
 
         expect(screen.getByText(/Import in progress/))
@@ -26,7 +27,7 @@ describe('<SyncNotification/>', () => {
                 platform={'Shopify'}
                 shopName={'Very Good Shop'}
                 isSyncComplete={true}
-            />
+            />,
         )
 
         expect(screen.getByText(/Import complete/))
@@ -35,15 +36,15 @@ describe('<SyncNotification/>', () => {
     it('should render null if sync is completed and notification was dismissed', () => {
         localStorage.setItem(
             `Shopify_Very Good Shop_sync_notification`,
-            JSON.stringify(true)
+            JSON.stringify(true),
         )
 
-        const {container} = render(
+        const { container } = render(
             <SyncNotification
                 platform={'Shopify'}
                 shopName={'Very Good Shop'}
                 isSyncComplete={true}
-            />
+            />,
         )
 
         expect(container.firstChild).toBeNull()

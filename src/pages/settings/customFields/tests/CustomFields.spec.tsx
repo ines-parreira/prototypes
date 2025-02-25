@@ -1,23 +1,24 @@
-import {render, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
-import {Link, useParams} from 'react-router-dom'
 
-import {SegmentEvent, logEvent} from 'common/segment'
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { Link, useParams } from 'react-router-dom'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import {
-    OBJECT_TYPES,
-    OBJECT_TYPE_SETTINGS,
     AI_MANAGED_TYPES,
+    OBJECT_TYPE_SETTINGS,
+    OBJECT_TYPES,
 } from 'custom-fields/constants'
-import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import {useUpdateCustomFieldDefinitions} from 'custom-fields/hooks/queries/useUpdateCustomFieldDefinitions'
-import {apiListCursorPaginationResponse} from 'fixtures/axiosResponse'
+import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import { useUpdateCustomFieldDefinitions } from 'custom-fields/hooks/queries/useUpdateCustomFieldDefinitions'
+import { apiListCursorPaginationResponse } from 'fixtures/axiosResponse'
 import {
     ticketInputFieldDefinition,
     ticketNumberFieldDefinition,
 } from 'fixtures/customField'
 import useDebouncedValue from 'hooks/useDebouncedValue'
-import {assumeMock, getLastMockCall} from 'utils/testing'
+import { assumeMock, getLastMockCall } from 'utils/testing'
 
 import CustomFields from '../CustomFields'
 
@@ -27,7 +28,7 @@ jest.mock(
         ({
             ...jest.requireActual('common/segment'),
             logEvent: jest.fn(),
-        }) as Record<string, unknown>
+        }) as Record<string, unknown>,
 )
 jest.mock(
     'react-router-dom',
@@ -36,10 +37,10 @@ jest.mock(
             ...jest.requireActual('react-router-dom'),
             useParams: jest.fn(),
             Link: jest.fn(
-                ({children}: {children: React.ReactNode}) => children
+                ({ children }: { children: React.ReactNode }) => children,
             ),
-            NavLink: ({children}: {children: React.ReactNode}) => children,
-        }) as Record<string, unknown>
+            NavLink: ({ children }: { children: React.ReactNode }) => children,
+        }) as Record<string, unknown>,
 )
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 jest.mock('custom-fields/hooks/queries/useUpdateCustomFieldDefinitions')
@@ -47,13 +48,13 @@ jest.mock('hooks/useDebouncedValue')
 jest.mock('../components/List', () =>
     jest.fn(() => {
         return <div data-testid="custom-fields-list"></div>
-    })
+    }),
 )
 
 const useParamsMock = assumeMock(useParams)
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
 const useUpdateCustomFieldDefinitionsMock = assumeMock(
-    useUpdateCustomFieldDefinitions
+    useUpdateCustomFieldDefinitions,
 )
 const useDebouncedValueMock = assumeMock(useDebouncedValue)
 const mockedLogEvent = assumeMock(logEvent)
@@ -81,7 +82,7 @@ const archivedOnlyFieldDefinitions = {
 
 describe('<CustomFields/>', () => {
     beforeEach(() => {
-        useParamsMock.mockReturnValue({activeTab: 'active'})
+        useParamsMock.mockReturnValue({ activeTab: 'active' })
         useDebouncedValueMock.mockReturnValue('')
         useCustomFieldDefinitionsMock.mockReturnValue(emptyFieldDefinitions)
         useUpdateCustomFieldDefinitionsMock.mockReturnValue({
@@ -104,18 +105,18 @@ describe('<CustomFields/>', () => {
         })
         expect(createFieldButton).toBeInTheDocument()
         getLastMockCall(mockedLink)[0].onClick?.(
-            {} as React.MouseEvent<HTMLAnchorElement, MouseEvent>
+            {} as React.MouseEvent<HTMLAnchorElement, MouseEvent>,
         )
         expect(mockedLogEvent).toHaveBeenCalledWith(
             SegmentEvent.CustomFieldCreateFieldClicked,
             {
                 objectType: OBJECT_TYPES.TICKET,
-            }
+            },
         )
     })
 
     it('should render no active ticket fields when there is at least one archived ticket field', () => {
-        useCustomFieldDefinitionsMock.mockImplementation(({archived}) => {
+        useCustomFieldDefinitionsMock.mockImplementation(({ archived }) => {
             if (archived) {
                 return notEmptyFieldDefinitions
             }
@@ -126,8 +127,8 @@ describe('<CustomFields/>', () => {
 
         expect(
             screen.getByText(
-                /You don't have any active ticket fields at the moment/
-            )
+                /You don't have any active ticket fields at the moment/,
+            ),
         ).toBeDefined()
         expect(screen.queryByTestId('custom-fields-list')).toBeNull()
     })
@@ -146,7 +147,7 @@ describe('<CustomFields/>', () => {
         render(<CustomFields objectType={OBJECT_TYPES.TICKET} />)
         await userEvent.type(
             screen.getByPlaceholderText('Search ticket fields...'),
-            'foo'
+            'foo',
         )
         await waitFor(() => {
             expect(useDebouncedValue).toHaveBeenLastCalledWith('foo', 300)
@@ -155,27 +156,27 @@ describe('<CustomFields/>', () => {
     })
 
     it('should render no archived ticket fields', () => {
-        useCustomFieldDefinitionsMock.mockImplementation(({archived}) => {
+        useCustomFieldDefinitionsMock.mockImplementation(({ archived }) => {
             if (!archived) {
                 return notEmptyFieldDefinitions
             }
             return emptyFieldDefinitions
         })
-        useParamsMock.mockReturnValue({activeTab: 'archived'})
+        useParamsMock.mockReturnValue({ activeTab: 'archived' })
 
         render(<CustomFields objectType={OBJECT_TYPES.TICKET} />)
 
         expect(
             screen.getByText(
-                /You don't have any archived ticket fields at the moment/
-            )
+                /You don't have any archived ticket fields at the moment/,
+            ),
         ).toBeDefined()
         expect(screen.queryByTestId('custom-fields-list')).toBeNull()
     })
 
     it('should render archived ticket fields', () => {
         useCustomFieldDefinitionsMock.mockReturnValue(notEmptyFieldDefinitions)
-        useParamsMock.mockReturnValue({activeTab: 'archived'})
+        useParamsMock.mockReturnValue({ activeTab: 'archived' })
 
         render(<CustomFields objectType={OBJECT_TYPES.TICKET} />)
 
@@ -184,14 +185,14 @@ describe('<CustomFields/>', () => {
 
     it('should render archived ticket fields even when there is no active fields', () => {
         useDebouncedValueMock.mockReturnValue(ticketInputFieldDefinition.label)
-        useCustomFieldDefinitionsMock.mockImplementation(({archived}) => {
+        useCustomFieldDefinitionsMock.mockImplementation(({ archived }) => {
             if (archived) {
                 return archivedOnlyFieldDefinitions
             }
             return emptyFieldDefinitions
         })
 
-        useParamsMock.mockReturnValue({activeTab: 'archived'})
+        useParamsMock.mockReturnValue({ activeTab: 'archived' })
 
         render(<CustomFields objectType={OBJECT_TYPES.TICKET} />)
 
@@ -204,9 +205,9 @@ describe('<CustomFields/>', () => {
             useCustomFieldDefinitionsMock.mockReturnValue({
                 data: apiListCursorPaginationResponse(
                     Array.from(
-                        {length: OBJECT_TYPE_SETTINGS[objectType].MAX_FIELDS},
-                        () => ticketInputFieldDefinition
-                    )
+                        { length: OBJECT_TYPE_SETTINGS[objectType].MAX_FIELDS },
+                        () => ticketInputFieldDefinition,
+                    ),
                 ),
                 isLoading: false,
             } as unknown as ReturnType<typeof useCustomFieldDefinitions>)
@@ -214,18 +215,18 @@ describe('<CustomFields/>', () => {
             render(<CustomFields objectType={objectType} />)
 
             expect(
-                screen.getByText(/Please archive some fields before creating/)
+                screen.getByText(/Please archive some fields before creating/),
             ).toBeDefined()
             expect(
-                screen.getByRole('button', {name: 'Create Field'})
+                screen.getByRole('button', { name: 'Create Field' }),
             ).toBeAriaDisabled()
-        }
+        },
     )
 
     it('should count only active and not internally managed custom fields', () => {
         useCustomFieldDefinitionsMock.mockReturnValue({
             data: apiListCursorPaginationResponse([
-                ...Array.from({length: 23}, (_, idx) => ({
+                ...Array.from({ length: 23 }, (_, idx) => ({
                     ...ticketInputFieldDefinition,
                     id: idx,
                     label: `Field ${idx}`,
@@ -254,10 +255,10 @@ describe('<CustomFields/>', () => {
 
         render(<CustomFields objectType={OBJECT_TYPES.TICKET} />)
         expect(
-            screen.queryByText(/Please archive some fields before creating/)
+            screen.queryByText(/Please archive some fields before creating/),
         ).toBeNull()
         expect(
-            screen.getByRole('button', {name: 'Create Field'})
+            screen.getByRole('button', { name: 'Create Field' }),
         ).toBeAriaEnabled()
     })
 })

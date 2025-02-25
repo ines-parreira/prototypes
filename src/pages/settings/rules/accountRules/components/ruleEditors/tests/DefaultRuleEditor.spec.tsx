@@ -1,13 +1,14 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {emptyRule} from 'fixtures/rule'
-import {user} from 'fixtures/users'
-import {RootState, StoreDispatch} from 'state/types'
+import { emptyRule } from 'fixtures/rule'
+import { user } from 'fixtures/users'
+import { RootState, StoreDispatch } from 'state/types'
 
 import DefaultRuleEditor from '../DefaultRuleEditor'
 
@@ -29,10 +30,10 @@ describe('<DefaultRuleEditor/>', () => {
     } as RootState)
 
     it('should render correctly', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <DefaultRuleEditor {...minProps} />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })

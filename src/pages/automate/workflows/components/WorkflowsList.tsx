@@ -27,8 +27,8 @@ type Props = {
     onDelete: (workflowId: string) => Promise<void>
     onDuplicate: (
         workflowId: string,
-        storeIntegrationId: number
-    ) => Promise<{id: string}>
+        storeIntegrationId: number,
+    ) => Promise<{ id: string }>
     goToEditWorkflowPage: (workflowId: string) => void
     isUpdatePending: boolean
 }

@@ -1,23 +1,24 @@
-import {render, screen, waitFor} from '@testing-library/react'
-import MockAdapter from 'axios-mock-adapter'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render, screen, waitFor } from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {dummyAppListData as appData} from 'fixtures/apps'
+import { dummyAppListData as appData } from 'fixtures/apps'
 import client from 'models/api/resources'
-import {IntegrationType} from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 
-import {CARD_LINK_TEST_ID} from '../../Card'
-import Mine, {LOCAL_STORAGE_KEY} from '../Mine'
+import { CARD_LINK_TEST_ID } from '../../Card'
+import Mine, { LOCAL_STORAGE_KEY } from '../Mine'
 
 const mockStore = configureMockStore([thunk])
 
 const store = mockStore({
     integrations: fromJS({
-        integrations: [{id: 2, type: IntegrationType.Shopify}],
+        integrations: [{ id: 2, type: IntegrationType.Shopify }],
     }),
 })
 
@@ -32,7 +33,7 @@ describe('<Mine />', () => {
         render(
             <Provider store={store}>
                 <Mine />
-            </Provider>
+            </Provider>,
         )
         expect(screen.getByText(/Loading more/))
     })
@@ -48,11 +49,11 @@ describe('<Mine />', () => {
 
         mockApi
             .onGet('/api/apps/installed/')
-            .reply(200, {data: [installedAppData]})
+            .reply(200, { data: [installedAppData] })
         render(
             <Provider store={store}>
                 <Mine />
-            </Provider>
+            </Provider>,
         )
         await waitFor(() => {
             expect(screen.queryByText(/Loading/)).toBe(null)
@@ -69,12 +70,12 @@ describe('<Mine />', () => {
             }),
         })
 
-        mockApi.onGet('/api/apps/').reply(200, {data: []})
+        mockApi.onGet('/api/apps/').reply(200, { data: [] })
 
         render(
             <Provider store={store}>
                 <Mine />
-            </Provider>
+            </Provider>,
         )
         await waitFor(() => {
             expect(screen.queryByText(/Loading/)).toBe(null)
@@ -87,7 +88,7 @@ describe('<Mine />', () => {
         render(
             <Provider store={store}>
                 <Mine />
-            </Provider>
+            </Provider>,
         )
         expect(screen.getByText(/Please note/))
     })
@@ -98,7 +99,7 @@ describe('<Mine />', () => {
         render(
             <Provider store={store}>
                 <Mine />
-            </Provider>
+            </Provider>,
         )
         expect(screen.queryByText(/Please note/)).toBe(null)
     })

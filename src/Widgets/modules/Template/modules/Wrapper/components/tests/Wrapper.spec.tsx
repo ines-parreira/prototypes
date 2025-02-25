@@ -1,29 +1,28 @@
-import {screen, render} from '@testing-library/react'
-import {renderHook} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
-import React, {ComponentProps, ReactNode} from 'react'
-import {Provider} from 'react-redux'
-import {Action} from 'redux'
+import React, { ComponentProps, ReactNode } from 'react'
+
+import { render, screen } from '@testing-library/react'
+import { renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import { Action } from 'redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {IntegrationType} from 'models/integration/types'
-import {WrapperTemplate} from 'models/widget/types'
-import {EditionContext} from 'providers/infobar/EditionContext'
+import { IntegrationType } from 'models/integration/types'
+import { WrapperTemplate } from 'models/widget/types'
+import { EditionContext } from 'providers/infobar/EditionContext'
 import * as actions from 'state/widgets/actions'
 import {
     CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
     THIRD_PARTY_APP_NAME_KEY,
     WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
-import {Widget, WidgetType} from 'state/widgets/types'
-import {assumeMock, getLastMockCall} from 'utils/testing'
+import { Widget, WidgetType } from 'state/widgets/types'
+import { assumeMock, getLastMockCall } from 'utils/testing'
+import { WidgetContext } from 'Widgets/contexts/WidgetContext'
 
-import {WidgetContext} from 'Widgets/contexts/WidgetContext'
-
-import WrapperEditActions, {FormData} from '../views/WrapperEditActions'
-
-import Wrapper, {CUSTOMIZABLE_WIDGET_TYPES, useIntegration} from '../Wrapper'
+import WrapperEditActions, { FormData } from '../views/WrapperEditActions'
+import Wrapper, { CUSTOMIZABLE_WIDGET_TYPES, useIntegration } from '../Wrapper'
 
 jest.spyOn(actions, 'removeEditedWidget')
 
@@ -66,7 +65,7 @@ const shopifyWidget = {
     order: 1,
 } as Widget
 
-const shopifySource = {foo: 'foo value'}
+const shopifySource = { foo: 'foo value' }
 
 const httpWidget = {
     id: 5,
@@ -76,7 +75,7 @@ const httpWidget = {
     order: 2,
 } as Widget
 
-const httpSource = {bar: 'bar value'}
+const httpSource = { bar: 'bar value' }
 
 const customerExternalDataWidget = {
     id: 6,
@@ -114,7 +113,7 @@ jest.mock('../views/WrapperEditActions', () =>
                 {props.initialData?.color}
             </span>
         </div>
-    ))
+    )),
 )
 const WrapperEditActionsMock = assumeMock(WrapperEditActions)
 
@@ -127,10 +126,10 @@ describe('Wrapper', () => {
     })
 
     it('should display (without an edit or a remove icon)', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <WidgetContext.Provider value={shopifyWidget}>
-                    <EditionContext.Provider value={{isEditing: false}}>
+                    <EditionContext.Provider value={{ isEditing: false }}>
                         <Wrapper
                             template={{
                                 ...wrapperTemplate,
@@ -143,7 +142,7 @@ describe('Wrapper', () => {
                         </Wrapper>
                     </EditionContext.Provider>
                 </WidgetContext.Provider>
-            </Provider>
+            </Provider>,
         )
 
         expect(container).toMatchSnapshot()
@@ -153,7 +152,7 @@ describe('Wrapper', () => {
         render(
             <Provider store={store}>
                 <WidgetContext.Provider value={shopifyWidget}>
-                    <EditionContext.Provider value={{isEditing: true}}>
+                    <EditionContext.Provider value={{ isEditing: true }}>
                         <Wrapper
                             template={{
                                 ...wrapperTemplate,
@@ -166,13 +165,13 @@ describe('Wrapper', () => {
                         </Wrapper>
                     </EditionContext.Provider>
                 </WidgetContext.Provider>
-            </Provider>
+            </Provider>,
         )
 
         getLastMockCall(WrapperEditActionsMock)[0].onDelete()
 
         expect(store.getActions()).toContainEqual(
-            removeEditedWidget(defaultTemplatePath, defaultAbsolutePath)
+            removeEditedWidget(defaultTemplatePath, defaultAbsolutePath),
         )
     })
 
@@ -180,12 +179,12 @@ describe('Wrapper', () => {
         'should render color for customizable "%s" widget type',
         (type) => {
             const color = '#fff'
-            const {getByTestId} = render(
+            const { getByTestId } = render(
                 <Provider store={store}>
                     <WidgetContext.Provider
-                        value={{...httpWidget, type: type as WidgetType}}
+                        value={{ ...httpWidget, type: type as WidgetType }}
                     >
-                        <EditionContext.Provider value={{isEditing: true}}>
+                        <EditionContext.Provider value={{ isEditing: true }}>
                             <Wrapper
                                 template={{
                                     ...wrapperTemplate,
@@ -201,21 +200,21 @@ describe('Wrapper', () => {
                             </Wrapper>
                         </EditionContext.Provider>
                     </WidgetContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(getByTestId(MOCK_EDIT_FORM_COLOR_ID)).toHaveTextContent(
-                color
+                color,
             )
-        }
+        },
     )
 
     it('should not render color for not-customizable widget type', () => {
         const color = '#fff'
-        const {getByTestId} = render(
+        const { getByTestId } = render(
             <Provider store={store}>
                 <WidgetContext.Provider value={shopifyWidget}>
-                    <EditionContext.Provider value={{isEditing: true}}>
+                    <EditionContext.Provider value={{ isEditing: true }}>
                         <Wrapper
                             template={{
                                 ...wrapperTemplate,
@@ -231,19 +230,19 @@ describe('Wrapper', () => {
                         </Wrapper>
                     </EditionContext.Provider>
                 </WidgetContext.Provider>
-            </Provider>
+            </Provider>,
         )
 
         expect(getByTestId(MOCK_EDIT_FORM_COLOR_ID)).not.toHaveTextContent(
-            color
+            color,
         )
     })
 
     it('should render customer external data widget with the proper id', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <WidgetContext.Provider value={customerExternalDataWidget}>
-                    <EditionContext.Provider value={{isEditing: false}}>
+                    <EditionContext.Provider value={{ isEditing: false }}>
                         <Wrapper
                             template={{
                                 ...wrapperTemplate,
@@ -256,17 +255,17 @@ describe('Wrapper', () => {
                         </Wrapper>
                     </EditionContext.Provider>
                 </WidgetContext.Provider>
-            </Provider>
+            </Provider>,
         )
 
         expect(container).toMatchSnapshot()
     })
 
     it('should render woocommerce widget with the proper id', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <WidgetContext.Provider value={woocommerceDataWidget}>
-                    <EditionContext.Provider value={{isEditing: false}}>
+                    <EditionContext.Provider value={{ isEditing: false }}>
                         <Wrapper
                             template={{
                                 ...wrapperTemplate,
@@ -279,7 +278,7 @@ describe('Wrapper', () => {
                         </Wrapper>
                     </EditionContext.Provider>
                 </WidgetContext.Provider>
-            </Provider>
+            </Provider>,
         )
 
         expect(container).toMatchSnapshot()
@@ -289,7 +288,7 @@ describe('Wrapper', () => {
         render(
             <Provider store={store}>
                 <WidgetContext.Provider value={woocommerceDataWidget}>
-                    <EditionContext.Provider value={{isEditing: true}}>
+                    <EditionContext.Provider value={{ isEditing: true }}>
                         <Wrapper
                             template={{
                                 ...wrapperTemplate,
@@ -302,13 +301,13 @@ describe('Wrapper', () => {
                         </Wrapper>
                     </EditionContext.Provider>
                 </WidgetContext.Provider>
-            </Provider>
+            </Provider>,
         )
 
         getLastMockCall(WrapperEditActionsMock)[0].onEditStart()
 
         expect(store.getActions()).toContainEqual(
-            actions.startWidgetEdition(defaultTemplatePath)
+            actions.startWidgetEdition(defaultTemplatePath),
         )
     })
 
@@ -316,7 +315,7 @@ describe('Wrapper', () => {
         render(
             <Provider store={store}>
                 <WidgetContext.Provider value={shopifyWidget}>
-                    <EditionContext.Provider value={{isEditing: true}}>
+                    <EditionContext.Provider value={{ isEditing: true }}>
                         <Wrapper
                             template={{
                                 ...wrapperTemplate,
@@ -329,7 +328,7 @@ describe('Wrapper', () => {
                         </Wrapper>
                     </EditionContext.Provider>
                 </WidgetContext.Provider>
-            </Provider>
+            </Provider>,
         )
 
         getLastMockCall(WrapperEditActionsMock)[0].onEditCancel()
@@ -344,7 +343,7 @@ describe('Wrapper', () => {
         render(
             <Provider store={store}>
                 <WidgetContext.Provider value={shopifyWidget}>
-                    <EditionContext.Provider value={{isEditing: true}}>
+                    <EditionContext.Provider value={{ isEditing: true }}>
                         <Wrapper
                             template={{
                                 ...wrapperTemplate,
@@ -357,7 +356,7 @@ describe('Wrapper', () => {
                         </Wrapper>
                     </EditionContext.Provider>
                 </WidgetContext.Provider>
-            </Provider>
+            </Provider>,
         )
 
         WrapperEditActionsMock.mock.calls
@@ -378,12 +377,12 @@ describe('Wrapper', () => {
 
         expect(
             storeActions.findIndex(
-                ({type}: Action) => type === updateAction.type
-            )
+                ({ type }: Action) => type === updateAction.type,
+            ),
         ).toBeLessThan(
             storeActions.findIndex(
-                ({type}: Action) => type === stopEditAction.type
-            )
+                ({ type }: Action) => type === stopEditAction.type,
+            ),
         )
     })
 
@@ -393,13 +392,13 @@ describe('Wrapper', () => {
                 <Wrapper template={wrapperTemplate} source={shopifySource}>
                     {'foo'}
                 </Wrapper>
-            </Provider>
+            </Provider>,
         )
         expect(screen.getByText('foo'))
     })
 })
 
-const wrapper = ({children}: {children: ReactNode}) => (
+const wrapper = ({ children }: { children: ReactNode }) => (
     <Provider store={store}>
         <WidgetContext.Provider value={shopifyWidget}>
             {children}
@@ -412,16 +411,16 @@ describe('useIntegration hook', () => {
         const absolutePath = ['a', 'b', 'c', '2']
         const widgetType = IntegrationType.Shopify
         const integrationId = 0
-        const {result} = renderHook(
+        const { result } = renderHook(
             () => useIntegration(absolutePath, widgetType, integrationId),
-            {wrapper}
+            { wrapper },
         )
         expect(result.current).toEqual(
             fromJS({
                 id: 2,
                 type: 'shopify',
                 name: 'my little shopify integration',
-            })
+            }),
         )
     })
 
@@ -434,16 +433,16 @@ describe('useIntegration hook', () => {
         ]
         const widgetType = IntegrationType.Shopify
         const integrationId = 2
-        const {result} = renderHook(
+        const { result } = renderHook(
             () => useIntegration(absolutePath, widgetType, integrationId),
-            {wrapper}
+            { wrapper },
         )
         expect(result.current).toEqual(
             fromJS({
                 id: 2,
                 type: 'shopify',
                 name: 'my little shopify integration',
-            })
+            }),
         )
     })
 })

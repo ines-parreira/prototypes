@@ -1,19 +1,19 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {useGetHelpCenterArticleList} from 'models/helpCenter/queries'
+import { useGetHelpCenterArticleList } from 'models/helpCenter/queries'
 import {
     ArticleTemplateType,
     HelpCenterArticleItem,
     LocaleCode,
 } from 'models/helpCenter/types'
-import {DEFAULT_ARTICLE_GROUP} from 'pages/settings/helpCenter/constants'
-import {useGetAIArticles} from 'pages/settings/helpCenter/hooks/useGetAIArticles'
-import {useGetArticleTemplates} from 'pages/settings/helpCenter/queries'
-import {getValidStoreIntegrationId} from 'pages/settings/helpCenter/utils/helpCenter.utils'
-import {getStoreIntegrations} from 'state/integrations/selectors'
+import { DEFAULT_ARTICLE_GROUP } from 'pages/settings/helpCenter/constants'
+import { useGetAIArticles } from 'pages/settings/helpCenter/hooks/useGetAIArticles'
+import { useGetArticleTemplates } from 'pages/settings/helpCenter/queries'
+import { getValidStoreIntegrationId } from 'pages/settings/helpCenter/utils/helpCenter.utils'
+import { getStoreIntegrations } from 'state/integrations/selectors'
 
-import {MINIMUM_AI_ARTICLES} from '../../CategoriesView/components/ArticleTemplateCard/constants'
+import { MINIMUM_AI_ARTICLES } from '../../CategoriesView/components/ArticleTemplateCard/constants'
 import {
     groupArticlesByCategory,
     mapAIHelpCenterArticleData,
@@ -28,21 +28,21 @@ export type HelpCenterArticlesOutput = {
 export const useGetHelpCenterArticles = (
     helpCenterId: number,
     locale: LocaleCode,
-    helpCenterShopName: string | null
+    helpCenterShopName: string | null,
 ): HelpCenterArticlesOutput => {
     const allStoreIntegrations = useAppSelector(getStoreIntegrations)
     const storeIntegrationId = getValidStoreIntegrationId(
         allStoreIntegrations,
-        helpCenterShopName
+        helpCenterShopName,
     )
-    const {fetchedArticles: aiArticles, isLoading: isGetAIArticlesLoading} =
+    const { fetchedArticles: aiArticles, isLoading: isGetAIArticlesLoading } =
         useGetAIArticles({
             helpCenterId,
             storeIntegrationId,
             locale,
         })
 
-    const {data: articleTemplates, isLoading: isGetArticleTemplatesLoading} =
+    const { data: articleTemplates, isLoading: isGetArticleTemplatesLoading } =
         useGetArticleTemplates(locale, {
             refetchOnWindowFocus: false,
         })
@@ -57,7 +57,7 @@ export const useGetHelpCenterArticles = (
         },
         {
             refetchOnWindowFocus: false,
-        }
+        },
     )
     const helpCenterArticles = helpCenterArticlesData?.data
 
@@ -69,13 +69,13 @@ export const useGetHelpCenterArticles = (
         const mappedArticleTemplates = mapHelpCenterArticleData(
             articleTemplates,
             helpCenterArticles,
-            locale
+            locale,
         )
 
         const mappedArticlesAI = mapAIHelpCenterArticleData(
             aiArticles || [],
             helpCenterArticles,
-            locale
+            locale,
         )
 
         const slicedAiArticles = mappedArticlesAI.slice(0, MINIMUM_AI_ARTICLES)
@@ -89,7 +89,7 @@ export const useGetHelpCenterArticles = (
 
         // If no AI articles are available, return template articles grouped by category
         const isAnyArticleSelected = mappedArticleTemplates.some(
-            (article) => article.isSelected
+            (article) => article.isSelected,
         )
 
         if (mappedArticleTemplates.length && !isAnyArticleSelected) {

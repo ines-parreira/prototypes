@@ -1,5 +1,6 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { Meta, Story } from '@storybook/react'
 
 import StatDifference from 'pages/stats/common/components/StatDifference'
 
@@ -35,12 +36,12 @@ WithDifference.args = {
 }
 
 export const WithZeroValue = Template.bind({})
-WithZeroValue.args = {...defaultProps, value: 0}
+WithZeroValue.args = { ...defaultProps, value: 0 }
 
 export const WithFullValue = Template.bind({})
-WithFullValue.args = {...defaultProps, value: 100, maxValue: 100}
+WithFullValue.args = { ...defaultProps, value: 100, maxValue: 100 }
 
 export const WithEmptyFill = Template.bind({})
-WithEmptyFill.args = {...defaultProps, fill: 'empty'}
+WithEmptyFill.args = { ...defaultProps, fill: 'empty' }
 
 export default storyConfig

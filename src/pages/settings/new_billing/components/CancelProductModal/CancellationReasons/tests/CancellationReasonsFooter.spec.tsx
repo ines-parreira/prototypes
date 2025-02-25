@@ -1,5 +1,6 @@
-import {fireEvent, render} from '@testing-library/react'
 import React from 'react'
+
+import { fireEvent, render } from '@testing-library/react'
 
 import CancellationReasonsFooter from '../CancellationReasonsFooter'
 
@@ -15,13 +16,13 @@ describe('CancellationReasonsFooter', () => {
     })
 
     it('renders correctly', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <CancellationReasonsFooter
                 onClose={onCloseMock}
                 productType={productType}
                 onContinue={onContinueMock}
                 continueDisabled={continueDisabled}
-            />
+            />,
         )
 
         expect(getByText(`Keep using ${productType}`)).toBeInTheDocument()
@@ -29,13 +30,13 @@ describe('CancellationReasonsFooter', () => {
     })
 
     it('calls onClose when "Keep using" button is clicked', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <CancellationReasonsFooter
                 onClose={onCloseMock}
                 productType={productType}
                 onContinue={onContinueMock}
                 continueDisabled={continueDisabled}
-            />
+            />,
         )
 
         fireEvent.click(getByText(`Keep using ${productType}`))
@@ -43,13 +44,13 @@ describe('CancellationReasonsFooter', () => {
     })
 
     it('calls onContinue when "Continue cancelling" button is clicked', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <CancellationReasonsFooter
                 onClose={onCloseMock}
                 productType={productType}
                 onContinue={onContinueMock}
                 continueDisabled={continueDisabled}
-            />
+            />,
         )
 
         fireEvent.click(getByText('Continue cancelling'))
@@ -57,13 +58,13 @@ describe('CancellationReasonsFooter', () => {
     })
 
     it('disables "Continue cancelling" button when continueDisabled is true', () => {
-        const {getByRole} = render(
+        const { getByRole } = render(
             <CancellationReasonsFooter
                 onClose={onCloseMock}
                 productType={productType}
                 onContinue={onContinueMock}
                 continueDisabled={true}
-            />
+            />,
         )
 
         const continueButton = getByRole('button', {

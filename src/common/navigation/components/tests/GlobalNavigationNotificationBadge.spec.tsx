@@ -1,10 +1,11 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import useCount from 'common/notifications/hooks/useCount'
-import {assumeMock} from 'utils/testing'
+import { render, screen } from '@testing-library/react'
 
-import {GlobalNavigationNotificationBadge} from '../GlobalNavigationNotificationBadge'
+import useCount from 'common/notifications/hooks/useCount'
+import { assumeMock } from 'utils/testing'
+
+import { GlobalNavigationNotificationBadge } from '../GlobalNavigationNotificationBadge'
 
 jest.mock('common/notifications/hooks/useCount', () => jest.fn())
 const useCountMock = assumeMock(useCount)
@@ -17,7 +18,7 @@ describe('Global Navigation NotificationBadge', () => {
     })
 
     it('should return nothing if there are no notifications', () => {
-        const {container} = render(<GlobalNavigationNotificationBadge />)
+        const { container } = render(<GlobalNavigationNotificationBadge />)
         expect(container).toBeEmptyDOMElement()
     })
 
@@ -50,7 +51,7 @@ describe('Global Navigation NotificationBadge', () => {
         render(<GlobalNavigationNotificationBadge />)
         expect(screen.getByText('99+')).toHaveAttribute(
             'data-right-offset',
-            'l'
+            'l',
         )
     })
 })

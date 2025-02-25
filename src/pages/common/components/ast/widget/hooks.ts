@@ -1,17 +1,18 @@
-import {List, Map} from 'immutable'
-import {useMemo} from 'react'
+import { useMemo } from 'react'
+
+import { List, Map } from 'immutable'
 
 export const useOptions = (
     selectedOption: Maybe<Map<any, any>>,
     options: List<any>,
-    getOptionId: (value: Map<any, any>) => string | number
+    getOptionId: (value: Map<any, any>) => string | number,
 ): List<any> => {
     return useMemo(() => {
         if (
             selectedOption &&
             !options.find(
                 (option: Map<any, any>) =>
-                    getOptionId(option) === getOptionId(selectedOption)
+                    getOptionId(option) === getOptionId(selectedOption),
             )
         ) {
             return options.push(selectedOption)

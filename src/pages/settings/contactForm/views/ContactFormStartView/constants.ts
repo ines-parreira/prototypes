@@ -1,6 +1,6 @@
-import {ProductDetail} from 'pages/common/components/ProductDetail/types'
+import { ProductDetail } from 'pages/common/components/ProductDetail/types'
 
-import {CONTACT_FORM_PAGE_TITLE} from '../../constants'
+import { CONTACT_FORM_PAGE_TITLE } from '../../constants'
 
 export const CONTACT_FORM_APP_DETAIL: ProductDetail = {
     title: CONTACT_FORM_PAGE_TITLE,

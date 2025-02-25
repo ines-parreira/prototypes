@@ -1,10 +1,11 @@
-import {fireEvent, render, screen} from '@testing-library/react'
-import {Map} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render, screen } from '@testing-library/react'
+import { Map } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {RootState, StoreDispatch} from 'state/types'
+import { RootState, StoreDispatch } from 'state/types'
 
 import Tip from '../Tip'
 
@@ -22,18 +23,18 @@ const renderTip = () =>
             <Tip icon={true} actionLabel="Got It" storageKey="test">
                 test
             </Tip>
-        </Provider>
+        </Provider>,
     )
 
 describe('<Tip/>', () => {
     it('should not render another instance after closing', () => {
-        const {container} = renderTip()
+        const { container } = renderTip()
 
         fireEvent.click(screen.getByText('Got It'))
 
         expect(container.firstChild).toBeNull()
 
-        const {container: secondContainer} = renderTip()
+        const { container: secondContainer } = renderTip()
 
         expect(secondContainer.firstChild).toBeNull()
     })

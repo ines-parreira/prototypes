@@ -1,7 +1,7 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {List, Map, fromJS} from 'immutable'
+import { renderHook } from '@testing-library/react-hooks'
+import { fromJS, List, Map } from 'immutable'
 
-import {useOptions} from '../hooks'
+import { useOptions } from '../hooks'
 
 const getOptionId = (option: Map<any, any>) => option.get('id') as string
 
@@ -14,7 +14,7 @@ describe('useOptions', () => {
     ]) as List<any>
 
     it('should return options if no selected option', () => {
-        const {result} = renderHook(() => {
+        const { result } = renderHook(() => {
             return useOptions(null, options, getOptionId)
         })
         expect(result.current).toEqual(options)
@@ -25,7 +25,7 @@ describe('useOptions', () => {
             id: 2,
             baz: 'bac',
         })
-        const {result} = renderHook(() => {
+        const { result } = renderHook(() => {
             return useOptions(selectedOption, options, getOptionId)
         })
         expect(result.current).toEqual(options.push(selectedOption))
@@ -36,7 +36,7 @@ describe('useOptions', () => {
             id: 1,
             baz: 'bac',
         })
-        const {result} = renderHook(() => {
+        const { result } = renderHook(() => {
             return useOptions(selectedOption, options, getOptionId)
         })
         expect(result.current).toEqual(options)

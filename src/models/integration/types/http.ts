@@ -1,10 +1,10 @@
-import {ContentType, HttpMethod} from 'models/api/types'
-import type {EventType} from 'models/event/types'
-import type {Field} from 'pages/integrations/integration/components/http/Integration/ObjectListField'
+import { ContentType, HttpMethod } from 'models/api/types'
+import type { EventType } from 'models/event/types'
+import type { Field } from 'pages/integrations/integration/components/http/Integration/ObjectListField'
 
-import {IntegrationType} from '../constants'
-import type {Integration} from './'
-import type {IntegrationBase} from './base'
+import { IntegrationType } from '../constants'
+import type { Integration } from './'
+import type { IntegrationBase } from './base'
 
 export type HttpIntegration = IntegrationBase & {
     type: IntegrationType.Http
@@ -32,7 +32,7 @@ export type HttpIntegrationMeta = {
 export type HTTPForm = string | null | Record<string, unknown> | Field[]
 
 export const isHttpIntegration = (
-    integration: Maybe<Integration>
+    integration: Maybe<Integration>,
 ): integration is HttpIntegration => integration?.type === IntegrationType.Http
 
 export type HTTPIntegrationEvent = {

@@ -1,6 +1,6 @@
-import {GuidancesDataFixture} from '../../tests/GuidancesData.fixture'
-import {PublishYourFirstGuidanceTask} from '../PublishYourFirstGuidance.task'
-import {buildRuleEngineData, buildRuleEngineRoutes} from './utils'
+import { GuidancesDataFixture } from '../../tests/GuidancesData.fixture'
+import { PublishYourFirstGuidanceTask } from '../PublishYourFirstGuidance.task'
+import { buildRuleEngineData, buildRuleEngineRoutes } from './utils'
 
 describe('PublishYourFirstGuidance', () => {
     it('should display the task only if draft guidances exists', () => {
@@ -12,7 +12,7 @@ describe('PublishYourFirstGuidance', () => {
             buildRuleEngineData({
                 guidances,
             }),
-            buildRuleEngineRoutes()
+            buildRuleEngineRoutes(),
         )
         expect(task.display).toBe(true)
     })
@@ -51,12 +51,12 @@ describe('PublishYourFirstGuidance', () => {
                 .withUnlistedGuidance()
                 .build(),
         },
-    ])('should not display the task if $type guidances', ({guidances}) => {
+    ])('should not display the task if $type guidances', ({ guidances }) => {
         const task = new PublishYourFirstGuidanceTask(
             buildRuleEngineData({
                 guidances,
             }),
-            buildRuleEngineRoutes()
+            buildRuleEngineRoutes(),
         )
         expect(task.display).toBe(false)
     })

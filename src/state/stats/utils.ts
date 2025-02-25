@@ -1,22 +1,22 @@
 import moment from 'moment/moment'
 
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {ReportingGranularity} from 'models/reporting/types'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { ReportingGranularity } from 'models/reporting/types'
 import {
     AggregationWindow,
     CustomFieldFilter,
     CustomFieldSavedFilter,
-    SavedFilterCustomFieldFilter,
     FilterKey,
     LegacyStatsFilters,
     Period,
+    SavedFilterCustomFieldFilter,
     SavedFilterDraft,
     SavedFilterSupportedFilters,
     StatsFilters,
     StatsFiltersWithLogicalOperator,
     TagFilterInstanceId,
 } from 'models/stat/types'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 
 const getCustomFields = (statsFilters: Partial<LegacyStatsFilters>) => {
     const customFieldFilters: Record<string, CustomFieldFilter> = {}
@@ -40,7 +40,7 @@ const getCustomFields = (statsFilters: Partial<LegacyStatsFilters>) => {
 }
 
 export const fromPartialLegacyStatsFilters = (
-    statsFilters: Partial<LegacyStatsFilters>
+    statsFilters: Partial<LegacyStatsFilters>,
 ): Partial<StatsFiltersWithLogicalOperator> => {
     const filterKeys = Object.values(FilterKey)
     return filterKeys.reduce<Partial<StatsFiltersWithLogicalOperator>>(
@@ -62,7 +62,7 @@ export const fromPartialLegacyStatsFilters = (
                         acc[key] = [
                             {
                                 ...withDefaultLogicalOperator(
-                                    statsFilters[key]
+                                    statsFilters[key],
                                 ),
                                 filterInstanceId: TagFilterInstanceId.First,
                             },
@@ -88,12 +88,12 @@ export const fromPartialLegacyStatsFilters = (
             }
             return acc
         },
-        {}
+        {},
     )
 }
 
 export const fromLegacyStatsFilters = (
-    statsFilters: LegacyStatsFilters
+    statsFilters: LegacyStatsFilters,
 ): StatsFiltersWithLogicalOperator => {
     const filterKeys = Object.values(FilterKey)
     return filterKeys.reduce<StatsFiltersWithLogicalOperator>(
@@ -110,7 +110,7 @@ export const fromLegacyStatsFilters = (
                         acc[key] = [
                             {
                                 ...withDefaultLogicalOperator(
-                                    statsFilters[key]
+                                    statsFilters[key],
                                 ),
                                 filterInstanceId: TagFilterInstanceId.First,
                             },
@@ -152,12 +152,12 @@ export const fromLegacyStatsFilters = (
         },
         {
             period: statsFilters.period,
-        }
+        },
     )
 }
 
 export const fromFiltersWithLogicalOperators = (
-    statsFilters: StatsFiltersWithLogicalOperator
+    statsFilters: StatsFiltersWithLogicalOperator,
 ): LegacyStatsFilters => {
     return {
         period: statsFilters[FilterKey.Period],
@@ -172,7 +172,7 @@ export const fromFiltersWithLogicalOperators = (
                             acc[filter] = (statsFilters[filter] ?? []).find(
                                 (tagFilter) =>
                                     tagFilter.operator ===
-                                    LogicalOperatorEnum.ONE_OF
+                                    LogicalOperatorEnum.ONE_OF,
                             )?.values
                         }
                         break
@@ -210,14 +210,14 @@ export const fromFiltersWithLogicalOperators = (
                 }
                 return acc
             },
-            {}
+            {},
         ),
     }
 }
 
 export const excludeFromFiltersWithLogicalOperators = (
     statsFilters: StatsFiltersWithLogicalOperator,
-    filtersToExclude: Exclude<FilterKey, FilterKey.Period>[]
+    filtersToExclude: Exclude<FilterKey, FilterKey.Period>[],
 ): StatsFiltersWithLogicalOperator => {
     return Object.values(FilterKey).reduce<StatsFiltersWithLogicalOperator>(
         (acc, key) => {
@@ -249,12 +249,12 @@ export const excludeFromFiltersWithLogicalOperators = (
         },
         {
             period: statsFilters.period,
-        }
+        },
     )
 }
 
 export const savedFilterDraftFiltersFromFiltersWithLogicalOperators = (
-    statsFilters: StatsFiltersWithLogicalOperator
+    statsFilters: StatsFiltersWithLogicalOperator,
 ): SavedFilterDraft['filter_group'] =>
     Object.values(FilterKey).reduce<SavedFilterDraft['filter_group']>(
         (acc, filter) => {
@@ -289,7 +289,7 @@ export const savedFilterDraftFiltersFromFiltersWithLogicalOperators = (
                             >((accumulator, value) => {
                                 accumulator.push({
                                     custom_field_id: String(
-                                        value.customFieldId
+                                        value.customFieldId,
                                     ),
                                     values: value.values,
                                     operator: value.operator,
@@ -313,11 +313,11 @@ export const savedFilterDraftFiltersFromFiltersWithLogicalOperators = (
             }
             return acc
         },
-        []
+        [],
     )
 
 export const statsFiltersWithLogicalOperatorsFromSavedFilters = (
-    filters: SavedFilterDraft['filter_group'] | undefined
+    filters: SavedFilterDraft['filter_group'] | undefined,
 ): Omit<StatsFiltersWithLogicalOperator, 'period'> =>
     filters === undefined
         ? {}
@@ -328,7 +328,7 @@ export const statsFiltersWithLogicalOperatorsFromSavedFilters = (
                           (v) => ({
                               ...v,
                               customFieldId: Number(v.custom_field_id),
-                          })
+                          }),
                       )
                   } else if (savedFilter.member === FilterKey.Tags) {
                       statsFilters[savedFilter.member] = savedFilter.values.map(
@@ -337,7 +337,7 @@ export const statsFiltersWithLogicalOperatorsFromSavedFilters = (
                               operator: filter.operator,
                               values: filter.values.map(Number),
                               filterInstanceId: filter.filterInstanceId,
-                          })
+                          }),
                       )
                   } else if (
                       savedFilter.member === FilterKey.HelpCenters ||
@@ -357,20 +357,20 @@ export const statsFiltersWithLogicalOperatorsFromSavedFilters = (
 
                   return statsFilters
               },
-              {}
+              {},
           )
 
 export const getAllowedAggregationWindows = (
-    period: Period
+    period: Period,
 ): AggregationWindow[] => {
     const periodInDays = Math.abs(
         moment
             .duration(
                 moment(period.start_datetime)
                     .startOf('day')
-                    .diff(moment(period.end_datetime).endOf('day'))
+                    .diff(moment(period.end_datetime).endOf('day')),
             )
-            .asDays()
+            .asDays(),
     )
     const isLessThenADay = periodInDays <= 1
     const isUpTo92days = periodInDays <= 92
@@ -387,7 +387,7 @@ export const getAllowedAggregationWindows = (
 }
 
 export const getAdjustedAggregationWindow = (
-    filters: StatsFilters
+    filters: StatsFilters,
 ): StatsFilters[FilterKey.AggregationWindow] => {
     if (filters.aggregationWindow === undefined) {
         return undefined
@@ -400,5 +400,5 @@ export const getAdjustedAggregationWindow = (
 }
 
 export const isCustomFieldSavedFilter = (
-    filter: SavedFilterSupportedFilters
+    filter: SavedFilterSupportedFilters,
 ): filter is CustomFieldSavedFilter => filter.member === FilterKey.CustomFields

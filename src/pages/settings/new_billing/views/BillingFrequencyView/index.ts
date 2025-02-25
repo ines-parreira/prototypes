@@ -1,1 +1,1 @@
-export {default} from './BillingFrequencyView'
+export { default } from './BillingFrequencyView'

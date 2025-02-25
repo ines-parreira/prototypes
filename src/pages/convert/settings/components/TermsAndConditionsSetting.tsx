@@ -1,25 +1,26 @@
-import classnames from 'classnames'
-import {EditorState} from 'draft-js'
-import {fromJS, Map} from 'immutable'
-import React, {useCallback, useEffect, useMemo} from 'react'
+import React, { useCallback, useEffect, useMemo } from 'react'
 
-import {mapIntegrationLanguagesToLanguagePicker} from 'config/integrations/gorgias_chat'
+import classnames from 'classnames'
+import { EditorState } from 'draft-js'
+import { fromJS, Map } from 'immutable'
+
+import { mapIntegrationLanguagesToLanguagePicker } from 'config/integrations/gorgias_chat'
 import TabNavigator from 'pages/common/components/TabNavigator/TabNavigator'
-import {ActionName} from 'pages/common/draftjs/plugins/toolbar/types'
+import { ActionName } from 'pages/common/draftjs/plugins/toolbar/types'
 import CheckBox from 'pages/common/forms/CheckBox'
 import RichField from 'pages/common/forms/RichField/RichField'
 import ToggleInput from 'pages/common/forms/ToggleInput'
-import {ErrorMessage} from 'pages/convert/settings/components/styled'
-import {DisclaimerSettings} from 'pages/convert/settings/types'
-import {convertToHTML, convertFromHTML} from 'utils/editor'
-import {sanitizeHtmlDefault} from 'utils/html'
+import { ErrorMessage } from 'pages/convert/settings/components/styled'
+import { DisclaimerSettings } from 'pages/convert/settings/types'
+import { convertFromHTML, convertToHTML } from 'utils/editor'
+import { sanitizeHtmlDefault } from 'utils/html'
 
 import css from './TermsAndConditionsSetting.less'
 
 type TermsAndConditionsSettingProps = {
     disclaimerSettings: DisclaimerSettings
     onDisclaimerSettingsChange: (
-        arg0: (state: DisclaimerSettings) => DisclaimerSettings
+        arg0: (state: DisclaimerSettings) => DisclaimerSettings,
     ) => void
     onErrorChange: (value: boolean) => void
     chatIntegration: Map<any, any>
@@ -39,7 +40,7 @@ export const TermsAndConditionsSetting = ({
             disclaimerSettings.disclaimerMap[
                 disclaimerSettings.selectedLanguage
             ] ?? defaultDisclaimerMessage,
-        [disclaimerSettings]
+        [disclaimerSettings],
     )
 
     const selectedDisclaimerPureText = useMemo(() => {
@@ -72,7 +73,7 @@ export const TermsAndConditionsSetting = ({
                 selectedLanguage: value,
             }))
         },
-        [onDisclaimerSettingsChange]
+        [onDisclaimerSettingsChange],
     )
 
     const onDisclaimerEnabledChange = (value: boolean) => {
@@ -84,7 +85,7 @@ export const TermsAndConditionsSetting = ({
 
     const onDisclaimerMapChange = (value: EditorState) => {
         onDisclaimerSettingsChange((state: DisclaimerSettings) => {
-            const newState = {...state}
+            const newState = { ...state }
 
             let html = convertToHTML(value.getCurrentContent())
 
@@ -115,13 +116,13 @@ export const TermsAndConditionsSetting = ({
     }, [onError, onErrorChange])
 
     const languageOptions = mapIntegrationLanguagesToLanguagePicker(
-        fromJS(chatIntegration)
+        fromJS(chatIntegration),
     )
     const defaultLanguage = useMemo(
         () =>
             languageOptions.filter((language) => language.isDefault)[0] ||
             languageOptions[0],
-        [languageOptions]
+        [languageOptions],
     )
 
     useEffect(() => {

@@ -1,5 +1,6 @@
-import {render} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { render } from '@testing-library/react'
 
 import ProgressBar from '../ProgressBar'
 
@@ -26,8 +27,8 @@ const defaultProps: ComponentProps<typeof ProgressBar> = {
 
 describe('<ProgressBar />', () => {
     it('should render a progress bar of different types', () => {
-        const {container, rerender} = render(
-            <ProgressBar {...defaultProps} barType="secondary" />
+        const { container, rerender } = render(
+            <ProgressBar {...defaultProps} barType="secondary" />,
         )
 
         expect(container.querySelector('.secondary')).toBeTruthy()
@@ -40,14 +41,14 @@ describe('<ProgressBar />', () => {
     })
 
     it('should render different progress bars for the threshold type', () => {
-        const {container, rerender} = render(
-            <ProgressBar {...defaultProps} barType="threshold" />
+        const { container, rerender } = render(
+            <ProgressBar {...defaultProps} barType="threshold" />,
         )
 
         expect(container.querySelector('.success')).toBeTruthy()
 
         rerender(
-            <ProgressBar {...defaultProps} barType="threshold" value={20} />
+            <ProgressBar {...defaultProps} barType="threshold" value={20} />,
         )
         expect(container.querySelector('.error')).toBeTruthy()
 
@@ -55,12 +56,12 @@ describe('<ProgressBar />', () => {
             <ProgressBar
                 {...defaultProps}
                 thresholds={{
-                    secondary: {low: 0, high: 99},
-                    primary: {low: 100, high: 100},
+                    secondary: { low: 0, high: 99 },
+                    primary: { low: 100, high: 100 },
                 }}
                 barType="threshold"
                 value={99}
-            />
+            />,
         )
         expect(container.querySelector('.secondary')).toBeTruthy()
     })
@@ -85,7 +86,7 @@ describe('<ProgressBar />', () => {
             },
         } as const
 
-        const {container} = render(<ProgressBar {...props} value={20} />)
+        const { container } = render(<ProgressBar {...props} value={20} />)
         expect(container.querySelector('.success')).toBeTruthy()
     })
 })

@@ -1,8 +1,10 @@
-import {EmailIntegration} from '@gorgias/api-queries'
-import {screen, render, fireEvent, act} from '@testing-library/react'
 import React from 'react'
 
-import {assumeMock} from 'utils/testing'
+import { act, fireEvent, render, screen } from '@testing-library/react'
+
+import { EmailIntegration } from '@gorgias/api-queries'
+
+import { assumeMock } from 'utils/testing'
 
 import useDeleteEmailIntegration from '../../useDeleteEmailIntegration'
 import EmailDomainVerificationActionButtons from '../EmailDomainVerificationActionButtons'
@@ -26,13 +28,13 @@ describe('EmailDomainVerificationActionButtons', () => {
                         },
                     } as EmailIntegration
                 }
-            />
+            />,
         )
 
     beforeEach(() => {
         useDomainVerificationMock.mockReturnValue({
             domain: undefined,
-            errors: {createDomain: null},
+            errors: { createDomain: null },
         } as ReturnType<typeof useDomainVerification>)
         useDeleteEmailIntegrationMock.mockReturnValue({} as any)
     })
@@ -45,7 +47,7 @@ describe('EmailDomainVerificationActionButtons', () => {
         } as any)
         useDomainVerificationMock.mockReturnValue({
             domain: {},
-            errors: {createDomain: null},
+            errors: { createDomain: null },
         } as ReturnType<typeof useDomainVerification>)
 
         renderComponent()
@@ -68,7 +70,7 @@ describe('EmailDomainVerificationActionButtons', () => {
             verifyDomain: verifyDomainFn,
             isVerifying: false,
             isPending: false,
-            errors: {createDomain: null},
+            errors: { createDomain: null },
         } as any)
 
         renderComponent()
@@ -83,35 +85,35 @@ describe('EmailDomainVerificationActionButtons', () => {
     describe('domain creation error state', () => {
         it('should render correct href for contact support button', () => {
             useDomainVerificationMock.mockReturnValue({
-                errors: {createDomain: true},
+                errors: { createDomain: true },
             } as any)
             renderComponent()
 
             expect(screen.getByText('Contact support')).toHaveAttribute(
                 'href',
-                'mailto:support@gorgias.com'
+                'mailto:support@gorgias.com',
             )
         })
 
         it('should render correct link for close button', () => {
             useDomainVerificationMock.mockReturnValue({
-                errors: {createDomain: true},
+                errors: { createDomain: true },
             } as any)
 
             renderComponent()
 
             expect(screen.getByText('Close').closest('a')).toHaveAttribute(
                 'to',
-                '/app/settings/channels/email'
+                '/app/settings/channels/email',
             )
         })
     })
 
     describe('loading state', () => {
         it.each([
-            [{domain: undefined, isCreatingDomain: true, isFetching: false}],
-            [{domain: undefined, isCreatingDomain: false, isFetching: false}],
-            [{domain: {}, isCreatingDomain: false, isFetching: true}],
+            [{ domain: undefined, isCreatingDomain: true, isFetching: false }],
+            [{ domain: undefined, isCreatingDomain: false, isFetching: false }],
+            [{ domain: {}, isCreatingDomain: false, isFetching: true }],
         ])(
             'should disable buttons when domain creation is in progress or domain is being fetched',
             (useDomainVerificationState) => {
@@ -119,7 +121,7 @@ describe('EmailDomainVerificationActionButtons', () => {
                 useDomainVerificationMock.mockReturnValue({
                     ...useDomainVerificationState,
                     verifyDomain: verifyDomainFn,
-                    errors: {createDomain: null},
+                    errors: { createDomain: null },
                 } as any)
 
                 renderComponent()
@@ -135,7 +137,7 @@ describe('EmailDomainVerificationActionButtons', () => {
                 })
 
                 expect(screen.queryByText('Confirm')).not.toBeInTheDocument()
-            }
+            },
         )
     })
 })

@@ -1,5 +1,6 @@
-import React, {useMemo} from 'react'
-import {Link} from 'react-router-dom'
+import React, { useMemo } from 'react'
+
+import { Link } from 'react-router-dom'
 
 import {
     BACK_TO_CONVERT_HOME,
@@ -12,8 +13,8 @@ type Props = {
     integrationId?: number
 }
 
-const BackToConvertButton = ({integrationId}: Props) => {
-    const {backIntegrationId, removeBackIntegrationId} = useBackToConvert()
+const BackToConvertButton = ({ integrationId }: Props) => {
+    const { backIntegrationId, removeBackIntegrationId } = useBackToConvert()
 
     const backUrl = useMemo(() => {
         if (backIntegrationId === BACK_TO_CONVERT_HOME) {

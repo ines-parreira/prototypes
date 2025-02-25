@@ -1,15 +1,17 @@
-import {RuleType} from '@gorgias/api-queries'
-import {useCallback, useMemo} from 'react'
-// eslint-disable-next-line no-restricted-imports
-import {useDispatch} from 'react-redux'
-import {useParams} from 'react-router-dom'
+import { useCallback, useMemo } from 'react'
 
-import {updateRule} from 'models/rule/resources'
+// eslint-disable-next-line no-restricted-imports
+import { useDispatch } from 'react-redux'
+import { useParams } from 'react-router-dom'
+
+import { RuleType } from '@gorgias/api-queries'
+
+import { updateRule } from 'models/rule/resources'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
-import {useRules} from 'state/entities/rules/hooks'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { useRules } from 'state/entities/rules/hooks'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 export const useAiAgentEnabled = ({
     monitoredEmailIntegrations,
@@ -17,12 +19,12 @@ export const useAiAgentEnabled = ({
     isEnablingChatChannel,
     isEnablingEmailChannel,
 }: {
-    monitoredEmailIntegrations: {id: number; email: string}[]
+    monitoredEmailIntegrations: { id: number; email: string }[]
     monitoredChatIntegrations: number[]
     isEnablingChatChannel: boolean
     isEnablingEmailChannel: boolean
 }) => {
-    const {shopType, shopName} = useParams<{
+    const { shopType, shopName } = useParams<{
         shopType: string
         shopName: string
     }>()
@@ -39,7 +41,7 @@ export const useAiAgentEnabled = ({
                 .map((v) => v.value.meta.app_id)
                 .filter((value): value is string => Boolean(value)),
 
-        [chatChannels, monitoredChatIntegrations]
+        [chatChannels, monitoredChatIntegrations],
     )
 
     const {
@@ -55,7 +57,7 @@ export const useAiAgentEnabled = ({
             return []
         }
         return Object.values(rules).filter(
-            (rule) => rule.type === RuleType.Managed
+            (rule) => rule.type === RuleType.Managed,
         )
     }, [rules, isLoadingRules])
 
@@ -106,10 +108,10 @@ export const useAiAgentEnabled = ({
                             ...applicationsAutomationSettings[
                                 chatApplicationId
                             ],
-                            articleRecommendation: {enabled: false},
+                            articleRecommendation: { enabled: false },
                         },
                         undefined,
-                        true
+                        true,
                     )
                 calls.push(updateChatApplicationAutomationSettings)
             }
@@ -122,7 +124,7 @@ export const useAiAgentEnabled = ({
                     updateRule({
                         id: rule.id,
                         deactivated_datetime: new Date().toISOString(),
-                    })
+                    }),
                 )
             }
         }
@@ -134,7 +136,7 @@ export const useAiAgentEnabled = ({
                         notify({
                             status: NotificationStatus.Success,
                             message: successNotification,
-                        })
+                        }),
                     )
                 }
             })
@@ -144,7 +146,7 @@ export const useAiAgentEnabled = ({
                         status: NotificationStatus.Error,
                         message:
                             'There were some issues applying the settings after AI Agent was enabled. ',
-                    })
+                    }),
                 )
             })
     }, [

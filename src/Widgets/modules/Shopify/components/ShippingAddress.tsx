@@ -1,28 +1,28 @@
-import {Map} from 'immutable'
-import React, {useContext, useMemo} from 'react'
+import React, { useContext, useMemo } from 'react'
+
+import { Map } from 'immutable'
 
 import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
-import {InfobarAction} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
+import { InfobarAction } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
+import { EditOrderShippingAddressModal } from 'Widgets/modules/Shopify/modules/Order'
+import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
+import { CardCustomization } from 'Widgets/modules/Template/modules/Card'
 
-import {EditOrderShippingAddressModal} from 'Widgets/modules/Shopify/modules/Order'
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
-import {CardCustomization} from 'Widgets/modules/Template/modules/Card'
-
-import {CustomizationContext} from '../../Template'
-import {ShopifyContext} from '../contexts/ShopifyContext'
+import { CustomizationContext } from '../../Template'
+import { ShopifyContext } from '../contexts/ShopifyContext'
 
 type AfterTitleProps = {
     isEditing: boolean
     source: Map<string, string | number | boolean>
 }
 
-const AfterTitle = ({source}: AfterTitleProps) => {
-    const {widget_resource_ids} = useContext(ShopifyContext)
-    const {hideActionsForCustomer = false} =
+const AfterTitle = ({ source }: AfterTitleProps) => {
+    const { widget_resource_ids } = useContext(ShopifyContext)
+    const { hideActionsForCustomer = false } =
         useContext(CustomizationContext) || {}
 
     const payload = useMemo(() => {
-        return {order_id: widget_resource_ids.target_id}
+        return { order_id: widget_resource_ids.target_id }
     }, [widget_resource_ids])
 
     const getActions = () => {
@@ -38,8 +38,8 @@ const AfterTitle = ({source}: AfterTitleProps) => {
                         value: ShopifyActionType.EditShippingAddress,
                         label: 'Edit Address',
                         parameters: [
-                            {name: 'order_id', type: 'hidden'},
-                            {name: 'payload', type: 'hidden'},
+                            { name: 'order_id', type: 'hidden' },
+                            { name: 'payload', type: 'hidden' },
                         ],
                     },
                 ],

@@ -1,10 +1,10 @@
-import {ldClientMock} from 'jest-launchdarkly-mock'
+import { ldClientMock } from 'jest-launchdarkly-mock'
 
-import {OnboardingNotificationState} from 'models/aiAgent/types'
-import {getOnboardingNotificationStateFixture} from 'pages/aiAgent/fixtures/onboardingNotificationState.fixture'
-import {getLDClient} from 'utils/launchDarkly'
+import { OnboardingNotificationState } from 'models/aiAgent/types'
+import { getOnboardingNotificationStateFixture } from 'pages/aiAgent/fixtures/onboardingNotificationState.fixture'
+import { getLDClient } from 'utils/launchDarkly'
 
-import {AiAgentNotificationType} from '../types'
+import { AiAgentNotificationType } from '../types'
 import {
     getNotificationParams,
     getNotificationReceivedDatetime,
@@ -125,50 +125,50 @@ describe('getNotificationParams', () => {
 describe('getNotificationReceivedDatetimePayload', () => {
     it('should return correct received datetime payload for StartAiAgentSetup', () => {
         const result = getNotificationReceivedDatetimePayload(
-            AiAgentNotificationType.StartAiAgentSetup
+            AiAgentNotificationType.StartAiAgentSetup,
         )
         expect(result).toHaveProperty(
-            'startAiAgentSetupNotificationReceivedDatetime'
+            'startAiAgentSetupNotificationReceivedDatetime',
         )
     })
 
     it('should return correct received datetime payload for FinishAiAgentSetup', () => {
         const result = getNotificationReceivedDatetimePayload(
-            AiAgentNotificationType.FinishAiAgentSetup
+            AiAgentNotificationType.FinishAiAgentSetup,
         )
         expect(result).toHaveProperty(
-            'finishAiAgentSetupNotificationReceivedDatetime'
+            'finishAiAgentSetupNotificationReceivedDatetime',
         )
     })
 
     it('should return correct received datetime payload for ActivateAiAgent', () => {
         const result = getNotificationReceivedDatetimePayload(
-            AiAgentNotificationType.ActivateAiAgent
+            AiAgentNotificationType.ActivateAiAgent,
         )
         expect(result).toHaveProperty(
-            'activateAiAgentNotificationReceivedDatetime'
+            'activateAiAgentNotificationReceivedDatetime',
         )
     })
 
     it('should return correct received datetime payload for MeetAiAgent', () => {
         const result = getNotificationReceivedDatetimePayload(
-            AiAgentNotificationType.MeetAiAgent
+            AiAgentNotificationType.MeetAiAgent,
         )
         expect(result).toHaveProperty('meetAiAgentNotificationReceivedDatetime')
     })
 
     it('should return correct received datetime payload for FirstAiAgentTicket', () => {
         const result = getNotificationReceivedDatetimePayload(
-            AiAgentNotificationType.FirstAiAgentTicket
+            AiAgentNotificationType.FirstAiAgentTicket,
         )
         expect(result).toHaveProperty(
-            'firstAiAgentTicketNotificationReceivedDatetime'
+            'firstAiAgentTicketNotificationReceivedDatetime',
         )
     })
 
     it('should return an empty object for unsupported notification types', () => {
         const result = getNotificationReceivedDatetimePayload(
-            'unsupported-series' as AiAgentNotificationType
+            'unsupported-series' as AiAgentNotificationType,
         )
         expect(result).toEqual({})
     })
@@ -181,7 +181,7 @@ describe('isNotificationAlreadyReceived', () => {
     it('should return false if onboardingNotificationState is undefined', () => {
         const result = isNotificationAlreadyReceived(
             AiAgentNotificationType.StartAiAgentSetup,
-            undefined
+            undefined,
         )
         expect(result).toBe(false)
     })
@@ -189,7 +189,7 @@ describe('isNotificationAlreadyReceived', () => {
     it('should return false if notification has not been received', () => {
         const result = isNotificationAlreadyReceived(
             AiAgentNotificationType.StartAiAgentSetup,
-            baseState
+            baseState,
         )
         expect(result).toBe(false)
     })
@@ -202,7 +202,7 @@ describe('isNotificationAlreadyReceived', () => {
         }
         const result = isNotificationAlreadyReceived(
             AiAgentNotificationType.StartAiAgentSetup,
-            state
+            state,
         )
         expect(result).toBe(true)
     })
@@ -215,7 +215,7 @@ describe('isNotificationAlreadyReceived', () => {
         }
         const result = isNotificationAlreadyReceived(
             AiAgentNotificationType.FinishAiAgentSetup,
-            state
+            state,
         )
         expect(result).toBe(true)
     })
@@ -227,7 +227,7 @@ describe('isNotificationAlreadyReceived', () => {
         }
         const result = isNotificationAlreadyReceived(
             AiAgentNotificationType.ActivateAiAgent,
-            state
+            state,
         )
         expect(result).toBe(true)
     })
@@ -239,7 +239,7 @@ describe('isNotificationAlreadyReceived', () => {
         }
         const result = isNotificationAlreadyReceived(
             AiAgentNotificationType.MeetAiAgent,
-            state
+            state,
         )
         expect(result).toBe(true)
     })
@@ -252,7 +252,7 @@ describe('isNotificationAlreadyReceived', () => {
         }
         const result = isNotificationAlreadyReceived(
             AiAgentNotificationType.FirstAiAgentTicket,
-            state
+            state,
         )
         expect(result).toBe(true)
     })
@@ -260,7 +260,7 @@ describe('isNotificationAlreadyReceived', () => {
     it('should return false for unsupported notification types', () => {
         const result = isNotificationAlreadyReceived(
             'unsupported-series' as AiAgentNotificationType,
-            baseState
+            baseState,
         )
         expect(result).toBe(false)
     })
@@ -273,7 +273,7 @@ describe('getNotificationReceivedDatetime', () => {
     it('should return null if no onboarding notification has been received', () => {
         const result = getNotificationReceivedDatetime(
             AiAgentNotificationType.StartAiAgentSetup,
-            baseState
+            baseState,
         )
         expect(result).toBe(null)
     })
@@ -285,7 +285,7 @@ describe('getNotificationReceivedDatetime', () => {
                 ...baseState,
                 startAiAgentSetupNotificationReceivedDatetime:
                     '2024-12-01T12:00:00Z',
-            }
+            },
         )
         expect(result).toBe('2024-12-01T12:00:00Z')
     })
@@ -297,7 +297,7 @@ describe('getNotificationReceivedDatetime', () => {
                 ...baseState,
                 finishAiAgentSetupNotificationReceivedDatetime:
                     '2024-12-01T12:00:00Z',
-            }
+            },
         )
         expect(result).toBe('2024-12-01T12:00:00Z')
     })
@@ -309,7 +309,7 @@ describe('getNotificationReceivedDatetime', () => {
                 ...baseState,
                 activateAiAgentNotificationReceivedDatetime:
                     '2024-12-01T12:00:00Z',
-            }
+            },
         )
         expect(result).toBe('2024-12-01T12:00:00Z')
     })
@@ -320,7 +320,7 @@ describe('getNotificationReceivedDatetime', () => {
             {
                 ...baseState,
                 meetAiAgentNotificationReceivedDatetime: '2024-12-01T12:00:00Z',
-            }
+            },
         )
         expect(result).toBe('2024-12-01T12:00:00Z')
     })
@@ -332,7 +332,7 @@ describe('getNotificationReceivedDatetime', () => {
                 ...baseState,
                 firstAiAgentTicketNotificationReceivedDatetime:
                     '2024-12-01T12:00:00Z',
-            }
+            },
         )
         expect(result).toBe('2024-12-01T12:00:00Z')
     })
@@ -340,7 +340,7 @@ describe('getNotificationReceivedDatetime', () => {
     it('should return null for unsupported notification types', () => {
         const result = getNotificationReceivedDatetime(
             'unsupported-series' as AiAgentNotificationType,
-            baseState
+            baseState,
         )
         expect(result).toBe(null)
     })

@@ -1,12 +1,12 @@
-import {useEffect, useState} from 'react'
+import { useEffect, useState } from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {Category} from 'models/helpCenter/types'
-import {Paths} from 'rest_api/help_center_api/client.generated'
-import {getCategories} from 'state/entities/helpCenter/categories'
+import { Category } from 'models/helpCenter/types'
+import { Paths } from 'rest_api/help_center_api/client.generated'
+import { getCategories } from 'state/entities/helpCenter/categories'
 
 import useCurrentHelpCenter from '../hooks/useCurrentHelpCenter'
-import {useCategoriesActions} from './useCategoriesActions'
+import { useCategoriesActions } from './useCategoriesActions'
 
 type HelpCenterCategoriesHook = {
     categories: Category[]
@@ -14,7 +14,7 @@ type HelpCenterCategoriesHook = {
 }
 
 export const useHelpCenterCategories = (
-    params: Omit<Paths.ListCategories.QueryParameters, 'page'>
+    params: Omit<Paths.ListCategories.QueryParameters, 'page'>,
 ): HelpCenterCategoriesHook => {
     const categories = useAppSelector(getCategories)
     const helpCenter = useCurrentHelpCenter()
@@ -27,7 +27,7 @@ export const useHelpCenterCategories = (
             await actions.fetchCategories(
                 params.locale || helpCenter.default_locale,
                 0,
-                true
+                true,
             )
 
             setLoading(false)
@@ -36,5 +36,5 @@ export const useHelpCenterCategories = (
         void fetchCategories()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [params.locale])
-    return {categories, isLoading}
+    return { categories, isLoading }
 }

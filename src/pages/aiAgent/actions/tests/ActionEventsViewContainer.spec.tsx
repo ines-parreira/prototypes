@@ -1,29 +1,30 @@
-import {UseQueryResult, QueryClientProvider} from '@tanstack/react-query'
-import {fireEvent, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import _range from 'lodash/range'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider, UseQueryResult } from '@tanstack/react-query'
+import { fireEvent, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import _range from 'lodash/range'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {account, automationSubscriptionProductPrices} from 'fixtures/account'
-import {billingState} from 'fixtures/billing'
-import {shopifyIntegration} from 'fixtures/integrations'
-import {statsFilters} from 'fixtures/stats'
+import { account, automationSubscriptionProductPrices } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
+import { shopifyIntegration } from 'fixtures/integrations'
+import { statsFilters } from 'fixtures/stats'
 import {
+    useGetConfigurationExecution,
+    useGetConfigurationExecutionLogs,
     useGetConfigurationExecutions,
     useGetWorkflowConfiguration,
-    useGetConfigurationExecutionLogs,
-    useGetConfigurationExecution,
     useGetWorkflowConfigurationTemplates,
 } from 'models/workflows/queries'
-import {useAiAgentEnabled} from 'pages/aiAgent/hooks/useAiAgentEnabled'
-import {Paths} from 'rest_api/workflows_api/client.generated'
-import {fromLegacyStatsFilters} from 'state/stats/utils'
-import {RootState, StoreDispatch} from 'state/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {renderWithRouter, assumeMock} from 'utils/testing'
+import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
+import { Paths } from 'rest_api/workflows_api/client.generated'
+import { fromLegacyStatsFilters } from 'state/stats/utils'
+import { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock, renderWithRouter } from 'utils/testing'
 
 import ActionEventsViewContainer from '../ActionEventsViewContainer'
 import useGetAppImageUrl from '../hooks/useGetAppImageUrl'
@@ -36,19 +37,19 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const mockUseGetAppImageUrl = jest.mocked(useGetAppImageUrl)
 const queryClient = mockQueryClient()
 const useGetConfigurationExecutionsMocked = assumeMock(
-    useGetConfigurationExecutions
+    useGetConfigurationExecutions,
 )
 const useGetWorkflowConfigurationMocked = assumeMock(
-    useGetWorkflowConfiguration
+    useGetWorkflowConfiguration,
 )
 const useGetConfigurationExecutionLogsMocked = assumeMock(
-    useGetConfigurationExecutionLogs
+    useGetConfigurationExecutionLogs,
 )
 const useGetConfigurationExecutionMocked = assumeMock(
-    useGetConfigurationExecution
+    useGetConfigurationExecution,
 )
 const useGetWorkflowConfigurationTemplatesMocked = assumeMock(
-    useGetWorkflowConfigurationTemplates
+    useGetWorkflowConfigurationTemplates,
 )
 const mockUseEnableAiAgent = assumeMock(useAiAgentEnabled)
 mockUseGetAppImageUrl.mockReturnValue('https://example.com/app.png')
@@ -64,7 +65,7 @@ const defaultStore = mockStore({
     }),
     billing: fromJS(billingState),
     integrations: fromJS([shopifyIntegration]),
-    stats: {filters: fromLegacyStatsFilters(statsFilters)},
+    stats: { filters: fromLegacyStatsFilters(statsFilters) },
 })
 
 describe('ActionEventsViewContainer', () => {
@@ -96,9 +97,9 @@ describe('ActionEventsViewContainer', () => {
                     request_url: 'http://example.com',
                     response_status_code: 200,
                     request_body: 'request body',
-                    request_headers: JSON.stringify({key: 'value'}),
+                    request_headers: JSON.stringify({ key: 'value' }),
                     response_body: 'response body',
-                    response_headers: JSON.stringify({key: 'value'}),
+                    response_headers: JSON.stringify({ key: 'value' }),
                 },
             ],
         } as UseQueryResult<Paths.WfConfigurationControllerExportExecutionLogs.Responses.$200>)
@@ -130,7 +131,9 @@ describe('ActionEventsViewContainer', () => {
                     id: 'template_id',
                     internal_id: 'template_internal_id',
                     name: 'Template configuration',
-                    apps: [{app_id: 'app_id', api_key: 'api_key', type: 'app'}],
+                    apps: [
+                        { app_id: 'app_id', api_key: 'api_key', type: 'app' },
+                    ],
                 },
             ],
         } as UseQueryResult<Paths.WfConfigurationTemplateControllerList.Responses.$200>)
@@ -160,7 +163,7 @@ describe('ActionEventsViewContainer', () => {
             {
                 path: '/:shopType/:shopName/ai-agent/actions/events/:id',
                 route: '/shopify/my-shop/ai-agent/actions/events/configuration_id',
-            }
+            },
         )
 
         expect(component.container).toBeEmptyDOMElement()
@@ -181,7 +184,7 @@ describe('ActionEventsViewContainer', () => {
             {
                 path: '/:shopType/:shopName/ai-agent/actions/events/:id',
                 route: '/shopify/my-shop/ai-agent/actions/events/configuration_id',
-            }
+            },
         )
 
         expect(screen.getByText('AI Agent')).toBeInTheDocument()
@@ -219,7 +222,7 @@ describe('ActionEventsViewContainer', () => {
             {
                 path: '/:shopType/:shopName/ai-agent/actions/events/:id',
                 route: '/shopify/my-shop/ai-agent/actions/events/configuration_id',
-            }
+            },
         )
 
         expect(screen.getByText('AI Agent')).toBeInTheDocument()
@@ -228,10 +231,10 @@ describe('ActionEventsViewContainer', () => {
         expect(screen.getByText('STATUS')).toBeInTheDocument()
         expect(component.container.querySelector('td')).toBeNull()
         expect(
-            component.container.querySelector('[aria-label="previous"]')
+            component.container.querySelector('[aria-label="previous"]'),
         ).toBeNull()
         expect(
-            screen.getByText('No events found for the selected time period')
+            screen.getByText('No events found for the selected time period'),
         ).toBeInTheDocument()
     })
 
@@ -276,11 +279,11 @@ describe('ActionEventsViewContainer', () => {
             {
                 path: '/:shopType/:shopName/ai-agent/actions/events/:id',
                 route: '/shopify/my-shop/ai-agent/actions/events/configuration_id',
-            }
+            },
         )
         expect(component.container.querySelectorAll('td').length).toBe(40)
         expect(
-            component.container.querySelector('[aria-label="previous"]')
+            component.container.querySelector('[aria-label="previous"]'),
         ).toBeNull()
     })
 
@@ -325,11 +328,11 @@ describe('ActionEventsViewContainer', () => {
             {
                 path: '/:shopType/:shopName/ai-agent/actions/events/:id',
                 route: '/shopify/my-shop/ai-agent/actions/events/01J0KCFRTMPCESV2KYRG29GQ9H',
-            }
+            },
         )
         expect(component.container.querySelectorAll('td').length).toBe(80)
         expect(
-            component.container.querySelector('[aria-label="previous"]')
+            component.container.querySelector('[aria-label="previous"]'),
         ).not.toBeNull()
         expect(screen.getByLabelText('Event details')).not.toHaveClass('opened')
     })
@@ -358,7 +361,7 @@ describe('ActionEventsViewContainer', () => {
             {
                 path: '/:shopType/:shopName/ai-agent/actions/events/:id',
                 route: `/shopify/my-shop/ai-agent/actions/events/configuration_id?execution_id=${executionId}`,
-            }
+            },
         )
         expect(screen.queryAllByRole('table')).toHaveLength(1)
         expect(screen.queryAllByRole('cell')).toHaveLength(0)
@@ -442,7 +445,9 @@ describe('ActionEventsViewContainer', () => {
                     id: 'template id',
                     internal_id: 'template internal id',
                     name: 'template configuration',
-                    apps: [{app_id: 'app_id', api_key: 'api_key', type: 'app'}],
+                    apps: [
+                        { app_id: 'app_id', api_key: 'api_key', type: 'app' },
+                    ],
                 },
             ],
         } as UseQueryResult<Paths.WfConfigurationTemplateControllerList.Responses.$200>)
@@ -456,7 +461,7 @@ describe('ActionEventsViewContainer', () => {
             {
                 path: '/:shopType/:shopName/ai-agent/actions/events/:id',
                 route: '/shopify/my-shop/ai-agent/actions/events/configuration_id',
-            }
+            },
         )
 
         expect(screen.getByLabelText('Event details')).not.toHaveClass('opened')

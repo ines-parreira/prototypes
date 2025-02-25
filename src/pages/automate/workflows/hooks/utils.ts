@@ -1,9 +1,9 @@
-import {ulid} from 'ulidx'
+import { ulid } from 'ulidx'
 
-import {WorkflowConfiguration} from '../models/workflowConfiguration.types'
+import { WorkflowConfiguration } from '../models/workflowConfiguration.types'
 
 export const workflowConfigurationFactory = (
-    workflowId: string
+    workflowId: string,
 ): WorkflowConfiguration => {
     const messageStepId = ulid()
     const helpfulPromptStepId = ulid()

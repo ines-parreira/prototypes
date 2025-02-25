@@ -1,16 +1,15 @@
-import {UseQueryResult} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks/dom'
+import { UseQueryResult } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks/dom'
 
-import {AI_MANAGED_TYPES} from 'custom-fields/constants'
-import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import {CustomField} from 'custom-fields/types'
-import {useMultipleMetricsTrends} from 'hooks/reporting/useMultipleMetricsTrend'
-import {ApiListResponseCursorPagination} from 'models/api/types'
-import {TicketCustomFieldsMeasure} from 'models/reporting/cubes/TicketCustomFieldsCube'
-import {StatsFilters, StatType} from 'models/stat/types'
-
-import {useTotalConversations} from 'pages/aiAgent/Overview/hooks/kpis/useTotalConversations'
-import {assumeMock} from 'utils/testing'
+import { AI_MANAGED_TYPES } from 'custom-fields/constants'
+import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import { CustomField } from 'custom-fields/types'
+import { useMultipleMetricsTrends } from 'hooks/reporting/useMultipleMetricsTrend'
+import { ApiListResponseCursorPagination } from 'models/api/types'
+import { TicketCustomFieldsMeasure } from 'models/reporting/cubes/TicketCustomFieldsCube'
+import { StatsFilters, StatType } from 'models/stat/types'
+import { useTotalConversations } from 'pages/aiAgent/Overview/hooks/kpis/useTotalConversations'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/useMultipleMetricsTrend')
 const useMultipleMetricsTrendsMock = assumeMock(useMultipleMetricsTrends)
@@ -31,9 +30,9 @@ describe('useTotalConversations', () => {
         useCustomFieldDefinitionsMock.mockReturnValue({
             data: {
                 data: [
-                    {id: '1', managed_type: AI_MANAGED_TYPES.AI_OUTCOME},
-                    {id: '2', managed_type: AI_MANAGED_TYPES.AI_INTENT},
-                    {id: '3', managed_type: 'OTHER_TYPE'},
+                    { id: '1', managed_type: AI_MANAGED_TYPES.AI_OUTCOME },
+                    { id: '2', managed_type: AI_MANAGED_TYPES.AI_INTENT },
+                    { id: '3', managed_type: 'OTHER_TYPE' },
                 ],
             },
         } as unknown as UseQueryResult<
@@ -50,8 +49,8 @@ describe('useTotalConversations', () => {
             isFetching: false,
         } as any)
 
-        const {result} = renderHook(() =>
-            useTotalConversations(filters, timezone)
+        const { result } = renderHook(() =>
+            useTotalConversations(filters, timezone),
         )
 
         expect(result.current).toEqual({
@@ -82,8 +81,8 @@ describe('useTotalConversations', () => {
             isFetching: false,
         } as any)
 
-        const {result} = renderHook(() =>
-            useTotalConversations(filters, timezone)
+        const { result } = renderHook(() =>
+            useTotalConversations(filters, timezone),
         )
 
         expect(result.current).toEqual({
@@ -102,8 +101,8 @@ describe('useTotalConversations', () => {
             isFetching: true,
         } as any)
 
-        const {result} = renderHook(() =>
-            useTotalConversations(filters, timezone)
+        const { result } = renderHook(() =>
+            useTotalConversations(filters, timezone),
         )
 
         expect(result.current).toEqual({

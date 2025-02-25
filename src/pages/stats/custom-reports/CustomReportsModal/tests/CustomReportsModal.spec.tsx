@@ -1,23 +1,23 @@
-import {QueryClient, useQueryClient} from '@tanstack/react-query'
-import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-
 import React from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {useCustomReportActions} from 'hooks/reporting/custom-reports/useCustomReportActions'
-import {useReportRestrictions} from 'hooks/reporting/custom-reports/useReportRestrictions'
+import { QueryClient, useQueryClient } from '@tanstack/react-query'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { useCustomReportActions } from 'hooks/reporting/custom-reports/useCustomReportActions'
+import { useReportRestrictions } from 'hooks/reporting/custom-reports/useReportRestrictions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import * as constants from 'pages/stats/custom-reports/config'
-import {ReportsIDs} from 'pages/stats/custom-reports/constants'
-import {CHARTS_MODAL_ICONS} from 'pages/stats/custom-reports/CustomReportsModal/ChartIcon'
+import { ReportsIDs } from 'pages/stats/custom-reports/constants'
+import { CHARTS_MODAL_ICONS } from 'pages/stats/custom-reports/CustomReportsModal/ChartIcon'
 import {
     ADD_CHARTS_CTA,
     CustomReportsModal,
     GRAPH_DESCRIPTION,
-    READ_MORE_ABOUT_CHARTS,
     MODAL_TITLE,
     NO_SEARCH_RESULT,
+    READ_MORE_ABOUT_CHARTS,
 } from 'pages/stats/custom-reports/CustomReportsModal/CustomReportsModal'
 import {
     CustomReportChildType,
@@ -33,7 +33,7 @@ import {
     SUPPORT_PERFORMANCE_OVERVIEW_PAGE_TITLE,
     SupportPerformanceOverviewReportConfig,
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/useAppDispatch')
 const useAppDispatchMock = assumeMock(useAppDispatch)
@@ -105,12 +105,12 @@ describe('AddChartsModal', () => {
             () =>
                 ({
                     invalidateQueries: updateMutateMock,
-                }) as unknown as QueryClient
+                }) as unknown as QueryClient,
         )
         useCustomReportActionsMock.mockReturnValue({
             updateDashboardHandler: mutateUpdateReportMock,
         } as any)
-        useReportRestrictionsMock.mockReturnValue({restrictionsMap: {}})
+        useReportRestrictionsMock.mockReturnValue({ restrictionsMap: {} })
     })
 
     it('should render correctly', () => {
@@ -131,10 +131,10 @@ describe('AddChartsModal', () => {
             expect(screen.getByText(category.category)).toBeInTheDocument()
             category.children.map((child) => {
                 expect(
-                    screen.getByText(child.config.reportName)
+                    screen.getByText(child.config.reportName),
                 ).toBeInTheDocument()
             })
-        }
+        },
     )
 
     it('should select a chart and show its description and icon', async () => {
@@ -143,19 +143,19 @@ describe('AddChartsModal', () => {
         const firstChartDescription =
             OverviewMetricConfig[OverviewMetric.CustomerSatisfaction].hint.title
         expect(
-            screen.queryByText(String(firstChartDescription))
+            screen.queryByText(String(firstChartDescription)),
         ).not.toBeInTheDocument()
         fireEvent.click(
-            screen.getByText(SUPPORT_PERFORMANCE_OVERVIEW_PAGE_TITLE)
+            screen.getByText(SUPPORT_PERFORMANCE_OVERVIEW_PAGE_TITLE),
         )
         expect(
-            screen.getByText(String(firstChartDescription))
+            screen.getByText(String(firstChartDescription)),
         ).toBeInTheDocument()
 
         userEvent.hover(screen.getAllByRole('img')[0])
         await waitFor(() => {
             expect(
-                screen.getByText(CHARTS_MODAL_ICONS.card.tooltip)
+                screen.getByText(CHARTS_MODAL_ICONS.card.tooltip),
             ).toBeInTheDocument()
         })
 
@@ -171,7 +171,7 @@ describe('AddChartsModal', () => {
         render(<CustomReportsModal {...props} onSave={mockHandleSave} />, {})
 
         fireEvent.click(
-            screen.getByText(SUPPORT_PERFORMANCE_OVERVIEW_PAGE_TITLE)
+            screen.getByText(SUPPORT_PERFORMANCE_OVERVIEW_PAGE_TITLE),
         )
         userEvent.click(screen.getByText(String(firstChartDescription)))
 
@@ -183,7 +183,7 @@ describe('AddChartsModal', () => {
             OverviewMetric.MedianResolutionTime,
         ])
         expect(logEventMock).toHaveBeenCalledWith(
-            SegmentEvent.StatDashboardModalAddChartsClicked
+            SegmentEvent.StatDashboardModalAddChartsClicked,
         )
     })
 
@@ -191,7 +191,7 @@ describe('AddChartsModal', () => {
         render(<CustomReportsModal {...props} charts={undefined} />, {})
 
         fireEvent.click(
-            screen.getByText(SUPPORT_PERFORMANCE_OVERVIEW_PAGE_TITLE)
+            screen.getByText(SUPPORT_PERFORMANCE_OVERVIEW_PAGE_TITLE),
         )
     })
 
@@ -201,7 +201,7 @@ describe('AddChartsModal', () => {
         render(<CustomReportsModal {...props} />, {})
 
         fireEvent.click(
-            screen.getByText(SUPPORT_PERFORMANCE_OVERVIEW_PAGE_TITLE)
+            screen.getByText(SUPPORT_PERFORMANCE_OVERVIEW_PAGE_TITLE),
         )
         userEvent.click(screen.getByText(String(firstChartDescription)))
 
@@ -244,12 +244,12 @@ describe('AddChartsModal', () => {
         expect(screen.getByText(NO_SEARCH_RESULT)).toBeInTheDocument()
         expect(screen.getByText(READ_MORE_ABOUT_CHARTS)).toBeInTheDocument()
         expect(
-            screen.queryByText(SUPPORT_PERFORMANCE_OVERVIEW_PAGE_TITLE)
+            screen.queryByText(SUPPORT_PERFORMANCE_OVERVIEW_PAGE_TITLE),
         ).not.toBeInTheDocument()
     })
 
     it('should have a separator if we have 2 or more elements', () => {
-        const {container} = render(<CustomReportsModal {...props} />, {})
+        const { container } = render(<CustomReportsModal {...props} />, {})
 
         expect(container.getElementsByClassName('separator')).toBeTruthy()
     })

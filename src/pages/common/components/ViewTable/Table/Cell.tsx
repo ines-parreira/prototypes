@@ -1,12 +1,12 @@
-import {fromJS, Map} from 'immutable'
-import React, {useMemo} from 'react'
-import {Link} from 'react-router-dom'
+import React, { useMemo } from 'react'
 
-import {defaultCell, getConfigByName} from 'config/views'
-import {EntityType} from 'models/view/types'
+import { fromJS, Map } from 'immutable'
+import { Link } from 'react-router-dom'
 
+import { defaultCell, getConfigByName } from 'config/views'
+import { EntityType } from 'models/view/types'
 import css from 'pages/common/components/ViewTable/Table.less'
-import {RenderLabel} from 'pages/common/utils/labels'
+import { RenderLabel } from 'pages/common/utils/labels'
 
 type Props = {
     field: Map<any, any>
@@ -16,7 +16,7 @@ type Props = {
     type: EntityType
 }
 
-const Cell = ({field, item = fromJS({}), itemUrl, onClick, type}: Props) => {
+const Cell = ({ field, item = fromJS({}), itemUrl, onClick, type }: Props) => {
     const config = getConfigByName(type)
 
     const labelValue = useMemo(() => {

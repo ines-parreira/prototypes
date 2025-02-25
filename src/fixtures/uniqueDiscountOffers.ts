@@ -1,4 +1,4 @@
-import {UniqueDiscountOffer} from 'models/convert/discountOffer/types'
+import { UniqueDiscountOffer } from 'models/convert/discountOffer/types'
 
 export const uniqueDiscountOffers: UniqueDiscountOffer[] = [
     {

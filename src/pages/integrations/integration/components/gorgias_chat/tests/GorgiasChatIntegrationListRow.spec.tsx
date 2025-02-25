@@ -1,20 +1,21 @@
-import {render, waitFor} from '@testing-library/react'
+import React, { ReactNode } from 'react'
+
+import { render, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {fromJS, Map, List} from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 import LD from 'launchdarkly-react-client-sdk'
-import React, {ReactNode} from 'react'
-import {Provider} from 'react-redux'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {IntegrationType} from 'models/integration/constants'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { IntegrationType } from 'models/integration/constants'
 import {
     GorgiasChatCreationWizardStatus,
     GorgiasChatCreationWizardSteps,
     GorgiasChatStatusEnum,
 } from 'models/integration/types'
-import {RootState, StoreDispatch} from 'state/types'
+import { RootState, StoreDispatch } from 'state/types'
 
 import * as hookGorgiasChatIntegrationStatusData from '../../../hooks/useGorgiasChatIntegrationStatusData'
 import GorgiasChatIntegrationListRow, {
@@ -24,7 +25,7 @@ import GorgiasChatIntegrationListRow, {
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-const TestWrapper = ({children}: {children: ReactNode}) => (
+const TestWrapper = ({ children }: { children: ReactNode }) => (
     <table>
         <tbody>{children}</tbody>
     </table>
@@ -85,19 +86,19 @@ describe('<GorgiasChatIntegrationListRow />', () => {
     it('should render loading feedback if status is being fetched', () => {
         jest.spyOn(
             hookGorgiasChatIntegrationStatusData,
-            'useGorgiasChatIntegrationStatusData'
+            'useGorgiasChatIntegrationStatusData',
         ).mockImplementation(() => ({
             chatStatus: undefined,
             isChatStatusLoading: true,
             isChatStatusError: false,
         }))
 
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={mockStore(defaultState)}>
                 <TestWrapper>
                     <GorgiasChatIntegrationListRow {...defaultProps} />
                 </TestWrapper>
-            </Provider>
+            </Provider>,
         )
 
         expect(getByText(/Loading/)).toBeDefined()
@@ -106,19 +107,19 @@ describe('<GorgiasChatIntegrationListRow />', () => {
     it('should render unavailable feedback if status fetching resulted in error', () => {
         jest.spyOn(
             hookGorgiasChatIntegrationStatusData,
-            'useGorgiasChatIntegrationStatusData'
+            'useGorgiasChatIntegrationStatusData',
         ).mockImplementation(() => ({
             chatStatus: undefined,
             isChatStatusLoading: false,
             isChatStatusError: true,
         }))
 
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={mockStore(defaultState)}>
                 <TestWrapper>
                     <GorgiasChatIntegrationListRow {...defaultProps} />
                 </TestWrapper>
-            </Provider>
+            </Provider>,
         )
 
         expect(getByText(/Status unavailable/)).toBeDefined()
@@ -127,14 +128,14 @@ describe('<GorgiasChatIntegrationListRow />', () => {
     it('should render forward icon link for published chat', () => {
         jest.spyOn(
             hookGorgiasChatIntegrationStatusData,
-            'useGorgiasChatIntegrationStatusData'
+            'useGorgiasChatIntegrationStatusData',
         ).mockImplementation(() => ({
             chatStatus: undefined,
             isChatStatusLoading: false,
             isChatStatusError: true,
         }))
 
-        const {container, queryByText} = render(
+        const { container, queryByText } = render(
             <Provider store={mockStore(defaultState)}>
                 <TestWrapper>
                     <GorgiasChatIntegrationListRow
@@ -151,7 +152,7 @@ describe('<GorgiasChatIntegrationListRow />', () => {
                         })}
                     />
                 </TestWrapper>
-            </Provider>
+            </Provider>,
         )
 
         expect(queryByText('Continue Setup')).not.toBeInTheDocument()
@@ -164,14 +165,14 @@ describe('<GorgiasChatIntegrationListRow />', () => {
         }))
         jest.spyOn(
             hookGorgiasChatIntegrationStatusData,
-            'useGorgiasChatIntegrationStatusData'
+            'useGorgiasChatIntegrationStatusData',
         ).mockImplementation(() => ({
             chatStatus: undefined,
             isChatStatusLoading: false,
             isChatStatusError: true,
         }))
 
-        const {container, queryByText} = render(
+        const { container, queryByText } = render(
             <Provider store={mockStore(defaultState)}>
                 <TestWrapper>
                     <GorgiasChatIntegrationListRow
@@ -188,12 +189,12 @@ describe('<GorgiasChatIntegrationListRow />', () => {
                         })}
                     />
                 </TestWrapper>
-            </Provider>
+            </Provider>,
         )
 
         expect(queryByText('Continue Setup')).toBeInTheDocument()
         expect(
-            container.querySelector('.icon-go-forward')
+            container.querySelector('.icon-go-forward'),
         ).not.toBeInTheDocument()
     })
 
@@ -204,14 +205,14 @@ describe('<GorgiasChatIntegrationListRow />', () => {
         }))
         jest.spyOn(
             hookGorgiasChatIntegrationStatusData,
-            'useGorgiasChatIntegrationStatusData'
+            'useGorgiasChatIntegrationStatusData',
         ).mockImplementation(() => ({
             chatStatus: undefined,
             isChatStatusLoading: false,
             isChatStatusError: true,
         }))
 
-        const {container, queryByText} = render(
+        const { container, queryByText } = render(
             <Provider store={mockStore(defaultState)}>
                 <TestWrapper>
                     <GorgiasChatIntegrationListRow
@@ -236,7 +237,7 @@ describe('<GorgiasChatIntegrationListRow />', () => {
                                         main_color: '#123456',
                                     },
                                     deactivated_datetime: new Date(
-                                        '2020-12-17'
+                                        '2020-12-17',
                                     ),
                                 },
                             ]) as List<Map<any, any>>
@@ -255,12 +256,12 @@ describe('<GorgiasChatIntegrationListRow />', () => {
                         })}
                     />
                 </TestWrapper>
-            </Provider>
+            </Provider>,
         )
 
         expect(queryByText('Update Permissions')).toBeInTheDocument()
         expect(
-            container.querySelector('.icon-go-forward')
+            container.querySelector('.icon-go-forward'),
         ).not.toBeInTheDocument()
     })
 
@@ -269,23 +270,23 @@ describe('<GorgiasChatIntegrationListRow />', () => {
         (status, expected) => {
             jest.spyOn(
                 hookGorgiasChatIntegrationStatusData,
-                'useGorgiasChatIntegrationStatusData'
+                'useGorgiasChatIntegrationStatusData',
             ).mockImplementation(() => ({
                 chatStatus: status as GorgiasChatStatusEnum,
                 isChatStatusLoading: false,
                 isChatStatusError: false,
             }))
 
-            const {getByText} = render(
+            const { getByText } = render(
                 <Provider store={mockStore(defaultState)}>
                     <TestWrapper>
                         <GorgiasChatIntegrationListRow {...defaultProps} />
                     </TestWrapper>
-                </Provider>
+                </Provider>,
             )
 
             expect(getByText(expected)).toBeDefined()
-        }
+        },
     )
 
     it('should not render not installed popover if chat is draft', async () => {
@@ -294,14 +295,14 @@ describe('<GorgiasChatIntegrationListRow />', () => {
         }))
         jest.spyOn(
             hookGorgiasChatIntegrationStatusData,
-            'useGorgiasChatIntegrationStatusData'
+            'useGorgiasChatIntegrationStatusData',
         ).mockImplementation(() => ({
             chatStatus: GorgiasChatStatusEnum.NOT_INSTALLED,
             isChatStatusLoading: false,
             isChatStatusError: false,
         }))
 
-        const {getByText, queryByText} = render(
+        const { getByText, queryByText } = render(
             <Provider store={mockStore(defaultState)}>
                 <TestWrapper>
                     <GorgiasChatIntegrationListRow
@@ -317,7 +318,7 @@ describe('<GorgiasChatIntegrationListRow />', () => {
                         })}
                     />
                 </TestWrapper>
-            </Provider>
+            </Provider>,
         )
 
         const statusIndicator = getByText('Not Installed')
@@ -335,14 +336,14 @@ describe('<GorgiasChatIntegrationListRow />', () => {
         }))
         jest.spyOn(
             hookGorgiasChatIntegrationStatusData,
-            'useGorgiasChatIntegrationStatusData'
+            'useGorgiasChatIntegrationStatusData',
         ).mockImplementation(() => ({
             chatStatus: GorgiasChatStatusEnum.NOT_INSTALLED,
             isChatStatusLoading: false,
             isChatStatusError: false,
         }))
 
-        const {getByText, queryByText} = render(
+        const { getByText, queryByText } = render(
             <Provider store={mockStore(defaultState)}>
                 <TestWrapper>
                     <GorgiasChatIntegrationListRow
@@ -358,7 +359,7 @@ describe('<GorgiasChatIntegrationListRow />', () => {
                         })}
                     />
                 </TestWrapper>
-            </Provider>
+            </Provider>,
         )
 
         const statusIndicator = getByText('Not Installed')

@@ -1,4 +1,4 @@
-import {useEffect, useMemo, useState} from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -8,18 +8,18 @@ import {
     ArticleTemplateReviewAction,
     Locale,
 } from 'models/helpCenter/types'
-import {useHasEmailToStoreConnection} from 'pages/automate/common/components/TopQuestions/useHasEmailToStoreConnection'
-import {useGetAIArticles} from 'pages/settings/helpCenter/hooks/useGetAIArticles'
-import {getValidStoreIntegrationId} from 'pages/settings/helpCenter/utils/helpCenter.utils'
-import {getStoreIntegrations} from 'state/integrations/selectors'
+import { useHasEmailToStoreConnection } from 'pages/automate/common/components/TopQuestions/useHasEmailToStoreConnection'
+import { useGetAIArticles } from 'pages/settings/helpCenter/hooks/useGetAIArticles'
+import { getValidStoreIntegrationId } from 'pages/settings/helpCenter/utils/helpCenter.utils'
+import { getStoreIntegrations } from 'state/integrations/selectors'
 
-import {MINIMUM_AI_ARTICLES} from '../../CategoriesView/components/ArticleTemplateCard/constants'
-import {mapAILibraryArticlesData} from '../AIArticlesLibraryUtils'
+import { MINIMUM_AI_ARTICLES } from '../../CategoriesView/components/ArticleTemplateCard/constants'
+import { mapAILibraryArticlesData } from '../AIArticlesLibraryUtils'
 
 export const useHelpCenterAIArticlesLibrary = (
     helpCenterId: number,
     locale: Locale['code'],
-    helpCenterShopName: string | null
+    helpCenterShopName: string | null,
 ) => {
     const [articles, setArticles] = useState<AIArticle[] | null>(null)
     const [mappedArticleItems, setMappedArticleItems] = useState<
@@ -31,7 +31,7 @@ export const useHelpCenterAIArticlesLibrary = (
 
     const storeIntegrationId = getValidStoreIntegrationId(
         allStoreIntegrations,
-        helpCenterShopName
+        helpCenterShopName,
     )
 
     const {
@@ -47,10 +47,10 @@ export const useHelpCenterAIArticlesLibrary = (
             hasMultiStores,
             hasEmailToStoreConnection,
             isLoadingEmailToStoreConnection,
-        ]
+        ],
     )
 
-    const {fetchedArticles: fetchedArticles, isLoading: isLoading} =
+    const { fetchedArticles: fetchedArticles, isLoading: isLoading } =
         useGetAIArticles({
             helpCenterId,
             storeIntegrationId,
@@ -65,7 +65,7 @@ export const useHelpCenterAIArticlesLibrary = (
         const newestArticle = (articles || []).sort(
             (a, b) =>
                 new Date(b.batch_datetime || '').getTime() -
-                new Date(a.batch_datetime || '').getTime()
+                new Date(a.batch_datetime || '').getTime(),
         )?.[0]
 
         return newestArticle?.batch_datetime
@@ -75,24 +75,24 @@ export const useHelpCenterAIArticlesLibrary = (
         return articles?.filter(
             (article) =>
                 !article.review_action ||
-                article.review_action === 'dismissFromTopQuestions'
+                article.review_action === 'dismissFromTopQuestions',
         )
     }, [articles])
 
     const newArticles = useMemo(
         () =>
             articlesNotReviewed?.filter(
-                (article) => article.batch_datetime === latestBatchDate
+                (article) => article.batch_datetime === latestBatchDate,
             ) || [],
-        [articlesNotReviewed, latestBatchDate]
+        [articlesNotReviewed, latestBatchDate],
     )
 
     const oldArticles = useMemo(
         () =>
             articlesNotReviewed?.filter(
-                (article) => article.batch_datetime !== latestBatchDate
+                (article) => article.batch_datetime !== latestBatchDate,
             ) || [],
-        [articlesNotReviewed, latestBatchDate]
+        [articlesNotReviewed, latestBatchDate],
     )
 
     const [selectedArticleType, setSelectedArticleType] =
@@ -106,7 +106,7 @@ export const useHelpCenterAIArticlesLibrary = (
         const mappedArticleItems = mapAILibraryArticlesData(
             articlesNotReviewed || [],
             selectedArticleType,
-            latestBatchDate
+            latestBatchDate,
         )
         setMappedArticleItems(mappedArticleItems)
         setSelectedArticle(mappedArticleItems?.[0])
@@ -135,12 +135,12 @@ export const useHelpCenterAIArticlesLibrary = (
         showLinkToConnectEmailToStore,
         markArticleAsReviewed: (
             templateKey: string,
-            reviewAction: ArticleTemplateReviewAction
+            reviewAction: ArticleTemplateReviewAction,
         ) => {
             if (!articles) return
 
             const articleIndex = articles.findIndex(
-                (item) => item.key === templateKey
+                (item) => item.key === templateKey,
             )
 
             const newArticles = [...articles]

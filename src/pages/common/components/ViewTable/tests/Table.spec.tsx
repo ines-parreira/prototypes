@@ -1,27 +1,27 @@
-import {createEvent, fireEvent, render} from '@testing-library/react'
-import {fromJS, Map, List} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { createEvent, fireEvent, render } from '@testing-library/react'
+import { fromJS, List, Map } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import * as viewsConfig from 'config/views'
-import {useFlag} from 'core/flags'
-import {mockSearchRank} from 'fixtures/searchRank'
+import { useFlag } from 'core/flags'
+import { mockSearchRank } from 'fixtures/searchRank'
 import * as ticketFixtures from 'fixtures/ticket'
-import {EntityType} from 'models/view/types'
-
+import { EntityType } from 'models/view/types'
 import BlankState from 'pages/common/components/BlankState/BlankState'
 import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
 import Table from 'pages/common/components/ViewTable/Table'
 import Row from 'pages/common/components/ViewTable/Table/Row'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
-import {RootState, StoreDispatch} from 'state/types'
-import {ViewNavDirection} from 'state/views/types'
+import { RootState, StoreDispatch } from 'state/types'
+import { ViewNavDirection } from 'state/views/types'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>(
-    middlewares
+    middlewares,
 )
 
 jest.mock(
@@ -48,7 +48,7 @@ jest.mock(
                     )}
                 </td>
             </tr>
-        )
+        ),
 )
 jest.mock(
     '../Table/HeaderCell',
@@ -62,17 +62,17 @@ jest.mock(
                 HeaderCell - shouldRenderShowMoreDropdown :{' '}
                 {String(shouldRenderShowMoreDropdown)}
             </td>
-        )
+        ),
 )
 jest.mock(
     '../../BlankState/BlankState',
     () =>
-        ({message}: ComponentProps<typeof BlankState>) => (
+        ({ message }: ComponentProps<typeof BlankState>) => (
             <div>
                 BlankState
                 <div>{message}</div>
             </div>
-        )
+        ),
 )
 jest.mock('services/shortcutManager/shortcutManager')
 
@@ -98,7 +98,7 @@ describe('<Table />', () => {
         items: fromJS([ticketFixtures.ticket]),
         isSearch: false,
         isLoading: () => false,
-        navigation: fromJS({prev_items: null, next_items: null}),
+        navigation: fromJS({ prev_items: null, next_items: null }),
         fetchViewItems: jest.fn(),
         getItemUrl: jest.fn(),
         onItemClick: () => undefined,
@@ -111,64 +111,64 @@ describe('<Table />', () => {
     })
 
     it('should display a view with no fields', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <Table {...minProps} fields={fromJS([])} />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should display a default view', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <Table {...minProps} />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should display a default view with option selectable set to false', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <Table {...minProps} selectable={false} />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should display a default view with no items', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <Table {...minProps} items={fromJS([])} />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should pass shouldRenderShowMoreDropdown to HeaderCell', () => {
-        const {getAllByText} = render(
+        const { getAllByText } = render(
             <Provider store={mockStore(defaultState)}>
                 <Table {...minProps} shouldRenderShowMoreDropdown={false} />
-            </Provider>
+            </Provider>,
         )
         expect(
             getAllByText('HeaderCell - shouldRenderShowMoreDropdown : false')[
                 minProps.fields.size - 1
-            ]
+            ],
         ).toBeInTheDocument()
     })
 
     it('should display a modified view with no items, should reset the view and fetch first items ', () => {
         const store = mockStore(defaultState)
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <Table
                     {...minProps}
                     items={fromJS([])}
-                    view={fromJS({dirty: true})}
+                    view={fromJS({ dirty: true })}
                 />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(getByText('Reset view'))
@@ -182,40 +182,40 @@ describe('<Table />', () => {
             ' checkbox',
         () => {
             const store = mockStore(defaultState)
-            const {getByRole} = render(
+            const { getByRole } = render(
                 <Provider store={store}>
                     <Table {...minProps} />
-                </Provider>
+                </Provider>,
             )
 
             fireEvent.click(getByRole('checkbox'))
 
             expect(store.getActions()).toMatchSnapshot()
-        }
+        },
     )
 
     it('should display all checkboxes as checked when all items are selected', () => {
-        const {getByRole} = render(
+        const { getByRole } = render(
             <Provider store={mockStore(defaultState)}>
                 <Table
                     {...minProps}
                     selectedItemsIds={fromJS([ticketFixtures.ticket.id])}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect((getByRole('checkbox') as HTMLInputElement).checked).toBe(true)
     })
 
     it('should not getItemUrl on open item shortcut callback when no items', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <Table
                     {...minProps}
                     items={fromJS([])}
                     onItemClick={undefined}
                 />
-            </Provider>
+            </Provider>,
         )
 
         const boundShortcuts = (
@@ -229,32 +229,32 @@ describe('<Table />', () => {
     })
 
     it('should register search rank item selection on item click', () => {
-        const {getByTestId} = render(
+        const { getByTestId } = render(
             <SearchRankScenarioContext.Provider value={mockSearchRank}>
                 <Provider store={mockStore(defaultState)}>
                     <Table {...minProps} />
                 </Provider>
-            </SearchRankScenarioContext.Provider>
+            </SearchRankScenarioContext.Provider>,
         )
 
         fireEvent.click(
             getByTestId(
-                `click-item-${minProps.items.getIn(['0', 'id']) as string}`
-            )
+                `click-item-${minProps.items.getIn(['0', 'id']) as string}`,
+            ),
         )
 
         expect(mockSearchRank.registerResultSelection).toHaveBeenLastCalledWith(
-            {id: minProps.items.getIn(['0', 'id']), index: 0}
+            { id: minProps.items.getIn(['0', 'id']), index: 0 },
         )
     })
 
     it('should register search rank item selection on open item shortcut', () => {
-        const {container} = render(
+        const { container } = render(
             <SearchRankScenarioContext.Provider value={mockSearchRank}>
                 <Provider store={mockStore(defaultState)}>
                     <Table {...minProps} />
                 </Provider>
-            </SearchRankScenarioContext.Provider>
+            </SearchRankScenarioContext.Provider>,
         )
 
         const boundShortcuts = (
@@ -265,7 +265,7 @@ describe('<Table />', () => {
         boundShortcuts!['OPEN_ITEM'].action!(createEvent.keyDown(container))
 
         expect(mockSearchRank.registerResultSelection).toHaveBeenLastCalledWith(
-            {id: minProps.items.getIn(['0', 'id']), index: 0}
+            { id: minProps.items.getIn(['0', 'id']), index: 0 },
         )
     })
 
@@ -275,7 +275,7 @@ describe('<Table />', () => {
     ])(
         'should fetch items with the search rank from the context on the %s shortcut',
         (testName, direction, shortcut) => {
-            const {container} = render(
+            const { container } = render(
                 <SearchRankScenarioContext.Provider value={mockSearchRank}>
                     <Provider store={mockStore(defaultState)}>
                         <Table
@@ -286,7 +286,7 @@ describe('<Table />', () => {
                             })}
                         />
                     </Provider>
-                </SearchRankScenarioContext.Provider>
+                </SearchRankScenarioContext.Provider>,
             )
 
             const boundShortcuts = (
@@ -301,9 +301,9 @@ describe('<Table />', () => {
                 null,
                 null,
                 mockSearchRank,
-                undefined
+                undefined,
             )
-        }
+        },
     )
 
     it.each([
@@ -312,7 +312,7 @@ describe('<Table />', () => {
     ])(
         'should fetch items with the search rank from the context on %s navigation button click',
         (testName, direction, buttonText) => {
-            const {getByText} = render(
+            const { getByText } = render(
                 <SearchRankScenarioContext.Provider value={mockSearchRank}>
                     <Provider store={mockStore(defaultState)}>
                         <Table
@@ -323,7 +323,7 @@ describe('<Table />', () => {
                             })}
                         />
                     </Provider>
-                </SearchRankScenarioContext.Provider>
+                </SearchRankScenarioContext.Provider>,
             )
 
             fireEvent.click(getByText(buttonText))
@@ -333,9 +333,9 @@ describe('<Table />', () => {
                 null,
                 null,
                 mockSearchRank,
-                {}
+                {},
             )
-        }
+        },
     )
 
     it.each([
@@ -346,7 +346,7 @@ describe('<Table />', () => {
         (testName, direction, buttonText) => {
             mockUseFlag.mockReturnValue(true)
 
-            const {getByText} = render(
+            const { getByText } = render(
                 <SearchRankScenarioContext.Provider value={mockSearchRank}>
                     <Provider store={mockStore(defaultState)}>
                         <Table
@@ -358,7 +358,7 @@ describe('<Table />', () => {
                             isSearch
                         />
                     </Provider>
-                </SearchRankScenarioContext.Provider>
+                </SearchRankScenarioContext.Provider>,
             )
 
             fireEvent.click(getByText(buttonText))
@@ -368,14 +368,14 @@ describe('<Table />', () => {
                 null,
                 null,
                 mockSearchRank,
-                {trackTotalHits: true}
+                { trackTotalHits: true },
             )
-        }
+        },
     )
 
     it('should render navigation buttons when prev_items and next_items are defined', () => {
         const store = mockStore(defaultState)
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <Table
                     {...minProps}
@@ -384,7 +384,7 @@ describe('<Table />', () => {
                         prev_items: 'prev_items',
                     })}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.getElementsByClassName('navigation')).toHaveLength(1)
@@ -392,7 +392,7 @@ describe('<Table />', () => {
 
     it('should render navigation buttons when prev_cursor and next_cursor are defined', () => {
         const store = mockStore(defaultState)
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <Table
                     {...minProps}
@@ -401,7 +401,7 @@ describe('<Table />', () => {
                         prev_cursor: 'prev_cursor',
                     })}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.getElementsByClassName('navigation')).toHaveLength(1)

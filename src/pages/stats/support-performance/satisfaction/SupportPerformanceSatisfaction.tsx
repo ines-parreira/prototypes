@@ -1,17 +1,17 @@
-import {fromJS, Map} from 'immutable'
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
+
+import { fromJS, Map } from 'immutable'
 
 import {
     LATEST_SATISFACTION_SURVEYS,
     SATISFACTION_SURVEYS,
     stats as statsConfig,
 } from 'config/stats'
-
 import useStatResource from 'hooks/reporting/useStatResource'
 import useAppSelector from 'hooks/useAppSelector'
 import {
-    OneDimensionalUnionChart,
     LegacyStatsFilters,
+    OneDimensionalUnionChart,
     TwoDimensionalChart,
 } from 'models/stat/types'
 import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
@@ -20,25 +20,24 @@ import TableStat from 'pages/stats/common/components/charts/TableStat/TableStat'
 import KeyMetricStatWrapper from 'pages/stats/KeyMetricStatWrapper'
 import StatsPage from 'pages/stats/StatsPage'
 import StatWrapper from 'pages/stats/StatWrapper'
-import {SupportPerformanceSatisfactionFilters} from 'pages/stats/support-performance/satisfaction/SupportPerformanceSatisfactionFilters'
-import {AccountFeature} from 'state/currentAccount/types'
-
-import {getMessagingAndAppIntegrationsStatsFilter} from 'state/stats/selectors'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
+import { SupportPerformanceSatisfactionFilters } from 'pages/stats/support-performance/satisfaction/SupportPerformanceSatisfactionFilters'
+import { AccountFeature } from 'state/currentAccount/types'
+import { getMessagingAndAppIntegrationsStatsFilter } from 'state/stats/selectors'
+import { getCleanStatsFiltersWithTimezone } from 'state/ui/stats/selectors'
 
 const SUPPORT_PERFORMANCE_SATISFACTION_STAT_NAME =
     'support-performance-satisfaction'
 
 function SupportPerformanceSatisfaction() {
     const integrationsStatsFilter = useAppSelector(
-        getMessagingAndAppIntegrationsStatsFilter
+        getMessagingAndAppIntegrationsStatsFilter,
     )
-    const {cleanStatsFilters: statsFilters} = useAppSelector(
-        getCleanStatsFiltersWithTimezone
+    const { cleanStatsFilters: statsFilters } = useAppSelector(
+        getCleanStatsFiltersWithTimezone,
     )
 
     const pageStatsFilters = useMemo<LegacyStatsFilters>(() => {
-        const {channels, score, agents, tags, period} = statsFilters
+        const { channels, score, agents, tags, period } = statsFilters
         return {
             channels,
             score,
@@ -58,7 +57,7 @@ function SupportPerformanceSatisfaction() {
 
     const immutableStatsSatisfactionSurveys = useMemo(
         () => fromJS(satisfactionSurveys || {}) as Map<any, any>,
-        [satisfactionSurveys]
+        [satisfactionSurveys],
     )
 
     const [latestSatisfactionSurveys, isFetchingLatestSatisfactionSurveys] =
@@ -97,7 +96,7 @@ How many surveys have been sent, response rate, average scores and more."
             >
                 {(stat) => (
                     <TableStat
-                        context={{tagColors: null}}
+                        context={{ tagColors: null }}
                         data={stat.getIn(['data', 'data'])}
                         meta={stat.get('meta')}
                         config={statsConfig.get(LATEST_SATISFACTION_SURVEYS)}
@@ -109,5 +108,5 @@ How many surveys have been sent, response rate, average scores and more."
 }
 
 export default withFeaturePaywall(AccountFeature.SatisfactionSurveys)(
-    SupportPerformanceSatisfaction
+    SupportPerformanceSatisfaction,
 )

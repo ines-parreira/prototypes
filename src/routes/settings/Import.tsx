@@ -1,18 +1,17 @@
 import React from 'react'
 
-import {Route, Switch, useRouteMatch} from 'react-router-dom'
+import { Route, Switch, useRouteMatch } from 'react-router-dom'
 
-import {PageSection} from 'config/pages'
-import {ADMIN_ROLE} from 'config/user'
-
+import { PageSection } from 'config/pages'
+import { ADMIN_ROLE } from 'config/user'
 import ImportData from 'pages/settings/importData/ImportData'
 import ImportZendeskCreate from 'pages/settings/importData/zendesk/ImportZendeskCreate'
 import ImportZendeskDetail from 'pages/settings/importData/zendesk/ImportZendeskDetail'
 
-import {renderAppSettings} from './helpers/settingsRenderer'
+import { renderAppSettings } from './helpers/settingsRenderer'
 
 export function Import() {
-    const {path} = useRouteMatch()
+    const { path } = useRouteMatch()
 
     return (
         <Switch>

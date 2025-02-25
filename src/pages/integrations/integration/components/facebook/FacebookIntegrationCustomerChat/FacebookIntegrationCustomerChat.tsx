@@ -1,17 +1,19 @@
-import {List, Map} from 'immutable'
 import React from 'react'
-import {Link} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem, Col, Container, Row} from 'reactstrap'
 
-import {AlertBanner, AlertBannerTypes} from 'AlertBanners'
+import { List, Map } from 'immutable'
+import { Link } from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem, Col, Container, Row } from 'reactstrap'
+
+import { AlertBanner, AlertBannerTypes } from 'AlertBanners'
 import PageHeader from 'pages/common/components/PageHeader'
 import CustomInstallationCard from 'pages/integrations/common/components/CustomInstallationCard/CustomInstallationCard'
 import FacebookIntegrationNavigation from 'pages/integrations/integration/components/facebook/FacebookIntegrationNavigation'
 import settingsCss from 'pages/settings/settings.less'
-import {assetsUrl} from 'utils'
+import { assetsUrl } from 'utils'
+
+import { renderFacebookCodeSnippet } from './utils'
 
 import css from './FacebookIntegrationCustomerChat.less'
-import {renderFacebookCodeSnippet} from './utils'
 
 const deprecationBanner = (
     <p>
@@ -56,7 +58,7 @@ const FacebookIntegrationCustomerChat = ({
                     {(
                         integration.getIn(
                             ['meta', 'shopify_integration_ids'],
-                            []
+                            [],
                         ) as List<number>
                     ).size > 0 && (
                         <Row className="mb-4">
@@ -81,7 +83,7 @@ const FacebookIntegrationCustomerChat = ({
                                         href={`https://business.facebook.com/${
                                             integration.getIn(
                                                 ['meta', 'page_id'],
-                                                ''
+                                                '',
                                             ) as string
                                         }/settings/?tab=messenger_platform`}
                                     >
@@ -110,7 +112,7 @@ const FacebookIntegrationCustomerChat = ({
                             alt="facebook messenger logo"
                             className={css.image}
                             src={assetsUrl(
-                                '/img/presentationals/messenger-preview.png'
+                                '/img/presentationals/messenger-preview.png',
                             )}
                         />
                     </div>

@@ -1,14 +1,16 @@
-import classNames from 'classnames'
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {ActionStepItem} from '../types'
+import classNames from 'classnames'
+
+import { ActionStepItem } from '../types'
+
 import css from './NoHttpRequestLogsView.less'
 
 type NoHttpRequestLogsViewProps = {
     step: ActionStepItem
 }
 
-const NoHttpRequestLogsView = ({step}: NoHttpRequestLogsViewProps) => {
+const NoHttpRequestLogsView = ({ step }: NoHttpRequestLogsViewProps) => {
     const success = step.success
     const nativeAppError = useMemo(() => {
         if (step.error) {
@@ -17,7 +19,7 @@ const NoHttpRequestLogsView = ({step}: NoHttpRequestLogsViewProps) => {
         return Object.values(step.steps_state ?? {})
             .filter((state) => 'error' in state && state.error)
             .map((state) =>
-                'error' in state ? JSON.stringify(state.error) : ''
+                'error' in state ? JSON.stringify(state.error) : '',
             )
             .join('|')
     }, [step])

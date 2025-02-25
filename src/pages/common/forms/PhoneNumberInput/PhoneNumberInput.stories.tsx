@@ -1,5 +1,6 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps, useState} from 'react'
+import React, { ComponentProps, useState } from 'react'
+
+import { Meta, Story } from '@storybook/react'
 
 import PhoneNumberInput from './PhoneNumberInput'
 
@@ -15,7 +16,7 @@ const Template: Story<ComponentProps<typeof PhoneNumberInput>> = ({
     const [phoneNumber, setPhoneNumber] = useState(value || '')
 
     return (
-        <div style={{width: '300px'}}>
+        <div style={{ width: '300px' }}>
             <PhoneNumberInput
                 {...other}
                 onChange={setPhoneNumber}

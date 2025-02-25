@@ -1,14 +1,15 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
+import React, { ReactNode, useCallback, useMemo } from 'react'
+
+import { useFlags } from 'launchdarkly-react-client-sdk'
 import _difference from 'lodash/difference'
 import _intersection from 'lodash/intersection'
-import React, {ReactNode, useCallback, useMemo} from 'react'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
-import {TicketChannel} from 'business/types/ticket'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useGetWorkflowConfigurations} from 'models/workflows/queries'
-import {SelfServiceChannelType} from 'pages/automate/common/hooks/useSelfServiceChannels'
-import {ChannelLanguage} from 'pages/automate/common/types'
+import { TicketChannel } from 'business/types/ticket'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useGetWorkflowConfigurations } from 'models/workflows/queries'
+import { SelfServiceChannelType } from 'pages/automate/common/hooks/useSelfServiceChannels'
+import { ChannelLanguage } from 'pages/automate/common/types'
 
 function getChannelLanguageLabel(l: ChannelLanguage): string {
     switch (l) {
@@ -59,7 +60,7 @@ function getChannelLanguageLabel(l: ChannelLanguage): string {
 export default function useLanguagesMismatchWarnings(
     channelType: SelfServiceChannelType,
     integrationId: number,
-    channelLanguages: ChannelLanguage[]
+    channelLanguages: ChannelLanguage[],
 ) {
     const chatLanguageSettingsLink = `/app/settings/channels/gorgias_chat/${integrationId}/preferences`
     const helpCenterLanguageSettingsLink = `/app/settings/help-center/${integrationId}/preferences`
@@ -80,12 +81,12 @@ export default function useLanguagesMismatchWarnings(
             : [TicketChannel.Chat, TicketChannel.ContactForm]
     }, [hasChatMultiLanguagesFeatureFlag])
 
-    const {data: workflows} = useGetWorkflowConfigurations()
+    const { data: workflows } = useGetWorkflowConfigurations()
 
     const getLanguagesMismatchWarning = useCallback<
         (
-            workflowId: string
-        ) => {message: ReactNode; type: 'error' | 'warning'} | void
+            workflowId: string,
+        ) => { message: ReactNode; type: 'error' | 'warning' } | void
     >(
         (workflowId: string) => {
             const workflow = workflows?.find((w) => w.id === workflowId)
@@ -97,11 +98,11 @@ export default function useLanguagesMismatchWarnings(
                     wl === 'cs-CZ'
                         ? // Handle special case for 'cs-CZ' and 'cz'
                           (channelLanguages.find(
-                              (cl) => cl === ('cz' as ChannelLanguage)
+                              (cl) => cl === ('cz' as ChannelLanguage),
                           ) ?? wl)
                         : (channelLanguages.find(
-                              (cl) => cl === wl.substring(0, cl.length)
-                          ) ?? wl)
+                              (cl) => cl === wl.substring(0, cl.length),
+                          ) ?? wl),
                 ) ?? []
             // There is no overlap between the flow language and the channel language.
             if (
@@ -154,7 +155,7 @@ export default function useLanguagesMismatchWarnings(
             // The channel has a language that the flow doesn’t have
             const extraChannelLanguages = _difference(
                 channelLanguages,
-                workflowLanguages
+                workflowLanguages,
             )
             if (extraChannelLanguages.length > 0) {
                 return {
@@ -178,7 +179,7 @@ export default function useLanguagesMismatchWarnings(
             // If the flow has a language that the channel doesn’t have.
             const extraWorkflowLanguages = _difference(
                 workflowLanguages,
-                channelLanguages
+                channelLanguages,
             )
             if (extraWorkflowLanguages.length > 0) {
                 return {
@@ -208,8 +209,8 @@ export default function useLanguagesMismatchWarnings(
             monoLanguageChannels,
             channelType,
             channelLanguageSettingsLink,
-        ]
+        ],
     )
 
-    return {getLanguagesMismatchWarning}
+    return { getLanguagesMismatchWarning }
 }

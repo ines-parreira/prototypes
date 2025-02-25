@@ -1,40 +1,40 @@
-import {IntegrationType} from '@gorgias/api-queries'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+
 import axios from 'axios'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {get} from 'lodash'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { get } from 'lodash'
 import _debounce from 'lodash/debounce'
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
-import {Route, Switch, useHistory, useLocation} from 'react-router-dom'
+import { Route, Switch, useHistory, useLocation } from 'react-router-dom'
+
+import { IntegrationType } from '@gorgias/api-queries'
 
 import warningIcon from 'assets/img/icons/warning2.svg'
-import {SegmentEvent, logEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import Accordion from 'pages/common/components/accordion/Accordion'
 import AccordionBody from 'pages/common/components/accordion/AccordionBody'
 import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
 import AccordionItem from 'pages/common/components/accordion/AccordionItem'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import LinkAlert from 'pages/common/components/Alert/LinkAlert'
 import BackLink from 'pages/common/components/BackLink'
 import Button from 'pages/common/components/button/Button'
-
-import {ConfirmModalAction} from 'pages/common/components/ConfirmModalAction'
+import { ConfirmModalAction } from 'pages/common/components/ConfirmModalAction'
 import CopyText from 'pages/common/components/CopyText'
 import InstallationCodeSnippet from 'pages/common/components/InstallationCodeSnippet/InstallationCodeSnippet'
 import TabNavigator from 'pages/common/components/TabNavigator/TabNavigator'
 import InputField from 'pages/common/forms/input/InputField'
-import {useGetPageEmbedments} from 'pages/settings/helpCenter/queries'
+import { useGetPageEmbedments } from 'pages/settings/helpCenter/queries'
 import settingsCss from 'pages/settings/settings.less'
-import {Paths} from 'rest_api/help_center_api/client.generated'
-
+import { Paths } from 'rest_api/help_center_api/client.generated'
 import {
     helpCenterDeleted,
     helpCenterUpdated,
 } from 'state/entities/helpCenter/helpCenters/actions'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {reportError} from 'utils/errors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { reportError } from 'utils/errors'
 
 import {
     HELP_CENTER_BASE_PATH,
@@ -43,26 +43,25 @@ import {
     ManuallyEmbedOptions,
 } from '../constants'
 import useCurrentHelpCenter from '../hooks/useCurrentHelpCenter'
-import {useHelpCenterActions} from '../hooks/useHelpCenterActions'
-import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
-import {useStoreIntegrationByShopName} from '../hooks/useStoreIntegrationByShopName'
-import {useHelpCenterPreferencesSettings} from '../providers/HelpCenterPreferencesSettings'
-import {getAbsoluteUrl, getHelpCenterDomain} from '../utils/helpCenter.utils'
+import { useHelpCenterActions } from '../hooks/useHelpCenterActions'
+import { useHelpCenterApi } from '../hooks/useHelpCenterApi'
+import { useStoreIntegrationByShopName } from '../hooks/useStoreIntegrationByShopName'
+import { useHelpCenterPreferencesSettings } from '../providers/HelpCenterPreferencesSettings'
+import { getAbsoluteUrl, getHelpCenterDomain } from '../utils/helpCenter.utils'
 import {
     getSubdomainValidationError,
     isValidSubdomain,
 } from '../utils/validations'
-
-import {ConnectToShopSection} from './ConnectToShopSection'
-import {CustomDomain} from './CustomDomain'
+import { ConnectToShopSection } from './ConnectToShopSection'
+import { CustomDomain } from './CustomDomain'
 import GoogleAnalyticsSection from './GoogleAnalyticSection'
 import HelpCenterAutoEmbedPublishSection from './HelpCenterAutoEmbedPublishSection'
 import HelpCenterPageWrapper from './HelpCenterPageWrapper'
-import css from './HelpCenterPublishAndTrackView.less'
 import ManageEmbedments from './ManageEmbedments'
-import {SubdomainSection} from './SubdomainSection'
+import { SubdomainSection } from './SubdomainSection'
+import { UpdateToggle } from './UpdateToggle'
 
-import {UpdateToggle} from './UpdateToggle'
+import css from './HelpCenterPublishAndTrackView.less'
 
 export const HelpCenterInstallationView: React.FC = () => {
     const dispatch = useAppDispatch()
@@ -72,7 +71,7 @@ export const HelpCenterInstallationView: React.FC = () => {
     const location = useLocation()
     const helpCenter = useCurrentHelpCenter()
     const helpCenterId = helpCenter.id
-    const {client} = useHelpCenterApi()
+    const { client } = useHelpCenterApi()
     const [subdomainValue, setSubdomainValue] = useState<string>()
     const [gaid, setGaid] = useState<string | null>(null)
     const [isSubdomainAvailable, setIsSubdomainAvailable] = useState(true)
@@ -81,13 +80,13 @@ export const HelpCenterInstallationView: React.FC = () => {
     const [showConnectToStoreWarning, setShowConnectToStoreWarning] =
         useState(true)
     const [activeTab, setActiveTab] = useState<string>(
-        ManuallyEmbedOptions.SHOPIFY
+        ManuallyEmbedOptions.SHOPIFY,
     )
     const getPageEmbedments = useGetPageEmbedments(helpCenterId, {
         enabled: Boolean(helpCenter.shop_name),
     })
 
-    const {getHelpCenterCustomDomain} = useHelpCenterActions()
+    const { getHelpCenterCustomDomain } = useHelpCenterActions()
     const {
         preferences,
         updatePreferences,
@@ -97,11 +96,11 @@ export const HelpCenterInstallationView: React.FC = () => {
     } = useHelpCenterPreferencesSettings()
     const isPreferencesFetched = useMemo(
         () => preferences.availableLanguages.length > 0,
-        [preferences.availableLanguages]
+        [preferences.availableLanguages],
     )
 
     const selectedShop = useStoreIntegrationByShopName(
-        preferences.connectedShop.shopName ?? ''
+        preferences.connectedShop.shopName ?? '',
     )
 
     const isConnectedToShopifyShop = useMemo(
@@ -109,12 +108,12 @@ export const HelpCenterInstallationView: React.FC = () => {
             Boolean(preferences.connectedShop.shopName) &&
             !!selectedShop &&
             selectedShop.type === IntegrationType.Shopify,
-        [preferences.connectedShop.shopName, selectedShop]
+        [preferences.connectedShop.shopName, selectedShop],
     )
 
     const helpCenterUrl = useMemo(() => {
         const domain = getHelpCenterDomain(helpCenter)
-        return getAbsoluteUrl({domain})
+        return getAbsoluteUrl({ domain })
     }, [helpCenter])
 
     const subdomainError = subdomainValue
@@ -154,7 +153,7 @@ export const HelpCenterInstallationView: React.FC = () => {
                 }
             }
         }, 500),
-        [subdomainValue]
+        [subdomainValue],
     )
 
     const handleOnDeleteHelpCenter = () => {
@@ -166,13 +165,13 @@ export const HelpCenterInstallationView: React.FC = () => {
                 .then(() => {
                     dispatch(helpCenterDeleted(helpCenterId))
                     history.push(
-                        location.pathname.split(helpCenterId.toString())[0]
+                        location.pathname.split(helpCenterId.toString())[0],
                     )
                     void dispatch(
                         notify({
                             message: 'Help Center deleted with success',
                             status: NotificationStatus.Success,
-                        })
+                        }),
                     )
                 })
                 .catch((err) => {
@@ -186,7 +185,7 @@ export const HelpCenterInstallationView: React.FC = () => {
                         notify({
                             message: errorMessage,
                             status: NotificationStatus.Error,
-                        })
+                        }),
                     )
                     reportError(err as Error)
                 })
@@ -204,7 +203,7 @@ export const HelpCenterInstallationView: React.FC = () => {
                     {
                         help_center_id: helpCenterId,
                     },
-                    delta
+                    delta,
                 )
 
                 dispatch(helpCenterUpdated(response.data))
@@ -212,7 +211,7 @@ export const HelpCenterInstallationView: React.FC = () => {
                     notify({
                         message: 'Help Center updated with success',
                         status: NotificationStatus.Success,
-                    })
+                    }),
                 )
             } catch (err) {
                 // TODO: Add different messages based on error response code
@@ -220,12 +219,12 @@ export const HelpCenterInstallationView: React.FC = () => {
                     notify({
                         message: 'Could not update the Help Center',
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
                 reportError(err as Error)
             }
         },
-        [client, dispatch, helpCenterId]
+        [client, dispatch, helpCenterId],
     )
 
     const handleOnCancel = () => {
@@ -236,8 +235,8 @@ export const HelpCenterInstallationView: React.FC = () => {
     const handleOnSave = useCallback(
         async () =>
             await handleOnUpdateHelpCenter({
-                ...(isNewSubdomainValid ? {subdomain: subdomainValue} : {}),
-                ...(isUpdatedGaid ? {gaid} : {}),
+                ...(isNewSubdomainValid ? { subdomain: subdomainValue } : {}),
+                ...(isUpdatedGaid ? { gaid } : {}),
             }),
         [
             handleOnUpdateHelpCenter,
@@ -245,7 +244,7 @@ export const HelpCenterInstallationView: React.FC = () => {
             subdomainValue,
             isUpdatedGaid,
             gaid,
-        ]
+        ],
     )
 
     const onConnectedShopChange = ({
@@ -349,7 +348,7 @@ export const HelpCenterInstallationView: React.FC = () => {
                                             icon
                                             onClose={() =>
                                                 setShowConnectToStoreWarning(
-                                                    false
+                                                    false,
                                                 )
                                             }
                                         >
@@ -365,7 +364,7 @@ export const HelpCenterInstallationView: React.FC = () => {
                                     }
                                     isDisabled={
                                         Boolean(
-                                            helpCenter.deactivated_datetime
+                                            helpCenter.deactivated_datetime,
                                         ) ||
                                         (getPageEmbedments.isLoading &&
                                             !getPageEmbedments.isFetched)
@@ -374,7 +373,7 @@ export const HelpCenterInstallationView: React.FC = () => {
                                 <Accordion>
                                     <AccordionItem
                                         isDisabled={Boolean(
-                                            helpCenter.deactivated_datetime
+                                            helpCenter.deactivated_datetime,
                                         )}
                                     >
                                         <AccordionHeader>
@@ -407,7 +406,7 @@ export const HelpCenterInstallationView: React.FC = () => {
                                                         activeTab as keyof typeof MANUALLY_EMBED_STEPS
                                                     ].map(
                                                         (step: JSX.Element) =>
-                                                            step
+                                                            step,
                                                     )}
                                                 </div>
                                                 <Alert
@@ -421,7 +420,7 @@ export const HelpCenterInstallationView: React.FC = () => {
                                                 <InstallationCodeSnippet
                                                     onCopy={() =>
                                                         logEvent(
-                                                            SegmentEvent.HelpCenterManualEmbedCopyCode
+                                                            SegmentEvent.HelpCenterManualEmbedCopyCode,
                                                         )
                                                     }
                                                     code={
@@ -433,7 +432,7 @@ export const HelpCenterInstallationView: React.FC = () => {
                                     </AccordionItem>
                                     <AccordionItem
                                         isDisabled={Boolean(
-                                            helpCenter.deactivated_datetime
+                                            helpCenter.deactivated_datetime,
                                         )}
                                     >
                                         <AccordionHeader>
@@ -534,10 +533,10 @@ export const HelpCenterInstallationView: React.FC = () => {
                                 onClick={() =>
                                     handleOnUpdateHelpCenter({
                                         ...(isNewSubdomainValid
-                                            ? {subdomain: subdomainValue}
+                                            ? { subdomain: subdomainValue }
                                             : {}),
                                         ...(isUpdatedGaid
-                                            ? {gaid: gaid || null}
+                                            ? { gaid: gaid || null }
                                             : {}),
                                     })
                                 }

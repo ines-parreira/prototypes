@@ -1,7 +1,6 @@
-import {ToneOfVoice} from '../../constants'
-import {ValidFormValues} from '../../types'
-import {filterNonNull} from '../../util'
-
+import { ToneOfVoice } from '../../constants'
+import { ValidFormValues } from '../../types'
+import { filterNonNull } from '../../util'
 import {
     getStoreConfigurationFromFormValues,
     isPreviewModeActivated,
@@ -24,8 +23,8 @@ describe('getStoreConfigurationFromFormValues', () => {
         previewModeActivatedDatetime: '2024-02-01',
         previewModeValidUntilDatetime: '2024-02-08',
         monitoredEmailIntegrations: [
-            {id: 1, email: 'email1@example.com'},
-            {id: 2, email: 'email2@example.com'},
+            { id: 1, email: 'email1@example.com' },
+            { id: 2, email: 'email2@example.com' },
         ],
         monitoredChatIntegrations: [1, 2],
 
@@ -33,8 +32,8 @@ describe('getStoreConfigurationFromFormValues', () => {
         signature: 'Best regards, Store',
         silentHandover: true,
         tags: [
-            {name: 'tag1', description: 'description1'},
-            {name: 'tag2', description: 'description2'},
+            { name: 'tag1', description: 'description1' },
+            { name: 'tag2', description: 'description2' },
         ],
         excludedTopics: ['topic1', 'topic2'],
         ticketSampleRate: 0.5,
@@ -49,8 +48,8 @@ describe('getStoreConfigurationFromFormValues', () => {
     const filterNonNullResult = {
         silentHandover: true,
         tags: [
-            {name: 'tag1', description: 'description1'},
-            {name: 'tag2', description: 'description2'},
+            { name: 'tag1', description: 'description1' },
+            { name: 'tag2', description: 'description2' },
         ],
         excludedTopics: ['topic1', 'topic2'],
         ticketSampleRate: 0.5,
@@ -97,7 +96,7 @@ describe('getStoreConfigurationFromFormValues', () => {
                     previewModeValidUntilDatetime: null,
                     isPreviewModeActive: isPreviewModeActive,
                     isTrialModeAvailable,
-                })
+                }),
             ).toBe(true)
         })
 
@@ -112,7 +111,7 @@ describe('getStoreConfigurationFromFormValues', () => {
                     previewModeValidUntilDatetime: null,
                     isPreviewModeActive: isPreviewModeActive,
                     isTrialModeAvailable,
-                })
+                }),
             ).toBe(false)
         })
 
@@ -128,7 +127,7 @@ describe('getStoreConfigurationFromFormValues', () => {
                     previewModeValidUntilDatetime: '2023-10-01T00:00:00Z',
                     isPreviewModeActive: isPreviewModeActive,
                     isTrialModeAvailable,
-                })
+                }),
             ).toBe(true)
         })
 
@@ -143,7 +142,7 @@ describe('getStoreConfigurationFromFormValues', () => {
                     previewModeValidUntilDatetime: '2023-10-01T00:00:00Z',
                     isPreviewModeActive: isPreviewModeActive,
                     isTrialModeAvailable,
-                })
+                }),
             ).toBe(false)
         })
 
@@ -159,7 +158,7 @@ describe('getStoreConfigurationFromFormValues', () => {
                     previewModeValidUntilDatetime: null,
                     isPreviewModeActive: isPreviewModeActive,
                     isTrialModeAvailable,
-                })
+                }),
             ).toBe(false)
         })
 
@@ -176,7 +175,7 @@ describe('getStoreConfigurationFromFormValues', () => {
                     previewModeValidUntilDatetime: null,
                     isPreviewModeActive: isPreviewModeActive,
                     isTrialModeAvailable,
-                })
+                }),
             ).toBe(false)
         })
 
@@ -192,7 +191,7 @@ describe('getStoreConfigurationFromFormValues', () => {
                     previewModeValidUntilDatetime: null,
                     isPreviewModeActive: isPreviewModeActive,
                     isTrialModeAvailable,
-                })
+                }),
             ).toBe(false)
         })
 
@@ -208,7 +207,7 @@ describe('getStoreConfigurationFromFormValues', () => {
                     previewModeValidUntilDatetime: null,
                     isPreviewModeActive: isPreviewModeActive,
                     isTrialModeAvailable,
-                })
+                }),
             ).toBe(false)
         })
 
@@ -225,7 +224,7 @@ describe('getStoreConfigurationFromFormValues', () => {
                     previewModeValidUntilDatetime: '2023-10-01T00:00:00Z',
                     isPreviewModeActive: isPreviewModeActive,
                     isTrialModeAvailable,
-                })
+                }),
             ).toBe(false)
         })
     })

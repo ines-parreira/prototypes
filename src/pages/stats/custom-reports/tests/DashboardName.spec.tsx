@@ -1,8 +1,9 @@
-import {fireEvent, render, screen} from '@testing-library/react'
-import {noop} from 'lodash'
 import React from 'react'
 
-import {DashboardName} from 'pages/stats/custom-reports/DashboardName'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { noop } from 'lodash'
+
+import { DashboardName } from 'pages/stats/custom-reports/DashboardName'
 
 const getNameInput = () => screen.getByRole('textbox')
 const getEmojiInput = (emoji = 'insert_emoticon') => screen.getByText(emoji)
@@ -19,7 +20,7 @@ const selectEmoji = (emoji: string) => {
 const enterName = (name: string) => {
     const nameInput = getNameInput()
 
-    fireEvent.change(nameInput, {target: {value: name}})
+    fireEvent.change(nameInput, { target: { value: name } })
 }
 
 describe('<DashboardName />', () => {
@@ -28,9 +29,9 @@ describe('<DashboardName />', () => {
     it('should render text input field', () => {
         render(
             <DashboardName
-                value={{name: 'My Dashboard', emoji: '🤘'}}
+                value={{ name: 'My Dashboard', emoji: '🤘' }}
                 onChange={noop}
-            />
+            />,
         )
 
         expect(getNameInput()).toBeInTheDocument()
@@ -39,9 +40,9 @@ describe('<DashboardName />', () => {
     it('should render emoji selector', () => {
         render(
             <DashboardName
-                value={{name: 'My Dashboard', emoji: ''}}
+                value={{ name: 'My Dashboard', emoji: '' }}
                 onChange={noop}
-            />
+            />,
         )
 
         expect(getEmojiInput()).toBeInTheDocument()
@@ -62,9 +63,9 @@ describe('<DashboardName />', () => {
     it('should call `onChange` when `name` is changed', () => {
         render(
             <DashboardName
-                value={{name: '', emoji: ''}}
+                value={{ name: '', emoji: '' }}
                 onChange={mockHandleChange}
-            />
+            />,
         )
 
         const name = 'My Custom Report'
@@ -72,16 +73,16 @@ describe('<DashboardName />', () => {
         enterName(name)
 
         expect(mockHandleChange).toHaveBeenCalledWith(
-            expect.objectContaining({name})
+            expect.objectContaining({ name }),
         )
     })
 
     it('should call `onChange` when `emoji` is changed', () => {
         render(
             <DashboardName
-                value={{name: '', emoji: ''}}
+                value={{ name: '', emoji: '' }}
                 onChange={mockHandleChange}
-            />
+            />,
         )
 
         const emoji = '🤘'
@@ -89,7 +90,7 @@ describe('<DashboardName />', () => {
         selectEmoji(emoji)
 
         expect(mockHandleChange).toHaveBeenCalledWith(
-            expect.objectContaining({emoji})
+            expect.objectContaining({ emoji }),
         )
     })
 
@@ -97,10 +98,10 @@ describe('<DashboardName />', () => {
         const mockHandleBlur = jest.fn()
         render(
             <DashboardName
-                value={{name: '', emoji: ''}}
+                value={{ name: '', emoji: '' }}
                 onChange={noop}
                 onBlur={mockHandleBlur}
-            />
+            />,
         )
 
         getNameInput().focus()

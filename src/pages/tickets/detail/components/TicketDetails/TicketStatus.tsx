@@ -1,7 +1,8 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
-import {TicketStatus as TicketStatusEnum} from 'business/types/ticket'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { TicketStatus as TicketStatusEnum } from 'business/types/ticket'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 
@@ -10,7 +11,7 @@ type Props = {
     currentStatus: string
 }
 
-const TicketStatus = ({setQuickStatus, currentStatus}: Props) => {
+const TicketStatus = ({ setQuickStatus, currentStatus }: Props) => {
     const isClosed = currentStatus === TicketStatusEnum.Closed
 
     return (

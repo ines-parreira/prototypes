@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {ORDER_MANAGEMENT} from 'pages/automate/common/components/constants'
+import { ORDER_MANAGEMENT } from 'pages/automate/common/components/constants'
 
 import {
     IdentifierCategoryKey,
@@ -69,7 +69,7 @@ export const IDENTIFIER_CATEGORIES: {
 
 export const IDENTIFIER_VARIABLES_BY_CATEGORY: {
     [key in IdentifierCategoryKey]: (
-        | (IdentifierElement & {children?: undefined})
+        | (IdentifierElement & { children?: undefined })
         | {
               label: IdentifierSubCategoryValue
               children: IdentifierElement[]

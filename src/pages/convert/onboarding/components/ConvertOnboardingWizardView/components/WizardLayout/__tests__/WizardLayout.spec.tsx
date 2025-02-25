@@ -1,24 +1,25 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-import {createMemoryHistory} from 'history'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Router} from 'react-router-dom'
 
-import {Language} from 'constants/languages'
-import {channelConnection} from 'fixtures/channelConnection'
-import {installBundleMockImplementation} from 'fixtures/convertBundle'
-import {shopifyIntegration} from 'fixtures/integrations'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { createMemoryHistory } from 'history'
+import { fromJS } from 'immutable'
+import { Router } from 'react-router-dom'
+
+import { Language } from 'constants/languages'
+import { channelConnection } from 'fixtures/channelConnection'
+import { installBundleMockImplementation } from 'fixtures/convertBundle'
+import { shopifyIntegration } from 'fixtures/integrations'
 import {
     useCreateCampaign,
     useListCampaigns,
 } from 'models/convert/campaign/queries'
 import Wizard from 'pages/common/components/wizard/Wizard'
-import {useInstallBundle} from 'pages/convert/bundles/hooks/useInstallBundle'
-import {useUpdateChannelConnection} from 'pages/convert/channelConnections/hooks/useUpdateChannelConnection'
-import {OnboardingWizardSteps} from 'pages/convert/onboarding/components/ConvertOnboardingWizardView/constants'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock, flushPromises} from 'utils/testing'
+import { useInstallBundle } from 'pages/convert/bundles/hooks/useInstallBundle'
+import { useUpdateChannelConnection } from 'pages/convert/channelConnections/hooks/useUpdateChannelConnection'
+import { OnboardingWizardSteps } from 'pages/convert/onboarding/components/ConvertOnboardingWizardView/constants'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock, flushPromises } from 'utils/testing'
 
 import WizardLayout from '../WizardLayout'
 
@@ -41,21 +42,21 @@ jest.mock(
     'pages/convert/onboarding/components/ConvertOnboardingWizardView/components/WizardCampaignsStep',
     () => {
         return jest.fn(() => <div>WizardCampaignsStep</div>)
-    }
+    },
 )
 jest.mock(
     'pages/convert/onboarding/components/ConvertOnboardingWizardView/components/WizardInstallStep',
     () => {
         return jest.fn(() => <div>WizardInstallStep</div>)
-    }
+    },
 )
 
 const integration = {
     id: 123,
     meta: {
         languages: [
-            {language: Language.FrenchFr, primary: true},
-            {language: Language.EnglishUs},
+            { language: Language.FrenchFr, primary: true },
+            { language: Language.EnglishUs },
         ],
     },
 }
@@ -71,7 +72,7 @@ describe('WizardLayout', () => {
             } as unknown as ReturnType<typeof useUpdateChannelConnection>
         })
 
-        useListCampaignsMock.mockReturnValue({data: []} as any)
+        useListCampaignsMock.mockReturnValue({ data: [] } as any)
         useCreateCampaignMock.mockImplementation(() => {
             return {
                 mutateAsync: jest.fn(),
@@ -82,7 +83,7 @@ describe('WizardLayout', () => {
 
         const history = createMemoryHistory()
 
-        const {getByText} = render(
+        const { getByText } = render(
             <Router history={history}>
                 <QueryClientProvider client={queryClient}>
                     <Wizard
@@ -91,13 +92,13 @@ describe('WizardLayout', () => {
                     >
                         <WizardLayout
                             steps={steps}
-                            integration={fromJS({id: 123})}
+                            integration={fromJS({ id: 123 })}
                             channelConnection={channelConnection}
                             storeIntegration={fromJS(shopifyIntegration)}
                         />
                     </Wizard>
                 </QueryClientProvider>
-            </Router>
+            </Router>,
         )
 
         expect(getByText('Campaigns')).toBeInTheDocument()
@@ -114,7 +115,7 @@ describe('WizardLayout', () => {
 
     test('can click finish setup only once', async () => {
         useInstallBundleMock.mockImplementation(installBundleMockImplementation)
-        useListCampaignsMock.mockReturnValue({data: []} as any)
+        useListCampaignsMock.mockReturnValue({ data: [] } as any)
 
         const mutateUpdateMock = jest.fn()
         useUpdateChannelConnectionMock.mockImplementation(() => {
@@ -152,7 +153,7 @@ describe('WizardLayout', () => {
                         />
                     </Wizard>
                 </QueryClientProvider>
-            </Router>
+            </Router>,
         )
 
         const submitButton = screen.getByRole('button', {

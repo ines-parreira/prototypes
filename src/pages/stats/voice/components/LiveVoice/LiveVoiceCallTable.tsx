@@ -1,17 +1,18 @@
-import {LiveCallQueueVoiceCall} from '@gorgias/api-queries'
-import React, {useMemo, useState} from 'react'
+import React, { useMemo, useState } from 'react'
+
+import { LiveCallQueueVoiceCall } from '@gorgias/api-queries'
 
 import useOrderBy from 'hooks/useOrderBy'
-import {OrderDirection} from 'models/api/types'
+import { OrderDirection } from 'models/api/types'
 import * as ToggleButton from 'pages/common/components/ToggleButton'
 import ChartCard from 'pages/stats/ChartCard'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
 
-import {LIVE_VOICE_CALLS_TITLE} from '../../constants/liveVoice'
-import {VoiceCallTableColumnName} from '../VoiceCallTable/constants'
+import { LIVE_VOICE_CALLS_TITLE } from '../../constants/liveVoice'
+import { VoiceCallTableColumnName } from '../VoiceCallTable/constants'
 import VoiceCallTableContent from '../VoiceCallTable/VoiceCallTableContent'
-import {LiveVoiceStatusFilterOption} from './types'
+import { LiveVoiceStatusFilterOption } from './types'
 import {
     filterLiveCallsByStatus,
     formatVoiceCallsData,
@@ -24,24 +25,24 @@ type Props = {
     isLoading: boolean
 }
 
-export default function LiveVoiceCallTable({voiceCalls, isLoading}: Props) {
+export default function LiveVoiceCallTable({ voiceCalls, isLoading }: Props) {
     const [statusFilter, setStatusFilter] = useState(
-        LiveVoiceStatusFilterOption.ALL
+        LiveVoiceStatusFilterOption.ALL,
     )
-    const {orderBy, orderDirection, toggleOrderBy} =
+    const { orderBy, orderDirection, toggleOrderBy } =
         useOrderBy<VoiceCallTableColumnName>(
             VoiceCallTableColumnName.OngoingTime,
-            OrderDirection.Asc
+            OrderDirection.Asc,
         )
 
     const displayedVoiceCalls = useMemo(() => {
         const filteredVoiceCalls = filterLiveCallsByStatus(
             voiceCalls,
-            statusFilter
+            statusFilter,
         )
         const orderedVoiceCalls = orderLiveVoiceCallsByOngoingTime(
             filteredVoiceCalls,
-            orderDirection
+            orderDirection,
         )
         const formattedVoiceCalls = formatVoiceCallsData(orderedVoiceCalls)
 

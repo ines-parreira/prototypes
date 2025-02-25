@@ -8,7 +8,7 @@ type Props = {
     canUpdateArticle: boolean | null
 }
 
-const AddArticleCard = ({onCreateArticle, canUpdateArticle}: Props) => {
+const AddArticleCard = ({ onCreateArticle, canUpdateArticle }: Props) => {
     const handleOnCreate = () => {
         if (canUpdateArticle) {
             onCreateArticle()

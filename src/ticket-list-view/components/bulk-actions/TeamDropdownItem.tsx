@@ -1,16 +1,17 @@
-import {Emoji} from 'emoji-mart'
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {Item} from 'components/Dropdown'
-import {Team} from 'models/team/types'
+import { Emoji } from 'emoji-mart'
+
+import { Item } from 'components/Dropdown'
+import { Team } from 'models/team/types'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 
 import css from './style.less'
 
-export default function TeamDropdownItem({item}: {item: Item}) {
+export default function TeamDropdownItem({ item }: { item: Item }) {
     const emoji = useMemo(
         () => (item.decoration as Team['decoration'])?.emoji,
-        [item.decoration]
+        [item.decoration],
     )
 
     return (

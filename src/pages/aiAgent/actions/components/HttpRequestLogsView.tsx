@@ -1,7 +1,7 @@
 import React from 'react'
 
-import {Separator} from 'pages/common/components/Separator/Separator'
-import {Components} from 'rest_api/workflows_api/client.generated'
+import { Separator } from 'pages/common/components/Separator/Separator'
+import { Components } from 'rest_api/workflows_api/client.generated'
 
 import css from './HttpRequestLogsView.less'
 
@@ -9,15 +9,15 @@ type HttpRequestLogsViewProps = {
     logs: Components.Schemas.HttpRequestEventsResponseDto
 }
 
-const HttpRequestLogsView = ({logs}: HttpRequestLogsViewProps) => {
+const HttpRequestLogsView = ({ logs }: HttpRequestLogsViewProps) => {
     return (
         <>
             {logs.map((log) => {
                 const responseHeader = JSON.parse(
-                    log.response_headers ?? '{}'
+                    log.response_headers ?? '{}',
                 ) as Record<string, string>
                 const requestHeader = JSON.parse(
-                    log.request_headers ?? '{}'
+                    log.request_headers ?? '{}',
                 ) as Record<string, string>
                 return (
                     <div key={log.id} className={css.httpRequestContainer}>
@@ -42,7 +42,7 @@ const HttpRequestLogsView = ({logs}: HttpRequestLogsViewProps) => {
                                                         <p>{key}: </p>
                                                         {value}
                                                     </li>
-                                                )
+                                                ),
                                             )}
                                         </ol>
                                     </li>
@@ -73,7 +73,7 @@ const HttpRequestLogsView = ({logs}: HttpRequestLogsViewProps) => {
                                                         <p>{key}: </p>
                                                         {value}
                                                     </li>
-                                                )
+                                                ),
                                             )}
                                         </ol>
                                     </li>

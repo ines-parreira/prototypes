@@ -1,6 +1,6 @@
-import {ReactNode} from 'react'
+import { ReactNode } from 'react'
 
-import {AiAgentScopes} from 'pages/aiAgent/Onboarding/types'
+import { AiAgentScopes } from 'pages/aiAgent/Onboarding/types'
 
 export enum GoalType {
     AutomateSupport = 'automateSupport',

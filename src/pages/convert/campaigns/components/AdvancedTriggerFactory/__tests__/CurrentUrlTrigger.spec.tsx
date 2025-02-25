@@ -1,11 +1,12 @@
-import {render, act, fireEvent, screen} from '@testing-library/react'
 import React from 'react'
 
-import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
-import {createTrigger} from 'pages/convert/campaigns/utils/createTrigger'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 
-import {CurrentUrlTrigger} from '../CurrentUrlTrigger'
+import { CampaignTriggerOperator } from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
+import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import { createTrigger } from 'pages/convert/campaigns/utils/createTrigger'
+
+import { CurrentUrlTrigger } from '../CurrentUrlTrigger'
 
 describe('<CurrentUrlTrigger />', () => {
     it('should render correctly', () => {
@@ -18,7 +19,7 @@ describe('<CurrentUrlTrigger />', () => {
                 onUpdateTrigger={jest.fn()}
                 onDeleteTrigger={jest.fn()}
                 onTriggerValidationUpdate={jest.fn()}
-            />
+            />,
         )
 
         act(() => {
@@ -38,7 +39,7 @@ describe('<CurrentUrlTrigger />', () => {
                 onUpdateTrigger={jest.fn()}
                 onDeleteTrigger={jest.fn()}
                 onTriggerValidationUpdate={jest.fn()}
-            />
+            />,
         )
         const URLs = screen.getAllByLabelText('Current URL')
 
@@ -58,7 +59,7 @@ describe('<CurrentUrlTrigger />', () => {
                 onUpdateTrigger={jest.fn()}
                 onDeleteTrigger={jest.fn()}
                 onTriggerValidationUpdate={jest.fn()}
-            />
+            />,
         )
         const URLsBefore = screen.getAllByLabelText('Current URL')
 
@@ -89,17 +90,17 @@ describe('<CurrentUrlTrigger />', () => {
                 onUpdateTrigger={jest.fn()}
                 onDeleteTrigger={jest.fn()}
                 onTriggerValidationUpdate={jest.fn()}
-            />
+            />,
         )
 
-        const input = screen.getAllByRole('textbox', {name: 'Current URL'})[0]
-        fireEvent.change(input, {target: {value: '/%'}})
+        const input = screen.getAllByRole('textbox', { name: 'Current URL' })[0]
+        fireEvent.change(input, { target: { value: '/%' } })
         fireEvent.blur(input)
 
         expect(
             screen.getByText(
-                'The URL appears to be malformed. Please review and re-enter.'
-            )
+                'The URL appears to be malformed. Please review and re-enter.',
+            ),
         ).toBeInTheDocument()
     })
 
@@ -117,7 +118,7 @@ describe('<CurrentUrlTrigger />', () => {
                 onUpdateTrigger={updateTriggerMock}
                 onDeleteTrigger={deleteTriggerMock}
                 onTriggerValidationUpdate={jest.fn()}
-            />
+            />,
         )
 
         let deleteButtons = screen.getAllByLabelText('Delete URL')

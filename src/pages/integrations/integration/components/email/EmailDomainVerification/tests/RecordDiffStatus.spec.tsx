@@ -1,19 +1,21 @@
-import {EmailDNSRecord} from '@gorgias/api-queries'
-import {render, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
+
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { EmailDNSRecord } from '@gorgias/api-queries'
 
 import RecordDiffStatus from '../components/RecordDiffStatus'
 
 jest.mock(
     '../components/CharDiff',
     () =>
-        ({string1, string2}: {string1: string; string2: string}) => (
+        ({ string1, string2 }: { string1: string; string2: string }) => (
             <div>
                 <p>{string1}</p>
                 <p>{string2}</p>
             </div>
-        )
+        ),
 )
 
 const renderComponent = (record: EmailDNSRecord) => {
@@ -31,7 +33,7 @@ describe('EmailDomainVerificationDiffStatus', () => {
         const badge = screen.getByText('Missing value')
 
         expect(badge).toBeInTheDocument()
-        expect(badge).toHaveStyle({color: new RegExp('light-dark')})
+        expect(badge).toHaveStyle({ color: new RegExp('light-dark') })
     })
 
     it('renders Verified badge when isVerified is true', () => {
@@ -44,7 +46,7 @@ describe('EmailDomainVerificationDiffStatus', () => {
         const badge = screen.getByText('Verified')
 
         expect(badge).toBeInTheDocument()
-        expect(badge).toHaveStyle({color: new RegExp('success')})
+        expect(badge).toHaveStyle({ color: new RegExp('success') })
     })
 
     it('joins currentValues before comparing', () => {
@@ -55,7 +57,7 @@ describe('EmailDomainVerificationDiffStatus', () => {
         })
 
         expect(
-            screen.getByText(/example\.com,\s*example\.org/)
+            screen.getByText(/example\.com,\s*example\.org/),
         ).toBeInTheDocument()
     })
 
@@ -70,7 +72,7 @@ describe('EmailDomainVerificationDiffStatus', () => {
             const badge = screen.getByText('Mismatch')
 
             expect(badge).toBeInTheDocument()
-            expect(badge).toHaveStyle({color: new RegExp('light-error')})
+            expect(badge).toHaveStyle({ color: new RegExp('light-error') })
             expect(screen.getByText('example.com')).toBeInTheDocument()
             expect(screen.getByText('example.org')).toBeInTheDocument()
         })
@@ -87,8 +89,8 @@ describe('EmailDomainVerificationDiffStatus', () => {
             await waitFor(() => {
                 expect(
                     screen.getByText(
-                        "The value you entered doesn't match the record. Copy and paste the value into your DNS settings to avoid errors."
-                    )
+                        "The value you entered doesn't match the record. Copy and paste the value into your DNS settings to avoid errors.",
+                    ),
                 ).toBeInTheDocument()
             })
         })
@@ -105,8 +107,8 @@ describe('EmailDomainVerificationDiffStatus', () => {
             await waitFor(() => {
                 expect(
                     screen.getByText(
-                        'Detected multiple values. Add the correct value as a single DNS record.'
-                    )
+                        'Detected multiple values. Add the correct value as a single DNS record.',
+                    ),
                 ).toBeInTheDocument()
             })
         })

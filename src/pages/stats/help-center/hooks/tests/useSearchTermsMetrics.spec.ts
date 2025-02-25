@@ -1,7 +1,7 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {useMetric} from 'hooks/reporting/useMetric'
-import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
+import { useMetric } from 'hooks/reporting/useMetric'
+import { useMetricPerDimension } from 'hooks/reporting/useMetricPerDimension'
 import {
     HelpCenterTrackingEventDimensions,
     HelpCenterTrackingEventMeasures,
@@ -9,7 +9,7 @@ import {
     HelpCenterTrackingEventSegment,
 } from 'models/reporting/cubes/HelpCenterTrackingEventCube'
 
-import {useSearchTermsMetrics} from '../useSearchTermsMetrics'
+import { useSearchTermsMetrics } from '../useSearchTermsMetrics'
 
 jest.mock('hooks/reporting/useMetric', () => ({
     useMetric: jest.fn(),
@@ -33,7 +33,7 @@ const currentPage = 1
 
 describe('useSearchTermsMetrics', () => {
     beforeEach(() => {
-        mockUseMetric.mockReturnValue({isFetching: false, isError: false})
+        mockUseMetric.mockReturnValue({ isFetching: false, isError: false })
         mockUseMetricPerDimension.mockReturnValue({
             isFetching: false,
             isError: false,
@@ -53,7 +53,7 @@ describe('useSearchTermsMetrics', () => {
                 itemPerPage,
                 currentPage,
                 onModalOpen: jest.fn(),
-            })
+            }),
         )
 
         expect(mockUseMetric).toHaveBeenCalledWith({
@@ -80,16 +80,16 @@ describe('useSearchTermsMetrics', () => {
         mockUseMetric.mockReturnValue({
             isFetching: false,
             isError: false,
-            data: {value: 10},
+            data: { value: 10 },
         })
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useSearchTermsMetrics({
                 statsFilters,
                 timezone,
                 itemPerPage,
                 currentPage,
                 onModalOpen: jest.fn(),
-            })
+            }),
         )
 
         expect(result.current).toEqual({
@@ -121,14 +121,14 @@ describe('useSearchTermsMetrics', () => {
             },
         })
         const mockOnModalOpen = jest.fn()
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useSearchTermsMetrics({
                 statsFilters,
                 timezone,
                 itemPerPage,
                 currentPage,
                 onModalOpen: mockOnModalOpen,
-            })
+            }),
         )
 
         expect(result.current).toEqual({
@@ -168,14 +168,14 @@ describe('useSearchTermsMetrics', () => {
                 decile: null,
             },
         })
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useSearchTermsMetrics({
                 statsFilters,
                 timezone,
                 itemPerPage,
                 currentPage,
                 onModalOpen: jest.fn(),
-            })
+            }),
         )
 
         expect(result.current).toEqual({
@@ -210,14 +210,14 @@ describe('useSearchTermsMetrics', () => {
             isError: false,
             data: null,
         })
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useSearchTermsMetrics({
                 statsFilters,
                 timezone,
                 itemPerPage,
                 currentPage,
                 onModalOpen: jest.fn(),
-            })
+            }),
         )
 
         expect(result.current).toEqual({

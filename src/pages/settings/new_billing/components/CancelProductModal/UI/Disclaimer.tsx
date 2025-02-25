@@ -8,7 +8,7 @@ type DisclaimerProps = {
     agreementChecked: boolean
     onChange: (value: boolean) => void
 }
-const Disclaimer = ({agreementChecked, onChange}: DisclaimerProps) => {
+const Disclaimer = ({ agreementChecked, onChange }: DisclaimerProps) => {
     return (
         <div className={css.container}>
             <div className={css.disclaimerAgreement}>

@@ -1,14 +1,13 @@
-import {getCsvFileNameWithDates} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
-import {TimeSeriesHook} from 'hooks/reporting/useTimeSeries'
-import {ReportingGranularity} from 'models/reporting/types'
-
-import {Period, StatsFilters} from 'models/stat/types'
+import { getCsvFileNameWithDates } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
+import { TimeSeriesHook } from 'hooks/reporting/useTimeSeries'
+import { ReportingGranularity } from 'models/reporting/types'
+import { Period, StatsFilters } from 'models/stat/types'
 import {
     BusiestTimeOfDaysMetrics,
     DayOfWeek,
     HOUR_COLUMN,
 } from 'pages/stats/support-performance/busiest-times-of-days/types'
-import {useAggregatedBusiestTimesOfDayData} from 'pages/stats/support-performance/busiest-times-of-days/useAggregatedBusiestTimesOfDayData'
+import { useAggregatedBusiestTimesOfDayData } from 'pages/stats/support-performance/busiest-times-of-days/useAggregatedBusiestTimesOfDayData'
 import {
     BTODData,
     get24Hours,
@@ -16,7 +15,7 @@ import {
     getMetricFetch,
     hourFromHourIndex,
 } from 'pages/stats/support-performance/busiest-times-of-days/utils'
-import {createCsv} from 'utils/file'
+import { createCsv } from 'utils/file'
 
 const turnIntoArray = (data: BTODData): unknown[][] => {
     const daysOfWeek: DayOfWeek[] = Object.values(DayOfWeek)
@@ -46,12 +45,12 @@ export const createReport = (data: BTODData, period: Period) => {
 }
 
 export const useAggregatedBusiestTimesOfDayReportData = (
-    useMetricQuery: TimeSeriesHook
+    useMetricQuery: TimeSeriesHook,
 ) => {
-    const {btodData, period, isLoading} =
+    const { btodData, period, isLoading } =
         useAggregatedBusiestTimesOfDayData(useMetricQuery)
 
-    return {...createReport(btodData, period), isLoading}
+    return { ...createReport(btodData, period), isLoading }
 }
 
 export const fetchAggregatedBusiestTimesOfDayReportData = async (
@@ -60,7 +59,7 @@ export const fetchAggregatedBusiestTimesOfDayReportData = async (
     _: ReportingGranularity,
     context: {
         selectedBTODMetric: BusiestTimeOfDaysMetrics
-    }
+    },
 ) => {
     const fetchQuery = getMetricFetch(context.selectedBTODMetric)
 
@@ -68,7 +67,7 @@ export const fetchAggregatedBusiestTimesOfDayReportData = async (
         .then((result) => ({
             ...createReport(
                 getAggregatedBusiestTimesOfDayData(result, timezone).btodData,
-                statsFilters.period
+                statsFilters.period,
             ),
             isLoading: false,
         }))

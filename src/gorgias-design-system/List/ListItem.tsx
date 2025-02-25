@@ -1,11 +1,11 @@
-import {useTheme} from '@emotion/react'
+import React, { HTMLAttributes } from 'react'
+
+import { useTheme } from '@emotion/react'
 import styled from '@emotion/styled'
-import React, {HTMLAttributes} from 'react'
 
-import {gorgiasColors} from 'gorgias-design-system/styles'
-import {setLightness} from 'gorgias-design-system/utils'
-
-import {ChatTheme} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview'
+import { gorgiasColors } from 'gorgias-design-system/styles'
+import { setLightness } from 'gorgias-design-system/utils'
+import { ChatTheme } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview'
 
 const StyledTrailContent = styled.div`
     margin-left: auto;
@@ -14,26 +14,26 @@ const StyledTrailContent = styled.div`
     gap: 8px;
 `
 
-const StyledTrailIcon = styled.div<{theme: ChatTheme}>`
+const StyledTrailIcon = styled.div<{ theme: ChatTheme }>`
     svg {
         height: 20px;
         width: 20px;
 
         .withFill {
-            fill: ${({theme}) => theme?.mainColor};
+            fill: ${({ theme }) => theme?.mainColor};
         }
     }
 `
 
-const StyledImage = styled.div<{src: string; variant: ListItemVariant}>`
+const StyledImage = styled.div<{ src: string; variant: ListItemVariant }>`
     align-self: flex-start;
 
-    ${({variant}) =>
+    ${({ variant }) =>
         variant === 'condensed'
             ? 'width: 28px; height: 28px;'
             : 'width: 32px; height: 32px;'}
 
-    background-image: url(${({src}) => src});
+    background-image: url(${({ src }) => src});
     background-size: cover;
     background-position: center;
     background-color: ${gorgiasColors.neutralGrey6};
@@ -89,7 +89,7 @@ const StyledListItemContainer = styled.div<{
 
     &:hover,
     &.active {
-        background: ${({theme}) => setLightness(theme?.mainColor)};
+        background: ${({ theme }) => setLightness(theme?.mainColor)};
     }
 `
 

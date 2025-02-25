@@ -1,20 +1,21 @@
-import {List, Map} from 'immutable'
-import React, {FC, MouseEvent} from 'react'
-// eslint-disable-next-line no-restricted-imports
-import {useDispatch} from 'react-redux'
-import {Modal, ModalBody, ModalHeader} from 'reactstrap'
+import React, { FC, MouseEvent } from 'react'
 
-import {useAppNode} from 'appNode'
-import {AttachmentEnum} from 'common/types'
+import { List, Map } from 'immutable'
+// eslint-disable-next-line no-restricted-imports
+import { useDispatch } from 'react-redux'
+import { Modal, ModalBody, ModalHeader } from 'reactstrap'
+
+import { useAppNode } from 'appNode'
+import { AttachmentEnum } from 'common/types'
 import useAppSelector from 'hooks/useAppSelector'
-import {useModalManager} from 'hooks/useModalManager'
-import {UniqueDiscountOffer} from 'models/convert/discountOffer/types'
-import {DELETE_DISCOUNT_MODAL_NAME} from 'models/discountCodes/constants'
+import { useModalManager } from 'hooks/useModalManager'
+import { UniqueDiscountOffer } from 'models/convert/discountOffer/types'
+import { DELETE_DISCOUNT_MODAL_NAME } from 'models/discountCodes/constants'
 import Button from 'pages/common/components/button/Button'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import {useDeleteDiscountOffer} from 'pages/convert/discountOffer/hooks/useDeleteDiscountOffer'
-import {deleteAttachment} from 'state/newMessage/actions'
-import {getNewMessageAttachments} from 'state/newMessage/selectors'
+import { useDeleteDiscountOffer } from 'pages/convert/discountOffer/hooks/useDeleteDiscountOffer'
+import { deleteAttachment } from 'state/newMessage/actions'
+import { getNewMessageAttachments } from 'state/newMessage/selectors'
 
 type Props = {
     isOpen: boolean
@@ -22,9 +23,9 @@ type Props = {
 }
 
 export const DeleteUniqueDiscountOfferModal: FC<Props> = (props) => {
-    const {isOpen, onClose} = props
+    const { isOpen, onClose } = props
     const newMessageAttachments: List<any> = useAppSelector(
-        getNewMessageAttachments
+        getNewMessageAttachments,
     )
     const dispatch = useDispatch()
 
@@ -34,8 +35,8 @@ export const DeleteUniqueDiscountOfferModal: FC<Props> = (props) => {
 
     const appNode = useAppNode()
 
-    const {mutateAsync: deleteDiscountOfferAsync} = useDeleteDiscountOffer(
-        modalParams?.prefix || ''
+    const { mutateAsync: deleteDiscountOfferAsync } = useDeleteDiscountOffer(
+        modalParams?.prefix || '',
     )
 
     const onDeleteDiscountOffer = async (e: MouseEvent<HTMLButtonElement>) => {
@@ -46,7 +47,7 @@ export const DeleteUniqueDiscountOfferModal: FC<Props> = (props) => {
 
         await deleteDiscountOfferAsync([
             undefined,
-            {discount_offer_id: modalParams.id},
+            { discount_offer_id: modalParams.id },
         ])
 
         // After deletion, check if the deleted discountOffer is among new message attachments and remove it
@@ -57,7 +58,7 @@ export const DeleteUniqueDiscountOfferModal: FC<Props> = (props) => {
                         att?.get('content_type') ===
                             AttachmentEnum.DiscountOffer &&
                         att?.getIn(['extra', 'discount_offer_id']) ===
-                            modalParams?.id
+                            modalParams?.id,
                 )
 
             if (currentlyDeletedOfferAttachmentIndex > -1) {

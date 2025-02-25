@@ -1,10 +1,12 @@
-import {Badge} from '@gorgias/merchant-ui-kit'
-import React, {useState} from 'react'
-import {Container, Collapse, Row, Col} from 'reactstrap'
+import React, { useState } from 'react'
 
-import {ProductDetails} from 'models/ticket/types'
+import { Col, Collapse, Container, Row } from 'reactstrap'
+
+import { Badge } from '@gorgias/merchant-ui-kit'
+
+import { ProductDetails } from 'models/ticket/types'
 import StarRating from 'pages/common/components/StarRating'
-import {getIconFromUrl} from 'utils'
+import { getIconFromUrl } from 'utils'
 
 import GenericCard from '../GenericCard/GenericCard'
 
@@ -15,7 +17,7 @@ type Props = {
 }
 
 export default function ProductEmbeddedCard(props: Props) {
-    const {product} = props
+    const { product } = props
     const [isOpen, setIsOpen] = useState(false)
 
     const toggle = () => setIsOpen(!isOpen)
@@ -31,7 +33,7 @@ export default function ProductEmbeddedCard(props: Props) {
                                 product.images?.length
                                     ? product.images[0].square
                                     : getIconFromUrl(
-                                          'integrations/shopify-placeholder.png'
+                                          'integrations/shopify-placeholder.png',
                                       )
                             }
                         />

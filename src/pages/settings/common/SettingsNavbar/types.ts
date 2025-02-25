@@ -1,7 +1,7 @@
-import {ReactNode} from 'react'
+import { ReactNode } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {UserRole} from 'config/types/user'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { UserRole } from 'config/types/user'
 
 export type CategoryLink = {
     className?: string

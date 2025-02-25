@@ -1,4 +1,4 @@
-import {getPreviousMonthRange} from '../getPreviousMonthRange'
+import { getPreviousMonthRange } from '../getPreviousMonthRange'
 
 jest.useFakeTimers().setSystemTime(new Date('2020-02-02'))
 

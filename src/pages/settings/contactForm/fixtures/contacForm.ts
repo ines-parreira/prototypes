@@ -1,8 +1,8 @@
-import {ContactForm} from 'models/contactForm/types'
-import {CONTACT_FORM_DEFAULT_LOCALE} from 'pages/settings/contactForm/constants'
+import { ContactForm } from 'models/contactForm/types'
+import { CONTACT_FORM_DEFAULT_LOCALE } from 'pages/settings/contactForm/constants'
 
-import {Components} from '../../../../rest_api/help_center_api/client.generated'
-import {ContactFormDisplayMode} from '../types/formDisplayMode.enum'
+import { Components } from '../../../../rest_api/help_center_api/client.generated'
+import { ContactFormDisplayMode } from '../types/formDisplayMode.enum'
 
 export const ContactFormFixture: ContactForm = {
     id: 1,
@@ -38,7 +38,7 @@ export const ContactFormFixture: ContactForm = {
 }
 
 export const getContactFormForHelpCenterFixture = (
-    newParams: Pick<ContactForm, 'id' | 'help_center_id'>
+    newParams: Pick<ContactForm, 'id' | 'help_center_id'>,
 ) => ({
     ...ContactFormFixture,
     ...newParams,

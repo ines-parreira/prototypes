@@ -1,25 +1,26 @@
-import {AxiosError} from 'axios'
+import React, { useEffect, useState } from 'react'
+
+import { AxiosError } from 'axios'
 import classNames from 'classnames'
-import React, {useEffect, useState} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAsyncFn from 'hooks/useAsyncFn'
-import {CustomDomain as CustomDomainEntity} from 'models/clickTracking/types'
+import { CustomDomain as CustomDomainEntity } from 'models/clickTracking/types'
 import Button from 'pages/common/components/button/Button'
-
-import {ConnectionStatus} from 'pages/common/components/ConnectionStatus'
+import { ConnectionStatus } from 'pages/common/components/ConnectionStatus'
 import Loader from 'pages/common/components/Loader/Loader'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
-import {StatusCheck} from 'pages/common/components/StatusCheck'
+import { StatusCheck } from 'pages/common/components/StatusCheck'
 import InputField from 'pages/common/forms/input/InputField'
-import {useConvertApi} from 'pages/convert/common/hooks/useConvertApi'
+import { useConvertApi } from 'pages/convert/common/hooks/useConvertApi'
 import settingsCss from 'pages/settings/settings.less'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {isDomain} from 'utils'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { isDomain } from 'utils'
+
+import { HelpText } from './components/HelpText'
 
 import css from './ClickTrackingCustomDomain.less'
-import {HelpText} from './components/HelpText'
 
 const CUSTOM_DOMAIN_ZONE = 'gorgias-convert.com'
 
@@ -39,7 +40,7 @@ const tooltips = {
 
 export const ClickTrackingCustomDomain = () => {
     const dispatch = useAppDispatch()
-    const {client} = useConvertApi()
+    const { client } = useConvertApi()
 
     const [domainValue, setDomainValue] = useState('')
     const [domainError, setDomainError] = useState('')
@@ -60,7 +61,7 @@ export const ClickTrackingCustomDomain = () => {
                     notify({
                         status: NotificationStatus.Success,
                         message: 'Domain removed with success',
-                    })
+                    }),
                 )
 
                 return null
@@ -70,7 +71,7 @@ export const ClickTrackingCustomDomain = () => {
                     notify({
                         status: NotificationStatus.Error,
                         message: 'Failed to delete the domain',
-                    })
+                    }),
                 )
             }
         }
@@ -93,14 +94,14 @@ export const ClickTrackingCustomDomain = () => {
                         notify({
                             status: NotificationStatus.Success,
                             message: 'Domain created with success',
-                        })
+                        }),
                     )
                 } else {
                     void dispatch(
                         notify({
                             status: NotificationStatus.Error,
                             message: 'Invalid domain.',
-                        })
+                        }),
                     )
                 }
 
@@ -112,7 +113,7 @@ export const ClickTrackingCustomDomain = () => {
                         status: NotificationStatus.Error,
                         message:
                             'Could not add the domain. Please try again or contact support.',
-                    })
+                    }),
                 )
             }
         }
@@ -122,14 +123,14 @@ export const ClickTrackingCustomDomain = () => {
         if (client && currentDomain) {
             try {
                 const response = await client.check_custom_domain()
-                const {data} = response
+                const { data } = response
                 setCurrentDomain(data as CustomDomainEntity)
 
                 void dispatch(
                     notify({
                         status: NotificationStatus.Success,
                         message: 'Domain status updated with success',
-                    })
+                    }),
                 )
 
                 return response.data
@@ -139,7 +140,7 @@ export const ClickTrackingCustomDomain = () => {
                     notify({
                         status: NotificationStatus.Error,
                         message: 'Could not check domain status',
-                    })
+                    }),
                 )
             }
         }
@@ -153,15 +154,15 @@ export const ClickTrackingCustomDomain = () => {
                     setDomainValue(response.data.hostname)
                     setCurrentDomain(response.data as CustomDomainEntity)
                 } catch (error) {
-                    const {response} = error as AxiosError<{
-                        error: {msg: string}
+                    const { response } = error as AxiosError<{
+                        error: { msg: string }
                     }>
                     if (response?.status !== 404) {
                         void dispatch(
                             notify({
                                 status: NotificationStatus.Error,
                                 message: 'Could not get domain status',
-                            })
+                            }),
                         )
                     }
                 }
@@ -229,12 +230,12 @@ export const ClickTrackingCustomDomain = () => {
                                 onConfirm={handleOnDeleteDomain}
                                 placement="left"
                             >
-                                {({uid, onDisplayConfirmation}) => (
+                                {({ uid, onDisplayConfirmation }) => (
                                     <span
                                         id={uid}
                                         className={classNames(
                                             css.deleteDomain,
-                                            'material-icons'
+                                            'material-icons',
                                         )}
                                         onClick={onDisplayConfirmation}
                                         aria-label="Delete custom domain"

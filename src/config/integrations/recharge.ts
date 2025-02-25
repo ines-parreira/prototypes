@@ -1,16 +1,16 @@
-import {Map} from 'immutable'
+import { Map } from 'immutable'
 
-import {DATE_VARIABLE_TOOLTIP_TEXT} from 'config/integrations/constants'
+import { DATE_VARIABLE_TOOLTIP_TEXT } from 'config/integrations/constants'
 import {
     DateAndTimeFormatting,
     DateTimeFormatMapper,
     DateTimeFormatType,
 } from 'constants/datetime'
-import {IntegrationType} from 'models/integration/types'
-import {momentToLDMLFormat} from 'pages/common/utils/template'
-import {getDateAndTimeFormatter} from 'state/currentUser/selectors'
-import {StoreState} from 'state/types'
-import {formatDatetime} from 'utils'
+import { IntegrationType } from 'models/integration/types'
+import { momentToLDMLFormat } from 'pages/common/utils/template'
+import { getDateAndTimeFormatter } from 'state/currentUser/selectors'
+import { StoreState } from 'state/types'
+import { formatDatetime } from 'utils'
 
 /**
  * Format last Recharge subscription datetime according to user's date and time formatting settings.
@@ -18,7 +18,7 @@ import {formatDatetime} from 'utils'
 function getLastSubscriptionFormattedDatetime(
     context: Map<any, any>,
     integrationId: number,
-    currentUser: Map<any, any>
+    currentUser: Map<any, any>,
 ) {
     const lastSubscription = context.getIn([
         'ticket',
@@ -40,7 +40,7 @@ function getLastSubscriptionFormattedDatetime(
         lastSubscription.get('next_charge_scheduled_at'),
         getDateAndTimeFormatter({
             currentUser: currentUser,
-        } as unknown as StoreState)(DateAndTimeFormatting.CompactDate)
+        } as unknown as StoreState)(DateAndTimeFormatting.CompactDate),
     )
 }
 
@@ -78,7 +78,7 @@ export const MACRO_VARIABLES = {
             value: `{{ticket.customer.integrations.recharge.subscriptions[0].next_charge_scheduled_at|datetime_format("${momentToLDMLFormat(
                 DateTimeFormatMapper[
                     DateTimeFormatType.COMPACT_DATE_EN_US
-                ].toString()
+                ].toString(),
             )}")}}`,
             tooltip: DATE_VARIABLE_TOOLTIP_TEXT,
             replace: getLastSubscriptionFormattedDatetime,

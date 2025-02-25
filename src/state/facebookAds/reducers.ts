@@ -1,7 +1,6 @@
-import {fromJS, Map, List} from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 
-import {GorgiasAction} from '../types'
-
+import { GorgiasAction } from '../types'
 import {
     ADD_LOADING_FACEBOOK_AD,
     REMOVE_LOADING_FACEBOOK_AD,
@@ -18,12 +17,12 @@ export const initialState = fromJS({
 
 const getActivePath = (
     key: string,
-    {integrationId, id}: {integrationId: number; id: string}
+    { integrationId, id }: { integrationId: number; id: string },
 ) => ['internals', integrationId.toString(), key, id, 'is_active']
 
 export default function reducer(
     state: Map<any, any> = initialState,
-    action: GorgiasAction
+    action: GorgiasAction,
 ) {
     switch (action.type) {
         case SET_FACEBOOK_ADS_LOADING:
@@ -32,19 +31,19 @@ export default function reducer(
             return state.set('internals', fromJS(action.payload))
         case ADD_LOADING_FACEBOOK_AD:
             return state.update('loadingAds', (ads: List<any>) =>
-                ads.push(action.payload)
+                ads.push(action.payload),
             )
         case REMOVE_LOADING_FACEBOOK_AD:
             return state.update('loadingAds', (ads: List<any>) =>
-                ads.filter((ad) => ad !== action.payload)
+                ads.filter((ad) => ad !== action.payload),
             )
         case UPDATE_ACTIVE_FACEBOOK_AD:
             return state.setIn(
                 getActivePath(
                     'ads',
-                    action.payload as {integrationId: number; id: string}
+                    action.payload as { integrationId: number; id: string },
                 ),
-                (action.payload as {isActive: boolean}).isActive
+                (action.payload as { isActive: boolean }).isActive,
             )
         default:
             return state

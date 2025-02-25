@@ -1,5 +1,6 @@
-import {fireEvent, render} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { fireEvent, render } from '@testing-library/react'
 
 import WrapperEditForm, {
     CANCEL_TEXT,
@@ -18,8 +19,8 @@ describe('WrapperEditForm', () => {
     }
 
     it('should render the initial data', () => {
-        const {getByDisplayValue} = render(
-            <WrapperEditForm {...defaultProps} />
+        const { getByDisplayValue } = render(
+            <WrapperEditForm {...defaultProps} />,
         )
 
         expect(getByDisplayValue(defaultData.color)).toBeInTheDocument()
@@ -30,12 +31,12 @@ describe('WrapperEditForm', () => {
             ...defaultData,
             color: '#aa00ff',
         }
-        const {getByDisplayValue, getByText} = render(
-            <WrapperEditForm {...defaultProps} />
+        const { getByDisplayValue, getByText } = render(
+            <WrapperEditForm {...defaultProps} />,
         )
 
         fireEvent.change(getByDisplayValue(defaultData.color), {
-            target: {value: expectedData.color},
+            target: { value: expectedData.color },
         })
         fireEvent.click(getByText(SUBMIT_TEXT))
 
@@ -43,7 +44,7 @@ describe('WrapperEditForm', () => {
     })
 
     it(`should call onCancel callback on "${CANCEL_TEXT}" click`, () => {
-        const {getByText} = render(<WrapperEditForm {...defaultProps} />)
+        const { getByText } = render(<WrapperEditForm {...defaultProps} />)
 
         fireEvent.click(getByText(CANCEL_TEXT))
 

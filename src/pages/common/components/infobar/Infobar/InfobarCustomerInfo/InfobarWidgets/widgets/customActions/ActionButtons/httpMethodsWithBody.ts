@@ -1,4 +1,4 @@
-import {HttpMethod} from '../../../../../../../../../../models/api/types'
+import { HttpMethod } from '../../../../../../../../../../models/api/types'
 
 export const httpMethodsWithBody = [
     HttpMethod.Post,

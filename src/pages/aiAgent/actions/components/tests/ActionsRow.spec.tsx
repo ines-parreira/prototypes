@@ -1,20 +1,20 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {act, fireEvent, screen} from '@testing-library/react'
-import {createMemoryHistory} from 'history'
 import React from 'react'
 
-import {ulid} from 'ulidx'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { act, fireEvent, screen } from '@testing-library/react'
+import { createMemoryHistory } from 'history'
+import { ulid } from 'ulidx'
 
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import {IntegrationType} from 'models/integration/constants'
-import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
+import { IntegrationType } from 'models/integration/constants'
+import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
 import useDeleteAction from 'pages/aiAgent/actions/hooks/useDeleteAction'
 import useUpsertAction from 'pages/aiAgent/actions/hooks/useUpsertAction'
-import {StoreWorkflowsConfiguration} from 'pages/aiAgent/actions/types'
+import { StoreWorkflowsConfiguration } from 'pages/aiAgent/actions/types'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
-import {WorkflowConfigurationBuilder} from 'pages/automate/workflows/models/workflowConfiguration.model'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {renderWithRouter} from 'utils/testing'
+import { WorkflowConfigurationBuilder } from 'pages/automate/workflows/models/workflowConfiguration.model'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { renderWithRouter } from 'utils/testing'
 
 import ActionsRow from '../ActionsRow'
 
@@ -31,7 +31,7 @@ const mockUseUpsertAction = jest.mocked(useUpsertAction)
 const mockUseDeleteAction = jest.mocked(useDeleteAction)
 const mockUseGetDateAndTimeFormat = jest.mocked(useGetDateAndTimeFormat)
 const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
-    useGetWorkflowConfigurationTemplates
+    useGetWorkflowConfigurationTemplates,
 )
 
 const b = new WorkflowConfigurationBuilder({
@@ -177,7 +177,7 @@ describe('<ActionsRow />', () => {
         renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <ActionsRow action={configuration} />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(screen.getByText('Action name')).toBeInTheDocument()
@@ -197,7 +197,7 @@ describe('<ActionsRow />', () => {
                         updated_datetime: '2025-01-15T14:58:19.164Z',
                     }}
                 />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(screen.getByText('01/15/2025')).toBeInTheDocument()
@@ -215,7 +215,7 @@ describe('<ActionsRow />', () => {
         renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <ActionsRow action={configuration} />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         act(() => {
@@ -241,7 +241,7 @@ describe('<ActionsRow />', () => {
                 history,
                 path: '/app/automation/:shopType/:shopName/ai-agent/actions',
                 route: `/app/automation/shopify/shopify-store/ai-agent/actions`,
-            }
+            },
         )
 
         act(() => {
@@ -249,7 +249,7 @@ describe('<ActionsRow />', () => {
         })
 
         expect(historyPushSpy).toHaveBeenCalledWith(
-            `/app/automation/shopify/shopify-store/ai-agent/actions/edit/${configuration.id}`
+            `/app/automation/shopify/shopify-store/ai-agent/actions/edit/${configuration.id}`,
         )
     })
 
@@ -265,7 +265,7 @@ describe('<ActionsRow />', () => {
         renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <ActionsRow action={configuration} />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         act(() => {

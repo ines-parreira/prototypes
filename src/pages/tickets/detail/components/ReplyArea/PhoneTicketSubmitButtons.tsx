@@ -1,6 +1,3 @@
-import classnames from 'classnames'
-import {Map} from 'immutable'
-import parsePhoneNumber from 'libphonenumber-js'
 import React, {
     SyntheticEvent,
     useCallback,
@@ -9,15 +6,18 @@ import React, {
     useState,
 } from 'react'
 
-import {useOutboundCall} from 'hooks/integrations/phone/useOutboundCall'
+import classnames from 'classnames'
+import { Map } from 'immutable'
+import parsePhoneNumber from 'libphonenumber-js'
+
+import { useOutboundCall } from 'hooks/integrations/phone/useOutboundCall'
 import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
 import useAppSelector from 'hooks/useAppSelector'
-
 import Button from 'pages/common/components/button/Button'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {getNewMessageSource} from 'state/newMessage/selectors'
-import {DEPRECATED_getTicket} from 'state/ticket/selectors'
-import {isDeviceReady} from 'utils/device'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { getNewMessageSource } from 'state/newMessage/selectors'
+import { DEPRECATED_getTicket } from 'state/ticket/selectors'
+import { isDeviceReady } from 'utils/device'
 
 import css from './PhoneTicketSubmitButtons.less'
 
@@ -26,12 +26,12 @@ function PhoneTicketSubmitButtons() {
     const source = useAppSelector(getNewMessageSource)
     const ticket = useAppSelector(DEPRECATED_getTicket)
 
-    const {call, device} = useVoiceDevice()
+    const { call, device } = useVoiceDevice()
 
     const agentId = useMemo(() => agent.get('id') as number, [agent])
     const ticketId = useMemo(() => ticket.get('id') as number, [ticket])
 
-    const {isValid, onSubmit} = useSubmit(source, ticketId, agentId)
+    const { isValid, onSubmit } = useSubmit(source, ticketId, agentId)
     const isDisabled = !isDeviceReady(device) || !!call || !isValid
 
     const handleSubmit = (event: SyntheticEvent) => {
@@ -43,7 +43,7 @@ function PhoneTicketSubmitButtons() {
         <div
             className={classnames(
                 css.component,
-                'd-flex align-items-center justify-content-between'
+                'd-flex align-items-center justify-content-between',
             )}
         >
             <Button
@@ -109,5 +109,5 @@ function useSubmit(source: Map<any, any>, ticketId: number, agentId: number) {
         setIsValid(!!newIntegrationId && !!formattedFrom && !!formattedTo)
     }, [source])
 
-    return {isValid, onSubmit}
+    return { isValid, onSubmit }
 }

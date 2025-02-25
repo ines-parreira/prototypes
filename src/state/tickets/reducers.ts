@@ -1,12 +1,10 @@
-import {fromJS, Map, List} from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 
-import {ViewType} from 'models/view/types'
-
+import { ViewType } from 'models/view/types'
 import * as ticketTypes from 'state/ticket/constants'
-
 import * as types from 'state/tickets/constants'
-import {TicketsState} from 'state/tickets/types'
-import {GorgiasAction} from 'state/types'
+import { TicketsState } from 'state/tickets/types'
+import { GorgiasAction } from 'state/types'
 import * as viewsTypes from 'state/views/constants'
 
 export const initialState: TicketsState = fromJS({
@@ -19,7 +17,7 @@ export const initialState: TicketsState = fromJS({
 
 export default function reducer(
     state: TicketsState = initialState,
-    action: GorgiasAction
+    action: GorgiasAction,
 ): TicketsState {
     switch (action.type) {
         case types.UPDATE_CURSOR: {
@@ -42,7 +40,7 @@ export default function reducer(
             const newItems = (
                 state.get('items', fromJS([])) as List<any>
             ).filter(
-                (item: Map<any, any>) => !action.ids?.includes(item.get('id'))
+                (item: Map<any, any>) => !action.ids?.includes(item.get('id')),
             )
 
             return state.set('items', newItems)
@@ -54,7 +52,7 @@ export default function reducer(
             const ticketIndex = (
                 state.get('items', fromJS([])) as List<any>
             ).findIndex(
-                (item: Map<any, any>) => item.get('id') === action.ticketId
+                (item: Map<any, any>) => item.get('id') === action.ticketId,
             )
 
             // if ticket is not found in view, don't do anything

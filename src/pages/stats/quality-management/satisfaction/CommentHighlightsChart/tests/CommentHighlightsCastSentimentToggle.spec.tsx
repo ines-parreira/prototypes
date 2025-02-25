@@ -1,22 +1,23 @@
-import {fireEvent} from '@testing-library/react'
 import React from 'react'
+
+import { fireEvent } from '@testing-library/react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import CommentHighlightsToggle, {
     COMMENT_HIGHLIGHTS_CSAT_SENTIMENT_TOGGLE,
 } from 'pages/stats/quality-management/satisfaction/CommentHighlightsChart/CommentHighlightsCsatSentimentToggle'
-import {RootState} from 'state/types'
-import {QUALITY_MANAGEMENT_SLICE_NAME} from 'state/ui/stats/constants'
-import {toggleCommentHighlightsCsatSentiment} from 'state/ui/stats/qualityManagementSlice'
-import {CsatSentiment} from 'state/ui/stats/types'
-import {assumeMock, renderWithStore} from 'utils/testing'
+import { RootState } from 'state/types'
+import { QUALITY_MANAGEMENT_SLICE_NAME } from 'state/ui/stats/constants'
+import { toggleCommentHighlightsCsatSentiment } from 'state/ui/stats/qualityManagementSlice'
+import { CsatSentiment } from 'state/ui/stats/types'
+import { assumeMock, renderWithStore } from 'utils/testing'
 
 jest.mock('hooks/useAppDispatch')
 const useAppDispatchMock = assumeMock(useAppDispatch)
 
 jest.mock('state/ui/stats/qualityManagementSlice')
 const toggleCommentHighlightsCsatSentimentMock = assumeMock(
-    toggleCommentHighlightsCsatSentiment
+    toggleCommentHighlightsCsatSentiment,
 )
 
 const dispatchMock = jest.fn()
@@ -35,9 +36,9 @@ describe('CommentHighlightsToggle', () => {
         },
     } as RootState
     it('renders the toggle buttons correctly', () => {
-        const {getByText} = renderWithStore(
+        const { getByText } = renderWithStore(
             <CommentHighlightsToggle />,
-            defaultState
+            defaultState,
         )
 
         Object.values(COMMENT_HIGHLIGHTS_CSAT_SENTIMENT_TOGGLE).forEach(
@@ -45,25 +46,25 @@ describe('CommentHighlightsToggle', () => {
                 const button = getByText(option.LABEL)
 
                 expect(button).toBeInTheDocument()
-            }
+            },
         )
     })
 
     it('calls setSelectedOption when a button is clicked', () => {
-        const {getByText} = renderWithStore(
+        const { getByText } = renderWithStore(
             <CommentHighlightsToggle />,
-            defaultState
+            defaultState,
         )
 
         const negativeButton = getByText(
-            COMMENT_HIGHLIGHTS_CSAT_SENTIMENT_TOGGLE.NEGATIVE.LABEL
+            COMMENT_HIGHLIGHTS_CSAT_SENTIMENT_TOGGLE.NEGATIVE.LABEL,
         )
 
         fireEvent.click(negativeButton)
 
         expect(dispatchMock).toHaveBeenCalledTimes(1)
         expect(dispatchMock).toHaveBeenCalledWith(
-            toggleCommentHighlightsCsatSentimentMock()
+            toggleCommentHighlightsCsatSentimentMock(),
         )
         expect(toggleCommentHighlightsCsatSentimentMock).toHaveBeenCalled()
     })

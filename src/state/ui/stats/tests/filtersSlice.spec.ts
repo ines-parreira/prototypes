@@ -6,9 +6,9 @@ import {
     SavedFilterWithLogicalOperator,
     StatsFiltersWithLogicalOperator,
 } from 'models/stat/types'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-import {fromLegacyStatsFilters} from 'state/stats/utils'
-import {RootState} from 'state/types'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
+import { fromLegacyStatsFilters } from 'state/stats/utils'
+import { RootState } from 'state/types'
 import {
     statFiltersClean,
     statFiltersCleanWithPayload,
@@ -19,22 +19,22 @@ import {
     applySavedFilter,
     clearSavedFilterDraft,
     COPY_OF_DRAFT_NAME,
-    initialiseSavedFilterDraft,
+    duplicateSavedFilterDraftFromSavedFilter,
     filtersSlice,
     FiltersSliceState,
     getCanSaveFilter,
     getHasSavedFilterDraft,
+    getHideFiltersPanelOptionalFilters,
     getIsSavedFilterApplied,
     getSavedFilterDraft,
+    initialiseSavedFilterDraft,
+    initialiseSavedFilterDraftFromFilters,
+    initialiseSavedFilterDraftFromSavedFilter,
     initialState,
     removeFilterFromSavedFilterDraft,
     updateSavedFilterDraftName,
-    upsertSavedFilterFilter,
-    initialiseSavedFilterDraftFromSavedFilter,
-    initialiseSavedFilterDraftFromFilters,
-    duplicateSavedFilterDraftFromSavedFilter,
     upsertSavedFilterCustomFieldFilter,
-    getHideFiltersPanelOptionalFilters,
+    upsertSavedFilterFilter,
 } from 'state/ui/stats/filtersSlice'
 
 describe('filtersSlice', () => {
@@ -42,7 +42,7 @@ describe('filtersSlice', () => {
         it('should set the isDirty flag to true', () => {
             const newState = filtersSlice.reducer(
                 initialState,
-                statFiltersDirty()
+                statFiltersDirty(),
             )
 
             expect(newState.isFilterDirty).toBe(true)
@@ -53,7 +53,7 @@ describe('filtersSlice', () => {
         it('should set the isDirty flag to false', () => {
             const newState = filtersSlice.reducer(
                 initialState,
-                statFiltersClean()
+                statFiltersClean(),
             )
 
             expect(newState.isFilterDirty).toBe(false)
@@ -71,13 +71,13 @@ describe('filtersSlice', () => {
             }
 
             const newState = filtersSlice.reducer(
-                {...initialState, isFilterDirty: true},
-                statFiltersCleanWithPayload(newFilters)
+                { ...initialState, isFilterDirty: true },
+                statFiltersCleanWithPayload(newFilters),
             )
 
             expect(newState.isFilterDirty).toEqual(false)
             expect(newState.cleanStatsFilters).toEqual(
-                fromLegacyStatsFilters(newFilters)
+                fromLegacyStatsFilters(newFilters),
             )
         })
     })
@@ -93,8 +93,8 @@ describe('filtersSlice', () => {
             })
 
             const newState = filtersSlice.reducer(
-                {...initialState, isFilterDirty: true},
-                statFiltersWithLogicalOperatorsCleanWithPayload(newFilters)
+                { ...initialState, isFilterDirty: true },
+                statFiltersWithLogicalOperatorsCleanWithPayload(newFilters),
             )
 
             expect(newState.isFilterDirty).toEqual(false)
@@ -118,7 +118,7 @@ describe('filtersSlice', () => {
         it('should initialiseSavedFilterDraft', () => {
             const newState = filtersSlice.reducer(
                 initialState,
-                initialiseSavedFilterDraft()
+                initialiseSavedFilterDraft(),
             )
 
             expect(newState.savedFilterDraft).toEqual({
@@ -135,7 +135,7 @@ describe('filtersSlice', () => {
             }
             const newState = filtersSlice.reducer(
                 initialState,
-                duplicateSavedFilterDraftFromSavedFilter(savedFilter)
+                duplicateSavedFilterDraftFromSavedFilter(savedFilter),
             )
 
             expect(newState.savedFilterDraft).toEqual({
@@ -152,7 +152,7 @@ describe('filtersSlice', () => {
             }
             const newState = filtersSlice.reducer(
                 initialState,
-                initialiseSavedFilterDraftFromSavedFilter(savedFilter)
+                initialiseSavedFilterDraftFromSavedFilter(savedFilter),
             )
 
             expect(newState.savedFilterDraft).toEqual(savedFilter)
@@ -171,7 +171,7 @@ describe('filtersSlice', () => {
             }
             const newState = filtersSlice.reducer(
                 initialState,
-                initialiseSavedFilterDraftFromFilters(savedFilter)
+                initialiseSavedFilterDraftFromFilters(savedFilter),
             )
 
             expect(newState.savedFilterDraft).toEqual({
@@ -199,7 +199,7 @@ describe('filtersSlice', () => {
 
             const newState = filtersSlice.reducer(
                 state,
-                clearSavedFilterDraft()
+                clearSavedFilterDraft(),
             )
 
             expect(newState.savedFilterDraft).toEqual(null)
@@ -215,7 +215,7 @@ describe('filtersSlice', () => {
 
             const newState = filtersSlice.reducer(
                 initialState,
-                applySavedFilter(savedFilter)
+                applySavedFilter(savedFilter),
             )
 
             expect(newState.appliedSavedFilterId).toEqual(savedFilter.id)
@@ -239,7 +239,7 @@ describe('filtersSlice', () => {
 
             const newState = filtersSlice.reducer(
                 state,
-                upsertSavedFilterFilter(filter)
+                upsertSavedFilterFilter(filter),
             )
 
             expect(newState.savedFilterDraft?.filter_group).toEqual([filter])
@@ -259,7 +259,7 @@ describe('filtersSlice', () => {
 
             const newState = filtersSlice.reducer(
                 state,
-                upsertSavedFilterFilter(filter)
+                upsertSavedFilterFilter(filter),
             )
 
             expect(newState.savedFilterDraft?.filter_group).toEqual([filter])
@@ -280,7 +280,7 @@ describe('filtersSlice', () => {
 
             const newState = filtersSlice.reducer(
                 state,
-                upsertSavedFilterFilter(newAgentsSavedFilter)
+                upsertSavedFilterFilter(newAgentsSavedFilter),
             )
 
             expect(newState.savedFilterDraft?.filter_group).toEqual([
@@ -299,7 +299,7 @@ describe('filtersSlice', () => {
 
             const newState = filtersSlice.reducer(
                 state,
-                upsertSavedFilterFilter(channelsFilter)
+                upsertSavedFilterFilter(channelsFilter),
             )
 
             expect(newState.savedFilterDraft?.filter_group).toEqual([
@@ -321,7 +321,7 @@ describe('filtersSlice', () => {
 
             const newState = filtersSlice.reducer(
                 state,
-                upsertSavedFilterCustomFieldFilter(customFieldFilter)
+                upsertSavedFilterCustomFieldFilter(customFieldFilter),
             )
 
             expect(newState.savedFilterDraft?.filter_group).toEqual([
@@ -331,7 +331,7 @@ describe('filtersSlice', () => {
                         {
                             ...customFieldFilter,
                             custom_field_id: String(
-                                customFieldFilter.customFieldId
+                                customFieldFilter.customFieldId,
                             ),
                         },
                     ],
@@ -355,7 +355,7 @@ describe('filtersSlice', () => {
 
             const newState = filtersSlice.reducer(
                 state,
-                upsertSavedFilterCustomFieldFilter(customFieldFilter)
+                upsertSavedFilterCustomFieldFilter(customFieldFilter),
             )
 
             expect(newState.savedFilterDraft?.filter_group).toEqual([
@@ -365,7 +365,7 @@ describe('filtersSlice', () => {
                         {
                             ...customFieldFilter,
                             custom_field_id: String(
-                                customFieldFilter.customFieldId
+                                customFieldFilter.customFieldId,
                             ),
                         },
                     ],
@@ -400,7 +400,7 @@ describe('filtersSlice', () => {
 
             const newState = filtersSlice.reducer(
                 state,
-                upsertSavedFilterCustomFieldFilter(customFieldFilter)
+                upsertSavedFilterCustomFieldFilter(customFieldFilter),
             )
 
             expect(newState.savedFilterDraft?.filter_group).toEqual([
@@ -411,7 +411,7 @@ describe('filtersSlice', () => {
                         {
                             ...customFieldFilter,
                             custom_field_id: String(
-                                customFieldFilter.customFieldId
+                                customFieldFilter.customFieldId,
                             ),
                         },
                     ],
@@ -447,7 +447,7 @@ describe('filtersSlice', () => {
 
             const newState = filtersSlice.reducer(
                 state,
-                upsertSavedFilterCustomFieldFilter(customFieldFilter)
+                upsertSavedFilterCustomFieldFilter(customFieldFilter),
             )
 
             expect(newState.savedFilterDraft?.filter_group).toEqual([
@@ -457,7 +457,7 @@ describe('filtersSlice', () => {
                         {
                             ...customFieldFilter,
                             custom_field_id: String(
-                                customFieldFilter.customFieldId
+                                customFieldFilter.customFieldId,
                             ),
                         },
                     ],
@@ -477,7 +477,7 @@ describe('filtersSlice', () => {
 
             const newState = filtersSlice.reducer(
                 state,
-                updateSavedFilterDraftName(newName)
+                updateSavedFilterDraftName(newName),
             )
 
             expect(newState.savedFilterDraft?.name).toEqual(newName)
@@ -492,7 +492,7 @@ describe('filtersSlice', () => {
 
             const newState = filtersSlice.reducer(
                 state,
-                updateSavedFilterDraftName(newName)
+                updateSavedFilterDraftName(newName),
             )
 
             expect(newState.savedFilterDraft).toEqual({
@@ -518,7 +518,9 @@ describe('filtersSlice', () => {
 
             const newState = filtersSlice.reducer(
                 state,
-                removeFilterFromSavedFilterDraft({filterKey: FilterKey.Agents})
+                removeFilterFromSavedFilterDraft({
+                    filterKey: FilterKey.Agents,
+                }),
             )
 
             expect(newState.savedFilterDraft?.filter_group).toEqual([
@@ -552,7 +554,7 @@ describe('filtersSlice', () => {
                 removeFilterFromSavedFilterDraft({
                     filterKey: FilterKey.CustomFields,
                     customFieldId: 123,
-                })
+                }),
             )
 
             expect(newState.savedFilterDraft?.filter_group).toEqual([])
@@ -564,7 +566,7 @@ describe('filtersSlice', () => {
                 values: ['Some::value'],
                 custom_field_id: '123',
             }
-            const otherFilter = {...currentFilter, custom_field_id: '456'}
+            const otherFilter = { ...currentFilter, custom_field_id: '456' }
             const savedFilterDraft: SavedFilterDraft = {
                 name: 'someName',
                 filter_group: [
@@ -585,7 +587,7 @@ describe('filtersSlice', () => {
                 removeFilterFromSavedFilterDraft({
                     filterKey: FilterKey.CustomFields,
                     customFieldId: 123,
-                })
+                }),
             )
 
             expect(newState.savedFilterDraft?.filter_group).toEqual([
@@ -622,7 +624,7 @@ describe('filtersSlice', () => {
                 removeFilterFromSavedFilterDraft({
                     filterKey: FilterKey.Tags,
                     filterInstanceId: 'first',
-                })
+                }),
             )
 
             expect(newState.savedFilterDraft?.filter_group).toEqual([])
@@ -663,7 +665,7 @@ describe('filtersSlice', () => {
                 removeFilterFromSavedFilterDraft({
                     filterKey: FilterKey.Tags,
                     filterInstanceId: 'first',
-                })
+                }),
             )
 
             expect(newState.savedFilterDraft?.filter_group).toEqual([
@@ -682,7 +684,9 @@ describe('filtersSlice', () => {
 
             const newState = filtersSlice.reducer(
                 state,
-                removeFilterFromSavedFilterDraft({filterKey: FilterKey.Agents})
+                removeFilterFromSavedFilterDraft({
+                    filterKey: FilterKey.Agents,
+                }),
             )
 
             expect(newState.savedFilterDraft).toEqual(null)
@@ -835,8 +839,8 @@ describe('filtersSlice', () => {
                     getState({
                         savedFilterDraft: savedFilterDraft,
                         appliedSavedFilterId: null,
-                    }) as RootState
-                )
+                    }) as RootState,
+                ),
             ).toBeTruthy()
 
             expect(
@@ -844,17 +848,17 @@ describe('filtersSlice', () => {
                     getState({
                         savedFilterDraft: null,
                         appliedSavedFilterId: 1,
-                    }) as RootState
-                )
+                    }) as RootState,
+                ),
             ).toBeTruthy()
 
             expect(
                 getHideFiltersPanelOptionalFilters(
                     getState({
-                        savedFilterDraft: {name: null},
+                        savedFilterDraft: { name: null },
                         appliedSavedFilterId: 1,
-                    }) as RootState
-                )
+                    }) as RootState,
+                ),
             ).toBeTruthy()
         })
 
@@ -864,8 +868,8 @@ describe('filtersSlice', () => {
                     getState({
                         savedFilterDraft: null,
                         appliedSavedFilterId: null,
-                    }) as RootState
-                )
+                    }) as RootState,
+                ),
             ).toBeFalsy()
         })
     })

@@ -15,11 +15,11 @@ type Props = {
     when: boolean
 }
 
-export default function OnboardingDomainVerificationPrompt({when}: Props) {
+export default function OnboardingDomainVerificationPrompt({ when }: Props) {
     return (
         <PromptModal when={when}>
             <PromptModalContext.Consumer>
-                {({hideModal, redirectToOriginalLocation}) => (
+                {({ hideModal, redirectToOriginalLocation }) => (
                     <>
                         <ModalHeader
                             title={

@@ -1,4 +1,4 @@
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
 import BaseCard from './BaseCard'
 

@@ -1,10 +1,11 @@
-import {act, fireEvent, screen} from '@testing-library/react'
-import {produce} from 'immer'
 import React from 'react'
 
-import {VisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
-import {visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture} from 'pages/automate/workflows/tests/visualBuilderGraph.fixtures'
-import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
+import { act, fireEvent, screen } from '@testing-library/react'
+import { produce } from 'immer'
+
+import { VisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
+import { visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture } from 'pages/automate/workflows/tests/visualBuilderGraph.fixtures'
+import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import ActionsPlatformUseCaseTemplateFormView from '../ActionsPlatformUseCaseTemplateFormView'
 
@@ -28,7 +29,7 @@ describe('<ActionsPlatformUseCaseTemplateFormView />', () => {
                 }}
             >
                 <ActionsPlatformUseCaseTemplateFormView steps={[]} />
-            </VisualBuilderContext.Provider>
+            </VisualBuilderContext.Provider>,
         )
 
         act(() => {
@@ -64,7 +65,7 @@ describe('<ActionsPlatformUseCaseTemplateFormView />', () => {
                 }}
             >
                 <ActionsPlatformUseCaseTemplateFormView steps={[]} />
-            </VisualBuilderContext.Provider>
+            </VisualBuilderContext.Provider>,
         )
 
         act(() => {
@@ -98,12 +99,12 @@ describe('<ActionsPlatformUseCaseTemplateFormView />', () => {
                 }}
             >
                 <ActionsPlatformUseCaseTemplateFormView steps={[]} />
-            </VisualBuilderContext.Provider>
+            </VisualBuilderContext.Provider>,
         )
 
         act(() => {
             fireEvent.change(screen.getAllByRole('textbox')[0], {
-                target: {value: 'some name'},
+                target: { value: 'some name' },
             })
         })
 
@@ -132,7 +133,7 @@ describe('<ActionsPlatformUseCaseTemplateFormView />', () => {
                 }}
             >
                 <ActionsPlatformUseCaseTemplateFormView steps={[]} />
-            </VisualBuilderContext.Provider>
+            </VisualBuilderContext.Provider>,
         )
 
         act(() => {
@@ -166,12 +167,12 @@ describe('<ActionsPlatformUseCaseTemplateFormView />', () => {
                 }}
             >
                 <ActionsPlatformUseCaseTemplateFormView steps={[]} />
-            </VisualBuilderContext.Provider>
+            </VisualBuilderContext.Provider>,
         )
 
         act(() => {
             fireEvent.change(screen.getAllByRole('textbox')[1], {
-                target: {value: 'some description'},
+                target: { value: 'some description' },
             })
         })
 
@@ -200,7 +201,7 @@ describe('<ActionsPlatformUseCaseTemplateFormView />', () => {
                 }}
             >
                 <ActionsPlatformUseCaseTemplateFormView steps={[]} />
-            </VisualBuilderContext.Provider>
+            </VisualBuilderContext.Provider>,
         )
 
         act(() => {
@@ -229,12 +230,12 @@ describe('<ActionsPlatformUseCaseTemplateFormView />', () => {
                             draft.nodes[0].data.conditions = [
                                 {
                                     equals: [
-                                        {var: 'objects.customer.firstname'},
+                                        { var: 'objects.customer.firstname' },
                                         'test',
                                     ],
                                 },
                             ]
-                        }
+                        },
                     ),
                     initialVisualBuilderGraph:
                         visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture,
@@ -254,7 +255,7 @@ describe('<ActionsPlatformUseCaseTemplateFormView />', () => {
                 }}
             >
                 <ActionsPlatformUseCaseTemplateFormView steps={[]} />
-            </VisualBuilderContext.Provider>
+            </VisualBuilderContext.Provider>,
         )
 
         act(() => {
@@ -277,7 +278,7 @@ describe('<ActionsPlatformUseCaseTemplateFormView />', () => {
                         visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture,
                         (draft) => {
                             draft.nodes[0].data.conditionsType = 'and'
-                        }
+                        },
                     ),
                     initialVisualBuilderGraph:
                         visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture,
@@ -297,7 +298,7 @@ describe('<ActionsPlatformUseCaseTemplateFormView />', () => {
                 }}
             >
                 <ActionsPlatformUseCaseTemplateFormView steps={[]} />
-            </VisualBuilderContext.Provider>
+            </VisualBuilderContext.Provider>,
         )
 
         act(() => {
@@ -311,7 +312,7 @@ describe('<ActionsPlatformUseCaseTemplateFormView />', () => {
         expect(mockDispatch).toHaveBeenCalledWith({
             type: 'ADD_LLM_PROMPT_TRIGGER_CONDITION',
             condition: {
-                equals: [{var: 'objects.customer.firstname'}, undefined],
+                equals: [{ var: 'objects.customer.firstname' }, undefined],
             },
         })
     })
@@ -335,7 +336,7 @@ describe('<ActionsPlatformUseCaseTemplateFormView />', () => {
                 }}
             >
                 <ActionsPlatformUseCaseTemplateFormView steps={[]} />
-            </VisualBuilderContext.Provider>
+            </VisualBuilderContext.Provider>,
         )
 
         act(() => {
@@ -361,12 +362,12 @@ describe('<ActionsPlatformUseCaseTemplateFormView />', () => {
                             draft.nodes[0].data.conditions = [
                                 {
                                     equals: [
-                                        {var: 'objects.customer.firstname'},
+                                        { var: 'objects.customer.firstname' },
                                         'test',
                                     ],
                                 },
                             ]
-                        }
+                        },
                     ),
                     initialVisualBuilderGraph:
                         visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture,
@@ -386,12 +387,12 @@ describe('<ActionsPlatformUseCaseTemplateFormView />', () => {
                 }}
             >
                 <ActionsPlatformUseCaseTemplateFormView steps={[]} />
-            </VisualBuilderContext.Provider>
+            </VisualBuilderContext.Provider>,
         )
 
         act(() => {
             fireEvent.change(screen.getByDisplayValue('test'), {
-                target: {value: 'some test'},
+                target: { value: 'some test' },
             })
         })
 
@@ -399,7 +400,7 @@ describe('<ActionsPlatformUseCaseTemplateFormView />', () => {
             type: 'SET_LLM_PROMPT_TRIGGER_CONDITION',
             index: 0,
             condition: {
-                equals: [{var: 'objects.customer.firstname'}, 'some test'],
+                equals: [{ var: 'objects.customer.firstname' }, 'some test'],
             },
         })
     })
@@ -417,12 +418,12 @@ describe('<ActionsPlatformUseCaseTemplateFormView />', () => {
                             draft.nodes[0].data.conditions = [
                                 {
                                     equals: [
-                                        {var: 'objects.customer.firstname'},
+                                        { var: 'objects.customer.firstname' },
                                         'test',
                                     ],
                                 },
                             ]
-                        }
+                        },
                     ),
                     initialVisualBuilderGraph:
                         visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture,
@@ -442,7 +443,7 @@ describe('<ActionsPlatformUseCaseTemplateFormView />', () => {
                 }}
             >
                 <ActionsPlatformUseCaseTemplateFormView steps={[]} />
-            </VisualBuilderContext.Provider>
+            </VisualBuilderContext.Provider>,
         )
 
         act(() => {
@@ -479,14 +480,14 @@ describe('<ActionsPlatformUseCaseTemplateFormView />', () => {
                 }}
             >
                 <ActionsPlatformUseCaseTemplateFormView steps={[]} />
-            </VisualBuilderContext.Provider>
+            </VisualBuilderContext.Provider>,
         )
 
         act(() => {
             fireEvent.click(
                 screen.getByText(
-                    'Require customer confirmation to perform Action'
-                )
+                    'Require customer confirmation to perform Action',
+                ),
             )
         })
 

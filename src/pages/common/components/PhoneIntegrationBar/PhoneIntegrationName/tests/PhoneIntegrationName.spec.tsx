@@ -1,11 +1,12 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {RootState, StoreDispatch} from '../../../../../../state/types'
+import { RootState, StoreDispatch } from '../../../../../../state/types'
 import PhoneIntegrationName from '../PhoneIntegrationName'
 
 describe('<PhoneIntegrationName/>', () => {
@@ -24,7 +25,7 @@ describe('<PhoneIntegrationName/>', () => {
                     {
                         id: integrationId,
                         name: 'My Phone Integration',
-                        meta: {emoji: '❤️'},
+                        meta: { emoji: '❤️' },
                     },
                 ],
             }),
@@ -32,20 +33,20 @@ describe('<PhoneIntegrationName/>', () => {
     })
 
     it('should render', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <PhoneIntegrationName integrationId={integrationId} />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render as primary', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <PhoneIntegrationName integrationId={integrationId} primary />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()

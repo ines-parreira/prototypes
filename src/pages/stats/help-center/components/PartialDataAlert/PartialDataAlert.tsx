@@ -1,17 +1,17 @@
 import React from 'react'
 
-import {DateAndTimeFormatting} from 'constants/datetime'
+import { DateAndTimeFormatting } from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import {formatDatetime} from 'utils'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { formatDatetime } from 'utils'
 
 type PartialDataAlertProps = {
     collectionStartDate: string
 }
 
-const PartialDataAlert = ({collectionStartDate}: PartialDataAlertProps) => {
+const PartialDataAlert = ({ collectionStartDate }: PartialDataAlertProps) => {
     const datetimeFormat = useGetDateAndTimeFormat(
-        DateAndTimeFormatting.LongDateWithYear
+        DateAndTimeFormatting.LongDateWithYear,
     )
     return (
         <Alert type={AlertType.Info} icon>

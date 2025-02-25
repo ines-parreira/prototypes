@@ -1,36 +1,36 @@
-import {fromJS, List, Map} from 'immutable'
-
 import React from 'react'
-import {Link} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
+
+import { fromJS, List, Map } from 'immutable'
+import { Link } from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem, Container } from 'reactstrap'
 
 import warningIcon from 'assets/img/icons/warning.svg'
-
 import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationType} from 'models/integration/types'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import { IntegrationType } from 'models/integration/types'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import PageHeader from 'pages/common/components/PageHeader'
 import NavigatedSuccessModal, {
     NavigatedSuccessModalName,
 } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
-import {SuccessModalIcon} from 'pages/common/components/SuccessModal/SuccessModal'
+import { SuccessModalIcon } from 'pages/common/components/SuccessModal/SuccessModal'
 import BackToConvertButton from 'pages/convert/onboarding/components/BackToConvertButton'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
-import {Tab} from 'pages/integrations/integration/types'
-import {getChatInstallationStatus} from 'state/entities/chatInstallationStatus/selectors'
-import {deleteIntegration} from 'state/integrations/actions'
-import {getStoreIntegrations} from 'state/integrations/selectors'
+import { Tab } from 'pages/integrations/integration/types'
+import { getChatInstallationStatus } from 'state/entities/chatInstallationStatus/selectors'
+import { deleteIntegration } from 'state/integrations/actions'
+import { getStoreIntegrations } from 'state/integrations/selectors'
 
 import useChatMigrationBanner from '../hooks/useChatMigrationBanner'
 import useThemeAppExtensionInstallation from '../hooks/useThemeAppExtensionInstallation'
 import GorgiasChatIntegrationConnectStore from './GorgiasChatIntegrationConnectStore'
-import css from './GorgiasChatIntegrationInstall.less'
 import GorgiasChatIntegrationManualInstallationCard from './GorgiasChatIntegrationManualInstallationCard'
 import InstallationStep from './GorgiasChatIntegrationManualInstallationTabs/components/InstallationStep'
 import InstallationTab from './GorgiasChatIntegrationManualInstallationTabs/components/InstallationTab'
 import GorgiasChatIntegrationOneClickInstallationCard from './GorgiasChatIntegrationOneClickInstallationCard'
 import GorgiasChatIntegrationShopifyCheckoutChatInstallationCard from './GorgiasChatIntegrationShopifyCheckoutChatInstallationCard'
+
+import css from './GorgiasChatIntegrationInstall.less'
 
 type Props = {
     integration: Map<any, any>
@@ -43,23 +43,23 @@ type Props = {
 
 const GorgiasChatIntegrationInstall = ({
     integration,
-    actions: {updateOrCreateIntegration, deleteIntegration},
+    actions: { updateOrCreateIntegration, deleteIntegration },
     isUpdate,
 }: Props) => {
     const storeIntegrations = useAppSelector(getStoreIntegrations)
-    const {installed} = useAppSelector(getChatInstallationStatus)
+    const { installed } = useAppSelector(getChatInstallationStatus)
     const applicationId: string = integration.getIn(['meta', 'app_id'])
     const shopIntegrationId = integration.getIn(['meta', 'shop_integration_id'])
         ? Number(integration.getIn(['meta', 'shop_integration_id']))
         : undefined
     const shopifyIntegrationIds: List<number> = integration.getIn(
         ['meta', 'shopify_integration_ids'],
-        fromJS([])
+        fromJS([]),
     )
 
     const storeIntegration = shopIntegrationId
         ? storeIntegrations.find(
-              (storeIntegration) => storeIntegration.id === shopIntegrationId
+              (storeIntegration) => storeIntegration.id === shopIntegrationId,
           )
         : undefined
 
@@ -70,13 +70,13 @@ const GorgiasChatIntegrationInstall = ({
         ? shopifyIntegrationIds.includes(shopIntegrationId)
         : undefined
 
-    const {showScriptTagMigrationBanner, hasShopifyScriptTagScope} =
+    const { showScriptTagMigrationBanner, hasShopifyScriptTagScope } =
         useChatMigrationBanner(integration)
     const {
         shouldUseThemeAppExtensionInstallation,
         themeAppExtensionInstallationUrl,
     } = useThemeAppExtensionInstallation(
-        isConnectedToShopify ? storeIntegration : undefined
+        isConnectedToShopify ? storeIntegration : undefined,
     )
 
     return (

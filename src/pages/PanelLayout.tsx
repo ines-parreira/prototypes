@@ -1,7 +1,7 @@
-import React, {ReactElement, useCallback, useMemo} from 'react'
+import React, { ReactElement, useCallback, useMemo } from 'react'
 
-import {Panel, PanelConfig, Panels} from 'panels'
-import {LayoutKeys} from 'split-ticket-view/constants'
+import { Panel, PanelConfig, Panels } from 'panels'
+import { LayoutKeys } from 'split-ticket-view/constants'
 import createInitialConfig from 'split-ticket-view/utils/createInitialConfig'
 import storePanelWidths from 'split-ticket-view/utils/storePanelWidths'
 
@@ -28,21 +28,21 @@ export default function PanelLayout({
         () =>
             createInitialConfig(
                 layoutKey,
-                config.map((c) => c.panelConfig)
+                config.map((c) => c.panelConfig),
             ),
-        [config, layoutKey]
+        [config, layoutKey],
     )
 
     const children = useMemo(
         () => config.map((c) => <Panel key={c.key}>{c.content}</Panel>),
-        [config]
+        [config],
     )
 
     const handleResize = useCallback(
         (widths: number[]) => {
             storePanelWidths(layoutKey, widths)
         },
-        [layoutKey]
+        [layoutKey],
     )
 
     return (

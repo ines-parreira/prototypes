@@ -2,10 +2,10 @@ import React from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import AutomatePaywallView from 'pages/automate/common/components/AutomatePaywallView'
-import {AutomateFeatures} from 'pages/automate/common/types'
-import {ErrorBoundary} from 'pages/ErrorBoundary'
-import {AutomateOverview} from 'pages/stats/automate/overview/AutomateOverview'
-import {getHasAutomate} from 'state/billing/selectors'
+import { AutomateFeatures } from 'pages/automate/common/types'
+import { ErrorBoundary } from 'pages/ErrorBoundary'
+import { AutomateOverview } from 'pages/stats/automate/overview/AutomateOverview'
+import { getHasAutomate } from 'state/billing/selectors'
 
 const AutomateStatsPaywall: React.FC = () => {
     const hasAutomate = useAppSelector(getHasAutomate)

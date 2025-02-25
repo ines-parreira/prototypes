@@ -1,11 +1,12 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
-import React, {useEffect, useMemo, useState} from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
-import {useLocation} from 'react-router-dom'
+import classnames from 'classnames'
+import { useLocation } from 'react-router-dom'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import warningIcon from 'assets/img/icons/warning.svg'
-import {Plan, ProductType} from 'models/billing/types'
+import { Plan, ProductType } from 'models/billing/types'
 import {
     getPlanPriceFormatted,
     getPlanUnitsPerCadence,
@@ -15,11 +16,12 @@ import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import ToggleInput from 'pages/common/forms/ToggleInput'
-import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
+import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
 
-import {ENTERPRISE_PRICE_ID} from '../../constants'
-import {getNextTier} from '../../utils/getNextTier'
-import {SelectedPlans} from '../../views/BillingProcessView/BillingProcessView'
+import { ENTERPRISE_PRICE_ID } from '../../constants'
+import { getNextTier } from '../../utils/getNextTier'
+import { SelectedPlans } from '../../views/BillingProcessView/BillingProcessView'
+
 import css from './AutoUpgradeToggle.less'
 
 export type AutoUpgradeToggleProps = {
@@ -45,14 +47,14 @@ const AutoUpgradeToggle = ({
     const nextTier =
         selectedPlan.plan && getNextTier(availablePlans, selectedPlan.plan)
 
-    const {nextTierAmount, nextTierName} = useMemo(() => {
+    const { nextTierAmount, nextTierName } = useMemo(() => {
         if (nextTier) {
             return {
                 nextTierAmount: getPlanPriceFormatted(nextTier),
                 nextTierName: getPlanUnitsPerCadence(nextTier),
             }
         }
-        return {nextTierAmount: null, nextTierName: null}
+        return { nextTierAmount: null, nextTierName: null }
     }, [nextTier])
 
     const isEnterprisePlan =

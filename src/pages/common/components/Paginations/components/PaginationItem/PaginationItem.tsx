@@ -1,8 +1,9 @@
-import classNames from 'classnames'
 import React from 'react'
 
-import {NavigationSize} from '../../types/NavigationSize'
-import {PageType, isPageType} from '../../types/PageType'
+import classNames from 'classnames'
+
+import { NavigationSize } from '../../types/NavigationSize'
+import { isPageType, PageType } from '../../types/PageType'
 
 import css from './PaginationItem.less'
 

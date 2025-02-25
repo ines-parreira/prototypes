@@ -1,24 +1,25 @@
-import {JobType} from '@gorgias/api-queries'
-import {waitFor} from '@testing-library/react'
+import { waitFor } from '@testing-library/react'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
-import {fromJS, Map, List} from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 import _range from 'lodash/range'
 import moment from 'moment'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {baseView, getExpirationTimeForCount} from 'config/views'
-import {customer} from 'fixtures/customer'
-import {mockSearchRank} from 'fixtures/searchRank'
-import {ticket} from 'fixtures/ticket'
+import { JobType } from '@gorgias/api-queries'
+
+import { baseView, getExpirationTimeForCount } from 'config/views'
+import { customer } from 'fixtures/customer'
+import { mockSearchRank } from 'fixtures/searchRank'
+import { ticket } from 'fixtures/ticket'
 import client from 'models/api/resources'
-import {OrderDirection} from 'models/api/types'
+import { OrderDirection } from 'models/api/types'
 import {
     searchCustomers,
     searchCustomersWithHighlights,
 } from 'models/customer/resources'
-import {SEARCH_ENDPOINT} from 'models/search/resources'
+import { SEARCH_ENDPOINT } from 'models/search/resources'
 import {
     CUSTOMER_SEARCH_ORDERING,
     TicketSearchSortableProperties,
@@ -27,29 +28,29 @@ import {
     searchTickets,
     searchTicketsWithHighlights,
 } from 'models/ticket/resources'
-import {ViewType, ViewVisibility} from 'models/view/types'
-import {MoveIndexDirection} from 'pages/common/utils/keyboard'
+import { ViewType, ViewVisibility } from 'models/view/types'
+import { MoveIndexDirection } from 'pages/common/utils/keyboard'
 import socketManager from 'services/socketManager/socketManager'
-import {SocketEventType} from 'services/socketManager/types'
-import {RootState, StoreDispatch} from 'state/types'
+import { SocketEventType } from 'services/socketManager/types'
+import { RootState, StoreDispatch } from 'state/types'
 import * as actions from 'state/views/actions'
 import {
-    FETCH_LIST_VIEW_SUCCESS,
     FETCH_LIST_VIEW_START,
+    FETCH_LIST_VIEW_SUCCESS,
 } from 'state/views/constants'
 import * as types from 'state/views/constants'
-import {initialState} from 'state/views/reducers'
+import { initialState } from 'state/views/reducers'
 import * as viewsSelectors from 'state/views/selectors'
-import {ViewNavDirection} from 'state/views/types'
-import {getAST} from 'utils'
-import {getLDClient} from 'utils/launchDarkly'
-import {assumeMock} from 'utils/testing'
+import { ViewNavDirection } from 'state/views/types'
+import { getAST } from 'utils'
+import { getLDClient } from 'utils/launchDarkly'
+import { assumeMock } from 'utils/testing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 jest.mock('state/notifications/actions.ts', () => {
     return {
-        notify: jest.fn((args: unknown) => () => ({payload: args})),
+        notify: jest.fn((args: unknown) => () => ({ payload: args })),
     }
 })
 
@@ -68,7 +69,7 @@ const searchTicketsWithHighlightsMock = assumeMock(searchTicketsWithHighlights)
 jest.mock('models/customer/resources')
 const searchCustomersMock = searchCustomers as jest.Mock
 const searchCustomersWithHighlightsMock = assumeMock(
-    searchCustomersWithHighlights
+    searchCustomersWithHighlights,
 )
 
 jest.mock('utils/launchDarkly')
@@ -101,7 +102,7 @@ beforeEach(() => {
     })
     searchTicketsWithHighlightsMock.mockResolvedValue({
         data: {
-            data: [{...ticket, highlights: {}}],
+            data: [{ ...ticket, highlights: {} }],
             meta: {
                 next_cursor: null,
                 prev_cursor: null,
@@ -119,7 +120,7 @@ beforeEach(() => {
     })
     searchCustomersWithHighlightsMock.mockResolvedValue({
         data: {
-            data: [{...customer, highlights: {}}],
+            data: [{ ...customer, highlights: {} }],
             meta: {
                 next_cursor: null,
                 prev_cursor: null,
@@ -137,9 +138,9 @@ describe('actions', () => {
         it('should dispatch results', async () => {
             const response = {
                 data: [
-                    {id: 1, name: 'Name 1', email: 'name1@foo.bar'},
-                    {id: 2, name: 'Name 2', email: 'name2@foo.bar'},
-                    {id: 3, name: 'Name 3', email: 'name3@foo.bar'},
+                    { id: 1, name: 'Name 1', email: 'name1@foo.bar' },
+                    { id: 2, name: 'Name 2', email: 'name2@foo.bar' },
+                    { id: 3, name: 'Name 3', email: 'name3@foo.bar' },
                 ],
                 object: 'list',
                 uri: '',
@@ -148,11 +149,11 @@ describe('actions', () => {
 
             mockServer.onPost(SEARCH_ENDPOINT).reply(200, response)
 
-            const field = fromJS({filter: {type: 'customer'}})
+            const field = fromJS({ filter: { type: 'customer' } })
             const query = 'foo'
 
             const res = await store.dispatch(
-                actions.fieldEnumSearch(field, query)
+                actions.fieldEnumSearch(field, query),
             )
             expect(res).toMatchSnapshot()
         })
@@ -160,14 +161,14 @@ describe('actions', () => {
         it('should dispatch error', async () => {
             mockServer.onPost(SEARCH_ENDPOINT).reply(500)
 
-            const field = fromJS({filter: {type: 'customer'}})
+            const field = fromJS({ filter: { type: 'customer' } })
             const query = 'xyz'
 
             try {
                 await store.dispatch(actions.fieldEnumSearch(field, query))
             } catch (e) {
                 expect(e).toEqual(
-                    new Error('Request failed with status code 500')
+                    new Error('Request failed with status code 500'),
                 )
             }
         })
@@ -180,11 +181,11 @@ describe('actions', () => {
             await expect(
                 store.dispatch(
                     actions.fieldEnumSearch(
-                        fromJS({filter: {type: 'customer'}}),
+                        fromJS({ filter: { type: 'customer' } }),
                         'foo',
-                        source.token
-                    )
-                )
+                        source.token,
+                    ),
+                ),
             ).rejects.toEqual(new axios.Cancel())
         })
     })
@@ -192,14 +193,14 @@ describe('actions', () => {
     describe('fetchActiveViewTickets', () => {
         const shouldFetchActiveViewTicketsMock = jest.spyOn(
             viewsSelectors,
-            'shouldFetchActiveViewTickets'
+            'shouldFetchActiveViewTickets',
         )
         beforeEach(() => {
             shouldFetchActiveViewTicketsMock.mockReturnValue(false)
         })
         it('should not fetch (no active view)', () => {
             expect(store.dispatch(actions.fetchActiveViewTickets())).toBe(
-                undefined
+                undefined,
             )
             expect(store.getActions()).toEqual([])
         })
@@ -208,12 +209,12 @@ describe('actions', () => {
             shouldFetchActiveViewTicketsMock.mockReturnValue(true)
             const state = initialState.set(
                 'active',
-                fromJS({id: 1, type: ViewType.TicketList})
+                fromJS({ id: 1, type: ViewType.TicketList }),
             )
 
-            const store = mockStore({views: state})
+            const store = mockStore({ views: state })
             expect(
-                store.dispatch(actions.fetchActiveViewTickets())
+                store.dispatch(actions.fetchActiveViewTickets()),
             ).not.toEqual(undefined)
 
             await waitFor(() => {
@@ -241,9 +242,9 @@ describe('actions', () => {
 
         it('should not fetch views counts (not on a ticket and not on a view)', () => {
             window.location.pathname = '/app/rules/'
-            const store = mockStore({views: initialState})
+            const store = mockStore({ views: initialState })
             expect(store.dispatch(actions.fetchRecentViewsCounts())).toBe(
-                undefined
+                undefined,
             )
             expect(sendSpy.mock.calls.length).toEqual(0)
         })
@@ -252,16 +253,16 @@ describe('actions', () => {
             window.location.pathname = '/app/tickets/1/'
             const state = initialState.mergeDeep(
                 fromJS({
-                    active: {id: 1},
+                    active: { id: 1 },
                     recent: {
-                        2: {updated_datetime: moment.utc().toISOString()},
+                        2: { updated_datetime: moment.utc().toISOString() },
                     },
-                })
+                }),
             )
-            const store = mockStore({views: state})
+            const store = mockStore({ views: state })
 
             expect(store.dispatch(actions.fetchRecentViewsCounts())).toBe(
-                undefined
+                undefined,
             )
             expect(sendSpy.mock.calls.length).toEqual(0)
         })
@@ -279,22 +280,22 @@ describe('actions', () => {
                         .subtract(getExpirationTimeForCount(counts[1]) + 1, 's')
                         .toISOString(),
                 },
-                2: {updated_datetime: moment().utc().toISOString()},
+                2: { updated_datetime: moment().utc().toISOString() },
             }
             const state = initialState.mergeDeep(
                 fromJS({
                     counts,
-                    active: {id: 1},
+                    active: { id: 1 },
                     recent: recentViews,
-                })
+                }),
             )
 
-            const store = mockStore({views: state})
+            const store = mockStore({ views: state })
             store.dispatch(actions.fetchRecentViewsCounts())
             expect(sendSpy).toHaveBeenNthCalledWith(
                 1,
                 SocketEventType.ViewsCountExpired,
-                {viewIds: [1]}
+                { viewIds: [1] },
             )
         })
     })
@@ -303,15 +304,15 @@ describe('actions', () => {
         it('should update updated datetime of recent views', () => {
             const state = initialState.mergeDeep(
                 fromJS({
-                    active: {id: 1},
+                    active: { id: 1 },
                     recent: {
                         1: {},
                     },
-                })
+                }),
             )
-            const store = mockStore({views: state})
+            const store = mockStore({ views: state })
             expect(
-                store.dispatch(actions.updateRecentViews([1]))
+                store.dispatch(actions.updateRecentViews([1])),
             ).toMatchSnapshot()
             expect(store.getActions()).toMatchSnapshot()
         })
@@ -327,7 +328,7 @@ describe('actions', () => {
             filters_ast: getAST(filtersCode),
         }
         const baseReply = {
-            data: [{id: 1}, {id: 2}],
+            data: [{ id: 1 }, { id: 2 }],
             meta: {
                 current_cursor: 123,
                 prev_items: `/api/views/${viewId}/items?direction=${MoveIndexDirection.Prev}`,
@@ -458,11 +459,11 @@ describe('actions', () => {
                 .dispatch(
                     actions.fetchViewItems(null, null, null, null, {
                         orderBy: 'closed_datetime:asc',
-                    })
+                    }),
                 )
                 .then(() => {
                     expect(
-                        searchTicketsWithHighlightsMock
+                        searchTicketsWithHighlightsMock,
                     ).toHaveBeenCalledWith({
                         filters: "eq(ticket.channel, 'chat')",
                         search: '',
@@ -525,12 +526,12 @@ describe('actions', () => {
                             null,
                             null,
                             undefined,
-                            cancelToken
-                        )
+                            cancelToken,
+                        ),
                     )
                     .then(() => {
                         expect(
-                            searchTicketsWithHighlightsMock
+                            searchTicketsWithHighlightsMock,
                         ).toHaveBeenCalledWith({
                             filters: "eq(ticket.channel, 'chat')",
                             search: '',
@@ -539,7 +540,7 @@ describe('actions', () => {
                             cursor: args.expected,
                         })
                     })
-            }
+            },
         )
 
         it('should pass the view because it is dirty', () => {
@@ -585,7 +586,7 @@ describe('actions', () => {
                 let hasRequestBeenCalled = false
 
                 const store = mockStore(() =>
-                    hasRequestBeenCalled ? postRequestState : preRequestState
+                    hasRequestBeenCalled ? postRequestState : preRequestState,
                 )
 
                 mockServer.onGet(`/api/views/${viewId}/items/`).reply(() => {
@@ -597,7 +598,7 @@ describe('actions', () => {
                     expect(store.getActions()).toMatchSnapshot()
                     expect(mockServer.history).toMatchSnapshot()
                 })
-            }
+            },
         )
 
         it(
@@ -625,7 +626,7 @@ describe('actions', () => {
                         expect(store.getActions()).toMatchSnapshot()
                         expect(mockServer.history).toMatchSnapshot()
                     })
-            }
+            },
         )
 
         it(
@@ -644,13 +645,13 @@ describe('actions', () => {
                 const postRequestState = {
                     views: preRequestState.views.setIn(
                         ['active', 'filters'],
-                        'bar'
+                        'bar',
                     ),
                 }
                 let hasRequestBeenCalled = false
 
                 const store = mockStore(() =>
-                    hasRequestBeenCalled ? postRequestState : preRequestState
+                    hasRequestBeenCalled ? postRequestState : preRequestState,
                 )
 
                 mockServer.onGet(`/api/views/${viewId}/items/`).reply(() => {
@@ -662,7 +663,7 @@ describe('actions', () => {
                     expect(store.getActions()).toMatchSnapshot()
                     expect(mockServer.history).toMatchSnapshot()
                 })
-            }
+            },
         )
 
         it('should not fetch because active view is deactivated', () => {
@@ -671,7 +672,7 @@ describe('actions', () => {
                     active: baseView()
                         .set(
                             'deactivated_datetime',
-                            '2020-06-15 22:56:32.708038'
+                            '2020-06-15 22:56:32.708038',
                         )
                         .set('type', ViewType.TicketList),
                 }),
@@ -703,8 +704,8 @@ describe('actions', () => {
                     null,
                     null,
                     undefined,
-                    source.token
-                )
+                    source.token,
+                ),
             )
             source.cancel()
 
@@ -726,7 +727,7 @@ describe('actions', () => {
                 .reply(200, baseReply)
 
             await store.dispatch(
-                actions.fetchViewItems(null, null, null, mockSearchRank)
+                actions.fetchViewItems(null, null, null, mockSearchRank),
             )
 
             expect(mockSearchRank.endScenario).toHaveBeenLastCalledWith()
@@ -744,7 +745,7 @@ describe('actions', () => {
                 .reply(200, baseReply)
 
             await store.dispatch(
-                actions.fetchViewItems(null, null, null, mockSearchRank)
+                actions.fetchViewItems(null, null, null, mockSearchRank),
             )
 
             expect(mockSearchRank.registerResultsRequest).toMatchSnapshot()
@@ -779,9 +780,9 @@ describe('actions', () => {
                 expect(mockSearchRank.endScenario).toHaveBeenLastCalledWith()
                 expect(mockSearchRank.registerResultsRequest).not.toBeCalled()
                 expect(
-                    mockSearchRank.registerResultsResponse
+                    mockSearchRank.registerResultsResponse,
                 ).not.toHaveBeenCalled()
-            }
+            },
         )
 
         describe('elasticsearch search', () => {
@@ -814,12 +815,12 @@ describe('actions', () => {
                         null,
                         null,
                         undefined,
-                        cancelToken
-                    )
+                        cancelToken,
+                    ),
                 )
 
                 expect(
-                    searchTicketsWithHighlightsMock
+                    searchTicketsWithHighlightsMock,
                 ).toHaveBeenLastCalledWith({
                     search: ticketSearchView.search,
                     filters: ticketSearchView.filters,
@@ -843,11 +844,11 @@ describe('actions', () => {
                 })
 
                 await store.dispatch(
-                    actions.fetchViewItems(ViewNavDirection.NextView)
+                    actions.fetchViewItems(ViewNavDirection.NextView),
                 )
 
                 expect(
-                    searchTicketsWithHighlightsMock
+                    searchTicketsWithHighlightsMock,
                 ).toHaveBeenLastCalledWith({
                     cancelToken: undefined,
                     search: ticketSearchView.search,
@@ -871,11 +872,11 @@ describe('actions', () => {
                 })
 
                 await store.dispatch(
-                    actions.fetchViewItems(ViewNavDirection.PrevView)
+                    actions.fetchViewItems(ViewNavDirection.PrevView),
                 )
 
                 expect(
-                    searchTicketsWithHighlightsMock
+                    searchTicketsWithHighlightsMock,
                 ).toHaveBeenLastCalledWith({
                     cancelToken: undefined,
                     search: ticketSearchView.search,
@@ -905,11 +906,11 @@ describe('actions', () => {
                 })
 
                 await store.dispatch(
-                    actions.fetchViewItems(ViewNavDirection.NextView)
+                    actions.fetchViewItems(ViewNavDirection.NextView),
                 )
 
                 expect(
-                    searchCustomersWithHighlightsMock
+                    searchCustomersWithHighlightsMock,
                 ).toHaveBeenLastCalledWith({
                     cancelToken: undefined,
                     search: customerSearchView.search,
@@ -929,11 +930,11 @@ describe('actions', () => {
                 await store.dispatch(
                     actions.fetchViewItems(null, undefined, null, null, {
                         orderBy: orderByParam,
-                    })
+                    }),
                 )
 
                 expect(
-                    searchTicketsWithHighlightsMock
+                    searchTicketsWithHighlightsMock,
                 ).toHaveBeenLastCalledWith({
                     search: ticketSearchView.search,
                     filters: ticketSearchView.filters,
@@ -957,15 +958,15 @@ describe('actions', () => {
                 foo: 'bar',
             })
             const jobType = 'jobTypeValue'
-            const jobPartialParams = {exampleVar: 'exampleValue'}
+            const jobPartialParams = { exampleVar: 'exampleValue' }
 
             return store
                 .dispatch(
                     actions.createJob(
                         view,
                         jobType as unknown as JobType,
-                        jobPartialParams
-                    )
+                        jobPartialParams,
+                    ),
                 )
                 .then(() => {
                     expect(mockServer.history).toMatchSnapshot()
@@ -989,15 +990,15 @@ describe('actions', () => {
                 foo: 'bar',
             })
             const jobType = 'jobTypeValue'
-            const jobPartialParams = {exampleVar: 'exampleValue'}
+            const jobPartialParams = { exampleVar: 'exampleValue' }
 
             return store
                 .dispatch(
                     actions.createJob(
                         view,
                         jobType as unknown as JobType,
-                        jobPartialParams
-                    )
+                        jobPartialParams,
+                    ),
                 )
                 .then(() => {
                     expect(mockServer.history).toMatchSnapshot()
@@ -1019,7 +1020,7 @@ describe('actions', () => {
 
         it('should prevent deletion of last view of same type', async () => {
             const views = initialState.set('items', fromJS([view]))
-            const store = mockStore({views})
+            const store = mockStore({ views })
 
             await store.dispatch(actions.deleteView(view))
 
@@ -1030,9 +1031,9 @@ describe('actions', () => {
         it('should update the active view with the same type when deletion succeeds', async () => {
             const views = initialState.set(
                 'items',
-                fromJS([view, view.set('id', 2)])
+                fromJS([view, view.set('id', 2)]),
             )
-            const store = mockStore({views})
+            const store = mockStore({ views })
 
             await store.dispatch(actions.deleteView(view))
 
@@ -1051,7 +1052,7 @@ describe('actions', () => {
             const views = initialState
                 .set('items', fromJS([view, view.set('id', 2)]))
                 .set('active', view)
-            const store = mockStore({views})
+            const store = mockStore({ views })
 
             store.dispatch(actions.deleteViewSuccess(view.get('id')))
 
@@ -1075,11 +1076,11 @@ describe('actions', () => {
         it('should create view when id is 0', async () => {
             const mockServer = new MockAdapter(client)
                 .onPost('/api/views/')
-                .reply(() => [200, {id: 1, slug: 'my-tickets'}])
+                .reply(() => [200, { id: 1, slug: 'my-tickets' }])
 
             const store = mockStore({
                 views: initialState,
-                currentUser: fromJS({id: 1}),
+                currentUser: fromJS({ id: 1 }),
             })
             await store.dispatch(actions.submitView(view))
 
@@ -1111,11 +1112,11 @@ describe('actions', () => {
             const viewToCreate = view.merge(propsToRemove)
             const mockServer = new MockAdapter(client)
                 .onPost('/api/views/')
-                .reply(() => [200, {id: 1, slug: 'my-tickets'}])
+                .reply(() => [200, { id: 1, slug: 'my-tickets' }])
 
             await store.dispatch(actions.submitView(viewToCreate))
 
-            const {post} = mockServer.history
+            const { post } = mockServer.history
             const viewSent = JSON.parse(post[0].data)
             for (const prop of Object.keys(propsToRemove)) {
                 expect(viewSent).not.toHaveProperty(prop)
@@ -1140,7 +1141,7 @@ describe('actions', () => {
 
             await store.dispatch(actions.submitView(viewToUpdate))
 
-            const {put} = mockServer.history
+            const { put } = mockServer.history
             const viewSent = JSON.parse(put[0].data)
             for (const prop of Object.keys(propsToRemove)) {
                 expect(viewSent).not.toHaveProperty(prop)
@@ -1154,14 +1155,14 @@ describe('actions', () => {
             socketManager.send = jest.fn()
             jest.spyOn(
                 viewsSelectors,
-                'getViewIdsOrderedByCollapsedSections'
+                'getViewIdsOrderedByCollapsedSections',
             ).mockReturnValue(
                 (() =>
                     fromJS(
-                        _range(101)
+                        _range(101),
                     ) as unknown as List<any>) as unknown as ReturnType<
                     typeof viewsSelectors.getViewIdsOrderedByCollapsedSections
-                >
+                >,
             )
         })
 
@@ -1187,7 +1188,7 @@ describe('actions', () => {
             }
 
             expect(actions.updateFieldFilter(index, value)).toEqual(
-                expectedAction
+                expectedAction,
             )
         })
     })
@@ -1205,7 +1206,7 @@ describe('actions', () => {
             }
 
             expect(
-                actions.updateCustomFieldFilterId(index, customFieldId, 'eq')
+                actions.updateCustomFieldFilterId(index, customFieldId, 'eq'),
             ).toEqual(expectedAction)
         })
     })
@@ -1221,7 +1222,7 @@ describe('actions', () => {
             }
 
             expect(actions.updateFieldFilterOperator(index, operator)).toEqual(
-                expectedAction
+                expectedAction,
             )
         })
     })

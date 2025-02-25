@@ -1,32 +1,29 @@
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
+import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
+import { OutOfStockProductPagesTrigger } from 'pages/convert/campaigns/components/AdvancedTriggerFactory/OutOfStockProductPagesTrigger'
 
-import {OutOfStockProductPagesTrigger} from 'pages/convert/campaigns/components/AdvancedTriggerFactory/OutOfStockProductPagesTrigger'
+import { useTriggers } from '../../containers/TriggersProvider'
+import { CampaignTrigger } from '../../types/CampaignTrigger'
+import { CampaignTriggerType } from '../../types/enums/CampaignTriggerType.enum'
+import { isAllowedToUpdateTrigger } from '../../utils/isAllowedToUpdateTrigger'
+import { AmountSpentTrigger } from './AmountSpentTrigger'
+import { BaseTriggerRow } from './BaseTriggerRow'
+import { BusinessHoursTrigger } from './BusinessHoursTrigger'
+import { CartValueTrigger } from './CartValueTrigger'
+import { CurrentProductTagsTrigger } from './CurrentProductTagsTrigger'
+import { CurrentUrlTrigger } from './CurrentUrlTrigger'
+import { CustomerCountryTrigger } from './CustomerCountryTrigger'
+import { ExitIntentTrigger } from './ExitIntentTrigger'
+import { OrderedProductsTriggers } from './OrderedProductsTriggers'
+import { OrdersCountTrigger } from './OrdersCountTrigger'
+import { ProductTagsTrigger } from './ProductTagsTrigger'
+import { SessionTimeTrigger } from './SessionTimeTrigger'
+import { ShopifyTagsTrigger } from './ShopifyTagsTrigger'
+import { TimeSpentOnPageTrigger } from './TimeSpentOnPageTrigger'
+import { VisitCountTrigger } from './VisitCountTrigger'
 
-import {useTriggers} from '../../containers/TriggersProvider'
-
-import {CampaignTrigger} from '../../types/CampaignTrigger'
-import {CampaignTriggerType} from '../../types/enums/CampaignTriggerType.enum'
-import {isAllowedToUpdateTrigger} from '../../utils/isAllowedToUpdateTrigger'
-
-import {AmountSpentTrigger} from './AmountSpentTrigger'
-import {BaseTriggerRow} from './BaseTriggerRow'
-
-import {BusinessHoursTrigger} from './BusinessHoursTrigger'
-import {CartValueTrigger} from './CartValueTrigger'
-import {CurrentProductTagsTrigger} from './CurrentProductTagsTrigger'
-import {CurrentUrlTrigger} from './CurrentUrlTrigger'
-import {CustomerCountryTrigger} from './CustomerCountryTrigger'
-import {ExitIntentTrigger} from './ExitIntentTrigger'
-import {OrderedProductsTriggers} from './OrderedProductsTriggers'
-import {OrdersCountTrigger} from './OrdersCountTrigger'
-import {ProductTagsTrigger} from './ProductTagsTrigger'
-import {SessionTimeTrigger} from './SessionTimeTrigger'
-import {ShopifyTagsTrigger} from './ShopifyTagsTrigger'
 import css from './style.less'
-import {TimeSpentOnPageTrigger} from './TimeSpentOnPageTrigger'
-import {VisitCountTrigger} from './VisitCountTrigger'
 
 type Props = {
     trigger: CampaignTrigger
@@ -39,13 +36,13 @@ export const AdvancedTriggerFactory = ({
     id,
     trigger,
 }: Props): JSX.Element => {
-    const {onUpdateTrigger, onDeleteTrigger, onTriggerValidationUpdate} =
+    const { onUpdateTrigger, onDeleteTrigger, onTriggerValidationUpdate } =
         useTriggers()
     const isConvertSubscriber: boolean = useIsConvertSubscriber()
 
     const isAllowedToEdit = isAllowedToUpdateTrigger(
         trigger,
-        isConvertSubscriber
+        isConvertSubscriber,
     )
 
     const content = useMemo(() => {

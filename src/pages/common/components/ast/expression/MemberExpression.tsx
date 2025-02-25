@@ -1,25 +1,26 @@
-import classnames from 'classnames'
-import {fromJS, List} from 'immutable'
-import React, {Fragment, useMemo, useState} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
+import React, { Fragment, useMemo, useState } from 'react'
 
-import {IntegrationType} from 'models/integration/types'
+import classnames from 'classnames'
+import { fromJS, List } from 'immutable'
+import { connect, ConnectedProps } from 'react-redux'
+
+import { IntegrationType } from 'models/integration/types'
 import {
     IDENTIFIER_CATEGORIES,
     IDENTIFIER_VARIABLES_BY_CATEGORY,
 } from 'models/rule/constants'
-import {IdentifierCategoryKey, IdentifierElement} from 'models/rule/types'
+import { IdentifierCategoryKey, IdentifierElement } from 'models/rule/types'
 import {
     generateExpression,
     getAstPath,
     getCategoryFromPath,
 } from 'models/rule/utils'
-import {RuleItemActions} from 'pages/settings/rules/types'
-import {getHasAutomate} from 'state/billing/selectors'
-import {makeHasIntegrationOfTypes} from 'state/integrations/selectors'
-import {ObjectExpressionPropertyKey, RuleOperation} from 'state/rules/types'
-import {RootState} from 'state/types'
-import {getIconFromUrl} from 'utils'
+import { RuleItemActions } from 'pages/settings/rules/types'
+import { getHasAutomate } from 'state/billing/selectors'
+import { makeHasIntegrationOfTypes } from 'state/integrations/selectors'
+import { ObjectExpressionPropertyKey, RuleOperation } from 'state/rules/types'
+import { RootState } from 'state/types'
+import { getIconFromUrl } from 'utils'
 
 import RuleSelect from '../widget/RuleSelect'
 
@@ -52,7 +53,7 @@ export function MemberExpressionContainer({
         return categoryElements
             .reduce(
                 (acc, element) => acc.concat(element.children || [element]),
-                [] as IdentifierElement[]
+                [] as IdentifierElement[],
             )
             .find((element) => {
                 return element.value === jointValuePath
@@ -86,7 +87,7 @@ export function MemberExpressionContainer({
 
     const handleSelect = (value: string) => {
         const expression = fromJS(
-            generateExpression(value.split('.').reverse())
+            generateExpression(value.split('.').reverse()),
         )
         actions.modifyCodeAST(parent, expression, RuleOperation.Update)
         setSelectedCategory(null)
@@ -152,7 +153,7 @@ export function MemberExpressionContainer({
                                 <i
                                     className={classnames(
                                         css.optionArrow,
-                                        'material-icons'
+                                        'material-icons',
                                     )}
                                 >
                                     keyboard_arrow_right
@@ -171,7 +172,7 @@ export function MemberExpressionContainer({
                             <i
                                 className={classnames(
                                     css.backArrow,
-                                    'material-icons mr-1'
+                                    'material-icons mr-1',
                                 )}
                             >
                                 arrow_back
@@ -179,7 +180,7 @@ export function MemberExpressionContainer({
                             {
                                 IDENTIFIER_CATEGORIES.find(
                                     (category) =>
-                                        category.value === selectedCategory
+                                        category.value === selectedCategory,
                                 )?.label
                             }
                         </span>
@@ -199,7 +200,7 @@ export function MemberExpressionContainer({
                                                     key={element.value}
                                                     onClick={() =>
                                                         handleSelect(
-                                                            element.value
+                                                            element.value,
                                                         )
                                                     }
                                                     value={element.value}
@@ -221,7 +222,7 @@ export function MemberExpressionContainer({
                                         {subcategory.label}
                                     </RuleSelect.Option>
                                 )
-                            }
+                            },
                         )}
                     </div>
                 </>

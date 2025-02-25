@@ -1,9 +1,10 @@
-import {render, waitFor} from '@testing-library/react'
 import React, {
     KeyboardEvent as KeyboardEventType,
     MutableRefObject,
     useRef,
 } from 'react'
+
+import { render, waitFor } from '@testing-library/react'
 
 import focusOnNextItem from '../focusOnNextItem'
 
@@ -43,7 +44,7 @@ describe.skip('focusOnNextItem', () => {
     })
 
     it('should focus on previous item', async () => {
-        const {getByText} = render(<DummyComponent />)
+        const { getByText } = render(<DummyComponent />)
         const focusedElement = getByText('one')
 
         const event = {
@@ -62,7 +63,7 @@ describe.skip('focusOnNextItem', () => {
     })
 
     it('should focus on next item', () => {
-        const {getByText} = render(<DummyComponent />)
+        const { getByText } = render(<DummyComponent />)
         const focusedElement = getByText('one')
 
         const event = {

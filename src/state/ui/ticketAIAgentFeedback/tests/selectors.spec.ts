@@ -1,7 +1,7 @@
-import {StoreState} from 'state/types'
+import { StoreState } from 'state/types'
 
-import {TicketAIAgentFeedbackTab} from '../constants'
-import {getActiveTab, getSelectedAIMessage} from '../selectors'
+import { TicketAIAgentFeedbackTab } from '../constants'
+import { getActiveTab, getSelectedAIMessage } from '../selectors'
 
 describe('getActiveTab', () => {
     it('should return the active tab from the ticketAIAgentFeedback state', () => {
@@ -14,7 +14,7 @@ describe('getActiveTab', () => {
         }
 
         expect(getActiveTab(state as StoreState)).toEqual(
-            TicketAIAgentFeedbackTab.AIAgent
+            TicketAIAgentFeedbackTab.AIAgent,
         )
     })
 

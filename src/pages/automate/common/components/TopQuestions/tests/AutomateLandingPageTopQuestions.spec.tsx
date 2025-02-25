@@ -1,17 +1,18 @@
-import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
 import React from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {HelpCenter} from 'models/helpCenter/types'
-import {IntegrationType} from 'models/integration/constants'
-import {ShopifyIntegration} from 'models/integration/types'
-import {assumeMock} from 'utils/testing'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 
-import {AutomateLandingPageTopQuestions} from '../AutomateLandingPageTopQuestions'
-import {useHasEmailToStoreConnection} from '../useHasEmailToStoreConnection'
-import {useTopQuestionsArticles} from '../useTopQuestionsArticles'
-import {useTopQuestionsFilters} from '../useTopQuestionsFilters'
-import {useTopQuestionsViewedOnPage} from '../useTopQuestionsViewedOnPage'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { HelpCenter } from 'models/helpCenter/types'
+import { IntegrationType } from 'models/integration/constants'
+import { ShopifyIntegration } from 'models/integration/types'
+import { assumeMock } from 'utils/testing'
+
+import { AutomateLandingPageTopQuestions } from '../AutomateLandingPageTopQuestions'
+import { useHasEmailToStoreConnection } from '../useHasEmailToStoreConnection'
+import { useTopQuestionsArticles } from '../useTopQuestionsArticles'
+import { useTopQuestionsFilters } from '../useTopQuestionsFilters'
+import { useTopQuestionsViewedOnPage } from '../useTopQuestionsViewedOnPage'
 
 jest.mock('common/segment')
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
@@ -21,7 +22,7 @@ const mockUseTopQuestionsFilters = assumeMock(useTopQuestionsFilters)
 
 jest.mock('../useHasEmailToStoreConnection')
 const mockUseHasEmailToStoreConnection = assumeMock(
-    useHasEmailToStoreConnection
+    useHasEmailToStoreConnection,
 )
 
 jest.mock('../useTopQuestionsArticles')
@@ -236,8 +237,8 @@ describe('AutomateLandingPageTopQuestions', () => {
 
         await waitFor(() =>
             expect(
-                defaultTopQuestionsArticles.dismissArticle
-            ).toHaveBeenCalled()
+                defaultTopQuestionsArticles.dismissArticle,
+            ).toHaveBeenCalled(),
         )
     })
 
@@ -250,7 +251,7 @@ describe('AutomateLandingPageTopQuestions', () => {
         render(<AutomateLandingPageTopQuestions />)
 
         expect(
-            screen.getByText('You have no recommendations for this store yet.')
+            screen.getByText('You have no recommendations for this store yet.'),
         ).toBeInTheDocument()
     })
 
@@ -278,8 +279,8 @@ describe('AutomateLandingPageTopQuestions', () => {
 
         expect(
             screen.queryByText(
-                'You have no recommendations for this store yet.'
-            )
+                'You have no recommendations for this store yet.',
+            ),
         ).not.toBeInTheDocument()
         expect(screen.queryByText('AI Article 1')).not.toBeInTheDocument()
         expect(screen.queryByText('AI Article 2')).not.toBeInTheDocument()
@@ -294,7 +295,7 @@ describe('AutomateLandingPageTopQuestions', () => {
             dismissArticle: async () => Promise.resolve(),
         })
 
-        const {rerender} = render(<AutomateLandingPageTopQuestions />)
+        const { rerender } = render(<AutomateLandingPageTopQuestions />)
 
         act(() => {
             fireEvent.click(screen.getAllByText('close')[0])
@@ -312,8 +313,8 @@ describe('AutomateLandingPageTopQuestions', () => {
 
         await waitFor(() =>
             expect(
-                screen.getByText('You’ve reviewed every recommendation!')
-            ).toBeInTheDocument()
+                screen.getByText('You’ve reviewed every recommendation!'),
+            ).toBeInTheDocument(),
         )
     })
 
@@ -338,7 +339,7 @@ describe('AutomateLandingPageTopQuestions', () => {
             dismissArticle: async () => Promise.resolve(),
         })
 
-        const {rerender} = render(<AutomateLandingPageTopQuestions />)
+        const { rerender } = render(<AutomateLandingPageTopQuestions />)
 
         act(() => {
             fireEvent.click(screen.getAllByText('close')[0])
@@ -356,8 +357,8 @@ describe('AutomateLandingPageTopQuestions', () => {
 
         await waitFor(() =>
             expect(
-                screen.getByText('You’ve reviewed every recommendation!')
-            ).toBeInTheDocument()
+                screen.getByText('You’ve reviewed every recommendation!'),
+            ).toBeInTheDocument(),
         )
     })
 })

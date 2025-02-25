@@ -1,15 +1,15 @@
 import MockAdapter from 'axios-mock-adapter'
 import PushJS from 'push.js'
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {RecentChatTicket} from '../../../business/types/recentChats'
+import { RecentChatTicket } from '../../../business/types/recentChats'
 import client from '../../../models/api/resources'
-import {Ticket} from '../../../models/ticket/types'
+import { Ticket } from '../../../models/ticket/types'
 import browserNotification from '../../../services/browserNotification'
-import {StoreDispatch} from '../../types'
+import { StoreDispatch } from '../../types'
 import * as actions from '../actions'
-import {initialState} from '../reducers'
+import { initialState } from '../reducers'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -71,7 +71,7 @@ describe('actions', () => {
                 store.dispatch(actions.setChats(chats))
                 expect(store.getActions()).toMatchSnapshot()
                 expect(
-                    (PushJS as unknown as {getAll: () => any[]}).getAll()
+                    (PushJS as unknown as { getAll: () => any[] }).getAll(),
                 ).toMatchSnapshot()
             })
         })
@@ -93,7 +93,7 @@ describe('actions', () => {
                 store.dispatch(actions.addChat(chat, true))
                 expect(store.getActions()).toMatchSnapshot()
                 expect(
-                    browserNotification.newMessageThrottled
+                    browserNotification.newMessageThrottled,
                 ).toHaveBeenNthCalledWith(1, {
                     body: 'Hi',
                     playSoundNotification: true,
@@ -107,7 +107,7 @@ describe('actions', () => {
                 store.dispatch(actions.addChat(chat, false))
                 expect(store.getActions()).toMatchSnapshot()
                 expect(
-                    browserNotification.newMessageThrottled
+                    browserNotification.newMessageThrottled,
                 ).not.toHaveBeenCalled()
             })
         })

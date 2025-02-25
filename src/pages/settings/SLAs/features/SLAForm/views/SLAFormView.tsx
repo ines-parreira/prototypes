@@ -1,19 +1,19 @@
 import React from 'react'
 
-import {Form, FormField, FormValidator, FormSubmitButton} from 'core/forms'
+import { Form, FormField, FormSubmitButton, FormValidator } from 'core/forms'
 import Button from 'pages/common/components/button/Button'
 import ToggleInputField from 'pages/common/forms/ToggleInputField'
 import history from 'pages/history'
 import settingsCss from 'pages/settings/settings.less'
 import PageHeader from 'pages/settings/SLAs/features/PageHeader/PageHeader'
-import {DeleteModal} from 'pages/settings/SLAs/features/SLAForm/views/DeleteModal'
+import { DeleteModal } from 'pages/settings/SLAs/features/SLAForm/views/DeleteModal'
 
-import {MappedFormSLAPolicy} from '../controllers/makeMappedFormSLAPolicy'
-import {SLAFormValues} from '../controllers/useFormValues'
-
+import { MappedFormSLAPolicy } from '../controllers/makeMappedFormSLAPolicy'
+import { SLAFormValues } from '../controllers/useFormValues'
 import ChannelSelectBox from './ChannelSelectBox'
 import FormSection from './FormSection'
 import MetricsFieldArray from './MetricsFieldArray'
+
 import css from './SLAFormView.less'
 
 type SLAFormViewProps = {

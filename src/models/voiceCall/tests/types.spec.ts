@@ -1,6 +1,6 @@
-import {voiceCall} from 'fixtures/voiceCalls'
+import { voiceCall } from 'fixtures/voiceCalls'
 
-import {isVoiceCall, isOutboundVoiceCall} from '../types'
+import { isOutboundVoiceCall, isVoiceCall } from '../types'
 
 describe('type guards', () => {
     describe('isVoiceCall', () => {
@@ -8,7 +8,7 @@ describe('type guards', () => {
             expect(isVoiceCall(voiceCall)).toBe(true)
         })
         it('should return false if the object is not a VoiceCall', () => {
-            expect(isVoiceCall({id: 1})).toBe(false)
+            expect(isVoiceCall({ id: 1 })).toBe(false)
         })
     })
 
@@ -18,7 +18,7 @@ describe('type guards', () => {
                 isOutboundVoiceCall({
                     ...voiceCall,
                     initiated_by_agent_id: 1,
-                })
+                }),
             ).toBe(true)
         })
 
@@ -27,13 +27,13 @@ describe('type guards', () => {
                 isOutboundVoiceCall({
                     ...voiceCall,
                     initiated_by_agent_id: null,
-                })
+                }),
             ).toBe(false)
             expect(
                 isOutboundVoiceCall({
                     ...voiceCall,
                     initiated_by_agent_id: undefined,
-                })
+                }),
             ).toBe(false)
         })
     })

@@ -1,4 +1,4 @@
-import {ShortcutManager} from '../shortcutManager'
+import { ShortcutManager } from '../shortcutManager'
 
 describe('shortcutManager', () => {
     let sm: ShortcutManager

@@ -13,7 +13,7 @@ import {
 export function seekNextValues(
     parentTemplate: WrapperTemplate | ListTemplate | CardTemplate,
     parentSource: Source,
-    templateIndex = 0
+    templateIndex = 0,
 ): {
     parentTemplate: Template
     template: Template | null
@@ -38,7 +38,7 @@ export function seekNextValues(
 
 function seekNextTemplate(
     parentTemplate: WrapperTemplate | ListTemplate | CardTemplate,
-    templateIndex: number
+    templateIndex: number,
 ) {
     const template = parentTemplate.widgets?.[templateIndex]
     if (!template) {
@@ -56,7 +56,7 @@ function seekNextTemplate(
 
 function seekNextSource(
     parentSource: Source,
-    path: string | undefined
+    path: string | undefined,
 ): Source {
     return path && isSourceRecord(parentSource)
         ? parentSource[path]
@@ -65,7 +65,7 @@ function seekNextSource(
 
 function buildAbsolutePath(
     parentTemplate: WrapperTemplate | ListTemplate | CardTemplate,
-    template: Template
+    template: Template,
 ) {
     const absolutePath = [...(parentTemplate?.absolutePath || [])]
     if (parentTemplate.type === 'list') {

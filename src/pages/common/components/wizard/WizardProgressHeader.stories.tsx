@@ -1,10 +1,11 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { Meta, Story } from '@storybook/react'
 
 import Button from 'pages/common/components/button/Button'
 import Group from 'pages/common/components/layout/Group'
 
-import Wizard, {WizardContext} from './Wizard'
+import Wizard, { WizardContext } from './Wizard'
 import WizardProgressHeader from './WizardProgressHeader'
 import WizardStep from './WizardStep'
 
@@ -42,7 +43,7 @@ const Template: Story<ComponentProps<typeof WizardProgressHeader>> = () => {
                                 intent="secondary"
                                 onClick={() =>
                                     context?.setActiveStep(
-                                        context.previousStep!
+                                        context.previousStep!,
                                     )
                                 }
                                 isDisabled={!context?.previousStep}

@@ -1,12 +1,13 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {fireEvent, render, screen} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {RootState} from 'state/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { RootState } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import AddSalesCouponModal from '../AddSalesCouponModal'
 
@@ -34,17 +35,17 @@ describe('AddSalesCouponModal', () => {
                         alreadyAppliedCoupon={undefined}
                     />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
         const items = document.getElementsByClassName('dropdown-item')
         expect(items[0]).toHaveTextContent(availableCoupons[0])
         expect(items[1]).toHaveTextContent(availableCoupons[1])
 
         expect(
-            screen.queryByRole('button', {name: 'Delete Coupon'})
+            screen.queryByRole('button', { name: 'Delete Coupon' }),
         ).not.toBeInTheDocument()
-        screen.getByRole('button', {name: 'Cancel'})
-        screen.getByRole('button', {name: 'Apply Coupon'})
+        screen.getByRole('button', { name: 'Cancel' })
+        screen.getByRole('button', { name: 'Apply Coupon' })
     })
 
     it('should show the selected coupon and the Delete Coupon button when a coupon has already been applied', () => {
@@ -60,7 +61,7 @@ describe('AddSalesCouponModal', () => {
                         alreadyAppliedCoupon={expectedSelectedCoupon}
                     />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         const selectedCoupon = screen.getByLabelText('Select coupon')
@@ -72,11 +73,13 @@ describe('AddSalesCouponModal', () => {
         expect(items[1]).toHaveTextContent(availableCoupons[1])
 
         expect(
-            screen.getByRole('button', {name: 'Delete Coupon'})
+            screen.getByRole('button', { name: 'Delete Coupon' }),
         ).toBeInTheDocument()
-        expect(screen.getByRole('button', {name: 'Cancel'})).toBeInTheDocument()
         expect(
-            screen.getByRole('button', {name: 'Apply Coupon'})
+            screen.getByRole('button', { name: 'Cancel' }),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('button', { name: 'Apply Coupon' }),
         ).toBeInTheDocument()
     })
 
@@ -92,7 +95,7 @@ describe('AddSalesCouponModal', () => {
                         alreadyAppliedCoupon={undefined}
                     />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         const applyCouponButton = screen.getByRole('button', {
@@ -108,7 +111,7 @@ describe('AddSalesCouponModal', () => {
 
         const reasonTextBox = screen.getByPlaceholderText('Your reason')
         fireEvent.change(reasonTextBox, {
-            target: {value: 'a good reason'},
+            target: { value: 'a good reason' },
         })
 
         expect(applyCouponButton).toBeAriaEnabled()

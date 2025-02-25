@@ -1,6 +1,6 @@
-import {ComponentType, ReactNode} from 'react'
+import { ComponentType, ReactNode } from 'react'
 
-import type {ButtonProps} from 'pages/common/components/button/Button'
+import type { ButtonProps } from 'pages/common/components/button/Button'
 
 export type Parameter = {
     name: string
@@ -39,14 +39,14 @@ export type InfobarModalProps = {
     onChange: (
         name: string,
         value: string | number | boolean | Record<string, unknown>,
-        callback?: () => void
+        callback?: () => void,
     ) => void
     onBulkChange: (
         options: Array<{
             name: string
             value: string | number | boolean | Record<string, unknown>
         }>,
-        callback?: () => void
+        callback?: () => void,
     ) => void
     onSubmit: () => void
     onClose: () => void

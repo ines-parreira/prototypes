@@ -1,5 +1,5 @@
-import {CampaignTriggerOperator} from '../types/enums/CampaignTriggerOperator.enum'
-import {CampaignTriggerType} from '../types/enums/CampaignTriggerType.enum'
+import { CampaignTriggerOperator } from '../types/enums/CampaignTriggerOperator.enum'
+import { CampaignTriggerType } from '../types/enums/CampaignTriggerType.enum'
 
 export type TriggerConfigOperators = {
     [key in CampaignTriggerOperator]?: {

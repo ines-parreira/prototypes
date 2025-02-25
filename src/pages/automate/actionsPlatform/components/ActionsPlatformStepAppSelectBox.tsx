@@ -1,7 +1,8 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import React, {useCallback, useRef, useState} from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 
-import {IntegrationType} from 'models/integration/constants'
+import { Label } from '@gorgias/merchant-ui-kit'
+
+import { IntegrationType } from 'models/integration/constants'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
@@ -11,7 +12,7 @@ import SelectInputBox, {
 } from 'pages/common/forms/input/SelectInputBox'
 
 import useGetAppFromTemplateApp from '../hooks/useGetAppFromTemplateApp'
-import {ActionTemplateApp, App} from '../types'
+import { ActionTemplateApp, App } from '../types'
 
 import css from './ActionsPlatformAppSelectBox.less'
 
@@ -33,7 +34,7 @@ const ActionsPlatformStepAppSelectBox = ({
 
     const [isOpen, setIsOpen] = useState(false)
 
-    const getAppFromTemplateApp = useGetAppFromTemplateApp({apps})
+    const getAppFromTemplateApp = useGetAppFromTemplateApp({ apps })
 
     const appValue = value ? getAppFromTemplateApp(value) : null
 
@@ -48,10 +49,10 @@ const ActionsPlatformStepAppSelectBox = ({
 
                     break
                 default:
-                    onChange({type: app.type})
+                    onChange({ type: app.type })
             }
         },
-        [onChange]
+        [onChange],
     )
 
     return (

@@ -10,7 +10,7 @@ describe('keyboard utils', () => {
             expect(
                 utils.moveIndex(1, 1, {
                     direction: utils.MoveIndexDirection.Prev,
-                })
+                }),
             ).toEqual(0)
         })
 
@@ -19,7 +19,7 @@ describe('keyboard utils', () => {
             expect(
                 utils.moveIndex(0, 0, {
                     direction: utils.MoveIndexDirection.Prev,
-                })
+                }),
             ).toEqual(0)
         })
     })

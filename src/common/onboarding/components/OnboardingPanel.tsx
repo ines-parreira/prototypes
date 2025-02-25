@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {Handle, Panel} from 'core/layout/panels'
+import { Handle, Panel } from 'core/layout/panels'
 import OnboardingSidePanel from 'pages/tickets/list/OnboardingSidePanel'
 
 import useIsOnboardingHidden from '../hooks/useIsOnboardingHidden'

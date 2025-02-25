@@ -1,18 +1,15 @@
-import {fireEvent, render} from '@testing-library/react'
-import {Map} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
 
-import {Router} from 'react-router-dom'
-
+import { fireEvent, render } from '@testing-library/react'
+import { Map } from 'immutable'
+import { Provider } from 'react-redux'
+import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
-
 import thunk from 'redux-thunk'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { logEvent, SegmentEvent } from 'common/segment'
 import history from 'pages/history'
-
-import {RootState, StoreDispatch} from 'state/types'
+import { RootState, StoreDispatch } from 'state/types'
 
 import TimelineTicket from '../TimelineTicket'
 
@@ -32,25 +29,25 @@ describe('TimelineTicket', () => {
         subject: 'Test Subject',
         messages_count: 2,
         status: 'open',
-        assignee_user: {name: 'John Doe'},
+        assignee_user: { name: 'John Doe' },
         excerpt: 'Test Excerpt',
         created_datetime: '2021-01-01T00:00:00Z',
         channel: 'email',
     })
 
     it('navigates to a ticket when it is clicked', () => {
-        const {getByRole} = render(
+        const { getByRole } = render(
             <Router history={history}>
                 <Provider store={mockStore()}>
                     <TimelineTicket isCurrent={false} ticket={ticket} />
                 </Provider>
-            </Router>
+            </Router>,
         )
 
         fireEvent.click(getByRole('link'))
 
         expect(logEvent).toHaveBeenCalledWith(
-            SegmentEvent.CustomerTimelineTicketClicked
+            SegmentEvent.CustomerTimelineTicketClicked,
         )
 
         expect(history.push).toHaveBeenCalledWith('/app/ticket/1')

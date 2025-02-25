@@ -1,23 +1,22 @@
-import {produce} from 'immer'
+import { produce } from 'immer'
 import _keyBy from 'lodash/keyBy'
 
-import {createArticleFromDto} from 'models/helpCenter/utils'
+import { createArticleFromDto } from 'models/helpCenter/utils'
 import {
     getArticlesResponseFixture,
     getSingleArticleEnglish as singleArticle,
 } from 'pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
 
 import {
-    saveArticles,
-    updateArticle,
     deleteArticle,
-    resetArticles,
     pushArticleSupportedLocales,
     removeLocaleFromArticle,
+    resetArticles,
+    saveArticles,
+    updateArticle,
 } from '../actions'
-import reducer, {initialState} from '../reducer'
-
-import {ArticlesAction} from '../types'
+import reducer, { initialState } from '../reducer'
+import { ArticlesAction } from '../types'
 
 const articlesResponse =
     getArticlesResponseFixture.data.map(createArticleFromDto)
@@ -33,7 +32,7 @@ describe('Help Center/Articles reducer', () => {
         it('saves the articles by key', () => {
             const nextState = reducer(undefined, saveArticles(articlesResponse))
             const articlesId = Object.keys(nextState.articlesById).map((id) =>
-                parseInt(id, 10)
+                parseInt(id, 10),
             )
 
             // We have the same number of entities
@@ -43,9 +42,9 @@ describe('Help Center/Articles reducer', () => {
             expect(
                 articlesId.every((id) => {
                     return !!articlesResponse.find(
-                        (article) => article.id === id
+                        (article) => article.id === id,
                     )
-                })
+                }),
             ).toBeTruthy()
         })
     })
@@ -64,7 +63,7 @@ describe('Help Center/Articles reducer', () => {
                         [singleArticle.id]: singleArticle,
                     },
                 },
-                updateArticle(updatedArticle)
+                updateArticle(updatedArticle),
             )
 
             expect(nextState).toEqual({
@@ -83,7 +82,7 @@ describe('Help Center/Articles reducer', () => {
                         [singleArticle.id]: singleArticle,
                     },
                 },
-                deleteArticle(singleArticle.id)
+                deleteArticle(singleArticle.id),
             )
 
             expect(nextState).toEqual({
@@ -102,7 +101,7 @@ describe('Help Center/Articles reducer', () => {
             pushArticleSupportedLocales({
                 articleId: singleArticle.id,
                 supportedLocales: ['fr-FR'],
-            })
+            }),
         )
 
         expect(nextState).toEqual({
@@ -129,7 +128,7 @@ describe('Help Center/Articles reducer', () => {
                 removeLocaleFromArticle({
                     articleId: singleArticle.id,
                     locale: 'de-DE',
-                })
+                }),
             )
 
             expect(nextState).toEqual({
@@ -149,7 +148,7 @@ describe('Help Center/Articles reducer', () => {
                 {
                     articlesById: _keyBy(articlesResponse, 'id'),
                 },
-                resetArticles()
+                resetArticles(),
             )
 
             expect(nextState).toEqual(initialState)

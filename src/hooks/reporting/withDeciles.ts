@@ -27,11 +27,11 @@ export const selectWithDeciles = (data: DataResponse['data']['data']) => {
 
 export const getDecile = (
     itemIndex: number,
-    decilesIndex: {decileIndex: number; decile: number}[]
+    decilesIndex: { decileIndex: number; decile: number }[],
 ) => {
     const result = _findIndex(
         decilesIndex,
-        (item) => itemIndex >= item.decileIndex
+        (item) => itemIndex >= item.decileIndex,
     )
     return decilesIndex[result].decile
 }
@@ -49,7 +49,7 @@ export const getDecilesIndex = (length: number): DecileIndex[] => {
     if (length >= 10) {
         const localDeciles = []
         for (let i = 9; i >= 0; i--) {
-            localDeciles.push({decileIndex: Math.round((length * i) / 10)})
+            localDeciles.push({ decileIndex: Math.round((length * i) / 10) })
         }
         deciles = localDeciles
             .map((item, index) => ({

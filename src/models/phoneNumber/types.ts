@@ -1,5 +1,5 @@
-import {PhoneType, PhoneCountry, PhoneFunction} from 'business/twilio'
-import {Integration} from 'models/integration/types'
+import { PhoneCountry, PhoneFunction, PhoneType } from 'business/twilio'
+import { Integration } from 'models/integration/types'
 
 export type PhoneNumber = OldPhoneNumber | NewPhoneNumber
 
@@ -98,9 +98,9 @@ export enum AddressType {
 
 export type IntegrationPreview = Pick<Integration, 'id' | 'type' | 'name'>
 
-type CountryPhoneCapabilities = {[key in PhoneType]?: PhoneCapabilities}
+type CountryPhoneCapabilities = { [key in PhoneType]?: PhoneCapabilities }
 export type PhoneCapabilitiesLimitationsMap = {
     [key in PhoneCountry]?: CountryPhoneCapabilities
 }
 
-export {PhoneType, PhoneCountry, PhoneFunction}
+export { PhoneType, PhoneCountry, PhoneFunction }

@@ -1,13 +1,14 @@
-import {UseQueryResult} from '@tanstack/react-query'
-import {screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {SegmentEvent, logEvent} from 'common/segment'
-import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import {CustomField} from 'custom-fields/types'
-import {ticketFieldDefinitions} from 'fixtures/customField'
-import {ApiListResponseCursorPagination} from 'models/api/types'
+import { UseQueryResult } from '@tanstack/react-query'
+import { screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import { CustomField } from 'custom-fields/types'
+import { ticketFieldDefinitions } from 'fixtures/customField'
+import { ApiListResponseCursorPagination } from 'models/api/types'
 import {
     FILTER_DROPDOWN_ICON,
     FILTER_VALUE_PLACEHOLDER,
@@ -16,32 +17,32 @@ import {
     CUSTOM_FIELD_FILTER_NAME,
     CustomFieldFilter,
 } from 'pages/stats/common/filters/CustomFieldFilter'
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
 import {
     initialState,
     setSelectedCustomField,
     ticketInsightsSlice,
 } from 'state/ui/stats/ticketInsightsSlice'
-import {assumeMock, renderWithStore} from 'utils/testing'
+import { assumeMock, renderWithStore } from 'utils/testing'
 
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
 
 jest.mock('common/segment', () => ({
     logEvent: jest.fn(),
-    SegmentEvent: {StatFilterSelected: 'stat-filter-selected'},
+    SegmentEvent: { StatFilterSelected: 'stat-filter-selected' },
 }))
 
 describe('CustomFieldFilter', () => {
     const defaultState = {
         ui: {
-            stats: {[ticketInsightsSlice.name]: initialState},
+            stats: { [ticketInsightsSlice.name]: initialState },
         },
     } as RootState
 
     beforeEach(() => {
         useCustomFieldDefinitionsMock.mockReturnValue({
-            data: {data: ticketFieldDefinitions},
+            data: { data: ticketFieldDefinitions },
             isLoading: false,
         } as unknown as UseQueryResult<
             ApiListResponseCursorPagination<CustomField[]>
@@ -56,7 +57,7 @@ describe('CustomFieldFilter', () => {
 
     it('should render CustomFieldFilter component when the fields are loading', () => {
         useCustomFieldDefinitionsMock.mockReturnValue({
-            data: {data: ticketFieldDefinitions},
+            data: { data: ticketFieldDefinitions },
             isLoading: true,
         } as unknown as UseQueryResult<
             ApiListResponseCursorPagination<CustomField[]>
@@ -69,7 +70,7 @@ describe('CustomFieldFilter', () => {
 
     it('should render CustomFieldFilter component when the fields are not available - no data in response', () => {
         useCustomFieldDefinitionsMock.mockReturnValue({
-            data: {data: undefined},
+            data: { data: undefined },
             isLoading: false,
         } as unknown as UseQueryResult<
             ApiListResponseCursorPagination<CustomField[]>
@@ -99,7 +100,7 @@ describe('CustomFieldFilter', () => {
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
         expect(
-            screen.getByText(ticketFieldDefinitions[1].label)
+            screen.getByText(ticketFieldDefinitions[1].label),
         ).toBeInTheDocument()
     })
 
@@ -132,7 +133,7 @@ describe('CustomFieldFilter', () => {
     })
 
     it('should dispatch mergeStatsFiltersWithLogicalOperator action on selecting channel', () => {
-        const {store} = renderWithStore(<CustomFieldFilter />, defaultState)
+        const { store } = renderWithStore(<CustomFieldFilter />, defaultState)
 
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         userEvent.click(screen.getByText(ticketFieldDefinitions[1].label))
@@ -142,14 +143,14 @@ describe('CustomFieldFilter', () => {
                 id: ticketFieldDefinitions[1].id,
                 label: ticketFieldDefinitions[1].label,
                 isLoading: false,
-            })
+            }),
         )
     })
 
     it('should call segment analytics log event on filter dropdown close', () => {
-        const {rerenderComponent} = renderWithStore(
+        const { rerenderComponent } = renderWithStore(
             <CustomFieldFilter />,
-            defaultState
+            defaultState,
         )
 
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))

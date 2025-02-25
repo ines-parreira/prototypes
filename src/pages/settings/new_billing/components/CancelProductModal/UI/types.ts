@@ -1,4 +1,4 @@
-import {Cadence} from 'models/billing/types'
+import { Cadence } from 'models/billing/types'
 
 export type SummaryItemData = {
     title: string

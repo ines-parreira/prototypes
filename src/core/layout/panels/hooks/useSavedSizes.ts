@@ -1,6 +1,6 @@
-import {useCallback, useMemo, useRef} from 'react'
+import { useCallback, useMemo, useRef } from 'react'
 
-import type {Sizes} from '../types'
+import type { Sizes } from '../types'
 
 const KEY = 'panel-sizes'
 
@@ -15,9 +15,9 @@ function getSavedSizes() {
         return Object.entries(parsed)
             .filter(
                 (entry): entry is [string, number] =>
-                    typeof entry[1] === 'number'
+                    typeof entry[1] === 'number',
             )
-            .reduce((acc, [k, v]) => ({...acc, [k]: v}), {} as Sizes)
+            .reduce((acc, [k, v]) => ({ ...acc, [k]: v }), {} as Sizes)
     } catch {
         return {}
     }
@@ -32,12 +32,12 @@ export default function useSavedSizes() {
     }
 
     const persistSizes = useCallback((sizes: Sizes) => {
-        savedSizes.current = {...savedSizes.current, ...sizes}
+        savedSizes.current = { ...savedSizes.current, ...sizes }
         localStorage.setItem(KEY, JSON.stringify(savedSizes.current))
     }, [])
 
     return useMemo(
         () => [savedSizes, persistSizes] as const,
-        [persistSizes, savedSizes]
+        [persistSizes, savedSizes],
     )
 }

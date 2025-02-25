@@ -1,6 +1,6 @@
-import {fromJS, List, Map} from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 
-import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
+import { PhoneIntegrationEvent } from 'constants/integrations/types/event'
 import {
     addInternalNoteAction,
     addTagsAction,
@@ -17,8 +17,11 @@ import {
     shopperFixture,
     shopperOrderFixture,
 } from 'models/customerEcommerceData/fixtures'
-import {ShopperAddress, ShopperOrder} from 'models/customerEcommerceData/types'
-import {EventObjectType, TICKET_EVENT_TYPES} from 'models/event/types'
+import {
+    ShopperAddress,
+    ShopperOrder,
+} from 'models/customerEcommerceData/types'
+import { EventObjectType, TICKET_EVENT_TYPES } from 'models/event/types'
 import * as customerTypes from 'state/customers/constants'
 import * as newMessageTypes from 'state/newMessage/constants'
 import {
@@ -26,15 +29,14 @@ import {
     mergeCustomerEcommerceDataShopper,
     mergeCustomerEcommerceDataShopperAddress,
 } from 'state/ticket/actions'
-import {GorgiasAction} from 'state/types'
-
+import { GorgiasAction } from 'state/types'
 import {
     CUSTOMER_ECOMMERCE_DATA_KEY,
     CUSTOMER_EXTERNAL_DATA_KEY,
 } from 'state/widgets/constants'
 
 import * as types from '../constants'
-import reducer, {initialState} from '../reducers'
+import reducer, { initialState } from '../reducers'
 
 jest.mock('../helpers', () => {
     const helpers = jest.requireActual('../helpers')
@@ -50,7 +52,7 @@ jest.mock('../helpers', () => {
 describe('ticket reducers', () => {
     it('initial state', () => {
         expect(
-            reducer(undefined, {} as unknown as GorgiasAction)
+            reducer(undefined, {} as unknown as GorgiasAction),
         ).toEqualImmutable(initialState)
     })
 
@@ -60,7 +62,7 @@ describe('ticket reducers', () => {
             reducer(initialState, {
                 type: types.UPDATE_TICKET_MESSAGE_START,
                 messageId: 1,
-            }).toJS()
+            }).toJS(),
         ).toMatchSnapshot()
     })
 
@@ -71,7 +73,7 @@ describe('ticket reducers', () => {
             source: {
                 type: 'email',
                 from: {},
-                to: [{address: 'alex@gorgias.io'}],
+                to: [{ address: 'alex@gorgias.io' }],
                 cc: [],
                 bcc: [],
             },
@@ -88,7 +90,7 @@ describe('ticket reducers', () => {
                 messageId: '123', // fake message id attributed in submit action,
                 retry: false,
                 status: 'open',
-            } as unknown as GorgiasAction).toJS()
+            } as unknown as GorgiasAction).toJS(),
         ).toMatchSnapshot()
 
         const retryMessage = {
@@ -113,8 +115,8 @@ describe('ticket reducers', () => {
                     type: newMessageTypes.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_ERROR,
                     message: newMessage,
                     messageId: 1,
-                } as unknown as GorgiasAction
-            ).toJS()
+                } as unknown as GorgiasAction,
+            ).toJS(),
         ).toMatchSnapshot()
 
         // start retry
@@ -136,8 +138,8 @@ describe('ticket reducers', () => {
                     messageId: 1,
                     retry: true,
                     status: 'open',
-                } as unknown as GorgiasAction
-            ).toJS()
+                } as unknown as GorgiasAction,
+            ).toJS(),
         ).toMatchSnapshot()
 
         jest.useRealTimers()
@@ -152,7 +154,7 @@ describe('ticket reducers', () => {
                     id: 12,
                     subject: 'title',
                 },
-            }).toJS()
+            }).toJS(),
         ).toMatchSnapshot()
     })
 
@@ -161,7 +163,7 @@ describe('ticket reducers', () => {
         expect(
             reducer(initialState, {
                 type: types.FETCH_TICKET_START,
-            }).toJS()
+            }).toJS(),
         ).toMatchSnapshot()
 
         const ticket = {
@@ -178,7 +180,7 @@ describe('ticket reducers', () => {
             custom_fields: {},
             customer: {
                 id: 1,
-                data: {hello: 'world!'},
+                data: { hello: 'world!' },
             },
         }
 
@@ -187,14 +189,14 @@ describe('ticket reducers', () => {
             reducer(initialState, {
                 type: types.FETCH_TICKET_SUCCESS,
                 response: ticket,
-            }).toJS()
+            }).toJS(),
         ).toMatchSnapshot()
 
         // error
         expect(
             reducer(initialState, {
                 type: types.FETCH_TICKET_ERROR,
-            }).toJS()
+            }).toJS(),
         ).toMatchSnapshot()
     })
 
@@ -202,7 +204,7 @@ describe('ticket reducers', () => {
         expect(
             reducer(initialState.mergeDeep(ticketFixtures.ticket), {
                 type: types.CLEAR_TICKET,
-            }).toJS()
+            }).toJS(),
         ).toMatchSnapshot()
     })
 
@@ -213,37 +215,37 @@ describe('ticket reducers', () => {
                 args: fromJS({
                     tags: 'billing, refund',
                 }),
-            }).toJS()
+            }).toJS(),
         ).toMatchSnapshot()
 
         // already existing
         expect(
             reducer(
                 initialState.mergeDeep({
-                    tags: [{name: 'billing'}],
+                    tags: [{ name: 'billing' }],
                 }),
                 {
                     type: types.ADD_TICKET_TAGS,
                     args: fromJS({
                         tags: 'billing, refund',
                     }),
-                }
-            ).toJS()
+                },
+            ).toJS(),
         ).toMatchSnapshot()
 
         // empty tags
         expect(
             reducer(
                 initialState.mergeDeep({
-                    tags: [{name: 'billing'}],
+                    tags: [{ name: 'billing' }],
                 }),
                 {
                     type: types.ADD_TICKET_TAGS,
                     args: fromJS({
                         tags: '',
                     }),
-                }
-            ).toJS()
+                },
+            ).toJS(),
         ).toMatchSnapshot()
     })
 
@@ -251,30 +253,30 @@ describe('ticket reducers', () => {
         expect(
             reducer(
                 initialState.mergeDeep({
-                    tags: [{name: 'billing'}, {name: 'refund'}],
+                    tags: [{ name: 'billing' }, { name: 'refund' }],
                 }),
                 {
                     type: types.REMOVE_TICKET_TAG,
                     args: fromJS({
                         tag: 'billing',
                     }),
-                }
-            ).toJS()
+                },
+            ).toJS(),
         ).toMatchSnapshot()
 
         // empty tags
         expect(
             reducer(
                 initialState.mergeDeep({
-                    tags: [{name: 'billing'}],
+                    tags: [{ name: 'billing' }],
                 }),
                 {
                     type: types.REMOVE_TICKET_TAG,
                     args: fromJS({
                         tag: '',
                     }),
-                }
-            ).toJS()
+                },
+            ).toJS(),
         ).toMatchSnapshot()
     })
 
@@ -293,8 +295,8 @@ describe('ticket reducers', () => {
                     type: types.SET_TICKET_MESSAGE_REQUEST,
                     messageId: 1,
                     requestId: 2,
-                }
-            ).toJS()
+                },
+            ).toJS(),
         ).toMatchSnapshot()
     })
 
@@ -312,8 +314,8 @@ describe('ticket reducers', () => {
                 {
                     type: types.REMOVE_TICKET_MESSAGE_REQUEST,
                     messageId: 1,
-                }
-            ).toJS()
+                },
+            ).toJS(),
         ).toMatchSnapshot()
     })
 
@@ -323,7 +325,7 @@ describe('ticket reducers', () => {
             reducer(initialState, {
                 type: types.SET_SPAM_START,
                 spam: true,
-            }).toJS()
+            }).toJS(),
         ).toMatchSnapshot()
 
         // set false
@@ -335,8 +337,8 @@ describe('ticket reducers', () => {
                 {
                     type: types.SET_SPAM_SUCCESS,
                     spam: false,
-                }
-            ).toJS()
+                },
+            ).toJS(),
         ).toMatchSnapshot()
     })
 
@@ -344,7 +346,7 @@ describe('ticket reducers', () => {
         expect(
             reducer(initialState, {
                 type: types.SET_SPAM_SUCCESS,
-            }).toJS()
+            }).toJS(),
         ).toMatchSnapshot()
     })
 
@@ -353,11 +355,11 @@ describe('ticket reducers', () => {
             reducer(initialState, {
                 type: types.SET_TRASHED_START,
                 trashed_datetime: 'trashed_datetime',
-            })
+            }),
         ).toEqualImmutable(
             initialState
                 .set('trashed_datetime', 'trashed_datetime')
-                .setIn(['_internal', 'loading', 'setTrash'], true)
+                .setIn(['_internal', 'loading', 'setTrash'], true),
         )
     })
 
@@ -365,10 +367,10 @@ describe('ticket reducers', () => {
         expect(
             reducer(
                 initialState.setIn(['_internal', 'loading', 'setTrash'], true),
-                {type: types.SET_TRASHED_SUCCESS}
-            )
+                { type: types.SET_TRASHED_SUCCESS },
+            ),
         ).toEqualImmutable(
-            initialState.setIn(['_internal', 'loading', 'setTrash'], false)
+            initialState.setIn(['_internal', 'loading', 'setTrash'], false),
         )
     })
 
@@ -381,7 +383,7 @@ describe('ticket reducers', () => {
         expect(reducer(initialState, action)).toEqualImmutable(
             initialState
                 .set('snooze_datetime', action.snooze_datetime)
-                .set('status', action.status)
+                .set('status', action.status),
         )
     })
 
@@ -397,7 +399,7 @@ describe('ticket reducers', () => {
         expect(reducer(initialState, action)).toEqualImmutable(
             initialState
                 .set('snooze_datetime', '2017-01-02T00:00:00Z')
-                .set('status', 'closed')
+                .set('status', 'closed'),
         )
         jest.useRealTimers()
     })
@@ -406,9 +408,9 @@ describe('ticket reducers', () => {
             reducer(initialState, {
                 type: types.SET_AGENT,
                 args: fromJS({
-                    assignee_user: {id: 1},
+                    assignee_user: { id: 1 },
                 }),
-            }).toJS()
+            }).toJS(),
         ).toMatchSnapshot()
 
         // unassigned
@@ -416,7 +418,7 @@ describe('ticket reducers', () => {
             reducer(initialState, {
                 type: types.SET_AGENT,
                 args: fromJS({}),
-            }).toJS()
+            }).toJS(),
         ).toMatchSnapshot()
     })
 
@@ -425,9 +427,9 @@ describe('ticket reducers', () => {
             reducer(initialState, {
                 type: types.SET_TEAM,
                 args: fromJS({
-                    assignee_team: {id: 1},
+                    assignee_team: { id: 1 },
                 }),
-            }).toJS()
+            }).toJS(),
         ).toMatchSnapshot()
 
         // unassigned
@@ -435,7 +437,7 @@ describe('ticket reducers', () => {
             reducer(initialState, {
                 type: types.SET_TEAM,
                 args: fromJS({}),
-            }).toJS()
+            }).toJS(),
         ).toMatchSnapshot()
     })
 
@@ -446,7 +448,7 @@ describe('ticket reducers', () => {
                 args: fromJS({
                     status: 'closed',
                 }),
-            }).toJS()
+            }).toJS(),
         ).toMatchSnapshot()
     })
 
@@ -457,7 +459,7 @@ describe('ticket reducers', () => {
                 args: fromJS({
                     subject: 'another title',
                 }),
-            }).toJS()
+            }).toJS(),
         ).toMatchSnapshot()
     })
 
@@ -468,10 +470,10 @@ describe('ticket reducers', () => {
                 args: fromJS({
                     customer: {
                         id: 1,
-                        data: {hello: 'world!'},
+                        data: { hello: 'world!' },
                     },
                 }),
-            }).toJS()
+            }).toJS(),
         ).toMatchSnapshot()
     })
 
@@ -479,8 +481,8 @@ describe('ticket reducers', () => {
         expect(
             reducer(initialState, {
                 type: types.APPLY_MACRO,
-                macro: fromJS({id: 1}),
-            }).toJS()
+                macro: fromJS({ id: 1 }),
+            }).toJS(),
         ).toMatchSnapshot()
 
         // replace previous macro
@@ -488,21 +490,21 @@ describe('ticket reducers', () => {
             reducer(
                 initialState.mergeDeep({
                     state: {
-                        appliedMacro: {id: 1},
+                        appliedMacro: { id: 1 },
                     },
                 }),
                 {
                     type: types.APPLY_MACRO,
-                    macro: fromJS({id: 2}),
-                }
-            ).toJS()
+                    macro: fromJS({ id: 2 }),
+                },
+            ).toJS(),
         ).toMatchSnapshot()
     })
 
     it('should handle tag stacking', () => {
         const state = reducer(initialState, {
             type: types.APPLY_MACRO,
-            macro: fromJS({id: 1, actions: [addTagsAction]}),
+            macro: fromJS({ id: 1, actions: [addTagsAction] }),
         })
 
         expect(
@@ -526,14 +528,14 @@ describe('ticket reducers', () => {
                 0,
                 'arguments',
                 'tags',
-            ])
+            ]),
         ).toEqual('refund,billing,refund accepted,paid') // doesn't duplicate refund and adds paid
     })
 
     it('should handle new actions stacking', () => {
         const state = reducer(initialState, {
             type: types.APPLY_MACRO,
-            macro: fromJS({id: 1, actions: [addTagsAction]}),
+            macro: fromJS({ id: 1, actions: [addTagsAction] }),
         })
 
         expect(
@@ -547,14 +549,14 @@ describe('ticket reducers', () => {
                 }).getIn(['state', 'appliedMacro', 'actions']) as List<any>
             )
                 .map((action: Map<any, any>) => action.get('name') as string)
-                .toJS()
+                .toJS(),
         ).toEqual(['http', 'shopifyFullRefundLastOrder', 'addTags'])
     })
 
     it('should handle http hook stacking', () => {
         const state = reducer(initialState, {
             type: types.APPLY_MACRO,
-            macro: fromJS({id: 1, actions: [httpAction]}),
+            macro: fromJS({ id: 1, actions: [httpAction] }),
         })
 
         expect(
@@ -568,7 +570,7 @@ describe('ticket reducers', () => {
                 }).getIn(['state', 'appliedMacro', 'actions']) as List<any>
             )
                 .map((action: Map<any, any>) => action.get('name') as string)
-                .toJS()
+                .toJS(),
         ).toEqual(['http']) // Same http hook got deduplicated
 
         expect(
@@ -577,19 +579,19 @@ describe('ticket reducers', () => {
                     type: types.APPLY_MACRO,
                     macro: fromJS({
                         id: 2,
-                        actions: [{...httpAction, title: 'new title'}],
+                        actions: [{ ...httpAction, title: 'new title' }],
                     }),
                 }).getIn(['state', 'appliedMacro', 'actions']) as List<any>
             )
                 .map((action: Map<any, any>) => action.get('name') as string)
-                .toJS()
+                .toJS(),
         ).toEqual(['http', 'http']) //Different http hook, so we keep both
     })
 
     it('should handle internal note stacking', () => {
         const state = reducer(initialState, {
             type: types.APPLY_MACRO,
-            macro: fromJS({id: 1, actions: [addInternalNoteAction]}),
+            macro: fromJS({ id: 1, actions: [addInternalNoteAction] }),
         })
 
         const newState = reducer(state, {
@@ -602,7 +604,7 @@ describe('ticket reducers', () => {
         expect(
             (newState.getIn(['state', 'appliedMacro', 'actions']) as List<any>)
                 .map((action: Map<any, any>) => action.get('name') as string)
-                .toJS()
+                .toJS(),
         ).toEqual(['addInternalNote']) // actions got merged
 
         expect(
@@ -613,7 +615,7 @@ describe('ticket reducers', () => {
                 0,
                 'arguments',
                 'body_text',
-            ])
+            ]),
         ).toEqual('Hello\nHello') //Body got concatenated
     })
 
@@ -632,12 +634,15 @@ describe('ticket reducers', () => {
                 id: 2,
                 actions: [
                     setClosedStatusAction,
-                    {...setSubjectAction, arguments: {subject: 'Test Verb'}},
+                    {
+                        ...setSubjectAction,
+                        arguments: { subject: 'Test Verb' },
+                    },
                 ],
             }),
         })
         expect(
-            (newState.getIn(['state', 'appliedMacro']) as Map<any, any>).toJS()
+            (newState.getIn(['state', 'appliedMacro']) as Map<any, any>).toJS(),
         ).toMatchSnapshot() //Only keep the last actions values
     })
 
@@ -646,13 +651,13 @@ describe('ticket reducers', () => {
             reducer(
                 initialState.mergeDeep({
                     state: {
-                        appliedMacro: {id: 1},
+                        appliedMacro: { id: 1 },
                     },
                 }),
                 {
                     type: types.CLEAR_APPLIED_MACRO,
-                }
-            ).toJS()
+                },
+            ).toJS(),
         ).toMatchSnapshot()
     })
 
@@ -660,13 +665,13 @@ describe('ticket reducers', () => {
         it('found in ticket cache', () => {
             const newState = reducer(initialState, {
                 type: types.APPLY_MACRO,
-                macro: fromJS({id: 1, value: {hello: 'world1'}}),
+                macro: fromJS({ id: 1, value: { hello: 'world1' } }),
                 ticketId: 1,
             })
 
             expect(
-                newState.getIn(['state', 'appliedMacro', 'value'])
-            ).toStrictEqual(fromJS({hello: 'world1'}))
+                newState.getIn(['state', 'appliedMacro', 'value']),
+            ).toStrictEqual(fromJS({ hello: 'world1' }))
 
             expect(
                 reducer(newState, {
@@ -682,8 +687,8 @@ describe('ticket reducers', () => {
                     'actions',
                     '0',
                     'arguments',
-                ])
-            ).toStrictEqual({hello: 'world'})
+                ]),
+            ).toStrictEqual({ hello: 'world' })
         })
 
         it('found in ticket cache, but macro is null', () => {
@@ -693,7 +698,7 @@ describe('ticket reducers', () => {
             })
 
             expect(newState.getIn(['state', 'appliedMacro'])).toStrictEqual(
-                null
+                null,
             )
 
             expect(
@@ -704,7 +709,7 @@ describe('ticket reducers', () => {
                         hello: 'world2',
                     },
                     ticketId: 2,
-                } as unknown as GorgiasAction).getIn(['state', 'appliedMacro'])
+                } as unknown as GorgiasAction).getIn(['state', 'appliedMacro']),
             ).toStrictEqual(null)
         })
 
@@ -716,7 +721,7 @@ describe('ticket reducers', () => {
                     value: {
                         hello: 'world3',
                     },
-                } as unknown as GorgiasAction).getIn(['state', 'appliedMacro'])
+                } as unknown as GorgiasAction).getIn(['state', 'appliedMacro']),
             ).toStrictEqual(null)
         })
     })
@@ -747,8 +752,8 @@ describe('ticket reducers', () => {
                     type: types.DELETE_ACTION_ON_APPLIED,
                     actionIndex: 0,
                     ticketId: 1,
-                }
-            ).toJS()
+                },
+            ).toJS(),
         ).toMatchSnapshot()
     })
 
@@ -757,7 +762,7 @@ describe('ticket reducers', () => {
             reducer(initialState, {
                 type: types.MARK_TICKET_DIRTY,
                 dirty: true,
-            }).toJS()
+            }).toJS(),
         ).toMatchSnapshot()
 
         // set false
@@ -771,8 +776,8 @@ describe('ticket reducers', () => {
                 {
                     type: types.MARK_TICKET_DIRTY,
                     dirty: false,
-                }
-            ).toJS()
+                },
+            ).toJS(),
         ).toMatchSnapshot()
     })
 
@@ -793,8 +798,8 @@ describe('ticket reducers', () => {
                 {
                     type: types.DELETE_TICKET_MESSAGE_SUCCESS,
                     messageId: 2,
-                }
-            ).toJS()
+                },
+            ).toJS(),
         ).toMatchSnapshot()
     })
 
@@ -803,7 +808,7 @@ describe('ticket reducers', () => {
             reducer(initialState, {
                 type: types.TOGGLE_HISTORY,
                 state: true,
-            } as unknown as GorgiasAction).toJS()
+            } as unknown as GorgiasAction).toJS(),
         ).toMatchSnapshot()
 
         // set false
@@ -817,8 +822,8 @@ describe('ticket reducers', () => {
                 {
                     type: types.TOGGLE_HISTORY,
                     state: false,
-                } as unknown as GorgiasAction
-            ).toJS()
+                } as unknown as GorgiasAction,
+            ).toJS(),
         ).toMatchSnapshot()
 
         // invert previous value if no passed state
@@ -831,8 +836,8 @@ describe('ticket reducers', () => {
                 }),
                 {
                     type: types.TOGGLE_HISTORY,
-                }
-            ).toJS()
+                },
+            ).toJS(),
         ).toMatchSnapshot()
     })
 
@@ -841,7 +846,7 @@ describe('ticket reducers', () => {
             reducer(initialState, {
                 type: types.DISPLAY_HISTORY_ON_NEXT_PAGE,
                 state: true,
-            } as unknown as GorgiasAction).toJS()
+            } as unknown as GorgiasAction).toJS(),
         ).toMatchSnapshot()
 
         // set false
@@ -855,8 +860,8 @@ describe('ticket reducers', () => {
                 {
                     type: types.DISPLAY_HISTORY_ON_NEXT_PAGE,
                     state: false,
-                } as unknown as GorgiasAction
-            ).toJS()
+                } as unknown as GorgiasAction,
+            ).toJS(),
         ).toMatchSnapshot()
     })
 
@@ -870,7 +875,7 @@ describe('ticket reducers', () => {
                     id: 1,
                     name: 'Alex',
                 },
-            }).toJS()
+            }).toJS(),
         ).toMatchSnapshot()
 
         // should replace customer
@@ -888,8 +893,8 @@ describe('ticket reducers', () => {
                         id: 1,
                         name: 'Alex',
                     },
-                }
-            ).toJS()
+                },
+            ).toJS(),
         ).toMatchSnapshot()
     })
 
@@ -916,7 +921,7 @@ describe('ticket reducers', () => {
             ],
             customer: {
                 id: 1,
-                data: {hello: 'world!'},
+                data: { hello: 'world!' },
             },
         }) as Map<any, any>
 
@@ -925,7 +930,7 @@ describe('ticket reducers', () => {
                 reducer(initialState, {
                     type: types.MERGE_TICKET,
                     ticket,
-                }).toJS()
+                }).toJS(),
             ).toMatchSnapshot()
         })
 
@@ -947,8 +952,8 @@ describe('ticket reducers', () => {
                         type: types.MERGE_TICKET,
                         ticket,
                         messagesDifference: 1,
-                    } as unknown as GorgiasAction
-                ).toJS()
+                    } as unknown as GorgiasAction,
+                ).toJS(),
             ).toMatchSnapshot()
         })
 
@@ -970,13 +975,13 @@ describe('ticket reducers', () => {
                                 object_id: ticket.get('id'),
                                 type: TICKET_EVENT_TYPES.TicketReopened,
                             },
-                        ])
+                        ]),
                     ),
                     {
                         type: types.MERGE_TICKET,
                         ticket,
-                    }
-                ).toJS()
+                    },
+                ).toJS(),
             ).toMatchSnapshot()
         })
 
@@ -999,13 +1004,13 @@ describe('ticket reducers', () => {
                         type: types.MERGE_TICKET,
                         ticket,
                         messagesDifference: 1,
-                    } as unknown as GorgiasAction
+                    } as unknown as GorgiasAction,
                 )
 
                 expect(newState.getIn(['customer', dataKey])).toEqual(
-                    fromJS(dataNewValue)
+                    fromJS(dataNewValue),
                 )
-            }
+            },
         )
 
         it.each([CUSTOMER_EXTERNAL_DATA_KEY, CUSTOMER_ECOMMERCE_DATA_KEY])(
@@ -1038,20 +1043,20 @@ describe('ticket reducers', () => {
                             },
                         }),
                         messagesDifference: 1,
-                    } as unknown as GorgiasAction
+                    } as unknown as GorgiasAction,
                 )
 
                 expect(newState.getIn(['customer', dataKey])).toEqual(
-                    fromJS(dataNewValue)
+                    fromJS(dataNewValue),
                 )
-            }
+            },
         )
 
         it('should deep merge ticket.custom_fields', () => {
             const customFieldsInitialState = {
-                1: {id: 1, value: 'foo', hasError: true},
+                1: { id: 1, value: 'foo', hasError: true },
             }
-            const actionCustomFields = {1: {}}
+            const actionCustomFields = { 1: {} }
 
             const action = {
                 type: types.MERGE_TICKET,
@@ -1065,7 +1070,7 @@ describe('ticket reducers', () => {
                 initialState.mergeDeep(ticket).mergeDeep({
                     custom_fields: customFieldsInitialState,
                 }),
-                action
+                action,
             )
 
             expect(
@@ -1074,16 +1079,16 @@ describe('ticket reducers', () => {
                         unknown,
                         unknown
                     >
-                ).toJS()
+                ).toJS(),
             ).toEqual(customFieldsInitialState[1])
         })
 
         it('should deep merge ticket.reply_option', () => {
             const initialReplyOptions = {
-                email: {answerable: true},
-                'internal-note': {answerable: true},
+                email: { answerable: true },
+                'internal-note': { answerable: true },
             }
-            const newReplyOptions = {'tiktok-shop': {answerable: true}}
+            const newReplyOptions = { 'tiktok-shop': { answerable: true } }
 
             const action = {
                 type: types.MERGE_TICKET,
@@ -1097,11 +1102,13 @@ describe('ticket reducers', () => {
                 initialState.mergeDeep(ticket).mergeDeep({
                     reply_options: initialReplyOptions,
                 }),
-                action
+                action,
             )
 
             expect(
-                (nextState.get('reply_options') as Map<unknown, unknown>).toJS()
+                (
+                    nextState.get('reply_options') as Map<unknown, unknown>
+                ).toJS(),
             ).toEqual({
                 ...initialReplyOptions,
                 ...newReplyOptions,
@@ -1118,7 +1125,7 @@ describe('ticket reducers', () => {
                         id: 1,
                         name: 'Alex',
                     },
-                } as unknown as GorgiasAction).toJS()
+                } as unknown as GorgiasAction).toJS(),
             ).toMatchSnapshot()
         })
         it('should update customer', () => {
@@ -1137,7 +1144,7 @@ describe('ticket reducers', () => {
                         id: 1,
                         name: newName,
                     },
-                } as unknown as GorgiasAction
+                } as unknown as GorgiasAction,
             )
 
             expect(newState.getIn(['customer', 'name'])).toEqual(newName)
@@ -1167,14 +1174,14 @@ describe('ticket reducers', () => {
                             id: 1,
                             name: newName,
                         },
-                    } as unknown as GorgiasAction
+                    } as unknown as GorgiasAction,
                 )
 
                 expect(newState.getIn(['customer', 'name'])).toEqual(newName)
                 expect(newState.getIn(['customer', dataKey])).toEqual(
-                    fromJS(dataValue)
+                    fromJS(dataValue),
                 )
-            }
+            },
         )
 
         it.each([CUSTOMER_EXTERNAL_DATA_KEY, CUSTOMER_ECOMMERCE_DATA_KEY])(
@@ -1209,14 +1216,14 @@ describe('ticket reducers', () => {
                             name: newName,
                             [dataKey]: dataNewValue,
                         },
-                    } as unknown as GorgiasAction
+                    } as unknown as GorgiasAction,
                 )
 
                 expect(newState.getIn(['customer', 'name'])).toEqual(newName)
                 expect(newState.getIn(['customer', dataKey])).toEqual(
-                    fromJS(dataNewValue)
+                    fromJS(dataNewValue),
                 )
-            }
+            },
         )
     })
 
@@ -1258,11 +1265,11 @@ describe('ticket reducers', () => {
                     type: types.MERGE_CUSTOMER_EXTERNAL_DATA,
                     customerId: 1,
                     externalData: externalDataNewValue,
-                } as unknown as GorgiasAction
+                } as unknown as GorgiasAction,
             )
 
             expect(
-                newState.getIn(['customer', CUSTOMER_EXTERNAL_DATA_KEY])
+                newState.getIn(['customer', CUSTOMER_EXTERNAL_DATA_KEY]),
             ).toEqual(fromJS(externalDataNewValue))
         })
     })
@@ -1274,8 +1281,8 @@ describe('ticket reducers', () => {
                 mergeCustomerEcommerceDataShopper(
                     1,
                     ecommerceStoreFixture,
-                    shopperFixture
-                )
+                    shopperFixture,
+                ),
             )
             expect(newState.get('customer')).toBeNull()
         })
@@ -1292,8 +1299,8 @@ describe('ticket reducers', () => {
                 mergeCustomerEcommerceDataShopper(
                     1,
                     ecommerceStoreFixture,
-                    shopperFixture
-                )
+                    shopperFixture,
+                ),
             )
 
             expect(
@@ -1302,7 +1309,7 @@ describe('ticket reducers', () => {
                     CUSTOMER_ECOMMERCE_DATA_KEY,
                     ecommerceStoreFixture.uuid,
                     'store',
-                ])
+                ]),
             ).toEqual(fromJS(ecommerceStoreFixture))
 
             expect(
@@ -1311,7 +1318,7 @@ describe('ticket reducers', () => {
                     CUSTOMER_ECOMMERCE_DATA_KEY,
                     ecommerceStoreFixture.uuid,
                     'shopper',
-                ])
+                ]),
             ).toEqual(fromJS(shopperFixture))
         })
     })
@@ -1323,26 +1330,26 @@ describe('ticket reducers', () => {
                 mergeCustomerEcommerceDataShopperAddress(
                     1,
                     ecommerceStoreFixture.uuid,
-                    shopperAddressFixture
-                )
+                    shopperAddressFixture,
+                ),
             )
             expect(newState.get('customer')).toBeNull()
         })
 
         it('should update the shopper address of the customer keeping only the latest', () => {
             const fixtureCreatedDatetime = new Date(
-                shopperAddressFixture.created_datetime
+                shopperAddressFixture.created_datetime,
             )
             const addresses = Array.from(
-                Array(types.MAX_ADDRESSES_PER_SHOPPER).keys()
+                Array(types.MAX_ADDRESSES_PER_SHOPPER).keys(),
             ).map((_, i) => {
                 return {
                     ...shopperAddressFixture,
                     id: types.MAX_ADDRESSES_PER_SHOPPER - i,
                     created_datetime: new Date(
                         fixtureCreatedDatetime.setDate(
-                            fixtureCreatedDatetime.getDate() - (i + 1)
-                        )
+                            fixtureCreatedDatetime.getDate() - (i + 1),
+                        ),
                     ).toISOString(),
                 }
             })
@@ -1366,8 +1373,8 @@ describe('ticket reducers', () => {
                     {
                         ...shopperAddressFixture,
                         id: types.MAX_ADDRESSES_PER_SHOPPER + 1,
-                    }
-                )
+                    },
+                ),
             )
 
             const newAddresses: ShopperAddress[] = (
@@ -1380,7 +1387,7 @@ describe('ticket reducers', () => {
             )?.toJS()
             expect(newAddresses.length).toEqual(types.MAX_ADDRESSES_PER_SHOPPER)
             expect(newAddresses[0].id).toEqual(
-                types.MAX_ADDRESSES_PER_SHOPPER + 1
+                types.MAX_ADDRESSES_PER_SHOPPER + 1,
             )
         })
     })
@@ -1392,26 +1399,26 @@ describe('ticket reducers', () => {
                 mergeCustomerEcommerceDataOrder(
                     1,
                     ecommerceStoreFixture.uuid,
-                    shopperOrderFixture
-                )
+                    shopperOrderFixture,
+                ),
             )
             expect(newState.get('customer')).toBeNull()
         })
 
         it('should update the shopper order of the customer keeping only the latest', () => {
             const fixtureCreatedDatetime = new Date(
-                shopperOrderFixture.created_datetime
+                shopperOrderFixture.created_datetime,
             )
             const orders = Array.from(
-                Array(types.MAX_ORDERS_PER_SHOPPER).keys()
+                Array(types.MAX_ORDERS_PER_SHOPPER).keys(),
             ).map((_, i) => {
                 return {
                     ...shopperOrderFixture,
                     id: types.MAX_ORDERS_PER_SHOPPER - i,
                     created_datetime: new Date(
                         fixtureCreatedDatetime.setDate(
-                            fixtureCreatedDatetime.getDate() - (i + 1)
-                        )
+                            fixtureCreatedDatetime.getDate() - (i + 1),
+                        ),
                     ).toISOString(),
                 }
             })
@@ -1432,7 +1439,7 @@ describe('ticket reducers', () => {
                 mergeCustomerEcommerceDataOrder(1, ecommerceStoreFixture.uuid, {
                     ...shopperOrderFixture,
                     id: types.MAX_ORDERS_PER_SHOPPER + 1,
-                })
+                }),
             )
 
             expect(
@@ -1441,7 +1448,7 @@ describe('ticket reducers', () => {
                     CUSTOMER_ECOMMERCE_DATA_KEY,
                     ecommerceStoreFixture.uuid,
                     'store',
-                ])
+                ]),
             ).toEqual(fromJS(ecommerceStoreFixture))
 
             const newOrders: ShopperOrder[] = (
@@ -1492,8 +1499,8 @@ describe('ticket reducers', () => {
                         body_html: '<div>hello</div>',
                         channel: 'email',
                     }),
-                }
-            ).toJS()
+                },
+            ).toJS(),
         ).toMatchSnapshot()
     })
 
@@ -1505,7 +1512,7 @@ describe('ticket reducers', () => {
                     isShopperTyping: false,
                     isShopperTypingTimeoutId: undefined,
                 },
-            } as unknown as GorgiasAction).toJS()
+            } as unknown as GorgiasAction).toJS(),
         ).toMatchSnapshot()
 
         // set true
@@ -1523,8 +1530,8 @@ describe('ticket reducers', () => {
                         isShopperTyping: true,
                         isShopperTypingTimeoutId: 100,
                     },
-                } as unknown as GorgiasAction
-            ).toJS()
+                } as unknown as GorgiasAction,
+            ).toJS(),
         ).toMatchSnapshot()
 
         // set back to false
@@ -1541,8 +1548,8 @@ describe('ticket reducers', () => {
                     payload: {
                         isShopperTyping: false,
                     },
-                } as unknown as GorgiasAction
-            ).toJS()
+                } as unknown as GorgiasAction,
+            ).toJS(),
         ).toMatchSnapshot()
     })
 
@@ -1572,7 +1579,7 @@ describe('ticket reducers', () => {
 
         it('should update stored event when received event already exists in the store', () => {
             const initialEvent = getEvent(1)
-            const updatedEvent = initialEvent.set('data', {foo: 'bar'})
+            const updatedEvent = initialEvent.set('data', { foo: 'bar' })
 
             const action = {
                 type: types.ADD_TICKET_AUDIT_LOG_EVENTS,
@@ -1580,8 +1587,8 @@ describe('ticket reducers', () => {
             }
 
             const nextState = reducer(
-                initialState.mergeDeep({events: [initialEvent]}),
-                action
+                initialState.mergeDeep({ events: [initialEvent] }),
+                action,
             )
             expect(nextState.toJS()).toMatchSnapshot()
         })
@@ -1590,7 +1597,7 @@ describe('ticket reducers', () => {
             const initialEvent = getEvent(1)
             const updatedEvent = initialEvent
                 .set('type', TICKET_EVENT_TYPES.TicketClosed)
-                .set('data', {foo: 'bar'})
+                .set('data', { foo: 'bar' })
             const newEvent = getEvent(2)
 
             const action = {
@@ -1599,8 +1606,8 @@ describe('ticket reducers', () => {
             }
 
             const nextState = reducer(
-                initialState.mergeDeep({events: [initialEvent]}),
-                action
+                initialState.mergeDeep({ events: [initialEvent] }),
+                action,
             )
             expect(nextState.toJS()).toMatchSnapshot()
         })
@@ -1611,7 +1618,7 @@ describe('ticket reducers', () => {
                 payload: [
                     getEvent(1).set(
                         'type',
-                        PhoneIntegrationEvent.PhoneCallForwarded
+                        PhoneIntegrationEvent.PhoneCallForwarded,
                     ),
                 ],
             }
@@ -1644,8 +1651,10 @@ describe('ticket reducers', () => {
             }
 
             const nextState = reducer(
-                initialState.mergeDeep({events: [auditLogEvent, randomEvent]}),
-                action
+                initialState.mergeDeep({
+                    events: [auditLogEvent, randomEvent],
+                }),
+                action,
             )
             expect(nextState.toJS()).toMatchSnapshot()
         })
@@ -1669,7 +1678,7 @@ describe('ticket reducers', () => {
                         ],
                     },
                 }),
-                action
+                action,
             )
             expect(nextState.toJS()).toMatchSnapshot()
         })
@@ -1704,8 +1713,8 @@ describe('ticket reducers', () => {
             }
 
             const nextState = reducer(
-                initialState.set('messages', fromJS([{id: 1, intents: []}])),
-                action
+                initialState.set('messages', fromJS([{ id: 1, intents: [] }])),
+                action,
             )
             expect(nextState.toJS()).toMatchSnapshot()
         })
@@ -1729,7 +1738,7 @@ describe('ticket reducers', () => {
                         unknown,
                         unknown
                     >
-                ).toJS()
+                ).toJS(),
             ).toEqual(action.payload)
         })
     })
@@ -1737,7 +1746,7 @@ describe('ticket reducers', () => {
     describe('action UPDATE_CUSTOM_FIELD_VALUE', () => {
         it('should update the custom field value, and value only', () => {
             const customFieldsInitialState = {
-                1: {id: 1, value: 'test', hasError: true},
+                1: { id: 1, value: 'test', hasError: true },
             }
             const action = {
                 type: types.UPDATE_CUSTOM_FIELD_VALUE,
@@ -1752,7 +1761,7 @@ describe('ticket reducers', () => {
                 initialState.mergeDeep({
                     custom_fields: customFieldsInitialState,
                 }),
-                action
+                action,
             )
 
             expect(
@@ -1761,7 +1770,7 @@ describe('ticket reducers', () => {
                         unknown,
                         unknown
                     >
-                ).toJS()
+                ).toJS(),
             ).toEqual({
                 ...customFieldsInitialState[1],
                 value: action.payload.value,
@@ -1772,7 +1781,7 @@ describe('ticket reducers', () => {
     describe('action UPDATE_CUSTOM_FIELD_ERROR', () => {
         it('should update the custom field error key, and error only', () => {
             const customFieldsInitialState = {
-                1: {id: 1, value: 'test', hasError: true},
+                1: { id: 1, value: 'test', hasError: true },
             }
             const action = {
                 type: types.UPDATE_CUSTOM_FIELD_ERROR,
@@ -1787,7 +1796,7 @@ describe('ticket reducers', () => {
                 initialState.mergeDeep({
                     custom_fields: customFieldsInitialState,
                 }),
-                action
+                action,
             )
 
             expect(
@@ -1796,7 +1805,7 @@ describe('ticket reducers', () => {
                         unknown,
                         unknown
                     >
-                ).toJS()
+                ).toJS(),
             ).toEqual({
                 ...customFieldsInitialState[1],
                 hasError: action.payload.hasError,
@@ -1807,8 +1816,8 @@ describe('ticket reducers', () => {
     describe('action SET_INVALID_CUSTOM_FIELDS_TO_ERRORED', () => {
         it('should update the custom field error key, and error only', () => {
             const customFieldsInitialState = {
-                1: {id: 1, value: 'test', hasError: true},
-                2: {id: 2, value: 'test', hasError: false},
+                1: { id: 1, value: 'test', hasError: true },
+                2: { id: 2, value: 'test', hasError: false },
             }
             const action = {
                 type: types.SET_INVALID_CUSTOM_FIELDS_TO_ERRORED,
@@ -1819,17 +1828,17 @@ describe('ticket reducers', () => {
                 initialState.mergeDeep({
                     custom_fields: customFieldsInitialState,
                 }),
-                action
+                action,
             )
 
             expect(
                 (
                     nextState.getIn(['custom_fields']) as Map<unknown, unknown>
-                ).toJS()
+                ).toJS(),
             ).toEqual({
                 ...customFieldsInitialState,
-                2: {...customFieldsInitialState[2], hasError: true},
-                3: {id: 3, hasError: true},
+                2: { ...customFieldsInitialState[2], hasError: true },
+                3: { id: 3, hasError: true },
             })
         })
     })

@@ -1,9 +1,9 @@
-import React, {useCallback} from 'react'
+import React, { useCallback } from 'react'
 
-import {UserRole} from 'config/types/user'
+import { UserRole } from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {EmailProvider} from 'models/integration/constants'
+import { EmailProvider } from 'models/integration/constants'
 import {
     EmailIntegration,
     GmailIntegration,
@@ -13,16 +13,15 @@ import Alert from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { fetchIntegration } from 'state/integrations/actions'
+import { hasRole } from 'utils'
 
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {fetchIntegration} from 'state/integrations/actions'
-import {hasRole} from 'utils'
-
-import {getDomainFromEmailAddress, isBaseEmailAddress} from '../helpers'
+import { getDomainFromEmailAddress, isBaseEmailAddress } from '../helpers'
 import EmailDomainVerificationForm from './components/EmailDomainVerificationForm'
 import RecordsTable from './components/RecordsTable'
+import { DEPRECATED_useDomainVerification } from './DEPRECATED_useDomainVerification'
 
-import {DEPRECATED_useDomainVerification} from './DEPRECATED_useDomainVerification'
 import css from './EmailDomainVerification.less'
 
 export type Props = {

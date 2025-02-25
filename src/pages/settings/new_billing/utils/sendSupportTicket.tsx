@@ -22,26 +22,26 @@ export const sendSupportTicket = ({
 }: Props) => {
     return client.get(
         `${zapierHook}?message=${encodeURIComponent(
-            message
+            message,
         )}&from=${encodeURIComponent(from)}&to=${encodeURIComponent(
-            to
+            to,
         )}&subject=${encodeURIComponent(
-            subject
+            subject,
         )}&helpdeskPlan=${encodeURIComponent(
-            helpdeskPlan
+            helpdeskPlan,
         )}&freeTrial=${encodeURIComponent(
-            freeTrial
+            freeTrial,
         )}&account=${encodeURIComponent(account)}`,
         {
             transformRequest: (
                 data: Record<string, unknown>,
-                headers: Record<string, unknown>
+                headers: Record<string, unknown>,
             ) => {
                 // We need this in order to prevent CORS policy error.
                 delete headers['X-CSRF-Token']
                 delete headers['X-Gorgias-User-Client']
                 return data
             },
-        }
+        },
     )
 }

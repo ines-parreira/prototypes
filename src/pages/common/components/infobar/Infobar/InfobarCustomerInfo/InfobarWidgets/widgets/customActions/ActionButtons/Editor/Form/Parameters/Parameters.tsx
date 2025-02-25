@@ -1,17 +1,19 @@
+import React, { memo, useCallback, useMemo } from 'react'
+
 import debounce from 'lodash/debounce'
-import React, {memo, useCallback, useMemo} from 'react'
-import {ulid} from 'ulidx'
+import { ulid } from 'ulidx'
 
 import Button from 'pages/common/components/button/Button'
 import {
-    Parameter as ParameterType,
     OnChangeAction,
+    Parameter as ParameterType,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 import Caption from 'pages/common/forms/Caption/Caption'
 
 import Parameter from './Parameter'
+import { checkDuplicates } from './validators'
+
 import css from './Parameters.less'
-import {checkDuplicates} from './validators'
 
 type Props = {
     addLabel?: string
@@ -22,7 +24,7 @@ type Props = {
 
 const DEBOUNCE_DURATION = 200
 
-function Parameters({addLabel = 'Parameter', value, path, onChange}: Props) {
+function Parameters({ addLabel = 'Parameter', value, path, onChange }: Props) {
     // NOTE: Not every values comes with an ID
     // so we need to generate the missing ones
     if (!value.every((field) => field.id)) {
@@ -31,13 +33,13 @@ function Parameters({addLabel = 'Parameter', value, path, onChange}: Props) {
             value.map((field) => ({
                 ...field,
                 id: field.id || ulid(),
-            }))
+            })),
         )
     }
 
     const debouncedOnChange = useMemo(
         () => debounce(onChange, DEBOUNCE_DURATION),
-        [onChange]
+        [onChange],
     )
 
     const onDelete = useCallback(
@@ -47,7 +49,7 @@ function Parameters({addLabel = 'Parameter', value, path, onChange}: Props) {
                 ...value.slice(index + 1),
             ])
         },
-        [onChange, path, value]
+        [onChange, path, value],
     )
 
     const onAdd = () => {

@@ -1,20 +1,20 @@
-import {fireEvent, render, screen} from '@testing-library/react'
-import {mockFlags} from 'jest-launchdarkly-mock'
+import React, { ComponentProps } from 'react'
+
+import { fireEvent, render, screen } from '@testing-library/react'
+import { mockFlags } from 'jest-launchdarkly-mock'
 import _keyBy from 'lodash/keyBy'
 
-import React, {ComponentProps} from 'react'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { Locale } from 'models/helpCenter/types'
+import { IntegrationType } from 'models/integration/constants'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {Locale} from 'models/helpCenter/types'
-import {IntegrationType} from 'models/integration/constants'
-
-import {getHelpCentersResponseFixture} from '../../fixtures/getHelpCentersResponse.fixture'
-import {getLocalesResponseFixture} from '../../fixtures/getLocalesResponse.fixtures'
-import {useStoreIntegrationByShopName} from '../../hooks/useStoreIntegrationByShopName'
-import {HelpCenterTable} from '../HelpCenterTable'
+import { getHelpCentersResponseFixture } from '../../fixtures/getHelpCentersResponse.fixture'
+import { getLocalesResponseFixture } from '../../fixtures/getLocalesResponse.fixtures'
+import { useStoreIntegrationByShopName } from '../../hooks/useStoreIntegrationByShopName'
+import { HelpCenterTable } from '../HelpCenterTable'
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
-    useAbilityChecker: () => ({isPassingRulesCheck: () => true}),
+    useAbilityChecker: () => ({ isPassingRulesCheck: () => true }),
 }))
 jest.mock('../../hooks/useStoreIntegrationByShopName')
 
@@ -22,7 +22,7 @@ describe('<HelpCenterTable />', () => {
     const mockedOnClick = jest.fn()
     const mockedDuplicateHelpCenter = jest.fn()
     const mockedUseStoreIntegrationByShopName = jest.mocked(
-        useStoreIntegrationByShopName
+        useStoreIntegrationByShopName,
     )
 
     const props: ComponentProps<typeof HelpCenterTable> = {
@@ -45,20 +45,20 @@ describe('<HelpCenterTable />', () => {
         })
     })
     it('should display the table correctly when loading', () => {
-        const {container} = render(
-            <HelpCenterTable {...props} isLoading={true} />
+        const { container } = render(
+            <HelpCenterTable {...props} isLoading={true} />,
         )
         expect(container).toMatchSnapshot()
     })
 
     it('should display the table correctly when not loading', () => {
-        const {container} = render(<HelpCenterTable {...props} />)
+        const { container } = render(<HelpCenterTable {...props} />)
         expect(container).toMatchSnapshot()
     })
 
     it('should call the onClick callback when clicking on a row', () => {
-        const {getByRole} = render(<HelpCenterTable {...props} />)
-        const tableRow = getByRole('row', {name: /ACME Help Center 2/i})
+        const { getByRole } = render(<HelpCenterTable {...props} />)
+        const tableRow = getByRole('row', { name: /ACME Help Center 2/i })
         fireEvent.click(tableRow)
         expect(mockedOnClick).toHaveBeenCalledWith(props.list[1], false)
     })

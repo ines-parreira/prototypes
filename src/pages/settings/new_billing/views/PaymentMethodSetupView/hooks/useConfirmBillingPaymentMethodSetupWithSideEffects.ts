@@ -1,19 +1,23 @@
-import {useConfirmBillingPaymentMethodSetup} from '@gorgias/api-queries'
-import {useQueryClient} from '@tanstack/react-query'
-import {useStore} from 'react-redux'
+import { useQueryClient } from '@tanstack/react-query'
+import { useStore } from 'react-redux'
+
+import { useConfirmBillingPaymentMethodSetup } from '@gorgias/api-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {getBillingStateQuery} from 'models/billing/queries'
-import {useStartSubscription} from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useStartSubscription'
-import {ErrorResponse} from 'state/billing/types'
-import {getIsCurrentSubscriptionTrialingOrCanceled} from 'state/currentAccount/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
+import { getBillingStateQuery } from 'models/billing/queries'
+import { useStartSubscription } from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useStartSubscription'
+import { ErrorResponse } from 'state/billing/types'
+import { getIsCurrentSubscriptionTrialingOrCanceled } from 'state/currentAccount/selectors'
+import { notify } from 'state/notifications/actions'
+import {
+    NotificationStatus,
+    NotificationStyle,
+} from 'state/notifications/types'
 
 export const useConfirmBillingPaymentMethodSetupWithSideEffects = (
     overrides?: NonNullable<
         Parameters<typeof useConfirmBillingPaymentMethodSetup>['0']
-    >['mutation']
+    >['mutation'],
 ) => {
     const queryClient = useQueryClient()
     const dispatch = useAppDispatch()
@@ -33,7 +37,7 @@ export const useConfirmBillingPaymentMethodSetupWithSideEffects = (
                         message: 'Payment method updated successfully!',
                         style: NotificationStyle.Alert,
                         showDismissButton: true,
-                    })
+                    }),
                 )
 
                 const isStartingSubscription =
@@ -63,7 +67,7 @@ export const useConfirmBillingPaymentMethodSetupWithSideEffects = (
                         message: errorMsg,
                         style: NotificationStyle.Alert,
                         showDismissButton: true,
-                    })
+                    }),
                 )
 
                 return overrides?.onError?.(err, ...args)

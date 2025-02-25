@@ -1,15 +1,14 @@
-import React, {useCallback, useMemo, useState} from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
-
 import useLocalStorageWithExpiry from 'hooks/useLocalStorageWithExpiry'
-import {PendingTasksSection} from 'pages/aiAgent/Overview/components/PendingTasksSection/PendingTasksSection'
-import {usePendingTasksRuleEngine} from 'pages/aiAgent/Overview/hooks/pendingTasks/usePendingTasksRuleEngine'
+import { PendingTasksSection } from 'pages/aiAgent/Overview/components/PendingTasksSection/PendingTasksSection'
+import { usePendingTasksRuleEngine } from 'pages/aiAgent/Overview/hooks/pendingTasks/usePendingTasksRuleEngine'
 import {
     getCurrentAccountId,
     getCurrentDomain,
 } from 'state/currentAccount/selectors'
-import {getShopifyIntegrationsSortedByName} from 'state/integrations/selectors'
+import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 
 type Store = {
     id: number
@@ -36,7 +35,7 @@ export const PendingTasksSectionConnected = () => {
                 id: store.id,
                 type: store.type as string,
             })),
-        [rawStores]
+        [rawStores],
     )
 
     const selectedStoreStorageKey = `ai-agent-pending-tasks:${accountId}`
@@ -46,7 +45,7 @@ export const PendingTasksSectionConnected = () => {
     } = useLocalStorageWithExpiry<Store>(
         selectedStoreStorageKey,
         expireIn1Hour,
-        stores[0]
+        stores[0],
     )
 
     const [selectedStore, setSelectedStore] = useState(selectedStoreFromStorage)
@@ -56,16 +55,15 @@ export const PendingTasksSectionConnected = () => {
             setSelectedStore(store)
             setSelectedStoreToStorage(store)
         },
-        [setSelectedStoreToStorage]
+        [setSelectedStoreToStorage],
     )
 
-    const {isLoading, pendingTasks, completedTasks} = usePendingTasksRuleEngine(
-        {
+    const { isLoading, pendingTasks, completedTasks } =
+        usePendingTasksRuleEngine({
             accountDomain,
             storeName: selectedStore.name,
             storeType: selectedStore.type,
-        }
-    )
+        })
 
     return (
         <PendingTasksSection

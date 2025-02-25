@@ -1,5 +1,6 @@
-import {Label} from '@gorgias/merchant-ui-kit'
 import React from 'react'
+
+import { Label } from '@gorgias/merchant-ui-kit'
 
 import {
     ReportIssueCaseReason,
@@ -12,18 +13,19 @@ import {
     SCENARIO_NAME_MAX_LENGTH,
 } from '../constants'
 import ReportOrderIssueScenarioConditions from './ReportOrderIssueScenarioConditions'
-import css from './ReportOrderIssueScenarioForm.less'
-import {usePropagateError} from './ReportOrderIssueScenarioFormContext'
+import { usePropagateError } from './ReportOrderIssueScenarioFormContext'
 import ReportOrderIssueScenarioReasons from './ReportOrderIssueScenarioReasons'
+
+import css from './ReportOrderIssueScenarioForm.less'
 
 type Props = {
     value: SelfServiceReportIssueCase
     expandedReason: ReportIssueCaseReason['reasonKey'] | null
     onExpandedReasonChange: (
-        expandedReason: ReportIssueCaseReason['reasonKey'] | null
+        expandedReason: ReportIssueCaseReason['reasonKey'] | null,
     ) => void
     onHoveredReasonChange: (
-        hoveredReason: ReportIssueCaseReason['reasonKey'] | null
+        hoveredReason: ReportIssueCaseReason['reasonKey'] | null,
     ) => void
     isFallback: boolean
     onPreviewChange: (nextValue: SelfServiceReportIssueCase) => void
@@ -50,23 +52,23 @@ const ReportOrderIssueScenarioForm = ({
     usePropagateError('reasons', reasonsHasError)
 
     const handleNameChange = (nextName: string) => {
-        onPreviewChange({...value, title: nextName})
+        onPreviewChange({ ...value, title: nextName })
     }
     const handleDescriptionChange = (nextDescription: string) => {
-        onPreviewChange({...value, description: nextDescription})
+        onPreviewChange({ ...value, description: nextDescription })
     }
     const handleConditionsChange = (
-        nextConditions: SelfServiceReportIssueCase['conditions']
+        nextConditions: SelfServiceReportIssueCase['conditions'],
     ) => {
-        onPreviewChange({...value, conditions: nextConditions})
+        onPreviewChange({ ...value, conditions: nextConditions })
     }
     const handleReasonsPreviewChange = (
-        nextReasons: ReportIssueCaseReason[]
+        nextReasons: ReportIssueCaseReason[],
     ) => {
-        onPreviewChange({...value, newReasons: nextReasons})
+        onPreviewChange({ ...value, newReasons: nextReasons })
     }
     const handleReasonsChange = (nextReasons: ReportIssueCaseReason[]) => {
-        onChange({...value, newReasons: nextReasons})
+        onChange({ ...value, newReasons: nextReasons })
     }
 
     return (

@@ -1,12 +1,11 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-
-import {useStoreConfiguration} from './useStoreConfiguration'
-import {useWelcomePageAcknowledged} from './useWelcomePageAcknowledged'
+import { useStoreConfiguration } from './useStoreConfiguration'
+import { useWelcomePageAcknowledged } from './useWelcomePageAcknowledged'
 
 type WelcomePageFeatureFlag =
     | undefined
@@ -16,7 +15,7 @@ type WelcomePageFeatureFlag =
 
 const isWelcomeDynamic = (
     welcomePageFeatureFlag: WelcomePageFeatureFlag,
-    accountId: number
+    accountId: number,
 ) =>
     (welcomePageFeatureFlag === 'dynamic_odd_static_even' &&
         accountId % 2 !== 0) ||
@@ -33,7 +32,7 @@ export enum OnboardingState {
 
 export const useAiAgentOnboardingState = (
     shopName: string,
-    isLoading?: boolean
+    isLoading?: boolean,
 ): OnboardingState => {
     const welcomePageFeatureFlag: WelcomePageFeatureFlag =
         useFlags()[FeatureFlagKey.AIAgentWelcomePage]
@@ -44,7 +43,7 @@ export const useAiAgentOnboardingState = (
     const accountId = currentAccount.get('id')
     const accountDomain = currentAccount.get('domain')
 
-    const {isLoading: isStoreConfigurationLoading, storeConfiguration} =
+    const { isLoading: isStoreConfigurationLoading, storeConfiguration } =
         useStoreConfiguration({
             shopName,
             accountDomain,
@@ -68,7 +67,7 @@ export const useAiAgentOnboardingState = (
 
     const displayWelcomePage =
         ['dynamic_odd_static_even', 'static_odd_dynamic_even'].includes(
-            welcomePageFeatureFlag ?? ''
+            welcomePageFeatureFlag ?? '',
         ) &&
         !storeConfiguration &&
         welcomePageAcknowledged?.acknowledged !== true

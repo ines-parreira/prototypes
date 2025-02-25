@@ -1,9 +1,10 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useCustomFieldDefinition} from 'custom-fields/hooks/queries/useCustomFieldDefinition'
-import {ticketInputFieldDefinition as mockTicketInputFieldDefinition} from 'fixtures/customField'
+import { render, screen } from '@testing-library/react'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useCustomFieldDefinition } from 'custom-fields/hooks/queries/useCustomFieldDefinition'
+import { ticketInputFieldDefinition as mockTicketInputFieldDefinition } from 'fixtures/customField'
 import {
     addAttachmentsAction,
     addInternalNoteAction,
@@ -18,9 +19,9 @@ import {
     setTextAction,
     snoozeTicketAction,
 } from 'fixtures/macro'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
-import Preview, {CustomFieldName} from '../Preview'
+import Preview, { CustomFieldName } from '../Preview'
 
 const flags = {
     [FeatureFlagKey.MacroForwardByEmail]: true,
@@ -37,12 +38,12 @@ const mockedUseCustomFieldDefinition = assumeMock(useCustomFieldDefinition)
 jest.mock(
     'pages/common/forms/RichField/TicketRichField',
     () =>
-        ({value}: {value: {html: string; text: string}}) => (
+        ({ value }: { value: { html: string; text: string } }) => (
             <div>
                 TicketRichField: <div>{value.text}</div>
                 <div>{value.html}</div>
             </div>
-        )
+        ),
 )
 
 jest.mock(
@@ -50,10 +51,10 @@ jest.mock(
     () =>
         ({
             ...jest.requireActual('pages/common/utils/labels'),
-            TimedeltaLabel: ({duration}: {duration: string}) => (
+            TimedeltaLabel: ({ duration }: { duration: string }) => (
                 <div>{duration}</div>
             ),
-        }) as unknown
+        }) as unknown,
 )
 
 describe('<Preview />', () => {
@@ -64,8 +65,8 @@ describe('<Preview />', () => {
         expect(screen.getByText('photo_library')).toBeInTheDocument()
         expect(
             screen.getByText(
-                addAttachmentsAction.arguments.attachments![0].name!
-            )
+                addAttachmentsAction.arguments.attachments![0].name!,
+            ),
         ).toBeInTheDocument()
     })
 
@@ -99,7 +100,7 @@ describe('<Preview />', () => {
                         },
                     },
                 ]}
-            />
+            />,
         )
 
         expect(screen.getAllByText(/Input field/i)).toHaveLength(2)
@@ -111,7 +112,7 @@ describe('<Preview />', () => {
 
         expect(screen.getByText('Set status:')).toBeInTheDocument()
         expect(
-            screen.getByText(setOpenStatusAction.arguments.status!)
+            screen.getByText(setOpenStatusAction.arguments.status!),
         ).toBeInTheDocument()
     })
 
@@ -121,7 +122,7 @@ describe('<Preview />', () => {
         expect(screen.getByText('Snooze for')).toBeInTheDocument()
 
         expect(
-            screen.getByText(snoozeTicketAction.arguments.snooze_timedelta!)
+            screen.getByText(snoozeTicketAction.arguments.snooze_timedelta!),
         ).toBeInTheDocument()
     })
 
@@ -141,7 +142,7 @@ describe('<Preview />', () => {
         expect(screen.getByText('Assign to user:')).toBeInTheDocument()
 
         expect(
-            screen.getByText(setAssigneeAction.arguments.assignee_user!.name)
+            screen.getByText(setAssigneeAction.arguments.assignee_user!.name),
         ).toBeInTheDocument()
     })
 
@@ -152,8 +153,8 @@ describe('<Preview />', () => {
 
         expect(
             screen.getByText(
-                setTeamAssigneeAction.arguments.assignee_team!.name
-            )
+                setTeamAssigneeAction.arguments.assignee_team!.name,
+            ),
         ).toBeInTheDocument()
     })
 
@@ -162,7 +163,7 @@ describe('<Preview />', () => {
 
         expect(screen.getByText('Set subject:')).toBeInTheDocument()
         expect(
-            screen.getByText(setSubjectAction.arguments.subject!)
+            screen.getByText(setSubjectAction.arguments.subject!),
         ).toBeInTheDocument()
     })
 
@@ -171,7 +172,7 @@ describe('<Preview />', () => {
 
         expect(screen.getByText('Send internal note:')).toBeInTheDocument()
         expect(
-            screen.getByText(addInternalNoteAction.title)
+            screen.getByText(addInternalNoteAction.title),
         ).toBeInTheDocument()
     })
 
@@ -179,10 +180,10 @@ describe('<Preview />', () => {
         render(<Preview {...defaultProps} actions={[forwardByEmailAction]} />)
 
         expect(
-            screen.getByText(new RegExp(forwardByEmailAction.title, 'i'))
+            screen.getByText(new RegExp(forwardByEmailAction.title, 'i')),
         ).toBeInTheDocument()
         expect(
-            screen.getByText(forwardByEmailAction.arguments.to!)
+            screen.getByText(forwardByEmailAction.arguments.to!),
         ).toBeInTheDocument()
     })
 
@@ -191,7 +192,7 @@ describe('<Preview />', () => {
             <Preview
                 {...defaultProps}
                 actions={[addTagsAction, addInternalNoteAction]}
-            />
+            />,
         )
 
         expect(screen.getByText('Add tags:')).toBeInTheDocument()
@@ -202,7 +203,7 @@ describe('<Preview />', () => {
         render(<Preview {...defaultProps} actions={[httpAction]} />)
 
         expect(
-            screen.getByText(new RegExp(httpAction.name, 'i'))
+            screen.getByText(new RegExp(httpAction.name, 'i')),
         ).toBeInTheDocument()
     })
 })
@@ -216,7 +217,7 @@ describe('<CustomFieldName />', () => {
         render(
             <CustomFieldName
                 customFieldId={mockTicketInputFieldDefinition.id}
-            />
+            />,
         )
 
         expect(screen.getByText(/Field/i)).toBeInTheDocument()
@@ -228,7 +229,7 @@ describe('<CustomFieldName />', () => {
             data: {},
             isLoading: true,
         } as any)
-        const {container} = render(<CustomFieldName customFieldId={1} />)
+        const { container } = render(<CustomFieldName customFieldId={1} />)
 
         expect(container.firstChild).toBeNull()
     })

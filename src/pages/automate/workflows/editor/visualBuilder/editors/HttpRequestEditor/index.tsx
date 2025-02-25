@@ -1,36 +1,37 @@
-import {Label, Tooltip} from '@gorgias/merchant-ui-kit'
-import {produce} from 'immer'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+
+import { produce } from 'immer'
 import _uniq from 'lodash/uniq'
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
+
+import { Label, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useId from 'hooks/useId'
-import {useDownloadWorkflowConfigurationStepLogs} from 'models/workflows/queries'
+import { useDownloadWorkflowConfigurationStepLogs } from 'models/workflows/queries'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
-import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
+import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {
     extractVariablesFromNode,
     parseWorkflowVariable,
 } from 'pages/automate/workflows/models/variables.model'
-import {WorkflowVariable} from 'pages/automate/workflows/models/variables.types'
+import { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
 import {
     getHTTPRequestNodeErrors,
     getHTTPRequestNodeTouched,
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import {HttpRequestNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { HttpRequestNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import Button from 'pages/common/components/button/Button'
-import {Drawer} from 'pages/common/components/Drawer'
+import { Drawer } from 'pages/common/components/Drawer'
 import Caption from 'pages/common/forms/Caption/Caption'
 import TextInput from 'pages/common/forms/input/TextInput'
 import ToggleInput from 'pages/common/forms/ToggleInput'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {saveFileAsDownloaded} from 'utils/file'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { saveFileAsDownloaded } from 'utils/file'
 
 import TextareaWithVariables from '../../components/variables/TextareaWithVariables'
 import TextInputWithVariables from '../../components/variables/TextInputWithVariables'
 import NodeEditorDrawerHeader from '../../NodeEditorDrawerHeader'
-import css from '../NodeEditor.less'
 import BodyContentTypeSelect from './BodyContentTypeSelect'
 import FormUrlencoded from './FormUrlencoded'
 import Headers from './Headers'
@@ -40,6 +41,8 @@ import TestRequestModal from './TestRequestModal'
 import TestRequestModalWithInputs from './TestRequestModalWithInputs'
 import useSendTestRequest from './useSendTestRequest'
 import Variables from './Variables'
+
+import css from '../NodeEditor.less'
 
 const nameTextLimit = 100
 
@@ -55,7 +58,7 @@ export default function HttpRequestEditor({
         getVariableListInChildren,
         getVariableListForNode,
     } = useVisualBuilderContext()
-    const {isLoading: isTestRequestLoading, sendTestRequest} =
+    const { isLoading: isTestRequestLoading, sendTestRequest } =
         useSendTestRequest(nodeInEdition.data, (result) => {
             dispatch({
                 type: 'SET_HTTP_REQUEST_TEST_REQUEST_RESULT',
@@ -67,11 +70,11 @@ export default function HttpRequestEditor({
     const [isTestRequestModalOpen, setIsTestRequestModalOpen] = useState(false)
     const variablesInUse = useMemo(
         () => getVariableListInChildren(nodeInEdition.id),
-        [getVariableListInChildren, nodeInEdition.id]
+        [getVariableListInChildren, nodeInEdition.id],
     )
     const appDispatch = useAppDispatch()
 
-    const {actionsApps} = useApps()
+    const { actionsApps } = useApps()
     const selectedApp = useMemo(() => {
         if (visualBuilderGraph.apps?.[0]?.type === 'app') {
             const appId = visualBuilderGraph.apps?.[0]?.app_id
@@ -83,11 +86,11 @@ export default function HttpRequestEditor({
         return selectedApp?.auth_type === 'oauth2-token'
     }, [selectedApp?.auth_type])
 
-    const {mutateAsync: downloadEventLogs, isLoading: isDownloadPending} =
+    const { mutateAsync: downloadEventLogs, isLoading: isDownloadPending } =
         useDownloadWorkflowConfigurationStepLogs()
     const handleDownloadHttpRequestEventLogs = useCallback(async () => {
         try {
-            const {data} = await downloadEventLogs([
+            const { data } = await downloadEventLogs([
                 {
                     internal_id: visualBuilderGraph.internal_id,
                     step_id: nodeInEdition.id,
@@ -99,7 +102,7 @@ export default function HttpRequestEditor({
                     nodeInEdition.data.name ?? 'Request name'
                 }-event-logs-${new Date().toISOString()}.csv`,
                 data,
-                'text/csv'
+                'text/csv',
             )
         } catch {
             void appDispatch(
@@ -108,7 +111,7 @@ export default function HttpRequestEditor({
                     allowHTML: true,
                     showDismissButton: true,
                     status: NotificationStatus.Error,
-                })
+                }),
             )
         }
     }, [
@@ -121,26 +124,26 @@ export default function HttpRequestEditor({
     const downloadLogsButtonRef = useRef<HTMLButtonElement>(null)
 
     useEffect(() => {
-        inputRef?.focus({preventScroll: true})
+        inputRef?.focus({ preventScroll: true })
     }, [inputRef])
 
     const isNodeNew = useMemo(
         () => checkNewVisualBuilderNode(nodeInEdition.id),
-        [nodeInEdition.id, checkNewVisualBuilderNode]
+        [nodeInEdition.id, checkNewVisualBuilderNode],
     )
     const workflowVariables = useMemo(
         () => getVariableListForNode(nodeInEdition.id),
-        [getVariableListForNode, nodeInEdition.id]
+        [getVariableListForNode, nodeInEdition.id],
     )
     const variables = useMemo(() => {
         const variables = _uniq(
             extractVariablesFromNode({
                 type: 'http_request',
                 data: nodeInEdition.data,
-            })
+            }),
         )
         return variables.map((variable) =>
-            parseWorkflowVariable(variable, workflowVariables)
+            parseWorkflowVariable(variable, workflowVariables),
         )
     }, [workflowVariables, nodeInEdition.data])
 
@@ -158,12 +161,12 @@ export default function HttpRequestEditor({
                 index,
             })
         },
-        [dispatch, nodeInEdition.id]
+        [dispatch, nodeInEdition.id],
     )
     const handleChangeVariable = useCallback(
         (
             index: number,
-            variable: HttpRequestNodeType['data']['variables'][number]
+            variable: HttpRequestNodeType['data']['variables'][number],
         ) => {
             dispatch({
                 type: 'SET_HTTP_REQUEST_VARIABLE',
@@ -172,7 +175,7 @@ export default function HttpRequestEditor({
                 variable,
             })
         },
-        [dispatch, nodeInEdition.id]
+        [dispatch, nodeInEdition.id],
     )
 
     const triggerNode = visualBuilderGraph.nodes[0]
@@ -182,9 +185,9 @@ export default function HttpRequestEditor({
                 produce(nodeInEdition, (draft) => {
                     draft.data.touched = getHTTPRequestNodeTouched(draft)
                 }),
-                workflowVariables
+                workflowVariables,
             ),
-        [nodeInEdition, workflowVariables]
+        [nodeInEdition, workflowVariables],
     )
 
     const oauth2ToggleId = `oauth2-toggle-${useId()}`
@@ -606,7 +609,7 @@ export default function HttpRequestEditor({
                     result={nodeInEdition.data.testRequestResult}
                     inputs={variables.filter(
                         (variable): variable is WorkflowVariable =>
-                            variable != null
+                            variable != null,
                     )}
                     onChangeVariable={handleChangeVariable}
                     onDeleteVariable={handleDeleteVariable}

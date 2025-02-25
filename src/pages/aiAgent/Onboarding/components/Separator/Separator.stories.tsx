@@ -1,6 +1,7 @@
-import type {Meta, StoryObj} from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 
-import {Separator} from './Separator'
+import { Separator } from './Separator'
+
 import './Separator.less'
 
 const meta = {
@@ -20,25 +21,25 @@ export const Default: Story = {
 }
 
 export const ExtraExtraSmall: Story = {
-    args: {size: 'xxs'},
+    args: { size: 'xxs' },
 }
 
 export const ExtraSmall: Story = {
-    args: {size: 'xs'},
+    args: { size: 'xs' },
 }
 
 export const Small: Story = {
-    args: {size: 's'},
+    args: { size: 's' },
 }
 
 export const Medium: Story = {
-    args: {size: 'm'},
+    args: { size: 'm' },
 }
 
 export const Large: Story = {
-    args: {size: 'l'},
+    args: { size: 'l' },
 }
 
 export const ExtraLarge: Story = {
-    args: {size: 'xl'},
+    args: { size: 'xl' },
 }

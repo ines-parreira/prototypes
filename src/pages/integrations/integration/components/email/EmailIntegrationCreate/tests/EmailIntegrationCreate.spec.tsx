@@ -1,5 +1,6 @@
-import {render, fireEvent, screen} from '@testing-library/react'
 import React from 'react'
+
+import { fireEvent, render, screen } from '@testing-library/react'
 
 import useAppSelector from 'hooks/useAppSelector'
 
@@ -29,7 +30,7 @@ describe('<EmailIntegrationCreate/>', () => {
 
         expect(link).toHaveAttribute(
             'to',
-            '/app/settings/channels/email/new/onboarding'
+            '/app/settings/channels/email/new/onboarding',
         )
     })
 

@@ -1,10 +1,11 @@
-import {screen} from '@testing-library/dom'
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-import {AutomationRateMetric} from 'pages/automate/automate-metrics/AutomationRateMetric'
-import {AUTOMATION_RATE_LABEL} from 'pages/automate/automate-metrics/constants'
+import { screen } from '@testing-library/dom'
+import { render } from '@testing-library/react'
+
+import { MetricTrend } from 'hooks/reporting/useMetricTrend'
+import { AutomationRateMetric } from 'pages/automate/automate-metrics/AutomationRateMetric'
+import { AUTOMATION_RATE_LABEL } from 'pages/automate/automate-metrics/constants'
 
 const trend: MetricTrend = {
     isFetching: false,
@@ -29,7 +30,7 @@ describe('AutomationRateMetric', () => {
     })
 
     it('should render a loading state', () => {
-        render(<AutomationRateMetric trend={{...trend, isFetching: true}} />)
+        render(<AutomationRateMetric trend={{ ...trend, isFetching: true }} />)
 
         expect(screen.queryByText('300%')).not.toBeInTheDocument()
     })

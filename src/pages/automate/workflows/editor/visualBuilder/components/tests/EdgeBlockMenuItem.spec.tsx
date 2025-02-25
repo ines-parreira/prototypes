@@ -1,7 +1,8 @@
-import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
 import React from 'react'
 
-import {DropdownContext} from 'pages/common/components/dropdown/Dropdown'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+
+import { DropdownContext } from 'pages/common/components/dropdown/Dropdown'
 
 import MenuItem from '../MenuItem'
 
@@ -26,7 +27,7 @@ describe('<EdgeBlockMenuItem />', () => {
                     icon="icon"
                     onClick={mockOnClick}
                 />
-            </DropdownContext.Provider>
+            </DropdownContext.Provider>,
         )
 
         expect(screen.getByText('label')).toBeInTheDocument()
@@ -62,7 +63,7 @@ describe('<EdgeBlockMenuItem />', () => {
                     disabledText="disabled text"
                     floatingRef={document.body}
                 />
-            </DropdownContext.Provider>
+            </DropdownContext.Provider>,
         )
 
         act(() => {

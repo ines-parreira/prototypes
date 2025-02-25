@@ -3,8 +3,8 @@
  * polling until the backend is ready. Once the
  * backend is hooked up, this file can be deleted.
  */
-import {ApiListResponseCursorPagination} from 'models/api/types'
-import {TicketPartial as ApiTicketPartial} from 'models/ticket/types'
+import { ApiListResponseCursorPagination } from 'models/api/types'
+import { TicketPartial as ApiTicketPartial } from 'models/ticket/types'
 
 export type Response = ApiListResponseCursorPagination<ApiTicketPartial[]>
 
@@ -142,7 +142,7 @@ export class MockedTickets {
                 : {
                       ...ticket,
                       updated_datetime: new Date().toString(),
-                  }
+                  },
         )
         this.notify()
     }

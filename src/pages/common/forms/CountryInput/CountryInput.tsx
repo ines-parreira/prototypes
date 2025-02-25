@@ -1,18 +1,18 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
 import React, {
-    useState,
+    ComponentProps,
+    useCallback,
+    useEffect,
     useMemo,
     useRef,
-    useCallback,
-    ComponentProps,
-    useEffect,
+    useState,
 } from 'react'
 
-import {ReactCountryFlag as CountryFlag} from 'react-country-flag'
+import classnames from 'classnames'
+import { ReactCountryFlag as CountryFlag } from 'react-country-flag'
 
-import {countries} from 'config/countries'
+import { Label } from '@gorgias/merchant-ui-kit'
 
+import { countries } from 'config/countries'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
@@ -23,8 +23,9 @@ import SelectInputBox, {
 } from 'pages/common/forms/input/SelectInputBox'
 import TextInput from 'pages/common/forms/input/TextInput'
 
+import { getCountryLabel, getCountrySelectOptions } from './utils'
+
 import css from './CountryInput.less'
-import {getCountryLabel, getCountrySelectOptions} from './utils'
 
 type Props = {
     allowedCountries?: string[]
@@ -47,13 +48,13 @@ const CountryInput = ({
     const inputRef = useRef<HTMLInputElement>(null)
     const floatingRef = useRef<HTMLInputElement>(null)
     const [currentCountry, setCurrentCountry] = useState(
-        value || defaultCountry
+        value || defaultCountry,
     )
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
     const popularOptions = useMemo(
         () => getCountrySelectOptions(countries, popularCountries),
-        [popularCountries]
+        [popularCountries],
     )
 
     const handleChange = useCallback(
@@ -62,7 +63,7 @@ const CountryInput = ({
             setIsDropdownOpen(false)
             onChange(countryCode)
         },
-        [onChange, setCurrentCountry]
+        [onChange, setCurrentCountry],
     )
 
     useEffect(() => {

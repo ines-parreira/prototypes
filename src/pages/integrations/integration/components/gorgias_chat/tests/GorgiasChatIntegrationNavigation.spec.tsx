@@ -1,16 +1,17 @@
-import {render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import {
     GORGIAS_CHAT_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
 } from 'constants/integration'
-import {entitiesInitialState} from 'fixtures/entities'
-import {getHasAutomate} from 'state/billing/selectors'
-import {RootState, StoreDispatch} from 'state/types'
+import { entitiesInitialState } from 'fixtures/entities'
+import { getHasAutomate } from 'state/billing/selectors'
+import { RootState, StoreDispatch } from 'state/types'
 
 import GorgiasChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation'
 
@@ -49,7 +50,7 @@ describe('<GorgiasChatIntegrationNavigation />', () => {
     }
 
     const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
-    const store = mockStore({entities: entitiesInitialState})
+    const store = mockStore({ entities: entitiesInitialState })
 
     const storeInstallationIssue = mockStore({
         entities: {
@@ -69,7 +70,7 @@ describe('<GorgiasChatIntegrationNavigation />', () => {
                 <GorgiasChatIntegrationNavigation
                     integration={fromJS(integration)}
                 ></GorgiasChatIntegrationNavigation>
-            </Provider>
+            </Provider>,
         )
         expect(screen.getByText('Automate')).toBeInTheDocument()
     })
@@ -81,30 +82,30 @@ describe('<GorgiasChatIntegrationNavigation />', () => {
                 <GorgiasChatIntegrationNavigation
                     integration={fromJS(integration)}
                 ></GorgiasChatIntegrationNavigation>
-            </Provider>
+            </Provider>,
         )
         expect(screen.queryByText('Automate')).not.toBeInTheDocument()
     })
 
     it('should render GorgiasChatIntegrationNavigation', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <GorgiasChatIntegrationNavigation
                     integration={fromJS(integration)}
                 ></GorgiasChatIntegrationNavigation>
-            </Provider>
+            </Provider>,
         )
 
         expect(container).toMatchSnapshot()
     })
 
     it('should render GorgiasChatIntegrationNavigation with an installation issue icon', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={storeInstallationIssue}>
                 <GorgiasChatIntegrationNavigation
                     integration={fromJS(integration)}
                 ></GorgiasChatIntegrationNavigation>
-            </Provider>
+            </Provider>,
         )
 
         expect(container).toMatchSnapshot()

@@ -1,8 +1,10 @@
-import {EmailDomain} from '@gorgias/api-queries'
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {assumeMock} from 'utils/testing'
+import { render, screen } from '@testing-library/react'
+
+import { EmailDomain } from '@gorgias/api-queries'
+
+import { assumeMock } from 'utils/testing'
 
 import * as helpers from '../../../helpers'
 import RecordDiffStatus from '../RecordDiffStatus'
@@ -78,7 +80,7 @@ describe('RecordsTable component', () => {
 
         expect(removeDomainMock).toHaveBeenCalledWith(
             domain.data.sending_dns_records,
-            'gorgias.com'
+            'gorgias.com',
         )
     })
 

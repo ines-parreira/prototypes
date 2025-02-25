@@ -1,74 +1,74 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
 import {
     useClosedTicketsMetric,
     useCustomerSatisfactionMetric,
     useMedianFirstResponseTimeMetric,
     useMedianResolutionTimeMetric,
-    useTicketsRepliedMetric,
     useMessagesSentMetric,
     useOnlineTimeMetric,
     useTicketAverageHandleTimeMetric,
+    useTicketsRepliedMetric,
 } from 'hooks/reporting/metrics'
-import {useOneTouchTicketsPercentageMetricTrend} from 'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricTrend'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-import {useMessagesSentPerHour} from 'hooks/reporting/useMessagesSentPerHour'
-import {useTicketsClosedPerHour} from 'hooks/reporting/useTicketsClosedPerHour'
-import {useTicketsRepliedPerHour} from 'hooks/reporting/useTicketsRepliedPerHour'
+import { useOneTouchTicketsPercentageMetricTrend } from 'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricTrend'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useMessagesSentPerHour } from 'hooks/reporting/useMessagesSentPerHour'
+import { useTicketsClosedPerHour } from 'hooks/reporting/useTicketsClosedPerHour'
+import { useTicketsRepliedPerHour } from 'hooks/reporting/useTicketsRepliedPerHour'
 
 export function useAgentsSummaryMetrics() {
-    const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone } = useNewStatsFilters()
     const customerSatisfactionMetric = useCustomerSatisfactionMetric(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
     const percentageOfClosedTicketsMetric = useClosedTicketsMetric(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
     const closedTicketsMetric = useClosedTicketsMetric(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
     const medianFirstResponseTimeMetric = useMedianFirstResponseTimeMetric(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
     const messagesSentMetric = useMessagesSentMetric(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
     const medianResolutionTimeMetric = useMedianResolutionTimeMetric(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
     const ticketsRepliedMetric = useTicketsRepliedMetric(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
     const oneTouchTicketsMetric = useOneTouchTicketsPercentageMetricTrend(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
     const repliedTicketsPerHourMetric = useTicketsRepliedPerHour(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
     const onlineTimeMetric = useOnlineTimeMetric(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
     const messagesSentPerHourMetric = useMessagesSentPerHour(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
     const closedTicketsPerHourMetric = useTicketsClosedPerHour(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
     const ticketHandleTimeMetric = useTicketAverageHandleTimeMetric(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
 
     const loading = useMemo(() => {

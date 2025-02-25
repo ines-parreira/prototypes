@@ -1,6 +1,8 @@
-import {Badge} from '@gorgias/merchant-ui-kit'
+import React, { useState } from 'react'
+
 import classnames from 'classnames'
-import React, {useState} from 'react'
+
+import { Badge } from '@gorgias/merchant-ui-kit'
 
 import keymap from 'config/shortcuts'
 import useShortcuts from 'hooks/useShortcuts'
@@ -58,18 +60,18 @@ export default function KeyboardHelp() {
                                                 type="grey"
                                                 className={classnames(
                                                     css.combo,
-                                                    'mr-2'
+                                                    'mr-2',
                                                 )}
                                             >
                                                 {shortcutManager.getActionKeys(
-                                                    action
+                                                    action,
                                                 )}
                                             </Badge>
 
                                             {action.description}
                                         </div>
                                     )
-                                }
+                                },
                             )}
                         </div>
                     )

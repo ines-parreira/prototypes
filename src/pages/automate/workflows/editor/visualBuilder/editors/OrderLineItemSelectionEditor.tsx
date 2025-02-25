@@ -1,11 +1,12 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import React, {useCallback, useMemo} from 'react'
+import React, { useCallback, useMemo } from 'react'
 
-import {useTranslationsPreviewContext} from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
-import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
-import {OrderLineItemSelectionNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import {MessageContent} from 'pages/automate/workflows/models/workflowConfiguration.types'
-import {Drawer} from 'pages/common/components/Drawer'
+import { Label } from '@gorgias/merchant-ui-kit'
+
+import { useTranslationsPreviewContext } from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
+import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
+import { OrderLineItemSelectionNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { MessageContent } from 'pages/automate/workflows/models/workflowConfiguration.types'
+import { Drawer } from 'pages/common/components/Drawer'
 import Caption from 'pages/common/forms/Caption/Caption'
 
 import MessageContentFormField from '../components/MessageContentFormField'
@@ -21,8 +22,8 @@ export default function OrderLineItemSelectionEditor({
 }: {
     nodeInEdition: OrderLineItemSelectionNodeType
 }) {
-    const {dispatch, getVariableListForNode} = useVisualBuilderContext()
-    const {previewLanguage} = useTranslationsPreviewContext()
+    const { dispatch, getVariableListForNode } = useVisualBuilderContext()
+    const { previewLanguage } = useTranslationsPreviewContext()
     const handleUpdateContent = useCallback(
         (content: MessageContent) => {
             dispatch({
@@ -31,11 +32,11 @@ export default function OrderLineItemSelectionEditor({
                 content,
             })
         },
-        [dispatch, nodeInEdition.id]
+        [dispatch, nodeInEdition.id],
     )
     const workflowVariables = useMemo(
         () => getVariableListForNode(nodeInEdition.id),
-        [getVariableListForNode, nodeInEdition.id]
+        [getVariableListForNode, nodeInEdition.id],
     )
     return (
         <>

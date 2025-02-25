@@ -1,15 +1,16 @@
-import {ListMacrosParams, Macro} from '@gorgias/api-queries'
-import {AxiosRequestConfig} from 'axios'
+import { AxiosRequestConfig } from 'axios'
+
+import { ListMacrosParams, Macro } from '@gorgias/api-queries'
 
 import client from 'models/api/resources'
-import {ApiListResponseCursorPagination} from 'models/api/types'
-import {deepMapKeysToSnakeCase} from 'models/api/utils'
+import { ApiListResponseCursorPagination } from 'models/api/types'
+import { deepMapKeysToSnakeCase } from 'models/api/utils'
 
-import {MacroDraft} from './types'
+import { MacroDraft } from './types'
 
 export const fetchMacros = async (
     options: ListMacrosParams = {},
-    config: AxiosRequestConfig = {}
+    config: AxiosRequestConfig = {},
 ) => {
     const params: Record<string, unknown> = deepMapKeysToSnakeCase(options)
 
@@ -24,7 +25,7 @@ export const fetchMacros = async (
                 indexes: null,
             },
             ...config,
-        }
+        },
     )
     return res
 }

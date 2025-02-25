@@ -1,7 +1,7 @@
-import {UseEnrichedPostReportingQueryData} from 'models/reporting/queries'
-import {EnrichmentFields} from 'models/reporting/types'
+import { UseEnrichedPostReportingQueryData } from 'models/reporting/queries'
+import { EnrichmentFields } from 'models/reporting/types'
 
-export type IDRecord<IDKey extends string> = {[K in IDKey]: any}
+export type IDRecord<IDKey extends string> = { [K in IDKey]: any }
 
 export type KeyedRecord<keys extends string> = {
     [K in keys]: any
@@ -25,7 +25,7 @@ export const withEnrichment = <
     }>,
     idField: ID,
     enrichmentFields: K[],
-    enrichmentIdField: K
+    enrichmentIdField: K,
 ): UseEnrichedPostReportingQueryData<{
     data: (MergedRecord<T, K | EnrichmentFields> & IDRecord<ID>)[]
 }> => {
@@ -36,7 +36,7 @@ export const withEnrichment = <
                 res.data,
                 idField,
                 enrichmentFields,
-                enrichmentIdField
+                enrichmentIdField,
             ),
         },
     }
@@ -53,7 +53,7 @@ const selectWithEnrichment = <
     },
     idField: ID,
     enrichmentFields: K[],
-    enrichmentIdField: K
+    enrichmentIdField: K,
 ): (MergedRecord<T, K | EnrichmentFields> & IDRecord<ID>)[] => {
     return data.data.map((result) => ({
         ...result,
@@ -63,8 +63,8 @@ const selectWithEnrichment = <
             data.enrichment.find(
                 (enrichedResult) =>
                     String(enrichedResult[enrichmentIdField]) ===
-                    String(result[idField])
-            )
+                    String(result[idField]),
+            ),
         ),
     }))
 }
@@ -72,12 +72,12 @@ const selectWithEnrichment = <
 const merge = <T extends string, K extends string, ID extends string>(
     result: KeyedRecord<T> & IDRecord<ID>,
     fields: K[],
-    enrichment?: KeyedRecord<K>
+    enrichment?: KeyedRecord<K>,
 ): MergedRecord<T, K | EnrichmentFields> & IDRecord<ID> => {
     return fields.reduce(
         (obj, field) => {
-            return {...obj, [field]: enrichment?.[field] || null}
+            return { ...obj, [field]: enrichment?.[field] || null }
         },
-        result as MergedRecord<T, K | EnrichmentFields> & IDRecord<ID>
+        result as MergedRecord<T, K | EnrichmentFields> & IDRecord<ID>,
     )
 }

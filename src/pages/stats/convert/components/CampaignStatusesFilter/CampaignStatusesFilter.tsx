@@ -1,32 +1,33 @@
+import React, { useCallback, useMemo } from 'react'
+
 import _noop from 'lodash/noop'
-import React, {useCallback, useMemo} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {InferredCampaignStatus} from 'models/convert/campaign/types'
+import { InferredCampaignStatus } from 'models/convert/campaign/types'
 import {
     withDefaultLogicalOperator,
     withLogicalOperator,
 } from 'models/reporting/queryFactories/utils'
-import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
+import { FilterKey, StatsFiltersWithLogicalOperator } from 'models/stat/types'
 import Filter from 'pages/stats/common/components/Filter'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-import {FilterLabels} from 'pages/stats/common/filters/constants'
-import {logSegmentEvent} from 'pages/stats/common/filters/helpers'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
+import { FilterLabels } from 'pages/stats/common/filters/constants'
+import { logSegmentEvent } from 'pages/stats/common/filters/helpers'
 import {
     OptionalFilterProps,
     RemovableFilter,
 } from 'pages/stats/common/filters/types'
-import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
-import {DropdownOption} from 'pages/stats/types'
-import {getSavedFiltersWithLogicalOperators} from 'state/stats/selectors'
-import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
-import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
+import { useCampaignStatsFilters } from 'pages/stats/convert/hooks/useCampaignStatsFilters'
+import { DropdownOption } from 'pages/stats/types'
+import { getSavedFiltersWithLogicalOperators } from 'state/stats/selectors'
+import { mergeStatsFiltersWithLogicalOperator } from 'state/stats/statsSlice'
+import { statFiltersClean, statFiltersDirty } from 'state/ui/stats/actions'
 import {
     removeFilterFromSavedFilterDraft,
     upsertSavedFilterFilter,
 } from 'state/ui/stats/filtersSlice'
-import {getCleanStatsFiltersWithLogicalOperators} from 'state/ui/stats/selectors'
+import { getCleanStatsFiltersWithLogicalOperators } from 'state/ui/stats/selectors'
 
 const filterOptions = [
     {
@@ -48,7 +49,7 @@ type Props = {
         value: Exclude<
             StatsFiltersWithLogicalOperator[FilterKey.CampaignStatuses],
             undefined
-        >
+        >,
     ) => void
     dispatchRemove: () => void
     dispatchStatFiltersDirty?: () => void
@@ -69,7 +70,7 @@ export default function CampaignStatusesFilter({
 }: Props) {
     const selectedCampaignStatuses = useMemo(
         () => value?.values || [],
-        [value?.values]
+        [value?.values],
     )
 
     const selectedOptions: DropdownOption[] = useMemo(
@@ -78,7 +79,7 @@ export default function CampaignStatusesFilter({
                 label: status,
                 value: status,
             })) ?? [],
-        [selectedCampaignStatuses]
+        [selectedCampaignStatuses],
     )
 
     const handleFilterValuesChange = useCallback(
@@ -88,7 +89,7 @@ export default function CampaignStatusesFilter({
                 operator: value?.operator || LogicalOperatorEnum.ONE_OF,
             })
         },
-        [dispatchUpdate, value?.operator]
+        [dispatchUpdate, value?.operator],
     )
 
     const onOptionChange = useCallback(
@@ -96,8 +97,8 @@ export default function CampaignStatusesFilter({
             if (selectedCampaignStatuses.includes(option.value)) {
                 handleFilterValuesChange(
                     selectedCampaignStatuses.filter(
-                        (status) => status !== option.value
-                    )
+                        (status) => status !== option.value,
+                    ),
                 )
             } else {
                 handleFilterValuesChange([
@@ -106,7 +107,7 @@ export default function CampaignStatusesFilter({
                 ])
             }
         },
-        [handleFilterValuesChange, selectedCampaignStatuses]
+        [handleFilterValuesChange, selectedCampaignStatuses],
     )
 
     const onSelectAllFilters = useCallback(() => {
@@ -133,7 +134,7 @@ export default function CampaignStatusesFilter({
     return (
         <Filter
             filterName={FilterLabels[FilterKey.CampaignStatuses]}
-            filterErrors={{warningType}}
+            filterErrors={{ warningType }}
             filterOptionGroups={filterOptions}
             selectedOptions={selectedOptions}
             onChangeOption={onOptionChange}
@@ -157,32 +158,32 @@ export const CampaignStatusesFilterFromContext = ({
     isDisabled,
 }: RemovableFilter & OptionalFilterProps) => {
     const dispatch = useAppDispatch()
-    const {selectedCampaignStatuses} = useCampaignStatsFilters()
+    const { selectedCampaignStatuses } = useCampaignStatsFilters()
     const statsFilters = useAppSelector(
-        getCleanStatsFiltersWithLogicalOperators
+        getCleanStatsFiltersWithLogicalOperators,
     )
     return (
         <CampaignStatusesFilter
             value={withLogicalOperator(
                 selectedCampaignStatuses,
-                statsFilters[FilterKey.CampaignStatuses]?.operator
+                statsFilters[FilterKey.CampaignStatuses]?.operator,
             )}
             initializeAsOpen={initializeAsOpen}
             onRemove={onRemove}
             dispatchUpdate={(
-                filter: StatsFiltersWithLogicalOperator[FilterKey.CampaignStatuses]
+                filter: StatsFiltersWithLogicalOperator[FilterKey.CampaignStatuses],
             ) =>
                 dispatch(
                     mergeStatsFiltersWithLogicalOperator({
                         campaignStatuses: filter,
-                    })
+                    }),
                 )
             }
             dispatchRemove={() =>
                 dispatch(
                     mergeStatsFiltersWithLogicalOperator({
                         campaignStatuses: emptyFilter,
-                    })
+                    }),
                 )
             }
             dispatchStatFiltersDirty={() => dispatch(statFiltersDirty())}
@@ -201,7 +202,7 @@ export const CampaignStatusesFilterFromSavedContext = ({
 }: RemovableFilter & OptionalFilterProps) => {
     const dispatch = useAppDispatch()
     const selectedCampaignStatuses = useAppSelector(
-        getSavedFiltersWithLogicalOperators
+        getSavedFiltersWithLogicalOperators,
     )[FilterKey.CampaignStatuses]
 
     return (
@@ -215,21 +216,21 @@ export const CampaignStatusesFilterFromSavedContext = ({
                 filter: Exclude<
                     StatsFiltersWithLogicalOperator[FilterKey.CampaignStatuses],
                     undefined
-                >
+                >,
             ) =>
                 dispatch(
                     upsertSavedFilterFilter({
                         operator: filter.operator,
                         values: filter.values.map(String),
                         member: FilterKey.CampaignStatuses,
-                    })
+                    }),
                 )
             }
             dispatchRemove={() =>
                 dispatch(
                     removeFilterFromSavedFilterDraft({
                         filterKey: FilterKey.CampaignStatuses,
-                    })
+                    }),
                 )
             }
         />

@@ -1,13 +1,15 @@
-import {Label, Badge} from '@gorgias/merchant-ui-kit'
+import React, { memo } from 'react'
+
 import classNames from 'classnames'
-import React, {memo} from 'react'
-import {Handle, Position, NodeProps} from 'reactflow'
+import { Handle, NodeProps, Position } from 'reactflow'
+
+import { Badge, Label } from '@gorgias/merchant-ui-kit'
 
 import {
-    VisualBuilderNodeProps,
     useVisualBuilderNodeProps,
+    VisualBuilderNodeProps,
 } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
-import {ChannelTriggerNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { ChannelTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 import css from './Node.less'
 
@@ -15,10 +17,10 @@ type Props = VisualBuilderNodeProps & {
     label: string
 }
 
-const ChannelTriggerNode = memo(function ChannelTriggerNode({label}: Props) {
+const ChannelTriggerNode = memo(function ChannelTriggerNode({ label }: Props) {
     return (
         <div>
-            <div className={css.node} style={{height: 98}}>
+            <div className={css.node} style={{ height: 98 }}>
                 <Handle
                     type="target"
                     position={Position.Top}
@@ -41,7 +43,7 @@ const ChannelTriggerNode = memo(function ChannelTriggerNode({label}: Props) {
 })
 
 export default function TriggerButtonNodeWrapper(
-    node: NodeProps<ChannelTriggerNodeType['data']>
+    node: NodeProps<ChannelTriggerNodeType['data']>,
 ) {
     const label = node.data.label
     const commonProps = useVisualBuilderNodeProps(node)

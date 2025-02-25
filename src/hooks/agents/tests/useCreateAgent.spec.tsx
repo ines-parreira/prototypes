@@ -1,19 +1,19 @@
-import {QueryClient, useQueryClient} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
+import { QueryClient, useQueryClient } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {agents} from 'fixtures/agents'
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
+import { agents } from 'fixtures/agents'
+import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import {
     agentsKeys,
     useCreateAgent as usePureCreateAgent,
 } from 'models/agents/queries'
-import {CREATE_AGENT_SUCCESS} from 'state/agents/constants'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {assumeMock} from 'utils/testing'
+import { CREATE_AGENT_SUCCESS } from 'state/agents/constants'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { assumeMock } from 'utils/testing'
 
-import {handleError} from '../errorHandler'
-import {useCreateAgent} from '../useCreateAgent'
+import { handleError } from '../errorHandler'
+import { useCreateAgent } from '../useCreateAgent'
 
 jest.mock('@tanstack/react-query')
 jest.mock('models/agents/queries')
@@ -31,7 +31,7 @@ describe('useCreateAgent', () => {
             () =>
                 ({
                     invalidateQueries: invalidateQueriesMock,
-                }) as unknown as QueryClient
+                }) as unknown as QueryClient,
         )
     })
 
@@ -41,7 +41,7 @@ describe('useCreateAgent', () => {
         usePureCreateAgentMock.mock.calls[0][0]?.onSuccess!(
             axiosSuccessResponse(agents[0]),
             [agents[0]],
-            undefined
+            undefined,
         )
 
         expect(useQueryClient().invalidateQueries).toHaveBeenLastCalledWith({
@@ -67,14 +67,14 @@ describe('useCreateAgent', () => {
         usePureCreateAgentMock.mock.calls[0][0]?.onError!(
             myError,
             [agents[0]],
-            undefined
+            undefined,
         )
 
         expect(handleError).toHaveBeenNthCalledWith(
             1,
             myError,
             'Failed to create team member',
-            mockedDispatch
+            mockedDispatch,
         )
     })
 })

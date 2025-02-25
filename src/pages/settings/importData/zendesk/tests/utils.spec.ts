@@ -3,23 +3,22 @@ import {
     DateFormatType,
     TimeFormatType,
 } from 'constants/datetime'
-import {getDateAndTimeFormat} from 'utils/datetime'
+import { getDateAndTimeFormat } from 'utils/datetime'
 
-import {getImportCompletionDate} from '../utils'
-
+import { getImportCompletionDate } from '../utils'
 import {
     failedImport,
     pendingImport,
     successImport,
-    timezoneUtc,
     timezoneParis,
+    timezoneUtc,
 } from './fixtures'
 
 describe('utils', () => {
     const compactDatetimeFormat = getDateAndTimeFormat(
         DateFormatType.en_US,
         TimeFormatType.AmPm,
-        DateAndTimeFormatting.CompactDateWithTime
+        DateAndTimeFormatting.CompactDateWithTime,
     )
     describe('getImportCompletionDate()', () => {
         it.each([
@@ -34,10 +33,10 @@ describe('utils', () => {
                     getImportCompletionDate(
                         integration,
                         compactDatetimeFormat,
-                        timezone
-                    )
+                        timezone,
+                    ),
                 ).toEqual(expectedString)
-            }
+            },
         )
     })
 })

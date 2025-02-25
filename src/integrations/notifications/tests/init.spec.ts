@@ -1,4 +1,4 @@
-import {registerNotification} from 'common/notifications'
+import { registerNotification } from 'common/notifications'
 
 jest.mock('common/notifications', () => ({
     registerNotification: jest.fn(),
@@ -9,7 +9,7 @@ describe('init', () => {
         require('../init')
 
         expect(registerNotification).toHaveBeenCalledWith(
-            expect.objectContaining({type: 'email-domain.verified'})
+            expect.objectContaining({ type: 'email-domain.verified' }),
         )
     })
 })

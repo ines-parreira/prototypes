@@ -1,28 +1,28 @@
-import {fireEvent, render, screen, within} from '@testing-library/react'
-import {fromJS, Map} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import type {ReactNode} from 'react'
+import type { ReactNode } from 'react'
 import React from 'react'
-import {Provider} from 'react-redux'
-import {StaticRouter} from 'react-router-dom'
+
+import { fireEvent, render, screen, within } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { Provider } from 'react-redux'
+import { StaticRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
-import {NavBarProvider} from 'common/navigation/components/NavBarProvider'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {ThemeProvider} from 'core/theme'
-import {account, automationSubscriptionProductPrices} from 'fixtures/account'
-import {billingState} from 'fixtures/billing'
-import {integrationsState} from 'fixtures/integrations'
-import {user} from 'fixtures/users'
-import {AiAgentOnboardingWizardStep} from 'models/aiAgent/types'
-import {getStoreConfigurationFixture} from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
-import {useStoreConfiguration} from 'pages/aiAgent/hooks/useStoreConfiguration'
-import {useWelcomePageAcknowledged} from 'pages/aiAgent/hooks/useWelcomePageAcknowledged'
-import {RootState} from 'state/types'
+import { NavBarProvider } from 'common/navigation/components/NavBarProvider'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { ThemeProvider } from 'core/theme'
+import { account, automationSubscriptionProductPrices } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
+import { integrationsState } from 'fixtures/integrations'
+import { user } from 'fixtures/users'
+import { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
+import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
+import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
+import { useWelcomePageAcknowledged } from 'pages/aiAgent/hooks/useWelcomePageAcknowledged'
+import { RootState } from 'state/types'
+import { assumeMock } from 'utils/testing'
 
-import {assumeMock} from 'utils/testing'
-
-import {AiAgentNavbar} from '../AiAgentNavbar'
+import { AiAgentNavbar } from '../AiAgentNavbar'
 
 jest.mock('pages/aiAgent/hooks/useStoreConfiguration')
 jest.mock('pages/aiAgent/hooks/useWelcomePageAcknowledged')
@@ -40,7 +40,7 @@ jest.mock('common/notifications/components/Button', () => ({
     default: () => <div>NotificationsButton</div>,
 }))
 
-const wrapper = ({children}: {children: ReactNode}) => (
+const wrapper = ({ children }: { children: ReactNode }) => (
     <StaticRouter location="/app/ai-agent/shopify/teststore1/optimize">
         <NavBarProvider>{children}</NavBarProvider>
     </StaticRouter>
@@ -111,7 +111,7 @@ describe('<AiAgentNavbar />', () => {
                 deactivated_datetime: null,
                 type: 'shopify',
             },
-        ])
+        ]),
     )
 
     const defaultState: Partial<RootState> = {
@@ -140,7 +140,7 @@ describe('<AiAgentNavbar />', () => {
                         <AiAgentNavbar />
                     </ThemeProvider>
                 </Provider>,
-                {wrapper}
+                { wrapper },
             )
 
             const navbar = within(screen.getByTestId('ai-agent-navbar'))
@@ -171,7 +171,7 @@ describe('<AiAgentNavbar />', () => {
         })
 
         it('should not render ai agent navbar without automate', () => {
-            const {queryByText} = render(
+            const { queryByText } = render(
                 <Provider
                     store={mockStore({
                         ...defaultState,
@@ -181,7 +181,7 @@ describe('<AiAgentNavbar />', () => {
                         <AiAgentNavbar />
                     </ThemeProvider>
                 </Provider>,
-                {wrapper}
+                { wrapper },
             )
 
             expect(queryByText('teststore1')).not.toBeInTheDocument()
@@ -204,7 +204,7 @@ describe('<AiAgentNavbar />', () => {
                 },
                 isLoading: false,
             })
-            const {queryByText, queryAllByText} = render(
+            const { queryByText, queryAllByText } = render(
                 <Provider
                     store={mockStore({
                         ...defaultState,
@@ -221,18 +221,18 @@ describe('<AiAgentNavbar />', () => {
                         <AiAgentNavbar />
                     </ThemeProvider>
                 </Provider>,
-                {wrapper}
+                { wrapper },
             )
 
             expect(queryByText('teststore1')).toBeInTheDocument()
             expect(queryAllByText('Optimize').length).toBe(0)
             expect(queryAllByText('Get Started').length).toBeGreaterThanOrEqual(
-                1
+                1,
             )
         })
 
         it('should render no stores', () => {
-            const {queryByText} = render(
+            const { queryByText } = render(
                 <Provider
                     store={mockStore({
                         ...defaultState,
@@ -252,7 +252,7 @@ describe('<AiAgentNavbar />', () => {
                         <AiAgentNavbar />
                     </ThemeProvider>
                 </Provider>,
-                {wrapper}
+                { wrapper },
             )
 
             expect(queryByText('teststore1')).not.toBeInTheDocument()
@@ -263,7 +263,7 @@ describe('<AiAgentNavbar />', () => {
                 [FeatureFlagKey.StandaloneConvAiOverviewPage]: true,
             })
 
-            const {queryByText} = render(
+            const { queryByText } = render(
                 <Provider
                     store={mockStore({
                         ...defaultState,
@@ -280,7 +280,7 @@ describe('<AiAgentNavbar />', () => {
                         <AiAgentNavbar />
                     </ThemeProvider>
                 </Provider>,
-                {wrapper}
+                { wrapper },
             )
 
             expect(queryByText('Overview')).toBeInTheDocument()
@@ -291,7 +291,7 @@ describe('<AiAgentNavbar />', () => {
                 [FeatureFlagKey.StandaloneConvAiOverviewPage]: false,
             })
 
-            const {queryByText} = render(
+            const { queryByText } = render(
                 <Provider
                     store={mockStore({
                         ...defaultState,
@@ -308,7 +308,7 @@ describe('<AiAgentNavbar />', () => {
                         <AiAgentNavbar />
                     </ThemeProvider>
                 </Provider>,
-                {wrapper}
+                { wrapper },
             )
 
             expect(queryByText('Overview')).not.toBeInTheDocument()

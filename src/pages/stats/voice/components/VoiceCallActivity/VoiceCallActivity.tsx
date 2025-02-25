@@ -1,15 +1,16 @@
-import classNames from 'classnames'
 import React from 'react'
 
-import {VoiceCallStatus} from 'models/voiceCall/types'
-import {isFinalVoiceCallStatus} from 'models/voiceCall/utils'
+import classNames from 'classnames'
+
+import { VoiceCallStatus } from 'models/voiceCall/types'
+import { isFinalVoiceCallStatus } from 'models/voiceCall/utils'
 import VoiceCallAgentLabel from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'
 import VoiceCallCustomerLabel from 'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel'
-import {AgentLabel, CustomerLabel} from 'pages/common/utils/labels'
+import { AgentLabel, CustomerLabel } from 'pages/common/utils/labels'
 
-import {isInboundVoiceCallSummary, VoiceCallSummary} from '../../models/types'
+import { isInboundVoiceCallSummary, VoiceCallSummary } from '../../models/types'
+import { isLiveCallRinging } from '../LiveVoice/utils'
 
-import {isLiveCallRinging} from '../LiveVoice/utils'
 import css from './VoiceCallActivity.less'
 
 type Props = {
@@ -18,7 +19,7 @@ type Props = {
 
 const UNKNOWN_AGENT = 'Unknown agent'
 
-const InboundVoiceCallActivity = ({voiceCall}: Props) => {
+const InboundVoiceCallActivity = ({ voiceCall }: Props) => {
     return (
         <div className={css.callActivityContainer}>
             <i className={classNames('material-icons', css.phoneIcon)}>
@@ -60,7 +61,7 @@ const InboundVoiceCallActivity = ({voiceCall}: Props) => {
     )
 }
 
-const OutboundVoiceCallActivity = ({voiceCall}: Props) => {
+const OutboundVoiceCallActivity = ({ voiceCall }: Props) => {
     const unknownAgent = voiceCall.phoneNumberSource ?? UNKNOWN_AGENT
 
     return (
@@ -106,7 +107,7 @@ const OutboundVoiceCallActivity = ({voiceCall}: Props) => {
     )
 }
 
-export default function VoiceCallActivity({voiceCall}: Props) {
+export default function VoiceCallActivity({ voiceCall }: Props) {
     return (
         <div>
             {isInboundVoiceCallSummary(voiceCall) ? (

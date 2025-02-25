@@ -1,5 +1,5 @@
-import {OrderDirection} from 'models/api/types'
-import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
+import { OrderDirection } from 'models/api/types'
+import { HelpdeskMessageCubeWithJoins } from 'models/reporting/cubes/HelpdeskMessageCube'
 import {
     TicketCubeWithJoins,
     TicketDimension,
@@ -10,10 +10,10 @@ import {
     TicketMessagesDimension,
     TicketMessagesMember,
 } from 'models/reporting/cubes/TicketMessagesCube'
-import {CHANNEL_DIMENSION} from 'models/reporting/queryFactories/support-performance/constants'
-import {ReportingFilterOperator, ReportingQuery} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
-import {subtractDaysFromDate} from 'utils/date'
+import { CHANNEL_DIMENSION } from 'models/reporting/queryFactories/support-performance/constants'
+import { ReportingFilterOperator, ReportingQuery } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
+import { subtractDaysFromDate } from 'utils/date'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
@@ -29,13 +29,13 @@ export const ZERO_TOUCH_TICKETS_MAX_DAYS_INTO_THE_PAST = 180
 export const zeroTouchTicketsQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ): ReportingQuery<TicketCubeWithJoins> => {
     const hardPeriodStart = formatReportingQueryDate(
         subtractDaysFromDate(
             filters.period.start_datetime,
-            ZERO_TOUCH_TICKETS_MAX_DAYS_INTO_THE_PAST
-        )
+            ZERO_TOUCH_TICKETS_MAX_DAYS_INTO_THE_PAST,
+        ),
     )
     return {
         measures: [TicketMeasure.TicketCount],
@@ -45,7 +45,7 @@ export const zeroTouchTicketsQueryFactory = (
             ...NotSpamNorTrashedTicketsFilter,
             ...statsFiltersToReportingFilters(
                 TicketStatsFiltersMembers,
-                filters
+                filters,
             ),
             {
                 member: TicketDimension.CreatedDatetime,
@@ -73,18 +73,18 @@ export const zeroTouchTicketsQueryFactory = (
 
 export const zeroTouchTicketsPerAgentQueryFactory = perDimensionQueryFactory(
     zeroTouchTicketsQueryFactory,
-    TicketDimension.AssigneeUserId
+    TicketDimension.AssigneeUserId,
 )
 
 export const zeroTouchTicketsPerChannelQueryFactory = perDimensionQueryFactory(
     zeroTouchTicketsQueryFactory,
-    CHANNEL_DIMENSION
+    CHANNEL_DIMENSION,
 )
 
 export const zeroTouchTicketsPerTicketQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
     ...zeroTouchTicketsQueryFactory(filters, timezone, sorting),
     measures: [],

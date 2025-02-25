@@ -1,11 +1,11 @@
-import {rules as rulesFixtures} from '../../../../fixtures/rule'
+import { rules as rulesFixtures } from '../../../../fixtures/rule'
 import {
     ruleCreated,
     ruleDeleted,
     ruleFetched,
-    ruleUpdated,
     rulesFetched,
     rulesReordered,
+    ruleUpdated,
 } from '../actions'
 import reducer from '../reducer'
 
@@ -22,21 +22,23 @@ describe('rule reducer', () => {
     describe('deleteRule action', () => {
         it('should remove a rule from the state', () => {
             const newState = reducer(
-                {'1': rulesFixtures[0], '2': rulesFixtures[1]},
-                ruleDeleted(1)
+                { '1': rulesFixtures[0], '2': rulesFixtures[1] },
+                ruleDeleted(1),
             )
-            expect(newState).toStrictEqual({'2': rulesFixtures[1]})
+            expect(newState).toStrictEqual({ '2': rulesFixtures[1] })
         })
     })
 
     describe('updateRule action', () => {
         it('should replace an existing rule in the state', () => {
-            const updatedRule = {...rulesFixtures[0], name: 'my awesome rule'}
+            const updatedRule = { ...rulesFixtures[0], name: 'my awesome rule' }
             const newState = reducer(
-                {[rulesFixtures[0].id]: rulesFixtures[0]},
-                ruleUpdated(updatedRule)
+                { [rulesFixtures[0].id]: rulesFixtures[0] },
+                ruleUpdated(updatedRule),
             )
-            expect(newState).toStrictEqual({[rulesFixtures[0].id]: updatedRule})
+            expect(newState).toStrictEqual({
+                [rulesFixtures[0].id]: updatedRule,
+            })
         })
     })
 
@@ -59,8 +61,8 @@ describe('rule reducer', () => {
     describe('reorderRules actions', () => {
         it('should reorder rules in the state', () => {
             const newState = reducer(
-                {[rulesFixtures[0].id]: rulesFixtures[0]},
-                rulesReordered([{id: rulesFixtures[0].id, priority: 200}])
+                { [rulesFixtures[0].id]: rulesFixtures[0] },
+                rulesReordered([{ id: rulesFixtures[0].id, priority: 200 }]),
             )
             expect(newState[rulesFixtures[0].id].priority).toBe(200)
         })

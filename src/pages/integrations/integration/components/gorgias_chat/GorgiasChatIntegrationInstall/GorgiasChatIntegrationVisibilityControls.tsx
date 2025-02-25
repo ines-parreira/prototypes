@@ -1,5 +1,3 @@
-import classNames from 'classnames'
-import {Map} from 'immutable'
 import React, {
     ForwardedRef,
     forwardRef,
@@ -7,24 +5,28 @@ import React, {
     useMemo,
     useState,
 } from 'react'
-import {v4 as uuidv4} from 'uuid'
+
+import classNames from 'classnames'
+import { Map } from 'immutable'
+import { v4 as uuidv4 } from 'uuid'
 
 import {
     GorgiasChatInstallationVisibility,
-    GorgiasChatInstallationVisibilityMethod,
-    GorgiasChatInstallationVisibilityMatchConditions,
     GorgiasChatInstallationVisibilityCondition,
     GorgiasChatInstallationVisibilityConditionOperator,
+    GorgiasChatInstallationVisibilityMatchConditions,
+    GorgiasChatInstallationVisibilityMethod,
     GorgiasChatMetaInstallation,
 } from 'models/integration/types'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import Collapse from 'pages/common/components/Collapse/Collapse'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 
 import GorgiasChatIntegrationVisibilityCondition from './GorgiasChatIntegrationVisibilityCondition'
+import validateUrl, { UrlValidationResult } from './utils/validateUrl'
+
 import css from './GorgiasChatIntegrationVisibilityControls.less'
-import validateUrl, {UrlValidationResult} from './utils/validateUrl'
 
 const visibilityMethodCaptions: Record<
     GorgiasChatInstallationVisibilityMethod,
@@ -39,8 +41,8 @@ const visibilityMethodCaptions: Record<
 }
 
 const visibilityMethodCaptionsOptions = Object.entries(
-    visibilityMethodCaptions
-).map(([value, label]) => ({value, label}))
+    visibilityMethodCaptions,
+).map(([value, label]) => ({ value, label }))
 
 const matchConditionsCaptions: Record<
     GorgiasChatInstallationVisibilityMatchConditions,
@@ -52,7 +54,7 @@ const matchConditionsCaptions: Record<
 }
 
 const matchConditionsOptions = Object.entries(matchConditionsCaptions).map(
-    ([value, label]) => ({value, label})
+    ([value, label]) => ({ value, label }),
 )
 
 const makeCondition = () => ({
@@ -85,11 +87,11 @@ const GorgiasChatIntegrationVisibilityControls = (
         onSubmit,
         onValidate,
     }: Props,
-    ref: ForwardedRef<GorgiasChatIntegrationVisibilityControlsHandle>
+    ref: ForwardedRef<GorgiasChatIntegrationVisibilityControlsHandle>,
 ) => {
     const installationMeta = integration.getIn(
         ['meta', 'installation'],
-        Map()
+        Map(),
     ) as Map<any, any>
 
     const installation: Maybe<GorgiasChatMetaInstallation> = installationMeta
@@ -102,7 +104,7 @@ const GorgiasChatIntegrationVisibilityControls = (
 
     const [visibilityMethod, setVisibilityMethod] =
         useState<GorgiasChatInstallationVisibilityMethod>(
-            initialVisibilityMethod
+            initialVisibilityMethod,
         )
 
     const initialMatchConditions =
@@ -111,7 +113,7 @@ const GorgiasChatIntegrationVisibilityControls = (
 
     const [matchConditions, setMatchConditions] =
         useState<GorgiasChatInstallationVisibilityMatchConditions>(
-            initialMatchConditions
+            initialMatchConditions,
         )
 
     const [conditions, setConditions] = useState<
@@ -123,7 +125,7 @@ const GorgiasChatIntegrationVisibilityControls = (
     const [hasValidationError, setHasValidationError] = useState(false)
 
     const visibility: GorgiasChatInstallationVisibility = useMemo(() => {
-        if (conditions.every(({value}) => !value)) {
+        if (conditions.every(({ value }) => !value)) {
             return {
                 method: GorgiasChatInstallationVisibilityMethod.ShowOnEveryPage,
             }
@@ -135,17 +137,17 @@ const GorgiasChatIntegrationVisibilityControls = (
             GorgiasChatInstallationVisibilityMethod.ShowOnEveryPage
                 ? {
                       match_conditions: matchConditions,
-                      conditions: conditions.filter(({value}) => !!value),
+                      conditions: conditions.filter(({ value }) => !!value),
                   }
                 : undefined),
         }
     }, [visibilityMethod, matchConditions, conditions])
 
-    useImperativeHandle(ref, () => ({visibility}), [visibility])
+    useImperativeHandle(ref, () => ({ visibility }), [visibility])
 
     const updateCondition = (
         index: number,
-        values: Partial<GorgiasChatInstallationVisibilityCondition>
+        values: Partial<GorgiasChatInstallationVisibilityCondition>,
     ) => {
         const newConditions = [...conditions]
         newConditions[index] = {
@@ -153,13 +155,13 @@ const GorgiasChatIntegrationVisibilityControls = (
             ...values,
             validationResult: validateUrl(
                 values.value ?? newConditions[index].value,
-                values.operator ?? newConditions[index].operator
+                values.operator ?? newConditions[index].operator,
             ),
         }
 
         const hasValidationError = newConditions.some(
-            ({validationResult}) =>
-                validationResult && validationResult !== 'valid'
+            ({ validationResult }) =>
+                validationResult && validationResult !== 'valid',
         )
 
         setHasValidationError(hasValidationError)
@@ -181,9 +183,9 @@ const GorgiasChatIntegrationVisibilityControls = (
         matchConditions ===
             GorgiasChatInstallationVisibilityMatchConditions.Every &&
         conditions.filter(
-            ({operator}) =>
+            ({ operator }) =>
                 operator ===
-                GorgiasChatInstallationVisibilityConditionOperator.Equal
+                GorgiasChatInstallationVisibilityConditionOperator.Equal,
         ).length > 1
 
     const isDirty =
@@ -195,7 +197,7 @@ const GorgiasChatIntegrationVisibilityControls = (
                 condition.value !==
                     installation?.visibility?.conditions?.[index].value ||
                 condition.operator !==
-                    installation?.visibility?.conditions?.[index].operator
+                    installation?.visibility?.conditions?.[index].operator,
         )
 
     const isShowOnEveryPage =
@@ -259,15 +261,15 @@ const GorgiasChatIntegrationVisibilityControls = (
                         <div className={css.conditions}>
                             {conditions.map(
                                 (
-                                    {id, value, operator, validationResult},
-                                    index
+                                    { id, value, operator, validationResult },
+                                    index,
                                 ) => (
                                     <GorgiasChatIntegrationVisibilityCondition
                                         key={id}
                                         value={value}
                                         operator={operator}
                                         onChange={(
-                                            values: Partial<GorgiasChatInstallationVisibilityCondition>
+                                            values: Partial<GorgiasChatInstallationVisibilityCondition>,
                                         ) => updateCondition(index, values)}
                                         onDelete={() => deleteCondition(index)}
                                         validationResult={
@@ -277,7 +279,7 @@ const GorgiasChatIntegrationVisibilityControls = (
                                         }
                                         isDeletable={conditions.length > 1}
                                     />
-                                )
+                                ),
                             )}
                         </div>
                         {hasIncompatibleConditions && (

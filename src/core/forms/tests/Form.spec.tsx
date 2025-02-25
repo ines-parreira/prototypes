@@ -1,12 +1,13 @@
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-import {produce} from 'immer'
-import _set from 'lodash/set'
 import React from 'react'
 
-import {Form} from '../components/Form'
-import {FormField} from '../components/FormField'
-import {FormSubmitButton} from '../components/FormSubmitButton'
-import {FormErrors} from '../utils/validation'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { produce } from 'immer'
+import _set from 'lodash/set'
+
+import { Form } from '../components/Form'
+import { FormField } from '../components/FormField'
+import { FormSubmitButton } from '../components/FormSubmitButton'
+import { FormErrors } from '../utils/validation'
 
 const onSubmit = jest.fn()
 
@@ -17,7 +18,7 @@ describe('<Form />', () => {
                 <Form onValidSubmit={onSubmit}>
                     <FormField name="name" label="Name" />
                     <FormField name="address" label="Address" />
-                </Form>
+                </Form>,
             )
 
             expect(screen.getByLabelText('Name')).toBeInTheDocument()
@@ -28,37 +29,37 @@ describe('<Form />', () => {
     describe('values', () => {
         it('allows passing default (initial) values', async () => {
             render(
-                <Form defaultValues={{name: 'John'}} onValidSubmit={onSubmit}>
+                <Form defaultValues={{ name: 'John' }} onValidSubmit={onSubmit}>
                     <FormField name="name" label="Name" />
-                </Form>
+                </Form>,
             )
 
             fireEvent.submit(screen.getByRole('form'))
 
             await waitFor(() => {
                 expect(onSubmit).toHaveBeenCalledWith(
-                    {name: 'John'},
-                    expect.any(Object)
+                    { name: 'John' },
+                    expect.any(Object),
                 )
             })
         })
 
         it('updates values when fields change', async () => {
             render(
-                <Form defaultValues={{name: 'John'}} onValidSubmit={onSubmit}>
+                <Form defaultValues={{ name: 'John' }} onValidSubmit={onSubmit}>
                     <FormField name="name" label="Name" />
-                </Form>
+                </Form>,
             )
 
             fireEvent.change(screen.getByLabelText('Name'), {
-                target: {value: 'Doe'},
+                target: { value: 'Doe' },
             })
             fireEvent.submit(screen.getByRole('form'))
 
             await waitFor(() => {
                 expect(onSubmit).toHaveBeenCalledWith(
-                    {name: 'Doe'},
-                    expect.any(Object)
+                    { name: 'Doe' },
+                    expect.any(Object),
                 )
             })
         })
@@ -68,14 +69,14 @@ describe('<Form />', () => {
                 <Form onValidSubmit={onSubmit}>
                     <FormField name="name" label="Name" />
                     <FormField name="address.street" label="Street" />
-                </Form>
+                </Form>,
             )
 
             fireEvent.change(screen.getByLabelText('Name'), {
-                target: {value: 'John'},
+                target: { value: 'John' },
             })
             fireEvent.change(screen.getByLabelText('Street'), {
-                target: {value: 'Sesame St'},
+                target: { value: 'Sesame St' },
             })
             fireEvent.submit(screen.getByRole('form'))
 
@@ -83,9 +84,9 @@ describe('<Form />', () => {
                 expect(onSubmit).toHaveBeenCalledWith(
                     {
                         name: 'John',
-                        address: {street: 'Sesame St'},
+                        address: { street: 'Sesame St' },
                     },
-                    expect.any(Object)
+                    expect.any(Object),
                 )
             })
         })
@@ -96,17 +97,17 @@ describe('<Form />', () => {
                     <FormField name="name" label="Name" />
                     <FormField name="items.0.name" label="First item" />
                     <FormField name="items.1.name" label="Second item" />
-                </Form>
+                </Form>,
             )
 
             fireEvent.change(screen.getByLabelText('Name'), {
-                target: {value: 'John'},
+                target: { value: 'John' },
             })
             fireEvent.change(screen.getByLabelText('First item'), {
-                target: {value: 'One'},
+                target: { value: 'One' },
             })
             fireEvent.change(screen.getByLabelText('Second item'), {
-                target: {value: 'Two'},
+                target: { value: 'Two' },
             })
             fireEvent.submit(screen.getByRole('form'))
 
@@ -114,9 +115,9 @@ describe('<Form />', () => {
                 expect(onSubmit).toHaveBeenCalledWith(
                     {
                         name: 'John',
-                        items: [{name: 'One'}, {name: 'Two'}],
+                        items: [{ name: 'One' }, { name: 'Two' }],
                     },
-                    expect.any(Object)
+                    expect.any(Object),
                 )
             })
         })
@@ -127,14 +128,14 @@ describe('<Form />', () => {
             render(
                 <Form onValidSubmit={onSubmit}>
                     <FormField name="name" label="Name" isRequired />
-                </Form>
+                </Form>,
             )
 
             fireEvent.submit(screen.getByRole('form'))
 
             await waitFor(() => {
                 expect(
-                    screen.getByText('This field is required')
+                    screen.getByText('This field is required'),
                 ).toBeInTheDocument()
 
                 expect(onSubmit).not.toHaveBeenCalled()
@@ -148,9 +149,9 @@ describe('<Form />', () => {
                         name="name"
                         label="Name"
                         isRequired
-                        validation={{required: 'Cannot be blank'}}
+                        validation={{ required: 'Cannot be blank' }}
                     />
-                </Form>
+                </Form>,
             )
 
             fireEvent.submit(screen.getByRole('form'))
@@ -174,11 +175,11 @@ describe('<Form />', () => {
                                     : undefined,
                         }}
                     />
-                </Form>
+                </Form>,
             )
 
             fireEvent.change(screen.getByLabelText('Name'), {
-                target: {value: 'secret'},
+                target: { value: 'secret' },
             })
             fireEvent.submit(screen.getByRole('form'))
 
@@ -188,14 +189,14 @@ describe('<Form />', () => {
             })
 
             fireEvent.change(screen.getByLabelText('Name'), {
-                target: {value: 'not secret'},
+                target: { value: 'not secret' },
             })
             fireEvent.submit(screen.getByRole('form'))
 
             await waitFor(() => {
                 expect(onSubmit).toHaveBeenCalledWith(
-                    {name: 'not secret'},
-                    expect.any(Object)
+                    { name: 'not secret' },
+                    expect.any(Object),
                 )
             })
         })
@@ -203,18 +204,18 @@ describe('<Form />', () => {
         it('allows passing errors and renders them on the field', async () => {
             render(
                 <Form
-                    errors={{username: 'Username is already in use'}}
+                    errors={{ username: 'Username is already in use' }}
                     onValidSubmit={onSubmit}
                 >
                     <FormField name="username" label="Username" />
-                </Form>
+                </Form>,
             )
 
             fireEvent.submit(screen.getByRole('form'))
 
             await waitFor(() => {
                 expect(
-                    screen.getByText('Username is already in use')
+                    screen.getByText('Username is already in use'),
                 ).toBeInTheDocument()
 
                 expect(onSubmit).not.toHaveBeenCalled()
@@ -222,36 +223,36 @@ describe('<Form />', () => {
         })
 
         it('allows passing a validation function to validate the values', async () => {
-            type Values = {username: string}
+            type Values = { username: string }
 
             render(
                 <Form<Values>
                     validator={(values) => {
                         if (!values.username) {
-                            return {username: 'This field is required'}
+                            return { username: 'This field is required' }
                         }
 
                         if (values.username === 'admin') {
-                            return {username: 'Cannot be admin'}
+                            return { username: 'Cannot be admin' }
                         }
                     }}
                     onValidSubmit={onSubmit}
                 >
                     <FormField name="username" label="Username" />
-                </Form>
+                </Form>,
             )
 
             fireEvent.submit(screen.getByRole('form'))
 
             await waitFor(() => {
                 expect(
-                    screen.getByText('This field is required')
+                    screen.getByText('This field is required'),
                 ).toBeInTheDocument()
                 expect(onSubmit).not.toHaveBeenCalled()
             })
 
             fireEvent.change(screen.getByLabelText('Username'), {
-                target: {value: 'admin'},
+                target: { value: 'admin' },
             })
 
             fireEvent.submit(screen.getByRole('form'))
@@ -262,15 +263,15 @@ describe('<Form />', () => {
             })
 
             fireEvent.change(screen.getByLabelText('Username'), {
-                target: {value: 'not-admin'},
+                target: { value: 'not-admin' },
             })
 
             fireEvent.submit(screen.getByRole('form'))
 
             await waitFor(() => {
                 expect(onSubmit).toHaveBeenCalledWith(
-                    {username: 'not-admin'},
-                    expect.any(Object)
+                    { username: 'not-admin' },
+                    expect.any(Object),
                 )
             })
         })
@@ -278,8 +279,8 @@ describe('<Form />', () => {
         it('correctly validates nested values', async () => {
             type Values = {
                 name: string
-                items: {name: string}[]
-                address: {street: string}
+                items: { name: string }[]
+                address: { street: string }
             }
 
             const validate = (values: Values) => {
@@ -308,7 +309,7 @@ describe('<Form />', () => {
                     <FormField name="address.street" label="Street" />
                     <FormField name="items.0.name" label="First item" />
                     <FormField name="items.1.name" label="Second item" />
-                </Form>
+                </Form>,
             )
 
             fireEvent.submit(screen.getByRole('form'))
@@ -316,13 +317,13 @@ describe('<Form />', () => {
             await waitFor(() => {
                 expect(screen.getByText('Name is required')).toBeInTheDocument()
                 expect(
-                    screen.getByText('Street is required')
+                    screen.getByText('Street is required'),
                 ).toBeInTheDocument()
                 expect(
-                    screen.getByText('First item is required')
+                    screen.getByText('First item is required'),
                 ).toBeInTheDocument()
                 expect(
-                    screen.getByText('Second item is required')
+                    screen.getByText('Second item is required'),
                 ).toBeInTheDocument()
                 expect(onSubmit).not.toHaveBeenCalled()
             })
@@ -335,9 +336,9 @@ describe('<Form />', () => {
                 <Form onValidSubmit={onSubmit}>
                     <FormField name="name" label="Name" />
                     <button type="submit">Save Changes</button>
-                </Form>
+                </Form>,
             )
-            const button = screen.getByRole('button', {name: 'Save Changes'})
+            const button = screen.getByRole('button', { name: 'Save Changes' })
             expect(button).toBeInTheDocument()
         })
 
@@ -346,10 +347,10 @@ describe('<Form />', () => {
                 <Form onValidSubmit={onSubmit}>
                     <FormField name="name" label="Name" />
                     <FormSubmitButton />
-                </Form>
+                </Form>,
             )
 
-            const button = screen.getByRole('button', {name: 'Save Changes'})
+            const button = screen.getByRole('button', { name: 'Save Changes' })
             expect(button).toBeAriaDisabled()
 
             fireEvent.click(button)
@@ -361,12 +362,12 @@ describe('<Form />', () => {
 
         it('tracks dirty state correctly based on default values', async () => {
             render(
-                <Form onValidSubmit={onSubmit} defaultValues={{name: 'test'}}>
+                <Form onValidSubmit={onSubmit} defaultValues={{ name: 'test' }}>
                     <FormField name="name" label="Name" />
                     <FormSubmitButton />
-                </Form>
+                </Form>,
             )
-            const button = screen.getByRole('button', {name: 'Save Changes'})
+            const button = screen.getByRole('button', { name: 'Save Changes' })
 
             expect(button).toBeAriaDisabled()
 
@@ -377,15 +378,15 @@ describe('<Form />', () => {
             })
 
             fireEvent.change(screen.getByLabelText('Name'), {
-                target: {value: 'Doe'},
+                target: { value: 'Doe' },
             })
 
             fireEvent.click(button)
 
             await waitFor(() => {
                 expect(onSubmit).toHaveBeenCalledWith(
-                    {name: 'Doe'},
-                    expect.any(Object)
+                    { name: 'Doe' },
+                    expect.any(Object),
                 )
             })
         })

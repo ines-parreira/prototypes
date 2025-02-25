@@ -1,5 +1,6 @@
-import {useQueryClient} from '@tanstack/react-query'
-import {useMemo} from 'react'
+import { useMemo } from 'react'
+
+import { useQueryClient } from '@tanstack/react-query'
 
 import {
     helpCenterKeys,
@@ -10,8 +11,8 @@ import {
     LocaleCode,
 } from 'models/helpCenter/types'
 
-import {mapArticleApiToGuidanceArticle} from '../utils/guidance.utils'
-import {GUIDANCE_ARTICLES_QUERY_PARAMS} from './useGuidanceArticles'
+import { mapArticleApiToGuidanceArticle } from '../utils/guidance.utils'
+import { GUIDANCE_ARTICLES_QUERY_PARAMS } from './useGuidanceArticles'
 
 export const useGuidanceArticle = ({
     guidanceArticleId,
@@ -23,32 +24,33 @@ export const useGuidanceArticle = ({
     locale: LocaleCode
 }) => {
     const queryClient = useQueryClient()
-    const {data, isLoading: isGuidanceArticleLoading} = useGetHelpCenterArticle(
-        guidanceArticleId,
-        guidanceHelpCenterId,
-        locale,
-        {
-            initialData: () => {
-                const articlesCache = queryClient.getQueryData(
-                    helpCenterKeys.articles(
-                        guidanceHelpCenterId,
-                        GUIDANCE_ARTICLES_QUERY_PARAMS
+    const { data, isLoading: isGuidanceArticleLoading } =
+        useGetHelpCenterArticle(
+            guidanceArticleId,
+            guidanceHelpCenterId,
+            locale,
+            {
+                initialData: () => {
+                    const articlesCache = queryClient.getQueryData(
+                        helpCenterKeys.articles(
+                            guidanceHelpCenterId,
+                            GUIDANCE_ARTICLES_QUERY_PARAMS,
+                        ),
+                    ) as { data?: ArticleWithLocalTranslationAndRating[] }
+
+                    const articleCache = articlesCache?.data?.find(
+                        (article) => article.id === guidanceArticleId,
                     )
-                ) as {data?: ArticleWithLocalTranslationAndRating[]}
 
-                const articleCache = articlesCache?.data?.find(
-                    (article) => article.id === guidanceArticleId
-                )
-
-                return articleCache
+                    return articleCache
+                },
             },
-        }
-    )
+        )
 
     const guidanceArticle = useMemo(
         () => (data ? mapArticleApiToGuidanceArticle(data) : undefined),
-        [data]
+        [data],
     )
 
-    return {guidanceArticle, isGuidanceArticleLoading}
+    return { guidanceArticle, isGuidanceArticleLoading }
 }

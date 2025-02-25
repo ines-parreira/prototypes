@@ -1,9 +1,10 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import Header from 'pages/common/components/ProductDetail/Header'
 
-import {dummyProduct} from './fixtures'
+import { dummyProduct } from './fixtures'
 
 describe(`Header`, () => {
     it('should render an image instead of an icon', () => {

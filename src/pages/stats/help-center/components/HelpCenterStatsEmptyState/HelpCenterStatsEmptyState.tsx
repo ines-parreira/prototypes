@@ -1,10 +1,12 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
+
+import { Link } from 'react-router-dom'
 
 import icon from 'assets/img/help-center/no-help-center-icon.png'
 import Button from 'pages/common/components/button/Button'
 
-import {HELP_CENTER_STATS_TEST_IDS} from '../../pages/tests/constants'
+import { HELP_CENTER_STATS_TEST_IDS } from '../../pages/tests/constants'
+
 import css from './HelpCenterStatsEmptyState.less'
 
 const HELP_CENTER_SETTINGS_PATH = '/app/settings/help-center'

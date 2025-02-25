@@ -1,5 +1,6 @@
-import {AxiosError} from 'axios'
 import React from 'react'
+
+import { AxiosError } from 'axios'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -9,14 +10,14 @@ import {
     EmailIntegration,
     OutboundVerificationStatusValue,
 } from 'models/integration/types'
-import {getVerification} from 'models/singleSenderVerification/resources'
+import { getVerification } from 'models/singleSenderVerification/resources'
 import Loader from 'pages/common/components/Loader/Loader'
 import history from 'pages/history'
-import {setVerification} from 'state/entities/singleSenderVerification/actions'
-import {getSingleSenderVerification} from 'state/entities/singleSenderVerification/selectors'
-import {fetchIntegration, fetchIntegrations} from 'state/integrations/actions'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { setVerification } from 'state/entities/singleSenderVerification/actions'
+import { getSingleSenderVerification } from 'state/entities/singleSenderVerification/selectors'
+import { fetchIntegration, fetchIntegrations } from 'state/integrations/actions'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 import useCreateSingleSenderVerification from '../../hooks/useCreateSingleSenderVerification'
 import BackButton from '../BackButton'
@@ -33,9 +34,10 @@ export default function SingleSenderVerification({
     baseURL,
     integration,
 }: Props) {
-    const {createVerification, isLoading} = useCreateSingleSenderVerification()
+    const { createVerification, isLoading } =
+        useCreateSingleSenderVerification()
     const verification = useAppSelector(
-        getSingleSenderVerification(integration.id)
+        getSingleSenderVerification(integration.id),
     )
 
     const dispatch = useAppDispatch()
@@ -59,13 +61,15 @@ export default function SingleSenderVerification({
         history.push(baseURL)
     }
 
-    const [{loading: isLoadingVerification}, loadVerification] =
+    const [{ loading: isLoadingVerification }, loadVerification] =
         useAsyncFn(async () => {
             try {
                 const response = await getVerification(integration.id)
                 dispatch(setVerification(response))
             } catch (error) {
-                const {response} = error as AxiosError<{error: {msg: string}}>
+                const { response } = error as AxiosError<{
+                    error: { msg: string }
+                }>
                 const errorMsg =
                     response && response.data.error
                         ? response.data.error.msg
@@ -75,7 +79,7 @@ export default function SingleSenderVerification({
                     notify({
                         message: errorMsg,
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
             }
         }, [dispatch, verification])
@@ -97,7 +101,7 @@ export default function SingleSenderVerification({
                         Enter the mailing address associated with your business.
                     </p>
                     <VerificationForm
-                        initialValues={{email: integration.meta.address}}
+                        initialValues={{ email: integration.meta.address }}
                         isLoading={isLoading}
                         showSubmitButton
                         onSubmit={async (values) => {

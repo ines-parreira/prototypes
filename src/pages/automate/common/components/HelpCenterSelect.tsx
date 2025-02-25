@@ -1,12 +1,13 @@
-import React, {useRef, useState} from 'react'
+import React, { useRef, useState } from 'react'
 
-import {HelpCenter} from '../../../../models/helpCenter/types'
+import { HelpCenter } from '../../../../models/helpCenter/types'
 import Dropdown from '../../../common/components/dropdown/Dropdown'
 import DropdownBody from '../../../common/components/dropdown/DropdownBody'
 import DropdownItem from '../../../common/components/dropdown/DropdownItem'
 import SelectInputBox, {
     SelectInputBoxContext,
 } from '../../../common/forms/input/SelectInputBox'
+
 import css from './HelpCenterSelect.less'
 
 export const EMPTY_HELP_CENTER_ID = -1

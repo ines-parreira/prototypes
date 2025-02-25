@@ -1,12 +1,13 @@
-import {fireEvent, render, waitFor} from '@testing-library/react'
 import React from 'react'
+
+import { fireEvent, render, waitFor } from '@testing-library/react'
 
 import Deprecated_MultiLevelSelect from '../Deprecated_MultiLevelSelect'
 
 jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
 jest.mock('state/currentUser/selectors', () => ({
     getCurrentUser: jest.fn(() => ({
-        role: {name: 'admin'},
+        role: { name: 'admin' },
     })),
 }))
 
@@ -26,13 +27,13 @@ const renderComponent = (props = {}) => {
             {...props}
         >
             Hello world
-        </Deprecated_MultiLevelSelect>
+        </Deprecated_MultiLevelSelect>,
     )
 }
 
 describe('Deprecated_MultiLevelSelect', () => {
     it('should display all the items when focused and allow mouse navigation', () => {
-        const {getByText} = renderComponent({})
+        const { getByText } = renderComponent({})
 
         let navItem = getByText('s1')
         expect(getByText('s2'))
@@ -46,12 +47,12 @@ describe('Deprecated_MultiLevelSelect', () => {
     })
 
     it('should render search', async () => {
-        const {getByText, getByPlaceholderText} = renderComponent({})
+        const { getByText, getByPlaceholderText } = renderComponent({})
 
         await waitFor(() => {
             const inputElement = getByPlaceholderText('Search')
             fireEvent.change(inputElement, {
-                target: {value: 'help center article'},
+                target: { value: 'help center article' },
             })
 
             expect(inputElement).toHaveValue('help center article')
@@ -61,12 +62,12 @@ describe('Deprecated_MultiLevelSelect', () => {
     })
 
     it('should display results when searching', async () => {
-        const {getByPlaceholderText, getAllByText} = renderComponent({})
+        const { getByPlaceholderText, getAllByText } = renderComponent({})
 
         await waitFor(() => {
             const inputElement = getByPlaceholderText('Search')
             fireEvent.change(inputElement, {
-                target: {value: 's1'},
+                target: { value: 's1' },
             })
 
             expect(getAllByText('s1')[0]).toBeInTheDocument()

@@ -1,5 +1,6 @@
-import {render, screen} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import FacebookCarousel from '../FacebookCarousel'
 
@@ -9,7 +10,7 @@ describe('FacebookCarousel component', () => {
     }
 
     it('default props', () => {
-        const {container} = render(<FacebookCarousel {...defaultProps} />)
+        const { container } = render(<FacebookCarousel {...defaultProps} />)
 
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -43,7 +44,7 @@ describe('FacebookCarousel component', () => {
             },
         ]
 
-        const {container} = render(<FacebookCarousel data={data} />)
+        const { container } = render(<FacebookCarousel data={data} />)
 
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -86,7 +87,7 @@ describe('FacebookCarousel component', () => {
             },
         ]
 
-        const {container} = render(<FacebookCarousel data={data} />)
+        const { container } = render(<FacebookCarousel data={data} />)
 
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -158,7 +159,7 @@ describe('FacebookCarousel component', () => {
         const buttonComponents = []
         buttons?.forEach((button) => {
             buttonComponents.push(
-                screen.getByText(button.title, {exact: false})
+                screen.getByText(button.title, { exact: false }),
             )
         })
 

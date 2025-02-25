@@ -1,9 +1,9 @@
 import React from 'react'
 
-import {useNotificationsOverlay} from 'common/notifications'
+import { useNotificationsOverlay } from 'common/notifications'
 
 import Item from './GlobalNavigationItem'
-import {GlobalNavigationNotificationBadge} from './GlobalNavigationNotificationBadge'
+import { GlobalNavigationNotificationBadge } from './GlobalNavigationNotificationBadge'
 
 export default function NotificationsItem() {
     const [, onToggle] = useNotificationsOverlay()

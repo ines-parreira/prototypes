@@ -1,10 +1,10 @@
-import {EditorState} from 'draft-js'
+import React, { useState } from 'react'
+
+import { EditorState } from 'draft-js'
 import Editor from 'draft-js-plugins-editor'
-import React, {useState} from 'react'
 
-import {Plugin} from '../plugins/types'
-
-import {createEditorStateFromHtml} from './draftTestUtils'
+import { Plugin } from '../plugins/types'
+import { createEditorStateFromHtml } from './draftTestUtils'
 
 type Props = {
     html: string
@@ -12,9 +12,9 @@ type Props = {
     plugins: Plugin[]
 }
 
-export default function TestEditor({html, editorState, plugins}: Props) {
+export default function TestEditor({ html, editorState, plugins }: Props) {
     const [editorComponentState] = useState<EditorState>(
-        editorState ? editorState : createEditorStateFromHtml(html)
+        editorState ? editorState : createEditorStateFromHtml(html),
     )
 
     return (

@@ -1,8 +1,9 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {GorgiasChatAvatarNameType} from 'models/integration/types'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { GorgiasChatAvatarNameType } from 'models/integration/types'
 
 import ChatTitle from './ChatTitle'
 
@@ -36,7 +37,7 @@ export const AgentDisplayName = ({
                 displayName =
                     displayNameArray.length > 1
                         ? `${displayNameArray[0]} ${displayNameArray[1].charAt(
-                              0
+                              0,
                           )}.`
                         : displayNameArray[0]
                 break

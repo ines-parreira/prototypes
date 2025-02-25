@@ -1,18 +1,19 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
 
-import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
-import {useSearchParam} from 'hooks/useSearchParam'
-import {useGetArticleIngestionLogs} from 'models/helpCenter/queries'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {reportError} from 'utils/errors'
-import {assumeMock} from 'utils/testing'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {useAiAgentNavigation} from '../useAiAgentNavigation'
-import {usePublicResourcesPooling} from '../usePublicResourcesPooling'
+import { AI_AGENT_SENTRY_TEAM } from 'common/const/sentryTeamNames'
+import { useSearchParam } from 'hooks/useSearchParam'
+import { useGetArticleIngestionLogs } from 'models/helpCenter/queries'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { reportError } from 'utils/errors'
+import { assumeMock } from 'utils/testing'
+
+import { useAiAgentNavigation } from '../useAiAgentNavigation'
+import { usePublicResourcesPooling } from '../usePublicResourcesPooling'
 
 const queryClient = mockQueryClient()
 
@@ -52,8 +53,8 @@ describe('usePublicResourcesPooling', () => {
         } as unknown as ReturnType<typeof useAiAgentNavigation>)
         mockUseGetArticleIngestionLogs.mockReturnValue({
             data: [
-                {id: 1, status: 'PENDING'},
-                {id: 2, status: 'SUCCESSFUL'},
+                { id: 1, status: 'PENDING' },
+                { id: 2, status: 'SUCCESSFUL' },
             ],
         } as unknown as ReturnType<typeof useGetArticleIngestionLogs>)
         mockUseSearchParam.mockReturnValue([null, jest.fn()])
@@ -61,14 +62,14 @@ describe('usePublicResourcesPooling', () => {
 
     const setupHook = (shopName: string, helpCenterId: number) => {
         return renderHook(
-            () => usePublicResourcesPooling({shopName, helpCenterId}),
+            () => usePublicResourcesPooling({ shopName, helpCenterId }),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         {children}
                     </QueryClientProvider>
                 ),
-            }
+            },
         )
     }
 
@@ -81,8 +82,8 @@ describe('usePublicResourcesPooling', () => {
         setupHook(shopName, helpCenterId)
 
         expect(reportError).toHaveBeenCalledWith(mockedError, {
-            tags: {team: AI_AGENT_SENTRY_TEAM},
-            extra: {context: 'Error during article ingestion logs pooling'},
+            tags: { team: AI_AGENT_SENTRY_TEAM },
+            extra: { context: 'Error during article ingestion logs pooling' },
         })
     })
 

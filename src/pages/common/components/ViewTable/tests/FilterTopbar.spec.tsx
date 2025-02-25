@@ -1,27 +1,26 @@
-import {act, fireEvent, render, waitFor} from '@testing-library/react'
-
-import {fromJS, Map} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { act, fireEvent, render, waitFor } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useFlag} from 'core/flags'
-import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import {mockSearchRank} from 'fixtures/searchRank'
-import {view as viewFixture} from 'fixtures/views'
-import {JobType} from 'models/job/types'
-
-import {EntityType, View, ViewCategory} from 'models/view/types'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
+import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import { mockSearchRank } from 'fixtures/searchRank'
+import { view as viewFixture } from 'fixtures/views'
+import { JobType } from 'models/job/types'
+import { EntityType, View, ViewCategory } from 'models/view/types'
 import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
-import {FilterTopbar} from 'pages/common/components/ViewTable/FilterTopbar'
+import { FilterTopbar } from 'pages/common/components/ViewTable/FilterTopbar'
 import history from 'pages/history'
-import {useSplitTicketView} from 'split-ticket-view-toggle'
-import {viewCreated, viewUpdated} from 'state/entities/views/actions'
-import {RootState, StoreDispatch} from 'state/types'
-import {initialState as ticketNavbarInitialState} from 'state/ui/ticketNavbar/reducer'
+import { useSplitTicketView } from 'split-ticket-view-toggle'
+import { viewCreated, viewUpdated } from 'state/entities/views/actions'
+import { RootState, StoreDispatch } from 'state/types'
+import { initialState as ticketNavbarInitialState } from 'state/ui/ticketNavbar/reducer'
 import * as viewsActions from 'state/ui/views/actions'
 import {
     addFieldFilter,
@@ -63,12 +62,12 @@ const createViewWithFilters = (filters: string) => ({
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const views = [
     createViewWithFilters(ticketChannelEqualsEmailFilter),
-    {...createViewWithFilters(ticketChannelEqualsEmailFilter), id: 3},
+    { ...createViewWithFilters(ticketChannelEqualsEmailFilter), id: 3 },
 ]
 
 const defaultState = {
     agents: fromJS({}),
-    currentUser: fromJS({first_name: 'Steve', id: 2, settings: []}),
+    currentUser: fromJS({ first_name: 'Steve', id: 2, settings: [] }),
     entities: {
         sections: {},
         views: views.reduce(
@@ -76,7 +75,7 @@ const defaultState = {
                 acc[view.id] = view
                 return acc
             },
-            {} as Record<number, View>
+            {} as Record<number, View>,
         ),
     },
     schemas: fromJS({}),
@@ -89,7 +88,7 @@ const defaultState = {
         },
     }),
     tickets: fromJS({
-        items: [{id: 1}],
+        items: [{ id: 1 }],
     }),
     ui: {
         ticketNavbar: ticketNavbarInitialState,
@@ -130,12 +129,12 @@ beforeEach(() => {
     jest.spyOn(utils, 'getDefaultOperator').mockImplementation(() => 'foo')
     submitViewMock.mockImplementation(() => () => Promise.resolve(viewFixture))
     deleteViewMock.mockImplementation(
-        () => () => fromJS({...viewFixture, id: 8}) as Map<any, any>
+        () => () => fromJS({ ...viewFixture, id: 8 }) as Map<any, any>,
     )
     fetchViewItemsMock.mockImplementation(() => () => ({}))
     createJobMock.mockImplementation(() => () => Promise.resolve())
 
-    mockUseSplitTicketViewMock.mockReturnValue({isEnabled: false})
+    mockUseSplitTicketViewMock.mockReturnValue({ isEnabled: false })
     mockUseCustomFieldDefinitions.mockReturnValue({})
 })
 
@@ -157,28 +156,28 @@ const minProps = {
 describe('<FilterTopbar />', () => {
     describe('render', () => {
         it('should not render delete button when creating new view', () => {
-            const {queryByText} = render(
+            const { queryByText } = render(
                 <Provider store={mockStore(defaultState)}>
                     <FilterTopbar {...minProps} isUpdate={false} />
-                </Provider>
+                </Provider>,
             )
             expect(queryByText(/delete view/)).not.toBeInTheDocument()
         })
 
         it('should not render footer when in search mode', () => {
-            const {queryByText} = render(
+            const { queryByText } = render(
                 <Provider store={mockStore(defaultState)}>
                     <FilterTopbar {...minProps} isSearch={true} />
-                </Provider>
+                </Provider>,
             )
             expect(queryByText(/update view/)).not.toBeInTheDocument()
         })
 
         it('should render view sharing and export tickets buttons when is in update mode', () => {
-            const {queryByText, queryByTitle} = render(
+            const { queryByText, queryByTitle } = render(
                 <Provider store={mockStore(defaultState)}>
                     <FilterTopbar {...minProps} />
-                </Provider>
+                </Provider>,
             )
             expect(queryByTitle('Export all view tickets')).toBeInTheDocument()
             expect(queryByText('View Sharing Button')).toBeInTheDocument()
@@ -192,52 +191,52 @@ describe('<FilterTopbar />', () => {
                 }),
             }
 
-            const {queryByTitle} = render(
+            const { queryByTitle } = render(
                 <Provider store={mockStore(state)}>
                     <FilterTopbar {...minProps} />
-                </Provider>
+                </Provider>,
             )
             expect(
-                queryByTitle('Export all view tickets')
+                queryByTitle('Export all view tickets'),
             ).not.toBeInTheDocument()
         })
 
         it('should not render view sharing and export tickets buttons when is not in update mode', () => {
-            const {queryByText, queryByTitle} = render(
+            const { queryByText, queryByTitle } = render(
                 <Provider store={mockStore(defaultState)}>
                     <FilterTopbar {...minProps} isUpdate={false} />
-                </Provider>
+                </Provider>,
             )
             expect(
-                queryByTitle('Export all view tickets')
+                queryByTitle('Export all view tickets'),
             ).not.toBeInTheDocument()
             expect(queryByText('View Sharing Button')).not.toBeInTheDocument()
         })
 
         it('not render view sharing and export tickets buttons when is in search mode', () => {
-            const {queryByText} = render(
+            const { queryByText } = render(
                 <Provider store={mockStore(defaultState)}>
                     <FilterTopbar
                         {...minProps}
                         isUpdate={true}
                         isSearch={true}
                     />
-                </Provider>
+                </Provider>,
             )
             expect(
-                queryByText('Export all view tickets')
+                queryByText('Export all view tickets'),
             ).not.toBeInTheDocument()
             expect(queryByText('View Sharing Button')).not.toBeInTheDocument()
         })
 
         it('should not render export tickets button on a customer view', () => {
-            const {queryByTitle} = render(
+            const { queryByTitle } = render(
                 <Provider store={mockStore(defaultState)}>
                     <FilterTopbar {...minProps} type={EntityType.Customer} />
-                </Provider>
+                </Provider>,
             )
             expect(
-                queryByTitle('Export all view tickets')
+                queryByTitle('Export all view tickets'),
             ).not.toBeInTheDocument()
         })
     })
@@ -252,10 +251,10 @@ describe('<FilterTopbar />', () => {
         })
 
         it('should update active view on add field', () => {
-            const {getByText, getByLabelText} = render(
+            const { getByText, getByLabelText } = render(
                 <Provider store={mockStore(defaultState)}>
                     <FilterTopbar {...minProps} />
-                </Provider>
+                </Provider>,
             )
             const addFilterButton = getByLabelText('Add filter')
             fireEvent.click(addFilterButton)
@@ -267,7 +266,7 @@ describe('<FilterTopbar />', () => {
                 {
                     left: 'ticket.channel',
                     operator: 'foo',
-                }
+                },
             )
         })
     })
@@ -285,10 +284,10 @@ describe('<FilterTopbar />', () => {
         const activeView = fromJS(createViewWithFilters(''))
 
         it('should fetch view items', () => {
-            const {rerender} = render(
+            const { rerender } = render(
                 <Provider store={mockStore(defaultState)}>
                     <FilterTopbar {...minProps} />
-                </Provider>
+                </Provider>,
             )
 
             rerender(
@@ -302,24 +301,24 @@ describe('<FilterTopbar />', () => {
                     })}
                 >
                     <FilterTopbar {...minProps} activeView={activeView} />
-                </Provider>
+                </Provider>,
             )
             expect(minProps.fetchViewItemsCancellable).toHaveBeenLastCalledWith(
                 undefined,
                 undefined,
                 undefined,
                 null,
-                params
+                params,
             )
         })
 
         it('should fetch view items with searchRank from the context', () => {
-            const {rerender} = render(
+            const { rerender } = render(
                 <SearchRankScenarioContext.Provider value={mockSearchRank}>
                     <Provider store={mockStore(defaultState)}>
                         <FilterTopbar {...minProps} />
                     </Provider>
-                </SearchRankScenarioContext.Provider>
+                </SearchRankScenarioContext.Provider>,
             )
             rerender(
                 <SearchRankScenarioContext.Provider value={mockSearchRank}>
@@ -334,22 +333,22 @@ describe('<FilterTopbar />', () => {
                     >
                         <FilterTopbar {...minProps} activeView={activeView} />
                     </Provider>
-                </SearchRankScenarioContext.Provider>
+                </SearchRankScenarioContext.Provider>,
             )
             expect(minProps.fetchViewItemsCancellable).toHaveBeenLastCalledWith(
                 undefined,
                 undefined,
                 undefined,
                 mockSearchRank,
-                params
+                params,
             )
         })
 
         it('should not fetch view items when filters did not change', () => {
-            const {rerender} = render(
+            const { rerender } = render(
                 <Provider store={mockStore(defaultState)}>
                     <FilterTopbar {...minProps} />
-                </Provider>
+                </Provider>,
             )
             rerender(
                 <Provider
@@ -359,7 +358,7 @@ describe('<FilterTopbar />', () => {
                             ...defaultState.views,
                             active: {
                                 ...createViewWithFilters(
-                                    ticketChannelEqualsEmailFilter
+                                    ticketChannelEqualsEmailFilter,
                                 ),
                                 name: `${viewFixture.name} foo`,
                             },
@@ -367,16 +366,16 @@ describe('<FilterTopbar />', () => {
                     })}
                 >
                     <FilterTopbar {...minProps} />
-                </Provider>
+                </Provider>,
             )
             expect(minProps.fetchViewItemsCancellable).not.toHaveBeenCalled()
         })
 
         it('should not fetch view items when view id changed', () => {
-            const {rerender} = render(
+            const { rerender } = render(
                 <Provider store={mockStore(defaultState)}>
                     <FilterTopbar {...minProps} />
-                </Provider>
+                </Provider>,
             )
             rerender(
                 <Provider
@@ -386,7 +385,7 @@ describe('<FilterTopbar />', () => {
                             ...defaultState.views,
                             active: {
                                 ...createViewWithFilters(
-                                    ticketChannelEqualsEmailFilter
+                                    ticketChannelEqualsEmailFilter,
                                 ),
                                 id: viewFixture.id + 1,
                             },
@@ -394,20 +393,20 @@ describe('<FilterTopbar />', () => {
                     })}
                 >
                     <FilterTopbar {...minProps} />
-                </Provider>
+                </Provider>,
             )
             expect(minProps.fetchViewItemsCancellable).not.toHaveBeenCalled()
         })
 
         it('should not fetch view items when filters are not valid', () => {
-            const {rerender} = render(
+            const { rerender } = render(
                 <Provider store={mockStore(defaultState)}>
                     <FilterTopbar {...minProps} />
-                </Provider>
+                </Provider>,
             )
             const getAreFiltersValidSpy = jest.spyOn(
                 viewSelectors,
-                'areFiltersValid'
+                'areFiltersValid',
             )
             getAreFiltersValidSpy.mockImplementationOnce(() => false)
 
@@ -422,7 +421,7 @@ describe('<FilterTopbar />', () => {
                     })}
                 >
                     <FilterTopbar {...minProps} />
-                </Provider>
+                </Provider>,
             )
             expect(minProps.fetchViewItemsCancellable).not.toHaveBeenCalled()
         })
@@ -445,13 +444,13 @@ describe('<FilterTopbar />', () => {
                         name: 'Error',
                     },
                     reason: 'Failed to submit view. Please try again',
-                })
+                }),
         )
 
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={mockStore(defaultState)}>
                 <FilterTopbar {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(getByText(/Update view/i))
@@ -480,13 +479,13 @@ describe('<FilterTopbar />', () => {
                         name: 'Error',
                     },
                     reason: 'Failed to submit view. Please try again',
-                })
+                }),
         )
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const {id, ...activeView} = createViewWithFilters(
-            ticketChannelEqualsEmailFilter
+        const { id, ...activeView } = createViewWithFilters(
+            ticketChannelEqualsEmailFilter,
         )
-        const {getByText, getByRole} = render(
+        const { getByText, getByRole } = render(
             <Provider
                 store={mockStore({
                     ...defaultState,
@@ -497,13 +496,13 @@ describe('<FilterTopbar />', () => {
                 })}
             >
                 <FilterTopbar {...minProps} isUpdate={false} />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(getByText(/Create view/i))
         await waitFor(() => {
             expect(
-                getByRole('button', {name: /Create view/i})
+                getByRole('button', { name: /Create view/i }),
             ).toBeAriaEnabled()
         })
 
@@ -514,10 +513,10 @@ describe('<FilterTopbar />', () => {
     it('should toggle dropdown on update view button dropdown caret click', () => {
         const isDirtyMock = jest.spyOn(viewSelectors, 'isDirty')
         isDirtyMock.mockReturnValue(true)
-        const {getByText, container} = render(
+        const { getByText, container } = render(
             <Provider store={mockStore(defaultState)}>
                 <FilterTopbar {...minProps} />
-            </Provider>
+            </Provider>,
         )
         const toggle = container.querySelector('#arrow-save-view-button')
         expect(toggle).toBeInTheDocument()
@@ -525,21 +524,21 @@ describe('<FilterTopbar />', () => {
         expect(
             getByText(/Save as new view/i)
                 .closest('.dropdown-menu')!
-                .getAttribute('aria-hidden')
+                .getAttribute('aria-hidden'),
         ).toBe('true')
 
         fireEvent.click(toggle!)
         expect(
             getByText(/Save as new view/i)
                 .closest('.dropdown-menu')!
-                .getAttribute('aria-hidden')
+                .getAttribute('aria-hidden'),
         ).toBe('false')
 
         fireEvent.click(toggle!)
         expect(
             getByText(/Save as new view/i)
                 .closest('.dropdown-menu')!
-                .getAttribute('aria-hidden')
+                .getAttribute('aria-hidden'),
         ).toBe('true')
     })
 
@@ -550,10 +549,10 @@ describe('<FilterTopbar />', () => {
             resetView as jest.MockedFunction<typeof resetView>
         resetViewMock.mockImplementationOnce(() => () => ({}))
 
-        const {getByText, queryByText} = render(
+        const { getByText, queryByText } = render(
             <Provider store={mockStore(defaultState)}>
                 <FilterTopbar {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(getByText(/Update view/i))
@@ -567,10 +566,10 @@ describe('<FilterTopbar />', () => {
     })
 
     it('should properly redirect to the last view when canceling', async () => {
-        const {getByText} = render(
-            <Provider store={mockStore({...defaultState})}>
+        const { getByText } = render(
+            <Provider store={mockStore({ ...defaultState })}>
                 <FilterTopbar {...minProps} isUpdate={false} />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(getByText('Cancel'))
@@ -582,7 +581,7 @@ describe('<FilterTopbar />', () => {
                         '_internal',
                         'lastViewId',
                     ]) as number
-                }`
+                }`,
             )
         })
     })
@@ -592,63 +591,63 @@ describe('<FilterTopbar />', () => {
 
         const isDirtyMock = jest.spyOn(viewSelectors, 'isDirty')
         isDirtyMock.mockImplementation(() => false)
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={mockStore(defaultState)}>
                 <FilterTopbar {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(getByText(/Update view/i))
         expect(
             getByText(/No changes have been made/i).classList.contains(
-                'visible'
-            )
+                'visible',
+            ),
         ).toBe(true)
 
         act(() => jest.runOnlyPendingTimers())
 
         expect(
             getByText(/No changes have been made/i).classList.contains(
-                'visible'
-            )
+                'visible',
+            ),
         ).toBe(false)
 
         jest.useRealTimers()
     })
 
     it('should call export ticket job on export tickets button click, and disable the button during the call', async () => {
-        const {getByTitle} = render(
+        const { getByTitle } = render(
             <Provider store={mockStore(defaultState)}>
                 <FilterTopbar {...minProps} isUpdate={true} />
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            getByTitle('Export all view tickets') as HTMLButtonElement
+            getByTitle('Export all view tickets') as HTMLButtonElement,
         ).toBeAriaEnabled()
 
         fireEvent.click(getByTitle('Export all view tickets'))
         expect(
-            getByTitle('Export all view tickets') as HTMLButtonElement
+            getByTitle('Export all view tickets') as HTMLButtonElement,
         ).toBeAriaDisabled()
 
         expect(createJobMock).toHaveBeenCalledWith(
             fromJS(createViewWithFilters(ticketChannelEqualsEmailFilter)),
             JobType.ExportTicket,
-            {}
+            {},
         )
         await waitFor(() => {
             expect(
-                getByTitle('Export all view tickets') as HTMLButtonElement
+                getByTitle('Export all view tickets') as HTMLButtonElement,
             ).toBeAriaEnabled()
         })
     })
 
     it('should send event to segment on export tickets button click', () => {
-        const {getByTitle} = render(
+        const { getByTitle } = render(
             <Provider store={mockStore(defaultState)}>
                 <FilterTopbar {...minProps} isUpdate={true} />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(getByTitle('Export all view tickets'))
@@ -657,7 +656,7 @@ describe('<FilterTopbar />', () => {
             SegmentEvent.TicketExport,
             expect.objectContaining({
                 type: 'views-export-button',
-            })
+            }),
         )
     })
 
@@ -667,7 +666,7 @@ describe('<FilterTopbar />', () => {
             category: ViewCategory.System,
             editMode: true,
         })
-        const {queryByText} = render(
+        const { queryByText } = render(
             <Provider
                 store={mockStore({
                     ...defaultState,
@@ -677,7 +676,7 @@ describe('<FilterTopbar />', () => {
                 })}
             >
                 <FilterTopbar {...minProps} activeView={systemView} />
-            </Provider>
+            </Provider>,
         )
 
         expect(queryByText('Update view')).not.toBeInTheDocument()
@@ -686,10 +685,10 @@ describe('<FilterTopbar />', () => {
 
     it('should render Ticket Fields filter when FF is enabled and when in search mode', () => {
         mockUseFlag.mockReturnValue(true)
-        const {getByLabelText, getByText} = render(
+        const { getByLabelText, getByText } = render(
             <Provider store={mockStore(defaultState)}>
                 <FilterTopbar {...minProps} isSearch={true} />
-            </Provider>
+            </Provider>,
         )
 
         const addFilterButton = getByLabelText('Add filter')
@@ -700,9 +699,9 @@ describe('<FilterTopbar />', () => {
 
     it('should render total resource count when in search mode', () => {
         mockUseFlag.mockImplementation(
-            (flag) => flag === FeatureFlagKey.TrackTotalSearchHits
+            (flag) => flag === FeatureFlagKey.TrackTotalSearchHits,
         )
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider
                 store={mockStore({
                     ...defaultState,
@@ -710,12 +709,12 @@ describe('<FilterTopbar />', () => {
                         ['_internal', 'navigation'],
                         fromJS({
                             total_resources: 1,
-                        })
+                        }),
                     ),
                 })}
             >
                 <FilterTopbar {...minProps} isSearch={true} />
-            </Provider>
+            </Provider>,
         )
 
         expect(getByText('1 ticket')).toBeInTheDocument()
@@ -723,9 +722,9 @@ describe('<FilterTopbar />', () => {
 
     it('should render custom total resource when resource count is >= 5000, and in search mode', () => {
         mockUseFlag.mockImplementation(
-            (flag) => flag === FeatureFlagKey.TrackTotalSearchHits
+            (flag) => flag === FeatureFlagKey.TrackTotalSearchHits,
         )
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider
                 store={mockStore({
                     ...defaultState,
@@ -733,22 +732,22 @@ describe('<FilterTopbar />', () => {
                         ['_internal', 'navigation'],
                         fromJS({
                             total_resources: 8000,
-                        })
+                        }),
                     ),
                 })}
             >
                 <FilterTopbar {...minProps} isSearch={true} />
-            </Provider>
+            </Provider>,
         )
 
         expect(getByText('5000+ tickets')).toBeInTheDocument()
     })
 
     it('should not render total resource count when not in search mode', () => {
-        const {queryByText} = render(
+        const { queryByText } = render(
             <Provider store={mockStore(defaultState)}>
                 <FilterTopbar {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
         expect(queryByText('1 tickets')).not.toBeInTheDocument()

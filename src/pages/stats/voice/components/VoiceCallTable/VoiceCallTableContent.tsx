@@ -1,28 +1,31 @@
-import {Skeleton} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
-import React, {UIEventHandler, useMemo, useState} from 'react'
+import React, { UIEventHandler, useMemo, useState } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import classNames from 'classnames'
+
+import { Skeleton } from '@gorgias/merchant-ui-kit'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import useFlag from 'core/flags/hooks/useFlag'
 import useMeasure from 'hooks/useMeasure'
-import {OrderDirection} from 'models/api/types'
+import { OrderDirection } from 'models/api/types'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
-import {CALL_LIST_PAGE_SIZE} from 'pages/stats/voice/constants/voiceOverview'
-import {VoiceCallSummary} from 'pages/stats/voice/models/types'
+import { NoDataAvailable } from 'pages/stats/NoDataAvailable'
+import { CALL_LIST_PAGE_SIZE } from 'pages/stats/voice/constants/voiceOverview'
+import { VoiceCallSummary } from 'pages/stats/voice/models/types'
 
-import {VoiceCallTableColumnName, skeletonColumnsWidth} from './constants'
-import {Cell, getVoiceDrillDownColumns} from './utils'
-import css from './VoiceCallTable.less'
+import { skeletonColumnsWidth, VoiceCallTableColumnName } from './constants'
+import { Cell, getVoiceDrillDownColumns } from './utils'
 import {
     getOrderedCells,
     getOrderedHeaderCells,
 } from './voiceCallTableContentCells'
+
+import css from './VoiceCallTable.less'
 
 type VoiceCallTableContentProps = {
     data?: VoiceCallSummary[]
@@ -54,10 +57,10 @@ export default function VoiceCallTableContent({
     onColumnClick,
 }: VoiceCallTableContentProps) {
     const shouldShowNewUnansweredStatuses = useFlag(
-        FeatureFlagKey.ShowNewUnansweredStatuses
+        FeatureFlagKey.ShowNewUnansweredStatuses,
     )
 
-    const [ref, {width: measuredWidth}] = useMeasure<HTMLDivElement>()
+    const [ref, { width: measuredWidth }] = useMeasure<HTMLDivElement>()
     const [isTableScrolled, setIsTableScrolled] = useState(false)
 
     const width = useMeasuredWidth ? measuredWidth : undefined
@@ -113,7 +116,7 @@ export default function VoiceCallTableContent({
     return (
         <>
             <div ref={ref} className={css.container} onScroll={handleScroll}>
-                <TableWrapper className={css.table} style={{width}}>
+                <TableWrapper className={css.table} style={{ width }}>
                     <TableHead
                         className={classNames(css.tableHead, css.tableRow)}
                     >

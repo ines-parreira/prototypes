@@ -1,15 +1,16 @@
+import { useEffect, useMemo } from 'react'
+
 import _flatten from 'lodash/flatten'
-import {useEffect, useMemo} from 'react'
 
-import {ResourceFeedbackOnMessage} from 'models/aiAgentFeedback/types'
-import {useGetHelpCenterArticleList} from 'models/helpCenter/queries'
-import {useGetAICompatibleMacros} from 'models/macro/queries'
-import {useGetStoreWorkflowsConfigurations} from 'models/workflows/queries'
-import {useFileIngestion} from 'pages/aiAgent/hooks/useFileIngestion'
-import {useGuidanceArticles} from 'pages/aiAgent/hooks/useGuidanceArticles'
-import {usePublicResources} from 'pages/aiAgent/hooks/usePublicResources'
+import { ResourceFeedbackOnMessage } from 'models/aiAgentFeedback/types'
+import { useGetHelpCenterArticleList } from 'models/helpCenter/queries'
+import { useGetAICompatibleMacros } from 'models/macro/queries'
+import { useGetStoreWorkflowsConfigurations } from 'models/workflows/queries'
+import { useFileIngestion } from 'pages/aiAgent/hooks/useFileIngestion'
+import { useGuidanceArticles } from 'pages/aiAgent/hooks/useGuidanceArticles'
+import { usePublicResources } from 'pages/aiAgent/hooks/usePublicResources'
 
-import {mapResourceLabelToType} from '../components/AIAgentFeedbackBar/utils'
+import { mapResourceLabelToType } from '../components/AIAgentFeedbackBar/utils'
 
 export type UseAIAgentGetOtherResourcesProps = {
     articleHelpCenterId: number
@@ -35,7 +36,7 @@ export const useAIAgentGetOtherResources = ({
         },
         {
             refetchOnWindowFocus: false,
-        }
+        },
     )
 
     const articlesList = useMemo(() => {
@@ -43,16 +44,16 @@ export const useAIAgentGetOtherResources = ({
     }, [getHelpCenterArticles.data])
 
     /** Fetch guidance articles */
-    const {guidanceArticles, isGuidanceArticleListLoading} =
+    const { guidanceArticles, isGuidanceArticleListLoading } =
         useGuidanceArticles(guidanceHelpCenterId)
 
     /** Fetch snippets */
-    const {sourceItems, isSourceItemsListLoading} = usePublicResources({
+    const { sourceItems, isSourceItemsListLoading } = usePublicResources({
         helpCenterId: snippetHelpCenterId,
     })
 
     /** Fetch file snippets */
-    const {ingestedFiles, isIngesting} = useFileIngestion({
+    const { ingestedFiles, isIngesting } = useFileIngestion({
         helpCenterId: snippetHelpCenterId,
         onSuccess: () => {},
         onFailure: () => {},
@@ -79,7 +80,7 @@ export const useAIAgentGetOtherResources = ({
     }, [getMacrosList.data?.pageParams])
 
     /** Fetch actions */
-    const {data: actionsList, isLoading: isActionsListLoading} =
+    const { data: actionsList, isLoading: isActionsListLoading } =
         useGetStoreWorkflowsConfigurations({
             storeName: shopName,
             storeType: shopType,
@@ -159,7 +160,7 @@ export const useAIAgentGetOtherResources = ({
             switch (resourceType) {
                 case 'soft_action': {
                     const softAction = actionsOptions.find(
-                        (option) => option.label === text
+                        (option) => option.label === text,
                     )
                     if (softAction) {
                         resource = {
@@ -172,7 +173,7 @@ export const useAIAgentGetOtherResources = ({
                 }
                 case 'hard_action': {
                     const hardAction = actionsOptions.find(
-                        (option) => option.label === text
+                        (option) => option.label === text,
                     )
                     if (hardAction) {
                         resource = {
@@ -185,7 +186,7 @@ export const useAIAgentGetOtherResources = ({
                 }
                 case 'guidance': {
                     const guidance = guidanceOptions.find(
-                        (option) => option.label === text
+                        (option) => option.label === text,
                     )
                     if (guidance) {
                         resource = {
@@ -198,7 +199,7 @@ export const useAIAgentGetOtherResources = ({
                 }
                 case 'article': {
                     const article = articlesOptions.find(
-                        (option) => option.label === text
+                        (option) => option.label === text,
                     )
                     if (article) {
                         resource = {
@@ -211,7 +212,7 @@ export const useAIAgentGetOtherResources = ({
                 }
                 case 'macro': {
                     const macro = macrosOptions.find(
-                        (option) => option.label === text
+                        (option) => option.label === text,
                     )
                     if (macro) {
                         resource = {
@@ -224,7 +225,7 @@ export const useAIAgentGetOtherResources = ({
                 }
                 case 'external_snippet': {
                     const snippet = snippetsOptions.find(
-                        (option) => option.label === text
+                        (option) => option.label === text,
                     )
                     if (snippet) {
                         resource = {
@@ -237,7 +238,7 @@ export const useAIAgentGetOtherResources = ({
                 }
                 case 'file_external_snippet': {
                     const fileSnippet = fileSnippetsOptions.find(
-                        (option) => option.label === text
+                        (option) => option.label === text,
                     )
                     if (fileSnippet) {
                         resource = {

@@ -1,4 +1,4 @@
-import {HelpCenterAutomationSettings} from 'models/helpCenter/types'
+import { HelpCenterAutomationSettings } from 'models/helpCenter/types'
 
 export enum HelpCentersAutomationSettingsActions {
     HELPCENTER_AUTOMATION_SETTINGS_FETCHED = 'HELPCENTER/HELPCENTER_AUTOMATION_SETTINGS_FETCHED',

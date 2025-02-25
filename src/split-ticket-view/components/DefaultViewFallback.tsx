@@ -1,10 +1,10 @@
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {ViewType} from 'models/view/types'
-import {getViewIdToDisplay} from 'state/views/selectors'
-import {TicketListView} from 'ticket-list-view'
-import type {OnToggleUnreadFn} from 'tickets/pages/SplitTicketPage'
+import { ViewType } from 'models/view/types'
+import { getViewIdToDisplay } from 'state/views/selectors'
+import { TicketListView } from 'ticket-list-view'
+import type { OnToggleUnreadFn } from 'tickets/pages/SplitTicketPage'
 
 type Params = {
     ticketId?: string
@@ -26,17 +26,17 @@ export default function DefaultViewFallback({
     registerToggleUnread,
 }: Params) {
     const defaultViewId = useAppSelector((state) =>
-        getViewIdToDisplay(state)(ViewType.TicketList)
+        getViewIdToDisplay(state)(ViewType.TicketList),
     )
 
     const viewId = useMemo(
         () => (urlViewId ? parseInt(urlViewId, 10) : defaultViewId!),
-        [defaultViewId, urlViewId]
+        [defaultViewId, urlViewId],
     )
 
     const ticketId = useMemo(
         () => (urlTicketId ? parseInt(urlTicketId, 10) : undefined),
-        [urlTicketId]
+        [urlTicketId],
     )
 
     return (

@@ -1,4 +1,4 @@
-import {AttachmentEnum} from 'common/types'
+import { AttachmentEnum } from 'common/types'
 import {
     CampaignPreview,
     InferredCampaignStatus,
@@ -9,14 +9,13 @@ import {
     CampaignProductRecommendation,
     ProductRecommendationScenario,
 } from 'pages/convert/campaigns/types/CampaignAttachment'
-import {ScheduleSchema} from 'pages/convert/campaigns/types/CampaignSchedule'
-import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
-import {ABGroupStatus} from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
-import {CampaignScheduleRuleValueEnum} from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
-import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
-
-import {Components} from 'rest_api/revenue_addon_api/client.generated'
+import { ScheduleSchema } from 'pages/convert/campaigns/types/CampaignSchedule'
+import { CampaignVariant } from 'pages/convert/campaigns/types/CampaignVariant'
+import { ABGroupStatus } from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
+import { CampaignScheduleRuleValueEnum } from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
+import { CampaignTriggerOperator } from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
+import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import { Components } from 'rest_api/revenue_addon_api/client.generated'
 
 export const campaignId = 'ee869594-65e2-45a5-a759-a4660c9ce677'
 

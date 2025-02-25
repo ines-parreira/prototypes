@@ -1,6 +1,6 @@
-import {visualBuilderGraphLlmPromptTriggerFixture} from 'pages/automate/workflows/tests/visualBuilderGraph.fixtures'
+import { visualBuilderGraphLlmPromptTriggerFixture } from 'pages/automate/workflows/tests/visualBuilderGraph.fixtures'
 
-import {httpRequestReducer} from '../httpRequestReducer'
+import { httpRequestReducer } from '../httpRequestReducer'
 
 describe('httpRequestReducer', () => {
     test('SET_HTTP_REQUEST_METHOD', () => {
@@ -19,7 +19,7 @@ describe('httpRequestReducer', () => {
                     json: '{}',
                     formUrlencoded: null,
                 }),
-            })
+            }),
         )
 
         nextG = httpRequestReducer(nextG, {
@@ -36,7 +36,7 @@ describe('httpRequestReducer', () => {
                     json: null,
                     formUrlencoded: null,
                 }),
-            })
+            }),
         )
     })
 
@@ -56,7 +56,7 @@ describe('httpRequestReducer', () => {
                     json: '{}',
                     formUrlencoded: null,
                 }),
-            })
+            }),
         )
 
         nextG = httpRequestReducer(nextG, {
@@ -73,7 +73,7 @@ describe('httpRequestReducer', () => {
                     json: null,
                     formUrlencoded: [],
                 }),
-            })
+            }),
         )
 
         nextG = httpRequestReducer(nextG, {
@@ -90,7 +90,7 @@ describe('httpRequestReducer', () => {
                     json: '{}',
                     formUrlencoded: null,
                 }),
-            })
+            }),
         )
     })
     test('TOGGLE_OAUTH2_SETTINGS', () => {
@@ -109,7 +109,7 @@ describe('httpRequestReducer', () => {
                         refresh_token_url: `{{apps.${g.apps?.[0]?.app_id}.refresh_token_url}}`,
                     },
                 }),
-            })
+            }),
         )
         // Disable oauth2 token
         const nextG2 = httpRequestReducer(nextG, {
@@ -122,7 +122,7 @@ describe('httpRequestReducer', () => {
                 data: expect.objectContaining({
                     oauth2TokenSettings: null,
                 }),
-            })
+            }),
         )
     })
 })

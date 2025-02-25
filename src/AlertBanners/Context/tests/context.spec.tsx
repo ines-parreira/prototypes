@@ -1,7 +1,8 @@
-import {render} from '@testing-library/react'
-import React, {useContext} from 'react'
+import React, { useContext } from 'react'
 
-import {BannersContext, BannersDispatchContext} from '../context'
+import { render } from '@testing-library/react'
+
+import { BannersContext, BannersDispatchContext } from '../context'
 
 describe('AlertBanners default contexts', () => {
     it('should set contexts with correct initial values', () => {

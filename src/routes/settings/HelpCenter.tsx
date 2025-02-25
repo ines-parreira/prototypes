@@ -1,24 +1,23 @@
 import React from 'react'
 
-import {Route, Switch, useRouteMatch} from 'react-router-dom'
+import { Route, Switch, useRouteMatch } from 'react-router-dom'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useFlag} from 'core/flags'
-
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import HelpCenterCreationWizard from 'pages/settings/helpCenter/components/HelpCenterCreationWizard'
 import HelpCenterNewView from 'pages/settings/helpCenter/components/HelpCenterNewView'
 import HelpCenterStartView from 'pages/settings/helpCenter/components/HelpCenterStartView'
-import {HelpCenterApiClientProvider} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import {MigrationApiClientProvider} from 'pages/settings/helpCenter/hooks/useMigrationApi'
+import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import { MigrationApiClientProvider } from 'pages/settings/helpCenter/hooks/useMigrationApi'
 import CurrentHelpCenter from 'pages/settings/helpCenter/providers/CurrentHelpCenter/CurrentHelpCenter'
-import {SupportedLocalesProvider} from 'pages/settings/helpCenter/providers/SupportedLocales'
+import { SupportedLocalesProvider } from 'pages/settings/helpCenter/providers/SupportedLocales'
 
-import {renderAppSettings} from './helpers/settingsRenderer'
+import { renderAppSettings } from './helpers/settingsRenderer'
 
 export function HelpCenter() {
-    const {path} = useRouteMatch()
+    const { path } = useRouteMatch()
     const isHelpCenterCreationWizardEnabled: boolean = useFlag(
-        FeatureFlagKey.HelpCenterCreationWizard
+        FeatureFlagKey.HelpCenterCreationWizard,
     )
     return (
         <HelpCenterApiClientProvider>
@@ -40,7 +39,7 @@ export function HelpCenter() {
                             {renderAppSettings(
                                 isHelpCenterCreationWizardEnabled
                                     ? HelpCenterCreationWizard
-                                    : HelpCenterNewView
+                                    : HelpCenterNewView,
                             )}
                         </Route>
 

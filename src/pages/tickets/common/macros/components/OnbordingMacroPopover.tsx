@@ -1,22 +1,23 @@
-import classnames from 'classnames'
 import React, {
-    ReactElement,
-    useState,
-    useRef,
     MutableRefObject,
+    ReactElement,
     useEffect,
+    useRef,
+    useState,
 } from 'react'
-import {Link} from 'react-router-dom'
-import {Popover, PopoverBody} from 'reactstrap'
 
-import {useAppNode} from 'appNode'
-import {logEvent, SegmentEvent} from 'common/segment'
+import classnames from 'classnames'
+import { Link } from 'react-router-dom'
+import { Popover, PopoverBody } from 'reactstrap'
+
+import { useAppNode } from 'appNode'
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import Button, {type ButtonProps} from 'pages/common/components/button/Button'
-import {submitSetting} from 'state/currentUser/actions'
-import {getPreferences, getCurrentUser} from 'state/currentUser/selectors'
-import {getTicket} from 'state/ticket/selectors'
+import Button, { type ButtonProps } from 'pages/common/components/button/Button'
+import { submitSetting } from 'state/currentUser/actions'
+import { getCurrentUser, getPreferences } from 'state/currentUser/selectors'
+import { getTicket } from 'state/ticket/selectors'
 
 import css from './OnbordingMacroPopover.less'
 
@@ -83,17 +84,17 @@ export default function OnbordingMacroPopover({
         setShowPopover(false)
         let updatedCurrentUserPreferences = currentUserPreferences.setIn(
             ['data', 'macros_default_to_search_popover'],
-            false
+            false,
         )
 
         if (showMacro !== undefined) {
             updatedCurrentUserPreferences = updatedCurrentUserPreferences.setIn(
                 ['data', 'show_macros'],
-                showMacro
+                showMacro,
             )
         }
         await dispatch(
-            submitSetting(updatedCurrentUserPreferences.toJS(), false)
+            submitSetting(updatedCurrentUserPreferences.toJS(), false),
         )
     }
 
@@ -127,7 +128,7 @@ export default function OnbordingMacroPopover({
                 {
                     label: 'Got it',
                     onClick: () => setStage('prompt'),
-                    buttonsProp: {intent: 'secondary', fillStyle: 'fill'},
+                    buttonsProp: { intent: 'secondary', fillStyle: 'fill' },
                 },
             ],
         },
@@ -143,12 +144,12 @@ export default function OnbordingMacroPopover({
                 {
                     label: 'Keep search',
                     onClick: handleKeepSearch,
-                    buttonsProp: {intent: 'primary'},
+                    buttonsProp: { intent: 'primary' },
                 },
                 {
                     label: 'Revert back',
                     onClick: handleRevertBack,
-                    buttonsProp: {intent: 'secondary'},
+                    buttonsProp: { intent: 'secondary' },
                 },
             ],
         },
@@ -192,7 +193,7 @@ function MacroPopOver({
                     trigger="legacy"
                     container={appNode ?? undefined}
                 >
-                    {({scheduleUpdate}) => {
+                    {({ scheduleUpdate }) => {
                         // React-Virtuoso is preventing Popperjs initial update
                         scheduleUpdate()
                         return (
@@ -201,7 +202,7 @@ function MacroPopOver({
                                     <div
                                         className={classnames(
                                             'd-md-block p-1',
-                                            css.popoverContent
+                                            css.popoverContent,
                                         )}
                                     >
                                         {content}

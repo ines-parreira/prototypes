@@ -1,10 +1,8 @@
 // g/integrations/smile/schemas.py
-
-import {IntegrationType} from '../constants'
-
-import type {Integration} from './'
-import type {IntegrationBase} from './base'
-import type {OAuth2} from './misc'
+import { IntegrationType } from '../constants'
+import type { Integration } from './'
+import type { IntegrationBase } from './base'
+import type { OAuth2 } from './misc'
 
 export type SmileIntegration = IntegrationBase & {
     type: IntegrationType.Smile
@@ -21,6 +19,6 @@ export type SmileIntegrationMeta = {
 }
 
 export const isSmileIntegration = (
-    integration: Maybe<Integration>
+    integration: Maybe<Integration>,
 ): integration is SmileIntegration =>
     integration?.type === IntegrationType.Smile

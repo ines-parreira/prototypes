@@ -1,7 +1,7 @@
-import {useCallback, useEffect, useState} from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
-import {BannerNotification} from '../../state/notifications/types'
-import {BannerCategories, ContextBanner} from '../types'
+import { BannerNotification } from '../../state/notifications/types'
+import { BannerCategories, ContextBanner } from '../types'
 
 type UseBannerCarouselProps = {
     legacyBanners: BannerNotification[]
@@ -33,12 +33,12 @@ export const useBannerCarousel = ({
         const impersonationIndex = updatedBanners?.findIndex(
             (banner) =>
                 'instanceId' in banner &&
-                banner?.category === BannerCategories.IMPERSONATION
+                banner?.category === BannerCategories.IMPERSONATION,
         )
 
         if (impersonationIndex !== -1) {
             setImpersonationBanner(
-                updatedBanners[impersonationIndex] as ContextBanner
+                updatedBanners[impersonationIndex] as ContextBanner,
             )
             updatedBanners.splice(impersonationIndex, 1)
         }

@@ -1,14 +1,14 @@
-import {ExpressionFieldSource, ExpressionOperator} from '@gorgias/api-queries'
-import {ExpressionFieldType} from '@gorgias/api-types'
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {OBJECT_TYPES} from 'custom-fields/constants'
+import { ExpressionFieldSource, ExpressionOperator } from '@gorgias/api-queries'
+import { ExpressionFieldType } from '@gorgias/api-types'
 
-import {useCustomFieldConditions} from 'custom-fields/hooks/queries/useCustomFieldConditions'
-import {customFieldCondition} from 'fixtures/customFieldCondition'
-import {assumeMock} from 'utils/testing'
+import { OBJECT_TYPES } from 'custom-fields/constants'
+import { useCustomFieldConditions } from 'custom-fields/hooks/queries/useCustomFieldConditions'
+import { customFieldCondition } from 'fixtures/customFieldCondition'
+import { assumeMock } from 'utils/testing'
 
-import {useCustomFieldsConditionsEvaluationResults} from '../useCustomFieldsConditionsEvaluationResults'
+import { useCustomFieldsConditionsEvaluationResults } from '../useCustomFieldsConditionsEvaluationResults'
 
 jest.mock('custom-fields/hooks/queries/useCustomFieldConditions')
 const useCustomFieldConditionsMock = assumeMock(useCustomFieldConditions)
@@ -47,12 +47,12 @@ describe('useCustomFieldsConditionsEvaluationResults', () => {
             customFieldConditions: [],
         } as any)
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useCustomFieldsConditionsEvaluationResults(
                 OBJECT_TYPES.TICKET,
                 {},
-                false
-            )
+                false,
+            ),
         )
         expect(useCustomFieldConditions).toHaveBeenCalledWith({
             objectType: OBJECT_TYPES.TICKET,
@@ -69,15 +69,15 @@ describe('useCustomFieldsConditionsEvaluationResults', () => {
             customFieldConditions: [requiredCustomFieldCondition],
         } as any)
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useCustomFieldsConditionsEvaluationResults(
                 OBJECT_TYPES.TICKET,
                 {
                     status: 'open',
-                    custom_fields: {100: {value: 'high'}},
+                    custom_fields: { 100: { value: 'high' } },
                 },
-                true
-            )
+                true,
+            ),
         )
 
         expect(useCustomFieldConditions).toHaveBeenCalledWith({
@@ -97,14 +97,14 @@ describe('useCustomFieldsConditionsEvaluationResults', () => {
             customFieldConditions: [requiredCustomFieldCondition],
         } as any)
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useCustomFieldsConditionsEvaluationResults(
                 OBJECT_TYPES.TICKET,
                 {
                     status: 'closed',
                 },
-                true
-            )
+                true,
+            ),
         )
 
         expect(useCustomFieldConditions).toHaveBeenCalledWith({

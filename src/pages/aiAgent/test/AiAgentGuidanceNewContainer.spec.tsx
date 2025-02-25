@@ -1,17 +1,18 @@
-import {screen} from '@testing-library/react'
 import React from 'react'
 
-import {useAiAgentEnabled} from 'pages/aiAgent/hooks/useAiAgentEnabled'
-import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {renderWithRouter} from 'utils/testing'
+import { screen } from '@testing-library/react'
 
-import {AiAgentGuidanceNewContainer} from '../AiAgentGuidanceNewContainer'
-import {getAIGuidanceFixture} from '../fixtures/aiGuidance.fixture'
-import {useAiAgentHelpCenter} from '../hooks/useAiAgentHelpCenter'
-import {useAiAgentOnboardingNotification} from '../hooks/useAiAgentOnboardingNotification'
-import {useGuidanceAiSuggestions} from '../hooks/useGuidanceAiSuggestions'
-import {useGuidanceArticleMutation} from '../hooks/useGuidanceArticleMutation'
-import {useGuidanceArticles} from '../hooks/useGuidanceArticles'
+import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
+import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { renderWithRouter } from 'utils/testing'
+
+import { AiAgentGuidanceNewContainer } from '../AiAgentGuidanceNewContainer'
+import { getAIGuidanceFixture } from '../fixtures/aiGuidance.fixture'
+import { useAiAgentHelpCenter } from '../hooks/useAiAgentHelpCenter'
+import { useAiAgentOnboardingNotification } from '../hooks/useAiAgentOnboardingNotification'
+import { useGuidanceAiSuggestions } from '../hooks/useGuidanceAiSuggestions'
+import { useGuidanceArticleMutation } from '../hooks/useGuidanceArticleMutation'
+import { useGuidanceArticles } from '../hooks/useGuidanceArticles'
 
 jest.mock('../hooks/useAiAgentHelpCenter', () => ({
     useAiAgentHelpCenter: jest.fn(),
@@ -31,7 +32,7 @@ jest.mock(
     () => {
         const ComponentToMock = () => <div />
         return ComponentToMock
-    }
+    },
 )
 jest.mock('pages/aiAgent/hooks/useAiAgentEnabled')
 
@@ -50,7 +51,7 @@ const mockedUseGuidanceArticleMutation = jest.mocked(useGuidanceArticleMutation)
 const mockedUseGuidanceAiSuggestions = jest.mocked(useGuidanceAiSuggestions)
 const mockUseEnableAiAgent = jest.mocked(useAiAgentEnabled)
 const mockUseAiAgentOnboardingNotification = jest.mocked(
-    useAiAgentOnboardingNotification
+    useAiAgentOnboardingNotification,
 )
 
 const helpCenter = getHelpCentersResponseFixture.data[0]
@@ -86,7 +87,7 @@ describe('<AiAgentNewGuidance />', () => {
     beforeEach(() => {
         mockedUseAiAgentHelpCenter.mockReturnValue(helpCenter)
         mockedUseGuidanceArticleMutation.mockReturnValue(
-            defaultGuidanceArticleMutationProps
+            defaultGuidanceArticleMutationProps,
         )
         mockedUseGuidanceArticles.mockReturnValue({
             guidanceArticles: [],
@@ -103,7 +104,7 @@ describe('<AiAgentNewGuidance />', () => {
             updateSettingsAfterAiAgentEnabled: jest.fn(),
         })
         mockUseAiAgentOnboardingNotification.mockReturnValue(
-            defaultUseAiAgentOnboardingNotification
+            defaultUseAiAgentOnboardingNotification,
         )
     })
 

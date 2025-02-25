@@ -1,8 +1,8 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {NavBarContextType, NavBarDisplayMode} from '../useNavBar/context'
-import {useNavBar} from '../useNavBar/useNavBar'
-import {NavBarMenuIcons, useNavBarMenuIcon} from '../useNavBarMenuIcon'
+import { NavBarContextType, NavBarDisplayMode } from '../useNavBar/context'
+import { useNavBar } from '../useNavBar/useNavBar'
+import { NavBarMenuIcons, useNavBarMenuIcon } from '../useNavBarMenuIcon'
 
 jest.mock('../useNavBar/useNavBar')
 const mockUseNavBar = useNavBar as jest.MockedFunction<typeof useNavBar>
@@ -25,7 +25,7 @@ describe('useNavBarMenuIcon', () => {
             navBarDisplay: NavBarDisplayMode.Open,
         })
 
-        const {result} = renderHook(useNavBarMenuIcon)
+        const { result } = renderHook(useNavBarMenuIcon)
         expect(result.current).toBe(NavBarMenuIcons.Menu)
     })
 
@@ -36,7 +36,7 @@ describe('useNavBarMenuIcon', () => {
             navBarDisplay: NavBarDisplayMode.Open,
         })
 
-        const {result} = renderHook(useNavBarMenuIcon)
+        const { result } = renderHook(useNavBarMenuIcon)
         expect(result.current).toBe(NavBarMenuIcons.DoubleLeft)
     })
 
@@ -47,7 +47,7 @@ describe('useNavBarMenuIcon', () => {
             navBarDisplay: NavBarDisplayMode.Hover,
         })
 
-        const {result} = renderHook(useNavBarMenuIcon)
+        const { result } = renderHook(useNavBarMenuIcon)
         expect(result.current).toBe(NavBarMenuIcons.DoubleRight)
     })
 
@@ -58,7 +58,7 @@ describe('useNavBarMenuIcon', () => {
             navBarDisplay: NavBarDisplayMode.Hover,
         })
 
-        const {result} = renderHook(useNavBarMenuIcon)
+        const { result } = renderHook(useNavBarMenuIcon)
         expect(result.current).toBe(NavBarMenuIcons.Menu)
     })
 
@@ -69,7 +69,7 @@ describe('useNavBarMenuIcon', () => {
             navBarDisplay: NavBarDisplayMode.Collapsed,
         })
 
-        const {result} = renderHook(useNavBarMenuIcon)
+        const { result } = renderHook(useNavBarMenuIcon)
         expect(result.current).toBe(NavBarMenuIcons.DoubleRight)
     })
 
@@ -80,7 +80,7 @@ describe('useNavBarMenuIcon', () => {
             navBarDisplay: NavBarDisplayMode.Collapsed,
         })
 
-        const {result} = renderHook(useNavBarMenuIcon)
+        const { result } = renderHook(useNavBarMenuIcon)
         expect(result.current).toBe(NavBarMenuIcons.Menu)
     })
 
@@ -92,7 +92,7 @@ describe('useNavBarMenuIcon', () => {
             navBarDisplay: 'Unsupported',
         })
 
-        const {result} = renderHook(useNavBarMenuIcon)
+        const { result } = renderHook(useNavBarMenuIcon)
         expect(result.current).toBe(NavBarMenuIcons.Menu)
     })
 })

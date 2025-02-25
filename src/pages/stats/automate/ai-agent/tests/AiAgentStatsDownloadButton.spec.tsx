@@ -1,34 +1,33 @@
-import {render, fireEvent, act} from '@testing-library/react'
-
-import moment from 'moment'
-
 import React from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import {agents} from 'fixtures/agents'
-import {AutomateStatsMeasureLabelMap} from 'hooks/reporting/automate/automateStatsMeasureLabelMap'
-import {useAutomateMetricsTimeSeries} from 'hooks/reporting/automate/useAutomationDataset'
-import {calculateGreyArea} from 'hooks/reporting/automate/utils'
-import {useAgentsMetrics} from 'hooks/reporting/support-performance/agents/useAgentsMetrics'
-import {useAgentsSummaryMetrics} from 'hooks/reporting/support-performance/agents/useAgentsSummaryMetrics'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-import {useCustomFieldsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
-import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
-import {getPeriodDateTimes} from 'hooks/reporting/useTimeSeries'
-import useAppSelector from 'hooks/useAppSelector'
-import {AutomationBillingEventMeasure} from 'models/reporting/cubes/automate/AutomationBillingEventCube'
-import {ReportingGranularity} from 'models/reporting/types'
-import {StatsFiltersWithLogicalOperator} from 'models/stat/types'
-import {isAiAgentCustomField} from 'pages/aiAgent/util'
-import {getTimeSeriesFormattedData} from 'pages/stats/automate/overview/utils'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-import {formatDates} from 'pages/stats/utils'
-import {saveReport} from 'services/reporting/automateAiAgentReportingService'
-import {AgentsTableColumn} from 'state/ui/stats/types'
-import {assumeMock} from 'utils/testing'
+import { act, fireEvent, render } from '@testing-library/react'
+import moment from 'moment'
 
-import {AiAgentStatsDownloadButton} from '../AiAgentStatsDownloadButton'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import { agents } from 'fixtures/agents'
+import { AutomateStatsMeasureLabelMap } from 'hooks/reporting/automate/automateStatsMeasureLabelMap'
+import { useAutomateMetricsTimeSeries } from 'hooks/reporting/automate/useAutomationDataset'
+import { calculateGreyArea } from 'hooks/reporting/automate/utils'
+import { useAgentsMetrics } from 'hooks/reporting/support-performance/agents/useAgentsMetrics'
+import { useAgentsSummaryMetrics } from 'hooks/reporting/support-performance/agents/useAgentsSummaryMetrics'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useCustomFieldsTicketCountTimeSeries } from 'hooks/reporting/timeSeries'
+import { useAgentsTableConfigSetting } from 'hooks/reporting/useAgentsTableConfigSetting'
+import { getPeriodDateTimes } from 'hooks/reporting/useTimeSeries'
+import useAppSelector from 'hooks/useAppSelector'
+import { AutomationBillingEventMeasure } from 'models/reporting/cubes/automate/AutomationBillingEventCube'
+import { ReportingGranularity } from 'models/reporting/types'
+import { StatsFiltersWithLogicalOperator } from 'models/stat/types'
+import { isAiAgentCustomField } from 'pages/aiAgent/util'
+import { getTimeSeriesFormattedData } from 'pages/stats/automate/overview/utils'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
+import { formatDates } from 'pages/stats/utils'
+import { saveReport } from 'services/reporting/automateAiAgentReportingService'
+import { AgentsTableColumn } from 'state/ui/stats/types'
+import { assumeMock } from 'utils/testing'
+
+import { AiAgentStatsDownloadButton } from '../AiAgentStatsDownloadButton'
 
 jest.mock('hooks/useAppSelector', () => jest.fn())
 const useAppSelectorMock = assumeMock(useAppSelector)
@@ -47,7 +46,7 @@ const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
 
 jest.mock('hooks/reporting/automate/useAutomationDataset')
 const useAutomateMetricsTimeSeriesMock = assumeMock(
-    useAutomateMetricsTimeSeries
+    useAutomateMetricsTimeSeries,
 )
 
 jest.mock('hooks/reporting/automate/utils')
@@ -58,7 +57,7 @@ const useTimeSeriesFormattedDataMock = assumeMock(getTimeSeriesFormattedData)
 
 jest.mock('hooks/reporting/timeSeries')
 const useCustomFieldsTicketCountTimeSeriesMock = assumeMock(
-    useCustomFieldsTicketCountTimeSeries
+    useCustomFieldsTicketCountTimeSeries,
 )
 
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
@@ -164,12 +163,12 @@ describe('AiAgentStatsDownloadButton', () => {
         // Mock performance data
         useAgentsMetricsMock.mockReturnValue({
             isLoading: agentsMetricsIsLoading,
-            reportData: {'agents-metrics': []},
+            reportData: { 'agents-metrics': [] },
         } as unknown as ReturnType<typeof useAgentsMetrics>)
 
         useAgentsSummaryMetricsMock.mockReturnValue({
             isLoading: agentsSummaryMetricsIsLoading,
-            summaryData: {'agents-summary-metrics': []},
+            summaryData: { 'agents-summary-metrics': [] },
         } as unknown as ReturnType<typeof useAgentsSummaryMetrics>)
 
         useAgentsTableConfigSettingMock.mockReturnValue({
@@ -222,7 +221,7 @@ describe('AiAgentStatsDownloadButton', () => {
         } as unknown as ReturnType<typeof useCustomFieldsTicketCountTimeSeries>)
 
         useCustomFieldDefinitionsMock.mockReturnValue({
-            data: {data: customFieldLabels.map((x) => ({label: x}))},
+            data: { data: customFieldLabels.map((x) => ({ label: x })) },
         } as unknown as ReturnType<typeof useCustomFieldDefinitions>)
 
         getPeriodDateTimesMock.mockReturnValue(periodDateTimes)
@@ -231,7 +230,7 @@ describe('AiAgentStatsDownloadButton', () => {
     }
 
     it('should call the external functions with the correct properties on click', () => {
-        const {getByText} = renderComponent()
+        const { getByText } = renderComponent()
 
         act(() => {
             fireEvent.click(getByText('Download data'))
@@ -241,15 +240,15 @@ describe('AiAgentStatsDownloadButton', () => {
             SegmentEvent.StatDownloadClicked,
             {
                 name: 'all-metrics',
-            }
+            },
         )
 
         expect(saveReportMock).toHaveBeenCalledWith(
             agents,
             statsFiltersMock.period,
             {
-                data: {'agents-metrics': []},
-                summary: {'agents-summary-metrics': []},
+                data: { 'agents-metrics': [] },
+                summary: { 'agents-summary-metrics': [] },
                 columnsOrder: [AgentsTableColumn.AgentName],
             },
             {
@@ -259,15 +258,15 @@ describe('AiAgentStatsDownloadButton', () => {
             {
                 data: 'use-custom-fields-ticket-count-time-series',
                 dateTimes: periodDateTimes.map((x) =>
-                    formatDates(ReportingGranularity.Day, x)
+                    formatDates(ReportingGranularity.Day, x),
                 ),
                 order: 'asc',
-            }
+            },
         )
     })
 
     it('should call the external functions without custom field data when hasAiAgentCustomField is false', () => {
-        const {getByText} = renderComponent({hasAiAgentCustomField: false})
+        const { getByText } = renderComponent({ hasAiAgentCustomField: false })
 
         act(() => {
             fireEvent.click(getByText('Download data'))
@@ -277,15 +276,15 @@ describe('AiAgentStatsDownloadButton', () => {
             agents,
             statsFiltersMock.period,
             {
-                data: {'agents-metrics': []},
-                summary: {'agents-summary-metrics': []},
+                data: { 'agents-metrics': [] },
+                summary: { 'agents-summary-metrics': [] },
                 columnsOrder: [AgentsTableColumn.AgentName],
             },
             {
                 automateStatsMeasureLabelMap: AutomateStatsMeasureLabelMap,
                 automatedInteractionByEventTypesTimeSeries: [timeSeriesMock[0]],
             },
-            undefined
+            undefined,
         )
     })
 
@@ -317,7 +316,7 @@ describe('AiAgentStatsDownloadButton', () => {
     ])(
         'should not call the external functions when still loading',
         (loadingStates) => {
-            const {getByText} = renderComponent(loadingStates)
+            const { getByText } = renderComponent(loadingStates)
 
             act(() => {
                 fireEvent.click(getByText('Download data'))
@@ -325,6 +324,6 @@ describe('AiAgentStatsDownloadButton', () => {
 
             expect(logEventMock).not.toHaveBeenCalled()
             expect(saveReportMock).not.toHaveBeenCalled()
-        }
+        },
     )
 })

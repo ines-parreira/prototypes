@@ -1,9 +1,11 @@
-import {Label, Badge} from '@gorgias/merchant-ui-kit'
 import React from 'react'
-import {Link} from 'react-router-dom'
 
-import {RequirementType} from 'custom-fields/types'
-import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
+import { Link } from 'react-router-dom'
+
+import { Badge, Label } from '@gorgias/merchant-ui-kit'
+
+import { RequirementType } from 'custom-fields/types'
+import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 import css from 'pages/settings/customFields/components/RequirementTypeInput.less'
 
 interface RequirementTypeInputProps {

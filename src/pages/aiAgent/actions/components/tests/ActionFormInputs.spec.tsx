@@ -1,5 +1,6 @@
-import {render, screen, fireEvent, act, waitFor} from '@testing-library/react'
 import React from 'react'
+
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import ActionFormInputs from '../ActionFormInputs'
 
@@ -24,7 +25,7 @@ describe('<ActionFormInputs />', () => {
                 onChange={jest.fn()}
                 onAdd={jest.fn()}
                 appName="test"
-            />
+            />,
         )
 
         act(() => {
@@ -34,8 +35,8 @@ describe('<ActionFormInputs />', () => {
         await waitFor(() => {
             expect(
                 screen.getByText(
-                    'This information is required by test to perform this Action.'
-                )
+                    'This information is required by test to perform this Action.',
+                ),
             ).toBeInTheDocument()
         })
     })
@@ -57,15 +58,15 @@ describe('<ActionFormInputs />', () => {
                 onDelete={mockOnDelete}
                 onChange={mockOnChange}
                 onAdd={jest.fn()}
-            />
+            />,
         )
 
         act(() => {
             fireEvent.change(screen.getByDisplayValue('test name'), {
-                target: {value: 'new test name'},
+                target: { value: 'new test name' },
             })
             fireEvent.change(screen.getByDisplayValue('test instructions'), {
-                target: {value: 'new test instructions'},
+                target: { value: 'new test instructions' },
             })
         })
 
@@ -96,13 +97,13 @@ describe('<ActionFormInputs />', () => {
                 onDelete={jest.fn()}
                 onChange={jest.fn()}
                 onAdd={jest.fn()}
-            />
+            />,
         )
 
         expect(
             screen.getByText(
-                'Collect information from customers to use as variables in this Action'
-            )
+                'Collect information from customers to use as variables in this Action',
+            ),
         ).toBeInTheDocument()
     })
 
@@ -114,7 +115,7 @@ describe('<ActionFormInputs />', () => {
                 onChange={jest.fn()}
                 onAdd={jest.fn()}
                 label="custom label"
-            />
+            />,
         )
 
         expect(screen.getByText('custom label')).toBeInTheDocument()
@@ -127,13 +128,13 @@ describe('<ActionFormInputs />', () => {
                 onDelete={jest.fn()}
                 onChange={jest.fn()}
                 onAdd={jest.fn()}
-            />
+            />,
         )
 
         expect(
             screen.getByText(
-                'Note: AI Agent already has access to the customer’s email address and order number.'
-            )
+                'Note: AI Agent already has access to the customer’s email address and order number.',
+            ),
         ).toBeInTheDocument()
     })
 
@@ -145,13 +146,13 @@ describe('<ActionFormInputs />', () => {
                 onChange={jest.fn()}
                 onAdd={jest.fn()}
                 description={null}
-            />
+            />,
         )
 
         expect(
             screen.queryByText(
-                'Note: AI Agent already has access to the customer’s email address and order number.'
-            )
+                'Note: AI Agent already has access to the customer’s email address and order number.',
+            ),
         ).not.toBeInTheDocument()
     })
 
@@ -174,7 +175,7 @@ describe('<ActionFormInputs />', () => {
                 onAdd={jest.fn()}
                 onNameBlur={mockOnNameBlur}
                 onInstructionsBlur={mockOnInstructionsBlur}
-            />
+            />,
         )
 
         act(() => {

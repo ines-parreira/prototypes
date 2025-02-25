@@ -1,4 +1,4 @@
-import {useCallback, useMemo, useState} from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 export default function useNotificationsContext() {
     const [isVisible, setIsVisible] = useState(false)
@@ -9,6 +9,6 @@ export default function useNotificationsContext() {
 
     return useMemo(
         () => [isVisible, handleToggle] as const,
-        [handleToggle, isVisible]
+        [handleToggle, isVisible],
     )
 }

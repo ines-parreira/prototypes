@@ -1,9 +1,9 @@
-import {Integration} from 'models/integration/types'
+import { Integration } from 'models/integration/types'
 
 export const getReconnectUrl = (
     connectUrl: string,
     domain: string,
-    integration: Integration
+    integration: Integration,
 ) => {
     const reconnectUrl = new URL(connectUrl)
     reconnectUrl.searchParams.set('account', domain)

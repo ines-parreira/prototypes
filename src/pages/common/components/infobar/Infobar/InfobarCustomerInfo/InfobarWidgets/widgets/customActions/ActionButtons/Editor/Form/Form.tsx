@@ -1,10 +1,11 @@
-import {produce} from 'immer'
-import {set as _set} from 'lodash'
-import React, {FormEvent, useState, useCallback, memo} from 'react'
+import React, { FormEvent, memo, useCallback, useState } from 'react'
 
-import {ContentType, HttpMethod} from 'models/api/types'
+import { produce } from 'immer'
+import { set as _set } from 'lodash'
+
+import { ContentType, HttpMethod } from 'models/api/types'
 import Button from 'pages/common/components/button/Button'
-import {httpMethodsWithBody} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/httpMethodsWithBody'
+import { httpMethodsWithBody } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/httpMethodsWithBody'
 import {
     Button as ButtonType,
     OnSubmitButton,
@@ -16,6 +17,7 @@ import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import InputField from 'pages/common/forms/input/InputField'
 
 import Action from './Action'
+
 import css from './Form.less'
 
 type Props = {
@@ -40,7 +42,7 @@ const initialState = {
     },
 }
 
-function Form({button = initialState, onSubmit, index, onClose}: Props) {
+function Form({ button = initialState, onSubmit, index, onClose }: Props) {
     const [formState, setFormState] = useState<ButtonType>(button)
 
     const handleLabelChange = useCallback((value: string) => {
@@ -68,7 +70,7 @@ function Form({button = initialState, onSubmit, index, onClose}: Props) {
             onSubmit(trimLeftoverData(formState), index)
             onClose()
         },
-        [formState, index, onSubmit, onClose]
+        [formState, index, onSubmit, onClose],
     )
 
     return (
@@ -105,14 +107,14 @@ function Form({button = initialState, onSubmit, index, onClose}: Props) {
 export default memo(Form)
 
 function trimLeftoverData(button: ButtonType): ButtonType {
-    return produce(button, ({action}: ButtonType) => {
+    return produce(button, ({ action }: ButtonType) => {
         if (httpMethodsWithBody.includes(action.method)) {
             if (action.body.contentType === ContentType.Json) {
                 action.body[ContentType.Form] =
                     initialState.action.body[ContentType.Form]
             } else {
                 action.body[ContentType.Form] = removeDuplicates(
-                    action.body[ContentType.Form]
+                    action.body[ContentType.Form],
                 )
                 action.body[ContentType.Json] =
                     initialState.action.body[ContentType.Json]
@@ -129,6 +131,6 @@ function removeDuplicates(params: Parameter[]): Parameter[] {
     return params.filter(
         (paramA, index) =>
             // findIndex only returns the first match so others are filtered out
-            params.findIndex((paramB) => paramA.key === paramB.key) === index
+            params.findIndex((paramB) => paramA.key === paramB.key) === index,
     )
 }

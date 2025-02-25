@@ -62,7 +62,7 @@ export const migrationProviders: MigrationProvider[] = [
 ]
 
 export const migrationConfigProviders: string[] = migrationProviders.map(
-    (provider) => provider.type
+    (provider) => provider.type,
 )
 export const helpCenterMigrationConfig: HelpCenterMigrationConfig = {
     providers: migrationConfigProviders,

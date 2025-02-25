@@ -1,7 +1,8 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {NOT_AVAILABLE_PLACEHOLDER} from 'pages/stats/common/utils'
+import { render, screen } from '@testing-library/react'
+
+import { NOT_AVAILABLE_PLACEHOLDER } from 'pages/stats/common/utils'
 import CommentHighlightsCarousel, {
     UNASSIGNED_TICKET_LABEL,
 } from 'pages/stats/quality-management/satisfaction/CommentHighlightsChart/CommentHighlightsCarousel'
@@ -14,9 +15,9 @@ const dummyData = [
         ticketId: '1',
         surveyScore: '5',
         comment: 'This is a test comment.',
-        assignedAgent: {name: 'Agent A', url: 'http://avatar.url/a.png'},
+        assignedAgent: { name: 'Agent A', url: 'http://avatar.url/a.png' },
         customerName: 'Customer A',
-        assignedTeam: {name: 'Team A', emoji: '👍'},
+        assignedTeam: { name: 'Team A', emoji: '👍' },
     },
 ]
 
@@ -26,24 +27,24 @@ jest.mock('@gorgias/merchant-ui-kit', () => ({
 
 describe('CommentHighlightsCarousel', () => {
     it('renders skeletons when fetching', () => {
-        const {getAllByText} = render(
+        const { getAllByText } = render(
             <CommentHighlightsCarousel
                 isFetching={true}
                 isError={false}
                 data={[]}
-            />
+            />,
         )
 
         expect(getAllByText('Skeleton').length).toEqual(2)
     })
 
     it('renders slider with provided data when not fetching', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <CommentHighlightsCarousel
                 isFetching={false}
                 isError={false}
                 data={dummyData}
-            />
+            />,
         )
 
         const viewTicketElement = getByText(VIEW_TICKET)
@@ -63,16 +64,16 @@ describe('CommentHighlightsCarousel', () => {
                 comment: 'This is a test comment.',
                 assignedAgent: null,
                 customerName: 'Customer A',
-                assignedTeam: {name: 'Team A', emoji: '👍'},
+                assignedTeam: { name: 'Team A', emoji: '👍' },
             },
         ]
 
-        const {getByText} = render(
+        const { getByText } = render(
             <CommentHighlightsCarousel
                 isFetching={false}
                 isError={false}
                 data={dummyDataWithoutAgent}
-            />
+            />,
         )
 
         expect(getByText('Team A')).toBeInTheDocument()
@@ -87,16 +88,16 @@ describe('CommentHighlightsCarousel', () => {
                 comment: 'This is a test comment.',
                 assignedAgent: null,
                 customerName: 'Customer A',
-                assignedTeam: {name: 'Team A'},
+                assignedTeam: { name: 'Team A' },
             },
         ]
 
-        const {getByText, queryByText} = render(
+        const { getByText, queryByText } = render(
             <CommentHighlightsCarousel
                 isFetching={false}
                 isError={false}
                 data={dummyDataWithoutAgent}
-            />
+            />,
         )
 
         const emojiElement = queryByText('👍')
@@ -117,24 +118,24 @@ describe('CommentHighlightsCarousel', () => {
             },
         ]
 
-        const {getByText} = render(
+        const { getByText } = render(
             <CommentHighlightsCarousel
                 isFetching={false}
                 isError={false}
                 data={dummyDataWithoutAgentAndTeam}
-            />
+            />,
         )
 
         expect(getByText(UNASSIGNED_TICKET_LABEL)).toBeInTheDocument()
     })
 
     it('renders default no-data item when data is empty', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <CommentHighlightsCarousel
                 isFetching={false}
                 isError={false}
                 data={[]}
-            />
+            />,
         )
 
         expect(getByText(NO_DATA_COMMENT)).toBeInTheDocument()
@@ -158,7 +159,7 @@ describe('CommentHighlightsCarousel', () => {
                 isFetching={false}
                 isError={false}
                 data={partialDummyData}
-            />
+            />,
         )
 
         const placeholders = screen.getAllByText(NOT_AVAILABLE_PLACEHOLDER)
@@ -172,9 +173,9 @@ describe('CommentHighlightsCarousel', () => {
                 ticketId: null,
                 surveyScore: '4',
                 comment: 'Another test comment.',
-                assignedAgent: {name: 'Agent B'},
+                assignedAgent: { name: 'Agent B' },
                 customerName: 'Customer B',
-                assignedTeam: {name: 'Team B', emoji: '👎'},
+                assignedTeam: { name: 'Team B', emoji: '👎' },
             },
         ]
 
@@ -183,7 +184,7 @@ describe('CommentHighlightsCarousel', () => {
                 isFetching={false}
                 isError={false}
                 data={dummyNoTicketData}
-            />
+            />,
         )
 
         const viewTicketElements = screen.getAllByText(VIEW_TICKET)
@@ -199,7 +200,7 @@ describe('CommentHighlightsCarousel', () => {
                 isFetching={false}
                 isError={false}
                 data={dummyData}
-            />
+            />,
         )
 
         const viewTicketElements = screen.getAllByText(VIEW_TICKET)
@@ -216,9 +217,9 @@ describe('CommentHighlightsCarousel', () => {
                 ticketId: '2',
                 surveyScore: '3',
                 comment: longComment,
-                assignedAgent: {name: 'Agent Long'},
+                assignedAgent: { name: 'Agent Long' },
                 customerName: 'Customer Long',
-                assignedTeam: {name: 'Team Long', emoji: '🤷'},
+                assignedTeam: { name: 'Team Long', emoji: '🤷' },
             },
         ]
 
@@ -227,16 +228,16 @@ describe('CommentHighlightsCarousel', () => {
                 isFetching={false}
                 isError={false}
                 data={dataWithLongComment}
-            />
+            />,
         )
 
         const commentElement = screen.getByText((content) =>
-            content.endsWith('...')
+            content.endsWith('...'),
         )
 
         expect(commentElement).toBeInTheDocument()
         expect(commentElement.textContent!.length).toBeLessThan(
-            longComment.length
+            longComment.length,
         )
     })
 })

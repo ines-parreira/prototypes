@@ -1,22 +1,24 @@
-import {Badge} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
-import React, {useEffect, useMemo, useState} from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
-import {DateAndTimeFormatting} from 'constants/datetime'
+import classnames from 'classnames'
+
+import { Badge } from '@gorgias/merchant-ui-kit'
+
+import { DateAndTimeFormatting } from 'constants/datetime'
 import useAppSelector from 'hooks/useAppSelector'
 import useSearch from 'hooks/useSearch'
 import Button from 'pages/common/components/button/Button'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import css from 'pages/settings/settings.less'
 import TwoFactorAuthenticationModal from 'pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationModal/TwoFactorAuthenticationModal'
-import {check2FARequired} from 'pages/settings/yourProfile/twoFactorAuthentication/utils'
+import { check2FARequired } from 'pages/settings/yourProfile/twoFactorAuthentication/utils'
 import {
     getTwoFAEnforcedDatetime,
     is2FAEnforcedSelector,
 } from 'state/currentAccount/selectors'
-import {has2FaEnabled as has2FaEnabledSelector} from 'state/currentUser/selectors'
+import { has2FaEnabled as has2FaEnabledSelector } from 'state/currentUser/selectors'
 
-import {isRecentLogin} from '../utils'
+import { isRecentLogin } from '../utils'
 import TwoFactorAuthenticationDisableModal from './TwoFactorAuthenticationDisableModal'
 
 export default function TwoFactorAuthenticationSection() {

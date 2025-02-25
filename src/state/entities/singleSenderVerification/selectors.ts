@@ -1,16 +1,16 @@
-import {createSelector} from 'reselect'
+import { createSelector } from 'reselect'
 
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
 
-import {SingleSenderVerificationsState} from './types'
+import { SingleSenderVerificationsState } from './types'
 
 export const getSingleSenderVerifications = (
-    state: RootState
+    state: RootState,
 ): SingleSenderVerificationsState =>
     state.entities?.singleSenderVerifications || {}
 
 export const getSingleSenderVerification = (id: number) =>
     createSelector(
         getSingleSenderVerifications,
-        (singleSenderVerifications) => singleSenderVerifications[id]
+        (singleSenderVerifications) => singleSenderVerifications[id],
     )

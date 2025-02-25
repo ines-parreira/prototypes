@@ -1,7 +1,7 @@
 import React from 'react'
 
 import useLocalStorage from 'hooks/useLocalStorage'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import LinkAlert from 'pages/common/components/Alert/LinkAlert'
 
 type SyncNotificationProps = {
@@ -17,7 +17,7 @@ const SyncNotification = ({
 }: SyncNotificationProps) => {
     const [isAlertClosed, setAlertClosed] = useLocalStorage(
         `${platform}_${shopName}_sync_notification`,
-        false
+        false,
     )
 
     if (!isSyncComplete) {

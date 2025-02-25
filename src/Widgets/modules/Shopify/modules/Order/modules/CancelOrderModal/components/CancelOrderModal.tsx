@@ -1,6 +1,3 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
-import {fromJS, List, Map} from 'immutable'
 import React, {
     ChangeEvent,
     FormEvent,
@@ -8,19 +5,24 @@ import React, {
     useContext,
     useMemo,
 } from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {Button, Form} from 'reactstrap'
 
-import {getFinalCancelOrderPayload} from 'business/shopify/order'
-import {aggregateMaximumRefundableByGateway} from 'business/shopify/refund'
+import classnames from 'classnames'
+import { fromJS, List, Map } from 'immutable'
+import { connect, ConnectedProps } from 'react-redux'
+import { Button, Form } from 'reactstrap'
+
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+
+import { getFinalCancelOrderPayload } from 'business/shopify/order'
+import { aggregateMaximumRefundableByGateway } from 'business/shopify/refund'
 import usePrevious from 'hooks/usePrevious'
 import useUpdateEffect from 'hooks/useUpdateEffect'
-import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
-import {InfobarModalProps} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
+import { IntegrationType, ShopifyIntegration } from 'models/integration/types'
+import { InfobarModalProps } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
 import {
     onCancel,
@@ -30,10 +32,9 @@ import {
     onReset,
     setPayload,
 } from 'state/infobarActions/shopify/cancelOrder/actions'
-import {getCancelOrderState} from 'state/infobarActions/shopify/cancelOrder/selectors'
-import {getIntegrationsByType} from 'state/integrations/selectors'
-import {RootState} from 'state/types'
-
+import { getCancelOrderState } from 'state/infobarActions/shopify/cancelOrder/selectors'
+import { getIntegrationsByType } from 'state/integrations/selectors'
+import { RootState } from 'state/types'
 import OrderForm from 'Widgets/modules/Shopify/modules/Order/modules/OrderForm'
 
 import css from './CancelOrderModal.less'
@@ -68,7 +69,7 @@ export const CancelOrderModalContainer = ({
     setPayload,
     title,
 }: Props) => {
-    const {integrationId} = useContext(IntegrationContext)
+    const { integrationId } = useContext(IntegrationContext)
 
     const previousIsOpen = usePrevious(isOpen)
     const hasMultipleGateways =
@@ -77,9 +78,9 @@ export const CancelOrderModalContainer = ({
     const integration = useMemo(
         () =>
             integrations.find(
-                (integration) => integration.id === integrationId
+                (integration) => integration.id === integrationId,
             ),
-        [integrationId, integrations]
+        [integrationId, integrations],
     )
 
     const shopName = useMemo(() => {
@@ -111,7 +112,7 @@ export const CancelOrderModalContainer = ({
     }
 
     const handleReasonChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const {value} = event.target
+        const { value } = event.target
         const newPayload = payload
             ?.set('reason', value)
             .set('email', value !== 'fraud')
@@ -153,7 +154,7 @@ export const CancelOrderModalContainer = ({
         (lineItem: Map<string, any>, index: number) => {
             void onLineItemChange(integrationId!, lineItem, index)
         },
-        [integrationId, onLineItemChange]
+        [integrationId, onLineItemChange],
     )
 
     return integration ? (
@@ -222,11 +223,11 @@ export const CancelOrderModalContainer = ({
 const connector = connect(
     (state: RootState) => ({
         integrations: getIntegrationsByType<ShopifyIntegration>(
-            IntegrationType.Shopify
+            IntegrationType.Shopify,
         )(state),
         loading: getCancelOrderState(state).get('loading') as boolean,
         loadingMessage: getCancelOrderState(state).get(
-            'loadingMessage'
+            'loadingMessage',
         ) as string,
         payload: getCancelOrderState(state).get('payload') as Map<
             any,
@@ -242,7 +243,7 @@ const connector = connect(
         onPayloadChange,
         onReset,
         setPayload,
-    }
+    },
 )
 
 export default connector(CancelOrderModalContainer as any)

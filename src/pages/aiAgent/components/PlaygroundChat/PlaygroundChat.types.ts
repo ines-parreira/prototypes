@@ -1,4 +1,4 @@
-import {PlaygroundCustomer} from '../../types'
+import { PlaygroundCustomer } from '../../types'
 
 export type PlaygroundFormValues = {
     message: string

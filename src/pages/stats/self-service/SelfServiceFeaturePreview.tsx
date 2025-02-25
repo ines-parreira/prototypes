@@ -2,6 +2,7 @@ import React from 'react'
 
 import Button from '../../common/components/button/Button'
 import history from '../../history'
+
 import css from './SelfServiceStatsPage.less'
 
 type Props = {

@@ -1,6 +1,6 @@
-import {ReactNode} from 'react'
+import { ReactNode } from 'react'
 
-import {SegmentedOptionValue} from './SegmentedOptionValue'
+import { SegmentedOptionValue } from './SegmentedOptionValue'
 
 export type SegmentedOptionModel = {
     disabled?: boolean

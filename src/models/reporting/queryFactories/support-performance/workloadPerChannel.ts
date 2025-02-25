@@ -1,15 +1,15 @@
-import {OrderDirection} from 'models/api/types'
-import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
+import { OrderDirection } from 'models/api/types'
+import { HelpdeskMessageCubeWithJoins } from 'models/reporting/cubes/HelpdeskMessageCube'
 import {
     TicketDimension,
     TicketMeasure,
     TicketMember,
     TicketSegment,
 } from 'models/reporting/cubes/TicketCube'
-import {OPEN_TICKETS_MAX_DAYS_INTO_THE_PAST} from 'models/reporting/queryFactories/support-performance/openTickets'
-import {ReportingFilterOperator, ReportingQuery} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
-import {subtractDaysFromDate} from 'utils/date'
+import { OPEN_TICKETS_MAX_DAYS_INTO_THE_PAST } from 'models/reporting/queryFactories/support-performance/openTickets'
+import { ReportingFilterOperator, ReportingQuery } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
+import { subtractDaysFromDate } from 'utils/date'
 import {
     formatReportingQueryDate,
     NotSpamNorTrashedTicketsFilter,
@@ -19,13 +19,13 @@ import {
 
 export const workloadPerChannelDistributionQueryFactory = (
     filters: StatsFilters,
-    timezone: string
+    timezone: string,
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
     const hardPeriodStart = formatReportingQueryDate(
         subtractDaysFromDate(
             filters.period.start_datetime,
-            OPEN_TICKETS_MAX_DAYS_INTO_THE_PAST
-        )
+            OPEN_TICKETS_MAX_DAYS_INTO_THE_PAST,
+        ),
     )
     return {
         measures: [TicketMeasure.TicketCount],
@@ -36,7 +36,7 @@ export const workloadPerChannelDistributionQueryFactory = (
             ...NotSpamNorTrashedTicketsFilter,
             ...statsFiltersToReportingFilters(
                 TicketStatsFiltersMembers,
-                filters
+                filters,
             ).map((filter) => {
                 if (filter.member === TicketStatsFiltersMembers.periodStart)
                     return {

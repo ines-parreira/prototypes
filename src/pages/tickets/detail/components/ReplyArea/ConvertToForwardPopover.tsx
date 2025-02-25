@@ -1,18 +1,19 @@
-import classnames from 'classnames'
 import React from 'react'
-import {Popover, PopoverBody} from 'reactstrap'
 
-import {useAppNode} from 'appNode'
+import classnames from 'classnames'
+import { Popover, PopoverBody } from 'reactstrap'
+
+import { useAppNode } from 'appNode'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import Button from 'pages/common/components/button/Button'
 import {
-    setSourceExtra,
     setShowConvertToForwardPopover,
+    setSourceExtra,
 } from 'state/newMessage/actions'
 import {
-    getShowConvertToForwardPopover,
     getNewMessageExtra,
+    getShowConvertToForwardPopover,
 } from 'state/newMessage/selectors'
 
 import css from './ConvertToForwardPopover.less'
@@ -21,11 +22,11 @@ type Props = {
     target: React.RefObject<HTMLElement>
 }
 
-const ConvertToForwardPopover: React.FC<Props> = ({target}) => {
+const ConvertToForwardPopover: React.FC<Props> = ({ target }) => {
     const dispatch = useAppDispatch()
     const extra = useAppSelector(getNewMessageExtra)
     const showConvertToForwardPopover = useAppSelector(
-        getShowConvertToForwardPopover
+        getShowConvertToForwardPopover,
     )
     const appNode = useAppNode()
 
@@ -33,7 +34,7 @@ const ConvertToForwardPopover: React.FC<Props> = ({target}) => {
 
     const onConvert = () => {
         onClose()
-        dispatch(setSourceExtra({...extra.toJS(), forward: true}))
+        dispatch(setSourceExtra({ ...extra.toJS(), forward: true }))
     }
 
     return (

@@ -1,32 +1,34 @@
+import React from 'react'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { within } from '@testing-library/dom'
+import { screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { fromJS } from 'immutable'
+import randomstring from 'randomstring'
+import { MemoryRouter } from 'react-router-dom'
+
 import {
     useCreateAnalyticsFilter,
     useDeleteAnalyticsFilter,
     useListAnalyticsFilters,
     useUpdateAnalyticsFilter,
 } from '@gorgias/api-queries'
-import {QueryClientProvider} from '@tanstack/react-query'
-import {within} from '@testing-library/dom'
-import {screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 
-import {fromJS} from 'immutable'
-import randomstring from 'randomstring'
-import React from 'react'
-import {MemoryRouter} from 'react-router-dom'
-
-import {UserRole} from 'config/types/user'
-
+import { UserRole } from 'config/types/user'
 import {
     FilterKey,
     SavedFilter,
     SavedFilterAPI,
     SavedFilterDraft,
 } from 'models/stat/types'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-import {fromApiFormatted} from 'pages/stats/common/filters/helpers'
-import {SAVED_FILTER_ACTIONS_MENU_ICON} from 'pages/stats/common/filters/SavedFilterMenu'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
+import { fromApiFormatted } from 'pages/stats/common/filters/helpers'
+import { SAVED_FILTER_ACTIONS_MENU_ICON } from 'pages/stats/common/filters/SavedFilterMenu'
 import {
     CANCEL_BUTTON_LABEL,
+    CANCEL_MODAL_BUTTON_LABEL,
+    CLOSE_MODAL_BUTTON_LABEL,
     COLLAPSE_CLOSED_ICON,
     COLLAPSE_OPEN_ICON,
     DELETE_CONFIRMATION_BUTTON_LABEL,
@@ -35,23 +37,21 @@ import {
     FILTER_DELETED_ERROR_MESSAGE,
     FILTER_SAVED_ERROR_MESSAGE,
     getDeleteConfirmationTitle,
+    getMaxSavedFilterNameLengthErrorText,
+    getSaveConfirmationTitle,
     isSavedFiltersError,
+    MAX_SAVED_FILTER_NAME_LENGTH,
     SAVE_BUTTON_LABEL,
-    SAVED_FILTER_NAME_FIELD_KEY,
+    SAVE_MODAL_BUTTON_LABEL,
     SAVED_FILTER_FIELD_GROUP_FIELD_KEY,
+    SAVED_FILTER_NAME_FIELD_KEY,
     SavedFiltersPanel,
     UNAPPLY_FILTER_ICON,
-    SAVE_MODAL_BUTTON_LABEL,
-    getSaveConfirmationTitle,
-    CLOSE_MODAL_BUTTON_LABEL,
-    CANCEL_MODAL_BUTTON_LABEL,
-    getMaxSavedFilterNameLengthErrorText,
-    MAX_SAVED_FILTER_NAME_LENGTH,
 } from 'pages/stats/common/filters/SavedFiltersPanel'
-import {exampleGorgiasApiError} from 'pages/stats/common/filters/tests/fixtures/errors'
-import {CampaignStatsFilters} from 'pages/stats/convert/providers/CampaignStatsFilters'
+import { exampleGorgiasApiError } from 'pages/stats/common/filters/tests/fixtures/errors'
+import { CampaignStatsFilters } from 'pages/stats/convert/providers/CampaignStatsFilters'
 import * as statsSlice from 'state/stats/statsSlice'
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
 import {
     clearSavedFilterDraft,
     duplicateSavedFilterDraftFromSavedFilter,
@@ -59,8 +59,8 @@ import {
     initialState,
     updateSavedFilterDraftName,
 } from 'state/ui/stats/filtersSlice'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock, renderWithStore} from 'utils/testing'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock, renderWithStore } from 'utils/testing'
 
 const queryClient = mockQueryClient()
 jest.mock('pages/stats/common/filters/FiltersPanel')
@@ -168,13 +168,13 @@ describe('SavedFiltersPanel', () => {
     })
 
     it('should not render when no saved filter draft', () => {
-        const {container} = renderWithStore(
+        const { container } = renderWithStore(
             <MemoryRouter>
                 <QueryClientProvider client={queryClient}>
                     <SavedFiltersPanel optionalFilters={[]} />
                 </QueryClientProvider>
             </MemoryRouter>,
-            defaultState
+            defaultState,
         )
 
         expect(container).toBeEmptyDOMElement()
@@ -211,7 +211,7 @@ describe('SavedFiltersPanel', () => {
                     <SavedFiltersPanel optionalFilters={[]} />
                 </QueryClientProvider>
             </MemoryRouter>,
-            state
+            state,
         )
 
         expect(screen.getByText(COLLAPSE_CLOSED_ICON))
@@ -248,7 +248,7 @@ describe('SavedFiltersPanel', () => {
                     <SavedFiltersPanel optionalFilters={[]} />
                 </QueryClientProvider>
             </MemoryRouter>,
-            state
+            state,
         )
 
         expect(screen.getByText(COLLAPSE_OPEN_ICON))
@@ -285,7 +285,7 @@ describe('SavedFiltersPanel', () => {
             currentUser: defaultState.currentUser,
         } as RootState
         const mutateMock = jest.fn().mockResolvedValue({
-            data: {id: 123, ...savedFilterDraft},
+            data: { id: 123, ...savedFilterDraft },
         })
         useCreateAnalyticsFilterMock.mockReturnValue({
             mutateAsync: mutateMock,
@@ -298,10 +298,10 @@ describe('SavedFiltersPanel', () => {
                     <SavedFiltersPanel optionalFilters={[]} />
                 </QueryClientProvider>
             </MemoryRouter>,
-            state
+            state,
         )
 
-        userEvent.click(screen.getByRole('button', {name: SAVE_BUTTON_LABEL}))
+        userEvent.click(screen.getByRole('button', { name: SAVE_BUTTON_LABEL }))
 
         expect(mutateMock).toHaveBeenCalled()
     })
@@ -342,16 +342,16 @@ describe('SavedFiltersPanel', () => {
             currentUser: defaultState.currentUser,
         } as RootState
 
-        const {store} = renderWithStore(
+        const { store } = renderWithStore(
             <MemoryRouter>
                 <QueryClientProvider client={queryClient}>
                     <SavedFiltersPanel optionalFilters={[]} />
                 </QueryClientProvider>
             </MemoryRouter>,
-            state
+            state,
         )
 
-        userEvent.click(screen.getByRole('button', {name: SAVE_BUTTON_LABEL}))
+        userEvent.click(screen.getByRole('button', { name: SAVE_BUTTON_LABEL }))
 
         expect(mutateMock).toHaveBeenCalled()
         await waitFor(() => {
@@ -360,7 +360,7 @@ describe('SavedFiltersPanel', () => {
                     payload: expect.objectContaining({
                         message: FILTER_SAVED_ERROR_MESSAGE,
                     }),
-                })
+                }),
             )
         })
     })
@@ -409,17 +409,17 @@ describe('SavedFiltersPanel', () => {
                     <SavedFiltersPanel optionalFilters={[]} />
                 </QueryClientProvider>
             </MemoryRouter>,
-            state
+            state,
         )
 
-        userEvent.click(screen.getByRole('button', {name: SAVE_BUTTON_LABEL}))
+        userEvent.click(screen.getByRole('button', { name: SAVE_BUTTON_LABEL }))
 
         await waitFor(() => {
             expect(
-                screen.getByRole('button', {name: SAVE_MODAL_BUTTON_LABEL})
+                screen.getByRole('button', { name: SAVE_MODAL_BUTTON_LABEL }),
             ).toBeInTheDocument()
             userEvent.click(
-                screen.getByRole('button', {name: SAVE_MODAL_BUTTON_LABEL})
+                screen.getByRole('button', { name: SAVE_MODAL_BUTTON_LABEL }),
             )
         })
 
@@ -463,23 +463,23 @@ describe('SavedFiltersPanel', () => {
             currentUser: defaultState.currentUser,
         } as RootState
 
-        const {store} = renderWithStore(
+        const { store } = renderWithStore(
             <MemoryRouter>
                 <QueryClientProvider client={queryClient}>
                     <SavedFiltersPanel optionalFilters={[]} />
                 </QueryClientProvider>
             </MemoryRouter>,
-            state
+            state,
         )
 
-        userEvent.click(screen.getByRole('button', {name: SAVE_BUTTON_LABEL}))
+        userEvent.click(screen.getByRole('button', { name: SAVE_BUTTON_LABEL }))
 
         await waitFor(() => {
             expect(
-                screen.getByRole('button', {name: SAVE_MODAL_BUTTON_LABEL})
+                screen.getByRole('button', { name: SAVE_MODAL_BUTTON_LABEL }),
             ).toBeInTheDocument()
             userEvent.click(
-                screen.getByRole('button', {name: SAVE_MODAL_BUTTON_LABEL})
+                screen.getByRole('button', { name: SAVE_MODAL_BUTTON_LABEL }),
             )
         })
 
@@ -491,7 +491,7 @@ describe('SavedFiltersPanel', () => {
                     payload: expect.objectContaining({
                         message: FILTER_SAVED_ERROR_MESSAGE,
                     }),
-                })
+                }),
             )
         })
     })
@@ -528,20 +528,20 @@ describe('SavedFiltersPanel', () => {
             currentUser: defaultState.currentUser,
         } as RootState
 
-        const {store} = renderWithStore(
+        const { store } = renderWithStore(
             <MemoryRouter>
                 <QueryClientProvider client={queryClient}>
                     <SavedFiltersPanel optionalFilters={[]} />
                 </QueryClientProvider>
             </MemoryRouter>,
-            state
+            state,
         )
 
         userEvent.clear(screen.getByRole('textbox'))
         userEvent.paste(screen.getByRole('textbox'), nameChange)
 
         expect(store.getActions()).toContainEqual(
-            updateSavedFilterDraftName(`${savedFilterName}${nameChange}`)
+            updateSavedFilterDraftName(`${savedFilterName}${nameChange}`),
         )
     })
 
@@ -581,7 +581,7 @@ describe('SavedFiltersPanel', () => {
                     <SavedFiltersPanel optionalFilters={[]} />
                 </QueryClientProvider>
             </MemoryRouter>,
-            state
+            state,
         )
 
         userEvent.click(screen.getByText(COLLAPSE_CLOSED_ICON))
@@ -589,7 +589,7 @@ describe('SavedFiltersPanel', () => {
         userEvent.click(
             screen.getByRole('option', {
                 name: new RegExp(DELETE_FILTER_ACTION_LABEL),
-            })
+            }),
         )
         userEvent.click(screen.getByText(DELETE_CONFIRMATION_BUTTON_LABEL))
 
@@ -632,7 +632,7 @@ describe('SavedFiltersPanel', () => {
                     <SavedFiltersPanel optionalFilters={[]} />
                 </QueryClientProvider>
             </MemoryRouter>,
-            state
+            state,
         )
 
         userEvent.click(screen.getByText(COLLAPSE_CLOSED_ICON))
@@ -640,22 +640,22 @@ describe('SavedFiltersPanel', () => {
         userEvent.click(
             screen.getByRole('option', {
                 name: new RegExp(DELETE_FILTER_ACTION_LABEL),
-            })
+            }),
         )
         const confirmationModal = screen.getByRole('dialog')
         expect(confirmationModal).toBeInTheDocument()
         expect(
             within(confirmationModal).getByText(
-                getDeleteConfirmationTitle(savedFilterName)
-            )
+                getDeleteConfirmationTitle(savedFilterName),
+            ),
         ).toBeInTheDocument()
         userEvent.click(
-            within(confirmationModal).getByText(CANCEL_BUTTON_LABEL)
+            within(confirmationModal).getByText(CANCEL_BUTTON_LABEL),
         )
 
         await waitFor(() => {
             expect(
-                screen.queryByText(getDeleteConfirmationTitle(savedFilterName))
+                screen.queryByText(getDeleteConfirmationTitle(savedFilterName)),
             ).not.toBeInTheDocument()
             expect(mutateMock).not.toHaveBeenCalled()
         })
@@ -691,13 +691,13 @@ describe('SavedFiltersPanel', () => {
             currentUser: defaultState.currentUser,
         } as RootState
 
-        const {store} = renderWithStore(
+        const { store } = renderWithStore(
             <MemoryRouter>
                 <QueryClientProvider client={queryClient}>
                     <SavedFiltersPanel optionalFilters={[]} />
                 </QueryClientProvider>
             </MemoryRouter>,
-            state
+            state,
         )
 
         userEvent.click(screen.getByText(COLLAPSE_CLOSED_ICON))
@@ -705,7 +705,7 @@ describe('SavedFiltersPanel', () => {
         userEvent.click(
             screen.getByRole('option', {
                 name: new RegExp(DELETE_FILTER_ACTION_LABEL),
-            })
+            }),
         )
         userEvent.click(screen.getByText(DELETE_CONFIRMATION_BUTTON_LABEL))
 
@@ -716,7 +716,7 @@ describe('SavedFiltersPanel', () => {
                     payload: expect.objectContaining({
                         message: FILTER_DELETED_ERROR_MESSAGE,
                     }),
-                })
+                }),
             )
         })
     })
@@ -751,13 +751,13 @@ describe('SavedFiltersPanel', () => {
             currentUser: defaultState.currentUser,
         } as RootState
 
-        const {store} = renderWithStore(
+        const { store } = renderWithStore(
             <MemoryRouter>
                 <QueryClientProvider client={queryClient}>
                     <SavedFiltersPanel optionalFilters={[]} />
                 </QueryClientProvider>
             </MemoryRouter>,
-            state
+            state,
         )
 
         userEvent.click(screen.getByText(COLLAPSE_CLOSED_ICON))
@@ -765,11 +765,11 @@ describe('SavedFiltersPanel', () => {
         userEvent.click(
             screen.getByRole('option', {
                 name: new RegExp(DUPLICATE_FILTER_ACTION_LABEL),
-            })
+            }),
         )
 
         expect(store.getActions()).toContainEqual(
-            duplicateSavedFilterDraftFromSavedFilter(savedFilter)
+            duplicateSavedFilterDraftFromSavedFilter(savedFilter),
         )
     })
 
@@ -799,13 +799,13 @@ describe('SavedFiltersPanel', () => {
             currentUser: defaultState.currentUser,
         } as RootState
 
-        const {store} = renderWithStore(
+        const { store } = renderWithStore(
             <MemoryRouter>
                 <QueryClientProvider client={queryClient}>
                     <SavedFiltersPanel optionalFilters={[]} />
                 </QueryClientProvider>
             </MemoryRouter>,
-            state
+            state,
         )
 
         userEvent.click(screen.getByText(UNAPPLY_FILTER_ICON))
@@ -844,15 +844,17 @@ describe('SavedFiltersPanel', () => {
             currentUser: defaultState.currentUser,
         } as RootState
 
-        const {store} = renderWithStore(
+        const { store } = renderWithStore(
             <MemoryRouter>
                 <QueryClientProvider client={queryClient}>
                     <SavedFiltersPanel optionalFilters={[]} />
                 </QueryClientProvider>
             </MemoryRouter>,
-            state
+            state,
         )
-        userEvent.click(screen.getByRole('button', {name: CANCEL_BUTTON_LABEL}))
+        userEvent.click(
+            screen.getByRole('button', { name: CANCEL_BUTTON_LABEL }),
+        )
 
         expect(store.getActions()).toContainEqual(clearSavedFilterDraft())
         expect(screen.getByText(COLLAPSE_OPEN_ICON)).toBeInTheDocument()
@@ -891,24 +893,26 @@ describe('SavedFiltersPanel', () => {
         } as RootState
         useListAnalyticsFiltersMock.mockReturnValue({
             data: {
-                data: {data: [savedFilter]},
+                data: { data: [savedFilter] },
             },
         } as any)
 
-        const {store} = renderWithStore(
+        const { store } = renderWithStore(
             <MemoryRouter>
                 <QueryClientProvider client={queryClient}>
                     <SavedFiltersPanel optionalFilters={[]} />
                 </QueryClientProvider>
             </MemoryRouter>,
-            state
+            state,
         )
-        userEvent.click(screen.getByRole('button', {name: CANCEL_BUTTON_LABEL}))
+        userEvent.click(
+            screen.getByRole('button', { name: CANCEL_BUTTON_LABEL }),
+        )
 
         expect(store.getActions()).toContainEqual(
             initialiseSavedFilterDraftFromSavedFilter(
-                fromApiFormatted(savedFilter as SavedFilterAPI)
-            )
+                fromApiFormatted(savedFilter as SavedFilterAPI),
+            ),
         )
         expect(screen.getByText(COLLAPSE_CLOSED_ICON)).toBeInTheDocument()
     })
@@ -968,17 +972,17 @@ describe('SavedFiltersPanel', () => {
                 error: undefined,
             } as any)
 
-            const {store} = renderWithStore(
+            const { store } = renderWithStore(
                 <MemoryRouter>
                     <QueryClientProvider client={queryClient}>
                         <SavedFiltersPanel optionalFilters={[]} />
                     </QueryClientProvider>
                 </MemoryRouter>,
-                createState
+                createState,
             )
 
             userEvent.click(
-                screen.getByRole('button', {name: SAVE_BUTTON_LABEL})
+                screen.getByRole('button', { name: SAVE_BUTTON_LABEL }),
             )
 
             expect(mutateMock).toHaveBeenCalled()
@@ -988,7 +992,7 @@ describe('SavedFiltersPanel', () => {
                         payload: expect.objectContaining({
                             message: FILTER_SAVED_ERROR_MESSAGE,
                         }),
-                    })
+                    }),
                 )
                 expect(screen.getByText(errorMessageOnSave)).toBeInTheDocument()
             })
@@ -1000,25 +1004,29 @@ describe('SavedFiltersPanel', () => {
                 mutateAsync: mutateMock,
             } as any)
 
-            const {store} = renderWithStore(
+            const { store } = renderWithStore(
                 <MemoryRouter>
                     <QueryClientProvider client={queryClient}>
                         <SavedFiltersPanel optionalFilters={[]} />
                     </QueryClientProvider>
                 </MemoryRouter>,
-                updateState
+                updateState,
             )
 
             userEvent.click(
-                screen.getByRole('button', {name: SAVE_BUTTON_LABEL})
+                screen.getByRole('button', { name: SAVE_BUTTON_LABEL }),
             )
 
             await waitFor(() => {
                 expect(
-                    screen.getByRole('button', {name: SAVE_MODAL_BUTTON_LABEL})
+                    screen.getByRole('button', {
+                        name: SAVE_MODAL_BUTTON_LABEL,
+                    }),
                 ).toBeInTheDocument()
                 userEvent.click(
-                    screen.getByRole('button', {name: SAVE_MODAL_BUTTON_LABEL})
+                    screen.getByRole('button', {
+                        name: SAVE_MODAL_BUTTON_LABEL,
+                    }),
                 )
             })
 
@@ -1032,7 +1040,7 @@ describe('SavedFiltersPanel', () => {
                         payload: expect.objectContaining({
                             message: FILTER_SAVED_ERROR_MESSAGE,
                         }),
-                    })
+                    }),
                 )
                 expect(screen.getByText(errorMessageOnSave)).toBeInTheDocument()
             })
@@ -1045,17 +1053,17 @@ describe('SavedFiltersPanel', () => {
                 error: undefined,
             } as any)
 
-            const {store} = renderWithStore(
+            const { store } = renderWithStore(
                 <MemoryRouter>
                     <QueryClientProvider client={queryClient}>
                         <SavedFiltersPanel optionalFilters={[]} />
                     </QueryClientProvider>
                 </MemoryRouter>,
-                createState
+                createState,
             )
 
             userEvent.click(
-                screen.getByRole('button', {name: SAVE_BUTTON_LABEL})
+                screen.getByRole('button', { name: SAVE_BUTTON_LABEL }),
             )
 
             expect(mutateMock).toHaveBeenCalled()
@@ -1065,10 +1073,10 @@ describe('SavedFiltersPanel', () => {
                         payload: expect.objectContaining({
                             message: FILTER_SAVED_ERROR_MESSAGE,
                         }),
-                    })
+                    }),
                 )
                 expect(
-                    screen.queryByText(errorMessageOnSave)
+                    screen.queryByText(errorMessageOnSave),
                 ).not.toBeInTheDocument()
             })
         })
@@ -1110,14 +1118,14 @@ describe('SavedFiltersPanel', () => {
                         <SavedFiltersPanel optionalFilters={[]} />
                     </QueryClientProvider>
                 </MemoryRouter>,
-                state
+                state,
             )
 
             expect(
-                screen.getByRole('button', {name: CANCEL_BUTTON_LABEL})
+                screen.getByRole('button', { name: CANCEL_BUTTON_LABEL }),
             ).toBeInTheDocument()
             expect(
-                screen.getByRole('button', {name: SAVE_BUTTON_LABEL})
+                screen.getByRole('button', { name: SAVE_BUTTON_LABEL }),
             ).toBeInTheDocument()
         })
 
@@ -1164,14 +1172,14 @@ describe('SavedFiltersPanel', () => {
                         <SavedFiltersPanel optionalFilters={[]} />
                     </QueryClientProvider>
                 </MemoryRouter>,
-                state
+                state,
             )
 
             expect(
-                screen.queryByRole('button', {name: CANCEL_BUTTON_LABEL})
+                screen.queryByRole('button', { name: CANCEL_BUTTON_LABEL }),
             ).not.toBeInTheDocument()
             expect(
-                screen.queryByRole('button', {name: SAVE_BUTTON_LABEL})
+                screen.queryByRole('button', { name: SAVE_BUTTON_LABEL }),
             ).not.toBeInTheDocument()
         })
 
@@ -1219,7 +1227,7 @@ describe('SavedFiltersPanel', () => {
                         <SavedFiltersPanel optionalFilters={[]} />
                     </QueryClientProvider>
                 </MemoryRouter>,
-                state
+                state,
             )
 
             userEvent.click(screen.getByText(COLLAPSE_CLOSED_ICON))
@@ -1229,18 +1237,18 @@ describe('SavedFiltersPanel', () => {
             expect(confirmationModal).toBeInTheDocument()
             expect(
                 within(confirmationModal).getByText(
-                    getSaveConfirmationTitle(savedFilterName)
-                )
+                    getSaveConfirmationTitle(savedFilterName),
+                ),
             ).toBeInTheDocument()
             userEvent.click(
-                within(confirmationModal).getByText(CLOSE_MODAL_BUTTON_LABEL)
+                within(confirmationModal).getByText(CLOSE_MODAL_BUTTON_LABEL),
             )
 
             await waitFor(() => {
                 expect(
                     screen.queryByText(
-                        getSaveConfirmationTitle(savedFilterName)
-                    )
+                        getSaveConfirmationTitle(savedFilterName),
+                    ),
                 ).not.toBeInTheDocument()
                 expect(mutateMock).not.toHaveBeenCalled()
             })
@@ -1299,13 +1307,13 @@ describe('SavedFiltersPanel', () => {
                 },
             } as any)
 
-            const {store} = renderWithStore(
+            const { store } = renderWithStore(
                 <MemoryRouter>
                     <QueryClientProvider client={queryClient}>
                         <SavedFiltersPanel optionalFilters={[]} />
                     </QueryClientProvider>
                 </MemoryRouter>,
-                state
+                state,
             )
 
             userEvent.click(screen.getByText(COLLAPSE_CLOSED_ICON))
@@ -1315,24 +1323,24 @@ describe('SavedFiltersPanel', () => {
             expect(confirmationModal).toBeInTheDocument()
             expect(
                 within(confirmationModal).getByText(
-                    getSaveConfirmationTitle(savedFilterName)
-                )
+                    getSaveConfirmationTitle(savedFilterName),
+                ),
             ).toBeInTheDocument()
             userEvent.click(
-                within(confirmationModal).getByText(CANCEL_MODAL_BUTTON_LABEL)
+                within(confirmationModal).getByText(CANCEL_MODAL_BUTTON_LABEL),
             )
 
             expect(store.getActions()).toContainEqual(
                 initialiseSavedFilterDraftFromSavedFilter(
-                    fromApiFormatted(otherSavedFilter as SavedFilterAPI)
-                )
+                    fromApiFormatted(otherSavedFilter as SavedFilterAPI),
+                ),
             )
             expect(screen.getByText(COLLAPSE_CLOSED_ICON)).toBeInTheDocument()
         })
 
         it('should show an error is you try to input a string length greater than 255', async () => {
             const savedFilterName = randomstring.generate(
-                MAX_SAVED_FILTER_NAME_LENGTH
+                MAX_SAVED_FILTER_NAME_LENGTH,
             )
             const savedFilter: SavedFilter = {
                 id: 123,
@@ -1365,7 +1373,7 @@ describe('SavedFiltersPanel', () => {
             } as RootState
             useListAnalyticsFiltersMock.mockReturnValue({
                 data: {
-                    data: {data: [savedFilter]},
+                    data: { data: [savedFilter] },
                 },
             } as any)
 
@@ -1375,29 +1383,29 @@ describe('SavedFiltersPanel', () => {
                         <SavedFiltersPanel optionalFilters={[]} />
                     </QueryClientProvider>
                 </MemoryRouter>,
-                state
+                state,
             )
 
             expect(
                 screen.queryByText(
                     getMaxSavedFilterNameLengthErrorText(
-                        MAX_SAVED_FILTER_NAME_LENGTH
-                    )
-                )
+                        MAX_SAVED_FILTER_NAME_LENGTH,
+                    ),
+                ),
             ).not.toBeInTheDocument()
 
             userEvent.click(screen.getByText(COLLAPSE_CLOSED_ICON))
             await userEvent.type(
                 screen.getByPlaceholderText('Name Filter'),
-                'asdf'
+                'asdf',
             )
 
             expect(
                 screen.getByText(
                     getMaxSavedFilterNameLengthErrorText(
-                        MAX_SAVED_FILTER_NAME_LENGTH
-                    )
-                )
+                        MAX_SAVED_FILTER_NAME_LENGTH,
+                    ),
+                ),
             ).toBeInTheDocument()
         })
 
@@ -1448,7 +1456,7 @@ describe('SavedFiltersPanel', () => {
                         <SavedFiltersPanel optionalFilters={[]} />
                     </QueryClientProvider>
                 </MemoryRouter>,
-                state
+                state,
             )
 
             userEvent.click(screen.getByText(COLLAPSE_CLOSED_ICON))

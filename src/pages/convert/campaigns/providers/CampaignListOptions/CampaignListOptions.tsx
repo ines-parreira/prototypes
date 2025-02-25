@@ -10,16 +10,16 @@ import useSearch from 'hooks/useSearch'
 
 import {
     CampaignListOptionsContext,
-    PartialOptionsParams,
     defaultParams,
+    PartialOptionsParams,
 } from './context'
-import {updateUrlWithSearchParams} from './utils'
+import { updateUrlWithSearchParams } from './utils'
 
 interface Props {
     children: ReactNode
 }
 
-export const CampaignListOptions = ({children}: Props) => {
+export const CampaignListOptions = ({ children }: Props) => {
     const params = useSearch<{
         page?: string
         search?: string
@@ -28,12 +28,12 @@ export const CampaignListOptions = ({children}: Props) => {
     }>()
 
     const [page, setPage] = useState(
-        params?.page ? parseInt(params.page, 10) : defaultParams.page
+        params?.page ? parseInt(params.page, 10) : defaultParams.page,
     )
     const [search, setSearch] = useState(params.search ?? defaultParams.search)
     const [state, setState] = useState(params.state ?? defaultParams.state)
     const [filters, setFilters] = useState<string[]>(
-        params?.filters?.split(',') ?? defaultParams.filters
+        params?.filters?.split(',') ?? defaultParams.filters,
     )
 
     useEffect(
@@ -47,7 +47,7 @@ export const CampaignListOptions = ({children}: Props) => {
         },
         // We ensure the URL reflects the current options state
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        []
+        [],
     )
 
     useEffect(() => {
@@ -93,7 +93,7 @@ export const CampaignListOptions = ({children}: Props) => {
                 ...params,
             })
         },
-        [filters, page, search, state]
+        [filters, page, search, state],
     )
 
     const handleGetParams = useCallback(
@@ -103,7 +103,7 @@ export const CampaignListOptions = ({children}: Props) => {
             state,
             filters,
         }),
-        [filters, page, search, state]
+        [filters, page, search, state],
     )
 
     const memoValue = useMemo(
@@ -111,7 +111,7 @@ export const CampaignListOptions = ({children}: Props) => {
             getParams: handleGetParams,
             onChangeParams: handleChangeParams,
         }),
-        [handleChangeParams, handleGetParams]
+        [handleChangeParams, handleGetParams],
     )
 
     return (

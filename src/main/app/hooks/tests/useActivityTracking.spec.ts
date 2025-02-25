@@ -1,4 +1,4 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
 import * as activityTracker from 'services/activityTracker'
 
@@ -14,7 +14,7 @@ describe('useActivityTracking', () => {
     it('should register activity tracker', () => {
         const registerActivityTrackerSpy = jest.spyOn(
             activityTracker,
-            'registerAppActivityTrackerHooks'
+            'registerAppActivityTrackerHooks',
         )
         renderHook(() => useActivityTracker())
 
@@ -24,7 +24,7 @@ describe('useActivityTracking', () => {
     it('should unregister activity tracker', () => {
         const unregisterActivityTrackerSpy = jest.spyOn(
             activityTracker,
-            'unregisterAppActivityTrackerHooks'
+            'unregisterAppActivityTrackerHooks',
         )
         renderHook(() => useActivityTracker()).unmount()
 

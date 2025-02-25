@@ -1,10 +1,11 @@
-import {render, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {useSearchParam} from 'hooks/useSearchParam'
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
-import {HELP_CENTER_WIZARD_COMPLETED_STATE} from '../../../constants'
+import { useSearchParam } from 'hooks/useSearchParam'
+
+import { HELP_CENTER_WIZARD_COMPLETED_STATE } from '../../../constants'
 import HelpCenterWizardCompletedModal from '../HelpCenterWizardCompletedModal'
 
 jest.mock('hooks/useSearchParam', () => ({
@@ -67,10 +68,10 @@ describe('<HelpCenterWizardCompletedModal />', () => {
             ])
             renderComponent()
 
-            userEvent.click(screen.getByRole('button', {name: 'Continue'}))
+            userEvent.click(screen.getByRole('button', { name: 'Continue' }))
 
             await waitFor(() =>
-                expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+                expect(screen.queryByRole('dialog')).not.toBeInTheDocument(),
             )
             expect(mockSetSearchParam).toHaveBeenCalledWith(null)
         })

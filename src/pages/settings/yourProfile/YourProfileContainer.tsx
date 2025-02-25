@@ -1,13 +1,14 @@
-import {fromJS} from 'immutable'
-import _pick from 'lodash/pick'
-import React, {Component} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {bindActionCreators} from 'redux'
+import React, { Component } from 'react'
 
-import {EditableUserProfile, User, UserSetting} from 'config/types/user'
-import {submitSetting, updateCurrentUser} from 'state/currentUser/actions'
-import {getPreferences} from 'state/currentUser/selectors'
-import {StoreDispatch, StoreState} from 'state/types'
+import { fromJS } from 'immutable'
+import _pick from 'lodash/pick'
+import { connect, ConnectedProps } from 'react-redux'
+import { bindActionCreators } from 'redux'
+
+import { EditableUserProfile, User, UserSetting } from 'config/types/user'
+import { submitSetting, updateCurrentUser } from 'state/currentUser/actions'
+import { getPreferences } from 'state/currentUser/selectors'
+import { StoreDispatch, StoreState } from 'state/types'
 
 import YourProfileView from './components/YourProfileView'
 
@@ -29,7 +30,7 @@ class YourProfileContainer extends Component<Props> {
     }
 
     render() {
-        const {currentUser} = this.props
+        const { currentUser } = this.props
         let prunedCurrentUser = fromJS({})
 
         if (!currentUser.delete('_internal').isEmpty()) {
@@ -42,7 +43,7 @@ class YourProfileContainer extends Component<Props> {
                     'language',
                     'settings',
                     'meta',
-                ])
+                ]),
             )
         }
 
@@ -51,13 +52,13 @@ class YourProfileContainer extends Component<Props> {
                 currentUser={prunedCurrentUser}
                 updateCurrentUser={
                     this.props.updateCurrentUser as unknown as (
-                        object: Partial<EditableUserProfile>
+                        object: Partial<EditableUserProfile>,
                     ) => Promise<User>
                 }
                 submitSetting={
                     this.props.submitSetting as unknown as (
                         object: UserSetting,
-                        notification: boolean
+                        notification: boolean,
                     ) => Promise<unknown>
                 }
                 preferences={this.props.preferences}

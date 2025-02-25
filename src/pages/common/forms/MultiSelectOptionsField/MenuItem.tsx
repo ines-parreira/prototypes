@@ -1,6 +1,7 @@
+import React, { ReactNode } from 'react'
+
 import classNames from 'classnames'
-import React, {ReactNode} from 'react'
-import {DropdownItem} from 'reactstrap'
+import { DropdownItem } from 'reactstrap'
 
 import css from './MenuItem.less'
 

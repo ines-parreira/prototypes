@@ -1,16 +1,16 @@
-import {useCallback, useLayoutEffect} from 'react'
+import { useCallback, useLayoutEffect } from 'react'
 
 import useLocalStorage from 'hooks/useLocalStorage'
 
 export default function useLocalStorageWithExpiry<T>(
     key: string,
     expiryTimeInMilliseconds: number,
-    defaultValue: T
+    defaultValue: T,
 ) {
     const [value, setValue, removeValue] = useLocalStorage<T>(key, defaultValue)
     const [timestamp, setTimestamp, removeTimestamp] = useLocalStorage<number>(
         `${key}-timestamp`,
-        Date.now()
+        Date.now(),
     )
 
     const isExpired = useCallback(
@@ -18,7 +18,7 @@ export default function useLocalStorageWithExpiry<T>(
             timestamp
                 ? Date.now() - timestamp > expiryTimeInMilliseconds
                 : false,
-        [expiryTimeInMilliseconds, timestamp]
+        [expiryTimeInMilliseconds, timestamp],
     )
 
     const remove = useCallback(() => {
@@ -31,7 +31,7 @@ export default function useLocalStorageWithExpiry<T>(
             setValue(value)
             setTimestamp(Date.now())
         },
-        [setValue, setTimestamp]
+        [setValue, setTimestamp],
     )
 
     const resetValue = useCallback(() => {
@@ -48,5 +48,5 @@ export default function useLocalStorageWithExpiry<T>(
         }
     })
 
-    return {state: value, setState, remove}
+    return { state: value, setState, remove }
 }

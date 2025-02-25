@@ -1,39 +1,40 @@
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-import {fromJS, List, Map} from 'immutable'
-import React, {ReactNode} from 'react'
+import React, { ReactNode } from 'react'
+
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fromJS, List, Map } from 'immutable'
 
 import {
     getFinalCancelOrderPayload,
-    initRefundOrderLineItems,
     initCancelOrderPayload,
+    initRefundOrderLineItems,
 } from 'business/shopify/order'
-import {TransactionKind} from 'constants/integrations/types/shopify'
-import {integrationsStateWithShopify} from 'fixtures/integrations'
+import { TransactionKind } from 'constants/integrations/types/shopify'
+import { integrationsStateWithShopify } from 'fixtures/integrations'
 import {
+    shopifyCancelOrderPayloadFixture,
     shopifyLineItemFixture,
     shopifyOrderFixture,
-    shopifyCancelOrderPayloadFixture,
     shopifySuggestedRefundFixture,
 } from 'fixtures/shopify'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
+import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
-import {CancelOrderModalContainer} from '../CancelOrderModal'
+import { CancelOrderModalContainer } from '../CancelOrderModal'
 
 jest.mock(
     'pages/common/utils/DatetimeLabel',
     () =>
-        ({dateTime}: {dateTime: string}) => (
+        ({ dateTime }: { dateTime: string }) => (
             <div data-testid="DatetimeLabel">{dateTime}</div>
-        )
+        ),
 )
 
 jest.mock(
     'pages/common/components/modal/ModalHeader',
     () =>
-        ({title}: {title: ReactNode}) => (
+        ({ title }: { title: ReactNode }) => (
             <div data-testid="Modal-Header">{title}</div>
-        )
+        ),
 )
 
 jest.mock(
@@ -56,17 +57,20 @@ jest.mock(
                 )
             }
             return null
-        }
+        },
 )
 
 describe('<CancelOrderContainer />', () => {
     const order = fromJS(
-        shopifyOrderFixture({shippingLines: [{price: '0.00'}]})
+        shopifyOrderFixture({ shippingLines: [{ price: '0.00' }] }),
     )
     const payload = initCancelOrderPayload(order)
     const lineItems = initRefundOrderLineItems(order)
     const refund = fromJS(shopifySuggestedRefundFixture())
-    const integrationContextValue = {integration: fromJS({}), integrationId: 1}
+    const integrationContextValue = {
+        integration: fromJS({}),
+        integrationId: 1,
+    }
     const minProps = {
         data: {
             actionName: ShopifyActionType.CancelOrder,
@@ -90,10 +94,10 @@ describe('<CancelOrderContainer />', () => {
                 (
                     name: string,
                     value: string | number | boolean | Record<string, unknown>,
-                    callback?: () => void
+                    callback?: () => void,
                 ) => {
                     callback?.()
-                }
+                },
             ),
         onClose: jest.fn(),
         onInit: jest.fn(),
@@ -106,10 +110,10 @@ describe('<CancelOrderContainer />', () => {
     }
 
     it('should not render when modal is closed', () => {
-        const {container} = render(
+        const { container } = render(
             <IntegrationContext.Provider value={integrationContextValue}>
                 <CancelOrderModalContainer {...minProps} isOpen={false} />
-            </IntegrationContext.Provider>
+            </IntegrationContext.Provider>,
         )
 
         expect(container.firstChild).toBeNull()
@@ -119,7 +123,7 @@ describe('<CancelOrderContainer />', () => {
         render(
             <IntegrationContext.Provider value={integrationContextValue}>
                 <CancelOrderModalContainer {...minProps} loading />
-            </IntegrationContext.Provider>
+            </IntegrationContext.Provider>,
         )
 
         expect(screen.getAllByText('Loading...').length).toBeTruthy()
@@ -129,21 +133,21 @@ describe('<CancelOrderContainer />', () => {
         render(
             <IntegrationContext.Provider value={integrationContextValue}>
                 <CancelOrderModalContainer {...minProps} payload={payload} />
-            </IntegrationContext.Provider>
+            </IntegrationContext.Provider>,
         )
 
         expect(document.getElementsByTagName('tbody')[0]).toBeEmptyDOMElement()
     })
 
     it('should render with a populated order table when data is populated', () => {
-        const {container} = render(
+        const { container } = render(
             <IntegrationContext.Provider value={integrationContextValue}>
                 <CancelOrderModalContainer
                     {...minProps}
                     payload={payload}
                     lineItems={lineItems}
                 />
-            </IntegrationContext.Provider>
+            </IntegrationContext.Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -151,10 +155,10 @@ describe('<CancelOrderContainer />', () => {
 
     it('should call onLineItemsChange() when quantity of a product is changed', async () => {
         const lineItems = fromJS([
-            shopifyLineItemFixture({currencyCode: 'USD'}),
+            shopifyLineItemFixture({ currencyCode: 'USD' }),
         ]) as List<Map<any, any>>
 
-        const {getByText} = render(
+        const { getByText } = render(
             <IntegrationContext.Provider value={integrationContextValue}>
                 <CancelOrderModalContainer
                     {...minProps}
@@ -162,31 +166,31 @@ describe('<CancelOrderContainer />', () => {
                     lineItems={lineItems}
                     refund={refund}
                 />
-            </IntegrationContext.Provider>
+            </IntegrationContext.Provider>,
         )
 
         fireEvent.click(getByText('▼'))
 
         const newLineItems = lineItems.setIn(
             ['0', 'quantity'],
-            lineItems.getIn(['0', 'quantity']) - 1
+            lineItems.getIn(['0', 'quantity']) - 1,
         )
 
         await waitFor(() =>
             expect(minProps.onLineItemChange).toHaveBeenCalledWith(
                 1,
                 newLineItems.get(0),
-                0
-            )
+                0,
+            ),
         )
     })
 
     it('should call onPayloadChange when shipping amount is changed', async () => {
         const payload: Map<any, any> = fromJS(
-            shopifyCancelOrderPayloadFixture()
+            shopifyCancelOrderPayloadFixture(),
         )
 
-        const {getByLabelText} = render(
+        const { getByLabelText } = render(
             <IntegrationContext.Provider value={integrationContextValue}>
                 <CancelOrderModalContainer
                     {...minProps}
@@ -194,28 +198,31 @@ describe('<CancelOrderContainer />', () => {
                     lineItems={lineItems}
                     refund={refund}
                 />
-            </IntegrationContext.Provider>
+            </IntegrationContext.Provider>,
         )
         const newPayload = payload.setIn(
             ['refund', 'shipping', 'amount'],
-            '1.00'
+            '1.00',
         )
 
         fireEvent.change(getByLabelText(/Shipping/i), {
-            target: {value: '1.00'},
+            target: { value: '1.00' },
         })
 
         await waitFor(() =>
-            expect(minProps.onPayloadChange).toHaveBeenCalledWith(1, newPayload)
+            expect(minProps.onPayloadChange).toHaveBeenCalledWith(
+                1,
+                newPayload,
+            ),
         )
     })
 
     it('should call setPayload() when reason is changed', () => {
         const payload: Map<any, any> = fromJS(
-            shopifyCancelOrderPayloadFixture()
+            shopifyCancelOrderPayloadFixture(),
         )
 
-        const {getByLabelText} = render(
+        const { getByLabelText } = render(
             <IntegrationContext.Provider value={integrationContextValue}>
                 <CancelOrderModalContainer
                     {...minProps}
@@ -223,12 +230,12 @@ describe('<CancelOrderContainer />', () => {
                     lineItems={lineItems}
                     refund={refund}
                 />
-            </IntegrationContext.Provider>
+            </IntegrationContext.Provider>,
         )
 
         const reason = 'fraud'
         fireEvent.change(getByLabelText(/Reason for canceling/i), {
-            target: {value: reason},
+            target: { value: reason },
         })
         const newPayload = payload.set('reason', reason).set('email', false)
 
@@ -241,7 +248,7 @@ describe('<CancelOrderContainer />', () => {
             any
         >
 
-        const {getByLabelText} = render(
+        const { getByLabelText } = render(
             <IntegrationContext.Provider value={integrationContextValue}>
                 <CancelOrderModalContainer
                     {...minProps}
@@ -249,7 +256,7 @@ describe('<CancelOrderContainer />', () => {
                     lineItems={lineItems}
                     refund={refund}
                 />
-            </IntegrationContext.Provider>
+            </IntegrationContext.Provider>,
         )
         const newPayload = payload
             .setIn(['refund', 'notify'], false)
@@ -263,7 +270,7 @@ describe('<CancelOrderContainer />', () => {
     it('should call onSubmit() when submitting the form', () => {
         const payload = fromJS(shopifyCancelOrderPayloadFixture())
 
-        const {getAllByText} = render(
+        const { getAllByText } = render(
             <IntegrationContext.Provider value={integrationContextValue}>
                 <CancelOrderModalContainer
                     {...minProps}
@@ -271,7 +278,7 @@ describe('<CancelOrderContainer />', () => {
                     payload={payload}
                     refund={refund}
                 />
-            </IntegrationContext.Provider>
+            </IntegrationContext.Provider>,
         )
 
         fireEvent.click(getAllByText('Cancel order')[1])
@@ -281,14 +288,14 @@ describe('<CancelOrderContainer />', () => {
         expect(minProps.onChange).toHaveBeenCalledWith(
             'payload',
             finalPayload,
-            expect.any(Function)
+            expect.any(Function),
         )
         expect(minProps.onSubmit).toHaveBeenCalled()
         expect(minProps.onReset).toHaveBeenCalled()
     })
 
     it('should call onCancel() when clicking on Keep order button', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <IntegrationContext.Provider value={integrationContextValue}>
                 <CancelOrderModalContainer
                     {...minProps}
@@ -296,7 +303,7 @@ describe('<CancelOrderContainer />', () => {
                     lineItems={lineItems}
                     refund={refund}
                 />
-            </IntegrationContext.Provider>
+            </IntegrationContext.Provider>,
         )
 
         fireEvent.click(getByText('Keep order'))
@@ -307,7 +314,7 @@ describe('<CancelOrderContainer />', () => {
     })
 
     it('should call onCancel() when clicking on header button', () => {
-        const {getByTestId} = render(
+        const { getByTestId } = render(
             <IntegrationContext.Provider value={integrationContextValue}>
                 <CancelOrderModalContainer
                     {...minProps}
@@ -315,7 +322,7 @@ describe('<CancelOrderContainer />', () => {
                     lineItems={lineItems}
                     refund={refund}
                 />
-            </IntegrationContext.Provider>
+            </IntegrationContext.Provider>,
         )
 
         fireEvent.click(getByTestId('Modal'))
@@ -344,7 +351,7 @@ describe('<CancelOrderContainer />', () => {
             ],
         })
 
-        const {getAllByText} = render(
+        const { getAllByText } = render(
             <IntegrationContext.Provider value={integrationContextValue}>
                 <CancelOrderModalContainer
                     {...minProps}
@@ -352,7 +359,7 @@ describe('<CancelOrderContainer />', () => {
                     payload={payload}
                     refund={refund}
                 />
-            </IntegrationContext.Provider>
+            </IntegrationContext.Provider>,
         )
         const button = getAllByText('Cancel order')[1]
         expect(button).toBeDisabled()

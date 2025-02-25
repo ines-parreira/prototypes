@@ -1,1 +1,1 @@
-export {default} from './AIArticlesToggleButton'
+export { default } from './AIArticlesToggleButton'

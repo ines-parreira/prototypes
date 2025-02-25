@@ -1,6 +1,7 @@
-import {render} from '@testing-library/react'
 import React from 'react'
-import {Route} from 'react-router-dom'
+
+import { render } from '@testing-library/react'
+import { Route } from 'react-router-dom'
 
 import {
     CONTACT_FORM_ABOUT_PATH,
@@ -12,23 +13,25 @@ import {
 import ContactFormCreateView from 'pages/settings/contactForm/views/ContactFormCreateView'
 import ContactFormSettingsView from 'pages/settings/contactForm/views/ContactFormSettingsView'
 import ContactFormStartView from 'pages/settings/contactForm/views/ContactFormStartView'
-import {HelpCenterApiClientProvider} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import {SupportedLocalesProvider} from 'pages/settings/helpCenter/providers/SupportedLocales'
-import {assumeMock} from 'utils/testing'
+import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import { SupportedLocalesProvider } from 'pages/settings/helpCenter/providers/SupportedLocales'
+import { assumeMock } from 'utils/testing'
 
-import {ContactForm} from '../ContactForm'
-import {renderAppSettings} from '../helpers/settingsRenderer'
+import { ContactForm } from '../ContactForm'
+import { renderAppSettings } from '../helpers/settingsRenderer'
 
 jest.mock('react-router-dom', () => ({
     Route: jest.fn(() => <div>route</div>),
-    Switch: jest.fn(({children}) => <div>{children}</div>),
+    Switch: jest.fn(({ children }) => <div>{children}</div>),
     Link: () => <div />,
 }))
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
-    HelpCenterApiClientProvider: jest.fn(({children}) => <div>{children}</div>),
+    HelpCenterApiClientProvider: jest.fn(({ children }) => (
+        <div>{children}</div>
+    )),
 }))
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales', () => ({
-    SupportedLocalesProvider: jest.fn(({children}) => <div>{children}</div>),
+    SupportedLocalesProvider: jest.fn(({ children }) => <div>{children}</div>),
 }))
 
 const ComponentToRender = () => <div>OK</div>
@@ -78,7 +81,7 @@ describe('ContactForm', () => {
         ],
     ])(
         'should call renderer and Route with correct props',
-        ({callOrder, exact, path, component}) => {
+        ({ callOrder, exact, path, component }) => {
             render(<ContactForm />)
 
             expect(mockedRenderAppSettings.mock.calls[callOrder]).toEqual([
@@ -92,6 +95,6 @@ describe('ContactForm', () => {
                 },
                 {},
             ])
-        }
+        },
     )
 })

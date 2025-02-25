@@ -1,31 +1,33 @@
+import React from 'react'
+
 import {
     CreateCustomFieldCondition,
     CustomFieldCondition,
     UpdateCustomFieldCondition,
 } from '@gorgias/api-queries'
-import {Label} from '@gorgias/merchant-ui-kit'
-import React from 'react'
+import { Label } from '@gorgias/merchant-ui-kit'
 
-import {Form, FormField, FormSubmitButton} from 'core/forms'
+import { Form, FormField, FormSubmitButton } from 'core/forms'
 import Button from 'pages/common/components/button/Button'
 import ToggleInputField from 'pages/common/forms/ToggleInputField'
 import history from 'pages/history'
 import settingsCss from 'pages/settings/settings.less'
-import {CUSTOM_FIELD_CONDITIONS_ROUTE} from 'routes/constants'
+import { CUSTOM_FIELD_CONDITIONS_ROUTE } from 'routes/constants'
 
-import {DEFAULT_EXPRESSION_RULE} from '../constants'
+import { DEFAULT_EXPRESSION_RULE } from '../constants'
 import useSaveCondition from '../hooks/useSaveCondition'
-import css from './ConditionForm.less'
-import {DeletionPopover} from './DeletionPopover'
-import {ExpressionField} from './ExpressionField'
+import { DeletionPopover } from './DeletionPopover'
+import { ExpressionField } from './ExpressionField'
 import ThenField from './ThenField'
+
+import css from './ConditionForm.less'
 
 type ConditionFormProps = {
     condition?: CustomFieldCondition
 }
 
-export default function EditConditionForm({condition}: ConditionFormProps) {
-    const {onSubmit, isSubmitting} = useSaveCondition(condition?.id)
+export default function EditConditionForm({ condition }: ConditionFormProps) {
+    const { onSubmit, isSubmitting } = useSaveCondition(condition?.id)
 
     const editValues = {
         name: condition?.name,
@@ -36,7 +38,7 @@ export default function EditConditionForm({condition}: ConditionFormProps) {
     }
 
     const handleFormSubmit = (
-        data: CreateCustomFieldCondition | UpdateCustomFieldCondition
+        data: CreateCustomFieldCondition | UpdateCustomFieldCondition,
     ) => {
         void onSubmit(data)
     }
@@ -53,7 +55,10 @@ export default function EditConditionForm({condition}: ConditionFormProps) {
             }}
             values={
                 condition?.id
-                    ? {...editValues, description: editValues.description ?? ''}
+                    ? {
+                          ...editValues,
+                          description: editValues.description ?? '',
+                      }
                     : undefined
             }
             onValidSubmit={handleFormSubmit}
@@ -108,7 +113,7 @@ export default function EditConditionForm({condition}: ConditionFormProps) {
                         intent="secondary"
                         onClick={() => {
                             history.push(
-                                `/app/settings/${CUSTOM_FIELD_CONDITIONS_ROUTE}`
+                                `/app/settings/${CUSTOM_FIELD_CONDITIONS_ROUTE}`,
                             )
                         }}
                     >
@@ -117,7 +122,7 @@ export default function EditConditionForm({condition}: ConditionFormProps) {
                 </span>
                 {condition && (
                     <DeletionPopover condition={condition} redirect>
-                        {({uid, onDisplayConfirmation}) => (
+                        {({ uid, onDisplayConfirmation }) => (
                             <Button
                                 type="button"
                                 fillStyle="ghost"

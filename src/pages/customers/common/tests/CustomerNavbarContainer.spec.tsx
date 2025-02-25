@@ -1,34 +1,35 @@
-import {createMemoryHistory} from 'history'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {Navbar} from 'common/navigation'
+import { createMemoryHistory } from 'history'
+
+import { Navbar } from 'common/navigation'
 import ViewNavbarView from 'pages/common/components/ViewNavbarView/ViewNavbarView'
-import {renderWithRouter} from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
-import {CustomerNavbarContainer} from '../CustomerNavbarContainer'
+import { CustomerNavbarContainer } from '../CustomerNavbarContainer'
 
 jest.mock(
     'common/navigation',
     () =>
         ({
             ...jest.requireActual('common/navigation'),
-            Navbar: ({children}: ComponentProps<typeof Navbar>) => (
+            Navbar: ({ children }: ComponentProps<typeof Navbar>) => (
                 <div>
                     Navbar: <div>children: {children}</div>
                 </div>
             ),
-        }) as typeof import('common/navigation')
+        }) as typeof import('common/navigation'),
 )
 
 jest.mock(
     '../../../common/components/ViewNavbarView/ViewNavbarView',
     () =>
-        ({settingType, isLoading}: ComponentProps<typeof ViewNavbarView>) => (
+        ({ settingType, isLoading }: ComponentProps<typeof ViewNavbarView>) => (
             <div>
                 <div>isLoading: {JSON.stringify(isLoading)}</div>
                 <div>settingType: {settingType}</div>
             </div>
-        )
+        ),
 )
 
 describe('<CustomerNavbarContainer />', () => {
@@ -38,8 +39,8 @@ describe('<CustomerNavbarContainer />', () => {
     }
 
     it('should display', () => {
-        const {container} = renderWithRouter(
-            <CustomerNavbarContainer {...minProps} />
+        const { container } = renderWithRouter(
+            <CustomerNavbarContainer {...minProps} />,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -47,12 +48,12 @@ describe('<CustomerNavbarContainer />', () => {
     it('should fetch views on initial load and when route parameters are updated', () => {
         const history = createMemoryHistory()
 
-        const {rerender} = renderWithRouter(
+        const { rerender } = renderWithRouter(
             <CustomerNavbarContainer {...minProps} />,
             {
                 history,
                 path: '/',
-            }
+            },
         )
         expect(minProps.fetchViews).toHaveBeenCalledWith(undefined)
 

@@ -1,33 +1,31 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {agents} from 'fixtures/agents'
-import {tags} from 'fixtures/tag'
-import {getCsvFileNameWithDates} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
-import {ReportingGranularity} from 'models/reporting/types'
-
-import {LegacyStatsFilters} from 'models/stat/types'
+import { agents } from 'fixtures/agents'
+import { tags } from 'fixtures/tag'
+import { getCsvFileNameWithDates } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
+import { ReportingGranularity } from 'models/reporting/types'
+import { LegacyStatsFilters } from 'models/stat/types'
 import {
     VOICE_OVERVIEW_CALL_EXPERIENCE_REPORT_FILE_NAME,
     VOICE_OVERVIEW_CALL_VOLUME_REPORT_FILE_NAME,
     VOICE_OVERVIEW_REPORT_FILE_NAME,
 } from 'pages/stats/voice/constants/voiceOverview'
-import {useNewVoiceStatsFilters} from 'pages/stats/voice/hooks/useNewVoiceStatsFilters'
-import {useVoiceCallAverageTimeTrend} from 'pages/stats/voice/hooks/useVoiceCallAverageTimeTrend'
-
-import {useVoiceCallCountTrend} from 'pages/stats/voice/hooks/useVoiceCallCountTrend'
+import { useNewVoiceStatsFilters } from 'pages/stats/voice/hooks/useNewVoiceStatsFilters'
+import { useVoiceCallAverageTimeTrend } from 'pages/stats/voice/hooks/useVoiceCallAverageTimeTrend'
+import { useVoiceCallCountTrend } from 'pages/stats/voice/hooks/useVoiceCallCountTrend'
 import {
     saveReport,
     useVoiceOverviewReportData,
 } from 'services/reporting/voiceOverviewReportingService'
-import {fromLegacyStatsFilters} from 'state/stats/utils'
+import { fromLegacyStatsFilters } from 'state/stats/utils'
 import * as files from 'utils/file'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('pages/stats/voice/hooks/useVoiceCallCountTrend')
 const useVoiceCallCountTrendMock = assumeMock(useVoiceCallCountTrend)
 jest.mock('pages/stats/voice/hooks/useVoiceCallAverageTimeTrend')
 const useVoiceCallAverageTimeTrendMock = assumeMock(
-    useVoiceCallAverageTimeTrend
+    useVoiceCallAverageTimeTrend,
 )
 jest.mock('pages/stats/voice/hooks/useNewVoiceStatsFilters')
 const useNewVoiceStatsFiltersMock = assumeMock(useNewVoiceStatsFilters)
@@ -111,16 +109,16 @@ describe('voiceOverviewReportingService', () => {
             files: {
                 [getCsvFileNameWithDates(
                     period,
-                    VOICE_OVERVIEW_CALL_EXPERIENCE_REPORT_FILE_NAME
+                    VOICE_OVERVIEW_CALL_EXPERIENCE_REPORT_FILE_NAME,
                 )]: fakeReport,
                 [getCsvFileNameWithDates(
                     period,
-                    VOICE_OVERVIEW_CALL_VOLUME_REPORT_FILE_NAME
+                    VOICE_OVERVIEW_CALL_VOLUME_REPORT_FILE_NAME,
                 )]: fakeReport,
             },
             fileName: getCsvFileNameWithDates(
                 period,
-                VOICE_OVERVIEW_REPORT_FILE_NAME
+                VOICE_OVERVIEW_REPORT_FILE_NAME,
             ),
         })
     })
@@ -128,12 +126,12 @@ describe('voiceOverviewReportingService', () => {
     describe('useVoiceOverviewReportData', () => {
         beforeEach(() => {
             useVoiceCallCountTrendMock.mockReturnValue({
-                data: {prevValue: 10, value: 15},
+                data: { prevValue: 10, value: 15 },
                 isFetching: false,
                 isError: false,
             })
             useVoiceCallAverageTimeTrendMock.mockReturnValue({
-                data: {prevValue: 1, value: 2},
+                data: { prevValue: 1, value: 2 },
                 isFetching: false,
                 isError: false,
             })
@@ -148,19 +146,19 @@ describe('voiceOverviewReportingService', () => {
         it('should fetch and format data', () => {
             const fileName = getCsvFileNameWithDates(
                 period,
-                VOICE_OVERVIEW_REPORT_FILE_NAME
+                VOICE_OVERVIEW_REPORT_FILE_NAME,
             )
-            const {result} = renderHook(() => useVoiceOverviewReportData())
+            const { result } = renderHook(() => useVoiceOverviewReportData())
 
             expect(result.current).toEqual({
                 files: {
                     [getCsvFileNameWithDates(
                         period,
-                        VOICE_OVERVIEW_CALL_EXPERIENCE_REPORT_FILE_NAME
+                        VOICE_OVERVIEW_CALL_EXPERIENCE_REPORT_FILE_NAME,
                     )]: fakeReport,
                     [getCsvFileNameWithDates(
                         period,
-                        VOICE_OVERVIEW_CALL_VOLUME_REPORT_FILE_NAME
+                        VOICE_OVERVIEW_CALL_VOLUME_REPORT_FILE_NAME,
                     )]: fakeReport,
                 },
                 fileName,

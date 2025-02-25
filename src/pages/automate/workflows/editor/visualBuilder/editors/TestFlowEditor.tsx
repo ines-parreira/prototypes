@@ -1,28 +1,31 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
+
 import classNames from 'classnames'
 import _throttle from 'lodash/throttle'
-import React, {useEffect, useState, useMemo, useRef} from 'react'
-import {useParams} from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
-import {AlertBanner, AlertBannerTypes} from 'AlertBanners'
-import {GORGIAS_CHAT_SSP_TEXTS} from 'config/integrations/gorgias_chat'
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+
+import { AlertBanner, AlertBannerTypes } from 'AlertBanners'
+import { GORGIAS_CHAT_SSP_TEXTS } from 'config/integrations/gorgias_chat'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useEffectOnce from 'hooks/useEffectOnce'
 import useKey from 'hooks/useKey'
-import {useGetInstallationSnippet} from 'models/integration/queries'
+import { useGetInstallationSnippet } from 'models/integration/queries'
 import SelfServicePreviewChannelSelect from 'pages/automate/common/components/preview/SelfServicePreviewChannelSelect'
 import useSelfServiceChatChannels, {
     SelfServiceChatChannel,
 } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import LanguageSelector from 'pages/automate/workflows/components/LanguageSelector'
-import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
-import {ChannelTriggerNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { useWorkflowEditorContext } from 'pages/automate/workflows/hooks/useWorkflowEditor'
+import { ChannelTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import Button from 'pages/common/components/button/Button'
-import {Drawer} from 'pages/common/components/Drawer'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { Drawer } from 'pages/common/components/Drawer'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 import EditorDrawerHeader from '../EditorDrawerHeader'
+
 import nodeEditorCss from '../NodeEditorDrawer.less'
 import css from './TestFlowEditor.less'
 
@@ -41,7 +44,7 @@ export const TestFlowEditor = ({
     startFlowNode,
 }: Props) => {
     const dispatch = useAppDispatch()
-    const {shopType, shopName, editWorkflowId} = useParams<{
+    const { shopType, shopName, editWorkflowId } = useParams<{
         shopType: string
         shopName: string
         editWorkflowId: string
@@ -54,14 +57,14 @@ export const TestFlowEditor = ({
             chatChannels.filter(
                 (chat) =>
                     !chat.value.deactivated_datetime &&
-                    !chat.value.deleted_datetime
+                    !chat.value.deleted_datetime,
             ),
-        [chatChannels]
+        [chatChannels],
     )
     const {
         currentLanguage,
         translateKey,
-        visualBuilderGraph: {available_languages},
+        visualBuilderGraph: { available_languages },
     } = useWorkflowEditorContext()
 
     const [selectedTestLanguage, setSelectedTestLanguage] =
@@ -82,7 +85,7 @@ export const TestFlowEditor = ({
         ? (selectedChatChannel.value.meta?.app_id ?? '')
         : (availableChatChannels?.[0]?.value.meta?.app_id ?? '')
 
-    const {data: installationSnippet} = useGetInstallationSnippet({
+    const { data: installationSnippet } = useGetInstallationSnippet({
         applicationId: selectedChannelApplicationId,
     })
 
@@ -95,7 +98,7 @@ export const TestFlowEditor = ({
             }
         },
         undefined,
-        [onClose, isTesting]
+        [onClose, isTesting],
     )
 
     const selectedLanguage = selectedTestLanguage
@@ -154,7 +157,7 @@ export const TestFlowEditor = ({
                     status: NotificationStatus.Error,
                     message:
                         'Failed Loading Flow Testing. Please try again later',
-                })
+                }),
             )
         }
     }, [
@@ -278,7 +281,7 @@ export const TestFlowEditor = ({
                                     language: selectedLanguage,
                                     id: editWorkflowId,
                                 }),
-                            2000
+                            2000,
                         )}
                         intent="secondary"
                         leadingIcon="refresh"
@@ -303,7 +306,7 @@ export const TestFlowEditor = ({
 
                                 const snippet = new DOMParser().parseFromString(
                                     installationSnippet.snippet,
-                                    'text/html'
+                                    'text/html',
                                 )
                                 const script = snippet.querySelector('script')
 
@@ -348,7 +351,7 @@ export const TestFlowEditor = ({
                                                 GorgiasChat.updateSSPTexts(${JSON.stringify(
                                                     GORGIAS_CHAT_SSP_TEXTS[
                                                         selectedLanguage
-                                                    ]
+                                                    ],
                                                 )})
                                                 GorgiasChat.hideOnMobile(false);
                                                 GorgiasChat.hideOutsideBusinessHours(false);
@@ -364,7 +367,7 @@ export const TestFlowEditor = ({
                                                                 editWorkflowId,
                                                             language:
                                                                 selectedLanguage,
-                                                        }
+                                                        },
                                                     )}],
                                                 }
                                                 GorgiasChat.setShopifyContext();
@@ -375,7 +378,7 @@ export const TestFlowEditor = ({
                                                             flowLanguage:
                                                                 selectedLanguage,
                                                             flowId: editWorkflowId,
-                                                        }
+                                                        },
                                                     )})
                                                 })
                                                 window.addEventListener('flow-interpreter-started', (e) => {

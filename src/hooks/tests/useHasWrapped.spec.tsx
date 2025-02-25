@@ -1,7 +1,8 @@
-import {render, waitFor} from '@testing-library/react'
-import {renderHook, act} from '@testing-library/react-hooks/dom'
+import React, { forwardRef, MutableRefObject } from 'react'
+
+import { render, waitFor } from '@testing-library/react'
+import { act, renderHook } from '@testing-library/react-hooks/dom'
 import noop from 'lodash/noop'
-import React, {MutableRefObject, forwardRef} from 'react'
 
 import useHasWrapped from '../useHasWrapped'
 
@@ -14,17 +15,17 @@ const resizeObserverMethods = {
 }
 
 const HookWrapper = forwardRef<HTMLDivElement, Record<string, unknown>>(
-    (props, ref) => <div ref={ref} />
+    (props, ref) => <div ref={ref} />,
 )
 
 describe('useHasWrapped', () => {
     it('should return default state', () => {
-        const {result} = renderHook(() => useHasWrapped())
+        const { result } = renderHook(() => useHasWrapped())
 
         act(() => {
             const [ref] = result.current
             render(
-                <HookWrapper ref={ref as MutableRefObject<HTMLDivElement>} />
+                <HookWrapper ref={ref as MutableRefObject<HTMLDivElement>} />,
             )
         })
 
@@ -34,12 +35,12 @@ describe('useHasWrapped', () => {
     it('should synchronously set up ResizeObserver listener', () => {
         const spy = jest.spyOn(window, 'ResizeObserver')
 
-        const {result} = renderHook(() => useHasWrapped())
+        const { result } = renderHook(() => useHasWrapped())
 
         act(() => {
             const [ref] = result.current
             render(
-                <HookWrapper ref={ref as MutableRefObject<HTMLDivElement>} />
+                <HookWrapper ref={ref as MutableRefObject<HTMLDivElement>} />,
             )
         })
 
@@ -53,12 +54,12 @@ describe('useHasWrapped', () => {
             return resizeObserverMethods
         }) as MockedResizeObserver)
 
-        const {result} = renderHook(() => useHasWrapped())
+        const { result } = renderHook(() => useHasWrapped())
 
         act(() => {
             const [ref] = result.current
             render(
-                <HookWrapper ref={ref as MutableRefObject<HTMLDivElement>} />
+                <HookWrapper ref={ref as MutableRefObject<HTMLDivElement>} />,
             )
         })
 
@@ -78,7 +79,7 @@ describe('useHasWrapped', () => {
         }
 
         act(() => {
-            resizeListener([{target}])
+            resizeListener([{ target }])
         })
 
         expect(result.current[1]).toBeTruthy()
@@ -91,12 +92,12 @@ describe('useHasWrapped', () => {
             return resizeObserverMethods
         }) as MockedResizeObserver)
 
-        const {result} = renderHook(() => useHasWrapped())
+        const { result } = renderHook(() => useHasWrapped())
 
         act(() => {
             const [ref] = result.current
             render(
-                <HookWrapper ref={ref as MutableRefObject<HTMLDivElement>} />
+                <HookWrapper ref={ref as MutableRefObject<HTMLDivElement>} />,
             )
         })
 
@@ -116,7 +117,7 @@ describe('useHasWrapped', () => {
         }
 
         act(() => {
-            resizeListener([{target}])
+            resizeListener([{ target }])
         })
 
         expect(result.current[1]).toBeFalsy()
@@ -137,7 +138,7 @@ describe('useHasWrapped', () => {
         }
 
         act(() => {
-            resizeListener([{target: updatedTarget}])
+            resizeListener([{ target: updatedTarget }])
         })
 
         expect(result.current[1]).toBeTruthy()
@@ -146,7 +147,7 @@ describe('useHasWrapped', () => {
     it('should call .disconnect() on ResizeObserver when component unmounts', async () => {
         const disconnect = jest.fn()
         jest.spyOn(window, 'ResizeObserver').mockImplementation((() => {
-            return {observe: noop, disconnect}
+            return { observe: noop, disconnect }
         }) as MockedResizeObserver)
 
         const hook = renderHook(() => useHasWrapped())

@@ -1,5 +1,3 @@
-import classNames from 'classnames'
-import {EmojiData, BaseEmoji} from 'emoji-mart'
 import React, {
     ComponentProps,
     MouseEvent,
@@ -7,9 +5,12 @@ import React, {
     useRef,
     useState,
 } from 'react'
-import {Popover} from 'reactstrap'
 
-import {useAppNode} from 'appNode'
+import classNames from 'classnames'
+import { BaseEmoji, EmojiData } from 'emoji-mart'
+import { Popover } from 'reactstrap'
+
+import { useAppNode } from 'appNode'
 import Button from 'pages/common/components/button/Button'
 import EmojiPicker from 'pages/common/components/EmojiPicker/EmojiPicker'
 
@@ -21,7 +22,7 @@ type Props = {
     onEmojiClear: (event: MouseEvent<HTMLButtonElement>) => void
     onEmojiSelect: (
         emoji: BaseEmoji['native'],
-        event: MouseEvent<HTMLElement>
+        event: MouseEvent<HTMLElement>,
     ) => void
 } & Pick<ComponentProps<typeof Popover>, 'container'>
 
@@ -46,7 +47,7 @@ const EmojiSelect = ({
                         'material-icons': !emoji,
                         [css.empty]: !emoji,
                     },
-                    css.icon
+                    css.icon,
                 )}
                 onClick={toggle}
             >
@@ -64,10 +65,10 @@ const EmojiSelect = ({
                 >
                     <div className={css.popover}>
                         <EmojiPicker
-                            style={{border: 'none'}}
+                            style={{ border: 'none' }}
                             onClick={(
                                 emoji: EmojiData,
-                                event: MouseEvent<HTMLElement>
+                                event: MouseEvent<HTMLElement>,
                             ) => {
                                 setIsOpen(false)
                                 if ('native' in emoji) {
@@ -81,7 +82,7 @@ const EmojiSelect = ({
                                 intent="primary"
                                 className={css.clearButton}
                                 onClick={(
-                                    event: MouseEvent<HTMLButtonElement>
+                                    event: MouseEvent<HTMLButtonElement>,
                                 ) => {
                                     onEmojiClear(event)
                                     setIsOpen(false)

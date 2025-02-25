@@ -1,4 +1,4 @@
-import {assetsUrl} from 'utils'
+import { assetsUrl } from 'utils'
 
 export default {
     greyButtonText: 'Learn more',
@@ -25,14 +25,14 @@ export default {
         },
         {
             imageUrl: assetsUrl(
-                '/img/paywalls/screens/voice-events-timeline.png'
+                '/img/paywalls/screens/voice-events-timeline.png',
             ),
             description:
                 'View a complete timeline of all phone call events, from start to finish, for full visibility into every interaction.',
         },
         {
             imageUrl: assetsUrl(
-                '/img/paywalls/screens/voice-transcription.png'
+                '/img/paywalls/screens/voice-transcription.png',
             ),
             description:
                 'All recorded calls and voicemails are automatically transcribed and summarized for quick and easy review.',

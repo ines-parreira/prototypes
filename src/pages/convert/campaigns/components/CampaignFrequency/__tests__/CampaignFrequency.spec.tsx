@@ -1,5 +1,6 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import CampaignFrequency from '../CampaignFrequency'
 
@@ -12,7 +13,7 @@ describe('<MaximumCampaignDisplayed />', () => {
                 onChangeMaximumCampaignDisplayed={jest.fn()}
                 timeBetweenCampaigns={undefined}
                 onChangeTimeBetweenCampaigns={jest.fn()}
-            />
+            />,
         )
 
         expect(screen.getByText('Frequency settings')).toBeInTheDocument()

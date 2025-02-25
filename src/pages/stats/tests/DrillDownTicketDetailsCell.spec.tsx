@@ -1,10 +1,10 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {TicketChannel, TicketStatus} from 'business/types/ticket'
-import {NOT_AVAILABLE_PLACEHOLDER} from 'pages/stats/common/utils'
+import { render, screen } from '@testing-library/react'
 
-import {DrillDownTicketDetailsCell} from 'pages/stats/DrillDownTicketDetailsCell'
+import { TicketChannel, TicketStatus } from 'business/types/ticket'
+import { NOT_AVAILABLE_PLACEHOLDER } from 'pages/stats/common/utils'
+import { DrillDownTicketDetailsCell } from 'pages/stats/DrillDownTicketDetailsCell'
 
 describe('<DrillDownTicketDetailsCell />', () => {
     const subject = 'Ticket subject'
@@ -26,13 +26,13 @@ describe('<DrillDownTicketDetailsCell />', () => {
     })
 
     it('should render with highlight class name', () => {
-        const {container} = render(
+        const { container } = render(
             <DrillDownTicketDetailsCell
                 ticketDetails={{
                     ...ticketDetails,
                     isRead: false,
                 }}
-            />
+            />,
         )
 
         expect(container.firstChild).toHaveClass('highlighted')
@@ -46,7 +46,7 @@ describe('<DrillDownTicketDetailsCell />', () => {
                     isRead: false,
                     channel: null,
                 }}
-            />
+            />,
         )
 
         expect(screen.getByText(NOT_AVAILABLE_PLACEHOLDER)).toBeInTheDocument()
@@ -59,7 +59,7 @@ describe('<DrillDownTicketDetailsCell />', () => {
                     ...ticketDetails,
                     status: null,
                 }}
-            />
+            />,
         )
 
         expect(screen.getByText('delete')).toBeInTheDocument()

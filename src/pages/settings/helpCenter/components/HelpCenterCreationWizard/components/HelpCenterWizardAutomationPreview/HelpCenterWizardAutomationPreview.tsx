@@ -1,13 +1,13 @@
 import React from 'react'
 
-import {HELP_CENTER_TEXTS} from 'config/helpCenter'
-import {HelpCenter} from 'models/helpCenter/types'
-import {Entrypoint} from 'pages/automate/common/components/WorkflowsFeatureList'
+import { HELP_CENTER_TEXTS } from 'config/helpCenter'
+import { HelpCenter } from 'models/helpCenter/types'
+import { Entrypoint } from 'pages/automate/common/components/WorkflowsFeatureList'
 import HelpCenterPreviewAutomation from 'pages/settings/helpCenter/components/HelpCenterPreview/HelpCenterPreviewAutomation'
 import HelpCenterPreviewHomePage from 'pages/settings/helpCenter/components/HelpCenterPreview/HelpCenterPreviewHomePage'
 
 import HelpCenterPreview from '../../../HelpCenterPreview/HelpCenterPreview'
-import {useHelpCenterFlows} from '../../hooks/useHelpCenterFlows'
+import { useHelpCenterFlows } from '../../hooks/useHelpCenterFlows'
 
 type Props = {
     shopName: string
@@ -24,7 +24,7 @@ const HelpCenterWizardAutomationPreview = ({
     orderManagementEnabled,
     flows,
 }: Props) => {
-    const {selfServiceConfiguration, workflowConfigurations} =
+    const { selfServiceConfiguration, workflowConfigurations } =
         useHelpCenterFlows({
             flows,
             shopType,
@@ -37,7 +37,8 @@ const HelpCenterWizardAutomationPreview = ({
             id: flow.workflow_id,
             name:
                 workflowConfigurations?.find(
-                    (wfConfiguration) => wfConfiguration.id === flow.workflow_id
+                    (wfConfiguration) =>
+                        wfConfiguration.id === flow.workflow_id,
                 )?.name ?? '',
         }))
 

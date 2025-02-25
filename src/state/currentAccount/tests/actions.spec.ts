@@ -1,9 +1,9 @@
 import MockAdapter from 'axios-mock-adapter'
-import {fromJS, Map} from 'immutable'
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+import { fromJS, Map } from 'immutable'
+import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {billingState} from 'fixtures/billing'
+import { billingState } from 'fixtures/billing'
 import {
     AUTOMATION_PRODUCT_ID,
     basicMonthlyAutomationPlan,
@@ -17,13 +17,13 @@ import {
 } from 'state/currentAccount/actions'
 import * as actions from 'state/currentAccount/actions'
 import * as constants from 'state/currentAccount/constants'
-import {initialState} from 'state/currentAccount/reducers'
-import {AccountSettingType, AccountSetting} from 'state/currentAccount/types'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {StoreDispatch} from 'state/types'
-import {AgentsTableColumn, ChannelsTableColumns} from 'state/ui/stats/types'
-import {assumeMock} from 'utils/testing'
+import { initialState } from 'state/currentAccount/reducers'
+import { AccountSetting, AccountSettingType } from 'state/currentAccount/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { StoreDispatch } from 'state/types'
+import { AgentsTableColumn, ChannelsTableColumns } from 'state/ui/stats/types'
+import { assumeMock } from 'utils/testing'
 
 type MockedRootState = {
     currentAccount: Map<any, any>
@@ -32,15 +32,15 @@ type MockedRootState = {
 
 const middlewares = [thunk]
 const mockStore = configureMockStore<MockedRootState, StoreDispatch>(
-    middlewares
+    middlewares,
 )
 
 type fromJSType = typeof fromJS
 
 jest.mock('init', () => {
     /* eslint-disable @typescript-eslint/no-var-requires,@typescript-eslint/no-unsafe-member-access */
-    const {fromJS} = jest.requireActual('immutable')
-    const {billingState} = require('fixtures/billing')
+    const { fromJS } = jest.requireActual('immutable')
+    const { billingState } = require('fixtures/billing')
     return {
         store: {
             getState: () => ({
@@ -70,7 +70,7 @@ describe('current account actions', () => {
     })
 
     it('update account', () => {
-        const data = {id: 2}
+        const data = { id: 2 }
 
         mockServer.onPut('/api/account/').reply(200, data)
 
@@ -81,7 +81,7 @@ describe('current account actions', () => {
 
     describe('submit setting', () => {
         it('creation', () => {
-            const data = {hello: 'world'}
+            const data = { hello: 'world' }
 
             mockServer.onPost('/api/account/settings/').reply(200, data)
 
@@ -91,7 +91,7 @@ describe('current account actions', () => {
         })
 
         it('update', () => {
-            const data = {id: 1, hello: 'world'}
+            const data = { id: 1, hello: 'world' }
 
             mockServer.onPut('/api/account/settings/1/').reply(200, data)
 
@@ -105,7 +105,7 @@ describe('current account actions', () => {
         it('update account owner', () => {
             const userId = 1
 
-            mockServer.onPut('/api/account/owner/', {id: userId}).reply(202)
+            mockServer.onPut('/api/account/owner/', { id: userId }).reply(202)
 
             return store
                 .dispatch(actions.updateAccountOwner(userId))
@@ -117,7 +117,7 @@ describe('current account actions', () => {
 
     describe('update subscription', () => {
         it('update subscription', () => {
-            const subscription = {prices: [basicMonthlyHelpdeskPlan.price_id]}
+            const subscription = { prices: [basicMonthlyHelpdeskPlan.price_id] }
 
             mockServer
                 .onPut('/api/billing/subscription/')
@@ -146,9 +146,9 @@ describe('current account actions', () => {
             return store
                 .dispatch(
                     actions.updateSubscriptionsForPlans(
-                        {helpdesk: basicMonthlyHelpdeskPlan.price_id},
-                        []
-                    )
+                        { helpdesk: basicMonthlyHelpdeskPlan.price_id },
+                        [],
+                    ),
                 )
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
@@ -163,7 +163,7 @@ describe('current account actions', () => {
                 status: 'active',
             }
             expect(
-                actions.setCurrentSubscription(fromJS(subscription))
+                actions.setCurrentSubscription(fromJS(subscription)),
             ).toMatchSnapshot()
         })
     })
@@ -181,8 +181,8 @@ describe('current account actions', () => {
             return store
                 .dispatch(
                     actions.fetchAccountSettings(
-                        AccountSettingType.DefaultIntegration
-                    )
+                        AccountSettingType.DefaultIntegration,
+                    ),
                 )
                 .then(() => {
                     expect(store.getActions()).toMatchSnapshot()
@@ -192,12 +192,12 @@ describe('current account actions', () => {
         it('should return the error.', () => {
             mockServer
                 .onGet('/api/account/settings/')
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return store
                 .dispatch(
                     actions.fetchAccountSettings(
-                        AccountSettingType.DefaultIntegration
-                    )
+                        AccountSettingType.DefaultIntegration,
+                    ),
                 )
                 .then(() => {
                     expect(store.getActions()).toMatchSnapshot()
@@ -214,7 +214,7 @@ describe('current account actions', () => {
             const req = {
                 data: {
                     views: {
-                        1: {display_order: 2},
+                        1: { display_order: 2 },
                     },
                     views_top: {},
                     views_bottom: {},
@@ -264,7 +264,7 @@ describe('current account actions', () => {
         it('should fail to cancel with a message from the server', () => {
             mockServer
                 .onPut('/api/billing/subscription/')
-                .reply(400, {error: {msg: 'error', data: []}})
+                .reply(400, { error: { msg: 'error', data: [] } })
 
             return store
                 .dispatch(actions.cancelHelpdeskAutoRenewal())
@@ -282,7 +282,7 @@ describe('current account actions', () => {
         it('should fail to cancel with a default message', () => {
             mockServer
                 .onPut('/api/billing/subscription/')
-                .reply(500, {random: 'Response'})
+                .reply(500, { random: 'Response' })
 
             return store
                 .dispatch(actions.cancelHelpdeskAutoRenewal())
@@ -315,7 +315,7 @@ describe('current account actions', () => {
         ])(
             'should submit new TableConfig if none present in the state ',
             async (tableConfigType, submitAction, metric) => {
-                const data = {hello: 'world'}
+                const data = { hello: 'world' }
                 mockServer.onPost('/api/account/settings/').reply(200, data)
                 store = mockStore({
                     currentAccount: initialState,
@@ -342,9 +342,9 @@ describe('current account actions', () => {
                             active_view: activeView.id,
                             views: [activeView],
                         },
-                    })
+                    }),
                 )
-            }
+            },
         )
 
         it.each([
@@ -363,7 +363,7 @@ describe('current account actions', () => {
         ])(
             'should submit updated TableConfig from state ',
             async (tableConfigType, submitAction, metric, newMetric) => {
-                const data = {hello: 'world'}
+                const data = { hello: 'world' }
                 mockServer.onPost('/api/account/settings/').reply(200, data)
                 const settingId = 'setting-id'
                 const activeViewId = 'view-id'
@@ -423,9 +423,9 @@ describe('current account actions', () => {
                             active_view: activeView.id,
                             views: [updatedView],
                         },
-                    })
+                    }),
                 )
-            }
+            },
         )
     })
 })

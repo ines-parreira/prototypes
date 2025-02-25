@@ -1,4 +1,4 @@
-import React, {useMemo, useRef} from 'react'
+import React, { useMemo, useRef } from 'react'
 
 import {
     DropdownItem,
@@ -7,18 +7,19 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
-import {TicketMessageSourceType} from 'business/types/ticket'
+import { TicketMessageSourceType } from 'business/types/ticket'
 import useOutboundChannels from 'hooks/useOutboundChannels'
 import useShortcuts from 'hooks/useShortcuts'
-import {isTicketMessageSourceType} from 'models/ticket/predicates'
+import { isTicketMessageSourceType } from 'models/ticket/predicates'
 import SourceIcon from 'pages/common/components/SourceIcon'
-import {humanizeChannel} from 'state/ticket/utils'
+import { humanizeChannel } from 'state/ticket/utils'
 
-import css from './ChannelSelect.less'
 import ConvertToForwardPopover from './ConvertToForwardPopover'
 
+import css from './ChannelSelect.less'
+
 export default function ChannelSelect() {
-    const {channels, selectedChannel, selectChannel} = useOutboundChannels()
+    const { channels, selectedChannel, selectChannel } = useOutboundChannels()
     const dropdownToggleRef = useRef<HTMLElement | null>(null)
 
     const keymapActions = useMemo(
@@ -36,7 +37,7 @@ export default function ChannelSelect() {
                 },
             },
         }),
-        [selectChannel]
+        [selectChannel],
     )
 
     useShortcuts('TicketDetailContainer', keymapActions)

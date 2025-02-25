@@ -1,19 +1,21 @@
+import React, { FormEvent, useEffect, useRef, useState } from 'react'
+
+import classnames from 'classnames'
+import { fromJS, List, Map } from 'immutable'
+import _uniqWith from 'lodash/uniqWith'
+import { Col, Container, Row } from 'reactstrap'
+
 import {
     Language,
     Macro,
     MacroAction,
     UpdateMacroBodyLanguage,
 } from '@gorgias/api-queries'
-import classnames from 'classnames'
-import {fromJS, Map, List} from 'immutable'
-import _uniqWith from 'lodash/uniqWith'
-import React, {FormEvent, useEffect, useRef, useState} from 'react'
-import {Container, Row, Col} from 'reactstrap'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {DEFAULT_ACTIONS} from 'config'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useFlag} from 'core/flags'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { DEFAULT_ACTIONS } from 'config'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import {
     useBulkArchiveMacros,
     useCreateMacro,
@@ -23,9 +25,9 @@ import {
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
-import {JobParams, JobType} from 'models/job/types'
-import {Filters} from 'models/macro/types'
-import {MacroActionName} from 'models/macroAction/types'
+import { JobParams, JobType } from 'models/job/types'
+import { Filters } from 'models/macro/types'
+import { MacroActionName } from 'models/macroAction/types'
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -34,15 +36,16 @@ import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import shortcutManager from 'services/shortcutManager/index'
-import {createJob as createTicketJob} from 'state/tickets/actions'
-import {createJob as createViewJob} from 'state/views/actions'
-import {makeGetViewCount} from 'state/views/selectors'
+import { createJob as createTicketJob } from 'state/tickets/actions'
+import { createJob as createViewJob } from 'state/views/actions'
+import { makeGetViewCount } from 'state/views/selectors'
 
 import MacroEdit from './MacroEdit'
-import css from './MacroModal.less'
 import MacroModalList from './MacroModalList'
 import MacroNoResults from './MacroNoResults'
 import MacroPreview from './MacroPreview'
+
+import css from './MacroModal.less'
 
 export type ModalProps = {
     activeView: Map<any, any>
@@ -92,7 +95,7 @@ const MacroModal = ({
 }: ModalProps) => {
     const dispatch = useAppDispatch()
     const isArchivingAvailable = useFlag(FeatureFlagKey.MacroArchives)
-    const {mutateAsync: bulkArchiveMacros} = useBulkArchiveMacros()
+    const { mutateAsync: bulkArchiveMacros } = useBulkArchiveMacros()
 
     const modalRef = useRef<HTMLDivElement>(null)
     // We don't use directly `currentMacro` to avoid an out-of-sync state between
@@ -102,11 +105,11 @@ const MacroModal = ({
     // being initialized on mount with the value of the previous macro's action.
     const [macro, setMacro] = useState<Macro>()
     const [actions, setActions] = useState<MacroAction[]>(
-        currentMacro?.actions || []
+        currentMacro?.actions || [],
     )
     const [name, setName] = useState<string>(currentMacro?.name || '')
     const [language, setLanguage] = useState<string | null>(
-        currentMacro?.language || null
+        currentMacro?.language || null,
     )
     const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -150,15 +153,15 @@ const MacroModal = ({
                   createViewJob(
                       activeView,
                       JobType.ApplyMacro,
-                      jobPartialParams
-                  )
+                      jobPartialParams,
+                  ),
               )
             : dispatch(
                   createTicketJob(
                       selectedItemsIds,
                       JobType.ApplyMacro,
-                      jobPartialParams
-                  )
+                      jobPartialParams,
+                  ),
               )
 
         void job
@@ -200,12 +203,12 @@ const MacroModal = ({
         actions.filter(
             (action) =>
                 action.name !== MacroActionName.AddTags ||
-                !!(action.arguments.tags as string | null)
+                !!(action.arguments.tags as string | null),
         )
 
-    const {mutateAsync: createMacro} = useCreateMacro()
-    const {mutate: updateMacro} = useUpdateMacro()
-    const {mutate: deleteMacro} = useDeleteMacro()
+    const { mutateAsync: createMacro } = useCreateMacro()
+    const { mutate: updateMacro } = useUpdateMacro()
+    const { mutate: deleteMacro } = useDeleteMacro()
 
     const handleCreateMacro = (e: FormEvent) => {
         e.preventDefault()
@@ -240,7 +243,7 @@ const MacroModal = ({
         }
 
         updateMacro(
-            {id: updatedMacro.id!, data: updatedMacro},
+            { id: updatedMacro.id!, data: updatedMacro },
             {
                 onSettled: (data) => {
                     const newMacro = data?.data
@@ -251,11 +254,11 @@ const MacroModal = ({
                             macro.id === newMacro!.id &&
                             macro.name !== newMacro!.name
                         ) {
-                            onSearch({search: newMacro!.name || ''})
+                            onSearch({ search: newMacro!.name || '' })
                         }
                     }) as any)
                 },
-            }
+            },
         )
     }
 
@@ -264,15 +267,15 @@ const MacroModal = ({
         e.stopPropagation()
 
         if (!!currentMacro) {
-            const {id: __id, ...rest} = currentMacro
+            const { id: __id, ...rest } = currentMacro
             const duplicatedMacro = {
                 ...rest,
                 name: `(Copy) ${currentMacro?.name || ''}`,
             }
 
-            const res = await createMacro({data: duplicatedMacro})
+            const res = await createMacro({ data: duplicatedMacro })
             // once the macro is created - search it in the list
-            onSearch({search: res.data.name || ''})
+            onSearch({ search: res.data.name || '' })
         }
     }
 
@@ -294,16 +297,16 @@ const MacroModal = ({
                 },
                 {
                     onSettled: () => {
-                        onSearch({search: undefined})
+                        onSearch({ search: undefined })
                     },
-                }
+                },
             )
         }
     }
 
     const handlArchiveMacro = async () => {
         try {
-            await bulkArchiveMacros({data: {ids: [currentMacro!.id!]}})
+            await bulkArchiveMacros({ data: { ids: [currentMacro!.id!] } })
             void fetchMacros(true)
         } catch {
             // handled in hook
@@ -324,15 +327,15 @@ const MacroModal = ({
                 (first: Record<string, unknown>, second) => {
                     if (
                         multipleActionsNames.includes(
-                            first.name as MacroActionName
+                            first.name as MacroActionName,
                         )
                     ) {
                         return false
                     }
 
                     return first.name === second.name
-                }
-            )
+                },
+            ),
         )
 
         setActions(uniqActions)

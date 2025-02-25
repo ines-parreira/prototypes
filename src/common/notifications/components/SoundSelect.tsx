@@ -1,5 +1,6 @@
+import React, { useMemo, useRef, useState } from 'react'
+
 import cn from 'classnames'
-import React, {useMemo, useRef, useState} from 'react'
 
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
@@ -7,7 +8,7 @@ import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
-import {sounds, SoundValue} from 'services/NotificationSounds'
+import { sounds, SoundValue } from 'services/NotificationSounds'
 
 import css from './SoundSelect.less'
 
@@ -18,7 +19,7 @@ type Props = {
     onChange: (sound: '' | SoundValue) => void
 }
 
-const emptyOption = {label: '- No sound -', value: ''} as const
+const emptyOption = { label: '- No sound -', value: '' } as const
 
 export default function SoundSelect({
     addEmptyValue = false,
@@ -32,7 +33,7 @@ export default function SoundSelect({
 
     const selectedSound = useMemo(
         () => sounds.find((s) => s.value === value),
-        [value]
+        [value],
     )
 
     return (

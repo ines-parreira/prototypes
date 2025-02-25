@@ -1,20 +1,20 @@
-import {composeWithDevTools} from '@redux-devtools/extension'
-import {createStore, applyMiddleware} from 'redux'
+import { composeWithDevTools } from '@redux-devtools/extension'
+import { applyMiddleware, createStore } from 'redux'
 import thunk from 'redux-thunk'
 
 import rootReducer from 'state/reducers'
 import serverErrorHandler from 'store/middlewares/serverErrorHandler'
-import {InitialRootState} from 'types'
+import { InitialRootState } from 'types'
 
 export default function configureStore(
-    initialState: InitialRootState = {} as InitialRootState
+    initialState: InitialRootState = {} as InitialRootState,
 ) {
     const middlewares = applyMiddleware(thunk, serverErrorHandler)
 
     const store = createStore(
         rootReducer,
         initialState,
-        composeWithDevTools(middlewares)
+        composeWithDevTools(middlewares),
     )
 
     if (module.hot) {

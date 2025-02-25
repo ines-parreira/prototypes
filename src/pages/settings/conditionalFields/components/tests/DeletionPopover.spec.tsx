@@ -1,15 +1,17 @@
-import {CustomFieldCondition} from '@gorgias/api-queries'
-import {render, screen, waitFor} from '@testing-library/react'
 import React from 'react'
-import {Router} from 'react-router-dom'
+
+import { render, screen, waitFor } from '@testing-library/react'
+import { Router } from 'react-router-dom'
+
+import { CustomFieldCondition } from '@gorgias/api-queries'
 
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import history from 'pages/history'
-import {CUSTOM_FIELD_CONDITIONS_ROUTE} from 'routes/constants'
-import {assumeMock, getLastMockCall} from 'utils/testing'
+import { CUSTOM_FIELD_CONDITIONS_ROUTE } from 'routes/constants'
+import { assumeMock, getLastMockCall } from 'utils/testing'
 
 import useDeleteCustomFieldCondition from '../../hooks/useDeleteCustomFieldCondition'
-import {DeletionPopover} from '../DeletionPopover'
+import { DeletionPopover } from '../DeletionPopover'
 
 jest.spyOn(history, 'push')
 jest.mock('pages/common/components/popover/ConfirmationPopover', () =>
@@ -25,14 +27,14 @@ jest.mock('pages/common/components/popover/ConfirmationPopover', () =>
                 {children()}
                 {content}
             </div>
-        )
-    )
+        ),
+    ),
 )
 jest.mock('../../hooks/useDeleteCustomFieldCondition')
 
 const ConfirmationPopoverMock = assumeMock(ConfirmationPopover)
 const useDeleteCustomFieldConditionMock = assumeMock(
-    useDeleteCustomFieldCondition
+    useDeleteCustomFieldCondition,
 )
 
 describe('DeletionPopover', () => {
@@ -51,7 +53,7 @@ describe('DeletionPopover', () => {
 
     it('should render correctly', () => {
         render(
-            <DeletionPopover condition={condition}>{children}</DeletionPopover>
+            <DeletionPopover condition={condition}>{children}</DeletionPopover>,
         )
         expect(screen.getByText(/You are about to delete/)).toBeInTheDocument()
         expect(screen.getByText('Test Condition')).toBeInTheDocument()
@@ -60,15 +62,15 @@ describe('DeletionPopover', () => {
 
     it('should passe correct props to ConfirmationPopover', () => {
         render(
-            <DeletionPopover condition={condition}>{children}</DeletionPopover>
+            <DeletionPopover condition={condition}>{children}</DeletionPopover>,
         )
         expect(ConfirmationPopover).toHaveBeenCalledWith(
             expect.objectContaining({
-                buttonProps: {intent: 'destructive', isLoading: false},
+                buttonProps: { intent: 'destructive', isLoading: false },
                 id: `delete-condition-${condition.id}`,
                 isOpen: undefined,
             }),
-            {}
+            {},
         )
     })
 
@@ -83,14 +85,14 @@ describe('DeletionPopover', () => {
                 <DeletionPopover condition={condition} redirect>
                     {children}
                 </DeletionPopover>
-            </Router>
+            </Router>,
         )
         getLastMockCall(ConfirmationPopoverMock)[0].onConfirm?.()
 
-        expect(deleteCondition).toHaveBeenCalledWith({id: condition.id})
+        expect(deleteCondition).toHaveBeenCalledWith({ id: condition.id })
         await waitFor(() => {
             expect(history.push).toHaveBeenCalledWith(
-                `/app/settings/${CUSTOM_FIELD_CONDITIONS_ROUTE}`
+                `/app/settings/${CUSTOM_FIELD_CONDITIONS_ROUTE}`,
             )
         })
     })

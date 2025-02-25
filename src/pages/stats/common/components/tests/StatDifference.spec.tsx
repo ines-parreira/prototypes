@@ -1,5 +1,6 @@
-import {render} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { render } from '@testing-library/react'
 
 import StatDifference from '../StatDifference'
 
@@ -10,7 +11,9 @@ describe('<StatDifference />', () => {
     }
 
     it('should render null when percentage is not a number', () => {
-        const {container} = render(<StatDifference {...minProps} value="bar" />)
+        const { container } = render(
+            <StatDifference {...minProps} value="bar" />,
+        )
         expect(container.firstChild).toBe(null)
     })
 
@@ -57,12 +60,12 @@ describe('<StatDifference />', () => {
             false,
         ],
     ])('should render %s', (testName, percentage, moreIsBetter) => {
-        const {container} = render(
+        const { container } = render(
             <StatDifference
                 {...minProps}
                 value={percentage}
                 moreIsBetter={moreIsBetter}
-            />
+            />,
         )
         expect(container.firstChild).toMatchSnapshot()
     })

@@ -1,23 +1,24 @@
+import React, { useCallback, useEffect, useState } from 'react'
+
 import _isEqual from 'lodash/isEqual'
-import React, {useCallback, useState, useEffect} from 'react'
-import {Col, Container, Form, Row} from 'reactstrap'
+import { Col, Container, Form, Row } from 'reactstrap'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {DEFAULT_VOICE_MESSAGE} from 'models/integration/constants'
+import { DEFAULT_VOICE_MESSAGE } from 'models/integration/constants'
 import {
+    isPhoneIntegration,
     PhoneIntegration,
     PhoneIntegrationIvrSettings,
-    isPhoneIntegration,
 } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
-import {updatePhoneIvrConfiguration} from 'pages/integrations/integration/components/phone/actions'
+import { updatePhoneIvrConfiguration } from 'pages/integrations/integration/components/phone/actions'
 import IvrMenuActionsFieldArray from 'pages/integrations/integration/components/voice/IvrMenuActionsFieldArray'
 import VoiceMessageField from 'pages/integrations/integration/components/voice/VoiceMessageField'
-
 import settingsCss from 'pages/settings/settings.less'
 
 import useVoiceMessageValidation from './hooks/useVoiceMessageValidation'
+
 import css from './VoiceIntegrationIvr.less'
 
 type Props = {
@@ -25,7 +26,7 @@ type Props = {
 }
 
 export default function VoiceIntegrationIvr(props: Props): JSX.Element | null {
-    const {integration} = props
+    const { integration } = props
     const dispatch = useAppDispatch()
     const [payload, setPayload] = useState<
         PhoneIntegrationIvrSettings | undefined
@@ -34,7 +35,7 @@ export default function VoiceIntegrationIvr(props: Props): JSX.Element | null {
         PhoneIntegrationIvrSettings | undefined
     >(integration?.meta?.ivr)
     const [isLoading, setIsLoading] = useState(false)
-    const {cleanUpIvrPayload} = useVoiceMessageValidation()
+    const { cleanUpIvrPayload } = useVoiceMessageValidation()
 
     useEffect(() => {
         if (!payload) {
@@ -44,7 +45,7 @@ export default function VoiceIntegrationIvr(props: Props): JSX.Element | null {
 
     const isSubmittable = !_isEqual(
         cleanUpIvrPayload(payload),
-        cleanUpIvrPayload(initialSettings)
+        cleanUpIvrPayload(initialSettings),
     )
 
     const onSubmit = useCallback(
@@ -64,7 +65,7 @@ export default function VoiceIntegrationIvr(props: Props): JSX.Element | null {
                 setIsLoading(false)
             }
         },
-        [payload, setIsLoading, dispatch, setInitialSettings]
+        [payload, setIsLoading, dispatch, setInitialSettings],
     )
 
     if (!isPhoneIntegration(integration)) {

@@ -1,5 +1,6 @@
+import React, { HTMLProps, ReactNode, useEffect, useRef, useState } from 'react'
+
 import classnames from 'classnames'
-import React, {HTMLProps, ReactNode, useRef, useState, useEffect} from 'react'
 import {
     DragObjectWithType,
     DropTargetHookSpec,
@@ -7,7 +8,7 @@ import {
     useDrop,
 } from 'react-dnd'
 
-import {ViewCategoryNavbar} from 'models/view/types'
+import { ViewCategoryNavbar } from 'models/view/types'
 
 import css from './TicketNavbarDropTarget.less'
 
@@ -44,7 +45,7 @@ type Props = Omit<
     onDrop?: (
         item: TicketNavbarDragObject,
         monitor: DropTargetMonitor,
-        direction: TicketNavbarDropDirection | null
+        direction: TicketNavbarDropDirection | null,
     ) => TicketNavbarDropResult | Promise<void> | void
     children: ReactNode | ((isOver: boolean) => ReactNode)
     topIndicatorClassName?: string
@@ -67,7 +68,7 @@ const TicketNavbarDropTarget = ({
     const [indicatorPosition, setIndicatorPosition] =
         useState<TicketNavbarDropDirection | null>(null)
 
-    const [{isOver}, drop] = useDrop<
+    const [{ isOver }, drop] = useDrop<
         TicketNavbarDragObject,
         TicketNavbarDropResult,
         {
@@ -85,7 +86,7 @@ const TicketNavbarDropTarget = ({
                 monitor.canDrop() &&
                 boundingRect &&
                 clientOffset &&
-                monitor.isOver({shallow})
+                monitor.isOver({ shallow })
             ) {
                 nextIndicator =
                     clientOffset.y < boundingRect.top + boundingRect.height / 2
@@ -128,7 +129,7 @@ const TicketNavbarDropTarget = ({
                     className={classnames(
                         css.indicator,
                         css.isUp,
-                        topIndicatorClassName
+                        topIndicatorClassName,
                     )}
                 />
             )}
@@ -140,7 +141,7 @@ const TicketNavbarDropTarget = ({
                     className={classnames(
                         css.indicator,
                         css.isDown,
-                        bottomIndicatorClassName
+                        bottomIndicatorClassName,
                     )}
                 />
             )}

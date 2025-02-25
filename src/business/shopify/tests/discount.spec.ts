@@ -1,15 +1,15 @@
-import {fromJS, Map} from 'immutable'
+import { fromJS, Map } from 'immutable'
 
-import {DiscountType} from '../../../constants/integrations/types/shopify'
+import { DiscountType } from '../../../constants/integrations/types/shopify'
 import {
     shopifyAppliedDiscountFixture,
     shopifyCustomLineItemFixture,
     shopifyDraftOrderPayloadFixture,
     shopifyLineItemFixture,
 } from '../../../fixtures/shopify'
-import {getDiscountAmount, refreshAppliedDiscounts} from '../discount'
-import {addCustomLineItem} from '../draftOrder'
-import {formatPrice} from '../number'
+import { getDiscountAmount, refreshAppliedDiscounts } from '../discount'
+import { addCustomLineItem } from '../draftOrder'
+import { formatPrice } from '../number'
 
 describe('getDiscountAmount()', () => {
     it('should return the discount amount for fixed amount discount', () => {
@@ -20,7 +20,7 @@ describe('getDiscountAmount()', () => {
         const result = formatPrice(
             getDiscountAmount(amount, discountType, discountAmount),
             currencyCode,
-            true
+            true,
         )
         expect(result).toMatchSnapshot()
     })
@@ -33,7 +33,7 @@ describe('getDiscountAmount()', () => {
         const result = formatPrice(
             getDiscountAmount(amount, discountType, discountAmount),
             currencyCode,
-            true
+            true,
         )
         expect(result).toMatchSnapshot()
     })
@@ -48,23 +48,23 @@ describe('refreshAppliedDiscounts()', () => {
         const customLineItem = fromJS(shopifyCustomLineItemFixture())
         const payloadWithCustomLineItem = addCustomLineItem(
             payload,
-            customLineItem
+            customLineItem,
         )
         expect(
             parseFloat(
                 payloadWithCustomLineItem.getIn([
                     'applied_discount',
                     'amount',
-                ]) as string
-            )
+                ]) as string,
+            ),
         ).toMatchSnapshot()
 
         // Refresh applied discounts
         const newPayload = refreshAppliedDiscounts(payloadWithCustomLineItem)
         expect(
             parseFloat(
-                newPayload.getIn(['applied_discount', 'amount']) as string
-            )
+                newPayload.getIn(['applied_discount', 'amount']) as string,
+            ),
         ).toMatchSnapshot()
     })
 
@@ -75,10 +75,10 @@ describe('refreshAppliedDiscounts()', () => {
         ).set(
             'line_items',
             fromJS([
-                shopifyLineItemFixture({price: '98.99'}),
-                shopifyLineItemFixture({price: '24.95'}),
-                shopifyLineItemFixture({price: '8.95'}),
-            ])
+                shopifyLineItemFixture({ price: '98.99' }),
+                shopifyLineItemFixture({ price: '24.95' }),
+                shopifyLineItemFixture({ price: '8.95' }),
+            ]),
         )
 
         const newPayload = refreshAppliedDiscounts(payload)
@@ -105,14 +105,14 @@ describe('refreshAppliedDiscounts()', () => {
         'should return expected payload with applied discounts',
         (quantity, expectedAmount) => {
             const appliedDiscount = fromJS(
-                shopifyAppliedDiscountFixture({value: '50.00'})
+                shopifyAppliedDiscountFixture({ value: '50.00' }),
             )
             const lineItem = fromJS(
                 shopifyLineItemFixture({
                     price: '19.99',
                     quantity,
                     appliedDiscount,
-                })
+                }),
             )
             const payload = (
                 fromJS(shopifyDraftOrderPayloadFixture()) as Map<any, any>
@@ -128,7 +128,7 @@ describe('refreshAppliedDiscounts()', () => {
                 'amount',
             ])
             expect(discountAmount).toEqual(expectedAmount)
-        }
+        },
     )
 
     it.each([
@@ -151,14 +151,14 @@ describe('refreshAppliedDiscounts()', () => {
         'should return expected payload with applied discounts and non-fractional currency',
         (quantity, expectedAmount) => {
             const appliedDiscount = fromJS(
-                shopifyAppliedDiscountFixture({value: '5.00'})
+                shopifyAppliedDiscountFixture({ value: '5.00' }),
             )
             const lineItem = fromJS(
                 shopifyLineItemFixture({
                     price: '94952',
                     quantity,
                     appliedDiscount,
-                })
+                }),
             )
             const payload = (
                 fromJS(shopifyDraftOrderPayloadFixture()) as Map<any, any>
@@ -175,6 +175,6 @@ describe('refreshAppliedDiscounts()', () => {
                 'amount',
             ])
             expect(discountAmount).toEqual(expectedAmount)
-        }
+        },
     )
 })

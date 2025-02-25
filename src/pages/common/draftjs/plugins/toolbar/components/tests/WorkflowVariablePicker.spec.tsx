@@ -1,7 +1,8 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
+import { render, screen } from '@testing-library/react'
+
+import { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
 
 import ToolbarProvider from '../../ToolbarProvider'
 import WorkflowVariablePicker, {
@@ -60,12 +61,12 @@ const workflowVariables: WorkflowVariableList = [
 ]
 describe('WorkflowVariablePicker', () => {
     const renderWithToolbarProvider = (
-        overrides?: Partial<WorkflowVariablePickerProps>
+        overrides?: Partial<WorkflowVariablePickerProps>,
     ) =>
         render(
             <ToolbarProvider workflowVariables={workflowVariables}>
                 <WorkflowVariablePicker onSelect={jest.fn()} {...overrides} />
-            </ToolbarProvider>
+            </ToolbarProvider>,
         )
 
     it('should render correctly', () => {
@@ -90,13 +91,13 @@ describe('WorkflowVariablePicker', () => {
         screen.getByRole('button').click()
         screen.getByText('Which order are you contacting us about?').click()
         expect(screen.getByTestId('floating-overlay')).toHaveTextContent(
-            'Order ID'
+            'Order ID',
         )
         expect(screen.getByTestId('floating-overlay')).toHaveTextContent(
-            'Order date'
+            'Order date',
         )
         expect(screen.getByTestId('floating-overlay')).toHaveTextContent(
-            'Order total'
+            'Order total',
         )
     })
 
@@ -106,7 +107,7 @@ describe('WorkflowVariablePicker', () => {
         screen.getByText('Which order are you contacting us about?').click()
         screen.getByText('arrow_back').click()
         expect(screen.getByTestId('floating-overlay')).toHaveTextContent(
-            'Customer first name'
+            'Customer first name',
         )
     })
 
@@ -121,7 +122,7 @@ describe('WorkflowVariablePicker', () => {
 
     it("should call the 'onSelect' callback when selecting an item", () => {
         const onSelect = jest.fn()
-        renderWithToolbarProvider({onSelect})
+        renderWithToolbarProvider({ onSelect })
         screen.getByRole('button').click()
         screen.getByText('Which order are you contacting us about?').click()
         screen.getByText('Order ID').click()

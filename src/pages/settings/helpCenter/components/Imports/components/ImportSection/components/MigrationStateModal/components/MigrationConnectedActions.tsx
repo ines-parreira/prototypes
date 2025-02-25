@@ -2,13 +2,13 @@ import React from 'react'
 
 import Button from 'pages/common/components/button/Button'
 
-import {ConnectedMigrationState} from '../../../types'
+import { ConnectedMigrationState } from '../../../types'
 
 type Props = {
     state: ConnectedMigrationState
 }
 
-const MigrationConnectedActions: React.FC<Props> = ({state}) => {
+const MigrationConnectedActions: React.FC<Props> = ({ state }) => {
     return (
         <Button
             className="w-100"

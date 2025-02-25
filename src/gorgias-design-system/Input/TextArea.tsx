@@ -1,4 +1,3 @@
-import styled from '@emotion/styled'
 import React, {
     ChangeEvent,
     useCallback,
@@ -7,7 +6,9 @@ import React, {
     useState,
 } from 'react'
 
-import {gorgiasColors} from 'gorgias-design-system/styles'
+import styled from '@emotion/styled'
+
+import { gorgiasColors } from 'gorgias-design-system/styles'
 
 import Caption from './Caption'
 import Label from './Label'
@@ -67,8 +68,8 @@ const StyledTextAreaWrapper = styled.div`
 `
 
 const StyledTextArea = styled.textarea<TextAreaProps>`
-    min-height: ${({minHeight}) => `${minHeight!}px`};
-    max-height: ${({maxHeight}) => (maxHeight ? `${maxHeight}px` : '')};
+    min-height: ${({ minHeight }) => `${minHeight!}px`};
+    max-height: ${({ maxHeight }) => (maxHeight ? `${maxHeight}px` : '')};
     overflow-y: auto;
     width: 100%;
     border: 1px solid
@@ -77,13 +78,13 @@ const StyledTextArea = styled.textarea<TextAreaProps>`
     outline: none;
     padding: 12px;
 
-    resize: ${({isExpandable}) => (isExpandable ? 'vertical' : 'none')};
+    resize: ${({ isExpandable }) => (isExpandable ? 'vertical' : 'none')};
 
     font-size: 14px;
     color: var(--textarea-color, ${gorgiasColors.dark});
     background-color: var(--textarea-background-color, ${gorgiasColors.white});
 
-    ${({isAlternative}) =>
+    ${({ isAlternative }) =>
         isAlternative
             ? `
                 --textarea-background-color: ${gorgiasColors.neutralGrey2};
@@ -187,7 +188,7 @@ const TextArea: React.FC<TextAreaProps> = (args) => {
             setInnerValue(value)
             onChange && onChange(value)
         },
-        [setInnerValue, onChange]
+        [setInnerValue, onChange],
     )
 
     const onTextAreaChange = (event: ChangeEvent<HTMLTextAreaElement>) => {

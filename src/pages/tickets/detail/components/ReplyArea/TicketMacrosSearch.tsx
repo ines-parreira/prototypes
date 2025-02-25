@@ -1,8 +1,9 @@
-import classnames from 'classnames'
-import React, {KeyboardEvent as KeyboardEventReact, useRef} from 'react'
+import React, { KeyboardEvent as KeyboardEventReact, useRef } from 'react'
 
-import {useAppNode} from 'appNode'
-import {MacrosProperties} from 'models/macro/types'
+import classnames from 'classnames'
+
+import { useAppNode } from 'appNode'
+import { MacrosProperties } from 'models/macro/types'
 import MacroFilters from 'pages/common/components/MacroFilters/MacroFilters'
 import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'
@@ -76,7 +77,7 @@ const TicketMacrosSearch = ({
                 ref={ref}
                 className={classnames(
                     'material-icons md-2 mr-3 clickable',
-                    css.closeButton
+                    css.closeButton,
                 )}
                 onClick={macrosVisible ? onClearMacro : showMacros}
             >

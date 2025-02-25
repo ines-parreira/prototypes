@@ -1,10 +1,10 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {usePostReporting} from 'models/reporting/queries'
-import {ReportingGranularity} from 'models/reporting/types'
-import {AggregationWindow} from 'models/stat/types'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-import {getRevenueShareGraphData} from 'pages/stats/convert/clients/CampaignCubeQueries'
+import { usePostReporting } from 'models/reporting/queries'
+import { ReportingGranularity } from 'models/reporting/types'
+import { AggregationWindow } from 'models/stat/types'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
+import { getRevenueShareGraphData } from 'pages/stats/convert/clients/CampaignCubeQueries'
 import {
     CubeData,
     CubeFilterParams,
@@ -15,7 +15,7 @@ import {
     getDataFromResult,
     transformToCampaignRevenueOverTime,
 } from 'pages/stats/convert/services/CampaignMetricsHelper'
-import {RevenueGraphDataPoint} from 'pages/stats/convert/services/types'
+import { RevenueGraphDataPoint } from 'pages/stats/convert/services/types'
 
 const OVERRIDES = {
     select: getDataFromResult,
@@ -34,7 +34,7 @@ const useGetCampaignRevenueTimeSeries = (
     startDate: string,
     endDate: string,
     timezone: string,
-    timeGranularity: AggregationWindow = ReportingGranularity.Day
+    timeGranularity: AggregationWindow = ReportingGranularity.Day,
 ): GetCampaignRevenue => {
     const attrs: CubeFilterParams = useMemo(
         () => ({
@@ -54,12 +54,12 @@ const useGetCampaignRevenueTimeSeries = (
             timezone,
             campaignsOperator,
             timeGranularity,
-        ]
+        ],
     )
 
     const revenueChartQuery = useMemo(
         () => getRevenueShareGraphData(attrs),
-        [attrs]
+        [attrs],
     )
 
     const revenueChart = usePostReporting<[CubeData], CubeData>(
@@ -67,19 +67,19 @@ const useGetCampaignRevenueTimeSeries = (
         {
             ...OVERRIDES,
             enabled: campaignIds !== null,
-        }
+        },
     )
 
     const data = useMemo(() => {
         const data = revenueChart.data || []
         const dataPoints = data.map((dataPoint: CubeMetric) =>
-            transformToCampaignRevenueOverTime(dataPoint, timeGranularity)
+            transformToCampaignRevenueOverTime(dataPoint, timeGranularity),
         )
         const [bfDataPoints] = backFillGraphData(
             [dataPoints],
             startDate,
             endDate,
-            timeGranularity
+            timeGranularity,
         )
         // make sure there are no gaps in the data
         return bfDataPoints

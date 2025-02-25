@@ -1,8 +1,8 @@
+import React, { Ref, RefObject, useEffect } from 'react'
+
 import classNames from 'classnames'
-import React, {Ref, RefObject, useEffect} from 'react'
 
-import {Category} from 'models/helpCenter/types'
-
+import { Category } from 'models/helpCenter/types'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import {
@@ -11,7 +11,7 @@ import {
     useReorderDnD,
 } from 'pages/common/hooks/useReorderDnD'
 
-import {getCategoryDndType} from '../../utils/getCategoryDndType'
+import { getCategoryDndType } from '../../utils/getCategoryDndType'
 
 import css from './DroppableTableBodyRow.less'
 
@@ -45,10 +45,10 @@ export const DroppableTableBodyRow = ({
     className,
     category,
 }: DroppableTableBodyRowProps): JSX.Element => {
-    const {dragRef, dropRef, handlerId, isDragging} = useReorderDnD(
+    const { dragRef, dropRef, handlerId, isDragging } = useReorderDnD(
         dragItem,
         [getCategoryDndType(category.translation?.parent_category_id ?? null)],
-        {onHover: onMoveEntity, onDrop: onDropEntity, onCancel: onCancelDnD}
+        { onHover: onMoveEntity, onDrop: onDropEntity, onCancel: onCancelDnD },
     )
 
     useEffect(() => {
@@ -64,16 +64,16 @@ export const DroppableTableBodyRow = ({
         <TableBodyRow
             ref={dropRef as Ref<HTMLTableRowElement>}
             data-handler-id={handlerId}
-            style={{opacity}}
+            style={{ opacity }}
             onClick={onRowClick}
             className={className}
         >
-            <BodyCell style={{width: 25}}>
+            <BodyCell style={{ width: 25 }}>
                 <div
                     ref={dragRef as RefObject<HTMLDivElement>}
                     className={classNames(
                         css['drag-handler'],
-                        'material-icons'
+                        'material-icons',
                     )}
                 >
                     drag_indicator

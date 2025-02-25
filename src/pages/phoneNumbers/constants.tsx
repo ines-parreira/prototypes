@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {PhoneCountry} from 'business/twilio'
+import { PhoneCountry } from 'business/twilio'
 
 export enum CustomNotifications {
     UPGRADE_MESSAGE = 'UPGRADE_MESSAGE',

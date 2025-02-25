@@ -1,13 +1,13 @@
-import {getHelpCenterAuthApiBaseUrl} from 'utils/environment'
+import { getHelpCenterAuthApiBaseUrl } from 'utils/environment'
 
-import {helpCenterAPI, HelpCenterClient} from './help_center_api/client'
+import { helpCenterAPI, HelpCenterClient } from './help_center_api/client'
 
 export function isValidAccessToken(token: string | null): boolean {
     if (!token) {
         return false
     }
 
-    const {exp} = JSON.parse(atob(token.split('.')[1]))
+    const { exp } = JSON.parse(atob(token.split('.')[1]))
     const expirationDate = new Date(exp * 1000)
     return new Date() < expirationDate
 }
@@ -38,10 +38,10 @@ export const getAccessToken = (() => {
             {
                 baseURL: getHelpCenterAuthApiBaseUrl(),
                 withCredentials: true,
-            }
+            },
         )
         const {
-            data: {access_token: tokenFromResponse},
+            data: { access_token: tokenFromResponse },
         } = await createAccessTokenPendingRequest
         accessToken = tokenFromResponse
         createAccessTokenPendingRequest = null

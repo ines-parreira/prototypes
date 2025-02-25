@@ -1,22 +1,23 @@
+import { useMemo } from 'react'
+
 import moment from 'moment'
-import {useMemo} from 'react'
 
 import {
     PRODUCT_BANNER_KEY,
     useProductBannerStorage,
 } from 'hooks/useProductBannerStorage'
-import {HelpCenter} from 'models/helpCenter/types'
+import { HelpCenter } from 'models/helpCenter/types'
 
 export function useStandaloneHelpCenterAfterDismiss(
     helpCenters: HelpCenter[],
-    bannerKey: PRODUCT_BANNER_KEY
+    bannerKey: PRODUCT_BANNER_KEY,
 ) {
     const standaloneHCs = useMemo(() => {
         return helpCenters.filter(
-            (helpCenter) => helpCenter.source === 'automation'
+            (helpCenter) => helpCenter.source === 'automation',
         )
     }, [helpCenters])
-    const {getProductBanner} = useProductBannerStorage()
+    const { getProductBanner } = useProductBannerStorage()
     const productBannerInfo = getProductBanner(bannerKey)
 
     const helpCentersAfterDismiss = useMemo(() => {

@@ -1,16 +1,17 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {agents} from 'fixtures/agents'
-import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
-import {useShoutoutTopResults} from 'hooks/reporting/useShoutoutTopResults'
-import {TicketDimension} from 'models/reporting/cubes/TicketCube'
-import {AgentsShoutOutsConfig} from 'pages/stats/support-performance/agents/AgentsShoutOutsConfig'
-import {RootState} from 'state/types'
+import { agents } from 'fixtures/agents'
+import { MetricWithDecile } from 'hooks/reporting/useMetricPerDimension'
+import { useShoutoutTopResults } from 'hooks/reporting/useShoutoutTopResults'
+import { TicketDimension } from 'models/reporting/cubes/TicketCube'
+import { AgentsShoutOutsConfig } from 'pages/stats/support-performance/agents/AgentsShoutOutsConfig'
+import { RootState } from 'state/types'
 
 const mockStore = configureMockStore([thunk])
 
@@ -21,7 +22,7 @@ describe('useShoutoutTopResults', () => {
 
     const allDataMockedMetric = (
         measure: string,
-        agentIdField: string
+        agentIdField: string,
     ): MetricWithDecile => ({
         isError: false,
         isFetching: false,
@@ -41,32 +42,32 @@ describe('useShoutoutTopResults', () => {
         agents: fromJS({
             all: agents,
         }),
-        ui: {stats: {filters: {cleanStatsFilters: null}}},
+        ui: { stats: { filters: { cleanStatsFilters: null } } },
     } as RootState
 
     it.each(Object.values(AgentsShoutOutsConfig))(
         'should pick the best result per metric $measure',
-        ({formatValue, measure}) => {
-            const {result} = renderHook(
+        ({ formatValue, measure }) => {
+            const { result } = renderHook(
                 () =>
                     useShoutoutTopResults(
                         allDataMockedMetric(measure, idField),
                         formatValue,
-                        measure
+                        measure,
                     ),
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <Provider store={mockStore(defaultState)}>
                             {children}
                         </Provider>
                     ),
-                }
+                },
             )
 
             expect(result.current).toEqual({
                 agents: [agents[0]],
                 metricValue: formatValue(metricValue),
             })
-        }
+        },
     )
 })

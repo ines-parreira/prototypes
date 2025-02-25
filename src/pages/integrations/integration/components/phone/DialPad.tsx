@@ -29,7 +29,7 @@ export default function DialPad({
     onDigitClick,
 }: Props): JSX.Element {
     const handleDigitClick = (event: React.SyntheticEvent<HTMLElement>) => {
-        const {digit} = event.currentTarget.dataset
+        const { digit } = event.currentTarget.dataset
 
         if (!digit) {
             return

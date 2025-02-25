@@ -1,48 +1,47 @@
-import {renderHook} from '@testing-library/react-hooks'
-
+import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment'
 
 import {
-    ignoreNotAssignedTicketsFilter,
-    useClosedTicketsMetric,
-    useCustomerSatisfactionMetric,
-    useMedianFirstResponseTimeMetric,
-    useMessagesSentMetric,
-    useMedianResolutionTimeMetric,
-    useTicketsRepliedMetric,
-    useOnlineTimeMetric,
-    useTicketAverageHandleTimeMetric,
-    useTicketsCreatedMetric,
-    fetchTicketAverageHandleTimeMetric,
     fetchClosedTicketsMetric,
     fetchCustomerSatisfactionMetric,
     fetchMedianFirstResponseTimeMetric,
     fetchMedianResolutionTimeMetric,
-    fetchOneTouchTicketsMetric,
-    useOneTouchTicketsMetric,
     fetchMessagesSentMetric,
-    fetchTicketsRepliedMetric,
-    fetchTicketsCreatedMetric,
+    fetchOneTouchTicketsMetric,
     fetchOnlineTimeMetric,
-    useZeroTouchTicketsMetric,
+    fetchTicketAverageHandleTimeMetric,
+    fetchTicketsCreatedMetric,
+    fetchTicketsRepliedMetric,
     fetchZeroTouchTicketsMetric,
+    ignoreNotAssignedTicketsFilter,
+    useClosedTicketsMetric,
+    useCustomerSatisfactionMetric,
+    useMedianFirstResponseTimeMetric,
+    useMedianResolutionTimeMetric,
+    useMessagesSentMetric,
+    useOneTouchTicketsMetric,
+    useOnlineTimeMetric,
+    useTicketAverageHandleTimeMetric,
+    useTicketsCreatedMetric,
+    useTicketsRepliedMetric,
+    useZeroTouchTicketsMetric,
 } from 'hooks/reporting/metrics'
-import {fetchMetric, useMetric} from 'hooks/reporting/useMetric'
-import {onlineTimeQueryFactory} from 'models/reporting/queryFactories/agentxp/onlineTime'
-import {ticketAverageHandleTimeQueryFactory} from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
-import {closedTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
-import {customerSatisfactionQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
-import {medianFirstResponseTimeQueryFactory} from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
-import {medianResolutionTimeQueryFactory} from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
-import {messagesSentQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
-import {oneTouchTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
-import {ticketsCreatedQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsCreated'
-import {ticketsRepliedQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
-import {zeroTouchTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/zeroTouchTickets'
-import {ReportingQuery} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
-import {formatReportingQueryDate, withFilter} from 'utils/reporting'
-import {assumeMock} from 'utils/testing'
+import { fetchMetric, useMetric } from 'hooks/reporting/useMetric'
+import { onlineTimeQueryFactory } from 'models/reporting/queryFactories/agentxp/onlineTime'
+import { ticketAverageHandleTimeQueryFactory } from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
+import { closedTicketsQueryFactory } from 'models/reporting/queryFactories/support-performance/closedTickets'
+import { customerSatisfactionQueryFactory } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
+import { medianFirstResponseTimeQueryFactory } from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
+import { medianResolutionTimeQueryFactory } from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
+import { messagesSentQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesSent'
+import { oneTouchTicketsQueryFactory } from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
+import { ticketsCreatedQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsCreated'
+import { ticketsRepliedQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsReplied'
+import { zeroTouchTicketsQueryFactory } from 'models/reporting/queryFactories/support-performance/zeroTouchTickets'
+import { ReportingQuery } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
+import { formatReportingQueryDate, withFilter } from 'utils/reporting'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/useMetric')
 const useMetricMock = assumeMock(useMetric)
@@ -60,7 +59,7 @@ describe('metrics', () => {
     const timezone = 'UTC'
 
     const defaultMetricValue = {
-        data: {value: 1},
+        data: { value: 1 },
         isError: false,
         isFetching: false,
     }
@@ -111,23 +110,23 @@ describe('metrics', () => {
             useTrendFn,
             queryFactory: (
                 statsFilters: StatsFilters,
-                timezone: string
-            ) => ReportingQuery
+                timezone: string,
+            ) => ReportingQuery,
         ) => {
             it('should create reporting metric with assigned tickets only', () => {
-                const {result} = renderHook(() =>
-                    useTrendFn(statsFilters, timezone)
+                const { result } = renderHook(() =>
+                    useTrendFn(statsFilters, timezone),
                 )
 
                 expect(useMetricMock).toHaveBeenCalledWith(
                     withFilter(
                         queryFactory(statsFilters, timezone),
-                        ignoreNotAssignedTicketsFilter
-                    )
+                        ignoreNotAssignedTicketsFilter,
+                    ),
                 )
                 expect(result.current).toBe(defaultMetricValue)
             })
-        }
+        },
     )
 
     describe.each([
@@ -173,8 +172,8 @@ describe('metrics', () => {
             fetchTrendFn,
             queryFactory: (
                 statsFilters: StatsFilters,
-                timezone: string
-            ) => ReportingQuery
+                timezone: string,
+            ) => ReportingQuery,
         ) => {
             it('should fetch reporting metric with assigned tickets only', async () => {
                 const result = await fetchTrendFn(statsFilters, timezone)
@@ -182,12 +181,12 @@ describe('metrics', () => {
                 expect(fetchMetricMock).toHaveBeenCalledWith(
                     withFilter(
                         queryFactory(statsFilters, timezone),
-                        ignoreNotAssignedTicketsFilter
-                    )
+                        ignoreNotAssignedTicketsFilter,
+                    ),
                 )
                 expect(result).toBe(defaultMetricValue)
             })
-        }
+        },
     )
 
     describe.each([
@@ -214,20 +213,20 @@ describe('metrics', () => {
             useTrendFn,
             queryFactory: (
                 statsFilters: StatsFilters,
-                timezone: string
-            ) => ReportingQuery
+                timezone: string,
+            ) => ReportingQuery,
         ) => {
             it('should create reporting metric with all tickets', () => {
-                const {result} = renderHook(() =>
-                    useTrendFn(statsFilters, timezone)
+                const { result } = renderHook(() =>
+                    useTrendFn(statsFilters, timezone),
                 )
 
                 expect(useMetricMock).toHaveBeenCalledWith(
-                    queryFactory(statsFilters, timezone)
+                    queryFactory(statsFilters, timezone),
                 )
                 expect(result.current).toBe(defaultMetricValue)
             })
-        }
+        },
     )
 
     describe.each([
@@ -258,17 +257,17 @@ describe('metrics', () => {
             fetchTrendFn,
             queryFactory: (
                 statsFilters: StatsFilters,
-                timezone: string
-            ) => ReportingQuery
+                timezone: string,
+            ) => ReportingQuery,
         ) => {
             it('should create reporting metric with all tickets', async () => {
                 const result = await fetchTrendFn(statsFilters, timezone)
 
                 expect(fetchMetricMock).toHaveBeenCalledWith(
-                    queryFactory(statsFilters, timezone)
+                    queryFactory(statsFilters, timezone),
                 )
                 expect(result).toBe(defaultMetricValue)
             })
-        }
+        },
     )
 })

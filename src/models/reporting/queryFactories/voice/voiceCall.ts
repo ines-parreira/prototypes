@@ -1,6 +1,6 @@
 import moment from 'moment/moment'
 
-import {OrderDirection} from 'models/api/types'
+import { OrderDirection } from 'models/api/types'
 import {
     VoiceCallCube,
     VoiceCallDimension,
@@ -9,10 +9,10 @@ import {
     VoiceCallMember,
     VoiceCallSegment,
 } from 'models/reporting/cubes/VoiceCallCube'
-import {ReportingFilterOperator, ReportingQuery} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
-import {getLiveVoicePeriodFilter} from 'pages/stats/voice/components/LiveVoice/utils'
-import {MIN_DATE_FOR_ADVANCED_VOICE_STATS} from 'pages/stats/voice/constants/voiceOverview'
+import { ReportingFilterOperator, ReportingQuery } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
+import { getLiveVoicePeriodFilter } from 'pages/stats/voice/components/LiveVoice/utils'
+import { MIN_DATE_FOR_ADVANCED_VOICE_STATS } from 'pages/stats/voice/constants/voiceOverview'
 import {
     AccountSettingBusinessHours,
     AccountSettingType,
@@ -22,22 +22,22 @@ import {
     statsFiltersToReportingFilters,
 } from 'utils/reporting'
 
-import {TicketMember} from '../../cubes/TicketCube'
+import { TicketMember } from '../../cubes/TicketCube'
 
 const getAccountBusinessHoursTimezone = () =>
     (
         window.GORGIAS_STATE?.currentAccount?.settings?.find(
-            (setting) => setting.type === AccountSettingType.BusinessHours
+            (setting) => setting.type === AccountSettingType.BusinessHours,
         ) as AccountSettingBusinessHours | undefined
     )?.data?.timezone ?? 'UTC'
 
 export const getAdvancedVoicePeriodFilters = (
-    period: StatsFilters['period']
+    period: StatsFilters['period'],
 ) => {
     // We need to filter by a minimum date for advanced metrics to display correct data
     const end_datetime = period.end_datetime
     const start_datetime = period.start_datetime
-    const extraPeriodFilters = {start_datetime, end_datetime}
+    const extraPeriodFilters = { start_datetime, end_datetime }
     if (moment(start_datetime) < moment(MIN_DATE_FOR_ADVANCED_VOICE_STATS)) {
         extraPeriodFilters.start_datetime = MIN_DATE_FOR_ADVANCED_VOICE_STATS
     }
@@ -62,7 +62,7 @@ export const getTicketPeriodFilters = (filters: StatsFilters) => {
                 member: TicketMember.PeriodEnd,
                 operator: ReportingFilterOperator.BeforeDate,
                 values: [formatReportingQueryDate(filters.period.end_datetime)],
-            }
+            },
         )
     }
     return extraFilters
@@ -70,15 +70,15 @@ export const getTicketPeriodFilters = (filters: StatsFilters) => {
 
 export const voiceCallDefaultFilters = (
     filters: StatsFilters,
-    isAdvancedMetric = false
+    isAdvancedMetric = false,
 ) => {
     if (isAdvancedMetric) {
         const extraPeriodFilters = getAdvancedVoicePeriodFilters(filters.period)
-        const correctFilters = {...filters, period: extraPeriodFilters}
+        const correctFilters = { ...filters, period: extraPeriodFilters }
         return [
             ...statsFiltersToReportingFilters(
                 VoiceCallFiltersMembers,
-                correctFilters
+                correctFilters,
             ),
             ...getTicketPeriodFilters(correctFilters),
         ]
@@ -124,7 +124,7 @@ export const waitTimeSetFilter = {
 
 export const connectedCallsListQueryFactory = (
     filters: StatsFilters,
-    timezone: string
+    timezone: string,
 ): ReportingQuery<VoiceCallCube> => ({
     measures: [VoiceCallMeasure.VoiceCallCount],
     dimensions: voiceCallListDimensions,
@@ -133,7 +133,7 @@ export const connectedCallsListQueryFactory = (
 })
 
 export const liveDashboardConnectedCallsListQueryFactory = (
-    filters: StatsFilters
+    filters: StatsFilters,
 ): ReportingQuery<VoiceCallCube> => {
     const timezone = getAccountBusinessHoursTimezone()
     const period = getLiveVoicePeriodFilter(timezone)
@@ -142,16 +142,16 @@ export const liveDashboardConnectedCallsListQueryFactory = (
         {
             ...filters,
             period,
-            ...getTicketPeriodFilters({...filters, period}),
+            ...getTicketPeriodFilters({ ...filters, period }),
         },
-        timezone
+        timezone,
     )
 }
 
 export const waitingTimeCallsListQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    segment?: VoiceCallSegment
+    segment?: VoiceCallSegment,
 ): ReportingQuery<VoiceCallCube> => ({
     measures: [VoiceCallMeasure.VoiceCallCount],
     dimensions: voiceCallListDimensions,
@@ -162,7 +162,7 @@ export const waitingTimeCallsListQueryFactory = (
 
 export const liveDashboardWaitingTimeCallsListQueryFactory = (
     filters: StatsFilters,
-    segment?: VoiceCallSegment
+    segment?: VoiceCallSegment,
 ): ReportingQuery<VoiceCallCube> => {
     const timezone = getAccountBusinessHoursTimezone()
     const period = getLiveVoicePeriodFilter(timezone)
@@ -171,17 +171,17 @@ export const liveDashboardWaitingTimeCallsListQueryFactory = (
         {
             ...filters,
             period,
-            ...getTicketPeriodFilters({...filters, period}),
+            ...getTicketPeriodFilters({ ...filters, period }),
         },
         timezone,
-        segment
+        segment,
     )
 }
 
 export const voiceCallCountQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    segment?: VoiceCallSegment
+    segment?: VoiceCallSegment,
 ) => ({
     measures: [VoiceCallMeasure.VoiceCallCount],
     dimensions: [],
@@ -193,7 +193,7 @@ export const voiceCallCountQueryFactory = (
 export const voiceCallCountPerFilteringAgentQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    segment?: VoiceCallSegment
+    segment?: VoiceCallSegment,
 ) => ({
     measures: [VoiceCallMeasure.VoiceCallCount],
     dimensions: [VoiceCallDimension.FilteringAgentId],
@@ -205,7 +205,7 @@ export const voiceCallCountPerFilteringAgentQueryFactory = (
 export const voiceCallCountPerAgentQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    segment?: VoiceCallSegment
+    segment?: VoiceCallSegment,
 ) => ({
     measures: [VoiceCallMeasure.VoiceCallCount],
     dimensions: [VoiceCallDimension.AgentId],
@@ -221,7 +221,7 @@ export const voiceCallListQueryFactory = (
     limit?: number,
     offset?: number,
     order: VoiceCallDimension = VoiceCallDimension.CreatedAt,
-    sorting: OrderDirection = OrderDirection.Desc
+    sorting: OrderDirection = OrderDirection.Desc,
 ): ReportingQuery<VoiceCallCube> => ({
     measures: [VoiceCallMeasure.VoiceCallCount],
     dimensions: voiceCallListDimensions,
@@ -235,7 +235,7 @@ export const voiceCallListQueryFactory = (
 
 export const liveDashBoardVoiceCallListQueryFactory = (
     filters: StatsFilters,
-    segment?: VoiceCallSegment
+    segment?: VoiceCallSegment,
 ): ReportingQuery<VoiceCallCube> => {
     const timezone = getAccountBusinessHoursTimezone()
     const period = getLiveVoicePeriodFilter(timezone)
@@ -244,16 +244,16 @@ export const liveDashBoardVoiceCallListQueryFactory = (
         {
             ...filters,
             period,
-            ...getTicketPeriodFilters({...filters, period}),
+            ...getTicketPeriodFilters({ ...filters, period }),
         },
         timezone,
-        segment
+        segment,
     )
 }
 
 export const voiceCallAverageTalkTimeQueryFactory = (
     filters: StatsFilters,
-    timezone: string
+    timezone: string,
 ) => ({
     measures: [VoiceCallMeasure.VoiceCallAverageTalkTime],
     dimensions: [],
@@ -265,7 +265,7 @@ export const voiceCallAverageTalkTimeQueryFactory = (
 export const voiceCallAverageTalkTimePerAgentQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    segment?: VoiceCallSegment
+    segment?: VoiceCallSegment,
 ) => ({
     measures: [VoiceCallMeasure.VoiceCallAverageTalkTime],
     dimensions: [VoiceCallDimension.AgentId],
@@ -276,7 +276,7 @@ export const voiceCallAverageTalkTimePerAgentQueryFactory = (
 
 export const voiceCallAverageWaitTimeQueryFactory = (
     filters: StatsFilters,
-    timezone: string
+    timezone: string,
 ) => ({
     measures: [VoiceCallMeasure.VoiceCallAverageWaitTime],
     dimensions: [],

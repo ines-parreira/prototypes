@@ -1,6 +1,8 @@
+import React, { ComponentProps } from 'react'
+
+import { render, screen } from '@testing-library/react'
+
 import colorTokens from '@gorgias/design-tokens/dist/tokens/colors.json'
-import {render, screen} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
 
 import DonutChart from '../DonutChart'
 
@@ -24,19 +26,19 @@ describe('<DonutChart />', () => {
     })
 
     it('should render loader', () => {
-        renderComponent({isLoading: true})
+        renderComponent({ isLoading: true })
 
         expect(mockDoughnutProps).not.toHaveBeenCalled()
         expect(
-            document.querySelector('.react-loading-skeleton')
+            document.querySelector('.react-loading-skeleton'),
         ).toBeInTheDocument()
     })
 
     it('should pass correct data and config', () => {
         renderComponent({
             data: [
-                {label: 'Label 1', value: 11},
-                {label: 'Label 2', value: 12},
+                { label: 'Label 1', value: 11 },
+                { label: 'Label 2', value: 12 },
             ],
             width: 300,
             height: 300,
@@ -54,7 +56,7 @@ describe('<DonutChart />', () => {
                 }),
                 width: 300,
                 height: 300,
-            })
+            }),
         )
     })
 
@@ -65,8 +67,8 @@ describe('<DonutChart />', () => {
         ]
         renderComponent({
             data: [
-                {label: 'Label 1', value: 11},
-                {label: 'Label 2', value: 12},
+                { label: 'Label 1', value: 11 },
+                { label: 'Label 2', value: 12 },
             ],
             customColors,
         })
@@ -80,15 +82,15 @@ describe('<DonutChart />', () => {
                         }),
                     ],
                 }),
-            })
+            }),
         )
     })
 
     it('should hide displayLegend when it disabled', () => {
         renderComponent({
             data: [
-                {label: 'Label 1', value: 11},
-                {label: 'Label 2', value: 12},
+                { label: 'Label 1', value: 11 },
+                { label: 'Label 2', value: 12 },
             ],
             displayLegend: false,
         })
@@ -100,8 +102,8 @@ describe('<DonutChart />', () => {
     it('should show displayLegend when it enabled', () => {
         renderComponent({
             data: [
-                {label: 'Label 1', value: 11},
-                {label: 'Label 2', value: 12},
+                { label: 'Label 1', value: 11 },
+                { label: 'Label 2', value: 12 },
             ],
             displayLegend: true,
         })
@@ -113,8 +115,8 @@ describe('<DonutChart />', () => {
     it('should render a children element', () => {
         renderComponent({
             data: [
-                {label: 'Label 1', value: 11},
-                {label: 'Label 2', value: 12},
+                { label: 'Label 1', value: 11 },
+                { label: 'Label 2', value: 12 },
             ],
             children: <div>children</div>,
         })

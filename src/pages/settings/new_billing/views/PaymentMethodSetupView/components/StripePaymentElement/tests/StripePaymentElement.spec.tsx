@@ -1,7 +1,8 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {StripePaymentElement} from '../StripePaymentElement'
+import { render, screen } from '@testing-library/react'
+
+import { StripePaymentElement } from '../StripePaymentElement'
 
 jest.mock('@stripe/react-stripe-js', () => ({
     PaymentElement: jest.fn(() => <div>Mocked PaymentElement</div>),

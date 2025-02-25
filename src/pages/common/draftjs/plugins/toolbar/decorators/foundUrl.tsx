@@ -1,13 +1,14 @@
-import {ContentBlock, ContentState} from 'draft-js'
-import {Map} from 'immutable'
 import * as React from 'react'
 
+import { ContentBlock, ContentState } from 'draft-js'
+import { Map } from 'immutable'
+
 import {
-    DecoratorStrategyCallback,
-    DecoratorComponentProps,
     Decorator,
+    DecoratorComponentProps,
+    DecoratorStrategyCallback,
 } from 'pages/common/draftjs/plugins/types'
-import {linkify} from 'utils/linkify'
+import { linkify } from 'utils/linkify'
 
 import LinkPopover from '../components/LinkPopover'
 
@@ -15,7 +16,7 @@ const foundUrl = (): Decorator => ({
     strategy: (
         contentBlock: ContentBlock,
         callback: DecoratorStrategyCallback,
-        contentState: ContentState
+        contentState: ContentState,
     ) => {
         // BUG double-closing curly braces, brackets, etc. break linkify-it detection,
         // because they're not valid URL characters.
@@ -50,7 +51,7 @@ const foundUrl = (): Decorator => ({
         })
     },
     component: (props: DecoratorComponentProps) => {
-        const {decoratedText, children} = props
+        const { decoratedText, children } = props
         const links = linkify.match(decoratedText)
         const url = links && links[0] ? links[0].url : ''
         return <LinkPopover url={url}>{children}</LinkPopover>

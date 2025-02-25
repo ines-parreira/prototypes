@@ -1,10 +1,11 @@
-import {render} from '@testing-library/react'
-import {ContentState} from 'draft-js'
 import * as React from 'react'
 
-import {convertFromHTML} from 'utils/editor'
+import { render } from '@testing-library/react'
+import { ContentState } from 'draft-js'
 
-import {DecoratorComponentProps} from '../../../types'
+import { convertFromHTML } from 'utils/editor'
+
+import { DecoratorComponentProps } from '../../../types'
 import discountCodeLink from '../discountCodeLink'
 
 describe('discountCodeLink decorator', () => {
@@ -39,12 +40,12 @@ describe('discountCodeLink decorator', () => {
 
         it('should render component with onEdit prop if active', () => {
             const link = discountCodeLink()
-            const {container} = render(
+            const { container } = render(
                 <link.component
                     {...minProps}
                     contentState={contentState}
                     entityKey={contentState.getFirstBlock().getEntityAt(0)}
-                />
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()

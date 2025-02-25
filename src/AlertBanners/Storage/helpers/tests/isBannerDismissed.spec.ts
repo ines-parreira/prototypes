@@ -1,6 +1,6 @@
-import {BannerCategories} from '../../../types'
-import {AlertBannerStorage} from '../../types'
-import {isBannerDismissed} from '../isBannerDismissed'
+import { BannerCategories } from '../../../types'
+import { AlertBannerStorage } from '../../types'
+import { isBannerDismissed } from '../isBannerDismissed'
 
 describe('isBannerDismissed', () => {
     const storage: AlertBannerStorage = {
@@ -14,8 +14,8 @@ describe('isBannerDismissed', () => {
             isBannerDismissed(
                 storage,
                 BannerCategories.STATUS_PAGE_INCIDENT,
-                '3'
-            )
+                '3',
+            ),
         ).toBe(false)
     })
 
@@ -24,8 +24,8 @@ describe('isBannerDismissed', () => {
             isBannerDismissed(
                 storage,
                 BannerCategories.STATUS_PAGE_INCIDENT,
-                '2'
-            )
+                '2',
+            ),
         ).toBe(true)
     })
 
@@ -34,8 +34,8 @@ describe('isBannerDismissed', () => {
             isBannerDismissed(
                 storage,
                 BannerCategories.STATUS_PAGE_MAINTENANCE,
-                '2'
-            )
+                '2',
+            ),
         ).toBe(false)
     })
 })

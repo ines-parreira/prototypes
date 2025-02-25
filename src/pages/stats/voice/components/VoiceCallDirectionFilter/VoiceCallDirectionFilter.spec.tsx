@@ -1,5 +1,6 @@
-import {fireEvent, render} from '@testing-library/react'
 import React from 'react'
+
+import { fireEvent, render } from '@testing-library/react'
 
 import {
     ALL_CALLS_FILTER_LABEL,
@@ -7,15 +8,15 @@ import {
     MISSED_CALLS_FILTER_LABEL,
     OUTBOUND_CALLS_FILTER_LABEL,
 } from 'pages/stats/voice/constants/voiceOverview'
-import {VoiceCallFilterOptions} from 'pages/stats/voice/models/types'
+import { VoiceCallFilterOptions } from 'pages/stats/voice/models/types'
 
 import VoiceCallDirectionFilter from './VoiceCallDirectionFilter'
 
 describe('VoiceCallDirectionFilter', () => {
     it('should render', () => {
         const mockFilterSelect = jest.fn()
-        const {getByText, getAllByText} = render(
-            <VoiceCallDirectionFilter onFilterSelect={mockFilterSelect} />
+        const { getByText, getAllByText } = render(
+            <VoiceCallDirectionFilter onFilterSelect={mockFilterSelect} />,
         )
         expect(getAllByText(ALL_CALLS_FILTER_LABEL)).toHaveLength(2)
         expect(getByText(INBOUND_CALLS_FILTER_LABEL)).toBeInTheDocument()
@@ -38,8 +39,8 @@ describe('VoiceCallDirectionFilter', () => {
         },
     ])('should change selector', (filter) => {
         const mockFilterSelect = jest.fn()
-        const {getByText, getAllByText} = render(
-            <VoiceCallDirectionFilter onFilterSelect={mockFilterSelect} />
+        const { getByText, getAllByText } = render(
+            <VoiceCallDirectionFilter onFilterSelect={mockFilterSelect} />,
         )
         fireEvent.click(getAllByText(ALL_CALLS_FILTER_LABEL)[0])
         fireEvent.click(getByText(filter.label))

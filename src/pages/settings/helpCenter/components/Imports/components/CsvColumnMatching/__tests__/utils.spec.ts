@@ -1,4 +1,4 @@
-import {GorgiasFieldsMappingsLocalized} from '../types'
+import { GorgiasFieldsMappingsLocalized } from '../types'
 import {
     CSV_MIGRATION_PROVIDER_TYPE,
     mapCSVLocalValuesToAPIPayload,
@@ -36,7 +36,7 @@ describe('CsvColumnMatching utils', () => {
                             csv_column: 'another_article_title',
                         },
                     },
-                })
+                }),
             ).toEqual([
                 {
                     localeCode: 'en-US',
@@ -65,7 +65,7 @@ describe('CsvColumnMatching utils', () => {
                             kind: 'AUTO_GENERATED',
                         },
                     },
-                })
+                }),
             ).toEqual([
                 {
                     localeCode: 'en-US',
@@ -100,7 +100,7 @@ describe('CsvColumnMatching utils', () => {
                             csv_column: 'article_content_fr',
                         },
                     },
-                })
+                }),
             ).toEqual([
                 {
                     localeCode: 'en-US',
@@ -153,7 +153,7 @@ describe('CsvColumnMatching utils', () => {
                             csv_column: 'article_content',
                         },
                     },
-                }
+                },
             )
 
             expect(preview).toEqual(['toto', 'titi'])
@@ -171,7 +171,7 @@ describe('CsvColumnMatching utils', () => {
                         },
                     ],
                 ]),
-                {}
+                {},
             )
 
             expect(preview).toEqual([])
@@ -205,7 +205,7 @@ describe('CsvColumnMatching utils', () => {
                             kind: 'AUTO_GENERATED',
                         },
                     },
-                }
+                },
             )
 
             expect(preview).toEqual(['beautiful-title', 'awesome-title'])
@@ -253,7 +253,7 @@ describe('CsvColumnMatching utils', () => {
                             kind: 'AUTO_GENERATED',
                         },
                     },
-                }
+                },
             )
 
             expect(preview).toEqual(['My content', 'Another content'])
@@ -276,7 +276,7 @@ describe('CsvColumnMatching utils', () => {
             ]
 
             expect(
-                mapCSVLocalValuesToAPIPayload('http://file.com', mappings)
+                mapCSVLocalValuesToAPIPayload('http://file.com', mappings),
             ).toEqual(undefined)
         })
 
@@ -576,11 +576,11 @@ describe('CsvColumnMatching utils', () => {
             }
 
             expect(
-                mapCSVLocalValuesToAPIPayload('http://file.com', mappings)
+                mapCSVLocalValuesToAPIPayload('http://file.com', mappings),
             ).toEqual(expectedDto)
 
             expect(
-                mapCSVLocalValuesToAPIPayload('http://file.com', fullMappings)
+                mapCSVLocalValuesToAPIPayload('http://file.com', fullMappings),
             ).toEqual(expectedFullDto)
         })
     })

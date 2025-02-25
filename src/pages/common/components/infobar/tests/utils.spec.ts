@@ -1,18 +1,17 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 import moment from 'moment'
 import momentTimezone from 'moment-timezone'
 
 import {
-    DateTimeResultFormatType,
-    DateFormatType,
-    TimeFormatType,
     DateAndTimeFormatting,
+    DateFormatType,
+    DateTimeResultFormatType,
+    TimeFormatType,
 } from 'constants/datetime'
-import {Template, Source} from 'models/widget/types'
-import {jsonToCovertToWidgets} from 'pages/common/components/infobar/tests/fixtures'
-import {WidgetEnvironment} from 'state/widgets/types'
-
-import {getDateAndTimeFormat} from 'utils/datetime'
+import { Source, Template } from 'models/widget/types'
+import { jsonToCovertToWidgets } from 'pages/common/components/infobar/tests/fixtures'
+import { WidgetEnvironment } from 'state/widgets/types'
+import { getDateAndTimeFormat } from 'utils/datetime'
 
 import * as utils from '../utils'
 
@@ -233,12 +232,12 @@ describe('widgets infobar utils', () => {
         const enGBDateTimeFormat = getDateAndTimeFormat(
             DateFormatType.en_GB,
             TimeFormatType.TwentyFourHour,
-            DateAndTimeFormatting.TimeDoubleDigitHour
+            DateAndTimeFormatting.TimeDoubleDigitHour,
         )
         const enUSDateTimeFormat = getDateAndTimeFormat(
             DateFormatType.en_US,
             TimeFormatType.AmPm,
-            DateAndTimeFormatting.TimeDoubleDigitHour
+            DateAndTimeFormatting.TimeDoubleDigitHour,
         )
         const nowDates = [
             {
@@ -312,15 +311,15 @@ describe('widgets infobar utils', () => {
             }) => {
                 const fixedUtcDate = moment.utc('2019-01-26T12:34:56.000Z')
                 jest.spyOn(moment, 'utc').mockImplementationOnce(
-                    () => fixedUtcDate
+                    () => fixedUtcDate,
                 )
 
                 const result = utils.getLocalTime(
                     obj.timezoneOffset,
-                    obj.datetimeFormat
+                    obj.datetimeFormat,
                 )
                 expect(result).toBe(obj.expectedLocalTime)
-            }
+            },
         )
     })
 
@@ -391,35 +390,35 @@ describe('widgets infobar utils', () => {
                 lastSeenOnChat,
                 timezone,
                 referenceDay,
-                expectedDisplayLastSeenOnChat
+                expectedDisplayLastSeenOnChat,
             ) => {
                 const fixedUtcDate = momentTimezone.utc(mockedNow)
                 const mockedReference = momentTimezone.utc(referenceDay)
                 jest.spyOn(momentTimezone, 'utc').mockImplementationOnce(
-                    () => fixedUtcDate
+                    () => fixedUtcDate,
                 )
 
                 const result = utils.getDisplayCustomerLastSeenOnChat(
                     lastSeenOnChat,
                     timezone,
-                    referenceDay ? mockedReference : null
+                    referenceDay ? mockedReference : null,
                 )
 
                 expect(result).toBe(expectedDisplayLastSeenOnChat)
-            }
+            },
         )
     })
 
     describe('isWidgetEmpty()', () => {
         const emptyValues: [Template, Source][] = [
-            [{type: 'wrapper', path: 'foo'} as Template, {}],
+            [{ type: 'wrapper', path: 'foo' } as Template, {}],
             [
                 {
                     type: 'wrapper',
                     path: 'foo',
                     widgets: [
-                        {type: 'wrapper', path: 'bar'},
-                        {type: 'card', path: 'baz'},
+                        { type: 'wrapper', path: 'bar' },
+                        { type: 'card', path: 'baz' },
                     ],
                 } as Template,
                 {},
@@ -432,11 +431,11 @@ describe('widgets infobar utils', () => {
                         {
                             type: 'card',
                             path: 'bar',
-                            widgets: [{type: 'text', path: 'baz'}],
+                            widgets: [{ type: 'text', path: 'baz' }],
                         },
                     ],
                 } as Template,
-                {foo: {bar: {baz: null}}},
+                { foo: { bar: { baz: null } } },
             ],
             [
                 {
@@ -446,11 +445,11 @@ describe('widgets infobar utils', () => {
                         {
                             type: 'list',
                             path: 'bar',
-                            widgets: [{type: 'text', path: 'baz'}],
+                            widgets: [{ type: 'text', path: 'baz' }],
                         },
                     ],
                 } as Template,
-                {foo: {bar: []}},
+                { foo: { bar: [] } },
             ],
             [
                 {
@@ -460,19 +459,19 @@ describe('widgets infobar utils', () => {
                         {
                             type: 'list',
                             path: 'bar',
-                            widgets: [{type: 'text', path: 'baz'}],
+                            widgets: [{ type: 'text', path: 'baz' }],
                         },
                     ],
                 } as Template,
-                {foo: {bar: [{baz: null}]}},
+                { foo: { bar: [{ baz: null }] } },
             ],
             [
                 {
                     type: 'wrapper',
                     path: 'foo',
                     widgets: [
-                        {type: 'wrapper', path: 'bar'},
-                        {type: 'card', path: 'baz'},
+                        { type: 'wrapper', path: 'bar' },
+                        { type: 'card', path: 'baz' },
                     ],
                 } as Template,
                 undefined,
@@ -486,27 +485,27 @@ describe('widgets infobar utils', () => {
                             type: 'card',
                             path: '',
                             widgets: [
-                                {type: 'text', path: 'baz'},
-                                {type: 'text', path: 'buz'},
+                                { type: 'text', path: 'baz' },
+                                { type: 'text', path: 'buz' },
                             ],
                         },
                     ],
                 } as Template,
-                {bar: [{baz: '', buz: ''}]},
+                { bar: [{ baz: '', buz: '' }] },
             ],
             [
                 {
                     type: 'list',
                     path: 'bar',
                 } as Template,
-                {bar: [{baz: '', buz: ''}]},
+                { bar: [{ baz: '', buz: '' }] },
             ],
             [
                 {
                     type: 'list',
                     path: 'bar',
                 } as Template,
-                {bar: 'not an array'},
+                { bar: 'not an array' },
             ],
         ]
 
@@ -515,7 +514,7 @@ describe('widgets infobar utils', () => {
             (widget, source) => {
                 const result = utils.isWidgetEmpty(widget, source)
                 expect(result).toBe(true)
-            }
+            },
         )
 
         const validValues: [Template, Source][] = [
@@ -523,9 +522,11 @@ describe('widgets infobar utils', () => {
                 {
                     type: 'card',
                     path: 'foo',
-                    meta: {custom: {links: [{label: 'link', url: 'url'}]}},
+                    meta: {
+                        custom: { links: [{ label: 'link', url: 'url' }] },
+                    },
                 } as Template,
-                {foo: {bar: {baz: 'baz!', buz: ''}}},
+                { foo: { bar: { baz: 'baz!', buz: '' } } },
             ],
             [
                 {
@@ -536,13 +537,13 @@ describe('widgets infobar utils', () => {
                             type: 'card',
                             path: 'bar',
                             widgets: [
-                                {type: 'text', path: 'baz'},
-                                {type: 'text', path: 'buz'},
+                                { type: 'text', path: 'baz' },
+                                { type: 'text', path: 'buz' },
                             ],
                         },
                     ],
                 } as Template,
-                {foo: {bar: {baz: 'baz!', buz: ''}}},
+                { foo: { bar: { baz: 'baz!', buz: '' } } },
             ],
             [
                 {
@@ -551,11 +552,11 @@ describe('widgets infobar utils', () => {
                         {
                             type: 'list',
                             path: 'bar',
-                            widgets: [{type: 'text', path: 'baz'}],
+                            widgets: [{ type: 'text', path: 'baz' }],
                         },
                     ],
                 } as Template,
-                {bar: [{baz: 'baz!', buz: ''}]},
+                { bar: [{ baz: 'baz!', buz: '' }] },
             ],
             [
                 {
@@ -566,13 +567,13 @@ describe('widgets infobar utils', () => {
                             type: 'card',
                             path: '',
                             widgets: [
-                                {type: 'text', path: 'baz'},
-                                {type: 'text', path: 'buz'},
+                                { type: 'text', path: 'baz' },
+                                { type: 'text', path: 'buz' },
                             ],
                         },
                     ],
                 } as Template,
-                {bar: [{baz: '', buz: 'miam'}]},
+                { bar: [{ baz: '', buz: 'miam' }] },
             ],
         ]
 
@@ -581,7 +582,7 @@ describe('widgets infobar utils', () => {
             (widget, source) => {
                 const result = utils.isWidgetEmpty(widget, source)
                 expect(result).toBe(false)
-            }
+            },
         )
     })
 
@@ -590,8 +591,8 @@ describe('widgets infobar utils', () => {
             expect(
                 utils.jsonToWidgets(
                     jsonToCovertToWidgets,
-                    WidgetEnvironment.Customer
-                )
+                    WidgetEnvironment.Customer,
+                ),
             ).toMatchSnapshot()
         })
     })

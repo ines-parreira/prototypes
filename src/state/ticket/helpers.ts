@@ -1,9 +1,9 @@
-import {fromJS, List, Map} from 'immutable'
-import moment, {Moment} from 'moment'
+import { fromJS, List, Map } from 'immutable'
+import moment, { Moment } from 'moment'
 
-import {TicketStatus} from 'business/types/ticket'
-import {TAGS_ADDED_KEY, TAGS_REMOVED_KEY} from 'models/event/constants'
-import {TicketEventType, TICKET_EVENT_TYPES} from 'models/event/types'
+import { TicketStatus } from 'business/types/ticket'
+import { TAGS_ADDED_KEY, TAGS_REMOVED_KEY } from 'models/event/constants'
+import { TICKET_EVENT_TYPES, TicketEventType } from 'models/event/types'
 
 const MAX_DIFF_SECONDS = 5
 
@@ -22,7 +22,7 @@ type TicketState = {
  * Fix for duplicated events has been deployed at 2019-12-10T00:06:02Z UTC (Dec 9, 2019, 4:06 PM PST).
  */
 export function shouldDeduplicateAuditLogEvents(
-    ticketCreatedDatetime: string
+    ticketCreatedDatetime: string,
 ): boolean {
     return moment
         .utc(ticketCreatedDatetime)
@@ -43,7 +43,7 @@ export function deduplicateAuditLogEvents(events: List<any>) {
     }
 
     const sortedEvents = events.sortBy((event: Map<any, any>) =>
-        moment(event.get('created_datetime'))
+        moment(event.get('created_datetime')),
     )
 
     sortedEvents.forEach((event: Map<any, any>) => {
@@ -99,7 +99,7 @@ export function deduplicateAuditLogEvents(events: List<any>) {
                     const diff = snoozedAt.diff(
                         ticketState.snoozedAt,
                         'seconds',
-                        true
+                        true,
                     )
 
                     if (Math.abs(diff) < MAX_DIFF_SECONDS) {
@@ -130,8 +130,8 @@ export function deduplicateAuditLogEvents(events: List<any>) {
                     results.push(
                         event.setIn(
                             ['data', TAGS_ADDED_KEY],
-                            fromJS(deduplicatedTagsAdded)
-                        )
+                            fromJS(deduplicatedTagsAdded),
+                        ),
                     )
                 }
 
@@ -148,7 +148,7 @@ export function deduplicateAuditLogEvents(events: List<any>) {
                 tagsRemoved.forEach((tagRemoved) => {
                     if (ticketState.tags.includes(tagRemoved)) {
                         ticketState.tags = ticketState.tags.filter(
-                            (ticketTag) => ticketTag !== tagRemoved
+                            (ticketTag) => ticketTag !== tagRemoved,
                         )
                         deduplicatedTagsRemoved.push(tagRemoved)
                     }
@@ -158,8 +158,8 @@ export function deduplicateAuditLogEvents(events: List<any>) {
                     results.push(
                         event.setIn(
                             ['data', TAGS_REMOVED_KEY],
-                            fromJS(deduplicatedTagsRemoved)
-                        )
+                            fromJS(deduplicatedTagsRemoved),
+                        ),
                     )
                 }
 
@@ -228,12 +228,14 @@ export function deduplicateAuditLogEvents(events: List<any>) {
  */
 export const getAllCustomerIdsFromTicket = (
     ticket: Map<any, any>,
-    integrationFilterFn: ((integration: Map<any, any>) => boolean) | null = null
+    integrationFilterFn:
+        | ((integration: Map<any, any>) => boolean)
+        | null = null,
 ) => {
     const gorgiasId = ticket.getIn(['customer', 'id'], null)
     let integrations: Map<number, any> = ticket?.getIn(
         ['customer', 'integrations'],
-        fromJS({})
+        fromJS({}),
     )
 
     if (integrationFilterFn) {

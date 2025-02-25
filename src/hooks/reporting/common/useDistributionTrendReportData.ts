@@ -1,8 +1,8 @@
-import {useEffect, useState} from 'react'
+import { useEffect, useState } from 'react'
 
-import {MetricPerDimensionFetch} from 'hooks/reporting/distributions'
-import {StatsFilters} from 'models/stat/types'
-import {formatMetricValue, MetricTrendFormat} from 'pages/stats/common/utils'
+import { MetricPerDimensionFetch } from 'hooks/reporting/distributions'
+import { StatsFilters } from 'models/stat/types'
+import { formatMetricValue, MetricTrendFormat } from 'pages/stats/common/utils'
 
 export type LabelledData = {
     label: string
@@ -13,14 +13,14 @@ export const formatPerDimensionTrendData = (
     current: LabelledData,
     previous: LabelledData,
     labelPrefix: string,
-    metricFormat: MetricTrendFormat
+    metricFormat: MetricTrendFormat,
 ) =>
     current.map((dataPoint) => ({
         label: `${labelPrefix} - ${dataPoint.label}`,
         value: formatMetricValue(dataPoint.value, metricFormat),
         prevValue: formatMetricValue(
             previous.find((row) => row.label === dataPoint.label)?.value,
-            metricFormat
+            metricFormat,
         ),
     }))
 
@@ -32,7 +32,7 @@ export const useDistributionTrendReportData = (
         fetchPreviousDistribution: MetricPerDimensionFetch
         labelPrefix: string
         metricFormat: MetricTrendFormat
-    }
+    },
 ) => {
     const [perDimensionData, setPerDimensionData] = useState<{
         isFetching: boolean
@@ -51,11 +51,11 @@ export const useDistributionTrendReportData = (
             void Promise.all([
                 fetchDistributions.fetchCurrentDistribution(
                     cleanStatsFilters,
-                    userTimezone
+                    userTimezone,
                 ),
                 fetchDistributions.fetchPreviousDistribution(
                     cleanStatsFilters,
-                    userTimezone
+                    userTimezone,
                 ),
             ])
                 .then(([currentPerDimensionData, previousPerDimensionData]) => {
@@ -65,13 +65,15 @@ export const useDistributionTrendReportData = (
                             currentPerDimensionData.data,
                             previousPerDimensionData.data,
                             fetchDistributions.labelPrefix,
-                            fetchDistributions.metricFormat
+                            fetchDistributions.metricFormat,
                         ),
                     })
                 })
-                .catch(() => setPerDimensionData({isFetching: false, data: []}))
+                .catch(() =>
+                    setPerDimensionData({ isFetching: false, data: [] }),
+                )
         } else {
-            setPerDimensionData({isFetching: false, data: []})
+            setPerDimensionData({ isFetching: false, data: [] })
         }
     }, [cleanStatsFilters, fetchDistributions, userTimezone])
 

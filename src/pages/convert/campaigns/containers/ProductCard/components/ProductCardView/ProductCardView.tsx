@@ -1,18 +1,16 @@
+import React, { useMemo } from 'react'
+
 import cn from 'classnames'
-import React, {useMemo} from 'react'
 
 import GorgiasButton from 'gorgias-design-system/Buttons/Button'
-import {getContrastColor} from 'gorgias-design-system/utils'
+import { getContrastColor } from 'gorgias-design-system/utils'
 import Button from 'pages/common/components/button/Button'
+import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
+import { useIsProductCardDiscountedPriceEnabled } from 'pages/convert/common/hooks/useIsProductCardDiscountedPriceEnabled'
 
-import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
-
-import {useIsProductCardDiscountedPriceEnabled} from 'pages/convert/common/hooks/useIsProductCardDiscountedPriceEnabled'
-
-import {AttachmentPosition} from '../../../../types/CampaignAttachment'
-
-import {BaseProductCard} from '../BaseProductCard'
-import {FeaturedImage, ImagePosition} from '../ImagePosition'
+import { AttachmentPosition } from '../../../../types/CampaignAttachment'
+import { BaseProductCard } from '../BaseProductCard'
+import { FeaturedImage, ImagePosition } from '../ImagePosition'
 
 import css from './ProductCardView.less'
 
@@ -51,10 +49,10 @@ export const ProductCardView = ({
             backgroundColor: bgColor,
             color: getContrastColor(bgColor),
         }),
-        [bgColor]
+        [bgColor],
     )
 
-    const {formattedPrice, formattedCompareAtPrice} = useMemo(() => {
+    const { formattedPrice, formattedCompareAtPrice } = useMemo(() => {
         const formatter = new Intl.NumberFormat('en-US', {
             style: 'currency',
             currency: currency || 'USD',

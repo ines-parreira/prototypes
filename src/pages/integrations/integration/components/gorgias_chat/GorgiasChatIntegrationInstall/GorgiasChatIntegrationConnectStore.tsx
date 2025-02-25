@@ -1,22 +1,23 @@
-import {fromJS, Map} from 'immutable'
-import React, {useEffect, useMemo, useState} from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
+
+import { fromJS, Map } from 'immutable'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
-import {IntegrationType, StoreIntegration} from 'models/integration/types'
-import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
+import { IntegrationType, StoreIntegration } from 'models/integration/types'
+import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import {updateOrCreateIntegration} from 'state/integrations/actions'
-import {getIconFromType} from 'state/integrations/helpers'
-import {getIntegrationsByType} from 'state/integrations/selectors'
+import { updateOrCreateIntegration } from 'state/integrations/actions'
+import { getIconFromType } from 'state/integrations/helpers'
+import { getIntegrationsByType } from 'state/integrations/selectors'
 
-import {StoreNameDropdown} from '../GorgiasChatIntegrationAppearance/StoreNameDropdown'
+import { StoreNameDropdown } from '../GorgiasChatIntegrationAppearance/StoreNameDropdown'
 
 import css from './GorgiasChatIntegrationConnectStore.less'
 
@@ -41,13 +42,13 @@ const GorgiasChatIntegrationConnectStore = ({
 
     const getGorgiasChatIntegrations = useMemo(
         () => getIntegrationsByType(IntegrationType.GorgiasChat),
-        []
+        [],
     )
     const gorgiasChatIntegrations = useAppSelector(getGorgiasChatIntegrations)
 
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [storeIntegrationId, setStoreIntegration] = useState(
-        storeIntegration?.id ?? null
+        storeIntegration?.id ?? null,
     )
 
     useEffect(() => {
@@ -61,14 +62,15 @@ const GorgiasChatIntegrationConnectStore = ({
         setIsModalOpen(false)
     }
 
-    const [{loading: isConnectPending}, handleConnect] =
+    const [{ loading: isConnectPending }, handleConnect] =
         useAsyncFn(async () => {
             if (!storeIntegrationId) {
                 return
             }
 
             const storeIntegration = storeIntegrations.find(
-                (storeIntegration) => storeIntegration.id === storeIntegrationId
+                (storeIntegration) =>
+                    storeIntegration.id === storeIntegrationId,
             )
 
             if (!storeIntegration) {
@@ -83,7 +85,7 @@ const GorgiasChatIntegrationConnectStore = ({
                 meta: meta
                     .set(
                         'shop_name',
-                        getShopNameFromStoreIntegration(storeIntegration)
+                        getShopNameFromStoreIntegration(storeIntegration),
                     )
                     .set('shop_type', storeIntegration.type)
                     .set('shop_integration_id', storeIntegration.id)
@@ -94,7 +96,7 @@ const GorgiasChatIntegrationConnectStore = ({
 
             setIsModalOpen(false)
         }, [integration, storeIntegrationId, storeIntegrations])
-    const [{loading: isDisconnectPending}, handleDisconnect] =
+    const [{ loading: isDisconnectPending }, handleDisconnect] =
         useAsyncFn(async () => {
             const meta: Map<any, any> = integration.get('meta')
 
@@ -180,7 +182,7 @@ const GorgiasChatIntegrationConnectStore = ({
                     </div>
                     <StoreNameDropdown
                         gorgiasChatIntegrations={fromJS(
-                            gorgiasChatIntegrations
+                            gorgiasChatIntegrations,
                         )}
                         storeIntegrations={fromJS(storeIntegrations)}
                         storeIntegrationId={storeIntegrationId}

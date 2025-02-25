@@ -1,49 +1,46 @@
-import {waitFor} from '@testing-library/react'
-import {renderHook} from '@testing-library/react-hooks'
-
-import {fromJS} from 'immutable'
-import _keyBy from 'lodash/keyBy'
-
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { waitFor } from '@testing-library/react'
+import { renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
+import _keyBy from 'lodash/keyBy'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {TicketChannel} from 'business/types/ticket'
-import {agents} from 'fixtures/agents'
-import {integrationsState} from 'fixtures/integrations'
-import {tags} from 'fixtures/tag'
+import { TicketChannel } from 'business/types/ticket'
+import { agents } from 'fixtures/agents'
+import { integrationsState } from 'fixtures/integrations'
+import { tags } from 'fixtures/tag'
 import {
     fetchTableReportData,
     TableDataSources,
     useTableReportData,
     useTables,
 } from 'hooks/reporting/common/useTableReportData'
-
-import {useSortedChannels} from 'hooks/reporting/support-performance/useSortedChannels'
-import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
-import {useChannelsTableSetting} from 'hooks/reporting/useChannelsTableConfigSetting'
-import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {ReportingGranularity} from 'models/reporting/types'
-import {StatsFiltersWithLogicalOperator} from 'models/stat/types'
-
-import {RootState, StoreDispatch} from 'state/types'
-import {getSortedAgents} from 'state/ui/stats/agentPerformanceSlice'
-import {getSortedAutoQAAgents} from 'state/ui/stats/autoQAAgentPerformanceSlice'
+import { useSortedChannels } from 'hooks/reporting/support-performance/useSortedChannels'
+import { useAgentsTableConfigSetting } from 'hooks/reporting/useAgentsTableConfigSetting'
+import { useChannelsTableSetting } from 'hooks/reporting/useChannelsTableConfigSetting'
+import { MetricWithDecile } from 'hooks/reporting/useMetricPerDimension'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { ReportingGranularity } from 'models/reporting/types'
+import { StatsFiltersWithLogicalOperator } from 'models/stat/types'
+import { RootState, StoreDispatch } from 'state/types'
+import { getSortedAgents } from 'state/ui/stats/agentPerformanceSlice'
+import { getSortedAutoQAAgents } from 'state/ui/stats/autoQAAgentPerformanceSlice'
 import {
     busiestTimesSlice,
     initialState as busiestTimesSliceInitialState,
 } from 'state/ui/stats/busiestTimesSlice'
 import {
-    initialState as tagsReportSliceinitialState,
     tagsReportSlice,
+    initialState as tagsReportSliceinitialState,
 } from 'state/ui/stats/tagsReportSlice'
 import {
     initialState,
     ticketInsightsSlice,
 } from 'state/ui/stats/ticketInsightsSlice'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/useAgentsTableConfigSetting')
 const useAgentsTableConfigSettingMock = assumeMock(useAgentsTableConfigSetting)
@@ -100,7 +97,7 @@ describe('useTable hooks', () => {
         const files = {
             ['fileName']: 'fileContent',
         }
-        const tableResponse = {isLoading: false, fileName, files}
+        const tableResponse = { isLoading: false, fileName, files }
         const tableSources = [
             {
                 title: 'someTitle',
@@ -123,21 +120,21 @@ describe('useTable hooks', () => {
         })
 
         it('should fetch Table Reports', async () => {
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () =>
                     useTables(
                         defaultStatsFilters,
                         userTimezone,
                         granularity,
-                        tableSources
+                        tableSources,
                     ),
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <Provider store={mockStore(defaultState)}>
                             {children}
                         </Provider>
                     ),
-                }
+                },
             )
 
             await waitFor(() => {
@@ -171,19 +168,19 @@ describe('useTable hooks', () => {
                 },
             ]
 
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () =>
                     useTables(
                         defaultStatsFilters,
                         userTimezone,
                         granularity,
-                        errorTableSources
+                        errorTableSources,
                     ),
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <Provider store={mockStore(state)}>{children}</Provider>
                     ),
-                }
+                },
             )
 
             await waitFor(() => {
@@ -230,12 +227,12 @@ describe('useTable hooks', () => {
                 },
             ]
 
-            const {result} = renderHook(() =>
+            const { result } = renderHook(() =>
                 useTableReportData(
                     defaultStatsFilters,
                     userTimezone,
-                    tableDataSources
-                )
+                    tableDataSources,
+                ),
             )
 
             await waitFor(() => {
@@ -290,12 +287,12 @@ describe('useTable hooks', () => {
                 },
             ]
 
-            const {result} = renderHook(() =>
+            const { result } = renderHook(() =>
                 useTableReportData(
                     defaultStatsFilters,
                     userTimezone,
-                    tableDataSources
-                )
+                    tableDataSources,
+                ),
             )
 
             await waitFor(() => {
@@ -309,7 +306,7 @@ describe('useTable hooks', () => {
 
     describe('fetchTableReportData', () => {
         it('should fetch data for report source', async () => {
-            const tableResponse = {isLoading: false, fileName, files: {}}
+            const tableResponse = { isLoading: false, fileName, files: {} }
             const tableSources = [
                 {
                     fetchData: () => Promise.resolve(tableResponse),
@@ -320,18 +317,18 @@ describe('useTable hooks', () => {
             const response = await fetchTableReportData(
                 defaultStatsFilters,
                 userTimezone,
-                tableSources
+                tableSources,
             )
 
             expect(response).toEqual({
-                data: {['abc']: tableResponse},
+                data: { ['abc']: tableResponse },
                 isError: false,
                 isFetching: false,
             })
         })
 
         it('should return empty on error', async () => {
-            const tableResponse = {isLoading: false, fileName, files: {}}
+            const tableResponse = { isLoading: false, fileName, files: {} }
             const tableSources = [
                 {
                     fetchData: () => Promise.reject(tableResponse),
@@ -342,7 +339,7 @@ describe('useTable hooks', () => {
             const response = await fetchTableReportData(
                 defaultStatsFilters,
                 userTimezone,
-                tableSources
+                tableSources,
             )
 
             expect(response).toEqual({

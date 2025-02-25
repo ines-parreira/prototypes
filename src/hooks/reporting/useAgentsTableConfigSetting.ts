@@ -1,6 +1,6 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {useTableConfigSetting} from 'hooks/reporting/useTableConfigSetting'
+import { useTableConfigSetting } from 'hooks/reporting/useTableConfigSetting'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -12,16 +12,16 @@ import {
     submitAgentTableConfigView,
     submitSetting,
 } from 'state/currentAccount/actions'
-import {getAgentsTableConfigSettingsJS} from 'state/currentAccount/selectors'
-import {AccountSettingType} from 'state/currentAccount/types'
-import {AgentsTableColumn, TableView} from 'state/ui/stats/types'
+import { getAgentsTableConfigSettingsJS } from 'state/currentAccount/selectors'
+import { AccountSettingType } from 'state/currentAccount/types'
+import { AgentsTableColumn, TableView } from 'state/ui/stats/types'
 
 export const useAgentTableSetting = () =>
     useTableConfigSetting(
         getAgentsTableConfigSettingsJS,
         agentPerformanceTableActiveView,
         TableColumnsOrderWithOnlineTime,
-        submitAgentTableConfigView
+        submitAgentTableConfigView,
     )
 
 export const useAgentsTableConfigSetting = () => {
@@ -30,14 +30,14 @@ export const useAgentsTableConfigSetting = () => {
     const currentSettings = settings ? settings.data : AgentsTableViews
     const currentView =
         currentSettings.views.find(
-            (view) => view.id === currentSettings.active_view
+            (view) => view.id === currentSettings.active_view,
         ) || agentPerformanceTableActiveView
 
     const currentViewColumnsInOrder = currentView.metrics
         .map((metric) => metric.id)
         .filter((column) => TableColumnsOrderWithOnlineTime.includes(column))
     const columnsMissingInSettings = TableColumnsOrderWithOnlineTime.filter(
-        (column) => !currentViewColumnsInOrder.includes(column)
+        (column) => !currentViewColumnsInOrder.includes(column),
     )
     const columnsInOrder = [
         ...currentViewColumnsInOrder,
@@ -46,7 +46,7 @@ export const useAgentsTableConfigSetting = () => {
 
     currentView.metrics = columnsInOrder.map((metric) => {
         const savedSetting = currentView.metrics.find(
-            (entry) => entry.id === metric
+            (entry) => entry.id === metric,
         )
         return {
             id: metric,
@@ -58,7 +58,7 @@ export const useAgentsTableConfigSetting = () => {
     })
 
     const submitActiveView = async (
-        activeView: TableView<AgentsTableColumn>
+        activeView: TableView<AgentsTableColumn>,
     ) => {
         await dispatch(
             submitSetting({
@@ -67,14 +67,14 @@ export const useAgentsTableConfigSetting = () => {
                 data: {
                     active_view: activeView.id,
                     views: currentSettings.views.find(
-                        (view) => view.id === activeView.id
+                        (view) => view.id === activeView.id,
                     )
                         ? currentSettings.views.map((view) =>
-                              view.id === activeView.id ? activeView : view
+                              view.id === activeView.id ? activeView : view,
                           )
                         : [...currentSettings.views, activeView],
                 },
-            })
+            }),
         )
     }
 

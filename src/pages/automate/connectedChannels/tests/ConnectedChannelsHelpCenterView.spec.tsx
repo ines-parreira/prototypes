@@ -1,32 +1,33 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {act, fireEvent, screen, waitFor} from '@testing-library/react'
-import {produce} from 'immer'
-import {fromJS} from 'immutable'
-import {keyBy} from 'lodash'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
+import { produce } from 'immer'
+import { fromJS } from 'immutable'
+import { keyBy } from 'lodash'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {TicketChannel} from 'business/types/ticket'
-import {billingState} from 'fixtures/billing'
-import {selfServiceConfiguration1 as mockSelfServiceConfiguration} from 'fixtures/self_service_configurations'
-import {useUpdateHelpCenter} from 'models/helpCenter/queries'
+import { TicketChannel } from 'business/types/ticket'
+import { billingState } from 'fixtures/billing'
+import { selfServiceConfiguration1 as mockSelfServiceConfiguration } from 'fixtures/self_service_configurations'
+import { useUpdateHelpCenter } from 'models/helpCenter/queries'
 import useHelpCentersAutomationSettings from 'pages/automate/common/hooks/useHelpCentersAutomationSettings'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import useSelfServiceHelpCenterChannels, {
     SelfServiceHelpCenterChannel,
 } from 'pages/automate/common/hooks/useSelfServiceHelpCenterChannels'
-import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
-import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {initialState as articlesState} from 'state/entities/helpCenter/articles'
-import {initialState as categoriesState} from 'state/entities/helpCenter/categories'
-import {NotificationStatus} from 'state/notifications/types'
-import {RootState} from 'state/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {renderWithRouter} from 'utils/testing'
+import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
+import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { initialState as articlesState } from 'state/entities/helpCenter/articles'
+import { initialState as categoriesState } from 'state/entities/helpCenter/categories'
+import { NotificationStatus } from 'state/notifications/types'
+import { RootState } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { renderWithRouter } from 'utils/testing'
 
-import {ConnectedChannelsHelpCenterView} from '../components/ConnectedChannelsHelpCenterView'
+import { ConnectedChannelsHelpCenterView } from '../components/ConnectedChannelsHelpCenterView'
 
 jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration')
 jest.mock('pages/automate/common/hooks/useHelpCentersAutomationSettings')
@@ -96,7 +97,7 @@ const mockedStore = mockStore({
                 automationSettingsByContactFormId: {
                     [contactForm.id]: {
                         workflows: [],
-                        order_management: {enabled: false},
+                        order_management: { enabled: false },
                     },
                 },
             },
@@ -203,7 +204,7 @@ describe('ConnectedChannelsContactFormView', () => {
             isFetchPending: false,
         })
         ;(useSelfServiceHelpCenterChannels as jest.Mock).mockReturnValue(
-            mockHelpCenterChannels
+            mockHelpCenterChannels,
         )
         ;(useHelpCentersAutomationSettings as jest.Mock).mockReturnValue({
             automationSettings: {
@@ -237,7 +238,7 @@ describe('ConnectedChannelsContactFormView', () => {
                 <QueryClientProvider client={queryClient}>
                     <ConnectedChannelsHelpCenterView />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
     })
 
@@ -247,7 +248,7 @@ describe('ConnectedChannelsContactFormView', () => {
                 <QueryClientProvider client={queryClient}>
                     <ConnectedChannelsHelpCenterView />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         await waitFor(() => {
@@ -261,7 +262,7 @@ describe('ConnectedChannelsContactFormView', () => {
                 <QueryClientProvider client={queryClient}>
                     <ConnectedChannelsHelpCenterView />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         await waitFor(() => {
@@ -277,7 +278,7 @@ describe('ConnectedChannelsContactFormView', () => {
                         helpCenter={mockHelpCenterChannels[0].value}
                     />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
         await waitFor(() => {
             expect(screen.queryByText('Currently viewing')).toBeNull()
@@ -292,7 +293,7 @@ describe('ConnectedChannelsContactFormView', () => {
                 <QueryClientProvider client={queryClient}>
                     <ConnectedChannelsHelpCenterView />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText(/Go to Help Center/i)).toBeInTheDocument()
@@ -319,7 +320,7 @@ describe('ConnectedChannelsContactFormView', () => {
             {
                 path: '/:shopType/:shopName/connected-channels/help-center',
                 route: '/shopify/itay-store-two/connected-channels/help-center',
-            }
+            },
         )
 
         await waitFor(() => {
@@ -333,7 +334,7 @@ describe('ConnectedChannelsContactFormView', () => {
         await waitFor(() => {
             expect(mockUpdateHelpCenterMutateAsync).toHaveBeenCalledWith([
                 undefined,
-                {help_center_id: 42},
+                { help_center_id: 42 },
                 {
                     self_service_deactivated: true,
                 },
@@ -370,7 +371,7 @@ describe('ConnectedChannelsContactFormView', () => {
             produce(mockHelpCenterChannels, (draft) => {
                 draft[0].value.self_service_deactivated_datetime =
                     '2024-09-04T10:02:02.163Z'
-            })
+            }),
         )
         ;(useUpdateHelpCenter as jest.Mock).mockReturnValue({
             mutateAsync: mockUpdateHelpCenterMutateAsync,
@@ -385,7 +386,7 @@ describe('ConnectedChannelsContactFormView', () => {
             {
                 path: '/:shopType/:shopName/connected-channels/help-center',
                 route: '/shopify/itay-store-two/connected-channels/help-center',
-            }
+            },
         )
 
         await waitFor(() => {
@@ -399,7 +400,7 @@ describe('ConnectedChannelsContactFormView', () => {
         await waitFor(() => {
             expect(mockUpdateHelpCenterMutateAsync).toHaveBeenCalledWith([
                 undefined,
-                {help_center_id: 42},
+                { help_center_id: 42 },
                 {
                     self_service_deactivated: false,
                 },

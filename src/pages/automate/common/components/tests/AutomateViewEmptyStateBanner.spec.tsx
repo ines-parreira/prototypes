@@ -1,5 +1,6 @@
-import {screen, render} from '@testing-library/react'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import AutomateViewEmptyStateBanner from '../AutomateViewEmptyStateBanner'
 
@@ -11,14 +12,14 @@ describe('<AutomateViewEmptyStateBanner />', () => {
                 title="Test Title"
                 description="Test Description"
                 image="/path/to/image.jpg"
-            />
+            />,
         )
 
         expect(screen.getByText('Test Title')).toBeInTheDocument()
         expect(screen.getByText('Test Description')).toBeInTheDocument()
         expect(screen.getByAltText('Test Title')).toHaveAttribute(
             'src',
-            '/path/to/image.jpg'
+            '/path/to/image.jpg',
         )
     })
 
@@ -30,7 +31,7 @@ describe('<AutomateViewEmptyStateBanner />', () => {
                 description="Test Description"
                 image="/path/to/image.jpg"
                 badge={<span>Badge</span>}
-            />
+            />,
         )
 
         expect(screen.getByText('Badge')).toBeInTheDocument()
@@ -44,7 +45,7 @@ describe('<AutomateViewEmptyStateBanner />', () => {
                 description="Test Description"
                 image="/path/to/image.jpg"
                 action={<button>Click Me</button>}
-            />
+            />,
         )
 
         expect(screen.getByText('Click Me')).toBeInTheDocument()

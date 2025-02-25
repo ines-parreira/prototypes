@@ -1,7 +1,7 @@
 {
     "$schema": "./node_modules/oxlint/configuration_schema.json",
-    "env": {"browser": true, "es6": true, "jest": true, "node": true},
-    "globals": {"$": "off", "amplitude": "off", "FB": "off", "Stripe": "off"},
+    "env": { "browser": true, "es6": true, "jest": true, "node": true },
+    "globals": { "$": "off", "amplitude": "off", "FB": "off", "Stripe": "off" },
     "ignorePatterns": [
         "src/coverage/**",
         "src/rest_api/help_center_api/**",
@@ -14,7 +14,7 @@
     "overrides": [
         {
             "files": ["**/*.spec.ts", "**/*.spec.tsx"],
-            "rules": {"react/no-unescaped-entities": "off"}
+            "rules": { "react/no-unescaped-entities": "off" }
         }
     ],
     "plugins": ["import", "jsx-a11y", "react", "react-hooks", "typescript"],
@@ -23,9 +23,9 @@
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-unused-vars": [
             "error",
-            {"argsIgnorePattern": "^__", "varsIgnorePattern": "^__"}
+            { "argsIgnorePattern": "^__", "varsIgnorePattern": "^__" }
         ],
-        "eqeqeq": ["error", "always", {"null": "ignore"}],
+        "eqeqeq": ["error", "always", { "null": "ignore" }],
         "import/default": "off",
         "import/namespace": "off",
         "import/no-anonymous-default-export": [
@@ -43,10 +43,6 @@
         "import/no-duplicates": "error",
         "import/no-named-as-default": "warn",
         "import/no-named-as-default-member": "off",
-        "import/order": [
-            "error",
-            {"newlines-between": "always-and-inside-groups"}
-        ],
         "jsx-a11y/alt-text": ["error"],
         "jsx-a11y/anchor-is-valid": "off",
         "jsx-a11y/click-events-have-key-events": "off",
@@ -54,9 +50,9 @@
         "jsx-a11y/no-noninteractive-tabindex": "off",
         "jsx-a11y/tabindex-no-positive": "off",
         "no-async-promise-executor": "off",
-        "no-console": ["error", {"allow": ["error", "warn"]}],
+        "no-console": ["error", { "allow": ["error", "warn"] }],
         "no-else-return": ["error"],
-        "no-empty": ["error", {"allowEmptyCatch": true}],
+        "no-empty": ["error", { "allowEmptyCatch": true }],
         "no-extra-boolean-cast": ["off"],
         "no-param-reassign": ["error"],
         "no-prototype-builtins": "off",
@@ -80,7 +76,7 @@
         "no-unused-vars": "off",
         "no-useless-escape": "off",
         "react-hooks/exhaustive-deps": "error",
-        "react/jsx-key": ["error", {"checkFragmentShorthand": true}],
+        "react/jsx-key": ["error", { "checkFragmentShorthand": true }],
         "react/no-find-dom-node": "off",
         "react/no-unescaped-entities": "error",
         "unicorn/*": "off"

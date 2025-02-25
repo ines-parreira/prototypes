@@ -1,8 +1,9 @@
-import classnames from 'classnames'
 import React from 'react'
 
+import classnames from 'classnames'
+
 import AppIcon from 'pages/automate/actionsPlatform/components/AppIcon'
-import {App} from 'pages/automate/actionsPlatform/types'
+import { App } from 'pages/automate/actionsPlatform/types'
 
 import css from './ReusableLLMPromptCallNodeLabel.less'
 

@@ -1,3 +1,5 @@
+import React from 'react'
+
 import {
     cleanup,
     fireEvent,
@@ -5,7 +7,6 @@ import {
     screen,
     waitFor,
 } from '@testing-library/react'
-import React from 'react'
 
 import {
     DEFAULT_ERROR_MESSAGE,
@@ -16,22 +17,22 @@ import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
 import useHasPhone from 'hooks/useHasPhone'
 import PhoneDevice from 'pages/integrations/integration/components/phone/PhoneDevice'
 import useMicrophonePermissions from 'pages/integrations/integration/components/voice/useMicrophonePermissions'
-import {isDesktopDevice, isDeviceReady} from 'utils/device'
+import { isDesktopDevice, isDeviceReady } from 'utils/device'
 import * as platform from 'utils/platform'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
 import PlaceCallNavbarButton from '../PlaceCallNavbarButton'
 
 jest.mock('hooks/useConditionalShortcuts')
 jest.mock('utils/device')
-jest.mock('../DeactivatedViewIcon', () => ({tooltipText}: any) => (
+jest.mock('../DeactivatedViewIcon', () => ({ tooltipText }: any) => (
     <div>{tooltipText}</div>
 ))
 jest.mock('pages/integrations/integration/components/phone/PhoneDevice')
 jest.mock('hooks/integrations/phone/useVoiceDevice')
 jest.mock('hooks/useHasPhone')
 jest.mock(
-    'pages/integrations/integration/components/voice/useMicrophonePermissions'
+    'pages/integrations/integration/components/voice/useMicrophonePermissions',
 )
 
 const isDesktopDeviceMock = assumeMock(isDesktopDevice)
@@ -48,15 +49,19 @@ describe('<PlaceCallNavbarButton />', () => {
     beforeEach(() => {
         isDesktopDeviceMock.mockReturnValue(true)
         useHasPhoneMock.mockReturnValue(true)
-        useVoiceDeviceMock.mockReturnValue({device: {}} as any)
+        useVoiceDeviceMock.mockReturnValue({ device: {} } as any)
         isDeviceReadyMock.mockReturnValue(true)
-        useMicrophonePermissionsMock.mockReturnValue({permissionDenied: false})
+        useMicrophonePermissionsMock.mockReturnValue({
+            permissionDenied: false,
+        })
 
-        PhoneDeviceMock.mockImplementation(({isOpen}: {isOpen: boolean}) => (
-            <div data-testid="phone-device">
-                {isOpen ? 'visible' : 'hidden'}
-            </div>
-        ))
+        PhoneDeviceMock.mockImplementation(
+            ({ isOpen }: { isOpen: boolean }) => (
+                <div data-testid="phone-device">
+                    {isOpen ? 'visible' : 'hidden'}
+                </div>
+            ),
+        )
     })
 
     afterEach(cleanup)
@@ -77,7 +82,7 @@ describe('<PlaceCallNavbarButton />', () => {
                 OPEN_DIALPAD: {
                     action: expect.any(Function),
                 },
-            }
+            },
         )
     })
 
@@ -124,32 +129,32 @@ describe('<PlaceCallNavbarButton />', () => {
 
         expect(screen.getByText(DEFAULT_ERROR_MESSAGE)).toBeInTheDocument()
         expect(
-            screen.getByRole('button', {name: /Place call/})
+            screen.getByRole('button', { name: /Place call/ }),
         ).toBeAriaDisabled()
         expect(useConditionalShortcutsMock.mock.lastCall?.[0]).toBe(false)
     })
 
     it('should render DeactivatedViewIcon and disable button when microphone permissions are denied', () => {
-        useMicrophonePermissionsMock.mockReturnValue({permissionDenied: true})
+        useMicrophonePermissionsMock.mockReturnValue({ permissionDenied: true })
         renderComponent()
 
         expect(
-            screen.getByText(MICROPHONE_PERMISSION_ERROR_MESSAGE)
+            screen.getByText(MICROPHONE_PERMISSION_ERROR_MESSAGE),
         ).toBeInTheDocument()
         expect(
-            screen.getByRole('button', {name: /Place call/})
+            screen.getByRole('button', { name: /Place call/ }),
         ).toBeAriaDisabled()
     })
 
     it('should close PhoneDevice when device is removed', () => {
-        const {rerender} = renderComponent()
+        const { rerender } = renderComponent()
 
         const button = screen.getByText('Place call')
         fireEvent.click(button)
 
         expect(screen.getByTestId('phone-device')).toHaveTextContent('visible')
 
-        useVoiceDeviceMock.mockReturnValue({device: null} as any)
+        useVoiceDeviceMock.mockReturnValue({ device: null } as any)
         rerender(<PlaceCallNavbarButton />)
 
         expect(screen.getByTestId('phone-device')).toHaveTextContent('hidden')

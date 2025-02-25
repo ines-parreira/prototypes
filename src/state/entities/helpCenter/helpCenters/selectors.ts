@@ -1,9 +1,8 @@
-import {createSelector} from '@reduxjs/toolkit'
+import { createSelector } from '@reduxjs/toolkit'
 
-import {HelpCenter} from 'models/helpCenter/types'
-import {StoreState} from 'state/types'
-
-import {getCurrentHelpCenterId} from 'state/ui/helpCenter/selectors'
+import { HelpCenter } from 'models/helpCenter/types'
+import { StoreState } from 'state/types'
+import { getCurrentHelpCenterId } from 'state/ui/helpCenter/selectors'
 
 export const getHelpCenters = (state: StoreState): Record<string, HelpCenter> =>
     state.entities?.helpCenter.helpCenters.helpCentersById || {}
@@ -16,23 +15,23 @@ export const getCurrentHelpCenter = createSelector(
             return helpCenterList[currentHelpCenterId.toString()] || null
         }
         return null
-    }
+    },
 )
 
 export const getHelpCenterList = createSelector(getHelpCenters, (helpCenters) =>
-    Object.values(helpCenters)
+    Object.values(helpCenters),
 )
 
 export const getActiveHelpCenterList = createSelector(
     getHelpCenterList,
     (helpCenters) =>
-        helpCenters.filter((helpCenter) => !helpCenter.deactivated_datetime)
+        helpCenters.filter((helpCenter) => !helpCenter.deactivated_datetime),
 )
 
 export const getHelpCenterFAQList = createSelector(
     getHelpCenterList,
     (helpCenters) =>
-        helpCenters.filter((helpCenter) => helpCenter.type === 'faq')
+        helpCenters.filter((helpCenter) => helpCenter.type === 'faq'),
 )
 
 export const getActiveHelpCenterFAQList = createSelector(
@@ -40,12 +39,12 @@ export const getActiveHelpCenterFAQList = createSelector(
     (helpCenters) =>
         helpCenters.filter(
             (helpCenter) =>
-                !helpCenter.deactivated_datetime && helpCenter.type === 'faq'
-        )
+                !helpCenter.deactivated_datetime && helpCenter.type === 'faq',
+        ),
 )
 
 export const getHelpCenterGuidanceList = createSelector(
     getHelpCenterList,
     (helpCenters) =>
-        helpCenters.filter((helpCenter) => helpCenter.type === 'guidance')
+        helpCenters.filter((helpCenter) => helpCenter.type === 'guidance'),
 )

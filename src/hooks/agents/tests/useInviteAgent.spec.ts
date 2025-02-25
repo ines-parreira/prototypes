@@ -1,13 +1,13 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
-import {useInviteAgent as usePureInviteAgent} from 'models/agents/queries'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {assumeMock} from 'utils/testing'
+import { axiosSuccessResponse } from 'fixtures/axiosResponse'
+import { useInviteAgent as usePureInviteAgent } from 'models/agents/queries'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { assumeMock } from 'utils/testing'
 
-import {handleError} from '../errorHandler'
-import {useInviteAgent} from '../useInviteAgent'
+import { handleError } from '../errorHandler'
+import { useInviteAgent } from '../useInviteAgent'
 
 jest.mock('models/agents/queries')
 const usePureInviteAgentMock = assumeMock(usePureInviteAgent)
@@ -31,7 +31,7 @@ describe('useInviteAgent', () => {
         usePureInviteAgentMock.mock.calls[0][0]?.onSuccess!(
             axiosSuccessResponse(undefined),
             [0],
-            undefined
+            undefined,
         )
 
         expect(notify).toHaveBeenNthCalledWith(1, {
@@ -47,14 +47,14 @@ describe('useInviteAgent', () => {
         usePureInviteAgentMock.mock.calls[0][0]?.onError!(
             myError,
             [0],
-            undefined
+            undefined,
         )
 
         expect(handleError).toHaveBeenNthCalledWith(
             1,
             myError,
             'Failed to send invite',
-            mockedDispatch
+            mockedDispatch,
         )
     })
 })

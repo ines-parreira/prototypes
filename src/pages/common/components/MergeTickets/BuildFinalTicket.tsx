@@ -1,5 +1,6 @@
-import {fromJS, Map} from 'immutable'
 import React from 'react'
+
+import { fromJS, Map } from 'immutable'
 
 import Avatar from '../Avatar/Avatar'
 import BinaryChoiceField from '../BinaryChoiceField'
@@ -47,7 +48,7 @@ export default function BuildFinalTicket({
                 automatically.
             </p>
             {nothingIsDifferent ? (
-                <p className="mt-2 mb=2" style={{textAlign: 'center'}}>
+                <p className="mt-2 mb=2" style={{ textAlign: 'center' }}>
                     These tickets are similar so all fields will be set
                     automatically. Confirm the merge below and you’re all set!
                 </p>
@@ -103,8 +104,8 @@ export default function BuildFinalTicket({
                         updateFinalTicket(
                             finalTicket.set(
                                 'customer',
-                                fromJS({id: customerId})
-                            )
+                                fromJS({ id: customerId }),
+                            ),
                         )
                     }
                 />
@@ -157,8 +158,8 @@ export default function BuildFinalTicket({
                         updateFinalTicket(
                             finalTicket.set(
                                 'assignee_user',
-                                fromJS({id: assigneeUserId})
-                            )
+                                fromJS({ id: assigneeUserId }),
+                            ),
                         )
                     }
                 />

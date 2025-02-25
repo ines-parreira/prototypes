@@ -10,7 +10,7 @@ import WhatsAppMessageTemplateNavigator from './WhatsAppMessageTemplateNavigator
 import css from './WhatsAppTemplateReplyArea.less'
 
 export default function WhatsAppMessageTemplateReplyArea() {
-    const {isTemplateListVisible, selectedTemplate, cleanupEditorState} =
+    const { isTemplateListVisible, selectedTemplate, cleanupEditorState } =
         useWhatsAppEditor()
 
     useEffectOnce(() => {

@@ -1,17 +1,16 @@
-import {render, fireEvent} from '@testing-library/react'
-
 import React from 'react'
 
+import { fireEvent, render } from '@testing-library/react'
+
 import {
-    NavBarContextType,
     NavBarContext,
+    NavBarContextType,
     NavBarDisplayMode,
 } from 'common/navigation/hooks/useNavBar/context'
-import {useNavBar} from 'common/navigation/hooks/useNavBar/useNavBar'
+import { useNavBar } from 'common/navigation/hooks/useNavBar/useNavBar'
+import { Panels } from 'core/layout/panels'
 
-import {Panels} from 'core/layout/panels'
-
-import {CollapsibleNavbarContainer} from '../CollapsibleNavbarContainer'
+import { CollapsibleNavbarContainer } from '../CollapsibleNavbarContainer'
 
 jest.mock('common/navigation/hooks/useNavBar/useNavBar')
 const mockUseNavBar = useNavBar as jest.MockedFunction<typeof useNavBar>
@@ -37,7 +36,7 @@ describe('CollapsibleNavbarContainer', () => {
                 <Panels size={100}>
                     <CollapsibleNavbarContainer {...defaultProps} />
                 </Panels>
-            </NavBarContext.Provider>
+            </NavBarContext.Provider>,
         )
 
     it('calls appropriate handlers on overlay mouse enter', () => {
@@ -49,7 +48,7 @@ describe('CollapsibleNavbarContainer', () => {
             onOverlayHover: mockOnOverlayHover,
         })
 
-        const {container} = renderWithContext()
+        const { container } = renderWithContext()
         const overlay = container.querySelector('[data-name="navbar-overlay"]')!
 
         fireEvent.mouseEnter(overlay)
@@ -66,9 +65,9 @@ describe('CollapsibleNavbarContainer', () => {
             onNavHover: mockOnNavHover,
         })
 
-        const {container} = renderWithContext()
+        const { container } = renderWithContext()
         const collapsible = container.querySelector(
-            '[data-name="navbar-collapsible-container"]'
+            '[data-name="navbar-collapsible-container"]',
         )!
 
         fireEvent.mouseEnter(collapsible)

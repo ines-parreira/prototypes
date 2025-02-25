@@ -1,15 +1,16 @@
+import React, { useEffect, useMemo, useState } from 'react'
+
 import classnames from 'classnames'
-import {fromJS} from 'immutable'
-import React, {useEffect, useMemo, useState} from 'react'
+import { fromJS } from 'immutable'
 import isURL from 'validator/lib/isURL'
 
-import {MacroActionName} from 'models/macroAction/types'
+import { MacroActionName } from 'models/macroAction/types'
 import InputField from 'pages/common/forms/input/InputField'
 import MultiSelectField from 'pages/common/forms/MultiSelectField'
 import ResponseAction from 'pages/tickets/common/macros/components/actions/ResponseAction'
-import {AutoReplyReturnSettings} from 'state/rules/types'
+import { AutoReplyReturnSettings } from 'state/rules/types'
 
-import {ManagedRuleDetailProps} from './ManagedRuleEditor'
+import { ManagedRuleDetailProps } from './ManagedRuleEditor'
 
 import css from './ManagedRuleEditor.less'
 
@@ -19,17 +20,19 @@ export const AutoReplyReturnEditor = ({
 }: ManagedRuleDetailProps<AutoReplyReturnSettings>) => {
     const [settingsFields, setSettingsFields] = useState<
         Omit<typeof settings, 'slug'>
-    >({...settings, return_portal_url: settings.return_portal_url ?? ''})
+    >({ ...settings, return_portal_url: settings.return_portal_url ?? '' })
 
     const setSettingsField = <Key extends keyof typeof settingsFields>(
         key: Key,
-        value: (typeof settings)[Key]
-    ) => setSettingsFields((prev) => ({...prev, [key]: value}))
+        value: (typeof settings)[Key],
+    ) => setSettingsFields((prev) => ({ ...prev, [key]: value }))
 
     const returnPortalUrlError = useMemo(() => {
         if (
             !settingsFields.return_portal_url ||
-            !isURL(settingsFields.return_portal_url, {require_protocol: false})
+            !isURL(settingsFields.return_portal_url, {
+                require_protocol: false,
+            })
         ) {
             return 'Enter a valid URL.'
         } else if (
@@ -45,7 +48,7 @@ export const AutoReplyReturnEditor = ({
 
     const hasInvalidField = !!returnPortalUrlError
     useEffect(() => {
-        onChange()?.({...settings, ...settingsFields}, hasInvalidField)
+        onChange()?.({ ...settings, ...settingsFields }, hasInvalidField)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [settingsFields, hasInvalidField])
 
@@ -68,7 +71,7 @@ export const AutoReplyReturnEditor = ({
                         onChange={(return_portal_url) =>
                             setSettingsField(
                                 'return_portal_url',
-                                return_portal_url
+                                return_portal_url,
                             )
                         }
                         isRequired
@@ -125,11 +128,11 @@ export const AutoReplyReturnEditor = ({
                         updateActionArgs={(index, args) => {
                             setSettingsField(
                                 'signature_html',
-                                args.get('body_html')
+                                args.get('body_html'),
                             )
                             setSettingsField(
                                 'signature_text',
-                                args.get('body_text')
+                                args.get('body_text'),
                             )
                         }}
                         ignoredVariables={['shopify']}

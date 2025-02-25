@@ -1,14 +1,15 @@
 import React from 'react'
 
-import {getIconFromType} from 'state/integrations/helpers'
+import { getIconFromType } from 'state/integrations/helpers'
 
-import {useStoreIntegrationByShopName} from '../../hooks/useStoreIntegrationByShopName'
+import { useStoreIntegrationByShopName } from '../../hooks/useStoreIntegrationByShopName'
+
 import css from './StoreName.less'
 
 export type StoreNameType = {
     name: string | null
 }
-const StoreName = ({name}: StoreNameType) => {
+const StoreName = ({ name }: StoreNameType) => {
     const storeIntegration = useStoreIntegrationByShopName(name ?? '')
 
     if (!name || !storeIntegration) {

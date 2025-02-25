@@ -1,10 +1,10 @@
-import {Macro, MacroAction} from '@gorgias/api-queries'
 import _forEach from 'lodash/forEach'
 
-import {MacroActionName} from '../../models/macroAction/types'
-import {getActionTemplate} from '../../utils'
+import { Macro, MacroAction } from '@gorgias/api-queries'
 
-import {MacroApiError} from './types'
+import { MacroActionName } from '../../models/macroAction/types'
+import { getActionTemplate } from '../../utils'
+import { MacroApiError } from './types'
 
 export function generateDefaultAction(actionType: MacroActionName) {
     const actionTemplate = getActionTemplate(actionType)
@@ -23,7 +23,7 @@ export function generateDefaultAction(actionType: MacroActionName) {
 
     _forEach(
         (actionTemplate.arguments as {
-            [key: string]: {default: Maybe<any>; type: string}
+            [key: string]: { default: Maybe<any>; type: string }
         }) || {},
         (arg, key) => {
             let defaultValue = arg.default
@@ -54,7 +54,7 @@ export function generateDefaultAction(actionType: MacroActionName) {
                     [key]: defaultValue,
                 },
             }
-        }
+        },
     )
 
     return ret
@@ -71,11 +71,11 @@ export function getDefaultMacro() {
 export function getErrorReason({
     response: {
         data: {
-            error: {data},
+            error: { data },
         },
     },
 }: MacroApiError) {
-    const {actions, name = []} = data || {}
+    const { actions, name = [] } = data || {}
 
     return [
         ...Object.values(actions || {}).reduce<string[]>(
@@ -85,13 +85,13 @@ export function getErrorReason({
                         errors.push(
                             ...(typeof reason === 'string'
                                 ? [reason]
-                                : Object.values(reason))
+                                : Object.values(reason)),
                         )
                     })
                 })
                 return errors
             },
-            []
+            [],
         ),
         ...name,
     ].join(', ')

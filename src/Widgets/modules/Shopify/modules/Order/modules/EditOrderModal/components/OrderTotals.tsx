@@ -1,7 +1,8 @@
-import classnames from 'classnames'
-import {Map} from 'immutable'
 import React from 'react'
-import {FormGroup, FormText} from 'reactstrap'
+
+import classnames from 'classnames'
+import { Map } from 'immutable'
+import { FormGroup, FormText } from 'reactstrap'
 
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 
@@ -47,7 +48,7 @@ export function OrderTotals({
 
             <dt className="col-7 mb-2">Total</dt>
             <dd className="col-5 mb-2">
-                <strong className={classnames({'text-muted': loading})}>
+                <strong className={classnames({ 'text-muted': loading })}>
                     <MoneyAmount
                         renderIfZero
                         amount={calculatedEditOrder.get('current_total_price')}
@@ -86,14 +87,14 @@ export function OrderTotals({
 
             <dd className="col-5 mb-2">
                 <FormGroup check className="mb-3">
-                    <strong className={classnames({'text-muted': loading})}>
+                    <strong className={classnames({ 'text-muted': loading })}>
                         <MoneyAmount
                             renderIfZero
                             negative={
                                 calculatedEditOrder.get('amount_to_collect') < 0
                             }
                             amount={calculatedEditOrder.get(
-                                'amount_to_collect'
+                                'amount_to_collect',
                             )}
                             currencyCode={currencyCode}
                         />

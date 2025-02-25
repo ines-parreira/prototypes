@@ -1,4 +1,3 @@
-import classnames from 'classnames'
 import React, {
     createContext,
     HTMLAttributes,
@@ -7,11 +6,13 @@ import React, {
     useMemo,
 } from 'react'
 
+import classnames from 'classnames'
+
 import {
     GroupContext,
     GroupPositionContext,
 } from 'pages/common/components/layout/Group'
-import {InputGroupContext} from 'pages/common/forms/input/InputGroup'
+import { InputGroupContext } from 'pages/common/forms/input/InputGroup'
 
 import css from './BaseButton.less'
 
@@ -58,9 +59,9 @@ const BaseButton = ({
         {
             [css.isDisabled]: context?.isDisabled || isDisabled || isLoading,
             [css.isAuxiliaryButton]: isInsideInputGroup,
-        }
+        },
     )
-    const contextValue = useMemo(() => ({size}), [size])
+    const contextValue = useMemo(() => ({ size }), [size])
 
     return (
         <BaseButtonContext.Provider value={contextValue}>

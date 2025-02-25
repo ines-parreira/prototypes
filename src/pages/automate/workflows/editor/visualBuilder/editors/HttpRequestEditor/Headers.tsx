@@ -1,10 +1,9 @@
 import React from 'react'
 
-import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
-import {HttpRequestNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
+import { HttpRequestNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
-
 import Caption from 'pages/common/forms/Caption/Caption'
 import TextInput from 'pages/common/forms/input/TextInput'
 
@@ -17,7 +16,7 @@ type Props = {
     variables?: WorkflowVariableList
     onChange: (
         index: number,
-        header: HttpRequestNodeType['data']['headers'][number]
+        header: HttpRequestNodeType['data']['headers'][number],
     ) => void
     onDelete: (index: number) => void
     onAdd: () => void
@@ -62,7 +61,7 @@ const Headers = ({
                         className={css.textInput}
                         placeholder="Key"
                         onChange={(name) => {
-                            onChange(index, {name, value: header.value})
+                            onChange(index, { name, value: header.value })
                         }}
                         hasError={!!errors?.[index]?.name}
                         onBlur={() => {
@@ -75,7 +74,7 @@ const Headers = ({
                         isDisabled={isDisabled}
                         value={header.value}
                         onChange={(value) => {
-                            onChange(index, {name: header.name, value})
+                            onChange(index, { name: header.name, value })
                         }}
                         variables={variables}
                         placeholder="Value"

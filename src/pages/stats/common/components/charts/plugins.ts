@@ -1,6 +1,7 @@
+import { Chart, Plugin, Tick } from 'chart.js'
+import moment, { Moment } from 'moment'
+
 import colorTokens from '@gorgias/design-tokens/dist/tokens/colors.json'
-import {Chart, Plugin, Tick} from 'chart.js'
-import moment, {Moment} from 'moment'
 
 export type highlightOptions = {
     timeRanges: [[Moment, Moment]]
@@ -17,7 +18,7 @@ export const highlightTimeRanges: Plugin = {
             timeRanges,
             defaultColor = colorTokens['📺 Classic'].Neutral.Grey_2.value,
             highlightColor = colorTokens['📺 Classic'].Neutral.Grey_0.value,
-        }: highlightOptions
+        }: highlightOptions,
     ) => {
         if (!chart.canvas || !timeRanges) {
             return
@@ -27,20 +28,20 @@ export const highlightTimeRanges: Plugin = {
 
         timeRanges.map((range) => {
             const ctx = chart.canvas.getContext(
-                '2d'
+                '2d',
             ) as CanvasRenderingContext2D
             ctx.save()
             const ticksValues = xScale.ticks
                 .map((tick: Tick) =>
-                    parseInt(xScale.getLabelForValue(tick.value))
+                    parseInt(xScale.getLabelForValue(tick.value)),
                 )
                 .map((value: number) => moment.unix(value).utc().format('h a'))
 
             const leftIndex = ticksValues.findIndex(
-                (item: string) => item === range[0].format('h a')
+                (item: string) => item === range[0].format('h a'),
             )
             const rightIndex = ticksValues.findIndex(
-                (item: string) => item === range[1].format('h a')
+                (item: string) => item === range[1].format('h a'),
             )
 
             if (leftIndex === -1 || rightIndex === -1) {
@@ -49,11 +50,11 @@ export const highlightTimeRanges: Plugin = {
 
             const left = xScale.getPixelForValue(
                 xScale.ticks[leftIndex].value,
-                leftIndex
+                leftIndex,
             )
             const right = xScale.getPixelForValue(
                 xScale.ticks[rightIndex].value,
-                rightIndex
+                rightIndex,
             )
             const top = yScale.top
             const bottom = yScale.bottom

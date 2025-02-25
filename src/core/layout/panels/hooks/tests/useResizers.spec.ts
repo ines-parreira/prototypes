@@ -1,4 +1,4 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
 import useResizers from '../useResizers'
 
@@ -29,8 +29,8 @@ describe('usePanelGroup', () => {
     })
 
     it('should create a resizer for each eligible panel', () => {
-        const {result} = renderHook(() =>
-            useResizers(createResizer, configs, order)
+        const { result } = renderHook(() =>
+            useResizers(createResizer, configs, order),
         )
         expect(result.current).toEqual({
             panel2: expect.any(Function),

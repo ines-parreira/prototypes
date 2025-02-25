@@ -1,18 +1,17 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
-
 import LinkAlert, {
     Props as LinkAlertProps,
 } from 'pages/common/components/Alert/LinkAlert'
-import {tryLocalStorage} from 'services/common/utils'
-import {getCurrentUser} from 'state/currentUser/selectors'
+import { tryLocalStorage } from 'services/common/utils'
+import { getCurrentUser } from 'state/currentUser/selectors'
 
 type Props = {
     storageKey: string
 } & LinkAlertProps
 
-const Tip: React.FC<Props> = ({storageKey, children, ...linkAlertProps}) => {
+const Tip: React.FC<Props> = ({ storageKey, children, ...linkAlertProps }) => {
     const currentUser = useAppSelector(getCurrentUser)
     const currentUserId = currentUser.get('id') as number
     const tipStorageKey = `user:${currentUserId}:tip:${storageKey}`

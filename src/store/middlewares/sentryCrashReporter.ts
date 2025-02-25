@@ -1,14 +1,14 @@
 import * as Sentry from '@sentry/react'
-import {AxiosError} from 'axios'
-import {Middleware} from 'redux'
+import { AxiosError } from 'axios'
+import { Middleware } from 'redux'
 
-import {reportError} from 'utils/errors'
+import { reportError } from 'utils/errors'
 
 /**
  * Middleware sending redux errors to Sentry
  */
 const crashReporter: Middleware =
-    () => (next) => (action: {type: string; error?: AxiosError}) => {
+    () => (next) => (action: { type: string; error?: AxiosError }) => {
         try {
             if (action.type) {
                 Sentry.addBreadcrumb({

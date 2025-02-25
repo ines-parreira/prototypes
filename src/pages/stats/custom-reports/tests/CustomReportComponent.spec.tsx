@@ -1,16 +1,17 @@
-import {render, screen} from '@testing-library/react'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {CustomReportComponent} from 'pages/stats/custom-reports/CustomReportComponent'
+import { render, screen } from '@testing-library/react'
+import { mockFlags } from 'jest-launchdarkly-mock'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { CustomReportComponent } from 'pages/stats/custom-reports/CustomReportComponent'
 import {
     CustomReportSchema,
     DashboardChartProps,
     ReportConfig,
 } from 'pages/stats/custom-reports/types'
-import {useReportChartRestrictions} from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
-import {assumeMock} from 'utils/testing'
+import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('pages/stats/report-chart-restrictions/useReportChartRestrictions')
 const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
@@ -77,15 +78,15 @@ describe('<CustomReportComponent />', () => {
                 config={config}
                 dashboard={dashboard}
                 chart={chart}
-            />
+            />,
         )
 
         expect(screen.getByText(content)).toBeInTheDocument()
         expect(screen.queryByText(chart)).toBeInTheDocument()
         expect(screen.queryByText(dashboard.id)).toBeInTheDocument()
         expect(chartComponentMock).toHaveBeenCalledWith(
-            {chartId: chart, dashboard},
-            {}
+            { chartId: chart, dashboard },
+            {},
         )
     })
 })

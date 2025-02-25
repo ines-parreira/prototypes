@@ -1,19 +1,19 @@
-import {FilterKey, StaticFilter} from 'models/stat/types'
-import {AUTO_QA_FILTER_KEYS} from 'pages/stats/common/filters/constants'
+import { FilterKey, StaticFilter } from 'models/stat/types'
+import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
 import {
     ChartType,
     DataExportFormat,
     ReportConfig,
 } from 'pages/stats/custom-reports/types'
-import {AllUsedTagsTableChart} from 'pages/stats/ticket-insights/tags/AllUsedTagsTableChart'
+import { AllUsedTagsTableChart } from 'pages/stats/ticket-insights/tags/AllUsedTagsTableChart'
 import {
     TicketInsightsTagsMetric,
     TicketInsightsTagsMetricConfig,
 } from 'pages/stats/ticket-insights/tags/TagsMetricConfig'
-import {TagsTrendChart} from 'pages/stats/ticket-insights/tags/TagsTrendChart'
-import {TopUsedTagsChart} from 'pages/stats/ticket-insights/tags/TopUsedTagsChart'
-import {STATS_ROUTES} from 'routes/constants'
-import {fetchTagsReportData} from 'services/reporting/tagsReportingService'
+import { TagsTrendChart } from 'pages/stats/ticket-insights/tags/TagsTrendChart'
+import { TopUsedTagsChart } from 'pages/stats/ticket-insights/tags/TopUsedTagsChart'
+import { STATS_ROUTES } from 'routes/constants'
+import { fetchTagsReportData } from 'services/reporting/tagsReportingService'
 
 export const TAGS_OPTIONAL_FILTERS = [
     FilterKey.Agents,

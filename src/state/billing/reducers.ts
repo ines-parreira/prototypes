@@ -1,15 +1,14 @@
-import {Map, fromJS, List} from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 
-import {GorgiasAction} from '../types'
-
+import { GorgiasAction } from '../types'
 import * as constants from './constants'
-import {BillingImmutableState} from './types'
+import { BillingImmutableState } from './types'
 
 export const initialState: BillingImmutableState = fromJS({})
 
 export default function reducer(
     state: BillingImmutableState = initialState,
-    action: GorgiasAction
+    action: GorgiasAction,
 ): BillingImmutableState {
     switch (action.type) {
         case constants.UPDATE_INVOICE_IN_LIST:

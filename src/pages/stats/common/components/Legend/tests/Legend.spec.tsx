@@ -1,6 +1,8 @@
+import React, { ComponentProps } from 'react'
+
+import { render } from '@testing-library/react'
+
 import colorTokens from '@gorgias/design-tokens/dist/tokens/colors.json'
-import {render} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
 
 import Legend from '../Legend'
 
@@ -31,7 +33,7 @@ describe('Legend', () => {
     }
 
     it('should render a legend', () => {
-        const {container} = render(<Legend {...minProps} />)
+        const { container } = render(<Legend {...minProps} />)
 
         expect(container.firstChild).toMatchSnapshot()
     })

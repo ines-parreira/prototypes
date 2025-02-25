@@ -1,1 +1,1 @@
-export {default as useSplitViewPage} from './useSplitViewPage'
+export { default as useSplitViewPage } from './useSplitViewPage'

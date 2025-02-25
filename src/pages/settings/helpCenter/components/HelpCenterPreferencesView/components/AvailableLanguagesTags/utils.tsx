@@ -1,13 +1,13 @@
 import React from 'react'
 
-import {BadgeItemProps} from 'pages/common/components/BadgetItem'
+import { BadgeItemProps } from 'pages/common/components/BadgetItem'
 
-import {Locale} from '../../../../../../../models/helpCenter/types'
-import {FlagLanguageItem} from '../../../../../../common/components/LanguageBulletList'
+import { Locale } from '../../../../../../../models/helpCenter/types'
+import { FlagLanguageItem } from '../../../../../../common/components/LanguageBulletList'
 
 export function transformToSelectedLocale(
     locale: Locale,
-    labelForNonRemovable: string | null
+    labelForNonRemovable: string | null,
 ): BadgeItemProps {
     return {
         id: locale.code,

@@ -1,8 +1,9 @@
-import {render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {FACEBOOK_INTEGRATION_TYPE} from 'constants/integration'
+import { render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+
+import { FACEBOOK_INTEGRATION_TYPE } from 'constants/integration'
 
 import FacebookIntegrationCustomerChat from '../FacebookIntegrationCustomerChat'
 
@@ -19,7 +20,7 @@ describe('<FacebookIntegrationCustomerChat />', () => {
                         script_url: 'config.gorgias.io/foo/chat/bar',
                     },
                 })}
-            />
+            />,
         )
 
         expect(screen.getByText(/We are no longer supporting/))

@@ -1,27 +1,28 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {render} from '@testing-library/react'
-import {fromJS, Map} from 'immutable'
-import type {ReactNode} from 'react'
+import type { ReactNode } from 'react'
 import React from 'react'
-import {DndProvider} from 'react-dnd'
-import {HTML5Backend} from 'react-dnd-html5-backend'
-import {Provider} from 'react-redux'
-import {StaticRouter} from 'react-router-dom'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { render } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+import { Provider } from 'react-redux'
+import { StaticRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
-import {NavBarProvider} from 'common/navigation/components/NavBarProvider'
-import {ThemeProvider} from 'core/theme'
-import {account} from 'fixtures/account'
-import {billingState} from 'fixtures/billing'
-import {integrationsState, shopifyIntegration} from 'fixtures/integrations'
-import {user} from 'fixtures/users'
-import {IntegrationType} from 'models/integration/types'
-import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
-import {useGetOnboardingStatusMap} from 'pages/convert/channelConnections/hooks/useGetOnboardingStatusMap'
+import { NavBarProvider } from 'common/navigation/components/NavBarProvider'
+import { ThemeProvider } from 'core/theme'
+import { account } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
+import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
+import { user } from 'fixtures/users'
+import { IntegrationType } from 'models/integration/types'
+import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
+import { useGetOnboardingStatusMap } from 'pages/convert/channelConnections/hooks/useGetOnboardingStatusMap'
 import useContactFormFlag from 'pages/convert/common/hooks/useContactFormFlag'
-import {RootState} from 'state/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { RootState } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 import ConvertNavbar from '../ConvertNavbar'
 
@@ -42,7 +43,7 @@ jest.mock(
         ({
             ...jest.requireActual('@gorgias/merchant-ui-kit'),
             Skeleton: () => <div data-testid={MOCK_SKELETON_TEST_ID} />,
-        }) as typeof import('@gorgias/merchant-ui-kit')
+        }) as typeof import('@gorgias/merchant-ui-kit'),
 )
 
 jest.mock('pages/convert/common/hooks/useContactFormFlag')
@@ -57,7 +58,7 @@ const mockStore = configureMockStore()
 
 const queryClient = mockQueryClient()
 
-const wrapper = ({children}: {children: ReactNode}) => (
+const wrapper = ({ children }: { children: ReactNode }) => (
     <StaticRouter location="/app">
         <NavBarProvider>{children}</NavBarProvider>
     </StaticRouter>
@@ -68,7 +69,7 @@ describe('<ConvertNavbar />', () => {
         currentUser: fromJS(user),
         currentAccount: fromJS(account),
         billing: fromJS(billingState),
-        integrations: fromJS({integrations: []}),
+        integrations: fromJS({ integrations: [] }),
     }
     const integration = {
         id: 99,
@@ -84,12 +85,12 @@ describe('<ConvertNavbar />', () => {
     }
     const integrations = (fromJS(integrationsState) as Map<any, any>).mergeIn(
         ['integrations'],
-        fromJS([integration, shopifyIntegration])
+        fromJS([integration, shopifyIntegration]),
     )
 
     beforeEach(() => {
         useGetOnboardingStatusMapSpy.mockReturnValue({
-            onboardingMap: {'101': true},
+            onboardingMap: { '101': true },
             isLoading: false,
             isError: false,
         })
@@ -98,20 +99,20 @@ describe('<ConvertNavbar />', () => {
 
     describe('render()', () => {
         it('should render overview tab when ff is enabled', () => {
-            const {queryByText} = render(
+            const { queryByText } = render(
                 <Provider store={mockStore(defaultState)}>
                     <ThemeProvider>
                         <ConvertNavbar />
                     </ThemeProvider>
                 </Provider>,
-                {wrapper}
+                { wrapper },
             )
 
             expect(queryByText('Overview')).toBeInTheDocument()
         })
 
         it('should render empty convert navbar when no integrations', () => {
-            const {queryByText} = render(
+            const { queryByText } = render(
                 <Provider store={mockStore(defaultState)}>
                     <QueryClientProvider client={queryClient}>
                         <DndProvider backend={HTML5Backend}>
@@ -121,7 +122,7 @@ describe('<ConvertNavbar />', () => {
                         </DndProvider>
                     </QueryClientProvider>
                 </Provider>,
-                {wrapper}
+                { wrapper },
             )
 
             expect(queryByText('forum')).not.toBeInTheDocument()
@@ -132,7 +133,7 @@ describe('<ConvertNavbar />', () => {
         })
 
         it('should render convert navbar with integrations', () => {
-            const {getAllByText, getByText} = render(
+            const { getAllByText, getByText } = render(
                 <Provider
                     store={mockStore({
                         ...defaultState,
@@ -147,7 +148,7 @@ describe('<ConvertNavbar />', () => {
                         </QueryClientProvider>
                     </DndProvider>
                 </Provider>,
-                {wrapper}
+                { wrapper },
             )
 
             expect(getAllByText('forum').length).toBe(2)
@@ -166,7 +167,7 @@ describe('<ConvertNavbar />', () => {
 
         it('should render settings when ff is enabled', () => {
             mockUseContactFormFlag.mockReturnValue(true)
-            const {getAllByText} = render(
+            const { getAllByText } = render(
                 <Provider
                     store={mockStore({
                         ...defaultState,
@@ -180,7 +181,7 @@ describe('<ConvertNavbar />', () => {
                         </QueryClientProvider>
                     </DndProvider>
                 </Provider>,
-                {wrapper}
+                { wrapper },
             )
             expect(getAllByText('Settings').length).toBe(1)
         })
@@ -188,7 +189,7 @@ describe('<ConvertNavbar />', () => {
         it('should render convert navbar with integrations without paywalls', () => {
             isConvertSubscriberMock.mockReturnValue(true)
 
-            const {getAllByText, getByText, queryByText} = render(
+            const { getAllByText, getByText, queryByText } = render(
                 <Provider
                     store={mockStore({
                         ...defaultState,
@@ -203,7 +204,7 @@ describe('<ConvertNavbar />', () => {
                         </DndProvider>
                     </QueryClientProvider>
                 </Provider>,
-                {wrapper}
+                { wrapper },
             )
 
             expect(getAllByText('forum').length).toBe(2)
@@ -234,10 +235,10 @@ describe('<ConvertNavbar />', () => {
                             shop_type: IntegrationType.BigCommerce,
                         },
                     },
-                ]
+                ],
             )
 
-            const {getAllByText, queryAllByText} = render(
+            const { getAllByText, queryAllByText } = render(
                 <Provider
                     store={mockStore({
                         ...defaultState,
@@ -252,7 +253,7 @@ describe('<ConvertNavbar />', () => {
                         </DndProvider>
                     </QueryClientProvider>
                 </Provider>,
-                {wrapper}
+                { wrapper },
             )
 
             expect(queryAllByText('Set up').length).toBe(1)
@@ -271,7 +272,7 @@ describe('<ConvertNavbar />', () => {
                 isError: false,
             })
 
-            const {queryByText, queryAllByTestId} = render(
+            const { queryByText, queryAllByTestId } = render(
                 <Provider store={mockStore(defaultState)}>
                     <QueryClientProvider client={queryClient}>
                         <DndProvider backend={HTML5Backend}>
@@ -281,7 +282,7 @@ describe('<ConvertNavbar />', () => {
                         </DndProvider>
                     </QueryClientProvider>
                 </Provider>,
-                {wrapper}
+                { wrapper },
             )
 
             expect(queryByText('forum')).not.toBeInTheDocument()

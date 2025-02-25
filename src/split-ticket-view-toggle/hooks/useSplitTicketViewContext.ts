@@ -1,8 +1,8 @@
-import {useState} from 'react'
+import { useState } from 'react'
 
 import useLocalStorage from 'hooks/useLocalStorage'
 
-import {TicketIds} from '../Context'
+import { TicketIds } from '../Context'
 
 export default function useSplitTicketViewContext() {
     const [prevNextTicketIds, setPrevNextTicketIds] = useState<TicketIds>({
@@ -13,7 +13,7 @@ export default function useSplitTicketViewContext() {
         useState(false)
     const [isEnabled, setIsEnabled] = useLocalStorage(
         'split-ticket-view-enabled',
-        true
+        true,
     )
 
     return {

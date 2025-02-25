@@ -1,12 +1,14 @@
+import React, { FC, ReactNode, Ref } from 'react'
+
 import classnames from 'classnames'
-import {Map} from 'immutable'
-import React, {FC, ReactNode, Ref} from 'react'
+import { Map } from 'immutable'
 
-import {GorgiasChatAvatarSettings} from 'models/integration/types'
+import { GorgiasChatAvatarSettings } from 'models/integration/types'
 
-import AgentMessages, {AgentMessage} from './AgentMessages'
-import css from './ChatIntegrationPreview.less'
+import AgentMessages, { AgentMessage } from './AgentMessages'
 import CustomerInitialMessages from './CustomerInitialMessages'
+
+import css from './ChatIntegrationPreview.less'
 
 type Props = {
     className?: string

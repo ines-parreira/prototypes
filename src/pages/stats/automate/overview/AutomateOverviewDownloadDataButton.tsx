@@ -1,15 +1,14 @@
 import React from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {DownloadDataButton} from 'pages/stats/support-performance/components/DownloadDataButton'
-
-import {useAutomateOverviewReportData} from 'services/reporting/automateOverviewReportingService'
-import {saveZippedFiles} from 'utils/file'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { DownloadDataButton } from 'pages/stats/support-performance/components/DownloadDataButton'
+import { useAutomateOverviewReportData } from 'services/reporting/automateOverviewReportingService'
+import { saveZippedFiles } from 'utils/file'
 
 const DOWNLOAD_AUTOMATE_DATA_BUTTON_TITLE = 'Download data'
 
 export const AutomateOverviewDownloadDataButton = () => {
-    const {files, fileName, isLoading} = useAutomateOverviewReportData()
+    const { files, fileName, isLoading } = useAutomateOverviewReportData()
 
     return (
         <DownloadDataButton

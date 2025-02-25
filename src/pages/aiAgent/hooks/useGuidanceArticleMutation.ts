@@ -1,17 +1,18 @@
-import {useQueryClient} from '@tanstack/react-query'
-import {useCallback} from 'react'
+import { useCallback } from 'react'
 
-import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
+import { useQueryClient } from '@tanstack/react-query'
+
+import { AI_AGENT_SENTRY_TEAM } from 'common/const/sentryTeamNames'
 import {
-    useCreateArticle,
     helpCenterKeys,
+    useCreateArticle,
     useDeleteArticle,
     useUpdateArticleTranslation,
 } from 'models/helpCenter/queries'
-import {LocaleCode} from 'models/helpCenter/types'
-import {reportError} from 'utils/errors'
+import { LocaleCode } from 'models/helpCenter/types'
+import { reportError } from 'utils/errors'
 
-import {CreateGuidanceArticle, UpdateGuidanceArticle} from '../types'
+import { CreateGuidanceArticle, UpdateGuidanceArticle } from '../types'
 import {
     mapGuidanceToArticleApi,
     mapUpdateGuidanceArticleToArticleApi,
@@ -63,12 +64,12 @@ export const useGuidanceArticleMutation = ({
             try {
                 await createArticleMutateAsync([
                     undefined,
-                    {help_center_id: guidanceHelpCenterId},
+                    { help_center_id: guidanceHelpCenterId },
                     payload,
                 ])
             } catch (error) {
                 reportError(error, {
-                    tags: {team: AI_AGENT_SENTRY_TEAM},
+                    tags: { team: AI_AGENT_SENTRY_TEAM },
                     extra: {
                         context: 'Error during guidance article creation',
                     },
@@ -77,16 +78,16 @@ export const useGuidanceArticleMutation = ({
                 throw error
             }
         },
-        [createArticleMutateAsync, guidanceHelpCenterId]
+        [createArticleMutateAsync, guidanceHelpCenterId],
     )
 
     const updateGuidanceArticle = useCallback(
         async (
             updateGuidanceArticle: UpdateGuidanceArticle,
-            {articleId, locale}: {articleId: number; locale: LocaleCode}
+            { articleId, locale }: { articleId: number; locale: LocaleCode },
         ) => {
             const payload = mapUpdateGuidanceArticleToArticleApi(
-                updateGuidanceArticle
+                updateGuidanceArticle,
             )
 
             try {
@@ -101,7 +102,7 @@ export const useGuidanceArticleMutation = ({
                 ])
             } catch (error) {
                 reportError(error, {
-                    tags: {team: AI_AGENT_SENTRY_TEAM},
+                    tags: { team: AI_AGENT_SENTRY_TEAM },
                     extra: {
                         context: 'Error during guidance article updating',
                     },
@@ -110,7 +111,7 @@ export const useGuidanceArticleMutation = ({
                 throw error
             }
         },
-        [guidanceHelpCenterId, updateArticleTranslationAsync]
+        [guidanceHelpCenterId, updateArticleTranslationAsync],
     )
 
     const deleteGuidanceArticle = useCallback(
@@ -118,11 +119,11 @@ export const useGuidanceArticleMutation = ({
             try {
                 await deleteArticleMutateAsync([
                     undefined,
-                    {id: articleId, help_center_id: guidanceHelpCenterId},
+                    { id: articleId, help_center_id: guidanceHelpCenterId },
                 ])
             } catch (error) {
                 reportError(error, {
-                    tags: {team: AI_AGENT_SENTRY_TEAM},
+                    tags: { team: AI_AGENT_SENTRY_TEAM },
                     extra: {
                         context: 'Error during guidance article deletion',
                     },
@@ -131,7 +132,7 @@ export const useGuidanceArticleMutation = ({
                 throw error
             }
         },
-        [deleteArticleMutateAsync, guidanceHelpCenterId]
+        [deleteArticleMutateAsync, guidanceHelpCenterId],
     )
 
     return {

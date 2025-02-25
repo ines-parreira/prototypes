@@ -1,40 +1,40 @@
 /* eslint-disable @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access */
-import {Label} from '@gorgias/merchant-ui-kit'
-import {produce} from 'immer'
-import moment, {Moment} from 'moment-timezone'
+import React, { useMemo, useState } from 'react'
 
-import React, {useState, useMemo} from 'react'
+import { produce } from 'immer'
+import moment, { Moment } from 'moment-timezone'
 
-import {Caption} from 'gorgias-design-system/Input/Caption'
+import { Label } from '@gorgias/merchant-ui-kit'
+
+import { Caption } from 'gorgias-design-system/Input/Caption'
 import useAppSelector from 'hooks/useAppSelector'
-import {useModalManager} from 'hooks/useModalManager'
+import { useModalManager } from 'hooks/useModalManager'
 import useUpdateEffect from 'hooks/useUpdateEffect'
-
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-
 import CampaignCustomSchedule from 'pages/convert/campaigns//components/CampaignCustomSchedule'
 import CampaignScheduleSummary from 'pages/convert/campaigns/components/CampaignScheduleSummary'
-import {StatefulAccordion} from 'pages/convert/campaigns/components/StatefulAccordion'
-import {DURATION_VALUES} from 'pages/convert/campaigns/constants/labels'
-import {useCampaignDetailsContext} from 'pages/convert/campaigns/hooks/useCampaignDetailsContext'
-import {useCampaignFormContext} from 'pages/convert/campaigns/hooks/useCampaignFormContext'
-import {useStepState} from 'pages/convert/campaigns/hooks/useStepState'
+import { StatefulAccordion } from 'pages/convert/campaigns/components/StatefulAccordion'
+import { DURATION_VALUES } from 'pages/convert/campaigns/constants/labels'
+import { useCampaignDetailsContext } from 'pages/convert/campaigns/hooks/useCampaignDetailsContext'
+import { useCampaignFormContext } from 'pages/convert/campaigns/hooks/useCampaignFormContext'
+import { useStepState } from 'pages/convert/campaigns/hooks/useStepState'
 import {
-    ScheduleSchema,
     CustomScheduleSchema,
+    ScheduleSchema,
 } from 'pages/convert/campaigns/types/CampaignSchedule'
-import {CampaignStepsKeys} from 'pages/convert/campaigns/types/CampaignSteps'
+import { CampaignStepsKeys } from 'pages/convert/campaigns/types/CampaignSteps'
 import {
     CampaignScheduleModeEnum,
     CampaignScheduleRuleValueEnum,
 } from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 import ConvertSubscriptionModal from 'pages/convert/common/components/ConvertSubscriptionModal'
-import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
+import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
+
+import CampaignSchedulePicker from './CampaignSchedulePicker'
 
 import css from './CampaignPublishScheduleStep.less'
-import CampaignSchedulePicker from './CampaignSchedulePicker'
 
 const DEFAULT_TIMEZONE = 'UTC'
 // Note: In convert we store all dates in UTC format (without timezone info)
@@ -59,8 +59,8 @@ export const CampaignPublishScheduleStep = ({
     isConvertSubscriber = false,
     isLightCampaign = false,
 }: Props) => {
-    const {isEditMode} = useCampaignFormContext()
-    const {campaign, updateCampaign, triggers} = useCampaignDetailsContext()
+    const { isEditMode } = useCampaignFormContext()
+    const { campaign, updateCampaign, triggers } = useCampaignDetailsContext()
     const convertModal = useModalManager('ConvertSubscriber')
 
     const businessHoursSettings = useAppSelector(getBusinessHoursSettings)
@@ -92,7 +92,7 @@ export const CampaignPublishScheduleStep = ({
 
     const businessHourTrigger = useMemo(() => {
         const businessHourTrigger = Object.values(triggers).find(
-            (trigger) => trigger.type === CampaignTriggerType.BusinessHours
+            (trigger) => trigger.type === CampaignTriggerType.BusinessHours,
         )
         return businessHourTrigger
     }, [triggers])
@@ -140,12 +140,12 @@ export const CampaignPublishScheduleStep = ({
                     if (
                         scheduleInnerConfiguration.end_datetime &&
                         moment(
-                            scheduleInnerConfiguration.end_datetime
+                            scheduleInnerConfiguration.end_datetime,
                         ).isBefore(draft.start_datetime)
                     ) {
                         draft.end_datetime = null
                     }
-                })
+                }),
             )
         }
 

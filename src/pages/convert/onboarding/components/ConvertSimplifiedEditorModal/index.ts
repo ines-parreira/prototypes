@@ -1,1 +1,1 @@
-export {default} from './ConvertSimplifiedEditorModal'
+export { default } from './ConvertSimplifiedEditorModal'

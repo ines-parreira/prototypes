@@ -1,9 +1,9 @@
-import React, {useCallback, useState} from 'react'
+import React, { useCallback, useState } from 'react'
 
 import client from 'models/api/resources'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 
-import {ConfirmationModal} from '../helpCenter/components/ConfirmationModal'
+import { ConfirmationModal } from '../helpCenter/components/ConfirmationModal'
 
 type Props = {
     id: string
@@ -18,7 +18,7 @@ type Props = {
 }
 
 export const SsoToggleButton = (props: Props) => {
-    const {id, name, logo, value, loading, disabled, setValue} = props
+    const { id, name, logo, value, loading, disabled, setValue } = props
 
     const [ssoModalVisible, setSsoModalVisible] = useState(false)
     const [isLoadingUsers, setIsLoadingUsers] = useState(false)
@@ -45,7 +45,7 @@ export const SsoToggleButton = (props: Props) => {
             }
             return setValue(val)
         },
-        [loadUsers, setValue]
+        [loadUsers, setValue],
     )
 
     return (
@@ -61,7 +61,7 @@ export const SsoToggleButton = (props: Props) => {
                     alt={name + ' logo'}
                     src={logo}
                     className="ml-3 mr-2"
-                    style={{height: '1.4em'}}
+                    style={{ height: '1.4em' }}
                 />
                 <b>{name} SSO</b>
             </ToggleInput>

@@ -1,18 +1,19 @@
+import { CancelToken } from 'axios'
+import { isObject } from 'lodash'
+
 import {
     SearchVoiceCalls200DataItemHighlights,
     SearchVoiceCallsParams,
 } from '@gorgias/api-types'
-import {CancelToken} from 'axios'
-import {isObject} from 'lodash'
 
 import {
     ApiListResponse,
     ApiPaginationParams,
     OrderParams,
 } from 'models/api/types'
-import {Customer} from 'models/customer/types'
-import {Ticket} from 'models/ticket/types'
-import {VoiceCall} from 'models/voiceCall/types'
+import { Customer } from 'models/customer/types'
+import { Ticket } from 'models/ticket/types'
+import { VoiceCall } from 'models/voiceCall/types'
 
 export enum SearchType {
     Agent = 'agent',
@@ -86,7 +87,7 @@ export const isTicket = (
         | PickedTicketWithHighlights
         | PickedCustomer
         | PickedCustomerWithHighlights
-        | PicketVoiceCallWithHighlights
+        | PicketVoiceCallWithHighlights,
 ): item is PickedTicketWithHighlights => {
     return 'channel' in item
 }
@@ -95,7 +96,7 @@ export const isTicket = (
 // TODO: @anddon move this to the SDK
 
 export const isUserSearchResult = (
-    input: unknown
+    input: unknown,
 ): input is UserSearchResult => {
     return (
         isObject(input) &&
@@ -161,13 +162,13 @@ export const isCustomer = (
         | PickedTicketWithHighlights
         | PickedCustomer
         | PickedCustomerWithHighlights
-        | PicketVoiceCallWithHighlights
+        | PicketVoiceCallWithHighlights,
 ): item is PickedCustomerWithHighlights => {
     return 'email' in item
 }
 
 export type CustomerHighlights = {
-    channels?: {address?: string[]}
+    channels?: { address?: string[] }
     name?: string[]
     email?: string[]
     order_ids?: string[]

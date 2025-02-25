@@ -1,5 +1,6 @@
-import {SelectField} from '@gorgias/merchant-ui-kit'
-import React, {useState} from 'react'
+import React, { useState } from 'react'
+
+import { SelectField } from '@gorgias/merchant-ui-kit'
 
 import Accordion from 'pages/common/components/accordion/Accordion'
 import AccordionBody from 'pages/common/components/accordion/AccordionBody'
@@ -7,13 +8,14 @@ import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
 import AccordionItem from 'pages/common/components/accordion/AccordionItem'
 import SettingsSidebar from 'pages/settings/SettingsSidebar'
 
-import {supportContentDropdownOptions} from './constants'
-import css from './EmailDomainVerificationSupportContentSidebar.less'
+import { supportContentDropdownOptions } from './constants'
 import SupportContentLearnMore from './SupportContentLearnMore'
+
+import css from './EmailDomainVerificationSupportContentSidebar.less'
 
 export default function EmailDomainVerificationSupportContentSidebar() {
     const [selectedOption, setSelectedOption] = useState(
-        supportContentDropdownOptions[0]
+        supportContentDropdownOptions[0],
     )
 
     return (
@@ -24,7 +26,7 @@ export default function EmailDomainVerificationSupportContentSidebar() {
                         label="Domain Verification Guide"
                         options={supportContentDropdownOptions}
                         selectedOption={selectedOption}
-                        optionMapper={(option) => ({value: option.label})}
+                        optionMapper={(option) => ({ value: option.label })}
                         onChange={setSelectedOption}
                     />
                 </div>

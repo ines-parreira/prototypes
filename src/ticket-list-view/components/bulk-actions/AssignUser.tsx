@@ -1,13 +1,16 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import cn from 'classnames'
-import React, {useCallback, useRef, useState} from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 
-import {Item} from 'components/Dropdown'
+import cn from 'classnames'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { Item } from 'components/Dropdown'
 import IconButton from 'pages/common/components/button/IconButton'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 
-import css from './style.less'
 import UserAssigneeDropdownMenu from './UserAssigneeDropdownMenu'
+
+import css from './style.less'
 
 export default function AssignUser({
     isDisabled,
@@ -24,7 +27,7 @@ export default function AssignUser({
             onClick(user)
             setIsDropdownOpen(false)
         },
-        [onClick]
+        [onClick],
     )
 
     return (

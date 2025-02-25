@@ -1,24 +1,23 @@
-import {ContentState} from 'draft-js'
-import {fromJS, Map, List} from 'immutable'
+import { ContentState } from 'draft-js'
+import { fromJS, List, Map } from 'immutable'
 import _assign from 'lodash/assign'
 import _omit from 'lodash/omit'
 import _pick from 'lodash/pick'
 
 import {
-    TicketMessageSourceType,
     TicketChannel,
+    TicketMessageSourceType,
     TicketVia,
 } from 'business/types/ticket'
-import {DiscountCode} from 'models/discountCodes/types'
-
-import {MacroAction} from 'models/macroAction/types'
-import {AttachmentPosition} from 'pages/convert/campaigns/types/CampaignAttachment'
+import { DiscountCode } from 'models/discountCodes/types'
+import { MacroAction } from 'models/macroAction/types'
+import { AttachmentPosition } from 'pages/convert/campaigns/types/CampaignAttachment'
 import * as ticketTypes from 'state/ticket/constants'
-import {getSourceTypeOfResponse} from 'state/ticket/utils'
-import {GorgiasAction} from 'state/types'
-import {getChannelFromSourceType, isPublic} from 'tickets/common/utils'
+import { getSourceTypeOfResponse } from 'state/ticket/utils'
+import { GorgiasAction } from 'state/types'
+import { getChannelFromSourceType, isPublic } from 'tickets/common/utils'
 
-import {addEmailExtra} from './actions'
+import { addEmailExtra } from './actions'
 import * as types from './constants'
 import {
     addEmailExtraContent,
@@ -34,10 +33,10 @@ import {
     updateCache,
     updateNewMessageWithContentState,
 } from './responseUtils'
-import {getReceiversProperties} from './selectors'
+import { getReceiversProperties } from './selectors'
 import ticketReplyCache from './ticketReplyCache'
-import {NewMessage, NewMessageState, ReplyAreaState} from './types'
-import {getMentionIds} from './utils'
+import { NewMessage, NewMessageState, ReplyAreaState } from './types'
+import { getMentionIds } from './utils'
 
 const defaultSourceExtra = {
     include_thread: false,
@@ -45,7 +44,7 @@ const defaultSourceExtra = {
 
 export const makeNewMessage = (
     channel: TicketChannel,
-    sourceType: TicketMessageSourceType
+    sourceType: TicketMessageSourceType,
 ) => {
     return fromJS({
         via: 'helpdesk',
@@ -93,7 +92,7 @@ export const initialState: NewMessageState = fromJS({
     },
     newMessage: makeNewMessage(
         TicketChannel.Email,
-        TicketMessageSourceType.Email
+        TicketMessageSourceType.Email,
     ),
 })
 
@@ -113,7 +112,7 @@ const resetContentState = (state: Map<any, any>): NewMessageState => {
 
 export default function reducer(
     state: NewMessageState = initialState,
-    action: GorgiasAction
+    action: GorgiasAction,
 ): NewMessageState {
     switch (action.type) {
         case types.NEW_MESSAGE_ADD_ATTACHMENT_START: {
@@ -126,7 +125,7 @@ export default function reducer(
                     attachments: (
                         state.getIn(
                             ['newMessage', 'attachments'],
-                            fromJS([])
+                            fromJS([]),
                         ) as List<any>
                     ).concat(fromJS(action.resp)),
                 },
@@ -147,15 +146,15 @@ export default function reducer(
                     attachments: (
                         state.getIn(
                             ['newMessage', 'attachments'],
-                            fromJS([])
+                            fromJS([]),
                         ) as List<any>
                     )
                         .concat(fromJS(action.resp))
                         // Sort attachments by content type
                         .sort((a: Map<any, any>, b: Map<any, any>) =>
                             String(a.get('content_type')).localeCompare(
-                                String(b.get('content_type'))
-                            )
+                                String(b.get('content_type')),
+                            ),
                         ),
                 },
                 state: {
@@ -175,7 +174,7 @@ export default function reducer(
                 fromJS([]),
                 (attachments: List<any>) => {
                     return attachments.concat(action.args?.get('attachments'))
-                }
+                },
             )
         }
 
@@ -190,15 +189,15 @@ export default function reducer(
                     (
                         state.getIn(
                             ['newMessage', 'attachments'],
-                            fromJS([])
+                            fromJS([]),
                         ) as List<any>
-                    ).delete(action.index as number)
+                    ).delete(action.index as number),
                 )
                 .setIn(['state', 'dirty'], true)
         }
 
         case types.UPDATE_CAMPAIGN_PRODUCT_POSITION: {
-            const {productId, position} = action.payload as {
+            const { productId, position } = action.payload as {
                 productId: number
                 position: AttachmentPosition
             }
@@ -217,8 +216,8 @@ export default function reducer(
                 ['newMessage', 'attachments'],
                 attachments.setIn(
                     [currentAttachmentIndex, 'extra', 'position'],
-                    position
-                )
+                    position,
+                ),
             )
         }
 
@@ -230,7 +229,7 @@ export default function reducer(
             // if macro already added, do not do anything
             if (
                 macros.find(
-                    (macro: Map<any, any>) => macro.get('id') === macroId
+                    (macro: Map<any, any>) => macro.get('id') === macroId,
                 )
             ) {
                 return state
@@ -238,7 +237,7 @@ export default function reducer(
 
             return state.updateIn(
                 ['newMessage', 'macros'],
-                (macros: unknown[]) => macros.push(fromJS({id: macroId}))
+                (macros: unknown[]) => macros.push(fromJS({ id: macroId })),
             )
         }
 
@@ -254,7 +253,7 @@ export default function reducer(
             return state
                 .setIn(
                     ['state', 'contentState'],
-                    ContentState.createFromText('')
+                    ContentState.createFromText(''),
                 )
                 .setIn(['state', 'selectionState'], null)
         }
@@ -262,7 +261,7 @@ export default function reducer(
         case types.NEW_MESSAGE_SHOW_CONVERT_TO_FORWARD_POPOVER: {
             return state.setIn(
                 ['state', 'showConvertToForwardPopover'],
-                action.payload
+                action.payload,
             )
         }
 
@@ -293,17 +292,17 @@ export default function reducer(
             const sourceType = getSourceTypeOfResponse(
                 messages,
                 via!,
-                action.ticketId as string
+                action.ticketId as string,
             )
             return resetContentState(state).set(
                 'newMessage',
                 makeNewMessage(
                     getChannelFromSourceType(
                         sourceType,
-                        messages
+                        messages,
                     ) as TicketChannel,
-                    sourceType
-                )
+                    sourceType,
+                ),
             )
         }
 
@@ -312,7 +311,7 @@ export default function reducer(
         }
 
         case types.NEW_MESSAGE_RESET_FROM_TICKET: {
-            const {ticket} = action
+            const { ticket } = action
             const via = ticket?.get('via')
             const messages = ticket?.get('messages') || fromJS([])
 
@@ -324,9 +323,9 @@ export default function reducer(
             const newMessage = makeNewMessage(
                 getChannelFromSourceType(
                     sourceType,
-                    fromJS([])
+                    fromJS([]),
                 ) as TicketChannel,
-                sourceType
+                sourceType,
             )
                 .set('subject', state.getIn(['newMessage', 'subject']))
                 .set('body_text', state.getIn(['newMessage', 'body_text']))
@@ -338,13 +337,13 @@ export default function reducer(
         }
 
         case types.NEW_MESSAGE_SUBMIT_TICKET_SUCCESS: {
-            const {channel, via, id} = action.resp as {
+            const { channel, via, id } = action.resp as {
                 channel: TicketChannel
                 via: TicketVia
                 id: string
             }
             const messages = fromJS(
-                (action.resp as {messages: unknown[]}).messages
+                (action.resp as { messages: unknown[] }).messages,
             )
 
             const newState = resetContentState(state)
@@ -365,13 +364,13 @@ export default function reducer(
                 'newMessage',
                 makeNewMessage(
                     channel,
-                    getSourceTypeOfResponse(messages, via, id)
-                )
+                    getSourceTypeOfResponse(messages, via, id),
+                ),
             )
         }
 
         case types.NEW_MESSAGE_FETCH_TICKET_SUCCESS: {
-            const {messages, via, id, meta} = action.resp as {
+            const { messages, via, id, meta } = action.resp as {
                 messages: unknown[]
                 meta: Record<string, unknown>
                 via: TicketVia
@@ -386,15 +385,15 @@ export default function reducer(
                 makeNewMessage(
                     getChannelFromSourceType(
                         sourceType,
-                        messages
+                        messages,
                     ) as TicketChannel,
-                    sourceType
-                )
+                    sourceType,
+                ),
             )
         }
 
         case types.NEW_MESSAGE_SET_SOURCE_TYPE: {
-            const {messages, sourceType} = action
+            const { messages, sourceType } = action
             const channel = getChannelFromSourceType(sourceType!, messages!)
 
             return state
@@ -402,7 +401,7 @@ export default function reducer(
                 .setIn(['newMessage', 'source', 'type'], sourceType)
                 .setIn(
                     ['newMessage', 'public'],
-                    isPublic(sourceType as TicketMessageSourceType)
+                    isPublic(sourceType as TicketMessageSourceType),
                 )
         }
 
@@ -412,7 +411,7 @@ export default function reducer(
                 fromJS({
                     ...defaultSourceExtra,
                     ...action.extra,
-                })
+                }),
             )
         }
 
@@ -427,11 +426,11 @@ export default function reducer(
             let selectionState =
                 action.args?.get('selectionState') ||
                 state.getIn(['state', 'selectionState'])
-            const {appliedMacro, forceFocus, topRankMacroState} = action
-            let {forceUpdate} = action
+            const { appliedMacro, forceFocus, topRankMacroState } = action
+            let { forceUpdate } = action
             const source = state.getIn(
                 ['newMessage', 'source'],
-                fromJS({})
+                fromJS({}),
             ) as Map<any, any>
             const emailExtraAdded = action.args?.has('emailExtraAdded')
                 ? action.args?.get('emailExtraAdded')
@@ -443,7 +442,7 @@ export default function reducer(
 
             const emailExtraUpdatedContentState = updateEmailExtraOnUserInput(
                 prevContentState,
-                contentState
+                contentState,
             )
             if (!emailExtraUpdatedContentState.equals(contentState)) {
                 contentState = emailExtraUpdatedContentState
@@ -472,7 +471,7 @@ export default function reducer(
 
             const ids = getMentionIds(
                 contentState,
-                state.getIn(['newMessage', 'source', 'type'])
+                state.getIn(['newMessage', 'source', 'type']),
             )
 
             let dirty = state.getIn(['state', 'dirty'])
@@ -492,8 +491,8 @@ export default function reducer(
                         return fromJS(
                             updateNewMessageWithContentState(
                                 newMessage.toJS() as NewMessage,
-                                contentState
-                            )
+                                contentState,
+                            ),
                         ) as Map<any, any>
                     })
                     .mergeDeep({
@@ -514,7 +513,7 @@ export default function reducer(
         }
 
         case types.NEW_MESSAGE_ADD_EMAIL_EXTRA: {
-            const {contentState, emailExtraArgs} = (
+            const { contentState, emailExtraArgs } = (
                 action as ReturnType<typeof addEmailExtra>
             ).payload
             if (state.getIn(['state', 'emailExtraAdded'], false)) {
@@ -522,15 +521,15 @@ export default function reducer(
             }
             const newContentState = addEmailExtraContent(
                 contentState,
-                emailExtraArgs
+                emailExtraArgs,
             )
             return state
                 .update('newMessage', (newMessage: Map<any, any>) => {
                     return fromJS(
                         updateNewMessageWithContentState(
                             newMessage.toJS() as NewMessage,
-                            newContentState
-                        )
+                            newContentState,
+                        ),
                     ) as Map<any, any>
                 })
                 .mergeDeep({
@@ -574,7 +573,7 @@ export default function reducer(
                 // we merge existing receivers with passed ones
                 const currentReceivers = _pick(
                     currentSource,
-                    getReceiversProperties()
+                    getReceiversProperties(),
                 )
                 newReceivers = _assign(currentReceivers, receivers)
             }
@@ -582,13 +581,13 @@ export default function reducer(
             // removing current receivers from source
             const sourceWithoutReceivers = _omit(
                 currentSource,
-                getReceiversProperties()
+                getReceiversProperties(),
             )
 
             // setting new receivers in source
             return state.setIn(
                 ['newMessage', 'source'],
-                fromJS(_assign(sourceWithoutReceivers, newReceivers))
+                fromJS(_assign(sourceWithoutReceivers, newReceivers)),
             )
         }
 
@@ -599,7 +598,7 @@ export default function reducer(
             }
             let {
                 newMessage,
-                replyAreaState: {contentState, emailExtraAdded},
+                replyAreaState: { contentState, emailExtraAdded },
             } = payload
 
             // Remove email extra on reset because we always add it on submit
@@ -607,7 +606,7 @@ export default function reducer(
                 contentState = deleteEmailExtraContent(contentState)
                 newMessage = updateNewMessageWithContentState(
                     newMessage,
-                    contentState
+                    contentState,
                 )
                 emailExtraAdded = false
             }
@@ -626,7 +625,7 @@ export default function reducer(
                 .setIn(['state', 'contentState'], contentState)
                 .setIn(
                     ['state', 'selectionState'],
-                    payload.replyAreaState.selectionState
+                    payload.replyAreaState.selectionState,
                 )
         }
 
@@ -658,7 +657,7 @@ export default function reducer(
             if (
                 currentDiscountCodes.find(
                     (discount: Map<any, any>) =>
-                        discount.get('id') === discountCode.id
+                        discount.get('id') === discountCode.id,
                 )
             ) {
                 return state
@@ -666,7 +665,7 @@ export default function reducer(
 
             const newState = state.setIn(
                 ['state', 'inserted_discounts'],
-                currentDiscountCodes.push(fromJS(discountCode))
+                currentDiscountCodes.push(fromJS(discountCode)),
             )
 
             // persist discount codes in cache in case agent leaves the ticket
@@ -681,7 +680,7 @@ export default function reducer(
         }
 
         case types.RESTORE_NEW_MESSAGE_DRAFT: {
-            const {attachments, source} = action.payload as Pick<
+            const { attachments, source } = action.payload as Pick<
                 NewMessage,
                 'attachments' | 'source'
             >
@@ -703,7 +702,7 @@ export default function reducer(
 
             const ids = getMentionIds(
                 contentState,
-                state.getIn(['newMessage', 'source', 'type'])
+                state.getIn(['newMessage', 'source', 'type']),
             )
 
             let dirty = state.getIn(['state', 'dirty'])
@@ -719,9 +718,9 @@ export default function reducer(
                             fromJS(
                                 updateNewMessageWithContentState(
                                     newMessage.toJS() as NewMessage,
-                                    contentState
-                                )
-                            ) as Map<any, any>
+                                    contentState,
+                                ),
+                            ) as Map<any, any>,
                     )
                     .mergeDeep({
                         state: {

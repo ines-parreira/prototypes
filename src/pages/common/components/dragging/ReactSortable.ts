@@ -1,6 +1,7 @@
-import React, {ReactNode, Component} from 'react'
+import React, { Component, ReactNode } from 'react'
+
 import ReactDOM from 'react-dom'
-import Sortable, {MoveEvent, SortableEvent, SortableOptions} from 'sortablejs'
+import Sortable, { MoveEvent, SortableEvent, SortableOptions } from 'sortablejs'
 
 type Props = {
     children: ReactNode
@@ -9,7 +10,7 @@ type Props = {
     onChange: (
         values: string[],
         sortable?: Sortable,
-        event?: SortableEvent | MoveEvent
+        event?: SortableEvent | MoveEvent,
     ) => void
     tag: keyof JSX.IntrinsicElements | null
 }
@@ -32,7 +33,7 @@ class ReactSortable extends Component<Props> {
     }
 
     componentDidMount() {
-        const {options, onChange} = this.props
+        const { options, onChange } = this.props
         const eventsNames: Array<
             keyof Pick<
                 SortableOptions,
@@ -74,7 +75,7 @@ class ReactSortable extends Component<Props> {
 
                     evt.from.insertBefore(
                         evt.item,
-                        evt.from.children[store.previousIndex as number]
+                        evt.from.children[store.previousIndex as number],
                     )
 
                     if (remote !== this) {
@@ -92,7 +93,7 @@ class ReactSortable extends Component<Props> {
                             remote.props.onChange(
                                 remoteItems,
                                 remote.sortable!,
-                                evt
+                                evt,
                             )
                         }
                     }
@@ -112,7 +113,7 @@ class ReactSortable extends Component<Props> {
 
         this.sortable = Sortable.create(
             ReactDOM.findDOMNode(this) as Element,
-            options
+            options,
         )
     }
 
@@ -124,9 +125,9 @@ class ReactSortable extends Component<Props> {
     }
 
     render() {
-        const {children, className, tag} = this.props
+        const { children, className, tag } = this.props
         if (tag) {
-            return React.createElement(tag, {className}, children)
+            return React.createElement(tag, { className }, children)
         }
         return children
     }
@@ -143,7 +144,7 @@ const store: {
 export default ReactSortable
 
 export const isSortableEvent = (
-    evt?: SortableEvent | MoveEvent
+    evt?: SortableEvent | MoveEvent,
 ): evt is SortableEvent => {
     return typeof (evt as SortableEvent)?.item !== 'undefined'
 }

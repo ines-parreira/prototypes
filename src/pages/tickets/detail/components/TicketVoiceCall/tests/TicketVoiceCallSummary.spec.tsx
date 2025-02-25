@@ -1,7 +1,8 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {VoiceCallSummary} from 'models/voiceCall/types'
+import { render } from '@testing-library/react'
+
+import { VoiceCallSummary } from 'models/voiceCall/types'
 
 import TicketVoiceCallSummary from '../TicketVoiceCallSummary'
 
@@ -11,7 +12,7 @@ describe('TicketVoiceCallSummary', () => {
     }
 
     it("should render nothing if there's no summaries", () => {
-        const {container} = renderSummary([])
+        const { container } = renderSummary([])
 
         expect(container).toBeEmptyDOMElement()
     })
@@ -31,7 +32,7 @@ describe('TicketVoiceCallSummary', () => {
                 created_datetime: '2022-01-02T00:00:00.000Z',
             },
         ]
-        const {getByText} = renderSummary(summaries)
+        const { getByText } = renderSummary(summaries)
 
         expect(getByText('Call Summary')).toBeInTheDocument()
         expect(getByText('Summary 1')).toBeInTheDocument()

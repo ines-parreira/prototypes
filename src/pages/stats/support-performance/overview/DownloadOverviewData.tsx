@@ -1,13 +1,12 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
+import React, { useEffect, useState } from 'react'
 
-import React, {useEffect, useState} from 'react'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useDownloadOverViewData} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
-import {DownloadDataButton} from 'pages/stats/support-performance/components/DownloadDataButton'
-
-import {saveZippedFiles} from 'utils/file'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useDownloadOverViewData } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
+import { DownloadDataButton } from 'pages/stats/support-performance/components/DownloadDataButton'
+import { saveZippedFiles } from 'utils/file'
 
 const DOWNLOAD_BUTTON_TITLE = 'Download Performance Overview Data'
 
@@ -18,18 +17,18 @@ export const DownloadOverviewData = () => {
     const [fetchingEnabled, setFetchingEnable] = useState(
         isDeferredLoadingEnabled === undefined
             ? false
-            : !isDeferredLoadingEnabled
+            : !isDeferredLoadingEnabled,
     )
     useEffect(() => {
         setFetchingEnable(
             isDeferredLoadingEnabled === undefined
                 ? false
-                : !isDeferredLoadingEnabled
+                : !isDeferredLoadingEnabled,
         )
     }, [isDeferredLoadingEnabled])
     const [waitForTheReportData, setWaitForTheReportData] = useState(false)
 
-    const {files, fileName, isLoading} =
+    const { files, fileName, isLoading } =
         useDownloadOverViewData(fetchingEnabled)
 
     useEffect(() => {

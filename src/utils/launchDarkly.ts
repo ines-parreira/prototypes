@@ -1,7 +1,7 @@
 import * as LDClient from 'launchdarkly-js-client-sdk'
 
-import {User} from 'config/types/user'
-import {Account} from 'state/currentAccount/types'
+import { User } from 'config/types/user'
+import { Account } from 'state/currentAccount/types'
 
 let client: LDClient.LDClient
 export let LDContext: LDClient.LDContext = {}
@@ -14,15 +14,15 @@ export function initLaunchDarkly(
     user: User,
     account: Account,
     currentHelpdeskProductId?: string,
-    currentAutomationProductId?: string
+    currentAutomationProductId?: string,
 ): LDClient.LDClient {
     if (user && account) {
         const helpdeskMap = currentHelpdeskProductId
-            ? {helpdeskPriceId: currentHelpdeskProductId}
+            ? { helpdeskPriceId: currentHelpdeskProductId }
             : ({} as Record<string, never>)
 
         const automationMap = currentAutomationProductId
-            ? {automationPriceId: currentAutomationProductId}
+            ? { automationPriceId: currentAutomationProductId }
             : ({} as Record<string, never>)
 
         LDContext = {
@@ -40,7 +40,7 @@ export function initLaunchDarkly(
     try {
         client = LDClient.initialize(
             window.GORGIAS_LAUNCHDARKLY_CLIENT_ID,
-            LDContext
+            LDContext,
         )
     } catch (err) {
         console.error(err)

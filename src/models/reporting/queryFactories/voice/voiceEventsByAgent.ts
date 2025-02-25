@@ -4,16 +4,16 @@ import {
     VoiceEventsByAgentMeasure,
     VoiceEventsByAgentSegment,
 } from 'models/reporting/cubes/VoiceEventsByAgent'
-import {StatsFilters} from 'models/stat/types'
-import {statsFiltersToReportingFilters} from 'utils/reporting'
+import { StatsFilters } from 'models/stat/types'
+import { statsFiltersToReportingFilters } from 'utils/reporting'
 
-import {getTicketPeriodFilters} from './voiceCall'
+import { getTicketPeriodFilters } from './voiceCall'
 
 export const voiceEventsByAgentDefaultFilters = (filters: StatsFilters) => {
     return [
         ...statsFiltersToReportingFilters(
             VoiceEventsByAgentFiltersMembers,
-            filters
+            filters,
         ),
         ...getTicketPeriodFilters(filters),
     ]
@@ -21,7 +21,7 @@ export const voiceEventsByAgentDefaultFilters = (filters: StatsFilters) => {
 
 export const declinedVoiceCallsCountPerAgentQueryFactory = (
     filters: StatsFilters,
-    timezone: string
+    timezone: string,
 ) => ({
     measures: [VoiceEventsByAgentMeasure.VoiceEventsCount],
     dimensions: [VoiceEventsByAgentDimension.AgentId],
@@ -32,7 +32,7 @@ export const declinedVoiceCallsCountPerAgentQueryFactory = (
 
 export const declinedVoiceCallsCountQueryFactory = (
     filters: StatsFilters,
-    timezone: string
+    timezone: string,
 ) => ({
     measures: [VoiceEventsByAgentMeasure.VoiceEventsCount],
     dimensions: [],

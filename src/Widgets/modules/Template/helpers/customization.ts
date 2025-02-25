@@ -1,21 +1,24 @@
-import {ComponentProps} from 'react'
+import { ComponentProps } from 'react'
 
-import {LeafTemplate, Source, CardTemplate} from 'models/widget/types'
-
-import {CardCustomization} from 'Widgets/modules/Template/modules/Card'
+import { CardTemplate, LeafTemplate, Source } from 'models/widget/types'
+import { CardCustomization } from 'Widgets/modules/Template/modules/Card'
 import Field from 'Widgets/modules/Template/modules/Field'
 
-import {TemplateCustomization} from '../types'
+import { TemplateCustomization } from '../types'
 
 export function seekCardCustomization(
     cardExtensionArray: TemplateCustomization['card'] | undefined = [],
-    template: CardTemplate
+    template: CardTemplate,
 ) {
     const dataPath = (template.absolutePath || []).join('.')
     const templatePath = template.templatePath || ''
     let customization: CardCustomization = {}
     cardExtensionArray.some(
-        ({dataMatcher, templateMatcher, customization: matchedExtensions}) => {
+        ({
+            dataMatcher,
+            templateMatcher,
+            customization: matchedExtensions,
+        }) => {
             if (
                 dataMatcher.test(dataPath) &&
                 (templateMatcher ? templateMatcher.test(templatePath) : true)
@@ -24,7 +27,7 @@ export function seekCardCustomization(
                 return true
             }
             return false
-        }
+        },
     )
 
     return customization
@@ -33,7 +36,7 @@ export function seekCardCustomization(
 export function seekFieldCustomization(
     fieldExtensionArray: TemplateCustomization['field'] | undefined = [],
     source: Source,
-    template: LeafTemplate
+    template: LeafTemplate,
 ) {
     let customization: Partial<ComponentProps<typeof Field>> = {}
     const dataPath = (template.absolutePath || []).join('.')
@@ -65,7 +68,7 @@ export function seekFieldCustomization(
                     valueCanOverflow,
                 }
             }
-        }
+        },
     )
 
     return customization

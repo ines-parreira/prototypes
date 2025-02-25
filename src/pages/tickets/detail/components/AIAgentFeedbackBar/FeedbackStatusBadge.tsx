@@ -1,11 +1,13 @@
-import {Badge, ColorType} from '@gorgias/merchant-ui-kit'
-import React, {useEffect} from 'react'
+import React, { useEffect } from 'react'
+
+import { Badge, ColorType } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {setAgentFeedbackMessageStatus} from 'state/agents/actions'
+import { setAgentFeedbackMessageStatus } from 'state/agents/actions'
+
+import { FeedbackStatus, ResourceSection } from './types'
 
 import css from './FeedbackStatusBadge.less'
-import {FeedbackStatus, ResourceSection} from './types'
 
 type Props = {
     status: FeedbackStatus | null
@@ -14,7 +16,7 @@ type Props = {
 
 const DISAPPEAR_TIME = 5000
 
-const FeedbackStatusBadge = ({status, resourceSection}: Props) => {
+const FeedbackStatusBadge = ({ status, resourceSection }: Props) => {
     const dispatch = useAppDispatch()
 
     useEffect(() => {
@@ -53,11 +55,11 @@ const FeedbackStatusBadge = ({status, resourceSection}: Props) => {
                     colorType: 'light-success',
                 }
             default:
-                return {text: '', icon: '', colorType: 'light-success'}
+                return { text: '', icon: '', colorType: 'light-success' }
         }
     }
 
-    const {text, icon, colorType} = getStatusContent()
+    const { text, icon, colorType } = getStatusContent()
 
     return (
         <Badge

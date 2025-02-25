@@ -1,9 +1,9 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
 import {
+    ARTICLE_RECOMMENDATION,
     FLOWS,
     ORDER_MANAGEMENT,
-    ARTICLE_RECOMMENDATION,
 } from 'pages/automate/common/components/constants'
 
 import useAutomationFeatures from '../useAutomationFeatures'
@@ -12,7 +12,7 @@ jest.mock('launchdarkly-react-client-sdk')
 
 describe('useAutomationFeatures', () => {
     it('should return features including AI Agent', () => {
-        const {result} = renderHook(() => useAutomationFeatures())
+        const { result } = renderHook(() => useAutomationFeatures())
 
         const expectedFeatures = [
             {

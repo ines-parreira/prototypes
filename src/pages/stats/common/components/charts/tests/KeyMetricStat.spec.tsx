@@ -1,6 +1,7 @@
-import {render} from '@testing-library/react'
-import {fromJS, Map} from 'immutable'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { render } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
 
 import {
     OVERVIEW,
@@ -46,19 +47,19 @@ describe('KeyMetricStat', () => {
                 previous_end_datetime: '2019-07-06 00:00:00',
             },
         })
-        const {container} = render(
+        const { container } = render(
             <KeyMetricStat
                 {...minProps}
                 config={config}
                 {...splittedKeyMetricsStat.toObject()}
-            />
+            />,
         )
         expect(container).toMatchSnapshot()
     })
 
     it('should render a key metrics chart (grouped key metrics)', () => {
         const config = statsConfig.find(
-            (config, key) => key === REVENUE_OVERVIEW
+            (config, key) => key === REVENUE_OVERVIEW,
         )
         const groupedKeyMetricsStat: Map<any, any> = fromJS({
             data: [
@@ -99,19 +100,19 @@ describe('KeyMetricStat', () => {
                 previous_end_datetime: '2019-07-06 00:00:00',
             },
         })
-        const {container} = render(
+        const { container } = render(
             <KeyMetricStat
                 {...minProps}
                 config={config}
                 {...groupedKeyMetricsStat.toObject()}
-            />
+            />,
         )
         expect(container).toMatchSnapshot()
     })
 
     it('should render a key metrics chart with distribution and donut components', () => {
         const config = statsConfig.find(
-            (config, key) => key === SATISFACTION_SURVEYS
+            (config, key) => key === SATISFACTION_SURVEYS,
         )
         const satisfactionSurveyStat: Map<any, any> = fromJS({
             data: [
@@ -139,12 +140,12 @@ describe('KeyMetricStat', () => {
             },
         })
 
-        const {container} = render(
+        const { container } = render(
             <KeyMetricStat
                 {...minProps}
                 config={config}
                 {...satisfactionSurveyStat.toObject()}
-            />
+            />,
         )
         expect(container).toMatchSnapshot()
     })

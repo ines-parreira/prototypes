@@ -1,15 +1,15 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 import {
-    useScoredSurveys,
     ScoredSurveyDataKey,
+    useScoredSurveys,
 } from 'hooks/reporting/quality-management/satisfaction/useScoredSurveys'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-import {opposite, OrderDirection} from 'models/api/types'
-import {NumberedPagination} from 'pages/common/components/Paginations'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { opposite, OrderDirection } from 'models/api/types'
+import { NumberedPagination } from 'pages/common/components/Paginations'
 import ChartCard from 'pages/stats/ChartCard'
-import {DashboardChartProps} from 'pages/stats/custom-reports/types'
-import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
+import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { NoDataAvailable } from 'pages/stats/NoDataAvailable'
 import ScoredSurveysTable, {
     TableState,
 } from 'pages/stats/quality-management/satisfaction/ScoredSurveysChart/ScoredSurveysTable'
@@ -27,17 +27,20 @@ const initialTableState: TableState = {
 }
 
 export default function ScoredSurveysChart(props: DashboardChartProps) {
-    const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
-    const {data, isFetching} = useScoredSurveys(cleanStatsFilters, userTimezone)
+    const { cleanStatsFilters, userTimezone } = useNewStatsFilters()
+    const { data, isFetching } = useScoredSurveys(
+        cleanStatsFilters,
+        userTimezone,
+    )
 
     const [tableState, setTableState] = useState(initialTableState)
 
     useEffect(() => {
-        setTableState((prevState) => ({...prevState, currentPage: 1}))
+        setTableState((prevState) => ({ ...prevState, currentPage: 1 }))
     }, [data])
 
     const sortedCurrentPageOfData = useMemo(() => {
-        const {orderBy, orderDirection, currentPage} = tableState
+        const { orderBy, orderDirection, currentPage } = tableState
 
         if (!data) {
             return
@@ -47,7 +50,7 @@ export default function ScoredSurveysChart(props: DashboardChartProps) {
 
         return sortedData?.slice(
             (currentPage - 1) * SURVEYS_PER_PAGE,
-            currentPage * SURVEYS_PER_PAGE
+            currentPage * SURVEYS_PER_PAGE,
         )
     }, [data, tableState])
 
@@ -64,7 +67,7 @@ export default function ScoredSurveysChart(props: DashboardChartProps) {
 
     const hasPagination = useMemo(
         () => !!data && data.length >= SURVEYS_PER_PAGE,
-        [data]
+        [data],
     )
 
     return (

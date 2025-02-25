@@ -1,27 +1,27 @@
+import React from 'react'
+
 import {
-    render,
-    fireEvent,
-    waitFor,
     cleanup,
+    fireEvent,
+    render,
     screen,
+    waitFor,
 } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {fromJS} from 'immutable'
-import React from 'react'
-import {Provider} from 'react-redux'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {phoneNumbers as phoneNumberFixtures} from 'fixtures/newPhoneNumber'
+import { phoneNumbers as phoneNumberFixtures } from 'fixtures/newPhoneNumber'
 import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
-import {IntegrationType} from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import history from 'pages/history'
-import {VoiceDeviceContextState} from 'pages/integrations/integration/components/voice/VoiceDeviceContext'
-import {initialState} from 'state/twilio/voiceDevice'
-import {RootState, StoreDispatch} from 'state/types'
-import {mockDevice} from 'tests/twilioMocks'
-
-import {assumeMock} from 'utils/testing'
+import { VoiceDeviceContextState } from 'pages/integrations/integration/components/voice/VoiceDeviceContext'
+import { initialState } from 'state/twilio/voiceDevice'
+import { RootState, StoreDispatch } from 'state/types'
+import { mockDevice } from 'tests/twilioMocks'
+import { assumeMock } from 'utils/testing'
 
 import ClickablePhoneNumber from '../ClickablePhoneNumber'
 
@@ -31,8 +31,8 @@ const useVoiceDeviceMock = assumeMock(useVoiceDevice)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const newPhoneNumbers = phoneNumberFixtures.reduce(
-    (acc, number) => ({...acc, [number.id]: number}),
-    {}
+    (acc, number) => ({ ...acc, [number.id]: number }),
+    {},
 )
 
 describe('<ClickablePhoneNumber/>', () => {
@@ -40,7 +40,7 @@ describe('<ClickablePhoneNumber/>', () => {
         id: number,
         type:
             | IntegrationType.Phone
-            | IntegrationType.Sms = IntegrationType.Phone
+            | IntegrationType.Sms = IntegrationType.Phone,
     ) {
         return {
             id,
@@ -57,10 +57,10 @@ describe('<ClickablePhoneNumber/>', () => {
 
     it('should render href with prefix "tel:" because there is no phone integration', () => {
         const store = mockStore({
-            integrations: fromJS({integrations: []}),
+            integrations: fromJS({ integrations: [] }),
         })
         useVoiceDeviceMock.mockReturnValue(
-            initialState as VoiceDeviceContextState
+            initialState as VoiceDeviceContextState,
         )
 
         render(
@@ -71,12 +71,12 @@ describe('<ClickablePhoneNumber/>', () => {
                     customerName="Foo"
                     address="+33 6 11 22 33 44"
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('+33 6 11 22 33 44')).toHaveAttribute(
             'href',
-            'tel:+33611223344'
+            'tel:+33611223344',
         )
     })
 
@@ -92,10 +92,10 @@ describe('<ClickablePhoneNumber/>', () => {
                 },
             } as RootState)
             useVoiceDeviceMock.mockReturnValue(
-                initialState as VoiceDeviceContextState
+                initialState as VoiceDeviceContextState,
             )
 
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <ClickablePhoneNumber
                         id="phone-number-1"
@@ -103,7 +103,7 @@ describe('<ClickablePhoneNumber/>', () => {
                         customerName="Foo"
                         address="+33 6 11 22 33 44"
                     />
-                </Provider>
+                </Provider>,
             )
 
             const options = container.querySelectorAll('.dropdown-item')
@@ -111,7 +111,7 @@ describe('<ClickablePhoneNumber/>', () => {
             options.forEach((option) => {
                 expect(option).toHaveClass('disabled')
             })
-        }
+        },
     )
 
     it.each([[[getIntegration(1), getIntegration(2)]], [[getIntegration(1)]]])(
@@ -126,10 +126,10 @@ describe('<ClickablePhoneNumber/>', () => {
                 },
             } as RootState)
             useVoiceDeviceMock.mockReturnValue(
-                initialState as VoiceDeviceContextState
+                initialState as VoiceDeviceContextState,
             )
 
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <ClickablePhoneNumber
                         id="phone-number-1"
@@ -137,7 +137,7 @@ describe('<ClickablePhoneNumber/>', () => {
                         customerName="Foo"
                         address="+33 66666666666666666666666666"
                     />
-                </Provider>
+                </Provider>,
             )
 
             const options = container.querySelectorAll('.dropdown-item')
@@ -145,7 +145,7 @@ describe('<ClickablePhoneNumber/>', () => {
             options.forEach((option) => {
                 expect(option).toHaveClass('disabled')
             })
-        }
+        },
     )
 
     it.each([[[getIntegration(1), getIntegration(2)]], [[getIntegration(1)]]])(
@@ -172,7 +172,7 @@ describe('<ClickablePhoneNumber/>', () => {
                         customerName="Foo"
                         address="+33 6 11 22 33 44"
                     />
-                </Provider>
+                </Provider>,
             )
 
             userEvent.hover(screen.getByText('+33 6 11 22 33 44'))
@@ -182,11 +182,11 @@ describe('<ClickablePhoneNumber/>', () => {
 
             integrations.forEach((integration) => {
                 const option = screen.getByText(
-                    new RegExp(`${integration.name}`, 'i')
+                    new RegExp(`${integration.name}`, 'i'),
                 )
                 expect(option).not.toHaveAttribute('disabled')
             })
-        }
+        },
     )
 
     it('should render a dropdown listing SMS integrations', async () => {
@@ -206,7 +206,7 @@ describe('<ClickablePhoneNumber/>', () => {
             device: mockDevice as any,
         } as VoiceDeviceContextState)
 
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <ClickablePhoneNumber
                     id="phone-number-1"
@@ -214,7 +214,7 @@ describe('<ClickablePhoneNumber/>', () => {
                     customerName="Foo"
                     address="+33 6 11 22 33 44"
                 />
-            </Provider>
+            </Provider>,
         )
 
         userEvent.hover(screen.getByText('+33 6 11 22 33 44'))
@@ -244,7 +244,7 @@ describe('<ClickablePhoneNumber/>', () => {
             device: mockDevice as any,
         } as VoiceDeviceContextState)
 
-        const {queryByText, getByText} = render(
+        const { queryByText, getByText } = render(
             <Provider store={store}>
                 <ClickablePhoneNumber
                     id="phone-number-1"
@@ -252,7 +252,7 @@ describe('<ClickablePhoneNumber/>', () => {
                     customerName="Foo"
                     address="+33 6 11 22 33 44"
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(queryByText('Make outbound call')).not.toBeNull()
@@ -262,7 +262,7 @@ describe('<ClickablePhoneNumber/>', () => {
 
         expect(queryByText('SMS with')).not.toBeNull()
         expect(
-            queryByText('My Phone Integration 1 (+1 213 373 4253)')
+            queryByText('My Phone Integration 1 (+1 213 373 4253)'),
         ).not.toBeNull()
 
         userEvent.hover(getByText('+33 6 11 22 33 44'))
@@ -274,7 +274,7 @@ describe('<ClickablePhoneNumber/>', () => {
 
         await waitFor(() => {
             expect(push).toHaveBeenCalledWith('/app/ticket/new?customer=1', {
-                receiver: {address: '+33611223344', name: 'Foo'},
+                receiver: { address: '+33611223344', name: 'Foo' },
                 sender: '+12133734253',
                 source: 'sms',
             })

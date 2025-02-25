@@ -1,14 +1,14 @@
-import {useState, useMemo} from 'react'
+import { useMemo, useState } from 'react'
 
-import {CustomFieldValue} from 'custom-fields/types'
+import { CustomFieldValue } from 'custom-fields/types'
 
 import {
     CHOICE_VALUES_SYMBOL,
     DROPDOWN_NESTING_FANCY_DELIMITER,
 } from '../constants'
-import {getFullValueFromCurrentPath} from '../helpers/getFullValueFromCurrentPath'
-import {getLabel} from '../helpers/getLabels'
-import {ChoicesTree, SearchResults} from '../types'
+import { getFullValueFromCurrentPath } from '../helpers/getFullValueFromCurrentPath'
+import { getLabel } from '../helpers/getLabels'
+import { ChoicesTree, SearchResults } from '../types'
 
 export function useSearch({
     choices,
@@ -38,10 +38,10 @@ export function useSearch({
         search,
         setSearch,
         searchResults,
-        valueIsInSearchResults: searchResults.some(({value}) =>
+        valueIsInSearchResults: searchResults.some(({ value }) =>
             Array.isArray(dropdownValue)
                 ? dropdownValue.includes(value)
-                : value === dropdownValue
+                : value === dropdownValue,
         ),
     }
 }
@@ -51,7 +51,7 @@ function searchChoices(
     currentChoices: ChoicesTree,
     currentPath: string[],
     searchResults: SearchResults,
-    includeAllValues = false
+    includeAllValues = false,
 ) {
     // leaves of the current branch
     for (const value of currentChoices[CHOICE_VALUES_SYMBOL]) {
@@ -76,7 +76,7 @@ function searchChoices(
             [...currentPath, nextPath],
             searchResults,
             includeAllValues ||
-                nextPath.toLowerCase().includes(search.toLowerCase())
+                nextPath.toLowerCase().includes(search.toLowerCase()),
         )
     }
 }

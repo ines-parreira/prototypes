@@ -1,17 +1,18 @@
-import {render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {IntegrationType} from 'models/integration/constants'
-import {EditionContext} from 'providers/infobar/EditionContext'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import {initialState as cancelInitialState} from 'state/infobarActions/shopify/cancelOrder/reducers'
-import {initialState} from 'state/infobarActions/shopify/createOrder/reducers'
-import {CustomizationContext} from 'Widgets/modules/Template'
+import { IntegrationType } from 'models/integration/constants'
+import { EditionContext } from 'providers/infobar/EditionContext'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
+import { initialState as cancelInitialState } from 'state/infobarActions/shopify/cancelOrder/reducers'
+import { initialState } from 'state/infobarActions/shopify/createOrder/reducers'
+import { CustomizationContext } from 'Widgets/modules/Template'
 
-import {Wrapper, orderCustomization, OrderContext} from '../Order'
+import { OrderContext, orderCustomization, Wrapper } from '../Order'
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
@@ -51,7 +52,7 @@ describe('<TitleWrapper/>', () => {
                     },
                 },
             })
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <IntegrationContext.Provider
                         value={{
@@ -72,7 +73,7 @@ describe('<TitleWrapper/>', () => {
                             <div>foo bar</div>
                         </TitleWrapper>
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
             expect(screen.getByRole('button')).toBeVisible()
 
@@ -92,7 +93,7 @@ describe('<TitleWrapper/>', () => {
             })
             render(
                 <Provider store={store}>
-                    <EditionContext.Provider value={{isEditing: true}}>
+                    <EditionContext.Provider value={{ isEditing: true }}>
                         <IntegrationContext.Provider
                             value={{
                                 integration: fromJS(integration),
@@ -112,7 +113,7 @@ describe('<TitleWrapper/>', () => {
                             </TitleWrapper>
                         </IntegrationContext.Provider>
                     </EditionContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(screen.queryByRole('button')).toBeNull()
@@ -153,7 +154,7 @@ describe('<AfterTitle/>', () => {
             })
             render(
                 <Provider store={store}>
-                    <EditionContext.Provider value={{isEditing: false}}>
+                    <EditionContext.Provider value={{ isEditing: false }}>
                         <IntegrationContext.Provider
                             value={{
                                 integrationId: null,
@@ -164,12 +165,12 @@ describe('<AfterTitle/>', () => {
                                 }),
                             }}
                         >
-                            <AfterTitle source={fromJS({id: 123})}>
+                            <AfterTitle source={fromJS({ id: 123 })}>
                                 <div>foo bar</div>
                             </AfterTitle>
                         </IntegrationContext.Provider>
                     </EditionContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(screen.queryByRole('button')).toBeNull()
@@ -224,12 +225,12 @@ describe('<AfterTitle/>', () => {
                                 </AfterTitle>
                             </Wrapper>
                         </IntegrationContext.Provider>
-                    </Provider>
+                    </Provider>,
                 )
                 expect(
-                    screen.queryAllByRole('button', {name: /Refund/}).length
+                    screen.queryAllByRole('button', { name: /Refund/ }).length,
                 ).toBe(expected)
-            }
+            },
         )
 
         it('should hide actions when hideActionsForCustomer is true', () => {
@@ -259,7 +260,7 @@ describe('<AfterTitle/>', () => {
             render(
                 <Provider store={store}>
                     <CustomizationContext.Provider
-                        value={{hideActionsForCustomer: true}}
+                        value={{ hideActionsForCustomer: true }}
                     >
                         <OrderContext.Provider
                             value={{
@@ -277,7 +278,7 @@ describe('<AfterTitle/>', () => {
                             <AfterTitle isEditing={false} source={mockOrder} />
                         </OrderContext.Provider>
                     </CustomizationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             // Verify no action buttons are present

@@ -1,10 +1,11 @@
-import {useListJobs} from '@gorgias/api-queries'
-import {JobStatus} from '@gorgias/api-types'
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {assumeMock} from 'utils/testing'
+import { useListJobs } from '@gorgias/api-queries'
+import { JobStatus } from '@gorgias/api-types'
 
-import {useRunningJobs} from '../useRunningJobs'
+import { assumeMock } from 'utils/testing'
+
+import { useRunningJobs } from '../useRunningJobs'
 
 jest.mock('@gorgias/api-queries')
 const useListJobsMock = assumeMock(useListJobs)
@@ -12,7 +13,7 @@ const jobWithStatus = (status: JobStatus) => ({
     status,
 })
 
-const jobsResponse = (jobs: {status?: JobStatus}[]): any => ({
+const jobsResponse = (jobs: { status?: JobStatus }[]): any => ({
     data: {
         data: {
             data: jobs,
@@ -40,7 +41,7 @@ describe('useRunningJobs', () => {
         const jobs = [...runningJobs, ...notRunningJobs]
         useListJobsMock.mockReturnValue(jobsResponse(jobs))
 
-        const {result} = renderHook(() => useRunningJobs())
+        const { result } = renderHook(() => useRunningJobs())
 
         expect(result.current.running).toEqual(true)
         expect(result.current.jobs).toEqual(jobs)
@@ -49,7 +50,7 @@ describe('useRunningJobs', () => {
     it('should fetch the list of jobs and return false if none are in "running" state', () => {
         useListJobsMock.mockReturnValue(jobsResponse(notRunningJobs))
 
-        const {result} = renderHook(() => useRunningJobs())
+        const { result } = renderHook(() => useRunningJobs())
 
         expect(result.current.running).toEqual(false)
         expect(result.current.jobs).toEqual(notRunningJobs)
@@ -62,7 +63,7 @@ describe('useRunningJobs', () => {
             refetch: jest.fn(),
         } as any)
 
-        const {result} = renderHook(() => useRunningJobs())
+        const { result } = renderHook(() => useRunningJobs())
 
         expect(result.current.running).toEqual(null)
         expect(result.current.jobs).toEqual(undefined)

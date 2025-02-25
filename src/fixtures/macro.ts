@@ -1,14 +1,14 @@
-import {Macro} from '@gorgias/api-queries'
+import { Macro } from '@gorgias/api-queries'
 
-import {TicketStatus} from 'business/types/ticket'
-import {User} from 'config/types/user'
-import {Team} from 'models/team/types'
+import { TicketStatus } from 'business/types/ticket'
+import { User } from 'config/types/user'
+import { Team } from 'models/team/types'
 
-import {HttpMethod} from '../models/api/types'
+import { HttpMethod } from '../models/api/types'
 import {
     MacroAction,
-    MacroActionType,
     MacroActionName,
+    MacroActionType,
 } from '../models/macroAction/types'
 
 export const macros: Macro[] = [
@@ -20,13 +20,13 @@ export const macros: Macro[] = [
             {
                 type: MacroActionType.User,
                 title: 'Add Refund Tag',
-                arguments: {tags: 'refund'},
+                arguments: { tags: 'refund' },
                 name: MacroActionName.AddTags,
             },
             {
                 type: MacroActionType.User,
                 title: 'Add Refund Accepted Tag',
-                arguments: {tags: 'refund accepted'},
+                arguments: { tags: 'refund accepted' },
                 name: MacroActionName.AddTags,
             },
             {
@@ -83,7 +83,7 @@ export const macros: Macro[] = [
             {
                 type: MacroActionType.User,
                 title: 'Add Rejected Tag',
-                arguments: {tags: 'rejectedTag'},
+                arguments: { tags: 'rejectedTag' },
                 name: MacroActionName.AddTags,
             },
             {

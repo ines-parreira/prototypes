@@ -1,15 +1,16 @@
-import {produce} from 'immer'
-import React, {useMemo, useCallback} from 'react'
+import React, { useCallback, useMemo } from 'react'
+
+import { produce } from 'immer'
 
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import {
-    DEFAULT_SCHEDULE_VALUE,
     DAYS_OPTIONS,
+    DEFAULT_SCHEDULE_VALUE,
     MAX_ENTRIES,
 } from 'pages/convert/campaigns/components/CampaignCustomSchedule/contants'
 import CustomScheduleForm from 'pages/convert/campaigns/components/CampaignCustomSchedule/CustomScheduleForm'
-import {CustomScheduleSchema} from 'pages/convert/campaigns/types/CampaignSchedule'
+import { CustomScheduleSchema } from 'pages/convert/campaigns/types/CampaignSchedule'
 
 import css from './CampaignCustomSchedule.less'
 
@@ -26,7 +27,7 @@ const CampaignCustomSchedule: React.FC<Props> = ({
         onChange(
             produce(customSchedule, (draft) => {
                 draft[index] = updatedValue
-            })
+            }),
         )
     }
 
@@ -34,7 +35,7 @@ const CampaignCustomSchedule: React.FC<Props> = ({
         onChange(
             produce(customSchedule, (draft) => {
                 draft.splice(index, 1)
-            })
+            }),
         )
     }
 
@@ -48,7 +49,7 @@ const CampaignCustomSchedule: React.FC<Props> = ({
         }
 
         const nextAllowedOption = DAYS_OPTIONS.filter(
-            (option) => !alreadyTaken.includes(option.value)
+            (option) => !alreadyTaken.includes(option.value),
         )[0]
 
         onChange(
@@ -57,7 +58,7 @@ const CampaignCustomSchedule: React.FC<Props> = ({
                     ...DEFAULT_SCHEDULE_VALUE,
                     days: nextAllowedOption.value,
                 })
-            })
+            }),
         )
     }
 
@@ -66,10 +67,10 @@ const CampaignCustomSchedule: React.FC<Props> = ({
             return DAYS_OPTIONS.filter(
                 (option) =>
                     !alreadyTaken.includes(option.value) ||
-                    currentSchedule.days === option.value
+                    currentSchedule.days === option.value,
             )
         },
-        [alreadyTaken]
+        [alreadyTaken],
     )
 
     return (

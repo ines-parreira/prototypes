@@ -2,7 +2,7 @@ import _find from 'lodash/find'
 import _isArray from 'lodash/isArray'
 import _isObject from 'lodash/isObject'
 
-import {SocketEventType} from 'services/socketManager/types'
+import { SocketEventType } from 'services/socketManager/types'
 
 import joinEvents from '../joinEvents'
 
@@ -28,7 +28,7 @@ describe('joinEvents', () => {
     })
 
     it('Should stop typing when leaving ticket room', () => {
-        const ticketJoinEvent = _find(joinEvents, {name: 'ticket'})
+        const ticketJoinEvent = _find(joinEvents, { name: 'ticket' })
 
         class MockSocketManager {
             ticketOnLeaveJoinEvent = ticketJoinEvent
@@ -46,7 +46,7 @@ describe('joinEvents', () => {
 
         expect(mockSocketManager.send).toHaveBeenCalledWith(
             SocketEventType.AgentTypingStopped,
-            ticketId
+            ticketId,
         )
     })
 })

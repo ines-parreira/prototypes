@@ -1,8 +1,8 @@
 import _findLastIndex from 'lodash/findLastIndex'
 
-import {formatDuration} from 'pages/stats/common/utils'
-import {MetricName} from 'services/reporting/constants'
-import {PlanName} from 'utils/paywalls'
+import { formatDuration } from 'pages/stats/common/utils'
+import { MetricName } from 'services/reporting/constants'
+import { PlanName } from 'utils/paywalls'
 
 type MetricBaseline = [number, number]
 
@@ -170,14 +170,14 @@ export const randomIndexGrade = (list: string[]) =>
 export const getPerformanceTip = (
     metric: MetricName,
     value: number | null,
-    plan: PlanName | null
+    plan: PlanName | null,
 ): Tip | null => {
     if (!value || !plan) {
         return null
     }
 
     const baselines = MetricsBaselinesJSON[metric][plan]
-    const {grade} = getMetricGrader(metric)(baselines, value)
+    const { grade } = getMetricGrader(metric)(baselines, value)
     const content = randomIndexGrade(tips[metric][grade])
 
     return {

@@ -1,21 +1,22 @@
 import 'tests/__mocks__/intersectionObserverMock'
 
-import {screen} from '@testing-library/react'
+import React, { ComponentProps } from 'react'
+
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {createMemoryHistory} from 'history'
-import {mockFlags} from 'jest-launchdarkly-mock'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
-import {Router} from 'react-router-dom'
+import { createMemoryHistory } from 'history'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
+import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
-import {AiAgentOnboardingWizardStep} from 'models/aiAgent/types'
+import { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
 import Wizard from 'pages/common/components/wizard/Wizard'
-import {mockQueryClientProvider} from 'tests/reactQueryTestingUtils'
-import {assumeMock, renderWithRouter} from 'utils/testing'
+import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
+import { assumeMock, renderWithRouter } from 'utils/testing'
 
 import {
     AiAgentChannel,
@@ -24,17 +25,17 @@ import {
     WIZARD_BUTTON_ACTIONS,
 } from '../../constants'
 import useCustomToneOfVoicePreview from '../../hooks/useCustomToneOfVoicePreview'
-import {FormValues} from '../../types'
+import { FormValues } from '../../types'
 import AiAgentOnboardingWizardStepPersonalize from '../AiAgentOnboardingWizardPersonalize'
-import {useAiAgentOnboardingWizard} from '../hooks/useAiAgentOnboardingWizard'
+import { useAiAgentOnboardingWizard } from '../hooks/useAiAgentOnboardingWizard'
 
 const mockStore = configureMockStore([thunk])
 jest.mock(
     'pages/automate/common/hooks/useSelfServiceChatChannels',
     () => () => [
-        {name: '1', meta: {app_id: 1}, id: 1},
-        {name: '2', meta: {app_id: 2}, id: 2},
-    ]
+        { name: '1', meta: { app_id: 1 }, id: 1 },
+        { name: '2', meta: { app_id: 2 }, id: 2 },
+    ],
 )
 jest.mock('../hooks/useAiAgentOnboardingWizard')
 jest.mock('hooks/useAppSelector')
@@ -46,7 +47,7 @@ jest.mock(
         ChatIntegrationListSelection: () => (
             <div>ChatIntegrationListSelection</div>
         ),
-    })
+    }),
 )
 
 const mockUseAiAgentOnboardingWizard = jest.mocked(useAiAgentOnboardingWizard)
@@ -66,7 +67,7 @@ const history = createMemoryHistory()
 const renderComponent = (
     props: Partial<
         ComponentProps<typeof AiAgentOnboardingWizardStepPersonalize>
-    >
+    >,
 ) => {
     const currentProps = {
         ...defaultProps,
@@ -83,7 +84,7 @@ const renderComponent = (
                     </Wizard>
                 </QueryClientProvider>
             </Provider>
-        </Router>
+        </Router>,
     )
 }
 
@@ -146,7 +147,7 @@ describe('<AiAgentOnboardingWizardPersonalize />', () => {
         renderComponent({})
 
         expect(
-            screen.getAllByText('Personalize AI Agent')[1]
+            screen.getAllByText('Personalize AI Agent')[1],
         ).toBeInTheDocument()
         expect(screen.getByText('Back')).toBeInTheDocument()
         expect(screen.getByText('Next')).toBeInTheDocument()
@@ -164,7 +165,7 @@ describe('<AiAgentOnboardingWizardPersonalize />', () => {
         expect(screen.queryByText('Save & Customize Later')).not
             .toBeInTheDocument
         expect(
-            screen.getAllByText('Personalize AI Agent')[1]
+            screen.getAllByText('Personalize AI Agent')[1],
         ).toBeInTheDocument()
         expect(screen.getByText('Next')).toBeInTheDocument()
         expect(screen.getByText('Cancel')).toBeInTheDocument()
@@ -209,7 +210,7 @@ describe('<AiAgentOnboardingWizardPersonalize />', () => {
         expect(screen.getByText('Cancel')).toBeInTheDocument()
         userEvent.click(screen.getByText('Cancel'))
         expect(mockHandleAction).toHaveBeenCalledWith(
-            WIZARD_BUTTON_ACTIONS.CANCEL
+            WIZARD_BUTTON_ACTIONS.CANCEL,
         )
     })
 
@@ -222,7 +223,7 @@ describe('<AiAgentOnboardingWizardPersonalize />', () => {
             handleSave: mockHandleSave,
             storeFormValues: {
                 ...storeFormValues,
-                wizard: {...DEFAULT_WIZARD_FORM_VALUES, enabledChannels: []},
+                wizard: { ...DEFAULT_WIZARD_FORM_VALUES, enabledChannels: [] },
             },
             faqHelpCenters: [],
             handleAction: jest.fn,
@@ -249,7 +250,7 @@ describe('<AiAgentOnboardingWizardPersonalize />', () => {
         })
         renderComponent({})
         expect(
-            screen.getByText('ChatIntegrationListSelection')
+            screen.getByText('ChatIntegrationListSelection'),
         ).toBeInTheDocument()
     })
 
@@ -260,7 +261,7 @@ describe('<AiAgentOnboardingWizardPersonalize />', () => {
         renderComponent({})
 
         expect(
-            screen.queryByText('ChatIntegrationListSelection')
+            screen.queryByText('ChatIntegrationListSelection'),
         ).not.toBeInTheDocument()
     })
 
@@ -272,8 +273,8 @@ describe('<AiAgentOnboardingWizardPersonalize />', () => {
 
         expect(
             screen.getByText(
-                'Your changes to this page will be lost if you don’t save them.'
-            )
+                'Your changes to this page will be lost if you don’t save them.',
+            ),
         ).toBeInTheDocument()
         expect(screen.getByText('Save Changes')).toBeInTheDocument()
         expect(screen.getByText('Discard Changes')).toBeInTheDocument()

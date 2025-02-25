@@ -4,7 +4,7 @@ type Props = {
     fillColor: string
 }
 
-const ArrowIcon: React.FC<Props> = ({fillColor}) => (
+const ArrowIcon: React.FC<Props> = ({ fillColor }) => (
     <svg
         width="24"
         height="24"

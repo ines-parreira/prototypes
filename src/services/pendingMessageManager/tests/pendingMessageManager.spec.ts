@@ -1,12 +1,12 @@
-import {fromJS} from 'immutable'
-import {dismissNotification} from 'reapop'
+import { fromJS } from 'immutable'
+import { dismissNotification } from 'reapop'
 
 import history from 'pages/history'
 import {
     newMessageResetFromMessage,
     sendTicketMessage,
 } from 'state/newMessage/actions'
-import {applyMacro, messageDeleted} from 'state/ticket/actions'
+import { applyMacro, messageDeleted } from 'state/ticket/actions'
 
 import pendingMessageManager, {
     PendingMessageManager,
@@ -20,12 +20,12 @@ jest.spyOn(window, 'removeEventListener')
 jest.mock('react-router-dom')
 jest.mock('reapop')
 jest.mock('common/store', () => {
-    const {fromJS} = jest.requireActual('immutable')
+    const { fromJS } = jest.requireActual('immutable')
     return {
         store: {
             dispatch: jest.fn(),
             getState: () => ({
-                macros: (fromJS as fromJSType)({'1': {id: 1}}),
+                macros: (fromJS as fromJSType)({ '1': { id: 1 } }),
             }),
         },
     }
@@ -39,7 +39,7 @@ describe('services', () => {
     describe('pendingMessageManager', () => {
         const actions = [
             {
-                arguments: {tags: 'refund'},
+                arguments: { tags: 'refund' },
                 name: 'addTags',
                 title: 'Add tags',
                 type: 'user',
@@ -49,7 +49,7 @@ describe('services', () => {
 
         const sendMessageArgs: SendMessageArgs = {
             messageId: 1,
-            messageToSend: {actions: fromJS(actions)} as any,
+            messageToSend: { actions: fromJS(actions) } as any,
             replyAreaState: {} as any,
             action: null,
             resetMessage: true,
@@ -57,9 +57,9 @@ describe('services', () => {
         }
 
         const getSendTicketMessageCallArgs = (
-            sendMessageArgs: SendMessageArgs
+            sendMessageArgs: SendMessageArgs,
         ): Parameters<typeof sendTicketMessage> => {
-            const {messageId, messageToSend, action, resetMessage, ticketId} =
+            const { messageId, messageToSend, action, resetMessage, ticketId } =
                 sendMessageArgs
             return [messageId, messageToSend, action, resetMessage, ticketId]
         }
@@ -69,7 +69,7 @@ describe('services', () => {
             jest.runAllTimers()
             expect(sendTicketMessage).toHaveBeenNthCalledWith(
                 1,
-                ...getSendTicketMessageCallArgs(sendMessageArgs)
+                ...getSendTicketMessageCallArgs(sendMessageArgs),
             )
         })
 
@@ -83,12 +83,12 @@ describe('services', () => {
 
             expect(sendTicketMessage).toHaveBeenNthCalledWith(
                 1,
-                ...getSendTicketMessageCallArgs(sendMessageArgs)
+                ...getSendTicketMessageCallArgs(sendMessageArgs),
             )
             jest.runAllTimers()
             expect(sendTicketMessage).toHaveBeenNthCalledWith(
                 2,
-                ...getSendTicketMessageCallArgs(secondSendMessageArgs)
+                ...getSendTicketMessageCallArgs(secondSendMessageArgs),
             )
         })
 
@@ -101,7 +101,7 @@ describe('services', () => {
         })
 
         it('should remove the pending message and redirect to the ticket when undoing the message', () => {
-            const {messageToSend, replyAreaState} = sendMessageArgs
+            const { messageToSend, replyAreaState } = sendMessageArgs
             pendingMessageManager.sendMessage(sendMessageArgs)
             pendingMessageManager.undoMessage()
 
@@ -122,9 +122,9 @@ describe('services', () => {
             jest.runAllTimers()
             expect(applyMacro).toHaveBeenNthCalledWith(
                 1,
-                fromJS({actions}),
+                fromJS({ actions }),
                 1,
-                false
+                false,
             )
         })
 
@@ -134,7 +134,7 @@ describe('services', () => {
 
             expect(sendTicketMessage).toHaveBeenNthCalledWith(
                 1,
-                ...getSendTicketMessageCallArgs(sendMessageArgs)
+                ...getSendTicketMessageCallArgs(sendMessageArgs),
             )
         })
 
@@ -145,7 +145,7 @@ describe('services', () => {
             expect(window.addEventListener).toHaveBeenNthCalledWith(
                 1,
                 'beforeunload',
-                newPendingMessageManager.handleBeforeUnload
+                newPendingMessageManager.handleBeforeUnload,
             )
         })
 
@@ -156,7 +156,7 @@ describe('services', () => {
             expect(window.removeEventListener).toHaveBeenNthCalledWith(
                 1,
                 'beforeunload',
-                newPendingMessageManager.handleBeforeUnload
+                newPendingMessageManager.handleBeforeUnload,
             )
         })
     })

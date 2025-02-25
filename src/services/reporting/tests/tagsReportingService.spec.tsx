@@ -1,25 +1,25 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {tags} from 'fixtures/tag'
-import {getCsvFileNameWithDates} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
+import { tags } from 'fixtures/tag'
+import { getCsvFileNameWithDates } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
 import * as ticketCountPerTag from 'hooks/reporting/ticket-insights/useTicketCountPerTag'
-import {fetchTagsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
-import {OrderDirection} from 'models/api/types'
-import {ReportingGranularity} from 'models/reporting/types'
-import {formatDates} from 'pages/stats/utils'
+import { fetchTagsTicketCountTimeSeries } from 'hooks/reporting/timeSeries'
+import { OrderDirection } from 'models/api/types'
+import { ReportingGranularity } from 'models/reporting/types'
+import { formatDates } from 'pages/stats/utils'
 import {
     createReport,
     fetchTagsReportData,
     TAGS_REPORT_FILE_NAME,
     useTagsReportData,
 } from 'services/reporting/tagsReportingService'
-import {TagsTableOrder} from 'state/ui/stats/tagsReportSlice'
-import {createCsv} from 'utils/file'
-import {assumeMock} from 'utils/testing'
+import { TagsTableOrder } from 'state/ui/stats/tagsReportSlice'
+import { createCsv } from 'utils/file'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/timeSeries')
 const fetchTagsTicketCountTimeSeriesMock = assumeMock(
-    fetchTagsTicketCountTimeSeries
+    fetchTagsTicketCountTimeSeries,
 )
 
 describe('TagsReportingService', () => {
@@ -36,8 +36,8 @@ describe('TagsReportingService', () => {
             tagId: String(tag.id),
             tag,
             timeSeries: [
-                {value: 100, dateTime: '2023-06-07'},
-                {value: 23, dateTime: '2023-06-08'},
+                { value: 100, dateTime: '2023-06-07' },
+                { value: 23, dateTime: '2023-06-08' },
                 {
                     value: 0,
                     dateTime: '2023-06-09',
@@ -49,8 +49,8 @@ describe('TagsReportingService', () => {
             tagId: deletedTagId,
             tag: undefined,
             timeSeries: [
-                {value: 200, dateTime: '2023-06-07'},
-                {value: 13, dateTime: '2023-06-08'},
+                { value: 200, dateTime: '2023-06-07' },
+                { value: 13, dateTime: '2023-06-08' },
                 {
                     value: 0,
                     dateTime: '2023-06-09',
@@ -94,19 +94,19 @@ describe('TagsReportingService', () => {
         it('should fetch and format Tags Report data', () => {
             jest.spyOn(
                 ticketCountPerTag,
-                'useTicketCountPerTag'
+                'useTicketCountPerTag',
             ).mockReturnValue({
                 data,
                 dateTimes,
                 isLoading: false,
-                cleanStatsFilters: {period},
+                cleanStatsFilters: { period },
                 granularity,
                 order: tagsTableOrder,
                 setOrdering: jest.fn(),
                 grandTotal: 10,
                 columnTotals: [5, 5, 0],
             })
-            const {result} = renderHook(() => useTagsReportData())
+            const { result } = renderHook(() => useTagsReportData())
 
             expect(result.current).toEqual({
                 files: {
@@ -163,20 +163,23 @@ describe('TagsReportingService', () => {
         }
         beforeEach(() => {
             fetchTagsTicketCountTimeSeriesMock.mockResolvedValue(
-                exampleResponse
+                exampleResponse,
             )
         })
 
         it('should fetch and format the report', async () => {
             const context = {
-                tags: tags.reduce((acc, tag) => ({...acc, [tag.id]: tag}), {}),
+                tags: tags.reduce(
+                    (acc, tag) => ({ ...acc, [tag.id]: tag }),
+                    {},
+                ),
                 tagsTableOrder,
             }
             const result = await fetchTagsReportData(
-                {period},
+                { period },
                 timezone,
                 granularity,
-                context
+                context,
             )
             expect(result).toEqual({
                 files: {

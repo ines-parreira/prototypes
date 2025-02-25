@@ -1,6 +1,7 @@
-import React, {Ref} from 'react'
+import React, { Ref } from 'react'
 
-import {SuggestionStates} from './InTicketSuggestion'
+import { SuggestionStates } from './InTicketSuggestion'
+
 import css from './SuggestionHeader.less'
 
 type Props = {
@@ -24,7 +25,7 @@ export default function SuggestionHeader({
         <header
             ref={innerRef}
             className={css.container}
-            style={{paddingBottom: !!onChevronToggle ? '8px' : 0}}
+            style={{ paddingBottom: !!onChevronToggle ? '8px' : 0 }}
         >
             <div className={css.infoContainer}>
                 <div className={css.title}>

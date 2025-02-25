@@ -2,21 +2,21 @@ import {
     VoiceCallMeasure,
     VoiceCallSegment,
 } from 'models/reporting/cubes/VoiceCallCube'
-import {usePostReporting} from 'models/reporting/queries'
-import {voiceCallCountQueryFactory} from 'models/reporting/queryFactories/voice/voiceCall'
-import {StatsFilters} from 'models/stat/types'
+import { usePostReporting } from 'models/reporting/queries'
+import { voiceCallCountQueryFactory } from 'models/reporting/queryFactories/voice/voiceCall'
+import { StatsFilters } from 'models/stat/types'
 
-import {CALL_LIST_PAGE_SIZE} from '../constants/voiceOverview'
+import { CALL_LIST_PAGE_SIZE } from '../constants/voiceOverview'
 
 export const useVoiceCallCount = (
     filters: StatsFilters,
     timezone: string,
     segment?: VoiceCallSegment,
-    perPage = CALL_LIST_PAGE_SIZE
+    perPage = CALL_LIST_PAGE_SIZE,
 ) => {
-    const {data} = usePostReporting<
-        {[VoiceCallMeasure.VoiceCallCount]: string}[],
-        {[VoiceCallMeasure.VoiceCallCount]: string}[]
+    const { data } = usePostReporting<
+        { [VoiceCallMeasure.VoiceCallCount]: string }[],
+        { [VoiceCallMeasure.VoiceCallCount]: string }[]
     >([voiceCallCountQueryFactory(filters, timezone, segment)], {
         select: (results) => results.data?.data,
     })

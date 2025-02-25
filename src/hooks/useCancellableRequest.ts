@@ -1,10 +1,11 @@
-import axios, {CancelTokenSource, CancelToken} from 'axios'
-import {useRef, useEffect, useCallback} from 'react'
+import { useCallback, useEffect, useRef } from 'react'
+
+import axios, { CancelToken, CancelTokenSource } from 'axios'
 
 type FnReturningPromise = (...args: any[]) => Promise<unknown>
 
 const useCancellableRequest = <T extends FnReturningPromise>(
-    fn: (cancelToken: CancelToken) => T
+    fn: (cancelToken: CancelToken) => T,
 ): [T, () => void] => {
     const cancelTokenSourceRef = useRef<Maybe<CancelTokenSource>>()
     const cancel = useCallback(() => {
@@ -20,7 +21,7 @@ const useCancellableRequest = <T extends FnReturningPromise>(
             cancelTokenSourceRef.current = cancelTokenSource
             try {
                 const res = (await fn(cancelTokenSource.token)(
-                    ...args
+                    ...args,
                 )) as ReturnType<T>
                 return res
             } catch (error) {
@@ -29,7 +30,7 @@ const useCancellableRequest = <T extends FnReturningPromise>(
                 }
             }
         },
-        [fn, cancel]
+        [fn, cancel],
     )
     useEffect(() => cancel, [cancel])
 

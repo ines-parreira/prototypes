@@ -1,7 +1,8 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {VoiceCallDisplayStatus} from 'models/voiceCall/types'
+import { render } from '@testing-library/react'
+
+import { VoiceCallDisplayStatus } from 'models/voiceCall/types'
 
 import VoiceCallStatusLabel from './VoiceCallStatusLabel'
 
@@ -18,13 +19,13 @@ describe('VoiceCallStatusLabel', () => {
     ])(
         'should render the ringing status',
         (displayStatus, prettyName, className) => {
-            const {queryByText} = render(
-                <VoiceCallStatusLabel displayStatus={displayStatus} />
+            const { queryByText } = render(
+                <VoiceCallStatusLabel displayStatus={displayStatus} />,
             )
 
             const status = queryByText(prettyName)
             expect(status).toBeInTheDocument()
             expect(status).toHaveClass(className)
-        }
+        },
     )
 })

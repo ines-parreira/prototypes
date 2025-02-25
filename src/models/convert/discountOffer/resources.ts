@@ -1,4 +1,4 @@
-import {RevenueAddonClient} from 'rest_api/revenue_addon_api/client'
+import { RevenueAddonClient } from 'rest_api/revenue_addon_api/client'
 
 import {
     UniqueDiscountListParams,
@@ -11,7 +11,7 @@ import {
 
 export const getDiscountOffers = async (
     client: RevenueAddonClient | undefined,
-    params: UniqueDiscountListParams
+    params: UniqueDiscountListParams,
 ) => {
     if (!client) return null
 
@@ -20,7 +20,7 @@ export const getDiscountOffers = async (
 
 export const createDiscountOffer = async (
     client: RevenueAddonClient | undefined,
-    data: UniqueDiscountOfferCreatePayload
+    data: UniqueDiscountOfferCreatePayload,
 ) => {
     if (!client) return null
 
@@ -30,7 +30,7 @@ export const createDiscountOffer = async (
 export const updateDiscountOffer = async (
     client: RevenueAddonClient | undefined,
     params: UniqueDiscountOfferPatchParams,
-    data: UniqueDiscountOfferPatchPayload
+    data: UniqueDiscountOfferPatchPayload,
 ) => {
     if (!client) return null
 
@@ -39,7 +39,7 @@ export const updateDiscountOffer = async (
 
 export const deleteDiscountOffer = async (
     client: RevenueAddonClient | undefined,
-    params: UniqueDiscountOfferDeleteParams
+    params: UniqueDiscountOfferDeleteParams,
 ) => {
     if (!client) return null
 
@@ -48,7 +48,7 @@ export const deleteDiscountOffer = async (
 
 export const getDiscountOffer = async (
     client: RevenueAddonClient | undefined,
-    params: UniqueDiscountOfferGetParams
+    params: UniqueDiscountOfferGetParams,
 ) => {
     if (!client) return null
 

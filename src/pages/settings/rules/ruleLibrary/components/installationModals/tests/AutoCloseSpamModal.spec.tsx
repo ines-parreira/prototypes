@@ -1,10 +1,11 @@
-import {render} from '@testing-library/react'
+import React, { ComponentProps } from 'react'
+
+import { render } from '@testing-library/react'
 import _noop from 'lodash/noop'
-import React, {ComponentProps} from 'react'
 
-import {emptyManagedRule} from 'fixtures/rule'
+import { emptyManagedRule } from 'fixtures/rule'
 
-import {AutoCloseSpamModal} from '../AutoCloseSpamModal'
+import { AutoCloseSpamModal } from '../AutoCloseSpamModal'
 
 describe('<AutoCloseSpamModal/>', () => {
     const minProps: ComponentProps<typeof AutoCloseSpamModal> = {
@@ -16,11 +17,11 @@ describe('<AutoCloseSpamModal/>', () => {
         handleDefaultSettings: _noop,
     }
     it('should render the autoclose spam body when Automate is subscribed', () => {
-        const {container} = render(<AutoCloseSpamModal {...minProps} />)
+        const { container } = render(<AutoCloseSpamModal {...minProps} />)
         expect(container.firstChild).toMatchSnapshot()
     })
     it('should render the autoclose spam body when Automate is not subscribed', () => {
-        const {container} = render(<AutoCloseSpamModal {...minProps} />)
+        const { container } = render(<AutoCloseSpamModal {...minProps} />)
         expect(container.firstChild).toMatchSnapshot()
     })
 })

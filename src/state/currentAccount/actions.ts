@@ -1,28 +1,27 @@
-import {AxiosError} from 'axios'
-import {Map} from 'immutable'
+import { AxiosError } from 'axios'
+import { Map } from 'immutable'
 import _capitalize from 'lodash/capitalize'
 
-import {getAccountSettings} from 'models/account/resources'
+import { getAccountSettings } from 'models/account/resources'
 import client from 'models/api/resources'
-import {GorgiasApiError, isGorgiasApiError} from 'models/api/types'
-import {AgentsTableViews} from 'pages/stats/support-performance/agents/AgentsTableConfig'
-import {ChannelsTableViews} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
+import { GorgiasApiError, isGorgiasApiError } from 'models/api/types'
+import { AgentsTableViews } from 'pages/stats/support-performance/agents/AgentsTableConfig'
+import { ChannelsTableViews } from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import GorgiasApi from 'services/gorgiasApi'
-import {ProductData, Subscription} from 'state/billing/types'
+import { ProductData, Subscription } from 'state/billing/types'
 import * as constants from 'state/currentAccount/constants'
 import {
     getAgentsTableConfigSettingsJS,
     getChannelsTableConfigSettingsJS,
 } from 'state/currentAccount/selectors'
-
 import {
     Account,
     AccountSetting,
     AccountSettingType,
 } from 'state/currentAccount/types'
-import {notify} from 'state/notifications/actions'
-import {Notification, NotificationStatus} from 'state/notifications/types'
-import {RootState, StoreDispatch} from 'state/types'
+import { notify } from 'state/notifications/actions'
+import { Notification, NotificationStatus } from 'state/notifications/types'
+import { RootState, StoreDispatch } from 'state/types'
 import {
     AgentsTableColumn,
     ChannelsTableColumns,
@@ -32,7 +31,7 @@ import {
 export const updateAccount =
     (values: Account) =>
     (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
-        dispatch({type: constants.UPDATE_ACCOUNT_START})
+        dispatch({ type: constants.UPDATE_ACCOUNT_START })
 
         return client
             .put<Account>('/api/account/', values)
@@ -47,7 +46,7 @@ export const updateAccount =
                         notify({
                             status: NotificationStatus.Success,
                             message: 'Account settings successfully updated!',
-                        })
+                        }),
                     )
                 },
                 (error) => {
@@ -56,13 +55,13 @@ export const updateAccount =
                         error,
                         reason: 'Failed to update account settings',
                     })
-                }
+                },
             )
     }
 
 export function submitSettingSuccess(
     setting: AccountSetting,
-    isUpdate: boolean
+    isUpdate: boolean,
 ) {
     return {
         type: constants.UPDATE_ACCOUNT_SETTING,
@@ -72,20 +71,20 @@ export function submitSettingSuccess(
 }
 
 const isAccountSettingWithId = (
-    setting: Omit<AccountSetting, 'id'> & {id?: number}
+    setting: Omit<AccountSetting, 'id'> & { id?: number },
 ): setting is AccountSetting => {
     return 'id' in setting && setting.id !== undefined
 }
 
 export function submitSetting(
-    setting: Omit<AccountSetting, 'id'> & {id?: number},
-    notification?: string
+    setting: Omit<AccountSetting, 'id'> & { id?: number },
+    notification?: string,
 ) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         const promise = isAccountSettingWithId(setting)
             ? client.put<AccountSetting>(
                   `/api/account/settings/${setting.id}/`,
-                  setting
+                  setting,
               )
             : client.post<AccountSetting>('/api/account/settings/', setting)
 
@@ -99,14 +98,14 @@ export function submitSetting(
                             message:
                                 notification ??
                                 `${_capitalize(setting.type)} settings saved`,
-                        })
+                        }),
                     )
 
                     return dispatch(
                         submitSettingSuccess(
                             setting,
-                            isAccountSettingWithId(setting)
-                        )
+                            isAccountSettingWithId(setting),
+                        ),
                     )
                 },
                 (error) => {
@@ -115,17 +114,17 @@ export function submitSetting(
                         error,
                         reason: `Failed to update ${setting.type} settings`,
                     })
-                }
+                },
             )
     }
 }
 
 export function submitAgentTableConfigView(
-    activeView: TableView<AgentsTableColumn>
+    activeView: TableView<AgentsTableColumn>,
 ) {
     return (
         dispatch: StoreDispatch,
-        getState: () => RootState
+        getState: () => RootState,
     ): Promise<ReturnType<StoreDispatch>> => {
         const settings = getAgentsTableConfigSettingsJS(getState())
         const currentSettings = settings ? settings.data : AgentsTableViews
@@ -136,24 +135,24 @@ export function submitAgentTableConfigView(
                 data: {
                     active_view: activeView.id,
                     views: currentSettings.views.find(
-                        (view) => view.id === activeView.id
+                        (view) => view.id === activeView.id,
                     )
                         ? currentSettings.views.map((view) =>
-                              view.id === activeView.id ? activeView : view
+                              view.id === activeView.id ? activeView : view,
                           )
                         : [...currentSettings.views, activeView],
                 },
-            })
+            }),
         )
     }
 }
 
 export function submitChannelsTableConfigView(
-    activeView: TableView<ChannelsTableColumns>
+    activeView: TableView<ChannelsTableColumns>,
 ) {
     return (
         dispatch: StoreDispatch,
-        getState: () => RootState
+        getState: () => RootState,
     ): Promise<ReturnType<StoreDispatch>> => {
         const settings = getChannelsTableConfigSettingsJS(getState())
         const currentSettings = settings ? settings.data : ChannelsTableViews
@@ -164,14 +163,14 @@ export function submitChannelsTableConfigView(
                 data: {
                     active_view: activeView.id,
                     views: currentSettings.views.find(
-                        (view) => view.id === activeView.id
+                        (view) => view.id === activeView.id,
                     )
                         ? currentSettings.views.map((view) =>
-                              view.id === activeView.id ? activeView : view
+                              view.id === activeView.id ? activeView : view,
                           )
                         : [...currentSettings.views, activeView],
                 },
-            })
+            }),
         )
     }
 }
@@ -181,7 +180,7 @@ export function updateSubscription(subscription: Subscription) {
         return client
             .put<Record<string, string>>(
                 '/api/billing/subscription/',
-                subscription
+                subscription,
             )
             .then((json) => json?.data)
             .then(
@@ -190,7 +189,7 @@ export function updateSubscription(subscription: Subscription) {
                         notify({
                             status: NotificationStatus.Success,
                             message: 'Your subscription was updated.',
-                        })
+                        }),
                     )
                     return dispatch({
                         type: constants.UPDATE_SUBSCRIPTION_SUCCESS,
@@ -203,21 +202,21 @@ export function updateSubscription(subscription: Subscription) {
                         error,
                         reason: 'Failed to update the current subscription.',
                     })
-                }
+                },
             )
     }
 }
 
 export function updateSubscriptionsForPlans(
     products: ProductData,
-    notifications: Notification[]
+    notifications: Notification[],
 ) {
     return async (dispatch: StoreDispatch): Promise<void> => {
         const response = await client.put<Record<string, string>>(
             '/api/billing/subscription/',
             {
                 prices: Object.values(products),
-            }
+            },
         )
 
         dispatch({
@@ -247,13 +246,13 @@ export const setCurrentSubscription = (subscription: Map<any, any>) => {
 export const updateAccountOwner =
     (userId: number) =>
     (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
-        return client.put('/api/account/owner/', {id: userId}).then(
+        return client.put('/api/account/owner/', { id: userId }).then(
             () => {
                 void dispatch(
                     notify({
                         status: NotificationStatus.Success,
                         message: 'The account owner was successfully​ changed.',
-                    })
+                    }),
                 )
                 return dispatch({
                     type: constants.UPDATE_ACCOUNT_OWNER_SUCCESS,
@@ -266,14 +265,14 @@ export const updateAccountOwner =
                     error,
                     reason: 'Failed to change the account owner. Please try again in a few seconds.',
                 })
-            }
+            },
         )
     }
 
 export const fetchAccountSettings =
     (type?: string | null) =>
     async (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
-        dispatch({type: constants.FETCH_ACCOUNT_SETTINGS_START})
+        dispatch({ type: constants.FETCH_ACCOUNT_SETTINGS_START })
         try {
             const accountSettings = await getAccountSettings(type)
             return dispatch({
@@ -300,15 +299,15 @@ export const resendVerificationEmail =
                 notify({
                     status: NotificationStatus.Success,
                     message: 'The verification email has been resent!',
-                })
+                }),
             )
         } catch (exc) {
             void dispatch(
                 notify({
                     status: NotificationStatus.Error,
-                    message: (exc as AxiosError<{error: {msg: string}}>)
+                    message: (exc as AxiosError<{ error: { msg: string } }>)
                         .response?.data.error.msg,
-                })
+                }),
             )
         }
     }
@@ -333,7 +332,7 @@ export function cancelHelpdeskAutoRenewal() {
                             status: NotificationStatus.Success,
                             message:
                                 'Your Helpdesk auto-renewal has been cancelled.',
-                        })
+                        }),
                     )
 
                     return true
@@ -350,10 +349,10 @@ export function cancelHelpdeskAutoRenewal() {
                             status: NotificationStatus.Error,
                             message: message,
                             allowHTML: true,
-                        })
+                        }),
                     )
                     return false
-                }
+                },
             )
     }
 }

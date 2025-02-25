@@ -1,8 +1,9 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -10,7 +11,7 @@ import {
     GORGIAS_CHAT_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
 } from 'constants/integration'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import ConvertBundleDetail from '../ConvertBundleDetail'
 
@@ -38,7 +39,7 @@ describe('ConvertBundleDetail', () => {
                         })}
                     />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(screen.getByText(/Test Chat Integration/)).toBeInTheDocument()
@@ -59,7 +60,7 @@ describe('ConvertBundleDetail', () => {
                         })}
                     />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(screen.getByText(/Test Store Integration/)).toBeInTheDocument()
@@ -74,14 +75,14 @@ describe('ConvertBundleDetail', () => {
                         isThemeAppExtensionInstallation={false}
                     />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(
-            screen.getByText(/Campaign bundle installation method/)
+            screen.getByText(/Campaign bundle installation method/),
         ).toBeInTheDocument()
         expect(
-            screen.getByText(/Installing the campaign bundle is required/)
+            screen.getByText(/Installing the campaign bundle is required/),
         ).toBeInTheDocument()
     })
 })

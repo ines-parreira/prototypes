@@ -1,9 +1,9 @@
-import {act, render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import {fromJS, Map} from 'immutable'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {Provider} from 'react-redux'
+import { act, render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { fromJS, Map } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import {
@@ -11,12 +11,12 @@ import {
     StatValueType,
     TICKETS_PER_TAG,
 } from 'config/stats'
-import {channels} from 'fixtures/channels'
-import {Integration} from 'models/integration/types'
-import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
-import {TableStat} from 'pages/stats/common/components/charts/TableStat/TableStat'
+import { channels } from 'fixtures/channels'
+import { Integration } from 'models/integration/types'
+import { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
+import { TableStat } from 'pages/stats/common/components/charts/TableStat/TableStat'
 import * as channelsService from 'services/channels'
-import {initialState} from 'state/tags/reducers'
+import { initialState } from 'state/tags/reducers'
 
 jest.spyOn(channelsService, 'getChannels').mockReturnValue(channels)
 
@@ -59,10 +59,10 @@ const tableStatData = fromJS({
                     type: StatValueType.Currency,
                     currency: 'AUD',
                 },
-                {name: 'Online time', type: StatValueType.OnlineTime},
-                {name: 'Online state', type: StatValueType.OnlineState},
-                {name: 'Ticket details', type: StatValueType.TicketDetails},
-                {name: 'Customer link', type: StatValueType.CustomerLink},
+                { name: 'Online time', type: StatValueType.OnlineTime },
+                { name: 'Online state', type: StatValueType.OnlineState },
+                { name: 'Ticket details', type: StatValueType.TicketDetails },
+                { name: 'Customer link', type: StatValueType.CustomerLink },
                 {
                     name: 'Customer link - null',
                     type: StatValueType.CustomerLink,
@@ -101,7 +101,7 @@ const tableStatData = fromJS({
             [
                 {
                     type: StatValueType.User,
-                    value: {id: 1, name: 'Foo'},
+                    value: { id: 1, name: 'Foo' },
                 },
                 {
                     type: StatValueType.String,
@@ -201,7 +201,7 @@ const tableStatData = fromJS({
                     type: StatValueType.SatisfactionSurveyLink,
                 },
                 {
-                    value: {title: 'Article Title', url: 'fake url'},
+                    value: { title: 'Article Title', url: 'fake url' },
                     type: StatValueType.TitleWithLink,
                 },
                 {
@@ -234,7 +234,7 @@ const tableStatDataOnlyWithOnlineState = fromJS({
     data: {
         axes: {
             x: [
-                {name: 'Online state', type: StatValueType.OnlineState},
+                { name: 'Online state', type: StatValueType.OnlineState },
                 {
                     name: 'Ticket details',
                     type: StatValueType.TicketDetails,
@@ -289,41 +289,41 @@ const selfServiceConfigurationsData = [
 ]
 
 describe('TableStat', () => {
-    const defaultState = {entities: {tags: initialState}}
+    const defaultState = { entities: { tags: initialState } }
     it('should render a table chart', () => {
         const config = statsConfig.find(
-            (config, key) => key === TICKETS_PER_TAG
+            (config, key) => key === TICKETS_PER_TAG,
         )
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <TableStat
                     {...(tableStatData.toObject() as ComponentProps<
                         typeof TableStat
                     >)}
-                    context={{tagColors: null}}
+                    context={{ tagColors: null }}
                     config={config}
                     integrations={integrationsData}
                     selfServiceConfigurations={selfServiceConfigurationsData}
                 />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render a table chart with "no data" message', () => {
         const config = statsConfig.find(
-            (config, key) => key === TICKETS_PER_TAG
+            (config, key) => key === TICKETS_PER_TAG,
         )
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <TableStat
                     {...(tableStatNoData.toObject() as ComponentProps<
                         typeof TableStat
                     >)}
-                    context={{tagColors: null}}
+                    context={{ tagColors: null }}
                     config={config}
                 />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -333,9 +333,9 @@ describe('TableStat', () => {
             ...statsConfig
                 .find((config, key) => key === TICKETS_PER_TAG)
                 .toJS(),
-            tableOptions: {showLines: 1},
+            tableOptions: { showLines: 1 },
         }
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <TableStat
                     {...(tableStatData
@@ -344,15 +344,15 @@ describe('TableStat', () => {
                             fromJS([
                                 tableStatData.getIn(['data', 'lines', 0]),
                                 tableStatData.getIn(['data', 'lines', 0]),
-                            ])
+                            ]),
                         )
                         .toObject() as ComponentProps<typeof TableStat>)}
-                    context={{tagColors: null}}
+                    context={{ tagColors: null }}
                     config={fromJS(config)}
                     integrations={integrationsData}
                     selfServiceConfigurations={selfServiceConfigurationsData}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -363,9 +363,9 @@ describe('TableStat', () => {
             ...statsConfig
                 .find((config, key) => key === TICKETS_PER_TAG)
                 .toJS(),
-            tableOptions: {showLines: 1},
+            tableOptions: { showLines: 1 },
         }
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <TableStat
                     {...(tableStatData
@@ -374,15 +374,15 @@ describe('TableStat', () => {
                             fromJS([
                                 tableStatData.getIn(['data', 'lines', 0]),
                                 tableStatData.getIn(['data', 'lines', 0]),
-                            ])
+                            ]),
                         )
                         .toObject() as ComponentProps<typeof TableStat>)}
-                    context={{tagColors: null}}
+                    context={{ tagColors: null }}
                     config={fromJS(config)}
                     integrations={integrationsData}
                     selfServiceConfigurations={selfServiceConfigurationsData}
                 />
-            </Provider>
+            </Provider>,
         )
 
         act(() => {
@@ -394,20 +394,20 @@ describe('TableStat', () => {
 
     it('should render a table with online status disabled badge', () => {
         const config = statsConfig.find(
-            (config, key) => key === TICKETS_PER_TAG
+            (config, key) => key === TICKETS_PER_TAG,
         )
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <TableStat
                     {...(tableStatDataOnlyWithOnlineState.toObject() as ComponentProps<
                         typeof TableStat
                     >)}
-                    context={{tagColors: null}}
+                    context={{ tagColors: null }}
                     config={config}
                     integrations={integrationsData}
                     selfServiceConfigurations={selfServiceConfigurationsData}
                 />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })

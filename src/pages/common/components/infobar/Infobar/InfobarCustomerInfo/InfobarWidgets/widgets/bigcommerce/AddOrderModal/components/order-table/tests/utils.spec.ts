@@ -2,9 +2,9 @@ import {
     bigCommerceLineItemFixture,
     bigCommerceProductFixture,
 } from 'fixtures/bigcommerce'
-import {BigCommerceProductsListType} from 'models/integration/types'
+import { BigCommerceProductsListType } from 'models/integration/types'
 
-import {getOrderLineItemInfo} from '../utils'
+import { getOrderLineItemInfo } from '../utils'
 
 describe('utils', () => {
     describe('getOrderLineItemInfo', () => {
@@ -26,9 +26,9 @@ describe('utils', () => {
             const product = bigCommerceProductFixture()
             product.id = lineItem.product_id
             lineItem.options = [
-                {name: 'name1', name_id: 1, value: 'name1', value_id: 1},
-                {name: 'name2', name_id: 2, value: 'name2', value_id: 2},
-                {name: 'name3', name_id: 3, value: 'name3', value_id: 3},
+                { name: 'name1', name_id: 1, value: 'name1', value_id: 1 },
+                { name: 'name2', name_id: 2, value: 'name2', value_id: 2 },
+                { name: 'name3', name_id: 3, value: 'name3', value_id: 3 },
             ]
             const products: BigCommerceProductsListType = new Map([
                 [product.id, product],

@@ -1,7 +1,8 @@
-import React, {useCallback, useRef} from 'react'
-import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
+import React, { useCallback, useRef } from 'react'
 
-import {useAppNode} from 'appNode'
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
+
+import { useAppNode } from 'appNode'
 
 import css from './GorgiasTranslateText.less'
 

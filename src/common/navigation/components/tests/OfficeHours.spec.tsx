@@ -1,13 +1,14 @@
-import {render} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {useFlag} from 'core/flags'
-import type {HelpdeskPlan} from 'models/billing/types'
-import {getCurrentHelpdeskPlan} from 'state/billing/selectors'
-import {isTrialing as getIsTrialing} from 'state/currentAccount/selectors'
-import {assumeMock} from 'utils/testing'
+import { render } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { useFlag } from 'core/flags'
+import type { HelpdeskPlan } from 'models/billing/types'
+import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
+import { isTrialing as getIsTrialing } from 'state/currentAccount/selectors'
+import { assumeMock } from 'utils/testing'
 
 import OfficeHours from '../OfficeHours'
 
@@ -22,7 +23,7 @@ jest.mock(
         ({
             ...jest.requireActual('common/segment'),
             logEvent: jest.fn(),
-        }) as typeof import('common/segment')
+        }) as typeof import('common/segment'),
 )
 
 jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
@@ -32,7 +33,7 @@ jest.mock('state/billing/selectors', () => ({
 }))
 const getCurrentHelpdeskPlanMock = assumeMock(getCurrentHelpdeskPlan)
 
-jest.mock('state/currentAccount/selectors', () => ({isTrialing: jest.fn()}))
+jest.mock('state/currentAccount/selectors', () => ({ isTrialing: jest.fn() }))
 const getIsTrialingMock = assumeMock(getIsTrialing)
 
 describe('OfficeHours', () => {
@@ -52,38 +53,46 @@ describe('OfficeHours', () => {
         getCurrentHelpdeskPlanMock.mockReturnValue({
             name: 'Basic',
         } as HelpdeskPlan)
-        const {container} = render(<OfficeHours onToggleDropdown={onToggle} />)
+        const { container } = render(
+            <OfficeHours onToggleDropdown={onToggle} />,
+        )
         expect(container).toBeEmptyDOMElement()
     })
 
     it('should not render while on trial', () => {
         getIsTrialingMock.mockReturnValue(true)
-        const {container} = render(<OfficeHours onToggleDropdown={onToggle} />)
+        const { container } = render(
+            <OfficeHours onToggleDropdown={onToggle} />,
+        )
         expect(container).toBeEmptyDOMElement()
     })
 
     it('should not render if the feature flag is not active', () => {
         useFlagMock.mockReturnValue(false)
-        const {container} = render(<OfficeHours onToggleDropdown={onToggle} />)
+        const { container } = render(
+            <OfficeHours onToggleDropdown={onToggle} />,
+        )
         expect(container).toBeEmptyDOMElement()
     })
 
     it('should render a link to be able to book office hours', () => {
-        const {getByText} = render(<OfficeHours onToggleDropdown={onToggle} />)
+        const { getByText } = render(
+            <OfficeHours onToggleDropdown={onToggle} />,
+        )
         const el = getByText('Book office hours')
         expect(el.getAttribute('href')).toBe(
-            'https://calendly.com/gorgias-office-hours?utm_source=helpdesk&utm_medium=in_product&utm_campaign=user_menu'
+            'https://calendly.com/gorgias-office-hours?utm_source=helpdesk&utm_medium=in_product&utm_campaign=user_menu',
         )
         expect(el.getAttribute('rel')).toBe('noreferrer')
         expect(el.getAttribute('target')).toBe('_blank')
         expect(el.getAttribute('title')).toBe(
-            'Book a meeting with a Customer Success Manager at Gorgias.'
+            'Book a meeting with a Customer Success Manager at Gorgias.',
         )
 
         userEvent.click(el)
         expect(logEvent).toHaveBeenCalledWith(
             SegmentEvent.MenuUserLinkClicked,
-            {link: 'office-hours'}
+            { link: 'office-hours' },
         )
         expect(onToggle).toHaveBeenCalledWith()
     })

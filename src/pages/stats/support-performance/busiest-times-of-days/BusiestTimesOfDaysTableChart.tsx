@@ -1,18 +1,18 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import ChartCard from 'pages/stats/ChartCard'
 import Legend from 'pages/stats/common/components/Legend'
-import {TableHeatmapSwitch} from 'pages/stats/common/components/Table/TableHeatmapSwitch'
-import {DashboardChartProps} from 'pages/stats/custom-reports/types'
+import { TableHeatmapSwitch } from 'pages/stats/common/components/Table/TableHeatmapSwitch'
+import { DashboardChartProps } from 'pages/stats/custom-reports/types'
 import css from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDays.less'
-import {BusiestTimesOfDaysTable} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysTable'
-import {BusiestTimeOfDaysMetrics} from 'pages/stats/support-performance/busiest-times-of-days/types'
+import { BusiestTimesOfDaysTable } from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysTable'
+import { BusiestTimeOfDaysMetrics } from 'pages/stats/support-performance/busiest-times-of-days/types'
 import {
     businessHoursLegend,
     getMetricQuery,
 } from 'pages/stats/support-performance/busiest-times-of-days/utils'
-import {getSelectedMetric} from 'state/ui/stats/busiestTimesSlice'
+import { getSelectedMetric } from 'state/ui/stats/busiestTimesSlice'
 
 const BUSIEST_TIME_OF_THE_WEEK_SECTION_LABEL = 'Busiest times of the week'
 const TICKETS_CREATED_TOOLTIP = 'Tickets created per hour per day of the week'
@@ -61,7 +61,7 @@ export const BusiestTimesOfDaysTableChart = ({
         <ChartCard
             noPadding
             title={BUSIEST_TIME_OF_THE_WEEK_SECTION_LABEL}
-            hint={{title: SectionTooltips[selectedMetric]}}
+            hint={{ title: SectionTooltips[selectedMetric] }}
             dashboard={dashboard}
             chartId={chartId}
             titleExtra={

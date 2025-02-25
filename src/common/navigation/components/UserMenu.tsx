@@ -1,8 +1,9 @@
-import cn from 'classnames'
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {THEME_CONFIGS, useTheme} from 'core/theme'
+import cn from 'classnames'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { THEME_CONFIGS, useTheme } from 'core/theme'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
 import DropdownItemLabel from 'pages/common/components/dropdown/DropdownItemLabel'
@@ -21,6 +22,7 @@ import AvailabilityToggle from './AvailabilityToggle'
 import NavbarLink from './NavbarLink'
 import OfficeHours from './OfficeHours'
 import ThemeMenu from './ThemeMenu'
+
 import css from './UserMenu.less'
 
 enum ActiveScreen {
@@ -34,13 +36,13 @@ type Props = {
     onClose: () => void
 }
 
-export default function UserMenu({onClose}: Props) {
+export default function UserMenu({ onClose }: Props) {
     const theme = useTheme()
     const [activeScreen, setActiveScreen] = useState<ActiveScreen>(
-        ActiveScreen.Main
+        ActiveScreen.Main,
     )
 
-    const selectedTheme = THEME_CONFIGS.find(({name}) => name === theme.name)!
+    const selectedTheme = THEME_CONFIGS.find(({ name }) => name === theme.name)!
 
     return (
         <Screens activeScreen={activeScreen}>
@@ -59,7 +61,7 @@ export default function UserMenu({onClose}: Props) {
                             <i
                                 className={cn(
                                     'material-icons',
-                                    css['sub-menu-chevron']
+                                    css['sub-menu-chevron'],
                                 )}
                             >
                                 chevron_right
@@ -102,7 +104,7 @@ export default function UserMenu({onClose}: Props) {
                                 <i
                                     className={cn(
                                         'material-icons',
-                                        css['sub-menu-chevron']
+                                        css['sub-menu-chevron'],
                                     )}
                                 >
                                     chevron_right
@@ -127,7 +129,7 @@ export default function UserMenu({onClose}: Props) {
                                 <i
                                     className={cn(
                                         'material-icons',
-                                        css['sub-menu-chevron']
+                                        css['sub-menu-chevron'],
                                     )}
                                 >
                                     chevron_right
@@ -225,7 +227,7 @@ export default function UserMenu({onClose}: Props) {
                         <i
                             className={cn(
                                 'material-icons-outlined mr-2',
-                                css.icon
+                                css.icon,
                             )}
                             title="Gorgias Webinars"
                         >
@@ -278,7 +280,7 @@ export default function UserMenu({onClose}: Props) {
                         onClick={() => {
                             shortcutManager.triggerAction(
                                 'KeyboardHelp',
-                                'SHOW_HELP'
+                                'SHOW_HELP',
                             )
                             logEvent(SegmentEvent.MenuUserLinkClicked, {
                                 link: 'keyboard-shortcuts',
@@ -310,7 +312,7 @@ export default function UserMenu({onClose}: Props) {
                     <button
                         className={cn(
                             css['dropdown-item-user-menu'],
-                            css.justify
+                            css.justify,
                         )}
                         onClick={() => {
                             logEvent(SegmentEvent.MenuUserLinkClicked, {
@@ -318,7 +320,7 @@ export default function UserMenu({onClose}: Props) {
                             })
                             window.noticeable.do(
                                 'widget:open',
-                                window.noticeableWidgetId
+                                window.noticeableWidgetId,
                             )
                         }}
                     >

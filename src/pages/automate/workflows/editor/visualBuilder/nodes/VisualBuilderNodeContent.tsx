@@ -1,5 +1,6 @@
-import classnames from 'classnames'
 import React from 'react'
+
+import classnames from 'classnames'
 
 import css from './VisualBuilderNodeContent.less'
 
@@ -8,7 +9,7 @@ type Props = {
     children?: string
 }
 
-const VisualBuilderNodeContent = ({placeholder, children}: Props) => {
+const VisualBuilderNodeContent = ({ placeholder, children }: Props) => {
     return (
         <div
             className={classnames(css.container, {

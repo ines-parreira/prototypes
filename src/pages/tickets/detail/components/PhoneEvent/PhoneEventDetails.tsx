@@ -1,10 +1,11 @@
-import {fromJS, Map} from 'immutable'
-import parsePhoneNumber from 'libphonenumber-js'
 import React from 'react'
 
-import {PhoneIntegrationEvent} from '../../../../../constants/integrations/types/event'
+import { fromJS, Map } from 'immutable'
+import parsePhoneNumber from 'libphonenumber-js'
 
-import {VoiceMessageType} from '../../../../../models/integration/constants'
+import { PhoneIntegrationEvent } from '../../../../../constants/integrations/types/event'
+import { VoiceMessageType } from '../../../../../models/integration/constants'
+
 import css from './PhoneEventDetails.less'
 
 type PhoneEventDetailsProps = {
@@ -17,7 +18,7 @@ export default function PhoneEventDetails({
     const eventType = event.get('type')
     const eventData = event.get('data', fromJS({})) as Map<string, any>
     const formattedCustomerPhoneNumber = parsePhoneNumber(
-        eventData.getIn(['customer', 'phone_number'], '')
+        eventData.getIn(['customer', 'phone_number'], ''),
     )?.formatInternational()
     const customerName = eventData.getIn(['customer', 'name'])
 
@@ -35,7 +36,7 @@ export default function PhoneEventDetails({
 
             const formattedForwardCallPhoneNumber = forwardCallPhoneNumber
                 ? parsePhoneNumber(
-                      forwardCallPhoneNumber
+                      forwardCallPhoneNumber,
                   )?.formatInternational()
                 : null
 
@@ -84,7 +85,7 @@ export default function PhoneEventDetails({
         }
         default: {
             const formattedForwardedPhoneNumber = parsePhoneNumber(
-                eventData.get('forwarded_to', '')
+                eventData.get('forwarded_to', ''),
             )?.formatInternational()
             content = (
                 <>

@@ -1,4 +1,4 @@
-import {IntegrationType} from 'models/integration/constants'
+import { IntegrationType } from 'models/integration/constants'
 
 export const BASE_PATH = `/app/settings/integrations/${IntegrationType.Http}`
 export const NEW_INTEGRATION_PATH = 'new'

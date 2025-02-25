@@ -1,7 +1,8 @@
-import {List, Map} from 'immutable'
+import React, { Component } from 'react'
+
+import { List, Map } from 'immutable'
 import _isUndefined from 'lodash/isUndefined'
-import React, {Component} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
+import { connect, ConnectedProps } from 'react-redux'
 import {
     DropdownItem,
     DropdownMenu,
@@ -12,11 +13,11 @@ import {
     UncontrolledButtonDropdown,
 } from 'reactstrap'
 
-import {WithAppNodeProps, withAppNode} from 'appNode'
+import { withAppNode, WithAppNodeProps } from 'appNode'
 import Button from 'pages/common/components/button/Button'
 import shortcutManager from 'services/shortcutManager/index'
-import {bulkDeleteCustomer} from 'state/customers/actions'
-import {RootState} from 'state/types'
+import { bulkDeleteCustomer } from 'state/customers/actions'
+import { RootState } from 'state/types'
 import {
     areAllActiveViewItemsSelected,
     makeGetViewCount,
@@ -77,11 +78,11 @@ class CustomerListActions extends Component<Props, State> {
     }
 
     _togglePopover = (popoverOpen = '') => {
-        return this.setState({popoverOpen})
+        return this.setState({ popoverOpen })
     }
 
     _bulkDelete = () => {
-        const {bulkDeleteCustomer, selectedItemsIds} = this.props
+        const { bulkDeleteCustomer, selectedItemsIds } = this.props
         this.toggleDeleteConfirmation()
         return bulkDeleteCustomer(selectedItemsIds)
     }
@@ -180,7 +181,7 @@ const connector = connect(
     }),
     {
         bulkDeleteCustomer,
-    }
+    },
 )
 
 export default connector(withAppNode(CustomerListActions))

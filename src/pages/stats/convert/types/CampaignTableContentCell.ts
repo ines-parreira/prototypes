@@ -1,7 +1,7 @@
-import {CampaignPreview} from 'models/convert/campaign/types'
-import {GorgiasChatIntegration} from 'models/integration/types'
-import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
-import {ConvertMetric} from 'state/ui/stats/types'
+import { CampaignPreview } from 'models/convert/campaign/types'
+import { GorgiasChatIntegration } from 'models/integration/types'
+import { DrillDownMetric } from 'state/ui/stats/drillDownSlice'
+import { ConvertMetric } from 'state/ui/stats/types'
 
 export interface CampaignTableContentCell {
     campaign: CampaignPreview

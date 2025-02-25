@@ -1,21 +1,21 @@
-import {render, screen, waitFor} from '@testing-library/react'
-import {mockFlags} from 'jest-launchdarkly-mock'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
-import configureMockStore from 'redux-mock-store'
+import React, { ComponentProps } from 'react'
 
+import { render, screen, waitFor } from '@testing-library/react'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
+import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {SegmentEvent} from 'common/segment'
-import {logEventWithSampling} from 'common/segment/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {MessageMetadataType} from 'models/ticket/types'
-import {AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS} from 'state/agents/constants'
-import {getCurrentAccountId} from 'state/currentAccount/selectors'
-import {shouldDisplayAuditLogEvents as getShouldDisplayAuditLogEvents} from 'state/ticket/selectors'
-import {RootState} from 'state/types'
-import {getSelectedAIMessage} from 'state/ui/ticketAIAgentFeedback'
-import {assumeMock} from 'utils/testing'
+import { SegmentEvent } from 'common/segment'
+import { logEventWithSampling } from 'common/segment/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { MessageMetadataType } from 'models/ticket/types'
+import { AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS } from 'state/agents/constants'
+import { getCurrentAccountId } from 'state/currentAccount/selectors'
+import { shouldDisplayAuditLogEvents as getShouldDisplayAuditLogEvents } from 'state/ticket/selectors'
+import { RootState } from 'state/types'
+import { getSelectedAIMessage } from 'state/ui/ticketAIAgentFeedback'
+import { assumeMock } from 'utils/testing'
 
 import AIAgentDraftMessage from '../../AIAgentDraftMessage/AIAgentDraftMessage'
 import {
@@ -23,7 +23,7 @@ import {
     DRAFT_MESSAGE_TAG,
     TRIAL_MESSAGE_TAG,
 } from '../../AIAgentFeedbackBar/constants'
-import {messageFeedback} from '../../AIAgentFeedbackBar/tests/fixtures'
+import { messageFeedback } from '../../AIAgentFeedbackBar/tests/fixtures'
 import TicketMessages from '../TicketMessages'
 
 jest.mock('state/ui/ticketAIAgentFeedback')
@@ -34,23 +34,23 @@ jest.mock('common/segment/segment')
 const getSelectedAIMessageMock = assumeMock(getSelectedAIMessage)
 const getCurrentAccountIdMock = assumeMock(getCurrentAccountId)
 const getShouldDisplayAuditLogEventsMock = assumeMock(
-    getShouldDisplayAuditLogEvents
+    getShouldDisplayAuditLogEvents,
 )
 const logEventMock = assumeMock(logEventWithSampling)
 
 jest.mock(
     'pages/tickets/detail/components/TicketMessages/Message',
-    () => () => <p>Message</p>
+    () => () => <p>Message</p>,
 )
 
 jest.mock(
     'pages/tickets/detail/components/TicketMessages/Container',
-    () => () => <p>Container</p>
+    () => () => <p>Container</p>,
 )
 
 jest.mock(
     'pages/tickets/detail/components/AIAgentDraftMessage/AIAgentDraftMessage',
-    () => jest.fn(() => <p>AIAgentDraftMessage</p>)
+    () => jest.fn(() => <p>AIAgentDraftMessage</p>),
 )
 
 const mockStore = configureMockStore([thunk])
@@ -65,7 +65,7 @@ describe('TicketMessages', () => {
                 body: 'message',
                 body_html: DRAFT_MESSAGE_TAG,
                 created_at: '2021-01-01T00:00:00Z',
-                sender: {email: 'test@test.com'},
+                sender: { email: 'test@test.com' },
                 public: true,
                 sent_datetime: '2021-01-01T00:00:00Z',
             },
@@ -98,7 +98,7 @@ describe('TicketMessages', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <TicketMessages {...defaultProps} />
-            </Provider>
+            </Provider>,
         )
 
         expect(getCurrentAccountIdMock).toHaveBeenCalled()
@@ -118,7 +118,7 @@ describe('TicketMessages', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <TicketMessages {...draftMessageProps} />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('AIAgentDraftMessage')).toBeInTheDocument()
@@ -127,7 +127,7 @@ describe('TicketMessages', () => {
                 ticketId: draftMessageProps.ticketId,
                 message: draftMessageProps.messages[0],
             }),
-            expect.anything()
+            expect.anything(),
         )
     })
 
@@ -145,7 +145,7 @@ describe('TicketMessages', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <TicketMessages {...trialMessageProps} />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('AIAgentDraftMessage')).toBeInTheDocument()
@@ -155,7 +155,7 @@ describe('TicketMessages', () => {
                 message: trialMessageProps.messages[0],
                 isTrial: true,
             }),
-            expect.anything()
+            expect.anything(),
         )
     })
 
@@ -181,7 +181,7 @@ describe('TicketMessages', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <TicketMessages {...props} />
-            </Provider>
+            </Provider>,
         )
 
         await waitFor(() => {
@@ -191,7 +191,7 @@ describe('TicketMessages', () => {
                     accountId: 1,
                     banner: 'qa_failed',
                 },
-                1
+                1,
             )
         })
     })
@@ -217,7 +217,7 @@ describe('TicketMessages', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <TicketMessages {...props} />
-            </Provider>
+            </Provider>,
         )
 
         await waitFor(() => {
@@ -227,7 +227,7 @@ describe('TicketMessages', () => {
                     accountId: 1,
                     banner: 'trial',
                 },
-                1
+                1,
             )
         })
     })
@@ -254,7 +254,7 @@ describe('TicketMessages', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <TicketMessages {...props} />
-            </Provider>
+            </Provider>,
         )
 
         await waitFor(() => {
@@ -264,7 +264,7 @@ describe('TicketMessages', () => {
                     accountId: 1,
                     banner: BANNER_TYPE.THUMBS_UP_AND_DOWN,
                 },
-                0.1
+                0.1,
             )
         })
     })
@@ -290,7 +290,7 @@ describe('TicketMessages', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <TicketMessages {...props} />
-            </Provider>
+            </Provider>,
         )
 
         await waitFor(() => {
@@ -300,7 +300,7 @@ describe('TicketMessages', () => {
                     accountId: 1,
                     banner: BANNER_TYPE.THUMBS_UP_IMPROVE_RESPONSE,
                 },
-                0.1
+                0.1,
             )
         })
     })
@@ -311,10 +311,10 @@ describe('TicketMessages', () => {
             messages: [],
         }
 
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <TicketMessages {...props} />
-            </Provider>
+            </Provider>,
         )
 
         expect(container).toBeEmptyDOMElement()
@@ -334,10 +334,10 @@ describe('TicketMessages', () => {
             ],
         }
 
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <TicketMessages {...signalMessageProps} />
-            </Provider>
+            </Provider>,
         )
         expect(container).not.toBeEmptyDOMElement()
     })

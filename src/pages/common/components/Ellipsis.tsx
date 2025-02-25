@@ -1,5 +1,6 @@
-import classnames from 'classnames'
 import React from 'react'
+
+import classnames from 'classnames'
 
 import css from './Ellipsis.less'
 
@@ -9,7 +10,7 @@ type Props = {
     onClick: () => void
 }
 
-const Ellipsis = ({title, onClick, className}: Props) => (
+const Ellipsis = ({ title, onClick, className }: Props) => (
     <div
         className={classnames(css['btn-more'], className)}
         title={title}

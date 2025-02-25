@@ -1,27 +1,29 @@
-import {FeedItem, FeedItem as KnockFeedItem} from '@knocklabs/client'
+import React, { useCallback } from 'react'
+
+import { FeedItem, FeedItem as KnockFeedItem } from '@knocklabs/client'
 import {
-    NotificationFeedHeaderProps,
     NotificationFeed,
+    NotificationFeedHeaderProps,
     RenderItemProps,
     useKnockFeed,
 } from '@knocklabs/react'
-import React, {useCallback} from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {NotificationCenterEventTypes} from 'common/segment/types'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { NotificationCenterEventTypes } from 'common/segment/types'
 
-import {RawNotification} from '../types'
+import { RawNotification } from '../types'
 import transformKnockNotification from '../utils/transformKnockNotification'
-import css from './Feed.less'
 import FeedHeader from './FeedHeader'
 import FeedItemComponent from './FeedItem'
+
+import css from './Feed.less'
 
 type Props = {
     onClose?: () => void
 }
 
-export default function Feed({onClose}: Props) {
-    const {feedClient} = useKnockFeed()
+export default function Feed({ onClose }: Props) {
+    const { feedClient } = useKnockFeed()
 
     const handleClickNotification = useCallback(
         (item: KnockFeedItem) => {
@@ -31,7 +33,7 @@ export default function Feed({onClose}: Props) {
             void feedClient.markAsRead(item)
             onClose?.()
         },
-        [feedClient, onClose]
+        [feedClient, onClose],
     )
 
     const handleToggleRead = useCallback(
@@ -46,7 +48,7 @@ export default function Feed({onClose}: Props) {
                 ? void feedClient.markAsUnread(item)
                 : void feedClient.markAsRead(item)
         },
-        [feedClient]
+        [feedClient],
     )
 
     const renderHeader = useCallback(
@@ -56,14 +58,14 @@ export default function Feed({onClose}: Props) {
                 onToggleVisibility={() => onClose?.()}
             />
         ),
-        [onClose]
+        [onClose],
     )
 
     const renderItem = useCallback(
-        ({item}: RenderItemProps) => {
+        ({ item }: RenderItemProps) => {
             const notification = transformKnockNotification(
                 // remove cast after consultation with knock team
-                item as FeedItem<RawNotification>
+                item as FeedItem<RawNotification>,
             )
             return !notification ? null : (
                 <FeedItemComponent
@@ -74,7 +76,7 @@ export default function Feed({onClose}: Props) {
                 />
             )
         },
-        [handleClickNotification, handleToggleRead]
+        [handleClickNotification, handleToggleRead],
     )
 
     return (

@@ -1,9 +1,10 @@
-import {fireEvent, render, waitFor, screen} from '@testing-library/react'
-import {act} from '@testing-library/react-hooks'
-import {Call} from '@twilio/voice-sdk'
 import React from 'react'
 
-import {mockIncomingCall} from 'tests/twilioMocks'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act } from '@testing-library/react-hooks'
+import { Call } from '@twilio/voice-sdk'
+
+import { mockIncomingCall } from 'tests/twilioMocks'
 
 import InCallDialPad from '../InCallDialPad'
 
@@ -47,7 +48,7 @@ jest.mock(
                     }}
                 />
             ))
-        }
+        },
 )
 
 describe('<InCallDialPad />', () => {
@@ -71,7 +72,7 @@ describe('<InCallDialPad />', () => {
         })
 
         await waitFor(() =>
-            expect(screen.getByTestId('digit-1')).toBeInTheDocument()
+            expect(screen.getByTestId('digit-1')).toBeInTheDocument(),
         )
     })
 
@@ -104,7 +105,7 @@ describe('<InCallDialPad />', () => {
         })
 
         await waitFor(() =>
-            expect(screen.getByTestId('digit-1')).toBeInTheDocument()
+            expect(screen.getByTestId('digit-1')).toBeInTheDocument(),
         )
 
         act(() => {
@@ -128,7 +129,7 @@ describe('<InCallDialPad />', () => {
         })
 
         await waitFor(() =>
-            expect(screen.getByText('...3456789012')).toBeInTheDocument()
+            expect(screen.getByText('...3456789012')).toBeInTheDocument(),
         )
     })
 })

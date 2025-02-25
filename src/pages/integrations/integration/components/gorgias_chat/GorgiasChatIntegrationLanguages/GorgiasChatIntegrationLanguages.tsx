@@ -1,20 +1,21 @@
-import {Map} from 'immutable'
 import React from 'react'
-import {Link} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
-import {Language} from 'constants/languages'
-import {IntegrationType} from 'models/integration/constants'
+import { Map } from 'immutable'
+import { Link } from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
+
+import { Language } from 'constants/languages'
+import { IntegrationType } from 'models/integration/constants'
 import DropdownButtonWithSearch, {
     Option as DropdownOption,
 } from 'pages/common/components/DropdownButtonWithSearch/DropdownButtonWithSearch'
 import PageHeader from 'pages/common/components/PageHeader'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
-import {Tab} from 'pages/integrations/integration/types'
+import { Tab } from 'pages/integrations/integration/types'
 
-import {GorgiasChatIntegrationLanguagesTable} from './components/GorgiasChatIntegrationLanguagesTable'
-import {GorgiasChatIntegrationLanguagesTableRow} from './components/GorgiasChatIntegrationLanguagesTable/GorgiasChatIntegrationLanguagesTableRow'
-import {useGorgiasChatIntegrationLanguagesTable} from './components/GorgiasChatIntegrationLanguagesTable/useGorgiasChatIntegrationLanguagesTable'
+import { GorgiasChatIntegrationLanguagesTable } from './components/GorgiasChatIntegrationLanguagesTable'
+import { GorgiasChatIntegrationLanguagesTableRow } from './components/GorgiasChatIntegrationLanguagesTable/GorgiasChatIntegrationLanguagesTableRow'
+import { useGorgiasChatIntegrationLanguagesTable } from './components/GorgiasChatIntegrationLanguagesTable/useGorgiasChatIntegrationLanguagesTable'
 
 type GorgiasChatIntegrationLanguagesProps = {
     integration: Map<any, any>
@@ -37,7 +38,7 @@ const GorgiasChatIntegrationLanguages = ({
     })
 
     const onAddLanguage = async (option: DropdownOption) => {
-        await addLanguage({language: option.value as Language})
+        await addLanguage({ language: option.value as Language })
     }
 
     return (

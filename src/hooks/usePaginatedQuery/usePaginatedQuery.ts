@@ -1,17 +1,18 @@
-import {UseQueryOptions, UseQueryResult} from '@tanstack/react-query'
-import {AxiosResponse} from 'axios'
-import {useCallback, useEffect, useState} from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
-import {useSearchParam} from 'hooks/useSearchParam'
+import { UseQueryOptions, UseQueryResult } from '@tanstack/react-query'
+import { AxiosResponse } from 'axios'
+
+import { useSearchParam } from 'hooks/useSearchParam'
 import {
     ApiListResponseCursorPagination,
     ApiPaginationParams,
 } from 'models/api/types'
 
-import {useResponseCursor} from './useResponseCursor'
+import { useResponseCursor } from './useResponseCursor'
 
 type PaginatedQuery<T> = (
-    params: {cursor: ApiPaginationParams['cursor']; [key: string]: unknown},
+    params: { cursor: ApiPaginationParams['cursor']; [key: string]: unknown },
     overrides: UseQueryOptions<any>,
     ...args: any
 ) => UseQueryResult<AxiosResponse<ApiListResponseCursorPagination<T>>, unknown>
@@ -24,7 +25,7 @@ export const usePaginatedQuery = <T>(
     query: PaginatedQuery<T>,
     params?: Omit<Parameters<PaginatedQuery<T>>[0], 'cursor'>,
     overrides?: Parameters<PaginatedQuery<T>>[1],
-    searchParamLabel = 'cursor'
+    searchParamLabel = 'cursor',
 ) => {
     const [cursor, setCursor] = useSearchParam(searchParamLabel)
 
@@ -34,10 +35,10 @@ export const usePaginatedQuery = <T>(
     }
 
     const queryResults = query(
-        {...params, cursor},
+        { ...params, cursor },
         // We don’t want to re-fetch when we are back on first page
         // and cursor has just been cleared.
-        {enabled: !(previousCursor && !cursor), ...overrides}
+        { enabled: !(previousCursor && !cursor), ...overrides },
     )
 
     const {

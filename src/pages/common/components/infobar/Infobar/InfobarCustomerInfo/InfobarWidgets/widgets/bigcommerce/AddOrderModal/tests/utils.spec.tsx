@@ -48,7 +48,7 @@ describe('utils', () => {
         cart: bigCommerceCartFixture(),
     }
     const nestedCartResponse = {
-        data: {cart: bigCommerceCartFixture()},
+        data: { cart: bigCommerceCartFixture() },
     }
     const integrationId = 1
     const customer = bigCommerceCustomerFixture()
@@ -135,7 +135,7 @@ describe('utils', () => {
 
     describe('addLineItem', () => {
         it('should add a line item to the cart', async () => {
-            apiMock.onAny().reply<BigCommerceCartResponse>(200, {cart})
+            apiMock.onAny().reply<BigCommerceCartResponse>(200, { cart })
 
             const setIsLoadingMock = jest.fn()
             const setProductsMock = jest.fn()
@@ -160,7 +160,7 @@ describe('utils', () => {
         })
 
         it('should throw product modifiers error', async () => {
-            const mockProduct = {...bigCommerceProductFixture()}
+            const mockProduct = { ...bigCommerceProductFixture() }
 
             apiMock.onAny().reply<BigCommerceCartResponse>(422, {
                 error: {
@@ -189,7 +189,7 @@ describe('utils', () => {
                     setCart: setCartMock,
                     setProducts: setProductsMock,
                     setModalErrors,
-                })
+                }),
             ).rejects.toThrow(ProductModifiersChangedError)
 
             expect(setIsLoadingMock).toHaveBeenCalledTimes(2)
@@ -200,7 +200,7 @@ describe('utils', () => {
         it('should set an error because quantity is more than stock', async () => {
             apiMock.onAny().reply<BigCommerceCartResponse>(422, {
                 error: {
-                    data: {cart},
+                    data: { cart },
                     msg: 'Invalid quantity selected. Please adjust product quantity.',
                 },
             })
@@ -225,7 +225,7 @@ describe('utils', () => {
             expect(setModalErrorsMock).toHaveBeenCalledWith(
                 'modal',
                 `Invalid quantity selected for <b>${product.name}</b>. Please adjust product quantity.`,
-                `${product.id}_${variant?.id}`
+                `${product.id}_${variant?.id}`,
             )
         })
     })
@@ -269,7 +269,7 @@ describe('utils', () => {
             const cart = bigCommerceCartFixture()
 
             apiMock.onAny().reply<BigCommerceNestedCartResponse>(200, {
-                data: {cart: bigCommerceCartFixture()},
+                data: { cart: bigCommerceCartFixture() },
             })
 
             const setIsLoadingMock = jest.fn()
@@ -298,7 +298,7 @@ describe('utils', () => {
                     setIsLoading: setIsLoadingMock,
                     setModalErrors: setModalErrorsMock,
                     actionName: BigCommerceActionType.CreateOrder,
-                })
+                }),
             ).rejects.toThrow()
 
             expect(setIsLoadingMock).toHaveBeenCalled()
@@ -309,7 +309,7 @@ describe('utils', () => {
             apiMock.onAny().reply<BigCommerceNestedCartResponse>(422, {
                 error: {
                     // @ts-ignore
-                    data: {cart: {}},
+                    data: { cart: {} },
                     msg: 'Invalid quantity selected. Please adjust product quantity.',
                 },
             })
@@ -323,11 +323,11 @@ describe('utils', () => {
                     setIsLoading: setIsLoadingMock,
                     setModalErrors: setModalErrorsMock,
                     actionName: BigCommerceActionType.CreateOrder,
-                })
+                }),
             ).rejects.toThrow(
                 new BigCommerceLineItemError(
-                    'Invalid quantity selected. Please adjust product quantity.'
-                )
+                    'Invalid quantity selected. Please adjust product quantity.',
+                ),
             )
 
             expect(setIsLoadingMock).toHaveBeenCalled()
@@ -351,7 +351,7 @@ describe('utils', () => {
             const cart = bigCommerceCartFixture()
 
             apiMock.onAny().reply<BigCommerceNestedCartResponse>(200, {
-                data: {cart: bigCommerceCartFixture()},
+                data: { cart: bigCommerceCartFixture() },
             })
 
             const setIsLoadingMock = jest.fn()
@@ -373,7 +373,7 @@ describe('utils', () => {
             apiMock.onAny().reply<BigCommerceNestedCartResponse>(422, {
                 error: {
                     // @ts-ignore
-                    data: {cart: {}},
+                    data: { cart: {} },
                     msg: '[BIGCOMMERCE][some_action] BigCommerce API has returned an error: (422): Doing very bad my friend.',
                 },
             })
@@ -388,9 +388,9 @@ describe('utils', () => {
                     setModalErrors: setModalErrorsMock,
                     discounts: new Map(),
                     setDiscounts: jest.fn(),
-                })
+                }),
             ).rejects.toThrow(
-                new BigCommerceLineItemError('Product could not be updated.')
+                new BigCommerceLineItemError('Product could not be updated.'),
             )
 
             expect(setIsLoadingMock).toHaveBeenCalled()

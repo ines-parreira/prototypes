@@ -1,11 +1,10 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { useHelpCenterList } from 'pages/settings/helpCenter/hooks/useHelpCenterList'
+import { assumeMock } from 'utils/testing'
 
-import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
-import {assumeMock} from 'utils/testing'
-
-import {useGetHelpCentersByShopName} from '../useGetHelpCentersByShopName'
+import { useGetHelpCentersByShopName } from '../useGetHelpCentersByShopName'
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterList')
 const mockUseHelpCenterList = assumeMock(useHelpCenterList)
@@ -19,7 +18,7 @@ describe('useGetHelpCenterByShopName', () => {
             fetchMore: jest.fn(),
         })
 
-        const {result} = renderHook(() => useGetHelpCentersByShopName(''))
+        const { result } = renderHook(() => useGetHelpCentersByShopName(''))
 
         expect(result.current).toStrictEqual({
             isHelpCenterLoading: false,
@@ -34,7 +33,7 @@ describe('useGetHelpCenterByShopName', () => {
             hasMore: false,
             fetchMore: jest.fn(),
         })
-        const {result} = renderHook(() => useGetHelpCentersByShopName('test'))
+        const { result } = renderHook(() => useGetHelpCentersByShopName('test'))
 
         expect(result.current).toStrictEqual({
             isHelpCenterLoading: false,

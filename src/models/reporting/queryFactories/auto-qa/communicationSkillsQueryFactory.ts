@@ -1,14 +1,14 @@
-import {TicketStatus} from 'business/types/ticket'
-import {OrderDirection} from 'models/api/types'
+import { TicketStatus } from 'business/types/ticket'
+import { OrderDirection } from 'models/api/types'
 import {
     TicketQAScoreCubeWithJoins,
     TicketQAScoreDimension,
     TicketQAScoreDimensionName,
     TicketQAScoreMeasure,
 } from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
-import {TicketDimension} from 'models/reporting/cubes/TicketCube'
-import {ReportingFilterOperator, ReportingQuery} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import { TicketDimension } from 'models/reporting/cubes/TicketCube'
+import { ReportingFilterOperator, ReportingQuery } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     perDimensionQueryFactory,
@@ -19,7 +19,7 @@ import {
 export const communicationSkillsQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ): ReportingQuery<TicketQAScoreCubeWithJoins> => ({
     measures: [TicketQAScoreMeasure.AverageScore],
     dimensions: [],
@@ -47,13 +47,13 @@ export const communicationSkillsQueryFactory = (
 
 export const communicationSkillsPerAgentQueryFactory = perDimensionQueryFactory(
     communicationSkillsQueryFactory,
-    TicketDimension.AssigneeUserId
+    TicketDimension.AssigneeUserId,
 )
 
 export const communicationSkillsDrillDownQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ): ReportingQuery<TicketQAScoreCubeWithJoins> => ({
     ...communicationSkillsQueryFactory(filters, timezone, sorting),
     measures: [

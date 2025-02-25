@@ -1,9 +1,9 @@
-import {variants as variantsFixtures} from 'fixtures/abGroup'
-import {campaign} from 'fixtures/campaign'
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
-import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
+import { variants as variantsFixtures } from 'fixtures/abGroup'
+import { campaign } from 'fixtures/campaign'
+import { Campaign } from 'pages/convert/campaigns/types/Campaign'
+import { CampaignVariant } from 'pages/convert/campaigns/types/CampaignVariant'
 
-import {duplicateVariant} from '../duplicateVariant'
+import { duplicateVariant } from '../duplicateVariant'
 
 describe('duplicateVariant', () => {
     it('duplicates CampaignVariant', () => {
@@ -11,18 +11,18 @@ describe('duplicateVariant', () => {
         const [newVariantId, variants] = duplicateVariant(
             variantsFixtures as CampaignVariant[],
             campaign as Campaign,
-            variantIdToDuplicate
+            variantIdToDuplicate,
         )
 
         expect(newVariantId).not.toBeUndefined()
         expect(variants).toHaveLength(3)
 
         const oldVariant = variants?.find(
-            (item) => item.id === variantIdToDuplicate
+            (item) => item.id === variantIdToDuplicate,
         ) as CampaignVariant
 
         const duplicatedVariant = variants?.find(
-            (item) => item.id === newVariantId
+            (item) => item.id === newVariantId,
         ) as CampaignVariant
 
         expect(duplicatedVariant.message_html).toEqual(oldVariant.message_html)
@@ -34,14 +34,14 @@ describe('duplicateVariant', () => {
         const [newVariantId, variants] = duplicateVariant(
             [],
             campaign as Campaign,
-            null
+            null,
         )
 
         expect(newVariantId).not.toBeUndefined()
         expect(variants).toHaveLength(1)
 
         const duplicatedVariant = variants?.find(
-            (item) => item.id === newVariantId
+            (item) => item.id === newVariantId,
         ) as CampaignVariant
 
         expect(duplicatedVariant.message_html).toEqual(campaign.message_html)
@@ -53,7 +53,7 @@ describe('duplicateVariant', () => {
         const [newVariantId, variants] = duplicateVariant(
             variantsFixtures as CampaignVariant[],
             campaign as Campaign,
-            'fake-id'
+            'fake-id',
         )
 
         expect(newVariantId).toBeUndefined()

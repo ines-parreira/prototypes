@@ -1,1 +1,1 @@
-export {default} from './VariantList'
+export { default } from './VariantList'

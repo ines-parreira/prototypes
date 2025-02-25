@@ -1,7 +1,8 @@
 import React from 'react'
-import {Alert} from 'reactstrap'
 
-import {withClipboardButton} from '../utils/withClipboardButton/withClipboardButton'
+import { Alert } from 'reactstrap'
+
+import { withClipboardButton } from '../utils/withClipboardButton/withClipboardButton'
 
 import css from './CodeSnippet.less'
 
@@ -10,7 +11,7 @@ type Props = {
     code: string
 }
 
-function CodeSnippet({id, code}: Props) {
+function CodeSnippet({ id, code }: Props) {
     return (
         <Alert fade={false} className={css.wrapper}>
             <pre id={id} className={css.code}>

@@ -1,26 +1,28 @@
-import {render, screen} from '@testing-library/react'
-
 import React from 'react'
 
-import {DRILL_DOWN_PER_PAGE} from 'hooks/reporting/useDrillDownData'
-import {DrillDownInfoBar} from 'pages/stats/DrillDownInfoBar'
-import {OverviewMetric} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
-import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
+import { render, screen } from '@testing-library/react'
+
+import { DRILL_DOWN_PER_PAGE } from 'hooks/reporting/useDrillDownData'
+import { DrillDownInfoBar } from 'pages/stats/DrillDownInfoBar'
+import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
+import { DrillDownMetric } from 'state/ui/stats/drillDownSlice'
 import {
     ConvertMetric,
     VoiceAgentsMetric,
     VoiceMetric,
 } from 'state/ui/stats/types'
-import {DRILLDOWN_QUERY_LIMIT} from 'utils/reporting'
-import {assumeMock} from 'utils/testing'
+import { DRILLDOWN_QUERY_LIMIT } from 'utils/reporting'
+import { assumeMock } from 'utils/testing'
 
-import {DrillDownDownloadButton} from '../DrillDownDownloadButton'
+import { DrillDownDownloadButton } from '../DrillDownDownloadButton'
 
 jest.mock('pages/stats/DrillDownDownloadButton')
 const DrillDownDownloadButtonMock = assumeMock(DrillDownDownloadButton)
 
 describe('<DrillDownInfobar />', () => {
-    const metricData: DrillDownMetric = {metricName: OverviewMetric.OpenTickets}
+    const metricData: DrillDownMetric = {
+        metricName: OverviewMetric.OpenTickets,
+    }
     const totalResults = 50
 
     const useDrillDownDataMock = jest.fn().mockReturnValue({
@@ -40,11 +42,11 @@ describe('<DrillDownInfobar />', () => {
             <DrillDownInfoBar
                 metricData={metricData}
                 useDataHook={useDrillDownDataMock}
-            />
+            />,
         )
 
         expect(
-            screen.getByText(`${totalResults}`, {exact: false})
+            screen.getByText(`${totalResults}`, { exact: false }),
         ).toBeInTheDocument()
     })
 
@@ -59,11 +61,11 @@ describe('<DrillDownInfobar />', () => {
             <DrillDownInfoBar
                 metricData={metricData}
                 useDataHook={useDrillDownDataMock}
-            />
+            />,
         )
 
         expect(
-            screen.getByText(String(DRILLDOWN_QUERY_LIMIT), {exact: false})
+            screen.getByText(String(DRILLDOWN_QUERY_LIMIT), { exact: false }),
         ).toBeInTheDocument()
     })
 
@@ -78,11 +80,11 @@ describe('<DrillDownInfobar />', () => {
             <DrillDownInfoBar
                 metricData={metricData}
                 useDataHook={useDrillDownDataMock}
-            />
+            />,
         )
 
         expect(
-            screen.getByText('Fetching tickets...', {exact: false})
+            screen.getByText('Fetching tickets...', { exact: false }),
         ).toBeInTheDocument()
     })
 
@@ -100,7 +102,7 @@ describe('<DrillDownInfobar />', () => {
             <DrillDownInfoBar
                 metricData={metricData}
                 useDataHook={useDrillDownDataMock}
-            />
+            />,
         )
 
         expect(screen.getByTestId('download')).toBeInTheDocument()
@@ -135,11 +137,11 @@ describe('<DrillDownInfobar />', () => {
                 <DrillDownInfoBar
                     metricData={metricData}
                     useDataHook={useDrillDownDataMock}
-                />
+                />,
             )
 
             expect(screen.queryByTestId('download')).toBeNull()
-        }
+        },
     )
 
     it.each([
@@ -158,7 +160,7 @@ describe('<DrillDownInfobar />', () => {
         [VoiceAgentsMetric.AgentTotalCalls, 'voice calls'],
         ['test-metric', 'tickets'],
     ])('should render the correct object type for %s', (metric, objectType) => {
-        const metricData = {metricName: metric} as DrillDownMetric
+        const metricData = { metricName: metric } as DrillDownMetric
         useDrillDownDataMock.mockReturnValue({
             perPage: DRILL_DOWN_PER_PAGE,
             totalResults,
@@ -169,9 +171,11 @@ describe('<DrillDownInfobar />', () => {
             <DrillDownInfoBar
                 metricData={metricData}
                 useDataHook={useDrillDownDataMock}
-            />
+            />,
         )
 
-        expect(screen.getByText(objectType, {exact: false})).toBeInTheDocument()
+        expect(
+            screen.getByText(objectType, { exact: false }),
+        ).toBeInTheDocument()
     })
 })

@@ -1,27 +1,29 @@
+import React from 'react'
+
 import classnames from 'classnames'
-import {fromJS, Map} from 'immutable'
+import { fromJS, Map } from 'immutable'
 import _capitalize from 'lodash/capitalize'
 import _isObject from 'lodash/isObject'
-import React from 'react'
 import JSONPretty from 'react-json-pretty'
-import {connect, ConnectedProps} from 'react-redux'
-import {Card, CardBody} from 'reactstrap'
+import { connect, ConnectedProps } from 'react-redux'
+import { Card, CardBody } from 'reactstrap'
 
-import {getActionByName} from 'config/actions'
-import {IntegrationType} from 'models/integration/constants'
+import { getActionByName } from 'config/actions'
+import { IntegrationType } from 'models/integration/constants'
 import IconButton from 'pages/common/components/button/IconButton'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-import {AgentLabel} from 'pages/common/utils/labels'
-import {getIntegrationById} from 'state/integrations/selectors'
+import { AgentLabel } from 'pages/common/utils/labels'
+import { getIntegrationById } from 'state/integrations/selectors'
 import {
     getAppDataByAppId,
     getIntegrationDataByIntegrationId,
 } from 'state/ticket/selectors'
-import {RootState} from 'state/types'
-import {humanizeString, stripErrorMessage} from 'utils'
+import { RootState } from 'state/types'
+import { humanizeString, stripErrorMessage } from 'utils'
+
+import getEvent from './Events'
 
 import css from './Event.less'
-import getEvent from './Events'
 
 export function renderDetails(isError: boolean, eventData: Map<any, any>) {
     const payload = (eventData.get('payload') || fromJS({})) as Map<any, any>
@@ -32,7 +34,7 @@ export function renderDetails(isError: boolean, eventData: Map<any, any>) {
             <div key="error">
                 <b className="text-danger">Error:</b>{' '}
                 {stripErrorMessage(eventData.get('msg'))}
-            </div>
+            </div>,
         )
     }
 
@@ -67,7 +69,7 @@ export function renderDetails(isError: boolean, eventData: Map<any, any>) {
                         })
                         .toList()}
                 </div>
-            </div>
+            </div>,
         )
     }
 
@@ -99,7 +101,7 @@ export class EventContainer extends React.Component<Props, State> {
     }
 
     render() {
-        const {event, isLast, integration, integrationData, appData} =
+        const { event, isLast, integration, integrationData, appData } =
             this.props
 
         const user = (event.get('user') || fromJS({})) as Map<any, any>
@@ -135,7 +137,7 @@ export class EventContainer extends React.Component<Props, State> {
             </div>
         )
 
-        const {objectLabel, objectLink} = getEvent({
+        const { objectLabel, objectLink } = getEvent({
             integration,
             actionConfig,
             payload,
@@ -180,8 +182,8 @@ export class EventContainer extends React.Component<Props, State> {
                                     {hasIntegration &&
                                         _capitalize(
                                             this.getDisplayableType(
-                                                integration.get('type')
-                                            )
+                                                integration.get('type'),
+                                            ),
                                         )}{' '}
                                     ({integration.get('name')})
                                 </span>
@@ -234,14 +236,14 @@ export class EventContainer extends React.Component<Props, State> {
 }
 
 const connector = connect((state: RootState, ownProps: OwnProps) => {
-    const {event} = ownProps
+    const { event } = ownProps
     const integration = getIntegrationById(
-        event.getIn(['data', 'integration_id'])
+        event.getIn(['data', 'integration_id']),
     )(state)
 
     return {
         integrationData: getIntegrationDataByIntegrationId(
-            integration.get('id', '') as number
+            integration.get('id', '') as number,
         )(state),
         appData: getAppDataByAppId(event.getIn(['data', 'app_id']))(state),
         integration,

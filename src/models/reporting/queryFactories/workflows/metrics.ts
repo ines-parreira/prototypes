@@ -2,12 +2,12 @@ import {
     WorkflowDatasetDimension,
     WorkflowDatasetMeasure,
 } from 'models/reporting/cubes/automate_v2/WorkflowDatasetCube'
-import {workflowDatasetDefaultFilters} from 'models/reporting/queryFactories/workflows/filters'
-import {WorkflowStatsFilters} from 'models/stat/types'
+import { workflowDatasetDefaultFilters } from 'models/reporting/queryFactories/workflows/filters'
+import { WorkflowStatsFilters } from 'models/stat/types'
 
 export const workflowDatasetCountQueryFactory = (
     filters: WorkflowStatsFilters,
-    timezone: string
+    timezone: string,
 ) => ({
     measures: [WorkflowDatasetMeasure.CountEvents],
     dimensions: [WorkflowDatasetDimension.EventType],
@@ -17,7 +17,7 @@ export const workflowDatasetCountQueryFactory = (
 
 export const workflowDatasetStepQueryFactory = (
     filters: WorkflowStatsFilters,
-    timezone: string
+    timezone: string,
 ) => ({
     measures: [WorkflowDatasetMeasure.FlowStepDropoff],
     dimensions: [WorkflowDatasetDimension.FlowStepId],
@@ -27,7 +27,7 @@ export const workflowDatasetStepQueryFactory = (
 
 export const workflowDatasetStepCountQueryFactory = (
     filters: WorkflowStatsFilters,
-    timezone: string
+    timezone: string,
 ) => ({
     measures: [WorkflowDatasetMeasure.CountEvents],
     dimensions: [

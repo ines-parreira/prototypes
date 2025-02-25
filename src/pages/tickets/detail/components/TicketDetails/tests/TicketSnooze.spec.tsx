@@ -1,13 +1,13 @@
-import {render, fireEvent, waitFor} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
 
+import { fireEvent, render, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {UserSettingType} from 'config/types/user'
-import {DateFormatType, TimeFormatType} from 'constants/datetime'
+import { UserSettingType } from 'config/types/user'
+import { DateFormatType, TimeFormatType } from 'constants/datetime'
 
 import TicketSnooze from '../TicketSnooze'
 
@@ -33,19 +33,19 @@ describe('<TicketSnooze/>', () => {
 
     describe('rendering', () => {
         it('should render null if no datetime is provided', () => {
-            const {queryByText} = render(
+            const { queryByText } = render(
                 <Provider store={store}>
                     <TicketSnooze timezone="utc" />
-                </Provider>
+                </Provider>,
             )
             expect(queryByText('Snoozed')).not.toBeInTheDocument()
         })
 
         it('should render a badge with a tooltip', async () => {
-            const {getByText} = render(
+            const { getByText } = render(
                 <Provider store={store}>
                     <TicketSnooze datetime="2017-12-22 17:00" timezone="utc" />
-                </Provider>
+                </Provider>,
             )
             const el = getByText('Snoozed')
             expect(el).toBeInTheDocument()

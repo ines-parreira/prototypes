@@ -1,27 +1,28 @@
+import React, { FC, useEffect, useMemo } from 'react'
+
 import classNames from 'classnames'
-import React, {FC, useEffect, useMemo} from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {Article, HelpCenter} from 'models/helpCenter/types'
+import { Article, HelpCenter } from 'models/helpCenter/types'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
+import { ArticleRowActionTypes } from 'pages/settings/helpCenter/constants'
+import { useArticlesActions } from 'pages/settings/helpCenter/hooks/useArticlesActions'
+import { useCategoriesActions } from 'pages/settings/helpCenter/hooks/useCategoriesActions'
+import { FlatAlgoliaSearchResults } from 'pages/settings/helpCenter/providers/SearchContext'
+import { getArticlesById } from 'state/entities/helpCenter/articles'
+import { getCategoriesById } from 'state/entities/helpCenter/categories'
+import { getViewLanguage } from 'state/ui/helpCenter'
 
-import {ArticleRowActionTypes} from 'pages/settings/helpCenter/constants'
-import {useArticlesActions} from 'pages/settings/helpCenter/hooks/useArticlesActions'
-import {useCategoriesActions} from 'pages/settings/helpCenter/hooks/useCategoriesActions'
-import {FlatAlgoliaSearchResults} from 'pages/settings/helpCenter/providers/SearchContext'
-import {getArticlesById} from 'state/entities/helpCenter/articles'
-import {getCategoriesById} from 'state/entities/helpCenter/categories'
-import {getViewLanguage} from 'state/ui/helpCenter'
+import { SearchResultsArticleRow } from './SearchResultsArticleRow'
+import { SearchResultsCategoryRow } from './SearchResultsCategoryRow'
+import { getMissingEntities, searchResultsTreeFromAlgolia } from './utils'
 
 import css from './SearchResults.less'
-import {SearchResultsArticleRow} from './SearchResultsArticleRow'
-import {SearchResultsCategoryRow} from './SearchResultsCategoryRow'
-import {getMissingEntities, searchResultsTreeFromAlgolia} from './utils'
 
 const UncategorizedArticlesHeaderRow: FC = () => (
     <TableBodyRow className={css.row}>
@@ -42,7 +43,7 @@ type Props = {
     onArticleClickSettings: (
         action: ArticleRowActionTypes,
         article: Article,
-        isArticleOrAncestorUnlisted: boolean
+        isArticleOrAncestorUnlisted: boolean,
     ) => void
 }
 
@@ -63,17 +64,17 @@ export const SearchResults: FC<Props> = ({
     const resultsTree = useMemo(
         () =>
             searchResultsTreeFromAlgolia(results, categoriesById, articlesById),
-        [results, categoriesById, articlesById]
+        [results, categoriesById, articlesById],
     )
 
     useEffect(() => {
-        const {missingArticlesIds, missingCategoriesIds} =
+        const { missingArticlesIds, missingCategoriesIds } =
             getMissingEntities(resultsTree)
 
         async function fetchData() {
             if (missingArticlesIds.size > 0) {
                 await articlesActions.fetchArticlesByIds(
-                    Array.from(missingArticlesIds)
+                    Array.from(missingArticlesIds),
                 )
             }
 
@@ -82,9 +83,9 @@ export const SearchResults: FC<Props> = ({
                     categoriesActions.fetchCategories(
                         viewLanguage,
                         categoryId,
-                        false
-                    )
-                )
+                        false,
+                    ),
+                ),
             )
         }
 
@@ -96,11 +97,11 @@ export const SearchResults: FC<Props> = ({
     return (
         <TableWrapper>
             <TableHead className={css['header-tr']}>
-                <HeaderCell style={{width: 25}} />
+                <HeaderCell style={{ width: 25 }} />
                 <HeaderCell />
                 <HeaderCell />
-                <HeaderCell style={{width: 124}} />
-                <HeaderCell style={{width: 160}} />
+                <HeaderCell style={{ width: 124 }} />
+                <HeaderCell style={{ width: 160 }} />
             </TableHead>
             <TableBody className={css['table-body']}>
                 {resultsTree.uncategorized.length > 0 && (

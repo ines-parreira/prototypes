@@ -1,7 +1,8 @@
-import classnames from 'classnames'
-import {Map} from 'immutable'
-import _rangeRight from 'lodash/rangeRight'
 import React from 'react'
+
+import classnames from 'classnames'
+import { Map } from 'immutable'
+import _rangeRight from 'lodash/rangeRight'
 
 import DistributionVariantStat, {
     DistributionStatVariant,
@@ -39,7 +40,7 @@ export default function DistributionKeyMetricStat({
                         className={classnames(
                             css.value,
                             'col-md-3',
-                            'ta-right'
+                            'ta-right',
                         )}
                     >
                         {formattedValue.get(index.toString())}

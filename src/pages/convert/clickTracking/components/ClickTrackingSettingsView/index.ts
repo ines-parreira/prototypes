@@ -1,1 +1,1 @@
-export {default} from './ClickTrackingSettingsView'
+export { default } from './ClickTrackingSettingsView'

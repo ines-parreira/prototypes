@@ -1,4 +1,4 @@
-import {useCallback} from 'react'
+import { useCallback } from 'react'
 
 export default function useMouseRelease(callback: () => void) {
     const handleMouseUp = useCallback(() => {

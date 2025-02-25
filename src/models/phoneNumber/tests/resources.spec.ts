@@ -3,17 +3,17 @@ import MockAdapter from 'axios-mock-adapter'
 import _pick from 'lodash/pick'
 
 import {
-    phoneNumbers as phoneNumbersFixtures,
     capabilities as capabilitiesFixtures,
+    phoneNumbers as phoneNumbersFixtures,
 } from 'fixtures/phoneNumber'
 import client from 'models/api/resources'
 
 import {
-    fetchPhoneNumbers,
     createPhoneNumber,
-    updatePhoneNumber,
     deletePhoneNumber,
     fetchPhoneCapabilities,
+    fetchPhoneNumbers,
+    updatePhoneNumber,
 } from '../resources'
 
 const mockedServer = new MockAdapter(client)
@@ -40,9 +40,9 @@ describe('phone numbers resources', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onGet('/api/integrations/phone/phone-numbers/')
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(fetchPhoneNumbers()).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                new Error('Request failed with status code 503'),
             )
         })
 
@@ -59,7 +59,7 @@ describe('phone numbers resources', () => {
             source.cancel()
 
             await expect(fetchPhoneNumbers(source.token)).rejects.toEqual(
-                new axios.Cancel()
+                new axios.Cancel(),
             )
         })
     })
@@ -80,9 +80,9 @@ describe('phone numbers resources', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onPost('/api/integrations/phone/phone-numbers/')
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(
-                createPhoneNumber(phoneNumberDraftMock)
+                createPhoneNumber(phoneNumberDraftMock),
             ).rejects.toEqual(new Error('Request failed with status code 503'))
         })
     })
@@ -100,9 +100,9 @@ describe('phone numbers resources', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onPut(/\/api\/integrations\/phone\/phone-numbers\/\d+\//)
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(
-                updatePhoneNumber(phoneNumbersFixtures[0])
+                updatePhoneNumber(phoneNumbersFixtures[0]),
             ).rejects.toEqual(new Error('Request failed with status code 503'))
         })
     })
@@ -119,9 +119,9 @@ describe('phone numbers resources', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onDelete(/\/api\/integrations\/phone\/phone-numbers\/\d+\//)
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(deletePhoneNumber(1)).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                new Error('Request failed with status code 503'),
             )
         })
     })

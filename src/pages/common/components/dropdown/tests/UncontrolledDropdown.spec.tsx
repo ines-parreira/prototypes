@@ -1,10 +1,11 @@
-import {fireEvent, render} from '@testing-library/react'
-import React, {ComponentProps, useRef} from 'react'
+import React, { ComponentProps, useRef } from 'react'
+
+import { fireEvent, render } from '@testing-library/react'
 
 import UncontrolledDropdown from '../UncontrolledDropdown'
 
 function MockedImplementation(
-    props: Partial<ComponentProps<typeof UncontrolledDropdown>>
+    props: Partial<ComponentProps<typeof UncontrolledDropdown>>,
 ) {
     const targetRef = useRef<HTMLDivElement>(null)
 
@@ -18,16 +19,16 @@ function MockedImplementation(
 
 describe('<UncontrolledDropdown />', () => {
     it('should render a closed dropdown', () => {
-        const {container} = render(
-            <MockedImplementation>Bar</MockedImplementation>
+        const { container } = render(
+            <MockedImplementation>Bar</MockedImplementation>,
         )
 
         expect(container.parentElement).toMatchSnapshot()
     })
 
     it('should open the dropdown when clicking the target', () => {
-        const {container, getByText} = render(
-            <MockedImplementation>Bar</MockedImplementation>
+        const { container, getByText } = render(
+            <MockedImplementation>Bar</MockedImplementation>,
         )
 
         fireEvent.click(getByText(/Foo/))

@@ -1,10 +1,10 @@
 import React from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {ErrorBoundary} from 'pages/ErrorBoundary'
-import {getHasAutomate} from 'state/billing/selectors'
+import { ErrorBoundary } from 'pages/ErrorBoundary'
+import { getHasAutomate } from 'state/billing/selectors'
 
-import {AutomateFeatures} from '../types'
+import { AutomateFeatures } from '../types'
 import AutomateAllRecommendationsPage from './AutomateAllRecommendationsPage'
 import AutomatePaywallView from './AutomatePaywallView'
 

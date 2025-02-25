@@ -1,6 +1,6 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {getDecreaseInFirstResponseTimeTrend} from 'hooks/reporting/automate/automateStatsCalculatedTrends'
+import { getDecreaseInFirstResponseTimeTrend } from 'hooks/reporting/automate/automateStatsCalculatedTrends'
 import {
     fetchBillableTicketsExcludingAIAgent,
     fetchFilteredAutomatedInteractions,
@@ -11,39 +11,39 @@ import {
     useResolutionTimeExcludingAIAgent,
     useResolutionTimeResolvedByAIAgent,
 } from 'hooks/reporting/automate/automationTrends'
-import {useAIAgentUserId} from 'hooks/reporting/automate/useAIAgentUserId'
+import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
 import {
     fetchDecreaseInResolutionTimeTrend,
     useDecreaseInResolutionTimeTrend,
 } from 'hooks/reporting/automate/useDecreaseInResolutionTimeTrend'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {StatsFilters} from 'models/stat/types'
-import {assumeMock} from 'utils/testing'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { StatsFilters } from 'models/stat/types'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/automate/automationTrends')
 const useFilteredAutomatedInteractionsMock = assumeMock(
-    useFilteredAutomatedInteractions
+    useFilteredAutomatedInteractions,
 )
 const useBillableTicketsExcludingAIAgentMock = assumeMock(
-    useBillableTicketsExcludingAIAgent
+    useBillableTicketsExcludingAIAgent,
 )
 const useResolutionTimeExcludingAIAgentMock = assumeMock(
-    useResolutionTimeExcludingAIAgent
+    useResolutionTimeExcludingAIAgent,
 )
 const useResolutionTimeResolvedByAIAgentMock = assumeMock(
-    useResolutionTimeResolvedByAIAgent
+    useResolutionTimeResolvedByAIAgent,
 )
 const fetchFilteredAutomatedInteractionsMock = assumeMock(
-    fetchFilteredAutomatedInteractions
+    fetchFilteredAutomatedInteractions,
 )
 const fetchBillableTicketsExcludingAIAgentMock = assumeMock(
-    fetchBillableTicketsExcludingAIAgent
+    fetchBillableTicketsExcludingAIAgent,
 )
 const fetchResolutionTimeExcludingAIAgentMock = assumeMock(
-    fetchResolutionTimeExcludingAIAgent
+    fetchResolutionTimeExcludingAIAgent,
 )
 const fetchResolutionTimeResolvedByAIAgentMock = assumeMock(
-    fetchResolutionTimeResolvedByAIAgent
+    fetchResolutionTimeResolvedByAIAgent,
 )
 
 jest.mock('hooks/reporting/automate/useAIAgentUserId')
@@ -98,21 +98,21 @@ describe('decreaseInFirstResponseTimeTrend', () => {
         beforeEach(() => {
             useAIAgentUserIdMock.mockReturnValue(aIAgentUserId)
             useFilteredAutomatedInteractionsMock.mockReturnValue(
-                filteredAutomatedInteractions
+                filteredAutomatedInteractions,
             )
             useBillableTicketsExcludingAIAgentMock.mockReturnValue(
-                billableTicketsExcludingAIAgent
+                billableTicketsExcludingAIAgent,
             )
             useResolutionTimeExcludingAIAgentMock.mockReturnValue(
-                resolutionTimeExcludingAIAgent
+                resolutionTimeExcludingAIAgent,
             )
             useResolutionTimeResolvedByAIAgentMock.mockReturnValue(
-                resolutionTimeIncludingAIAgent
+                resolutionTimeIncludingAIAgent,
             )
         })
         it('should fetch data and format the response', () => {
-            const {result} = renderHook(() =>
-                useDecreaseInResolutionTimeTrend(statsFilters, timezone)
+            const { result } = renderHook(() =>
+                useDecreaseInResolutionTimeTrend(statsFilters, timezone),
             )
 
             expect(result.current).toEqual(
@@ -122,8 +122,8 @@ describe('decreaseInFirstResponseTimeTrend', () => {
                     filteredAutomatedInteractions.data,
                     billableTicketsExcludingAIAgent.data,
                     resolutionTimeExcludingAIAgent.data,
-                    resolutionTimeIncludingAIAgent.data
-                )
+                    resolutionTimeIncludingAIAgent.data,
+                ),
             )
         })
     })
@@ -131,16 +131,16 @@ describe('decreaseInFirstResponseTimeTrend', () => {
     describe('fetchDecreaseInResolutionTimeTrend', () => {
         beforeEach(() => {
             fetchFilteredAutomatedInteractionsMock.mockResolvedValue(
-                filteredAutomatedInteractions
+                filteredAutomatedInteractions,
             )
             fetchBillableTicketsExcludingAIAgentMock.mockResolvedValue(
-                billableTicketsExcludingAIAgent
+                billableTicketsExcludingAIAgent,
             )
             fetchResolutionTimeExcludingAIAgentMock.mockResolvedValue(
-                resolutionTimeExcludingAIAgent
+                resolutionTimeExcludingAIAgent,
             )
             fetchResolutionTimeResolvedByAIAgentMock.mockResolvedValue(
-                resolutionTimeIncludingAIAgent
+                resolutionTimeIncludingAIAgent,
             )
         })
 
@@ -149,7 +149,7 @@ describe('decreaseInFirstResponseTimeTrend', () => {
                 statsFilters,
                 timezone,
                 undefined,
-                aIAgentUserId
+                aIAgentUserId,
             )
 
             expect(result).toEqual(
@@ -159,8 +159,8 @@ describe('decreaseInFirstResponseTimeTrend', () => {
                     filteredAutomatedInteractions.data,
                     billableTicketsExcludingAIAgent.data,
                     resolutionTimeExcludingAIAgent.data,
-                    resolutionTimeIncludingAIAgent.data
-                )
+                    resolutionTimeIncludingAIAgent.data,
+                ),
             )
         })
     })

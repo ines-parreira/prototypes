@@ -1,8 +1,9 @@
-import {fireEvent, render} from '@testing-library/react'
-import React, {MouseEvent as ReactMouseEvent, ReactNode} from 'react'
+import React, { MouseEvent as ReactMouseEvent, ReactNode } from 'react'
 
-import {usePanels, useScreenSize} from '../../hooks'
-import type {Config} from '../../types'
+import { fireEvent, render } from '@testing-library/react'
+
+import { usePanels, useScreenSize } from '../../hooks'
+import type { Config } from '../../types'
 import Panel from '../Panel'
 import Panels from '../Panels'
 
@@ -13,19 +14,21 @@ jest.mock('../../hooks', () => ({
 jest.mock(
     '../Handle',
     () =>
-        ({onResizeStart}: {onResizeStart: (ev: ReactMouseEvent) => void}) => (
-            <div onMouseDown={onResizeStart}>Handle</div>
-        )
+        ({
+            onResizeStart,
+        }: {
+            onResizeStart: (ev: ReactMouseEvent) => void
+        }) => <div onMouseDown={onResizeStart}>Handle</div>,
 )
 jest.mock(
     '../Panel',
     () =>
-        ({children, width}: {children: ReactNode; width: number}) => (
+        ({ children, width }: { children: ReactNode; width: number }) => (
             <div>
                 <p>Panel width: {width}</p>
                 {children}
             </div>
-        )
+        ),
 )
 
 const usePanelsMock = usePanels as jest.Mock
@@ -51,7 +54,7 @@ describe('Panels', () => {
     })
 
     it('should render a handle between each panel', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Panels config={config}>
                 <Panel>
                     <p>Navigation</p>
@@ -59,7 +62,7 @@ describe('Panels', () => {
                 <Panel>
                     <p>Panel one</p>
                 </Panel>
-            </Panels>
+            </Panels>,
         )
 
         expect(getByText('Navigation')).toBeInTheDocument()
@@ -68,7 +71,7 @@ describe('Panels', () => {
     })
 
     it('should pass the width into each panel', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Panels config={config}>
                 <Panel>
                     <p>Navigation</p>
@@ -76,7 +79,7 @@ describe('Panels', () => {
                 <Panel>
                     <p>Panel one</p>
                 </Panel>
-            </Panels>
+            </Panels>,
         )
 
         expect(getByText('Panel width: 200')).toBeInTheDocument()
@@ -84,7 +87,7 @@ describe('Panels', () => {
     })
 
     it('should call the correct resize handler when a handler is mousedowned', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Panels config={config}>
                 <Panel>
                     <p>Navigation</p>
@@ -92,7 +95,7 @@ describe('Panels', () => {
                 <Panel>
                     <p>Panel one</p>
                 </Panel>
-            </Panels>
+            </Panels>,
         )
 
         const handle = getByText('Handle')
@@ -108,7 +111,7 @@ describe('Panels', () => {
             resizeStartHandlers: [resizeStartHandler1, resizeStartHandler2],
         })
 
-        const {getAllByText} = render(
+        const { getAllByText } = render(
             <Panels config={config}>
                 <Panel>
                     <p>Navigation</p>
@@ -119,7 +122,7 @@ describe('Panels', () => {
                 <Panel>
                     <p>Panel two</p>
                 </Panel>
-            </Panels>
+            </Panels>,
         )
 
         const handles = getAllByText('Handle')
@@ -138,7 +141,7 @@ describe('Panels', () => {
             resizeStartHandlers: [resizeStartHandler1, resizeStartHandler2],
         })
 
-        const {rerender} = render(
+        const { rerender } = render(
             <Panels config={config} onResize={onResize}>
                 <Panel>
                     <p>Navigation</p>
@@ -146,7 +149,7 @@ describe('Panels', () => {
                 <Panel>
                     <p>Panel one</p>
                 </Panel>
-            </Panels>
+            </Panels>,
         )
 
         usePanelsMock.mockReturnValue({
@@ -162,7 +165,7 @@ describe('Panels', () => {
                 <Panel>
                     <p>Panel one</p>
                 </Panel>
-            </Panels>
+            </Panels>,
         )
 
         expect(onResize).toHaveBeenCalledWith([300, 400])

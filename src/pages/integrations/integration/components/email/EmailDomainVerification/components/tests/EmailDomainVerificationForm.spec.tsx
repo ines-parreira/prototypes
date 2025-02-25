@@ -1,18 +1,18 @@
-import {updateEmailIntegrationDomain} from '@gorgias/api-client'
-import {QueryClientProvider} from '@tanstack/react-query'
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {Provider} from 'react-redux'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { updateEmailIntegrationDomain } from '@gorgias/api-client'
 
-import {RootState, StoreDispatch} from 'state/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import useAppDispatch from 'hooks/useAppDispatch'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 import * as helpers from '../../../helpers'
 import EmailDomainVerificationForm from '../EmailDomainVerificationForm'
@@ -45,7 +45,7 @@ describe('<EmailDomainVerificationForm/>', () => {
                 <Provider store={mockStore({})}>
                     <EmailDomainVerificationForm {...minProps} {...props} />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
     it('should render the form', () => {
@@ -63,8 +63,8 @@ describe('<EmailDomainVerificationForm/>', () => {
         await waitFor(() => {
             expect(updateDomainMock).toHaveBeenCalledWith(
                 'gorgias.com',
-                {dkim_key_size: 1024},
-                undefined
+                { dkim_key_size: 1024 },
+                undefined,
             )
         })
     })
@@ -92,8 +92,8 @@ describe('<EmailDomainVerificationForm/>', () => {
         await waitFor(() => {
             expect(updateDomainMock).toHaveBeenCalledWith(
                 'acme.com',
-                {dkim_key_size: 1024},
-                undefined
+                { dkim_key_size: 1024 },
+                undefined,
             )
 
             expect(notifyMock).toHaveBeenCalledWith({
@@ -118,8 +118,8 @@ describe('<EmailDomainVerificationForm/>', () => {
         updateDomainMock.mockReturnValue(
             Promise.reject({
                 isAxiosError: true,
-                response: {data: {error: {msg: 'Domain already exists'}}},
-            })
+                response: { data: { error: { msg: 'Domain already exists' } } },
+            }),
         )
 
         expect(screen.getByText('1024')).toBeInTheDocument()
@@ -129,8 +129,8 @@ describe('<EmailDomainVerificationForm/>', () => {
         await waitFor(() => {
             expect(updateDomainMock).toHaveBeenCalledWith(
                 'acme.com',
-                {dkim_key_size: 1024},
-                undefined
+                { dkim_key_size: 1024 },
+                undefined,
             )
 
             expect(notifyMock).toHaveBeenCalledWith({
@@ -158,8 +158,8 @@ describe('<EmailDomainVerificationForm/>', () => {
         await waitFor(() => {
             expect(updateDomainMock).toHaveBeenCalledWith(
                 'acme.com',
-                {dkim_key_size: 1024},
-                undefined
+                { dkim_key_size: 1024 },
+                undefined,
             )
         })
     })
@@ -182,7 +182,7 @@ describe('<EmailDomainVerificationForm/>', () => {
     it('should not break rendering when the address is not defined', () => {
         const getDomainAddressMock = jest.spyOn(
             helpers,
-            'getDomainFromEmailAddress'
+            'getDomainFromEmailAddress',
         )
         renderComponent({
             ...minProps,

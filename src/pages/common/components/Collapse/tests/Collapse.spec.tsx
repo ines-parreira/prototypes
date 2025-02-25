@@ -1,5 +1,6 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import Collapse from '../Collapse'
 
@@ -36,10 +37,10 @@ describe('<Collapse />', () => {
             render(
                 <Collapse isOpen direction={direction}>
                     FooBar
-                </Collapse>
+                </Collapse>,
             )
             expect(screen.getByText('FooBar').style[prop]).toBe('')
-        }
+        },
     )
 
     it.each([
@@ -49,13 +50,13 @@ describe('<Collapse />', () => {
         render(
             <Collapse isOpen={false} direction={direction}>
                 FooBar
-            </Collapse>
+            </Collapse>,
         )
         expect(screen.getByText('FooBar').style[prop]).toBe('')
     })
 
     it('should apply correct classes', () => {
-        const {rerender} = render(<Collapse isOpen={false}>FooBar</Collapse>)
+        const { rerender } = render(<Collapse isOpen={false}>FooBar</Collapse>)
         rerender(<Collapse isOpen>FooBar</Collapse>)
         expect(screen.getByText('FooBar')).toHaveClass('isCollapsing')
         jest.advanceTimersByTime(350)
@@ -73,19 +74,19 @@ describe('<Collapse />', () => {
     ] as const)(
         'should set inline style to 0 when isOpen changes to false and remove after transition',
         (prop, direction) => {
-            const {rerender} = render(
+            const { rerender } = render(
                 <Collapse isOpen direction={direction}>
                     FooBar
-                </Collapse>
+                </Collapse>,
             )
             rerender(
                 <Collapse isOpen={false} direction={direction}>
                     FooBar
-                </Collapse>
+                </Collapse>,
             )
             expect(screen.getByText('FooBar').style[prop]).toBe('0px')
             jest.advanceTimersByTime(350)
             expect(screen.getByText('FooBar').style[prop]).toBe('')
-        }
+        },
     )
 })

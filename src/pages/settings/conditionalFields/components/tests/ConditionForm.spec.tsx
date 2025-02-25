@@ -1,29 +1,32 @@
-import {CustomFieldCondition} from '@gorgias/api-queries'
-import {render, screen, fireEvent} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { fireEvent, render, screen } from '@testing-library/react'
+
+import { CustomFieldCondition } from '@gorgias/api-queries'
 
 import '@testing-library/jest-dom/extend-expect'
-import {Form, FormField, FormSubmitButton} from 'core/forms'
+
+import { Form, FormField, FormSubmitButton } from 'core/forms'
 import ToggleInputField from 'pages/common/forms/ToggleInputField'
 import history from 'pages/history'
-import {CUSTOM_FIELD_CONDITIONS_ROUTE} from 'routes/constants'
-import {assumeMock, getLastMockCall} from 'utils/testing'
+import { CUSTOM_FIELD_CONDITIONS_ROUTE } from 'routes/constants'
+import { assumeMock, getLastMockCall } from 'utils/testing'
 
-import {DEFAULT_EXPRESSION_RULE} from '../../constants'
+import { DEFAULT_EXPRESSION_RULE } from '../../constants'
 import useSaveCondition from '../../hooks/useSaveCondition'
 import ConditionForm from '../ConditionForm'
-import {DeletionPopover} from '../DeletionPopover'
-import {ExpressionField} from '../ExpressionField'
+import { DeletionPopover } from '../DeletionPopover'
+import { ExpressionField } from '../ExpressionField'
 import ThenField from '../ThenField'
 
 jest.mock('core/forms', () => ({
-    Form: jest.fn(({children}) => <form>{children}</form>),
+    Form: jest.fn(({ children }) => <form>{children}</form>),
     FormField: jest.fn(() => <div />),
     FormSubmitButton: jest.fn(() => <button />),
     createFormValidator: jest.fn(),
 }))
 jest.mock('pages/common/forms/ToggleInputField', () =>
-    jest.fn(() => <input type="checkbox" />)
+    jest.fn(() => <input type="checkbox" />),
 )
 jest.mock('../../hooks/useSaveCondition', () => jest.fn())
 jest.mock('../DeletionPopover', () => ({
@@ -46,7 +49,7 @@ describe('ConditionForm', () => {
 
     beforeEach(() => {
         DeletionPopoverMock.mockImplementation(
-            ({children}: ComponentProps<typeof DeletionPopover>) => (
+            ({ children }: ComponentProps<typeof DeletionPopover>) => (
                 <div>
                     {children({
                         uid: 'uid',
@@ -54,7 +57,7 @@ describe('ConditionForm', () => {
                         elementRef: jest.fn(),
                     })}
                 </div>
-            )
+            ),
         )
         useSaveConditionMock.mockReturnValue({
             onSubmit: onSubmitMock,
@@ -72,7 +75,7 @@ describe('ConditionForm', () => {
     }
 
     it('should call Form with proper props', () => {
-        const {rerender} = render(<ConditionForm {...defaultProps} />)
+        const { rerender } = render(<ConditionForm {...defaultProps} />)
         expect(FormMock).toHaveBeenCalledWith(
             expect.objectContaining({
                 children: expect.any(Array),
@@ -90,7 +93,7 @@ describe('ConditionForm', () => {
                     deactivated_datetime: null,
                 }),
             }),
-            {}
+            {},
         )
 
         rerender(<ConditionForm />)
@@ -98,7 +101,7 @@ describe('ConditionForm', () => {
             expect.objectContaining({
                 values: undefined,
             }),
-            {}
+            {},
         )
     })
 
@@ -113,7 +116,7 @@ describe('ConditionForm', () => {
                 placeholder:
                     'Provide a name for condition. E.g: Contact Reason Conditions',
             }),
-            {}
+            {},
         )
         expect(FormFieldMock).toHaveBeenNthCalledWith(
             2,
@@ -122,7 +125,7 @@ describe('ConditionForm', () => {
                 placeholder:
                     'Describe how the condition works. E.g: Display when contact reason includes quality and shipping',
             }),
-            {}
+            {},
         )
         expect(FormFieldMock).toHaveBeenNthCalledWith(
             3,
@@ -131,7 +134,7 @@ describe('ConditionForm', () => {
                 name: 'requirements',
                 isRequired: true,
             }),
-            {}
+            {},
         )
         expect(FormFieldMock).toHaveBeenNthCalledWith(
             4,
@@ -141,20 +144,20 @@ describe('ConditionForm', () => {
                 inputTransform: expect.any(Function),
                 outputTransform: expect.any(Function),
             }),
-            {}
+            {},
         )
 
         expect(
-            FormFieldMock.mock.calls[3][0].inputTransform?.(null)
+            FormFieldMock.mock.calls[3][0].inputTransform?.(null),
         ).toBeTruthy()
         expect(
-            FormFieldMock.mock.calls[3][0].inputTransform?.('test')
+            FormFieldMock.mock.calls[3][0].inputTransform?.('test'),
         ).toBeFalsy()
         expect(
-            FormFieldMock.mock.calls[3][0].outputTransform?.(true)
+            FormFieldMock.mock.calls[3][0].outputTransform?.(true),
         ).toBeNull()
         expect(
-            typeof FormFieldMock.mock.calls[3][0].outputTransform?.(false)
+            typeof FormFieldMock.mock.calls[3][0].outputTransform?.(false),
         ).toBe('string')
     })
 
@@ -165,7 +168,7 @@ describe('ConditionForm', () => {
 
     it('should call onSubmit of valid submit and pass it form data', () => {
         render(<ConditionForm />)
-        const data = {hey: 'there'}
+        const data = { hey: 'there' }
         getLastMockCall(FormMock)[0].onValidSubmit(data)
 
         expect(onSubmitMock).toHaveBeenCalledWith(data)
@@ -177,7 +180,7 @@ describe('ConditionForm', () => {
             expect.objectContaining({
                 isLoading: isSubmitting,
             }),
-            {}
+            {},
         )
     })
 
@@ -186,7 +189,7 @@ describe('ConditionForm', () => {
         fireEvent.click(screen.getByText('Cancel'))
 
         expect(history.push).toHaveBeenCalledWith(
-            `/app/settings/${CUSTOM_FIELD_CONDITIONS_ROUTE}`
+            `/app/settings/${CUSTOM_FIELD_CONDITIONS_ROUTE}`,
         )
     })
 
@@ -197,7 +200,7 @@ describe('ConditionForm', () => {
                 condition: defaultProps.condition,
                 redirect: true,
             }),
-            {}
+            {},
         )
     })
 

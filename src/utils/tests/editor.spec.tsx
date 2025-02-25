@@ -1,3 +1,5 @@
+import React, { ReactNode } from 'react'
+
 import {
     AtomicBlockUtils,
     CompositeDecorator,
@@ -7,46 +9,45 @@ import {
     Modifier,
     SelectionState,
 } from 'draft-js'
-import {fromJS} from 'immutable'
-import React, {ReactNode} from 'react'
+import { fromJS } from 'immutable'
 
-import {setQuoteDepth} from '../../pages/common/draftjs/plugins/quotes/quotesEditorUtils'
+import { setQuoteDepth } from '../../pages/common/draftjs/plugins/quotes/quotesEditorUtils'
 import {
-    insertNewBlockAtTheEnd,
-    convertToHTML,
-    convertFromHTML,
-    removeMentions,
-    contentStateFromTextOrHTML,
-    getSelectedEntityKey,
-    refreshEditor,
-    getSelectedText,
-    isValidSelectionKey,
-    getPlainText,
-    unescapeTemplateVars,
-    findContentState,
-    createCollapsedSelectionState,
-    insertNewBlockAtTheBeginning,
-    getContentStateBlocksSnapshot,
-    selectWholeContentState,
-    mergeContentStates,
-    truncateContentStateBlocks,
-    truncateContentStateWords,
     ContentStateCounter,
+    contentStateFromTextOrHTML,
+    convertFromHTML,
+    convertToHTML,
+    createCollapsedSelectionState,
     EditorBlockType,
     editorStateWithReplacedText,
+    findContentState,
+    getContentStateBlocksSnapshot,
+    getPlainText,
+    getSelectedEntityKey,
+    getSelectedText,
+    insertNewBlockAtTheBeginning,
+    insertNewBlockAtTheEnd,
+    isValidSelectionKey,
+    mergeContentStates,
+    refreshEditor,
+    removeMentions,
+    selectWholeContentState,
+    truncateContentStateBlocks,
+    truncateContentStateWords,
+    unescapeTemplateVars,
 } from '../editor'
 
 const imageContentState = ContentState.createFromBlockArray(
     AtomicBlockUtils.insertAtomicBlock(
         EditorState.createEmpty(),
         ContentState.createFromText('')
-            .createEntity('img', 'IMMUTABLE', {src: ''})
+            .createEntity('img', 'IMMUTABLE', { src: '' })
             .getLastCreatedEntityKey(),
-        ' '
+        ' ',
     )
         .getCurrentContent()
         .getBlocksAsArray()
-        .slice(1)
+        .slice(1),
 )
 
 describe('editor utils', () => {
@@ -88,12 +89,12 @@ describe('editor utils', () => {
         it('should turn images into atomic blocks', () => {
             // create an editor state with an image
             const entityKey = ContentState.createFromText('')
-                .createEntity('img', 'IMMUTABLE', {src: ''})
+                .createEntity('img', 'IMMUTABLE', { src: '' })
                 .getLastCreatedEntityKey()
             const editorState = AtomicBlockUtils.insertAtomicBlock(
                 EditorState.createEmpty(),
                 entityKey,
-                ' '
+                ' ',
             )
             // convert ContentState to plain html
             const wrappedHTML = convertToHTML(editorState.getCurrentContent())
@@ -105,8 +106,8 @@ describe('editor utils', () => {
                     .find(
                         (b) =>
                             (b as unknown as Record<string, unknown>).type ===
-                            'atomic'
-                    )
+                            'atomic',
+                    ),
             ).toBeTruthy()
         })
 
@@ -183,7 +184,7 @@ describe('editor utils', () => {
             const quotedContentState = setQuoteDepth(
                 contentState,
                 selectWholeContentState(contentState),
-                1
+                1,
             )
             expect(convertToHTML(quotedContentState)).toMatchSnapshot()
         })
@@ -277,19 +278,19 @@ describe('editor utils', () => {
             const quotedContentState = setQuoteDepth(
                 contentState,
                 selectWholeContentState(contentState),
-                3
+                3,
             )
             const quotedHtml = convertToHTML(quotedContentState)
             const resultContentState = convertFromHTML(quotedHtml)
             expect(
-                getContentStateBlocksSnapshot(resultContentState)
+                getContentStateBlocksSnapshot(resultContentState),
             ).toMatchSnapshot()
         })
 
         it('should convert empty figure to an empty atomic block', () => {
             const contentState = convertFromHTML('<figure />')
             expect(
-                getContentStateBlocksSnapshot(contentState)
+                getContentStateBlocksSnapshot(contentState),
             ).toMatchSnapshot()
         })
 
@@ -306,23 +307,23 @@ describe('editor utils', () => {
         it('should ONLY unescape template variables', () => {
             expect(
                 unescapeTemplateVars(
-                    '%7Bh%7B%7Bello%7D%7D %7B%7Bticket.customer.email%7D%7D %7B%7Bmessage.from_agent%7D%7D %7B%7Bevent.type%7D%7D'
-                )
+                    '%7Bh%7B%7Bello%7D%7D %7B%7Bticket.customer.email%7D%7D %7B%7Bmessage.from_agent%7D%7D %7B%7Bevent.type%7D%7D',
+                ),
             ).toEqual(
-                '%7Bh%7B%7Bello%7D%7D {{ticket.customer.email}} {{message.from_agent}} {{event.type}}'
+                '%7Bh%7B%7Bello%7D%7D {{ticket.customer.email}} {{message.from_agent}} {{event.type}}',
             )
         })
 
         it('should NOT unescape variables (invalid template variables)', () => {
             expect(
-                unescapeTemplateVars('hello %7B%7Baccount.id%7D%7D')
+                unescapeTemplateVars('hello %7B%7Baccount.id%7D%7D'),
             ).toEqual('hello %7B%7Baccount.id%7D%7D')
             expect(
                 unescapeTemplateVars(
-                    'hello %7B%7Bintegrations.data%7D%7D 7B%hello 7B%7B%hello7%D7%D'
-                )
+                    'hello %7B%7Bintegrations.data%7D%7D 7B%hello 7B%7B%hello7%D7%D',
+                ),
             ).toEqual(
-                'hello %7B%7Bintegrations.data%7D%7D 7B%hello 7B%7B%hello7%D7%D'
+                'hello %7B%7Bintegrations.data%7D%7D 7B%hello 7B%7B%hello7%D7%D',
             )
         })
     })
@@ -343,13 +344,13 @@ describe('editor utils', () => {
     describe('editorStateWithReplacedText', () => {
         it('should replace the text in editor state', () => {
             const oldEditorState = EditorState.createWithContent(
-                ContentState.createFromText('old text')
+                ContentState.createFromText('old text'),
             )
 
             const text = 'new text'
             const newEditorState = editorStateWithReplacedText(
                 oldEditorState,
-                text
+                text,
             )
             expect(newEditorState.getCurrentContent().getPlainText()).toBe(text)
         })
@@ -387,7 +388,7 @@ describe('editor utils', () => {
             const block = contentState.getFirstBlock()
             const selection = SelectionState.createEmpty(block.getKey()).set(
                 'focusOffset',
-                3
+                3,
             ) as SelectionState
             const entityKey = getSelectedEntityKey(contentState, selection)
             expect(entityKey).toBe(block.getEntityAt(0))
@@ -441,7 +442,7 @@ describe('editor utils', () => {
             const block = contentState.getFirstBlock()
             const selection = SelectionState.createEmpty(block.getKey()).set(
                 'focusOffset',
-                9
+                9,
             ) as SelectionState
             const entityKey = getSelectedEntityKey(contentState, selection)
             expect(entityKey).toBeFalsy()
@@ -451,19 +452,19 @@ describe('editor utils', () => {
     describe('removeMentions', () => {
         it('should remove only mentions', () => {
             let contentState = convertFromHTML(
-                '@Foo <a href="http://gorgias.io">Gorgias</a>'
+                '@Foo <a href="http://gorgias.io">Gorgias</a>',
             )
             contentState = contentState.createEntity('mention', 'SEGMENTED')
             const entityKey = contentState.getLastCreatedEntityKey()
             const selection = SelectionState.createEmpty(
-                contentState.getFirstBlock().getKey()
+                contentState.getFirstBlock().getKey(),
             ).set('focusOffset', 4) as SelectionState
             contentState = Modifier.replaceText(
                 contentState,
                 selection,
                 '@Foo',
                 null as any, // no inline style needed
-                entityKey
+                entityKey,
             )
             const editorState = EditorState.createWithContent(contentState)
             const newEditorState = removeMentions(editorState)
@@ -480,63 +481,63 @@ describe('editor utils', () => {
                 {
                     strategy: (contentBlock: ContentBlock, callback) =>
                         callback(0, 1),
-                    component: (props: {children: ReactNode}) => (
+                    component: (props: { children: ReactNode }) => (
                         <span>{props.children}</span>
                     ),
                 },
             ])
             let editorState = EditorState.createWithContent(
                 contentState,
-                decorators
+                decorators,
             )
             const updatedContentState = Modifier.insertText(
                 contentState,
                 editorState.getSelection(),
-                'abc'
+                'abc',
             )
             editorState = EditorState.push(
                 editorState,
                 updatedContentState,
-                'insert-characters'
+                'insert-characters',
             )
             const newEditorState = refreshEditor(editorState)
             expect(newEditorState).not.toBe(editorState)
             expect(newEditorState.getSelection()).toBe(
-                editorState.getSelection()
+                editorState.getSelection(),
             )
             expect(newEditorState.getCurrentContent()).toBe(
-                editorState.getCurrentContent()
+                editorState.getCurrentContent(),
             )
             expect(newEditorState.getDecorator()).toBe(decorators)
             expect(newEditorState.getRedoStack()).toBe(
-                editorState.getRedoStack()
+                editorState.getRedoStack(),
             )
             expect(newEditorState.getUndoStack()).toBe(
-                editorState.getUndoStack()
+                editorState.getUndoStack(),
             )
             expect(newEditorState.getLastChangeType()).toBe(
-                editorState.getLastChangeType()
+                editorState.getLastChangeType(),
             )
         })
     })
 
     describe('isValidSelectionKey', () => {
         const editorState1 = EditorState.createWithContent(
-            ContentState.createFromText('foo')
+            ContentState.createFromText('foo'),
         )
         const editorState2 = EditorState.createWithContent(
-            ContentState.createFromText('bar')
+            ContentState.createFromText('bar'),
         )
 
         it('should return true for selection from the same editorState', () => {
             expect(
-                isValidSelectionKey(editorState1, editorState1.getSelection())
+                isValidSelectionKey(editorState1, editorState1.getSelection()),
             ).toBe(true)
         })
 
         it('should return false for selection from some other editorState', () => {
             expect(
-                isValidSelectionKey(editorState1, editorState2.getSelection())
+                isValidSelectionKey(editorState1, editorState2.getSelection()),
             ).toBe(false)
         })
 
@@ -552,7 +553,10 @@ describe('editor utils', () => {
             //@ts-ignore EditorState.push should have 3 args
             const newEditorState = EditorState.push(editorState1, contentState)
             expect(
-                isValidSelectionKey(newEditorState, editorState1.getSelection())
+                isValidSelectionKey(
+                    newEditorState,
+                    editorState1.getSelection(),
+                ),
             ).toBe(false)
         })
     })
@@ -568,7 +572,7 @@ describe('editor utils', () => {
             const html = 'One <a href="http://gorgias.io">gorgias</a> link'
             const contentState = convertFromHTML(html)
             expect(getPlainText(contentState)).toBe(
-                'One gorgias: http://gorgias.io/ link'
+                'One gorgias: http://gorgias.io/ link',
             )
         })
 
@@ -579,7 +583,7 @@ describe('editor utils', () => {
                 ' link <a href="https://gorgias.io/features">home</a> and back'
             const contentState = convertFromHTML(html)
             expect(getPlainText(contentState)).toBe(
-                'One gorgias: http://gorgias.io/ link home: https://gorgias.io/features and back'
+                'One gorgias: http://gorgias.io/ link home: https://gorgias.io/features and back',
             )
         })
 
@@ -591,7 +595,7 @@ describe('editor utils', () => {
                 'Last line'
             const contentState = convertFromHTML(html)
             expect(getPlainText(contentState)).toBe(
-                'First line\nOne gorgias: http://gorgias.io/ link\nLast line'
+                'First line\nOne gorgias: http://gorgias.io/ link\nLast line',
             )
         })
 
@@ -600,7 +604,7 @@ describe('editor utils', () => {
                 'One <a href="http://gorgias.io">gorgias</a> and <a href="http://google.com/">http://google.com/</a> end.'
             const contentState = convertFromHTML(html)
             expect(getPlainText(contentState)).toBe(
-                'One gorgias: http://gorgias.io/ and http://google.com/ end.'
+                'One gorgias: http://gorgias.io/ and http://google.com/ end.',
             )
         })
 
@@ -625,7 +629,7 @@ describe('editor utils', () => {
             ].reduce((contentState, line, i) => {
                 return mergeContentStates(
                     contentState,
-                    setQuoteDepth(line, selectWholeContentState(line), i + 1)
+                    setQuoteDepth(line, selectWholeContentState(line), i + 1),
                 )
             }, ContentState.createFromText('No quote'))
 
@@ -638,7 +642,7 @@ describe('editor utils', () => {
             const contentState = ContentState.createFromText('Foo')
             const newContentState = insertNewBlockAtTheEnd(contentState)
             expect(
-                getContentStateBlocksSnapshot(newContentState)
+                getContentStateBlocksSnapshot(newContentState),
             ).toMatchSnapshot()
         })
     })
@@ -648,7 +652,7 @@ describe('editor utils', () => {
             const contentState = ContentState.createFromText('Foo')
             const newContentState = insertNewBlockAtTheBeginning(contentState)
             expect(
-                getContentStateBlocksSnapshot(newContentState)
+                getContentStateBlocksSnapshot(newContentState),
             ).toMatchSnapshot()
         })
     })
@@ -658,7 +662,7 @@ describe('editor utils', () => {
             const parentContentState = ContentState.createFromText('Foo')
             const contentState = ContentState.createFromText('Bar')
             expect(findContentState(parentContentState, contentState)).toBe(
-                null
+                null,
             )
         })
 
@@ -668,16 +672,16 @@ describe('editor utils', () => {
             const contentState = ContentState.createFromText('\n\nBar')
             const selectionState = findContentState(
                 parentContentState,
-                contentState
+                contentState,
             )
             expect(selectionState).not.toBe(null)
             const removedSelectionContentState = Modifier.removeRange(
                 parentContentState,
                 selectionState as SelectionState,
-                'forward'
+                'forward',
             )
             expect(removedSelectionContentState.getPlainText()).toBe(
-                'Foo\n\nBaz'
+                'Foo\n\nBaz',
             )
         })
 
@@ -686,7 +690,7 @@ describe('editor utils', () => {
                 ContentState.createFromText('Foo\n\n\nBarBaz')
             const contentState = ContentState.createFromText('\n\nBar')
             expect(findContentState(parentContentState, contentState)).toBe(
-                null
+                null,
             )
         })
 
@@ -694,39 +698,39 @@ describe('editor utils', () => {
             const parentContentState = (() => {
                 const contentState = ContentState.createFromText('Foo\nBar')
                 const selectionState = SelectionState.createEmpty(
-                    contentState.getFirstBlock().getKey()
+                    contentState.getFirstBlock().getKey(),
                 )
                     .set('focusKey', contentState.getLastBlock().getKey())
                     .set('focusOffset', contentState.getLastBlock().getLength())
                 return Modifier.setBlockData(
                     contentState,
                     selectionState as SelectionState,
-                    fromJS({foo: 'bar'})
+                    fromJS({ foo: 'bar' }),
                 )
             })()
             const contentState = ContentState.createFromText('Bar')
             expect(findContentState(parentContentState, contentState)).toBe(
-                null
+                null,
             )
         })
 
         it('should return the selection state of the full match when both partial and full matches are in the parent content state', () => {
             const parentContentState = ContentState.createFromText(
-                'Foo\nBar\nFoo\nBar\nBaz'
+                'Foo\nBar\nFoo\nBar\nBaz',
             )
             const contentState = ContentState.createFromText('Bar\nBaz')
             const selectionState = findContentState(
                 parentContentState,
-                contentState
+                contentState,
             )
             expect(selectionState).not.toBe(null)
             const removedSelectionContentState = Modifier.removeRange(
                 parentContentState,
                 selectionState as SelectionState,
-                'forward'
+                'forward',
             )
             expect(removedSelectionContentState.getPlainText()).toBe(
-                'Foo\nBar\nFoo\n'
+                'Foo\nBar\nFoo\n',
             )
         })
     })
@@ -747,14 +751,14 @@ describe('editor utils', () => {
             const contentState = ContentState.createFromText('Foo\nBarBaz')
             const selection = selectWholeContentState(contentState)
             expect(selection.getAnchorKey()).toBe(
-                contentState.getFirstBlock().getKey()
+                contentState.getFirstBlock().getKey(),
             )
             expect(selection.getAnchorOffset()).toBe(0)
             expect(selection.getFocusKey()).toBe(
-                contentState.getLastBlock().getKey()
+                contentState.getLastBlock().getKey(),
             )
             expect(selection.getFocusOffset()).toBe(
-                contentState.getLastBlock().getLength()
+                contentState.getLastBlock().getLength(),
             )
         })
     })
@@ -763,10 +767,10 @@ describe('editor utils', () => {
         it('should add content state at the end of the original content state', () => {
             const contentState = mergeContentStates(
                 ContentState.createFromText('Foo\nBar'),
-                ContentState.createFromText('Baz')
+                ContentState.createFromText('Baz'),
             )
             expect(
-                getContentStateBlocksSnapshot(contentState)
+                getContentStateBlocksSnapshot(contentState),
             ).toMatchSnapshot()
         })
     })
@@ -776,7 +780,7 @@ describe('editor utils', () => {
             expect(() => {
                 truncateContentStateBlocks(
                     ContentState.createFromText('Foo bar'),
-                    -1
+                    -1,
                 )
             }).toThrow('Negative number of blocks')
         })
@@ -784,7 +788,7 @@ describe('editor utils', () => {
         it('should return empty contentState if n is equal 0', () => {
             const contentState = ContentState.createFromText('Foo bar')
             expect(
-                truncateContentStateBlocks(contentState, 0).getBlocksAsArray()
+                truncateContentStateBlocks(contentState, 0).getBlocksAsArray(),
             ).toEqual([])
         })
 
@@ -792,20 +796,20 @@ describe('editor utils', () => {
             const contentState = ContentState.createFromText('Foo\nBar\nBaz')
             const truncatedContentState = truncateContentStateBlocks(
                 contentState,
-                2
+                2,
             )
             expect(
-                getContentStateBlocksSnapshot(truncatedContentState)
+                getContentStateBlocksSnapshot(truncatedContentState),
             ).toMatchSnapshot()
         })
 
         it('should return the same content state when n is larger or equal the number of blocks in the content state', () => {
             const contentState = ContentState.createFromText('Foo\nBar\nBaz')
             expect(truncateContentStateBlocks(contentState, 3)).toBe(
-                contentState
+                contentState,
             )
             expect(truncateContentStateBlocks(contentState, 4)).toBe(
-                contentState
+                contentState,
             )
         })
     })
@@ -815,7 +819,7 @@ describe('editor utils', () => {
             expect(() => {
                 truncateContentStateWords(
                     ContentState.createFromText('Foo bar'),
-                    -1
+                    -1,
                 )
             }).toThrow('Negative number of words')
         })
@@ -824,31 +828,31 @@ describe('editor utils', () => {
             expect(
                 truncateContentStateWords(
                     ContentState.createFromText('Foo'),
-                    0
-                ).getPlainText()
+                    0,
+                ).getPlainText(),
             ).toBe('')
         })
 
         it('should truncate content state words', () => {
             const contentState = ContentState.createFromText(
-                'Foo bar\n Baz  Bac\nQux quux'
+                'Foo bar\n Baz  Bac\nQux quux',
             )
             const truncatedContentState = truncateContentStateWords(
                 contentState,
-                5
+                5,
             )
             expect(
-                getContentStateBlocksSnapshot(truncatedContentState)
+                getContentStateBlocksSnapshot(truncatedContentState),
             ).toMatchSnapshot()
         })
 
         it('should return the same content state if it was not truncated', () => {
             const contentState = ContentState.createFromText('Foo\nBar\nBaz')
             expect(truncateContentStateWords(contentState, 3)).toBe(
-                contentState
+                contentState,
             )
             expect(truncateContentStateWords(contentState, 4)).toBe(
-                contentState
+                contentState,
             )
         })
     })
@@ -869,7 +873,7 @@ describe('editor utils', () => {
 
         it('should add a content state', () => {
             const counter = new ContentStateCounter(
-                ContentState.createFromText('Foo Bar\nBaz')
+                ContentState.createFromText('Foo Bar\nBaz'),
             )
             counter.addContentState(ContentState.createFromText('Bac'))
             expect(counter.words).toBe(4)
@@ -878,7 +882,7 @@ describe('editor utils', () => {
 
         it('should remove a content state', () => {
             const counter = new ContentStateCounter(
-                ContentState.createFromText('Foo Bar\nBaz')
+                ContentState.createFromText('Foo Bar\nBaz'),
             )
             counter.removeContentState(ContentState.createFromText('Baz'))
             expect(counter.words).toBe(2)
@@ -887,7 +891,7 @@ describe('editor utils', () => {
 
         it('should reset a content state', () => {
             const counter = new ContentStateCounter(
-                ContentState.createFromText('Foo Bar\nBaz')
+                ContentState.createFromText('Foo Bar\nBaz'),
             )
             counter.reset(ContentState.createFromText('Baz'))
             expect(counter.words).toBe(1)

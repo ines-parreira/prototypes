@@ -1,8 +1,8 @@
-import {createSelector} from 'reselect'
+import { createSelector } from 'reselect'
 
-import {getShopifyActionsState} from '../selectors'
+import { getShopifyActionsState } from '../selectors'
 
 export const getCancelOrderState = createSelector(
     getShopifyActionsState,
-    (state) => state.cancelOrder
+    (state) => state.cancelOrder,
 )

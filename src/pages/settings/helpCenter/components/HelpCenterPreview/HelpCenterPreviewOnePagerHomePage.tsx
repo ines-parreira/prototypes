@@ -2,11 +2,11 @@ import React from 'react'
 
 import css from './HelpCenterPreviewHomePage.less'
 
-const HomePageCategory = ({title}: {title: string}) => {
+const HomePageCategory = ({ title }: { title: string }) => {
     return <div className={css.categoryTitle}>{title}</div>
 }
 
-const HomePageArticle = ({title}: {title: string}) => {
+const HomePageArticle = ({ title }: { title: string }) => {
     return (
         <li className={css.articleTitle}>
             <span>{title}</span>

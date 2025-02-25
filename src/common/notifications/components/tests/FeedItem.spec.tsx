@@ -1,8 +1,9 @@
-import {fireEvent, render} from '@testing-library/react'
 import React from 'react'
-import type {ReactNode} from 'react'
+import type { ReactNode } from 'react'
 
-import type {Notification} from '../../types'
+import { fireEvent, render } from '@testing-library/react'
+
+import type { Notification } from '../../types'
 import FeedItem from '../FeedItem'
 
 jest.mock('../../data', () => ({
@@ -32,20 +33,24 @@ jest.mock('../../data', () => ({
 
 describe('FeedItem', () => {
     it('should return null if no config is found for the notification type', () => {
-        const {container} = render(
+        const { container } = render(
             <FeedItem
-                notification={{type: 'unknown.type'} as unknown as Notification}
-            />
+                notification={
+                    { type: 'unknown.type' } as unknown as Notification
+                }
+            />,
         )
 
         expect(container).toBeEmptyDOMElement()
     })
 
     it('should render the notification component', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <FeedItem
-                notification={{type: 'ticket-message.created'} as Notification}
-            />
+                notification={
+                    { type: 'ticket-message.created' } as Notification
+                }
+            />,
         )
 
         expect(getByText('Notification component')).toBeInTheDocument()
@@ -54,11 +59,13 @@ describe('FeedItem', () => {
     it('should call onClick when the notification is clicked', () => {
         const onClick = jest.fn()
 
-        const {getByText} = render(
+        const { getByText } = render(
             <FeedItem
-                notification={{type: 'ticket-message.created'} as Notification}
+                notification={
+                    { type: 'ticket-message.created' } as Notification
+                }
                 onClick={onClick}
-            />
+            />,
         )
 
         fireEvent.click(getByText('Notification component'))
@@ -68,11 +75,13 @@ describe('FeedItem', () => {
     it('should call onToggleRead when the notification is marked as read', () => {
         const onToggleRead = jest.fn()
 
-        const {getByText} = render(
+        const { getByText } = render(
             <FeedItem
-                notification={{type: 'ticket-message.created'} as Notification}
+                notification={
+                    { type: 'ticket-message.created' } as Notification
+                }
                 onToggleRead={onToggleRead}
-            />
+            />,
         )
 
         fireEvent.click(getByText('check_box'))

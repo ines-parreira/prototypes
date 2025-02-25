@@ -1,7 +1,8 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {UISLAPolicy} from '../../types'
+import { render } from '@testing-library/react'
+
+import { UISLAPolicy } from '../../types'
 import ToggleCell from '../ToggleCell'
 
 const policy = {
@@ -12,12 +13,12 @@ const policy = {
 
 describe('<ToggleCell />', () => {
     it('should render a toggle input and policy name', () => {
-        const {getByText, getByRole} = render(
+        const { getByText, getByRole } = render(
             <ToggleCell
                 policy={policy}
                 onToggle={jest.fn()}
-                dragRef={{current: null}}
-            />
+                dragRef={{ current: null }}
+            />,
         )
         expect(getByText(policy.name)).toBeInTheDocument()
         expect(getByRole('checkbox')).toBeInTheDocument()

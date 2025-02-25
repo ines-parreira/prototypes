@@ -1,14 +1,16 @@
-import {Label} from '@gorgias/merchant-ui-kit'
+import React, { useMemo, useRef, useState } from 'react'
+
 import _noop from 'lodash/noop'
-import React, {useMemo, useRef, useState} from 'react'
+
+import { Label } from '@gorgias/merchant-ui-kit'
 
 import ActionFormInputs from 'pages/aiAgent/actions/components/ActionFormInputs'
 import VisualBuilderActionIcon from 'pages/automate/workflows/components/VisualBuilderActionIcon'
 import useSplitLLMPromptTriggerInputs from 'pages/automate/workflows/hooks/useSplitLLMPromptTriggerInputs'
-import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
-import {WorkflowVariableGroup} from 'pages/automate/workflows/models/variables.types'
-import {LLMPromptTriggerNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import {Drawer} from 'pages/common/components/Drawer'
+import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
+import { WorkflowVariableGroup } from 'pages/automate/workflows/models/variables.types'
+import { LLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { Drawer } from 'pages/common/components/Drawer'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
@@ -26,26 +28,26 @@ export default function LLMPromptTriggerEditor({
 }: {
     nodeInEdition: LLMPromptTriggerNodeType
 }) {
-    const {dispatch, visualBuilderGraph, getVariableListForNode} =
+    const { dispatch, visualBuilderGraph, getVariableListForNode } =
         useVisualBuilderContext()
 
     const [inputs, templateInputs] = useSplitLLMPromptTriggerInputs(
         nodeInEdition.data.inputs,
-        visualBuilderGraph.nodes
+        visualBuilderGraph.nodes,
     )
 
     const workflowVariables = useMemo(
         () => getVariableListForNode(nodeInEdition.id),
-        [getVariableListForNode, nodeInEdition.id]
+        [getVariableListForNode, nodeInEdition.id],
     )
 
     const customerVariables = workflowVariables.find(
         (variable): variable is WorkflowVariableGroup =>
-            variable.nodeType === 'shopper_authentication'
+            variable.nodeType === 'shopper_authentication',
     )
     const orderVariables = workflowVariables.find(
         (variable): variable is WorkflowVariableGroup =>
-            variable.nodeType === 'order_selection'
+            variable.nodeType === 'order_selection',
     )
 
     const customerVariableInputRef = useRef<HTMLDivElement>(null)
@@ -109,7 +111,7 @@ export default function LLMPromptTriggerEditor({
                                                             {option.name}
                                                         </DropdownItemLabel>
                                                     </DropdownItem>
-                                                )
+                                                ),
                                             )}
                                         </DropdownBody>
                                     </Dropdown>
@@ -152,7 +154,7 @@ export default function LLMPromptTriggerEditor({
                                                             {option.name}
                                                         </DropdownItemLabel>
                                                     </DropdownItem>
-                                                )
+                                                ),
                                             )}
                                         </DropdownBody>
                                     </Dropdown>

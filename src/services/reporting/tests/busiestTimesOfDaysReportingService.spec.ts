@@ -1,15 +1,15 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {getCsvFileNameWithDates} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { getCsvFileNameWithDates } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {
     fetchMessagesSentTimeSeries,
     fetchTicketsClosedTimeSeries,
     fetchTicketsCreatedTimeSeries,
     fetchTicketsRepliedTimeSeries,
 } from 'hooks/reporting/timeSeries'
-import {ReportingGranularity} from 'models/reporting/types'
-import {BusiestTimeOfDaysMetrics} from 'pages/stats/support-performance/busiest-times-of-days/types'
+import { ReportingGranularity } from 'models/reporting/types'
+import { BusiestTimeOfDaysMetrics } from 'pages/stats/support-performance/busiest-times-of-days/types'
 import {
     getAggregatedBusiestTimesOfDayData,
     hourFromHourIndex,
@@ -21,20 +21,20 @@ import {
     useAggregatedBusiestTimesOfDayReportData,
 } from 'services/reporting/busiestTimesOfDaysReportingService'
 import * as files from 'utils/file'
-import {createCsv} from 'utils/file'
-import {assumeMock} from 'utils/testing'
+import { createCsv } from 'utils/file'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('utils/file')
 jest.mock('hooks/reporting/timeSeries')
 const fetchTicketsClosedTimeSeriesMock = assumeMock(
-    fetchTicketsClosedTimeSeries
+    fetchTicketsClosedTimeSeries,
 )
 const fetchMessagesSentTimeSeriesMock = assumeMock(fetchMessagesSentTimeSeries)
 const fetchTicketsRepliedTimeSeriesMock = assumeMock(
-    fetchTicketsRepliedTimeSeries
+    fetchTicketsRepliedTimeSeries,
 )
 const fetchTicketsCreatedTimeSeriesMock = assumeMock(
-    fetchTicketsCreatedTimeSeries
+    fetchTicketsCreatedTimeSeries,
 )
 
 jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
@@ -87,7 +87,7 @@ describe('busiestTimesOfDaysReportingService', () => {
         [hourFromHourIndex(23), 0, 0, 0, 0, 0, 0, 0],
     ]
     describe('createReport', () => {
-        const {btodData} = getAggregatedBusiestTimesOfDayData([[]], timeZone)
+        const { btodData } = getAggregatedBusiestTimesOfDayData([[]], timeZone)
 
         it('should render the report', () => {
             const createCsvMock = jest.spyOn(files, 'createCsv')
@@ -95,7 +95,7 @@ describe('busiestTimesOfDaysReportingService', () => {
             createReport(btodData, period)
 
             expect(createCsvMock).toHaveBeenCalledWith(
-                expectedResultFromEmptyData
+                expectedResultFromEmptyData,
             )
         })
     })
@@ -115,8 +115,8 @@ describe('busiestTimesOfDaysReportingService', () => {
                 data: [[]],
                 isLoading: false,
             })
-            const {result} = renderHook(() =>
-                useAggregatedBusiestTimesOfDayReportData(hook)
+            const { result } = renderHook(() =>
+                useAggregatedBusiestTimesOfDayReportData(hook),
             )
 
             expect(result.current).toEqual({
@@ -150,7 +150,7 @@ describe('busiestTimesOfDaysReportingService', () => {
                 statsFilters,
                 timeZone,
                 ReportingGranularity.Day,
-                context
+                context,
             )
 
             expect(report).toEqual({
@@ -171,7 +171,7 @@ describe('busiestTimesOfDaysReportingService', () => {
                 statsFilters,
                 timeZone,
                 ReportingGranularity.Day,
-                context
+                context,
             )
 
             expect(report).toEqual({

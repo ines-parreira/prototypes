@@ -1,3 +1,5 @@
+import React from 'react'
+
 import {
     act,
     createEvent,
@@ -6,22 +8,20 @@ import {
     waitFor,
     within,
 } from '@testing-library/react'
-import {createMemoryHistory} from 'history'
-import {fromJS} from 'immutable'
-import React from 'react'
-import {Provider} from 'react-redux'
+import { createMemoryHistory } from 'history'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {IntegrationType} from 'models/integration/constants'
+import { IntegrationType } from 'models/integration/constants'
 import {
     useDownloadWorkflowConfigurationStepLogs,
     useGetWorkflowConfigurationTemplates,
     useListActionsApps,
 } from 'models/workflows/queries'
-import {RootState, StoreDispatch} from 'state/types'
-
-import {renderWithRouter} from 'utils/testing'
+import { RootState, StoreDispatch } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
 import ActionsPlatformCreateTemplateView from '../ActionsPlatformCreateTemplateView'
 import useApps from '../hooks/useApps'
@@ -34,8 +34,8 @@ jest.mock('../hooks/useCreateActionTemplate')
 jest.mock('state/integrations/selectors', () => ({
     ...jest.requireActual('state/integrations/selectors'),
     getIntegrationsList: () => [
-        {type: 'shopify', count: 1},
-        {type: 'recharge', count: 0},
+        { type: 'shopify', count: 1 },
+        { type: 'recharge', count: 0 },
     ],
 }))
 
@@ -43,10 +43,10 @@ const mockUseListActionsApps = jest.mocked(useListActionsApps)
 const mockUseApps = jest.mocked(useApps)
 const mockUseCreateActionTemplate = jest.mocked(useCreateActionTemplate)
 const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
-    useGetWorkflowConfigurationTemplates
+    useGetWorkflowConfigurationTemplates,
 )
 const mockUseDownloadWorkflowConfigurationStepLogs = jest.mocked(
-    useDownloadWorkflowConfigurationStepLogs
+    useDownloadWorkflowConfigurationStepLogs,
 )
 const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])({
     integrations: fromJS({
@@ -110,7 +110,7 @@ describe('<ActionsPlatformCreateTemplateView />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <ActionsPlatformCreateTemplateView />
-            </Provider>
+            </Provider>,
         )
 
         act(() => {
@@ -124,12 +124,12 @@ describe('<ActionsPlatformCreateTemplateView />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <ActionsPlatformCreateTemplateView />
-            </Provider>
+            </Provider>,
         )
 
         act(() => {
             fireEvent.focus(
-                within(screen.getByRole('combobox')).getByText('Select App(s)')
+                within(screen.getByRole('combobox')).getByText('Select App(s)'),
             )
         })
 
@@ -163,12 +163,12 @@ describe('<ActionsPlatformCreateTemplateView />', () => {
             </Provider>,
             {
                 history,
-            }
+            },
         )
 
         act(() => {
             fireEvent.focus(
-                within(screen.getByRole('combobox')).getByText('Select App(s)')
+                within(screen.getByRole('combobox')).getByText('Select App(s)'),
             )
         })
 
@@ -182,13 +182,13 @@ describe('<ActionsPlatformCreateTemplateView />', () => {
 
         act(() => {
             fireEvent.change(screen.queryAllByRole('textbox')[0], {
-                target: {value: 'Some name'},
+                target: { value: 'Some name' },
             })
         })
 
         act(() => {
             fireEvent.change(screen.queryAllByRole('textbox')[1], {
-                target: {value: 'Some description'},
+                target: { value: 'Some description' },
             })
         })
 
@@ -206,7 +206,7 @@ describe('<ActionsPlatformCreateTemplateView />', () => {
 
         act(() => {
             fireEvent.change(screen.queryAllByRole('textbox')[1], {
-                target: {value: 'Request name'},
+                target: { value: 'Request name' },
             })
         })
 
@@ -297,7 +297,7 @@ describe('<ActionsPlatformCreateTemplateView />', () => {
 
         await waitFor(() => {
             expect(historyPushSpy).toHaveBeenCalledWith(
-                '/app/automation/actions-platform'
+                '/app/automation/actions-platform',
             )
         })
     })
@@ -313,12 +313,12 @@ describe('<ActionsPlatformCreateTemplateView />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <ActionsPlatformCreateTemplateView />
-            </Provider>
+            </Provider>,
         )
 
         act(() => {
             fireEvent.focus(
-                within(screen.getByRole('combobox')).getByText('Select App(s)')
+                within(screen.getByRole('combobox')).getByText('Select App(s)'),
             )
         })
 

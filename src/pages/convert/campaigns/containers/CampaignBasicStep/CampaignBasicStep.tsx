@@ -1,26 +1,26 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import {fromJS} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { fromJS } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { Label } from '@gorgias/merchant-ui-kit'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import {
     getGorgiasChatLanguageByCode,
     mapIntegrationLanguagesToLanguagePicker,
 } from 'config/integrations/gorgias_chat'
-import {Language as LanguageEnum} from 'constants/languages'
-import {Language} from 'pages/common/components/LanguagePicker/LanguagePicker'
+import { Language as LanguageEnum } from 'constants/languages'
+import { Language } from 'pages/common/components/LanguagePicker/LanguagePicker'
 import InputField from 'pages/common/forms/input/InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {useCampaignFormContext} from 'pages/convert/campaigns/hooks/useCampaignFormContext'
+import { useCampaignFormContext } from 'pages/convert/campaigns/hooks/useCampaignFormContext'
 
-import {StatefulAccordion} from '../../components/StatefulAccordion'
-import {useCampaignDetailsContext} from '../../hooks/useCampaignDetailsContext'
-import {useStepState} from '../../hooks/useStepState'
-
-import {CampaignStepsKeys} from '../../types/CampaignSteps'
-
-import {useIntegrationContext} from '../IntegrationProvider'
+import { StatefulAccordion } from '../../components/StatefulAccordion'
+import { useCampaignDetailsContext } from '../../hooks/useCampaignDetailsContext'
+import { useStepState } from '../../hooks/useStepState'
+import { CampaignStepsKeys } from '../../types/CampaignSteps'
+import { useIntegrationContext } from '../IntegrationProvider'
 
 type Props = {
     count?: number
@@ -35,9 +35,9 @@ export const CampaignBasicStep = ({
     isValid = false,
     isDisabled = false,
 }: Props) => {
-    const {isEditMode} = useCampaignFormContext()
-    const {campaign, updateCampaign} = useCampaignDetailsContext()
-    const {chatIntegration} = useIntegrationContext()
+    const { isEditMode } = useCampaignFormContext()
+    const { campaign, updateCampaign } = useCampaignDetailsContext()
+    const { chatIntegration } = useIntegrationContext()
 
     const stateProps = useStepState({
         count,
@@ -57,14 +57,14 @@ export const CampaignBasicStep = ({
 
     const languageOptions = useMemo<Language[]>(() => {
         const mappedLanguages = mapIntegrationLanguagesToLanguagePicker(
-            fromJS(chatIntegration)
+            fromJS(chatIntegration),
         )
         const campaignLanguage = getGorgiasChatLanguageByCode(
-            campaign.language as LanguageEnum
+            campaign.language as LanguageEnum,
         ) as Language
 
         const exists = mappedLanguages.some(
-            (language) => language.value === campaign.language
+            (language) => language.value === campaign.language,
         )
         if (!exists) {
             mappedLanguages.push(campaignLanguage)

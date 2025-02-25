@@ -1,17 +1,18 @@
-import {fireEvent, render} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { fireEvent, render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {bigCommerceAvailableCurrenciesFixture} from 'fixtures/bigcommerce'
-import {integrationsState} from 'fixtures/integrations'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import { bigCommerceAvailableCurrenciesFixture } from 'fixtures/bigcommerce'
+import { integrationsState } from 'fixtures/integrations'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 
-import {CurrencyPickerDropdown} from '../CurrencyPickerDropdown'
+import { CurrencyPickerDropdown } from '../CurrencyPickerDropdown'
 
-const integrationContextValue = {integration: fromJS({}), integrationId: 1}
+const integrationContextValue = { integration: fromJS({}), integrationId: 1 }
 
 const defaultState = {
     integrations: fromJS(integrationsState),
@@ -34,12 +35,12 @@ const selectedCurrencyProps: Props = {
 
 describe('<CurrencyPickerDropdown/>', () => {
     it('should display the available currencies as options', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <CurrencyPickerDropdown {...unselectedCurrencyProps} />
                 </IntegrationContext.Provider>
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.focus(getByText(/Select currency/))
@@ -49,12 +50,12 @@ describe('<CurrencyPickerDropdown/>', () => {
         expect(getByText(/USD/)).toBeInTheDocument()
     })
     it('should display the selected currency', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <CurrencyPickerDropdown {...selectedCurrencyProps} />
                 </IntegrationContext.Provider>
-            </Provider>
+            </Provider>,
         )
 
         expect(container).toMatchSnapshot()

@@ -1,6 +1,8 @@
-import {CreateSlaPolicyBody} from '@gorgias/api-types'
+import React, { useEffect, useState } from 'react'
+
 import classNames from 'classnames'
-import React, {useEffect, useState} from 'react'
+
+import { CreateSlaPolicyBody } from '@gorgias/api-types'
 
 import {
     FormField,
@@ -12,9 +14,10 @@ import Caption from 'pages/common/forms/Caption/Caption'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import settingsCss from 'pages/settings/settings.less'
 
-import css from './MetricsFieldArray.less'
 import NumberInputField from './NumberInputField'
 import TimeUnitSelectBox from './TimeUnitSelectBox'
+
+import css from './MetricsFieldArray.less'
 
 const fieldTexts = {
     FRT: {
@@ -30,17 +33,17 @@ const fieldTexts = {
 }
 
 export default function MetricsFieldArray() {
-    const {fields} = useFieldArray<CreateSlaPolicyBody>({
+    const { fields } = useFieldArray<CreateSlaPolicyBody>({
         name: 'metrics',
     })
 
     const {
-        fieldState: {error},
+        fieldState: { error },
     } = useController({
         name: 'metrics',
     })
 
-    const {setValue, getValues} = useFormContext()
+    const { setValue, getValues } = useFormContext()
 
     const [toggleState, setToggleState] = useState<boolean[]>([])
     const [tempThresholdValues, setTempThresholdValues] = useState<

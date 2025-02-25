@@ -1,14 +1,13 @@
 import React from 'react'
 
 import MainTitle from 'pages/aiAgent/Onboarding/components/MainTitle/MainTitle'
-import {Subtitle} from 'pages/aiAgent/Onboarding/components/Subtitle/Subtitle'
-
+import { Subtitle } from 'pages/aiAgent/Onboarding/components/Subtitle/Subtitle'
 import css from 'pages/aiAgent/Overview/components/Title/Title.less'
 
 type Props = {
     firstName: string
 }
-export const Title = ({firstName}: Props) => {
+export const Title = ({ firstName }: Props) => {
     return (
         <div className={css.container}>
             <MainTitle

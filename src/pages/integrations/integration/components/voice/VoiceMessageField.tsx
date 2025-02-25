@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
 import {
     MAX_VOICE_RECORDING_FILE_SIZE_MB,
@@ -12,12 +12,12 @@ import {
 } from 'models/integration/types'
 import RadioButton from 'pages/common/components/RadioButton'
 import Textarea from 'pages/common/forms/TextArea'
-import {countLines} from 'utils/string'
+import { countLines } from 'utils/string'
 
 import useVoiceMessageValidation from './hooks/useVoiceMessageValidation'
+import VoiceRecordingInput from './VoiceRecordingInput'
 
 import css from './VoiceMessageField.less'
-import VoiceRecordingInput from './VoiceRecordingInput'
 
 type Props = {
     value: VoiceMessage
@@ -38,7 +38,7 @@ const VoiceMessageField = ({
     radioButtonId = '',
     isDisabled = false,
 }: Props): JSX.Element => {
-    const {validateVoiceRecordingUpload} = useVoiceMessageValidation()
+    const { validateVoiceRecordingUpload } = useVoiceMessageValidation()
     const [voiceRecordingPath, setVoiceRecordingPath] = useState<
         string | undefined
     >()
@@ -60,7 +60,7 @@ const VoiceMessageField = ({
                 voice_message_type: type,
             })
         },
-        [value, onChange]
+        [value, onChange],
     )
 
     const handleVoiceRecordingUpload = useCallback(
@@ -69,10 +69,10 @@ const VoiceMessageField = ({
                 event,
                 maxRecordingDuration,
                 MAX_VOICE_RECORDING_FILE_SIZE_MB,
-                horizontal
+                horizontal,
             )
             if (voiceRecordingUpload) {
-                const {url, newVoiceFields} = voiceRecordingUpload
+                const { url, newVoiceFields } = voiceRecordingUpload
                 setVoiceRecordingPath(url)
 
                 const newValue: VoiceMessageRecording = {
@@ -89,7 +89,7 @@ const VoiceMessageField = ({
             maxRecordingDuration,
             horizontal,
             validateVoiceRecordingUpload,
-        ]
+        ],
     )
 
     if (horizontal) {

@@ -1,8 +1,9 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {fireEvent, screen, waitFor} from '@testing-library/react'
-import {createMemoryHistory} from 'history'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { createMemoryHistory } from 'history'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -11,16 +12,16 @@ import {
     CONTACT_FORM_CREATE_PATH,
     CONTACT_FORM_FORMS_PATH,
 } from 'pages/settings/contactForm/constants'
-import {CONTACT_FORM_APP_DETAIL} from 'pages/settings/contactForm/views/ContactFormStartView/constants'
+import { CONTACT_FORM_APP_DETAIL } from 'pages/settings/contactForm/views/ContactFormStartView/constants'
 import ContactFormStartView from 'pages/settings/contactForm/views/ContactFormStartView/ContactFormStartView'
-import {HELP_CENTER_BASE_PATH} from 'pages/settings/helpCenter/constants'
-import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import {RootState, StoreDispatch} from 'state/types'
-import {renderWithRouter} from 'utils/testing'
+import { HELP_CENTER_BASE_PATH } from 'pages/settings/helpCenter/constants'
+import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import { RootState, StoreDispatch } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
-import {buildSDKMocks} from '../../../../../../rest_api/help_center_api/tests/buildSdkMocks'
-import {mockQueryClient} from '../../../../../../tests/reactQueryTestingUtils'
-import {mockResourceServerReplies} from '../../../tests/resource-mocks'
+import { buildSDKMocks } from '../../../../../../rest_api/help_center_api/tests/buildSdkMocks'
+import { mockQueryClient } from '../../../../../../tests/reactQueryTestingUtils'
+import { mockResourceServerReplies } from '../../../tests/resource-mocks'
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi')
 const mockedUseHelpCenterApi = useHelpCenterApi as jest.MockedFunction<
@@ -31,10 +32,10 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const testQueryClient = mockQueryClient()
 
 const mockedLocales = [
-    {name: 'English', code: 'en-US'},
-    {name: 'Spanish', code: 'es-ES'},
-    {name: 'French', code: 'fr-FR'},
-    {name: 'German', code: 'de-DE'},
+    { name: 'English', code: 'en-US' },
+    { name: 'Spanish', code: 'es-ES' },
+    { name: 'French', code: 'fr-FR' },
+    { name: 'German', code: 'de-DE' },
 ]
 
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales', () => ({
@@ -63,19 +64,19 @@ describe('<ContactFormStartView />', () => {
                     <Provider store={mockStore({})}>
                         <ContactFormStartView />
                     </Provider>
-                </QueryClientProvider>
+                </QueryClientProvider>,
             )
 
-            const aboutNavLink = screen.getByRole('link', {name: 'About'})
-            const formsNavLink = screen.getByRole('link', {name: 'Forms'})
+            const aboutNavLink = screen.getByRole('link', { name: 'About' })
+            const formsNavLink = screen.getByRole('link', { name: 'Forms' })
 
             expect(aboutNavLink).toHaveAttribute(
                 'href',
-                CONTACT_FORM_ABOUT_PATH
+                CONTACT_FORM_ABOUT_PATH,
             )
             expect(formsNavLink).toHaveAttribute(
                 'href',
-                CONTACT_FORM_FORMS_PATH
+                CONTACT_FORM_FORMS_PATH,
             )
         })
 
@@ -94,12 +95,12 @@ describe('<ContactFormStartView />', () => {
                         <ContactFormStartView />
                     </Provider>
                 </QueryClientProvider>,
-                {history}
+                { history },
             )
 
             await waitFor(() => {
                 expect(history.location.pathname).toEqual(
-                    CONTACT_FORM_ABOUT_PATH
+                    CONTACT_FORM_ABOUT_PATH,
                 )
             })
         })
@@ -118,12 +119,12 @@ describe('<ContactFormStartView />', () => {
                         <ContactFormStartView />,
                     </Provider>
                 </QueryClientProvider>,
-                {history}
+                { history },
             )
 
             await waitFor(() => {
                 expect(history.location.pathname).toEqual(
-                    CONTACT_FORM_FORMS_PATH
+                    CONTACT_FORM_FORMS_PATH,
                 )
             })
         })
@@ -131,7 +132,7 @@ describe('<ContactFormStartView />', () => {
 
     describe('`About` section', () => {
         it('should display description', () => {
-            const {container} = renderWithRouter(
+            const { container } = renderWithRouter(
                 <QueryClientProvider client={testQueryClient}>
                     <Provider store={mockStore({})}>
                         <ContactFormStartView />,
@@ -140,7 +141,7 @@ describe('<ContactFormStartView />', () => {
 
                 {
                     route: CONTACT_FORM_ABOUT_PATH,
-                }
+                },
             )
 
             screen.getByText(CONTACT_FORM_APP_DETAIL.description)
@@ -158,11 +159,11 @@ describe('<ContactFormStartView />', () => {
 
                 {
                     route: CONTACT_FORM_ABOUT_PATH,
-                }
+                },
             )
 
             const createButtonHref = screen
-                .getByRole('button', {name: /Create Contact Form/})
+                .getByRole('button', { name: /Create Contact Form/ })
                 .closest('a')
                 ?.getAttribute('to')
 
@@ -186,12 +187,12 @@ describe('<ContactFormStartView />', () => {
                         <ContactFormStartView />,
                     </Provider>
                 </QueryClientProvider>,
-                {history}
+                { history },
             )
 
             await waitFor(() => {
                 expect(history.location.pathname).toEqual(
-                    CONTACT_FORM_ABOUT_PATH
+                    CONTACT_FORM_ABOUT_PATH,
                 )
             })
         })
@@ -207,7 +208,7 @@ describe('<ContactFormStartView />', () => {
                         <ContactFormStartView />,
                     </Provider>
                 </QueryClientProvider>,
-                {route: CONTACT_FORM_FORMS_PATH}
+                { route: CONTACT_FORM_FORMS_PATH },
             )
 
             await waitFor(() => {
@@ -232,7 +233,7 @@ describe('<ContactFormStartView />', () => {
                         <ContactFormStartView />
                     </Provider>
                 </QueryClientProvider>,
-                {history}
+                { history },
             )
 
             await waitFor(() => {
@@ -241,7 +242,7 @@ describe('<ContactFormStartView />', () => {
             })
 
             expect(history.push).toHaveBeenLastCalledWith(
-                CONTACT_FORM_CREATE_PATH
+                CONTACT_FORM_CREATE_PATH,
             )
         })
 
@@ -260,7 +261,7 @@ describe('<ContactFormStartView />', () => {
                         <ContactFormStartView />,
                     </Provider>
                 </QueryClientProvider>,
-                {history}
+                { history },
             )
 
             await waitFor(() => {
@@ -269,7 +270,7 @@ describe('<ContactFormStartView />', () => {
             })
 
             expect(history.push).toHaveBeenLastCalledWith(
-                CONTACT_FORM_CREATE_PATH
+                CONTACT_FORM_CREATE_PATH,
             )
         })
     })

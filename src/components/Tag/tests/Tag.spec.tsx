@@ -1,8 +1,9 @@
-import {fireEvent, render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useFlag} from 'core/flags'
+import { fireEvent, render, screen } from '@testing-library/react'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 
 import Tag from '../Tag'
 
@@ -22,7 +23,7 @@ describe('<Tag />', () => {
         mockUseFlag.mockImplementation(
             (featureFlag: keyof typeof mockFlagSet) => {
                 return mockFlagSet[featureFlag]
-            }
+            },
         )
     })
 
@@ -42,7 +43,7 @@ describe('<Tag />', () => {
 
     it('should render trailIcon', () => {
         render(
-            <Tag color="black" text="text" trailIcon={<div>trailIcon</div>} />
+            <Tag color="black" text="text" trailIcon={<div>trailIcon</div>} />,
         )
 
         expect(screen.getByText('trailIcon')).toBeInTheDocument()
@@ -71,7 +72,7 @@ describe('<Tag />', () => {
                 text="text"
                 trailIcon={<div>{trailIcon}</div>}
                 onTrailIconClick={onTrailIconClick}
-            />
+            />,
         )
 
         fireEvent.click(screen.getByText(trailIcon))
@@ -84,15 +85,15 @@ describe('<Tag />', () => {
         const color = 'teal'
         const customColor = '#456123'
 
-        const {container} = render(
-            <Tag color={color} text={text} customColor={customColor} />
+        const { container } = render(
+            <Tag color={color} text={text} customColor={customColor} />,
         )
 
         expect(container.firstChild).toHaveClass('newTag')
         expect(screen.getByText(text)).toHaveClass('newText')
         expect(screen.getByText(text)).toHaveClass(color)
         expect(screen.getByText(text)).toHaveStyle(
-            `--tag-dot-color: ${customColor}`
+            `--tag-dot-color: ${customColor}`,
         )
     })
 })

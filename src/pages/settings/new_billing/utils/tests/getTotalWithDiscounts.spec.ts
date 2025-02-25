@@ -5,10 +5,10 @@ import {
     smsPlan1,
     voicePlan1,
 } from 'fixtures/productPrices'
-import {CouponSummary, ProductType} from 'models/billing/types'
+import { CouponSummary, ProductType } from 'models/billing/types'
 
-import {SelectedPlans} from '../../views/BillingProcessView/BillingProcessView'
-import {getTotalWithDiscounts} from '../getTotalWithDiscounts'
+import { SelectedPlans } from '../../views/BillingProcessView/BillingProcessView'
+import { getTotalWithDiscounts } from '../getTotalWithDiscounts'
 
 describe('getTotalWithDiscounts', () => {
     it('should return the base amounts when coupon is null', () => {
@@ -36,7 +36,7 @@ describe('getTotalWithDiscounts', () => {
         }
         const coupon = null
 
-        const {totalWithDiscounts, totalWithoutDiscounts, discountAmount} =
+        const { totalWithDiscounts, totalWithoutDiscounts, discountAmount } =
             getTotalWithDiscounts(selectedPlans, coupon)
 
         expect(totalWithoutDiscounts).toEqual(
@@ -44,7 +44,7 @@ describe('getTotalWithDiscounts', () => {
                 proMonthlyAutomationPlan.amount +
                 voicePlan1.amount +
                 smsPlan1.amount +
-                convertPlan1.amount
+                convertPlan1.amount,
         )
         expect(totalWithDiscounts).toEqual(totalWithoutDiscounts)
         expect(discountAmount).toEqual(0)
@@ -83,7 +83,7 @@ describe('getTotalWithDiscounts', () => {
             products: [],
         }
 
-        const {totalWithDiscounts, totalWithoutDiscounts, discountAmount} =
+        const { totalWithDiscounts, totalWithoutDiscounts, discountAmount } =
             getTotalWithDiscounts(selectedPlans, coupon)
 
         const expectedDiscountAmount = totalWithoutDiscounts / 2
@@ -93,10 +93,10 @@ describe('getTotalWithDiscounts', () => {
                 proMonthlyAutomationPlan.amount +
                 voicePlan1.amount +
                 smsPlan1.amount +
-                convertPlan1.amount
+                convertPlan1.amount,
         )
         expect(totalWithDiscounts).toEqual(
-            totalWithoutDiscounts - expectedDiscountAmount
+            totalWithoutDiscounts - expectedDiscountAmount,
         )
         expect(discountAmount).toEqual(expectedDiscountAmount)
     })
@@ -135,7 +135,7 @@ describe('getTotalWithDiscounts', () => {
             products: [],
         }
 
-        const {totalWithDiscounts, totalWithoutDiscounts, discountAmount} =
+        const { totalWithDiscounts, totalWithoutDiscounts, discountAmount } =
             getTotalWithDiscounts(selectedPlans, coupon)
 
         const expectedDiscountAmount =
@@ -143,10 +143,10 @@ describe('getTotalWithDiscounts', () => {
             proMonthlyAutomationPlan.amount / 2
 
         expect(totalWithoutDiscounts).toEqual(
-            proMonthlyHelpdeskPlan.amount + proMonthlyAutomationPlan.amount
+            proMonthlyHelpdeskPlan.amount + proMonthlyAutomationPlan.amount,
         )
         expect(totalWithDiscounts).toEqual(
-            totalWithoutDiscounts - expectedDiscountAmount
+            totalWithoutDiscounts - expectedDiscountAmount,
         )
         expect(discountAmount).toEqual(expectedDiscountAmount)
     })
@@ -184,7 +184,7 @@ describe('getTotalWithDiscounts', () => {
             products: [ProductType.Helpdesk],
         }
 
-        const {totalWithDiscounts, totalWithoutDiscounts, discountAmount} =
+        const { totalWithDiscounts, totalWithoutDiscounts, discountAmount } =
             getTotalWithDiscounts(selectedPlans, coupon)
 
         const expectedDiscountAmount = proMonthlyHelpdeskPlan.amount / 2
@@ -194,10 +194,10 @@ describe('getTotalWithDiscounts', () => {
                 proMonthlyAutomationPlan.amount +
                 voicePlan1.amount +
                 smsPlan1.amount +
-                convertPlan1.amount
+                convertPlan1.amount,
         )
         expect(totalWithDiscounts).toEqual(
-            totalWithoutDiscounts - expectedDiscountAmount
+            totalWithoutDiscounts - expectedDiscountAmount,
         )
         expect(discountAmount).toEqual(expectedDiscountAmount)
     })
@@ -235,14 +235,14 @@ describe('getTotalWithDiscounts', () => {
             products: [ProductType.Helpdesk],
         }
 
-        const {totalWithDiscounts, totalWithoutDiscounts, discountAmount} =
+        const { totalWithDiscounts, totalWithoutDiscounts, discountAmount } =
             getTotalWithDiscounts(selectedPlans, coupon)
 
         const expectedDiscountAmount = proMonthlyHelpdeskPlan.amount
 
         expect(totalWithoutDiscounts).toEqual(proMonthlyHelpdeskPlan.amount)
         expect(totalWithDiscounts).toEqual(
-            totalWithoutDiscounts - expectedDiscountAmount
+            totalWithoutDiscounts - expectedDiscountAmount,
         )
         expect(totalWithDiscounts).toEqual(0)
         expect(discountAmount).toEqual(expectedDiscountAmount)
@@ -281,16 +281,16 @@ describe('getTotalWithDiscounts', () => {
             products: [ProductType.Helpdesk, ProductType.Automation],
         }
 
-        const {totalWithDiscounts, totalWithoutDiscounts, discountAmount} =
+        const { totalWithDiscounts, totalWithoutDiscounts, discountAmount } =
             getTotalWithDiscounts(selectedPlans, coupon)
 
         const expectedDiscountAmount = 20000
 
         expect(totalWithoutDiscounts).toEqual(
-            proMonthlyHelpdeskPlan.amount + proMonthlyAutomationPlan.amount
+            proMonthlyHelpdeskPlan.amount + proMonthlyAutomationPlan.amount,
         )
         expect(totalWithDiscounts).toEqual(
-            totalWithoutDiscounts - (coupon.amount_off_in_cents as number)
+            totalWithoutDiscounts - (coupon.amount_off_in_cents as number),
         )
         expect(discountAmount).toEqual(expectedDiscountAmount)
     })

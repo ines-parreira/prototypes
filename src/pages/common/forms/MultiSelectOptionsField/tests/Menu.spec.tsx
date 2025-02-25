@@ -1,9 +1,10 @@
-import {render, screen} from '@testing-library/react'
-import _noop from 'lodash/noop'
 import React from 'react'
 
+import { render, screen } from '@testing-library/react'
+import _noop from 'lodash/noop'
+
 import Menu from 'pages/common/forms/MultiSelectOptionsField/Menu'
-import {Option} from 'pages/common/forms/MultiSelectOptionsField/types'
+import { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
 
 describe('MultiSelectField Menu', () => {
     const options: Option[] = [
@@ -26,7 +27,7 @@ describe('MultiSelectField Menu', () => {
     }
 
     it('should render displayLabel first and label as a fallback', () => {
-        const {container} = render(<Menu {...defaultProps} />)
+        const { container } = render(<Menu {...defaultProps} />)
 
         expect(container.firstChild?.textContent).toBe('Foo')
         expect(container.lastChild?.textContent).toBe('BarSpan')
@@ -36,7 +37,7 @@ describe('MultiSelectField Menu', () => {
         render(<Menu {...defaultProps} isLoading />)
 
         expect(document.querySelector('.material-icons')?.textContent).toEqual(
-            'refresh'
+            'refresh',
         )
         expect(screen.getByText('Loading...')).toBeInTheDocument()
     })

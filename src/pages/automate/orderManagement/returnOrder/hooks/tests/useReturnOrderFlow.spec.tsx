@@ -1,6 +1,6 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {selfServiceConfiguration1} from 'fixtures/self_service_configurations'
+import { selfServiceConfiguration1 } from 'fixtures/self_service_configurations'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 
 import useReturnOrderFlow from '../useReturnOrderFlow'
@@ -16,10 +16,10 @@ describe('useReturnOrderFlow', () => {
         })
     })
     it('should return a scenario', () => {
-        const {result} = renderHook(() => useReturnOrderFlow('shop-name'))
+        const { result } = renderHook(() => useReturnOrderFlow('shop-name'))
 
         expect(result.current.selfServiceConfiguration).toMatchObject(
-            selfServiceConfiguration1
+            selfServiceConfiguration1,
         )
     })
 })

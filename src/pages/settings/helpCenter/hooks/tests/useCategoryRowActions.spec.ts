@@ -1,9 +1,9 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {useAbilityChecker} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import { useAbilityChecker } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 
-import {CATEGORY_TREE_MAX_LEVEL} from '../../constants'
-import {useCategoryRowActions} from '../useCategoryRowActions'
+import { CATEGORY_TREE_MAX_LEVEL } from '../../constants'
+import { useCategoryRowActions } from '../useCategoryRowActions'
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi')
 
@@ -22,8 +22,8 @@ describe('useCategoryRowActions()', () => {
     })
 
     it('returns all the actions - enabled', () => {
-        const {result} = renderHook(() =>
-            useCategoryRowActions(categoryId, level)
+        const { result } = renderHook(() =>
+            useCategoryRowActions(categoryId, level),
         )
 
         expect(result.current).toMatchInlineSnapshot(`
@@ -60,8 +60,8 @@ describe('useCategoryRowActions()', () => {
     })
 
     it('returns all the actions - createNestedCategory disabled because passed the level limitations', () => {
-        const {result} = renderHook(() =>
-            useCategoryRowActions(categoryId, CATEGORY_TREE_MAX_LEVEL)
+        const { result } = renderHook(() =>
+            useCategoryRowActions(categoryId, CATEGORY_TREE_MAX_LEVEL),
         )
         expect(result.current).toMatchInlineSnapshot(`
             [
@@ -101,8 +101,8 @@ describe('useCategoryRowActions()', () => {
             isPassingRulesCheck: () => false,
         })
 
-        const {result} = renderHook(() =>
-            useCategoryRowActions(categoryId, level)
+        const { result } = renderHook(() =>
+            useCategoryRowActions(categoryId, level),
         )
         expect(result.current).toMatchInlineSnapshot(`
             [

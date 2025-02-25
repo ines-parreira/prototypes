@@ -1,27 +1,28 @@
-import moment from 'moment'
-import {useCallback, useMemo, useState} from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import moment from 'moment'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
-import {tryLocalStorage} from 'services/common/utils'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {isAdmin} from 'utils'
+import { tryLocalStorage } from 'services/common/utils'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { isAdmin } from 'utils'
 
 export default function useIsOnboardingHidden() {
     const currentUser = useAppSelector(getCurrentUser)
 
     const hidingDate = useMemo(
         () => moment(currentUser.get('created_datetime')).add(10, 'days'),
-        [currentUser]
+        [currentUser],
     )
 
     const [isHidden, setIsHidden] = useState(
         () =>
             !isAdmin(currentUser) ||
             (tryLocalStorage(() =>
-                window.localStorage.getItem('hideBoarding')
+                window.localStorage.getItem('hideBoarding'),
             ) as string) ||
-            moment().isAfter(hidingDate)
+            moment().isAfter(hidingDate),
     )
 
     const handleHide = useCallback(() => {
@@ -30,12 +31,12 @@ export default function useIsOnboardingHidden() {
             name: 'Hide',
         })
         tryLocalStorage(() =>
-            window.localStorage.setItem('hideBoarding', 'true')
+            window.localStorage.setItem('hideBoarding', 'true'),
         )
     }, [])
 
     return useMemo(
         () => [!!isHidden, handleHide] as const,
-        [handleHide, isHidden]
+        [handleHide, isHidden],
     )
 }

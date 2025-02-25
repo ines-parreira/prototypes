@@ -1,17 +1,18 @@
-import {Label} from '@gorgias/merchant-ui-kit'
+import React, { useEffect, useState } from 'react'
+
 import classNames from 'classnames'
-import React, {useEffect, useState} from 'react'
+
+import { Label } from '@gorgias/merchant-ui-kit'
 
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-
-import {useShopifyStoreWithChatConnectionsOptions} from 'pages/settings/helpCenter/hooks/useShopifyStoreWithChatConnectionsOptions'
+import { useShopifyStoreWithChatConnectionsOptions } from 'pages/settings/helpCenter/hooks/useShopifyStoreWithChatConnectionsOptions'
 import settingsCss from 'pages/settings/settings.less'
 
 import contactFormCss from '../../contactForm.less'
 import css from './ConnectContactFormToShopSection.less'
 
 interface Props {
-    onUpdate: (data: {shop_name: string | null}) => void
+    onUpdate: (data: { shop_name: string | null }) => void
     shopName: string | null
 }
 
@@ -40,7 +41,7 @@ export const ConnectContactFormToShopSection = ({
                 className={classNames(
                     'body-regular',
                     css.description,
-                    settingsCss.mb8
+                    settingsCss.mb8,
                 )}
             >
                 A store connection is required to use Automate features and
@@ -57,7 +58,7 @@ export const ConnectContactFormToShopSection = ({
                 onChange={(value) => {
                     // this type cast is safe as all values are string
                     setSelectedShop(value as string)
-                    onUpdate({shop_name: value as string})
+                    onUpdate({ shop_name: value as string })
                 }}
                 caption="Once set, the store associated with this contact form cannot be changed."
                 options={shopifyShopsOptions}

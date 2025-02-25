@@ -1,14 +1,14 @@
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {useParams} from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
-import {CONVERT_ROUTE_PARAM_NAME} from 'pages/convert/common/constants'
-import {ConvertRouteTemplateParams} from 'pages/convert/common/types'
+import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
+import { ConvertRouteTemplateParams } from 'pages/convert/common/types'
 
 import CampaignTemplateCustomizeBaseView from './CampaignTemplateCustomizeBaseView'
 
 const CampaignTemplateCustomizeLibraryView = () => {
-    const {[CONVERT_ROUTE_PARAM_NAME]: integrationId} =
+    const { [CONVERT_ROUTE_PARAM_NAME]: integrationId } =
         useParams<ConvertRouteTemplateParams>()
 
     const chatIntegrationId = parseInt(integrationId || '')

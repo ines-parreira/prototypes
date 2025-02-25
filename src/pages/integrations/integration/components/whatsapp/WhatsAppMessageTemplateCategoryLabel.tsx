@@ -1,7 +1,8 @@
-import {Badge, ColorType} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
-import {WhatsAppMessageTemplateCategory} from 'models/whatsAppMessageTemplates/types'
+import { Badge, ColorType } from '@gorgias/merchant-ui-kit'
+
+import { WhatsAppMessageTemplateCategory } from 'models/whatsAppMessageTemplates/types'
 
 type Props = {
     category: WhatsAppMessageTemplateCategory
@@ -10,7 +11,7 @@ type Props = {
 export default function WhatsAppMessageTemplateCategoryLabel({
     category,
 }: Props) {
-    const {type, label} = templateCategoryToBadgeProps[category] ?? {}
+    const { type, label } = templateCategoryToBadgeProps[category] ?? {}
 
     return <Badge type={type}>{label ?? category}</Badge>
 }

@@ -1,7 +1,7 @@
-import {fromJS, Map} from 'immutable'
+import { fromJS, Map } from 'immutable'
 
 import bigCommerceEvent from '../bigcommerce'
-import {eventMatcher} from '../matcher'
+import { eventMatcher } from '../matcher'
 import rechargeEvent from '../recharge'
 import shopifyEvent from '../shopify'
 
@@ -35,7 +35,7 @@ describe('eventMatcher', () => {
             objectLink: 'shopify',
         })
         const event = eventMatcher({
-            integration: fromJS({type: 'shopify'}),
+            integration: fromJS({ type: 'shopify' }),
             actionConfig,
             payload: Map(),
             data: Map(),
@@ -52,7 +52,7 @@ describe('eventMatcher', () => {
             objectLink: 'recharge',
         })
         const event = eventMatcher({
-            integration: fromJS({type: 'recharge'}),
+            integration: fromJS({ type: 'recharge' }),
             actionConfig,
             payload: Map(),
             data: Map(),
@@ -69,7 +69,7 @@ describe('eventMatcher', () => {
             objectLink: 'bigcommerce',
         })
         const event = eventMatcher({
-            integration: fromJS({type: 'bigcommerce'}),
+            integration: fromJS({ type: 'bigcommerce' }),
             actionConfig,
             payload: Map(),
             data: Map(),

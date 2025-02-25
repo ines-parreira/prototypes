@@ -1,10 +1,10 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
 
-import {customerCustomization} from 'Widgets/modules/Yotpo/components/Customer'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
+import { customerCustomization } from 'Widgets/modules/Yotpo/components/Customer'
 
 const TitleWrapper = customerCustomization.TitleWrapper!
 const BeforeContent = customerCustomization.BeforeContent!
@@ -15,7 +15,7 @@ describe('<TitleWrapper/>', () => {
             const component = render(
                 <IntegrationContext.Provider
                     value={{
-                        integration: fromJS({id: 1}),
+                        integration: fromJS({ id: 1 }),
                         integrationId: null,
                     }}
                 >
@@ -28,7 +28,7 @@ describe('<TitleWrapper/>', () => {
                         })}
                         isEditing={false}
                     ></TitleWrapper>
-                </IntegrationContext.Provider>
+                </IntegrationContext.Provider>,
             )
 
             expect(component).toMatchSnapshot()
@@ -37,7 +37,7 @@ describe('<TitleWrapper/>', () => {
             const component = render(
                 <IntegrationContext.Provider
                     value={{
-                        integration: fromJS({id: 1}),
+                        integration: fromJS({ id: 1 }),
                         integrationId: null,
                     }}
                 >
@@ -49,7 +49,7 @@ describe('<TitleWrapper/>', () => {
                         })}
                         isEditing={false}
                     ></TitleWrapper>
-                </IntegrationContext.Provider>
+                </IntegrationContext.Provider>,
             )
 
             expect(component).toMatchSnapshot()
@@ -58,7 +58,7 @@ describe('<TitleWrapper/>', () => {
             const component = render(
                 <IntegrationContext.Provider
                     value={{
-                        integration: fromJS({id: 1}),
+                        integration: fromJS({ id: 1 }),
                         integrationId: null,
                     }}
                 >
@@ -66,7 +66,7 @@ describe('<TitleWrapper/>', () => {
                         source={fromJS({})}
                         isEditing={false}
                     ></TitleWrapper>
-                </IntegrationContext.Provider>
+                </IntegrationContext.Provider>,
             )
 
             expect(component).toMatchSnapshot()
@@ -80,12 +80,12 @@ describe('<TitleWrapper/>', () => {
             const component = render(
                 <IntegrationContext.Provider
                     value={{
-                        integration: fromJS({id: 1}),
+                        integration: fromJS({ id: 1 }),
                         integrationId: null,
                     }}
                 >
-                    <BeforeContent source={fromJS({id: 1})}></BeforeContent>
-                </IntegrationContext.Provider>
+                    <BeforeContent source={fromJS({ id: 1 })}></BeforeContent>
+                </IntegrationContext.Provider>,
             )
 
             expect(component).toMatchSnapshot()
@@ -94,7 +94,7 @@ describe('<TitleWrapper/>', () => {
             const component = render(
                 <IntegrationContext.Provider
                     value={{
-                        integration: fromJS({id: 1}),
+                        integration: fromJS({ id: 1 }),
                         integrationId: null,
                     }}
                 >
@@ -106,7 +106,7 @@ describe('<TitleWrapper/>', () => {
                             },
                         })}
                     ></BeforeContent>
-                </IntegrationContext.Provider>
+                </IntegrationContext.Provider>,
             )
 
             expect(component).toMatchSnapshot()

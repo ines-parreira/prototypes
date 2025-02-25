@@ -1,7 +1,8 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {VerticalTextCarousel} from '../VerticalTextCarousel'
+import { render, screen } from '@testing-library/react'
+
+import { VerticalTextCarousel } from '../VerticalTextCarousel'
 
 describe('VerticalTextCarousel', () => {
     it('should render texts and CTA', () => {
@@ -9,7 +10,7 @@ describe('VerticalTextCarousel', () => {
             <VerticalTextCarousel
                 texts={['text1', 'text2']}
                 cta={<button>CTA</button>}
-            />
+            />,
         )
 
         expect(screen.getByText('text1')).toBeInTheDocument()
@@ -18,7 +19,7 @@ describe('VerticalTextCarousel', () => {
     })
 
     it('should not render if texts are empty', () => {
-        const {container} = render(<VerticalTextCarousel texts={[]} />)
+        const { container } = render(<VerticalTextCarousel texts={[]} />)
 
         expect(container.firstChild).toBeNull()
     })
@@ -59,7 +60,7 @@ describe('VerticalTextCarousel', () => {
                 cta={<button>CTA</button>}
                 ctaSuccessMessage={'Successful CTA click'}
                 onCtaClick={onCtaClick}
-            />
+            />,
         )
 
         // move to the 2nd suggestion

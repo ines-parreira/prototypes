@@ -1,5 +1,5 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit'
-import {createSelector} from 'reselect'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSelector } from 'reselect'
 
 import {
     CustomFieldFilter,
@@ -12,13 +12,13 @@ import {
     StatsFiltersWithLogicalOperator,
     TagsSavedFilter,
 } from 'models/stat/types'
-import {toApiFormatted} from 'pages/stats/common/filters/helpers'
+import { toApiFormatted } from 'pages/stats/common/filters/helpers'
 import {
     fromLegacyStatsFilters,
     isCustomFieldSavedFilter,
     savedFilterDraftFiltersFromFiltersWithLogicalOperators,
 } from 'state/stats/utils'
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
 
 export type FiltersSliceState = {
     isFilterDirty: boolean
@@ -53,11 +53,11 @@ export const filtersSlice = createSlice({
         statFiltersClean(state) {
             state.isFilterDirty = false
         },
-        statFiltersCleanWithPayload(state, {payload}) {
+        statFiltersCleanWithPayload(state, { payload }) {
             state.isFilterDirty = false
             state.cleanStatsFilters = fromLegacyStatsFilters(payload)
         },
-        statFiltersWithLogicalOperatorsCleanWithPayload(state, {payload}) {
+        statFiltersWithLogicalOperatorsCleanWithPayload(state, { payload }) {
             state.isFilterDirty = false
             state.cleanStatsFilters = payload
         },
@@ -69,26 +69,26 @@ export const filtersSlice = createSlice({
         },
         initialiseSavedFilterDraftFromFilters(
             state,
-            action: PayloadAction<StatsFiltersWithLogicalOperator>
+            action: PayloadAction<StatsFiltersWithLogicalOperator>,
         ) {
             state.savedFilterDraft = {
                 name: '',
                 filter_group:
                     savedFilterDraftFiltersFromFiltersWithLogicalOperators(
-                        action.payload
+                        action.payload,
                     ),
             }
         },
         initialiseSavedFilterDraftFromSavedFilter(
             state,
-            action: PayloadAction<SavedFilter>
+            action: PayloadAction<SavedFilter>,
         ) {
             state.appliedSavedFilterId = action.payload.id
             state.savedFilterDraft = action.payload
         },
         duplicateSavedFilterDraftFromSavedFilter(
             state,
-            action: PayloadAction<SavedFilter>
+            action: PayloadAction<SavedFilter>,
         ) {
             state.savedFilterDraft = {
                 name: `${action.payload.name} ${COPY_OF_DRAFT_NAME}`,
@@ -117,7 +117,7 @@ export const filtersSlice = createSlice({
             state,
             action: PayloadAction<
                 SavedFilterWithLogicalOperator | TagsSavedFilter
-            >
+            >,
         ) {
             if (state.savedFilterDraft === null) {
                 state.savedFilterDraft = {
@@ -126,7 +126,7 @@ export const filtersSlice = createSlice({
                 }
             } else {
                 const otherFilters = state.savedFilterDraft.filter_group.filter(
-                    (filter) => filter.member !== action.payload.member
+                    (filter) => filter.member !== action.payload.member,
                 )
                 state.savedFilterDraft.filter_group = [
                     action.payload,
@@ -136,7 +136,7 @@ export const filtersSlice = createSlice({
         },
         upsertSavedFilterCustomFieldFilter(
             state,
-            action: PayloadAction<CustomFieldFilter>
+            action: PayloadAction<CustomFieldFilter>,
         ) {
             if (state.savedFilterDraft === null) {
                 state.savedFilterDraft = {
@@ -148,7 +148,7 @@ export const filtersSlice = createSlice({
                                 {
                                     ...action.payload,
                                     custom_field_id: String(
-                                        action.payload.customFieldId
+                                        action.payload.customFieldId,
                                     ),
                                 },
                             ],
@@ -157,19 +157,19 @@ export const filtersSlice = createSlice({
                 }
             } else {
                 const otherFilters = state.savedFilterDraft.filter_group.filter(
-                    (filter) => filter.member !== FilterKey.CustomFields
+                    (filter) => filter.member !== FilterKey.CustomFields,
                 )
 
                 const existingCustomFieldFilter =
                     state.savedFilterDraft.filter_group.find(
-                        isCustomFieldSavedFilter
+                        isCustomFieldSavedFilter,
                     )
 
                 const otherValues =
                     existingCustomFieldFilter?.values.filter(
                         (v) =>
                             v.custom_field_id !==
-                            String(action.payload.customFieldId)
+                            String(action.payload.customFieldId),
                     ) ?? []
 
                 const updatedFilter: CustomFieldSavedFilter = {
@@ -179,7 +179,7 @@ export const filtersSlice = createSlice({
                         {
                             ...action.payload,
                             custom_field_id: String(
-                                action.payload.customFieldId
+                                action.payload.customFieldId,
                             ),
                         },
                     ],
@@ -192,7 +192,7 @@ export const filtersSlice = createSlice({
         },
         removeFilterFromSavedFilterDraft(
             state,
-            action: PayloadAction<RemoveFiltersProps>
+            action: PayloadAction<RemoveFiltersProps>,
         ) {
             if (state.savedFilterDraft !== null) {
                 state.savedFilterDraft.filter_group =
@@ -204,7 +204,9 @@ export const filtersSlice = createSlice({
                                     values: filterGroup.values.filter(
                                         (value) =>
                                             value.custom_field_id !==
-                                            String(action.payload.customFieldId)
+                                            String(
+                                                action.payload.customFieldId,
+                                            ),
                                     ),
                                 }
                                 if (customFields.values.length) {
@@ -216,7 +218,7 @@ export const filtersSlice = createSlice({
                                     values: filterGroup.values.filter(
                                         (value) =>
                                             value.filterInstanceId !==
-                                            action.payload.filterInstanceId
+                                            action.payload.filterInstanceId,
                                     ),
                                 }
                                 if (tags.values.length) {
@@ -232,7 +234,7 @@ export const filtersSlice = createSlice({
                             }
                             return acc
                         },
-                        []
+                        [],
                     )
             }
         },
@@ -256,12 +258,12 @@ const getSliceState = (state: RootState) => state.ui.stats[filtersSlice.name]
 
 export const getHasSavedFilterDraft = createSelector(
     getSliceState,
-    (state) => state.savedFilterDraft !== null
+    (state) => state.savedFilterDraft !== null,
 )
 
 export const getSavedFilterDraft = createSelector(
     getSliceState,
-    (state) => state.savedFilterDraft
+    (state) => state.savedFilterDraft,
 )
 
 export const getCanSaveFilter = createSelector(
@@ -269,21 +271,21 @@ export const getCanSaveFilter = createSelector(
     (state) =>
         state.savedFilterDraft !== null &&
         state.savedFilterDraft.name !== '' &&
-        toApiFormatted(state.savedFilterDraft.filter_group).length > 0
+        toApiFormatted(state.savedFilterDraft.filter_group).length > 0,
 )
 
 export const getIsSavedFilterApplied = createSelector(
     getSliceState,
-    (state) => state.appliedSavedFilterId !== null
+    (state) => state.appliedSavedFilterId !== null,
 )
 
 export const getSavedFilterAppliedId = createSelector(
     getSliceState,
-    (state) => state.appliedSavedFilterId
+    (state) => state.appliedSavedFilterId,
 )
 
 export const getHideFiltersPanelOptionalFilters = createSelector(
     getSliceState,
     (state) =>
-        state.appliedSavedFilterId !== null || state.savedFilterDraft !== null
+        state.appliedSavedFilterId !== null || state.savedFilterDraft !== null,
 )

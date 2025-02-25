@@ -1,9 +1,11 @@
+import React, { Component } from 'react'
+
 import classNames from 'classnames'
-import {List} from 'immutable'
-import React, {Component} from 'react'
-import {Row, Col, Button} from 'reactstrap'
+import { List } from 'immutable'
+import { Button, Col, Row } from 'reactstrap'
 
 import TextInput from './input/TextInput'
+
 import css from './ListField.less'
 
 type Props = {
@@ -25,7 +27,7 @@ export default class ListField extends Component<Props> {
     }
 
     addRow = () => {
-        const {items, maxItems} = this.props
+        const { items, maxItems } = this.props
 
         if (maxItems && items.size >= maxItems) {
             return
@@ -81,7 +83,7 @@ export default class ListField extends Component<Props> {
                             className={classNames(
                                 'd-flex',
                                 'col-sm-auto',
-                                css.delete
+                                css.delete,
                             )}
                             onClick={() => !disabled && this.deleteRow(index!)}
                         >
@@ -99,7 +101,7 @@ export default class ListField extends Component<Props> {
                     className="d-flex align-items-center"
                     disabled={disabled === true || items.size === maxItems}
                     onClick={this.addRow}
-                    {...(dataCanduId ? {'data-candu-id': dataCanduId} : {})}
+                    {...(dataCanduId ? { 'data-candu-id': dataCanduId } : {})}
                 >
                     <i className="material-icons md-2">add</i>
                     {addLabel !== undefined ? (

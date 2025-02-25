@@ -3,19 +3,19 @@ import React from 'react'
 import useAppSelector from 'hooks/useAppSelector'
 import useContactFormsAutomationSettings from 'pages/automate/common/hooks/useContactFormAutomationSettings'
 import FlowsBanner from 'pages/settings/contactForm/components/FlowsBanner'
-import {getCurrentAutomatePlan} from 'state/billing/selectors'
+import { getCurrentAutomatePlan } from 'state/billing/selectors'
 
 type Props = {
     contactFormId: number
     shopName: string
 }
 
-const ContactFormFlowsBanner = ({contactFormId, shopName}: Props) => {
+const ContactFormFlowsBanner = ({ contactFormId, shopName }: Props) => {
     const currentAutomatePlan = useAppSelector(getCurrentAutomatePlan)
-    const {automationSettings, isFetchPending} =
+    const { automationSettings, isFetchPending } =
         useContactFormsAutomationSettings(contactFormId)
     const hasFlowsEnabled = automationSettings.workflows.some(
-        (workflow) => workflow.enabled
+        (workflow) => workflow.enabled,
     )
 
     if (hasFlowsEnabled || isFetchPending) {

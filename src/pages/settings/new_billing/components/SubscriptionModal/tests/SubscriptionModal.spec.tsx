@@ -1,15 +1,16 @@
-import {fireEvent, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {UserRole} from 'config/types/user'
-import {account} from 'fixtures/account'
-import {billingState} from 'fixtures/billing'
-import {convertAvailablePlans} from 'fixtures/productPrices'
-import {ProductType} from 'models/billing/types'
+import { fireEvent, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+
+import { UserRole } from 'config/types/user'
+import { account } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
+import { convertAvailablePlans } from 'fixtures/productPrices'
+import { ProductType } from 'models/billing/types'
 import SubscriptionModal from 'pages/settings/new_billing/components/SubscriptionModal/SubscriptionModal'
-import {RootState} from 'state/types'
-import {renderWithStoreAndQueryClientProvider} from 'tests/renderWithStoreAndQueryClientProvider'
+import { RootState } from 'state/types'
+import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 describe('SubscriptionModal', () => {
     const canduId = 'my-test-candu-id'
@@ -19,7 +20,7 @@ describe('SubscriptionModal', () => {
 
     const defaultState: Partial<RootState> = {
         currentUser: fromJS({
-            role: {name: UserRole.Admin},
+            role: { name: UserRole.Admin },
         }),
         currentAccount: fromJS({
             ...account,
@@ -49,7 +50,7 @@ describe('SubscriptionModal', () => {
     it('should not render', () => {
         renderWithStoreAndQueryClientProvider(
             <SubscriptionModal {...minProps} isOpen={false} />,
-            defaultState
+            defaultState,
         )
 
         expect(screen.queryByText(headerDescription)).not.toBeInTheDocument()
@@ -61,14 +62,14 @@ describe('SubscriptionModal', () => {
 
         renderWithStoreAndQueryClientProvider(
             <SubscriptionModal {...minProps} isOpen={true} onClose={onClose} />,
-            defaultState
+            defaultState,
         )
 
         expect(screen.getByText(headerDescription)).toBeInTheDocument()
         expect(screen.getByText(confirmLabel)).toBeInTheDocument()
 
         const canduDataId = document.querySelector(
-            `[data-candu-id="${canduId}"]`
+            `[data-candu-id="${canduId}"]`,
         )
         expect(canduDataId).not.toBeNull()
 

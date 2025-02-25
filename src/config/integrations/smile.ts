@@ -1,4 +1,4 @@
-import {IntegrationType} from '../../models/integration/types'
+import { IntegrationType } from '../../models/integration/types'
 
 export const MACRO_VARIABLES = {
     type: IntegrationType.Smile,

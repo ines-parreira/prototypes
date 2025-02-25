@@ -2,25 +2,25 @@ import {
     fetchAutomationDatasetTimeSeries,
     useAutomationDatasetTimeSeries,
 } from 'hooks/reporting/automate/timeSeries'
-import {getAutomateStatsByMeasure} from 'hooks/reporting/automate/utils'
-import {AutomationDatasetMeasure} from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
-import {ReportingGranularity} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import { getAutomateStatsByMeasure } from 'hooks/reporting/automate/utils'
+import { AutomationDatasetMeasure } from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
+import { ReportingGranularity } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
 
 export const useFilteredAutomatedInteractionsSeries = (
     filters: StatsFilters,
     timezone: string,
-    granularity: ReportingGranularity
+    granularity: ReportingGranularity,
 ) => {
-    const {data, isFetching, isError} = useAutomationDatasetTimeSeries(
+    const { data, isFetching, isError } = useAutomationDatasetTimeSeries(
         filters,
         timezone,
-        granularity
+        granularity,
     )
 
     const filteredAutomatedInteractionsSeries = getAutomateStatsByMeasure(
         AutomationDatasetMeasure.AutomatedInteractions,
-        data
+        data,
     )
 
     return {
@@ -33,18 +33,18 @@ export const useFilteredAutomatedInteractionsSeries = (
 export const fetchFilteredAutomatedInteractionsSeries = async (
     filters: StatsFilters,
     timezone: string,
-    granularity: ReportingGranularity
+    granularity: ReportingGranularity,
 ) => {
     return fetchAutomationDatasetTimeSeries(
         filters,
         timezone,
-        granularity
+        granularity,
     ).then((result) => {
         return {
             data: [
                 getAutomateStatsByMeasure(
                     AutomationDatasetMeasure.AutomatedInteractions,
-                    result
+                    result,
                 ),
             ],
             isFetching: false,

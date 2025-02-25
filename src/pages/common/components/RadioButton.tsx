@@ -1,4 +1,3 @@
-import {Label} from '@gorgias/merchant-ui-kit'
 import React, {
     ForwardedRef,
     forwardRef,
@@ -7,8 +6,10 @@ import React, {
     useRef,
 } from 'react'
 
+import { Label } from '@gorgias/merchant-ui-kit'
+
 import Caption from '../forms/Caption/Caption'
-import {RadioFieldOption} from '../forms/RadioFieldSet'
+import { RadioFieldOption } from '../forms/RadioFieldSet'
 
 import css from './RadioButton.less'
 
@@ -34,7 +35,7 @@ function RadioButton(
         id,
         ...props
     }: Props,
-    forwardedRef: ForwardedRef<HTMLInputElement>
+    forwardedRef: ForwardedRef<HTMLInputElement>,
 ) {
     const ref = useRef<HTMLInputElement>(null)
     useImperativeHandle(forwardedRef, () => ref.current!)

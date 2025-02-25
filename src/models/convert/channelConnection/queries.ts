@@ -1,4 +1,4 @@
-import {useMutation, UseQueryOptions, useQuery} from '@tanstack/react-query'
+import { useMutation, useQuery, UseQueryOptions } from '@tanstack/react-query'
 
 import {
     createChannelConnection,
@@ -11,11 +11,11 @@ import {
     ChannelConnection,
     ChannelConnectionListOptions,
 } from 'models/convert/channelConnection/types'
-import {useConvertApi} from 'pages/convert/common/hooks/useConvertApi'
-import {Paths} from 'rest_api/revenue_addon_api/client.generated'
-import {MutationOverrides} from 'types/query'
+import { useConvertApi } from 'pages/convert/common/hooks/useConvertApi'
+import { Paths } from 'rest_api/revenue_addon_api/client.generated'
+import { MutationOverrides } from 'types/query'
 
-import {CONVERT_DEFAULT_OPTIONS} from '../constants'
+import { CONVERT_DEFAULT_OPTIONS } from '../constants'
 
 export const channelConnectionKeys = {
     all: () => ['channelConnection'] as const,
@@ -33,9 +33,9 @@ export const useGetChannelConnection = (
         Awaited<ReturnType<typeof getChannelConnection>>,
         unknown,
         ChannelConnection
-    >
+    >,
 ) => {
-    const {client: convertClient} = useConvertApi()
+    const { client: convertClient } = useConvertApi()
 
     return useQuery({
         queryKey: channelConnectionKeys.detail(params),
@@ -53,9 +53,9 @@ export const useListChannelConnections = (
         Awaited<ReturnType<typeof listChannelConnections>>,
         unknown,
         ChannelConnection[]
-    >
+    >,
 ) => {
-    const {client: convertClient} = useConvertApi()
+    const { client: convertClient } = useConvertApi()
 
     return useQuery({
         queryKey: channelConnectionKeys.list(params),
@@ -68,9 +68,9 @@ export const useListChannelConnections = (
 }
 
 export const useCreateChannelConnection = (
-    overrides?: MutationOverrides<typeof createChannelConnection>
+    overrides?: MutationOverrides<typeof createChannelConnection>,
 ) => {
-    const {client: convertClient} = useConvertApi()
+    const { client: convertClient } = useConvertApi()
 
     return useMutation({
         mutationFn: ([client = convertClient, data]) =>
@@ -81,9 +81,9 @@ export const useCreateChannelConnection = (
 }
 
 export const useUpdateChannelConnection = (
-    overrides?: MutationOverrides<typeof updateChannelConnection>
+    overrides?: MutationOverrides<typeof updateChannelConnection>,
 ) => {
-    const {client: convertClient} = useConvertApi()
+    const { client: convertClient } = useConvertApi()
 
     return useMutation({
         mutationFn: ([client = convertClient, pathParams, data]) =>
@@ -94,9 +94,9 @@ export const useUpdateChannelConnection = (
 }
 
 export const useDeleteChannelConnection = (
-    overrides?: MutationOverrides<typeof deleteChannelConnection>
+    overrides?: MutationOverrides<typeof deleteChannelConnection>,
 ) => {
-    const {client: convertClient} = useConvertApi()
+    const { client: convertClient } = useConvertApi()
 
     return useMutation({
         mutationFn: ([client = convertClient, pathParams]) =>

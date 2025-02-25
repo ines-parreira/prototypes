@@ -1,13 +1,13 @@
 import MockAdapter from 'axios-mock-adapter'
-import {fromJS} from 'immutable'
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+import { fromJS } from 'immutable'
+import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import client from '../../../models/api/resources'
-import {JobType} from '../../../models/job/types'
-import {RootState, StoreDispatch} from '../../types'
+import { JobType } from '../../../models/job/types'
+import { RootState, StoreDispatch } from '../../types'
 import * as actions from '../actions'
-import {initialState} from '../reducers'
+import { initialState } from '../reducers'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -20,7 +20,7 @@ describe('tickets actions', () => {
     })
 
     beforeEach(() => {
-        store = mockStore({ticket: initialState})
+        store = mockStore({ ticket: initialState })
     })
 
     describe('updateCursor()', () => {
@@ -35,10 +35,14 @@ describe('tickets actions', () => {
             mockServer.onAny().reply(200)
 
             const idsList = fromJS([1, 2, 3, 4])
-            const jobPartialParams = {exampleKey: 'exampleValue'}
+            const jobPartialParams = { exampleKey: 'exampleValue' }
 
             await store.dispatch(
-                actions.createJob(idsList, JobType.ApplyMacro, jobPartialParams)
+                actions.createJob(
+                    idsList,
+                    JobType.ApplyMacro,
+                    jobPartialParams,
+                ),
             )
             expect(mockServer.history).toMatchSnapshot()
         })

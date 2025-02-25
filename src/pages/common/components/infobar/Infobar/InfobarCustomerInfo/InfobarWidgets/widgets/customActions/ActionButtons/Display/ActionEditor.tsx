@@ -1,24 +1,26 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import {get as _get} from 'lodash'
-import React, {FormEvent, useCallback} from 'react'
+import React, { FormEvent, useCallback } from 'react'
 
-import {SegmentEvent, logEvent} from 'common/segment'
+import { get as _get } from 'lodash'
+
+import { Label } from '@gorgias/merchant-ui-kit'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import Button from 'pages/common/components/button/Button'
 import {
     Action,
     Parameter,
     ParameterTypes,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
-import {GroupPositionContext} from 'pages/common/components/layout/Group'
+import { GroupPositionContext } from 'pages/common/components/layout/Group'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import InputField from 'pages/common/forms/input/InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 
-import {ACTION_PARAMETER_PATHS} from '../../constants'
-import {getDropdownOptions, prepareDropdownValue} from '../helpers/dropdown'
-import {useImmerState} from '../hooks/useImmerState'
+import { ACTION_PARAMETER_PATHS } from '../../constants'
+import { getDropdownOptions, prepareDropdownValue } from '../helpers/dropdown'
+import { useImmerState } from '../hooks/useImmerState'
 
 import css from './ActionsEditor.less'
 
@@ -29,9 +31,9 @@ type Props = {
     trackingData?: Record<string, unknown>
 }
 
-function ActionEditor({action, onSubmit, onClose, trackingData}: Props) {
+function ActionEditor({ action, onSubmit, onClose, trackingData }: Props) {
     const [actionState, setActionState] = useImmerState(
-        prepareDropdownValue(action)
+        prepareDropdownValue(action),
     )
 
     const handleSubmit = useCallback(
@@ -40,13 +42,13 @@ function ActionEditor({action, onSubmit, onClose, trackingData}: Props) {
             onSubmit(actionState)
             onClose(false)
         },
-        [actionState, onSubmit, onClose]
+        [actionState, onSubmit, onClose],
     )
 
     const mapParamsToInput = useCallback(
         (path: string, params?: Parameter[]) =>
             params?.map(
-                ({type, editable, label, key, value, mandatory}, index) => {
+                ({ type, editable, label, key, value, mandatory }, index) => {
                     if (!editable && type !== ParameterTypes.Dropdown)
                         return null
 
@@ -69,11 +71,11 @@ function ActionEditor({action, onSubmit, onClose, trackingData}: Props) {
                                         onChange={(value) => {
                                             logEvent(
                                                 SegmentEvent.CustomActionButtonsDropdownChanged,
-                                                trackingData
+                                                trackingData,
                                             )
                                             setActionState(
                                                 `${path}[${index}].value`,
-                                                value
+                                                value,
                                             )
                                         }}
                                         required={mandatory}
@@ -81,9 +83,9 @@ function ActionEditor({action, onSubmit, onClose, trackingData}: Props) {
                                             value,
                                             _get(
                                                 action,
-                                                `${path}[${index}].value`
+                                                `${path}[${index}].value`,
                                             ),
-                                            !mandatory
+                                            !mandatory,
                                         )}
                                     />
                                 </>
@@ -98,16 +100,16 @@ function ActionEditor({action, onSubmit, onClose, trackingData}: Props) {
                                     onChange={(value) =>
                                         setActionState(
                                             `${path}[${index}].value`,
-                                            value
+                                            value,
                                         )
                                     }
                                 />
                             )}
                         </div>
                     )
-                }
+                },
             ),
-        [action, setActionState, trackingData]
+        [action, setActionState, trackingData],
     )
 
     return (
@@ -117,7 +119,7 @@ function ActionEditor({action, onSubmit, onClose, trackingData}: Props) {
                 <form onSubmit={handleSubmit}>
                     <ModalBody>
                         {ACTION_PARAMETER_PATHS.map((param) =>
-                            mapParamsToInput(param, _get(actionState, param))
+                            mapParamsToInput(param, _get(actionState, param)),
                         )}
                     </ModalBody>
                     <ModalActionsFooter>

@@ -1,10 +1,11 @@
+import { fromJS } from 'immutable'
+
 import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
-import {fromJS} from 'immutable'
 
 import analyticsColorsModern from 'assets/css/new/stats/modern.json'
-import type {AnalyticsTheme} from 'pages/stats/common/theme'
+import type { AnalyticsTheme } from 'pages/stats/common/theme'
 
-import {ChartColors} from './types'
+import { ChartColors } from './types'
 
 export const chartColorsFallbackTokens = {
     Main: {
@@ -13,9 +14,9 @@ export const chartColorsFallbackTokens = {
         },
     },
     Feedback: {
-        Error: {value: colors['📺 Classic'].Feedback.Error.value},
-        Success: {value: colors['📺 Classic'].Feedback.Success.value},
-        Warning: {value: colors['📺 Classic'].Feedback.Warning.value},
+        Error: { value: colors['📺 Classic'].Feedback.Error.value },
+        Success: { value: colors['📺 Classic'].Feedback.Success.value },
+        Warning: { value: colors['📺 Classic'].Feedback.Warning.value },
     },
     Neutral: {
         Grey_2: {

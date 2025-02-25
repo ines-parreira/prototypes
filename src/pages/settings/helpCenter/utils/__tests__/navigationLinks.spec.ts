@@ -1,7 +1,7 @@
-import {LocalSocialNavigationLink} from 'models/helpCenter/types'
-import {HelpCenterClient} from 'rest_api/help_center_api/client'
+import { LocalSocialNavigationLink } from 'models/helpCenter/types'
+import { HelpCenterClient } from 'rest_api/help_center_api/client'
 
-import {saveSocialLinks} from '../navigationLinks'
+import { saveSocialLinks } from '../navigationLinks'
 
 const mockedHelpCenterClient = {
     createNavigationLink: jest.fn(),
@@ -9,10 +9,10 @@ const mockedHelpCenterClient = {
     deleteNavigationLink: jest.fn(),
 }
 
-const defaultContext = {helpCenterId: 1, locale: 'en-US'} as const
+const defaultContext = { helpCenterId: 1, locale: 'en-US' } as const
 const createSocialLink = (
     id: number,
-    props: Partial<LocalSocialNavigationLink>
+    props: Partial<LocalSocialNavigationLink>,
 ): LocalSocialNavigationLink => ({
     id,
     label: `label ${id}`,
@@ -43,18 +43,18 @@ describe('navigationLinks', () => {
                         value: 'https://facebook.com',
                     }),
                 ],
-                defaultContext
+                defaultContext,
             )
 
             expect(mockedHelpCenterClient.createNavigationLink).toBeCalledWith(
-                {help_center_id: 1},
+                { help_center_id: 1 },
                 {
                     group: 'footer',
                     label: 'label -1',
                     locale: 'en-US',
-                    meta: {network: 'facebook'},
+                    meta: { network: 'facebook' },
                     value: 'https://facebook.com',
-                }
+                },
             )
         })
 
@@ -67,7 +67,7 @@ describe('navigationLinks', () => {
                         value: '',
                     }),
                 ],
-                defaultContext
+                defaultContext,
             )
 
             expect(mockedHelpCenterClient.createNavigationLink).not.toBeCalled()
@@ -84,12 +84,12 @@ describe('navigationLinks', () => {
                         value: '',
                     }),
                 ],
-                defaultContext
+                defaultContext,
             )
 
             expect(
-                mockedHelpCenterClient.deleteNavigationLink
-            ).toHaveBeenCalledWith({help_center_id: 1, id: 12})
+                mockedHelpCenterClient.deleteNavigationLink,
+            ).toHaveBeenCalledWith({ help_center_id: 1, id: 12 })
         })
     })
 })

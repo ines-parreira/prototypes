@@ -1,8 +1,8 @@
-import {Map} from 'immutable'
-import React, {ReactNode} from 'react'
-import {Link} from 'react-router-dom'
+import React, { ReactNode } from 'react'
 
-import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
+import { Map } from 'immutable'
+import { Link } from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
 import PageHeader from 'pages/common/components/PageHeader'
 

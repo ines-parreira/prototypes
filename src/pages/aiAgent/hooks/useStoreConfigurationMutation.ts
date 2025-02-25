@@ -1,6 +1,6 @@
-import {useQueryClient} from '@tanstack/react-query'
+import { useCallback } from 'react'
 
-import {useCallback} from 'react'
+import { useQueryClient } from '@tanstack/react-query'
 
 import {
     storeConfigurationKeys,
@@ -52,7 +52,7 @@ export const useStoreConfigurationMutation = ({
 
     const createStoreConfiguration = useCallback(
         async (
-            configurationToSubmit: CreateStoreConfigurationPayload
+            configurationToSubmit: CreateStoreConfigurationPayload,
         ): Promise<StoreConfiguration> => {
             const createdConfiguration = await createStoreConfigurationAsync([
                 accountDomain,
@@ -61,12 +61,12 @@ export const useStoreConfigurationMutation = ({
 
             return createdConfiguration.data.storeConfiguration
         },
-        [accountDomain, createStoreConfigurationAsync]
+        [accountDomain, createStoreConfigurationAsync],
     )
 
     const upsertStoreConfiguration = useCallback(
         async (
-            configurationToSubmit: StoreConfiguration
+            configurationToSubmit: StoreConfiguration,
         ): Promise<StoreConfiguration> => {
             const upsertedConfiguration = await upsertStoreConfigurationAsync([
                 accountDomain,
@@ -75,7 +75,7 @@ export const useStoreConfigurationMutation = ({
 
             return upsertedConfiguration.data.storeConfiguration
         },
-        [accountDomain, upsertStoreConfigurationAsync]
+        [accountDomain, upsertStoreConfigurationAsync],
     )
 
     return {

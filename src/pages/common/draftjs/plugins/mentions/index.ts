@@ -1,26 +1,27 @@
 /**
  * Adapted from https://github.com/draft-js-plugins/draft-js-plugins/tree/master/draft-js-mention-plugin
  */
+import { KeyboardEvent } from 'react'
 
 import decorateComponentWithProps from 'decorate-component-with-props'
-import {EditorState} from 'draft-js'
-import {Map} from 'immutable'
-import {KeyboardEvent} from 'react'
+import { EditorState } from 'draft-js'
+import { Map } from 'immutable'
 
 import Mention from './Mention'
-import styles from './Mention.less'
 import mentionStrategy from './mentionStrategy'
 import MentionSuggestions from './MentionSuggestions'
 import MentionSuggestionsPortal from './MentionSuggestionsPortal'
 import mentionSuggestionsStrategy from './mentionSuggestionsStrategy'
 import {
-    MentionPluginTheme,
-    MentionPluginStore,
     ClientRectFunction,
     GetSetEditorState,
+    MentionPluginStore,
+    MentionPluginTheme,
     MentionSuggestionCallbacks,
 } from './types'
-import {defaultSuggestionsFilter, positionSuggestions} from './utils'
+import { defaultSuggestionsFilter, positionSuggestions } from './utils'
+
+import styles from './Mention.less'
 
 const letterRegExp =
     '[' +
@@ -130,21 +131,21 @@ const createMentionPlugin = () => {
     return {
         MentionSuggestions: decorateComponentWithProps(
             MentionSuggestions,
-            mentionSearchProps
+            mentionSearchProps,
         ),
         decorators: [
             {
                 strategy: mentionStrategy(mentionTrigger),
-                component: decorateComponentWithProps(Mention, {theme}),
+                component: decorateComponentWithProps(Mention, { theme }),
             },
             {
                 strategy: mentionSuggestionsStrategy(
                     mentionTrigger,
-                    mentionRegExp
+                    mentionRegExp,
                 ),
                 component: decorateComponentWithProps(
                     MentionSuggestionsPortal,
-                    {store}
+                    { store },
                 ),
             },
         ],
@@ -155,7 +156,7 @@ const createMentionPlugin = () => {
             ariaExpanded: ariaProps.ariaExpanded,
         }),
 
-        initialize: ({getEditorState, setEditorState}: GetSetEditorState) => {
+        initialize: ({ getEditorState, setEditorState }: GetSetEditorState) => {
             store.getEditorState = getEditorState
             store.setEditorState = setEditorState
         },

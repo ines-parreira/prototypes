@@ -1,8 +1,9 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {renderHook, act} from '@testing-library/react-hooks'
 import React from 'react'
 
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { act, renderHook } from '@testing-library/react-hooks'
+
+import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import {
     channelConnection,
     channelConnectionId,
@@ -13,8 +14,8 @@ import {
     ChannelConnectionParams,
     ChannelConnectionUpdatePayload,
 } from 'models/convert/channelConnection/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 import * as queries from '../queries'
 import * as resources from '../resources'
@@ -43,7 +44,7 @@ const mockedResources = {
 
 const queryClient = mockQueryClient()
 
-const wrapper = ({children}: any) => (
+const wrapper = ({ children }: any) => (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 )
 
@@ -63,17 +64,17 @@ describe('Channel Connection queries', () => {
             mockedResources.mockGetChannelConnection.mockResolvedValueOnce({
                 data: channelConnection,
             } as any)
-            const {result, waitFor} = renderHook(
+            const { result, waitFor } = renderHook(
                 () =>
                     queries.useGetChannelConnection(
                         {
                             channel_connection_id: channelConnectionId,
                         },
-                        testOverrides
+                        testOverrides,
                     ),
                 {
                     wrapper,
-                }
+                },
             )
             await waitFor(() => expect(result.current.isSuccess).toBe(true))
             expect(result.current.data).toStrictEqual(channelConnection)
@@ -81,41 +82,41 @@ describe('Channel Connection queries', () => {
 
         it('should return expected error on failure', async () => {
             mockedResources.mockGetChannelConnection.mockRejectedValueOnce(
-                Error('test error')
+                Error('test error'),
             )
-            const {result, waitFor} = renderHook(
+            const { result, waitFor } = renderHook(
                 () =>
                     queries.useGetChannelConnection(
                         {
                             channel_connection_id: channelConnectionId,
                         },
-                        testOverrides
+                        testOverrides,
                     ),
                 {
                     wrapper,
-                }
+                },
             )
             await waitFor(() => expect(result.current.isError).toBe(true))
             expect(result.current.error).toStrictEqual(Error('test error'))
         })
 
         it('should respect the enabled setting', async () => {
-            const {waitFor} = renderHook(
+            const { waitFor } = renderHook(
                 () =>
                     queries.useGetChannelConnection(
                         {
                             channel_connection_id: channelConnectionId,
                         },
-                        {...testOverrides, enabled: false}
+                        { ...testOverrides, enabled: false },
                     ),
                 {
                     wrapper,
-                }
+                },
             )
             await waitFor(() =>
                 expect(
-                    mockedResources.mockGetChannelConnection
-                ).not.toHaveBeenCalled()
+                    mockedResources.mockGetChannelConnection,
+                ).not.toHaveBeenCalled(),
             )
         })
     })
@@ -132,11 +133,11 @@ describe('Channel Connection queries', () => {
                 data: [channelConnection],
             } as any)
 
-            const {result, waitFor} = renderHook(
+            const { result, waitFor } = renderHook(
                 () => queries.useListChannelConnections(options),
                 {
                     wrapper,
-                }
+                },
             )
             await waitFor(() => expect(result.current.isSuccess).toBe(true))
             expect(result.current.data).toStrictEqual([channelConnection])
@@ -144,20 +145,20 @@ describe('Channel Connection queries', () => {
 
         it('should return expected error on failure', async () => {
             mockedResources.mockListChannelConnections.mockRejectedValueOnce(
-                Error('test error')
+                Error('test error'),
             )
-            const {result, waitFor} = renderHook(
+            const { result, waitFor } = renderHook(
                 () => queries.useListChannelConnections(options, testOverrides),
                 {
                     wrapper,
-                }
+                },
             )
             await waitFor(() => expect(result.current.isError).toBe(true))
             expect(result.current.error).toStrictEqual(Error('test error'))
         })
 
         it('should respect the enabled setting', async () => {
-            const {waitFor} = renderHook(
+            const { waitFor } = renderHook(
                 () =>
                     queries.useListChannelConnections(options, {
                         ...testOverrides,
@@ -165,12 +166,12 @@ describe('Channel Connection queries', () => {
                     }),
                 {
                     wrapper,
-                }
+                },
             )
             await waitFor(() =>
                 expect(
-                    mockedResources.mockListChannelConnections
-                ).not.toHaveBeenCalled()
+                    mockedResources.mockListChannelConnections,
+                ).not.toHaveBeenCalled(),
             )
         })
     })
@@ -203,10 +204,10 @@ describe('Channel Connection queries', () => {
             '%s return correct data on success',
             async (hook, mockedResource, param, returnedData) => {
                 mockedResources[mockedResource].mockResolvedValueOnce(
-                    axiosSuccessResponse(returnedData) as any
+                    axiosSuccessResponse(returnedData) as any,
                 )
-                const {result, waitFor} = renderHook(() => queries[hook](), {
-                    wrapper: ({children}) => (
+                const { result, waitFor } = renderHook(() => queries[hook](), {
+                    wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
                             {children}
                         </QueryClientProvider>
@@ -221,7 +222,7 @@ describe('Channel Connection queries', () => {
                     expect(result.current.isSuccess).toBe(true)
                 })
                 expect(result.current.data?.data).toEqual(returnedData)
-            }
+            },
         )
     })
 })

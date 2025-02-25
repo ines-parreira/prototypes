@@ -1,27 +1,28 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {act, renderHook} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { act, renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS} from 'state/agents/constants'
-import {RootState, StoreDispatch} from 'state/types'
-import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS } from 'state/agents/constants'
+import { RootState, StoreDispatch } from 'state/types'
+import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constants'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import {ReportIssueOption} from '../constants'
+import { ReportIssueOption } from '../constants'
 import {
+    useDeleteAIAgentTicketMessagesFeedback,
     useGetAiAgentFeedback,
     useSubmitAIAgentTicketMessagesFeedback,
-    useDeleteAIAgentTicketMessagesFeedback,
 } from '../queries'
 import {
     deleteAIAgentTicketMessagesFeedback,
     getAIAgentTicketMessagesFeedback,
     submitAIAgentTicketMessagesFeedback,
 } from '../resources'
-import {DeleteMessageFeedback, SubmitMessageFeedback} from '../types'
+import { DeleteMessageFeedback, SubmitMessageFeedback } from '../types'
 
 jest.mock('../resources', () => ({
     getAIAgentTicketMessagesFeedback: jest.fn(),
@@ -59,7 +60,7 @@ const store = mockStore({
     }),
 } as RootState)
 
-const wrapper = ({children}: any) => (
+const wrapper = ({ children }: any) => (
     <Provider store={store}>
         <QueryClientProvider client={queryClient}>
             {children}
@@ -70,16 +71,16 @@ const wrapper = ({children}: any) => (
 describe('useGetAiAgentFeedback', () => {
     it('should call getAIAgentTicketMessagesFeedback with the correct messageIds', async () => {
         const mockFeedback = [
-            {messageId: 1, feedback: 1},
-            {messageId: 2, feedback: -1},
+            { messageId: 1, feedback: 1 },
+            { messageId: 2, feedback: -1 },
         ]
         ;(getAIAgentTicketMessagesFeedback as jest.Mock).mockResolvedValue(
-            mockFeedback
+            mockFeedback,
         )
 
-        const {result, waitForNextUpdate} = renderHook(
+        const { result, waitForNextUpdate } = renderHook(
             () => useGetAiAgentFeedback(),
-            {wrapper}
+            { wrapper },
         )
 
         expect(result.current.isLoading).toBe(true)
@@ -105,17 +106,17 @@ describe('useSubmitAIAgentTicketMessagesFeedback', () => {
                 },
             ],
             feedbackOnMessage: [
-                {type: 'binary', feedback: 'thumbs_up'},
-                {type: 'resource', resourceType: 'article', resourceId: 2},
+                { type: 'binary', feedback: 'thumbs_up' },
+                { type: 'resource', resourceType: 'article', resourceId: 2 },
             ],
         }
         ;(submitAIAgentTicketMessagesFeedback as jest.Mock).mockResolvedValue(
-            feedback
+            feedback,
         )
 
-        const {result, waitFor} = renderHook(
+        const { result, waitFor } = renderHook(
             () => useSubmitAIAgentTicketMessagesFeedback(),
-            {wrapper}
+            { wrapper },
         )
 
         act(() => result.current.mutate([messageId, feedback]))
@@ -123,7 +124,7 @@ describe('useSubmitAIAgentTicketMessagesFeedback', () => {
         await waitFor(() => {
             expect(submitAIAgentTicketMessagesFeedback).toHaveBeenCalledWith(
                 messageId,
-                feedback
+                feedback,
             )
         })
     })
@@ -142,12 +143,12 @@ describe('useDeleteAIAgentTicketMessagesFeedback', () => {
             ],
         }
         ;(deleteAIAgentTicketMessagesFeedback as jest.Mock).mockResolvedValue(
-            feedback
+            feedback,
         )
 
-        const {result, waitFor} = renderHook(
+        const { result, waitFor } = renderHook(
             () => useDeleteAIAgentTicketMessagesFeedback(),
-            {wrapper}
+            { wrapper },
         )
 
         act(() => result.current.mutate([messageId, feedback]))
@@ -155,7 +156,7 @@ describe('useDeleteAIAgentTicketMessagesFeedback', () => {
         await waitFor(() => {
             expect(deleteAIAgentTicketMessagesFeedback).toHaveBeenCalledWith(
                 messageId,
-                feedback
+                feedback,
             )
         })
     })

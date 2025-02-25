@@ -1,41 +1,42 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { Component, ReactNode } from 'react'
+
 import classnames from 'classnames'
-import {fromJS, List, Map} from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 import _omit from 'lodash/omit'
 import _truncate from 'lodash/truncate'
-import React, {Component, ReactNode} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
+import { connect, ConnectedProps } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { Card, CardBody } from 'reactstrap'
 
-import {Link} from 'react-router-dom'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
-import {Card, CardBody} from 'reactstrap'
-
-import {eventNameToLabel} from 'config/rules'
-import {TAGS_ADDED_KEY, TAGS_REMOVED_KEY} from 'models/event/constants'
+import { eventNameToLabel } from 'config/rules'
+import { TAGS_ADDED_KEY, TAGS_REMOVED_KEY } from 'models/event/constants'
 import {
     isRuleExecutedType,
     isSystemRuleEvent,
     isViaRuleEvent,
 } from 'models/event/predicates'
 import {
-    TicketEventType,
-    TICKET_EVENT_TYPES,
-    rulesActionsFailures,
     EventType,
+    rulesActionsFailures,
     SATISFACTION_SURVEY_EVENT_TYPES,
     SatisfactionSurveyEventType,
+    TICKET_EVENT_TYPES,
+    TicketEventType,
 } from 'models/event/types'
-import {actionsConfigWithManagedRules} from 'pages/common/components/ast/actions/config'
+import { actionsConfigWithManagedRules } from 'pages/common/components/ast/actions/config'
 import TicketTag from 'pages/common/components/TicketTag'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-import {AgentLabel, TeamLabel} from 'pages/common/utils/labels'
-import {getHumanAgents} from 'state/agents/selectors'
-import {useRuleRecipes} from 'state/entities/ruleRecipes/hooks'
-import {getTeams} from 'state/teams/selectors'
-import {getEvents} from 'state/ticket/selectors'
-import {RootState} from 'state/types'
+import { AgentLabel, TeamLabel } from 'pages/common/utils/labels'
+import { getHumanAgents } from 'state/agents/selectors'
+import { useRuleRecipes } from 'state/entities/ruleRecipes/hooks'
+import { getTeams } from 'state/teams/selectors'
+import { getEvents } from 'state/ticket/selectors'
+import { RootState } from 'state/types'
 
 import IconButton from '../../../common/components/button/IconButton'
+
 import css from './Event.less'
 
 type Props = {
@@ -59,7 +60,7 @@ const CONTENTFUL_EVENT_TYPES = Object.freeze({
 })
 
 export const contentfulEventTypesValues = Object.freeze(
-    Object.values(CONTENTFUL_EVENT_TYPES)
+    Object.values(CONTENTFUL_EVENT_TYPES),
 )
 
 const RuleSuggestionEvent = ({
@@ -171,17 +172,17 @@ export class AuditLogEventContainer extends Component<Props, State> {
         Record<TicketEventType | SatisfactionSurveyEventType, () => ReactNode>
     > = {
         [CONTENTFUL_EVENT_TYPES.RuleExecuted]: () => {
-            const {event} = this.props
+            const { event } = this.props
             const hasManagedRuleSlug = event.hasIn(['data', 'slug'])
             if (hasManagedRuleSlug)
                 return this._renderRuleSuggestionEvent(
-                    CONTENTFUL_EVENT_TYPES.RuleExecuted
+                    CONTENTFUL_EVENT_TYPES.RuleExecuted,
                 )
             return this._renderRuleExecutedEvent()
         },
         [CONTENTFUL_EVENT_TYPES.RuleSuggestionSuggested]: () =>
             this._renderRuleSuggestionEvent(
-                CONTENTFUL_EVENT_TYPES.RuleSuggestionSuggested
+                CONTENTFUL_EVENT_TYPES.RuleSuggestionSuggested,
             ),
         [CONTENTFUL_EVENT_TYPES.TicketAssigned]: () =>
             this._renderTicketAssignedEvent(),
@@ -271,9 +272,9 @@ export class AuditLogEventContainer extends Component<Props, State> {
     }
 
     _getIcon() {
-        const {event} = this.props
+        const { event } = this.props
         const type = event.get(
-            'type'
+            'type',
         ) as keyof typeof AuditLogEventContainer._ICONS
         const iconConfig = AuditLogEventContainer._ICONS[type] || ['info']
         const [icon, className] = iconConfig
@@ -286,7 +287,7 @@ export class AuditLogEventContainer extends Component<Props, State> {
     }
 
     _getContent() {
-        const {event} = this.props
+        const { event } = this.props
         const type = event.get('type') as TicketEventType
         const contentRenderer = this._CONTENT_RENDERERS[type]
 
@@ -294,7 +295,7 @@ export class AuditLogEventContainer extends Component<Props, State> {
     }
 
     _getDetails() {
-        const {event} = this.props
+        const { event } = this.props
         const type = event.get('type') as TicketEventType
         const detailsRenderer = this._DETAILS_RENDERERS[type]
 
@@ -302,7 +303,7 @@ export class AuditLogEventContainer extends Component<Props, State> {
     }
 
     _renderRuleExecutedEvent() {
-        const {event} = this.props
+        const { event } = this.props
 
         if (isSystemRuleEvent(event)) {
             return null
@@ -339,9 +340,9 @@ export class AuditLogEventContainer extends Component<Props, State> {
     _renderRuleSuggestionEvent(
         eventType:
             | EventType.RuleSuggestionSuggested
-            | typeof TICKET_EVENT_TYPES.RuleExecuted
+            | typeof TICKET_EVENT_TYPES.RuleExecuted,
     ) {
-        const {event} = this.props
+        const { event } = this.props
         const slug = event.getIn(['data', 'slug']) as string
         return slug ? (
             <RuleSuggestionEvent eventType={eventType} slug={slug} />
@@ -349,10 +350,10 @@ export class AuditLogEventContainer extends Component<Props, State> {
     }
 
     _renderTicketAssignedEvent() {
-        const {event, users} = this.props
+        const { event, users } = this.props
         const assigneeUserId = event.getIn(['data', 'assignee_user_id'])
         const assigneeUser = users.find(
-            (user: Map<any, any>) => user.get('id') === assigneeUserId
+            (user: Map<any, any>) => user.get('id') === assigneeUserId,
         ) as Map<any, any>
         const elements = [<ActionName key="action-name">Assigned</ActionName>]
 
@@ -363,7 +364,7 @@ export class AuditLogEventContainer extends Component<Props, State> {
                     key="assign-label"
                     name={assigneeUser.get('name')}
                     className={css.assigneeLabel}
-                />
+                />,
             )
         }
 
@@ -371,10 +372,10 @@ export class AuditLogEventContainer extends Component<Props, State> {
     }
 
     _renderTicketTeamAssignedEvent() {
-        const {event, teams} = this.props
+        const { event, teams } = this.props
         const assigneeTeamId = event.getIn(['data', 'assignee_team_id'])
         const assigneeTeam = teams.find(
-            (team) => team!.get('id') === assigneeTeamId
+            (team) => team!.get('id') === assigneeTeamId,
         )
         const elements = [<ActionName key="action-name">Assigned</ActionName>]
 
@@ -385,7 +386,7 @@ export class AuditLogEventContainer extends Component<Props, State> {
                     key="team-label"
                     name={assigneeTeam.get('name')}
                     className={css.assigneeLabel}
-                />
+                />,
             )
         }
 
@@ -393,7 +394,7 @@ export class AuditLogEventContainer extends Component<Props, State> {
     }
 
     _renderTicketCreatedEvent() {
-        const {event} = this.props
+        const { event } = this.props
         const splitFromTicketId = event.getIn([
             'data',
             'split_from_ticket',
@@ -419,7 +420,7 @@ export class AuditLogEventContainer extends Component<Props, State> {
                 <Filler key="closed-on">
                     closed on{' '}
                     {new Date(splitFromTicketClosedDatetime).toLocaleDateString(
-                        'en-US'
+                        'en-US',
                     )}
                 </Filler>,
             ]
@@ -429,7 +430,7 @@ export class AuditLogEventContainer extends Component<Props, State> {
     }
 
     _renderTicketSplitEvent() {
-        const {event} = this.props
+        const { event } = this.props
         const splitIntoTicketId = event.getIn([
             'data',
             'split_into_ticket',
@@ -459,9 +460,9 @@ export class AuditLogEventContainer extends Component<Props, State> {
     }
 
     _renderTagsEvent(
-        tagsIdsKey: typeof TAGS_ADDED_KEY | typeof TAGS_REMOVED_KEY
+        tagsIdsKey: typeof TAGS_ADDED_KEY | typeof TAGS_REMOVED_KEY,
     ) {
-        const {event, tags} = this.props
+        const { event, tags } = this.props
         const tagsIds = event.getIn(['data', tagsIdsKey]) as List<any>
         const eventTags = tagsIds
             .map((tagId: number) => fromJS(tags[tagId]) as Map<any, any>)
@@ -485,7 +486,7 @@ export class AuditLogEventContainer extends Component<Props, State> {
                         text={tag.get('name')}
                         decoration={tag.get('decoration')}
                         className={css.equalFiller}
-                    />
+                    />,
                 )
             })
         }
@@ -494,7 +495,7 @@ export class AuditLogEventContainer extends Component<Props, State> {
     }
 
     _renderTicketSubjectUpdated() {
-        const {event} = this.props
+        const { event } = this.props
         const oldSubject = event.getIn(['data', 'old_subject'])
         const newSubject = event.getIn(['data', 'new_subject'])
 
@@ -506,7 +507,7 @@ export class AuditLogEventContainer extends Component<Props, State> {
                 </span>,
                 <span className={css.actionName} key="old">
                     {oldSubject}
-                </span>
+                </span>,
             )
         }
         if (newSubject) {
@@ -516,14 +517,14 @@ export class AuditLogEventContainer extends Component<Props, State> {
                 </span>,
                 <span className={css.actionName} key="new">
                     {newSubject}
-                </span>
+                </span>,
             )
         }
         return elements
     }
 
     _renderCustomerUpdated() {
-        const {event} = this.props
+        const { event } = this.props
 
         const oldCustomer = event.getIn(['data', 'old_customer']) as Map<
             any,
@@ -560,7 +561,7 @@ export class AuditLogEventContainer extends Component<Props, State> {
     }
 
     _renderTicketMessageSummaryCreatedEvent() {
-        const {event} = this.props
+        const { event } = this.props
 
         if (isSystemRuleEvent(event)) {
             return null
@@ -584,7 +585,7 @@ export class AuditLogEventContainer extends Component<Props, State> {
                 <a
                     href={'#'}
                     onClick={() => {
-                        this.props.setHighlightedElements({first, last})
+                        this.props.setHighlightedElements({ first, last })
                     }}
                 >
                     <u>Unseen chat messages</u>
@@ -595,7 +596,7 @@ export class AuditLogEventContainer extends Component<Props, State> {
     }
 
     _renderFailedRuleActions() {
-        const {event} = this.props
+        const { event } = this.props
         const failedActions = (
             (event.getIn(['data', 'failed_actions']) as List<any>) || []
         ).filter((action: Map<any, any>) => {
@@ -629,14 +630,14 @@ export class AuditLogEventContainer extends Component<Props, State> {
                         </span>
                     </div>
                 )
-            }
+            },
         )
 
         return <div className={css.failedActions}>{failures}</div>
     }
 
     _getTicketSatisfactionSurveySkippedReasons(): List<string> {
-        const {event} = this.props
+        const { event } = this.props
         const data: Map<any, any> | null = event.get('data')
         if (!data) {
             return List<string>()
@@ -662,7 +663,7 @@ export class AuditLogEventContainer extends Component<Props, State> {
     }
 
     _renderTicketSatisfactionSurveySkippedDetails() {
-        const {event} = this.props
+        const { event } = this.props
         const data: Map<any, any> = event.get('data')
         if (!data) {
             return null
@@ -687,7 +688,7 @@ export class AuditLogEventContainer extends Component<Props, State> {
     }
 
     render() {
-        const {event, isLast, users, events} = this.props
+        const { event, isLast, users, events } = this.props
         const type = event.get('type') as TicketEventType
         const isRuleExecuted = isRuleExecutedType(event)
         const isSuggestion =
@@ -701,7 +702,7 @@ export class AuditLogEventContainer extends Component<Props, State> {
         }
 
         const user = users.find(
-            (user: Map<any, any>) => user.get('id') === event.get('user_id')
+            (user: Map<any, any>) => user.get('id') === event.get('user_id'),
         ) as Map<any, any>
 
         const isSystemEvent = !event.get('user_id')
@@ -721,7 +722,7 @@ export class AuditLogEventContainer extends Component<Props, State> {
 
                         {isRuleExecuted || isSuggestion ? null : isViaRuleEvent(
                               event,
-                              events
+                              events,
                           ) ? (
                             <Filler>via rule</Filler>
                         ) : type === CONTENTFUL_EVENT_TYPES.TicketMerged &&
@@ -778,9 +779,9 @@ type HelperProps = {
     children: ReactNode
 }
 
-export const ActionName = ({children}: HelperProps) => (
+export const ActionName = ({ children }: HelperProps) => (
     <span className={css.actionName}>{children}</span>
 )
-const Filler = ({children}: HelperProps) => (
+const Filler = ({ children }: HelperProps) => (
     <span className={css.filler}>{children}</span>
 )

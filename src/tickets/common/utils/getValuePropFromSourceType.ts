@@ -1,6 +1,6 @@
-import {SOURCE_VALUE_PROP} from 'config'
-import {isTicketMessageSourceType} from 'models/ticket/predicates'
-import {ChannelLike} from 'services/channels'
+import { SOURCE_VALUE_PROP } from 'config'
+import { isTicketMessageSourceType } from 'models/ticket/predicates'
+import { ChannelLike } from 'services/channels'
 
 /**
  * Return value prop from sender/receiver that is used to identify a person depending on the source type

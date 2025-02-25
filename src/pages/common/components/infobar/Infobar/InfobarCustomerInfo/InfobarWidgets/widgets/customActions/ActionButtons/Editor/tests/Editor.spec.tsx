@@ -1,14 +1,15 @@
-import {render, fireEvent, screen, waitFor} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {actionFixture} from 'fixtures/infobarCustomActions'
+import { actionFixture } from 'fixtures/infobarCustomActions'
 import * as actions from 'state/widgets/actions'
 
-import {Editor} from '../Editor'
+import { Editor } from '../Editor'
 
 jest.spyOn(actions, 'startWidgetEdition')
 jest.spyOn(actions, 'updateCustomActions')
@@ -24,8 +25,8 @@ describe('<Editor/>', () => {
 
     const props = {
         buttons: [
-            {label: 'I am in snapshots', action},
-            {label: 'I am in snapshots too', action},
+            { label: 'I am in snapshots', action },
+            { label: 'I am in snapshots too', action },
         ],
         templatePath: 'some.template',
         absolutePath: ['some', 'absolute', 'template'],
@@ -33,14 +34,14 @@ describe('<Editor/>', () => {
     }
 
     it('should render with buttons and "add button" button', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider
                 store={mockStore({
-                    customers: fromJS({active: {}}),
+                    customers: fromJS({ active: {} }),
                 })}
             >
                 <Editor {...props} />
-            </Provider>
+            </Provider>,
         )
         expect(container).toMatchSnapshot()
     })
@@ -48,43 +49,43 @@ describe('<Editor/>', () => {
         render(
             <Provider
                 store={mockStore({
-                    customers: fromJS({active: {}}),
+                    customers: fromJS({ active: {} }),
                 })}
             >
                 <Editor {...props} />
-            </Provider>
+            </Provider>,
         )
-        fireEvent.click(screen.getByRole('button', {name: 'Add Button'}))
+        fireEvent.click(screen.getByRole('button', { name: 'Add Button' }))
         await waitFor(() => {
-            expect(screen.queryByRole('button', {name: 'Save'})).toBeTruthy()
+            expect(screen.queryByRole('button', { name: 'Save' })).toBeTruthy()
         })
     })
     it('should close the modal when clicking "Cancel"', async () => {
         render(
             <Provider
                 store={mockStore({
-                    customers: fromJS({active: {}}),
+                    customers: fromJS({ active: {} }),
                 })}
             >
                 <Editor {...props} />
-            </Provider>
+            </Provider>,
         )
-        fireEvent.click(screen.getByRole('button', {name: 'Add Button'}))
-        await screen.findByRole('button', {name: 'Save'})
-        fireEvent.click(screen.getByRole('button', {name: 'Cancel'}))
+        fireEvent.click(screen.getByRole('button', { name: 'Add Button' }))
+        await screen.findByRole('button', { name: 'Save' })
+        fireEvent.click(screen.getByRole('button', { name: 'Cancel' }))
         await waitFor(() => {
-            expect(screen.queryByRole('button', {name: 'Save'})).toBeFalsy()
+            expect(screen.queryByRole('button', { name: 'Save' })).toBeFalsy()
         })
     })
     it('should call the correct callbacks when removing a button', () => {
         render(
             <Provider
                 store={mockStore({
-                    customers: fromJS({active: {}}),
+                    customers: fromJS({ active: {} }),
                 })}
             >
                 <Editor {...props} />
-            </Provider>
+            </Provider>,
         )
         fireEvent.click(screen.getAllByText('delete')[1])
         expect(startWidgetEdition.mock.calls).toMatchSnapshot()
@@ -95,18 +96,18 @@ describe('<Editor/>', () => {
         render(
             <Provider
                 store={mockStore({
-                    customers: fromJS({active: {}}),
+                    customers: fromJS({ active: {} }),
                 })}
             >
                 <Editor {...props} />
-            </Provider>
+            </Provider>,
         )
-        fireEvent.click(screen.getByRole('button', {name: 'Add Button'}))
-        await screen.findByRole('button', {name: 'Save'})
+        fireEvent.click(screen.getByRole('button', { name: 'Add Button' }))
+        await screen.findByRole('button', { name: 'Save' })
         fireEvent.change(screen.getByLabelText(/Button title/), {
-            target: {value: 'ok'},
+            target: { value: 'ok' },
         })
-        fireEvent.click(screen.getByRole('button', {name: 'Save'}))
+        fireEvent.click(screen.getByRole('button', { name: 'Save' }))
         expect(startWidgetEdition.mock.calls).toMatchSnapshot()
         expect(updateCustomActions.mock.calls).toMatchSnapshot()
     })
@@ -114,15 +115,15 @@ describe('<Editor/>', () => {
         render(
             <Provider
                 store={mockStore({
-                    customers: fromJS({active: {}}),
+                    customers: fromJS({ active: {} }),
                 })}
             >
                 <Editor {...props} />
-            </Provider>
+            </Provider>,
         )
         fireEvent.click(screen.getAllByText('edit')[1])
-        await screen.findByRole('button', {name: 'Save'})
-        fireEvent.click(screen.getByRole('button', {name: 'Save'}))
+        await screen.findByRole('button', { name: 'Save' })
+        fireEvent.click(screen.getByRole('button', { name: 'Save' }))
         expect(startWidgetEdition.mock.calls).toMatchSnapshot()
         expect(updateCustomActions.mock.calls).toMatchSnapshot()
     })

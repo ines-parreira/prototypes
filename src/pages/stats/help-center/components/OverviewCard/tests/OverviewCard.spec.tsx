@@ -1,12 +1,13 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render, screen } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {formatMetricTrend} from 'pages/stats/common/utils'
+import { formatMetricTrend } from 'pages/stats/common/utils'
 
-import OverviewCard, {OverviewCardProps} from '../OverviewCard'
+import OverviewCard, { OverviewCardProps } from '../OverviewCard'
 
 const mockStore = configureMockStore([thunk])
 const store = mockStore()
@@ -31,7 +32,7 @@ const renderComponent = (props: Partial<OverviewCardProps>) => {
                 }
                 {...props}
             />
-        </Provider>
+        </Provider>,
     )
 }
 
@@ -39,44 +40,44 @@ describe('<OverviewCard />', () => {
     it('should render with trend values', () => {
         const trendValue = 120
         const prevTrendValue = 110
-        renderComponent({trendValue, prevTrendValue})
+        renderComponent({ trendValue, prevTrendValue })
 
         expect(
-            screen.getByText(new RegExp(String(trendValue)))
+            screen.getByText(new RegExp(String(trendValue))),
         ).toBeInTheDocument()
         expect(
             screen.getByText(
                 new RegExp(
                     String(
                         formatMetricTrend(trendValue, prevTrendValue, 'percent')
-                            .formattedTrend
-                    )
-                )
-            )
+                            .formattedTrend,
+                    ),
+                ),
+            ),
         ).toBeInTheDocument()
     })
 
     it('should render default value when no trend values', () => {
         const trendValue = undefined
         const prevTrendValue = undefined
-        renderComponent({trendValue, prevTrendValue})
+        renderComponent({ trendValue, prevTrendValue })
 
         expect(screen.getByText(new RegExp('0%'))).toBeInTheDocument()
     })
 
     it('should show loader when component loading', () => {
-        renderComponent({isLoading: true})
+        renderComponent({ isLoading: true })
 
         expect(
-            document.querySelector('.react-loading-skeleton')
+            document.querySelector('.react-loading-skeleton'),
         ).toBeInTheDocument()
     })
 
     it('should hide tip when showTip is false', () => {
-        renderComponent({showTip: false})
+        renderComponent({ showTip: false })
 
         expect(
-            screen.queryByText('article views for your Help Center')
+            screen.queryByText('article views for your Help Center'),
         ).not.toBeInTheDocument()
     })
 
@@ -88,7 +89,7 @@ describe('<OverviewCard />', () => {
         })
 
         expect(
-            screen.queryByText('No data available for the selected filters.')
+            screen.queryByText('No data available for the selected filters.'),
         ).toBeInTheDocument()
     })
 })

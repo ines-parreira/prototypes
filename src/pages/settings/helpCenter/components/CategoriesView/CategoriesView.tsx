@@ -1,35 +1,34 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
-import {NavLink} from 'react-router-dom'
+
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { NavLink } from 'react-router-dom'
 
 import standalonePreview from 'assets/img/presentationals/standalone-self-service-portal.png'
-
-import {FeatureFlagKey} from 'config/featureFlags'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
-import {ArticleTemplate, HelpCenter} from 'models/helpCenter/types'
-import {Banner} from 'pages/common/components/Banner'
+import { ArticleTemplate, HelpCenter } from 'models/helpCenter/types'
+import { Banner } from 'pages/common/components/Banner'
 import Button from 'pages/common/components/button/Button'
-
 import {
     CategoriesTable,
     CategoriesTableProps,
 } from 'pages/settings/helpCenter/components/CategoriesTable'
-import {ImportSection} from 'pages/settings/helpCenter/components/Imports/components/ImportSection'
-import {CATEGORIES_PER_PAGE} from 'pages/settings/helpCenter/constants'
-import {useCategoriesActions} from 'pages/settings/helpCenter/hooks/useCategoriesActions'
-import {useHelpCenterCategories} from 'pages/settings/helpCenter/hooks/useHelpCenterCategories'
+import { ImportSection } from 'pages/settings/helpCenter/components/Imports/components/ImportSection'
+import { CATEGORIES_PER_PAGE } from 'pages/settings/helpCenter/constants'
+import { useCategoriesActions } from 'pages/settings/helpCenter/hooks/useCategoriesActions'
+import { useHelpCenterCategories } from 'pages/settings/helpCenter/hooks/useHelpCenterCategories'
 import settingsCss from 'pages/settings/settings.less'
-import {getUncategorizedArticles} from 'state/entities/helpCenter/articles'
-import {getViewLanguage} from 'state/ui/helpCenter'
+import { getUncategorizedArticles } from 'state/entities/helpCenter/articles'
+import { getViewLanguage } from 'state/ui/helpCenter'
 
-import {getRootCategory} from '../../../../../state/entities/helpCenter/categories'
-import {useAbilityChecker} from '../../hooks/useHelpCenterApi'
-import {useSearchContext} from '../../providers/SearchContext'
-import {CategoriesPositionsType} from '../CategoriesTable/CategoriesTable'
-import {CategoriesTableSkeleton} from '../CategoriesTableSkeleton'
+import { getRootCategory } from '../../../../../state/entities/helpCenter/categories'
+import { useAbilityChecker } from '../../hooks/useHelpCenterApi'
+import { useSearchContext } from '../../providers/SearchContext'
+import { CategoriesPositionsType } from '../CategoriesTable/CategoriesTable'
+import { CategoriesTableSkeleton } from '../CategoriesTableSkeleton'
+import ArticleLandingPage from './components/ArticleLandingPage'
 
 import css from './CategoriesView.less'
-import ArticleLandingPage from './components/ArticleLandingPage'
 
 type Props = Pick<CategoriesTableProps, 'renderArticleList'> & {
     helpCenter: HelpCenter
@@ -53,12 +52,12 @@ export const CategoriesViews = ({
     const uncategorizedArticles = useAppSelector(getUncategorizedArticles)
     const viewLanguage =
         useAppSelector(getViewLanguage) || helpCenter.default_locale
-    const {categories, isLoading} = useHelpCenterCategories({
+    const { categories, isLoading } = useHelpCenterCategories({
         per_page: CATEGORIES_PER_PAGE,
         locale: viewLanguage,
     })
-    const {isPassingRulesCheck} = useAbilityChecker()
-    const {setSearchInput} = useSearchContext()
+    const { isPassingRulesCheck } = useAbilityChecker()
+    const { setSearchInput } = useSearchContext()
     const articleTemplatesFlag =
         useFlags()[FeatureFlagKey.ObservabilityArticleTemplates]
 
@@ -91,12 +90,12 @@ export const CategoriesViews = ({
 
     const showLandingPage = showCreateFirst && articleTemplatesFlag
 
-    const canUpdateArticle = isPassingRulesCheck(({can}) =>
-        can('update', 'ArticleEntity')
+    const canUpdateArticle = isPassingRulesCheck(({ can }) =>
+        can('update', 'ArticleEntity'),
     )
 
-    const canUpdateCategory = isPassingRulesCheck(({can}) =>
-        can('update', 'CategoryEntity')
+    const canUpdateCategory = isPassingRulesCheck(({ can }) =>
+        can('update', 'CategoryEntity'),
     )
 
     if (isLoading && categories.length === 1) {

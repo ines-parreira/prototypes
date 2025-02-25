@@ -1,7 +1,8 @@
-import {fireEvent, render} from '@testing-library/react'
-import React, {useContext} from 'react'
+import React, { useContext } from 'react'
 
-import Wizard, {WizardContext} from '../Wizard'
+import { fireEvent, render } from '@testing-library/react'
+
+import Wizard, { WizardContext } from '../Wizard'
 import WizardProgressHeader from '../WizardProgressHeader'
 import WizardStep from '../WizardStep'
 
@@ -26,10 +27,10 @@ const MockNextStepComponent = () => {
 
 describe('<WizardProgressHeader />', () => {
     it('should render steps', () => {
-        const {getByText, getByTestId} = render(
+        const { getByText, getByTestId } = render(
             <Wizard startAt="bar" steps={['foo', 'bar', 'baz']}>
                 <WizardProgressHeader
-                    labels={{foo: 'Step 1', bar: 'Step 2', baz: 'Step 3'}}
+                    labels={{ foo: 'Step 1', bar: 'Step 2', baz: 'Step 3' }}
                 />
 
                 <WizardStep name="foo" />
@@ -39,7 +40,7 @@ describe('<WizardProgressHeader />', () => {
                 <WizardStep name="baz" />
 
                 <MockNextStepComponent />
-            </Wizard>
+            </Wizard>,
         )
 
         expect(getByText('Step 1')).toHaveClass('previousStep')

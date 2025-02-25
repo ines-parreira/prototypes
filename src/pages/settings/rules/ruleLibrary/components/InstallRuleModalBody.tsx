@@ -1,20 +1,20 @@
 import React from 'react'
 
 import {
-    RuleDraft,
-    ManagedRulesSlugs,
-    ManagedRule,
-    RuleType,
     AnyManagedRuleSettings,
+    ManagedRule,
+    ManagedRulesSlugs,
+    RuleDraft,
+    RuleType,
 } from 'state/rules/types'
 
-import {RuleItemActions} from '../../types'
-import {InstallationError} from '../constants'
-import {AutoCloseSpamModal} from './installationModals/AutoCloseSpamModal'
-import {AutoReplyFAQModal} from './installationModals/AutoReplyFAQModal'
-import {AutoReplyReturnModal} from './installationModals/AutoReplyReturnModal'
-import {AutoReplyWismoModal} from './installationModals/AutoReplyWismoModal'
-import {DefaultModal} from './installationModals/DefaultModal'
+import { RuleItemActions } from '../../types'
+import { InstallationError } from '../constants'
+import { AutoCloseSpamModal } from './installationModals/AutoCloseSpamModal'
+import { AutoReplyFAQModal } from './installationModals/AutoReplyFAQModal'
+import { AutoReplyReturnModal } from './installationModals/AutoReplyReturnModal'
+import { AutoReplyWismoModal } from './installationModals/AutoReplyWismoModal'
+import { DefaultModal } from './installationModals/DefaultModal'
 
 type Props = {
     handleRule: RuleItemActions
@@ -35,7 +35,7 @@ export type DefaultModalProps = Pick<
 export type ManagedRuleModalProps = Omit<Props, 'handleRule'>
 
 export const InstallRuleModalBody = (props: Props) => {
-    const {rule} = props
+    const { rule } = props
     const installationModals: {
         [ManagedRulesSlugs.AutoCloseSpam]: typeof AutoCloseSpamModal
         [ManagedRulesSlugs.AutoReplyWismo]: typeof AutoReplyWismoModal

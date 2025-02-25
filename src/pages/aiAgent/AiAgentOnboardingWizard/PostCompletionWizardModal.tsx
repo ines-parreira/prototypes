@@ -1,6 +1,6 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
-import {useSearchParam} from 'hooks/useSearchParam'
+import { useSearchParam } from 'hooks/useSearchParam'
 import HeroImageCarousel, {
     CarouselData,
 } from 'pages/common/components/HeroImageCarousel/HeroImageCarousel'
@@ -8,13 +8,14 @@ import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import SuccessModal from 'pages/common/components/SuccessModal'
-import {SuccessModalIcon} from 'pages/common/components/SuccessModal/SuccessModal'
-import {assetsUrl} from 'utils'
+import { SuccessModalIcon } from 'pages/common/components/SuccessModal/SuccessModal'
+import { assetsUrl } from 'utils'
 
 import {
     WIZARD_POST_COMPLETION_QUERY_KEY,
     WIZARD_POST_COMPLETION_STATE,
 } from '../constants'
+
 import css from './PostCompletionWizardModal.less'
 
 type ModalParams = {
@@ -29,7 +30,7 @@ type ModalParams = {
 }
 
 const getModalParams = (
-    state?: WIZARD_POST_COMPLETION_STATE
+    state?: WIZARD_POST_COMPLETION_STATE,
 ): ModalParams | null => {
     switch (state) {
         case WIZARD_POST_COMPLETION_STATE.configuration:
@@ -56,7 +57,7 @@ const getModalParams = (
                     {
                         header: 'Great work! Before setting it live, you can power AI Agent with more knowledge using Guidance',
                         imageUrl: assetsUrl(
-                            '/img/ai-agent/ai_agent_guidance.png'
+                            '/img/ai-agent/ai_agent_guidance.png',
                         ),
                         description:
                             'Write text-based instructions that explains your policies and processes so it can perform like a real agent.',
@@ -65,7 +66,7 @@ const getModalParams = (
                     {
                         header: 'Connect 3rd party apps to automate requests with Actions',
                         imageUrl: assetsUrl(
-                            '/img/ai-agent/ai_agent_actions.png'
+                            '/img/ai-agent/ai_agent_actions.png',
                         ),
                         description:
                             'Use your ecommerce tools to resolve common and repetitive asks from your customers, like changing their shipping address.',
@@ -86,7 +87,7 @@ const getModalParams = (
                     {
                         header: 'Before setting it live, you can power AI Agent with more knowledge using Guidance',
                         imageUrl: assetsUrl(
-                            '/img/ai-agent/ai_agent_guidance.png'
+                            '/img/ai-agent/ai_agent_guidance.png',
                         ),
                         description:
                             'Write text-based instructions that explains your policies and processes so it can perform like a real agent.',
@@ -95,7 +96,7 @@ const getModalParams = (
                     {
                         header: 'Connect 3rd party apps to automate requests with Actions',
                         imageUrl: assetsUrl(
-                            '/img/ai-agent/ai_agent_actions.png'
+                            '/img/ai-agent/ai_agent_actions.png',
                         ),
                         description:
                             'Use your ecommerce tools to resolve common and repetitive asks from your customers, like changing their shipping address.',
@@ -116,18 +117,18 @@ const getModalParams = (
 }
 
 const isWizardPostCompletionState = (
-    value: any
+    value: any,
 ): value is WIZARD_POST_COMPLETION_STATE => {
     return Object.values(WIZARD_POST_COMPLETION_STATE).includes(value)
 }
 
 const PostCompletionWizardModal = () => {
     const [value, setSearchParam] = useSearchParam(
-        WIZARD_POST_COMPLETION_QUERY_KEY
+        WIZARD_POST_COMPLETION_QUERY_KEY,
     )
 
     const [modalState, setModalState] = useState(
-        isWizardPostCompletionState(value) ? value : undefined
+        isWizardPostCompletionState(value) ? value : undefined,
     )
     const [isOpen, setIsOpen] = useState(modalState !== undefined)
 
@@ -139,7 +140,7 @@ const PostCompletionWizardModal = () => {
         if (modalState === WIZARD_POST_COMPLETION_STATE.configuration) {
             setIsOpen(true)
             setModalParams(
-                getModalParams(WIZARD_POST_COMPLETION_STATE.knowledge)
+                getModalParams(WIZARD_POST_COMPLETION_STATE.knowledge),
             )
             setModalState(WIZARD_POST_COMPLETION_STATE.knowledge)
         }

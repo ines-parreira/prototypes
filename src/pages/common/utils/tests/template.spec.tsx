@@ -10,7 +10,7 @@ describe('utils', () => {
             it('should replace `d` with `D`', () => {
                 expect(LDMLToMomentFormat('MMMM d YYYY')).toEqual('MMMM D YYYY')
                 expect(LDMLToMomentFormat('MMMM dd YYYY')).toEqual(
-                    'MMMM DD YYYY'
+                    'MMMM DD YYYY',
                 )
                 expect(LDMLToMomentFormat('MMMM/d/YYYY')).toEqual('MMMM/D/YYYY')
                 expect(LDMLToMomentFormat('d/YYYY')).toEqual('D/YYYY')
@@ -27,7 +27,7 @@ describe('utils', () => {
                     'MMMM Od YYYY',
                     'MMMM OdO YYYY',
                 ].forEach((pattern) =>
-                    expect(LDMLToMomentFormat(pattern)).toEqual(pattern)
+                    expect(LDMLToMomentFormat(pattern)).toEqual(pattern),
                 )
             })
         })
@@ -48,7 +48,7 @@ describe('utils', () => {
                 expect(
                     renderTemplate('Hello {{something}}', {
                         something: 'world',
-                    })
+                    }),
                 ).toBe('Hello world')
             })
 
@@ -56,7 +56,7 @@ describe('utils', () => {
                 expect(
                     renderTemplate('You have {{sum}} orders.', {
                         sum: 0,
-                    })
+                    }),
                 ).toBe('You have 0 orders.')
             })
 
@@ -72,8 +72,8 @@ describe('utils', () => {
                                 name: 'cup of tea',
                                 temperature: 300,
                             },
-                        }
-                    )
+                        },
+                    ),
                 ).toBe('Hello Michael, how about a nice cup of tea?')
             })
 
@@ -85,7 +85,7 @@ describe('utils', () => {
                                 name: 'Michael',
                             },
                         },
-                    })
+                    }),
                 ).toBe('Hello Michael')
             })
 
@@ -100,7 +100,7 @@ describe('utils', () => {
                                 name: 'Michael',
                             },
                         },
-                    })
+                    }),
                 ).toBe(result)
             })
 
@@ -112,8 +112,8 @@ describe('utils', () => {
                             somebody: {
                                 name: 'Michael',
                             },
-                        }
-                    )
+                        },
+                    ),
                 ).toBe('Hello Michael, how about a nice ?')
             })
 
@@ -121,7 +121,7 @@ describe('utils', () => {
                 expect(
                     renderTemplate('You have {{sum}} orders.', {
                         sum: null,
-                    })
+                    }),
                 ).toBe('You have  orders.')
             })
 
@@ -129,7 +129,7 @@ describe('utils', () => {
                 expect(
                     renderTemplate('You have {{sum}} orders.', {
                         sum: undefined,
-                    })
+                    }),
                 ).toBe('You have  orders.')
             })
 
@@ -137,7 +137,7 @@ describe('utils', () => {
                 expect(
                     renderTemplate('{{date|datetime_format("YYYY")}}', {
                         date: '2018-01-02',
-                    })
+                    }),
                 ).toBe('2018')
             })
 
@@ -145,7 +145,7 @@ describe('utils', () => {
                 expect(
                     renderTemplate('{{date|datetime_format("YYYY-MM")}}', {
                         date: '2018-01-02',
-                    })
+                    }),
                 ).toBe('2018-01')
             })
 
@@ -153,7 +153,7 @@ describe('utils', () => {
                 expect(
                     renderTemplate('Hi {{x|fallback("there")}}', {
                         x: 'Alex',
-                    })
+                    }),
                 ).toBe('Hi Alex')
             })
 
@@ -161,7 +161,7 @@ describe('utils', () => {
                 expect(
                     renderTemplate('Hi {{x|fallback("there")}}', {
                         x: '',
-                    })
+                    }),
                 ).toBe('Hi there')
             })
 
@@ -169,7 +169,7 @@ describe('utils', () => {
                 expect(
                     renderTemplate('Hi {{x|fallback("there")}}', {
                         y: 'Alex',
-                    })
+                    }),
                 ).toBe('Hi there')
             })
 
@@ -177,7 +177,7 @@ describe('utils', () => {
                 expect(
                     renderTemplate('{{x|unknown()}}', {
                         x: 123,
-                    })
+                    }),
                 ).toBe('123')
             })
 
@@ -185,7 +185,7 @@ describe('utils', () => {
                 expect(
                     renderTemplate('{{x|datetime_relative(alert(123))}}', {
                         x: 123,
-                    })
+                    }),
                 ).toBe('{{x|datetime_relative(alert(123))}}')
             })
 
@@ -193,9 +193,12 @@ describe('utils', () => {
                 expect(
                     renderTemplate('{{x.messages[-1].from_agent}}', {
                         x: {
-                            messages: [{from_agent: true}, {from_agent: false}],
+                            messages: [
+                                { from_agent: true },
+                                { from_agent: false },
+                            ],
                         },
-                    })
+                    }),
                 ).toBe('false')
             })
 
@@ -216,8 +219,8 @@ describe('utils', () => {
                                     },
                                 ],
                             },
-                        }
-                    )
+                        },
+                    ),
                 ).toBe('March 11 2022')
             })
 
@@ -240,8 +243,8 @@ describe('utils', () => {
                                     },
                                 },
                             },
-                        }
-                    )
+                        },
+                    ),
                 ).toBe('2020-05-12T08:14:21.191818+00:00')
             })
 
@@ -264,8 +267,8 @@ describe('utils', () => {
                                     },
                                 },
                             },
-                        }
-                    )
+                        },
+                    ),
                 ).toBe('2020-05-12T08:14:21.191818+00:00')
             })
 
@@ -281,7 +284,7 @@ describe('utils', () => {
                                 },
                             },
                         },
-                    })
+                    }),
                 ).toBe('foo')
             })
 
@@ -297,9 +300,9 @@ describe('utils', () => {
                                 },
                             },
                         },
-                    })
+                    }),
                 ).toBe(
-                    '{"customer":{"integrations":{"14":{"orders":["foo"]}}}}'
+                    '{"customer":{"integrations":{"14":{"orders":["foo"]}}}}',
                 )
             })
             it('should trim too long objects in stringified JSON', () => {
@@ -308,14 +311,14 @@ describe('utils', () => {
                         x: {
                             customer: 'customer_name'.repeat(1000),
                         },
-                    }).length
+                    }).length,
                 ).toBe(MAX_OBJECT_RENDER_LENGTH)
             })
 
             it('should return template when templated value is empty', () => {
                 expect(renderTemplate('hello {{x}}', {})).toEqual('hello ')
                 expect(renderTemplate('hello {{x}}', {}, true)).toEqual(
-                    'hello {{x}}'
+                    'hello {{x}}',
                 )
             })
         })

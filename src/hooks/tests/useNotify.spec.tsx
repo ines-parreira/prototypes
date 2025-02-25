@@ -1,10 +1,10 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {useNotify} from 'hooks/useNotify'
-import {notify as notifyAction} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {assumeMock} from 'utils/testing'
+import { useNotify } from 'hooks/useNotify'
+import { notify as notifyAction } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/useAppDispatch')
 const useAppDispatchMock = assumeMock(useAppDispatch)
@@ -21,7 +21,7 @@ describe('useNotify', () => {
     })
 
     it('should create a notify function that dispatches notifications', () => {
-        const {result} = renderHook(() => useNotify())
+        const { result } = renderHook(() => useNotify())
 
         void result.current.notify({
             status: NotificationStatus.Success,
@@ -36,7 +36,7 @@ describe('useNotify', () => {
     })
 
     it('should provide success notification shorthand', () => {
-        const {result} = renderHook(() => useNotify())
+        const { result } = renderHook(() => useNotify())
 
         void result.current.success('Success message')
 
@@ -48,7 +48,7 @@ describe('useNotify', () => {
     })
 
     it('should provide error notification shorthand', () => {
-        const {result} = renderHook(() => useNotify())
+        const { result } = renderHook(() => useNotify())
 
         void result.current.error('Error message')
 
@@ -60,7 +60,7 @@ describe('useNotify', () => {
     })
 
     it('should provide info notification shorthand', () => {
-        const {result} = renderHook(() => useNotify())
+        const { result } = renderHook(() => useNotify())
 
         void result.current.info('Info message')
 
@@ -72,7 +72,7 @@ describe('useNotify', () => {
     })
 
     it('should provide warning notification shorthand', () => {
-        const {result} = renderHook(() => useNotify())
+        const { result } = renderHook(() => useNotify())
 
         void result.current.warning('Warning message')
 

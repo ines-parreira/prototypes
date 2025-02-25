@@ -1,8 +1,9 @@
-import {render} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
-import {Provider} from 'react-redux'
-import {Router} from 'react-router-dom'
+
+import { render } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { Provider } from 'react-redux'
+import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -19,7 +20,7 @@ import VoiceIntegrationIvr from '../VoiceIntegrationIvr'
 const mockStore = configureMockStore([thunk])
 jest.mock(
     'pages/integrations/integration/components/voice/IvrMenuActionsFieldArray',
-    () => () => <div>test actions</div>
+    () => () => <div>test actions</div>,
 )
 
 const ivrIntegration = {
@@ -67,7 +68,7 @@ describe('<VoiceIntegrationIvr />', () => {
                 <Provider store={mockStore()}>
                     <VoiceIntegrationIvr integration={ivrIntegration} />
                 </Provider>
-            </Router>
+            </Router>,
         )
     }
 
@@ -76,35 +77,35 @@ describe('<VoiceIntegrationIvr />', () => {
     })
 
     it('renders component', () => {
-        const {getByText, getByLabelText, getByRole} = renderComponent()
+        const { getByText, getByLabelText, getByRole } = renderComponent()
 
         expect(getByText('Greeting message')).toBeInTheDocument()
         expect(
             getByText(
-                'Callers will be informed of all IVR options through this message, which must be updated if options change.'
-            )
+                'Callers will be informed of all IVR options through this message, which must be updated if options change.',
+            ),
         ).toBeInTheDocument()
         expect(getByLabelText('Text-to-speech')).toBeChecked()
         expect(
             getByText(
-                'Hello, thanks for calling. 1 for message 2 for forward 3 for message'
-            )
+                'Hello, thanks for calling. 1 for message 2 for forward 3 for message',
+            ),
         ).toBeInTheDocument()
 
         expect(getByText('test actions')).toBeInTheDocument()
         expect(getByText('Save changes')).toBeInTheDocument()
-        expect(getByRole('button', {name: 'Save changes'})).toBeAriaDisabled()
+        expect(getByRole('button', { name: 'Save changes' })).toBeAriaDisabled()
         expect(getByText('Cancel')).toBeInTheDocument()
     })
 
     it('enables save button when there are changes', () => {
-        const {getByText, getByLabelText, getByRole} = renderComponent()
+        const { getByText, getByLabelText, getByRole } = renderComponent()
 
         userEvent.click(getByLabelText('None'))
-        expect(getByRole('button', {name: 'Save changes'})).toBeAriaEnabled()
+        expect(getByRole('button', { name: 'Save changes' })).toBeAriaEnabled()
 
         userEvent.click(getByText('Cancel'))
         expect(getByText('None')).not.toBeChecked()
-        expect(getByRole('button', {name: 'Save changes'})).toBeAriaDisabled()
+        expect(getByRole('button', { name: 'Save changes' })).toBeAriaDisabled()
     })
 })

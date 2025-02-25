@@ -1,12 +1,12 @@
 import bigCommerceEvent from './bigcommerce'
 import rechargeEvent from './recharge'
 import shopifyEvent from './shopify'
-import {eventMaker, integrationEvent} from './types'
+import { eventMaker, integrationEvent } from './types'
 
 export const eventMatcher = (
-    eventData: eventMaker
+    eventData: eventMaker,
 ): integrationEvent | undefined => {
-    const {integration} = eventData
+    const { integration } = eventData
     const integrationType = integration.get('type')
 
     switch (integrationType) {

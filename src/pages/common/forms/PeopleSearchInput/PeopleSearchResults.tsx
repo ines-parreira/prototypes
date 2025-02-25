@@ -1,8 +1,9 @@
-import {Map, List, Seq} from 'immutable'
-import React, {ReactNode} from 'react'
-import {DropdownItem} from 'reactstrap'
+import React, { ReactNode } from 'react'
 
-import {AgentLabel, TeamLabel} from '../../utils/labels'
+import { List, Map, Seq } from 'immutable'
+import { DropdownItem } from 'reactstrap'
+
+import { AgentLabel, TeamLabel } from '../../utils/labels'
 
 import css from './PeopleSearchResults.less'
 
@@ -41,7 +42,7 @@ type TeamResultsProps = {
     onClick: (team: Map<any, any>) => void
 }
 
-function TeamResults({teams, onClick}: TeamResultsProps) {
+function TeamResults({ teams, onClick }: TeamResultsProps) {
     return (
         <>
             <DropdownItem header className="text-uppercase">
@@ -76,7 +77,7 @@ type UserResultsProps = {
     onClick: (user: Map<any, any>) => void
 }
 
-function UserResults({users, onClick}: UserResultsProps) {
+function UserResults({ users, onClick }: UserResultsProps) {
     return (
         <>
             <DropdownItem header className="text-uppercase">

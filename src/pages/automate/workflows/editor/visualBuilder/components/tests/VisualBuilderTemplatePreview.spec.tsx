@@ -1,8 +1,9 @@
-import {screen} from '@testing-library/react'
 import React from 'react'
 
-import {visualBuilderGraphSimpleChoicesFixture} from 'pages/automate/workflows/tests/visualBuilderGraph.fixtures'
-import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
+import { screen } from '@testing-library/react'
+
+import { visualBuilderGraphSimpleChoicesFixture } from 'pages/automate/workflows/tests/visualBuilderGraph.fixtures'
+import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import VisualBuilderTemplatePreview from '../VisualBuilderTemplatePreview'
 
@@ -11,7 +12,7 @@ describe('<VisualBuilderTemplatePreview />', () => {
         renderWithQueryClientProvider(
             <VisualBuilderTemplatePreview
                 visualBuilderGraph={visualBuilderGraphSimpleChoicesFixture}
-            />
+            />,
         )
 
         expect(screen.getByText('entrypoint')).toBeInTheDocument()

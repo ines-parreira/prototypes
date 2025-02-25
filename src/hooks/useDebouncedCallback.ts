@@ -1,4 +1,4 @@
-import {useMemo, useRef} from 'react'
+import { useMemo, useRef } from 'react'
 
 import useUnmount from './useUnmount'
 
@@ -57,7 +57,7 @@ export default function useDebouncedCallback<
                 clearTimeout(timeout.current)
             }
 
-            lastCall.current = {args, this: this}
+            lastCall.current = { args, this: this }
 
             // Plan regular execution
             timeout.current = setTimeout(execute, delay)
@@ -69,7 +69,7 @@ export default function useDebouncedCallback<
         } as DebouncedFunction<Fn>
 
         Object.defineProperties(wrapped, {
-            length: {value: callback.length},
+            length: { value: callback.length },
             name: {
                 value: `${callback.name || 'anonymous'}__debounced__${delay}`,
             },

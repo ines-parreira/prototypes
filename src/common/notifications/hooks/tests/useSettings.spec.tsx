@@ -1,18 +1,19 @@
-import {useKnockClient} from '@knocklabs/react'
-import {waitFor} from '@testing-library/react'
-import {renderHook, act} from '@testing-library/react-hooks'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { useKnockClient } from '@knocklabs/react'
+import { waitFor } from '@testing-library/react'
+import { act, renderHook } from '@testing-library/react-hooks'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {submitSetting} from 'state/currentUser/actions'
-import {RootState, StoreDispatch} from 'state/types'
-import {getLDClient} from 'utils/launchDarkly'
+import { submitSetting } from 'state/currentUser/actions'
+import { RootState, StoreDispatch } from 'state/types'
+import { getLDClient } from 'utils/launchDarkly'
 
-import {categories, notifications} from '../../data'
+import { categories, notifications } from '../../data'
 import useSettings from '../useSettings'
 
 jest.mock('@knocklabs/react', () => ({
@@ -103,7 +104,7 @@ describe('useSettings', () => {
     beforeEach(() => {
         variationMock.mockImplementation(() => true)
         mockUseKnockClient.mockReturnValue({
-            user: {identify: jest.fn()},
+            user: { identify: jest.fn() },
             preferences: {
                 get: mockGetKnockPreferences,
                 set: mockSetKnockPreferences,
@@ -117,7 +118,7 @@ describe('useSettings', () => {
     })
 
     it('should return expected properties', async () => {
-        const {result, waitForNextUpdate} = renderHook(() => useSettings())
+        const { result, waitForNextUpdate } = renderHook(() => useSettings())
 
         await act(async () => await waitForNextUpdate())
 
@@ -131,26 +132,28 @@ describe('useSettings', () => {
     it.each(notificationsWithSettings.map((config) => [config.type]))(
         'should include %s event',
         async (notificationType) => {
-            const {result, waitForNextUpdate} = renderHook(() => useSettings())
+            const { result, waitForNextUpdate } = renderHook(() =>
+                useSettings(),
+            )
             await act(async () => await waitForNextUpdate())
 
             expect(
-                result.current.settings.events[notificationType]
+                result.current.settings.events[notificationType],
             ).toBeDefined()
-        }
+        },
     )
 
     it('should use the old notification format for the legacy-chat-and-messaging event', async () => {
-        const {result, waitForNextUpdate} = renderHook(() => useSettings())
+        const { result, waitForNextUpdate } = renderHook(() => useSettings())
 
         await act(async () => await waitForNextUpdate())
 
         expect(
-            result.current.settings.events['legacy-chat-and-messaging'].sound
+            result.current.settings.events['legacy-chat-and-messaging'].sound,
         ).toBe('custom-sound')
         expect(
             result.current.settings.events['legacy-chat-and-messaging'].channels
-                .in_app_feed
+                .in_app_feed,
         ).toBe(true)
     })
 
@@ -165,12 +168,12 @@ describe('useSettings', () => {
             },
         })
 
-        const {result, waitForNextUpdate} = renderHook(() => useSettings())
+        const { result, waitForNextUpdate } = renderHook(() => useSettings())
 
         await act(async () => await waitForNextUpdate())
 
         expect(
-            result.current.settings.events['legacy-chat-and-messaging'].sound
+            result.current.settings.events['legacy-chat-and-messaging'].sound,
         ).toBe('')
     })
 
@@ -181,12 +184,12 @@ describe('useSettings', () => {
             },
         })
 
-        const {result, waitForNextUpdate} = renderHook(() => useSettings())
+        const { result, waitForNextUpdate } = renderHook(() => useSettings())
 
         await act(async () => await waitForNextUpdate())
 
         expect(
-            result.current.settings.events['legacy-chat-and-messaging'].sound
+            result.current.settings.events['legacy-chat-and-messaging'].sound,
         ).toBe('default')
     })
 
@@ -199,18 +202,18 @@ describe('useSettings', () => {
             },
         })
 
-        const {result, waitForNextUpdate} = renderHook(() => useSettings())
+        const { result, waitForNextUpdate } = renderHook(() => useSettings())
 
         await act(async () => await waitForNextUpdate())
         expect(
-            result.current.settings.events['user.mentioned'].channels
+            result.current.settings.events['user.mentioned'].channels,
         ).toEqual({
             in_app_feed: true,
         })
     })
 
     it('should update settings when handleChangeChannel is called', async () => {
-        const {result, waitForNextUpdate} = renderHook(() => useSettings())
+        const { result, waitForNextUpdate } = renderHook(() => useSettings())
 
         await act(async () => await waitForNextUpdate())
 
@@ -218,19 +221,19 @@ describe('useSettings', () => {
             result.current.onChangeChannel(
                 'user.mentioned',
                 'in_app_feed',
-                false
+                false,
             )
         })
 
         expect(
             result.current.settings.events['user.mentioned'].channels[
                 'in_app_feed'
-            ]
+            ],
         ).toBe(false)
     })
 
     it('should update settings when handleChangeSound is called', async () => {
-        const {result, waitForNextUpdate} = renderHook(() => useSettings())
+        const { result, waitForNextUpdate } = renderHook(() => useSettings())
 
         await act(async () => await waitForNextUpdate())
 
@@ -239,12 +242,12 @@ describe('useSettings', () => {
         })
 
         expect(result.current.settings.events['user.mentioned'].sound).toBe(
-            'definite'
+            'definite',
         )
     })
 
     it('should update settings when handleChangeVolume is called', async () => {
-        const {result, waitForNextUpdate} = renderHook(() => useSettings())
+        const { result, waitForNextUpdate } = renderHook(() => useSettings())
 
         await act(async () => await waitForNextUpdate())
 
@@ -256,7 +259,7 @@ describe('useSettings', () => {
     })
 
     it('should save settings when save is called', async () => {
-        const {result, waitForNextUpdate} = renderHook(() => useSettings())
+        const { result, waitForNextUpdate } = renderHook(() => useSettings())
 
         await act(async () => await waitForNextUpdate())
 
@@ -271,8 +274,8 @@ describe('useSettings', () => {
     })
 
     it('should filter out legacy-chat-and-messaging event on save from settings and knock workflow preferences', async () => {
-        const {result, waitForNextUpdate} = renderHook(() => useSettings(), {
-            wrapper: ({children}) => (
+        const { result, waitForNextUpdate } = renderHook(() => useSettings(), {
+            wrapper: ({ children }) => (
                 <Provider store={mockStore()}>{children}</Provider>
             ),
         })
@@ -286,11 +289,11 @@ describe('useSettings', () => {
             // eslint-disable-next-line
             submitSettingMock.mock.calls[0][0]['data']['events'][
                 'legacy-chat-and-messaging'
-            ]
+            ],
         ).not.toBeDefined()
         expect(
             // eslint-disable-next-line
-            mockSetKnockPreferences.mock.calls[0][0]['workflows']
+            mockSetKnockPreferences.mock.calls[0][0]['workflows'],
         ).not.toHaveProperty('legacy-chat-and-messaging')
     })
 })

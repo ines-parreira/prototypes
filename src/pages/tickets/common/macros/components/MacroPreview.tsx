@@ -1,9 +1,10 @@
-import {Macro} from '@gorgias/api-queries'
 import React from 'react'
+
+import { Macro } from '@gorgias/api-queries'
 
 import Preview from '../Preview'
 
-const MacroPreview = ({currentMacro}: {currentMacro?: Macro}) =>
+const MacroPreview = ({ currentMacro }: { currentMacro?: Macro }) =>
     currentMacro ? (
         <div className="MacroPreview">
             <div className="mt-3 mb-3">

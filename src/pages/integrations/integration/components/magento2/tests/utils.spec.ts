@@ -1,4 +1,4 @@
-import {split_url} from '../utils'
+import { split_url } from '../utils'
 
 describe('split_url', () => {
     it('should split url when there is https in url', () => {

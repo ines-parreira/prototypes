@@ -1,11 +1,13 @@
-import {useListAnalyticsFilters} from '@gorgias/api-queries'
-import {fireEvent, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
+import { fireEvent, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { useListAnalyticsFilters } from '@gorgias/api-queries'
+
 import useAppSelector from 'hooks/useAppSelector'
-import {APPLY_SAVED_FILTERS} from 'pages/stats/common/filters/SavedFiltersActions/ApplySavedFilters/ApplySavedFilters'
-import {SavedFiltersActions} from 'pages/stats/common/filters/SavedFiltersActions/SavedFiltersActions'
+import { APPLY_SAVED_FILTERS } from 'pages/stats/common/filters/SavedFiltersActions/ApplySavedFilters/ApplySavedFilters'
+import { SavedFiltersActions } from 'pages/stats/common/filters/SavedFiltersActions/SavedFiltersActions'
 import {
     SAVE_FILTERS,
     SAVE_FILTERS_TOOLTIP,
@@ -15,9 +17,9 @@ import {
     filterKeysMock,
     filtersMock,
 } from 'pages/stats/common/filters/SavedFiltersActions/tests/helpers.spec'
-import {initialiseSavedFilterDraftFromFilters} from 'state/ui/stats/filtersSlice'
-import {isTeamLead} from 'utils'
-import {assumeMock, renderWithStore} from 'utils/testing'
+import { initialiseSavedFilterDraftFromFilters } from 'state/ui/stats/filtersSlice'
+import { isTeamLead } from 'utils'
+import { assumeMock, renderWithStore } from 'utils/testing'
 
 jest.mock('state/currentUser/selectors', () => ({
     getCurrentUser: jest.fn(),
@@ -48,9 +50,9 @@ describe('SavedFiltersActions for an Agent', () => {
     })
 
     it('should only render ApplySavedFilters', () => {
-        const {queryByText, getByText} = renderWithStore(
+        const { queryByText, getByText } = renderWithStore(
             <SavedFiltersActions optionalFilters={filterKeysMock} />,
-            {}
+            {},
         )
 
         expect(queryByText(SAVE_FILTERS)).toBeFalsy()
@@ -59,9 +61,9 @@ describe('SavedFiltersActions for an Agent', () => {
     })
 
     it('should render ApplySavedFilters and SaveFilters', () => {
-        const {queryByText, getByText} = renderWithStore(
+        const { queryByText, getByText } = renderWithStore(
             <SavedFiltersActions optionalFilters={filterKeysMock} />,
-            {}
+            {},
         )
 
         expect(queryByText(SAVE_FILTERS)).toBeFalsy()
@@ -86,15 +88,15 @@ describe('SavedFiltersActions for an Admin or Team Lead', () => {
         useListAnalyticsFiltersMock.mockReturnValue({
             data: {
                 data: [
-                    {id: 1, name: 'Temp Filter 1', filter_group: []},
-                    {id: 2, name: 'Temp Filter 2', filter_group: []},
+                    { id: 1, name: 'Temp Filter 1', filter_group: [] },
+                    { id: 2, name: 'Temp Filter 2', filter_group: [] },
                 ],
             },
         } as any)
 
-        const {getByText} = renderWithStore(
+        const { getByText } = renderWithStore(
             <SavedFiltersActions optionalFilters={filterKeysMock} />,
-            {}
+            {},
         )
 
         expect(getByText(SAVE_FILTERS)).toBeTruthy()
@@ -106,21 +108,21 @@ describe('SavedFiltersActions for an Admin or Team Lead', () => {
         useListAnalyticsFiltersMock.mockReturnValue({
             data: {
                 data: [
-                    {id: 1, name: 'Temp Filter 1', filter_group: []},
-                    {id: 2, name: 'Temp Filter 2', filter_group: []},
+                    { id: 1, name: 'Temp Filter 1', filter_group: [] },
+                    { id: 2, name: 'Temp Filter 2', filter_group: [] },
                 ],
             },
         } as any)
 
-        const {getByText} = renderWithStore(
+        const { getByText } = renderWithStore(
             <SavedFiltersActions optionalFilters={filterKeysMock} />,
-            {}
+            {},
         )
 
         fireEvent.mouseEnter(getByText(SAVE_FILTERS))
 
         await waitFor(() =>
-            expect(getByText(SAVE_FILTERS_TOOLTIP)).toBeTruthy()
+            expect(getByText(SAVE_FILTERS_TOOLTIP)).toBeTruthy(),
         )
     })
 
@@ -128,22 +130,22 @@ describe('SavedFiltersActions for an Admin or Team Lead', () => {
         useListAnalyticsFiltersMock.mockReturnValue({
             data: {
                 data: [
-                    {id: 1, name: 'Temp Filter 1', filter_group: []},
-                    {id: 2, name: 'Temp Filter 2', filter_group: []},
+                    { id: 1, name: 'Temp Filter 1', filter_group: [] },
+                    { id: 2, name: 'Temp Filter 2', filter_group: [] },
                 ],
             },
         } as any)
 
-        const {getByText, store} = renderWithStore(
+        const { getByText, store } = renderWithStore(
             <SavedFiltersActions optionalFilters={filterKeysMock} />,
-            {}
+            {},
         )
 
         expect(getByText(SAVE_FILTERS)).toBeTruthy()
         userEvent.click(getByText(SAVE_FILTERS))
 
         expect(store.getActions()).toContainEqual(
-            initialiseSavedFilterDraftFromFilters(filtersMock)
+            initialiseSavedFilterDraftFromFilters(filtersMock),
         )
     })
 })

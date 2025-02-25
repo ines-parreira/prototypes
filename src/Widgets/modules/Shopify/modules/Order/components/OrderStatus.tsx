@@ -1,11 +1,12 @@
-import {Badge, ColorType} from '@gorgias/merchant-ui-kit'
 import React from 'react'
+
+import { Badge, ColorType } from '@gorgias/merchant-ui-kit'
 
 import {
     FinancialStatus,
     FulfillmentStatus,
 } from 'constants/integrations/types/shopify'
-import {humanizeString} from 'utils'
+import { humanizeString } from 'utils'
 
 type FulfillmentBadgeProps = {
     fulfillmentStatus: FulfillmentStatus
@@ -54,7 +55,7 @@ export default function OrderStatus({
     )
 }
 
-function FulfillmentBadge({fulfillmentStatus}: FulfillmentBadgeProps) {
+function FulfillmentBadge({ fulfillmentStatus }: FulfillmentBadgeProps) {
     const [type, label] = fulfillmentValues.get(fulfillmentStatus) || []
     if (!type) {
         return null
@@ -62,7 +63,7 @@ function FulfillmentBadge({fulfillmentStatus}: FulfillmentBadgeProps) {
     return <Badge type={type}>{label}</Badge>
 }
 
-function FinancialBadge({financialStatus}: FinancialBadgeProps) {
+function FinancialBadge({ financialStatus }: FinancialBadgeProps) {
     const type = financialValues.get(financialStatus)
     if (!type) {
         return null

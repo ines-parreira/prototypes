@@ -1,1 +1,1 @@
-export {default} from './DownloadOverviewData'
+export { default } from './DownloadOverviewData'

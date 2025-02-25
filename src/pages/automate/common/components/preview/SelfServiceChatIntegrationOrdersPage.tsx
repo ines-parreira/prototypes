@@ -1,30 +1,32 @@
-import classnames from 'classnames'
 import React from 'react'
-import {useHistory} from 'react-router-dom'
+
+import classnames from 'classnames'
+import { useHistory } from 'react-router-dom'
 
 import {
-    GORGIAS_CHAT_SSP_TEXTS,
     getPrimaryLanguageFromChatConfig,
+    GORGIAS_CHAT_SSP_TEXTS,
 } from 'config/integrations/gorgias_chat'
 import Badge from 'gorgias-design-system/Badge/Badge'
 import Button from 'gorgias-design-system/Buttons/Button'
-import {GorgiasChatIntegration} from 'models/integration/types'
+import { GorgiasChatIntegration } from 'models/integration/types'
 
 import MousePointer from './components/MousePointer'
 import SelfServiceChatIntegrationFooter from './components/SelfServiceChatIntegrationFooter'
-import {LINE_ITEMS} from './constants'
-import useOrdersPagePreview, {PreviewStep} from './hooks/useOrdersPagePreview'
+import { LINE_ITEMS } from './constants'
+import useOrdersPagePreview, { PreviewStep } from './hooks/useOrdersPagePreview'
+import { useSelfServicePreviewContext } from './SelfServicePreviewContext'
+
 import css from './SelfServiceChatIntegrationOrdersPage.less'
-import {useSelfServicePreviewContext} from './SelfServicePreviewContext'
 
 type Props = {
     integration: GorgiasChatIntegration
 }
 
-const SelfServiceChatIntegrationOrdersPage = ({integration}: Props) => {
-    const {orderManagementFlow, hasHoveredReportOrderIssueScenario} =
+const SelfServiceChatIntegrationOrdersPage = ({ integration }: Props) => {
+    const { orderManagementFlow, hasHoveredReportOrderIssueScenario } =
         useSelfServicePreviewContext()
-    const {previewStep} = useOrdersPagePreview()
+    const { previewStep } = useOrdersPagePreview()
 
     const history = useHistory()
     const language = getPrimaryLanguageFromChatConfig(integration.meta)
@@ -86,7 +88,7 @@ const SelfServiceChatIntegrationOrdersPage = ({integration}: Props) => {
                                                         [css.isActive]:
                                                             previewStep ===
                                                             PreviewStep.TRACK_CLICK,
-                                                    }
+                                                    },
                                                 )}
                                             >
                                                 {sspTexts.track}
@@ -126,7 +128,7 @@ const SelfServiceChatIntegrationOrdersPage = ({integration}: Props) => {
                                                     {
                                                         [css.isActive]:
                                                             hasHoveredReportOrderIssueScenario,
-                                                    }
+                                                    },
                                                 )}
                                             >
                                                 {sspTexts.reportIssue}

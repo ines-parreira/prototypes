@@ -1,19 +1,19 @@
-import {LEAF_TYPES} from '../constants'
+import { LEAF_TYPES } from '../constants'
 import {
-    isSourceRecord,
-    isSourceArray,
-    Source,
-    isWrapperTemplate,
-    isLeafType,
     isCardTemplate,
-    isListTemplate,
     isLeafTemplate,
+    isLeafType,
+    isListTemplate,
+    isSourceArray,
+    isSourceRecord,
+    isWrapperTemplate,
+    Source,
     Template,
 } from '../types'
 
 describe('isSourceRecord', () => {
     it.each([
-        [{a: 1, b: 2}, true],
+        [{ a: 1, b: 2 }, true],
         [{}, true],
         [['no'], false],
         ['hey', false],
@@ -60,19 +60,19 @@ describe('isLeafType', () => {
 
 describe('template type guards', () => {
     it.each([
-        ['isWrapperTemplate', {type: 'wrapper'}, true, isWrapperTemplate],
-        ['isWrapperTemplate', {type: 'card'}, false, isWrapperTemplate],
-        ['isCardTemplate', {type: 'card'}, true, isCardTemplate],
-        ['isCardTemplate', {type: 'wrapper'}, false, isCardTemplate],
-        ['isListTemplate', {type: 'list'}, true, isListTemplate],
-        ['isListTemplate', {type: 'card'}, false, isListTemplate],
-        ['isLeafTemplate', {type: LEAF_TYPES.TEXT}, true, isLeafTemplate],
-        ['isLeafTemplate', {type: 'yes'}, true, isLeafTemplate],
-        ['isLeafTemplate', {type: 'wrapper'}, false, isLeafTemplate],
+        ['isWrapperTemplate', { type: 'wrapper' }, true, isWrapperTemplate],
+        ['isWrapperTemplate', { type: 'card' }, false, isWrapperTemplate],
+        ['isCardTemplate', { type: 'card' }, true, isCardTemplate],
+        ['isCardTemplate', { type: 'wrapper' }, false, isCardTemplate],
+        ['isListTemplate', { type: 'list' }, true, isListTemplate],
+        ['isListTemplate', { type: 'card' }, false, isListTemplate],
+        ['isLeafTemplate', { type: LEAF_TYPES.TEXT }, true, isLeafTemplate],
+        ['isLeafTemplate', { type: 'yes' }, true, isLeafTemplate],
+        ['isLeafTemplate', { type: 'wrapper' }, false, isLeafTemplate],
     ])(
         '%s should, when given `%s`, return %s',
         (label, input: unknown, outcome, typeguard) => {
             expect(typeguard(input as Template)).toBe(outcome)
-        }
+        },
     )
 })

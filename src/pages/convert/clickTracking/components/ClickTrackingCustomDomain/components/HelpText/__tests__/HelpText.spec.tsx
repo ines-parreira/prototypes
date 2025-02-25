@@ -1,14 +1,17 @@
-import {screen, render} from '@testing-library/react'
 import React from 'react'
 
-import {HelpText} from '../HelpText'
+import { render, screen } from '@testing-library/react'
+
+import { HelpText } from '../HelpText'
 
 describe('<HelpText />', () => {
     it('matches snapshot', () => {
         render(<HelpText isHidden={false} domain="example.com" />)
 
         expect(
-            screen.getByText(/Visit the admin console of your domain registrar/)
+            screen.getByText(
+                /Visit the admin console of your domain registrar/,
+            ),
         ).toBeInTheDocument()
     })
 
@@ -17,8 +20,8 @@ describe('<HelpText />', () => {
 
         expect(
             screen.queryByText(
-                /Visit the admin console of your domain registrar/
-            )
+                /Visit the admin console of your domain registrar/,
+            ),
         ).not.toBeInTheDocument()
     })
 })

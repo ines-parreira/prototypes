@@ -1,16 +1,15 @@
-import {UseQueryResult} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
+import { UseQueryResult } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
 
 import {
     HelpdeskMessageCubeWithJoins,
     HelpdeskMessageMeasure,
 } from 'models/reporting/cubes/HelpdeskMessageCube'
-import {TicketMeasure} from 'models/reporting/cubes/TicketCube'
-import {TicketMessagesMeasure} from 'models/reporting/cubes/TicketMessagesCube'
-
-import {fetchPostReporting, usePostReporting} from 'models/reporting/queries'
-import {ReportingQuery} from 'models/reporting/types'
-import {assumeMock} from 'utils/testing'
+import { TicketMeasure } from 'models/reporting/cubes/TicketCube'
+import { TicketMessagesMeasure } from 'models/reporting/cubes/TicketMessagesCube'
+import { fetchPostReporting, usePostReporting } from 'models/reporting/queries'
+import { ReportingQuery } from 'models/reporting/types'
+import { assumeMock } from 'utils/testing'
 
 import useMetricTrend, {
     fetchMetricTrend,
@@ -38,8 +37,8 @@ describe('useMetricTrend', () => {
     })
 
     it('should return isFetching=false when no queries are fetching', () => {
-        const {result} = renderHook(() =>
-            useMetricTrend(defaultQuery, defaultQuery)
+        const { result } = renderHook(() =>
+            useMetricTrend(defaultQuery, defaultQuery),
         )
 
         expect(result.current.isFetching).toBe(false)
@@ -51,16 +50,16 @@ describe('useMetricTrend', () => {
             isFetching: true,
         })
 
-        const {result} = renderHook(() =>
-            useMetricTrend(defaultQuery, defaultQuery)
+        const { result } = renderHook(() =>
+            useMetricTrend(defaultQuery, defaultQuery),
         )
 
         expect(result.current.isFetching).toBe(true)
     })
 
     it('should return isError=false when no queries errored', () => {
-        const {result} = renderHook(() =>
-            useMetricTrend(defaultQuery, defaultQuery)
+        const { result } = renderHook(() =>
+            useMetricTrend(defaultQuery, defaultQuery),
         )
 
         expect(result.current.isError).toBe(false)
@@ -72,16 +71,16 @@ describe('useMetricTrend', () => {
             isError: true,
         } as UseQueryResult)
 
-        const {result} = renderHook(() =>
-            useMetricTrend(defaultQuery, defaultQuery)
+        const { result } = renderHook(() =>
+            useMetricTrend(defaultQuery, defaultQuery),
         )
 
         expect(result.current.isError).toBe(true)
     })
 
     it('should not return data when one the queries does not have data', () => {
-        const {result} = renderHook(() =>
-            useMetricTrend(defaultQuery, defaultQuery)
+        const { result } = renderHook(() =>
+            useMetricTrend(defaultQuery, defaultQuery),
         )
 
         expect(result.current.data).toBe(undefined)
@@ -97,8 +96,8 @@ describe('useMetricTrend', () => {
             data: null,
         } as UseQueryResult)
 
-        const {result} = renderHook(() =>
-            useMetricTrend(defaultQuery, defaultQuery)
+        const { result } = renderHook(() =>
+            useMetricTrend(defaultQuery, defaultQuery),
         )
 
         expect(result.current.data).toEqual({
@@ -112,7 +111,10 @@ describe('useMetricTrend', () => {
         const data = {
             data: {
                 data: [
-                    {[TicketMessagesMeasure.MessagesAverage]: messagesAverage},
+                    {
+                        [TicketMessagesMeasure.MessagesAverage]:
+                            messagesAverage,
+                    },
                 ],
             },
         } as any
@@ -139,7 +141,7 @@ describe('useMetricTrend', () => {
             [defaultQuery],
             expect.objectContaining({
                 select: defaultSelect,
-            })
+            }),
         )
         expect(defaultSelect?.(data)).toEqual(null)
 
@@ -147,7 +149,7 @@ describe('useMetricTrend', () => {
             [prevPeriodQuery],
             expect.objectContaining({
                 select: usePostReportingMock.mock.calls[1][1]?.select,
-            })
+            }),
         )
         expect(previousSelect?.(data)).toEqual(messagesAverage)
     })
@@ -155,18 +157,18 @@ describe('useMetricTrend', () => {
     describe('selectMeasure', () => {
         const ticketCount = 100
         const data = {
-            data: {data: [{[TicketMeasure.TicketCount]: ticketCount}]},
+            data: { data: [{ [TicketMeasure.TicketCount]: ticketCount }] },
         } as any
 
         it('should return the measure value', () => {
             expect(selectMeasure(TicketMeasure.TicketCount, data)).toEqual(
-                ticketCount
+                ticketCount,
             )
         })
 
         it('should return null for the missing measure', () => {
             expect(
-                selectMeasure(HelpdeskMessageMeasure.TicketCount, data)
+                selectMeasure(HelpdeskMessageMeasure.TicketCount, data),
             ).toEqual(null)
         })
     })

@@ -1,44 +1,43 @@
+import React, { useEffect, useMemo, useState } from 'react'
+
 import classnames from 'classnames'
-import {List, Map} from 'immutable'
+import { List, Map } from 'immutable'
 import _getIn from 'lodash/get'
-import React, {useEffect, useMemo, useState} from 'react'
-import {Badge} from 'reactstrap'
+import { Badge } from 'reactstrap'
 
 import successIcon from 'assets/img/icons/success.svg'
-import {logEvent, SegmentEvent} from 'common/segment'
-import {fromAST} from 'common/utils'
-
+import { logEvent, SegmentEvent } from 'common/segment'
+import { fromAST } from 'common/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
-
-import {IntegrationType} from 'models/integration/constants'
-import {StoreIntegration} from 'models/integration/types'
-import {createRule} from 'models/rule/resources'
-import {RuleDraft} from 'models/rule/types'
-import {RuleRecipe} from 'models/ruleRecipe/types'
-import {createSection} from 'models/section/resources'
-import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
-import {createTag, fetchTags} from 'models/tag/resources'
-import {TagDraft} from 'models/tag/types'
-import {createView, deleteView} from 'models/view/resources'
-import {View, ViewDraft} from 'models/view/types'
+import { IntegrationType } from 'models/integration/constants'
+import { StoreIntegration } from 'models/integration/types'
+import { createRule } from 'models/rule/resources'
+import { RuleDraft } from 'models/rule/types'
+import { RuleRecipe } from 'models/ruleRecipe/types'
+import { createSection } from 'models/section/resources'
+import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
+import { createTag, fetchTags } from 'models/tag/resources'
+import { TagDraft } from 'models/tag/types'
+import { createView, deleteView } from 'models/view/resources'
+import { View, ViewDraft } from 'models/view/types'
 import history from 'pages/history'
-import {getHasAutomate} from 'state/billing/selectors'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {ruleCreated} from 'state/entities/rules/actions'
+import { getHasAutomate } from 'state/billing/selectors'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { ruleCreated } from 'state/entities/rules/actions'
 import {
     getRulesLimitStatus,
     getSortedRules,
 } from 'state/entities/rules/selectors'
-import {sectionCreated} from 'state/entities/sections/actions'
-import {getSectionIdByName} from 'state/entities/sections/selectors'
-import {tagCreated} from 'state/entities/tags/actions'
-import {viewCreated, viewDeleted} from 'state/entities/views/actions'
-import {getTicketViews} from 'state/entities/views/selectors'
-import {getIntegrationsByType} from 'state/integrations/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { sectionCreated } from 'state/entities/sections/actions'
+import { getSectionIdByName } from 'state/entities/sections/selectors'
+import { tagCreated } from 'state/entities/tags/actions'
+import { viewCreated, viewDeleted } from 'state/entities/views/actions'
+import { getTicketViews } from 'state/entities/views/selectors'
+import { getIntegrationsByType } from 'state/integrations/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 import {
     AnyManagedRuleSettings,
     ManagedRule,
@@ -46,15 +45,14 @@ import {
     RuleOperation,
     RuleType,
 } from 'state/rules/types'
-import {compare} from 'utils'
+import { compare } from 'utils'
 
-import {CodeASTType} from '../../types'
+import { CodeASTType } from '../../types'
+import { RuleTemplateRecipeSlugs, tagColors } from '../constants'
+import { AiAgentRequirements } from './installationModals/components/AiAgentRequirement'
+import { RuleRecipeModal } from './RuleRecipeModal'
 
-import {RuleTemplateRecipeSlugs, tagColors} from '../constants'
-
-import {AiAgentRequirements} from './installationModals/components/AiAgentRequirement'
 import css from './RuleRecipeCard.less'
-import {RuleRecipeModal} from './RuleRecipeModal'
 
 type Props = {
     recipe: RuleRecipe
@@ -83,14 +81,14 @@ function RuleRecipeCard({
     >({})
     const [isModalOpen, setModalOpen] = useState(isModalOpenOnLoad)
     const hasAutomate = useAppSelector(getHasAutomate)
-    const {rule, tags, recipe_tag, views_per_section} = recipe
+    const { rule, tags, recipe_tag, views_per_section } = recipe
     const isBehindPaywall = rule.type === RuleType.Managed && !hasAutomate
     const shopifyIntegrations = useAppSelector(
-        getIntegrationsByType(IntegrationType.Shopify)
+        getIntegrationsByType(IntegrationType.Shopify),
     )
     const sortedShopifyIntegrations = useMemo(
         () => [...shopifyIntegrations].sort((a, b) => compare(a.name, b.name)),
-        [shopifyIntegrations]
+        [shopifyIntegrations],
     )
 
     const firstShopifyIntegration = sortedShopifyIntegrations[0]
@@ -99,7 +97,7 @@ function RuleRecipeCard({
     const aiAgentLink =
         firstShopifyIntegration && hasAutomate
             ? `/app/automation/shopify/${getShopNameFromStoreIntegration(
-                  firstShopifyIntegration as StoreIntegration
+                  firstShopifyIntegration as StoreIntegration,
               )}/ai-agent`
             : undefined
 
@@ -107,7 +105,7 @@ function RuleRecipeCard({
         _path: List<any>,
         _value: Maybe<string | Record<string, unknown>>,
         _operation: RuleOperation,
-        code_ast?: CodeASTType
+        code_ast?: CodeASTType,
     ): CodeASTType => {
         return code_ast as CodeASTType
     }
@@ -123,13 +121,13 @@ function RuleRecipeCard({
     const handleModalToggle = () => setModalOpen(!isModalOpen)
 
     const handleCreateTag = async (tag: TagDraft) => {
-        const existingTags = await fetchTags({search: tag.name})
+        const existingTags = await fetchTags({ search: tag.name })
 
         // search returns a case agnostic result, so we have to check
         // for string equality
         if (
             !existingTags.data.data.some(
-                (existingTag) => existingTag.name === tag.name
+                (existingTag) => existingTag.name === tag.name,
             )
         ) {
             const newTag = await createTag(tag)
@@ -163,7 +161,7 @@ function RuleRecipeCard({
     }
 
     const createSectionedView = async (view: ViewDraft, sectionId: number) => {
-        const newView = await createView({...view, section_id: sectionId})
+        const newView = await createView({ ...view, section_id: sectionId })
         dispatch(viewCreated(newView))
         return newView
     }
@@ -176,14 +174,14 @@ function RuleRecipeCard({
 
     const handleCreateViewsAndSections = async (
         sectionName: string,
-        views: ViewDraft[]
+        views: ViewDraft[],
     ) => {
         const promises: Promise<View>[] = []
         const viewsToCreate = (
             await Promise.all(
                 views.map(async (view) => {
                     const existingView = existingViews.find(
-                        (existingView) => existingView.name === view.name
+                        (existingView) => existingView.name === view.name,
                     )
                     if (!existingView) {
                         return view
@@ -193,7 +191,7 @@ function RuleRecipeCard({
                         dispatch(viewDeleted(existingView.id))
                         return view
                     }
-                })
+                }),
             )
         ).filter((view) => view) as ViewDraft[]
         if (sectionName === 'none') {
@@ -211,7 +209,7 @@ function RuleRecipeCard({
 
     const handleInstall = async (
         shouldCreateViews: boolean,
-        installFromSuggestion = false
+        installFromSuggestion = false,
     ) => {
         void dispatch(
             notify({
@@ -219,7 +217,7 @@ function RuleRecipeCard({
                 status: NotificationStatus.Loading,
                 closeOnNext: true,
                 dismissAfter: 0,
-            })
+            }),
         )
 
         if (limitStatus === RuleLimitStatus.Reached) {
@@ -227,7 +225,7 @@ function RuleRecipeCard({
                 notify({
                     message: 'Rule limit reached',
                     status: NotificationStatus.Error,
-                })
+                }),
             )
             return
         }
@@ -242,7 +240,7 @@ function RuleRecipeCard({
                         notify({
                             message: 'Failed to create all rule tags',
                             status: NotificationStatus.Error,
-                        })
+                        }),
                     )
                 }
             }
@@ -250,8 +248,8 @@ function RuleRecipeCard({
                 const promises = Object.keys(views_per_section).map((section) =>
                     handleCreateViewsAndSections(
                         section,
-                        views_per_section[section]
-                    )
+                        views_per_section[section],
+                    ),
                 )
                 try {
                     await Promise.all(promises)
@@ -260,7 +258,7 @@ function RuleRecipeCard({
                         notify({
                             status: NotificationStatus.Error,
                             message: 'Failed to create all rule views',
-                        })
+                        }),
                     )
                     return
                 }
@@ -286,7 +284,7 @@ function RuleRecipeCard({
             if (installFromSuggestion)
                 newRuleDraft = {
                     ...newRuleDraft,
-                    meta: {via_suggestion: true},
+                    meta: { via_suggestion: true },
                 } as RuleDraft
 
             const newRule = await createRule(newRuleDraft)
@@ -295,7 +293,7 @@ function RuleRecipeCard({
                 notify({
                     status: NotificationStatus.Success,
                     message: 'Successfully installed rule',
-                })
+                }),
             )
             logEvent(SegmentEvent.RuleLibraryItemInstalled, {
                 ...segmentEventProps,
@@ -307,7 +305,7 @@ function RuleRecipeCard({
                 notify({
                     status: NotificationStatus.Error,
                     message: 'Failed to install rule',
-                })
+                }),
             )
             return
         }
@@ -318,7 +316,7 @@ function RuleRecipeCard({
             rule.type === RuleType.Managed &&
             recipe.rule.type === RuleType.Managed &&
             (rule as ManagedRule).settings.slug ===
-                (recipe.rule as ManagedRule).settings.slug
+                (recipe.rule as ManagedRule).settings.slug,
     )
     const managedRuleId = managedRule?.id
 
@@ -349,7 +347,7 @@ function RuleRecipeCard({
                 {recipe.recipe_tag && (
                     <Badge
                         key={recipe_tag}
-                        cssModule={{badge: css.badge}}
+                        cssModule={{ badge: css.badge }}
                         style={tagColors[recipe_tag]}
                     >
                         {recipe_tag}

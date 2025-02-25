@@ -1,10 +1,11 @@
 import React from 'react'
 
-import {TEMPLATES_LIST} from 'pages/settings/SLAs/config/templates'
+import { TEMPLATES_LIST } from 'pages/settings/SLAs/config/templates'
 import PageHeader from 'pages/settings/SLAs/features/PageHeader/PageHeader'
 
-import css from './TemplateListView.less'
 import Templates from './Templates'
+
+import css from './TemplateListView.less'
 
 export default function TemplateListView() {
     return (

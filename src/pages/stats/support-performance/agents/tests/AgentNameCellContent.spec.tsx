@@ -1,14 +1,15 @@
-import {fireEvent, render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {agents} from 'fixtures/agents'
-import {AgentNameCellContent} from 'pages/stats/support-performance/agents/AgentNameCellContent'
-import {mergeStatsFilters} from 'state/stats/statsSlice'
-import {RootState, StoreDispatch} from 'state/types'
+import { agents } from 'fixtures/agents'
+import { AgentNameCellContent } from 'pages/stats/support-performance/agents/AgentNameCellContent'
+import { mergeStatsFilters } from 'state/stats/statsSlice'
+import { RootState, StoreDispatch } from 'state/types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -25,7 +26,7 @@ describe('<AgentNameCellContent>', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <AgentNameCellContent agent={agent} />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText(agents[0].name)).toBeInTheDocument()
@@ -36,7 +37,7 @@ describe('<AgentNameCellContent>', () => {
         render(
             <Provider store={store}>
                 <AgentNameCellContent agent={agent} />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(screen.getByText(agents[0].name))
@@ -44,9 +45,9 @@ describe('<AgentNameCellContent>', () => {
         expect(store.getActions()).toMatchObject(
             expect.arrayContaining([
                 expect.objectContaining(
-                    mergeStatsFilters({agents: [agents[0].id]})
+                    mergeStatsFilters({ agents: [agents[0].id] }),
                 ),
-            ])
+            ]),
         )
     })
 })

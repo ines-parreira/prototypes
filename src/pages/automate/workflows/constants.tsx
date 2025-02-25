@@ -1,9 +1,12 @@
-import React, {ReactNode} from 'react'
+import React, { ReactNode } from 'react'
 
 import conditionsMergeIcon from 'assets/img/workflows/icons/conditions-merge-sm.svg'
 import orderSelectionIcon from 'assets/img/workflows/icons/order-selection-sm.svg'
 
-import {EndNodeType, VisualBuilderNode} from './models/visualBuilderGraph.types'
+import {
+    EndNodeType,
+    VisualBuilderNode,
+} from './models/visualBuilderGraph.types'
 
 export const colorByVisualBuilderNodeType: Record<
     | Exclude<
@@ -16,7 +19,7 @@ export const colorByVisualBuilderNodeType: Record<
     | 'custom_input'
     | 'merchant_input'
     | 'app',
-    {color: string; backgroundColor: string}
+    { color: string; backgroundColor: string }
 > = {
     automated_message: {
         color: 'var(--accessory-magenta-3)',

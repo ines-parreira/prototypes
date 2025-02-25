@@ -1,6 +1,6 @@
-import {CardTemplate, ListTemplate, Source} from 'models/widget/types'
+import { CardTemplate, ListTemplate, Source } from 'models/widget/types'
 
-import {seekNextValues} from '../iterator'
+import { seekNextValues } from '../iterator'
 
 const childTemplate1: CardTemplate = {
     type: 'card',
@@ -85,11 +85,11 @@ describe('seekNextValues', () => {
 
     it('should handle the case of parentTemplate not having widgets', () => {
         const result = seekNextValues(
-            {...cardTemplate, widgets: []},
-            parentSource
+            { ...cardTemplate, widgets: [] },
+            parentSource,
         )
         expect(result).toEqual({
-            parentTemplate: {...cardTemplate, widgets: []},
+            parentTemplate: { ...cardTemplate, widgets: [] },
             template: null,
             source: parentSource,
         })

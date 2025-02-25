@@ -1,13 +1,14 @@
-import {fireEvent, render, waitFor} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render, waitFor } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {TicketMessageSourceType} from 'business/types/ticket'
+import { TicketMessageSourceType } from 'business/types/ticket'
 import useSearchRankScenario from 'hooks/useSearchRankScenario'
-import {SearchEngine} from 'models/search/types'
-import {RootState} from 'state/types'
+import { SearchEngine } from 'models/search/types'
+import { RootState } from 'state/types'
 
 import MultiSelectAsyncField from '../ReceiversSelectField'
 
@@ -42,7 +43,7 @@ jest.mock('state/newMessage/actions', () => ({
                     },
                 ],
                 searchEngine: 'ES',
-            })
+            }),
     ),
 }))
 
@@ -66,10 +67,10 @@ describe('<ReceiversSelectField />', () => {
     })
 
     it('should display an empty field', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultStore)}>
                 <MultiSelectAsyncField {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -82,10 +83,10 @@ describe('<ReceiversSelectField />', () => {
                 name: 'Acme',
             },
         ]
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultStore)}>
                 <MultiSelectAsyncField {...minProps} value={value} />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -93,14 +94,14 @@ describe('<ReceiversSelectField />', () => {
 
     it('should register search rank scenario when user search for a term', async () => {
         const query = 'gorgias'
-        const {getByPlaceholderText} = render(
+        const { getByPlaceholderText } = render(
             <Provider store={mockStore(defaultStore)}>
                 <MultiSelectAsyncField {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
         const inputElement = getByPlaceholderText('Search customers...')
-        fireEvent.change(inputElement, {target: {value: query}})
+        fireEvent.change(inputElement, { target: { value: query } })
         jest.runOnlyPendingTimers()
 
         await waitFor(() => {
@@ -108,7 +109,7 @@ describe('<ReceiversSelectField />', () => {
             expect(mockSearchRank.registerResultsRequest).toHaveBeenCalledWith(
                 expect.objectContaining({
                     query,
-                })
+                }),
             )
         })
 
@@ -116,20 +117,20 @@ describe('<ReceiversSelectField />', () => {
             expect.objectContaining({
                 numberOfResults: 2,
                 searchEngine: SearchEngine.ES,
-            })
+            }),
         )
     })
 
     it('should register search rank scenario when user selects a search result', async () => {
         const query = 'gorgias'
-        const {findByText, getByPlaceholderText} = render(
+        const { findByText, getByPlaceholderText } = render(
             <Provider store={mockStore(defaultStore)}>
                 <MultiSelectAsyncField {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
         const inputElement = getByPlaceholderText('Search customers...')
-        fireEvent.change(inputElement, {target: {value: query}})
+        fireEvent.change(inputElement, { target: { value: query } })
 
         jest.runOnlyPendingTimers()
 
@@ -148,15 +149,15 @@ describe('<ReceiversSelectField />', () => {
     ])(
         'should display "Search customers or enter a number" when channel is phone',
         (channel) => {
-            const {getByPlaceholderText} = render(
+            const { getByPlaceholderText } = render(
                 <Provider store={mockStore(defaultStore)}>
                     <MultiSelectAsyncField {...minProps} sourceType={channel} />
-                </Provider>
+                </Provider>,
             )
 
             expect(
-                getByPlaceholderText('Search customers or enter a number...')
+                getByPlaceholderText('Search customers or enter a number...'),
             ).toBeVisible()
-        }
+        },
     )
 })

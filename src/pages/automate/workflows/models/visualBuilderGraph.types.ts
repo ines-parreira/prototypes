@@ -1,6 +1,6 @@
-import {Edge, Node} from 'reactflow'
+import { Edge, Node } from 'reactflow'
 
-import {ConditionSchema, ConditionsSchema} from './conditions.types'
+import { ConditionSchema, ConditionsSchema } from './conditions.types'
 import {
     LanguageCode,
     MessageContent,
@@ -154,37 +154,37 @@ export type MultipleChoicesNodeType = Node<
 >
 
 export function isMultipleChoicesNodeType(
-    node: VisualBuilderNode
+    node: VisualBuilderNode,
 ): node is MultipleChoicesNodeType {
     return node.type === 'multiple_choices'
 }
 
 export function isConditionsNodeType(
-    node: VisualBuilderNode
+    node: VisualBuilderNode,
 ): node is ConditionsNodeType {
     return node.type === 'conditions'
 }
 
 export function isHttpRequestNodeType(
-    node: VisualBuilderNode
+    node: VisualBuilderNode,
 ): node is HttpRequestNodeType {
     return node.type === 'http_request'
 }
 
 export function isLLMPromptTriggerNodeType(
-    node: VisualBuilderNode
+    node: VisualBuilderNode,
 ): node is LLMPromptTriggerNodeType {
     return node.type === 'llm_prompt_trigger'
 }
 
 export function isReusableLLMPromptTriggerNodeType(
-    node: VisualBuilderNode
+    node: VisualBuilderNode,
 ): node is ReusableLLMPromptTriggerNodeType {
     return node.type === 'reusable_llm_prompt_trigger'
 }
 
 export function isReusableLLMPromptCallNodeType(
-    node: VisualBuilderNode
+    node: VisualBuilderNode,
 ): node is ReusableLLMPromptCallNodeType {
     return node.type === 'reusable_llm_prompt_call'
 }
@@ -250,9 +250,9 @@ export type HttpRequestNodeType = Node<
         name: string
         url: string
         method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
-        headers: {name: string; value: string}[]
+        headers: { name: string; value: string }[]
         json: string | null
-        formUrlencoded: {key: string; value: string}[] | null
+        formUrlencoded: { key: string; value: string }[] | null
         bodyContentType:
             | 'application/json'
             | 'application/x-www-form-urlencoded'
@@ -673,7 +673,7 @@ export type VisualBuilderGraphAppApp = {
 }
 
 export const isVisualBuilderGraphAppApp = (
-    app: VisualBuilderGraphApp
+    app: VisualBuilderGraphApp,
 ): app is VisualBuilderGraphAppApp => {
     return app.type === 'app'
 }
@@ -704,7 +704,7 @@ export type VisualBuilderGraph<
                     name: string
                     description: string
                     data_type: 'string'
-                    options?: {value: string; label: string}[] | null
+                    options?: { value: string; label: string }[] | null
                 }
               | {
                     id: string
@@ -723,7 +723,7 @@ export type VisualBuilderGraph<
                     name: string
                     description: string
                     data_type: 'number'
-                    options?: {value: number; label: string}[] | null
+                    options?: { value: number; label: string }[] | null
                 }
           )[]
         | null

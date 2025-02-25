@@ -1,32 +1,33 @@
-import {render} from '@testing-library/react'
 import React from 'react'
+
+import { render } from '@testing-library/react'
 
 import ChurnMitigationOffer from '../ChurnMitigationOffer'
 
 describe('ChurnMitigationOffer', () => {
     it('should render with candu content contents', () => {
         const canduContentId = '5f5e3e3e4f3e4e001f3e4e4f'
-        const {container} = render(
-            <ChurnMitigationOffer canduContentId={canduContentId} />
+        const { container } = render(
+            <ChurnMitigationOffer canduContentId={canduContentId} />,
         )
         expect(
-            container.querySelector(`[data-candu-id="${canduContentId}"]`)
+            container.querySelector(`[data-candu-id="${canduContentId}"]`),
         ).toBeInTheDocument()
     })
 
     it('should render with no candu content', () => {
-        const {container} = render(
-            <ChurnMitigationOffer canduContentId={null} />
+        const { container } = render(
+            <ChurnMitigationOffer canduContentId={null} />,
         )
 
         const defaultTextElement = container.querySelector('.container')
         expect(defaultTextElement).toBeInTheDocument()
         expect(defaultTextElement).toHaveTextContent(
-            'Need help staying with us?'
+            'Need help staying with us?',
         )
         expect(defaultTextElement).toHaveTextContent(
             'If you would like to get help with the product, discuss potential offers, or share further feedback,' +
-                " please select “Accept Offer” below. Let's work together to keep you happy and satisfied."
+                " please select “Accept Offer” below. Let's work together to keep you happy and satisfied.",
         )
     })
 })

@@ -1,8 +1,8 @@
 // g/integrations/recharge/schemas.py
-import {IntegrationType} from '../constants'
-import type {Integration} from './'
-import type {IntegrationBase} from './base'
-import type {OAuth2} from './misc'
+import { IntegrationType } from '../constants'
+import type { Integration } from './'
+import type { IntegrationBase } from './base'
+import type { OAuth2 } from './misc'
 
 export type RechargeIntegration = IntegrationBase & {
     type: IntegrationType.Recharge
@@ -20,6 +20,6 @@ export type RechargeIntegrationMeta = {
 }
 
 export const isRechargeIntegration = (
-    integration: Maybe<Integration>
+    integration: Maybe<Integration>,
 ): integration is RechargeIntegration =>
     integration?.type === IntegrationType.Recharge

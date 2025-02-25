@@ -1,29 +1,27 @@
-import {renderHook} from '@testing-library/react-hooks'
-
+import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment/moment'
 
-import {useDistributionTrendReportData} from 'hooks/reporting/common/useDistributionTrendReportData'
-import {useTables} from 'hooks/reporting/common/useTableReportData'
-
+import { useDistributionTrendReportData } from 'hooks/reporting/common/useDistributionTrendReportData'
+import { useTables } from 'hooks/reporting/common/useTableReportData'
 import {
     useTimeSeriesPerDimensionReportData,
     useTimeSeriesReportData,
 } from 'hooks/reporting/common/useTimeSeriesReportData'
-import {useTrendReportData} from 'hooks/reporting/common/useTrendReportData'
-import {useCustomReportData} from 'hooks/reporting/custom-reports/useCustomReportData'
-import {useSanitizedDashboard} from 'hooks/reporting/custom-reports/useSanitizedDashboard'
-import {getCsvFileNameWithDates} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
-import {ReportingGranularity} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import { useTrendReportData } from 'hooks/reporting/common/useTrendReportData'
+import { useCustomReportData } from 'hooks/reporting/custom-reports/useCustomReportData'
+import { useSanitizedDashboard } from 'hooks/reporting/custom-reports/useSanitizedDashboard'
+import { getCsvFileNameWithDates } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useAgentsTableConfigSetting } from 'hooks/reporting/useAgentsTableConfigSetting'
+import { ReportingGranularity } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
 import {
     CustomReportChartSchema,
     CustomReportChildType,
     CustomReportRowSchema,
     CustomReportSchema,
 } from 'pages/stats/custom-reports/types'
-import {ServiceLevelAgreementsChart} from 'pages/stats/sla/ServiceLevelAgreementsReportConfig'
+import { ServiceLevelAgreementsChart } from 'pages/stats/sla/ServiceLevelAgreementsReportConfig'
 import {
     OverviewChartConfig,
     OverviewMetric,
@@ -33,13 +31,13 @@ import {
     OverviewChart,
     SupportPerformanceOverviewReportConfig,
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
-import {TicketFieldsChart} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsReportConfig'
+import { TicketFieldsChart } from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsReportConfig'
 import {
     createTimeSeriesReport,
     createTrendReport,
 } from 'services/reporting/supportPerformanceReportingService'
-import {formatReportingQueryDate} from 'utils/reporting'
-import {assumeMock} from 'utils/testing'
+import { formatReportingQueryDate } from 'utils/reporting'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/custom-reports/useSanitizedDashboard')
 const useSanitizedDashboardMock = assumeMock(useSanitizedDashboard)
@@ -50,10 +48,10 @@ jest.mock('hooks/reporting/common/useTimeSeriesReportData')
 const useTimeSeriesReportDataMock = assumeMock(useTimeSeriesReportData)
 jest.mock('hooks/reporting/common/useDistributionTrendReportData')
 const useDistributionTrendReportDataMock = assumeMock(
-    useDistributionTrendReportData
+    useDistributionTrendReportData,
 )
 const useTimeSeriesPerDimensionReportDataMock = assumeMock(
-    useTimeSeriesPerDimensionReportData
+    useTimeSeriesPerDimensionReportData,
 )
 jest.mock('hooks/reporting/common/useTableReportData')
 const useTablesMock = assumeMock(useTables)
@@ -134,7 +132,7 @@ describe('useDownloadCustomReportData', () => {
             granularity,
             isAnalyticsNewFilters: true,
         })
-        useTrendReportDataMock.mockReturnValue({data: [], isFetching: false})
+        useTrendReportDataMock.mockReturnValue({ data: [], isFetching: false })
         useTimeSeriesReportDataMock.mockReturnValue({
             data: [],
             isFetching: false,
@@ -154,8 +152,8 @@ describe('useDownloadCustomReportData', () => {
     })
 
     it('should download for charts from custom report', () => {
-        const {result} = renderHook(() =>
-            useCustomReportData(exampleCustomReport)
+        const { result } = renderHook(() =>
+            useCustomReportData(exampleCustomReport),
         )
 
         expect(useTrendReportDataMock).toHaveBeenCalledWith(
@@ -173,7 +171,7 @@ describe('useDownloadCustomReportData', () => {
                         OverviewMetricConfig[OverviewMetric.MessagesPerTicket]
                             .metricFormat,
                 },
-            ])
+            ]),
         )
         expect(useTimeSeriesReportDataMock).toHaveBeenCalledWith(
             statsFilters,
@@ -188,7 +186,7 @@ describe('useDownloadCustomReportData', () => {
                         timeSeriesChartId
                     ].label,
                 },
-            ])
+            ]),
         )
         expect(result.current).toEqual({
             files: {
@@ -197,14 +195,14 @@ describe('useDownloadCustomReportData', () => {
             },
             fileName: getCsvFileNameWithDates(
                 statsFilters.period,
-                exampleCustomReport.name
+                exampleCustomReport.name,
             ),
             isLoading: false,
         })
     })
 
     it('should return isLoading flag', () => {
-        useTrendReportDataMock.mockReturnValue({data: [], isFetching: true})
+        useTrendReportDataMock.mockReturnValue({ data: [], isFetching: true })
         useTimeSeriesReportDataMock.mockReturnValue({
             data: [],
             isFetching: true,
@@ -214,8 +212,8 @@ describe('useDownloadCustomReportData', () => {
             isFetching: true,
         })
 
-        const {result} = renderHook(() =>
-            useCustomReportData(exampleCustomReport)
+        const { result } = renderHook(() =>
+            useCustomReportData(exampleCustomReport),
         )
 
         expect(useTrendReportDataMock).toHaveBeenCalledWith(
@@ -233,7 +231,7 @@ describe('useDownloadCustomReportData', () => {
                         OverviewMetricConfig[OverviewMetric.MessagesPerTicket]
                             .metricFormat,
                 },
-            ])
+            ]),
         )
         expect(useTimeSeriesReportDataMock).toHaveBeenCalledWith(
             statsFilters,
@@ -248,7 +246,7 @@ describe('useDownloadCustomReportData', () => {
                         timeSeriesChartId
                     ].label,
                 },
-            ])
+            ]),
         )
         expect(result.current).toEqual({
             files: {
@@ -257,7 +255,7 @@ describe('useDownloadCustomReportData', () => {
             },
             fileName: getCsvFileNameWithDates(
                 statsFilters.period,
-                exampleCustomReport.name
+                exampleCustomReport.name,
             ),
             isLoading: true,
         })

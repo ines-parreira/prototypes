@@ -1,11 +1,11 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
+import { renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {handleUsageBanner} from 'state/notifications/actions'
+import { handleUsageBanner } from 'state/notifications/actions'
 
-import {useUsageBanner} from '../useUsageBanner'
+import { useUsageBanner } from '../useUsageBanner'
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())
 jest.mock('hooks/useAppSelector', () => jest.fn())
@@ -23,7 +23,7 @@ describe('useUsageBanner', () => {
     beforeEach(() => {
         jest.restoreAllMocks()
 
-        handleUsageBannerMock.mockReturnValue({type: 'handle-usage-banner'})
+        handleUsageBannerMock.mockReturnValue({ type: 'handle-usage-banner' })
 
         dispatch = jest.fn()
         useAppDispatchMock.mockReturnValue(dispatch)
@@ -33,10 +33,10 @@ describe('useUsageBanner', () => {
         useAppSelectorMock.mockReturnValue(
             fromJS({
                 status: {
-                    notification: fromJS({id: 1}),
+                    notification: fromJS({ id: 1 }),
                     status: 'STATUS',
                 },
-            })
+            }),
         )
 
         renderHook(() => useUsageBanner())
@@ -44,9 +44,9 @@ describe('useUsageBanner', () => {
         expect(handleUsageBanner).toHaveBeenCalledWith({
             currentAccountStatus: 'STATUS',
             newAccountStatus: 'STATUS',
-            notification: {id: 1},
+            notification: { id: 1 },
         })
-        expect(dispatch).toHaveBeenCalledWith({type: 'handle-usage-banner'})
+        expect(dispatch).toHaveBeenCalledWith({ type: 'handle-usage-banner' })
     })
 
     it('should dispatch an action without a notification for the usage banner on mount', () => {
@@ -55,7 +55,7 @@ describe('useUsageBanner', () => {
                 status: {
                     status: 'STATUS',
                 },
-            })
+            }),
         )
 
         renderHook(() => useUsageBanner())
@@ -65,6 +65,6 @@ describe('useUsageBanner', () => {
             newAccountStatus: 'STATUS',
             notification: null,
         })
-        expect(dispatch).toHaveBeenCalledWith({type: 'handle-usage-banner'})
+        expect(dispatch).toHaveBeenCalledWith({ type: 'handle-usage-banner' })
     })
 })

@@ -1,17 +1,18 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
 
-import {customerCustomization} from '../Customer'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
+
+import { customerCustomization } from '../Customer'
 
 const TitleWrapper = customerCustomization.TitleWrapper!
 
 describe('<TitleWrapper/>', () => {
     describe('render()', () => {
         it('should not render link because there is no admin url suffix', () => {
-            const {container} = render(
+            const { container } = render(
                 <IntegrationContext.Provider
                     value={{
                         integrationId: null,
@@ -23,17 +24,17 @@ describe('<TitleWrapper/>', () => {
                         }),
                     }}
                 >
-                    <TitleWrapper source={fromJS({id: 1})} isEditing={false}>
+                    <TitleWrapper source={fromJS({ id: 1 })} isEditing={false}>
                         <div>foo bar</div>
                     </TitleWrapper>
-                </IntegrationContext.Provider>
+                </IntegrationContext.Provider>,
             )
 
             expect(container).toMatchSnapshot()
         })
 
         it('should render link', () => {
-            const {container} = render(
+            const { container } = render(
                 <IntegrationContext.Provider
                     value={{
                         integrationId: null,
@@ -45,10 +46,10 @@ describe('<TitleWrapper/>', () => {
                         }),
                     }}
                 >
-                    <TitleWrapper source={fromJS({id: 1})} isEditing={false}>
+                    <TitleWrapper source={fromJS({ id: 1 })} isEditing={false}>
                         <div>foo bar</div>
                     </TitleWrapper>
-                </IntegrationContext.Provider>
+                </IntegrationContext.Provider>,
             )
 
             expect(container).toMatchSnapshot()

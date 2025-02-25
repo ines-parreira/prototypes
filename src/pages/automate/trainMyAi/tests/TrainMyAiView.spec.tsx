@@ -1,43 +1,43 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {fireEvent, screen, render, waitFor} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
-import routerDom, {BrowserRouter} from 'react-router-dom'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import routerDom, { BrowserRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
-import {TicketChannel} from 'business/types/ticket'
-import {GORGIAS_CHAT_DEFAULT_COLOR} from 'config/integrations/gorgias_chat'
-import {selfServiceConfiguration1} from 'fixtures/self_service_configurations'
-import {useArticleRecommendationPredictions} from 'models/articleRecommendationPrediction/queries'
-import {articleRecommendationPredictionsResponseFixture} from 'models/articleRecommendationPrediction/tests/article-recommendation-prediction.fixture'
+import { TicketChannel } from 'business/types/ticket'
+import { GORGIAS_CHAT_DEFAULT_COLOR } from 'config/integrations/gorgias_chat'
+import { selfServiceConfiguration1 } from 'fixtures/self_service_configurations'
+import { useArticleRecommendationPredictions } from 'models/articleRecommendationPrediction/queries'
+import { articleRecommendationPredictionsResponseFixture } from 'models/articleRecommendationPrediction/tests/article-recommendation-prediction.fixture'
 import {
-    useGetHelpCenterArticle,
     useGetHelpCenter,
+    useGetHelpCenterArticle,
     useUpdateArticleTranslation,
 } from 'models/helpCenter/queries'
-import {GorgiasChatIntegration} from 'models/integration/types'
+import { GorgiasChatIntegration } from 'models/integration/types'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
-import {useHelpCenterPublishedArticlesCount} from 'pages/automate/common/hooks/useHelpCenterPublishedArticlesCount'
+import { useHelpCenterPublishedArticlesCount } from 'pages/automate/common/hooks/useHelpCenterPublishedArticlesCount'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import useHelpCenterArticleTree from 'pages/automate/trainMyAi/hooks/useHelpCenterArticleTree'
 import useUpdateArticleRecommendationPrediction from 'pages/automate/trainMyAi/hooks/useUpdateArticleRecommendationPrediction'
-import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
+import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
-
-import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
-import {RootState, StoreDispatch} from 'state/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {getLDClient} from 'utils/launchDarkly'
+import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
+import { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { getLDClient } from 'utils/launchDarkly'
 
 import TrainMyAiView from '../TrainMyAiView'
 
 jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
 jest.mock('pages/automate/trainMyAi/hooks/useHelpCenterArticleTree')
 jest.mock(
-    'pages/automate/trainMyAi/hooks/useUpdateArticleRecommendationPrediction'
+    'pages/automate/trainMyAi/hooks/useUpdateArticleRecommendationPrediction',
 )
 jest.mock('pages/automate/common/hooks/useHelpCenterPublishedArticlesCount')
 jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels')
@@ -60,7 +60,7 @@ jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 ;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
 
 jest.mock(
-    'pages/settings/helpCenter/components/articles/HelpCenterEditor/FroalaEditorComponent'
+    'pages/settings/helpCenter/components/articles/HelpCenterEditor/FroalaEditorComponent',
 )
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
@@ -157,7 +157,7 @@ describe('<TrainMyAiView />', () => {
         }) as unknown as ReturnType<typeof useParamsMock>
 
         useCurrentHelpCenterMock.mockReturnValue(
-            getSingleHelpCenterResponseFixture
+            getSingleHelpCenterResponseFixture,
         )
 
         useHistoryMock.mockReturnValue({
@@ -265,9 +265,9 @@ describe('<TrainMyAiView />', () => {
                 1: {
                     id: 1,
                     applicationId: 1,
-                    articleRecommendation: {enabled: true},
-                    orderManagement: {enabled: false},
-                    workflows: {enabled: false},
+                    articleRecommendation: { enabled: true },
+                    orderManagement: { enabled: false },
+                    workflows: { enabled: false },
                     createdDatetime: '2023-01-10T10:11:00.077382+00:00',
                     updatedDatetime: '2023-01-10T10:11:00.077382+00:00',
                 },
@@ -286,11 +286,11 @@ describe('<TrainMyAiView />', () => {
                         <TrainMyAiView />
                     </Provider>
                 </QueryClientProvider>
-            </BrowserRouter>
+            </BrowserRouter>,
         )
 
         expect(
-            screen.queryByText('No recommendations have been sent yet')
+            screen.queryByText('No recommendations have been sent yet'),
         ).toBeInTheDocument()
     })
 
@@ -348,9 +348,9 @@ describe('<TrainMyAiView />', () => {
                 1: {
                     id: 1,
                     applicationId: 1,
-                    articleRecommendation: {enabled: true},
-                    orderManagement: {enabled: false},
-                    workflows: {enabled: false},
+                    articleRecommendation: { enabled: true },
+                    orderManagement: { enabled: false },
+                    workflows: { enabled: false },
                     createdDatetime: '2023-01-10T10:11:00.077382+00:00',
                     updatedDatetime: '2023-01-10T10:11:00.077382+00:00',
                 },
@@ -369,13 +369,13 @@ describe('<TrainMyAiView />', () => {
                         <TrainMyAiView />
                     </Provider>
                 </QueryClientProvider>
-            </BrowserRouter>
+            </BrowserRouter>,
         )
 
         expect(
             screen.queryByText(
-                'Configure Article Recommendation to access AI training'
-            )
+                'Configure Article Recommendation to access AI training',
+            ),
         ).toBeInTheDocument()
     })
 
@@ -415,9 +415,9 @@ describe('<TrainMyAiView />', () => {
                 1: {
                     id: 1,
                     applicationId: 1,
-                    articleRecommendation: {enabled: true},
-                    orderManagement: {enabled: false},
-                    workflows: {enabled: false},
+                    articleRecommendation: { enabled: true },
+                    orderManagement: { enabled: false },
+                    workflows: { enabled: false },
                     createdDatetime: '2023-01-10T10:11:00.077382+00:00',
                     updatedDatetime: '2023-01-10T10:11:00.077382+00:00',
                 },
@@ -436,11 +436,11 @@ describe('<TrainMyAiView />', () => {
                         <TrainMyAiView />
                     </Provider>
                 </QueryClientProvider>
-            </BrowserRouter>
+            </BrowserRouter>,
         )
 
         expect(
-            screen.getByText('Provide feedback on Article Recommendations.')
+            screen.getByText('Provide feedback on Article Recommendations.'),
         ).toBeInTheDocument()
     })
 
@@ -480,9 +480,9 @@ describe('<TrainMyAiView />', () => {
                 1: {
                     id: 1,
                     applicationId: 1,
-                    articleRecommendation: {enabled: true},
-                    orderManagement: {enabled: false},
-                    workflows: {enabled: false},
+                    articleRecommendation: { enabled: true },
+                    orderManagement: { enabled: false },
+                    workflows: { enabled: false },
                     createdDatetime: '2023-01-10T10:11:00.077382+00:00',
                     updatedDatetime: '2023-01-10T10:11:00.077382+00:00',
                 },
@@ -501,7 +501,7 @@ describe('<TrainMyAiView />', () => {
                         <TrainMyAiView />
                     </Provider>
                 </QueryClientProvider>
-            </BrowserRouter>
+            </BrowserRouter>,
         )
 
         fireEvent.click(screen.getByText('Provide feedback'))
@@ -511,7 +511,7 @@ describe('<TrainMyAiView />', () => {
         // not answered prediction has two identical article titles
         // for the ai banner and for the article preview
         expect(
-            screen.queryAllByText(helpCenterArticleData.translation.title)
+            screen.queryAllByText(helpCenterArticleData.translation.title),
         ).toHaveLength(2)
     })
 
@@ -619,9 +619,9 @@ describe('<TrainMyAiView />', () => {
                 1: {
                     id: 1,
                     applicationId: 1,
-                    articleRecommendation: {enabled: true},
-                    orderManagement: {enabled: false},
-                    workflows: {enabled: false},
+                    articleRecommendation: { enabled: true },
+                    orderManagement: { enabled: false },
+                    workflows: { enabled: false },
                     createdDatetime: '2023-01-10T10:11:00.077382+00:00',
                     updatedDatetime: '2023-01-10T10:11:00.077382+00:00',
                 },
@@ -640,7 +640,7 @@ describe('<TrainMyAiView />', () => {
                         <TrainMyAiView />
                     </Provider>
                 </QueryClientProvider>
-            </BrowserRouter>
+            </BrowserRouter>,
         )
 
         expect(screen.getByText('🎉')).toBeInTheDocument()
@@ -718,9 +718,9 @@ describe('<TrainMyAiView />', () => {
                 1: {
                     id: 1,
                     applicationId: 1,
-                    articleRecommendation: {enabled: true},
-                    orderManagement: {enabled: false},
-                    workflows: {enabled: false},
+                    articleRecommendation: { enabled: true },
+                    orderManagement: { enabled: false },
+                    workflows: { enabled: false },
                     createdDatetime: '2023-01-10T10:11:00.077382+00:00',
                     updatedDatetime: '2023-01-10T10:11:00.077382+00:00',
                 },
@@ -739,19 +739,19 @@ describe('<TrainMyAiView />', () => {
                         <TrainMyAiView />
                     </Provider>
                 </QueryClientProvider>
-            </BrowserRouter>
+            </BrowserRouter>,
         )
 
         fireEvent.click(
             screen.getByRole('button', {
                 name: new RegExp(recommendationData.data[0].message, 'i'),
-            })
+            }),
         )
 
         expect(screen.getAllByText('No relevant articles')).toHaveLength(2)
 
         expect(
-            screen.getByText('Which article should have been sent?')
+            screen.getByText('Which article should have been sent?'),
         ).toBeInTheDocument()
     })
 
@@ -826,9 +826,9 @@ describe('<TrainMyAiView />', () => {
                 1: {
                     id: 1,
                     applicationId: 1,
-                    articleRecommendation: {enabled: true},
-                    orderManagement: {enabled: false},
-                    workflows: {enabled: false},
+                    articleRecommendation: { enabled: true },
+                    orderManagement: { enabled: false },
+                    workflows: { enabled: false },
                     createdDatetime: '2023-01-10T10:11:00.077382+00:00',
                     updatedDatetime: '2023-01-10T10:11:00.077382+00:00',
                 },
@@ -847,17 +847,17 @@ describe('<TrainMyAiView />', () => {
                         <TrainMyAiView />
                     </Provider>
                 </QueryClientProvider>
-            </BrowserRouter>
+            </BrowserRouter>,
         )
 
         fireEvent.click(
             screen.getByRole('button', {
                 name: new RegExp(recommendationData.data[0].message, 'i'),
-            })
+            }),
         )
 
         expect(
-            screen.getByText('Was this the best article to recommend?')
+            screen.getByText('Was this the best article to recommend?'),
         ).toBeInTheDocument()
 
         expect(screen.getByText('This article exists')).toBeInTheDocument()
@@ -935,9 +935,9 @@ describe('<TrainMyAiView />', () => {
                 1: {
                     id: 1,
                     applicationId: 1,
-                    articleRecommendation: {enabled: true},
-                    orderManagement: {enabled: false},
-                    workflows: {enabled: false},
+                    articleRecommendation: { enabled: true },
+                    orderManagement: { enabled: false },
+                    workflows: { enabled: false },
                     createdDatetime: '2023-01-10T10:11:00.077382+00:00',
                     updatedDatetime: '2023-01-10T10:11:00.077382+00:00',
                 },
@@ -956,17 +956,17 @@ describe('<TrainMyAiView />', () => {
                         <TrainMyAiView />
                     </Provider>
                 </QueryClientProvider>
-            </BrowserRouter>
+            </BrowserRouter>,
         )
 
         fireEvent.click(
             screen.getByRole('button', {
                 name: new RegExp(recommendationData.data[0].message, 'i'),
-            })
+            }),
         )
 
         expect(
-            screen.getByText('Which article should have been sent?')
+            screen.getByText('Which article should have been sent?'),
         ).toBeInTheDocument()
 
         expect(screen.getByText('This article exists')).toBeInTheDocument()
@@ -1035,9 +1035,9 @@ describe('<TrainMyAiView />', () => {
                 1: {
                     id: 1,
                     applicationId: 1,
-                    articleRecommendation: {enabled: true},
-                    orderManagement: {enabled: false},
-                    workflows: {enabled: false},
+                    articleRecommendation: { enabled: true },
+                    orderManagement: { enabled: false },
+                    workflows: { enabled: false },
                     createdDatetime: '2023-01-10T10:11:00.077382+00:00',
                     updatedDatetime: '2023-01-10T10:11:00.077382+00:00',
                 },
@@ -1056,13 +1056,13 @@ describe('<TrainMyAiView />', () => {
                         <TrainMyAiView />
                     </Provider>
                 </QueryClientProvider>
-            </BrowserRouter>
+            </BrowserRouter>,
         )
 
         fireEvent.click(
             screen.getByRole('button', {
                 name: new RegExp(recommendationData.data[0].message, 'i'),
-            })
+            }),
         )
 
         await waitFor(() => {
@@ -1075,9 +1075,9 @@ describe('<TrainMyAiView />', () => {
 
         expect(updateMutateMock).toBeCalledWith(
             [
-                {id: 1},
+                { id: 1 },
                 {
-                    data: {articleIdFeedback: 10},
+                    data: { articleIdFeedback: 10 },
                     meta: {
                         articleSlugFeedback:
                             helpCenterArticleData.translation.slug,
@@ -1086,7 +1086,7 @@ describe('<TrainMyAiView />', () => {
                     },
                 },
             ],
-            {onError: expect.any(Function)}
+            { onError: expect.any(Function) },
         )
     })
 })

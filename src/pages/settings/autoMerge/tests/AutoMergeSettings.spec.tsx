@@ -1,16 +1,17 @@
-import {fireEvent, render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import {createMemoryHistory} from 'history'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
-import {Router} from 'react-router-dom'
+
+import { fireEvent, render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { createMemoryHistory } from 'history'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import AutoMergeSettings from 'pages/settings/autoMerge/AutoMergeSettings'
-import {submitSetting} from 'state/currentAccount/actions'
-import {AccountSettingType} from 'state/currentAccount/types'
+import { submitSetting } from 'state/currentAccount/actions'
+import { AccountSettingType } from 'state/currentAccount/types'
 
 jest.mock('state/currentAccount/actions')
 
@@ -38,21 +39,21 @@ const history = createMemoryHistory()
 
 describe('AutoMergeSettings', () => {
     it('should render out a form with a checkbox (`[] Auto-merge tickets`) and a label with a number input spinner (`Maximum difference between ticket creation dates`)', () => {
-        const {getByText, getByRole} = render(
+        const { getByText, getByRole } = render(
             <Router history={history}>
                 <Provider store={store}>
                     <AutoMergeSettings />
                 </Provider>
-            </Router>
+            </Router>,
         )
 
         expect(getByText('Auto-merge tickets')).toBeInTheDocument()
 
         expect(
-            getByText('Maximum difference between ticket creation dates:')
+            getByText('Maximum difference between ticket creation dates:'),
         ).toBeInTheDocument()
         expect(
-            getByText('Maximum difference between ticket creation dates:')
+            getByText('Maximum difference between ticket creation dates:'),
         ).not.toHaveClass('isDisabled')
         expect(getByRole('checkbox')).toBeInTheDocument()
 
@@ -61,7 +62,7 @@ describe('AutoMergeSettings', () => {
     })
 
     it('should render out a disabled label with a disabled number input spinner (`Maximum difference between ticket creation dates`)', () => {
-        const {getByText, getByRole} = render(
+        const { getByText, getByRole } = render(
             <Router history={history}>
                 <Provider
                     store={configureMockStore([thunk])({
@@ -82,27 +83,27 @@ describe('AutoMergeSettings', () => {
                 >
                     <AutoMergeSettings />
                 </Provider>
-            </Router>
+            </Router>,
         )
 
         expect(
-            getByText('Maximum difference between ticket creation dates:')
+            getByText('Maximum difference between ticket creation dates:'),
         ).toHaveClass('isDisabled')
         expect(getByRole('spinbutton')).toHaveClass('isDisabled')
     })
 
     it('should call the `submitSettings` function when the form is submitted', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Router history={history}>
                 <Provider store={store}>
                     <AutoMergeSettings />
                 </Provider>
-            </Router>
+            </Router>,
         )
 
         userEvent.click(getByText('Auto-merge tickets'))
         fireEvent.change(screen.getByRole('spinbutton'), {
-            target: {value: 21},
+            target: { value: 21 },
         })
 
         userEvent.click(getByText('Save Changes'))

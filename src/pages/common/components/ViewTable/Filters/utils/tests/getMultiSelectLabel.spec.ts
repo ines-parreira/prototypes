@@ -10,9 +10,9 @@ describe('getMultiSelectLabel', () => {
         'should return the correct path',
         (
             input: Parameters<typeof getMultiSelectLabel>[0],
-            output: ReturnType<typeof getMultiSelectLabel>
+            output: ReturnType<typeof getMultiSelectLabel>,
         ) => {
             expect(getMultiSelectLabel(input)).toEqual(output)
-        }
+        },
     )
 })

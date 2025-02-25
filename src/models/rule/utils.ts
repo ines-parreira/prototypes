@@ -1,17 +1,16 @@
-import {ObjectExpressionPropertyKey} from '../../state/rules/types'
-
-import {RuleObject, IdentifierCategoryKey} from './types'
+import { ObjectExpressionPropertyKey } from '../../state/rules/types'
+import { IdentifierCategoryKey, RuleObject } from './types'
 
 export function getAstPath(
     property: ObjectExpressionPropertyKey,
-    object: RuleObject | ObjectExpressionPropertyKey
+    object: RuleObject | ObjectExpressionPropertyKey,
 ): string[] {
     if ((object as ObjectExpressionPropertyKey).name) {
         return [(object as ObjectExpressionPropertyKey).name, property.name]
     }
     return getAstPath(
         (object as RuleObject).property,
-        (object as RuleObject).object
+        (object as RuleObject).object,
     ).concat([property.name])
 }
 

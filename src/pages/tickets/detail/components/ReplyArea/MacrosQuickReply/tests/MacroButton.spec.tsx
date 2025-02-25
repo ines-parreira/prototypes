@@ -1,12 +1,16 @@
-import {render, fireEvent} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { fireEvent, render } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {setTextAction, macroFixture} from '../../../../../../../fixtures/macro'
-import {StoreDispatch, RootState} from '../../../../../../../state/types'
-import {MacroButton} from '../MacroButton'
+import {
+    macroFixture,
+    setTextAction,
+} from '../../../../../../../fixtures/macro'
+import { RootState, StoreDispatch } from '../../../../../../../state/types'
+import { MacroButton } from '../MacroButton'
 
 jest.mock('draft-js/lib/generateRandomKey', () => () => '42')
 
@@ -32,32 +36,32 @@ describe('<MacroButton />', () => {
     })
 
     it('should render the button', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <MacroButton {...minProps} />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should apply macro on click', () => {
-        const {getByRole} = render(
+        const { getByRole } = render(
             <Provider store={store}>
                 <MacroButton {...minProps} />
-            </Provider>
+            </Provider>,
         )
         fireEvent.click(getByRole('button'))
         expect(applyMacro).toHaveBeenCalled()
     })
 
     it('should open the popover on hover', () => {
-        const {baseElement, getByRole} = render(
+        const { baseElement, getByRole } = render(
             <Provider store={store}>
                 <MacroButton
                     {...minProps}
-                    macro={{...macroFixture, actions: [setTextAction]}}
+                    macro={{ ...macroFixture, actions: [setTextAction] }}
                 />
-            </Provider>
+            </Provider>,
         )
         fireEvent.mouseEnter(getByRole('button'))
         expect(baseElement.children[1]).toMatchSnapshot()

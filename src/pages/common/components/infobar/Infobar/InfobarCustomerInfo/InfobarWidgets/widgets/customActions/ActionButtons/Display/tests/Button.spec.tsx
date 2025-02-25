@@ -1,16 +1,16 @@
-import {render, fireEvent, screen, waitFor} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
-import {createStore, applyMiddleware, Reducer} from 'redux'
+
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import { applyMiddleware, createStore, Reducer } from 'redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {actionFixture} from 'fixtures/infobarCustomActions'
+import { actionFixture } from 'fixtures/infobarCustomActions'
 import ActionEditor from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/Display/ActionEditor'
 import * as infobarActions from 'state/infobar/actions'
-
-import {assumeMock, getLastMockCall} from 'utils/testing'
+import { assumeMock, getLastMockCall } from 'utils/testing'
 
 import Button from '../Button'
 
@@ -20,7 +20,7 @@ jest.mock('state/infobar/actions', () => ({
 }))
 jest.mock(
     'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/Display/ActionEditor',
-    () => jest.fn(() => <div>mocked action editor</div>)
+    () => jest.fn(() => <div>mocked action editor</div>),
 )
 const mockedActionEditor = assumeMock(ActionEditor)
 
@@ -37,15 +37,15 @@ describe('<Button/>', () => {
         render(
             <Provider
                 store={mockStore({
-                    customers: fromJS({active: {}}),
+                    customers: fromJS({ active: {} }),
                 })}
             >
                 <Button {...props} />
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            screen.getByRole('button', {name: props.label})
+            screen.getByRole('button', { name: props.label }),
         ).toBeInTheDocument()
     })
 
@@ -53,14 +53,14 @@ describe('<Button/>', () => {
         render(
             <Provider
                 store={mockStore({
-                    customers: fromJS({active: {}}),
+                    customers: fromJS({ active: {} }),
                 })}
             >
                 <Button {...props} isDropdown />
-            </Provider>
+            </Provider>,
         )
         expect(
-            screen.getByRole('menuitem', {name: props.label})
+            screen.getByRole('menuitem', { name: props.label }),
         ).toBeInTheDocument()
     })
 
@@ -68,11 +68,11 @@ describe('<Button/>', () => {
         render(
             <Provider
                 store={mockStore({
-                    customers: fromJS({active: {}}),
+                    customers: fromJS({ active: {} }),
                 })}
             >
                 <Button {...props} />
-            </Provider>
+            </Provider>,
         )
         fireEvent.click(screen.getByText(props.label))
         expect(infobarActions.executeAction).toHaveBeenCalledWith({
@@ -91,24 +91,24 @@ describe('<Button/>', () => {
             },
         })
         expect(
-            screen.getByRole('button', {name: props.label})
+            screen.getByRole('button', { name: props.label }),
         ).toBeAriaDisabled()
     })
 
     it('should display param editor on button click if some fields are editable', () => {
-        const actionFixtureWithEdit = actionFixture({edit: true})
+        const actionFixtureWithEdit = actionFixture({ edit: true })
         render(
             <Provider
                 store={mockStore({
-                    customers: fromJS({active: {}}),
+                    customers: fromJS({ active: {} }),
                 })}
             >
                 <Button {...props} action={actionFixtureWithEdit} />
-            </Provider>
+            </Provider>,
         )
         fireEvent.click(screen.getByText(props.label))
         expect(getLastMockCall(mockedActionEditor)[0]).toEqual(
-            expect.objectContaining({action: actionFixtureWithEdit})
+            expect.objectContaining({ action: actionFixtureWithEdit }),
         )
         getLastMockCall(mockedActionEditor)[0].onSubmit(actionFixtureWithEdit)
         expect(infobarActions.executeAction).toHaveBeenCalledTimes(1)
@@ -120,7 +120,7 @@ describe('<Button/>', () => {
         const reducer: Reducer = (state: unknown, action) => {
             if (action.type === DUMB_ACTION_TYPE) {
                 return {
-                    customers: fromJS({active: {}}),
+                    customers: fromJS({ active: {} }),
                     infobar: fromJS({
                         pendingActionsCallbacks: [],
                     }),
@@ -131,7 +131,7 @@ describe('<Button/>', () => {
         const store = createStore(
             reducer,
             {
-                customers: fromJS({active: {}}),
+                customers: fromJS({ active: {} }),
                 infobar: fromJS({
                     pendingActionsCallbacks: [
                         {
@@ -140,21 +140,21 @@ describe('<Button/>', () => {
                     ],
                 }),
             },
-            applyMiddleware(thunk)
+            applyMiddleware(thunk),
         )
         render(
             <Provider store={store}>
                 <Button {...props} />
-            </Provider>
+            </Provider>,
         )
         fireEvent.click(screen.getByText(props.label))
 
         // We need to dispatch any dummy action so we get our new state
-        store.dispatch({type: DUMB_ACTION_TYPE})
+        store.dispatch({ type: DUMB_ACTION_TYPE })
         await waitFor(() =>
             expect(
-                screen.getByRole('button', {name: props.label})
-            ).toBeAriaEnabled()
+                screen.getByRole('button', { name: props.label }),
+            ).toBeAriaEnabled(),
         )
     })
 })

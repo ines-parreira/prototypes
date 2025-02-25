@@ -1,13 +1,15 @@
+import React from 'react'
+
 import classnames from 'classnames'
 import _omit from 'lodash/omit'
-import React from 'react'
-import {FormGroup, Label, Input as BootstrapInput, FormText} from 'reactstrap'
+import { Input as BootstrapInput, FormGroup, FormText, Label } from 'reactstrap'
 
-import {defined} from 'utils'
+import { defined } from 'utils'
 
-import InputField, {InputFieldProps} from './DEPRECATED_InputField'
-import css from './DEPRECATED_InputField.less'
+import InputField, { InputFieldProps } from './DEPRECATED_InputField'
 import Errors from './Errors'
+
+import css from './DEPRECATED_InputField.less'
 
 type Props = InputFieldProps<boolean>
 
@@ -23,14 +25,14 @@ export default class DEPRECATED_BooleanField extends InputField<Props> {
 
     _onChange = () => {
         const value = !this.props.value
-        const {onChange} = this.props
+        const { onChange } = this.props
         if (onChange) {
             onChange(value)
         }
     }
 
     _getField = () => {
-        const {children, error, value, ...rest} = _omit(this.props, [
+        const { children, error, value, ...rest } = _omit(this.props, [
             'help',
             'inline',
             'label',
@@ -55,7 +57,7 @@ export default class DEPRECATED_BooleanField extends InputField<Props> {
     }
 
     render() {
-        const {className, error, required, inline, label, help, disabled} =
+        const { className, error, required, inline, label, help, disabled } =
             this.props
         const color = error ? 'danger' : ''
 
@@ -71,7 +73,7 @@ export default class DEPRECATED_BooleanField extends InputField<Props> {
             >
                 <Label htmlFor={this.id} className="control-label" check>
                     {this._getField()}
-                    <span style={{verticalAlign: 'middle'}}>{label}</span>
+                    <span style={{ verticalAlign: 'middle' }}>{label}</span>
                 </Label>
                 {this.props.error && <Errors>{error}</Errors>}
                 {defined(help) && <FormText color="muted">{help}</FormText>}

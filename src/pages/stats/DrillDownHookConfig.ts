@@ -4,7 +4,7 @@ import {
     useDrillDownData,
     useEnrichedDrillDownData,
 } from 'hooks/reporting/useDrillDownData'
-import {EnrichmentFields} from 'models/reporting/types'
+import { EnrichmentFields } from 'models/reporting/types'
 import {
     ConvertDrillDownRowData,
     formatConvertCampaignSalesDrillDownRowData,
@@ -13,7 +13,7 @@ import {
     TicketDrillDownRowData,
     VoiceCallDrillDownRowData,
 } from 'pages/stats/DrillDownFormatters'
-import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
+import { DrillDownMetric } from 'state/ui/stats/drillDownSlice'
 import {
     ConvertMetric,
     VoiceAgentsMetric,
@@ -21,7 +21,7 @@ import {
 } from 'state/ui/stats/types'
 
 export const getDrillDownHook = (
-    metricName: DrillDownMetric
+    metricName: DrillDownMetric,
 ): DrillDownDataHook<
     TicketDrillDownRowData | ConvertDrillDownRowData | VoiceCallDrillDownRowData
 > => {
@@ -32,7 +32,7 @@ export const getDrillDownHook = (
                     metricData,
                     [EnrichmentFields.CustomerIntegrationDataByExternalId],
                     formatConvertCampaignSalesDrillDownRowData,
-                    EnrichmentFields.OrderCustomerId
+                    EnrichmentFields.OrderCustomerId,
                 )
         case VoiceMetric.AverageWaitTime:
         case VoiceMetric.AverageTalkTime:
@@ -54,7 +54,7 @@ export const getDrillDownHook = (
                     metricData,
                     defaultEnrichmentFields,
                     formatTicketDrillDownRowData,
-                    EnrichmentFields.TicketId
+                    EnrichmentFields.TicketId,
                 )
     }
 }

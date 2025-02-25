@@ -1,12 +1,15 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
-import {List, Map} from 'immutable'
-import React, {memo, useCallback} from 'react'
-import {Table} from 'reactstrap'
+import React, { memo, useCallback } from 'react'
 
-import {FulfillmentStatus} from 'constants/integrations/types/shopify'
+import classnames from 'classnames'
+import { List, Map } from 'immutable'
+import { Table } from 'reactstrap'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { FulfillmentStatus } from 'constants/integrations/types/shopify'
 
 import OrderLineItemRow from './OrderLineItemRow'
+
 import css from './OrderTable.less'
 
 type Props = {
@@ -40,14 +43,14 @@ function OrderTable({
                 refund.get('refund_line_items', []) as List<Map<string, any>>
             ).find(
                 (refundLineItem) =>
-                    refundLineItem?.get('line_item_id') === lineItem.get('id')
+                    refundLineItem?.get('line_item_id') === lineItem.get('id'),
             )
             if (refundLineItem && !refundLineItem.get('location_id')) {
                 return false
             }
             return true
         },
-        [refund]
+        [refund],
     )
 
     const showQtyWarningIcon =

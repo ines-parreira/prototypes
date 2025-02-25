@@ -1,7 +1,8 @@
-import {fireEvent, render} from '@testing-library/react'
-import React, {ComponentProps, ContextType} from 'react'
+import React, { ComponentProps, ContextType } from 'react'
 
-import {DropdownContext} from '../Dropdown'
+import { fireEvent, render } from '@testing-library/react'
+
+import { DropdownContext } from '../Dropdown'
 import DropdownQuickSelect from '../DropdownQuickSelect'
 
 const minProps = {
@@ -22,7 +23,7 @@ const mockContext: ContextType<typeof DropdownContext> = {
 
 const MockedComponent = (
     props: ComponentProps<typeof DropdownQuickSelect>,
-    context: ContextType<typeof DropdownContext>
+    context: ContextType<typeof DropdownContext>,
 ) => {
     return (
         <DropdownContext.Provider value={context}>
@@ -33,7 +34,7 @@ const MockedComponent = (
 
 describe('<DropdownQuickSelect />', () => {
     it('should render', () => {
-        const {container} = render(MockedComponent(minProps, mockContext))
+        const { container } = render(MockedComponent(minProps, mockContext))
 
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -43,18 +44,18 @@ describe('<DropdownQuickSelect />', () => {
     })
 
     it('should call onSelectAll when clicking on the unselected component', () => {
-        const {container} = render(MockedComponent(minProps, mockContext))
+        const { container } = render(MockedComponent(minProps, mockContext))
 
         fireEvent.click(container.firstChild!)
         expect(minProps.onSelectAll).toHaveBeenCalled()
     })
 
     it('should call onRemoveAll when clicking on the selected component', () => {
-        const {container} = render(
+        const { container } = render(
             MockedComponent(minProps, {
                 ...mockContext,
                 value: ['tacos', 'pizza'],
-            })
+            }),
         )
 
         fireEvent.click(container.firstChild!)
@@ -62,11 +63,11 @@ describe('<DropdownQuickSelect />', () => {
     })
 
     it('should call onRemoveAll when clicking on the partially selected component', () => {
-        const {container} = render(
+        const { container } = render(
             MockedComponent(minProps, {
                 ...mockContext,
                 value: ['tacos'],
-            })
+            }),
         )
 
         fireEvent.click(container.firstChild!)
@@ -74,11 +75,11 @@ describe('<DropdownQuickSelect />', () => {
     })
 
     it('should call the context toggle when clicked and when shouldCloseOnSelect is passed', () => {
-        const {container} = render(
+        const { container } = render(
             MockedComponent(
-                {...minProps, shouldCloseOnSelect: true},
-                mockContext
-            )
+                { ...minProps, shouldCloseOnSelect: true },
+                mockContext,
+            ),
         )
 
         fireEvent.click(container.firstChild!)

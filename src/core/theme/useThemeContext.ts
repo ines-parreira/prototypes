@@ -1,5 +1,6 @@
-import {THEME_NAME, themeTokenMap} from '@gorgias/design-tokens'
-import {useMemo} from 'react'
+import { useMemo } from 'react'
+
+import { THEME_NAME, themeTokenMap } from '@gorgias/design-tokens'
 
 import useActualTheme from './useActualTheme'
 
@@ -7,7 +8,7 @@ export default function useThemeContext() {
     const [theme, setTheme] = useActualTheme()
 
     const prefersDarkTheme = window.matchMedia(
-        '(prefers-color-scheme: dark)'
+        '(prefers-color-scheme: dark)',
     ).matches
 
     const resolvedTheme =
@@ -26,6 +27,6 @@ export default function useThemeContext() {
                 tokens: themeTokenMap[resolvedTheme],
             },
         }),
-        [resolvedTheme, theme, setTheme]
+        [resolvedTheme, theme, setTheme],
     )
 }

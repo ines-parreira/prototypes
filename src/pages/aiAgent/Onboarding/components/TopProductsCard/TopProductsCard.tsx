@@ -1,5 +1,6 @@
-import cn from 'classnames'
 import React from 'react'
+
+import cn from 'classnames'
 
 import {
     Card,
@@ -9,8 +10,9 @@ import {
 } from 'pages/aiAgent/Onboarding/components/Card'
 
 import TopProductItem from './TopProductItem'
+import { Product } from './types'
+
 import css from './TopProductsCard.less'
-import {Product} from './types'
 
 type Props = {
     className?: string
@@ -18,7 +20,7 @@ type Props = {
     products: Product[]
 }
 
-const TopProductsCard = ({className, title, products}: Props) => {
+const TopProductsCard = ({ className, title, products }: Props) => {
     return (
         <Card className={cn(css.topProductsContainer, className)}>
             <CardHeader>

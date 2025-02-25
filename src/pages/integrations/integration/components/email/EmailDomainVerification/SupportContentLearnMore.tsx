@@ -1,5 +1,6 @@
-import classNames from 'classnames'
 import React from 'react'
+
+import classNames from 'classnames'
 
 import css from './SupportContentLearnMore.less'
 
@@ -8,7 +9,7 @@ type Props = {
     url: string
 }
 
-export default function SupportContentLearnMore({children, url}: Props) {
+export default function SupportContentLearnMore({ children, url }: Props) {
     return (
         <a
             href={url}

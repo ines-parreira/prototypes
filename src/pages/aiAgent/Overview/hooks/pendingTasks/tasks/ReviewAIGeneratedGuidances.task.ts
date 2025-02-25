@@ -1,5 +1,5 @@
-import {RuleEngineData, RuleEngineRoutes} from '../ruleEngine'
-import {Task} from './Task'
+import { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
+import { Task } from './Task'
 
 export class ReviewAIGeneratedGuidancesTask extends Task {
     constructor(data: RuleEngineData, routes: RuleEngineRoutes) {
@@ -8,7 +8,7 @@ export class ReviewAIGeneratedGuidancesTask extends Task {
             'Review and edit the Guidances we generated for you',
             'RECOMMENDED',
             data,
-            routes
+            routes,
         )
     }
 
@@ -18,13 +18,13 @@ export class ReviewAIGeneratedGuidancesTask extends Task {
             data.guidances.filter(
                 (g) =>
                     g.templateKey?.startsWith('ai_guidance') &&
-                    g.visibility === 'UNLISTED'
+                    g.visibility === 'UNLISTED',
             ).length > 0
         )
     }
 
     protected getFeatureUrl({
-        routes: {aiAgentRoutes},
+        routes: { aiAgentRoutes },
     }: {
         data: RuleEngineData
         routes: RuleEngineRoutes

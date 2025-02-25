@@ -1,5 +1,5 @@
-import {WorkflowDatasetFilterMember} from 'models/reporting/cubes/automate_v2/WorkflowDatasetCube'
-import {workflowDatasetDefaultFilters} from 'models/reporting/queryFactories/workflows/filters'
+import { WorkflowDatasetFilterMember } from 'models/reporting/cubes/automate_v2/WorkflowDatasetCube'
+import { workflowDatasetDefaultFilters } from 'models/reporting/queryFactories/workflows/filters'
 
 describe('workflowDatasetDefaultFilters', () => {
     it('should map WorkflowStatsFilters to ReportingFilter', () => {

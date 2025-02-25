@@ -1,7 +1,7 @@
 import useOrderBy from 'hooks/useOrderBy'
-import {OrderDirection} from 'models/api/types'
+import { OrderDirection } from 'models/api/types'
 
-import {VoiceCallTableColumnName} from './constants'
+import { VoiceCallTableColumnName } from './constants'
 import {
     isVoiceCallTableColumnSortable,
     voiceCallTableColumnNameToDimension,
@@ -14,7 +14,7 @@ export default function useVoiceCallTableOrdering() {
         orderDirection,
     } = useOrderBy<VoiceCallTableColumnName>(
         VoiceCallTableColumnName.Date,
-        OrderDirection.Desc
+        OrderDirection.Desc,
     )
 
     const orderByDimension =

@@ -1,10 +1,10 @@
-import React, {useRef, useState} from 'react'
+import React, { useRef, useState } from 'react'
 
 import {
     DEFAULT_REASON_ACTIONS,
     REASONS_DROPDOWN_SECTIONS_WITH_OPTIONS,
 } from 'models/selfServiceConfiguration/constants'
-import {ReportIssueCaseReason} from 'models/selfServiceConfiguration/types'
+import { ReportIssueCaseReason } from 'models/selfServiceConfiguration/types'
 import SortableAccordion from 'pages/common/components/accordion/SortableAccordion'
 import SortableAccordionItem from 'pages/common/components/accordion/SortableAccordionItem'
 import Button from 'pages/common/components/button/Button'
@@ -14,7 +14,7 @@ import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
 import DropdownSection from 'pages/common/components/dropdown/DropdownSection'
 
-import {useReportOrderIssueScenarioFormContext} from './ReportOrderIssueScenarioFormContext'
+import { useReportOrderIssueScenarioFormContext } from './ReportOrderIssueScenarioFormContext'
 import ReportOrderIssueScenarioReason from './ReportOrderIssueScenarioReason'
 
 import css from './ReportOrderIssueScenarioReasons.less'
@@ -23,10 +23,10 @@ type Props = {
     items: ReportIssueCaseReason[]
     expandedItem: ReportIssueCaseReason['reasonKey'] | null
     onExpandedItemChange: (
-        expandedItem: ReportIssueCaseReason['reasonKey'] | null
+        expandedItem: ReportIssueCaseReason['reasonKey'] | null,
     ) => void
     onHoveredItemChange: (
-        expandedItem: ReportIssueCaseReason['reasonKey'] | null
+        expandedItem: ReportIssueCaseReason['reasonKey'] | null,
     ) => void
     onPreviewChange: (items: ReportIssueCaseReason[]) => void
     onChange: (items: ReportIssueCaseReason[]) => void
@@ -42,18 +42,18 @@ const ReportOrderIssueScenarioReasons = ({
 }: Props) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
     const buttonRef = useRef<HTMLButtonElement>(null)
-    const {isUpdatePending, hasError, errors} =
+    const { isUpdatePending, hasError, errors } =
         useReportOrderIssueScenarioFormContext()
 
     const hasReasonActionError = 'action' in errors
     const selectedReasons = items.map((item) => item.reasonKey)
 
     const handleReorder = (
-        reorderedItemKeys: ReportIssueCaseReason['reasonKey'][]
+        reorderedItemKeys: ReportIssueCaseReason['reasonKey'][],
     ) => {
         const itemsByKey = items.reduce<
             Record<ReportIssueCaseReason['reasonKey'], ReportIssueCaseReason>
-        >((acc, item) => ({...acc, [item.reasonKey]: item}), {})
+        >((acc, item) => ({ ...acc, [item.reasonKey]: item }), {})
 
         const nextItems = reorderedItemKeys.map((id) => itemsByKey[id])
 
@@ -62,7 +62,7 @@ const ReportOrderIssueScenarioReasons = ({
     const handleItemPreviewChange = (nextItem: ReportIssueCaseReason) => {
         const nextItems = [...items]
         const index = nextItems.findIndex(
-            (item) => item.reasonKey === nextItem.reasonKey
+            (item) => item.reasonKey === nextItem.reasonKey,
         )
 
         if (index !== -1) {
@@ -71,11 +71,11 @@ const ReportOrderIssueScenarioReasons = ({
         }
     }
     const handleItemDelete = (
-        reasonKey: ReportIssueCaseReason['reasonKey']
+        reasonKey: ReportIssueCaseReason['reasonKey'],
     ) => {
         const nextItems = [...items]
         const index = nextItems.findIndex(
-            (item) => item.reasonKey === reasonKey
+            (item) => item.reasonKey === reasonKey,
         )
 
         if (index !== -1) {
@@ -149,7 +149,7 @@ const ReportOrderIssueScenarioReasons = ({
                                     />
                                 ))}
                             </DropdownSection>
-                        )
+                        ),
                     )}
                 </DropdownBody>
             </Dropdown>

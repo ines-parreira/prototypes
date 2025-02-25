@@ -1,25 +1,25 @@
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {CampaignSalesDrillDownTableContent} from 'pages/stats/convert/components/CampaignSalesDrillDownTableContent'
-import {DrillDownInfoBar} from 'pages/stats/DrillDownInfoBar'
-import {DrillDownTable} from 'pages/stats/DrillDownTable'
-
-import {TicketDrillDownTableContent} from 'pages/stats/TicketDrillDownTableContent'
-import {RootState, StoreDispatch} from 'state/types'
-import {closeDrillDownModal} from 'state/ui/stats/drillDownSlice'
+import { CampaignSalesDrillDownTableContent } from 'pages/stats/convert/components/CampaignSalesDrillDownTableContent'
+import { DrillDownInfoBar } from 'pages/stats/DrillDownInfoBar'
+import { DrillDownTable } from 'pages/stats/DrillDownTable'
+import { TicketDrillDownTableContent } from 'pages/stats/TicketDrillDownTableContent'
+import { RootState, StoreDispatch } from 'state/types'
+import { closeDrillDownModal } from 'state/ui/stats/drillDownSlice'
 import {
     ConvertMetric,
     TicketFieldsMetric,
     VoiceAgentsMetric,
     VoiceMetric,
 } from 'state/ui/stats/types'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
-import {DrillDownModal} from '../DrillDownModal'
+import { DrillDownModal } from '../DrillDownModal'
 import VoiceCallDrillDownTableContent from '../voice/components/VoiceCallTable/VoiceCallDrillDownTableContent'
 
 jest.mock('pages/stats/DrillDownTable')
@@ -55,7 +55,7 @@ describe('<DrillDownModal />', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <DrillDownModal />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText(title)).toBeInTheDocument()
@@ -108,7 +108,7 @@ describe('<DrillDownModal />', () => {
             render(
                 <Provider store={mockStore(state)}>
                     <DrillDownModal />
-                </Provider>
+                </Provider>,
             )
 
             expect(DrillDownTableMock).toHaveBeenCalledWith(
@@ -117,17 +117,17 @@ describe('<DrillDownModal />', () => {
                     useDataHook: expect.any(Function),
                     TableContent: ExpectedTableContentComponent,
                 }),
-                {}
+                {},
             )
             expect(DrillDownInfobarMock).toHaveBeenCalledWith(
                 {
                     metricData: state.ui.stats.drillDown.metricData,
                     useDataHook: expect.any(Function),
                 },
-                {}
+                {},
             )
             expect(screen.getByText('Metric title')).toBeInTheDocument()
-        }
+        },
     )
 
     it('should close the modal', async () => {
@@ -135,7 +135,7 @@ describe('<DrillDownModal />', () => {
         render(
             <Provider store={store}>
                 <DrillDownModal />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(screen.getByText('close'))

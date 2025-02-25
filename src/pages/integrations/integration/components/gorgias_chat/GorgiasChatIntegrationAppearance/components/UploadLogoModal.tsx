@@ -1,9 +1,9 @@
 import React, {
     ForwardedRef,
     forwardRef,
-    useState,
     useCallback,
     useImperativeHandle,
+    useState,
 } from 'react'
 
 import Button from 'pages/common/components/button/Button'
@@ -26,8 +26,8 @@ type UploadLogoModalHandleProps = {
 }
 
 const UploadLogoModal = (
-    {onConfirm, uploadMaxSize}: UploadLogoModalHandleProps,
-    ref: ForwardedRef<UploadLogoModalHandle>
+    { onConfirm, uploadMaxSize }: UploadLogoModalHandleProps,
+    ref: ForwardedRef<UploadLogoModalHandle>,
 ) => {
     const [url, setUrl] = useState<string>()
     const [isOpen, setIsOpen] = useState(false)
@@ -46,7 +46,7 @@ const UploadLogoModal = (
                 setIsOpen(true)
             },
         }),
-        []
+        [],
     )
 
     return (
@@ -74,5 +74,5 @@ const UploadLogoModal = (
 }
 
 export default forwardRef<UploadLogoModalHandle, UploadLogoModalHandleProps>(
-    UploadLogoModal
+    UploadLogoModal,
 )

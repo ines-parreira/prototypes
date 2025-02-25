@@ -1,15 +1,19 @@
+import React, { ComponentProps, ReactNode, useRef } from 'react'
+
 import classNames from 'classnames'
-import React, {ComponentProps, ReactNode, useRef} from 'react'
 
 import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
-
 import HeaderTitle from 'pages/common/components/HeaderTitle'
 import PageHeader from 'pages/common/components/PageHeader'
-import {DrillDownModal} from 'pages/stats/DrillDownModal'
+import { DrillDownModal } from 'pages/stats/DrillDownModal'
 
 import css from './StatsPage.less'
 
-export const StatsPageWrapper = ({children}: {children: React.ReactNode}) => (
+export const StatsPageWrapper = ({
+    children,
+}: {
+    children: React.ReactNode
+}) => (
     <div className={classNames('full-width', css.wrapper)}>
         {children}
         <DrillDownModal />
@@ -39,9 +43,11 @@ export const StatsPageHeader = ({
     )
 }
 
-export const StatsPageContent = ({children}: {children: React.ReactNode}) => (
-    <div className={css.statsContainer}>{children}</div>
-)
+export const StatsPageContent = ({
+    children,
+}: {
+    children: React.ReactNode
+}) => <div className={css.statsContainer}>{children}</div>
 
 type Props = {
     children: ReactNode

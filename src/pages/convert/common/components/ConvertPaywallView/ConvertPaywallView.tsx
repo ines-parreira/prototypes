@@ -1,9 +1,9 @@
 import React from 'react'
-import {Redirect} from 'react-router-dom'
+
+import { Redirect } from 'react-router-dom'
 
 import convertIcon from 'assets/img/convert/convert-logo.svg'
 import LinkButton from 'pages/common/components/button/LinkButton'
-
 import HeroImageCarousel from 'pages/common/components/HeroImageCarousel/HeroImageCarousel'
 import PageHeader from 'pages/common/components/PageHeader'
 import PaywallView from 'pages/common/components/PaywallView/PaywallView'
@@ -13,13 +13,14 @@ import PaywallViewChecklistItem from 'pages/common/components/PaywallView/Paywal
 import PaywallViewHeader from 'pages/common/components/PaywallView/PaywallViewHeader'
 import PaywallViewLeftContainer from 'pages/common/components/PaywallView/PaywallViewLeftContainer'
 import PaywallViewRightContainer from 'pages/common/components/PaywallView/PaywallViewRightContainer'
-import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
+import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
 import {
     CONVERT_BOOK_DEMO_LINK,
     CONVERT_PRODUCT_LINK,
 } from 'pages/convert/common/constants'
 
-import {ConvertFeatures, PaywallConfig} from './constants'
+import { ConvertFeatures, PaywallConfig } from './constants'
+
 import css from './ConvertPaywallView.less'
 
 type Props = {

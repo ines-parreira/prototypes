@@ -1,17 +1,16 @@
 import _fromPairs from 'lodash/fromPairs'
 import _sortBy from 'lodash/sortBy'
 
-import {User} from 'config/types/user'
-
+import { User } from 'config/types/user'
 import {
     TimeSeriesDataItem,
     TimeSeriesPerDimension,
 } from 'hooks/reporting/useTimeSeries'
-import {Integration} from 'models/integration/types'
-import {TicketDimension} from 'models/reporting/cubes/TicketCube'
-import {TicketMessagesDimension} from 'models/reporting/cubes/TicketMessagesCube'
-import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
-import {NOT_AVAILABLE_TEXT} from 'pages/stats/common/utils'
+import { Integration } from 'models/integration/types'
+import { TicketDimension } from 'models/reporting/cubes/TicketCube'
+import { TicketMessagesDimension } from 'models/reporting/cubes/TicketMessagesCube'
+import { TicketSatisfactionSurveyMeasure } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
+import { NOT_AVAILABLE_TEXT } from 'pages/stats/common/utils'
 
 const DATASET_VISIBILITY_ITEMS = 3
 const TOP_AMOUNT = 10
@@ -32,11 +31,11 @@ const getAverageCSATScorePerDimension = (data?: TimeSeriesPerDimension) => {
                 .map((item) => item.value)
                 .reduce(
                     (prevValue, currentValue) => prevValue + currentValue,
-                    0
+                    0,
                 )
             return acc
         },
-        {}
+        {},
     )
 }
 
@@ -66,23 +65,23 @@ export const getAverageCSATLabels = ({
         labels = initialLabels.map((label) => {
             if (label === 'null') return 'No Integration'
             const integration = integrations?.find(
-                (integration) => integration.id === parseInt(label)
+                (integration) => integration.id === parseInt(label),
             )
             return integration ? integration.name : label
         })
         tooltips = [...labels]
     }
-    return {labels, tooltips}
+    return { labels, tooltips }
 }
 
 export const getSortedData = (
     topAmount: number,
     defaultData?: TimeSeriesPerDimension,
-    averageTimeseries?: TimeSeriesDataItem[][]
+    averageTimeseries?: TimeSeriesDataItem[][],
 ) => {
     const data = {
         ...defaultData,
-        ...(averageTimeseries ? {Average: averageTimeseries} : {}),
+        ...(averageTimeseries ? { Average: averageTimeseries } : {}),
     }
 
     const averageCSATScore = getAverageCSATScorePerDimension(defaultData)
@@ -97,10 +96,10 @@ export const getSortedData = (
     const tooltips = topData.map(([dim, __]) => dim)
 
     const initialVisibility = _fromPairs(
-        topData.map((_, index) => [index, index < DATASET_VISIBILITY_ITEMS])
+        topData.map((_, index) => [index, index < DATASET_VISIBILITY_ITEMS]),
     )
 
-    return {dataToRender, labels, tooltips, initialVisibility}
+    return { dataToRender, labels, tooltips, initialVisibility }
 }
 
 export const computeAverageCSAT = (data?: TimeSeriesPerDimension) => {
@@ -162,7 +161,7 @@ export const getFormattedInfo = ({
         initialVisibility,
     } = getSortedData(TOP_AMOUNT, data, averageTimeseries)
 
-    const {labels, tooltips} = getAverageCSATLabels({
+    const { labels, tooltips } = getAverageCSATLabels({
         initialLabels,
         initialTooltips,
         integrations,
@@ -172,7 +171,7 @@ export const getFormattedInfo = ({
 
     if (!data) return {}
 
-    return {labels, tooltips, dataToRender, initialVisibility}
+    return { labels, tooltips, dataToRender, initialVisibility }
 }
 
 export const transformToTimeSeriesData = (result: {
@@ -186,7 +185,7 @@ export const transformToTimeSeriesData = (result: {
         values.push([
             dates[i],
             ...result.dataToRender.map(
-                (value) => value[values.length - 1].value
+                (value) => value[values.length - 1].value,
             ),
         ])
     }

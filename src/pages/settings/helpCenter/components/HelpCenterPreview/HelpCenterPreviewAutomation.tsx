@@ -1,12 +1,12 @@
-import classnames from 'classnames'
 import React from 'react'
+
+import classnames from 'classnames'
 
 import cancelIcon from 'assets/img/self-service/cancel.svg'
 import reportIssueIcon from 'assets/img/self-service/report-issue.svg'
 import returnIcon from 'assets/img/self-service/return.svg'
 import trackIcon from 'assets/img/self-service/track.svg'
-
-import {PolicyKey} from 'models/selfServiceConfiguration/types'
+import { PolicyKey } from 'models/selfServiceConfiguration/types'
 
 import css from './HelpCenterPreviewAutomation.less'
 
@@ -41,7 +41,7 @@ const getOrderManagementLabel = (orderManagement: PolicyKey) => {
 }
 
 type HelpCenterPreviewAutomationProps = {
-    flows: {name: string; id: string}[]
+    flows: { name: string; id: string }[]
     // Readonly is used to simplify type casting and using `as const`
     orderManagement: Readonly<PolicyKey[]>
     highlightedOrderManagement?: Maybe<PolicyKey>

@@ -1,8 +1,9 @@
-import {render, screen} from '@testing-library/react'
-import {Emoji} from 'emoji-mart'
 import React from 'react'
 
-import {assumeMock} from 'utils/testing'
+import { render, screen } from '@testing-library/react'
+import { Emoji } from 'emoji-mart'
+
+import { assumeMock } from 'utils/testing'
 
 import TeamDropdownItem from '../TeamDropdownItem'
 
@@ -32,7 +33,7 @@ describe('<TeamDropdownItem />', () => {
                 item={{
                     name: 'Team Simpsons',
                 }}
-            />
+            />,
         )
 
         expect(screen.getByText('TS')).toBeInTheDocument()

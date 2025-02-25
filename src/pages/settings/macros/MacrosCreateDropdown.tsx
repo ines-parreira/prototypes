@@ -1,4 +1,5 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
+
 import {
     Button,
     DropdownItem,
@@ -7,18 +8,17 @@ import {
     UncontrolledButtonDropdown,
 } from 'reactstrap'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
-import {createJob} from 'models/job/resources'
-import {JobType} from 'models/job/types'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { createJob } from 'models/job/resources'
+import { JobType } from 'models/job/types'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 import history from '../../history'
-
 import MacrosCSVImportPopover from './MacrosCSVImportPopover'
 
 export function MacrosCreateDropdown(): JSX.Element {
@@ -42,7 +42,7 @@ export function MacrosCreateDropdown(): JSX.Element {
                 status: NotificationStatus.Success,
                 message:
                     'All the macros will be exported. You will receive the download link via email once the export is done.',
-            })
+            }),
         )
 
         createJob(requestPayload).catch((error) => {
@@ -50,7 +50,7 @@ export function MacrosCreateDropdown(): JSX.Element {
                 notify({
                     status: NotificationStatus.Error,
                     message: 'Failed to export macros. Please try again.',
-                })
+                }),
             )
             throw error
         })

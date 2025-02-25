@@ -1,11 +1,12 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {waitFor} from '@testing-library/react'
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
 
-import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import {HelpCenterClient} from 'rest_api/help_center_api/client'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { waitFor } from '@testing-library/react'
+import { renderHook } from '@testing-library/react-hooks'
+
+import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import { HelpCenterClient } from 'rest_api/help_center_api/client'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import {
     useGetContactFormMailtoReplacementConfig,
@@ -17,7 +18,7 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
 }))
 
 const queryClient = mockQueryClient()
-const wrapper = ({children}: any) => (
+const wrapper = ({ children }: any) => (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 )
 
@@ -36,9 +37,9 @@ describe('queries', () => {
                 isReady: true,
             })
 
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () => useGetContactFormMailtoReplacementConfig(contactFormId),
-                {wrapper}
+                { wrapper },
             )
 
             await waitFor(() => expect(result.current.data).toBeUndefined())
@@ -49,17 +50,17 @@ describe('queries', () => {
             mockUseHelpCenterApi.mockReturnValue({
                 client: {
                     getContactFormMailtoReplacementConfig: () =>
-                        Promise.resolve({data: {emails}}),
+                        Promise.resolve({ data: { emails } }),
                 } as HelpCenterClient,
                 isReady: true,
             })
 
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () => useGetContactFormMailtoReplacementConfig(contactFormId),
-                {wrapper}
+                { wrapper },
             )
 
-            await waitFor(() => expect(result.current.data).toEqual({emails}))
+            await waitFor(() => expect(result.current.data).toEqual({ emails }))
         })
     })
 
@@ -70,15 +71,15 @@ describe('queries', () => {
                 isReady: true,
             })
 
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () => useUpsertContactFormMailtoReplacementConfig(),
-                {wrapper}
+                { wrapper },
             )
 
             await result.current.mutateAsync([
                 undefined,
-                {contact_form_id: contactFormId},
-                {emails: []},
+                { contact_form_id: contactFormId },
+                { emails: [] },
             ])
 
             await waitFor(() => expect(result.current.data).toBeUndefined())
@@ -90,27 +91,30 @@ describe('queries', () => {
             mockUseHelpCenterApi.mockReturnValue({
                 client: {
                     upsertContactFormShopifyMailtoReplacement: () =>
-                        Promise.resolve({data: {emails}, status: statusCode}),
+                        Promise.resolve({
+                            data: { emails },
+                            status: statusCode,
+                        }),
                 } as HelpCenterClient,
                 isReady: true,
             })
 
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () => useUpsertContactFormMailtoReplacementConfig(),
-                {wrapper}
+                { wrapper },
             )
 
             await result.current.mutateAsync([
                 undefined,
-                {contact_form_id: contactFormId},
-                {emails},
+                { contact_form_id: contactFormId },
+                { emails },
             ])
 
             await waitFor(() =>
                 expect(result.current.data).toEqual({
-                    data: {emails},
+                    data: { emails },
                     statusCode,
-                })
+                }),
             )
         })
     })

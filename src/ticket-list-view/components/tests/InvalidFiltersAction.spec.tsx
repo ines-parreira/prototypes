@@ -1,9 +1,10 @@
-import {render} from '@testing-library/react'
 import React from 'react'
+
+import { render } from '@testing-library/react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {useSplitTicketView} from 'split-ticket-view-toggle'
+import { useSplitTicketView } from 'split-ticket-view-toggle'
 
 import InvalidFiltersAction from '../InvalidFiltersAction'
 
@@ -22,24 +23,26 @@ const mockSetIsEnabled = jest.fn()
 describe('<InvalidFiltersAction />', () => {
     beforeEach(() => {
         useAppDispatchMock.mockReturnValue(mockDispatch)
-        useSplitTicketViewMock.mockReturnValue({setIsEnabled: mockSetIsEnabled})
+        useSplitTicketViewMock.mockReturnValue({
+            setIsEnabled: mockSetIsEnabled,
+        })
     })
 
     it('should render', () => {
-        const {getByText} = render(<InvalidFiltersAction />)
+        const { getByText } = render(<InvalidFiltersAction />)
 
         expect(getByText('Fix filters')).toBeInTheDocument()
     })
 
     it('should call setIsEnabled and dispatch on click', () => {
-        useAppSelectorMock.mockReturnValue({id: 1})
+        useAppSelectorMock.mockReturnValue({ id: 1 })
 
-        const {getByText} = render(<InvalidFiltersAction />)
+        const { getByText } = render(<InvalidFiltersAction />)
         getByText('Fix filters').click()
 
         expect(mockSetIsEnabled).toHaveBeenCalledWith(false)
         expect(mockDispatch).toHaveBeenCalledWith(
-            expect.objectContaining({view: {id: 1}})
+            expect.objectContaining({ view: { id: 1 } }),
         )
     })
 })

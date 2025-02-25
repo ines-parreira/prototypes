@@ -1,6 +1,6 @@
-import {User} from 'config/types/user'
-import {Metric} from 'hooks/reporting/metrics'
-import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
+import { User } from 'config/types/user'
+import { Metric } from 'hooks/reporting/metrics'
+import { MetricWithDecile } from 'hooks/reporting/useMetricPerDimension'
 import {
     AgentTimeTrackingCube,
     AgentTimeTrackingDimension,
@@ -16,12 +16,15 @@ import {
     HelpdeskMessageMeasure,
     HelpdeskMessageMember,
 } from 'models/reporting/cubes/HelpdeskMessageCube'
-import {TicketDimension, TicketMeasure} from 'models/reporting/cubes/TicketCube'
+import {
+    TicketDimension,
+    TicketMeasure,
+} from 'models/reporting/cubes/TicketCube'
 import {
     TicketMessagesDimension,
     TicketMessagesMeasure,
 } from 'models/reporting/cubes/TicketMessagesCube'
-import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
+import { TicketSatisfactionSurveyMeasure } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
@@ -30,8 +33,8 @@ import {
     AgentsColumnConfig,
     TableLabels,
 } from 'pages/stats/support-performance/agents/AgentsTableConfig'
-import {AgentsTableColumn} from 'state/ui/stats/types'
-import {createCsv} from 'utils/file'
+import { AgentsTableColumn } from 'state/ui/stats/types'
+import { createCsv } from 'utils/file'
 
 export const SUMMARY_ROW_AGENT_COLUMN_LABEL = 'Average'
 
@@ -80,17 +83,17 @@ const formatMetric = (column: AgentsTableColumn, value?: number | null) =>
     formatMetricValue(
         value,
         AgentsColumnConfig[column].format,
-        NOT_AVAILABLE_PLACEHOLDER
+        NOT_AVAILABLE_PLACEHOLDER,
     )
 
 const getAgentMetric = (
     agentId: number,
     data: Pick<MetricWithDecile, 'data'>,
     agentIdField: AgentIdentifierDimension,
-    metricField: AgentReportMetrics
+    metricField: AgentReportMetrics,
 ) => {
     const metricValue = data.data?.allData.find(
-        (item) => Number(item[agentIdField]) === agentId
+        (item) => Number(item[agentIdField]) === agentId,
     )?.[metricField]
     return typeof metricValue === 'string' ? Number(metricValue) : metricValue
 }
@@ -98,7 +101,7 @@ const getAgentMetric = (
 const getSummary = (
     column: AgentsTableColumn,
     summaryDataMap: ReportDataMap,
-    agents: number
+    agents: number,
 ) => {
     if (column === AgentsTableColumn.AgentName)
         return SUMMARY_ROW_AGENT_COLUMN_LABEL
@@ -113,7 +116,7 @@ const getSummary = (
 const getMetric = (
     column: AgentsTableColumn,
     agent: User,
-    summaryDataMap: ReportDataMap
+    summaryDataMap: ReportDataMap,
 ) =>
     column === AgentsTableColumn.AgentName
         ? agent.name
@@ -123,15 +126,15 @@ const getMetric = (
                   agent.id,
                   summaryDataMap[column].metricData,
                   summaryDataMap[column].idField,
-                  summaryDataMap[column].metricField
-              )
+                  summaryDataMap[column].metricField,
+              ),
           )
 
 export const getData = (
     agents: User[],
     data: AgentsPerformanceReportData,
     summary: Omit<AgentsPerformanceReportData<Metric>, 'agents'>,
-    columnsOrder: AgentsTableColumn[]
+    columnsOrder: AgentsTableColumn[],
 ) => {
     const AssigneeUserId = TicketDimension.AssigneeUserId
     const AvgSurveyScore = TicketSatisfactionSurveyMeasure.AvgSurveyScore
@@ -152,7 +155,7 @@ export const getData = (
     const columnsToMetricDataMap: ReportDataMap = {
         [AgentsTableColumn.AgentName]: {
             column: AgentsTableColumn.AgentName,
-            metricData: {data: null},
+            metricData: { data: null },
             idField: AssigneeUserId,
             metricField: AvgSurveyScore,
             summaryData: null,
@@ -253,11 +256,11 @@ export const getData = (
     return [
         columnsOrder.map((column) => TableLabels[column]),
         columnsOrder.map((column) =>
-            getSummary(column, columnsToMetricDataMap, agents.length)
+            getSummary(column, columnsToMetricDataMap, agents.length),
         ),
         ...agents.map((agent) => {
             return columnsOrder.map((column) =>
-                getMetric(column, agent, columnsToMetricDataMap)
+                getMetric(column, agent, columnsToMetricDataMap),
             )
         }),
     ]
@@ -268,7 +271,7 @@ export const createAgentsReport = (
     data: AgentsPerformanceReportData | null,
     summary: AgentsPerformanceReportData<Metric> | null,
     columnsOrder: AgentsTableColumn[],
-    fileName: string
+    fileName: string,
 ) => {
     if (data === null || summary === null) {
         return {

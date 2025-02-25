@@ -1,5 +1,5 @@
-import {RuleEngineData, RuleEngineRoutes} from '../ruleEngine'
-import {Task} from './Task'
+import { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
+import { Task } from './Task'
 
 export class EnableAIAgentOnEmailTask extends Task {
     constructor(data: RuleEngineData, routes: RuleEngineRoutes) {
@@ -8,7 +8,7 @@ export class EnableAIAgentOnEmailTask extends Task {
             'Automates up to 60% of support tickets',
             'BASIC',
             data,
-            routes
+            routes,
         )
     }
 
@@ -21,7 +21,7 @@ export class EnableAIAgentOnEmailTask extends Task {
     }
 
     protected getFeatureUrl({
-        routes: {aiAgentRoutes},
+        routes: { aiAgentRoutes },
     }: {
         data: RuleEngineData
         routes: RuleEngineRoutes

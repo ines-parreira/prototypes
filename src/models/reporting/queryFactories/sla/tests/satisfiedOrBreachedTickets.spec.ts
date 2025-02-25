@@ -1,7 +1,8 @@
-import {QueryFiltersItemOperator} from '@gorgias/api-types'
 import moment from 'moment/moment'
 
-import {OrderDirection} from 'models/api/types'
+import { QueryFiltersItemOperator } from '@gorgias/api-types'
+
+import { OrderDirection } from 'models/api/types'
 import {
     TicketSLADimension,
     TicketSLAMeasure,
@@ -9,7 +10,10 @@ import {
     TicketSLASegment,
     TicketSLAStatus,
 } from 'models/reporting/cubes/sla/TicketSLACube'
-import {TicketDimension, TicketMember} from 'models/reporting/cubes/TicketCube'
+import {
+    TicketDimension,
+    TicketMember,
+} from 'models/reporting/cubes/TicketCube'
 import {
     breachedTicketsDrillDownQueryFactory,
     satisfiedOrBreachedTicketsDrillDownQueryFactory,
@@ -18,7 +22,7 @@ import {
     ReportingFilterOperator,
     ReportingGranularity,
 } from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import { StatsFilters } from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
@@ -41,7 +45,7 @@ describe('satisfiedOrBreachedTicketsTicketsQueryFactory', () => {
         it('should produce the query', () => {
             const query = satisfiedOrBreachedTicketsDrillDownQueryFactory(
                 statsFilters,
-                timezone
+                timezone,
             )
 
             expect(query).toEqual({
@@ -103,13 +107,13 @@ describe('satisfiedOrBreachedTicketsTicketsQueryFactory', () => {
             const query = satisfiedOrBreachedTicketsDrillDownQueryFactory(
                 statsFilters,
                 timezone,
-                sorting
+                sorting,
             )
 
             expect(query).toEqual({
                 ...satisfiedOrBreachedTicketsDrillDownQueryFactory(
                     statsFilters,
-                    timezone
+                    timezone,
                 ),
                 order: [[TicketDimension.CreatedDatetime, sorting]],
             })
@@ -120,7 +124,7 @@ describe('satisfiedOrBreachedTicketsTicketsQueryFactory', () => {
         it('should produce the query', () => {
             const query = breachedTicketsDrillDownQueryFactory(
                 statsFilters,
-                timezone
+                timezone,
             )
 
             expect(query).toEqual({
@@ -179,7 +183,7 @@ describe('satisfiedOrBreachedTicketsTicketsQueryFactory', () => {
             const query = breachedTicketsDrillDownQueryFactory(
                 statsFilters,
                 timezone,
-                sorting
+                sorting,
             )
 
             expect(query).toEqual({

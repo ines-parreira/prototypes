@@ -1,14 +1,14 @@
-import {OrderDirection} from 'models/api/types'
-import {ConvertOrderConversionCube} from 'models/reporting/cubes/ConvertOrderConversionCube'
-import {ConvertOrderEventsCube} from 'models/reporting/cubes/ConvertOrderEventsCube'
-import {FilterOperatorMap} from 'models/reporting/queryFactories/utils'
+import { OrderDirection } from 'models/api/types'
+import { ConvertOrderConversionCube } from 'models/reporting/cubes/ConvertOrderConversionCube'
+import { ConvertOrderEventsCube } from 'models/reporting/cubes/ConvertOrderEventsCube'
+import { FilterOperatorMap } from 'models/reporting/queryFactories/utils'
 import {
     ReportingGranularity,
     ReportingParams,
     ReportingQuery,
     TimeSeriesQuery,
 } from 'models/reporting/types'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import {
     CampaignOrderEventsDimension,
     CampaignOrderEventsMeasure,
@@ -26,7 +26,7 @@ import {
     CubeFilterParams,
     DefaultFilterParams,
 } from 'pages/stats/convert/clients/types'
-import {getDateRange} from 'pages/stats/convert/clients/utils'
+import { getDateRange } from 'pages/stats/convert/clients/utils'
 
 const _getDefaultFilters = ({
     startDate,
@@ -41,7 +41,7 @@ const _getDefaultFilters = ({
 
     if (campaignIds && campaignsOperator && campaignIds?.length) {
         filters.push(
-            _campaignEqualsFilter(campaignIds, campaignsOperator, cubeName)
+            _campaignEqualsFilter(campaignIds, campaignsOperator, cubeName),
         )
     }
 
@@ -59,7 +59,7 @@ const _getDefaultFilters = ({
 const _inDateRangeFilter = (
     startDate: string,
     endDate: string,
-    cubeName: string
+    cubeName: string,
 ): CubeFilter => {
     return {
         member: `${cubeName}.${SharedDimension.createdDatetime}`,
@@ -70,7 +70,7 @@ const _inDateRangeFilter = (
 
 const _shopNameEqualsFilter = (
     shopName: string,
-    cubeName: string
+    cubeName: string,
 ): CubeFilter => {
     return {
         member: `${cubeName}.${SharedDimension.shopName}`,
@@ -81,7 +81,7 @@ const _shopNameEqualsFilter = (
 
 const _abVariantEqualsFilter = (
     abVariant: string,
-    cubeName: string
+    cubeName: string,
 ): CubeFilter => {
     return {
         member: `${cubeName}.${SharedDimension.abVariant}`,
@@ -93,7 +93,7 @@ const _abVariantEqualsFilter = (
 const _campaignEqualsFilter = (
     campaignIds: string[],
     campaignIdsOperator: LogicalOperatorEnum,
-    cubeName: string
+    cubeName: string,
 ): CubeFilter => {
     return {
         member: `${cubeName}.${SharedDimension.campaignId}`,
@@ -450,11 +450,11 @@ export const getCampaignABTestEvents = ({
                 _inDateRangeFilter(
                     startDate,
                     endDate,
-                    Cube.campaignOrderEvents
+                    Cube.campaignOrderEvents,
                 ),
                 _shopNameEqualsFilter(
                     shopName as string,
-                    Cube.campaignOrderEvents
+                    Cube.campaignOrderEvents,
                 ),
             ] as CubeFilter[],
         },

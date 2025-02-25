@@ -1,6 +1,7 @@
-import {render} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
+
+import { render } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import LogicalOperator from 'pages/stats/common/components/Filter/components/LogicalOperator/LogicalOperator'
 import {
@@ -18,28 +19,28 @@ describe('LogicalOperator', () => {
     const onChange = jest.fn()
 
     it('renders the component correctly', () => {
-        const {container} = render(
+        const { container } = render(
             <LogicalOperator
                 logicalOperators={logicalOperators}
                 selectedLogicalOperator={selectedLogicalOperator}
                 onChange={onChange}
-            />
+            />,
         )
 
         expect(container.firstChild).toBeInTheDocument()
     })
 
     it('calls the onChange function when a logical operator is selected', () => {
-        const {getByLabelText} = render(
+        const { getByLabelText } = render(
             <LogicalOperator
                 logicalOperators={logicalOperators}
                 selectedLogicalOperator={selectedLogicalOperator}
                 onChange={onChange}
-            />
+            />,
         )
 
         const radioInput = getByLabelText(
-            LogicalOperatorLabel[LogicalOperatorEnum.ALL_OF]
+            LogicalOperatorLabel[LogicalOperatorEnum.ALL_OF],
         )
         userEvent.click(radioInput)
 

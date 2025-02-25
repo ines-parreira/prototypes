@@ -1,31 +1,33 @@
-import {fireEvent, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import {fromJS} from 'immutable'
 import React from 'react'
 
+import { fireEvent, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { fromJS } from 'immutable'
+
 import 'tests/__mocks__/intersectionObserverMock'
-import {Provider} from 'react-redux'
+
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {shopifyIntegration} from 'fixtures/integrations'
+import { shopifyIntegration } from 'fixtures/integrations'
 import {
     HelpCenter,
     HelpCenterAutomateType,
     HelpCenterCreationWizardStep,
 } from 'models/helpCenter/types'
-import {Integration} from 'models/integration/types'
+import { Integration } from 'models/integration/types'
 import Wizard from 'pages/common/components/wizard/Wizard'
-import {NEXT_ACTION} from 'pages/settings/helpCenter/constants'
+import { NEXT_ACTION } from 'pages/settings/helpCenter/constants'
 import {
     HelpCenterApiBasicsFixture,
     HelpCenterUiBasicsFixture,
 } from 'pages/settings/helpCenter/fixtures/wizard.fixture'
-import {SupportedLocalesProvider} from 'pages/settings/helpCenter/providers/SupportedLocales'
-import {StoreState} from 'state/types'
-import {renderWithRouter} from 'utils/testing'
+import { SupportedLocalesProvider } from 'pages/settings/helpCenter/providers/SupportedLocales'
+import { StoreState } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
-import {useHelpCenterCreationWizard} from '../../../hooks/useHelpCenterCreationWizard'
+import { useHelpCenterCreationWizard } from '../../../hooks/useHelpCenterCreationWizard'
 import HelpCenterCreationWizardStepBasics from '../HelpCenterCreationWizardStepBasics'
 
 const defaultHelpCenter = HelpCenterUiBasicsFixture
@@ -66,7 +68,7 @@ const renderComponent = (fixtures?: {
     } = fixtures ?? {}
 
     const defaultStore = {
-        integrations: fromJS({integrations}),
+        integrations: fromJS({ integrations }),
     } as unknown as StoreState
 
     const mockStore = configureMockStore([thunk])
@@ -82,7 +84,7 @@ const renderComponent = (fixtures?: {
                     />
                 </Wizard>
             </SupportedLocalesProvider>
-        </Provider>
+        </Provider>,
     )
 }
 
@@ -108,7 +110,7 @@ describe('<HelpCenterCreationWizardStepBasics />', () => {
     })
 
     it('renders wizard with platform type when non Automate account', () => {
-        renderComponent({automateType: HelpCenterAutomateType.NON_AUTOMATE})
+        renderComponent({ automateType: HelpCenterAutomateType.NON_AUTOMATE })
 
         const platformTypeLabel = screen.getByText(/Select a platform type/i)
 
@@ -157,7 +159,7 @@ describe('<HelpCenterCreationWizardStepBasics />', () => {
         renderComponent()
 
         const brandInput = screen.getByTestId('name')
-        fireEvent.change(brandInput, {target: {value: 'updated name'}})
+        fireEvent.change(brandInput, { target: { value: 'updated name' } })
 
         expect(mockUpdateData).toHaveBeenCalledWith({
             name: 'updated name',
@@ -173,7 +175,7 @@ describe('<HelpCenterCreationWizardStepBasics />', () => {
         })
 
         fireEvent.change(subdomainInput, {
-            target: {value: 'custom-subdomain'},
+            target: { value: 'custom-subdomain' },
         })
 
         await waitFor(() => {

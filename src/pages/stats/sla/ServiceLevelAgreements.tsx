@@ -1,23 +1,24 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useGridSize} from 'hooks/useGridSize'
-import {FilterKey} from 'models/stat/types'
-import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useGridSize } from 'hooks/useGridSize'
+import { FilterKey } from 'models/stat/types'
+import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
-import {CustomReportComponent} from 'pages/stats/custom-reports/CustomReportComponent'
+import { CustomReportComponent } from 'pages/stats/custom-reports/CustomReportComponent'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
-import {DownloadSLAsData} from 'pages/stats/sla/components/DownloadSLAsData'
-import {SLAPolicySelect} from 'pages/stats/sla/components/SLAPolicySelect'
-import {WithSlaEmptyState} from 'pages/stats/sla/components/WithSlaEmptyState'
+import { DownloadSLAsData } from 'pages/stats/sla/components/DownloadSLAsData'
+import { SLAPolicySelect } from 'pages/stats/sla/components/SLAPolicySelect'
+import { WithSlaEmptyState } from 'pages/stats/sla/components/WithSlaEmptyState'
 import {
-    ServiceLevelAgreementsReportConfig,
     ServiceLevelAgreementsChart,
+    ServiceLevelAgreementsReportConfig,
 } from 'pages/stats/sla/ServiceLevelAgreementsReportConfig'
 import StatsPage from 'pages/stats/StatsPage'
-import {SupportPerformanceFilters} from 'pages/stats/support-performance/SupportPerformanceFilters'
+import { SupportPerformanceFilters } from 'pages/stats/support-performance/SupportPerformanceFilters'
 
 const OVERVIEW_SECTION_LABEL = 'Overview'
 

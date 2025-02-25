@@ -1,16 +1,17 @@
-import {fireEvent, screen} from '@testing-library/react'
-import uniqueId from 'lodash/uniqueId'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, screen } from '@testing-library/react'
+import uniqueId from 'lodash/uniqueId'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {
-    OBJECT_TYPES,
     DROPDOWN_NESTING_DELIMITER as delimiter,
+    OBJECT_TYPES,
 } from 'custom-fields/constants'
-import {ticketDropdownFieldDefinition} from 'fixtures/customField'
-import {renderWithDnD} from 'utils/testing'
+import { ticketDropdownFieldDefinition } from 'fixtures/customField'
+import { renderWithDnD } from 'utils/testing'
 
 import DropdownInput from '../DropdownInput'
 import DropdownInputRow from '../DropdownInputRow'
@@ -24,7 +25,7 @@ jest.mock('../DropdownInputRow', () => ({
     __esModule: true,
     default: jest.fn(
         // eslint-disable-next-line
-        jest.requireActual('../DropdownInputRow').DropdownInputRow
+        jest.requireActual('../DropdownInputRow').DropdownInputRow,
     ),
 }))
 
@@ -57,10 +58,10 @@ describe('<DropdownInput/>', () => {
             ],
         }
 
-        const {container} = renderWithDnD(
+        const { container } = renderWithDnD(
             <Provider store={mockStore}>
                 <DropdownInput {...props} />
-            </Provider>
+            </Provider>,
         )
         expect(container).toMatchSnapshot()
         expect(screen.queryAllByText('drag_indicator')).toHaveLength(9)
@@ -79,10 +80,10 @@ describe('<DropdownInput/>', () => {
         renderWithDnD(
             <Provider store={mockStore}>
                 <DropdownInput {...props} />
-            </Provider>
+            </Provider>,
         )
         expect(
-            screen.getAllByText(/more than 5 levels of nesting/).length
+            screen.getAllByText(/more than 5 levels of nesting/).length,
         ).toBeGreaterThan(0)
     })
 
@@ -95,10 +96,10 @@ describe('<DropdownInput/>', () => {
         renderWithDnD(
             <Provider store={mockStore}>
                 <DropdownInput {...props} />
-            </Provider>
+            </Provider>,
         )
         expect(
-            screen.getAllByText(/This value already exists/).length
+            screen.getAllByText(/This value already exists/).length,
         ).toBeGreaterThan(0)
     })
 
@@ -111,11 +112,11 @@ describe('<DropdownInput/>', () => {
         renderWithDnD(
             <Provider store={mockStore}>
                 <DropdownInput {...props} />
-            </Provider>
+            </Provider>,
         )
 
         const input = screen.getByTestId('dropdown-choice-2')
-        fireEvent.change(input, {target: {value: 'My new value'}})
+        fireEvent.change(input, { target: { value: 'My new value' } })
 
         expect(props.onChange).toHaveBeenCalledWith([
             'Option 1',
@@ -133,7 +134,7 @@ describe('<DropdownInput/>', () => {
         renderWithDnD(
             <Provider store={mockStore}>
                 <DropdownInput {...props} />
-            </Provider>
+            </Provider>,
         )
 
         const button = screen.getByTestId('dropdown-choice-2-remove')
@@ -151,11 +152,11 @@ describe('<DropdownInput/>', () => {
         renderWithDnD(
             <Provider store={mockStore}>
                 <DropdownInput {...props} />
-            </Provider>
+            </Provider>,
         )
 
         const input = screen.getByTestId('dropdown-choice-4')
-        fireEvent.change(input, {target: {value: 'My new value'}})
+        fireEvent.change(input, { target: { value: 'My new value' } })
 
         expect(props.onChange).toHaveBeenCalledWith([
             'Option 1',
@@ -174,7 +175,7 @@ describe('<DropdownInput/>', () => {
         renderWithDnD(
             <Provider store={mockStore}>
                 <DropdownInput {...props} />
-            </Provider>
+            </Provider>,
         )
 
         const from = screen.getByTestId('dropdown-choice-3-handle')
@@ -202,14 +203,14 @@ describe('<DropdownInput/>', () => {
             renderWithDnD(
                 <Provider store={mockStore}>
                     <DropdownInput {...props} />
-                </Provider>
+                </Provider>,
             )
 
             expect(DropdownInputRow).toHaveBeenCalledWith(
                 expect.objectContaining({
                     isDisabled: true,
                 }),
-                {}
+                {},
             )
         })
 
@@ -222,10 +223,10 @@ describe('<DropdownInput/>', () => {
             renderWithDnD(
                 <Provider store={mockStore}>
                     <DropdownInput {...props} />
-                </Provider>
+                </Provider>,
             )
             expect(
-                screen.queryByText('Import from CSV')
+                screen.queryByText('Import from CSV'),
             ).not.toBeInTheDocument()
         })
 
@@ -238,11 +239,11 @@ describe('<DropdownInput/>', () => {
             renderWithDnD(
                 <Provider store={mockStore}>
                     <DropdownInput {...props} />
-                </Provider>
+                </Provider>,
             )
 
             expect(
-                screen.queryByText(/Max 2,000 values/)
+                screen.queryByText(/Max 2,000 values/),
             ).not.toBeInTheDocument()
 
             expect(screen.queryByText('See examples')).not.toBeInTheDocument()
@@ -257,13 +258,13 @@ describe('<DropdownInput/>', () => {
             renderWithDnD(
                 <Provider store={mockStore}>
                     <DropdownInput {...props} />
-                </Provider>
+                </Provider>,
             )
 
             expect(
-                screen.getByText('See examples').getAttribute('href')
+                screen.getByText('See examples').getAttribute('href'),
             ).toEqual(
-                'https://docs.gorgias.com/en-US/set-up-ticket-fields-215327#how-to-define-your-fields-to-generate-insights-efficiently'
+                'https://docs.gorgias.com/en-US/set-up-ticket-fields-215327#how-to-define-your-fields-to-generate-insights-efficiently',
             )
         })
 
@@ -276,11 +277,11 @@ describe('<DropdownInput/>', () => {
             renderWithDnD(
                 <Provider store={mockStore}>
                     <DropdownInput {...props} />
-                </Provider>
+                </Provider>,
             )
 
             expect(
-                screen.getByText('See examples').getAttribute('href')
+                screen.getByText('See examples').getAttribute('href'),
             ).toEqual('https://link.gorgias.com/t8f')
         })
     })

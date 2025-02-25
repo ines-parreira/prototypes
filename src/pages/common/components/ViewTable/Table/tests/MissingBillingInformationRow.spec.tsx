@@ -1,20 +1,20 @@
-import {AddressElement, Elements, useElements} from '@stripe/react-stripe-js'
-import {
-    loadStripe,
-    type StripeAddressElementChangeEvent,
-    type Stripe,
-} from '@stripe/stripe-js'
-import {act, fireEvent, screen, waitFor} from '@testing-library/react'
-import MockAdapter from 'axios-mock-adapter'
-import {fromJS, Map} from 'immutable'
 import React from 'react'
 
-import {UserRole} from 'config/types/user'
-import client from 'models/api/resources'
-import {PaymentMethodType} from 'state/billing/types'
-import {renderWithStoreAndQueryClientProvider} from 'tests/renderWithStoreAndQueryClientProvider'
+import { AddressElement, Elements, useElements } from '@stripe/react-stripe-js'
+import {
+    loadStripe,
+    type Stripe,
+    type StripeAddressElementChangeEvent,
+} from '@stripe/stripe-js'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
+import { fromJS, Map } from 'immutable'
 
-import {assumeMock} from 'utils/testing'
+import { UserRole } from 'config/types/user'
+import client from 'models/api/resources'
+import { PaymentMethodType } from 'state/billing/types'
+import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
+import { assumeMock } from 'utils/testing'
 
 import MissingBillingInformationRow from '../MissingBillingInformationRow'
 
@@ -25,13 +25,13 @@ window.STRIPE_PUBLIC_KEY = 'pk_test_123'
 
 jest.mock('@stripe/react-stripe-js')
 
-assumeMock(Elements).mockImplementation(({children}: any) => (
+assumeMock(Elements).mockImplementation(({ children }: any) => (
     <div data-testid="stripe-elements">{children}</div>
 ))
 
 let handleAddressChange: (event: StripeAddressElementChangeEvent) => any
 
-assumeMock(AddressElement).mockImplementation(({onChange}) => {
+assumeMock(AddressElement).mockImplementation(({ onChange }) => {
     handleAddressChange = onChange ?? (() => {})
 
     return <div data-testid="stripe-address-element" />
@@ -67,10 +67,10 @@ mockedServer.onPut('/api/billing/contact/').reply(201, {})
 describe('<MissingBillingInformationRow />', () => {
     const initialState = {
         currentUser: fromJS({
-            role: {name: UserRole.Admin},
+            role: { name: UserRole.Admin },
         }) as Map<any, any>,
         currentAccount: fromJS({
-            meta: {hasCreditCard: true, should_pay_with_shopify: false},
+            meta: { hasCreditCard: true, should_pay_with_shopify: false },
         }) as Map<any, any>,
         billing: fromJS({
             paymentMethod: PaymentMethodType.Stripe,
@@ -80,15 +80,15 @@ describe('<MissingBillingInformationRow />', () => {
     it('should render a row when conditions are met', async () => {
         renderWithStoreAndQueryClientProvider(
             <MissingBillingInformationRow />,
-            initialState
+            initialState,
         )
 
         expect(await screen.findByText('Update Now')).toBeVisible()
 
         expect(
             screen.getByText(
-                'You need to complete your billing profile, please update it now.'
-            )
+                'You need to complete your billing profile, please update it now.',
+            ),
         ).toBeVisible()
     })
 
@@ -99,7 +99,7 @@ describe('<MissingBillingInformationRow />', () => {
                 ...initialState,
                 currentUser: initialState.currentUser.setIn(
                     ['role', 'name'],
-                    UserRole.Agent
+                    UserRole.Agent,
                 ),
             },
         ],
@@ -109,7 +109,7 @@ describe('<MissingBillingInformationRow />', () => {
                 ...initialState,
                 currentAccount: initialState.currentAccount.setIn(
                     ['meta', 'hasCreditCard'],
-                    false
+                    false,
                 ),
             },
         ],
@@ -119,7 +119,7 @@ describe('<MissingBillingInformationRow />', () => {
                 ...initialState,
                 currentAccount: initialState.currentAccount.setIn(
                     ['meta', 'should_pay_with_shopify'],
-                    true
+                    true,
                 ),
             },
         ],
@@ -129,14 +129,14 @@ describe('<MissingBillingInformationRow />', () => {
                 ...initialState,
                 billing: initialState.billing.setIn(
                     ['contact', 'shipping', 'address', 'state'],
-                    'NY'
+                    'NY',
                 ),
             },
         ],
     ])('should not render a row when %s', (testName, state) => {
-        const {container} = renderWithStoreAndQueryClientProvider(
+        const { container } = renderWithStoreAndQueryClientProvider(
             <MissingBillingInformationRow />,
-            state
+            state,
         )
 
         expect(container.firstChild).toBe(null)
@@ -145,20 +145,20 @@ describe('<MissingBillingInformationRow />', () => {
     it('should open the modal when clicking on update button', async () => {
         renderWithStoreAndQueryClientProvider(
             <MissingBillingInformationRow />,
-            initialState
+            initialState,
         )
 
         fireEvent.click(await screen.findByText('Update Now'))
 
         expect(
-            await screen.findByText('Missing information - Billing')
+            await screen.findByText('Missing information - Billing'),
         ).toBeVisible()
     })
 
     it('should submit the billing information when submiting the modal form', async () => {
         renderWithStoreAndQueryClientProvider(
             <MissingBillingInformationRow />,
-            initialState
+            initialState,
         )
 
         fireEvent.click(await screen.findByText('Update Now'))
@@ -166,7 +166,7 @@ describe('<MissingBillingInformationRow />', () => {
         expect(
             await screen.findByRole('button', {
                 name: 'Save Billing Information',
-            })
+            }),
         ).toBeVisible()
 
         mockAddressValue({
@@ -185,7 +185,7 @@ describe('<MissingBillingInformationRow />', () => {
         })
 
         fireEvent.click(
-            screen.getByRole('button', {name: 'Save Billing Information'})
+            screen.getByRole('button', { name: 'Save Billing Information' }),
         )
 
         await waitFor(() => {

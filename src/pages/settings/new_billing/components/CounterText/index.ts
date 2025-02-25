@@ -1,1 +1,1 @@
-export {default} from './CounterText'
+export { default } from './CounterText'

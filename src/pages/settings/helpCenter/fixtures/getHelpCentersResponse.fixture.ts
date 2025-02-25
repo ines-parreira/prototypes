@@ -1,4 +1,4 @@
-import {HelpCenter, HelpCentersListPage} from 'models/helpCenter/types'
+import { HelpCenter, HelpCentersListPage } from 'models/helpCenter/types'
 
 export const getHelpCentersResponseFixture: HelpCentersListPage = {
     data: [
@@ -185,7 +185,7 @@ export const getSingleHelpCenterResponseFixtureWithTranslation: HelpCenter = {
         {
             help_center_id: 1,
             locale: 'en-US',
-            seo_meta: {title: null, description: null},
+            seo_meta: { title: null, description: null },
             extra_html: {
                 custom_footer: 'Custom footer',
                 custom_header: 'Custom header',

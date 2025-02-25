@@ -1,8 +1,8 @@
-import {fromJS} from 'immutable'
-import configureMockStore, {MockStore} from 'redux-mock-store'
+import { fromJS } from 'immutable'
+import configureMockStore, { MockStore } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {SocketEventType} from 'services/socketManager/types'
+import { SocketEventType } from 'services/socketManager/types'
 
 import socketManager from '../socketManager/socketManager'
 import userActivityManager from '../userActivityManager'
@@ -19,7 +19,7 @@ describe('services', () => {
             const sendSpy = jest.fn()
             const send = socketManager.send
 
-            store = mockStore({currentUser: fromJS({is_active: false})})
+            store = mockStore({ currentUser: fromJS({ is_active: false }) })
 
             socketManager.send = sendSpy
             userActivityManager.store = store
@@ -34,14 +34,14 @@ describe('services', () => {
             expect(sendSpy).toHaveBeenCalledWith(SocketEventType.AgentActive)
 
             // mark the current user as active
-            store = mockStore({currentUser: fromJS({is_active: true})})
+            store = mockStore({ currentUser: fromJS({ is_active: true }) })
 
             userActivityManager.store = store
 
             setTimeout(() => {
                 expect(store.getActions()).toMatchSnapshot()
                 expect(sendSpy).toHaveBeenCalledWith(
-                    SocketEventType.AgentInactive
+                    SocketEventType.AgentInactive,
                 )
                 socketManager.send = send
                 done()
@@ -55,15 +55,15 @@ describe('services', () => {
             expect(spy).toHaveBeenCalledTimes(3)
             expect(spy).toHaveBeenCalledWith(
                 'mousemove',
-                userActivityManager.setCurrentUserActive
+                userActivityManager.setCurrentUserActive,
             )
             expect(spy).toHaveBeenCalledWith(
                 'touchstart',
-                userActivityManager.setCurrentUserActive
+                userActivityManager.setCurrentUserActive,
             )
             expect(spy).toHaveBeenCalledWith(
                 'keydown',
-                userActivityManager.setCurrentUserActive
+                userActivityManager.setCurrentUserActive,
             )
         })
     })

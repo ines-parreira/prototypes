@@ -1,13 +1,14 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {addTagsAction} from '../../../../../../../../fixtures/macro'
-import {RootState, StoreDispatch} from '../../../../../../../../state/types'
-import {TagActionPreview} from '../TagActionPreview'
+import { addTagsAction } from '../../../../../../../../fixtures/macro'
+import { RootState, StoreDispatch } from '../../../../../../../../state/types'
+import { TagActionPreview } from '../TagActionPreview'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 describe('<TagPreviewContainer/>', () => {
@@ -18,11 +19,11 @@ describe('<TagPreviewContainer/>', () => {
     const state: Partial<RootState> = {
         tags: fromJS({
             items: [
-                {name: 'refund'},
-                {name: 'billing'},
+                { name: 'refund' },
+                { name: 'billing' },
                 {
                     name: 'refund accepted',
-                    decoration: fromJS({color: '#dedede'}),
+                    decoration: fromJS({ color: '#dedede' }),
                 },
             ],
         }),
@@ -31,10 +32,10 @@ describe('<TagPreviewContainer/>', () => {
     const store = mockStore(state)
 
     it('should render tags', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <TagActionPreview {...minProps} />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })

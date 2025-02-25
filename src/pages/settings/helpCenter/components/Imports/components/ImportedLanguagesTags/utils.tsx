@@ -1,14 +1,13 @@
 import React from 'react'
 
-import {BadgeItemProps} from 'pages/common/components/BadgetItem'
+import { BadgeItemProps } from 'pages/common/components/BadgetItem'
 
-import {Locale} from '../../../../../../../models/helpCenter/types'
-
-import {FlagLanguageItem} from '../../../../../../common/components/LanguageBulletList'
+import { Locale } from '../../../../../../../models/helpCenter/types'
+import { FlagLanguageItem } from '../../../../../../common/components/LanguageBulletList'
 
 export const localeToSelectedLanguage = (
     locale: Locale,
-    isRemovable: boolean
+    isRemovable: boolean,
 ): BadgeItemProps => ({
     id: locale.code,
     label: <FlagLanguageItem code={locale.code} name={locale.name} />,

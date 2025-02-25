@@ -1,12 +1,13 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {TicketMessageSourceType} from 'business/types/ticket'
-import {IntegrationType} from 'models/integration/constants'
+import { TicketMessageSourceType } from 'business/types/ticket'
+import { IntegrationType } from 'models/integration/constants'
 import ReplyForm from 'pages/tickets/detail/components/ReplyForm'
 
 jest.mock('../ReplyArea/PhoneTicketSubmitButtons', () => () => (
@@ -22,17 +23,17 @@ describe('<ReplyForm />', () => {
 
     const phoneState = {
         integrations: fromJS({
-            integrations: [{id: 1, type: IntegrationType.Phone}],
+            integrations: [{ id: 1, type: IntegrationType.Phone }],
         }),
         newMessage: fromJS({
             newMessage: {
-                source: {type: TicketMessageSourceType.Phone},
+                source: { type: TicketMessageSourceType.Phone },
             },
         }),
     }
 
     it('should render phone submit buttons', () => {
-        const {getByText, queryByText} = render(
+        const { getByText, queryByText } = render(
             <Provider
                 store={mockStore({
                     ...defaultState,
@@ -42,7 +43,7 @@ describe('<ReplyForm />', () => {
                 <ReplyForm>
                     <p>Children</p>
                 </ReplyForm>
-            </Provider>
+            </Provider>,
         )
 
         expect(getByText('PhoneTicketSubmitButtons')).toBeInTheDocument()
@@ -50,7 +51,7 @@ describe('<ReplyForm />', () => {
     })
 
     it('should render given children', () => {
-        const {getByText, queryByText} = render(
+        const { getByText, queryByText } = render(
             <Provider
                 store={mockStore({
                     ...defaultState,
@@ -59,7 +60,7 @@ describe('<ReplyForm />', () => {
                 <ReplyForm>
                     <p>Children</p>
                 </ReplyForm>
-            </Provider>
+            </Provider>,
         )
 
         expect(getByText('Children')).toBeInTheDocument()

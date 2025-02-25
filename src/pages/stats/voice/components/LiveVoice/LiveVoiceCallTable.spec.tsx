@@ -1,15 +1,17 @@
-import {LiveCallQueueVoiceCall} from '@gorgias/api-queries'
-import {act, render} from '@testing-library/react'
 import React from 'react'
 
-import * as ToggleButton from 'pages/common/components/ToggleButton'
-import {assumeMock} from 'utils/testing'
+import { act, render } from '@testing-library/react'
 
-import {VoiceCallSummary} from '../../models/types'
-import {VoiceCallTableColumnName} from '../VoiceCallTable/constants'
+import { LiveCallQueueVoiceCall } from '@gorgias/api-queries'
+
+import * as ToggleButton from 'pages/common/components/ToggleButton'
+import { assumeMock } from 'utils/testing'
+
+import { VoiceCallSummary } from '../../models/types'
+import { VoiceCallTableColumnName } from '../VoiceCallTable/constants'
 import VoiceCallTableContent from '../VoiceCallTable/VoiceCallTableContent'
 import LiveVoiceCallTable from './LiveVoiceCallTable'
-import {LiveVoiceStatusFilterOption} from './types'
+import { LiveVoiceStatusFilterOption } from './types'
 import {
     filterLiveCallsByStatus,
     formatVoiceCallsData,
@@ -27,14 +29,14 @@ const VoiceCallTableContentMock = assumeMock(VoiceCallTableContent)
 const toggleButtonSpy = jest.spyOn(ToggleButton, 'Wrapper')
 const filterLiveCallsByStatusMock = assumeMock(filterLiveCallsByStatus)
 const orderLiveVoiceCallsByOngoingTimeMock = assumeMock(
-    orderLiveVoiceCallsByOngoingTime
+    orderLiveVoiceCallsByOngoingTime,
 )
 const formatVoiceCallsDataMock = assumeMock(formatVoiceCallsData)
 
 describe('LiveVoiceCallTable', () => {
     beforeEach(() => {
         VoiceCallTableContentMock.mockReturnValue(
-            <div>VoiceCallTableContent</div>
+            <div>VoiceCallTableContent</div>,
         )
         filterLiveCallsByStatusMock.mockReturnValue([])
         orderLiveVoiceCallsByOngoingTimeMock.mockReturnValue([])
@@ -49,7 +51,7 @@ describe('LiveVoiceCallTable', () => {
                 expect.objectContaining({
                     value: LiveVoiceStatusFilterOption.ALL,
                 }),
-                expect.anything()
+                expect.anything(),
             )
         })
 
@@ -60,7 +62,7 @@ describe('LiveVoiceCallTable', () => {
 
                 act(() => {
                     toggleButtonSpy.mock.calls?.[0]?.[0]?.onChange?.(
-                        statusFilter
+                        statusFilter,
                     )
                 })
 
@@ -68,16 +70,16 @@ describe('LiveVoiceCallTable', () => {
                     expect.objectContaining({
                         value: statusFilter,
                     }),
-                    expect.anything()
+                    expect.anything(),
                 )
                 expect(filterLiveCallsByStatusMock).toHaveBeenCalledWith(
                     [],
-                    statusFilter
+                    statusFilter,
                 )
 
                 act(() => {
                     toggleButtonSpy.mock.calls?.[0]?.[0]?.onChange?.(
-                        LiveVoiceStatusFilterOption.ALL
+                        LiveVoiceStatusFilterOption.ALL,
                     )
                 })
 
@@ -85,9 +87,9 @@ describe('LiveVoiceCallTable', () => {
                     expect.objectContaining({
                         value: LiveVoiceStatusFilterOption.ALL,
                     }),
-                    expect.anything()
+                    expect.anything(),
                 )
-            }
+            },
         )
     })
 
@@ -95,25 +97,25 @@ describe('LiveVoiceCallTable', () => {
         renderComponent()
 
         filterLiveCallsByStatusMock.mockImplementation(
-            (voiceCalls: any) => [...voiceCalls, 1] as LiveCallQueueVoiceCall[]
+            (voiceCalls: any) => [...voiceCalls, 1] as LiveCallQueueVoiceCall[],
         )
         orderLiveVoiceCallsByOngoingTimeMock.mockImplementation(
-            (voiceCalls: any) => [...voiceCalls, 2] as LiveCallQueueVoiceCall[]
+            (voiceCalls: any) => [...voiceCalls, 2] as LiveCallQueueVoiceCall[],
         )
         formatVoiceCallsDataMock.mockImplementation(
-            (voiceCalls: any) => [...voiceCalls, 3] as VoiceCallSummary[]
+            (voiceCalls: any) => [...voiceCalls, 3] as VoiceCallSummary[],
         )
 
         act(() => {
             toggleButtonSpy.mock.calls?.[0]?.[0]?.onChange?.(
-                LiveVoiceStatusFilterOption.IN_PROGRESS
+                LiveVoiceStatusFilterOption.IN_PROGRESS,
             )
         })
         expect(VoiceCallTableContentMock).toHaveBeenCalledWith(
             expect.objectContaining({
                 data: [1, 2, 3],
             }),
-            {}
+            {},
         )
     })
 
@@ -122,20 +124,20 @@ describe('LiveVoiceCallTable', () => {
 
         act(() => {
             VoiceCallTableContentMock.mock.lastCall?.[0]?.onColumnClick?.(
-                VoiceCallTableColumnName.OngoingTime
+                VoiceCallTableColumnName.OngoingTime,
             )
         })
 
         expect(orderLiveVoiceCallsByOngoingTimeMock).toHaveBeenCalledWith(
             [],
-            'desc'
+            'desc',
         )
         expect(VoiceCallTableContentMock).toHaveBeenLastCalledWith(
             expect.objectContaining({
                 orderBy: VoiceCallTableColumnName.OngoingTime,
                 orderDirection: 'desc',
             }),
-            {}
+            {},
         )
     })
 })

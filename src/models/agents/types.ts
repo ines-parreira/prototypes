@@ -3,7 +3,7 @@ import {
     ListUsersRolesItem,
 } from '@gorgias/api-queries'
 
-import {ApiPaginationParams, OrderParams} from 'models/api/types'
+import { ApiPaginationParams, OrderParams } from 'models/api/types'
 
 export enum AgentSortableProperties {
     CreatedDatetimeAsc = 'created_datetime:asc',

@@ -1,7 +1,8 @@
-import _get from 'lodash/get'
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {CampaignPreview} from 'models/convert/campaign/types'
+import _get from 'lodash/get'
+
+import { CampaignPreview } from 'models/convert/campaign/types'
 import {
     CampaignSaleDetails,
     ConvertDrillDownRowData,
@@ -13,7 +14,7 @@ export type CampaignSalesDrillDownData = CampaignSaleDetails & {
 
 export const useGetCampaignSalesDrillDownData = (
     metricData: ConvertDrillDownRowData[],
-    campaigns: CampaignPreview[]
+    campaigns: CampaignPreview[],
 ): CampaignSalesDrillDownData[] => {
     return useMemo(() => {
         if (!metricData.length || !campaigns.length) return []
@@ -23,7 +24,7 @@ export const useGetCampaignSalesDrillDownData = (
                 acc[campaign.id] = campaign.name
                 return acc
             },
-            {} as Record<string, string>
+            {} as Record<string, string>,
         )
 
         return metricData.map((row) => {
@@ -32,7 +33,7 @@ export const useGetCampaignSalesDrillDownData = (
                 campaignName: _get(
                     campaignData,
                     row.data.campaignId,
-                    row.data.campaignId
+                    row.data.campaignId,
                 ),
             }
         })

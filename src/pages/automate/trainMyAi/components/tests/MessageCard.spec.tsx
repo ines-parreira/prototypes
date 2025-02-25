@@ -1,5 +1,6 @@
-import {screen, render} from '@testing-library/react'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import Header from '../Header'
 
@@ -8,7 +9,7 @@ describe('<Header />', () => {
         render(<Header />)
 
         expect(
-            screen.getByText(/how To train article recommendations/i)
+            screen.getByText(/how To train article recommendations/i),
         ).toBeInTheDocument()
     })
 })

@@ -1,6 +1,6 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {useMixedKpis} from '../useMixedKpis'
+import { useMixedKpis } from '../useMixedKpis'
 
 jest.mock('pages/aiAgent/Overview/hooks/kpis/useCoverageRate', () => ({
     useCoverageRate: jest.fn(() => 'mockCoverageRate'),
@@ -23,7 +23,7 @@ const filters = {
 
 describe('useMixedKpis', () => {
     it('should return metrics from individual hooks', () => {
-        const {result} = renderHook(() => useMixedKpis(filters, timezone))
+        const { result } = renderHook(() => useMixedKpis(filters, timezone))
 
         expect(result.current.metrics).toEqual([
             'mockCoverageRate',

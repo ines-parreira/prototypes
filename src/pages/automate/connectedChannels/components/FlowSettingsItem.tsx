@@ -1,10 +1,12 @@
-import {Label, Tooltip} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
 import React from 'react'
-import {Link} from 'react-router-dom'
+
+import classNames from 'classnames'
+import { Link } from 'react-router-dom'
+
+import { Label, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import IconButton from 'pages/common/components/button/IconButton'
-import {useReorderDnD} from 'pages/common/hooks/useReorderDnD'
+import { useReorderDnD } from 'pages/common/hooks/useReorderDnD'
 
 import css from './FlowSettingsItem.less'
 
@@ -36,17 +38,17 @@ export const FlowSettingsItem = ({
     onCancel,
 }: Props) => {
     const type = `flows-${channelType}`
-    const {dragRef, dropRef, handlerId, isDragging} = useReorderDnD(
-        {type, position: index},
+    const { dragRef, dropRef, handlerId, isDragging } = useReorderDnD(
+        { type, position: index },
         [type],
-        {onHover: onMove, onDrop, onCancel}
+        { onHover: onMove, onDrop, onCancel },
     )
 
     return (
         <div
             data-handler-id={handlerId}
             ref={dropRef as any}
-            style={{opacity: isDragging ? 0 : 1}}
+            style={{ opacity: isDragging ? 0 : 1 }}
             className={css.container}
         >
             <li key={id} className={css.workflowListItem}>
@@ -66,7 +68,7 @@ export const FlowSettingsItem = ({
                                 <i
                                     className={classNames(
                                         'material-icons',
-                                        css.warningIcon
+                                        css.warningIcon,
                                     )}
                                     id="languages-mismatch-warning"
                                 >

@@ -1,19 +1,19 @@
-import {withEnrichment} from 'hooks/reporting/withEnrichment'
-import {EnrichmentFields} from 'models/reporting/types'
+import { withEnrichment } from 'hooks/reporting/withEnrichment'
+import { EnrichmentFields } from 'models/reporting/types'
 
 describe('withEnrichment', () => {
     const results = [
-        {[EnrichmentFields.TicketId]: 1, metric: 123},
-        {[EnrichmentFields.TicketId]: 2, metric: 456},
-        {[EnrichmentFields.TicketId]: 3, metric: 789},
-        {[EnrichmentFields.TicketId]: 4, metric: 369},
-        {[EnrichmentFields.TicketId]: 5, metric: 529},
+        { [EnrichmentFields.TicketId]: 1, metric: 123 },
+        { [EnrichmentFields.TicketId]: 2, metric: 456 },
+        { [EnrichmentFields.TicketId]: 3, metric: 789 },
+        { [EnrichmentFields.TicketId]: 4, metric: 369 },
+        { [EnrichmentFields.TicketId]: 5, metric: 529 },
     ]
     const enrichments = [
-        {[EnrichmentFields.TicketId]: 1, fieldA: 'Jan', fieldB: 'Kowalski'},
-        {[EnrichmentFields.TicketId]: 2, fieldA: 'Petar', fieldB: 'Petrović'},
-        {[EnrichmentFields.TicketId]: 3, fieldA: 'Jean', fieldB: 'Dupont'},
-        {[EnrichmentFields.TicketId]: 4, fieldB: null},
+        { [EnrichmentFields.TicketId]: 1, fieldA: 'Jan', fieldB: 'Kowalski' },
+        { [EnrichmentFields.TicketId]: 2, fieldA: 'Petar', fieldB: 'Petrović' },
+        { [EnrichmentFields.TicketId]: 3, fieldA: 'Jean', fieldB: 'Dupont' },
+        { [EnrichmentFields.TicketId]: 4, fieldB: null },
     ]
     const enrichmentFields = ['fieldA' as const, 'fieldB' as const]
 
@@ -33,7 +33,7 @@ describe('withEnrichment', () => {
             response as any,
             EnrichmentFields.TicketId,
             enrichmentFields,
-            EnrichmentFields.TicketId
+            EnrichmentFields.TicketId,
         )
 
         expect(responseWithEnrichment.data.data).toEqual([

@@ -1,1 +1,1 @@
-export {default} from './GorgiasChatIntegrationLanguages'
+export { default } from './GorgiasChatIntegrationLanguages'

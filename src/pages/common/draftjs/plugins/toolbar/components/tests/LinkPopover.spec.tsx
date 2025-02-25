@@ -1,7 +1,8 @@
-import {fireEvent, render, waitFor} from '@testing-library/react'
+import React, { ComponentProps } from 'react'
+
+import { fireEvent, render, waitFor } from '@testing-library/react'
 import _noop from 'lodash/noop'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -19,7 +20,7 @@ jest.spyOn(window, 'clearTimeout')
 describe('<LinkPopover />', () => {
     let store = mockStore({})
     beforeEach(() => {
-        store = mockStore({ui: {editor: {isEditingLink: false}}})
+        store = mockStore({ ui: { editor: { isEditingLink: false } } })
     })
 
     const minProps = {
@@ -27,20 +28,20 @@ describe('<LinkPopover />', () => {
     } as unknown as ComponentProps<typeof LinkPopover>
 
     it('should render a link', () => {
-        const {baseElement} = render(
+        const { baseElement } = render(
             <Provider store={store}>
                 <LinkPopover {...minProps}>I am a link</LinkPopover>
-            </Provider>
+            </Provider>,
         )
         expect(baseElement).toMatchSnapshot()
     })
 
     it('should render a popover on link hover', () => {
         const label = 'hover me'
-        const {getByText, queryByText} = render(
+        const { getByText, queryByText } = render(
             <Provider store={store}>
                 <LinkPopover {...minProps}>{label}</LinkPopover>
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.mouseOver(getByText(label))
@@ -53,12 +54,12 @@ describe('<LinkPopover />', () => {
             onEdit: jest.fn(),
         }
 
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <LinkPopover {...minProps} {...props}>
                     {label}
                 </LinkPopover>
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.mouseOver(getByText(label))
@@ -72,12 +73,12 @@ describe('<LinkPopover />', () => {
             onDelete: jest.fn(),
         }
 
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <LinkPopover {...minProps} {...props}>
                     {label}
                 </LinkPopover>
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.mouseOver(getByText(label))
@@ -88,12 +89,12 @@ describe('<LinkPopover />', () => {
     it('should render the popover on a specified modal', () => {
         const label = 'hover me'
 
-        const {baseElement, getByText} = render(
+        const { baseElement, getByText } = render(
             <Provider store={store}>
                 <Modal isOpen onClose={_noop}>
                     <LinkPopover {...minProps}>{label}</LinkPopover>
                 </Modal>
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.mouseOver(getByText(label))
@@ -103,10 +104,10 @@ describe('<LinkPopover />', () => {
 
     it('should hide the popover when hovering out of the link', async () => {
         const label = 'hover me'
-        const {getByText, queryByText} = render(
+        const { getByText, queryByText } = render(
             <Provider store={store}>
                 <LinkPopover {...minProps}>{label}</LinkPopover>
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.mouseOver(getByText(label))
@@ -116,10 +117,10 @@ describe('<LinkPopover />', () => {
 
     it('should clear popover disappearance timeout on unmount', () => {
         const label = 'hover me'
-        const {getByText, unmount} = render(
+        const { getByText, unmount } = render(
             <Provider store={store}>
                 <LinkPopover {...minProps}>{label}</LinkPopover>
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.mouseOver(getByText(label))

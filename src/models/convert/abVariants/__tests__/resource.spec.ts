@@ -1,5 +1,5 @@
-import {abGroup} from 'fixtures/abGroup'
-import {RevenueAddonClient} from 'rest_api/revenue_addon_api/client'
+import { abGroup } from 'fixtures/abGroup'
+import { RevenueAddonClient } from 'rest_api/revenue_addon_api/client'
 
 import * as resources from '../resources'
 
@@ -38,7 +38,7 @@ describe('A/B Group resources', () => {
             const res = await resources[mockedResource](client, param)
 
             expect(res).toEqual(abGroup)
-        }
+        },
     )
 
     describe('stop A/B group', () => {
@@ -52,7 +52,7 @@ describe('A/B Group resources', () => {
                 {
                     campaign_id: '1',
                 },
-                {winner_variant_id: '1'}
+                { winner_variant_id: '1' },
             )
 
             expect(res).toEqual(abGroup)

@@ -1,8 +1,9 @@
-import {fireEvent, render, waitFor} from '@testing-library/react'
-import MockAdapter from 'axios-mock-adapter'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render, waitFor } from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -46,9 +47,11 @@ describe('AlloyConnectButton', () => {
             setToken: jest.fn(),
             install: jest
                 .fn()
-                .mockImplementation(({callback}: {callback: () => void}) => {
-                    callback()
-                }),
+                .mockImplementation(
+                    ({ callback }: { callback: () => void }) => {
+                        callback()
+                    },
+                ),
         }
 
         // Render the button with no installed integration
@@ -57,14 +60,14 @@ describe('AlloyConnectButton', () => {
                 integrations: [],
             }),
         })
-        const {findByText} = render(
+        const { findByText } = render(
             <Provider store={store}>
                 <AlloyConnectButton
                     integrationId="test"
                     appId="test"
                     name="Test"
                 />
-            </Provider>
+            </Provider>,
         )
 
         // Click the install button
@@ -73,7 +76,7 @@ describe('AlloyConnectButton', () => {
 
         // The Alloy front-end SDK should have been called and the integration created
         await waitFor(
-            () => updateOrCreateIntegrationRequest.mock.calls.length > 0
+            () => updateOrCreateIntegrationRequest.mock.calls.length > 0,
         )
         expect(window.Alloy.setToken).toHaveBeenCalledWith('user-token')
         expect(window.Alloy.install).toHaveBeenCalled()
@@ -88,7 +91,7 @@ describe('AlloyConnectButton', () => {
             }),
             undefined,
             null,
-            true
+            true,
         )
     })
 
@@ -114,14 +117,14 @@ describe('AlloyConnectButton', () => {
             }),
         })
 
-        const {findByText} = render(
+        const { findByText } = render(
             <Provider store={store}>
                 <AlloyConnectButton
                     integrationId="test"
                     appId="test"
                     name="Test"
                 />
-            </Provider>
+            </Provider>,
         )
 
         const button = await findByText(/Disconnect App/)

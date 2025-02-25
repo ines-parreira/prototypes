@@ -1,4 +1,4 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment'
 
 import {
@@ -9,10 +9,10 @@ import {
     fetchMetricPerDimension,
     useMetricPerDimension,
 } from 'hooks/reporting/useMetricPerDimension'
-import {surveyScoresQueryFactory} from 'models/reporting/queryFactories/satisfaction/surveyScoresQueryFactory'
-import {StatsFilters} from 'models/stat/types'
-import {formatReportingQueryDate} from 'utils/reporting'
-import {assumeMock} from 'utils/testing'
+import { surveyScoresQueryFactory } from 'models/reporting/queryFactories/satisfaction/surveyScoresQueryFactory'
+import { StatsFilters } from 'models/stat/types'
+import { formatReportingQueryDate } from 'utils/reporting'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/useMetricPerDimension')
 const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
@@ -34,7 +34,7 @@ describe('SurveyScores', () => {
             renderHook(() => useSurveyScores(statsFilters, timezone))
 
             expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
-                surveyScoresQueryFactory(statsFilters, timezone)
+                surveyScoresQueryFactory(statsFilters, timezone),
             )
         })
     })
@@ -44,7 +44,7 @@ describe('SurveyScores', () => {
             await fetchSurveyScores(statsFilters, timezone)
 
             expect(fetchMetricPerDimensionMock).toHaveBeenCalledWith(
-                surveyScoresQueryFactory(statsFilters, timezone)
+                surveyScoresQueryFactory(statsFilters, timezone),
             )
         })
     })

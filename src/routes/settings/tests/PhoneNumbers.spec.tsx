@@ -1,20 +1,21 @@
-import {render} from '@testing-library/react'
 import React from 'react'
-import {Route, useRouteMatch} from 'react-router-dom'
 
-import {PageSection} from 'config/pages'
-import {ADMIN_ROLE} from 'config/user'
+import { render } from '@testing-library/react'
+import { Route, useRouteMatch } from 'react-router-dom'
+
+import { PageSection } from 'config/pages'
+import { ADMIN_ROLE } from 'config/user'
 import PhoneNumberCreateContainer from 'pages/phoneNumbers/PhoneNumberCreateContainer'
 import PhoneNumberDetailContainer from 'pages/phoneNumbers/PhoneNumberDetailContainer'
 import PhoneNumbersListContainer from 'pages/phoneNumbers/PhoneNumbersListContainer'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
-import {renderAppSettings} from '../helpers/settingsRenderer'
-import {PhoneNumbers} from '../PhoneNumbers'
+import { renderAppSettings } from '../helpers/settingsRenderer'
+import { PhoneNumbers } from '../PhoneNumbers'
 
 jest.mock('react-router-dom', () => ({
     Route: jest.fn(() => <div>route</div>),
-    Switch: jest.fn(({children}) => <div>{children}</div>),
+    Switch: jest.fn(({ children }) => <div>{children}</div>),
     useRouteMatch: jest.fn(),
 }))
 
@@ -60,7 +61,7 @@ describe('PhoneNumbers', () => {
         ],
     ])(
         'should call renderer and Route with correct props',
-        ({callOrder, path, component}) => {
+        ({ callOrder, path, component }) => {
             render(<PhoneNumbers />)
 
             expect(mockedRenderAppSettings.mock.calls[callOrder]).toEqual([
@@ -77,6 +78,6 @@ describe('PhoneNumbers', () => {
                 },
                 {},
             ])
-        }
+        },
     )
 })

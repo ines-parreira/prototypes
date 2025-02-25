@@ -1,4 +1,4 @@
-import {User} from '@gorgias/api-queries'
+import { User } from '@gorgias/api-queries'
 
 import {
     AvailabilityStatusTag,
@@ -7,16 +7,16 @@ import {
 
 export const mergeAgentData = (
     agentsData: GorgiasStateUser[],
-    agentsDataWithStatus?: User[]
+    agentsDataWithStatus?: User[],
 ): {
     id: number
     status?: string
     name: string
-    meta: {profile_picture_url?: string | null}
+    meta: { profile_picture_url?: string | null }
 }[] => {
     const result = agentsData.map((agent) => {
         const agentWithStatus = agentsDataWithStatus?.find(
-            (agentWithStatus) => agentWithStatus.id === agent.id
+            (agentWithStatus) => agentWithStatus.id === agent.id,
         )
 
         return {
@@ -33,7 +33,7 @@ export const mergeAgentData = (
 }
 
 export const getAvailabilityBadgeColor = (
-    status: string | undefined
+    status: string | undefined,
 ): string | undefined => {
     switch (status) {
         case AvailabilityStatusTag.Offline:

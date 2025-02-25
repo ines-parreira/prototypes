@@ -1,6 +1,7 @@
-import {render, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
+
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import {
     FILTER_VALUE_PLACEHOLDER,
@@ -9,16 +10,16 @@ import {
     LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'
 import Filter from 'pages/stats/common/components/Filter/Filter'
-import {NON_EXISTENT_VALUES_WARNING_MESSAGE} from 'pages/stats/common/filters/utils'
+import { NON_EXISTENT_VALUES_WARNING_MESSAGE } from 'pages/stats/common/filters/utils'
 
 describe('Filter', () => {
     const filterName = 'Test Filter'
     const filterOptionGroups = [
         {
             options: [
-                {label: 'Option 1', value: 'option1'},
-                {label: 'Option 2', value: 'option2'},
-                {label: 'Option 3', value: 'option3'},
+                { label: 'Option 1', value: 'option1' },
+                { label: 'Option 2', value: 'option2' },
+                { label: 'Option 3', value: 'option3' },
             ],
         },
     ]
@@ -50,7 +51,7 @@ describe('Filter', () => {
                     warningType: undefined,
                     warningMessage: undefined,
                 }}
-            />
+            />,
         )
 
         expect(screen.getByText(filterName)).toBeInTheDocument()
@@ -71,15 +72,15 @@ describe('Filter', () => {
                 onRemoveAll={onRemoveAll}
                 onChangeLogicalOperator={onChangeLogicalOperator}
                 onDropdownOpen={onDropdownOpenSpy}
-            />
+            />,
         )
 
         expect(screen.getByText(filterName)).toBeInTheDocument()
         expect(
-            screen.getByRole('option', {name: 'Option 1'})
+            screen.getByRole('option', { name: 'Option 1' }),
         ).toBeInTheDocument()
         expect(
-            screen.getByRole('option', {name: 'Option 2'})
+            screen.getByRole('option', { name: 'Option 2' }),
         ).toBeInTheDocument()
         expect(onDropdownOpenSpy).toHaveBeenCalled()
     })
@@ -95,7 +96,7 @@ describe('Filter', () => {
                 onSelectAll={onSelectAll}
                 onRemoveAll={onRemoveAll}
                 onChangeLogicalOperator={onChangeLogicalOperator}
-            />
+            />,
         )
 
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
@@ -119,7 +120,7 @@ describe('Filter', () => {
                 onSelectAll={onSelectAll}
                 onRemoveAll={onRemoveAll}
                 onChangeLogicalOperator={onChangeLogicalOperator}
-            />
+            />,
         )
 
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
@@ -140,7 +141,7 @@ describe('Filter', () => {
                 onSelectAll={onSelectAll}
                 onRemoveAll={onRemoveAll}
                 onChangeLogicalOperator={onChangeLogicalOperator}
-            />
+            />,
         )
 
         userEvent.click(screen.getByText('Option 1, Option 2'))
@@ -161,17 +162,17 @@ describe('Filter', () => {
                 onSelectAll={onSelectAll}
                 onRemoveAll={onRemoveAll}
                 onChangeLogicalOperator={onChangeLogicalOperator}
-            />
+            />,
         )
 
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
         userEvent.click(
-            screen.getByText(LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF])
+            screen.getByText(LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF]),
         )
 
         expect(onChangeLogicalOperator).toHaveBeenCalledWith(
-            LogicalOperatorEnum.ONE_OF
+            LogicalOperatorEnum.ONE_OF,
         )
     })
 
@@ -186,16 +187,18 @@ describe('Filter', () => {
                 onSelectAll={onSelectAll}
                 onRemoveAll={onRemoveAll}
                 onChangeLogicalOperator={onChangeLogicalOperator}
-            />
+            />,
         )
 
         expect(
-            screen.queryByText(LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF])
+            screen.queryByText(
+                LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF],
+            ),
         ).not.toBeInTheDocument()
     })
 
     it('does not render search when showSearch is false', () => {
-        const {queryByPlaceholderText} = render(
+        const { queryByPlaceholderText } = render(
             <Filter
                 filterName={filterName}
                 filterOptionGroups={filterOptionGroups}
@@ -206,7 +209,7 @@ describe('Filter', () => {
                 onSelectAll={onSelectAll}
                 onRemoveAll={onRemoveAll}
                 onChangeLogicalOperator={onChangeLogicalOperator}
-            />
+            />,
         )
 
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
@@ -226,7 +229,7 @@ describe('Filter', () => {
                 onSelectAll={onSelectAll}
                 onRemoveAll={onRemoveAll}
                 onChangeLogicalOperator={onChangeLogicalOperator}
-            />
+            />,
         )
 
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
@@ -247,7 +250,7 @@ describe('Filter', () => {
                 onRemoveAll={onRemoveAll}
                 onChangeLogicalOperator={onChangeLogicalOperator}
                 onDropdownClosed={onDropdownClosedSpy}
-            />
+            />,
         )
         expect(screen.queryByTestId('floating-overlay')).not.toBeInTheDocument()
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
@@ -272,7 +275,7 @@ describe('Filter', () => {
                     warningType: 'not-applicable',
                     warningMessage: 'warningMessage',
                 }}
-            />
+            />,
         )
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         userEvent.click(screen.getByTestId('floating-overlay'))
@@ -296,7 +299,7 @@ describe('Filter', () => {
                     warningType: 'non-existent',
                     warningMessage: 'warningMessage',
                 }}
-            />
+            />,
         )
 
         const warningIcon = screen.getByText(FILTER_WARNING_ICON)
@@ -311,20 +314,20 @@ describe('Filter', () => {
             <Filter
                 filterName={filterName}
                 filterOptionGroups={filterOptionGroups}
-                selectedOptions={[{label: 'New Option', value: 'new-option'}]}
+                selectedOptions={[{ label: 'New Option', value: 'new-option' }]}
                 logicalOperators={logicalOperators}
                 onChangeOption={onChangeOption}
                 onSelectAll={onSelectAll}
                 onRemoveAll={onRemoveAll}
                 onChangeLogicalOperator={onChangeLogicalOperator}
-            />
+            />,
         )
 
         const warningIcon = screen.getByText(FILTER_WARNING_ICON)
         userEvent.hover(warningIcon)
         await waitFor(() => {
             expect(
-                screen.getByText(NON_EXISTENT_VALUES_WARNING_MESSAGE)
+                screen.getByText(NON_EXISTENT_VALUES_WARNING_MESSAGE),
             ).toBeInTheDocument()
         })
     })
@@ -345,7 +348,7 @@ describe('Filter', () => {
                 onRemoveAll={onRemoveAll}
                 onChangeLogicalOperator={onChangeLogicalOperator}
                 onDropdownClosed={onDropdownClosedSpy}
-            />
+            />,
         )
 
         userEvent.click(screen.getByText('Option 2'))

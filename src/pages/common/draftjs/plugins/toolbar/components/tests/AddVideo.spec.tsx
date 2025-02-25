@@ -1,12 +1,12 @@
-import {fireEvent, render, screen} from '@testing-library/react'
-import {EditorState} from 'draft-js'
 import React from 'react'
+
+import { fireEvent, render, screen } from '@testing-library/react'
+import { EditorState } from 'draft-js'
 import ReactPlayer from 'react-player'
 
 import * as utils from 'utils'
 
 import * as draftjsPluginsUtils from '../../../utils'
-
 import ToolbarProvider from '../../ToolbarProvider'
 import AddVideo from '../AddVideo'
 
@@ -17,7 +17,7 @@ const minProps = {
 
 describe('<AddVideo/>', () => {
     it('should not render when the popover is closed', () => {
-        const {container} = render(<AddVideo {...minProps} />)
+        const { container } = render(<AddVideo {...minProps} />)
         expect(container).toMatchSnapshot()
     })
 
@@ -26,21 +26,21 @@ describe('<AddVideo/>', () => {
         fireEvent.click(screen.getByText(/video/i))
 
         expect(
-            screen.getByText('Insert Video').getAttribute('disabled')
+            screen.getByText('Insert Video').getAttribute('disabled'),
         ).toBeDefined()
 
         fireEvent.change(screen.getByPlaceholderText('External video URL'), {
-            target: {value: 'toto'},
+            target: { value: 'toto' },
         })
         expect(
-            screen.getByText('Insert Video').getAttribute('disabled')
+            screen.getByText('Insert Video').getAttribute('disabled'),
         ).toBeDefined()
 
         fireEvent.change(screen.getByPlaceholderText('External video URL'), {
-            target: {value: 'https://www.youtube.com/watch?v=4sLFpe-xbhk'},
+            target: { value: 'https://www.youtube.com/watch?v=4sLFpe-xbhk' },
         })
         expect(
-            screen.getByText('Insert Video').getAttribute('disabled')
+            screen.getByText('Insert Video').getAttribute('disabled'),
         ).toBeNull()
     })
 
@@ -50,15 +50,15 @@ describe('<AddVideo/>', () => {
 
         expect(
             screen.queryByText(
-                'This provider is not supported or link is not valid.'
-            )
+                'This provider is not supported or link is not valid.',
+            ),
         ).toBeNull()
 
         fireEvent.change(screen.getByPlaceholderText('External video URL'), {
-            target: {value: 'https://www.google.com'},
+            target: { value: 'https://www.google.com' },
         })
         expect(
-            screen.getByText('Insert Video').getAttribute('disabled')
+            screen.getByText('Insert Video').getAttribute('disabled'),
         ).toBeNull()
 
         screen.getByText('This provider is not supported or link is not valid.')
@@ -76,18 +76,18 @@ describe('<AddVideo/>', () => {
         render(
             <ToolbarProvider canAddVideoPlayer>
                 <AddVideo {...minProps} />
-            </ToolbarProvider>
+            </ToolbarProvider>,
         )
         fireEvent.click(screen.getByText(/video/i))
 
         fireEvent.change(screen.getByPlaceholderText('External video URL'), {
-            target: {value: 'https://www.youtube.com/watch?v=4sLFpe-xbhk'}, // URL is valid and ReactPlayer.canPlay: true.
+            target: { value: 'https://www.youtube.com/watch?v=4sLFpe-xbhk' }, // URL is valid and ReactPlayer.canPlay: true.
         })
 
         fireEvent.click(screen.getByText(/Insert Video/i))
         expect(addVideoSpy).toHaveBeenCalledWith(
             editorState,
-            `https://www.youtube.com/watch?v=4sLFpe-xbhk`
+            `https://www.youtube.com/watch?v=4sLFpe-xbhk`,
         )
     })
 
@@ -103,18 +103,18 @@ describe('<AddVideo/>', () => {
         render(
             <ToolbarProvider canAddVideoLink>
                 <AddVideo {...minProps} />
-            </ToolbarProvider>
+            </ToolbarProvider>,
         )
         fireEvent.click(screen.getByText(/video/i))
 
         fireEvent.change(screen.getByPlaceholderText('External video URL'), {
-            target: {value: 'https://gorgias.com'}, // URL is valid and ReactPlayer.canPlay: false.
+            target: { value: 'https://gorgias.com' }, // URL is valid and ReactPlayer.canPlay: false.
         })
 
         fireEvent.click(screen.getByText(/Insert Video/i))
         expect(insertLinkSpy).toHaveBeenCalledWith(
             editorState,
-            `https://gorgias.com`
+            `https://gorgias.com`,
         )
     })
 
@@ -131,13 +131,13 @@ describe('<AddVideo/>', () => {
         fireEvent.click(screen.getByText(/video/i))
 
         fireEvent.change(screen.getByPlaceholderText('External video URL'), {
-            target: {value: 'https://gorgias.com'}, // URL is valid and ReactPlayer.canPlay: false.
+            target: { value: 'https://gorgias.com' }, // URL is valid and ReactPlayer.canPlay: false.
         })
 
         fireEvent.click(screen.getByText(/Insert Video/i))
         expect(insertText).toHaveBeenCalledWith(
             editorState,
-            `https://gorgias.com`
+            `https://gorgias.com`,
         )
     })
 
@@ -154,12 +154,12 @@ describe('<AddVideo/>', () => {
         render(
             <ToolbarProvider canAddVideoPlayer>
                 <AddVideo {...minProps} />
-            </ToolbarProvider>
+            </ToolbarProvider>,
         )
         fireEvent.click(screen.getByText(/video/i))
 
         fireEvent.change(screen.getByPlaceholderText('External video URL'), {
-            target: {value: 'https://www.youtube.com/watch?v=4sLFpe-xbhk'}, // URL is valid and ReactPlayer.canPlay: true.
+            target: { value: 'https://www.youtube.com/watch?v=4sLFpe-xbhk' }, // URL is valid and ReactPlayer.canPlay: true.
         })
 
         fireEvent.click(screen.getByText(/Insert Video/i))
@@ -178,7 +178,7 @@ describe('<AddVideo/>', () => {
         render(
             <ToolbarProvider canAddVideoPlayer>
                 <AddVideo {...minProps} />
-            </ToolbarProvider>
+            </ToolbarProvider>,
         )
         fireEvent.click(screen.getByText(/video/i))
 
@@ -191,7 +191,7 @@ describe('<AddVideo/>', () => {
         fireEvent.click(screen.getByText(/Insert Video/i))
         expect(addVideoSpy).toHaveBeenCalledWith(
             editorState,
-            'https://www.dailymotion.com/video/x2m3vyr'
+            'https://www.dailymotion.com/video/x2m3vyr',
         )
     })
 
@@ -207,7 +207,7 @@ describe('<AddVideo/>', () => {
         render(
             <ToolbarProvider canAddVideoLink>
                 <AddVideo {...minProps} />
-            </ToolbarProvider>
+            </ToolbarProvider>,
         )
         fireEvent.click(screen.getByText(/video/i))
 
@@ -220,7 +220,7 @@ describe('<AddVideo/>', () => {
         fireEvent.click(screen.getByText(/Insert Video/i))
         expect(insertLinkSpy).toHaveBeenCalledWith(
             editorState,
-            `https://www.dailymotion.com/video/x2m3vyr?playlist=x7juyaf`
+            `https://www.dailymotion.com/video/x2m3vyr?playlist=x7juyaf`,
         )
     })
 })
@@ -245,8 +245,8 @@ describe('ReactPlayer', () => {
         ${'https://test-videos.co.uk/vids/bigbuckbunny/webm/vp8/360/Big_Buck_Bunny_360_10s_1MB.webm'} | ${true}  | ${'URL can be played by ReactPlayer'}
     `(
         'EMAIL_REGEX - $email should be valid: $isValid - $description',
-        ({url, isValid}) => {
+        ({ url, isValid }) => {
             expect(ReactPlayer.canPlay(url)).toEqual(isValid)
-        }
+        },
     )
 })

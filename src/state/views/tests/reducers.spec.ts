@@ -1,12 +1,12 @@
-import {fromJS, Map} from 'immutable'
+import { fromJS, Map } from 'immutable'
 import moment from 'moment'
 
 import * as fixtures from '../../../fixtures/views'
-import {ViewType} from '../../../models/view/types'
-import {RootState} from '../../types'
+import { ViewType } from '../../../models/view/types'
+import { RootState } from '../../types'
 import * as types from '../constants'
-import {SEARCH_VIEW_FIELD_CONFIG_STORAGE_KEY} from '../constants'
-import reducers, {initialState} from '../reducers'
+import { SEARCH_VIEW_FIELD_CONFIG_STORAGE_KEY } from '../constants'
+import reducers, { initialState } from '../reducers'
 import * as selectors from '../selectors'
 import * as utils from '../utils'
 
@@ -23,7 +23,7 @@ describe('reducers', () => {
             expect(
                 reducers(state, {
                     type: types.ACTIVATE_VIEW_EDIT_MODE,
-                })
+                }),
             ).toMatchSnapshot()
         })
 
@@ -83,7 +83,7 @@ describe('reducers', () => {
                     type: types.UPDATE_VIEW_FIELD_FILTER,
                     index: 0,
                     value: '3',
-                })
+                }),
             ).toMatchSnapshot()
         })
 
@@ -136,7 +136,7 @@ describe('reducers', () => {
                     index: 0,
                     customFieldId: 123,
                     customFieldOperator: 'neq',
-                }).toJS()
+                }).toJS(),
             ).toStrictEqual({
                 active: expect.objectContaining({
                     dirty: true,
@@ -201,7 +201,7 @@ describe('reducers', () => {
                     type: types.UPDATE_VIEW_FIELD_FILTER_OPERATOR,
                     index: 0,
                     operator: 'neq',
-                })
+                }),
             ).toMatchSnapshot()
         })
 
@@ -210,7 +210,7 @@ describe('reducers', () => {
                 reducers(initialState, {
                     type: types.SUBMIT_NEW_VIEW_SUCCESS,
                     resp: fixtures.view,
-                })
+                }),
             ).toMatchSnapshot()
         })
 
@@ -224,7 +224,7 @@ describe('reducers', () => {
                 reducers(state, {
                     type: types.SUBMIT_NEW_VIEW_SUCCESS,
                     resp: fixtures.view,
-                })
+                }),
             ).toMatchSnapshot()
         })
 
@@ -240,15 +240,15 @@ describe('reducers', () => {
             expect(
                 reducers(state, {
                     type: types.FETCH_VIEW_LIST_SUCCESS,
-                    resp: {data: [fixtures.view]},
+                    resp: { data: [fixtures.view] },
                     currentViewId: '7',
-                })
+                }),
             ).toEqual(
                 fromJS({
-                    active: {...fixtures.view, editMode: true},
+                    active: { ...fixtures.view, editMode: true },
                     items: [fixtures.view],
                     loading: false,
-                })
+                }),
             )
         })
 
@@ -257,7 +257,7 @@ describe('reducers', () => {
                 reducers(initialState, {
                     type: types.CREATE_VIEW_SUCCESS,
                     resp: fixtures.view,
-                })
+                }),
             ).toMatchSnapshot()
         })
 
@@ -271,7 +271,7 @@ describe('reducers', () => {
                 reducers(state, {
                     type: types.CREATE_VIEW_SUCCESS,
                     resp: fixtures.view,
-                })
+                }),
             ).toMatchSnapshot()
         })
 
@@ -287,7 +287,7 @@ describe('reducers', () => {
                 reducers(state, {
                     type: types.UPDATE_VIEW_SUCCESS,
                     resp: fixtures.view,
-                })
+                }),
             ).toMatchSnapshot()
         })
 
@@ -297,7 +297,7 @@ describe('reducers', () => {
                     reducers(initialState, {
                         type: types.UPDATE_PAGE_SELECTION,
                         ids: [1, 2, 3, 4, 5],
-                    })
+                    }),
                 ).toMatchSnapshot()
             })
         })
@@ -313,7 +313,7 @@ describe('reducers', () => {
                     reducers(state, {
                         type: types.TOGGLE_ID_IN_PAGE_SELECTION,
                         id: 12,
-                    })
+                    }),
                 ).toMatchSnapshot()
             })
 
@@ -327,7 +327,7 @@ describe('reducers', () => {
                     reducers(state, {
                         type: types.TOGGLE_ID_IN_PAGE_SELECTION,
                         id: 40,
-                    })
+                    }),
                 ).toMatchSnapshot()
             })
         })
@@ -342,7 +342,7 @@ describe('reducers', () => {
                 expect(
                     reducers(state, {
                         type: types.TOGGLE_VIEW_SELECTION,
-                    })
+                    }),
                 ).toMatchSnapshot()
             })
 
@@ -355,7 +355,7 @@ describe('reducers', () => {
                 expect(
                     reducers(state, {
                         type: types.TOGGLE_VIEW_SELECTION,
-                    })
+                    }),
                 ).toMatchSnapshot()
             })
         })
@@ -369,7 +369,7 @@ describe('reducers', () => {
                 reducers(state, {
                     type: types.DELETE_VIEW_SUCCESS,
                     viewId: fixtures.view.id,
-                })
+                }),
             ).toMatchSnapshot()
         })
 
@@ -381,7 +381,7 @@ describe('reducers', () => {
             })
 
             const recentViews = selectors
-                .getRecentViews({views: state} as RootState)
+                .getRecentViews({ views: state } as RootState)
                 .toJS() as Record<
                 string,
                 {
@@ -399,7 +399,7 @@ describe('reducers', () => {
                 expect(
                     moment(recentViews[view].inserted_datetime)
                         .utc()
-                        .isBetween(beforeActionDt, now)
+                        .isBetween(beforeActionDt, now),
                 ).toBe(true)
                 expect(recentViews[view].updated_datetime).toBe(undefined)
             }
@@ -416,7 +416,7 @@ describe('reducers', () => {
                         1: {},
                         2: {},
                     },
-                })
+                }),
             )
             const counts = {
                 1: 12,
@@ -432,12 +432,12 @@ describe('reducers', () => {
 
             // should update view counts
             expect((state.get('counts') as Map<any, any>).toJS()).toEqual(
-                counts
+                counts,
             )
 
             const now = moment.utc().add(10, 's')
             const recentViews = selectors
-                .getRecentViews({views: state} as RootState)
+                .getRecentViews({ views: state } as RootState)
                 .toJS() as Record<
                 string,
                 {
@@ -452,8 +452,8 @@ describe('reducers', () => {
                 expect(
                     moment(recentViews[view].updated_datetime).isBetween(
                         beforeActionDt,
-                        now
-                    )
+                        now,
+                    ),
                 ).toBe(true)
             }
         })
@@ -466,7 +466,7 @@ describe('reducers', () => {
                         1: {},
                         2: {},
                     },
-                })
+                }),
             )
             state = reducers(state, {
                 type: types.UPDATE_RECENT_VIEWS,
@@ -475,7 +475,7 @@ describe('reducers', () => {
 
             const now = moment.utc().add(10, 's')
             const recentViews = selectors
-                .getRecentViews({views: state} as RootState)
+                .getRecentViews({ views: state } as RootState)
                 .toJS() as Record<
                 string,
                 {
@@ -490,8 +490,8 @@ describe('reducers', () => {
                 expect(
                     moment(recentViews[view].updated_datetime).isBetween(
                         beforeActionDt,
-                        now
-                    )
+                        now,
+                    ),
                 ).toBe(true)
             }
         })
@@ -511,18 +511,18 @@ describe('reducers', () => {
                     name: field,
                     state: true,
                     shouldStoreFieldConfig: true,
-                })
+                }),
             ).toEqual(
                 fromJS({
                     active: {
                         fields: [field],
                     },
-                })
+                }),
             )
 
             expect(localStorageSpy).toHaveBeenCalledWith(
                 SEARCH_VIEW_FIELD_CONFIG_STORAGE_KEY,
-                JSON.stringify([field])
+                JSON.stringify([field]),
             )
         })
 
@@ -538,7 +538,7 @@ describe('reducers', () => {
             expect(
                 reducers(state, {
                     type: types.FETCH_LIST_VIEW_START,
-                }).toJS()
+                }).toJS(),
             ).toEqual({
                 _internal: {
                     loading: {

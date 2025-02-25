@@ -1,10 +1,11 @@
-import {render} from '@testing-library/react'
 import React from 'react'
+
+import { render } from '@testing-library/react'
 
 import useSearchRankScenario, {
     SearchRankSource,
 } from 'hooks/useSearchRankScenario'
-import {createContextConsumer} from 'utils/testing'
+import { createContextConsumer } from 'utils/testing'
 
 import SearchRankScenarioContext from '../SearchRankScenarioContext'
 import SearchRankScenarioProvider from '../SearchRankScenarioProvider'
@@ -15,7 +16,7 @@ const useSearchRankScenarioMock = useSearchRankScenario as jest.MockedFunction<
 >
 
 const SearchRankScenarioConsumer = createContextConsumer(
-    SearchRankScenarioContext
+    SearchRankScenarioContext,
 )
 
 describe('SearchRankScenarioProvider', () => {
@@ -34,12 +35,12 @@ describe('SearchRankScenarioProvider', () => {
                 scenarioTimeout={10}
             >
                 <SearchRankScenarioConsumer />
-            </SearchRankScenarioProvider>
+            </SearchRankScenarioProvider>,
         )
 
         expect(useSearchRankScenarioMock).toHaveBeenCalledWith(
             SearchRankSource.CustomerProfile,
-            10
+            10,
         )
     })
 
@@ -49,11 +50,11 @@ describe('SearchRankScenarioProvider', () => {
                 source={SearchRankSource.CustomerProfile}
             >
                 <SearchRankScenarioConsumer />
-            </SearchRankScenarioProvider>
+            </SearchRankScenarioProvider>,
         )
 
         expect(SearchRankScenarioConsumer.getLastContextValue()).toBe(
-            defaultSearchRankScenario
+            defaultSearchRankScenario,
         )
     })
 })

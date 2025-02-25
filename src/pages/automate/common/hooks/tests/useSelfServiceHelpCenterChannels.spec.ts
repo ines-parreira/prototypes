@@ -1,9 +1,9 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {TicketChannel} from 'business/types/ticket'
-import {useGetHelpCenterList} from 'models/helpCenter/queries'
-import {HelpCenter} from 'models/helpCenter/types'
-import {assumeMock} from 'utils/testing'
+import { TicketChannel } from 'business/types/ticket'
+import { useGetHelpCenterList } from 'models/helpCenter/queries'
+import { HelpCenter } from 'models/helpCenter/types'
+import { assumeMock } from 'utils/testing'
 
 import useSelfServiceHelpCenterChannels, {
     SelfServiceHelpCenterChannel,
@@ -41,7 +41,7 @@ jest.mock('../useSelfServiceStoreIntegration')
 
 const mockedUseGetHelpCenterList = assumeMock(useGetHelpCenterList)
 const mockedUseSelfServiceStoreIntegration = assumeMock(
-    useSelfServiceStoreIntegration
+    useSelfServiceStoreIntegration,
 )
 
 describe('useSelfServiceHelpCenterChannels', () => {
@@ -51,7 +51,7 @@ describe('useSelfServiceHelpCenterChannels', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         mockedUseGetHelpCenterList.mockReturnValue({
-            data: {data: {data: [mockHelpCenter]}},
+            data: { data: { data: [mockHelpCenter] } },
         } as unknown as ReturnType<typeof useGetHelpCenterList>)
         mockedUseSelfServiceStoreIntegration.mockReturnValue({
             id: 1,
@@ -62,8 +62,8 @@ describe('useSelfServiceHelpCenterChannels', () => {
 
     it('returns an empty array if storeIntegration is undefined', () => {
         mockedUseSelfServiceStoreIntegration.mockReturnValue(undefined)
-        const {result} = renderHook(() =>
-            useSelfServiceHelpCenterChannels(shopType, shopName)
+        const { result } = renderHook(() =>
+            useSelfServiceHelpCenterChannels(shopType, shopName),
         )
 
         expect(result.current).toEqual([])
@@ -73,16 +73,16 @@ describe('useSelfServiceHelpCenterChannels', () => {
         mockedUseGetHelpCenterList.mockReturnValue({
             data: null,
         } as unknown as ReturnType<typeof useGetHelpCenterList>)
-        const {result} = renderHook(() =>
-            useSelfServiceHelpCenterChannels(shopType, shopName)
+        const { result } = renderHook(() =>
+            useSelfServiceHelpCenterChannels(shopType, shopName),
         )
 
         expect(result.current).toEqual([])
     })
 
     it('returns filtered and mapped help centers when storeIntegration is present', () => {
-        const {result} = renderHook(() =>
-            useSelfServiceHelpCenterChannels(shopType, shopName)
+        const { result } = renderHook(() =>
+            useSelfServiceHelpCenterChannels(shopType, shopName),
         )
 
         const expectedResult: SelfServiceHelpCenterChannel[] = [
@@ -102,8 +102,8 @@ describe('useSelfServiceHelpCenterChannels', () => {
             type: 'shopify',
         } as unknown as ReturnType<typeof useSelfServiceStoreIntegration>)
 
-        const {result} = renderHook(() =>
-            useSelfServiceHelpCenterChannels(shopType, shopName)
+        const { result } = renderHook(() =>
+            useSelfServiceHelpCenterChannels(shopType, shopName),
         )
 
         expect(result.current).toEqual([])

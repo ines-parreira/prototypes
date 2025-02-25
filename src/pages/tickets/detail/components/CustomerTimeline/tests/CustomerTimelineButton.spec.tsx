@@ -1,20 +1,21 @@
-import {render, fireEvent, screen, act, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
-import {createStore} from 'redux'
+
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import { createStore } from 'redux'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import * as types from 'state/ticket/constants'
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
 
-import {CustomerTimelineButton} from '../CustomerTimelineButton'
+import { CustomerTimelineButton } from '../CustomerTimelineButton'
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())
 
 const defaultState = {
-    ticket: fromJS({id: 123, _internal: {displayHistory: false}}),
+    ticket: fromJS({ id: 123, _internal: { displayHistory: false } }),
     customers: fromJS({
         _internal: {
             loading: {
@@ -46,7 +47,7 @@ describe('CustomerTimelineButton', () => {
                 ...defaultState,
                 ticket: defaultState.ticket.setIn(
                     ['_internal', 'displayHistory'],
-                    displayHistory
+                    displayHistory,
                 ),
             } as unknown as RootState
             const store = createStore((state) => state as RootState, state)
@@ -54,13 +55,13 @@ describe('CustomerTimelineButton', () => {
             render(
                 <Provider store={store}>
                     <CustomerTimelineButton isEditing={false} />
-                </Provider>
+                </Provider>,
             )
 
             expect(
                 screen.getByText(
-                    displayHistory ? 'Close timeline' : 'Customer timeline'
-                )
+                    displayHistory ? 'Close timeline' : 'Customer timeline',
+                ),
             ).toBeInTheDocument()
             // Secondary button -> there aren't open tickets
             expect(screen.getByRole('button')).toHaveClass('secondary')
@@ -74,7 +75,7 @@ describe('CustomerTimelineButton', () => {
                 type: types.TOGGLE_HISTORY,
                 state: !displayHistory,
             })
-        }
+        },
     )
 
     it.each([true, false])(
@@ -84,7 +85,7 @@ describe('CustomerTimelineButton', () => {
                 ...defaultState,
                 ticket: defaultState.ticket.setIn(
                     ['_internal', 'displayHistory'],
-                    displayHistory
+                    displayHistory,
                 ),
                 customers: defaultState.customers.setIn(
                     ['customerHistory', 'tickets'],
@@ -109,7 +110,7 @@ describe('CustomerTimelineButton', () => {
                             id: 127,
                             status: 'closed',
                         },
-                    ])
+                    ]),
                 ),
             } as unknown as RootState
             const store = createStore((state) => state as RootState, state)
@@ -117,15 +118,15 @@ describe('CustomerTimelineButton', () => {
             render(
                 <Provider store={store}>
                     <CustomerTimelineButton isEditing={false} />
-                </Provider>
+                </Provider>,
             )
 
             expect(
                 screen.getByText(
                     displayHistory
                         ? 'Close timeline (2)'
-                        : 'Customer timeline (2)'
-                )
+                        : 'Customer timeline (2)',
+                ),
             ).toBeInTheDocument()
             // Primary button -> there are open tickets
             expect(screen.getByRole('button')).toHaveClass('primary')
@@ -135,12 +136,12 @@ describe('CustomerTimelineButton', () => {
                     screen.getByText(
                         displayHistory
                             ? 'Close timeline (2)'
-                            : 'Customer timeline (2)'
-                    )
+                            : 'Customer timeline (2)',
+                    ),
                 )
 
                 expect(screen.getByRole('tooltip').innerHTML).toEqual(
-                    '2 open tickets<br>2 closed tickets'
+                    '2 open tickets<br>2 closed tickets',
                 )
             })
 
@@ -153,7 +154,7 @@ describe('CustomerTimelineButton', () => {
                 type: types.TOGGLE_HISTORY,
                 state: !displayHistory,
             })
-        }
+        },
     )
 
     it('should render the `Customer timeline` button as disabled and do nothing when clicked - customer does not have history', async () => {
@@ -161,7 +162,7 @@ describe('CustomerTimelineButton', () => {
             ...defaultState,
             customers: defaultState.customers.setIn(
                 ['customerHistory', 'hasHistory'],
-                false
+                false,
             ),
         } as unknown as RootState
         const store = createStore((state) => state as RootState, state)
@@ -169,11 +170,11 @@ describe('CustomerTimelineButton', () => {
         render(
             <Provider store={store}>
                 <CustomerTimelineButton isEditing={false} />
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            screen.getByRole('button', {name: /Customer timeline/})
+            screen.getByRole('button', { name: /Customer timeline/ }),
         ).toBeAriaDisabled()
         // Secondary button -> there aren't open tickets
         expect(screen.getByRole('button')).toHaveClass('secondary')
@@ -182,8 +183,8 @@ describe('CustomerTimelineButton', () => {
             userEvent.hover(screen.getByText('Customer timeline'))
             expect(
                 screen.queryByText(
-                    'This customer does not have any other tickets'
-                )
+                    'This customer does not have any other tickets',
+                ),
             ).toBeInTheDocument()
         })
 
@@ -199,7 +200,7 @@ describe('CustomerTimelineButton', () => {
             ...defaultState,
             customers: defaultState.customers.setIn(
                 ['_internal', 'loading', 'history'],
-                true
+                true,
             ),
         } as unknown as RootState
         const store = createStore((state) => state as RootState, state)
@@ -207,11 +208,11 @@ describe('CustomerTimelineButton', () => {
         render(
             <Provider store={store}>
                 <CustomerTimelineButton isEditing={false} />
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            screen.getByRole('button', {name: /Customer timeline/})
+            screen.getByRole('button', { name: /Customer timeline/ }),
         ).toBeAriaDisabled()
         // Secondary button -> there aren't open tickets
         expect(screen.getByRole('button')).toHaveClass('secondary')
@@ -220,8 +221,8 @@ describe('CustomerTimelineButton', () => {
             userEvent.hover(screen.getByText('Customer timeline'))
             expect(
                 screen.queryByText(
-                    'This customer does not have any other tickets'
-                )
+                    'This customer does not have any other tickets',
+                ),
             ).not.toBeInTheDocument()
         })
 
@@ -238,7 +239,7 @@ describe('CustomerTimelineButton', () => {
         render(
             <Provider store={store}>
                 <CustomerTimelineButton isEditing={true} />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.queryByText('Customer timeline')).toBeNull()
@@ -255,7 +256,7 @@ describe('CustomerTimelineButton', () => {
         render(
             <Provider store={store}>
                 <CustomerTimelineButton isEditing={false} />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.queryByText('Customer timeline')).toBeNull()

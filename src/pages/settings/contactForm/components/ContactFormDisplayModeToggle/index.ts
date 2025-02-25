@@ -1,1 +1,1 @@
-export {default} from './ContactFormDisplayModeToggle'
+export { default } from './ContactFormDisplayModeToggle'

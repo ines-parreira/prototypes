@@ -1,25 +1,24 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
-import {UserRole} from 'config/types/user'
-import {useDrillDownQueryWithoutLimit} from 'hooks/reporting/useDrillDownData'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { UserRole } from 'config/types/user'
+import { useDrillDownQueryWithoutLimit } from 'hooks/reporting/useDrillDownData'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {useRunningJobs} from 'jobs'
-import {JobContext, JobType} from 'models/job/types'
+import { useRunningJobs } from 'jobs'
+import { JobContext, JobType } from 'models/job/types'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-
 import css from 'pages/stats/DrillDownDownloadButton.less'
-import {getCurrentUser} from 'state/currentUser/selectors'
+import { getCurrentUser } from 'state/currentUser/selectors'
 import {
     createExportDrillDownJob,
     DrillDownMetric,
     getDrillDownExport,
 } from 'state/ui/stats/drillDownSlice'
-
-import {ConvertMetric} from 'state/ui/stats/types'
-import {hasRole} from 'utils'
+import { ConvertMetric } from 'state/ui/stats/types'
+import { hasRole } from 'utils'
 
 export const DOWNLOAD_REQUESTED_LABEL = 'Download Requested'
 export const TOTAL_OBJECTS_COUNT_PLACEHOLDER = 'All'
@@ -31,7 +30,7 @@ const OPERATION_IN_PROGRESS_CONTENT =
 const tooltipTargetID = 'download-drill-down-tooltip'
 
 const getDrillDownJobType = (
-    metricData: DrillDownMetric
+    metricData: DrillDownMetric,
 ):
     | JobType.ExportConvertCampaignSalesDrilldown
     | JobType.ExportTicketDrilldown => {
@@ -44,7 +43,7 @@ const getDrillDownJobType = (
 }
 
 const getDrillDownJobContext = (
-    metricData: DrillDownMetric
+    metricData: DrillDownMetric,
 ): JobContext | undefined => {
     switch (metricData.metricName) {
         case ConvertMetric.CampaignSalesCount:
@@ -62,9 +61,10 @@ export const DrillDownDownloadButton = ({
     objectType: string
 }) => {
     const dispatch = useAppDispatch()
-    const {isLoading, isError, isRequested} = useAppSelector(getDrillDownExport)
+    const { isLoading, isError, isRequested } =
+        useAppSelector(getDrillDownExport)
     const currentUser = useAppSelector(getCurrentUser)
-    const {running} = useRunningJobs()
+    const { running } = useRunningJobs()
     const hasNoPermissions = !(
         hasRole(currentUser, UserRole.Admin) ||
         hasRole(currentUser, UserRole.Agent)
@@ -78,7 +78,7 @@ export const DrillDownDownloadButton = ({
                 query,
                 jobType: getDrillDownJobType(metricData),
                 context: getDrillDownJobContext(metricData),
-            })
+            }),
         )
     }
 
@@ -111,7 +111,7 @@ export const getButtonVariant = (
     objectType: string,
     isRequested: boolean,
     exportRequestLoading: boolean,
-    isError: boolean
+    isError: boolean,
 ) => {
     if (exportRequestLoading) {
         return (

@@ -1,9 +1,9 @@
-import {act, renderHook} from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react-hooks'
 
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
-import type {ContextValue} from '../../Context'
-import type {HandleState} from '../../types'
+import type { ContextValue } from '../../Context'
+import type { HandleState } from '../../types'
 import useHandle from '../useHandle'
 import usePanels from '../usePanels'
 
@@ -15,24 +15,24 @@ describe('useHandle', () => {
 
     beforeEach(() => {
         addHandle = jest.fn()
-        usePanelsMock.mockReturnValue({addHandle} as unknown as ContextValue)
+        usePanelsMock.mockReturnValue({ addHandle } as unknown as ContextValue)
     })
 
     it('should return the default handle state', () => {
-        const {result} = renderHook(() => useHandle('123'))
+        const { result } = renderHook(() => useHandle('123'))
         expect(result.current).toEqual({})
     })
 
     it('should return the updated handle state when the listener is called', () => {
-        const {result} = renderHook(() => useHandle('123'))
+        const { result } = renderHook(() => useHandle('123'))
         expect(addHandle).toHaveBeenCalledWith('123', expect.any(Function))
         const [[, listener]] = addHandle.mock.calls as [
             string,
             (state: HandleState) => void,
         ][]
         act(() => {
-            listener({onResizeStart: jest.fn()})
+            listener({ onResizeStart: jest.fn() })
         })
-        expect(result.current).toEqual({onResizeStart: expect.any(Function)})
+        expect(result.current).toEqual({ onResizeStart: expect.any(Function) })
     })
 })

@@ -1,4 +1,3 @@
-import {EditorState} from 'draft-js'
 import React, {
     KeyboardEvent,
     RefObject,
@@ -7,22 +6,24 @@ import React, {
     useRef,
     useState,
 } from 'react'
+
+import { EditorState } from 'draft-js'
 import ReactPlayer from 'react-player'
 
 import Button from 'pages/common/components/button/Button'
 import Popover from 'pages/common/draftjs/plugins/toolbar/components/ButtonPopover'
 import TextInput from 'pages/common/forms/input/TextInput'
-import {fixVideoUrlForReactPlayer, insertLink, insertText} from 'utils'
+import { fixVideoUrlForReactPlayer, insertLink, insertText } from 'utils'
 
-import {addVideo} from '../../utils'
-import {useToolbarContext} from '../ToolbarContext'
-import {ActionInjectedProps} from '../types'
+import { addVideo } from '../../utils'
+import { useToolbarContext } from '../ToolbarContext'
+import { ActionInjectedProps } from '../types'
 
 import css from './AddVideo.less'
 
 type Props = ActionInjectedProps
 
-const AddVideo = ({getEditorState, setEditorState}: Props) => {
+const AddVideo = ({ getEditorState, setEditorState }: Props) => {
     const {
         canAddVideoPlayer,
         canAddVideoLink,
@@ -74,7 +75,7 @@ const AddVideo = ({getEditorState, setEditorState}: Props) => {
 
         newEditorState = EditorState.forceSelection(
             newEditorState,
-            newEditorState.getSelection()
+            newEditorState.getSelection(),
         )
         setEditorState(newEditorState)
 

@@ -1,8 +1,8 @@
 declare module 'draft-js-plugins-editor' {
-    import {Component, ReactNode, MouseEvent, KeyboardEvent} from 'react'
-    import {EditorState, DraftEditorCommand} from 'draft-js'
+    import { Component, ReactNode, MouseEvent, KeyboardEvent } from 'react'
+    import { EditorState, DraftEditorCommand } from 'draft-js'
 
-    import {Plugin, PluginMethods} from 'pages/common/draftjs/plugins/types'
+    import { Plugin, PluginMethods } from 'pages/common/draftjs/plugins/types'
 
     type Props = {
         editorState: EditorState
@@ -14,14 +14,16 @@ declare module 'draft-js-plugins-editor' {
         handlePastedText?: (
             text: string,
             html: string | undefined,
-            editorState: EditorState
+            editorState: EditorState,
         ) => string | undefined
         readOnly?: boolean
         placeholder?: string
         editorKey?: string
         tabIndex?: number
         spellCheck?: boolean
-        keyBindingFn?: (event: KeyboardEvent) => DraftEditorCommand | null | undefined
+        keyBindingFn?: (
+            event: KeyboardEvent,
+        ) => DraftEditorCommand | null | undefined
         [key: string]: any
     }
 
@@ -37,7 +39,7 @@ declare module 'draft-js-plugins-editor' {
 
     namespace EditorPlugin {
         function composeDecorators(
-            decorator: ReactNode
+            decorator: ReactNode,
         ): (decorators: ReactNode) => ReactNode
     }
 

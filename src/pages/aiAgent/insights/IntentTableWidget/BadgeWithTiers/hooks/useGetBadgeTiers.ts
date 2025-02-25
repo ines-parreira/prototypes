@@ -1,4 +1,4 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
 export interface BadgeTiers {
     range: [number, number]
@@ -18,7 +18,7 @@ const calculateTierRange = (
     min: number,
     max: number,
     tierIndex: number,
-    tiersCount: number = 3
+    tiersCount: number = 3,
 ): [number, number] => {
     const range = max - min
     const tierSize = range / tiersCount
@@ -32,7 +32,7 @@ const calculateTierRange = (
 const createTier = (
     range: [number, number],
     background: string,
-    color: string
+    color: string,
 ): BadgeTiers => ({
     range,
     background,
@@ -43,7 +43,7 @@ const createSingleTier = (value: number): BadgeTiers[] => {
     const singleTier = createTier(
         [value, value],
         MID_TIRES_BACKGROUND_COLOR,
-        MID_TIRES_COLOR
+        MID_TIRES_COLOR,
     )
     return [singleTier]
 }
@@ -63,12 +63,12 @@ const useGetBadgeTiers = (values: number[]) => {
         const maxRate = Math.max(...values)
 
         const tiersCount = Math.min(uniqueValues.length, DEFAULT_TIER_LENGTH)
-        const tiers = Array.from({length: tiersCount}, (_, tierIndex) => {
+        const tiers = Array.from({ length: tiersCount }, (_, tierIndex) => {
             const range = calculateTierRange(
                 minRate,
                 maxRate,
                 tierIndex,
-                tiersCount
+                tiersCount,
             )
             const background = [
                 MID_TIRES_BACKGROUND_COLOR,

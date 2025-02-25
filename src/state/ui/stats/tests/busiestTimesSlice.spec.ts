@@ -1,5 +1,5 @@
-import {BusiestTimeOfDaysMetrics} from 'pages/stats/support-performance/busiest-times-of-days/types'
-import {RootState} from 'state/types'
+import { BusiestTimeOfDaysMetrics } from 'pages/stats/support-performance/busiest-times-of-days/types'
+import { RootState } from 'state/types'
 import {
     busiestTimesSlice,
     getSelectedMetric,
@@ -18,7 +18,7 @@ describe('busiestTimesSlice', () => {
 
     it('should return initial metric', () => {
         expect(getSelectedMetric(defaultState)).toEqual(
-            initialState.selectedMetric
+            initialState.selectedMetric,
         )
     })
 
@@ -26,7 +26,7 @@ describe('busiestTimesSlice', () => {
         const metric = BusiestTimeOfDaysMetrics.TicketsCreated
         const newState = busiestTimesSlice.reducer(
             initialState,
-            setSelectedMetric(metric)
+            setSelectedMetric(metric),
         )
 
         expect(newState.selectedMetric).toEqual(metric)
@@ -36,7 +36,7 @@ describe('busiestTimesSlice', () => {
         const metric = 'randomString'
         const newState = busiestTimesSlice.reducer(
             initialState,
-            setSelectedMetric(metric)
+            setSelectedMetric(metric),
         )
 
         expect(newState.selectedMetric).toEqual(initialState.selectedMetric)

@@ -1,9 +1,10 @@
-import {produce} from 'immer'
-import {set as _set} from 'lodash'
-import {useCallback, useState} from 'react'
+import { useCallback, useState } from 'react'
+
+import { produce } from 'immer'
+import { set as _set } from 'lodash'
 
 export function useImmerState<T extends Record<string, unknown>>(
-    initialState: T
+    initialState: T,
 ) {
     const [actionState, setActionState] = useState(initialState)
     const produceActionState = useCallback(
@@ -11,9 +12,9 @@ export function useImmerState<T extends Record<string, unknown>>(
             setActionState((previousActionState) =>
                 produce(previousActionState, (draft) => {
                     _set(draft, path, value)
-                })
+                }),
             ),
-        []
+        [],
     )
     return [actionState, produceActionState] as const
 }

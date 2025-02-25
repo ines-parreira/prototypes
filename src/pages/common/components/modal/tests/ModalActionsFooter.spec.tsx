@@ -1,5 +1,6 @@
-import {render} from '@testing-library/react'
 import React from 'react'
+
+import { render } from '@testing-library/react'
 
 import ModalActionsFooter from '../ModalActionsFooter'
 
@@ -9,18 +10,18 @@ describe('<ModalActionsFooter />', () => {
     }
 
     it('should render a modal footer', () => {
-        const {container} = render(
+        const { container } = render(
             <ModalActionsFooter {...minProps}>
                 <button>Cancel</button>
                 <button>OK</button>
-            </ModalActionsFooter>
+            </ModalActionsFooter>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render with extra info on footer', () => {
-        const {container} = render(
+        const { container } = render(
             <ModalActionsFooter
                 {...minProps}
                 extra="Ares is the Greek god of courage and war. He is one of the
@@ -28,18 +29,18 @@ describe('<ModalActionsFooter />', () => {
             >
                 <button>Cancel</button>
                 <button>OK</button>
-            </ModalActionsFooter>
+            </ModalActionsFooter>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render with no extra style if extra is not a string', () => {
-        const {container} = render(
+        const { container } = render(
             <ModalActionsFooter {...minProps} extra={<button>Foo</button>}>
                 <button>Cancel</button>
                 <button>OK</button>
-            </ModalActionsFooter>
+            </ModalActionsFooter>,
         )
 
         expect(container.firstChild).toMatchSnapshot()

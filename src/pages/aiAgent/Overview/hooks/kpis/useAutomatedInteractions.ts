@@ -1,15 +1,15 @@
-import {TicketCustomFieldsMeasure} from 'models/reporting/cubes/TicketCustomFieldsCube'
-import {StatsFilters, StatType} from 'models/stat/types'
-import {useAiAgentTicketNoHandover} from 'pages/aiAgent/Overview/hooks/kpis/useAiAgentTicketNoHandover'
-import {KpiMetric} from 'pages/aiAgent/Overview/types'
+import { TicketCustomFieldsMeasure } from 'models/reporting/cubes/TicketCustomFieldsCube'
+import { StatsFilters, StatType } from 'models/stat/types'
+import { useAiAgentTicketNoHandover } from 'pages/aiAgent/Overview/hooks/kpis/useAiAgentTicketNoHandover'
+import { KpiMetric } from 'pages/aiAgent/Overview/types'
 
 export const useAutomatedInteractions = (
     filters: StatsFilters,
-    timezone: string
+    timezone: string,
 ): KpiMetric => {
     const aiAgentTicketNoHandover = useAiAgentTicketNoHandover(
         filters,
-        timezone
+        timezone,
     )
 
     return {

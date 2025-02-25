@@ -1,7 +1,3 @@
-import {CursorPaginationMeta} from '@gorgias/api-queries'
-import axios, {CancelToken} from 'axios'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import _isEmpty from 'lodash/isEmpty'
 import {
     KeyboardEvent,
     useCallback,
@@ -11,7 +7,13 @@ import {
     useState,
 } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import axios, { CancelToken } from 'axios'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import _isEmpty from 'lodash/isEmpty'
+
+import { CursorPaginationMeta } from '@gorgias/api-queries'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
@@ -19,14 +21,14 @@ import useCancellableRequest from 'hooks/useCancellableRequest'
 import useDelayedAsyncFn from 'hooks/useDelayedAsyncFn'
 import useLocalStorageWithExpiry from 'hooks/useLocalStorageWithExpiry'
 import usePrevious from 'hooks/usePrevious'
-import {RecentItems} from 'hooks/useRecentItems/constants'
+import { RecentItems } from 'hooks/useRecentItems/constants'
 import useRecentItems from 'hooks/useRecentItems/useRecentItems'
 import useSearchRankScenario, {
     SearchRankSource,
 } from 'hooks/useSearchRankScenario'
 import useSelectedIndex from 'hooks/useSelectedIndex'
-import {ProductType} from 'models/billing/types'
-import {searchCustomersWithHighlights} from 'models/customer/resources'
+import { ProductType } from 'models/billing/types'
+import { searchCustomersWithHighlights } from 'models/customer/resources'
 import {
     CUSTOMER_SEARCH_ORDERING,
     isCustomer,
@@ -38,19 +40,19 @@ import {
     PicketVoiceCallWithHighlights,
     SearchEngine,
 } from 'models/search/types'
-import {searchTicketsWithHighlights} from 'models/ticket/resources'
-import {ViewType} from 'models/view/types'
-import {searchVoiceCallsWithHighlights} from 'models/voiceCall/resources'
-import {isVoiceCall} from 'models/voiceCall/types'
+import { searchTicketsWithHighlights } from 'models/ticket/resources'
+import { ViewType } from 'models/view/types'
+import { searchVoiceCallsWithHighlights } from 'models/voiceCall/resources'
+import { isVoiceCall } from 'models/voiceCall/types'
 import {
     FEDERATED_SEARCH_GROUP_SIZE,
     SEARCH_QUERY_EXPIRY_TIME,
 } from 'pages/common/components/Spotlight/constants'
 import history from 'pages/history'
-import {currentAccountHasProduct} from 'state/billing/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {isMacOs} from 'utils/platform'
+import { currentAccountHasProduct } from 'state/billing/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { isMacOs } from 'utils/platform'
 
 type OldSearchPaginationMeta = {
     prev_items: string
@@ -96,7 +98,7 @@ const getSelectedItemUrl = (
         | PickedCustomer
         | PickedTicketWithHighlights
         | PickedCustomerWithHighlights
-        | PicketVoiceCallWithHighlights
+        | PicketVoiceCallWithHighlights,
 ) => {
     if (isTicket(selectedItem)) {
         return `/app/ticket/${selectedItem.id}`
@@ -111,26 +113,26 @@ export const useSearch = () => {
     const dispatch = useAppDispatch()
     const defaultSearchItemsType = ViewType.All
     const [searchItemsType, setSearchItemsType] = useState<ViewType>(
-        defaultSearchItemsType
+        defaultSearchItemsType,
     )
     const hasVoiceProduct = useAppSelector(
-        currentAccountHasProduct(ProductType.Voice)
+        currentAccountHasProduct(ProductType.Voice),
     )
     const useVoiceCallSearch = !!useFlags()[FeatureFlagKey.VoiceCallSearch]
     const showCallsTab = useVoiceCallSearch && hasVoiceProduct
 
-    const {state: recentSearchQuery, setState: setRecentSearchQuery} =
+    const { state: recentSearchQuery, setState: setRecentSearchQuery } =
         useLocalStorageWithExpiry<string>(
             'recent-search-query',
             SEARCH_QUERY_EXPIRY_TIME,
-            ''
+            '',
         )
     const [searchQuery, setSearchQuery] = useState<string | undefined>(
-        recentSearchQuery
+        recentSearchQuery,
     )
 
     const searchRank = useSearchRankScenario(
-        searchRankScenarioSource[searchItemsType]
+        searchRankScenarioSource[searchItemsType],
     )
     const [ticketsSearchMeta, setTicketsSearchMeta] = useState<MetaType>()
     const [customersSearchMeta, setCustomersSearchMeta] = useState<MetaType>()
@@ -148,18 +150,17 @@ export const useSearch = () => {
     const [hasSearched, setHasSearched] = useState<boolean>(false)
     const [tickets, setTickets] = useState<PickedTicketWithHighlights[]>([])
     const [customers, setCustomers] = useState<PickedCustomerWithHighlights[]>(
-        []
+        [],
     )
     const [calls, setCalls] = useState<PicketVoiceCallWithHighlights[]>([])
-    const {items: recentTickets} = useRecentItems<PickedTicket>(
-        RecentItems.Tickets
+    const { items: recentTickets } = useRecentItems<PickedTicket>(
+        RecentItems.Tickets,
     )
-    const {items: recentCustomers} = useRecentItems<PickedCustomer>(
-        RecentItems.Customers
+    const { items: recentCustomers } = useRecentItems<PickedCustomer>(
+        RecentItems.Customers,
     )
-    const {items: recentCalls} = useRecentItems<PicketVoiceCallWithHighlights>(
-        RecentItems.Calls
-    )
+    const { items: recentCalls } =
+        useRecentItems<PicketVoiceCallWithHighlights>(RecentItems.Calls)
 
     const maxIndex = useMemo(() => {
         switch (searchItemsType) {
@@ -183,17 +184,17 @@ export const useSearch = () => {
                     : [
                           ...recentTickets.slice(
                               0,
-                              FEDERATED_SEARCH_GROUP_SIZE
+                              FEDERATED_SEARCH_GROUP_SIZE,
                           ),
                           ...(showCallsTab
                               ? recentCalls.slice(
                                     0,
-                                    FEDERATED_SEARCH_GROUP_SIZE
+                                    FEDERATED_SEARCH_GROUP_SIZE,
                                 )
                               : []),
                           ...recentCustomers.slice(
                               0,
-                              FEDERATED_SEARCH_GROUP_SIZE
+                              FEDERATED_SEARCH_GROUP_SIZE,
                           ),
                       ].length - 1
             case ViewType.CallList:
@@ -217,7 +218,7 @@ export const useSearch = () => {
         previous: previousIndex,
         reset: resetSelectedIndex,
         setIndex: setSelectedIndex,
-    } = useSelectedIndex(maxIndex, {loop: true})
+    } = useSelectedIndex(maxIndex, { loop: true })
     useEffect(resetSelectedIndex, [resetSelectedIndex, searchItemsType])
 
     const selectedItem = useMemo(() => {
@@ -246,17 +247,17 @@ export const useSearch = () => {
                     : [
                           ...recentTickets.slice(
                               0,
-                              FEDERATED_SEARCH_GROUP_SIZE
+                              FEDERATED_SEARCH_GROUP_SIZE,
                           ),
                           ...(showCallsTab
                               ? recentCalls.slice(
                                     0,
-                                    FEDERATED_SEARCH_GROUP_SIZE
+                                    FEDERATED_SEARCH_GROUP_SIZE,
                                 )
                               : []),
                           ...recentCustomers.slice(
                               0,
-                              FEDERATED_SEARCH_GROUP_SIZE
+                              FEDERATED_SEARCH_GROUP_SIZE,
                           ),
                       ][selectedIndex]
         }
@@ -277,7 +278,7 @@ export const useSearch = () => {
             data: CustomerSearchResponse,
             viewType: ViewType,
             searchTerm: string,
-            cursor?: string
+            cursor?: string,
         ) => {
             const results = data?.data ?? []
             searchRank.registerResultsResponse({
@@ -293,11 +294,11 @@ export const useSearch = () => {
                 [Tabs.Calls]: '',
             })
             setCustomers((customers) =>
-                cursor ? [...customers, ...results] : results
+                cursor ? [...customers, ...results] : results,
             )
             setCustomersSearchMeta(data.meta)
         },
-        [searchRank]
+        [searchRank],
     )
 
     const handleTicketSearchResult = useCallback(
@@ -305,7 +306,7 @@ export const useSearch = () => {
             data: TicketSearchResponse,
             viewType: ViewType,
             searchTerm: string,
-            cursor?: string
+            cursor?: string,
         ) => {
             const results = data?.data ?? []
 
@@ -322,11 +323,11 @@ export const useSearch = () => {
                 [Tabs.Calls]: '',
             })
             setTickets((tickets) =>
-                cursor ? [...tickets, ...results] : results
+                cursor ? [...tickets, ...results] : results,
             )
             setTicketsSearchMeta(data.meta)
         },
-        [searchRank]
+        [searchRank],
     )
 
     const handleCallSearchResult = useCallback(
@@ -334,7 +335,7 @@ export const useSearch = () => {
             data: CallSearchResponse,
             viewType: ViewType,
             searchTerm: string,
-            cursor?: string
+            cursor?: string,
         ) => {
             const results = data?.data ?? []
             searchRank.registerResultsResponse({
@@ -351,7 +352,7 @@ export const useSearch = () => {
             setCalls((calls) => (cursor ? [...calls, ...results] : results))
             setCallSearchMeta(data.meta)
         },
-        [searchRank]
+        [searchRank],
     )
 
     const createFetchSearchItems = useCallback(
@@ -411,7 +412,7 @@ export const useSearch = () => {
                             ticketData.data,
                             viewType,
                             searchTerm,
-                            cursor
+                            cursor,
                         )
                     }
                     if (customerData) {
@@ -419,7 +420,7 @@ export const useSearch = () => {
                             customerData.data,
                             viewType,
                             searchTerm,
-                            cursor
+                            cursor,
                         )
                     }
                     if (callData) {
@@ -427,7 +428,7 @@ export const useSearch = () => {
                             callData.data,
                             viewType,
                             searchTerm,
-                            cursor
+                            cursor,
                         )
                     }
                 } catch (e) {
@@ -436,7 +437,7 @@ export const useSearch = () => {
                             notify({
                                 message: 'Failed to fetch search results',
                                 status: NotificationStatus.Error,
-                            })
+                            }),
                         )
                         searchRank.registerResultsResponse({
                             responseTime: Date.now(),
@@ -454,31 +455,31 @@ export const useSearch = () => {
             handleCallSearchResult,
             dispatch,
             showCallsTab,
-        ]
+        ],
     )
 
     const [cancellableFetchSearchItems, cancelSearch] = useCancellableRequest(
-        createFetchSearchItems
+        createFetchSearchItems,
     )
-    const [{loading: isRequestLoading}, fetchSearchItems] = useAsyncFn(
+    const [{ loading: isRequestLoading }, fetchSearchItems] = useAsyncFn(
         cancellableFetchSearchItems,
-        [cancellableFetchSearchItems]
+        [cancellableFetchSearchItems],
     )
 
-    const [{loading: isDelayedRequestLoading}, delayedFetchSearchItems] =
+    const [{ loading: isDelayedRequestLoading }, delayedFetchSearchItems] =
         useDelayedAsyncFn(
             cancellableFetchSearchItems,
             [cancellableFetchSearchItems],
-            300
+            300,
         )
 
     const isLoading = useMemo(
         () => isRequestLoading || isDelayedRequestLoading,
-        [isRequestLoading, isDelayedRequestLoading]
+        [isRequestLoading, isDelayedRequestLoading],
     )
-    const [{loading: isFetchingMore}, fetchMoreSearchItems] = useAsyncFn(
+    const [{ loading: isFetchingMore }, fetchMoreSearchItems] = useAsyncFn(
         cancellableFetchSearchItems,
-        [cancellableFetchSearchItems]
+        [cancellableFetchSearchItems],
     )
 
     const reinitializeSearchQuery = () => {
@@ -627,8 +628,8 @@ export const useSearch = () => {
                 type:
                     | 'spotlight-ticket'
                     | 'spotlight-customer'
-                    | 'spotlight-call'
-            ) => void
+                    | 'spotlight-call',
+            ) => void,
         ) => {
             if (selectedItem) {
                 const selectedItemUrl = getSelectedItemUrl(selectedItem)
@@ -637,7 +638,7 @@ export const useSearch = () => {
                         ? 'spotlight-customer'
                         : isTicket(selectedItem)
                           ? 'spotlight-ticket'
-                          : 'spotlight-call'
+                          : 'spotlight-call',
                 )
                 if ((isMacOs && event.metaKey) || (!isMacOs && event.ctrlKey)) {
                     window.open(selectedItemUrl, '_blank', 'noopener')
@@ -673,7 +674,7 @@ export const useSearch = () => {
             searchQuery,
             selectedItem,
             showCallsTab,
-        ]
+        ],
     )
 
     const handleLoadMore = useCallback(async () => {

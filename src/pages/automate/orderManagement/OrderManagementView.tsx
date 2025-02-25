@@ -1,13 +1,14 @@
-import {createMemoryHistory} from 'history'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useMemo, useState} from 'react'
-import {useHistory, useLocation, useParams} from 'react-router-dom'
+import React, { useMemo, useState } from 'react'
 
-import {SegmentEvent, logEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
+import { createMemoryHistory } from 'history'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { useHistory, useLocation, useParams } from 'react-router-dom'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
-import {IntegrationType} from 'models/integration/constants'
+import { IntegrationType } from 'models/integration/constants'
 import {
     PolicyKey,
     ReturnActionType,
@@ -20,16 +21,16 @@ import useContactFormsAutomationSettings from 'pages/automate/common/hooks/useCo
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
 import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
-import {getHasAutomate} from 'state/billing/selectors'
+import { getHasAutomate } from 'state/billing/selectors'
 
-import {ORDER_MANAGEMENT} from '../common/components/constants'
+import { ORDER_MANAGEMENT } from '../common/components/constants'
 import {
     isSelfServiceChatChannel,
     isSelfServiceStandaloneContactFormChannel,
 } from '../common/hooks/useSelfServiceChannels'
 import OrderManagementFlowItem from './components/OrderManagementFlowItem'
 import OrderManagementPreview from './OrderManagementPreview'
-import {useOrderManagementPreviewContext} from './OrderManagementPreviewContext'
+import { useOrderManagementPreviewContext } from './OrderManagementPreviewContext'
 
 const AutomationSubscriptionAction = () => {
     const [
@@ -57,34 +58,34 @@ const AutomationSubscriptionAction = () => {
 
 const OrderManagementView = () => {
     const history = useHistory()
-    const {pathname} = useLocation()
-    const {shopName} = useParams<{shopName: string}>()
+    const { pathname } = useLocation()
+    const { shopName } = useParams<{ shopName: string }>()
     const {
         isUpdatePending,
         selfServiceConfiguration,
         handleSelfServiceConfigurationUpdate,
     } = useSelfServiceConfiguration(IntegrationType.Shopify, shopName)
     const hasAutomate = useAppSelector(getHasAutomate)
-    const {channels} = useOrderManagementPreviewContext()
+    const { channels } = useOrderManagementPreviewContext()
     const previewHistory = useMemo(
         () => createMemoryHistory(),
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [selfServiceConfiguration?.id]
+        [selfServiceConfiguration?.id],
     )
     const chatApplicationIds = useMemo(
         () =>
             channels
                 .filter(isSelfServiceChatChannel)
-                .map(({value}) => value.meta.app_id)
+                .map(({ value }) => value.meta.app_id)
                 .filter((value): value is string => Boolean(value)),
-        [channels]
+        [channels],
     )
     const contactFormIds = useMemo(
         () =>
             channels
                 .filter(isSelfServiceStandaloneContactFormChannel)
-                .map(({value}) => value.id),
-        [channels]
+                .map(({ value }) => value.id),
+        [channels],
     )
 
     const changeAutomateSettingButtomPosition =
@@ -97,9 +98,9 @@ const OrderManagementView = () => {
         })
     })
 
-    const {applicationsAutomationSettings} =
+    const { applicationsAutomationSettings } =
         useApplicationsAutomationSettings(chatApplicationIds)
-    const {contactFormsAutomationSettings} =
+    const { contactFormsAutomationSettings } =
         useContactFormsAutomationSettings(contactFormIds)
 
     const [hoveredOrderManagementFlow, setHoveredOrderManagementFlow] =
@@ -107,7 +108,7 @@ const OrderManagementView = () => {
 
     const handleOrderManagementFlowUpdate = (
         flow: PolicyKey,
-        isEnabled: boolean
+        isEnabled: boolean,
     ) => {
         void handleSelfServiceConfigurationUpdate((draft) => {
             draft[flow].enabled = isEnabled
@@ -134,11 +135,11 @@ const OrderManagementView = () => {
                     ?.responseMessageContent?.text
             case 'reportIssuePolicy':
                 return selfServiceConfiguration?.reportIssuePolicy?.cases?.some(
-                    ({newReasons}) =>
+                    ({ newReasons }) =>
                         newReasons.some(
                             (reason) =>
-                                !reason.action?.responseMessageContent.text
-                        )
+                                !reason.action?.responseMessageContent.text,
+                        ),
                 )
         }
     }
@@ -155,10 +156,10 @@ const OrderManagementView = () => {
     const isLoading =
         !selfServiceConfiguration ||
         chatApplicationIds.some(
-            (id) => !(id in applicationsAutomationSettings)
+            (id) => !(id in applicationsAutomationSettings),
         ) ||
         contactFormIds.some(
-            (id) => !(id.toString() in contactFormsAutomationSettings)
+            (id) => !(id.toString() in contactFormsAutomationSettings),
         )
 
     return (
@@ -178,7 +179,7 @@ const OrderManagementView = () => {
                     onChange={(isEnabled) => {
                         handleOrderManagementFlowUpdate(
                             'trackOrderPolicy',
-                            isEnabled
+                            isEnabled,
                         )
                     }}
                     onMouseEnter={() => {
@@ -187,7 +188,7 @@ const OrderManagementView = () => {
                     onMouseLeave={handleFlowItemMouseLeave}
                     alert={getAlert('trackOrderPolicy')}
                     {...(!hasAutomate
-                        ? {action: <AutomationSubscriptionAction />}
+                        ? { action: <AutomationSubscriptionAction /> }
                         : {
                               onClick: () => {
                                   history.push(`${pathname}/track`)
@@ -204,7 +205,7 @@ const OrderManagementView = () => {
                     onChange={(isEnabled) => {
                         handleOrderManagementFlowUpdate(
                             'returnOrderPolicy',
-                            isEnabled
+                            isEnabled,
                         )
                     }}
                     onMouseEnter={() => {
@@ -226,7 +227,7 @@ const OrderManagementView = () => {
                     onChange={(isEnabled) => {
                         handleOrderManagementFlowUpdate(
                             'cancelOrderPolicy',
-                            isEnabled
+                            isEnabled,
                         )
                     }}
                     onMouseEnter={() => {
@@ -248,7 +249,7 @@ const OrderManagementView = () => {
                     onChange={(isEnabled) => {
                         handleOrderManagementFlowUpdate(
                             'reportIssuePolicy',
-                            isEnabled
+                            isEnabled,
                         )
                     }}
                     onMouseEnter={() => {
@@ -257,7 +258,7 @@ const OrderManagementView = () => {
                     onMouseLeave={handleFlowItemMouseLeave}
                     alert={getAlert('reportIssuePolicy')}
                     {...(!hasAutomate
-                        ? {action: <AutomationSubscriptionAction />}
+                        ? { action: <AutomationSubscriptionAction /> }
                         : {
                               onClick: () => {
                                   history.push(`${pathname}/report-issue`)

@@ -1,18 +1,19 @@
-import classnames from 'classnames'
-import {Map} from 'immutable'
 import React from 'react'
-import {Link} from 'react-router-dom'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import classnames from 'classnames'
+import { Map } from 'immutable'
+import { Link } from 'react-router-dom'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationType} from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import InfobarLayout from 'pages/common/components/infobar/InfobarLayout'
 import Video from 'pages/common/components/Video/Video'
-import {isBaseEmailIntegration} from 'pages/integrations/integration/components/email/helpers'
-import {getHumanAgents} from 'state/agents/selectors'
-import {is2FAEnforcedSelector} from 'state/currentAccount/selectors'
-import {getCurrentUser} from 'state/currentUser/selectors'
+import { isBaseEmailIntegration } from 'pages/integrations/integration/components/email/helpers'
+import { getHumanAgents } from 'state/agents/selectors'
+import { is2FAEnforcedSelector } from 'state/currentAccount/selectors'
+import { getCurrentUser } from 'state/currentUser/selectors'
 import {
     getEmailIntegrations,
     makeHasIntegrationOfTypes,
@@ -20,7 +21,7 @@ import {
 
 import css from './OnboardingSidePanel.less'
 
-const CheckIcon = ({condition}: {condition: boolean}) => (
+const CheckIcon = ({ condition }: { condition: boolean }) => (
     <i
         className={classnames('material-icons', {
             'text-success': condition,
@@ -51,7 +52,7 @@ export default function OnboardingSidePanel({
     const hasVerifiedEmailIntegration = emailIntegrations
         .filter(
             (integration: Map<any, any>) =>
-                !isBaseEmailIntegration(integration.toJS())
+                !isBaseEmailIntegration(integration.toJS()),
         ) // remove generated gorgias addresses
         .some((integration: Map<any, any>) => {
             // gmail or outlook is connected or forwarding is on
@@ -62,10 +63,10 @@ export default function OnboardingSidePanel({
         })
 
     const hasConnectedFacebook = hasIntegrationsOfTypes(
-        IntegrationType.Facebook
+        IntegrationType.Facebook,
     )
     const hasShopifyIntegration = hasIntegrationsOfTypes(
-        IntegrationType.Shopify
+        IntegrationType.Shopify,
     )
 
     const hasConnectedChat = hasIntegrationsOfTypes([

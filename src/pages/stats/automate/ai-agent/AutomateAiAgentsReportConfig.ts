@@ -1,24 +1,24 @@
-import {FilterKey, StaticFilter} from 'models/stat/types'
-import {AUTOMATED_INTERACTIONS_LABEL} from 'pages/automate/automate-metrics/constants'
-import {AiAgentTableChart} from 'pages/stats/automate/ai-agent/AiAgentTableChart'
-import {AutomatedInteractionsMetricCard} from 'pages/stats/automate/ai-agent/AutomatedInteractionsMetricCard'
+import { FilterKey, StaticFilter } from 'models/stat/types'
+import { AUTOMATED_INTERACTIONS_LABEL } from 'pages/automate/automate-metrics/constants'
+import { AiAgentTableChart } from 'pages/stats/automate/ai-agent/AiAgentTableChart'
+import { AutomatedInteractionsMetricCard } from 'pages/stats/automate/ai-agent/AutomatedInteractionsMetricCard'
 import {
-    AutomatedInteractionsOverTimeChart,
     AUTOMATED_INTERACTIONS_OVER_TIME_CHART_TITLE,
+    AutomatedInteractionsOverTimeChart,
 } from 'pages/stats/automate/ai-agent/AutomatedInteractionsOverTimeChart'
 import {
     ChartType,
     // DataExportFormat,
     ReportConfig,
 } from 'pages/stats/custom-reports/types'
-import {PAGE_TITLE_AI_AGENT} from 'pages/stats/self-service/constants'
-import {CustomFieldsTicketCountBreakdownTableChart} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownTableChart'
-import {TicketDistributionChart} from 'pages/stats/ticket-insights/ticket-fields/TicketDistributionTable'
+import { PAGE_TITLE_AI_AGENT } from 'pages/stats/self-service/constants'
+import { CustomFieldsTicketCountBreakdownTableChart } from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownTableChart'
+import { TicketDistributionChart } from 'pages/stats/ticket-insights/ticket-fields/TicketDistributionTable'
 import {
     TicketInsightsFieldsMetric,
     TicketInsightsFieldsMetricConfig,
 } from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsMetricConfig'
-import {TicketInsightsFieldTrend} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldTrend'
+import { TicketInsightsFieldTrend } from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldTrend'
 
 export const SUPPORT_PERFORMANCE_AI_AGENTS_REPORT_PATH = 'automate-ai-agent'
 

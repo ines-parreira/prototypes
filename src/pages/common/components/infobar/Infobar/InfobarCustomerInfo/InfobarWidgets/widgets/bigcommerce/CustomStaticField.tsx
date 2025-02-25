@@ -1,7 +1,8 @@
-import classnames from 'classnames'
-import React, {ReactNode, useContext} from 'react'
+import React, { ReactNode, useContext } from 'react'
 
-import {EditionContext} from 'providers/infobar/EditionContext'
+import classnames from 'classnames'
+
+import { EditionContext } from 'providers/infobar/EditionContext'
 
 import css from './CustomStaticField.less'
 
@@ -11,8 +12,8 @@ type Props = {
     noBold?: boolean
 }
 
-export function CustomStaticField({children, label, noBold = false}: Props) {
-    const {isEditing} = useContext(EditionContext)
+export function CustomStaticField({ children, label, noBold = false }: Props) {
+    const { isEditing } = useContext(EditionContext)
     return (
         <div className={classnames(css.widgetField, css.staticWidgetField)}>
             {label ? (

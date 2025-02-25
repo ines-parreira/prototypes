@@ -1,11 +1,12 @@
-import {render, screen, waitFor} from '@testing-library/react'
-import MockAdapter from 'axios-mock-adapter'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render, screen, waitFor } from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {teams} from 'fixtures/teams'
+import { teams } from 'fixtures/teams'
 import client from 'models/api/resources'
 
 import TeamList from '../List'
@@ -25,25 +26,25 @@ describe('<TeamList />', () => {
         render(
             <Provider store={store}>
                 <TeamList />
-            </Provider>
+            </Provider>,
         )
 
         await waitFor(() => {
             expect(
-                screen.getByText(/Your account doesn't have any teams yet./i)
+                screen.getByText(/Your account doesn't have any teams yet./i),
             ).toBeInTheDocument()
         })
     })
     it('should render with data', async () => {
         mockServer.onGet('/api/teams/').reply(200, {
             data: teams,
-            meta: {next_cursor: null, prev_cursor: null},
+            meta: { next_cursor: null, prev_cursor: null },
         })
 
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <TeamList />
-            </Provider>
+            </Provider>,
         )
 
         await waitFor(() => {

@@ -1,9 +1,10 @@
-import {useCallback, useMemo} from 'react'
-import {useHistory} from 'react-router-dom'
+import { useCallback, useMemo } from 'react'
+
+import { useHistory } from 'react-router-dom'
 
 import useAsyncFn from 'hooks/useAsyncFn'
-import {IntegrationType} from 'models/integration/constants'
-import {SelfServiceReportIssueCase} from 'models/selfServiceConfiguration/types'
+import { IntegrationType } from 'models/integration/constants'
+import { SelfServiceReportIssueCase } from 'models/selfServiceConfiguration/types'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 
 const useReportOrderIssueFlowScenarios = (shopName: string) => {
@@ -18,21 +19,21 @@ const useReportOrderIssueFlowScenarios = (shopName: string) => {
 
     const scenarios = useMemo(
         () => selfServiceConfiguration?.reportIssuePolicy?.cases ?? [],
-        [selfServiceConfiguration?.reportIssuePolicy?.cases]
+        [selfServiceConfiguration?.reportIssuePolicy?.cases],
     )
 
     const handleScenariosUpdate = useCallback(
         (
             scenarios: SelfServiceReportIssueCase[],
-            messages: {success?: string; error?: string} = {}
+            messages: { success?: string; error?: string } = {},
         ) => {
             return handleSelfServiceConfigurationUpdate((draft) => {
                 draft.reportIssuePolicy.cases = scenarios
             }, messages)
         },
-        [handleSelfServiceConfigurationUpdate]
+        [handleSelfServiceConfigurationUpdate],
     )
-    const [{loading: isCreatePending}, handleScenarioCreate] = useAsyncFn(
+    const [{ loading: isCreatePending }, handleScenarioCreate] = useAsyncFn(
         async (scenario: SelfServiceReportIssueCase) => {
             await handleScenariosUpdate([scenario, ...scenarios], {
                 success: 'Successfully created',
@@ -40,10 +41,10 @@ const useReportOrderIssueFlowScenarios = (shopName: string) => {
             })
 
             history.push(
-                `/app/automation/shopify/${shopName}/order-management/report-issue`
+                `/app/automation/shopify/${shopName}/order-management/report-issue`,
             )
         },
-        [scenarios, handleScenariosUpdate, history, shopName]
+        [scenarios, handleScenariosUpdate, history, shopName],
     )
 
     return {

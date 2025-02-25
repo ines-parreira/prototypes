@@ -1,6 +1,6 @@
 import moment from 'moment'
 
-import {Period} from 'models/stat/types'
+import { Period } from 'models/stat/types'
 import {
     MESSAGES_SENT_LABEL,
     OPEN_TICKETS_LABEL,
@@ -11,8 +11,8 @@ import {
 } from 'services/reporting/constants'
 import {
     createTimeSeriesReport,
-    TimeSeriesDataWithLabels,
     createTrendReport,
+    TimeSeriesDataWithLabels,
 } from 'services/reporting/supportPerformanceReportingService'
 import * as files from 'utils/file'
 
@@ -97,8 +97,8 @@ const workloadDataSource = [
         value: String(channelData.value),
         prevValue: String(
             exampleWorkloadPerChannelData.data?.find(
-                (row) => row.label === channelData.label
-            )?.value
+                (row) => row.label === channelData.label,
+            )?.value,
         ),
     })) || []),
 ]
@@ -109,7 +109,7 @@ const period = {
 }
 
 const timeSeriesDateTimeOverriddenByYesterdayDate = [
-    [{...exampleTimeSeriesData, dateTime: YESTERDAY}],
+    [{ ...exampleTimeSeriesData, dateTime: YESTERDAY }],
 ]
 
 const timeSeriesNoValue = [
@@ -146,7 +146,7 @@ const timeSeriesDataOverrides = [
 const testDataFactory = (
     data: TimeSeriesDataWithLabels[],
     period: Period,
-    testName: string | undefined = ''
+    testName: string | undefined = '',
 ) => {
     return {
         data,
@@ -159,12 +159,12 @@ const testData = [
     testDataFactory(
         timeSeriesData,
         period,
-        'Overridden time series report data'
+        'Overridden time series report data',
     ),
     testDataFactory(
         timeSeriesDataOverrides,
         period,
-        'Overridden one dimensional report data'
+        'Overridden one dimensional report data',
     ),
 ]
 
@@ -172,7 +172,7 @@ describe('supportPerformanceReportingService', () => {
     describe('createTimeSeriesReport', () => {
         it.each(testData)(
             'should call saveReport with a report $testName',
-            ({data}) => {
+            ({ data }) => {
                 const fakeReport = 'someValue'
                 const fileName = 'some-name'
                 jest.spyOn(files, 'createCsv').mockReturnValue(fakeReport)
@@ -184,7 +184,7 @@ describe('supportPerformanceReportingService', () => {
                         [fileName]: fakeReport,
                     },
                 })
-            }
+            },
         )
 
         it('should return empty object when no data provided', () => {

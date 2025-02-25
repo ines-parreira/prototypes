@@ -1,9 +1,10 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import type {Notification} from 'common/notifications'
+import { render } from '@testing-library/react'
 
-import type {EmailDomainPayload} from '../../types'
+import type { Notification } from 'common/notifications'
+
+import type { EmailDomainPayload } from '../../types'
 import DomainVerificationNotification from '../DomainVerificationNotification'
 
 const notification = {
@@ -19,19 +20,19 @@ const notification = {
 
 describe('UserMentionedNotification', () => {
     it('should render the notification with a sender', () => {
-        const {getByText} = render(
-            <DomainVerificationNotification notification={notification} />
+        const { getByText } = render(
+            <DomainVerificationNotification notification={notification} />,
         )
         expect(getByText('Domain verification complete')).toBeInTheDocument()
         expect(
             getByText(
-                (_, el) => el?.textContent === 'System update from Gorgias'
-            )
+                (_, el) => el?.textContent === 'System update from Gorgias',
+            ),
         ).toBeInTheDocument()
         expect(
             getByText(
-                'Your domain has been verified! You can now send emails with Gorgias using addresses ending in @example.com.'
-            )
+                'Your domain has been verified! You can now send emails with Gorgias using addresses ending in @example.com.',
+            ),
         ).toBeInTheDocument()
     })
 })

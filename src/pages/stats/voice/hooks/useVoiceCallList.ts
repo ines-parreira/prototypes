@@ -1,4 +1,4 @@
-import {OrderDirection} from 'models/api/types'
+import { OrderDirection } from 'models/api/types'
 import {
     VoiceCallCube,
     VoiceCallDimension,
@@ -8,11 +8,11 @@ import {
     usePostReporting,
     UsePostReportingQueryData,
 } from 'models/reporting/queries'
-import {voiceCallListQueryFactory} from 'models/reporting/queryFactories/voice/voiceCall'
-import {StatsFilters} from 'models/stat/types'
+import { voiceCallListQueryFactory } from 'models/reporting/queryFactories/voice/voiceCall'
+import { StatsFilters } from 'models/stat/types'
 
-import {CALL_LIST_PAGE_SIZE} from '../constants/voiceOverview'
-import {VoiceCallStatListItem, VoiceCallSummary} from '../models/types'
+import { CALL_LIST_PAGE_SIZE } from '../constants/voiceOverview'
+import { VoiceCallStatListItem, VoiceCallSummary } from '../models/types'
 
 export const useVoiceCallList = (
     filters: StatsFilters,
@@ -21,7 +21,7 @@ export const useVoiceCallList = (
     perPage = CALL_LIST_PAGE_SIZE,
     segment?: VoiceCallSegment,
     order?: VoiceCallDimension,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ) =>
     usePostReporting<
         VoiceCallStatListItem[],
@@ -36,16 +36,16 @@ export const useVoiceCallList = (
                 perPage,
                 (page - 1) * perPage,
                 order,
-                sorting
+                sorting,
             ),
         ],
         {
             select: selectVoiceCallData,
-        }
+        },
     )
 
 export const selectVoiceCallData = (
-    results: UsePostReportingQueryData<VoiceCallStatListItem[]>
+    results: UsePostReportingQueryData<VoiceCallStatListItem[]>,
 ): VoiceCallSummary[] => {
     const parseNullableInteger = (value: string | null) =>
         value ? parseInt(value) : null
@@ -55,7 +55,7 @@ export const selectVoiceCallData = (
         customerId: parseNullableInteger(row[VoiceCallDimension.CustomerId]),
         direction: row[VoiceCallDimension.Direction],
         integrationId: parseNullableInteger(
-            row[VoiceCallDimension.IntegrationId]
+            row[VoiceCallDimension.IntegrationId],
         ),
         createdAt: row[VoiceCallDimension.CreatedAt],
         status: row[VoiceCallDimension.Status],

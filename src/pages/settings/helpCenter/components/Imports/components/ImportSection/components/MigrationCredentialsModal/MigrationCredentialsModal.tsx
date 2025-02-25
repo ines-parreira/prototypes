@@ -1,11 +1,11 @@
-import {Map} from 'immutable'
-import React, {Fragment, useEffect, useState} from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
+
+import { Map } from 'immutable'
 
 import Button from 'pages/common/components/button/Button'
 import InputField from 'pages/common/forms/input/InputField'
 
-import {MigrationProvider} from '../../types'
-
+import { MigrationProvider } from '../../types'
 import MigrationBaseModal from '../MigrationBaseModal'
 import MigrationBaseModalBody from '../MigrationBaseModalBody'
 import ProviderInfo from '../ProviderInfo'
@@ -89,7 +89,7 @@ const MigrationCredentialsModal: React.FC<Props> = ({
                                 value={fieldsValue.get(fieldConfig.name) || ''}
                                 onChange={(newValue) =>
                                     setFieldsValue((prev) =>
-                                        prev.set(fieldConfig.name, newValue)
+                                        prev.set(fieldConfig.name, newValue),
                                     )
                                 }
                                 isRequired

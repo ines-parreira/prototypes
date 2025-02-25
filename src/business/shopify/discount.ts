@@ -1,15 +1,14 @@
-import {Map, List} from 'immutable'
+import { List, Map } from 'immutable'
 
-import {DiscountType} from '../../constants/integrations/types/shopify'
-
-import {getDraftOrderTotalLineItemsPrice} from './lineItem'
-import {formatPrice} from './number'
+import { DiscountType } from '../../constants/integrations/types/shopify'
+import { getDraftOrderTotalLineItemsPrice } from './lineItem'
+import { formatPrice } from './number'
 
 export function getDiscountAmount(
     price: number,
     discountType: DiscountType,
     discountValue: string,
-    quantity = 1
+    quantity = 1,
 ): number {
     const value = parseFloat(discountValue)
 
@@ -23,7 +22,7 @@ export function getDiscountAmount(
  * or on the global applied discount), because discount amounts depend on quantities.
  */
 export function refreshAppliedDiscounts(
-    draftOrder: Map<any, any>
+    draftOrder: Map<any, any>,
 ): Map<any, any> {
     let newDraftOrder = draftOrder
     ;(draftOrder.get('line_items', []) as List<any>).forEach(
@@ -44,9 +43,9 @@ export function refreshAppliedDiscounts(
 
             newDraftOrder = newDraftOrder.setIn(
                 ['line_items', index, 'applied_discount', 'amount'],
-                formatPrice(amount, currency, true)
+                formatPrice(amount, currency, true),
             )
-        }
+        },
     )
 
     const appliedDiscount = newDraftOrder.get('applied_discount') as Maybe<
@@ -65,7 +64,7 @@ export function refreshAppliedDiscounts(
         const amount = getDiscountAmount(totalLineItemsPrice, type, value)
         newDraftOrder = newDraftOrder.setIn(
             ['applied_discount', 'amount'],
-            formatPrice(amount, currency, true)
+            formatPrice(amount, currency, true),
         )
     }
 

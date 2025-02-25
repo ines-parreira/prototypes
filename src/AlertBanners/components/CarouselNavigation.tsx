@@ -1,5 +1,6 @@
-import {Box, IconButton} from '@gorgias/merchant-ui-kit'
 import React from 'react'
+
+import { Box, IconButton } from '@gorgias/merchant-ui-kit'
 
 type CarouselNavigationProps = {
     onPrevious: VoidFunction

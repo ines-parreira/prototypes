@@ -1,10 +1,11 @@
-import {Emoji} from 'emoji-mart'
-import React, {ReactNode, PureComponent} from 'react'
-import {Card, CardBody, Collapse} from 'reactstrap'
+import React, { PureComponent, ReactNode } from 'react'
 
-import {reportError} from '../utils/errors'
+import { Emoji } from 'emoji-mart'
+import { Card, CardBody, Collapse } from 'reactstrap'
 
+import { reportError } from '../utils/errors'
 import Button from './common/components/button/Button'
+
 import css from './ErrorBoundary.less'
 
 export const SUBHEADER = 'An error occurred!'
@@ -38,18 +39,18 @@ export class ErrorBoundary extends PureComponent<Props, State> {
         error: Error,
         errorInfo: {
             componentStack: string
-        }
+        },
     ) {
-        const {sentryTags} = this.props
+        const { sentryTags } = this.props
         reportError(error, {
             extra: errorInfo,
-            ...(sentryTags != null ? {tags: sentryTags} : {}),
+            ...(sentryTags != null ? { tags: sentryTags } : {}),
         })
     }
 
     _onToggle = () => {
-        const {areDetailsOpen} = this.state
-        this.setState({areDetailsOpen: !areDetailsOpen})
+        const { areDetailsOpen } = this.state
+        this.setState({ areDetailsOpen: !areDetailsOpen })
     }
 
     _onReload = () => {
@@ -57,8 +58,8 @@ export class ErrorBoundary extends PureComponent<Props, State> {
     }
 
     render() {
-        const {children} = this.props
-        const {error, areDetailsOpen} = this.state
+        const { children } = this.props
+        const { error, areDetailsOpen } = this.state
 
         if (!error) {
             return children

@@ -1,17 +1,18 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
-import {BusiestTimesOfDaysCellContent} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysCellContent'
+import { BusiestTimesOfDaysCellContent } from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysCellContent'
 import {
     BusiestTimeOfDaysMetrics,
     DayOfWeek,
     HOUR_COLUMN,
 } from 'pages/stats/support-performance/busiest-times-of-days/types'
-import {hourFromHourIndex} from 'pages/stats/support-performance/busiest-times-of-days/utils'
+import { hourFromHourIndex } from 'pages/stats/support-performance/busiest-times-of-days/utils'
 
 describe('<BusiestTimesOfDaysCellContent />', () => {
     const defaultProps = {
@@ -26,7 +27,10 @@ describe('<BusiestTimesOfDaysCellContent />', () => {
     }
     it('should render loading skeleton', () => {
         render(
-            <BusiestTimesOfDaysCellContent {...defaultProps} isLoading={true} />
+            <BusiestTimesOfDaysCellContent
+                {...defaultProps}
+                isLoading={true}
+            />,
         )
     })
 
@@ -35,11 +39,11 @@ describe('<BusiestTimesOfDaysCellContent />', () => {
             <BusiestTimesOfDaysCellContent
                 {...defaultProps}
                 day={HOUR_COLUMN}
-            />
+            />,
         )
 
         expect(
-            screen.getByText(hourFromHourIndex(defaultProps.hour))
+            screen.getByText(hourFromHourIndex(defaultProps.hour)),
         ).toBeInTheDocument()
     })
 
@@ -51,9 +55,9 @@ describe('<BusiestTimesOfDaysCellContent />', () => {
                 formatMetricValue(
                     defaultProps.metricValue,
                     'integer',
-                    NOT_AVAILABLE_PLACEHOLDER
-                )
-            )
+                    NOT_AVAILABLE_PLACEHOLDER,
+                ),
+            ),
         )
     })
 
@@ -62,11 +66,11 @@ describe('<BusiestTimesOfDaysCellContent />', () => {
             <BusiestTimesOfDaysCellContent
                 {...defaultProps}
                 isHeatmapMode={true}
-            />
+            />,
         )
 
         expect(
-            document.querySelector(`.p${defaultProps.decile}`)
+            document.querySelector(`.p${defaultProps.decile}`),
         ).toBeInTheDocument()
         expect(document.querySelector('.heatmap')).toBeInTheDocument()
     })
@@ -76,11 +80,11 @@ describe('<BusiestTimesOfDaysCellContent />', () => {
             <BusiestTimesOfDaysCellContent
                 {...defaultProps}
                 isWorkingHour={true}
-            />
+            />,
         )
 
         expect(
-            document.querySelector('.redTransparentStripesPseudoElement')
+            document.querySelector('.redTransparentStripesPseudoElement'),
         ).toBeInTheDocument()
         expect(document.querySelector('.heatmap')).toBeInTheDocument()
     })

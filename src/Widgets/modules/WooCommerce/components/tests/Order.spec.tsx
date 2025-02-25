@@ -1,11 +1,11 @@
-import {render} from '@testing-library/react'
-
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {EcommerceStore} from 'models/customerEcommerceData/types'
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
 
-import {orderCustomization} from '../Order'
+import { EcommerceStore } from 'models/customerEcommerceData/types'
+
+import { orderCustomization } from '../Order'
 
 const ecomStore: EcommerceStore = {
     deleted_datetime: null,
@@ -36,18 +36,18 @@ describe('Order card', () => {
     describe('<TitleWrapper/>', () => {
         const TitleWrapper = orderCustomization.TitleWrapper!
         it('should render the order', () => {
-            const {container} = render(
-                <TitleWrapper source={fromJS({external_id: '1234'})}>
+            const { container } = render(
+                <TitleWrapper source={fromJS({ external_id: '1234' })}>
                     Order
-                </TitleWrapper>
+                </TitleWrapper>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render the order without the external id', () => {
-            const {container} = render(
-                <TitleWrapper source={fromJS({})}>Order</TitleWrapper>
+            const { container } = render(
+                <TitleWrapper source={fromJS({})}>Order</TitleWrapper>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -55,10 +55,10 @@ describe('Order card', () => {
 
         it('should not render because the store is missing', () => {
             mockEcomStore = undefined
-            const {container} = render(
-                <TitleWrapper source={fromJS({external_id: '1234'})}>
+            const { container } = render(
+                <TitleWrapper source={fromJS({ external_id: '1234' })}>
                     Order
-                </TitleWrapper>
+                </TitleWrapper>,
             )
 
             expect(container.firstChild).toBeNull()

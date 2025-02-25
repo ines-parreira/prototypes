@@ -1,16 +1,17 @@
-import React, {memo} from 'react'
-import {NodeProps} from 'reactflow'
+import React, { memo } from 'react'
+
+import { NodeProps } from 'reactflow'
 
 import VisualBuilderActionTag from 'pages/automate/workflows/components/VisualBuilderActionTag'
 import {
     useVisualBuilderNodeProps,
     VisualBuilderNodeProps,
 } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
-import {ReplaceItemNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { ReplaceItemNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 import EdgeBlock from '../components/EdgeBlock'
 import NodeDeleteIcon from '../components/NodeDeleteIcon'
-import {defaultNodeNames} from './constants'
+import { defaultNodeNames } from './constants'
 import VisualBuilderNode from './VisualBuilderNode'
 import VisualBuilderNodeContent from './VisualBuilderNodeContent'
 
@@ -45,7 +46,7 @@ const ReplaceItemNode = memo(function ReplaceItemNode({
 })
 
 export default function ReplaceItemNodeWrapper(
-    node: NodeProps<ReplaceItemNodeType['data']>
+    node: NodeProps<ReplaceItemNodeType['data']>,
 ) {
     const commonProps = useVisualBuilderNodeProps(node)
 

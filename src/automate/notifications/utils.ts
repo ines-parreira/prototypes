@@ -2,11 +2,10 @@ import {
     AiAgentOnboardingState,
     OnboardingNotificationState,
 } from 'models/aiAgent/types'
-import {getAiAgentNavigationRoutes} from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { getAiAgentNavigationRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { getLDClient } from 'utils/launchDarkly'
 
-import {getLDClient} from 'utils/launchDarkly'
-
-import {AiAgentNotificationPayload, AiAgentNotificationType} from './types'
+import { AiAgentNotificationPayload, AiAgentNotificationType } from './types'
 
 type NotificationParams = {
     title: string
@@ -16,7 +15,7 @@ type NotificationParams = {
 
 export const getNotificationParams = (
     payload: AiAgentNotificationPayload,
-    aiAgentTicketViewId: number | null
+    aiAgentTicketViewId: number | null,
 ): NotificationParams | null => {
     const {
         ai_agent_notification_type: aiAgentNotificationType,
@@ -72,7 +71,7 @@ export const getNotificationParams = (
 }
 
 export const getNotificationReceivedDatetimePayload = (
-    aiAgentNotificationType: AiAgentNotificationType
+    aiAgentNotificationType: AiAgentNotificationType,
 ): Partial<OnboardingNotificationState> => {
     const receivedDatetime = new Date().toISOString()
     switch (aiAgentNotificationType) {
@@ -106,7 +105,7 @@ export const getNotificationReceivedDatetimePayload = (
 
 export const isNotificationAlreadyReceived = (
     aiAgentNotificationType: AiAgentNotificationType,
-    onboardingNotificationState?: OnboardingNotificationState
+    onboardingNotificationState?: OnboardingNotificationState,
 ) => {
     if (!onboardingNotificationState) {
         return false
@@ -130,7 +129,7 @@ export const isNotificationAlreadyReceived = (
 
 export const getNotificationReceivedDatetime = (
     aiAgentNotificationType: AiAgentNotificationType,
-    onboardingNotificationState: OnboardingNotificationState
+    onboardingNotificationState: OnboardingNotificationState,
 ) => {
     switch (aiAgentNotificationType) {
         case AiAgentNotificationType.StartAiAgentSetup:

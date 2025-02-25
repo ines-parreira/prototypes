@@ -1,14 +1,15 @@
+import React, { useState } from 'react'
+
 import _capitalize from 'lodash/capitalize'
-import React, {useState} from 'react'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import warningIcon from 'assets/img/icons/warning.svg'
-import {EmailProvider, IntegrationType} from 'models/integration/constants'
-import {GmailIntegration, OutlookIntegration} from 'models/integration/types'
+import { EmailProvider, IntegrationType } from 'models/integration/constants'
+import { GmailIntegration, OutlookIntegration } from 'models/integration/types'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 import FormSection from 'pages/settings/SLAs/features/SLAForm/views/FormSection'
 
-import {canEnableEmailingViaInternalProvider} from '../helpers'
+import { canEnableEmailingViaInternalProvider } from '../helpers'
 
 import css from './EmailIntegrationDeliverabilitySettings.less'
 
@@ -43,7 +44,7 @@ export default function EmailIntegrationDeliverabilitySettings({
 
     const handleOnChange = (selectedProvider: string) => {
         onChange(
-            selectedProvider === DeliverabilityProviderSetting.UseProviderAPI
+            selectedProvider === DeliverabilityProviderSetting.UseProviderAPI,
         )
         setCurrentProvider(selectedProvider as DeliverabilityProviderSetting)
     }

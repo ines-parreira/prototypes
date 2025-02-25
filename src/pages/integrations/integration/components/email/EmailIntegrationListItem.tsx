@@ -1,29 +1,29 @@
+import React from 'react'
+
+import classnames from 'classnames'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
 import {
     EmailIntegration,
     EmailProvider,
     GmailIntegration,
 } from '@gorgias/api-queries'
-import classnames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React from 'react'
 
 import gmailImg from 'assets/img/integrations/gmail.svg'
 import officeImg from 'assets/img/integrations/office.svg'
-import {FeatureFlagKey} from 'config/featureFlags'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import {
+    EmailIntegration as DEPRECATED_EmailIntegration,
     IntegrationType,
     OutlookIntegration,
-    EmailIntegration as DEPRECATED_EmailIntegration,
 } from 'models/integration/types'
 import history from 'pages/history'
-import {getDefaultIntegrationSettings} from 'state/currentAccount/selectors'
-import {getIconFromType} from 'state/integrations/helpers'
-
-import {makeGetRedirectUri} from 'state/integrations/selectors'
+import { getDefaultIntegrationSettings } from 'state/currentAccount/selectors'
+import { getIconFromType } from 'state/integrations/helpers'
+import { makeGetRedirectUri } from 'state/integrations/selectors'
 
 import DefaultIntegrationBadge from './DefaultIntegrationBadge'
-import css from './EmailIntegrationList.less'
 import EmailIntegrationListVerificationStatus from './EmailIntegrationListVerificationStatus'
 import {
     canIntegrationDomainBeVerified,
@@ -31,7 +31,9 @@ import {
     isBaseEmailIntegration,
     isOutboundVerifiedSendgrid,
 } from './helpers'
-import {useEmailOnboardingCompleteCheck} from './hooks/useEmailOnboarding'
+import { useEmailOnboardingCompleteCheck } from './hooks/useEmailOnboarding'
+
+import css from './EmailIntegrationList.less'
 
 type Props = {
     integration: EmailIntegration | GmailIntegration | OutlookIntegration
@@ -58,7 +60,8 @@ export default function EmailIntegrationListItem({
     const isNewDomainVerificationEnabled: boolean =
         useFlags()[FeatureFlagKey.NewDomainVerification] ?? false
 
-    const {isOnboardingComplete} = useEmailOnboardingCompleteCheck(integration)
+    const { isOnboardingComplete } =
+        useEmailOnboardingCompleteCheck(integration)
 
     const active = !integration.deactivated_datetime
     const integrationId = integration.id
@@ -140,7 +143,7 @@ export default function EmailIntegrationListItem({
                     className={classnames(
                         css.icon,
                         'material-icons',
-                        'align-bottom'
+                        'align-bottom',
                     )}
                 >
                     email
@@ -152,7 +155,7 @@ export default function EmailIntegrationListItem({
     const adapter = adapters[integrationType as keyof typeof adapters]
 
     const storeIntegration = integrations.find(
-        (_integration) => _integration?.id === storeMappings?.[integrationId]
+        (_integration) => _integration?.id === storeMappings?.[integrationId],
     )
 
     const handleRowClick = () => {
@@ -180,7 +183,7 @@ export default function EmailIntegrationListItem({
                                 height={16}
                                 width={16}
                                 src={getIconFromType(
-                                    storeIntegration.type as IntegrationType
+                                    storeIntegration.type as IntegrationType,
                                 )}
                                 alt="logo"
                             />

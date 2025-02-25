@@ -1,29 +1,27 @@
-import {Label} from '@gorgias/merchant-ui-kit'
+import React, { useMemo, useRef, useState } from 'react'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useMemo, useRef, useState} from 'react'
-import {Route, Switch, useParams} from 'react-router-dom'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { Route, Switch, useParams } from 'react-router-dom'
 
-import {SegmentEvent, logEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
+import { Label } from '@gorgias/merchant-ui-kit'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useEffectOnce from 'hooks/useEffectOnce'
 import AutomateView from 'pages/automate/common/components/AutomateView'
 import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
-import {useHelpCenterPublishedArticlesCount} from 'pages/automate/common/hooks/useHelpCenterPublishedArticlesCount'
+import { useHelpCenterPublishedArticlesCount } from 'pages/automate/common/hooks/useHelpCenterPublishedArticlesCount'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
-
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
-import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
+import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
+import { useHelpCenterList } from 'pages/settings/helpCenter/hooks/useHelpCenterList'
 
-import {ARTICLE_RECOMMENDATION} from '../common/components/constants'
+import { ARTICLE_RECOMMENDATION } from '../common/components/constants'
 import HelpCenterSelect from '../common/components/HelpCenterSelect'
-import {useHistoryTracking} from '../common/hooks/useHistoryTracking'
-import {getArticleRecommendationNavItems} from '../common/utils/getArticleRecommendationNavItems'
+import { useHistoryTracking } from '../common/hooks/useHistoryTracking'
+import { getArticleRecommendationNavItems } from '../common/utils/getArticleRecommendationNavItems'
 import TrainMyAiViewContainer from '../trainMyAi/TrainMyAiViewContainer'
 import ArticleRecommendationPreview from './ArticleRecommendationPreview'
-
-import css from './ArticleRecommendationView.less'
 import {
     ConnectedChannelsInfoAlert,
     EmptyHelpCenterAlert,
@@ -31,14 +29,16 @@ import {
     NoHelpCenterAlert,
 } from './components/ArticleRecommendationAlerts'
 
+import css from './ArticleRecommendationView.less'
+
 const ArticleRecommendationView = () => {
     useHistoryTracking(SegmentEvent.AutomateArticleRecommendationVisited)
-    const {shopType, shopName} = useParams<{
+    const { shopType, shopName } = useParams<{
         shopType: string
         shopName: string
     }>()
 
-    const {helpCenters, isLoading: isLoadingHelpCenters} = useHelpCenterList({
+    const { helpCenters, isLoading: isLoadingHelpCenters } = useHelpCenterList({
         per_page: HELP_CENTER_MAX_CREATION,
         type: 'faq',
     })
@@ -66,7 +66,7 @@ const ArticleRecommendationView = () => {
 
     const helpCenter = useMemo(() => {
         return helpCenters.find(
-            (helpCenter) => helpCenter.id === dirtyHelpCenterId
+            (helpCenter) => helpCenter.id === dirtyHelpCenterId,
         )
     }, [helpCenters, dirtyHelpCenterId])
 
@@ -100,7 +100,7 @@ const ArticleRecommendationView = () => {
             isLoading={isLoading}
             headerNavbarItems={getArticleRecommendationNavItems(
                 shopType,
-                shopName
+                shopName,
             )}
         >
             <AutomateViewContent

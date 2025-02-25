@@ -1,5 +1,5 @@
-import {BANNER_TYPE_HIERARCHY} from '../../constants'
-import {AlertBannerTypes, ContextBanner} from '../../types'
+import { BANNER_TYPE_HIERARCHY } from '../../constants'
+import { AlertBannerTypes, ContextBanner } from '../../types'
 
 /**
  * Banners are sorted by types, in the follow order: [Critical, Warning, Info]
@@ -11,7 +11,7 @@ import {AlertBannerTypes, ContextBanner} from '../../types'
 export function getBannerInsertionIndex(
     banners: ContextBanner[],
     type: AlertBannerTypes,
-    findLastIndex: boolean = false
+    findLastIndex: boolean = false,
 ) {
     const indexMethod = findLastIndex ? 'findLastIndex' : 'findIndex'
     const typeIndex = banners[indexMethod as 'findIndex']((banner) => {

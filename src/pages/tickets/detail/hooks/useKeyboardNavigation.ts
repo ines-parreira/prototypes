@@ -1,4 +1,4 @@
-import {useEffect} from 'react'
+import { useEffect } from 'react'
 
 import shortcutManager from 'services/shortcutManager'
 
@@ -7,11 +7,11 @@ interface Options {
     previous: () => void
 }
 
-export default function useKeyboardNavigation({next, previous}: Options) {
+export default function useKeyboardNavigation({ next, previous }: Options) {
     useEffect(() => {
         shortcutManager.bind('TicketDetailContainer', {
-            GO_NEXT_MESSAGE: {action: next},
-            GO_PREV_MESSAGE: {action: previous},
+            GO_NEXT_MESSAGE: { action: next },
+            GO_PREV_MESSAGE: { action: previous },
         })
 
         return () => {

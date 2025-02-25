@@ -1,8 +1,8 @@
-import {Config, PanelConfig} from 'panels'
+import { Config, PanelConfig } from 'panels'
 
 const createConfig = (
     widths: number[],
-    defaultConfig: Config
+    defaultConfig: Config,
 ): PanelConfig[] => {
     return defaultConfig.map((config, i) => {
         const [defaultWidth, min, max] = config

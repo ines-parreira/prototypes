@@ -1,34 +1,31 @@
-import {renderHook} from '@testing-library/react-hooks'
-
-import {fromJS} from 'immutable'
-
 import React from 'react'
 
-import {Provider} from 'react-redux'
+import { renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 
-import {agents} from 'fixtures/agents'
-import {useTableReportData} from 'hooks/reporting/common/useTableReportData'
+import { agents } from 'fixtures/agents'
+import { useTableReportData } from 'hooks/reporting/common/useTableReportData'
 import {
     AGENTS_REPORT_FILE_NAME,
     fetchAgentsTableReportData,
     useDownloadAgentsPerformanceData,
 } from 'hooks/reporting/support-performance/agents/useDownloadAgentsPerformanceData'
-import {getCsvFileNameWithDates} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
-import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
-import {OrderDirection} from 'models/api/types'
-import {ReportingGranularity} from 'models/reporting/types'
-import {BusiestTimeOfDaysMetrics} from 'pages/stats/support-performance/busiest-times-of-days/types'
-
-import {createAgentsReport} from 'services/reporting/agentsPerformanceReportingService'
-import {RootState} from 'state/types'
+import { getCsvFileNameWithDates } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
+import { useAgentsTableConfigSetting } from 'hooks/reporting/useAgentsTableConfigSetting'
+import { OrderDirection } from 'models/api/types'
+import { ReportingGranularity } from 'models/reporting/types'
+import { BusiestTimeOfDaysMetrics } from 'pages/stats/support-performance/busiest-times-of-days/types'
+import { createAgentsReport } from 'services/reporting/agentsPerformanceReportingService'
+import { RootState } from 'state/types'
 import {
-    getSortedAgents,
     initialState as agentPerformanceInitialState,
+    getSortedAgents,
 } from 'state/ui/stats/agentPerformanceSlice'
-import {AGENT_PERFORMANCE_SLICE_NAME} from 'state/ui/stats/constants'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
-import {AgentsTableColumn} from 'state/ui/stats/types'
-import {assumeMock, mockStore} from 'utils/testing'
+import { AGENT_PERFORMANCE_SLICE_NAME } from 'state/ui/stats/constants'
+import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
+import { AgentsTableColumn } from 'state/ui/stats/types'
+import { assumeMock, mockStore } from 'utils/testing'
 
 jest.mock('hooks/reporting/common/useTableReportData')
 const useTableReportDataMock = assumeMock(useTableReportData)
@@ -48,7 +45,7 @@ describe('useDownloadAgentsPerformanceData', () => {
             all: agents,
         }),
         stats: {
-            filters: {period},
+            filters: { period },
         },
         ui: {
             stats: {
@@ -64,7 +61,7 @@ describe('useDownloadAgentsPerformanceData', () => {
     const metricReturnValue = {
         isFetching: false,
         isError: false,
-        data: {allData: [], value: null, decile: 0},
+        data: { allData: [], value: null, decile: 0 },
     }
     const summaryMetricReturnValue = {
         ...metricReturnValue,
@@ -103,7 +100,7 @@ describe('useDownloadAgentsPerformanceData', () => {
             ticketsRepliedMetric: summaryMetricReturnValue,
             oneTouchTicketsMetric: {
                 ...summaryMetricReturnValue,
-                data: {...summaryMetricReturnValue.data, prevValue: 0},
+                data: { ...summaryMetricReturnValue.data, prevValue: 0 },
             },
             repliedTicketsPerHourMetric: summaryMetricReturnValue,
             onlineTimeMetric: summaryMetricReturnValue,
@@ -135,10 +132,10 @@ describe('useDownloadAgentsPerformanceData', () => {
     it('Should return report files, file name and the loading state', () => {
         const fileName = getCsvFileNameWithDates(
             period,
-            AGENTS_REPORT_FILE_NAME
+            AGENTS_REPORT_FILE_NAME,
         )
         const report = {
-            files: {['file']: 'data'},
+            files: { ['file']: 'data' },
         }
         useTableReportDataMock.mockReturnValueOnce({
             data: agentsMetricsReturnValue.reportData,
@@ -150,18 +147,21 @@ describe('useDownloadAgentsPerformanceData', () => {
         })
         saveReportMock.mockReturnValue(report)
 
-        const {result} = renderHook(() => useDownloadAgentsPerformanceData(), {
-            wrapper: ({children}) => (
-                <Provider store={mockStore(state)}>{children}</Provider>
-            ),
-        })
+        const { result } = renderHook(
+            () => useDownloadAgentsPerformanceData(),
+            {
+                wrapper: ({ children }) => (
+                    <Provider store={mockStore(state)}>{children}</Provider>
+                ),
+            },
+        )
 
         expect(saveReportMock).toHaveBeenCalledWith(
             getSortedAgents(state),
             agentsMetricsReturnValue.reportData,
             agentsSummaryMetricsReturnValue.summaryData,
             columnsOrder,
-            fileName
+            fileName,
         )
         expect(result.current).toEqual({
             ...report,
@@ -173,27 +173,30 @@ describe('useDownloadAgentsPerformanceData', () => {
     it('Should return loading state', () => {
         const fileName = getCsvFileNameWithDates(
             period,
-            AGENTS_REPORT_FILE_NAME
+            AGENTS_REPORT_FILE_NAME,
         )
         const report = {
-            files: {['file']: 'data'},
+            files: { ['file']: 'data' },
             fileName: getCsvFileNameWithDates(period, AGENTS_REPORT_FILE_NAME),
         }
 
         saveReportMock.mockReturnValue(report)
 
-        const {result} = renderHook(() => useDownloadAgentsPerformanceData(), {
-            wrapper: ({children}) => (
-                <Provider store={mockStore(state)}>{children}</Provider>
-            ),
-        })
+        const { result } = renderHook(
+            () => useDownloadAgentsPerformanceData(),
+            {
+                wrapper: ({ children }) => (
+                    <Provider store={mockStore(state)}>{children}</Provider>
+                ),
+            },
+        )
 
         expect(saveReportMock).toHaveBeenCalledWith(
             getSortedAgents(state),
             agentsMetricsReturnValue.reportData,
             agentsSummaryMetricsReturnValue.summaryData,
             columnsOrder,
-            fileName
+            fileName,
         )
         expect(result.current).toEqual({
             ...report,
@@ -202,7 +205,7 @@ describe('useDownloadAgentsPerformanceData', () => {
     })
 
     describe('fetchAgentsTableReportData', () => {
-        const filters = {period}
+        const filters = { period }
         const userTimezone = 'UTC'
         const granularity = ReportingGranularity.Day
         const context = {
@@ -231,11 +234,11 @@ describe('useDownloadAgentsPerformanceData', () => {
                 filters,
                 userTimezone,
                 granularity,
-                context
+                context,
             )
             const fileName = getCsvFileNameWithDates(
                 filters.period,
-                AGENTS_REPORT_FILE_NAME
+                AGENTS_REPORT_FILE_NAME,
             )
 
             expect(response).toEqual({

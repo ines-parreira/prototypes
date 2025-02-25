@@ -1,6 +1,3 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
-import {Map, List} from 'immutable'
 import React, {
     Children,
     cloneElement,
@@ -8,25 +5,31 @@ import React, {
     ReactElement,
     useMemo,
 } from 'react'
-import {Link} from 'react-router-dom'
-import {Card, CardBody} from 'reactstrap'
+
+import classnames from 'classnames'
+import { List, Map } from 'immutable'
+import { Link } from 'react-router-dom'
+import { Card, CardBody } from 'reactstrap'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import Errors from 'pages/common/components/ast/Errors'
-import {computeLeftPadding} from 'pages/common/components/ast/utils'
-import {RuleItemActions} from 'pages/settings/rules/types'
+import { computeLeftPadding } from 'pages/common/components/ast/utils'
+import { RuleItemActions } from 'pages/settings/rules/types'
 
-import css from './Action.less'
 import ActionSelect from './ActionSelect'
 import ActionWarning from './ActionWarning'
-import {actionsConfig, isValidActionKey} from './config'
+import { actionsConfig, isValidActionKey } from './config'
+
+import css from './Action.less'
 
 type Props = {
     actions: RuleItemActions
     depth: number
     parent: List<any>
     properties: {
-        key: {name: string}
-        value: {value: unknown}
+        key: { name: string }
+        value: { value: unknown }
     }[]
     rule: Map<any, any>
     schemas?: Map<any, any>
@@ -51,9 +54,9 @@ export default function Action({
                     ...props,
                     [property.key.name]: property.value.value,
                 }),
-                {}
+                {},
             ),
-        [properties]
+        [properties],
     )
 
     const errors = useMemo(() => {
@@ -75,7 +78,7 @@ export default function Action({
                         id="replyToTicketWarningIcon"
                         className={classnames(
                             'material-icons',
-                            css.warningIcon
+                            css.warningIcon,
                         )}
                     >
                         warning
@@ -100,7 +103,7 @@ export default function Action({
             className={classnames('Action', {
                 'd-flex align-items-baseline': config?.compact,
             })}
-            style={{paddingLeft: computeLeftPadding(depth)}}
+            style={{ paddingLeft: computeLeftPadding(depth) }}
         >
             <ActionSelect
                 actions={actions}
@@ -122,13 +125,13 @@ export default function Action({
                     <span
                         className={classnames(
                             css.compactAction,
-                            'compact-action'
+                            'compact-action',
                         )}
                     >
                         {Children.map(children, (child) =>
                             cloneElement(child as ReactElement, {
                                 compact: config.compact,
-                            })
+                            }),
                         )}
                     </span>
                     {value === 'setTeamAssignee' && (

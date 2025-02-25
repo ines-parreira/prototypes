@@ -1,6 +1,6 @@
-import {act, renderHook} from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react-hooks'
 
-import {ShopifyIntegration} from 'models/integration/types'
+import { ShopifyIntegration } from 'models/integration/types'
 
 import useShopifyThemeAppExtension from '../useShopifyThemeAppExtension'
 import useThemeAppExtensionInstallation from '../useThemeAppExtensionInstallation'
@@ -15,11 +15,11 @@ describe('useShopifyThemeAppExtension', () => {
             shouldUseThemeAppExtensionInstallation: true,
         })
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useShopifyThemeAppExtension({
-                shopifyIntegration: {id: 123} as ShopifyIntegration,
+                shopifyIntegration: { id: 123 } as ShopifyIntegration,
                 appUuid: 'appUuid',
-            })
+            }),
         )
         expect(result.current.isInstalled).toBeUndefined()
     })
@@ -33,7 +33,7 @@ describe('useShopifyThemeAppExtension', () => {
             useShopifyThemeAppExtension({
                 shopifyIntegration: undefined,
                 appUuid: 'appUuid',
-            })
+            }),
         )
         expect(global.fetch).not.toHaveBeenCalled()
     })
@@ -45,33 +45,33 @@ describe('useShopifyThemeAppExtension', () => {
 
         renderHook(() =>
             useShopifyThemeAppExtension({
-                shopifyIntegration: {id: 123} as ShopifyIntegration,
+                shopifyIntegration: { id: 123 } as ShopifyIntegration,
                 appUuid: 'appUuid',
-            })
+            }),
         )
         expect(global.fetch).not.toHaveBeenCalled()
     })
 
     it('should handle successful fetch', async () => {
         ;(global.fetch as jest.Mock).mockResolvedValueOnce({
-            json: () => Promise.resolve({is_installed: true}),
+            json: () => Promise.resolve({ is_installed: true }),
         })
         ;(useThemeAppExtensionInstallation as jest.Mock).mockReturnValue({
             shouldUseThemeAppExtensionInstallation: true,
         })
 
-        const {result, waitForNextUpdate} = renderHook(() =>
+        const { result, waitForNextUpdate } = renderHook(() =>
             useShopifyThemeAppExtension({
-                shopifyIntegration: {id: 123} as ShopifyIntegration,
+                shopifyIntegration: { id: 123 } as ShopifyIntegration,
                 appUuid: 'appUuid',
-            })
+            }),
         )
 
         await waitForNextUpdate()
 
         expect(global.fetch).toHaveBeenCalledTimes(1)
         expect(global.fetch).toHaveBeenCalledWith(
-            '/integrations/shopify/123/gorgias-theme-app-extension/status/appUuid'
+            '/integrations/shopify/123/gorgias-theme-app-extension/status/appUuid',
         )
         expect(result.current.isInstalled).toBe(true)
     })
@@ -79,17 +79,17 @@ describe('useShopifyThemeAppExtension', () => {
     it('should handle fetch error', async () => {
         const consoleSpy = jest.spyOn(console, 'error')
         ;(global.fetch as jest.Mock).mockRejectedValueOnce(
-            new Error('Failed to fetch')
+            new Error('Failed to fetch'),
         )
         ;(useThemeAppExtensionInstallation as jest.Mock).mockReturnValue({
             shouldUseThemeAppExtensionInstallation: true,
         })
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useShopifyThemeAppExtension({
-                shopifyIntegration: {id: 123} as ShopifyIntegration,
+                shopifyIntegration: { id: 123 } as ShopifyIntegration,
                 appUuid: 'appUuid',
-            })
+            }),
         )
 
         // Workaround as waitForNextUpdate won't trigger for undefined -> undefined.

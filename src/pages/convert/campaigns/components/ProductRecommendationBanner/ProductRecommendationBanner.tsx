@@ -1,7 +1,8 @@
-import classNames from 'classnames'
 import React from 'react'
 
-import {ProductRecommendationScenario} from 'pages/convert/campaigns/types/CampaignAttachment'
+import classNames from 'classnames'
+
+import { ProductRecommendationScenario } from 'pages/convert/campaigns/types/CampaignAttachment'
 
 import css from './ProductRecommendationBanner.less'
 
@@ -19,7 +20,7 @@ const getTextByScenario = (scenario: ProductRecommendationScenario | null) => {
     }
 }
 
-export const ProductRecommendationBanner = ({scenario, className}: Props) => {
+export const ProductRecommendationBanner = ({ scenario, className }: Props) => {
     const text = getTextByScenario(scenario)
 
     return (

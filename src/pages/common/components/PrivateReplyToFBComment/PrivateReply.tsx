@@ -1,6 +1,6 @@
-import React, {useState, useCallback, ComponentProps} from 'react'
+import React, { ComponentProps, useCallback, useState } from 'react'
 
-import Button, {type ButtonProps} from 'pages/common/components/button/Button'
+import Button, { type ButtonProps } from 'pages/common/components/button/Button'
 
 import PrivateReplyButton from './PrivateReplyButton'
 import PrivateReplyModal from './PrivateReplyModal/PrivateReplyModal'

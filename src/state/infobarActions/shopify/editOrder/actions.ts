@@ -1,26 +1,26 @@
 import axios from 'axios'
-import type {Map} from 'immutable'
-import {fromJS, List} from 'immutable'
+import type { Map } from 'immutable'
+import { fromJS, List } from 'immutable'
 import _debounce from 'lodash/debounce'
 
-import {calculateEditDiff} from 'business/shopify/calculatedEditOrder'
-import {refreshAppliedDiscounts} from 'business/shopify/discount'
+import { calculateEditDiff } from 'business/shopify/calculatedEditOrder'
+import { refreshAppliedDiscounts } from 'business/shopify/discount'
 import {
     addCustomLineItem,
     addVariant,
     initDraftOrderPayload,
 } from 'business/shopify/draftOrder'
-import {logEvent, SegmentEvent} from 'common/segment'
+import { logEvent, SegmentEvent } from 'common/segment'
 import {
+    EditOrderAction,
     Product,
     Variant,
-    EditOrderAction,
 } from 'constants/integrations/types/shopify'
 import GorgiasApi from 'services/gorgiasApi'
-import {fetchIntegrationProducts} from 'state/integrations/helpers'
-import {RootState, StoreDispatch} from 'state/types'
-import {onApiError} from 'state/utils'
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
+import { fetchIntegrationProducts } from 'state/integrations/helpers'
+import { RootState, StoreDispatch } from 'state/types'
+import { onApiError } from 'state/utils'
+import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import {
     SET_CALCULATED_EDIT_ORDER,
@@ -29,9 +29,9 @@ import {
     SET_PAYLOAD,
     SET_PRODUCTS,
 } from './constants'
-import {getEditOrderState} from './selectors'
+import { getEditOrderState } from './selectors'
 
-let _apiInstances: {[key: string]: GorgiasApi} = {}
+let _apiInstances: { [key: string]: GorgiasApi } = {}
 
 const getApiInstance = (key: string) => () => {
     if (!_apiInstances[key]) {
@@ -83,7 +83,7 @@ export const onInit =
         order: Maybe<Map<any, any>>,
         customer: Map<any, any>,
         currencyCode: string,
-        onError: () => void
+        onError: () => void,
     ) =>
     async (dispatch: StoreDispatch) => {
         // Create payload as if we wanted to duplicate the order
@@ -96,7 +96,7 @@ export const onInit =
                 customer,
                 order,
                 products as any,
-                true
+                true,
             )
             const clean_payload = _cleanInitPayload(payload)
             return Promise.all([
@@ -105,8 +105,8 @@ export const onInit =
                     _initEditOrder(
                         integrationId,
                         order.get('admin_graphql_api_id'),
-                        onError
-                    )
+                        onError,
+                    ),
                 ),
                 dispatch(setProducts(products)),
             ])
@@ -131,7 +131,7 @@ const _initEditOrder =
 
             const beginEditOrder = await api.beginEditOrder(
                 integrationId,
-                fromJS({orderId: orderId})
+                fromJS({ orderId: orderId }),
             )
             const calculatedEditOrder = _initEditOrderPayload(beginEditOrder)
             dispatch(setCalculatedEditOrder(calculatedEditOrder))
@@ -144,8 +144,8 @@ const _initEditOrder =
                 onApiError(
                     error,
                     'Error while beginning edit order',
-                    setLoading(false)
-                )
+                    setLoading(false),
+                ),
             )
         } finally {
             dispatch(setLoading(false))
@@ -254,7 +254,7 @@ export const onPayloadChange =
         try {
             const state = getState()
             const calculatedOrder = getEditOrderState(state).get(
-                'calculatedEditOrder'
+                'calculatedEditOrder',
             ) as Map<any, any>
             const api = getCalculateApi()
 
@@ -276,7 +276,7 @@ export const onPayloadChange =
 
             const editedOrder = await api.editOrder(
                 integrationId,
-                updateToPerform
+                updateToPerform,
             )
 
             let updatedPayload = payload
@@ -294,7 +294,7 @@ export const onPayloadChange =
                     editedOrder.getIn(['calculatedLineItem']),
                     updateToPerform.action,
                     updateToPerform.variant_id || updateToPerform.line_item_id,
-                    updateToPerform.title
+                    updateToPerform.title,
                 )
             }
 
@@ -304,8 +304,8 @@ export const onPayloadChange =
             dispatch(
                 _refreshOrderAmount(
                     calculatedOrder,
-                    editedOrder.get('calculatedOrder')
-                )
+                    editedOrder.get('calculatedOrder'),
+                ),
             )
             dispatch(setPayload(updatedPayload))
         } catch (error) {
@@ -317,8 +317,8 @@ export const onPayloadChange =
                 onApiError(
                     error,
                     'Error while calculating edit order',
-                    setLoading(false)
-                )
+                    setLoading(false),
+                ),
             )
         } finally {
             dispatch(setLoading(false))
@@ -341,7 +341,7 @@ const _updatePayload = (
     calculatedLineItem: Map<any, any>,
     action: string,
     lookupId?: string,
-    title?: string
+    title?: string,
 ): Map<any, any> => {
     let line_items = payload.get('line_items') as List<Map<any, any>>
     let line_item_index
@@ -353,19 +353,19 @@ const _updatePayload = (
                 (lItem &&
                     !lItem.get('variant_admin_graphql_api_id') &&
                     !lItem.get('lineItem_admin_graphql_api_id') &&
-                    lItem.get('title')) === title
+                    lItem.get('title')) === title,
         )
     } else if (action === EditOrderAction.ApplyItemDiscount) {
         line_item_index = line_items.findIndex(
             (lItem) =>
                 (lItem && lItem.get('lineItem_admin_graphql_api_id')) ===
-                lookupId
+                lookupId,
         )
     } else {
         line_item_index = line_items.findIndex(
             (lItem) =>
                 (lItem && lItem.get('variant_admin_graphql_api_id')) ===
-                lookupId
+                lookupId,
         )
     }
 
@@ -383,7 +383,7 @@ const _updatePayload = (
     } else if (action === EditOrderAction.ApplyItemDiscount) {
         // add discount id to the line item
         const discountApplications = calculatedLineItem.get(
-            'calculatedDiscountAllocations'
+            'calculatedDiscountAllocations',
         ) as List<Map<any, any>>
 
         const discountApplicationId = discountApplications
@@ -393,7 +393,7 @@ const _updatePayload = (
             .get(line_item_index)
             .set(
                 'discountApplication_admin_graphql_api_id',
-                discountApplicationId
+                discountApplicationId,
             )
     }
 
@@ -422,16 +422,16 @@ export const onNotifyChange =
  */
 export const loadProducts = async (
     integrationId: number,
-    oldOrder: Map<any, any>
+    oldOrder: Map<any, any>,
 ): Promise<globalThis.Map<string, any>> => {
     const products = new window.Map()
     const productIds = (oldOrder.get('line_items', []) as List<any>).map(
-        (lineItem: Map<any, any>) => lineItem.get('product_id') as number
+        (lineItem: Map<any, any>) => lineItem.get('product_id') as number,
     ) as unknown as number[]
 
     const integrationProducts = await fetchIntegrationProducts(
         integrationId,
-        productIds
+        productIds,
     )
 
     integrationProducts.forEach((item: Map<string, any>) => {
@@ -449,13 +449,13 @@ export const addRow =
         actionName: string,
         integrationId: number,
         product: Product,
-        variant: Variant
+        variant: Variant,
     ) =>
     (dispatch: StoreDispatch, getState: () => RootState) => {
         const state = getState()
         const payload = getEditOrderState(state).get('payload') as Map<any, any>
         const products = getEditOrderState(state).get(
-            'products'
+            'products',
         ) as globalThis.Map<any, any>
         const newPayload = addVariant(payload, product, variant)
         const newProducts = new window.Map(products)
@@ -484,7 +484,7 @@ export const onLineItemChange =
             newLineItem,
             index,
             remove = false,
-        }: {newLineItem?: Map<any, any>; index: number; remove?: boolean}
+        }: { newLineItem?: Map<any, any>; index: number; remove?: boolean },
     ) =>
     (dispatch: StoreDispatch, getState: () => RootState) => {
         const state = getState()
@@ -504,8 +504,8 @@ export const onLineItemChange =
         return dispatch(
             onPayloadChange(
                 integrationId,
-                oldPayload.set('line_items', newLineItems)
-            )
+                oldPayload.set('line_items', newLineItems),
+            ),
         )
     }
 
@@ -532,7 +532,7 @@ export const onCancel =
 
         if (actionName !== ShopifyActionType.EditOrder) return
         const eventName = SegmentEvent.ShopifyEditOrderCancel
-        logEvent(eventName, {via})
+        logEvent(eventName, { via })
     }
 
 /**
@@ -542,5 +542,5 @@ export const onReset = () => (dispatch: StoreDispatch) => resetState(dispatch)
 
 export const resetState = _debounce(
     (dispatch: StoreDispatch) => dispatch(setInitialState()),
-    250
+    250,
 )

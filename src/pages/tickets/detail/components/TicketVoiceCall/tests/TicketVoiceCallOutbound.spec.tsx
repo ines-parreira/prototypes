@@ -1,10 +1,11 @@
-import {render} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
+import { render } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
 import {
-    VoiceCall,
     OutboundVoiceCall,
+    VoiceCall,
     VoiceCallStatus,
 } from 'models/voiceCall/types'
 import * as utils from 'models/voiceCall/utils'
@@ -14,9 +15,9 @@ import TicketVoiceCallOutbound from '../TicketVoiceCallOutbound'
 jest.mock(
     'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel',
     () =>
-        ({agentId}: {agentId: number}) => (
+        ({ agentId }: { agentId: number }) => (
             <div>VoiceCallAgentLabel {agentId}</div>
-        )
+        ),
 )
 
 jest.mock('pages/common/utils/DatetimeLabel', () => () => (
@@ -43,13 +44,13 @@ jest.mock('pages/tickets/detail/components/TicketVoiceCall/hooks', () => ({
 jest.mock(
     'pages/tickets/detail/components/TicketVoiceCall/TicketVoiceCallOutboundStatus',
     () =>
-        ({voiceCall}: {voiceCall: VoiceCall}) => (
+        ({ voiceCall }: { voiceCall: VoiceCall }) => (
             <div>TicketVoiceCallOutboundStatus {voiceCall.status}</div>
-        )
+        ),
 )
 jest.mock(
     'pages/tickets/detail/components/TicketVoiceCall/TicketVoiceCallDuration',
-    () => () => <div>TicketVoiceCallDuration</div>
+    () => () => <div>TicketVoiceCallDuration</div>,
 )
 
 const isFinalVoiceCallSpy = jest.spyOn(utils, 'isFinalVoiceCallStatus')
@@ -69,21 +70,21 @@ describe('TicketVoiceCallOutbound', () => {
     }
 
     it('renders the agent label', () => {
-        const {getByText} = renderComponent()
+        const { getByText } = renderComponent()
         const agentLabel = getByText('VoiceCallAgentLabel 123')
         expect(agentLabel).toBeInTheDocument()
     })
 
     it('renders the call status', () => {
-        const {getByText} = renderComponent()
+        const { getByText } = renderComponent()
         const callStatus = getByText(
-            `TicketVoiceCallOutboundStatus ${voiceCall.status}`
+            `TicketVoiceCallOutboundStatus ${voiceCall.status}`,
         )
         expect(callStatus).toBeInTheDocument()
     })
 
     it('renders the call icon with correct tooltip content', async () => {
-        const {getByText, findByText} = renderComponent()
+        const { getByText, findByText } = renderComponent()
         const icon = getByText('call_made')
         expect(icon).toBeInTheDocument()
 
@@ -91,20 +92,20 @@ describe('TicketVoiceCallOutbound', () => {
 
         await findByText('+1 213 373 4253')
         expect(
-            getByText('Jane Doe Customer (+1 213 373 4444)')
+            getByText('Jane Doe Customer (+1 213 373 4444)'),
         ).toBeInTheDocument()
     })
 
     it('displays correct header when call is still in progress', () => {
         isFinalVoiceCallSpy.mockReturnValue(false)
-        const {getByText} = renderComponent()
+        const { getByText } = renderComponent()
         const header = getByText('is making a call')
         expect(header).toBeInTheDocument()
     })
 
     it('displays correct header when call is finished', () => {
         isFinalVoiceCallSpy.mockReturnValue(true)
-        const {getByText} = renderComponent()
+        const { getByText } = renderComponent()
         const header = getByText('made a call')
         expect(header).toBeInTheDocument()
     })

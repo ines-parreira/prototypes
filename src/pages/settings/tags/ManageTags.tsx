@@ -1,13 +1,3 @@
-import {
-    CursorPaginationMeta,
-    ListTagsOrderBy,
-    ListTagsParams,
-    OrderDirection,
-    Tag,
-} from '@gorgias/api-queries'
-import axios, {AxiosError, CancelToken} from 'axios'
-import classnames from 'classnames'
-import {Map} from 'immutable'
 import React, {
     FormEvent,
     useCallback,
@@ -15,18 +5,30 @@ import React, {
     useMemo,
     useState,
 } from 'react'
-import {Link} from 'react-router-dom'
-import {Form, Popover, PopoverBody, PopoverHeader} from 'reactstrap'
 
-import {useAppNode} from 'appNode'
+import axios, { AxiosError, CancelToken } from 'axios'
+import classnames from 'classnames'
+import { Map } from 'immutable'
+import { Link } from 'react-router-dom'
+import { Form, Popover, PopoverBody, PopoverHeader } from 'reactstrap'
+
+import {
+    CursorPaginationMeta,
+    ListTagsOrderBy,
+    ListTagsParams,
+    OrderDirection,
+    Tag,
+} from '@gorgias/api-queries'
+
+import { useAppNode } from 'appNode'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import useEffectOnce from 'hooks/useEffectOnce'
-import {CursorDirection} from 'models/api/types'
-import {fetchTags} from 'models/tag/resources'
-import {OrderBy, OrderByOrderDir} from 'models/tag/types'
+import { CursorDirection } from 'models/api/types'
+import { fetchTags } from 'models/tag/resources'
+import { OrderBy, OrderByOrderDir } from 'models/tag/types'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -36,16 +38,16 @@ import Search from 'pages/common/components/Search'
 import Video from 'pages/common/components/Video/Video'
 import TextInput from 'pages/common/forms/input/TextInput'
 import settingsCss from 'pages/settings/settings.less'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {bulkDelete, create, merge, selectAll} from 'state/tags/actions'
-import {REMOVE_TAG_ERROR} from 'state/tags/constants'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { bulkDelete, create, merge, selectAll } from 'state/tags/actions'
+import { REMOVE_TAG_ERROR } from 'state/tags/constants'
+import { getIsCreating, getMeta, getSelectAll } from 'state/tags/selectors'
+import { ServerErrorAction } from 'store/middlewares/serverErrorHandler'
 
-import {getMeta, getIsCreating, getSelectAll} from 'state/tags/selectors'
-import {ServerErrorAction} from 'store/middlewares/serverErrorHandler'
+import Table from './Table'
 
 import css from './ManageTags.less'
-import Table from './Table'
 
 const ManageTags = () => {
     const dispatch = useAppDispatch()
@@ -64,11 +66,11 @@ const ManageTags = () => {
         () =>
             toggledTags
                 .filter(
-                    (meta: Map<any, any>) => meta.get('selected') as boolean
+                    (meta: Map<any, any>) => meta.get('selected') as boolean,
                 )
                 .keySeq()
                 .toList(),
-        [toggledTags]
+        [toggledTags],
     )
     const appNode = useAppNode()
 
@@ -102,7 +104,7 @@ const ManageTags = () => {
             }
 
             try {
-                const res = await fetchTags(params, {cancelToken})
+                const res = await fetchTags(params, { cancelToken })
                 setMeta(res.data.meta)
                 setTags(res.data.data)
                 setSort(orderBy || ListTagsOrderBy.UsageDescNameDesc)
@@ -112,7 +114,7 @@ const ManageTags = () => {
                     return
                 }
                 const responseError = error as AxiosError<{
-                    error?: {msg: string}
+                    error?: { msg: string }
                 }>
                 await dispatch(
                     notify({
@@ -120,7 +122,7 @@ const ManageTags = () => {
                             responseError.response?.data.error?.msg ||
                             'Failed to fetch tags.',
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
             }
         }
@@ -128,10 +130,10 @@ const ManageTags = () => {
     const [cancellableFetchTags, cancelFetchTags] =
         useCancellableRequest(createFetchTags)
 
-    const [{loading: isLoading}, fetchPage] = useAsyncFn(
+    const [{ loading: isLoading }, fetchPage] = useAsyncFn(
         cancellableFetchTags,
         [reverse, search, sort, meta],
-        {loading: true}
+        { loading: true },
     )
 
     const onSort = (sort: OrderBy, reverse: boolean) => {
@@ -148,7 +150,7 @@ const ManageTags = () => {
         await dispatch(
             create({
                 name: newTag,
-            })
+            }),
         )
         await fetchPage()
         setNewTag('')
@@ -163,7 +165,7 @@ const ManageTags = () => {
             !meta?.next_cursor &&
             (res as ServerErrorAction)?.type !== REMOVE_TAG_ERROR
         ) {
-            await fetchPage({refreshPreviousPage: true})
+            await fetchPage({ refreshPreviousPage: true })
         } else {
             await fetchPage()
         }
@@ -182,16 +184,16 @@ const ManageTags = () => {
     const toggleCreationPopup = () => setShowCreationPopup(!showCreationPopup)
 
     const handlePageChange = (direction: CursorDirection) => {
-        void fetchPage({direction, search})
+        void fetchPage({ direction, search })
         areAllTagsSelected && handleSelectAll()
     }
 
     const onSearchChange = useCallback(
         (search: string) => {
             setSearch(search)
-            void fetchPage({search})
+            void fetchPage({ search })
         },
-        [fetchPage]
+        [fetchPage],
     )
 
     useEffectOnce(() => {

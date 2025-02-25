@@ -22,6 +22,6 @@ export const INFO_RECEIVED_DATE = moment([2022, 11, 16, 8, 36])
 export const IN_TRANSIT_DATE = moment([2022, 11, 17, 16, 55])
 
 export const LINE_ITEMS = [
-    {src: graphicTShirt, name: 'Graphic T-Shirt'},
-    {src: chainBracelet, name: 'Chain Bracelet'},
+    { src: graphicTShirt, name: 'Graphic T-Shirt' },
+    { src: chainBracelet, name: 'Chain Bracelet' },
 ]

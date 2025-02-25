@@ -1,4 +1,4 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
 import {
     ETA_DATE,
@@ -15,7 +15,7 @@ const useOrderDates = (locale: string) => {
             infoReceivedDate: INFO_RECEIVED_DATE.clone().locale(locale),
             inTransitDate: IN_TRANSIT_DATE.clone().locale(locale),
         }),
-        [locale]
+        [locale],
     )
 }
 

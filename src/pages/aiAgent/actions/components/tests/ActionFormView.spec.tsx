@@ -1,10 +1,11 @@
-import {act, fireEvent, screen} from '@testing-library/react'
-import {produce} from 'immer'
 import React from 'react'
 
-import {VisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
-import {visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture} from 'pages/automate/workflows/tests/visualBuilderGraph.fixtures'
-import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
+import { act, fireEvent, screen } from '@testing-library/react'
+import { produce } from 'immer'
+
+import { VisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
+import { visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture } from 'pages/automate/workflows/tests/visualBuilderGraph.fixtures'
+import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import ActionFormView from '../ActionFormView'
 
@@ -40,12 +41,12 @@ describe('<ActionFormView />', () => {
                 }}
             >
                 <ActionFormView onEditSteps={jest.fn()} steps={[]} />
-            </VisualBuilderContext.Provider>
+            </VisualBuilderContext.Provider>,
         )
 
         act(() => {
             fireEvent.change(screen.getAllByRole('textbox')[0], {
-                target: {value: 'some name'},
+                target: { value: 'some name' },
             })
         })
 
@@ -74,7 +75,7 @@ describe('<ActionFormView />', () => {
                 }}
             >
                 <ActionFormView onEditSteps={jest.fn()} steps={[]} />
-            </VisualBuilderContext.Provider>
+            </VisualBuilderContext.Provider>,
         )
 
         act(() => {
@@ -108,12 +109,12 @@ describe('<ActionFormView />', () => {
                 }}
             >
                 <ActionFormView onEditSteps={jest.fn()} steps={[]} />
-            </VisualBuilderContext.Provider>
+            </VisualBuilderContext.Provider>,
         )
 
         act(() => {
             fireEvent.change(screen.getAllByRole('textbox')[1], {
-                target: {value: 'some description'},
+                target: { value: 'some description' },
             })
         })
 
@@ -142,7 +143,7 @@ describe('<ActionFormView />', () => {
                 }}
             >
                 <ActionFormView onEditSteps={jest.fn()} steps={[]} />
-            </VisualBuilderContext.Provider>
+            </VisualBuilderContext.Provider>,
         )
 
         act(() => {
@@ -171,12 +172,12 @@ describe('<ActionFormView />', () => {
                             draft.nodes[0].data.conditions = [
                                 {
                                     equals: [
-                                        {var: 'objects.customer.firstname'},
+                                        { var: 'objects.customer.firstname' },
                                         'test',
                                     ],
                                 },
                             ]
-                        }
+                        },
                     ),
                     initialVisualBuilderGraph:
                         visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture,
@@ -196,7 +197,7 @@ describe('<ActionFormView />', () => {
                 }}
             >
                 <ActionFormView onEditSteps={jest.fn()} steps={[]} />
-            </VisualBuilderContext.Provider>
+            </VisualBuilderContext.Provider>,
         )
 
         act(() => {
@@ -219,7 +220,7 @@ describe('<ActionFormView />', () => {
                         visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture,
                         (draft) => {
                             draft.nodes[0].data.conditionsType = 'and'
-                        }
+                        },
                     ),
                     initialVisualBuilderGraph:
                         visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture,
@@ -239,7 +240,7 @@ describe('<ActionFormView />', () => {
                 }}
             >
                 <ActionFormView onEditSteps={jest.fn()} steps={[]} />
-            </VisualBuilderContext.Provider>
+            </VisualBuilderContext.Provider>,
         )
 
         act(() => {
@@ -253,7 +254,7 @@ describe('<ActionFormView />', () => {
         expect(mockDispatch).toHaveBeenCalledWith({
             type: 'ADD_LLM_PROMPT_TRIGGER_CONDITION',
             condition: {
-                equals: [{var: 'objects.customer.firstname'}, undefined],
+                equals: [{ var: 'objects.customer.firstname' }, undefined],
             },
         })
     })
@@ -277,7 +278,7 @@ describe('<ActionFormView />', () => {
                 }}
             >
                 <ActionFormView onEditSteps={jest.fn()} steps={[]} />
-            </VisualBuilderContext.Provider>
+            </VisualBuilderContext.Provider>,
         )
 
         act(() => {
@@ -303,12 +304,12 @@ describe('<ActionFormView />', () => {
                             draft.nodes[0].data.conditions = [
                                 {
                                     equals: [
-                                        {var: 'objects.customer.firstname'},
+                                        { var: 'objects.customer.firstname' },
                                         'test',
                                     ],
                                 },
                             ]
-                        }
+                        },
                     ),
                     initialVisualBuilderGraph:
                         visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture,
@@ -328,12 +329,12 @@ describe('<ActionFormView />', () => {
                 }}
             >
                 <ActionFormView onEditSteps={jest.fn()} steps={[]} />
-            </VisualBuilderContext.Provider>
+            </VisualBuilderContext.Provider>,
         )
 
         act(() => {
             fireEvent.change(screen.getByDisplayValue('test'), {
-                target: {value: 'some test'},
+                target: { value: 'some test' },
             })
         })
 
@@ -341,7 +342,7 @@ describe('<ActionFormView />', () => {
             type: 'SET_LLM_PROMPT_TRIGGER_CONDITION',
             index: 0,
             condition: {
-                equals: [{var: 'objects.customer.firstname'}, 'some test'],
+                equals: [{ var: 'objects.customer.firstname' }, 'some test'],
             },
         })
     })
@@ -359,12 +360,12 @@ describe('<ActionFormView />', () => {
                             draft.nodes[0].data.conditions = [
                                 {
                                     equals: [
-                                        {var: 'objects.customer.firstname'},
+                                        { var: 'objects.customer.firstname' },
                                         'test',
                                     ],
                                 },
                             ]
-                        }
+                        },
                     ),
                     initialVisualBuilderGraph:
                         visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture,
@@ -384,7 +385,7 @@ describe('<ActionFormView />', () => {
                 }}
             >
                 <ActionFormView onEditSteps={jest.fn()} steps={[]} />
-            </VisualBuilderContext.Provider>
+            </VisualBuilderContext.Provider>,
         )
 
         act(() => {
@@ -421,14 +422,14 @@ describe('<ActionFormView />', () => {
                 }}
             >
                 <ActionFormView onEditSteps={jest.fn()} steps={[]} />
-            </VisualBuilderContext.Provider>
+            </VisualBuilderContext.Provider>,
         )
 
         act(() => {
             fireEvent.click(
                 screen.getByText(
-                    'Require customer confirmation to perform Action'
-                )
+                    'Require customer confirmation to perform Action',
+                ),
             )
         })
 
@@ -441,7 +442,7 @@ describe('<ActionFormView />', () => {
     it('should dispatch SET_LLM_PROMPT_TRIGGER_DEACTIVATED_DATETIME action', () => {
         const mockDispatch = jest.fn()
 
-        const {rerender} = renderWithQueryClientProvider(
+        const { rerender } = renderWithQueryClientProvider(
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph:
@@ -457,7 +458,7 @@ describe('<ActionFormView />', () => {
                 }}
             >
                 <ActionFormView onEditSteps={jest.fn()} steps={[]} />
-            </VisualBuilderContext.Provider>
+            </VisualBuilderContext.Provider>,
         )
 
         act(() => {
@@ -477,7 +478,7 @@ describe('<ActionFormView />', () => {
                         (draft) => {
                             draft.nodes[0].data.deactivated_datetime =
                                 new Date().toISOString()
-                        }
+                        },
                     ),
                     initialVisualBuilderGraph:
                         visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture,
@@ -490,7 +491,7 @@ describe('<ActionFormView />', () => {
                 }}
             >
                 <ActionFormView onEditSteps={jest.fn()} steps={[]} />
-            </VisualBuilderContext.Provider>
+            </VisualBuilderContext.Provider>,
         )
 
         act(() => {

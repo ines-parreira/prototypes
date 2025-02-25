@@ -1,10 +1,11 @@
-import {render} from '@testing-library/react'
+import React, { ComponentProps } from 'react'
+
+import { render } from '@testing-library/react'
 import _omit from 'lodash/omit'
-import React, {ComponentProps} from 'react'
-import {STATUSES} from 'reapop'
+import { STATUSES } from 'reapop'
 
 import notificationsTheme from '../../components/Notifications'
-import {NotificationIcon} from '../NotificationIcon'
+import { NotificationIcon } from '../NotificationIcon'
 
 describe('<NotificationIcon />', () => {
     it.each(Object.values(_omit(STATUSES, STATUSES.none)))(
@@ -16,11 +17,11 @@ describe('<NotificationIcon />', () => {
                 typeof NotificationIcon
             >['notification']
 
-            const {container} = render(
-                <NotificationIcon notification={notification} />
+            const { container } = render(
+                <NotificationIcon notification={notification} />,
             )
             expect(container.firstChild).toMatchSnapshot()
-        }
+        },
     )
 
     it('should render with custom theme', () => {
@@ -28,11 +29,11 @@ describe('<NotificationIcon />', () => {
             status: STATUSES.info,
         } as unknown as ComponentProps<typeof NotificationIcon>['notification']
 
-        const {container} = render(
+        const { container } = render(
             <NotificationIcon
                 notification={notification}
                 theme={notificationsTheme}
-            />
+            />,
         )
         expect(container.firstChild).toMatchSnapshot()
     })

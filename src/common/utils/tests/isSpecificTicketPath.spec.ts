@@ -22,6 +22,6 @@ describe('isSpecificTicketPath', () => {
         (path) => {
             const result = isSpecificTicketPath(path, 123456)
             expect(result).toBe(false)
-        }
+        },
     )
 })

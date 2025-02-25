@@ -24,12 +24,12 @@ export const sendRemoveNotificationZap = ({
 }: Props) => {
     const params = new URLSearchParams(
         `message=${message}&from=${from}&to=${to}&subject=${subject}&helpdeskPlan=${helpdeskPlan}
-        &automationPlan=${automationPlan}&freeTrial=${freeTrial.toString()}&account=${account}`
+        &automationPlan=${automationPlan}&freeTrial=${freeTrial.toString()}&account=${account}`,
     )
     return client.get(`${zapierHook}?${params.toString()}`, {
         transformRequest: (
             data: Record<string, unknown>,
-            headers: Record<string, unknown>
+            headers: Record<string, unknown>,
         ) => {
             // We need this in order to prevent CORS policy error.
             delete headers['X-CSRF-Token']

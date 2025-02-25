@@ -1,5 +1,5 @@
-import {RuleEngineData, RuleEngineRoutes} from '../ruleEngine'
-import {Task} from './Task'
+import { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
+import { Task } from './Task'
 
 export class CreateAnActionTask extends Task {
     constructor(data: RuleEngineData, routes: RuleEngineRoutes) {
@@ -8,7 +8,7 @@ export class CreateAnActionTask extends Task {
             'Allow AI Agent to perform support Actions',
             'RECOMMENDED',
             data,
-            routes
+            routes,
         )
     }
 
@@ -18,7 +18,7 @@ export class CreateAnActionTask extends Task {
     }
 
     protected getFeatureUrl({
-        routes: {aiAgentRoutes},
+        routes: { aiAgentRoutes },
     }: {
         data: RuleEngineData
         routes: RuleEngineRoutes

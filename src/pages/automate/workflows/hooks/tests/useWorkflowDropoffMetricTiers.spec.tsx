@@ -1,4 +1,4 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
 import {
     HIGH_TIERS_DROPOFF_BACKGROUND,
@@ -12,8 +12,8 @@ import useWorkflowDropoffMetricTiers from '../useWorkflowDropoffMetricTiers'
 
 describe('useWorkflowDropoffMetricTiers', () => {
     it('should return LOW TIER range when dropOffRates is empty', () => {
-        const {result} = renderHook(() =>
-            useWorkflowDropoffMetricTiers({dropOffRates: []})
+        const { result } = renderHook(() =>
+            useWorkflowDropoffMetricTiers({ dropOffRates: [] }),
         )
 
         expect(result.current).toEqual([
@@ -27,8 +27,8 @@ describe('useWorkflowDropoffMetricTiers', () => {
 
     it('should return correct tiers when dropOffRates has one element', () => {
         const dropOffRates = [53]
-        const {result} = renderHook(() =>
-            useWorkflowDropoffMetricTiers({dropOffRates})
+        const { result } = renderHook(() =>
+            useWorkflowDropoffMetricTiers({ dropOffRates }),
         )
 
         const expectedTiers = [
@@ -43,8 +43,8 @@ describe('useWorkflowDropoffMetricTiers', () => {
 
     it('should return correct tiers when dropOffRates has multiple elements', () => {
         const dropOffRates = [17, 12, 53, 17, 0, 0, 33, 20, 0, 0, 0]
-        const {result} = renderHook(() =>
-            useWorkflowDropoffMetricTiers({dropOffRates})
+        const { result } = renderHook(() =>
+            useWorkflowDropoffMetricTiers({ dropOffRates }),
         )
 
         const expectedTiers = [

@@ -1,11 +1,12 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import Card from '../Card'
 
 describe('<Card />', () => {
     it('should render', () => {
-        const {container} = render(<Card title="Test">Test</Card>)
+        const { container } = render(<Card title="Test">Test</Card>)
         expect(container).toMatchSnapshot()
     })
 
@@ -13,15 +14,15 @@ describe('<Card />', () => {
         render(
             <Card
                 title="Test"
-                link={{url: 'https://gorgias.com', text: 'See Plans Details'}}
+                link={{ url: 'https://gorgias.com', text: 'See Plans Details' }}
             >
                 Test
-            </Card>
+            </Card>,
         )
         // expect header to have link with text
         expect(screen.getByText('See Plans Details')).toHaveAttribute(
             'href',
-            'https://gorgias.com'
+            'https://gorgias.com',
         )
     })
 })

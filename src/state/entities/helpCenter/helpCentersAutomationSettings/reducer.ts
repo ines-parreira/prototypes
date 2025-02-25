@@ -1,4 +1,4 @@
-import {createReducer} from '@reduxjs/toolkit'
+import { createReducer } from '@reduxjs/toolkit'
 
 import {
     helpCenterAutomationSettingsFetched,
@@ -6,7 +6,7 @@ import {
     helpCentersAutomationSettingsFetched,
 } from 'state/entities/helpCenter/helpCentersAutomationSettings/actions'
 
-import {HelpCentersAutomationSettingsState} from './types'
+import { HelpCentersAutomationSettingsState } from './types'
 
 export const initialState: HelpCentersAutomationSettingsState = {
     automationSettingsByHelpCenterId: {},
@@ -17,28 +17,28 @@ const helpCenterAutomationSettingsReducer =
         builder
             .addCase(
                 helpCenterAutomationSettingsFetched,
-                (state, {payload: {helpCenterId, automationSettings}}) => {
+                (state, { payload: { helpCenterId, automationSettings } }) => {
                     state.automationSettingsByHelpCenterId[helpCenterId] =
                         automationSettings
-                }
+                },
             )
             .addCase(
                 helpCentersAutomationSettingsFetched,
-                (state, {payload}) => {
+                (state, { payload }) => {
                     payload.forEach((settings) => {
                         state.automationSettingsByHelpCenterId[
                             settings.helpCenterId
                         ] = settings.automationSettings
                     })
-                }
+                },
             )
             .addCase(
                 helpCenterAutomationSettingsUpdated,
-                (state, {payload: {helpCenterId, automationSettings}}) => {
+                (state, { payload: { helpCenterId, automationSettings } }) => {
                     state.automationSettingsByHelpCenterId[helpCenterId] =
                         automationSettings
-                }
-            )
+                },
+            ),
     )
 
 export default helpCenterAutomationSettingsReducer

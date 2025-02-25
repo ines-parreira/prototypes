@@ -1,16 +1,18 @@
+import React from 'react'
+
 import classnames from 'classnames'
 import _truncate from 'lodash/truncate'
-import React from 'react'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
-import {HTTP_METHOD_GET} from 'config'
-import {useGetHTTPEvents} from 'models/integration/queries/http'
-import {HTTPIntegrationEvent} from 'models/integration/types'
+import { HTTP_METHOD_GET } from 'config'
+import { useGetHTTPEvents } from 'models/integration/queries/http'
+import { HTTPIntegrationEvent } from 'models/integration/types'
 import HTTPStatusLabel from 'pages/common/components/HTTPStatusLabel/HTTPStatusLabel'
 import Loader from 'pages/common/components/Loader/Loader'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 
-import {BASE_PATH, EVENTS_PATH} from '../constants'
+import { BASE_PATH, EVENTS_PATH } from '../constants'
+
 import css from './Events.less'
 
 function Event({
@@ -29,7 +31,7 @@ function Event({
                 className={classnames(css.inlineGrid, css.link)}
             >
                 <span>{event.request?.method || HTTP_METHOD_GET}</span>
-                <span>{_truncate(event.request?.url, {length: 100})}</span>
+                <span>{_truncate(event.request?.url, { length: 100 })}</span>
                 <span>
                     <HTTPStatusLabel
                         hasNoRequest={!event.request}
@@ -53,7 +55,7 @@ type Props = {
     integrationId: string
 }
 
-export function Events({integrationId}: Props) {
+export function Events({ integrationId }: Props) {
     const {
         data: events,
         isLoading,

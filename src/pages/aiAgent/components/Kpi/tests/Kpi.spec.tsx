@@ -1,11 +1,12 @@
 import '@testing-library/jest-dom'
-import {render, screen} from '@testing-library/react'
 
 import React from 'react'
 
-import {StatType} from 'models/stat/types'
+import { render, screen } from '@testing-library/react'
 
-import {Kpi} from '../Kpi'
+import { StatType } from 'models/stat/types'
+
+import { Kpi } from '../Kpi'
 
 describe('Kpi', () => {
     it('should render the title and formatted value for number metric type', () => {
@@ -16,7 +17,7 @@ describe('Kpi', () => {
                 prevValue={1200}
                 metricType={StatType.Number}
                 metricFormat="decimal"
-            />
+            />,
         )
 
         expect(screen.getByText('Number KPI')).toBeInTheDocument()
@@ -35,7 +36,7 @@ describe('Kpi', () => {
                 value={1234.56}
                 prevValue={1000}
                 metricType={StatType.Currency}
-            />
+            />,
         )
 
         expect(screen.getByText('Currency KPI')).toBeInTheDocument()
@@ -50,7 +51,7 @@ describe('Kpi', () => {
                 prevValue={1000}
                 metricType={StatType.Currency}
                 currency="USD"
-            />
+            />,
         )
 
         expect(screen.getByText('Currency KPI')).toBeInTheDocument()
@@ -67,7 +68,7 @@ describe('Kpi', () => {
                 metricFormat="decimal-to-percent"
                 hint="Conversion hint"
                 isLoading={false}
-            />
+            />,
         )
 
         expect(screen.getByText('Rate KPI')).toBeInTheDocument()

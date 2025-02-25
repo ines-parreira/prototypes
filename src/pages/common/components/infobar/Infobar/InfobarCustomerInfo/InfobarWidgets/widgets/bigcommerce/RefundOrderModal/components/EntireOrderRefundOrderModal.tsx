@@ -1,5 +1,6 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
-import React, {Dispatch, useEffect} from 'react'
+import React, { Dispatch, useEffect } from 'react'
+
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import {
     BigCommerceAvailablePaymentOptionsData,
@@ -7,13 +8,14 @@ import {
     CalculateOrderRefundDataResponse,
 } from 'models/integration/types'
 
-import cssRefundOrderModal from '../RefundOrderModal.less'
 import {
     BIGCOMMERCE_REFUND_ACTION_TYPE,
     BigCommerceRefundActionType,
 } from '../types'
-import css from './EntireOrderRefundOrderModal.less'
 import OrderTable from './order-table/OrderTable'
+
+import cssRefundOrderModal from '../RefundOrderModal.less'
+import css from './EntireOrderRefundOrderModal.less'
 
 type Props = {
     refundData: CalculateOrderRefundDataResponse

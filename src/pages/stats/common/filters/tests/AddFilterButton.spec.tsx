@@ -1,26 +1,30 @@
-import {render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {FilterKey} from 'models/stat/types'
-import {AddFilterButton} from 'pages/stats/common/filters/AddFilterButton'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { FilterKey } from 'models/stat/types'
+import { AddFilterButton } from 'pages/stats/common/filters/AddFilterButton'
 
 describe('AddFilterButton', () => {
     it('should list options and select one on Click', () => {
         const onClickSpy = jest.fn()
-        const firstOption = {label: 'someLabel', value: FilterKey.Period}
+        const firstOption = { label: 'someLabel', value: FilterKey.Period }
         const optionGroups = [
             {
                 title: 'some section title',
                 options: [
                     firstOption,
-                    {label: 'someOtherLabel', value: FilterKey.HelpCenters},
+                    { label: 'someOtherLabel', value: FilterKey.HelpCenters },
                 ],
             },
         ]
 
         render(
-            <AddFilterButton onClick={onClickSpy} optionGroups={optionGroups} />
+            <AddFilterButton
+                onClick={onClickSpy}
+                optionGroups={optionGroups}
+            />,
         )
         const button = screen.getByRole('button')
         userEvent.click(button)

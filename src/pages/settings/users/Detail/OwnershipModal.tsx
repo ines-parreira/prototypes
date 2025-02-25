@@ -6,7 +6,7 @@ import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import {updateAccountOwner} from 'state/currentAccount/actions'
+import { updateAccountOwner } from 'state/currentAccount/actions'
 
 type Props = {
     agentId: number

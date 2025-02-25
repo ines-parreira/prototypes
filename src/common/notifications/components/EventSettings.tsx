@@ -1,23 +1,23 @@
-import React, {Fragment} from 'react'
+import React, { Fragment } from 'react'
 
 import useLaunchDarklyClient from 'common/hooks/useLaunchDarklyClient'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-import {SoundValue} from 'services/NotificationSounds'
+import { SoundValue } from 'services/NotificationSounds'
 
-import {categories, notifications} from '../data'
-import {CategoryConfig, Settings} from '../types'
-
-import css from './EventSettings.less'
+import { categories, notifications } from '../data'
+import { CategoryConfig, Settings } from '../types'
 import EventSettingsRow from './EventSettingsRow'
 import EventSettingsTableHead from './EventSettingsTableHead'
+
+import css from './EventSettings.less'
 
 type Props = {
     settings: Settings
     onChangeChannel: (
         notificationType: string,
         channel: string,
-        value: boolean
+        value: boolean,
     ) => void
     onChangeSound: (notificationType: string, sound: '' | SoundValue) => void
 }
@@ -27,20 +27,20 @@ export default function EventSettings({
     onChangeChannel,
     onChangeSound,
 }: Props) {
-    const {isLdInitialized} = useLaunchDarklyClient()
+    const { isLdInitialized } = useLaunchDarklyClient()
 
     if (!isLdInitialized) {
         return null
     }
 
     const filteredEnabledCategories = categories.filter(
-        (category) => category.isEnabled?.() ?? true
+        (category) => category.isEnabled?.() ?? true,
     )
 
     const filteredEnabledNotifications = (category: CategoryConfig) =>
         (category.notifications || []).filter(
             (notificationType) =>
-                notifications[notificationType].isEnabled?.() ?? true
+                notifications[notificationType].isEnabled?.() ?? true,
         )
 
     return (
@@ -69,17 +69,17 @@ export default function EventSettings({
                                                 onChangeChannel(
                                                     notificationType,
                                                     channel,
-                                                    value
+                                                    value,
                                                 )
                                         }}
                                         onChangeSound={(sound) => {
                                             onChangeSound(
                                                 notificationType,
-                                                sound
+                                                sound,
                                             )
                                         }}
                                     />
-                                )
+                                ),
                             )}
                         </TableBody>
                     </TableWrapper>

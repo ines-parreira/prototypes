@@ -1,7 +1,8 @@
-import {TooltipLabelStyle, TooltipModel} from 'chart.js'
 import React from 'react'
 
-import {NOT_AVAILABLE_TEXT} from 'pages/stats/common/utils'
+import { TooltipLabelStyle, TooltipModel } from 'chart.js'
+
+import { NOT_AVAILABLE_TEXT } from 'pages/stats/common/utils'
 
 import css from './ChartTooltip.less'
 
@@ -11,7 +12,7 @@ type Props = {
 }
 
 export const ChartTooltipContent = ({
-    tooltip: {labelColors, dataPoints},
+    tooltip: { labelColors, dataPoints },
     showZeroAsNA,
 }: Props) => {
     return (

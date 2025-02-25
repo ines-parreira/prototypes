@@ -1,5 +1,6 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
+
+import { useFlags } from 'launchdarkly-react-client-sdk'
 import {
     Link,
     NavLink,
@@ -8,12 +9,12 @@ import {
     Switch,
     useHistory,
 } from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
+import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
 import dotError from 'assets/img/icons/dot-error.svg'
-import {TicketChannel} from 'business/types/ticket'
-import {SegmentEvent, logEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
+import { TicketChannel } from 'business/types/ticket'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import Button from 'pages/common/components/button/Button'
@@ -24,30 +25,31 @@ import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNa
 import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
 import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 import {
-    CONTACT_FORM_CUSTOMIZATION_PATH,
+    CONTACT_FORM_AUTOMATE_PATH,
     CONTACT_FORM_BASE_PATH,
+    CONTACT_FORM_CUSTOMIZATION_PATH,
+    CONTACT_FORM_MANAGE_EMBEDMENTS_PATH,
     CONTACT_FORM_PAGE_TITLE,
     CONTACT_FORM_PREFERENCES_PATH,
     CONTACT_FORM_PUBLISH_PATH,
-    CONTACT_FORM_MANAGE_EMBEDMENTS_PATH,
-    CONTACT_FORM_AUTOMATE_PATH,
 } from 'pages/settings/contactForm/constants'
-import {CurrentContactFormContext} from 'pages/settings/contactForm/contexts/currentContactForm.context'
-import {useContactFormApi} from 'pages/settings/contactForm/hooks/useContactFormApi'
-import {useContactFormIdParam} from 'pages/settings/contactForm/hooks/useCurrentContactFormId'
-import {catchAsync} from 'pages/settings/contactForm/utils/errorHandling'
-import {insertContactFormIdParam} from 'pages/settings/contactForm/utils/navigation'
+import { CurrentContactFormContext } from 'pages/settings/contactForm/contexts/currentContactForm.context'
+import { useContactFormApi } from 'pages/settings/contactForm/hooks/useContactFormApi'
+import { useContactFormIdParam } from 'pages/settings/contactForm/hooks/useCurrentContactFormId'
+import { catchAsync } from 'pages/settings/contactForm/utils/errorHandling'
+import { insertContactFormIdParam } from 'pages/settings/contactForm/utils/navigation'
 import ContactFormCustomization from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormCustomization'
 import ContactFormPreferences from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormPreferences'
 import ContactFormPublish from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormPublish'
 import settingsCss from 'pages/settings/settings.less'
-import {getHasAutomate} from 'state/billing/selectors'
-import {getCurrentContactForm} from 'state/entities/contactForm/contactForms'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {changeContactFormId} from 'state/ui/contactForm'
+import { getHasAutomate } from 'state/billing/selectors'
+import { getCurrentContactForm } from 'state/entities/contactForm/contactForms'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { changeContactFormId } from 'state/ui/contactForm'
 
-import {ContactFormAutomateView} from './ContactFormAutomateView'
+import { ContactFormAutomateView } from './ContactFormAutomateView'
+
 import css from './ContactFormSettingsView.less'
 
 const navLinks = {
@@ -59,8 +61,8 @@ const navLinks = {
 const ContactFormSettingsView = (): JSX.Element => {
     const dispatch = useAppDispatch()
     const history = useHistory()
-    const {fetchContactFormById, isReady} = useContactFormApi()
-    const {id: contactFormId, isValid: isIdValid} = useContactFormIdParam()
+    const { fetchContactFormById, isReady } = useContactFormApi()
+    const { id: contactFormId, isValid: isIdValid } = useContactFormIdParam()
     const contactForm = useAppSelector(getCurrentContactForm)
     const hasAutomate = useAppSelector(getHasAutomate)
     const [isAutomationModalOpened, setIsAutomationModalOpened] =
@@ -82,7 +84,7 @@ const ContactFormSettingsView = (): JSX.Element => {
 
         void (async () => {
             const [error, result] = await catchAsync(() =>
-                fetchContactFormById(contactFormId)
+                fetchContactFormById(contactFormId),
             )
 
             if (!error && !!result) return
@@ -94,7 +96,7 @@ const ContactFormSettingsView = (): JSX.Element => {
                             ? 'Contact Form not found'
                             : 'Something went wrong',
                     status: NotificationStatus.Error,
-                })
+                }),
             )
 
             history.push(CONTACT_FORM_BASE_PATH)
@@ -160,7 +162,7 @@ const ContactFormSettingsView = (): JSX.Element => {
                                     intent="primary"
                                     onClick={() => {
                                         history.push(
-                                            `/app/settings/contact-form/${contactForm.id}/preferences`
+                                            `/app/settings/contact-form/${contactForm.id}/preferences`,
                                         )
                                     }}
                                 >
@@ -204,7 +206,7 @@ const ContactFormSettingsView = (): JSX.Element => {
                 {Object.entries({
                     ...navLinks,
                     ...(hasAutomate
-                        ? {Automate: CONTACT_FORM_AUTOMATE_PATH}
+                        ? { Automate: CONTACT_FORM_AUTOMATE_PATH }
                         : {}),
                 }).map(([name, to]) => (
                     <NavLink
@@ -231,7 +233,7 @@ const ContactFormSettingsView = (): JSX.Element => {
                                     onClick={() => {
                                         logContactFormEvent('Store')
                                         history.push(
-                                            `/app/settings/contact-form/${contactForm.id}/preferences`
+                                            `/app/settings/contact-form/${contactForm.id}/preferences`,
                                         )
                                     }}
                                 >
@@ -295,7 +297,7 @@ const ContactFormSettingsView = (): JSX.Element => {
                                 <Redirect
                                     to={insertContactFormIdParam(
                                         CONTACT_FORM_CUSTOMIZATION_PATH,
-                                        contactFormId
+                                        contactFormId,
                                     )}
                                 />
                             )}

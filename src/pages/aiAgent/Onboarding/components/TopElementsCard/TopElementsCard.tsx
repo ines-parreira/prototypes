@@ -8,15 +8,16 @@ import {
 } from 'pages/aiAgent/Onboarding/components/Card'
 
 import TopElementsItem from './TopElementItem/TopElementItem'
+import { TopElement } from './types'
+
 import css from './TopElementsCard.less'
-import {TopElement} from './types'
 
 type Props = {
     title: string
     topElements: TopElement[]
 }
 
-const TopElementsCard = ({title, topElements}: Props) => {
+const TopElementsCard = ({ title, topElements }: Props) => {
     return (
         <Card className={css.topElementsContainer}>
             <CardHeader>

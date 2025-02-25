@@ -1,4 +1,4 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
 import {
     buildEdgeCommonProperties,
@@ -9,7 +9,7 @@ import useTouchWorkflowGraph from '../useTouchWorkflowGraph'
 
 describe('useTouchWorkflowGraph()', () => {
     it('should touch workflow graph', () => {
-        const {result} = renderHook(() => useTouchWorkflowGraph())
+        const { result } = renderHook(() => useTouchWorkflowGraph())
 
         expect(
             result.current({
@@ -93,7 +93,7 @@ describe('useTouchWorkflowGraph()', () => {
                                 html: '',
                                 text: '',
                             },
-                            choices: [{event_id: 'choice1', label: ''}],
+                            choices: [{ event_id: 'choice1', label: '' }],
                         },
                     },
                     {
@@ -158,7 +158,7 @@ describe('useTouchWorkflowGraph()', () => {
                         source: 'conditions1',
                         target: 'end1',
                         data: {
-                            conditions: {and: []},
+                            conditions: { and: [] },
                         },
                     },
                     {
@@ -195,7 +195,7 @@ describe('useTouchWorkflowGraph()', () => {
                 nodeEditingId: null,
                 choiceEventIdEditing: null,
                 branchIdsEditing: [],
-            })
+            }),
         ).toEqual(
             expect.objectContaining({
                 nodes: [
@@ -306,7 +306,7 @@ describe('useTouchWorkflowGraph()', () => {
                     name: true,
                     nodes: true,
                 },
-            })
+            }),
         )
     })
 })

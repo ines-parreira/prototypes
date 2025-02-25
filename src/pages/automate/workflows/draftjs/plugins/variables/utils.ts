@@ -1,17 +1,17 @@
-import {ContentBlock, ContentState, Modifier, SelectionState} from 'draft-js'
+import { ContentBlock, ContentState, Modifier, SelectionState } from 'draft-js'
 
 import {
     extractVariablesFromText,
     parseWorkflowVariable,
 } from 'pages/automate/workflows/models/variables.model'
-import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
+import { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
 
 export const addEntityToVariable = (
     block: ContentBlock,
     contentState: ContentState,
     start: number,
     end: number,
-    variables?: WorkflowVariableList
+    variables?: WorkflowVariableList,
 ): ContentState => {
     const existingEntityKey = block.getEntityAt(start)
     if (existingEntityKey) {
@@ -25,7 +25,7 @@ export const addEntityToVariable = (
     const value = block.getText().substring(start, end)
     const variable = parseWorkflowVariable(
         extractVariablesFromText(value)?.[0]?.value ?? '',
-        variables || []
+        variables || [],
     )
 
     let newContentState = contentState
@@ -33,7 +33,7 @@ export const addEntityToVariable = (
     const contentStateWithEntity = newContentState.createEntity(
         'flow_variable',
         'IMMUTABLE',
-        {value, format: variable?.format}
+        { value, format: variable?.format },
     )
     const entityKey = contentStateWithEntity.getLastCreatedEntityKey()
 
@@ -47,7 +47,7 @@ export const addEntityToVariable = (
         selection,
         value,
         undefined,
-        entityKey
+        entityKey,
     )
     return newContentState
 }

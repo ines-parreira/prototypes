@@ -1,27 +1,30 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { ReactNode } from 'react'
+
 import classnames from 'classnames'
-import {Map, List, fromJS} from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 import _isObject from 'lodash/isObject'
 import moment from 'moment'
-import React, {ReactNode} from 'react'
 
-import {StatConfigMetric} from 'config/stats'
-import {StatType} from 'models/stat/types'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { StatConfigMetric } from 'config/stats'
+import { StatType } from 'models/stat/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import StatDifference from 'pages/stats/common/components/StatDifference'
 import {
-    formatNumber,
+    formatComparedPeriodString,
     formatCurrency,
     formatDuration,
+    formatNumber,
     formatPercent,
-    formatComparedPeriodString,
 } from 'pages/stats/common/utils'
-import {NOT_AVAILABLE_LABEL} from 'services/reporting/constants'
+import { NOT_AVAILABLE_LABEL } from 'services/reporting/constants'
 
 import DistributionKeyMetricStat from './DistributionKeyMetricStat'
 import DonutKeyMetricStat from './DonutKeyMetricStat'
-import css from './KeyMetricCell.less'
 import KeyMetricCellWrapper from './KeyMetricCellWrapper'
+
+import css from './KeyMetricCell.less'
 
 export const NO_VALUE_PLACEHOLDER = '-'
 
@@ -36,7 +39,7 @@ export type Props = {
 const renderDifference = (
     valueTooltipId: string,
     metric: Map<any, any>,
-    tooltipDelta: string | null
+    tooltipDelta: string | null,
 ) => {
     return (
         <span id={valueTooltipId} className={css.diff}>
@@ -55,7 +58,7 @@ const defaultWrapper = (
     formattedValue: string | number | null,
     metric: Map<any, any>,
     valueTooltipId: string,
-    tooltipDelta: string | null
+    tooltipDelta: string | null,
 ) => {
     return (
         <div>
@@ -86,13 +89,13 @@ export const renderValue = (
     config: Map<any, any>,
     metric: Map<any, any> | null,
     valueTooltipId: string,
-    tooltipDelta: string | null
+    tooltipDelta: string | null,
 ) => {
     if (!metric) {
         return NO_VALUE_PLACEHOLDER
     }
     const formatData = config.get(
-        'formatData'
+        'formatData',
     ) as StatConfigMetric['formatData']
 
     if (formatData) {
@@ -100,7 +103,7 @@ export const renderValue = (
             formatData(metric),
             metric,
             valueTooltipId,
-            tooltipDelta
+            tooltipDelta,
         )
     }
 
@@ -113,8 +116,8 @@ export const renderValue = (
                     ...acc,
                     [key]: formatValue(value, metric),
                 }),
-                {}
-            )
+                {},
+            ),
         )
 
         return (
@@ -137,7 +140,7 @@ export const renderValue = (
             differenceComponent={renderDifference(
                 valueTooltipId,
                 metric,
-                tooltipDelta
+                tooltipDelta,
             )}
         />
     ) : (
@@ -167,7 +170,7 @@ export const KeyMetricCell = ({
         ? data.find((metric: Map<any, any>, j) =>
               metric.get('name')
                   ? metric.get('name') === metricConfig.get('name')
-                  : j === index
+                  : j === index,
           )
         : null
 
@@ -176,7 +179,7 @@ export const KeyMetricCell = ({
             ? metricConfig.get('tooltip')
             : (
                   metricConfig.get('tooltip') as (
-                      data: Map<any, any>
+                      data: Map<any, any>,
                   ) => ReactNode
               )(metric)
 
@@ -185,7 +188,7 @@ export const KeyMetricCell = ({
         previousEndDatetime = moment(meta.get('previous_end_datetime'))
         tooltipDelta = formatComparedPeriodString(
             previousStartDatetime,
-            previousEndDatetime
+            previousEndDatetime,
         )
     }
 
@@ -203,7 +206,7 @@ export const KeyMetricCell = ({
                         metricConfig,
                         metric,
                         valueTooltipId,
-                        tooltipDelta
+                        tooltipDelta,
                     )
                 )}
             </div>

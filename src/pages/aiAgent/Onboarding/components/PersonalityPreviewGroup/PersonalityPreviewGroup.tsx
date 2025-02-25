@@ -1,8 +1,9 @@
 import React from 'react'
 
-import {getPreviewsForPreviewType, Preview, PreviewId} from './constants'
+import { getPreviewsForPreviewType, Preview, PreviewId } from './constants'
+import { PersonalityPreviewItem } from './PersonalityPreviewItem'
+
 import css from './PersonalityPreviewGroup.less'
-import {PersonalityPreviewItem} from './PersonalityPreviewItem'
 
 type Props = {
     previewType?: 'mixed' | 'sales' | 'support'
@@ -20,7 +21,7 @@ export const PersonalityPreviewGroup: React.FC<Props> = ({
     const previewsToDisplay = getPreviewsForPreviewType(previewType)
     let ariaLoadingProps: Record<string, string> = {}
     if (isLoading) {
-        ariaLoadingProps = {'aria-busy': 'true', 'aria-live': 'polite'}
+        ariaLoadingProps = { 'aria-busy': 'true', 'aria-live': 'polite' }
     }
 
     return (

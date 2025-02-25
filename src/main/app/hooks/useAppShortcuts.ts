@@ -1,9 +1,9 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useShortcuts from 'hooks/useShortcuts'
 import pendingMessageManager from 'services/pendingMessageManager/pendingMessageManager'
-import {goToActiveView} from 'state/views/actions'
+import { goToActiveView } from 'state/views/actions'
 
 export default function useAppShortcuts() {
     const dispatch = useAppDispatch()
@@ -20,7 +20,7 @@ export default function useAppShortcuts() {
                 action: () => pendingMessageManager.undoMessage(),
             },
         }),
-        [dispatch]
+        [dispatch],
     )
 
     useShortcuts('App', actions)

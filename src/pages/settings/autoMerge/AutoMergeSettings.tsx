@@ -1,5 +1,6 @@
+import React, { FormEvent, useCallback } from 'react'
+
 import classNames from 'classnames'
-import React, {useCallback, FormEvent} from 'react'
 
 import Button from 'pages/common/components/button/Button'
 import DropdownItemLabel from 'pages/common/components/dropdown/DropdownItemLabel'
@@ -7,7 +8,6 @@ import PageHeader from 'pages/common/components/PageHeader'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import CheckBox from 'pages/common/forms/CheckBox'
 import NumberInput from 'pages/common/forms/input/NumberInput'
-
 import autoMergeSettingsCss from 'pages/settings/autoMerge/AutoMergeSettings.less'
 import {
     defaultAutoMergeSettings,
@@ -15,11 +15,10 @@ import {
 } from 'pages/settings/autoMerge/constants'
 import useAutoMerge from 'pages/settings/autoMerge/hooks/useAutoMerge'
 import useAutoMergeSettings from 'pages/settings/autoMerge/hooks/useAutoMergeSettings'
-
 import css from 'pages/settings/settings.less'
 
 export default function AutoMergeSettings() {
-    const {initialAutoMergeSettings, saveAutoMergeSettings} =
+    const { initialAutoMergeSettings, saveAutoMergeSettings } =
         useAutoMergeSettings()
     const autoMergeSettings = useAutoMerge(initialAutoMergeSettings)
 
@@ -36,7 +35,7 @@ export default function AutoMergeSettings() {
 
             void saveAutoMergeSettings(autoMergeSettings)
         },
-        [autoMergeSettings, saveAutoMergeSettings]
+        [autoMergeSettings, saveAutoMergeSettings],
     )
 
     const handleOnClick = (event: React.FormEvent<HTMLInputElement>) => {
@@ -112,8 +111,8 @@ export default function AutoMergeSettings() {
                                         Math.min(
                                             merging_window_days ||
                                                 defaultAutoMergeSettings.merging_window_days,
-                                            MAX_MERGING_WINDOW_DAYS
-                                        )
+                                            MAX_MERGING_WINDOW_DAYS,
+                                        ),
                                     )
                                 }}
                                 onFocus={handleOnClick}

@@ -1,17 +1,16 @@
 import React from 'react'
 
-import {Route, Switch, useRouteMatch} from 'react-router-dom'
+import { Route, Switch, useRouteMatch } from 'react-router-dom'
 
-import {PageSection} from 'config/pages'
-import {ADMIN_ROLE} from 'config/user'
-
+import { PageSection } from 'config/pages'
+import { ADMIN_ROLE } from 'config/user'
 import AgentDetail from 'pages/settings/users/Detail'
 import AgentList from 'pages/settings/users/List'
 
-import {renderAppSettings} from './helpers/settingsRenderer'
+import { renderAppSettings } from './helpers/settingsRenderer'
 
 export function Users() {
-    const {path} = useRouteMatch()
+    const { path } = useRouteMatch()
 
     return (
         <Switch>

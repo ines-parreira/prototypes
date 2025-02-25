@@ -1,5 +1,6 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { Meta, Story } from '@storybook/react'
 
 import TableBody from '../TableBody'
 import TableBodyRow from '../TableBodyRow'
@@ -20,7 +21,7 @@ const Template: Story<ComponentProps<typeof BodyCell>> = (props) => (
                     'Row body cell value 2',
                     'Row body cell value 3',
                 ].map((value, index) => (
-                    <BodyCell key={index} style={{width: '33%'}} {...props}>
+                    <BodyCell key={index} style={{ width: '33%' }} {...props}>
                         {value}
                     </BodyCell>
                 ))}

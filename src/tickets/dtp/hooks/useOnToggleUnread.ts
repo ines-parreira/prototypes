@@ -1,4 +1,4 @@
-import {useCallback, useMemo, useState} from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 export type OnToggleUnreadFn = (ticketId: number, isUnread: boolean) => void
 
@@ -9,11 +9,11 @@ export function useOnToggleUnread() {
         (toggleUnreadFn: OnToggleUnreadFn) => {
             setOnToggleUnread(() => toggleUnreadFn)
         },
-        []
+        [],
     )
 
     return useMemo(
-        () => ({onToggleUnread, registerOnToggleUnread}),
-        [onToggleUnread, registerOnToggleUnread]
+        () => ({ onToggleUnread, registerOnToggleUnread }),
+        [onToggleUnread, registerOnToggleUnread],
     )
 }

@@ -1,15 +1,19 @@
+import { useEffect, useMemo } from 'react'
+
 import _isEqual from 'lodash/isEqual'
-import {useEffect, useMemo} from 'react'
 // eslint-disable-next-line no-restricted-imports
-import {useDispatch} from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {StatsFiltersWithLogicalOperator} from 'models/stat/types'
-import {statFiltersWithLogicalOperatorsCleanWithPayload} from 'state/ui/stats/actions'
-import {getCleanStatsFilters, isCleanStatsDirty} from 'state/ui/stats/selectors'
+import { StatsFiltersWithLogicalOperator } from 'models/stat/types'
+import { statFiltersWithLogicalOperatorsCleanWithPayload } from 'state/ui/stats/actions'
+import {
+    getCleanStatsFilters,
+    isCleanStatsDirty,
+} from 'state/ui/stats/selectors'
 
 export function useCleanStatsFiltersWithLogicalOperators(
-    statsFilters: StatsFiltersWithLogicalOperator
+    statsFilters: StatsFiltersWithLogicalOperator,
 ): StatsFiltersWithLogicalOperator {
     const cleanStatsFilters = useAppSelector(getCleanStatsFilters)
     const isFilterDirty = useAppSelector(isCleanStatsDirty)
@@ -21,7 +25,7 @@ export function useCleanStatsFiltersWithLogicalOperators(
     useEffect(() => {
         if (cleanStatsShouldUpdate) {
             dispatch(
-                statFiltersWithLogicalOperatorsCleanWithPayload(statsFilters)
+                statFiltersWithLogicalOperatorsCleanWithPayload(statsFilters),
             )
         }
     }, [cleanStatsShouldUpdate, dispatch, statsFilters])

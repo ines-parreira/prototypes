@@ -1,8 +1,9 @@
+import React, { ReactNode, useState } from 'react'
+
 import classnames from 'classnames'
-import React, {ReactNode, useState} from 'react'
 
 import orderIcon from 'assets/img/icons/order-icon.svg'
-import {logEvent, SegmentEvent} from 'common/segment'
+import { logEvent, SegmentEvent } from 'common/segment'
 
 import css from './MetafieldsContainer.less'
 
@@ -10,7 +11,7 @@ type Props = {
     children: ReactNode
 }
 
-export default function MetafieldsContainer({children}: Props) {
+export default function MetafieldsContainer({ children }: Props) {
     const [isOpen, setIsOpen] = useState(false)
 
     const onClick = () => {

@@ -1,5 +1,6 @@
+import React, { createContext, useContext } from 'react'
+
 import classnames from 'classnames'
-import React, {createContext, useContext} from 'react'
 
 import css from './ToggleButton.less'
 
@@ -26,7 +27,7 @@ export const Wrapper: React.FC<ToggleButtonContextType> = ({
     children,
     size = 'medium',
 }) => (
-    <ToggleButtonContext.Provider value={{value, type, onChange, size}}>
+    <ToggleButtonContext.Provider value={{ value, type, onChange, size }}>
         <div
             role="radiogroup"
             className={classnames(css.wrapper, css[size], className)}
@@ -41,7 +42,11 @@ type OptionProps = {
     className?: string
 }
 
-export const Option: React.FC<OptionProps> = ({children, value, className}) => {
+export const Option: React.FC<OptionProps> = ({
+    children,
+    value,
+    className,
+}) => {
     const {
         value: currentValue,
         type,

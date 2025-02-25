@@ -1,24 +1,26 @@
-import {Skeleton} from '@gorgias/merchant-ui-kit'
+import React, { UIEventHandler, useState } from 'react'
+
 import classNames from 'classnames'
-import React, {UIEventHandler, useState} from 'react'
+
+import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import {
     DateAndTimeFormatting,
     DateTimeResultFormatType,
 } from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import {NumberedPagination} from 'pages/common/components/Paginations'
+import { NumberedPagination } from 'pages/common/components/Paginations'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-import {formatPercentage} from 'pages/common/utils/numbers'
-import {HintTooltip} from 'pages/stats/common/HintTooltip'
-import {formatMetricValue} from 'pages/stats/common/utils'
-import {TooltipData} from 'pages/stats/types'
-import {formatDatetime} from 'utils'
+import { formatPercentage } from 'pages/common/utils/numbers'
+import { HintTooltip } from 'pages/stats/common/HintTooltip'
+import { formatMetricValue } from 'pages/stats/common/utils'
+import { TooltipData } from 'pages/stats/types'
+import { formatDatetime } from 'utils'
 
 import css from './HelpCenterStatsTable.less'
 
@@ -63,7 +65,7 @@ const NO_VALUE_PLACEHOLDER = '-'
 
 const getCellFormatter = (
     cell: HelpCenterTableCell,
-    datetimeFormat: DateTimeResultFormatType
+    datetimeFormat: DateTimeResultFormatType,
 ) => {
     if (cell.value === null) return NO_VALUE_PLACEHOLDER
 
@@ -113,7 +115,7 @@ const HelpCenterStatsTable = ({
     }
 
     const datetimeFormat = useGetDateAndTimeFormat(
-        DateAndTimeFormatting.RelativeDateAndTime
+        DateAndTimeFormatting.RelativeDateAndTime,
     )
 
     return (
@@ -208,12 +210,12 @@ const HelpCenterStatsTable = ({
                                                           [css.clickableSpan]:
                                                               cell.onClick !==
                                                               undefined,
-                                                      }
+                                                      },
                                                   )}
                                                   data-testid={`${columns[columnNumber]?.name}-${rowNumber}`}
                                                   title={getCellFormatter(
                                                       cell,
-                                                      datetimeFormat
+                                                      datetimeFormat,
                                                   ).toString()}
                                               >
                                                   {cell.link ? (
@@ -224,13 +226,13 @@ const HelpCenterStatsTable = ({
                                                       >
                                                           {getCellFormatter(
                                                               cell,
-                                                              datetimeFormat
+                                                              datetimeFormat,
                                                           )}
                                                       </a>
                                                   ) : (
                                                       getCellFormatter(
                                                           cell,
-                                                          datetimeFormat
+                                                          datetimeFormat,
                                                       )
                                                   )}
                                               </span>

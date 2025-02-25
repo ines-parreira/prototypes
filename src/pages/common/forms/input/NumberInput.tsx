@@ -1,16 +1,17 @@
-import classnames from 'classnames'
 import React, {
-    forwardRef,
     ForwardedRef,
+    forwardRef,
     InputHTMLAttributes,
     ReactNode,
     useCallback,
     useContext,
+    useEffect,
     useImperativeHandle,
     useMemo,
     useState,
-    useEffect,
 } from 'react'
+
+import classnames from 'classnames'
 
 import useEffectOnce from 'hooks/useEffectOnce'
 import useEvent from 'hooks/useEvent'
@@ -20,7 +21,7 @@ import Group, {
     GroupPositionContext,
 } from 'pages/common/components/layout/Group'
 
-import {InputGroupContext} from './InputGroup'
+import { InputGroupContext } from './InputGroup'
 
 import css from './NumberInput.less'
 
@@ -75,11 +76,11 @@ function NumberInput(
         allowEmptyString,
         ...other
     }: Props,
-    ref: ForwardedRef<HTMLInputElement>
+    ref: ForwardedRef<HTMLInputElement>,
 ) {
     const appendPosition = useContext(GroupPositionContext) || ''
     const [inputElement, setInputElement] = useState<HTMLInputElement | null>(
-        null
+        null,
     )
     useImperativeHandle(ref, () => inputElement!)
     const groupContext = useContext(GroupContext)
@@ -93,12 +94,12 @@ function NumberInput(
             e.preventDefault()
             inputElement?.focus()
         },
-        [inputElement]
+        [inputElement],
     )
 
     const isDisabledMemoized = useMemo(
         () => groupContext?.isDisabled || isDisabled,
-        [groupContext?.isDisabled, isDisabled]
+        [groupContext?.isDisabled, isDisabled],
     )
 
     const handleFocus = useCallback(() => {
@@ -166,14 +167,23 @@ function NumberInput(
             const multiplier = direction === 'up' ? 1 : -1
             let newValue = Math.max(
                 Math.min((value ?? 0) + multiplier * step, max),
-                min
+                min,
             )
 
             newValue = Math.round(newValue * formatFactor) / formatFactor
 
             onChange(newValue)
         },
-        [inputElement, isFocused, max, min, step, formatFactor, onChange, value]
+        [
+            inputElement,
+            isFocused,
+            max,
+            min,
+            step,
+            formatFactor,
+            onChange,
+            value,
+        ],
     )
 
     return (
@@ -209,7 +219,7 @@ function NumberInput(
                     onChange(
                         parsedValue == null || isNaN(parsedValue)
                             ? undefined
-                            : parsedValue
+                            : parsedValue,
                     )
                 }}
                 ref={setInputElement}

@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-import styled from '@emotion/styled'
 import React from 'react'
 
-import {ColorType, gorgiasColors} from 'gorgias-design-system/styles'
+import styled from '@emotion/styled'
+
+import { ColorType, gorgiasColors } from 'gorgias-design-system/styles'
 
 export type BadgeColor = Extract<
     ColorType,
@@ -36,7 +37,7 @@ const transformColor = (color: BadgeColor) => {
         : gorgiasColors.dark
 }
 
-const StyledBadge = styled.div<{color?: BadgeColor}>`
+const StyledBadge = styled.div<{ color?: BadgeColor }>`
     display: flex;
     padding: 2px 8px;
     justify-content: center;
@@ -52,16 +53,17 @@ const StyledBadge = styled.div<{color?: BadgeColor}>`
     text-transform: uppercase;
     text-align: center;
 
-    background-color: ${({color}) =>
+    background-color: ${({ color }) =>
         color ? gorgiasColors[color] : gorgiasColors.accessoryBlue};
-    color: ${({color}) => (color ? transformColor(color) : gorgiasColors.dark)};
+    color: ${({ color }) =>
+        color ? transformColor(color) : gorgiasColors.dark};
 `
 
 /**
  * Non-interactive components used to display statuses or information.
  */
-export const Badge: React.FC<BadgeProps> = ({...props}: BadgeProps) => {
-    const {label, color = 'accessoryBlue'} = props
+export const Badge: React.FC<BadgeProps> = ({ ...props }: BadgeProps) => {
+    const { label, color = 'accessoryBlue' } = props
     return (
         <StyledBadge color={color} {...props}>
             {label}

@@ -1,9 +1,9 @@
 import useAppSelector from 'hooks/useAppSelector'
-import {GorgiasChatIntegration} from 'models/integration/types/gorgiasChat'
-import {getHasAutomate} from 'state/billing/selectors'
+import { GorgiasChatIntegration } from 'models/integration/types/gorgiasChat'
+import { getHasAutomate } from 'state/billing/selectors'
 
 const useIsAutomateSubscriber = (
-    integration: GorgiasChatIntegration
+    integration: GorgiasChatIntegration,
 ): boolean => {
     const hasAutomate = useAppSelector(getHasAutomate)
     const shopName = integration.meta?.shop_name as string | null

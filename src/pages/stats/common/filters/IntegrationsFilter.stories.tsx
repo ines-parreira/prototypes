@@ -1,13 +1,14 @@
-import {Meta, StoryFn} from '@storybook/react'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { Meta, StoryFn } from '@storybook/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {integrationsState} from 'fixtures/integrations'
-import {Integration} from 'models/integration/types'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {IntegrationsFilter} from 'pages/stats/common/filters/IntegrationsFilter'
+import { integrationsState } from 'fixtures/integrations'
+import { Integration } from 'models/integration/types'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { IntegrationsFilter } from 'pages/stats/common/filters/IntegrationsFilter'
 
 const defaultState = {}
 
@@ -17,7 +18,7 @@ const storyConfig: Meta = {
 }
 
 const Template: StoryFn<ComponentProps<typeof IntegrationsFilter>> = (
-    props: ComponentProps<typeof IntegrationsFilter>
+    props: ComponentProps<typeof IntegrationsFilter>,
 ) => {
     return (
         <Provider store={configureMockStore([thunk])(defaultState)}>
@@ -30,7 +31,7 @@ export const Default = Template.bind({})
 
 Default.args = {
     value: withDefaultLogicalOperator(
-        integrationsState.integrations.map((integration) => integration.id)
+        integrationsState.integrations.map((integration) => integration.id),
     ),
     integrations: integrationsState.integrations as Integration[],
 }

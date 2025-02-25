@@ -1,12 +1,12 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {HelpCenter} from 'models/helpCenter/types'
-import {StoreIntegration} from 'models/integration/types'
-import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
-import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
-import {getStoreIntegrations} from 'state/integrations/selectors'
-import {NonEmptyArray} from 'types'
+import { HelpCenter } from 'models/helpCenter/types'
+import { StoreIntegration } from 'models/integration/types'
+import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
+import { useHelpCenterList } from 'pages/settings/helpCenter/hooks/useHelpCenterList'
+import { getStoreIntegrations } from 'state/integrations/selectors'
+import { NonEmptyArray } from 'types'
 
 export type StoreWithHelpCenters = {
     store: StoreIntegration
@@ -14,7 +14,7 @@ export type StoreWithHelpCenters = {
 }
 
 const useHelpCentersByStoreId = (storesIntegrations: StoreIntegration[]) => {
-    const {helpCenters, isLoading} = useHelpCenterList({
+    const { helpCenters, isLoading } = useHelpCenterList({
         per_page: HELP_CENTER_MAX_CREATION,
         type: 'faq',
     })
@@ -28,21 +28,22 @@ const useHelpCentersByStoreId = (storesIntegrations: StoreIntegration[]) => {
                           ...acc,
                           [storeIntegration.id]: helpCenters.filter(
                               (helpCenter) =>
-                                  helpCenter.shop_name === storeIntegration.name
+                                  helpCenter.shop_name ===
+                                  storeIntegration.name,
                           ),
                       }),
-                      {}
+                      {},
                   ),
-        [helpCenters, isLoading, storesIntegrations]
+        [helpCenters, isLoading, storesIntegrations],
     )
 
-    return {isLoading, helpCentersByStoreId}
+    return { isLoading, helpCentersByStoreId }
 }
 
 const isStoreWithHelpCenter = (
     maybeStoreWithHelpCenter: Omit<StoreWithHelpCenters, 'helpCenters'> & {
         helpCenters: HelpCenter[]
-    }
+    },
 ): maybeStoreWithHelpCenter is StoreWithHelpCenters =>
     maybeStoreWithHelpCenter.helpCenters.length > 0
 
@@ -52,7 +53,7 @@ export const useTopQuestionsStoresWithHelpCenters = (): {
 } => {
     const storesIntegrations = useAppSelector(getStoreIntegrations)
 
-    const {helpCentersByStoreId, isLoading: isLoadingHelpCenters} =
+    const { helpCentersByStoreId, isLoading: isLoadingHelpCenters } =
         useHelpCentersByStoreId(storesIntegrations)
 
     const storesWithHelpCenters = useMemo(
@@ -65,7 +66,7 @@ export const useTopQuestionsStoresWithHelpCenters = (): {
                           helpCenters: helpCentersByStoreId[store.id] ?? [],
                       }))
                       .filter(isStoreWithHelpCenter),
-        [storesIntegrations, helpCentersByStoreId, isLoadingHelpCenters]
+        [storesIntegrations, helpCentersByStoreId, isLoadingHelpCenters],
     )
 
     return {

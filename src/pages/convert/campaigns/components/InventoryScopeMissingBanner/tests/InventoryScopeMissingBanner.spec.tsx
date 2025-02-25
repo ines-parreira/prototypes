@@ -1,13 +1,13 @@
-import {render, screen} from '@testing-library/react'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { render, screen } from '@testing-library/react'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
+import { makeGetRedirectUri } from 'state/integrations/selectors'
 
-import {makeGetRedirectUri} from 'state/integrations/selectors'
-
-import {InventoryScopeMissingBanner} from '../InventoryScopeMissingBanner'
+import { InventoryScopeMissingBanner } from '../InventoryScopeMissingBanner'
 
 jest.mock('launchdarkly-react-client-sdk')
 jest.mock('hooks/useAppSelector')
@@ -68,12 +68,12 @@ describe('InventoryScopeMissingBanner', () => {
         render(<InventoryScopeMissingBanner shopIntegrationId={1} />)
 
         expect(
-            screen.getByText(/Convert needs additional permissions/)
+            screen.getByText(/Convert needs additional permissions/),
         ).toBeInTheDocument()
         expect(screen.getByText('test-shop')).toBeInTheDocument()
         expect(screen.getByText('Update Permissions')).toHaveAttribute(
             'href',
-            'https://example.com/auth?shop_name=test-shop'
+            'https://example.com/auth?shop_name=test-shop',
         )
     })
 
@@ -83,8 +83,8 @@ describe('InventoryScopeMissingBanner', () => {
             [FeatureFlagKey.ShopifyInventoryItemScopeBanner]: false,
         })
 
-        const {container} = render(
-            <InventoryScopeMissingBanner shopIntegrationId={1} />
+        const { container } = render(
+            <InventoryScopeMissingBanner shopIntegrationId={1} />,
         )
         expect(container).toBeEmptyDOMElement()
     })
@@ -92,8 +92,8 @@ describe('InventoryScopeMissingBanner', () => {
     it('does not render when need_scope_update is false', () => {
         mockStoreData(storeIntegrationWithoutScopeUpdate)
 
-        const {container} = render(
-            <InventoryScopeMissingBanner shopIntegrationId={1} />
+        const { container } = render(
+            <InventoryScopeMissingBanner shopIntegrationId={1} />,
         )
         expect(container).toBeEmptyDOMElement()
     })
@@ -101,8 +101,8 @@ describe('InventoryScopeMissingBanner', () => {
     it('does not render when inventory scope is already present', () => {
         mockStoreData(storeIntegrationNeedsOtherScopeUpdate)
 
-        const {container} = render(
-            <InventoryScopeMissingBanner shopIntegrationId={1} />
+        const { container } = render(
+            <InventoryScopeMissingBanner shopIntegrationId={1} />,
         )
         expect(container).toBeEmptyDOMElement()
     })
@@ -110,8 +110,8 @@ describe('InventoryScopeMissingBanner', () => {
     it('handles undefined shop integration gracefully', () => {
         mockStoreData(undefined)
 
-        const {container} = render(
-            <InventoryScopeMissingBanner shopIntegrationId={1} />
+        const { container } = render(
+            <InventoryScopeMissingBanner shopIntegrationId={1} />,
         )
         expect(container).toBeEmptyDOMElement()
     })

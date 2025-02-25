@@ -8,7 +8,7 @@ interface Props {
     translatedTexts: Record<string, string>
 }
 
-const PoweredByGorgias: React.FC<Props> = ({translatedTexts}: Props) => (
+const PoweredByGorgias: React.FC<Props> = ({ translatedTexts }: Props) => (
     <div className={css.poweredBy}>
         <div>
             <span>{translatedTexts.poweredBy}</span>

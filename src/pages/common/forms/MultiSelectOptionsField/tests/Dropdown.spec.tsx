@@ -1,8 +1,9 @@
-import {act, render, screen} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
-import {UncontrolledDropdown} from 'reactstrap'
+import React, { ComponentProps } from 'react'
 
-import {assumeMock, getLastMockCall} from 'utils/testing'
+import { act, render, screen } from '@testing-library/react'
+import { UncontrolledDropdown } from 'reactstrap'
+
+import { assumeMock, getLastMockCall } from 'utils/testing'
 
 import Dropdown from '../Dropdown'
 import Input from '../Input'
@@ -15,7 +16,7 @@ jest.mock('reactstrap', () => {
         UncontrolledDropdown: jest.fn(
             (props: ComponentProps<typeof UncontrolledDropdown>) => {
                 return <div>{props.children}</div>
-            }
+            },
         ),
         DropdownToggle: (props: Record<string, unknown>) => <div {...props} />,
         DropdownMenu: (props: Record<string, unknown>) => <div {...props} />,
@@ -57,13 +58,13 @@ describe('MultiSelectField Dropdown', () => {
     }
 
     it('should call UncontrolledDropdown, Input and Menu with correct props', () => {
-        const {rerender} = render(<Dropdown {...defaultProps} />)
+        const { rerender } = render(<Dropdown {...defaultProps} />)
 
         expect(UncontrolledDropdown).toHaveBeenLastCalledWith(
             expect.objectContaining({
                 isOpen: false,
             }),
-            {}
+            {},
         )
         expect(mockedInput).toHaveBeenLastCalledWith(
             expect.objectContaining({
@@ -76,7 +77,7 @@ describe('MultiSelectField Dropdown', () => {
                 onChange: defaultProps.onChange,
                 isCompact: defaultProps.isCompact,
             }),
-            {}
+            {},
         )
         expect(mockedMenu).toHaveBeenLastCalledWith(
             expect.objectContaining({
@@ -85,23 +86,28 @@ describe('MultiSelectField Dropdown', () => {
                 activeIndex: 0,
                 onSelect: defaultProps.onSelect,
             }),
-            {}
+            {},
         )
 
         rerender(
-            <Dropdown {...defaultProps} isFocused value="Yo" isLoading={true} />
+            <Dropdown
+                {...defaultProps}
+                isFocused
+                value="Yo"
+                isLoading={true}
+            />,
         )
         expect(UncontrolledDropdown).toHaveBeenLastCalledWith(
             expect.objectContaining({
                 isOpen: true,
             }),
-            {}
+            {},
         )
         expect(mockedMenu).toHaveBeenLastCalledWith(
             expect.objectContaining({
                 isLoading: true,
             }),
-            {}
+            {},
         )
     })
 
@@ -174,7 +180,7 @@ describe('MultiSelectField Dropdown', () => {
 
     describe('selection reset', () => {
         it('should reset selection if options change', () => {
-            const {rerender} = render(<Dropdown {...defaultProps} />)
+            const { rerender } = render(<Dropdown {...defaultProps} />)
             act(() => {
                 getLastMockCall(mockedMenu)[0].onActivate(2)
             })
@@ -185,7 +191,7 @@ describe('MultiSelectField Dropdown', () => {
         })
 
         it('should not reset selection if options did not change', () => {
-            const {rerender} = render(<Dropdown {...defaultProps} />)
+            const { rerender } = render(<Dropdown {...defaultProps} />)
             act(() => {
                 getLastMockCall(mockedMenu)[0].onActivate(2)
             })

@@ -1,5 +1,6 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps, useRef} from 'react'
+import React, { ComponentProps, useRef } from 'react'
+
+import { Meta, Story } from '@storybook/react'
 
 import Button from 'pages/common/components/button/Button'
 
@@ -11,7 +12,7 @@ const storyConfig: Meta = {
 }
 
 const ExampleTemplate: Story<ComponentProps<typeof UncontrolledDropdown>> = (
-    props
+    props,
 ) => {
     const buttonRef = useRef<HTMLButtonElement>(null)
 
@@ -27,6 +28,6 @@ const ExampleTemplate: Story<ComponentProps<typeof UncontrolledDropdown>> = (
 }
 
 export const Example = ExampleTemplate.bind({})
-Example.parameters = {controls: {include: ['placement']}}
+Example.parameters = { controls: { include: ['placement'] } }
 
 export default storyConfig

@@ -1,16 +1,17 @@
-import {render} from '@testing-library/react'
-import {fromJS, Map} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { render } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 
-import {AfterTitle, BeforeContent, TitleWrapper, Wrapper} from '../Order'
+import { AfterTitle, BeforeContent, TitleWrapper, Wrapper } from '../Order'
 
 const mockStore = configureMockStore([thunk])
-const integrationContextData = {integration: fromJS({}), integrationId: 1}
+const integrationContextData = { integration: fromJS({}), integrationId: 1 }
 
 describe('Order', () => {
     describe('<AfterTitle/>', () => {
@@ -21,27 +22,27 @@ describe('Order', () => {
         } as unknown as ComponentProps<typeof AfterTitle>
 
         it('should not render because widgets are being edited', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore({})}>
                     <IntegrationContext.Provider value={integrationContextData}>
                         <Wrapper source={fromJS({})}>
                             <AfterTitle {...minProps} isEditing />
                         </Wrapper>
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(container).toMatchSnapshot()
         })
 
         it('should not render because no integration id was provided', () => {
-            const {container} = render(<AfterTitle {...minProps} />)
+            const { container } = render(<AfterTitle {...minProps} />)
 
             expect(container).toMatchSnapshot()
         })
 
         it('should not display the refund action because the order was cancelled', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore({})}>
                     <IntegrationContext.Provider value={integrationContextData}>
                         <Wrapper
@@ -59,14 +60,14 @@ describe('Order', () => {
                             />
                         </Wrapper>
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(container).toMatchSnapshot()
         })
 
         it('should not display the refund action because the order was refunded', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore({})}>
                     <IntegrationContext.Provider value={integrationContextData}>
                         <Wrapper
@@ -84,14 +85,14 @@ describe('Order', () => {
                             />
                         </Wrapper>
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(container).toMatchSnapshot()
         })
 
         it('should not display the refund action because the charge is not refundable', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore({})}>
                     <IntegrationContext.Provider value={integrationContextData}>
                         <Wrapper
@@ -109,14 +110,14 @@ describe('Order', () => {
                             />
                         </Wrapper>
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(container).toMatchSnapshot()
         })
 
         it('should display the refund action', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore({})}>
                     <IntegrationContext.Provider value={integrationContextData}>
                         <Wrapper
@@ -134,7 +135,7 @@ describe('Order', () => {
                             />
                         </Wrapper>
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(container).toMatchSnapshot()
@@ -142,7 +143,7 @@ describe('Order', () => {
 
         it('should display the refund action (because total_price > total_refunds)', () => {
             const chargeId = 1
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore({})}>
                     <IntegrationContext.Provider value={integrationContextData}>
                         <Wrapper
@@ -171,7 +172,7 @@ describe('Order', () => {
                             />
                         </Wrapper>
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(container).toMatchSnapshot()
@@ -196,21 +197,21 @@ describe('Order', () => {
         } as unknown as ComponentProps<typeof BeforeContent>
 
         it('should render the total_refunds field to 0.00 because the value on the associated charge is null', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore({})}>
                     <IntegrationContext.Provider value={integrationContextData}>
                         <Wrapper source={fromJS({})}>
                             <BeforeContent {...minProps} />
                         </Wrapper>
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render with the total_refunds field from the associated charge', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore({})}>
                     <IntegrationContext.Provider value={integrationContextData}>
                         <Wrapper source={fromJS({})}>
@@ -229,7 +230,7 @@ describe('Order', () => {
                             />
                         </Wrapper>
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -238,19 +239,19 @@ describe('Order', () => {
 
     describe('<TitleWrapper/>', () => {
         const minProps = {
-            source: fromJS({order_id: 1}),
+            source: fromJS({ order_id: 1 }),
             template: fromJS({}),
             getIntegrationData: () => fromJS({}) as Map<any, any>,
         } as unknown as ComponentProps<typeof TitleWrapper>
 
         it('should not render any link because no customer hash was passed', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore({})}>
                     <IntegrationContext.Provider
                         value={{
                             integrationId: 1,
                             integration: fromJS({
-                                meta: {store_name: 'storegorgias3'},
+                                meta: { store_name: 'storegorgias3' },
                             }),
                         }}
                     >
@@ -258,20 +259,20 @@ describe('Order', () => {
                             <TitleWrapper {...minProps} />
                         </Wrapper>
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render the base link because a customer hash was passed and no custom link is set', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore({})}>
                     <IntegrationContext.Provider
                         value={{
                             integrationId: 1,
                             integration: fromJS({
-                                meta: {store_name: 'storegorgias3'},
+                                meta: { store_name: 'storegorgias3' },
                             }),
                         }}
                     >
@@ -285,26 +286,26 @@ describe('Order', () => {
                                 })}
                                 getIntegrationData={() =>
                                     fromJS({
-                                        customer: {hash: 's8d4f6sdf4'},
+                                        customer: { hash: 's8d4f6sdf4' },
                                     }) as Map<any, any>
                                 }
                             />
                         </Wrapper>
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render the custom link because a customer hash was passed and a custom link is set', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore({})}>
                     <IntegrationContext.Provider
                         value={{
                             integrationId: 1,
                             integration: fromJS({
-                                meta: {store_name: 'storegorgias3'},
+                                meta: { store_name: 'storegorgias3' },
                             }),
                         }}
                     >
@@ -318,13 +319,13 @@ describe('Order', () => {
                                 })}
                                 getIntegrationData={() =>
                                     fromJS({
-                                        customer: {hash: 's8d4f6sdf4'},
+                                        customer: { hash: 's8d4f6sdf4' },
                                     }) as Map<any, any>
                                 }
                             />
                         </Wrapper>
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(container.firstChild).toMatchSnapshot()

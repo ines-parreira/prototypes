@@ -1,14 +1,14 @@
-import {OrderDirection} from 'models/api/types'
-import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
-import {TicketDimension} from 'models/reporting/cubes/TicketCube'
+import { OrderDirection } from 'models/api/types'
+import { HelpdeskMessageCubeWithJoins } from 'models/reporting/cubes/HelpdeskMessageCube'
+import { TicketDimension } from 'models/reporting/cubes/TicketCube'
 import {
     TicketSatisfactionSurveyDimension,
     TicketSatisfactionSurveyMeasure,
     TicketSatisfactionSurveySegment,
 } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
-import {CHANNEL_DIMENSION} from 'models/reporting/queryFactories/support-performance/constants'
-import {ReportingQuery} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import { CHANNEL_DIMENSION } from 'models/reporting/queryFactories/support-performance/constants'
+import { ReportingQuery } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     NotSpamNorTrashedTicketsFilter,
@@ -21,7 +21,7 @@ import {
 export const customerSatisfactionQueryFactory = (
     statsFilters: StatsFilters,
     timezone: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
     measures: [TicketSatisfactionSurveyMeasure.AvgSurveyScore],
     dimensions: [],
@@ -31,7 +31,7 @@ export const customerSatisfactionQueryFactory = (
         ...NotSpamNorTrashedTicketsFilter,
         ...statsFiltersToReportingFilters(
             TicketStatsFiltersMembers,
-            statsFilters
+            statsFilters,
         ),
     ],
     ...(sorting
@@ -46,24 +46,24 @@ export const customerSatisfactionQueryFactory = (
 export const customerSatisfactionMetricPerAgentQueryFactory =
     perDimensionQueryFactory(
         customerSatisfactionQueryFactory,
-        TicketDimension.AssigneeUserId
+        TicketDimension.AssigneeUserId,
     )
 
 export const customerSatisfactionMetricPerChannelQueryFactory =
     perDimensionQueryFactory(
         customerSatisfactionQueryFactory,
-        CHANNEL_DIMENSION
+        CHANNEL_DIMENSION,
     )
 
 export const customerSatisfactionMetricDrillDownQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
     const baseQuery = customerSatisfactionMetricPerAgentQueryFactory(
         filters,
         timezone,
-        sorting
+        sorting,
     )
     return {
         ...baseQuery,

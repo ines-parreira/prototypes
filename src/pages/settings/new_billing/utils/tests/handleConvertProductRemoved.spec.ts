@@ -1,7 +1,7 @@
-import {logEvent, SegmentEvent} from 'common/segment'
-import {assumeMock} from 'utils/testing'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { assumeMock } from 'utils/testing'
 
-import {handleConvertProductRemoved} from '../handleConvertProductRemoved'
+import { handleConvertProductRemoved } from '../handleConvertProductRemoved'
 
 jest.mock('common/segment')
 const logEventMock = assumeMock(logEvent)
@@ -15,7 +15,7 @@ describe('handleConvertProductRemoved', () => {
             {
                 account: 'acme-shop',
                 from: 'convert-usd1000',
-            }
+            },
         )
     })
 })

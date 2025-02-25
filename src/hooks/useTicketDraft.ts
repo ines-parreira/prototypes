@@ -1,22 +1,24 @@
-import {Macro} from '@gorgias/api-queries'
-import {RawDraftContentState, SelectionState, convertFromRaw} from 'draft-js'
-import {fromJS, List, Map} from 'immutable'
-import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
-import {v4 as uuidv4} from 'uuid'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import {TicketMessageSourceType} from 'business/types/ticket'
+import { convertFromRaw, RawDraftContentState, SelectionState } from 'draft-js'
+import { fromJS, List, Map } from 'immutable'
+import { v4 as uuidv4 } from 'uuid'
+
+import { Macro } from '@gorgias/api-queries'
+
+import { TicketMessageSourceType } from 'business/types/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {Ticket} from 'models/ticket/types'
-import {convertToRawWithoutPredictions} from 'pages/common/draftjs/plugins/prediction/utils'
+import { Ticket } from 'models/ticket/types'
+import { convertToRawWithoutPredictions } from 'pages/common/draftjs/plugins/prediction/utils'
 import LocalForageManager from 'services/localForageManager/localForageManager'
 import {
     restoreNewMessageBodyText,
     restoreNewMessageDraft,
     setSourceType,
 } from 'state/newMessage/actions'
-import {hasOnlySignatureText} from 'state/newMessage/emailExtraUtils'
-import {transformMessageContext} from 'state/newMessage/responseUtils'
+import { hasOnlySignatureText } from 'state/newMessage/emailExtraUtils'
+import { transformMessageContext } from 'state/newMessage/responseUtils'
 import {
     getNewMessage,
     getNewMessageAttachments,
@@ -28,12 +30,12 @@ import {
     getNewMessageType,
     isNewMessageEmailExtraAdded,
 } from 'state/newMessage/selectors'
-import {Message} from 'state/newMessage/types'
+import { Message } from 'state/newMessage/types'
 import {
     restoreTicketDraft,
     restoreTicketDraftApplyMacro,
 } from 'state/ticket/actions'
-import {getAppliedMacro, getProperty} from 'state/ticket/selectors'
+import { getAppliedMacro, getProperty } from 'state/ticket/selectors'
 
 import useEffectOnce from './useEffectOnce'
 import usePrevious from './usePrevious'
@@ -100,28 +102,28 @@ export default function useTicketDraft(isTicketNew = false) {
     const attachments = useAppSelector(getNewMessageAttachments)
     const source = useAppSelector(getNewMessageSource)
     const assigneeTeam = useAppSelector((state) =>
-        getProperty('assignee_team')(state)
+        getProperty('assignee_team')(state),
     ) as Map<any, any> | null
     const assigneeUser = useAppSelector((state) =>
-        getProperty('assignee_user')(state)
+        getProperty('assignee_user')(state),
     ) as Map<any, any> | null
     const subject = useAppSelector((state) =>
-        getProperty('subject')(state)
+        getProperty('subject')(state),
     ) as unknown as string
     const tags = useAppSelector((state) =>
-        getProperty('tags')(state)
+        getProperty('tags')(state),
     ) as unknown as List<any>
     const customer = useAppSelector((state) =>
-        getProperty('customer')(state)
+        getProperty('customer')(state),
     ) as Map<any, any> | null
     const newMessage = useAppSelector(getNewMessage)
     const newMessageState = useAppSelector(getNewMessageState)
     const bodyText = useMemo(
         () => newMessage.get('body_text') as string,
-        [newMessage]
+        [newMessage],
     )
     const newMessageIsEmailExtraAdded = useAppSelector(
-        isNewMessageEmailExtraAdded
+        isNewMessageEmailExtraAdded,
     )
     const newMessageContentState = useAppSelector(getNewMessageContentState)
     const newMessageSelectionState = useMemo(
@@ -130,12 +132,12 @@ export default function useTicketDraft(isTicketNew = false) {
                 'state',
                 'selectionState',
             ]) as SelectionState,
-        [newMessageState]
+        [newMessageState],
     )
     const newMessageSignature = useAppSelector(getNewMessageSignature)
     const isForward = useMemo(
         () => source.getIn(['extra', 'forward']) as boolean,
-        [source]
+        [source],
     )
     const newMessageSourceType = useAppSelector(getNewMessageType)
     const sourceType = useMemo(
@@ -143,7 +145,7 @@ export default function useTicketDraft(isTicketNew = false) {
             isForward
                 ? TicketMessageSourceType.EmailForward
                 : newMessageSourceType,
-        [isForward, newMessageSourceType]
+        [isForward, newMessageSourceType],
     )
     const appliedMacro = useAppSelector(getAppliedMacro)
     const isMacroApplied = !!appliedMacro && !appliedMacro.isEmpty()
@@ -155,13 +157,13 @@ export default function useTicketDraft(isTicketNew = false) {
                 newMessageContentState.hasText() &&
                 !hasOnlySignatureText(
                     newMessageContentState,
-                    newMessageSignature || fromJS({})
+                    newMessageSignature || fromJS({}),
                 )) ||
             isMacroApplied
         ) {
             return {
                 contentState: convertToRawWithoutPredictions(
-                    newMessageContentState
+                    newMessageContentState,
                 ),
                 emailExtraAdded: newMessageIsEmailExtraAdded,
                 inserted_discounts: newMessageDiscountCodes.toJS(),
@@ -209,14 +211,14 @@ export default function useTicketDraft(isTicketNew = false) {
             subject,
             ticket,
             tags,
-        ]
+        ],
     )
 
     const [ticketDraft, setTicketDraft] = useState<TicketDraft | null>(null)
 
     const isStoredTicketDraftEmpty = useMemo(
         () => isTicketDraftEmpty(ticketDraft),
-        [ticketDraft]
+        [ticketDraft],
     )
 
     const isNewTicketEmpty = useMemo(
@@ -243,7 +245,7 @@ export default function useTicketDraft(isTicketNew = false) {
             source,
             subject,
             tags,
-        ]
+        ],
     )
 
     const previousIsNewTicketEmpty = usePrevious(isNewTicketEmpty)
@@ -279,7 +281,7 @@ export default function useTicketDraft(isTicketNew = false) {
             isTicketNew &&
             ((!isStoredTicketDraftEmpty && !isNewTicketEmpty) ||
                 (isStoredTicketDraftEmpty && !isNewTicketEmpty)),
-        [isTicketNew, isNewTicketEmpty, isStoredTicketDraftEmpty]
+        [isTicketNew, isNewTicketEmpty, isStoredTicketDraftEmpty],
     )
 
     const persist = useCallback(() => {
@@ -305,7 +307,7 @@ export default function useTicketDraft(isTicketNew = false) {
                 restoreNewMessageDraft({
                     attachments,
                     source,
-                })
+                }),
             )
             dispatch(setSourceType(sourceType))
 
@@ -316,13 +318,13 @@ export default function useTicketDraft(isTicketNew = false) {
                     customer,
                     subject,
                     tags,
-                })
+                }),
             )
             dispatch(restoreTicketDraftApplyMacro(appliedMacro))
 
             if (ticket) {
                 const newTicket = transformMessageContext(
-                    fromJS(ticket) as Map<any, any>
+                    fromJS(ticket) as Map<any, any>,
                 )
                 dispatch(restoreNewMessageBodyText(newTicket))
             }

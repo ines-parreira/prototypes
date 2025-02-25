@@ -1,8 +1,8 @@
-import {AIGuidance} from '../types'
+import { AIGuidance } from '../types'
 
 export const getAIGuidanceFixture = (
     key: string,
-    overrides: Partial<Omit<AIGuidance, 'key'>> = {}
+    overrides: Partial<Omit<AIGuidance, 'key'>> = {},
 ): AIGuidance => ({
     key,
     name: `Name ${key}`,

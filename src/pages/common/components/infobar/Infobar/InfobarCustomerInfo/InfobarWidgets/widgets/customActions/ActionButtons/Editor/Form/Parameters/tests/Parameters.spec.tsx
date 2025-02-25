@@ -1,7 +1,8 @@
-import {render, fireEvent, screen} from '@testing-library/react'
 import React from 'react'
 
-import {assumeMock, getLastMockCall} from 'utils/testing'
+import { fireEvent, render, screen } from '@testing-library/react'
+
+import { assumeMock, getLastMockCall } from 'utils/testing'
 
 import Parameter from '../Parameter'
 import Parameters from '../Parameters'
@@ -40,12 +41,12 @@ describe('<Parameters/>', () => {
     }
 
     it('should call onChange when adding a new parameter', () => {
-        render(<Parameters {...{...props, value: []}} />)
+        render(<Parameters {...{ ...props, value: [] }} />)
 
         fireEvent.click(
             screen.getByRole('button', {
                 name: /Add Parameter/,
-            })
+            }),
         )
         expect(props.onChange).toHaveBeenCalledWith(props.path, [
             {
@@ -61,8 +62,8 @@ describe('<Parameters/>', () => {
     it('should display an error message when having duplicate keys', () => {
         render(
             <Parameters
-                {...{...props, value: [props.value[0], props.value[0]]}}
-            />
+                {...{ ...props, value: [props.value[0], props.value[0]] }}
+            />,
         )
 
         expect(screen.getByText(/you have duplicate keys/))

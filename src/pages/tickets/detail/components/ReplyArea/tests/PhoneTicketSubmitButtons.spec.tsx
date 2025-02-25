@@ -1,16 +1,16 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import {resetLDMocks} from 'jest-launchdarkly-mock'
 import React from 'react'
-import {Provider} from 'react-redux'
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { resetLDMocks } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
+import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import VoiceDeviceProvider from 'pages/integrations/integration/components/voice/VoiceDeviceProvider'
-import {RootState, StoreDispatch} from 'state/types'
-import {isDeviceReady} from 'utils/device'
-
-import {assumeMock} from 'utils/testing'
+import { RootState, StoreDispatch } from 'state/types'
+import { isDeviceReady } from 'utils/device'
+import { assumeMock } from 'utils/testing'
 
 import PhoneTicketSubmitButtons from '../PhoneTicketSubmitButtons'
 
@@ -20,7 +20,7 @@ const isDeviceReadyMock = assumeMock(isDeviceReady)
 
 const getWrapper =
     (store: any) =>
-    ({children}: any) => (
+    ({ children }: any) => (
         <Provider store={store}>
             <VoiceDeviceProvider>{children}</VoiceDeviceProvider>
         </Provider>
@@ -38,7 +38,7 @@ describe('<PhoneTicketSubmitButtons/>', () => {
     function getSource(
         fromId: number | null = integrationId,
         fromAddress: string | null = validFromAddress,
-        toAddress: string | null = validToAddress
+        toAddress: string | null = validToAddress,
     ) {
         return {
             from: {
@@ -74,7 +74,7 @@ describe('<PhoneTicketSubmitButtons/>', () => {
         const state = getState()
         store = mockStore(state)
 
-        const {getByText} = render(<PhoneTicketSubmitButtons />, {
+        const { getByText } = render(<PhoneTicketSubmitButtons />, {
             wrapper: getWrapper(store),
         })
 
@@ -92,12 +92,12 @@ describe('<PhoneTicketSubmitButtons/>', () => {
         (invalidState) => {
             store = mockStore(invalidState)
 
-            const {getByRole} = render(<PhoneTicketSubmitButtons />, {
+            const { getByRole } = render(<PhoneTicketSubmitButtons />, {
                 wrapper: getWrapper(store),
             })
 
-            expect(getByRole('button', {name: 'Call'})).toBeAriaDisabled()
-        }
+            expect(getByRole('button', { name: 'Call' })).toBeAriaDisabled()
+        },
     )
 
     it('should render as disabled because the device is not ready', () => {
@@ -105,10 +105,10 @@ describe('<PhoneTicketSubmitButtons/>', () => {
 
         isDeviceReadyMock.mockReturnValue(false)
 
-        const {getByRole} = render(<PhoneTicketSubmitButtons />, {
+        const { getByRole } = render(<PhoneTicketSubmitButtons />, {
             wrapper: getWrapper(store),
         })
 
-        expect(getByRole('button', {name: 'Call'})).toBeAriaDisabled()
+        expect(getByRole('button', { name: 'Call' })).toBeAriaDisabled()
     })
 })

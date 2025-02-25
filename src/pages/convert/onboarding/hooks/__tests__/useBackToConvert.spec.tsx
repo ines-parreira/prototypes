@@ -1,4 +1,4 @@
-import {act, renderHook} from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react-hooks'
 
 import {
     BACK_TO_CONVERT_ONBOARDING_KEY,
@@ -9,14 +9,14 @@ describe('useBackToConvert', () => {
     test('persists backIntegrationId in sessionStorage', () => {
         sessionStorage.removeItem(BACK_TO_CONVERT_ONBOARDING_KEY)
 
-        const {result} = renderHook(() => useBackToConvert())
+        const { result } = renderHook(() => useBackToConvert())
 
         act(() => {
             result.current.setBackIntegrationId(123)
         })
 
         expect(sessionStorage.getItem(BACK_TO_CONVERT_ONBOARDING_KEY)).toBe(
-            '123'
+            '123',
         )
 
         expect(result.current.backIntegrationId).toBe('123')

@@ -1,27 +1,28 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {SegmentEvent, logEvent} from 'common/segment'
-import {account as accountFixture} from 'fixtures/account'
-import {integrationsState} from 'fixtures/integrations'
-import {user as userFixture} from 'fixtures/users'
-import {HelpCenterPageEmbedment} from 'models/helpCenter/types'
-import {PageEmbedmentPosition} from 'pages/common/components/PageEmbedmentForm'
-import {HELP_CENTER_BASE_PATH} from 'pages/settings/helpCenter/constants'
-import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { account as accountFixture } from 'fixtures/account'
+import { integrationsState } from 'fixtures/integrations'
+import { user as userFixture } from 'fixtures/users'
+import { HelpCenterPageEmbedment } from 'models/helpCenter/types'
+import { PageEmbedmentPosition } from 'pages/common/components/PageEmbedmentForm'
+import { HELP_CENTER_BASE_PATH } from 'pages/settings/helpCenter/constants'
+import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {
-    useUpdatePageEmbedment,
     useDeletePageEmbedment,
+    useUpdatePageEmbedment,
 } from 'pages/settings/helpCenter/queries'
-import {RootState, StoreDispatch} from 'state/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock, renderWithRouter} from 'utils/testing'
+import { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock, renderWithRouter } from 'utils/testing'
 
 import ManageEmbedments from '../ManageEmbedments'
 
@@ -37,14 +38,14 @@ jest.mock(
             ...jest.requireActual('pages/settings/helpCenter/queries'),
             useUpdatePageEmbedment: jest.fn(),
             useDeletePageEmbedment: jest.fn(),
-        }) as Record<string, unknown>
+        }) as Record<string, unknown>,
 )
 const mockUpdatePageEmbedment = jest.fn()
 const mockDeletePageEmbedment = jest.fn()
 const useUpdatePageEmbedmentMock = assumeMock(useUpdatePageEmbedment)
 const useDeletePageEmbedmentMock = assumeMock(useDeletePageEmbedment)
 
-const embedments: HelpCenterPageEmbedment[] = Array.from({length: 3}).map(
+const embedments: HelpCenterPageEmbedment[] = Array.from({ length: 3 }).map(
     (_, i) => ({
         id: i + 1,
         page_path_url: `/pages/test-${i}`,
@@ -53,7 +54,7 @@ const embedments: HelpCenterPageEmbedment[] = Array.from({length: 3}).map(
         position: PageEmbedmentPosition.TOP,
         updated_datetime: '2021-01-01T00:00:00.000Z',
         created_datetime: '2021-01-01T00:00:00.000Z',
-    })
+    }),
 )
 
 const helpCenter = {
@@ -93,7 +94,7 @@ const renderView = ({
         {
             path,
             route,
-        }
+        },
     )
 }
 
@@ -117,7 +118,7 @@ describe('<ManageEmbedments', () => {
     })
 
     it('wording check', () => {
-        renderView({state: defaultState, embedments})
+        renderView({ state: defaultState, embedments })
 
         screen.getByText('Manage embedded pages')
         screen.getByText(/Edit the position of your Help Center/)
@@ -125,7 +126,7 @@ describe('<ManageEmbedments', () => {
     })
 
     it('renders the embedments', () => {
-        renderView({state: defaultState, embedments})
+        renderView({ state: defaultState, embedments })
 
         embedments.forEach((embedment) => {
             // Renders the page title for each embedment
@@ -138,7 +139,7 @@ describe('<ManageEmbedments', () => {
             const link = screen.getByTestId(`preview-button-${embedment.id}`)
             expect(link).toHaveAttribute(
                 'href',
-                `https://${helpCenter.shop_name}.myshopify.com${embedment.page_path_url}`
+                `https://${helpCenter.shop_name}.myshopify.com${embedment.page_path_url}`,
             )
         })
 
@@ -148,7 +149,7 @@ describe('<ManageEmbedments', () => {
     })
 
     it('logs an event when trying to embed on another page', () => {
-        renderView({state: defaultState, embedments})
+        renderView({ state: defaultState, embedments })
 
         const button = screen.getByText(/embed on another page/i)
 
@@ -161,14 +162,14 @@ describe('<ManageEmbedments', () => {
                 account_domain: accountFixture.domain,
                 help_center_id: helpCenter.id,
                 page_embedments_count: embedments.length,
-            }
+            },
         )
     })
 
     it('saves the changes when Save Changes is clicked', async () => {
-        renderView({state: defaultState, embedments: [embedments[0]]})
+        renderView({ state: defaultState, embedments: [embedments[0]] })
 
-        const button = screen.getByRole('button', {name: /save changes/i})
+        const button = screen.getByRole('button', { name: /save changes/i })
         expect(button).toBeAriaDisabled()
 
         // Change the position of the first embedment

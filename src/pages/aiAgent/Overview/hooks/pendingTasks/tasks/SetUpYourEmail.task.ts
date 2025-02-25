@@ -1,5 +1,5 @@
-import {RuleEngineData, RuleEngineRoutes} from '../ruleEngine'
-import {Task} from './Task'
+import { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
+import { Task } from './Task'
 
 export class SetUpYourEmailTask extends Task {
     constructor(data: RuleEngineData, routes: RuleEngineRoutes) {
@@ -8,7 +8,7 @@ export class SetUpYourEmailTask extends Task {
             'Connecting your email is mandatory to be able to turn on AI Agent',
             'BASIC',
             data,
-            routes
+            routes,
         )
     }
 
@@ -16,7 +16,7 @@ export class SetUpYourEmailTask extends Task {
     protected shouldBeDisplayed(data: RuleEngineData): boolean {
         // TODO: add condition "Email selected in onboarding settings is other provider" when settings API is connected
         return !data.emailIntegrations.filter(
-            (emailIntegration) => !emailIntegration.isDefault
+            (emailIntegration) => !emailIntegration.isDefault,
         ).length
     }
 

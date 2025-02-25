@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
 import Button from 'pages/common/components/button/Button'
 
@@ -6,12 +6,13 @@ import {
     WorkflowTemplate,
     WorkflowTemplateLabelType,
 } from '../models/workflowConfiguration.types'
+import { WorkflowTemplateModal } from './WorkflowTemplateModal'
+
 import css from './WorkflowTemplateCard.less'
-import {WorkflowTemplateModal} from './WorkflowTemplateModal'
 
 const workflowLabelStyles: Record<
     WorkflowTemplateLabelType,
-    {color: string; backgroundColor: string}
+    { color: string; backgroundColor: string }
 > = {
     [WorkflowTemplateLabelType.ProductQuestion]: {
         color: 'var(--accessory-blue-3)',

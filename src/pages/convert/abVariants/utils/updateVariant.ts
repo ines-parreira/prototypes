@@ -1,10 +1,10 @@
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
-import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
+import { Campaign } from 'pages/convert/campaigns/types/Campaign'
+import { CampaignVariant } from 'pages/convert/campaigns/types/CampaignVariant'
 
 export const updateVariant = (
     currentVariants: CampaignVariant[],
     campaign: Campaign,
-    variantId: string
+    variantId: string,
 ): CampaignVariant[] | undefined => {
     const variants = [...currentVariants]
     const variantIdx = variants.findIndex((item) => item.id === variantId)

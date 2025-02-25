@@ -1,20 +1,19 @@
-import {searchCustomers as apiSearchCustomers} from '@gorgias/api-client'
 import axios from 'axios'
-
 import MockAdapter from 'axios-mock-adapter'
 
-import {customer} from 'fixtures/customer'
-import client from 'models/api/resources'
+import { searchCustomers as apiSearchCustomers } from '@gorgias/api-client'
 
-import {ApiListResponseCursorPagination} from 'models/api/types'
+import { customer } from 'fixtures/customer'
+import client from 'models/api/resources'
+import { ApiListResponseCursorPagination } from 'models/api/types'
 import {
     getCustomer,
     searchCustomers,
     searchCustomersWithHighlights,
 } from 'models/customer/resources'
-import {Customer} from 'models/customer/types'
-import {CustomerWithHighlightsResponse} from 'models/search/types'
-import {assumeMock} from 'utils/testing'
+import { Customer } from 'models/customer/types'
+import { CustomerWithHighlightsResponse } from 'models/search/types'
+import { assumeMock } from 'utils/testing'
 
 const mockedServer = new MockAdapter(client)
 
@@ -35,7 +34,9 @@ describe('Customer resources', () => {
         }
 
         beforeEach(() => {
-            apiSearchCustomersMock.mockResolvedValue({data: defaultData} as any)
+            apiSearchCustomersMock.mockResolvedValue({
+                data: defaultData,
+            } as any)
             mockedServer.reset()
             mockedServer
                 .onGet(`/api/customers/${customer.id}`)
@@ -71,9 +72,9 @@ describe('Customer resources', () => {
             })
 
             expect(apiSearchCustomersMock).toHaveBeenCalledWith(
-                {search: 'foo'},
-                {cursor, limit},
-                {}
+                { search: 'foo' },
+                { cursor, limit },
+                {},
             )
         })
 
@@ -87,9 +88,9 @@ describe('Customer resources', () => {
             })
 
             expect(apiSearchCustomersMock).toHaveBeenCalledWith(
-                {search: ''},
+                { search: '' },
                 {},
-                {cancelToken: source.token}
+                { cancelToken: source.token },
             )
         })
 
@@ -102,11 +103,11 @@ describe('Customer resources', () => {
             await searchCustomers(options)
 
             expect(apiSearchCustomersMock).toHaveBeenCalledWith(
-                {search: 'foo'},
+                { search: 'foo' },
                 {
                     with_highlights: options.withHighlights,
                 },
-                {}
+                {},
             )
         })
     })
@@ -116,7 +117,7 @@ describe('Customer resources', () => {
         const defaultData: ApiListResponseCursorPagination<
             CustomerWithHighlightsResponse[]
         > = {
-            data: [{entity: customer, highlights: customerHighlights}],
+            data: [{ entity: customer, highlights: customerHighlights }],
             meta: {
                 next_cursor: null,
                 prev_cursor: null,
@@ -127,8 +128,10 @@ describe('Customer resources', () => {
         }
 
         it('should call searchCustomers withHighlights and merge Customers with their highlights', async () => {
-            const options = {search: 'foo'}
-            apiSearchCustomersMock.mockResolvedValue({data: defaultData} as any)
+            const options = { search: 'foo' }
+            apiSearchCustomersMock.mockResolvedValue({
+                data: defaultData,
+            } as any)
 
             const response = await searchCustomersWithHighlights(options)
 
@@ -136,8 +139,8 @@ describe('Customer resources', () => {
                 {
                     ...options,
                 },
-                {with_highlights: true},
-                {}
+                { with_highlights: true },
+                {},
             )
 
             expect(response.data.data).toEqual([

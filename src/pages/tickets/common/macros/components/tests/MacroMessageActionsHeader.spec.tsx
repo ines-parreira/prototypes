@@ -1,11 +1,11 @@
-import {render, screen, fireEvent} from '@testing-library/react'
-import {Map, List} from 'immutable'
-
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {MacroActionName} from 'models/macroAction/types'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { List, Map } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { MacroActionName } from 'models/macroAction/types'
 
 import MacroMessageActionsHeader from '../MacroMessageActionsHeader'
 
@@ -32,7 +32,7 @@ describe('MacroMessageActionsHeader', () => {
                 type={MacroActionName.SetResponseText}
             >
                 test
-            </MacroMessageActionsHeader>
+            </MacroMessageActionsHeader>,
         )
 
         fireEvent.click(screen.getByText('Internal note'))
@@ -46,7 +46,7 @@ describe('MacroMessageActionsHeader', () => {
                 type={MacroActionName.SetResponseText}
             >
                 test
-            </MacroMessageActionsHeader>
+            </MacroMessageActionsHeader>,
         )
 
         fireEvent.click(screen.getByText('Response text'))
@@ -54,14 +54,14 @@ describe('MacroMessageActionsHeader', () => {
     })
 
     it('should not fire onSelect on used option', () => {
-        const {container} = render(
+        const { container } = render(
             <MacroMessageActionsHeader
                 {...minProps}
-                actions={List([Map({name: MacroActionName.AddInternalNote})])}
+                actions={List([Map({ name: MacroActionName.AddInternalNote })])}
                 type={MacroActionName.SetResponseText}
             >
                 test
-            </MacroMessageActionsHeader>
+            </MacroMessageActionsHeader>,
         )
 
         fireEvent.click(screen.getByText('Internal note'))

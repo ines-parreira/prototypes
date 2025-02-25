@@ -1,5 +1,6 @@
-import {render} from '@testing-library/react'
 import React from 'react'
+
+import { render } from '@testing-library/react'
 
 import Loader from '../Loader'
 
@@ -12,7 +13,7 @@ jest.mock('pages/common/components/Loader/Loader', () => () => (
 
 describe('<Loader />', () => {
     it('should render a loader', () => {
-        const {getByText} = render(<Loader />)
+        const { getByText } = render(<Loader />)
 
         expect(getByText('PageHeader')).toBeInTheDocument()
         expect(getByText('Loader')).toBeInTheDocument()

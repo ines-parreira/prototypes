@@ -1,4 +1,4 @@
-import {Expression} from 'estree'
+import { Expression } from 'estree'
 
 import resolveObjectPath from '../resolveObjectPath'
 
@@ -43,7 +43,7 @@ describe('resolveObjectPath', () => {
             },
         } as Expression
         expect(() => resolveObjectPath(node)).toThrow(
-            'Unknown type: UnaryExpression'
+            'Unknown type: UnaryExpression',
         )
     })
 })

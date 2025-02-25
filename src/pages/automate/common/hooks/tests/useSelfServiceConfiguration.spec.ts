@@ -1,16 +1,15 @@
-import {QueryClient, useQueryClient} from '@tanstack/react-query'
-import {renderHook, act} from '@testing-library/react-hooks'
+import { QueryClient, useQueryClient } from '@tanstack/react-query'
+import { act, renderHook } from '@testing-library/react-hooks'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {useGetSelfServiceConfiguration} from 'models/selfServiceConfiguration/queries'
-import {updateSelfServiceConfigurationSSP} from 'models/selfServiceConfiguration/resources'
-import {notify} from 'state/notifications/actions'
-
-import {assumeMock} from 'utils/testing'
+import { useGetSelfServiceConfiguration } from 'models/selfServiceConfiguration/queries'
+import { updateSelfServiceConfigurationSSP } from 'models/selfServiceConfiguration/resources'
+import { notify } from 'state/notifications/actions'
+import { assumeMock } from 'utils/testing'
 
 import useSelfServiceConfiguration from '../useSelfServiceConfiguration'
-import {useSelfServiceConfigurationUpdate} from '../useSelfServiceConfigurationUpdate'
+import { useSelfServiceConfigurationUpdate } from '../useSelfServiceConfigurationUpdate'
 import useSelfServiceStoreIntegration from '../useSelfServiceStoreIntegration'
 
 jest.mock('@tanstack/react-query')
@@ -57,7 +56,7 @@ describe('useSelfServiceConfiguration', () => {
             () =>
                 ({
                     invalidateQueries: invalidateQueriesMock,
-                }) as unknown as QueryClient
+                }) as unknown as QueryClient,
         )
         useSelfServiceConfigurationUpdateMock.mockReturnValue(() => {
             jest.fn()
@@ -82,8 +81,8 @@ describe('useSelfServiceConfiguration', () => {
             isLoading: true,
         })
 
-        const {result} = renderHook(() =>
-            useSelfServiceConfiguration(shopType, shopName)
+        const { result } = renderHook(() =>
+            useSelfServiceConfiguration(shopType, shopName),
         )
 
         expect(result.current.isFetchPending).toBe(true)
@@ -91,13 +90,13 @@ describe('useSelfServiceConfiguration', () => {
     })
 
     it('should set selfServiceConfiguration when data is fetched', () => {
-        const {result} = renderHook(() =>
-            useSelfServiceConfiguration(shopType, shopName)
+        const { result } = renderHook(() =>
+            useSelfServiceConfiguration(shopType, shopName),
         )
 
         expect(result.current.isFetchPending).toBe(false)
         expect(result.current.selfServiceConfiguration).toEqual(
-            mockConfigurationData
+            mockConfigurationData,
         )
     })
 
@@ -117,7 +116,7 @@ describe('useSelfServiceConfiguration', () => {
         expect(updateSelfServiceConfigurationSSP).toHaveBeenCalledWith(
             expect.objectContaining({
                 deletedDatetime: null,
-            })
+            }),
         )
     })
 
@@ -129,7 +128,7 @@ describe('useSelfServiceConfiguration', () => {
         expect(mockDispatch).toHaveBeenCalledWith(
             notify({
                 message: 'Failed to fetch store integration',
-            })
+            }),
         )
     })
 })

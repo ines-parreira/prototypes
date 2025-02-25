@@ -1,6 +1,8 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import React, {FormEvent, useState} from 'react'
-import {Col, Container, Form, Row} from 'reactstrap'
+import React, { FormEvent, useState } from 'react'
+
+import { Col, Container, Form, Row } from 'reactstrap'
+
+import { Label } from '@gorgias/merchant-ui-kit'
 
 import useAppSelector from 'hooks/useAppSelector'
 import Button from 'pages/common/components/button/Button'
@@ -9,25 +11,25 @@ import GroupAddon from 'pages/common/forms/input/GroupAddon'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import TextInput from 'pages/common/forms/input/TextInput'
 import css from 'pages/settings/settings.less'
-import {getShopifyIntegrationByShopName} from 'state/integrations/selectors'
+import { getShopifyIntegrationByShopName } from 'state/integrations/selectors'
 import * as utils from 'utils'
 
 type Props = {
     redirectUri: string
 }
 
-export default function Create({redirectUri}: Props) {
+export default function Create({ redirectUri }: Props) {
     const [shopName, setShopName] = useState('')
 
     const shopifyIntegrationAlreadyExists = !useAppSelector(
-        getShopifyIntegrationByShopName(shopName)
+        getShopifyIntegrationByShopName(shopName),
     ).isEmpty()
 
     const handleCreate = (evt: FormEvent<HTMLFormElement>) => {
         evt.preventDefault()
         window.location.href = redirectUri.replace(
             '{shop_name}',
-            utils.subdomain(shopName)
+            utils.subdomain(shopName),
         )
     }
 

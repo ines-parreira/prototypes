@@ -1,18 +1,22 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
-import MockAdapter from 'axios-mock-adapter'
 import React from 'react'
 
-import {convertBundleActionResponse} from 'fixtures/convertBundle'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
+import MockAdapter from 'axios-mock-adapter'
+
+import { convertBundleActionResponse } from 'fixtures/convertBundle'
 import useAppDispatch from 'hooks/useAppDispatch'
 import client from 'models/api/resources'
-import {BundleInstallationMethod} from 'models/convert/bundle/types'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { BundleInstallationMethod } from 'models/convert/bundle/types'
+import { notify } from 'state/notifications/actions'
+import {
+    NotificationStatus,
+    NotificationStyle,
+} from 'state/notifications/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
-import {useInstallBundle} from '../useInstallBundle'
+import { useInstallBundle } from '../useInstallBundle'
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())
 jest.mock('models/api/resources')
@@ -44,19 +48,19 @@ describe('useInstallBundle', () => {
             .onPost('/api/revenue-addon-bundle/manual-install/')
             .reply(200, convertBundleActionResponse)
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useInstallBundle(1, BundleInstallationMethod.Manual, onSubmit),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         {children}
                     </QueryClientProvider>
                 ),
-            }
+            },
         )
 
-        const {installBundle} = result.current
+        const { installBundle } = result.current
 
         expect(installBundle).toBeInstanceOf(Function)
 
@@ -77,23 +81,23 @@ describe('useInstallBundle', () => {
             .onPost('/api/revenue-addon-bundle/install/')
             .reply(200, convertBundleActionResponse)
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useInstallBundle(
                     1,
                     BundleInstallationMethod.OneClick,
-                    onSubmit
+                    onSubmit,
                 ),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         {children}
                     </QueryClientProvider>
                 ),
-            }
+            },
         )
 
-        const {installBundle} = result.current
+        const { installBundle } = result.current
 
         expect(installBundle).toBeInstanceOf(Function)
 
@@ -114,23 +118,23 @@ describe('useInstallBundle', () => {
             .onPost('/api/revenue-addon-bundle/install/')
             .reply(400, convertBundleActionResponse)
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useInstallBundle(
                     1,
                     BundleInstallationMethod.OneClick,
-                    onSubmit
+                    onSubmit,
                 ),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         {children}
                     </QueryClientProvider>
                 ),
-            }
+            },
         )
 
-        const {installBundle} = result.current
+        const { installBundle } = result.current
 
         await installBundle()
 

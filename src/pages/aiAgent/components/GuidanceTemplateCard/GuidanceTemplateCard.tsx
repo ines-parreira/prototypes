@@ -1,8 +1,9 @@
 import React from 'react'
 
-import {TemplateCard} from 'pages/common/components/TemplateCard'
+import { TemplateCard } from 'pages/common/components/TemplateCard'
 
-import {GuidanceTemplate} from '../../types'
+import { GuidanceTemplate } from '../../types'
+
 import css from './GuidanceTemplateCard.less'
 
 type Props = {
@@ -10,7 +11,7 @@ type Props = {
     onClick: () => void
 }
 
-export const GuidanceTemplateCard = ({guidanceTemplate, onClick}: Props) => {
+export const GuidanceTemplateCard = ({ guidanceTemplate, onClick }: Props) => {
     return (
         <TemplateCard
             onClick={onClick}

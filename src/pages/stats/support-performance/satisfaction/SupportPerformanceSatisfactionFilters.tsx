@@ -1,38 +1,38 @@
 import React from 'react'
 
-import {TicketChannel} from 'business/types/ticket'
+import { TicketChannel } from 'business/types/ticket'
 import {
     SATISFACTION_SURVEY_MAX_SCORE,
     SATISFACTION_SURVEY_MIN_SCORE,
 } from 'config/stats'
-import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
+import { useCleanStatsFiltersWithLogicalOperators } from 'hooks/reporting/useCleanStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import DEPRECATED_AgentsStatsFilter from 'pages/stats/common/filters/DEPRECATED_AgentsStatsFilter'
 import ChannelsStatsFilter from 'pages/stats/common/filters/DEPRECATED_ChannelsStatsFilter'
 import DEPRECATED_IntegrationsStatsFilter from 'pages/stats/common/filters/DEPRECATED_IntegrationsStatsFilter'
 import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
-import {DEPRECATED_ScoreStatsFilter} from 'pages/stats/common/filters/DEPRECATED_ScoreStatsFilter'
+import { DEPRECATED_ScoreStatsFilter } from 'pages/stats/common/filters/DEPRECATED_ScoreStatsFilter'
 import DEPRECATED_TagsStatsFilter from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
 import {
-    getStatsFilters,
     getMessagingAndAppIntegrationsStatsFilter,
-    getStatsMessagingAndAppIntegrations,
     getPageStatsFiltersWithLogicalOperators,
+    getStatsFilters,
+    getStatsMessagingAndAppIntegrations,
 } from 'state/stats/selectors'
 
 export const SupportPerformanceSatisfactionFilters = () => {
     const pageStatsFiltersWithLogicalOperators = useAppSelector(
-        getPageStatsFiltersWithLogicalOperators
+        getPageStatsFiltersWithLogicalOperators,
     )
     useCleanStatsFiltersWithLogicalOperators(
-        pageStatsFiltersWithLogicalOperators
+        pageStatsFiltersWithLogicalOperators,
     )
     const statsFilters = useAppSelector(getStatsFilters)
     const messagingIntegrations = useAppSelector(
-        getStatsMessagingAndAppIntegrations
+        getStatsMessagingAndAppIntegrations,
     )
     const integrationsStatsFilter = useAppSelector(
-        getMessagingAndAppIntegrationsStatsFilter
+        getMessagingAndAppIntegrationsStatsFilter,
     )
     return (
         <>

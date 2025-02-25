@@ -1,4 +1,4 @@
-import React, {ReactElement, ReactNode} from 'react'
+import React, { ReactElement, ReactNode } from 'react'
 
 import {
     PaywallTheme,
@@ -8,8 +8,8 @@ import {
     GORGIAS_AUTOMATE_BADGE,
     PAGE_TITLE_AUTOMATE_PAYWALL,
 } from 'pages/stats/self-service/constants'
-import {AccountFeature} from 'state/currentAccount/types'
-import {assetsUrl} from 'utils'
+import { AccountFeature } from 'state/currentAccount/types'
+import { assetsUrl } from 'utils'
 
 export type PaywallConfig = {
     pageHeader?: ReactNode

@@ -1,1 +1,1 @@
-export {default as useFlag} from './hooks/useFlag'
+export { default as useFlag } from './hooks/useFlag'

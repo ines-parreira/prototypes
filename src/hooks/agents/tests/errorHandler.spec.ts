@@ -1,7 +1,7 @@
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
-import {handleError} from '../errorHandler'
+import { handleError } from '../errorHandler'
 
 const mockedDispatch = jest.fn()
 
@@ -12,11 +12,11 @@ describe('handleError', () => {
         const message = 'test error'
         handleError(
             {
-                response: {data: {error: {msg: message}}},
+                response: { data: { error: { msg: message } } },
                 isAxiosError: true,
             },
             '',
-            mockedDispatch
+            mockedDispatch,
         )
         expect(notify).toHaveBeenNthCalledWith(1, {
             message,
@@ -32,7 +32,7 @@ describe('handleError', () => {
                 response: undefined,
             },
             message,
-            mockedDispatch
+            mockedDispatch,
         )
         expect(notify).toHaveBeenNthCalledWith(1, {
             message,

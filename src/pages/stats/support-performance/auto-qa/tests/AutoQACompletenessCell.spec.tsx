@@ -1,7 +1,8 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {AutoQACompletenessCell} from 'pages/stats/support-performance/auto-qa/AutoQACompletenessCell'
+import { render, screen } from '@testing-library/react'
+
+import { AutoQACompletenessCell } from 'pages/stats/support-performance/auto-qa/AutoQACompletenessCell'
 import {
     COMPLETENESS_STATUS_COMPLETE,
     COMPLETENESS_STATUS_INCOMPLETE,
@@ -13,7 +14,7 @@ describe('AutoQACompletenessCell', () => {
         const badge = screen.getByText(COMPLETENESS_STATUS_COMPLETE)
 
         expect(badge).toBeInTheDocument()
-        expect(badge).toHaveStyle({color: new RegExp('light-success')})
+        expect(badge).toHaveStyle({ color: new RegExp('light-success') })
     })
 
     it('should render incomplete badge', () => {
@@ -21,8 +22,8 @@ describe('AutoQACompletenessCell', () => {
         const badge = screen.getByText(COMPLETENESS_STATUS_INCOMPLETE)
 
         expect(
-            screen.getByText(COMPLETENESS_STATUS_INCOMPLETE)
+            screen.getByText(COMPLETENESS_STATUS_INCOMPLETE),
         ).toBeInTheDocument()
-        expect(badge).toHaveStyle({color: new RegExp('light-warning')})
+        expect(badge).toHaveStyle({ color: new RegExp('light-warning') })
     })
 })

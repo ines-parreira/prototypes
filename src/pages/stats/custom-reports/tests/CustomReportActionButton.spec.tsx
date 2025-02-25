@@ -1,25 +1,26 @@
-import {render, screen, waitFor, within} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {useDownloadCustomReportData} from 'hooks/reporting/custom-reports/useDownloadCustomReportData'
+import { render, screen, waitFor, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { useDownloadCustomReportData } from 'hooks/reporting/custom-reports/useDownloadCustomReportData'
 import {
     CUSTOM_REPORT_ID_CTA,
     CustomReportActionButton,
 } from 'pages/stats/custom-reports/CustomReportActionButton'
 import {
+    ADD_OR_REMOVE_REPORT_LABEL,
     CANCEL_CONFIRMATION_BUTTON_LABEL,
     DELETE_CONFIRMATION_BUTTON_LABEL,
     DELETE_REPORT_LABEL,
     DOWNLOAD_REPORT_LABEL,
-    ADD_OR_REMOVE_REPORT_LABEL,
     getDeleteConfirmationTitle,
 } from 'pages/stats/custom-reports/CustomReportsPageActions'
 import {
     CustomReportChildType,
     CustomReportSchema,
 } from 'pages/stats/custom-reports/types'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
 const mockPush = jest.fn()
 const baseURL = '/some/path'
@@ -28,7 +29,7 @@ const liveOverviewURL = `${baseURL}/live-overview`
 jest.mock('react-router-dom', () => ({
     useLocation: jest
         .fn()
-        .mockReturnValue({pathname: `${baseURL}/custom-reports`}),
+        .mockReturnValue({ pathname: `${baseURL}/custom-reports` }),
     useHistory: () => ({
         push: mockPush,
     }),
@@ -40,7 +41,7 @@ const mockSetOpenModal = jest.fn()
 jest.mock('hooks/reporting/custom-reports/useCustomReportActions', () => ({
     useCustomReportActions: () => ({
         duplicateReportHandler: mockDuplicateReport,
-        deleteReportHandler: ({onSuccess}: {onSuccess: () => void}) => {
+        deleteReportHandler: ({ onSuccess }: { onSuccess: () => void }) => {
             onSuccess()
         },
     }),
@@ -74,18 +75,18 @@ describe('CustomReportActionButton', () => {
             <CustomReportActionButton
                 customReport={customReport}
                 setOpenModal={mockSetOpenModal}
-            />
+            />,
         )
 
         userEvent.click(
-            screen.getByRole('button', {name: CUSTOM_REPORT_ID_CTA})
+            screen.getByRole('button', { name: CUSTOM_REPORT_ID_CTA }),
         )
 
         await waitFor(() => {
             expect(screen.getByText(DOWNLOAD_REPORT_LABEL)).toBeInTheDocument()
             expect(screen.getByText(DELETE_REPORT_LABEL)).toBeInTheDocument()
             expect(
-                screen.getByText(ADD_OR_REMOVE_REPORT_LABEL)
+                screen.getByText(ADD_OR_REMOVE_REPORT_LABEL),
             ).toBeInTheDocument()
         })
 
@@ -98,11 +99,11 @@ describe('CustomReportActionButton', () => {
             <CustomReportActionButton
                 customReport={customReport}
                 setOpenModal={mockSetOpenModal}
-            />
+            />,
         )
 
         userEvent.click(
-            screen.getByRole('button', {name: CUSTOM_REPORT_ID_CTA})
+            screen.getByRole('button', { name: CUSTOM_REPORT_ID_CTA }),
         )
 
         await waitFor(() => {
@@ -113,13 +114,13 @@ describe('CustomReportActionButton', () => {
         expect(confirmationModal).toBeInTheDocument()
         expect(
             within(confirmationModal).getByText(
-                getDeleteConfirmationTitle(customReport.name)
-            )
+                getDeleteConfirmationTitle(customReport.name),
+            ),
         ).toBeInTheDocument()
         userEvent.click(
             within(confirmationModal).getByText(
-                DELETE_CONFIRMATION_BUTTON_LABEL
-            )
+                DELETE_CONFIRMATION_BUTTON_LABEL,
+            ),
         )
 
         expect(mockPush).toHaveBeenCalledWith(liveOverviewURL)
@@ -130,11 +131,11 @@ describe('CustomReportActionButton', () => {
             <CustomReportActionButton
                 customReport={undefined}
                 setOpenModal={mockSetOpenModal}
-            />
+            />,
         )
 
         userEvent.click(
-            screen.getByRole('button', {name: CUSTOM_REPORT_ID_CTA})
+            screen.getByRole('button', { name: CUSTOM_REPORT_ID_CTA }),
         )
 
         await waitFor(() => {
@@ -149,11 +150,11 @@ describe('CustomReportActionButton', () => {
             <CustomReportActionButton
                 customReport={customReport}
                 setOpenModal={mockSetOpenModal}
-            />
+            />,
         )
 
         userEvent.click(
-            screen.getByRole('button', {name: CUSTOM_REPORT_ID_CTA})
+            screen.getByRole('button', { name: CUSTOM_REPORT_ID_CTA }),
         )
 
         await waitFor(() => {
@@ -164,13 +165,13 @@ describe('CustomReportActionButton', () => {
         expect(confirmationModal).toBeInTheDocument()
         expect(
             within(confirmationModal).getByText(
-                getDeleteConfirmationTitle(customReport.name)
-            )
+                getDeleteConfirmationTitle(customReport.name),
+            ),
         ).toBeInTheDocument()
         userEvent.click(
             within(confirmationModal).getByText(
-                CANCEL_CONFIRMATION_BUTTON_LABEL
-            )
+                CANCEL_CONFIRMATION_BUTTON_LABEL,
+            ),
         )
 
         expect(mockPush).not.toHaveBeenCalled()

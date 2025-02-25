@@ -1,5 +1,5 @@
-import {TicketCube} from 'models/reporting/cubes/TicketCube'
-import {Cube, JoinedCubesWithMapping} from 'models/reporting/types'
+import { TicketCube } from 'models/reporting/cubes/TicketCube'
+import { Cube, JoinedCubesWithMapping } from 'models/reporting/types'
 
 export enum TicketSLAMeasure {
     TicketCount = 'TicketSLA.ticketCount',

@@ -1,5 +1,6 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
-import React, {ReactNode} from 'react'
+import React, { ReactNode } from 'react'
+
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import css from './MetaLabel.less'
 
@@ -9,7 +10,7 @@ export type Props = {
     children?: ReactNode
 }
 
-export default function MetaLabel({label, isLoading, children}: Props) {
+export default function MetaLabel({ label, isLoading, children }: Props) {
     return (
         <span className={css.from}>
             {isLoading ? (

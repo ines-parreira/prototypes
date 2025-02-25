@@ -1,16 +1,17 @@
-import {screen, render, fireEvent} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import {fromJS} from 'immutable'
-import moment from 'moment'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { fromJS } from 'immutable'
+import moment from 'moment'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import TwoFactorAuthenticationEnforcement from 'pages/settings/access/TwoFactorAuthenticationEnforcement'
-import {OwnProps} from 'pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationModal/TwoFactorAuthenticationModal'
-import {TWO_FA_REQUIRED_AFTER_DAYS} from 'state/currentUser/constants'
-import {RootState, StoreDispatch} from 'state/types'
+import { OwnProps } from 'pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationModal/TwoFactorAuthenticationModal'
+import { TWO_FA_REQUIRED_AFTER_DAYS } from 'state/currentUser/constants'
+import { RootState, StoreDispatch } from 'state/types'
 
 jest.mock(
     'pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationModal/TwoFactorAuthenticationModal',
@@ -25,7 +26,7 @@ jest.mock(
                 </div>
             )
         )
-    }
+    },
 )
 
 describe('<TwoFactorAuthenticationEnforcement />', () => {
@@ -59,17 +60,17 @@ describe('<TwoFactorAuthenticationEnforcement />', () => {
         it.each(['2023-06-02T12:34:56', null])(
             'should render turned on/off',
             (twoFAEnforcedDatetime) => {
-                const {container} = render(
+                const { container } = render(
                     <Provider store={defaultStore}>
                         <TwoFactorAuthenticationEnforcement
                             {...minProps}
                             twoFAEnforcedDatetime={twoFAEnforcedDatetime}
                         />
-                    </Provider>
+                    </Provider>,
                 )
 
                 expect(container).toMatchSnapshot()
-            }
+            },
         )
 
         it('should enforce 2fa', () => {
@@ -87,7 +88,7 @@ describe('<TwoFactorAuthenticationEnforcement />', () => {
                         twoFAEnforcedDatetime={null}
                         on2FAEnforced={on2FAEnforced}
                     />
-                </Provider>
+                </Provider>,
             )
 
             const toggle = screen.getByLabelText('Require 2FA for all users')
@@ -107,7 +108,7 @@ describe('<TwoFactorAuthenticationEnforcement />', () => {
                         twoFAEnforcedDatetime={null}
                         on2FAEnforced={on2FAEnforced}
                     />
-                </Provider>
+                </Provider>,
             )
 
             const toggle = screen.getByLabelText('Require 2FA for all users')
@@ -135,7 +136,7 @@ describe('<TwoFactorAuthenticationEnforcement />', () => {
                     twoFAEnforcedDatetime={'2023-06-02T12:34:56'}
                     on2FAEnforced={on2FAEnforced}
                 />
-            </Provider>
+            </Provider>,
         )
 
         const toggle = screen.getByLabelText('Require 2FA for all users')
@@ -160,7 +161,7 @@ describe('<TwoFactorAuthenticationEnforcement />', () => {
                     twoFAEnforcedDatetime={'2023-06-02T12:34:56'}
                     on2FAEnforced={on2FAEnforced}
                 />
-            </Provider>
+            </Provider>,
         )
 
         // Open calendar
@@ -213,15 +214,15 @@ describe('<TwoFactorAuthenticationEnforcement />', () => {
                         twoFAEnforcedDatetime={'2023-06-02T12:34:56'}
                         on2FAEnforced={on2FAEnforced}
                     />
-                </Provider>
+                </Provider>,
             )
             performEnforcementFlow()
 
             expect(
-                screen.getByText('Confirm Enforcement Time')
+                screen.getByText('Confirm Enforcement Time'),
             ).toBeInTheDocument()
             expect(
-                screen.getByRole('button', {name: 'Review'})
+                screen.getByRole('button', { name: 'Review' }),
             ).toBeInTheDocument()
             expect(on2FAEnforced).not.toHaveBeenCalled()
         })
@@ -239,7 +240,7 @@ describe('<TwoFactorAuthenticationEnforcement />', () => {
                         twoFAEnforcedDatetime={recommendedEnforcement}
                         on2FAEnforced={on2FAEnforced}
                     />
-                </Provider>
+                </Provider>,
             )
 
             // Open the calendar and direcly re-apply the same date
@@ -247,7 +248,7 @@ describe('<TwoFactorAuthenticationEnforcement />', () => {
             fireEvent.click(screen.getByText('Apply'))
 
             expect(
-                screen.queryByText('Confirm Enforcement Time')
+                screen.queryByText('Confirm Enforcement Time'),
             ).not.toBeInTheDocument()
             expect(on2FAEnforced).toHaveBeenCalledWith('2023-06-16T12:34:00')
         })
@@ -262,7 +263,7 @@ describe('<TwoFactorAuthenticationEnforcement />', () => {
                         twoFAEnforcedDatetime={'2023-06-12T12:34:00'}
                         on2FAEnforced={on2FAEnforced}
                     />
-                </Provider>
+                </Provider>,
             )
 
             // Open the calendar and direcly re-apply the same date
@@ -270,7 +271,7 @@ describe('<TwoFactorAuthenticationEnforcement />', () => {
             fireEvent.click(screen.getByText('Apply'))
 
             expect(
-                screen.queryByText('Confirm Enforcement Time')
+                screen.queryByText('Confirm Enforcement Time'),
             ).not.toBeInTheDocument()
             expect(on2FAEnforced).toHaveBeenCalledWith('2023-06-12T12:34:00')
         })
@@ -285,11 +286,11 @@ describe('<TwoFactorAuthenticationEnforcement />', () => {
                         twoFAEnforcedDatetime={'2023-06-02T12:34:56'}
                         on2FAEnforced={on2FAEnforced}
                     />
-                </Provider>
+                </Provider>,
             )
             performEnforcementFlow()
 
-            fireEvent.click(screen.getByRole('button', {name: 'Review'}))
+            fireEvent.click(screen.getByRole('button', { name: 'Review' }))
 
             expect(screen.getByText('Apply')).toBeInTheDocument()
             expect(on2FAEnforced).not.toHaveBeenCalled()
@@ -305,7 +306,7 @@ describe('<TwoFactorAuthenticationEnforcement />', () => {
                         twoFAEnforcedDatetime={'2023-06-02T12:34:56'}
                         on2FAEnforced={on2FAEnforced}
                     />
-                </Provider>
+                </Provider>,
             )
             performEnforcementFlow()
 
@@ -325,11 +326,11 @@ describe('<TwoFactorAuthenticationEnforcement />', () => {
                         twoFAEnforcedDatetime={'2023-06-02T12:34:56'}
                         on2FAEnforced={on2FAEnforced}
                     />
-                </Provider>
+                </Provider>,
             )
             performEnforcementFlow()
 
-            fireEvent.click(screen.getByRole('button', {name: 'Confirm'}))
+            fireEvent.click(screen.getByRole('button', { name: 'Confirm' }))
             jest.runAllTimers() // Wait for the popover to close
 
             expect(on2FAEnforced).toHaveBeenCalledWith('2023-06-12T12:34:00')

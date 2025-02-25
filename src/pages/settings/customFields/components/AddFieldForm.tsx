@@ -1,10 +1,10 @@
 import React from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {useCreateCustomFieldDefinition} from 'custom-fields/hooks/queries/useCreateCustomFieldDefinition'
-import {CustomFieldInput, CustomFieldObjectTypes} from 'custom-fields/types'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { useCreateCustomFieldDefinition } from 'custom-fields/hooks/queries/useCreateCustomFieldDefinition'
+import { CustomFieldInput, CustomFieldObjectTypes } from 'custom-fields/types'
 import history from 'pages/history'
-import {CUSTOM_FIELD_ROUTES} from 'routes/constants'
+import { CUSTOM_FIELD_ROUTES } from 'routes/constants'
 
 import FieldForm from './FieldForm'
 
@@ -13,7 +13,7 @@ export default function AddFieldForm({
 }: {
     objectType: CustomFieldObjectTypes
 }) {
-    const {mutateAsync} = useCreateCustomFieldDefinition()
+    const { mutateAsync } = useCreateCustomFieldDefinition()
 
     const newField: CustomFieldInput = {
         object_type: objectType,

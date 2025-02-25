@@ -3,8 +3,8 @@ import {
     TicketMessageSourceType,
     TicketVia,
 } from 'business/types/ticket'
-import {MacroActionName} from 'models/macroAction/types'
-import {Action, ActionStatus, TicketMessage} from 'models/ticket/types'
+import { MacroActionName } from 'models/macroAction/types'
+import { Action, ActionStatus, TicketMessage } from 'models/ticket/types'
 
 export const message: TicketMessage = {
     id: 1,
@@ -69,8 +69,10 @@ export const facebookMessageNoMeta: TicketMessage = {
     created_datetime: '2024-01-09T15:10:01.996156+00:00',
     isMessage: true,
     source: {
-        to: [{name: 'Cust Omer', address: '657788504429455-4135481299826174'}],
-        from: {name: 'Page', address: '657788504429455-657788504429455'},
+        to: [
+            { name: 'Cust Omer', address: '657788504429455-4135481299826174' },
+        ],
+        from: { name: 'Page', address: '657788504429455-657788504429455' },
         type: TicketMessageSourceType.FacebookComment,
     },
     stripped_signature: null,
@@ -112,8 +114,10 @@ export const facebookMessageWithCustomerReaction = {
     created_datetime: '',
     isMessage: true,
     source: {
-        to: [{name: 'Cust Omer', address: '657788504429455-4135481299826174'}],
-        from: {name: 'Page', address: '657788504429455-657788504429455'},
+        to: [
+            { name: 'Cust Omer', address: '657788504429455-4135481299826174' },
+        ],
+        from: { name: 'Page', address: '657788504429455-657788504429455' },
         type: TicketMessageSourceType.FacebookComment,
     },
     meta: {
@@ -158,8 +162,10 @@ export const facebookMessageWithPageReaction = {
     created_datetime: '2020-06-17T08:31:10+00:00',
     isMessage: true,
     source: {
-        to: [{name: 'Cust Omer', address: '657788504429455-4135481299826174'}],
-        from: {name: 'Page', address: '657788504429455-657788504429455'},
+        to: [
+            { name: 'Cust Omer', address: '657788504429455-4135481299826174' },
+        ],
+        from: { name: 'Page', address: '657788504429455-657788504429455' },
         type: TicketMessageSourceType.FacebookComment,
     },
     meta: {
@@ -222,8 +228,10 @@ export const facebookMessageWithPageAndCustomerReactions = {
         },
     },
     source: {
-        to: [{name: 'Cust Omer', address: '657788504429455-4135481299826174'}],
-        from: {name: 'Page', address: '657788504429455-657788504429455'},
+        to: [
+            { name: 'Cust Omer', address: '657788504429455-4135481299826174' },
+        ],
+        from: { name: 'Page', address: '657788504429455-657788504429455' },
         type: TicketMessageSourceType.FacebookComment,
     },
 } as unknown as TicketMessage
@@ -273,8 +281,10 @@ export const hiddenFacebookMessage = {
         },
     },
     source: {
-        to: [{name: 'Cust Omer', address: '657788504429455-4135481299826174'}],
-        from: {name: 'Page', address: '657788504429455-657788504429455'},
+        to: [
+            { name: 'Cust Omer', address: '657788504429455-4135481299826174' },
+        ],
+        from: { name: 'Page', address: '657788504429455-657788504429455' },
         type: TicketMessageSourceType.FacebookComment,
     },
 } as unknown as TicketMessage
@@ -311,8 +321,10 @@ export const duplicatedHiddenFacebookMessage = {
         is_duplicated: true,
     },
     source: {
-        to: [{name: 'Cust Omer', address: '657788504429455-4135481299826174'}],
-        from: {name: 'Page', address: '657788504429455-657788504429455'},
+        to: [
+            { name: 'Cust Omer', address: '657788504429455-4135481299826174' },
+        ],
+        from: { name: 'Page', address: '657788504429455-657788504429455' },
         type: TicketMessageSourceType.FacebookComment,
     },
 } as unknown as TicketMessage

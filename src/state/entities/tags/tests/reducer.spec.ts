@@ -1,11 +1,11 @@
-import {tags as tagsFixtures} from 'fixtures/tag'
+import { tags as tagsFixtures } from 'fixtures/tag'
 
 import {
     tagCreated,
     tagDeleted,
     tagFetched,
-    tagUpdated,
     tagsFetched,
+    tagUpdated,
 } from '../actions'
 import reducer from '../reducer'
 
@@ -19,7 +19,7 @@ describe('tags reducer', () => {
 
     describe('deleteTag action', () => {
         it('should delete a tag from the state', () => {
-            const newState = reducer({'1': tagsFixtures[0]}, tagDeleted(1))
+            const newState = reducer({ '1': tagsFixtures[0] }, tagDeleted(1))
             expect(newState).toMatchSnapshot()
         })
     })
@@ -38,8 +38,8 @@ describe('tags reducer', () => {
                 name: 'bar',
             }
             const newState = reducer(
-                {'1': tagsFixtures[0]},
-                tagUpdated(updatedTagMock)
+                { '1': tagsFixtures[0] },
+                tagUpdated(updatedTagMock),
             )
             expect(newState).toMatchSnapshot()
         })

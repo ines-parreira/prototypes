@@ -1,9 +1,9 @@
-import {ConversationMessage} from 'pages/aiAgent/Onboarding/components/AiAgentChatConversation/AiAgentChatConversation'
-import {PreviewId} from 'pages/aiAgent/Onboarding/components/PersonalityPreviewGroup/constants'
+import { ConversationMessage } from 'pages/aiAgent/Onboarding/components/AiAgentChatConversation/AiAgentChatConversation'
+import { PreviewId } from 'pages/aiAgent/Onboarding/components/PersonalityPreviewGroup/constants'
 
 export const conversationExamples: Record<
     PreviewId,
-    {messages: ConversationMessage[]}
+    { messages: ConversationMessage[] }
 > = {
     billingAndPayment: {
         messages: [

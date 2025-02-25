@@ -1,17 +1,17 @@
-import {renderHook} from '@testing-library/react-hooks'
-
+import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment'
 
 import {
     fetchEfficiencyTrend,
     useEfficiencyTrend,
 } from 'hooks/reporting/support-performance/auto-qa/useEfficiencyTrend'
-import useMetricTrend, {fetchMetricTrend} from 'hooks/reporting/useMetricTrend'
-import {efficiencyQueryFactory} from 'models/reporting/queryFactories/auto-qa/efficiencyQueryFactory'
-
-import {StatsFilters} from 'models/stat/types'
-import {formatReportingQueryDate, getPreviousPeriod} from 'utils/reporting'
-import {assumeMock} from 'utils/testing'
+import useMetricTrend, {
+    fetchMetricTrend,
+} from 'hooks/reporting/useMetricTrend'
+import { efficiencyQueryFactory } from 'models/reporting/queryFactories/auto-qa/efficiencyQueryFactory'
+import { StatsFilters } from 'models/stat/types'
+import { formatReportingQueryDate, getPreviousPeriod } from 'utils/reporting'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/useMetricTrend')
 const useMetricTrendMock = assumeMock(useMetricTrend)
@@ -39,8 +39,8 @@ describe('EfficiencyTrend', () => {
                         ...statsFilters,
                         period: getPreviousPeriod(statsFilters.period),
                     },
-                    timezone
-                )
+                    timezone,
+                ),
             )
         })
     })
@@ -56,8 +56,8 @@ describe('EfficiencyTrend', () => {
                         ...statsFilters,
                         period: getPreviousPeriod(statsFilters.period),
                     },
-                    timezone
-                )
+                    timezone,
+                ),
             )
         })
     })

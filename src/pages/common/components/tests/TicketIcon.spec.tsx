@@ -1,9 +1,10 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {TicketChannel, TicketStatus} from 'business/types/ticket'
+import { render } from '@testing-library/react'
 
-import TicketIcon, {NullTicketIcon} from '../TicketIcon'
+import { TicketChannel, TicketStatus } from 'business/types/ticket'
+
+import TicketIcon, { NullTicketIcon } from '../TicketIcon'
 
 jest.mock('hooks/useId', () => () => 'test')
 
@@ -14,24 +15,24 @@ describe('<TicketIcon />', () => {
     }
 
     it('should render the icon as closed', () => {
-        const {getByText} = render(<TicketIcon {...props} />)
+        const { getByText } = render(<TicketIcon {...props} />)
         expect(
-            getByText('email').closest('div')?.classList.contains('isOpen')
+            getByText('email').closest('div')?.classList.contains('isOpen'),
         ).toBeFalsy()
     })
 
     it('should render the icon as open', () => {
-        const {getByText} = render(
-            <TicketIcon {...props} status={TicketStatus.Open} />
+        const { getByText } = render(
+            <TicketIcon {...props} status={TicketStatus.Open} />,
         )
         expect(
-            getByText('email').closest('div')?.classList.contains('isOpen')
+            getByText('email').closest('div')?.classList.contains('isOpen'),
         ).toBeTruthy()
     })
 
     it('should reflect the channel of the ticket in the icon', () => {
-        const {getByText} = render(
-            <TicketIcon {...props} channel={TicketChannel.Chat} />
+        const { getByText } = render(
+            <TicketIcon {...props} channel={TicketChannel.Chat} />,
         )
 
         expect(getByText('forum')).toBeInTheDocument()
@@ -40,7 +41,7 @@ describe('<TicketIcon />', () => {
 
 describe('<NullTicketIcon />', () => {
     it('should render delete icon', () => {
-        const {getByText} = render(<NullTicketIcon />)
+        const { getByText } = render(<NullTicketIcon />)
 
         expect(getByText('delete')).toBeInTheDocument()
     })

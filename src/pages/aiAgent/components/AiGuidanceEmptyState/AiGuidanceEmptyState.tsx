@@ -1,12 +1,14 @@
-import {Badge} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
 import React from 'react'
 
+import classNames from 'classnames'
+
+import { Badge } from '@gorgias/merchant-ui-kit'
+
 import imgSrc from 'assets/img/ai-agent/guidance-empty-state.png'
-import {SegmentEvent, logEvent} from 'common/segment'
-import {GuidanceAiSuggestionsList} from 'pages/aiAgent/components/GuidanceAiSuggestionsList/GuidanceAiSuggestionsList'
-import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import {AIGuidance} from 'pages/aiAgent/types'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { GuidanceAiSuggestionsList } from 'pages/aiAgent/components/GuidanceAiSuggestionsList/GuidanceAiSuggestionsList'
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { AIGuidance } from 'pages/aiAgent/types'
 import Button from 'pages/common/components/button/Button'
 import history from 'pages/history'
 
@@ -16,8 +18,8 @@ type Props = {
     aiGuidances: AIGuidance[]
     shopName: string
 }
-const AiGuidanceEmptyState = ({aiGuidances, shopName}: Props) => {
-    const {routes} = useAiAgentNavigation({shopName})
+const AiGuidanceEmptyState = ({ aiGuidances, shopName }: Props) => {
+    const { routes } = useAiAgentNavigation({ shopName })
 
     const onNewClick = () => {
         history.push(routes.newGuidanceArticle)
@@ -40,7 +42,7 @@ const AiGuidanceEmptyState = ({aiGuidances, shopName}: Props) => {
                                 <i
                                     className={classNames(
                                         'material-icons',
-                                        css.autoAwesome
+                                        css.autoAwesome,
                                     )}
                                 >
                                     auto_awesome

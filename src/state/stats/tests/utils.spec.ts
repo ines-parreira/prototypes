@@ -2,7 +2,7 @@ import {
     withDefaultCustomFieldAndLogicalOperator,
     withDefaultLogicalOperator,
 } from 'models/reporting/queryFactories/utils'
-import {ReportingGranularity} from 'models/reporting/types'
+import { ReportingGranularity } from 'models/reporting/types'
 import {
     AggregationWindow,
     FilterKey,
@@ -12,7 +12,7 @@ import {
     StatsFiltersWithLogicalOperator,
     TagFilterInstanceId,
 } from 'models/stat/types'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import {
     excludeFromFiltersWithLogicalOperators,
     fromFiltersWithLogicalOperators,
@@ -177,12 +177,12 @@ describe('fromFiltersWithLogicalOperators', () => {
             ],
         }
         expect(
-            fromFiltersWithLogicalOperators(statsFiltersWithLogicalOperators)
+            fromFiltersWithLogicalOperators(statsFiltersWithLogicalOperators),
         ).toEqual({
             agents: statsFiltersWithLogicalOperators.agents.values,
             channels: statsFiltersWithLogicalOperators.channels.values,
             customFields: statsFiltersWithLogicalOperators.customFields.map(
-                (filter) => filter.values[0]
+                (filter) => filter.values[0],
             ),
             integrations: statsFiltersWithLogicalOperators.integrations.values,
             period: statsFiltersWithLogicalOperators.period,
@@ -220,7 +220,7 @@ describe('getAllowedAggregationWindows', () => {
                 ReportingGranularity.Week,
                 ReportingGranularity.Month,
             ])
-        }
+        },
     )
 
     it('should return week and month for a period longer then 92 days', () => {
@@ -257,7 +257,7 @@ describe('getAdjustedAggregationWindow', () => {
         }
 
         expect(getAdjustedAggregationWindow(statsFilters)).toEqual(
-            statsFilters.aggregationWindow
+            statsFilters.aggregationWindow,
         )
     })
 
@@ -271,7 +271,7 @@ describe('getAdjustedAggregationWindow', () => {
         }
 
         expect(getAdjustedAggregationWindow(statsFilters)).toEqual(
-            getAllowedAggregationWindows(statsFilters.period)[0]
+            getAllowedAggregationWindows(statsFilters.period)[0],
         )
     })
 })
@@ -287,9 +287,9 @@ describe('savedFilterDraftFromFiltersWithLogicalOperators', () => {
                         end_datetime: '2021-05-02T23:59:59.999Z',
                     },
                     [filterKey]: undefined,
-                })
+                }),
             ).toEqual([])
-        }
+        },
     )
 
     it('should return SavedFilter filters', () => {
@@ -408,11 +408,11 @@ describe('statsFiltersWithLogicalOperatorsFromSavedFilters', () => {
 
         expect(
             statsFiltersWithLogicalOperatorsFromSavedFilters(
-                savedFiltersDraft.filter_group
-            )
+                savedFiltersDraft.filter_group,
+            ),
         ).toEqual({
             [FilterKey.CustomFields]: [
-                {...customFieldFilter, customFieldId: 123},
+                { ...customFieldFilter, customFieldId: 123 },
             ],
             [FilterKey.Tags]: [
                 {
@@ -446,7 +446,7 @@ describe('excludeFromFiltersWithLogicalOperators', () => {
             [FilterKey.Agents]: withDefaultLogicalOperator([123]),
             [FilterKey.Integrations]: withDefaultLogicalOperator([123]),
             [FilterKey.CustomFields]: [
-                {...withDefaultLogicalOperator(['123']), customFieldId: 123},
+                { ...withDefaultLogicalOperator(['123']), customFieldId: 123 },
             ],
             [FilterKey.Tags]: [
                 {
@@ -463,7 +463,7 @@ describe('excludeFromFiltersWithLogicalOperators', () => {
         ]
 
         expect(
-            excludeFromFiltersWithLogicalOperators(filters, excludeFilters)
+            excludeFromFiltersWithLogicalOperators(filters, excludeFilters),
         ).toEqual({
             [FilterKey.Period]: {
                 start_datetime: 'sdf',

@@ -9,13 +9,13 @@ import {
     isTagFilter,
     OptionalFilter,
 } from 'models/reporting/queryFactories/utils'
-import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
-import {defaultStatsFilters} from 'state/stats/statsSlice'
+import { FilterKey, StatsFiltersWithLogicalOperator } from 'models/stat/types'
+import { defaultStatsFilters } from 'state/stats/statsSlice'
 
 export const CURRENT_FILTERS = 'current-filters'
 
 export const getValidator = (
-    filterKey: FilterKey
+    filterKey: FilterKey,
 ): ((filter: any) => boolean) => {
     switch (filterKey) {
         case FilterKey.Period:
@@ -48,7 +48,7 @@ export const getValidator = (
 
 export const getShallowTypedFilters = (
     sessionFilters: string,
-    defaultFilters: StatsFiltersWithLogicalOperator
+    defaultFilters: StatsFiltersWithLogicalOperator,
 ): StatsFiltersWithLogicalOperator => {
     try {
         const filters = JSON.parse(sessionFilters) as {
@@ -73,7 +73,7 @@ export const getShallowTypedFilters = (
 
         if (!isCorrectlyTypes) {
             throw new Error(
-                'There seems to be an error with the filters retrieved from session storage'
+                'There seems to be an error with the filters retrieved from session storage',
             )
         }
 
@@ -93,7 +93,7 @@ const persistFilters = (values: StatsFiltersWithLogicalOperator) => {
 }
 
 export default function useCurrentFilters(
-    defaultFilters: StatsFiltersWithLogicalOperator
+    defaultFilters: StatsFiltersWithLogicalOperator,
 ): {
     filters: StatsFiltersWithLogicalOperator
     persistFilters: (values: StatsFiltersWithLogicalOperator) => void
@@ -101,7 +101,7 @@ export default function useCurrentFilters(
     const [filters] = useSessionStorage<string>(
         CURRENT_FILTERS,
         JSON.stringify(defaultFilters),
-        true
+        true,
     )
 
     return {

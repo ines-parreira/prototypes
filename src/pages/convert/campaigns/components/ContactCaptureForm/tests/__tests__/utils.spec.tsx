@@ -1,12 +1,12 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
-import {AttachmentEnum} from 'common/types'
+import { AttachmentEnum } from 'common/types'
 import {
     handleContactFormSubmitted,
     transformAttachmentToTransitory,
     transformTransitoryToAttachment,
 } from 'pages/convert/campaigns/components/ContactCaptureForm/utils'
-import {deleteAttachment} from 'state/newMessage/actions'
+import { deleteAttachment } from 'state/newMessage/actions'
 
 describe('CampaignForm Utils', () => {
     describe('transformTransitoryToAttachment', () => {
@@ -76,7 +76,7 @@ describe('CampaignForm Utils', () => {
 
             expect(output).toMatchObject({
                 ...baseExpectedAttachment,
-                on_success_content: {message: undefined},
+                on_success_content: { message: undefined },
             })
         })
     })
@@ -104,7 +104,7 @@ describe('CampaignForm Utils', () => {
                 },
             }
             const middleState = transformTransitoryToAttachment(
-                baseTransitoryAttachmentData
+                baseTransitoryAttachmentData,
             )
             const output = transformAttachmentToTransitory(middleState)
 
@@ -130,7 +130,7 @@ describe('CampaignForm Utils', () => {
                     extra: undefined,
                 }),
                 fromJS({}),
-                true
+                true,
             )
             expect(mockDispatch).toHaveBeenCalledWith(deleteAttachment(0))
             expect(mockDispatch).toHaveBeenCalledTimes(2)
@@ -147,7 +147,7 @@ describe('CampaignForm Utils', () => {
                     extra: undefined,
                 }),
                 fromJS({}),
-                true
+                true,
             )
             expect(mockDispatch).toHaveBeenCalledTimes(1)
         })

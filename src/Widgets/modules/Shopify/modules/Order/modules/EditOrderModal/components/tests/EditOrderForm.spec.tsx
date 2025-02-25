@@ -1,7 +1,7 @@
-import {render} from '@testing-library/react'
-
-import {fromJS} from 'immutable'
 import React from 'react'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
 
 import EditOrderFormContainer from '../EditOrderForm'
 
@@ -15,7 +15,7 @@ const minProps = {
 
 describe('<EditOrderForm/>', () => {
     it('should render', () => {
-        const {container} = render(<EditOrderFormContainer {...minProps} />)
+        const { container } = render(<EditOrderFormContainer {...minProps} />)
         expect(container.firstChild).toMatchSnapshot()
     })
 })

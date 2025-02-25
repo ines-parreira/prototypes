@@ -1,26 +1,26 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 import Promise from 'promise-polyfill'
 
-import {createWorkflowConfigurationShallow} from 'fixtures/workflows'
-import {IntegrationType} from 'models/integration/constants'
-import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
-import {useGetWorkflowConfigurations} from 'models/workflows/queries'
+import { createWorkflowConfigurationShallow } from 'fixtures/workflows'
+import { IntegrationType } from 'models/integration/constants'
+import { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
+import { useGetWorkflowConfigurations } from 'models/workflows/queries'
 import useHelpCentersAutomationSettings from 'pages/automate/common/hooks/useHelpCenterAutomationSettings'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import {ChannelLanguage} from 'pages/automate/common/types'
-import {WorkflowConfigurationShallow} from 'pages/automate/workflows/models/workflowConfiguration.types'
-import {Components} from 'rest_api/help_center_api/client.generated'
+import { ChannelLanguage } from 'pages/automate/common/types'
+import { WorkflowConfigurationShallow } from 'pages/automate/workflows/models/workflowConfiguration.types'
+import { Components } from 'rest_api/help_center_api/client.generated'
 
-import {useHelpCenterFlows} from '../useHelpCenterFlows'
+import { useHelpCenterFlows } from '../useHelpCenterFlows'
 
 jest.mock('models/workflows/queries', () => ({
     useGetWorkflowConfigurations: jest.fn(),
 }))
 jest.mock('pages/automate/common/hooks/useHelpCenterAutomationSettings', () =>
-    jest.fn()
+    jest.fn(),
 )
 jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration', () =>
-    jest.fn()
+    jest.fn(),
 )
 
 const shopType = IntegrationType.Shopify
@@ -28,17 +28,17 @@ const shopName = 'test-shop'
 const supportedLocales: ChannelLanguage[] = ['en-US']
 const automationSettings: Components.Schemas.AutomationSettingsDto = {
     workflows: [],
-    order_management: {enabled: false},
+    order_management: { enabled: false },
 }
 
 const mockedUseWorkflowConfigurations = jest.mocked(
-    useGetWorkflowConfigurations
+    useGetWorkflowConfigurations,
 )
 const mockedUseHelpCentersAutomationSettings = jest.mocked(
-    useHelpCentersAutomationSettings
+    useHelpCentersAutomationSettings,
 )
 const mockedUseSelfServiceConfiguration = jest.mocked(
-    useSelfServiceConfiguration
+    useSelfServiceConfiguration,
 )
 
 describe('useHelpCenterFlows', () => {
@@ -67,13 +67,13 @@ describe('useHelpCenterFlows', () => {
     })
 
     it('should return workflows entrypoints', () => {
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useHelpCenterFlows({
                 shopName,
                 supportedLocales,
                 shopType,
                 flows: [],
-            })
+            }),
         )
 
         expect(result.current).toEqual({
@@ -101,13 +101,13 @@ describe('useHelpCenterFlows', () => {
             data: workflowConfigurations,
         } as unknown as ReturnType<typeof useGetWorkflowConfigurations>)
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useHelpCenterFlows({
                 shopName,
                 supportedLocales: ['en-US'],
                 shopType,
                 flows: [],
-            })
+            }),
         )
 
         expect(result.current.workflowConfigurations).toHaveLength(1)
@@ -142,13 +142,13 @@ describe('useHelpCenterFlows', () => {
             storeIntegration: undefined,
         })
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useHelpCenterFlows({
                 shopName,
                 supportedLocales: ['en-US'],
                 shopType,
                 flows: [],
-            })
+            }),
         )
 
         expect(result.current.workflowConfigurations).toHaveLength(1)
@@ -156,7 +156,7 @@ describe('useHelpCenterFlows', () => {
         expect(result.current.workflowConfigurations?.[0]).toEqual(
             expect.objectContaining({
                 id: '2',
-            })
+            }),
         )
     })
 })

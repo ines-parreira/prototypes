@@ -1,16 +1,18 @@
+import React, { useMemo } from 'react'
+
 import classnames from 'classnames'
 import _orderBy from 'lodash/orderBy'
-import React, {useMemo} from 'react'
-import {useHistory, useParams} from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 
-import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import useGetIsActionStepEnabled from 'pages/automate/actionsPlatform/hooks/useGetIsActionStepEnabled'
-import {ActionTemplate} from 'pages/automate/actionsPlatform/types'
+import { ActionTemplate } from 'pages/automate/actionsPlatform/types'
 import Button from 'pages/common/components/button/Button'
-import {TemplateCard} from 'pages/common/components/TemplateCard'
+import { TemplateCard } from 'pages/common/components/TemplateCard'
+
+import UseCaseTemplateCard from './UseCaseTemplateCard'
 
 import css from './ActionsUseCaseTemplatesCards.less'
-import UseCaseTemplateCard from './UseCaseTemplateCard'
 
 type Props = {
     showCustomAction?: boolean
@@ -25,8 +27,8 @@ const ActionsUseCaseTemplatesCards = ({
 }: Props) => {
     const history = useHistory()
 
-    const {shopName} = useParams<{shopName: string}>()
-    const {routes} = useAiAgentNavigation({shopName})
+    const { shopName } = useParams<{ shopName: string }>()
+    const { routes } = useAiAgentNavigation({ shopName })
 
     const getIsActionStepEnabled = useGetIsActionStepEnabled()
 
@@ -41,7 +43,7 @@ const ActionsUseCaseTemplatesCards = ({
                     return template.steps.some((step) => {
                         if (step.kind === 'reusable-llm-prompt-call') {
                             return getIsActionStepEnabled(
-                                step.settings.configuration_internal_id
+                                step.settings.configuration_internal_id,
                             )
                         }
 
@@ -49,9 +51,9 @@ const ActionsUseCaseTemplatesCards = ({
                     })
                 }),
                 ['category', 'name'],
-                ['asc', 'asc']
+                ['asc', 'asc'],
             ),
-        [templates, getIsActionStepEnabled]
+        [templates, getIsActionStepEnabled],
     )
 
     return (
@@ -82,7 +84,7 @@ const ActionsUseCaseTemplatesCards = ({
                         <i
                             className={classnames(
                                 'material-icons',
-                                css.customActionIcon
+                                css.customActionIcon,
                             )}
                         >
                             add_circle

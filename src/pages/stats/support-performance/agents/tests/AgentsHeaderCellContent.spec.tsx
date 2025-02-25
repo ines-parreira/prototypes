@@ -1,11 +1,11 @@
-import {act, render, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-
 import React from 'react'
 
-import {OrderDirection} from 'models/api/types'
-import {AgentsHeaderCellContent} from 'pages/stats/support-performance/agents/AgentsHeaderCellContent'
-import {AgentsTableColumn} from 'state/ui/stats/types'
+import { act, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { OrderDirection } from 'models/api/types'
+import { AgentsHeaderCellContent } from 'pages/stats/support-performance/agents/AgentsHeaderCellContent'
+import { AgentsTableColumn } from 'state/ui/stats/types'
 
 describe('<AgentsHeaderCellContent>', () => {
     const title = 'Some title'
@@ -24,7 +24,7 @@ describe('<AgentsHeaderCellContent>', () => {
                 title={title}
                 hint={null}
                 useSortingQuery={useSortingQueryMock}
-            />
+            />,
         )
 
         expect(screen.getByText(title))
@@ -34,9 +34,9 @@ describe('<AgentsHeaderCellContent>', () => {
         render(
             <AgentsHeaderCellContent
                 title={title}
-                hint={{title: hint}}
+                hint={{ title: hint }}
                 useSortingQuery={useSortingQueryMock}
-            />
+            />,
         )
 
         act(() => {
@@ -55,7 +55,7 @@ describe('<AgentsHeaderCellContent>', () => {
                 title={title}
                 hint={null}
                 useSortingQuery={useSortingQueryMock}
-            />
+            />,
         )
         const tr = screen.getByRole('columnheader')
         act(() => {
@@ -78,7 +78,7 @@ describe('<AgentsHeaderCellContent>', () => {
                 title={title}
                 hint={null}
                 useSortingQuery={useSortingQueryMock}
-            />
+            />,
         )
         const sortingIcon = screen.getByText('arrow_upward')
 
@@ -98,7 +98,7 @@ describe('<AgentsHeaderCellContent>', () => {
                 title={title}
                 hint={null}
                 useSortingQuery={useSortingQueryMock}
-            />
+            />,
         )
         const sortingIcon = screen.queryByText('arrow_upward')
 

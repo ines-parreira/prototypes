@@ -1,11 +1,12 @@
-import {render} from '@testing-library/react'
+import React, { ComponentProps } from 'react'
+
+import { render } from '@testing-library/react'
 import _noop from 'lodash/noop'
-import React, {ComponentProps} from 'react'
 
-import {emptyManagedRule} from 'fixtures/rule'
-import {ManagedRulesSlugs} from 'state/rules/types'
+import { emptyManagedRule } from 'fixtures/rule'
+import { ManagedRulesSlugs } from 'state/rules/types'
 
-import {AutoReplyReturnModal} from '../AutoReplyReturnModal'
+import { AutoReplyReturnModal } from '../AutoReplyReturnModal'
 
 describe('<AutoReplyReturnModal/>', () => {
     const minProps: ComponentProps<typeof AutoReplyReturnModal> = {
@@ -17,11 +18,11 @@ describe('<AutoReplyReturnModal/>', () => {
         handleDefaultSettings: _noop,
     }
     it('should render the instalation modal when Automate is subscribed', () => {
-        const {container} = render(<AutoReplyReturnModal {...minProps} />)
+        const { container } = render(<AutoReplyReturnModal {...minProps} />)
         expect(container.firstChild).toMatchSnapshot()
     })
     it('should render the instalation modal when Automate is not subscribed', () => {
-        const {container} = render(<AutoReplyReturnModal {...minProps} />)
+        const { container } = render(<AutoReplyReturnModal {...minProps} />)
         expect(container.firstChild).toMatchSnapshot()
     })
 })

@@ -1,18 +1,18 @@
+import React, { useEffect, useState } from 'react'
+
 import classNames from 'classnames'
-import React, {useEffect, useState} from 'react'
 
 import Button from 'pages/common/components/button/Button'
 import InputField from 'pages/common/forms/input/InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {Value} from 'pages/common/forms/SelectField/types'
-
-import {AdvancedTriggerBaseProps} from 'pages/convert/campaigns/types/AdvancedTriggerBaseProps'
-import {CampaignTrigger} from 'pages/convert/campaigns/types/CampaignTrigger'
-import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
-import {convertTriggerOperatorsToSelectOptions} from 'pages/convert/campaigns/utils/convertTriggerOperatorsToSelectOptions'
-import {handleTriggerOperatorChange} from 'pages/convert/campaigns/utils/handleTriggerOperatorChange'
-import {validateCurrentUrl} from 'pages/convert/campaigns/validators/currentUrlValidator'
-import {ValidationError} from 'pages/convert/campaigns/validators/validationError'
+import { Value } from 'pages/common/forms/SelectField/types'
+import { AdvancedTriggerBaseProps } from 'pages/convert/campaigns/types/AdvancedTriggerBaseProps'
+import { CampaignTrigger } from 'pages/convert/campaigns/types/CampaignTrigger'
+import { CampaignTriggerOperator } from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
+import { convertTriggerOperatorsToSelectOptions } from 'pages/convert/campaigns/utils/convertTriggerOperatorsToSelectOptions'
+import { handleTriggerOperatorChange } from 'pages/convert/campaigns/utils/handleTriggerOperatorChange'
+import { validateCurrentUrl } from 'pages/convert/campaigns/validators/currentUrlValidator'
+import { ValidationError } from 'pages/convert/campaigns/validators/validationError'
 
 import css from './style.less'
 
@@ -26,12 +26,12 @@ export const CurrentUrlTrigger = ({
     onTriggerValidationUpdate,
 }: Props): JSX.Element => {
     const [innerOperator, setInnerOperator] = useState<CampaignTriggerOperator>(
-        trigger.operator
+        trigger.operator,
     )
     const [innerValue, setInnerValue] = useState<string[]>(
         (!Array.isArray(trigger.value)
             ? [trigger.value]
-            : trigger.value) as string[]
+            : trigger.value) as string[],
     )
     const [innerError, setInnerError] = useState<string[]>([])
 
@@ -41,7 +41,7 @@ export const CurrentUrlTrigger = ({
             id,
             trigger,
             setInnerOperator,
-            onUpdateTrigger
+            onUpdateTrigger,
         )
 
     const handleChangeValue = (index: number) => (value: string) => {
@@ -180,7 +180,7 @@ export const CurrentUrlTrigger = ({
                     onChange={handleChangeOperator}
                     options={convertTriggerOperatorsToSelectOptions(
                         trigger.type,
-                        innerValue.length > 1
+                        innerValue.length > 1,
                     )}
                 />
             </div>

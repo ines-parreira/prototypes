@@ -1,19 +1,20 @@
-import React, {useEffect} from 'react'
-import {useHistory} from 'react-router-dom'
+import React, { useEffect } from 'react'
+
+import { useHistory } from 'react-router-dom'
 
 import {
-    GORGIAS_CHAT_SSP_TEXTS,
     getPrimaryLanguageFromChatConfig,
+    GORGIAS_CHAT_SSP_TEXTS,
 } from 'config/integrations/gorgias_chat'
 import List from 'gorgias-design-system/List/List'
 import ListItem from 'gorgias-design-system/List/ListItem'
-import {GorgiasChatIntegration} from 'models/integration/types'
+import { GorgiasChatIntegration } from 'models/integration/types'
+import { ChevronRightIcon } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/icon-utils'
 
-import {ChevronRightIcon} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/icon-utils'
+import { SELF_SERVICE_PREVIEW_ROUTES } from './constants'
+import { useSelfServicePreviewContext } from './SelfServicePreviewContext'
 
-import {SELF_SERVICE_PREVIEW_ROUTES} from './constants'
 import css from './SelfServiceChatIntegrationReportIssueReasonsPage.less'
-import {useSelfServicePreviewContext} from './SelfServicePreviewContext'
 
 type Props = {
     integration: GorgiasChatIntegration
@@ -41,7 +42,7 @@ const SelfServiceChatIntegrationReportIssueReasonsPage = ({
     return (
         <div className={css.container}>
             <h3 className={css.header}>{sspTexts.whatIsWrongWithOrder}</h3>
-            <List shouldDisplayShadow={false} style={{marginLeft: '-12px'}}>
+            <List shouldDisplayShadow={false} style={{ marginLeft: '-12px' }}>
                 {reportOrderIssueReasons.map((reason) => (
                     <ListItem
                         className={

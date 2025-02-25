@@ -1,6 +1,7 @@
-import {render} from '@testing-library/react'
-import {fromJS, Map} from 'immutable'
 import React from 'react'
+
+import { render } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
 
 import {
     FACEBOOK_INTEGRATION_TYPE,
@@ -18,8 +19,8 @@ describe('FacebookPageRow component', () => {
             created_datetime: '2018-01-01 00:00:00',
         })
 
-        const {container} = render(
-            <FacebookPageRow integration={integration} />
+        const { container } = render(
+            <FacebookPageRow integration={integration} />,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -42,8 +43,8 @@ describe('FacebookPageRow component', () => {
             },
         })
 
-        const {container} = render(
-            <FacebookPageRow integration={integration} />
+        const { container } = render(
+            <FacebookPageRow integration={integration} />,
         )
 
         expect(container.firstChild).toMatchSnapshot()

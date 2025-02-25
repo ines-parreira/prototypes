@@ -1,21 +1,22 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
-import {Link} from 'react-router-dom'
 
-import {agents} from 'fixtures/agents'
+import { render, screen } from '@testing-library/react'
+import { Link } from 'react-router-dom'
+
+import { agents } from 'fixtures/agents'
 import {
     basicMonthlyHelpdeskPlan as mockedBasicMonthlyHelpdeskPlan,
     starterHelpdeskPlan,
 } from 'fixtures/productPrices'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {usePaginatedQuery} from 'hooks/usePaginatedQuery'
+import { usePaginatedQuery } from 'hooks/usePaginatedQuery'
 import Navigation from 'pages/common/components/Navigation/Navigation'
 import Row from 'pages/settings/users/List/Row'
-import {getCurrentHelpdeskPlan} from 'state/billing/selectors'
-import {getAccountOwnerId} from 'state/currentAccount/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {assumeMock} from 'utils/testing'
+import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
+import { getAccountOwnerId } from 'state/currentAccount/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { assumeMock } from 'utils/testing'
 
 import UserList from '..'
 
@@ -38,7 +39,7 @@ jest.mock('state/billing/selectors', () => ({
 const mockedGetCurrentHelpdeskProduct = assumeMock(getCurrentHelpdeskPlan)
 
 jest.mock('pages/common/components/Navigation/Navigation', () =>
-    jest.fn(() => null)
+    jest.fn(() => null),
 )
 jest.mock('../Row', () => jest.fn(() => null))
 const mockedRow = assumeMock(Row)
@@ -51,7 +52,7 @@ describe('<List />', () => {
         mockedUseAppDispatch.mockImplementation(() => mockedDispatch)
         mockedGetAccountOwnerId.mockImplementation(() => agents[0].id)
         mockedUsePaginatedQuery.mockImplementation(
-            () => ({}) as ReturnType<typeof usePaginatedQuery>
+            () => ({}) as ReturnType<typeof usePaginatedQuery>,
         )
     })
 
@@ -61,11 +62,11 @@ describe('<List />', () => {
     })
 
     it('should render a text saying how many users can be managed', () => {
-        const {rerender} = render(<UserList />)
+        const { rerender } = render(<UserList />)
         expect(screen.getByText(/as many users/)).toBeInTheDocument()
 
         mockedGetCurrentHelpdeskProduct.mockImplementationOnce(
-            () => starterHelpdeskPlan
+            () => starterHelpdeskPlan,
         )
         rerender(<UserList />)
         expect(screen.getByText(/up to 3 users/)).toBeInTheDocument()
@@ -76,7 +77,7 @@ describe('<List />', () => {
             () =>
                 ({
                     isLoading: true,
-                }) as ReturnType<typeof usePaginatedQuery>
+                }) as ReturnType<typeof usePaginatedQuery>,
         )
         render(<UserList />)
         expect(screen.getByText('Loading...')).toBeInTheDocument()
@@ -87,7 +88,7 @@ describe('<List />', () => {
             () =>
                 ({
                     error: {},
-                }) as ReturnType<typeof usePaginatedQuery>
+                }) as ReturnType<typeof usePaginatedQuery>,
         )
         render(<UserList />)
         expect(mockedDispatch).toHaveBeenCalledTimes(1)
@@ -95,7 +96,7 @@ describe('<List />', () => {
             1,
             expect.objectContaining({
                 status: NotificationStatus.Error,
-            })
+            }),
         )
     })
 
@@ -111,7 +112,7 @@ describe('<List />', () => {
                     fetchPreviousPage,
                     hasNextPage,
                     fetchNextPage,
-                }) as unknown as ReturnType<typeof usePaginatedQuery>
+                }) as unknown as ReturnType<typeof usePaginatedQuery>,
         )
         render(<UserList />)
         expect(Navigation).toHaveBeenNthCalledWith(
@@ -122,7 +123,7 @@ describe('<List />', () => {
                 hasNextItems: hasNextPage,
                 fetchNextItems: fetchNextPage,
             },
-            {}
+            {},
         )
     })
 
@@ -135,12 +136,12 @@ describe('<List />', () => {
                             data: agents,
                         },
                     },
-                }) as unknown as ReturnType<typeof usePaginatedQuery>
+                }) as unknown as ReturnType<typeof usePaginatedQuery>,
         )
         render(<UserList />)
         expect(mockedRow.mock.calls).toEqual([
-            [{agent: agents[0], isAccountOwner: true}, {}],
-            [{agent: agents[1], isAccountOwner: false}, {}],
+            [{ agent: agents[0], isAccountOwner: true }, {}],
+            [{ agent: agents[1], isAccountOwner: false }, {}],
         ])
     })
 })

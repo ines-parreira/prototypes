@@ -1,6 +1,6 @@
-import React, {ComponentType} from 'react'
+import React, { ComponentType } from 'react'
 
-import {AppNodeContextType} from './AppNodeContext'
+import { AppNodeContextType } from './AppNodeContext'
 import useAppNode from './useAppNode'
 
 export type WithAppNodeProps = {
@@ -8,7 +8,7 @@ export type WithAppNodeProps = {
 }
 
 function withAppNode<T>(
-    WrappedComponent: ComponentType<T & WithAppNodeProps>
+    WrappedComponent: ComponentType<T & WithAppNodeProps>,
 ): ComponentType<T> {
     const displayName =
         WrappedComponent.displayName || WrappedComponent.name || 'Component'

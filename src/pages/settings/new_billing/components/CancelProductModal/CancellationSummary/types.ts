@@ -1,4 +1,4 @@
-import {Plan, ProductType, HelpdeskPlan} from 'models/billing/types'
+import { HelpdeskPlan, Plan, ProductType } from 'models/billing/types'
 
 export type SubscriptionProducts = {
     [key in ProductType]: Plan | null

@@ -1,20 +1,22 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { useRef } from 'react'
+
 import classNames from 'classnames'
-import React, {useRef} from 'react'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import {
     GorgiasChatInstallationVisibilityCondition,
     GorgiasChatInstallationVisibilityConditionOperator,
 } from 'models/integration/types'
-
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import InputField from 'pages/common/forms/input/InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 
+import { UrlValidationResult } from './utils/validateUrl'
+
 import css from './GorgiasChatIntegrationVisibilityCondition.less'
-import {UrlValidationResult} from './utils/validateUrl'
 
 const visibilityConditionOperatorCaptions: Record<
     GorgiasChatInstallationVisibilityConditionOperator,
@@ -28,8 +30,8 @@ const visibilityConditionOperatorCaptions: Record<
 }
 
 const visibilityConditionOperatorCaptionsOptions = Object.entries(
-    visibilityConditionOperatorCaptions
-).map(([value, label]) => ({value, label}))
+    visibilityConditionOperatorCaptions,
+).map(([value, label]) => ({ value, label }))
 
 const errorByUrlValidationResult: Record<
     Exclude<UrlValidationResult, 'valid'>,
@@ -51,7 +53,7 @@ type Props = {
     value: string
     operator: GorgiasChatInstallationVisibilityConditionOperator
     onChange: (
-        values: Partial<GorgiasChatInstallationVisibilityCondition>
+        values: Partial<GorgiasChatInstallationVisibilityCondition>,
     ) => void
     onDelete: () => void
     isDeletable?: boolean

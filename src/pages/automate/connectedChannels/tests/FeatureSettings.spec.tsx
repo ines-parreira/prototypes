@@ -1,7 +1,8 @@
-import {render, screen, fireEvent} from '@testing-library/react'
 import React from 'react'
 
-import {FeatureSettings} from '../components/FeatureSettings'
+import { fireEvent, render, screen } from '@testing-library/react'
+
+import { FeatureSettings } from '../components/FeatureSettings'
 
 describe('FeatureSettings', () => {
     test('renders the component with all props', () => {
@@ -13,7 +14,7 @@ describe('FeatureSettings', () => {
                 subtitle="Feature Subtitle"
                 label="Toggle Label"
                 labelSubtitle="Label Subtitle"
-            />
+            />,
         )
 
         expect(screen.getByText('Feature Title')).toBeInTheDocument()
@@ -29,7 +30,7 @@ describe('FeatureSettings', () => {
                 enabled={false}
                 title="Feature Title"
                 label="Toggle Label"
-            />
+            />,
         )
 
         expect(screen.getByText('Feature Title')).toBeInTheDocument()
@@ -49,7 +50,7 @@ describe('FeatureSettings', () => {
                 label="Toggle Label"
                 subtitle="Feature Subtitle"
                 onToggle={onChange}
-            />
+            />,
         )
 
         const toggleInput = screen.getByRole('checkbox')
@@ -68,7 +69,7 @@ describe('FeatureSettings', () => {
                 subtitle="Feature Subtitle"
                 disabled
                 onToggle={onChange}
-            />
+            />,
         )
 
         const toggleInput = screen.getByRole('checkbox')
@@ -84,7 +85,7 @@ describe('FeatureSettings', () => {
                 label="Toggle Label"
                 showConfigurationRequiredAlert
                 externalLinkUrl="http://example.com"
-            />
+            />,
         )
 
         expect(screen.getByText('Toggle Label')).toBeInTheDocument()

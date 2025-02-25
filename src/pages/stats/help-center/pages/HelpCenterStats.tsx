@@ -1,18 +1,17 @@
 import React from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
-import {HelpCenterReport} from 'pages/stats/help-center/components/HelpCenterReport/HelpCenterReport'
-import {HelpCenterReportConfig} from 'pages/stats/help-center/components/HelpCenterReport/HelpCenterReportConfig'
-import {HelpCenterStatsEmptyState} from 'pages/stats/help-center/components/HelpCenterStatsEmptyState/HelpCenterStatsEmptyState'
+import { HelpCenterReport } from 'pages/stats/help-center/components/HelpCenterReport/HelpCenterReport'
+import { HelpCenterReportConfig } from 'pages/stats/help-center/components/HelpCenterReport/HelpCenterReportConfig'
+import { HelpCenterStatsEmptyState } from 'pages/stats/help-center/components/HelpCenterStatsEmptyState/HelpCenterStatsEmptyState'
 import HelpCenterStatsLoading from 'pages/stats/help-center/components/HelpCenterStatsLoading/HelpCenterStatsLoading'
-import {useSelectedHelpCenter} from 'pages/stats/help-center/hooks/useSelectedHelpCenter'
-import {isHelpCenterStatsFiltersValid} from 'pages/stats/help-center/types'
-
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {isNotEmptyArray} from 'utils'
+import { useSelectedHelpCenter } from 'pages/stats/help-center/hooks/useSelectedHelpCenter'
+import { isHelpCenterStatsFiltersValid } from 'pages/stats/help-center/types'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { isNotEmptyArray } from 'utils'
 
 const HelpCenterStats = () => {
     const currentUser = useAppSelector(getCurrentUser)

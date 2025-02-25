@@ -1,20 +1,18 @@
-import {renderHook} from '@testing-library/react-hooks'
-
-import moment from 'moment'
-
 import React from 'react'
-import {Provider} from 'react-redux'
 
+import { renderHook } from '@testing-library/react-hooks'
+import moment from 'moment'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {agents} from 'fixtures/agents'
-import {fetchTableReportData} from 'hooks/reporting/common/useTableReportData'
-import {useAutoQAMetrics} from 'hooks/reporting/support-performance/auto-qa/useAutoQAMetrics'
-import {getCsvFileNameWithDates} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
-import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
-import {OrderDirection} from 'models/api/types'
-import {TicketQAScoreMeasure} from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
-import {ReportingGranularity} from 'models/reporting/types'
+import { agents } from 'fixtures/agents'
+import { fetchTableReportData } from 'hooks/reporting/common/useTableReportData'
+import { useAutoQAMetrics } from 'hooks/reporting/support-performance/auto-qa/useAutoQAMetrics'
+import { getCsvFileNameWithDates } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
+import { MetricWithDecile } from 'hooks/reporting/useMetricPerDimension'
+import { OrderDirection } from 'models/api/types'
+import { TicketQAScoreMeasure } from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
+import { ReportingGranularity } from 'models/reporting/types'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
@@ -25,9 +23,8 @@ import {
     AutoQAAgentsTableColumn,
     TableLabels,
 } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
-import {TrendCardConfig} from 'pages/stats/support-performance/auto-qa/AutoQAMetricsConfig'
-
-import {BusiestTimeOfDaysMetrics} from 'pages/stats/support-performance/busiest-times-of-days/types'
+import { TrendCardConfig } from 'pages/stats/support-performance/auto-qa/AutoQAMetricsConfig'
+import { BusiestTimeOfDaysMetrics } from 'pages/stats/support-performance/busiest-times-of-days/types'
 import {
     AGENT_ID_DIMENSION,
     AUTO_QA_DOWNLOAD_AGENTS_FILE_NAME,
@@ -38,12 +35,12 @@ import {
     fetchAutoQAAgentsTableReportData,
     useAutoQAReportData,
 } from 'services/reporting/autoQAReportingService'
-import {DATE_TIME_FORMAT} from 'services/reporting/constants'
-import {getSortedAutoQAAgents} from 'state/ui/stats/autoQAAgentPerformanceSlice'
-import {AutoQAMetric} from 'state/ui/stats/types'
-import {createCsv} from 'utils/file'
-import {getPreviousPeriod} from 'utils/reporting'
-import {assumeMock} from 'utils/testing'
+import { DATE_TIME_FORMAT } from 'services/reporting/constants'
+import { getSortedAutoQAAgents } from 'state/ui/stats/autoQAAgentPerformanceSlice'
+import { AutoQAMetric } from 'state/ui/stats/types'
+import { createCsv } from 'utils/file'
+import { getPreviousPeriod } from 'utils/reporting'
+import { assumeMock } from 'utils/testing'
 
 const mockStore = configureMockStore()
 jest.mock('hooks/reporting/common/useTableReportData')
@@ -66,38 +63,38 @@ describe('autoQAReportingService', () => {
     const previousPeriod = getPreviousPeriod(period)
     const startDate = moment(period.start_datetime).format(DATE_TIME_FORMAT)
     const previousStartDate = moment(previousPeriod.start_datetime).format(
-        DATE_TIME_FORMAT
+        DATE_TIME_FORMAT,
     )
     const endDate = moment(period.end_datetime).format(DATE_TIME_FORMAT)
     const previousEndDate = moment(previousPeriod.end_datetime).format(
-        DATE_TIME_FORMAT
+        DATE_TIME_FORMAT,
     )
 
     const defaultData = {
         agents: [],
-        communicationSkillsPerAgent: {data: null},
-        languageProficiencyPerAgent: {data: null},
-        accuracyPerAgent: {data: null},
-        efficiencyPerAgent: {data: null},
-        internalCompliancePerAgent: {data: null},
-        brandVoicePerAgent: {data: null},
-        resolutionCompletenessPerAgent: {data: null},
-        reviewedClosedTicketsPerAgent: {data: null},
-        communicationSkillsTrend: {data: undefined},
-        languageProficiencyTrend: {data: undefined},
-        accuracyTrend: {data: undefined},
-        efficiencyTrend: {data: undefined},
-        internalComplianceTrend: {data: undefined},
-        brandVoiceTrend: {data: undefined},
-        resolutionCompletenessTrend: {data: undefined},
-        reviewedClosedTicketsTrend: {data: undefined},
+        communicationSkillsPerAgent: { data: null },
+        languageProficiencyPerAgent: { data: null },
+        accuracyPerAgent: { data: null },
+        efficiencyPerAgent: { data: null },
+        internalCompliancePerAgent: { data: null },
+        brandVoicePerAgent: { data: null },
+        resolutionCompletenessPerAgent: { data: null },
+        reviewedClosedTicketsPerAgent: { data: null },
+        communicationSkillsTrend: { data: undefined },
+        languageProficiencyTrend: { data: undefined },
+        accuracyTrend: { data: undefined },
+        efficiencyTrend: { data: undefined },
+        internalComplianceTrend: { data: undefined },
+        brandVoiceTrend: { data: undefined },
+        resolutionCompletenessTrend: { data: undefined },
+        reviewedClosedTicketsTrend: { data: undefined },
     } as any
 
     const agentA = agents[0]
     const exampleData = (
         agentId: number,
         metricField: AutoQAReportMetrics,
-        value: number
+        value: number,
     ): MetricWithDecile => ({
         isFetching: false,
         isError: false,
@@ -133,42 +130,42 @@ describe('autoQAReportingService', () => {
         communicationSkillsPerAgent: exampleData(
             agentA.id,
             TicketQAScoreMeasure.AverageScore,
-            agentACommunicationSkills
+            agentACommunicationSkills,
         ),
         languageProficiencyPerAgent: exampleData(
             agentA.id,
             TicketQAScoreMeasure.AverageScore,
-            agentALanguageProficiency
+            agentALanguageProficiency,
         ),
         accuracyPerAgent: exampleData(
             agentA.id,
             TicketQAScoreMeasure.AverageScore,
-            agentAAccuracy
+            agentAAccuracy,
         ),
         efficiencyPerAgent: exampleData(
             agentA.id,
             TicketQAScoreMeasure.AverageScore,
-            agentAEfficiency
+            agentAEfficiency,
         ),
         internalCompliancePerAgent: exampleData(
             agentA.id,
             TicketQAScoreMeasure.AverageScore,
-            agentAInternalCompliance
+            agentAInternalCompliance,
         ),
         brandVoicePerAgent: exampleData(
             agentA.id,
             TicketQAScoreMeasure.AverageScore,
-            agentABrandVoice
+            agentABrandVoice,
         ),
         resolutionCompletenessPerAgent: exampleData(
             agentA.id,
             TicketQAScoreMeasure.AverageScore,
-            agentAResolutionCompleteness
+            agentAResolutionCompleteness,
         ),
         reviewedClosedTicketsPerAgent: exampleData(
             agentA.id,
             TicketQAScoreMeasure.TicketCount,
-            agentAReviewedTickets
+            agentAReviewedTickets,
         ),
         communicationSkillsTrend: exampleTrendData,
         languageProficiencyTrend: exampleTrendData,
@@ -190,11 +187,13 @@ describe('autoQAReportingService', () => {
             TrendCardConfig[AutoQAMetric.ReviewedClosedTickets].title,
             formatMetricValue(
                 exampleTrendData.data.value,
-                TrendCardConfig[AutoQAMetric.ReviewedClosedTickets].metricFormat
+                TrendCardConfig[AutoQAMetric.ReviewedClosedTickets]
+                    .metricFormat,
             ),
             formatMetricValue(
                 exampleTrendData.data.prevValue,
-                TrendCardConfig[AutoQAMetric.ReviewedClosedTickets].metricFormat
+                TrendCardConfig[AutoQAMetric.ReviewedClosedTickets]
+                    .metricFormat,
             ),
         ],
         [
@@ -202,78 +201,78 @@ describe('autoQAReportingService', () => {
             formatMetricValue(
                 exampleTrendData.data.value,
                 TrendCardConfig[AutoQAMetric.ResolutionCompleteness]
-                    .metricFormat
+                    .metricFormat,
             ),
             formatMetricValue(
                 exampleTrendData.data.prevValue,
                 TrendCardConfig[AutoQAMetric.ResolutionCompleteness]
-                    .metricFormat
+                    .metricFormat,
             ),
         ],
         [
             TrendCardConfig[AutoQAMetric.Accuracy].title,
             formatMetricValue(
                 exampleTrendData.data.value,
-                TrendCardConfig[AutoQAMetric.Accuracy].metricFormat
+                TrendCardConfig[AutoQAMetric.Accuracy].metricFormat,
             ),
             formatMetricValue(
                 exampleTrendData.data.prevValue,
-                TrendCardConfig[AutoQAMetric.Accuracy].metricFormat
+                TrendCardConfig[AutoQAMetric.Accuracy].metricFormat,
             ),
         ],
         [
             TrendCardConfig[AutoQAMetric.InternalCompliance].title,
             formatMetricValue(
                 exampleTrendData.data.value,
-                TrendCardConfig[AutoQAMetric.InternalCompliance].metricFormat
+                TrendCardConfig[AutoQAMetric.InternalCompliance].metricFormat,
             ),
             formatMetricValue(
                 exampleTrendData.data.prevValue,
-                TrendCardConfig[AutoQAMetric.InternalCompliance].metricFormat
+                TrendCardConfig[AutoQAMetric.InternalCompliance].metricFormat,
             ),
         ],
         [
             TrendCardConfig[AutoQAMetric.Efficiency].title,
             formatMetricValue(
                 exampleTrendData.data.value,
-                TrendCardConfig[AutoQAMetric.Efficiency].metricFormat
+                TrendCardConfig[AutoQAMetric.Efficiency].metricFormat,
             ),
             formatMetricValue(
                 exampleTrendData.data.prevValue,
-                TrendCardConfig[AutoQAMetric.Efficiency].metricFormat
+                TrendCardConfig[AutoQAMetric.Efficiency].metricFormat,
             ),
         ],
         [
             TrendCardConfig[AutoQAMetric.CommunicationSkills].title,
             formatMetricValue(
                 exampleTrendData.data.value,
-                TrendCardConfig[AutoQAMetric.CommunicationSkills].metricFormat
+                TrendCardConfig[AutoQAMetric.CommunicationSkills].metricFormat,
             ),
             formatMetricValue(
                 exampleTrendData.data.prevValue,
-                TrendCardConfig[AutoQAMetric.CommunicationSkills].metricFormat
+                TrendCardConfig[AutoQAMetric.CommunicationSkills].metricFormat,
             ),
         ],
         [
             TrendCardConfig[AutoQAMetric.LanguageProficiency].title,
             formatMetricValue(
                 exampleTrendData.data.value,
-                TrendCardConfig[AutoQAMetric.LanguageProficiency].metricFormat
+                TrendCardConfig[AutoQAMetric.LanguageProficiency].metricFormat,
             ),
             formatMetricValue(
                 exampleTrendData.data.prevValue,
-                TrendCardConfig[AutoQAMetric.LanguageProficiency].metricFormat
+                TrendCardConfig[AutoQAMetric.LanguageProficiency].metricFormat,
             ),
         ],
         [
             TrendCardConfig[AutoQAMetric.BrandVoice].title,
             formatMetricValue(
                 exampleTrendData.data.value,
-                TrendCardConfig[AutoQAMetric.BrandVoice].metricFormat
+                TrendCardConfig[AutoQAMetric.BrandVoice].metricFormat,
             ),
             formatMetricValue(
                 exampleTrendData.data.prevValue,
-                TrendCardConfig[AutoQAMetric.BrandVoice].metricFormat
+                TrendCardConfig[AutoQAMetric.BrandVoice].metricFormat,
             ),
         ],
     ]
@@ -295,46 +294,46 @@ describe('autoQAReportingService', () => {
                 agentAReviewedTickets,
                 AutoQAAgentsColumnConfig[
                     AutoQAAgentsTableColumn.ReviewedClosedTickets
-                ].format
+                ].format,
             ),
             formatMetricValue(
                 agentAResolutionCompleteness,
                 AutoQAAgentsColumnConfig[
                     AutoQAAgentsTableColumn.ResolutionCompleteness
-                ].format
+                ].format,
             ),
             formatMetricValue(
                 agentAAccuracy,
                 AutoQAAgentsColumnConfig[AutoQAAgentsTableColumn.Accuracy]
-                    .format
+                    .format,
             ),
             formatMetricValue(
                 agentAInternalCompliance,
                 AutoQAAgentsColumnConfig[
                     AutoQAAgentsTableColumn.InternalCompliance
-                ].format
+                ].format,
             ),
             formatMetricValue(
                 agentAEfficiency,
                 AutoQAAgentsColumnConfig[AutoQAAgentsTableColumn.Efficiency]
-                    .format
+                    .format,
             ),
             formatMetricValue(
                 agentACommunicationSkills,
                 AutoQAAgentsColumnConfig[
                     AutoQAAgentsTableColumn.CommunicationSkills
-                ].format
+                ].format,
             ),
             formatMetricValue(
                 agentALanguageProficiency,
                 AutoQAAgentsColumnConfig[
                     AutoQAAgentsTableColumn.LanguageProficiency
-                ].format
+                ].format,
             ),
             formatMetricValue(
                 agentABrandVoice,
                 AutoQAAgentsColumnConfig[AutoQAAgentsTableColumn.BrandVoice]
-                    .format
+                    .format,
             ),
         ],
         [
@@ -351,15 +350,15 @@ describe('autoQAReportingService', () => {
     ]
     const fileName = getCsvFileNameWithDates(
         statsFilters.period,
-        AUTO_QA_DOWNLOAD_DATA_FILE_NAME
+        AUTO_QA_DOWNLOAD_DATA_FILE_NAME,
     )
     const agentsFileName = getCsvFileNameWithDates(
         statsFilters.period,
-        AUTO_QA_DOWNLOAD_AGENTS_FILE_NAME
+        AUTO_QA_DOWNLOAD_AGENTS_FILE_NAME,
     )
     const trendsFileName = getCsvFileNameWithDates(
         statsFilters.period,
-        AUTO_QA_DOWNLOAD_TRENDS_FILE_NAME
+        AUTO_QA_DOWNLOAD_TRENDS_FILE_NAME,
     )
 
     describe('createReport', () => {
@@ -368,23 +367,23 @@ describe('autoQAReportingService', () => {
                 agents,
                 data,
                 AUTO_QA_AGENTS_TABLE_DIMENSIONS_COLUMNS_ORDER,
-                period
+                period,
             )
 
             expect(report).toEqual({
                 files: {
                     [getCsvFileNameWithDates(
                         period,
-                        AUTO_QA_DOWNLOAD_TRENDS_FILE_NAME
+                        AUTO_QA_DOWNLOAD_TRENDS_FILE_NAME,
                     )]: createCsv(expectedReport),
                     [getCsvFileNameWithDates(
                         period,
-                        AUTO_QA_DOWNLOAD_AGENTS_FILE_NAME
+                        AUTO_QA_DOWNLOAD_AGENTS_FILE_NAME,
                     )]: createCsv(expectedAgentsReport),
                 },
                 fileName: getCsvFileNameWithDates(
                     period,
-                    AUTO_QA_DOWNLOAD_DATA_FILE_NAME
+                    AUTO_QA_DOWNLOAD_DATA_FILE_NAME,
                 ),
             })
         })
@@ -394,7 +393,7 @@ describe('autoQAReportingService', () => {
                 agents,
                 data,
                 AUTO_QA_AGENTS_TABLE_DIMENSIONS_COLUMNS_ORDER,
-                period
+                period,
             )
 
             expect(report).toEqual({
@@ -406,7 +405,7 @@ describe('autoQAReportingService', () => {
             })
 
             expect(report.files[agentsFileName]).toEqual(
-                createCsv(expectedAgentsReport)
+                createCsv(expectedAgentsReport),
             )
         })
     })
@@ -422,8 +421,8 @@ describe('autoQAReportingService', () => {
         })
 
         it('should fetch data and return a report', () => {
-            const {result} = renderHook(() => useAutoQAReportData(), {
-                wrapper: ({children}) => (
+            const { result } = renderHook(() => useAutoQAReportData(), {
+                wrapper: ({ children }) => (
                     <Provider store={mockStore({})}>{children}</Provider>
                 ),
             })
@@ -474,7 +473,7 @@ describe('autoQAReportingService', () => {
                 statsFilters,
                 userTimezone,
                 granularity,
-                context
+                context,
             )
 
             expect(report).toEqual({
@@ -483,7 +482,7 @@ describe('autoQAReportingService', () => {
                 },
                 fileName: getCsvFileNameWithDates(
                     statsFilters.period,
-                    AUTO_QA_DOWNLOAD_DATA_FILE_NAME
+                    AUTO_QA_DOWNLOAD_DATA_FILE_NAME,
                 ),
                 isLoading: false,
             })
@@ -500,14 +499,14 @@ describe('autoQAReportingService', () => {
                 statsFilters,
                 userTimezone,
                 granularity,
-                context
+                context,
             )
 
             expect(report).toEqual({
                 files: {},
                 fileName: getCsvFileNameWithDates(
                     statsFilters.period,
-                    AUTO_QA_DOWNLOAD_DATA_FILE_NAME
+                    AUTO_QA_DOWNLOAD_DATA_FILE_NAME,
                 ),
                 isLoading: false,
             })
@@ -520,14 +519,14 @@ describe('autoQAReportingService', () => {
                 statsFilters,
                 userTimezone,
                 granularity,
-                context
+                context,
             )
 
             expect(report).toEqual({
                 files: {},
                 fileName: getCsvFileNameWithDates(
                     statsFilters.period,
-                    AUTO_QA_DOWNLOAD_DATA_FILE_NAME
+                    AUTO_QA_DOWNLOAD_DATA_FILE_NAME,
                 ),
                 isLoading: false,
             })

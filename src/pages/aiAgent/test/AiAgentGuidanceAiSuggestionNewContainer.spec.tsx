@@ -1,18 +1,19 @@
-import {screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {useAiAgentEnabled} from 'pages/aiAgent/hooks/useAiAgentEnabled'
-import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {renderWithRouter} from 'utils/testing'
+import { screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
-import {AiAgentGuidanceAiSuggestionNewContainer} from '../AiAgentGuidanceAiSuggestionNewContainer'
-import {getAIGuidanceFixture} from '../fixtures/aiGuidance.fixture'
-import {getGuidanceArticleFixture} from '../fixtures/guidanceArticle.fixture'
-import {useAiAgentHelpCenter} from '../hooks/useAiAgentHelpCenter'
-import {useAiAgentOnboardingNotification} from '../hooks/useAiAgentOnboardingNotification'
-import {useGuidanceAiSuggestions} from '../hooks/useGuidanceAiSuggestions'
-import {useGuidanceArticleMutation} from '../hooks/useGuidanceArticleMutation'
+import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
+import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { renderWithRouter } from 'utils/testing'
+
+import { AiAgentGuidanceAiSuggestionNewContainer } from '../AiAgentGuidanceAiSuggestionNewContainer'
+import { getAIGuidanceFixture } from '../fixtures/aiGuidance.fixture'
+import { getGuidanceArticleFixture } from '../fixtures/guidanceArticle.fixture'
+import { useAiAgentHelpCenter } from '../hooks/useAiAgentHelpCenter'
+import { useAiAgentOnboardingNotification } from '../hooks/useAiAgentOnboardingNotification'
+import { useGuidanceAiSuggestions } from '../hooks/useGuidanceAiSuggestions'
+import { useGuidanceArticleMutation } from '../hooks/useGuidanceArticleMutation'
 
 jest.mock('../hooks/useAiAgentHelpCenter', () => ({
     useAiAgentHelpCenter: jest.fn(),
@@ -32,7 +33,7 @@ jest.mock(
     () => {
         const ComponentToMock = () => <div />
         return ComponentToMock
-    }
+    },
 )
 jest.mock('pages/aiAgent/hooks/useAiAgentEnabled')
 
@@ -47,7 +48,7 @@ const mockedUseGuidanceArticleMutation = jest.mocked(useGuidanceArticleMutation)
 const mockedUseGuidanceAiSuggestions = jest.mocked(useGuidanceAiSuggestions)
 const mockUseEnableAiAgent = jest.mocked(useAiAgentEnabled)
 const mockUseAiAgentOnboardingNotification = jest.mocked(
-    useAiAgentOnboardingNotification
+    useAiAgentOnboardingNotification,
 )
 
 const helpCenter = getHelpCentersResponseFixture.data[0]
@@ -104,17 +105,17 @@ describe('<AiAgentGuidanceAiSuggestionNewContainer />', () => {
     beforeEach(() => {
         mockedUseAiAgentHelpCenter.mockReturnValue(helpCenter)
         mockedUseGuidanceArticleMutation.mockReturnValue(
-            defaultGuidanceArticleMutationProps
+            defaultGuidanceArticleMutationProps,
         )
         mockedUseGuidanceAiSuggestions.mockReturnValue(
-            defaultUseGuidanceAiSuggestions
+            defaultUseGuidanceAiSuggestions,
         )
 
         mockUseEnableAiAgent.mockReturnValue({
             updateSettingsAfterAiAgentEnabled: jest.fn(),
         })
         mockUseAiAgentOnboardingNotification.mockReturnValue(
-            defaultUseAiAgentOnboardingNotification
+            defaultUseAiAgentOnboardingNotification,
         )
     })
 
@@ -141,7 +142,7 @@ describe('<AiAgentGuidanceAiSuggestionNewContainer />', () => {
         renderComponent()
 
         expect(screen.getByLabelText(/Guidance name/)).toHaveValue(
-            aiGuidanceSuggestion.name
+            aiGuidanceSuggestion.name,
         )
     })
 
@@ -162,7 +163,7 @@ describe('<AiAgentGuidanceAiSuggestionNewContainer />', () => {
             expect.objectContaining({
                 title: aiGuidanceSuggestion.name,
                 content: aiGuidanceSuggestion.content,
-            })
+            }),
         )
     })
 
@@ -175,7 +176,7 @@ describe('<AiAgentGuidanceAiSuggestionNewContainer />', () => {
 
         await waitFor(() => {
             expect(
-                defaultUseAiAgentOnboardingNotification.handleOnTriggerActivateAiAgentNotification
+                defaultUseAiAgentOnboardingNotification.handleOnTriggerActivateAiAgentNotification,
             ).toHaveBeenCalled()
         })
     })
@@ -189,7 +190,7 @@ describe('<AiAgentGuidanceAiSuggestionNewContainer />', () => {
 
         await waitFor(() => {
             expect(
-                defaultUseAiAgentOnboardingNotification.handleOnTriggerActivateAiAgentNotification
+                defaultUseAiAgentOnboardingNotification.handleOnTriggerActivateAiAgentNotification,
             ).toHaveBeenCalled()
         })
     })
@@ -208,7 +209,7 @@ describe('<AiAgentGuidanceAiSuggestionNewContainer />', () => {
 
         await waitFor(() => {
             expect(
-                defaultUseAiAgentOnboardingNotification.handleOnTriggerActivateAiAgentNotification
+                defaultUseAiAgentOnboardingNotification.handleOnTriggerActivateAiAgentNotification,
             ).not.toHaveBeenCalled()
         })
     })

@@ -1,24 +1,25 @@
-import {renderHook} from '@testing-library/react-hooks'
-import React, {ComponentType} from 'react'
+import React, { ComponentType } from 'react'
 
-import {SearchRank} from 'hooks/useSearchRankScenario'
+import { renderHook } from '@testing-library/react-hooks'
+
+import { SearchRank } from 'hooks/useSearchRankScenario'
 import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
 
 import useSearchRankScenarioContext from '../useSearchRankScenarioContext'
 
 describe('useSearchRankScenario', () => {
     it('should throw when used outside the provider', () => {
-        const {result} = renderHook(() => useSearchRankScenarioContext())
+        const { result } = renderHook(() => useSearchRankScenarioContext())
         expect(result.error?.message).toBe(
-            'useSearchRankContext should be used inside SearchRankScenarioProvider'
+            'useSearchRankContext should be used inside SearchRankScenarioProvider',
         )
     })
 
     it('should return the context', () => {
         const contextValue = {} as SearchRank
 
-        const {result} = renderHook(() => useSearchRankScenarioContext(), {
-            wrapper: (({children}) => (
+        const { result } = renderHook(() => useSearchRankScenarioContext(), {
+            wrapper: (({ children }) => (
                 <SearchRankScenarioContext.Provider value={contextValue}>
                     {children}
                 </SearchRankScenarioContext.Provider>

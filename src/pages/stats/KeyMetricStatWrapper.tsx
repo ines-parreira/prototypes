@@ -1,5 +1,6 @@
+import React, { HTMLAttributes } from 'react'
+
 import classNames from 'classnames'
-import React, {HTMLAttributes} from 'react'
 
 import css from './KeyMetricStatWrapper.less'
 

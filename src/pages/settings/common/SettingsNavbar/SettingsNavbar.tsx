@@ -1,22 +1,22 @@
-import classnames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import _kebabCase from 'lodash/kebabCase'
 import React from 'react'
-import {useLocation} from 'react-router-dom'
+
+import classnames from 'classnames'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import _kebabCase from 'lodash/kebabCase'
+import { useLocation } from 'react-router-dom'
 
 import css from 'assets/css/navbar.less'
-
-import {ActiveContent, Navbar} from 'common/navigation'
-import {logEvent, SegmentEvent} from 'common/segment'
+import { ActiveContent, Navbar } from 'common/navigation'
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {buildPasswordAnd2FaText} from 'pages/settings/yourProfile/twoFactorAuthentication/utils'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {closePanels} from 'state/layout/actions'
-import {hasRole} from 'utils'
+import { buildPasswordAnd2FaText } from 'pages/settings/yourProfile/twoFactorAuthentication/utils'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { closePanels } from 'state/layout/actions'
+import { hasRole } from 'utils'
 
-import {NavbarConfig} from './config'
+import { NavbarConfig } from './config'
 import SettingsNavbarLink from './SettingsNavbarLink'
 
 const SettingsNavbar = () => {
@@ -28,7 +28,7 @@ const SettingsNavbar = () => {
 
     return (
         <Navbar activeContent={ActiveContent.Settings} title="Settings">
-            {NavbarConfig.map(({name, icon, links}, index) => {
+            {NavbarConfig.map(({ name, icon, links }, index) => {
                 const displayedLinks = links
                     .filter((link) => !link.isHidden)
                     .map(
@@ -46,7 +46,7 @@ const SettingsNavbar = () => {
                                     !hasRole(currentUser, requiredRole)) ||
                                 (requiredFeatureFlags &&
                                     !requiredFeatureFlags.every(
-                                        (flag) => featureFlags[flag]
+                                        (flag) => featureFlags[flag],
                                     ))
                             ) {
                                 return null
@@ -54,7 +54,7 @@ const SettingsNavbar = () => {
 
                             if (to === 'password-2fa') {
                                 computedText = buildPasswordAnd2FaText(
-                                    currentUser.get('has_password')
+                                    currentUser.get('has_password'),
                                 )
                             }
 
@@ -85,10 +85,10 @@ const SettingsNavbar = () => {
                                     key={to}
                                     className={classnames(
                                         css['link-wrapper'],
-                                        css.isNested
+                                        css.isNested,
                                     )}
                                     data-candu-id={`settings-link-${_kebabCase(
-                                        computedText
+                                        computedText,
                                     )}`}
                                 >
                                     <SettingsNavbarLink
@@ -103,7 +103,7 @@ const SettingsNavbar = () => {
                                                     title: text,
                                                     account_domain:
                                                         account.get('domain'),
-                                                }
+                                                },
                                             )
                                             dispatch(closePanels())
                                         }}
@@ -111,7 +111,7 @@ const SettingsNavbar = () => {
                                     {outerExtra}
                                 </div>
                             )
-                        }
+                        },
                     )
                     .filter((link) => link)
 
@@ -130,7 +130,7 @@ const SettingsNavbar = () => {
                             <i
                                 className={classnames(
                                     'material-icons',
-                                    css.icon
+                                    css.icon,
                                 )}
                             >
                                 {icon}

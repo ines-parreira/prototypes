@@ -1,2 +1,2 @@
-export {default} from './components/Widget'
-export type {WidgetProps} from './types'
+export { default } from './components/Widget'
+export type { WidgetProps } from './types'

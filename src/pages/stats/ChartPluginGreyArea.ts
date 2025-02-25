@@ -1,4 +1,4 @@
-import {Chart} from 'chart.js'
+import { Chart } from 'chart.js'
 
 export type GreyArea = {
     start: string
@@ -15,7 +15,7 @@ const GreyArea = {
             return
         const {
             ctx,
-            chartArea: {top, bottom, right, left},
+            chartArea: { top, bottom, right, left },
         } = chart
         const xScale = chart.scales['x']
         let startX = left
@@ -25,10 +25,10 @@ const GreyArea = {
             chart.config.options.plugins.greyArea?.end
         ) {
             let start = chart.data.labels.indexOf(
-                chart.config.options.plugins.greyArea?.start
+                chart.config.options.plugins.greyArea?.start,
             )
             let end = chart.data.labels.indexOf(
-                chart.config.options.plugins.greyArea?.end
+                chart.config.options.plugins.greyArea?.end,
             )
             if (start < 0 || end < 0) return
             if (start > end) {
@@ -46,7 +46,7 @@ const GreyArea = {
 
         const drawLine = (
             moveTo: [number, number],
-            lineTo: [number, number]
+            lineTo: [number, number],
         ) => {
             ctx.beginPath()
             ctx.moveTo(...moveTo)

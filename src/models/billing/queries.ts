@@ -1,6 +1,6 @@
-import {UseQueryOptions, useMutation, useQuery} from '@tanstack/react-query'
+import { useMutation, useQuery, UseQueryOptions } from '@tanstack/react-query'
 
-import {MutationOverrides} from '../../types/query'
+import { MutationOverrides } from '../../types/query'
 import {
     extendTrial,
     getBillingContact,
@@ -23,7 +23,7 @@ export const getBillingStateQuery = {
 export type UseGetBillingState = Awaited<ReturnType<typeof getBillingState>>
 
 export const useBillingState = (
-    overrides?: UseQueryOptions<UseGetBillingState>
+    overrides?: UseQueryOptions<UseGetBillingState>,
 ) => {
     return useQuery({
         ...getBillingStateQuery,
@@ -39,7 +39,7 @@ export const getCouponsForSalesQuery = {
 export type UseSalesCoupons = Awaited<ReturnType<typeof getCouponsForSales>>
 
 export const useSalesCoupons = (
-    overrides?: UseQueryOptions<UseSalesCoupons>
+    overrides?: UseQueryOptions<UseSalesCoupons>,
 ) => {
     return useQuery({
         ...getCouponsForSalesQuery,
@@ -48,7 +48,7 @@ export const useSalesCoupons = (
 }
 
 export const useExtendTrial = (
-    overrides?: MutationOverrides<typeof extendTrial>
+    overrides?: MutationOverrides<typeof extendTrial>,
 ) => {
     return useMutation({
         mutationFn: extendTrial,
@@ -57,7 +57,7 @@ export const useExtendTrial = (
 }
 
 export const useReactivateTrial = (
-    overrides?: MutationOverrides<typeof reactivateTrial>
+    overrides?: MutationOverrides<typeof reactivateTrial>,
 ) => {
     return useMutation({
         mutationFn: reactivateTrial,
@@ -66,7 +66,7 @@ export const useReactivateTrial = (
 }
 
 export const useBillingContact = (
-    overrides?: UseQueryOptions<Awaited<ReturnType<typeof getBillingContact>>>
+    overrides?: UseQueryOptions<Awaited<ReturnType<typeof getBillingContact>>>,
 ) =>
     useQuery({
         queryKey: billingKeys.contact(),
@@ -75,7 +75,7 @@ export const useBillingContact = (
     })
 
 export const useUpdateBillingContact = (
-    overrides?: MutationOverrides<typeof updateBillingContact>
+    overrides?: MutationOverrides<typeof updateBillingContact>,
 ) =>
     useMutation({
         mutationFn: (params) => updateBillingContact(...params),

@@ -1,5 +1,5 @@
 // Update a message (retry failed actions or sending, or force sending)
-import {TicketChannel} from '../../business/types/ticket'
+import { TicketChannel } from '../../business/types/ticket'
 
 export const UPDATE_TICKET_MESSAGE_START = 'UPDATE_TICKET_MESSAGE_START'
 export const UPDATE_TICKET_MESSAGE_SUCCESS = 'UPDATE_TICKET_MESSAGE_SUCCESS'
@@ -110,7 +110,7 @@ export const TICKET_CHANNEL_NAMES: Record<string, string> = Object.freeze({
     [TicketChannel.YotpoReview]: 'Yotpo Review',
 })
 
-export const EMPTY_SENDER = {name: '', address: ''}
+export const EMPTY_SENDER = { name: '', address: '' }
 
 // Chat-related
 export const SET_TYPING_ACTIVITY_SHOPPER = 'SET_TYPING_ACTIVITY_SHOPPER'

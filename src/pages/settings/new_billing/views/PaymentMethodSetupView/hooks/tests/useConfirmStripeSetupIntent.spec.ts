@@ -1,15 +1,15 @@
-import {useElements, useStripe} from '@stripe/react-stripe-js'
-import {waitFor} from '@testing-library/react'
-import {act} from '@testing-library/react-hooks'
+import { useElements, useStripe } from '@stripe/react-stripe-js'
+import { waitFor } from '@testing-library/react'
+import { act } from '@testing-library/react-hooks'
 import MockAdapter from 'axios-mock-adapter'
 
 import client from 'models/api/resources'
 import * as queries from 'models/billing/queries'
-import {renderHookWithStoreAndQueryClientProvider} from 'tests/renderHookWithStoreAndQueryClientProvider'
+import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
 import * as errorUtils from 'utils/errors'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
-import {useConfirmStripeSetupIntent} from '../useConfirmStripeSetupIntent'
+import { useConfirmStripeSetupIntent } from '../useConfirmStripeSetupIntent'
 
 jest.mock('@stripe/react-stripe-js')
 
@@ -58,8 +58,8 @@ describe('useConfirmStripeSetupIntent', () => {
             isLoading: false,
         } as any)
 
-        const {result} = renderHookWithStoreAndQueryClientProvider(
-            useConfirmStripeSetupIntent
+        const { result } = renderHookWithStoreAndQueryClientProvider(
+            useConfirmStripeSetupIntent,
         )
 
         act(() => {
@@ -85,8 +85,8 @@ describe('useConfirmStripeSetupIntent', () => {
     it('should reject if stripe is not initialized', async () => {
         assumeMock(useStripe).mockReturnValue(null)
 
-        const {result} = renderHookWithStoreAndQueryClientProvider(
-            useConfirmStripeSetupIntent
+        const { result } = renderHookWithStoreAndQueryClientProvider(
+            useConfirmStripeSetupIntent,
         )
 
         try {
@@ -101,8 +101,8 @@ describe('useConfirmStripeSetupIntent', () => {
     it('should reject if elements is not initialized', async () => {
         assumeMock(useElements).mockReturnValue(null)
 
-        const {result} = renderHookWithStoreAndQueryClientProvider(
-            useConfirmStripeSetupIntent
+        const { result } = renderHookWithStoreAndQueryClientProvider(
+            useConfirmStripeSetupIntent,
         )
 
         try {
@@ -125,8 +125,8 @@ describe('useConfirmStripeSetupIntent', () => {
             },
         })
 
-        const {result} = renderHookWithStoreAndQueryClientProvider(
-            useConfirmStripeSetupIntent
+        const { result } = renderHookWithStoreAndQueryClientProvider(
+            useConfirmStripeSetupIntent,
         )
 
         try {
@@ -149,8 +149,8 @@ describe('useConfirmStripeSetupIntent', () => {
             code: 'some_error',
         })
 
-        const {result} = renderHookWithStoreAndQueryClientProvider(
-            useConfirmStripeSetupIntent
+        const { result } = renderHookWithStoreAndQueryClientProvider(
+            useConfirmStripeSetupIntent,
         )
 
         try {
@@ -172,8 +172,8 @@ describe('useConfirmStripeSetupIntent', () => {
             message: 'Card error message',
         })
 
-        const {result, store} = renderHookWithStoreAndQueryClientProvider(
-            useConfirmStripeSetupIntent
+        const { result, store } = renderHookWithStoreAndQueryClientProvider(
+            useConfirmStripeSetupIntent,
         )
 
         try {
@@ -187,11 +187,11 @@ describe('useConfirmStripeSetupIntent', () => {
             })
         }
 
-        const notificationAction: {payload: {message: string}} =
+        const notificationAction: { payload: { message: string } } =
             store.getActions()[0]
 
         expect(notificationAction?.payload.message).toEqual(
-            'Card error message'
+            'Card error message',
         )
     })
 
@@ -201,8 +201,8 @@ describe('useConfirmStripeSetupIntent', () => {
             message: 'Invalid request error message',
         })
 
-        const {result, store} = renderHookWithStoreAndQueryClientProvider(
-            useConfirmStripeSetupIntent
+        const { result, store } = renderHookWithStoreAndQueryClientProvider(
+            useConfirmStripeSetupIntent,
         )
 
         try {
@@ -216,11 +216,11 @@ describe('useConfirmStripeSetupIntent', () => {
             })
         }
 
-        const notificationAction: {payload: {message: string}} =
+        const notificationAction: { payload: { message: string } } =
             store.getActions()[0]
 
         expect(notificationAction?.payload.message).toEqual(
-            'Something went wrong unexpectedly. Please try again later, and contact support if the issue persists.'
+            'Something went wrong unexpectedly. Please try again later, and contact support if the issue persists.',
         )
     })
 
@@ -233,8 +233,8 @@ describe('useConfirmStripeSetupIntent', () => {
             },
         })
 
-        const {result} = renderHookWithStoreAndQueryClientProvider(
-            useConfirmStripeSetupIntent
+        const { result } = renderHookWithStoreAndQueryClientProvider(
+            useConfirmStripeSetupIntent,
         )
 
         act(() => {

@@ -9,7 +9,7 @@ export const isValidSubdomain = (value: string): boolean =>
 
 export const getSubdomainValidationError = (
     subdomain: string,
-    isAvailable: boolean
+    isAvailable: boolean,
 ): string | null => {
     // If subdomain is empty
     if (isEmpty(subdomain)) return 'Subdomain cannot be empty'

@@ -1,18 +1,19 @@
-import _uniqueId from 'lodash/uniqueId'
-import React, {useCallback, useEffect, useState, useRef} from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 
-import {UpdateSubjectLinesProps} from 'models/contactForm/types'
+import _uniqueId from 'lodash/uniqueId'
+
+import { UpdateSubjectLinesProps } from 'models/contactForm/types'
 import Button from 'pages/common/components/button/Button'
 import CheckBox from 'pages/common/forms/CheckBox'
 
-import SubjectLine, {SubjectLineProps} from '../SubjectLine/SubjectLine'
-
+import SubjectLine, { SubjectLineProps } from '../SubjectLine/SubjectLine'
 import {
     LINE_HEIGHT,
-    VISIBLE_LINES,
-    MAX_SUBJECT_LINES,
     MAX_CHARACTERS,
+    MAX_SUBJECT_LINES,
+    VISIBLE_LINES,
 } from './constants'
+
 import css from './SubjectLines.less'
 
 type SubjectLinesProps = {
@@ -31,7 +32,7 @@ const SubjectLines = ({
     setIsDirty,
 }: SubjectLinesProps) => {
     const [subjectLinesWithId, setSubjectLinesWithId] = useState<
-        {id: string; value: string}[]
+        { id: string; value: string }[]
     >([])
     const [subjectLinesExpanded, setSubjectLinesExpanded] = useState(false)
     const lastSubjectLineRef = useRef<null | UpdateSubjectLinesProps>(null)
@@ -47,7 +48,7 @@ const SubjectLines = ({
                 subjectLines.options.map((option) => ({
                     id: _uniqueId('subject-line-'),
                     value: option,
-                }))
+                })),
             )
 
             lastSubjectLineRef.current = {
@@ -58,23 +59,23 @@ const SubjectLines = ({
     }, [subjectLines])
 
     const updateSubjectLinesWithId = useCallback(
-        (subjectLinesWithIds: {id: string; value: string}[]) => {
+        (subjectLinesWithIds: { id: string; value: string }[]) => {
             setSubjectLinesWithId(subjectLinesWithIds)
 
             lastSubjectLineRef.current = {
                 allow_other: subjectLines?.allow_other ?? true,
-                options: subjectLinesWithIds.map(({value}) => value),
+                options: subjectLinesWithIds.map(({ value }) => value),
             }
 
             updateSubjectLines(lastSubjectLineRef.current)
         },
-        [subjectLines, updateSubjectLines]
+        [subjectLines, updateSubjectLines],
     )
 
     const handleOnChange = (newValue: string, id: string) => {
         const subjectLines = [...subjectLinesWithId]
         const subjectLineIndex = subjectLines.findIndex(
-            (subjectLine) => subjectLine.id === id
+            (subjectLine) => subjectLine.id === id,
         )
 
         if (subjectLineIndex === -1 || newValue.length > MAX_CHARACTERS) {
@@ -90,7 +91,7 @@ const SubjectLines = ({
     const handleOnDelete = (id: string) => {
         const subjectLines = [...subjectLinesWithId]
         const subjectLineIndex = subjectLines.findIndex(
-            (subjectLine) => subjectLine.id === id
+            (subjectLine) => subjectLine.id === id,
         )
 
         if (subjectLineIndex === -1) {
@@ -106,7 +107,7 @@ const SubjectLines = ({
     const handleOnAdd = () => {
         updateSubjectLinesWithId([
             ...subjectLinesWithId,
-            {id: _uniqueId('subject-line-'), value: ''},
+            { id: _uniqueId('subject-line-'), value: '' },
         ])
         setSubjectLinesExpanded(true)
         setIsDirty(true)

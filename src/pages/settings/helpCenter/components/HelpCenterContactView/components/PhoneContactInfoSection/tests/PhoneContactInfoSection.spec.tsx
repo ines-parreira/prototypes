@@ -1,22 +1,23 @@
-import {render} from '@testing-library/react'
+import React, { FC } from 'react'
+
+import { render } from '@testing-library/react'
 import _keyBy from 'lodash/keyBy'
-import React, {FC} from 'react'
-import {Provider} from 'react-redux'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
-import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
-import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
-import {initialState as uiState} from 'state/ui/helpCenter/reducer'
+import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
+import { initialState as articlesState } from 'state/entities/helpCenter/articles/reducer'
+import { initialState as categoriesState } from 'state/entities/helpCenter/categories/reducer'
+import { initialState as uiState } from 'state/ui/helpCenter/reducer'
 
-import {RootState, StoreDispatch} from '../../../../../../../../state/types'
-import {getSingleHelpCenterResponseFixture} from '../../../../../fixtures/getHelpCentersResponse.fixture'
-import {getHelpCenterTranslationsResponseFixture} from '../../../../../fixtures/getHelpCenterTranslationsResponse.fixture'
-import {getLocalesResponseFixture} from '../../../../../fixtures/getLocalesResponse.fixtures'
+import { RootState, StoreDispatch } from '../../../../../../../../state/types'
+import { getSingleHelpCenterResponseFixture } from '../../../../../fixtures/getHelpCentersResponse.fixture'
+import { getHelpCenterTranslationsResponseFixture } from '../../../../../fixtures/getHelpCenterTranslationsResponse.fixture'
+import { getLocalesResponseFixture } from '../../../../../fixtures/getLocalesResponse.fixtures'
 import useCurrentHelpCenter from '../../../../../hooks/useCurrentHelpCenter'
-import {HelpCenterTranslationProvider} from '../../../../../providers/HelpCenterTranslation'
-import {useSupportedLocales} from '../../../../../providers/SupportedLocales'
+import { HelpCenterTranslationProvider } from '../../../../../providers/HelpCenterTranslation'
+import { useSupportedLocales } from '../../../../../providers/SupportedLocales'
 import PhoneContactInfoSection from '../PhoneContactInfoSection'
 
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
@@ -40,16 +41,16 @@ const defaultState: Partial<RootState> = {
             categories: categoriesState,
         },
     } as any,
-    ui: {helpCenter: {...uiState, currentId: 1}} as any,
+    ui: { helpCenter: { ...uiState, currentId: 1 } } as any,
 }
 
 const mockedUpdateHelpCenter = jest
     .fn()
-    .mockResolvedValue({data: getSingleHelpCenterResponseFixture})
+    .mockResolvedValue({ data: getSingleHelpCenterResponseFixture })
 
 const mockedGetHelpCenter = jest
     .fn()
-    .mockResolvedValue({data: getSingleHelpCenterResponseFixture})
+    .mockResolvedValue({ data: getSingleHelpCenterResponseFixture })
 
 const mockedUpdateHelpCenterTranslation = jest.fn()
 const mockedListHelpCenterTranslations = jest
@@ -57,9 +58,9 @@ const mockedListHelpCenterTranslations = jest
     .mockResolvedValue(getHelpCenterTranslationsResponseFixture)
 const mockedListGoogleFonts = jest.fn().mockResolvedValue({
     data: [
-        {family: 'Roboto', category: 'serif'},
-        {family: 'Adriana', category: 'serif'},
-        {family: 'Tambourin', category: 'serif'},
+        { family: 'Roboto', category: 'serif' },
+        { family: 'Adriana', category: 'serif' },
+        { family: 'Tambourin', category: 'serif' },
     ],
 })
 
@@ -90,13 +91,13 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
 
 jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
 ;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
-    getSingleHelpCenterResponseFixture
+    getSingleHelpCenterResponseFixture,
 )
 
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 ;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
 
-const DefaultProviders: FC = ({children}) => (
+const DefaultProviders: FC = ({ children }) => (
     <Provider store={mockedStore(defaultState)}>
         <HelpCenterTranslationProvider
             helpCenter={getSingleHelpCenterResponseFixture}
@@ -107,7 +108,7 @@ const DefaultProviders: FC = ({children}) => (
 )
 describe('<PhoneContactInfoSection />', () => {
     it('should render the component', () => {
-        const {container} = render(<PhoneContactInfoSection />, {
+        const { container } = render(<PhoneContactInfoSection />, {
             wrapper: DefaultProviders,
         })
 

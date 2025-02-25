@@ -1,20 +1,21 @@
+import React, { useContext } from 'react'
+
 import classnames from 'classnames'
-import {Map, fromJS} from 'immutable'
+import { fromJS, Map } from 'immutable'
 import _last from 'lodash/last'
-import React, {useContext} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {Integration, IntegrationType} from 'models/integration/types'
-import {Source, Template, WrapperTemplate} from 'models/widget/types'
+import { Integration, IntegrationType } from 'models/integration/types'
+import { Source, Template, WrapperTemplate } from 'models/widget/types'
 import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
 import {
     getWidgetId,
     getWidgetTitle,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
-import {AppContext} from 'providers/infobar/AppContext'
-import {EditionContext} from 'providers/infobar/EditionContext'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import { AppContext } from 'providers/infobar/AppContext'
+import { EditionContext } from 'providers/infobar/EditionContext'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import * as integrationsSelectors from 'state/integrations/selectors'
 import {
     removeEditedWidget,
@@ -28,13 +29,13 @@ import {
     STANDALONE_WIDGET_TYPE,
     WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
-import {WidgetType} from 'state/widgets/types'
-
-import {WidgetContext} from 'Widgets/contexts/WidgetContext'
-import {EXPAND_CONTAINER_MARKER} from 'Widgets/modules/Template/config/template'
+import { WidgetType } from 'state/widgets/types'
+import { WidgetContext } from 'Widgets/contexts/WidgetContext'
+import { EXPAND_CONTAINER_MARKER } from 'Widgets/modules/Template/config/template'
 import WidgetPanel from 'Widgets/modules/WidgetPanel'
 
 import WrapperEditActions from './views/WrapperEditActions'
+
 import css from './Wrapper.less'
 
 export const CUSTOMIZE_WIDGET_BUTTON_TEXT = 'Customize Widget'
@@ -53,10 +54,10 @@ type Props = {
     children: React.ReactNode
 }
 
-export default function Wrapper({template, source, children}: Props) {
+export default function Wrapper({ template, source, children }: Props) {
     const dispatch = useAppDispatch()
     const widget = useContext(WidgetContext)
-    const {isEditing} = useContext(EditionContext)
+    const { isEditing } = useContext(EditionContext)
 
     const absolutePath = template.absolutePath || []
     const templatePath = template.templatePath || ''
@@ -66,7 +67,7 @@ export default function Wrapper({template, source, children}: Props) {
     const integration = useIntegration(
         absolutePath,
         widgetType,
-        Number(integrationId)
+        Number(integrationId),
     )
 
     const widgetName = getWidgetTitle({
@@ -91,7 +92,7 @@ export default function Wrapper({template, source, children}: Props) {
                 }}
             >
                 <div
-                    {...{[EXPAND_CONTAINER_MARKER]: true}}
+                    {...{ [EXPAND_CONTAINER_MARKER]: true }}
                     className={classnames('draggable', css.widgetWrapper, {
                         [css.widgetWrapperEditing]: isEditing,
                     })}
@@ -114,13 +115,13 @@ export default function Wrapper({template, source, children}: Props) {
                                         dispatch(
                                             removeEditedWidget(
                                                 templatePath,
-                                                absolutePath
-                                            )
+                                                absolutePath,
+                                            ),
                                         )
                                     }}
                                     initialData={
                                         CUSTOMIZABLE_WIDGET_TYPES.includes(
-                                            widgetType
+                                            widgetType,
                                         )
                                             ? {
                                                   color:
@@ -131,20 +132,20 @@ export default function Wrapper({template, source, children}: Props) {
                                     }
                                     onEditStart={() => {
                                         dispatch(
-                                            startWidgetEdition(templatePath)
+                                            startWidgetEdition(templatePath),
                                         )
                                     }}
                                     onEditCancel={() => {
                                         dispatch(stopWidgetEdition())
                                     }}
-                                    onEditSubmit={({color}) => {
+                                    onEditSubmit={({ color }) => {
                                         dispatch(
                                             updateEditedWidget({
                                                 type: 'wrapper',
                                                 meta: {
                                                     color,
                                                 },
-                                            })
+                                            }),
                                         )
                                         dispatch(stopWidgetEdition())
                                     }}
@@ -175,7 +176,7 @@ export default function Wrapper({template, source, children}: Props) {
 export function useIntegration(
     absolutePath: Template['absolutePath'],
     widgetType: WidgetType,
-    integration_id: number
+    integration_id: number,
 ) {
     const lastAbsolutePath = _last(absolutePath) || ''
     let integrationId = null
@@ -190,11 +191,11 @@ export function useIntegration(
     }
 
     const integration = useAppSelector(
-        integrationsSelectors.getIntegrationById(integrationId)
+        integrationsSelectors.getIntegrationById(integrationId),
     )
 
     const integrations = useAppSelector(
-        integrationsSelectors.getIntegrationsByType<Integration>(widgetType)
+        integrationsSelectors.getIntegrationsByType<Integration>(widgetType),
     )
 
     if (isNaN(integrationId)) {

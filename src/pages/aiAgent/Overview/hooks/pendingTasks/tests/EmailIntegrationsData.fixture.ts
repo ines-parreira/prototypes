@@ -1,4 +1,4 @@
-import {type EmailIntegrationsData} from '../useFetchEmailIntegrationsData'
+import { type EmailIntegrationsData } from '../useFetchEmailIntegrationsData'
 
 type AllKeys = keyof EmailIntegrationsDataFixture
 type ConfiguredEmailIntegrationsData<
@@ -32,7 +32,7 @@ export class EmailIntegrationsDataFixture {
         return this as EmailIntegrationsDataFullyConfigured
     }
 
-    withEmailIntegration({isDefault = false, isVerified = false} = {}) {
+    withEmailIntegration({ isDefault = false, isVerified = false } = {}) {
         const id = this.internalData.emailIntegrationId++
         this.emailIntegrationsData.push({
             id,

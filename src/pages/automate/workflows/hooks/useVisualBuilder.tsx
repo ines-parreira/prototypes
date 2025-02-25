@@ -1,5 +1,3 @@
-import _noop from 'lodash/noop'
-
 import React, {
     createContext,
     Dispatch,
@@ -8,7 +6,9 @@ import React, {
     useMemo,
 } from 'react'
 
-import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
+import _noop from 'lodash/noop'
+
+import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 
 import {
@@ -23,12 +23,12 @@ import {
     WorkflowVariable,
     WorkflowVariableList,
 } from '../models/variables.types'
-import {walkVisualBuilderGraph} from '../models/visualBuilderGraph.model'
+import { walkVisualBuilderGraph } from '../models/visualBuilderGraph.model'
 import {
     VisualBuilderGraph,
     VisualBuilderTriggerNode,
 } from '../models/visualBuilderGraph.types'
-import {VisualBuilderGraphAction} from './useVisualBuilderGraphReducer'
+import { VisualBuilderGraphAction } from './useVisualBuilderGraphReducer'
 
 export type VisualBuilderContextType<
     T extends VisualBuilderTriggerNode = VisualBuilderTriggerNode,
@@ -67,13 +67,13 @@ export const withVisualBuilderContext =
             isNew: boolean
         },
     >(
-        Component: React.FC<WrappedProps>
+        Component: React.FC<WrappedProps>,
     ) =>
     (props: WrappedProps) => {
         const contextValue = useVisualBuilder(
             props.visualBuilderGraph,
             props.dispatch,
-            props.isNew
+            props.isNew,
         )
 
         return (
@@ -89,22 +89,22 @@ export function useVisualBuilder<
     visualBuilderGraph: VisualBuilderGraph<T>,
     dispatch: Dispatch<VisualBuilderGraphAction>,
     isNew: boolean,
-    availableIntegrations: AvailableIntegrations = []
+    availableIntegrations: AvailableIntegrations = [],
 ): VisualBuilderContextType<T> {
     const initialVisualBuilderGraph = useMemo(
         () => visualBuilderGraph,
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [visualBuilderGraph.internal_id]
+        [visualBuilderGraph.internal_id],
     )
 
     const triggerNode = visualBuilderGraph.nodes[0]
-    const {data: steps = []} = useGetWorkflowConfigurationTemplates(
+    const { data: steps = [] } = useGetWorkflowConfigurationTemplates(
         {
             triggers: ['reusable-llm-prompt'],
         },
-        {enabled: triggerNode.type === 'llm_prompt_trigger'}
+        { enabled: triggerNode.type === 'llm_prompt_trigger' },
     )
-    const {apps} = useApps()
+    const { apps } = useApps()
 
     const getVariableListForNode = useCallback(
         (nodeId: string) => {
@@ -113,10 +113,10 @@ export function useVisualBuilder<
                 nodeId,
                 steps,
                 apps,
-                availableIntegrations
+                availableIntegrations,
             )
         },
-        [visualBuilderGraph, steps, apps, availableIntegrations]
+        [visualBuilderGraph, steps, apps, availableIntegrations],
     )
 
     const getVariableListInChildren = useCallback(
@@ -131,7 +131,7 @@ export function useVisualBuilder<
                 visualBuilderGraph,
                 node,
                 steps,
-                apps
+                apps,
             )
 
             if (!nodeVariable) {
@@ -143,7 +143,7 @@ export function useVisualBuilder<
             walkVisualBuilderGraph(visualBuilderGraph, nodeId, (childNode) => {
                 const variables = extractVariablesFromNode(
                     childNode,
-                    visualBuilderGraph.edges
+                    visualBuilderGraph.edges,
                 )
 
                 if (variables.length === 0) return
@@ -157,14 +157,14 @@ export function useVisualBuilder<
                             if ('value' in v && variables.includes(v.value)) {
                                 return v
                             }
-                        }
-                    )
+                        },
+                    ),
                 )
             })
 
             return availableVariables
         },
-        [visualBuilderGraph, steps, apps]
+        [visualBuilderGraph, steps, apps],
     )
 
     const checkNodeHasVariablesUsedInChildren = useCallback(
@@ -179,7 +179,7 @@ export function useVisualBuilder<
                 visualBuilderGraph,
                 node,
                 steps,
-                apps
+                apps,
             )
 
             if (!nodeVariable) {
@@ -208,14 +208,14 @@ export function useVisualBuilder<
                             if ('value' in v && variables.includes(v.value)) {
                                 return v
                             }
-                        }
-                    )
+                        },
+                    ),
                 )
             })
 
             return found
         },
-        [visualBuilderGraph, steps, apps]
+        [visualBuilderGraph, steps, apps],
     )
 
     const checkNewVisualBuilderNode = useCallback(
@@ -223,11 +223,11 @@ export function useVisualBuilder<
             return (
                 isNew ||
                 !initialVisualBuilderGraph.nodes.some(
-                    (node) => node.id === nodeId
+                    (node) => node.id === nodeId,
                 )
             )
         },
-        [isNew, initialVisualBuilderGraph]
+        [isNew, initialVisualBuilderGraph],
     )
 
     return useMemo<VisualBuilderContextType<T>>(
@@ -250,12 +250,12 @@ export function useVisualBuilder<
             getVariableListForNode,
             initialVisualBuilderGraph,
             isNew,
-        ]
+        ],
     )
 }
 
 export function createVisualBuilderContextForPreview(
-    visualBuilderGraph: VisualBuilderGraph
+    visualBuilderGraph: VisualBuilderGraph,
 ): VisualBuilderContextType {
     return {
         visualBuilderGraph,

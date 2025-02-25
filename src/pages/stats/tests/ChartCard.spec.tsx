@@ -1,9 +1,10 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
+import { render, screen } from '@testing-library/react'
+
 import ChartCard from 'pages/stats/ChartCard'
-import {ChartsActionMenu} from 'pages/stats/custom-reports/ChartsActionMenu/ChartsActionMenu'
-import {assumeMock} from 'utils/testing'
+import { ChartsActionMenu } from 'pages/stats/custom-reports/ChartsActionMenu/ChartsActionMenu'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('pages/stats/custom-reports/ChartsActionMenu/ChartsActionMenu')
 const ChartsActionMenuMock = assumeMock(ChartsActionMenu)
@@ -17,9 +18,9 @@ describe('<ChartCard />', () => {
         const title = 'Metric title'
 
         render(
-            <ChartCard hint={{title: 'metric hint'}} title={title}>
+            <ChartCard hint={{ title: 'metric hint' }} title={title}>
                 Metric
-            </ChartCard>
+            </ChartCard>,
         )
 
         expect(screen.getByText(title)).toBeInTheDocument()
@@ -32,12 +33,12 @@ describe('<ChartCard />', () => {
 
         render(
             <ChartCard
-                hint={{title: 'metric hint'}}
+                hint={{ title: 'metric hint' }}
                 title={title}
                 chartId={chartId}
             >
                 Metric
-            </ChartCard>
+            </ChartCard>,
         )
 
         expect(screen.getByText(title)).toBeInTheDocument()

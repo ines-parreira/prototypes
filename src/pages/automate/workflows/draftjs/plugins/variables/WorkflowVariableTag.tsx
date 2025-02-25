@@ -1,22 +1,23 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
 import React, {
     MouseEvent,
-    useLayoutEffect,
-    useState,
     ReactNode,
     useCallback,
+    useLayoutEffect,
     useMemo,
     useRef,
+    useState,
 } from 'react'
 
-import useId from 'hooks/useId'
+import classNames from 'classnames'
 
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import useId from 'hooks/useId'
 import {
     extractVariablesFromText,
     parseWorkflowVariable,
 } from 'pages/automate/workflows/models/variables.model'
-import {useToolbarContext} from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
+import { useToolbarContext } from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
 
 import css from './WorkflowVariableTag.less'
 
@@ -33,7 +34,7 @@ export default function WorkflowVariableTag({
     onClick,
     children,
 }: WorkflowVariableTagProps) {
-    const {workflowVariables} = useToolbarContext()
+    const { workflowVariables } = useToolbarContext()
     const contentRef = useRef<HTMLSpanElement>(null)
     const randomId = useId()
     const wrapperId = `workflow-variable-tag-${randomId}`
@@ -44,7 +45,7 @@ export default function WorkflowVariableTag({
         if (contentRef.current) {
             setIsTextOverflow(
                 contentRef.current?.offsetWidth <
-                    contentRef.current?.scrollWidth
+                    contentRef.current?.scrollWidth,
             )
         }
     }, [])
@@ -53,16 +54,16 @@ export default function WorkflowVariableTag({
         () =>
             parseWorkflowVariable(
                 extractVariablesFromText(value)?.[0]?.value ?? '',
-                workflowVariables || []
+                workflowVariables || [],
             ),
-        [value, workflowVariables]
+        [value, workflowVariables],
     )
 
     const handleClick = useCallback(
         (event: MouseEvent<HTMLDivElement>) => {
             onClick?.(event.currentTarget)
         },
-        [onClick]
+        [onClick],
     )
     const variableName = variable?.name ?? 'Invalid variable'
 

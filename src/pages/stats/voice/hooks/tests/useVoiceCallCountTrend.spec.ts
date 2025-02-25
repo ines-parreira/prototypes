@@ -1,17 +1,17 @@
 import moment from 'moment/moment'
 
-import {fetchMetricTrend} from 'hooks/reporting/useMetricTrend'
-import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
-import {voiceCallCountQueryFactory} from 'models/reporting/queryFactories/voice/voiceCall'
-import {StatsFilters} from 'models/stat/types'
+import { fetchMetricTrend } from 'hooks/reporting/useMetricTrend'
+import { VoiceCallSegment } from 'models/reporting/cubes/VoiceCallCube'
+import { voiceCallCountQueryFactory } from 'models/reporting/queryFactories/voice/voiceCall'
+import { StatsFilters } from 'models/stat/types'
 import {
     fetchVoiceCallCountInboundTrend,
     fetchVoiceCallCountMissedTrend,
     fetchVoiceCallCountOutboundTrend,
     fetchVoiceCallCountTrend,
 } from 'pages/stats/voice/hooks/useVoiceCallCountTrend'
-import {formatReportingQueryDate, getPreviousPeriod} from 'utils/reporting'
-import {assumeMock} from 'utils/testing'
+import { formatReportingQueryDate, getPreviousPeriod } from 'utils/reporting'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/useMetricTrend')
 const fetchMetricTrendMock = assumeMock(fetchMetricTrend)
@@ -46,7 +46,7 @@ describe('VoiceCallCountTrend', () => {
         },
     ])(
         'should use voiceCallCountQueryFactory with specific segment ($segment)',
-        async ({fetch, segment}) => {
+        async ({ fetch, segment }) => {
             await fetch(statsFilters, userTimezone)
 
             expect(fetchMetricTrendMock).toHaveBeenCalledWith(
@@ -57,9 +57,9 @@ describe('VoiceCallCountTrend', () => {
                         period: getPreviousPeriod(statsFilters.period),
                     },
                     userTimezone,
-                    segment
-                )
+                    segment,
+                ),
             )
-        }
+        },
     )
 })

@@ -1,14 +1,14 @@
-import {UseQueryResult} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
+import { UseQueryResult } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {usePostReporting} from 'models/reporting/queries'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import { usePostReporting } from 'models/reporting/queries'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import {
     OrderConversionDimension,
     OrderConversionMeasure,
 } from 'pages/stats/convert/clients/constants'
-import {getDataFromResult} from 'pages/stats/convert/services/CampaignMetricsHelper'
-import {assumeMock} from 'utils/testing'
+import { getDataFromResult } from 'pages/stats/convert/services/CampaignMetricsHelper'
+import { assumeMock } from 'utils/testing'
 
 import useGetCampaignRevenueTimeSeries from '../useGetCampaignRevenueTimeSeries'
 
@@ -58,8 +58,8 @@ describe('useGetCampaignRevenueTimeSeries', () => {
             isError: true,
         } as UseQueryResult)
 
-        const {result} = renderHook(() =>
-            useGetCampaignRevenueTimeSeries(...hookArgs)
+        const { result } = renderHook(() =>
+            useGetCampaignRevenueTimeSeries(...hookArgs),
         )
 
         expect(result.current.isError).toBe(true)
@@ -69,8 +69,8 @@ describe('useGetCampaignRevenueTimeSeries', () => {
         const args: typeof hookArgs = [...hookArgs]
         args[1] = null
 
-        const {result} = renderHook(() =>
-            useGetCampaignRevenueTimeSeries(...args)
+        const { result } = renderHook(() =>
+            useGetCampaignRevenueTimeSeries(...args),
         )
 
         usePostReportingMock.mock.calls.map((call) => {
@@ -90,8 +90,8 @@ describe('useGetCampaignRevenueTimeSeries', () => {
             data: campaignRevenueData,
         } as UseQueryResult)
 
-        const {result} = renderHook(() =>
-            useGetCampaignRevenueTimeSeries(...hookArgs)
+        const { result } = renderHook(() =>
+            useGetCampaignRevenueTimeSeries(...hookArgs),
         )
 
         expect(usePostReportingMock).toBeCalledWith(
@@ -133,14 +133,14 @@ describe('useGetCampaignRevenueTimeSeries', () => {
                     timezone: 'UTC',
                 }),
             ]),
-            expect.objectContaining({enabled: true})
+            expect.objectContaining({ enabled: true }),
         )
         // verify select function is passed
         expect(usePostReportingMock).toHaveBeenCalledWith(
             expect.anything(),
             expect.objectContaining({
                 select: getDataFromResult,
-            })
+            }),
         )
         expect(result.current).toEqual({
             data: [

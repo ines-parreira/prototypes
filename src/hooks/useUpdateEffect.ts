@@ -1,10 +1,10 @@
-import {DependencyList, EffectCallback, useEffect} from 'react'
+import { DependencyList, EffectCallback, useEffect } from 'react'
 
 import useIsFirstRender from './useIsFirstRender'
 
 export default function useUpdateEffect(
     effect: EffectCallback,
-    deps?: DependencyList
+    deps?: DependencyList,
 ) {
     const isFirst = useIsFirstRender()
 

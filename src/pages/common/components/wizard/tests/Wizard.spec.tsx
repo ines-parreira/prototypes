@@ -1,9 +1,10 @@
-import {render} from '@testing-library/react'
-import React, {useContext} from 'react'
+import React, { useContext } from 'react'
+
+import { render } from '@testing-library/react'
 
 import useEffectOnce from 'hooks/useEffectOnce'
 
-import Wizard, {WizardContext} from '../Wizard'
+import Wizard, { WizardContext } from '../Wizard'
 
 describe('<Wizard />', () => {
     const defaultProps = {
@@ -26,19 +27,19 @@ describe('<Wizard />', () => {
     }
 
     it('should accept a starting step', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Wizard {...defaultProps}>
                 <WizardContext.Consumer>
                     {(context) => context && context.activeStep}
                 </WizardContext.Consumer>
-            </Wizard>
+            </Wizard>,
         )
 
         expect(getByText(/bar/)).toBeTruthy()
     })
 
     it('should provide next and previous steps', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Wizard {...defaultProps}>
                 <WizardContext.Consumer>
                     {(context) => {
@@ -51,17 +52,17 @@ describe('<Wizard />', () => {
                         } nextStep:${context.nextStep || ''}`
                     }}
                 </WizardContext.Consumer>
-            </Wizard>
+            </Wizard>,
         )
 
         expect(getByText(/previousStep:foo nextStep:baz/)).toBeTruthy()
     })
 
     it('should set an active step', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Wizard {...defaultProps}>
                 <MockSetActiveStepComponent />
-            </Wizard>
+            </Wizard>,
         )
 
         expect(getByText(/foo/)).toBeTruthy()
@@ -72,8 +73,8 @@ describe('<Wizard />', () => {
             render(
                 <Wizard {...defaultProps} steps={['foo']}>
                     Foo
-                </Wizard>
-            )
+                </Wizard>,
+            ),
         ).toThrow()
     })
 
@@ -82,53 +83,53 @@ describe('<Wizard />', () => {
     })
 
     it('should keep the active step when steps change but includes active step', () => {
-        const {getByText, rerender} = render(
+        const { getByText, rerender } = render(
             <Wizard {...defaultProps}>
                 <WizardContext.Consumer>
                     {(context) => context && context.activeStep}
                 </WizardContext.Consumer>
-            </Wizard>
+            </Wizard>,
         )
         rerender(
             <Wizard {...defaultProps} steps={['foo', 'bar']}>
                 <WizardContext.Consumer>
                     {(context) => context && context.activeStep}
                 </WizardContext.Consumer>
-            </Wizard>
+            </Wizard>,
         )
 
         expect(getByText(/bar/)).toBeTruthy()
     })
 
     it('should fallback to the startAt step when steps change and include startAt but not the active step', () => {
-        const {getByText, rerender} = render(
+        const { getByText, rerender } = render(
             <Wizard {...defaultProps}>
                 <MockSetActiveStepComponent />
-            </Wizard>
+            </Wizard>,
         )
         rerender(
             <Wizard {...defaultProps} steps={['bar']}>
                 <WizardContext.Consumer>
                     {(context) => context && context.activeStep}
                 </WizardContext.Consumer>
-            </Wizard>
+            </Wizard>,
         )
 
         expect(getByText(/bar/)).toBeTruthy()
     })
 
     it("should fallback to the first available step when steps change and doesn't include startAt nor the active step", () => {
-        const {getByText, rerender} = render(
+        const { getByText, rerender } = render(
             <Wizard {...defaultProps}>
                 <MockSetActiveStepComponent />
-            </Wizard>
+            </Wizard>,
         )
         rerender(
             <Wizard {...defaultProps} steps={['baz']}>
                 <WizardContext.Consumer>
                     {(context) => context && context.activeStep}
                 </WizardContext.Consumer>
-            </Wizard>
+            </Wizard>,
         )
 
         expect(getByText(/baz/)).toBeTruthy()

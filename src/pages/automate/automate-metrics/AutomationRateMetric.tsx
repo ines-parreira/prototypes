@@ -1,16 +1,15 @@
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
 import TrendBadge from 'pages/stats/common/components/TrendBadge'
-import {formatMetricValue} from 'pages/stats/common/utils'
+import { formatMetricValue } from 'pages/stats/common/utils'
 import MetricCard from 'pages/stats/MetricCard'
 import PerformanceTip from 'pages/stats/PerformanceTip'
+import { TooltipData } from 'pages/stats/types'
 
-import {TooltipData} from 'pages/stats/types'
-
-import {AUTOMATION_RATE_FIXED_STATS, AUTOMATION_RATE_LABEL} from './constants'
-import {AutomateMetricProps} from './types'
-import {getTrendProps, toPercentage} from './utils'
+import { AUTOMATION_RATE_FIXED_STATS, AUTOMATION_RATE_LABEL } from './constants'
+import { AutomateMetricProps } from './types'
+import { getTrendProps, toPercentage } from './utils'
 
 export const AUTOMATION_RATE_TOOLTIP: TooltipData = {
     title: 'Automated interactions as a percent of all customer interactions.',
@@ -46,10 +45,10 @@ export const AutomationRateMetric = ({
                 showTips && (
                     <PerformanceTip
                         topTen={toPercentage(
-                            AUTOMATION_RATE_FIXED_STATS.top10P
+                            AUTOMATION_RATE_FIXED_STATS.top10P,
                         )}
                         avgMerchant={toPercentage(
-                            AUTOMATION_RATE_FIXED_STATS.avg
+                            AUTOMATION_RATE_FIXED_STATS.avg,
                         )}
                         type={automationRateSentiment}
                         canduId="rate"

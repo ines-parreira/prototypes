@@ -1,11 +1,11 @@
-import {Cubes} from 'models/reporting/cubes'
+import { Cubes } from 'models/reporting/cubes'
 import {
     fetchPostReporting,
     usePostReporting,
     UsePostReportingQueryData,
 } from 'models/reporting/queries'
-import {ReportingQuery} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import { ReportingQuery } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
 
 export type MetricTrend = {
     isFetching: boolean
@@ -19,7 +19,7 @@ export type MetricTrend = {
 export type MetricTrendHook = (
     statsFilters: StatsFilters,
     timezone: string,
-    enabled?: boolean
+    enabled?: boolean,
 ) => MetricTrend
 
 export type MetricTrendFetch = (
@@ -27,7 +27,7 @@ export type MetricTrendFetch = (
     timezone: string,
     isAutomateNonFilteredDenominatorInAutomationRate: boolean | undefined,
     aiAgentUserId: string | undefined,
-    costSavedPerInteraction: number
+    costSavedPerInteraction: number,
 ) => Promise<MetricTrend>
 
 export type QueryReturnType<Measure extends Cubes['measures']> = [
@@ -36,7 +36,7 @@ export type QueryReturnType<Measure extends Cubes['measures']> = [
 
 export const selectMeasure = <Measure extends Cubes['measures']>(
     measure: Measure,
-    data: UsePostReportingQueryData<QueryReturnType<Measure>>
+    data: UsePostReportingQueryData<QueryReturnType<Measure>>,
 ) => {
     const dataMeasure = data.data.data?.[0]?.[measure] || null
     return dataMeasure !== null ? parseFloat(dataMeasure) : null
@@ -49,7 +49,7 @@ const getSelectMeasure =
 
 export async function fetchMetricTrend<TCube extends Cubes>(
     currentPeriodQuery: ReportingQuery<TCube>,
-    prevPeriodQuery: ReportingQuery<TCube>
+    prevPeriodQuery: ReportingQuery<TCube>,
 ): Promise<MetricTrend> {
     const currentPeriodMetric = fetchPostReporting<
         QueryReturnType<TCube['measures']>,
@@ -90,7 +90,7 @@ export async function fetchMetricTrend<TCube extends Cubes>(
 
 export default function useMetricTrend<TCube extends Cubes>(
     currentPeriodQuery: ReportingQuery<TCube>,
-    prevPeriodQuery: ReportingQuery<TCube>
+    prevPeriodQuery: ReportingQuery<TCube>,
 ): MetricTrend {
     const currentPeriodMetric = usePostReporting<
         QueryReturnType<TCube['measures']>,

@@ -1,4 +1,4 @@
-export type WindowWithACE = Window & typeof globalThis & {ace: any}
+export type WindowWithACE = Window & typeof globalThis & { ace: any }
 
 export type EditorProps = {
     editor: any

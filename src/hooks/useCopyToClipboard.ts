@@ -1,5 +1,6 @@
+import { useCallback, useState } from 'react'
+
 import writeText from 'copy-to-clipboard'
-import {useCallback, useState} from 'react'
 
 import useIsMounted from './useIsMounted'
 
@@ -29,7 +30,7 @@ export default function useCopyToClipboard(): [
                 // only strings and numbers casted to strings can be copied to clipboard
                 if (typeof value !== 'string' && typeof value !== 'number') {
                     const error = new Error(
-                        `Cannot copy typeof ${typeof value} to clipboard, must be a string`
+                        `Cannot copy typeof ${typeof value} to clipboard, must be a string`,
                     )
                     if (process.env.NODE_ENV === 'development')
                         console.error(error)
@@ -42,7 +43,7 @@ export default function useCopyToClipboard(): [
                 }
                 if (value === '') {
                     const error = new Error(
-                        `Cannot copy empty string to clipboard.`
+                        `Cannot copy empty string to clipboard.`,
                     )
                     if (process.env.NODE_ENV === 'development')
                         console.error(error)
@@ -68,7 +69,7 @@ export default function useCopyToClipboard(): [
                 })
             }
         },
-        [isMounted]
+        [isMounted],
     )
 
     return [state, copyToClipboard]

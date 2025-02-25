@@ -1,23 +1,24 @@
+import React, { Component, ContextType, RefObject } from 'react'
+
 import classnames from 'classnames'
-import {fromJS, Map, List} from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 import hash from 'object-hash'
-import React, {Component, ContextType, RefObject} from 'react'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 
-import {getDraftOrderTotalLineItemsPrice} from 'business/shopify/lineItem'
-import {formatPrice} from 'business/shopify/number'
+import { getDraftOrderTotalLineItemsPrice } from 'business/shopify/lineItem'
+import { formatPrice } from 'business/shopify/number'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import {onPayloadChange} from 'state/infobarActions/shopify/createOrder/actions'
-import {getCreateOrderState} from 'state/infobarActions/shopify/createOrder/selectors'
-import {RootState} from 'state/types'
-
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
+import { onPayloadChange } from 'state/infobarActions/shopify/createOrder/actions'
+import { getCreateOrderState } from 'state/infobarActions/shopify/createOrder/selectors'
+import { RootState } from 'state/types'
 import DiscountPopover from 'Widgets/modules/Shopify/modules/DiscountPopover'
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
+import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
-import css from './OrderTotals.less'
 import ShippingPopover from './ShippingPopover'
 import TaxesPopover from './TaxesPopover'
+
+import css from './OrderTotals.less'
 
 type Props = {
     editable: boolean
@@ -34,22 +35,22 @@ export class OrderTotalsComponent extends Component<Props> {
     static contextType = IntegrationContext
     context!: ContextType<typeof IntegrationContext>
     _onAppliedDiscountChange = (appliedDiscount: Map<any, any> | null) => {
-        const {onPayloadChange, payload} = this.props
-        const {integrationId} = this.context
+        const { onPayloadChange, payload } = this.props
+        const { integrationId } = this.context
         const newPayload = payload.set('applied_discount', appliedDiscount)
         onPayloadChange(integrationId!, newPayload)
     }
 
     _onShippingLineChange = (shippingLine: Map<any, any> | null) => {
-        const {onPayloadChange, payload} = this.props
-        const {integrationId} = this.context
+        const { onPayloadChange, payload } = this.props
+        const { integrationId } = this.context
         const newPayload = payload.set('shipping_line', shippingLine)
         onPayloadChange(integrationId!, newPayload)
     }
 
     _onTaxExemptChange = (taxExempt: boolean) => {
-        const {onPayloadChange, payload} = this.props
-        const {integrationId} = this.context
+        const { onPayloadChange, payload } = this.props
+        const { integrationId } = this.context
         const newPayload = payload.set('tax_exempt', taxExempt)
         onPayloadChange(integrationId!, newPayload)
     }
@@ -92,7 +93,7 @@ export class OrderTotalsComponent extends Component<Props> {
                                 'amountV2',
                                 'amount',
                             ]),
-                            currencyCode
+                            currencyCode,
                         )}
                         currencyCode={currencyCode}
                         negative
@@ -105,7 +106,7 @@ export class OrderTotalsComponent extends Component<Props> {
                         renderIfZero
                         amount={formatPrice(
                             calculatedDraftOrder.get('subtotalPrice'),
-                            currencyCode
+                            currencyCode,
                         )}
                         currencyCode={currencyCode}
                     />
@@ -120,7 +121,7 @@ export class OrderTotalsComponent extends Component<Props> {
                         value={payload.get('shipping_line')}
                         availableShippingRates={calculatedDraftOrder.get(
                             'availableShippingRates',
-                            []
+                            [],
                         )}
                         onChange={this._onShippingLineChange}
                         container={container}
@@ -136,7 +137,7 @@ export class OrderTotalsComponent extends Component<Props> {
                         renderIfZero={!!payload.get('shipping_line')}
                         amount={formatPrice(
                             calculatedDraftOrder.get('totalShippingPrice'),
-                            currencyCode
+                            currencyCode,
                         )}
                         currencyCode={currencyCode}
                     />
@@ -182,7 +183,7 @@ export class OrderTotalsComponent extends Component<Props> {
                                         'presentmentMoney',
                                         'amount',
                                     ]),
-                                    currencyCode
+                                    currencyCode,
                                 )}
                                 currencyCode={currencyCode}
                             />
@@ -192,7 +193,7 @@ export class OrderTotalsComponent extends Component<Props> {
 
                 <dt className="col-9 mb-2">Total</dt>
                 <dd className="col-3 mb-2">
-                    <strong className={classnames({'text-muted': loading})}>
+                    <strong className={classnames({ 'text-muted': loading })}>
                         <MoneyAmount
                             renderIfZero
                             amount={calculatedDraftOrder.get('totalPrice')}
@@ -218,5 +219,5 @@ const mapDispatchToProps = {
 
 export default connect(
     mapStateToProps,
-    mapDispatchToProps
+    mapDispatchToProps,
 )(OrderTotalsComponent)

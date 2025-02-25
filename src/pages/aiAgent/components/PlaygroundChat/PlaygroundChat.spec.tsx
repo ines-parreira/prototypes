@@ -1,12 +1,13 @@
-import {render, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
 
-import {AiAgentNotificationType} from 'automate/notifications/types'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useSearchParam} from 'hooks/useSearchParam'
-import {useSearchCustomer} from 'models/aiAgent/queries'
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { mockFlags } from 'jest-launchdarkly-mock'
+
+import { AiAgentNotificationType } from 'automate/notifications/types'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useSearchParam } from 'hooks/useSearchParam'
+import { useSearchCustomer } from 'models/aiAgent/queries'
 import {
     AiAgentOnboardingState,
     OnboardingNotificationState,
@@ -16,19 +17,18 @@ import {
     PlaygroundPromptType,
     TicketOutcome,
 } from 'models/aiAgentPlayground/types'
-
-import {getOnboardingNotificationStateFixture} from 'pages/aiAgent/fixtures/onboardingNotificationState.fixture'
+import { getOnboardingNotificationStateFixture } from 'pages/aiAgent/fixtures/onboardingNotificationState.fixture'
 
 import {
     CustomerHttpIntegrationDataMock,
     DEFAULT_PLAYGROUND_CUSTOMER,
 } from '../../constants'
-import {getAccountConfigurationWithHttpIntegrationFixture} from '../../fixtures/accountConfiguration.fixture'
-import {getStoreConfigurationFixture} from '../../fixtures/storeConfiguration.fixtures'
-import {useAiAgentOnboardingNotification} from '../../hooks/useAiAgentOnboardingNotification'
-import {usePlaygroundForm} from '../../hooks/usePlaygroundForm'
-import {usePlaygroundMessages} from '../../hooks/usePlaygroundMessages'
-import {PlaygroundChat} from './PlaygroundChat'
+import { getAccountConfigurationWithHttpIntegrationFixture } from '../../fixtures/accountConfiguration.fixture'
+import { getStoreConfigurationFixture } from '../../fixtures/storeConfiguration.fixtures'
+import { useAiAgentOnboardingNotification } from '../../hooks/useAiAgentOnboardingNotification'
+import { usePlaygroundForm } from '../../hooks/usePlaygroundForm'
+import { usePlaygroundMessages } from '../../hooks/usePlaygroundMessages'
+import { PlaygroundChat } from './PlaygroundChat'
 
 jest.mock('../../hooks/usePlaygroundMessages', () => ({
     usePlaygroundMessages: jest.fn(),
@@ -48,7 +48,7 @@ jest.mock('../../hooks/useAiAgentOnboardingNotification', () => ({
 
 jest.mock(
     'pages/settings/helpCenter/components/articles/HelpCenterEditor/FroalaEditorComponent.js',
-    () => () => <div />
+    () => () => <div />,
 )
 jest.mock('hooks/useSearchParam', () => ({
     useSearchParam: jest.fn(),
@@ -57,7 +57,7 @@ const mockUseSearchParam = jest.mocked(useSearchParam)
 const mockedUsePlaygroundMessages = jest.mocked(usePlaygroundMessages)
 const mockedUsePlaygroundForm = jest.mocked(usePlaygroundForm)
 const mockUseAiAgentOnboardingNotification = jest.mocked(
-    useAiAgentOnboardingNotification
+    useAiAgentOnboardingNotification,
 )
 
 const defaultUsePlaygroundMessagesProps = {
@@ -69,7 +69,7 @@ const defaultUsePlaygroundMessagesProps = {
 }
 
 const defaultUsePlaygroundFormProps = {
-    formValues: {message: ''},
+    formValues: { message: '' },
     onFormValuesChange: jest.fn(),
     isDisabled: false,
     isFormValid: false,
@@ -97,17 +97,17 @@ const renderComponent = () => {
         <PlaygroundChat
             storeData={getStoreConfigurationFixture()}
             accountData={getAccountConfigurationWithHttpIntegrationFixture()}
-        />
+        />,
     )
 }
 
 describe('PlaygroundChat', () => {
     beforeEach(() => {
         mockedUsePlaygroundMessages.mockReturnValue(
-            defaultUsePlaygroundMessagesProps
+            defaultUsePlaygroundMessagesProps,
         )
         mockedUsePlaygroundForm.mockReturnValue({
-            formValues: {message: '', customer: DEFAULT_PLAYGROUND_CUSTOMER},
+            formValues: { message: '', customer: DEFAULT_PLAYGROUND_CUSTOMER },
             onFormValuesChange: jest.fn(),
             isDisabled: false,
             isFormValid: false,
@@ -117,7 +117,7 @@ describe('PlaygroundChat', () => {
             disabledMessage: undefined,
         })
         mockUseAiAgentOnboardingNotification.mockReturnValue(
-            defaultUseAiAgentOnboardingNotification
+            defaultUseAiAgentOnboardingNotification,
         )
 
         mockFlags({
@@ -130,18 +130,18 @@ describe('PlaygroundChat', () => {
         renderComponent()
 
         expect(
-            screen.getByText('Or test a common question')
+            screen.getByText('Or test a common question'),
         ).toBeInTheDocument()
     })
 
     it('should change channel', () => {
         renderComponent()
-        expect(screen.getByRole('tab', {selected: true})).toHaveTextContent(
-            'Email'
+        expect(screen.getByRole('tab', { selected: true })).toHaveTextContent(
+            'Email',
         )
         userEvent.click(screen.getByText('Chat'))
-        expect(screen.getByRole('tab', {selected: true})).toHaveTextContent(
-            'Chat'
+        expect(screen.getByRole('tab', { selected: true })).toHaveTextContent(
+            'Chat',
         )
     })
 
@@ -161,7 +161,7 @@ describe('PlaygroundChat', () => {
             isRefetching: false,
             isRefetchError: false,
             data: {
-                data: {data: [customer]},
+                data: { data: [customer] },
             },
             refetch: jest.fn(),
         } as unknown as ReturnType<typeof useSearchCustomer>)
@@ -170,7 +170,7 @@ describe('PlaygroundChat', () => {
         userEvent.click(screen.getByText('Existing customer'))
         await userEvent.type(
             screen.getByPlaceholderText('Search'),
-            customer.address
+            customer.address,
         )
         userEvent.click(await screen.findByText(customer.address))
         expect(screen.getByDisplayValue(customer.address)).toBeInTheDocument()
@@ -188,10 +188,10 @@ describe('PlaygroundChat', () => {
 
         renderComponent()
 
-        userEvent.click(screen.getByRole('button', {name: 'Send'}))
+        userEvent.click(screen.getByRole('button', { name: 'Send' }))
 
         expect(
-            defaultUseAiAgentOnboardingNotification.handleOnSave
+            defaultUseAiAgentOnboardingNotification.handleOnSave,
         ).toHaveBeenCalledWith({
             onboardingState: AiAgentOnboardingState.FinishedSetup,
             testBeforeActivationDatetimes: [expect.any(String)],
@@ -214,10 +214,10 @@ describe('PlaygroundChat', () => {
 
         renderComponent()
 
-        userEvent.click(screen.getByRole('button', {name: 'Send'}))
+        userEvent.click(screen.getByRole('button', { name: 'Send' }))
 
         expect(
-            defaultUseAiAgentOnboardingNotification.handleOnSave
+            defaultUseAiAgentOnboardingNotification.handleOnSave,
         ).not.toHaveBeenCalled()
     })
 
@@ -237,10 +237,10 @@ describe('PlaygroundChat', () => {
 
         renderComponent()
 
-        userEvent.click(screen.getByRole('button', {name: 'Send'}))
+        userEvent.click(screen.getByRole('button', { name: 'Send' }))
 
         expect(
-            defaultUseAiAgentOnboardingNotification.handleOnSave
+            defaultUseAiAgentOnboardingNotification.handleOnSave,
         ).not.toHaveBeenCalled()
     })
 
@@ -262,10 +262,10 @@ describe('PlaygroundChat', () => {
 
         renderComponent()
 
-        userEvent.click(screen.getByRole('button', {name: 'Send'}))
+        userEvent.click(screen.getByRole('button', { name: 'Send' }))
 
         expect(
-            defaultUseAiAgentOnboardingNotification.handleOnSave
+            defaultUseAiAgentOnboardingNotification.handleOnSave,
         ).not.toHaveBeenCalled()
     })
 
@@ -287,10 +287,10 @@ describe('PlaygroundChat', () => {
 
         renderComponent()
 
-        userEvent.click(screen.getByRole('button', {name: 'Send'}))
+        userEvent.click(screen.getByRole('button', { name: 'Send' }))
 
         expect(
-            defaultUseAiAgentOnboardingNotification.handleOnSave
+            defaultUseAiAgentOnboardingNotification.handleOnSave,
         ).not.toHaveBeenCalled()
     })
 
@@ -313,10 +313,10 @@ describe('PlaygroundChat', () => {
 
         renderComponent()
 
-        userEvent.click(screen.getByRole('button', {name: 'Send'}))
+        userEvent.click(screen.getByRole('button', { name: 'Send' }))
 
         expect(
-            defaultUseAiAgentOnboardingNotification.handleOnSave
+            defaultUseAiAgentOnboardingNotification.handleOnSave,
         ).not.toHaveBeenCalled()
     })
 
@@ -348,17 +348,17 @@ describe('PlaygroundChat', () => {
                         testBeforeActivationDatetimes: [
                             ...(payload.testBeforeActivationDatetimes || []),
                         ],
-                    })
+                    }),
                 ),
         })
 
         renderComponent()
 
-        userEvent.click(screen.getByRole('button', {name: 'Send'}))
+        userEvent.click(screen.getByRole('button', { name: 'Send' }))
 
         await waitFor(() => {
             expect(
-                defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
+                defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification,
             ).toHaveBeenCalledWith({
                 aiAgentNotificationType:
                     AiAgentNotificationType.ActivateAiAgent,
@@ -393,17 +393,17 @@ describe('PlaygroundChat', () => {
                         testBeforeActivationDatetimes: [
                             ...(payload.testBeforeActivationDatetimes || []),
                         ],
-                    })
+                    }),
                 ),
         })
 
         renderComponent()
 
-        userEvent.click(screen.getByRole('button', {name: 'Send'}))
+        userEvent.click(screen.getByRole('button', { name: 'Send' }))
 
         await waitFor(() => {
             expect(
-                defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
+                defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification,
             ).not.toHaveBeenCalled()
         })
     })
@@ -442,7 +442,7 @@ describe('PlaygroundChat', () => {
             })
             renderComponent()
             expect(screen.getByRole('alert')).toHaveTextContent(
-                'No messages will be sent, no data will change and no actions will be performed while testing.'
+                'No messages will be sent, no data will change and no actions will be performed while testing.',
             )
         })
 
@@ -529,9 +529,9 @@ describe('PlaygroundChat', () => {
                 isFormValid: true,
             })
             renderComponent()
-            userEvent.click(screen.getByRole('button', {name: 'Send'}))
+            userEvent.click(screen.getByRole('button', { name: 'Send' }))
             expect(
-                defaultUsePlaygroundMessagesProps.onMessageSend
+                defaultUsePlaygroundMessagesProps.onMessageSend,
             ).toHaveBeenCalledWith(
                 expect.objectContaining({
                     content: 'Hello',
@@ -541,7 +541,7 @@ describe('PlaygroundChat', () => {
                 {
                     customer: DEFAULT_PLAYGROUND_CUSTOMER,
                     subject: undefined,
-                }
+                },
             )
         })
 
@@ -557,9 +557,9 @@ describe('PlaygroundChat', () => {
 
             renderComponent()
 
-            userEvent.click(screen.getByRole('button', {name: 'Send'}))
+            userEvent.click(screen.getByRole('button', { name: 'Send' }))
             expect(
-                defaultUsePlaygroundMessagesProps.onMessageSend
+                defaultUsePlaygroundMessagesProps.onMessageSend,
             ).toHaveBeenCalledWith(
                 expect.objectContaining({
                     content: 'Hello',
@@ -569,7 +569,7 @@ describe('PlaygroundChat', () => {
                 {
                     customer: DEFAULT_PLAYGROUND_CUSTOMER,
                     subject: undefined,
-                }
+                },
             )
         })
 
@@ -580,7 +580,7 @@ describe('PlaygroundChat', () => {
             })
             renderComponent()
             expect(
-                screen.queryByText('Or test a common question')
+                screen.queryByText('Or test a common question'),
             ).not.toBeInTheDocument()
         })
 
@@ -601,7 +601,7 @@ describe('PlaygroundChat', () => {
             userEvent.click(screen.getByText('Yes, thanks'))
 
             expect(
-                defaultUsePlaygroundMessagesProps.onMessageSend
+                defaultUsePlaygroundMessagesProps.onMessageSend,
             ).toHaveBeenCalledWith(
                 expect.objectContaining({
                     content: 'Yes, thanks',
@@ -613,7 +613,7 @@ describe('PlaygroundChat', () => {
                     customer: DEFAULT_PLAYGROUND_CUSTOMER,
 
                     subject: undefined,
-                }
+                },
             )
         })
 
@@ -635,7 +635,7 @@ describe('PlaygroundChat', () => {
             userEvent.click(screen.getByText('No, I need more help'))
 
             expect(
-                defaultUsePlaygroundMessagesProps.onMessageSend
+                defaultUsePlaygroundMessagesProps.onMessageSend,
             ).toHaveBeenCalledWith(
                 expect.objectContaining({
                     content: 'No, I need more help',
@@ -646,7 +646,7 @@ describe('PlaygroundChat', () => {
                 {
                     customer: DEFAULT_PLAYGROUND_CUSTOMER,
                     subject: undefined,
-                }
+                },
             )
         })
     })

@@ -1,17 +1,18 @@
-import {render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {PaywallConfig, paywallConfigs} from 'config/paywalls'
-import {account} from 'fixtures/account'
-import {billingState} from 'fixtures/billing'
-import {AccountFeature} from 'state/currentAccount/types'
-import {RootState, StoreDispatch} from 'state/types'
+import { PaywallConfig, paywallConfigs } from 'config/paywalls'
+import { account } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
+import { AccountFeature } from 'state/currentAccount/types'
+import { RootState, StoreDispatch } from 'state/types'
 
-import {withFeaturePaywall} from '../withFeaturePaywall'
+import { withFeaturePaywall } from '../withFeaturePaywall'
 
 const AnyComponent = () => (
     <div data-testid="paywalled-component">Not paywalled</div>
@@ -28,8 +29,8 @@ describe('withFeaturePaywall', () => {
         currentAccount: fromJS({
             current_subscription: account.current_subscription,
             features: fromJS({
-                [AccountFeature.InstagramComment]: {enabled: true},
-                [AccountFeature.RevenueStatistics]: {enabled: false},
+                [AccountFeature.InstagramComment]: { enabled: true },
+                [AccountFeature.RevenueStatistics]: { enabled: false },
             }),
         }),
         billing: fromJS(billingState),
@@ -37,12 +38,12 @@ describe('withFeaturePaywall', () => {
 
     it('should render the passed component when the feature is available', () => {
         const PaywalledComponent = withFeaturePaywall(
-            AccountFeature.InstagramComment
+            AccountFeature.InstagramComment,
         )(AnyComponent)
         render(
             <Provider store={mockStore(defaultState)}>
                 <PaywalledComponent />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('Not paywalled')).toBeInTheDocument()
@@ -50,30 +51,30 @@ describe('withFeaturePaywall', () => {
 
     it('should not render the passed component when the feature is unavailable', () => {
         const PaywalledComponent = withFeaturePaywall(
-            AccountFeature.RevenueStatistics
+            AccountFeature.RevenueStatistics,
         )(AnyComponent)
         render(
             <Provider store={mockStore(defaultState)}>
                 <PaywalledComponent />
-            </Provider>
+            </Provider>,
         )
 
         expect(
             screen.getByText(
-                paywallConfigs[AccountFeature.RevenueStatistics]!.header
-            )
+                paywallConfigs[AccountFeature.RevenueStatistics]!.header,
+            ),
         ).toBeInTheDocument()
     })
 
     it('should not render the passed component when the feature is unavailable and use a custom paywall', () => {
         const PaywalledComponent = withFeaturePaywall(
             AccountFeature.RevenueStatistics,
-            CustomPaywallComponent
+            CustomPaywallComponent,
         )(AnyComponent)
         render(
             <Provider store={mockStore(defaultState)}>
                 <PaywalledComponent />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('Paywalled')).toBeInTheDocument()
@@ -90,12 +91,12 @@ describe('withFeaturePaywall', () => {
         const PaywalledComponent = withFeaturePaywall(
             AccountFeature.RevenueStatistics,
             undefined,
-            customPaywallConfigs
+            customPaywallConfigs,
         )(AnyComponent)
         render(
             <Provider store={mockStore(defaultState)}>
                 <PaywalledComponent />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('Custom page header')).toBeInTheDocument()

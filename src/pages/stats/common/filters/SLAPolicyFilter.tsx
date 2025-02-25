@@ -1,18 +1,23 @@
-import {useListSlaPolicies} from '@gorgias/api-queries'
-import _noop from 'lodash/noop'
-import React, {useCallback, useMemo} from 'react'
-import {connect} from 'react-redux'
+import React, { useCallback, useMemo } from 'react'
 
-import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
+import _noop from 'lodash/noop'
+import { connect } from 'react-redux'
+
+import { useListSlaPolicies } from '@gorgias/api-queries'
+
+import { FilterKey, StatsFiltersWithLogicalOperator } from 'models/stat/types'
 import Filter from 'pages/stats/common/components/Filter'
-import {LogicalOperatorLabel} from 'pages/stats/common/components/Filter/constants'
-import {FilterLabels} from 'pages/stats/common/filters/constants'
-import {emptyFilter, logSegmentEvent} from 'pages/stats/common/filters/helpers'
-import {DropdownOption} from 'pages/stats/types'
-import {getStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
-import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
-import {RootState} from 'state/types'
-import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
+import { LogicalOperatorLabel } from 'pages/stats/common/components/Filter/constants'
+import { FilterLabels } from 'pages/stats/common/filters/constants'
+import {
+    emptyFilter,
+    logSegmentEvent,
+} from 'pages/stats/common/filters/helpers'
+import { DropdownOption } from 'pages/stats/types'
+import { getStatsFiltersWithLogicalOperators } from 'state/stats/selectors'
+import { mergeStatsFiltersWithLogicalOperator } from 'state/stats/statsSlice'
+import { RootState } from 'state/types'
+import { statFiltersClean, statFiltersDirty } from 'state/ui/stats/actions'
 
 type Props = {
     value: StatsFiltersWithLogicalOperator[FilterKey.SlaPolicies]
@@ -20,7 +25,7 @@ type Props = {
         value: Exclude<
             StatsFiltersWithLogicalOperator[FilterKey.SlaPolicies],
             undefined
-        >
+        >,
     ) => void
     dispatchStatFiltersDirty: () => void
     dispatchStatFiltersClean: () => void
@@ -32,7 +37,7 @@ export const SLAPolicyFilter = ({
     dispatchStatFiltersDirty,
     dispatchStatFiltersClean,
 }: Props) => {
-    const {data} = useListSlaPolicies()
+    const { data } = useListSlaPolicies()
     const policies = useMemo(() => data?.data.data || [], [data?.data.data])
     const filterOptions = policies?.map((policy) => ({
         value: policy.uuid,
@@ -45,10 +50,10 @@ export const SLAPolicyFilter = ({
             selectedPolicies.map((p) => ({
                 value: p,
                 label: String(
-                    policies.find((policy) => policy.uuid === p)?.name
+                    policies.find((policy) => policy.uuid === p)?.name,
                 ),
             })),
-        [policies, selectedPolicies]
+        [policies, selectedPolicies],
     )
 
     const handleFilterValuesChange = useCallback(
@@ -58,7 +63,7 @@ export const SLAPolicyFilter = ({
                 operator: value.operator,
             })
         },
-        [dispatchUpdate, value.operator]
+        [dispatchUpdate, value.operator],
     )
 
     const onOptionChange = useCallback(
@@ -67,14 +72,14 @@ export const SLAPolicyFilter = ({
             if (selectedPolicies.includes(policyId)) {
                 handleFilterValuesChange(
                     selectedPolicies.filter(
-                        (selectedPolicyId) => selectedPolicyId !== policyId
-                    )
+                        (selectedPolicyId) => selectedPolicyId !== policyId,
+                    ),
                 )
             } else {
                 handleFilterValuesChange([...selectedPolicies, policyId])
             }
         },
-        [handleFilterValuesChange, selectedPolicies]
+        [handleFilterValuesChange, selectedPolicies],
     )
 
     const handleDropdownOpen = () => {
@@ -83,7 +88,7 @@ export const SLAPolicyFilter = ({
     const handleDropdownClosed = () => {
         logSegmentEvent(
             FilterKey.SlaPolicies,
-            LogicalOperatorLabel[value.operator]
+            LogicalOperatorLabel[value.operator],
         )
         dispatchStatFiltersClean()
     }
@@ -91,7 +96,7 @@ export const SLAPolicyFilter = ({
     return (
         <Filter
             filterName={FilterLabels[FilterKey.SlaPolicies]}
-            filterOptionGroups={[{options: filterOptions}]}
+            filterOptionGroups={[{ options: filterOptions }]}
             selectedOptions={selectedOptions}
             onChangeOption={onOptionChange}
             logicalOperators={[]}
@@ -123,5 +128,5 @@ export const SLAPolicyFilterWithState = connect(
             }),
         dispatchStatFiltersDirty: statFiltersDirty,
         dispatchStatFiltersClean: statFiltersClean,
-    }
+    },
 )(SLAPolicyFilter)

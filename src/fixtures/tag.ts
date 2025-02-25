@@ -1,4 +1,4 @@
-import {Tag} from '@gorgias/api-queries'
+import { Tag } from '@gorgias/api-queries'
 
 export const tags = [
     {

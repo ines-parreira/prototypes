@@ -1,20 +1,21 @@
-import {List as ImmutableList, Map} from 'immutable'
 import React from 'react'
-import {Link, useParams, NavLink} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
+
+import { List as ImmutableList, Map } from 'immutable'
+import { Link, NavLink, useParams } from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationType} from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import Detail from 'pages/common/components/ProductDetail'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import ConnectLink from 'pages/integrations/components/ConnectLink'
-import {mapAppToDetail} from 'pages/integrations/mappers/appToDetail'
-import {makeHasFeature} from 'state/billing/selectors'
-import {AccountFeature} from 'state/currentAccount/types'
-import {getIntegrationConfig} from 'state/integrations/helpers'
-import {PlanName} from 'utils/paywalls'
+import { mapAppToDetail } from 'pages/integrations/mappers/appToDetail'
+import { makeHasFeature } from 'state/billing/selectors'
+import { AccountFeature } from 'state/currentAccount/types'
+import { getIntegrationConfig } from 'state/integrations/helpers'
+import { PlanName } from 'utils/paywalls'
 
 import Create from './Create'
 import Integration from './Integration'
@@ -31,11 +32,11 @@ type Props = {
     redirectUri: string
 }
 
-function Magento2({integration, integrations, loading, redirectUri}: Props) {
+function Magento2({ integration, integrations, loading, redirectUri }: Props) {
     const upgradePlanPathname = '/app/settings/billing'
 
     const getHasFeature = useAppSelector(makeHasFeature)
-    const {integrationId} = useParams<{integrationId: string}>()
+    const { integrationId } = useParams<{ integrationId: string }>()
 
     const hasMagentoFeature = getHasFeature(AccountFeature.MagentoIntegration)
 

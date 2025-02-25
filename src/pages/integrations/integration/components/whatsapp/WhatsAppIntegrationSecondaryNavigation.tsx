@@ -1,7 +1,8 @@
 import React from 'react'
-import {NavLink, useLocation} from 'react-router-dom'
 
-import {IntegrationType, WhatsAppIntegration} from 'models/integration/types'
+import { NavLink, useLocation } from 'react-router-dom'
+
+import { IntegrationType, WhatsAppIntegration } from 'models/integration/types'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 
 type Props = {
@@ -11,7 +12,7 @@ type Props = {
 export default function WhatsAppIntegrationSecondaryNavigation({
     integration,
 }: Props): JSX.Element | null {
-    const {pathname} = useLocation()
+    const { pathname } = useLocation()
     if (pathname.endsWith('/migration')) {
         return null
     }

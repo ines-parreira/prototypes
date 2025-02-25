@@ -1,8 +1,9 @@
-import {render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
-import {GoogleAnalyticsSection} from '../GoogleAnalyticsSection'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { GoogleAnalyticsSection } from '../GoogleAnalyticsSection'
 
 describe('<GoogleAnalyticsSection />', () => {
     it('should render the section in its initial state', () => {
@@ -11,7 +12,7 @@ describe('<GoogleAnalyticsSection />', () => {
                 gaid=""
                 onChange={jest.fn()}
                 onDelete={null}
-            />
+            />,
         )
 
         screen.getByText(/Google Universal Analytics ID/i)

@@ -1,6 +1,6 @@
-import {IsURLOptions} from 'validator/lib/isURL'
+import { IsURLOptions } from 'validator/lib/isURL'
 
-import {HelpCenterClient} from 'rest_api/help_center_api/client'
+import { HelpCenterClient } from 'rest_api/help_center_api/client'
 
 import {
     LocaleCode,
@@ -9,8 +9,7 @@ import {
     NavigationLink,
     NavigationLinkMeta,
 } from '../../../../models/helpCenter/types'
-
-import {getAbsoluteUrl} from './helpCenter.utils'
+import { getAbsoluteUrl } from './helpCenter.utils'
 
 export const isURLOptions: IsURLOptions = {
     require_host: true,
@@ -22,7 +21,7 @@ export async function saveSocialLinks(
     context: {
         helpCenterId: number
         locale: LocaleCode
-    }
+    },
 ): Promise<void> {
     const promises = localLinks.map((socialLink) => {
         if (socialLink.value === '' && socialLink.id >= 0) {
@@ -56,10 +55,10 @@ export async function saveSocialLinks(
                     {
                         label: socialLink.label,
                         value: getAbsoluteUrl(
-                            {domain: socialLink.value},
-                            false
+                            { domain: socialLink.value },
+                            false,
                         ),
-                    }
+                    },
                 )
             }
 
@@ -69,11 +68,11 @@ export async function saveSocialLinks(
                 },
                 {
                     label: socialLink.label,
-                    value: getAbsoluteUrl({domain: socialLink.value}, false),
+                    value: getAbsoluteUrl({ domain: socialLink.value }, false),
                     locale: context.locale,
                     group,
                     meta,
-                }
+                },
             )
         }
         return null
@@ -90,7 +89,7 @@ export async function saveNavigationLinks(
         group: 'header' | 'footer'
         helpCenterId: number
         locale: LocaleCode
-    }
+    },
 ): Promise<void> {
     const localLinksIds = localLinks.map((link) => link.id)
     const remoteLinksIds = remoteLinks
@@ -98,17 +97,18 @@ export async function saveNavigationLinks(
         .map((link) => link.id)
 
     const linkIdsToDelete = remoteLinksIds.filter(
-        (linkId) => !localLinksIds.includes(linkId)
+        (linkId) => !localLinksIds.includes(linkId),
     )
 
     const linksToCreate = localLinks.filter(
         (link) =>
-            link.created_datetime === 'now' && !remoteLinksIds.includes(link.id)
+            link.created_datetime === 'now' &&
+            !remoteLinksIds.includes(link.id),
     )
 
     const linksToUpdate = localLinks.filter(
         (link) =>
-            link.updated_datetime === 'now' && link.created_datetime !== 'now'
+            link.updated_datetime === 'now' && link.created_datetime !== 'now',
     )
 
     const promises: Promise<any>[] = []
@@ -119,7 +119,7 @@ export async function saveNavigationLinks(
                 client.deleteNavigationLink({
                     help_center_id: context.helpCenterId,
                     id: linkId,
-                })
+                }),
             )
         })
     }
@@ -133,11 +133,11 @@ export async function saveNavigationLinks(
                     },
                     {
                         label: link.label,
-                        value: getAbsoluteUrl({domain: link.value}, false),
+                        value: getAbsoluteUrl({ domain: link.value }, false),
                         locale: context.locale,
                         group: context.group,
-                    }
-                )
+                    },
+                ),
             )
         })
     }
@@ -152,9 +152,9 @@ export async function saveNavigationLinks(
                     },
                     {
                         label: link.label,
-                        value: getAbsoluteUrl({domain: link.value}, false),
-                    }
-                )
+                        value: getAbsoluteUrl({ domain: link.value }, false),
+                    },
+                ),
             )
         })
     }

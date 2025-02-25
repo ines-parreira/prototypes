@@ -1,11 +1,12 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import ArrowLink from '../ArrowLink'
 
 describe('ArrowLink component', () => {
     it('should render with a to attribute', () => {
-        const {container} = render(<ArrowLink href="/here">Hello</ArrowLink>)
+        const { container } = render(<ArrowLink href="/here">Hello</ArrowLink>)
         expect(container.firstChild).toMatchSnapshot()
     })
     it('should render with an href attribute', () => {

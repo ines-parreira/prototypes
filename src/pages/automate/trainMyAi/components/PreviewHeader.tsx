@@ -1,11 +1,13 @@
-import classnames from 'classnames'
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
-import {useGetHelpCenterArticle} from 'models/helpCenter/queries'
+import classnames from 'classnames'
+
+import { useGetHelpCenterArticle } from 'models/helpCenter/queries'
 import Button from 'pages/common/components/button/Button'
 
-import {Components as ComponentsSSP} from '../../../../rest_api/ssp_api/client.generated'
+import { Components as ComponentsSSP } from '../../../../rest_api/ssp_api/client.generated'
 import ArticleSelectPreview from './ArticleSelectPreview'
+
 import css from './PreviewHeader.less'
 
 interface Props {
@@ -25,11 +27,11 @@ export default function PreviewHeader({
     isFeedbackProvided,
     articleTitle,
 }: Props) {
-    const {data: recommendedArticleData} = useGetHelpCenterArticle(
+    const { data: recommendedArticleData } = useGetHelpCenterArticle(
         recommendations.articleId,
         recommendations.helpCenterId,
         recommendations.locale,
-        {enabled: !noRelevantArticles}
+        { enabled: !noRelevantArticles },
     )
     const [showDropdown, setShowDropdown] = useState(false)
     const articleDeleted = recommendedArticleData === null
@@ -118,7 +120,7 @@ export default function PreviewHeader({
                                     <Button
                                         onClick={() => {
                                             onSelectArticle(
-                                                recommendations.articleId
+                                                recommendations.articleId,
                                             )
                                         }}
                                     >

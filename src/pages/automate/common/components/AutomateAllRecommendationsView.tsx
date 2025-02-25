@@ -1,11 +1,13 @@
-import {Card} from '@gorgias/analytics-ui-kit'
-import moment from 'moment'
 import React from 'react'
-import {Link} from 'react-router-dom'
 
-import {HelpCenter} from 'models/helpCenter/types'
-import {StoreIntegration} from 'models/integration/types'
-import {ArticleOrigin} from 'pages/settings/helpCenter/types/articleOrigin.enum'
+import moment from 'moment'
+import { Link } from 'react-router-dom'
+
+import { Card } from '@gorgias/analytics-ui-kit'
+
+import { HelpCenter } from 'models/helpCenter/types'
+import { StoreIntegration } from 'models/integration/types'
+import { ArticleOrigin } from 'pages/settings/helpCenter/types/articleOrigin.enum'
 import StatsPage from 'pages/stats/StatsPage'
 
 import {
@@ -13,13 +15,14 @@ import {
     useAIArticleRecommendationItems,
 } from '../hooks/useAIArticleRecommendationItems'
 import AutomateAllRecommendationsCard from './AutomateAllRecommendationsCard'
-import css from './AutomateAllRecommendationsView.less'
 import {
     HelpCenterFilter,
     StoreFilter,
     TopQuestionsSectionProps,
 } from './TopQuestions/TopQuestionsSection'
-import {useTopQuestionsViewedOnPage} from './TopQuestions/useTopQuestionsViewedOnPage'
+import { useTopQuestionsViewedOnPage } from './TopQuestions/useTopQuestionsViewedOnPage'
+
+import css from './AutomateAllRecommendationsView.less'
 
 const ITEMS_PER_PAGE = 15
 
@@ -71,7 +74,7 @@ const AutomateAllRecommendationsContent = ({
         selectedStore.id,
         selectedHelpCenter.id,
         'all-recommendations',
-        batchDatetime ? moment(batchDatetime).toDate() : new Date()
+        batchDatetime ? moment(batchDatetime).toDate() : new Date(),
     )
 
     return (

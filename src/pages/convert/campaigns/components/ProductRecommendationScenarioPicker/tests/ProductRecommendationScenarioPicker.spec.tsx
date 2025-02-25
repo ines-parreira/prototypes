@@ -1,12 +1,13 @@
-import {fireEvent, render} from '@testing-library/react'
 import React from 'react'
 
-import {AttachmentEnum} from 'common/types'
-import {useCampaignDetailsContext} from 'pages/convert/campaigns/hooks/useCampaignDetailsContext'
-import {ProductRecommendationScenario} from 'pages/convert/campaigns/types/CampaignAttachment'
-import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
-import {assumeMock} from 'utils/testing'
+import { fireEvent, render } from '@testing-library/react'
+
+import { AttachmentEnum } from 'common/types'
+import { useCampaignDetailsContext } from 'pages/convert/campaigns/hooks/useCampaignDetailsContext'
+import { ProductRecommendationScenario } from 'pages/convert/campaigns/types/CampaignAttachment'
+import { CampaignTriggerOperator } from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
+import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import { assumeMock } from 'utils/testing'
 
 import ProductRecommendationScenarioPicker from '../ProductRecommendationScenarioPicker'
 
@@ -22,8 +23,8 @@ describe('ProductRecommendationScenarioPicker', () => {
     })
 
     it('should render the component', () => {
-        const {getByText} = render(
-            <ProductRecommendationScenarioPicker onClick={jest.fn()} />
+        const { getByText } = render(
+            <ProductRecommendationScenarioPicker onClick={jest.fn()} />,
         )
 
         expect(getByText('Similar Browsed Products')).toBeInTheDocument()
@@ -31,8 +32,8 @@ describe('ProductRecommendationScenarioPicker', () => {
 
     it('should call onClick with the correct attachment', () => {
         const onClick = jest.fn()
-        const {getByText} = render(
-            <ProductRecommendationScenarioPicker onClick={onClick} />
+        const { getByText } = render(
+            <ProductRecommendationScenarioPicker onClick={onClick} />,
         )
 
         const seenScenario = getByText('Similar Browsed Products')
@@ -51,15 +52,15 @@ describe('ProductRecommendationScenarioPicker', () => {
     })
 
     it('should open modal for scenario that requires it', () => {
-        const {getByText} = render(
-            <ProductRecommendationScenarioPicker onClick={jest.fn()} />
+        const { getByText } = render(
+            <ProductRecommendationScenarioPicker onClick={jest.fn()} />,
         )
 
         const scenario = getByText('Alternatives for Out of Stock Products')
         fireEvent.click(scenario)
 
         expect(
-            getByText('Recommend Alternatives for Out of Stock Products')
+            getByText('Recommend Alternatives for Out of Stock Products'),
         ).toBeInTheDocument()
     })
 
@@ -70,8 +71,8 @@ describe('ProductRecommendationScenarioPicker', () => {
             addTrigger: addTriggerMock,
         } as any)
 
-        const {getByText} = render(
-            <ProductRecommendationScenarioPicker onClick={jest.fn()} />
+        const { getByText } = render(
+            <ProductRecommendationScenarioPicker onClick={jest.fn()} />,
         )
 
         const scenario = getByText('Alternatives for Out of Stock Products')
@@ -86,7 +87,7 @@ describe('ProductRecommendationScenarioPicker', () => {
                 type: CampaignTriggerType.OutOfStockProductPages,
                 operator: CampaignTriggerOperator.Eq,
                 value: 'true',
-            }
+            },
         )
     })
 
@@ -105,8 +106,8 @@ describe('ProductRecommendationScenarioPicker', () => {
             addTrigger: addTriggerMock,
         } as any)
 
-        const {getByText} = render(
-            <ProductRecommendationScenarioPicker onClick={onClick} />
+        const { getByText } = render(
+            <ProductRecommendationScenarioPicker onClick={onClick} />,
         )
 
         const scenario = getByText('Alternatives for Out of Stock Products')

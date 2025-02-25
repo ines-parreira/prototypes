@@ -1,12 +1,12 @@
-import {renderHook} from '@testing-library/react-hooks'
-import type {Location} from 'history'
-import {useLocation} from 'react-router-dom'
+import { renderHook } from '@testing-library/react-hooks'
+import type { Location } from 'history'
+import { useLocation } from 'react-router-dom'
 
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
 import useActiveItem from '../useActiveItem'
 
-jest.mock('react-router-dom', () => ({useLocation: jest.fn()}))
+jest.mock('react-router-dom', () => ({ useLocation: jest.fn() }))
 const useLocationMock = assumeMock(useLocation)
 
 describe('useActiveItem', () => {
@@ -23,9 +23,9 @@ describe('useActiveItem', () => {
         ['/app/views', 'tickets'],
         ['/app/whatever', 'tickets'],
     ])('should return the corrent item for %s', (path, item) => {
-        useLocationMock.mockReturnValue({pathname: path} as Location)
+        useLocationMock.mockReturnValue({ pathname: path } as Location)
 
-        const {result} = renderHook(() => useActiveItem())
+        const { result } = renderHook(() => useActiveItem())
         expect(result.current).toBe(item)
     })
 })

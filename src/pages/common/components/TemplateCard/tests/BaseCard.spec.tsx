@@ -1,8 +1,9 @@
-import {render} from '@testing-library/react'
-import userEvent, {TargetElement} from '@testing-library/user-event'
 import React from 'react'
 
-import {THEME_NAME, useTheme} from 'core/theme'
+import { render } from '@testing-library/react'
+import userEvent, { TargetElement } from '@testing-library/user-event'
+
+import { THEME_NAME, useTheme } from 'core/theme'
 
 import BaseCard from '../BaseCard'
 
@@ -23,7 +24,7 @@ describe('<BaseCard />', () => {
     })
 
     it('should display a base card', () => {
-        const {getByText} = render(<BaseCard {...props} />)
+        const { getByText } = render(<BaseCard {...props} />)
 
         expect(getByText(props.description)).toBeInTheDocument()
         expect(getByText(props.title)).toBeInTheDocument()
@@ -31,7 +32,7 @@ describe('<BaseCard />', () => {
 
     it('should execute callback onClick', () => {
         const onClick = jest.fn()
-        const {container} = render(<BaseCard {...props} onClick={onClick} />)
+        const { container } = render(<BaseCard {...props} onClick={onClick} />)
 
         userEvent.click(container.firstChild as TargetElement)
         expect(onClick).toHaveBeenCalled()
@@ -46,8 +47,8 @@ describe('<BaseCard />', () => {
                 background: '#ddd',
             },
         }
-        const {container, getByText} = render(
-            <BaseCard {...props} {...options} />
+        const { container, getByText } = render(
+            <BaseCard {...props} {...options} />,
         )
 
         expect(getByText(options.buttonLabel)).toBeInTheDocument()
@@ -64,7 +65,7 @@ describe('<BaseCard />', () => {
             name: theme,
             resolvedName: theme,
         })
-        const {container} = render(<BaseCard {...props} />)
+        const { container } = render(<BaseCard {...props} />)
 
         expect(container.firstChild).toHaveClass(className)
     })

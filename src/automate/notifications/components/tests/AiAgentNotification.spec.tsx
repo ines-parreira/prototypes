@@ -1,20 +1,19 @@
-import {render, fireEvent} from '@testing-library/react'
-import {ldClientMock} from 'jest-launchdarkly-mock'
 import React from 'react'
+
+import { fireEvent, render } from '@testing-library/react'
+import { ldClientMock } from 'jest-launchdarkly-mock'
 
 import {
     AiAgentNotificationPayload,
     AiAgentNotificationType,
 } from 'automate/notifications/types'
-import {getNotificationReceivedDatetimePayload} from 'automate/notifications/utils'
-import type {Notification} from 'common/notifications'
-
-import {logEvent, SegmentEvent} from 'common/segment'
-import {getOnboardingNotificationStateFixture} from 'pages/aiAgent/fixtures/onboardingNotificationState.fixture'
-import {useAiAgentOnboardingNotification} from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
-import {getLDClient} from 'utils/launchDarkly'
-
-import {assumeMock} from 'utils/testing'
+import { getNotificationReceivedDatetimePayload } from 'automate/notifications/utils'
+import type { Notification } from 'common/notifications'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { getOnboardingNotificationStateFixture } from 'pages/aiAgent/fixtures/onboardingNotificationState.fixture'
+import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
+import { getLDClient } from 'utils/launchDarkly'
+import { assumeMock } from 'utils/testing'
 
 import AiAgentNotification from '../AiAgentNotification'
 
@@ -27,7 +26,7 @@ jest.mock(
         ({
             ...jest.requireActual('common/segment'),
             logEvent: jest.fn(),
-        }) as typeof import('common/segment')
+        }) as typeof import('common/segment'),
 )
 
 jest.mock('pages/aiAgent/hooks/useAccountStoreConfiguration', () => ({
@@ -39,7 +38,7 @@ jest.mock('pages/aiAgent/hooks/useAccountStoreConfiguration', () => ({
 jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingNotification')
 
 const mockUseAiAgentOnboardingNotification = assumeMock(
-    useAiAgentOnboardingNotification
+    useAiAgentOnboardingNotification,
 )
 
 const defaultUseAiAgentOnboardingNotification = {
@@ -65,7 +64,7 @@ describe('AiAgentNotification', () => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         client = ldClientMock
         mockUseAiAgentOnboardingNotification.mockReturnValue(
-            defaultUseAiAgentOnboardingNotification
+            defaultUseAiAgentOnboardingNotification,
         )
         jest.useFakeTimers().setSystemTime(new Date(mockDatetime))
     })
@@ -120,7 +119,7 @@ describe('AiAgentNotification', () => {
 
     it.each(notifications)(
         'should render correctly $type notification and redirect to the correct page when clicked',
-        ({type, title, subtitle, redirectTo}) => {
+        ({ type, title, subtitle, redirectTo }) => {
             const notification: Notification<AiAgentNotificationPayload> = {
                 id: '1',
                 inserted_datetime: '2024-11-04T13:07:00',
@@ -137,8 +136,8 @@ describe('AiAgentNotification', () => {
                 },
             }
 
-            const {getByText, container} = render(
-                <AiAgentNotification notification={notification} />
+            const { getByText, container } = render(
+                <AiAgentNotification notification={notification} />,
             )
 
             const titleElement = getByText(title)
@@ -151,7 +150,7 @@ describe('AiAgentNotification', () => {
             expect(linkElement).toBeInTheDocument()
 
             fireEvent.click(linkElement as HTMLElement)
-        }
+        },
     )
 
     it('should not render if the notification type is not supported', () => {
@@ -169,8 +168,8 @@ describe('AiAgentNotification', () => {
                 },
             }
 
-        const {container} = render(
-            <AiAgentNotification notification={unsupportedNotification} />
+        const { container } = render(
+            <AiAgentNotification notification={unsupportedNotification} />,
         )
 
         expect(container).toBeEmptyDOMElement()
@@ -178,7 +177,7 @@ describe('AiAgentNotification', () => {
 
     it.each(notifications)(
         'should save and log event when $type notification is received',
-        ({type}) => {
+        ({ type }) => {
             const notification: Notification<AiAgentNotificationPayload> = {
                 id: '1',
                 inserted_datetime: '2024-11-04T13:07:00',
@@ -198,21 +197,21 @@ describe('AiAgentNotification', () => {
             render(<AiAgentNotification notification={notification} />)
 
             expect(
-                defaultUseAiAgentOnboardingNotification.handleOnSave
+                defaultUseAiAgentOnboardingNotification.handleOnSave,
             ).toHaveBeenCalledWith(getNotificationReceivedDatetimePayload(type))
 
             expect(logEvent).toHaveBeenCalledWith(
                 SegmentEvent.AiAgentOnboardingNotificationReceived,
                 {
                     type,
-                }
+                },
             )
-        }
+        },
     )
 
     it.each(notifications)(
         'should log event when $type notification is clicked',
-        ({type, redirectTo}) => {
+        ({ type, redirectTo }) => {
             const notification: Notification<AiAgentNotificationPayload> = {
                 id: '1',
                 inserted_datetime: '2024-11-04T13:07:00',
@@ -229,8 +228,8 @@ describe('AiAgentNotification', () => {
                 },
             }
 
-            const {container} = render(
-                <AiAgentNotification notification={notification} />
+            const { container } = render(
+                <AiAgentNotification notification={notification} />,
             )
 
             const linkElement = container.querySelector(`a[to="${redirectTo}"]`)
@@ -242,9 +241,9 @@ describe('AiAgentNotification', () => {
                 SegmentEvent.AiAgentOnboardingNotificationClicked,
                 {
                     type,
-                }
+                },
             )
-        }
+        },
     )
 
     it('should call onClick from props when the notification is clicked', () => {
@@ -262,11 +261,11 @@ describe('AiAgentNotification', () => {
             },
         }
 
-        const {container} = render(
+        const { container } = render(
             <AiAgentNotification
                 notification={notification}
                 onClick={mockOnClick}
-            />
+            />,
         )
 
         const linkElement = container.querySelector('a')

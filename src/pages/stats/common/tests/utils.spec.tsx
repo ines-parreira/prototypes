@@ -1,54 +1,56 @@
-import {AnalyticsFilter} from '@gorgias/api-queries'
-import {renderHook} from '@testing-library/react-hooks'
+import React, { ComponentType } from 'react'
+
+import { renderHook } from '@testing-library/react-hooks'
 import _keyBy from 'lodash/keyBy'
 import moment from 'moment/moment'
-import React, {ComponentType} from 'react'
-import {Provider} from 'react-redux'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {TicketChannel} from 'business/types/ticket'
-import {DateTimeFormatMapper, DateTimeFormatType} from 'constants/datetime'
-import {tags} from 'fixtures/tag'
-import {ReportingGranularity} from 'models/reporting/types'
+import { AnalyticsFilter } from '@gorgias/api-queries'
+
+import { TicketChannel } from 'business/types/ticket'
+import { DateTimeFormatMapper, DateTimeFormatType } from 'constants/datetime'
+import { tags } from 'fixtures/tag'
+import { ReportingGranularity } from 'models/reporting/types'
 import {
     FilterKey,
     LegacyStatsFilters,
     SavedFilterDraft,
     TagFilterInstanceId,
 } from 'models/stat/types'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import {
     areFiltersEqual,
     getFormattedFilter,
 } from 'pages/stats/common/filters/utils'
 import {
+    dateInPastFromStartOfToday,
+    endOfLastMonth,
+    endOfToday,
     formatDuration,
+    formatLabeledTooltipTimeSeriesData,
     formatMetricTrend,
     formatMetricValue,
     formatNumber,
     formatTimeSeriesData,
-    formatLabeledTooltipTimeSeriesData,
-    SHORT_FORMAT,
-    NOT_AVAILABLE_TEXT,
-    useStatsViewFilters,
-    periodPickerMaxSpanDays,
-    NOT_AVAILABLE_PLACEHOLDER,
-    startOfToday,
-    endOfToday,
-    dateInPastFromStartOfToday,
-    startOfMonth,
-    startOfLastMonth,
-    endOfLastMonth,
-    startOfYear,
+    getDateRangePickerLabel,
     last365DaysStartingFromToday,
     lastWeekDateRange,
-    StartDayOfWeek,
-    getDateRangePickerLabel,
     move,
+    NOT_AVAILABLE_PLACEHOLDER,
+    NOT_AVAILABLE_TEXT,
+    periodPickerMaxSpanDays,
+    SHORT_FORMAT,
+    StartDayOfWeek,
+    startOfLastMonth,
+    startOfMonth,
+    startOfToday,
+    startOfYear,
+    useStatsViewFilters,
 } from 'pages/stats/common/utils'
 import StatsFiltersContext from 'pages/stats/StatsFiltersContext'
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
 
 const mockStore = configureMockStore([thunk])
 
@@ -129,7 +131,7 @@ describe('stats components utils', () => {
                 },
             ],
         ])('should return view filters for %s', (testName, statsFilters) => {
-            const wrapper: ComponentType = ({children}) => (
+            const wrapper: ComponentType = ({ children }) => (
                 <Provider store={mockStore(defaultState)}>
                     <StatsFiltersContext.Provider value={statsFilters}>
                         {children}
@@ -137,18 +139,18 @@ describe('stats components utils', () => {
                 </Provider>
             )
 
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () => {
                     return useStatsViewFilters('ticket.created_datetime')
                 },
-                {wrapper}
+                { wrapper },
             )
 
             expect(result.current).toMatchSnapshot()
         })
 
         it('should not include a view filter if the corresponding stat filter is an empty array', () => {
-            const wrapper: ComponentType = ({children}) => (
+            const wrapper: ComponentType = ({ children }) => (
                 <Provider store={mockStore(defaultState)}>
                     <StatsFiltersContext.Provider
                         value={{
@@ -165,18 +167,18 @@ describe('stats components utils', () => {
                 </Provider>
             )
 
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () => {
                     return useStatsViewFilters('ticket.created_datetime')
                 },
-                {wrapper}
+                { wrapper },
             )
 
             expect(result.current).toMatchSnapshot()
         })
 
         it("should not include tags that don't exist in the store", () => {
-            const wrapper: ComponentType = ({children}) => (
+            const wrapper: ComponentType = ({ children }) => (
                 <Provider store={mockStore(defaultState)}>
                     <StatsFiltersContext.Provider
                         value={{
@@ -189,11 +191,11 @@ describe('stats components utils', () => {
                 </Provider>
             )
 
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () => {
                     return useStatsViewFilters('ticket.created_datetime')
                 },
-                {wrapper}
+                { wrapper },
             )
 
             expect(result.current).toMatchSnapshot()
@@ -249,8 +251,8 @@ describe('stats components utils', () => {
                         17 * hourInSeconds +
                         42 * minuteInSeconds +
                         33,
-                    'duration'
-                )
+                    'duration',
+                ),
             ).toBe('5d 17h')
         })
 
@@ -264,13 +266,13 @@ describe('stats components utils', () => {
 
         it('should round number to closest integer (up) when format is "decimal-percent-to-integer-percent"', () => {
             expect(
-                formatMetricValue(0.555, 'decimal-percent-to-integer-percent')
+                formatMetricValue(0.555, 'decimal-percent-to-integer-percent'),
             ).toBe('56%')
         })
 
         it('should round number to closest integer (down) when format is "decimal-percent-to-integer-percent"', () => {
             expect(
-                formatMetricValue(0.352, 'decimal-percent-to-integer-percent')
+                formatMetricValue(0.352, 'decimal-percent-to-integer-percent'),
             ).toBe('35%')
         })
     })
@@ -290,8 +292,8 @@ describe('stats components utils', () => {
                 formatMetricTrend(
                     38 * minuteInSeconds + 15,
                     21 * minuteInSeconds + 6,
-                    'duration'
-                )
+                    'duration',
+                ),
             ).toMatchObject({
                 formattedTrend: '17m',
                 sign: 1,
@@ -347,21 +349,21 @@ describe('stats components utils', () => {
                         ],
                     ],
                     'test label',
-                    ReportingGranularity.Month
-                )
+                    ReportingGranularity.Month,
+                ),
             ).toMatchObject([
                 {
                     label: 'test label',
                     values: [
                         {
                             x: moment('2020-01-01T00:00:00.000').format(
-                                SHORT_FORMAT
+                                SHORT_FORMAT,
                             ),
                             y: 1,
                         },
                         {
                             x: moment('2020-01-01T00:00:00.000').format(
-                                SHORT_FORMAT
+                                SHORT_FORMAT,
                             ),
                             y: 2,
                         },
@@ -373,17 +375,17 @@ describe('stats components utils', () => {
         it('should format the dates to show month day and year', () => {
             expect(
                 formatTimeSeriesData(
-                    [[{dateTime: '2020-01-01T00:00:00.000', value: 1}]],
+                    [[{ dateTime: '2020-01-01T00:00:00.000', value: 1 }]],
                     'test label',
-                    ReportingGranularity.Month
-                )
+                    ReportingGranularity.Month,
+                ),
             ).toMatchObject([
                 {
                     label: 'test label',
                     values: [
                         {
                             x: moment('2020-01-01T00:00:00.000').format(
-                                SHORT_FORMAT
+                                SHORT_FORMAT,
                             ),
                             y: 1,
                         },
@@ -395,12 +397,12 @@ describe('stats components utils', () => {
         it('should format the dates to show hour when granularity is "hour"', () => {
             expect(
                 formatTimeSeriesData(
-                    [[{dateTime: '2020-01-01T00:00:00.000', value: 2}]],
+                    [[{ dateTime: '2020-01-01T00:00:00.000', value: 2 }]],
                     'test label',
-                    ReportingGranularity.Hour
-                )
+                    ReportingGranularity.Hour,
+                ),
             ).toMatchObject([
-                {label: 'test label', values: [{x: '12:00 AM', y: 2}]},
+                { label: 'test label', values: [{ x: '12:00 AM', y: 2 }] },
             ])
         })
     })
@@ -421,9 +423,9 @@ describe('stats components utils', () => {
                             },
                         ],
                     ],
-                    {labels: ['test label'], tooltips: ['test tooltip']},
-                    ReportingGranularity.Month
-                )
+                    { labels: ['test label'], tooltips: ['test tooltip'] },
+                    ReportingGranularity.Month,
+                ),
             ).toMatchObject([
                 {
                     label: 'test label',
@@ -431,13 +433,13 @@ describe('stats components utils', () => {
                     values: [
                         {
                             x: moment('2020-01-01T00:00:00.000').format(
-                                SHORT_FORMAT
+                                SHORT_FORMAT,
                             ),
                             y: 1,
                         },
                         {
                             x: moment('2020-01-01T00:00:00.000').format(
-                                SHORT_FORMAT
+                                SHORT_FORMAT,
                             ),
                             y: 2,
                         },
@@ -458,7 +460,10 @@ describe('stats components utils', () => {
 
         it('returns placeholder when there is no max span and min date is provided', () => {
             expect(
-                periodPickerMaxSpanDays(undefined, moment().subtract(5, 'days'))
+                periodPickerMaxSpanDays(
+                    undefined,
+                    moment().subtract(5, 'days'),
+                ),
             ).toEqual(NOT_AVAILABLE_PLACEHOLDER)
         })
 
@@ -485,21 +490,21 @@ describe('stats components utils', () => {
         const formatOfDate = 'DD/MM/YYYY HH:mm:ss'
 
         it.each([
-            {method: startOfToday, expectedResult: '16/05/2023 00:00:00'},
-            {method: endOfToday, expectedResult: '16/05/2023 23:59:59'},
-            {method: startOfMonth, expectedResult: '01/05/2023 00:00:00'},
-            {method: startOfLastMonth, expectedResult: '01/04/2023 00:00:00'},
-            {method: endOfLastMonth, expectedResult: '30/04/2023 23:59:59'},
-            {method: startOfYear, expectedResult: '01/01/2023 00:00:00'},
+            { method: startOfToday, expectedResult: '16/05/2023 00:00:00' },
+            { method: endOfToday, expectedResult: '16/05/2023 23:59:59' },
+            { method: startOfMonth, expectedResult: '01/05/2023 00:00:00' },
+            { method: startOfLastMonth, expectedResult: '01/04/2023 00:00:00' },
+            { method: endOfLastMonth, expectedResult: '30/04/2023 23:59:59' },
+            { method: startOfYear, expectedResult: '01/01/2023 00:00:00' },
             {
                 method: last365DaysStartingFromToday,
                 expectedResult: '16/05/2022 00:00:00',
             },
         ])(
             'should check if $method.name returns $expectedResult',
-            ({method, expectedResult}) => {
+            ({ method, expectedResult }) => {
                 expect(method().format(formatOfDate)).toBe(expectedResult)
-            }
+            },
         )
 
         it.each([
@@ -519,30 +524,30 @@ describe('stats components utils', () => {
             },
         ])(
             'should check if lastWeekDateRange returns correct dates for $weekStartDay',
-            ({weekStartDay, expectedResults}) => {
+            ({ weekStartDay, expectedResults }) => {
                 expect(
-                    lastWeekDateRange(weekStartDay).start.format(formatOfDate)
+                    lastWeekDateRange(weekStartDay).start.format(formatOfDate),
                 ).toBe(expectedResults.start)
                 expect(
-                    lastWeekDateRange(weekStartDay).end.format(formatOfDate)
+                    lastWeekDateRange(weekStartDay).end.format(formatOfDate),
                 ).toBe(expectedResults.end)
-            }
+            },
         )
 
         it.each([
-            {daysFromToday: 7, expectedResult: '10/05/2023 00:00:00'},
-            {daysFromToday: 30, expectedResult: '17/04/2023 00:00:00'},
-            {daysFromToday: 60, expectedResult: '18/03/2023 00:00:00'},
-            {daysFromToday: 90, expectedResult: '16/02/2023 00:00:00'},
+            { daysFromToday: 7, expectedResult: '10/05/2023 00:00:00' },
+            { daysFromToday: 30, expectedResult: '17/04/2023 00:00:00' },
+            { daysFromToday: 60, expectedResult: '18/03/2023 00:00:00' },
+            { daysFromToday: 90, expectedResult: '16/02/2023 00:00:00' },
         ])(
             'should check if dateInPastFromStartOfToday returns $expectedResult for $daysFromToday days',
-            ({daysFromToday, expectedResult}) => {
+            ({ daysFromToday, expectedResult }) => {
                 expect(
                     dateInPastFromStartOfToday(daysFromToday).format(
-                        formatOfDate
-                    )
+                        formatOfDate,
+                    ),
                 ).toBe(expectedResult)
-            }
+            },
         )
     })
 
@@ -552,7 +557,7 @@ describe('stats components utils', () => {
                 period: {
                     startDate: moment('2023-05-16T15:21:16.000Z').subtract(
                         7,
-                        'days'
+                        'days',
                     ),
                     endDate: moment('2023-05-16T15:21:16.000Z'),
                 },
@@ -562,7 +567,7 @@ describe('stats components utils', () => {
                 period: {
                     startDate: moment('2023-05-16T15:21:16.000Z').subtract(
                         7,
-                        'days'
+                        'days',
                     ),
                     endDate: moment('2023-05-16T15:21:16.000Z'),
                 },
@@ -580,17 +585,17 @@ describe('stats components utils', () => {
             },
         ])(
             'should return $expectedResult for $period.startDate and $period.endDate',
-            ({period, format, expectedResult}) => {
-                const {startDate, endDate} = period
+            ({ period, format, expectedResult }) => {
+                const { startDate, endDate } = period
                 const dateFormat =
                     format ??
                     DateTimeFormatMapper[
                         DateTimeFormatType.SHORT_DATE_WITH_YEAR_EN_US
                     ]
                 expect(
-                    getDateRangePickerLabel(startDate, endDate, dateFormat)
+                    getDateRangePickerLabel(startDate, endDate, dateFormat),
                 ).toBe(expectedResult)
-            }
+            },
         )
     })
 
@@ -708,7 +713,7 @@ describe('stats components utils', () => {
                 getFormattedFilter({
                     name: 'Copy of Saved Filter',
                     filter_group: null,
-                } as any)
+                } as any),
             ).toEqual({
                 name: 'Copy of Saved Filter',
                 filter_group: [],
@@ -761,7 +766,10 @@ describe('stats components utils', () => {
             expect(areFiltersEqual(savedFilters, filtersDraft)).toBeTruthy()
 
             expect(
-                areFiltersEqual({...savedFilters, name: 'test'}, filtersDraft)
+                areFiltersEqual(
+                    { ...savedFilters, name: 'test' },
+                    filtersDraft,
+                ),
             ).toBeFalsy()
 
             expect(
@@ -785,8 +793,8 @@ describe('stats components utils', () => {
                             savedFilters.filter_group[2],
                         ],
                     },
-                    filtersDraft
-                )
+                    filtersDraft,
+                ),
             ).toBeFalsy()
         })
     })

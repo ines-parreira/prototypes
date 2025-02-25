@@ -1,4 +1,4 @@
-import {act, renderHook} from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react-hooks'
 
 import useElementSize from '../useElementSize'
 
@@ -11,12 +11,12 @@ describe('useElementSize', () => {
         unobserve = jest.fn()
 
         // @ts-expect-error
-        window.ResizeObserver = jest.fn(() => ({observe, unobserve}))
+        window.ResizeObserver = jest.fn(() => ({ observe, unobserve }))
     })
 
     it('should return the element size', () => {
         const element = document.createElement('div')
-        const {result} = renderHook(() => useElementSize(element))
+        const { result } = renderHook(() => useElementSize(element))
 
         expect(result.current).toEqual([0, 0])
         expect(observe).toHaveBeenCalledWith(element)
@@ -27,7 +27,7 @@ describe('useElementSize', () => {
         act(() => {
             cb([
                 {
-                    borderBoxSize: [{blockSize: 30, inlineSize: 40}],
+                    borderBoxSize: [{ blockSize: 30, inlineSize: 40 }],
                     target: element,
                 } as unknown as ResizeObserverEntry,
             ])

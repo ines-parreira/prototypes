@@ -1,11 +1,12 @@
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-import {Map, fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {agents} from 'fixtures/agents'
+import { agents } from 'fixtures/agents'
 import useElementSize from 'hooks/useElementSize'
 
 import TicketTags from '../TicketTags'
@@ -16,7 +17,7 @@ const mockNumberOfWrappedElements = 3
 
 jest.mock(
     'common/utils/getElementWrapInfo',
-    () => () => mockNumberOfWrappedElements
+    () => () => mockNumberOfWrappedElements,
 )
 
 jest.mock('lodash/uniqueId', () => () => '42')
@@ -29,9 +30,9 @@ useElementSizeMock.mockReturnValue([160, 100])
 jest.mock(
     '../TagDropdown',
     () =>
-        ({addTag}: {addTag: ({name}: {name: string}) => void}) => (
-            <div onClick={() => addTag({name: 'mock'})}>TagDropdownMock</div>
-        )
+        ({ addTag }: { addTag: ({ name }: { name: string }) => void }) => (
+            <div onClick={() => addTag({ name: 'mock' })}>TagDropdownMock</div>
+        ),
 )
 
 describe('<TicketTags />', () => {
@@ -44,31 +45,31 @@ describe('<TicketTags />', () => {
         addTag: jest.fn(),
         removeTag: jest.fn(),
         ticketTags: fromJS([
-            {name: 'refund'},
-            {name: 'angry'},
-            {name: 'return'},
-            {name: 'customer'},
+            { name: 'refund' },
+            { name: 'angry' },
+            { name: 'return' },
+            { name: 'customer' },
         ]),
     }
 
     it('should display current tags', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <TicketTags {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should allow to show and hide overflowing tags', async () => {
-        const {container, getByText, getAllByText} = render(
+        const { container, getByText, getAllByText } = render(
             <Provider store={store}>
                 <TicketTags {...minProps} />
-            </Provider>
+            </Provider>,
         )
         const expandButton = getByText(
-            new RegExp(`${mockNumberOfWrappedElements}`)
+            new RegExp(`${mockNumberOfWrappedElements}`),
         )
         expect(container.firstChild).toHaveStyle('height: 24px')
         fireEvent.mouseOver(expandButton)
@@ -83,7 +84,7 @@ describe('<TicketTags />', () => {
         render(
             <Provider store={store}>
                 <TicketTags {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(screen.getByText('TagDropdownMock'))
@@ -95,7 +96,7 @@ describe('<TicketTags />', () => {
         render(
             <Provider store={store}>
                 <TicketTags {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(screen.getAllByText('close')[0])

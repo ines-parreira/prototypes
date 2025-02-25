@@ -1,30 +1,31 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks/dom'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
-import routerDom, {useParams} from 'react-router-dom'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks/dom'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import routerDom, { useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {account} from 'fixtures/account'
-import {channelConnection} from 'fixtures/channelConnection'
-import {entitiesInitialState} from 'fixtures/entities'
-import {integrationsState} from 'fixtures/integrations'
+import { account } from 'fixtures/account'
+import { channelConnection } from 'fixtures/channelConnection'
+import { entitiesInitialState } from 'fixtures/entities'
+import { integrationsState } from 'fixtures/integrations'
 import {
     useGetSettingsList,
     useUpdateSetting,
 } from 'models/convert/settings/queries'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import {
-    CampaignTableColumnDefaultSelect,
     CampaignPerformanceTableDefaultConfigurationViews,
+    CampaignTableColumnDefaultSelect,
 } from 'pages/stats/convert/components/CampaignTableStats/constants'
-import {RootState, StoreDispatch} from 'state/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
-import {useCampaignPerformanceTableSetting} from '../useCampaignPerformanceTableSetting'
+import { useCampaignPerformanceTableSetting } from '../useCampaignPerformanceTableSetting'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])
 const queryClient = mockQueryClient()
@@ -42,7 +43,7 @@ const useUpdateSettingMock = assumeMock(useUpdateSetting)
 
 jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')
 const useGetOrCreateChannelConnectionMock = assumeMock(
-    useGetOrCreateChannelConnection
+    useGetOrCreateChannelConnection,
 )
 
 describe('useCampaignPerformanceTableSetting', () => {
@@ -74,17 +75,17 @@ describe('useCampaignPerformanceTableSetting', () => {
             isLoading: false,
         } as any)
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () => useCampaignPerformanceTableSetting(),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={mockStore(defaultState)}>
                         <QueryClientProvider client={queryClient}>
                             {children}
                         </QueryClientProvider>
                     </Provider>
                 ),
-            }
+            },
         )
 
         expect(result.current).toEqual({

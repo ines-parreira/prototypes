@@ -1,20 +1,21 @@
-import {render} from '@testing-library/react'
 import React from 'react'
-import {Redirect, Route, useRouteMatch} from 'react-router-dom'
 
-import {PageSection} from 'config/pages'
-import {AGENT_ROLE} from 'config/user'
+import { render } from '@testing-library/react'
+import { Redirect, Route, useRouteMatch } from 'react-router-dom'
+
+import { PageSection } from 'config/pages'
+import { AGENT_ROLE } from 'config/user'
 import MacrosSettingsContent from 'pages/settings/macros/MacrosSettingsContent'
 import MacrosSettingsForm from 'pages/settings/macros/MacrosSettingsForm'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
-import {renderAppSettings} from '../helpers/settingsRenderer'
-import {Macros} from '../Macros'
+import { renderAppSettings } from '../helpers/settingsRenderer'
+import { Macros } from '../Macros'
 
 jest.mock('react-router-dom', () => ({
     Redirect: jest.fn(() => <div>redirect</div>),
     Route: jest.fn(() => <div>route</div>),
-    Switch: jest.fn(({children}) => <div>{children}</div>),
+    Switch: jest.fn(({ children }) => <div>{children}</div>),
     useRouteMatch: jest.fn(),
 }))
 
@@ -128,6 +129,6 @@ describe('Macros', () => {
                 },
                 {},
             ])
-        }
+        },
     )
 })

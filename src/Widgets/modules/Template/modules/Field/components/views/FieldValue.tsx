@@ -1,5 +1,6 @@
+import React, { ComponentProps } from 'react'
+
 import cs from 'classnames'
-import React, {ComponentProps} from 'react'
 
 import css from './FieldValue.less'
 

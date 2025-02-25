@@ -3,7 +3,7 @@ import React from 'react'
 type SummaryHeaderProps = {
     periodEnd: string
 }
-const SummaryHeader = ({periodEnd}: SummaryHeaderProps) => {
+const SummaryHeader = ({ periodEnd }: SummaryHeaderProps) => {
     return (
         <div className="body-regular">
             {`Once you confirm cancellation, you'll continue to have full access

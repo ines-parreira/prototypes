@@ -1,15 +1,17 @@
-import classnames from 'classnames'
-import {produce} from 'immer'
 import React from 'react'
 
+import classnames from 'classnames'
+import { produce } from 'immer'
+
 import {
+    IvrForwardCallMenuAction,
     IvrMenuAction,
     IvrMenuActionType,
-    IvrForwardCallMenuAction,
 } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 
 import IvrMenuActionField from './IvrMenuActionField'
+
 import css from './VoiceIntegrationIvr.less'
 
 type Props = {
@@ -18,7 +20,7 @@ type Props = {
 }
 
 const IvrMenuActionsFieldArray = (props: Props): JSX.Element => {
-    const {value, onChange} = props
+    const { value, onChange } = props
 
     const addAction = () => {
         const digit = (value.length + 1).toString()
@@ -38,9 +40,9 @@ const IvrMenuActionsFieldArray = (props: Props): JSX.Element => {
             produce(value, (draft) => {
                 draft.splice(index, 1)
                 draft.map(
-                    (action, index) => (action.digit = (index + 1).toString())
+                    (action, index) => (action.digit = (index + 1).toString()),
                 )
-            })
+            }),
         )
     }
 
@@ -48,7 +50,7 @@ const IvrMenuActionsFieldArray = (props: Props): JSX.Element => {
         onChange(
             produce(value, (draft) => {
                 draft[index] = action
-            })
+            }),
         )
     }
 

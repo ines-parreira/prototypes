@@ -6,26 +6,26 @@ import {
     useMedianFirstResponseTimeMetricPerAgent,
     useMedianResolutionTimeMetricPerAgent,
 } from 'hooks/reporting/metricsPerAgent'
-import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
-import {OrderDirection} from 'models/api/types'
-import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
-import {TicketMeasure} from 'models/reporting/cubes/TicketCube'
-import {TicketMessagesMeasure} from 'models/reporting/cubes/TicketMessagesCube'
-import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
-import {StatsFilters} from 'models/stat/types'
+import { MetricWithDecile } from 'hooks/reporting/useMetricPerDimension'
+import { OrderDirection } from 'models/api/types'
+import { HelpdeskMessageCubeWithJoins } from 'models/reporting/cubes/HelpdeskMessageCube'
+import { TicketMeasure } from 'models/reporting/cubes/TicketCube'
+import { TicketMessagesMeasure } from 'models/reporting/cubes/TicketMessagesCube'
+import { TicketSatisfactionSurveyMeasure } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
+import { StatsFilters } from 'models/stat/types'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
-import {TableLabels} from 'pages/stats/support-performance/agents/AgentsTableConfig'
-import {AgentsTableColumn} from 'state/ui/stats/types'
+import { TableLabels } from 'pages/stats/support-performance/agents/AgentsTableConfig'
+import { AgentsTableColumn } from 'state/ui/stats/types'
 
 export interface ShoutoutConfig {
     useQuery: (
         statsFilters: StatsFilters,
         timezone: string,
         sorting?: OrderDirection,
-        agentAssigneeId?: string
+        agentAssigneeId?: string,
     ) => MetricWithDecile
     queryOrder: OrderDirection
     metricName: string
@@ -41,13 +41,13 @@ const formatDecimals = _partial(
     formatMetricValue,
     _partial.placeholder,
     'decimal',
-    NOT_AVAILABLE_PLACEHOLDER
+    NOT_AVAILABLE_PLACEHOLDER,
 )
 const formatDuration = _partial(
     formatMetricValue,
     _partial.placeholder,
     'duration',
-    NOT_AVAILABLE_PLACEHOLDER
+    NOT_AVAILABLE_PLACEHOLDER,
 )
 
 export enum TopPerformersChart {

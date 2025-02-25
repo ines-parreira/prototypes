@@ -18,7 +18,7 @@ export function isEditable(element: Element): boolean {
     return (
         (element.tagName === 'INPUT' &&
             !nonEditableInputTypes.includes(
-                element.getAttribute('type') as any
+                element.getAttribute('type') as any,
             )) ||
         element.tagName === 'SELECT' ||
         element.tagName === 'TEXTAREA' ||

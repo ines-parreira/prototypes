@@ -1,5 +1,5 @@
-import {RuleEngineData, RuleEngineRoutes} from '../ruleEngine'
-import {Task} from './Task'
+import { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
+import { Task } from './Task'
 
 export class ConnectYourDefaultEmailTask extends Task {
     constructor(data: RuleEngineData, routes: RuleEngineRoutes) {
@@ -8,7 +8,7 @@ export class ConnectYourDefaultEmailTask extends Task {
             'Increase your AI Agent’s coverage by connect your default email',
             'RECOMMENDED',
             data,
-            routes
+            routes,
         )
     }
 
@@ -24,7 +24,7 @@ export class ConnectYourDefaultEmailTask extends Task {
         }
 
         const defaultEmailIntegration = data.emailIntegrations.find(
-            (emailIntegration) => emailIntegration.isDefault
+            (emailIntegration) => emailIntegration.isDefault,
         )
 
         if (!defaultEmailIntegration) {
@@ -32,12 +32,12 @@ export class ConnectYourDefaultEmailTask extends Task {
         }
 
         return data.aiAgentStoreConfiguration.monitoredEmailIntegrations.some(
-            (ei) => ei.id === defaultEmailIntegration.id
+            (ei) => ei.id === defaultEmailIntegration.id,
         )
     }
 
     protected getFeatureUrl({
-        routes: {aiAgentRoutes},
+        routes: { aiAgentRoutes },
     }: {
         data: RuleEngineData
         routes: RuleEngineRoutes

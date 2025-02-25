@@ -1,10 +1,12 @@
-import {Macro} from '@gorgias/api-queries'
-import React, {useState} from 'react'
+import React, { useState } from 'react'
+
+import { Macro } from '@gorgias/api-queries'
 
 import Button from 'pages/common/components/button/Button'
 
+import { PreviewPopover } from './PreviewPopover'
+
 import css from './MacroButton.less'
-import {PreviewPopover} from './PreviewPopover'
 
 type Props = {
     macro: Macro
@@ -12,7 +14,7 @@ type Props = {
     onHover: () => void
 }
 
-export const MacroButton = ({macro, applyMacro, onHover}: Props) => {
+export const MacroButton = ({ macro, applyMacro, onHover }: Props) => {
     const [isPreviewOpen, setPreviewOpen] = useState(false)
     const buttonId = `macro-quick-reply-${macro.id}`
     return (

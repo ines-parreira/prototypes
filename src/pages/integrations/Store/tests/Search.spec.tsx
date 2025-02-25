@@ -1,14 +1,15 @@
-import {fireEvent, screen} from '@testing-library/react'
-import {createMemoryHistory} from 'history'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, screen } from '@testing-library/react'
+import { createMemoryHistory } from 'history'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import history from 'pages/history'
-import {renderWithRouter} from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
-import {SEARCH_URL_PARAM} from '../constants'
+import { SEARCH_URL_PARAM } from '../constants'
 import Search from '../Search'
 
 const mockStore = configureMockStore([thunk])
@@ -26,7 +27,7 @@ describe('<Search />', () => {
             </Provider>,
             {
                 route: `?${SEARCH_URL_PARAM}=${inputValue}`,
-            }
+            },
         )
         expect(screen.getByRole('textbox')).toHaveValue(inputValue)
     })
@@ -40,7 +41,7 @@ describe('<Search />', () => {
             {
                 history,
                 route: `?${SEARCH_URL_PARAM}=we don't care`,
-            }
+            },
         )
         history.push('?')
         expect(screen.getByRole('textbox')).toHaveValue('')
@@ -50,14 +51,14 @@ describe('<Search />', () => {
         renderWithRouter(
             <Provider store={store}>
                 <Search />
-            </Provider>
+            </Provider>,
         )
         fireEvent.change(screen.getByRole('textbox'), {
-            target: {value: ' some Random value '},
+            target: { value: ' some Random value ' },
         })
         expect(history.replace).toHaveBeenNthCalledWith(
             1,
-            `?${SEARCH_URL_PARAM}=some%20random%20value`
+            `?${SEARCH_URL_PARAM}=some%20random%20value`,
         )
     })
 
@@ -68,10 +69,10 @@ describe('<Search />', () => {
             </Provider>,
             {
                 route: `?${SEARCH_URL_PARAM}=we don't care`,
-            }
+            },
         )
         fireEvent.change(screen.getByRole('textbox'), {
-            target: {value: ''},
+            target: { value: '' },
         })
         expect(history.replace).toHaveBeenNthCalledWith(1, `?`)
     })
@@ -80,12 +81,12 @@ describe('<Search />', () => {
         renderWithRouter(
             <Provider store={store}>
                 <Search />
-            </Provider>
+            </Provider>,
         )
         const clearIcon = screen.getByText('cancel')
         expect(clearIcon).toHaveClass('hidden')
         fireEvent.change(screen.getByRole('textbox'), {
-            target: {value: 'whatever'},
+            target: { value: 'whatever' },
         })
         expect(clearIcon).not.toHaveClass('hidden')
     })

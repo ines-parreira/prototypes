@@ -1,10 +1,11 @@
-import {fromJS, Map} from 'immutable'
 import React from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { fromJS, Map } from 'immutable'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import {isCurrentlyOnTicket} from 'utils'
+import { isCurrentlyOnTicket } from 'utils'
 
 type Props = {
     customer: Map<any, any>

@@ -1,4 +1,4 @@
-import {OrderDirection} from 'models/api/types'
+import { OrderDirection } from 'models/api/types'
 import {
     TicketCubeWithJoins,
     TicketDimension,
@@ -14,7 +14,7 @@ import {
     ReportingQuery,
     TimeSeriesQuery,
 } from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import { StatsFilters } from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
@@ -27,7 +27,7 @@ import {
 export const tagsTicketCountQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ): ReportingQuery<TicketTagsEnrichedCube> => ({
     measures: [TicketTagsEnrichedMeasure.TicketCount],
     dimensions: [TicketTagsEnrichedDimension.TagId],
@@ -48,7 +48,7 @@ export const tagsTicketCountTimeSeriesFactory = (
     filters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ): TimeSeriesQuery<TicketCubeWithJoins> => ({
     ...tagsTicketCountQueryFactory(filters, timezone, sorting),
     timeDimensions: [
@@ -65,7 +65,7 @@ export const tagsTicketCountDrillDownQueryFactory = (
     timezone: string,
     tagId: string,
     dateRange: StatsFilters['period'],
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ): ReportingQuery<TicketCubeWithJoins> => ({
     ...tagsTicketCountQueryFactory(filters, timezone, sorting),
     dimensions: [TicketDimension.TicketId],

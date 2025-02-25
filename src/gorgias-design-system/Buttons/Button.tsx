@@ -1,16 +1,16 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
+import React, { HTMLAttributes } from 'react'
 
-import {useTheme} from '@emotion/react'
+import { useTheme } from '@emotion/react'
 import styled from '@emotion/styled'
-import React, {HTMLAttributes} from 'react'
 
-import {gorgiasColors} from 'gorgias-design-system/styles'
+import { gorgiasColors } from 'gorgias-design-system/styles'
 import {
+    getContrastColor,
     relativeDarken,
     relativeLighten,
-    getContrastColor,
 } from 'gorgias-design-system/utils'
-import {ChatTheme} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview'
+import { ChatTheme } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview'
 
 import SpinnerIcon from './icons/SpinnerIcon'
 
@@ -77,13 +77,13 @@ const StyledSpinnerContainer = styled.div`
 const StyledButtonWrapper = styled.span<
     Pick<ButtonProps, 'disabled' | 'isLoading' | 'isStretched'>
 >`
-    ${({disabled, isLoading}) =>
+    ${({ disabled, isLoading }) =>
         (disabled || isLoading) && 'cursor: not-allowed;'}
 
-    ${({isStretched}) => isStretched && 'width: 100%;'}
+    ${({ isStretched }) => isStretched && 'width: 100%;'}
 `
 
-const StyledButton = styled.button<ButtonProps & {theme: ChatTheme}>`
+const StyledButton = styled.button<ButtonProps & { theme: ChatTheme }>`
     display: flex;
     gap: 8px;
 
@@ -95,7 +95,7 @@ const StyledButton = styled.button<ButtonProps & {theme: ChatTheme}>`
         outline: 0;
     }
 
-    border: ${({variant, theme, disabled}) =>
+    border: ${({ variant, theme, disabled }) =>
         variant === 'tertiary' && !disabled
             ? `1px solid ${theme.mainColor}`
             : '0'};
@@ -103,16 +103,16 @@ const StyledButton = styled.button<ButtonProps & {theme: ChatTheme}>`
 
     user-select: none;
 
-    padding: ${({size}) => (size === 'small' ? '8px 16px;' : '14px 20px;')};
+    padding: ${({ size }) => (size === 'small' ? '8px 16px;' : '14px 20px;')};
 
-    ${({disabled, isLoading}) =>
+    ${({ disabled, isLoading }) =>
         (disabled || isLoading) && 'pointer-events: none;'}
 
-    ${({isStretched}) =>
+    ${({ isStretched }) =>
         isStretched &&
         'width: 100%; justify-content: center; text-transform: capitalize;'}
 
-    ${({theme, variant, disabled}) => {
+    ${({ theme, variant, disabled }) => {
         if (disabled) {
             return `
                 background-color: ${gorgiasColors.neutralGrey3};

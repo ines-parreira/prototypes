@@ -1,10 +1,10 @@
-import {renderHook, act} from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react-hooks'
 
 import useOrderBy from 'hooks/useOrderBy'
-import {OrderDirection} from 'models/api/types'
-import {assumeMock} from 'utils/testing'
+import { OrderDirection } from 'models/api/types'
+import { assumeMock } from 'utils/testing'
 
-import {VoiceCallTableColumnName} from './constants'
+import { VoiceCallTableColumnName } from './constants'
 import useVoiceCallTableOrdering from './useVoiceCallTableOrdering'
 
 jest.mock('hooks/useOrderBy')
@@ -25,22 +25,22 @@ describe('useVoiceCallTableOrdering', () => {
     })
 
     it('should initialize with default values', () => {
-        const {result} = render()
+        const { result } = render()
 
         expect(mockUseOrderBy).toHaveBeenCalledWith(
             VoiceCallTableColumnName.Date,
-            OrderDirection.Desc
+            OrderDirection.Desc,
         )
 
         expect(result.current.orderByColumnName).toBe(
-            VoiceCallTableColumnName.Date
+            VoiceCallTableColumnName.Date,
         )
         expect(result.current.orderDirection).toBe(OrderDirection.Desc)
         expect(result.current.orderByDimension).toBeDefined()
     })
 
     it('should call toggleOrderBy when onOrderChange is called with a sortable column', () => {
-        const {result} = render()
+        const { result } = render()
         const column = VoiceCallTableColumnName.Date
 
         act(() => {
@@ -52,7 +52,7 @@ describe('useVoiceCallTableOrdering', () => {
     })
 
     it('should not call toggleOrderBy when onOrderChange is called with a non-sortable column', () => {
-        const {result} = render()
+        const { result } = render()
         const column = VoiceCallTableColumnName.Activity
 
         act(() => {

@@ -1,7 +1,8 @@
-import classNames from 'classnames'
 import React from 'react'
 
-import {BigCommerceOrderProduct} from 'models/integration/types'
+import classNames from 'classnames'
+
+import { BigCommerceOrderProduct } from 'models/integration/types'
 import bigcommerceLineItemRowCss from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/components/order-table/OrderLineItemRow.less'
 
 type Props = {
@@ -9,7 +10,7 @@ type Props = {
     isDisabled?: boolean
 }
 
-export function GiftWrappingComponent({product, isDisabled = false}: Props) {
+export function GiftWrappingComponent({ product, isDisabled = false }: Props) {
     const renderImage = () => {
         return <i className="material-icons">redeem</i>
     }

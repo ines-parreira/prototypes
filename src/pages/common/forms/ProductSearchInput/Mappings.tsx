@@ -1,34 +1,33 @@
 import {
+    InventoryPolicy as ShipifyInventoryPolicy,
     Product as ShopifyProduct,
     Variant as ShopifyVariant,
-    InventoryPolicy as ShipifyInventoryPolicy,
 } from 'constants/integrations/types/shopify'
 import {
-    IntegrationType,
-    IntegrationDataItem,
-    BigCommerceProductVariant,
     BigCommerceProduct,
+    BigCommerceProductVariant,
+    IntegrationDataItem,
+    IntegrationType,
 } from 'models/integration/types'
+import { supportedBigCommerceModifierTypes } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/components/modifiers-popover/consts'
 
-import {supportedBigCommerceModifierTypes} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/components/modifiers-popover/consts'
-
-import {Props as ResultProps} from './Result'
+import { Props as ResultProps } from './Result'
 
 export const shopifyDataMappers = {
     variantsPath: (integrationItem: IntegrationDataItem<ShopifyProduct>) =>
         integrationItem.data.variants,
     product: (
-        integrationItem: IntegrationDataItem<ShopifyProduct>
+        integrationItem: IntegrationDataItem<ShopifyProduct>,
     ): ResultProps => {
         const product = integrationItem.data
         const variant = product.variants[0]
         const sku = variant.sku ? `SKU: ${variant.sku}` : null
         const isTracked = product.variants.every(
-            (variant) => !!variant.inventory_management
+            (variant) => !!variant.inventory_management,
         )
         const quantity = product.variants.reduce(
             (total, variant) => total + variant.inventory_quantity,
-            0
+            0,
         )
 
         const isAvailable =
@@ -58,7 +57,7 @@ export const shopifyDataMappers = {
     },
     variants: (
         integrationItem: IntegrationDataItem<ShopifyProduct>,
-        variant: ShopifyVariant
+        variant: ShopifyVariant,
     ): ResultProps => {
         const product = integrationItem.data
         const title =
@@ -92,12 +91,12 @@ export const bigcommerceDataMappers = {
     variantsPath: (integrationItem: IntegrationDataItem<BigCommerceProduct>) =>
         integrationItem.data.variants,
     product: (
-        integrationItem: IntegrationDataItem<BigCommerceProduct>
+        integrationItem: IntegrationDataItem<BigCommerceProduct>,
     ): ResultProps => {
         const product = integrationItem.data
-        const image = {src: product.image_url, alt: product.name} as const
+        const image = { src: product.image_url, alt: product.name } as const
         const isDisabled = (product.modifiers ?? []).some(
-            ({type}) => !supportedBigCommerceModifierTypes.includes(type)
+            ({ type }) => !supportedBigCommerceModifierTypes.includes(type),
         )
 
         return {
@@ -110,7 +109,7 @@ export const bigcommerceDataMappers = {
                   : '',
             stock: {
                 tracked: ['variant', 'product'].includes(
-                    product.inventory_tracking
+                    product.inventory_tracking,
                 ),
                 quantity: product.inventory_level,
                 totalVariants: product.variants ? product.variants.length : 0,
@@ -123,13 +122,13 @@ export const bigcommerceDataMappers = {
     },
     variants: (
         integrationItem: IntegrationDataItem<BigCommerceProduct>,
-        variant: BigCommerceProductVariant
+        variant: BigCommerceProductVariant,
     ): ResultProps => {
         const product = integrationItem.data
         const image_url = variant.image_url
             ? variant.image_url
             : product.image_url
-        const image = {src: image_url, alt: ''} as const
+        const image = { src: image_url, alt: '' } as const
 
         return {
             image,

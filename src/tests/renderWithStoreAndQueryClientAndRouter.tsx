@@ -1,12 +1,13 @@
-import {render} from '@testing-library/react'
-import {createMemoryHistory} from 'history'
-import React, {ReactElement} from 'react'
-import {Provider} from 'react-redux'
-import {Route, Router} from 'react-router-dom'
+import React, { ReactElement } from 'react'
 
-import {RootState} from 'state/types'
-import {mockQueryClientProvider} from 'tests/reactQueryTestingUtils'
-import {mockStore, RenderWithRouterParams} from 'utils/testing'
+import { render } from '@testing-library/react'
+import { createMemoryHistory } from 'history'
+import { Provider } from 'react-redux'
+import { Route, Router } from 'react-router-dom'
+
+import { RootState } from 'state/types'
+import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
+import { mockStore, RenderWithRouterParams } from 'utils/testing'
 
 export const renderWithStoreAndQueryClientAndRouter = (
     element: ReactElement,
@@ -16,17 +17,17 @@ export const renderWithStoreAndQueryClientAndRouter = (
         path: '/',
         route: '/',
         history: undefined,
-    }
+    },
 ) => {
     const store = mockStore(state)
     const MockQueryClientProvider = mockQueryClientProvider()
     const history =
         routing.history ||
-        createMemoryHistory({initialEntries: [routing.route || '/']})
+        createMemoryHistory({ initialEntries: [routing.route || '/'] })
 
     return {
         ...render(element, {
-            wrapper: ({children}: any) => (
+            wrapper: ({ children }: any) => (
                 <Provider store={store}>
                     <MockQueryClientProvider>
                         <Router history={history}>

@@ -1,16 +1,17 @@
-import {EmailDNSRecord, EmailDomain} from '@gorgias/api-queries'
 import React from 'react'
+
+import { EmailDNSRecord, EmailDomain } from '@gorgias/api-queries'
 
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 
-import {removeDomainFromDNSRecords} from '../../helpers'
-
+import { removeDomainFromDNSRecords } from '../../helpers'
 import RecordItem from './RecordItem'
-import css from './RecordsTable.less'
 import RecordsTableSkeleton from './RecordsTableSkeleton'
+
+import css from './RecordsTable.less'
 
 type Props = {
     domainName: string
@@ -18,10 +19,10 @@ type Props = {
     domain?: EmailDomain
 }
 
-const RecordsTable = ({domainName, isLoading, domain}: Props) => {
+const RecordsTable = ({ domainName, isLoading, domain }: Props) => {
     const records = removeDomainFromDNSRecords(
         domain?.data.sending_dns_records ?? [],
-        domainName
+        domainName,
     )
 
     return (

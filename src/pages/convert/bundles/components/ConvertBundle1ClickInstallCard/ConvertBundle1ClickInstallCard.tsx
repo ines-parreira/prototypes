@@ -1,5 +1,6 @@
+import React, { useMemo } from 'react'
+
 import classnames from 'classnames'
-import React, {useMemo} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAsyncFn from 'hooks/useAsyncFn'
@@ -10,9 +11,9 @@ import {
     BundleStatus,
 } from 'models/convert/bundle/types'
 import Button from 'pages/common/components/button/Button'
-import {transformBundleError} from 'pages/convert/common/utils/transformBundleError'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { transformBundleError } from 'pages/convert/common/utils/transformBundleError'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 import css from './ConvertBundle1ClickInstallCard.less'
 
@@ -43,7 +44,7 @@ const ConvertBundle1ClickInstallCard = ({
         bundle?.status === BundleStatus.Installed &&
         bundle?.method === BundleInstallationMethodResponse.ThemeApp
 
-    const [{loading: isUninstallSubmitting}, handleUninstall] =
+    const [{ loading: isUninstallSubmitting }, handleUninstall] =
         useAsyncFn(async () => {
             if (!bundle) {
                 return
@@ -57,7 +58,7 @@ const ConvertBundle1ClickInstallCard = ({
             try {
                 await client.post(
                     `/api/revenue-addon-bundle/${bundle.id}/uninstall/`,
-                    {}
+                    {},
                 )
 
                 if (onChange) {
@@ -68,7 +69,7 @@ const ConvertBundle1ClickInstallCard = ({
                     notify({
                         status: NotificationStatus.Success,
                         message: 'Bundle uninstalled',
-                    })
+                    }),
                 )
             } catch (error) {
                 void dispatch(
@@ -76,14 +77,14 @@ const ConvertBundle1ClickInstallCard = ({
                         transformBundleError(
                             error,
                             "Couldn't uninstall bundle",
-                            bundle.shop_integration_id
-                        )
-                    )
+                            bundle.shop_integration_id,
+                        ),
+                    ),
                 )
             }
         }, [bundle, isThemeAppExtensionInstallation, chatIntegrationId])
 
-    const [{loading: isInstallSubmitting}, handleInstall] = useAsyncFn(
+    const [{ loading: isInstallSubmitting }, handleInstall] = useAsyncFn(
         async () => {
             try {
                 await client.post(`/api/revenue-addon-bundle/install/`, {
@@ -98,7 +99,7 @@ const ConvertBundle1ClickInstallCard = ({
                     notify({
                         status: NotificationStatus.Success,
                         message: 'Bundle installed successfully',
-                    })
+                    }),
                 )
             } catch (error) {
                 void dispatch(
@@ -106,12 +107,12 @@ const ConvertBundle1ClickInstallCard = ({
                         transformBundleError(
                             error,
                             "Couldn't install bundle",
-                            integrationId
-                        )
-                    )
+                            integrationId,
+                        ),
+                    ),
                 )
             }
-        }
+        },
     )
 
     const shouldDisplay = useMemo(() => {
@@ -132,7 +133,7 @@ const ConvertBundle1ClickInstallCard = ({
                     {isOneClickInstalled || isThemeAppInstalled ? (
                         <i
                             className="material-icons text-success"
-                            style={{fontSize: 24}}
+                            style={{ fontSize: 24 }}
                         >
                             check_circle
                         </i>

@@ -1,5 +1,6 @@
-import {render} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { render } from '@testing-library/react'
 
 import DonutKeyMetricStat from '../KeyMetricStat/DonutKeyMetricStat'
 
@@ -45,7 +46,7 @@ describe('DonutKeyMetricStat', () => {
                 {...minProps}
                 value={someValue}
                 maxValue={someValue}
-            />
+            />,
         )
 
         const chart = document.querySelector('svg[class*=donut]')
@@ -63,7 +64,7 @@ describe('DonutKeyMetricStat', () => {
                 {...minProps}
                 value={someValue}
                 maxValue={someValue}
-            />
+            />,
         )
 
         const chart = document.querySelector('svg[class*=donut]')

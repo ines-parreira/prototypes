@@ -1,14 +1,15 @@
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useFlag} from 'core/flags'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useLegacyAlertBanners from 'notifications/hooks/useLegacyAlertBanners'
 
-import {useBannersContext} from '../Context'
-import {useBannerCarousel} from '../hooks/useBannerCarousel'
-import {AlertBanner} from './AlertBanner'
+import { useBannersContext } from '../Context'
+import { useBannerCarousel } from '../hooks/useBannerCarousel'
+import { AlertBanner } from './AlertBanner'
+import { CarouselNavigation } from './CarouselNavigation'
+
 import css from './AlertBanner.less'
-import {CarouselNavigation} from './CarouselNavigation'
 
 const AlertBanners = () => {
     const legacyBanners = useLegacyAlertBanners()
@@ -16,7 +17,7 @@ const AlertBanners = () => {
 
     const carouselBannerFlag: boolean = useFlag(
         FeatureFlagKey.BannerCarousel,
-        false
+        false,
     )
 
     const {

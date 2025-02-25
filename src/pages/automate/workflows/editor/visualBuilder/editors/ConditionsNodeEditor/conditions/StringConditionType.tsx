@@ -1,5 +1,6 @@
-import {produce} from 'immer'
-import React, {useRef, useState} from 'react'
+import React, { useRef, useState } from 'react'
+
+import { produce } from 'immer'
 
 import {
     ConditionSchema,
@@ -89,7 +90,7 @@ export const StringConditionType = ({
                                                     }
 
                                                     schema[1] = nextValue
-                                                })
+                                                }),
                                             )
                                         }}
                                         shouldCloseOnSelect
@@ -119,7 +120,7 @@ export const StringConditionType = ({
                         }
 
                         schema[1] = nextValue
-                    })
+                    }),
                 )
             }}
             error={error}

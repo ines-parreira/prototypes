@@ -2,7 +2,7 @@ import React from 'react'
 
 export function useOnClickOutside<Element extends HTMLElement = HTMLElement>(
     ref: React.RefObject<Element>,
-    handler: (ev: MouseEvent | TouchEvent) => void
+    handler: (ev: MouseEvent | TouchEvent) => void,
 ): void {
     React.useEffect(() => {
         const listener = (event: MouseEvent | TouchEvent) => {

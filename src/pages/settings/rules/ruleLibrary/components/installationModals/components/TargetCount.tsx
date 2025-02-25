@@ -6,7 +6,7 @@ type Props = {
     count: number
 }
 
-const TargetCount: React.FC<Props> = ({count}) => (
+const TargetCount: React.FC<Props> = ({ count }) => (
     <div className={css.count}>
         <div className={css.targetTitle}>install to target up to</div>
         <div className={css.targetValue}>

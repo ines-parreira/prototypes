@@ -1,6 +1,7 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
-import {MemoryRouter} from 'react-router-dom'
+
+import { render, screen } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
 
 import {
     ActivateCustomerSatisfactionSurveyTip,
@@ -18,7 +19,7 @@ describe('<ActivateCustomerSatisfactionSurveyTip />', () => {
         render(
             <MemoryRouter>
                 <ActivateCustomerSatisfactionSurveyTip />
-            </MemoryRouter>
+            </MemoryRouter>,
         )
 
         screen.getByRole('button', {
@@ -27,7 +28,7 @@ describe('<ActivateCustomerSatisfactionSurveyTip />', () => {
 
         expect(screen.getByRole('link')).toHaveAttribute(
             'href',
-            SATISFACTION_SURVEYS_SETTINGS_PATH
+            SATISFACTION_SURVEYS_SETTINGS_PATH,
         )
         expect(screen.getByText(CSAT_CTA)).toBeInTheDocument()
     })

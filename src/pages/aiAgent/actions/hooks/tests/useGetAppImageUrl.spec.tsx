@@ -1,11 +1,12 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
 
-import {dummyAppListData} from 'fixtures/apps'
-import {useGetApps, useGetAppsByIds} from 'models/integration/queries'
-import {useListActionsApps} from 'models/workflows/queries'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
+
+import { dummyAppListData } from 'fixtures/apps'
+import { useGetApps, useGetAppsByIds } from 'models/integration/queries'
+import { useListActionsApps } from 'models/workflows/queries'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import useGetAppImageUrl from '../useGetAppImageUrl'
 
@@ -35,18 +36,18 @@ describe('useGetAppImageUrl', () => {
 
         mockUseGetAppsByIds.mockReturnValue([])
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useGetAppImageUrl({
                     type: 'shopify',
                 }),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         {children}
                     </QueryClientProvider>
                 ),
-            }
+            },
         )
 
         expect(result.current).toEqual('/assets/img/integrations/shopify.png')

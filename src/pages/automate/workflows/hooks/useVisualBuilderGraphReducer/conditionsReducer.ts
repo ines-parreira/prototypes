@@ -1,7 +1,7 @@
-import {produce} from 'immer'
+import { produce } from 'immer'
 
-import {ConditionsSchema} from '../../models/conditions.types'
-import {buildEdgeCommonProperties} from '../../models/visualBuilderGraph.model'
+import { ConditionsSchema } from '../../models/conditions.types'
+import { buildEdgeCommonProperties } from '../../models/visualBuilderGraph.model'
 import {
     ConditionsNodeType,
     VisualBuilderEdge,
@@ -69,20 +69,24 @@ export function isVisualBuilderConditionAction(action: {
 
 export function conditionsReducer(
     graph: VisualBuilderGraph,
-    action: VisualBuilderConditionsAction
+    action: VisualBuilderConditionsAction,
 ): VisualBuilderGraph {
     switch (action.type) {
         case 'INSERT_CONDITIONS_NODE':
             return computeNodesPositions(
-                insertCondition(graph, action.beforeNodeId)
+                insertCondition(graph, action.beforeNodeId),
             )
         case 'ADD_CONDITIONS_NODE_BRANCH':
             return computeNodesPositions(
-                addConditionBranch(graph, action.conditionNodeId, action.edgeId)
+                addConditionBranch(
+                    graph,
+                    action.conditionNodeId,
+                    action.edgeId,
+                ),
             )
         case 'DELETE_CONDITIONS_NODE_BRANCH': {
             const childNodeId = graph.edges.find(
-                (e) => e.id === action.edgeId
+                (e) => e.id === action.edgeId,
             )?.target
 
             if (childNodeId) {
@@ -93,21 +97,21 @@ export function conditionsReducer(
         }
         case 'REORDER_CONDITIONS_NODE_BRANCHES':
             return computeNodesPositions(
-                reorderBranches(graph, action.nodeId, action.newOrder)
+                reorderBranches(graph, action.nodeId, action.newOrder),
             )
         case 'UPDATE_CONDITIONS_NODE_BRANCH':
             return computeNodesPositions(
                 produce(graph, (draft) => {
                     const edge = draft.edges.find((e) => e.id === action.nodeId)
                     if (edge) {
-                        edge.data = {...edge.data, ...action.data}
+                        edge.data = { ...edge.data, ...action.data }
                     }
-                })
+                }),
             )
         case 'UPDATE_CONDITIONS_NODE_NAME':
             return produce(graph, (draft) => {
                 const node = draft.nodes.find(
-                    (n): n is ConditionsNodeType => n.id === action.nodeId
+                    (n): n is ConditionsNodeType => n.id === action.nodeId,
                 )
                 if (node) {
                     node.data.name = action.name
@@ -128,7 +132,7 @@ function insertCondition(graph: VisualBuilderGraph, beforeNodeId: string) {
         const endNode = buildEndNode(
             triggerNode.type === 'channel_trigger'
                 ? 'ask-for-feedback'
-                : 'end-failure'
+                : 'end-failure',
         )
 
         const targetNode = draft.nodes.find((node) => node.id === beforeNodeId)
@@ -161,7 +165,7 @@ function insertCondition(graph: VisualBuilderGraph, beforeNodeId: string) {
                 data: {
                     name: 'Fallback',
                 },
-            }
+            },
         )
         draft.nodeEditingId = conditionsNode.id
         draft.choiceEventIdEditing = null
@@ -172,11 +176,11 @@ function insertCondition(graph: VisualBuilderGraph, beforeNodeId: string) {
 function reorderBranches(
     graph: VisualBuilderGraph,
     conditionNodeId: string,
-    newOrder: string[]
+    newOrder: string[],
 ) {
     return produce(graph, (draft) => {
         const branches = draft.edges.filter(
-            (edge) => edge.source === conditionNodeId
+            (edge) => edge.source === conditionNodeId,
         )
 
         const fallback = branches.pop()
@@ -185,12 +189,12 @@ function reorderBranches(
             .map((id) => branches.find((e) => e.id === id))
             .filter(
                 (
-                    edge: VisualBuilderEdge | undefined
-                ): edge is VisualBuilderEdge => Boolean(edge)
+                    edge: VisualBuilderEdge | undefined,
+                ): edge is VisualBuilderEdge => Boolean(edge),
             )
 
         draft.edges = draft.edges.filter(
-            (edge) => edge.source !== conditionNodeId
+            (edge) => edge.source !== conditionNodeId,
         )
         draft.edges = draft.edges.concat(newBranches, fallback)
     })
@@ -199,7 +203,7 @@ function reorderBranches(
 function addConditionBranch(
     graph: VisualBuilderGraph,
     conditionNodeId: string,
-    edgeId: string
+    edgeId: string,
 ) {
     const triggerNode = graph.nodes[0]
 
@@ -211,11 +215,11 @@ function addConditionBranch(
             buildEndNode(
                 triggerNode.type === 'channel_trigger'
                     ? 'ask-for-feedback'
-                    : 'end-success'
-            )
+                    : 'end-success',
+            ),
         )
         const edges = draft.edges.filter(
-            (edge) => edge.source === conditionNodeId
+            (edge) => edge.source === conditionNodeId,
         )
 
         const fallback = edges.pop()
@@ -228,7 +232,7 @@ function addConditionBranch(
             data: {
                 name: `Branch ${
                     draft.edges.filter(
-                        (edge) => edge.source === conditionNodeId
+                        (edge) => edge.source === conditionNodeId,
                     ).length
                 }`,
                 conditions: {
@@ -242,7 +246,7 @@ function addConditionBranch(
         const newBranches = [...edges, fallback]
 
         draft.edges = draft.edges.filter(
-            (edge) => edge.source !== conditionNodeId
+            (edge) => edge.source !== conditionNodeId,
         )
 
         draft.edges = draft.edges.concat(newBranches)

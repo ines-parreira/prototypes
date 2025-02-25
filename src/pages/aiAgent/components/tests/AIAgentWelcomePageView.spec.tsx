@@ -1,19 +1,20 @@
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-import {createMemoryHistory} from 'history'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
 
-import {SegmentEvent, logEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
-import useAppDispatch from 'hooks/useAppDispatch'
-import {AiAgentOnboardingWizardStep} from 'models/aiAgent/types'
-import {notify} from 'state/notifications/actions'
-import {renderWithRouter} from 'utils/testing'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { createMemoryHistory } from 'history'
+import { mockFlags } from 'jest-launchdarkly-mock'
 
-import {WIZARD_UPDATE_QUERY_KEY} from '../../constants'
-import {getStoreConfigurationFixture} from '../../fixtures/storeConfiguration.fixtures'
-import {useWelcomePageAcknowledgedMutation} from '../../hooks/useWelcomePageAcknowledgedMutation'
-import {AIAgentWelcomePageView} from '../AIAgentWelcomePageView/AIAgentWelcomePageView'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
+import useAppDispatch from 'hooks/useAppDispatch'
+import { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
+import { notify } from 'state/notifications/actions'
+import { renderWithRouter } from 'utils/testing'
+
+import { WIZARD_UPDATE_QUERY_KEY } from '../../constants'
+import { getStoreConfigurationFixture } from '../../fixtures/storeConfiguration.fixtures'
+import { useWelcomePageAcknowledgedMutation } from '../../hooks/useWelcomePageAcknowledgedMutation'
+import { AIAgentWelcomePageView } from '../AIAgentWelcomePageView/AIAgentWelcomePageView'
 
 const MOCK_WIZARD_VALUES = {
     wizard: {
@@ -80,7 +81,7 @@ describe('<AIAgentWelcomePageView />', () => {
     const assertHref = (href: string, occurences = 1) => {
         const links = screen.queryAllByRole('link')
         expect(
-            links.filter((link) => link.getAttribute('href') === href)
+            links.filter((link) => link.getAttribute('href') === href),
         ).toHaveLength(occurences)
     }
 
@@ -88,23 +89,23 @@ describe('<AIAgentWelcomePageView />', () => {
         expect(
             screen.getByText('Set Up AI Agent', {
                 selector: 'button span',
-            })
+            }),
         ).toBeInTheDocument()
 
         const item1 = screen.getByText(
-            'Join our AI Agent Masterclass live webinar'
+            'Join our AI Agent Masterclass live webinar',
         )
         expect(item1).toContainElement(screen.getByText('ondemand_video'))
         expect(item1).toHaveAttribute(
             'href',
-            'https://link.gorgias.com/ai-agent-webinar-product'
+            'https://link.gorgias.com/ai-agent-webinar-product',
         )
 
         const item2 = screen.getByText('How to set up AI Agent')
         expect(item2).toContainElement(screen.getByText('chrome_reader_mode'))
         expect(item2).toHaveAttribute(
             'href',
-            'https://link.gorgias.com/ai-agent-help-product'
+            'https://link.gorgias.com/ai-agent-help-product',
         )
     }
 
@@ -115,7 +116,7 @@ describe('<AIAgentWelcomePageView />', () => {
                 shopType="shopify"
                 shopName="my-store"
                 state="loading"
-            />
+            />,
         )
         expect(await screen.findAllByText('loading-skeleton')).toHaveLength(5)
         expect(logEvent).not.toHaveBeenCalled()
@@ -128,43 +129,43 @@ describe('<AIAgentWelcomePageView />', () => {
                 shopType="shopify"
                 shopName="my-store"
                 state="static"
-            />
+            />,
         )
 
         expect(
             screen.getByText(
-                'Introducing AI Agent, your team’s newest member for seamless customer interactions who can:'
-            )
+                'Introducing AI Agent, your team’s newest member for seamless customer interactions who can:',
+            ),
         ).toBeInTheDocument()
         expect(
             screen.getByText(
-                'Consume all your brand’s knowledge, identity and tone'
-            )
+                'Consume all your brand’s knowledge, identity and tone',
+            ),
         ).toBeInTheDocument()
         expect(
-            screen.getByText('Follow Guidance built by you')
-        ).toBeInTheDocument()
-        expect(
-            screen.getByText(
-                'Enhance team productivity, reducing workload & response times'
-            )
+            screen.getByText('Follow Guidance built by you'),
         ).toBeInTheDocument()
         expect(
             screen.getByText(
-                'Guide customers towards swift resolutions in seconds, not hours'
-            )
+                'Enhance team productivity, reducing workload & response times',
+            ),
         ).toBeInTheDocument()
         expect(
             screen.getByText(
-                'Continuously improve based on your reviews & feedback'
-            )
+                'Guide customers towards swift resolutions in seconds, not hours',
+            ),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                'Continuously improve based on your reviews & feedback',
+            ),
         ).toBeInTheDocument()
 
         assertButtonAndLearnMore()
 
         expect(logEvent).toHaveBeenCalledWith(
             SegmentEvent.AiAgentWelcomePageViewed,
-            {version: 'Basic', store: 'my-store'}
+            { version: 'Basic', store: 'my-store' },
         )
     })
 
@@ -181,7 +182,7 @@ describe('<AIAgentWelcomePageView />', () => {
                 accountDomain="my-account-domain"
                 shopType="shopify"
                 shopName="my-shop"
-            />
+            />,
         )
 
         const button = screen.getByRole('button', {
@@ -198,8 +199,8 @@ describe('<AIAgentWelcomePageView />', () => {
         await waitFor(() =>
             expect(logEvent).toHaveBeenLastCalledWith(
                 SegmentEvent.AiAgentWelcomePageCtaClicked,
-                {version: 'Basic', store: 'my-shop'}
-            )
+                { version: 'Basic', store: 'my-shop' },
+            ),
         )
     })
 
@@ -222,11 +223,11 @@ describe('<AIAgentWelcomePageView />', () => {
                     checked: false,
                     link: 'welcome-page-add-articles-link',
                 }}
-            />
+            />,
         )
 
         assertText(
-            'Prepare AI Agent to automate 60% of your email and contact form tickets by completing these steps'
+            'Prepare AI Agent to automate 60% of your email and contact form tickets by completing these steps',
         )
         assertText('Connect an email to this store')
         assertText('Create or import a Help Center')
@@ -244,7 +245,7 @@ describe('<AIAgentWelcomePageView />', () => {
 
         expect(logEvent).toHaveBeenCalledWith(
             SegmentEvent.AiAgentWelcomePageViewed,
-            {version: 'Dynamic', store: 'my-store'}
+            { version: 'Dynamic', store: 'my-store' },
         )
 
         assertButtonAndLearnMore()
@@ -267,11 +268,11 @@ describe('<AIAgentWelcomePageView />', () => {
                 helpCenter20Articles={{
                     checked: true,
                 }}
-            />
+            />,
         )
 
         assertText(
-            'Prepare AI Agent to automate 60% of your email and contact form tickets by completing these steps'
+            'Prepare AI Agent to automate 60% of your email and contact form tickets by completing these steps',
         )
         assertText('Connect an email to this store')
         assertText('Create or import a Help Center')
@@ -304,11 +305,11 @@ describe('<AIAgentWelcomePageView />', () => {
                 helpCenter20Articles={{
                     checked: true,
                 }}
-            />
+            />,
         )
 
         assertText(
-            'Prepare AI Agent to automate 60% of your email and contact form tickets by completing these steps'
+            'Prepare AI Agent to automate 60% of your email and contact form tickets by completing these steps',
         )
         assertText('Connect an email to this store')
         assertText('Create or import a Help Center')
@@ -347,7 +348,7 @@ describe('<AIAgentWelcomePageView />', () => {
                 helpCenter20Articles={{
                     checked: true,
                 }}
-            />
+            />,
         )
 
         const button = screen.getByRole('button', {
@@ -364,8 +365,8 @@ describe('<AIAgentWelcomePageView />', () => {
         await waitFor(() =>
             expect(logEvent).toHaveBeenLastCalledWith(
                 SegmentEvent.AiAgentWelcomePageCtaClicked,
-                {version: 'Dynamic', store: 'my-store'}
-            )
+                { version: 'Dynamic', store: 'my-store' },
+            ),
         )
     })
 
@@ -382,7 +383,7 @@ describe('<AIAgentWelcomePageView />', () => {
                 accountDomain="my-account-domain"
                 shopType="shopify"
                 shopName="my-shop"
-            />
+            />,
         )
 
         const button = screen.getByRole<HTMLButtonElement>('button', {
@@ -418,7 +419,7 @@ describe('<AIAgentWelcomePageView />', () => {
                 accountDomain="my-account-domain"
                 shopType="shopify"
                 shopName="my-shop"
-            />
+            />,
         )
 
         const button = screen.getByRole('button', {
@@ -428,27 +429,27 @@ describe('<AIAgentWelcomePageView />', () => {
         fireEvent.click(button)
 
         await waitFor(() =>
-            expect(dispatchMock).toHaveBeenLastCalledWith('notify-return')
+            expect(dispatchMock).toHaveBeenLastCalledWith('notify-return'),
         )
 
         await waitFor(() =>
             expect(notifyMock).toHaveBeenLastCalledWith({
                 message: 'Test Error',
                 status: 'error',
-            })
+            }),
         )
 
         fireEvent.click(button)
 
         await waitFor(() =>
-            expect(dispatchMock).toHaveBeenLastCalledWith('notify-return')
+            expect(dispatchMock).toHaveBeenLastCalledWith('notify-return'),
         )
 
         await waitFor(() =>
             expect(notifyMock).toHaveBeenLastCalledWith({
                 message: 'An unknown error occurred',
                 status: 'error',
-            })
+            }),
         )
     })
     it('should render onboardingWizard state with the correct copy', () => {
@@ -470,11 +471,11 @@ describe('<AIAgentWelcomePageView />', () => {
                 shopifyPermissionUpdated={{
                     checked: true,
                 }}
-            />
+            />,
         )
 
         assertText(
-            'Prepare AI Agent to automate 60% of your email, Chat and Contact Form tickets by completing these steps:'
+            'Prepare AI Agent to automate 60% of your email, Chat and Contact Form tickets by completing these steps:',
         )
         assertText('Update your Shopify integration')
         assertText('Connect an email to this store')
@@ -508,7 +509,7 @@ describe('<AIAgentWelcomePageView />', () => {
                     checked: true,
                 }}
             />,
-            {history}
+            { history },
         )
 
         const button = screen.getByRole('button', {
@@ -536,7 +537,7 @@ describe('<AIAgentWelcomePageView />', () => {
                 shopType={SHOP_TYPE}
                 shopName={SHOP_NAME}
                 storeConfiguration={getStoreConfigurationFixture(
-                    MOCK_WIZARD_VALUES
+                    MOCK_WIZARD_VALUES,
                 )}
                 state="onboardingWizard"
                 emailConnected={{
@@ -552,7 +553,7 @@ describe('<AIAgentWelcomePageView />', () => {
                     checked: true,
                 }}
             />,
-            {history}
+            { history },
         )
 
         const button = screen.getByRole('button', {
@@ -574,7 +575,7 @@ describe('<AIAgentWelcomePageView />', () => {
                 shopType="shopify"
                 shopName="my-store"
                 storeConfiguration={getStoreConfigurationFixture(
-                    MOCK_WIZARD_VALUES
+                    MOCK_WIZARD_VALUES,
                 )}
                 state="onboardingWizard"
                 emailConnected={{
@@ -589,11 +590,11 @@ describe('<AIAgentWelcomePageView />', () => {
                 shopifyPermissionUpdated={{
                     checked: true,
                 }}
-            />
+            />,
         )
 
         assertText(
-            'Prepare AI Agent to automate 60% of your tickets by completing these steps:'
+            'Prepare AI Agent to automate 60% of your tickets by completing these steps:',
         )
         assertText('Update your Shopify integration')
         assertText('Connect an email to this store')
@@ -603,7 +604,7 @@ describe('<AIAgentWelcomePageView />', () => {
         expect(
             screen.getByRole('button', {
                 name: /Continue Setup/i,
-            })
+            }),
         ).toBeInTheDocument()
     })
 })

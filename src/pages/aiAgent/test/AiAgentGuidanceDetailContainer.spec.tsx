@@ -1,19 +1,20 @@
-import {fireEvent, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {useAiAgentEnabled} from 'pages/aiAgent/hooks/useAiAgentEnabled'
-import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {renderWithRouter} from 'utils/testing'
+import { fireEvent, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
-import {AiAgentGuidanceDetailContainer} from '../AiAgentGuidanceDetailContainer'
-import {getAIGuidanceFixture} from '../fixtures/aiGuidance.fixture'
-import {getGuidanceArticleFixture} from '../fixtures/guidanceArticle.fixture'
-import {useAiAgentHelpCenter} from '../hooks/useAiAgentHelpCenter'
-import {useAiAgentOnboardingNotification} from '../hooks/useAiAgentOnboardingNotification'
-import {useGuidanceAiSuggestions} from '../hooks/useGuidanceAiSuggestions'
-import {useGuidanceArticle} from '../hooks/useGuidanceArticle'
-import {useGuidanceArticleMutation} from '../hooks/useGuidanceArticleMutation'
+import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
+import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { renderWithRouter } from 'utils/testing'
+
+import { AiAgentGuidanceDetailContainer } from '../AiAgentGuidanceDetailContainer'
+import { getAIGuidanceFixture } from '../fixtures/aiGuidance.fixture'
+import { getGuidanceArticleFixture } from '../fixtures/guidanceArticle.fixture'
+import { useAiAgentHelpCenter } from '../hooks/useAiAgentHelpCenter'
+import { useAiAgentOnboardingNotification } from '../hooks/useAiAgentOnboardingNotification'
+import { useGuidanceAiSuggestions } from '../hooks/useGuidanceAiSuggestions'
+import { useGuidanceArticle } from '../hooks/useGuidanceArticle'
+import { useGuidanceArticleMutation } from '../hooks/useGuidanceArticleMutation'
 
 jest.mock('../hooks/useAiAgentHelpCenter', () => ({
     useAiAgentHelpCenter: jest.fn(),
@@ -36,7 +37,7 @@ jest.mock(
     () => {
         const ComponentToMock = () => <div />
         return ComponentToMock
-    }
+    },
 )
 jest.mock('pages/aiAgent/hooks/useAiAgentEnabled')
 
@@ -52,7 +53,7 @@ const mockedUseGuidanceArticleMutation = jest.mocked(useGuidanceArticleMutation)
 const mockedUseGuidanceAiSuggestions = jest.mocked(useGuidanceAiSuggestions)
 const mockUseEnableAiAgent = jest.mocked(useAiAgentEnabled)
 const mockUseAiAgentOnboardingNotification = jest.mocked(
-    useAiAgentOnboardingNotification
+    useAiAgentOnboardingNotification,
 )
 
 const helpCenter = getHelpCentersResponseFixture.data[0]
@@ -90,7 +91,7 @@ describe('<AiAgentGuidanceDetail />', () => {
     beforeEach(() => {
         mockedUseAiAgentHelpCenter.mockReturnValue(helpCenter)
         mockedUseGuidanceArticleMutation.mockReturnValue(
-            defaultGuidanceArticleMutationProps
+            defaultGuidanceArticleMutationProps,
         )
         mockedUseGuidanceArticle.mockReturnValue({
             guidanceArticle: guidanceArticle,
@@ -107,7 +108,7 @@ describe('<AiAgentGuidanceDetail />', () => {
             updateSettingsAfterAiAgentEnabled: jest.fn(),
         })
         mockUseAiAgentOnboardingNotification.mockReturnValue(
-            defaultUseAiAgentOnboardingNotification
+            defaultUseAiAgentOnboardingNotification,
         )
     })
 
@@ -134,7 +135,7 @@ describe('<AiAgentGuidanceDetail />', () => {
         renderComponent()
 
         expect(screen.getByLabelText(/Guidance name/)).toHaveValue(
-            guidanceArticle.title
+            guidanceArticle.title,
         )
         expect(screen.getByText('Save Changes')).toBeInTheDocument()
         expect(screen.getByText('Save And Test')).toBeInTheDocument()
@@ -145,10 +146,10 @@ describe('<AiAgentGuidanceDetail />', () => {
         renderComponent()
 
         expect(
-            screen.getByRole('button', {name: 'Save Changes'})
+            screen.getByRole('button', { name: 'Save Changes' }),
         ).toBeAriaDisabled()
         expect(
-            screen.getByRole('button', {name: 'Save And Test'})
+            screen.getByRole('button', { name: 'Save And Test' }),
         ).toBeAriaDisabled()
     })
 
@@ -158,10 +159,10 @@ describe('<AiAgentGuidanceDetail />', () => {
         userEvent.clear(screen.getByLabelText(/Guidance name/))
 
         expect(
-            screen.getByRole('button', {name: 'Save Changes'})
+            screen.getByRole('button', { name: 'Save Changes' }),
         ).toBeAriaDisabled()
         expect(
-            screen.getByRole('button', {name: 'Save And Test'})
+            screen.getByRole('button', { name: 'Save And Test' }),
         ).toBeAriaDisabled()
     })
 
@@ -188,7 +189,7 @@ describe('<AiAgentGuidanceDetail />', () => {
                 templateKey: null,
                 visibility: 'PUBLIC',
             },
-            {articleId: guidanceArticle.id, locale: guidanceArticle.locale}
+            { articleId: guidanceArticle.id, locale: guidanceArticle.locale },
         )
     })
 
@@ -214,7 +215,7 @@ describe('<AiAgentGuidanceDetail />', () => {
                 templateKey: null,
                 visibility: 'UNLISTED',
             },
-            {articleId: guidanceArticle.id, locale: guidanceArticle.locale}
+            { articleId: guidanceArticle.id, locale: guidanceArticle.locale },
         )
     })
 })

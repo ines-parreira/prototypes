@@ -1,1 +1,1 @@
-export {default} from './RequestABTest'
+export { default } from './RequestABTest'

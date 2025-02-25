@@ -1,8 +1,9 @@
-import {screen, fireEvent, act} from '@testing-library/react'
 import React from 'react'
 
-import {useSearchParam} from 'hooks/useSearchParam'
-import {assumeMock, renderWithRouter} from 'utils/testing'
+import { act, fireEvent, screen } from '@testing-library/react'
+
+import { useSearchParam } from 'hooks/useSearchParam'
+import { assumeMock, renderWithRouter } from 'utils/testing'
 
 import VerifyDomainModal from '../VerifyDomainModal'
 
@@ -19,7 +20,7 @@ describe('VerifyDomainModal', () => {
         renderComponent()
 
         expect(
-            screen.queryByText('Verify your email domain')
+            screen.queryByText('Verify your email domain'),
         ).not.toBeInTheDocument()
     })
 
@@ -52,7 +53,7 @@ describe('VerifyDomainModal', () => {
         const finishLaterButton = screen.getByText('Finish later')
         expect(finishLaterButton.closest('a')).toHaveAttribute(
             'to',
-            '/app/settings/channels/email'
+            '/app/settings/channels/email',
         )
     })
 })

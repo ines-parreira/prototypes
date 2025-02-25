@@ -1,7 +1,8 @@
-import {render, screen, fireEvent} from '@testing-library/react'
 import React from 'react'
 
-import {CarouselNavigation} from '../CarouselNavigation'
+import { fireEvent, render, screen } from '@testing-library/react'
+
+import { CarouselNavigation } from '../CarouselNavigation'
 
 describe('CarouselNavigation', () => {
     const defaultProps = {
@@ -32,7 +33,7 @@ describe('CarouselNavigation', () => {
     })
 
     it('displays correct counter for different indices', () => {
-        const {rerender} = render(<CarouselNavigation {...defaultProps} />)
+        const { rerender } = render(<CarouselNavigation {...defaultProps} />)
         expect(screen.getByText('1 of 3')).toBeInTheDocument()
 
         rerender(<CarouselNavigation {...defaultProps} currentIndex={2} />)

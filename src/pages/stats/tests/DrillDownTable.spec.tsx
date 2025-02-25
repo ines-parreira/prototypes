@@ -1,47 +1,46 @@
-import {act, render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import React, { FunctionComponent } from 'react'
 
-import React, {FunctionComponent} from 'react'
-import {Provider} from 'react-redux'
+import { act, render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {TicketChannel, TicketStatus} from 'business/types/ticket'
-import {logEvent, SegmentEvent} from 'common/segment'
-import {campaign, campaignId} from 'fixtures/campaign'
-import {useEnrichedDrillDownData} from 'hooks/reporting/useDrillDownData'
-import {TicketQAScoreDimensionName} from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
+import { TicketChannel, TicketStatus } from 'business/types/ticket'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { campaign, campaignId } from 'fixtures/campaign'
+import { useEnrichedDrillDownData } from 'hooks/reporting/useDrillDownData'
+import { TicketQAScoreDimensionName } from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
 import {
     TicketSLADimension,
     TicketSLAStatus,
 } from 'models/reporting/cubes/sla/TicketSLACube'
-import {NumberedPagination} from 'pages/common/components/Paginations'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-import {CampaignSalesDrillDownTableContent} from 'pages/stats/convert/components/CampaignSalesDrillDownTableContent'
-import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
+import { NumberedPagination } from 'pages/common/components/Paginations'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
+import { CampaignSalesDrillDownTableContent } from 'pages/stats/convert/components/CampaignSalesDrillDownTableContent'
+import { useCampaignStatsFilters } from 'pages/stats/convert/hooks/useCampaignStatsFilters'
 import {
     ConvertDrillDownRowData,
     TicketDrillDownRowData,
 } from 'pages/stats/DrillDownFormatters'
-import {DrillDownTable} from 'pages/stats/DrillDownTable'
-import {SlaMetricConfig} from 'pages/stats/sla/SlaConfig'
+import { DrillDownTable } from 'pages/stats/DrillDownTable'
+import { SlaMetricConfig } from 'pages/stats/sla/SlaConfig'
 import {
     COMMUNICATION_SKILLS_LABEL,
     COMPLETENESS_STATUS_COMPLETE,
     RESOLUTION_COMPLETENESS_SHORT_LABEL,
 } from 'pages/stats/support-performance/auto-qa/AutoQAMetricsConfig'
-import {OverviewMetric} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
-import {TicketDrillDownTableContent} from 'pages/stats/TicketDrillDownTableContent'
-import {SlaStatusLabel} from 'services/reporting/constants'
-
-import {RootState, StoreDispatch} from 'state/types'
+import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
+import { TicketDrillDownTableContent } from 'pages/stats/TicketDrillDownTableContent'
+import { SlaStatusLabel } from 'services/reporting/constants'
+import { RootState, StoreDispatch } from 'state/types'
 import {
     DrillDownMetric,
     getDrillDownMetricColumn,
     SLA_FORMAT,
 } from 'state/ui/stats/drillDownSlice'
-import {AutoQAMetric, ConvertMetric, SlaMetric} from 'state/ui/stats/types'
-import {assumeMock} from 'utils/testing'
+import { AutoQAMetric, ConvertMetric, SlaMetric } from 'state/ui/stats/types'
+import { assumeMock } from 'utils/testing'
 
 const MOCK_SKELETON_TEST_ID = 'skeleton'
 
@@ -51,7 +50,7 @@ jest.mock(
         ({
             ...jest.requireActual('@gorgias/merchant-ui-kit'),
             Skeleton: () => <div data-testid={MOCK_SKELETON_TEST_ID} />,
-        }) as typeof import('@gorgias/merchant-ui-kit')
+        }) as typeof import('@gorgias/merchant-ui-kit'),
 )
 jest.mock('pages/common/components/Paginations')
 const numberedPaginationMock = assumeMock(NumberedPagination)
@@ -92,7 +91,7 @@ describe('<DrillDownTable />', () => {
         metricData: DrillDownMetric,
         content: FunctionComponent<{
             metricData: DrillDownMetric
-        }>
+        }>,
     ) => {
         return render(
             <Provider store={mockStore(defaultState)}>
@@ -101,7 +100,7 @@ describe('<DrillDownTable />', () => {
                     useDataHook={useDataHookMock}
                     TableContent={content}
                 />
-            </Provider>
+            </Provider>,
         )
     }
 
@@ -182,10 +181,10 @@ describe('<DrillDownTable />', () => {
 
         it('should not render Avatar if no assignee', () => {
             useEnrichedDrillDownDataMock.mockReturnValue({
-                data: [{...exampleRow, assignee: null}],
+                data: [{ ...exampleRow, assignee: null }],
             } as any)
             useDataHookMock.mockReturnValue({
-                data: [{...exampleRow, assignee: null}],
+                data: [{ ...exampleRow, assignee: null }],
                 currentPage,
                 perPage: 1,
             } as any)
@@ -208,13 +207,13 @@ describe('<DrillDownTable />', () => {
             renderTableForTicket(metricData)
 
             expect(
-                screen.getAllByTestId(MOCK_SKELETON_TEST_ID).length
+                screen.getAllByTestId(MOCK_SKELETON_TEST_ID).length,
             ).not.toBe(0)
         })
 
         it('should redirect to Ticket page on row click', () => {
             useEnrichedDrillDownDataMock.mockReturnValue({
-                data: [{...exampleRow, assignee: null}],
+                data: [{ ...exampleRow, assignee: null }],
             } as any)
             useDataHookMock.mockReturnValue({
                 currentPage,
@@ -228,7 +227,7 @@ describe('<DrillDownTable />', () => {
 
             expect(window.open).toHaveBeenCalledWith(
                 `/app/ticket/${exampleRow.ticket.id}`,
-                '_blank'
+                '_blank',
             )
         })
 
@@ -251,7 +250,7 @@ describe('<DrillDownTable />', () => {
                 {
                     metric: autoQAMetricData.metricName,
                     ticket_id: exampleRow.ticket.id,
-                }
+                },
             )
         })
 
@@ -288,7 +287,7 @@ describe('<DrillDownTable />', () => {
             renderTableForTicket(metricData)
 
             expect(
-                screen.getByText(SlaStatusLabel[metricStatus])
+                screen.getByText(SlaStatusLabel[metricStatus]),
             ).toBeInTheDocument()
         })
 
@@ -320,13 +319,13 @@ describe('<DrillDownTable />', () => {
             renderTableForTicket(metricData)
 
             expect(
-                screen.getByText(RESOLUTION_COMPLETENESS_SHORT_LABEL)
+                screen.getByText(RESOLUTION_COMPLETENESS_SHORT_LABEL),
             ).toBeInTheDocument()
             expect(
-                screen.getByText(COMMUNICATION_SKILLS_LABEL)
+                screen.getByText(COMMUNICATION_SKILLS_LABEL),
             ).toBeInTheDocument()
             expect(
-                screen.getByText(COMPLETENESS_STATUS_COMPLETE)
+                screen.getByText(COMPLETENESS_STATUS_COMPLETE),
             ).toBeInTheDocument()
             expect(screen.getByText('3.2')).toBeInTheDocument()
         })
@@ -359,10 +358,10 @@ describe('<DrillDownTable />', () => {
             renderTableForTicket(metricData)
 
             expect(
-                screen.getByText(RESOLUTION_COMPLETENESS_SHORT_LABEL)
+                screen.getByText(RESOLUTION_COMPLETENESS_SHORT_LABEL),
             ).toBeInTheDocument()
             expect(
-                screen.getByText(COMPLETENESS_STATUS_COMPLETE)
+                screen.getByText(COMPLETENESS_STATUS_COMPLETE),
             ).toBeInTheDocument()
         })
 
@@ -388,7 +387,7 @@ describe('<DrillDownTable />', () => {
                     onChange: onPageChange,
                     className: 'pagination',
                 },
-                {}
+                {},
             )
         })
     })
@@ -474,7 +473,7 @@ describe('<DrillDownTable />', () => {
                 metricValueFormat: 'decimal',
             })
 
-            const {getByText} = renderTableForCampaignSales(metricData)
+            const { getByText } = renderTableForCampaignSales(metricData)
 
             expect(getByText(campaign.name)).toBeInTheDocument()
             expect(getByText(customerName)).toBeInTheDocument()
@@ -493,7 +492,7 @@ describe('<DrillDownTable />', () => {
             renderTableForCampaignSales(metricData)
 
             expect(
-                screen.getAllByTestId(MOCK_SKELETON_TEST_ID).length
+                screen.getAllByTestId(MOCK_SKELETON_TEST_ID).length,
             ).not.toBe(0)
         })
 
@@ -519,7 +518,7 @@ describe('<DrillDownTable />', () => {
                     onChange: onPageChange,
                     className: 'pagination',
                 },
-                {}
+                {},
             )
         })
     })

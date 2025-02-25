@@ -1,6 +1,6 @@
-import {AvailabilityStatusTag} from 'config/types/user'
+import { AvailabilityStatusTag } from 'config/types/user'
 
-import {mergeAgentData, getAvailabilityBadgeColor} from '../utils'
+import { getAvailabilityBadgeColor, mergeAgentData } from '../utils'
 
 describe('utils', () => {
     describe('mergeAgentData', () => {
@@ -9,17 +9,17 @@ describe('utils', () => {
                 {
                     id: 1,
                     name: 'Agent 1',
-                    meta: {profile_picture_url: 'url1'},
+                    meta: { profile_picture_url: 'url1' },
                 },
                 {
                     id: 2,
                     name: 'Agent 2',
-                    meta: {profile_picture_url: 'url2'},
+                    meta: { profile_picture_url: 'url2' },
                 },
                 {
                     id: 3,
                     name: 'Agent 3',
-                    meta: {profile_picture_url: 'url3'},
+                    meta: { profile_picture_url: 'url3' },
                 },
             ]
             const agentsDataWithStatus = [
@@ -39,7 +39,7 @@ describe('utils', () => {
 
             const mergedData = mergeAgentData(
                 agentsData as any,
-                agentsDataWithStatus as any
+                agentsDataWithStatus as any,
             )
 
             expect(mergedData).toEqual([
@@ -47,18 +47,18 @@ describe('utils', () => {
                     id: 1,
                     status: AvailabilityStatusTag.Online,
                     name: 'Agent 1',
-                    meta: {profile_picture_url: 'url1'},
+                    meta: { profile_picture_url: 'url1' },
                 },
                 {
                     id: 2,
                     status: AvailabilityStatusTag.Offline,
                     name: 'Agent 2',
-                    meta: {profile_picture_url: 'url2'},
+                    meta: { profile_picture_url: 'url2' },
                 },
                 {
                     id: 3,
                     name: 'Agent 3',
-                    meta: {profile_picture_url: 'url3'},
+                    meta: { profile_picture_url: 'url3' },
                 },
             ])
         })

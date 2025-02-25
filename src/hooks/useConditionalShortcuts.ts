@@ -1,12 +1,12 @@
-import {useEffect} from 'react'
+import { useEffect } from 'react'
 
 import shortcutManager from 'services/shortcutManager'
-import {KeyboardAction} from 'services/shortcutManager/shortcutManager'
+import { KeyboardAction } from 'services/shortcutManager/shortcutManager'
 
 export default function useConditionalShortcuts(
     mount: boolean,
     component = 'global',
-    actions: Record<string, Partial<KeyboardAction>>
+    actions: Record<string, Partial<KeyboardAction>>,
 ) {
     useEffect(() => {
         if (!mount) return

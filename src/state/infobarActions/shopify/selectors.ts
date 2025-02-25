@@ -1,10 +1,10 @@
-import {createSelector} from 'reselect'
+import { createSelector } from 'reselect'
 
-import {IntegrationType} from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 
-import {getInfobarActionsState} from '../selectors'
+import { getInfobarActionsState } from '../selectors'
 
 export const getShopifyActionsState = createSelector(
     getInfobarActionsState,
-    (state) => state[IntegrationType.Shopify]
+    (state) => state[IntegrationType.Shopify],
 )

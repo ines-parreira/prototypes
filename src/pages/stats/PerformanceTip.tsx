@@ -1,9 +1,11 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { PropsWithChildren } from 'react'
+
 import classnames from 'classnames'
-import React, {PropsWithChildren} from 'react'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import css from 'pages/stats/PerformanceTip.less'
-import {sanitizeHtmlDefault} from 'utils/html'
+import { sanitizeHtmlDefault } from 'utils/html'
 
 type SuccessLevel = 'neutral' | 'light-error' | 'light-success' | 'success'
 
@@ -73,7 +75,7 @@ export default function PerformanceTip({
                                     <span
                                         dangerouslySetInnerHTML={{
                                             __html: sanitizeHtmlDefault(
-                                                avgTooltip
+                                                avgTooltip,
                                             ),
                                         }}
                                     />
@@ -96,7 +98,7 @@ export default function PerformanceTip({
                             className={classnames(
                                 'material-icons-outlined',
                                 css.icon,
-                                css[type]
+                                css[type],
                             )}
                         >
                             {SentimentIconLabel[type].icon}

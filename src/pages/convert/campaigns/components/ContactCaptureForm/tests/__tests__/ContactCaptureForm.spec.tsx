@@ -1,21 +1,22 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {act, render, fireEvent} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { act, fireEvent, render } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {UserRole} from 'config/types/user'
-import {user} from 'fixtures/users'
+import { UserRole } from 'config/types/user'
+import { user } from 'fixtures/users'
 import AddContactCaptureForm from 'pages/convert/campaigns/components/ContactCaptureForm/AddContactCaptureForm'
-import {ContactFormCaptureFormIconButton} from 'pages/convert/campaigns/components/ContactCaptureForm/ContactCaptureFormIconButton'
-import {Customization} from 'pages/convert/campaigns/components/ContactCaptureForm/steps/Customization'
-import {PostSubmissionMessage} from 'pages/convert/campaigns/components/ContactCaptureForm/steps/PostSubmissionMessage'
-import {useConvertGeneralSettings} from 'pages/stats/convert/hooks/useConvertGeneralSettings'
+import { ContactFormCaptureFormIconButton } from 'pages/convert/campaigns/components/ContactCaptureForm/ContactCaptureFormIconButton'
+import { Customization } from 'pages/convert/campaigns/components/ContactCaptureForm/steps/Customization'
+import { PostSubmissionMessage } from 'pages/convert/campaigns/components/ContactCaptureForm/steps/PostSubmissionMessage'
+import { useConvertGeneralSettings } from 'pages/stats/convert/hooks/useConvertGeneralSettings'
 import useListTags from 'tags/useListTags'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('tags/useListTags')
 const mockStore = configureMockStore()
@@ -24,9 +25,9 @@ const queryClient = mockQueryClient()
 const store = mockStore({
     currentUser: fromJS({
         ...user,
-        role: {name: UserRole.Admin},
+        role: { name: UserRole.Admin },
     }),
-    integrations: fromJS({integrations: []}),
+    integrations: fromJS({ integrations: [] }),
 })
 const mockUseListTags = useListTags as jest.Mock
 
@@ -63,7 +64,7 @@ describe('ContactForm test suite', () => {
         mockUseConvertGeneralSettings.mockReturnValue({
             emailDisclaimer: {
                 enabled: true,
-                disclaimer: {en: 'foo'},
+                disclaimer: { en: 'foo' },
                 disclaimer_default_accepted: true,
             },
             isLoading: false,
@@ -73,7 +74,7 @@ describe('ContactForm test suite', () => {
     it('should have the correct behavior for step navigation buttons', () => {
         const mockOnSubmit = jest.fn()
         const mockOnCancel = jest.fn()
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <AddContactCaptureForm
                     open
@@ -82,7 +83,7 @@ describe('ContactForm test suite', () => {
                     onSubmit={mockOnSubmit}
                     onReset={jest.fn()}
                 />
-            </Provider>
+            </Provider>,
         )
 
         // It is expected to start at the first step
@@ -121,7 +122,7 @@ describe('ContactForm test suite', () => {
     })
 
     it('should add tags in the first step and the next step should be available', async () => {
-        const {getByText, getByPlaceholderText} = render(
+        const { getByText, getByPlaceholderText } = render(
             <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
                     <AddContactCaptureForm
@@ -132,7 +133,7 @@ describe('ContactForm test suite', () => {
                         onReset={jest.fn()}
                     />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
         const addTagsBtn = getByPlaceholderText('Add tags...')
         act(() => addTagsBtn.click())
@@ -168,7 +169,7 @@ describe('ContactForm test suite', () => {
             },
         }
         const setState = (
-            wrapped: (innerState: typeof state) => typeof state
+            wrapped: (innerState: typeof state) => typeof state,
         ) => {
             const newState = wrapped(state)
             state.subscriberTypes = newState.subscriberTypes
@@ -176,14 +177,14 @@ describe('ContactForm test suite', () => {
             state.postSubmissionMessage = newState.postSubmissionMessage
         }
 
-        const {getByPlaceholderText, getAllByPlaceholderText} = render(
+        const { getByPlaceholderText, getAllByPlaceholderText } = render(
             <Provider store={store}>
                 <Customization
                     setNextButtonActive={jest.fn()}
                     setAttachmentData={setState as any}
                     attachmentData={state}
                 />
-            </Provider>
+            </Provider>,
         )
         const fieldLabelInputs = getAllByPlaceholderText('Email')
         const buttonLabelInput = getByPlaceholderText('Subscribe')
@@ -197,7 +198,7 @@ describe('ContactForm test suite', () => {
     it('should render the thank you message', () => {
         const state = baseState
         const setState = (
-            wrapped: (innerState: typeof state) => typeof state
+            wrapped: (innerState: typeof state) => typeof state,
         ) => {
             const newState = wrapped(state)
             state.subscriberTypes = newState.subscriberTypes
@@ -205,14 +206,14 @@ describe('ContactForm test suite', () => {
             state.postSubmissionMessage = newState.postSubmissionMessage
         }
 
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <PostSubmissionMessage
                     setNextButtonActive={jest.fn()}
                     setAttachmentData={setState as any}
                     attachmentData={state}
                 />
-            </Provider>
+            </Provider>,
         )
         const toggleInput = getByText('Thank you message')
         act(() => toggleInput.click())
@@ -221,7 +222,7 @@ describe('ContactForm test suite', () => {
 
     it('should close when the collapse is called', () => {
         const mockOnOpenChange = jest.fn()
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <AddContactCaptureForm
                     open
@@ -230,7 +231,7 @@ describe('ContactForm test suite', () => {
                     onSubmit={jest.fn()}
                     onReset={jest.fn()}
                 />
-            </Provider>
+            </Provider>,
         )
         act(() => getByText('keyboard_tab').click())
         expect(mockOnOpenChange).toHaveBeenCalledWith(false)
@@ -238,11 +239,11 @@ describe('ContactForm test suite', () => {
 
     it('should open when the toolbar icon is clicked', () => {
         const mockOnOpenChange = jest.fn()
-        const {getByText} = render(
+        const { getByText } = render(
             <ContactFormCaptureFormIconButton
                 onOpenChange={mockOnOpenChange}
                 isDisabled={false}
-            />
+            />,
         )
         act(() => getByText('wysiwyg').click())
         expect(mockOnOpenChange).toHaveBeenCalledWith(true)
@@ -250,7 +251,7 @@ describe('ContactForm test suite', () => {
 
     it('should close when the backdrop area is clicked', () => {
         const mockOnOpenChange = jest.fn()
-        const {baseElement} = render(
+        const { baseElement } = render(
             <Provider store={store}>
                 <AddContactCaptureForm
                     open={true}
@@ -259,20 +260,20 @@ describe('ContactForm test suite', () => {
                     onSubmit={jest.fn()}
                     onReset={jest.fn()}
                 />
-            </Provider>
+            </Provider>,
         )
 
         act(() =>
-            userEvent.click(baseElement.getElementsByClassName('backdrop')[0])
+            userEvent.click(baseElement.getElementsByClassName('backdrop')[0]),
         )
         expect(mockOnOpenChange).toHaveBeenCalledWith(false)
     })
 
     it('should show error state when tags number is over 5 on setup', async () => {
-        const {getByPlaceholderText, getByText} = render(
+        const { getByPlaceholderText, getByText } = render(
             <Provider store={store}>
                 <AddContactCaptureForm open={true} onOpenChange={jest.fn()} />
-            </Provider>
+            </Provider>,
         )
         const addTagsBtn = getByPlaceholderText('Add tags...')
         act(() => addTagsBtn.click())
@@ -288,26 +289,26 @@ describe('ContactForm test suite', () => {
     })
 
     it('should show error state when message is too long on post submission message step', () => {
-        const state = {...baseState}
+        const state = { ...baseState }
         state.postSubmissionMessage.message = 'f'.repeat(281)
         state.postSubmissionMessage.enabled = true
         const mockSetActiveButton = jest.fn()
 
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <PostSubmissionMessage
                     setNextButtonActive={mockSetActiveButton}
                     setAttachmentData={() => {}}
                     attachmentData={state}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(mockSetActiveButton).toHaveBeenCalledWith(false)
         expect(
             getByText(
-                'The message should be under or equals to 280 characters.'
-            )
+                'The message should be under or equals to 280 characters.',
+            ),
         ).toBeInTheDocument()
     })
 })

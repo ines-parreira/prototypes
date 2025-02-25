@@ -1,18 +1,19 @@
-import {act, cleanup, fireEvent, render, screen} from '@testing-library/react'
-import {resetLDMocks} from 'jest-launchdarkly-mock'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
+import { resetLDMocks } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {phoneNumbers, capabilities} from 'fixtures/phoneNumber'
-import {fetchPhoneCapabilities} from 'models/phoneNumber/resources'
+import { capabilities, phoneNumbers } from 'fixtures/phoneNumber'
+import { fetchPhoneCapabilities } from 'models/phoneNumber/resources'
 import * as apiCalls from 'models/phoneNumber/resources'
 import * as notificationActions from 'state/notifications/actions'
-import {AlertNotification} from 'state/notifications/types'
-import {RootState, StoreDispatch} from 'state/types'
-import {mockQueryClientProvider} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { AlertNotification } from 'state/notifications/types'
+import { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 import PhoneNumberCreateForm from '../PhoneNumberCreateForm'
 import * as phoneNumberUtils from '../utils'
@@ -22,8 +23,8 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const store = mockStore({
     entities: {
         phoneNumbers: phoneNumbers.reduce(
-            (acc, number) => ({...acc, [number.id]: number}),
-            {}
+            (acc, number) => ({ ...acc, [number.id]: number }),
+            {},
         ),
     },
 } as RootState)
@@ -35,7 +36,7 @@ const notify = jest.spyOn(notificationActions, 'notify')
 
 const getAddressValidationAlertMessageSpy = jest.spyOn(
     phoneNumberUtils,
-    'getAddressValidationAlertMessage'
+    'getAddressValidationAlertMessage',
 )
 
 describe('<PhoneNumberCreateForm/>', () => {
@@ -45,7 +46,7 @@ describe('<PhoneNumberCreateForm/>', () => {
                 <QueryClientProvider>
                     <PhoneNumberCreateForm />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
     beforeEach(() => {
@@ -58,13 +59,13 @@ describe('<PhoneNumberCreateForm/>', () => {
 
     it('should render Alert message when there is one', () => {
         getAddressValidationAlertMessageSpy.mockReturnValue(
-            'test message' as any
+            'test message' as any,
         )
 
         renderComponent()
         expect(screen.getByText('test message')).toBeVisible()
         expect(
-            screen.getByRole('button', {name: /Add phone number/})
+            screen.getByRole('button', { name: /Add phone number/ }),
         ).toBeAriaDisabled()
     })
 
@@ -74,13 +75,13 @@ describe('<PhoneNumberCreateForm/>', () => {
         renderComponent()
         expect(screen.queryByText('test message')).toBeNull()
         expect(
-            screen.getByRole('button', {name: /Add phone number/})
+            screen.getByRole('button', { name: /Add phone number/ }),
         ).not.toBeAriaDisabled()
     })
 
     describe('render()', () => {
         it('should render when a country and a state are selected', () => {
-            const {container, getByText} = renderComponent()
+            const { container, getByText } = renderComponent()
 
             fireEvent.click(getByText('United States'))
             fireEvent.click(getByText('Local'))
@@ -90,7 +91,7 @@ describe('<PhoneNumberCreateForm/>', () => {
         })
 
         it('should render when type "Toll-free" is selected', () => {
-            const {container, getByText} = renderComponent()
+            const { container, getByText } = renderComponent()
 
             fireEvent.click(getByText('Canada'))
             fireEvent.click(getByText('Toll-free'))
@@ -99,7 +100,7 @@ describe('<PhoneNumberCreateForm/>', () => {
         })
 
         it('should render address validation form for Australia', () => {
-            const {getByText, queryByText} = renderComponent()
+            const { getByText, queryByText } = renderComponent()
 
             fireEvent.click(getByText('United States'))
             expect(queryByText('Address verification')).toBe(null)
@@ -115,14 +116,14 @@ describe('<PhoneNumberCreateForm/>', () => {
         })
 
         it('should pass the address if a phone of a country with address verification is created', async () => {
-            const {getByText, getByRole, findByText} = renderComponent()
+            const { getByText, getByRole, findByText } = renderComponent()
 
             await act(async () => {
                 fireEvent.change(
                     getByRole('textbox', {
                         name: /title required/i,
                     }),
-                    {target: {value: 'test title'}}
+                    { target: { value: 'test title' } },
                 )
 
                 fireEvent.click(getByText('Australia'))
@@ -133,36 +134,36 @@ describe('<PhoneNumberCreateForm/>', () => {
 
                 fireEvent.click(getByText('Business information'))
                 fireEvent.change(
-                    getByRole('textbox', {name: /business name required/i}),
+                    getByRole('textbox', { name: /business name required/i }),
                     {
-                        target: {value: 'test business name'},
-                    }
+                        target: { value: 'test business name' },
+                    },
                 )
                 fireEvent.change(
-                    getByRole('textbox', {name: /address required/i}),
+                    getByRole('textbox', { name: /address required/i }),
                     {
-                        target: {value: 'test address'},
-                    }
+                        target: { value: 'test address' },
+                    },
                 )
                 fireEvent.change(
-                    getByRole('textbox', {name: /city required/i}),
+                    getByRole('textbox', { name: /city required/i }),
                     {
-                        target: {value: 'test city'},
-                    }
+                        target: { value: 'test city' },
+                    },
                 )
                 fireEvent.change(
                     getByRole('textbox', {
                         name: /state\/province\/region required/i,
                     }),
                     {
-                        target: {value: 'test region'},
-                    }
+                        target: { value: 'test region' },
+                    },
                 )
                 fireEvent.change(
-                    getByRole('textbox', {name: /postal code required/i}),
+                    getByRole('textbox', { name: /postal code required/i }),
                     {
-                        target: {value: 'test postal code'},
-                    }
+                        target: { value: 'test postal code' },
+                    },
                 )
 
                 fireEvent.click(getByText('Add phone number'))
@@ -182,14 +183,14 @@ describe('<PhoneNumberCreateForm/>', () => {
         })
 
         it('should call createPhoneNumber with the correct payload after switching from country with address verification', async () => {
-            const {getByText, getByRole, findByText} = renderComponent()
+            const { getByText, getByRole, findByText } = renderComponent()
 
             await act(async () => {
                 fireEvent.change(
                     getByRole('textbox', {
                         name: /title required/i,
                     }),
-                    {target: {value: 'test title'}}
+                    { target: { value: 'test title' } },
                 )
 
                 // change to AU, a country with address verification, and fill one of the address fields
@@ -198,10 +199,10 @@ describe('<PhoneNumberCreateForm/>', () => {
                 await findByText('Address verification')
 
                 fireEvent.change(
-                    getByRole('textbox', {name: /business name required/i}),
+                    getByRole('textbox', { name: /business name required/i }),
                     {
-                        target: {value: 'test business name'},
-                    }
+                        target: { value: 'test business name' },
+                    },
                 )
 
                 // switch back to US, a country with no address verification, and create a phone number
@@ -227,21 +228,21 @@ describe('<PhoneNumberCreateForm/>', () => {
                         data: {
                             error: {
                                 msg: 'Failed',
-                                data: {use_custom: 'UPGRADE_MESSAGE'},
+                                data: { use_custom: 'UPGRADE_MESSAGE' },
                             },
                         },
                     },
-                })
+                }),
             )
 
-            const {getByText, getByRole, findByText} = renderComponent()
+            const { getByText, getByRole, findByText } = renderComponent()
 
             await act(async () => {
                 fireEvent.change(
                     getByRole('textbox', {
                         name: /title required/i,
                     }),
-                    {target: {value: 'test title'}}
+                    { target: { value: 'test title' } },
                 )
 
                 fireEvent.click(getByText('United States'))

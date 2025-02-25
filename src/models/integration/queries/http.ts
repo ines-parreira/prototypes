@@ -1,6 +1,6 @@
-import {useQuery, UseQueryOptions} from '@tanstack/react-query'
+import { useQuery, UseQueryOptions } from '@tanstack/react-query'
 
-import {getHTTPEvents, getHTTPEvent} from 'models/integration/resources/http'
+import { getHTTPEvent, getHTTPEvents } from 'models/integration/resources/http'
 
 export const HTTPEventKeys = {
     list: (integrationId: number) => ['HTTPEvent', integrationId] as const,
@@ -16,7 +16,7 @@ export const useGetHTTPEvents = <
         Awaited<ReturnType<typeof getHTTPEvents>>,
         unknown,
         TData
-    >
+    >,
 ) => {
     return useQuery({
         queryKey: HTTPEventKeys.list(integrationId),
@@ -28,12 +28,12 @@ export const useGetHTTPEvents = <
 export const useGetHTTPEvent = <
     TData = Awaited<ReturnType<typeof getHTTPEvent>>,
 >(
-    {integrationId, eventId}: {integrationId: number; eventId: number},
+    { integrationId, eventId }: { integrationId: number; eventId: number },
     overrides?: UseQueryOptions<
         Awaited<ReturnType<typeof getHTTPEvent>>,
         unknown,
         TData
-    >
+    >,
 ) => {
     return useQuery({
         queryKey: HTTPEventKeys.detail(integrationId, eventId),

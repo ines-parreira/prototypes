@@ -1,16 +1,16 @@
-import {Map} from 'immutable'
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {useListCampaigns} from 'models/convert/campaign/queries'
-import {CampaignListOptions} from 'models/convert/campaign/types'
-import {ONBOARDING_CAMPAIGN_TEMPLATES_LIST} from 'pages/convert/campaigns/templates'
-import {CampaignTemplate} from 'pages/convert/campaigns/templates/types'
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
-import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
+import { Map } from 'immutable'
 
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import { useListCampaigns } from 'models/convert/campaign/queries'
+import { CampaignListOptions } from 'models/convert/campaign/types'
+import { ONBOARDING_CAMPAIGN_TEMPLATES_LIST } from 'pages/convert/campaigns/templates'
+import { CampaignTemplate } from 'pages/convert/campaigns/templates/types'
+import { Campaign } from 'pages/convert/campaigns/types/Campaign'
+import { CampaignStatus } from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
+import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import ConvertOnboardingCampaignTemplate from 'pages/convert/onboarding/components/ConvertOnboardingCampaignTemplate'
-import {toJS} from 'utils'
+import { toJS } from 'utils'
 
 import css from './WizardCampaignsStep.less'
 
@@ -18,9 +18,9 @@ type Props = {
     integration: Map<any, any>
 }
 
-const WizardCampaignsStep = ({integration}: Props) => {
-    const {channelConnection} = useGetOrCreateChannelConnection(
-        toJS(integration)
+const WizardCampaignsStep = ({ integration }: Props) => {
+    const { channelConnection } = useGetOrCreateChannelConnection(
+        toJS(integration),
     )
 
     const campaignListOptions = useMemo(
@@ -30,10 +30,10 @@ const WizardCampaignsStep = ({integration}: Props) => {
                       channelConnectionId: channelConnection?.id,
                   }
                 : {}) as CampaignListOptions,
-        [channelConnection]
+        [channelConnection],
     )
 
-    const {data: campaigns} = useListCampaigns(campaignListOptions, {
+    const { data: campaigns } = useListCampaigns(campaignListOptions, {
         enabled: !!campaignListOptions.channelConnectionId,
     })
 
@@ -41,7 +41,7 @@ const WizardCampaignsStep = ({integration}: Props) => {
         campaigns.some(
             (c) =>
                 c.template_id === template.slug &&
-                c.status === CampaignStatus.Active
+                c.status === CampaignStatus.Active,
         )
 
     const allCampaigns = useMemo(() => {
@@ -50,7 +50,7 @@ const WizardCampaignsStep = ({integration}: Props) => {
 
     const findCampaign = (
         template: CampaignTemplate,
-        campaigns: Campaign[]
+        campaigns: Campaign[],
     ): Campaign | undefined =>
         campaigns.find((c) => c.template_id === template.slug)
 

@@ -1,1 +1,1 @@
-export {default} from './UpdateABTestView'
+export { default } from './UpdateABTestView'

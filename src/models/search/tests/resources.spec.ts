@@ -7,7 +7,11 @@ import {
     SEARCH_ENDPOINT,
     SEARCH_ENGINE_HEADER,
 } from 'models/search/resources'
-import {SearchParams, SearchType, SearchApiResponse} from 'models/search/types'
+import {
+    SearchApiResponse,
+    SearchParams,
+    SearchType,
+} from 'models/search/types'
 
 const mockedServer = new MockAdapter(client)
 
@@ -17,7 +21,7 @@ describe('search resource', () => {
         type: SearchType.UserChannelEmail,
     }
     const defaultResponse: SearchApiResponse<unknown> = {
-        data: [{foo: 'bar'}],
+        data: [{ foo: 'bar' }],
         meta: {},
         object: 'list',
         uri: '',
@@ -46,7 +50,7 @@ describe('search resource', () => {
                 [SEARCH_ENGINE_HEADER]: engineHeader,
             })
 
-            const {searchEngine} = await search(defaultParams)
+            const { searchEngine } = await search(defaultParams)
 
             expect(searchEngine).toBe(engineHeader)
         })
@@ -59,7 +63,7 @@ describe('search resource', () => {
                 search({
                     ...defaultParams,
                     cancelToken: source.token,
-                })
+                }),
             ).rejects.toEqual(new axios.Cancel())
         })
     })

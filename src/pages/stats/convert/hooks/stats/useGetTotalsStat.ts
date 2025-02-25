@@ -1,13 +1,13 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {usePostReporting} from 'models/reporting/queries'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import { usePostReporting } from 'models/reporting/queries'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import {
     getCampaignEventsTotalsData,
     getCampaignOrderTotalsData,
     getStoreRevenueTotalData,
 } from 'pages/stats/convert/clients/CampaignCubeQueries'
-import {CubeFilterParams, CubeMetric} from 'pages/stats/convert/clients/types'
+import { CubeFilterParams, CubeMetric } from 'pages/stats/convert/clients/types'
 import {
     getMetricFromCubeData,
     transformToCampaignCalculatedTotals,
@@ -15,9 +15,9 @@ import {
     transformToCampaignOrdersTotals,
     transformToStoreTotal,
 } from 'pages/stats/convert/services/CampaignMetricsHelper'
-import {CampaignsTotalsMetricNames} from 'pages/stats/convert/services/constants'
-import {CampaignsTotals} from 'pages/stats/convert/services/types'
-import {getDefaultsForMetricKeys} from 'pages/stats/convert/services/utils'
+import { CampaignsTotalsMetricNames } from 'pages/stats/convert/services/constants'
+import { CampaignsTotals } from 'pages/stats/convert/services/types'
+import { getDefaultsForMetricKeys } from 'pages/stats/convert/services/utils'
 
 const OVERRIDES = {
     select: getMetricFromCubeData,
@@ -36,7 +36,7 @@ export const useGetTotalsStat = (
     currency: string,
     startDate: string,
     endDate: string,
-    timezone: string
+    timezone: string,
 ): GetTotalsQuery => {
     const attrs: CubeFilterParams = useMemo(
         () => ({
@@ -54,33 +54,33 @@ export const useGetTotalsStat = (
             endDate,
             timezone,
             campaignsOperator,
-        ]
+        ],
     )
 
     const campaignEventsTotalsQuery = useMemo(
         () => getCampaignEventsTotalsData(attrs),
-        [attrs]
+        [attrs],
     )
     const campaignOrderTotalsQuery = useMemo(
         () => getCampaignOrderTotalsData(attrs),
-        [attrs]
+        [attrs],
     )
     const storeTotalQuery = useMemo(
         () => getStoreRevenueTotalData(attrs),
-        [attrs]
+        [attrs],
     )
 
     const eventsTotals = usePostReporting<[CubeMetric], CubeMetric>(
         campaignEventsTotalsQuery,
-        {...OVERRIDES, enabled: campaignIds !== null}
+        { ...OVERRIDES, enabled: campaignIds !== null },
     )
     const orderTotals = usePostReporting<[CubeMetric], CubeMetric>(
         campaignOrderTotalsQuery,
-        {...OVERRIDES, enabled: campaignIds !== null}
+        { ...OVERRIDES, enabled: campaignIds !== null },
     )
     const storeTotal = usePostReporting<[CubeMetric], CubeMetric>(
         storeTotalQuery,
-        {...OVERRIDES, enabled: campaignIds !== null}
+        { ...OVERRIDES, enabled: campaignIds !== null },
     )
 
     const data = useMemo(() => {
@@ -90,7 +90,7 @@ export const useGetTotalsStat = (
             ...transformToStoreTotal(storeTotal.data, currency),
             ...transformToCampaignCalculatedTotals(
                 orderTotals.data,
-                storeTotal.data
+                storeTotal.data,
             ),
         }
     }, [eventsTotals.data, orderTotals.data, storeTotal.data, currency])

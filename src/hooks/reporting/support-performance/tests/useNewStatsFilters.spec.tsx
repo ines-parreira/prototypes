@@ -1,15 +1,16 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {mockFlags} from 'jest-launchdarkly-mock'
-import moment from 'moment'
 import React from 'react'
-import {Provider} from 'react-redux'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {RootState} from 'state/types'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
-import {mockStore} from 'utils/testing'
+import { renderHook } from '@testing-library/react-hooks'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import moment from 'moment'
+import { Provider } from 'react-redux'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { RootState } from 'state/types'
+import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
+import { mockStore } from 'utils/testing'
 
 describe('useNewStatsFilters', () => {
     const periodStart = moment()
@@ -20,10 +21,10 @@ describe('useNewStatsFilters', () => {
     }
     const defaultState = {
         stats: {
-            filters: {period},
+            filters: { period },
         },
         ui: {
-            stats: {filters: uiStatsInitialState},
+            stats: { filters: uiStatsInitialState },
         },
     } as RootState
 
@@ -34,8 +35,8 @@ describe('useNewStatsFilters', () => {
     })
 
     it('should return legacy filters and empty channels when the flag is off', () => {
-        const {result} = renderHook(() => useNewStatsFilters(), {
-            wrapper: ({children}) => (
+        const { result } = renderHook(() => useNewStatsFilters(), {
+            wrapper: ({ children }) => (
                 <Provider store={mockStore(defaultState)}>{children}</Provider>
             ),
         })
@@ -64,8 +65,8 @@ describe('useNewStatsFilters', () => {
             },
         } as RootState
 
-        const {result} = renderHook(() => useNewStatsFilters(), {
-            wrapper: ({children}) => (
+        const { result } = renderHook(() => useNewStatsFilters(), {
+            wrapper: ({ children }) => (
                 <Provider store={mockStore(state)}>{children}</Provider>
             ),
         })
@@ -101,8 +102,8 @@ describe('useNewStatsFilters', () => {
             },
         } as RootState
 
-        const {result} = renderHook(() => useNewStatsFilters(), {
-            wrapper: ({children}) => (
+        const { result } = renderHook(() => useNewStatsFilters(), {
+            wrapper: ({ children }) => (
                 <Provider store={mockStore(state)}>{children}</Provider>
             ),
         })
@@ -126,8 +127,8 @@ describe('useNewStatsFilters', () => {
             },
         } as RootState
 
-        const {result} = renderHook(() => useNewStatsFilters(), {
-            wrapper: ({children}) => (
+        const { result } = renderHook(() => useNewStatsFilters(), {
+            wrapper: ({ children }) => (
                 <Provider store={mockStore(state)}>{children}</Provider>
             ),
         })
@@ -151,8 +152,8 @@ describe('useNewStatsFilters', () => {
             },
         } as RootState
 
-        const {result} = renderHook(() => useNewStatsFilters(), {
-            wrapper: ({children}) => (
+        const { result } = renderHook(() => useNewStatsFilters(), {
+            wrapper: ({ children }) => (
                 <Provider store={mockStore(state)}>{children}</Provider>
             ),
         })
@@ -185,8 +186,8 @@ describe('useNewStatsFilters', () => {
             },
         } as RootState
 
-        const {result} = renderHook(() => useNewStatsFilters(), {
-            wrapper: ({children}) => (
+        const { result } = renderHook(() => useNewStatsFilters(), {
+            wrapper: ({ children }) => (
                 <Provider store={mockStore(state)}>{children}</Provider>
             ),
         })
@@ -231,8 +232,8 @@ describe('useNewStatsFilters', () => {
             },
         } as RootState
 
-        const {result} = renderHook(() => useNewStatsFilters(), {
-            wrapper: ({children}) => (
+        const { result } = renderHook(() => useNewStatsFilters(), {
+            wrapper: ({ children }) => (
                 <Provider store={mockStore(state)}>{children}</Provider>
             ),
         })

@@ -1,9 +1,9 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import React, {useRef} from 'react'
+import React, { useRef } from 'react'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import * as ToggleButton from 'pages/common/components/ToggleButton'
-
-import {ValueMode} from 'state/ui/stats/types'
+import { ValueMode } from 'state/ui/stats/types'
 
 const TOTAL_COUNT_TOOLTIP = 'Total count'
 const PERCENTAGE_TOOLTIP = 'Percentage'

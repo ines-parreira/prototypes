@@ -1,17 +1,17 @@
-import {AxiosError} from 'axios'
+import { AxiosError } from 'axios'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAsyncFn from 'hooks/useAsyncFn'
-import {createVerification} from 'models/singleSenderVerification/resources'
-import {SenderInformation} from 'models/singleSenderVerification/types'
-import {setVerification} from 'state/entities/singleSenderVerification/actions'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { createVerification } from 'models/singleSenderVerification/resources'
+import { SenderInformation } from 'models/singleSenderVerification/types'
+import { setVerification } from 'state/entities/singleSenderVerification/actions'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 export default function useCreateSingleSenderVerification() {
     const dispatch = useAppDispatch()
 
-    const [{loading: isLoading}, handleVerificationCreate] = useAsyncFn(
+    const [{ loading: isLoading }, handleVerificationCreate] = useAsyncFn(
         async (id: number, values: SenderInformation) => {
             if (!id) return
 
@@ -22,10 +22,12 @@ export default function useCreateSingleSenderVerification() {
                     notify({
                         message: 'Verification created successfully',
                         status: NotificationStatus.Success,
-                    })
+                    }),
                 )
             } catch (error) {
-                const {response} = error as AxiosError<{error: {msg: string}}>
+                const { response } = error as AxiosError<{
+                    error: { msg: string }
+                }>
                 const errorMsg =
                     response && response.data.error
                         ? response.data.error.msg
@@ -35,11 +37,11 @@ export default function useCreateSingleSenderVerification() {
                     notify({
                         message: errorMsg,
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
             }
         },
-        [dispatch]
+        [dispatch],
     )
 
     return {

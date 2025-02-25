@@ -1,11 +1,11 @@
-import {CustomFieldConditionExpression} from '@gorgias/api-queries'
-
 import React from 'react'
 
-import {useWatch} from 'core/forms'
+import { CustomFieldConditionExpression } from '@gorgias/api-queries'
+
+import { useWatch } from 'core/forms'
 import Button from 'pages/common/components/button/Button'
 
-export function AddButton({onClick}: {onClick: () => void}) {
+export function AddButton({ onClick }: { onClick: () => void }) {
     const expression: CustomFieldConditionExpression[] = useWatch({
         name: 'expression',
     })

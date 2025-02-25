@@ -1,22 +1,23 @@
-import {LiveCallQueueVoiceCall} from '@gorgias/api-queries'
-import React, {ComponentProps, useMemo} from 'react'
+import React, { ComponentProps, useMemo } from 'react'
 
-import {useMetric} from 'hooks/reporting/useMetric'
+import { LiveCallQueueVoiceCall } from '@gorgias/api-queries'
+
+import { useMetric } from 'hooks/reporting/useMetric'
 import useAppSelector from 'hooks/useAppSelector'
-import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
-import {voiceCallAverageWaitTimeQueryFactory} from 'models/reporting/queryFactories/voice/voiceCall'
-import {StatsFiltersWithLogicalOperator} from 'models/stat/types'
+import { VoiceCallSegment } from 'models/reporting/cubes/VoiceCallCube'
+import { voiceCallAverageWaitTimeQueryFactory } from 'models/reporting/queryFactories/voice/voiceCall'
+import { StatsFiltersWithLogicalOperator } from 'models/stat/types'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
 import * as constants from 'pages/stats/voice/constants/liveVoice'
-import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
-import {VoiceMetric} from 'state/ui/stats/types'
+import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
+import { VoiceMetric } from 'state/ui/stats/types'
 
-import {useAverageTalkTimeMetric} from '../../hooks/agentMetrics'
-import {useVoiceCallCountMetric} from '../../hooks/useVoiceCallCountMetric'
+import { useAverageTalkTimeMetric } from '../../hooks/agentMetrics'
+import { useVoiceCallCountMetric } from '../../hooks/useVoiceCallCountMetric'
 import LiveVoiceMetricCard from './LiveVoiceMetricCard'
-import {LiveVoiceStatusFilterOption} from './types'
-import {filterLiveCallsByStatus, getLiveVoicePeriodFilter} from './utils'
+import { LiveVoiceStatusFilterOption } from './types'
+import { filterLiveCallsByStatus, getLiveVoicePeriodFilter } from './utils'
 
 const CARD_SIZE = 4
 
@@ -32,7 +33,7 @@ export default function LiveVoiceMetrics({
     cleanStatsFilters,
 }: Props) {
     const {
-        data: {timezone},
+        data: { timezone },
     } = useAppSelector(getBusinessHoursSettings) ?? {
         data: {
             timezone: 'UTC',
@@ -47,22 +48,22 @@ export default function LiveVoiceMetrics({
     }, [cleanStatsFilters, timezone])
 
     const averageWaitTime = useMetric(
-        voiceCallAverageWaitTimeQueryFactory(filters, timezone)
+        voiceCallAverageWaitTimeQueryFactory(filters, timezone),
     )
     const inboundCallsCount = useVoiceCallCountMetric(
         filters,
         timezone,
-        VoiceCallSegment.inboundCalls
+        VoiceCallSegment.inboundCalls,
     )
     const outboundCallsCount = useVoiceCallCountMetric(
         filters,
         timezone,
-        VoiceCallSegment.outboundCalls
+        VoiceCallSegment.outboundCalls,
     )
     const missedInboundCallsCount = useVoiceCallCountMetric(
         filters,
         timezone,
-        VoiceCallSegment.missedCalls
+        VoiceCallSegment.missedCalls,
     )
     const averageTalkTime = useAverageTalkTimeMetric(filters, timezone)
 
@@ -72,7 +73,7 @@ export default function LiveVoiceMetrics({
             hint: constants.CALLS_IN_QUEUE_METRIC_HINT,
             value: filterLiveCallsByStatus(
                 liveVoiceCalls,
-                LiveVoiceStatusFilterOption.IN_QUEUE
+                LiveVoiceStatusFilterOption.IN_QUEUE,
             ).length,
             isLoading: isLoadingVoiceCalls,
         },

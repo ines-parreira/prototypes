@@ -1,6 +1,7 @@
-import classNames from 'classnames'
 import React from 'react'
-import {useHistory} from 'react-router-dom'
+
+import classNames from 'classnames'
+import { useHistory } from 'react-router-dom'
 
 import Button from 'pages/common/components/button/Button'
 
@@ -15,7 +16,7 @@ type AIBannerProps = {
     from: string
 }
 
-const AIBanner = ({helpCenterId, className, from}: AIBannerProps) => {
+const AIBanner = ({ helpCenterId, className, from }: AIBannerProps) => {
     const history = useHistory()
 
     return (
@@ -41,7 +42,7 @@ const AIBanner = ({helpCenterId, className, from}: AIBannerProps) => {
                         `/app/settings/help-center/${helpCenterId}/ai-library`,
                         {
                             from,
-                        }
+                        },
                     )
                 }}
             >

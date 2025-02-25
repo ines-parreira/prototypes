@@ -5,15 +5,14 @@ import {
     TRIGGERED_ON_EXIT_INTENT,
     TRIGGERED_OUTSIDE_BUSINESS_HOURS,
 } from '../constants/filters'
-
-import {Campaign} from '../types/Campaign'
+import { Campaign } from '../types/Campaign'
 import {
     campaignAttachmentIsDiscountOffer,
     campaignAttachmentIsProduct,
     campaignAttachmentIsProductRecommendation,
 } from '../types/CampaignAttachment'
-import {CampaignTriggerBusinessHoursValuesEnum} from '../types/enums/CampaignTriggerBusinessHoursValues.enum'
-import {CampaignTriggerType} from '../types/enums/CampaignTriggerType.enum'
+import { CampaignTriggerBusinessHoursValuesEnum } from '../types/enums/CampaignTriggerBusinessHoursValues.enum'
+import { CampaignTriggerType } from '../types/enums/CampaignTriggerType.enum'
 
 export function filterWithProductCards(campaigns: Campaign[]): Campaign[] {
     return campaigns.filter(
@@ -22,8 +21,8 @@ export function filterWithProductCards(campaigns: Campaign[]): Campaign[] {
             campaign.attachments.some(
                 (attachment) =>
                     !!campaignAttachmentIsProduct(attachment) ||
-                    !!campaignAttachmentIsProductRecommendation(attachment)
-            )
+                    !!campaignAttachmentIsProductRecommendation(attachment),
+            ),
     )
 }
 
@@ -35,7 +34,7 @@ export function filterWithDiscountCodes(campaigns: Campaign[]): Campaign[] {
             (campaign.attachments &&
                 campaign.attachments.some(
                     (attachment) =>
-                        !!campaignAttachmentIsDiscountOffer(attachment)
+                        !!campaignAttachmentIsDiscountOffer(attachment),
                 ))
         )
     })
@@ -44,13 +43,13 @@ export function filterWithDiscountCodes(campaigns: Campaign[]): Campaign[] {
 export function filterWithExitIntent(campaigns: Campaign[]): Campaign[] {
     return campaigns.filter((campaign) => {
         return campaign.triggers.some(
-            (trigger) => trigger.type === CampaignTriggerType.ExitIntent
+            (trigger) => trigger.type === CampaignTriggerType.ExitIntent,
         )
     })
 }
 
 export function filterWithOutsideBusinessHours(
-    campaigns: Campaign[]
+    campaigns: Campaign[],
 ): Campaign[] {
     return campaigns.filter((campaign) => {
         return campaign.triggers.some((trigger) => {
@@ -83,7 +82,7 @@ const QUICK_FILTERS_FN = {
 
 export function quickFiltersInvoke(
     campaigns: Campaign[],
-    quickFilters: string[]
+    quickFilters: string[],
 ): Campaign[] {
     return quickFilters.reduce((acc, quickFilter) => {
         const filterFn = QUICK_FILTERS_FN[quickFilter]

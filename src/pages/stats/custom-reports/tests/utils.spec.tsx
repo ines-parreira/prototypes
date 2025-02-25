@@ -1,3 +1,7 @@
+import React from 'react'
+
+import { AxiosError } from 'axios'
+
 import {
     AnalyticsCustomReport,
     AnalyticsCustomReportChartSchema,
@@ -9,13 +13,10 @@ import {
     AnalyticsCustomReportSectionSchemaType,
     AnalyticsCustomReportType,
 } from '@gorgias/api-types'
-import {AxiosError} from 'axios'
 
-import React from 'react'
-
-import {REPORTS_CONFIG} from 'pages/stats/custom-reports/config'
-import {ReportsIDs} from 'pages/stats/custom-reports/constants'
-import {getSearchConfig} from 'pages/stats/custom-reports/CustomReportsModal/ModalSearchBar'
+import { REPORTS_CONFIG } from 'pages/stats/custom-reports/config'
+import { ReportsIDs } from 'pages/stats/custom-reports/constants'
+import { getSearchConfig } from 'pages/stats/custom-reports/CustomReportsModal/ModalSearchBar'
 import {
     ChartConfig,
     ChartType,
@@ -43,13 +44,13 @@ import {
     AgentsShoutOutsConfig,
     TopPerformersChart,
 } from 'pages/stats/support-performance/agents/AgentsShoutOutsConfig'
-import {AGENT_PERFORMANCE_SECTION_TITLE} from 'pages/stats/support-performance/agents/AgentsTableChart'
+import { AGENT_PERFORMANCE_SECTION_TITLE } from 'pages/stats/support-performance/agents/AgentsTableChart'
 import {
     AGENT_PERSISTENT_FILTERS,
     AGENTS_OPTIONAL_FILTERS,
     AgentsChart,
 } from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReportConfig'
-import {TopCsatPerformers} from 'pages/stats/support-performance/agents/TopCsatPerformers'
+import { TopCsatPerformers } from 'pages/stats/support-performance/agents/TopCsatPerformers'
 import {
     OverviewMetric,
     OverviewMetricConfig,
@@ -58,7 +59,7 @@ import {
     OverviewChart,
     SupportPerformanceOverviewReportConfig,
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
-import {STATS_ROUTES} from 'routes/constants'
+import { STATS_ROUTES } from 'routes/constants'
 
 describe('customReportFromApi', () => {
     const apiReportWithoutChildren: AnalyticsCustomReport = {
@@ -109,7 +110,7 @@ describe('customReportFromApi', () => {
                 {
                     ...apiSection,
                     children: [
-                        {...apiRow, children: [{...apiChart}]},
+                        { ...apiRow, children: [{ ...apiChart }] },
                         apiChart,
                     ],
                 },
@@ -220,9 +221,9 @@ describe('getGroupChartsIntoRows', () => {
         expect(result.length).toBe(1)
         expect(result[0]).toEqual({
             children: [
-                {config_id: 'chart1', type: 'chart'},
-                {config_id: 'chart2', type: 'chart'},
-                {config_id: 'chart3', type: 'chart'},
+                { config_id: 'chart1', type: 'chart' },
+                { config_id: 'chart2', type: 'chart' },
+                { config_id: 'chart3', type: 'chart' },
             ],
             type: 'row',
         })
@@ -596,7 +597,7 @@ describe('getErrorMessage(error, defaultMessage)', () => {
 
     it('should construct simple error message', () => {
         const msg = 'Bad Request.'
-        const error = createError({msg})
+        const error = createError({ msg })
 
         const actual = getErrorMessage(error)
 
@@ -610,7 +611,7 @@ describe('getErrorMessage(error, defaultMessage)', () => {
 
         const error = createError({
             msg,
-            data: {name: nameError, emoji: emojiErrors},
+            data: { name: nameError, emoji: emojiErrors },
         })
 
         const actual = getErrorMessage(error)
@@ -674,7 +675,7 @@ describe('createDashboardPayload', () => {
     })
 
     it('should provide defaults if not provided in the Dashboard object', () => {
-        const dashboard = {name: 'Test Dashboard'}
+        const dashboard = { name: 'Test Dashboard' }
 
         const expected = {
             name: 'Test Dashboard',
@@ -692,7 +693,7 @@ describe('createDashboardPayload', () => {
 
 const createError = (error: any) =>
     new AxiosError(undefined, undefined, undefined, undefined, {
-        data: {error},
+        data: { error },
     } as any)
 
 describe('getErrorMessage(error, defaultMessage)', () => {
@@ -720,7 +721,7 @@ describe('getErrorMessage(error, defaultMessage)', () => {
 
     it('should construct simple error message', () => {
         const msg = 'Bad Request.'
-        const error = createError({msg})
+        const error = createError({ msg })
 
         const actual = getErrorMessage(error)
 
@@ -734,7 +735,7 @@ describe('getErrorMessage(error, defaultMessage)', () => {
 
         const error = createError({
             msg,
-            data: {name: nameError, emoji: emojiErrors},
+            data: { name: nameError, emoji: emojiErrors },
         })
 
         const actual = getErrorMessage(error)
@@ -788,7 +789,7 @@ describe('createDashboardPayload', () => {
     })
 
     it('should create an empty report with the correct payload', () => {
-        const dashboard = {name: 'Test Dashboard'}
+        const dashboard = { name: 'Test Dashboard' }
 
         const expected = {
             name: 'Test Dashboard',
@@ -947,7 +948,7 @@ describe('updateChartPosition', () => {
             dashboard,
             chartToMove.config_id,
             targetChart.config_id,
-            'after'
+            'after',
         )
 
         expect(updatedDashboard).toEqual({
@@ -988,7 +989,7 @@ describe('updateChartPosition', () => {
             dashboard,
             chartToMove.config_id,
             targetChart.config_id,
-            'before'
+            'before',
         )
 
         expect(updatedDashboard).toEqual({
@@ -1029,7 +1030,7 @@ describe('updateChartPosition', () => {
             dashboard,
             'nonExistentChartId',
             targetChart.config_id,
-            'before'
+            'before',
         )
 
         expect(updatedDashboard).toEqual({
@@ -1070,7 +1071,7 @@ describe('updateChartPosition', () => {
             dashboard,
             chartToMove.config_id,
             'nonExistentTargetChart',
-            'before'
+            'before',
         )
 
         expect(updatedDashboard).toEqual({

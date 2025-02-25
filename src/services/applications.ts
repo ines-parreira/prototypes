@@ -1,13 +1,16 @@
-import {appQueryClient} from 'api/queryClient'
-import {ApiListResponseCursorPagination} from 'models/api/types'
+import { appQueryClient } from 'api/queryClient'
+import { ApiListResponseCursorPagination } from 'models/api/types'
 import {
     applicationsQueryKeys,
     useListApplications,
 } from 'models/application/queries'
-import {listApplications} from 'models/application/resources'
-import {Application, ApplicationMessagingConfig} from 'models/application/types'
-import {Integration, isAppIntegration} from 'models/integration/types'
-import {toChannel, ChannelLike} from 'services/channels'
+import { listApplications } from 'models/application/resources'
+import {
+    Application,
+    ApplicationMessagingConfig,
+} from 'models/application/types'
+import { Integration, isAppIntegration } from 'models/integration/types'
+import { ChannelLike, toChannel } from 'services/channels'
 
 export type {
     Application,
@@ -43,11 +46,11 @@ export function getApplicationById(id: string): Application | undefined {
 }
 
 export function getApplicationsByChannel(
-    channelLike: ChannelLike
+    channelLike: ChannelLike,
 ): Application[] {
     const channel = toChannel(channelLike)
     return getApplications().filter(
-        (application) => application.channel_id === channel?.id
+        (application) => application.channel_id === channel?.id,
     )
 }
 
@@ -56,7 +59,7 @@ export function hasApplicationForChannel(channelLike: ChannelLike): boolean {
 }
 
 export function getMessagingConfig(
-    integration: Integration
+    integration: Integration,
 ): ApplicationMessagingConfig | undefined {
     if (!isAppIntegration(integration)) {
         return
@@ -66,7 +69,7 @@ export function getMessagingConfig(
 }
 
 function mockPaginatedApplicationsList(
-    entries: Application[]
+    entries: Application[],
 ): ApiListResponseCursorPagination<Application[]> {
     return {
         meta: {

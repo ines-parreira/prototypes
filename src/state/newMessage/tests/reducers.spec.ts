@@ -1,13 +1,13 @@
-import {TicketVia} from '@gorgias/api-types'
-import {EditorState, ContentState, SelectionState} from 'draft-js'
-import {fromJS, Map, List} from 'immutable'
+import { ContentState, EditorState, SelectionState } from 'draft-js'
+import { fromJS, List, Map } from 'immutable'
 
-import {TicketMessageSourceType, TicketChannel} from 'business/types/ticket'
-import {ticket} from 'fixtures/ticket'
+import { TicketVia } from '@gorgias/api-types'
+
+import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
+import { ticket } from 'fixtures/ticket'
 import addMention from 'pages/common/draftjs/plugins/mentions/modifiers/addMention'
-import {GorgiasAction} from 'state/types'
-
-import {DEFAULT_SOURCE_TYPE} from 'tickets/common/config'
+import { GorgiasAction } from 'state/types'
+import { DEFAULT_SOURCE_TYPE } from 'tickets/common/config'
 
 import {
     newMessageResetFromMessage,
@@ -15,15 +15,14 @@ import {
     restoreNewMessageDraft,
 } from '../actions'
 import * as types from '../constants'
-import {NEW_MESSAGE_FETCH_TICKET_SUCCESS} from '../constants'
+import { NEW_MESSAGE_FETCH_TICKET_SUCCESS } from '../constants'
 import * as emailExtraUtils from '../emailExtraUtils'
-import reducer, {makeNewMessage, initialState} from '../reducers'
+import reducer, { initialState, makeNewMessage } from '../reducers'
 import * as responseUtils from '../responseUtils'
-import {NewMessage, ReplyAreaState} from '../types'
+import { NewMessage, ReplyAreaState } from '../types'
+import { getMessageContextSnapshot } from './testUtils'
 
-import {getMessageContextSnapshot} from './testUtils'
-
-const {addEmailExtraContent} = emailExtraUtils
+const { addEmailExtraContent } = emailExtraUtils
 
 // mock random key generation so they match from a snapshot to the other
 jest.mock('draft-js/lib/generateRandomKey', () => () => 'someRandomKey')
@@ -31,20 +30,20 @@ jest.mock('draft-js/lib/generateRandomKey', () => () => 'someRandomKey')
 describe('new message reducer', () => {
     it('should return the initial state', () => {
         expect(reducer(undefined, {} as GorgiasAction)).toEqualImmutable(
-            initialState
+            initialState,
         )
     })
 
     it('should return new state with attachment loading to true', () => {
         const expected = initialState.setIn(
             ['_internal', 'loading', 'addAttachment'],
-            true
+            true,
         )
 
         expect(
             reducer(initialState, {
                 type: types.NEW_MESSAGE_ADD_ATTACHMENT_START,
-            })
+            }),
         ).toEqualImmutable(expected)
     })
 
@@ -69,7 +68,7 @@ describe('new message reducer', () => {
             reducer(initialState, {
                 type: types.NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS,
                 resp: ['resp'],
-            })
+            }),
         ).toEqualImmutable(expected)
     })
 
@@ -77,8 +76,8 @@ describe('new message reducer', () => {
         const populatedInitialState = initialState.mergeDeep({
             newMessage: {
                 attachments: fromJS([
-                    {content_type: 'image/jpg'},
-                    {content_type: 'image/png'},
+                    { content_type: 'image/jpg' },
+                    { content_type: 'image/png' },
                 ]),
             },
         })
@@ -87,9 +86,9 @@ describe('new message reducer', () => {
             .mergeDeep({
                 newMessage: {
                     attachments: fromJS([
-                        {content_type: 'image/jpg'},
-                        {content_type: 'image/jpg'},
-                        {content_type: 'image/png'},
+                        { content_type: 'image/jpg' },
+                        { content_type: 'image/jpg' },
+                        { content_type: 'image/png' },
                     ]),
                 },
                 state: {
@@ -101,8 +100,8 @@ describe('new message reducer', () => {
         expect(
             reducer(populatedInitialState, {
                 type: types.NEW_MESSAGE_ADD_SORTED_ATTACHMENT_SUCCESS,
-                resp: [{content_type: 'image/jpg'}],
-            })
+                resp: [{ content_type: 'image/jpg' }],
+            }),
         ).toEqualImmutable(expected)
     })
 
@@ -126,7 +125,7 @@ describe('new message reducer', () => {
                         'newMessage',
                         'attachments',
                     ]) as List<any>
-                ).delete(0)
+                ).delete(0),
             )
             .setIn(['state', 'dirty'], true)
 
@@ -134,7 +133,7 @@ describe('new message reducer', () => {
             reducer(fakeAttachments, {
                 type: types.NEW_MESSAGE_DELETE_ATTACHMENT,
                 index: 0,
-            })
+            }),
         ).toEqualImmutable(expected)
     })
 
@@ -144,15 +143,15 @@ describe('new message reducer', () => {
             (initialState.getIn(['newMessage', 'macros']) as List<any>).push(
                 fromJS({
                     id: '666',
-                })
-            )
+                }),
+            ),
         )
 
         expect(
             reducer(initialState, {
                 type: types.NEW_MESSAGE_RECORD_MACRO,
-                macro: fromJS({id: '666'}),
-            })
+                macro: fromJS({ id: '666' }),
+            }),
         ).toEqual(expected)
     })
 
@@ -162,39 +161,41 @@ describe('new message reducer', () => {
             (initialState.getIn(['newMessage', 'macros']) as List<any>).push(
                 fromJS({
                     id: '666',
-                })
-            )
+                }),
+            ),
         )
 
         expect(
             reducer(expected, {
                 type: types.NEW_MESSAGE_RECORD_MACRO,
-                macro: fromJS({id: '666'}),
-            })
+                macro: fromJS({ id: '666' }),
+            }),
         ).toEqual(expected)
     })
 
     it('should return loading state equal false', () => {
         const expected = initialState.setIn(
             ['_internal', 'loading', 'submitMessage'],
-            false
+            false,
         )
 
         expect(
-            reducer(initialState, {type: types.NEW_MESSAGE_SUBMIT_TICKET_ERROR})
+            reducer(initialState, {
+                type: types.NEW_MESSAGE_SUBMIT_TICKET_ERROR,
+            }),
         ).toEqualImmutable(expected)
     })
 
     it('should return same state if state.id is undefined or different from response', () => {
         const currentTicket = initialState.mergeDeep({
             id: 'toto',
-            state: {forceUpdate: false},
+            state: { forceUpdate: false },
         })
         expect(
             reducer(currentTicket, {
                 type: types.NEW_MESSAGE_SUBMIT_TICKET_SUCCESS,
-                resp: {id: 'fake'},
-            })
+                resp: { id: 'fake' },
+            }),
         ).toEqualImmutable(currentTicket)
     })
 
@@ -211,7 +212,7 @@ describe('new message reducer', () => {
                 type: types.NEW_MESSAGE_SUBMIT_TICKET_SUCCESS,
                 resp: {},
                 resetMessage: false,
-            })
+            }),
         ).toEqualImmutable(expected)
     })
 
@@ -231,13 +232,13 @@ describe('new message reducer', () => {
                     messages: [
                         makeNewMessage(
                             TicketChannel.Email,
-                            TicketMessageSourceType.Email
+                            TicketMessageSourceType.Email,
                         ),
                     ],
                     events: [],
                 },
                 resetMessage: true,
-            })
+            }),
         ).toEqualImmutable(expected)
     })
 
@@ -257,10 +258,10 @@ describe('new message reducer', () => {
             reducer(
                 initialState.setIn(
                     ['state', 'inserted_discounts'],
-                    fromJS([{code: 'FREETHINGY'}])
+                    fromJS([{ code: 'FREETHINGY' }]),
                 ),
-                action
-            )
+                action,
+            ),
         ).toEqualImmutable(expected)
     })
 
@@ -274,7 +275,7 @@ describe('new message reducer', () => {
             reducer(initialState, {
                 type: types.NEW_MESSAGE_SET_SOURCE_TYPE,
                 sourceType: TicketMessageSourceType.Facebook,
-            })
+            }),
         ).toEqualImmutable(expected)
     })
 
@@ -295,10 +296,10 @@ describe('new message reducer', () => {
                 messages: fromJS([
                     (initialState.get('newMessage') as Map<any, any>).setIn(
                         ['source', 'type'],
-                        'email'
+                        'email',
                     ),
                 ]),
-            })
+            }),
         ).toEqualImmutable(expected)
     })
 
@@ -307,8 +308,8 @@ describe('new message reducer', () => {
             expect(
                 reducer(initialState, {
                     type: types.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START,
-                    message: {channel: 'email'} as any,
-                }).getIn(['state', 'firstNewMessage'])
+                    message: { channel: 'email' } as any,
+                }).getIn(['state', 'firstNewMessage']),
             ).toEqual(false)
         })
 
@@ -330,13 +331,13 @@ describe('new message reducer', () => {
             }
             const newState = reducer(
                 initialState,
-                action as unknown as GorgiasAction
+                action as unknown as GorgiasAction,
             )
             expect(newState.getIn(['newMessage', 'source', 'type'])).toEqual(
-                TicketMessageSourceType.FacebookMessenger
+                TicketMessageSourceType.FacebookMessenger,
             )
             expect(newState.getIn(['newMessage', 'channel'])).toEqual(
-                TicketMessageSourceType.FacebookMessenger
+                TicketMessageSourceType.FacebookMessenger,
             )
         })
     })
@@ -349,7 +350,7 @@ describe('new message reducer', () => {
             addCacheSpy = jest.spyOn(responseUtils, 'addCache')
             updateEmailExtraOnUserInputSpy = jest.spyOn(
                 emailExtraUtils,
-                'updateEmailExtraOnUserInput'
+                'updateEmailExtraOnUserInput',
             )
         })
 
@@ -362,14 +363,14 @@ describe('new message reducer', () => {
             //@ts-ignore
             const editorState = EditorState.push(
                 EditorState.createEmpty(),
-                ContentState.createFromText('@Bob')
+                ContentState.createFromText('@Bob'),
             )
             const newEditorState = addMention(
                 editorState,
-                fromJS({name: 'Bob', id: 8}),
+                fromJS({ name: 'Bob', id: 8 }),
                 '@',
                 '@',
-                'SEGMENTED'
+                'SEGMENTED',
             )
 
             expect(
@@ -386,8 +387,8 @@ describe('new message reducer', () => {
                         args: fromJS({
                             contentState: newEditorState.getCurrentContent(),
                         }),
-                    }
-                ).getIn(['newMessage', 'mention_ids'])
+                    },
+                ).getIn(['newMessage', 'mention_ids']),
             ).toEqual(fromJS([8]))
         })
 
@@ -395,14 +396,14 @@ describe('new message reducer', () => {
             //@ts-ignore
             const editorState = EditorState.push(
                 EditorState.createEmpty(),
-                ContentState.createFromText('@Bob')
+                ContentState.createFromText('@Bob'),
             )
             const newEditorState = addMention(
                 editorState,
-                fromJS({name: 'Bob', id: 8}),
+                fromJS({ name: 'Bob', id: 8 }),
                 '@',
                 '@',
-                'SEGMENTED'
+                'SEGMENTED',
             )
 
             expect(
@@ -419,8 +420,8 @@ describe('new message reducer', () => {
                         args: fromJS({
                             contentState: newEditorState.getCurrentContent(),
                         }),
-                    }
-                ).getIn(['newMessage', 'mention_ids'])
+                    },
+                ).getIn(['newMessage', 'mention_ids']),
             ).toEqual(fromJS([]))
         })
 
@@ -428,14 +429,14 @@ describe('new message reducer', () => {
             //@ts-ignore
             const editorState = EditorState.push(
                 EditorState.createEmpty(),
-                ContentState.createFromText('@Bob @Bob')
+                ContentState.createFromText('@Bob @Bob'),
             )
             const newEditorState = addMention(
                 editorState,
-                fromJS({name: 'Bob', id: 8}),
+                fromJS({ name: 'Bob', id: 8 }),
                 '@',
                 '@',
-                'SEGMENTED'
+                'SEGMENTED',
             )
 
             expect(
@@ -452,8 +453,8 @@ describe('new message reducer', () => {
                         args: fromJS({
                             contentState: newEditorState.getCurrentContent(),
                         }),
-                    }
-                ).getIn(['newMessage', 'mention_ids'])
+                    },
+                ).getIn(['newMessage', 'mention_ids']),
             ).toEqual(fromJS([8]))
         })
 
@@ -475,9 +476,9 @@ describe('new message reducer', () => {
                                 },
                             },
                         }),
-                        action
+                        action,
                     ).getIn(['state', 'contentState']) as ContentState
-                ).getPlainText()
+                ).getPlainText(),
             ).toEqual('Hello')
         })
 
@@ -509,13 +510,13 @@ describe('new message reducer', () => {
                         ...context,
                         emailExtraAdded: false,
                     }
-                }
+                },
             )
             expect(
                 reducer(
                     initialState.setIn(['state', 'emailExtraAdded'], false),
-                    action
-                )
+                    action,
+                ),
             ).toMatchSnapshot()
         })
 
@@ -529,8 +530,8 @@ describe('new message reducer', () => {
             expect(
                 reducer(
                     initialState.setIn(['state', 'emailExtraAdded'], true),
-                    action
-                )
+                    action,
+                ),
             ).toMatchSnapshot()
         })
 
@@ -542,9 +543,9 @@ describe('new message reducer', () => {
                 {
                     isForwarded: false,
                     replyThreadMessages: [],
-                    signature: fromJS({text: 'Signature', html: 'Signature'}),
+                    signature: fromJS({ text: 'Signature', html: 'Signature' }),
                     ticket,
-                }
+                },
             )
             updateEmailExtraOnUserInputSpy.mockImplementation(() => {
                 return contentStateWithoutEmailExtra
@@ -559,8 +560,8 @@ describe('new message reducer', () => {
             expect(
                 reducer(
                     initialState.setIn(['state', 'contentState'], contentState),
-                    action
-                )
+                    action,
+                ),
             ).toMatchSnapshot()
         })
 
@@ -570,9 +571,9 @@ describe('new message reducer', () => {
                 {
                     isForwarded: false,
                     replyThreadMessages: [],
-                    signature: fromJS({text: 'Signature', html: 'Signature'}),
+                    signature: fromJS({ text: 'Signature', html: 'Signature' }),
                     ticket,
-                }
+                },
             )
             const action = {
                 type: types.SET_RESPONSE_TEXT,
@@ -588,10 +589,10 @@ describe('new message reducer', () => {
                         .setIn(['newMessage', 'stripped_text'], 'stripped text')
                         .setIn(
                             ['newMessage', 'stripped_html'],
-                            'stripped body'
+                            'stripped body',
                         ),
-                    action
-                )
+                    action,
+                ),
             ).toMatchSnapshot()
         })
 
@@ -618,16 +619,16 @@ describe('new message reducer', () => {
                         ...context,
                         inserted_discounts: discounts,
                     }
-                }
+                },
             )
             expect(
                 reducer(
                     initialState.setIn(
                         ['state', 'inserted_discounts'],
-                        fromJS([])
+                        fromJS([]),
                     ),
-                    action
-                )
+                    action,
+                ),
             ).toMatchSnapshot()
         })
 
@@ -654,16 +655,16 @@ describe('new message reducer', () => {
                         ...context,
                         inserted_discounts: null,
                     }
-                }
+                },
             )
             expect(
                 reducer(
                     initialState.setIn(
                         ['state', 'inserted_discounts'],
-                        discounts
+                        discounts,
                     ),
-                    action
-                )
+                    action,
+                ),
             ).toMatchSnapshot()
         })
     })
@@ -692,7 +693,7 @@ describe('new message reducer', () => {
                     receivers: {
                         to: [receiver],
                     } as any,
-                })
+                }),
             ).toEqualImmutable(expected)
         })
     })
@@ -706,7 +707,7 @@ describe('new message reducer', () => {
             }),
         }
         expect(reducer(initialState, action)).toEqualImmutable(
-            initialState.setIn(['newMessage', 'source', 'from'], action.sender)
+            initialState.setIn(['newMessage', 'source', 'from'], action.sender),
         )
     })
 
@@ -730,11 +731,11 @@ describe('new message reducer', () => {
             ])
             const action = {
                 type: types.ADD_ATTACHMENTS,
-                args: fromJS({attachments}),
+                args: fromJS({ attachments }),
             }
 
             expect(reducer(initialState, action)).toEqualImmutable(
-                initialState.setIn(['newMessage', 'attachments'], attachments)
+                initialState.setIn(['newMessage', 'attachments'], attachments),
             )
         })
     })
@@ -742,7 +743,7 @@ describe('new message reducer', () => {
     describe('NEW_MESSAGE_RESET_FROM_TICKET action', () => {
         const ticket = fromJS({
             events: [],
-            messages: [{channel: 'email'}],
+            messages: [{ channel: 'email' }],
             subject: '',
             via: 'helpdesk',
             channel: 'email',
@@ -765,11 +766,11 @@ describe('new message reducer', () => {
 
             const state = initialState.setIn(
                 ['newMessage', 'source', 'type'],
-                'internal-note'
+                'internal-note',
             )
 
             expect(
-                reducer(state, action).getIn(['newMessage', 'source', 'type'])
+                reducer(state, action).getIn(['newMessage', 'source', 'type']),
             ).toEqual('internal-note')
         })
 
@@ -781,7 +782,7 @@ describe('new message reducer', () => {
 
             const state = initialState.mergeDeep({
                 newMessage: {
-                    source: {type: 'internal-note'},
+                    source: { type: 'internal-note' },
                     public: false,
                 },
             })
@@ -789,10 +790,10 @@ describe('new message reducer', () => {
             expect(reducer(state, action)).toEqualImmutable(
                 initialState.mergeDeep({
                     newMessage: {
-                        source: {type: 'internal-note'},
+                        source: { type: 'internal-note' },
                         public: false,
                     },
-                })
+                }),
             )
         })
 
@@ -803,16 +804,16 @@ describe('new message reducer', () => {
             }
 
             const state = initialState.mergeDeep({
-                newMessage: {public: false},
+                newMessage: { public: false },
             })
 
             expect(reducer(state, action)).toEqualImmutable(
                 initialState.mergeDeep({
                     newMessage: {
-                        source: {type: 'email'},
+                        source: { type: 'email' },
                         public: true,
                     },
-                })
+                }),
             )
         })
     })
@@ -834,16 +835,16 @@ describe('new message reducer', () => {
                         extra: {},
                     },
                 },
-                contentState
+                contentState,
             )
         }
         const createReplyAreaState = (
-            contentState: ContentState
+            contentState: ContentState,
         ): ReplyAreaState => {
             return {
                 contentState,
                 selectionState: SelectionState.createEmpty(
-                    contentState.getFirstBlock().getKey()
+                    contentState.getFirstBlock().getKey(),
                 ),
                 forceFocus: false,
                 forceUpdate: false,
@@ -870,11 +871,11 @@ describe('new message reducer', () => {
             const contentState = addEmailExtraContent(
                 ContentState.createFromText('Foo'),
                 {
-                    signature: fromJS({text: 'Signature'}),
+                    signature: fromJS({ text: 'Signature' }),
                     replyThreadMessages: [],
                     isForwarded: false,
                     ticket: ticket,
-                }
+                },
             )
             const action = newMessageResetFromMessage({
                 newMessage: createNewMessage(contentState),
@@ -900,7 +901,7 @@ describe('new message reducer', () => {
                         'source',
                         'extra',
                     ]) as Map<any, any>
-                ).toJS()
+                ).toJS(),
             ).toMatchSnapshot()
         })
     })
@@ -924,7 +925,7 @@ describe('new message reducer', () => {
                 reducer(initialState, action).getIn([
                     'state',
                     'inserted_discounts',
-                ]) as Map<any, any>
+                ]) as Map<any, any>,
             ).toMatchSnapshot()
         })
 
@@ -955,7 +956,7 @@ describe('new message reducer', () => {
                 reducer(stateWithDiscounts, action).getIn([
                     'state',
                     'inserted_discounts',
-                ]) as Map<any, any>
+                ]) as Map<any, any>,
             ).toEqual(expected)
         })
     })
@@ -988,7 +989,7 @@ describe('new message reducer', () => {
                         any,
                         any
                     >
-                ).toJS()
+                ).toJS(),
             ).toMatchSnapshot()
         })
     })
@@ -997,7 +998,7 @@ describe('new message reducer', () => {
         it('should set body text', () => {
             const contentState = ContentState.createFromText('Foo')
             const selectionState = SelectionState.createEmpty(
-                contentState.getFirstBlock().getKey()
+                contentState.getFirstBlock().getKey(),
             )
 
             const action = restoreNewMessageBodyText({
@@ -1014,7 +1015,7 @@ describe('new message reducer', () => {
                         any,
                         any
                     >
-                ).toJS()
+                ).toJS(),
             ).toMatchSnapshot()
         })
     })
@@ -1026,7 +1027,7 @@ describe('new message reducer', () => {
                 messages: [],
                 via: TicketVia.Chat,
                 id: 1,
-                meta: {response_channel: SOURCE_TYPE},
+                meta: { response_channel: SOURCE_TYPE },
             }
             const newState = (
                 reducer(initialState, {

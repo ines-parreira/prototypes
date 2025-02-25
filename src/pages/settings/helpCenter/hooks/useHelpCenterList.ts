@@ -1,20 +1,18 @@
-import {useCallback, useEffect, useMemo, useState} from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {HelpCenter} from 'models/helpCenter/types'
-import {Paths} from 'rest_api/help_center_api/client.generated'
-
+import { HelpCenter } from 'models/helpCenter/types'
+import { Paths } from 'rest_api/help_center_api/client.generated'
 import {
     getHelpCenterFAQList,
     helpCentersFetched,
 } from 'state/entities/helpCenter/helpCenters'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { reportError } from 'utils/errors'
 
-import {reportError} from 'utils/errors'
-
-import {useHelpCenterApi} from './useHelpCenterApi'
+import { useHelpCenterApi } from './useHelpCenterApi'
 
 type HelpCenterListHook = {
     helpCenters: HelpCenter[]
@@ -29,12 +27,12 @@ type Pagination = {
 }
 
 export const useHelpCenterList = (
-    params: Omit<Paths.ListHelpCenters.QueryParameters, 'page'>
+    params: Omit<Paths.ListHelpCenters.QueryParameters, 'page'>,
 ): HelpCenterListHook => {
     const dispatch = useAppDispatch()
     const helpCenters = useAppSelector(getHelpCenterFAQList)
 
-    const {client} = useHelpCenterApi()
+    const { client } = useHelpCenterApi()
     const [isLoading, setLoading] = useState(true)
     const [pagination, setPagination] = useState<Pagination>({
         page: 0,
@@ -42,7 +40,7 @@ export const useHelpCenterList = (
     })
     const hasMore = useMemo(
         () => pagination.page < pagination.nbPages,
-        [pagination]
+        [pagination],
     )
 
     const fetchHelpCenters = useCallback(
@@ -52,7 +50,7 @@ export const useHelpCenterList = (
                     setLoading(true)
 
                     const {
-                        data: {meta, data: fetchedHelpCenters},
+                        data: { meta, data: fetchedHelpCenters },
                     } = await client.listHelpCenters({
                         ...params,
                         page: page + 1,
@@ -63,16 +61,16 @@ export const useHelpCenterList = (
                         helpCentersFetched([
                             ...helpCenters,
                             ...fetchedHelpCenters,
-                        ])
+                        ]),
                     )
 
-                    setPagination({page: meta.page, nbPages: meta.nb_pages})
+                    setPagination({ page: meta.page, nbPages: meta.nb_pages })
                 } catch (err) {
                     void dispatch(
                         notify({
                             message: 'Failed to retrieve the Help Center list',
                             status: NotificationStatus.Error,
-                        })
+                        }),
                     )
                     reportError(err as Error)
                 } finally {
@@ -80,7 +78,7 @@ export const useHelpCenterList = (
                 }
             }
         },
-        [client, dispatch, helpCenters, params]
+        [client, dispatch, helpCenters, params],
     )
 
     const fetchMore = useCallback(async () => {
@@ -97,7 +95,7 @@ export const useHelpCenterList = (
     }, [client])
 
     return useMemo(
-        () => ({helpCenters, isLoading, hasMore, fetchMore}),
-        [fetchMore, hasMore, helpCenters, isLoading]
+        () => ({ helpCenters, isLoading, hasMore, fetchMore }),
+        [fetchMore, hasMore, helpCenters, isLoading],
     )
 }

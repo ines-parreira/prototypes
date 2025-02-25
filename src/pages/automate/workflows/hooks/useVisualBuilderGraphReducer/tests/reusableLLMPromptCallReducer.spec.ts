@@ -1,4 +1,4 @@
-import {buildNodeCommonProperties} from 'pages/automate/workflows/models/visualBuilderGraph.model'
+import { buildNodeCommonProperties } from 'pages/automate/workflows/models/visualBuilderGraph.model'
 import {
     LLMPromptTriggerNodeType,
     ReusableLLMPromptCallNodeType,
@@ -10,9 +10,9 @@ import {
 } from 'pages/automate/workflows/tests/visualBuilderGraph.fixtures'
 
 import {
-    reusableLLMPromptCallReducer,
     isVisualBuilderReusableLLMPromptCallAction,
     reorderNodes,
+    reusableLLMPromptCallReducer,
 } from '../reusableLLMPromptCallReducer'
 
 describe('reusableLLMPromptCallReducer', () => {
@@ -20,20 +20,22 @@ describe('reusableLLMPromptCallReducer', () => {
         expect(
             isVisualBuilderReusableLLMPromptCallAction({
                 type: 'INSERT_REUSABLE_LLM_PROMPT_CALL_NODE',
-            })
+            }),
         ).toBe(true)
         expect(
             isVisualBuilderReusableLLMPromptCallAction({
                 type: 'SET_REUSABLE_LLM_PROMPT_CALL_VALUE',
-            })
+            }),
         ).toBe(true)
         expect(
             isVisualBuilderReusableLLMPromptCallAction({
                 type: 'REORDER_REUSABLE_LLM_PROMPT_CALL_NODE',
-            })
+            }),
         ).toBe(true)
         expect(
-            isVisualBuilderReusableLLMPromptCallAction({type: 'UNKNOWN_ACTION'})
+            isVisualBuilderReusableLLMPromptCallAction({
+                type: 'UNKNOWN_ACTION',
+            }),
         ).toBe(false)
     })
 
@@ -56,7 +58,7 @@ describe('reusableLLMPromptCallReducer', () => {
             entrypoint: {
                 requires_confirmation: false,
             },
-            app: {type: 'app', app_id: 'app123'},
+            app: { type: 'app', app_id: 'app123' },
             values: {},
         })
 
@@ -66,7 +68,7 @@ describe('reusableLLMPromptCallReducer', () => {
     test('INSERT_REUSABLE_LLM_PROMPT_CALL_NODE with existing app', () => {
         const graph = {
             ...visualBuilderGraphLlmPromptTriggerFixture,
-            apps: [{type: 'app' as const, app_id: 'app123'}],
+            apps: [{ type: 'app' as const, app_id: 'app123' }],
         }
         const nextGraph = reusableLLMPromptCallReducer(graph, {
             type: 'INSERT_REUSABLE_LLM_PROMPT_CALL_NODE',
@@ -81,7 +83,7 @@ describe('reusableLLMPromptCallReducer', () => {
             entrypoint: {
                 requires_confirmation: false,
             },
-            app: {type: 'app', app_id: 'app123'},
+            app: { type: 'app', app_id: 'app123' },
             values: {},
         })
 
@@ -96,7 +98,7 @@ describe('reusableLLMPromptCallReducer', () => {
                 reusableLLMPromptCallNodeId: 'reusable_llm_prompt_call1',
                 inputId: 'input1',
                 value: 'value1',
-            }
+            },
         )
 
         expect(nextGraph.nodes[1].data).toEqual(
@@ -104,7 +106,7 @@ describe('reusableLLMPromptCallReducer', () => {
                 values: {
                     input1: 'value1',
                 },
-            })
+            }),
         )
     })
 
@@ -139,9 +141,9 @@ describe('reusableLLMPromptCallReducer', () => {
                 entrypoint: {
                     requires_confirmation: false,
                 },
-                app: {type: 'app' as const, app_id: 'app123'},
+                app: { type: 'app' as const, app_id: 'app123' },
                 values: {},
-            })
+            }),
         ).toThrow()
     })
 
@@ -190,7 +192,7 @@ describe('reusableLLMPromptCallReducer', () => {
             entrypoint: {
                 requires_confirmation: false,
             },
-            app: {type: 'app' as const, app_id: 'app123'},
+            app: { type: 'app' as const, app_id: 'app123' },
             values: {},
         })
 
@@ -223,22 +225,22 @@ describe('reusableLLMPromptCallReducer', () => {
                 entrypoint: {
                     requires_confirmation: false,
                 },
-                app: {type: 'app' as const, app_id: 'app123'},
+                app: { type: 'app' as const, app_id: 'app123' },
                 values: {},
-            }
+            },
         )
 
         // Verify that a new product input was added
         const triggerNode = nextG.nodes[0] as LLMPromptTriggerNodeType
         const productInputs = triggerNode.data.inputs.filter(
             (
-                input
+                input,
             ): input is {
                 id: string
                 name: string
                 kind: 'product'
                 instructions: string
-            } => 'kind' in input && input.kind === 'product'
+            } => 'kind' in input && input.kind === 'product',
         )
         expect(productInputs).toHaveLength(1)
         expect(productInputs[0].name).toBe('Test name 2')
@@ -274,7 +276,7 @@ describe('reusableLLMPromptCallReducer', () => {
 
         const newNode = nextG.nodes.find(
             (n): n is ReusableLLMPromptCallNodeType =>
-                n.type === 'reusable_llm_prompt_call'
+                n.type === 'reusable_llm_prompt_call',
         )
         expect(nextG.nodeEditingId).toBe(newNode?.id)
         expect(nextG.branchIdsEditing).toEqual([])
@@ -310,7 +312,7 @@ describe('reusableLLMPromptCallReducer', () => {
 
         const newNode = nextG.nodes.find(
             (n): n is ReusableLLMPromptCallNodeType =>
-                n.type === 'reusable_llm_prompt_call'
+                n.type === 'reusable_llm_prompt_call',
         )
         expect(nextG.nodeEditingId).toBe(newNode?.id)
         expect(nextG.branchIdsEditing).toEqual([])
@@ -569,7 +571,7 @@ describe('reusableLLMPromptCallReducer', () => {
             entrypoint: {
                 requires_confirmation: false,
             },
-            app: {type: 'app' as const, app_id: 'app123'},
+            app: { type: 'app' as const, app_id: 'app123' },
             values: {},
         })
 
@@ -581,7 +583,7 @@ describe('reusableLLMPromptCallReducer', () => {
         // Verify that the custom input was mapped correctly
         const reusableLLMPromptCallNode = nextG.nodes.find(
             (n): n is ReusableLLMPromptCallNodeType =>
-                n.type === 'reusable_llm_prompt_call'
+                n.type === 'reusable_llm_prompt_call',
         )
         expect(reusableLLMPromptCallNode?.data.custom_inputs).toEqual({
             input1: `{{custom_inputs.existing-input}}`,
@@ -608,13 +610,13 @@ describe('reusableLLMPromptCallReducer', () => {
             entrypoint: {
                 requires_confirmation: false,
             },
-            app: {type: 'app' as const, app_id: 'app123'},
+            app: { type: 'app' as const, app_id: 'app123' },
             values: {},
         })
 
         const reusableLLMPromptCallNode = nextG.nodes.find(
             (n): n is ReusableLLMPromptCallNodeType =>
-                n.type === 'reusable_llm_prompt_call'
+                n.type === 'reusable_llm_prompt_call',
         )
         expect(reusableLLMPromptCallNode?.data.objects).toEqual({
             customer: '{{objects.customer}}',
@@ -641,13 +643,13 @@ describe('reusableLLMPromptCallReducer', () => {
             entrypoint: {
                 requires_confirmation: false,
             },
-            app: {type: 'app' as const, app_id: 'app123'},
+            app: { type: 'app' as const, app_id: 'app123' },
             values: {},
         })
 
         const reusableLLMPromptCallNode = nextG.nodes.find(
             (n): n is ReusableLLMPromptCallNodeType =>
-                n.type === 'reusable_llm_prompt_call'
+                n.type === 'reusable_llm_prompt_call',
         )
         expect(reusableLLMPromptCallNode?.data.objects).toEqual({
             order: '{{objects.order}}',
@@ -692,20 +694,20 @@ describe('reusableLLMPromptCallReducer', () => {
             entrypoint: {
                 requires_confirmation: false,
             },
-            app: {type: 'app' as const, app_id: 'app123'},
+            app: { type: 'app' as const, app_id: 'app123' },
             values: {},
         })
 
         const triggerNode = nextG.nodes[0] as LLMPromptTriggerNodeType
         const newInput = triggerNode.data.inputs.find(
             (
-                input
+                input,
             ): input is {
                 id: string
                 name: string
                 instructions: string
                 kind: 'product'
-            } => 'kind' in input && input.kind === 'product'
+            } => 'kind' in input && input.kind === 'product',
         )
         expect(newInput?.kind).toBe('product')
         expect(newInput?.name).toBeDefined()
@@ -713,7 +715,7 @@ describe('reusableLLMPromptCallReducer', () => {
 
         const reusableLLMPromptCallNode = nextG.nodes.find(
             (n): n is ReusableLLMPromptCallNodeType =>
-                n.type === 'reusable_llm_prompt_call'
+                n.type === 'reusable_llm_prompt_call',
         )
         expect(reusableLLMPromptCallNode?.data.objects).toEqual({
             products: {
@@ -766,25 +768,25 @@ describe('reusableLLMPromptCallReducer', () => {
             entrypoint: {
                 requires_confirmation: false,
             },
-            app: {type: 'app' as const, app_id: 'app123'},
+            app: { type: 'app' as const, app_id: 'app123' },
             values: {},
         })
 
         const triggerNode = nextG.nodes[0] as LLMPromptTriggerNodeType
         const productInput = triggerNode.data.inputs.find(
             (
-                input
+                input,
             ): input is {
                 id: string
                 name: string
                 instructions: string
                 kind: 'product'
-            } => 'kind' in input && input.kind === 'product'
+            } => 'kind' in input && input.kind === 'product',
         )
 
         const reusableLLMPromptCallNode = nextG.nodes.find(
             (n): n is ReusableLLMPromptCallNodeType =>
-                n.type === 'reusable_llm_prompt_call'
+                n.type === 'reusable_llm_prompt_call',
         )
         expect(reusableLLMPromptCallNode?.data.objects).toEqual({
             customer: '{{objects.customer}}',
@@ -802,38 +804,38 @@ describe('reusableLLMPromptCallReducer', () => {
                     {
                         id: 'trigger',
                         type: 'channel_trigger',
-                        position: {x: 0, y: 0},
+                        position: { x: 0, y: 0 },
                         data: {},
                     },
                     {
                         id: 'node1',
                         type: 'reusable_llm_prompt_call',
-                        position: {x: 0, y: 100},
+                        position: { x: 0, y: 100 },
                         data: {},
                     },
                     {
                         id: 'error1',
                         type: 'end',
-                        position: {x: 100, y: 100},
-                        data: {action: 'end-failure'},
+                        position: { x: 100, y: 100 },
+                        data: { action: 'end-failure' },
                     },
                     {
                         id: 'node2',
                         type: 'reusable_llm_prompt_call',
-                        position: {x: 0, y: 200},
+                        position: { x: 0, y: 200 },
                         data: {},
                     },
                     {
                         id: 'error2',
                         type: 'end',
-                        position: {x: 100, y: 200},
-                        data: {action: 'end-failure'},
+                        position: { x: 100, y: 200 },
+                        data: { action: 'end-failure' },
                     },
                     {
                         id: 'success',
                         type: 'end',
-                        position: {x: 0, y: 300},
-                        data: {action: 'end-success'},
+                        position: { x: 0, y: 300 },
+                        data: { action: 'end-success' },
                     },
                 ],
                 edges: [
@@ -846,7 +848,7 @@ describe('reusableLLMPromptCallReducer', () => {
                         id: 'edge2',
                         source: 'node1',
                         target: 'error1',
-                        data: {name: 'Error'},
+                        data: { name: 'Error' },
                     },
                     {
                         id: 'edge3',
@@ -858,7 +860,9 @@ describe('reusableLLMPromptCallReducer', () => {
                                 and: [
                                     {
                                         equals: [
-                                            {var: 'steps_state.node1.success'},
+                                            {
+                                                var: 'steps_state.node1.success',
+                                            },
                                             true,
                                         ],
                                     },
@@ -870,7 +874,7 @@ describe('reusableLLMPromptCallReducer', () => {
                         id: 'edge4',
                         source: 'node2',
                         target: 'error2',
-                        data: {name: 'Error'},
+                        data: { name: 'Error' },
                     },
                     {
                         id: 'edge5',
@@ -882,7 +886,9 @@ describe('reusableLLMPromptCallReducer', () => {
                                 and: [
                                     {
                                         equals: [
-                                            {var: 'steps_state.node2.success'},
+                                            {
+                                                var: 'steps_state.node2.success',
+                                            },
                                             true,
                                         ],
                                     },
@@ -901,12 +907,12 @@ describe('reusableLLMPromptCallReducer', () => {
                 expect.objectContaining({
                     source: 'trigger',
                     target: 'node2',
-                })
+                }),
             )
 
             // Verify node2 connects to node1 with success condition
             const node2ToNode1Edge = result.edges.find(
-                (edge) => edge.source === 'node2' && edge.target === 'node1'
+                (edge) => edge.source === 'node2' && edge.target === 'node1',
             )
             expect(node2ToNode1Edge).toBeTruthy()
             expect(node2ToNode1Edge?.data).toEqual(
@@ -916,31 +922,31 @@ describe('reusableLLMPromptCallReducer', () => {
                         and: [
                             {
                                 equals: [
-                                    {var: 'steps_state.node2.success'},
+                                    { var: 'steps_state.node2.success' },
                                     true,
                                 ],
                             },
                         ],
                     }),
-                })
+                }),
             )
 
             // Verify error edges are preserved
             const node2ToError2Edge = result.edges.find(
-                (edge) => edge.source === 'node2' && edge.target === 'error2'
+                (edge) => edge.source === 'node2' && edge.target === 'error2',
             )
             expect(node2ToError2Edge).toBeTruthy()
-            expect(node2ToError2Edge?.data).toEqual({name: 'Error'})
+            expect(node2ToError2Edge?.data).toEqual({ name: 'Error' })
 
             const node1ToError1Edge = result.edges.find(
-                (edge) => edge.source === 'node1' && edge.target === 'error1'
+                (edge) => edge.source === 'node1' && edge.target === 'error1',
             )
             expect(node1ToError1Edge).toBeTruthy()
-            expect(node1ToError1Edge?.data).toEqual({name: 'Error'})
+            expect(node1ToError1Edge?.data).toEqual({ name: 'Error' })
 
             // Verify final success edge
             const node1ToSuccessEdge = result.edges.find(
-                (edge) => edge.source === 'node1' && edge.target === 'success'
+                (edge) => edge.source === 'node1' && edge.target === 'success',
             )
             expect(node1ToSuccessEdge).toBeTruthy()
             expect(node1ToSuccessEdge?.data).toEqual(
@@ -950,13 +956,13 @@ describe('reusableLLMPromptCallReducer', () => {
                         and: [
                             {
                                 equals: [
-                                    {var: 'steps_state.node1.success'},
+                                    { var: 'steps_state.node1.success' },
                                     true,
                                 ],
                             },
                         ],
                     }),
-                })
+                }),
             )
 
             // Verify nodes order in the final array
@@ -976,20 +982,20 @@ describe('reusableLLMPromptCallReducer', () => {
                     {
                         id: 'trigger',
                         type: 'channel_trigger',
-                        position: {x: 0, y: 0},
+                        position: { x: 0, y: 0 },
                         data: {},
                     },
                     {
                         id: 'node1',
                         type: 'reusable_llm_prompt_call',
-                        position: {x: 0, y: 100},
+                        position: { x: 0, y: 100 },
                         data: {},
                     },
                     {
                         id: 'success',
                         type: 'end',
-                        position: {x: 0, y: 300},
-                        data: {action: 'end-success'},
+                        position: { x: 0, y: 300 },
+                        data: { action: 'end-success' },
                     },
                 ],
                 edges: [
@@ -1009,11 +1015,11 @@ describe('reusableLLMPromptCallReducer', () => {
                 expect.objectContaining({
                     source: 'trigger',
                     target: 'node1',
-                })
+                }),
             )
 
             const node1ToSuccessEdge = result.edges.find(
-                (edge) => edge.source === 'node1' && edge.target === 'success'
+                (edge) => edge.source === 'node1' && edge.target === 'success',
             )
             expect(node1ToSuccessEdge).toBeTruthy()
             expect(node1ToSuccessEdge?.data).toEqual(
@@ -1023,13 +1029,13 @@ describe('reusableLLMPromptCallReducer', () => {
                         and: [
                             {
                                 equals: [
-                                    {var: 'steps_state.node1.success'},
+                                    { var: 'steps_state.node1.success' },
                                     true,
                                 ],
                             },
                         ],
                     }),
-                })
+                }),
             )
         })
 
@@ -1039,14 +1045,14 @@ describe('reusableLLMPromptCallReducer', () => {
                     {
                         id: 'node1',
                         type: 'reusable_llm_prompt_call',
-                        position: {x: 0, y: 100},
+                        position: { x: 0, y: 100 },
                         data: {},
                     },
                     {
                         id: 'success',
                         type: 'end',
-                        position: {x: 0, y: 300},
-                        data: {action: 'end-success'},
+                        position: { x: 0, y: 300 },
+                        data: { action: 'end-success' },
                     },
                 ],
                 edges: [
@@ -1070,7 +1076,7 @@ describe('reusableLLMPromptCallReducer', () => {
                         expect.objectContaining({
                             id: 'success',
                             type: 'end',
-                            data: {action: 'end-success'},
+                            data: { action: 'end-success' },
                         }),
                     ]),
                     edges: expect.arrayContaining([
@@ -1079,7 +1085,7 @@ describe('reusableLLMPromptCallReducer', () => {
                             target: 'success',
                         }),
                     ]),
-                })
+                }),
             )
 
             const graphWithoutEnd = {
@@ -1087,13 +1093,13 @@ describe('reusableLLMPromptCallReducer', () => {
                     {
                         id: 'trigger',
                         type: 'channel_trigger',
-                        position: {x: 0, y: 0},
+                        position: { x: 0, y: 0 },
                         data: {},
                     },
                     {
                         id: 'node1',
                         type: 'reusable_llm_prompt_call',
-                        position: {x: 0, y: 100},
+                        position: { x: 0, y: 100 },
                         data: {},
                     },
                 ],
@@ -1126,7 +1132,7 @@ describe('reusableLLMPromptCallReducer', () => {
                             target: 'node1',
                         }),
                     ]),
-                })
+                }),
             )
         })
     })
@@ -1169,7 +1175,7 @@ describe('reusableLLMPromptCallReducer', () => {
             entrypoint: {
                 requires_confirmation: false,
             },
-            app: {type: 'app' as const, app_id: 'app123'},
+            app: { type: 'app' as const, app_id: 'app123' },
             values: {},
         })
 
@@ -1177,13 +1183,13 @@ describe('reusableLLMPromptCallReducer', () => {
         const triggerNode = nextG.nodes[0] as LLMPromptTriggerNodeType
         const productInput = triggerNode.data.inputs.find(
             (
-                input
+                input,
             ): input is {
                 id: string
                 name: string
                 instructions: string
                 kind: 'product'
-            } => 'kind' in input && input.kind === 'product'
+            } => 'kind' in input && input.kind === 'product',
         )
 
         expect(productInput).toBeDefined()
@@ -1194,7 +1200,7 @@ describe('reusableLLMPromptCallReducer', () => {
         // Verify reusable LLM prompt call node mapping
         const reusableLLMPromptCallNode = nextG.nodes.find(
             (n): n is ReusableLLMPromptCallNodeType =>
-                n.type === 'reusable_llm_prompt_call'
+                n.type === 'reusable_llm_prompt_call',
         )
         expect(reusableLLMPromptCallNode?.data.objects).toEqual({
             products: {

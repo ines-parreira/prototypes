@@ -1,6 +1,6 @@
-import {List, Map} from 'immutable'
+import { List, Map } from 'immutable'
 
-import {RuleItemActions} from 'pages/settings/rules/types'
+import { RuleItemActions } from 'pages/settings/rules/types'
 
 export type BlockStatementItemProps = {
     rule: Map<any, any>

@@ -1,15 +1,15 @@
-import {ulid} from 'ulidx'
+import { ulid } from 'ulidx'
 
-import {CampaignConfigurationBuilder} from 'pages/convert/campaigns/templates/constructor'
+import { CampaignConfigurationBuilder } from 'pages/convert/campaigns/templates/constructor'
 import {
     CampaignConfiguration,
     CampaignTemplate,
 } from 'pages/convert/campaigns/templates/types'
-import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
-import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
-import {createTriggerRule} from 'pages/convert/campaigns/utils/createTriggerRule'
-import {assetsUrl} from 'utils'
+import { CampaignStatus } from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
+import { CampaignTriggerOperator } from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
+import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import { createTriggerRule } from 'pages/convert/campaigns/utils/createTriggerRule'
+import { assetsUrl } from 'utils'
 
 export const CSM_SUGGEST_COMPLIMENTARY_PRODUCT_TO_PREVIOUS_PURCHASE: CampaignTemplate =
     {
@@ -80,7 +80,7 @@ Since you missed out on the bundle to save option, use code SECOND CHANCE for 5%
                     triggers: triggers,
                     trigger_rule: createTriggerRule(triggers),
                     attachments: [],
-                }
+                },
             )
 
             return Promise.resolve(builder.build())

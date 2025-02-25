@@ -1,24 +1,25 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import {Cadence, Plan, ProductType} from 'models/billing/types'
-import {getPlanPriceFormatted, getProductLabel} from 'models/billing/utils'
+import classNames from 'classnames'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { Cadence, Plan, ProductType } from 'models/billing/types'
+import { getPlanPriceFormatted, getProductLabel } from 'models/billing/utils'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {Value} from 'pages/common/forms/SelectField/types'
+import { Value } from 'pages/common/forms/SelectField/types'
 import CounterText from 'pages/settings/new_billing/components/CounterText'
 import css from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription.less'
 import SummaryFooter from 'pages/settings/new_billing/components/SummaryFooter/SummaryFooter'
-import {NewSummaryPaymentSection} from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
-
+import { NewSummaryPaymentSection } from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
 import {
     ENTERPRISE_PRICE_ID,
     PRODUCT_INFO,
     PRODUCT_SUBSCRIPTION_DESCRIPTION,
 } from 'pages/settings/new_billing/constants'
-import {useIsPaymentEnabled} from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
-import {ProductSubscriptionDescription} from 'pages/settings/new_billing/types'
-import {formatNumTickets} from 'pages/settings/new_billing/utils/formatAmount'
+import { useIsPaymentEnabled } from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
+import { ProductSubscriptionDescription } from 'pages/settings/new_billing/types'
+import { formatNumTickets } from 'pages/settings/new_billing/utils/formatAmount'
 
 export type PlanSubscriptionDescriptionProps = {
     productType: ProductType
@@ -48,13 +49,13 @@ const PlanSubscriptionDescription = ({
     const [isTermsChecked, setIsTermsChecked] = useState(false)
     const filteredPlans = useMemo(
         () => availablePlans.filter((plan) => plan.cadence === cadence),
-        [availablePlans, cadence]
+        [availablePlans, cadence],
     )
 
     const productInfo = useMemo(() => PRODUCT_INFO[productType], [productType])
     const descriptionInfo: ProductSubscriptionDescription = useMemo(
         () => PRODUCT_SUBSCRIPTION_DESCRIPTION[productType],
-        [productType]
+        [productType],
     )
 
     const formatOptionLabel = useCallback((plan: Plan) => {
@@ -76,7 +77,7 @@ const PlanSubscriptionDescription = ({
                 value: ENTERPRISE_PRICE_ID,
                 label: `${formatNumTickets(
                     filteredPlans[filteredPlans.length - 1]
-                        ?.num_quota_tickets ?? 0
+                        ?.num_quota_tickets ?? 0,
                 )}+`,
             },
         ]
@@ -84,7 +85,7 @@ const PlanSubscriptionDescription = ({
 
     const handleSelectProductPlan = (price_id: Value) => {
         const selectedPlan = filteredPlans.find(
-            (plan) => plan.price_id === price_id
+            (plan) => plan.price_id === price_id,
         )
 
         const enterprisePlan = {
@@ -97,7 +98,7 @@ const PlanSubscriptionDescription = ({
 
     useEffect(() => {
         setIsSubscriptionEnabled(
-            isTrialing || (isTermsChecked && isPaymentEnabled)
+            isTrialing || (isTermsChecked && isPaymentEnabled),
         )
     }, [isTrialing, isTermsChecked, isPaymentEnabled, setIsSubscriptionEnabled])
 

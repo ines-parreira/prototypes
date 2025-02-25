@@ -1,14 +1,14 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {AiAgentScope} from 'models/aiAgent/types'
-import {useStoreConfigurationForAccount} from 'pages/aiAgent/hooks/useStoreConfigurationForAccount'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {getStoreIntegrations} from 'state/integrations/selectors'
+import { AiAgentScope } from 'models/aiAgent/types'
+import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreConfigurationForAccount'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { getStoreIntegrations } from 'state/integrations/selectors'
 
 export type AiAgentType = 'sales' | 'support' | 'mixed'
 export const getAiAgentTypeFromScopes = (
-    scopes?: AiAgentScope[]
+    scopes?: AiAgentScope[],
 ): AiAgentType | undefined => {
     if (!scopes?.length) {
         return undefined
@@ -37,10 +37,10 @@ export const useAiAgentTypeForAccount = (): {
     const stores = useAppSelector(getStoreIntegrations)
     const storesName = useMemo(
         () => stores.map((store) => store.name),
-        [stores]
+        [stores],
     )
 
-    const {isLoading, storeConfigurations} = useStoreConfigurationForAccount({
+    const { isLoading, storeConfigurations } = useStoreConfigurationForAccount({
         accountDomain,
         storesName,
     })
@@ -53,8 +53,8 @@ export const useAiAgentTypeForAccount = (): {
                 .reduce((allScopes, currentScopes) => {
                     allScopes.push(...currentScopes)
                     return allScopes
-                }, []) ?? []
-        )
+                }, []) ?? [],
+        ),
     )
 
     return {

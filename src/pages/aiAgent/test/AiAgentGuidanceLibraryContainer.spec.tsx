@@ -1,18 +1,19 @@
-import {screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {useAiAgentEnabled} from 'pages/aiAgent/hooks/useAiAgentEnabled'
-import history from 'pages/history'
-import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {renderWithRouter} from 'utils/testing'
+import { screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
-import {AiAgentGuidanceLibraryContainer} from '../AiAgentGuidanceLibraryContainer'
-import {getAIGuidanceFixture} from '../fixtures/aiGuidance.fixture'
-import {getGuidanceTemplateFixture} from '../fixtures/guidanceTemplate.fixture'
-import {useAiAgentHelpCenter} from '../hooks/useAiAgentHelpCenter'
-import {useGuidanceAiSuggestions} from '../hooks/useGuidanceAiSuggestions'
-import {useGuidanceTemplates} from '../hooks/useGuidanceTemplates'
+import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
+import history from 'pages/history'
+import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { renderWithRouter } from 'utils/testing'
+
+import { AiAgentGuidanceLibraryContainer } from '../AiAgentGuidanceLibraryContainer'
+import { getAIGuidanceFixture } from '../fixtures/aiGuidance.fixture'
+import { getGuidanceTemplateFixture } from '../fixtures/guidanceTemplate.fixture'
+import { useAiAgentHelpCenter } from '../hooks/useAiAgentHelpCenter'
+import { useGuidanceAiSuggestions } from '../hooks/useGuidanceAiSuggestions'
+import { useGuidanceTemplates } from '../hooks/useGuidanceTemplates'
 
 jest.mock('../hooks/useAiAgentHelpCenter', () => ({
     useAiAgentHelpCenter: jest.fn(),
@@ -51,7 +52,7 @@ const renderComponent = () => {
 describe('<AiAgentGuidanceLibraryContainer />', () => {
     beforeEach(() => {
         mockedUseAiAgentHelpCenter.mockReturnValue(helpCenter)
-        mockedUseGuidanceTemplates.mockReturnValue({guidanceTemplates: []})
+        mockedUseGuidanceTemplates.mockReturnValue({ guidanceTemplates: [] })
         mockedUseGuidanceAiSuggestions.mockReturnValue({
             guidanceAISuggestions: [],
             isLoadingAiGuidances: false,
@@ -102,8 +103,8 @@ describe('<AiAgentGuidanceLibraryContainer />', () => {
 
         expect(
             screen.getByText(
-                'You’ve added all AI-generated suggestions to your library.'
-            )
+                'You’ve added all AI-generated suggestions to your library.',
+            ),
         ).toBeInTheDocument()
         expect(screen.getByText(template.name)).toBeInTheDocument()
         expect(screen.getByText('Create custom Guidance')).toBeInTheDocument()
@@ -121,12 +122,12 @@ describe('<AiAgentGuidanceLibraryContainer />', () => {
         renderComponent()
 
         const createCustomGuidanceButton = screen.getByText(
-            'Create Custom Guidance'
+            'Create Custom Guidance',
         )
         userEvent.click(createCustomGuidanceButton)
 
         expect(history.push).toHaveBeenCalledWith(
-            '/app/automation/shopify/test-shop/ai-agent/guidance/new'
+            '/app/automation/shopify/test-shop/ai-agent/guidance/new',
         )
     })
 
@@ -147,12 +148,12 @@ describe('<AiAgentGuidanceLibraryContainer />', () => {
         renderComponent()
 
         const templateGuidanceElement = screen.getByText(
-            'Damaged or defective item'
+            'Damaged or defective item',
         )
         userEvent.click(templateGuidanceElement)
 
         expect(history.push).toHaveBeenCalledWith(
-            '/app/automation/shopify/test-shop/ai-agent/guidance/templates/order-status'
+            '/app/automation/shopify/test-shop/ai-agent/guidance/templates/order-status',
         )
     })
 

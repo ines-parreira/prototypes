@@ -1,9 +1,10 @@
-import {render, fireEvent} from '@testing-library/react'
 import React from 'react'
 
-import {analyseCsvResponse} from '../../../../../fixtures/analyseCsvResponse.fixture'
-import {getSingleHelpCenterResponseFixture as helpCenter} from '../../../../../fixtures/getHelpCentersResponse.fixture'
-import {getLocalesResponseFixture} from '../../../../../fixtures/getLocalesResponse.fixtures'
+import { fireEvent, render } from '@testing-library/react'
+
+import { analyseCsvResponse } from '../../../../../fixtures/analyseCsvResponse.fixture'
+import { getSingleHelpCenterResponseFixture as helpCenter } from '../../../../../fixtures/getHelpCentersResponse.fixture'
+import { getLocalesResponseFixture } from '../../../../../fixtures/getLocalesResponse.fixtures'
 import CsvColumnMatching, {
     Props as CsvColumnMatchingProps,
 } from '../CsvColumnMatching'
@@ -18,12 +19,12 @@ const props: CsvColumnMatchingProps = {
 
 describe('<CsvColumnMatching />', () => {
     it('renders initial mappings with default help center locale', () => {
-        const {container} = render(<CsvColumnMatching {...props} />)
+        const { container } = render(<CsvColumnMatching {...props} />)
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('returns the mappings when Confirm import button clicked', () => {
-        const {getByText} = render(<CsvColumnMatching {...props} />)
+        const { getByText } = render(<CsvColumnMatching {...props} />)
 
         fireEvent.click(getByText('Confirm Import'))
 
@@ -32,12 +33,12 @@ describe('<CsvColumnMatching />', () => {
                 localeCode: 'en-US',
                 mappings: {
                     ArticleContent: {
-                        source: {csv_column: 'body', kind: 'CSV_COLUMN'},
+                        source: { csv_column: 'body', kind: 'CSV_COLUMN' },
                     },
-                    ArticleExcerpt: {source: {kind: 'AUTO_GENERATED'}},
-                    ArticleSlug: {source: {kind: 'AUTO_GENERATED'}},
+                    ArticleExcerpt: { source: { kind: 'AUTO_GENERATED' } },
+                    ArticleSlug: { source: { kind: 'AUTO_GENERATED' } },
                     ArticleTitle: {
-                        source: {csv_column: 'title', kind: 'CSV_COLUMN'},
+                        source: { csv_column: 'title', kind: 'CSV_COLUMN' },
                     },
                     CategoryName: {
                         source: {
@@ -45,7 +46,7 @@ describe('<CsvColumnMatching />', () => {
                             kind: 'CSV_COLUMN',
                         },
                     },
-                    CategorySlug: {source: {kind: 'AUTO_GENERATED'}},
+                    CategorySlug: { source: { kind: 'AUTO_GENERATED' } },
                 },
             },
         ])

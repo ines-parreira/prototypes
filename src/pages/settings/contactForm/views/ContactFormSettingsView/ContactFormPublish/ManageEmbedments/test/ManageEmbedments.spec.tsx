@@ -1,28 +1,29 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {SegmentEvent, logEvent} from 'common/segment'
-import {account as accountFixture} from 'fixtures/account'
-import {integrationsState} from 'fixtures/integrations'
-import {user as userFixture} from 'fixtures/users'
-import {ContactFormPageEmbedment} from 'models/contactForm/types'
-import {PageEmbedmentPosition} from 'pages/common/components/PageEmbedmentForm'
-import {CONTACT_FORM_PUBLISH_PATH} from 'pages/settings/contactForm/constants'
-import {CurrentContactFormContext} from 'pages/settings/contactForm/contexts/currentContactForm.context'
-import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { account as accountFixture } from 'fixtures/account'
+import { integrationsState } from 'fixtures/integrations'
+import { user as userFixture } from 'fixtures/users'
+import { ContactFormPageEmbedment } from 'models/contactForm/types'
+import { PageEmbedmentPosition } from 'pages/common/components/PageEmbedmentForm'
+import { CONTACT_FORM_PUBLISH_PATH } from 'pages/settings/contactForm/constants'
+import { CurrentContactFormContext } from 'pages/settings/contactForm/contexts/currentContactForm.context'
+import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
 import {
-    useUpdatePageEmbedment,
     useDeletePageEmbedment,
+    useUpdatePageEmbedment,
 } from 'pages/settings/contactForm/queries'
-import {RootState, StoreDispatch} from 'state/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock, renderWithRouter} from 'utils/testing'
+import { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock, renderWithRouter } from 'utils/testing'
 
 import ManageEmbedments from '../ManageEmbedments'
 
@@ -38,14 +39,14 @@ jest.mock(
             ...jest.requireActual('pages/settings/contactForm/queries'),
             useUpdatePageEmbedment: jest.fn(),
             useDeletePageEmbedment: jest.fn(),
-        }) as Record<string, unknown>
+        }) as Record<string, unknown>,
 )
 const mockUpdatePageEmbedment = jest.fn()
 const mockDeletePageEmbedment = jest.fn()
 const useUpdatePageEmbedmentMock = assumeMock(useUpdatePageEmbedment)
 const useDeletePageEmbedmentMock = assumeMock(useDeletePageEmbedment)
 
-const embedments: ContactFormPageEmbedment[] = Array.from({length: 3}).map(
+const embedments: ContactFormPageEmbedment[] = Array.from({ length: 3 }).map(
     (_, i) => ({
         id: i + 1,
         page_path_url: `/pages/test-${i}`,
@@ -54,7 +55,7 @@ const embedments: ContactFormPageEmbedment[] = Array.from({length: 3}).map(
         position: PageEmbedmentPosition.TOP,
         updated_datetime: '2021-01-01T00:00:00.000Z',
         created_datetime: '2021-01-01T00:00:00.000Z',
-    })
+    }),
 )
 
 const contactForm = {
@@ -90,7 +91,7 @@ const renderView = ({
         {
             path,
             route,
-        }
+        },
     )
 }
 
@@ -114,7 +115,7 @@ describe('ContactFormPublish', () => {
     })
 
     it('wording check', () => {
-        renderView({state: defaultState, embedments})
+        renderView({ state: defaultState, embedments })
 
         screen.getByText('Manage embedded pages')
         screen.getByText(/Edit the position of the contact form/)
@@ -122,7 +123,7 @@ describe('ContactFormPublish', () => {
     })
 
     it('renders the embedments', () => {
-        renderView({state: defaultState, embedments})
+        renderView({ state: defaultState, embedments })
 
         embedments.forEach((embedment) => {
             // Renders the page title for each embedment
@@ -135,7 +136,7 @@ describe('ContactFormPublish', () => {
             const link = screen.getByTestId(`preview-button-${embedment.id}`)
             expect(link).toHaveAttribute(
                 'href',
-                `https://${contactForm.shop_name}.myshopify.com${embedment.page_path_url}`
+                `https://${contactForm.shop_name}.myshopify.com${embedment.page_path_url}`,
             )
         })
 
@@ -145,7 +146,7 @@ describe('ContactFormPublish', () => {
     })
 
     it('logs an event when trying to embed on another page', () => {
-        renderView({state: defaultState, embedments})
+        renderView({ state: defaultState, embedments })
 
         const button = screen.getByText(/embed on another page/i)
 
@@ -158,14 +159,14 @@ describe('ContactFormPublish', () => {
                 account_domain: accountFixture.domain,
                 contact_form_id: contactForm.id,
                 page_embedments_count: embedments.length,
-            }
+            },
         )
     })
 
     it('saves the changes when Save Changes is clicked', async () => {
-        renderView({state: defaultState, embedments: [embedments[0]]})
+        renderView({ state: defaultState, embedments: [embedments[0]] })
 
-        const button = screen.getByRole('button', {name: /save changes/i})
+        const button = screen.getByRole('button', { name: /save changes/i })
         expect(button).toBeAriaDisabled()
 
         // Change the position of the first embedment
@@ -187,7 +188,9 @@ describe('ContactFormPublish', () => {
 
         const deleteButton = screen.getByTestId(`delete-button-1`)
         userEvent.click(deleteButton)
-        const confirmButton = screen.getByRole('button', {name: /remove form/i})
+        const confirmButton = screen.getByRole('button', {
+            name: /remove form/i,
+        })
         userEvent.click(confirmButton)
 
         //expect Delete action to be called

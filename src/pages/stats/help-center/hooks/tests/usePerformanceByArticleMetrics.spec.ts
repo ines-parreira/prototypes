@@ -1,18 +1,18 @@
-import {UseQueryResult} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
+import { UseQueryResult } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {useMetric} from 'hooks/reporting/useMetric'
-import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
-import {useGetHelpCenterArticleList} from 'models/helpCenter/queries'
+import { useMetric } from 'hooks/reporting/useMetric'
+import { useMetricPerDimension } from 'hooks/reporting/useMetricPerDimension'
+import { useGetHelpCenterArticleList } from 'models/helpCenter/queries'
 import {
     HelpCenterTrackingEventDimensions,
     HelpCenterTrackingEventMeasures,
     HelpCenterTrackingEventMember,
     HelpCenterTrackingEventSegment,
 } from 'models/reporting/cubes/HelpCenterTrackingEventCube'
-import {Components} from 'rest_api/help_center_api/client.generated'
+import { Components } from 'rest_api/help_center_api/client.generated'
 
-import {usePerformanceByArticleMetrics} from '../usePerformanceByArticleMetrics'
+import { usePerformanceByArticleMetrics } from '../usePerformanceByArticleMetrics'
 
 jest.mock('hooks/reporting/useMetric', () => ({
     useMetric: jest.fn(),
@@ -42,7 +42,7 @@ const currentPage = 1
 
 describe('usePerformanceByArticleMetrics', () => {
     beforeEach(() => {
-        mockUseMetric.mockReturnValue({isFetching: false, isError: false})
+        mockUseMetric.mockReturnValue({ isFetching: false, isError: false })
         mockUseMetricPerDimension.mockReturnValue({
             isFetching: false,
             isError: false,
@@ -67,7 +67,7 @@ describe('usePerformanceByArticleMetrics', () => {
                 itemPerPage,
                 currentPage,
                 helpCenterId,
-            })
+            }),
         )
 
         expect(mockUseMetric).toHaveBeenCalledWith({
@@ -94,9 +94,9 @@ describe('usePerformanceByArticleMetrics', () => {
         mockUseMetric.mockReturnValue({
             isFetching: false,
             isError: false,
-            data: {value: 10},
+            data: { value: 10 },
         })
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             usePerformanceByArticleMetrics({
                 statsFilters,
                 timezone,
@@ -104,7 +104,7 @@ describe('usePerformanceByArticleMetrics', () => {
                 itemPerPage,
                 currentPage,
                 helpCenterId,
-            })
+            }),
         )
 
         expect(result.current).toEqual({
@@ -121,7 +121,7 @@ describe('usePerformanceByArticleMetrics', () => {
                     {
                         id: 1,
                         name: 'Set up Voice (Phone)',
-                        rating: {up: 3, down: 1},
+                        rating: { up: 3, down: 1 },
                         updated_datetime: '1970-01-19T20:48:32.000',
                     },
                 ],
@@ -147,7 +147,7 @@ describe('usePerformanceByArticleMetrics', () => {
                 decile: null,
             },
         })
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             usePerformanceByArticleMetrics({
                 statsFilters,
                 timezone,
@@ -155,13 +155,13 @@ describe('usePerformanceByArticleMetrics', () => {
                 itemPerPage,
                 currentPage,
                 helpCenterId,
-            })
+            }),
         )
 
         expect(mockUseGetHelpCenterArticleList).toHaveBeenCalledWith(
             1,
-            {ids: [1], version_status: 'latest_draft'},
-            {enabled: true}
+            { ids: [1], version_status: 'latest_draft' },
+            { enabled: true },
         )
 
         expect(result.current).toEqual({
@@ -202,7 +202,7 @@ describe('usePerformanceByArticleMetrics', () => {
                     {
                         id: 1,
                         name: 'Set up Voice (Phone)',
-                        rating: {up: 0, down: 0},
+                        rating: { up: 0, down: 0 },
                         updated_datetime: '1970-01-19T20:48:32.000',
                     },
                 ],
@@ -228,7 +228,7 @@ describe('usePerformanceByArticleMetrics', () => {
                 decile: null,
             },
         })
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             usePerformanceByArticleMetrics({
                 statsFilters,
                 timezone,
@@ -236,13 +236,13 @@ describe('usePerformanceByArticleMetrics', () => {
                 itemPerPage,
                 currentPage,
                 helpCenterId,
-            })
+            }),
         )
 
         expect(mockUseGetHelpCenterArticleList).toHaveBeenCalledWith(
             1,
-            {ids: [1], version_status: 'latest_draft'},
-            {enabled: true}
+            { ids: [1], version_status: 'latest_draft' },
+            { enabled: true },
         )
 
         expect(result.current).toEqual({
@@ -286,7 +286,7 @@ describe('usePerformanceByArticleMetrics', () => {
                 decile: null,
             },
         })
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             usePerformanceByArticleMetrics({
                 statsFilters,
                 timezone,
@@ -294,7 +294,7 @@ describe('usePerformanceByArticleMetrics', () => {
                 itemPerPage,
                 currentPage,
                 helpCenterId,
-            })
+            }),
         )
 
         expect(result.current).toEqual({
@@ -334,7 +334,7 @@ describe('usePerformanceByArticleMetrics', () => {
             isError: false,
             data: null,
         })
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             usePerformanceByArticleMetrics({
                 statsFilters,
                 timezone,
@@ -342,7 +342,7 @@ describe('usePerformanceByArticleMetrics', () => {
                 itemPerPage,
                 currentPage,
                 helpCenterId,
-            })
+            }),
         )
 
         expect(result.current).toEqual({

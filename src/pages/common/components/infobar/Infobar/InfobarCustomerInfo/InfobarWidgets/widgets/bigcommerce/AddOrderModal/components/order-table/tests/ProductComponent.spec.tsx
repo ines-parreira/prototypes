@@ -1,5 +1,6 @@
-import {render, screen} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import {
     bigCommerceCustomLineItemFixture,
@@ -9,7 +10,7 @@ import {
     bigCommerceVariantFixture,
 } from 'fixtures/bigcommerce'
 
-import ProductComponent, {getVariant, Modifiers} from '../ProductComponent'
+import ProductComponent, { getVariant, Modifiers } from '../ProductComponent'
 
 const defaultProps: ComponentProps<typeof ProductComponent> = {
     product: bigCommerceProductFixture(),
@@ -36,7 +37,7 @@ describe('getVariant', () => {
     it('should return null if is not a bigCommerce cart line', () => {
         const variant = getVariant(
             bigCommerceCustomLineItemFixture,
-            bigCommerceProductFixture()
+            bigCommerceProductFixture(),
         )
 
         expect(variant).toBeNull()
@@ -51,7 +52,7 @@ describe('getVariant', () => {
     it('should return null if the product is not a bigCommerce product', () => {
         const variant = getVariant(
             bigCommerceLineItemFixture(),
-            bigCommerceCustomProductFixture
+            bigCommerceCustomProductFixture,
         )
 
         expect(variant).toBeNull()
@@ -60,7 +61,7 @@ describe('getVariant', () => {
     it("should return null if the product doesn't have the corresponding variant", () => {
         const variant = getVariant(
             bigCommerceLineItemFixture(),
-            bigCommerceProductFixture()
+            bigCommerceProductFixture(),
         )
 
         expect(variant).toBeNull()
@@ -69,7 +70,7 @@ describe('getVariant', () => {
 
 describe('<ProductComponent/>', () => {
     it('should render correctly', () => {
-        const {container} = render(<ProductComponent {...defaultProps} />)
+        const { container } = render(<ProductComponent {...defaultProps} />)
 
         expect(container).toMatchSnapshot()
     })
@@ -78,7 +79,7 @@ describe('<ProductComponent/>', () => {
         const lineItem = bigCommerceLineItemFixture()
         lineItem.sku = 'test-sku'
 
-        const props = {...defaultProps, lineItem}
+        const props = { ...defaultProps, lineItem }
         render(<ProductComponent {...props} />)
 
         expect(screen.getByText('SKU: test-sku')).toBeVisible()
@@ -95,22 +96,22 @@ describe('<ProductComponent/>', () => {
 
         const lineItem = bigCommerceLineItemFixture()
         lineItem.variant_id = variant.id
-        const props = {...defaultProps, product, lineItem}
+        const props = { ...defaultProps, product, lineItem }
         render(<ProductComponent {...props} />)
 
         expect(screen.getByRole('img').getAttribute('src')).toBe(
-            'https://variantsImage.com/variant.png'
+            'https://variantsImage.com/variant.png',
         )
     })
 
     it('should show the default image', () => {
         const product = bigCommerceProductFixture()
         product.image_url = ''
-        const props = {...defaultProps, product}
+        const props = { ...defaultProps, product }
         render(<ProductComponent {...props} />)
 
         expect(screen.getByRole('img').getAttribute('src')).toBe(
-            'test-file-stub'
+            'test-file-stub',
         )
     })
 
@@ -129,14 +130,14 @@ describe('<ProductComponent/>', () => {
             ...defaultProps,
             product: bigCommerceCustomProductFixture,
         }
-        const {container} = render(<ProductComponent {...props} />)
+        const { container } = render(<ProductComponent {...props} />)
 
         expect(container).toMatchSnapshot()
     })
 
     it('should show not available stock if missing product', () => {
-        const props = {...defaultProps, product: undefined}
-        const {container} = render(<ProductComponent {...props} />)
+        const props = { ...defaultProps, product: undefined }
+        const { container } = render(<ProductComponent {...props} />)
 
         expect(container).toMatchSnapshot()
     })
@@ -148,7 +149,7 @@ describe('<ProductComponent/>', () => {
 
         const lineItem = bigCommerceLineItemFixture()
         lineItem.variant_id = variant.id
-        const props = {...defaultProps, product, lineItem}
+        const props = { ...defaultProps, product, lineItem }
         render(<ProductComponent {...props} />)
 
         expect(screen.queryByLabelText('product stock quantity')).toBeNull()
@@ -162,7 +163,7 @@ describe('<ProductComponent/>', () => {
 
         const lineItem = bigCommerceLineItemFixture()
         lineItem.variant_id = variant.id
-        const props = {...defaultProps, product, lineItem}
+        const props = { ...defaultProps, product, lineItem }
         render(<ProductComponent {...props} />)
 
         const productStock = screen.getByLabelText('product stock quantity')
@@ -181,7 +182,7 @@ describe('<ProductComponent/>', () => {
 
         const lineItem = bigCommerceLineItemFixture()
         lineItem.variant_id = variant.id
-        const props = {...defaultProps, product, lineItem}
+        const props = { ...defaultProps, product, lineItem }
         render(<ProductComponent {...props} />)
 
         const productStock = screen.getByLabelText('product stock quantity')
@@ -190,7 +191,7 @@ describe('<ProductComponent/>', () => {
     })
 
     it('should show an error', () => {
-        const props = {...defaultProps, errorMessage: 'error message'}
+        const props = { ...defaultProps, errorMessage: 'error message' }
         render(<ProductComponent {...props} />)
 
         expect(screen.getByText('error message')).toBeVisible()
@@ -199,7 +200,7 @@ describe('<ProductComponent/>', () => {
 
 describe('<Modifiers />', () => {
     it('should render correctly', () => {
-        const {container} = render(<Modifiers {...defaultProps} />)
+        const { container } = render(<Modifiers {...defaultProps} />)
 
         expect(container).toMatchSnapshot()
     })
@@ -207,18 +208,18 @@ describe('<Modifiers />', () => {
     it('should render nothing if not a BigcommerceCartLine', () => {
         const lineItem = bigCommerceCustomLineItemFixture
 
-        const props = {...defaultProps, lineItem}
-        const {container} = render(<Modifiers {...props} />)
+        const props = { ...defaultProps, lineItem }
+        const { container } = render(<Modifiers {...props} />)
         expect(container.childElementCount).toEqual(0)
     })
 
     it.each([undefined, bigCommerceCustomProductFixture])(
         'should render nothing if not a BigCommerceProduct pruduct',
         (product) => {
-            const props = {...defaultProps, product}
-            const {container} = render(<Modifiers {...props} />)
+            const props = { ...defaultProps, product }
+            const { container } = render(<Modifiers {...props} />)
             expect(container.childElementCount).toEqual(0)
-        }
+        },
     )
 
     it.each([
@@ -249,8 +250,8 @@ describe('<Modifiers />', () => {
             options: [option],
         }
 
-        const props = {...defaultProps, lineItem}
-        const {getByRole} = render(<Modifiers {...props} />)
+        const props = { ...defaultProps, lineItem }
+        const { getByRole } = render(<Modifiers {...props} />)
         const item = getByRole('listitem')
         expect(item.textContent).toEqual(title)
     })
@@ -266,8 +267,8 @@ describe('<Modifiers />', () => {
             ],
         }
 
-        const props = {...defaultProps, lineItem}
-        const {queryAllByRole} = render(<Modifiers {...props} />)
+        const props = { ...defaultProps, lineItem }
+        const { queryAllByRole } = render(<Modifiers {...props} />)
         const item = queryAllByRole('listitem')
         expect(item.length).toEqual(0)
     })

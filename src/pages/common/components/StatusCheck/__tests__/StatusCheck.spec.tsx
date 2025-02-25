@@ -1,7 +1,8 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {StatusCheck} from '../StatusCheck'
+import { render, screen } from '@testing-library/react'
+
+import { StatusCheck } from '../StatusCheck'
 
 describe('<StatusCheck />', () => {
     it('matches snapshot', () => {
@@ -9,12 +10,12 @@ describe('<StatusCheck />', () => {
 
         screen.getByText('Check Status')
         screen.getByText(
-            'NOTE: It may take up to a few hours for DNS changes to take effect.'
+            'NOTE: It may take up to a few hours for DNS changes to take effect.',
         )
     })
 
     it("doesn't render if there's no status", () => {
-        const {container} = render(<StatusCheck onCheckStatus={() => null} />)
+        const { container } = render(<StatusCheck onCheckStatus={() => null} />)
 
         expect(container.firstChild).toBeNull()
     })

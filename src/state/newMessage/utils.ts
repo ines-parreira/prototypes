@@ -1,27 +1,27 @@
-import {convertToRaw, ContentState} from 'draft-js'
-import {fromJS, Map, List} from 'immutable'
-import {omit} from 'lodash'
+import { ContentState, convertToRaw } from 'draft-js'
+import { fromJS, List, Map } from 'immutable'
+import { omit } from 'lodash'
 import _forOwn from 'lodash/forOwn'
 import _get from 'lodash/get'
 
-import {TicketMessageSourceType} from 'business/types/ticket'
-import {AttachmentEnum} from 'common/types'
-import {isImmutable} from 'common/utils'
-import {MacroAction, MacroActionName} from 'models/macroAction/types'
-import {ApplyExternalTemplateAction} from 'models/whatsAppMessageTemplates/types'
+import { TicketMessageSourceType } from 'business/types/ticket'
+import { AttachmentEnum } from 'common/types'
+import { isImmutable } from 'common/utils'
+import { MacroAction, MacroActionName } from 'models/macroAction/types'
+import { ApplyExternalTemplateAction } from 'models/whatsAppMessageTemplates/types'
 import {
-    whatsAppMessageTemplateToHtml,
     WHATSAPP_VARIABLE_REGEX,
+    whatsAppMessageTemplateToHtml,
 } from 'pages/integrations/integration/components/whatsapp/utils'
-import {EMPTY_SENDER} from 'state/ticket/constants'
-import {canLeaveInternalNote} from 'tickets/common/utils'
+import { EMPTY_SENDER } from 'state/ticket/constants'
+import { canLeaveInternalNote } from 'tickets/common/utils'
 
-import {MacroActions, NewMessage} from './types'
+import { MacroActions, NewMessage } from './types'
 
 export function transformToInternalNote(
     message: NewMessage,
     actions?: MacroActions | null,
-    placeholder = ''
+    placeholder = '',
 ) {
     let newActions
     const newMessage = {
@@ -34,14 +34,14 @@ export function transformToInternalNote(
     }
     delete newMessage.source.to
     const internalNote = actions?.find(
-        (action) => action?.get('name') === MacroActionName.AddInternalNote
+        (action) => action?.get('name') === MacroActionName.AddInternalNote,
     )
     if (internalNote) {
         const args = internalNote.get('arguments') as Map<any, any>
         newMessage.body_text = args.get('body_text') ?? ''
         newMessage.body_html = args.get('body_html') ?? ''
         newActions = actions?.filter(
-            (action) => action?.get('name') !== MacroActionName.AddInternalNote
+            (action) => action?.get('name') !== MacroActionName.AddInternalNote,
         ) as MacroActions | undefined
     } else {
         newMessage.body_text = placeholder
@@ -50,12 +50,12 @@ export function transformToInternalNote(
     }
 
     newMessage.public = false
-    return {newMessage, newActions}
+    return { newMessage, newActions }
 }
 
 export function getMentionIds(
     contentState: ContentState,
-    sourceType: TicketMessageSourceType
+    sourceType: TicketMessageSourceType,
 ) {
     let ids: List<any> = fromJS([])
     const isInternalNote = canLeaveInternalNote(sourceType)
@@ -81,7 +81,7 @@ export const replaceWhatsAppTemplateVariables = (
     args: {
         type: string
         value: string
-    }[]
+    }[],
 ): string => {
     let newText = text
 
@@ -102,7 +102,7 @@ export const transformExternalTemplatePart = (
     args?: {
         type: string
         value: string
-    }[]
+    }[],
 ): string => {
     const lines = text.split('\n')
 
@@ -118,9 +118,9 @@ export const transformExternalTemplatePart = (
 
 export function upsertNewMessageAction(
     message: NewMessage,
-    action: Map<any, any>
+    action: Map<any, any>,
 ): NewMessage {
-    const newMessage = {...message}
+    const newMessage = { ...message }
 
     newMessage.actions = isImmutable(newMessage.actions)
         ? newMessage.actions
@@ -133,7 +133,7 @@ export function upsertNewMessageAction(
 
     const existingActionIndex = newMessage.actions.findIndex(
         (existingAction?: Map<any, any>) =>
-            existingAction?.get('name') === action.get('name')
+            existingAction?.get('name') === action.get('name'),
     )
     if (existingActionIndex !== -1) {
         newMessage.actions = newMessage.actions.set(existingActionIndex, action)
@@ -150,8 +150,8 @@ const replaceVariablesAndConvert = (
     args?: {
         type: string
         value: string
-    }[]
-): {body_html: string; body_text: string} => ({
+    }[],
+): { body_html: string; body_text: string } => ({
     body_html: transformExternalTemplatePart(text, args),
     body_text: args?.length
         ? replaceWhatsAppTemplateVariables(text, args)
@@ -159,19 +159,19 @@ const replaceVariablesAndConvert = (
 })
 
 export const applyExternalTemplateAction = (
-    newMessage: NewMessage
+    newMessage: NewMessage,
 ): NewMessage => {
     const actions = newMessage.actions?.toJS() as MacroAction[]
 
     const action = actions?.find(
-        (action) => action.name === MacroActionName.ApplyExternalTemplate
+        (action) => action.name === MacroActionName.ApplyExternalTemplate,
     ) as ApplyExternalTemplateAction | undefined
 
     if (!action?.arguments.template) {
         return newMessage
     }
 
-    const {template, body: bodyArgs, header: headerArgs} = action.arguments
+    const { template, body: bodyArgs, header: headerArgs } = action.arguments
     const {
         body: templateBody,
         header: templateHeader,
@@ -180,7 +180,7 @@ export const applyExternalTemplateAction = (
 
     const convertedBody = replaceVariablesAndConvert(
         templateBody.value,
-        bodyArgs
+        bodyArgs,
     )
     const convertedHeader = templateHeader?.value
         ? replaceVariablesAndConvert(templateHeader.value, headerArgs)
@@ -204,7 +204,7 @@ export const applyExternalTemplateAction = (
 
     const message = upsertNewMessageAction(
         newMessage,
-        fromJS(omit(action, ['arguments.template']))
+        fromJS(omit(action, ['arguments.template'])),
     )
 
     return {
@@ -215,7 +215,7 @@ export const applyExternalTemplateAction = (
 }
 
 export const getProductCardAttachmentsDeletionOrder = (
-    attachments: Map<any, any>[]
+    attachments: Map<any, any>[],
 ): number[] => {
     const indices = []
     for (let index = attachments.length - 1; index >= 0; index--) {

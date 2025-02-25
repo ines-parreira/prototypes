@@ -1,27 +1,29 @@
-import {EmailIntegration} from '@gorgias/api-queries'
-import {fireEvent, render, screen} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {assumeMock} from 'utils/testing'
+import { fireEvent, render, screen } from '@testing-library/react'
+
+import { EmailIntegration } from '@gorgias/api-queries'
+
+import { assumeMock } from 'utils/testing'
 
 import EmailIntegrationListVerificationStatus from '../EmailIntegrationListVerificationStatus'
-import {canIntegrationDomainBeVerified} from '../helpers'
+import { canIntegrationDomainBeVerified } from '../helpers'
 
 jest.mock('../helpers')
 
 const canIntegrationDomainBeVerifiedMock = assumeMock(
-    canIntegrationDomainBeVerified
+    canIntegrationDomainBeVerified,
 )
 
 const integration = {
     id: 1,
     name: 'name',
-    meta: {address: 'abc@gorgias.com'},
+    meta: { address: 'abc@gorgias.com' },
 } as EmailIntegration
 
 describe('EmailIntegrationListVerificationStatus', () => {
     const renderComponent = (
-        props: ComponentProps<typeof EmailIntegrationListVerificationStatus>
+        props: ComponentProps<typeof EmailIntegrationListVerificationStatus>,
     ) => render(<EmailIntegrationListVerificationStatus {...props} />)
 
     beforeEach(() => {
@@ -31,7 +33,7 @@ describe('EmailIntegrationListVerificationStatus', () => {
     it(`should not render anything if it's a forward, inbound verified, outbound unverified email but canIntegrationDomainBeVerified is false`, () => {
         canIntegrationDomainBeVerifiedMock.mockReturnValue(false)
 
-        const {container} = renderComponent({
+        const { container } = renderComponent({
             integration,
             active: true,
             isForwardEmail: true,
@@ -47,7 +49,7 @@ describe('EmailIntegrationListVerificationStatus', () => {
     it(`should not render anything if it's a gmail/outlook active integration but canIntegrationDomainBeVerified is false`, () => {
         canIntegrationDomainBeVerifiedMock.mockReturnValue(false)
 
-        const {container} = renderComponent({
+        const { container } = renderComponent({
             integration,
             active: true,
             isForwardEmail: false,
@@ -72,7 +74,7 @@ describe('EmailIntegrationListVerificationStatus', () => {
         })
 
         expect(
-            screen.getByText('Action Required: Reconnect Email')
+            screen.getByText('Action Required: Reconnect Email'),
         ).toBeInTheDocument()
     })
 
@@ -88,7 +90,7 @@ describe('EmailIntegrationListVerificationStatus', () => {
         })
 
         expect(
-            screen.getByText('Action Required: Verify Email')
+            screen.getByText('Action Required: Verify Email'),
         ).toBeInTheDocument()
     })
 
@@ -104,7 +106,7 @@ describe('EmailIntegrationListVerificationStatus', () => {
         })
 
         expect(
-            screen.getByText('Action Required: Verify Domain')
+            screen.getByText('Action Required: Verify Domain'),
         ).toBeInTheDocument()
     })
 
@@ -155,7 +157,7 @@ describe('EmailIntegrationListVerificationStatus', () => {
         })
 
         expect(
-            screen.getByText('Action Required: Reconnect Email')
+            screen.getByText('Action Required: Reconnect Email'),
         ).toBeInTheDocument()
     })
 })

@@ -1,9 +1,10 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { HTMLProps, ReactNode, useRef } from 'react'
+
 import classnames from 'classnames'
-import React, {HTMLProps, ReactNode, useRef} from 'react'
 
-import {OrderDirection} from 'models/api/types'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
+import { OrderDirection } from 'models/api/types'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import css from 'pages/common/components/table/cells/HeaderCellProperty.less'
 import StatsHelpIcon from 'pages/stats/common/components/StatsHelpIcon'
@@ -43,7 +44,7 @@ export default function HeaderCellProperty({
     return (
         <HeaderCell
             {...otherProps}
-            className={classnames(className, {[css.withShadow]: isSticky})}
+            className={classnames(className, { [css.withShadow]: isSticky })}
             onClick={onClick}
         >
             <div
@@ -52,14 +53,14 @@ export default function HeaderCellProperty({
                     justifyContent && css[justifyContent],
                     {
                         [css.wrapContent]: wrapContent,
-                    }
+                    },
                 )}
             >
                 {children}
                 <div
                     className={classnames(
                         css.cell,
-                        justifyContent && css[justifyContent]
+                        justifyContent && css[justifyContent],
                     )}
                 >
                     <span className={classnames(css.title, titleClassName)}>
@@ -79,7 +80,7 @@ export default function HeaderCellProperty({
                             css.directionIcon,
                             {
                                 [css.isVisible]: isOrderedBy,
-                            }
+                            },
                         )}
                     >
                         {direction === OrderDirection.Asc

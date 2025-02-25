@@ -1,7 +1,7 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {fetchPostReporting, usePostReporting} from 'models/reporting/queries'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import { fetchPostReporting, usePostReporting } from 'models/reporting/queries'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import {
     getCampaignEventsOrdersPerformanceData,
     getCampaignEventsPerformanceData,
@@ -19,7 +19,7 @@ import {
     getMetricFromCubeData,
     transformToCampaignsPerformanceTable,
 } from 'pages/stats/convert/services/CampaignMetricsHelper'
-import {CampaignsPerformanceDataset} from 'pages/stats/convert/services/types'
+import { CampaignsPerformanceDataset } from 'pages/stats/convert/services/types'
 
 const OVERRIDES = {
     select: getDataFromResult,
@@ -70,7 +70,7 @@ export const useGetTableStat = ({
             timezone,
             groupDimension,
             campaignsOperator,
-        ]
+        ],
     )
 
     const isEnabled =
@@ -78,36 +78,36 @@ export const useGetTableStat = ({
 
     const eventsQuery = useMemo(
         () => getCampaignEventsPerformanceData(attrs),
-        [attrs]
+        [attrs],
     )
     const ordersQuery = useMemo(
         () => getCampaignOrderPerformanceData(attrs),
-        [attrs]
+        [attrs],
     )
     const eventsOrdersQuery = useMemo(
         () => getCampaignEventsOrdersPerformanceData(attrs),
-        [attrs]
+        [attrs],
     )
     const storeTotalQuery = useMemo(
         () => getStoreRevenueTotalData(attrs),
-        [attrs]
+        [attrs],
     )
 
     const eventsPerformance = usePostReporting<[CubeData], CubeData>(
         eventsQuery,
-        {...OVERRIDES, enabled: isEnabled}
+        { ...OVERRIDES, enabled: isEnabled },
     )
     const ordersPerformance = usePostReporting<[CubeData], CubeData>(
         ordersQuery,
-        {...OVERRIDES, enabled: isEnabled}
+        { ...OVERRIDES, enabled: isEnabled },
     )
     const eventsOrdersPerformance = usePostReporting<[CubeData], CubeData>(
         eventsOrdersQuery,
-        {...OVERRIDES, enabled: isEnabled}
+        { ...OVERRIDES, enabled: isEnabled },
     )
     const storeTotal = usePostReporting<[CubeMetric], CubeMetric>(
         storeTotalQuery,
-        {select: getMetricFromCubeData, enabled: isEnabled}
+        { select: getMetricFromCubeData, enabled: isEnabled },
     )
 
     const data = useMemo(() => {
@@ -116,7 +116,7 @@ export const useGetTableStat = ({
             eventsPerformance.data,
             ordersPerformance.data,
             eventsOrdersPerformance.data,
-            storeTotal.data
+            storeTotal.data,
         )
     }, [
         groupDimension,
@@ -171,7 +171,7 @@ export const fetchGetTableStat = async ({
                 undefined,
                 undefined,
                 undefined,
-                getMetricFromCubeData(undefined)
+                getMetricFromCubeData(undefined),
             ),
         })
     }
@@ -185,19 +185,19 @@ export const fetchGetTableStat = async ({
 
     const eventsPerformance = fetchPostReporting<CubeData, CubeData>(
         eventsQuery,
-        {...OVERRIDES, enabled: isEnabled}
+        { ...OVERRIDES, enabled: isEnabled },
     )
     const ordersPerformance = fetchPostReporting<CubeData, CubeData>(
         ordersQuery,
-        {...OVERRIDES, enabled: isEnabled}
+        { ...OVERRIDES, enabled: isEnabled },
     )
     const eventsOrdersPerformance = fetchPostReporting<CubeData, CubeData>(
         eventsOrdersQuery,
-        {...OVERRIDES, enabled: isEnabled}
+        { ...OVERRIDES, enabled: isEnabled },
     )
     const storeTotal = fetchPostReporting<[CubeMetric], CubeMetric>(
         storeTotalQuery,
-        {select: getMetricFromCubeData, enabled: isEnabled}
+        { select: getMetricFromCubeData, enabled: isEnabled },
     )
 
     return Promise.all([
@@ -218,7 +218,7 @@ export const fetchGetTableStat = async ({
                     getDataFromResult(eventsPerformance),
                     getDataFromResult(ordersPerformance),
                     getDataFromResult(eventsOrdersPerformance),
-                    getMetricFromCubeData(getDataFromResult(storeTotal))
+                    getMetricFromCubeData(getDataFromResult(storeTotal)),
                 )
 
                 return {
@@ -226,7 +226,7 @@ export const fetchGetTableStat = async ({
                     isError: false,
                     data: data,
                 }
-            }
+            },
         )
         .catch(() => ({
             isFetching: false,

@@ -1,8 +1,9 @@
-import {fireEvent, render, screen} from '@testing-library/react'
-import {fromJS, List, Map} from 'immutable'
 import React from 'react'
 
-import {FulfillmentStatus} from 'constants/integrations/types/shopify'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { fromJS, List, Map } from 'immutable'
+
+import { FulfillmentStatus } from 'constants/integrations/types/shopify'
 import {
     shopifyOrderFixture,
     shopifySuggestedRefundFixture,
@@ -14,7 +15,7 @@ describe('<OrderTable/>', () => {
     let onLineItemChange: jest.MockedFunction<any>
 
     const lineItems = (fromJS(shopifyOrderFixture()) as Map<any, any>).get(
-        'line_items'
+        'line_items',
     ) as List<Map<string, any>>
     const refund = fromJS(shopifySuggestedRefundFixture()) as Map<any, any>
 
@@ -28,7 +29,7 @@ describe('<OrderTable/>', () => {
     })
 
     it('should render', () => {
-        const {container} = render(
+        const { container } = render(
             <OrderTable
                 shopName="storegorgias3"
                 currencyCode="USD"
@@ -37,7 +38,7 @@ describe('<OrderTable/>', () => {
                 onLineItemChange={onLineItemChange}
                 fulfillmentStatus={FulfillmentStatus.Partial}
                 hasMultipleGateways={false}
-            />
+            />,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -45,7 +46,7 @@ describe('<OrderTable/>', () => {
     })
 
     it('should render with zero quantity', () => {
-        const {container} = render(
+        const { container } = render(
             <OrderTable
                 shopName="storegorgias3"
                 currencyCode="USD"
@@ -55,7 +56,7 @@ describe('<OrderTable/>', () => {
                 fulfillmentStatus={FulfillmentStatus.Partial}
                 keepLineItemQuantityAsDefault={false}
                 hasMultipleGateways={false}
-            />
+            />,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -72,14 +73,14 @@ describe('<OrderTable/>', () => {
                 onLineItemChange={onLineItemChange}
                 fulfillmentStatus={FulfillmentStatus.Fulfilled}
                 hasMultipleGateways={false}
-            />
+            />,
         )
 
         expect(screen.queryByAltText('Quantity warning')).toBeNull()
     })
 
     it('should render for multi-currency order', () => {
-        const {container} = render(
+        const { container } = render(
             <OrderTable
                 shopName="storegorgias3"
                 currencyCode="JPY"
@@ -88,7 +89,7 @@ describe('<OrderTable/>', () => {
                 onLineItemChange={onLineItemChange}
                 fulfillmentStatus={FulfillmentStatus.Partial}
                 hasMultipleGateways={false}
-            />
+            />,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -103,13 +104,13 @@ describe('<OrderTable/>', () => {
                 refund={refund
                     .setIn(
                         ['refund_line_items', 0, 'line_item_id'],
-                        lineItems.getIn([0, 'id'])
+                        lineItems.getIn([0, 'id']),
                     )
                     .setIn(['refund_line_items', 0, 'location_id'], null)}
                 onLineItemChange={onLineItemChange}
                 fulfillmentStatus={FulfillmentStatus.Partial}
                 hasMultipleGateways={false}
-            />
+            />,
         )
         expect(screen.getByText("This product can't be restocked."))
     })
@@ -124,15 +125,15 @@ describe('<OrderTable/>', () => {
                 onLineItemChange={onLineItemChange}
                 fulfillmentStatus={FulfillmentStatus.Partial}
                 hasMultipleGateways={false}
-            />
+            />,
         )
         fireEvent.change(screen.getAllByRole('textbox')[0], {
-            target: {value: '0'},
+            target: { value: '0' },
         })
         jest.advanceTimersByTime(300)
         expect(onLineItemChange).toHaveBeenCalledWith(
             lineItems.get(0).set('quantity', 0),
-            0
+            0,
         )
     })
     it('should keep the initial maximum quantity', () => {
@@ -145,7 +146,7 @@ describe('<OrderTable/>', () => {
                 onLineItemChange={onLineItemChange}
                 fulfillmentStatus={FulfillmentStatus.Partial}
                 hasMultipleGateways={false}
-            />
+            />,
         )
         fireEvent.click(screen.getAllByText('▼')[0])
         fireEvent.click(screen.getAllByText('▼')[0])
@@ -154,7 +155,7 @@ describe('<OrderTable/>', () => {
         jest.advanceTimersByTime(300)
         expect(onLineItemChange).toHaveBeenLastCalledWith(
             lineItems.get(0).set('quantity', 2),
-            0
+            0,
         )
     })
 
@@ -168,16 +169,16 @@ describe('<OrderTable/>', () => {
                 onLineItemChange={onLineItemChange}
                 fulfillmentStatus={FulfillmentStatus.Partial}
                 hasMultipleGateways={true}
-            />
+            />,
         )
 
         screen.getAllByRole('textbox').forEach((textbox) => {
             expect(textbox).toBeDisabled()
         })
-        screen.getAllByRole('button', {name: '▼'}).forEach((button) => {
+        screen.getAllByRole('button', { name: '▼' }).forEach((button) => {
             expect(button).toBeAriaDisabled()
         })
-        screen.getAllByRole('button', {name: '▲'}).forEach((button) => {
+        screen.getAllByRole('button', { name: '▲' }).forEach((button) => {
             expect(button).toBeAriaDisabled()
         })
     })

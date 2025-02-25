@@ -1,11 +1,12 @@
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {agents} from 'fixtures/agents'
+import { agents } from 'fixtures/agents'
 
 import Link from '../Link'
 
@@ -32,25 +33,25 @@ describe('<Link/>', () => {
     })
 
     it('should render with template replaced with its according value', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider
                 store={mockStore({
-                    customers: fromJS({active: {name: 'Johanna'}}),
-                    ticket: fromJS({someData: '1234'}),
+                    customers: fromJS({ active: { name: 'Johanna' } }),
+                    ticket: fromJS({ someData: '1234' }),
                     currentUser: fromJS(agents[0]),
                 })}
             >
                 <Link {...props} />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should not render all agent available data', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider
                 store={mockStore({
-                    customers: fromJS({active: {name: 'Johanna'}}),
+                    customers: fromJS({ active: { name: 'Johanna' } }),
                     currentUser: fromJS(agents[0]),
                 })}
             >
@@ -61,20 +62,20 @@ describe('<Link/>', () => {
                         label: 'Query {{current_user.has_2fa_enabled}}',
                     }}
                 />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render with the editor', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider
                 store={mockStore({
-                    customers: fromJS({active: {}}),
+                    customers: fromJS({ active: {} }),
                 })}
             >
                 <Link {...props} isEditing />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -83,15 +84,15 @@ describe('<Link/>', () => {
         render(
             <Provider
                 store={mockStore({
-                    customers: fromJS({active: {}}),
+                    customers: fromJS({ active: {} }),
                 })}
             >
                 <Link {...props} isEditing />
-            </Provider>
+            </Provider>,
         )
         fireEvent.click(screen.getByText('edit'))
         await waitFor(() => {
-            fireEvent.click(screen.getByRole('button', {name: 'Save'}))
+            fireEvent.click(screen.getByRole('button', { name: 'Save' }))
             expect(props.onSubmit).toHaveBeenCalledWith(props.link, props.index)
         })
     })
@@ -100,11 +101,11 @@ describe('<Link/>', () => {
         render(
             <Provider
                 store={mockStore({
-                    customers: fromJS({active: {}}),
+                    customers: fromJS({ active: {} }),
                 })}
             >
                 <Link {...props} isEditing />
-            </Provider>
+            </Provider>,
         )
         fireEvent.click(screen.getByText('delete'))
         expect(props.onRemove).toHaveBeenCalledWith(props.index)

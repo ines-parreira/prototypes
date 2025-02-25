@@ -1,10 +1,13 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { ComponentProps, forwardRef, ReactNode, Ref } from 'react'
+
 import classnames from 'classnames'
-import React, {ComponentProps, ReactNode, Ref, forwardRef} from 'react'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useId from 'hooks/useId'
 
 import IconButton from '../../button/IconButton'
+
 import css from './IconButtonTooltip.less'
 
 type TooltipProps = ComponentProps<typeof Tooltip>
@@ -17,8 +20,8 @@ type Props = ComponentProps<typeof IconButton> & {
 }
 
 const IconButtonTooltip = (
-    {children, className, icon = 'info', id, tooltipProps, ...rest}: Props,
-    ref?: Ref<HTMLButtonElement> | null
+    { children, className, icon = 'info', id, tooltipProps, ...rest }: Props,
+    ref?: Ref<HTMLButtonElement> | null,
 ) => {
     const generatedId = useId()
     const buttonId = id ?? `icon-button-${generatedId}`

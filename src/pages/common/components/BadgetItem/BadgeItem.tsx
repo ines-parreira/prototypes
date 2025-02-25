@@ -1,7 +1,9 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
 import React from 'react'
-import {Badge} from 'reactstrap'
+
+import classnames from 'classnames'
+import { Badge } from 'reactstrap'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import css from './BadgeItem.less'
 
@@ -37,7 +39,7 @@ const BadgeItem: React.FC<BadgeItemProps> = ({
                         data-testid={`help-${id}`}
                         className={classnames(
                             css['badge-icon'],
-                            'material-icons-outlined'
+                            'material-icons-outlined',
                         )}
                     >
                         info
@@ -60,7 +62,7 @@ const BadgeItem: React.FC<BadgeItemProps> = ({
                 <i
                     className={classnames(
                         css['badge-icon'],
-                        'material-icons cursor-pointer ml-1'
+                        'material-icons cursor-pointer ml-1',
                     )}
                     onClick={onClose}
                 >

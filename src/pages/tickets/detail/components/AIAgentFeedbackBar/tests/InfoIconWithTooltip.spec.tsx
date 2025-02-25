@@ -1,5 +1,6 @@
-import {render, screen} from '@testing-library/react'
-import React, {ReactNode} from 'react'
+import React, { ReactNode } from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import InfoIconWithTooltip from '../InfoIconWithTooltip'
 
@@ -10,7 +11,7 @@ jest.mock('../../../../../stats/common/components/StatsHelpIcon', () => () => (
 
 // Mocking the Tooltip component
 jest.mock('@gorgias/merchant-ui-kit', () => ({
-    Tooltip: ({children}: {children: ReactNode}) => (
+    Tooltip: ({ children }: { children: ReactNode }) => (
         <div data-testid="tooltip">{children}</div>
     ),
 }))
@@ -22,10 +23,10 @@ describe('InfoIconWithTooltip Component', () => {
         render(
             <InfoIconWithTooltip
                 id={id}
-                tooltipProps={{autohide: true, placement: 'bottom'}}
+                tooltipProps={{ autohide: true, placement: 'bottom' }}
             >
                 Tooltip content here
-            </InfoIconWithTooltip>
+            </InfoIconWithTooltip>,
         )
 
         expect(screen.getByTestId('stats-help-icon')).toBeInTheDocument()
@@ -35,14 +36,14 @@ describe('InfoIconWithTooltip Component', () => {
         render(
             <InfoIconWithTooltip
                 id={id}
-                tooltipProps={{autohide: true, placement: 'bottom'}}
+                tooltipProps={{ autohide: true, placement: 'bottom' }}
             >
                 Tooltip content here
-            </InfoIconWithTooltip>
+            </InfoIconWithTooltip>,
         )
 
         expect(screen.getByTestId('tooltip')).toHaveTextContent(
-            'Tooltip content here'
+            'Tooltip content here',
         )
     })
 
@@ -50,7 +51,7 @@ describe('InfoIconWithTooltip Component', () => {
         render(
             <InfoIconWithTooltip
                 id={id}
-                tooltipProps={{autohide: true, placement: 'bottom'}}
+                tooltipProps={{ autohide: true, placement: 'bottom' }}
             >
                 <>
                     Provide feedback on the resources AI Agent used to improve
@@ -59,14 +60,14 @@ describe('InfoIconWithTooltip Component', () => {
                     the right resource
                     <br /> 2. Edit a resource if it didn’t work as expected
                 </>
-            </InfoIconWithTooltip>
+            </InfoIconWithTooltip>,
         )
 
         expect(screen.getByTestId('tooltip')).toHaveTextContent(
-            'Provide feedback on the resources AI Agent'
+            'Provide feedback on the resources AI Agent',
         )
         expect(screen.getByTestId('tooltip')).toHaveTextContent(
-            '1. Use thumbs up/down to indicate'
+            '1. Use thumbs up/down to indicate',
         )
     })
 })

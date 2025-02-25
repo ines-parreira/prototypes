@@ -1,27 +1,27 @@
-import React, {useEffect} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {useParams} from 'react-router-dom'
+import React, { useEffect } from 'react'
+
+import { connect, ConnectedProps } from 'react-redux'
+import { useParams } from 'react-router-dom'
 
 import useAsyncFn from 'hooks/useAsyncFn'
-import {fetchRule} from 'models/rule/resources'
+import { fetchRule } from 'models/rule/resources'
 import Loader from 'pages/common/components/Loader/Loader'
 import history from 'pages/history'
-import {ruleFetched} from 'state/entities/rules/actions'
-import {getRulesLimitStatus} from 'state/entities/rules/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { ruleFetched } from 'state/entities/rules/actions'
+import { getRulesLimitStatus } from 'state/entities/rules/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { RootState } from 'state/types'
 
-import {RootState} from 'state/types'
-
-import {RuleFormEditor} from './components/RuleFormEditor'
+import { RuleFormEditor } from './components/RuleFormEditor'
 
 export function RuleDetailForm({
     rules,
     ruleFetched,
     notify,
 }: ConnectedProps<typeof connector>) {
-    const {ruleId} = useParams<{ruleId?: string}>()
-    const [{loading: isFetchPending}, handleFetchRule] = useAsyncFn(
+    const { ruleId } = useParams<{ ruleId?: string }>()
+    const [{ loading: isFetchPending }, handleFetchRule] = useAsyncFn(
         async (ruleId: number) => {
             try {
                 const res = await fetchRule(ruleId)
@@ -34,7 +34,7 @@ export function RuleDetailForm({
                 history.push('/app/settings/rules')
             }
         },
-        []
+        [],
     )
     useEffect(() => {
         if (ruleId) {
@@ -64,7 +64,7 @@ const connector = connect(
     {
         ruleFetched,
         notify,
-    }
+    },
 )
 
 export default connector(RuleDetailForm)

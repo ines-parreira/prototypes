@@ -1,16 +1,18 @@
-import {CursorPaginationMeta} from '@gorgias/api-queries'
-import {AxiosError} from 'axios'
-import classnames from 'classnames'
-import {Emoji} from 'emoji-mart'
-import React, {useState} from 'react'
-import {Link} from 'react-router-dom'
+import React, { useState } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { AxiosError } from 'axios'
+import classnames from 'classnames'
+import { Emoji } from 'emoji-mart'
+import { Link } from 'react-router-dom'
+
+import { CursorPaginationMeta } from '@gorgias/api-queries'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAsyncFn from 'hooks/useAsyncFn'
 import useEffectOnce from 'hooks/useEffectOnce'
-import {CursorDirection, OrderDirection} from 'models/api/types'
-import {fetchTeams} from 'models/team/resources'
+import { CursorDirection, OrderDirection } from 'models/api/types'
+import { fetchTeams } from 'models/team/resources'
 import {
     FetchTeamsOptions,
     Team,
@@ -23,9 +25,9 @@ import Navigation from 'pages/common/components/Navigation/Navigation'
 import PageHeader from 'pages/common/components/PageHeader'
 import settingsCss from 'pages/settings/settings.less'
 import TeamCreationModal from 'pages/settings/teams/TeamCreationModal'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {FETCH_TEAMS_SUCCESS} from 'state/teams/constants'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { FETCH_TEAMS_SUCCESS } from 'state/teams/constants'
 
 import css from './List.less'
 
@@ -35,7 +37,7 @@ type Props = {
     team: Team
 }
 
-const TeamItem = ({team}: Props) => {
+const TeamItem = ({ team }: Props) => {
     const teamId = team.id
     const emoji = team.decoration?.emoji
     const memberCount = team.members.length
@@ -101,7 +103,7 @@ const TeamList = () => {
         void fetchPage()
     })
 
-    const [{loading: isFetching}, fetchPage] = useAsyncFn(
+    const [{ loading: isFetching }, fetchPage] = useAsyncFn(
         async (direction?: CursorDirection) => {
             const params: FetchTeamsOptions = {
                 orderBy: `${TeamSortableProperties.Name}:${OrderDirection.Asc}`,
@@ -126,7 +128,7 @@ const TeamList = () => {
                 })
             } catch (error) {
                 const responseError = error as AxiosError<{
-                    error?: {msg: string}
+                    error?: { msg: string }
                 }>
                 await dispatch(
                     notify({
@@ -134,11 +136,11 @@ const TeamList = () => {
                             responseError.response?.data.error?.msg ||
                             'Failed to fetch teams.',
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
             }
         },
-        [meta]
+        [meta],
     )
 
     const handleClick = () => {

@@ -1,5 +1,6 @@
 import React from 'react'
-import {useHistory} from 'react-router-dom'
+
+import { useHistory } from 'react-router-dom'
 
 import css from './BackLink.less'
 
@@ -8,7 +9,7 @@ type BackLinkProps = {
     label: string
 }
 
-const BackLink = ({path, label}: BackLinkProps) => {
+const BackLink = ({ path, label }: BackLinkProps) => {
     const history = useHistory()
 
     const goBack = () => {

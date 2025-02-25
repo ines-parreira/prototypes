@@ -1,6 +1,6 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
-import {useLocation} from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 
 import history from 'pages/history'
 
@@ -20,14 +20,14 @@ type Props = {
     name: NavigatedSuccessModalName
 } & Omit<React.ComponentProps<typeof SuccessModal>, 'isOpen' | 'onClose'>
 
-const NavigatedSuccessModal: React.FC<Props> = ({name, ...props}) => {
-    const {pathname, state} =
+const NavigatedSuccessModal: React.FC<Props> = ({ name, ...props }) => {
+    const { pathname, state } =
         useLocation<NavigatedSuccessModalLocationState | null>()
 
     const [isOpen, setIsOpen] = useState(state?.showModal === name)
 
     const onClose = () => {
-        history.replace(pathname, {...state, showModal: undefined})
+        history.replace(pathname, { ...state, showModal: undefined })
         setIsOpen(false)
     }
 

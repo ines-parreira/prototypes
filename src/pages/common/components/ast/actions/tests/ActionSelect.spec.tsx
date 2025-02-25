@@ -1,10 +1,11 @@
-import {fireEvent, render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import {fromJS} from 'immutable'
 import React from 'react'
 
+import { fireEvent, render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { fromJS } from 'immutable'
+
 import ActionSelect from '../ActionSelect'
-import {actionsConfig} from '../config'
+import { actionsConfig } from '../config'
 
 const commonProps = {
     actions: {
@@ -13,10 +14,10 @@ const commonProps = {
     },
     parent: fromJS(['body', 0, 'expression']),
     value: '' as const,
-    rule: fromJS({type: 'user'}),
+    rule: fromJS({ type: 'user' }),
 }
 
-const systemRule = fromJS({type: 'system'})
+const systemRule = fromJS({ type: 'system' })
 
 describe('<ActionSelect />', () => {
     it('should render `Select action` when value is empty', () => {
@@ -25,7 +26,7 @@ describe('<ActionSelect />', () => {
         expect(
             screen.getByRole('button', {
                 name: 'Select action',
-            })
+            }),
         ).toBeInTheDocument()
     })
 
@@ -35,7 +36,7 @@ describe('<ActionSelect />', () => {
         expect(
             screen.getByRole('button', {
                 name: 'Add tags',
-            })
+            }),
         ).toBeInTheDocument()
     })
 
@@ -48,7 +49,7 @@ describe('<ActionSelect />', () => {
                 expect(
                     screen.getByRole('menuitem', {
                         name: config.name,
-                    })
+                    }),
                 ).toBeInTheDocument()
             }
         })
@@ -62,7 +63,7 @@ describe('<ActionSelect />', () => {
             expect(
                 screen.getByRole('menuitem', {
                     name: config.name,
-                })
+                }),
             ).toBeInTheDocument()
         })
     })
@@ -71,12 +72,12 @@ describe('<ActionSelect />', () => {
         render(<ActionSelect {...commonProps} value="addTags" />)
 
         userEvent.click(screen.getByRole('button'))
-        userEvent.click(screen.getByRole('menuitem', {name: 'Add tags'}))
+        userEvent.click(screen.getByRole('menuitem', { name: 'Add tags' }))
 
         expect(commonProps.actions.modifyCodeAST).toHaveBeenCalledWith(
             commonProps.parent,
             'addTags',
-            'UPDATE'
+            'UPDATE',
         )
     })
 })

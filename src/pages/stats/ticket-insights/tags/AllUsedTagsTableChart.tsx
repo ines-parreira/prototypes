@@ -4,10 +4,10 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import css from 'pages/stats/BreakdownTable.less'
 import ChartCard from 'pages/stats/ChartCard'
-import {TableHeatmapSwitch} from 'pages/stats/common/components/Table/TableHeatmapSwitch'
-import {TableValueModeSwitch} from 'pages/stats/common/components/Table/TableValueModeSwitch'
-import {DashboardChartProps} from 'pages/stats/custom-reports/types'
-import {AllUsedTagsTable} from 'pages/stats/ticket-insights/tags/AllUsedTagsTable'
+import { TableHeatmapSwitch } from 'pages/stats/common/components/Table/TableHeatmapSwitch'
+import { TableValueModeSwitch } from 'pages/stats/common/components/Table/TableValueModeSwitch'
+import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { AllUsedTagsTable } from 'pages/stats/ticket-insights/tags/AllUsedTagsTable'
 import {
     TicketInsightsTagsMetric,
     TicketInsightsTagsMetricConfig,
@@ -30,7 +30,7 @@ export const AllUsedTagsTableChart = ({
 
     const heatmapModeHandler = () => dispatch(toggleHeatmapMode())
 
-    const {hint, title} =
+    const { hint, title } =
         TicketInsightsTagsMetricConfig[
             TicketInsightsTagsMetric.AllUsedTagsTableChart
         ]

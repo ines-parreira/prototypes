@@ -1,11 +1,11 @@
+import React, { UIEventHandler, useState } from 'react'
+
 import classNames from 'classnames'
-import React, {UIEventHandler, useState} from 'react'
 // eslint-disable-next-line no-restricted-imports
-import {useDispatch} from 'react-redux'
+import { useDispatch } from 'react-redux'
+import { useParams } from 'react-router-dom'
 
-import {useParams} from 'react-router-dom'
-
-import {useAIAgentInsightsDataset} from 'hooks/reporting/automate/useAIAgentInsightsDataset'
+import { useAIAgentInsightsDataset } from 'hooks/reporting/automate/useAIAgentInsightsDataset'
 import useAppSelector from 'hooks/useAppSelector'
 import useMeasure from 'hooks/useMeasure'
 import {
@@ -13,27 +13,22 @@ import {
     IntentTableColumn,
     PaginatedIntents,
 } from 'pages/aiAgent/insights/IntentTableWidget/types'
-import {NumberedPagination} from 'pages/common/components/Paginations'
+import { NumberedPagination } from 'pages/common/components/Paginations'
 import css from 'pages/common/components/table/cells/HeaderCellProperty.less'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-
 import ChartCard from 'pages/stats/ChartCard'
-import {AgentsHeaderCellContent} from 'pages/stats/support-performance/agents/AgentsHeaderCellContent'
-
+import { AgentsHeaderCellContent } from 'pages/stats/support-performance/agents/AgentsHeaderCellContent'
 import {
     getPaginatedIntents,
     isSortingMetricLoading,
     pageSet,
 } from 'state/ui/stats/insightsSlice'
+import { AIInsightsMetric } from 'state/ui/stats/types'
 
-import {AIInsightsMetric} from 'state/ui/stats/types'
-
-import {useGetCustomTicketsFieldsDefinitionData} from './hooks/useGetCustomTicketsFieldsDefinitionData'
-import intentTableCss from './IntentTable.less'
-
+import { useGetCustomTicketsFieldsDefinitionData } from './hooks/useGetCustomTicketsFieldsDefinitionData'
 import {
     IntentAutomationOpportunitiesCellContent,
     IntentAvgCsatCellContent,
@@ -51,17 +46,19 @@ import {
     useIntentSortingQuery,
 } from './IntentTableConfig'
 
+import intentTableCss from './IntentTable.less'
+
 const getSortingQuery = (
     column: IntentTableColumn,
     intentId?: string,
-    intentLevel?: number
+    intentLevel?: number,
 ) => {
     return () =>
         useIntentSortingQuery(
             column,
             useAIAgentInsightsDataset,
             intentId,
-            intentLevel
+            intentLevel,
         )
 }
 
@@ -74,15 +71,15 @@ export const IntentTable = ({
 }) => {
     const dispatch = useDispatch()
 
-    const [ref, {width}] = useMeasure<HTMLDivElement>()
+    const [ref, { width }] = useMeasure<HTMLDivElement>()
     const [isTableScrolled, setIsTableScrolled] = useState(false)
-    const {intents, allIntents, currentPage, perPage} = paginatedIntents
+    const { intents, allIntents, currentPage, perPage } = paginatedIntents
 
     const isSortingLoading = useAppSelector(isSortingMetricLoading)
 
-    const {intentCustomFieldId} = useGetCustomTicketsFieldsDefinitionData()
+    const { intentCustomFieldId } = useGetCustomTicketsFieldsDefinitionData()
 
-    const {intentId} = useParams<{
+    const { intentId } = useParams<{
         shopName: string
         intentId: string
     }>()
@@ -140,9 +137,9 @@ export const IntentTable = ({
                 <TableWrapper
                     className={classNames(
                         css.table,
-                        intentTableCss.tableWrapper
+                        intentTableCss.tableWrapper,
                     )}
-                    style={{width}}
+                    style={{ width }}
                 >
                     <TableHead>
                         {TableColumnsOrder.map((column, index) => (
@@ -155,7 +152,7 @@ export const IntentTable = ({
                                 useSortingQuery={getSortingQuery(
                                     column,
                                     intentId,
-                                    intentLevel
+                                    intentLevel,
                                 )}
                                 width={getColumnWidth(column)}
                                 className={classNames(
@@ -165,10 +162,10 @@ export const IntentTable = ({
                                     {
                                         [css.withShadow]:
                                             index === 0 && isTableScrolled,
-                                    }
+                                    },
                                 )}
                                 justifyContent={getColumnContentAlignment(
-                                    column
+                                    column,
                                 )}
                             />
                         ))}
@@ -193,7 +190,7 @@ export const IntentTable = ({
                                                             intent,
                                                         }),
                                                     intentLevel,
-                                                }
+                                                },
                                             )}
                                         </React.Fragment>
                                     ))}
@@ -222,7 +219,7 @@ export const IntentTable = ({
 export const LoadingTableRows = () => {
     const numberOfLoadingRows = 4
     const loadingRows = Array.from(
-        {length: numberOfLoadingRows},
+        { length: numberOfLoadingRows },
         (_, index) => (
             <TableBodyRow key={`loading-row-${index}`}>
                 {TableColumnsOrder.map((column) => (
@@ -231,7 +228,7 @@ export const LoadingTableRows = () => {
                     </React.Fragment>
                 ))}
             </TableBodyRow>
-        )
+        ),
     )
     return <>{loadingRows}</>
 }
@@ -249,7 +246,7 @@ export const IntentTableWithDefaultState = ({
     }
     intentLevel?: number
 }) => {
-    const {intentId} = useParams<{
+    const { intentId } = useParams<{
         shopName: string
         intentId: string
     }>()
@@ -258,7 +255,7 @@ export const IntentTableWithDefaultState = ({
         IntentTableColumn.AutomationOpportunities,
         useAIAgentInsightsDataset,
         intentId,
-        intentLevel
+        intentLevel,
     )
 
     const paginatedIntents = useAppSelector(getPaginatedIntents)

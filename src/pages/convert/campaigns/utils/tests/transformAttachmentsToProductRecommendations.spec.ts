@@ -1,9 +1,9 @@
-import {List} from 'immutable'
+import { List } from 'immutable'
 
-import {AttachmentEnum} from 'common/types'
-import {ProductRecommendationScenario} from 'pages/convert/campaigns/types/CampaignAttachment'
+import { AttachmentEnum } from 'common/types'
+import { ProductRecommendationScenario } from 'pages/convert/campaigns/types/CampaignAttachment'
 
-import {transformAttachmentsToProductRecommendations} from '../transformAttachmentsToProductRecommendations'
+import { transformAttachmentsToProductRecommendations } from '../transformAttachmentsToProductRecommendations'
 
 describe('transformAttachmentsToProductRecommendations', () => {
     it('should return an empty array if no attachments are provided', () => {
@@ -19,12 +19,12 @@ describe('transformAttachmentsToProductRecommendations', () => {
             {
                 content_type: 'image',
                 name: 'image1',
-                extra: {id: 1, scenario: 'scenario1'},
+                extra: { id: 1, scenario: 'scenario1' },
             },
             {
                 content_type: 'image',
                 name: 'image2',
-                extra: {id: 2, scenario: 'scenario2'},
+                extra: { id: 2, scenario: 'scenario2' },
             },
         ])
 
@@ -46,7 +46,7 @@ describe('transformAttachmentsToProductRecommendations', () => {
             {
                 content_type: 'image',
                 name: 'image2',
-                extra: {id: 2, scenario: 'scenario2'},
+                extra: { id: 2, scenario: 'scenario2' },
             },
         ])
 

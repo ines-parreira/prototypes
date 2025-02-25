@@ -20,8 +20,8 @@ describe('Automate metrics', () => {
                 billableTicketDatasetExcludingAIAgentQueryFactory(
                     filters,
                     timezone,
-                    aiAgentUserId
-                )
+                    aiAgentUserId,
+                ),
             ).toEqual({
                 dimensions: [],
                 filters: [
@@ -55,8 +55,8 @@ describe('Automate metrics', () => {
                 billableTicketDatasetExcludingAIAgentQueryFactory(
                     filters,
                     timezone,
-                    undefined
-                )
+                    undefined,
+                ),
             ).toEqual({
                 dimensions: [],
                 filters: [
@@ -88,8 +88,8 @@ describe('Automate metrics', () => {
                 billableTicketDatasetResolvedByAIAgentQueryFactory(
                     filters,
                     timezone,
-                    aiAgentUserId
-                )
+                    aiAgentUserId,
+                ),
             ).toEqual({
                 dimensions: [],
                 filters: [
@@ -123,8 +123,8 @@ describe('Automate metrics', () => {
                 billableTicketDatasetResolvedByAIAgentQueryFactory(
                     filters,
                     timezone,
-                    undefined
-                )
+                    undefined,
+                ),
             ).toEqual({
                 dimensions: [],
                 filters: [

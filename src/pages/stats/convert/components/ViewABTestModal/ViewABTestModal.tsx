@@ -1,6 +1,6 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
-import {ABTest} from 'models/convert/abTest/types'
+import { ABTest } from 'models/convert/abTest/types'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
@@ -16,7 +16,7 @@ type Props = {
     onSubmit: () => void
 }
 
-const ViewABTestModal = ({isOpen, abTests, onClose, onSubmit}: Props) => {
+const ViewABTestModal = ({ isOpen, abTests, onClose, onSubmit }: Props) => {
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
     const submit = () => {

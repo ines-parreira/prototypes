@@ -1,18 +1,20 @@
-import {Map} from 'immutable'
-import _capitalize from 'lodash/capitalize'
-import React, {useState} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
+import React, { useState } from 'react'
 
-import {AGENT_ROLE} from 'config/user'
-import {ViewCategory} from 'models/view/types'
+import { Map } from 'immutable'
+import _capitalize from 'lodash/capitalize'
+import { connect, ConnectedProps } from 'react-redux'
+
+import { AGENT_ROLE } from 'config/user'
+import { ViewCategory } from 'models/view/types'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {RootState} from 'state/types'
-import {hasRole} from 'utils'
+import { RootState } from 'state/types'
+import { hasRole } from 'utils'
 
-import css from './ViewSharingButton.less'
 import ViewSharingButtonTooltip from './ViewSharingButtonTooltip'
 import ViewSharingModal from './ViewSharingModal/ViewSharingModal'
+
+import css from './ViewSharingButton.less'
 
 type OwnProps = {
     view: Map<any, any>
@@ -20,7 +22,7 @@ type OwnProps = {
 
 type Props = OwnProps & ConnectedProps<typeof connector>
 
-export function ViewSharingButtonContainer({currentUser, view}: Props) {
+export function ViewSharingButtonContainer({ currentUser, view }: Props) {
     const isSystem = ViewCategory.System === view.get('category')
     const label = _capitalize(view.get('visibility'))
     const [isOpen, setOpen] = useState(false)

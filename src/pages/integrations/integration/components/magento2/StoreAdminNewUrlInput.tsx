@@ -11,7 +11,7 @@ type Props = {
 
 export const STORE_ADMIN_URL_INPUT_ID = 'store-field'
 
-export const StoreAdminNewUrlInput = ({onChange, value}: Props) => (
+export const StoreAdminNewUrlInput = ({ onChange, value }: Props) => (
     <InputGroup className="mb-4">
         <GroupAddon>https://</GroupAddon>
         <TextInput

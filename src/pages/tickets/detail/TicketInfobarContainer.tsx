@@ -1,37 +1,42 @@
-import classNames from 'classnames'
-import {fromJS, Map} from 'immutable'
-import React, {useEffect, useRef} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {useLocation, useParams} from 'react-router-dom'
-import {Navbar} from 'reactstrap'
+import React, { useEffect, useRef } from 'react'
 
-import {TicketStatus} from 'business/types/ticket'
-import {SegmentEvent} from 'common/segment'
-import {logEvent, logEventWithSampling} from 'common/segment/segment'
+import classNames from 'classnames'
+import { fromJS, Map } from 'immutable'
+import { connect, ConnectedProps } from 'react-redux'
+import { useLocation, useParams } from 'react-router-dom'
+import { Navbar } from 'reactstrap'
+
+import { TicketStatus } from 'business/types/ticket'
+import { SegmentEvent } from 'common/segment'
+import { logEvent, logEventWithSampling } from 'common/segment/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {useSearchParam} from 'hooks/useSearchParam'
+import { useSearchParam } from 'hooks/useSearchParam'
 import Infobar from 'pages/common/components/infobar/Infobar/Infobar'
 import TicketFeedback from 'pages/tickets/detail/components/TicketFeedback'
-import {getHasAutomate} from 'state/billing/selectors'
-import {getCurrentAccountId} from 'state/currentAccount/selectors'
-import {getCurrentUser} from 'state/currentUser/selectors'
+import { getHasAutomate } from 'state/billing/selectors'
+import { getCurrentAccountId } from 'state/currentAccount/selectors'
+import { getCurrentUser } from 'state/currentUser/selectors'
 import * as layoutSelectors from 'state/layout/selectors'
-import {getAIAgentMessages, getTicket} from 'state/ticket/selectors'
-import {RootState} from 'state/types'
+import { getAIAgentMessages, getTicket } from 'state/ticket/selectors'
+import { RootState } from 'state/types'
 import {
     changeActiveTab,
     changeTicketMessage,
     getActiveTab,
 } from 'state/ui/ticketAIAgentFeedback'
-import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants'
+import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constants'
 import * as actions from 'state/widgets/actions'
-import {getSourcesWithCustomer, getWidgetsState} from 'state/widgets/selectors'
-import {WidgetEnvironment} from 'state/widgets/types'
-import {isTeamLead} from 'utils'
+import {
+    getSourcesWithCustomer,
+    getWidgetsState,
+} from 'state/widgets/selectors'
+import { WidgetEnvironment } from 'state/widgets/types'
+import { isTeamLead } from 'utils'
 
-import {DATE_FEATURE_AVAILABLE} from './components/AIAgentFeedbackBar/constants'
-import {isTrialMessageFromAIAgent} from './components/AIAgentFeedbackBar/utils'
+import { DATE_FEATURE_AVAILABLE } from './components/AIAgentFeedbackBar/constants'
+import { isTrialMessageFromAIAgent } from './components/AIAgentFeedbackBar/utils'
+
 import css from './TicketInfobarContainer.less'
 
 type OwnProps = {
@@ -54,7 +59,7 @@ export const TicketInfobarContainer = ({
     sources,
     widgets,
 }: Props) => {
-    const params = useParams<{ticketId: string}>()
+    const params = useParams<{ ticketId: string }>()
     const [preferredTab, setPreferredTab] = useSearchParam('activeTab')
     const dispatch = useAppDispatch()
     const accountId = useAppSelector(getCurrentAccountId)
@@ -83,16 +88,17 @@ export const TicketInfobarContainer = ({
                 : TicketAIAgentFeedbackTab.CustomerInformation
         if (nextTab !== activeTab) {
             setPreferredTab(null)
-            dispatch(changeActiveTab({activeTab: nextTab}))
+            dispatch(changeActiveTab({ activeTab: nextTab }))
         }
-        dispatch(changeTicketMessage({message: undefined}))
+        dispatch(changeTicketMessage({ message: undefined }))
     }
 
     const customer =
         sources.getIn(['ticket', 'customer']) || (fromJS({}) as Map<any, any>)
 
     const aiMessages = useAppSelector(getAIAgentMessages).filter(
-        (message) => new Date(message.created_datetime) > DATE_FEATURE_AVAILABLE
+        (message) =>
+            new Date(message.created_datetime) > DATE_FEATURE_AVAILABLE,
     )
 
     const handleChangeTab = (tab: TicketAIAgentFeedbackTab) => {
@@ -100,7 +106,7 @@ export const TicketInfobarContainer = ({
             return
         }
 
-        dispatch(changeActiveTab({activeTab: tab}))
+        dispatch(changeActiveTab({ activeTab: tab }))
 
         if (tab === TicketAIAgentFeedbackTab.AIAgent) {
             dispatch(
@@ -111,10 +117,10 @@ export const TicketInfobarContainer = ({
                             isTrialMessageFromAIAgent(aiMessages[0]))
                             ? aiMessages[0]
                             : undefined,
-                })
+                }),
             )
         } else {
-            dispatch(changeTicketMessage({message: undefined}))
+            dispatch(changeTicketMessage({ message: undefined }))
         }
     }
 
@@ -151,7 +157,7 @@ export const TicketInfobarContainer = ({
                         })}
                         onClick={() =>
                             handleChangeTab(
-                                TicketAIAgentFeedbackTab.CustomerInformation
+                                TicketAIAgentFeedbackTab.CustomerInformation,
                             )
                         }
                     >
@@ -183,7 +189,7 @@ export const TicketInfobarContainer = ({
                         identifier={(
                             sources.getIn(
                                 ['ticket', 'id'],
-                                params.ticketId || ''
+                                params.ticketId || '',
                             ) as number
                         ).toString()}
                         customer={customer}

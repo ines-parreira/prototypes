@@ -1,15 +1,15 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
+import { renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
 
-import {useCustomFieldDefinition} from 'custom-fields/hooks/queries/useCustomFieldDefinition'
-import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import { useCustomFieldDefinition } from 'custom-fields/hooks/queries/useCustomFieldDefinition'
+import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {
     ticketFieldDefinitions,
     ticketInputFieldDefinition,
 } from 'fixtures/customField'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {getDefaultCustomFieldOperator} from 'pages/common/components/ViewTable/Filters/utils'
-import {updateCustomFieldFilterId} from 'state/views/actions'
+import { getDefaultCustomFieldOperator } from 'pages/common/components/ViewTable/Filters/utils'
+import { updateCustomFieldFilterId } from 'state/views/actions'
 
 import useCustomFieldsFilters from '../useCustomFieldsFilters'
 
@@ -32,7 +32,7 @@ const getDefaultCustomFieldOperatorMock =
 describe('useCustomFieldsFilters', () => {
     beforeEach(() => {
         useCustomFieldDefinitionsMock.mockReturnValue({
-            data: {data: ticketFieldDefinitions},
+            data: { data: ticketFieldDefinitions },
             isLoading: false,
         } as any)
 
@@ -45,26 +45,26 @@ describe('useCustomFieldsFilters', () => {
     })
 
     it('should return the active custom fields', () => {
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useCustomFieldsFilters({
                 objectPath: 'ticket.custom_fields[123].value',
                 index: 0,
                 schemas: fromJS({}),
-            })
+            }),
         )
 
         expect(result.current.activeCustomFields).toEqual(
-            ticketFieldDefinitions
+            ticketFieldDefinitions,
         )
     })
 
     it('should return the custom field corresponding to the object path', () => {
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useCustomFieldsFilters({
                 objectPath: 'ticket.custom_fields[123].value',
                 index: 0,
                 schemas: fromJS({}),
-            })
+            }),
         )
 
         expect(result.current.customField).toEqual(ticketInputFieldDefinition)
@@ -73,12 +73,12 @@ describe('useCustomFieldsFilters', () => {
     it('should call updateCustomFieldFilterId when onCustomFieldChange is called', () => {
         getDefaultCustomFieldOperatorMock.mockReturnValue('eq')
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useCustomFieldsFilters({
                 objectPath: 'ticket.custom_fields[123].value',
                 index: 0,
                 schemas: fromJS({}),
-            })
+            }),
         )
 
         result.current.onCustomFieldChange(2)

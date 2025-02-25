@@ -1,1 +1,1 @@
-export {default} from './ContactFormFlowsBanner'
+export { default } from './ContactFormFlowsBanner'

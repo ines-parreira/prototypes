@@ -1,9 +1,10 @@
-import {render, cleanup} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import {fromJS, Map} from 'immutable'
 import React from 'react'
 
-import {ActionButtonContainer} from '../ActionButton'
+import { cleanup, render } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { fromJS, Map } from 'immutable'
+
+import { ActionButtonContainer } from '../ActionButton'
 
 describe('ActionButton component', () => {
     const getPendingActionCallback = () => fromJS({}) as Map<any, any>
@@ -24,7 +25,7 @@ describe('ActionButton component', () => {
                 <i className="material-icons mr-2">refresh</i> Little action
             </div>
         ),
-        options: [{value: 'myLittleAction', label: 'My little action'}],
+        options: [{ value: 'myLittleAction', label: 'My little action' }],
         payload: {
             order_id: '12',
         },
@@ -61,7 +62,7 @@ describe('ActionButton component', () => {
                         ],
                     },
                 ]}
-            />
+            />,
         )
 
         expect(component).toMatchSnapshot()
@@ -89,7 +90,7 @@ describe('ActionButton component', () => {
                         ],
                     },
                 ]}
-            />
+            />,
         )
 
         expect(component).toMatchSnapshot()
@@ -113,7 +114,7 @@ describe('ActionButton component', () => {
                         ],
                     },
                 ]}
-            />
+            />,
         )
 
         expect(component).toMatchSnapshot()
@@ -134,14 +135,14 @@ describe('ActionButton component', () => {
                                 defaultValue: true,
                                 label: 'Execute the action for real',
                                 options: [
-                                    {label: 'Foo', value: 'foo'},
-                                    {label: 'Bar', value: 'bar'},
+                                    { label: 'Foo', value: 'foo' },
+                                    { label: 'Bar', value: 'bar' },
                                 ],
                             } as any,
                         ],
                     },
                 ]}
-            />
+            />,
         )
 
         expect(component).toMatchSnapshot()
@@ -161,7 +162,7 @@ describe('ActionButton component', () => {
                         label: 'My big action',
                     },
                 ]}
-            />
+            />,
         )
 
         expect(component).toMatchSnapshot()
@@ -199,7 +200,7 @@ describe('ActionButton component', () => {
                         ],
                     },
                 ]}
-            />
+            />,
         )
 
         expect(component).toMatchSnapshot()
@@ -236,14 +237,14 @@ describe('ActionButton component', () => {
                         ],
                     },
                 ]}
-            />
+            />,
         )
 
         expect(component).toMatchSnapshot()
     })
 
     it('should display disabled button based on context', () => {
-        const {getByRole} = render(
+        const { getByRole } = render(
             <ActionButtonContainer
                 {...minProps}
                 actionError={'Some error message'}
@@ -253,14 +254,14 @@ describe('ActionButton component', () => {
                         label: 'My little action',
                     },
                 ]}
-            />
+            />,
         )
 
         expect(getByRole('button')).toBeAriaDisabled()
     })
 
     it('should display enabled button based on context', () => {
-        const {getByRole} = render(
+        const { getByRole } = render(
             <ActionButtonContainer
                 {...minProps}
                 actionError={null}
@@ -270,7 +271,7 @@ describe('ActionButton component', () => {
                         label: 'My little action',
                     },
                 ]}
-            />
+            />,
         )
 
         expect(getByRole('button')).toBeAriaEnabled()
@@ -293,15 +294,15 @@ describe('ActionButton component', () => {
             },
         ]
         const customerId = 43
-        const Modal = ({onSubmit}: any) => <div onClick={onSubmit}>Modal</div>
+        const Modal = ({ onSubmit }: any) => <div onClick={onSubmit}>Modal</div>
 
-        const {getByText} = render(
+        const { getByText } = render(
             <ActionButtonContainer
                 {...minProps}
                 customerId={customerId}
                 options={options}
                 modal={Modal}
-            />
+            />,
         )
 
         userEvent.click(getByText('Modal'))

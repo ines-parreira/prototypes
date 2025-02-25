@@ -1,20 +1,24 @@
-import {AxiosError} from 'axios'
+import { AxiosError } from 'axios'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {errorToChildren} from 'utils'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { errorToChildren } from 'utils'
 
-import {CustomNotifications} from '../constants'
+import { CustomNotifications } from '../constants'
 
 export default function useCreatePhoneNumberNotifications() {
     const dispatch = useAppDispatch()
 
-    const showCreatePhoneNumberErrorNotification = ({error}: {error: any}) => {
+    const showCreatePhoneNumberErrorNotification = ({
+        error,
+    }: {
+        error: any
+    }) => {
         const upgradePlanPath = '/app/settings/billing/process/helpdesk'
 
-        const {response} = error as AxiosError<{
-            error: {msg: string; data: {use_custom: string | null}}
+        const { response } = error as AxiosError<{
+            error: { msg: string; data: { use_custom: string | null } }
         }>
         const customNotificationName = response?.data?.error?.data?.use_custom
         if (customNotificationName === CustomNotifications.UPGRADE_MESSAGE) {
@@ -28,7 +32,7 @@ export default function useCreatePhoneNumberNotifications() {
                     allowHTML: true,
                     title: 'Cannot add phone number.',
                     status: NotificationStatus.Error,
-                })
+                }),
             )
             return
         }
@@ -42,9 +46,9 @@ export default function useCreatePhoneNumberNotifications() {
                 message: errors ?? '',
                 status: NotificationStatus.Error,
                 allowHTML: true,
-            })
+            }),
         )
     }
 
-    return {showCreatePhoneNumberErrorNotification}
+    return { showCreatePhoneNumberErrorNotification }
 }

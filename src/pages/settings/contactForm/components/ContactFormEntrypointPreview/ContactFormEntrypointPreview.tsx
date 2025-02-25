@@ -1,14 +1,14 @@
 import React from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {ContactForm} from 'models/contactForm/types'
-import {Integration, IntegrationType} from 'models/integration/types'
+import { ContactForm } from 'models/contactForm/types'
+import { Integration, IntegrationType } from 'models/integration/types'
 import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'
 import SelfServiceStandaloneContactFormHomePage from 'pages/automate/common/components/preview/SelfServiceStandaloneContactFormHomePage'
 import useContactFormAutomationSettings from 'pages/automate/common/hooks/useContactFormAutomationSettings'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import {getHasAutomate} from 'state/billing/selectors'
-import {getIntegrationsByType} from 'state/integrations/selectors'
+import { getHasAutomate } from 'state/billing/selectors'
+import { getIntegrationsByType } from 'state/integrations/selectors'
 
 import StandaloneContactFormPreview from '../StandaloneContactFormPreview/StandaloneContactFormPreview'
 
@@ -22,10 +22,10 @@ const ContactFormEntrypointPreview = ({
     isFormHidden,
 }: ContactFormEntrypointPreviewProps) => {
     const integrations = useAppSelector(
-        getIntegrationsByType(IntegrationType.Shopify)
+        getIntegrationsByType(IntegrationType.Shopify),
     )
     const contactFormShopIntegration = integrations?.find(
-        (integration) => integration.name === contactForm.shop_name
+        (integration) => integration.name === contactForm.shop_name,
     )
     const hasAutomate = useAppSelector(getHasAutomate)
     if (contactFormShopIntegration && hasAutomate) {
@@ -60,26 +60,26 @@ export const ContactFormWithShopIntegration = ({
     contactForm,
     isFormHidden,
     shopIntegration,
-}: ContactFormEntrypointPreviewProps & {shopIntegration: Integration}) => {
+}: ContactFormEntrypointPreviewProps & { shopIntegration: Integration }) => {
     const shopType = shopIntegration?.type || ''
     const shopName = shopIntegration?.name || ''
-    const {selfServiceConfiguration} = useSelfServiceConfiguration(
+    const { selfServiceConfiguration } = useSelfServiceConfiguration(
         shopType,
-        shopName
+        shopName,
     )
 
     let isOrderManagementEnabled = false
     let workflowsEntrypoints:
-        | {workflow_id: string; enabled: boolean}[]
+        | { workflow_id: string; enabled: boolean }[]
         | undefined
 
-    const {automationSettings} = useContactFormAutomationSettings(
-        contactForm.id
+    const { automationSettings } = useContactFormAutomationSettings(
+        contactForm.id,
     )
     if (automationSettings !== undefined) {
         isOrderManagementEnabled = automationSettings.order_management.enabled
         workflowsEntrypoints = automationSettings.workflows.map(
-            ({id, enabled}) => ({workflow_id: id, enabled})
+            ({ id, enabled }) => ({ workflow_id: id, enabled }),
         )
     }
 

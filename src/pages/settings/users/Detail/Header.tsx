@@ -1,6 +1,7 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
+
+import { Link } from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
 import PageHeader from 'pages/common/components/PageHeader'
 
@@ -9,7 +10,7 @@ type Props = {
     name: string
 }
 
-export const Header = ({isEdit, name}: Props) => (
+export const Header = ({ isEdit, name }: Props) => (
     <PageHeader
         title={
             <Breadcrumb>

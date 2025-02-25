@@ -1,15 +1,15 @@
-import {variants as variantsFixtures} from 'fixtures/abGroup'
-import {campaign} from 'fixtures/campaign'
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
-import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
+import { variants as variantsFixtures } from 'fixtures/abGroup'
+import { campaign } from 'fixtures/campaign'
+import { Campaign } from 'pages/convert/campaigns/types/Campaign'
+import { CampaignVariant } from 'pages/convert/campaigns/types/CampaignVariant'
 
-import {createVariant} from '../createVariant'
+import { createVariant } from '../createVariant'
 
 describe('createVariant', () => {
     it('create variant if list contains variant placeholder', () => {
         const [newVariantId, variants] = createVariant(
-            [{message_text: '', message_html: ''}] as CampaignVariant[],
-            campaign as Campaign
+            [{ message_text: '', message_html: '' }] as CampaignVariant[],
+            campaign as Campaign,
         )
 
         expect(newVariantId).not.toBeUndefined()
@@ -23,16 +23,16 @@ describe('createVariant', () => {
         const [newVariantId, variants] = createVariant(
             [
                 ...variantsFixtures,
-                {message_text: '', message_html: ''},
+                { message_text: '', message_html: '' },
             ] as CampaignVariant[],
-            campaign as Campaign
+            campaign as Campaign,
         )
 
         expect(newVariantId).not.toBeUndefined()
         expect(variants).toHaveLength(3)
 
         const variant = variants.find(
-            (item) => item.id === newVariantId
+            (item) => item.id === newVariantId,
         ) as CampaignVariant
         expect(variant).not.toBeUndefined()
         expect(variant.message_html).toEqual(campaign.message_html)
@@ -43,7 +43,7 @@ describe('createVariant', () => {
     it('placehoulder does not exist', () => {
         const [newVariantId, variants] = createVariant(
             [...variantsFixtures] as CampaignVariant[],
-            campaign as Campaign
+            campaign as Campaign,
         )
 
         expect(newVariantId).toBeUndefined()

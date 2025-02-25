@@ -1,6 +1,6 @@
-import {useParams} from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
-import {CONTACT_FORM_ID_PARAM} from '../constants'
+import { CONTACT_FORM_ID_PARAM } from '../constants'
 
 type ContactFormParseIdResult = {
     isValid: boolean
@@ -8,7 +8,7 @@ type ContactFormParseIdResult = {
 }
 
 export const useContactFormIdParam = (): ContactFormParseIdResult => {
-    const params = useParams<{[CONTACT_FORM_ID_PARAM]: string}>()
+    const params = useParams<{ [CONTACT_FORM_ID_PARAM]: string }>()
     const contactFormIdParamValue = params[CONTACT_FORM_ID_PARAM]
     const parsedId = parseInt(contactFormIdParamValue, 10)
 

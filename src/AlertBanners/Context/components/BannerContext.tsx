@@ -1,9 +1,9 @@
-import React, {ReactNode, useReducer} from 'react'
+import React, { ReactNode, useReducer } from 'react'
 
-import {BannersContext, BannersDispatchContext} from '../context'
-import {bannersReducer} from '../reducer'
+import { BannersContext, BannersDispatchContext } from '../context'
+import { bannersReducer } from '../reducer'
 
-export function BannersContextProvider({children}: {children: ReactNode}) {
+export function BannersContextProvider({ children }: { children: ReactNode }) {
     const [banners, bannersDispatch] = useReducer(bannersReducer, [])
 
     return (

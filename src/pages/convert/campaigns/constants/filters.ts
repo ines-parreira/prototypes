@@ -1,4 +1,4 @@
-import {QuickFilterType} from '../types/QuickFilter'
+import { QuickFilterType } from '../types/QuickFilter'
 
 export const CONTAINS_PRODUCT_CARDS = {
     id: 'contains-product-cards',

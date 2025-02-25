@@ -1,12 +1,13 @@
-import {screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
 
-import {useGetStoreApps} from 'models/workflows/queries'
+import { screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+
+import { useGetStoreApps } from 'models/workflows/queries'
 import useAddStoreApp from 'pages/aiAgent/actions/hooks/useAddStoreApp'
-import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
-import {mockStore} from 'utils/testing'
+import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
+import { mockStore } from 'utils/testing'
 
 import StoreAppsContext from '../StoreAppsContext'
 import StoreAppsProvider from '../StoreAppsProvider'
@@ -55,7 +56,7 @@ describe('<StoreAppsProvider />', () => {
                         }}
                     </StoreAppsContext.Consumer>
                 </StoreAppsProvider>
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('Recharge integration: 1')).toBeInTheDocument()
@@ -96,7 +97,7 @@ describe('<StoreAppsProvider />', () => {
                         }}
                     </StoreAppsContext.Consumer>
                 </StoreAppsProvider>
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('Recharge integration: 1')).toBeInTheDocument()
@@ -145,7 +146,7 @@ describe('<StoreAppsProvider />', () => {
                         }}
                     </StoreAppsContext.Consumer>
                 </StoreAppsProvider>
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('Recharge integration: 1')).toBeInTheDocument()

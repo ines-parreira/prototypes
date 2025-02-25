@@ -36,8 +36,8 @@ describe('Services common utils', () => {
         Object.defineProperty(newException, 'name', {
             value: name || nameFromCode,
         })
-        Object.defineProperty(newException, 'code', {value: code})
-        Object.defineProperty(newException, 'message', {value: message})
+        Object.defineProperty(newException, 'code', { value: code })
+        Object.defineProperty(newException, 'message', { value: message })
 
         return newException
     }
@@ -99,22 +99,24 @@ describe('Services common utils', () => {
         ])(
             'should return true when localStorage has no more space available with code %i and name %s exception',
             (code, name) => {
-                Object.defineProperty(window.localStorage, 'length', {value: 1})
+                Object.defineProperty(window.localStorage, 'length', {
+                    value: 1,
+                })
                 jest.spyOn(Storage.prototype, 'setItem').mockImplementationOnce(
                     () => {
                         throw DOMExceptionMock(code, name)
-                    }
+                    },
                 )
 
                 expect(utils.isLocalStorageAvailable()).toBe(true)
-            }
+            },
         )
 
         it('should return false when localStorage is not available because of an exception other than quota exceeded ones', () => {
             jest.spyOn(Storage.prototype, 'setItem').mockImplementationOnce(
                 () => {
                     throw new DOMException()
-                }
+                },
             )
             expect(utils.isLocalStorageAvailable()).toBe(false)
         })
@@ -142,7 +144,7 @@ describe('Services common utils', () => {
                 expect(() => {
                     utils.tryLocalStorage(fn)
                 }).not.toThrow()
-            }
+            },
         )
 
         it('should throw an unhandled exception', () => {

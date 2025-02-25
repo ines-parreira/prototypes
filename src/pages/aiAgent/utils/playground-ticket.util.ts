@@ -1,4 +1,4 @@
-import {getAiAgentCustomer} from 'models/aiAgentPlayground/resources'
+import { getAiAgentCustomer } from 'models/aiAgentPlayground/resources'
 import {
     AiAgentInput,
     CreatePlaygroundBody,
@@ -6,7 +6,7 @@ import {
     MockTicketMessage,
 } from 'models/aiAgentPlayground/types'
 
-import {PlaygroundChannels} from '../components/PlaygroundChat/PlaygroundChat.types'
+import { PlaygroundChannels } from '../components/PlaygroundChat/PlaygroundChat.types'
 import {
     CustomerHttpIntegrationDataMock,
     DEFAULT_PLAYGROUND_CUSTOMER,
@@ -137,8 +137,8 @@ export const createMockHttpIntegrationPayload = ({
                     from_agent: message.fromAgent,
                     channel,
                     meta: message.meta,
-                })
-            )
+                }),
+            ),
         ),
         subject,
         tags: '[]',
@@ -146,7 +146,7 @@ export const createMockHttpIntegrationPayload = ({
 })
 
 export const getTicketCustomer = async (
-    body: GetPlaygroundCustomerRequest
+    body: GetPlaygroundCustomerRequest,
 ): Promise<TicketCustomer> => {
     if (body.customer_email === DEFAULT_PLAYGROUND_CUSTOMER.email) {
         return {
@@ -159,7 +159,7 @@ export const getTicketCustomer = async (
         }
     }
 
-    const {data} = await getAiAgentCustomer(body)
+    const { data } = await getAiAgentCustomer(body)
     const customerData = data.ticket.customer
 
     return {

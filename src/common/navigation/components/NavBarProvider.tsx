@@ -1,16 +1,15 @@
-import React, {ReactNode, useMemo, useState, useCallback, useRef} from 'react'
+import React, { ReactNode, useCallback, useMemo, useRef, useState } from 'react'
 
 import useLocalStorage from 'hooks/useLocalStorage'
+import { useTimeout } from 'hooks/useTimeout'
 
-import {useTimeout} from 'hooks/useTimeout'
-
-import {NavBarContext, NavBarDisplayMode} from '../hooks/useNavBar/context'
+import { NavBarContext, NavBarDisplayMode } from '../hooks/useNavBar/context'
 
 export const NAVBAR_DISPLAY_KEY = 'navbar-display'
 
 const FREEZE_TIMEOUT = 750
 
-export function NavBarProvider({children}: {children: ReactNode}) {
+export function NavBarProvider({ children }: { children: ReactNode }) {
     const [isNavHovered, setIsNavHovered] = useState(false)
     const [navBarDisplay, setNavBarDisplay] = useLocalStorage<
         ValueOf<typeof NavBarDisplayMode>
@@ -84,7 +83,7 @@ export function NavBarProvider({children}: {children: ReactNode}) {
             onNavLeave,
             onOverlayHover,
             onMenuToggle,
-        ]
+        ],
     )
 
     return (

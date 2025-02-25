@@ -1,12 +1,13 @@
-import {Label, SelectFieldOption} from '@gorgias/merchant-ui-kit'
-import React, {useRef} from 'react'
+import React, { useRef } from 'react'
+
+import { Label, SelectFieldOption } from '@gorgias/merchant-ui-kit'
 
 import CheckBox from 'pages/common/forms/CheckBox'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import TextInput from 'pages/common/forms/input/TextInput'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 
-import {MerchantInput} from '../types'
+import { MerchantInput } from '../types'
 
 import css from './ActionFormMerchantInputValue.less'
 
@@ -16,9 +17,9 @@ type Props = {
     onChange: (input: string | number | boolean) => void
 }
 
-const ActionFormMerchantInputValue = ({input, onChange, value}: Props) => {
+const ActionFormMerchantInputValue = ({ input, onChange, value }: Props) => {
     const ref = useRef<HTMLDivElement>(null)
-    const {name, description, data_type} = input
+    const { name, description, data_type } = input
     const options = 'options' in input ? input.options : undefined
     return (
         <div ref={ref} className={css.container}>

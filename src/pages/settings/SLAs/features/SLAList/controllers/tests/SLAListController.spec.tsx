@@ -1,9 +1,11 @@
-import {useUpdateSlaPolicy} from '@gorgias/api-queries'
-import {QueryClientProvider} from '@tanstack/react-query'
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { render } from '@testing-library/react'
+
+import { useUpdateSlaPolicy } from '@gorgias/api-queries'
+
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import SLAListController from '../SLAListController'
 import useGetSLAPolicies from '../useGetSLAPolicies'
@@ -39,10 +41,10 @@ describe('<SLAListController />', () => {
             isLoading: true,
         }))
 
-        const {getByText} = render(
+        const { getByText } = render(
             <QueryClientProvider client={queryClient}>
                 <SLAListController />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(getByText('Loader')).toBeInTheDocument()
@@ -54,10 +56,10 @@ describe('<SLAListController />', () => {
             isLoading: false,
         }))
 
-        const {getByText} = render(
+        const { getByText } = render(
             <QueryClientProvider client={queryClient}>
                 <SLAListController />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(getByText('LandingPage')).toBeInTheDocument()
@@ -69,10 +71,10 @@ describe('<SLAListController />', () => {
             isLoading: false,
         }))
 
-        const {getByText} = render(
+        const { getByText } = render(
             <QueryClientProvider client={queryClient}>
                 <SLAListController />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(getByText('SLAListView')).toBeInTheDocument()

@@ -1,9 +1,9 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { useState } from 'react'
+
 import classNames from 'classnames'
-import {fromJS} from 'immutable'
-import React, {useState} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {Link, useParams} from 'react-router-dom'
+import { fromJS } from 'immutable'
+import { connect, ConnectedProps } from 'react-redux'
+import { Link, useParams } from 'react-router-dom'
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -11,31 +11,34 @@ import {
     PopoverBody,
     Table,
 } from 'reactstrap'
-import {bindActionCreators} from 'redux'
+import { bindActionCreators } from 'redux'
 
-import {useAppNode} from 'appNode'
-import {DateAndTimeFormatting} from 'constants/datetime'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { useAppNode } from 'appNode'
+import { DateAndTimeFormatting } from 'constants/datetime'
 import useEffectOnce from 'hooks/useEffectOnce'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import {IntegrationType} from 'models/integration/constants'
-import {ZendeskIntegration} from 'models/integration/types'
+import { IntegrationType } from 'models/integration/constants'
+import { ZendeskIntegration } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import settingsCss from 'pages/settings/settings.less'
-import {getTimezone} from 'state/currentUser/selectors'
+import { getTimezone } from 'state/currentUser/selectors'
 import {
     fetchIntegration,
     updateOrCreateIntegration,
 } from 'state/integrations/actions'
-import {getIntegrationsByType} from 'state/integrations/selectors'
-import {RootState, StoreDispatch} from 'state/types'
+import { getIntegrationsByType } from 'state/integrations/selectors'
+import { RootState, StoreDispatch } from 'state/types'
 
 import EditCredentialsForm from './EditCredentialsForm'
 import ImportStatusAlert from './ImportStatusAlert'
+import { ImportStatus } from './types'
+import { getImportCompletionDate } from './utils'
+
 import css from './ImportZendeskDetail.less'
-import {ImportStatus} from './types'
-import {getImportCompletionDate} from './utils'
 
 export const ImportZendeskDetail = ({
     fetchIntegration,
@@ -45,11 +48,11 @@ export const ImportZendeskDetail = ({
     timezone,
 }: ConnectedProps<typeof connector>) => {
     const [isPopoverOpened, setIsPopoverOpened] = useState(false)
-    const {integrationId} = useParams<{integrationId: string}>()
+    const { integrationId } = useParams<{ integrationId: string }>()
     const appNode = useAppNode()
 
     const datetimeFormat = useGetDateAndTimeFormat(
-        DateAndTimeFormatting.CompactDateWithTime
+        DateAndTimeFormatting.CompactDateWithTime,
     )
 
     useEffectOnce(() => {
@@ -57,7 +60,7 @@ export const ImportZendeskDetail = ({
     })
 
     const integration = integrations.find(
-        (integration) => integration.id === parseInt(integrationId, 10)
+        (integration) => integration.id === parseInt(integrationId, 10),
     )
 
     if (loading || integration === undefined) {
@@ -90,7 +93,7 @@ export const ImportZendeskDetail = ({
     const handleSyncClick = () => {
         const integrationData = fromJS({
             id: integration.id,
-            meta: {continuous_import_enabled: !synchronizationEnabled},
+            meta: { continuous_import_enabled: !synchronizationEnabled },
         })
 
         updateOrCreateIntegration(integrationData)
@@ -219,7 +222,7 @@ export const ImportZendeskDetail = ({
                                     <tr>
                                         <td>
                                             {displayStatisticsValue(
-                                                ticketsCount
+                                                ticketsCount,
                                             )}
                                             {showImportedTicketsProgress && (
                                                 <>
@@ -232,7 +235,7 @@ export const ImportZendeskDetail = ({
                                                                 'material-icons-outlined',
                                                                 'pl-2',
                                                                 css.icon,
-                                                                css.success
+                                                                css.success,
                                                             )}
                                                         >
                                                             check_circle
@@ -244,19 +247,19 @@ export const ImportZendeskDetail = ({
                                         <td>
                                             {displayStatisticsValue(
                                                 integrationMeta?.sync_macros
-                                                    ?.count || 0
+                                                    ?.count || 0,
                                             )}
                                         </td>
                                         <td>
                                             {displayStatisticsValue(
                                                 integrationMeta?.sync_users
-                                                    ?.customers_count || 0
+                                                    ?.customers_count || 0,
                                             )}
                                         </td>
                                         <td>
                                             {displayStatisticsValue(
                                                 integrationMeta?.sync_users
-                                                    ?.users_count || 0
+                                                    ?.users_count || 0,
                                             )}
                                         </td>
                                     </tr>
@@ -266,7 +269,7 @@ export const ImportZendeskDetail = ({
                                 {getImportCompletionDate(
                                     integration,
                                     datetimeFormat,
-                                    timezone
+                                    timezone,
                                 )}
                             </span>
                         </div>
@@ -291,7 +294,7 @@ export const ImportZendeskDetail = ({
 
 const mapStateToProps = (state: RootState) => ({
     integrations: getIntegrationsByType<ZendeskIntegration>(
-        IntegrationType.Zendesk
+        IntegrationType.Zendesk,
     )(state),
     loading: state.integrations.getIn(['state', 'loading', 'integration']),
     timezone: getTimezone(state),
@@ -303,7 +306,7 @@ const mapDispatchToProps = (dispatch: StoreDispatch) =>
             fetchIntegration,
             updateOrCreateIntegration,
         },
-        dispatch
+        dispatch,
     )
 
 const connector = connect(mapStateToProps, mapDispatchToProps)

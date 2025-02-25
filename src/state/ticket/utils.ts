@@ -1,31 +1,30 @@
-import {fromJS, Map, List} from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 import _isArray from 'lodash/isArray'
 import _isEqual from 'lodash/isEqual'
 import _pick from 'lodash/pick'
 
-import {appQueryClient} from 'api/queryClient'
-import {humanize} from 'business/format'
+import { appQueryClient } from 'api/queryClient'
+import { humanize } from 'business/format'
 import {
-    TicketVia,
-    TicketMessageSourceType,
     TicketChannel,
+    TicketMessageSourceType,
+    TicketVia,
 } from 'business/types/ticket'
-import {isImmutable, toImmutable} from 'common/utils'
-import {MacroActionName} from 'models/macroAction/types'
+import { isImmutable, toImmutable } from 'common/utils'
+import { MacroActionName } from 'models/macroAction/types'
 import {
     isGorgiasContactFormTicketMeta,
     isTicketMessageSourceType,
 } from 'models/ticket/predicates'
-import {TicketMessage} from 'models/ticket/types'
-import {UseListVoiceCalls, voiceCallsKeys} from 'models/voiceCall/queries'
-import {formatPhoneNumberInternational} from 'pages/phoneNumbers/utils'
-
-import {getPersonLabelFromSource} from 'pages/tickets/common/utils'
-import {ChannelIdentifier, ChannelLike, toChannel} from 'services/channels'
-import {tryLocalStorage} from 'services/common/utils'
-import {AccountSettingDefaultIntegration} from 'state/currentAccount/types'
+import { TicketMessage } from 'models/ticket/types'
+import { UseListVoiceCalls, voiceCallsKeys } from 'models/voiceCall/queries'
+import { formatPhoneNumberInternational } from 'pages/phoneNumbers/utils'
+import { getPersonLabelFromSource } from 'pages/tickets/common/utils'
+import { ChannelIdentifier, ChannelLike, toChannel } from 'services/channels'
+import { tryLocalStorage } from 'services/common/utils'
+import { AccountSettingDefaultIntegration } from 'state/currentAccount/types'
 import * as responseUtils from 'state/newMessage/responseUtils'
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
 import {
     getValuePropFromSourceType,
     isForwardedMessage,
@@ -36,10 +35,10 @@ import {
     responseSourceType,
     sourceTypeToChannel,
 } from 'tickets/common/utils'
-import {generateTicketMessagesId, getActionTemplate} from 'utils'
+import { generateTicketMessagesId, getActionTemplate } from 'utils'
 
-import {EMPTY_SENDER, TICKET_CHANNEL_NAMES} from './constants'
-import {getProperty} from './selectors'
+import { EMPTY_SENDER, TICKET_CHANNEL_NAMES } from './constants'
+import { getProperty } from './selectors'
 
 export type Receiver = {
     name: string | null
@@ -70,7 +69,7 @@ export type ReceiversValue = {
  */
 export function getLastSameSourceTypeMessage(
     messages: List<any>,
-    sourceType: string
+    sourceType: string,
 ) {
     let sourceTypesToSearch = [sourceType]
 
@@ -95,7 +94,7 @@ export function getLastSameSourceTypeMessage(
     const msg = orderedMessages(messages)
         .filter((m) => !isForwardedMessage(m))
         .filter((m: Map<any, any>) =>
-            sourceTypesToSearch.includes(m.getIn(['source', 'type'], ''))
+            sourceTypesToSearch.includes(m.getIn(['source', 'type'], '')),
         )
         .last() as Map<any, any>
 
@@ -106,7 +105,7 @@ export function getLastSameSourceTypeMessage(
             .filter(
                 (m: Map<any, any>) =>
                     m.getIn(['source', 'type']) ===
-                    TicketMessageSourceType.FacebookPost
+                    TicketMessageSourceType.FacebookPost,
             )
             .last() as Map<any, any>
     } else if (
@@ -117,7 +116,7 @@ export function getLastSameSourceTypeMessage(
             .filter(
                 (m: Map<any, any>) =>
                     m.getIn(['source', 'type']) ===
-                    TicketMessageSourceType.FacebookMentionPost
+                    TicketMessageSourceType.FacebookMentionPost,
             )
             .last() as Map<any, any>
     } else if (
@@ -128,7 +127,7 @@ export function getLastSameSourceTypeMessage(
             .filter(
                 (m: Map<any, any>) =>
                     m.getIn(['source', 'type']) ===
-                    TicketMessageSourceType.FacebookReview
+                    TicketMessageSourceType.FacebookReview,
             )
             .last() as Map<any, any>
     } else if (
@@ -139,7 +138,7 @@ export function getLastSameSourceTypeMessage(
             .filter(
                 (m: Map<any, any>) =>
                     m.getIn(['source', 'type']) ===
-                    TicketMessageSourceType.InstagramMentionMedia
+                    TicketMessageSourceType.InstagramMentionMedia,
             )
             .last() as Map<any, any>
     } else if (
@@ -150,7 +149,7 @@ export function getLastSameSourceTypeMessage(
             .filter(
                 (m: Map<any, any>) =>
                     m.getIn(['source', 'type']) ===
-                    TicketMessageSourceType.YotpoReview
+                    TicketMessageSourceType.YotpoReview,
             )
             .last() as Map<any, any>
     } else if (
@@ -161,7 +160,7 @@ export function getLastSameSourceTypeMessage(
             .filter(
                 (m: Map<any, any>) =>
                     m.getIn(['source', 'type']) ===
-                    TicketMessageSourceType.YotpoReview
+                    TicketMessageSourceType.YotpoReview,
             )
             .last() as Map<any, any>
     }
@@ -176,14 +175,14 @@ export function getLastSameSourceTypeMessage(
 export function getSourceTypeOfResponse(
     messages: List<any> | any[],
     via: TicketVia,
-    ticketId: string | number
+    ticketId: string | number,
 ) {
     const immutableMessages: List<any> = isImmutable(messages)
         ? messages
         : toImmutable(messages)
     if (ticketId) {
         const cachedSourceType = responseUtils.getSourceTypeCache(
-            typeof ticketId === 'string' ? ticketId : ticketId.toString()
+            typeof ticketId === 'string' ? ticketId : ticketId.toString(),
         )
         if (cachedSourceType) {
             return cachedSourceType
@@ -192,14 +191,14 @@ export function getSourceTypeOfResponse(
     return responseSourceType(
         immutableMessages.toJS(),
         via,
-        typeof ticketId === 'string' ? parseInt(ticketId) : ticketId
+        typeof ticketId === 'string' ? parseInt(ticketId) : ticketId,
     )
 }
 
 export function isSupportAddress(
     addressToTest: string,
     supportAddresses: string[] = [],
-    sourceType: TicketMessageSourceType = TicketMessageSourceType.Email
+    sourceType: TicketMessageSourceType = TicketMessageSourceType.Email,
 ): boolean {
     if (!addressToTest) {
         return false
@@ -231,7 +230,7 @@ export function isSupportAddress(
 export function cleanReceivers(
     receiversList: List<any>,
     supportAddresses: List<any>,
-    sourceType: TicketMessageSourceType
+    sourceType: TicketMessageSourceType,
 ): Receiver[] {
     const receivers = receiversList.toJS() ?? []
 
@@ -249,7 +248,7 @@ export function cleanReceivers(
             return !isSupportAddress(
                 receiver.address,
                 supportAddresses.toJS(),
-                sourceType
+                sourceType,
             )
         })
 }
@@ -260,34 +259,34 @@ export function cleanReceivers(
 export function guessReceiversFromTicket(
     ticket: Map<any, any>,
     newMessageSourceType: TicketMessageSourceType,
-    channels: List<any> = fromJS([])
+    channels: List<any> = fromJS([]),
 ) {
     let toReceivers: List<any> = fromJS([])
     let ccReceivers = fromJS([])
     const messages = ticket.get('messages', fromJS([]))
 
     const supportAddresses = channels.map(
-        (channel: Map<any, any>) => channel.get('address') as string
+        (channel: Map<any, any>) => channel.get('address') as string,
     ) as List<any>
     const lastMessage = getLastSameSourceTypeMessage(
         messages,
-        newMessageSourceType
+        newMessageSourceType,
     )
 
     if (lastMessage) {
         if (lastMessage.get('from_agent')) {
             toReceivers = toReceivers.concat(
-                lastMessage.getIn(['source', 'to'])
+                lastMessage.getIn(['source', 'to']),
             ) as List<any>
         } else {
             toReceivers = toReceivers.push(
-                lastMessage.getIn(['source', 'from'])
+                lastMessage.getIn(['source', 'from']),
             )
 
             // Related issue: https://github.com/gorgias/gorgias/issues/4620
             if (supportAddresses.size) {
                 toReceivers = toReceivers.concat(
-                    lastMessage.getIn(['source', 'to'])
+                    lastMessage.getIn(['source', 'to']),
                 ) as List<any>
             }
         }
@@ -301,7 +300,7 @@ export function guessReceiversFromTicket(
     const cc: Receiver[] = cleanReceivers(
         ccReceivers,
         supportAddresses,
-        newMessageSourceType
+        newMessageSourceType,
     )
 
     // To avoid setting an empty `cc` field in every source
@@ -322,7 +321,7 @@ export function guessReceiversFromTicket(
             )
                 .filter(
                     (channel: Map<any, any>) =>
-                        channel.get('type') === newMessageChannel
+                        channel.get('type') === newMessageChannel,
                 ) // keep only matching channels
                 .sortBy((channel: Map<any, any>) => !channel.get('preferred')) // preferred channel is now first of the list
                 .first() as Map<any, any> | undefined
@@ -333,14 +332,16 @@ export function guessReceiversFromTicket(
                         name: ticket.getIn(['customer', 'name']) || '',
                         address:
                             customerChannel.get(
-                                getValuePropFromSourceType(newMessageSourceType)
+                                getValuePropFromSourceType(
+                                    newMessageSourceType,
+                                ),
                             ) || '',
                     },
                 ])
                 ret.to = cleanReceivers(
                     receivers,
                     supportAddresses,
-                    newMessageSourceType
+                    newMessageSourceType,
                 )
             }
         }
@@ -354,7 +355,7 @@ export function guessReceiversFromTicket(
  */
 export function receiversValueFromState(
     options: Receivers,
-    sourceType: TicketMessageSourceType
+    sourceType: TicketMessageSourceType,
 ) {
     return Object.entries(options).reduce((acc, [key, receivers]) => {
         acc[key as keyof ReceiversValue] = receivers.map((receiver) => ({
@@ -372,7 +373,7 @@ export function receiversValueFromState(
  */
 export function receiversStateFromValue(
     value: ReceiversValue,
-    sourceType: TicketMessageSourceType
+    sourceType: TicketMessageSourceType,
 ): Record<never, unknown> | Receivers {
     const valueProp = getValuePropFromSourceType(sourceType)
 
@@ -384,7 +385,7 @@ export function receiversStateFromValue(
 
     return Object.entries(newValue).reduce((acc, [key, receivers]) => {
         acc[key as keyof Receivers] = receivers.map((receiver) => ({
-            ...(receiver.id ? {id: receiver.id} : {}),
+            ...(receiver.id ? { id: receiver.id } : {}),
             name: receiver.name || '',
             address: receiver.value || '',
         }))
@@ -397,7 +398,7 @@ export function receiversStateFromValue(
  */
 export function buildPartialUpdateFromAction(
     actionNames: string | string[],
-    state: RootState
+    state: RootState,
 ) {
     if (!state) {
         return {}
@@ -416,8 +417,8 @@ export function buildPartialUpdateFromAction(
                 keys.forEach(
                     (key, idx) =>
                         (result[key] = getProperty((values as string[])[idx])(
-                            state
-                        ))
+                            state,
+                        )),
                 )
             } else if (typeof keys === 'string') {
                 result[keys] = getProperty(values as string)(state)
@@ -432,7 +433,7 @@ export function buildPartialUpdateFromAction(
  */
 export function getPreferredChannel(
     channelType: TicketMessageSourceType | TicketChannel,
-    channels: List<any>
+    channels: List<any>,
 ) {
     // get the preferred channel
     let chan: Map<any, any> | undefined = channels.find(
@@ -441,13 +442,13 @@ export function getPreferredChannel(
                 channel.get('type') === channelType &&
                 (channel.get('preferred', false) as boolean)
             )
-        }
+        },
     )
 
     // get the first channel available
     if (!chan) {
         chan = channels.find(
-            (channel: Map<any, any>) => channel.get('type') === channelType
+            (channel: Map<any, any>) => channel.get('type') === channelType,
         )
     }
 
@@ -460,7 +461,7 @@ export const persistLastSenderChannel = (channel: Map<any, any>) => {
     tryLocalStorage(() => {
         window.localStorage.setItem(
             LAST_SENDER_CHANNEL_KEY,
-            JSON.stringify(channel.toJS())
+            JSON.stringify(channel.toJS()),
         )
     })
 }
@@ -468,7 +469,7 @@ export const persistLastSenderChannel = (channel: Map<any, any>) => {
 export const getLastSenderChannel = () => {
     if (window.localStorage) {
         const lastSenderChannel = window.localStorage.getItem(
-            LAST_SENDER_CHANNEL_KEY
+            LAST_SENDER_CHANNEL_KEY,
         )
         if (lastSenderChannel) {
             try {
@@ -476,7 +477,7 @@ export const getLastSenderChannel = () => {
             } catch (error) {
                 console.error(
                     `Failed to decode window.localStorage."${LAST_SENDER_CHANNEL_KEY}"`,
-                    error
+                    error,
                 )
             }
         }
@@ -486,7 +487,7 @@ export const getLastSenderChannel = () => {
 
 export function getOutboundCallFrom(
     ticket: Map<any, any>,
-    channels: List<any>
+    channels: List<any>,
 ) {
     if (!channels.size) {
         return fromJS({
@@ -497,7 +498,7 @@ export function getOutboundCallFrom(
     }
 
     const voiceCalls = appQueryClient.getQueryData<UseListVoiceCalls>(
-        voiceCallsKeys.list({ticket_id: ticket.get('id')})
+        voiceCallsKeys.list({ ticket_id: ticket.get('id') }),
     )?.data
 
     if (!voiceCalls?.length) {
@@ -508,14 +509,14 @@ export function getOutboundCallFrom(
 
     const channel = channels.find(
         (channel: Map<any, any>) =>
-            channel.get('id') === lastVoiceCallIntegrationId
+            channel.get('id') === lastVoiceCallIntegrationId,
     ) as Map<any, any> | undefined
 
     return channel || (channels.get(0) as Map<any, any>)
 }
 
 const getContactFormTicketMessageSender = (
-    ticket: Map<any, any>
+    ticket: Map<any, any>,
 ): Map<any, any> | null => {
     const ticketMessages = ticket.get('messages') as List<any>
     const firstContactFormMessage = ticketMessages.find(
@@ -530,7 +531,7 @@ const getContactFormTicketMessageSender = (
             return (
                 isHelpCenterContactFormSource || isStandaloneContactFormSource
             )
-        }
+        },
     ) as Map<any, any> | undefined
 
     /**
@@ -589,7 +590,7 @@ export function getNewMessageSender(
     newMessageSourceType: TicketMessageSourceType,
     channels: List<any>,
     integrations: Map<any, any>,
-    defaultSettings?: AccountSettingDefaultIntegration | undefined
+    defaultSettings?: AccountSettingDefaultIntegration | undefined,
 ) {
     if (newMessageSourceType === 'internal-note') {
         return fromJS(EMPTY_SENDER) as Map<any, any>
@@ -613,7 +614,7 @@ export function getNewMessageSender(
             const foundIntegration = integrationList.find(
                 (integration: Map<any, any>) =>
                     integration.getIn(['meta', 'address']) ===
-                    contactFormTicketMessageSender.get('address')
+                    contactFormTicketMessageSender.get('address'),
             ) as Map<any, any> | undefined
 
             if (foundIntegration) return contactFormTicketMessageSender
@@ -632,14 +633,14 @@ export function getNewMessageSender(
         defaultChannel ??
         getPreferredChannel(
             sourceTypeToChannel(newMessageSourceType),
-            channels
+            channels,
         ) ??
         fromJS({})
 
     const previousMessages = (ticket.get('messages') as List<any>).filter(
         (message: Map<any, any>) => {
             return !message.get('failed_datetime', null)
-        }
+        },
     )
 
     const lastMessage: Map<any, any> | undefined = (
@@ -740,7 +741,7 @@ export function getNewMessageSender(
             lastSender &&
             channels.find(
                 (c: Map<any, any>) =>
-                    c.get('address') === lastSender.get('address')
+                    c.get('address') === lastSender.get('address'),
             )
         ) {
             return lastSender
@@ -759,7 +760,7 @@ export function getNewMessageSender(
         const integration =
             ((integrations.get('integrations') as List<any>).find(
                 (integration: Map<any, any>) =>
-                    integration.get('id') === lastMessage.get('integration_id')
+                    integration.get('id') === lastMessage.get('integration_id'),
             ) as Map<any, any>) || fromJS({})
 
         const linkedEmailIntegration = integration.getIn([
@@ -775,7 +776,7 @@ export function getNewMessageSender(
         return (
             (channels.find(
                 (channel: Map<any, any>) =>
-                    channel.get('id') === linkedEmailIntegration
+                    channel.get('id') === linkedEmailIntegration,
             ) as Map<any, any>) || preferredChannel
         )
     }
@@ -801,7 +802,7 @@ export function getNewMessageSender(
 
         return (
             (channels as List<Map<any, any>>).find(
-                (channel) => !!channel && channel.get('address') === address
+                (channel) => !!channel && channel.get('address') === address,
             ) || preferredChannel
         )
     }
@@ -833,7 +834,7 @@ export function getNewMessageSender(
  */
 export function getPendingMessageIndex(
     pendingMessages: TicketMessage[],
-    message: TicketMessage
+    message: TicketMessage,
 ) {
     let index = -1
 
@@ -864,7 +865,7 @@ export function getPendingMessageIndex(
 
 export const mergeTagActions = (
     oldAction: Map<any, any>,
-    newAction: Map<any, any>
+    newAction: Map<any, any>,
 ) => {
     const oldTags = oldAction.getIn(['arguments', 'tags']) as string
     const newTags = newAction.getIn(['arguments', 'tags']) as string
@@ -873,20 +874,20 @@ export const mergeTagActions = (
 
 export const mergeInternalNoteActions = (
     oldAction: Map<any, any>,
-    newAction: Map<any, any>
+    newAction: Map<any, any>,
 ) => {
     let args = newAction.get('arguments') as Map<any, any>
     args = args.set(
         'body_text',
         (args.get('body_text') as string) +
             '\n' +
-            (oldAction.getIn(['arguments', 'body_text']) as string)
+            (oldAction.getIn(['arguments', 'body_text']) as string),
     )
     return args.set(
         'body_html',
         (args.get('body_html') as string) +
             '<br/>' +
-            (oldAction.getIn(['arguments', 'body_html']) as string)
+            (oldAction.getIn(['arguments', 'body_html']) as string),
     )
 }
 
@@ -901,7 +902,7 @@ export const mergeActions = (oldActions: List<any>, newActions: List<any>) => {
     oldActions.forEach((oldAction: Map<any, any>) => {
         const name = oldAction.get('name')
         const macroActionIndex = newActions.findIndex(
-            (macroAction: Map<any, any>) => macroAction.get('name') === name
+            (macroAction: Map<any, any>) => macroAction.get('name') === name,
         )
         if (macroActionIndex !== -1) {
             const newAction = actions.get(macroActionIndex)
@@ -909,13 +910,13 @@ export const mergeActions = (oldActions: List<any>, newActions: List<any>) => {
                 case MacroActionName.AddTags: {
                     actions = actions.setIn(
                         [macroActionIndex, 'arguments', 'tags'],
-                        mergeTagActions(oldAction, newAction)
+                        mergeTagActions(oldAction, newAction),
                     )
                     break
                 }
                 case MacroActionName.Http: {
                     const hookActions = actions.filter(
-                        (action: Map<any, any>) => action.get('name') === name
+                        (action: Map<any, any>) => action.get('name') === name,
                     )
 
                     if (!hookActions.includes(oldAction))
@@ -925,7 +926,7 @@ export const mergeActions = (oldActions: List<any>, newActions: List<any>) => {
                 case MacroActionName.AddInternalNote: {
                     actions = actions.setIn(
                         [macroActionIndex, 'arguments'],
-                        mergeInternalNoteActions(oldAction, newAction)
+                        mergeInternalNoteActions(oldAction, newAction),
                     )
                     break
                 }
@@ -952,7 +953,7 @@ export function isReceiver(receiver: unknown): receiver is Receiver {
 
 export function humanizeAddress(
     address: string,
-    channel?: Maybe<ChannelLike>
+    channel?: Maybe<ChannelLike>,
 ): string {
     if (
         channel &&
@@ -998,7 +999,7 @@ export function humanizeChannel(channelName: ChannelIdentifier): string {
 export function buildFirstTicketMessage(
     ticketMessage: TicketMessage,
     ticketMessagesId: string,
-    ticketMeta: Map<any, any> | null
+    ticketMeta: Map<any, any> | null,
 ): TicketMessage {
     // Only modify the first ticket message of the first ticket messages group, identifiable via the id = "message-1"
     if (ticketMessagesId !== generateTicketMessagesId(1) || !ticketMeta)

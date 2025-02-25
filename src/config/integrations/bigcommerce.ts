@@ -1,21 +1,21 @@
-import {Map} from 'immutable'
+import { Map } from 'immutable'
 
-import {getTrackingLink} from 'common/tracking'
-import {DATE_VARIABLE_TOOLTIP_TEXT} from 'config/integrations/constants'
+import { getTrackingLink } from 'common/tracking'
+import { DATE_VARIABLE_TOOLTIP_TEXT } from 'config/integrations/constants'
 import {
     DateAndTimeFormatting,
     DateTimeFormatMapper,
     DateTimeFormatType,
 } from 'constants/datetime'
-import {IntegrationType} from 'models/integration/types'
-import {momentToLDMLFormat} from 'pages/common/utils/template'
-import {getDateAndTimeFormatter} from 'state/currentUser/selectors'
-import {StoreState} from 'state/types'
-import {formatDatetime} from 'utils'
+import { IntegrationType } from 'models/integration/types'
+import { momentToLDMLFormat } from 'pages/common/utils/template'
+import { getDateAndTimeFormatter } from 'state/currentUser/selectors'
+import { StoreState } from 'state/types'
+import { formatDatetime } from 'utils'
 
 function getLastOrderTrackingURL(
     context: Map<any, any>,
-    integrationId: number
+    integrationId: number,
 ) {
     const lastOrderShipments = context.getIn([
         'ticket',
@@ -57,13 +57,13 @@ export const MACRO_VARIABLES = {
             value: `{{ticket.customer.integrations.bigcommerce.orders[0].date_created|datetime_format("${momentToLDMLFormat(
                 DateTimeFormatMapper[
                     DateTimeFormatType.LONG_DATE_WITH_YEAR_EN_US
-                ].toString()
+                ].toString(),
             )}")}}`,
             tooltip: DATE_VARIABLE_TOOLTIP_TEXT,
             replace: (
                 context: Map<any, any>,
                 integrationId: number,
-                currentUser: Map<any, any>
+                currentUser: Map<any, any>,
             ) => {
                 const lastOrder = context.getIn([
                     'ticket',
@@ -83,8 +83,8 @@ export const MACRO_VARIABLES = {
                     getDateAndTimeFormatter({
                         currentUser: currentUser,
                     } as unknown as StoreState)(
-                        DateAndTimeFormatting.LongDateWithYear
-                    )
+                        DateAndTimeFormatting.LongDateWithYear,
+                    ),
                 )
             },
         },
@@ -106,13 +106,13 @@ export const MACRO_VARIABLES = {
             value: `{{ticket.customer.integrations.bigcommerce.orders[0].date_shipped|datetime_format("${momentToLDMLFormat(
                 DateTimeFormatMapper[
                     DateTimeFormatType.LONG_DATE_WITH_YEAR_EN_US
-                ].toString()
+                ].toString(),
             )}")}}`,
             tooltip: DATE_VARIABLE_TOOLTIP_TEXT,
             replace: (
                 context: Map<any, any>,
                 integrationId: number,
-                currentUser: Map<any, any>
+                currentUser: Map<any, any>,
             ) => {
                 const lastOrder = context.getIn([
                     'ticket',
@@ -132,8 +132,8 @@ export const MACRO_VARIABLES = {
                     getDateAndTimeFormatter({
                         currentUser: currentUser,
                     } as unknown as StoreState)(
-                        DateAndTimeFormatting.LongDateWithYear
-                    )
+                        DateAndTimeFormatting.LongDateWithYear,
+                    ),
                 )
             },
         },

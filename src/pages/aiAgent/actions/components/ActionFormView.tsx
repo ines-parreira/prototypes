@@ -1,23 +1,23 @@
+import React, { useMemo } from 'react'
+
 import classnames from 'classnames'
+import { useParams } from 'react-router-dom'
 
-import React, {useMemo} from 'react'
-
-import {useParams} from 'react-router-dom'
-
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useFlag} from 'core/flags'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import ActionsPlatformTemplateConditions from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateConditions'
 import ActionsPlatformTemplateConfirmation from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateConfirmation'
 import ActionsPlatformTemplateInstructions from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateInstructions'
 import ActionsPlatformTemplateName from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateName'
 import ActionsPlatformTemplateSteps from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateSteps'
-import {ActionTemplate} from 'pages/automate/actionsPlatform/types'
-import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
-import {LLMPromptTriggerNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { ActionTemplate } from 'pages/automate/actionsPlatform/types'
+import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
+import { LLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 
+import { SimplifiedStepBuilder } from './SimplifiedStepBuilder'
+
 import css from './ActionFormView.less'
-import {SimplifiedStepBuilder} from './SimplifiedStepBuilder'
 
 type Props = {
     isTemplate?: boolean
@@ -34,23 +34,23 @@ const ActionFormView = ({
     isConditionsRecommendationAlertOpen,
     onConditionsRecommendationAlertClose,
 }: Props) => {
-    const {visualBuilderGraph, dispatch, getVariableListForNode} =
+    const { visualBuilderGraph, dispatch, getVariableListForNode } =
         useVisualBuilderContext<LLMPromptTriggerNodeType>()
 
     const triggerNode = visualBuilderGraph.nodes[0]
 
     const variables = useMemo(
         () => getVariableListForNode(triggerNode.id),
-        [getVariableListForNode, triggerNode.id]
+        [getVariableListForNode, triggerNode.id],
     )
 
-    const {shopName, shopType} = useParams<{
+    const { shopName, shopType } = useParams<{
         shopName: string
         shopType: string
     }>()
 
     const isSimplifiedStepBuilderEnabled = useFlag(
-        FeatureFlagKey.SimplifiedStepBuilder
+        FeatureFlagKey.SimplifiedStepBuilder,
     )
     const isAdvanced =
         visualBuilderGraph.advanced_datetime || !isSimplifiedStepBuilderEnabled

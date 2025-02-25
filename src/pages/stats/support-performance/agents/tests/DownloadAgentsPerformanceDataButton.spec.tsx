@@ -1,22 +1,21 @@
-import {render, screen, fireEvent, act} from '@testing-library/react'
-
 import React from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {useDownloadAgentsPerformanceData} from 'hooks/reporting/support-performance/agents/useDownloadAgentsPerformanceData'
-import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
-import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 
-import {DownloadAgentsPerformanceDataButton} from 'pages/stats/support-performance/agents/DownloadAgentsPerformanceDataButton'
-import {AgentsTableColumn} from 'state/ui/stats/types'
-import {saveZippedFiles} from 'utils/file'
-import {assumeMock} from 'utils/testing'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { useDownloadAgentsPerformanceData } from 'hooks/reporting/support-performance/agents/useDownloadAgentsPerformanceData'
+import { useAgentsTableConfigSetting } from 'hooks/reporting/useAgentsTableConfigSetting'
+import { DOWNLOAD_DATA_BUTTON_LABEL } from 'pages/stats/constants'
+import { DownloadAgentsPerformanceDataButton } from 'pages/stats/support-performance/agents/DownloadAgentsPerformanceDataButton'
+import { AgentsTableColumn } from 'state/ui/stats/types'
+import { saveZippedFiles } from 'utils/file'
+import { assumeMock } from 'utils/testing'
 
 jest.mock(
-    'hooks/reporting/support-performance/agents/useDownloadAgentsPerformanceData'
+    'hooks/reporting/support-performance/agents/useDownloadAgentsPerformanceData',
 )
 const useDownloadAgentsPerformanceDataMock = assumeMock(
-    useDownloadAgentsPerformanceData
+    useDownloadAgentsPerformanceData,
 )
 jest.mock('hooks/reporting/useAgentsTableConfigSetting')
 const useAgentsTableConfigSettingMock = assumeMock(useAgentsTableConfigSetting)
@@ -56,7 +55,7 @@ describe('DownloadAgentsPerformanceDataButton', () => {
 
         expect(saveZippedFilesMock).toHaveBeenCalledWith(
             reportData.files,
-            reportData.fileName
+            reportData.fileName,
         )
     })
 
@@ -72,7 +71,7 @@ describe('DownloadAgentsPerformanceDataButton', () => {
     })
 
     it('should send event to segment and call saveReport on download data button click', () => {
-        const {getByText} = render(<DownloadAgentsPerformanceDataButton />)
+        const { getByText } = render(<DownloadAgentsPerformanceDataButton />)
         act(() => {
             fireEvent.click(getByText(DOWNLOAD_DATA_BUTTON_LABEL))
         })
@@ -81,7 +80,7 @@ describe('DownloadAgentsPerformanceDataButton', () => {
             SegmentEvent.StatDownloadClicked,
             expect.objectContaining({
                 name: 'all-metrics',
-            })
+            }),
         )
         expect(saveZippedFilesMock).toHaveBeenCalled()
     })

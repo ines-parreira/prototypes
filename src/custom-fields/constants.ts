@@ -1,7 +1,7 @@
 import {
-    ExhaustiveUIDataType,
     CustomFieldManagedType,
     CustomFieldObjectTypes,
+    ExhaustiveUIDataType,
     SupportedUIDataType,
 } from './types'
 
@@ -18,7 +18,9 @@ export const OBJECT_TYPE_SETTINGS: {
         PLACEHOLDERS: {
             LABEL: string
             DESCRIPTION: string
-            DROPDOWN: Record<CustomFieldManagedType, string> & {DEFAULT: string}
+            DROPDOWN: Record<CustomFieldManagedType, string> & {
+                DEFAULT: string
+            }
         }
     }
 } = {
@@ -129,5 +131,5 @@ const csvTemplateData = [
     ['Warranty & Damage', 'Question'],
 ]
 export const DROPDOWN_CSV_TEMPLATE = csvTemplateData
-    .map((row: string[]) => Array.from({...row, length: 3}).join(','))
+    .map((row: string[]) => Array.from({ ...row, length: 3 }).join(','))
     .join('\n')

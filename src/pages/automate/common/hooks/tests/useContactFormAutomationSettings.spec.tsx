@@ -1,6 +1,6 @@
-import {renderHook, act} from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react-hooks'
 
-import {CONTACT_FORM_DEFAULT_AUTOMATION_SETTINGS} from 'pages/settings/contactForm/constants'
+import { CONTACT_FORM_DEFAULT_AUTOMATION_SETTINGS } from 'pages/settings/contactForm/constants'
 
 import useContactFormAutomationSettings from '../useContactFormAutomationSettings'
 import useContactFormsAutomationSettings from '../useContactFormsAutomationSettings'
@@ -13,8 +13,8 @@ const mockUseContactFormsAutomationSettings =
 describe('useContactFormAutomationSettings()', () => {
     const contactFormId = 123
     const automationSettings = {
-        workflows: [{id: '123', enabled: true}],
-        order_management: {enabled: false},
+        workflows: [{ id: '123', enabled: true }],
+        order_management: { enabled: false },
     }
 
     it('should return Automate settings', () => {
@@ -25,8 +25,8 @@ describe('useContactFormAutomationSettings()', () => {
             handleContactFormAutomationSettingsUpdate: jest.fn(),
         })
 
-        const {result} = renderHook(() =>
-            useContactFormAutomationSettings(contactFormId)
+        const { result } = renderHook(() =>
+            useContactFormAutomationSettings(contactFormId),
         )
 
         expect(result.current.automationSettings).toBe(automationSettings)
@@ -38,12 +38,12 @@ describe('useContactFormAutomationSettings()', () => {
             handleContactFormAutomationSettingsUpdate: jest.fn(),
         })
 
-        const {result} = renderHook(() =>
-            useContactFormAutomationSettings(contactFormId)
+        const { result } = renderHook(() =>
+            useContactFormAutomationSettings(contactFormId),
         )
 
         expect(result.current.automationSettings).toBe(
-            CONTACT_FORM_DEFAULT_AUTOMATION_SETTINGS
+            CONTACT_FORM_DEFAULT_AUTOMATION_SETTINGS,
         )
     })
 
@@ -56,19 +56,19 @@ describe('useContactFormAutomationSettings()', () => {
                 mockHandleContactFormAutomationSettingsUpdate,
         })
 
-        const {result} = renderHook(() =>
-            useContactFormAutomationSettings(contactFormId)
+        const { result } = renderHook(() =>
+            useContactFormAutomationSettings(contactFormId),
         )
 
         act(() => {
             void result.current.handleContactFormAutomationSettingsUpdate(
-                automationSettings
+                automationSettings,
             )
         })
 
         expect(mockHandleContactFormAutomationSettingsUpdate).toBeCalledWith(
             contactFormId,
-            automationSettings
+            automationSettings,
         )
     })
 
@@ -81,21 +81,21 @@ describe('useContactFormAutomationSettings()', () => {
                 mockHandleContactFormAutomationSettingsUpdate,
         })
 
-        const {result} = renderHook(() =>
-            useContactFormAutomationSettings(contactFormId)
+        const { result } = renderHook(() =>
+            useContactFormAutomationSettings(contactFormId),
         )
 
         act(() => {
             void result.current.handleContactFormAutomationSettingsUpdate(
                 automationSettings,
-                'wow'
+                'wow',
             )
         })
 
         expect(mockHandleContactFormAutomationSettingsUpdate).toBeCalledWith(
             contactFormId,
             automationSettings,
-            'wow'
+            'wow',
         )
     })
 })

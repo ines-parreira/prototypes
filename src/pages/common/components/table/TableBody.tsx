@@ -1,5 +1,6 @@
+import React, { ForwardedRef, forwardRef, HTMLProps, ReactNode } from 'react'
+
 import classnames from 'classnames'
-import React, {ForwardedRef, forwardRef, HTMLProps, ReactNode} from 'react'
 
 import css from 'pages/common/components/table/TableBody.less'
 
@@ -9,8 +10,8 @@ type Props = HTMLProps<HTMLTableSectionElement> & {
 }
 
 function TableBody(
-    {children, className, ...otherProps}: Props,
-    ref: ForwardedRef<HTMLTableSectionElement>
+    { children, className, ...otherProps }: Props,
+    ref: ForwardedRef<HTMLTableSectionElement>,
 ) {
     return (
         <tbody

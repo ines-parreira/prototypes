@@ -1,26 +1,27 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-import {fireEvent, screen, waitFor} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
-import {Provider} from 'react-redux'
-import {Router} from 'react-router-dom'
+
+import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
+import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {billingState} from 'fixtures/billing'
-import {getStoreConfigurationFixture} from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
-import {useAiAgentEnabled} from 'pages/aiAgent/hooks/useAiAgentEnabled'
-import {useAiAgentOnboardingNotification} from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
-import {useStoreConfiguration} from 'pages/aiAgent/hooks/useStoreConfiguration'
-import {useStoreConfigurationMutation} from 'pages/aiAgent/hooks/useStoreConfigurationMutation'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { billingState } from 'fixtures/billing'
+import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
+import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
+import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
+import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
+import { useStoreConfigurationMutation } from 'pages/aiAgent/hooks/useStoreConfigurationMutation'
 import history from 'pages/history'
-import {notify} from 'state/notifications/actions'
-import {RootState} from 'state/types'
-import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
+import { notify } from 'state/notifications/actions'
+import { RootState } from 'state/types'
+import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
-import {ConnectedChannelsEmailView} from '../components/ConnectedChannelsEmailView'
+import { ConnectedChannelsEmailView } from '../components/ConnectedChannelsEmailView'
 
 jest.mock('hooks/useAppDispatch', () => () => jest.fn())
 jest.mock('state/notifications/actions')
@@ -40,7 +41,7 @@ jest.mock('pages/aiAgent/hooks/useAiAgentEnabled')
 const mockUseEnableAiAgent = jest.mocked(useAiAgentEnabled)
 jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingNotification')
 const mockUseAiAgentOnboardingNotification = jest.mocked(
-    useAiAgentOnboardingNotification
+    useAiAgentOnboardingNotification,
 )
 const mockStore = configureMockStore([thunk])
 
@@ -92,7 +93,7 @@ describe('ConnectedChannelsEmailView', () => {
                 <Provider store={mockedStore}>
                     <ConnectedChannelsEmailView />
                 </Provider>
-            </Router>
+            </Router>,
         )
         expect(screen.getByText(/loading/i)).toBeInTheDocument()
     })
@@ -106,14 +107,14 @@ describe('ConnectedChannelsEmailView', () => {
                 <Provider store={mockedStore}>
                     <ConnectedChannelsEmailView />
                 </Provider>
-            </Router>
+            </Router>,
         )
 
         expect(screen.getByText(/warning/i)).toBeInTheDocument()
         expect(
             screen.getByRole('link', {
                 name: /configuration required/i,
-            })
+            }),
         ).toHaveAttribute('href', `/app/automation/shopify/shopName/ai-agent`)
     })
 
@@ -121,7 +122,7 @@ describe('ConnectedChannelsEmailView', () => {
         const handleUpsertStoreConfiguration = jest.fn()
         const storeConfiguration = getStoreConfigurationFixture({
             emailChannelDeactivatedDatetime: '2021-09-28T10:00:00Z',
-            monitoredEmailIntegrations: [{id: 1, email: 'test@mail.com'}],
+            monitoredEmailIntegrations: [{ id: 1, email: 'test@mail.com' }],
         })
         ;(useStoreConfiguration as jest.Mock).mockReturnValue({
             storeConfiguration,
@@ -137,10 +138,10 @@ describe('ConnectedChannelsEmailView', () => {
                 <Provider store={mockedStore}>
                     <ConnectedChannelsEmailView />
                 </Provider>
-            </Router>
+            </Router>,
         )
 
-        fireEvent.click(screen.getByRole('switch', {name: /enable/i}))
+        fireEvent.click(screen.getByRole('switch', { name: /enable/i }))
 
         expect(handleUpsertStoreConfiguration).toHaveBeenCalledWith({
             ...storeConfiguration,
@@ -171,7 +172,7 @@ describe('ConnectedChannelsEmailView', () => {
                 <Provider store={mockedStore}>
                     <ConnectedChannelsEmailView />
                 </Provider>
-            </Router>
+            </Router>,
         )
 
         expect(screen.getByRole('switch')).toBeChecked()
@@ -184,7 +185,7 @@ describe('ConnectedChannelsEmailView', () => {
                 trialModeActivatedDatetime: null,
                 previewModeActivatedDatetime: null,
                 emailChannelDeactivatedDatetime: expect.any(String),
-            })
+            }),
         )
     })
 
@@ -200,7 +201,7 @@ describe('ConnectedChannelsEmailView', () => {
                 <Provider store={mockedStore}>
                     <ConnectedChannelsEmailView />
                 </Provider>
-            </Router>
+            </Router>,
         )
 
         expect(screen.getByText(/enabled/i)).toBeInTheDocument()
@@ -218,7 +219,7 @@ describe('ConnectedChannelsEmailView', () => {
                 <Provider store={mockedStore}>
                     <ConnectedChannelsEmailView />
                 </Provider>
-            </Router>
+            </Router>,
         )
 
         expect(screen.getByRole('switch')).not.toBeChecked()
@@ -227,7 +228,7 @@ describe('ConnectedChannelsEmailView', () => {
     it('should call upsertStoreConfiguration and enable when disabled state', () => {
         const handleUpsertStoreConfiguration = jest.fn()
         const storeConfiguration = getStoreConfigurationFixture({
-            monitoredEmailIntegrations: [{id: 1, email: 'test@mail.com'}],
+            monitoredEmailIntegrations: [{ id: 1, email: 'test@mail.com' }],
             emailChannelDeactivatedDatetime: '2021-09-28T10:00:00Z',
         })
         ;(useStoreConfiguration as jest.Mock).mockReturnValue({
@@ -244,10 +245,10 @@ describe('ConnectedChannelsEmailView', () => {
                 <Provider store={mockedStore}>
                     <ConnectedChannelsEmailView />
                 </Provider>
-            </Router>
+            </Router>,
         )
 
-        fireEvent.click(screen.getByRole('switch', {name: /enable/i}))
+        fireEvent.click(screen.getByRole('switch', { name: /enable/i }))
 
         expect(handleUpsertStoreConfiguration).toHaveBeenCalledWith({
             ...storeConfiguration,
@@ -278,7 +279,7 @@ describe('ConnectedChannelsEmailView', () => {
                 <Provider store={mockedStore}>
                     <ConnectedChannelsEmailView />
                 </Provider>
-            </Router>
+            </Router>,
         )
 
         expect(screen.getByRole('switch')).toBeChecked()
@@ -291,7 +292,7 @@ describe('ConnectedChannelsEmailView', () => {
                 trialModeActivatedDatetime: null,
                 previewModeActivatedDatetime: null,
                 emailChannelDeactivatedDatetime: expect.any(String),
-            })
+            }),
         )
     })
 
@@ -308,10 +309,10 @@ describe('ConnectedChannelsEmailView', () => {
                 <Provider store={mockedStore}>
                     <ConnectedChannelsEmailView />
                 </Provider>
-            </Router>
+            </Router>,
         )
         expect(
-            screen.getByLabelText(/Enable AI Agent for email/i)
+            screen.getByLabelText(/Enable AI Agent for email/i),
         ).toBeDisabled()
     })
 
@@ -319,7 +320,7 @@ describe('ConnectedChannelsEmailView', () => {
         const handleUpsertStoreConfiguration = jest.fn()
         const storeConfiguration = getStoreConfigurationFixture({
             emailChannelDeactivatedDatetime: '2021-09-28T10:00:00Z',
-            monitoredEmailIntegrations: [{id: 1, email: 'test@mail.com'}],
+            monitoredEmailIntegrations: [{ id: 1, email: 'test@mail.com' }],
         })
 
         ;(useStoreConfiguration as jest.Mock).mockReturnValue({
@@ -339,16 +340,16 @@ describe('ConnectedChannelsEmailView', () => {
                 <Provider store={mockedStore}>
                     <ConnectedChannelsEmailView />
                 </Provider>
-            </Router>
+            </Router>,
         )
 
-        fireEvent.click(screen.getByRole('switch', {name: /enable/i}))
+        fireEvent.click(screen.getByRole('switch', { name: /enable/i }))
 
         expect(handleUpsertStoreConfiguration).toHaveBeenCalledWith(
             expect.objectContaining({
                 trialModeActivatedDatetime: null,
                 emailChannelDeactivatedDatetime: null,
-            })
+            }),
         )
     })
 
@@ -356,7 +357,7 @@ describe('ConnectedChannelsEmailView', () => {
         const updateSettingsAfterAiAgentEnabled = jest.fn()
         const storeConfiguration = getStoreConfigurationFixture({
             emailChannelDeactivatedDatetime: '2021-09-28T10:00:00Z',
-            monitoredEmailIntegrations: [{id: 1, email: 'test@mail.com'}],
+            monitoredEmailIntegrations: [{ id: 1, email: 'test@mail.com' }],
         })
         ;(useStoreConfiguration as jest.Mock).mockReturnValue({
             storeConfiguration,
@@ -375,13 +376,13 @@ describe('ConnectedChannelsEmailView', () => {
                 <Provider store={mockedStore}>
                     <ConnectedChannelsEmailView />
                 </Provider>
-            </Router>
+            </Router>,
         )
 
-        fireEvent.click(screen.getByRole('switch', {name: /enable/i}))
+        fireEvent.click(screen.getByRole('switch', { name: /enable/i }))
 
         await waitFor(() =>
-            expect(updateSettingsAfterAiAgentEnabled).toHaveBeenCalledTimes(1)
+            expect(updateSettingsAfterAiAgentEnabled).toHaveBeenCalledTimes(1),
         )
     })
 
@@ -389,7 +390,7 @@ describe('ConnectedChannelsEmailView', () => {
         const handleUpsertStoreConfiguration = jest.fn()
         const storeConfiguration = getStoreConfigurationFixture({
             emailChannelDeactivatedDatetime: '2021-09-28T10:00:00Z',
-            monitoredEmailIntegrations: [{id: 1, email: 'test@mail.com'}],
+            monitoredEmailIntegrations: [{ id: 1, email: 'test@mail.com' }],
         })
 
         ;(useStoreConfiguration as jest.Mock).mockReturnValue({
@@ -406,15 +407,15 @@ describe('ConnectedChannelsEmailView', () => {
                 <Provider store={mockedStore}>
                     <ConnectedChannelsEmailView />
                 </Provider>
-            </Router>
+            </Router>,
         )
 
-        fireEvent.click(screen.getByRole('switch', {name: /enable/i}))
+        fireEvent.click(screen.getByRole('switch', { name: /enable/i }))
 
         await waitFor(() =>
             expect(mockNotify).toHaveBeenCalledWith({
                 message: 'Could not update store configuration',
-            })
+            }),
         )
     })
 })

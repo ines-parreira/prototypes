@@ -1,5 +1,3 @@
-import {LoadingSpinner, Tooltip} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
 import React, {
     ReactElement,
     useCallback,
@@ -7,18 +5,23 @@ import React, {
     useMemo,
     useState,
 } from 'react'
-import {Badge} from 'reactstrap'
+
+import classNames from 'classnames'
+import { Badge } from 'reactstrap'
+
+import { LoadingSpinner, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {Article} from 'models/helpCenter/types'
+import { Article } from 'models/helpCenter/types'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import {ARTICLES_PER_PAGE} from 'pages/settings/helpCenter/constants'
-import {useArticlesActions} from 'pages/settings/helpCenter/hooks/useArticlesActions'
-import {getUncategorizedArticles} from 'state/entities/helpCenter/articles'
-import {getRootCategory} from 'state/entities/helpCenter/categories'
+import { ARTICLES_PER_PAGE } from 'pages/settings/helpCenter/constants'
+import { useArticlesActions } from 'pages/settings/helpCenter/hooks/useArticlesActions'
+import { getUncategorizedArticles } from 'state/entities/helpCenter/articles'
+import { getRootCategory } from 'state/entities/helpCenter/categories'
 
-import {CATEGORY_NR_OF_COLUMNS} from '../../constants'
+import { CATEGORY_NR_OF_COLUMNS } from '../../constants'
+
 import css from './CategoriesTableBasicRow.less'
 
 export type BaseCategoriesTableRowProps = {
@@ -27,7 +30,7 @@ export type BaseCategoriesTableRowProps = {
         categoryId: number | null,
         articles: Article[],
         level: number,
-        isUnlisted: boolean
+        isUnlisted: boolean,
     ) => ReactElement
     tooltip?: string
     shouldRenderRowWithoutArticles?: boolean
@@ -70,12 +73,12 @@ export const CategoriesTableBasicRow = ({
 
     const itemCount = useAppSelector(getRootCategory).articleCount
 
-    const {isLoading, fetchArticles} = useArticlesActions()
+    const { isLoading, fetchArticles } = useArticlesActions()
     const articles = useAppSelector(getUncategorizedArticles)
     const hasArticles = useMemo(() => itemCount > 0, [itemCount])
     const hasMore = useMemo(
         () => articles.length < itemCount,
-        [articles, itemCount]
+        [articles, itemCount],
     )
 
     const fetchMore = useCallback(async () => {
@@ -93,7 +96,7 @@ export const CategoriesTableBasicRow = ({
 
             void fetchMore()
         },
-        [fetchMore]
+        [fetchMore],
     )
 
     const renderContent = () => {
@@ -119,7 +122,7 @@ export const CategoriesTableBasicRow = ({
                             colSpan={CATEGORY_NR_OF_COLUMNS}
                             innerClassName={classNames(
                                 css['no-click'],
-                                css['load-more']
+                                css['load-more'],
                             )}
                         >
                             {isLoading ? (
@@ -154,13 +157,13 @@ export const CategoriesTableBasicRow = ({
         <span className={css['caret-placeholder']} />
     )
     const countBadge = isCountBadgeLoading ? (
-        <LoadingSpinner size="small" style={{marginLeft: 8}} />
+        <LoadingSpinner size="small" style={{ marginLeft: 8 }} />
     ) : (
         <Badge pill color="light" className={css.count}>
             {hasArticles ? itemCount : 'No Published Articles'}
         </Badge>
     )
-    const bodyInnerClass = classNames({[css['no-click']]: !hasArticles})
+    const bodyInnerClass = classNames({ [css['no-click']]: !hasArticles })
     const headerCell = (
         <BodyCell
             className={css['cell']}

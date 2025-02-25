@@ -1,10 +1,10 @@
-import {useQueryClient} from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {usePauseABGroup as usePurePauseABGroup} from 'models/convert/abVariants/queries'
-import {invalidateCacheOnCampaignChange} from 'pages/convert/campaigns/hooks/utils'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { usePauseABGroup as usePurePauseABGroup } from 'models/convert/abVariants/queries'
+import { invalidateCacheOnCampaignChange } from 'pages/convert/campaigns/hooks/utils'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 export const usePauseABGroup = () => {
     const dispatch = useAppDispatch()
@@ -16,11 +16,11 @@ export const usePauseABGroup = () => {
                 notify({
                     status: NotificationStatus.Success,
                     message: 'A/B test paused',
-                })
+                }),
             )
             return invalidateCacheOnCampaignChange(
                 queryClient,
-                params.campaign_id
+                params.campaign_id,
             )
         },
         onError: () =>
@@ -28,7 +28,7 @@ export const usePauseABGroup = () => {
                 notify({
                     status: NotificationStatus.Error,
                     message: 'Failed to pause A/B test',
-                })
+                }),
             ),
     })
 }

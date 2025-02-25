@@ -1,7 +1,8 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import StatusBadge, {StatusEnum} from '../../StatusBadge'
+import { render, screen } from '@testing-library/react'
+
+import StatusBadge, { StatusEnum } from '../../StatusBadge'
 import IntegrationCard from '../IntegrationCard'
 
 describe('IntegrationCard', () => {
@@ -14,14 +15,14 @@ describe('IntegrationCard', () => {
                 description="Log into your Gmail or Google Workspace account to allow Gorgias access to emails."
                 title="Connect Gmail account"
                 onClick={jest.fn()}
-            />
+            />,
         )
 
         expect(screen.getByText('Connect Gmail account')).toBeInTheDocument()
         expect(
             screen.getByText(
-                /Log into your Gmail or Google Workspace account to allow Gorgias access to emails./
-            )
+                /Log into your Gmail or Google Workspace account to allow Gorgias access to emails./,
+            ),
         ).toBeInTheDocument()
     })
 })

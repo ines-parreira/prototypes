@@ -1,21 +1,22 @@
-import {useBulkArchiveMacros as useBulkArchiveMacrosPrimitive} from '@gorgias/api-queries'
-import {QueryClient, useQueryClient} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
+import { QueryClient, useQueryClient } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {macros} from 'fixtures/macro'
+import { useBulkArchiveMacros as useBulkArchiveMacrosPrimitive } from '@gorgias/api-queries'
+
+import { macros } from 'fixtures/macro'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {assumeMock} from 'utils/testing'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { assumeMock } from 'utils/testing'
 
-import {useBulkArchiveMacros} from '../useBulkArchiveMacros'
+import { useBulkArchiveMacros } from '../useBulkArchiveMacros'
 
 jest.mock('@gorgias/api-queries', () => ({
     __esModule: true,
     useBulkArchiveMacros: jest.fn(),
     queryKeys: {
         macros: {
-            listMacros: () => ({pop: () => null}),
+            listMacros: () => ({ pop: () => null }),
         },
     },
 }))
@@ -44,7 +45,7 @@ describe('useBulkArchiveMacros', () => {
             () =>
                 ({
                     invalidateQueries: invalidateQueriesMock,
-                }) as unknown as QueryClient
+                }) as unknown as QueryClient,
         )
     })
 
@@ -52,12 +53,14 @@ describe('useBulkArchiveMacros', () => {
 
     it('should handle successful and failed requests with useBulkArchiveMacros', () => {
         const onSettled = jest.fn()
-        const {result} = renderHook(() => useBulkArchiveMacros(macrosFixtures))
+        const { result } = renderHook(() =>
+            useBulkArchiveMacros(macrosFixtures),
+        )
         void result.current.mutateAsync(
-            {data: {ids: [1]}},
+            { data: { ids: [1] } },
             {
                 onSettled,
-            }
+            },
         )
         const error = {
             msg: 'In use in a rule',
@@ -67,7 +70,9 @@ describe('useBulkArchiveMacros', () => {
         }
         ;(
             useBulkArchiveMacrosMock.mock.calls[0][0]?.mutation as unknown as {
-                onSettled: (resp: {data: {data: {data: unknown[]}}}) => void
+                onSettled: (resp: {
+                    data: { data: { data: unknown[] } }
+                }) => void
             }
         )?.onSettled({
             data: {
@@ -103,12 +108,12 @@ describe('useBulkArchiveMacros', () => {
 
     it('should handle failed request with useBulkArchiveMacros', () => {
         const onError = jest.fn()
-        const {result} = renderHook(() => useBulkArchiveMacros())
+        const { result } = renderHook(() => useBulkArchiveMacros())
         void result.current.mutateAsync(
-            {data: {ids: [1, 2]}},
+            { data: { ids: [1, 2] } },
             {
                 onError,
-            }
+            },
         )
         ;(
             useBulkArchiveMacrosMock.mock.calls[0][0]?.mutation as unknown as {

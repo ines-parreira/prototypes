@@ -1,28 +1,29 @@
-import classNames from 'classnames'
-import {fromJS, List, Map} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useEffect, useMemo, useState} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {useParams} from 'react-router-dom'
-import {Container} from 'reactstrap'
-import {bindActionCreators} from 'redux'
+import React, { useEffect, useMemo, useState } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import classNames from 'classnames'
+import { fromJS, List, Map } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { connect, ConnectedProps } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import { Container } from 'reactstrap'
+import { bindActionCreators } from 'redux'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
 import useUpdateEffect from 'hooks/useUpdateEffect'
-import {EmailProvider} from 'models/integration/constants'
-import {IntegrationType} from 'models/integration/types'
+import { EmailProvider } from 'models/integration/constants'
+import { IntegrationType } from 'models/integration/types'
 import {
     fetchNewPhoneNumbers,
     fetchPhoneNumbers,
 } from 'models/phoneNumber/resources'
-import {useOnboardingIntegrationRedirection} from 'pages/aiAgent/Onboarding/hooks/useOnboardingIntegrationRedirection'
+import { useOnboardingIntegrationRedirection } from 'pages/aiAgent/Onboarding/hooks/useOnboardingIntegrationRedirection'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
-import {ErrorBoundary} from 'pages/ErrorBoundary'
-import {getHasAutomate, makeHasFeature} from 'state/billing/selectors'
-import {AccountFeature} from 'state/currentAccount/types'
+import { ErrorBoundary } from 'pages/ErrorBoundary'
+import { getHasAutomate, makeHasFeature } from 'state/billing/selectors'
+import { AccountFeature } from 'state/currentAccount/types'
 import {
     chatInstallationStatusFetched,
     resetChatInstallationStatus,
@@ -36,18 +37,15 @@ import {
     getEligibleShopifyIntegrationsFor,
     makeGetRedirectUri,
 } from 'state/integrations/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {RootState} from 'state/types'
-
-import {compare} from 'utils'
-import {reportError} from 'utils/errors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { RootState } from 'state/types'
+import { compare } from 'utils'
+import { reportError } from 'utils/errors'
 
 import history from '../../history'
-
 import AircallIntegrationCreate from './components/aircall/AircallIntegrationCreate'
 import AircallIntegrationList from './components/aircall/AircallIntegrationList'
-
 import BigCommerce from './components/bigcommerce/BigCommerce'
 import DEPRECATED_EmailDomainVerificationContainer from './components/email/EmailDomainVerification/DEPRECATED_EmailDomainVerificationContainer'
 import EmailDomainVerification from './components/email/EmailDomainVerification/EmailDomainVerification'
@@ -65,8 +63,7 @@ import FacebookIntegrationDetail from './components/facebook/FacebookIntegration
 import FacebookIntegrationList from './components/facebook/FacebookIntegrationList/FacebookIntegrationList'
 import FacebookIntegrationPreferences from './components/facebook/FacebookIntegrationPreferences'
 import FacebookIntegrationSetup from './components/facebook/FacebookIntegrationSetup/FacebookIntegrationSetup'
-
-import {GorgiasAutomateChatIntegration} from './components/gorgias_chat/GorgiasAutomateChatIntegration'
+import { GorgiasAutomateChatIntegration } from './components/gorgias_chat/GorgiasAutomateChatIntegration'
 import GorgiasChatCreationWizard from './components/gorgias_chat/GorgiasChatCreationWizard'
 import GorgiasChatIntegrationAppearance from './components/gorgias_chat/GorgiasChatIntegrationAppearance'
 import GorgiasTranslateText from './components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateText'
@@ -76,20 +73,16 @@ import GorgiasChatIntegrationLanguages from './components/gorgias_chat/GorgiasCh
 import GorgiasChatIntegrationList from './components/gorgias_chat/GorgiasChatIntegrationList'
 import GorgiasChatIntegrationPreferences from './components/gorgias_chat/GorgiasChatIntegrationPreferences'
 import GorgiasChatIntegrationQuickReplies from './components/gorgias_chat/GorgiasChatIntegrationQuickReplies'
-
 import useIsQuickRepliesEnabled from './components/gorgias_chat/GorgiasChatIntegrationQuickReplies/hooks/useIsQuickRepliesEnabled'
 import useSelfServiceConfiguration from './components/gorgias_chat/hooks/useSelfServiceConfiguration'
 import HTTP from './components/http/HTTP'
 import KlaviyoIntegrationDetail from './components/klaviyo/KlaviyoIntegrationDetail'
 import KlaviyoIntegrationList from './components/klaviyo/KlaviyoIntegrationList'
 import Magento2 from './components/magento2/Magento2'
-
 import Recharge from './components/recharge/Recharge'
 import Shopify from './components/shopify/Shopify'
-
 import SmileIntegrationDetail from './components/smile/SmileIntegrationDetail'
 import SmileIntegrationList from './components/smile/SmileIntegrationList'
-
 import SmsIntegration from './components/sms/SmsIntegration'
 import TwitterIntegrationDetail from './components/twitter/TwitterIntegrationDetail'
 import TwitterIntegrationList from './components/twitter/TwitterIntegrationList'
@@ -97,8 +90,7 @@ import VoiceIntegration from './components/voice/VoiceIntegration'
 import WhatsAppIntegration from './components/whatsapp/WhatsAppIntegration'
 import YotpoIntegrationDetail from './components/yotpo/YotpoIntegrationDetail'
 import YotpoIntegrationList from './components/yotpo/YotpoIntegrationList'
-
-import {Tab} from './types'
+import { Tab } from './types'
 
 export const IntegrationDetail = ({
     actions,
@@ -107,7 +99,7 @@ export const IntegrationDetail = ({
     hasTwitterFeature,
     integrations,
 }: ConnectedProps<typeof connector>) => {
-    const {extra, integrationId, integrationType, subId} = useParams<{
+    const { extra, integrationId, integrationType, subId } = useParams<{
         extra: string
         integrationId: string
         integrationType: IntegrationType
@@ -132,17 +124,17 @@ export const IntegrationDetail = ({
         'migration',
     ].includes(integrationId)
 
-    const {redirectToOnboardingIfOnboarding} =
+    const { redirectToOnboardingIfOnboarding } =
         useOnboardingIntegrationRedirection()
 
     const isUpdate = useMemo(
         () => !!integrationId && isIntegrationId,
-        [integrationId, isIntegrationId]
+        [integrationId, isIntegrationId],
     )
 
     const redirectUri = useMemo(
         () => getRedirectUri(integrationType),
-        [getRedirectUri, integrationType]
+        [getRedirectUri, integrationType],
     )
 
     redirectToOnboardingIfOnboarding(integrationType, integrationId)
@@ -168,10 +160,10 @@ export const IntegrationDetail = ({
             ).sort((a: Map<any, any>, b: Map<any, any>) =>
                 compare(
                     ((a.get('name') || '') as string).toLowerCase(),
-                    ((b.get('name') || '') as string).toLowerCase()
-                )
+                    ((b.get('name') || '') as string).toLowerCase(),
+                ),
             ) as List<Map<any, any>>,
-        [integrations]
+        [integrations],
     )
 
     const loading = useMemo(
@@ -180,7 +172,7 @@ export const IntegrationDetail = ({
                 any,
                 any
             >,
-        [integrations]
+        [integrations],
     )
 
     const editLinkDefaultTab = useMemo(() => {
@@ -211,7 +203,7 @@ export const IntegrationDetail = ({
                 notify({
                     message: 'Failed to fetch phone numbers',
                     status: NotificationStatus.Error,
-                })
+                }),
             )
         }
     })
@@ -240,7 +232,7 @@ export const IntegrationDetail = ({
         return []
     }, [integration, integrationType])
 
-    const {applicationsAutomationSettings} =
+    const { applicationsAutomationSettings } =
         useApplicationsAutomationSettings(chatApplicationIds)
 
     useUpdateEffect(() => {
@@ -254,7 +246,7 @@ export const IntegrationDetail = ({
         }
     }, [integration, integrationType])
 
-    const {selfServiceConfiguration, selfServiceConfigurationEnabled} =
+    const { selfServiceConfiguration, selfServiceConfigurationEnabled } =
         useSelfServiceConfiguration(integration)
 
     const dispatch = useAppDispatch()
@@ -264,7 +256,7 @@ export const IntegrationDetail = ({
             try {
                 const installationStatus =
                     await IntegrationsActions.getInstallationStatus(
-                        applicationId
+                        applicationId,
                     )
 
                 if (installationStatus) {
@@ -274,11 +266,11 @@ export const IntegrationDetail = ({
                 reportError(
                     new Error(`Failed to fetch chat installation status`),
                     {
-                        extra: {applicationId},
-                    }
+                        extra: { applicationId },
+                    },
                 )
             }
-        }
+        },
     )
 
     useEffect(() => {
@@ -286,7 +278,7 @@ export const IntegrationDetail = ({
         if (appId) {
             setArticleRecommendationEnabled(
                 applicationsAutomationSettings[appId]?.articleRecommendation
-                    ?.enabled && hasAutomate
+                    ?.enabled && hasAutomate,
             )
         }
     }, [hasAutomate, chatApplicationIds, applicationsAutomationSettings])
@@ -479,7 +471,7 @@ export const IntegrationDetail = ({
                     integration={integration}
                     integrations={
                         integrationsProp.filter(
-                            (v) => v!.get('type') === IntegrationType.Shopify
+                            (v) => v!.get('type') === IntegrationType.Shopify,
                         ) as List<Map<any, any>>
                     }
                     loading={loading}
@@ -494,7 +486,7 @@ export const IntegrationDetail = ({
                     integrations={
                         integrationsProp.filter(
                             (v) =>
-                                v!.get('type') === IntegrationType.BigCommerce
+                                v!.get('type') === IntegrationType.BigCommerce,
                         ) as List<Map<any, any>>
                     }
                     loading={loading}
@@ -555,7 +547,7 @@ export const IntegrationDetail = ({
                     integration={integration}
                     integrations={
                         integrationsProp.filter(
-                            (v) => v!.get('type') === IntegrationType.Recharge
+                            (v) => v!.get('type') === IntegrationType.Recharge,
                         ) as List<Map<any, any>>
                     }
                     loading={loading}
@@ -608,7 +600,7 @@ export const IntegrationDetail = ({
                     integration={integration}
                     integrations={
                         integrationsProp.filter(
-                            (v) => v!.get('type') === IntegrationType.Magento2
+                            (v) => v!.get('type') === IntegrationType.Magento2,
                         ) as List<Map<any, any>>
                     }
                     loading={loading}
@@ -734,12 +726,12 @@ const connector = connect(
         getRedirectUri: makeGetRedirectUri(state),
         currentUser: state.currentUser,
         hasTwitterFeature: makeHasFeature(state)(
-            AccountFeature.TwitterIntegration
+            AccountFeature.TwitterIntegration,
         ),
     }),
     (dispatch) => ({
         actions: bindActionCreators(IntegrationsActions, dispatch),
-    })
+    }),
 )
 
 export default connector(IntegrationDetail)

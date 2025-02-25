@@ -1,28 +1,28 @@
-import {Call} from '@twilio/voice-sdk'
+import { Call } from '@twilio/voice-sdk'
 
 import client from 'models/api/resources'
-import {reportError} from 'utils/errors'
+import { reportError } from 'utils/errors'
 
 export async function getToken(): Promise<string | null> {
     const response = await client.get('/integrations/phone/token')
-    const data: {token: string | null} = await response.data
+    const data: { token: string | null } = await response.data
     return data.token
 }
 
 export async function acceptCall(call: Call) {
     try {
         const integrationId = parseInt(
-            call.customParameters.get('integration_id') as string
+            call.customParameters.get('integration_id') as string,
         )
         const customerPhoneNumber = call.parameters.From
         const customerName = call.customParameters.get(
-            'customer_name'
+            'customer_name',
         ) as string
         const customerId = parseInt(
-            call.customParameters.get('customer_id') as string
+            call.customParameters.get('customer_id') as string,
         )
         const ticketId = parseInt(
-            call.customParameters.get('ticket_id') as string
+            call.customParameters.get('ticket_id') as string,
         )
         const callSid = call.customParameters.get('call_sid') as string
 
@@ -47,7 +47,7 @@ export async function cancelCall(call?: Call) {
             await client.post('/integrations/phone/call/canceled')
         } else {
             const ticketId = parseInt(
-                call.customParameters.get('ticket_id') as string
+                call.customParameters.get('ticket_id') as string,
             )
             const callSid = call.customParameters.get('call_sid') as string
             await client.post('/integrations/phone/call/canceled', {
@@ -79,7 +79,7 @@ export async function disconnectCall() {
 export async function declineCall(call: Call) {
     try {
         const ticketId = parseInt(
-            call.customParameters.get('ticket_id') as string
+            call.customParameters.get('ticket_id') as string,
         )
         const callSid = call.customParameters.get('call_sid') as string
 

@@ -1,12 +1,13 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
-import {RootState, StoreDispatch} from 'state/types'
+import { PhoneIntegrationEvent } from 'constants/integrations/types/event'
+import { RootState, StoreDispatch } from 'state/types'
 
 import PhoneEvent from '../PhoneEvent'
 
@@ -28,12 +29,12 @@ describe('<PhoneEvent/>', () => {
         ])('should render with closed details', (eventType) => {
             const event = fromJS({
                 type: eventType,
-                customer: {name: 'Michael Gorgias'},
+                customer: { name: 'Michael Gorgias' },
             })
-            const {getByText} = render(
+            const { getByText } = render(
                 <Provider store={store}>
                     <PhoneEvent event={event} isLast={false} />
-                </Provider>
+                </Provider>,
             )
 
             expect(getByText('keyboard_arrow_down')).toBeInTheDocument()
@@ -42,12 +43,12 @@ describe('<PhoneEvent/>', () => {
         it('should render with "View ticket" link"', () => {
             const event = fromJS({
                 type: PhoneIntegrationEvent.ConversationStarted,
-                data: {phone_ticket_id: 123},
+                data: { phone_ticket_id: 123 },
             })
-            const {getByText} = render(
+            const { getByText } = render(
                 <Provider store={store}>
                     <PhoneEvent event={event} isLast={false} />
-                </Provider>
+                </Provider>,
             )
 
             expect(getByText('View ticket')).toBeInTheDocument()
@@ -56,19 +57,19 @@ describe('<PhoneEvent/>', () => {
         it('should render agent based event', () => {
             const event = fromJS({
                 type: PhoneIntegrationEvent.ConversationStarted,
-                user: {name: 'Agent'},
+                user: { name: 'Agent' },
                 data: {
-                    customer: {name: 'Customer'},
+                    customer: { name: 'Customer' },
                 },
             })
-            const {getByText} = render(
+            const { getByText } = render(
                 <Provider store={store}>
                     <PhoneEvent event={event} isLast={false} />
-                </Provider>
+                </Provider>,
             )
 
             expect(
-                getByText('Phone conversation started by Agent')
+                getByText('Phone conversation started by Agent'),
             ).toBeInTheDocument()
         })
     })

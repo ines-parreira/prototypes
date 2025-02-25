@@ -1,7 +1,8 @@
-import classnames from 'classnames'
-import React, {ForwardedRef, forwardRef, ReactNode, useContext} from 'react'
+import React, { ForwardedRef, forwardRef, ReactNode, useContext } from 'react'
 
-import {BaseButtonContext} from 'pages/common/components/button/BaseButton'
+import classnames from 'classnames'
+
+import { BaseButtonContext } from 'pages/common/components/button/BaseButton'
 import css from 'pages/common/components/button/ButtonIconLabel.less'
 
 export type ButtonIconPosition = 'left' | 'right'
@@ -15,8 +16,8 @@ type Props = {
 }
 
 function ButtonIconLabel(
-    {children, className, icon, iconClassName, position = 'left'}: Props,
-    ref: ForwardedRef<HTMLButtonElement>
+    { children, className, icon, iconClassName, position = 'left' }: Props,
+    ref: ForwardedRef<HTMLButtonElement>,
 ) {
     return (
         <span className={classnames(css.wrapper, className)} ref={ref}>
@@ -46,8 +47,8 @@ type IconProps = {
     children: string
 }
 
-function Icon({children, className}: IconProps) {
-    const {size} = useContext(BaseButtonContext)
+function Icon({ children, className }: IconProps) {
+    const { size } = useContext(BaseButtonContext)
 
     return (
         <i className={classnames('material-icons', className, css[size])}>

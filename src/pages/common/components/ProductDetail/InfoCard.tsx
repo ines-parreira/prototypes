@@ -1,13 +1,15 @@
-import classNames from 'classnames'
 import React from 'react'
-import {Card, CardBody} from 'reactstrap'
+
+import classNames from 'classnames'
+import { Card, CardBody } from 'reactstrap'
+
+import { Infocard } from './types'
 
 import css from './Detail.less'
-import {Infocard} from './types'
 
 export default function InfoCard(props: Infocard) {
-    const {isHidden, banner, CTA, pricing, resources = {}, support} = props
-    const {documentationLink, privacyPolicyLink, others} = resources
+    const { isHidden, banner, CTA, pricing, resources = {}, support } = props
+    const { documentationLink, privacyPolicyLink, others } = resources
 
     if (isHidden) return null
 
@@ -21,7 +23,7 @@ export default function InfoCard(props: Infocard) {
                         <h2
                             className={classNames(
                                 css.categoryTitle,
-                                css.cardTitle
+                                css.cardTitle,
                             )}
                         >
                             Pricing
@@ -47,7 +49,7 @@ export default function InfoCard(props: Infocard) {
                                             className={classNames(
                                                 'material-icons-outlined',
                                                 css.actionIcon,
-                                                css.actionIconBigger
+                                                css.actionIconBigger,
                                             )}
                                         >
                                             attach_money
@@ -66,7 +68,7 @@ export default function InfoCard(props: Infocard) {
                         <h2
                             className={classNames(
                                 css.categoryTitle,
-                                css.cardTitle
+                                css.cardTitle,
                             )}
                         >
                             Resources
@@ -84,7 +86,7 @@ export default function InfoCard(props: Infocard) {
                                             className={classNames(
                                                 'material-icons-outlined',
                                                 css.actionIcon,
-                                                css.actionIconBigger
+                                                css.actionIconBigger,
                                             )}
                                         >
                                             description
@@ -95,7 +97,7 @@ export default function InfoCard(props: Infocard) {
                             )}
                             {others &&
                                 others.length > 0 &&
-                                others.map(({url, title, icon}, index) => (
+                                others.map(({ url, title, icon }, index) => (
                                     <li key={`resource_${index}`}>
                                         <a
                                             href={url}
@@ -106,7 +108,7 @@ export default function InfoCard(props: Infocard) {
                                             <i
                                                 className={classNames(
                                                     'material-icons',
-                                                    css.actionIcon
+                                                    css.actionIcon,
                                                 )}
                                             >
                                                 {icon}
@@ -127,7 +129,7 @@ export default function InfoCard(props: Infocard) {
                                             className={classNames(
                                                 'material-icons-outlined',
                                                 css.actionIcon,
-                                                css.actionIconBigger
+                                                css.actionIconBigger,
                                             )}
                                         >
                                             privacy_tip
@@ -144,7 +146,7 @@ export default function InfoCard(props: Infocard) {
                         <h2
                             className={classNames(
                                 css.categoryTitle,
-                                css.cardTitle
+                                css.cardTitle,
                             )}
                         >
                             Support
@@ -161,7 +163,7 @@ export default function InfoCard(props: Infocard) {
                                         <i
                                             className={classNames(
                                                 'material-icons',
-                                                css.actionIcon
+                                                css.actionIcon,
                                             )}
                                         >
                                             mail
@@ -181,7 +183,7 @@ export default function InfoCard(props: Infocard) {
                                         <i
                                             className={classNames(
                                                 'material-icons',
-                                                css.actionIcon
+                                                css.actionIcon,
                                             )}
                                         >
                                             phone

@@ -1,4 +1,4 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
 import {
     fetchClosedTicketsTrend,
@@ -10,8 +10,8 @@ import {
     fetchZeroTouchTicketsPercentageMetricTrend,
     useZeroTouchTicketsPercentageMetricTrend,
 } from 'hooks/reporting/support-performance/agents/useZeroTouchTicketsPercentageMetricTrend'
-import {StatsFilters} from 'models/stat/types'
-import {assumeMock} from 'utils/testing'
+import { StatsFilters } from 'models/stat/types'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/metricTrends')
 const useZeroTicketsTrendMock = assumeMock(useZeroTouchTicketsTrend)
@@ -31,23 +31,26 @@ describe('ZeroTouchTicketsPercentageMetricTrend', () => {
 
         it('should calculate percentages correctly', () => {
             const mockData = {
-                data: {value: 50, prevValue: 30},
+                data: { value: 50, prevValue: 30 },
                 isFetching: false,
                 isError: false,
             }
             const mockClosedTicketsPerAgent = {
-                data: {value: 200, prevValue: 100},
+                data: { value: 200, prevValue: 100 },
                 isFetching: false,
                 isError: false,
             }
 
             useZeroTicketsTrendMock.mockImplementation(() => mockData)
             useClosedTicketsTrendMock.mockImplementation(
-                () => mockClosedTicketsPerAgent
+                () => mockClosedTicketsPerAgent,
             )
 
-            const {result} = renderHook(() =>
-                useZeroTouchTicketsPercentageMetricTrend(statsFilters, timezone)
+            const { result } = renderHook(() =>
+                useZeroTouchTicketsPercentageMetricTrend(
+                    statsFilters,
+                    timezone,
+                ),
             )
 
             expect(result?.current?.data?.value).toBe(25)
@@ -71,8 +74,11 @@ describe('ZeroTouchTicketsPercentageMetricTrend', () => {
             useZeroTicketsTrendMock.mockReturnValue(mockData)
             useClosedTicketsTrendMock.mockReturnValue(mockClosedTicketsPerAgent)
 
-            const {result} = renderHook(() =>
-                useZeroTouchTicketsPercentageMetricTrend(statsFilters, timezone)
+            const { result } = renderHook(() =>
+                useZeroTouchTicketsPercentageMetricTrend(
+                    statsFilters,
+                    timezone,
+                ),
             )
 
             expect(result?.current?.data).toBe(undefined)
@@ -94,11 +100,14 @@ describe('ZeroTouchTicketsPercentageMetricTrend', () => {
 
             useZeroTicketsTrendMock.mockImplementation(() => mockData)
             useClosedTicketsTrendMock.mockImplementation(
-                () => mockClosedTicketsPerAgent
+                () => mockClosedTicketsPerAgent,
             )
 
-            const {result} = renderHook(() =>
-                useZeroTouchTicketsPercentageMetricTrend(statsFilters, timezone)
+            const { result } = renderHook(() =>
+                useZeroTouchTicketsPercentageMetricTrend(
+                    statsFilters,
+                    timezone,
+                ),
             )
 
             expect(result?.current?.data?.value).toBe(null)
@@ -119,24 +128,24 @@ describe('ZeroTouchTicketsPercentageMetricTrend', () => {
 
         it('should calculate percentages correctly', async () => {
             const mockData = {
-                data: {value: 50, prevValue: 30},
+                data: { value: 50, prevValue: 30 },
                 isFetching: false,
                 isError: false,
             }
             const mockClosedTicketsPerAgent = {
-                data: {value: 200, prevValue: 100},
+                data: { value: 200, prevValue: 100 },
                 isFetching: false,
                 isError: false,
             }
 
             fetchZeroTicketsTrendMock.mockResolvedValue(mockData)
             fetchClosedTicketsTrendMock.mockResolvedValue(
-                mockClosedTicketsPerAgent
+                mockClosedTicketsPerAgent,
             )
 
             const result = await fetchZeroTouchTicketsPercentageMetricTrend(
                 statsFilters,
-                timezone
+                timezone,
             )
 
             expect(result?.data?.value).toBe(25)
@@ -159,12 +168,12 @@ describe('ZeroTouchTicketsPercentageMetricTrend', () => {
 
             fetchZeroTicketsTrendMock.mockResolvedValue(mockData)
             fetchClosedTicketsTrendMock.mockResolvedValue(
-                mockClosedTicketsPerAgent
+                mockClosedTicketsPerAgent,
             )
 
             const result = await fetchZeroTouchTicketsPercentageMetricTrend(
                 statsFilters,
-                timezone
+                timezone,
             )
 
             expect(result?.data?.value).toBe(null)
@@ -187,12 +196,12 @@ describe('ZeroTouchTicketsPercentageMetricTrend', () => {
 
             fetchZeroTicketsTrendMock.mockRejectedValue(mockData)
             fetchClosedTicketsTrendMock.mockRejectedValue(
-                mockClosedTicketsPerAgent
+                mockClosedTicketsPerAgent,
             )
 
             const result = await fetchZeroTouchTicketsPercentageMetricTrend(
                 statsFilters,
-                timezone
+                timezone,
             )
 
             expect(result?.data).toBe(undefined)

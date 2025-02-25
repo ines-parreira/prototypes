@@ -1,8 +1,9 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {screen, render} from '@testing-library/react'
 import React from 'react'
 
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { render, screen } from '@testing-library/react'
+
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import PreviewHeader from '../PreviewHeader'
 
@@ -31,7 +32,7 @@ describe('<PreviewHeader />', () => {
                         updatedDatetime: '',
                     }}
                 />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(screen.getByText(/thanks for the feedback/i)).toBeInTheDocument()

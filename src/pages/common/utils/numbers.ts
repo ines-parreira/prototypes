@@ -6,7 +6,7 @@ const DEFAULT_OPTIONS = {
 
 export function formatPercentage(
     value: number,
-    options?: Intl.NumberFormatOptions
+    options?: Intl.NumberFormatOptions,
 ) {
     const optionsWithDefaults = _defaults(options, DEFAULT_OPTIONS)
 

@@ -1,10 +1,11 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {waitFor, render, screen, fireEvent, act} from '@testing-library/react'
 import React from 'react'
 
-import {useCollectionsFromShopifyIntegration} from 'models/integration/queries'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+
+import { useCollectionsFromShopifyIntegration } from 'models/integration/queries'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 import CollectionSelector from '../CollectionSelector'
 
@@ -13,7 +14,7 @@ jest.mock('models/integration/queries')
 const queryClient = mockQueryClient()
 
 const useCollectionsFromShopifyIntegrationMock = assumeMock(
-    useCollectionsFromShopifyIntegration
+    useCollectionsFromShopifyIntegration,
 )
 
 describe('<CollectionSelector />', () => {
@@ -41,10 +42,10 @@ describe('<CollectionSelector />', () => {
             onChange: jest.fn(),
         }
 
-        const {getByText} = render(
+        const { getByText } = render(
             <QueryClientProvider client={queryClient}>
                 <CollectionSelector {...props} />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(getByText('Select a product collection')).toBeInTheDocument()
@@ -61,10 +62,10 @@ describe('<CollectionSelector />', () => {
             onChange: jest.fn(),
         }
 
-        const {getByText} = render(
+        const { getByText } = render(
             <QueryClientProvider client={queryClient}>
                 <CollectionSelector {...props} />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(getByText('Select a product collection')).toBeInTheDocument()
@@ -89,7 +90,7 @@ describe('<CollectionSelector />', () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <CollectionSelector {...props} />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         const element = screen.getByText('Select a product collection')
@@ -98,15 +99,15 @@ describe('<CollectionSelector />', () => {
         const input = screen.getByRole('textbox')
 
         act(() => {
-            fireEvent.change(input, {target: {value: 'product'}})
+            fireEvent.change(input, { target: { value: 'product' } })
             // Make sure all debounced functions are called
             jest.runAllTimers()
         })
 
         await waitFor(() => {
             expect(
-                useCollectionsFromShopifyIntegrationMock
-            ).toHaveBeenCalledWith(1, {search: 'product'})
+                useCollectionsFromShopifyIntegrationMock,
+            ).toHaveBeenCalledWith(1, { search: 'product' })
         })
     })
 })

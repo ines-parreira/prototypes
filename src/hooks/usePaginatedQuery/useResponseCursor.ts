@@ -1,4 +1,4 @@
-import {AxiosResponse} from 'axios'
+import { AxiosResponse } from 'axios'
 
 import {
     ApiListResponseCursorPagination,
@@ -18,9 +18,9 @@ export const useResponseCursor = ({
 
     let isCursorInvalid = false
     if (isGorgiasApiError(error)) {
-        const {data} = error.response.data.error
+        const { data } = error.response.data.error
         if (data && typeof data === 'object' && 'cursor' in data) {
-            const {cursor} = data as {cursor?: unknown}
+            const { cursor } = data as { cursor?: unknown }
             if (Array.isArray(cursor) && cursor.length) {
                 isCursorInvalid = true
             }

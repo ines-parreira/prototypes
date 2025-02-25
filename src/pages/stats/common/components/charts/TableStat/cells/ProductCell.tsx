@@ -1,5 +1,6 @@
+import React, { useEffect, useState } from 'react'
+
 import axios from 'axios'
-import React, {useEffect, useState} from 'react'
 
 import imagePlaceholder from 'assets/img/icons/insert-photo.svg'
 
@@ -10,7 +11,7 @@ type Props = {
     imageUrl: string | null
 }
 
-const ProductCell = ({name, imageUrl}: Props) => {
+const ProductCell = ({ name, imageUrl }: Props) => {
     const [isImageNotFound, setIsImageNotFound] = useState(!imageUrl)
 
     useEffect(() => {

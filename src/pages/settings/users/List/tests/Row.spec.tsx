@@ -1,8 +1,9 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {agents} from 'fixtures/agents'
-import {getInitials} from 'gorgias-design-system/Avatar/utils'
+import { render, screen } from '@testing-library/react'
+
+import { agents } from 'fixtures/agents'
+import { getInitials } from 'gorgias-design-system/Avatar/utils'
 
 import Row from '../Row'
 
@@ -16,7 +17,7 @@ describe('<Row />', () => {
     })
 
     it('should render a role or account owner badge', () => {
-        const {rerender} = render(<Row agent={agents[0]} />)
+        const { rerender } = render(<Row agent={agents[0]} />)
 
         expect(screen.getByText('Lead'))
 
@@ -26,11 +27,11 @@ describe('<Row />', () => {
     })
 
     it('should render 2FA badge when enabled or disabled', () => {
-        const {rerender} = render(<Row agent={agents[0]} />)
+        const { rerender } = render(<Row agent={agents[0]} />)
 
         expect(screen.getByText('Disabled'))
 
-        rerender(<Row agent={{...agents[1], has_2fa_enabled: true}} />)
+        rerender(<Row agent={{ ...agents[1], has_2fa_enabled: true }} />)
 
         expect(screen.getByText('Enabled'))
     })

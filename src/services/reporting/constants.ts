@@ -1,4 +1,4 @@
-import {TicketSLAStatus} from 'models/reporting/cubes/sla/TicketSLACube'
+import { TicketSLAStatus } from 'models/reporting/cubes/sla/TicketSLACube'
 
 export const CUSTOMER_SATISFACTION_LABEL = 'Average CSAT'
 export const MEDIAN_FIRST_RESPONSE_TIME_LABEL = 'First response time'

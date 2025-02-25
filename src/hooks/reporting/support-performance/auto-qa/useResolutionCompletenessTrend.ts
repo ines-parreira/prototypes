@@ -1,11 +1,13 @@
-import useMetricTrend, {fetchMetricTrend} from 'hooks/reporting/useMetricTrend'
-import {resolutionCompletenessQueryFactory as resolutionCompletenessQueryFactory} from 'models/reporting/queryFactories/auto-qa/resolutionCompletenessQueryFactory'
-import {StatsFilters} from 'models/stat/types'
-import {getPreviousPeriod} from 'utils/reporting'
+import useMetricTrend, {
+    fetchMetricTrend,
+} from 'hooks/reporting/useMetricTrend'
+import { resolutionCompletenessQueryFactory } from 'models/reporting/queryFactories/auto-qa/resolutionCompletenessQueryFactory'
+import { StatsFilters } from 'models/stat/types'
+import { getPreviousPeriod } from 'utils/reporting'
 
 export const useResolutionCompletenessTrend = (
     filters: StatsFilters,
-    timezone: string
+    timezone: string,
 ) =>
     useMetricTrend(
         resolutionCompletenessQueryFactory(filters, timezone),
@@ -14,13 +16,13 @@ export const useResolutionCompletenessTrend = (
                 ...filters,
                 period: getPreviousPeriod(filters.period),
             },
-            timezone
-        )
+            timezone,
+        ),
     )
 
 export const fetchResolutionCompletenessTrend = (
     filters: StatsFilters,
-    timezone: string
+    timezone: string,
 ) =>
     fetchMetricTrend(
         resolutionCompletenessQueryFactory(filters, timezone),
@@ -29,6 +31,6 @@ export const fetchResolutionCompletenessTrend = (
                 ...filters,
                 period: getPreviousPeriod(filters.period),
             },
-            timezone
-        )
+            timezone,
+        ),
     )

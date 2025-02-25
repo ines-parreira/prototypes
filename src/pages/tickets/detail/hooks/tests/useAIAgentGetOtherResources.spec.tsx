@@ -1,13 +1,14 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {useGetHelpCenterArticleList} from 'models/helpCenter/queries'
-import {useGetAICompatibleMacros} from 'models/macro/queries'
-import {useGetStoreWorkflowsConfigurations} from 'models/workflows/queries'
-import {useFileIngestion} from 'pages/aiAgent/hooks/useFileIngestion'
-import {useGuidanceArticles} from 'pages/aiAgent/hooks/useGuidanceArticles'
-import {usePublicResources} from 'pages/aiAgent/hooks/usePublicResources'
-import {assumeMock} from 'utils/testing'
+import { render } from '@testing-library/react'
+
+import { useGetHelpCenterArticleList } from 'models/helpCenter/queries'
+import { useGetAICompatibleMacros } from 'models/macro/queries'
+import { useGetStoreWorkflowsConfigurations } from 'models/workflows/queries'
+import { useFileIngestion } from 'pages/aiAgent/hooks/useFileIngestion'
+import { useGuidanceArticles } from 'pages/aiAgent/hooks/useGuidanceArticles'
+import { usePublicResources } from 'pages/aiAgent/hooks/usePublicResources'
+import { assumeMock } from 'utils/testing'
 
 import * as useAIAgentGetOtherResources from '../useAIAgentGetOtherResources'
 
@@ -19,14 +20,14 @@ jest.mock('pages/aiAgent/hooks/useGuidanceArticles')
 jest.mock('models/workflows/queries')
 
 const mockedUseGetHelpCenterArticleList = assumeMock(
-    useGetHelpCenterArticleList
+    useGetHelpCenterArticleList,
 )
 const mockedUseGetAICompatibleMacros = assumeMock(useGetAICompatibleMacros)
 const mockedUsePublicResources = assumeMock(usePublicResources)
 const mockedUseFileIngestion = assumeMock(useFileIngestion)
 const mockedUseGuidanceArticles = assumeMock(useGuidanceArticles)
 const mockedUseGetStoreWorkflowsConfigurations = assumeMock(
-    useGetStoreWorkflowsConfigurations
+    useGetStoreWorkflowsConfigurations,
 )
 
 const TestComponent = () => {
@@ -45,11 +46,11 @@ describe('useAIAgentGetOtherResources', () => {
     describe('when no data is available', () => {
         beforeEach(() => {
             mockedUseGetHelpCenterArticleList.mockReturnValue({
-                data: {data: []},
+                data: { data: [] },
             } as unknown as ReturnType<typeof useGetHelpCenterArticleList>)
 
             mockedUseGetAICompatibleMacros.mockReturnValue({
-                data: {pages: [{data: {data: []}}]},
+                data: { pages: [{ data: { data: [] } }] },
             } as unknown as ReturnType<typeof useGetAICompatibleMacros>)
 
             mockedUsePublicResources.mockReturnValue({
@@ -83,7 +84,7 @@ describe('useAIAgentGetOtherResources', () => {
 
             const spyUseAIAgentGetOtherResources = jest.spyOn(
                 useAIAgentGetOtherResources,
-                'useAIAgentGetOtherResources'
+                'useAIAgentGetOtherResources',
             )
 
             // Act
@@ -110,7 +111,7 @@ describe('useAIAgentGetOtherResources', () => {
                     actionsOptions: [],
                     isOtherResourceListLoading: false,
                     getResourcesFromLabels: expect.any(Function),
-                })
+                }),
             )
         })
     })
@@ -120,8 +121,8 @@ describe('useAIAgentGetOtherResources', () => {
             mockedUseGetHelpCenterArticleList.mockReturnValue({
                 data: {
                     data: [
-                        {id: 1, translation: {title: 'test1'}},
-                        {id: 2, translation: {title: 'test2'}},
+                        { id: 1, translation: { title: 'test1' } },
+                        { id: 2, translation: { title: 'test2' } },
                     ],
                 },
             } as unknown as ReturnType<typeof useGetHelpCenterArticleList>)
@@ -132,8 +133,8 @@ describe('useAIAgentGetOtherResources', () => {
                         {
                             data: {
                                 data: [
-                                    {id: 3, name: 'test1'},
-                                    {id: 4, name: 'test2'},
+                                    { id: 3, name: 'test1' },
+                                    { id: 4, name: 'test2' },
                                 ],
                             },
                         },
@@ -143,24 +144,24 @@ describe('useAIAgentGetOtherResources', () => {
 
             mockedUsePublicResources.mockReturnValue({
                 sourceItems: [
-                    {id: 5, url: 'test1'},
-                    {id: 6, url: 'test2'},
+                    { id: 5, url: 'test1' },
+                    { id: 6, url: 'test2' },
                 ],
                 isSourceItemsListLoading: false,
             } as unknown as ReturnType<typeof usePublicResources>)
 
             mockedUseGuidanceArticles.mockReturnValue({
                 guidanceArticles: [
-                    {id: 7, title: 'test1'},
-                    {id: 8, title: 'test2'},
+                    { id: 7, title: 'test1' },
+                    { id: 8, title: 'test2' },
                 ],
                 isGuidanceArticleListLoading: false,
             } as unknown as ReturnType<typeof useGuidanceArticles>)
 
             mockedUseGetStoreWorkflowsConfigurations.mockReturnValue({
                 data: [
-                    {id: 9, name: 'test1'},
-                    {id: 10, name: 'test2'},
+                    { id: 9, name: 'test1' },
+                    { id: 10, name: 'test2' },
                 ],
                 isLoading: false,
             } as unknown as ReturnType<
@@ -169,8 +170,8 @@ describe('useAIAgentGetOtherResources', () => {
 
             mockedUseFileIngestion.mockReturnValue({
                 ingestedFiles: [
-                    {id: 11, filename: 'test1', status: 'PENDING'},
-                    {id: 12, filename: 'test2', status: 'SUCCESSFUL'},
+                    { id: 11, filename: 'test1', status: 'PENDING' },
+                    { id: 12, filename: 'test2', status: 'SUCCESSFUL' },
                 ],
                 ingestFile: jest.fn(),
                 deleteIngestedFile: jest.fn(),
@@ -183,7 +184,7 @@ describe('useAIAgentGetOtherResources', () => {
 
             const spyUseAIAgentGetOtherResources = jest.spyOn(
                 useAIAgentGetOtherResources,
-                'useAIAgentGetOtherResources'
+                'useAIAgentGetOtherResources',
             )
 
             // Act
@@ -203,29 +204,29 @@ describe('useAIAgentGetOtherResources', () => {
             expect(spyUseAIAgentGetOtherResources).toHaveLastReturnedWith(
                 expect.objectContaining({
                     articlesOptions: [
-                        {value: 1, label: 'test1'},
-                        {value: 2, label: 'test2'},
+                        { value: 1, label: 'test1' },
+                        { value: 2, label: 'test2' },
                     ],
                     guidanceOptions: [
-                        {value: 7, label: 'test1'},
-                        {value: 8, label: 'test2'},
+                        { value: 7, label: 'test1' },
+                        { value: 8, label: 'test2' },
                     ],
                     snippetsOptions: [
-                        {value: 5, label: 'test1'},
-                        {value: 6, label: 'test2'},
+                        { value: 5, label: 'test1' },
+                        { value: 6, label: 'test2' },
                     ],
                     macrosOptions: [
-                        {value: 3, label: 'test1'},
-                        {value: 4, label: 'test2'},
+                        { value: 3, label: 'test1' },
+                        { value: 4, label: 'test2' },
                     ],
                     actionsOptions: [
-                        {value: 9, label: 'test1'},
-                        {value: 10, label: 'test2'},
+                        { value: 9, label: 'test1' },
+                        { value: 10, label: 'test2' },
                     ],
-                    fileSnippetsOptions: [{value: 12, label: 'test2'}],
+                    fileSnippetsOptions: [{ value: 12, label: 'test2' }],
                     isOtherResourceListLoading: false,
                     getResourcesFromLabels: expect.any(Function),
-                })
+                }),
             )
         })
 
@@ -234,7 +235,7 @@ describe('useAIAgentGetOtherResources', () => {
 
             const spyUseAIAgentGetOtherResources = jest.spyOn(
                 useAIAgentGetOtherResources,
-                'useAIAgentGetOtherResources'
+                'useAIAgentGetOtherResources',
             )
 
             // Act
@@ -254,39 +255,48 @@ describe('useAIAgentGetOtherResources', () => {
             expect(spyUseAIAgentGetOtherResources).toHaveLastReturnedWith(
                 expect.objectContaining({
                     getResourcesFromLabels: expect.any(Function),
-                })
+                }),
             )
 
-            const {getResourcesFromLabels} = spyUseAIAgentGetOtherResources.mock
-                .results[spyUseAIAgentGetOtherResources.mock.results.length - 1]
-                .value as ReturnType<
+            const { getResourcesFromLabels } = spyUseAIAgentGetOtherResources
+                .mock.results[
+                spyUseAIAgentGetOtherResources.mock.results.length - 1
+            ].value as ReturnType<
                 typeof useAIAgentGetOtherResources.useAIAgentGetOtherResources
             >
 
             expect(getResourcesFromLabels).toBeInstanceOf(Function)
             expect(getResourcesFromLabels(['Guidance::test1'])).toEqual([
-                {type: 'resource', resourceType: 'guidance', resourceId: '7'},
+                { type: 'resource', resourceType: 'guidance', resourceId: '7' },
             ])
             expect(
-                getResourcesFromLabels(['Help Center articles::test1'])
+                getResourcesFromLabels(['Help Center articles::test1']),
             ).toEqual([
-                {type: 'resource', resourceType: 'article', resourceId: '1'},
+                { type: 'resource', resourceType: 'article', resourceId: '1' },
             ])
             expect(getResourcesFromLabels(['Macros::test1'])).toEqual([
-                {type: 'resource', resourceType: 'macro', resourceId: '3'},
+                { type: 'resource', resourceType: 'macro', resourceId: '3' },
             ])
             expect(
-                getResourcesFromLabels(['Actions::Soft action::test1'])
+                getResourcesFromLabels(['Actions::Soft action::test1']),
             ).toEqual([
-                {type: 'resource', resourceType: 'soft_action', resourceId: 9},
+                {
+                    type: 'resource',
+                    resourceType: 'soft_action',
+                    resourceId: 9,
+                },
             ])
             expect(
-                getResourcesFromLabels(['Actions::Hard action::test2'])
+                getResourcesFromLabels(['Actions::Hard action::test2']),
             ).toEqual([
-                {type: 'resource', resourceType: 'hard_action', resourceId: 10},
+                {
+                    type: 'resource',
+                    resourceType: 'hard_action',
+                    resourceId: 10,
+                },
             ])
             expect(
-                getResourcesFromLabels(['External websites::test2'])
+                getResourcesFromLabels(['External websites::test2']),
             ).toEqual([
                 {
                     type: 'resource',
@@ -303,7 +313,7 @@ describe('useAIAgentGetOtherResources', () => {
             ])
 
             expect(getResourcesFromLabels(['Other'])).toEqual([
-                {type: 'resource', resourceType: 'other', resourceId: '1'},
+                { type: 'resource', resourceType: 'other', resourceId: '1' },
             ])
         })
     })

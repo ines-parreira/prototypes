@@ -1,7 +1,7 @@
 import React from 'react'
 
 import Button from 'pages/common/components/button/Button'
-import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
+import { DOWNLOAD_DATA_BUTTON_LABEL } from 'pages/stats/constants'
 
 type Props = {
     disabled: boolean
@@ -9,7 +9,7 @@ type Props = {
     title: string
 }
 
-export const DownloadDataButton = ({disabled, onClick, title}: Props) => {
+export const DownloadDataButton = ({ disabled, onClick, title }: Props) => {
     return (
         <Button
             intent="secondary"

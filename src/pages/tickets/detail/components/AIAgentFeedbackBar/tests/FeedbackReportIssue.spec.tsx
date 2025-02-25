@@ -1,13 +1,14 @@
-import {fireEvent, render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {SegmentEvent} from 'common/segment'
-import {logEventWithSampling} from 'common/segment/segment'
+import { fireEvent, render, screen } from '@testing-library/react'
+
+import { SegmentEvent } from 'common/segment'
+import { logEventWithSampling } from 'common/segment/segment'
 import {
     ReportIssueLabels,
     ReportIssueOption,
 } from 'models/aiAgentFeedback/constants'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
 import FeedbackReportIssue from '../FeedbackReportIssue'
 
@@ -28,7 +29,7 @@ describe('FeedbackReportIssue', () => {
                 value={allOptions}
                 onChange={jest.fn()}
                 accountId={1}
-            />
+            />,
         )
 
         let count = 0
@@ -49,7 +50,7 @@ describe('FeedbackReportIssue', () => {
                 value={allOptions}
                 onChange={onChange}
                 accountId={1}
-            />
+            />,
         )
 
         fireEvent.click(screen.getAllByText('close')[0])
@@ -60,7 +61,7 @@ describe('FeedbackReportIssue', () => {
             {
                 accountId: 1,
                 value: allOptions[0],
-            }
+            },
         )
     })
 
@@ -68,7 +69,11 @@ describe('FeedbackReportIssue', () => {
         const onChange = jest.fn()
 
         render(
-            <FeedbackReportIssue value={[]} onChange={onChange} accountId={1} />
+            <FeedbackReportIssue
+                value={[]}
+                onChange={onChange}
+                accountId={1}
+            />,
         )
 
         const listBox = screen.getByRole('combobox')
@@ -84,7 +89,7 @@ describe('FeedbackReportIssue', () => {
             {
                 accountId: 1,
                 value: firstElement,
-            }
+            },
         )
     })
 
@@ -97,7 +102,7 @@ describe('FeedbackReportIssue', () => {
                 value={[firstElement]}
                 onChange={onChange}
                 accountId={1}
-            />
+            />,
         )
 
         const listBox = screen.getByRole('combobox')

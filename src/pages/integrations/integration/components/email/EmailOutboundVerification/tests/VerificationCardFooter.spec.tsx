@@ -1,5 +1,6 @@
-import {cleanup, fireEvent, render, screen} from '@testing-library/react'
 import React from 'react'
+
+import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 
 import VerificationCardFooter from '../VerificationCard/VerificationCardFooter'
 
@@ -18,7 +19,7 @@ describe('Verification card footer', () => {
     it('should be interactive and display Verified when isVerified=true', () => {
         render(<VerificationCardFooter {...commonProps} isVerified />)
 
-        expect(screen.getByText('Verified', {exact: true})).toBeTruthy()
+        expect(screen.getByText('Verified', { exact: true })).toBeTruthy()
         fireEvent.click(screen.getByTestId('verification-status-footer'))
         expect(commonProps.onClick).toHaveBeenCalled()
     })
@@ -26,7 +27,7 @@ describe('Verification card footer', () => {
     it('should not be interactive when isVerified=false', () => {
         render(<VerificationCardFooter {...commonProps} isVerified={false} />)
 
-        expect(screen.getByText('Not verified', {exact: true})).toBeTruthy()
+        expect(screen.getByText('Not verified', { exact: true })).toBeTruthy()
 
         fireEvent.click(screen.getByTestId('verification-status-footer'))
         expect(commonProps.onClick).not.toHaveBeenCalled()
@@ -38,9 +39,9 @@ describe('Verification card footer', () => {
                 {...commonProps}
                 isVerified={false}
                 showStatus={false}
-            />
+            />,
         )
 
-        expect(screen.queryByText('Not verified', {exact: true})).toBeFalsy()
+        expect(screen.queryByText('Not verified', { exact: true })).toBeFalsy()
     })
 })

@@ -1,5 +1,3 @@
-import classnames from 'classnames'
-import _get from 'lodash/get'
 import React, {
     ComponentProps,
     ReactNode,
@@ -8,13 +6,16 @@ import React, {
     useMemo,
     useState,
 } from 'react'
-import {Popover, PopoverBody, PopoverHeader} from 'reactstrap'
 
-import {useAppNode} from 'appNode'
+import classnames from 'classnames'
+import _get from 'lodash/get'
+import { Popover, PopoverBody, PopoverHeader } from 'reactstrap'
+
+import { useAppNode } from 'appNode'
 import useId from 'hooks/useId'
 import useIsMounted from 'hooks/useIsMounted'
-import Button, {type ButtonProps} from 'pages/common/components/button/Button'
-import {GroupPositionContext} from 'pages/common/components/layout/Group'
+import Button, { type ButtonProps } from 'pages/common/components/button/Button'
+import { GroupPositionContext } from 'pages/common/components/layout/Group'
 
 import css from './ConfirmationPopover.less'
 
@@ -72,7 +73,7 @@ export default function ConfirmationPopover({
             (buttonProps?.type === 'submit'
                 ? element?.parentElement || rootElement
                 : rootElement),
-        [buttonProps?.type, containerElement, element, rootElement]
+        [buttonProps?.type, containerElement, element, rootElement],
     )
 
     const handleDisplayConfirmation = useCallback(
@@ -88,7 +89,7 @@ export default function ConfirmationPopover({
             event?.stopPropagation()
             setIsOpened(true)
         },
-        [buttonProps?.type]
+        [buttonProps?.type],
     )
 
     const handleConfirmation = () => {
@@ -137,7 +138,7 @@ export default function ConfirmationPopover({
                                     {...cancelButtonProps}
                                     className={classnames(
                                         css.cancelButton,
-                                        cancelButtonProps?.className
+                                        cancelButtonProps?.className,
                                     )}
                                     onClick={handleCancellation}
                                 >

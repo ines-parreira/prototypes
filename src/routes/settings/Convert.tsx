@@ -1,10 +1,11 @@
 import React from 'react'
-import {Redirect, Route, Switch, useRouteMatch} from 'react-router-dom'
 
-import {RevenueAddonApiClientProvider} from 'pages/convert/common/hooks/useConvertApi'
+import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom'
+
+import { RevenueAddonApiClientProvider } from 'pages/convert/common/hooks/useConvertApi'
 
 export function Convert() {
-    const {path} = useRouteMatch()
+    const { path } = useRouteMatch()
 
     return (
         <RevenueAddonApiClientProvider>

@@ -1,12 +1,11 @@
-import {ProductType} from 'models/billing/types'
-import {cancelHelpdeskAutoRenewal} from 'state/currentAccount/actions'
+import { ProductType } from 'models/billing/types'
+import { cancelHelpdeskAutoRenewal } from 'state/currentAccount/actions'
 
 import {
     HELPDESK_CANCELLATION_REASONS,
     HELPDESK_REASONS_TO_CANDU_CONTENTS,
 } from './constants'
-
-import {CancellationScenario} from './types'
+import { CancellationScenario } from './types'
 
 export const HELPDESK_CANCELLATION_SCENARIO: CancellationScenario = {
     reasons: HELPDESK_CANCELLATION_REASONS,

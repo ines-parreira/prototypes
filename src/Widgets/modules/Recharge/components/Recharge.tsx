@@ -1,19 +1,18 @@
 import React from 'react'
 
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-
 import Template, {
-    TemplateCustomization,
     CustomizationContext,
+    TemplateCustomization,
 } from 'Widgets/modules/Template'
-import {FALLBACK_VALUE} from 'Widgets/modules/Template/modules/Field'
-import {WidgetProps} from 'Widgets/modules/Widget'
+import { FALLBACK_VALUE } from 'Widgets/modules/Template/modules/Field'
+import { WidgetProps } from 'Widgets/modules/Widget'
 
-import {formatRechargeDateTime} from '../helpers/formatRechargeDateTime'
-import {chargeCustomization} from './Charge'
-import {customerCustomization} from './Customer'
-import {orderCustomization} from './Order'
-import {subscriptionCustomization} from './Subscription'
+import { formatRechargeDateTime } from '../helpers/formatRechargeDateTime'
+import { chargeCustomization } from './Charge'
+import { customerCustomization } from './Customer'
+import { orderCustomization } from './Order'
+import { subscriptionCustomization } from './Subscription'
 
 export const customization: TemplateCustomization = {
     card: [

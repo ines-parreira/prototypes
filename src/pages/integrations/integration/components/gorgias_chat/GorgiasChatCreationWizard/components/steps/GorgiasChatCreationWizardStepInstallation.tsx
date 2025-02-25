@@ -1,18 +1,19 @@
-import classnames from 'classnames'
-import {Map, fromJS} from 'immutable'
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
-import {SegmentEvent} from 'common/segment'
+import classnames from 'classnames'
+import { fromJS, Map } from 'immutable'
+
+import { SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
+    GorgiasChatCreationWizardInstallationMethod,
     GorgiasChatCreationWizardStatus,
     GorgiasChatCreationWizardSteps,
-    GorgiasChatCreationWizardInstallationMethod,
     IntegrationType,
 } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
-import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
+import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 import {
     NavigatedSuccessModalLocationState,
     NavigatedSuccessModalName,
@@ -20,9 +21,9 @@ import {
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 import history from 'pages/history'
-import {Tab} from 'pages/integrations/integration/types'
-import {updateOrCreateIntegration} from 'state/integrations/actions'
-import {getStoreIntegrations} from 'state/integrations/selectors'
+import { Tab } from 'pages/integrations/integration/types'
+import { updateOrCreateIntegration } from 'state/integrations/actions'
+import { getStoreIntegrations } from 'state/integrations/selectors'
 
 import GorgiasChatIntegrationConnectStore from '../../../GorgiasChatIntegrationInstall/GorgiasChatIntegrationConnectStore'
 import useShopifyThemeAppExtension from '../../../hooks/useShopifyThemeAppExtension'
@@ -48,7 +49,7 @@ const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
 
     const dispatch = useAppDispatch()
 
-    const {goToPreviousStep} = useNavigateWizardSteps()
+    const { goToPreviousStep } = useNavigateWizardSteps()
 
     const [hasSubmitted, setHasSubmitted] = useState(false)
 
@@ -57,7 +58,7 @@ const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
     const shopIntegrationId = integration.getIn(['meta', 'shop_integration_id'])
 
     const storeIntegration = storeIntegrations.find(
-        (storeIntegration) => storeIntegration.id === shopIntegrationId
+        (storeIntegration) => storeIntegration.id === shopIntegrationId,
     )
 
     const isOneClickInstallationAllowed =
@@ -73,10 +74,10 @@ const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
         shouldUseThemeAppExtensionInstallation,
         themeAppExtensionInstallationUrl,
     } = useThemeAppExtensionInstallation(
-        isStoreOfShopifyType ? storeIntegration : undefined
+        isStoreOfShopifyType ? storeIntegration : undefined,
     )
 
-    const {isInstalled: isThemeAppExtensionInstalled} =
+    const { isInstalled: isThemeAppExtensionInstalled } =
         useShopifyThemeAppExtension({
             shopifyIntegration: isStoreOfShopifyType
                 ? storeIntegration
@@ -88,7 +89,7 @@ const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
         ? (currentInstallationMethod ??
           integration.getIn(
               ['meta', 'wizard', 'installation_method'],
-              GorgiasChatCreationWizardInstallationMethod.OneClick
+              GorgiasChatCreationWizardInstallationMethod.OneClick,
           ))
         : GorgiasChatCreationWizardInstallationMethod.Manual
 
@@ -103,7 +104,7 @@ const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
         if (shouldPublish) {
             meta = meta.setIn(
                 ['wizard', 'status'],
-                GorgiasChatCreationWizardStatus.Published
+                GorgiasChatCreationWizardStatus.Published,
             )
 
             if (isOneClickInstallation) {
@@ -136,7 +137,7 @@ const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
                             : SegmentEvent.ChatWidgetWizardStepCompleted,
                         {
                             installation_method: installationMethod,
-                        }
+                        },
                     )
 
                     setHasSubmitted(true)
@@ -165,14 +166,14 @@ const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
                             window.open(
                                 themeAppExtensionInstallationUrl,
                                 '_blank',
-                                'noopener noreferrer'
+                                'noopener noreferrer',
                             )
                         }
                     }
                 },
                 shouldPublish,
-                'Changes saved'
-            )
+                'Changes saved',
+            ),
         )
     }
 
@@ -197,7 +198,7 @@ const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
                             onClick={() =>
                                 onSave(false, true)?.then(() => {
                                     history.push(
-                                        '/app/settings/channels/gorgias_chat'
+                                        '/app/settings/channels/gorgias_chat',
                                     )
                                 })
                             }
@@ -230,7 +231,7 @@ const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
                             <div
                                 className={classnames(
                                     css.sectionHeading,
-                                    css.sectionHeadingWithLabel
+                                    css.sectionHeadingWithLabel,
                                 )}
                             >
                                 Connect store
@@ -276,7 +277,7 @@ const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
                                 value="true"
                                 onClick={() =>
                                     setCurrentInstallationMethod(
-                                        GorgiasChatCreationWizardInstallationMethod.OneClick
+                                        GorgiasChatCreationWizardInstallationMethod.OneClick,
                                     )
                                 }
                             />
@@ -287,7 +288,7 @@ const GorgiasChatCreationWizardStepInstallation: React.FC<Props> = ({
                                 value="false"
                                 onClick={() =>
                                     setCurrentInstallationMethod(
-                                        GorgiasChatCreationWizardInstallationMethod.Manual
+                                        GorgiasChatCreationWizardInstallationMethod.Manual,
                                     )
                                 }
                             />

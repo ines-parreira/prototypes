@@ -1,17 +1,17 @@
-import {act, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {BusiestTimesOfDaysMetricSelect} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysMetricSelect'
-import {BusiestTimeOfDaysMetrics} from 'pages/stats/support-performance/busiest-times-of-days/types'
+import { act, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
-import {metricLabels} from 'pages/stats/support-performance/busiest-times-of-days/utils'
-import {RootState} from 'state/types'
+import { BusiestTimesOfDaysMetricSelect } from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysMetricSelect'
+import { BusiestTimeOfDaysMetrics } from 'pages/stats/support-performance/busiest-times-of-days/types'
+import { metricLabels } from 'pages/stats/support-performance/busiest-times-of-days/utils'
+import { RootState } from 'state/types'
 import {
     busiestTimesSlice,
     setSelectedMetric,
 } from 'state/ui/stats/busiestTimesSlice'
-import {renderWithStore} from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 describe('<BusiestTimesOfDaysMetricSelect />', () => {
     it.each(Object.values(BusiestTimeOfDaysMetrics))(
@@ -19,14 +19,16 @@ describe('<BusiestTimesOfDaysMetricSelect />', () => {
         (metric) => {
             const state = {
                 ui: {
-                    stats: {[busiestTimesSlice.name]: {selectedMetric: metric}},
+                    stats: {
+                        [busiestTimesSlice.name]: { selectedMetric: metric },
+                    },
                 },
             } as RootState
 
             renderWithStore(<BusiestTimesOfDaysMetricSelect />, state)
 
             expect(screen.getByText(metricLabels[metric])).toBeInTheDocument()
-        }
+        },
     )
 
     it('should call the change callback on click', () => {
@@ -36,14 +38,14 @@ describe('<BusiestTimesOfDaysMetricSelect />', () => {
         const state = {
             ui: {
                 stats: {
-                    [busiestTimesSlice.name]: {selectedMetric: currentMetric},
+                    [busiestTimesSlice.name]: { selectedMetric: currentMetric },
                 },
             },
         } as RootState
 
-        const {store} = renderWithStore(
+        const { store } = renderWithStore(
             <BusiestTimesOfDaysMetricSelect />,
-            state
+            state,
         )
         act(() => {
             userEvent.click(screen.getByRole('button'))
@@ -53,7 +55,7 @@ describe('<BusiestTimesOfDaysMetricSelect />', () => {
         })
 
         expect(store.getActions()).toContainEqual(
-            setSelectedMetric(selectedMetric)
+            setSelectedMetric(selectedMetric),
         )
     })
 })

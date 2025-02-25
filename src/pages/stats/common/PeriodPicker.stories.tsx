@@ -1,30 +1,31 @@
-import {Meta, StoryFn, StoryObj} from '@storybook/react'
-import {within} from '@testing-library/react'
+import React, { ComponentProps } from 'react'
+
+import { Meta, StoryFn, StoryObj } from '@storybook/react'
+import { within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import moment from 'moment'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {ThemeProvider} from 'core/theme'
+import { ThemeProvider } from 'core/theme'
 import PeriodPicker from 'pages/stats/common/PeriodPicker'
-import {getNewSetOfRanges} from 'pages/stats/constants'
+import { getNewSetOfRanges } from 'pages/stats/constants'
 
 const defaultState = {}
 
 const DATE = '2024-04-14T12:34:56.000Z'
-const rangeOptions = {default: undefined, custom: getNewSetOfRanges()}
+const rangeOptions = { default: undefined, custom: getNewSetOfRanges() }
 
 const storyConfig: Meta = {
     title: 'Stats/PeriodPicker',
     component: PeriodPicker,
     parameters: {
-        chromatic: {disableSnapshot: false},
+        chromatic: { disableSnapshot: false },
     },
 }
 
 const Template: StoryFn<ComponentProps<typeof PeriodPicker>> = (
-    props: ComponentProps<typeof PeriodPicker>
+    props: ComponentProps<typeof PeriodPicker>,
 ) => {
     return (
         <ThemeProvider>
@@ -51,7 +52,7 @@ const pickerV2Props: ComponentProps<typeof PeriodPicker> = {
 
 export const Default = Template.bind({})
 Default.args = defaultProps
-Default.play = ({canvasElement}) => {
+Default.play = ({ canvasElement }) => {
     const canvas = within(canvasElement)
     userEvent.click(canvas.getByRole('button'))
 }
@@ -78,7 +79,7 @@ export const PeriodPickerV2: Story = {
             control: {
                 type: 'boolean',
             },
-            if: {arg: 'actionButtonsOnTheBottom'},
+            if: { arg: 'actionButtonsOnTheBottom' },
         },
     },
     args: {
@@ -96,7 +97,7 @@ export const PeriodPickerV2: Story = {
     ),
 }
 
-PeriodPickerV2.play = ({canvasElement}) => {
+PeriodPickerV2.play = ({ canvasElement }) => {
     const canvas = within(canvasElement)
     userEvent.click(canvas.getByRole('button'))
 }

@@ -1,17 +1,17 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
-import {Link} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {AI_AGENT, GUIDANCE} from 'pages/aiAgent/constants'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { Link } from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
-import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { AI_AGENT, GUIDANCE } from 'pages/aiAgent/constants'
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
-type Props = {shopName: string; title?: string}
+type Props = { shopName: string; title?: string }
 
-export const GuidanceBreadcrumbs = ({shopName, title}: Props) => {
-    const {routes} = useAiAgentNavigation({shopName})
+export const GuidanceBreadcrumbs = ({ shopName, title }: Props) => {
+    const { routes } = useAiAgentNavigation({ shopName })
     const isStandaloneMenuEnabled =
         useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
 

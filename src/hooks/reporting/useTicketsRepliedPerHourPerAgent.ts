@@ -1,4 +1,4 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
 import {
     fetchOnlineTimePerAgent,
@@ -6,7 +6,7 @@ import {
     useOnlineTimePerAgent,
     useTicketsRepliedMetricPerAgent,
 } from 'hooks/reporting/metricsPerAgent'
-import {calculateDecile} from 'hooks/reporting/ticket-insights/useCustomFieldsTicketCountPerCustomFields'
+import { calculateDecile } from 'hooks/reporting/ticket-insights/useCustomFieldsTicketCountPerCustomFields'
 import {
     calculateMetricPerHour,
     periodAndAgentOnlyFilters,
@@ -15,15 +15,15 @@ import {
     MetricWithDecile,
     MetricWithDecileFetch,
 } from 'hooks/reporting/useMetricPerDimension'
-import {OrderDirection} from 'models/api/types'
+import { OrderDirection } from 'models/api/types'
 import {
     AgentTimeTrackingDimension,
     AgentTimeTrackingMeasure,
 } from 'models/reporting/cubes/agentxp/AgentTimeTrackingCube'
-import {HelpdeskMessageMeasure} from 'models/reporting/cubes/HelpdeskMessageCube'
-import {TicketMember} from 'models/reporting/cubes/TicketCube'
-import {StatsFilters} from 'models/stat/types'
-import {matchAndCalculateAllEntries, sortAllData} from 'utils/reporting'
+import { HelpdeskMessageMeasure } from 'models/reporting/cubes/HelpdeskMessageCube'
+import { TicketMember } from 'models/reporting/cubes/TicketCube'
+import { StatsFilters } from 'models/stat/types'
+import { matchAndCalculateAllEntries, sortAllData } from 'utils/reporting'
 
 const senderId = TicketMember.MessageSenderId
 const userIdField = AgentTimeTrackingDimension.UserId
@@ -33,14 +33,14 @@ const onlineTimeField = AgentTimeTrackingMeasure.OnlineTime
 const formatResult = (
     repliedTickets: MetricWithDecile,
     onlineTime: MetricWithDecile,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ): MetricWithDecile['data'] => {
     let metricValue: number | null = null
 
     if (repliedTickets.data?.value && onlineTime.data?.value) {
         metricValue = calculateMetricPerHour(
             repliedTickets.data.value,
-            onlineTime.data.value
+            onlineTime.data.value,
         )
     }
 
@@ -53,14 +53,14 @@ const formatResult = (
                   senderId,
                   userIdField,
                   ticketCountField,
-                  onlineTimeField
+                  onlineTimeField,
               )
             : []
 
     const sortedData = sortAllData(data, ticketCountField, sorting)
 
     const maxValue = Math.max(
-        ...sortedData.map((item) => Number(item[ticketCountField]))
+        ...sortedData.map((item) => Number(item[ticketCountField])),
     )
 
     return {
@@ -74,24 +74,24 @@ export const useTicketsRepliedPerHourPerAgent = (
     statsFilters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
-    agentAssigneeId?: string
+    agentAssigneeId?: string,
 ): MetricWithDecile => {
     const repliedTickets = useTicketsRepliedMetricPerAgent(
         periodAndAgentOnlyFilters(statsFilters),
         timezone,
         sorting,
-        String(agentAssigneeId)
+        String(agentAssigneeId),
     )
     const onlineTime = useOnlineTimePerAgent(
         periodAndAgentOnlyFilters(statsFilters),
         timezone,
         sorting,
-        String(agentAssigneeId)
+        String(agentAssigneeId),
     )
 
     const data = useMemo(
         () => formatResult(repliedTickets, onlineTime, sorting),
-        [onlineTime, repliedTickets, sorting]
+        [onlineTime, repliedTickets, sorting],
     )
 
     return {
@@ -105,20 +105,20 @@ export const fetchTicketsRepliedPerHourPerAgent: MetricWithDecileFetch = async (
     statsFilters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
-    agentAssigneeId?: string
+    agentAssigneeId?: string,
 ): Promise<MetricWithDecile> => {
     return Promise.all([
         fetchTicketsRepliedMetricPerAgent(
             periodAndAgentOnlyFilters(statsFilters),
             timezone,
             sorting,
-            agentAssigneeId
+            agentAssigneeId,
         ),
         fetchOnlineTimePerAgent(
             periodAndAgentOnlyFilters(statsFilters),
             timezone,
             sorting,
-            agentAssigneeId
+            agentAssigneeId,
         ),
     ])
         .then(([repliedTickets, onlineTime]) => ({

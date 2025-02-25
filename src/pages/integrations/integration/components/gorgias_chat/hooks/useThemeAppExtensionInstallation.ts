@@ -1,11 +1,11 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {ShopifyIntegration} from 'models/integration/types'
-import {GorgiasUIEnv, getEnvironment} from 'utils/environment'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { ShopifyIntegration } from 'models/integration/types'
+import { getEnvironment, GorgiasUIEnv } from 'utils/environment'
 
 const useThemeAppExtensionInstallation = (
-    shopifyIntegration?: ShopifyIntegration
+    shopifyIntegration?: ShopifyIntegration,
 ): {
     themeAppExtensionEnabled: boolean // This determines if the Theme App Extension is released.
     shouldUseThemeAppExtensionInstallation: boolean // This determines if the Theme App Extension should be used for this integration.
@@ -25,7 +25,7 @@ const useThemeAppExtensionInstallation = (
     }
 
     const switchDate = new Date(
-        Number(switchToShopifyThemeAppExtensionRawValue)
+        Number(switchToShopifyThemeAppExtensionRawValue),
     )
 
     if (!shopifyIntegration) {

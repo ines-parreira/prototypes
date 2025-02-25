@@ -1,5 +1,6 @@
-import {Component} from 'react'
-import {findDOMNode} from 'react-dom'
+import { Component } from 'react'
+
+import { findDOMNode } from 'react-dom'
 import scrollIntoView, {
     StandardBehaviorOptions,
 } from 'scroll-into-view-if-needed'
@@ -21,7 +22,7 @@ function scrollToNode(node: HTMLElement, options?: StandardBehaviorOptions) {
  */
 export function scrollToReactNode(
     node: HTMLElement | Component,
-    options?: StandardBehaviorOptions
+    options?: StandardBehaviorOptions,
 ) {
     return scrollToNode(findDOMNode(node) as HTMLElement, options)
 }
@@ -45,7 +46,7 @@ export function moveIndex(
     options: MoveIndexOptions = {
         direction: MoveIndexDirection.Next,
         rotate: false,
-    }
+    },
 ) {
     const move = options.direction === 'next' ? 1 : -1
     const newIndex = currentIndex + move

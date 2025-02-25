@@ -1,24 +1,24 @@
-import {render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import React, { ComponentProps } from 'react'
 
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {TicketChannel} from 'business/types/ticket'
-import {customer} from 'fixtures/customer'
-import {user} from 'fixtures/users'
+import { TicketChannel } from 'business/types/ticket'
+import { customer } from 'fixtures/customer'
+import { user } from 'fixtures/users'
 
 import SpotlightCustomerRow from '../SpotlightCustomerRow'
 
 const mockStore = configureMockStore([thunk])
 
 const WrappedSpotlightCustomerRow = (
-    props: ComponentProps<typeof SpotlightCustomerRow>
+    props: ComponentProps<typeof SpotlightCustomerRow>,
 ) => (
-    <Provider store={mockStore({currentUser: fromJS(user)})}>
+    <Provider store={mockStore({ currentUser: fromJS(user) })}>
         <SpotlightCustomerRow {...props} />
     </Provider>
 )
@@ -34,10 +34,10 @@ describe('<SpotlightCustomerRow/>', () => {
         onClick: mockOnClick,
     }
     const customerEmail = customer.channels?.find(
-        (channel) => channel.type === TicketChannel.Email
+        (channel) => channel.type === TicketChannel.Email,
     )?.address
     const customerPhone = customer.channels?.find(
-        (channel) => channel.type === TicketChannel.Phone
+        (channel) => channel.type === TicketChannel.Phone,
     )?.address
 
     it('should render render customer information', () => {
@@ -56,8 +56,8 @@ describe('<SpotlightCustomerRow/>', () => {
         render(
             <WrappedSpotlightCustomerRow
                 {...defaultProps}
-                item={{...customer, name: ''}}
-            />
+                item={{ ...customer, name: '' }}
+            />,
         )
 
         expect(screen.getByText(`Customer #${customer.id}`)).toBeInTheDocument()
@@ -67,16 +67,16 @@ describe('<SpotlightCustomerRow/>', () => {
         render(
             <WrappedSpotlightCustomerRow
                 {...defaultProps}
-                item={{...customer, email: null, channels: []}}
-            />
+                item={{ ...customer, email: null, channels: [] }}
+            />,
         )
 
         expect(document.querySelector('.customerInfo')).toBeNull()
     })
 
     it('should call onClick when customer row is clicked', () => {
-        const {container} = render(
-            <WrappedSpotlightCustomerRow {...defaultProps} />
+        const { container } = render(
+            <WrappedSpotlightCustomerRow {...defaultProps} />,
         )
         userEvent.click(container.firstChild! as Element)
         expect(mockOnClick).toHaveBeenCalled()
@@ -93,8 +93,8 @@ describe('<SpotlightCustomerRow/>', () => {
                 },
             },
         }
-        const {getByText} = render(
-            <WrappedSpotlightCustomerRow {...defaultProps} item={item} />
+        const { getByText } = render(
+            <WrappedSpotlightCustomerRow {...defaultProps} item={item} />,
         )
 
         expect(getByText('some email')).toBeInTheDocument()

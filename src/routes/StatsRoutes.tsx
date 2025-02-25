@@ -1,6 +1,6 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
+import React, { useEffect } from 'react'
 
-import React, {useEffect} from 'react'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 import {
     Redirect,
     Route,
@@ -10,35 +10,34 @@ import {
     useRouteMatch,
 } from 'react-router-dom'
 
-import {logPageChange} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {AGENT_ROLE} from 'config/user'
+import { logPageChange } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { AGENT_ROLE } from 'config/user'
 import useAppSelector from 'hooks/useAppSelector'
 import App from 'pages/App'
 import withUserRoleRequired from 'pages/common/utils/withUserRoleRequired'
-import {RevenueAddonApiClientProvider} from 'pages/convert/common/hooks/useConvertApi'
-import {HelpCenterApiClientProvider} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import {SupportedLocalesProvider} from 'pages/settings/helpCenter/providers/SupportedLocales'
+import { RevenueAddonApiClientProvider } from 'pages/convert/common/hooks/useConvertApi'
+import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import { SupportedLocalesProvider } from 'pages/settings/helpCenter/providers/SupportedLocales'
 import AiSalesAgentSalesOverview from 'pages/stats/aiSalesAgent/AiSalesAgentSalesOverview'
-import {ROUTE_AI_SALES_AGENT_OVERVIEW} from 'pages/stats/aiSalesAgent/constants'
+import { ROUTE_AI_SALES_AGENT_OVERVIEW } from 'pages/stats/aiSalesAgent/constants'
 import AiAgentStatsFilters from 'pages/stats/automate/ai-agent/AiAgentStatsFilters'
 import AutomateAiAgentStats from 'pages/stats/automate/ai-agent/AutomateAiAgentStats'
 import AutomateStatsPaywall from 'pages/stats/automate/AutomateStatsPaywall'
 import AutomateIntents from 'pages/stats/AutomateIntents'
 import AutomateMacros from 'pages/stats/AutomateMacros'
-
 import StatsNavbarContainer from 'pages/stats/common/StatsNavbarContainer'
 import RevenueCampaignsStats from 'pages/stats/convert/pages/CampaignsStats'
 import CampaignStatsPaywallView from 'pages/stats/convert/pages/CampaignsStats/CampaignStatsPaywallView'
-import {CampaignStatsFilters} from 'pages/stats/convert/providers/CampaignStatsFilters'
-import {CustomReportPage} from 'pages/stats/custom-reports/CustomReportPage'
-import {CustomReports} from 'pages/stats/custom-reports/CustomReports'
+import { CampaignStatsFilters } from 'pages/stats/convert/providers/CampaignStatsFilters'
+import { CustomReportPage } from 'pages/stats/custom-reports/CustomReportPage'
+import { CustomReports } from 'pages/stats/custom-reports/CustomReports'
 import DefaultStatsFilters from 'pages/stats/DefaultStatsFilters'
 import HelpCenterStats from 'pages/stats/help-center/pages/HelpCenterStats'
 import LiveAgents from 'pages/stats/LiveAgents'
 import LiveOverview from 'pages/stats/LiveOverview'
 import SatisfactionReport from 'pages/stats/quality-management/satisfaction/SatisfactionReport'
-import {ProtectedRoute} from 'pages/stats/report-chart-restrictions/ProtectedRoute'
+import { ProtectedRoute } from 'pages/stats/report-chart-restrictions/ProtectedRoute'
 import {
     ROUTE_AUTOMATE_AI_AGENT,
     ROUTE_AUTOMATE_OVERVIEW,
@@ -46,27 +45,27 @@ import {
     ROUTE_OLD_PERFORMANCE_BY_FEATURES,
 } from 'pages/stats/self-service/constants'
 import SelfServiceStatsPage from 'pages/stats/self-service/SelfServiceStatsPage'
-import {ServiceLevelAgreements} from 'pages/stats/sla/ServiceLevelAgreements'
+import { ServiceLevelAgreements } from 'pages/stats/sla/ServiceLevelAgreements'
 import SupportPerformanceAgentsReport from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReport'
 import AutoQA from 'pages/stats/support-performance/auto-qa/AutoQA'
-import {BusiestTimesOfDays} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDays'
-import {ChannelsReport} from 'pages/stats/support-performance/channels/ChannelsReport'
+import { BusiestTimesOfDays } from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDays'
+import { ChannelsReport } from 'pages/stats/support-performance/channels/ChannelsReport'
 import SupportPerformanceOverviewReport from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReport'
 import SupportPerformanceRevenue from 'pages/stats/support-performance/revenue/SupportPerformanceRevenue'
 import SupportPerformanceSatisfaction from 'pages/stats/support-performance/satisfaction/SupportPerformanceSatisfaction'
-import {Tags} from 'pages/stats/ticket-insights/tags/Tags'
-import {SupportPerformanceTicketInsights} from 'pages/stats/ticket-insights/ticket-fields/SupportPerformanceTicketInsights'
+import { Tags } from 'pages/stats/ticket-insights/tags/Tags'
+import { SupportPerformanceTicketInsights } from 'pages/stats/ticket-insights/ticket-fields/SupportPerformanceTicketInsights'
 import LiveVoice from 'pages/stats/voice/pages/LiveVoice'
 import VoiceAgents from 'pages/stats/voice/pages/VoiceAgents'
 import VoiceOverview from 'pages/stats/voice/pages/VoiceOverview'
-import {STATS_ROUTES} from 'routes/constants'
-import {getHasAutomate} from 'state/billing/selectors'
-import {currentAccountHasFeature} from 'state/currentAccount/selectors'
-import {AccountFeature} from 'state/currentAccount/types'
+import { STATS_ROUTES } from 'routes/constants'
+import { getHasAutomate } from 'state/billing/selectors'
+import { currentAccountHasFeature } from 'state/currentAccount/selectors'
+import { AccountFeature } from 'state/currentAccount/types'
 
 type FeatureFlag = boolean | undefined
 
-function HelpCenterStatsRoutes({match: {path}}: RouteComponentProps) {
+function HelpCenterStatsRoutes({ match: { path } }: RouteComponentProps) {
     return (
         <HelpCenterApiClientProvider>
             <SupportedLocalesProvider>
@@ -89,10 +88,10 @@ function HelpCenterStatsRoutes({match: {path}}: RouteComponentProps) {
 
 export const StatsRoutes = () => {
     const location = useLocation()
-    const {path} = useRouteMatch()
+    const { path } = useRouteMatch()
 
     const hasLiveOverviewFeature = useAppSelector(
-        currentAccountHasFeature(AccountFeature.OverviewLiveStatistics)
+        currentAccountHasFeature(AccountFeature.OverviewLiveStatistics),
     )
 
     const hasAutomate = useAppSelector(getHasAutomate)
@@ -329,7 +328,7 @@ export const StatsRoutes = () => {
                                 <App
                                     content={withUserRoleRequired(
                                         AutoQA,
-                                        AGENT_ROLE
+                                        AGENT_ROLE,
                                     )}
                                     navbar={StatsNavbarContainer}
                                 />

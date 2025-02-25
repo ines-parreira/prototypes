@@ -1,7 +1,8 @@
-import classNames from 'classnames'
 import React from 'react'
 
-import {VoiceCallDisplayStatus} from 'models/voiceCall/types'
+import classNames from 'classnames'
+
+import { VoiceCallDisplayStatus } from 'models/voiceCall/types'
 
 import css from './VoiceCallStatusLabel.less'
 
@@ -48,7 +49,7 @@ const getColorClass = (status: VoiceCallDisplayStatus) => {
     }
 }
 
-const VoiceCallStatusLabel = ({displayStatus}: Props) => {
+const VoiceCallStatusLabel = ({ displayStatus }: Props) => {
     return (
         <div className={classNames(getColorClass(displayStatus))}>
             {getPrettyDisplayName(displayStatus)}

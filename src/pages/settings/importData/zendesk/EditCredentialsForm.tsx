@@ -1,28 +1,31 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { FormEvent, useState } from 'react'
+
 import classNames from 'classnames'
-import {fromJS} from 'immutable'
-import React, {FormEvent, useState} from 'react'
-import {Form} from 'reactstrap'
+import { fromJS } from 'immutable'
+import { Form } from 'reactstrap'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {ZendeskIntegration} from 'models/integration/types'
+import { ZendeskIntegration } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import InputField from 'pages/common/forms/input/InputField'
-import {updateOrCreateIntegration} from 'state/integrations/actions'
-import {getAreIntegrationsLoading} from 'state/integrations/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { updateOrCreateIntegration } from 'state/integrations/actions'
+import { getAreIntegrationsLoading } from 'state/integrations/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+
+import { ImportStatus, ZENDESK_CONNECTION_TYPE } from './types'
 
 import css from './EditCredentialsForm.less'
-import {ImportStatus, ZENDESK_CONNECTION_TYPE} from './types'
 
 type Props = {
     integration: ZendeskIntegration
 }
 
-export default function EditCredentialsForm({integration}: Props) {
+export default function EditCredentialsForm({ integration }: Props) {
     const [apiKey, setApiKey] = useState('')
     const [email, setEmail] = useState('')
 
@@ -44,7 +47,7 @@ export default function EditCredentialsForm({integration}: Props) {
                         ? 'Please enter email address'
                         : 'Please enter API key',
                     status: NotificationStatus.Error,
-                })
+                }),
             )
 
             return
@@ -69,8 +72,8 @@ export default function EditCredentialsForm({integration}: Props) {
                             },
                         ],
                     }),
-                })
-            )
+                }),
+            ),
         )
     }
 

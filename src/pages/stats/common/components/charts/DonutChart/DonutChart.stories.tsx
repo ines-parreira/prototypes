@@ -1,5 +1,6 @@
-import {Meta, StoryObj} from '@storybook/react'
 import React from 'react'
+
+import { Meta, StoryObj } from '@storybook/react'
 
 import DonutChart from './DonutChart'
 
@@ -20,15 +21,15 @@ export default meta
 type Story = StoryObj<typeof DonutChart>
 export const Default: Story = {
     render: (args) => (
-        <div style={{width: 300}}>
+        <div style={{ width: 300 }}>
             <DonutChart {...args} />
         </div>
     ),
     args: {
         data: [
-            {label: 'Label 1', value: 3000},
-            {label: 'Label 2', value: 5000},
-            {label: 'Label 3', value: 7000},
+            { label: 'Label 1', value: 3000 },
+            { label: 'Label 2', value: 5000 },
+            { label: 'Label 3', value: 7000 },
         ],
     },
 }

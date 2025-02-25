@@ -1,5 +1,3 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
 import React, {
     MouseEvent,
     useCallback,
@@ -7,35 +5,36 @@ import React, {
     useMemo,
     useState,
 } from 'react'
-import {Link} from 'react-router-dom'
-import {Popover, PopoverBody} from 'reactstrap'
 
-import {useAppNode} from 'appNode'
+import classnames from 'classnames'
+import { Link } from 'react-router-dom'
+import { Popover, PopoverBody } from 'reactstrap'
 
-import {DateAndTimeFormatting} from 'constants/datetime'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { useAppNode } from 'appNode'
+import { DateAndTimeFormatting } from 'constants/datetime'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
-
-import {deactivateRule, createRule, deleteRule} from 'models/rule/resources'
+import { createRule, deactivateRule, deleteRule } from 'models/rule/resources'
 import IconButton from 'pages/common/components/button/IconButton'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
-
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import history from 'pages/history'
-import {getHasAutomate} from 'state/billing/selectors'
-import {getHelpCenterFAQList} from 'state/entities/helpCenter/helpCenters'
-import {getSortedRuleRecipes} from 'state/entities/ruleRecipes/selectors'
+import { getHasAutomate } from 'state/billing/selectors'
+import { getHelpCenterFAQList } from 'state/entities/helpCenter/helpCenters'
+import { getSortedRuleRecipes } from 'state/entities/ruleRecipes/selectors'
 import {
     ruleCreated,
-    ruleUpdated,
     ruleDeleted,
+    ruleUpdated,
 } from 'state/entities/rules/actions'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {ManagedRuleDisplayName} from 'state/rules/constants'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { ManagedRuleDisplayName } from 'state/rules/constants'
 import {
     AnyManagedRuleSettings,
     AutoReplyFAQSettings,
@@ -45,9 +44,10 @@ import {
     Rule,
     RuleType,
 } from 'state/rules/types'
-import {formatDatetime} from 'utils'
+import { formatDatetime } from 'utils'
 
-import {getRuleActions} from './ruleEditors/utils'
+import { getRuleActions } from './ruleEditors/utils'
+
 import css from './RuleRow.less'
 
 type Props = {
@@ -74,7 +74,7 @@ export function RuleRow({
     const helpCenters = useAppSelector(getHelpCenterFAQList)
     const hasAgentPrivileges = useHasAgentPrivileges()
     const datetimeFormat = useGetDateAndTimeFormat(
-        DateAndTimeFormatting.CompactDate
+        DateAndTimeFormatting.CompactDate,
     )
 
     const [isDescriptionOpen, setDescriptionOpen] = useState(false)
@@ -89,7 +89,7 @@ export function RuleRow({
                 ).help_center_id
                 if (
                     !helpCenters.find(
-                        (helpCenter) => helpCenter.id === helpCenterId
+                        (helpCenter) => helpCenter.id === helpCenterId,
                     )
                 ) {
                     setError('No help center selected')
@@ -117,14 +117,14 @@ export function RuleRow({
                     notify({
                         message: 'Rule duplicated successfully',
                         status: NotificationStatus.Success,
-                    })
+                    }),
                 )
             } catch {
                 void dispatch(
                     notify({
                         status: NotificationStatus.Error,
                         message: 'Failed to duplicate rule',
-                    })
+                    }),
                 )
             }
         } else {
@@ -133,12 +133,12 @@ export function RuleRow({
                     message:
                         'You have reached the 70 rule limit. Delete existing rules to add more.',
                     status: NotificationStatus.Error,
-                })
+                }),
             )
         }
     }
 
-    const [{loading: isDeleting}, handleDelete] = useAsyncFn(async () => {
+    const [{ loading: isDeleting }, handleDelete] = useAsyncFn(async () => {
         try {
             await deleteRule(rule.id)
             void dispatch(ruleDeleted(rule.id))
@@ -146,14 +146,14 @@ export function RuleRow({
                 notify({
                     status: NotificationStatus.Success,
                     message: `Successfully deleted rule ${rule.name}`,
-                })
+                }),
             )
         } catch {
             void dispatch(
                 notify({
                     status: NotificationStatus.Error,
                     message: 'Failed to delete rule',
-                })
+                }),
             )
         }
     })
@@ -178,21 +178,21 @@ export function RuleRow({
                 notify({
                     status: NotificationStatus.Success,
                     message: 'Rule deactivated successfully',
-                })
+                }),
             )
         } catch {
             void dispatch(
                 notify({
                     status: NotificationStatus.Error,
                     message: 'Unable to deactivate rule',
-                })
+                }),
             )
         }
     }
 
     const formattedUpdatedDate = useMemo(
         () => formatDatetime(rule.updated_datetime, datetimeFormat),
-        [rule, datetimeFormat]
+        [rule, datetimeFormat],
     )
 
     const link = useMemo(() => `/app/settings/rules/${rule.id}`, [rule.id])
@@ -209,18 +209,18 @@ export function RuleRow({
                     onDisplayConfirmation(event)
                 }
             },
-        [handleActivate, rule]
+        [handleActivate, rule],
     )
 
     const [ruleName, ruleDescription] = useMemo(() => {
         if (rule.type === RuleType.Managed) {
             const recipe = ruleRecipes.find(
-                (recipe) => recipe.slug === (rule as ManagedRule).settings.slug
+                (recipe) => recipe.slug === (rule as ManagedRule).settings.slug,
             )
             return recipe
                 ? [
                       ManagedRuleDisplayName.get(
-                          recipe.slug as ManagedRulesSlugs
+                          recipe.slug as ManagedRulesSlugs,
                       ),
                       recipe.rule.description,
                   ]
@@ -248,7 +248,7 @@ export function RuleRow({
                     className={classnames(
                         'material-icons text-faded drag-handle',
                         css.dragHandle,
-                        {invisible: isSearching}
+                        { invisible: isSearching },
                     )}
                 >
                     drag_indicator
@@ -265,12 +265,12 @@ export function RuleRow({
                     onConfirm={handleDeactivate}
                     placement="right"
                 >
-                    {({uid, onDisplayConfirmation}) => (
+                    {({ uid, onDisplayConfirmation }) => (
                         <>
                             <ToggleInput
                                 isToggled={!rule.deactivated_datetime}
                                 onClick={handleToggleClick(
-                                    onDisplayConfirmation
+                                    onDisplayConfirmation,
                                 )}
                                 isDisabled={!hasAgentPrivileges}
                             />
@@ -284,7 +284,7 @@ export function RuleRow({
                 className={classnames(
                     'link-full-td',
                     'align-middle',
-                    css.middleColumn
+                    css.middleColumn,
                 )}
                 id={`rule-name-${rule.id}`}
             >
@@ -306,7 +306,7 @@ export function RuleRow({
                                     <i
                                         className={classnames(
                                             'material-icons',
-                                            css.infoIcon
+                                            css.infoIcon,
                                         )}
                                         id={`copy-icon-${rule.id}`}
                                         onMouseEnter={() =>
@@ -351,7 +351,7 @@ export function RuleRow({
             </td>
             <td
                 className={classnames(
-                    'link-full-td align-middle smallest pr-4'
+                    'link-full-td align-middle smallest pr-4',
                 )}
             >
                 <Link to={link}>
@@ -387,7 +387,7 @@ export function RuleRow({
                     }
                     onConfirm={handleDelete}
                 >
-                    {({uid, onDisplayConfirmation}) => (
+                    {({ uid, onDisplayConfirmation }) => (
                         <IconButton
                             className={classnames(css.actionButton, 'mr-1')}
                             onClick={onDisplayConfirmation}

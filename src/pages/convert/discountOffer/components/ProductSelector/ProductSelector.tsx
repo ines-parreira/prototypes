@@ -1,8 +1,8 @@
+import React, { useCallback, useMemo, useRef, useState } from 'react'
+
 import _debounce from 'lodash/debounce'
-import React, {useCallback, useMemo, useRef, useState} from 'react'
 
-import {useProductsFromShopifyIntegration} from 'models/integration/queries'
-
+import { useProductsFromShopifyIntegration } from 'models/integration/queries'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
@@ -23,7 +23,11 @@ type Props = {
     onChange: (nextValue: string | null) => void
 }
 
-const ProductSelector: React.FC<Props> = ({integrationId, value, onChange}) => {
+const ProductSelector: React.FC<Props> = ({
+    integrationId,
+    value,
+    onChange,
+}) => {
     const targetRef = useRef<HTMLDivElement>(null)
     const floatingRef = useRef<HTMLDivElement>(null)
     const searchRef = useRef<HTMLInputElement>(null)
@@ -31,9 +35,9 @@ const ProductSelector: React.FC<Props> = ({integrationId, value, onChange}) => {
     const [search, setSearch] = useState<string>('')
     const [isSelectOpen, setIsSelectOpen] = useState(false)
 
-    const {data: productsData} = useProductsFromShopifyIntegration(
+    const { data: productsData } = useProductsFromShopifyIntegration(
         integrationId,
-        search
+        search,
     )
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -41,7 +45,7 @@ const ProductSelector: React.FC<Props> = ({integrationId, value, onChange}) => {
         _debounce((value: string) => {
             setSearch(value)
         }, 250),
-        [setSearch]
+        [setSearch],
     )
 
     const products = useMemo<Option[]>(() => {
@@ -50,7 +54,7 @@ const ProductSelector: React.FC<Props> = ({integrationId, value, onChange}) => {
                 (product): Option => ({
                     label: product.data.title,
                     value: product.data.id.toString(),
-                })
+                }),
             ) ?? []
         )
     }, [productsData])

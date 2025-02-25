@@ -7,7 +7,7 @@ declare module 'domhandler' {
      * Once fix remove the @types/domhandler dependency
      */
     type DomElement = {
-        attribs?: {[s: string]: string}
+        attribs?: { [s: string]: string }
         children?: DomElement[]
         data?: any
         name?: string

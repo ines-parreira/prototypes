@@ -1,12 +1,13 @@
-import {CancelToken} from 'axios'
-import {Map, List} from 'immutable'
-import React, {useCallback} from 'react'
-import {DropdownItem} from 'reactstrap'
+import React, { useCallback } from 'react'
+
+import { CancelToken } from 'axios'
+import { List, Map } from 'immutable'
+import { DropdownItem } from 'reactstrap'
 
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import useEffectOnce from 'hooks/useEffectOnce'
 import Search from 'pages/common/components/Search'
-import {fieldEnumSearch} from 'state/views/actions'
+import { fieldEnumSearch } from 'state/views/actions'
 
 type Props = {
     field: Map<any, any>
@@ -25,7 +26,7 @@ export default function FilterDropdownSearch({
         (cancelToken: CancelToken) => {
             return (field: Map<any, any>, query: string) =>
                 fieldEnumSearch(field, query, cancelToken)()
-        }
+        },
     )
 
     const handleSearch = useCallback(
@@ -50,7 +51,7 @@ export default function FilterDropdownSearch({
             onSearchSuccess,
             field,
             fieldEnumSearchCancellable,
-        ]
+        ],
     )
 
     useEffectOnce(() => {

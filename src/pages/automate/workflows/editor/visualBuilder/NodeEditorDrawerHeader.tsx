@@ -1,13 +1,13 @@
-import React, {ReactNode} from 'react'
+import React, { ReactNode } from 'react'
 
 import {
     ReusableLLMPromptCallNodeType,
     VisualBuilderNode,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
-import {labelByVisualBuilderNodeType} from '../../constants'
+import { labelByVisualBuilderNodeType } from '../../constants'
 import EditorDrawerHeader from './EditorDrawerHeader'
-import {useNodeEditorDrawerContext} from './NodeEditorDrawerContext'
+import { useNodeEditorDrawerContext } from './NodeEditorDrawerContext'
 
 type Props = {
     nodeInEdition?: Exclude<VisualBuilderNode, ReusableLLMPromptCallNodeType>
@@ -15,8 +15,8 @@ type Props = {
     children?: ReactNode
 }
 
-const NodeEditorDrawerHeader = ({nodeInEdition, label, children}: Props) => {
-    const {onClose} = useNodeEditorDrawerContext()
+const NodeEditorDrawerHeader = ({ nodeInEdition, label, children }: Props) => {
+    const { onClose } = useNodeEditorDrawerContext()
 
     return (
         <EditorDrawerHeader

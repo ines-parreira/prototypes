@@ -1,9 +1,9 @@
 /**
  * Adapted from https://github.com/draft-js-plugins/draft-js-plugins/tree/master/draft-js-mention-plugin
  */
-import {ContentBlock, ContentState, CharacterMetadata} from 'draft-js'
+import { CharacterMetadata, ContentBlock, ContentState } from 'draft-js'
 
-import {getTypeByTrigger} from './utils'
+import { getTypeByTrigger } from './utils'
 
 const findMention =
     (trigger: string, contentState: ContentState) =>
@@ -21,11 +21,11 @@ const findMentionEntities =
     (
         contentBlock: ContentBlock,
         callback: (start: number, end: number) => void,
-        contentState: ContentState
+        contentState: ContentState,
     ) => {
         contentBlock.findEntityRanges(
             findMention(trigger, contentState),
-            callback
+            callback,
         )
     }
 

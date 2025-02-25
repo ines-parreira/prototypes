@@ -1,8 +1,9 @@
-import {fireEvent, waitFor} from '@testing-library/react'
 import React from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {SavedFilter} from 'models/stat/types'
+import { fireEvent, waitFor } from '@testing-library/react'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { SavedFilter } from 'models/stat/types'
 import ApplySavedFilers, {
     APPLY_SAVED_FILTER_TOOLTIP,
     APPLY_SAVED_FILTERS,
@@ -11,27 +12,27 @@ import ApplySavedFilers, {
     NO_FILTERS_CONTENT,
     NOT_ADMIN_CONTENT,
 } from 'pages/stats/common/filters/SavedFiltersActions/ApplySavedFilters/ApplySavedFilters'
-import {RootState} from 'state/types'
-import {initialiseSavedFilterDraft} from 'state/ui/stats/filtersSlice'
-import {assumeMock, renderWithStore} from 'utils/testing'
+import { RootState } from 'state/types'
+import { initialiseSavedFilterDraft } from 'state/ui/stats/filtersSlice'
+import { assumeMock, renderWithStore } from 'utils/testing'
 
 const savedFilters: SavedFilter[] = [
-    {id: 1, name: 'Temp Filter 1', filter_group: []},
-    {id: 2, name: 'Temp Filter 2', filter_group: []},
+    { id: 1, name: 'Temp Filter 1', filter_group: [] },
+    { id: 2, name: 'Temp Filter 2', filter_group: [] },
 ]
 
 jest.mock('common/segment')
 const logEventMock = assumeMock(logEvent)
 
 const defaultState = {
-    ui: {stats: {filters: {appliedSavedFilterId: 0}}},
+    ui: { stats: { filters: { appliedSavedFilterId: 0 } } },
 } as RootState
 
 describe('ApplySavedFilers', () => {
     it('should render the component for an admin', () => {
-        const {getByText, queryByText} = renderWithStore(
+        const { getByText, queryByText } = renderWithStore(
             <ApplySavedFilers canEdit savedFilters={[]} />,
-            defaultState
+            defaultState,
         )
 
         expect(queryByText(NO_FILTERS_CONTENT)).toBeFalsy()
@@ -41,9 +42,9 @@ describe('ApplySavedFilers', () => {
     })
 
     it('should render a different content for a normal user', () => {
-        const {getByText, queryByText} = renderWithStore(
+        const { getByText, queryByText } = renderWithStore(
             <ApplySavedFilers canEdit={false} savedFilters={[]} />,
-            defaultState
+            defaultState,
         )
 
         expect(queryByText(NOT_ADMIN_CONTENT)).toBeFalsy()
@@ -53,22 +54,22 @@ describe('ApplySavedFilers', () => {
     })
 
     it('should have a descriptive tooltip', async () => {
-        const {getByText} = renderWithStore(
+        const { getByText } = renderWithStore(
             <ApplySavedFilers canEdit={false} savedFilters={[]} />,
-            defaultState
+            defaultState,
         )
 
         fireEvent.mouseEnter(getByText(APPLY_SAVED_FILTERS))
 
         await waitFor(() =>
-            expect(getByText(APPLY_SAVED_FILTER_TOOLTIP)).toBeTruthy()
+            expect(getByText(APPLY_SAVED_FILTER_TOOLTIP)).toBeTruthy(),
         )
     })
 
     it('should show the saved filters for a normal user', () => {
-        const {getByText, queryByText} = renderWithStore(
+        const { getByText, queryByText } = renderWithStore(
             <ApplySavedFilers canEdit={false} savedFilters={savedFilters} />,
-            defaultState
+            defaultState,
         )
         expect(queryByText(NOT_ADMIN_CONTENT)).toBeFalsy()
         fireEvent.click(getByText(APPLY_SAVED_FILTERS))
@@ -78,9 +79,9 @@ describe('ApplySavedFilers', () => {
     })
 
     it('should allow admin to create the Saved Filter Draft', () => {
-        const {getByText, store} = renderWithStore(
+        const { getByText, store } = renderWithStore(
             <ApplySavedFilers canEdit={true} savedFilters={savedFilters} />,
-            defaultState
+            defaultState,
         )
 
         fireEvent.click(getByText('arrow_drop_down'))
@@ -91,9 +92,9 @@ describe('ApplySavedFilers', () => {
     })
 
     it('should render a dropdown items for Admins', () => {
-        const {getByText} = renderWithStore(
+        const { getByText } = renderWithStore(
             <ApplySavedFilers canEdit savedFilters={savedFilters} />,
-            defaultState
+            defaultState,
         )
 
         expect(getByText(APPLY_SAVED_FILTERS)).toBeTruthy()
@@ -104,9 +105,9 @@ describe('ApplySavedFilers', () => {
     })
 
     it('should log segment event on filter click', () => {
-        const {getByText} = renderWithStore(
+        const { getByText } = renderWithStore(
             <ApplySavedFilers canEdit savedFilters={savedFilters} />,
-            defaultState
+            defaultState,
         )
 
         fireEvent.click(getByText(APPLY_SAVED_FILTERS))
@@ -117,16 +118,16 @@ describe('ApplySavedFilers', () => {
             {
                 name: savedFilters[0].name,
                 id: savedFilters[0].id,
-            }
+            },
         )
     })
 
     it('should render the component for an admin', () => {
-        const {getByText, queryByText} = renderWithStore(
+        const { getByText, queryByText } = renderWithStore(
             <ApplySavedFilers canEdit savedFilters={savedFilters} />,
             {
-                ui: {stats: {filters: {appliedSavedFilterId: 1}}},
-            } as RootState
+                ui: { stats: { filters: { appliedSavedFilterId: 1 } } },
+            } as RootState,
         )
 
         expect(queryByText(APPLY_SAVED_FILTERS)).toBeFalsy()
@@ -134,7 +135,7 @@ describe('ApplySavedFilers', () => {
     })
 
     it('should render draft filter name instead of applied filter name', () => {
-        const {getByText, queryByText} = renderWithStore(
+        const { getByText, queryByText } = renderWithStore(
             <ApplySavedFilers canEdit savedFilters={savedFilters} />,
             {
                 ui: {
@@ -145,7 +146,7 @@ describe('ApplySavedFilers', () => {
                         },
                     },
                 },
-            } as RootState
+            } as RootState,
         )
 
         expect(queryByText(APPLY_SAVED_FILTERS)).toBeFalsy()
@@ -153,7 +154,7 @@ describe('ApplySavedFilers', () => {
     })
 
     it('should show default value if the saved filters name is empty', () => {
-        const {getByText} = renderWithStore(
+        const { getByText } = renderWithStore(
             <ApplySavedFilers canEdit savedFilters={savedFilters} />,
             {
                 ui: {
@@ -167,14 +168,14 @@ describe('ApplySavedFilers', () => {
                         },
                     },
                 },
-            } as RootState
+            } as RootState,
         )
 
         expect(getByText(APPLY_SAVED_FILTERS)).toBeTruthy()
     })
 })
 
-const filters = [{id: 1, name: 'Filter 1', filter_group: []}]
+const filters = [{ id: 1, name: 'Filter 1', filter_group: [] }]
 
 describe('getApplyFiltersButtonName', () => {
     it('should return APPLY_SAVED_FILTERS when id is null', () => {
@@ -190,10 +191,10 @@ describe('getApplyFiltersButtonName', () => {
     it('should return APPLY_SAVED_FILTERS if id does not match any filter', () => {
         const result = getApplyFiltersButtonName(
             [
-                {id: 1, name: 'Filter 1', filter_group: []},
-                {id: 2, name: 'Filter 2', filter_group: []},
+                { id: 1, name: 'Filter 1', filter_group: [] },
+                { id: 2, name: 'Filter 2', filter_group: [] },
             ],
-            999
+            999,
         )
         expect(result).toBe(APPLY_SAVED_FILTERS)
     })
@@ -201,10 +202,10 @@ describe('getApplyFiltersButtonName', () => {
     it('should return the filter name when a matching id is found', () => {
         const result = getApplyFiltersButtonName(
             [
-                {id: 1, name: 'Filter 1', filter_group: []},
-                {id: 2, name: 'Filter 2', filter_group: []},
+                { id: 1, name: 'Filter 1', filter_group: [] },
+                { id: 2, name: 'Filter 2', filter_group: [] },
             ],
-            1
+            1,
         )
         expect(result).toBe('Filter 1')
     })
@@ -217,10 +218,10 @@ describe('getApplyFiltersButtonName', () => {
     it('should return APPLY_SAVED_FILTERS when filter name is empty or null', () => {
         const result = getApplyFiltersButtonName(
             [
-                {id: 1, name: '', filter_group: []},
-                {id: 2, name: null, filter_group: []} as any,
+                { id: 1, name: '', filter_group: [] },
+                { id: 2, name: null, filter_group: [] } as any,
             ],
-            1
+            1,
         )
         expect(result).toBe(APPLY_SAVED_FILTERS)
     })
@@ -228,10 +229,10 @@ describe('getApplyFiltersButtonName', () => {
     it('should return the first filter name if multiple filters match the same id (edge case)', () => {
         const result = getApplyFiltersButtonName(
             [
-                {id: 1, name: 'Filter 1', filter_group: []},
-                {id: 1, name: 'Filter 2', filter_group: []},
+                { id: 1, name: 'Filter 1', filter_group: [] },
+                { id: 1, name: 'Filter 2', filter_group: [] },
             ],
-            1
+            1,
         )
         expect(result).toBe('Filter 1')
     })

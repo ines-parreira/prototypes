@@ -1,16 +1,18 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 import LD from 'launchdarkly-react-client-sdk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { FeatureFlagKey } from 'config/featureFlags'
 
-import {useIsConvertPerformanceViewEnabled} from '../useIsConvertPerformanceViewEnabled'
+import { useIsConvertPerformanceViewEnabled } from '../useIsConvertPerformanceViewEnabled'
 
 describe('useIsConvertPerformanceViewEnabled', () => {
     it('feature flag is enabled', () => {
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
             [FeatureFlagKey.ConvertPerformanceView]: true,
         }))
-        const {result} = renderHook(() => useIsConvertPerformanceViewEnabled())
+        const { result } = renderHook(() =>
+            useIsConvertPerformanceViewEnabled(),
+        )
         expect(result.current).toBe(true)
     })
 
@@ -18,7 +20,9 @@ describe('useIsConvertPerformanceViewEnabled', () => {
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
             [FeatureFlagKey.ConvertPerformanceView]: false,
         }))
-        const {result} = renderHook(() => useIsConvertPerformanceViewEnabled())
+        const { result } = renderHook(() =>
+            useIsConvertPerformanceViewEnabled(),
+        )
         expect(result.current).toBe(false)
     })
 })

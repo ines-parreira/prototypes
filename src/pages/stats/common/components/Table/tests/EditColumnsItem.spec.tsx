@@ -1,11 +1,11 @@
-import {fireEvent, render, screen} from '@testing-library/react'
-import {createDragDropManager} from 'dnd-core'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {DndProvider} from 'react-dnd'
-import {HTML5Backend} from 'react-dnd-html5-backend'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { createDragDropManager } from 'dnd-core'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
 
-import {EditColumnsItem} from 'pages/stats/common/components/Table/EditColumnsItem'
+import { EditColumnsItem } from 'pages/stats/common/components/Table/EditColumnsItem'
 
 const manager = createDragDropManager(HTML5Backend, undefined, undefined)
 
@@ -15,7 +15,7 @@ describe('<EditColumnsItem>', () => {
         title,
         isChecked: false,
         onChange: (v) => v,
-        option: {id: 'someId'},
+        option: { id: 'someId' },
         onDrop: jest.fn(),
     }
 
@@ -23,7 +23,7 @@ describe('<EditColumnsItem>', () => {
         render(
             <DndProvider manager={manager}>
                 <EditColumnsItem {...minProps} />
-            </DndProvider>
+            </DndProvider>,
         )
 
         expect(screen.getByText(title)).toBeInTheDocument()
@@ -33,7 +33,7 @@ describe('<EditColumnsItem>', () => {
         render(
             <DndProvider manager={manager}>
                 <EditColumnsItem {...minProps} disabled />
-            </DndProvider>
+            </DndProvider>,
         )
         const dropdown = document.querySelector('.dropdownItem')
 
@@ -45,7 +45,7 @@ describe('<EditColumnsItem>', () => {
         render(
             <DndProvider manager={manager}>
                 <EditColumnsItem {...minProps} tooltip={tooltip} />
-            </DndProvider>
+            </DndProvider>,
         )
 
         fireEvent.mouseOver(screen.getByText('info'))
@@ -58,7 +58,7 @@ describe('<EditColumnsItem>', () => {
         render(
             <DndProvider manager={manager}>
                 <EditColumnsItem {...minProps} onChange={onChange} />
-            </DndProvider>
+            </DndProvider>,
         )
 
         fireEvent.click(screen.getByText(title))

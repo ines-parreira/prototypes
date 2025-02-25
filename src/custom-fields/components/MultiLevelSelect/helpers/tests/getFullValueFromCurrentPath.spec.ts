@@ -1,4 +1,4 @@
-import {getFullValueFromCurrentPath} from '../getFullValueFromCurrentPath'
+import { getFullValueFromCurrentPath } from '../getFullValueFromCurrentPath'
 
 describe('getFullValueFromCurrentPath', () => {
     const testValues: Array<

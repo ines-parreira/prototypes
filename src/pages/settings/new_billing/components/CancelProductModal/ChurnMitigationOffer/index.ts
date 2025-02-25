@@ -1,1 +1,1 @@
-export {default} from './ChurnMitigationOffer'
+export { default } from './ChurnMitigationOffer'

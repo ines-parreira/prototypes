@@ -1,4 +1,3 @@
-import classnames from 'classnames'
 import React, {
     createContext,
     FocusEvent,
@@ -15,6 +14,8 @@ import React, {
     useState,
 } from 'react'
 
+import classnames from 'classnames'
+
 import useEffectOnce from 'hooks/useEffectOnce'
 import useUpdateEffect from 'hooks/useUpdateEffect'
 import {
@@ -22,7 +23,8 @@ import {
     GroupPositionContext,
 } from 'pages/common/components/layout/Group'
 
-import {InputGroupContext} from './InputGroup'
+import { InputGroupContext } from './InputGroup'
+
 import css from './SelectInputBox.less'
 
 type Props = {
@@ -63,7 +65,7 @@ const SelectInputBox = (
         ['aria-labelledby']: ariaLabelledBy,
         ...props
     }: Props,
-    ref: ForwardedRef<HTMLDivElement>
+    ref: ForwardedRef<HTMLDivElement>,
 ) => {
     const inputElement = useRef<HTMLDivElement>(null)
     useImperativeHandle(ref, () => inputElement.current!)
@@ -71,7 +73,7 @@ const SelectInputBox = (
     const groupContext = useContext(GroupContext)
     const isDisabledMemoized = useMemo(
         () => groupContext?.isDisabled || isDisabled,
-        [groupContext?.isDisabled, isDisabled]
+        [groupContext?.isDisabled, isDisabled],
     )
     const inputGroupContext = useContext(InputGroupContext)
     const isPlaceholder = useMemo(() => !label || label.length === 0, [label])
@@ -82,7 +84,7 @@ const SelectInputBox = (
                 : Array.isArray(label)
                   ? label.join(', ')
                   : label,
-        [isPlaceholder, label, placeholder]
+        [isPlaceholder, label, placeholder],
     )
     const [isFocused, setIsFocused] = useState(false)
 
@@ -115,7 +117,7 @@ const SelectInputBox = (
             }
             setIsFocused(false)
         },
-        [floating, inputGroupContext]
+        [floating, inputGroupContext],
     )
 
     useEffectOnce(() => {
@@ -134,7 +136,7 @@ const SelectInputBox = (
         () => ({
             onBlur: handleBlur,
         }),
-        [handleBlur]
+        [handleBlur],
     )
 
     return (
@@ -142,8 +144,8 @@ const SelectInputBox = (
             <div
                 className={classnames(
                     css.wrapper,
-                    {[css.leftMargin]: appendPosition === 'left'},
-                    className
+                    { [css.leftMargin]: appendPosition === 'left' },
+                    className,
                 )}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
@@ -165,7 +167,7 @@ const SelectInputBox = (
                             [css.isDisabled]: isDisabledMemoized,
                             [css.isFocused]: isFocused,
                             [css.isNested]: !!inputGroupContext,
-                        }
+                        },
                     )}
                 >
                     {prefix && (
@@ -200,7 +202,7 @@ const SelectInputBox = (
                             css.affix,
                             css.suffix,
                             css.toggle,
-                            'material-icons'
+                            'material-icons',
                         )}
                         onClick={handleAffixClick}
                     >

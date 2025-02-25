@@ -1,13 +1,13 @@
 // g/integrations/outlook/schemas.py
-import {IntegrationType} from '../constants'
-import type {Integration} from './'
-import type {IntegrationBase} from './base'
-import type {EmailSignature} from './email'
+import { IntegrationType } from '../constants'
+import type { Integration } from './'
+import type { IntegrationBase } from './base'
+import type { EmailSignature } from './email'
 import {
     OutboundVerificationStatusValue,
     OutboundVerificationType,
 } from './email'
-import type {OAuth2} from './misc'
+import type { OAuth2 } from './misc'
 
 export type OutlookIntegration = IntegrationBase & {
     type: IntegrationType.Outlook
@@ -39,6 +39,6 @@ export type OutlookIntegrationMeta = {
 }
 
 export const isOutlookIntegration = (
-    integration: Maybe<Integration>
+    integration: Maybe<Integration>,
 ): integration is OutlookIntegration =>
     integration?.type === IntegrationType.Outlook

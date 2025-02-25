@@ -1,44 +1,42 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useEffect, useMemo, useState} from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
-import {SegmentEvent} from 'common/segment'
-import {logEventWithSampling} from 'common/segment/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { SegmentEvent } from 'common/segment'
+import { logEventWithSampling } from 'common/segment/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
-import {ReportIssueOption} from 'models/aiAgentFeedback/constants'
+import { ReportIssueOption } from 'models/aiAgentFeedback/constants'
 import {
     DeleteMessageFeedback,
     Feedback,
     FeedbackOnResource,
-    SubmitMessageFeedback,
     isIssueFeedbackOnMessage,
     MessageFeedback,
-    ResourceFeedbackOnMessage,
     NoteFeedbackOnMessage,
+    ResourceFeedbackOnMessage,
+    SubmitMessageFeedback,
 } from 'models/aiAgentFeedback/types'
+import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import { getAgentMessageFeedbackStatus } from 'state/agents/selectors'
+import { getCurrentAccountId } from 'state/currentAccount/selectors'
+import { getSelectedAIMessage } from 'state/ui/ticketAIAgentFeedback'
 
-import {HelpCenterApiClientProvider} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-
-import {getAgentMessageFeedbackStatus} from 'state/agents/selectors'
-import {getCurrentAccountId} from 'state/currentAccount/selectors'
-import {getSelectedAIMessage} from 'state/ui/ticketAIAgentFeedback'
-
-import {useAIAgentResourcesWithFeedback} from '../../hooks/useAIAgentResourcesWithFeedback'
-import {useAIAgentSendFeedback} from '../../hooks/useAIAgentSendFeedback'
-
-import css from './AIAgentFeedbackBar.less'
+import { useAIAgentResourcesWithFeedback } from '../../hooks/useAIAgentResourcesWithFeedback'
+import { useAIAgentSendFeedback } from '../../hooks/useAIAgentSendFeedback'
 import FeedbackCreateResource from './FeedbackCreateResource'
 import FeedbackEvents from './FeedbackEvents'
 import FeedbackNote from './FeedbackNote'
 import FeedbackOrders from './FeedbackOrders'
 import FeedbackOtherResourcesSelect from './FeedbackOtherResourcesSelect'
 import FeedbackReportIssue from './FeedbackReportIssue'
-
-import {FeedbackResourceSection} from './FeedbackResourceSection'
+import { FeedbackResourceSection } from './FeedbackResourceSection'
 import FeedbackStatusBadge from './FeedbackStatusBadge'
 import InfoIconWithTooltip from './InfoIconWithTooltip'
-import {FeedbackStatus, ResourceSection} from './types'
-import {getActionUrl, getGuidanceUrl, getKnowledgeUrl} from './utils'
+import { FeedbackStatus, ResourceSection } from './types'
+import { getActionUrl, getGuidanceUrl, getKnowledgeUrl } from './utils'
+
+import css from './AIAgentFeedbackBar.less'
 
 export const FEEDBACK_MESSAGE_ACTIONS_TEST_ID = 'feedback-message-actions'
 export const FEEDBACK_MESSAGE_GUIDANCE_TEST_ID = 'feedback-message-guidance'
@@ -70,7 +68,7 @@ type Props = {
     messageFeedback: MessageFeedback
 }
 
-const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
+const AIAgentMessageFeedback: React.FC<Props> = ({ messageFeedback }) => {
     const isFeedbackToAiAgentV3Enabled =
         useFlags()[FeatureFlagKey.FeedbackToAIAgentInTicketViewsV3]
 
@@ -87,9 +85,9 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
     const issues = useMemo(
         () =>
             messageFeedback?.feedbackOnMessage?.filter(
-                isIssueFeedbackOnMessage
+                isIssueFeedbackOnMessage,
             ) || [],
-        [messageFeedback]
+        [messageFeedback],
     )
 
     const otherResourcesInitial = useMemo(
@@ -98,10 +96,10 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
                 ?.filter(
                     (feedback) =>
                         !isIssueFeedbackOnMessage(feedback) &&
-                        feedback.type === 'resource'
+                        feedback.type === 'resource',
                 )
                 .map((resource) => resource) || [],
-        [messageFeedback]
+        [messageFeedback],
     )
 
     const noteInitial = useMemo(() => {
@@ -109,17 +107,17 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
 
         const noteFeedbackMessage = feedbackOnMessage.filter(
             (feedback): feedback is NoteFeedbackOnMessage =>
-                feedback.type === 'note'
+                feedback.type === 'note',
         )
 
         return noteFeedbackMessage[0]?.feedback ?? ''
     }, [messageFeedback])
 
-    const {actions, guidance, knowledge} =
+    const { actions, guidance, knowledge } =
         useAIAgentResourcesWithFeedback(messageFeedback)
 
     const messageFeedbackStatus = useAppSelector((state) =>
-        getAgentMessageFeedbackStatus(state)
+        getAgentMessageFeedbackStatus(state),
     )
 
     useEffect(() => {
@@ -137,12 +135,12 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
         resourceId: number | string,
         resourceType: FeedbackOnResource['resourceType'],
         feedback: Feedback,
-        resourceSection?: ResourceSection
+        resourceSection?: ResourceSection,
     ) => {
         const payload: SubmitMessageFeedback = {
             feedbackOnMessage: [],
             feedbackOnResource: [
-                {resourceId, resourceType, type: 'binary', feedback},
+                { resourceId, resourceType, type: 'binary', feedback },
             ],
         }
 
@@ -153,7 +151,7 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
 
     const handleSubmitReportIssues = () => {
         const newIssues = reportIssues.filter(
-            (issue) => !issues.map((issue) => issue.feedback).includes(issue)
+            (issue) => !issues.map((issue) => issue.feedback).includes(issue),
         )
         const payload: SubmitMessageFeedback = {
             feedbackOnResource: [],
@@ -185,7 +183,7 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
     }
 
     const buildSubmitMessageFeedback = (
-        feedback: string
+        feedback: string,
     ): DeleteMessageFeedback => {
         return {
             feedbackOnResource: [],
@@ -227,7 +225,7 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
     }
 
     const handleSubmitOtherResources = (
-        resources: ResourceFeedbackOnMessage[]
+        resources: ResourceFeedbackOnMessage[],
     ) => {
         const payload: SubmitMessageFeedback = {
             feedbackOnMessage: resources,
@@ -240,7 +238,7 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
     }
 
     const handleDeleteOtherResources = (
-        resources: ResourceFeedbackOnMessage[]
+        resources: ResourceFeedbackOnMessage[],
     ) => {
         const payload: DeleteMessageFeedback = {
             feedbackOnMessage: resources,
@@ -256,7 +254,7 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
                     {
                         accountId,
                         sourceType: resource.resourceType,
-                    }
+                    },
                 )
             })
         }
@@ -270,7 +268,7 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
                     Feedback
                     <InfoIconWithTooltip
                         id="tooltip-message-feedback"
-                        tooltipProps={{autohide: true, placement: 'bottom'}}
+                        tooltipProps={{ autohide: true, placement: 'bottom' }}
                     >
                         <>
                             Provide feedback on the resources AI Agent used to
@@ -299,7 +297,7 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
                                     href={getActionUrl(
                                         action,
                                         messageFeedback.shopType,
-                                        messageFeedback.shopName
+                                        messageFeedback.shopName,
                                     )}
                                     dataTestId={
                                         FEEDBACK_MESSAGE_ACTIONS_TEST_ID
@@ -326,7 +324,7 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
                                     href={getGuidanceUrl(
                                         guidance,
                                         messageFeedback.shopType,
-                                        messageFeedback.shopName
+                                        messageFeedback.shopName,
                                     )}
                                     dataTestId={
                                         FEEDBACK_MESSAGE_GUIDANCE_TEST_ID
@@ -353,7 +351,7 @@ const AIAgentMessageFeedback: React.FC<Props> = ({messageFeedback}) => {
                                     href={getKnowledgeUrl(
                                         knowledge,
                                         messageFeedback.shopType,
-                                        messageFeedback.shopName
+                                        messageFeedback.shopName,
                                     )}
                                     dataTestId={
                                         FEEDBACK_MESSAGE_KNOWLEDGE_TEST_ID

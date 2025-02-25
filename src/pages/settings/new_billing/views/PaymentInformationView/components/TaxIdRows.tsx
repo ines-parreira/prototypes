@@ -1,7 +1,7 @@
 import React from 'react'
 
-import {DataRow} from 'pages/settings/new_billing/views/PaymentInformationView/components/DataRow'
-import {BillingContactDetailResponse} from 'state/billing/types'
+import { DataRow } from 'pages/settings/new_billing/views/PaymentInformationView/components/DataRow'
+import { BillingContactDetailResponse } from 'state/billing/types'
 
 export type ITaxIdRowsProps = {
     taxIDs: BillingContactDetailResponse['tax_ids']
@@ -11,7 +11,7 @@ export type ITaxIdRowsProps = {
     }
 }
 
-export const TaxIdRows: React.FC<ITaxIdRowsProps> = ({taxIDs, address}) => {
+export const TaxIdRows: React.FC<ITaxIdRowsProps> = ({ taxIDs, address }) => {
     const country = address.country
     const state = address.state
 
@@ -46,7 +46,7 @@ export const TaxIdRows: React.FC<ITaxIdRowsProps> = ({taxIDs, address}) => {
 const CanadaProvinceTaxIdRow: React.FC<{
     taxIDs: BillingContactDetailResponse['tax_ids']
     province?: string | null
-}> = ({taxIDs, province}) => {
+}> = ({ taxIDs, province }) => {
     switch (province) {
         case 'QC':
             return <DataRow label="QST ID" value={taxIDs?.ca_qst?.value} />

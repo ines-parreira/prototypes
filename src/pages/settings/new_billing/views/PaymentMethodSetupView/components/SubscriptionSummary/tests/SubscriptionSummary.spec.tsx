@@ -1,23 +1,24 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-import {QueryClientProvider} from '@tanstack/react-query'
-import {screen, fireEvent, waitFor} from '@testing-library/react'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {Form} from 'core/forms'
-import {basicMonthlyHelpdeskPlan} from 'fixtures/productPrices'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { mockFlags } from 'jest-launchdarkly-mock'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { Form } from 'core/forms'
+import { basicMonthlyHelpdeskPlan } from 'fixtures/productPrices'
 import useSessionStorage from 'hooks/useSessionStorage'
-import {Cadence, ProductType} from 'models/billing/types'
-import {useBillingPlans} from 'pages/settings/new_billing/hooks/useBillingPlan'
-import {SelectedPlans} from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'
+import { Cadence, ProductType } from 'models/billing/types'
+import { useBillingPlans } from 'pages/settings/new_billing/hooks/useBillingPlan'
+import { SelectedPlans } from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'
 import * as selectors from 'state/currentAccount/selectors'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock, renderWithRouter} from 'utils/testing'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock, renderWithRouter } from 'utils/testing'
 
 import {
-    SubscriptionSummary,
     ISubscriptionSummaryProps,
+    SubscriptionSummary,
 } from '../SubscriptionSummary'
 
 jest.mock('hooks/useAppSelector', () => (selector: () => any) => selector())
@@ -45,9 +46,9 @@ const selectedPlans: SelectedPlans = {
     [ProductType.Automation]: {
         isSelected: false,
     },
-    [ProductType.Voice]: {isSelected: false},
-    [ProductType.SMS]: {isSelected: false},
-    [ProductType.Convert]: {isSelected: false},
+    [ProductType.Voice]: { isSelected: false },
+    [ProductType.SMS]: { isSelected: false },
+    [ProductType.Convert]: { isSelected: false },
 }
 
 const defaultUseBillingPlansMockReturnValue = {
@@ -74,7 +75,7 @@ const renderSubscriptionSummary = () => {
             <Form onValidSubmit={props.onValidSubmit}>
                 <SubscriptionSummary {...props} />
             </Form>
-        </QueryClientProvider>
+        </QueryClientProvider>,
     )
 
     return {
@@ -87,7 +88,7 @@ describe('SubscriptionSummary Component', () => {
     beforeEach(() => {
         assumeMock(useSessionStorage).mockReturnValue([null, () => {}]) // No selected plans in session storage
         assumeMock(useBillingPlans).mockReturnValue(
-            defaultUseBillingPlansMockReturnValue
+            defaultUseBillingPlansMockReturnValue,
         )
         mockFlags({
             [FeatureFlagKey.BillingSummaryTotalWithCoupons]: false,
@@ -131,18 +132,18 @@ describe('SubscriptionSummary Component', () => {
         })
 
         const {
-            props: {onValidSubmit},
+            props: { onValidSubmit },
         } = renderSubscriptionSummary()
 
         fireEvent.click(screen.getByLabelText(/I agree to the/))
 
         await waitFor(() => {
             expect(
-                screen.getByRole('button', {name: 'Subscribe now'})
+                screen.getByRole('button', { name: 'Subscribe now' }),
             ).toBeAriaEnabled()
         })
 
-        fireEvent.click(screen.getByRole('button', {name: 'Subscribe now'}))
+        fireEvent.click(screen.getByRole('button', { name: 'Subscribe now' }))
 
         await waitFor(() => {
             expect(onValidSubmit).toHaveBeenCalled()

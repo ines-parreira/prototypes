@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react'
+import React, { ReactNode } from 'react'
 
 type Props = {
     name: string
@@ -6,7 +6,7 @@ type Props = {
     children?: ReactNode
 }
 
-export default function Item({name, value, children}: Props) {
+export default function Item({ name, value, children }: Props) {
     if ((!value && !children) || value === null) {
         return (
             <div className="mt-1">

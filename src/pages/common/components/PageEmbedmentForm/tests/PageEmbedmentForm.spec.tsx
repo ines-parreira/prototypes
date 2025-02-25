@@ -1,11 +1,12 @@
-import {fireEvent, render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {ShopifyPagesListFixture} from 'pages/settings/contactForm/fixtures/shopifyPage'
+import { fireEvent, render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
-import PageEmbedmentForm, {PageEmbedmentFormProps} from '../PageEmbedmentForm'
-import {DEFAULT_VALUES} from '../usePageEmbedmentForm'
+import { ShopifyPagesListFixture } from 'pages/settings/contactForm/fixtures/shopifyPage'
+
+import PageEmbedmentForm, { PageEmbedmentFormProps } from '../PageEmbedmentForm'
+import { DEFAULT_VALUES } from '../usePageEmbedmentForm'
 
 const baseProps: PageEmbedmentFormProps = {
     dispatch: jest.fn(),
@@ -76,7 +77,7 @@ describe('<PageEmbedmentForm />', () => {
                     selectedPage,
                 }}
                 dispatch={dispatch}
-            />
+            />,
         )
 
         // navigate to existing page mode
@@ -138,14 +139,14 @@ describe('<PageEmbedmentForm />', () => {
         const dispatch = jest.fn()
 
         // render with pages
-        const {rerender} = render(
-            <PageEmbedmentForm {...baseProps} dispatch={dispatch} />
+        const { rerender } = render(
+            <PageEmbedmentForm {...baseProps} dispatch={dispatch} />,
         )
 
         // navigate to existing page mode
         const existingCtaMode = screen.getByLabelText(
             /Embed to existing page/i,
-            {selector: 'input'}
+            { selector: 'input' },
         )
 
         expect(existingCtaMode).toBeEnabled()
@@ -167,7 +168,7 @@ describe('<PageEmbedmentForm />', () => {
                 {...baseProps}
                 dispatch={dispatch}
                 shopifyPages={[]}
-            />
+            />,
         )
 
         // verify that we are back to new page mode

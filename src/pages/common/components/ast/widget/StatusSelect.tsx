@@ -1,11 +1,10 @@
-import {List} from 'immutable'
 import React from 'react'
 
-import {connect, ConnectedProps} from 'react-redux'
+import { List } from 'immutable'
+import { connect, ConnectedProps } from 'react-redux'
 
-import {TicketStatus} from '../../../../../business/types/ticket'
-import {RootState} from '../../../../../state/types'
-
+import { TicketStatus } from '../../../../../business/types/ticket'
+import { RootState } from '../../../../../state/types'
 import Select from './ReactSelect'
 
 type Props = {
@@ -14,7 +13,7 @@ type Props = {
     className?: string
 } & ConnectedProps<typeof connector>
 
-function StatusSelect({onChange, schemas, value, className}: Props) {
+function StatusSelect({ onChange, schemas, value, className }: Props) {
     const options = (
         schemas.getIn([
             'definitions',

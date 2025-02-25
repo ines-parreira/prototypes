@@ -1,5 +1,6 @@
+import React, { ReactNode, useMemo } from 'react'
+
 import classnames from 'classnames'
-import React, {ReactNode, useMemo} from 'react'
 
 import css from './DashboardGridCell.less'
 
@@ -18,7 +19,7 @@ export default function DashboardGridCell({
         () => ({
             gridColumn: `span ${size} / span ${size}`,
         }),
-        [size]
+        [size],
     )
 
     return (

@@ -1,27 +1,27 @@
-import {FilterKey, StaticFilter} from 'models/stat/types'
-import {AUTO_QA_FILTER_KEYS} from 'pages/stats/common/filters/constants'
+import { FilterKey, StaticFilter } from 'models/stat/types'
+import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
 import {
     ChartType,
     DataExportFormat,
     ReportConfig,
 } from 'pages/stats/custom-reports/types'
-import {AGENT_PERFORMANCE_SECTION_TITLE} from 'pages/stats/support-performance/agents/AgentsTableChart'
-import {AccuracyTrendCard} from 'pages/stats/support-performance/auto-qa/AccuracyTrendCard'
+import { AGENT_PERFORMANCE_SECTION_TITLE } from 'pages/stats/support-performance/agents/AgentsTableChart'
+import { AccuracyTrendCard } from 'pages/stats/support-performance/auto-qa/AccuracyTrendCard'
 import {
     AUTO_QA_TITLE_TOOLTIP,
     AutoQaAgentsTableChart,
 } from 'pages/stats/support-performance/auto-qa/AutoQaAgentsTableChart'
-import {TrendCardConfig} from 'pages/stats/support-performance/auto-qa/AutoQAMetricsConfig'
-import {BrandVoiceTrendCard} from 'pages/stats/support-performance/auto-qa/BrandVoiceTrendCard'
-import {CommunicationSkillsTrendCard} from 'pages/stats/support-performance/auto-qa/CommunicationSkillsTrendCard'
-import {EfficiencyTrendCard} from 'pages/stats/support-performance/auto-qa/EfficiencyTrendCard'
-import {InternalComplianceTrendCard} from 'pages/stats/support-performance/auto-qa/InternalComplianceTrendCard'
-import {LanguageProficiencyTrendCard} from 'pages/stats/support-performance/auto-qa/LanguageProficiencyTrendCard'
-import {ResolutionCompletenessTrendCard} from 'pages/stats/support-performance/auto-qa/ResolutionCompletenessTrendCard'
-import {ReviewedClosedTicketsTrendCard} from 'pages/stats/support-performance/auto-qa/ReviewedClosedTicketsTrendCard'
-import {STATS_ROUTES} from 'routes/constants'
-import {fetchAutoQAAgentsTableReportData} from 'services/reporting/autoQAReportingService'
-import {AutoQAMetric} from 'state/ui/stats/types'
+import { TrendCardConfig } from 'pages/stats/support-performance/auto-qa/AutoQAMetricsConfig'
+import { BrandVoiceTrendCard } from 'pages/stats/support-performance/auto-qa/BrandVoiceTrendCard'
+import { CommunicationSkillsTrendCard } from 'pages/stats/support-performance/auto-qa/CommunicationSkillsTrendCard'
+import { EfficiencyTrendCard } from 'pages/stats/support-performance/auto-qa/EfficiencyTrendCard'
+import { InternalComplianceTrendCard } from 'pages/stats/support-performance/auto-qa/InternalComplianceTrendCard'
+import { LanguageProficiencyTrendCard } from 'pages/stats/support-performance/auto-qa/LanguageProficiencyTrendCard'
+import { ResolutionCompletenessTrendCard } from 'pages/stats/support-performance/auto-qa/ResolutionCompletenessTrendCard'
+import { ReviewedClosedTicketsTrendCard } from 'pages/stats/support-performance/auto-qa/ReviewedClosedTicketsTrendCard'
+import { STATS_ROUTES } from 'routes/constants'
+import { fetchAutoQAAgentsTableReportData } from 'services/reporting/autoQAReportingService'
+import { AutoQAMetric } from 'state/ui/stats/types'
 
 export enum AutoQAChart {
     ReviewedClosedTickets = 'auto_qa_reviewed_closed_tickets_trend_chart',

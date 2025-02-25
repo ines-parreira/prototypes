@@ -1,23 +1,22 @@
 // Schedule limited time offer for items that require liquidation
-
-import {Map} from 'immutable'
-import {ulid} from 'ulidx'
+import { Map } from 'immutable'
+import { ulid } from 'ulidx'
 
 import {
-    WizardConfiguration,
     BannerType,
     TooltipActionType,
+    WizardConfiguration,
 } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
-import {CampaignStepsKeys} from 'pages/convert/campaigns/types/CampaignSteps'
-import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
-import {CampaignTriggerBusinessHoursValuesEnum} from 'pages/convert/campaigns/types/enums/CampaignTriggerBusinessHoursValues.enum'
-import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
-import {createTriggerRule} from 'pages/convert/campaigns/utils/createTriggerRule'
-import {assetsUrl} from 'utils'
+import { CampaignStepsKeys } from 'pages/convert/campaigns/types/CampaignSteps'
+import { CampaignStatus } from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
+import { CampaignTriggerBusinessHoursValuesEnum } from 'pages/convert/campaigns/types/enums/CampaignTriggerBusinessHoursValues.enum'
+import { CampaignTriggerOperator } from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
+import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import { createTriggerRule } from 'pages/convert/campaigns/utils/createTriggerRule'
+import { assetsUrl } from 'utils'
 
-import {CampaignConfigurationBuilder} from '../constructor'
-import {CampaignConfiguration, CampaignTemplate} from '../types'
+import { CampaignConfigurationBuilder } from '../constructor'
+import { CampaignConfiguration, CampaignTemplate } from '../types'
 
 export const DISCOUNT_CODE = 'SAVE5'
 
@@ -53,7 +52,7 @@ export const SCHEDULE_LIMITED_TIME_OFFER: CampaignTemplate = {
                 storeIntegration,
                 'percentage',
                 DISCOUNT_CODE,
-                0.05
+                0.05,
             )
         } catch {
             return Promise.resolve(false)
@@ -62,7 +61,7 @@ export const SCHEDULE_LIMITED_TIME_OFFER: CampaignTemplate = {
         return Promise.resolve(true)
     },
     getConfiguration: async (
-        storeIntegration: Map<string, any>
+        storeIntegration: Map<string, any>,
     ): Promise<CampaignConfiguration> => {
         const shopName = storeIntegration.getIn([
             'meta',
@@ -105,7 +104,7 @@ export const SCHEDULE_LIMITED_TIME_OFFER: CampaignTemplate = {
                 meta: {
                     noReply: true,
                 },
-            }
+            },
         )
 
         return Promise.resolve(builder.build())

@@ -1,17 +1,17 @@
-import {SelectionState} from 'draft-js'
+import { SelectionState } from 'draft-js'
 import _noop from 'lodash/noop'
 
-import {EditorHandledNotHandled} from 'utils/editor'
+import { EditorHandledNotHandled } from 'utils/editor'
 
-import {PluginMethods, ImagePluginConfig} from '../types'
-import {insertInlineImages, isImage} from '../utils'
+import { ImagePluginConfig, PluginMethods } from '../types'
+import { insertInlineImages, isImage } from '../utils'
 
 const _handleDroppedFiles =
     (config: ImagePluginConfig) =>
     (
         selection: SelectionState,
         files: Array<File>,
-        pluginArgs: PluginMethods
+        pluginArgs: PluginMethods,
     ) => {
         // filter images
         let others: File[] = []
@@ -35,7 +35,7 @@ const _handleDroppedFiles =
             images,
             pluginArgs,
             config.notify,
-            config.uploadType
+            config.uploadType,
         )
         // upload other files types
         // only if drag-to-upload is enabled
@@ -51,7 +51,7 @@ const dndUploadPlugin = (
         getAttachFiles: () => _noop,
         getCanDropFiles: () => false,
         getCanInsertInlineImages: () => false,
-    }
+    },
 ) => {
     return {
         handleDroppedFiles: _handleDroppedFiles(config),

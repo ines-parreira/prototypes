@@ -1,4 +1,5 @@
-import {Badge} from '@gorgias/merchant-ui-kit'
+import React from 'react'
+
 import _isArray from 'lodash/isArray'
 import _isBoolean from 'lodash/isBoolean'
 import _isInteger from 'lodash/isInteger'
@@ -7,21 +8,21 @@ import _isObject from 'lodash/isObject'
 import _isString from 'lodash/isString'
 import _isUndefined from 'lodash/isUndefined'
 import moment from 'moment'
-import React from 'react'
 
-import {isImmutable} from 'common/utils'
-import {SENTIMENT_TYPE_LOWER_BOUND, SENTIMENT_TYPE_UPPER_BOUND} from 'config'
+import { Badge } from '@gorgias/merchant-ui-kit'
+
+import { isImmutable } from 'common/utils'
+import { SENTIMENT_TYPE_LOWER_BOUND, SENTIMENT_TYPE_UPPER_BOUND } from 'config'
 import StarRating from 'pages/common/components/StarRating'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-import {isUrl, isEmail} from 'utils'
-
-import {FALLBACK_VALUE} from 'Widgets/modules/Template/modules/Field'
+import { isEmail, isUrl } from 'utils'
+import { FALLBACK_VALUE } from 'Widgets/modules/Template/modules/Field'
 
 import css from './fieldDataMappers.less'
 
 export function getValueFromData(
     potentiallyImmutableData: unknown,
-    type?: string
+    type?: string,
 ) {
     let assignedType = type
     const data = (
@@ -63,7 +64,7 @@ export function getValueFromData(
         case 'age': {
             if (_isString(data) && moment(data).isValid()) {
                 return `${moment().diff(data, 'years')} (${moment(data).format(
-                    'YYYY-MM-DD'
+                    'YYYY-MM-DD',
                 )})`
             }
             break
@@ -131,7 +132,7 @@ export function getValueFromData(
                                 {val ? val.toString() : FALLBACK_VALUE}
                             </React.Fragment>
                         )
-                    }
+                    },
                 )
             }
 
@@ -235,7 +236,7 @@ export function getStringFromData(data: any, type: string): string | null {
         case 'age': {
             if (moment(data).isValid()) {
                 return `${moment().diff(data, 'years')} (${moment(data).format(
-                    'YYYY-MM-DD'
+                    'YYYY-MM-DD',
                 )})`
             }
             break

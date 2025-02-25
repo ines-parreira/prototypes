@@ -1,14 +1,15 @@
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import React from 'react'
 
-import {EmailIntegration} from 'models/integration/types'
-import {assumeMock} from 'utils/testing'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+
+import { EmailIntegration } from 'models/integration/types'
+import { assumeMock } from 'utils/testing'
 
 import EmailIntegrationForwardingSetupForm from '../EmailIntegrationForwardingSetupForm'
 import {
     EmailIntegrationOnboardingStep,
-    UseEmailOnboardingHookResult,
     useEmailOnboarding,
+    UseEmailOnboardingHookResult,
 } from '../hooks/useEmailOnboarding'
 
 const renderComponent = () => render(<EmailIntegrationForwardingSetupForm />)
@@ -16,7 +17,7 @@ const renderComponent = () => render(<EmailIntegrationForwardingSetupForm />)
 jest.mock('../hooks/useEmailOnboarding')
 jest.mock(
     '../BaseEmailIntegrationInputField',
-    () => () => '<BaseEmailIntegrationInputField />'
+    () => () => '<BaseEmailIntegrationInputField />',
 )
 
 const existingIntegration = {
@@ -42,26 +43,26 @@ describe('<EmailIntegrationForwardingSetupForm />', () => {
         renderComponent()
 
         expect(
-            screen.getByText('Forward your support emails to Gorgias')
+            screen.getByText('Forward your support emails to Gorgias'),
         ).toBeInTheDocument()
         expect(
             screen.getByText(
-                'In this step, you will go to your email provider to set up forwarding rules that will forward a copy of incoming customer emails to Gorgias, where they will appear as tickets.'
-            )
+                'In this step, you will go to your email provider to set up forwarding rules that will forward a copy of incoming customer emails to Gorgias, where they will appear as tickets.',
+            ),
         ).toBeInTheDocument()
 
         expect(
             screen.getByRole('checkbox', {
                 name: /Yes, I’ve set up email forwarding/,
-            })
+            }),
         ).toBeInTheDocument()
 
         expect(
-            screen.getByText('<BaseEmailIntegrationInputField />')
+            screen.getByText('<BaseEmailIntegrationInputField />'),
         ).toBeInTheDocument()
 
         expect(
-            screen.getByRole('button', {name: 'Begin Verification'})
+            screen.getByRole('button', { name: 'Begin Verification' }),
         ).toBeInTheDocument()
     })
 
@@ -72,7 +73,7 @@ describe('<EmailIntegrationForwardingSetupForm />', () => {
 
         await waitFor(() => {
             expect(
-                screen.getByText('This field is required')
+                screen.getByText('This field is required'),
             ).toBeInTheDocument()
         })
     })
@@ -83,7 +84,7 @@ describe('<EmailIntegrationForwardingSetupForm />', () => {
         fireEvent.click(
             screen.getByRole('checkbox', {
                 name: /Yes, I’ve set up email forwarding/,
-            })
+            }),
         )
 
         fireEvent.submit(screen.getByRole('form'))

@@ -1,22 +1,22 @@
-import {buildSDKMocks} from '../../../../rest_api/help_center_api/tests/buildSdkMocks'
+import { buildSDKMocks } from '../../../../rest_api/help_center_api/tests/buildSdkMocks'
 import {
     AIArticlesGeneric500ErrorFixture,
     AIArticlesListFixture,
 } from '../fixtures/aiArticles.fixture'
 import {
-    ArticleTemplatesListFixture,
     ArticleTemplatesGeneric500ErrorFixture,
+    ArticleTemplatesListFixture,
 } from '../fixtures/articleTemplate.fixture'
 import {
     PageEmbedmentFixture,
     PageEmbedmentsListFixture,
 } from '../fixtures/pageEmbedment'
 import {
-    ShopifyPagesListFixture,
     ShopifyPagesGeneric500ErrorFixture,
+    ShopifyPagesListFixture,
 } from '../fixtures/shopifyPage'
 import * as helpCenterResourceMethods from '../resources'
-import {mockResourceServerReplies} from './resource-mocks'
+import { mockResourceServerReplies } from './resource-mocks'
 
 describe('getShopifyPages', () => {
     let sdkMocks: Awaited<ReturnType<typeof buildSDKMocks>>
@@ -32,7 +32,7 @@ describe('getShopifyPages', () => {
 
         const data = await helpCenterResourceMethods.getShopifyPages(
             sdkMocks.client,
-            {help_center_id: 1}
+            { help_center_id: 1 },
         )
         expect(data).toEqual(ShopifyPagesListFixture)
         expect(sdkMocks.mockedServer.history).toMatchSnapshot()
@@ -50,9 +50,9 @@ describe('getShopifyPages', () => {
         await expect(
             helpCenterResourceMethods.getShopifyPages(sdkMocks.client, {
                 help_center_id: 1,
-            })
+            }),
         ).rejects.toMatchInlineSnapshot(
-            `[Error: Request failed with status code 500]`
+            `[Error: Request failed with status code 500]`,
         )
         expect(sdkMocks.mockedServer.history).toMatchSnapshot()
     })
@@ -72,7 +72,7 @@ describe('getPageEmbedments', () => {
 
         const data = await helpCenterResourceMethods.getPageEmbedments(
             sdkMocks.client,
-            {help_center_id: 1}
+            { help_center_id: 1 },
         )
         expect(data).toEqual(PageEmbedmentsListFixture)
         expect(sdkMocks.mockedServer.history).toMatchSnapshot()
@@ -90,9 +90,9 @@ describe('getPageEmbedments', () => {
         await expect(
             helpCenterResourceMethods.getPageEmbedments(sdkMocks.client, {
                 help_center_id: 1,
-            })
+            }),
         ).rejects.toMatchInlineSnapshot(
-            `[Error: Request failed with status code 500]`
+            `[Error: Request failed with status code 500]`,
         )
         expect(sdkMocks.mockedServer.history).toMatchSnapshot()
     })
@@ -119,8 +119,8 @@ describe('createPageEmbedment', () => {
 
         const data = await helpCenterResourceMethods.createPageEmbedment(
             sdkMocks.client,
-            {help_center_id: 1},
-            payload
+            { help_center_id: 1 },
+            payload,
         )
         expect(data).toEqual(PageEmbedmentFixture)
         expect(sdkMocks.mockedServer.history).toMatchSnapshot()
@@ -138,11 +138,11 @@ describe('createPageEmbedment', () => {
         await expect(
             helpCenterResourceMethods.createPageEmbedment(
                 sdkMocks.client,
-                {help_center_id: 1},
-                payload
-            )
+                { help_center_id: 1 },
+                payload,
+            ),
         ).rejects.toMatchInlineSnapshot(
-            `[Error: Request failed with status code 500]`
+            `[Error: Request failed with status code 500]`,
         )
         expect(sdkMocks.mockedServer.history).toMatchSnapshot()
     })
@@ -163,7 +163,7 @@ describe('getArticleTemplates', () => {
 
         const data = await helpCenterResourceMethods.getArticleTemplates(
             sdkMocks.client,
-            {locale}
+            { locale },
         )
         expect(data).toEqual(ArticleTemplatesListFixture)
         expect(sdkMocks.mockedServer.history).toMatchSnapshot()
@@ -181,9 +181,9 @@ describe('getArticleTemplates', () => {
         await expect(
             helpCenterResourceMethods.getArticleTemplates(sdkMocks.client, {
                 locale,
-            })
+            }),
         ).rejects.toMatchInlineSnapshot(
-            `[Error: Request failed with status code 500]`
+            `[Error: Request failed with status code 500]`,
         )
         expect(sdkMocks.mockedServer.history).toMatchSnapshot()
     })
@@ -205,8 +205,8 @@ describe('getArticleTemplate', () => {
 
         const data = await helpCenterResourceMethods.getArticleTemplate(
             sdkMocks.client,
-            {template_key: templateKey},
-            {locale}
+            { template_key: templateKey },
+            { locale },
         )
         expect(data).toEqual(ArticleTemplatesListFixture[0])
         expect(sdkMocks.mockedServer.history).toMatchSnapshot()
@@ -224,11 +224,11 @@ describe('getArticleTemplate', () => {
         await expect(
             helpCenterResourceMethods.getArticleTemplate(
                 sdkMocks.client,
-                {template_key: templateKey},
-                {locale}
-            )
+                { template_key: templateKey },
+                { locale },
+            ),
         ).rejects.toMatchInlineSnapshot(
-            `[Error: Request failed with status code 500]`
+            `[Error: Request failed with status code 500]`,
         )
         expect(sdkMocks.mockedServer.history).toMatchSnapshot()
     })
@@ -254,7 +254,7 @@ describe('getAIGeneratedArticlesByHelpCenterAndStore', () => {
                 {
                     help_center_id: helpCenterId,
                     store_integration_id: storeIntegrationId,
-                }
+                },
             )
         expect(data).toEqual(AIArticlesListFixture)
         expect(sdkMocks.mockedServer.history).toMatchSnapshot()
@@ -275,10 +275,10 @@ describe('getAIGeneratedArticlesByHelpCenterAndStore', () => {
                 {
                     help_center_id: helpCenterId,
                     store_integration_id: storeIntegrationId,
-                }
-            )
+                },
+            ),
         ).rejects.toMatchInlineSnapshot(
-            `[Error: Request failed with status code 404]`
+            `[Error: Request failed with status code 404]`,
         )
         expect(sdkMocks.mockedServer.history).toMatchSnapshot()
     })

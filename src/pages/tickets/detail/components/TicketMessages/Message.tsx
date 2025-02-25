@@ -1,16 +1,18 @@
-import classNames from 'classnames'
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
-import {hasFailedAction, isFailed, isPending} from 'models/ticket/predicates'
-import {TicketMessage} from 'models/ticket/types'
+import classNames from 'classnames'
+
+import { hasFailedAction, isFailed, isPending } from 'models/ticket/predicates'
+import { TicketMessage } from 'models/ticket/types'
 
 import Actions from './Actions'
 import Attachments from './Attachments'
 import Body from './Body'
 import Errors from './Errors'
-import css from './Message.less'
 import ReplyDetailsCard from './ReplyDetailsCard'
 import SourceDetailsHeader from './SourceDetailsHeader'
+
+import css from './Message.less'
 
 type Props = {
     message: TicketMessage

@@ -1,10 +1,10 @@
-import {ContentType} from 'models/api/types'
+import { ContentType } from 'models/api/types'
 
-import {Action} from '../../../types'
+import { Action } from '../../../types'
 import {
+    getDropdownOptions,
     prepareDropdownValue,
     splitDropdownValue,
-    getDropdownOptions,
 } from '../dropdown'
 
 describe('splitDropdownValue', () => {
@@ -152,24 +152,24 @@ describe('getDropdownOptions', () => {
 
     it('should return a matching array of options', () => {
         expect(getDropdownOptions(undefined, 'value1;value2')).toEqual([
-            {label: 'value1', value: 'value1'},
-            {label: 'value2', value: 'value2'},
+            { label: 'value1', value: 'value1' },
+            { label: 'value2', value: 'value2' },
         ])
     })
 
     it('should return a clear option if isNotRequired param is true and there is a currentValue', () => {
         expect(getDropdownOptions('value1', 'value1;value2', true)).toEqual([
-            {label: ' - ', value: ''},
-            {label: 'value1', value: 'value1'},
-            {label: 'value2', value: 'value2'},
+            { label: ' - ', value: '' },
+            { label: 'value1', value: 'value1' },
+            { label: 'value2', value: 'value2' },
         ])
 
         expect(
-            getDropdownOptions('value1', 'value1;value2', false)
-        ).not.toEqual(expect.arrayContaining([{label: ' - ', value: ''}]))
+            getDropdownOptions('value1', 'value1;value2', false),
+        ).not.toEqual(expect.arrayContaining([{ label: ' - ', value: '' }]))
 
         expect(getDropdownOptions('', 'value1;value2', true)).not.toEqual(
-            expect.arrayContaining([{label: ' - ', value: ''}])
+            expect.arrayContaining([{ label: ' - ', value: '' }]),
         )
     })
 })

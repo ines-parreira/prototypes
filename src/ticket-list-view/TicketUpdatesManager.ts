@@ -1,17 +1,17 @@
-import {CursorPaginationMeta} from '@gorgias/api-queries'
+import { CursorPaginationMeta } from '@gorgias/api-queries'
 
 /* istanbul ignore file */
-import {appQueryClient} from 'api/queryClient'
-import {viewItemsDefinitionKeys} from 'models/view/queries'
-import {getViewTicketUpdates} from 'models/view/resources'
+import { appQueryClient } from 'api/queryClient'
+import { viewItemsDefinitionKeys } from 'models/view/queries'
+import { getViewTicketUpdates } from 'models/view/resources'
 
-import {SortOrder} from './hooks/useSortOrder'
-import type {TicketPartial} from './types'
+import { SortOrder } from './hooks/useSortOrder'
+import type { TicketPartial } from './types'
 import transformApiTicketPartial from './utils/transformApiTicketPartial'
 
 export type Listener = (
     tickets: TicketPartial[],
-    cursor: CursorPaginationMeta['next_cursor']
+    cursor: CursorPaginationMeta['next_cursor'],
 ) => void
 export type Unsubscribe = () => void
 
@@ -40,7 +40,10 @@ export default class TicketUpdatesManager {
 
         this.loading = true
 
-        const {data, meta} = await this.getPage(this.sortOrder, this.nextCursor)
+        const { data, meta } = await this.getPage(
+            this.sortOrder,
+            this.nextCursor,
+        )
         this.nextCursor = meta.next_cursor
         this.tickets = [...this.tickets, ...data.map(transformApiTicketPartial)]
         this.listener?.(this.tickets, this.nextCursor)
@@ -76,7 +79,7 @@ export default class TicketUpdatesManager {
 
     private async getPage(
         sortOrder: SortOrder,
-        cursor: CursorPaginationMeta['next_cursor']
+        cursor: CursorPaginationMeta['next_cursor'],
     ) {
         const response = await appQueryClient.fetchQuery({
             queryFn: () =>
@@ -93,7 +96,7 @@ export default class TicketUpdatesManager {
 
     private async getTicketsUpTo(
         sortOrder: SortOrder,
-        datetime: number | string
+        datetime: number | string,
     ) {
         const response = await appQueryClient.fetchQuery({
             queryFn: () =>
@@ -125,7 +128,7 @@ export default class TicketUpdatesManager {
             this.loading = true
 
             try {
-                const {data, meta} = await this.getPage(this.sortOrder, null)
+                const { data, meta } = await this.getPage(this.sortOrder, null)
                 this.nextCursor = meta.next_cursor
                 this.tickets = data.map(transformApiTicketPartial)
             } catch {}
@@ -148,15 +151,15 @@ export default class TicketUpdatesManager {
         this.loading = true
 
         try {
-            const {data} = await this.getTicketsUpTo(
+            const { data } = await this.getTicketsUpTo(
                 this.sortOrder,
-                this.latestDatetime
+                this.latestDatetime,
             )
 
             const newTickets = data.map(transformApiTicketPartial)
             const newTicketIds = newTickets.reduce(
-                (acc, t) => ({...acc, [t.id]: true}),
-                {} as {[k: number]: boolean}
+                (acc, t) => ({ ...acc, [t.id]: true }),
+                {} as { [k: number]: boolean },
             )
             const oldTickets = this.tickets
                 .slice(this.latestIndex + 1)

@@ -1,1 +1,1 @@
-export {default} from './CreateABTestInfoModal'
+export { default } from './CreateABTestInfoModal'

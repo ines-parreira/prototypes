@@ -1,15 +1,17 @@
-import classNames from 'classnames'
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {useGetAiAgentFeedback} from 'models/aiAgentFeedback/queries'
-import {TicketMessage} from 'models/ticket/types'
+import classNames from 'classnames'
+
+import { useGetAiAgentFeedback } from 'models/aiAgentFeedback/queries'
+import { TicketMessage } from 'models/ticket/types'
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
 import Body from 'pages/tickets/detail/components/TicketMessages/Body'
 
-import {useAIAgentResourcesWithFeedback} from '../../hooks/useAIAgentResourcesWithFeedback'
-import {isTrialMessageFromAIAgent} from '../AIAgentFeedbackBar/utils'
-import css from './AIAgentBanner.less'
+import { useAIAgentResourcesWithFeedback } from '../../hooks/useAIAgentResourcesWithFeedback'
+import { isTrialMessageFromAIAgent } from '../AIAgentFeedbackBar/utils'
 import AIAgentFeedback from './AIAgentFeedback'
+
+import css from './AIAgentBanner.less'
 
 export type AIAgentBannerProps = {
     message: TicketMessage
@@ -17,14 +19,18 @@ export type AIAgentBannerProps = {
     className?: string
 }
 
-const AIAgentBanner = ({message, messages, className}: AIAgentBannerProps) => {
-    const {data} = useGetAiAgentFeedback({
+const AIAgentBanner = ({
+    message,
+    messages,
+    className,
+}: AIAgentBannerProps) => {
+    const { data } = useGetAiAgentFeedback({
         refetchOnWindowFocus: false,
     })
 
     const messageIds = useMemo(
         () => messages.map((message) => message.id),
-        [messages]
+        [messages],
     )
 
     const ticketFeedback = data?.data
@@ -35,7 +41,7 @@ const AIAgentBanner = ({message, messages, className}: AIAgentBannerProps) => {
         // We want to get the last message that contains feedback
         ?.reverse()
         ?.find((messageFeedback) =>
-            messageIds.includes(messageFeedback.messageId)
+            messageIds.includes(messageFeedback.messageId),
         )
 
     const resourceWithFeedback =
@@ -49,13 +55,13 @@ const AIAgentBanner = ({message, messages, className}: AIAgentBannerProps) => {
     const allowsFeedback =
         messageFeedback?.allowsFeedback || isMessagePublic || isTrialMessage
 
-    const {messageSummaryContainer, messageSummaryHasError} = useMemo(() => {
+    const { messageSummaryContainer, messageSummaryHasError } = useMemo(() => {
         const messageSummaryElement = document.createElement('div')
         messageSummaryElement.innerHTML = messageFeedback?.summary || ''
 
         const messageSummaryHasError =
             messageSummaryElement.querySelector(
-                '[data-error-summary="true"]'
+                '[data-error-summary="true"]',
             ) !== null
 
         const messageSummaryContainer = messageFeedback?.summary ? (
@@ -81,11 +87,11 @@ const AIAgentBanner = ({message, messages, className}: AIAgentBannerProps) => {
     }
 
     const twoStepMessageIndex = resourceWithFeedback?.actions.findIndex(
-        (action) => action.type === 'hard_action' && action.status
+        (action) => action.type === 'hard_action' && action.status,
     )
     const currentMessageIndex =
         ticketFeedback?.messages.findIndex(
-            (msg) => msg.messageId === message.id
+            (msg) => msg.messageId === message.id,
         ) || -1
 
     const isTwoStepMessage = twoStepMessageIndex === currentMessageIndex - 1

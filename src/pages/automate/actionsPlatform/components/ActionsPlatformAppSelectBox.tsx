@@ -1,7 +1,8 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import React, {useRef, useState} from 'react'
+import React, { useRef, useState } from 'react'
 
-import {IntegrationType} from 'models/integration/types'
+import { Label } from '@gorgias/merchant-ui-kit'
+
+import { IntegrationType } from 'models/integration/types'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
@@ -10,12 +11,12 @@ import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 
-import {App} from '../types'
+import { App } from '../types'
 
 import css from './ActionsPlatformAppSelectBox.less'
 
 type Props = {
-    apps: Extract<App, {type: IntegrationType.App}>[]
+    apps: Extract<App, { type: IntegrationType.App }>[]
     value?: App['id']
     onChange: (value: App['id']) => void
     isDisabled?: boolean

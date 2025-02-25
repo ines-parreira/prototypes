@@ -1,12 +1,12 @@
-import {useQueryClient} from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
-    useUpdateABTest as usePureUpdateABTest,
     abTestKeys,
+    useUpdateABTest as usePureUpdateABTest,
 } from 'models/convert/abTest/queries'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 export const useUpdateABTest = () => {
     const dispatch = useAppDispatch()
@@ -22,7 +22,7 @@ export const useUpdateABTest = () => {
                 notify({
                     status: NotificationStatus.Success,
                     message: 'A/B Test successfully updated',
-                })
+                }),
             )
         },
         onError: () =>
@@ -30,7 +30,7 @@ export const useUpdateABTest = () => {
                 notify({
                     status: NotificationStatus.Error,
                     message: 'Failed to update the A/B Test',
-                })
+                }),
             ),
     })
 }

@@ -1,5 +1,3 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
 import React, {
     ComponentProps,
     useCallback,
@@ -8,15 +6,20 @@ import React, {
     useState,
 } from 'react'
 
-import {states} from 'fixtures/states'
+import classnames from 'classnames'
+
+import { Label } from '@gorgias/merchant-ui-kit'
+
+import { states } from 'fixtures/states'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
 import InputField from 'pages/common/forms/input/InputField'
 
-import SelectInputBox, {SelectInputBoxContext} from '../input/SelectInputBox'
+import SelectInputBox, { SelectInputBoxContext } from '../input/SelectInputBox'
 import TextInput from '../input/TextInput'
+
 import css from '../ProvinceInput/ProvinceInput.less'
 
 type Props = {
@@ -58,7 +61,7 @@ const ProvinceInput = ({
             setProvince(province)
             onChange(province)
         },
-        [onChange]
+        [onChange],
     )
 
     useEffect(() => {

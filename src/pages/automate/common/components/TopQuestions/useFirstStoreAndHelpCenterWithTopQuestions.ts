@@ -1,12 +1,12 @@
-import {useEffect, useState} from 'react'
+import { useEffect, useState } from 'react'
 
-import {HelpCenter} from 'models/helpCenter/types'
-import {StoreIntegration} from 'models/integration/types'
-import {useGetAIArticles} from 'pages/settings/helpCenter/hooks/useGetAIArticles'
+import { HelpCenter } from 'models/helpCenter/types'
+import { StoreIntegration } from 'models/integration/types'
+import { useGetAIArticles } from 'pages/settings/helpCenter/hooks/useGetAIArticles'
 
-import {useHasEmailToStoreConnection} from './useHasEmailToStoreConnection'
-import {StoreWithHelpCenters} from './useTopQuestionsStoresWithHelpCenters'
-import {isAIArticleWithoutReviewAction} from './utils'
+import { useHasEmailToStoreConnection } from './useHasEmailToStoreConnection'
+import { StoreWithHelpCenters } from './useTopQuestionsStoresWithHelpCenters'
+import { isAIArticleWithoutReviewAction } from './utils'
 
 type FirstMatchingStoreAndHelpCenter = {
     firstMatchingStore: StoreIntegration
@@ -15,7 +15,7 @@ type FirstMatchingStoreAndHelpCenter = {
 
 export const useFirstStoreAndHelpCenterWithTopQuestions = (
     storesWithHelpCenters: StoreWithHelpCenters[],
-    enabled: boolean
+    enabled: boolean,
 ): {
     isLoading: boolean
     firstMatchingStoreAndHelpCenter: FirstMatchingStoreAndHelpCenter | undefined
@@ -46,12 +46,13 @@ export const useFirstStoreAndHelpCenterWithTopQuestions = (
         !hasEmailToStoreConnection ||
         isLoadingEmailToStoreConnection
 
-    const {fetchedArticles, isLoading: isLoadingAIArticles} = useGetAIArticles({
-        helpCenterId: helpCenter?.id ?? null,
-        storeIntegrationId: store?.store.id ?? null,
-        locale: helpCenter?.default_locale ?? 'en-US',
-        ...(disableRequest ? {enabled: false} : {}),
-    })
+    const { fetchedArticles, isLoading: isLoadingAIArticles } =
+        useGetAIArticles({
+            helpCenterId: helpCenter?.id ?? null,
+            storeIntegrationId: store?.store.id ?? null,
+            locale: helpCenter?.default_locale ?? 'en-US',
+            ...(disableRequest ? { enabled: false } : {}),
+        })
 
     useEffect(() => {
         if (

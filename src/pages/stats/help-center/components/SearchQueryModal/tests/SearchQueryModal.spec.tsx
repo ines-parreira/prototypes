@@ -1,10 +1,11 @@
-import {render, screen} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { render, screen } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
+import { useMetricPerDimension } from 'hooks/reporting/useMetricPerDimension'
 import {
     HelpCenterTrackingEventDimensions,
     HelpCenterTrackingEventMeasures,
@@ -22,7 +23,7 @@ const mockStore = configureMockStore([thunk])
 const store = mockStore({})
 
 const renderComponent = (
-    props: Partial<ComponentProps<typeof SearchQueryModal>>
+    props: Partial<ComponentProps<typeof SearchQueryModal>>,
 ) => {
     render(
         <Provider store={store}>
@@ -40,7 +41,7 @@ const renderComponent = (
                 helpCenterDomain="acme"
                 {...props}
             />
-        </Provider>
+        </Provider>,
     )
 }
 
@@ -58,7 +59,7 @@ describe('<SearchQueryModal />', () => {
     })
 
     it('should render', () => {
-        renderComponent({searchQuery: 'test'})
+        renderComponent({ searchQuery: 'test' })
 
         expect(screen.getByText('test')).toBeInTheDocument()
     })
@@ -85,7 +86,7 @@ describe('<SearchQueryModal />', () => {
 
         expect(screen.getByTestId('Clicks-0')).toHaveTextContent('5')
         expect(screen.getByTestId('Article clicked-0')).toHaveTextContent(
-            'How to report an issue'
+            'How to report an issue',
         )
     })
 })

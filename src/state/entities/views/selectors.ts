@@ -1,15 +1,15 @@
-import {createSelector} from 'reselect'
+import { createSelector } from 'reselect'
 
-import {ViewType} from 'models/view/types'
-import {makeGetSettingsByType} from 'state/currentUser/selectors'
-import {RootState} from 'state/types'
+import { ViewType } from 'models/view/types'
+import { makeGetSettingsByType } from 'state/currentUser/selectors'
+import { RootState } from 'state/types'
 
 export const getTicketViews = createSelector(
     (state: RootState) => state.entities.views || {},
     (viewsState) =>
         Object.values(viewsState).filter(
-            (view) => view.type === ViewType.TicketList
-        )
+            (view) => view.type === ViewType.TicketList,
+        ),
 )
 
 export const getOrderedViewsByType = (type: ViewType) =>
@@ -18,7 +18,7 @@ export const getOrderedViewsByType = (type: ViewType) =>
         (state: RootState) =>
             makeGetSettingsByType()(
                 state,
-                (type || '').replace('list', 'views')
+                (type || '').replace('list', 'views'),
             ),
         (viewsState, settings) => {
             return Object.values(viewsState)
@@ -34,7 +34,7 @@ export const getOrderedViewsByType = (type: ViewType) =>
                             'data',
                             view2.id.toString(),
                             'display_order',
-                        ])
+                        ]),
                 )
-        }
+        },
     )

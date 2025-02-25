@@ -1,10 +1,10 @@
-import {render} from '@testing-library/react'
+import React, { ComponentProps } from 'react'
+
+import { render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import React, {ComponentProps} from 'react'
 
-import {SegmentEvent, logEvent} from 'common/segment'
-
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import TaxesPopover from '../TaxesPopover'
 
@@ -30,7 +30,7 @@ describe('<TaxesPopover/>', () => {
         it('should render with checked checkbox because we charge taxes', () => {
             const taxExempt = false
 
-            const {container} = render(
+            const { container } = render(
                 <TaxesPopover
                     id="taxes"
                     actionName={ShopifyActionType.DuplicateOrder}
@@ -39,7 +39,7 @@ describe('<TaxesPopover/>', () => {
                     onChange={onChange}
                 >
                     Taxes
-                </TaxesPopover>
+                </TaxesPopover>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -48,7 +48,7 @@ describe('<TaxesPopover/>', () => {
         it('should render with unchecked checkbox because we do not charge taxes', () => {
             const taxExempt = true
 
-            const {container} = render(
+            const { container } = render(
                 <TaxesPopover
                     id="taxes"
                     actionName={ShopifyActionType.DuplicateOrder}
@@ -57,7 +57,7 @@ describe('<TaxesPopover/>', () => {
                     onChange={onChange}
                 >
                     Taxes
-                </TaxesPopover>
+                </TaxesPopover>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -82,7 +82,7 @@ describe('<TaxesPopover/>', () => {
                 const taxExempt = false
                 const label = 'Taxes'
 
-                const {getByText} = render(
+                const { getByText } = render(
                     <TaxesPopover
                         id="taxes"
                         actionName={actionName}
@@ -91,12 +91,12 @@ describe('<TaxesPopover/>', () => {
                         onChange={onChange}
                     >
                         {label}
-                    </TaxesPopover>
+                    </TaxesPopover>,
                 )
 
                 userEvent.click(getByText(label))
                 expect(
-                    getByText(/Taxes are automatically calculated/i)
+                    getByText(/Taxes are automatically calculated/i),
                 ).toBeTruthy()
                 expect(logEvent).toHaveBeenCalledWith(openEvent)
 
@@ -105,7 +105,7 @@ describe('<TaxesPopover/>', () => {
 
                 expect(onChange).toHaveBeenCalledWith(!taxExempt)
                 expect(logEvent).toHaveBeenCalledWith(submitEvent)
-            }
+            },
         )
     })
 
@@ -123,7 +123,7 @@ describe('<TaxesPopover/>', () => {
             const taxExempt = false
             const label = 'Taxes'
 
-            const {getByText} = render(
+            const { getByText } = render(
                 <TaxesPopover
                     id="taxes"
                     actionName={actionName}
@@ -132,7 +132,7 @@ describe('<TaxesPopover/>', () => {
                     onChange={onChange}
                 >
                     {label}
-                </TaxesPopover>
+                </TaxesPopover>,
             )
 
             userEvent.click(getByText(label))

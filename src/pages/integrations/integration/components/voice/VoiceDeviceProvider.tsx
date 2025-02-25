@@ -1,8 +1,9 @@
-import {Dispatch, bindActionCreators} from '@reduxjs/toolkit'
-import {Device} from '@twilio/voice-sdk'
-import React, {useEffect, useMemo, useReducer} from 'react'
+import React, { useEffect, useMemo, useReducer } from 'react'
 
-import {useErrorHandling} from 'hooks/integrations/phone/useErrorHandling'
+import { bindActionCreators, Dispatch } from '@reduxjs/toolkit'
+import { Device } from '@twilio/voice-sdk'
+
+import { useErrorHandling } from 'hooks/integrations/phone/useErrorHandling'
 import {
     connectDevice,
     disconnectDevice,
@@ -12,13 +13,13 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useHasPhone from 'hooks/useHasPhone'
 import slice from 'pages/integrations/integration/components/voice/voiceDeviceSlice'
-import {isActive} from 'state/currentUser/selectors'
-import {initialState} from 'state/twilio/voiceDevice'
-import {isDesktopDevice} from 'utils/device'
+import { isActive } from 'state/currentUser/selectors'
+import { initialState } from 'state/twilio/voiceDevice'
+import { isDesktopDevice } from 'utils/device'
 
-import {Context} from './VoiceDeviceContext'
+import { Context } from './VoiceDeviceContext'
 
-const {actions: contextActions, reducer} = slice
+const { actions: contextActions, reducer } = slice
 
 export default function VoiceDeviceProvider({
     children,
@@ -34,7 +35,7 @@ export default function VoiceDeviceProvider({
 
     const actions = useMemo(
         () => bindActionCreators(contextActions, dispatch as Dispatch),
-        [dispatch]
+        [dispatch],
     )
 
     useErrorHandling(state, actions)
@@ -72,7 +73,7 @@ export default function VoiceDeviceProvider({
         }
     }, [state, appDispatch, isDesktop, isAgentActive, actions, hasPhone])
 
-    const value = useMemo(() => ({...state, actions}), [state, actions])
+    const value = useMemo(() => ({ ...state, actions }), [state, actions])
 
     return <Context.Provider value={value}>{children}</Context.Provider>
 }

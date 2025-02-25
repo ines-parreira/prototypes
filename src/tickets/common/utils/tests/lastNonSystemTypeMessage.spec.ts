@@ -1,5 +1,5 @@
-import {TicketMessage} from 'models/ticket/types'
-import {SYSTEM_SOURCE_TYPES} from 'tickets/common/config'
+import { TicketMessage } from 'models/ticket/types'
+import { SYSTEM_SOURCE_TYPES } from 'tickets/common/config'
 
 import lastNonSystemTypeMessage from '../lastNonSystemTypeMessage'
 

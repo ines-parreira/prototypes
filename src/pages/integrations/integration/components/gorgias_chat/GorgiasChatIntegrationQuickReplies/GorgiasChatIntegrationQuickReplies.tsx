@@ -1,41 +1,41 @@
-import classnames from 'classnames'
-import {fromJS, Map, List} from 'immutable'
-import React, {Component, FormEvent} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {Link} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem, Form} from 'reactstrap'
+import React, { Component, FormEvent } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import classnames from 'classnames'
+import { fromJS, List, Map } from 'immutable'
+import { connect, ConnectedProps } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem, Form } from 'reactstrap'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import {
+    GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
+    GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
     QUICK_REPLIES_DEFAULTS,
     QUICK_REPLIES_MAX_ITEM_LENGTH,
     QUICK_REPLIES_MAX_ITEMS,
-    GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
-    GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
 } from 'config/integrations/gorgias_chat'
-import {IntegrationType} from 'models/integration/constants'
+import { IntegrationType } from 'models/integration/constants'
 import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
     GorgiasChatBackgroundColorStyle,
 } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
-
 import PageHeader from 'pages/common/components/PageHeader'
 import ListField from 'pages/common/forms/ListField'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
-import {Tab} from 'pages/integrations/integration/types'
-import {RootState} from 'state/types'
-import {getLDClient} from 'utils/launchDarkly'
+import { Tab } from 'pages/integrations/integration/types'
+import { RootState } from 'state/types'
+import { getLDClient } from 'utils/launchDarkly'
 
-import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
+import { updateOrCreateIntegration } from '../../../../../../state/integrations/actions'
 import ChatIntegrationPreview from '../GorgiasChatIntegrationPreview/ChatIntegrationPreview'
-import chatCss from '../GorgiasChatIntegrationPreview/ChatIntegrationPreview.less'
 import ChatIntegrationPreviewContent from '../GorgiasChatIntegrationPreview/ChatIntegrationPreviewContent'
 import QuickRepliesPreview from '../GorgiasChatIntegrationPreview/QuickReplies'
 import GorgiasChatIntegrationPreviewContainer from '../GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
 
+import chatCss from '../GorgiasChatIntegrationPreview/ChatIntegrationPreview.less'
 import css from './GorgiasChatIntegrationQuickReplies.less'
 
 type Props = {
@@ -65,7 +65,7 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
     }
 
     _initState = () => {
-        const {integration} = this.props
+        const { integration } = this.props
         const quickRepliesState: Map<any, any> =
             integration.getIn(['meta', 'quick_replies']) || fromJS({})
         let quickReplies: List<any> =
@@ -108,14 +108,14 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
 
     _submit = (event: FormEvent) => {
         event.preventDefault()
-        const {updateOrCreateIntegration, integration} = this.props
+        const { updateOrCreateIntegration, integration } = this.props
 
-        this.setState({isUpdating: true})
+        this.setState({ isUpdating: true })
 
         const existingMeta: Map<any, any> =
             integration.get('meta') || fromJS({})
         const trimmedQuickReplies = this.state.quickReplies.map(
-            (quickReplies) => quickReplies!.trim()
+            (quickReplies) => quickReplies!.trim(),
         ) as List<any>
 
         const payload = fromJS({
@@ -125,33 +125,33 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
                 fromJS({
                     enabled: this.state.quickRepliesEnabled,
                     replies: trimmedQuickReplies.toJS(),
-                })
+                }),
             ),
         })
 
-        this.setState({quickReplies: trimmedQuickReplies})
+        this.setState({ quickReplies: trimmedQuickReplies })
 
         return (updateOrCreateIntegration(payload) as Promise<void>)
-            .then(() => this.setState({isUpdating: false}))
-            .catch(() => this.setState({isUpdating: false}))
+            .then(() => this.setState({ isUpdating: false }))
+            .catch(() => this.setState({ isUpdating: false }))
     }
 
     render() {
-        const {integration} = this.props
-        const {quickRepliesEnabled, isUpdating} = this.state
+        const { integration } = this.props
+        const { quickRepliesEnabled, isUpdating } = this.state
 
         const position = {
             alignment: integration.getIn(
                 ['decoration', 'position', 'alignment'],
-                GORGIAS_CHAT_WIDGET_POSITION_DEFAULT.alignment
+                GORGIAS_CHAT_WIDGET_POSITION_DEFAULT.alignment,
             ),
             offsetX: integration.getIn(
                 ['decoration', 'position', 'offsetX'],
-                GORGIAS_CHAT_WIDGET_POSITION_DEFAULT.offsetX
+                GORGIAS_CHAT_WIDGET_POSITION_DEFAULT.offsetX,
             ),
             offsetY: integration.getIn(
                 ['decoration', 'position', 'offsetY'],
-                GORGIAS_CHAT_WIDGET_POSITION_DEFAULT.offsetY
+                GORGIAS_CHAT_WIDGET_POSITION_DEFAULT.offsetY,
             ),
         }
 
@@ -178,7 +178,7 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
                 mainColor={integration.getIn(['decoration', 'main_color'])}
                 mainFontFamily={integration.getIn(
                     ['decoration', 'main_font_family'],
-                    GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT
+                    GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
                 )}
                 language={integration.getIn(['meta', 'language'])}
                 isOnline
@@ -187,16 +187,16 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
                 autoResponderReply={autoResponderReply}
                 backgroundColorStyle={integration.getIn(
                     ['decoration', 'background_color_style'],
-                    GorgiasChatBackgroundColorStyle.Gradient
+                    GorgiasChatBackgroundColorStyle.Gradient,
                 )}
                 avatar={{
                     imageType: integration.getIn(
                         ['decoration', 'avatar', 'image_type'],
-                        GorgiasChatAvatarImageType.AGENT_PICTURE
+                        GorgiasChatAvatarImageType.AGENT_PICTURE,
                     ),
                     nameType: integration.getIn(
                         ['decoration', 'avatar', 'name_type'],
-                        GorgiasChatAvatarNameType.AGENT_FIRST_NAME
+                        GorgiasChatAvatarNameType.AGENT_FIRST_NAME,
                     ),
                     companyLogoUrl: integration.getIn([
                         'decoration',
@@ -206,11 +206,11 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
                 }}
                 displayBotLabel={integration.getIn(
                     ['decoration', 'display_bot_label'],
-                    true
+                    true,
                 )}
                 useMainColorOutsideBusinessHours={integration.getIn(
                     ['decoration', 'use_main_color_outside_business_hours'],
-                    false
+                    false,
                 )}
             >
                 <ChatIntegrationPreviewContent>
@@ -219,7 +219,7 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
                         quickReplies={this.state.quickReplies
                             .filter(
                                 (s: string | undefined) =>
-                                    s?.trim().length !== 0
+                                    s?.trim().length !== 0,
                             )
                             .toJS()}
                         mainColor={integration.getIn([
@@ -290,7 +290,7 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
                                 className={classnames(
                                     'd-flex',
                                     'align-items-center',
-                                    css.mb16
+                                    css.mb16,
                                 )}
                             >
                                 <ToggleInput
@@ -313,7 +313,7 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends Component<
                             className={css.container}
                             items={this.state.quickReplies}
                             onChange={(quickReplies) =>
-                                this.setState({quickReplies})
+                                this.setState({ quickReplies })
                             }
                             maxLength={QUICK_REPLIES_MAX_ITEM_LENGTH}
                             maxItems={QUICK_REPLIES_MAX_ITEMS}
@@ -343,7 +343,7 @@ const connector = connect(
     }),
     {
         updateOrCreateIntegration,
-    }
+    },
 )
 
 export default connector(GorgiasChatIntegrationQuickRepliesComponent)

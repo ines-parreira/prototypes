@@ -1,4 +1,4 @@
-import {fromJS, Map, List} from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 import drop from 'lodash/drop'
 import _isArray from 'lodash/isArray'
 import _isInteger from 'lodash/isInteger'
@@ -6,12 +6,11 @@ import _isString from 'lodash/isString'
 import _isUndefined from 'lodash/isUndefined'
 import moment from 'moment-timezone'
 
-import {UNARY_OPERATORS, TIMEDELTA_OPERATOR_DEFAULT_VALUE} from '../../config'
-import {Schemas} from '../../types'
-import {getAST, getFirstExpressionOfAST} from '../../utils'
-import {isTimedelta} from '../../utils/ast'
-
-import {OBJECT_DEFINITIONS} from './constants'
+import { TIMEDELTA_OPERATOR_DEFAULT_VALUE, UNARY_OPERATORS } from '../../config'
+import { Schemas } from '../../types'
+import { getAST, getFirstExpressionOfAST } from '../../utils'
+import { isTimedelta } from '../../utils/ast'
+import { OBJECT_DEFINITIONS } from './constants'
 import {
     CollectionOperator,
     DatetimeOperator,
@@ -43,7 +42,7 @@ import {
  */
 function partialPath(
     memberExpression: Maybe<Map<any, any>>,
-    stopPath: List<any>
+    stopPath: List<any>,
 ): Array<Maybe<string>> {
     const objectPath: Maybe<string>[] = []
     let fullStop = false
@@ -84,7 +83,7 @@ function partialPath(
  */
 const resolveArgSchema = (
     leftPath: Maybe<string>[],
-    schemas: Schemas
+    schemas: Schemas,
 ): Maybe<string>[] => {
     const path = []
     let left = leftPath
@@ -93,7 +92,7 @@ const resolveArgSchema = (
         throw Error(
             `leftPath is expected to be {Array}, instead got ${
                 leftPath as unknown as string
-            }`
+            }`,
         )
     }
 
@@ -140,7 +139,7 @@ const resolveArgSchema = (
                 const newRight = drop(left, pathLen)
                 return resolveArgSchema(
                     newLeft.concat(newRight as string[]),
-                    schemas
+                    schemas,
                 )
             }
         }
@@ -162,7 +161,7 @@ let fullStop = false
 function resolveProperties(
     props: Record<string, unknown>,
     firstArg: Maybe<string>[],
-    schemas: Schemas
+    schemas: Schemas,
 ): Array<Maybe<Maybe<string>[] | Map<any, any>>> | undefined {
     if (fullStop) {
         return [null, null]
@@ -206,7 +205,7 @@ function resolveProperties(
  */
 function resolveFirstArgSchema(
     firstArg: Maybe<string>[],
-    schemas: Schemas
+    schemas: Schemas,
 ): [Maybe<string>[], Maybe<Map<any, any>>] {
     // Based on the first arg, try to get our schema
     const schemaPath = resolveArgSchema(firstArg, schemas)
@@ -223,7 +222,7 @@ function resolveFirstArgSchema(
         const props = firstArgSchema.toJS() as Record<string, unknown>
         const args = resolveProperties(props, firstArg, schemas)
         return resolveFirstArgSchema(
-            ...(args as ArgumentsOf<typeof resolveFirstArgSchema>)
+            ...(args as ArgumentsOf<typeof resolveFirstArgSchema>),
         )
     }
     return [firstArg, null]
@@ -235,7 +234,7 @@ function resolveFirstArgSchema(
 function resolveFirstArg(
     callExpression: Map<any, any>,
     stopPath: List<any>,
-    schemas: Schemas
+    schemas: Schemas,
 ) {
     const memberExpression = callExpression.getIn(['arguments', 0]) as Map<
         any,
@@ -259,7 +258,7 @@ function resolveFirstArg(
  */
 export function resolveCallee(
     callExpression: Map<any, any>,
-    firstArgSchema: Schemas
+    firstArgSchema: Schemas,
 ): string {
     const oldCallee = callExpression.getIn(['callee', 'name'], '') as string
     let callee: Maybe<string> = oldCallee
@@ -268,7 +267,7 @@ export function resolveCallee(
         const operators = Object.keys(
             (
                 firstArgSchema.getIn(['meta', 'operators']) as Map<any, any>
-            ).toJS()
+            ).toJS(),
         )
 
         callee = operators.find((operator) => operator === oldCallee)
@@ -287,7 +286,7 @@ export function resolveCallee(
 
         if (!callee) {
             callee = operators.filter(
-                (op) => !Object.values(DeprecatedOperator).includes(op as any)
+                (op) => !Object.values(DeprecatedOperator).includes(op as any),
             )[0]
         }
     }
@@ -305,7 +304,7 @@ export function resolveSecondArg(
     callExpression: Map<any, any>,
     callee: string,
     reset: boolean,
-    firstArgSchema?: Schemas
+    firstArgSchema?: Schemas,
 ): Maybe<string> {
     // empty operators have only one argument
     if (Object.keys(UNARY_OPERATORS).includes(callee)) {
@@ -449,7 +448,7 @@ export function resolveSecondArg(
 export function updateCallExpression(
     state: Map<any, any>,
     path: List<any>,
-    schemas: Schemas
+    schemas: Schemas,
 ) {
     // nothing to do if it's just a value change, just return the same state
     // `value`: value of an AST Literal
@@ -471,13 +470,13 @@ export function updateCallExpression(
         // an argument has changed
         callExpressionPath = path.setSize(argumentsIndex)
         stopPath = path.takeLast(
-            path.size - callExpressionPath.size - 2
+            path.size - callExpressionPath.size - 2,
         ) as List<any>
     } else if (~calleeIndex) {
         // callee has changed
         callExpressionPath = path.setSize(calleeIndex)
         stopPath = path.takeLast(
-            path.size - callExpressionPath.size
+            path.size - callExpressionPath.size,
         ) as List<any>
     }
 
@@ -486,7 +485,7 @@ export function updateCallExpression(
     const [firstArg, firstArgSchema] = resolveFirstArg(
         callExpression,
         stopPath,
-        schemas
+        schemas,
     )
     let callee = null
     let secondArg = null
@@ -500,7 +499,7 @@ export function updateCallExpression(
             callExpression,
             callee,
             hasPropertyChanged,
-            firstArgSchema as Map<any, any>
+            firstArgSchema as Map<any, any>,
         )
     }
 
@@ -517,7 +516,7 @@ export function updateCallExpression(
 }
 
 export function getObjectExpression(
-    actionDict: Record<string, unknown>
+    actionDict: Record<string, unknown>,
 ): ObjectExpression {
     const properties: ObjectExpressionProperty[] = Object.keys(actionDict).map(
         (keyItem) => ({
@@ -535,10 +534,10 @@ export function getObjectExpression(
             kind: 'init',
             method: false,
             shorthand: false,
-        })
+        }),
     )
 
-    return {type: 'ObjectExpression', properties}
+    return { type: 'ObjectExpression', properties }
 }
 
 export function getEmptyRule(): RuleDraft {

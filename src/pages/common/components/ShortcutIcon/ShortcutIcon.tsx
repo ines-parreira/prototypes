@@ -1,5 +1,6 @@
+import React, { ReactNode } from 'react'
+
 import classnames from 'classnames'
-import React, {ReactNode} from 'react'
 
 import css from './ShortcutIcon.less'
 
@@ -21,8 +22,8 @@ const ShortcutIcon = ({
     <div
         className={classnames(
             css.wrapper,
-            {[css[type]]: fillStyle === 'fill'},
-            className
+            { [css[type]]: fillStyle === 'fill' },
+            className,
         )}
     >
         {children}

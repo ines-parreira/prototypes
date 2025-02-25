@@ -1,15 +1,17 @@
-import {usePutCallParticipantOnHold} from '@gorgias/api-queries'
-import {Call} from '@twilio/voice-sdk'
-import {AxiosError} from 'axios'
-import classNames from 'classnames'
-import React, {useCallback, useState, useEffect, useRef} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 
-import {TwilioSocketEventType} from 'business/twilio'
+import { Call } from '@twilio/voice-sdk'
+import { AxiosError } from 'axios'
+import classNames from 'classnames'
+import { connect, ConnectedProps } from 'react-redux'
+
+import { usePutCallParticipantOnHold } from '@gorgias/api-queries'
+
+import { TwilioSocketEventType } from 'business/twilio'
 import {
-    sendTwilioSocketEvent,
     gatherCallContext,
     getCallSid,
+    sendTwilioSocketEvent,
 } from 'hooks/integrations/phone/utils'
 import client from 'models/api/resources'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
@@ -18,25 +20,26 @@ import {
     CallRecordingStatus,
     TWILIO_CURRENT_ITEM,
 } from 'pages/common/components/PhoneIntegrationBar/constants'
-import {useConnectionParameters} from 'pages/common/components/PhoneIntegrationBar/hooks'
+import { useConnectionParameters } from 'pages/common/components/PhoneIntegrationBar/hooks'
 import PhoneCustomerName from 'pages/common/components/PhoneIntegrationBar/PhoneCustomerName/PhoneCustomerName'
 import PhoneInfobarWrapper from 'pages/common/components/PhoneIntegrationBar/PhoneInfobarWrapper/PhoneInfobarWrapper'
 import PhoneIntegrationName from 'pages/common/components/PhoneIntegrationBar/PhoneIntegrationName/PhoneIntegrationName'
 import socketManager from 'services/socketManager'
 import {
+    ServerMessage,
     SocketEventType,
     VoiceCallTransferFailedEvent,
-    ServerMessage,
 } from 'services/socketManager/types'
 import * as integrationsSelectors from 'state/integrations/selectors'
-import {notify as notifyAction} from 'state/notifications/actions'
-import {Notification, NotificationStatus} from 'state/notifications/types'
-import {RootState} from 'state/types'
+import { notify as notifyAction } from 'state/notifications/actions'
+import { Notification, NotificationStatus } from 'state/notifications/types'
+import { RootState } from 'state/types'
 
 import VoiceCallAgentLabel from '../../VoiceCallAgentLabel/VoiceCallAgentLabel'
 import CallTransferDropdown from './CallTransferDropdown'
 import IconButtonTooltip from './IconButtonTooltip'
 import InCallDialPad from './InCallDialPad/InCallDialPad'
+
 import css from './OngoingPhoneCall.less'
 
 type OwnProps = {
@@ -51,17 +54,17 @@ export function OngoingPhoneCall({
     notify,
 }: Props): JSX.Element {
     const [isTransferDropdownOpen, setIsTransferDropdownOpen] = useState(false)
-    const {isMuted, onToggleMute} = useMute(call)
-    const {integrationId, customerName, customerPhoneNumber} =
+    const { isMuted, onToggleMute } = useMute(call)
+    const { integrationId, customerName, customerPhoneNumber } =
         useConnectionParameters(call)
     const [isOnHold, setIsOnHold] = useState(false)
     const [isTransferring, setIsTransferring] = useState(false)
     const [transferringTo, setTransferringTo] = useState<number | null>(null)
     const [isRecording, setIsRecording] = useState(false)
 
-    const {mutate: changeHoldState} = usePutCallParticipantOnHold({
+    const { mutate: changeHoldState } = usePutCallParticipantOnHold({
         mutation: {
-            onSuccess: (_, {data: {hold_state}}) => {
+            onSuccess: (_, { data: { hold_state } }) => {
                 setIsOnHold(hold_state)
             },
             onError: () => {
@@ -74,11 +77,11 @@ export function OngoingPhoneCall({
         },
     })
 
-    const {startRecording, isRequestPending} = useRecording(
+    const { startRecording, isRequestPending } = useRecording(
         call,
         isRecording,
         setIsRecording,
-        notify
+        notify,
     )
 
     const transferButtonRef = useRef<HTMLButtonElement>(null)
@@ -96,7 +99,7 @@ export function OngoingPhoneCall({
                 message: eventData.event.data.error.message,
             })
         },
-        [notify, setIsTransferring]
+        [notify, setIsTransferring],
     )
 
     useEffect(() => {
@@ -279,21 +282,21 @@ function useMute(call: Call) {
         })
     }, [call, isMuted])
 
-    return {isMuted, onToggleMute}
+    return { isMuted, onToggleMute }
 }
 
 function useRecording(
     call: Call,
     isRecording: boolean,
     setIsRecording: (isRecording: boolean) => void,
-    notify: (message: Notification) => Promise<unknown>
+    notify: (message: Notification) => Promise<unknown>,
 ) {
     const [isRequestPending, setIsRequestPending] = useState(false)
 
     const startRecording = useCallback(async () => {
         const customParams = call.customParameters
         const integrationId = parseInt(
-            customParams.get('integration_id') as string
+            customParams.get('integration_id') as string,
         )
 
         const callSid = customParams.get('call_sid')
@@ -309,7 +312,7 @@ function useRecording(
         try {
             await client.put(
                 `/api/integrations/${integrationId}/calls/${callSid}/recordings/${TWILIO_CURRENT_ITEM}`,
-                {status}
+                { status },
             )
             setIsRecording(!isRecording)
             const recordingEvent =
@@ -321,7 +324,7 @@ function useRecording(
                 data: gatherCallContext(call),
             })
         } catch (error) {
-            const {response} = error as AxiosError<{error: {msg: string}}>
+            const { response } = error as AxiosError<{ error: { msg: string } }>
 
             if (response) {
                 const notification: Notification = {
@@ -346,7 +349,7 @@ function useRecording(
 
 const mapStateToProps = (state: RootState, ownProps: OwnProps) => {
     const integrationId = parseInt(
-        ownProps.call.customParameters.get('integration_id') as string
+        ownProps.call.customParameters.get('integration_id') as string,
     )
 
     const integration =

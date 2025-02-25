@@ -1,21 +1,22 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
-import _get from 'lodash/get'
 import React from 'react'
 
-import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
+import _get from 'lodash/get'
 
-import {buildSDKMocks} from '../../../../rest_api/help_center_api/tests/buildSdkMocks'
+import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+
+import { buildSDKMocks } from '../../../../rest_api/help_center_api/tests/buildSdkMocks'
 import {
     useCreateContactForm,
-    useGetContactFormList,
-    useGetShopifyPages,
-    useGetPageEmbedments,
     useCreatePageEmbedment,
+    useGetContactFormList,
+    useGetPageEmbedments,
+    useGetShopifyPages,
     useUpdatePageEmbedment,
 } from '../queries'
-import {mockResourceServerReplies} from './resource-mocks'
+import { mockResourceServerReplies } from './resource-mocks'
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi')
 const mockedUseHelpCenterApi = useHelpCenterApi as jest.MockedFunction<
@@ -24,7 +25,7 @@ const mockedUseHelpCenterApi = useHelpCenterApi as jest.MockedFunction<
 
 const queryClient = mockQueryClient()
 
-const wrapper: React.FC = ({children}) => (
+const wrapper: React.FC = ({ children }) => (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 )
 
@@ -45,14 +46,14 @@ describe('useGetContactFormList', () => {
             getContactForms: 'success',
         })
 
-        const {result, waitFor} = renderHook(() => useGetContactFormList(), {
+        const { result, waitFor } = renderHook(() => useGetContactFormList(), {
             wrapper,
         })
 
         await waitFor(() => expect(result.current.isSuccess).toBeTruthy())
 
         expect(_get(result, ['current', 'data', 'pages', 0])).toEqual(
-            mocks.fixtures.ContactFormListFixtures
+            mocks.fixtures.ContactFormListFixtures,
         )
     })
 
@@ -61,14 +62,14 @@ describe('useGetContactFormList', () => {
             getContactForms: 'error',
         })
 
-        const {result, waitFor} = renderHook(() => useGetContactFormList(), {
+        const { result, waitFor } = renderHook(() => useGetContactFormList(), {
             wrapper,
         })
 
         await waitFor(() => {
             expect(result.current.isError).toBeTruthy()
             expect(result.current.error).toMatchInlineSnapshot(
-                `[Error: Request failed with status code 500]`
+                `[Error: Request failed with status code 500]`,
             )
         })
     })
@@ -92,17 +93,17 @@ describe('useGetShopifyPages', () => {
             getShopifyPages: 'success',
         })
 
-        const {result, waitFor} = renderHook(
+        const { result, waitFor } = renderHook(
             () => useGetShopifyPages(contactFormId),
             {
                 wrapper,
-            }
+            },
         )
 
         await waitFor(() => expect(result.current.isSuccess).toBeTruthy())
 
         expect(result.current.data).toEqual(
-            mocks.fixtures.ShopifyPagesListFixture
+            mocks.fixtures.ShopifyPagesListFixture,
         )
     })
 
@@ -111,17 +112,17 @@ describe('useGetShopifyPages', () => {
             getShopifyPages: 'error',
         })
 
-        const {result, waitFor} = renderHook(
+        const { result, waitFor } = renderHook(
             () => useGetShopifyPages(contactFormId),
             {
                 wrapper,
-            }
+            },
         )
 
         await waitFor(() => {
             expect(result.current.isError).toBeTruthy()
             expect(result.current.error).toMatchInlineSnapshot(
-                `[Error: Request failed with status code 500]`
+                `[Error: Request failed with status code 500]`,
             )
         })
     })
@@ -145,17 +146,17 @@ describe('useGetPageEmbedments', () => {
             getPageEmbedments: 'success',
         })
 
-        const {result, waitFor} = renderHook(
+        const { result, waitFor } = renderHook(
             () => useGetPageEmbedments(contactFormId),
             {
                 wrapper,
-            }
+            },
         )
 
         await waitFor(() => expect(result.current.isSuccess).toBeTruthy())
 
         expect(result.current.data).toEqual(
-            mocks.fixtures.PageEmbedmentsListFixture
+            mocks.fixtures.PageEmbedmentsListFixture,
         )
     })
 
@@ -164,17 +165,17 @@ describe('useGetPageEmbedments', () => {
             getPageEmbedments: 'error',
         })
 
-        const {result, waitFor} = renderHook(
+        const { result, waitFor } = renderHook(
             () => useGetPageEmbedments(contactFormId),
             {
                 wrapper,
-            }
+            },
         )
 
         await waitFor(() => {
             expect(result.current.isError).toBeTruthy()
             expect(result.current.error).toMatchInlineSnapshot(
-                `[Error: Request failed with status code 500]`
+                `[Error: Request failed with status code 500]`,
             )
         })
     })
@@ -205,7 +206,7 @@ describe('useCreateContactForm', () => {
             createContactForm: 'success',
         })
 
-        const {result, waitFor} = renderHook(() => useCreateContactForm(), {
+        const { result, waitFor } = renderHook(() => useCreateContactForm(), {
             wrapper,
         })
 
@@ -214,7 +215,7 @@ describe('useCreateContactForm', () => {
         await waitFor(() => expect(result.current.isSuccess).toBeTruthy())
 
         expect(_get(result, ['current', 'data'])).toEqual(
-            mocks.fixtures.ContactFormFixture
+            mocks.fixtures.ContactFormFixture,
         )
     })
 
@@ -223,7 +224,7 @@ describe('useCreateContactForm', () => {
             createContactForm: 'error',
         })
 
-        const {result, waitFor} = renderHook(() => useCreateContactForm(), {
+        const { result, waitFor } = renderHook(() => useCreateContactForm(), {
             wrapper,
         })
 
@@ -232,7 +233,7 @@ describe('useCreateContactForm', () => {
         await waitFor(() => {
             expect(result.current.isError).toBeTruthy()
             expect(result.current.error).toMatchInlineSnapshot(
-                `[Error: Request failed with status code 500]`
+                `[Error: Request failed with status code 500]`,
             )
         })
     })
@@ -264,7 +265,7 @@ describe('useCreatePageEmbedment', () => {
             createPageEmbedment: 'success',
         })
 
-        const {result, waitFor} = renderHook(() => useCreatePageEmbedment(), {
+        const { result, waitFor } = renderHook(() => useCreatePageEmbedment(), {
             wrapper,
         })
 
@@ -273,7 +274,7 @@ describe('useCreatePageEmbedment', () => {
         await waitFor(() => expect(result.current.isSuccess).toBeTruthy())
 
         expect(_get(result, ['current', 'data'])).toEqual(
-            mocks.fixtures.PageEmbedmentFixture
+            mocks.fixtures.PageEmbedmentFixture,
         )
     })
 
@@ -282,7 +283,7 @@ describe('useCreatePageEmbedment', () => {
             createPageEmbedment: 'error',
         })
 
-        const {result, waitFor} = renderHook(() => useCreatePageEmbedment(), {
+        const { result, waitFor } = renderHook(() => useCreatePageEmbedment(), {
             wrapper,
         })
 
@@ -291,7 +292,7 @@ describe('useCreatePageEmbedment', () => {
         await waitFor(() => {
             expect(result.current.isError).toBeTruthy()
             expect(result.current.error).toMatchInlineSnapshot(
-                `[Error: Request failed with status code 500]`
+                `[Error: Request failed with status code 500]`,
             )
         })
     })
@@ -324,7 +325,7 @@ describe('useUpdatePageEmbedment', () => {
             updatePageEmbedment: 'success',
         })
 
-        const {result, waitFor} = renderHook(() => useUpdatePageEmbedment(), {
+        const { result, waitFor } = renderHook(() => useUpdatePageEmbedment(), {
             wrapper,
         })
 
@@ -333,7 +334,7 @@ describe('useUpdatePageEmbedment', () => {
         await waitFor(() => expect(result.current.isSuccess).toBeTruthy())
 
         expect(_get(result, ['current', 'data'])).toEqual(
-            mocks.fixtures.PageEmbedmentFixture
+            mocks.fixtures.PageEmbedmentFixture,
         )
     })
 
@@ -342,7 +343,7 @@ describe('useUpdatePageEmbedment', () => {
             updatePageEmbedment: 'error',
         })
 
-        const {result, waitFor} = renderHook(() => useUpdatePageEmbedment(), {
+        const { result, waitFor } = renderHook(() => useUpdatePageEmbedment(), {
             wrapper,
         })
 
@@ -351,7 +352,7 @@ describe('useUpdatePageEmbedment', () => {
         await waitFor(() => {
             expect(result.current.isError).toBeTruthy()
             expect(result.current.error).toMatchInlineSnapshot(
-                `[Error: Request failed with status code 500]`
+                `[Error: Request failed with status code 500]`,
             )
         })
     })

@@ -1,10 +1,11 @@
-import React, {useState} from 'react'
-import {Link} from 'react-router-dom'
+import React, { useState } from 'react'
+
+import { Link } from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationType} from 'models/integration/constants'
-import {HttpIntegration} from 'models/integration/types'
+import { IntegrationType } from 'models/integration/constants'
+import { HttpIntegration } from 'models/integration/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import {
@@ -17,16 +18,17 @@ import {
 } from 'state/integrations/selectors'
 
 import NoIntegration from '../../NoIntegration'
-import {BASE_PATH} from '../constants'
+import { BASE_PATH } from '../constants'
+
 import css from './List.less'
 
 function List() {
     const loading = useAppSelector(getIntegrationsLoading)
     const integrations = useAppSelector(
-        getIntegrationsByType<HttpIntegration>(IntegrationType.Http)
+        getIntegrationsByType<HttpIntegration>(IntegrationType.Http),
     )
     const [shouldDisplayFullLoader, setFullLoaderDisplay] = useState(
-        !loading || loading.integrations
+        !loading || loading.integrations,
     )
 
     const dispatch = useAppDispatch()
@@ -53,10 +55,10 @@ function List() {
                                 setFullLoaderDisplay(false)
                                 return isDisabled
                                     ? dispatch(
-                                          activateIntegration(integration.id)
+                                          activateIntegration(integration.id),
                                       )
                                     : dispatch(
-                                          deactivateIntegration(integration.id)
+                                          deactivateIntegration(integration.id),
                                       )
                             }
 

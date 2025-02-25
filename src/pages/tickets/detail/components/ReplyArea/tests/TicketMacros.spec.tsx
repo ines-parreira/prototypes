@@ -1,33 +1,35 @@
-import {Macro} from '@gorgias/api-queries'
-import {render, screen} from '@testing-library/react'
-import {fromJS, Map} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render, screen } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {UserRole} from 'config/types/user'
-import {user} from 'fixtures/users'
-import {useDeleteMacro} from 'hooks/macros'
-import {RootState} from 'state/types'
-import {assumeMock} from 'utils/testing'
+import { Macro } from '@gorgias/api-queries'
 
-import {TicketMacros} from '../TicketMacros'
+import { UserRole } from 'config/types/user'
+import { user } from 'fixtures/users'
+import { useDeleteMacro } from 'hooks/macros'
+import { RootState } from 'state/types'
+import { assumeMock } from 'utils/testing'
+
+import { TicketMacros } from '../TicketMacros'
 
 jest.mock(
     'pages/tickets/common/macros/components/MacroNoResults',
     () =>
-        ({newAction}: {newAction: () => void}) => (
+        ({ newAction }: { newAction: () => void }) => (
             <div onClick={newAction}>No macros found</div>
-        )
+        ),
 )
 jest.mock(
     'pages/tickets/common/macros/components/MacroList',
-    () => () => 'Macro list'
+    () => () => 'Macro list',
 )
 jest.mock(
     'pages/tickets/common/macros/MacroContainer',
-    () => () => 'MacroContainer'
+    () => () => 'MacroContainer',
 )
 
 const mockStore = configureMockStore([thunk])
@@ -81,21 +83,21 @@ describe('<TicketMacros />', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <TicketMacros {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('No macros found')).toBeTruthy()
     })
 
     it('should display macros list, and selected macro', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <TicketMacros
                     {...minProps}
                     macros={macros}
                     currentMacro={macros[1]}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -108,12 +110,12 @@ describe('<TicketMacros />', () => {
                     ...defaultState,
                     currentUser: defaultUser.setIn(
                         ['role', 'name'],
-                        UserRole.BasicAgent
+                        UserRole.BasicAgent,
                     ),
                 })}
             >
                 <TicketMacros {...minProps} macros={macros} />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.queryByText('settings')).not.toBeInTheDocument()
@@ -123,7 +125,7 @@ describe('<TicketMacros />', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <TicketMacros {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
         screen.getByText('No macros found').click()
@@ -139,7 +141,7 @@ describe('<TicketMacros />', () => {
                     macros={macros}
                     currentMacro={macros[1]}
                 />
-            </Provider>
+            </Provider>,
         )
 
         screen.getByText(/Delete macro/i).click()

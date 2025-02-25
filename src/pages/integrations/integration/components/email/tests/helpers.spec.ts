@@ -1,8 +1,8 @@
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
-import {cloneDeep} from 'lodash'
+import { cloneDeep } from 'lodash'
 
-import {EmailProvider, IntegrationType} from 'models/integration/constants'
+import { EmailProvider, IntegrationType } from 'models/integration/constants'
 import {
     DomainDNSRecord,
     EmailIntegration,
@@ -17,6 +17,7 @@ import {
     getDomainFromEmailAddress,
     isBaseEmailAddress,
     isBaseEmailIntegration,
+    isCommonDomainEmail,
     isOutboundDomainVerified,
     isOutboundVerifiedSendgrid,
     isSendgridEmailIntegration,
@@ -25,7 +26,6 @@ import {
     parseRecordsCurrentValues,
     populateCurrentValuesForDNSRecords,
     removeDomainFromDNSRecord,
-    isCommonDomainEmail,
 } from '../helpers'
 import * as helpers from '../helpers'
 
@@ -65,7 +65,7 @@ describe('helpers', () => {
             newIntegration.meta.outbound_verification_status.single_sender =
                 status
             expect(isSingleSenderVerificationInProgress(newIntegration)).toBe(
-                true
+                true,
             )
         })
 
@@ -77,7 +77,7 @@ describe('helpers', () => {
             newIntegration.meta.outbound_verification_status.single_sender =
                 status
             expect(isSingleSenderVerificationInProgress(newIntegration)).toBe(
-                false
+                false,
             )
         })
     })
@@ -95,13 +95,13 @@ describe('helpers', () => {
             ${OutboundVerificationStatusValue.Success}    | ${OutboundVerificationStatusValue.Success}    | ${true}
         `(
             'should return $result when domain is $domain and single sender is $singleSender',
-            ({domain, singleSender, result}) => {
+            ({ domain, singleSender, result }) => {
                 const newIntegration = cloneDeep(integration)
                 newIntegration.meta.outbound_verification_status.domain = domain
                 newIntegration.meta.outbound_verification_status.single_sender =
                     singleSender
                 expect(isOutboundVerifiedSendgrid(newIntegration)).toBe(result)
-            }
+            },
         )
     })
 
@@ -130,9 +130,9 @@ describe('helpers', () => {
                     OutboundVerificationStatusValue.Unverified
                 gmailIntegrationClone.meta.provider = provider
                 expect(
-                    canEnableEmailingViaInternalProvider(gmailIntegrationClone)
+                    canEnableEmailingViaInternalProvider(gmailIntegrationClone),
                 ).toBe(false)
-            }
+            },
         )
 
         it.each([EmailProvider.Mailgun, EmailProvider.Sendgrid])(
@@ -143,9 +143,9 @@ describe('helpers', () => {
                     OutboundVerificationStatusValue.Success
                 gmailIntegrationClone.meta.provider = provider
                 expect(
-                    canEnableEmailingViaInternalProvider(gmailIntegrationClone)
+                    canEnableEmailingViaInternalProvider(gmailIntegrationClone),
                 ).toBe(true)
-            }
+            },
         )
     })
 
@@ -168,7 +168,7 @@ describe('helpers', () => {
     describe('getDomainFromEmailAddress', () => {
         it('should return the domain', () => {
             expect(getDomainFromEmailAddress('email@gorgias-xyz.com')).toBe(
-                'gorgias-xyz.com'
+                'gorgias-xyz.com',
             )
         })
     })
@@ -198,7 +198,7 @@ describe('helpers', () => {
             'should return true for common domain %s',
             (domain) => {
                 expect(isCommonDomainEmail(domain)).toBe(true)
-            }
+            },
         )
 
         it('should return false for non-common domain', () => {
@@ -216,7 +216,7 @@ describe('helpers', () => {
                     meta: {
                         address: '',
                     },
-                } as any)
+                } as any),
             ).toBe(false)
         })
 
@@ -229,7 +229,7 @@ describe('helpers', () => {
                     meta: {
                         address: '',
                     },
-                } as any)
+                } as any),
             ).toBe(true)
         })
 
@@ -242,7 +242,7 @@ describe('helpers', () => {
                     meta: {
                         address: '',
                     },
-                } as any)
+                } as any),
             ).toBe(false)
         })
     })
@@ -268,7 +268,7 @@ describe('helpers', () => {
                     meta: {
                         address: 'email@gorgias.com',
                     },
-                } as any)
+                } as any),
             ).toBe(true)
         })
 
@@ -278,7 +278,7 @@ describe('helpers', () => {
                     meta: {
                         address: 'email@gorgias-xyz.com',
                     },
-                } as any)
+                } as any),
             ).toBe(false)
         })
     })
@@ -291,7 +291,7 @@ describe('helpers', () => {
                     meta: {
                         provider: EmailProvider.Mailgun,
                     },
-                } as any)
+                } as any),
             )
         })
 
@@ -302,7 +302,7 @@ describe('helpers', () => {
                     meta: {
                         provider: EmailProvider.Sendgrid,
                     },
-                } as any)
+                } as any),
             )
         })
 
@@ -313,7 +313,7 @@ describe('helpers', () => {
                     meta: {
                         provider: EmailProvider.Sendgrid,
                     },
-                } as any)
+                } as any),
             )
         })
 
@@ -324,7 +324,7 @@ describe('helpers', () => {
                     meta: {
                         provider: EmailProvider.Sendgrid,
                     },
-                } as any)
+                } as any),
             )
         })
     })
@@ -337,8 +337,8 @@ describe('helpers', () => {
                         host: 'em12345.mydomain.com',
                         value: 'ok',
                     } as DomainDNSRecord,
-                    'mydomain.com'
-                )
+                    'mydomain.com',
+                ),
             ).toEqual({
                 host: 'em12345',
                 value: 'ok',
@@ -352,8 +352,8 @@ describe('helpers', () => {
                         host: 'em12345.mydomain.com',
                         value: 'ok',
                     } as DomainDNSRecord,
-                    'a-different-domain.com'
-                )
+                    'a-different-domain.com',
+                ),
             ).toEqual({
                 host: 'em12345.mydomain.com',
                 value: 'ok',
@@ -363,7 +363,7 @@ describe('helpers', () => {
                 removeDomainFromDNSRecord({
                     host: 'em12345.mydomain.com',
                     value: 'ok',
-                } as DomainDNSRecord)
+                } as DomainDNSRecord),
             ).toEqual({
                 host: 'em12345.mydomain.com',
                 value: 'ok',
@@ -404,7 +404,7 @@ describe('helpers', () => {
     describe('populateCurrentValuesForDNSRecords()', () => {
         it('populates the current_values for all matching records, ignoring errors or unmatched ones', async () => {
             mockedServer.onGet('https://dns.google/resolve').reply((config) => {
-                const {name, type} = config.params as {
+                const { name, type } = config.params as {
                     name: string
                     type: string
                 }
@@ -481,7 +481,7 @@ describe('helpers', () => {
             ] as DomainDNSRecord[]
 
             expect(await populateCurrentValuesForDNSRecords(records)).toEqual(
-                records
+                records,
             )
         })
     })

@@ -1,6 +1,7 @@
-import React, {FunctionComponent} from 'react'
+import React, { FunctionComponent } from 'react'
 
-import {getEmojiFlag} from '../../utils/locale'
+import { getEmojiFlag } from '../../utils/locale'
+
 import css from './FlagLanguageItem.less'
 
 type FlagLanguageItemProps = {

@@ -7,20 +7,20 @@ import {
 } from 'models/integration/types'
 
 import client from '../../../models/api/resources'
-import {getGorgiasChatProtectedApiClient} from '../../../rest_api/gorgias_chat_protected_api/client'
-import {Client} from '../../../rest_api/gorgias_chat_protected_api/client.generated'
+import { getGorgiasChatProtectedApiClient } from '../../../rest_api/gorgias_chat_protected_api/client'
+import { Client } from '../../../rest_api/gorgias_chat_protected_api/client.generated'
 import {
     InstallationStatus,
     Texts,
     Translations,
 } from '../../../rest_api/gorgias_chat_protected_api/types'
 import {
-    getTranslations,
-    getApplicationTexts,
-    updateApplicationTexts,
-    getInstallationStatus,
-    getInstallationSnippet,
     getApplications,
+    getApplicationTexts,
+    getInstallationSnippet,
+    getInstallationStatus,
+    getTranslations,
+    updateApplicationTexts,
 } from '../actions/gorgias-chat.actions'
 
 describe('gorgias-chat.actions', () => {
@@ -41,9 +41,9 @@ describe('gorgias-chat.actions', () => {
     describe('"getTranslations"', () => {
         describe('when it works', () => {
             const okApiResponse: Translations = {
-                texts: {text: 'value '},
-                sspTexts: {text: 'value '},
-                meta: {text: 'value '},
+                texts: { text: 'value ' },
+                sspTexts: { text: 'value ' },
+                meta: { text: 'value ' },
             }
             const lang = 'Es-es'
             let mockServer: MockAdapter
@@ -66,7 +66,7 @@ describe('gorgias-chat.actions', () => {
             it('it should return correct data', async () => {
                 const response = await getTranslations(lang)
                 expect(JSON.stringify(response)).toBe(
-                    JSON.stringify(okApiResponse)
+                    JSON.stringify(okApiResponse),
                 )
             })
         })
@@ -81,7 +81,7 @@ describe('gorgias-chat.actions', () => {
                 mockServer.onGet('/translations').reply((config) => {
                     const params: Record<string, string> = config.params
                     if (params.lang === lang) {
-                        return [500, {error: 'Error'}]
+                        return [500, { error: 'Error' }]
                     }
                     return [404]
                 })
@@ -99,9 +99,9 @@ describe('gorgias-chat.actions', () => {
     describe('"getApplicationTexts"', () => {
         describe('when it works', () => {
             const okApiResponse: Texts = {
-                texts: {text: 'value '},
-                sspTexts: {text: 'value '},
-                meta: {text: 'value '},
+                texts: { text: 'value ' },
+                sspTexts: { text: 'value ' },
+                meta: { text: 'value ' },
             }
             const applicationId = '1'
             let mockServer: MockAdapter
@@ -120,7 +120,7 @@ describe('gorgias-chat.actions', () => {
             it('it should return correct data', async () => {
                 const response = await getApplicationTexts(applicationId)
                 expect(JSON.stringify(response)).toBe(
-                    JSON.stringify(okApiResponse)
+                    JSON.stringify(okApiResponse),
                 )
             })
         })
@@ -134,7 +134,7 @@ describe('gorgias-chat.actions', () => {
 
                 mockServer
                     .onGet(`/applications/${applicationId}/texts`)
-                    .reply(500, {error: 'Error'})
+                    .reply(500, { error: 'Error' })
             })
             afterAll(() => {
                 mockServer.reset()
@@ -142,7 +142,7 @@ describe('gorgias-chat.actions', () => {
 
             it('it should throw error', async () => {
                 await expect(
-                    getApplicationTexts(applicationId)
+                    getApplicationTexts(applicationId),
                 ).rejects.toThrow()
             })
         })
@@ -152,9 +152,9 @@ describe('gorgias-chat.actions', () => {
         describe('when it works', () => {
             const applicationId = '1'
             const data: Texts = {
-                texts: {texKey: 'TextValue'},
-                sspTexts: {key: 'value'},
-                meta: {key: 'value'},
+                texts: { texKey: 'TextValue' },
+                sspTexts: { key: 'value' },
+                meta: { key: 'value' },
             }
             let mockServer: MockAdapter
 
@@ -188,9 +188,9 @@ describe('gorgias-chat.actions', () => {
         describe('when it fails', () => {
             const applicationId = '1'
             const data: Texts = {
-                texts: {texKey: 'TextValue'},
-                sspTexts: {key: 'value'},
-                meta: {key: 'value'},
+                texts: { texKey: 'TextValue' },
+                sspTexts: { key: 'value' },
+                meta: { key: 'value' },
             }
             let mockServer: MockAdapter
 
@@ -206,7 +206,7 @@ describe('gorgias-chat.actions', () => {
                             JSON.stringify(JSON.parse(params)) ===
                             JSON.stringify(data)
                         ) {
-                            return [500, {error: 'Error'}]
+                            return [500, { error: 'Error' }]
                         }
 
                         return [404]
@@ -218,7 +218,7 @@ describe('gorgias-chat.actions', () => {
 
             it('it should throw error', async () => {
                 await expect(
-                    updateApplicationTexts(applicationId, data)
+                    updateApplicationTexts(applicationId, data),
                 ).rejects.toThrow()
             })
         })
@@ -250,7 +250,7 @@ describe('gorgias-chat.actions', () => {
             it('it should return correct data', async () => {
                 const response = await getInstallationStatus(applicationId)
                 expect(JSON.stringify(response)).toBe(
-                    JSON.stringify(okApiResponse)
+                    JSON.stringify(okApiResponse),
                 )
             })
         })
@@ -264,7 +264,7 @@ describe('gorgias-chat.actions', () => {
 
                 mockServer
                     .onGet(`/applications/${applicationId}/installation-status`)
-                    .reply(500, {error: 'Error'})
+                    .reply(500, { error: 'Error' })
             })
             afterAll(() => {
                 mockServer.reset()
@@ -272,7 +272,7 @@ describe('gorgias-chat.actions', () => {
 
             it('it should throw error', async () => {
                 await expect(
-                    getInstallationStatus(applicationId)
+                    getInstallationStatus(applicationId),
                 ).rejects.toThrow()
             })
         })
@@ -293,7 +293,7 @@ describe('gorgias-chat.actions', () => {
 
                 mockServer
                     .onGet(
-                        `/helpdesk/applications/${applicationId}/installation-snippet/manual`
+                        `/helpdesk/applications/${applicationId}/installation-snippet/manual`,
                     )
                     .reply(200, okApiResponse)
             })
@@ -302,9 +302,9 @@ describe('gorgias-chat.actions', () => {
             })
 
             it('it should return correct data', async () => {
-                const response = await getInstallationSnippet({applicationId})
+                const response = await getInstallationSnippet({ applicationId })
                 expect(JSON.stringify(response)).toBe(
-                    JSON.stringify(okApiResponse)
+                    JSON.stringify(okApiResponse),
                 )
             })
         })
@@ -318,9 +318,9 @@ describe('gorgias-chat.actions', () => {
 
                 mockServer
                     .onGet(
-                        `/helpdesk/applications/${applicationId}/installation-snippet/manual`
+                        `/helpdesk/applications/${applicationId}/installation-snippet/manual`,
                     )
-                    .reply(500, {error: 'Error'})
+                    .reply(500, { error: 'Error' })
             })
             afterAll(() => {
                 mockServer.reset()
@@ -328,7 +328,7 @@ describe('gorgias-chat.actions', () => {
 
             it('it should throw error', async () => {
                 await expect(
-                    getInstallationSnippet({applicationId})
+                    getInstallationSnippet({ applicationId }),
                 ).rejects.toThrow()
             })
         })
@@ -361,7 +361,7 @@ describe('gorgias-chat.actions', () => {
             it('it should return correct data', async () => {
                 const response = await getApplications()
                 expect(JSON.stringify(response)).toBe(
-                    JSON.stringify(okApiResponse)
+                    JSON.stringify(okApiResponse),
                 )
             })
         })
@@ -374,7 +374,7 @@ describe('gorgias-chat.actions', () => {
 
                 mockServer
                     .onGet(`/helpdesk/applications`)
-                    .reply(500, {error: 'Error'})
+                    .reply(500, { error: 'Error' })
             })
             afterAll(() => {
                 mockServer.reset()

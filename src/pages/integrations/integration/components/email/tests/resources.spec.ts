@@ -1,7 +1,7 @@
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
-import {fetchEmailDomains} from '../resources'
+import { fetchEmailDomains } from '../resources'
 
 describe('email resources', () => {
     const mockedServer = new MockAdapter(axios)

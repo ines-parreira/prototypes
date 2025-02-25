@@ -1,32 +1,33 @@
-import _ from 'lodash'
-import {useMemo} from 'react'
-import {useParams} from 'react-router-dom'
+import { useMemo } from 'react'
 
-import {SelfServiceChannelType} from 'pages/automate/common/hooks/useSelfServiceChannels'
+import _ from 'lodash'
+import { useParams } from 'react-router-dom'
+
+import { SelfServiceChannelType } from 'pages/automate/common/hooks/useSelfServiceChannels'
 import useWorkflowChannelSupport from 'pages/automate/workflows/hooks/useWorkflowChannelSupport'
-import {WorkflowConfiguration} from 'pages/automate/workflows/models/workflowConfiguration.types'
+import { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
 
 const useOnlySupportedChannels = (
     configuration: WorkflowConfiguration,
-    channelType: SelfServiceChannelType
+    channelType: SelfServiceChannelType,
 ) => {
-    const {shopType, shopName} = useParams<{
+    const { shopType, shopName } = useParams<{
         shopType: string
         shopName: string
     }>()
-    const {getUnsupportedNodeTypes, getSupportedChannels} =
+    const { getUnsupportedNodeTypes, getSupportedChannels } =
         useWorkflowChannelSupport(shopType, shopName)
     const onlySupportedChannels = useMemo(() => {
         const unsupportedNodeTypes = getUnsupportedNodeTypes(
             channelType,
-            configuration
+            configuration,
         )
 
         const onlySupportedChannels = _.uniq(
             unsupportedNodeTypes.reduce<SelfServiceChannelType[]>(
                 (acc, nodeType) => [...acc, ...getSupportedChannels(nodeType)],
-                []
-            )
+                [],
+            ),
         )
         return onlySupportedChannels
     }, [

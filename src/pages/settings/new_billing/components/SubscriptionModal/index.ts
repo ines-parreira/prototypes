@@ -1,1 +1,1 @@
-export {default} from './SubscriptionModal'
+export { default } from './SubscriptionModal'

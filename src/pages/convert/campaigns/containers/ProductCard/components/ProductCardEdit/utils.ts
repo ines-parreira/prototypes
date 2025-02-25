@@ -1,7 +1,7 @@
 // Adjust the minimum zoom limit in order to always keep the image within the container
 export const getMinRangeSize = (
-    image: {width: number; height: number},
-    container: {width: number; height: number}
+    image: { width: number; height: number },
+    container: { width: number; height: number },
 ): number => {
     if (!image?.width || !image?.height) return 1
 
@@ -9,8 +9,8 @@ export const getMinRangeSize = (
         100 /
             Math.min(
                 image.width / container.width,
-                image.height / container.height
-            )
+                image.height / container.height,
+            ),
     )
 }
 
@@ -18,7 +18,7 @@ export const getMinRangeSize = (
 // within [minRangeSize - 100] scale to [1 - 100] scale
 export const convertSizeToRangeValue = (
     size: number,
-    minRangeSize: number
+    minRangeSize: number,
 ): number => {
     const converted =
         1 + ((100 - 1) * (size - minRangeSize)) / (100 - minRangeSize)
@@ -30,7 +30,7 @@ export const convertSizeToRangeValue = (
 // within [1 - 100] scale to [minRangeSize - 100] scale
 export const convertRangeValueToSize = (
     value: number,
-    minRangeSize: number
+    minRangeSize: number,
 ): number => {
     const converted =
         minRangeSize + ((value - 1) * (100 - minRangeSize)) / (100 - 1)

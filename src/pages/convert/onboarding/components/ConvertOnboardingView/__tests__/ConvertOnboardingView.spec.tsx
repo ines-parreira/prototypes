@@ -1,21 +1,21 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {screen, waitFor} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {Provider} from 'react-redux'
-import routerDom, {useParams} from 'react-router-dom'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { screen, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import routerDom, { useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
-import {channelConnection} from 'fixtures/channelConnection'
-import {convertBundle} from 'fixtures/convertBundle'
-import {useListBundles} from 'models/convert/bundle/queries'
-import {NavigatedSuccessModalName} from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
+import { channelConnection } from 'fixtures/channelConnection'
+import { convertBundle } from 'fixtures/convertBundle'
+import { useListBundles } from 'models/convert/bundle/queries'
+import { NavigatedSuccessModalName } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import history from 'pages/history'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock, renderWithRouter} from 'utils/testing'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock, renderWithRouter } from 'utils/testing'
 
 import ConvertOnboardingView from '../ConvertOnboardingView'
 
@@ -26,15 +26,19 @@ const mockStore = configureMockStore()
 const defaultStateShopify = {
     integrations: fromJS({
         integrations: [
-            {id: 123, type: 'gorgias_chat', meta: {shop_integration_id: 234}},
-            {id: 234, type: 'shopify'},
+            {
+                id: 123,
+                type: 'gorgias_chat',
+                meta: { shop_integration_id: 234 },
+            },
+            { id: 234, type: 'shopify' },
         ],
     }),
 }
 
 const defaultStateNoShopify = {
     integrations: fromJS({
-        integrations: [{id: 123, type: 'gorgias_chat'}],
+        integrations: [{ id: 123, type: 'gorgias_chat' }],
     }),
 }
 
@@ -49,7 +53,7 @@ const useListBundlesMock = assumeMock(useListBundles)
 
 jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')
 const useGetOrCreateChannelConnectionMock = assumeMock(
-    useGetOrCreateChannelConnection
+    useGetOrCreateChannelConnection,
 )
 
 jest.mock('pages/convert/common/hooks/useConvertApi', () => ({
@@ -84,7 +88,7 @@ describe('<ConvertOnboardingView />', () => {
         'redirects to campaigns page when onboarding is done',
         async (isSubscriber, defaultState, completedSteps) => {
             // Mock useParams
-            ;(useParams as jest.Mock).mockReturnValue({id: '123'})
+            ;(useParams as jest.Mock).mockReturnValue({ id: '123' })
 
             // Mock useGetOrCreateChannelConnection
             useGetOrCreateChannelConnectionMock.mockReturnValue({
@@ -105,16 +109,16 @@ describe('<ConvertOnboardingView />', () => {
 
             const spy = jest.spyOn(history, 'push')
 
-            const {queryByText} = renderWithRouter(
+            const { queryByText } = renderWithRouter(
                 <QueryClientProvider client={queryClient}>
                     <Provider store={mockStore(defaultState)}>
                         <ConvertOnboardingView />
                     </Provider>
-                </QueryClientProvider>
+                </QueryClientProvider>,
             )
 
             expect(screen.getAllByLabelText('Step completed')).toHaveLength(
-                completedSteps
+                completedSteps,
             )
 
             // Ensure redirection happens
@@ -136,6 +140,6 @@ describe('<ConvertOnboardingView />', () => {
             } else {
                 expect(queryByText(button)).toBeInTheDocument()
             }
-        }
+        },
     )
 })

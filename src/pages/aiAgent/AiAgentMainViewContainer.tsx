@@ -1,26 +1,29 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useCallback, useEffect} from 'react'
-import {useHistory, useParams} from 'react-router-dom'
+import React, { useCallback, useEffect } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { useHistory, useParams } from 'react-router-dom'
+
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
-import {AiAgentOnboardingState} from 'models/aiAgent/types'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import { AiAgentOnboardingState } from 'models/aiAgent/types'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
-import {AIAgentWelcomePageDynamic} from './AIAgentWelcomePageDynamic'
-import css from './components/AiAgentView/AiAgentView.less'
-import {AIAgentWelcomePageView} from './components/AIAgentWelcomePageView/AIAgentWelcomePageView'
-import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
-import {useAiAgentOnboardingNotification} from './hooks/useAiAgentOnboardingNotification'
+import { AIAgentWelcomePageDynamic } from './AIAgentWelcomePageDynamic'
+import { AIAgentWelcomePageView } from './components/AIAgentWelcomePageView/AIAgentWelcomePageView'
+import { useAiAgentNavigation } from './hooks/useAiAgentNavigation'
+import { useAiAgentOnboardingNotification } from './hooks/useAiAgentOnboardingNotification'
 import {
     OnboardingState,
     useAiAgentOnboardingState,
 } from './hooks/useAiAgentOnboardingState'
-import {useAiAgentStoreConfigurationContext} from './providers/AiAgentStoreConfigurationContext'
+import { useAiAgentStoreConfigurationContext } from './providers/AiAgentStoreConfigurationContext'
+
+import css from './components/AiAgentView/AiAgentView.less'
 
 const AiAgentMainViewContainer = () => {
-    const {shopName, shopType} = useParams<{
+    const { shopName, shopType } = useParams<{
         shopName: string
         shopType: string
     }>()
@@ -28,12 +31,12 @@ const AiAgentMainViewContainer = () => {
     const accountDomain = currentAccount.get('domain')
 
     const history = useHistory()
-    const {routes} = useAiAgentNavigation({shopName})
+    const { routes } = useAiAgentNavigation({ shopName })
 
     const isAiAgentOptimizeTabEnabled =
         useFlags()[FeatureFlagKey.AiAgentOptimizeTab]
 
-    const {isLoading: isLoadingStoreConfiguration, storeConfiguration} =
+    const { isLoading: isLoadingStoreConfiguration, storeConfiguration } =
         useAiAgentStoreConfigurationContext()
 
     const {
@@ -42,7 +45,7 @@ const AiAgentMainViewContainer = () => {
         onboardingNotificationState,
         handleOnSave,
         isAiAgentOnboardingNotificationEnabled,
-    } = useAiAgentOnboardingNotification({shopName})
+    } = useAiAgentOnboardingNotification({ shopName })
 
     const handleOnboardingState = useCallback(async () => {
         const isFullyOnboarded =
@@ -76,7 +79,7 @@ const AiAgentMainViewContainer = () => {
         if (onboardingState === onboardingNotificationState?.onboardingState)
             return
 
-        await handleOnSave({onboardingState})
+        await handleOnSave({ onboardingState })
     }, [
         handleOnSave,
         onboardingNotificationState?.onboardingState,
@@ -103,7 +106,7 @@ const AiAgentMainViewContainer = () => {
 
     const onboardingState = useAiAgentOnboardingState(
         shopName,
-        isLoadingOnboardingNotificationState
+        isLoadingOnboardingNotificationState,
     )
 
     switch (onboardingState) {
@@ -145,7 +148,7 @@ const AiAgentMainViewContainer = () => {
             history.replace(
                 isAiAgentOptimizeTabEnabled
                     ? routes.optimize
-                    : routes.configuration()
+                    : routes.configuration(),
             )
     }
 

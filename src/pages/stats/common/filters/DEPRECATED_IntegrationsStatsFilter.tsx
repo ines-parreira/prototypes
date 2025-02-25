@@ -1,4 +1,4 @@
-import React, {ComponentProps, useCallback, useMemo} from 'react'
+import React, { ComponentProps, useCallback, useMemo } from 'react'
 
 import aircallIcon from 'assets/img/integrations/aircall.png'
 import gmailIcon from 'assets/img/integrations/gmail.png'
@@ -12,13 +12,12 @@ import {
     HELP_CENTER_INTEGRATION_ADDRESS_PREFIX,
     IntegrationType,
 } from 'models/integration/constants'
-import {AppIntegration, Integration} from 'models/integration/types'
-import {LegacyStatsFilters} from 'models/stat/types'
-
+import { AppIntegration, Integration } from 'models/integration/types'
+import { LegacyStatsFilters } from 'models/stat/types'
 import css from 'pages/stats/common/filters/IntegrationsStatsFilter.less'
 import SelectFilter from 'pages/stats/common/SelectFilter'
 import SelectStatsFilter from 'pages/stats/common/SelectStatsFilter'
-import {mergeStatsFilters} from 'state/stats/statsSlice'
+import { mergeStatsFilters } from 'state/stats/statsSlice'
 
 export const IMAGE_ICONS = {
     [IntegrationType.Aircall]: aircallIcon,
@@ -96,10 +95,10 @@ export default function DEPRECATED_IntegrationsStatsFilter({
 
     const selectedIntegrationsIds = useMemo(() => {
         const integrationsIds = integrations.map(
-            (integration) => integration.id
+            (integration) => integration.id,
         )
         return value.filter((integrationId) =>
-            integrationsIds.includes(integrationId)
+            integrationsIds.includes(integrationId),
         )
     }, [value, integrations])
     const Component = variant === 'fill' ? SelectFilter : SelectStatsFilter
@@ -111,10 +110,10 @@ export default function DEPRECATED_IntegrationsStatsFilter({
                     mergeStatsFilters({
                         integrations: values as number[],
                         campaigns: [],
-                    })
+                    }),
                 )
             },
-            [dispatch]
+            [dispatch],
         )
 
     return (

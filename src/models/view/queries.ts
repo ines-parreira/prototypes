@@ -1,4 +1,4 @@
-import {useQuery} from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 
 import {
     getViewTicketUpdates,
@@ -8,7 +8,7 @@ import {
 export const viewItemsDefinitionKeys = {
     all: () => ['view'] as const,
     lists: () => [...viewItemsDefinitionKeys.all(), 'list'] as const,
-    list: (params: {query: string}) => [
+    list: (params: { query: string }) => [
         ...viewItemsDefinitionKeys.lists(),
         params,
     ],
@@ -24,8 +24,8 @@ export const viewItemsDefinitionKeys = {
 }
 
 export const useGetViewTicketUpdates = (
-    {viewId, params}: {viewId: number; params?: ViewTicketUpdatesParams},
-    {enabled = true}: {enabled?: boolean}
+    { viewId, params }: { viewId: number; params?: ViewTicketUpdatesParams },
+    { enabled = true }: { enabled?: boolean },
 ) => {
     return useQuery({
         queryFn: () => getViewTicketUpdates(viewId, params),

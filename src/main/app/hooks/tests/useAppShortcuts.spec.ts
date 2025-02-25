@@ -1,4 +1,4 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useShortcuts from 'hooks/useShortcuts'
@@ -44,14 +44,14 @@ describe('useAppShortcuts', () => {
     it('should go to a view', () => {
         renderHook(() => useAppShortcuts())
 
-        const {action: goView} = (
+        const { action: goView } = (
             useShortcutsMock.mock.calls as [
-                [string, {GO_VIEW: {action: (e: Event) => void}}],
+                [string, { GO_VIEW: { action: (e: Event) => void } }],
             ]
         )[0][1].GO_VIEW
 
         const preventDefault = jest.fn()
-        goView({preventDefault} as unknown as Event)
+        goView({ preventDefault } as unknown as Event)
 
         expect(preventDefault).toHaveBeenCalledWith()
         expect(dispatch).toHaveBeenCalled()
@@ -60,9 +60,9 @@ describe('useAppShortcuts', () => {
     it('should undo a message', () => {
         renderHook(() => useAppShortcuts())
 
-        const {action: undoMessage} = (
+        const { action: undoMessage } = (
             useShortcutsMock.mock.calls as [
-                [string, {UNDO_MESSAGE: {action: () => void}}],
+                [string, { UNDO_MESSAGE: { action: () => void } }],
             ]
         )[0][1].UNDO_MESSAGE
 

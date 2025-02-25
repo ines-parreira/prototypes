@@ -1,22 +1,25 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useMemo} from 'react'
-import {Redirect} from 'react-router-dom'
+import React, { useMemo } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { Redirect } from 'react-router-dom'
+
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {useGetHelpCenterList} from 'models/helpCenter/queries'
-import {AI_AGENT, SETTINGS} from 'pages/aiAgent/constants'
-import {useAiAgentStoreConfigurationContext} from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
-import {hasShopifyRequiredPermissions} from 'pages/aiAgent/utils/shopify-integration.utils'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
-import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { useGetHelpCenterList } from 'models/helpCenter/queries'
+import { AI_AGENT, SETTINGS } from 'pages/aiAgent/constants'
+import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
+import { hasShopifyRequiredPermissions } from 'pages/aiAgent/utils/shopify-integration.utils'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
+import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
-import {AiAgentLayout} from '../components/AiAgentLayout/AiAgentLayout'
-import {StoreConfigForm} from '../components/StoreConfigForm/StoreConfigForm'
+import { AiAgentLayout } from '../components/AiAgentLayout/AiAgentLayout'
+import { StoreConfigForm } from '../components/StoreConfigForm/StoreConfigForm'
+
 import css from './AiAgentConfigurationView.less'
 
 type AiAgentConfigurationViewProps = {
@@ -33,26 +36,26 @@ export const AiAgentConfigurationView = ({
     const isStandaloneMenuEnabled =
         useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
 
-    const {isLoading: isStoreConfigLoading} =
+    const { isLoading: isStoreConfigLoading } =
         useAiAgentStoreConfigurationContext()
 
-    const {integration} = useShopifyIntegrationAndScope(shopName)
+    const { integration } = useShopifyIntegrationAndScope(shopName)
 
-    const {data: helpCenterListData, isLoading: isLoadingHelpCenters} =
+    const { data: helpCenterListData, isLoading: isLoadingHelpCenters } =
         useGetHelpCenterList(
-            {type: 'faq', per_page: HELP_CENTER_MAX_CREATION},
+            { type: 'faq', per_page: HELP_CENTER_MAX_CREATION },
             {
                 staleTime: 1000 * 60 * 5,
                 refetchOnWindowFocus: false,
-            }
+            },
         )
 
     const helpCenters = useMemo(
         () =>
             (helpCenterListData?.data.data ?? []).filter(
-                (hc) => hc.shop_name === shopName || hc.shop_name === null
+                (hc) => hc.shop_name === shopName || hc.shop_name === null,
             ),
-        [helpCenterListData, shopName]
+        [helpCenterListData, shopName],
     )
 
     if (!integration) {
@@ -60,7 +63,7 @@ export const AiAgentConfigurationView = ({
             notify({
                 message: 'Could not find the integration for this store.',
                 status: NotificationStatus.Error,
-            })
+            }),
         )
 
         return <Redirect to="/app/automation" />

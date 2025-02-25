@@ -1,5 +1,6 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import ButtonPopover from '../ButtonPopover'
 
@@ -13,7 +14,7 @@ jest.mock('reactstrap', () => ({
         }: {
             children: React.ReactNode
             toggle: () => void
-        }) => <div onClick={toggle}>{children}</div>
+        }) => <div onClick={toggle}>{children}</div>,
     ),
 }))
 
@@ -29,7 +30,7 @@ describe('ButtonPopover', () => {
                 icon="test"
             >
                 <div>Button</div>
-            </ButtonPopover>
+            </ButtonPopover>,
         )
         expect(screen.getByText('Button')).toBeInTheDocument()
     })
@@ -46,7 +47,7 @@ describe('ButtonPopover', () => {
                 icon="test"
             >
                 <div>Button</div>
-            </ButtonPopover>
+            </ButtonPopover>,
         )
 
         screen.getByText('Button').click()
@@ -65,7 +66,7 @@ describe('ButtonPopover', () => {
                 icon="test"
             >
                 <div>Button</div>
-            </ButtonPopover>
+            </ButtonPopover>,
         )
 
         screen.getByText('Button').click()

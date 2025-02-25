@@ -1,1 +1,1 @@
-export {default} from './PaywallPopover'
+export { default } from './PaywallPopover'

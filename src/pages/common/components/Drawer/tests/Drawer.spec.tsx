@@ -1,7 +1,8 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {Drawer} from '../Drawer'
+import { render } from '@testing-library/react'
+
+import { Drawer } from '../Drawer'
 
 describe('<Drawer/>', () => {
     const props = {
@@ -17,15 +18,15 @@ describe('<Drawer/>', () => {
     })
 
     it('should display the component correctly', () => {
-        const {container} = render(<Drawer {...props}>Modal content</Drawer>)
+        const { container } = render(<Drawer {...props}>Modal content</Drawer>)
         expect(container).toMatchSnapshot()
     })
 
     it('should display the component in fullscreen mode correctly', () => {
-        const {container} = render(
+        const { container } = render(
             <Drawer {...props} fullscreen={true}>
                 Modal content
-            </Drawer>
+            </Drawer>,
         )
         expect(container).toMatchSnapshot()
     })

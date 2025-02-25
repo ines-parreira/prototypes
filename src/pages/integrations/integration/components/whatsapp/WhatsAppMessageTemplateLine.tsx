@@ -1,12 +1,12 @@
 import React from 'react'
 
 import InputField from 'pages/common/forms/input/InputField'
-import {sanitizeHtmlDefault} from 'utils/html'
+import { sanitizeHtmlDefault } from 'utils/html'
 
-import {whatsAppMessageTemplateToHtml, WHATSAPP_VARIABLE_REGEX} from './utils'
+import { WHATSAPP_VARIABLE_REGEX, whatsAppMessageTemplateToHtml } from './utils'
+import WhatsAppVariablePreview from './WhatsAppVariablePreview'
 
 import css from './WhatsAppMessageTemplateMessage.less'
-import WhatsAppVariablePreview from './WhatsAppVariablePreview'
 
 type Props = {
     line?: string

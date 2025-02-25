@@ -1,5 +1,6 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import React, {useEffect, useRef, useState} from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+
+import { Label } from '@gorgias/merchant-ui-kit'
 
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
@@ -8,7 +9,8 @@ import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 
-import {CATEGORIES} from '../constants'
+import { CATEGORIES } from '../constants'
+
 import css from './ActionsPlatformUseCaseTemplateCategory.less'
 
 type Props = {

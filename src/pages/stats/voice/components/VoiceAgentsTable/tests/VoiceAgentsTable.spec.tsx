@@ -1,40 +1,43 @@
-import {act, fireEvent, render, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { act, fireEvent, render, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {agents} from 'fixtures/agents'
-import {RootState, StoreDispatch} from 'state/types'
+import { agents } from 'fixtures/agents'
+import { RootState, StoreDispatch } from 'state/types'
 import {
     getPaginatedAgents,
     getSortedAgents,
     pageSet,
 } from 'state/ui/stats/agentPerformanceSlice'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
-import {VoiceAgentsTable} from '../VoiceAgentsTable'
+import { VoiceAgentsTable } from '../VoiceAgentsTable'
 
 jest.mock(
     'pages/stats/voice/components/VoiceAgentsTable/AverageTalkTimeCell',
     () =>
-        ({agentId}: {agentId: number}) => (
+        ({ agentId }: { agentId: number }) => (
             <div>AverageTalkTimeCell {agentId}</div>
-        )
+        ),
 )
 jest.mock(
     'pages/stats/voice/components/VoiceAgentsTable/CallsCountCell',
     () =>
-        ({agentId}: {agentId: number}) => <div>CallsCountCell {agentId}</div>
+        ({ agentId }: { agentId: number }) => (
+            <div>CallsCountCell {agentId}</div>
+        ),
 )
 jest.mock(
     'pages/stats/voice/components/VoiceAgentsTable/TeamAverageTalkTimeCell',
-    () => () => <div>TeamAverageTalkTimeCell</div>
+    () => () => <div>TeamAverageTalkTimeCell</div>,
 )
 jest.mock(
     'pages/stats/voice/components/VoiceAgentsTable/TeamAverageCallsCountCell',
-    () => () => <div>TeamAverageCallsCountCell</div>
+    () => () => <div>TeamAverageCallsCountCell</div>,
 )
 jest.mock(
     'state/ui/stats/agentPerformanceSlice',
@@ -43,7 +46,7 @@ jest.mock(
             ...jest.requireActual('state/ui/stats/agentPerformanceSlice'),
             getSortedAgents: jest.fn(),
             getPaginatedAgents: jest.fn(),
-        }) as Record<string, any>
+        }) as Record<string, any>,
 )
 jest.mock(
     'state/ui/stats/selectors',
@@ -51,7 +54,7 @@ jest.mock(
         ({
             ...jest.requireActual('state/ui/stats/selectors'),
             getCleanStatsFilters: jest.fn(),
-        }) as Record<string, any>
+        }) as Record<string, any>,
 )
 
 const getSortedAgentsMock = assumeMock(getSortedAgents)
@@ -73,12 +76,12 @@ describe('VoiceCallTable', () => {
         return render(
             <Provider store={store}>
                 <VoiceAgentsTable />
-            </Provider>
+            </Provider>,
         )
     }
 
     it('should render table', () => {
-        const {getByText, getAllByText} = renderComponent()
+        const { getByText, getAllByText } = renderComponent()
 
         expect(getByText('Agent')).toBeInTheDocument()
         expect(getByText('Total calls')).toBeInTheDocument()
@@ -100,18 +103,18 @@ describe('VoiceCallTable', () => {
     })
 
     it('should handle table scrolling', async () => {
-        const {container, getByRole} = renderComponent()
+        const { container, getByRole } = renderComponent()
 
         act(() => {
             const tableRow = container.getElementsByClassName('container')[0]
-            fireEvent.scroll(tableRow, {target: {scrollLeft: 50}})
+            fireEvent.scroll(tableRow, { target: { scrollLeft: 50 } })
         })
 
         await waitFor(() => {
             expect(
                 getByRole('cell', {
                     name: new RegExp('Bob Smith'),
-                })
+                }),
             ).toHaveClass('withShadow')
         })
     })
@@ -124,7 +127,7 @@ describe('VoiceCallTable', () => {
             perPage: agents.length + 1,
         })
 
-        const {queryByText} = renderComponent()
+        const { queryByText } = renderComponent()
 
         expect(queryByText(currentPage)).not.toBeInTheDocument()
     })
@@ -139,7 +142,7 @@ describe('VoiceCallTable', () => {
             perPage: 1,
         })
 
-        const {getByText} = renderComponent(store)
+        const { getByText } = renderComponent(store)
 
         act(() => {
             const pageButton = getByText(pageToClick)
@@ -150,7 +153,7 @@ describe('VoiceCallTable', () => {
     })
 
     it('should render table tooltips', async () => {
-        const {getByText, getAllByText} = renderComponent()
+        const { getByText, getAllByText } = renderComponent()
         const helpIcons = getAllByText('info_outline')
 
         fireEvent.mouseOver(helpIcons[0])
@@ -158,15 +161,15 @@ describe('VoiceCallTable', () => {
             expect(
                 getByText('Total number of calls that rung an agent', {
                     exact: false,
-                })
-            ).toBeInTheDocument()
+                }),
+            ).toBeInTheDocument(),
         )
 
         fireEvent.mouseOver(helpIcons[1])
         await waitFor(() =>
             expect(
-                getByText('Average time agent spent talking to customers')
-            ).toBeInTheDocument()
+                getByText('Average time agent spent talking to customers'),
+            ).toBeInTheDocument(),
         )
     })
 })

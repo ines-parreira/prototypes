@@ -1,5 +1,6 @@
-import {screen, render} from '@testing-library/react'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import OrderManagementFlowItem from '../OrderManagementFlowItem'
 
@@ -11,7 +12,7 @@ describe('<OrderManagementFlowItem />', () => {
                 onChange={jest.fn()}
                 title="title"
                 description="description"
-            />
+            />,
         )
 
         expect(screen.getByText('title')).toBeInTheDocument()

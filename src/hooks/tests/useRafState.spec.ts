@@ -1,6 +1,6 @@
-import {act, renderHook} from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react-hooks'
 
-import {mockRequestAnimationFrame} from 'utils/testing'
+import { mockRequestAnimationFrame } from 'utils/testing'
 
 import useRafState from '../useRafState'
 
@@ -14,7 +14,7 @@ describe('useRafState', () => {
     })
 
     it('should only update state after requestAnimationFrame when providing an object', () => {
-        const {result} = renderHook(() => useRafState(0))
+        const { result } = renderHook(() => useRafState(0))
 
         act(() => {
             result.current[1](1)
@@ -40,7 +40,7 @@ describe('useRafState', () => {
     })
 
     it('should only update state after requestAnimationFrame when providing a function', () => {
-        const {result} = renderHook(() => useRafState(0))
+        const { result } = renderHook(() => useRafState(0))
 
         act(() => {
             result.current[1]((prevState) => prevState + 1)
@@ -60,7 +60,7 @@ describe('useRafState', () => {
     })
 
     it('should cancel update state on unmount', () => {
-        const {unmount} = renderHook(() => useRafState(0))
+        const { unmount } = renderHook(() => useRafState(0))
 
         expect(cancelAnimationFrame).not.toHaveBeenCalled()
 

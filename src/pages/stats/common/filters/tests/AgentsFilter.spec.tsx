@@ -1,15 +1,16 @@
-import {screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {SegmentEvent, logEvent} from 'common/segment'
+import { screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { fromJS } from 'immutable'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import {
     withDefaultLogicalOperator,
     withLogicalOperator,
 } from 'models/reporting/queryFactories/utils'
-import {FilterKey} from 'models/stat/types'
-import {Team} from 'models/team/types'
+import { FilterKey } from 'models/stat/types'
+import { Team } from 'models/team/types'
 import {
     FILTER_DESELECT_ALL_LABEL,
     FILTER_SELECT_ALL_LABEL,
@@ -21,13 +22,13 @@ import AgentsFilter, {
     AgentsFiltersWithSavedState,
     AgentsFiltersWithState,
 } from 'pages/stats/common/filters/AgentsFilter'
-import {FilterLabels} from 'pages/stats/common/filters/constants'
-import {extendedAgents} from 'pages/stats/common/filters/tests/fixtures/agents'
-import {extendedTeams} from 'pages/stats/common/filters/tests/fixtures/teams'
+import { FilterLabels } from 'pages/stats/common/filters/constants'
+import { extendedAgents } from 'pages/stats/common/filters/tests/fixtures/agents'
+import { extendedTeams } from 'pages/stats/common/filters/tests/fixtures/teams'
 import * as statsSlice from 'state/stats/statsSlice'
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
 import * as filtersSlice from 'state/ui/stats/filtersSlice'
-import {renderWithStore} from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
@@ -50,7 +51,7 @@ const defaultState = {
 
 jest.mock('common/segment', () => ({
     logEvent: jest.fn(),
-    SegmentEvent: {StatFilterSelected: 'stat-filter-selected'},
+    SegmentEvent: { StatFilterSelected: 'stat-filter-selected' },
 }))
 
 describe('AgentsFilter', () => {
@@ -61,7 +62,7 @@ describe('AgentsFilter', () => {
 
     const isOneOfRegex = new RegExp(
         `${LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF]}`,
-        'i'
+        'i',
     )
 
     it('should render AgentsFilter component', () => {
@@ -73,10 +74,10 @@ describe('AgentsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState
+            defaultState,
         )
         expect(
-            screen.getByText(FilterLabels[FilterKey.Agents])
+            screen.getByText(FilterLabels[FilterKey.Agents]),
         ).toBeInTheDocument()
     })
 
@@ -89,7 +90,7 @@ describe('AgentsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState
+            defaultState,
         )
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
@@ -106,17 +107,17 @@ describe('AgentsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState
+            defaultState,
         )
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         userEvent.click(screen.getByText(extendedAgents[0].name))
         userEvent.click(screen.getByText(extendedAgents[1].name))
 
         expect(dispatchUpdate).toHaveBeenCalledWith(
-            withDefaultLogicalOperator([extendedAgents[0].id])
+            withDefaultLogicalOperator([extendedAgents[0].id]),
         )
         expect(dispatchUpdate).toHaveBeenCalledWith(
-            withDefaultLogicalOperator([extendedAgents[1].id])
+            withDefaultLogicalOperator([extendedAgents[1].id]),
         )
     })
 
@@ -129,7 +130,7 @@ describe('AgentsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState
+            defaultState,
         )
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
@@ -138,18 +139,18 @@ describe('AgentsFilter', () => {
 
         expect(dispatchUpdate).toHaveBeenCalledWith(
             withDefaultLogicalOperator(
-                extendedTeams[0].members.map((member) => member.id)
-            )
+                extendedTeams[0].members.map((member) => member.id),
+            ),
         )
         expect(dispatchUpdate).toHaveBeenCalledWith(
             withDefaultLogicalOperator(
-                extendedTeams[1].members.map((member) => member.id)
-            )
+                extendedTeams[1].members.map((member) => member.id),
+            ),
         )
     })
 
     it('should dispatch mergeStatsFiltersWithLogicalOperator action on deselecting a team', () => {
-        const {rerenderComponent} = renderWithStore(
+        const { rerenderComponent } = renderWithStore(
             <AgentsFilter
                 value={withDefaultLogicalOperator([])}
                 dispatchUpdate={dispatchUpdate}
@@ -157,7 +158,7 @@ describe('AgentsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState
+            defaultState,
         )
         const testTeam = extendedTeams.find((t) => t.id === 36) as Team
         const testAgent = extendedAgents[0]
@@ -176,7 +177,7 @@ describe('AgentsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState
+            defaultState,
         )
         mockedDispatch.mockClear()
         userEvent.click(screen.getByText(testTeam.name))
@@ -185,15 +186,15 @@ describe('AgentsFilter', () => {
             withDefaultLogicalOperator([
                 ...testTeam.members.map((member) => member.id),
                 testAgent.id,
-            ])
+            ]),
         )
         expect(dispatchUpdate).toHaveBeenCalledWith(
-            withDefaultLogicalOperator([testAgent.id])
+            withDefaultLogicalOperator([testAgent.id]),
         )
     })
 
     it('should dispatch mergeStatsFiltersWithLogicalOperator action on selecting all agents and deselecting all agents', () => {
-        const {rerenderComponent} = renderWithStore(
+        const { rerenderComponent } = renderWithStore(
             <AgentsFilter
                 value={withDefaultLogicalOperator([])}
                 dispatchUpdate={dispatchUpdate}
@@ -201,22 +202,22 @@ describe('AgentsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState
+            defaultState,
         )
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
 
         const allAvailableAgentsIds = withDefaultLogicalOperator(
-            extendedAgents.map((agents) => agents.id)
+            extendedAgents.map((agents) => agents.id),
         )
 
         expect(dispatchUpdate).toHaveBeenCalledWith(
             withDefaultLogicalOperator(
-                extendedAgents.map((agents) => agents.id)
-            )
+                extendedAgents.map((agents) => agents.id),
+            ),
         )
         expect(dispatchUpdate).not.toHaveBeenCalledWith(
-            withDefaultLogicalOperator([])
+            withDefaultLogicalOperator([]),
         )
 
         rerenderComponent(
@@ -227,18 +228,18 @@ describe('AgentsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState
+            defaultState,
         )
 
         userEvent.click(screen.getByText(FILTER_DESELECT_ALL_LABEL))
 
         expect(dispatchUpdate).toHaveBeenCalledWith(
-            withDefaultLogicalOperator([])
+            withDefaultLogicalOperator([]),
         )
     })
 
     it('should dispatch mergeStatsFiltersWithLogicalOperator action on deselecting one of the agent', () => {
-        const {rerenderComponent} = renderWithStore(
+        const { rerenderComponent } = renderWithStore(
             <AgentsFilter
                 value={withDefaultLogicalOperator([])}
                 dispatchUpdate={dispatchUpdate}
@@ -246,11 +247,11 @@ describe('AgentsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState
+            defaultState,
         )
 
         const allAvailableAgentsIds = withDefaultLogicalOperator(
-            extendedAgents.map((agents) => agents.id)
+            extendedAgents.map((agents) => agents.id),
         )
 
         rerenderComponent(
@@ -261,7 +262,7 @@ describe('AgentsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState
+            defaultState,
         )
 
         userEvent.click(screen.getByText(isOneOfRegex))
@@ -271,13 +272,13 @@ describe('AgentsFilter', () => {
             withDefaultLogicalOperator(
                 extendedAgents
                     .map((agents) => agents.id)
-                    .filter((id) => id !== extendedAgents[0].id)
-            )
+                    .filter((id) => id !== extendedAgents[0].id),
+            ),
         )
     })
 
     it('should dispatch mergeStatsFilters action on deselecting all agents when filters dropdown is closed', () => {
-        const {rerenderComponent} = renderWithStore(
+        const { rerenderComponent } = renderWithStore(
             <AgentsFilter
                 value={withDefaultLogicalOperator([])}
                 dispatchUpdate={dispatchUpdate}
@@ -285,11 +286,11 @@ describe('AgentsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState
+            defaultState,
         )
 
         const allAvailableAgentsIds = withDefaultLogicalOperator(
-            extendedAgents.map((agents) => agents.id)
+            extendedAgents.map((agents) => agents.id),
         )
 
         rerenderComponent(
@@ -300,7 +301,7 @@ describe('AgentsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState
+            defaultState,
         )
 
         userEvent.click(screen.getByText(new RegExp(clearFilterIcon, 'i')))
@@ -317,18 +318,18 @@ describe('AgentsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState
+            defaultState,
         )
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
         const isOneOfRadioLabel = screen.getByLabelText(
-            new RegExp(LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF], 'i')
+            new RegExp(LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF], 'i'),
         )
         const isNotOneOfRadioLabel = screen.getByLabelText(
             new RegExp(
                 LogicalOperatorLabel[LogicalOperatorEnum.NOT_ONE_OF],
-                'i'
-            )
+                'i',
+            ),
         )
 
         userEvent.click(isNotOneOfRadioLabel)
@@ -355,15 +356,15 @@ describe('AgentsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState
+            defaultState,
         )
         expect(
-            screen.getByText(FilterLabels[FilterKey.Agents])
+            screen.getByText(FilterLabels[FilterKey.Agents]),
         ).toBeInTheDocument()
     })
 
     it('should dispatch cleanFilters action and call segment analytics log event on filter dropdown close', () => {
-        const {rerenderComponent} = renderWithStore(
+        const { rerenderComponent } = renderWithStore(
             <AgentsFilter
                 value={withDefaultLogicalOperator([])}
                 dispatchUpdate={dispatchUpdate}
@@ -371,7 +372,7 @@ describe('AgentsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState
+            defaultState,
         )
 
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
@@ -386,7 +387,7 @@ describe('AgentsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState
+            defaultState,
         )
 
         expect(dispatchStatFiltersClean).toHaveBeenCalled()
@@ -403,7 +404,7 @@ describe('AgentsFilter', () => {
         it('should render AgentsFilter component', () => {
             const spy = jest.spyOn(
                 statsSlice,
-                'mergeStatsFiltersWithLogicalOperator'
+                'mergeStatsFiltersWithLogicalOperator',
             )
 
             renderWithStore(<AgentsFiltersWithState />, defaultState)
@@ -411,7 +412,7 @@ describe('AgentsFilter', () => {
             userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
 
             expect(
-                screen.getByText(FilterLabels[FilterKey.Agents])
+                screen.getByText(FilterLabels[FilterKey.Agents]),
             ).toBeInTheDocument()
             expect(spy).toHaveBeenCalled()
 
@@ -427,7 +428,7 @@ describe('AgentsFilter', () => {
             const spy = jest.spyOn(filtersSlice, 'upsertSavedFilterFilter')
             const removeSpy = jest.spyOn(
                 filtersSlice,
-                'removeFilterFromSavedFilterDraft'
+                'removeFilterFromSavedFilterDraft',
             )
             renderWithStore(<AgentsFiltersWithSavedState />, defaultState)
 
@@ -435,7 +436,7 @@ describe('AgentsFilter', () => {
             userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
 
             expect(
-                screen.getByText(FilterLabels[FilterKey.Agents])
+                screen.getByText(FilterLabels[FilterKey.Agents]),
             ).toBeInTheDocument()
             expect(spy).toHaveBeenCalled()
 

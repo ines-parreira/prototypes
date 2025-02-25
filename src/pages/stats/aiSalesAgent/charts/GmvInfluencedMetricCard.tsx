@@ -4,10 +4,13 @@ import {
     AiSalesAgentChart,
     AiSalesAgentMetricConfig,
 } from 'pages/stats/aiSalesAgent/AiSalesAgentMetricsConfig'
-import {TrendCard} from 'pages/stats/common/components/TrendCard'
-import {DashboardChartProps} from 'pages/stats/custom-reports/types'
+import { TrendCard } from 'pages/stats/common/components/TrendCard'
+import { DashboardChartProps } from 'pages/stats/custom-reports/types'
 
-const GmvInfluencedMetricCard = ({chartId, dashboard}: DashboardChartProps) => {
+const GmvInfluencedMetricCard = ({
+    chartId,
+    dashboard,
+}: DashboardChartProps) => {
     return (
         <TrendCard
             {...AiSalesAgentMetricConfig[

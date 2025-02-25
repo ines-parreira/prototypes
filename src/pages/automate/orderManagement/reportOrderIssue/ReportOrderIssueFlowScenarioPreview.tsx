@@ -1,13 +1,14 @@
-import {createMemoryHistory} from 'history'
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {ReportIssueCaseReason} from 'models/selfServiceConfiguration/types'
-import {SELF_SERVICE_PREVIEW_ROUTES} from 'pages/automate/common/components/preview/constants'
+import { createMemoryHistory } from 'history'
+
+import { ReportIssueCaseReason } from 'models/selfServiceConfiguration/types'
+import { SELF_SERVICE_PREVIEW_ROUTES } from 'pages/automate/common/components/preview/constants'
 import SelfServicePreview from 'pages/automate/common/components/preview/SelfServicePreview'
 import SelfServicePreviewContainer from 'pages/automate/common/components/preview/SelfServicePreviewContainer'
 import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'
 
-import {useOrderManagementPreviewContext} from '../OrderManagementPreviewContext'
+import { useOrderManagementPreviewContext } from '../OrderManagementPreviewContext'
 
 type Props = {
     reasons: ReportIssueCaseReason[]
@@ -27,12 +28,12 @@ const ReportOrderIssueFlowScenarioPreview = ({
                     SELF_SERVICE_PREVIEW_ROUTES.REPORT_ISSUE_REASONS,
                 ],
             }),
-        []
+        [],
     )
     const expandedReason = reasons.find(
-        (reason) => reason.reasonKey === expandedReasonKey
+        (reason) => reason.reasonKey === expandedReasonKey,
     )
-    const {channels, channel, onChannelChange} =
+    const { channels, channel, onChannelChange } =
         useOrderManagementPreviewContext()
 
     return (
@@ -50,7 +51,7 @@ const ReportOrderIssueFlowScenarioPreview = ({
                     value={{
                         orderManagementFlow: 'reportIssuePolicy',
                         reportOrderIssueReasons: reasons.map(
-                            (reason) => reason.reasonKey
+                            (reason) => reason.reasonKey,
                         ),
                         reportOrderIssueReason: expandedReason,
                         hoveredReportOrderIssueReason: hoveredReasonKey,

@@ -1,12 +1,13 @@
-import {fromJS, List, Map} from 'immutable'
 import React from 'react'
 
-import {Source, Template} from 'models/widget/types'
-import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
+import { fromJS, List, Map } from 'immutable'
 
-import {WidgetContextProvider} from 'Widgets/contexts/WidgetContext'
+import { Source, Template } from 'models/widget/types'
+import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
+import { WidgetContextProvider } from 'Widgets/contexts/WidgetContext'
 
 import Widget from './Widget'
+
 import css from './Widgets.less'
 
 type Props = {
@@ -14,7 +15,7 @@ type Props = {
     widgets: Map<string, unknown>[]
 }
 
-export default function Widgets({source, widgets}: Props) {
+export default function Widgets({ source, widgets }: Props) {
     return (
         <DragWrapper
             group={{

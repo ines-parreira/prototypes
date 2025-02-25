@@ -1,6 +1,6 @@
 import client from 'models/api/resources'
 
-import {sendSupportTicket, Props} from '../sendSupportTicket'
+import { Props, sendSupportTicket } from '../sendSupportTicket'
 
 jest.mock('models/api/resources', () => ({
     get: jest.fn(),
@@ -26,7 +26,7 @@ describe('sendSupportTicket', () => {
             'https://example.com/zapierHook?message=Test%20Message&from=test%40example.com&to=support%40example.com&subject=Test%20Subject&helpdeskPlan=acme&freeTrial=false&account=acme',
             {
                 transformRequest: expect.any(Function),
-            }
+            },
         )
     })
 })

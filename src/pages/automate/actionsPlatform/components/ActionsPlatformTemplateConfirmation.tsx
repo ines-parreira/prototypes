@@ -1,6 +1,8 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { useMemo, useState } from 'react'
+
 import _keyBy from 'lodash/keyBy'
-import React, {useMemo, useState} from 'react'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import {
     isReusableLLMPromptCallNodeType,
@@ -8,7 +10,8 @@ import {
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import CheckBox from 'pages/common/forms/CheckBox'
 
-import {ActionTemplate} from '../types'
+import { ActionTemplate } from '../types'
+
 import css from './ActionsPlatformTemplateConfirmation.less'
 
 type Props = {
@@ -28,7 +31,7 @@ const ActionsPlatformTemplateConfirmation = ({
 
     const reusableLLMPromptCallNodes = useMemo(
         () => nodes.filter(isReusableLLMPromptCallNodeType),
-        [nodes]
+        [nodes],
     )
 
     const isDisabled = useMemo(() => {
@@ -44,7 +47,7 @@ const ActionsPlatformTemplateConfirmation = ({
             return step?.entrypoints?.some(
                 (entrypoint) =>
                     entrypoint.kind === 'reusable-llm-prompt-call-step' &&
-                    entrypoint.settings.requires_confirmation
+                    entrypoint.settings.requires_confirmation,
             )
         })
     }, [steps, reusableLLMPromptCallNodes])

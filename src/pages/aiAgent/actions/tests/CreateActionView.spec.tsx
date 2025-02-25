@@ -1,15 +1,14 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {act, createEvent, fireEvent, screen} from '@testing-library/react'
-
-import {createMemoryHistory} from 'history'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { act, createEvent, fireEvent, screen } from '@testing-library/react'
+import { createMemoryHistory } from 'history'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
+import { ulid } from 'ulidx'
 
-import {ulid} from 'ulidx'
-
-import {useFlag} from 'core/flags'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     useDownloadWorkflowConfigurationStepLogs,
@@ -21,15 +20,15 @@ import {
 import use3plIntegrations from 'pages/aiAgent/actions/hooks/use3plIntegrations'
 import useAddStoreApp from 'pages/aiAgent/actions/hooks/useAddStoreApp'
 import useUpsertAction from 'pages/aiAgent/actions/hooks/useUpsertAction'
-import {useAiAgentEnabled} from 'pages/aiAgent/hooks/useAiAgentEnabled'
-import {useAiAgentOnboardingNotification} from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
+import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
+import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
-import {WorkflowConfigurationBuilder} from 'pages/automate/workflows/models/workflowConfiguration.model'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {RootState, StoreDispatch} from 'state/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {renderWithRouter} from 'utils/testing'
+import { WorkflowConfigurationBuilder } from 'pages/automate/workflows/models/workflowConfiguration.model'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { renderWithRouter } from 'utils/testing'
 
 import CreateActionView from '../CreateActionView'
 
@@ -47,7 +46,7 @@ jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingNotification', () => ({
 }))
 
 const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
-    useGetWorkflowConfigurationTemplates
+    useGetWorkflowConfigurationTemplates,
 )
 const mockUseUpsertAction = jest.mocked(useUpsertAction)
 const mockUseApps = jest.mocked(useApps)
@@ -57,15 +56,15 @@ const mockUseGetStoreApps = jest.mocked(useGetStoreApps)
 const mockuse3plIntegrations = jest.mocked(use3plIntegrations)
 const mockUseAddStoreApp = jest.mocked(useAddStoreApp)
 const mockUseDownloadWorkflowConfigurationStepLogs = jest.mocked(
-    useDownloadWorkflowConfigurationStepLogs
+    useDownloadWorkflowConfigurationStepLogs,
 )
 const mockUseFlag = jest.mocked(useFlag)
 const mockUseGetStoreWorkflowsConfigurations = jest.mocked(
-    useGetStoreWorkflowsConfigurations
+    useGetStoreWorkflowsConfigurations,
 )
 const mockUseListActionsApps = jest.mocked(useListActionsApps)
 const mockUseAiAgentOnboardingNotification = jest.mocked(
-    useAiAgentOnboardingNotification
+    useAiAgentOnboardingNotification,
 )
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
@@ -124,7 +123,7 @@ describe('<CreateActionView />', () => {
             data: [],
         } as unknown as ReturnType<typeof useListActionsApps>)
         mockUseAiAgentOnboardingNotification.mockReturnValue(
-            defaultUseAiAgentOnboardingNotification
+            defaultUseAiAgentOnboardingNotification,
         )
     })
 
@@ -140,7 +139,7 @@ describe('<CreateActionView />', () => {
                 <QueryClientProvider client={queryClient}>
                     <CreateActionView />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('Create Action')).toBeInTheDocument()
@@ -170,7 +169,7 @@ describe('<CreateActionView />', () => {
                 history,
                 path: '/app/automation/:shopType/:shopName/ai-agent/actions/new',
                 route: `/app/automation/shopify/shopify-store/ai-agent/actions/new`,
-            }
+            },
         )
 
         act(() => {
@@ -178,7 +177,7 @@ describe('<CreateActionView />', () => {
         })
 
         expect(historyPushSpy).toHaveBeenCalledWith(
-            '/app/automation/shopify/shopify-store/ai-agent/actions'
+            '/app/automation/shopify/shopify-store/ai-agent/actions',
         )
     })
 
@@ -206,7 +205,7 @@ describe('<CreateActionView />', () => {
                 history,
                 path: '/app/automation/:shopType/:shopName/ai-agent/actions/new',
                 route: `/app/automation/shopify/shopify-store/ai-agent/actions/new`,
-            }
+            },
         )
 
         act(() => {
@@ -214,7 +213,7 @@ describe('<CreateActionView />', () => {
         })
 
         expect(historyPushSpy).toHaveBeenCalledWith(
-            `/app/automation/shopify/shopify-store/ai-agent/actions`
+            `/app/automation/shopify/shopify-store/ai-agent/actions`,
         )
     })
 
@@ -248,11 +247,11 @@ describe('<CreateActionView />', () => {
                 history,
                 path: '/app/automation/:shopType/:shopName/ai-agent/actions/new',
                 route: `/app/automation/shopify/shopify-store/ai-agent/actions/new`,
-            }
+            },
         )
 
         expect(historyPushSpy).toHaveBeenCalledWith(
-            `/app/automation/shopify/shopify-store/ai-agent/actions`
+            `/app/automation/shopify/shopify-store/ai-agent/actions`,
         )
     })
 
@@ -264,7 +263,7 @@ describe('<CreateActionView />', () => {
         })
         const historyPushSpy = jest.spyOn(history, 'push')
 
-        const {rerender} = renderWithRouter(
+        const { rerender } = renderWithRouter(
             <Provider
                 store={mockStore({
                     integrations: fromJS({
@@ -280,7 +279,7 @@ describe('<CreateActionView />', () => {
                 history,
                 path: '/app/automation/:shopType/:shopName/ai-agent/actions/new',
                 route: `/app/automation/shopify/shopify-store/ai-agent/actions/new`,
-            }
+            },
         )
 
         act(() => {
@@ -304,11 +303,11 @@ describe('<CreateActionView />', () => {
                 <QueryClientProvider client={queryClient}>
                     <CreateActionView />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         expect(historyPushSpy).toHaveBeenCalledWith(
-            `/app/automation/shopify/shopify-store/ai-agent/test`
+            `/app/automation/shopify/shopify-store/ai-agent/test`,
         )
     })
 
@@ -324,7 +323,7 @@ describe('<CreateActionView />', () => {
                 <QueryClientProvider client={queryClient}>
                     <CreateActionView />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         act(() => {
@@ -332,7 +331,7 @@ describe('<CreateActionView />', () => {
         })
 
         expect(
-            screen.getByRole('button', {name: 'Create and test'})
+            screen.getByRole('button', { name: 'Create and test' }),
         ).toBeAriaDisabled()
     })
 
@@ -354,14 +353,14 @@ describe('<CreateActionView />', () => {
                 <QueryClientProvider client={queryClient}>
                     <CreateActionView />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            screen.getByRole('button', {name: /Create Action/})
+            screen.getByRole('button', { name: /Create Action/ }),
         ).toBeAriaDisabled()
         expect(
-            screen.getByRole('button', {name: /Create and test/})
+            screen.getByRole('button', { name: /Create and test/ }),
         ).toBeAriaDisabled()
     })
 
@@ -385,7 +384,7 @@ describe('<CreateActionView />', () => {
                 <QueryClientProvider client={queryClient}>
                     <CreateActionView />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         act(() => {
@@ -460,7 +459,7 @@ describe('<CreateActionView />', () => {
                 },
             ],
             is_draft: false,
-            apps: [{type: 'shopify'}],
+            apps: [{ type: 'shopify' }],
             available_languages: [],
         })
         b.insertReusableLLMPromptCallConditionAndEndStepAndSelect('success', {
@@ -478,7 +477,7 @@ describe('<CreateActionView />', () => {
         })
         history.push(
             '/app/automation/:shopType/:shopName/ai-agent/actions/new',
-            configuration
+            configuration,
         )
         renderWithRouter(
             <Provider
@@ -496,12 +495,12 @@ describe('<CreateActionView />', () => {
                 history,
                 path: '/app/automation/:shopType/:shopName/ai-agent/actions/new',
                 route: `/app/automation/shopify/shopify-store/ai-agent/actions/new`,
-            }
+            },
         )
         expect(
             screen.getByText(
-                'We recommend the conditions below to ensure this Action works properly.'
-            )
+                'We recommend the conditions below to ensure this Action works properly.',
+            ),
         ).toBeInTheDocument()
     })
 
@@ -550,7 +549,7 @@ describe('<CreateActionView />', () => {
         })
         history.push(
             '/app/automation/:shopType/:shopName/ai-agent/actions/new',
-            configuration
+            configuration,
         )
 
         renderWithRouter(
@@ -569,7 +568,7 @@ describe('<CreateActionView />', () => {
                 history,
                 path: '/app/automation/:shopType/:shopName/ai-agent/actions/new',
                 route: `/app/automation/shopify/shopify-store/ai-agent/actions/new`,
-            }
+            },
         )
 
         const nameInput = screen.queryAllByRole('textbox')[0]
@@ -588,7 +587,7 @@ describe('<CreateActionView />', () => {
                 <QueryClientProvider client={queryClient}>
                     <CreateActionView />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         const nameInput = screen.queryAllByRole('textbox')[0]
@@ -619,19 +618,19 @@ describe('<CreateActionView />', () => {
             {
                 path: '/app/automation/:shopType/:shopName/ai-agent/actions/new',
                 route: `/app/automation/shopify/shopify-store/ai-agent/actions/new`,
-            }
+            },
         )
 
         // Fill in the basic form
         act(() => {
             fireEvent.change(screen.queryAllByRole('textbox')[0], {
-                target: {value: 'Advanced Action'},
+                target: { value: 'Advanced Action' },
             })
         })
 
         act(() => {
             fireEvent.change(screen.queryAllByRole('textbox')[1], {
-                target: {value: 'Advanced description'},
+                target: { value: 'Advanced description' },
             })
         })
 
@@ -659,7 +658,7 @@ describe('<CreateActionView />', () => {
 
         act(() => {
             fireEvent.change(screen.queryAllByRole('textbox')[1], {
-                target: {value: 'Request name'},
+                target: { value: 'Request name' },
             })
         })
 
@@ -764,7 +763,7 @@ describe('<CreateActionView />', () => {
                 <QueryClientProvider client={queryClient}>
                     <CreateActionView />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         // Switch to advanced view
@@ -786,8 +785,8 @@ describe('<CreateActionView />', () => {
 
         expect(
             screen.getByText(
-                'Add at least one step with a 3rd party app or an HTTP request to perform the Action.'
-            )
+                'Add at least one step with a 3rd party app or an HTTP request to perform the Action.',
+            ),
         ).toBeInTheDocument()
         expect(screen.queryByText('Create Action')).not.toBeInTheDocument()
 
@@ -797,8 +796,8 @@ describe('<CreateActionView />', () => {
 
         expect(
             screen.queryByText(
-                'Add at least one step with a 3rd party app or an HTTP request to perform the Action.'
-            )
+                'Add at least one step with a 3rd party app or an HTTP request to perform the Action.',
+            ),
         ).not.toBeInTheDocument()
         expect(screen.getByText('Create Action')).toBeInTheDocument()
     })
@@ -812,7 +811,7 @@ describe('<CreateActionView />', () => {
         const historyPushSpy = jest.spyOn(history, 'push')
         const historyReplaceSpy = jest.spyOn(history, 'replace')
 
-        const {rerender} = renderWithRouter(
+        const { rerender } = renderWithRouter(
             <Provider
                 store={mockStore({
                     integrations: fromJS({
@@ -828,7 +827,7 @@ describe('<CreateActionView />', () => {
                 history,
                 path: '/app/automation/:shopType/:shopName/ai-agent/actions/new',
                 route: `/app/automation/shopify/shopify-store/ai-agent/actions/new`,
-            }
+            },
         )
 
         // Click Create and Test button
@@ -854,19 +853,19 @@ describe('<CreateActionView />', () => {
                 <QueryClientProvider client={queryClient}>
                     <CreateActionView />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         // Verify that replace was called first with the edit route
         expect(historyReplaceSpy).toHaveBeenCalledWith(
             expect.stringMatching(
-                /\/app\/automation\/shopify\/shopify-store\/ai-agent\/actions\/edit\/.*/
-            )
+                /\/app\/automation\/shopify\/shopify-store\/ai-agent\/actions\/edit\/.*/,
+            ),
         )
 
         // Verify that push was called second with the test route
         expect(historyPushSpy).toHaveBeenCalledWith(
-            `/app/automation/shopify/shopify-store/ai-agent/test`
+            `/app/automation/shopify/shopify-store/ai-agent/test`,
         )
 
         // Verify the order of operations
@@ -876,7 +875,7 @@ describe('<CreateActionView />', () => {
     })
 
     it('should trigger call to send activate AI agent notification when successfully creating Action', () => {
-        const {rerender} = renderWithRouter(
+        const { rerender } = renderWithRouter(
             <Provider
                 store={mockStore({
                     integrations: fromJS({
@@ -891,7 +890,7 @@ describe('<CreateActionView />', () => {
             {
                 path: '/app/automation/:shopType/:shopName/ai-agent/actions/new',
                 route: `/app/automation/shopify/shopify-store/ai-agent/actions/new`,
-            }
+            },
         )
 
         act(() => {
@@ -915,16 +914,16 @@ describe('<CreateActionView />', () => {
                 <QueryClientProvider client={queryClient}>
                     <CreateActionView />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            defaultUseAiAgentOnboardingNotification.handleOnTriggerActivateAiAgentNotification
+            defaultUseAiAgentOnboardingNotification.handleOnTriggerActivateAiAgentNotification,
         ).toHaveBeenCalled()
     })
 
     it('should not trigger call to send activate AI agent notification when creating Action is not successfull', () => {
-        const {rerender} = renderWithRouter(
+        const { rerender } = renderWithRouter(
             <Provider
                 store={mockStore({
                     integrations: fromJS({
@@ -939,7 +938,7 @@ describe('<CreateActionView />', () => {
             {
                 path: '/app/automation/:shopType/:shopName/ai-agent/actions/new',
                 route: `/app/automation/shopify/shopify-store/ai-agent/actions/new`,
-            }
+            },
         )
 
         act(() => {
@@ -963,16 +962,16 @@ describe('<CreateActionView />', () => {
                 <QueryClientProvider client={queryClient}>
                     <CreateActionView />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            defaultUseAiAgentOnboardingNotification.handleOnTriggerActivateAiAgentNotification
+            defaultUseAiAgentOnboardingNotification.handleOnTriggerActivateAiAgentNotification,
         ).not.toHaveBeenCalled()
     })
 
     it('should trigger call to send activate AI agent notification when click on Create and test', () => {
-        const {rerender} = renderWithRouter(
+        const { rerender } = renderWithRouter(
             <Provider
                 store={mockStore({
                     integrations: fromJS({
@@ -987,7 +986,7 @@ describe('<CreateActionView />', () => {
             {
                 path: '/app/automation/:shopType/:shopName/ai-agent/actions/new',
                 route: `/app/automation/shopify/shopify-store/ai-agent/actions/new`,
-            }
+            },
         )
 
         act(() => {
@@ -1011,11 +1010,11 @@ describe('<CreateActionView />', () => {
                 <QueryClientProvider client={queryClient}>
                     <CreateActionView />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            defaultUseAiAgentOnboardingNotification.handleOnTriggerActivateAiAgentNotification
+            defaultUseAiAgentOnboardingNotification.handleOnTriggerActivateAiAgentNotification,
         ).toHaveBeenCalled()
     })
 
@@ -1036,14 +1035,14 @@ describe('<CreateActionView />', () => {
                 <QueryClientProvider client={queryClient}>
                     <CreateActionView />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            screen.getByRole('button', {name: 'Create and test'})
+            screen.getByRole('button', { name: 'Create and test' }),
         ).toBeAriaDisabled()
         expect(
-            screen.getByRole('button', {name: 'Create Action'})
+            screen.getByRole('button', { name: 'Create Action' }),
         ).toBeAriaDisabled()
     })
 })

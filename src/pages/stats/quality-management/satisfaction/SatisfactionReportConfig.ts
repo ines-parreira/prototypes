@@ -1,5 +1,5 @@
-import {FilterKey, StaticFilter} from 'models/stat/types'
-import {AUTO_QA_FILTER_KEYS} from 'pages/stats/common/filters/constants'
+import { FilterKey, StaticFilter } from 'models/stat/types'
+import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
 import {
     ChartType,
     DataExportFormat,
@@ -8,20 +8,20 @@ import {
 import CommentHighlightsChart, {
     COMMENT_HIGHLIGHTS,
 } from 'pages/stats/quality-management/satisfaction//CommentHighlightsChart/CommentHighlightsChart'
-import {AverageScorePerDimensionTrendChart} from 'pages/stats/quality-management/satisfaction/AverageScorePerDimensionTrendChart/AverageScorePerDimensionTrendChart'
+import { AverageScorePerDimensionTrendChart } from 'pages/stats/quality-management/satisfaction/AverageScorePerDimensionTrendChart/AverageScorePerDimensionTrendChart'
 import AverageSurveyScoreDonutChart from 'pages/stats/quality-management/satisfaction/AverageSurveyScoreDonutChart/AverageSurveyScoreDonutChart'
-import {ResponseRateTrendCard} from 'pages/stats/quality-management/satisfaction/ResponseRateTrendCard'
-import {SatisfactionMetricConfig} from 'pages/stats/quality-management/satisfaction/SatisfactionMetricsConfig'
-import {SatisfactionScoreTrendCard} from 'pages/stats/quality-management/satisfaction/SatisfactionScoreTrendCard'
+import { ResponseRateTrendCard } from 'pages/stats/quality-management/satisfaction/ResponseRateTrendCard'
+import { SatisfactionMetricConfig } from 'pages/stats/quality-management/satisfaction/SatisfactionMetricsConfig'
+import { SatisfactionScoreTrendCard } from 'pages/stats/quality-management/satisfaction/SatisfactionScoreTrendCard'
 import ScoredSurveysChart from 'pages/stats/quality-management/satisfaction/ScoredSurveysChart/ScoredSurveysChart'
-import {SCORED_SURVEYS} from 'pages/stats/quality-management/satisfaction/ScoredSurveysChart/utils'
-import {SurveysSentTrendCard} from 'pages/stats/quality-management/satisfaction/SurveysSentTrendCard'
-import {STATS_ROUTES} from 'routes/constants'
+import { SCORED_SURVEYS } from 'pages/stats/quality-management/satisfaction/ScoredSurveysChart/utils'
+import { SurveysSentTrendCard } from 'pages/stats/quality-management/satisfaction/SurveysSentTrendCard'
+import { STATS_ROUTES } from 'routes/constants'
 import {
-    fetchSurveyScoresReportData,
     fetchScoredSurveysReportData,
+    fetchSurveyScoresReportData,
 } from 'services/reporting/satisfactionReportingService'
-import {SatisfactionMetric} from 'state/ui/stats/types'
+import { SatisfactionMetric } from 'state/ui/stats/types'
 
 export enum SatisfactionChart {
     SatisfactionScoreTrendCard = 'satisfaction-score-trend-card',

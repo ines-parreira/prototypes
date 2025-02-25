@@ -1,8 +1,9 @@
-import {useSearch} from '@gorgias/api-queries'
-import {renderHook, act} from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react-hooks'
+
+import { useSearch } from '@gorgias/api-queries'
 
 import * as searchTypes from 'models/search/types'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
 import usePhoneDeviceDialerCustomerSuggestions from '../usePhoneDeviceDialerCustomerSuggestions'
 
@@ -12,7 +13,7 @@ jest.mock(
         ({
             ...jest.requireActual('lodash'),
             debounce: jest.fn((fn: () => void) => fn),
-        }) as Record<string, any>
+        }) as Record<string, any>,
 )
 jest.mock('@gorgias/api-queries')
 
@@ -31,7 +32,7 @@ describe('usePhoneDeviceDialerCustomerSuggestions', () => {
                 onEnter,
                 minSearchInputLength,
                 onCustomerSelect,
-            })
+            }),
         )
     }
 
@@ -47,22 +48,25 @@ describe('usePhoneDeviceDialerCustomerSuggestions', () => {
     })
 
     it('should initialize with default values', () => {
-        const {result} = setup()
+        const { result } = setup()
 
         expect(result.current.isFetching).toBe(false)
         expect(result.current.highlightedResultIndex).toBeNull()
         expect(result.current.customers).toEqual([])
         expect(result.current.debouncedSearchCustomers).toEqual(
-            expect.any(Function)
+            expect.any(Function),
         )
     })
 
     it('should update highlightedResultIndex on arrow key down', () => {
-        const {result} = setup()
-        const customers = [{id: 1}, {id: 2}] as searchTypes.UserSearchResult[]
+        const { result } = setup()
+        const customers = [
+            { id: 1 },
+            { id: 2 },
+        ] as searchTypes.UserSearchResult[]
         useSearchMock.mockReturnValue({
             isFetching: false,
-            data: {data: {data: customers}},
+            data: { data: { data: customers } },
         } as any)
 
         act(() => {
@@ -85,7 +89,7 @@ describe('usePhoneDeviceDialerCustomerSuggestions', () => {
     })
 
     it('should call onEnter on Enter key when no customer is highlighted', () => {
-        const {result} = setup()
+        const { result } = setup()
 
         act(() => {
             result.current.handleInputKeyDown({
@@ -98,11 +102,14 @@ describe('usePhoneDeviceDialerCustomerSuggestions', () => {
     })
 
     it('should call onCustomerSelect on Enter key when a customer is highlighted', () => {
-        const {result} = setup()
-        const customers = [{id: 1}, {id: 2}] as searchTypes.UserSearchResult[]
+        const { result } = setup()
+        const customers = [
+            { id: 1 },
+            { id: 2 },
+        ] as searchTypes.UserSearchResult[]
         useSearchMock.mockReturnValue({
             isFetching: false,
-            data: {data: {data: customers}},
+            data: { data: { data: customers } },
         } as any)
 
         act(() => {

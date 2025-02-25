@@ -23,25 +23,24 @@
  *
  * Inspired by https://ayushgp.github.io/scaling-websockets-using-sharedworkers/
  */
-
-import io, {Socket} from 'socket.io-client'
+import io, { Socket } from 'socket.io-client'
 
 import {
-    MAX_INCREMENTAL_RECONNECT_BACKOFF,
     DISCONNECTED_NOTIFICATION_DELAY,
     HEALTH_CHECK_INTERVAL,
     HEALTH_CHECK_RECEIVE_TIMEOUT,
     HEALTH_CHECK_SEND_INTERVAL,
-    SCOPED_BROADCAST_CHANNEL_NAME,
-    INTERNAL_SERVER_CONNECTION_ERROR_MESSAGE,
     INCREMENTAL_RECONNECT_BACKOFF,
+    INTERNAL_SERVER_CONNECTION_ERROR_MESSAGE,
+    MAX_INCREMENTAL_RECONNECT_BACKOFF,
+    SCOPED_BROADCAST_CHANNEL_NAME,
 } from './constants'
 import IncrementalBackoff from './incrementalBackoff'
 import {
-    WSMessage,
-    MessagePortEvent,
     BroadcastChannelEvent,
+    MessagePortEvent,
     SocketEvent,
+    WSMessage,
 } from './types'
 
 export class WebsocketSharedWorker {
@@ -54,7 +53,7 @@ export class WebsocketSharedWorker {
     }
 
     scopedBroadcastChannel = new self.BroadcastChannel(
-        SCOPED_BROADCAST_CHANNEL_NAME
+        SCOPED_BROADCAST_CHANNEL_NAME,
     )
 
     sendDisconnectedNotificationTask: NodeJS.Timeout | null = null
@@ -162,7 +161,7 @@ export class WebsocketSharedWorker {
                 this.scopedBroadcastChannel.postMessage({
                     type: BroadcastChannelEvent.WsDisconnected,
                 }),
-            DISCONNECTED_NOTIFICATION_DELAY * 1000
+            DISCONNECTED_NOTIFICATION_DELAY * 1000,
         )
     }
 
@@ -194,7 +193,7 @@ export class WebsocketSharedWorker {
             this.socket.on('connect_error', this._onSocketConnectError)
             this.socket.io.on(
                 'reconnect_attempt',
-                this._onSocketReconnectAttempt
+                this._onSocketReconnectAttempt,
             )
         } else if (this.socket.connected) {
             messagePort.postMessage({

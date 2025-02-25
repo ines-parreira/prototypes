@@ -1,5 +1,6 @@
+import React, { ReactNode } from 'react'
+
 import classNames from 'classnames'
-import React, {ReactNode} from 'react'
 
 import settingsCss from 'pages/settings/settings.less'
 
@@ -32,7 +33,7 @@ export default function FormSection({
                                 className={classNames(
                                     'material-icons',
                                     css.materialIcon,
-                                    iconClassName
+                                    iconClassName,
                                 )}
                             >
                                 {icon}
@@ -53,7 +54,7 @@ export default function FormSection({
                                             headingSize === 'medium',
                                         [css.headingSizeL]:
                                             headingSize === 'large',
-                                    }
+                                    },
                                 )}
                             >
                                 {title}
@@ -64,7 +65,7 @@ export default function FormSection({
                         <div
                             className={classNames(
                                 css.infoText,
-                                settingsCss.mb24
+                                settingsCss.mb24,
                             )}
                         >
                             {description}

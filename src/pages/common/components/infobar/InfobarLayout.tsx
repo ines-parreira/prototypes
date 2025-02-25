@@ -1,12 +1,13 @@
-import classnames from 'classnames'
-import React, {ReactNode} from 'react'
-import type {ComponentType} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
+import React, { ReactNode } from 'react'
+import type { ComponentType } from 'react'
 
-import {clamp, useSavedSizes} from 'core/layout/panels'
-import {ErrorBoundary} from 'pages/ErrorBoundary'
+import classnames from 'classnames'
+import { connect, ConnectedProps } from 'react-redux'
+
+import { clamp, useSavedSizes } from 'core/layout/panels'
+import { ErrorBoundary } from 'pages/ErrorBoundary'
 import * as layoutSelectors from 'state/layout/selectors'
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
 
 import css from './Infobar.less'
 
@@ -46,14 +47,14 @@ export class InfobarLayout extends React.Component<
     constructor(props: Props & SavedSizesProps) {
         super(props)
 
-        const {savedSizes} = props
+        const { savedSizes } = props
 
         this.cursorX = null
         this.originalWidth = 0
         this.maxWidth = clamp(
             Math.round(window.innerWidth * MAX_WIDTH),
             MIN_WIDTH,
-            Infinity
+            Infinity,
         )
         this.classHandle = 'infobar-drag-handle'
         this.classActive = 'infobar-drag-active'
@@ -61,9 +62,9 @@ export class InfobarLayout extends React.Component<
         const width = clamp(
             savedSizes.current.infobar || DEFAULT_WIDTH,
             MIN_WIDTH,
-            this.maxWidth
+            this.maxWidth,
         )
-        this.state = {width}
+        this.state = { width }
     }
 
     componentDidMount() {
@@ -94,7 +95,7 @@ export class InfobarLayout extends React.Component<
 
         this.originalWidth = parseInt(
             computedStyle.getPropertyValue('width'),
-            10
+            10,
         )
 
         document.body.classList.add(this.classActive)
@@ -103,7 +104,7 @@ export class InfobarLayout extends React.Component<
     dragStop = () => {
         this.cursorX = null
         document.body.classList.remove(this.classActive)
-        this.props.persistSizes({infobar: this.state.width})
+        this.props.persistSizes({ infobar: this.state.width })
     }
 
     drag = (e: MouseEvent) => {
@@ -112,10 +113,10 @@ export class InfobarLayout extends React.Component<
         const nextWidth = clamp(
             this.originalWidth + this.cursorX - e.clientX,
             MIN_WIDTH,
-            this.maxWidth
+            this.maxWidth,
         )
 
-        this.setState({width: nextWidth})
+        this.setState({ width: nextWidth })
     }
 
     render() {
@@ -131,10 +132,10 @@ export class InfobarLayout extends React.Component<
                     {
                         'hidden-panel': !this.props.isOpenedPanel,
                     },
-                    this.props.className
+                    this.props.className,
                 )}
                 ref={(ref) => (this.containerRef = ref)}
-                {...(this.props.isOnNewLayout ? {} : {style})}
+                {...(this.props.isOnNewLayout ? {} : { style })}
             >
                 {!this.props.isOnNewLayout && (
                     <div className={this.classHandle} />
@@ -150,7 +151,7 @@ const connector = connect((state: RootState) => ({
 }))
 
 function withSavedSizes<T extends object>(
-    Component: ComponentType<T & SavedSizesProps>
+    Component: ComponentType<T & SavedSizesProps>,
 ) {
     return (props: T) => {
         const [savedSizes, persistSizes] = useSavedSizes()

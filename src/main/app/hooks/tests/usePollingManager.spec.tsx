@@ -1,10 +1,10 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
+import { renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
 import pollingManager from 'services/pollingManager'
-import {EqualityOperator} from 'state/rules/types'
-import {getViewFilters} from 'state/views/utils'
+import { EqualityOperator } from 'state/rules/types'
+import { getViewFilters } from 'state/views/utils'
 
 import usePollingManager from '../usePollingManager'
 
@@ -45,7 +45,7 @@ describe('usePollingManager', () => {
     })
 
     it('should start polling when user becomes active', () => {
-        const {rerender} = renderHook(() => usePollingManager())
+        const { rerender } = renderHook(() => usePollingManager())
         expect(pollingManager.start).not.toHaveBeenCalled()
 
         mockAppSelector()
@@ -55,30 +55,33 @@ describe('usePollingManager', () => {
 
     it('should stop polling when user becomes inactive', () => {
         mockAppSelector()
-        const {rerender} = renderHook(() => usePollingManager())
+        const { rerender } = renderHook(() => usePollingManager())
 
-        mockAppSelector({currentUser: {}})
+        mockAppSelector({ currentUser: {} })
         rerender()
         expect(pollingManager.stop).toHaveBeenCalled()
     })
 
     it("should not stop fetching recent views' counts", () => {
         mockAppSelector()
-        const {rerender} = renderHook(() => usePollingManager())
+        const { rerender } = renderHook(() => usePollingManager())
 
-        mockAppSelector({currentUser: {}, shouldFetchActiveViewTickets: false})
+        mockAppSelector({
+            currentUser: {},
+            shouldFetchActiveViewTickets: false,
+        })
         rerender()
 
         expect(
-            pollingManager.stopRecentViewCountsInterval
+            pollingManager.stopRecentViewCountsInterval,
         ).not.toHaveBeenCalled()
     })
 
     it("should stop fetching recent views' counts when user becomes inactive and active view has a chat filter", () => {
         mockAppSelector()
-        const {rerender} = renderHook(() => usePollingManager())
+        const { rerender } = renderHook(() => usePollingManager())
 
-        mockAppSelector({currentUser: {}, shouldFetchActiveViewTickets: true})
+        mockAppSelector({ currentUser: {}, shouldFetchActiveViewTickets: true })
         getViewFiltersMock.mockReturnValue([
             {
                 operator: EqualityOperator.Eq,
@@ -93,7 +96,7 @@ describe('usePollingManager', () => {
 
     it('should stop polling on unmount', () => {
         mockAppSelector()
-        const {unmount} = renderHook(() => usePollingManager())
+        const { unmount } = renderHook(() => usePollingManager())
 
         unmount()
         expect(pollingManager.stop).toHaveBeenCalled()

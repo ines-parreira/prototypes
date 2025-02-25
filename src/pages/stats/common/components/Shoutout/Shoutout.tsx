@@ -1,13 +1,15 @@
-import {Card} from '@gorgias/analytics-ui-kit'
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { Fragment, ReactNode, useMemo, useRef } from 'react'
+
 import classNames from 'classnames'
 import isNil from 'lodash/isNil'
-import React, {Fragment, ReactNode, useMemo, useRef} from 'react'
+
+import { Card } from '@gorgias/analytics-ui-kit'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import css from 'pages/stats/common/components/Shoutout/Shoutout.less'
-import {ChartsActionMenu} from 'pages/stats/custom-reports/ChartsActionMenu/ChartsActionMenu'
-import {DashboardChartProps} from 'pages/stats/custom-reports/types'
+import { ChartsActionMenu } from 'pages/stats/custom-reports/ChartsActionMenu/ChartsActionMenu'
+import { DashboardChartProps } from 'pages/stats/custom-reports/types'
 
 type Props = {
     persons: ShoutoutPerson[]
@@ -52,7 +54,7 @@ export default function Shoutout({
 
     const tooltipPersons = useMemo(
         () => persons.slice(0, maxTooltipPersons),
-        [maxTooltipPersons, persons]
+        [maxTooltipPersons, persons],
     )
     const personsLengthExceeded = persons.length > maxTooltipPersons
 
@@ -90,7 +92,7 @@ export default function Shoutout({
                                 ref={tooltipRef}
                                 className={classNames(
                                     'material-icons',
-                                    css.infoIcon
+                                    css.infoIcon,
                                 )}
                                 aria-label="Hover to display more people"
                             >
@@ -101,7 +103,7 @@ export default function Shoutout({
                                 target={tooltipRef}
                                 autohide={false}
                                 placement="top-start"
-                                delay={{show: 0, hide: 500}}
+                                delay={{ show: 0, hide: 500 }}
                             >
                                 {tooltipPersons.map((person, idx, source) => (
                                     <Fragment key={idx}>

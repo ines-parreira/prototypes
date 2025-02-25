@@ -1,8 +1,9 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {IntentTableWithDefaultState} from '../IntentTable'
-import {IntentTableWidget} from '../IntentTableWidget'
+import { render, screen } from '@testing-library/react'
+
+import { IntentTableWithDefaultState } from '../IntentTable'
+import { IntentTableWidget } from '../IntentTableWidget'
 
 jest.mock('../IntentTable', () => ({
     IntentTableWithDefaultState: jest.fn(() => (
@@ -40,7 +41,7 @@ describe('IntentTableWidget Component', () => {
                 tableTitle: defaultProps.tableTitle,
                 tableHint: defaultProps.tableHint,
             },
-            {}
+            {},
         )
     })
 
@@ -55,7 +56,7 @@ describe('IntentTableWidget Component', () => {
 
         expect(screen.getByText(propsWithoutHint.title)).toBeInTheDocument()
         expect(
-            screen.getByText(propsWithoutHint.description)
+            screen.getByText(propsWithoutHint.description),
         ).toBeInTheDocument()
 
         const intentTable = screen.getByText('IntentTableWithDefaultState')
@@ -66,7 +67,7 @@ describe('IntentTableWidget Component', () => {
                 tableTitle: propsWithoutHint.tableTitle,
                 tableHint: undefined,
             },
-            {}
+            {},
         )
     })
 

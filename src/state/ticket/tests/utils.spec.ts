@@ -1,15 +1,14 @@
-import {fromJS, List, Map} from 'immutable'
-import {omit} from 'lodash'
+import { fromJS, List, Map } from 'immutable'
+import { omit } from 'lodash'
 
-import {appQueryClient} from 'api/queryClient'
+import { appQueryClient } from 'api/queryClient'
 import {
     TicketChannel,
     TicketMessageSourceType,
     TicketVia,
 } from 'business/types/ticket'
-
-import {channels as mockChannels} from 'fixtures/channels'
-import {integrationsState} from 'fixtures/integrations'
+import { channels as mockChannels } from 'fixtures/channels'
+import { integrationsState } from 'fixtures/integrations'
 import {
     addInternalNoteAction,
     addTagsAction,
@@ -24,59 +23,58 @@ import {
     Source,
     TicketMessage,
 } from 'models/ticket/types'
-import {UseListVoiceCalls, voiceCallsKeys} from 'models/voiceCall/queries'
-import {VoiceCall} from 'models/voiceCall/types'
-import {getPersonLabelFromSource} from 'pages/tickets/common/utils'
+import { UseListVoiceCalls, voiceCallsKeys } from 'models/voiceCall/queries'
+import { VoiceCall } from 'models/voiceCall/types'
+import { getPersonLabelFromSource } from 'pages/tickets/common/utils'
 import * as channelsService from 'services/channels'
 import {
     AccountSettingDefaultIntegration,
     AccountSettingType,
 } from 'state/currentAccount/types'
-import {getEmailChannels} from 'state/integrations/selectors'
-import {TICKET_CHANNEL_NAMES} from 'state/ticket/constants'
-import {RootState} from 'state/types'
+import { getEmailChannels } from 'state/integrations/selectors'
+import { TICKET_CHANNEL_NAMES } from 'state/ticket/constants'
+import { RootState } from 'state/types'
 import * as utils from 'utils'
 
 import {
+    buildFirstTicketMessage,
     getNewMessageSender,
     getOutboundCallFrom,
+    getPendingMessageIndex,
     getPreferredChannel,
     getSourceTypeOfResponse,
     guessReceiversFromTicket,
+    humanizeAddress,
+    humanizeChannel,
+    isReceiver,
+    isSupportAddress,
+    mergeActions,
+    mergeInternalNoteActions,
     persistLastSenderChannel,
     Receivers,
-    ReceiversValue,
     receiversStateFromValue,
+    ReceiversValue,
     receiversValueFromState,
-    mergeInternalNoteActions,
-    mergeActions,
-    isSupportAddress,
-    isReceiver,
-    humanizeChannel,
-    buildFirstTicketMessage,
-    getPendingMessageIndex,
-    humanizeAddress,
 } from '../utils'
-
 import {
+    chatContactFormTicket,
+    chatTicket,
     emailTicket,
     facebookPost,
+    helpCenterContactFormTicketViaSendgridWithInternalNote,
+    helpCenterContactFormTicketViaSengrid,
+    helpCenterContactFormViaApi,
+    helpCenterContactFormViaApiNoSelectedEmail,
+    helpCenterContactFormViaApiUnavailableEmail,
+    smsTicket,
+    standaloneContactFormViaApi,
+    standaloneContactFormViaApiNoSelectedEmail,
+    standaloneContactFormViaApiUnavailableEmail,
+    standaloneContactFormViaSengrid,
+    standaloneContactFormViaSengridNoSelectedEmail,
     twitterQuotedTweet,
     twitterTweet,
-    chatTicket,
-    chatContactFormTicket,
-    helpCenterContactFormTicketViaSengrid,
-    helpCenterContactFormTicketViaSendgridWithInternalNote,
-    standaloneContactFormViaSengrid,
-    helpCenterContactFormViaApi,
-    standaloneContactFormViaApi,
-    standaloneContactFormViaSengridNoSelectedEmail,
-    helpCenterContactFormViaApiNoSelectedEmail,
-    standaloneContactFormViaApiNoSelectedEmail,
-    helpCenterContactFormViaApiUnavailableEmail,
-    standaloneContactFormViaApiUnavailableEmail,
     whatsAppTicket,
-    smsTicket,
 } from './fixtures'
 
 const customers = {
@@ -195,7 +193,7 @@ const ticket = fromJS({
 
 const receiversExample = guessReceiversFromTicket(
     ticket,
-    TicketMessageSourceType.Email
+    TicketMessageSourceType.Email,
 )
 const receiversValueExample = {
     to: [
@@ -203,7 +201,7 @@ const receiversValueExample = {
             name: customers.email[1].name,
             label: getPersonLabelFromSource(
                 customers.email[1],
-                TicketMessageSourceType.Email
+                TicketMessageSourceType.Email,
             ),
             value: customers.email[1].address,
         },
@@ -211,7 +209,7 @@ const receiversValueExample = {
             name: customers.email[2].name,
             label: getPersonLabelFromSource(
                 customers.email[2],
-                TicketMessageSourceType.Email
+                TicketMessageSourceType.Email,
             ),
             value: customers.email[2].address,
         },
@@ -221,7 +219,7 @@ const receiversValueExample = {
             name: customers.email[3].name,
             label: getPersonLabelFromSource(
                 customers.email[3],
-                TicketMessageSourceType.Email
+                TicketMessageSourceType.Email,
             ),
             value: customers.email[3].address,
         },
@@ -257,18 +255,18 @@ describe('ticket utils', () => {
             const via = TicketVia.Twilio
 
             expect(getSourceTypeOfResponse(messages, via, 1)).toEqual(
-                TicketMessageSourceType.InternalNote
+                TicketMessageSourceType.InternalNote,
             )
         })
 
         it('should return message source type "internal-note" for Twilio ticket that has one internal note', () => {
             const messages = [
-                {source: {type: TicketMessageSourceType.InternalNote}},
+                { source: { type: TicketMessageSourceType.InternalNote } },
             ]
             const via = TicketVia.Twilio
 
             expect(getSourceTypeOfResponse(messages, via, 1)).toEqual(
-                TicketMessageSourceType.InternalNote
+                TicketMessageSourceType.InternalNote,
             )
         })
     })
@@ -278,7 +276,7 @@ describe('ticket utils', () => {
             const updatedTicket = ticket.delete('messages').delete('customer')
             const receivers = guessReceiversFromTicket(
                 updatedTicket,
-                TicketMessageSourceType.Email
+                TicketMessageSourceType.Email,
             )
 
             expect(receivers).toEqual({
@@ -289,7 +287,7 @@ describe('ticket utils', () => {
         it('guess receivers email', () => {
             const receivers = guessReceiversFromTicket(
                 ticket,
-                TicketMessageSourceType.Email
+                TicketMessageSourceType.Email,
             )
 
             expect(receivers).toEqual({
@@ -302,11 +300,11 @@ describe('ticket utils', () => {
             // invert from_agent property
             const updatedTicket = ticket.setIn(
                 ['messages', 4, 'from_agent'],
-                false
+                false,
             )
             const receivers = guessReceiversFromTicket(
                 updatedTicket,
-                TicketMessageSourceType.Email
+                TicketMessageSourceType.Email,
             )
 
             expect(receivers).toEqual({
@@ -318,7 +316,7 @@ describe('ticket utils', () => {
         it('guess receivers chat', () => {
             const receivers = guessReceiversFromTicket(
                 ticket,
-                TicketMessageSourceType.Chat
+                TicketMessageSourceType.Chat,
             )
 
             expect(receivers).toEqual({
@@ -351,19 +349,19 @@ describe('ticket utils', () => {
                         from_agent: false,
                         source: {
                             type: 'chat',
-                            to: [{name: '', address: ''}],
-                            from: {name: null, address: '1234567890'},
+                            to: [{ name: '', address: '' }],
+                            from: { name: null, address: '1234567890' },
                         },
                     },
                 ],
             }) as Map<any, any>
             const receivers = guessReceiversFromTicket(
                 updatedTicket,
-                TicketMessageSourceType.Chat
+                TicketMessageSourceType.Chat,
             )
 
             expect(receivers).toEqual({
-                to: [{name: null, address: '1234567890'}],
+                to: [{ name: null, address: '1234567890' }],
             })
         })
 
@@ -371,11 +369,11 @@ describe('ticket utils', () => {
             // invert from_agent property
             const updatedTicket = ticket.setIn(
                 ['messages', 1, 'from_agent'],
-                false
+                false,
             )
             const receivers = guessReceiversFromTicket(
                 updatedTicket,
-                TicketMessageSourceType.Chat
+                TicketMessageSourceType.Chat,
             )
 
             expect(receivers).toEqual({
@@ -387,7 +385,7 @@ describe('ticket utils', () => {
             const updatedTicket = ticket.delete('messages')
             const receivers = guessReceiversFromTicket(
                 updatedTicket,
-                TicketMessageSourceType.Email
+                TicketMessageSourceType.Email,
             )
 
             const receiver = {
@@ -404,7 +402,7 @@ describe('ticket utils', () => {
             const updatedTicket = ticket.delete('messages')
             const receivers = guessReceiversFromTicket(
                 updatedTicket,
-                TicketMessageSourceType.Chat
+                TicketMessageSourceType.Chat,
             )
 
             const receiver = {
@@ -422,8 +420,8 @@ describe('ticket utils', () => {
         expect(
             receiversValueFromState(
                 receiversExample,
-                TicketMessageSourceType.Email
-            )
+                TicketMessageSourceType.Email,
+            ),
         ).toEqual(receiversValueExample)
     })
 
@@ -432,8 +430,8 @@ describe('ticket utils', () => {
             expect(
                 receiversStateFromValue(
                     receiversValueExample as unknown as ReceiversValue,
-                    TicketMessageSourceType.Email
-                )
+                    TicketMessageSourceType.Email,
+                ),
             ).toEqual(receiversStateExample)
         })
     })
@@ -445,7 +443,7 @@ describe('ticket utils', () => {
                     channel.get('preferred', false)) as boolean
             })
             expect(
-                getPreferredChannel(TicketMessageSourceType.Email, channels)
+                getPreferredChannel(TicketMessageSourceType.Email, channels),
             ).toEqualImmutable(expected)
         })
 
@@ -453,13 +451,13 @@ describe('ticket utils', () => {
             // remove preferred channels of the list
             const _chans = channels.filter(
                 (channel: Map<any, any>) =>
-                    channel.get('preferred', false) === false
+                    channel.get('preferred', false) === false,
             ) as List<any>
             const expected = _chans.find(
-                (channel: Map<any, any>) => channel.get('type') === 'email'
+                (channel: Map<any, any>) => channel.get('type') === 'email',
             )
             expect(
-                getPreferredChannel(TicketMessageSourceType.Email, _chans)
+                getPreferredChannel(TicketMessageSourceType.Email, _chans),
             ).toEqualImmutable(expected)
         })
 
@@ -467,8 +465,8 @@ describe('ticket utils', () => {
             expect(
                 getPreferredChannel(
                     'skype' as TicketMessageSourceType,
-                    channels
-                )
+                    channels,
+                ),
             ).toEqualImmutable(fromJS({}))
         })
     })
@@ -504,7 +502,7 @@ describe('ticket utils', () => {
                 {
                     id: 1,
                     type: AccountSettingType.DefaultIntegration,
-                    data: {email: 15},
+                    data: { email: 15 },
                 }
 
             it('should return `to` field from first message from shopper (help center contact form - via email)', () => {
@@ -520,8 +518,8 @@ describe('ticket utils', () => {
                         helpCenterContactFormTicketViaSengrid,
                         TicketMessageSourceType.HelpCenterContactForm,
                         channels,
-                        integrationsWithSelectedEmail
-                    )
+                        integrationsWithSelectedEmail,
+                    ),
                 ).toEqualImmutable(expected)
             })
 
@@ -529,15 +527,15 @@ describe('ticket utils', () => {
                 /* first message is an internal note, second message is from shopper */
                 const expected =
                     helpCenterContactFormTicketViaSendgridWithInternalNote.getIn(
-                        ['messages', 1, 'source', 'to', 0]
+                        ['messages', 1, 'source', 'to', 0],
                     )
                 expect(
                     getNewMessageSender(
                         helpCenterContactFormTicketViaSendgridWithInternalNote,
                         TicketMessageSourceType.HelpCenterContactForm,
                         channels,
-                        integrationsWithSelectedEmail
-                    )
+                        integrationsWithSelectedEmail,
+                    ),
                 ).toEqualImmutable(expected)
             })
 
@@ -554,8 +552,8 @@ describe('ticket utils', () => {
                         standaloneContactFormViaSengrid,
                         TicketMessageSourceType.ContactForm,
                         channels,
-                        integrationsWithSelectedEmail
-                    )
+                        integrationsWithSelectedEmail,
+                    ),
                 ).toEqualImmutable(expected)
             })
 
@@ -572,8 +570,8 @@ describe('ticket utils', () => {
                         helpCenterContactFormViaApi,
                         TicketMessageSourceType.ContactForm,
                         channels,
-                        integrationsWithSelectedEmail
-                    )
+                        integrationsWithSelectedEmail,
+                    ),
                 ).toEqualImmutable(expected)
             })
 
@@ -590,8 +588,8 @@ describe('ticket utils', () => {
                         standaloneContactFormViaApi,
                         TicketMessageSourceType.ContactForm,
                         channels,
-                        integrationsWithSelectedEmail
-                    )
+                        integrationsWithSelectedEmail,
+                    ),
                 ).toEqualImmutable(expected)
             })
 
@@ -608,8 +606,8 @@ describe('ticket utils', () => {
                             TicketMessageSourceType.ContactForm,
                             channels,
                             integrationsWithSelectedEmail,
-                            defaultIntegrationSetting
-                        )
+                            defaultIntegrationSetting,
+                        ),
                     ).toEqual(
                         fromJS({
                             preferred: true,
@@ -621,9 +619,9 @@ describe('ticket utils', () => {
                             signature: undefined,
                             type: 'email',
                             id: 15,
-                        })
+                        }),
                     )
-                }
+                },
             )
 
             it.each([
@@ -638,8 +636,8 @@ describe('ticket utils', () => {
                             TicketMessageSourceType.ContactForm,
                             channels,
                             integrationsWithSelectedEmail,
-                            defaultIntegrationSetting
-                        )
+                            defaultIntegrationSetting,
+                        ),
                     ).toEqual(
                         fromJS({
                             preferred: true,
@@ -651,9 +649,9 @@ describe('ticket utils', () => {
                             signature: undefined,
                             type: 'email',
                             id: 15,
-                        })
+                        }),
                     )
-                }
+                },
             )
         })
 
@@ -664,8 +662,8 @@ describe('ticket utils', () => {
                     chatTicket,
                     TicketMessageSourceType.Chat,
                     channels,
-                    integrations
-                )
+                    integrations,
+                ),
             ).toEqualImmutable(expected)
         })
 
@@ -681,8 +679,8 @@ describe('ticket utils', () => {
                     facebookPost,
                     TicketMessageSourceType.FacebookComment,
                     channels,
-                    integrations
-                )
+                    integrations,
+                ),
             ).toEqualImmutable(expected)
         })
 
@@ -701,8 +699,8 @@ describe('ticket utils', () => {
                     _chatTicket,
                     TicketMessageSourceType.Chat,
                     channels,
-                    integrations
-                )
+                    integrations,
+                ),
             ).toEqualImmutable(expected)
         })
 
@@ -721,8 +719,8 @@ describe('ticket utils', () => {
                     _facebookPost,
                     TicketMessageSourceType.FacebookComment,
                     channels,
-                    integrations
-                )
+                    integrations,
+                ),
             ).toEqualImmutable(expected)
         })
 
@@ -751,10 +749,10 @@ describe('ticket utils', () => {
                         testData.tweet,
                         testData.sourceType,
                         channels,
-                        integrations
-                    )
+                        integrations,
+                    ),
                 ).toEqualImmutable(expected)
-            }
+            },
         )
 
         it('should return preferred channel', () => {
@@ -762,15 +760,15 @@ describe('ticket utils', () => {
             const _emailTicket = emailTicket.set('messages', fromJS([]))
             const expected = getPreferredChannel(
                 TicketMessageSourceType.Email,
-                channels
+                channels,
             )
             expect(
                 getNewMessageSender(
                     _emailTicket,
                     TicketMessageSourceType.Email,
                     channels,
-                    integrations
-                )
+                    integrations,
+                ),
             ).toEqualImmutable(expected)
         })
 
@@ -783,15 +781,15 @@ describe('ticket utils', () => {
             ]) as Map<any, any>
             const expected = channels.find(
                 (channel: Map<any, any>) =>
-                    channel.get('address') === from.get('address')
+                    channel.get('address') === from.get('address'),
             )
             expect(
                 getNewMessageSender(
                     emailTicket,
                     TicketMessageSourceType.Email,
                     channels,
-                    integrations
-                )
+                    integrations,
+                ),
             ).toEqualImmutable(expected)
         })
 
@@ -820,15 +818,15 @@ describe('ticket utils', () => {
                 },
             ]
             const expected = channels.find(
-                (channel) => channel.address === from.get('address')
+                (channel) => channel.address === from.get('address'),
             )
             expect(
                 getNewMessageSender(
                     whatsAppTicket,
                     TicketMessageSourceType.WhatsAppMessage,
                     fromJS(channels) as List<any>,
-                    integrations
-                ).toJS()
+                    integrations,
+                ).toJS(),
             ).toEqual(expected)
         })
 
@@ -857,15 +855,15 @@ describe('ticket utils', () => {
                 },
             ]
             const expected = channels.find(
-                (channel) => channel.address === from.get('address')
+                (channel) => channel.address === from.get('address'),
             )
             expect(
                 getNewMessageSender(
                     smsTicket,
                     TicketMessageSourceType.Sms,
                     fromJS(channels) as List<any>,
-                    integrations
-                ).toJS()
+                    integrations,
+                ).toJS(),
             ).toEqual(expected)
         })
 
@@ -873,22 +871,22 @@ describe('ticket utils', () => {
             const emailIntegrationId = integrationsState.integrations.find(
                 (integration) =>
                     integration.id ===
-                    chatTicket.getIn(['messages', 0, 'integration_id'])
+                    chatTicket.getIn(['messages', 0, 'integration_id']),
             )?.meta?.preferences?.linked_email_integration
 
             const expected = fromJS(
                 channels.find(
                     (channel: Map<any, any>) =>
-                        emailIntegrationId === channel.get('id')
-                )
+                        emailIntegrationId === channel.get('id'),
+                ),
             )
             expect(
                 getNewMessageSender(
                     chatTicket,
                     TicketMessageSourceType.Email,
                     channels,
-                    fromJS(integrationsState)
-                )
+                    fromJS(integrationsState),
+                ),
             ).toEqualImmutable(expected)
         })
 
@@ -900,22 +898,22 @@ describe('ticket utils', () => {
                         'messages',
                         0,
                         'integration_id',
-                    ])
+                    ]),
             )?.meta?.preferences?.linked_email_integration
 
             const expected = fromJS(
                 channels.find(
                     (channel: Map<any, any>) =>
-                        emailIntegrationId === channel.get('id')
-                )
+                        emailIntegrationId === channel.get('id'),
+                ),
             )
             expect(
                 getNewMessageSender(
                     chatContactFormTicket,
                     TicketMessageSourceType.Email,
                     channels,
-                    fromJS(integrationsState)
-                )
+                    fromJS(integrationsState),
+                ),
             ).toEqualImmutable(expected)
         })
 
@@ -950,16 +948,16 @@ describe('ticket utils', () => {
             const expected = fromJS(
                 channels.find(
                     (channel: Map<any, any>) =>
-                        emailIntegrationValue === channel.get('address')
-                )
+                        emailIntegrationValue === channel.get('address'),
+                ),
             )
             expect(
                 getNewMessageSender(
                     ticket,
                     TicketMessageSourceType.Email,
                     channels,
-                    fromJS(integrationsState)
-                )
+                    fromJS(integrationsState),
+                ),
             ).toEqualImmutable(expected)
         })
 
@@ -996,8 +994,8 @@ describe('ticket utils', () => {
                     ticket,
                     TicketMessageSourceType.Email,
                     channels,
-                    fromJS(integrationsState)
-                )
+                    fromJS(integrationsState),
+                ),
             ).toEqualImmutable(expected)
         })
 
@@ -1013,15 +1011,15 @@ describe('ticket utils', () => {
             ]) as Map<any, any>
             const expected = channels.find(
                 (channel: Map<any, any>) =>
-                    channel.get('address') === to.get('address')
+                    channel.get('address') === to.get('address'),
             )
             expect(
                 getNewMessageSender(
                     emailTicket,
                     TicketMessageSourceType.Email,
                     channels,
-                    integrations
-                )
+                    integrations,
+                ),
             ).toEqualImmutable(expected)
         })
 
@@ -1036,7 +1034,7 @@ describe('ticket utils', () => {
                         return source
                             .set('cc', source.get('to'))
                             .set('to', fromJS([]))
-                    }
+                    },
                 )
             const cc = _emailTicket.getIn([
                 'messages',
@@ -1047,15 +1045,15 @@ describe('ticket utils', () => {
             ]) as Map<any, any>
             const expected = channels.find(
                 (channel: Map<any, any>) =>
-                    channel.get('address') === cc.get('address')
+                    channel.get('address') === cc.get('address'),
             )
             expect(
                 getNewMessageSender(
                     emailTicket,
                     TicketMessageSourceType.Email,
                     channels,
-                    integrations
-                )
+                    integrations,
+                ),
             ).toEqualImmutable(expected)
         })
 
@@ -1063,19 +1061,19 @@ describe('ticket utils', () => {
             // remove address that can match
             const _emailTicket = emailTicket.setIn(
                 ['messages', 1, 'source', 'from'],
-                fromJS({name: 'foo', address: 'unknown@gorgias.io'})
+                fromJS({ name: 'foo', address: 'unknown@gorgias.io' }),
             )
             const expected = getPreferredChannel(
                 TicketMessageSourceType.Email,
-                channels
+                channels,
             )
             expect(
                 getNewMessageSender(
                     _emailTicket,
                     TicketMessageSourceType.Email,
                     channels,
-                    integrations
-                )
+                    integrations,
+                ),
             ).toEqualImmutable(expected)
         })
 
@@ -1084,15 +1082,15 @@ describe('ticket utils', () => {
             const _emailTicket = emailTicket.deleteIn(['messages', 0])
             const expected = getPreferredChannel(
                 TicketMessageSourceType.Email,
-                channels
+                channels,
             )
             expect(
                 getNewMessageSender(
                     _emailTicket,
                     TicketMessageSourceType.Email,
                     channels,
-                    integrations
-                )
+                    integrations,
+                ),
             ).toEqualImmutable(expected)
         })
 
@@ -1102,13 +1100,13 @@ describe('ticket utils', () => {
                     emailTicket,
                     TicketMessageSourceType.InternalNote,
                     channels,
-                    integrations
-                )
+                    integrations,
+                ),
             ).toEqualImmutable(
                 fromJS({
                     name: '',
                     address: '',
-                })
+                }),
             )
         })
 
@@ -1124,7 +1122,7 @@ describe('ticket utils', () => {
 
             const expected = getPreferredChannel(
                 TicketMessageSourceType.Email,
-                channels
+                channels,
             )
 
             // persisted channel is not present in the channels list so the preferred channel should be returned
@@ -1133,8 +1131,8 @@ describe('ticket utils', () => {
                     _emailTicket,
                     TicketMessageSourceType.Email,
                     channels,
-                    integrations
-                )
+                    integrations,
+                ),
             ).toEqualImmutable(expected)
 
             // update the channel list and we should get the persisted channel
@@ -1143,8 +1141,8 @@ describe('ticket utils', () => {
                     _emailTicket,
                     TicketMessageSourceType.Email,
                     channels.push(testChannel),
-                    integrations
-                )
+                    integrations,
+                ),
             ).toEqualImmutable(testChannel)
         })
 
@@ -1152,7 +1150,7 @@ describe('ticket utils', () => {
             it('should return the default integration if set', () => {
                 const _emailTicket = emailTicket.set('messages', fromJS([]))
                 const expected = channels.find(
-                    (c: Map<any, any>) => c.get('id') === 15
+                    (c: Map<any, any>) => c.get('id') === 15,
                 )
                 expect(
                     getNewMessageSender(
@@ -1166,15 +1164,15 @@ describe('ticket utils', () => {
                             data: {
                                 email: 15,
                             },
-                        }
-                    )
+                        },
+                    ),
                 ).toEqualImmutable(expected)
             })
 
             it('should not return the default if not part of the available channels', () => {
                 const _emailTicket = emailTicket.set('messages', fromJS([]))
                 const expected = channels.find(
-                    (c: Map<any, any>) => c.get('id') === 1
+                    (c: Map<any, any>) => c.get('id') === 1,
                 )
                 expect(
                     getNewMessageSender(
@@ -1188,23 +1186,23 @@ describe('ticket utils', () => {
                             data: {
                                 email: 999,
                             },
-                        }
-                    )
+                        },
+                    ),
                 ).toEqualImmutable(expected)
             })
 
             it('should use the default behaviour if the setting is missing', () => {
                 const _emailTicket = emailTicket.set('messages', fromJS([]))
                 const expected = channels.find(
-                    (c: Map<any, any>) => c.get('id') === 1
+                    (c: Map<any, any>) => c.get('id') === 1,
                 )
                 expect(
                     getNewMessageSender(
                         _emailTicket,
                         TicketMessageSourceType.Email,
                         channels,
-                        integrations
-                    )
+                        integrations,
+                    ),
                 ).toEqualImmutable(expected)
             })
         })
@@ -1213,14 +1211,14 @@ describe('ticket utils', () => {
             const integrationId = 1
 
             appQueryClient.setQueryData<UseListVoiceCalls>(
-                voiceCallsKeys.list({ticket_id: ticket.get('id')}),
+                voiceCallsKeys.list({ ticket_id: ticket.get('id') }),
                 {
                     data: [
                         {
                             integration_id: integrationId,
                         } as VoiceCall,
                     ],
-                } as any
+                } as any,
             )
 
             const newMessageSourceType = TicketMessageSourceType.Phone
@@ -1236,8 +1234,8 @@ describe('ticket utils', () => {
                     ticket,
                     newMessageSourceType,
                     channels,
-                    integrations
-                )
+                    integrations,
+                ),
             ).toEqual(expectedSender)
         })
 
@@ -1257,8 +1255,8 @@ describe('ticket utils', () => {
                     ticket,
                     newMessageSourceType,
                     channels,
-                    integrations
-                )
+                    integrations,
+                ),
             ).toEqual(expectedSender)
         })
 
@@ -1335,10 +1333,10 @@ describe('ticket utils', () => {
                         ticket,
                         TicketMessageSourceType.Email,
                         channels,
-                        fromJS([])
-                    )
+                        fromJS([]),
+                    ),
                 ).toEqual(fromJS(expectedSender))
-            }
+            },
         )
 
         it('should disregard failed messages when cosidering the last message', () => {
@@ -1410,8 +1408,8 @@ describe('ticket utils', () => {
                     ticket,
                     TicketMessageSourceType.Email,
                     channels,
-                    fromJS([])
-                )
+                    fromJS([]),
+                ),
             ).toEqual(
                 fromJS({
                     id: 1,
@@ -1425,15 +1423,15 @@ describe('ticket utils', () => {
                     },
                     verified: true,
                     isDeactivated: false,
-                })
+                }),
             )
         })
     })
 
     describe('getOutboundCallFrom()', () => {
-        const emptySender = fromJS({id: null, name: '', address: ''})
+        const emptySender = fromJS({ id: null, name: '', address: '' })
         const getValidSender = (id: number) =>
-            fromJS({id, name: 'Acme Phone', address: '+14151112222'}) as Map<
+            fromJS({ id, name: 'Acme Phone', address: '+14151112222' }) as Map<
                 any,
                 any
             >
@@ -1445,46 +1443,46 @@ describe('ticket utils', () => {
         })
 
         it('should return first channel because there is no voice call', () => {
-            const ticket = fromJS({id: 1}) as Map<any, any>
+            const ticket = fromJS({ id: 1 }) as Map<any, any>
             const channel = getValidSender(1)
             const channels = fromJS([channel])
 
             appQueryClient.setQueryData<UseListVoiceCalls>(
-                voiceCallsKeys.list({ticket_id: ticket.get('id')}),
+                voiceCallsKeys.list({ ticket_id: ticket.get('id') }),
                 {
                     data: [],
-                } as any
+                } as any,
             )
 
             expect(getOutboundCallFrom(ticket, channels)).toEqual(channel)
         })
 
         it('should return first channel because ticket channel is not defined in the channels list', () => {
-            const ticket = fromJS({id: 1}) as Map<any, any>
+            const ticket = fromJS({ id: 1 }) as Map<any, any>
             const channel = getValidSender(2)
             const channels = fromJS([channel])
 
             appQueryClient.setQueryData<UseListVoiceCalls>(
-                voiceCallsKeys.list({ticket_id: ticket.get('id')}),
+                voiceCallsKeys.list({ ticket_id: ticket.get('id') }),
                 {
                     data: [
                         {
                             integration_id: 1,
                         } as VoiceCall,
                     ],
-                } as any
+                } as any,
             )
 
             expect(getOutboundCallFrom(ticket, channels)).toEqual(channel)
         })
 
         it('should return ticket channel because it is defined in the channels list', () => {
-            const ticket = fromJS({id: 1}) as Map<any, any>
+            const ticket = fromJS({ id: 1 }) as Map<any, any>
             const channel = getValidSender(2)
             const channels = fromJS([getValidSender(1), channel])
 
             appQueryClient.setQueryData<UseListVoiceCalls>(
-                voiceCallsKeys.list({ticket_id: ticket.get('id')}),
+                voiceCallsKeys.list({ ticket_id: ticket.get('id') }),
                 {
                     data: [
                         {
@@ -1494,7 +1492,7 @@ describe('ticket utils', () => {
                             integration_id: 1,
                         } as VoiceCall,
                     ],
-                } as any
+                } as any,
             )
 
             expect(getOutboundCallFrom(ticket, channels)).toEqual(channel)
@@ -1504,13 +1502,13 @@ describe('ticket utils', () => {
     describe('mergeInternalNoteActions', () => {
         it('should merge internal note actions', () => {
             const oldAction = fromJS({
-                arguments: {body_text: 'foo', body_html: 'foo'},
+                arguments: { body_text: 'foo', body_html: 'foo' },
             })
             const newAction = fromJS({
-                arguments: {body_text: 'bar', body_html: 'bar'},
+                arguments: { body_text: 'bar', body_html: 'bar' },
             })
             expect(
-                mergeInternalNoteActions(oldAction, newAction)
+                mergeInternalNoteActions(oldAction, newAction),
             ).toMatchSnapshot()
         })
     })
@@ -1519,26 +1517,27 @@ describe('ticket utils', () => {
         it('should merge http hooks', () => {
             const oldActions = fromJS([
                 httpAction,
-                {...httpAction, title: 'title2'},
+                { ...httpAction, title: 'title2' },
             ])
             const newActions = fromJS([
                 httpAction,
-                {...httpAction, title: 'title2'},
-                {...httpAction, title: 'title3'},
+                { ...httpAction, title: 'title2' },
+                { ...httpAction, title: 'title3' },
             ])
             expect(
                 mergeActions(oldActions, newActions)
                     .map(
-                        (action: Map<any, any>) => action.get('title') as string
+                        (action: Map<any, any>) =>
+                            action.get('title') as string,
                     )
-                    .toJS()
+                    .toJS(),
             ).toEqual(['Refund Last Month', 'title2', 'title3'])
         })
 
         it('should handle tag stacking', () => {
             const oldActions = fromJS([addTagsAction])
             const newActions = fromJS([
-                {...addTagsAction, arguments: {tags: 'refund,paid'}},
+                { ...addTagsAction, arguments: { tags: 'refund,paid' } },
             ])
 
             expect(
@@ -1546,7 +1545,7 @@ describe('ticket utils', () => {
                     0,
                     'arguments',
                     'tags',
-                ])
+                ]),
             ).toEqual('refund,billing,refund accepted,paid') // doesn't duplicate refund and adds paid
         })
 
@@ -1557,9 +1556,9 @@ describe('ticket utils', () => {
             expect(
                 mergeActions(oldActions, newActions)
                     .map(
-                        (action: Map<any, any>) => action.get('name') as string
+                        (action: Map<any, any>) => action.get('name') as string,
                     )
-                    .toJS()
+                    .toJS(),
             ).toEqual(['http', 'shopifyFullRefundLastOrder', 'addTags'])
         })
 
@@ -1570,13 +1569,13 @@ describe('ticket utils', () => {
             expect(
                 result
                     .map(
-                        (action: Map<any, any>) => action.get('name') as string
+                        (action: Map<any, any>) => action.get('name') as string,
                     )
-                    .toJS()
+                    .toJS(),
             ).toEqual(['addInternalNote']) // actions got merged
 
             expect(result.getIn([0, 'arguments', 'body_text'])).toEqual(
-                'Hello\nHello'
+                'Hello\nHello',
             ) //Body got concatenated
         })
 
@@ -1597,12 +1596,12 @@ describe('ticket utils', () => {
                 setClosedStatusAction,
                 {
                     ...setSubjectAction,
-                    arguments: {subject: 'Test Verb'},
+                    arguments: { subject: 'Test Verb' },
                 },
             ])
 
             expect(
-                mergeActions(oldActions, newActions).toJS()
+                mergeActions(oldActions, newActions).toJS(),
             ).toMatchSnapshot() //Only keep the last actions values
         })
     })
@@ -1610,50 +1609,50 @@ describe('ticket utils', () => {
     describe('isSupportAddress', () => {
         it('should return true for support address (including aliases)', () => {
             expect(
-                isSupportAddress('test@gorgias.com', ['test@gorgias.com'])
+                isSupportAddress('test@gorgias.com', ['test@gorgias.com']),
             ).toBe(true)
             expect(
-                isSupportAddress('test+1@gorgias.com', ['test@gorgias.com'])
+                isSupportAddress('test+1@gorgias.com', ['test@gorgias.com']),
             ).toBe(true)
             expect(
-                isSupportAddress('TEST+1@gorgias.com', ['test@gorgias.com'])
+                isSupportAddress('TEST+1@gorgias.com', ['test@gorgias.com']),
             ).toBe(true)
             expect(
-                isSupportAddress('test+1@gorgias.com', ['TEST@gorgias.com'])
+                isSupportAddress('test+1@gorgias.com', ['TEST@gorgias.com']),
             ).toBe(true)
         })
 
         it('should return false for non support address', () => {
             expect(isSupportAddress('test@gorgias.com', [])).toEqual(false)
             expect(
-                isSupportAddress('test@gorgias.com', ['testing@gorgias.com'])
+                isSupportAddress('test@gorgias.com', ['testing@gorgias.com']),
             ).toEqual(false)
         })
 
         it('should return true for support phone numbers', () => {
             expect(isSupportAddress('+12133734253', ['+12133734253'])).toBe(
-                true
+                true,
             )
             expect(
                 isSupportAddress(
                     '+12133734253',
                     ['+12133734253'],
-                    TicketMessageSourceType.Phone
-                )
+                    TicketMessageSourceType.Phone,
+                ),
             ).toBe(true)
             expect(
                 isSupportAddress(
                     '+1 213 373 4253',
                     ['+12133734253'],
-                    TicketMessageSourceType.Phone
-                )
+                    TicketMessageSourceType.Phone,
+                ),
             ).toBe(true)
             expect(
                 isSupportAddress(
                     '+12133734253',
                     ['+1 (213) 373 4253'],
-                    TicketMessageSourceType.Phone
-                )
+                    TicketMessageSourceType.Phone,
+                ),
             ).toBe(true)
         })
     })
@@ -1667,24 +1666,24 @@ describe('ticket utils', () => {
             expect(
                 isReceiver({
                     name: 'test',
-                })
+                }),
             ).toBe(false)
             expect(
                 isReceiver({
                     address: 'test',
-                })
+                }),
             ).toBe(false)
             expect(
                 isReceiver({
                     name: 123,
                     address: 'test',
-                })
+                }),
             ).toBe(false)
             expect(
                 isReceiver({
                     name: 'test',
                     address: 123,
-                })
+                }),
             ).toBe(false)
         })
 
@@ -1693,7 +1692,7 @@ describe('ticket utils', () => {
                 isReceiver({
                     name: 'test',
                     address: 'test',
-                })
+                }),
             ).toBe(true)
         })
     })
@@ -1701,14 +1700,14 @@ describe('ticket utils', () => {
     describe('humanizeAddress', () => {
         it('should friendly format phone numbers', () => {
             expect(
-                humanizeAddress('+12133734253', TicketMessageSourceType.Phone)
+                humanizeAddress('+12133734253', TicketMessageSourceType.Phone),
             ).toEqual('+1 213 373 4253')
 
             expect(
                 humanizeAddress(
                     '+12133734253',
-                    TicketMessageSourceType.WhatsAppMessage
-                )
+                    TicketMessageSourceType.WhatsAppMessage,
+                ),
             ).toEqual('+1 213 373 4253')
         })
 
@@ -1718,13 +1717,13 @@ describe('ticket utils', () => {
 
         it('formats correctly for non-legacy channels', () => {
             expect(humanizeAddress('sendershop', 'tiktok-shop')).toEqual(
-                'sendershop'
+                'sendershop',
             )
         })
 
         it('should run to lowercase on all other input', () => {
             expect(humanizeAddress('aNeMailAdDreSS@pRoVIder.io')).toEqual(
-                'anemailaddress@provider.io'
+                'anemailaddress@provider.io',
             )
         })
     })
@@ -1733,7 +1732,7 @@ describe('ticket utils', () => {
         it('should return the preserved channel name for known channels', () => {
             for (const channel in TICKET_CHANNEL_NAMES) {
                 expect(humanizeChannel(channel)).toEqual(
-                    TICKET_CHANNEL_NAMES[channel as TicketChannel]
+                    TICKET_CHANNEL_NAMES[channel as TicketChannel],
                 )
             }
         })
@@ -1744,33 +1743,33 @@ describe('ticket utils', () => {
 
         it('should convert source types to channel names', () => {
             expect(
-                humanizeChannel(TicketMessageSourceType.InternalNote)
+                humanizeChannel(TicketMessageSourceType.InternalNote),
             ).toEqual('Internal Note')
 
             expect(
-                humanizeChannel(TicketMessageSourceType.EmailForward)
+                humanizeChannel(TicketMessageSourceType.EmailForward),
             ).toEqual('Forward')
 
             expect(
                 humanizeChannel(
-                    TicketMessageSourceType.YotpoReviewPublicComment
-                )
+                    TicketMessageSourceType.YotpoReviewPublicComment,
+                ),
             ).toEqual('Public Yotpo reply')
 
             expect(
                 humanizeChannel(
-                    TicketMessageSourceType.YotpoReviewPrivateComment
-                )
+                    TicketMessageSourceType.YotpoReviewPrivateComment,
+                ),
             ).toEqual('Private Yotpo reply')
 
             expect(
-                humanizeChannel(TicketMessageSourceType.WhatsAppMessage)
+                humanizeChannel(TicketMessageSourceType.WhatsAppMessage),
             ).toEqual('WhatsApp')
         })
 
         it('should work with new channels', () => {
             jest.spyOn(channelsService, 'toChannel').mockReturnValue(
-                mockChannels[0]
+                mockChannels[0],
             )
 
             expect(humanizeChannel('tiktok-shop')).toEqual('TikTok Shop')
@@ -1787,8 +1786,8 @@ describe('ticket utils', () => {
                 buildFirstTicketMessage(
                     ticketMessage,
                     ticketMessageId,
-                    ticketMeta
-                )
+                    ticketMeta,
+                ),
             ).toEqual(ticketMessage)
         })
 
@@ -1801,8 +1800,8 @@ describe('ticket utils', () => {
                 buildFirstTicketMessage(
                     ticketMessage,
                     ticketMessageId,
-                    ticketMeta
-                )
+                    ticketMeta,
+                ),
             ).toEqual(ticketMessage)
         })
 
@@ -1817,8 +1816,8 @@ describe('ticket utils', () => {
                 buildFirstTicketMessage(
                     ticketMessage,
                     ticketMessageId,
-                    ticketMeta
-                )
+                    ticketMeta,
+                ),
             ).toEqual(ticketMessage)
         })
 
@@ -1841,8 +1840,8 @@ describe('ticket utils', () => {
                 buildFirstTicketMessage(
                     ticketMessage,
                     ticketMessageId,
-                    ticketMeta
-                )
+                    ticketMeta,
+                ),
             ).toMatchObject({
                 meta: {
                     current_page: gorgiasContactFormMeta.host_url,
@@ -1888,8 +1887,8 @@ describe('ticket utils', () => {
                         },
                         pendingMessage,
                     ],
-                    pendingMessage
-                )
+                    pendingMessage,
+                ),
             ).toEqual(2)
 
             expect(
@@ -1903,8 +1902,8 @@ describe('ticket utils', () => {
                             },
                         },
                     ],
-                    pendingMessage
-                )
+                    pendingMessage,
+                ),
             ).toEqual(0)
 
             expect(
@@ -1914,21 +1913,21 @@ describe('ticket utils', () => {
                             ...pendingMessage,
                             source: omit(
                                 pendingMessage.source,
-                                'type'
+                                'type',
                             ) as Source,
                         },
                     ],
-                    pendingMessage
-                )
+                    pendingMessage,
+                ),
             ).toEqual(0)
         })
 
         it('should disregard some props and still match', () => {
             expect(
                 getPendingMessageIndex(
-                    [{...pendingMessage, public: false}],
-                    pendingMessage
-                )
+                    [{ ...pendingMessage, public: false }],
+                    pendingMessage,
+                ),
             ).toEqual(0)
         })
 
@@ -1937,14 +1936,14 @@ describe('ticket utils', () => {
                 getPendingMessageIndex([pendingMessage], {
                     ...pendingMessage,
                     channel: TicketChannel.Facebook,
-                })
+                }),
             ).toEqual(-1)
 
             expect(
                 getPendingMessageIndex([pendingMessage], {
                     ...pendingMessage,
                     body_text: 'not pending!',
-                })
+                }),
             ).toEqual(-1)
 
             expect(
@@ -1953,9 +1952,9 @@ describe('ticket utils', () => {
                     source: {
                         ...pendingMessage.source,
                         type: TicketMessageSourceType.Email,
-                        to: [{address: 'z@z.com', name: 'z'}],
+                        to: [{ address: 'z@z.com', name: 'z' }],
                     },
-                })
+                }),
             ).toEqual(-1)
         })
     })

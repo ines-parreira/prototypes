@@ -1,4 +1,4 @@
-import {chain, differenceBy, map, orderBy} from 'lodash'
+import { chain, differenceBy, map, orderBy } from 'lodash'
 import _isEqual from 'lodash/isEqual'
 import _pickBy from 'lodash/pickBy'
 
@@ -13,10 +13,10 @@ import {
     Locale,
     LocaleCode,
 } from 'models/helpCenter/types'
-import {validLocaleCode} from 'models/helpCenter/utils'
-import {IntegrationFromType, IntegrationType} from 'models/integration/types'
-import {Entrypoint} from 'pages/automate/common/components/WorkflowsFeatureList'
-import {Language as LanguagePickerItem} from 'pages/common/components/LanguagePicker/LanguagePicker'
+import { validLocaleCode } from 'models/helpCenter/utils'
+import { IntegrationFromType, IntegrationType } from 'models/integration/types'
+import { Entrypoint } from 'pages/automate/common/components/WorkflowsFeatureList'
+import { Language as LanguagePickerItem } from 'pages/common/components/LanguagePicker/LanguagePicker'
 import {
     DEFAULT_ARTICLE_GROUP,
     HELP_CENTER_DEFAULT_LOCALE,
@@ -24,30 +24,30 @@ import {
     HelpCenterCreationWizard,
     PlatformType,
 } from 'pages/settings/helpCenter/constants'
-import {Components} from 'rest_api/help_center_api/client.generated'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {StoreDispatch} from 'state/types'
-import {reportError} from 'utils/errors'
+import { Components } from 'rest_api/help_center_api/client.generated'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { StoreDispatch } from 'state/types'
+import { reportError } from 'utils/errors'
 
-import {HelpCenterLayout} from '../../types/layout.enum'
-import {getHelpCenterLayout} from '../../utils/helpCenter.utils'
+import { HelpCenterLayout } from '../../types/layout.enum'
+import { getHelpCenterLayout } from '../../utils/helpCenter.utils'
 
 export const isPlatformType = (type: unknown): type is PlatformType => {
     return Object.values(PlatformType).includes(type as PlatformType)
 }
 
 export const isErrorRecord = (
-    error: unknown
+    error: unknown,
 ): error is Record<string, unknown> => {
     return typeof error === 'object' && error !== null && !Array.isArray(error)
 }
 
 export const isHelpCenterCreationWizardStep = (
-    step: unknown
+    step: unknown,
 ): step is HelpCenterCreationWizardStep => {
     return Object.values(HelpCenterCreationWizardStep).includes(
-        step as HelpCenterCreationWizardStep
+        step as HelpCenterCreationWizardStep,
     )
 }
 
@@ -55,7 +55,7 @@ const replaceNewLines = (input: string | undefined): string | undefined =>
     input?.replace(/\\n/g, '')
 
 export const replaceNewLinesWithBr = (
-    input: string | undefined
+    input: string | undefined,
 ): string | undefined => input?.replace(/\n/g, '<br />')
 
 /**
@@ -67,7 +67,7 @@ export const replaceNewLinesWithBr = (
  * - If there is more than one store integration, the one that matches the shop_name will be selected by default
  */
 export const mapApiHelpCenterToUIHelpCenter = (
-    helpCenter: HelpCenter | undefined
+    helpCenter: HelpCenter | undefined,
 ): HelpCenterCreationWizard => {
     const platformType = helpCenter?.wizard?.step_data?.platform_type
     const stepName = helpCenter?.wizard?.step_name
@@ -106,7 +106,7 @@ export const getHelpCenterWizardInitialData = (
         | IntegrationType.BigCommerce
         | IntegrationType.Magento2
     >[],
-    isOnePager?: boolean
+    isOnePager?: boolean,
 ): Partial<HelpCenterCreationWizard> => {
     const shopName =
         allStoreIntegrations.length === 1 ? allStoreIntegrations[0].name : ''
@@ -125,7 +125,7 @@ export const getHelpCenterWizardInitialData = (
  * Map UI Help Center to API Help Center
  */
 export const mapUIHelpCenterToApiHelpCenter = (
-    data: HelpCenterCreationWizard
+    data: HelpCenterCreationWizard,
 ) => {
     const result = {
         name: data.name,
@@ -164,7 +164,7 @@ export const mapUIHelpCenterToApiHelpCenter = (
  * Map help center locales to the format used in the LanguagePicker component
  */
 export const mapHelpCenterLocalesToLanguagePicker = (
-    locales: Locale[]
+    locales: Locale[],
 ): LanguagePickerItem[] => {
     return locales.map((locale: Locale) => ({
         value: locale.code,
@@ -177,7 +177,7 @@ export const mapHelpCenterLocalesToLanguagePicker = (
  */
 export const mapHelpCenterLanguagesToLanguagePicker = (
     helpCenter: HelpCenter | undefined,
-    uiLanguageOptions: LanguagePickerItem[]
+    uiLanguageOptions: LanguagePickerItem[],
 ) => {
     const defaultLocale = helpCenter?.default_locale
     const supportedLanguages = helpCenter?.supported_locales
@@ -190,7 +190,7 @@ export const mapHelpCenterLanguagesToLanguagePicker = (
         supportedLanguages?.map((languageCode: string) => {
             const matchedLanguage: LanguagePickerItem | undefined =
                 uiLanguageOptions.find(
-                    (lang: LanguagePickerItem) => lang.value === languageCode
+                    (lang: LanguagePickerItem) => lang.value === languageCode,
                 )
 
             return {
@@ -207,8 +207,8 @@ export const mapHelpCenterLanguagesToLanguagePicker = (
  * Map language picker format to help center supported languages, so it can be sent to the endpoint
  */
 export const mapLanguagePickerToHelpCenterLanguages = (
-    languages: LanguagePickerItem[]
-): {defaultLocale: LocaleCode; supportedLocales: LocaleCode[]} => {
+    languages: LanguagePickerItem[],
+): { defaultLocale: LocaleCode; supportedLocales: LocaleCode[] } => {
     let defaultLocale = HELP_CENTER_DEFAULT_LOCALE
     const helpCenterLanguages: LocaleCode[] = languages.map(
         (language: LanguagePickerItem) => {
@@ -217,23 +217,23 @@ export const mapLanguagePickerToHelpCenterLanguages = (
             }
 
             return validLocaleCode(language.value)
-        }
+        },
     )
 
-    return {defaultLocale, supportedLocales: helpCenterLanguages}
+    return { defaultLocale, supportedLocales: helpCenterLanguages }
 }
 
 /**
  * Map entrypoints from workflow list to help center Automate settings
  */
 export const mapEntrypointsToAutomationSettings = (
-    entrypoints: Entrypoint[]
+    entrypoints: Entrypoint[],
 ): Components.Schemas.UpsertAutomationSettingsDto => {
     const workflows = entrypoints.map((entrypoint) => ({
         id: entrypoint.workflow_id,
         enabled: entrypoint.enabled,
     }))
-    return {workflows}
+    return { workflows }
 }
 
 /**
@@ -241,7 +241,7 @@ export const mapEntrypointsToAutomationSettings = (
  */
 export const getUpdatedFields = (
     newHelpCenter: Partial<HelpCenter>,
-    helpCenter: HelpCenter
+    helpCenter: HelpCenter,
 ): Partial<HelpCenter> => {
     return _pickBy(newHelpCenter, (value: any, key: keyof HelpCenter) => {
         return !_isEqual(value, helpCenter[key])
@@ -253,30 +253,30 @@ export const handleOnSuccess = (message: string, dispatch: StoreDispatch) => {
         notify({
             status: NotificationStatus.Success,
             message,
-        })
+        }),
     )
 }
 
 export const handleOnError = (
     error: unknown,
     message: string,
-    dispatch: StoreDispatch
+    dispatch: StoreDispatch,
 ) => {
     reportError(error)
     void dispatch(
         notify({
             status: NotificationStatus.Error,
             message,
-        })
+        }),
     )
 }
 
 export const groupArticlesByCategory = (
-    articles: HelpCenterArticleItem[]
+    articles: HelpCenterArticleItem[],
 ): Record<string, HelpCenterArticleItem[]> => {
     return articles.reduce((groups, item) => {
         const category = item.category || 'other'
-        return {...groups, [category]: [...(groups[category] || []), item]}
+        return { ...groups, [category]: [...(groups[category] || []), item] }
     }, DEFAULT_ARTICLE_GROUP)
 }
 
@@ -290,11 +290,11 @@ export const groupArticlesByCategory = (
 export const mapHelpCenterArticleData = (
     articleTemplates: ArticleTemplate[],
     articleListData: ArticleWithLocalTranslationAndRating[],
-    locale: LocaleCode
+    locale: LocaleCode,
 ): HelpCenterArticleItem[] => {
     return articleTemplates.map((template) => {
         const matchingData = articleListData.find(
-            (data) => data.template_key === template.key
+            (data) => data.template_key === template.key,
         )
 
         if (!matchingData) {
@@ -334,13 +334,13 @@ export const mapHelpCenterArticleData = (
 export const mapAIHelpCenterArticleData = (
     aiArticles: AIArticle[],
     articleListData: ArticleWithLocalTranslationAndRating[],
-    locale: LocaleCode
+    locale: LocaleCode,
 ): HelpCenterArticleItem[] => {
     const helpCenterArticles = articleListData?.filter(
         (article) =>
             article.template_key &&
             article.template_key.startsWith('ai_') &&
-            article.translation?.locale === locale
+            article.translation?.locale === locale,
     )
 
     const helpCenterAiArticles: HelpCenterArticleItem[] = map(
@@ -353,13 +353,13 @@ export const mapAIHelpCenterArticleData = (
             key: article.template_key!,
             availableLocales: article.available_locales,
             type: ArticleTemplateType.AI,
-        })
+        }),
     )
 
     const aiArticlesFilter = differenceBy(
         aiArticles,
         helpCenterAiArticles,
-        'key'
+        'key',
     )
 
     const aiArticlesMapped: HelpCenterArticleItem[] = map(
@@ -370,7 +370,7 @@ export const mapAIHelpCenterArticleData = (
             isSelected: !!!helpCenterAiArticles.length,
             type: ArticleTemplateType.AI,
             category: aiArticle.category,
-        })
+        }),
     )
 
     return [...helpCenterAiArticles, ...aiArticlesMapped]
@@ -378,7 +378,7 @@ export const mapAIHelpCenterArticleData = (
 
 export const findArticleByKey = (
     data: Record<string, HelpCenterArticleItem[]>,
-    key: string
+    key: string,
 ): HelpCenterArticleItem | undefined => {
     return chain(data)
         .values()
@@ -388,7 +388,7 @@ export const findArticleByKey = (
 }
 
 export const getEnabledArticlesCount = (
-    articlesRecord: Record<string, HelpCenterArticleItem[]>
+    articlesRecord: Record<string, HelpCenterArticleItem[]>,
 ) =>
     chain(articlesRecord)
         .values()

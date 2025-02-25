@@ -1,11 +1,12 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {waitFor} from '@testing-library/react'
-import {renderHook, act} from '@testing-library/react-hooks/dom'
 import React from 'react'
 
-import {ReportingGranularity} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { waitFor } from '@testing-library/react'
+import { act, renderHook } from '@testing-library/react-hooks/dom'
+
+import { ReportingGranularity } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import useGmvInfluenceOverTimeSeries from '../useGmvInfluenceOverTimeSeries'
 
@@ -25,20 +26,20 @@ jest.useFakeTimers()
 describe('useGmvInfluenceOverTimeSeries', () => {
     it('should return correct metric data when the query resolves', async () => {
         act(() => jest.runAllTimers())
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useGmvInfluenceOverTimeSeries(
                     filters,
                     timezone,
-                    ReportingGranularity.Day
+                    ReportingGranularity.Day,
                 ),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         {children}
                     </QueryClientProvider>
                 ),
-            }
+            },
         )
 
         await waitFor(() => {

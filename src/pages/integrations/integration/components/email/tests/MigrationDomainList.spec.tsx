@@ -1,3 +1,5 @@
+import React, { ComponentProps } from 'react'
+
 import {
     cleanup,
     fireEvent,
@@ -5,8 +7,7 @@ import {
     screen,
     within,
 } from '@testing-library/react'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import { Provider } from 'react-redux'
 
 import {
     migrationOutboundVerificationNotStarted,
@@ -18,7 +19,7 @@ import {
     EmailMigrationOutboundVerification,
     OutboundVerificationType,
 } from 'models/integration/types'
-import {mockStore} from 'utils/testing'
+import { mockStore } from 'utils/testing'
 
 import DomainVerificationAccordionItem from '../EmailMigration/DomainVerificationAccordionItem'
 import MigrationDomainList from '../EmailMigration/MigrationDomainList'
@@ -26,7 +27,7 @@ import SingleSenderVerificationAccordionItem from '../EmailMigration/SingleSende
 
 const useLocalStorageSpy = jest.spyOn(
     useLocalStorageImports,
-    'default'
+    'default',
 ) as jest.Mock
 
 jest.mock(
@@ -45,7 +46,7 @@ jest.mock(
                     verify
                 </button>
             </div>
-        )
+        ),
 )
 
 jest.mock(
@@ -64,7 +65,7 @@ jest.mock(
                     verify
                 </button>
             </div>
-        )
+        ),
 )
 
 describe('MigrationDomainList', () => {
@@ -75,7 +76,7 @@ describe('MigrationDomainList', () => {
                     domains={domains}
                     refreshMigrationData={jest.fn()}
                 />
-            </Provider>
+            </Provider>,
         )
 
     afterEach(cleanup)
@@ -112,7 +113,7 @@ describe('MigrationDomainList', () => {
 
         /* selected type: undefined -> switch to Single Sender verification */
         let verifyButton = within(
-            screen.getAllByTestId('domain-accordion')[0]
+            screen.getAllByTestId('domain-accordion')[0],
         ).getByRole('button', {
             name: /verify/i,
         })
@@ -125,7 +126,7 @@ describe('MigrationDomainList', () => {
 
         /* selected type: Domain verification -> switch to Single Sender verification */
         verifyButton = within(
-            screen.getAllByTestId('domain-accordion')[1]
+            screen.getAllByTestId('domain-accordion')[1],
         ).getByRole('button', {
             name: /verify/i,
         })
@@ -138,7 +139,7 @@ describe('MigrationDomainList', () => {
 
         /* selected type: Single Sender verification -> switch to Domain verification */
         verifyButton = within(
-            screen.getAllByTestId('single-sender-accordion')[0]
+            screen.getAllByTestId('single-sender-accordion')[0],
         ).getByRole('button', {
             name: /verify/i,
         })

@@ -1,7 +1,8 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import React, {useRef, useState, FormEvent} from 'react'
+import React, { FormEvent, useRef, useState } from 'react'
 
-import {UploadType} from 'common/types'
+import { Label } from '@gorgias/merchant-ui-kit'
+
+import { UploadType } from 'common/types'
 import Button from 'pages/common/components/button/Button'
 import CheckBox from 'pages/common/forms/CheckBox'
 import ColorField from 'pages/common/forms/ColorField'
@@ -9,9 +10,10 @@ import FileField from 'pages/common/forms/FileField'
 import InputField from 'pages/common/forms/input/InputField'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {DEFAULT_LIST_ITEM_DISPLAYED_NUMBER} from 'Widgets/modules/Template/config/template'
+import { DEFAULT_LIST_ITEM_DISPLAYED_NUMBER } from 'Widgets/modules/Template/config/template'
 
-import {CardEditFormState, HiddenField} from '../../types'
+import { CardEditFormState, HiddenField } from '../../types'
+
 import css from './CardEditForm.less'
 
 export const TITLE_FIELD_LABEL = 'Title'
@@ -27,7 +29,7 @@ export const CANCEL_BUTTON_TEXT = 'Cancel'
 type Props = {
     initialData: CardEditFormState
     hiddenFields: HiddenField[]
-    orderByOptions: {label: string; value: string}[]
+    orderByOptions: { label: string; value: string }[]
     onSubmit: (formState: CardEditFormState) => void
     onCancel: () => void
 }
@@ -57,7 +59,10 @@ const CardEdit = ({
                         placeholder="Order {{id}}"
                         value={formState.title}
                         onChange={(title) =>
-                            setFormState((formState) => ({...formState, title}))
+                            setFormState((formState) => ({
+                                ...formState,
+                                title,
+                            }))
                         }
                         className={css.field}
                     />
@@ -69,7 +74,10 @@ const CardEdit = ({
                         placeholder="http://myapi.com/{{id}}"
                         value={formState.link}
                         onChange={(link) =>
-                            setFormState((formState) => ({...formState, link}))
+                            setFormState((formState) => ({
+                                ...formState,
+                                link,
+                            }))
                         }
                         className={css.field}
                     />
@@ -137,7 +145,7 @@ const CardEdit = ({
                             value={formState.limit}
                             placeholder="0"
                             onChange={(
-                                limit = DEFAULT_LIST_ITEM_DISPLAYED_NUMBER
+                                limit = DEFAULT_LIST_ITEM_DISPLAYED_NUMBER,
                             ) =>
                                 setFormState((formState) => ({
                                     ...formState,

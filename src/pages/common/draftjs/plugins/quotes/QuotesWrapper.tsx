@@ -1,7 +1,8 @@
-import classNames from 'classnames'
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {ComposedElements} from '../../../../../utils/react'
+import classNames from 'classnames'
+
+import { ComposedElements } from '../../../../../utils/react'
 
 import styles from './quotesBlockStyle.less'
 
@@ -9,7 +10,7 @@ export const QUOTES_WRAPPER_INNER_ELEMENT_CLASS_NAME_PREFIX =
     'draftjs-quote-plugin-wrapper-depth--'
 
 const WRAPPED_ELEMENT_CLASS_NAME_REGEXP = new RegExp(
-    QUOTES_WRAPPER_INNER_ELEMENT_CLASS_NAME_PREFIX + '(\\d+)'
+    QUOTES_WRAPPER_INNER_ELEMENT_CLASS_NAME_PREFIX + '(\\d+)',
 )
 
 type Props = {
@@ -17,7 +18,7 @@ type Props = {
     children?: React.ReactNode
 }
 
-const QuotesWrapper = ({innerWrapper, children}: Props) => {
+const QuotesWrapper = ({ innerWrapper, children }: Props) => {
     const firstChild = React.Children.toArray(children)[0]
     const quoteDepth = useMemo(() => {
         if (firstChild && React.isValidElement(firstChild)) {
@@ -39,7 +40,7 @@ const QuotesWrapper = ({innerWrapper, children}: Props) => {
                 quoteDepth > 0
                     ? classNames(
                           styles.replyThread,
-                          styles['quoteDepth' + quoteDepth.toString()]
+                          styles['quoteDepth' + quoteDepth.toString()],
                       )
                     : undefined
             }

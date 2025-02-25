@@ -19,6 +19,6 @@ export const SCENARIO_REASON_DEFAULT_ACTION: ReportIssueCaseReasonAction = {
 export const DEFAULT_SCENARIO: SelfServiceReportIssueCase = {
     title: '',
     description: '',
-    conditions: {and: []},
+    conditions: { and: [] },
     newReasons: [],
 }

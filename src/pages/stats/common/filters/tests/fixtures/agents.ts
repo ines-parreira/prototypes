@@ -1,11 +1,11 @@
 import {
-    UserRole,
-    User,
     AvailabilityStatusChannel,
-    AvailabilityStatusTag,
     AvailabilityStatusDetailCode,
+    AvailabilityStatusTag,
+    User,
+    UserRole,
 } from 'config/types/user'
-import {agents} from 'fixtures/agents'
+import { agents } from 'fixtures/agents'
 
 export const extendedAgents: User[] = [
     ...agents,
@@ -19,7 +19,7 @@ export const extendedAgents: User[] = [
         id: 3,
         firstname: 'Bob',
         email: 'agent-smith@gorgias.io',
-        role: {name: UserRole.BasicAgent},
+        role: { name: UserRole.BasicAgent },
         updated_datetime: '2017-07-31T21:43:08.033390+00:00',
         bio: null,
         meta: {
@@ -41,7 +41,7 @@ export const extendedAgents: User[] = [
         id: 182267,
         firstname: 'Kung',
         email: 'Kung-Fu@gorgias.io',
-        role: {name: UserRole.LiteAgent},
+        role: { name: UserRole.LiteAgent },
         updated_datetime: '2017-07-31T21:43:08.033390+00:00',
         bio: null,
         meta: {
@@ -68,7 +68,7 @@ export const extendedAgents: User[] = [
         id: 4,
         firstname: 'Jamie',
         email: 'JamievanLeijden@gorgias.com',
-        role: {name: UserRole.Agent},
+        role: { name: UserRole.Agent },
         updated_datetime: '2017-07-31T21:43:08.033390+00:00',
         bio: null,
         meta: {
@@ -90,7 +90,7 @@ export const extendedAgents: User[] = [
         id: 5,
         firstname: 'Yin',
         email: 'yin-yang@gorgias.io',
-        role: {name: UserRole.Admin},
+        role: { name: UserRole.Admin },
         updated_datetime: '2017-07-31T21:43:08.033390+00:00',
         bio: null,
         meta: {

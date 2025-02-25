@@ -1,7 +1,8 @@
-import {addBreadcrumb} from '@sentry/react'
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 
-import {reportError} from 'utils/errors'
+import { addBreadcrumb } from '@sentry/react'
+
+import { reportError } from 'utils/errors'
 
 type UnreadCountChangedPayload = {
     detail: {
@@ -40,7 +41,7 @@ export default function NoticeIndicator() {
                     category: 'noticeable',
                     message: 'widget unread_count changed',
                 })
-            }
+            },
         )
 
         return () => {
@@ -60,7 +61,7 @@ export default function NoticeIndicator() {
     return (
         <span
             id="noticeable-widget-notification"
-            style={{visibility: 'visible'}}
+            style={{ visibility: 'visible' }}
         />
     )
 }

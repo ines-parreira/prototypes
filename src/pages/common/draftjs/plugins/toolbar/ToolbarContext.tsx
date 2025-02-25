@@ -1,21 +1,25 @@
-import {List} from 'immutable'
-import _noop from 'lodash/noop'
-import React, {ComponentType, createContext, useContext} from 'react'
+import React, { ComponentType, createContext, useContext } from 'react'
 
-import {DiscountCode} from 'models/discountCodes/types'
-import {ProductCardDetails, ShopifyIntegration} from 'models/integration/types'
+import { List } from 'immutable'
+import _noop from 'lodash/noop'
+
+import { DiscountCode } from 'models/discountCodes/types'
+import {
+    ProductCardDetails,
+    ShopifyIntegration,
+} from 'models/integration/types'
 import {
     WorkflowVariableList,
     WorkflowVariableType,
 } from 'pages/automate/workflows/models/variables.types'
-import {RichFieldEditorPlacement} from 'pages/common/forms/RichField/enums'
+import { RichFieldEditorPlacement } from 'pages/common/forms/RichField/enums'
 import {
     AttachmentType,
     DiscountOfferAttachment,
 } from 'pages/convert/campaigns/types/CampaignAttachment'
 
-import {ProductCardAttachment} from './components/AddProductLink'
-import {TooltipTourConfigurationType} from './types'
+import { ProductCardAttachment } from './components/AddProductLink'
+import { TooltipTourConfigurationType } from './types'
 
 export type ToolbarContextType = {
     placementType: RichFieldEditorPlacement | undefined
@@ -34,7 +38,7 @@ export type ToolbarContextType = {
     canAddUniqueDiscountOffer: boolean
     supportsUniqueDiscountOffer: boolean
     onAddUniqueDiscountOfferAttachment: (
-        discount: DiscountOfferAttachment
+        discount: DiscountOfferAttachment,
     ) => void
     // AddProductLink
     canAddProductCard: boolean
@@ -89,7 +93,7 @@ export const ToolbarContext = createContext<ToolbarContextType>({
 export const useToolbarContext = () => useContext(ToolbarContext)
 
 export const withToolbarContext = <T extends Partial<ToolbarContextType>>(
-    WrappedComponent: ComponentType<T>
+    WrappedComponent: ComponentType<T>,
 ) => {
     return (props: Omit<T, keyof ToolbarContextType>) => {
         const toolbarContextProps = useToolbarContext()

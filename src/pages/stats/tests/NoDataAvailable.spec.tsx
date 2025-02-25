@@ -1,7 +1,8 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
+import { render, screen } from '@testing-library/react'
+
+import { NoDataAvailable } from 'pages/stats/NoDataAvailable'
 
 describe('<NoDataAvailable>', () => {
     it('should render', () => {

@@ -1,6 +1,7 @@
+import React, { useCallback, useEffect, useState } from 'react'
+
 import classnames from 'classnames'
-import React, {useCallback, useState, useEffect} from 'react'
-import {Col, Form, FormGroup, Row} from 'reactstrap'
+import { Col, Form, FormGroup, Row } from 'reactstrap'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAsyncFn from 'hooks/useAsyncFn'
@@ -9,26 +10,30 @@ import {
     fetchNewPhoneNumber,
 } from 'models/phoneNumber/resources'
 import {
-    PhoneNumber,
-    PhoneNumberMeta,
     AddressInformation,
     AddressType,
+    PhoneNumber,
+    PhoneNumberMeta,
     PhoneType,
 } from 'models/phoneNumber/types'
 import Alert from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import InputField from 'pages/common/forms/input/InputField'
 import history from 'pages/history'
-import {newPhoneNumberFetched} from 'state/entities/phoneNumbers/actions'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { newPhoneNumberFetched } from 'state/entities/phoneNumbers/actions'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 import useCreatePhoneNumberNotifications from './hooks/useCreatePhoneNumberNotifications'
 import PhoneAddressFields from './PhoneAddressFields'
 import PhoneMetaFields from './PhoneMetaFields'
 import PhoneNumberCapabilitiesAlert from './PhoneNumberCapabilitiesAlert'
+import {
+    getAddressValidationAlertMessage,
+    shouldValidateAddress,
+} from './utils'
+
 import css from './PhoneNumberCreateForm.less'
-import {getAddressValidationAlertMessage, shouldValidateAddress} from './utils'
 
 export default function PhoneNumberCreateForm(): JSX.Element {
     const dispatch = useAppDispatch()
@@ -38,14 +43,14 @@ export default function PhoneNumberCreateForm(): JSX.Element {
         type: PhoneType.Local,
         emoji: null,
     })
-    const {country, type} = meta
+    const { country, type } = meta
     const [validationAddress, setValidationAddress] =
         useState<Partial<AddressInformation> | null>(null)
 
-    const {showCreatePhoneNumberErrorNotification} =
+    const { showCreatePhoneNumberErrorNotification } =
         useCreatePhoneNumberNotifications()
 
-    const [{loading: isLoading}, handlePhoneNumberCreate] =
+    const [{ loading: isLoading }, handlePhoneNumberCreate] =
         useAsyncFn(async () => {
             try {
                 const address =
@@ -63,18 +68,18 @@ export default function PhoneNumberCreateForm(): JSX.Element {
 
                 const oldPhoneNumber = await createPhoneNumber(payload)
                 const phoneNumber = await fetchNewPhoneNumber(
-                    oldPhoneNumber.phone_number_id
+                    oldPhoneNumber.phone_number_id,
                 )
                 dispatch(newPhoneNumberFetched(phoneNumber))
                 void dispatch(
                     notify({
                         message: 'Phone number created successfully.',
                         status: NotificationStatus.Success,
-                    })
+                    }),
                 )
                 history.push(`/app/settings/phone-numbers/${phoneNumber.id}`)
             } catch (error) {
-                showCreatePhoneNumberErrorNotification({error})
+                showCreatePhoneNumberErrorNotification({ error })
             }
         }, [dispatch, name, meta, validationAddress])
 
@@ -83,7 +88,7 @@ export default function PhoneNumberCreateForm(): JSX.Element {
             event.preventDefault()
             await handlePhoneNumberCreate()
         },
-        [handlePhoneNumberCreate]
+        [handlePhoneNumberCreate],
     )
 
     useEffect(() => {
@@ -95,7 +100,7 @@ export default function PhoneNumberCreateForm(): JSX.Element {
 
     const validationAlertMessage = getAddressValidationAlertMessage(
         country,
-        type
+        type,
     )
 
     return (

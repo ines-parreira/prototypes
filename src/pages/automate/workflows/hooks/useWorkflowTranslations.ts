@@ -7,6 +7,8 @@
  * Note that on first load, the workflows API already returns the workflow configuration with translated texts,
  * even if text are emptied on save and saved in a translation dictionary instead.
  */
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+
 import _get from 'lodash/get'
 import _isArray from 'lodash/isArray'
 import _isEqual from 'lodash/isEqual'
@@ -15,17 +17,16 @@ import _keys from 'lodash/keys'
 import _mapValues from 'lodash/mapValues'
 import _omit from 'lodash/omit'
 import _pick from 'lodash/pick'
-import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 
 import {
-    useFetchWorkflowConfigurationTranslations,
     useDeleteWorkflowConfigurationTranslations,
+    useFetchWorkflowConfigurationTranslations,
     useUpsertWorkflowConfigurationTranslations,
 } from 'models/workflows/queries'
 
-import {MAX_TRANSLATIONS_SIZE_IN_BYTES} from '../constants'
-import {VisualBuilderGraph} from '../models/visualBuilderGraph.types'
-import {LanguageCode} from '../models/workflowConfiguration.types'
+import { MAX_TRANSLATIONS_SIZE_IN_BYTES } from '../constants'
+import { VisualBuilderGraph } from '../models/visualBuilderGraph.types'
+import { LanguageCode } from '../models/workflowConfiguration.types'
 import {
     getPayloadSizeToLimitRate,
     isPayloadTooLarge,
@@ -37,18 +38,18 @@ export default function useWorkflowTranslations(
     configurationInternalId: string,
     availableLanguages: LanguageCode[],
     isNew: boolean,
-    isWorkflowLoaded: boolean
+    isWorkflowLoaded: boolean,
 ) {
-    const {mutateAsync: fetchWorkflowTranslations} =
+    const { mutateAsync: fetchWorkflowTranslations } =
         useFetchWorkflowConfigurationTranslations()
-    const {mutateAsync: deleteWorkflowTranslations} =
+    const { mutateAsync: deleteWorkflowTranslations } =
         useDeleteWorkflowConfigurationTranslations()
-    const {mutateAsync: upsertWorkflowTranslations} =
+    const { mutateAsync: upsertWorkflowTranslations } =
         useUpsertWorkflowConfigurationTranslations()
     const [translationsByLang, setTranslationsByLang] =
         useState<TranslationsByLang>({})
     const [currentLanguage, setCurrentLanguage] = useState<LanguageCode>(
-        availableLanguages[0]
+        availableLanguages[0],
     )
     const [translationsByLangDirty, setTranslationsByLangDirty] =
         useState<TranslationsByLang>({})
@@ -74,15 +75,15 @@ export default function useWorkflowTranslations(
                             },
                         ])
 
-                    return {lang, data: translationsResponse.data}
-                })
+                    return { lang, data: translationsResponse.data }
+                }),
             )
             const translationsByLang = langTranslationsPair.reduce(
-                (acc, {lang, data}) => ({
+                (acc, { lang, data }) => ({
                     ...acc,
                     [lang]: data,
                 }),
-                {} as TranslationsByLang
+                {} as TranslationsByLang,
             )
             setTranslationsByLang(translationsByLang)
             setTranslationsByLangDirty(translationsByLang)
@@ -102,14 +103,14 @@ export default function useWorkflowTranslations(
             const translations = snapshotTranslations(
                 graph,
                 currentLanguage,
-                translationsByLangDirty
+                translationsByLangDirty,
             )[currentLanguage]
             return getPayloadSizeToLimitRate(
                 translations,
-                MAX_TRANSLATIONS_SIZE_IN_BYTES
+                MAX_TRANSLATIONS_SIZE_IN_BYTES,
             )
         },
-        [currentLanguage, translationsByLangDirty]
+        [currentLanguage, translationsByLangDirty],
     )
 
     // to be used to compare against the initially fetched configuration to determine if it's dirty or not
@@ -121,10 +122,10 @@ export default function useWorkflowTranslations(
                 translationsByLang[currentLanguage] ?? {},
                 {
                     doNotFallback: false,
-                }
+                },
             )
         },
-        [translationsByLang, currentLanguage]
+        [translationsByLang, currentLanguage],
     )
 
     const saveTranslations = useCallback(
@@ -133,14 +134,14 @@ export default function useWorkflowTranslations(
             const nextTranslationsByLangDirty = snapshotTranslations(
                 graph,
                 currentLanguage,
-                translationsByLangDirty
+                translationsByLangDirty,
             )
 
             for (const languageCode of availableLanguages) {
                 if (
                     !_isEqual(
                         nextTranslationsByLangDirty[languageCode],
-                        translationsByLang[languageCode]
+                        translationsByLang[languageCode],
                     )
                 ) {
                     await upsertWorkflowTranslations([
@@ -153,7 +154,7 @@ export default function useWorkflowTranslations(
                 }
             }
             for (const languageCode of Object.keys(translationsByLang).filter(
-                (lang) => !availableLanguages.includes(lang as LanguageCode)
+                (lang) => !availableLanguages.includes(lang as LanguageCode),
             )) {
                 await deleteWorkflowTranslations([
                     {
@@ -173,7 +174,7 @@ export default function useWorkflowTranslations(
             currentLanguage,
             translationsByLang,
             translationsByLangDirty,
-        ]
+        ],
     )
 
     const discardTranslations = useCallback(() => {
@@ -184,7 +185,7 @@ export default function useWorkflowTranslations(
     const translateKey = useCallback(
         (tkey: string, languageCode: LanguageCode) =>
             translationsByLangDirty[languageCode]?.[tkey] ?? '',
-        [translationsByLangDirty]
+        [translationsByLangDirty],
     )
 
     const switchLanguage = useCallback(
@@ -202,17 +203,17 @@ export default function useWorkflowTranslations(
             const nextTranslationsByLangDirty = snapshotTranslations(
                 graph,
                 currentLanguage,
-                translationsByLangDirty
+                translationsByLangDirty,
             )
             setTranslationsByLangDirty(nextTranslationsByLangDirty)
             setCurrentLanguage(nextLanguage)
             return translateDeep(
                 nextGraph,
                 nextTranslationsByLangDirty[nextLanguage] ?? {},
-                {doNotFallback: true}
+                { doNotFallback: true },
             )
         },
-        [availableLanguages, translationsByLangDirty, currentLanguage]
+        [availableLanguages, translationsByLangDirty, currentLanguage],
     )
 
     const translateGraph = useCallback(
@@ -223,14 +224,14 @@ export default function useWorkflowTranslations(
                 translationsByLang = snapshotTranslations(
                     graph,
                     currentLanguage,
-                    translationsByLangDirty
+                    translationsByLangDirty,
                 )
             }
             return translateDeep(graph, translationsByLang[language] ?? {}, {
                 doNotFallback: true,
             })
         },
-        [translationsByLangDirty, currentLanguage]
+        [translationsByLangDirty, currentLanguage],
     )
 
     const deleteTranslation = useCallback(
@@ -239,27 +240,27 @@ export default function useWorkflowTranslations(
             if (currentLanguage === languageCode) {
                 g = switchLanguage(
                     graph,
-                    availableLanguages.filter((l) => l !== languageCode)[0]
+                    availableLanguages.filter((l) => l !== languageCode)[0],
                 )
             }
             setTranslationsByLangDirty((translationsByLangDirty) =>
-                _omit(translationsByLangDirty, languageCode)
+                _omit(translationsByLangDirty, languageCode),
             )
             return {
                 ...g,
                 available_languages: g.available_languages?.filter(
-                    (lang) => lang !== languageCode
+                    (lang) => lang !== languageCode,
                 ),
             }
         },
-        [currentLanguage, availableLanguages, switchLanguage]
+        [currentLanguage, availableLanguages, switchLanguage],
     )
     const getLangsOfTooLargeTranslations = useCallback(
         (graph: VisualBuilderGraph) => {
             const nextTranslationsByLangDirty = snapshotTranslations(
                 graph,
                 currentLanguage,
-                translationsByLangDirty
+                translationsByLangDirty,
             )
             const tooLargeLangs: LanguageCode[] = []
             Object.entries(nextTranslationsByLangDirty).forEach(
@@ -267,16 +268,16 @@ export default function useWorkflowTranslations(
                     if (
                         isPayloadTooLarge(
                             translations,
-                            MAX_TRANSLATIONS_SIZE_IN_BYTES
+                            MAX_TRANSLATIONS_SIZE_IN_BYTES,
                         )
                     ) {
                         tooLargeLangs.push(lang as LanguageCode)
                     }
-                }
+                },
             )
             return tooLargeLangs
         },
-        [currentLanguage, translationsByLangDirty]
+        [currentLanguage, translationsByLangDirty],
     )
 
     const areTranslationsDirty = useMemo(
@@ -285,10 +286,10 @@ export default function useWorkflowTranslations(
                 (languageCode) =>
                     !_isEqual(
                         translationsByLang[languageCode],
-                        translationsByLangDirty[languageCode]
-                    )
+                        translationsByLangDirty[languageCode],
+                    ),
             ) != null,
-        [availableLanguages, translationsByLang, translationsByLangDirty]
+        [availableLanguages, translationsByLang, translationsByLangDirty],
     )
 
     return {
@@ -312,12 +313,12 @@ export default function useWorkflowTranslations(
 function walkDeep<T>(
     value: T,
     elementMapper: (v: any) => any,
-    options?: {ignoreKeys?: string[]}
+    options?: { ignoreKeys?: string[] },
 ): T {
     if (_isArray(value)) {
         const withValuesMapped = value.map((el) =>
             // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-            walkDeep(el, elementMapper)
+            walkDeep(el, elementMapper),
         )
         return elementMapper(withValuesMapped) as T
     } else if (_isObject(value)) {
@@ -334,7 +335,7 @@ function walkDeep<T>(
 function translateDeep<T>(
     o: T,
     translationDict: Record<string, string>,
-    options?: {doNotFallback?: boolean}
+    options?: { doNotFallback?: boolean },
 ): T {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return walkDeep(o, (el) => {
@@ -362,7 +363,7 @@ function translateDeep<T>(
 function snapshotTranslations(
     graph: VisualBuilderGraph,
     currentLanguage: LanguageCode,
-    translationsByLang: TranslationsByLang
+    translationsByLang: TranslationsByLang,
 ): TranslationsByLang {
     const translations: Record<string, string> = {}
     walkDeep(graph, (el) => {
@@ -382,13 +383,13 @@ function snapshotTranslations(
     // remaining languages. This prevents a situation when translations for deleted step are only removed from
     // translations for current language.
     const cleanedTranslationsByLang = Object.entries(
-        translationsByLang
+        translationsByLang,
     ).reduce<TranslationsByLang>(
         (acc, [lang, translations]) => ({
             ...acc,
             [lang]: _pick(translations, tkeys),
         }),
-        {}
+        {},
     )
 
     return {

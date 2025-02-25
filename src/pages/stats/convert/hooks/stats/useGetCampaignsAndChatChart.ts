@@ -1,16 +1,16 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {TicketChannel} from 'business/types/ticket'
-import {usePostReporting} from 'models/reporting/queries'
-import {ReportingGranularity} from 'models/reporting/types'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-import {getCampaignsPerformanceGraphData} from 'pages/stats/convert/clients/CampaignCubeQueries'
+import { TicketChannel } from 'business/types/ticket'
+import { usePostReporting } from 'models/reporting/queries'
+import { ReportingGranularity } from 'models/reporting/types'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
+import { getCampaignsPerformanceGraphData } from 'pages/stats/convert/clients/CampaignCubeQueries'
 import {
     CubeData,
     CubeFilterParams,
     CubeMetric,
 } from 'pages/stats/convert/clients/types'
-import {useTicketsPerformanceChart} from 'pages/stats/convert/hooks/stats/useGetTicketsPerformanceChart'
+import { useTicketsPerformanceChart } from 'pages/stats/convert/hooks/stats/useGetTicketsPerformanceChart'
 import {
     backFillGraphData,
     getDataFromResult,
@@ -18,7 +18,7 @@ import {
     transformToCampaignCTROverTime,
     transformToChatConversionRateOverTime,
 } from 'pages/stats/convert/services/CampaignMetricsHelper'
-import {CampaignChatPerformanceData} from 'pages/stats/convert/services/types'
+import { CampaignChatPerformanceData } from 'pages/stats/convert/services/types'
 
 export type GetCampaignsAndChatChartQuery = {
     isFetching: boolean
@@ -34,7 +34,7 @@ export const useGetCampaignsAndChatChart = (
     endDate: string,
     integrationId: number | null,
     timezone: string,
-    timeGranularity = ReportingGranularity.Day
+    timeGranularity = ReportingGranularity.Day,
 ): GetCampaignsAndChatChartQuery => {
     const attrs: CubeFilterParams = useMemo(
         () => ({
@@ -54,23 +54,23 @@ export const useGetCampaignsAndChatChart = (
             timeGranularity,
             timezone,
             campaignsOperator,
-        ]
+        ],
     )
 
     const campaignsPerformanceQuery = useMemo(
         () => getCampaignsPerformanceGraphData(attrs),
-        [attrs]
+        [attrs],
     )
 
     const campaignsPerformance = usePostReporting<[CubeData], CubeData>(
         campaignsPerformanceQuery,
         {
             select: getDataFromResult,
-        }
+        },
     )
     const integrationIds = useMemo(
         () => (!!integrationId ? [integrationId] : []),
-        [integrationId]
+        [integrationId],
     )
     const channels = useMemo(() => [TicketChannel.Chat], [])
     const {
@@ -83,7 +83,7 @@ export const useGetCampaignsAndChatChart = (
         endDate,
         integrationIds,
         campaignsOperator,
-        channels
+        channels,
     )
 
     const data = useMemo(() => {
@@ -91,14 +91,14 @@ export const useGetCampaignsAndChatChart = (
         const campaignsPerformanceData = campaignsPerformance.data || []
         const campaignsCTR = campaignsPerformanceData.map(
             (dataPoint: CubeMetric) =>
-                transformToCampaignCTROverTime(dataPoint, timeGranularity)
+                transformToCampaignCTROverTime(dataPoint, timeGranularity),
         )
         const campaignConversionRate = campaignsPerformanceData.map(
             (dataPoint: CubeMetric) =>
                 transformToCampaignConversionRateOverTime(
                     dataPoint,
-                    timeGranularity
-                )
+                    timeGranularity,
+                ),
         )
         const chatConversionRate =
             transformToChatConversionRateOverTime(chatPerformance)
@@ -108,7 +108,7 @@ export const useGetCampaignsAndChatChart = (
             backFillGraphData(
                 [campaignsCTR, campaignConversionRate, chatConversionRate],
                 startDate,
-                endDate
+                endDate,
             )
 
         return {

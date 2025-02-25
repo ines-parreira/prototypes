@@ -1,9 +1,9 @@
 import moment from 'moment'
 
-import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
-import {getMoment, stringToDatetime} from 'utils/date'
+import { PhoneIntegrationEvent } from 'constants/integrations/types/event'
+import { getMoment, stringToDatetime } from 'utils/date'
 
-import {VoiceCall, VoiceCallEvent, VoiceCallStatus} from './types'
+import { VoiceCall, VoiceCallEvent, VoiceCallStatus } from './types'
 
 export const isFinalVoiceCallStatus = (status: VoiceCallStatus) => {
     return [
@@ -18,7 +18,7 @@ export const isFinalVoiceCallStatus = (status: VoiceCallStatus) => {
 }
 
 export const getFormattedDurationEndedCall = (
-    durationInSeconds: number
+    durationInSeconds: number,
 ): string => {
     const duration = moment.duration(Number(durationInSeconds), 'seconds')
     const utcMoment = moment.utc(duration.asMilliseconds())
@@ -35,7 +35,7 @@ export const getFormattedDurationEndedCall = (
 }
 
 export const getFormattedDurationOngoingCall = (
-    startedDatetime: string
+    startedDatetime: string,
 ): string => {
     const startedMoment = stringToDatetime(startedDatetime)
     const now = getMoment()
@@ -56,7 +56,7 @@ export const getFormattedDurationOngoingCall = (
 }
 
 export const getFormattedDurationTranscriptionStart = (
-    startedSecond: number
+    startedSecond: number,
 ) => {
     const duration = moment.duration(Number(startedSecond), 'seconds')
     const utcMoment = moment.utc(duration.asMilliseconds())
@@ -66,7 +66,7 @@ export const getFormattedDurationTranscriptionStart = (
 const isMissedEvent = (event: VoiceCallEvent, nextEvents: VoiceCallEvent[]) => {
     // we should check if the call was missed/answered/declined before a transfer was initiated
     const checkEventsLimit = nextEvents.findIndex(
-        (e) => e.type === PhoneIntegrationEvent.PhoneCallTransferInitiated
+        (e) => e.type === PhoneIntegrationEvent.PhoneCallTransferInitiated,
     )
     const searchEvents =
         checkEventsLimit > 0
@@ -76,7 +76,7 @@ const isMissedEvent = (event: VoiceCallEvent, nextEvents: VoiceCallEvent[]) => {
     const missedCallEvent = searchEvents.find(
         (e) =>
             e.user_id === event.user_id &&
-            e.type === PhoneIntegrationEvent.ChildCallNotAnswered
+            e.type === PhoneIntegrationEvent.ChildCallNotAnswered,
     )
 
     const answeredOrDeclinedEvent = missedCallEvent
@@ -85,7 +85,7 @@ const isMissedEvent = (event: VoiceCallEvent, nextEvents: VoiceCallEvent[]) => {
               (e) =>
                   e.user_id === event.user_id &&
                   (e.type === PhoneIntegrationEvent.PhoneCallAnswered ||
-                      e.type === PhoneIntegrationEvent.DeclinedPhoneCall)
+                      e.type === PhoneIntegrationEvent.DeclinedPhoneCall),
           )
     return missedCallEvent || !answeredOrDeclinedEvent
 }
@@ -109,7 +109,7 @@ export const processEvents = (events: VoiceCallEvent[]): ProcessedEvent[] => {
             PhoneIntegrationEvent.PhoneCallTransferInitiated,
             PhoneIntegrationEvent.PhoneCallTransferFailed,
             PhoneIntegrationEvent.CompletedPhoneCall,
-        ].includes(event.type)
+        ].includes(event.type),
     )
 
     let isTransfer = false
@@ -183,7 +183,7 @@ export const isMissedInboundVoiceCall = (voiceCall: VoiceCall) => {
     return (
         voiceCall.direction === 'inbound' &&
         [VoiceCallStatus.Completed, VoiceCallStatus.Ending].includes(
-            voiceCall.status
+            voiceCall.status,
         ) &&
         !voiceCall.last_answered_by_agent_id
     )

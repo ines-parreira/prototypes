@@ -1,5 +1,6 @@
-import {cleanup, fireEvent, render, screen} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 
 import SingleSenderVerificationFormModal from '../EmailMigration/SingleSenderVerificationFormModal'
 import VerificationForm, {
@@ -11,7 +12,7 @@ jest.mock(
     () =>
         ({
             ...jest.requireActual(
-                '../EmailOutboundVerification/VerificationForm/VerificationForm'
+                '../EmailOutboundVerification/VerificationForm/VerificationForm',
             ),
             default: (props: ComponentProps<typeof VerificationForm>) => (
                 <div data-testid="verification-form">
@@ -21,7 +22,7 @@ jest.mock(
                     />
                 </div>
             ),
-        }) as Record<any, any>
+        }) as Record<any, any>,
 )
 
 describe('SingleSenderVerificationFormModal', () => {
@@ -42,11 +43,11 @@ describe('SingleSenderVerificationFormModal', () => {
         expect(screen.getByTestId(/verification-form/i)).toBeVisible()
 
         /* should call setIsOpen(false) when clicking close button */
-        fireEvent.click(screen.getByRole('button', {name: /close/i}))
+        fireEvent.click(screen.getByRole('button', { name: /close/i }))
         expect(props.setIsOpen).toHaveBeenCalledWith(false)
 
         /* submit button should submit form */
-        const submitButton = screen.getByRole('button', {name: /submit/i})
+        const submitButton = screen.getByRole('button', { name: /submit/i })
         expect(submitButton).toHaveAttribute('form', FORM_ID)
         expect(submitButton).toHaveAttribute('type', 'submit')
 

@@ -1,6 +1,6 @@
-import {waitFor} from '@testing-library/react'
-import {renderHook} from '@testing-library/react-hooks'
-import {produce} from 'immer'
+import { waitFor } from '@testing-library/react'
+import { renderHook } from '@testing-library/react-hooks'
+import { produce } from 'immer'
 
 import {
     bigCommerceLineItemFixture,
@@ -23,15 +23,15 @@ describe('useModifiersPopover', () => {
     it('returns component when maybeOpenModifierPopover is triggered', async () => {
         const onApplyMock = jest.fn()
 
-        const {result} = renderHook(() =>
-            useAddModifiersPopover('storeHash', onApplyMock)
+        const { result } = renderHook(() =>
+            useAddModifiersPopover('storeHash', onApplyMock),
         )
 
         // `modifiersPopover` components is `null` initially
         expect(result.current.modifiersPopover).toBeNull()
 
         expect(
-            result.current.maybeOpenModifierPopover({product, variant})
+            result.current.maybeOpenModifierPopover({ product, variant }),
         ).toBe(true)
 
         await waitFor(() => {
@@ -48,8 +48,8 @@ describe('useModifiersPopover', () => {
             }))
         })
 
-        const {result} = renderHook(() =>
-            useAddModifiersPopover('storeHash', onApplyMock)
+        const { result } = renderHook(() =>
+            useAddModifiersPopover('storeHash', onApplyMock),
         )
 
         expect(result.current.modifiersPopover).toBeNull()
@@ -58,7 +58,7 @@ describe('useModifiersPopover', () => {
             result.current.maybeOpenModifierPopover({
                 product: productWithoutRequiredModifiers,
                 variant,
-            })
+            }),
         ).toBe(false)
 
         await waitFor(() => {
@@ -71,8 +71,8 @@ describe('useEditModifiersPopover', () => {
     it('returns component when openModifierPopover is triggered', async () => {
         const onApplyMock = jest.fn()
 
-        const {result} = renderHook(() =>
-            useEditModifiersPopover('storeHash', onApplyMock)
+        const { result } = renderHook(() =>
+            useEditModifiersPopover('storeHash', onApplyMock),
         )
 
         // `modifiersPopover` components is `null` initially

@@ -1,5 +1,6 @@
+import React, { useMemo, useRef, useState } from 'react'
+
 import classnames from 'classnames'
-import React, {useMemo, useRef, useState} from 'react'
 
 import loopReturns from 'assets/img/integrations/loop-returns.png'
 import {
@@ -14,19 +15,19 @@ import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 
-import {DEFAULT_RETURN_ACTION} from '../constants'
+import { DEFAULT_RETURN_ACTION } from '../constants'
 import useLoopReturnsIntegrations from '../hooks/useLoopReturnsIntegrations'
 import LoopReturnsIntegrationCreateModal from './LoopReturnsIntegrationCreateModal'
+import ReturnOrderAutomatedResponseAction from './ReturnOrderAutomatedResponseAction'
 
 import css from './ReturnOrderAction.less'
-import ReturnOrderAutomatedResponseAction from './ReturnOrderAutomatedResponseAction'
 
 type Props = {
     action: ReturnAction
     onChange: (action: ReturnAction) => void
 }
 
-const LoopReturnsIcon = ({className}: {className?: string}) => (
+const LoopReturnsIcon = ({ className }: { className?: string }) => (
     <img
         className={classnames(css.loopReturnsIcon, className)}
         src={loopReturns}
@@ -36,7 +37,7 @@ const LoopReturnsIcon = ({className}: {className?: string}) => (
     />
 )
 
-const ReturnOrderAction = ({action, onChange}: Props) => {
+const ReturnOrderAction = ({ action, onChange }: Props) => {
     const [isTypeSelectOpen, setIsTypeSelectOpen] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false)
     const targetRef = useRef<HTMLDivElement>(null)
@@ -49,7 +50,7 @@ const ReturnOrderAction = ({action, onChange}: Props) => {
                 return 'Automated response'
             case ReturnActionType.LoopReturns:
                 return loopReturnsIntegrations.find(
-                    (integration) => integration.id === action.integrationId
+                    (integration) => integration.id === action.integrationId,
                 )!.name
         }
     }, [action, loopReturnsIntegrations])
@@ -80,7 +81,7 @@ const ReturnOrderAction = ({action, onChange}: Props) => {
             (prevIntegration, integration) =>
                 integration.id > prevIntegration.id
                     ? integration
-                    : prevIntegration
+                    : prevIntegration,
         )
 
         onChange({
@@ -118,7 +119,7 @@ const ReturnOrderAction = ({action, onChange}: Props) => {
                                     onClick={(value) => {
                                         handleItemClick(
                                             value,
-                                            DEFAULT_RETURN_ACTION
+                                            DEFAULT_RETURN_ACTION,
                                         )
                                     }}
                                     shouldCloseOnSelect
@@ -158,7 +159,7 @@ const ReturnOrderAction = ({action, onChange}: Props) => {
                                     <i
                                         className={classnames(
                                             'material-icons',
-                                            css.createLoopReturnsItemIcon
+                                            css.createLoopReturnsItemIcon,
                                         )}
                                     >
                                         add

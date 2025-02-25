@@ -1,17 +1,17 @@
 import moment from 'moment'
 
-import {fetchMetricTrend} from 'hooks/reporting/useMetricTrend'
+import { fetchMetricTrend } from 'hooks/reporting/useMetricTrend'
 import {
     voiceCallAverageTalkTimeQueryFactory,
     voiceCallAverageWaitTimeQueryFactory,
 } from 'models/reporting/queryFactories/voice/voiceCall'
-import {StatsFilters} from 'models/stat/types'
+import { StatsFilters } from 'models/stat/types'
 import {
     fetchVoiceCallAverageTimeTalkTimeTrend,
     fetchVoiceCallAverageTimeWaitTimeTrend,
 } from 'pages/stats/voice/hooks/useVoiceCallAverageTimeTrend'
-import {formatReportingQueryDate, getPreviousPeriod} from 'utils/reporting'
-import {assumeMock} from 'utils/testing'
+import { formatReportingQueryDate, getPreviousPeriod } from 'utils/reporting'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/useMetricTrend')
 const fetchMetricTrendMock = assumeMock(fetchMetricTrend)
@@ -31,21 +31,21 @@ describe('useVoiceCallAverageTimeTrend', () => {
         it('should use voiceCallAverageWaitTimeQueryFactory', async () => {
             await fetchVoiceCallAverageTimeWaitTimeTrend(
                 statsFilters,
-                userTimezone
+                userTimezone,
             )
 
             expect(fetchMetricTrendMock).toHaveBeenCalledWith(
                 voiceCallAverageWaitTimeQueryFactory(
                     statsFilters,
-                    userTimezone
+                    userTimezone,
                 ),
                 voiceCallAverageWaitTimeQueryFactory(
                     {
                         ...statsFilters,
                         period: getPreviousPeriod(statsFilters.period),
                     },
-                    userTimezone
-                )
+                    userTimezone,
+                ),
             )
         })
     })
@@ -54,21 +54,21 @@ describe('useVoiceCallAverageTimeTrend', () => {
         it('should use voiceCallAverageWaitTimeQueryFactory', async () => {
             await fetchVoiceCallAverageTimeTalkTimeTrend(
                 statsFilters,
-                userTimezone
+                userTimezone,
             )
 
             expect(fetchMetricTrendMock).toHaveBeenCalledWith(
                 voiceCallAverageTalkTimeQueryFactory(
                     statsFilters,
-                    userTimezone
+                    userTimezone,
                 ),
                 voiceCallAverageTalkTimeQueryFactory(
                     {
                         ...statsFilters,
                         period: getPreviousPeriod(statsFilters.period),
                     },
-                    userTimezone
-                )
+                    userTimezone,
+                ),
             )
         })
     })

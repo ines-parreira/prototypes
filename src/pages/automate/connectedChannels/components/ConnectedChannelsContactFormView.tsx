@@ -1,24 +1,26 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
+import React, { useCallback } from 'react'
+
 import classNames from 'classnames'
-import {noop} from 'lodash'
-import React, {useCallback} from 'react'
-import {useParams} from 'react-router-dom'
+import { noop } from 'lodash'
+import { useParams } from 'react-router-dom'
 
-import {SegmentEvent, logEvent} from 'common/segment'
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
-import {ContactForm} from 'models/contactForm/types'
-import {useGetWorkflowConfigurations} from 'models/workflows/queries'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { ContactForm } from 'models/contactForm/types'
+import { useGetWorkflowConfigurations } from 'models/workflows/queries'
 import useContactFormAutomationSettings from 'pages/automate/common/hooks/useContactFormAutomationSettings'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import useSelfServiceStandaloneContactFormChannels from 'pages/automate/common/hooks/useSelfServiceStandaloneContactFormChannels'
-import {AutomateFeatures} from 'pages/automate/common/types'
+import { AutomateFeatures } from 'pages/automate/common/types'
 
 import ConnectedChannelsPreview from '../ConnectedChannelsPreview'
+import { ConnectedChannelsEmptyView } from './ConnectedChannelsEmptyView'
+import { CurrentlyViewingDropdown } from './CurrentlyViewingDropdown'
+import { FeatureSettings } from './FeatureSettings'
+import { FlowsSettings } from './FlowsSettings'
+
 import css from './ConnectedChannelsChatView.less'
-import {ConnectedChannelsEmptyView} from './ConnectedChannelsEmptyView'
-import {CurrentlyViewingDropdown} from './CurrentlyViewingDropdown'
-import {FeatureSettings} from './FeatureSettings'
-import {FlowsSettings} from './FlowsSettings'
 
 interface Props {
     contactForm?: ContactForm
@@ -29,7 +31,7 @@ export const ConnectedChannelsContactFormView = ({
     contactForm,
     hideDropdown,
 }: Props) => {
-    const {shopType: shopTypeParam, shopName: shopNameParam} = useParams<{
+    const { shopType: shopTypeParam, shopName: shopNameParam } = useParams<{
         shopType: string
         shopName: string
     }>()
@@ -42,20 +44,20 @@ export const ConnectedChannelsContactFormView = ({
         storeIntegration,
         isFetchPending: isSelfServiceConfigurationFetchPending,
     } = useSelfServiceConfiguration(shopType, shopName)
-    const {data: workflowConfigurations = []} = useGetWorkflowConfigurations()
+    const { data: workflowConfigurations = [] } = useGetWorkflowConfigurations()
 
     const contactFormChannels = useSelfServiceStandaloneContactFormChannels(
         shopType,
-        shopName
+        shopName,
     )
 
     const [selectedChannel, setSelectedChannel] = React.useState<number | null>(
-        () => contactFormChannels[0]?.value.id ?? null
+        () => contactFormChannels[0]?.value.id ?? null,
     )
 
     const currentChannel =
         contactFormChannels.find(
-            (channel) => channel.value.id === selectedChannel
+            (channel) => channel.value.id === selectedChannel,
         ) ?? contactFormChannels?.[0]
 
     const currentChannelId = currentChannel?.value.id ?? ''
@@ -75,10 +77,10 @@ export const ConnectedChannelsContactFormView = ({
                         enabled: value,
                     },
                 },
-                `Order Management ${value ? 'enabled' : 'disabled'}`
+                `Order Management ${value ? 'enabled' : 'disabled'}`,
             )
         },
-        [automationSettings, handleContactFormAutomationSettingsUpdate]
+        [automationSettings, handleContactFormAutomationSettingsUpdate],
     )
 
     if (contactFormChannels.length === 0) {
@@ -144,7 +146,7 @@ export const ConnectedChannelsContactFormView = ({
                         (workflow) => ({
                             workflow_id: workflow.id,
                             enabled: workflow.enabled,
-                        })
+                        }),
                     )}
                     onChange={(nextEntrypoints, action) => {
                         const readableAction =
@@ -158,7 +160,7 @@ export const ConnectedChannelsContactFormView = ({
                             {
                                 page: 'Channels',
                                 channel: 'Contact Form',
-                            }
+                            },
                         )
 
                         void handleContactFormAutomationSettingsUpdate(
@@ -168,12 +170,12 @@ export const ConnectedChannelsContactFormView = ({
                                     (entrypoint) => ({
                                         id: entrypoint.workflow_id,
                                         enabled: entrypoint.enabled,
-                                    })
+                                    }),
                                 ),
                             },
                             `${
                                 action === 'reorder' ? 'Flows' : 'Flow'
-                            } ${readableAction}`
+                            } ${readableAction}`,
                         )
                     }}
                 />

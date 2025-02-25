@@ -1,24 +1,25 @@
+import React, { Component, SyntheticEvent } from 'react'
+
 import classnames from 'classnames'
-import {Emoji, EmojiData} from 'emoji-mart'
-import React, {Component, SyntheticEvent} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {NavLink, RouteComponentProps} from 'react-router-dom'
+import { Emoji, EmojiData } from 'emoji-mart'
+import { connect, ConnectedProps } from 'react-redux'
+import { NavLink, RouteComponentProps } from 'react-router-dom'
 import {
+    Form as BootstrapForm,
     Breadcrumb,
     BreadcrumbItem,
     ButtonGroup,
     Col,
-    Form as BootstrapForm,
     FormGroup,
     Popover,
     PopoverBody,
     Row,
 } from 'reactstrap'
 
-import {WithAppNodeProps, withAppNode} from 'appNode'
-import {GorgiasApiError} from 'models/api/types'
-import {deleteTeam, fetchTeam, updateTeam} from 'models/team/resources'
-import {Team} from 'models/team/types'
+import { withAppNode, WithAppNodeProps } from 'appNode'
+import { GorgiasApiError } from 'models/api/types'
+import { deleteTeam, fetchTeam, updateTeam } from 'models/team/resources'
+import { Team } from 'models/team/types'
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import IconButton from 'pages/common/components/button/IconButton'
@@ -30,8 +31,8 @@ import InputField from 'pages/common/forms/input/InputField'
 import withRouter from 'pages/common/utils/withRouter'
 import history from 'pages/history'
 import settingsCss from 'pages/settings/settings.less'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 import {
     deleteTeamSuccess,
     fetchTeamSuccess,
@@ -40,7 +41,7 @@ import {
 
 import css from './Form.less'
 
-type OwnProps = RouteComponentProps<{id: string}>
+type OwnProps = RouteComponentProps<{ id: string }>
 
 type Props = OwnProps & ConnectedProps<typeof connector> & WithAppNodeProps
 
@@ -63,7 +64,7 @@ export class FormContainer extends Component<Props, State> {
     }
 
     _fetchTeam = async (id: number) => {
-        this.setState({isFetching: true})
+        this.setState({ isFetching: true })
 
         try {
             const res = await fetchTeam(id)
@@ -78,13 +79,13 @@ export class FormContainer extends Component<Props, State> {
                 status: NotificationStatus.Error,
             })
         } finally {
-            this.setState({isFetching: false})
+            this.setState({ isFetching: false })
         }
     }
 
     _onSubmit = async (e: SyntheticEvent) => {
         e.preventDefault()
-        this.setState({isSubmitting: true})
+        this.setState({ isSubmitting: true })
         const team = this.state.team
 
         if (!!team) {
@@ -92,14 +93,14 @@ export class FormContainer extends Component<Props, State> {
                 await updateTeam(team)
                 this.props.updateTeamSuccess(team)
             } catch (error) {
-                const {response} = error as GorgiasApiError
+                const { response } = error as GorgiasApiError
 
                 void this.props.notify({
                     message: response.data.error.msg,
                     status: NotificationStatus.Error,
                 })
             } finally {
-                this.setState({isSubmitting: false})
+                this.setState({ isSubmitting: false })
             }
         }
     }
@@ -114,7 +115,7 @@ export class FormContainer extends Component<Props, State> {
                 history.push('/app/settings/teams')
                 this.props.deleteTeamSuccess(team.id)
             } catch (error) {
-                const {response} = error as GorgiasApiError
+                const { response } = error as GorgiasApiError
 
                 void this.props.notify({
                     message: response.data.error.msg,
@@ -174,7 +175,7 @@ export class FormContainer extends Component<Props, State> {
                                     <InputField
                                         className={classnames(
                                             'flex-grow',
-                                            css.inputField
+                                            css.inputField,
                                         )}
                                         name="name"
                                         label="Name"
@@ -194,7 +195,7 @@ export class FormContainer extends Component<Props, State> {
                                     <FormGroup
                                         className={classnames(
                                             'ml-2 align-self-end',
-                                            css.inputField
+                                            css.inputField,
                                         )}
                                     >
                                         <ButtonGroup>
@@ -203,7 +204,7 @@ export class FormContainer extends Component<Props, State> {
                                                     css.emojiButton,
                                                     {
                                                         [css.hasEmoji]: !!emoji,
-                                                    }
+                                                    },
                                                 )}
                                                 intent="secondary"
                                                 id="add-emoji"
@@ -215,7 +216,7 @@ export class FormContainer extends Component<Props, State> {
                                                     <div
                                                         className={classnames(
                                                             'flex',
-                                                            css.iconContainer
+                                                            css.iconContainer,
                                                         )}
                                                     >
                                                         <div
@@ -272,7 +273,7 @@ export class FormContainer extends Component<Props, State> {
                                                 <EmojiPicker
                                                     showPreview={false}
                                                     onClick={(
-                                                        emoji: EmojiData
+                                                        emoji: EmojiData,
                                                     ) => {
                                                         !!team &&
                                                             this.setState({
@@ -352,7 +353,7 @@ const connector = connect(
         fetchTeamSuccess,
         notify,
         updateTeamSuccess,
-    }
+    },
 )
 
 export default withRouter(connector(withAppNode(FormContainer)))

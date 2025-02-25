@@ -1,11 +1,11 @@
 import client from 'models/api/resources'
-import {SearchType} from 'models/search/types'
+import { SearchType } from 'models/search/types'
 
 import {
-    SearchCustomerRequest,
     CustomerSearchResponse,
     GetPlaygroundCustomerRequest,
     GetPlaygroundCustomerResponse,
+    SearchCustomerRequest,
 } from './types'
 
 export const searchCustomer = async (body: SearchCustomerRequest) => {
@@ -17,10 +17,10 @@ export const searchCustomer = async (body: SearchCustomerRequest) => {
 }
 
 export const getAiAgentCustomer = async (
-    body: GetPlaygroundCustomerRequest
+    body: GetPlaygroundCustomerRequest,
 ) => {
     return await client.post<GetPlaygroundCustomerResponse>(
         '/api/automate/ai-agent/playground',
-        body
+        body,
     )
 }

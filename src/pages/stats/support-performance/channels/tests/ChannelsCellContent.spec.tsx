@@ -1,22 +1,23 @@
-import {screen} from '@testing-library/react'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {TagFilterInstanceId} from 'models/stat/types'
-import {formatMetricValue} from 'pages/stats/common/utils'
-import {ChannelsCellContent} from 'pages/stats/support-performance/channels/ChannelsCellContent'
-import {ChannelColumnConfig} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
+import { screen } from '@testing-library/react'
+import { mockFlags } from 'jest-launchdarkly-mock'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { TagFilterInstanceId } from 'models/stat/types'
+import { formatMetricValue } from 'pages/stats/common/utils'
+import { ChannelsCellContent } from 'pages/stats/support-performance/channels/ChannelsCellContent'
+import { ChannelColumnConfig } from 'pages/stats/support-performance/channels/ChannelsTableConfig'
 import {
     initialState as statsInitialState,
     statsSlice,
 } from 'state/stats/statsSlice'
-import {RootState} from 'state/types'
-import {channelsSlice, initialState} from 'state/ui/stats/channelsSlice'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
-import {ChannelsTableColumns} from 'state/ui/stats/types'
-import {renderWithStore} from 'utils/testing'
+import { RootState } from 'state/types'
+import { channelsSlice, initialState } from 'state/ui/stats/channelsSlice'
+import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
+import { ChannelsTableColumns } from 'state/ui/stats/types'
+import { renderWithStore } from 'utils/testing'
 
 jest.mock(
     '@gorgias/merchant-ui-kit',
@@ -24,7 +25,7 @@ jest.mock(
         ({
             ...jest.requireActual('@gorgias/merchant-ui-kit'),
             Tooltip: () => <div />,
-        }) as typeof import('@gorgias/merchant-ui-kit')
+        }) as typeof import('@gorgias/merchant-ui-kit'),
 )
 
 describe('<ChannelsCellContent />', () => {
@@ -63,7 +64,7 @@ describe('<ChannelsCellContent />', () => {
     const column = ChannelsTableColumns.TicketHandleTime
 
     beforeEach(() => {
-        mockFlags({[FeatureFlagKey.AnalyticsNewFilters]: false})
+        mockFlags({ [FeatureFlagKey.AnalyticsNewFilters]: false })
     })
 
     it('should render loading placeholder', () => {
@@ -84,11 +85,11 @@ describe('<ChannelsCellContent />', () => {
                 width={0}
                 useMetric={metricHook}
             />,
-            defaultState
+            defaultState,
         )
 
         expect(
-            document.querySelector('.react-loading-skeleton')
+            document.querySelector('.react-loading-skeleton'),
         ).toBeInTheDocument()
     })
 
@@ -111,13 +112,13 @@ describe('<ChannelsCellContent />', () => {
                 width={0}
                 useMetric={metricHook}
             />,
-            defaultState
+            defaultState,
         )
 
         expect(
             screen.getByText(
-                formatMetricValue(value, ChannelColumnConfig[column].format)
-            )
+                formatMetricValue(value, ChannelColumnConfig[column].format),
+            ),
         )
     })
 
@@ -131,7 +132,7 @@ describe('<ChannelsCellContent />', () => {
                 width={0}
                 useMetric={ChannelColumnConfig[column].useMetric}
             />,
-            defaultState
+            defaultState,
         )
 
         expect(screen.getByText(channel.name))
@@ -168,7 +169,7 @@ describe('<ChannelsCellContent />', () => {
                         },
                     },
                 },
-            } as RootState
+            } as RootState,
         )
 
         expect(document.querySelector(`.p${decile}`)).toBeInTheDocument()
@@ -193,19 +194,19 @@ describe('<ChannelsCellContent />', () => {
                 width={0}
                 useMetric={metricHook}
             />,
-            defaultState
+            defaultState,
         )
 
         expect((metricHook.mock.calls[0] as Record<string, any>[])[0]).toEqual(
             expect.objectContaining({
                 tags: mockedTags,
                 helpCenters: mockedHelpCenters,
-            })
+            }),
         )
     })
 
     it('should check if use metric hook is called with stats filters with logical operator', () => {
-        mockFlags({[FeatureFlagKey.AnalyticsNewFilters]: true})
+        mockFlags({ [FeatureFlagKey.AnalyticsNewFilters]: true })
         const metricHook = jest.fn(() => ({
             isFetching: true,
             isError: false,
@@ -223,7 +224,7 @@ describe('<ChannelsCellContent />', () => {
                 width={0}
                 useMetric={metricHook}
             />,
-            defaultState
+            defaultState,
         )
 
         expect((metricHook.mock.calls[0] as Record<string, any>[])[0]).toEqual(
@@ -235,7 +236,7 @@ describe('<ChannelsCellContent />', () => {
                     },
                 ],
                 helpCenters: withDefaultLogicalOperator(mockedHelpCenters),
-            })
+            }),
         )
     })
 })

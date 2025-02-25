@@ -1,7 +1,8 @@
-import classnames from 'classnames'
-import React, {useContext} from 'react'
+import React, { useContext } from 'react'
 
-import {WizardContext} from './Wizard'
+import classnames from 'classnames'
+
+import { WizardContext } from './Wizard'
 
 import css from './WizardProgressHeader.less'
 
@@ -10,16 +11,16 @@ type Props = {
     labels: Record<string, string>
 }
 
-const WizardProgressHeader: React.FC<Props> = ({className, labels}) => {
+const WizardProgressHeader: React.FC<Props> = ({ className, labels }) => {
     const wizardContext = useContext(WizardContext)
 
     if (wizardContext === null) {
         throw new Error(
-            'WizardProgressHeader must be used within a WizardContext.Provider'
+            'WizardProgressHeader must be used within a WizardContext.Provider',
         )
     }
 
-    const {steps, activeStepIndex} = wizardContext
+    const { steps, activeStepIndex } = wizardContext
 
     return (
         <div className={classnames(css.wrapper, className)}>

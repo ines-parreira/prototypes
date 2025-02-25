@@ -1,13 +1,13 @@
+import React from 'react'
+
 import classnames from 'classnames'
 import _noop from 'lodash/noop'
 import moment from 'moment'
-import React from 'react'
-import {UncontrolledTooltip} from 'reactstrap'
+import { UncontrolledTooltip } from 'reactstrap'
 
 import messengerIcon from 'assets/img/integrations/facebook-messenger-dark-icon.svg'
 import instagramDirectMessageIcon from 'assets/img/integrations/Instagram-direct-message-blue.svg'
-
-import type {Meta} from 'models/ticket/types'
+import type { Meta } from 'models/ticket/types'
 
 import css from './PrivateReplyButton.less'
 
@@ -81,7 +81,7 @@ export default function PrivateReplyButton({
                                     : css.instagramDirectMessageIcon,
                                 {
                                     [css.disabled]: isDisabled,
-                                }
+                                },
                             )}
                             style={{
                                 WebkitMaskImage: `url(${icon})`,

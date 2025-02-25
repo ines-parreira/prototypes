@@ -1,6 +1,6 @@
-import {LegacyChannelSlug} from '@gorgias/api-queries'
+import { LegacyChannelSlug } from '@gorgias/api-queries'
 
-import {assetsUrl} from 'utils'
+import { assetsUrl } from 'utils'
 
 export const ChannelConfig = {
     [LegacyChannelSlug.Chat]: {

@@ -1,9 +1,9 @@
 import React from 'react'
 
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import infoIcon from 'assets/img/icons/info.svg'
-import {useSearchParam} from 'hooks/useSearchParam'
+import { useSearchParam } from 'hooks/useSearchParam'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'

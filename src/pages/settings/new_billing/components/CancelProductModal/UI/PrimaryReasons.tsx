@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react'
+import React, { useRef, useState } from 'react'
 
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
@@ -46,7 +46,7 @@ const PrimaryReasons = ({
                                         key={index}
                                         onClick={() => {
                                             handlePrimaryReasonSelection(
-                                                primaryReason
+                                                primaryReason,
                                             )
                                         }}
                                         option={{

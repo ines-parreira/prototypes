@@ -1,8 +1,8 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {IntegrationType} from 'models/integration/constants'
+import { IntegrationType } from 'models/integration/constants'
 
-import {App} from '../../types'
+import { App } from '../../types'
 import useGetAppFromActionsApp from '../useGetAppFromActionsApp'
 
 describe('useGetAppFromActionsApp()', () => {
@@ -32,14 +32,14 @@ describe('useGetAppFromActionsApp()', () => {
     })
 
     it('should get app from Actions app', () => {
-        const {result} = renderHook(() => useGetAppFromActionsApp({apps}))
+        const { result } = renderHook(() => useGetAppFromActionsApp({ apps }))
 
-        expect(result.current({id: 'someid'})).toEqual(testApp)
+        expect(result.current({ id: 'someid' })).toEqual(testApp)
     })
 
     it('should return undefined is app does not exist', () => {
-        const {result} = renderHook(() => useGetAppFromActionsApp({apps}))
+        const { result } = renderHook(() => useGetAppFromActionsApp({ apps }))
 
-        expect(result.current({id: 'someid2'})).toBeUndefined()
+        expect(result.current({ id: 'someid2' })).toBeUndefined()
     })
 })

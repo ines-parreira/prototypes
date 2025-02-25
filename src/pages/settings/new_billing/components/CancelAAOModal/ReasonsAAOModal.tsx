@@ -5,11 +5,11 @@ import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-
 import CheckBox from 'pages/common/forms/CheckBox'
 import TextArea from 'pages/common/forms/TextArea'
 
-import {Reason} from './CancelAAOModal'
+import { Reason } from './CancelAAOModal'
+
 import css from './CancelAAOModal.less'
 
 export type ReasonsAAOModalProps = {

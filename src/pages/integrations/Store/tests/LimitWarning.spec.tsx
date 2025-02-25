@@ -1,11 +1,12 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {ProductType} from 'models/billing/types'
+import { ProductType } from 'models/billing/types'
 
 import LimitWarning from '../LimitWarning'
 
@@ -20,7 +21,11 @@ const products = [
         type: ProductType.Helpdesk,
         id: HELPDESK_PRODUCT_ID,
         prices: [
-            {price_id: LOW_INTEGRATION_PRICE_ID, integrations: 5, amount: 100},
+            {
+                price_id: LOW_INTEGRATION_PRICE_ID,
+                integrations: 5,
+                amount: 100,
+            },
             {
                 price_id: HIGH_INTEGRATIONS_PRICE_ID,
                 integrations: 150,
@@ -30,12 +35,12 @@ const products = [
     },
     {
         type: ProductType.Automation,
-        prices: [{amount: 100}],
+        prices: [{ amount: 100 }],
     },
 ]
 
 const integrations = fromJS({
-    integrations: Array.from({length: 5}, (_, index) => ({id: index})),
+    integrations: Array.from({ length: 5 }, (_, index) => ({ id: index })),
 })
 
 describe('<LimitWarning />', () => {
@@ -53,10 +58,10 @@ describe('<LimitWarning />', () => {
             }),
             integrations,
         })
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <LimitWarning />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toBeNull()
     })
@@ -74,10 +79,10 @@ describe('<LimitWarning />', () => {
             }),
             integrations,
         })
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <LimitWarning />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })

@@ -1,16 +1,16 @@
 import moment from 'moment/moment'
 
-import {OrderDirection} from 'models/api/types'
+import { OrderDirection } from 'models/api/types'
 import {
     TicketDimension,
     TicketMeasure,
     TicketMember,
     TicketSegment,
 } from 'models/reporting/cubes/TicketCube'
-import {workloadPerChannelDistributionQueryFactory} from 'models/reporting/queryFactories/support-performance/workloadPerChannel'
-import {ReportingFilterOperator} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
-import {subtractDaysFromDate} from 'utils/date'
+import { workloadPerChannelDistributionQueryFactory } from 'models/reporting/queryFactories/support-performance/workloadPerChannel'
+import { ReportingFilterOperator } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
+import { subtractDaysFromDate } from 'utils/date'
 import {
     formatReportingQueryDate,
     NotSpamNorTrashedTicketsFilter,
@@ -20,7 +20,7 @@ describe('workloadPerChannelDistributionQueryFactory', () => {
     const now = moment()
     const periodStart = formatReportingQueryDate(now)
     const hardPeriodStart = formatReportingQueryDate(
-        subtractDaysFromDate(formatReportingQueryDate(now), 180)
+        subtractDaysFromDate(formatReportingQueryDate(now), 180),
     )
     const periodEnd = formatReportingQueryDate(moment())
     const statsFilters: StatsFilters = {
@@ -34,7 +34,7 @@ describe('workloadPerChannelDistributionQueryFactory', () => {
     it('should build a query', () => {
         const query = workloadPerChannelDistributionQueryFactory(
             statsFilters,
-            timezone
+            timezone,
         )
 
         expect(query).toEqual({

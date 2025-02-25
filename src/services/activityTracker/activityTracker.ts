@@ -1,12 +1,16 @@
+import { AxiosError } from 'axios'
+
 import BrowserEventTracker from '@gorgias/event-tracker-browser'
-import {AxiosError} from 'axios'
 
-import {isDevelopment} from 'utils/environment'
-import {reportError} from 'utils/errors'
-import {GorgiasAppAuthService} from 'utils/gorgiasAppsAuth'
+import { isDevelopment } from 'utils/environment'
+import { reportError } from 'utils/errors'
+import { GorgiasAppAuthService } from 'utils/gorgiasAppsAuth'
 
-import {ActivityEvents, AGENT_ACTIVITY_HEALTHCHECK_INTERVAL} from './constants'
-import {checkIfTrackerIsEnabled} from './utils'
+import {
+    ActivityEvents,
+    AGENT_ACTIVITY_HEALTHCHECK_INTERVAL,
+} from './constants'
+import { checkIfTrackerIsEnabled } from './utils'
 
 export const ingestionEndpoint = isDevelopment()
     ? 'http://localhost:8076/private/track'
@@ -18,14 +22,14 @@ export const ingestionEndpoint = isDevelopment()
 
 export const reportSentryError = (error: unknown, event: unknown) => {
     // remove cast when types are corrected in the library
-    const axiosError = error as AxiosError<{message: string; code: number}>
+    const axiosError = error as AxiosError<{ message: string; code: number }>
     const sentryError = axiosError.response?.data?.message
         ? new Error(
-              `Event ingestion error: ${axiosError.response.data.message}`
+              `Event ingestion error: ${axiosError.response.data.message}`,
           )
         : (error as Error)
     reportError(sentryError, {
-        extra: {event: event as Record<string, unknown>},
+        extra: { event: event as Record<string, unknown> },
     })
 }
 
@@ -118,10 +122,10 @@ export const registerAppActivityTrackerHooks = async () => {
 
     if (isActivityTrackerEnabled) {
         unregisterBrowserHooks = activityTrackerInstance.registerBrowserHooks({
-            startEvent: {eventTrigger: ActivityEvents.UserOpenedApp},
-            terminationEvent: {eventTrigger: ActivityEvents.UserClosedApp},
-            focusEvent: {eventTrigger: ActivityEvents.UserOpenedApp},
-            blurEvent: {eventTrigger: ActivityEvents.UserClosedApp},
+            startEvent: { eventTrigger: ActivityEvents.UserOpenedApp },
+            terminationEvent: { eventTrigger: ActivityEvents.UserClosedApp },
+            focusEvent: { eventTrigger: ActivityEvents.UserOpenedApp },
+            blurEvent: { eventTrigger: ActivityEvents.UserClosedApp },
         })
 
         startActivityHealthCheck()

@@ -1,6 +1,6 @@
-import {CustomField} from 'custom-fields/types'
+import { CustomField } from 'custom-fields/types'
 
-import {isTextInput, isNumberInput, isDropdownInput} from '../typeGuards'
+import { isDropdownInput, isNumberInput, isTextInput } from '../typeGuards'
 
 const textInputField = {
     definition: {

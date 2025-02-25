@@ -1,4 +1,4 @@
-import {Task} from '../Task'
+import { Task } from '../Task'
 
 export class AlwaysHiddenTask extends Task {
     constructor() {
@@ -7,7 +7,7 @@ export class AlwaysHiddenTask extends Task {
             'This task should never be displayed',
             'BASIC',
             {} as any,
-            {} as any
+            {} as any,
         )
     }
 

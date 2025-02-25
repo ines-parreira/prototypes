@@ -55,36 +55,36 @@
         "/api/widgets/{id}/": {
             "put": {
                 "consumes": ["application/json"],
-                "parameters": [{"$ref": "#/parameters/id"}],
+                "parameters": [{ "$ref": "#/parameters/id" }],
                 "tags": ["Widget"],
                 "responses": {
-                    "400": {"description": "Bad request."},
-                    "202": {"schema": {"$ref": "#/definitions/Widget"}},
-                    "404": {"description": "Not found."}
+                    "400": { "description": "Bad request." },
+                    "202": { "schema": { "$ref": "#/definitions/Widget" } },
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"],
                 "description": "Update a widget",
                 "summary": "Update a widget"
             },
             "delete": {
-                "parameters": [{"$ref": "#/parameters/id"}],
+                "parameters": [{ "$ref": "#/parameters/id" }],
                 "tags": ["Widget"],
                 "responses": {
-                    "400": {"description": "Bad request."},
-                    "404": {"description": "Not found."},
-                    "204": {"description": "No content."}
+                    "400": { "description": "Bad request." },
+                    "404": { "description": "Not found." },
+                    "204": { "description": "No content." }
                 },
                 "produces": ["application/json"],
                 "description": "Delete a widget",
                 "summary": "Delete a widget"
             },
             "get": {
-                "parameters": [{"$ref": "#/parameters/id"}],
+                "parameters": [{ "$ref": "#/parameters/id" }],
                 "tags": ["Widget"],
                 "responses": {
-                    "200": {"schema": {"$ref": "#/definitions/Widget"}},
-                    "400": {"description": "Bad request."},
-                    "404": {"description": "Not found."}
+                    "200": { "schema": { "$ref": "#/definitions/Widget" } },
+                    "400": { "description": "Bad request." },
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"],
                 "description": "Get a widget based on {id}",
@@ -96,11 +96,11 @@
                 "consumes": ["application/json"],
                 "tags": ["User"],
                 "responses": {
-                    "400": {"description": "Bad request."},
+                    "400": { "description": "Bad request." },
                     "202": {
-                        "schema": {"$ref": "#/definitions/DEPRECATED_User"}
+                        "schema": { "$ref": "#/definitions/DEPRECATED_User" }
                     },
-                    "404": {"description": "Not found."}
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"],
                 "description": "Merge two users according to the data sent in the payload. Replace all references to the second user's id with references to the first user's id.\n",
@@ -110,12 +110,12 @@
         "/api/users/{user_id}/tickets/{id}/": {},
         "/api/teams/{team_id}/members/{id}/": {
             "delete": {
-                "parameters": [{"$ref": "#/parameters/team_id"}],
+                "parameters": [{ "$ref": "#/parameters/team_id" }],
                 "tags": ["Team"],
                 "responses": {
-                    "400": {"description": "Bad request."},
-                    "404": {"description": "Not found."},
-                    "204": {"description": "No content."}
+                    "400": { "description": "Bad request." },
+                    "404": { "description": "Not found." },
+                    "204": { "description": "No content." }
                 },
                 "produces": ["application/json"],
                 "description": "Remove a team member",
@@ -127,9 +127,9 @@
                 "consumes": ["application/json"],
                 "tags": ["Team"],
                 "responses": {
-                    "400": {"description": "Bad request."},
-                    "201": {"schema": {"$ref": "#/definitions/Team"}},
-                    "404": {"description": "Not found."}
+                    "400": { "description": "Bad request." },
+                    "201": { "schema": { "$ref": "#/definitions/Team" } },
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"],
                 "description": "Create a new team",
@@ -140,21 +140,23 @@
                 "summary": "Retrieve all teams",
                 "tags": ["Team"],
                 "responses": {
-                    "200": {"schema": {"item": "TeamSchema", "type": "array"}},
-                    "400": {"description": "Bad request."},
-                    "404": {"description": "Not found."}
+                    "200": {
+                        "schema": { "item": "TeamSchema", "type": "array" }
+                    },
+                    "400": { "description": "Bad request." },
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"]
             }
         },
         "/api/events/{id}/": {
             "get": {
-                "parameters": [{"$ref": "#/parameters/id"}],
+                "parameters": [{ "$ref": "#/parameters/id" }],
                 "tags": ["Event"],
                 "responses": {
-                    "200": {"schema": {"$ref": "#/definitions/Event"}},
-                    "400": {"description": "Bad request."},
-                    "404": {"description": "Not found."}
+                    "200": { "schema": { "$ref": "#/definitions/Event" } },
+                    "400": { "description": "Bad request." },
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"],
                 "description": "Get an event based on it's id.",
@@ -167,33 +169,33 @@
                 "consumes": ["application/json"],
                 "tags": ["Team"],
                 "responses": {
-                    "400": {"description": "Bad request."},
-                    "202": {"schema": {"$ref": "#/definitions/Team"}},
-                    "404": {"description": "Not found."}
+                    "400": { "description": "Bad request." },
+                    "202": { "schema": { "$ref": "#/definitions/Team" } },
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"],
                 "description": "Update an existing team",
                 "summary": "Update an existing team"
             },
             "delete": {
-                "parameters": [{"$ref": "#/parameters/id"}],
+                "parameters": [{ "$ref": "#/parameters/id" }],
                 "tags": ["Team"],
                 "responses": {
-                    "400": {"description": "Bad request."},
-                    "404": {"description": "Not found."},
-                    "204": {"description": "No content."}
+                    "400": { "description": "Bad request." },
+                    "404": { "description": "Not found." },
+                    "204": { "description": "No content." }
                 },
                 "produces": ["application/json"],
                 "description": "Delete a team",
                 "summary": "Delete a team"
             },
             "get": {
-                "parameters": [{"$ref": "#/parameters/id"}],
+                "parameters": [{ "$ref": "#/parameters/id" }],
                 "tags": ["Team"],
                 "responses": {
-                    "200": {"schema": {"$ref": "#/definitions/Team"}},
-                    "400": {"description": "Bad request."},
-                    "404": {"description": "Not found."}
+                    "200": { "schema": { "$ref": "#/definitions/Team" } },
+                    "400": { "description": "Bad request." },
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"],
                 "description": "Retrieve a single team",
@@ -202,12 +204,12 @@
         },
         "/api/account/{id}/": {
             "get": {
-                "parameters": [{"$ref": "#/parameters/id"}],
+                "parameters": [{ "$ref": "#/parameters/id" }],
                 "tags": ["Account"],
                 "responses": {
-                    "200": {"schema": {"$ref": "#/definitions/Event"}},
-                    "400": {"description": "Bad request."},
-                    "404": {"description": "Not found."}
+                    "200": { "schema": { "$ref": "#/definitions/Event" } },
+                    "400": { "description": "Bad request." },
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"],
                 "description": "Get an event based on it's id.",
@@ -234,16 +236,16 @@
                                 }
                             },
                             "type": "object",
-                            "example": {"ids": [1, 7, 78, 12, 546]}
+                            "example": { "ids": [1, 7, 78, 12, 546] }
                         },
                         "name": "body"
                     }
                 ],
                 "tags": ["Team"],
                 "responses": {
-                    "400": {"description": "Bad request."},
-                    "404": {"description": "Not found."},
-                    "204": {"description": "No content."}
+                    "400": { "description": "Bad request." },
+                    "404": { "description": "Not found." },
+                    "204": { "description": "No content." }
                 },
                 "produces": ["application/json"],
                 "description": "Delete a batch of team members",
@@ -251,12 +253,12 @@
             },
             "post": {
                 "consumes": ["application/json"],
-                "parameters": [{"$ref": "#/parameters/team_id"}],
+                "parameters": [{ "$ref": "#/parameters/team_id" }],
                 "tags": ["Team"],
                 "responses": {
-                    "400": {"description": "Bad request."},
-                    "201": {"schema": {"$ref": "#/definitions/NewUser"}},
-                    "404": {"description": "Not found."}
+                    "400": { "description": "Bad request." },
+                    "201": { "schema": { "$ref": "#/definitions/NewUser" } },
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"],
                 "description": "Add a team member",
@@ -267,9 +269,11 @@
                 "summary": "Retrieve all teams",
                 "tags": ["Team"],
                 "responses": {
-                    "200": {"schema": {"item": "TeamSchema", "type": "array"}},
-                    "400": {"description": "Bad request."},
-                    "404": {"description": "Not found."}
+                    "200": {
+                        "schema": { "item": "TeamSchema", "type": "array" }
+                    },
+                    "400": { "description": "Bad request." },
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"]
             }
@@ -278,20 +282,22 @@
             "put": {
                 "consumes": ["application/json"],
                 "parameters": [
-                    {"$ref": "#/parameters/id"},
-                    {"$ref": "#/parameters/ticket_id"},
+                    { "$ref": "#/parameters/id" },
+                    { "$ref": "#/parameters/ticket_id" },
                     {
                         "description": "the new data you want to set on the Message",
                         "in": "body",
-                        "schema": {"$ref": "#/definitions/TicketMessage"},
+                        "schema": { "$ref": "#/definitions/TicketMessage" },
                         "name": "body"
                     }
                 ],
                 "tags": ["Ticket"],
                 "responses": {
-                    "400": {"description": "Bad request."},
-                    "201": {"schema": {"$ref": "#/definitions/TicketMessage"}},
-                    "404": {"description": "Not found."}
+                    "400": { "description": "Bad request." },
+                    "201": {
+                        "schema": { "$ref": "#/definitions/TicketMessage" }
+                    },
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"],
                 "description": "Update a TicketMessage and return it.",
@@ -299,14 +305,14 @@
             },
             "delete": {
                 "parameters": [
-                    {"$ref": "#/parameters/id"},
-                    {"$ref": "#/parameters/ticket_id"}
+                    { "$ref": "#/parameters/id" },
+                    { "$ref": "#/parameters/ticket_id" }
                 ],
                 "tags": ["Ticket"],
                 "responses": {
-                    "400": {"description": "Bad request."},
-                    "404": {"description": "Not found."},
-                    "204": {"description": "No content."}
+                    "400": { "description": "Bad request." },
+                    "404": { "description": "Not found." },
+                    "204": { "description": "No content." }
                 },
                 "produces": ["application/json"],
                 "description": "Delete a Message of a specific Ticket",
@@ -314,14 +320,16 @@
             },
             "get": {
                 "parameters": [
-                    {"$ref": "#/parameters/id"},
-                    {"$ref": "#/parameters/ticket_id"}
+                    { "$ref": "#/parameters/id" },
+                    { "$ref": "#/parameters/ticket_id" }
                 ],
                 "tags": ["Ticket"],
                 "responses": {
-                    "200": {"schema": {"$ref": "#/definitions/TicketMessage"}},
-                    "400": {"description": "Bad request."},
-                    "404": {"description": "Not found."}
+                    "200": {
+                        "schema": { "$ref": "#/definitions/TicketMessage" }
+                    },
+                    "400": { "description": "Bad request." },
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"],
                 "description": "Retrieve a single TicketMessage identified by the URL parameters {ticket_id} and {id}.",
@@ -334,9 +342,9 @@
                 "summary": "Delete a batch of users",
                 "tags": ["User"],
                 "responses": {
-                    "400": {"description": "Bad request."},
-                    "404": {"description": "Not found."},
-                    "204": {"description": "No content."}
+                    "400": { "description": "Bad request." },
+                    "404": { "description": "Not found." },
+                    "204": { "description": "No content." }
                 },
                 "produces": ["application/json"]
             },
@@ -344,11 +352,11 @@
                 "consumes": ["application/json"],
                 "tags": ["User"],
                 "responses": {
-                    "400": {"description": "Bad request."},
+                    "400": { "description": "Bad request." },
                     "201": {
-                        "schema": {"$ref": "#/definitions/DEPRECATED_User"}
+                        "schema": { "$ref": "#/definitions/DEPRECATED_User" }
                     },
-                    "404": {"description": "Not found."}
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"],
                 "description": "Create a new user linked to the current user's account. It's role can be any combination of \"user\", \"agent\" and \"admin\".\n",
@@ -362,11 +370,11 @@
                     "200": {
                         "schema": {
                             "type": "array",
-                            "items": {"$ref": "#/definitions/DEPRECATED_User"}
+                            "items": { "$ref": "#/definitions/DEPRECATED_User" }
                         }
                     },
-                    "400": {"description": "Bad request."},
-                    "404": {"description": "Not found."}
+                    "400": { "description": "Bad request." },
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"]
             }
@@ -374,12 +382,12 @@
         "/api/rules/{id}/": {
             "put": {
                 "consumes": ["application/json"],
-                "parameters": [{"$ref": "#/parameters/id"}],
+                "parameters": [{ "$ref": "#/parameters/id" }],
                 "tags": ["Rule"],
                 "responses": {
-                    "400": {"description": "Bad request."},
-                    "202": {"schema": {"$ref": "#/definitions/Rule"}},
-                    "404": {"description": "Not found."}
+                    "400": { "description": "Bad request." },
+                    "202": { "schema": { "$ref": "#/definitions/Rule" } },
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"],
                 "description": "Edit an existing Rule",
@@ -390,19 +398,19 @@
                 "summary": "Delete a rule",
                 "tags": ["Rule"],
                 "responses": {
-                    "400": {"description": "Bad request."},
-                    "404": {"description": "Not found."},
-                    "204": {"description": "No content."}
+                    "400": { "description": "Bad request." },
+                    "404": { "description": "Not found." },
+                    "204": { "description": "No content." }
                 },
                 "produces": ["application/json"]
             },
             "get": {
-                "parameters": [{"$ref": "#/parameters/id"}],
+                "parameters": [{ "$ref": "#/parameters/id" }],
                 "tags": ["Rule"],
                 "responses": {
-                    "200": {"schema": {"$ref": "#/definitions/Rule"}},
-                    "400": {"description": "Bad request."},
-                    "404": {"description": "Not found."}
+                    "200": { "schema": { "$ref": "#/definitions/Rule" } },
+                    "400": { "description": "Bad request." },
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"],
                 "description": "Fetch a single Rule",
@@ -414,9 +422,9 @@
                 "consumes": ["application/json"],
                 "tags": ["User"],
                 "responses": {
-                    "400": {"description": "Bad request."},
-                    "201": {"schema": {"$ref": "#/definitions/Role"}},
-                    "404": {"description": "Not found."}
+                    "400": { "description": "Bad request." },
+                    "201": { "schema": { "$ref": "#/definitions/Role" } },
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"],
                 "description": "Create a new role linked to the current user's account.\n",
@@ -430,11 +438,11 @@
                     "200": {
                         "schema": {
                             "type": "array",
-                            "items": {"$ref": "#/definitions/Role"}
+                            "items": { "$ref": "#/definitions/Role" }
                         }
                     },
-                    "400": {"description": "Bad request."},
-                    "404": {"description": "Not found."}
+                    "400": { "description": "Bad request." },
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"]
             }
@@ -444,9 +452,11 @@
                 "consumes": ["application/json"],
                 "tags": ["Integration"],
                 "responses": {
-                    "400": {"description": "Bad request."},
-                    "202": {"schema": {"$ref": "#/definitions/Integration"}},
-                    "404": {"description": "Not found."}
+                    "400": { "description": "Bad request." },
+                    "202": {
+                        "schema": { "$ref": "#/definitions/Integration" }
+                    },
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"],
                 "description": "Update an existing integration or its connection",
@@ -457,19 +467,21 @@
                 "summary": "Delete an integration",
                 "tags": ["Integration"],
                 "responses": {
-                    "400": {"description": "Bad request."},
-                    "404": {"description": "Not found."},
-                    "204": {"description": "No content."}
+                    "400": { "description": "Bad request." },
+                    "404": { "description": "Not found." },
+                    "204": { "description": "No content." }
                 },
                 "produces": ["application/json"]
             },
             "get": {
-                "parameters": [{"$ref": "#/parameters/id"}],
+                "parameters": [{ "$ref": "#/parameters/id" }],
                 "tags": ["Integration"],
                 "responses": {
-                    "200": {"schema": {"$ref": "#/definitions/Integration"}},
-                    "400": {"description": "Bad request."},
-                    "404": {"description": "Not found."}
+                    "200": {
+                        "schema": { "$ref": "#/definitions/Integration" }
+                    },
+                    "400": { "description": "Bad request." },
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"],
                 "description": "Fetch an integration's data with the linked connection.",
@@ -483,9 +495,9 @@
                 "summary": "Retrieve a list of auths",
                 "tags": ["User"],
                 "responses": {
-                    "200": {"schema": {"$ref": "#/definitions/UserAuth"}},
-                    "400": {"description": "Bad request."},
-                    "404": {"description": "Not found."}
+                    "200": { "schema": { "$ref": "#/definitions/UserAuth" } },
+                    "400": { "description": "Bad request." },
+                    "404": { "description": "Not found." }
                 }
             }
         },
@@ -493,43 +505,43 @@
             "put": {
                 "consumes": ["application/json"],
                 "parameters": [
-                    {"$ref": "#/parameters/id"},
+                    { "$ref": "#/parameters/id" },
                     {
                         "description": "the data of the Ticket you want to update",
                         "in": "body",
-                        "schema": {"$ref": "#/definitions/Ticket"},
+                        "schema": { "$ref": "#/definitions/Ticket" },
                         "name": "body"
                     }
                 ],
                 "tags": ["Ticket"],
                 "responses": {
-                    "400": {"description": "Bad request."},
-                    "202": {"schema": {"$ref": "#/definitions/Ticket"}},
-                    "404": {"description": "Not found."}
+                    "400": { "description": "Bad request." },
+                    "202": { "schema": { "$ref": "#/definitions/Ticket" } },
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"],
                 "description": "Update a Ticket identified by the URL parameter {id} and return it.",
                 "summary": "Update a ticket"
             },
             "delete": {
-                "parameters": [{"$ref": "#/parameters/id"}],
+                "parameters": [{ "$ref": "#/parameters/id" }],
                 "tags": ["Ticket"],
                 "responses": {
-                    "400": {"description": "Bad request."},
-                    "404": {"description": "Not found."},
-                    "204": {"description": "No content."}
+                    "400": { "description": "Bad request." },
+                    "404": { "description": "Not found." },
+                    "204": { "description": "No content." }
                 },
                 "produces": ["application/json"],
                 "description": "Delete a Ticket",
                 "summary": "Delete a ticket"
             },
             "get": {
-                "parameters": [{"$ref": "#/parameters/id"}],
+                "parameters": [{ "$ref": "#/parameters/id" }],
                 "tags": ["Ticket"],
                 "responses": {
-                    "200": {"schema": {"$ref": "#/definitions/Ticket"}},
-                    "400": {"description": "Bad request."},
-                    "404": {"description": "Not found."}
+                    "200": { "schema": { "$ref": "#/definitions/Ticket" } },
+                    "400": { "description": "Bad request." },
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"],
                 "description": "Retrieve a single Ticket, identified by the URL parameter {id}.",
@@ -540,12 +552,14 @@
         "/api/users/{user_id}/settings/{id}/": {
             "get": {
                 "summary": "Update a setting",
-                "parameters": [{"$ref": "#/parameters/id"}],
+                "parameters": [{ "$ref": "#/parameters/id" }],
                 "tags": ["User"],
                 "responses": {
-                    "200": {"schema": {"$ref": "#/definitions/UserSetting"}},
-                    "400": {"description": "Bad request."},
-                    "404": {"description": "Not found."}
+                    "200": {
+                        "schema": { "$ref": "#/definitions/UserSetting" }
+                    },
+                    "400": { "description": "Bad request." },
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"]
             }
@@ -565,7 +579,7 @@
                                 "required": false,
                                 "schema": {
                                     "type": "array",
-                                    "items": {"$ref": "#/definitions/integer"}
+                                    "items": { "$ref": "#/definitions/integer" }
                                 },
                                 "name": "user_ids"
                             },
@@ -575,7 +589,7 @@
                                 "required": false,
                                 "schema": {
                                     "type": "array",
-                                    "items": {"$ref": "#/definitions/string"}
+                                    "items": { "$ref": "#/definitions/string" }
                                 },
                                 "name": "object_types"
                             },
@@ -585,7 +599,7 @@
                                 "required": false,
                                 "schema": {
                                     "type": "array",
-                                    "items": {"$ref": "#/definitions/string"}
+                                    "items": { "$ref": "#/definitions/string" }
                                 },
                                 "name": "event_types"
                             },
@@ -593,24 +607,24 @@
                                 "description": "Start datetime filter (only show events after this date).",
                                 "in": "query",
                                 "required": false,
-                                "schema": {"type": "string"},
+                                "schema": { "type": "string" },
                                 "name": "start_datetime"
                             },
                             {
                                 "description": "End datetime filter (only show events before this date).",
                                 "in": "query",
                                 "required": false,
-                                "schema": {"type": "string"},
+                                "schema": { "type": "string" },
                                 "name": "end_datetime"
                             }
                         ],
                         "schema": {
                             "type": "array",
-                            "items": {"$ref": "#/definitions/UserAudit"}
+                            "items": { "$ref": "#/definitions/UserAudit" }
                         }
                     },
-                    "400": {"description": "Bad request."},
-                    "404": {"description": "Not found."}
+                    "400": { "description": "Bad request." },
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"]
             }
@@ -623,26 +637,26 @@
                 "consumes": ["application/json"],
                 "tags": ["Rule"],
                 "responses": {
-                    "400": {"description": "Bad request."},
-                    "201": {"schema": {"$ref": "#/definitions/Rule"}},
-                    "404": {"description": "Not found."}
+                    "400": { "description": "Bad request." },
+                    "201": { "schema": { "$ref": "#/definitions/Rule" } },
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"],
                 "description": "Create a new Rule",
                 "summary": "Create a rule"
             },
             "get": {
-                "parameters": [{"$ref": "#/parameters/id"}],
+                "parameters": [{ "$ref": "#/parameters/id" }],
                 "tags": ["Rule"],
                 "responses": {
                     "200": {
                         "schema": {
                             "type": "array",
-                            "items": {"$ref": "#/definitions/Rule"}
+                            "items": { "$ref": "#/definitions/Rule" }
                         }
                     },
-                    "400": {"description": "Bad request."},
-                    "404": {"description": "Not found."}
+                    "400": { "description": "Bad request." },
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"],
                 "description": "Fetch all the rules of the current account",
@@ -652,28 +666,28 @@
         "/api/satisfaction-surveys/{id}/": {
             "put": {
                 "consumes": ["application/json"],
-                "parameters": [{"$ref": "#/parameters/id"}],
+                "parameters": [{ "$ref": "#/parameters/id" }],
                 "tags": ["SatisfactionSurvey"],
                 "responses": {
-                    "400": {"description": "Bad request."},
+                    "400": { "description": "Bad request." },
                     "202": {
-                        "schema": {"$ref": "#/definitions/SatisfactionSurvey"}
+                        "schema": { "$ref": "#/definitions/SatisfactionSurvey" }
                     },
-                    "404": {"description": "Not found."}
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"],
                 "description": "Update an existing satisfaction survey\nNote: If you don't want the satisfaction surveys to be sent by Gorgias you should make sure that\n     `should_send_datetime` field stays `null` otherwise if it's a datetime we'll send the survey.\n",
                 "summary": "Update satisfaction survey"
             },
             "get": {
-                "parameters": [{"$ref": "#/parameters/id"}],
+                "parameters": [{ "$ref": "#/parameters/id" }],
                 "tags": ["SatisfactionSurvey"],
                 "responses": {
                     "200": {
-                        "schema": {"$ref": "#/definitions/SatisfactionSurvey"}
+                        "schema": { "$ref": "#/definitions/SatisfactionSurvey" }
                     },
-                    "400": {"description": "Bad request."},
-                    "404": {"description": "Not found."}
+                    "400": { "description": "Bad request." },
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"],
                 "description": "Get a satisfaction survey based on it's id.",
@@ -682,12 +696,12 @@
         },
         "/api/users/roles/{id}/": {
             "get": {
-                "parameters": [{"$ref": "#/parameters/id"}],
+                "parameters": [{ "$ref": "#/parameters/id" }],
                 "tags": ["User"],
                 "responses": {
-                    "200": {"schema": {"$ref": "#/definitions/Role"}},
-                    "400": {"description": "Bad request."},
-                    "404": {"description": "Not found."}
+                    "200": { "schema": { "$ref": "#/definitions/Role" } },
+                    "400": { "description": "Bad request." },
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"],
                 "description": "Retrieve a single role, identified by the URL parameter {id}.\n",
@@ -696,17 +710,17 @@
         },
         "/api/users/{user_id}/tickets/": {
             "get": {
-                "parameters": [{"$ref": "#/parameters/id"}],
+                "parameters": [{ "$ref": "#/parameters/id" }],
                 "tags": ["User"],
                 "responses": {
                     "200": {
                         "schema": {
                             "type": "array",
-                            "items": {"$ref": "#/definitions/Ticket"}
+                            "items": { "$ref": "#/definitions/Ticket" }
                         }
                     },
-                    "400": {"description": "Bad request."},
-                    "404": {"description": "Not found."}
+                    "400": { "description": "Bad request." },
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"],
                 "description": "Get all tickets of the specified user, sorted by DESC created_datetime.",
@@ -715,17 +729,17 @@
         },
         "/api/users/{user_id}/similar/{id}/": {
             "get": {
-                "parameters": [{"$ref": "#/parameters/id"}],
+                "parameters": [{ "$ref": "#/parameters/id" }],
                 "tags": ["User"],
                 "responses": {
                     "200": {
                         "schema": {
                             "type": "array",
-                            "items": {"$ref": "#/definitions/DEPRECATED_User"}
+                            "items": { "$ref": "#/definitions/DEPRECATED_User" }
                         }
                     },
-                    "400": {"description": "Bad request."},
-                    "404": {"description": "Not found."}
+                    "400": { "description": "Bad request." },
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"],
                 "description": "Get users similar to passed one",
@@ -737,9 +751,9 @@
                 "consumes": ["application/json"],
                 "tags": ["Event"],
                 "responses": {
-                    "400": {"description": "Bad request."},
-                    "201": {"schema": {"$ref": "#/definitions/Event"}},
-                    "404": {"description": "Not found."}
+                    "400": { "description": "Bad request." },
+                    "201": { "schema": { "$ref": "#/definitions/Event" } },
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"],
                 "description": "Create a new event",
@@ -753,11 +767,11 @@
                     "200": {
                         "schema": {
                             "type": "array",
-                            "items": {"$ref": "#/definitions/Event"}
+                            "items": { "$ref": "#/definitions/Event" }
                         }
                     },
-                    "400": {"description": "Bad request."},
-                    "404": {"description": "Not found."}
+                    "400": { "description": "Bad request." },
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"]
             }
@@ -767,9 +781,9 @@
                 "consumes": ["application/json"],
                 "tags": ["Account"],
                 "responses": {
-                    "400": {"description": "Bad request."},
-                    "201": {"schema": {"$ref": "#/definitions/Event"}},
-                    "404": {"description": "Not found."}
+                    "400": { "description": "Bad request." },
+                    "201": { "schema": { "$ref": "#/definitions/Event" } },
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"],
                 "description": "Create a new event",
@@ -783,11 +797,11 @@
                     "200": {
                         "schema": {
                             "type": "array",
-                            "items": {"$ref": "#/definitions/Event"}
+                            "items": { "$ref": "#/definitions/Event" }
                         }
                     },
-                    "400": {"description": "Bad request."},
-                    "404": {"description": "Not found."}
+                    "400": { "description": "Bad request." },
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"]
             }
@@ -797,9 +811,11 @@
                 "consumes": ["application/json"],
                 "tags": ["DEPRECATED_Tag"],
                 "responses": {
-                    "400": {"description": "Bad request."},
-                    "202": {"schema": {"$ref": "#/definitions/DEPRECATED_Tag"}},
-                    "404": {"description": "Not found."}
+                    "400": { "description": "Bad request." },
+                    "202": {
+                        "schema": { "$ref": "#/definitions/DEPRECATED_Tag" }
+                    },
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"],
                 "description": "Merge two tags together. The destination_tag is the one which will survive the merge, the source_tag is the one which will be discarded.\n",
@@ -814,9 +830,11 @@
                 "summary": "Update priority on some rules",
                 "tags": ["Rule"],
                 "responses": {
-                    "400": {"description": "Bad request."},
-                    "202": {"schema": {"item": "RuleSchema", "type": "array"}},
-                    "404": {"description": "Not found."}
+                    "400": { "description": "Bad request." },
+                    "202": {
+                        "schema": { "item": "RuleSchema", "type": "array" }
+                    },
+                    "404": { "description": "Not found." }
                 }
             }
         },
@@ -825,9 +843,11 @@
                 "consumes": ["application/json"],
                 "tags": ["Integration"],
                 "responses": {
-                    "400": {"description": "Bad request."},
-                    "201": {"schema": {"$ref": "#/definitions/Integration"}},
-                    "404": {"description": "Not found."}
+                    "400": { "description": "Bad request." },
+                    "201": {
+                        "schema": { "$ref": "#/definitions/Integration" }
+                    },
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"],
                 "description": "Create a new integration with a new or existing connection to an external service.",
@@ -841,11 +861,11 @@
                     "200": {
                         "schema": {
                             "type": "array",
-                            "items": {"$ref": "#/definitions/DEPRECATED_User"}
+                            "items": { "$ref": "#/definitions/DEPRECATED_User" }
                         }
                     },
-                    "400": {"description": "Bad request."},
-                    "404": {"description": "Not found."}
+                    "400": { "description": "Bad request." },
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"]
             }
@@ -854,40 +874,40 @@
         "/api/users/{id}/": {
             "put": {
                 "consumes": ["application/json"],
-                "parameters": [{"$ref": "#/parameters/id"}],
+                "parameters": [{ "$ref": "#/parameters/id" }],
                 "tags": ["User"],
                 "responses": {
-                    "400": {"description": "Bad request."},
+                    "400": { "description": "Bad request." },
                     "202": {
-                        "schema": {"$ref": "#/definitions/DEPRECATED_User"}
+                        "schema": { "$ref": "#/definitions/DEPRECATED_User" }
                     },
-                    "404": {"description": "Not found."}
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"],
                 "description": "Update a user's fields, and return it's new version.",
                 "summary": "Update a user"
             },
             "delete": {
-                "parameters": [{"$ref": "#/parameters/id"}],
+                "parameters": [{ "$ref": "#/parameters/id" }],
                 "tags": ["User"],
                 "responses": {
-                    "400": {"description": "Bad request."},
-                    "404": {"description": "Not found."},
-                    "204": {"description": "No content."}
+                    "400": { "description": "Bad request." },
+                    "404": { "description": "Not found." },
+                    "204": { "description": "No content." }
                 },
                 "produces": ["application/json"],
                 "description": "Delete a user identified by the URL parameter {id}.",
                 "summary": "Delete a user"
             },
             "get": {
-                "parameters": [{"$ref": "#/parameters/id"}],
+                "parameters": [{ "$ref": "#/parameters/id" }],
                 "tags": ["User"],
                 "responses": {
                     "200": {
-                        "schema": {"$ref": "#/definitions/DEPRECATED_User"}
+                        "schema": { "$ref": "#/definitions/DEPRECATED_User" }
                     },
-                    "400": {"description": "Bad request."},
-                    "404": {"description": "Not found."}
+                    "400": { "description": "Bad request." },
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"],
                 "description": "Retrieve a single user, identified by the URL parameter {id}. If {id} = 0, the current user is returned.\n",
@@ -964,11 +984,11 @@
                 ],
                 "tags": ["Ticket"],
                 "responses": {
-                    "400": {"description": "Bad request."},
+                    "400": { "description": "Bad request." },
                     "202": {
-                        "schema": {"item": "TicketSchema", "type": "array"}
+                        "schema": { "item": "TicketSchema", "type": "array" }
                     },
-                    "404": {"description": "Not found."}
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"],
                 "description": "Apply the same modification to a pre-selected batch of specific tickets.",
@@ -991,16 +1011,16 @@
                                 }
                             },
                             "type": "object",
-                            "example": {"ids": [1, 7, 78, 12, 546]}
+                            "example": { "ids": [1, 7, 78, 12, 546] }
                         },
                         "name": "body"
                     }
                 ],
                 "tags": ["Ticket"],
                 "responses": {
-                    "400": {"description": "Bad request."},
-                    "404": {"description": "Not found."},
-                    "204": {"description": "No content."}
+                    "400": { "description": "Bad request." },
+                    "404": { "description": "Not found." },
+                    "204": { "description": "No content." }
                 },
                 "produces": ["application/json"],
                 "description": "Delete a batch of tickets",
@@ -1012,15 +1032,15 @@
                     {
                         "description": "the data of the Ticket you want to create",
                         "in": "body",
-                        "schema": {"$ref": "#/definitions/Ticket"},
+                        "schema": { "$ref": "#/definitions/Ticket" },
                         "name": "body"
                     }
                 ],
                 "tags": ["Ticket"],
                 "responses": {
-                    "400": {"description": "Bad request."},
-                    "201": {"schema": {"$ref": "#/definitions/Ticket"}},
-                    "404": {"description": "Not found."}
+                    "400": { "description": "Bad request." },
+                    "201": { "schema": { "$ref": "#/definitions/Ticket" } },
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"],
                 "description": "Create a new Ticket along with its Messages.",
@@ -1028,20 +1048,20 @@
             },
             "get": {
                 "parameters": [
-                    {"$ref": "#/parameters/view_id"},
-                    {"$ref": "#/parameters/page"},
-                    {"$ref": "#/parameters/per_page"}
+                    { "$ref": "#/parameters/view_id" },
+                    { "$ref": "#/parameters/page" },
+                    { "$ref": "#/parameters/per_page" }
                 ],
                 "tags": ["Ticket"],
                 "responses": {
                     "200": {
                         "schema": {
                             "type": "array",
-                            "items": {"$ref": "#/definitions/Ticket"}
+                            "items": { "$ref": "#/definitions/Ticket" }
                         }
                     },
-                    "400": {"description": "Bad request."},
-                    "404": {"description": "Not found."}
+                    "400": { "description": "Bad request." },
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"],
                 "description": "Retrieve a list of tickets. If the {view} argument is present in the URL, then the list will correspond to this view's constraints.\n",
@@ -1051,17 +1071,17 @@
         "/api/users/{user_id}/invite/{id}/": {},
         "/api/tickets/{ticket_id}/messages/": {
             "get": {
-                "parameters": [{"$ref": "#/parameters/ticket_id"}],
+                "parameters": [{ "$ref": "#/parameters/ticket_id" }],
                 "tags": ["Ticket"],
                 "responses": {
                     "200": {
                         "schema": {
                             "type": "array",
-                            "items": {"$ref": "#/definitions/TicketMessage"}
+                            "items": { "$ref": "#/definitions/TicketMessage" }
                         }
                     },
-                    "400": {"description": "Bad request."},
-                    "404": {"description": "Not found."}
+                    "400": { "description": "Bad request." },
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"],
                 "description": "Retrieve the list of Messages of a Ticket identified by the URL parameter {ticket_id}",
@@ -1075,9 +1095,11 @@
                 "summary": "Create a setting",
                 "tags": ["User"],
                 "responses": {
-                    "400": {"description": "Bad request."},
-                    "201": {"schema": {"$ref": "#/definitions/UserSetting"}},
-                    "404": {"description": "Not found."}
+                    "400": { "description": "Bad request." },
+                    "201": {
+                        "schema": { "$ref": "#/definitions/UserSetting" }
+                    },
+                    "404": { "description": "Not found." }
                 }
             }
         },
@@ -1087,14 +1109,14 @@
                 "consumes": ["application/json"],
                 "tags": ["Widget"],
                 "responses": {
-                    "400": {"description": "Bad request."},
+                    "400": { "description": "Bad request." },
                     "202": {
                         "schema": {
                             "type": "array",
-                            "items": {"$ref": "#/definitions/Widget"}
+                            "items": { "$ref": "#/definitions/Widget" }
                         }
                     },
-                    "404": {"description": "Not found."}
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"],
                 "description": "Create/Update/Delete widgets of current account and passed context.",
@@ -1104,9 +1126,9 @@
                 "consumes": ["application/json"],
                 "tags": ["Widget"],
                 "responses": {
-                    "400": {"description": "Bad request."},
-                    "201": {"schema": {"$ref": "#/definitions/Widget"}},
-                    "404": {"description": "Not found."}
+                    "400": { "description": "Bad request." },
+                    "201": { "schema": { "$ref": "#/definitions/Widget" } },
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"],
                 "description": "Create a new widget that will be displayed in the sidebar.",
@@ -1120,11 +1142,11 @@
                     "200": {
                         "schema": {
                             "type": "array",
-                            "items": {"$ref": "#/definitions/Widget"}
+                            "items": { "$ref": "#/definitions/Widget" }
                         }
                     },
-                    "400": {"description": "Bad request."},
-                    "404": {"description": "Not found."}
+                    "400": { "description": "Bad request." },
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"]
             }
@@ -1134,11 +1156,11 @@
                 "consumes": ["application/json"],
                 "tags": ["SatisfactionSurvey"],
                 "responses": {
-                    "400": {"description": "Bad request."},
+                    "400": { "description": "Bad request." },
                     "201": {
-                        "schema": {"$ref": "#/definitions/SatisfactionSurvey"}
+                        "schema": { "$ref": "#/definitions/SatisfactionSurvey" }
                     },
-                    "404": {"description": "Not found."}
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"],
                 "description": "Create a new satisfaction survey.\nNote: If you don't want the satisfaction surveys to be sent by Gorgias you should make sure that\n     `should_send_datetime` field is `null` otherwise if it's a datetime we'll send the survey.\n",
@@ -1157,8 +1179,8 @@
                             }
                         }
                     },
-                    "400": {"description": "Bad request."},
-                    "404": {"description": "Not found."}
+                    "400": { "description": "Bad request." },
+                    "404": { "description": "Not found." }
                 },
                 "produces": ["application/json"]
             }
@@ -1170,8 +1192,8 @@
     "definitions": {
         "ShopifyIntegrationData": {
             "properties": {
-                "last_order": {"$ref": "#/definitions/ShopifyOrder"},
-                "customer": {"$ref": "#/definitions/ShopifyCustomer"}
+                "last_order": { "$ref": "#/definitions/ShopifyOrder" },
+                "customer": { "$ref": "#/definitions/ShopifyCustomer" }
             },
             "type": "object"
         },
@@ -1185,19 +1207,19 @@
                             "notContainsAny": {
                                 "label": "does not contain any of"
                             },
-                            "containsAll": {"label": "contains all of"},
-                            "startsWith": {"label": "starts with"},
-                            "contains": {"label": "contains"},
-                            "containsAny": {"label": "contains one of"},
-                            "eq": {"label": "is"},
+                            "containsAll": { "label": "contains all of" },
+                            "startsWith": { "label": "starts with" },
+                            "contains": { "label": "contains" },
+                            "containsAny": { "label": "contains one of" },
+                            "eq": { "label": "is" },
                             "notContainsAll": {
                                 "label": "does not contain all of"
                             },
-                            "neq": {"label": "is not"},
-                            "endsWith": {"label": "ends with"},
-                            "notContains": {"label": "does not contain"}
+                            "neq": { "label": "is not" },
+                            "endsWith": { "label": "ends with" },
+                            "notContains": { "label": "does not contain" }
                         },
-                        "rules": {"widget": "input"}
+                        "rules": { "widget": "input" }
                     },
                     "example": "Marie Curie",
                     "type": "string"
@@ -1209,19 +1231,19 @@
                             "notContainsAny": {
                                 "label": "does not contain any of"
                             },
-                            "containsAll": {"label": "contains all of"},
-                            "startsWith": {"label": "starts with"},
-                            "contains": {"label": "contains"},
-                            "containsAny": {"label": "contains one of"},
-                            "eq": {"label": "is"},
+                            "containsAll": { "label": "contains all of" },
+                            "startsWith": { "label": "starts with" },
+                            "contains": { "label": "contains" },
+                            "containsAny": { "label": "contains one of" },
+                            "eq": { "label": "is" },
                             "notContainsAll": {
                                 "label": "does not contain all of"
                             },
-                            "neq": {"label": "is not"},
-                            "endsWith": {"label": "ends with"},
-                            "notContains": {"label": "does not contain"}
+                            "neq": { "label": "is not" },
+                            "endsWith": { "label": "ends with" },
+                            "notContains": { "label": "does not contain" }
                         },
-                        "rules": {"widget": "input"}
+                        "rules": { "widget": "input" }
                     },
                     "example": "marie@gorgias.io",
                     "type": "string"
@@ -1233,8 +1255,8 @@
             "description": "A [UserChannel](#UserChannel-object) represents a way (an address) to communicate with a user.\nA [User](#User-object) can have multiple `UserChannel`.\nFor example a `User` can have multiple email addresses, phone numbers, etc.. All of these addresses are stored as an\nindividual [UserChannel](#UserChannel-object) object.",
             "required": ["type", "address"],
             "properties": {
-                "deleted_datetime": {"type": "string", "format": "date-time"},
-                "user": {"$ref": "#/definitions/DEPRECATED_User"},
+                "deleted_datetime": { "type": "string", "format": "date-time" },
+                "user": { "$ref": "#/definitions/DEPRECATED_User" },
                 "id": {
                     "description": "Primary key of the object",
                     "type": "integer",
@@ -1253,7 +1275,7 @@
                     "description": "Is this the preferred or (primary) channel to contact this user.",
                     "type": "boolean"
                 },
-                "customer": {"$ref": "#/definitions/DEPRECATED_User"},
+                "customer": { "$ref": "#/definitions/DEPRECATED_User" },
                 "address": {
                     "description": "Address can be email, phone, facebook id, etc...",
                     "example": "marie@gorgias.io",
@@ -1275,24 +1297,24 @@
         "RechargeSubscription": {
             "required": ["customer_id", "created_at", "id"],
             "properties": {
-                "customer_id": {"type": "integer", "format": "int32"},
+                "customer_id": { "type": "integer", "format": "int32" },
                 "product_title": {
                     "meta": {
                         "operators": {
                             "notContainsAny": {
                                 "label": "does not contain any of"
                             },
-                            "containsAll": {"label": "contains all of"},
-                            "startsWith": {"label": "starts with"},
-                            "contains": {"label": "contains"},
-                            "containsAny": {"label": "contains one of"},
-                            "eq": {"label": "is"},
+                            "containsAll": { "label": "contains all of" },
+                            "startsWith": { "label": "starts with" },
+                            "contains": { "label": "contains" },
+                            "containsAny": { "label": "contains one of" },
+                            "eq": { "label": "is" },
                             "notContainsAll": {
                                 "label": "does not contain all of"
                             },
-                            "neq": {"label": "is not"},
-                            "endsWith": {"label": "ends with"},
-                            "notContains": {"label": "does not contain"}
+                            "neq": { "label": "is not" },
+                            "endsWith": { "label": "ends with" },
+                            "notContains": { "label": "does not contain" }
                         }
                     },
                     "type": "string"
@@ -1300,8 +1322,8 @@
                 "order_interval_unit": {
                     "meta": {
                         "operators": {
-                            "eq": {"label": "is"},
-                            "neq": {"label": "is not"}
+                            "eq": { "label": "is" },
+                            "neq": { "label": "is not" }
                         }
                     },
                     "type": "string"
@@ -1313,8 +1335,8 @@
                                 "widget": "timedelta-select",
                                 "label": "less than"
                             },
-                            "gte": {"label": "after"},
-                            "lte": {"label": "before"},
+                            "gte": { "label": "after" },
+                            "lte": { "label": "before" },
                             "lteTimedelta": {
                                 "widget": "timedelta-select",
                                 "label": "more than"
@@ -1337,7 +1359,7 @@
                             }
                         },
                         "defaultOperator": "gteTimedelta",
-                        "rules": {"widget": "datetime-select"},
+                        "rules": { "widget": "datetime-select" },
                         "widget": "datetime-select"
                     },
                     "type": "string"
@@ -1345,14 +1367,14 @@
                 "order_interval_frequency": {
                     "meta": {
                         "operators": {
-                            "eq": {"label": "is"},
-                            "lt": {"label": "is less than"},
-                            "lte": {"label": "is less or equal to"},
-                            "neq": {"label": "is not"},
-                            "gt": {"label": "is greater than"},
-                            "gte": {"label": "is greater or equal to"}
+                            "eq": { "label": "is" },
+                            "lt": { "label": "is less than" },
+                            "lte": { "label": "is less or equal to" },
+                            "neq": { "label": "is not" },
+                            "gt": { "label": "is greater than" },
+                            "gte": { "label": "is greater or equal to" }
                         },
-                        "rules": {"widget": "number-input"},
+                        "rules": { "widget": "number-input" },
                         "widget": "number-input"
                     },
                     "type": "string"
@@ -1360,14 +1382,14 @@
                 "quantity": {
                     "meta": {
                         "operators": {
-                            "eq": {"label": "is"},
-                            "lt": {"label": "is less than"},
-                            "lte": {"label": "is less or equal to"},
-                            "neq": {"label": "is not"},
-                            "gt": {"label": "is greater than"},
-                            "gte": {"label": "is greater or equal to"}
+                            "eq": { "label": "is" },
+                            "lt": { "label": "is less than" },
+                            "lte": { "label": "is less or equal to" },
+                            "neq": { "label": "is not" },
+                            "gt": { "label": "is greater than" },
+                            "gte": { "label": "is greater or equal to" }
                         },
-                        "rules": {"widget": "number-input"},
+                        "rules": { "widget": "number-input" },
                         "widget": "number-input"
                     },
                     "type": "integer",
@@ -1380,8 +1402,8 @@
                                 "widget": "timedelta-select",
                                 "label": "less than"
                             },
-                            "gte": {"label": "after"},
-                            "lte": {"label": "before"},
+                            "gte": { "label": "after" },
+                            "lte": { "label": "before" },
                             "lteTimedelta": {
                                 "widget": "timedelta-select",
                                 "label": "more than"
@@ -1404,23 +1426,23 @@
                             }
                         },
                         "defaultOperator": "gteTimedelta",
-                        "rules": {"widget": "datetime-select"},
+                        "rules": { "widget": "datetime-select" },
                         "widget": "datetime-select"
                     },
                     "type": "string"
                 },
-                "id": {"type": "integer", "format": "int32"},
+                "id": { "type": "integer", "format": "int32" },
                 "price": {
                     "meta": {
                         "operators": {
-                            "eq": {"label": "is"},
-                            "lt": {"label": "is less than"},
-                            "lte": {"label": "is less or equal to"},
-                            "neq": {"label": "is not"},
-                            "gt": {"label": "is greater than"},
-                            "gte": {"label": "is greater or equal to"}
+                            "eq": { "label": "is" },
+                            "lt": { "label": "is less than" },
+                            "lte": { "label": "is less or equal to" },
+                            "neq": { "label": "is not" },
+                            "gt": { "label": "is greater than" },
+                            "gte": { "label": "is greater or equal to" }
                         },
-                        "rules": {"widget": "number-input"},
+                        "rules": { "widget": "number-input" },
                         "widget": "number-input"
                     },
                     "type": "number",
@@ -1436,14 +1458,14 @@
                     "type": "integer",
                     "format": "int32"
                 },
-                "name": {"type": "string"},
+                "name": { "type": "string" },
                 "uri": {
                     "description": "URI of the object - auto-generated",
                     "type": "string"
                 },
-                "user_id": {"type": "integer", "format": "int32"},
-                "data": {"type": "string"},
-                "type": {"type": "string"}
+                "user_id": { "type": "integer", "format": "int32" },
+                "data": { "type": "string" },
+                "type": { "type": "string" }
             },
             "type": "object"
         },
@@ -1452,14 +1474,14 @@
                 "price": {
                     "meta": {
                         "operators": {
-                            "eq": {"label": "is"},
-                            "lt": {"label": "is less than"},
-                            "lte": {"label": "is less or equal to"},
-                            "neq": {"label": "is not"},
-                            "gt": {"label": "is greater than"},
-                            "gte": {"label": "is greater or equal to"}
+                            "eq": { "label": "is" },
+                            "lt": { "label": "is less than" },
+                            "lte": { "label": "is less or equal to" },
+                            "neq": { "label": "is not" },
+                            "gt": { "label": "is greater than" },
+                            "gte": { "label": "is greater or equal to" }
                         },
-                        "rules": {"widget": "number-input"},
+                        "rules": { "widget": "number-input" },
                         "widget": "number-input"
                     },
                     "type": "string"
@@ -1475,7 +1497,7 @@
                     "description": "A list of [UserAuth](#UserAuth-object) objects. Each object represents a way to connect to Gorgias. This field is read-only.",
                     "many": true,
                     "type": "array",
-                    "items": {"$ref": "#/definitions/UserAuth"}
+                    "items": { "$ref": "#/definitions/UserAuth" }
                 },
                 "note": {
                     "description": "A note describing the customer.",
@@ -1510,7 +1532,7 @@
                     "description": "A list of [UserChannel](#UserChannel-object) objects. Each channel represents a way to communicate with a user. Example: email, phone, facebook, etc..",
                     "many": true,
                     "type": "array",
-                    "items": {"$ref": "#/definitions/UserChannel"}
+                    "items": { "$ref": "#/definitions/UserChannel" }
                 },
                 "country": {
                     "description": "Country of the user. We're using ISO_3166-1 (Alpha 2) codes from this list: https://en.wikipedia.org/wiki/ISO_3166-1",
@@ -1521,7 +1543,7 @@
                     "description": "A list of UserSetting objects. Each setting field represents a persona preference of a user.",
                     "many": true,
                     "type": "array",
-                    "items": {"$ref": "#/definitions/UserSetting"}
+                    "items": { "$ref": "#/definitions/UserSetting" }
                 },
                 "language": {
                     "description": "The preferred language of the user. We're using ISO_639-1 codes from this list: https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes",
@@ -1540,16 +1562,16 @@
                 },
                 "roles": {
                     "many": true,
-                    "items": {"$ref": "#/definitions/Role"},
+                    "items": { "$ref": "#/definitions/Role" },
                     "description": "A list of Role objects. Each account has a predefined list of roles so you only have to supply the name.",
                     "meta": {
                         "operators": {
-                            "eq": {"label": "is"},
-                            "neq": {"label": "is not"}
+                            "eq": { "label": "is" },
+                            "neq": { "label": "is not" }
                         },
-                        "rules": {"widget": "select"}
+                        "rules": { "widget": "select" }
                     },
-                    "example": [{"name": "user"}],
+                    "example": [{ "name": "user" }],
                     "type": "array"
                 },
                 "uri": {
@@ -1583,19 +1605,19 @@
                             "notContainsAny": {
                                 "label": "does not contain any of"
                             },
-                            "containsAll": {"label": "contains all of"},
-                            "startsWith": {"label": "starts with"},
-                            "contains": {"label": "contains"},
-                            "containsAny": {"label": "contains one of"},
-                            "eq": {"label": "is"},
+                            "containsAll": { "label": "contains all of" },
+                            "startsWith": { "label": "starts with" },
+                            "contains": { "label": "contains" },
+                            "containsAny": { "label": "contains one of" },
+                            "eq": { "label": "is" },
                             "notContainsAll": {
                                 "label": "does not contain all of"
                             },
-                            "neq": {"label": "is not"},
-                            "endsWith": {"label": "ends with"},
-                            "notContains": {"label": "does not contain"}
+                            "neq": { "label": "is not" },
+                            "endsWith": { "label": "ends with" },
+                            "notContains": { "label": "does not contain" }
                         },
-                        "rules": {"widget": "input"}
+                        "rules": { "widget": "input" }
                     },
                     "example": "marie@gorgias.io",
                     "type": "string",
@@ -1626,10 +1648,10 @@
                             "notContainsAll": {
                                 "label": "does not contain all of"
                             },
-                            "containsAll": {"label": "contains all of"},
-                            "contains": {"label": "contains"},
-                            "containsAny": {"label": "contains one of"},
-                            "notContains": {"label": "does not contain"}
+                            "containsAll": { "label": "contains all of" },
+                            "contains": { "label": "contains" },
+                            "containsAny": { "label": "contains one of" },
+                            "notContains": { "label": "does not contain" }
                         }
                     },
                     "example": {},
@@ -1685,7 +1707,7 @@
                 },
                 "meta": {
                     "description": "Free JSONB field for the developers. Can be used to add extra metadata about the satisfaction\n        survey. This field is not used by Gorgias.",
-                    "example": {"vip": true},
+                    "example": { "vip": true },
                     "type": "string"
                 },
                 "id": {
@@ -1700,14 +1722,14 @@
                     "format": "int32",
                     "meta": {
                         "operators": {
-                            "eq": {"label": "is"},
-                            "gt": {"label": "is greater than"},
-                            "gte": {"label": "is greater or equal to"},
-                            "lt": {"label": "is less than"},
-                            "lte": {"label": "is less or equal to"},
-                            "neq": {"label": "is not"}
+                            "eq": { "label": "is" },
+                            "gt": { "label": "is greater than" },
+                            "gte": { "label": "is greater or equal to" },
+                            "lt": { "label": "is less than" },
+                            "lte": { "label": "is less or equal to" },
+                            "neq": { "label": "is not" }
                         },
-                        "rules": {"widget": "csat-select"}
+                        "rules": { "widget": "csat-select" }
                     }
                 }
             },
@@ -1722,8 +1744,8 @@
                                 "widget": "timedelta-select",
                                 "label": "less than"
                             },
-                            "gte": {"label": "after"},
-                            "lte": {"label": "before"},
+                            "gte": { "label": "after" },
+                            "lte": { "label": "before" },
                             "lteTimedelta": {
                                 "widget": "timedelta-select",
                                 "label": "more than"
@@ -1746,7 +1768,7 @@
                             }
                         },
                         "defaultOperator": "gteTimedelta",
-                        "rules": {"widget": "datetime-select"},
+                        "rules": { "widget": "datetime-select" },
                         "widget": "datetime-select"
                     },
                     "type": "string"
@@ -1754,14 +1776,14 @@
                 "orders_count": {
                     "meta": {
                         "operators": {
-                            "eq": {"label": "is"},
-                            "lt": {"label": "is less than"},
-                            "lte": {"label": "is less or equal to"},
-                            "neq": {"label": "is not"},
-                            "gt": {"label": "is greater than"},
-                            "gte": {"label": "is greater or equal to"}
+                            "eq": { "label": "is" },
+                            "lt": { "label": "is less than" },
+                            "lte": { "label": "is less or equal to" },
+                            "neq": { "label": "is not" },
+                            "gt": { "label": "is greater than" },
+                            "gte": { "label": "is greater or equal to" }
                         },
-                        "rules": {"widget": "number-input"},
+                        "rules": { "widget": "number-input" },
                         "widget": "number-input"
                     },
                     "type": "integer",
@@ -1773,31 +1795,31 @@
                             "notContainsAny": {
                                 "label": "does not contain any of"
                             },
-                            "containsAll": {"label": "contains all of"},
-                            "contains": {"label": "contains"},
-                            "containsAny": {"label": "contains one of"},
-                            "eq": {"label": "is"},
+                            "containsAll": { "label": "contains all of" },
+                            "contains": { "label": "contains" },
+                            "containsAny": { "label": "contains one of" },
+                            "eq": { "label": "is" },
                             "notContainsAll": {
                                 "label": "does not contain all of"
                             },
-                            "neq": {"label": "is not"},
-                            "notContains": {"label": "does not contain"}
+                            "neq": { "label": "is not" },
+                            "notContains": { "label": "does not contain" }
                         }
                     },
                     "type": "string"
                 },
-                "id": {"type": "integer", "format": "int32"},
+                "id": { "type": "integer", "format": "int32" },
                 "total_spent": {
                     "meta": {
                         "operators": {
-                            "eq": {"label": "is"},
-                            "lt": {"label": "is less than"},
-                            "lte": {"label": "is less or equal to"},
-                            "neq": {"label": "is not"},
-                            "gt": {"label": "is greater than"},
-                            "gte": {"label": "is greater or equal to"}
+                            "eq": { "label": "is" },
+                            "lt": { "label": "is less than" },
+                            "lte": { "label": "is less or equal to" },
+                            "neq": { "label": "is not" },
+                            "gt": { "label": "is greater than" },
+                            "gte": { "label": "is greater or equal to" }
                         },
-                        "rules": {"widget": "number-input"},
+                        "rules": { "widget": "number-input" },
                         "widget": "number-input"
                     },
                     "type": "string"
@@ -1830,7 +1852,7 @@
                             "created_datetime"
                         ],
                         "properties": {
-                            "status": {"type": "string"},
+                            "status": { "type": "string" },
                             "trial_start_datetime": {
                                 "type": "string",
                                 "format": "date-time"
@@ -1839,23 +1861,23 @@
                                 "type": "string",
                                 "format": "date-time"
                             },
-                            "internal": {"type": "string"},
+                            "internal": { "type": "string" },
                             "created_datetime": {
                                 "type": "string",
                                 "format": "date-time"
                             },
-                            "stripe_id": {"type": "string"},
+                            "stripe_id": { "type": "string" },
                             "end_datetime": {
                                 "type": "string",
                                 "format": "date-time"
                             },
-                            "meta": {"type": "string"},
-                            "id": {"type": "integer", "format": "int32"},
+                            "meta": { "type": "string" },
+                            "id": { "type": "integer", "format": "int32" },
                             "start_datetime": {
                                 "type": "string",
                                 "format": "date-time"
                             },
-                            "is_active": {"type": "boolean"},
+                            "is_active": { "type": "boolean" },
                             "updated_datetime": {
                                 "type": "string",
                                 "format": "date-time"
@@ -1864,7 +1886,7 @@
                                 "type": "string",
                                 "format": "date-time"
                             },
-                            "plan": {"type": "string"}
+                            "plan": { "type": "string" }
                         },
                         "type": "object"
                     }
@@ -1921,7 +1943,7 @@
                         "created_datetime"
                     ],
                     "properties": {
-                        "status": {"type": "string"},
+                        "status": { "type": "string" },
                         "trial_start_datetime": {
                             "type": "string",
                             "format": "date-time"
@@ -1930,23 +1952,23 @@
                             "type": "string",
                             "format": "date-time"
                         },
-                        "internal": {"type": "string"},
+                        "internal": { "type": "string" },
                         "created_datetime": {
                             "type": "string",
                             "format": "date-time"
                         },
-                        "stripe_id": {"type": "string"},
+                        "stripe_id": { "type": "string" },
                         "end_datetime": {
                             "type": "string",
                             "format": "date-time"
                         },
-                        "meta": {"type": "string"},
-                        "id": {"type": "integer", "format": "int32"},
+                        "meta": { "type": "string" },
+                        "id": { "type": "integer", "format": "int32" },
                         "start_datetime": {
                             "type": "string",
                             "format": "date-time"
                         },
-                        "is_active": {"type": "boolean"},
+                        "is_active": { "type": "boolean" },
                         "updated_datetime": {
                             "type": "string",
                             "format": "date-time"
@@ -1955,7 +1977,7 @@
                             "type": "string",
                             "format": "date-time"
                         },
-                        "plan": {"type": "string"}
+                        "plan": { "type": "string" }
                     },
                     "type": "object"
                 },
@@ -1963,16 +1985,16 @@
                     "properties": {
                         "shopify_billing": {
                             "properties": {
-                                "charge_id": {"type": "string"},
-                                "active": {"type": "boolean"}
+                                "charge_id": { "type": "string" },
+                                "active": { "type": "boolean" }
                             },
                             "type": "object"
                         },
-                        "hasCreditCard": {"type": "boolean"},
-                        "company_domain": {"type": "string"},
-                        "company_id": {"type": "string"},
-                        "should_pay_with_shopify": {"type": "boolean"},
-                        "company_name": {"type": "string"}
+                        "hasCreditCard": { "type": "boolean" },
+                        "company_domain": { "type": "string" },
+                        "company_id": { "type": "string" },
+                        "should_pay_with_shopify": { "type": "boolean" },
+                        "company_name": { "type": "string" }
                     },
                     "type": "object"
                 },
@@ -1982,8 +2004,8 @@
                     "type": "array",
                     "items": {
                         "properties": {
-                            "data": {"type": "string"},
-                            "type": {"type": "string"},
+                            "data": { "type": "string" },
+                            "type": { "type": "string" },
                             "id": {
                                 "description": "Primary key of the object",
                                 "type": "integer",
@@ -2102,7 +2124,7 @@
                     "type": "string",
                     "format": "date-time"
                 },
-                "deleted_datetime": {"type": "string", "format": "date-time"},
+                "deleted_datetime": { "type": "string", "format": "date-time" },
                 "user": {
                     "description": "User which created this integration.",
                     "$ref": "#/definitions/DEPRECATED_User"
@@ -2128,14 +2150,14 @@
                                 "type": "integer",
                                 "format": "int32"
                             },
-                            "user": {"$ref": "#/definitions/DEPRECATED_User"},
+                            "user": { "$ref": "#/definitions/DEPRECATED_User" },
                             "uri": {
                                 "description": "URI of the object - auto-generated",
                                 "type": "string"
                             },
-                            "user_id": {"type": "integer", "format": "int32"},
-                            "data": {"type": "string"},
-                            "type": {"type": "string"}
+                            "user_id": { "type": "integer", "format": "int32" },
+                            "data": { "type": "string" },
+                            "type": { "type": "string" }
                         },
                         "type": "object"
                     }
@@ -2193,15 +2215,15 @@
                 "status": {
                     "meta": {
                         "operators": {
-                            "eq": {"label": "is"},
-                            "neq": {"label": "is not"}
+                            "eq": { "label": "is" },
+                            "neq": { "label": "is not" }
                         },
                         "enum": ["ACTIVE", "INACTIVE"],
-                        "rules": {"widget": "select"}
+                        "rules": { "widget": "select" }
                     },
                     "type": "string"
                 },
-                "id": {"type": "integer", "format": "int32"}
+                "id": { "type": "integer", "format": "int32" }
             },
             "type": "object"
         },
@@ -2213,14 +2235,14 @@
                 "total_line_items_price": {
                     "meta": {
                         "operators": {
-                            "eq": {"label": "is"},
-                            "lt": {"label": "is less than"},
-                            "lte": {"label": "is less or equal to"},
-                            "neq": {"label": "is not"},
-                            "gt": {"label": "is greater than"},
-                            "gte": {"label": "is greater or equal to"}
+                            "eq": { "label": "is" },
+                            "lt": { "label": "is less than" },
+                            "lte": { "label": "is less or equal to" },
+                            "neq": { "label": "is not" },
+                            "gt": { "label": "is greater than" },
+                            "gte": { "label": "is greater or equal to" }
                         },
-                        "rules": {"widget": "number-input"},
+                        "rules": { "widget": "number-input" },
                         "widget": "number-input"
                     },
                     "type": "string"
@@ -2228,14 +2250,14 @@
                 "total_discounts": {
                     "meta": {
                         "operators": {
-                            "eq": {"label": "is"},
-                            "lt": {"label": "is less than"},
-                            "lte": {"label": "is less or equal to"},
-                            "neq": {"label": "is not"},
-                            "gt": {"label": "is greater than"},
-                            "gte": {"label": "is greater or equal to"}
+                            "eq": { "label": "is" },
+                            "lt": { "label": "is less than" },
+                            "lte": { "label": "is less or equal to" },
+                            "neq": { "label": "is not" },
+                            "gt": { "label": "is greater than" },
+                            "gte": { "label": "is greater or equal to" }
                         },
-                        "rules": {"widget": "number-input"},
+                        "rules": { "widget": "number-input" },
                         "widget": "number-input"
                     },
                     "type": "string"
@@ -2246,15 +2268,15 @@
                             "notContainsAny": {
                                 "label": "does not contain any of"
                             },
-                            "containsAll": {"label": "contains all of"},
-                            "contains": {"label": "contains"},
-                            "containsAny": {"label": "contains one of"},
-                            "eq": {"label": "is"},
+                            "containsAll": { "label": "contains all of" },
+                            "contains": { "label": "contains" },
+                            "containsAny": { "label": "contains one of" },
+                            "eq": { "label": "is" },
                             "notContainsAll": {
                                 "label": "does not contain all of"
                             },
-                            "neq": {"label": "is not"},
-                            "notContains": {"label": "does not contain"}
+                            "neq": { "label": "is not" },
+                            "notContains": { "label": "does not contain" }
                         }
                     },
                     "type": "string"
@@ -2269,8 +2291,8 @@
                                 "widget": "timedelta-select",
                                 "label": "less than"
                             },
-                            "gte": {"label": "after"},
-                            "lte": {"label": "before"},
+                            "gte": { "label": "after" },
+                            "lte": { "label": "before" },
                             "lteTimedelta": {
                                 "widget": "timedelta-select",
                                 "label": "more than"
@@ -2293,7 +2315,7 @@
                             }
                         },
                         "defaultOperator": "gteTimedelta",
-                        "rules": {"widget": "datetime-select"},
+                        "rules": { "widget": "datetime-select" },
                         "widget": "datetime-select"
                     },
                     "type": "string"
@@ -2301,14 +2323,14 @@
                 "total_price": {
                     "meta": {
                         "operators": {
-                            "eq": {"label": "is"},
-                            "lt": {"label": "is less than"},
-                            "lte": {"label": "is less or equal to"},
-                            "neq": {"label": "is not"},
-                            "gt": {"label": "is greater than"},
-                            "gte": {"label": "is greater or equal to"}
+                            "eq": { "label": "is" },
+                            "lt": { "label": "is less than" },
+                            "lte": { "label": "is less or equal to" },
+                            "neq": { "label": "is not" },
+                            "gt": { "label": "is greater than" },
+                            "gte": { "label": "is greater or equal to" }
                         },
-                        "rules": {"widget": "number-input"},
+                        "rules": { "widget": "number-input" },
                         "widget": "number-input"
                     },
                     "type": "string"
@@ -2316,19 +2338,19 @@
                 "subtotal_price": {
                     "meta": {
                         "operators": {
-                            "eq": {"label": "is"},
-                            "lt": {"label": "is less than"},
-                            "lte": {"label": "is less or equal to"},
-                            "neq": {"label": "is not"},
-                            "gt": {"label": "is greater than"},
-                            "gte": {"label": "is greater or equal to"}
+                            "eq": { "label": "is" },
+                            "lt": { "label": "is less than" },
+                            "lte": { "label": "is less or equal to" },
+                            "neq": { "label": "is not" },
+                            "gt": { "label": "is greater than" },
+                            "gte": { "label": "is greater or equal to" }
                         },
-                        "rules": {"widget": "number-input"},
+                        "rules": { "widget": "number-input" },
                         "widget": "number-input"
                     },
                     "type": "string"
                 },
-                "shipping_address": {"$ref": "#/definitions/ShopifyAddress"}
+                "shipping_address": { "$ref": "#/definitions/ShopifyAddress" }
             },
             "type": "object"
         },
@@ -2409,7 +2431,7 @@
                     "description": "A list of [Action](#Action-object) objects that are to be executed when the Macro is used.",
                     "many": true,
                     "type": "array",
-                    "items": {"$ref": "#/definitions/Action"}
+                    "items": { "$ref": "#/definitions/Action" }
                 },
                 "id": {
                     "description": "Primary key of the object",
@@ -2440,7 +2462,7 @@
                     "description": "Field reserved for future use.",
                     "type": "string"
                 },
-                "deleted_datetime": {"type": "string", "format": "date-time"}
+                "deleted_datetime": { "type": "string", "format": "date-time" }
             },
             "type": "object"
         },
@@ -2452,7 +2474,7 @@
                     "description": "A list of [UserAuth](#UserAuth-object) objects. Each object represents a way to connect to Gorgias. This field is read-only.",
                     "many": true,
                     "type": "array",
-                    "items": {"$ref": "#/definitions/UserAuth"}
+                    "items": { "$ref": "#/definitions/UserAuth" }
                 },
                 "meta": {
                     "description": "User defined JSON field. It can be useful for storing additional info about the object.",
@@ -2475,19 +2497,19 @@
                             "notContainsAny": {
                                 "label": "does not contain any of"
                             },
-                            "containsAll": {"label": "contains all of"},
-                            "startsWith": {"label": "starts with"},
-                            "contains": {"label": "contains"},
-                            "containsAny": {"label": "contains one of"},
-                            "eq": {"label": "is"},
+                            "containsAll": { "label": "contains all of" },
+                            "startsWith": { "label": "starts with" },
+                            "contains": { "label": "contains" },
+                            "containsAny": { "label": "contains one of" },
+                            "eq": { "label": "is" },
                             "notContainsAll": {
                                 "label": "does not contain all of"
                             },
-                            "neq": {"label": "is not"},
-                            "endsWith": {"label": "ends with"},
-                            "notContains": {"label": "does not contain"}
+                            "neq": { "label": "is not" },
+                            "endsWith": { "label": "ends with" },
+                            "notContains": { "label": "does not contain" }
                         },
-                        "rules": {"widget": "input"}
+                        "rules": { "widget": "input" }
                     },
                     "example": "marie@gorgias.io",
                     "type": "string",
@@ -2507,7 +2529,7 @@
                     "description": "A list of [UserChannel](#UserChannel-object) objects. Each channel represents a way to communicate with a user. Example: email, phone, facebook, etc..",
                     "many": true,
                     "type": "array",
-                    "items": {"$ref": "#/definitions/UserChannel"}
+                    "items": { "$ref": "#/definitions/UserChannel" }
                 },
                 "country": {
                     "description": "Country of the user. We're using ISO_3166-1 (Alpha 2) codes from this list: https://en.wikipedia.org/wiki/ISO_3166-1",
@@ -2524,10 +2546,10 @@
                             "notContainsAll": {
                                 "label": "does not contain all of"
                             },
-                            "containsAll": {"label": "contains all of"},
-                            "contains": {"label": "contains"},
-                            "containsAny": {"label": "contains one of"},
-                            "notContains": {"label": "does not contain"}
+                            "containsAll": { "label": "contains all of" },
+                            "contains": { "label": "contains" },
+                            "containsAny": { "label": "contains one of" },
+                            "notContains": { "label": "does not contain" }
                         }
                     },
                     "example": {},
@@ -2537,7 +2559,7 @@
                     "description": "A list of UserSetting objects. Each setting field represents a persona preference of a user.",
                     "many": true,
                     "type": "array",
-                    "items": {"$ref": "#/definitions/UserSetting"}
+                    "items": { "$ref": "#/definitions/UserSetting" }
                 },
                 "language": {
                     "description": "The preferred language of the user. We're using ISO_639-1 codes from this list: https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes",
@@ -2551,16 +2573,16 @@
                 },
                 "roles": {
                     "many": true,
-                    "items": {"$ref": "#/definitions/Role"},
+                    "items": { "$ref": "#/definitions/Role" },
                     "description": "A list of Role objects. Each account has a predefined list of roles so you only have to supply the name.",
                     "meta": {
                         "operators": {
-                            "eq": {"label": "is"},
-                            "neq": {"label": "is not"}
+                            "eq": { "label": "is" },
+                            "neq": { "label": "is not" }
                         },
-                        "rules": {"widget": "select"}
+                        "rules": { "widget": "select" }
                     },
-                    "example": [{"name": "user"}],
+                    "example": [{ "name": "user" }],
                     "type": "array"
                 },
                 "name": {
@@ -2622,12 +2644,12 @@
                             "notContainsAll": {
                                 "label": "does not contain all of"
                             },
-                            "containsAll": {"label": "contains all of"},
-                            "contains": {"label": "contains"},
-                            "containsAny": {"label": "contains one of"},
-                            "notContains": {"label": "does not contain"}
+                            "containsAll": { "label": "contains all of" },
+                            "contains": { "label": "contains" },
+                            "containsAny": { "label": "contains one of" },
+                            "notContains": { "label": "does not contain" }
                         },
-                        "rules": {"hide": true}
+                        "rules": { "hide": true }
                     },
                     "example": {},
                     "type": "string"
@@ -2637,7 +2659,7 @@
         },
         "AllIntegrationsData": {
             "properties": {
-                "shopify": {"$ref": "#/definitions/ShopifyIntegrationData"},
+                "shopify": { "$ref": "#/definitions/ShopifyIntegrationData" },
                 "other": {
                     "meta": {
                         "operators": {
@@ -2647,16 +2669,16 @@
                             "notContainsAll": {
                                 "label": "does not contain all of"
                             },
-                            "containsAll": {"label": "contains all of"},
-                            "contains": {"label": "contains"},
-                            "containsAny": {"label": "contains one of"},
-                            "notContains": {"label": "does not contain"}
+                            "containsAll": { "label": "contains all of" },
+                            "contains": { "label": "contains" },
+                            "containsAny": { "label": "contains one of" },
+                            "notContains": { "label": "does not contain" }
                         }
                     },
                     "type": "string"
                 },
-                "smile": {"$ref": "#/definitions/SmileIntegrationData"},
-                "recharge": {"$ref": "#/definitions/RechargeIntegrationData"}
+                "smile": { "$ref": "#/definitions/SmileIntegrationData" },
+                "recharge": { "$ref": "#/definitions/RechargeIntegrationData" }
             },
             "type": "object"
         },
@@ -2743,7 +2765,7 @@
                 },
                 "type": {
                     "description": "Used to identify what list it should filter.",
-                    "meta": {"enum": ["ticket-list", "customer-list"]},
+                    "meta": { "enum": ["ticket-list", "customer-list"] },
                     "example": "ticket-list",
                     "type": "string"
                 }
@@ -2758,10 +2780,10 @@
                     "description": "When the message was actually sent from Gorgias. Because message sending is async, Gorgias will update this field once the message was processed and delivered via it's corresponding integration.",
                     "meta": {
                         "operators": {
-                            "isNotEmpty": {"label": "is not empty"},
-                            "gte": {"label": "after"},
-                            "isEmpty": {"label": "is empty"},
-                            "lte": {"label": "before"},
+                            "isNotEmpty": { "label": "is not empty" },
+                            "gte": { "label": "after" },
+                            "isEmpty": { "label": "is empty" },
+                            "lte": { "label": "before" },
                             "lteTimedelta": {
                                 "widget": "timedelta-select",
                                 "label": "more than"
@@ -2799,8 +2821,8 @@
                                 "widget": "timedelta-select",
                                 "label": "less than"
                             },
-                            "gte": {"label": "after"},
-                            "lte": {"label": "before"},
+                            "gte": { "label": "after" },
+                            "lte": { "label": "before" },
                             "lteTimedelta": {
                                 "widget": "timedelta-select",
                                 "label": "more than"
@@ -2823,7 +2845,7 @@
                             }
                         },
                         "defaultOperator": "gteTimedelta",
-                        "rules": {"widget": "datetime-select"},
+                        "rules": { "widget": "datetime-select" },
                         "widget": "datetime-select"
                     },
                     "type": "string",
@@ -2831,7 +2853,7 @@
                 },
                 "sender": {
                     "description": "The User object who sent this message.",
-                    "example": {"id": 7},
+                    "example": { "id": 7 },
                     "$ref": "#/definitions/DEPRECATED_User"
                 },
                 "public": {
@@ -2839,12 +2861,12 @@
                     "default": true,
                     "meta": {
                         "operators": {
-                            "eq": {"label": "is"},
-                            "neq": {"label": "is not"}
+                            "eq": { "label": "is" },
+                            "neq": { "label": "is not" }
                         },
                         "enum": ["true", "false"],
                         "show": ["rules"],
-                        "rules": {"widget": "select"},
+                        "rules": { "widget": "select" },
                         "widget": "select"
                     },
                     "type": "boolean",
@@ -2857,9 +2879,9 @@
                 "macros": {
                     "description": "An array of macros applied to this message.",
                     "many": true,
-                    "example": [{"id": 5132}],
+                    "example": [{ "id": 5132 }],
                     "type": "array",
-                    "items": {"$ref": "#/definitions/Macro"}
+                    "items": { "$ref": "#/definitions/Macro" }
                 },
                 "failed_datetime": {
                     "description": "If the message sending failed this field will be set with the datetime when it happened. Failed messages can usually be retried.",
@@ -2879,17 +2901,17 @@
                             "notContainsAny": {
                                 "label": "does not contain any of"
                             },
-                            "containsAll": {"label": "contains all of"},
-                            "startsWith": {"label": "starts with"},
-                            "contains": {"label": "contains"},
-                            "containsAny": {"label": "contains one of"},
-                            "eq": {"label": "is"},
+                            "containsAll": { "label": "contains all of" },
+                            "startsWith": { "label": "starts with" },
+                            "contains": { "label": "contains" },
+                            "containsAny": { "label": "contains one of" },
+                            "eq": { "label": "is" },
                             "notContainsAll": {
                                 "label": "does not contain all of"
                             },
-                            "neq": {"label": "is not"},
-                            "endsWith": {"label": "ends with"},
-                            "notContains": {"label": "does not contain"}
+                            "neq": { "label": "is not" },
+                            "endsWith": { "label": "ends with" },
+                            "notContains": { "label": "does not contain" }
                         },
                         "rules": {
                             "widget": "input",
@@ -2907,19 +2929,19 @@
                             "notContainsAny": {
                                 "label": "does not contain any of"
                             },
-                            "containsAll": {"label": "contains all of"},
-                            "startsWith": {"label": "starts with"},
-                            "contains": {"label": "contains"},
-                            "containsAny": {"label": "contains one of"},
-                            "eq": {"label": "is"},
+                            "containsAll": { "label": "contains all of" },
+                            "startsWith": { "label": "starts with" },
+                            "contains": { "label": "contains" },
+                            "containsAny": { "label": "contains one of" },
+                            "eq": { "label": "is" },
                             "notContainsAll": {
                                 "label": "does not contain all of"
                             },
-                            "neq": {"label": "is not"},
-                            "endsWith": {"label": "ends with"},
-                            "notContains": {"label": "does not contain"}
+                            "neq": { "label": "is not" },
+                            "endsWith": { "label": "ends with" },
+                            "notContains": { "label": "does not contain" }
                         },
-                        "rules": {"widget": "input", "hide": true}
+                        "rules": { "widget": "input", "hide": true }
                     },
                     "example": "Hello,<br><br>\n\n        I can't place an order on your site, it says: I don't have enough credit.<br>\n        How can I add some credits?<br><br>\n\n        Cheers,<br>\n        John Doe\n        ",
                     "type": "string"
@@ -2933,8 +2955,8 @@
                     "description": "The channel used to send this message.",
                     "meta": {
                         "operators": {
-                            "eq": {"label": "is"},
-                            "neq": {"label": "is not"}
+                            "eq": { "label": "is" },
+                            "neq": { "label": "is not" }
                         },
                         "enum": [
                             "aircall",
@@ -2949,11 +2971,11 @@
                             "sms",
                             "twitter"
                         ],
-                        "filters": {"widget": "multi-select"},
-                        "rules": {"widget": "select"},
+                        "filters": { "widget": "multi-select" },
+                        "rules": { "widget": "select" },
                         "views": {
                             "additional_operators": {
-                                "containsAny": {"label": "is one of"}
+                                "containsAny": { "label": "is one of" }
                             }
                         }
                     },
@@ -2964,12 +2986,12 @@
                     "description": "Indicates whether this message was sent by a user (agent or admins) or a customer.",
                     "meta": {
                         "operators": {
-                            "eq": {"label": "is"},
-                            "neq": {"label": "is not"}
+                            "eq": { "label": "is" },
+                            "neq": { "label": "is not" }
                         },
                         "enum": ["true", "false"],
                         "show": ["rules"],
-                        "rules": {"widget": "select"},
+                        "rules": { "widget": "select" },
                         "widget": "select"
                     },
                     "type": "boolean"
@@ -2986,15 +3008,15 @@
                 },
                 "receiver": {
                     "description": "The User who received this message.",
-                    "example": {"id": 8},
+                    "example": { "id": 8 },
                     "$ref": "#/definitions/DEPRECATED_User"
                 },
                 "rule_id": {
                     "description": "Id of the rule which sent this message, if any.",
                     "meta": {
                         "operators": {
-                            "eq": {"label": "is"},
-                            "neq": {"label": "is not"}
+                            "eq": { "label": "is" },
+                            "neq": { "label": "is not" }
                         }
                     },
                     "example": 89465,
@@ -3005,8 +3027,8 @@
                     "description": "Id of the integration with which this message has been received or sent.",
                     "meta": {
                         "operators": {
-                            "eq": {"label": "is"},
-                            "neq": {"label": "is not"}
+                            "eq": { "label": "is" },
+                            "neq": { "label": "is not" }
                         },
                         "rules": {
                             "widget": "integration-select",
@@ -3014,7 +3036,7 @@
                         },
                         "views": {
                             "additional_operators": {
-                                "containsAny": {"label": "is one of"}
+                                "containsAny": { "label": "is one of" }
                             }
                         }
                     },
@@ -3065,8 +3087,8 @@
                     "description": "Indicates from which origin the ticket has been created. For example, it can be `api`, `helpdesk`, `user_form`....",
                     "meta": {
                         "operators": {
-                            "eq": {"label": "is"},
-                            "neq": {"label": "is not"}
+                            "eq": { "label": "is" },
+                            "neq": { "label": "is not" }
                         },
                         "enum": [
                             "api",
@@ -3086,13 +3108,13 @@
                             "twitter",
                             "instagram"
                         ],
-                        "filters": {"widget": "multi-select"},
-                        "rules": {"widget": "select"}
+                        "filters": { "widget": "multi-select" },
+                        "rules": { "widget": "select" }
                     },
                     "example": "api",
                     "type": "string"
                 },
-                "deleted_datetime": {"type": "string", "format": "date-time"},
+                "deleted_datetime": { "type": "string", "format": "date-time" },
                 "ticket_id": {
                     "description": "The ID of the ticket this message is associated with.",
                     "example": 12,
@@ -3111,19 +3133,19 @@
                             "notContainsAny": {
                                 "label": "does not contain any of"
                             },
-                            "containsAll": {"label": "contains all of"},
-                            "startsWith": {"label": "starts with"},
-                            "contains": {"label": "contains"},
-                            "containsAny": {"label": "contains one of"},
-                            "eq": {"label": "is"},
+                            "containsAll": { "label": "contains all of" },
+                            "startsWith": { "label": "starts with" },
+                            "contains": { "label": "contains" },
+                            "containsAny": { "label": "contains one of" },
+                            "eq": { "label": "is" },
                             "notContainsAll": {
                                 "label": "does not contain all of"
                             },
-                            "neq": {"label": "is not"},
-                            "endsWith": {"label": "ends with"},
-                            "notContains": {"label": "does not contain"}
+                            "neq": { "label": "is not" },
+                            "endsWith": { "label": "ends with" },
+                            "notContains": { "label": "does not contain" }
                         },
-                        "rules": {"widget": "input", "label": "body"}
+                        "rules": { "widget": "input", "label": "body" }
                     },
                     "type": "string"
                 },
@@ -3132,7 +3154,7 @@
                     "many": true,
                     "example": [],
                     "type": "array",
-                    "items": {"$ref": "#/definitions/Attachment"}
+                    "items": { "$ref": "#/definitions/Attachment" }
                 }
             },
             "type": "object"
@@ -3142,10 +3164,10 @@
                 "status": {
                     "meta": {
                         "operators": {
-                            "eq": {"label": "is"},
-                            "isNotEmpty": {"label": "is not empty"},
-                            "neq": {"label": "is not"},
-                            "isEmpty": {"label": "is empty"}
+                            "eq": { "label": "is" },
+                            "isNotEmpty": { "label": "is not empty" },
+                            "neq": { "label": "is not" },
+                            "isEmpty": { "label": "is empty" }
                         },
                         "enum": [
                             "failure",
@@ -3156,15 +3178,15 @@
                             "error",
                             "failure"
                         ],
-                        "rules": {"widget": "select"}
+                        "rules": { "widget": "select" }
                     },
                     "type": "string"
                 },
                 "tracking_number": {
                     "meta": {
                         "operators": {
-                            "isNotEmpty": {"label": "is not empty"},
-                            "isEmpty": {"label": "is empty"}
+                            "isNotEmpty": { "label": "is not empty" },
+                            "isEmpty": { "label": "is empty" }
                         }
                     },
                     "type": "string"
@@ -3172,8 +3194,8 @@
                 "service": {
                     "meta": {
                         "operators": {
-                            "eq": {"label": "is"},
-                            "neq": {"label": "is not"}
+                            "eq": { "label": "is" },
+                            "neq": { "label": "is not" }
                         }
                     },
                     "type": "string"
@@ -3181,8 +3203,8 @@
                 "tracking_company": {
                     "meta": {
                         "operators": {
-                            "eq": {"label": "is"},
-                            "neq": {"label": "is not"}
+                            "eq": { "label": "is" },
+                            "neq": { "label": "is not" }
                         }
                     },
                     "type": "string"
@@ -3194,8 +3216,8 @@
                                 "widget": "timedelta-select",
                                 "label": "less than"
                             },
-                            "gte": {"label": "after"},
-                            "lte": {"label": "before"},
+                            "gte": { "label": "after" },
+                            "lte": { "label": "before" },
                             "lteTimedelta": {
                                 "widget": "timedelta-select",
                                 "label": "more than"
@@ -3218,7 +3240,7 @@
                             }
                         },
                         "defaultOperator": "gteTimedelta",
-                        "rules": {"widget": "datetime-select"},
+                        "rules": { "widget": "datetime-select" },
                         "widget": "datetime-select"
                     },
                     "type": "string"
@@ -3270,13 +3292,13 @@
                     "description": "A list of BCC addresses. Only present in an email context.",
                     "many": true,
                     "type": "array",
-                    "items": {"$ref": "#/definitions/SourceAddress"}
+                    "items": { "$ref": "#/definitions/SourceAddress" }
                 },
                 "cc": {
                     "description": "A list of CC addresses. Only present in an email context.",
                     "many": true,
                     "type": "array",
-                    "items": {"$ref": "#/definitions/SourceAddress"}
+                    "items": { "$ref": "#/definitions/SourceAddress" }
                 },
                 "type": {
                     "description": "(Obsolete)\n        Describes a more detailed channel information of how the message was sent/received.\n        This field will be removed soon.",
@@ -3286,7 +3308,7 @@
                     "description": "A list of To addresses. To and From are usually present for most channel types.",
                     "many": true,
                     "type": "array",
-                    "items": {"$ref": "#/definitions/SourceAddress"}
+                    "items": { "$ref": "#/definitions/SourceAddress" }
                 }
             },
             "type": "object"
@@ -3296,8 +3318,8 @@
                 "name": {
                     "meta": {
                         "operators": {
-                            "eq": {"label": "is"},
-                            "neq": {"label": "is not"}
+                            "eq": { "label": "is" },
+                            "neq": { "label": "is not" }
                         }
                     },
                     "type": "string"
@@ -3382,7 +3404,9 @@
         },
         "SmileIntegrationData": {
             "required": ["customer"],
-            "properties": {"customer": {"$ref": "#/definitions/SmileCustomer"}},
+            "properties": {
+                "customer": { "$ref": "#/definitions/SmileCustomer" }
+            },
             "type": "object"
         },
         "Role": {
@@ -3393,8 +3417,8 @@
                     "description": "Name of the role. Possible values are: user, basic-agent, agent, observer-agent, lite-agent, admin.",
                     "meta": {
                         "operators": {
-                            "eq": {"label": "is"},
-                            "neq": {"label": "is not"}
+                            "eq": { "label": "is" },
+                            "neq": { "label": "is not" }
                         },
                         "enum": [
                             "user",
@@ -3404,8 +3428,8 @@
                             "lite-agent",
                             "admin"
                         ],
-                        "filters": {"widget": "select"},
-                        "rules": {"widget": "select"}
+                        "filters": { "widget": "select" },
+                        "rules": { "widget": "select" }
                     },
                     "type": "string"
                 },
@@ -3513,8 +3537,8 @@
                 "country": {
                     "meta": {
                         "operators": {
-                            "eq": {"label": "is"},
-                            "neq": {"label": "is not"}
+                            "eq": { "label": "is" },
+                            "neq": { "label": "is not" }
                         }
                     },
                     "type": "string"
@@ -3531,7 +3555,7 @@
                     "type": "string",
                     "format": "date-time"
                 },
-                "deleted_datetime": {"type": "string", "format": "date-time"},
+                "deleted_datetime": { "type": "string", "format": "date-time" },
                 "name": {
                     "description": "Name of the tag. Keep it simple, a short 1 word tag is the best. The tag names are case sensitive.",
                     "meta": {
@@ -3542,12 +3566,12 @@
                             "notContainsAll": {
                                 "label": "does not contain all of"
                             },
-                            "containsAll": {"label": "contains all of"},
-                            "contains": {"label": "contains"},
-                            "isEmpty": {"label": "is empty"},
-                            "isNotEmpty": {"label": "is not empty"},
-                            "containsAny": {"label": "contains one of"},
-                            "notContains": {"label": "does not contain"}
+                            "containsAll": { "label": "contains all of" },
+                            "contains": { "label": "contains" },
+                            "isEmpty": { "label": "is empty" },
+                            "isNotEmpty": { "label": "is not empty" },
+                            "containsAny": { "label": "contains one of" },
+                            "notContains": { "label": "does not contain" }
                         }
                     },
                     "example": "refund",
@@ -3579,7 +3603,7 @@
                 },
                 "decoration": {
                     "description": "A JSON field that is used to decorate the tag with color and/or and icon.",
-                    "default": {"color": "#0693E3"},
+                    "default": { "color": "#0693E3" },
                     "type": "string"
                 }
             },
@@ -3589,21 +3613,21 @@
             "description": "(Obsolete) - This object will be removed soon. Please do not use it.",
             "required": ["url"],
             "properties": {
-                "headers": {"type": "string"},
-                "integration": {"$ref": "#/definitions/Integration"},
-                "form": {"type": "string"},
+                "headers": { "type": "string" },
+                "integration": { "$ref": "#/definitions/Integration" },
+                "form": { "type": "string" },
                 "request_content_type": {
                     "default": "application/json",
                     "type": "string"
                 },
-                "triggers": {"type": "string"},
+                "triggers": { "type": "string" },
                 "uri": {
                     "description": "URI of the object - auto-generated",
                     "type": "string"
                 },
-                "method": {"type": "string"},
-                "url": {"type": "string"},
-                "execution_order": {"type": "integer", "format": "int32"},
+                "method": { "type": "string" },
+                "url": { "type": "string" },
+                "execution_order": { "type": "integer", "format": "int32" },
                 "id": {
                     "description": "Primary key of the object",
                     "type": "integer",
@@ -3650,32 +3674,32 @@
                 "state": {
                     "meta": {
                         "operators": {
-                            "eq": {"label": "is"},
-                            "neq": {"label": "is not"}
+                            "eq": { "label": "is" },
+                            "neq": { "label": "is not" }
                         },
                         "enum": ["member", "candidate", "disabled"],
-                        "rules": {"widget": "select"}
+                        "rules": { "widget": "select" }
                     },
                     "type": "string"
                 },
                 "points_balance": {
                     "meta": {
                         "operators": {
-                            "eq": {"label": "is"},
-                            "lt": {"label": "is less than"},
-                            "lte": {"label": "is less or equal to"},
-                            "neq": {"label": "is not"},
-                            "gt": {"label": "is greater than"},
-                            "gte": {"label": "is greater or equal to"}
+                            "eq": { "label": "is" },
+                            "lt": { "label": "is less than" },
+                            "lte": { "label": "is less or equal to" },
+                            "neq": { "label": "is not" },
+                            "gt": { "label": "is greater than" },
+                            "gte": { "label": "is greater or equal to" }
                         },
-                        "rules": {"widget": "number-input"},
+                        "rules": { "widget": "number-input" },
                         "widget": "number-input"
                     },
                     "type": "integer",
                     "format": "int32"
                 },
-                "vip_tier": {"$ref": "#/definitions/SmileVipTierSchema"},
-                "id": {"type": "integer", "format": "int32"}
+                "vip_tier": { "$ref": "#/definitions/SmileVipTierSchema" },
+                "id": { "type": "integer", "format": "int32" }
             },
             "type": "object"
         },
@@ -3687,7 +3711,7 @@
                     "description": "All the messages of the ticket.",
                     "many": true,
                     "type": "array",
-                    "items": {"$ref": "#/definitions/TicketMessage"}
+                    "items": { "$ref": "#/definitions/TicketMessage" }
                 },
                 "created_datetime": {
                     "description": "When the ticket was created.",
@@ -3697,8 +3721,8 @@
                                 "widget": "timedelta-select",
                                 "label": "less than"
                             },
-                            "gte": {"label": "after"},
-                            "lte": {"label": "before"},
+                            "gte": { "label": "after" },
+                            "lte": { "label": "before" },
                             "lteTimedelta": {
                                 "widget": "timedelta-select",
                                 "label": "more than"
@@ -3721,7 +3745,7 @@
                             }
                         },
                         "defaultOperator": "gteTimedelta",
-                        "rules": {"widget": "datetime-select"},
+                        "rules": { "widget": "datetime-select" },
                         "widget": "datetime-select"
                     },
                     "type": "string",
@@ -3735,8 +3759,8 @@
                                 "widget": "timedelta-select",
                                 "label": "less than"
                             },
-                            "gte": {"label": "after"},
-                            "lte": {"label": "before"},
+                            "gte": { "label": "after" },
+                            "lte": { "label": "before" },
                             "lteTimedelta": {
                                 "widget": "timedelta-select",
                                 "label": "more than"
@@ -3759,7 +3783,7 @@
                             }
                         },
                         "defaultOperator": "gteTimedelta",
-                        "rules": {"widget": "datetime-select"},
+                        "rules": { "widget": "datetime-select" },
                         "widget": "datetime-select"
                     },
                     "type": "string"
@@ -3772,10 +3796,10 @@
                     "description": "The user who is requesting something in this ticket.",
                     "meta": {
                         "operators": {
-                            "eq": {"label": "is"},
-                            "neq": {"label": "is not"}
+                            "eq": { "label": "is" },
+                            "neq": { "label": "is not" }
                         },
-                        "rules": {"hide": true}
+                        "rules": { "hide": true }
                     },
                     "example": {
                         "lastname": "Doe",
@@ -3812,7 +3836,7 @@
                     },
                     "$ref": "#/definitions/DEPRECATED_User"
                 },
-                "reply_options": {"type": "string"},
+                "reply_options": { "type": "string" },
                 "last_received_message_datetime": {
                     "description": "When a message was received for the last time.",
                     "meta": {
@@ -3821,8 +3845,8 @@
                                 "widget": "timedelta-select",
                                 "label": "less than"
                             },
-                            "gte": {"label": "after"},
-                            "lte": {"label": "before"},
+                            "gte": { "label": "after" },
+                            "lte": { "label": "before" },
                             "lteTimedelta": {
                                 "widget": "timedelta-select",
                                 "label": "more than"
@@ -3845,7 +3869,7 @@
                             }
                         },
                         "defaultOperator": "gteTimedelta",
-                        "rules": {"widget": "datetime-select"},
+                        "rules": { "widget": "datetime-select" },
                         "widget": "datetime-select"
                     },
                     "type": "string",
@@ -3855,8 +3879,8 @@
                     "description": "When the ticket will be automatically re-open. Set if an agent wants to come back to this ticket later",
                     "meta": {
                         "operators": {
-                            "isNotEmpty": {"label": "is not empty"},
-                            "isEmpty": {"label": "is empty"}
+                            "isNotEmpty": { "label": "is not empty" },
+                            "isEmpty": { "label": "is empty" }
                         }
                     },
                     "type": "string",
@@ -3870,8 +3894,8 @@
                                 "widget": "timedelta-select",
                                 "label": "less than"
                             },
-                            "gte": {"label": "after"},
-                            "lte": {"label": "before"},
+                            "gte": { "label": "after" },
+                            "lte": { "label": "before" },
                             "lteTimedelta": {
                                 "widget": "timedelta-select",
                                 "label": "more than"
@@ -3894,7 +3918,7 @@
                             }
                         },
                         "defaultOperator": "gteTimedelta",
-                        "rules": {"widget": "datetime-select"},
+                        "rules": { "widget": "datetime-select" },
                         "widget": "datetime-select"
                     },
                     "type": "string",
@@ -3904,8 +3928,8 @@
                     "description": "The channel used to communicate with the user on this ticket.If not specified, it will be filled with the channel of the first [TicketMessage](#TicketMessage-object) of this ticket.",
                     "meta": {
                         "operators": {
-                            "eq": {"label": "is"},
-                            "neq": {"label": "is not"}
+                            "eq": { "label": "is" },
+                            "neq": { "label": "is not" }
                         },
                         "enum": [
                             "aircall",
@@ -3920,11 +3944,11 @@
                             "sms",
                             "twitter"
                         ],
-                        "filters": {"widget": "multi-select"},
-                        "rules": {"widget": "select"},
+                        "filters": { "widget": "multi-select" },
+                        "rules": { "widget": "select" },
                         "views": {
                             "additional_operators": {
-                                "containsAny": {"label": "is one of"}
+                                "containsAny": { "label": "is one of" }
                             }
                         }
                     },
@@ -3934,12 +3958,12 @@
                     "description": "Indicates whether the ticket has been created because a user or a customer sent a message. If not specified, it will be filled with the `from_agent` value of the first [TicketMessage](#TicketMessage-object) of this ticket.",
                     "meta": {
                         "operators": {
-                            "eq": {"label": "is"},
-                            "neq": {"label": "is not"}
+                            "eq": { "label": "is" },
+                            "neq": { "label": "is not" }
                         },
                         "enum": ["true", "false"],
                         "show": ["rules"],
-                        "rules": {"widget": "select"},
+                        "rules": { "widget": "select" },
                         "widget": "select"
                     },
                     "type": "boolean"
@@ -3948,8 +3972,8 @@
                     "description": "The customer who is requesting something in this ticket.",
                     "meta": {
                         "operators": {
-                            "eq": {"label": "is"},
-                            "neq": {"label": "is not"}
+                            "eq": { "label": "is" },
+                            "neq": { "label": "is not" }
                         }
                     },
                     "$ref": "#/definitions/Customer"
@@ -3962,8 +3986,8 @@
                                 "widget": "timedelta-select",
                                 "label": "less than"
                             },
-                            "gte": {"label": "after"},
-                            "lte": {"label": "before"},
+                            "gte": { "label": "after" },
+                            "lte": { "label": "before" },
                             "lteTimedelta": {
                                 "widget": "timedelta-select",
                                 "label": "more than"
@@ -3986,7 +4010,7 @@
                             }
                         },
                         "defaultOperator": "gteTimedelta",
-                        "rules": {"widget": "datetime-select"},
+                        "rules": { "widget": "datetime-select" },
                         "widget": "datetime-select"
                     },
                     "type": "string",
@@ -3996,10 +4020,10 @@
                     "description": "Ticket status is used for managing the lifecycle of the ticket",
                     "default": "open",
                     "meta": {
-                        "operators": {"eq": {"label": "is"}},
+                        "operators": { "eq": { "label": "is" } },
                         "enum": ["open", "closed"],
-                        "filters": {"widget": "multi-select"},
-                        "rules": {"widget": "select"}
+                        "filters": { "widget": "multi-select" },
+                        "rules": { "widget": "select" }
                     },
                     "type": "string"
                 },
@@ -4007,8 +4031,8 @@
                     "description": "The [ISO-639-1](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) language code of the client's messages on this ticket.\nThis field is automatically generated by Gorgias if empty.",
                     "meta": {
                         "operators": {
-                            "eq": {"label": "is"},
-                            "neq": {"label": "is not"}
+                            "eq": { "label": "is" },
+                            "neq": { "label": "is not" }
                         },
                         "enum": [
                             "kn",
@@ -4069,8 +4093,8 @@
                             "ar",
                             "tl"
                         ],
-                        "filters": {"widget": "multi-select"},
-                        "rules": {"widget": "select"}
+                        "filters": { "widget": "multi-select" },
+                        "rules": { "widget": "select" }
                     },
                     "example": "fr",
                     "type": "string"
@@ -4102,26 +4126,26 @@
                 },
                 "tags": {
                     "many": true,
-                    "items": {"$ref": "#/definitions/DEPRECATED_Tag"},
+                    "items": { "$ref": "#/definitions/DEPRECATED_Tag" },
                     "description": "The tags associated with the ticket.",
                     "meta": {
                         "operators": {
                             "notContainsAny": {
                                 "label": "does not contain any of"
                             },
-                            "containsAll": {"label": "contains all of"},
-                            "contains": {"label": "contains"},
-                            "notContains": {"label": "does not contain"},
-                            "isNotEmpty": {"label": "is not empty"},
-                            "containsAny": {"label": "contains one of"},
-                            "isEmpty": {"label": "is empty"}
+                            "containsAll": { "label": "contains all of" },
+                            "contains": { "label": "contains" },
+                            "notContains": { "label": "does not contain" },
+                            "isNotEmpty": { "label": "is not empty" },
+                            "containsAny": { "label": "contains one of" },
+                            "isEmpty": { "label": "is empty" }
                         },
                         "defaultOperator": "containsAll",
-                        "rules": {"widget": "tags-select"},
+                        "rules": { "widget": "tags-select" },
                         "views": {
                             "excluded_operators": {
-                                "contains": {"label": "contains"},
-                                "notContains": {"label": "does not contain"}
+                                "contains": { "label": "contains" },
+                                "notContains": { "label": "does not contain" }
                             }
                         }
                     },
@@ -4148,12 +4172,12 @@
                     "default": "normal",
                     "meta": {
                         "operators": {
-                            "eq": {"label": "is"},
-                            "neq": {"label": "is not"}
+                            "eq": { "label": "is" },
+                            "neq": { "label": "is not" }
                         },
                         "enum": ["normal", "high"],
-                        "filters": {"widget": "select"},
-                        "rules": {"widget": "select"}
+                        "filters": { "widget": "select" },
+                        "rules": { "widget": "select" }
                     },
                     "type": "string"
                 },
@@ -4166,8 +4190,8 @@
                     "description": "Indicates via which means this ticket was created. If not specified, it will be filled with the `via` value of the first [TicketMessage](#TicketMessage-object) of this ticket.For example, a ticket of channel `email` could have been created through the API because of an integration; the `via` would then be `api`.",
                     "meta": {
                         "operators": {
-                            "eq": {"label": "is"},
-                            "neq": {"label": "is not"}
+                            "eq": { "label": "is" },
+                            "neq": { "label": "is not" }
                         },
                         "enum": [
                             "api",
@@ -4187,8 +4211,8 @@
                             "twitter",
                             "instagram"
                         ],
-                        "filters": {"widget": "multi-select"},
-                        "rules": {"widget": "select"}
+                        "filters": { "widget": "multi-select" },
+                        "rules": { "widget": "select" }
                     },
                     "type": "string"
                 },
@@ -4200,8 +4224,8 @@
                                 "widget": "timedelta-select",
                                 "label": "less than"
                             },
-                            "gte": {"label": "after"},
-                            "lte": {"label": "before"},
+                            "gte": { "label": "after" },
+                            "lte": { "label": "before" },
                             "lteTimedelta": {
                                 "widget": "timedelta-select",
                                 "label": "more than"
@@ -4224,7 +4248,7 @@
                             }
                         },
                         "defaultOperator": "gteTimedelta",
-                        "rules": {"widget": "datetime-select"},
+                        "rules": { "widget": "datetime-select" },
                         "widget": "datetime-select"
                     },
                     "type": "string",
@@ -4238,12 +4262,12 @@
                     "description": "Indicates whether the ticket is considered as spam or not.",
                     "meta": {
                         "operators": {
-                            "eq": {"label": "is"},
-                            "neq": {"label": "is not"}
+                            "eq": { "label": "is" },
+                            "neq": { "label": "is not" }
                         },
                         "enum": ["true"],
                         "show": ["rules"],
-                        "rules": {"widget": "select"},
+                        "rules": { "widget": "select" },
                         "widget": "select"
                     },
                     "type": "boolean"
@@ -4255,19 +4279,19 @@
                             "notContainsAny": {
                                 "label": "does not contain any of"
                             },
-                            "containsAll": {"label": "contains all of"},
-                            "startsWith": {"label": "starts with"},
-                            "contains": {"label": "contains"},
-                            "containsAny": {"label": "contains one of"},
-                            "eq": {"label": "is"},
+                            "containsAll": { "label": "contains all of" },
+                            "startsWith": { "label": "starts with" },
+                            "contains": { "label": "contains" },
+                            "containsAny": { "label": "contains one of" },
+                            "eq": { "label": "is" },
                             "notContainsAll": {
                                 "label": "does not contain all of"
                             },
-                            "neq": {"label": "is not"},
-                            "endsWith": {"label": "ends with"},
-                            "notContains": {"label": "does not contain"}
+                            "neq": { "label": "is not" },
+                            "endsWith": { "label": "ends with" },
+                            "notContains": { "label": "does not contain" }
                         },
-                        "rules": {"widget": "input"}
+                        "rules": { "widget": "input" }
                     },
                     "example": "Refund request",
                     "type": "string"
@@ -4276,8 +4300,8 @@
                     "description": "When the ticket was moved to the trash for the last time.",
                     "meta": {
                         "operators": {
-                            "isNotEmpty": {"label": "is not empty"},
-                            "isEmpty": {"label": "is empty"}
+                            "isNotEmpty": { "label": "is not empty" },
+                            "isEmpty": { "label": "is empty" }
                         }
                     },
                     "type": "string",
@@ -4287,10 +4311,10 @@
                     "description": "The agent assigned to this ticket.",
                     "meta": {
                         "operators": {
-                            "eq": {"label": "is"},
-                            "isNotEmpty": {"label": "is not empty"},
-                            "neq": {"label": "is not"},
-                            "isEmpty": {"label": "is empty"}
+                            "eq": { "label": "is" },
+                            "isNotEmpty": { "label": "is not empty" },
+                            "neq": { "label": "is not" },
+                            "isEmpty": { "label": "is empty" }
                         }
                     },
                     "example": {
@@ -4307,7 +4331,7 @@
         },
         "RechargeIntegrationData": {
             "properties": {
-                "customer": {"$ref": "#/definitions/RechargeCustomer"},
+                "customer": { "$ref": "#/definitions/RechargeCustomer" },
                 "last_subscription": {
                     "$ref": "#/definitions/RechargeSubscription"
                 }
@@ -4315,7 +4339,7 @@
             "type": "object"
         }
     },
-    "info": {"version": "0.0.1", "title": "Gorgias"},
+    "info": { "version": "0.0.1", "title": "Gorgias" },
     "tags": [
         {
             "description": "Below you can find out how to create, update, delete, get and list your events as well as the description of the Event object itself.",

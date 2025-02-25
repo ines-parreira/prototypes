@@ -1,24 +1,26 @@
-import classnames from 'classnames'
 import React from 'react'
-import {Link} from 'react-router-dom'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import classnames from 'classnames'
+import { Link } from 'react-router-dom'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import useSearch from 'hooks/useSearch'
-import {Category} from 'models/integration/types/app'
+import { Category } from 'models/integration/types/app'
 import ArrowLink from 'pages/common/components/ArrowLink/ArrowLink'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
-import css from './CategoryFilter.less'
 import {
     CATEGORY_DATA,
     CATEGORY_URL_PARAM,
     ORDERED_CATEGORIES,
 } from './constants'
 
+import css from './CategoryFilter.less'
+
 export default function CategoryFilter() {
     const domain = useAppSelector(getCurrentAccountState).get('domain')
-    const search = useSearch<{[CATEGORY_URL_PARAM]: string}>()
+    const search = useSearch<{ [CATEGORY_URL_PARAM]: string }>()
     const activeCategory = search[CATEGORY_URL_PARAM]
 
     return (
@@ -38,7 +40,7 @@ export default function CategoryFilter() {
                     <li className={`${css.delimiter} ${css.item}`}>
                         <Link
                             to={`?category=${encodeURIComponent(
-                                Category.FEATURED
+                                Category.FEATURED,
                             )}`}
                             className={classnames(css.link, {
                                 [css.active]:
@@ -47,7 +49,7 @@ export default function CategoryFilter() {
                             onClick={() =>
                                 trackCategoryClick(
                                     CATEGORY_DATA[Category.FEATURED].title,
-                                    domain
+                                    domain,
                                 )
                             }
                         >
@@ -61,7 +63,7 @@ export default function CategoryFilter() {
                             <li className={css.item} key={index}>
                                 <Link
                                     to={`?category=${encodeURIComponent(
-                                        category
+                                        category,
                                     )}`}
                                     className={classnames(css.link, {
                                         [css.active]:
@@ -70,7 +72,7 @@ export default function CategoryFilter() {
                                     onClick={() =>
                                         trackCategoryClick(
                                             categoryData.title,
-                                            domain
+                                            domain,
                                         )
                                     }
                                 >

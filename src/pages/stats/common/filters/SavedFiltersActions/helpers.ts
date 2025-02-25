@@ -5,11 +5,11 @@ import {
     FilterKey,
     StatsFiltersWithLogicalOperator,
 } from 'models/stat/types'
-import {OptionalFilter} from 'pages/stats/common/filters/FiltersPanel'
+import { OptionalFilter } from 'pages/stats/common/filters/FiltersPanel'
 
 export const isFilterFilled = (
     filterKey: OptionalFilter,
-    filters: StatsFiltersWithLogicalOperator
+    filters: StatsFiltersWithLogicalOperator,
 ): boolean => {
     switch (filterKey) {
         case FilterKey.Period:
@@ -36,7 +36,7 @@ export const isFilterFilled = (
         case FilterKey.CustomFields:
             return (
                 filters?.[filterKey]?.some(
-                    (filter) => !_isEmpty(filter?.values)
+                    (filter) => !_isEmpty(filter?.values),
                 ) || false
             )
         case FilterComponentKey.PhoneIntegrations:
@@ -46,8 +46,8 @@ export const isFilterFilled = (
 
 export const areFiltersFilled = (
     optionalFilterKeys: OptionalFilter[],
-    statsFilters: StatsFiltersWithLogicalOperator
+    statsFilters: StatsFiltersWithLogicalOperator,
 ): boolean =>
     optionalFilterKeys.some((filterKey) =>
-        isFilterFilled(filterKey, statsFilters)
+        isFilterFilled(filterKey, statsFilters),
     )

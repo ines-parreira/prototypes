@@ -1,7 +1,8 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {SearchResult} from '../SearchResult'
+import { render, screen } from '@testing-library/react'
+
+import { SearchResult } from '../SearchResult'
 
 describe('SearchResult', () => {
     it('should render with a label and a path', () => {
@@ -17,19 +18,19 @@ describe('SearchResult', () => {
                 path="bar"
                 value="foo"
                 currentValue="foo"
-            />
+            />,
         )
         expect(screen.getByText('check'))
     })
 
     it('should render with a highlighted label or path when currentSearch is equal to label or path', () => {
-        const {container} = render(
+        const { container } = render(
             <SearchResult
                 label="foobar"
                 path="barfoo"
                 value="foob"
                 currentSearch="fo"
-            />
+            />,
         )
         const highlightedLabel = container.querySelector('strong')
         expect(highlightedLabel).toHaveTextContent('fo')

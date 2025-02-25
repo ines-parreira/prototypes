@@ -1,25 +1,25 @@
-import {Tooltip, Badge} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
-import React, {memo} from 'react'
-import {Handle, NodeProps, Position, useNodeId} from 'reactflow'
+import React, { memo } from 'react'
 
-import {toPercentage} from 'pages/automate/automate-metrics/utils'
+import classNames from 'classnames'
+import { Handle, NodeProps, Position, useNodeId } from 'reactflow'
+
+import { Badge, Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { toPercentage } from 'pages/automate/automate-metrics/utils'
 import {
     endNodeActionIconByAction,
     endNodeActionLabelByAction,
 } from 'pages/automate/workflows/constants'
 import {
-    VisualBuilderNodeProps,
     useVisualBuilderNodeProps,
+    VisualBuilderNodeProps,
 } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
-
 import useWorkflowDropoffMetricTiers from 'pages/automate/workflows/hooks/useWorkflowDropoffMetricTiers'
-import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
-import {EndNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import {getDropoffColor} from 'pages/automate/workflows/utils/getDropOffColor'
+import { useWorkflowEditorContext } from 'pages/automate/workflows/hooks/useWorkflowEditor'
+import { EndNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { getDropoffColor } from 'pages/automate/workflows/utils/getDropOffColor'
 
 import EdgeBlock from '../components/EdgeBlock'
-
 import {
     displayMetric,
     displayPercentMetric,
@@ -28,6 +28,7 @@ import {
     isValidNumber,
     shouldDisplayTooltip,
 } from '../utils'
+
 import css from './Node.less'
 
 type Props = VisualBuilderNodeProps & {
@@ -35,14 +36,14 @@ type Props = VisualBuilderNodeProps & {
     nodeId: string
 }
 
-const EndNode = memo(function EndNode({action, nodeId, edgeProps}: Props) {
-    const {workflowStepMetrics} = useWorkflowEditorContext()
+const EndNode = memo(function EndNode({ action, nodeId, edgeProps }: Props) {
+    const { workflowStepMetrics } = useWorkflowEditorContext()
     const metricByNodeId = workflowStepMetrics && workflowStepMetrics[nodeId]
     const dropOffRates = extractUniqueRates(workflowStepMetrics ?? {})
-    const metricTiers = useWorkflowDropoffMetricTiers({dropOffRates})
+    const metricTiers = useWorkflowDropoffMetricTiers({ dropOffRates })
     const dropOffTierByNodeId = getDropoffColor(
         metricByNodeId?.dropoffRate ?? 0,
-        metricTiers
+        metricTiers,
     )
 
     const shouldDisplayZero = isValidNumber(metricByNodeId?.views)
@@ -76,7 +77,7 @@ const EndNode = memo(function EndNode({action, nodeId, edgeProps}: Props) {
                         <span className={css.metricValue}>
                             {displayMetric(
                                 metricByNodeId?.automatedInteractions,
-                                shouldDisplayZero
+                                shouldDisplayZero,
                             )}
                         </span>
                     </div>
@@ -96,7 +97,7 @@ const EndNode = memo(function EndNode({action, nodeId, edgeProps}: Props) {
                             >
                                 {displayPercentMetric(
                                     metricByNodeId?.dropoffRate,
-                                    shouldDisplayZero
+                                    shouldDisplayZero,
                                 )}
                             </span>
                         </div>
@@ -109,20 +110,20 @@ const EndNode = memo(function EndNode({action, nodeId, edgeProps}: Props) {
                         <span className={css.metricValue}>
                             {displayMetric(
                                 metricByNodeId?.ticketsCreated,
-                                shouldDisplayZero
+                                shouldDisplayZero,
                             )}
                         </span>
                     </div>
                     {shouldDisplayTooltip(
                         metricByNodeId?.automatedInteractionsRate,
-                        shouldDisplayZero
+                        shouldDisplayZero,
                     ) && (
                         <Tooltip
                             target={`end-node-${nodeId}-metric-automated`}
                             placement="bottom"
                         >
                             {toPercentage(
-                                metricByNodeId?.automatedInteractionsRate ?? 0
+                                metricByNodeId?.automatedInteractionsRate ?? 0,
                             )}
                             <br />
                             <br />
@@ -134,7 +135,7 @@ const EndNode = memo(function EndNode({action, nodeId, edgeProps}: Props) {
                     {action !== 'end' &&
                         shouldDisplayTooltip(
                             metricByNodeId?.dropoff,
-                            shouldDisplayZero
+                            shouldDisplayZero,
                         ) && (
                             <Tooltip
                                 target={`end-node-${nodeId}-metric-dropoff`}
@@ -150,14 +151,14 @@ const EndNode = memo(function EndNode({action, nodeId, edgeProps}: Props) {
 
                     {shouldDisplayTooltip(
                         metricByNodeId?.ticketsCreatedRate,
-                        shouldDisplayZero
+                        shouldDisplayZero,
                     ) && (
                         <Tooltip
                             target={`end-node-${nodeId}-metric-ticket`}
                             placement="bottom"
                         >
                             {toPercentage(
-                                metricByNodeId?.ticketsCreatedRate ?? 0
+                                metricByNodeId?.ticketsCreatedRate ?? 0,
                             )}
                             <br />
                             <br />

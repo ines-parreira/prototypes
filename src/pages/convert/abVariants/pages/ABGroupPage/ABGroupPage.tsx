@@ -1,16 +1,16 @@
-import {Skeleton} from '@gorgias/merchant-ui-kit'
-import {produce} from 'immer'
-import {Map} from 'immutable'
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
-import {Route, Switch, useParams} from 'react-router-dom'
-import {Container} from 'reactstrap'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
-import {useGetCampaign} from 'models/convert/campaign/queries'
-import {CampaignUpdatePayload} from 'models/convert/campaign/types'
+import { produce } from 'immer'
+import { Map } from 'immutable'
+import { Route, Switch, useParams } from 'react-router-dom'
+import { Container } from 'reactstrap'
 
+import { Skeleton } from '@gorgias/merchant-ui-kit'
+
+import { useGetCampaign } from 'models/convert/campaign/queries'
+import { CampaignUpdatePayload } from 'models/convert/campaign/types'
 import SkeletonLoader from 'pages/common/components/SkeletonLoader'
-
-import {ABGroupContainer} from 'pages/convert/abVariants/containers/ABGroupContainer'
+import { ABGroupContainer } from 'pages/convert/abVariants/containers/ABGroupContainer'
 import ABTestSettingsPage from 'pages/convert/abVariants/pages/ABTestSettingsPage'
 import ABTestVariantEditPage from 'pages/convert/abVariants/pages/ABTestVariantEditPage'
 import {
@@ -20,22 +20,21 @@ import {
     abVariantsControlVersionPath,
     abVariantsPath,
 } from 'pages/convert/abVariants/urls'
-
-import {createVariant} from 'pages/convert/abVariants/utils/createVariant'
-import {deleteVariant} from 'pages/convert/abVariants/utils/deleteVariant'
-import {duplicateVariant} from 'pages/convert/abVariants/utils/duplicateVariant'
-import {updateVariant} from 'pages/convert/abVariants/utils/updateVariant'
-import {useUpdateCampaign} from 'pages/convert/campaigns/hooks/useUpdateCampaign'
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
-import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
-import {ABGroupStatus} from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
+import { createVariant } from 'pages/convert/abVariants/utils/createVariant'
+import { deleteVariant } from 'pages/convert/abVariants/utils/deleteVariant'
+import { duplicateVariant } from 'pages/convert/abVariants/utils/duplicateVariant'
+import { updateVariant } from 'pages/convert/abVariants/utils/updateVariant'
+import { useUpdateCampaign } from 'pages/convert/campaigns/hooks/useUpdateCampaign'
+import { Campaign } from 'pages/convert/campaigns/types/Campaign'
+import { CampaignVariant } from 'pages/convert/campaigns/types/CampaignVariant'
+import { ABGroupStatus } from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
 import {
     CONVERT_ROUTE_CAMPAIGN_PARAM_NAME,
     CONVERT_ROUTE_PARAM_NAME,
 } from 'pages/convert/common/constants'
-import {ConvertRouteAbVariantParams} from 'pages/convert/common/types'
+import { ConvertRouteAbVariantParams } from 'pages/convert/common/types'
 import history from 'pages/history'
-import {toJS} from 'utils'
+import { toJS } from 'utils'
 
 import css from './ABGroupPage.less'
 
@@ -48,13 +47,13 @@ export const ABGroupView: React.FC<ABGRoupViewProps> = ({
     campaign,
     integrationId,
 }) => {
-    const [campaignData, setCampaignData] = useState<Campaign>({...campaign})
+    const [campaignData, setCampaignData] = useState<Campaign>({ ...campaign })
 
     useEffect(() => {
-        setCampaignData({...campaign})
+        setCampaignData({ ...campaign })
     }, [campaign])
 
-    const {mutateAsync: updateCampaignRequest} = useUpdateCampaign()
+    const { mutateAsync: updateCampaignRequest } = useUpdateCampaign()
 
     const updateCampaign = useCallback(
         async (payload: CampaignUpdatePayload) => {
@@ -66,7 +65,7 @@ export const ABGroupView: React.FC<ABGRoupViewProps> = ({
                 payload,
             ])
         },
-        [campaignData, updateCampaignRequest]
+        [campaignData, updateCampaignRequest],
     )
 
     const canPerformCreateDeleteActions = useMemo(() => {
@@ -92,7 +91,7 @@ export const ABGroupView: React.FC<ABGRoupViewProps> = ({
 
     const addVariant = () => {
         const hasEmptyVariant = campaignData.variants?.find(
-            (variant) => !variant.id
+            (variant) => !variant.id,
         )
         if (hasEmptyVariant) {
             // user clicked `Add Variant` but didn't save data.
@@ -108,13 +107,13 @@ export const ABGroupView: React.FC<ABGRoupViewProps> = ({
                 } as CampaignVariant
 
                 draft.variants = [...(draft.variants || []), emptyVariant]
-            })
+            }),
         )
     }
 
     const handleDiscardVariant = () => {
         const emptyVariantIdx = campaignData.variants?.findIndex(
-            (variant) => !variant.id
+            (variant) => !variant.id,
         )
         if (emptyVariantIdx === undefined || emptyVariantIdx < 0) {
             return
@@ -125,7 +124,7 @@ export const ABGroupView: React.FC<ABGRoupViewProps> = ({
                 if (draft.variants) {
                     draft.variants.splice(emptyVariantIdx, 1)
                 }
-            })
+            }),
         )
     }
 
@@ -136,12 +135,12 @@ export const ABGroupView: React.FC<ABGRoupViewProps> = ({
 
     const handleUpdateVariant = async (
         campaign: Map<any, any>,
-        variantId?: string | null
+        variantId?: string | null,
     ) => {
         const variants = updateVariant(
             campaignData.variants ?? [],
             toJS(campaign),
-            variantId as string
+            variantId as string,
         )
 
         if (!variants) {
@@ -152,17 +151,17 @@ export const ABGroupView: React.FC<ABGRoupViewProps> = ({
         setCampaignData(
             produce((draft) => {
                 draft.variants = variants
-            })
+            }),
         )
 
-        await updateCampaign({variants: variants} as CampaignUpdatePayload)
+        await updateCampaign({ variants: variants } as CampaignUpdatePayload)
     }
 
     const handleDuplicateVariant = async (variantId: string | null) => {
         const [newVariantId, variants] = duplicateVariant(
             campaignData?.variants ?? [],
             campaignData,
-            variantId
+            variantId,
         )
 
         if (!newVariantId) {
@@ -173,20 +172,20 @@ export const ABGroupView: React.FC<ABGRoupViewProps> = ({
         setCampaignData(
             produce((draft) => {
                 draft.variants = variants
-            })
+            }),
         )
 
-        await updateCampaign({variants: variants} as CampaignUpdatePayload)
+        await updateCampaign({ variants: variants } as CampaignUpdatePayload)
 
         history.push(
-            abVariantEditorUrl(integrationId, campaignData.id, newVariantId)
+            abVariantEditorUrl(integrationId, campaignData.id, newVariantId),
         )
     }
 
     const handleDeleteVariant = async (variantId: string | null) => {
         const variants = deleteVariant(
             campaignData.variants ?? [],
-            variantId as string
+            variantId as string,
         )
 
         if (!variants) {
@@ -197,16 +196,16 @@ export const ABGroupView: React.FC<ABGRoupViewProps> = ({
         setCampaignData(
             produce((draft) => {
                 draft.variants = variants
-            })
+            }),
         )
 
-        await updateCampaign({variants: variants} as CampaignUpdatePayload)
+        await updateCampaign({ variants: variants } as CampaignUpdatePayload)
     }
 
     const handleCreateVariant = async (data: Map<any, any>) => {
         const [newVariantId, variants] = createVariant(
             campaignData?.variants ?? [],
-            toJS(data)
+            toJS(data),
         )
 
         if (!newVariantId) {
@@ -217,13 +216,13 @@ export const ABGroupView: React.FC<ABGRoupViewProps> = ({
         setCampaignData(
             produce((draft) => {
                 draft.variants = variants
-            })
+            }),
         )
 
-        await updateCampaign({variants: variants} as CampaignUpdatePayload)
+        await updateCampaign({ variants: variants } as CampaignUpdatePayload)
 
         history.push(
-            abVariantEditorUrl(integrationId, campaignData.id, newVariantId)
+            abVariantEditorUrl(integrationId, campaignData.id, newVariantId),
         )
     }
 
@@ -291,9 +290,9 @@ const ABGroupPage = () => {
         [CONVERT_ROUTE_CAMPAIGN_PARAM_NAME]: campaignId,
     } = useParams<ConvertRouteAbVariantParams>()
 
-    const {data, isLoading} = useGetCampaign(
-        {campaign_id: campaignId || ''},
-        {enabled: !!campaignId}
+    const { data, isLoading } = useGetCampaign(
+        { campaign_id: campaignId || '' },
+        { enabled: !!campaignId },
     )
 
     if (isLoading || !data) {

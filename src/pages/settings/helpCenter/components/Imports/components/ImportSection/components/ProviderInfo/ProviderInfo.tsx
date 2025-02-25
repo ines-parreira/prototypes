@@ -1,7 +1,8 @@
-import classNames from 'classnames'
 import React from 'react'
 
-import {MigrationProvider} from '../../types'
+import classNames from 'classnames'
+
+import { MigrationProvider } from '../../types'
 
 import css from './ProviderInfo.less'
 
@@ -11,7 +12,7 @@ type Props = {
     provider: MigrationProvider
 }
 
-const ProviderInfo: React.FC<Props> = ({className, provider, onClick}) => {
+const ProviderInfo: React.FC<Props> = ({ className, provider, onClick }) => {
     return (
         <div className={classNames(className, css.wrapper)} onClick={onClick}>
             <img

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {CampaignTemplateSectionType} from 'pages/convert/campaigns/templates/types'
+import { CampaignTemplateSectionType } from 'pages/convert/campaigns/templates/types'
 
 import CampainLibraryTileTemplate from '../CampaignLibraryTileTemplate'
 
@@ -11,7 +11,7 @@ type OwnProps = {
     section: CampaignTemplateSectionType
 }
 
-const CampaignLibrarySection = ({section, integrationId}: OwnProps) => {
+const CampaignLibrarySection = ({ section, integrationId }: OwnProps) => {
     return (
         <section className={css.section}>
             <h3 className={css.header}>{section.title}</h3>

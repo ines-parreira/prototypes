@@ -1,10 +1,11 @@
-import {fireEvent, render} from '@testing-library/react'
-import {fromJS, Map} from 'immutable'
 import React from 'react'
 
-import {IntegrationType} from 'models/integration/types'
+import { fireEvent, render } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
+
+import { IntegrationType } from 'models/integration/types'
 import TwitterIntegrationDetail from 'pages/integrations/integration/components/twitter/TwitterIntegrationDetail'
-import {INTEGRATION_REMOVAL_CONFIGURATION_TEXT} from 'pages/integrations/integration/constants'
+import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 
 describe('<TwitterIntegrationDetail/>', () => {
     let updateOrCreateIntegration: jest.MockedFunction<any>
@@ -41,33 +42,33 @@ describe('<TwitterIntegrationDetail/>', () => {
 
     describe('render()', () => {
         it('should render', () => {
-            const {container} = render(
+            const { container } = render(
                 <TwitterIntegrationDetail
                     integration={integration}
-                    actions={{updateOrCreateIntegration, deleteIntegration}}
+                    actions={{ updateOrCreateIntegration, deleteIntegration }}
                     redirectUri="https://this-is-an-url.com"
-                />
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should display delete warning message and it should contain text about "saved filters"', () => {
-            const {getByRole, getByText} = render(
+            const { getByRole, getByText } = render(
                 <TwitterIntegrationDetail
                     integration={integration}
-                    actions={{updateOrCreateIntegration, deleteIntegration}}
+                    actions={{ updateOrCreateIntegration, deleteIntegration }}
                     redirectUri="https://this-is-an-url.com"
-                />
+                />,
             )
             fireEvent.click(
                 getByRole('button', {
                     name: /Remove twitter account/i,
-                })
+                }),
             )
 
             expect(
-                getByText(INTEGRATION_REMOVAL_CONFIGURATION_TEXT)
+                getByText(INTEGRATION_REMOVAL_CONFIGURATION_TEXT),
             ).toBeInTheDocument()
         })
     })

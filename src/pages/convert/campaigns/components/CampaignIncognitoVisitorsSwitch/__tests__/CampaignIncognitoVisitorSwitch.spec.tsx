@@ -1,9 +1,10 @@
-import {render, act, screen} from '@testing-library/react'
 import React from 'react'
 
-import {CampaignTriggerMap} from 'pages/convert/campaigns/types/CampaignTriggerMap'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
-import {createTrigger} from 'pages/convert/campaigns/utils/createTrigger'
+import { act, render, screen } from '@testing-library/react'
+
+import { CampaignTriggerMap } from 'pages/convert/campaigns/types/CampaignTriggerMap'
+import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import { createTrigger } from 'pages/convert/campaigns/utils/createTrigger'
 
 import CampaignIncognitoVisitorsSwitch from '../CampaignIncognitoVisitorsSwitch'
 
@@ -13,15 +14,15 @@ describe('<CampaignIncognitoVisitorsSwitch />', () => {
             <CampaignIncognitoVisitorsSwitch
                 triggers={{}}
                 onChange={jest.fn()}
-            />
+            />,
         )
 
         expect(
-            screen.getByText('Incognito visitors will also see the campaign')
+            screen.getByText('Incognito visitors will also see the campaign'),
         ).toBeInTheDocument()
 
         const checkbox: HTMLInputElement = screen.getByLabelText(
-            /Incognito visitors will also see the campaign/
+            /Incognito visitors will also see the campaign/,
         )
         expect(checkbox).toBeDisabled()
         expect(checkbox.checked).toBeFalsy()
@@ -29,7 +30,7 @@ describe('<CampaignIncognitoVisitorsSwitch />', () => {
 
     it('has shopify triggers with non default values and it is disabled', () => {
         const amountSpentTrigger = createTrigger(
-            CampaignTriggerType.AmountSpent
+            CampaignTriggerType.AmountSpent,
         )
         const triggers = {
             [amountSpentTrigger.id]: {
@@ -43,16 +44,16 @@ describe('<CampaignIncognitoVisitorsSwitch />', () => {
                 <CampaignIncognitoVisitorsSwitch
                     triggers={triggers}
                     onChange={jest.fn()}
-                />
+                />,
             )
         })
 
         expect(
-            screen.getByText('Incognito visitors will also see the campaign')
+            screen.getByText('Incognito visitors will also see the campaign'),
         ).toBeInTheDocument()
 
         const checkbox: HTMLInputElement = screen.getByLabelText(
-            /Incognito visitors will also see the campaign/
+            /Incognito visitors will also see the campaign/,
         )
         expect(checkbox.getAttribute('disabled')).toBe('')
         expect(checkbox.checked).toBeFalsy()
@@ -60,7 +61,7 @@ describe('<CampaignIncognitoVisitorsSwitch />', () => {
 
     it('has shopify triggers with default values and it is enabled', () => {
         const amountSpentTrigger = createTrigger(
-            CampaignTriggerType.AmountSpent
+            CampaignTriggerType.AmountSpent,
         )
         const triggers = {
             [amountSpentTrigger.id]: {
@@ -74,11 +75,11 @@ describe('<CampaignIncognitoVisitorsSwitch />', () => {
                 <CampaignIncognitoVisitorsSwitch
                     triggers={triggers}
                     onChange={jest.fn()}
-                />
+                />,
             )
         })
         const checkbox: HTMLInputElement = screen.getByLabelText(
-            /Incognito visitors will also see the campaign/
+            /Incognito visitors will also see the campaign/,
         )
         expect(checkbox.getAttribute('disabled')).toBe('')
         expect(checkbox.checked).toBeTruthy()
@@ -86,10 +87,10 @@ describe('<CampaignIncognitoVisitorsSwitch />', () => {
 
     it('has shopify triggers with non default values and it is forced', () => {
         const amountSpentTrigger = createTrigger(
-            CampaignTriggerType.AmountSpent
+            CampaignTriggerType.AmountSpent,
         )
         const incognitoTrigger = createTrigger(
-            CampaignTriggerType.IncognitoVisitor
+            CampaignTriggerType.IncognitoVisitor,
         )
         const triggers = {
             [amountSpentTrigger.id]: {
@@ -104,11 +105,11 @@ describe('<CampaignIncognitoVisitorsSwitch />', () => {
                 <CampaignIncognitoVisitorsSwitch
                     triggers={triggers}
                     onChange={jest.fn()}
-                />
+                />,
             )
         })
         const checkbox: HTMLInputElement = screen.getByLabelText(
-            /Incognito visitors will also see the campaign/
+            /Incognito visitors will also see the campaign/,
         )
         expect(checkbox.getAttribute('disabled')).toBe('')
         expect(checkbox.checked).toBeTruthy()

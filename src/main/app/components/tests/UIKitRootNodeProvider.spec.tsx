@@ -1,9 +1,11 @@
-import {RootNodeProvider} from '@gorgias/merchant-ui-kit'
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {useAppNode} from 'appNode'
-import {assumeMock} from 'utils/testing'
+import { render } from '@testing-library/react'
+
+import { RootNodeProvider } from '@gorgias/merchant-ui-kit'
+
+import { useAppNode } from 'appNode'
+import { assumeMock } from 'utils/testing'
 
 import UIKitRootNodeProvider from '../UIKitRootNodeProvider'
 
@@ -26,8 +28,8 @@ describe('UIKitNodeProvider', () => {
         render(<UIKitRootNodeProvider />)
 
         expect(RootNodeProviderMock).toHaveBeenCalledWith(
-            expect.objectContaining({value: appNode}),
-            expect.anything()
+            expect.objectContaining({ value: appNode }),
+            expect.anything(),
         )
     })
 })

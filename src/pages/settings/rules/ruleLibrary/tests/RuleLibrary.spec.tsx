@@ -1,16 +1,17 @@
-import {render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {account} from 'fixtures/account'
-import {billingState} from 'fixtures/billing'
-import {rule as ruleFixture, emptyManagedRule} from 'fixtures/rule'
-import {emptyRuleRecipeFixture} from 'fixtures/ruleRecipe'
-import {RuleRecipeTag} from 'models/ruleRecipe/types'
-import {ManagedRulesSlugs} from 'state/rules/types'
+import { account } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
+import { emptyManagedRule, rule as ruleFixture } from 'fixtures/rule'
+import { emptyRuleRecipeFixture } from 'fixtures/ruleRecipe'
+import { RuleRecipeTag } from 'models/ruleRecipe/types'
+import { ManagedRulesSlugs } from 'state/rules/types'
 
 import RuleLibrary from '../RuleLibrary'
 
@@ -20,7 +21,7 @@ describe('<RuleLibrary/>', () => {
         entities: {},
         billing: fromJS(billingState),
         currentAccount: fromJS(account),
-        integrations: fromJS({integrations: []}),
+        integrations: fromJS({ integrations: [] }),
     })
     const minProps: ComponentProps<typeof RuleLibrary> = {
         recipes: [
@@ -41,18 +42,18 @@ describe('<RuleLibrary/>', () => {
     }
     describe('render', () => {
         it('should render cards for the library', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={defaultStore}>
                     <RuleLibrary {...minProps} />
-                </Provider>
+                </Provider>,
             )
             expect(container.firstChild).toMatchSnapshot()
         })
         it('should filter cards for the library', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={defaultStore}>
                     <RuleLibrary {...minProps} />
-                </Provider>
+                </Provider>,
             )
             expect(container.firstChild).toMatchSnapshot()
         })
@@ -81,12 +82,12 @@ describe('<RuleLibrary/>', () => {
                 },
                 billing: fromJS(billingState),
                 currentAccount: fromJS(account),
-                integrations: fromJS({integrations: []}),
+                integrations: fromJS({ integrations: [] }),
             })
             render(
                 <Provider store={store}>
                     <RuleLibrary {...props} />
-                </Provider>
+                </Provider>,
             )
             expect(screen.getByAltText('installed')).toBeInTheDocument()
         })

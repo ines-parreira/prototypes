@@ -1,27 +1,28 @@
-import {render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
-import {MemoryRouter} from 'react-router-dom'
+
+import { render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {TicketChannel} from 'business/types/ticket'
-import {account} from 'fixtures/account'
-import {agents} from 'fixtures/agents'
-import {integrationsState} from 'fixtures/integrations'
-import {tags} from 'fixtures/tag'
-import {teams} from 'fixtures/teams'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {TagFilterInstanceId} from 'models/stat/types'
-import {agentsStatsFilterLabels} from 'pages/stats/common/filters/DEPRECATED_AgentsStatsFilter'
-import {channelsStatsFilterLabels} from 'pages/stats/common/filters/DEPRECATED_ChannelsStatsFilter'
-import {integrationsStatsFilterLabels} from 'pages/stats/common/filters/DEPRECATED_IntegrationsStatsFilter'
-import {tagsStatsFilterLabels} from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
-import {CALENDAR_ICON} from 'pages/stats/common/PeriodPicker'
-import {SupportPerformanceFilters} from 'pages/stats/support-performance/SupportPerformanceFilters'
-import {RootState, StoreDispatch} from 'state/types'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
+import { TicketChannel } from 'business/types/ticket'
+import { account } from 'fixtures/account'
+import { agents } from 'fixtures/agents'
+import { integrationsState } from 'fixtures/integrations'
+import { tags } from 'fixtures/tag'
+import { teams } from 'fixtures/teams'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { TagFilterInstanceId } from 'models/stat/types'
+import { agentsStatsFilterLabels } from 'pages/stats/common/filters/DEPRECATED_AgentsStatsFilter'
+import { channelsStatsFilterLabels } from 'pages/stats/common/filters/DEPRECATED_ChannelsStatsFilter'
+import { integrationsStatsFilterLabels } from 'pages/stats/common/filters/DEPRECATED_IntegrationsStatsFilter'
+import { tagsStatsFilterLabels } from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
+import { CALENDAR_ICON } from 'pages/stats/common/PeriodPicker'
+import { SupportPerformanceFilters } from 'pages/stats/support-performance/SupportPerformanceFilters'
+import { RootState, StoreDispatch } from 'state/types'
+import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -61,7 +62,7 @@ describe('Support Performance Filters', () => {
             },
         },
         ui: {
-            stats: {filters: uiStatsInitialState},
+            stats: { filters: uiStatsInitialState },
         },
     } as RootState
 
@@ -100,14 +101,14 @@ describe('Support Performance Filters', () => {
                 >
                     <SupportPerformanceFilters />
                 </Provider>
-            </MemoryRouter>
+            </MemoryRouter>,
         )
 
         filtersLabels.forEach((filterLabels) => {
             expect(
                 screen.getByText(`All ${filterLabels.plural}`, {
                     exact: false,
-                })
+                }),
             ).toBeInTheDocument()
         })
 
@@ -120,14 +121,14 @@ describe('Support Performance Filters', () => {
                 <Provider store={mockStore(defaultState)}>
                     <SupportPerformanceFilters />
                 </Provider>
-            </MemoryRouter>
+            </MemoryRouter>,
         )
 
         filtersLabels.forEach((filterLabels) => {
             expect(
                 screen.getByText(`1 ${filterLabels.singular}`, {
                     exact: false,
-                })
+                }),
             ).toBeInTheDocument()
         })
     })
@@ -138,14 +139,14 @@ describe('Support Performance Filters', () => {
                 <Provider store={mockStore(defaultState)}>
                     <SupportPerformanceFilters hidden={true} />
                 </Provider>
-            </MemoryRouter>
+            </MemoryRouter>,
         )
 
         filtersLabels.forEach((filterLabels) => {
             expect(
                 screen.queryByText(`1 ${filterLabels.singular}`, {
                     exact: false,
-                })
+                }),
             ).not.toBeInTheDocument()
         })
     })

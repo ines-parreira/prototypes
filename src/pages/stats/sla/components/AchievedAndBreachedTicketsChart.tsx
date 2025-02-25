@@ -1,14 +1,15 @@
-import {Skeleton} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
+import { Skeleton } from '@gorgias/merchant-ui-kit'
+
 import analyticsColors from 'assets/css/new/stats/modern.json'
-import {useSatisfiedOrBreachedTicketsTimeSeries} from 'hooks/reporting/sla/useSatisfiedOrBreachedTicketsTimeSeries'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-import {TicketSLAStatus} from 'models/reporting/cubes/sla/TicketSLACube'
+import { useSatisfiedOrBreachedTicketsTimeSeries } from 'hooks/reporting/sla/useSatisfiedOrBreachedTicketsTimeSeries'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { TicketSLAStatus } from 'models/reporting/cubes/sla/TicketSLACube'
 import ChartCard from 'pages/stats/ChartCard'
 import BarChart from 'pages/stats/common/components/charts/BarChart/BarChart'
-import {formatLabeledTimeSeriesData} from 'pages/stats/common/utils'
-import {DashboardChartProps} from 'pages/stats/custom-reports/types'
+import { formatLabeledTimeSeriesData } from 'pages/stats/common/utils'
+import { DashboardChartProps } from 'pages/stats/custom-reports/types'
 
 export const CHART_TITLE = 'Achieved and breached tickets'
 export const HINT =
@@ -34,17 +35,18 @@ export const AchievedAndBreachedTicketsChart = ({
     chartId,
     dashboard,
 }: DashboardChartProps) => {
-    const {cleanStatsFilters, userTimezone, granularity} = useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone, granularity } =
+        useNewStatsFilters()
 
-    const {data, isLoading} = useSatisfiedOrBreachedTicketsTimeSeries(
+    const { data, isLoading } = useSatisfiedOrBreachedTicketsTimeSeries(
         cleanStatsFilters,
         userTimezone,
-        granularity
+        granularity,
     )
 
     const formattedData = data
         ? CHART_FIELDS.map((metric) => metric.field).map((metric) =>
-              data[metric] ? data[metric][0] : []
+              data[metric] ? data[metric][0] : [],
           )
         : []
 
@@ -53,7 +55,7 @@ export const AchievedAndBreachedTicketsChart = ({
     ) : (
         <ChartCard
             title={CHART_TITLE}
-            hint={{title: HINT}}
+            hint={{ title: HINT }}
             chartId={chartId}
             dashboard={dashboard}
         >
@@ -63,7 +65,7 @@ export const AchievedAndBreachedTicketsChart = ({
                         ? formatLabeledTimeSeriesData(
                               formattedData,
                               CHART_FIELDS.map((metric) => metric.label),
-                              granularity
+                              granularity,
                           )
                         : []
                 }

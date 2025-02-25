@@ -1,13 +1,14 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
-import React, {ComponentType} from 'react'
-import {Provider} from 'react-redux'
-import {createStore} from 'redux'
+import React, { ComponentType } from 'react'
 
-import {IntegrationType} from 'models/integration/types'
-import {RootState} from 'state/types'
+import { renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import { createStore } from 'redux'
 
-import {useGetChatForStore} from '../useGetChatForStore'
+import { IntegrationType } from 'models/integration/types'
+import { RootState } from 'state/types'
+
+import { useGetChatForStore } from '../useGetChatForStore'
 
 const defaultState = {
     integrations: fromJS({
@@ -52,7 +53,7 @@ const defaultState = {
 
 const store = createStore((state) => state as RootState, defaultState)
 const hookOptions = {
-    wrapper: (({children}) => (
+    wrapper: (({ children }) => (
         <Provider store={store}>{children}</Provider>
     )) as ComponentType,
 }
@@ -60,9 +61,9 @@ const hookOptions = {
 describe('useGetChatForStore', () => {
     describe('when there is a chat integration', () => {
         it('returns the chat integration', () => {
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () => useGetChatForStore(1),
-                hookOptions
+                hookOptions,
             )
 
             expect(result.current).toEqual({
@@ -76,9 +77,9 @@ describe('useGetChatForStore', () => {
         })
 
         it('returns first linked chat', () => {
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () => useGetChatForStore(5),
-                hookOptions
+                hookOptions,
             )
 
             expect(result.current).toEqual({
@@ -93,9 +94,9 @@ describe('useGetChatForStore', () => {
 
     describe('when there is no chat integration', () => {
         it('returns undefined', () => {
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () => useGetChatForStore(2),
-                hookOptions
+                hookOptions,
             )
 
             expect(result.current).toBeUndefined()

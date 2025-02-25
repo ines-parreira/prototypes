@@ -4,15 +4,15 @@ import {
     getChannelName,
     useWorkflowChannelSupportContext,
 } from 'pages/automate/workflows/hooks/useWorkflowChannelSupport'
-import {VisualBuilderNode} from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import { VisualBuilderNode } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 
 export default function SupportedChannelsWarning({
     nodeType,
 }: {
     nodeType: VisualBuilderNode['type']
 }) {
-    const {getSupportedChannels, getUnsupportedChannels} =
+    const { getSupportedChannels, getUnsupportedChannels } =
         useWorkflowChannelSupportContext()
     const supportedChannels = getSupportedChannels(nodeType).map(getChannelName)
     const unsupportedChannels =

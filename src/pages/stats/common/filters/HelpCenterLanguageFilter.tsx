@@ -1,11 +1,12 @@
+import React, { useCallback, useMemo } from 'react'
+
 import _noop from 'lodash/noop'
-import React, {useCallback, useMemo} from 'react'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
-import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
-import {getLocaleSelectOptions} from 'pages/settings/helpCenter/utils/localeSelectOptions'
+import { FilterKey, StatsFiltersWithLogicalOperator } from 'models/stat/types'
+import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
+import { getLocaleSelectOptions } from 'pages/settings/helpCenter/utils/localeSelectOptions'
 import {
     LogicalOperatorEnum,
     LogicalOperatorLabel,
@@ -15,12 +16,15 @@ import {
     FilterLabels,
     helpCenterLanguageFilterLogicalOperators,
 } from 'pages/stats/common/filters/constants'
-import {emptyFilter, logSegmentEvent} from 'pages/stats/common/filters/helpers'
-import {DropdownOption} from 'pages/stats/types'
-import {getHelpCenterFAQList} from 'state/entities/helpCenter/helpCenters'
-import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
-import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
-import {RootState} from 'state/types'
+import {
+    emptyFilter,
+    logSegmentEvent,
+} from 'pages/stats/common/filters/helpers'
+import { DropdownOption } from 'pages/stats/types'
+import { getHelpCenterFAQList } from 'state/entities/helpCenter/helpCenters'
+import { getPageStatsFiltersWithLogicalOperators } from 'state/stats/selectors'
+import { mergeStatsFiltersWithLogicalOperator } from 'state/stats/statsSlice'
+import { RootState } from 'state/types'
 
 type Props = {
     value: StatsFiltersWithLogicalOperator[FilterKey.LocaleCodes]
@@ -28,7 +32,7 @@ type Props = {
         value: Exclude<
             StatsFiltersWithLogicalOperator[FilterKey.LocaleCodes],
             undefined
-        >
+        >,
     ) => void
 }
 
@@ -37,19 +41,19 @@ const HelpCenterLanguageFilter = ({
     dispatchUpdate,
 }: Props) => {
     const locales = useSupportedLocales()
-    const {helpCenters: selectedHelpCenterId} = useAppSelector(
-        getPageStatsFiltersWithLogicalOperators
+    const { helpCenters: selectedHelpCenterId } = useAppSelector(
+        getPageStatsFiltersWithLogicalOperators,
     )
     const helpCenters = useAppSelector(getHelpCenterFAQList)
 
     const selectedHelpCenterItem = useMemo(() => {
         return helpCenters.filter(
-            ({id}) => id === selectedHelpCenterId?.values[0]
+            ({ id }) => id === selectedHelpCenterId?.values[0],
         )
     }, [helpCenters, selectedHelpCenterId])
     const helpCenterLocales = getLocaleSelectOptions(
         locales,
-        selectedHelpCenterItem[0]?.supported_locales ?? []
+        selectedHelpCenterItem[0]?.supported_locales ?? [],
     )
 
     const languages = useMemo(
@@ -61,12 +65,12 @@ const HelpCenterLanguageFilter = ({
                 })),
             },
         ],
-        [helpCenterLocales]
+        [helpCenterLocales],
     )
 
     const selectedLocales = () => {
         const locales = helpCenterLocales.filter((locale) =>
-            value.values.includes(locale.value)
+            value.values.includes(locale.value),
         )
         return locales.map((locale) => ({
             label: locale.text,
@@ -76,9 +80,9 @@ const HelpCenterLanguageFilter = ({
 
     const handleFilterValuesChange = useCallback(
         (values: string[]) => {
-            dispatchUpdate({values, operator: value.operator})
+            dispatchUpdate({ values, operator: value.operator })
         },
-        [dispatchUpdate, value.operator]
+        [dispatchUpdate, value.operator],
     )
 
     const onOptionChange = (opt: DropdownOption) => {
@@ -86,7 +90,7 @@ const HelpCenterLanguageFilter = ({
 
         if (value.values.includes(opt.value)) {
             handleFilterValuesChange(
-                value.values.filter((locale) => locale !== opt.value)
+                value.values.filter((locale) => locale !== opt.value),
             )
         } else {
             handleFilterValuesChange([...value.values, opt.value])
@@ -100,13 +104,13 @@ const HelpCenterLanguageFilter = ({
                 operator,
             })
         },
-        [dispatchUpdate, value.values]
+        [dispatchUpdate, value.values],
     )
 
     const handleDropdownClosed = () => {
         logSegmentEvent(
             FilterKey.LocaleCodes,
-            LogicalOperatorLabel[value.operator]
+            LogicalOperatorLabel[value.operator],
         )
     }
 
@@ -143,5 +147,5 @@ export const HelpCenterLanguageFilterWithState = connect(
             mergeStatsFiltersWithLogicalOperator({
                 localeCodes: filter,
             }),
-    }
+    },
 )(HelpCenterLanguageFilter)

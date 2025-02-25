@@ -1,6 +1,7 @@
-import type {Map} from 'immutable'
 import React from 'react'
-import {Link} from 'react-router-dom'
+
+import type { Map } from 'immutable'
+import { Link } from 'react-router-dom'
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -17,14 +18,14 @@ import {
     KLAVIYO_INITIAL_SYNC_SYNCED,
     KLAVIYO_INITIAL_SYNC_SYNCING,
 } from 'config/integrations/klaviyo'
-import {KLAVIYO_INTEGRATION_TYPE} from 'constants/integration'
+import { KLAVIYO_INTEGRATION_TYPE } from 'constants/integration'
 import Alert from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import PageHeader from 'pages/common/components/PageHeader'
 import CheckBox from 'pages/common/forms/CheckBox'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
-import {INTEGRATION_REMOVAL_CONFIGURATION_TEXT} from 'pages/integrations/integration/constants'
+import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 import css from 'pages/settings/settings.less'
 import {
     deleteIntegration,
@@ -66,66 +67,66 @@ class KlaviyoIntegrationDetail extends React.Component<Props> {
     isInitialized = false
 
     _syncHistorical = async () => {
-        const {actions} = this.props
-        this.setState({isSyncing: KLAVIYO_INITIAL_SYNC_SYNCING})
+        const { actions } = this.props
+        this.setState({ isSyncing: KLAVIYO_INITIAL_SYNC_SYNCING })
         await (actions.klaviyoSyncHistoricalEvent() as unknown as Promise<any>)
     }
 
     _deleteIntegration = async () => {
-        const {actions, integration} = this.props
-        this.setState({isDeleting: true})
+        const { actions, integration } = this.props
+        this.setState({ isDeleting: true })
         await (actions.deleteIntegration(
-            integration
+            integration,
         ) as unknown as Promise<any>)
-        this.setState({isDeleting: false})
+        this.setState({ isDeleting: false })
     }
 
     _getFormValues = (): Map<string, unknown> => {
-        const {integration} = this.props
+        const { integration } = this.props
         const form = integration
             .set('name', this.state.name)
             .set('type', KLAVIYO_INTEGRATION_TYPE)
             .setIn(['meta', 'api', 'public_key'], this.state.apiPublicKey)
             .setIn(
                 ['meta', 'event_sync', 'ticket_created'],
-                this.state.ticketCreated
+                this.state.ticketCreated,
             )
             .setIn(
                 ['meta', 'event_sync', 'ticket_closed'],
-                this.state.ticketClosed
+                this.state.ticketClosed,
             )
             .setIn(['meta', 'event_sync', 'csat_sent'], this.state.csatSent)
             .setIn(
                 ['meta', 'event_sync', 'csat_responded'],
-                this.state.csatResponded
+                this.state.csatResponded,
             )
             .setIn(
                 ['meta', 'customer_sync', 'enable_customer_sync'],
-                this.state.enableCustomerSync
+                this.state.enableCustomerSync,
             )
             .setIn(
                 ['meta', 'customer_sync', 'lists', 'default'],
-                this.state.customerDefaultList
+                this.state.customerDefaultList,
             )
             .setIn(
                 ['connections'],
                 [
                     {
-                        data: {private_key: this.state.apiPrivateKey},
+                        data: { private_key: this.state.apiPrivateKey },
                     },
-                ]
+                ],
             )
         return form
     }
 
     _handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        const {updateOrCreateIntegration} = this.props.actions
-        this.setState({isSubmitting: true})
+        const { updateOrCreateIntegration } = this.props.actions
+        this.setState({ isSubmitting: true })
         await (updateOrCreateIntegration(
-            this._getFormValues()
+            this._getFormValues(),
         ) as unknown as Promise<any>)
-        this.setState({isSubmitting: false})
+        this.setState({ isSubmitting: false })
     }
 
     _getIntegration = (integration: Map<string, unknown>) => {
@@ -135,37 +136,37 @@ class KlaviyoIntegrationDetail extends React.Component<Props> {
             apiPublicKey: integration.getIn(['meta', 'api', 'public_key'], ''),
             ticketCreated: integration.getIn(
                 ['meta', 'event_sync', 'ticket_created'],
-                true
+                true,
             ),
             ticketClosed: integration.getIn(
                 ['meta', 'event_sync', 'ticket_closed'],
-                true
+                true,
             ),
             csatSent: integration.getIn(
                 ['meta', 'event_sync', 'csat_sent'],
-                true
+                true,
             ),
             csatResponded: integration.getIn(
                 ['meta', 'event_sync', 'csat_responded'],
-                true
+                true,
             ),
             enableCustomerSync: integration.getIn(
                 ['meta', 'customer_sync', 'enable_customer_sync'],
-                true
+                true,
             ),
             customerDefaultList: integration.getIn(
                 ['meta', 'customer_sync', 'lists', 'default'],
-                'RhVsd2'
+                'RhVsd2',
             ),
             klaviyoLists: integration.getIn(
                 ['meta', 'customer_sync', 'lists', 'data'],
-                []
+                [],
             ),
         }
     }
 
     UNSAFE_componentWillMount(): void {
-        const {integration, isUpdate, loading} = this.props
+        const { integration, isUpdate, loading } = this.props
 
         if (
             !this.isInitialized &&
@@ -179,7 +180,7 @@ class KlaviyoIntegrationDetail extends React.Component<Props> {
     }
 
     UNSAFE_componentWillUpdate(nextProps: Props): void {
-        const {integration, isUpdate, loading} = nextProps
+        const { integration, isUpdate, loading } = nextProps
 
         if (!this.isInitialized && isUpdate && !loading.get('integration')) {
             this.setState(this._getIntegration(integration))
@@ -188,7 +189,7 @@ class KlaviyoIntegrationDetail extends React.Component<Props> {
     }
 
     render(): JSX.Element {
-        const {integration, isUpdate} = this.props
+        const { integration, isUpdate } = this.props
         const {
             isSubmitting,
             isActivating,
@@ -315,7 +316,7 @@ class KlaviyoIntegrationDetail extends React.Component<Props> {
                                             label="Integration name"
                                             value={name}
                                             onChange={(value: string) =>
-                                                this.setState({name: value})
+                                                this.setState({ name: value })
                                             }
                                             required
                                         />
@@ -460,21 +461,21 @@ class KlaviyoIntegrationDetail extends React.Component<Props> {
                                                         option: Map<
                                                             string,
                                                             string
-                                                        >
+                                                        >,
                                                     ) => (
                                                         <option
                                                             key={option.get(
-                                                                'list_id'
+                                                                'list_id',
                                                             )}
                                                             value={option.get(
-                                                                'list_id'
+                                                                'list_id',
                                                             )}
                                                         >
                                                             {option.get(
-                                                                'list_name'
+                                                                'list_name',
                                                             )}
                                                         </option>
-                                                    )
+                                                    ),
                                                 )}
                                             </DEPRECATED_InputField>
                                         </FormGroup>

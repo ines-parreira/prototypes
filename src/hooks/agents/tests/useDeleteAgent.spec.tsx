@@ -1,20 +1,21 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
 
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
+
+import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import {
     agentsKeys,
     useDeleteAgent as usePureDeleteAgent,
 } from 'models/agents/queries'
-import {DELETE_AGENT_SUCCESS} from 'state/agents/constants'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { DELETE_AGENT_SUCCESS } from 'state/agents/constants'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
-import {handleError} from '../errorHandler'
-import {useDeleteAgent} from '../useDeleteAgent'
+import { handleError } from '../errorHandler'
+import { useDeleteAgent } from '../useDeleteAgent'
 
 const queryClient = mockQueryClient()
 
@@ -38,7 +39,7 @@ describe('useDeleteAgent', () => {
     it('should accept a name param and dispatch success notification on success and invalidate lists queries', () => {
         const invalidateQueryMock = jest.spyOn(queryClient, 'invalidateQueries')
         renderHook(() => useDeleteAgent(name), {
-            wrapper: ({children}) => (
+            wrapper: ({ children }) => (
                 <QueryClientProvider client={queryClient}>
                     {children}
                 </QueryClientProvider>
@@ -47,7 +48,7 @@ describe('useDeleteAgent', () => {
         usePureDeleteAgentMock.mock.calls[0][0]?.onSuccess!(
             axiosSuccessResponse(undefined),
             [id],
-            undefined
+            undefined,
         )
 
         expect(invalidateQueryMock).toHaveBeenLastCalledWith({
@@ -69,7 +70,7 @@ describe('useDeleteAgent', () => {
 
     it('should call handleError on error', () => {
         renderHook(() => useDeleteAgent(name), {
-            wrapper: ({children}) => (
+            wrapper: ({ children }) => (
                 <QueryClientProvider client={queryClient}>
                     {children}
                 </QueryClientProvider>
@@ -79,14 +80,14 @@ describe('useDeleteAgent', () => {
         usePureDeleteAgentMock.mock.calls[0][0]?.onError!(
             myError,
             [0],
-            undefined
+            undefined,
         )
 
         expect(handleError).toHaveBeenNthCalledWith(
             1,
             myError,
             `Failed to delete ${name} user`,
-            mockedDispatch
+            mockedDispatch,
         )
     })
 })

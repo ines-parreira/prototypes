@@ -1,25 +1,24 @@
-import {fromJS, Map, List} from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 import _isNumber from 'lodash/isNumber'
 import moment from 'moment'
 
-import {tryLocalStorage} from 'services/common/utils'
+import { tryLocalStorage } from 'services/common/utils'
 
-import {MAX_RECENT_VIEWS} from '../../config/views'
-import {View} from '../../models/view/types'
-import {getCode} from '../../utils'
-import {GorgiasAction, RootState} from '../types'
-
+import { MAX_RECENT_VIEWS } from '../../config/views'
+import { View } from '../../models/view/types'
+import { getCode } from '../../utils'
+import { GorgiasAction, RootState } from '../types'
 import * as constants from './constants'
 import * as selectors from './selectors'
-import {ViewsState} from './types'
+import { ViewsState } from './types'
 import {
     addFilterAST,
     addViewIfMissing,
-    removeFilterAST,
     recentViewsStorage,
+    removeFilterAST,
+    updateCustomFieldFilter,
     updateFilterOperator,
     updateFilterValue,
-    updateCustomFieldFilter,
 } from './utils'
 
 export const initialState: ViewsState = fromJS({
@@ -41,7 +40,7 @@ export const initialState: ViewsState = fromJS({
 
 export default function reducer(
     state: ViewsState = initialState,
-    action: GorgiasAction
+    action: GorgiasAction,
 ): ViewsState {
     let items
     let code = ''
@@ -63,11 +62,11 @@ export default function reducer(
                             [action.viewId as number]: {
                                 inserted_datetime: now,
                             },
-                        })
+                        }),
                     )
                     .sortBy(
                         (view: Map<any, any>) =>
-                            view.get('inserted_datetime') as string
+                            view.get('inserted_datetime') as string,
                     )
                     .slice(-MAX_RECENT_VIEWS)
             })
@@ -92,7 +91,7 @@ export default function reducer(
                     if (action.viewIds?.includes(parseInt(viewId))) {
                         return view.set(
                             'updated_datetime',
-                            moment.utc().toISOString()
+                            moment.utc().toISOString(),
                         )
                     }
                     return view
@@ -111,7 +110,7 @@ export default function reducer(
             const view = action.view || activeView
             return state.set(
                 'active',
-                view.set('dirty', true).set('editMode', action.edit)
+                view.set('dirty', true).set('editMode', action.edit),
             )
         }
 
@@ -123,7 +122,7 @@ export default function reducer(
         case constants.SET_FIELD_VISIBILITY: {
             const visibleFields = activeView.get(
                 'fields',
-                fromJS([])
+                fromJS([]),
             ) as List<any>
 
             const fields = action.state
@@ -134,7 +133,7 @@ export default function reducer(
                 tryLocalStorage(() => {
                     localStorage.setItem(
                         constants.SEARCH_VIEW_FIELD_CONFIG_STORAGE_KEY,
-                        JSON.stringify(fields.toJS())
+                        JSON.stringify(fields.toJS()),
                     )
                 })
             }
@@ -150,7 +149,7 @@ export default function reducer(
                 activeView.merge({
                     order_by: action.fieldPath,
                     order_dir: action.direction,
-                })
+                }),
             )
         }
 
@@ -208,7 +207,7 @@ export default function reducer(
                 ast,
                 action.index,
                 action.customFieldId,
-                action.customFieldOperator
+                action.customFieldOperator,
             )
 
             code = getCode(nextAst.toJS())
@@ -227,7 +226,7 @@ export default function reducer(
             const nextAst = updateFilterOperator(
                 ast,
                 action.index,
-                action.operator
+                action.operator,
             )
             code = getCode(nextAst.toJS())
             activeView = activeView
@@ -240,8 +239,8 @@ export default function reducer(
             // find the original view from the state and replace the active view
             let original = selectors.getView(
                 activeView.get('id'),
-                action.configName
-            )({views: state} as RootState)
+                action.configName,
+            )({ views: state } as RootState)
 
             // if it's a new view, it's ID should be 0
             const isUpdate = original.get('id') !== 0
@@ -261,11 +260,11 @@ export default function reducer(
             return state.merge({
                 items: addViewIfMissing(
                     state.get('items'),
-                    action.resp as {id: number}
+                    action.resp as { id: number },
                 ),
                 active: (fromJS(action.resp) as Map<any, any>).set(
                     'dirty',
-                    false
+                    false,
                 ),
             })
         }
@@ -275,7 +274,7 @@ export default function reducer(
         }
 
         case constants.FETCH_VIEW_LIST_SUCCESS: {
-            items = fromJS((action.resp as {data: View[]}).data) as List<any>
+            items = fromJS((action.resp as { data: View[] }).data) as List<any>
 
             const isEditMode = activeView.get('editMode')
 
@@ -286,7 +285,7 @@ export default function reducer(
                         item.get('id') ===
                         parseInt(action.currentViewId as string),
                     null,
-                    fromJS({})
+                    fromJS({}),
                 )
                 isEditMode && (activeView = activeView.set('editMode', true))
             }
@@ -300,37 +299,37 @@ export default function reducer(
 
         case constants.CREATE_VIEW_SUCCESS: {
             return state.update('items', (items: List<any>) =>
-                addViewIfMissing(items, action.resp as {id: number})
+                addViewIfMissing(items, action.resp as { id: number }),
             )
         }
 
         case constants.UPDATE_VIEW_SUCCESS: {
             let newState = state.update('items', (items: List<any>) =>
                 items.map((view: Map<any, any>) => {
-                    if (view.get('id') === (action.resp as {id: number}).id) {
+                    if (view.get('id') === (action.resp as { id: number }).id) {
                         return fromJS(action.resp) as Map<any, any>
                     }
                     return view
-                })
+                }),
             )
             // also update the active view if we're on it
             if (
                 newState.getIn(['active', 'id']) ===
-                (action.resp as {id: number}).id
+                (action.resp as { id: number }).id
             ) {
                 newState = newState.set('active', fromJS(action.resp))
             }
 
             // if the view wasn't shared with current user, add it to the list of views
             return newState.update('items', (items) =>
-                addViewIfMissing(items, action.resp as any)
+                addViewIfMissing(items, action.resp as any),
             )
         }
 
         case constants.DELETE_VIEW_SUCCESS: {
             return state.merge({
                 items: (state.get('items') as List<any>).filter(
-                    (item: Map<any, any>) => item.get('id') !== action.viewId
+                    (item: Map<any, any>) => item.get('id') !== action.viewId,
                 ),
             })
         }
@@ -342,14 +341,14 @@ export default function reducer(
             if (_isNumber(action.viewId) && action.viewId > 0) {
                 newState = newState.setIn(
                     ['_internal', 'lastViewId'],
-                    action.viewId
+                    action.viewId,
                 )
             }
 
             if (action.discreet) {
                 newState = newState.setIn(
                     ['_internal', 'loading', 'fetchListDiscreet'],
-                    true
+                    true,
                 )
             } else {
                 newState = newState
@@ -361,7 +360,7 @@ export default function reducer(
             // from being displayed while the new count is being fetched
             newState = newState.setIn(
                 ['_internal', 'navigation', 'total_resources'],
-                null
+                null,
             )
 
             return newState
@@ -388,7 +387,7 @@ export default function reducer(
         case constants.TOGGLE_ID_IN_PAGE_SELECTION: {
             const currentlySelected = state.getIn(
                 ['_internal', 'selectedItemsIds'],
-                fromJS([])
+                fromJS([]),
             ) as List<any>
 
             const idx = currentlySelected.indexOf(action.id)
@@ -397,21 +396,21 @@ export default function reducer(
             if (~idx) {
                 return state.setIn(
                     ['_internal', 'selectedItemsIds'],
-                    currentlySelected.delete(idx)
+                    currentlySelected.delete(idx),
                 )
             }
 
             // otherwise select it
             return state.setIn(
                 ['_internal', 'selectedItemsIds'],
-                currentlySelected.push(action.id)
+                currentlySelected.push(action.id),
             )
         }
 
         case constants.TOGGLE_VIEW_SELECTION: {
             return state.updateIn(
                 ['active', 'allItemsSelected'],
-                (allItemsSelected) => !allItemsSelected
+                (allItemsSelected) => !allItemsSelected,
             )
         }
 
@@ -438,11 +437,11 @@ export default function reducer(
                                 if (viewIds.includes(viewId)) {
                                     return view.set(
                                         'updated_datetime',
-                                        moment.utc().toISOString()
+                                        moment.utc().toISOString(),
                                     )
                                 }
                                 return view
-                            }
+                            },
                         )
                     })
             )

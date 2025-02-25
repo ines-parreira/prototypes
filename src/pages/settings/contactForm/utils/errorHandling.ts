@@ -1,5 +1,5 @@
 export async function catchAsync<TFunction extends () => Promise<any>>(
-    func: TFunction
+    func: TFunction,
 ): Promise<[undefined, ReturnType<TFunction>] | [Error]> {
     try {
         const result = await func()

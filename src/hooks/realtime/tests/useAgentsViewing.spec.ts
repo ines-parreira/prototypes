@@ -1,8 +1,9 @@
-import {useAgentActivity} from '@gorgias/realtime'
-import {renderHook} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
+import { renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
 
-import {useFlag} from 'core/flags'
+import { useAgentActivity } from '@gorgias/realtime'
+
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 
 import useAgentsViewing from '../useAgentsViewing'
@@ -30,9 +31,9 @@ describe('useAgentsViewing', () => {
     })
 
     it('should return agents from ticket activity when realtime is enabled', () => {
-        const currentUser = fromJS({id: 'agent1'})
+        const currentUser = fromJS({ id: 'agent1' })
         const ticketActivity = {
-            viewing: [{id: 'agent1'}, {id: 'agent2'}],
+            viewing: [{ id: 'agent1' }, { id: 'agent2' }],
         }
 
         mockUseFlag.mockReturnValue(true)
@@ -41,25 +42,25 @@ describe('useAgentsViewing', () => {
             getTicketActivity: () => ticketActivity,
         })
 
-        const {result} = renderHook(() => useAgentsViewing(ticketId))
+        const { result } = renderHook(() => useAgentsViewing(ticketId))
 
-        expect(result.current.agentsViewing).toEqual([{id: 'agent2'}])
+        expect(result.current.agentsViewing).toEqual([{ id: 'agent2' }])
     })
 
     it('should return agents from state when realtime is disabled', () => {
-        const currentUser = fromJS({id: 'currentUser'})
-        const agentsOnTicket = fromJS([{id: 'agent1'}, {id: 'agent2'}])
+        const currentUser = fromJS({ id: 'currentUser' })
+        const agentsOnTicket = fromJS([{ id: 'agent1' }, { id: 'agent2' }])
 
         mockUseFlag.mockReturnValue(false)
         mockUseAppSelector
             .mockReturnValueOnce(currentUser)
             .mockReturnValueOnce(agentsOnTicket)
 
-        const {result} = renderHook(() => useAgentsViewing(ticketId))
+        const { result } = renderHook(() => useAgentsViewing(ticketId))
 
         expect(result.current.agentsViewing).toEqual([
-            {id: 'agent1'},
-            {id: 'agent2'},
+            { id: 'agent1' },
+            { id: 'agent2' },
         ])
     })
 })

@@ -1,14 +1,14 @@
-import {IntegrationType} from '@gorgias/api-queries'
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {integrationsState} from 'fixtures/integrations'
+import { IntegrationType } from '@gorgias/api-queries'
 
+import { integrationsState } from 'fixtures/integrations'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {PhoneIntegration} from 'models/integration/types'
-import {deleteIntegration} from 'state/integrations/actions'
-import {assumeMock} from 'utils/testing'
+import { PhoneIntegration } from 'models/integration/types'
+import { deleteIntegration } from 'state/integrations/actions'
+import { assumeMock } from 'utils/testing'
 
-import {useDeleteVoiceIntegration} from '../useDeleteVoiceIntegration'
+import { useDeleteVoiceIntegration } from '../useDeleteVoiceIntegration'
 
 jest.mock('hooks/useAppDispatch')
 const dispatchMock = jest.fn()
@@ -18,7 +18,7 @@ jest.mock('state/integrations/actions')
 const deleteIntegrationMock = assumeMock(deleteIntegration)
 
 const phoneIntegration = integrationsState.integrations.find(
-    (integration) => integration.type === IntegrationType.Phone
+    (integration) => integration.type === IntegrationType.Phone,
 ) as unknown as PhoneIntegration
 
 describe('useDeleteVoiceIntegration', () => {
@@ -29,7 +29,7 @@ describe('useDeleteVoiceIntegration', () => {
         deleteIntegrationMock.mockReturnValue({
             type: 'delete-integration',
         } as any)
-        const {result, waitFor} = render()
+        const { result, waitFor } = render()
 
         await result.current.handleDelete()
 

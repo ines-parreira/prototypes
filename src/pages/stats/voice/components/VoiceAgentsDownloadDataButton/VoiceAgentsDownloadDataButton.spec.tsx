@@ -1,12 +1,13 @@
-import {render, screen, fireEvent, act} from '@testing-library/react'
 import React from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {VoiceAgentsDownloadDataButton} from 'pages/stats/voice/components/VoiceAgentsDownloadDataButton/VoiceAgentsDownloadDataButton'
-import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/voice/constants/voiceAgents'
-import {useVoiceAgentsReportData} from 'services/reporting/voiceAgentsReportingService'
-import {saveZippedFiles} from 'utils/file'
-import {assumeMock} from 'utils/testing'
+import { act, fireEvent, render, screen } from '@testing-library/react'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { VoiceAgentsDownloadDataButton } from 'pages/stats/voice/components/VoiceAgentsDownloadDataButton/VoiceAgentsDownloadDataButton'
+import { DOWNLOAD_DATA_BUTTON_LABEL } from 'pages/stats/voice/constants/voiceAgents'
+import { useVoiceAgentsReportData } from 'services/reporting/voiceAgentsReportingService'
+import { saveZippedFiles } from 'utils/file'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('services/reporting/voiceAgentsReportingService')
 const useVoiceAgentsReportDataMock = assumeMock(useVoiceAgentsReportData)
@@ -54,7 +55,7 @@ describe('VoiceAgentsDownloadDataButton', () => {
     })
 
     it('should send event to segment and call saveReport on download data button click', () => {
-        const {getByText} = renderComponent()
+        const { getByText } = renderComponent()
         act(() => {
             fireEvent.click(getByText(DOWNLOAD_DATA_BUTTON_LABEL))
         })
@@ -63,7 +64,7 @@ describe('VoiceAgentsDownloadDataButton', () => {
             SegmentEvent.StatDownloadClicked,
             expect.objectContaining({
                 name: 'all-metrics',
-            })
+            }),
         )
         expect(saveZippedFilesMock).toHaveBeenCalled()
     })

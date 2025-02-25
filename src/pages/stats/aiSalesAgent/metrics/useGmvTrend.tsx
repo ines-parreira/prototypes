@@ -1,19 +1,18 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import {useQuery} from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 
-import {type MetricTrend} from 'hooks/reporting/useMetricTrend'
-
-import {StatsFilters} from 'models/stat/types'
-import {getRealisticResponseTime} from 'pages/aiAgent/Overview/getRealisticResponseTime'
+import { type MetricTrend } from 'hooks/reporting/useMetricTrend'
+import { StatsFilters } from 'models/stat/types'
+import { getRealisticResponseTime } from 'pages/aiAgent/Overview/getRealisticResponseTime'
 
 const useGmvTrend = (filters: StatsFilters, timezone: string): MetricTrend => {
     // TODO: replace with Cube hook
     const result = useQuery({
         queryKey: ['useGmvTrend'],
-        queryFn: (): Promise<{value: number; prevValue: number}> =>
+        queryFn: (): Promise<{ value: number; prevValue: number }> =>
             new Promise((resolve) => {
                 setTimeout(() => {
-                    resolve({value: 32.41, prevValue: 24.56})
+                    resolve({ value: 32.41, prevValue: 24.56 })
                 }, getRealisticResponseTime())
             }),
     })

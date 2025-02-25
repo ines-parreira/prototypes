@@ -1,5 +1,6 @@
+import React, { useEffect, useState } from 'react'
+
 import classnames from 'classnames'
-import React, {useEffect, useState} from 'react'
 
 import css from './VerticalTextCarousel.less'
 
@@ -18,7 +19,7 @@ export const VerticalTextCarousel = ({
 }: VerticalTextCarouselProps) => {
     const [currentTextIndex, setCurrentTextIndex] = useState(0)
     const [clickedTextIndex, setClickedTextIndex] = useState<number | null>(
-        null
+        null,
     )
 
     useEffect(() => {
@@ -52,7 +53,7 @@ export const VerticalTextCarousel = ({
                             ? css.clicked
                             : '',
                         css.suggestion,
-                        css.row
+                        css.row,
                     )}
                 >
                     {texts[currentTextIndex]}

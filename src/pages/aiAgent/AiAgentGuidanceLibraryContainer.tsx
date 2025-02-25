@@ -1,18 +1,21 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
-import {useParams} from 'react-router-dom'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { useParams } from 'react-router-dom'
 
-import {AiAgentGuidanceLibrary} from './AiAgentGuidanceLibrary'
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+
+import { AiAgentGuidanceLibrary } from './AiAgentGuidanceLibrary'
+import { AiAgentLayout } from './components/AiAgentLayout/AiAgentLayout'
+import { AI_AGENT, GUIDANCE } from './constants'
+import { useAiAgentHelpCenter } from './hooks/useAiAgentHelpCenter'
+
 import css from './AiAgentGuidanceLibraryContainer.less'
-import {AiAgentLayout} from './components/AiAgentLayout/AiAgentLayout'
-import {AI_AGENT, GUIDANCE} from './constants'
-import {useAiAgentHelpCenter} from './hooks/useAiAgentHelpCenter'
 
 export const AiAgentGuidanceLibraryContainer = () => {
-    const {shopName} = useParams<{
+    const { shopName } = useParams<{
         shopName: string
     }>()
     const guidanceHelpCenter = useAiAgentHelpCenter({

@@ -1,12 +1,12 @@
-import {useCreateArticle} from 'models/helpCenter/queries'
-import {AIArticle, LocaleCode} from 'models/helpCenter/types'
+import { useCreateArticle } from 'models/helpCenter/queries'
+import { AIArticle, LocaleCode } from 'models/helpCenter/types'
 
-import {ArticleOrigin} from '../types/articleOrigin.enum'
-import {mapAILibraryArticleItemToArticle} from '../utils/helpCenter.utils'
+import { ArticleOrigin } from '../types/articleOrigin.enum'
+import { mapAILibraryArticleItemToArticle } from '../utils/helpCenter.utils'
 
 export const useCreateAIArticle = (
     helpCenterId: number,
-    locale: LocaleCode
+    locale: LocaleCode,
 ) => {
     const {
         mutateAsync: createArticleMutateAsync,
@@ -38,12 +38,12 @@ export const useCreateAIArticle = (
         })
         if (!payload)
             return Promise.reject(
-                'No payload provided during article creation.'
+                'No payload provided during article creation.',
             )
 
         return createArticleMutateAsync([
             undefined,
-            {help_center_id: helpCenterId},
+            { help_center_id: helpCenterId },
             payload,
         ])
     }

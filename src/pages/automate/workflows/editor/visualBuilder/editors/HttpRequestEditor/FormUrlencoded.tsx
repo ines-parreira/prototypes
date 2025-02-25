@@ -1,7 +1,7 @@
 import React from 'react'
 
-import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
-import {HttpRequestNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
+import { HttpRequestNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import TextInput from 'pages/common/forms/input/TextInput'
@@ -16,7 +16,9 @@ type Props = {
     isDisabled?: boolean
     onChange: (
         index: number,
-        item: NonNullable<HttpRequestNodeType['data']['formUrlencoded']>[number]
+        item: NonNullable<
+            HttpRequestNodeType['data']['formUrlencoded']
+        >[number],
     ) => void
     onDelete: (index: number) => void
     onAdd: () => void
@@ -58,7 +60,7 @@ const FormUrlencoded = ({
                         className={css.textInput}
                         placeholder="Key"
                         onChange={(key) => {
-                            onChange(index, {key, value: item.value})
+                            onChange(index, { key, value: item.value })
                         }}
                         onBlur={() => {
                             onBlur?.()
@@ -71,7 +73,7 @@ const FormUrlencoded = ({
                         isDisabled={isDisabled}
                         value={item.value}
                         onChange={(value) => {
-                            onChange(index, {key: item.key, value})
+                            onChange(index, { key: item.key, value })
                         }}
                         variables={variables}
                         noSelectedCategoryText={noSelectedCategoryText}

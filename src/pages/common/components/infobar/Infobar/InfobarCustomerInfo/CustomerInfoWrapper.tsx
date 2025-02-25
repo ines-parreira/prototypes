@@ -1,4 +1,4 @@
-import React, {Children, ReactNode, useState} from 'react'
+import React, { Children, ReactNode, useState } from 'react'
 
 import Button from 'pages/common/components/button/Button'
 

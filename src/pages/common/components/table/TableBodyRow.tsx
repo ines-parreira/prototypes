@@ -1,5 +1,6 @@
+import React, { ForwardedRef, forwardRef, HTMLProps, ReactNode } from 'react'
+
 import classnames from 'classnames'
-import React, {ForwardedRef, forwardRef, HTMLProps, ReactNode} from 'react'
 
 import css from './TableBodyRow.less'
 
@@ -10,8 +11,8 @@ type Props = HTMLProps<HTMLTableRowElement> & {
 }
 
 function TableBodyRow(
-    {children, className, onClick, ...otherProps}: Props,
-    ref: ForwardedRef<HTMLTableRowElement>
+    { children, className, onClick, ...otherProps }: Props,
+    ref: ForwardedRef<HTMLTableRowElement>,
 ) {
     return (
         <tr

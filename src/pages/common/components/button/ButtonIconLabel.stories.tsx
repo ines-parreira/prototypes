@@ -1,5 +1,6 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { Meta, Story } from '@storybook/react'
 
 import Button from './Button'
 import ButtonIconLabel from './ButtonIconLabel'
@@ -21,7 +22,7 @@ const Template: Story<ComponentProps<typeof ButtonIconLabel>> = (props) => (
 )
 
 const UsageTemplate: Story<ComponentProps<typeof ButtonIconLabel>> = (
-    props
+    props,
 ) => (
     <Button>
         <ButtonIconLabel {...props} />

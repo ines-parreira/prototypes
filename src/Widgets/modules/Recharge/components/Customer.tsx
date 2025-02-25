@@ -1,21 +1,21 @@
-import {Map} from 'immutable'
-import React, {ReactNode, useContext} from 'react'
+import React, { ReactNode, useContext } from 'react'
+
+import { Map } from 'immutable'
 
 import logo from 'assets/img/infobar/recharge.svg'
-import {logEvent, SegmentEvent} from 'common/segment'
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
-import {renderTemplate} from 'pages/common/utils/template'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-
+import { renderTemplate } from 'pages/common/utils/template'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import {
-    ExpandAllButton,
     CardCustomization,
+    ExpandAllButton,
 } from 'Widgets/modules/Template/modules/Card'
-import {CardHeaderIcon} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderIcon'
-import {CardHeaderSubtitle} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderSubtitle'
-import {CardHeaderTitle} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderTitle'
-import {StaticField} from 'Widgets/modules/Template/modules/Field'
+import { CardHeaderIcon } from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderIcon'
+import { CardHeaderSubtitle } from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderSubtitle'
+import { CardHeaderTitle } from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderTitle'
+import { StaticField } from 'Widgets/modules/Template/modules/Field'
 
 export const customerCustomization: CardCustomization = {
     AfterTitle,
@@ -26,7 +26,7 @@ type AfterTitleProps = {
     source: Map<any, any>
 }
 
-function AfterTitle({source}: AfterTitleProps) {
+function AfterTitle({ source }: AfterTitleProps) {
     return (
         <>
             <StaticField label="Status">{source.get('status')}</StaticField>
@@ -48,7 +48,7 @@ export function TitleWrapper({
     isEditing,
 }: TitleWrapperProps) {
     const currentAccount = useAppSelector(getCurrentAccountState)
-    const {integration} = useContext(IntegrationContext)
+    const { integration } = useContext(IntegrationContext)
     const storeName = integration.getIn(['meta', 'store_name']) as string
     const customerHash = source.get('hash') as string
     const customerId = source.get('id') as string
@@ -58,7 +58,7 @@ export function TitleWrapper({
     if (customLink) {
         customLink = renderTemplate(
             customLink,
-            source.set('customerHash', customerHash).toJS()
+            source.set('customerHash', customerHash).toJS(),
         )
     }
 

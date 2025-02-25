@@ -1,6 +1,7 @@
-import {createEvent, fireEvent, render, screen} from '@testing-library/react'
-import _noop from 'lodash/noop'
 import React from 'react'
+
+import { createEvent, fireEvent, render, screen } from '@testing-library/react'
+import _noop from 'lodash/noop'
 
 import Input from 'pages/common/forms/MultiSelectOptionsField/Input'
 
@@ -26,10 +27,10 @@ describe('MultiSelectField Input', () => {
                 {...defaultProps}
                 onChange={onChangeSpy}
                 onBlur={onBlurSpy}
-            />
+            />,
         )
 
-        fireEvent.keyDown(screen.getByRole('textbox'), {key: 'Escape'})
+        fireEvent.keyDown(screen.getByRole('textbox'), { key: 'Escape' })
 
         expect(onBlurSpy.mock.calls.length).toBe(1)
         expect(onChangeSpy.mock.calls.length).toBe(1)
@@ -40,7 +41,7 @@ describe('MultiSelectField Input', () => {
         const onDownSpy = jest.fn()
         render(<Input {...defaultProps} onDown={onDownSpy} />)
 
-        fireEvent.keyDown(screen.getByRole('textbox'), {key: 'ArrowDown'})
+        fireEvent.keyDown(screen.getByRole('textbox'), { key: 'ArrowDown' })
 
         expect(onDownSpy).toBeCalled()
     })
@@ -49,7 +50,7 @@ describe('MultiSelectField Input', () => {
         const onUpSpy = jest.fn()
         render(<Input {...defaultProps} onUp={onUpSpy} />)
 
-        fireEvent.keyDown(screen.getByRole('textbox'), {key: 'ArrowUp'})
+        fireEvent.keyDown(screen.getByRole('textbox'), { key: 'ArrowUp' })
 
         expect(onUpSpy).toBeCalled()
     })
@@ -58,21 +59,21 @@ describe('MultiSelectField Input', () => {
         const onSubmitSpy = jest.fn()
         render(<Input {...defaultProps} onSubmit={onSubmitSpy} />)
 
-        fireEvent.keyDown(screen.getByRole('textbox'), {key: 'Tab'})
-        fireEvent.keyDown(screen.getByRole('textbox'), {key: 'Enter'})
+        fireEvent.keyDown(screen.getByRole('textbox'), { key: 'Tab' })
+        fireEvent.keyDown(screen.getByRole('textbox'), { key: 'Enter' })
 
         expect(onSubmitSpy.mock.calls).toHaveLength(2)
     })
 
     it('should call onDelete when Backspace pressed and there is no input', () => {
         const onDeleteSpy = jest.fn()
-        const {rerender} = render(
-            <Input {...defaultProps} value="foo" onDelete={onDeleteSpy} />
+        const { rerender } = render(
+            <Input {...defaultProps} value="foo" onDelete={onDeleteSpy} />,
         )
 
-        fireEvent.keyDown(screen.getByRole('textbox'), {key: 'Backspace'})
+        fireEvent.keyDown(screen.getByRole('textbox'), { key: 'Backspace' })
         rerender(<Input {...defaultProps} value="" onDelete={onDeleteSpy} />)
-        fireEvent.keyDown(screen.getByRole('textbox'), {key: 'Backspace'})
+        fireEvent.keyDown(screen.getByRole('textbox'), { key: 'Backspace' })
 
         expect(onDeleteSpy.mock.calls).toHaveLength(1)
     })
@@ -96,7 +97,7 @@ describe('MultiSelectField Input', () => {
 
             expect(preventDefaultSpy).toHaveBeenCalled()
             expect(stopPropagationSpy).toHaveBeenCalled()
-        }
+        },
     )
 
     it('should stop propagation of "Tab" event because input is not empty', () => {

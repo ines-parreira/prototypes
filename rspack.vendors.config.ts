@@ -1,10 +1,9 @@
+import { codecovWebpackPlugin } from '@codecov/webpack-plugin'
+import { rspack, Configuration as RspackConfiguration } from '@rspack/core'
 import path from 'path'
+import { RspackManifestPlugin } from 'rspack-manifest-plugin'
 
-import {codecovWebpackPlugin} from '@codecov/webpack-plugin'
-import {rspack, Configuration as RspackConfiguration} from '@rspack/core'
-import {RspackManifestPlugin} from 'rspack-manifest-plugin'
-
-const {NODE_ENV} = process.env
+const { NODE_ENV } = process.env
 
 const isProd = NODE_ENV === 'production'
 

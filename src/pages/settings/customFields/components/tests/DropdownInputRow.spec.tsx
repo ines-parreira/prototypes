@@ -1,10 +1,11 @@
-import {fireEvent, render, screen} from '@testing-library/react'
 import React from 'react'
-import {DndProvider} from 'react-dnd'
-import {HTML5Backend} from 'react-dnd-html5-backend'
 
-import {OBJECT_TYPE_SETTINGS, OBJECT_TYPES} from 'custom-fields/constants'
-import {ticketDropdownFieldDefinition} from 'fixtures/customField'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+
+import { OBJECT_TYPE_SETTINGS, OBJECT_TYPES } from 'custom-fields/constants'
+import { ticketDropdownFieldDefinition } from 'fixtures/customField'
 
 import DropdownInputRow from '../DropdownInputRow'
 
@@ -27,10 +28,10 @@ describe('<DropdownInputRow/>', () => {
             value: 'Test value',
         }
 
-        const {container} = render(
+        const { container } = render(
             <DndProvider backend={HTML5Backend}>
                 <DropdownInputRow {...props} />
-            </DndProvider>
+            </DndProvider>,
         )
         expect(container.firstChild).toMatchSnapshot()
         const input = screen.getByDisplayValue('Test value')
@@ -47,10 +48,10 @@ describe('<DropdownInputRow/>', () => {
             error: 'Unfortunately there is an error',
         }
 
-        const {container} = render(
+        const { container } = render(
             <DndProvider backend={HTML5Backend}>
                 <DropdownInputRow {...props} />
-            </DndProvider>
+            </DndProvider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -66,7 +67,7 @@ describe('<DropdownInputRow/>', () => {
         render(
             <DndProvider backend={HTML5Backend}>
                 <DropdownInputRow {...props} />
-            </DndProvider>
+            </DndProvider>,
         )
         const input = screen.getByDisplayValue('Test value')
         expect(input.hasAttribute('disabled')).toEqual(true)
@@ -85,11 +86,11 @@ describe('<DropdownInputRow/>', () => {
         render(
             <DndProvider backend={HTML5Backend}>
                 <DropdownInputRow {...props} />
-            </DndProvider>
+            </DndProvider>,
         )
 
         const input = screen.getByTestId('dropdown-choice-123')
-        fireEvent.change(input, {target: {value: 'My new value'}})
+        fireEvent.change(input, { target: { value: 'My new value' } })
 
         expect(props.onChange).toHaveBeenCalledWith(0, 'My new value')
     })
@@ -104,7 +105,7 @@ describe('<DropdownInputRow/>', () => {
         render(
             <DndProvider backend={HTML5Backend}>
                 <DropdownInputRow {...props} />
-            </DndProvider>
+            </DndProvider>,
         )
 
         const removeButton = screen.getByRole('button')
@@ -128,12 +129,12 @@ describe('<DropdownInputRow/>', () => {
             render(
                 <DndProvider backend={HTML5Backend}>
                     <DropdownInputRow {...props} />
-                </DndProvider>
+                </DndProvider>,
             )
             const input = screen.getByTestId(props.id)
             expect(input.getAttribute('placeholder')).toEqual(
-                OBJECT_TYPE_SETTINGS[objectType].PLACEHOLDERS.DROPDOWN.DEFAULT
+                OBJECT_TYPE_SETTINGS[objectType].PLACEHOLDERS.DROPDOWN.DEFAULT,
             )
-        }
+        },
     )
 })

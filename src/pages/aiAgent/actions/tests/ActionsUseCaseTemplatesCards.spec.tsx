@@ -1,8 +1,9 @@
-import {screen} from '@testing-library/react'
 import React from 'react'
 
+import { screen } from '@testing-library/react'
+
 import useGetIsActionStepEnabled from 'pages/automate/actionsPlatform/hooks/useGetIsActionStepEnabled'
-import {renderWithRouter} from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
 import ActionsUseCaseTemplatesCards from '../components/ActionsUseCaseTemplatesCards'
 
@@ -16,7 +17,7 @@ const mockUseGetIsActionStepEnabled = jest.mocked(useGetIsActionStepEnabled)
 describe('<ActionsUseCaseTemplatesCards />', () => {
     beforeEach(() => {
         mockUseGetIsActionStepEnabled.mockReturnValue(
-            jest.fn().mockReturnValue(true)
+            jest.fn().mockReturnValue(true),
         )
     })
 
@@ -93,7 +94,7 @@ describe('<ActionsUseCaseTemplatesCards />', () => {
             {
                 path: '/:shopType/:shopName/ai-agent/actions/templates',
                 route: '/shopify/acme/ai-agent/actions/templates',
-            }
+            },
         )
 
         expect(screen.getByText('template name')).toBeInTheDocument()
@@ -113,7 +114,7 @@ describe('<ActionsUseCaseTemplatesCards />', () => {
             })
 
         mockUseGetIsActionStepEnabled.mockReturnValue(
-            mockGetIsActionStepEnabled
+            mockGetIsActionStepEnabled,
         )
 
         renderWithRouter(
@@ -225,7 +226,7 @@ describe('<ActionsUseCaseTemplatesCards />', () => {
             {
                 path: '/:shopType/:shopName/ai-agent/actions/templates',
                 route: '/shopify/acme/ai-agent/actions/templates',
-            }
+            },
         )
 
         expect(screen.queryByText('template name 1')).not.toBeInTheDocument()

@@ -1,4 +1,4 @@
-import {THIRD_PARTY_APP_NAME_KEY} from 'state/widgets/constants'
+import { THIRD_PARTY_APP_NAME_KEY } from 'state/widgets/constants'
 
 export type CustomerExternalData = {
     [key in string | number]: Record<string, unknown> & {

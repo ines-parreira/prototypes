@@ -1,12 +1,12 @@
-import {CountryCode} from 'libphonenumber-js'
+import { CountryCode } from 'libphonenumber-js'
 
-import {WhatsAppMessageTemplateStatus} from 'models/whatsAppMessageTemplates/types'
-import {AlertType} from 'pages/common/components/Alert/Alert'
+import { WhatsAppMessageTemplateStatus } from 'models/whatsAppMessageTemplates/types'
+import { AlertType } from 'pages/common/components/Alert/Alert'
 
 export const templateAlertContent: Partial<
     Record<
         WhatsAppMessageTemplateStatus,
-        {type: AlertType; message: string; tooltip: string}
+        { type: AlertType; message: string; tooltip: string }
     >
 > = {
     [WhatsAppMessageTemplateStatus.Paused]: {

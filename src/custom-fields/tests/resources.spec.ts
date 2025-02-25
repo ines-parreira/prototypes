@@ -1,6 +1,6 @@
 import MockAdapter from 'axios-mock-adapter'
 
-import {OBJECT_TYPES} from 'custom-fields/constants'
+import { OBJECT_TYPES } from 'custom-fields/constants'
 import {
     customFieldInputDefinition,
     ticketInputFieldDefinition,
@@ -29,7 +29,7 @@ describe('custom field resources', () => {
         it('should resolve with a list of paginated CustomFields on success', async () => {
             mockedServer
                 .onGet('/api/custom-fields/')
-                .reply(200, {data: [ticketInputFieldDefinition]})
+                .reply(200, { data: [ticketInputFieldDefinition] })
             const res = await getCustomFields({
                 archived: false,
                 object_type: OBJECT_TYPES.TICKET,
@@ -41,12 +41,12 @@ describe('custom field resources', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onGet('/api/custom-fields')
-                .reply(404, {message: 'error'})
+                .reply(404, { message: 'error' })
             return expect(
                 getCustomFields({
                     archived: false,
                     object_type: OBJECT_TYPES.TICKET,
-                })
+                }),
             ).rejects.toEqual(new Error('Request failed with status code 404'))
         })
     })
@@ -65,9 +65,9 @@ describe('custom field resources', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onGet('/api/custom-fields/123')
-                .reply(404, {message: 'error'})
+                .reply(404, { message: 'error' })
             return expect(getCustomField(123)).rejects.toEqual(
-                new Error('Request failed with status code 404')
+                new Error('Request failed with status code 404'),
             )
         })
     })
@@ -86,9 +86,9 @@ describe('custom field resources', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onPost('/api/custom-fields')
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(
-                createCustomField(customFieldInputDefinition)
+                createCustomField(customFieldInputDefinition),
             ).rejects.toEqual(new Error('Request failed with status code 503'))
         })
     })
@@ -107,9 +107,9 @@ describe('custom field resources', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onPut('/api/custom-fields/123')
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(
-                updateCustomField(123, customFieldInputDefinition)
+                updateCustomField(123, customFieldInputDefinition),
             ).rejects.toEqual(new Error('Request failed with status code 503'))
         })
     })
@@ -118,7 +118,7 @@ describe('custom field resources', () => {
         it('should resolve with a list of updated CustomFields on success', async () => {
             mockedServer
                 .onPut('/api/custom-fields')
-                .reply(200, {data: [ticketInputFieldDefinition]})
+                .reply(200, { data: [ticketInputFieldDefinition] })
             const res = await updateCustomFields([
                 {
                     id: ticketInputFieldDefinition.id,
@@ -133,14 +133,14 @@ describe('custom field resources', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onPut('/api/custom-fields')
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(
                 updateCustomFields([
                     {
                         id: ticketInputFieldDefinition.id,
                         priority: 999,
                     },
-                ])
+                ]),
             ).rejects.toEqual(new Error('Request failed with status code 503'))
         })
     })
@@ -152,7 +152,7 @@ describe('custom field resources', () => {
                 .reply(200, ticketInputFieldDefinition)
             const res = await updatePartialCustomField(
                 123,
-                customFieldInputDefinition
+                customFieldInputDefinition,
             )
 
             expect(res.data).toMatchSnapshot()
@@ -162,9 +162,9 @@ describe('custom field resources', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onPut('/api/custom-fields/123')
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(
-                updatePartialCustomField(123, customFieldInputDefinition)
+                updatePartialCustomField(123, customFieldInputDefinition),
             ).rejects.toEqual(new Error('Request failed with status code 503'))
         })
     })
@@ -173,39 +173,39 @@ describe('custom field resources', () => {
         it('should resolve with axios’ response on success', async () => {
             mockedServer
                 .onGet('/api/tickets/1/custom-fields')
-                .reply(200, {data: 'whatever'})
+                .reply(200, { data: 'whatever' })
 
             const res = await getCustomFieldValues({
                 object_type: OBJECT_TYPES.TICKET,
                 holderId: 1,
             })
 
-            expect(res.data).toEqual({data: 'whatever'})
+            expect(res.data).toEqual({ data: 'whatever' })
         })
 
         it('should adapt when field type is customer', () => {
             mockedServer
                 .onGet('/api/customers/1/custom-fields')
-                .reply(200, {data: 'whatever'})
+                .reply(200, { data: 'whatever' })
 
             return getCustomFieldValues({
                 object_type: OBJECT_TYPES.CUSTOMER,
                 holderId: 1,
             }).then((res) => {
-                expect(res.data).toEqual({data: 'whatever'})
+                expect(res.data).toEqual({ data: 'whatever' })
             })
         })
 
         it('should reject an error on fail', () => {
             mockedServer
                 .onGet('/api/tickets/1/custom-fields')
-                .reply(404, {message: 'error'})
+                .reply(404, { message: 'error' })
 
             return expect(
                 getCustomFieldValues({
                     object_type: OBJECT_TYPES.TICKET,
                     holderId: 1,
-                })
+                }),
             ).rejects.toEqual(new Error('Request failed with status code 404'))
         })
     })
@@ -225,9 +225,9 @@ describe('custom field resources', () => {
 
                 expect(mockedServer.history.put.length).toBe(1)
                 expect(mockedServer.history.put[0].data).toBe(
-                    JSON.stringify(value)
+                    JSON.stringify(value),
                 )
-            }
+            },
         )
 
         it('should adapt when field type is customer', () => {
@@ -241,7 +241,7 @@ describe('custom field resources', () => {
             }).then(() => {
                 expect(mockedServer.history.put.length).toBe(1)
                 expect(mockedServer.history.put[0].data).toBe(
-                    JSON.stringify('123')
+                    JSON.stringify('123'),
                 )
             })
         })
@@ -249,14 +249,14 @@ describe('custom field resources', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onPut('/api/tickets/1/custom-fields/1')
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(
                 updateCustomFieldValue({
                     fieldType: OBJECT_TYPES.TICKET,
                     holderId: 1,
                     fieldId: 1,
                     value: '123',
-                })
+                }),
             ).rejects.toEqual(new Error('Request failed with status code 503'))
         })
     })

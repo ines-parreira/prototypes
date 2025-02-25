@@ -1,6 +1,6 @@
-import {AiAgentStoreConfigurationFixture} from '../../tests/AiAgentStoreConfiguration.fixture'
-import {DefineHandoverTopicsTask} from '../DefineHandoverTopics.task'
-import {buildRuleEngineData, buildRuleEngineRoutes} from './utils'
+import { AiAgentStoreConfigurationFixture } from '../../tests/AiAgentStoreConfiguration.fixture'
+import { DefineHandoverTopicsTask } from '../DefineHandoverTopics.task'
+import { buildRuleEngineData, buildRuleEngineRoutes } from './utils'
 
 describe('DefineHandoverTopics', () => {
     it('should display the task if ai agent store configuration does not have excludedTopics', () => {
@@ -14,7 +14,7 @@ describe('DefineHandoverTopics', () => {
             buildRuleEngineData({
                 aiAgentStoreConfiguration,
             }),
-            buildRuleEngineRoutes()
+            buildRuleEngineRoutes(),
         )
         expect(task.display).toBe(true)
     })
@@ -30,7 +30,7 @@ describe('DefineHandoverTopics', () => {
             buildRuleEngineData({
                 aiAgentStoreConfiguration,
             }),
-            buildRuleEngineRoutes()
+            buildRuleEngineRoutes(),
         )
         expect(task.display).toBe(false)
     })

@@ -1,10 +1,11 @@
-import {List, Map} from 'immutable'
-import React, {useCallback} from 'react'
-import {Link} from 'react-router-dom'
+import React, { useCallback } from 'react'
+
+import { List, Map } from 'immutable'
+import { Link } from 'react-router-dom'
 
 import Button from 'pages/common/components/button/Button'
 
-import {IntegrationType} from '../../../../../models/integration/types'
+import { IntegrationType } from '../../../../../models/integration/types'
 import ForwardIcon from '../../../common/components/ForwardIcon'
 import IntegrationList from '../IntegrationList'
 
@@ -24,7 +25,7 @@ export default function SmileIntegrationList({
     }, [redirectUri])
 
     const smileIntegrations = integrations.filter(
-        (v) => v!.get('type') === IntegrationType.Smile
+        (v) => v!.get('type') === IntegrationType.Smile,
     ) as List<Map<any, any>>
 
     const longTypeDescription = (

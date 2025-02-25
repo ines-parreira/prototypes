@@ -1,18 +1,20 @@
 import React from 'react'
-import {DropdownItem} from 'reactstrap'
+
+import { DropdownItem } from 'reactstrap'
+
+import { Option } from './types'
 
 import css from './RichDropdownOptions.less'
-import {Option} from './types'
 
 type Props = {
     options: Option[]
     onClick: (optionKey: string) => void
 }
 
-export default function RichDropdownOptions({options, onClick}: Props) {
+export default function RichDropdownOptions({ options, onClick }: Props) {
     return (
         <>
-            {options.map(({description, key, label}) => (
+            {options.map(({ description, key, label }) => (
                 <DropdownItem
                     key={key}
                     onClick={() => onClick(key)}

@@ -1,13 +1,14 @@
-import {Meta, StoryFn} from '@storybook/react'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { Meta, StoryFn } from '@storybook/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {tags} from 'fixtures/tag'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {TagFilterInstanceId} from 'models/stat/types'
-import {TagsFilter} from 'pages/stats/common/filters/TagsFilter'
+import { tags } from 'fixtures/tag'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { TagFilterInstanceId } from 'models/stat/types'
+import { TagsFilter } from 'pages/stats/common/filters/TagsFilter'
 
 const defaultState = {}
 

@@ -1,11 +1,12 @@
-import {render, screen, fireEvent} from '@testing-library/react'
 import React from 'react'
 
-import {BannersContextProvider} from 'AlertBanners'
+import { fireEvent, render, screen } from '@testing-library/react'
+
+import { BannersContextProvider } from 'AlertBanners'
 import * as Storage from 'AlertBanners/Storage'
 
-import {banner} from '../../hooks/useDisplayAiAgentMovedBanner'
-import {AiAgentMovedBanner} from '../AiAgentMovedBanner'
+import { banner } from '../../hooks/useDisplayAiAgentMovedBanner'
+import { AiAgentMovedBanner } from '../AiAgentMovedBanner'
 
 jest.mock('AlertBanners/Storage', () => ({
     useDismissedStorage: jest.fn(),
@@ -27,7 +28,7 @@ describe('AiAgentMovedBanner', () => {
         return render(
             <BannersContextProvider>
                 <AiAgentMovedBanner />
-            </BannersContextProvider>
+            </BannersContextProvider>,
         )
     }
 
@@ -49,7 +50,7 @@ describe('AiAgentMovedBanner', () => {
 
         expect(mockSetDismissed).toHaveBeenCalledWith(
             banner.category,
-            banner.instanceId
+            banner.instanceId,
         )
     })
 
@@ -57,7 +58,7 @@ describe('AiAgentMovedBanner', () => {
         renderBanner()
         expect(mockIsBannerDismissed).toHaveBeenCalledWith(
             banner.category,
-            banner.instanceId
+            banner.instanceId,
         )
     })
 })

@@ -1,16 +1,3 @@
-import {
-    autoUpdate,
-    flip,
-    FloatingOverlay,
-    FloatingPortal,
-    offset as offsetMiddleware,
-    Placement,
-    shift,
-    size,
-    useFloating,
-} from '@floating-ui/react'
-import classnames from 'classnames'
-import _debounce from 'lodash/debounce'
 import React, {
     createContext,
     forwardRef,
@@ -28,7 +15,21 @@ import React, {
     useState,
 } from 'react'
 
-import {useAppNode} from 'appNode'
+import {
+    autoUpdate,
+    flip,
+    FloatingOverlay,
+    FloatingPortal,
+    offset as offsetMiddleware,
+    Placement,
+    shift,
+    size,
+    useFloating,
+} from '@floating-ui/react'
+import classnames from 'classnames'
+import _debounce from 'lodash/debounce'
+
+import { useAppNode } from 'appNode'
 import useEvent from 'hooks/useEvent'
 import useKey from 'hooks/useKey'
 import usePrevious from 'hooks/usePrevious'
@@ -80,9 +81,9 @@ const Dropdown = forwardRef(
             shouldFlip = true,
             ...props
         }: Props,
-        ref: Ref<HTMLElement> | null | undefined
+        ref: Ref<HTMLElement> | null | undefined,
     ) => {
-        const {x, y, refs, strategy, update} = useFloating<HTMLElement>({
+        const { x, y, refs, strategy, update } = useFloating<HTMLElement>({
             placement,
             middleware: [
                 shift(),
@@ -93,7 +94,7 @@ const Dropdown = forwardRef(
                         padding: safeDistance,
                     }),
                 size({
-                    apply({elements}) {
+                    apply({ elements }) {
                         Object.assign(elements.floating.style ?? {}, {
                             [contained ? 'width' : 'minWidth']: `${
                                 elements.reference.getBoundingClientRect().width
@@ -115,7 +116,7 @@ const Dropdown = forwardRef(
         const appNode = useAppNode()
         const floatingPortalRoot = useMemo(
             () => root ?? appNode,
-            [appNode, root]
+            [appNode, root],
         )
 
         useLayoutEffect(() => {
@@ -132,13 +133,13 @@ const Dropdown = forwardRef(
                     return autoUpdate(
                         refs.reference.current,
                         refs.floating.current,
-                        update
+                        update,
                     )
                 },
                 50,
-                {leading: true}
+                { leading: true },
             ),
-            [children, refs.reference, refs.floating, update]
+            [children, refs.reference, refs.floating, update],
         )
 
         useEffect(handleUpdate, [handleUpdate])
@@ -181,7 +182,7 @@ const Dropdown = forwardRef(
                     </>
                 )
             },
-            [query]
+            [query],
         )
 
         const handleToggle = useCallback(
@@ -194,7 +195,7 @@ const Dropdown = forwardRef(
                     onToggle(!isOpen)
                 }
             },
-            [isOpen, onToggle, refs]
+            [isOpen, onToggle, refs],
         )
         useKey(
             'Escape',
@@ -204,7 +205,7 @@ const Dropdown = forwardRef(
                 }
             },
             undefined,
-            [isOpen, onToggle]
+            [isOpen, onToggle],
         )
         const handleQueryChange = useCallback((nextQuery: string) => {
             setQuery(nextQuery.trim())
@@ -226,7 +227,7 @@ const Dropdown = forwardRef(
                 onToggle,
                 query,
                 value,
-            ]
+            ],
         )
 
         return (
@@ -255,7 +256,7 @@ const Dropdown = forwardRef(
                 </FloatingPortal>
             </DropdownContext.Provider>
         )
-    }
+    },
 )
 
 export default Dropdown

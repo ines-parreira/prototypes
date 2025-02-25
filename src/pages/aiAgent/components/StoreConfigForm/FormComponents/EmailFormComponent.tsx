@@ -1,22 +1,25 @@
-import {Label} from '@gorgias/merchant-ui-kit'
+import React, { useEffect, useMemo } from 'react'
+
 import classnames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useEffect, useMemo} from 'react'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
+import { Label } from '@gorgias/merchant-ui-kit'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
 import useAppSelector from 'hooks/useAppSelector'
-import {StoreConfiguration} from 'models/aiAgent/types'
-import {getIntegrationsByTypes} from 'state/integrations/selectors'
+import { StoreConfiguration } from 'models/aiAgent/types'
+import { getIntegrationsByTypes } from 'state/integrations/selectors'
 
-import {INITIAL_FORM_VALUES} from '../../../constants'
-import {FormValues, UpdateValue} from '../../../types'
-import {EmailIntegrationListSelection} from '../../EmailIntegrationListSelection/EmailIntegrationListSelection'
+import { INITIAL_FORM_VALUES } from '../../../constants'
+import { FormValues, UpdateValue } from '../../../types'
+import { EmailIntegrationListSelection } from '../../EmailIntegrationListSelection/EmailIntegrationListSelection'
+
 import css from './EmailFormComponent.less'
 
 type EmailFormComponentProps = {
     updateValue: UpdateValue<FormValues>
-    monitoredEmailIntegrations: {id: number; email: string}[] | null
+    monitoredEmailIntegrations: { id: number; email: string }[] | null
     isRequired?: boolean
     isDisabled?: boolean
     shouldPrefillValue?: boolean
@@ -42,7 +45,7 @@ export const EmailFormComponent = ({
 
     const selector = useMemo(
         () => getIntegrationsByTypes(EMAIL_INTEGRATION_TYPES),
-        []
+        [],
     )
     const emailIntegrations = useAppSelector(selector)
     const emailItems = useMemo(() => {
@@ -70,7 +73,7 @@ export const EmailFormComponent = ({
             []
         for (const id of nextSelectedIds) {
             const emailIntegration = emailIntegrations.find(
-                (integration) => integration.id === id
+                (integration) => integration.id === id,
             )
             if (emailIntegration) {
                 monitoredEmailIntegrations.push({
@@ -98,7 +101,7 @@ export const EmailFormComponent = ({
                 selectedIds={
                     !!monitoredEmailIntegrations
                         ? monitoredEmailIntegrations.map(
-                              (integration) => integration.id
+                              (integration) => integration.id,
                           )
                         : INITIAL_FORM_VALUES.monitoredEmailIntegrations
                 }

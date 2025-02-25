@@ -1,14 +1,15 @@
-import {fireEvent, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { fireEvent, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import * as ToggleInput from 'pages/common/forms/ToggleInput'
-import {INTEGRATION_REMOVAL_CONFIGURATION_TEXT} from 'pages/integrations/integration/constants'
+import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 import * as actions from 'state/integrations/actions'
-import {renderWithRouter} from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
 import Integration from '../Integration'
 
@@ -28,13 +29,13 @@ describe('<ShopifyIntegration/>', () => {
 
     describe('render()', () => {
         it('should render a loader because the integration is loading', () => {
-            const {container} = renderWithRouter(
+            const { container } = renderWithRouter(
                 <Provider store={store}>
                     <Integration
                         {...minProps}
-                        loading={fromJS({integration: true})}
+                        loading={fromJS({ integration: true })}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(container).toMatchSnapshot()
@@ -47,11 +48,11 @@ describe('<ShopifyIntegration/>', () => {
                         {...minProps}
                         integration={fromJS({
                             meta: {
-                                import_state: {customers: {is_over: false}},
+                                import_state: { customers: { is_over: false } },
                             },
                         })}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(screen.getByText(/Import in progress/))
@@ -64,17 +65,17 @@ describe('<ShopifyIntegration/>', () => {
                         {...minProps}
                         integration={fromJS({
                             meta: {
-                                import_state: {customers: {is_over: true}},
+                                import_state: { customers: { is_over: true } },
                             },
                         })}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(
                 screen.getByText(
-                    /Import complete. The real-time sync with Shopify is active./
-                )
+                    /Import complete. The real-time sync with Shopify is active./,
+                ),
             )
         })
 
@@ -82,41 +83,41 @@ describe('<ShopifyIntegration/>', () => {
             jest.spyOn(actions, 'deleteIntegration')
             const deleteIntegration = actions.deleteIntegration as jest.Mock
 
-            const {container} = renderWithRouter(
+            const { container } = renderWithRouter(
                 <Provider store={store}>
                     <Integration {...minProps} />
-                </Provider>
+                </Provider>,
             )
 
             expect(container).toMatchSnapshot()
             fireEvent.click(
                 screen.getByRole('button', {
                     name: /Delete/,
-                })
+                }),
             )
             await screen.findByText(/Are you sure\?/)
             fireEvent.click(
                 screen.getByRole('button', {
                     name: /Confirm/,
-                })
+                }),
             )
             expect(deleteIntegration.mock.calls).toMatchSnapshot()
         })
 
         it('should display delete warning message and it should contain text about "saved filters"', () => {
-            const {getByRole, getByText} = renderWithRouter(
+            const { getByRole, getByText } = renderWithRouter(
                 <Provider store={store}>
                     <Integration {...minProps} />
-                </Provider>
+                </Provider>,
             )
 
             fireEvent.click(
                 getByRole('button', {
                     name: /Delete app/i,
-                })
+                }),
             )
             expect(
-                getByText(INTEGRATION_REMOVAL_CONFIGURATION_TEXT)
+                getByText(INTEGRATION_REMOVAL_CONFIGURATION_TEXT),
             ).toBeInTheDocument()
         })
 
@@ -133,11 +134,11 @@ describe('<ShopifyIntegration/>', () => {
                         })}
                         redirectUri="okok{shop_name}"
                     />
-                </Provider>
+                </Provider>,
             )
 
             fireEvent.click(
-                screen.getByRole('button', {name: 'Update App Permissions'})
+                screen.getByRole('button', { name: 'Update App Permissions' }),
             )
             expect(window.location.href).toBe('okokkumquat')
         })
@@ -149,14 +150,14 @@ describe('<ShopifyIntegration/>', () => {
                         {...minProps}
                         integration={fromJS({
                             deactivated_datetime: '2018-01-01 10:12',
-                            meta: {shop_name: 'kumquat'},
+                            meta: { shop_name: 'kumquat' },
                         })}
                         redirectUri="okok{shop_name}"
                     />
-                </Provider>
+                </Provider>,
             )
 
-            fireEvent.click(screen.getByRole('button', {name: 'Reconnect'}))
+            fireEvent.click(screen.getByRole('button', { name: 'Reconnect' }))
             expect(window.location.href).toBe('okokkumquat')
         })
 
@@ -178,21 +179,21 @@ describe('<ShopifyIntegration/>', () => {
                                 },
                             })}
                         />
-                    </Provider>
+                    </Provider>,
                 )
 
                 expect(
-                    screen.getByRole('button', {name: 'Update Connection'})
+                    screen.getByRole('button', { name: 'Update Connection' }),
                 ).toBeAriaDisabled()
                 fireEvent.click(
                     screen.getByRole('checkbox', {
                         name: optionName,
-                    })
+                    }),
                 )
                 expect(
-                    screen.getByRole('button', {name: 'Update Connection'})
+                    screen.getByRole('button', { name: 'Update Connection' }),
                 ).toBeAriaEnabled()
-            }
+            },
         )
 
         it('should correctly update the sync customers option based on integration data, after we fetch it', () => {
@@ -202,7 +203,7 @@ describe('<ShopifyIntegration/>', () => {
                     isToggled,
                 }: Partial<ComponentProps<typeof ToggleInput.default>>) => (
                     <div data-testid={name}>{isToggled ? 'true' : 'false'}</div>
-                )
+                ),
             )
 
             // first, simulate still waiting for the integration data
@@ -210,9 +211,9 @@ describe('<ShopifyIntegration/>', () => {
                 <Provider store={store}>
                     <Integration
                         {...minProps}
-                        loading={fromJS({integration: true})}
+                        loading={fromJS({ integration: true })}
                     />
-                </Provider>
+                </Provider>,
             )
 
             // then, simulate the integration data being fetched
@@ -220,16 +221,16 @@ describe('<ShopifyIntegration/>', () => {
                 <Provider store={store}>
                     <Integration
                         {...minProps}
-                        loading={fromJS({integration: false})}
+                        loading={fromJS({ integration: false })}
                         integration={fromJS({
-                            meta: {sync_customer_notes: false},
+                            meta: { sync_customer_notes: false },
                         })}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(screen.getByTestId('sync_customer_notes')).toHaveTextContent(
-                'false'
+                'false',
             )
         })
 
@@ -249,29 +250,31 @@ describe('<ShopifyIntegration/>', () => {
                             },
                         })}
                     />
-                </Provider>
+                </Provider>,
             )
 
             fireEvent.click(
                 screen.getByRole('checkbox', {
                     name: 'Synchronize customer notes between Gorgias and Shopify',
-                })
+                }),
             )
             fireEvent.click(
                 screen.getByRole('checkbox', {
                     name: 'Match customer by Shopify default address phone number',
-                })
+                }),
             )
 
             fireEvent.click(
-                screen.getByRole('button', {name: 'Update Connection'})
+                screen.getByRole('button', { name: 'Update Connection' }),
             )
 
             screen.getByText(/Save changes\?/i)
-            fireEvent.click(screen.getByRole('button', {name: 'Save Changes'}))
+            fireEvent.click(
+                screen.getByRole('button', { name: 'Save Changes' }),
+            )
 
             expect(
-                updateOrCreateIntegrationRequest.mock.calls
+                updateOrCreateIntegrationRequest.mock.calls,
             ).toMatchSnapshot()
         })
 
@@ -291,28 +294,28 @@ describe('<ShopifyIntegration/>', () => {
                             },
                         })}
                     />
-                </Provider>
+                </Provider>,
             )
 
             fireEvent.click(
                 screen.getByRole('checkbox', {
                     name: 'Synchronize customer notes between Gorgias and Shopify',
-                })
+                }),
             )
             fireEvent.click(
                 screen.getByRole('checkbox', {
                     name: 'Match customer by Shopify default address phone number',
-                })
+                }),
             )
 
             fireEvent.click(
-                screen.getByRole('button', {name: 'Update Connection'})
+                screen.getByRole('button', { name: 'Update Connection' }),
             )
 
             expect(screen.queryByText(/Save changes\?/i)).toBeNull()
 
             expect(
-                updateOrCreateIntegrationRequest.mock.calls
+                updateOrCreateIntegrationRequest.mock.calls,
             ).toMatchSnapshot()
         })
 
@@ -331,28 +334,28 @@ describe('<ShopifyIntegration/>', () => {
                             },
                         })}
                     />
-                </Provider>
+                </Provider>,
             )
 
             fireEvent.click(
                 screen.getByRole('checkbox', {
                     name: 'Match customer by Shopify default address phone number',
-                })
+                }),
             )
 
             fireEvent.click(
-                screen.getByRole('button', {name: 'Update Connection'})
+                screen.getByRole('button', { name: 'Update Connection' }),
             )
 
             screen.getByText(/Save changes\?/i)
             fireEvent.click(
-                screen.getByRole('button', {name: 'Discard Changes'})
+                screen.getByRole('button', { name: 'Discard Changes' }),
             )
 
             expect(
                 screen.getByRole('switch', {
                     name: 'Match customer by Shopify default address phone number',
-                })
+                }),
             ).toHaveAttribute('aria-checked', 'false')
             expect(updateOrCreateIntegrationRequest.mock.calls).toEqual([])
         })
@@ -372,28 +375,28 @@ describe('<ShopifyIntegration/>', () => {
                             },
                         })}
                     />
-                </Provider>
+                </Provider>,
             )
 
             fireEvent.click(
                 screen.getByRole('checkbox', {
                     name: 'Match customer by Shopify default address phone number',
-                })
+                }),
             )
 
             fireEvent.click(
-                screen.getByRole('button', {name: 'Update Connection'})
+                screen.getByRole('button', { name: 'Update Connection' }),
             )
 
             screen.getByText(/Save changes\?/i)
             fireEvent.click(
-                screen.getByRole('button', {name: 'Back To Editing'})
+                screen.getByRole('button', { name: 'Back To Editing' }),
             )
 
             expect(
                 screen.getByRole('switch', {
                     name: 'Match customer by Shopify default address phone number',
-                })
+                }),
             ).toHaveAttribute('aria-checked', 'true')
 
             expect(updateOrCreateIntegrationRequest.mock.calls).toEqual([])

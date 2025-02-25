@@ -1,13 +1,14 @@
-import {render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import WizardFooter, {FOOTER_BUTTONS} from '../WizardFooter'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import WizardFooter, { FOOTER_BUTTONS } from '../WizardFooter'
 
 const mockOnClick = jest.fn()
 
 const renderComponent = (
-    props: Partial<React.ComponentProps<typeof WizardFooter>>
+    props: Partial<React.ComponentProps<typeof WizardFooter>>,
 ) => {
     return render(
         <WizardFooter
@@ -22,14 +23,14 @@ const renderComponent = (
                 props.displayCreateAndCustomizeButton ?? true
             }
             onClick={mockOnClick}
-        />
+        />,
     )
 }
 describe('WizardFooter', () => {
     it('should render buttons and fire events on click', () => {
         renderComponent({})
         const saveAndCustomizeLaterButton = screen.getByText(
-            'Save & Customize Later'
+            'Save & Customize Later',
         )
         const createAndCustomizeButton = screen.getByText('Create & Customize')
         const cancelButton = screen.getByText('Cancel')
@@ -39,12 +40,12 @@ describe('WizardFooter', () => {
 
         userEvent.click(saveAndCustomizeLaterButton)
         expect(mockOnClick).toHaveBeenCalledWith(
-            FOOTER_BUTTONS.SAVE_AND_CUSTOMIZE_LATER
+            FOOTER_BUTTONS.SAVE_AND_CUSTOMIZE_LATER,
         )
 
         userEvent.click(createAndCustomizeButton)
         expect(mockOnClick).toHaveBeenCalledWith(
-            FOOTER_BUTTONS.CREATE_AND_CUSTOMIZE
+            FOOTER_BUTTONS.CREATE_AND_CUSTOMIZE,
         )
 
         userEvent.click(cancelButton)
@@ -72,7 +73,7 @@ describe('WizardFooter', () => {
             displayFinishButton: false,
         })
         const saveAndCustomizeLaterButton = screen.queryByText(
-            'Save & Customize Later'
+            'Save & Customize Later',
         )
         const createAndCustomizeButton =
             screen.queryByText('Create & Customize')

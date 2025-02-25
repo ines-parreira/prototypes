@@ -1,16 +1,17 @@
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {user} from 'fixtures/users'
-import {createJob} from 'models/job/resources'
-import {RootState} from 'state/types'
+import { user } from 'fixtures/users'
+import { createJob } from 'models/job/resources'
+import { RootState } from 'state/types'
 
 import history from '../../../history'
-import {MacrosCreateDropdown} from '../MacrosCreateDropdown'
+import { MacrosCreateDropdown } from '../MacrosCreateDropdown'
 
 jest.mock('models/job/resources', () => ({
     createJob: jest.fn(() => Promise.resolve()),
@@ -22,50 +23,50 @@ describe('<MacrosCreateDropdown/>', () => {
     } as RootState)
 
     it('should render', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={defaultStore}>
                 <MacrosCreateDropdown />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should start job when download clicked', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={defaultStore}>
                 <MacrosCreateDropdown />
-            </Provider>
+            </Provider>,
         )
         fireEvent.click(getByText('Export macros as CSV'))
         expect(createJob).toHaveBeenCalled()
     })
 
     it('should show popup when import clicked', async () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={defaultStore}>
                 <MacrosCreateDropdown />
-            </Provider>
+            </Provider>,
         )
         fireEvent.click(getByText('Import macros from CSV'))
         await waitFor(() =>
             expect(
                 screen.getByText(
-                    'You can import your macros into gorgias using a CSV. More information on macros variables'
-                )
-            ).toBeTruthy()
+                    'You can import your macros into gorgias using a CSV. More information on macros variables',
+                ),
+            ).toBeTruthy(),
         )
     })
     it('should redirect when creating new macro', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={defaultStore}>
                 <MacrosCreateDropdown />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(getByText('Create macro'))
         expect(history.push).toHaveBeenNthCalledWith(
             1,
-            '/app/settings/macros/new'
+            '/app/settings/macros/new',
         )
     })
 })

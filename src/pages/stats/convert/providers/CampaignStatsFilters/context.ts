@@ -1,12 +1,15 @@
-import {createContext} from 'react'
+import { createContext } from 'react'
 
-import {CampaignPreview} from 'models/convert/campaign/types'
-import {Integration} from 'models/integration/types'
-import {ReportingGranularity} from 'models/reporting/types'
-
-import {AggregationWindow, Period, WithLogicalOperator} from 'models/stat/types'
-import {Value} from 'pages/common/forms/SelectField/types'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import { CampaignPreview } from 'models/convert/campaign/types'
+import { Integration } from 'models/integration/types'
+import { ReportingGranularity } from 'models/reporting/types'
+import {
+    AggregationWindow,
+    Period,
+    WithLogicalOperator,
+} from 'models/stat/types'
+import { Value } from 'pages/common/forms/SelectField/types'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 
 interface FilterContextSchema {
     campaigns: CampaignPreview[]
@@ -20,10 +23,10 @@ interface FilterContextSchema {
     channelConnectionExternalIds: string[]
     onChangeIntegration: (integrationIds: Value[]) => void
     onChangeCampaigns: (
-        integrationIds: Value[] | WithLogicalOperator<string>
+        integrationIds: Value[] | WithLogicalOperator<string>,
     ) => void
     onChangeCampaignsByStatus: (
-        statuses: Value[] | WithLogicalOperator<string>
+        statuses: Value[] | WithLogicalOperator<string>,
     ) => void
     selectedCampaignsOperator: LogicalOperatorEnum
     granularity: AggregationWindow

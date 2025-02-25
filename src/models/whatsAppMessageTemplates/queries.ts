@@ -1,7 +1,7 @@
-import {UseQueryOptions, useQuery} from '@tanstack/react-query'
+import { useQuery, UseQueryOptions } from '@tanstack/react-query'
 
-import {listWhatsAppMessageTemplates} from 'models/whatsAppMessageTemplates/resources'
-import {ListWhatsAppMessageTemplatesParams} from 'models/whatsAppMessageTemplates/types'
+import { listWhatsAppMessageTemplates } from 'models/whatsAppMessageTemplates/resources'
+import { ListWhatsAppMessageTemplatesParams } from 'models/whatsAppMessageTemplates/types'
 
 export const whatsAppMessageTemplatesKeys = {
     all: () => ['whatsAppMessageTemplates'] as const,
@@ -16,7 +16,7 @@ export const useListWhatsAppMessageTemplates = (
     params?: ListWhatsAppMessageTemplatesParams,
     overrides?: UseQueryOptions<
         Awaited<ReturnType<typeof listWhatsAppMessageTemplates>>
-    >
+    >,
 ) => {
     return useQuery({
         queryKey: whatsAppMessageTemplatesKeys.list(params),

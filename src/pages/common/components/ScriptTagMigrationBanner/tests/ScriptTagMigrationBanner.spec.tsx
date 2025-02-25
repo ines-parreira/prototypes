@@ -1,15 +1,15 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import LD from 'launchdarkly-react-client-sdk'
 import React from 'react'
-import {Provider} from 'react-redux'
 
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import LD from 'launchdarkly-react-client-sdk'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {UserRole} from 'config/types/user'
-import {integrationsState} from 'fixtures/integrations'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { UserRole } from 'config/types/user'
+import { integrationsState } from 'fixtures/integrations'
 
 import useStoresRequiringScriptTagMigration from '../hooks/useStoresRequiringScriptTagMigration'
 import ScriptTagMigrationBanner from '../ScriptTagMigrationBanner'
@@ -29,23 +29,23 @@ describe('<ScriptTagMigrationBanner />', () => {
         ;(useStoresRequiringScriptTagMigration as jest.Mock).mockImplementation(
             () => [
                 {
-                    storeIntegration: {meta: {shop_name: 'test-shop-name'}},
+                    storeIntegration: { meta: { shop_name: 'test-shop-name' } },
                     storeRequiresPermissionUpdates: false,
-                    gorgiasChatIntegration: fromJS({id: 'test-chat-id'}),
+                    gorgiasChatIntegration: fromJS({ id: 'test-chat-id' }),
                     gorgiasChatRequiresReinstall: true,
                 },
-            ]
+            ],
         )
 
-        const {container} = render(
+        const { container } = render(
             <Provider
                 store={mockStore({
-                    currentUser: fromJS({role: {name: UserRole.Admin}}),
+                    currentUser: fromJS({ role: { name: UserRole.Admin } }),
                     integrations: fromJS(integrationsState),
                 })}
             >
                 <ScriptTagMigrationBanner />
-            </Provider>
+            </Provider>,
         )
         expect(container).toMatchSnapshot()
     })
@@ -54,23 +54,23 @@ describe('<ScriptTagMigrationBanner />', () => {
         ;(useStoresRequiringScriptTagMigration as jest.Mock).mockImplementation(
             () => [
                 {
-                    storeIntegration: {meta: {shop_name: 'test-shop-name'}},
+                    storeIntegration: { meta: { shop_name: 'test-shop-name' } },
                     storeRequiresPermissionUpdates: true,
-                    gorgiasChatIntegration: fromJS({id: 'test-chat-id'}),
+                    gorgiasChatIntegration: fromJS({ id: 'test-chat-id' }),
                     gorgiasChatRequiresReinstall: false,
                 },
-            ]
+            ],
         )
 
-        const {container} = render(
+        const { container } = render(
             <Provider
                 store={mockStore({
-                    currentUser: fromJS({role: {name: UserRole.Admin}}),
+                    currentUser: fromJS({ role: { name: UserRole.Admin } }),
                     integrations: fromJS(integrationsState),
                 })}
             >
                 <ScriptTagMigrationBanner />
-            </Provider>
+            </Provider>,
         )
         expect(container).toMatchSnapshot()
     })
@@ -79,23 +79,23 @@ describe('<ScriptTagMigrationBanner />', () => {
         ;(useStoresRequiringScriptTagMigration as jest.Mock).mockImplementation(
             () => [
                 {
-                    storeIntegration: {meta: {shop_name: 'test-shop-name'}},
+                    storeIntegration: { meta: { shop_name: 'test-shop-name' } },
                     storeRequiresPermissionUpdates: true,
-                    gorgiasChatIntegration: fromJS({id: 'test-chat-id'}),
+                    gorgiasChatIntegration: fromJS({ id: 'test-chat-id' }),
                     gorgiasChatRequiresReinstall: true,
                 },
-            ]
+            ],
         )
 
-        const {container} = render(
+        const { container } = render(
             <Provider
                 store={mockStore({
-                    currentUser: fromJS({role: {name: UserRole.Admin}}),
+                    currentUser: fromJS({ role: { name: UserRole.Admin } }),
                     integrations: fromJS(integrationsState),
                 })}
             >
                 <ScriptTagMigrationBanner />
-            </Provider>
+            </Provider>,
         )
         expect(container).toMatchSnapshot()
     })
@@ -104,29 +104,29 @@ describe('<ScriptTagMigrationBanner />', () => {
         ;(useStoresRequiringScriptTagMigration as jest.Mock).mockImplementation(
             () => [
                 {
-                    storeIntegration: {meta: {shop_name: 'test-shop-name'}},
+                    storeIntegration: { meta: { shop_name: 'test-shop-name' } },
                     storeRequiresPermissionUpdates: false,
-                    gorgiasChatIntegration: fromJS({id: 'test-chat-id'}),
+                    gorgiasChatIntegration: fromJS({ id: 'test-chat-id' }),
                     gorgiasChatRequiresReinstall: true,
                 },
                 {
-                    storeIntegration: {meta: {shop_name: 'test-shop-name'}},
+                    storeIntegration: { meta: { shop_name: 'test-shop-name' } },
                     storeRequiresPermissionUpdates: false,
-                    gorgiasChatIntegration: fromJS({id: 'test-chat-id'}),
+                    gorgiasChatIntegration: fromJS({ id: 'test-chat-id' }),
                     gorgiasChatRequiresReinstall: true,
                 },
-            ]
+            ],
         )
 
-        const {container} = render(
+        const { container } = render(
             <Provider
                 store={mockStore({
-                    currentUser: fromJS({role: {name: UserRole.Admin}}),
+                    currentUser: fromJS({ role: { name: UserRole.Admin } }),
                     integrations: fromJS(integrationsState),
                 })}
             >
                 <ScriptTagMigrationBanner />
-            </Provider>
+            </Provider>,
         )
         expect(container).toMatchSnapshot()
     })
@@ -135,29 +135,29 @@ describe('<ScriptTagMigrationBanner />', () => {
         ;(useStoresRequiringScriptTagMigration as jest.Mock).mockImplementation(
             () => [
                 {
-                    storeIntegration: {meta: {shop_name: 'test-shop-name'}},
+                    storeIntegration: { meta: { shop_name: 'test-shop-name' } },
                     storeRequiresPermissionUpdates: true,
-                    gorgiasChatIntegration: fromJS({id: 'test-chat-id'}),
+                    gorgiasChatIntegration: fromJS({ id: 'test-chat-id' }),
                     gorgiasChatRequiresReinstall: false,
                 },
                 {
-                    storeIntegration: {meta: {shop_name: 'test-shop-name'}},
+                    storeIntegration: { meta: { shop_name: 'test-shop-name' } },
                     storeRequiresPermissionUpdates: true,
-                    gorgiasChatIntegration: fromJS({id: 'test-chat-id'}),
+                    gorgiasChatIntegration: fromJS({ id: 'test-chat-id' }),
                     gorgiasChatRequiresReinstall: false,
                 },
-            ]
+            ],
         )
 
-        const {container} = render(
+        const { container } = render(
             <Provider
                 store={mockStore({
-                    currentUser: fromJS({role: {name: UserRole.Admin}}),
+                    currentUser: fromJS({ role: { name: UserRole.Admin } }),
                     integrations: fromJS(integrationsState),
                 })}
             >
                 <ScriptTagMigrationBanner />
-            </Provider>
+            </Provider>,
         )
         expect(container).toMatchSnapshot()
     })
@@ -166,29 +166,29 @@ describe('<ScriptTagMigrationBanner />', () => {
         ;(useStoresRequiringScriptTagMigration as jest.Mock).mockImplementation(
             () => [
                 {
-                    storeIntegration: {meta: {shop_name: 'test-shop-name'}},
+                    storeIntegration: { meta: { shop_name: 'test-shop-name' } },
                     storeRequiresPermissionUpdates: true,
-                    gorgiasChatIntegration: fromJS({id: 'test-chat-id'}),
+                    gorgiasChatIntegration: fromJS({ id: 'test-chat-id' }),
                     gorgiasChatRequiresReinstall: true,
                 },
                 {
-                    storeIntegration: {meta: {shop_name: 'test-shop-name'}},
+                    storeIntegration: { meta: { shop_name: 'test-shop-name' } },
                     storeRequiresPermissionUpdates: true,
-                    gorgiasChatIntegration: fromJS({id: 'test-chat-id'}),
+                    gorgiasChatIntegration: fromJS({ id: 'test-chat-id' }),
                     gorgiasChatRequiresReinstall: false,
                 },
-            ]
+            ],
         )
 
-        const {container} = render(
+        const { container } = render(
             <Provider
                 store={mockStore({
-                    currentUser: fromJS({role: {name: UserRole.Admin}}),
+                    currentUser: fromJS({ role: { name: UserRole.Admin } }),
                     integrations: fromJS(integrationsState),
                 })}
             >
                 <ScriptTagMigrationBanner />
-            </Provider>
+            </Provider>,
         )
         expect(container).toMatchSnapshot()
     })
@@ -197,29 +197,29 @@ describe('<ScriptTagMigrationBanner />', () => {
         ;(useStoresRequiringScriptTagMigration as jest.Mock).mockImplementation(
             () => [
                 {
-                    storeIntegration: {meta: {shop_name: 'test-shop-name'}},
+                    storeIntegration: { meta: { shop_name: 'test-shop-name' } },
                     storeRequiresPermissionUpdates: true,
-                    gorgiasChatIntegration: fromJS({id: 'test-chat-id'}),
+                    gorgiasChatIntegration: fromJS({ id: 'test-chat-id' }),
                     gorgiasChatRequiresReinstall: true,
                 },
                 {
-                    storeIntegration: {meta: {shop_name: 'test-shop-name'}},
+                    storeIntegration: { meta: { shop_name: 'test-shop-name' } },
                     storeRequiresPermissionUpdates: false,
-                    gorgiasChatIntegration: fromJS({id: 'test-chat-id'}),
+                    gorgiasChatIntegration: fromJS({ id: 'test-chat-id' }),
                     gorgiasChatRequiresReinstall: true,
                 },
-            ]
+            ],
         )
 
-        const {container} = render(
+        const { container } = render(
             <Provider
                 store={mockStore({
-                    currentUser: fromJS({role: {name: UserRole.Admin}}),
+                    currentUser: fromJS({ role: { name: UserRole.Admin } }),
                     integrations: fromJS(integrationsState),
                 })}
             >
                 <ScriptTagMigrationBanner />
-            </Provider>
+            </Provider>,
         )
         expect(container).toMatchSnapshot()
     })

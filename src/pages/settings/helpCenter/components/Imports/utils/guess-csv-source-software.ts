@@ -1,4 +1,4 @@
-import {CsvSourceSoftware} from '../types'
+import { CsvSourceSoftware } from '../types'
 
 const EXPECTED_HELPDOCS_COLUMNS = [
     'article_id',
@@ -59,11 +59,11 @@ const SOURCE_SOFTWARE_COLUMNS: [CsvSourceSoftware, string[]][] = [
 ]
 
 export const guessCsvSourceSoftware = (
-    csvColumns: string[]
+    csvColumns: string[],
 ): CsvSourceSoftware => {
     for (const [sourceSoftware, expectedColumns] of SOURCE_SOFTWARE_COLUMNS) {
         const containsAllExpectedColumns = expectedColumns.every(
-            (expectedColumn) => csvColumns.includes(expectedColumn)
+            (expectedColumn) => csvColumns.includes(expectedColumn),
         )
 
         if (containsAllExpectedColumns) {

@@ -1,5 +1,6 @@
-import {fireEvent, render, screen} from '@testing-library/react'
-import React, {createRef} from 'react'
+import React, { createRef } from 'react'
+
+import { fireEvent, render, screen } from '@testing-library/react'
 
 import Button from '../Button'
 
@@ -21,8 +22,8 @@ describe('<Button />', () => {
         render(<Button leadingIcon="add">Click me</Button>)
 
         expect(
-            screen.getByRole('button', {name: 'Click me'}).querySelector('i')
-                ?.innerHTML
+            screen.getByRole('button', { name: 'Click me' }).querySelector('i')
+                ?.innerHTML,
         ).toEqual('add')
     })
 
@@ -30,8 +31,8 @@ describe('<Button />', () => {
         render(<Button trailingIcon="expand_more">Click me</Button>)
 
         expect(
-            screen.getByRole('button', {name: 'Click me'}).querySelector('i')
-                ?.innerHTML
+            screen.getByRole('button', { name: 'Click me' }).querySelector('i')
+                ?.innerHTML,
         ).toEqual('expand_more')
     })
 
@@ -39,11 +40,11 @@ describe('<Button />', () => {
         render(
             <Button leadingIcon="add" trailingIcon="expand_more">
                 Click me
-            </Button>
+            </Button>,
         )
 
         const [leadingIcon, trailingIcon] = screen
-            .getByRole('button', {name: 'Click me'})
+            .getByRole('button', { name: 'Click me' })
             .querySelectorAll('i')
 
         expect(leadingIcon.innerHTML).toEqual('add')
@@ -54,11 +55,11 @@ describe('<Button />', () => {
         render(
             <Button leadingIcon="add" trailingIcon="expand_more" size="small">
                 Click me
-            </Button>
+            </Button>,
         )
 
         const [leadingIcon, trailingIcon] = screen
-            .getByRole('button', {name: 'Click me'})
+            .getByRole('button', { name: 'Click me' })
             .querySelectorAll('i')
 
         expect(leadingIcon).toHaveClass('small')
@@ -69,11 +70,11 @@ describe('<Button />', () => {
         render(
             <Button isLoading leadingIcon="add" trailingIcon="expand_more">
                 Click me
-            </Button>
+            </Button>,
         )
 
         const icons = screen
-            .getByRole('button', {name: 'Loading... Click me'})
+            .getByRole('button', { name: 'Loading... Click me' })
             .querySelectorAll('i')
 
         expect(icons.length).toEqual(1)
@@ -85,7 +86,7 @@ describe('<Button />', () => {
         render(<Button isDisabled>Click me</Button>)
 
         expect(
-            screen.getByRole('button', {name: 'Click me'})
+            screen.getByRole('button', { name: 'Click me' }),
         ).toBeAriaDisabled()
     })
 
@@ -93,11 +94,11 @@ describe('<Button />', () => {
         render(
             <Button isDisabled isLoading>
                 Click me
-            </Button>
+            </Button>,
         )
 
         expect(
-            screen.getByRole('button', {name: 'Loading... Click me'})
+            screen.getByRole('button', { name: 'Loading... Click me' }),
         ).toBeAriaDisabled()
     })
 
@@ -119,18 +120,18 @@ describe('<Button />', () => {
                 >
                     Click me
                 </Button>
-            </form>
+            </form>,
         )
 
-        fireEvent.click(screen.getByRole('button', {name: 'Click me'}))
+        fireEvent.click(screen.getByRole('button', { name: 'Click me' }))
         expect(onClick).toHaveBeenCalled()
         expect(onClickCapture).toHaveBeenCalled()
         expect(onSubmit).toHaveBeenCalled()
 
-        fireEvent.mouseDown(screen.getByRole('button', {name: 'Click me'}))
+        fireEvent.mouseDown(screen.getByRole('button', { name: 'Click me' }))
         expect(onMouseDown).toHaveBeenCalled()
 
-        fireEvent.mouseUp(screen.getByRole('button', {name: 'Click me'}))
+        fireEvent.mouseUp(screen.getByRole('button', { name: 'Click me' }))
         expect(onMouseUp).toHaveBeenCalled()
     })
 
@@ -153,18 +154,18 @@ describe('<Button />', () => {
                 >
                     Click me
                 </Button>
-            </form>
+            </form>,
         )
 
-        fireEvent.click(screen.getByRole('button', {name: 'Click me'}))
+        fireEvent.click(screen.getByRole('button', { name: 'Click me' }))
         expect(onClick).not.toHaveBeenCalled()
         expect(onClickCapture).not.toHaveBeenCalled()
         expect(onSubmit).not.toHaveBeenCalled()
 
-        fireEvent.mouseDown(screen.getByRole('button', {name: 'Click me'}))
+        fireEvent.mouseDown(screen.getByRole('button', { name: 'Click me' }))
         expect(onMouseDown).not.toHaveBeenCalled()
 
-        fireEvent.mouseUp(screen.getByRole('button', {name: 'Click me'}))
+        fireEvent.mouseUp(screen.getByRole('button', { name: 'Click me' }))
         expect(onMouseUp).not.toHaveBeenCalled()
     })
 
@@ -174,11 +175,11 @@ describe('<Button />', () => {
         render(
             <Button isLoading onClick={onClick}>
                 Click me
-            </Button>
+            </Button>,
         )
 
         fireEvent.click(
-            screen.getByRole('button', {name: 'Loading... Click me'})
+            screen.getByRole('button', { name: 'Loading... Click me' }),
         )
 
         expect(onClick).not.toHaveBeenCalled()
@@ -189,7 +190,7 @@ describe('<Button />', () => {
 
         render(<Button onClick={onClick}>Click me</Button>)
 
-        fireEvent.click(screen.getByRole('button', {name: 'Click me'}))
+        fireEvent.click(screen.getByRole('button', { name: 'Click me' }))
 
         expect(onClick).toHaveBeenCalled()
     })
@@ -198,12 +199,12 @@ describe('<Button />', () => {
         render(
             <Button as="a" href="https://example.gorgias.com">
                 Click me
-            </Button>
+            </Button>,
         )
 
-        expect(screen.getByRole('link', {name: 'Click me'})).toBeVisible()
+        expect(screen.getByRole('link', { name: 'Click me' })).toBeVisible()
         expect(
-            screen.queryByRole('button', {name: 'Click me'})
+            screen.queryByRole('button', { name: 'Click me' }),
         ).not.toBeInTheDocument()
     })
 
@@ -211,20 +212,20 @@ describe('<Button />', () => {
         render(<Button>Click me</Button>)
 
         expect(
-            screen.queryByRole('link', {name: 'Click me'})
+            screen.queryByRole('link', { name: 'Click me' }),
         ).not.toBeInTheDocument()
-        expect(screen.getByRole('button', {name: 'Click me'})).toBeVisible()
+        expect(screen.getByRole('button', { name: 'Click me' })).toBeVisible()
     })
 
     it('should expect type error when trying to use a Button with href prop', () => {
         render(
             // @ts-expect-error
-            <Button href="https://example.com">Click me</Button>
+            <Button href="https://example.com">Click me</Button>,
         )
 
         // Although we're passing href prop, the Button component should render as a button
         // because we didn't pass the `as="a"` prop
-        expect(screen.queryByRole('button', {name: 'Click me'})).toBeVisible()
+        expect(screen.queryByRole('button', { name: 'Click me' })).toBeVisible()
     })
 
     it('should expect type error when trying to pass a button ref to a link Button', () => {
@@ -236,10 +237,10 @@ describe('<Button />', () => {
                 ref={createRef<HTMLButtonElement>()}
             >
                 Click me
-            </Button>
+            </Button>,
         )
 
         // Although we're passing a button ref, the Button component should render as an anchor
-        expect(screen.queryByRole('link', {name: 'Click me'})).toBeVisible()
+        expect(screen.queryByRole('link', { name: 'Click me' })).toBeVisible()
     })
 })

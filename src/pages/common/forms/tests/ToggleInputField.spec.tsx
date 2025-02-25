@@ -1,8 +1,9 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
+import { render } from '@testing-library/react'
+
 import ToggleInput from 'pages/common/forms/ToggleInput'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
 import ToggleInputField from '../ToggleInputField'
 
@@ -18,7 +19,7 @@ describe('<ToggleInputField />', () => {
                 value={true}
                 onChange={onChange}
                 className="test-class"
-            />
+            />,
         )
 
         expect(ToggleInputMock).toHaveBeenCalledWith(
@@ -28,7 +29,7 @@ describe('<ToggleInputField />', () => {
                 onClick: onChange,
                 value: undefined,
             },
-            {}
+            {},
         )
     })
 })

@@ -1,12 +1,9 @@
-import {render, RenderResult, screen} from '@testing-library/react'
 import React from 'react'
 
-import {FormField} from 'core/forms'
+import { render, RenderResult, screen } from '@testing-library/react'
 
-import {assumeMock} from 'utils/testing'
-
-jest.mock('core/forms')
-const FormFieldMock = assumeMock(FormField)
+import { FormField } from 'core/forms'
+import { assumeMock } from 'utils/testing'
 
 import {
     RING_TIME_MAX_VALUE,
@@ -18,6 +15,9 @@ import {
 } from '../constants'
 import VoiceIntegrationPreferencesInboundCalls from '../VoiceIntegrationPreferencesInboundCalls'
 
+jest.mock('core/forms')
+const FormFieldMock = assumeMock(FormField)
+
 jest.mock('models/team/queries', () => ({
     useListTeams: jest.fn(),
 }))
@@ -28,7 +28,7 @@ describe('<VoiceIntegrationPreferencesInboundCalls />', () => {
     }
 
     beforeEach(() => {
-        FormFieldMock.mockImplementation(({label}: any) => <div>{label}</div>)
+        FormFieldMock.mockImplementation(({ label }: any) => <div>{label}</div>)
     })
 
     it('should display team select, ringing behaviour, recording section and ring/wait time when it is not IVR', () => {
@@ -39,13 +39,13 @@ describe('<VoiceIntegrationPreferencesInboundCalls />', () => {
         expect(screen.getByText('Max wait time')).toBeInTheDocument()
         expect(
             screen.getByText(
-                'Hold calls in queue until an agent becomes available'
-            )
+                'Hold calls in queue until an agent becomes available',
+            ),
         ).toBeInTheDocument()
     })
 
     it('should not display team select, ringing behaviour, recording section and ring/wait time when it is not IVR', () => {
-        renderComponent({isIvr: true})
+        renderComponent({ isIvr: true })
 
         expect(screen.queryByText('Set ringing behaviour')).toBeNull()
         expect(screen.queryByText('Start recording automatically')).toBeNull()
@@ -53,8 +53,8 @@ describe('<VoiceIntegrationPreferencesInboundCalls />', () => {
         expect(screen.queryByText('Wait Time')).toBeNull()
         expect(
             screen.queryByText(
-                'Hold calls in queue until an agent becomes available'
-            )
+                'Hold calls in queue until an agent becomes available',
+            ),
         ).toBeNull()
     })
 
@@ -62,7 +62,7 @@ describe('<VoiceIntegrationPreferencesInboundCalls />', () => {
         const getValidationProp = (fieldName: string) => {
             const recordingNotificationFormFieldCall =
                 FormFieldMock.mock.calls.find(
-                    (call) => call[0].name === fieldName
+                    (call) => call[0].name === fieldName,
                 )
 
             return recordingNotificationFormFieldCall?.[0]?.validation
@@ -72,7 +72,7 @@ describe('<VoiceIntegrationPreferencesInboundCalls />', () => {
             renderComponent()
 
             const validationProp = getValidationProp(
-                'meta.preferences.ring_time'
+                'meta.preferences.ring_time',
             )
 
             expect(validationProp).toEqual({
@@ -92,7 +92,7 @@ describe('<VoiceIntegrationPreferencesInboundCalls />', () => {
             renderComponent()
 
             const validationProp = getValidationProp(
-                'meta.preferences.wait_time.value'
+                'meta.preferences.wait_time.value',
             )
 
             expect(validationProp).toEqual({

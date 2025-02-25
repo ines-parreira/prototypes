@@ -1,10 +1,9 @@
-import {ldClientMock} from 'jest-launchdarkly-mock'
+import { ldClientMock } from 'jest-launchdarkly-mock'
 
-import {Knowledge} from 'models/aiAgentFeedback/types'
+import { Knowledge } from 'models/aiAgentFeedback/types'
+import { getLDClient } from 'utils/launchDarkly'
 
-import {getLDClient} from 'utils/launchDarkly'
-
-import {getKnowledgeUrl} from '../utils'
+import { getKnowledgeUrl } from '../utils'
 
 describe('getKnowledgeUrl', () => {
     const shopType = 'shopify'
@@ -46,7 +45,7 @@ describe('getKnowledgeUrl', () => {
         } as Knowledge
         const result = getKnowledgeUrl(knowledge, shopType, shopName)
         expect(result).toBe(
-            `/app/automation/${shopType}/${shopName}/ai-agent/knowledge`
+            `/app/automation/${shopType}/${shopName}/ai-agent/knowledge`,
         )
     })
 

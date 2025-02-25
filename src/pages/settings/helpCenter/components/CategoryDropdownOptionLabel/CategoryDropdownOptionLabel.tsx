@@ -1,16 +1,18 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
 import React from 'react'
 
+import classnames from 'classnames'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
 import useAppSelector from 'hooks/useAppSelector'
-import {Category} from 'models/helpCenter/types'
-import {getCategoriesById} from 'state/entities/helpCenter/categories'
+import { Category } from 'models/helpCenter/types'
+import { getCategoriesById } from 'state/entities/helpCenter/categories'
 
 import css from './CategoryDropdownOptionLabel.less'
 
 export const getParentsInfo = (
     category: Category,
-    categoriesById: Record<string, Category>
+    categoriesById: Record<string, Category>,
 ): string => {
     const parents: Category[] = []
 
@@ -52,7 +54,7 @@ export const CategoryDropdownOptionLabel = ({
                 <div
                     className={classnames(
                         css['parents'],
-                        css['trimTextFromTheLeft']
+                        css['trimTextFromTheLeft'],
                     )}
                 >
                     {parentsString}
@@ -61,7 +63,7 @@ export const CategoryDropdownOptionLabel = ({
             <Tooltip
                 placement="top-start"
                 target={`categoryOption-${category.id}`}
-                delay={{show: 1000, hide: 200}}
+                delay={{ show: 1000, hide: 200 }}
                 boundariesElement="body"
             >
                 <div className={css['tooltip']}>

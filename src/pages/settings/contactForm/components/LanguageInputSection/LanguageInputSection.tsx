@@ -1,12 +1,13 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {LocaleCode} from 'models/helpCenter/types'
-import {validLocaleCode} from 'models/helpCenter/utils'
+import { Label } from '@gorgias/merchant-ui-kit'
+
+import { LocaleCode } from 'models/helpCenter/types'
+import { validLocaleCode } from 'models/helpCenter/utils'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {Value} from 'pages/common/forms/SelectField/types'
+import { Value } from 'pages/common/forms/SelectField/types'
 import contactFormCss from 'pages/settings/contactForm/contactForm.less'
-import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
+import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
 
 type LanguageInputSectionProps = {
     onChange: (locale: LocaleCode) => void
@@ -21,7 +22,7 @@ const LanguageInputSection = ({
 }: LanguageInputSectionProps): JSX.Element => {
     const locales = useSupportedLocales()
     const localeOptions = useMemo(() => {
-        return locales.map(({name, code}) => ({
+        return locales.map(({ name, code }) => ({
             label: name,
             value: code,
         }))

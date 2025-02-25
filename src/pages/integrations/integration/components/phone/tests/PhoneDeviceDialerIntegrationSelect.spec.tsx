@@ -1,8 +1,9 @@
-import {render, screen, fireEvent} from '@testing-library/react'
 import React from 'react'
 
-import {PhoneIntegration} from 'models/integration/types'
-import {assumeMock} from 'utils/testing'
+import { fireEvent, render, screen } from '@testing-library/react'
+
+import { PhoneIntegration } from 'models/integration/types'
+import { assumeMock } from 'utils/testing'
 
 import PhoneDeviceDialerIntegrationSelect from '../PhoneDeviceDialerIntegrationSelect'
 import usePhoneNumbers from '../usePhoneNumbers'
@@ -13,8 +14,8 @@ const usePhoneNumbersMock = assumeMock(usePhoneNumbers)
 
 describe('PhoneDeviceDialerIntegrationSelect', () => {
     const options = [
-        {id: 1, name: 'Integration 1', meta: {}},
-        {id: 2, name: 'Integration 2', meta: {}},
+        { id: 1, name: 'Integration 1', meta: {} },
+        { id: 2, name: 'Integration 2', meta: {} },
     ] as PhoneIntegration[]
     const value = options[0]
     const onChange = jest.fn()
@@ -25,7 +26,7 @@ describe('PhoneDeviceDialerIntegrationSelect', () => {
                 value={value}
                 onChange={onChange}
                 options={options}
-            />
+            />,
         )
 
     beforeEach(() => {
@@ -40,14 +41,14 @@ describe('PhoneDeviceDialerIntegrationSelect', () => {
         renderComponent()
 
         expect(
-            screen.getByTestId('toggle-integration-dropdown')
+            screen.getByTestId('toggle-integration-dropdown'),
         ).toHaveTextContent(/Integration 1/)
     })
 
     it('opens the dropdown when the button is clicked', () => {
         renderComponent()
 
-        const button = screen.getByRole('button', {name: /Integration 1/})
+        const button = screen.getByRole('button', { name: /Integration 1/ })
         fireEvent.click(button)
         expect(screen.getAllByRole('option')).toHaveLength(options.length)
     })
@@ -55,7 +56,7 @@ describe('PhoneDeviceDialerIntegrationSelect', () => {
     it('calls onChange when an option is selected', () => {
         renderComponent()
 
-        const button = screen.getByRole('button', {name: /Integration 1/})
+        const button = screen.getByRole('button', { name: /Integration 1/ })
         fireEvent.click(button)
         const dropdownItem = screen.getByText(options[1].name)
         fireEvent.click(dropdownItem)

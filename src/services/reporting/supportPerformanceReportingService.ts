@@ -1,11 +1,11 @@
-import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
+import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
 import {
     CURRENT_PERIOD_LABEL,
     EMPTY_LABEL,
     NOT_AVAILABLE_LABEL,
     PREVIOUS_PERIOD_LABEL,
 } from 'services/reporting/constants'
-import {createCsv} from 'utils/file'
+import { createCsv } from 'utils/file'
 
 export type FormattedTrendDataWithLabel = {
     label: string
@@ -34,8 +34,8 @@ const getTimeSeriesDataReport = (data: TimeSeriesDataWithLabels[]) => {
             date,
             ...data.map(
                 (d) =>
-                    d.data?.[0].find(({dateTime}) => date === dateTime)
-                        ?.value || NOT_AVAILABLE_LABEL
+                    d.data?.[0].find(({ dateTime }) => date === dateTime)
+                        ?.value || NOT_AVAILABLE_LABEL,
             ),
         ]),
     ]
@@ -43,10 +43,10 @@ const getTimeSeriesDataReport = (data: TimeSeriesDataWithLabels[]) => {
 
 export const createTimeSeriesReport = (
     data: TimeSeriesDataWithLabels[],
-    fileName: string
+    fileName: string,
 ) => {
     if (data.length === 0) {
-        return {files: {}}
+        return { files: {} }
     }
 
     const ticketVolumeData = getTimeSeriesDataReport(data)
@@ -60,10 +60,10 @@ export const createTimeSeriesReport = (
 
 export const createTrendReport = (
     data: FormattedTrendDataWithLabel[],
-    fileName: string
+    fileName: string,
 ) => {
     if (data.length === 0) {
-        return {files: {}}
+        return { files: {} }
     }
     const reportData = getTrendDataReport(data)
 

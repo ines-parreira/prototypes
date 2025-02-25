@@ -1,19 +1,19 @@
 import moment from 'moment'
 
-import {TicketStatus} from 'business/types/ticket'
-import {OrderDirection} from 'models/api/types'
+import { TicketStatus } from 'business/types/ticket'
+import { OrderDirection } from 'models/api/types'
 import {
     TicketQAScoreDimension,
     TicketQAScoreDimensionName,
     TicketQAScoreMeasure,
 } from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
-import {TicketDimension} from 'models/reporting/cubes/TicketCube'
+import { TicketDimension } from 'models/reporting/cubes/TicketCube'
 import {
     communicationSkillsDrillDownQueryFactory,
     communicationSkillsQueryFactory,
 } from 'models/reporting/queryFactories/auto-qa/communicationSkillsQueryFactory'
-import {ReportingFilterOperator} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import { ReportingFilterOperator } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     statsFiltersToReportingFilters,
@@ -42,7 +42,7 @@ describe('resolutionCompletenessQueryFactory', () => {
             filters: [
                 ...statsFiltersToReportingFilters(
                     TicketStatsFiltersMembers,
-                    statsFilters
+                    statsFilters,
                 ),
                 {
                     member: TicketDimension.Status,
@@ -63,7 +63,7 @@ describe('resolutionCompletenessQueryFactory', () => {
         const query = communicationSkillsQueryFactory(
             statsFilters,
             timezone,
-            sorting
+            sorting,
         )
 
         expect(query).toEqual({
@@ -73,7 +73,7 @@ describe('resolutionCompletenessQueryFactory', () => {
             filters: [
                 ...statsFiltersToReportingFilters(
                     TicketStatsFiltersMembers,
-                    statsFilters
+                    statsFilters,
                 ),
                 {
                     member: TicketDimension.Status,
@@ -107,7 +107,7 @@ describe('communicationSkillsDrillDownQueryFactory', () => {
     it('should produce the query', () => {
         const query = communicationSkillsDrillDownQueryFactory(
             statsFilters,
-            timezone
+            timezone,
         )
 
         expect(query).toEqual({
@@ -121,7 +121,7 @@ describe('communicationSkillsDrillDownQueryFactory', () => {
             filters: [
                 ...statsFiltersToReportingFilters(
                     TicketStatsFiltersMembers,
-                    statsFilters
+                    statsFilters,
                 ),
                 {
                     member: TicketDimension.Status,
@@ -142,7 +142,7 @@ describe('communicationSkillsDrillDownQueryFactory', () => {
         const query = communicationSkillsDrillDownQueryFactory(
             statsFilters,
             timezone,
-            sorting
+            sorting,
         )
 
         expect(query).toEqual({
@@ -156,7 +156,7 @@ describe('communicationSkillsDrillDownQueryFactory', () => {
             filters: [
                 ...statsFiltersToReportingFilters(
                     TicketStatsFiltersMembers,
-                    statsFilters
+                    statsFilters,
                 ),
                 {
                     member: TicketDimension.Status,

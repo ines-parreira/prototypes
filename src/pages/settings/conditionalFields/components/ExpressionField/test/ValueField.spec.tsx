@@ -1,9 +1,11 @@
-import {SelectField} from '@gorgias/merchant-ui-kit'
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
+import { render, screen } from '@testing-library/react'
+
+import { SelectField } from '@gorgias/merchant-ui-kit'
+
 import MultiLevelSelect from 'custom-fields/components/MultiLevelSelect'
-import {CustomTypeDefinitionNumber} from 'custom-fields/types'
+import { CustomTypeDefinitionNumber } from 'custom-fields/types'
 import {
     ticketBooleanFieldDefinition,
     ticketDropdownFieldDefinition,
@@ -12,10 +14,10 @@ import {
 } from 'fixtures/customField'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import TextInput from 'pages/common/forms/input/TextInput'
-import {assumeMock, getLastMockCall} from 'utils/testing'
+import { assumeMock, getLastMockCall } from 'utils/testing'
 
-import {CustomDropdownInput} from '../CustomDropdownInput'
-import {ValueField} from '../ValueField'
+import { CustomDropdownInput } from '../CustomDropdownInput'
+import { ValueField } from '../ValueField'
 
 jest.mock('custom-fields/components/MultiLevelSelect')
 jest.mock(
@@ -24,7 +26,7 @@ jest.mock(
         ({
             ...jest.requireActual('@gorgias/merchant-ui-kit'),
             SelectField: jest.fn(() => <div data-testid="Mock" />),
-        }) as Record<string, unknown>
+        }) as Record<string, unknown>,
 )
 jest.mock('pages/common/forms/input/NumberInput', () => jest.fn(() => <div />))
 jest.mock('pages/common/forms/input/TextInput', () => jest.fn(() => <div />))
@@ -67,7 +69,7 @@ describe('ValueField', () => {
                 onChange: expect.any(Function),
                 selectedOption: null,
             },
-            {}
+            {},
         )
     })
 
@@ -77,7 +79,7 @@ describe('ValueField', () => {
                 <ValueField
                     {...defaultProps}
                     pickedDefinition={ticketInputFieldDefinition}
-                />
+                />,
             )
 
             expect(TextInputMock).toHaveBeenCalledWith(
@@ -87,7 +89,7 @@ describe('ValueField', () => {
                     onChange: expect.any(Function),
                     isDisabled: true,
                 },
-                {}
+                {},
             )
         })
 
@@ -98,7 +100,7 @@ describe('ValueField', () => {
                     pickedDefinition={ticketInputFieldDefinition}
                     isDisabled={false}
                     value={[]}
-                />
+                />,
             )
 
             expect(TextInputMock).toHaveBeenCalledWith(
@@ -106,7 +108,7 @@ describe('ValueField', () => {
                     value: '',
                     isDisabled: false,
                 }),
-                {}
+                {},
             )
         })
 
@@ -115,7 +117,7 @@ describe('ValueField', () => {
                 <ValueField
                     {...defaultProps}
                     pickedDefinition={ticketInputFieldDefinition}
-                />
+                />,
             )
 
             getLastMockCall(TextInputMock)[0].onChange?.('new value')
@@ -131,7 +133,7 @@ describe('ValueField', () => {
                     {...defaultProps}
                     value={[1]}
                     pickedDefinition={ticketNumberFieldDefinition}
-                />
+                />,
             )
 
             expect(NumberInput).toHaveBeenCalledWith(
@@ -140,15 +142,15 @@ describe('ValueField', () => {
                     onChange: expect.any(Function),
                     min: Number(
                         ticketNumberFieldDefinition.definition.input_settings
-                            .min
+                            .min,
                     ),
                     max: Number(
                         ticketNumberFieldDefinition.definition.input_settings
-                            .max
+                            .max,
                     ),
                     isDisabled: true,
                 },
-                {}
+                {},
             )
         })
 
@@ -168,7 +170,7 @@ describe('ValueField', () => {
                     pickedDefinition={newTicketNumberFieldDefinition}
                     isDisabled={false}
                     value={[]}
-                />
+                />,
             )
 
             expect(NumberInput).toHaveBeenCalledWith(
@@ -178,7 +180,7 @@ describe('ValueField', () => {
                     max: undefined,
                     isDisabled: false,
                 }),
-                {}
+                {},
             )
         })
 
@@ -187,7 +189,7 @@ describe('ValueField', () => {
                 <ValueField
                     {...defaultProps}
                     pickedDefinition={ticketNumberFieldDefinition}
-                />
+                />,
             )
 
             getLastMockCall(NumberInputMock)[0].onChange?.(5)
@@ -206,7 +208,7 @@ describe('ValueField', () => {
                         {...defaultProps}
                         value={[false]}
                         pickedDefinition={ticketBooleanFieldDefinition}
-                    />
+                    />,
                 )
 
                 expect(SelectFieldMock).toHaveBeenCalledWith(
@@ -217,7 +219,7 @@ describe('ValueField', () => {
                         isDisabled: true,
                         selectedOption: 'No',
                     },
-                    {}
+                    {},
                 )
             })
 
@@ -228,7 +230,7 @@ describe('ValueField', () => {
                         pickedDefinition={ticketBooleanFieldDefinition}
                         isDisabled={false}
                         value={[]}
-                    />
+                    />,
                 )
 
                 expect(SelectFieldMock).toHaveBeenCalledWith(
@@ -237,7 +239,7 @@ describe('ValueField', () => {
                         isDisabled: false,
                         selectedOption: null,
                     }),
-                    {}
+                    {},
                 )
             })
 
@@ -246,7 +248,7 @@ describe('ValueField', () => {
                     <ValueField
                         {...defaultProps}
                         pickedDefinition={ticketBooleanFieldDefinition}
-                    />
+                    />,
                 )
 
                 getLastMockCall(SelectFieldMock)[0].onChange?.('Yes')
@@ -276,7 +278,7 @@ describe('ValueField', () => {
                         dropdownAutoWidth: true,
                         isDisabled: true,
                     },
-                    {}
+                    {},
                 )
             })
 
@@ -286,7 +288,7 @@ describe('ValueField', () => {
                         {...defaultProps}
                         isDisabled={false}
                         value={null}
-                    />
+                    />,
                 )
 
                 expect(MultiLevelSelectMock).toHaveBeenCalledWith(
@@ -294,7 +296,7 @@ describe('ValueField', () => {
                         value: [],
                         isDisabled: false,
                     }),
-                    {}
+                    {},
                 )
             })
 
@@ -314,14 +316,14 @@ describe('ValueField', () => {
 
                 expect(
                     getLastMockCall(
-                        MultiLevelSelectMock
-                    )[0].customDisplayValue?.(['a', 'b'])
+                        MultiLevelSelectMock,
+                    )[0].customDisplayValue?.(['a', 'b']),
                 ).toBe('a, b')
 
                 expect(
                     getLastMockCall(
-                        MultiLevelSelectMock
-                    )[0].customDisplayValue?.(['a', 'b', 'c', 'd'])
+                        MultiLevelSelectMock,
+                    )[0].customDisplayValue?.(['a', 'b', 'c', 'd']),
                 ).toBe('4 fields selected')
             })
         })

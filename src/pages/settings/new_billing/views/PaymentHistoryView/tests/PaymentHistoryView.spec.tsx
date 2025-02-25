@@ -1,21 +1,22 @@
-import {render, screen, fireEvent, waitFor} from '@testing-library/react'
-import MockAdapter from 'axios-mock-adapter'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {invoices} from 'fixtures/invoices'
+import { invoices } from 'fixtures/invoices'
 import client from 'models/api/resources'
-import {Invoice, PaymentIntentStatus, PaymentType} from 'state/billing/types'
-import {RootState, StoreDispatch} from 'state/types'
+import { Invoice, PaymentIntentStatus, PaymentType } from 'state/billing/types'
+import { RootState, StoreDispatch } from 'state/types'
 
 import PaymentsHistoryView from '../PaymentsHistoryView'
 
 const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>()
 
 const store = mockedStore({
-    billing: fromJS({invoices, products: []}),
+    billing: fromJS({ invoices, products: [] }),
 })
 
 const mockPayInvoice = jest.fn()
@@ -25,26 +26,26 @@ const invoiceRequiringSource: Invoice = {
     description: 'Pro for the period from 2023-04-26 to 2023-04-28',
     invoice_pdf: '#',
     amount_due: 322052,
-    payment_intent: {status: PaymentIntentStatus.RequiresSource},
+    payment_intent: { status: PaymentIntentStatus.RequiresSource },
     payment_confirmation_url: null,
     attempted: true,
     id: 'in_1N1DawI9qXomtXqStoF23sQ8',
     paid: false,
     date: 1682535698,
-    metadata: {payment_service: PaymentType.Stripe},
+    metadata: { payment_service: PaymentType.Stripe },
 }
 
 const invoiceRequiringPaymentMethod: Invoice = {
     description: 'Pro for the period from 2023-04-26 to 2023-04-28',
     invoice_pdf: '#',
     amount_due: 322052,
-    payment_intent: {status: PaymentIntentStatus.RequiresPaymentMethod},
+    payment_intent: { status: PaymentIntentStatus.RequiresPaymentMethod },
     payment_confirmation_url: null,
     attempted: true,
     id: 'in_1N1DawI9qXomtXqStoF23sQ8',
     paid: false,
     date: 1682535698,
-    metadata: {payment_service: PaymentType.Stripe},
+    metadata: { payment_service: PaymentType.Stripe },
 }
 
 jest.mock('services/gorgiasApi.ts', () => () => {
@@ -64,21 +65,21 @@ describe('PaymentsHistoryView', () => {
         render(
             <Provider store={store}>
                 <PaymentsHistoryView />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByTestId('loader')).toBeInTheDocument()
     })
 
     it('renders invoices table when loaded', async () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <PaymentsHistoryView />
-            </Provider>
+            </Provider>,
         )
 
         await waitFor(() =>
-            expect(container.querySelector('table')).toBeInTheDocument()
+            expect(container.querySelector('table')).toBeInTheDocument(),
         )
     })
 
@@ -93,11 +94,11 @@ describe('PaymentsHistoryView', () => {
         render(
             <Provider store={store}>
                 <PaymentsHistoryView />
-            </Provider>
+            </Provider>,
         )
 
         await waitFor(() =>
-            expect(screen.getByText('Retry Payment')).toBeInTheDocument()
+            expect(screen.getByText('Retry Payment')).toBeInTheDocument(),
         )
     })
 
@@ -112,11 +113,11 @@ describe('PaymentsHistoryView', () => {
         render(
             <Provider store={store}>
                 <PaymentsHistoryView />
-            </Provider>
+            </Provider>,
         )
 
         await waitFor(() =>
-            expect(screen.getByText('Retry Payment')).toBeInTheDocument()
+            expect(screen.getByText('Retry Payment')).toBeInTheDocument(),
         )
     })
 
@@ -125,17 +126,20 @@ describe('PaymentsHistoryView', () => {
         apiMock.onAny().reply(200, {})
 
         const store = mockedStore({
-            billing: fromJS({invoices: [invoiceRequiringSource], products: []}),
+            billing: fromJS({
+                invoices: [invoiceRequiringSource],
+                products: [],
+            }),
         })
 
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <PaymentsHistoryView />
-            </Provider>
+            </Provider>,
         )
 
         await waitFor(() =>
-            expect(container.querySelector('table')).toBeInTheDocument()
+            expect(container.querySelector('table')).toBeInTheDocument(),
         )
 
         fireEvent.click(screen.getByText('Retry Payment'))

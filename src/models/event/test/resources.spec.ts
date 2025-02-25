@@ -1,14 +1,14 @@
 import MockAdapter from 'axios-mock-adapter'
 
-import {OrderDirection} from 'models/api/types'
+import { OrderDirection } from 'models/api/types'
 
 import {
     events as eventsFixtures,
     eventsServerMeta,
 } from '../../../fixtures/event'
 import client from '../../api/resources'
-import {fetchEvents} from '../resources'
-import {EventSortableProperties} from '../types'
+import { fetchEvents } from '../resources'
+import { EventSortableProperties } from '../types'
 
 const mockedServer = new MockAdapter(client)
 
@@ -28,9 +28,9 @@ describe('event resources', () => {
         })
 
         it('should reject an error on fail', () => {
-            mockedServer.onGet('/api/events/').reply(503, {message: 'error'})
+            mockedServer.onGet('/api/events/').reply(503, { message: 'error' })
             return expect(fetchEvents()).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                new Error('Request failed with status code 503'),
             )
         })
 

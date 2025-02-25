@@ -1,14 +1,15 @@
+import React, { ReactNode, useCallback } from 'react'
+
 import _noop from 'lodash/noop'
-import React, {ReactNode, useCallback} from 'react'
 import {
     Modal as BootstrapModal,
-    ModalHeader,
     ModalBody,
     ModalFooter,
+    ModalHeader,
     ModalProps,
 } from 'reactstrap'
 
-import {useAppNode} from 'appNode'
+import { useAppNode } from 'appNode'
 
 type Props = {
     children: ReactNode

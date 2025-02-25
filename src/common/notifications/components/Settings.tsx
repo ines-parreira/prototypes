@@ -1,5 +1,3 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
-import cn from 'classnames'
 import React, {
     ChangeEvent,
     FormEvent,
@@ -8,18 +6,22 @@ import React, {
     useRef,
 } from 'react'
 
+import cn from 'classnames'
+
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+
 import useMouseRelease from 'hooks/useMouseRelease'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import settingsCss from 'pages/settings/settings.less'
-import {notificationSounds} from 'services'
-import {defaultSound, SoundValue} from 'services/NotificationSounds'
+import { notificationSounds } from 'services'
+import { defaultSound, SoundValue } from 'services/NotificationSounds'
 
 import useSettings from '../hooks/useSettings'
-
 import EventSettings from './EventSettings'
-import css from './Settings.less'
 import VolumeControl from './VolumeControl'
+
+import css from './Settings.less'
 
 export default function Settings() {
     const {
@@ -49,7 +51,7 @@ export default function Settings() {
                 notificationSounds.play(sound, settings.volume)
             }
         },
-        [settings.volume, onChangeSound]
+        [settings.volume, onChangeSound],
     )
 
     const handleChangeVolume = useCallback(
@@ -57,7 +59,7 @@ export default function Settings() {
             const volume = parseInt(e.target.value, 10)
             onChangeVolume(volume)
         },
-        [onChangeVolume]
+        [onChangeVolume],
     )
 
     const handleSubmit = useCallback(
@@ -65,7 +67,7 @@ export default function Settings() {
             e.preventDefault()
             void save()
         },
-        [save]
+        [save],
     )
 
     return (
@@ -80,7 +82,7 @@ export default function Settings() {
                     className={cn(
                         settingsCss.contentWrapper,
                         settingsCss.pageContainer,
-                        css.container
+                        css.container,
                     )}
                     onSubmit={handleSubmit}
                 >

@@ -1,4 +1,4 @@
-import {CreatePlaygroundBody} from 'models/aiAgentPlayground/types'
+import { CreatePlaygroundBody } from 'models/aiAgentPlayground/types'
 
 import {
     AI_AGENT_CUSTOM_TONE_OF_VOICE_TICKET,
@@ -13,9 +13,9 @@ type CustomTOVPreviewInput = {
 }
 
 export const createCustomToneOfVoicePreviewBody = (
-    input: CustomTOVPreviewInput
+    input: CustomTOVPreviewInput,
 ): CreatePlaygroundBody => {
-    const {gorgiasDomain, accountId, storeName, customToneOfVoice} = input
+    const { gorgiasDomain, accountId, storeName, customToneOfVoice } = input
 
     const messageCustomer = PLAYGROUND_CUSTOMER_MOCK
 

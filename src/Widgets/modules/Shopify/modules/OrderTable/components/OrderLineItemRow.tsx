@@ -1,25 +1,25 @@
-import {getSizedImageUrl} from '@shopify/theme-images'
+import React, { memo, RefObject, useCallback, useEffect, useState } from 'react'
+
+import { getSizedImageUrl } from '@shopify/theme-images'
 import classnames from 'classnames'
-import {Map, List, fromJS} from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 import _debounce from 'lodash/debounce'
-import React, {RefObject, memo, useCallback, useEffect, useState} from 'react'
 
 import defaultImage from 'assets/img/presentationals/shopify-product-default-image.png'
 import {
     getDraftOrderLineItemDiscountedPrice,
     getDraftOrderLineItemTotal,
 } from 'business/shopify/lineItem'
-import {formatPrice} from 'business/shopify/number'
-import {logEvent, SegmentEvent} from 'common/segment'
-import {shopifyAdminBaseUrl} from 'config/integrations/shopify'
+import { formatPrice } from 'business/shopify/number'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { shopifyAdminBaseUrl } from 'config/integrations/shopify'
 import IconButton from 'pages/common/components/button/IconButton'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
-import {ProductStockQuantity} from 'pages/common/components/StockQuantity'
+import { ProductStockQuantity } from 'pages/common/components/StockQuantity'
 import CheckBox from 'pages/common/forms/CheckBox'
 import NumberInput from 'pages/common/forms/input/NumberInput'
-
 import DiscountPopover from 'Widgets/modules/Shopify/modules/DiscountPopover'
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
+import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import css from './OrderLineItemRow.less'
 
@@ -46,13 +46,13 @@ const debouncedRestock = _debounce(
         lineItem: Map<any, any>,
         index: number,
         onChange: onChange,
-        callback?: () => void
+        callback?: () => void,
     ) => {
         const newLineItem = lineItem.set('restock_item', restock)
         onChange(newLineItem, index)
         callback?.()
     },
-    100
+    100,
 )
 
 const debouncedUpdateLineItem = _debounce(
@@ -62,7 +62,7 @@ const debouncedUpdateLineItem = _debounce(
         index: number,
         onChange: onChange,
         actionName,
-        callback?: () => void
+        callback?: () => void,
     ) => {
         const newLineItem = lineItem.set('quantity', newQuantity)
         onChange(newLineItem, index)
@@ -82,7 +82,7 @@ const debouncedUpdateLineItem = _debounce(
         logEvent(action as SegmentEvent)
         callback?.()
     },
-    400
+    400,
 )
 
 function OrderLineItemRow({
@@ -101,7 +101,7 @@ function OrderLineItemRow({
 }: Props) {
     const [quantity, setQuantity] = useState<number>(lineItem.get('quantity'))
     const [restock, setRestock] = useState<boolean>(
-        lineItem.get('restock_item', false)
+        lineItem.get('restock_item', false),
     )
     const [isWaitingForUpdate, setWaitingForUpdate] = useState(false)
 
@@ -112,10 +112,10 @@ function OrderLineItemRow({
             setRestock(newValue)
             setWaitingForUpdate(true)
             debouncedRestock(newValue, lineItem, index, onChange, () =>
-                setWaitingForUpdate(false)
+                setWaitingForUpdate(false),
             )
         },
-        [index, lineItem, onChange]
+        [index, lineItem, onChange],
     )
 
     const handleQuantityChange = useCallback(
@@ -133,10 +133,10 @@ function OrderLineItemRow({
                 index,
                 onChange,
                 actionName,
-                () => setWaitingForUpdate(false)
+                () => setWaitingForUpdate(false),
             )
         },
-        [lineItem, isShownInEditOrder, index, onChange, actionName]
+        [lineItem, isShownInEditOrder, index, onChange, actionName],
     )
 
     const handleSetQuantityTo0 = useCallback(() => {
@@ -149,11 +149,11 @@ function OrderLineItemRow({
         (appliedDiscount: Map<any, any> | null) => {
             const newLineItem = lineItem.set(
                 'applied_discount',
-                appliedDiscount
+                appliedDiscount,
             )
             onChange(newLineItem, index)
         },
-        [lineItem, index, onChange]
+        [lineItem, index, onChange],
     )
 
     const renderImage = useCallback(() => {
@@ -165,7 +165,7 @@ function OrderLineItemRow({
                 (image: Map<any, any>) =>
                     (
                         image.get('variant_ids', fromJS([])) as List<any>
-                    ).includes(variant_id)
+                    ).includes(variant_id),
             )
         const variantImageSrc = variantImage ? variantImage.get('src') : ''
         if (variantImageSrc) {
@@ -232,7 +232,7 @@ function OrderLineItemRow({
         const variantId = lineItem.get('variant_id')
         const variant = !!product
             ? ((product.get('variants', []) as List<any>).find(
-                  (variant: Map<any, any>) => variant.get('id') === variantId
+                  (variant: Map<any, any>) => variant.get('id') === variantId,
               ) as Map<any, any>)
             : null
 
@@ -253,11 +253,11 @@ function OrderLineItemRow({
         const price = lineItem.get('price')
         const discountedPrice = getDraftOrderLineItemDiscountedPrice(
             lineItem,
-            currencyCode
+            currencyCode,
         )
         const formattedDiscountedPrice = formatPrice(
             discountedPrice,
-            currencyCode
+            currencyCode,
         )
         const hasDiscount = price !== formattedDiscountedPrice
         return (
@@ -360,7 +360,7 @@ function OrderLineItemRow({
                             renderIfZero
                             amount={formatPrice(
                                 getDraftOrderLineItemTotal(lineItem),
-                                currencyCode
+                                currencyCode,
                             )}
                             currencyCode={currencyCode}
                         />

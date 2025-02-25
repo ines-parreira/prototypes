@@ -1,10 +1,11 @@
+import React, { RefObject, useCallback, useRef, useState } from 'react'
+
 import cn from 'classnames'
-import React, {RefObject, useCallback, useRef, useState} from 'react'
-import {Popover, PopoverBody, Input} from 'reactstrap'
+import { Input, Popover, PopoverBody } from 'reactstrap'
 
 import useId from 'hooks/useId'
 import Button from 'pages/common/components/button/Button'
-import {useOnClickOutside} from 'pages/common/hooks/useOnClickOutside'
+import { useOnClickOutside } from 'pages/common/hooks/useOnClickOutside'
 
 import css from './ColorPicker.less'
 
@@ -62,7 +63,7 @@ export default function ColorPicker({
             onChange(value)
             setPopupVisible(false)
         },
-        [onChange]
+        [onChange],
     )
 
     const colorValue = value || defaultValue

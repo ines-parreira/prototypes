@@ -1,22 +1,21 @@
-import {useState, useEffect} from 'react'
+import { useEffect, useState } from 'react'
 
 import useAsyncFn from 'hooks/useAsyncFn'
-import {HelpCenter} from 'models/helpCenter/types'
-
-import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
-import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import { HelpCenter } from 'models/helpCenter/types'
+import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
+import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 
 const useHelpCenterOfShop = (shopName?: string, shopType?: string) => {
-    const {client} = useHelpCenterApi()
+    const { client } = useHelpCenterApi()
 
     const [helpCenters, setHelpCenters] = useState<HelpCenter[]>([])
 
-    const [{loading: isLoadingHelpCenters}, fetchHelpCenters] =
+    const [{ loading: isLoadingHelpCenters }, fetchHelpCenters] =
         useAsyncFn(async () => {
             if (client) {
                 try {
                     const {
-                        data: {data: fetchedHelpCenters},
+                        data: { data: fetchedHelpCenters },
                     } = await client.listHelpCenters({
                         shop_name: shopName,
                         per_page: HELP_CENTER_MAX_CREATION,

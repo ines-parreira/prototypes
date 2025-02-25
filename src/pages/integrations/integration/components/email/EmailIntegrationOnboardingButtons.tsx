@@ -1,17 +1,19 @@
-import {EmailIntegration} from '@gorgias/api-queries'
-import React, {useContext, useEffect} from 'react'
+import React, { useContext, useEffect } from 'react'
 
-import {FormSubmitButton} from 'core/forms'
+import { EmailIntegration } from '@gorgias/api-queries'
+
+import { FormSubmitButton } from 'core/forms'
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import {WizardContext} from 'pages/common/components/wizard/Wizard'
+import { WizardContext } from 'pages/common/components/wizard/Wizard'
 
-import css from './EmailIntegrationOnboardingButtons.less'
 import {
     EmailIntegrationOnboardingStep,
     useEmailOnboarding,
 } from './hooks/useEmailOnboarding'
 import OnboardingDomainVerificationButtons from './OnboardingDomainVerificationButtons'
+
+import css from './EmailIntegrationOnboardingButtons.less'
 
 type Props = {
     integration?: EmailIntegration | undefined

@@ -8,9 +8,9 @@ import {
     VALUE_FIELD,
     withBreakdown,
 } from 'hooks/reporting/withBreakdown'
-import {OrderDirection} from 'models/api/types'
-import {UsePostReportingQueryData} from 'models/reporting/queries'
-import {TicketInsightsOrder} from 'state/ui/stats/ticketInsightsSlice'
+import { OrderDirection } from 'models/api/types'
+import { UsePostReportingQueryData } from 'models/reporting/queries'
+import { TicketInsightsOrder } from 'state/ui/stats/ticketInsightsSlice'
 
 describe('withBreakdown', () => {
     const tagL1_1 = 'asd'
@@ -46,11 +46,11 @@ describe('withBreakdown', () => {
             const responseWithDeciles = withBreakdown(
                 response,
                 BREAKDOWN_FIELD,
-                VALUE_FIELD
+                VALUE_FIELD,
             )
 
             expect(responseWithDeciles.data.data).toEqual(
-                selectWithBreakdown(results, BREAKDOWN_FIELD, VALUE_FIELD)
+                selectWithBreakdown(results, BREAKDOWN_FIELD, VALUE_FIELD),
             )
         })
     })
@@ -60,7 +60,7 @@ describe('withBreakdown', () => {
             const breakdown = selectWithBreakdown(
                 results,
                 BREAKDOWN_FIELD,
-                VALUE_FIELD
+                VALUE_FIELD,
             )
 
             expect(breakdown).toEqual([
@@ -131,7 +131,7 @@ describe('withBreakdown', () => {
             const breakdown = selectWithBreakdown(
                 results,
                 BREAKDOWN_FIELD,
-                VALUE_FIELD
+                VALUE_FIELD,
             )
 
             expect(breakdown).toEqual([
@@ -235,7 +235,7 @@ describe('withBreakdown', () => {
                 timeSeriesData,
                 defaultOrder,
                 BREAKDOWN_FIELD,
-                VALUE_FIELD
+                VALUE_FIELD,
             )
 
             expect(results).toEqual([
@@ -417,11 +417,11 @@ describe('withBreakdown', () => {
                 tagsOrder: [tagL2_2, tagL2_1],
             },
             {
-                order: {column: 1, direction: OrderDirection.Asc},
+                order: { column: 1, direction: OrderDirection.Asc },
                 tagsOrder: [tagL2_2, tagL2_1],
             },
             {
-                order: {column: 1, direction: OrderDirection.Desc},
+                order: { column: 1, direction: OrderDirection.Desc },
                 tagsOrder: [tagL2_1, tagL2_2],
             },
         ])(
@@ -437,13 +437,13 @@ describe('withBreakdown', () => {
                     timeSeriesData,
                     order,
                     BREAKDOWN_FIELD,
-                    VALUE_FIELD
+                    VALUE_FIELD,
                 )
 
                 expect(
-                    results[0].children.map((r) => r[BREAKDOWN_FIELD])
+                    results[0].children.map((r) => r[BREAKDOWN_FIELD]),
                 ).toEqual(tagsOrder)
-            }
+            },
         )
     })
 })

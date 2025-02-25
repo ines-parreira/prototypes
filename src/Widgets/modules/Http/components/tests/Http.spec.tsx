@@ -1,15 +1,15 @@
-import {render} from '@testing-library/react'
-import React, {ComponentProps, useContext} from 'react'
+import React, { ComponentProps, useContext } from 'react'
 
-import {assumeMock} from 'utils/testing'
+import { render } from '@testing-library/react'
 
-import Template, {CustomizationContext} from 'Widgets/modules/Template'
+import { assumeMock } from 'utils/testing'
+import Template, { CustomizationContext } from 'Widgets/modules/Template'
 
-import HttpWidget, {customization} from '../Http'
+import HttpWidget, { customization } from '../Http'
 
 jest.mock('Widgets/modules/Template', () => {
     const templateExports: Record<string, unknown> = jest.requireActual(
-        'Widgets/modules/Template'
+        'Widgets/modules/Template',
     )
     return {
         ...templateExports,
@@ -54,11 +54,11 @@ describe('HttpWidget', () => {
         ])(
             'should have a dataMatcher that matches the given path, or not',
             (dataPath, output) => {
-                const hasMatch = cardCustomization.some(({dataMatcher}) => {
+                const hasMatch = cardCustomization.some(({ dataMatcher }) => {
                     return dataMatcher.test(dataPath)
                 })
                 expect(hasMatch).toBe(output)
-            }
+            },
         )
     })
 })

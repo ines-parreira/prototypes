@@ -1,19 +1,21 @@
+import React from 'react'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
+import { Provider } from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
 import {
     queryKeys,
     useCreateCustomFieldCondition as useCreate,
 } from '@gorgias/api-queries'
-import {QueryClientProvider} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
-import React from 'react'
-import {Provider} from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
-import {customFieldCondition} from 'fixtures/customFieldCondition'
-import {NotificationStatus} from 'state/notifications/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { axiosSuccessResponse } from 'fixtures/axiosResponse'
+import { customFieldCondition } from 'fixtures/customFieldCondition'
+import { NotificationStatus } from 'state/notifications/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 import useCreateCustomFieldCondition from '../useCreateCustomFieldCondition'
 
@@ -34,7 +36,7 @@ describe('useCreateCustomFieldCondition', () => {
         const invalidateQueryMock = jest.spyOn(queryClient, 'invalidateQueries')
 
         renderHook(() => useCreateCustomFieldCondition(), {
-            wrapper: ({children}) => (
+            wrapper: ({ children }) => (
                 <QueryClientProvider client={queryClient}>
                     <Provider store={mockStore}>{children}</Provider>
                 </QueryClientProvider>
@@ -44,8 +46,8 @@ describe('useCreateCustomFieldCondition', () => {
         useCreateCustomFieldConditionMock.mock.calls[0][0]?.mutation!
             .onSuccess!(
             axiosSuccessResponse(customFieldCondition) as any,
-            {data: customFieldCondition},
-            undefined
+            { data: customFieldCondition },
+            undefined,
         )
 
         expect(invalidateQueryMock).toHaveBeenLastCalledWith({
@@ -64,7 +66,7 @@ describe('useCreateCustomFieldCondition', () => {
 
     it('should dispatch failure notification on error', () => {
         renderHook(() => useCreateCustomFieldCondition(), {
-            wrapper: ({children}) => (
+            wrapper: ({ children }) => (
                 <QueryClientProvider client={queryClient}>
                     <Provider store={mockStore}>{children}</Provider>
                 </QueryClientProvider>
@@ -73,8 +75,8 @@ describe('useCreateCustomFieldCondition', () => {
 
         useCreateCustomFieldConditionMock.mock.calls[0][0]?.mutation!.onError!(
             {},
-            {data: customFieldCondition},
-            undefined
+            { data: customFieldCondition },
+            undefined,
         )
 
         expect(mockStore.getActions()).toMatchObject([

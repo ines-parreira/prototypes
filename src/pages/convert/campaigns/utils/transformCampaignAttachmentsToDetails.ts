@@ -1,4 +1,4 @@
-import {SCENARIO_CONFIG} from 'pages/convert/campaigns/constants/productRecommendationScenarios'
+import { SCENARIO_CONFIG } from 'pages/convert/campaigns/constants/productRecommendationScenarios'
 
 import {
     AttachmentType,
@@ -12,7 +12,7 @@ import {
 } from '../types/CampaignAttachment'
 
 export const transformCampaignAttachmentsToDetails = (
-    attachments: CampaignAttachment[]
+    attachments: CampaignAttachment[],
     // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
 ): (unknown | AttachmentType)[] => {
     const transformed = attachments.map((attachment) => {

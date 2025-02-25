@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {SegmentEvent, logEvent} from 'common/segment'
+import { logEvent, SegmentEvent } from 'common/segment'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 
 type Props = {

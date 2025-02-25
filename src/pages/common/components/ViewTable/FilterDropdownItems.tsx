@@ -1,12 +1,13 @@
-import {Map, List} from 'immutable'
 import React from 'react'
-import {DropdownItem} from 'reactstrap'
 
-import {isImmutable} from 'common/utils'
-import {RenderLabel} from 'pages/common/utils/labels'
-import {getDisplayName} from 'state/customers/helpers'
-import {humanizeChannel} from 'state/ticket/utils'
-import {getLanguageDisplayName} from 'utils'
+import { List, Map } from 'immutable'
+import { DropdownItem } from 'reactstrap'
+
+import { isImmutable } from 'common/utils'
+import { RenderLabel } from 'pages/common/utils/labels'
+import { getDisplayName } from 'state/customers/helpers'
+import { humanizeChannel } from 'state/ticket/utils'
+import { getLanguageDisplayName } from 'utils'
 
 import css from './FilterDropdownItems.less'
 
@@ -89,7 +90,7 @@ export default function FilterDropdownItems({
             >
                 Me (current user)
             </DropdownItem>,
-            <DropdownItem key="unassigned-divider" divider />
+            <DropdownItem key="unassigned-divider" divider />,
         )
     }
 

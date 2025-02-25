@@ -1,14 +1,15 @@
-import {List, Map} from 'immutable'
 import React from 'react'
 
-import {RuleItemActions} from 'pages/settings/rules/types'
+import { List, Map } from 'immutable'
+
+import { RuleItemActions } from 'pages/settings/rules/types'
 
 import Errors from '../Errors'
 import Widget from '../Widget'
 
 type Props = {
     actions: RuleItemActions
-    elements: {value?: Maybe<string>}[]
+    elements: { value?: Maybe<string> }[]
     leftsiblings: List<any>
     parent: List<any>
     rule: Map<any, any>

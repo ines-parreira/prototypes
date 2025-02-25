@@ -1,11 +1,13 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
 import React, {
-    ReactNode,
-    MouseEvent,
-    isValidElement,
     HTMLAttributes,
+    isValidElement,
+    MouseEvent,
+    ReactNode,
 } from 'react'
+
+import classnames from 'classnames'
+
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import autoAwesomeIcon from 'assets/img/icons/auto_awesome.svg'
 import closeIcon from 'assets/img/icons/close.svg'
@@ -64,7 +66,7 @@ const Alert = ({
                 {
                     [css.closable]: onClose,
                 },
-                className
+                className,
             )}
             {...props}
         >

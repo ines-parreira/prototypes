@@ -1,5 +1,6 @@
 import React from 'react'
-import {useParams} from 'react-router-dom'
+
+import { useParams } from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -8,23 +9,24 @@ import useTitle from 'hooks/useTitle'
 import useUpdateEffect from 'hooks/useUpdateEffect'
 import Loader from 'pages/common/components/Loader/Loader'
 import TicketBodyNonVirtualized from 'pages/tickets/detail/components/TicketBodyNonVirtualized'
-import {fetchTicket} from 'state/ticket/actions'
-import {getBody} from 'state/ticket/selectors'
+import { fetchTicket } from 'state/ticket/actions'
+import { getBody } from 'state/ticket/selectors'
 
 import useTicketActivityTracking from './hooks/useTicketActivityTracking'
+
 import css from './TicketPrintContainer.less'
 
 const TicketPrintContainer = () => {
     const ticketBody = useAppSelector(getBody)
     const ticket = useAppSelector((state) => state.ticket)
-    const {ticketId: ticketIdParam} = useParams<{ticketId: string}>()
+    const { ticketId: ticketIdParam } = useParams<{ ticketId: string }>()
     const dispatch = useAppDispatch()
 
     useTicketActivityTracking(Number(ticketIdParam))
 
     useEffectOnce(() => {
         void dispatch(
-            fetchTicket(ticketIdParam || '', {isCurrentlyOnTicket: true})
+            fetchTicket(ticketIdParam || '', { isCurrentlyOnTicket: true }),
         )
     })
 

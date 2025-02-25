@@ -1,15 +1,16 @@
-import {act, fireEvent, render, screen} from '@testing-library/react'
-import {fromJS, Map} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { act, fireEvent, render, screen } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
-import {tags as tagsFixtures} from 'fixtures/tag'
-import {fetchTags} from 'models/tag/resources'
+import { axiosSuccessResponse } from 'fixtures/axiosResponse'
+import { tags as tagsFixtures } from 'fixtures/tag'
+import { fetchTags } from 'models/tag/resources'
 import * as tagActions from 'state/tags/actions'
-import {RootState, StoreDispatch} from 'state/types'
+import { RootState, StoreDispatch } from 'state/types'
 
 import ManageTags from '../ManageTags'
 
@@ -40,7 +41,7 @@ describe('ManageTags component', () => {
     const keys = (fromJS(meta) as Map<any, any>).keySeq().toList()
 
     const defaultState: Partial<RootState> = {
-        tags: fromJS({_internal: {}, meta, items: tagsFixtures}),
+        tags: fromJS({ _internal: {}, meta, items: tagsFixtures }),
     }
 
     beforeEach(() => {
@@ -54,17 +55,17 @@ describe('ManageTags component', () => {
                     total_resources: null,
                 },
                 object: 'list',
-            })
+            }),
         )
     })
 
     it('should render a loader while fetching data', async () => {
         jest.useFakeTimers()
 
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <ManageTags />
-            </Provider>
+            </Provider>,
         )
 
         act(() => {
@@ -78,7 +79,7 @@ describe('ManageTags component', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <ManageTags />
-            </Provider>
+            </Provider>,
         )
 
         await screen.findByText(tagsFixtures[0].name)
@@ -89,7 +90,7 @@ describe('ManageTags component', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <ManageTags />
-            </Provider>
+            </Provider>,
         )
         await screen.findByText(tagsFixtures[0].name)
         const button = await screen.findByText(/Create tag/i)
@@ -102,13 +103,15 @@ describe('ManageTags component', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <ManageTags />
-            </Provider>
+            </Provider>,
         )
 
         await act(async () => {
             await screen.findByText(tagsFixtures[0].name)
 
-            fireEvent.click(screen.getByRole('checkbox', {name: 'select-all'}))
+            fireEvent.click(
+                screen.getByRole('checkbox', { name: 'select-all' }),
+            )
 
             fireEvent.click(screen.getByText('Delete'))
             const confirmButton = await screen.findByText(/Confirm/i)
@@ -116,7 +119,7 @@ describe('ManageTags component', () => {
 
             expect(tagActions.bulkDelete).toHaveBeenCalledTimes(1)
             expect(tagActions.bulkDelete).toHaveBeenCalledWith(
-                Object.keys(meta)
+                Object.keys(meta),
             )
         })
     })
@@ -125,13 +128,15 @@ describe('ManageTags component', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <ManageTags />
-            </Provider>
+            </Provider>,
         )
 
         await act(async () => {
             await screen.findByText(tagsFixtures[0].name)
 
-            fireEvent.click(screen.getByRole('checkbox', {name: 'select-all'}))
+            fireEvent.click(
+                screen.getByRole('checkbox', { name: 'select-all' }),
+            )
 
             fireEvent.click(screen.getByText('Merge'))
             const confirmButton = await screen.findByText(/Confirm/i)
@@ -155,13 +160,15 @@ describe('ManageTags component', () => {
                 })}
             >
                 <ManageTags />
-            </Provider>
+            </Provider>,
         )
 
         await act(async () => {
             await screen.findByText(tagsFixtures[0].name)
 
-            fireEvent.click(screen.getByRole('checkbox', {name: 'select-all'}))
+            fireEvent.click(
+                screen.getByRole('checkbox', { name: 'select-all' }),
+            )
 
             fireEvent.click(screen.getByText('Merge'))
             const confirmButton = await screen.findByText(/Confirm/i)
@@ -184,13 +191,15 @@ describe('ManageTags component', () => {
                 })}
             >
                 <ManageTags />
-            </Provider>
+            </Provider>,
         )
 
         await act(async () => {
             await screen.findByText(tagsFixtures[0].name)
 
-            fireEvent.click(screen.getByRole('checkbox', {name: 'select-all'}))
+            fireEvent.click(
+                screen.getByRole('checkbox', { name: 'select-all' }),
+            )
 
             fireEvent.click(screen.getByText('Delete'))
             const confirmButton = await screen.findByText(/Confirm/i)

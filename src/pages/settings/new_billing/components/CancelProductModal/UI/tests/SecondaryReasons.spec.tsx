@@ -1,7 +1,8 @@
-import {fireEvent, render} from '@testing-library/react'
 import React from 'react'
 
-import {CommonReasonLabel} from '../../constants'
+import { fireEvent, render } from '@testing-library/react'
+
+import { CommonReasonLabel } from '../../constants'
 import SecondaryReasons from '../SecondaryReasons'
 
 describe('SecondaryReasons', () => {
@@ -12,20 +13,20 @@ describe('SecondaryReasons', () => {
     ]
 
     it('renders with selected secondary reason', () => {
-        const {container} = render(
+        const { container } = render(
             <SecondaryReasons
                 secondaryReasons={secondaryReasons}
                 currentReason={null}
                 handleSecondaryReasonSelection={jest.fn() as any}
-            />
+            />,
         )
 
         const instructionsElement = container.querySelector(
-            'div[class="instruction"]'
+            'div[class="instruction"]',
         )
         expect(instructionsElement).toBeInTheDocument()
         expect(instructionsElement).toHaveTextContent(
-            'Could you please share more? *'
+            'Could you please share more? *',
         )
 
         const selectorElement = container.querySelector('fieldset')
@@ -40,12 +41,12 @@ describe('SecondaryReasons', () => {
     })
 
     it('renders with selected secondary reason being checked', () => {
-        const {container} = render(
+        const { container } = render(
             <SecondaryReasons
                 secondaryReasons={secondaryReasons}
                 currentReason={'secondary2'}
                 handleSecondaryReasonSelection={jest.fn() as any}
-            />
+            />,
         )
 
         container.querySelectorAll('fieldset input').forEach((input) => {
@@ -61,22 +62,22 @@ describe('SecondaryReasons', () => {
     it('handles onChange event for radio button', () => {
         const mockHandleSecondaryReasonSelection = jest.fn()
 
-        const {container} = render(
+        const { container } = render(
             <SecondaryReasons
                 secondaryReasons={secondaryReasons}
                 currentReason={null}
                 handleSecondaryReasonSelection={
                     mockHandleSecondaryReasonSelection
                 }
-            />
+            />,
         )
 
         const input = container.querySelector('fieldset input')
         expect(input).toBeInTheDocument()
-        fireEvent.click(input!, {target: {value: 'secondary1'}})
+        fireEvent.click(input!, { target: { value: 'secondary1' } })
 
         expect(mockHandleSecondaryReasonSelection).toHaveBeenCalledWith(
-            'secondary1'
+            'secondary1',
         )
     })
 })

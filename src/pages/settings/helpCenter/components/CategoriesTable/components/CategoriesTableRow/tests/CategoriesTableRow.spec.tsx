@@ -1,28 +1,28 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
-import {DndProvider} from 'react-dnd'
-import {HTML5Backend} from 'react-dnd-html5-backend'
-import {Provider as ReduxProvider} from 'react-redux'
-import {DeepPartial} from 'redux'
+
+import { render, screen } from '@testing-library/react'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+import { Provider as ReduxProvider } from 'react-redux'
+import { DeepPartial } from 'redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {Category} from 'models/helpCenter/types'
-import {CategoriesTableBasicRow} from 'pages/settings/helpCenter/components/CategoriesTable/components/CategoriesTableBasicRow/CategoriesTableBasicRow'
-
+import { Category } from 'models/helpCenter/types'
+import { CategoriesTableBasicRow } from 'pages/settings/helpCenter/components/CategoriesTable/components/CategoriesTableBasicRow/CategoriesTableBasicRow'
 import {
     CATEGORY_ROW_ACTIONS,
     CATEGORY_TREE_MAX_LEVEL,
 } from 'pages/settings/helpCenter/constants'
-import {getSingleArticleEnglish} from 'pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
-import {getCategoriesFlatSorted} from 'pages/settings/helpCenter/fixtures/getCategoriesTreeFlatSorted.fixtures'
-import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
-import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
-import {isNonRootCategory} from 'state/entities/helpCenter/categories'
-import {RootState, StoreDispatch} from 'state/types'
+import { getSingleArticleEnglish } from 'pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
+import { getCategoriesFlatSorted } from 'pages/settings/helpCenter/fixtures/getCategoriesTreeFlatSorted.fixtures'
+import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
+import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
+import { isNonRootCategory } from 'state/entities/helpCenter/categories'
+import { RootState, StoreDispatch } from 'state/types'
 
-import {CategoriesTableRow} from '../CategoriesTableRow'
+import { CategoriesTableRow } from '../CategoriesTableRow'
 
 const mockStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>([
     thunk,
@@ -35,10 +35,10 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterIdParam', () => {
 })
 
 const mockedListArticles = jest.fn().mockResolvedValue({
-    data: {data: [], meta: {item_count: 0}},
+    data: { data: [], meta: { item_count: 0 } },
 })
 const mockedListCategoryArticles = jest.fn().mockResolvedValue({
-    data: {data: [], meta: {item_count: 0}},
+    data: { data: [], meta: { item_count: 0 } },
 })
 const mockGetCategoryArticlesPositions = jest.fn().mockResolvedValue({
     data: [],
@@ -59,7 +59,7 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
                     mockGetUncategorizedArticlesPositions,
             },
         }),
-        useAbilityChecker: () => ({isPassingRulesCheck: () => true}),
+        useAbilityChecker: () => ({ isPassingRulesCheck: () => true }),
     }
 })
 
@@ -83,7 +83,7 @@ describe('<CategoriesTableRow />', () => {
                     },
                     categories: {
                         categoriesById: {
-                            '0': {...rootCategory, articleCount: 0},
+                            '0': { ...rootCategory, articleCount: 0 },
                         },
                     },
                 },
@@ -96,7 +96,7 @@ describe('<CategoriesTableRow />', () => {
             },
         }
 
-        const {container} = render(
+        const { container } = render(
             <ReduxProvider store={mockStore(initialState)}>
                 <CategoriesTableBasicRow
                     renderArticleList={() => <div />}
@@ -104,7 +104,7 @@ describe('<CategoriesTableRow />', () => {
                     shouldRenderRowWithoutArticles={false}
                     isCountBadgeLoading={false}
                 />
-            </ReduxProvider>
+            </ReduxProvider>,
         )
 
         expect(container).toMatchSnapshot()
@@ -126,7 +126,7 @@ describe('<CategoriesTableRow />', () => {
                     },
                     categories: {
                         categoriesById: {
-                            '0': {...rootCategory, articleCount: 1},
+                            '0': { ...rootCategory, articleCount: 1 },
                         },
                     },
                 },
@@ -154,7 +154,7 @@ describe('<CategoriesTableRow />', () => {
             },
         })
 
-        const {container, findByText} = render(
+        const { container, findByText } = render(
             <ReduxProvider store={mockStore(initialState)}>
                 <CategoriesTableBasicRow
                     renderArticleList={() => <div />}
@@ -162,7 +162,7 @@ describe('<CategoriesTableRow />', () => {
                     shouldRenderRowWithoutArticles={false}
                     isCountBadgeLoading={false}
                 />
-            </ReduxProvider>
+            </ReduxProvider>,
         )
 
         await findByText('Uncategorized articles')
@@ -200,7 +200,7 @@ describe('<CategoriesTableRow />', () => {
             },
         }
 
-        const {container, findByText} = render(
+        const { container, findByText } = render(
             <ReduxProvider store={mockStore(initialState)}>
                 <DndProvider backend={HTML5Backend}>
                     <CategoriesTableRow
@@ -221,7 +221,7 @@ describe('<CategoriesTableRow />', () => {
                         isCountBadgeLoading={false}
                     />
                 </DndProvider>
-            </ReduxProvider>
+            </ReduxProvider>,
         )
 
         expect(container).toMatchSnapshot('Loading state')
@@ -265,7 +265,7 @@ describe('<CategoriesTableRow />', () => {
             },
         }
 
-        const {container, findByText} = render(
+        const { container, findByText } = render(
             <ReduxProvider store={mockStore(initialState)}>
                 <DndProvider backend={HTML5Backend}>
                     <CategoriesTableRow
@@ -286,7 +286,7 @@ describe('<CategoriesTableRow />', () => {
                         isCountBadgeLoading={false}
                     />
                 </DndProvider>
-            </ReduxProvider>
+            </ReduxProvider>,
         )
 
         await findByText(categories[0].translation.title)
@@ -348,7 +348,7 @@ describe('<CategoriesTableRow />', () => {
                         isCountBadgeLoading={false}
                     />
                 </DndProvider>
-            </ReduxProvider>
+            </ReduxProvider>,
         )
 
         expect(screen.getByText('playlist_add')).toBeInTheDocument()
@@ -409,16 +409,16 @@ describe('<CategoriesTableRow />', () => {
                         isCountBadgeLoading={false}
                     />
                 </DndProvider>
-            </ReduxProvider>
+            </ReduxProvider>,
         )
         expect(
-            screen.getByLabelText(CATEGORY_ROW_ACTIONS[0].name)
+            screen.getByLabelText(CATEGORY_ROW_ACTIONS[0].name),
         ).toBeAriaEnabled()
         expect(
-            screen.getByLabelText(CATEGORY_ROW_ACTIONS[1].name)
+            screen.getByLabelText(CATEGORY_ROW_ACTIONS[1].name),
         ).toBeAriaDisabled()
         expect(
-            screen.getByLabelText(CATEGORY_ROW_ACTIONS[2].name)
+            screen.getByLabelText(CATEGORY_ROW_ACTIONS[2].name),
         ).toBeAriaEnabled()
     })
 })

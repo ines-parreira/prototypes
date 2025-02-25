@@ -1,5 +1,6 @@
-import {render, act, fireEvent, screen} from '@testing-library/react'
 import React from 'react'
+
+import { act, fireEvent, render, screen } from '@testing-library/react'
 
 import TextInputWithVariables from '../TextInputWithVariables'
 
@@ -25,7 +26,7 @@ describe('<TextInputWithVariables />', () => {
                         ],
                     },
                 ]}
-            />
+            />,
         )
 
         act(() => {
@@ -41,7 +42,7 @@ describe('<TextInputWithVariables />', () => {
         })
 
         expect(mockOnChange).toHaveBeenCalledWith(
-            '{{steps_state.http_request1.content.variable1 | date}}'
+            '{{steps_state.http_request1.content.variable1 | date}}',
         )
     })
 
@@ -66,7 +67,7 @@ describe('<TextInputWithVariables />', () => {
                         ],
                     },
                 ]}
-            />
+            />,
         )
 
         act(() => {
@@ -82,7 +83,7 @@ describe('<TextInputWithVariables />', () => {
         })
 
         expect(mockOnChange).toHaveBeenCalledWith(
-            '{{steps_state.http_request1.content.variable1}}'
+            '{{steps_state.http_request1.content.variable1}}',
         )
     })
 
@@ -92,7 +93,7 @@ describe('<TextInputWithVariables />', () => {
                 value="{{steps_state.http_request1.content.variable1 | date}}"
                 onChange={jest.fn()}
                 variables={[]}
-            />
+            />,
         )
 
         act(() => {

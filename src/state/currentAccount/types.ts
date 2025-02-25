@@ -1,7 +1,7 @@
-import {Map} from 'immutable'
+import { Map } from 'immutable'
 
-import {TicketChannel} from 'business/types/ticket'
-import {BannerNotificationFromBackend} from 'state/notifications/types'
+import { TicketChannel } from 'business/types/ticket'
+import { BannerNotificationFromBackend } from 'state/notifications/types'
 import {
     AgentsTableColumn,
     ChannelsTableColumns,
@@ -148,10 +148,10 @@ export type AccountSettingTableConfig<T extends TableColumnSet> = {
 }
 
 export type AccountViewsOrderingSettingData = {
-    views: Record<string, {display_order: number}>
-    views_top: Record<string, {display_order: number}>
-    views_bottom: Record<string, {display_order: number}>
-    view_sections: Record<string, {display_order: number}>
+    views: Record<string, { display_order: number }>
+    views_top: Record<string, { display_order: number }>
+    views_bottom: Record<string, { display_order: number }>
+    view_sections: Record<string, { display_order: number }>
 }
 
 export type AccountSettingAccess = {

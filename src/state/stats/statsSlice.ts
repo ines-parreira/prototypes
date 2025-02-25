@@ -1,4 +1,4 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import {
     CustomFieldFilter,
@@ -8,19 +8,19 @@ import {
     StatsFiltersWithLogicalOperator,
 } from 'models/stat/types'
 import {
-    getAdjustedAggregationWindow,
     fromLegacyStatsFilters,
     fromPartialLegacyStatsFilters,
+    getAdjustedAggregationWindow,
 } from 'state/stats/utils'
 
-export const defaultStatsFilters: {period: Period} = {
+export const defaultStatsFilters: { period: Period } = {
     period: {
         start_datetime: '1970-01-01T00:00:00+00:00',
         end_datetime: '1970-01-01T00:00:00+00:00',
     },
 }
 
-export type StatsState = {filters: StatsFiltersWithLogicalOperator}
+export type StatsState = { filters: StatsFiltersWithLogicalOperator }
 export const initialState: StatsState = {
     filters: defaultStatsFilters,
 }
@@ -44,7 +44,7 @@ export const statsSlice = createSlice({
         },
         setStatsFiltersWithLogicalOperators(
             state,
-            action: PayloadAction<StatsFiltersWithLogicalOperator>
+            action: PayloadAction<StatsFiltersWithLogicalOperator>,
         ) {
             state.filters = action.payload
             if (state.filters[FilterKey.AggregationWindow]) {
@@ -54,10 +54,10 @@ export const statsSlice = createSlice({
         },
         mergeStatsFilters(
             state,
-            action: PayloadAction<Partial<LegacyStatsFilters>>
+            action: PayloadAction<Partial<LegacyStatsFilters>>,
         ) {
             Object.keys(action.payload).forEach(
-                (filterKey) => delete state.filters[filterKey as FilterKey]
+                (filterKey) => delete state.filters[filterKey as FilterKey],
             )
             state.filters = {
                 ...state.filters,
@@ -71,7 +71,7 @@ export const statsSlice = createSlice({
         },
         mergeStatsFiltersWithLogicalOperator(
             state,
-            action: PayloadAction<Partial<StatsFiltersWithLogicalOperator>>
+            action: PayloadAction<Partial<StatsFiltersWithLogicalOperator>>,
         ) {
             state.filters = {
                 ...state.filters,
@@ -85,12 +85,12 @@ export const statsSlice = createSlice({
         },
         mergeCustomFieldsFilter(
             state,
-            action: PayloadAction<CustomFieldFilter>
+            action: PayloadAction<CustomFieldFilter>,
         ) {
-            const {payload} = action
+            const { payload } = action
             if (
                 state.filters.customFields?.find(
-                    (filter) => filter.customFieldId === payload.customFieldId
+                    (filter) => filter.customFieldId === payload.customFieldId,
                 )
             ) {
                 state.filters.customFields = state.filters.customFields.map(
@@ -98,7 +98,7 @@ export const statsSlice = createSlice({
                         customFieldFilter.customFieldId ===
                         payload.customFieldId
                             ? payload
-                            : customFieldFilter
+                            : customFieldFilter,
                 )
             } else {
                 state.filters.customFields = [

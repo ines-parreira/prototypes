@@ -1,13 +1,14 @@
-import {act, fireEvent, render} from '@testing-library/react'
 import React from 'react'
 
+import { act, fireEvent, render } from '@testing-library/react'
+
 import NodeEditorDrawerContext from 'pages/automate/workflows/editor/visualBuilder/NodeEditorDrawerContext'
-import {VisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
+import { VisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {
     buildEdgeCommonProperties,
     buildNodeCommonProperties,
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import {RemoveItemNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { RemoveItemNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 import RemoveItemEditor from '../RemoveItemEditor'
 
@@ -29,7 +30,7 @@ describe('<RemoveItemEditor />', () => {
         const mockGetVariableListForNode = jest.fn().mockReturnValue([])
         const mockDispatch = jest.fn()
 
-        const {container} = render(
+        const { container } = render(
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph: {
@@ -106,15 +107,17 @@ describe('<RemoveItemEditor />', () => {
                     isNew: false,
                 }}
             >
-                <NodeEditorDrawerContext.Provider value={{onClose: jest.fn()}}>
+                <NodeEditorDrawerContext.Provider
+                    value={{ onClose: jest.fn() }}
+                >
                     <RemoveItemEditor nodeInEdition={nodeInEdition} />
                 </NodeEditorDrawerContext.Provider>
-            </VisualBuilderContext.Provider>
+            </VisualBuilderContext.Provider>,
         )
 
         act(() => {
             const editor = container.querySelectorAll(
-                '.public-DraftEditor-content'
+                '.public-DraftEditor-content',
             )[0]
 
             fireEvent.focus(editor)
@@ -131,7 +134,7 @@ describe('<RemoveItemEditor />', () => {
 
         act(() => {
             const editor = container.querySelectorAll(
-                '.public-DraftEditor-content'
+                '.public-DraftEditor-content',
             )[1]
 
             fireEvent.focus(editor)
@@ -147,7 +150,7 @@ describe('<RemoveItemEditor />', () => {
         })
 
         expect(mockGetVariableListForNode).toHaveBeenCalledWith(
-            nodeInEdition.id
+            nodeInEdition.id,
         )
     })
 })

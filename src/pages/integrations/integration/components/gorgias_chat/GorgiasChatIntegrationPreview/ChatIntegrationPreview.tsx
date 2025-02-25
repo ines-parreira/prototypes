@@ -1,21 +1,21 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import {ThemeProvider} from '@emotion/react'
+import React, { createContext, ReactNode } from 'react'
+
+import { ThemeProvider } from '@emotion/react'
 import styled from '@emotion/styled'
 import classnames from 'classnames'
-import {List} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
+import { List } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
-import React, {createContext, ReactNode} from 'react'
 
 import noise from 'assets/img/integrations/noise.svg'
-import {FeatureFlagKey} from 'config/featureFlags'
+import { FeatureFlagKey } from 'config/featureFlags'
 import ConversationHeader, {
     ConversationHeaderVariant,
 } from 'gorgias-design-system/Header/ConversationHeader'
 import WidgetHeader from 'gorgias-design-system/Header/WidgetHeader'
 import ChatMessageInput from 'gorgias-design-system/Input/ChatMessageInput'
 import useAppSelector from 'hooks/useAppSelector'
-
 import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
@@ -25,10 +25,9 @@ import {
     GorgiasChatPosition,
     GorgiasChatPositionAlignmentEnum,
 } from 'models/integration/types'
-
 import Collapse from 'pages/common/components/Collapse/Collapse'
-import {PositionAxis} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/types'
-import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
+import { PositionAxis } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/types'
+import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
 
 import {
     GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
@@ -41,16 +40,16 @@ import {
     isAutoresponderReply,
     LanguageItem,
 } from '../../../../../../config/integrations/gorgias_chat'
-
-import css from './ChatIntegrationPreview.less'
 import {
     getTextColorBasedOnBackground,
     getThemeBasedOnContrast,
 } from './color-utils'
 import CustomizedChatLauncher from './CustomizedChatLauncher'
 import GorgiasChatPoweredBy from './GorgiasChatPoweredBy'
-import {AddIcon, PlaneIcon} from './icon-utils'
+import { AddIcon, PlaneIcon } from './icon-utils'
 import PrivacyPolicyDisclaimer from './PrivacyPolicyDisclaimer'
+
+import css from './ChatIntegrationPreview.less'
 
 type ChatIntegrationPreviewContextState = {
     displayBotLabel: boolean
@@ -200,14 +199,14 @@ const ChatIntegrationPreview = (props: Props) => {
     const variant = getThemeBasedOnContrast(currentColor)
 
     const ClockIcon = (
-        <i className="material-icons" style={{color: contrastColor}}>
+        <i className="material-icons" style={{ color: contrastColor }}>
             schedule
         </i>
     )
 
     const renderWithAnimationIfEnabled = (
         node: ReactNode,
-        direction: 'vertical' | 'horizontal'
+        direction: 'vertical' | 'horizontal',
     ) => {
         if (!enableAnimations) {
             return node
@@ -231,7 +230,7 @@ const ChatIntegrationPreview = (props: Props) => {
                             .hour(businessHoursFromHour)
                             .minutes(0)
                             .locale(language)
-                            .format('LT')
+                            .format('LT'),
                     )}
                 </>
             )
@@ -252,22 +251,22 @@ const ChatIntegrationPreview = (props: Props) => {
                   <div className={css.backButton}>
                       <i
                           className="material-icons"
-                          style={{color: contrastColor}}
+                          style={{ color: contrastColor }}
                       >
                           chevron_left
                       </i>
                   </div>,
-                  'horizontal'
+                  'horizontal',
               )
             : null
     }
 
-    const Gradient = styled.div<{color: string}>`
+    const Gradient = styled.div<{ color: string }>`
         position: absolute;
         top: 0;
         height: 100%;
         width: 100%;
-        background: ${({color}) =>
+        background: ${({ color }) =>
             `linear-gradient(${color} 34%, hsla(0, 0%, 100%, 0.4))`};
     `
 
@@ -295,7 +294,7 @@ const ChatIntegrationPreview = (props: Props) => {
                 <CustomizedChatLauncher
                     className={classnames(
                         css.preview,
-                        showBackground && css.previewWithBackground
+                        showBackground && css.previewWithBackground,
                     )}
                     mainFontFamily={mainFontFamily}
                     launcher={launcher}
@@ -329,7 +328,7 @@ const ChatIntegrationPreview = (props: Props) => {
                                 title={name}
                                 message={ConversationHeaderMessage()}
                                 leadIcon={ConversationHeaderBackButton()}
-                                style={{zIndex: 2}}
+                                style={{ zIndex: 2 }}
                             />
                         )}
 
@@ -352,7 +351,7 @@ const ChatIntegrationPreview = (props: Props) => {
                             className={classnames(
                                 isWidgetConversation &&
                                     css.conversationContentWrapper,
-                                !isWidgetConversation && css.contentWrapper
+                                !isWidgetConversation && css.contentWrapper,
                             )}
                             style={
                                 background
@@ -384,7 +383,7 @@ const ChatIntegrationPreview = (props: Props) => {
                                 <ChatMessageInput
                                     aria-label={'Gorgias message input'}
                                     placeholder={nonbreak(
-                                        translatedTexts.inputPlaceholder
+                                        translatedTexts.inputPlaceholder,
                                     )}
                                     leadIcon={<AddIcon />}
                                     leadIconAriaLabel="Add attachment"

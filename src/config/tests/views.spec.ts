@@ -1,24 +1,24 @@
-import {render, screen} from '@testing-library/react'
-import {fromJS, Map, List} from 'immutable'
+import { ReactComponentElement } from 'react'
+
+import { render, screen } from '@testing-library/react'
+import { fromJS, List, Map } from 'immutable'
 import _isObject from 'lodash/isObject'
-import {ReactComponentElement} from 'react'
 
-import {isImmutable} from 'common/utils'
-import {defaultTicketView} from 'config/views'
+import { isImmutable } from 'common/utils'
+import { defaultTicketView } from 'config/views'
 import * as viewsConfig from 'config/views'
-
-import {customer} from 'fixtures/customer'
+import { customer } from 'fixtures/customer'
 import * as ticketFixtures from 'fixtures/ticket'
-import {TicketHighlights} from 'models/search/types'
+import { TicketHighlights } from 'models/search/types'
 import {
-    ViewType,
+    EntityType,
     View,
     ViewField,
+    ViewType,
     ViewVisibility,
-    EntityType,
 } from 'models/view/types'
-import {getAST} from 'utils'
-import {getLDClient} from 'utils/launchDarkly'
+import { getAST } from 'utils'
+import { getLDClient } from 'utils/launchDarkly'
 
 jest.mock('utils/launchDarkly')
 const variationMock = getLDClient().variation as jest.Mock
@@ -60,12 +60,12 @@ describe('Config: views', () => {
 
             const cell = withHighlightView.cell as (
                 fieldName: ViewField,
-                item: Map<any, any>
+                item: Map<any, any>,
             ) => ReactComponentElement<any>
             render(cell(ViewField.Details, ticketWithHighlight))
 
             expect(
-                screen.getByText(`(${messages_count}) ${subject}`)
+                screen.getByText(`(${messages_count}) ${subject}`),
             ).toBeInTheDocument()
             expect(screen.getByText(excerpt)).toBeInTheDocument()
         })
@@ -82,7 +82,7 @@ describe('Config: views', () => {
             if (withHighlightView) {
                 const cell = withHighlightView.cell as (
                     fieldName: ViewField,
-                    item: Map<any, any>
+                    item: Map<any, any>,
                 ) => ReactComponentElement<any>
                 render(cell(ViewField.Details, ticketWithHighlight))
             }
@@ -111,18 +111,22 @@ describe('Config: views', () => {
             if (withHighlightView) {
                 const cell = withHighlightView.cell as (
                     fieldName: ViewField,
-                    item: Map<any, any>
+                    item: Map<any, any>,
                 ) => ReactComponentElement<any>
                 render(cell(ViewField.Details, ticketWithHighlight))
             }
 
             expect(screen.getByText(highlightedSubject)).toBeInTheDocument()
             expect(
-                screen.getByText(highlightedSubject).tagName.toLocaleLowerCase()
+                screen
+                    .getByText(highlightedSubject)
+                    .tagName.toLocaleLowerCase(),
             ).toBe('em')
             expect(screen.getByText(highlightedMessage)).toBeInTheDocument()
             expect(
-                screen.getByText(highlightedMessage).tagName.toLocaleLowerCase()
+                screen
+                    .getByText(highlightedMessage)
+                    .tagName.toLocaleLowerCase(),
             ).toBe('em')
         })
     })
@@ -233,11 +237,11 @@ describe('Config: views', () => {
                 }
 
                 const fieldNames = (viewConfig.get('fields') as List<any>).map(
-                    (field: Map<any, any>) => field.get('name') as string
+                    (field: Map<any, any>) => field.get('name') as string,
                 )
                 const cellFunction = viewConfig.get('cell') as (
                     fieldName: any,
-                    fixture: any
+                    fixture: any,
                 ) => any
 
                 // check that each field renders the correct type once passed through the cell() function
@@ -277,7 +281,7 @@ describe('Config: views', () => {
                         viewConfig.get('newView') as () => Map<any, any>
                     )()
                     expect(isImmutable(newView.getIn(['filters_ast']))).toEqual(
-                        true
+                        true,
                     )
                 })
 
@@ -286,12 +290,12 @@ describe('Config: views', () => {
                         viewConfig.get('newView') as (
                             visibility?: ViewVisibility,
                             viewName?: string,
-                            filters?: string
+                            filters?: string,
                         ) => Map<any, any>
                     )(ViewVisibility.Private, 'Some view', defaultFilters)
 
                     expect(isImmutable(newView.getIn(['filters_ast']))).toBe(
-                        true
+                        true,
                     )
                 })
             })
@@ -303,7 +307,7 @@ describe('Config: views', () => {
                     const searchView = (
                         viewConfig.get('searchView') as (
                             term: string,
-                            filters?: string
+                            filters?: string,
                         ) => Map<any, any>
                     )(term, filters).toJS()
 
@@ -321,7 +325,7 @@ describe('Config: views', () => {
                     expect(searchView).toHaveProperty('filters', filters)
                     expect(searchView).toHaveProperty(
                         'filters_ast',
-                        getAST(filters)
+                        getAST(filters),
                     )
                 })
                 it('has filtered_ast as immutable', () => {
@@ -329,7 +333,7 @@ describe('Config: views', () => {
                         viewConfig.get('searchView') as () => Map<any, any>
                     )()
                     expect(
-                        isImmutable(searchView.getIn(['filters_ast']))
+                        isImmutable(searchView.getIn(['filters_ast'])),
                     ).toEqual(true)
                 })
 
@@ -337,16 +341,16 @@ describe('Config: views', () => {
                     const searchView = (
                         viewConfig.get('searchView') as (
                             query?: string,
-                            filters?: string
+                            filters?: string,
                         ) => Map<any, any>
                     )('some query', defaultFilters)
 
                     expect(isImmutable(searchView.getIn(['filters_ast']))).toBe(
-                        true
+                        true,
                     )
                 })
             })
-        }
+        },
     )
 
     it('view config should set order properties to undefined if advanced search sorting FF is enabled', () => {
@@ -385,9 +389,9 @@ describe('Config: views', () => {
             'should return the expiration time for each view count',
             (count, expectedTime) => {
                 expect(viewsConfig.getExpirationTimeForCount(count)).toEqual(
-                    expectedTime
+                    expectedTime,
                 )
-            }
+            },
         )
     })
 
@@ -401,7 +405,7 @@ describe('Config: views', () => {
                     filter: {
                         type: 'agent',
                     },
-                })
+                }),
             )
         })
     })
@@ -410,8 +414,8 @@ describe('Config: views', () => {
         it('should return the path corresponding to the passed field', () => {
             expect(
                 viewsConfig.getTicketViewFieldPath(
-                    viewsConfig.getTicketViewField(ViewField.Channel)
-                )
+                    viewsConfig.getTicketViewField(ViewField.Channel),
+                ),
             ).toEqual('ticket.channel')
         })
     })
@@ -435,7 +439,7 @@ describe('Config: views', () => {
             if (withHighlightView) {
                 const cell = withHighlightView.cell as (
                     fieldName: ViewField,
-                    item: Map<any, any>
+                    item: Map<any, any>,
                 ) => ReactComponentElement<any>
                 render(cell(ViewField.Name, customerWithHighlights))
                 render(cell(ViewField.Email, customerWithHighlights))
@@ -465,7 +469,7 @@ describe('Config: views', () => {
             if (withHighlightView) {
                 const cell = withHighlightView.cell as (
                     fieldName: ViewField,
-                    item: Map<any, any>
+                    item: Map<any, any>,
                 ) => ReactComponentElement<any>
                 render(cell(ViewField.Name, customerWithHighlights))
             }
@@ -498,7 +502,7 @@ describe('Config: views', () => {
 
                 const cell = withHighlightView.cell as (
                     fieldName: ViewField,
-                    item: Map<any, any>
+                    item: Map<any, any>,
                 ) => ReactComponentElement<any>
                 render(cell(ViewField.Name, customerWithHighlights))
                 render(cell(ViewField.Email, customerWithHighlights))
@@ -506,11 +510,11 @@ describe('Config: views', () => {
 
             expect(screen.getByText(name)).toBeInTheDocument()
             expect(screen.getByText(name).tagName.toLocaleLowerCase()).toEqual(
-                'em'
+                'em',
             )
             expect(screen.getByText(email)).toBeInTheDocument()
             expect(screen.getByText(email).tagName.toLocaleLowerCase()).toEqual(
-                'em'
+                'em',
             )
         })
 
@@ -531,7 +535,7 @@ describe('Config: views', () => {
             if (defaultView) {
                 const cell = defaultView.cell as (
                     fieldName: ViewField,
-                    item: Map<any, any>
+                    item: Map<any, any>,
                 ) => ReactComponentElement<any>
                 render(cell(ViewField.Name, customerData))
             }
@@ -552,7 +556,7 @@ describe('Config: views', () => {
             if (defaultView) {
                 const cell = defaultView.cell as (
                     fieldName: ViewField,
-                    item: Map<any, any>
+                    item: Map<any, any>,
                 ) => ReactComponentElement<any>
                 render(cell(ViewField.Updated, customerData))
             }

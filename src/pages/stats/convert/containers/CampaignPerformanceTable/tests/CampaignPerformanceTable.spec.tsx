@@ -1,34 +1,34 @@
-import {fromJS} from 'immutable'
-
 import React from 'react'
-import routerDom, {useParams} from 'react-router-dom'
 
-import {campaign} from 'fixtures/campaign'
-import {integrationsState, shopifyIntegration} from 'fixtures/integrations'
-import {CONVERT_ROUTE_PARAM_NAME} from 'pages/convert/common/constants'
+import { fromJS } from 'immutable'
+import routerDom, { useParams } from 'react-router-dom'
+
+import { campaign } from 'fixtures/campaign'
+import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
+import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
 import * as useIsConvertPerformanceViewEnabled from 'pages/convert/common/hooks/useIsConvertPerformanceViewEnabled'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-import {CampaignPerformanceEditColumns} from 'pages/stats/convert/components/CampaignPerformanceEditColumns'
-import {CAMPAIGN_TABLE_COLUMN_TITLES} from 'pages/stats/convert/components/CampaignTableStats/constants'
-import {CampaignPerformanceTable} from 'pages/stats/convert/containers/CampaignPerformanceTable/CampaignPerformanceTable'
-import {useGetTableStat} from 'pages/stats/convert/hooks/stats/useGetTableStat'
-import {useCampaignPerformanceTableSetting} from 'pages/stats/convert/hooks/useCampaignPerformanceTableSetting'
-import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
-import {CampaignTableKeys} from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
-import {TableView} from 'state/ui/stats/types'
-import {assumeMock, renderWithStore} from 'utils/testing'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
+import { CampaignPerformanceEditColumns } from 'pages/stats/convert/components/CampaignPerformanceEditColumns'
+import { CAMPAIGN_TABLE_COLUMN_TITLES } from 'pages/stats/convert/components/CampaignTableStats/constants'
+import { CampaignPerformanceTable } from 'pages/stats/convert/containers/CampaignPerformanceTable/CampaignPerformanceTable'
+import { useGetTableStat } from 'pages/stats/convert/hooks/stats/useGetTableStat'
+import { useCampaignPerformanceTableSetting } from 'pages/stats/convert/hooks/useCampaignPerformanceTableSetting'
+import { useCampaignStatsFilters } from 'pages/stats/convert/hooks/useCampaignStatsFilters'
+import { CampaignTableKeys } from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
+import { TableView } from 'state/ui/stats/types'
+import { assumeMock, renderWithStore } from 'utils/testing'
 
 jest.mock('pages/stats/convert/hooks/useCampaignStatsFilters')
 const useCampaignStatsFiltersMock = assumeMock(useCampaignStatsFilters)
 
 jest.mock('pages/stats/convert/components/CampaignPerformanceEditColumns')
 const CampaignPerformanceEditColumnsMock = assumeMock(
-    CampaignPerformanceEditColumns
+    CampaignPerformanceEditColumns,
 )
 
 jest.mock('pages/stats/convert/hooks/useCampaignPerformanceTableSetting')
 const useCampaignPerformanceTableSettingMock = assumeMock(
-    useCampaignPerformanceTableSetting
+    useCampaignPerformanceTableSetting,
 )
 
 jest.mock('pages/stats/convert/hooks/stats/useGetTableStat')
@@ -68,7 +68,7 @@ describe('CampaignPerformanceTable', () => {
             isLoading: false,
             currentView: {} as TableView<CampaignTableKeys>,
             columnsOrder: Object.keys(
-                CAMPAIGN_TABLE_COLUMN_TITLES
+                CAMPAIGN_TABLE_COLUMN_TITLES,
             ) as CampaignTableKeys[],
             submitActiveView: jest.fn(),
         })
@@ -90,7 +90,7 @@ describe('CampaignPerformanceTable', () => {
     it('should render Edit Columns control when ConvertPerformanceViewEnabled', () => {
         jest.spyOn(
             useIsConvertPerformanceViewEnabled,
-            'useIsConvertPerformanceViewEnabled'
+            'useIsConvertPerformanceViewEnabled',
         ).mockImplementation(() => true)
 
         renderWithStore(<CampaignPerformanceTable />, {

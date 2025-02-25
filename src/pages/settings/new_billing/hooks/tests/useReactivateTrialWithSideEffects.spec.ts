@@ -1,13 +1,19 @@
-import {QueryClient, useQueryClient} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
+import { QueryClient, useQueryClient } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
+import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {getBillingStateQuery, useReactivateTrial} from 'models/billing/queries'
-import {useReactivateTrialWithSideEffects} from 'pages/settings/new_billing/hooks/useReactivateTrialWithSideEffects'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
-import {assumeMock} from 'utils/testing'
+import {
+    getBillingStateQuery,
+    useReactivateTrial,
+} from 'models/billing/queries'
+import { useReactivateTrialWithSideEffects } from 'pages/settings/new_billing/hooks/useReactivateTrialWithSideEffects'
+import { notify } from 'state/notifications/actions'
+import {
+    NotificationStatus,
+    NotificationStyle,
+} from 'state/notifications/types'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/useAppDispatch')
 const useAppDispatchMock = useAppDispatch as jest.Mock
@@ -23,7 +29,7 @@ useQueryClientMock.mockImplementation(
     () =>
         ({
             invalidateQueries: invalidateQueriesMock,
-        }) as unknown as QueryClient
+        }) as unknown as QueryClient,
 )
 
 jest.mock('models/billing/queries')
@@ -36,11 +42,11 @@ describe('useReactivateTrialWithSideEffects', () => {
         useReactivateTrialMock.mock.calls[0][0]?.onSuccess!(
             axiosSuccessResponse(undefined),
             [],
-            undefined
+            undefined,
         )
 
         expect(useQueryClient().invalidateQueries).toHaveBeenLastCalledWith(
-            getBillingStateQuery
+            getBillingStateQuery,
         )
 
         expect(dispatch).toHaveBeenCalledTimes(1)
@@ -62,7 +68,7 @@ describe('useReactivateTrialWithSideEffects', () => {
         useReactivateTrialMock.mock.calls[0][0]?.onError!(
             myError,
             [],
-            undefined
+            undefined,
         )
 
         expect(useQueryClient().invalidateQueries).not.toHaveBeenCalled()

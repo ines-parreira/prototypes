@@ -1,9 +1,10 @@
-import {fireEvent, render, screen} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {SegmentEvent, logEvent} from 'common/segment'
+import { fireEvent, render, screen } from '@testing-library/react'
 
-import {ChannelToggleInput} from '../FormComponents/ChannelToggleInput'
+import { logEvent, SegmentEvent } from 'common/segment'
+
+import { ChannelToggleInput } from '../FormComponents/ChannelToggleInput'
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
 jest.mock('common/segment', () => ({
@@ -14,7 +15,7 @@ jest.mock('common/segment', () => ({
 const mockLogEvent = jest.mocked(logEvent)
 
 const renderComponent = (
-    props?: Partial<ComponentProps<typeof ChannelToggleInput>>
+    props?: Partial<ComponentProps<typeof ChannelToggleInput>>,
 ) => {
     render(
         <ChannelToggleInput
@@ -22,7 +23,7 @@ const renderComponent = (
             onUpdate={jest.fn()}
             channel="email"
             {...props}
-        />
+        />,
     )
 }
 
@@ -32,7 +33,7 @@ describe('ChannelToggleInput', () => {
     })
 
     it('should render for email', () => {
-        renderComponent({channel: 'email'})
+        renderComponent({ channel: 'email' })
 
         expect(screen.getByText('Enable AI Agent on Email')).toBeInTheDocument()
     })
@@ -45,12 +46,12 @@ describe('ChannelToggleInput', () => {
         (channel, segmentEvent) => {
             const onUpdate = jest.fn()
 
-            renderComponent({onUpdate, channel})
+            renderComponent({ onUpdate, channel })
             fireEvent.click(screen.getByRole('switch'))
 
             expect(onUpdate).toHaveBeenCalledWith(false)
             expect(mockLogEvent).toHaveBeenCalledTimes(1)
             expect(mockLogEvent).toHaveBeenCalledWith(segmentEvent)
-        }
+        },
     )
 })

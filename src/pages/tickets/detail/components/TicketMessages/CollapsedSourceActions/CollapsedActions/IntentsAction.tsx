@@ -6,7 +6,7 @@ type Props = {
     onClick: () => void
 }
 
-const IntentsAction: React.FC<Props> = ({onClick}) => (
+const IntentsAction: React.FC<Props> = ({ onClick }) => (
     <CollapsedAction
         icon={<i className="material-icons">auto_awesome</i>}
         title={'All intents'}

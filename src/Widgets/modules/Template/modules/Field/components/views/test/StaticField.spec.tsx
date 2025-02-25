@@ -1,5 +1,6 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import StaticField from '../StaticField'
 
@@ -30,12 +31,12 @@ describe('<StaticField/>', () => {
             expect(
                 screen
                     .getByText(`${defaultProps.label}:`)
-                    .classList.contains('isDisabled')
+                    .classList.contains('isDisabled'),
             ).toBeFalsy()
             expect(
                 screen
                     .getByText(defaultProps.children)
-                    .classList.contains('isDisabled')
+                    .classList.contains('isDisabled'),
             ).toBeFalsy()
         })
 
@@ -45,12 +46,12 @@ describe('<StaticField/>', () => {
             expect(
                 screen
                     .getByText(`${defaultProps.label}:`)
-                    .classList.contains('isDisabled')
+                    .classList.contains('isDisabled'),
             ).toBeTruthy()
             expect(
                 screen
                     .getByText(defaultProps.children)
-                    .classList.contains('isDisabled')
+                    .classList.contains('isDisabled'),
             ).toBeTruthy()
         })
 
@@ -60,7 +61,7 @@ describe('<StaticField/>', () => {
             expect(
                 screen
                     .getByText(defaultProps.children)
-                    .classList.contains('isNotBold')
+                    .classList.contains('isNotBold'),
             ).toBeFalsy()
         })
 
@@ -70,7 +71,7 @@ describe('<StaticField/>', () => {
             expect(
                 screen
                     .getByText(defaultProps.children)
-                    .classList.contains('isNotBold')
+                    .classList.contains('isNotBold'),
             ).toBeTruthy()
         })
     })

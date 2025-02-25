@@ -1,7 +1,7 @@
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {MAX_TICKET_COUNT_PER_VIEW} from 'config/views'
-import {compactInteger} from 'utils'
+import { MAX_TICKET_COUNT_PER_VIEW } from 'config/views'
+import { compactInteger } from 'utils'
 
 import DeactivatedViewIcon from '../DeactivatedViewIcon'
 
@@ -25,7 +25,7 @@ export function ViewCount({
             viewCount && viewCount > 999
                 ? `${viewCount.toString()} ${objectName}`
                 : undefined,
-        [objectName, viewCount]
+        [objectName, viewCount],
     )
 
     if (isDeactivated) {

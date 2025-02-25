@@ -1,20 +1,24 @@
-import axios, {AxiosError, CancelToken} from 'axios'
+import { useCallback, useEffect, useState } from 'react'
+
+import axios, { AxiosError, CancelToken } from 'axios'
 import _isEqual from 'lodash/isEqual'
-import {useCallback, useEffect, useState} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
-import {fetchStat} from 'models/stat/resources'
-import {Stat, LegacyStatsFilters} from 'models/stat/types'
-import {statFetched} from 'state/entities/stats/actions'
-import {StatsState} from 'state/entities/stats/types'
-import {notify} from 'state/notifications/actions'
-import {Notification, NotificationStatus} from 'state/notifications/types'
-import {fetchStatEnded, fetchStatStarted} from 'state/ui/stats/fetchingMapSlice'
-import {StatsState as StatsUIState} from 'state/ui/stats/reducer'
-import {errorToChildren} from 'utils'
+import { fetchStat } from 'models/stat/resources'
+import { LegacyStatsFilters, Stat } from 'models/stat/types'
+import { statFetched } from 'state/entities/stats/actions'
+import { StatsState } from 'state/entities/stats/types'
+import { notify } from 'state/notifications/actions'
+import { Notification, NotificationStatus } from 'state/notifications/types'
+import {
+    fetchStatEnded,
+    fetchStatStarted,
+} from 'state/ui/stats/fetchingMapSlice'
+import { StatsState as StatsUIState } from 'state/ui/stats/reducer'
+import { errorToChildren } from 'utils'
 
 export const DEFAULT_ERROR_MESSAGE =
     'Failed to retrieve statistic. Please retry in a few seconds.'
@@ -34,10 +38,10 @@ export default function useStatResource<T>({
 }: Params): [Stat<T> | null, boolean, (cursor: string) => void] {
     const dispatch = useAppDispatch()
     const statsState = useAppSelector<StatsState>(
-        (state) => state.entities.stats
+        (state) => state.entities.stats,
     )
     const statsFetchingState = useAppSelector<StatsUIState['fetchingMap']>(
-        (state) => state.ui.stats.fetchingMap
+        (state) => state.ui.stats.fetchingMap,
     )
     const statKey = `${statName}/${resourceName}`
     const [cursor, setCursor] = useState<string | undefined>()
@@ -46,7 +50,7 @@ export default function useStatResource<T>({
     const createFetchStat = useCallback(
         (cancelToken: CancelToken) => {
             return async () => {
-                dispatch(fetchStatStarted({statName, resourceName}))
+                dispatch(fetchStatStarted({ statName, resourceName }))
                 try {
                     const stat = await fetchStat(
                         resourceName,
@@ -56,16 +60,16 @@ export default function useStatResource<T>({
                         },
                         {
                             cancelToken,
-                        }
+                        },
                     )
                     dispatch(
                         statFetched({
                             resourceName,
                             statName,
                             value: stat,
-                        })
+                        }),
                     )
-                    dispatch(fetchStatEnded({statName, resourceName}))
+                    dispatch(fetchStatEnded({ statName, resourceName }))
                 } catch (error) {
                     if (axios.isCancel(error)) {
                         return
@@ -75,7 +79,7 @@ export default function useStatResource<T>({
                         title:
                             (
                                 error as AxiosError<{
-                                    error?: {msg: string}
+                                    error?: { msg: string }
                                 }>
                             ).response?.data?.error?.msg ||
                             DEFAULT_ERROR_MESSAGE,
@@ -87,11 +91,11 @@ export default function useStatResource<T>({
                     }
 
                     void dispatch(notify(notification))
-                    dispatch(fetchStatEnded({statName, resourceName}))
+                    dispatch(fetchStatEnded({ statName, resourceName }))
                 }
             }
         },
-        [dispatch, resourceName, statName, cursor, filters]
+        [dispatch, resourceName, statName, cursor, filters],
     )
 
     const [handleFetchStat] = useCancellableRequest(createFetchStat)
@@ -108,7 +112,7 @@ export default function useStatResource<T>({
             }
         },
         [statsFilters, filters],
-        fetchDebounceDelay
+        fetchDebounceDelay,
     )
 
     const fetchPage = useCallback((cursor: string) => {

@@ -1,37 +1,38 @@
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {Category} from 'models/integration/types/app'
-import {renderWithRouter} from 'utils/testing'
+import { Category } from 'models/integration/types/app'
+import { renderWithRouter } from 'utils/testing'
 
 import CategoryFilter from '../CategoryFilter'
-import {CATEGORY_DATA, CATEGORY_URL_PARAM} from '../constants'
+import { CATEGORY_DATA, CATEGORY_URL_PARAM } from '../constants'
 
 const mockStore = configureMockStore([thunk])
 const store = mockStore({})
 
 describe('<CategoryFilter />', () => {
     it('should render correctly', () => {
-        const {container} = renderWithRouter(
+        const { container } = renderWithRouter(
             <Provider store={store}>
                 <CategoryFilter />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
     it('should highlight the current category', () => {
-        const {getByText} = renderWithRouter(
+        const { getByText } = renderWithRouter(
             <Provider store={store}>
                 <CategoryFilter />
             </Provider>,
             {
                 route: `?${CATEGORY_URL_PARAM}=${Category.FEATURED}`,
-            }
+            },
         )
         expect(getByText(CATEGORY_DATA[Category.FEATURED].title)).toHaveClass(
-            'active'
+            'active',
         )
     })
 })

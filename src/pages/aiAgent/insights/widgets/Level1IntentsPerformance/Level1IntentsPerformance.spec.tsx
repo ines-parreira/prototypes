@@ -1,12 +1,13 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {useAIAgentMetrics} from 'hooks/reporting/automate/useAIAgentInsightsDataset'
-import {useNewAutomateFilters} from 'hooks/reporting/automate/useNewAutomateFilters'
+import { render } from '@testing-library/react'
+
+import { useAIAgentMetrics } from 'hooks/reporting/automate/useAIAgentInsightsDataset'
+import { useNewAutomateFilters } from 'hooks/reporting/automate/useNewAutomateFilters'
 import useAppSelector from 'hooks/useAppSelector'
 
-import {IntentsPerformance} from '../IntentsPerformance/IntentsPerformance'
-import {Level1IntentsPerformance} from './Level1IntentsPerformance'
+import { IntentsPerformance } from '../IntentsPerformance/IntentsPerformance'
+import { Level1IntentsPerformance } from './Level1IntentsPerformance'
 
 jest.mock('../IntentsPerformance/IntentsPerformance', () => ({
     IntentsPerformance: jest.fn(() => <></>),
@@ -30,31 +31,31 @@ jest.mock(
             intentCustomFieldId: 'intentCustomFieldId',
             outcomeCustomFieldId: 'outcomeCustomFieldId',
         })),
-    })
+    }),
 )
 
 jest.mock('react-router-dom', () => ({
-    useParams: jest.fn(() => ({shopName: 'shopName'})),
+    useParams: jest.fn(() => ({ shopName: 'shopName' })),
 }))
 
 const aiAgentAutomatedInteractionTrend = {
     data: {
         isFetching: false,
         isError: false,
-        data: {value: 420, prevValue: 450},
+        data: { value: 420, prevValue: 450 },
     },
     isError: false,
     isFetching: false,
 }
 
 const aiAgentCSAT = {
-    data: {prevValue: 3.5, value: 3.7},
+    data: { prevValue: 3.5, value: 3.7 },
     isError: false,
     isFetching: true,
 }
 
 const aiAgentSuccessRate = {
-    data: {prevValue: 0.23, value: 0.3},
+    data: { prevValue: 0.23, value: 0.3 },
     isError: true,
     isFetching: false,
 }
@@ -63,7 +64,7 @@ const coverageTrend = {
     data: {
         isFetching: false,
         isError: false,
-        data: {value: 30, prevValue: 27},
+        data: { value: 30, prevValue: 27 },
     },
     isError: false,
     isFetching: false,
@@ -71,7 +72,7 @@ const coverageTrend = {
 
 describe('OptimizeContainer', () => {
     beforeEach(() => {
-        useNewAutomateFiltersMock.mockReturnValue({userTimezone: 'UTC'})
+        useNewAutomateFiltersMock.mockReturnValue({ userTimezone: 'UTC' })
 
         useAppSelectorMock.mockReturnValueOnce({
             period: {
@@ -114,7 +115,7 @@ describe('OptimizeContainer', () => {
                     }),
                 ],
             }),
-            {}
+            {},
         )
     })
 
@@ -187,7 +188,7 @@ describe('OptimizeContainer', () => {
                     }),
                 ],
             }),
-            {}
+            {},
         )
     })
 })

@@ -1,8 +1,8 @@
-import {Map} from 'immutable'
 import React from 'react'
 
-import {formatDuration} from '../../../../stats/common/utils'
+import { Map } from 'immutable'
 
+import { formatDuration } from '../../../../stats/common/utils'
 import DownloadableDeletableRecording from './DownloadableDeletableRecording'
 
 type OwnProps = {
@@ -17,7 +17,7 @@ export default function PhoneEventDetailsCallRecording({
     phoneNumber,
 }: OwnProps): JSX.Element {
     const callRecordingDuration = formatDuration(
-        eventData.getIn(['recording', 'original', 'duration'], 0)
+        eventData.getIn(['recording', 'original', 'duration'], 0),
     )
 
     const callRecording = eventData.get('recording') as Map<string, any>

@@ -1,10 +1,11 @@
-import {render, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {useSearchCustomer} from 'models/aiAgent/queries'
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
-import {CustomerSearchDropdownSelectView} from './CustomerSearchDropdownSelectView'
+import { useSearchCustomer } from 'models/aiAgent/queries'
+
+import { CustomerSearchDropdownSelectView } from './CustomerSearchDropdownSelectView'
 
 jest.mock('models/aiAgent/queries', () => ({
     useSearchCustomer: jest.fn(),
@@ -28,7 +29,7 @@ describe('CustomerSearchDropdownSelectView', () => {
             isRefetching: false,
             isRefetchError: false,
             data: {
-                data: {data: []},
+                data: { data: [] },
             },
             refetch: jest.fn(),
         } as unknown as ReturnType<typeof useSearchCustomer>)
@@ -41,7 +42,7 @@ describe('CustomerSearchDropdownSelectView', () => {
                 onSelect={jest.fn()}
                 baseSearchTerm=""
                 isDisabled={false}
-            />
+            />,
         )
         expect(screen.getByRole('textbox')).toBeInTheDocument()
     })
@@ -53,7 +54,7 @@ describe('CustomerSearchDropdownSelectView', () => {
                 onSelect={jest.fn()}
                 baseSearchTerm="test"
                 isDisabled={false}
-            />
+            />,
         )
         expect(screen.getByRole('textbox')).toHaveValue('test')
     })
@@ -66,7 +67,7 @@ describe('CustomerSearchDropdownSelectView', () => {
             isRefetching: false,
             isRefetchError: false,
             data: {
-                data: {data: [customer]},
+                data: { data: [customer] },
             },
             refetch: refetchMock,
         } as unknown as ReturnType<typeof useSearchCustomer>)
@@ -77,7 +78,7 @@ describe('CustomerSearchDropdownSelectView', () => {
                 onSelect={jest.fn()}
                 baseSearchTerm=""
                 isDisabled={false}
-            />
+            />,
         )
         const input = screen.getByRole('textbox')
         await userEvent.type(input, 'test@example.com')
@@ -92,7 +93,7 @@ describe('CustomerSearchDropdownSelectView', () => {
             isRefetching: false,
             isRefetchError: false,
             data: {
-                data: {data: [customer]},
+                data: { data: [customer] },
             },
             refetch: jest.fn(),
         } as unknown as ReturnType<typeof useSearchCustomer>)
@@ -103,7 +104,7 @@ describe('CustomerSearchDropdownSelectView', () => {
                 onSelect={jest.fn()}
                 baseSearchTerm=""
                 isDisabled={false}
-            />
+            />,
         )
         const input = screen.getByRole('textbox')
         await userEvent.type(input, 'test@example.com')
@@ -121,7 +122,7 @@ describe('CustomerSearchDropdownSelectView', () => {
             isRefetching: false,
             isRefetchError: false,
             data: {
-                data: {data: [customer]},
+                data: { data: [customer] },
             },
             refetch: jest.fn(),
         } as unknown as ReturnType<typeof useSearchCustomer>)
@@ -132,7 +133,7 @@ describe('CustomerSearchDropdownSelectView', () => {
                 onSelect={onSelectMock}
                 baseSearchTerm=""
                 isDisabled={false}
-            />
+            />,
         )
         const input = screen.getByRole('textbox')
         await userEvent.type(input, 'test@example.com')
@@ -145,7 +146,7 @@ describe('CustomerSearchDropdownSelectView', () => {
                 email: customer.address,
                 name: customer.user.name,
                 id: customer.user.id,
-            })
+            }),
         )
     })
 })

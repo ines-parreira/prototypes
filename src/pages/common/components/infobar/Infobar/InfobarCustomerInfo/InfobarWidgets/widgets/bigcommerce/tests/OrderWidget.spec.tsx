@@ -1,16 +1,17 @@
-import {render} from '@testing-library/react'
-import {fromJS, Map} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { render } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 
-import {AfterTitle, TitleWrapper} from '../OrderWidget'
+import { AfterTitle, TitleWrapper } from '../OrderWidget'
 
 const mockStore = configureMockStore([thunk])
-const integrationContextData = {integration: fromJS({}), integrationId: 1}
+const integrationContextData = { integration: fromJS({}), integrationId: 1 }
 
 describe('OrderWidget', () => {
     describe('<AfterTitle/>', () => {
@@ -21,37 +22,37 @@ describe('OrderWidget', () => {
         } as unknown as ComponentProps<typeof AfterTitle>
 
         it('should not render because widgets are being edited', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore({})}>
                     <IntegrationContext.Provider value={integrationContextData}>
                         <AfterTitle {...minProps} isEditing />
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(container).toMatchSnapshot()
         })
 
         it('should not render because no integration id was provided', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore({})}>
                     <IntegrationContext.Provider value={integrationContextData}>
                         <AfterTitle {...minProps} isEditing />
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(container).toMatchSnapshot()
         })
 
         it('should match snapshot', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore({})}>
                     <IntegrationContext.Provider
                         value={{
                             integrationId: 1,
                             integration: fromJS({
-                                meta: {store_hash: 'pk360c6roo'},
+                                meta: { store_hash: 'pk360c6roo' },
                             }),
                         }}
                     >
@@ -62,7 +63,7 @@ describe('OrderWidget', () => {
                             })}
                         />
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(container).toMatchSnapshot()
@@ -77,13 +78,13 @@ describe('OrderWidget', () => {
         } as unknown as ComponentProps<typeof TitleWrapper>
 
         it('should render default link', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore({})}>
                     <IntegrationContext.Provider
                         value={{
                             integrationId: 1,
                             integration: fromJS({
-                                meta: {store_hash: 'pk360c6roo'},
+                                meta: { store_hash: 'pk360c6roo' },
                             }),
                         }}
                     >
@@ -94,7 +95,7 @@ describe('OrderWidget', () => {
                             })}
                         />
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(container.firstChild).toMatchSnapshot()

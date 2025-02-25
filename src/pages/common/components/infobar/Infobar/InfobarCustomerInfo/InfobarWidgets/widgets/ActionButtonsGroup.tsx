@@ -1,15 +1,19 @@
+import React, { useContext, useState } from 'react'
+
 import classNames from 'classnames'
-import React, {useContext, useState} from 'react'
-import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
+import {
+    Dropdown,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+} from 'reactstrap'
 
 import IconButton from 'pages/common/components/button/IconButton'
-
 import ActionButton from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButton'
 import css from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtons.less'
-
-import {InfobarAction} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
+import { InfobarAction } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 import Group from 'pages/common/components/layout/Group'
-import {EditionContext} from 'providers/infobar/EditionContext'
+import { EditionContext } from 'providers/infobar/EditionContext'
 
 type Props = {
     actions: InfobarAction[]
@@ -19,8 +23,8 @@ type Props = {
 // The maximum number of actions we can display before adding the dropdown
 const NB_ACTIONS_DISPLAYED = 3
 
-function ActionButtonsGroup({actions, payload}: Props) {
-    const {isEditing} = useContext(EditionContext)
+function ActionButtonsGroup({ actions, payload }: Props) {
+    const { isEditing } = useContext(EditionContext)
     const [isModalOpen, setModalOpen] = useState(false)
     const [isActionDropdownOpen, setActionDropdownOpen] = useState(false)
 
@@ -84,7 +88,7 @@ function ActionButtonsGroup({actions, payload}: Props) {
                                         <i
                                             className={classNames(
                                                 'material-icons',
-                                                css.dropdownItemLeadingIcon
+                                                css.dropdownItemLeadingIcon,
                                             )}
                                         >
                                             {action.leadingIcon}

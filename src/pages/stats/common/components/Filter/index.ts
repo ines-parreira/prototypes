@@ -1,1 +1,1 @@
-export {default} from 'pages/stats/common/components/Filter/Filter'
+export { default } from 'pages/stats/common/components/Filter/Filter'

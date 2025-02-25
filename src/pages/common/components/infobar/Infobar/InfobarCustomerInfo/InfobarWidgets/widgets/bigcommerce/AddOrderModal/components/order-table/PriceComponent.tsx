@@ -1,6 +1,8 @@
-import {Label} from '@gorgias/merchant-ui-kit'
+import React, { useRef, useState } from 'react'
+
 import classnames from 'classnames'
-import React, {useRef, useState} from 'react'
+
+import { Label } from '@gorgias/merchant-ui-kit'
 
 import {
     BigCommerceCartLineItem,
@@ -10,12 +12,12 @@ import Button from 'pages/common/components/button/Button'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import Caption from 'pages/common/forms/Caption/Caption'
 import NumberInput from 'pages/common/forms/input/NumberInput'
-import {getMoneySymbol} from 'utils/getMoneySymbol'
+import { getMoneySymbol } from 'utils/getMoneySymbol'
+
+import { isBigCommerceCartLineItem } from '../../utils'
+import { PopoverContainer } from '../popover-container/PopoverContainer'
 
 import commonCss from '../../OrderTotals.less'
-import {isBigCommerceCartLineItem} from '../../utils'
-import {PopoverContainer} from '../popover-container/PopoverContainer'
-
 import css from './OrderLineItemRow.less'
 
 type Props = {
@@ -66,7 +68,7 @@ export default function PriceComponent({
     const currentDiscountAmount = fullPrice - discountedPrice
 
     const [discountAmount, setDiscountAmount] = useState<number | undefined>(
-        currentDiscountAmount
+        currentDiscountAmount,
     )
 
     const canAddDiscount = isBigCommerceCartLineItem(lineItem)
@@ -162,7 +164,7 @@ export default function PriceComponent({
                                         discountAmount
                                             ? fullPrice - discountAmount
                                             : fullPrice,
-                                        discountAmount ? 'add' : 'remove'
+                                        discountAmount ? 'add' : 'remove',
                                     )
                                 } catch (error) {
                                     console.error(error)

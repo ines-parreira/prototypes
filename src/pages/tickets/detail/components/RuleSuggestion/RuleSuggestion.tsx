@@ -1,16 +1,18 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
-import {fromJS} from 'immutable'
+import React, { useState } from 'react'
+
+import { fromJS } from 'immutable'
 import _pick from 'lodash/pick'
-import React, {useState} from 'react'
-import {Tooltip} from 'reactstrap'
+import { Tooltip } from 'reactstrap'
+
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import {
-    TicketMessageSourceType,
     TicketChannel,
+    TicketMessageSourceType,
     TicketVia,
 } from 'business/types/ticket'
-import {SegmentEvent, logEvent} from 'common/segment'
-import {UserRole} from 'config/types/user'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { UserRole } from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
@@ -19,30 +21,32 @@ import {
     MacroActionName,
     MacroActionType,
 } from 'models/macroAction/types'
-import {RuleAction, RuleType} from 'models/rule/types'
-import {ActionStatus, Ticket} from 'models/ticket/types'
-import {actionsConfig} from 'pages/common/components/ast/actions/config'
+import { RuleAction, RuleType } from 'models/rule/types'
+import { ActionStatus, Ticket } from 'models/ticket/types'
+import { actionsConfig } from 'pages/common/components/ast/actions/config'
 import Button from 'pages/common/components/button/Button'
-
-import {getHasAutomate} from 'state/billing/selectors'
-import {getAccountOwnerId} from 'state/currentAccount/selectors'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {useRuleRecipes} from 'state/entities/ruleRecipes/hooks'
-import {useRules} from 'state/entities/rules/hooks'
-import {getEmailChannels} from 'state/integrations/selectors'
-import {sendTicketMessage} from 'state/newMessage/actions'
-import {NewMessage} from 'state/newMessage/types'
-import {transformToInternalNote} from 'state/newMessage/utils'
-
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {ManagedRule} from 'state/rules/types'
-import {getPreferredChannel, guessReceiversFromTicket} from 'state/ticket/utils'
-import {hasRole} from 'utils'
-import {getMomentNow} from 'utils/date'
+import { getHasAutomate } from 'state/billing/selectors'
+import { getAccountOwnerId } from 'state/currentAccount/selectors'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { useRuleRecipes } from 'state/entities/ruleRecipes/hooks'
+import { useRules } from 'state/entities/rules/hooks'
+import { getEmailChannels } from 'state/integrations/selectors'
+import { sendTicketMessage } from 'state/newMessage/actions'
+import { NewMessage } from 'state/newMessage/types'
+import { transformToInternalNote } from 'state/newMessage/utils'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { ManagedRule } from 'state/rules/types'
+import {
+    getPreferredChannel,
+    guessReceiversFromTicket,
+} from 'state/ticket/utils'
+import { hasRole } from 'utils'
+import { getMomentNow } from 'utils/date'
 
 import useRuleSuggestionForDemos from '../../hooks/useRuleSuggestionForDemos'
 import InTicketSuggestion from './InTicketSuggestion'
+
 import css from './RuleSuggestion.less'
 
 type TicketWithRuleSuggestionData = Ticket & {
@@ -60,13 +64,13 @@ export type RuleSuggestionData = {
 }
 
 export const getRuleSuggestionContent = (
-    ticket: TicketWithRuleSuggestionData
+    ticket: TicketWithRuleSuggestionData,
 ) => {
     const suggestion = ticket.meta.rule_suggestion
     const actions = suggestion.actions
         ?.filter((action) => action.name !== 'replyToTicket')
         .filter((action) =>
-            Object.values(MacroActionName).includes(action.name as any)
+            Object.values(MacroActionName).includes(action.name as any),
         )
         .map(
             (action) =>
@@ -76,14 +80,14 @@ export const getRuleSuggestionContent = (
                     title: actionsConfig[action.name]?.name,
                     status: ActionStatus.Pending,
                     type: MacroActionType.User,
-                }) as MacroAction
+                }) as MacroAction,
         )
 
     const text = suggestion.actions?.find(
-        (action) => action.name === 'replyToTicket'
+        (action) => action.name === 'replyToTicket',
     )?.args
 
-    return {actions, text}
+    return { actions, text }
 }
 
 export const isSuggestionEmpty = ({
@@ -91,7 +95,7 @@ export const isSuggestionEmpty = ({
     text,
 }: ReturnType<typeof getRuleSuggestionContent>) => !actions?.length && !text
 
-export default function RuleSuggestion({ticket, isCollapsed}: Props) {
+export default function RuleSuggestion({ ticket, isCollapsed }: Props) {
     const dispatch = useAppDispatch()
     const hasAutomate = useAppSelector(getHasAutomate)
     const recipes = useRuleRecipes()
@@ -102,7 +106,7 @@ export default function RuleSuggestion({ticket, isCollapsed}: Props) {
     const [isSending, setIsSending] = useState(false)
 
     const suggestion = ticket.meta.rule_suggestion
-    const {actions, text} = getRuleSuggestionContent(ticket)
+    const { actions, text } = getRuleSuggestionContent(ticket)
 
     const {
         shouldDisplayDemoSuggestion,
@@ -114,7 +118,7 @@ export default function RuleSuggestion({ticket, isCollapsed}: Props) {
         if (
             !hasAutomate &&
             shouldDisplayDemoSuggestion &&
-            !isSuggestionEmpty({actions, text})
+            !isSuggestionEmpty({ actions, text })
         ) {
             logEvent(SegmentEvent.InTicketSuggestionForDemoViewed, {
                 ticketId: ticket.id,
@@ -122,18 +126,18 @@ export default function RuleSuggestion({ticket, isCollapsed}: Props) {
         }
     })
 
-    if (!shouldDisplayDemoSuggestion || isSuggestionEmpty({actions, text}))
+    if (!shouldDisplayDemoSuggestion || isSuggestionEmpty({ actions, text }))
         return null
 
     const channel = getPreferredChannel(
         TicketMessageSourceType.Email,
-        emailChannels
+        emailChannels,
     )
 
-    const {to} = guessReceiversFromTicket(
+    const { to } = guessReceiversFromTicket(
         fromJS(ticket),
         TicketMessageSourceType.Email,
-        emailChannels
+        emailChannels,
     )
     const ruleName = recipes?.[suggestion.slug]?.rule?.name ?? suggestion.slug
 
@@ -146,14 +150,14 @@ export default function RuleSuggestion({ticket, isCollapsed}: Props) {
         ? Object.values(rules).find(
               (rule) =>
                   rule.type === RuleType.Managed &&
-                  (rule as ManagedRule).settings.slug === suggestion.slug
+                  (rule as ManagedRule).settings.slug === suggestion.slug,
           )
         : undefined
 
     const applySuggestion = async () => {
         let message = {
             source: {
-                from: {address: channel.get('address')},
+                from: { address: channel.get('address') },
                 to: to,
                 type: TicketMessageSourceType.Email,
                 extra: {},
@@ -168,16 +172,16 @@ export default function RuleSuggestion({ticket, isCollapsed}: Props) {
             macros: [],
             via: TicketVia.Helpdesk,
             from_agent: true,
-            meta: {rule_suggestion_slug: suggestion.slug},
+            meta: { rule_suggestion_slug: suggestion.slug },
         } as unknown as NewMessage
 
         if (!text) {
-            const {newMessage, newActions} = transformToInternalNote(
+            const { newMessage, newActions } = transformToInternalNote(
                 message,
                 fromJS(actions),
-                `Sent via suggested rule: <a target="_blank" href="/app/settings/rules/library?${suggestion.slug}">${ruleName}</a>`
+                `Sent via suggested rule: <a target="_blank" href="/app/settings/rules/library?${suggestion.slug}">${ruleName}</a>`,
             )
-            message = {...newMessage, actions: newActions ?? fromJS([])}
+            message = { ...newMessage, actions: newActions ?? fromJS([]) }
         }
 
         await dispatch(sendTicketMessage(getMomentNow(), message, null))
@@ -189,7 +193,7 @@ export default function RuleSuggestion({ticket, isCollapsed}: Props) {
             window.open(
                 'https://www.gorgias.com/demo/customers/automate?utm_source=scaled_success&utm_campaign=in_ticket_suggestions&utm_medium=product',
                 '_blank',
-                'noopener'
+                'noopener',
             )
         } else {
             logEvent(SegmentEvent.InTicketSuggestionForDemoRequested, {
@@ -200,7 +204,7 @@ export default function RuleSuggestion({ticket, isCollapsed}: Props) {
                     status: NotificationStatus.Success,
                     message:
                         'We notified your account admin of your interest in an Automate demo.',
-                })
+                }),
             )
         }
         handleDismiss(false)
@@ -231,7 +235,7 @@ export default function RuleSuggestion({ticket, isCollapsed}: Props) {
                             onClick={() =>
                                 window.open(
                                     `/app/settings/rules/library?${suggestion.slug}&install`,
-                                    '_blank'
+                                    '_blank',
                                 )
                             }
                             isDisabled={!canInstall}

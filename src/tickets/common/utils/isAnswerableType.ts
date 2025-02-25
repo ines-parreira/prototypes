@@ -1,6 +1,6 @@
-import {isTicketMessageSourceType} from 'models/ticket/predicates'
-import {ChannelLike, toChannel} from 'services/channels'
-import {USABLE_SOURCE_TYPES} from 'tickets/common/config'
+import { isTicketMessageSourceType } from 'models/ticket/predicates'
+import { ChannelLike, toChannel } from 'services/channels'
+import { USABLE_SOURCE_TYPES } from 'tickets/common/config'
 
 /**
  * Return true if passed source type can be used to answer (can be used as a source type in a new message)

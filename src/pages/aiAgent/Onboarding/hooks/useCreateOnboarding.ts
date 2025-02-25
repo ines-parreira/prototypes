@@ -1,7 +1,7 @@
-import {useMutation, useQueryClient} from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
-import {createOnboardingData} from 'models/aiAgent/resources/configuration'
-import {OnboardingData} from 'models/aiAgent/types'
+import { createOnboardingData } from 'models/aiAgent/resources/configuration'
+import { OnboardingData } from 'models/aiAgent/types'
 
 export const useCreateOnboarding = () => {
     const queryClient = useQueryClient()
@@ -14,6 +14,6 @@ export const useCreateOnboarding = () => {
                 // Invalidate queries and properly handle the promise
                 void queryClient.invalidateQueries(['onboardingData'])
             },
-        }
+        },
     )
 }

@@ -1,20 +1,21 @@
-import classnames from 'classnames'
-import React, {useCallback, useState} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
+import React, { useCallback, useState } from 'react'
 
-import {useAppNode} from 'appNode'
-import {triggerTicketFieldsRefreshAndInvalidation} from 'common/state'
-import {FACEBOOK_MESSENGER_MESSAGE_MAX_LENGTH} from 'config/integrations/facebook'
+import classnames from 'classnames'
+import { connect, ConnectedProps } from 'react-redux'
+import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
+
+import { useAppNode } from 'appNode'
+import { triggerTicketFieldsRefreshAndInvalidation } from 'common/state'
+import { FACEBOOK_MESSENGER_MESSAGE_MAX_LENGTH } from 'config/integrations/facebook'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {Actor, Meta, Source} from 'models/ticket/types'
+import { Actor, Meta, Source } from 'models/ticket/types'
 import Button from 'pages/common/components/button/Button'
 import TicketMessageEmbeddedCard from 'pages/common/components/TicketMessageEmbeddedCard/TicketMessageEmbeddedCard'
-import {COMMENT_TICKET_PRIVATE_REPLY_EVENT} from 'pages/tickets/detail/components/PrivateReplyEvent/constants'
+import { COMMENT_TICKET_PRIVATE_REPLY_EVENT } from 'pages/tickets/detail/components/PrivateReplyEvent/constants'
 import * as infobarActions from 'state/infobar/actions'
-import {goToNextTicket, setStatus} from 'state/ticket/actions'
-import {TICKET_PARTIAL_UPDATE_ERROR} from 'state/ticket/constants'
-import {StoreDispatch} from 'state/types'
+import { goToNextTicket, setStatus } from 'state/ticket/actions'
+import { TICKET_PARTIAL_UPDATE_ERROR } from 'state/ticket/constants'
+import { StoreDispatch } from 'state/types'
 
 import css from './PrivateReplyModal.less'
 
@@ -54,7 +55,7 @@ function PrivateReplyModal({
     goToNextTicket,
     setClosedStatus,
 }: Props) {
-    const {isSending, sendPrivateReply, inputOnChange, canSend} =
+    const { isSending, sendPrivateReply, inputOnChange, canSend } =
         usePrivateReply(
             integrationId,
             messageId,
@@ -70,7 +71,7 @@ function PrivateReplyModal({
             messageCreatedDatetime,
             setClosedStatus,
             goToNextTicket,
-            meta
+            meta,
         )
     const appNode = useAppNode()
 
@@ -99,7 +100,7 @@ function PrivateReplyModal({
                     rows={4}
                     className={classnames(
                         'form-control',
-                        css.privateReplyTextarea
+                        css.privateReplyTextarea,
                     )}
                     maxLength={FACEBOOK_MESSENGER_MESSAGE_MAX_LENGTH}
                     placeholder={placeholder}
@@ -145,7 +146,7 @@ function usePrivateReply(
     messageCreatedDatetime: string,
     setClosedStatus: Props['setClosedStatus'],
     goToNextTicket: Props['goToNextTicket'],
-    meta?: Meta
+    meta?: Meta,
 ) {
     const dispatch = useAppDispatch()
     const [isSending, setIsSending] = useState(false)
@@ -175,7 +176,7 @@ function usePrivateReply(
               instagram_direct_message_reply: privateReplyMessage.trim(),
           }
 
-    const actionPayload = {...commonPayload, ...specificPayload}
+    const actionPayload = { ...commonPayload, ...specificPayload }
 
     const inputOnChange = useCallback(
         (value: string) => {
@@ -187,7 +188,7 @@ function usePrivateReply(
                 setCanSend(false)
             }
         },
-        [setPrivateReplyMessage, setCanSend]
+        [setPrivateReplyMessage, setCanSend],
     )
 
     const sendPrivateReply = (sendAndClose: boolean) => {
@@ -196,14 +197,14 @@ function usePrivateReply(
             actionName,
             integrationId,
             senderId,
-            actionPayload
+            actionPayload,
         )
         if (sendAndClose) {
             void setClosedStatus().then((dispatchReturn) => {
                 if (isErrorDispatchReturn(dispatchReturn)) {
                     if (dispatchReturn.type === TICKET_PARTIAL_UPDATE_ERROR) {
                         void dispatch(
-                            triggerTicketFieldsRefreshAndInvalidation()
+                            triggerTicketFieldsRefreshAndInvalidation(),
                         )
                     }
                 } else {
@@ -215,12 +216,12 @@ function usePrivateReply(
         }
     }
 
-    return {isSending, sendPrivateReply, inputOnChange, canSend}
+    return { isSending, sendPrivateReply, inputOnChange, canSend }
 }
 
 function isErrorDispatchReturn(
-    response: unknown
-): response is {type: string; error: Record<string, unknown>} {
+    response: unknown,
+): response is { type: string; error: Record<string, unknown> } {
     if (typeof response === 'object' && response !== null) {
         if (
             response.hasOwnProperty('type') &&
@@ -239,7 +240,7 @@ const mapDispatchToProps = (dispatch: StoreDispatch, props: OwnProps) => ({
         actionName: string,
         integrationId: number,
         senderId: number,
-        actionPayload: any
+        actionPayload: any,
     ) =>
         dispatch(
             infobarActions.executeAction({
@@ -247,7 +248,7 @@ const mapDispatchToProps = (dispatch: StoreDispatch, props: OwnProps) => ({
                 integrationId,
                 customerId: senderId.toString(),
                 payload: actionPayload,
-            })
+            }),
         ),
 })
 

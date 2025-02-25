@@ -1,17 +1,17 @@
-import React, {useRef, useState} from 'react'
+import React, { useRef, useState } from 'react'
 
-import {HelpCenter} from 'models/helpCenter/types'
+import { HelpCenter } from 'models/helpCenter/types'
 import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import css from 'pages/stats/common/filters/DEPRECATED_HelpCenterFilter/DEPRECATED_HelpCenterFilter.less'
-import {HELP_CENTER_STATS_TEST_IDS} from 'pages/stats/help-center/pages/tests/constants'
+import { HELP_CENTER_STATS_TEST_IDS } from 'pages/stats/help-center/pages/tests/constants'
 
 type HelpCenterFilterProps = {
     selectedHelpCenter: HelpCenter
     helpCenters: HelpCenter[]
-    setSelectedHelpCenter: (helpCenters: {helpCenters: number[]}) => void
+    setSelectedHelpCenter: (helpCenters: { helpCenters: number[] }) => void
 }
 /**
  * @deprecated
@@ -27,7 +27,7 @@ const DEPRECATED_HelpCenterFilter = ({
     const buttonRef = useRef(null)
 
     const onFilterChange = (helpCenterId: number) => {
-        setSelectedHelpCenter({helpCenters: [helpCenterId]})
+        setSelectedHelpCenter({ helpCenters: [helpCenterId] })
         setIsOpen(false)
     }
 

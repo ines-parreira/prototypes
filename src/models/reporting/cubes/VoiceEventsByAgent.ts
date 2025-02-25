@@ -1,7 +1,7 @@
-import {Cube} from 'models/reporting/types'
-import {StatsFiltersMembers} from 'utils/reporting'
+import { Cube } from 'models/reporting/types'
+import { StatsFiltersMembers } from 'utils/reporting'
 
-import {TicketMember} from './TicketCube'
+import { TicketMember } from './TicketCube'
 
 export enum VoiceEventsByAgentMeasure {
     VoiceEventsCount = 'VoiceEventsByAgent.count',

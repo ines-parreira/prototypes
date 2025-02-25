@@ -1,18 +1,20 @@
-import classnames from 'classnames'
-import _noop from 'lodash/noop'
 import React from 'react'
 
-import {THEME_NAME} from 'core/theme'
-import RichField from 'pages/common/forms/RichField/RichField'
-import {FakeFAQArticlePreview} from 'pages/settings/rules/components/FakeFAQArticlePreview'
-import {AutoReplyFAQSettings} from 'state/rules/types'
+import classnames from 'classnames'
+import _noop from 'lodash/noop'
 
-import {ManagedRuleDetailProps} from './ManagedRuleEditor'
+import { THEME_NAME } from 'core/theme'
+import RichField from 'pages/common/forms/RichField/RichField'
+import { FakeFAQArticlePreview } from 'pages/settings/rules/components/FakeFAQArticlePreview'
+import { AutoReplyFAQSettings } from 'state/rules/types'
+
+import { ManagedRuleDetailProps } from './ManagedRuleEditor'
+
 import css from './ManagedRuleEditor.less'
 
 type Props = Pick<ManagedRuleDetailProps<AutoReplyFAQSettings>, 'settings'>
 
-export const AutoReplyFAQDemo = ({settings}: Props) => {
+export const AutoReplyFAQDemo = ({ settings }: Props) => {
     return (
         <div className={classnames(css.demo, css.autoReplyFAQ)}>
             <div className={css.topbar}>

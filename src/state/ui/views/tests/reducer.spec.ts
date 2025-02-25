@@ -1,4 +1,4 @@
-import {activeViewIdSet} from '../actions'
+import { activeViewIdSet } from '../actions'
 import reducer from '../reducer'
 
 describe('views reducer', () => {
@@ -8,7 +8,7 @@ describe('views reducer', () => {
                 {
                     activeViewId: 2,
                 },
-                activeViewIdSet(value)
+                activeViewIdSet(value),
             )
             expect(newState).toMatchSnapshot()
         })

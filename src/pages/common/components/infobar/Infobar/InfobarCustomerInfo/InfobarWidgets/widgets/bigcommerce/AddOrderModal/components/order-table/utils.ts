@@ -5,14 +5,14 @@ import {
     BigCommerceProduct,
     BigCommerceProductsListType,
 } from 'models/integration/types'
-import {isBigCommerceCartLineItem} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/utils'
+import { isBigCommerceCartLineItem } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/utils'
 
 export function getOrderLineItemInfo(
     lineItem: BigCommerceCartLineItem | BigCommerceCustomCartLineItem,
-    products: BigCommerceProductsListType
-): {uid: string; product: BigCommerceProduct | BigCommerceCustomProduct} {
+    products: BigCommerceProductsListType,
+): { uid: string; product: BigCommerceProduct | BigCommerceCustomProduct } {
     if (!isBigCommerceCartLineItem(lineItem)) {
-        return {uid: lineItem.id, product: products.get(lineItem.id)!}
+        return { uid: lineItem.id, product: products.get(lineItem.id)! }
     }
 
     let uid: string
@@ -26,5 +26,5 @@ export function getOrderLineItemInfo(
     })
     const product = products.get(lineItem.product_id)!
 
-    return {uid, product}
+    return { uid, product }
 }

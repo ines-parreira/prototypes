@@ -1,1 +1,1 @@
-export {default} from './components/WooCommerce'
+export { default } from './components/WooCommerce'

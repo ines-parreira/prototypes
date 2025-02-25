@@ -1,26 +1,26 @@
-import {fireEvent, render, screen} from '@testing-library/react'
+import React, { ComponentProps } from 'react'
+
+import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {TicketStatus} from 'business/types/ticket'
-import {agents} from 'fixtures/agents'
-import {ticket} from 'fixtures/ticket'
-import {user} from 'fixtures/users'
-import {PickedTicket} from 'models/search/types'
-
+import { TicketStatus } from 'business/types/ticket'
+import { agents } from 'fixtures/agents'
+import { ticket } from 'fixtures/ticket'
+import { user } from 'fixtures/users'
+import { PickedTicket } from 'models/search/types'
 import SpotlightTicketRow from 'pages/common/components/Spotlight/SpotlightTicketRow'
 
 const mockStore = configureMockStore([thunk])
 
 const WrappedSpotlightTicketRow = (
-    props: ComponentProps<typeof SpotlightTicketRow>
+    props: ComponentProps<typeof SpotlightTicketRow>,
 ) => (
     <Provider
-        store={mockStore({agents: fromJS(agents), currentUser: fromJS(user)})}
+        store={mockStore({ agents: fromJS(agents), currentUser: fromJS(user) })}
     >
         <SpotlightTicketRow {...props} />
     </Provider>
@@ -42,19 +42,21 @@ describe('<SpotlightTicketRow/>', () => {
     })
 
     it('should render ticket information', () => {
-        const {container} = render(
-            <WrappedSpotlightTicketRow {...defaultProps} />
+        const { container } = render(
+            <WrappedSpotlightTicketRow {...defaultProps} />,
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render closed icon', () => {
-        const {container} = render(
+        const { container } = render(
             <WrappedSpotlightTicketRow
                 {...defaultProps}
-                item={{...ticket, status: TicketStatus.Closed} as PickedTicket}
-            />
+                item={
+                    { ...ticket, status: TicketStatus.Closed } as PickedTicket
+                }
+            />,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -62,8 +64,8 @@ describe('<SpotlightTicketRow/>', () => {
 
     it('should render the open ticket info tooltip on hover', () => {
         jest.useFakeTimers()
-        const {getByText, getByRole} = render(
-            <WrappedSpotlightTicketRow {...defaultProps} />
+        const { getByText, getByRole } = render(
+            <WrappedSpotlightTicketRow {...defaultProps} />,
         )
 
         fireEvent.mouseOver(getByText('email'))
@@ -73,11 +75,13 @@ describe('<SpotlightTicketRow/>', () => {
 
     it('should render the closed ticket info tooltip on hover', () => {
         jest.useFakeTimers()
-        const {getByText, getByRole} = render(
+        const { getByText, getByRole } = render(
             <WrappedSpotlightTicketRow
                 {...defaultProps}
-                item={{...ticket, status: TicketStatus.Closed} as PickedTicket}
-            />
+                item={
+                    { ...ticket, status: TicketStatus.Closed } as PickedTicket
+                }
+            />,
         )
 
         fireEvent.mouseOver(getByText('email'))
@@ -86,32 +90,36 @@ describe('<SpotlightTicketRow/>', () => {
     })
 
     it('should render without customer name', () => {
-        const {container} = render(
+        const { container } = render(
             <WrappedSpotlightTicketRow
                 {...defaultProps}
                 item={
                     {
                         ...ticket,
-                        customer: {...ticket.customer, name: null},
+                        customer: { ...ticket.customer, name: null },
                     } as unknown as PickedTicket
                 }
-            />
+            />,
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render without customer name and without email', () => {
-        const {container} = render(
+        const { container } = render(
             <WrappedSpotlightTicketRow
                 {...defaultProps}
                 item={
                     {
                         ...ticket,
-                        customer: {...ticket.customer, name: null, email: null},
+                        customer: {
+                            ...ticket.customer,
+                            name: null,
+                            email: null,
+                        },
                     } as unknown as PickedTicket
                 }
-            />
+            />,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -119,11 +127,11 @@ describe('<SpotlightTicketRow/>', () => {
 
     it('should render current date as "today"', () => {
         jest.spyOn(Date, 'now').mockImplementation(() =>
-            new Date(ticket.created_datetime).getTime()
+            new Date(ticket.created_datetime).getTime(),
         )
 
-        const {container} = render(
-            <WrappedSpotlightTicketRow {...defaultProps} />
+        const { container } = render(
+            <WrappedSpotlightTicketRow {...defaultProps} />,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -133,24 +141,27 @@ describe('<SpotlightTicketRow/>', () => {
         const mockDate = '2021-12-12T08:46:47+00:00'
         const mockPastDate = '2021-11-12T08:46:47+00:00'
         jest.spyOn(Date, 'now').mockImplementation(() =>
-            new Date(mockDate).getTime()
+            new Date(mockDate).getTime(),
         )
 
-        const {container} = render(
+        const { container } = render(
             <WrappedSpotlightTicketRow
                 {...defaultProps}
                 item={
-                    {...ticket, created_datetime: mockPastDate} as PickedTicket
+                    {
+                        ...ticket,
+                        created_datetime: mockPastDate,
+                    } as PickedTicket
                 }
-            />
+            />,
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should call onClick when ticket row is clicked', () => {
-        const {container} = render(
-            <WrappedSpotlightTicketRow {...defaultProps} />
+        const { container } = render(
+            <WrappedSpotlightTicketRow {...defaultProps} />,
         )
         if (container.firstChild) {
             userEvent.click(container.firstChild as Element)
@@ -170,7 +181,7 @@ describe('<SpotlightTicketRow/>', () => {
                         excerpt: exceptValue,
                     },
                 }}
-            />
+            />,
         )
 
         expect(screen.getByText(exceptValue)).toBeInTheDocument()
@@ -187,7 +198,7 @@ describe('<SpotlightTicketRow/>', () => {
                         excerpt: '',
                     },
                 }}
-            />
+            />,
         )
 
         expect(document.querySelector('.title')?.textContent).toBe('')
@@ -205,10 +216,10 @@ describe('<SpotlightTicketRow/>', () => {
                 },
             },
         }
-        const {getByText} = render(<WrappedSpotlightTicketRow {...props} />)
+        const { getByText } = render(<WrappedSpotlightTicketRow {...props} />)
 
         expect(
-            getByText(`#${props.item.customer.id}`, {exact: false})
+            getByText(`#${props.item.customer.id}`, { exact: false }),
         ).toBeInTheDocument()
     })
 
@@ -227,8 +238,8 @@ describe('<SpotlightTicketRow/>', () => {
                 },
             },
         }
-        const {getByText} = render(
-            <WrappedSpotlightTicketRow {...defaultProps} item={item} />
+        const { getByText } = render(
+            <WrappedSpotlightTicketRow {...defaultProps} item={item} />,
         )
 
         expect(getByText('subject')).toBeInTheDocument()

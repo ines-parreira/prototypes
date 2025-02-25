@@ -1,23 +1,24 @@
-import classnames from 'classnames'
-import _isFunction from 'lodash/isFunction'
-import _isString from 'lodash/isString'
 import React, {
-    useContext,
-    useMemo,
-    useCallback,
-    ReactNode,
     createElement,
-    HTMLAttributes,
-    forwardRef,
-    useImperativeHandle,
     ForwardedRef,
+    forwardRef,
+    HTMLAttributes,
     KeyboardEvent,
+    ReactNode,
+    useCallback,
+    useContext,
+    useImperativeHandle,
+    useMemo,
     useRef,
     useState,
 } from 'react'
 
+import classnames from 'classnames'
+import _isFunction from 'lodash/isFunction'
+import _isString from 'lodash/isString'
+
 import useEffectOnce from 'hooks/useEffectOnce'
-import {DropdownContext} from 'pages/common/components/dropdown/Dropdown'
+import { DropdownContext } from 'pages/common/components/dropdown/Dropdown'
 import css from 'pages/common/components/dropdown/DropdownItem.less'
 import CheckBox from 'pages/common/forms/CheckBox'
 
@@ -50,7 +51,7 @@ export const DropdownItem = <T extends boolean | number | string | null>(
         onKeyDown,
         ...rest
     }: Props<T> & Omit<HTMLAttributes<HTMLOrSVGElement>, 'onClick'>,
-    ref: ForwardedRef<HTMLElement>
+    ref: ForwardedRef<HTMLElement>,
 ) => {
     const itemRef = useRef<HTMLElement>(null)
     useImperativeHandle(ref, () => itemRef.current!)
@@ -60,7 +61,7 @@ export const DropdownItem = <T extends boolean | number | string | null>(
 
     if (!dropdownContext) {
         throw new Error(
-            'DropdownItem must be used within a DropdownContext.Provider'
+            'DropdownItem must be used within a DropdownContext.Provider',
         )
     }
 
@@ -78,15 +79,15 @@ export const DropdownItem = <T extends boolean | number | string | null>(
                 .toString()
                 .toLowerCase()
                 .includes(query.toLocaleLowerCase()),
-        [option.label, query]
+        [option.label, query],
     )
 
     const Tag = useMemo(
         () =>
-            forwardRef(({children, ...props}: HTMLAttributes<any>, ref) =>
-                createElement(tag, {...props, ref}, children)
+            forwardRef(({ children, ...props }: HTMLAttributes<any>, ref) =>
+                createElement(tag, { ...props, ref }, children),
             ),
-        [tag]
+        [tag],
     )
 
     const isSelected = useMemo(
@@ -94,7 +95,7 @@ export const DropdownItem = <T extends boolean | number | string | null>(
             !!(Array.isArray(currentValue)
                 ? (currentValue as any[]).includes(option.value)
                 : currentValue === option.value),
-        [currentValue, option]
+        [currentValue, option],
     )
 
     useEffectOnce(() => {
@@ -122,7 +123,7 @@ export const DropdownItem = <T extends boolean | number | string | null>(
                 onToggle(false)
             }
         },
-        [onClick, onToggle, isDisabled, shouldCloseOnSelect]
+        [onClick, onToggle, isDisabled, shouldCloseOnSelect],
     )
 
     const handleKeyDown = useCallback(
@@ -166,7 +167,7 @@ export const DropdownItem = <T extends boolean | number | string | null>(
                 }
             }
         },
-        [onKeyDown, isDisabled, onClick, shouldCloseOnSelect, onToggle]
+        [onKeyDown, isDisabled, onClick, shouldCloseOnSelect, onToggle],
     )
 
     const label = useMemo(
@@ -176,11 +177,11 @@ export const DropdownItem = <T extends boolean | number | string | null>(
                     ? getHighlightedLabel(children)
                     : _isFunction(children)
                       ? (children(
-                            getHighlightedLabel(option.label)
+                            getHighlightedLabel(option.label),
                         ) as ReactNode)
                       : children
                 : getHighlightedLabel(option.label),
-        [children, option, getHighlightedLabel]
+        [children, option, getHighlightedLabel],
     )
 
     return isContainingQuery ? (

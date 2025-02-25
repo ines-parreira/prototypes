@@ -1,4 +1,4 @@
-import {PageSection, SectionPageHeader} from './pages'
+import { PageSection, SectionPageHeader } from './pages'
 
 export type RoleRestrictionConfig = {
     pageHeader?: SectionPageHeader
@@ -12,12 +12,14 @@ export const roleRestrictionConfigs: Record<
     RoleRestrictionConfig
 > = {
     // TODO(@Irinel) remove this when new billing is fully released
-    [PageSection.NewBilling]: {pageHeader: SectionPageHeader.NewBilling},
-    [PageSection.Access]: {pageHeader: SectionPageHeader.Access},
-    [PageSection.Api]: {pageHeader: SectionPageHeader.Api},
-    [PageSection.Audit]: {pageHeader: SectionPageHeader.Audit},
-    [PageSection.BusinessHours]: {pageHeader: SectionPageHeader.BusinessHours},
-    [PageSection.Channels]: {pageHeader: SectionPageHeader.Channels},
+    [PageSection.NewBilling]: { pageHeader: SectionPageHeader.NewBilling },
+    [PageSection.Access]: { pageHeader: SectionPageHeader.Access },
+    [PageSection.Api]: { pageHeader: SectionPageHeader.Api },
+    [PageSection.Audit]: { pageHeader: SectionPageHeader.Audit },
+    [PageSection.BusinessHours]: {
+        pageHeader: SectionPageHeader.BusinessHours,
+    },
+    [PageSection.Channels]: { pageHeader: SectionPageHeader.Channels },
     [PageSection.ConditionalFields]: {
         pageHeader: SectionPageHeader.ConditionalFields,
     },
@@ -30,34 +32,34 @@ export const roleRestrictionConfigs: Record<
     [PageSection.CustomerFields]: {
         pageHeader: SectionPageHeader.CustomerFields,
     },
-    [PageSection.HelpCenter]: {pageHeader: SectionPageHeader.HelpCenter},
-    [PageSection.ImportData]: {pageHeader: SectionPageHeader.ImportData},
+    [PageSection.HelpCenter]: { pageHeader: SectionPageHeader.HelpCenter },
+    [PageSection.ImportData]: { pageHeader: SectionPageHeader.ImportData },
     [PageSection.ImportPhoneNumber]: {
         pageHeader: SectionPageHeader.ImportPhoneNumber,
     },
-    [PageSection.Integrations]: {pageHeader: SectionPageHeader.Integrations},
-    [PageSection.Macros]: {pageHeader: SectionPageHeader.Macros},
-    [PageSection.ManageTags]: {pageHeader: SectionPageHeader.ManageTags},
-    [PageSection.PhoneNumbers]: {pageHeader: SectionPageHeader.PhoneNumbers},
+    [PageSection.Integrations]: { pageHeader: SectionPageHeader.Integrations },
+    [PageSection.Macros]: { pageHeader: SectionPageHeader.Macros },
+    [PageSection.ManageTags]: { pageHeader: SectionPageHeader.ManageTags },
+    [PageSection.PhoneNumbers]: { pageHeader: SectionPageHeader.PhoneNumbers },
     [PageSection.RemoveShopifyBilling]: {
         pageHeader: SectionPageHeader.RemoveShopifyBilling,
     },
-    [PageSection.Rules]: {pageHeader: SectionPageHeader.Rules},
+    [PageSection.Rules]: { pageHeader: SectionPageHeader.Rules },
     [PageSection.SatisfactionSurveys]: {
         pageHeader: SectionPageHeader.SatisfactionSurveys,
     },
-    [PageSection.SelfService]: {pageHeader: SectionPageHeader.SelfService},
+    [PageSection.SelfService]: { pageHeader: SectionPageHeader.SelfService },
     [PageSection.SidebarSettings]: {
         pageHeader: SectionPageHeader.SidebarSettings,
     },
-    [PageSection.SLAPolicies]: {pageHeader: SectionPageHeader.SLAPolicies},
-    [PageSection.Teams]: {pageHeader: SectionPageHeader.Teams},
+    [PageSection.SLAPolicies]: { pageHeader: SectionPageHeader.SLAPolicies },
+    [PageSection.Teams]: { pageHeader: SectionPageHeader.Teams },
     [PageSection.TicketAssignment]: {
         pageHeader: SectionPageHeader.TicketAssignment,
     },
-    [PageSection.TicketFields]: {pageHeader: SectionPageHeader.TicketFields},
+    [PageSection.TicketFields]: { pageHeader: SectionPageHeader.TicketFields },
     [PageSection.TwilioSubaccountStatus]: {
         pageHeader: SectionPageHeader.TwilioSubaccountStatus,
     },
-    [PageSection.Users]: {pageHeader: SectionPageHeader.Users},
+    [PageSection.Users]: { pageHeader: SectionPageHeader.Users },
 }

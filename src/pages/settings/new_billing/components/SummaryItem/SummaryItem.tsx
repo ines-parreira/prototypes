@@ -1,8 +1,10 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {Plan, Cadence, ProductType} from 'models/billing/types'
+import classNames from 'classnames'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { Cadence, Plan, ProductType } from 'models/billing/types'
 import {
     getOverageUnitPriceFormatted,
     getPlanPrice,
@@ -11,11 +13,11 @@ import {
 } from 'models/billing/utils'
 
 import warningIcon from '../../../../../assets/img/icons/warning.svg'
-import {ENTERPRISE_PRICE_ID, PRODUCT_INFO} from '../../constants'
-import {formatAmount} from '../../utils/formatAmount'
+import { ENTERPRISE_PRICE_ID, PRODUCT_INFO } from '../../constants'
+import { formatAmount } from '../../utils/formatAmount'
+import { getNextTier } from '../../utils/getNextTier'
+import { SelectedPlans } from '../../views/BillingProcessView/BillingProcessView'
 
-import {getNextTier} from '../../utils/getNextTier'
-import {SelectedPlans} from '../../views/BillingProcessView/BillingProcessView'
 import css from './SummaryItem.less'
 
 export type SummaryItemProps = {
@@ -37,9 +39,9 @@ const SummaryItem = ({
 }: SummaryItemProps) => {
     const selectedPlan = selectedPlans[productType]
 
-    const {price, currency, name, tickets} = useMemo(() => {
+    const { price, currency, name, tickets } = useMemo(() => {
         const _selectedPlan = availablePlans.find(
-            (plan) => plan.price_id === selectedPlan.plan?.price_id
+            (plan) => plan.price_id === selectedPlan.plan?.price_id,
         )
         if (!selectedPlan.isSelected || !_selectedPlan) {
             return {
@@ -65,7 +67,7 @@ const SummaryItem = ({
             return null
         }
         const oldPlan = availablePlans.find(
-            (plan) => plan.price_id === currentPlan.price_id
+            (plan) => plan.price_id === currentPlan.price_id,
         )
         if (!oldPlan) {
             return null

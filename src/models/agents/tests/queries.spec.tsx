@@ -1,14 +1,15 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {renderHook, act} from '@testing-library/react-hooks'
 import React from 'react'
 
-import {agents} from 'fixtures/agents'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { act, renderHook } from '@testing-library/react-hooks'
+
+import { agents } from 'fixtures/agents'
 import {
-    axiosSuccessResponse,
     apiListCursorPaginationResponse,
+    axiosSuccessResponse,
 } from 'fixtures/axiosResponse'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 import * as queries from '../queries'
 import * as resources from '../resources'
@@ -33,7 +34,7 @@ const mockedResources = {
 
 const queryClient = mockQueryClient()
 
-const wrapper = ({children}: any) => (
+const wrapper = ({ children }: any) => (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 )
 
@@ -45,22 +46,28 @@ describe('Agents queries', () => {
     describe('useListAgent', () => {
         it('should return correct data on success', async () => {
             mockedResources.mockFetchAgents.mockResolvedValueOnce(
-                axiosSuccessResponse(apiListCursorPaginationResponse(agents))
+                axiosSuccessResponse(apiListCursorPaginationResponse(agents)),
             )
-            const {result, waitFor} = renderHook(() => queries.useListAgent(), {
-                wrapper,
-            })
+            const { result, waitFor } = renderHook(
+                () => queries.useListAgent(),
+                {
+                    wrapper,
+                },
+            )
             await waitFor(() => expect(result.current.isSuccess).toBe(true))
             expect(result.current.data?.data?.data).toStrictEqual(agents)
         })
 
         it('should return expected error on failure', async () => {
             mockedResources.mockFetchAgents.mockRejectedValueOnce(
-                Error('test error')
+                Error('test error'),
             )
-            const {result, waitFor} = renderHook(() => queries.useListAgent(), {
-                wrapper,
-            })
+            const { result, waitFor } = renderHook(
+                () => queries.useListAgent(),
+                {
+                    wrapper,
+                },
+            )
             await waitFor(() => expect(result.current.isError).toBe(true))
             expect(result.current.error).toStrictEqual(Error('test error'))
         })
@@ -69,20 +76,26 @@ describe('Agents queries', () => {
     describe('useGetAgent', () => {
         it('should return correct data on success', async () => {
             mockedResources.mockFetchAgent.mockResolvedValueOnce(agents[0])
-            const {result, waitFor} = renderHook(() => queries.useGetAgent(1), {
-                wrapper,
-            })
+            const { result, waitFor } = renderHook(
+                () => queries.useGetAgent(1),
+                {
+                    wrapper,
+                },
+            )
             await waitFor(() => expect(result.current.isSuccess).toBe(true))
             expect(result.current.data).toStrictEqual(agents[0])
         })
 
         it('should return expected error on failure', async () => {
             mockedResources.mockFetchAgent.mockRejectedValueOnce(
-                Error('test error')
+                Error('test error'),
             )
-            const {result, waitFor} = renderHook(() => queries.useGetAgent(1), {
-                wrapper,
-            })
+            const { result, waitFor } = renderHook(
+                () => queries.useGetAgent(1),
+                {
+                    wrapper,
+                },
+            )
             await waitFor(() => expect(result.current.isError).toBe(true))
             expect(result.current.error).toStrictEqual(Error('test error'))
         })
@@ -93,17 +106,17 @@ describe('Agents queries', () => {
         const id = agent.id
         it.each([
             ['useCreateAgent', 'mockCreateAgent', agent, agent],
-            ['useUpdateAgent', 'mockUpdateAgent', {id, agent}, agent],
+            ['useUpdateAgent', 'mockUpdateAgent', { id, agent }, agent],
             ['useDeleteAgent', 'mockDeleteAgent', id, undefined],
             ['useInviteAgent', 'mockInviteAgent', id, undefined],
         ] as const)(
             '%s return correct data on success',
             async (hook, mockedResource, param, returnedData) => {
                 mockedResources[mockedResource].mockResolvedValueOnce(
-                    axiosSuccessResponse(returnedData) as any
+                    axiosSuccessResponse(returnedData) as any,
                 )
-                const {result, waitFor} = renderHook(() => queries[hook](), {
-                    wrapper: ({children}) => (
+                const { result, waitFor } = renderHook(() => queries[hook](), {
+                    wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
                             {children}
                         </QueryClientProvider>
@@ -118,7 +131,7 @@ describe('Agents queries', () => {
                     expect(result.current.isSuccess).toBe(true)
                 })
                 expect(result.current.data?.data).toEqual(returnedData)
-            }
+            },
         )
     })
 })

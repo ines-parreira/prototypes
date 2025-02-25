@@ -1,4 +1,4 @@
-import {ProductRecommendationScenario} from 'pages/convert/campaigns/types/CampaignAttachment'
+import { ProductRecommendationScenario } from 'pages/convert/campaigns/types/CampaignAttachment'
 
 export const SCENARIO_CONFIG = {
     [ProductRecommendationScenario.SimilarSeen]: {

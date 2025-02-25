@@ -1,5 +1,6 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps, useState} from 'react'
+import React, { ComponentProps, useState } from 'react'
+
+import { Meta, Story } from '@storybook/react'
 
 import TimedeltaPicker from './TimedeltaPicker'
 
@@ -39,10 +40,10 @@ const Template: Story<ComponentProps<typeof TimedeltaPicker>> = (props) => {
 
 const defaultProps: Partial<ComponentProps<typeof TimedeltaPicker>> = {
     units: [
-        {label: 'minute(s) ago', value: 'm'},
-        {label: 'hour(s) ago', value: 'h'},
-        {label: 'day(s) ago', value: 'd'},
-        {label: 'week(s) ago', value: 'w'},
+        { label: 'minute(s) ago', value: 'm' },
+        { label: 'hour(s) ago', value: 'h' },
+        { label: 'day(s) ago', value: 'd' },
+        { label: 'week(s) ago', value: 'w' },
     ],
 }
 

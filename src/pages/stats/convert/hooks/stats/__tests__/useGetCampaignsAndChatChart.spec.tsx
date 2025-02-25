@@ -1,19 +1,19 @@
-import {UseQueryResult} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
+import { UseQueryResult } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment/moment'
 
-import {usePostReporting} from 'models/reporting/queries'
-import {ReportingGranularity} from 'models/reporting/types'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import { usePostReporting } from 'models/reporting/queries'
+import { ReportingGranularity } from 'models/reporting/types'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import {
     CampaignOrderEventsDimension,
     CampaignOrderEventsMeasure,
 } from 'pages/stats/convert/clients/constants'
-import {useGetCampaignsAndChatChart} from 'pages/stats/convert/hooks/stats/useGetCampaignsAndChatChart'
-import {useTicketsPerformanceChart} from 'pages/stats/convert/hooks/stats/useGetTicketsPerformanceChart'
-import {getDataFromResult} from 'pages/stats/convert/services/CampaignMetricsHelper'
-import {CampaignGraphData} from 'pages/stats/convert/services/types'
-import {assumeMock} from 'utils/testing'
+import { useGetCampaignsAndChatChart } from 'pages/stats/convert/hooks/stats/useGetCampaignsAndChatChart'
+import { useTicketsPerformanceChart } from 'pages/stats/convert/hooks/stats/useGetTicketsPerformanceChart'
+import { getDataFromResult } from 'pages/stats/convert/services/CampaignMetricsHelper'
+import { CampaignGraphData } from 'pages/stats/convert/services/types'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('models/reporting/queries')
 const usePostReportingMock = assumeMock(usePostReporting)
@@ -93,8 +93,8 @@ describe('useGetTotalsStat', () => {
             isFetching: true,
         })
 
-        const {result} = renderHook(() =>
-            useGetCampaignsAndChatChart(...hookArgs)
+        const { result } = renderHook(() =>
+            useGetCampaignsAndChatChart(...hookArgs),
         )
 
         expect(result.current.isFetching).toBe(true)
@@ -106,8 +106,8 @@ describe('useGetTotalsStat', () => {
             isError: true,
         } as UseQueryResult)
 
-        const {result} = renderHook(() =>
-            useGetCampaignsAndChatChart(...hookArgs)
+        const { result } = renderHook(() =>
+            useGetCampaignsAndChatChart(...hookArgs),
         )
 
         expect(result.current.isError).toBe(true)
@@ -121,8 +121,8 @@ describe('useGetTotalsStat', () => {
         } as UseQueryResult)
 
         // act
-        const {result} = renderHook(() =>
-            useGetCampaignsAndChatChart(...hookArgs)
+        const { result } = renderHook(() =>
+            useGetCampaignsAndChatChart(...hookArgs),
         )
 
         // assert
@@ -132,7 +132,7 @@ describe('useGetTotalsStat', () => {
             expect.anything(),
             expect.objectContaining({
                 select: getDataFromResult,
-            })
+            }),
         )
         expect(result.current).toMatchSnapshot()
     })

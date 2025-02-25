@@ -1,11 +1,12 @@
-import React, {ReactNode} from 'react'
-import {useHistory} from 'react-router-dom'
+import React, { ReactNode } from 'react'
 
-import {SelfServiceChannel} from 'pages/automate/common/hooks/useSelfServiceChannels'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import { useHistory } from 'react-router-dom'
+
+import { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 
-import {PreviewChannelButton} from '../../../../settings/common/PreviewChannelButton/PreviewChannelButton'
+import { PreviewChannelButton } from '../../../../settings/common/PreviewChannelButton/PreviewChannelButton'
 import SelfServicePreviewChannelSelect from './SelfServicePreviewChannelSelect'
 
 import css from './SelfServicePreviewContainer.less'
@@ -16,7 +17,7 @@ type Props<T extends SelfServiceChannel> = {
     channels?: T[]
     alert?: {
         message: ReactNode
-        action?: {message: string; href: string}
+        action?: { message: string; href: string }
     }
     children: (channel: T) => void
     previewUrl?: string

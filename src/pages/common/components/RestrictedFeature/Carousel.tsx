@@ -1,4 +1,5 @@
-import React, {MouseEvent} from 'react'
+import React, { MouseEvent } from 'react'
+
 import Slider from 'react-slick'
 
 import css from './Carousel.less'
@@ -8,7 +9,7 @@ type Props = {
     autoplay?: boolean
     imagesUrl: string[]
     slidesToShow?: number
-    onImageClick?: (img: {url: string; index: number; e: MouseEvent}) => void
+    onImageClick?: (img: { url: string; index: number; e: MouseEvent }) => void
 }
 
 export default function Carousel({
@@ -36,7 +37,7 @@ export default function Carousel({
                                 onClick={(e) => {
                                     e.preventDefault()
                                     if (onImageClick) {
-                                        onImageClick({url, index, e})
+                                        onImageClick({ url, index, e })
                                     }
                                 }}
                             />

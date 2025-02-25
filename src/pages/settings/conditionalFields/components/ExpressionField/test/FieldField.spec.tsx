@@ -1,19 +1,20 @@
-import {SelectField} from '@gorgias/merchant-ui-kit'
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {useFormContext} from 'core/forms'
-import {SUPPORTED_UI_DATA_TYPE_VALUES} from 'custom-fields/constants'
+import { render } from '@testing-library/react'
+
+import { SelectField } from '@gorgias/merchant-ui-kit'
+
+import { useFormContext } from 'core/forms'
+import { SUPPORTED_UI_DATA_TYPE_VALUES } from 'custom-fields/constants'
 import {
     ticketDropdownFieldDefinition,
     ticketInputFieldDefinition,
     ticketNumberFieldDefinition,
 } from 'fixtures/customField'
+import { EXPRESSION_OPERATORS_BY_UI_DATA_TYPE } from 'pages/settings/conditionalFields/constants'
+import { assumeMock, getLastMockCall } from 'utils/testing'
 
-import {EXPRESSION_OPERATORS_BY_UI_DATA_TYPE} from 'pages/settings/conditionalFields/constants'
-import {assumeMock, getLastMockCall} from 'utils/testing'
-
-import {FieldField} from '../FieldField'
+import { FieldField } from '../FieldField'
 
 jest.mock(
     '@gorgias/merchant-ui-kit',
@@ -21,7 +22,7 @@ jest.mock(
         ({
             ...jest.requireActual('@gorgias/merchant-ui-kit'),
             SelectField: jest.fn(() => <div data-testid="Mock" />),
-        }) as Record<string, unknown>
+        }) as Record<string, unknown>,
 )
 jest.mock('core/forms', () => ({
     useFormContext: jest.fn(),
@@ -59,7 +60,7 @@ describe('FieldField', () => {
                 placeholder: 'Select ticket field',
                 onChange: expect.any(Function),
             },
-            {}
+            {},
         )
     })
 
@@ -69,7 +70,7 @@ describe('FieldField', () => {
                 {...defaultProps}
                 value={undefined}
                 customFieldDefinitions={[ticketInputFieldDefinition]}
-            />
+            />,
         )
 
         expect(SelectFieldMock).toHaveBeenCalledWith(
@@ -77,7 +78,7 @@ describe('FieldField', () => {
                 options: [],
                 selectedOption: null,
             }),
-            {}
+            {},
         )
     })
 
@@ -99,15 +100,15 @@ describe('FieldField', () => {
         onChange(ticketNumberFieldDefinition)
 
         expect(defaultProps.onChange).toHaveBeenCalledWith(
-            ticketNumberFieldDefinition.id
+            ticketNumberFieldDefinition.id,
         )
         expect(setValueMock).toHaveBeenCalledWith(
             `expression.${defaultProps.index}.operator`,
-            EXPRESSION_OPERATORS_BY_UI_DATA_TYPE['input_number_number'][0]
+            EXPRESSION_OPERATORS_BY_UI_DATA_TYPE['input_number_number'][0],
         )
         expect(setValueMock).toHaveBeenCalledWith(
             `expression.${defaultProps.index}.values`,
-            null
+            null,
         )
     })
 })

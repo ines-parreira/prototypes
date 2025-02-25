@@ -1,5 +1,6 @@
-import classnames from 'classnames'
 import React from 'react'
+
+import classnames from 'classnames'
 
 import css from './ChatTitle.less'
 
@@ -8,7 +9,7 @@ type Props = {
     title: Maybe<string>
 }
 
-const ChatTitle = ({isBot = false, title}: Props) => (
+const ChatTitle = ({ isBot = false, title }: Props) => (
     <div
         className={classnames(css.title, {
             [css.empty]: !title,

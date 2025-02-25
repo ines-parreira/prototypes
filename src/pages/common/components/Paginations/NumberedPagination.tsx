@@ -1,12 +1,11 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
-import {PaginationItem} from './components/PaginationItem'
-
-import {usePaginatedItems} from './hooks/usePaginatedItems'
+import { PaginationItem } from './components/PaginationItem'
+import { usePaginatedItems } from './hooks/usePaginatedItems'
+import { NavigationSize } from './types/NavigationSize'
+import { UiListItem } from './types/UiListItem'
 
 import css from './style.less'
-import {NavigationSize} from './types/NavigationSize'
-import {UiListItem} from './types/UiListItem'
 
 type Props = {
     /**
@@ -88,7 +87,7 @@ export const NumberedPagination = ({
             onChange && onChange(nextPage)
             setCurrentPage(nextPage)
         },
-        [count, onChange]
+        [count, onChange],
     )
 
     const rawItems = usePaginatedItems({

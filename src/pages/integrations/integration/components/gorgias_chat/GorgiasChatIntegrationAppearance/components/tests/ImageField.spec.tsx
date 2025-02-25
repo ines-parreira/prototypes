@@ -1,12 +1,13 @@
-import {screen, render, act, waitFor, fireEvent} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {RootState, StoreDispatch} from 'state/types'
+import { RootState, StoreDispatch } from 'state/types'
 
-import ImageField, {ImageFieldVariant} from '../ImageField'
+import ImageField, { ImageFieldVariant } from '../ImageField'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 
@@ -14,7 +15,7 @@ jest.mock('common/utils', () => {
     const mockedUtils = jest.requireActual('common/utils')
     return {
         ...mockedUtils,
-        uploadFiles: jest.fn(() => Promise.resolve([{url: 'testUrl'}])),
+        uploadFiles: jest.fn(() => Promise.resolve([{ url: 'testUrl' }])),
     } as unknown
 })
 
@@ -27,19 +28,19 @@ describe('<ImageField />', () => {
         ['an avatar image', ImageFieldVariant.Avatar],
         ['a header image', ImageFieldVariant.Header],
     ])('renders %s', async (_, variant) => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <ImageField
                     onChange={onChangeMock}
                     maxSize={500 * 1000}
                     variant={variant}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('Upload image')).toBeInTheDocument()
 
-        const testFile = new File(['test'], 'test.png', {type: 'image/png'})
+        const testFile = new File(['test'], 'test.png', { type: 'image/png' })
         const fileInput = container.querySelector('input')
 
         await act(async () => {
@@ -60,7 +61,7 @@ describe('<ImageField />', () => {
                     url="testUrl"
                     maxSize={500 * 1000}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('Replace image')).toBeInTheDocument()

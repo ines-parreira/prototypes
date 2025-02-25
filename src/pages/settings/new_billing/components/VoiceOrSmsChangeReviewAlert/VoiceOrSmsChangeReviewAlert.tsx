@@ -1,16 +1,18 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
-import {ProductType} from 'models/billing/types'
+import { ProductType } from 'models/billing/types'
 import Alert from 'pages/common/components/Alert/Alert'
 import {
     getIsVettedForPhone,
     getVoiceOrSmsPlanChanged,
 } from 'state/billing/selectors'
 
-import {SelectedPlans} from '../../views/BillingProcessView/BillingProcessView'
+import { SelectedPlans } from '../../views/BillingProcessView/BillingProcessView'
+
 import css from './VoiceOrSmsChangeReviewAlert.less'
 
 interface VoiceOrSmsChangeReviewAlertProps {
@@ -19,7 +21,7 @@ interface VoiceOrSmsChangeReviewAlertProps {
 
 const VoiceOrSmsChangeReviewAlert: React.FC<
     VoiceOrSmsChangeReviewAlertProps
-> = ({selectedPlans}) => {
+> = ({ selectedPlans }) => {
     const isVettedForPhone = useAppSelector(getIsVettedForPhone)
 
     const isPhoneSelfServeEnabled =
@@ -29,7 +31,7 @@ const VoiceOrSmsChangeReviewAlert: React.FC<
         getVoiceOrSmsPlanChanged({
             selectedVoicePlan: selectedPlans[ProductType.Voice].plan,
             selectedSmsPlan: selectedPlans[ProductType.SMS].plan,
-        })
+        }),
     )
     const voiceOrSMSText = useMemo(() => {
         if (

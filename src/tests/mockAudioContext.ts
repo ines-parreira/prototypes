@@ -6,7 +6,7 @@ const audioContext = jest.fn(() => ({
     })),
     createGain: jest.fn(() => ({
         connect: jest.fn(),
-        gain: {value: 1},
+        gain: { value: 1 },
     })),
     decodeAudioData: jest.fn(),
     destination: 'destination',

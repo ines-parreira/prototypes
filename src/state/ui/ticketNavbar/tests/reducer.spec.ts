@@ -4,7 +4,7 @@ import {
     optimisticUserSettingsReset,
     optimisticUserSettingsSet,
 } from '../actions'
-import reducer, {initialState} from '../reducer'
+import reducer, { initialState } from '../reducer'
 
 describe('ticketNavbar reducer', () => {
     describe('optimisticAccountSettingsReset action', () => {
@@ -14,14 +14,14 @@ describe('ticketNavbar reducer', () => {
                     ...initialState,
                     optimisticAccountSettings: {
                         views: {
-                            1: {display_order: 1},
+                            1: { display_order: 1 },
                         },
                         views_top: {},
                         views_bottom: {},
                         view_sections: {},
                     },
                 },
-                optimisticAccountSettingsReset()
+                optimisticAccountSettingsReset(),
             )
             expect(newState).toMatchSnapshot()
         })
@@ -34,12 +34,12 @@ describe('ticketNavbar reducer', () => {
                     ...initialState,
                     optimisticUserSettings: {
                         views: {
-                            1: {display_order: 1},
+                            1: { display_order: 1 },
                         },
                         view_sections: {},
                     },
                 },
-                optimisticUserSettingsReset()
+                optimisticUserSettingsReset(),
             )
             expect(newState).toMatchSnapshot()
         })
@@ -51,14 +51,14 @@ describe('ticketNavbar reducer', () => {
                 initialState,
                 optimisticAccountSettingsSet({
                     views: {
-                        1: {display_order: 1},
+                        1: { display_order: 1 },
                     },
                     views_top: {},
                     views_bottom: {},
                     view_sections: {
-                        1: {display_order: 2},
+                        1: { display_order: 2 },
                     },
-                })
+                }),
             )
             expect(newState).toMatchSnapshot()
         })
@@ -70,12 +70,12 @@ describe('ticketNavbar reducer', () => {
                 initialState,
                 optimisticUserSettingsSet({
                     views: {
-                        1: {display_order: 1},
+                        1: { display_order: 1 },
                     },
                     view_sections: {
-                        1: {display_order: 2},
+                        1: { display_order: 2 },
                     },
-                })
+                }),
             )
             expect(newState).toMatchSnapshot()
         })

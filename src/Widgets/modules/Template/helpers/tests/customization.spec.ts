@@ -1,8 +1,8 @@
-import {LEAF_TYPES} from 'models/widget/constants'
-import {CardTemplate, LeafTemplate, LeafType} from 'models/widget/types'
+import { LEAF_TYPES } from 'models/widget/constants'
+import { CardTemplate, LeafTemplate, LeafType } from 'models/widget/types'
 
-import {FieldCustomization, TemplateCustomization} from '../../types'
-import {seekCardCustomization, seekFieldCustomization} from '../customization'
+import { FieldCustomization, TemplateCustomization } from '../../types'
+import { seekCardCustomization, seekFieldCustomization } from '../customization'
 
 describe('seekCardCustomization', () => {
     const cardCustomization = [
@@ -65,7 +65,7 @@ describe('seekCardCustomization', () => {
 describe('seekFieldCustomization', () => {
     const getValueMock = jest.fn()
     const getValueStringMock = jest.fn()
-    const source = {whatever: 'pumpkin'}
+    const source = { whatever: 'pumpkin' }
     const template = {
         absolutePath: ['bar'],
         type: LEAF_TYPES.TEXT,
@@ -116,11 +116,11 @@ describe('seekFieldCustomization', () => {
             const result = seekFieldCustomization(
                 customization,
                 source,
-                template
+                template,
             )
 
             expect(result.value).toBeUndefined()
-        }
+        },
     )
 
     it.each([
@@ -147,12 +147,12 @@ describe('seekFieldCustomization', () => {
             const result = seekFieldCustomization(
                 customization,
                 source,
-                template
+                template,
             )
 
             expect(result.value).toBe('value')
             expect(result.copyableValue).toBe('valueString')
-        }
+        },
     )
 
     it('should call getValue and getValueString with the source and template', () => {
@@ -173,7 +173,7 @@ describe('seekFieldCustomization', () => {
                 },
             ],
             source,
-            template
+            template,
         )
 
         expect(result).toEqual(
@@ -182,7 +182,7 @@ describe('seekFieldCustomization', () => {
                 copyableValue: 'valueString',
                 editionHiddenFields: ['title'],
                 valueCanOverflow: true,
-            })
+            }),
         )
     })
 })

@@ -1,12 +1,12 @@
-import {useEffect, useRef, useState} from 'react'
+import { useEffect, useRef, useState } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {useUpdateChannelConnection} from 'models/convert/channelConnection/queries'
-import {ChannelConnection} from 'models/convert/channelConnection/types'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { useUpdateChannelConnection } from 'models/convert/channelConnection/queries'
+import { ChannelConnection } from 'models/convert/channelConnection/types'
 
 export const useUtm = (
     channelConnection: ChannelConnection | null,
-    campaignName: string = ''
+    campaignName: string = '',
 ) => {
     const campaignNameRef = useRef(campaignName)
     const defaultQueryString =
@@ -30,7 +30,7 @@ export const useUtm = (
     const [appliedUtmEnabled, setAppliedUtmEnabled] =
         useState(initialUtmEnabled)
     const [appliedUtmQueryString, setAppliedUtmQueryString] = useState(
-        initialUtmQueryString
+        initialUtmQueryString,
     )
 
     useEffect(() => {
@@ -74,7 +74,7 @@ export const useUtm = (
         if (save) {
             await updateChannelConnection.mutateAsync([
                 undefined,
-                {channel_connection_id: channelConnection.id},
+                { channel_connection_id: channelConnection.id },
                 data,
             ])
             channelConnection['utm_query_string'] = data.utm_query_string

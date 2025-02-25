@@ -1,6 +1,7 @@
-import classnames from 'classnames'
 import React from 'react'
-import {Link} from 'react-router-dom'
+
+import classnames from 'classnames'
+import { Link } from 'react-router-dom'
 
 import Button from 'pages/common/components/button/Button'
 

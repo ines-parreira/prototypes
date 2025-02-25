@@ -1,21 +1,23 @@
+import React, { useEffect, useState } from 'react'
+
 import classnames from 'classnames'
-import {Map, fromJS} from 'immutable'
-import React, {useEffect, useState} from 'react'
+import { fromJS, Map } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {HelpCenter} from 'models/helpCenter/types'
-import {MacroActionName} from 'models/macroAction/types'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import { HelpCenter } from 'models/helpCenter/types'
+import { MacroActionName } from 'models/macroAction/types'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import MultiSelectField from 'pages/common/forms/MultiSelectField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {Option, Value} from 'pages/common/forms/SelectField/types'
-import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
-import {InstallationError} from 'pages/settings/rules/ruleLibrary/constants'
+import { Option, Value } from 'pages/common/forms/SelectField/types'
+import { useHelpCenterList } from 'pages/settings/helpCenter/hooks/useHelpCenterList'
+import { InstallationError } from 'pages/settings/rules/ruleLibrary/constants'
 import ResponseAction from 'pages/tickets/common/macros/components/actions/ResponseAction'
-import {getHelpCenterFAQList} from 'state/entities/helpCenter/helpCenters'
-import {AutoReplyFAQSettings} from 'state/rules/types'
+import { getHelpCenterFAQList } from 'state/entities/helpCenter/helpCenters'
+import { AutoReplyFAQSettings } from 'state/rules/types'
 
-import {ManagedRuleDetailProps} from './ManagedRuleEditor'
+import { ManagedRuleDetailProps } from './ManagedRuleEditor'
+
 import css from './ManagedRuleEditor.less'
 
 type HelpCenterDropdownProps = {
@@ -35,7 +37,7 @@ const HelpCenterSelectField = ({
                 value: helpCenter.id,
                 label: helpCenter.name,
                 text: helpCenter.name,
-            }) as Option
+            }) as Option,
     )
     return (
         <SelectField
@@ -60,13 +62,13 @@ export const AutoReplyFAQEditor = ({
     const handleChange = onChange()
     const helpCenters = useAppSelector(getHelpCenterFAQList)
     const [initialHelpCenterId] = useState(settings.help_center_id)
-    useHelpCenterList({per_page: 900})
+    useHelpCenterList({ per_page: 900 })
 
     const handleBlocklist = (block_list: string[]) => {
         if (!handleChange) {
             return
         }
-        void handleChange({...settings, block_list: block_list})
+        void handleChange({ ...settings, block_list: block_list })
     }
 
     const handleBodyChange = (index: number, args: Map<string, any>) => {
@@ -102,7 +104,7 @@ export const AutoReplyFAQEditor = ({
     }
 
     const isHelpCenterAvailable = !!helpCenters.find(
-        (helpCenter) => helpCenter.id === settings.help_center_id
+        (helpCenter) => helpCenter.id === settings.help_center_id,
     )
 
     const shouldDisplayHelpCenterList =
@@ -115,7 +117,7 @@ export const AutoReplyFAQEditor = ({
             !isHelpCenterAvailable
                 ? handleInstallationError(InstallationError.NoHelpCenter)
                 : handleInstallationError(null),
-        [isHelpCenterAvailable, handleInstallationError]
+        [isHelpCenterAvailable, handleInstallationError],
     )
 
     return (

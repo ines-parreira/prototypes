@@ -1,16 +1,17 @@
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { renderHook } from '@testing-library/react-hooks'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {useGetCustomFieldDefinition} from 'custom-fields/hooks/queries/queries'
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
-import {ticketDropdownFieldDefinition} from 'fixtures/customField'
-import {NotificationStatus} from 'state/notifications/types'
-import {assumeMock} from 'utils/testing'
+import { useGetCustomFieldDefinition } from 'custom-fields/hooks/queries/queries'
+import { axiosSuccessResponse } from 'fixtures/axiosResponse'
+import { ticketDropdownFieldDefinition } from 'fixtures/customField'
+import { NotificationStatus } from 'state/notifications/types'
+import { assumeMock } from 'utils/testing'
 
-import {useCustomFieldDefinition} from '../useCustomFieldDefinition'
+import { useCustomFieldDefinition } from '../useCustomFieldDefinition'
 
 jest.mock('custom-fields/hooks/queries/queries')
 const useGetCustomFieldDefinitionMock = assumeMock(useGetCustomFieldDefinition)
@@ -26,33 +27,33 @@ describe('useCustomFieldDefinition', () => {
 
     it('should call useGetCustomFieldDefinition with proper id', () => {
         renderHook(() => useCustomFieldDefinition(customFieldId), {
-            wrapper: ({children}) => (
+            wrapper: ({ children }) => (
                 <Provider store={mockStore}>{children}</Provider>
             ),
         })
 
         expect(useGetCustomFieldDefinitionMock.mock.calls[0][0]).toBe(
-            customFieldId
+            customFieldId,
         )
     })
 
     it('should provide a select param that picks the correct subset of data', () => {
         renderHook(() => useCustomFieldDefinition(customFieldId), {
-            wrapper: ({children}) => (
+            wrapper: ({ children }) => (
                 <Provider store={mockStore}>{children}</Provider>
             ),
         })
 
         expect(
             useGetCustomFieldDefinitionMock.mock.calls[0][1]?.select!(
-                axiosSuccessResponse(ticketDropdownFieldDefinition)
-            )
+                axiosSuccessResponse(ticketDropdownFieldDefinition),
+            ),
         ).toBe(ticketDropdownFieldDefinition)
     })
 
     it('should provide a onError param that calls the notify action', () => {
         renderHook(() => useCustomFieldDefinition(customFieldId), {
-            wrapper: ({children}) => (
+            wrapper: ({ children }) => (
                 <Provider store={mockStore}>{children}</Provider>
             ),
         })

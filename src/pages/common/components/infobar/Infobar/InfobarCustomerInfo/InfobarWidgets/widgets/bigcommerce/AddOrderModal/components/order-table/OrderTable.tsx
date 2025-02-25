@@ -1,18 +1,19 @@
 import React from 'react'
-import {Table} from 'reactstrap'
 
-import {OptionSelection} from 'models/integration/resources/bigcommerce'
+import { Table } from 'reactstrap'
+
+import { OptionSelection } from 'models/integration/resources/bigcommerce'
 import {
     BigCommerceCartLineItem,
     BigCommerceCustomCartLineItem,
     BigCommerceProductsListType,
 } from 'models/integration/types'
 
-import {computeLineItemErrorKey} from '../../utils'
-
+import { computeLineItemErrorKey } from '../../utils'
 import OrderLineItemRow from './OrderLineItemRow'
+import { getOrderLineItemInfo } from './utils'
+
 import css from './OrderTable.less'
-import {getOrderLineItemInfo} from './utils'
 
 type Props = {
     storeHash: string
@@ -23,13 +24,13 @@ type Props = {
     onLineItemDiscount: (
         index: number,
         newPrice: number,
-        action: 'add' | 'remove'
+        action: 'add' | 'remove',
     ) => void
     onLineItemDelete: (index: number) => void
     onLineItemUpdate: (
         index: number,
         quantity: number,
-        optionSelections?: OptionSelection[]
+        optionSelections?: OptionSelection[],
     ) => Promise<void>
     onLineItemModifiersUpdate: (props: {
         index: number
@@ -75,12 +76,12 @@ export default function OrderTable({
                 )}
                 {lineItems.map((lineItem, index) => {
                     const lineItemErrorMessage = lineItemsWithErrors?.get(
-                        computeLineItemErrorKey({lineItem: lineItem})
+                        computeLineItemErrorKey({ lineItem: lineItem }),
                     )
                     const hasError = !!lineItemErrorMessage
-                    const {uid, product} = getOrderLineItemInfo(
+                    const { uid, product } = getOrderLineItemInfo(
                         lineItem,
-                        products
+                        products,
                     )
 
                     return (

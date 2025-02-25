@@ -1,20 +1,20 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {Provider} from 'react-redux'
-import {createStore} from 'redux'
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import { createStore } from 'redux'
 
-import {AGENT_ROLE} from 'config/user'
-import {channelConnection} from 'fixtures/channelConnection'
-import {convertStatusNotInstalled, convertStatusOk} from 'fixtures/convert'
-import {user} from 'fixtures/users'
+import { AGENT_ROLE } from 'config/user'
+import { channelConnection } from 'fixtures/channelConnection'
+import { convertStatusNotInstalled, convertStatusOk } from 'fixtures/convert'
+import { user } from 'fixtures/users'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import {RootState} from 'state/types'
-import {assumeMock} from 'utils/testing'
+import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import { RootState } from 'state/types'
+import { assumeMock } from 'utils/testing'
 
-import {ConvertSetupBanner} from '../ConvertSetupBanner'
+import { ConvertSetupBanner } from '../ConvertSetupBanner'
 
 const defaultState = {
     currentUser: fromJS(user),
@@ -29,7 +29,7 @@ const useGetConvertStatusMock = assumeMock(useGetConvertStatus)
 
 jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')
 const useGetOrCreateChannelConnectionMock = assumeMock(
-    useGetOrCreateChannelConnection
+    useGetOrCreateChannelConnection,
 )
 
 describe('ConvertSetupBanner', () => {
@@ -49,26 +49,28 @@ describe('ConvertSetupBanner', () => {
     it('should render correctly for everyone', () => {
         useGetConvertStatusMock.mockReturnValue(convertStatusNotInstalled)
 
-        const {queryByText} = render(
+        const { queryByText } = render(
             <Provider store={store}>
                 <ConvertSetupBanner chatIntegrationId={1} />
-            </Provider>
+            </Provider>,
         )
 
-        expect(queryByText(messageText, {exact: false})).toBeInTheDocument()
+        expect(queryByText(messageText, { exact: false })).toBeInTheDocument()
         expect(queryByText(buttonText)).toBeInTheDocument()
     })
 
     it('should not render because has bundle installed', () => {
         useGetConvertStatusMock.mockReturnValue(convertStatusOk)
 
-        const {queryByText} = render(
+        const { queryByText } = render(
             <Provider store={store}>
                 <ConvertSetupBanner chatIntegrationId={1} />
-            </Provider>
+            </Provider>,
         )
 
-        expect(queryByText(messageText, {exact: false})).not.toBeInTheDocument()
+        expect(
+            queryByText(messageText, { exact: false }),
+        ).not.toBeInTheDocument()
         expect(queryByText(buttonText)).not.toBeInTheDocument()
     })
 
@@ -78,16 +80,16 @@ describe('ConvertSetupBanner', () => {
         const agentStore = createStore((state) => state as RootState, {
             currentUser: fromJS({
                 ...user,
-                role: {name: AGENT_ROLE},
+                role: { name: AGENT_ROLE },
             }),
         })
 
-        const {queryByText} = render(
+        const { queryByText } = render(
             <Provider store={agentStore}>
                 <ConvertSetupBanner chatIntegrationId={1} />
-            </Provider>
+            </Provider>,
         )
-        expect(queryByText(messageText, {exact: false})).toBeInTheDocument()
+        expect(queryByText(messageText, { exact: false })).toBeInTheDocument()
         expect(queryByText(buttonText)).not.toBeInTheDocument()
     })
 
@@ -98,12 +100,14 @@ describe('ConvertSetupBanner', () => {
             channelConnection: channelConnection,
         } as any)
 
-        const {queryByText} = render(
+        const { queryByText } = render(
             <Provider store={store}>
                 <ConvertSetupBanner chatIntegrationId={1} />
-            </Provider>
+            </Provider>,
         )
 
-        expect(queryByText(messageText, {exact: false})).not.toBeInTheDocument()
+        expect(
+            queryByText(messageText, { exact: false }),
+        ).not.toBeInTheDocument()
     })
 })

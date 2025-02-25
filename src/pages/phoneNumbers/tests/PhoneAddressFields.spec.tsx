@@ -1,8 +1,9 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {PhoneCountry} from 'business/twilio'
-import {AddressInformation, AddressType} from 'models/phoneNumber/types'
+import { render } from '@testing-library/react'
+
+import { PhoneCountry } from 'business/twilio'
+import { AddressInformation, AddressType } from 'models/phoneNumber/types'
 
 import PhoneAddressFields from '../PhoneAddressFields'
 
@@ -12,21 +13,21 @@ describe('<PhoneAddressFields />', () => {
     > = jest.fn()
 
     it('should render', () => {
-        const {container} = render(
-            <PhoneAddressFields onChange={onChange} value={{}} />
+        const { container } = render(
+            <PhoneAddressFields onChange={onChange} value={{}} />,
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should allow to use company information for validation', () => {
-        const {container, queryByLabelText} = render(
+        const { container, queryByLabelText } = render(
             <PhoneAddressFields
                 onChange={onChange}
                 value={{
                     type: AddressType.Company,
                 }}
-            />
+            />,
         )
 
         expect(queryByLabelText('Business name*')).not.toBe(null)
@@ -36,13 +37,13 @@ describe('<PhoneAddressFields />', () => {
     })
 
     it('should allow to use personal information for validation', () => {
-        const {container, queryByLabelText} = render(
+        const { container, queryByLabelText } = render(
             <PhoneAddressFields
                 onChange={onChange}
                 value={{
                     type: AddressType.Personal,
                 }}
-            />
+            />,
         )
 
         expect(queryByLabelText('Business name*')).toBe(null)
@@ -63,13 +64,13 @@ describe('<PhoneAddressFields />', () => {
                 value={{
                     country: PhoneCountry.AU,
                 }}
-            />
+            />,
         )
 
         expect(queryByLabelText('Country*')).not.toBe(null)
         expect(queryByDisplayValue('Australia')).not.toBe(null)
         expect(
-            (getByDisplayValue('Australia') as HTMLInputElement).disabled
+            (getByDisplayValue('Australia') as HTMLInputElement).disabled,
         ).toBe(true)
 
         expect(container.firstChild).toMatchSnapshot()

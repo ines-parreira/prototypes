@@ -1,10 +1,10 @@
-import React, {FC} from 'react'
+import React, { FC } from 'react'
 
-import {useParams} from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
-import {StepProps} from 'pages/aiAgent/Onboarding/components/steps/types'
+import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
 import useCheckStoreIntegration from 'pages/aiAgent/Onboarding/hooks/useCheckStoreIntegration'
-import {useSteps} from 'pages/aiAgent/Onboarding/hooks/useSteps'
+import { useSteps } from 'pages/aiAgent/Onboarding/hooks/useSteps'
 import {
     OnboardingBody,
     OnboardingContentContainer,
@@ -15,9 +15,9 @@ export const HandoverStep: FC<StepProps> = ({
     totalSteps,
     goToStep,
 }) => {
-    const {shopName} = useParams<{shopName: string}>()
+    const { shopName } = useParams<{ shopName: string }>()
 
-    const {validSteps} = useSteps({shopName})
+    const { validSteps } = useSteps({ shopName })
 
     useCheckStoreIntegration()
 

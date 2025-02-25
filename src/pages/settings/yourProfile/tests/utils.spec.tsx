@@ -1,4 +1,4 @@
-import {isRecentLogin} from '../utils'
+import { isRecentLogin } from '../utils'
 
 describe('isRecentLogin', () => {
     it('should return false when the login time is unknown', () => {

@@ -1,28 +1,30 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import {fromJS} from 'immutable'
-import React, {FormEvent, useState} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {Link} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem, Form} from 'reactstrap'
-import {bindActionCreators} from 'redux'
+import React, { FormEvent, useState } from 'react'
 
-import {ZENDESK_IMPORTED_TICKETS_FOR_YEARS} from 'config'
-import {IntegrationType, ZendeskIntegration} from 'models/integration/types'
+import { fromJS } from 'immutable'
+import { connect, ConnectedProps } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem, Form } from 'reactstrap'
+import { bindActionCreators } from 'redux'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { ZENDESK_IMPORTED_TICKETS_FOR_YEARS } from 'config'
+import { IntegrationType, ZendeskIntegration } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import css from 'pages/settings/settings.less'
-import {createImportIntegration} from 'state/integrations/actions'
-import {getIntegrationsByType} from 'state/integrations/selectors'
-import {RootState, StoreDispatch} from 'state/types'
+import { createImportIntegration } from 'state/integrations/actions'
+import { getIntegrationsByType } from 'state/integrations/selectors'
+import { RootState, StoreDispatch } from 'state/types'
 import * as utils from 'utils'
 
-import {ZENDESK_CONNECTION_TYPE} from './types'
+import { ZENDESK_CONNECTION_TYPE } from './types'
 
 export const ImportZendeskCreate = (
-    props: ConnectedProps<typeof connector>
+    props: ConnectedProps<typeof connector>,
 ) => {
-    const {createIntegration, integrations} = props
+    const { createIntegration, integrations } = props
     const [domain, setDomain] = useState('')
     const [apiKey, setApiKey] = useState('')
     const [email, setEmail] = useState('')
@@ -144,7 +146,7 @@ export const ImportZendeskCreate = (
 const mapStateToProps = (state: RootState) => {
     return {
         integrations: getIntegrationsByType<ZendeskIntegration>(
-            IntegrationType.Zendesk
+            IntegrationType.Zendesk,
         )(state),
     }
 }
@@ -152,7 +154,7 @@ const mapDispatchToProps = (dispatch: StoreDispatch) => {
     return {
         createIntegration: bindActionCreators(
             createImportIntegration,
-            dispatch
+            dispatch,
         ),
     }
 }

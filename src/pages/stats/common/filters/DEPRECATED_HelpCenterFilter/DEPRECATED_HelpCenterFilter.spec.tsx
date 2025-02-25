@@ -1,17 +1,18 @@
-import {render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
 
-import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {mockStore} from 'utils/testing'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { Provider } from 'react-redux'
+
+import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { mockStore } from 'utils/testing'
 
 import DEPRECATED_HelpCenterFilter from './DEPRECATED_HelpCenterFilter'
 
 const helpCenters = getHelpCentersResponseFixture.data
 
 const renderComponent = (
-    props: Partial<ComponentProps<typeof DEPRECATED_HelpCenterFilter>>
+    props: Partial<ComponentProps<typeof DEPRECATED_HelpCenterFilter>>,
 ) => {
     render(
         <Provider store={mockStore({} as any)}>
@@ -21,13 +22,13 @@ const renderComponent = (
                 setSelectedHelpCenter={jest.fn}
                 {...props}
             />
-        </Provider>
+        </Provider>,
     )
 }
 
 describe('<HelpCenterFilter />', () => {
     it('should render component', () => {
-        renderComponent({selectedHelpCenter: helpCenters[0]})
+        renderComponent({ selectedHelpCenter: helpCenters[0] })
 
         expect(screen.getByText(helpCenters[0].name)).toBeInTheDocument()
     })
@@ -41,7 +42,7 @@ describe('<HelpCenterFilter />', () => {
         })
 
         expect(screen.getByRole('button')).toHaveTextContent(
-            helpCenters[0].name
+            helpCenters[0].name,
         )
     })
 

@@ -1,9 +1,10 @@
-import {fromJS, List} from 'immutable'
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
+
+import { fromJS, List } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
 import MacroContainer from 'pages/tickets/common/macros/MacroContainer'
-import {getActiveView} from 'state/views/selectors'
+import { getActiveView } from 'state/views/selectors'
 
 type Props = {
     onApplyMacro: () => void
@@ -19,7 +20,7 @@ export default function ApplyMacro({
     const activeView = useAppSelector(getActiveView)
     const selectedTicketIdsImmutable = useMemo(
         () => fromJS(ticketIds) as List<number>,
-        [ticketIds]
+        [ticketIds],
     )
 
     return (

@@ -1,6 +1,8 @@
-import {queryKeys, useArchiveSlaPolicy} from '@gorgias/api-queries'
-import {useQueryClient} from '@tanstack/react-query'
 import React from 'react'
+
+import { useQueryClient } from '@tanstack/react-query'
+
+import { queryKeys, useArchiveSlaPolicy } from '@gorgias/api-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import Button from 'pages/common/components/button/Button'
@@ -10,8 +12,8 @@ import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import history from 'pages/history'
 import settingsCss from 'pages/settings/settings.less'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 type Props = {
     policyId: string
@@ -19,21 +21,21 @@ type Props = {
     onClose: () => void
 }
 
-export const DeleteModal = ({policyId, isOpen, onClose}: Props) => {
+export const DeleteModal = ({ policyId, isOpen, onClose }: Props) => {
     const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
 
-    const {mutateAsync: deletePolicy, isLoading: isDeleting} =
+    const { mutateAsync: deletePolicy, isLoading: isDeleting } =
         useArchiveSlaPolicy()
 
     const handleClick = async () => {
         try {
-            await deletePolicy({id: policyId})
+            await deletePolicy({ id: policyId })
             void dispatch(
                 notify({
                     status: NotificationStatus.Success,
                     message: 'SLA policy deleted.',
-                })
+                }),
             )
             await queryClient.invalidateQueries({
                 queryKey: queryKeys.slaPolicies.listSlaPolicies(),
@@ -44,7 +46,7 @@ export const DeleteModal = ({policyId, isOpen, onClose}: Props) => {
                 notify({
                     status: NotificationStatus.Error,
                     message: `Failed to delete SLA policy`,
-                })
+                }),
             )
             onClose()
         }

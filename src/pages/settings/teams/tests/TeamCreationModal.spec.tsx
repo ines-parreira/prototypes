@@ -1,13 +1,14 @@
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {createTeam} from 'models/team/resources'
-import {RootState, StoreDispatch} from 'state/types'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { createTeam } from 'models/team/resources'
+import { RootState, StoreDispatch } from 'state/types'
 
 import TeamCreationModal from '../TeamCreationModal'
 
@@ -36,10 +37,10 @@ describe('<TeamCreationModal />', () => {
 
     it('should not render anything when the modal is closed', () => {
         const store = mockStore({})
-        const {baseElement} = render(
+        const { baseElement } = render(
             <Provider store={store}>
                 <TeamCreationModal {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
         expect(baseElement.firstChild).toMatchSnapshot()
@@ -47,10 +48,10 @@ describe('<TeamCreationModal />', () => {
 
     it('should render the opened modal', () => {
         const store = mockStore({})
-        const {baseElement} = render(
+        const { baseElement } = render(
             <Provider store={store}>
                 <TeamCreationModal {...minProps} isOpen />
-            </Provider>
+            </Provider>,
         )
 
         expect(baseElement).toMatchSnapshot()
@@ -58,16 +59,16 @@ describe('<TeamCreationModal />', () => {
 
     it('should disable submit button when filling conditions are not met', () => {
         const store = mockStore({})
-        const {getByRole} = render(
+        const { getByRole } = render(
             <Provider store={store}>
                 <TeamCreationModal {...minProps} isOpen />
-            </Provider>
+            </Provider>,
         )
 
         expect(
             getByRole('button', {
                 name: /create team/i,
-            })
+            }),
         ).toBeAriaDisabled()
     })
 
@@ -78,32 +79,32 @@ describe('<TeamCreationModal />', () => {
             name: teamName,
             description: teamDescription,
             decoration: {},
-            members: [{id: 1}],
+            members: [{ id: 1 }],
         }
         ;(createTeam as jest.Mock).mockImplementation(() => () => nextTeam)
         const store = mockStore({
             agents: fromJS({
-                all: [{id: 1, name: 'foo bar'}],
+                all: [{ id: 1, name: 'foo bar' }],
             }),
         })
-        const {getByLabelText, getAllByText, getByText} = render(
+        const { getByLabelText, getAllByText, getByText } = render(
             <Provider store={store}>
                 <TeamCreationModal {...minProps} isOpen />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.change(getByLabelText(/team name/i), {
-            target: {value: teamName},
+            target: { value: teamName },
         })
         fireEvent.change(getByLabelText(/description/i), {
-            target: {value: teamDescription},
+            target: { value: teamDescription },
         })
         fireEvent.focus(getByText(/Add at least 1 team member/i))
         fireEvent.click(screen.getByText(/foo bar/i))
         fireEvent.click(getAllByText(/Create team/i)[1])
 
         expect(logEventMock).toHaveBeenCalledWith(
-            SegmentEvent.TeamWizardCreatedTeam
+            SegmentEvent.TeamWizardCreatedTeam,
         )
         expect(createTeam).toHaveBeenCalledWith(nextTeam)
         await waitFor(() => {
@@ -114,20 +115,20 @@ describe('<TeamCreationModal />', () => {
     it('should display the rule creation form once team creation form has successfully been submitted', async () => {
         const store = mockStore({
             agents: fromJS({
-                all: [{id: 1, name: 'foo bar'}],
+                all: [{ id: 1, name: 'foo bar' }],
             }),
         })
-        const {getByLabelText, getAllByText, getByText} = render(
+        const { getByLabelText, getAllByText, getByText } = render(
             <Provider store={store}>
                 <TeamCreationModal {...minProps} isOpen />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.change(getByLabelText(/team name/i), {
-            target: {value: 'Artemis'},
+            target: { value: 'Artemis' },
         })
         fireEvent.change(getByLabelText(/description/i), {
-            target: {value: 'Goddess of the hunt'},
+            target: { value: 'Goddess of the hunt' },
         })
         fireEvent.focus(getByText(/Add at least 1 team member/i))
         fireEvent.click(screen.getByText(/foo bar/i))
@@ -141,27 +142,27 @@ describe('<TeamCreationModal />', () => {
     it('should reset values if modal is closed', async () => {
         const store = mockStore({
             agents: fromJS({
-                all: [{id: 1, name: 'foo bar'}],
+                all: [{ id: 1, name: 'foo bar' }],
             }),
         })
-        const {getByLabelText, rerender} = render(
+        const { getByLabelText, rerender } = render(
             <Provider store={store}>
                 <TeamCreationModal {...minProps} isOpen />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.change(getByLabelText(/team name/i), {
-            target: {value: 'Artemis'},
+            target: { value: 'Artemis' },
         })
         rerender(
             <Provider store={store}>
                 <TeamCreationModal {...minProps} isOpen={false} />
-            </Provider>
+            </Provider>,
         )
         rerender(
             <Provider store={store}>
                 <TeamCreationModal {...minProps} isOpen />
-            </Provider>
+            </Provider>,
         )
 
         await waitFor(() => {
@@ -170,18 +171,18 @@ describe('<TeamCreationModal />', () => {
     })
 
     it('should keep modal open and retain the form values when submit attempt failed', async () => {
-        ;(createTeam as jest.Mock).mockReturnValueOnce({error: 'error'})
+        ;(createTeam as jest.Mock).mockReturnValueOnce({ error: 'error' })
 
         const store = mockStore({})
         const teamName = 'Artemis'
-        const {getByLabelText, getAllByText} = render(
+        const { getByLabelText, getAllByText } = render(
             <Provider store={store}>
                 <TeamCreationModal {...minProps} isOpen />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.change(getByLabelText(/team name/i), {
-            target: {value: teamName},
+            target: { value: teamName },
         })
         fireEvent.click(getAllByText(/create team/i)[1])
 

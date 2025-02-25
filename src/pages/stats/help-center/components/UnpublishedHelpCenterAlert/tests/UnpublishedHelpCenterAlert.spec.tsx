@@ -1,5 +1,6 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import UnpublishedHelpCenterAlert from '../UnpublishedHelpCenterAlert'
 
@@ -9,11 +10,11 @@ describe('<UnpublishedHelpCenterAlert />', () => {
 
         expect(
             screen.getByText(
-                'Set your Help Center back to live in order to view performance insights.'
-            )
+                'Set your Help Center back to live in order to view performance insights.',
+            ),
         ).toBeInTheDocument()
         expect(
-            screen.getByText('Manage Help Center').closest('a')
+            screen.getByText('Manage Help Center').closest('a'),
         ).toHaveAttribute('to', '/app/settings/help-center/1/publish-track')
     })
 })

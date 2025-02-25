@@ -1,5 +1,6 @@
-import {chain as _chain} from 'lodash'
-import {useCallback, useState, useMemo} from 'react'
+import { useCallback, useMemo, useState } from 'react'
+
+import { chain as _chain } from 'lodash'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -8,8 +9,8 @@ import {
     CreateArticleTranslationDto,
     LocaleCode,
 } from 'models/helpCenter/types'
-import {createArticleFromDto} from 'models/helpCenter/utils'
-import {HelpCenterClient} from 'rest_api/help_center_api/client'
+import { createArticleFromDto } from 'models/helpCenter/utils'
+import { HelpCenterClient } from 'rest_api/help_center_api/client'
 import {
     deleteArticle as deleteArticleAction,
     getArticlesById,
@@ -19,21 +20,20 @@ import {
     updateArticle as updateArticleAction,
     updateArticlesOrder,
 } from 'state/entities/helpCenter/articles'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { getViewLanguage } from 'state/ui/helpCenter'
 
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {getViewLanguage} from 'state/ui/helpCenter'
-
-import {ARTICLES_PER_PAGE, HELP_CENTER_DEFAULT_LOCALE} from '../constants'
-import {ArticleTemplateKey} from '../types/articleTemplates'
-import {useCategoriesActions} from './useCategoriesActions'
-import {useHelpCenterApi} from './useHelpCenterApi'
-import {useHelpCenterIdParam} from './useHelpCenterIdParam'
+import { ARTICLES_PER_PAGE, HELP_CENTER_DEFAULT_LOCALE } from '../constants'
+import { ArticleTemplateKey } from '../types/articleTemplates'
+import { useCategoriesActions } from './useCategoriesActions'
+import { useHelpCenterApi } from './useHelpCenterApi'
+import { useHelpCenterIdParam } from './useHelpCenterIdParam'
 
 function updatePositionRequest(
     client: HelpCenterClient,
     articles: Article[],
-    params: {helpCenterId: number; categoryId: number | null}
+    params: { helpCenterId: number; categoryId: number | null },
 ) {
     const sortedArticlesIds = _chain(articles)
         .sortBy(['position'])
@@ -47,7 +47,7 @@ function updatePositionRequest(
                     help_center_id: params.helpCenterId,
                     category_id: params.categoryId,
                 },
-                sortedArticlesIds
+                sortedArticlesIds,
             )
             .then((response) => response.data)
     }
@@ -57,7 +57,7 @@ function updatePositionRequest(
             {
                 help_center_id: params.helpCenterId,
             },
-            sortedArticlesIds
+            sortedArticlesIds,
         )
         .then((response) => response.data)
 }
@@ -65,10 +65,10 @@ function updatePositionRequest(
 export const useArticlesActions = () => {
     const helpCenterId = useHelpCenterIdParam()
     const dispatch = useAppDispatch()
-    const {client} = useHelpCenterApi()
+    const { client } = useHelpCenterApi()
     const viewLanguage =
         useAppSelector(getViewLanguage) ?? HELP_CENTER_DEFAULT_LOCALE
-    const {fetchCategoryArticleCount} = useCategoriesActions()
+    const { fetchCategoryArticleCount } = useCategoriesActions()
     const articlesById = useAppSelector(getArticlesById)
 
     /* TODO: Fix isLoading
@@ -85,7 +85,7 @@ export const useArticlesActions = () => {
 
             try {
                 const {
-                    data: {data: articles, meta},
+                    data: { data: articles, meta },
                 } = await client.listArticles({
                     help_center_id: helpCenterId,
                     order_by: 'position',
@@ -96,27 +96,27 @@ export const useArticlesActions = () => {
                 })
 
                 const payload = articles.map((article, index) =>
-                    createArticleFromDto(article, index)
+                    createArticleFromDto(article, index),
                 )
 
                 dispatch(saveArticles(payload))
 
                 setIsLoading(false)
 
-                return {articles, meta}
+                return { articles, meta }
             } catch (err) {
                 setIsLoading(false)
 
                 throw err
             }
         },
-        [client, dispatch, helpCenterId]
+        [client, dispatch, helpCenterId],
     )
 
     const fetchArticles = useCallback(
         async (
             categoryId: number | null,
-            params?: {page: number; per_page: number; ids?: number[]}
+            params?: { page: number; per_page: number; ids?: number[] },
         ) => {
             if (!client) throw new Error('HTTP client not initialized!')
 
@@ -124,7 +124,7 @@ export const useArticlesActions = () => {
 
             try {
                 const {
-                    data: {data: articles, meta},
+                    data: { data: articles, meta },
                 } = await (categoryId !== null
                     ? client.listCategoryArticles({
                           help_center_id: helpCenterId,
@@ -141,7 +141,7 @@ export const useArticlesActions = () => {
                           ...params,
                       }))
 
-                const {data: positions} =
+                const { data: positions } =
                     categoryId !== null
                         ? await client.getCategoryArticlesPositions({
                               help_center_id: helpCenterId,
@@ -155,46 +155,46 @@ export const useArticlesActions = () => {
                     createArticleFromDto(
                         article,
                         positions.findIndex(
-                            (articleId) => articleId === article.id
-                        )
-                    )
+                            (articleId) => articleId === article.id,
+                        ),
+                    ),
                 )
 
                 dispatch(saveArticles(payload))
 
                 setIsLoading(false)
 
-                return {articles, meta, positions}
+                return { articles, meta, positions }
             } catch (err) {
                 setIsLoading(false)
 
                 throw err
             }
         },
-        [client, dispatch, helpCenterId]
+        [client, dispatch, helpCenterId],
     )
 
     const createArticle = useCallback(
         async (
             translation: CreateArticleTranslationDto,
-            templateKey: ArticleTemplateKey | null
+            templateKey: ArticleTemplateKey | null,
         ): Promise<Article> => {
             if (!client) throw new Error('HTTP client not initialized!')
 
             setIsLoading(true)
 
             try {
-                const {data} = await client.createArticle(
+                const { data } = await client.createArticle(
                     {
                         help_center_id: helpCenterId,
                     },
                     {
                         translation,
                         template_key: templateKey ?? undefined,
-                    }
+                    },
                 )
 
-                const {data: positions} = translation.category_id
+                const { data: positions } = translation.category_id
                     ? await client.getCategoryArticlesPositions({
                           help_center_id: helpCenterId,
                           category_id: translation.category_id,
@@ -205,7 +205,7 @@ export const useArticlesActions = () => {
 
                 const createdArticle = createArticleFromDto(
                     data,
-                    positions.findIndex((articleId) => articleId === data.id)
+                    positions.findIndex((articleId) => articleId === data.id),
                 )
 
                 dispatch(saveArticles([createdArticle]))
@@ -227,14 +227,14 @@ export const useArticlesActions = () => {
             fetchCategoryArticleCount,
             helpCenterId,
             viewLanguage,
-        ]
+        ],
     )
 
     const createArticleTranslation = useCallback(
         async (article: Article) => {
             if (!client) throw new Error('HTTP client not initialized!')
 
-            const {data: translation} = await client.createArticleTranslation(
+            const { data: translation } = await client.createArticleTranslation(
                 {
                     help_center_id: helpCenterId,
                     article_id: article.id,
@@ -249,19 +249,19 @@ export const useArticlesActions = () => {
                     is_current: article.translation.is_current,
                     visibility_status: article.translation.visibility_status,
                     category_id: article.translation.category_id,
-                }
+                },
             )
 
             return translation
         },
-        [client, helpCenterId]
+        [client, helpCenterId],
     )
 
     const updateArticleTranslation = useCallback(
         async (article: Article) => {
             if (!client) throw new Error('HTTP client not initialized!')
 
-            const {data: translation} = await client.updateArticleTranslation(
+            const { data: translation } = await client.updateArticleTranslation(
                 {
                     help_center_id: helpCenterId,
                     article_id: article.id,
@@ -276,18 +276,18 @@ export const useArticlesActions = () => {
                     is_current: article.translation.is_current,
                     category_id: article.translation.category_id,
                     visibility_status: article.translation.visibility_status,
-                }
+                },
             )
 
             return translation
         },
-        [client, helpCenterId]
+        [client, helpCenterId],
     )
 
     const updateArticle = useCallback(
         async (
             defaultLocale: LocaleCode,
-            article: Article
+            article: Article,
         ): Promise<Article> => {
             if (!client) throw new Error('HTTP client not initialized!')
 
@@ -297,7 +297,7 @@ export const useArticlesActions = () => {
                 const previousCategoryId = article.category_id
                 const maybeNextCategoryId = article.translation.category_id
 
-                const {data: positions} = maybeNextCategoryId
+                const { data: positions } = maybeNextCategoryId
                     ? await client.getCategoryArticlesPositions({
                           help_center_id: helpCenterId,
                           category_id: maybeNextCategoryId,
@@ -310,13 +310,13 @@ export const useArticlesActions = () => {
                     ...article,
                     translation: article.translation,
                     position: positions.findIndex(
-                        (articleId) => articleId === article.id
+                        (articleId) => articleId === article.id,
                     ),
                 }
 
                 const localeIsAvailable =
                     updatedArticle.available_locales.includes(
-                        article.translation.locale
+                        article.translation.locale,
                     )
 
                 updatedArticle.translation = {
@@ -329,13 +329,13 @@ export const useArticlesActions = () => {
                 // if a new translation was added, the updated article must contain it in its available_locales
                 updatedArticle.available_locales = Array.from(
                     new Set(updatedArticle.available_locales).add(
-                        updatedArticle.translation.locale
-                    )
+                        updatedArticle.translation.locale,
+                    ),
                 )
 
                 if (updatedArticle.translation.locale !== viewLanguage) {
                     const {
-                        data: {data: translations},
+                        data: { data: translations },
                     } = await client.listArticleTranslations({
                         help_center_id: helpCenterId,
                         article_id: article.id,
@@ -358,7 +358,7 @@ export const useArticlesActions = () => {
                     // update the article count for the new category
                     void fetchCategoryArticleCount(
                         maybeNextCategoryId,
-                        viewLanguage
+                        viewLanguage,
                     )
 
                     // fetch the articles for the new category
@@ -372,7 +372,7 @@ export const useArticlesActions = () => {
                     pushArticleSupportedLocales({
                         articleId: article.id,
                         supportedLocales: [article.translation.locale],
-                    })
+                    }),
                 )
 
                 setIsLoading(false)
@@ -393,7 +393,7 @@ export const useArticlesActions = () => {
             helpCenterId,
             updateArticleTranslation,
             viewLanguage,
-        ]
+        ],
     )
 
     const deleteArticle = useCallback(
@@ -414,7 +414,7 @@ export const useArticlesActions = () => {
                 if (articleToBeDeleted) {
                     void fetchCategoryArticleCount(
                         articleToBeDeleted.category_id,
-                        viewLanguage
+                        viewLanguage,
                     )
                 }
 
@@ -434,7 +434,7 @@ export const useArticlesActions = () => {
             fetchCategoryArticleCount,
             helpCenterId,
             viewLanguage,
-        ]
+        ],
     )
 
     const updateArticlesPositions = useCallback(
@@ -456,7 +456,7 @@ export const useArticlesActions = () => {
                     notify({
                         message: 'Articles reordered with success',
                         status: NotificationStatus.Success,
-                    })
+                    }),
                 )
             } catch (err) {
                 setIsLoading(false)
@@ -464,12 +464,12 @@ export const useArticlesActions = () => {
                     notify({
                         message: 'Failed to reorder articles',
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
                 throw err
             }
         },
-        [client, dispatch, helpCenterId]
+        [client, dispatch, helpCenterId],
     )
 
     const deleteArticleTranslation = useCallback(
@@ -485,7 +485,7 @@ export const useArticlesActions = () => {
                     locale,
                 })
 
-                dispatch(removeLocaleFromArticle({articleId, locale}))
+                dispatch(removeLocaleFromArticle({ articleId, locale }))
 
                 setIsLoading(false)
             } catch (err) {
@@ -494,7 +494,7 @@ export const useArticlesActions = () => {
                 throw err
             }
         },
-        [client, dispatch, helpCenterId]
+        [client, dispatch, helpCenterId],
     )
 
     const cloneArticle = useCallback(
@@ -549,18 +549,18 @@ export const useArticlesActions = () => {
                                     },
                                     category_id: t.category_id,
                                     visibility_status: t.visibility_status,
-                                }
-                            )
-                        )
+                                },
+                            ),
+                        ),
                 )
 
                 dispatch(
                     pushArticleSupportedLocales({
                         articleId: clonedArticle.id,
                         supportedLocales: translations.map(
-                            (translation) => translation.locale
+                            (translation) => translation.locale,
                         ),
-                    })
+                    }),
                 )
 
                 setIsLoading(false)
@@ -572,7 +572,7 @@ export const useArticlesActions = () => {
                 throw err
             }
         },
-        [client, createArticle, dispatch, helpCenterId]
+        [client, createArticle, dispatch, helpCenterId],
     )
 
     return useMemo(
@@ -601,6 +601,6 @@ export const useArticlesActions = () => {
             updateArticle,
             updateArticleTranslation,
             updateArticlesPositions,
-        ]
+        ],
     )
 }

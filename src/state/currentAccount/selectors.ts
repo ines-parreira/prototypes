@@ -1,6 +1,6 @@
-import {fromJS, List, Map} from 'immutable'
-import moment, {Moment} from 'moment-timezone'
-import {createSelector} from 'reselect'
+import { fromJS, List, Map } from 'immutable'
+import moment, { Moment } from 'moment-timezone'
+import { createSelector } from 'reselect'
 
 import {
     AccountFeature,
@@ -17,92 +17,91 @@ import {
     ShopifyBillingStatus,
     ViewsOrderingAccountSetting,
 } from 'state/currentAccount/types'
-import {getTimezone} from 'state/currentUser/selectors'
-import {RootState} from 'state/types'
-
-import {toJS} from 'utils'
-import {isFeatureEnabled} from 'utils/account'
+import { getTimezone } from 'state/currentUser/selectors'
+import { RootState } from 'state/types'
+import { toJS } from 'utils'
+import { isFeatureEnabled } from 'utils/account'
 
 export const getCurrentAccountState = (state: RootState) =>
     state.currentAccount || fromJS({})
 
 export const getAccountOwnerId = createSelector(
     getCurrentAccountState,
-    (state) => state.get('user_id') as number
+    (state) => state.get('user_id') as number,
 )
 
 export const getCurrentAccountId = createSelector(
     getCurrentAccountState,
-    (state) => state.get('id') as number
+    (state) => state.get('id') as number,
 )
 
 export const getCurrentAccountMeta = createSelector(
     getCurrentAccountState,
-    (state) => (state.get('meta') as Map<any, any>) || fromJS({})
+    (state) => (state.get('meta') as Map<any, any>) || fromJS({}),
 )
 
 export const getCurrentAccountCreatedDatetime = createSelector(
     getCurrentAccountState,
-    (currentAccount) => currentAccount.get('created_datetime') as string
+    (currentAccount) => currentAccount.get('created_datetime') as string,
 )
 
 export const getCurrentAccountFeatures = createSelector(
     getCurrentAccountState,
-    (state) => (state.get('features') as Map<any, any>) || fromJS({})
+    (state) => (state.get('features') as Map<any, any>) || fromJS({}),
 )
 
 export const getCurrentDomain = createSelector(
     getCurrentAccountState,
-    (state) => state.get('domain') as string
+    (state) => state.get('domain') as string,
 )
 
 export const currentAccountHasFeature = (feature: AccountFeature) =>
     createSelector(
         getCurrentAccountFeatures,
         (state) =>
-            !!state.get(feature) && isFeatureEnabled(toJS(state.get(feature)))
+            !!state.get(feature) && isFeatureEnabled(toJS(state.get(feature))),
     )
 
 export const getAccountStatus = createSelector(
     getCurrentAccountState,
-    (state) => (state.get('status') as Map<any, any>) || fromJS({})
+    (state) => (state.get('status') as Map<any, any>) || fromJS({}),
 )
 
 export const isAccountActive = createSelector(
     getAccountStatus,
-    (state) => state.get('status') === 'active'
+    (state) => state.get('status') === 'active',
 )
 
 export const getCurrentSubscription = createSelector(
     getCurrentAccountState,
     (state) =>
-        (state.get('current_subscription') as Map<any, any>) || fromJS({})
+        (state.get('current_subscription') as Map<any, any>) || fromJS({}),
 )
 
 export const getIsCurrentSubscriptionCanceled = createSelector(
     getCurrentSubscription,
-    (state) => state.isEmpty()
+    (state) => state.isEmpty(),
 )
 
 export const isTrialing = createSelector(
     getCurrentSubscription,
-    (state) => state.get('status') === 'trialing'
+    (state) => state.get('status') === 'trialing',
 )
 
 export const getIsCurrentSubscriptionTrialingOrCanceled = createSelector(
     isTrialing,
     getIsCurrentSubscriptionCanceled,
-    (trialing, canceled) => trialing || canceled
+    (trialing, canceled) => trialing || canceled,
 )
 
 export const hasCreditCard = createSelector(
     getCurrentAccountMeta,
-    (state) => !!state.get('hasCreditCard')
+    (state) => !!state.get('hasCreditCard'),
 )
 
 export const shouldPayWithShopify = createSelector(
     getCurrentAccountMeta,
-    (state) => !!state.get('should_pay_with_shopify')
+    (state) => !!state.get('should_pay_with_shopify'),
 )
 
 export const getShopifyBillingStatus = createSelector(
@@ -117,7 +116,7 @@ export const getShopifyBillingStatus = createSelector(
         }
 
         return ShopifyBillingStatus.Inactive
-    }
+    },
 )
 
 export const paymentMethod = (state: RootState) =>
@@ -137,13 +136,13 @@ const createSettingByTypeSelector = (type: string) => {
     return createSelector(getCurrentAccountState, (account) => {
         const settings = (account.get('settings') as List<any>) || fromJS([])
         return (settings.find(
-            (setting: Map<any, any>) => setting.get('type') === type
+            (setting: Map<any, any>) => setting.get('type') === type,
         ) || fromJS({})) as Map<any, any>
     })
 }
 
 export const getAgentsTableConfigSettings = createSettingByTypeSelector(
-    AccountSettingType.AgentsTableConfig
+    AccountSettingType.AgentsTableConfig,
 )
 
 export const getAgentsTableConfigSettingsJS = createSelector(
@@ -151,11 +150,11 @@ export const getAgentsTableConfigSettingsJS = createSelector(
     (setting) =>
         setting.isEmpty()
             ? undefined
-            : (setting.toJS() as AccountSettingAgentsTableConfig)
+            : (setting.toJS() as AccountSettingAgentsTableConfig),
 )
 
 export const getChannelsTableConfigSettings = createSettingByTypeSelector(
-    AccountSettingType.ChannelsTableConfig
+    AccountSettingType.ChannelsTableConfig,
 )
 
 export const getChannelsTableConfigSettingsJS = createSelector(
@@ -163,11 +162,11 @@ export const getChannelsTableConfigSettingsJS = createSelector(
     (setting) =>
         setting.isEmpty()
             ? undefined
-            : (setting.toJS() as AccountSettingChannelsTableConfig)
+            : (setting.toJS() as AccountSettingChannelsTableConfig),
 )
 
 export const getSurveysSettings = createSettingByTypeSelector(
-    AccountSettingType.SatisfactionSurveys
+    AccountSettingType.SatisfactionSurveys,
 )
 
 export const getSurveysSettingsJS = createSelector(
@@ -175,7 +174,7 @@ export const getSurveysSettingsJS = createSelector(
     (setting) =>
         setting.isEmpty()
             ? undefined
-            : (setting.toJS() as AccountSettingSatisfactionSurvey)
+            : (setting.toJS() as AccountSettingSatisfactionSurvey),
 )
 
 export const getAgentCostsSettings = createSelector(
@@ -183,7 +182,7 @@ export const getAgentCostsSettings = createSelector(
     (setting) =>
         setting.isEmpty()
             ? undefined
-            : (setting.toJS() as AccountSettingAgentCosts)
+            : (setting.toJS() as AccountSettingAgentCosts),
 )
 
 /**
@@ -192,7 +191,7 @@ export const getAgentCostsSettings = createSelector(
  * @type feature-helper-fn
  */
 export const DEPRECATED_getBusinessHoursSettings = createSettingByTypeSelector(
-    AccountSettingType.BusinessHours
+    AccountSettingType.BusinessHours,
 )
 
 export const getBusinessHoursSettings = createSelector(
@@ -200,7 +199,7 @@ export const getBusinessHoursSettings = createSelector(
     (setting) =>
         setting.isEmpty()
             ? undefined
-            : (setting.toJS() as AccountSettingBusinessHours)
+            : (setting.toJS() as AccountSettingBusinessHours),
 )
 
 export const getViewsVisibilitySettings = createSelector(
@@ -208,7 +207,7 @@ export const getViewsVisibilitySettings = createSelector(
     (setting) =>
         setting.isEmpty()
             ? undefined
-            : (setting.toJS() as AccountSettingViewsVisibility)
+            : (setting.toJS() as AccountSettingViewsVisibility),
 )
 
 export const getAutoMergeSettings = createSelector(
@@ -216,7 +215,7 @@ export const getAutoMergeSettings = createSelector(
     (setting) =>
         setting.isEmpty()
             ? undefined
-            : (setting.toJS() as AccountSettingAutoMerge)
+            : (setting.toJS() as AccountSettingAutoMerge),
 )
 
 export const getBusinessHoursRangesByUserTimezone = createSelector(
@@ -267,13 +266,13 @@ export const getBusinessHoursRangesByUserTimezone = createSelector(
             .map((range) =>
                 timezone
                     ? [range[0].tz(timezone), range[1].tz(timezone)]
-                    : range
+                    : range,
             )
-    }
+    },
 )
 
 export const getTicketAssignmentSettings = createSettingByTypeSelector(
-    AccountSettingType.TicketAssignment
+    AccountSettingType.TicketAssignment,
 )
 /**
  * @deprecated
@@ -281,14 +280,14 @@ export const getTicketAssignmentSettings = createSettingByTypeSelector(
  * @type feature-helper-fn
  */
 export const DEPRECATED_getViewsOrderingSetting = createSettingByTypeSelector(
-    AccountSettingType.ViewsOrdering
+    AccountSettingType.ViewsOrdering,
 )
 export const getViewsOrderingSetting = createSelector(
     DEPRECATED_getViewsOrderingSetting,
-    (setting) => setting.toJS() as ViewsOrderingAccountSetting
+    (setting) => setting.toJS() as ViewsOrderingAccountSetting,
 )
 export const getAccessSettings = createSettingByTypeSelector(
-    AccountSettingType.Access
+    AccountSettingType.Access,
 )
 
 export const getDefaultIntegrationSettings = createSelector(
@@ -296,17 +295,17 @@ export const getDefaultIntegrationSettings = createSelector(
     (setting) =>
         setting.isEmpty()
             ? undefined
-            : (setting.toJS() as AccountSettingDefaultIntegration)
+            : (setting.toJS() as AccountSettingDefaultIntegration),
 )
 
 export const getTwoFAEnforcedDatetime = createSelector(
     getAccessSettings,
     (setting) =>
-        setting.getIn(['data', 'two_fa_enforced_datetime']) as string | null
+        setting.getIn(['data', 'two_fa_enforced_datetime']) as string | null,
 )
 export const is2FAEnforcedSelector = createSelector(
     getTwoFAEnforcedDatetime,
-    (twoFAEnforcedDatetime) => !!twoFAEnforcedDatetime
+    (twoFAEnforcedDatetime) => !!twoFAEnforcedDatetime,
 )
 
 export const getInTicketSuggestionSettings = createSelector(
@@ -314,5 +313,5 @@ export const getInTicketSuggestionSettings = createSelector(
     (setting) =>
         setting.isEmpty()
             ? undefined
-            : (setting.toJS() as AccountSettingInTicketSuggestion)
+            : (setting.toJS() as AccountSettingInTicketSuggestion),
 )

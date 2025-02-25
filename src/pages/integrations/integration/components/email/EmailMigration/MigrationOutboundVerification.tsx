@@ -1,22 +1,24 @@
-import {AxiosError} from 'axios'
-import React, {useEffect, useRef, useState} from 'react'
-import {useHistory} from 'react-router-dom'
-import {Col} from 'reactstrap'
+import React, { useEffect, useRef, useState } from 'react'
+
+import { AxiosError } from 'axios'
+import { useHistory } from 'react-router-dom'
+import { Col } from 'reactstrap'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAsyncFn from 'hooks/useAsyncFn'
 import useEffectOnce from 'hooks/useEffectOnce'
-import {fetchMigrationDomains} from 'models/integration/resources/email'
-import {EmailMigrationOutboundVerification} from 'models/integration/types'
+import { fetchMigrationDomains } from 'models/integration/resources/email'
+import { EmailMigrationOutboundVerification } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import useMigrationBannerStatus from 'pages/common/components/EmailMigrationBanner/hooks/useMigrationBannerStatus'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {getMoment} from 'utils/date'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { getMoment } from 'utils/date'
 
 import MigrationDomainList from './MigrationDomainList'
-import css from './MigrationOutboundVerification.less'
 import MigrationTutorialList from './MigrationTutorialList'
+
+import css from './MigrationOutboundVerification.less'
 
 type Props = {
     onBackClick: () => void
@@ -24,11 +26,11 @@ type Props = {
 
 const REFRESH_TIME = 2 * 60 * 1000 // 5 mins
 
-export default function MigrationOutboundVerification({onBackClick}: Props) {
+export default function MigrationOutboundVerification({ onBackClick }: Props) {
     const history = useHistory()
     const [lastChecked, setLastChecked] = useState<string>()
     const lastCheckedInterval = useRef<ReturnType<typeof setInterval> | null>(
-        null
+        null,
     )
     const [domains, setDomains] =
         useState<EmailMigrationOutboundVerification[]>()
@@ -55,12 +57,12 @@ export default function MigrationOutboundVerification({onBackClick}: Props) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [domains])
 
-    const [{loading: isLoading}, fetchAllDomains] = useAsyncFn(async () => {
+    const [{ loading: isLoading }, fetchAllDomains] = useAsyncFn(async () => {
         try {
             const response = await fetchMigrationDomains()
             setDomains(response.data)
         } catch (error) {
-            const {response} = error as AxiosError<{error: {msg: string}}>
+            const { response } = error as AxiosError<{ error: { msg: string } }>
             const errorMsg =
                 response && response.data.error
                     ? response.data.error.msg
@@ -69,7 +71,7 @@ export default function MigrationOutboundVerification({onBackClick}: Props) {
                 notify({
                     message: errorMsg,
                     status: NotificationStatus.Error,
-                })
+                }),
             )
         }
     })

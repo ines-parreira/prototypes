@@ -1,4 +1,4 @@
-import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
+import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
 
 import {
     hasFailedAction,
@@ -10,9 +10,8 @@ import {
     isTicketMessageSourceType,
     shouldMessagesBeGrouped,
 } from '../predicates'
-import {TicketMessage, ActionStatus, MessageMetadataType} from '../types'
-
-import {action as defaultAction, message as defaultMessage} from './mocks'
+import { ActionStatus, MessageMetadataType, TicketMessage } from '../types'
+import { action as defaultAction, message as defaultMessage } from './mocks'
 
 describe('predicates', () => {
     describe('hasFailedAction', () => {
@@ -191,11 +190,11 @@ describe('predicates', () => {
         it('should return false if the senders are different', () => {
             const msg1 = {
                 ...defaultMessage,
-                sender: {...defaultMessage.sender, id: 1},
+                sender: { ...defaultMessage.sender, id: 1 },
             }
             const msg2 = {
                 ...defaultMessage,
-                sender: {...defaultMessage.sender, id: 2},
+                sender: { ...defaultMessage.sender, id: 2 },
             }
             expect(shouldMessagesBeGrouped(msg1, msg2)).toBeFalsy()
         })
@@ -277,7 +276,7 @@ describe('predicates', () => {
             },
         ])(
             'should return false if either of the messages is a signal',
-            ({firstMessageType, secondMessageType}) => {
+            ({ firstMessageType, secondMessageType }) => {
                 const msg1 = {
                     ...defaultMessage,
                     channel: TicketChannel.Chat,
@@ -295,7 +294,7 @@ describe('predicates', () => {
                     },
                 }
                 expect(shouldMessagesBeGrouped(msg1, msg2)).toBeFalsy()
-            }
+            },
         )
 
         it('should return true if the messages satisfy all grouping conditions', () => {
@@ -318,7 +317,7 @@ describe('predicates', () => {
             'returns false if the input is falsy',
             (input) => {
                 expect(isGorgiasContactFormTicketMeta(input)).toBeFalsy()
-            }
+            },
         )
 
         it('returns true if the input looks like a "gorgias_contact_form" meta field', () => {
@@ -343,8 +342,8 @@ describe('predicates', () => {
             expect(isTicketMessageSourceType('sms')).toBe(true)
             expect(
                 isTicketMessageSourceType(
-                    TicketMessageSourceType.WhatsAppMessage
-                )
+                    TicketMessageSourceType.WhatsAppMessage,
+                ),
             ).toBe(true)
         })
 
@@ -354,7 +353,7 @@ describe('predicates', () => {
             expect(isTicketMessageSourceType('nope')).toBe(false)
             expect(isTicketMessageSourceType(123)).toBe(false)
             expect(isTicketMessageSourceType(TicketChannel.WhatsApp)).toBe(
-                false
+                false,
             )
         })
     })
@@ -372,7 +371,7 @@ describe('predicates', () => {
             expect(isTicketChannel('nope')).toBe(false)
             expect(isTicketChannel(123)).toBe(false)
             expect(
-                isTicketChannel(TicketMessageSourceType.WhatsAppMessage)
+                isTicketChannel(TicketMessageSourceType.WhatsAppMessage),
             ).toBe(false)
         })
     })

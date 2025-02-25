@@ -1,4 +1,4 @@
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 

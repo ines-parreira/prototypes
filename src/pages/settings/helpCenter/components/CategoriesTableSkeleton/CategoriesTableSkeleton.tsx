@@ -7,9 +7,9 @@ import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 
-import nestingCss from '../SearchResults/nesting.less'
-import {SearchResultsLoadingContent} from '../SearchResults/SearchResultsLoadingContent'
+import { SearchResultsLoadingContent } from '../SearchResults/SearchResultsLoadingContent'
 
+import nestingCss from '../SearchResults/nesting.less'
 import css from './CategoriesTableSkeleton.less'
 
 const SkeletonRow = () => {
@@ -32,8 +32,8 @@ export const CategoriesTableSkeleton: React.FC = () => {
             <TableHead>
                 <HeaderCell className={css.headerCell} />
                 <HeaderCell className={css.headerCell} />
-                <HeaderCell className={css.headerCell} style={{width: 124}} />
-                <HeaderCell className={css.headerCell} style={{width: 160}} />
+                <HeaderCell className={css.headerCell} style={{ width: 124 }} />
+                <HeaderCell className={css.headerCell} style={{ width: 160 }} />
             </TableHead>
             <TableBody className={css['main-table']}>
                 {Array(5)

@@ -1,16 +1,16 @@
-import {httpIntegration} from 'fixtures/integrations'
-import {IntegrationType} from 'models/integration/types'
-import {WrapperTemplate} from 'models/widget/types'
+import { httpIntegration } from 'fixtures/integrations'
+import { IntegrationType } from 'models/integration/types'
+import { WrapperTemplate } from 'models/widget/types'
 import {
     CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
     STANDALONE_WIDGET_TYPE,
     THIRD_PARTY_APP_NAME_KEY,
     WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
-import {WidgetType} from 'state/widgets/types'
-import {humanizeString} from 'utils'
+import { WidgetType } from 'state/widgets/types'
+import { humanizeString } from 'utils'
 
-import {getWidgetId, getWidgetTitle, LABELS} from '../helpers'
+import { getWidgetId, getWidgetTitle, LABELS } from '../helpers'
 
 describe('helpers tests', () => {
     describe('getWidgetId()', () => {
@@ -26,7 +26,7 @@ describe('helpers tests', () => {
         }
         const template: WrapperTemplate = {
             type: 'wrapper',
-            widgets: [{type: 'card', title: 'foo', path: '', widgets: []}],
+            widgets: [{ type: 'card', title: 'foo', path: '', widgets: [] }],
             templatePath: '',
             path: '',
         }
@@ -37,8 +37,8 @@ describe('helpers tests', () => {
                     getWidgetTitle({
                         ...baseProps,
                         widgetType: IntegrationType.Shopify,
-                        template: {...template, title: 'foo'},
-                    })
+                        template: { ...template, title: 'foo' },
+                    }),
                 ).toBe('foo')
             })
 
@@ -47,9 +47,9 @@ describe('helpers tests', () => {
                     getWidgetTitle({
                         ...baseProps,
                         widgetType: IntegrationType.Shopify,
-                        template: {...template, title: '{{foo}}'},
-                        source: {foo: 'bar'},
-                    })
+                        template: { ...template, title: '{{foo}}' },
+                        source: { foo: 'bar' },
+                    }),
                 ).toBe('bar')
             })
         })
@@ -60,7 +60,7 @@ describe('helpers tests', () => {
                     getWidgetTitle({
                         ...baseProps,
                         widgetType: IntegrationType.Shopify,
-                    })
+                    }),
                 ).toBe('Shopify')
             })
 
@@ -69,7 +69,7 @@ describe('helpers tests', () => {
                     getWidgetTitle({
                         ...baseProps,
                         widgetType: IntegrationType.Magento2,
-                    })
+                    }),
                 ).toBe(LABELS[IntegrationType.Magento2])
             })
 
@@ -79,7 +79,7 @@ describe('helpers tests', () => {
                         ...baseProps,
                         widgetType: IntegrationType.Http,
                         integration: httpIntegration,
-                    })
+                    }),
                 ).toBe(httpIntegration.name)
             })
         })
@@ -90,8 +90,8 @@ describe('helpers tests', () => {
                     getWidgetTitle({
                         ...baseProps,
                         widgetType: CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
-                        source: {[THIRD_PARTY_APP_NAME_KEY]: 'foo'},
-                    })
+                        source: { [THIRD_PARTY_APP_NAME_KEY]: 'foo' },
+                    }),
                 ).toBe('foo')
             })
 
@@ -101,7 +101,7 @@ describe('helpers tests', () => {
                         ...baseProps,
                         widgetType: CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
                         appId: 'foo',
-                    })
+                    }),
                 ).toBe('foo')
             })
         })
@@ -112,7 +112,7 @@ describe('helpers tests', () => {
                     getWidgetTitle({
                         ...baseProps,
                         widgetType: WOOCOMMERCE_WIDGET_TYPE,
-                    })
+                    }),
                 ).toBe(LABELS[WOOCOMMERCE_WIDGET_TYPE])
             })
         })
@@ -124,7 +124,7 @@ describe('helpers tests', () => {
                         ...baseProps,
                         template,
                         widgetType: STANDALONE_WIDGET_TYPE,
-                    })
+                    }),
                 ).toBe(template?.widgets?.[0].title)
             })
 
@@ -134,7 +134,7 @@ describe('helpers tests', () => {
                         ...baseProps,
                         template: undefined,
                         widgetType: STANDALONE_WIDGET_TYPE,
-                    })
+                    }),
                 ).toBe(LABELS[STANDALONE_WIDGET_TYPE])
             })
 
@@ -144,7 +144,7 @@ describe('helpers tests', () => {
                     getWidgetTitle({
                         ...baseProps,
                         widgetType: IntegrationType.Phone as WidgetType,
-                    })
+                    }),
                 ).toBe(humanizeString(IntegrationType.Phone))
             })
         })

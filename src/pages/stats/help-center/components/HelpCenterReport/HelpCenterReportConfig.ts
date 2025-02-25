@@ -1,22 +1,22 @@
-import {FilterKey, StaticFilter} from 'models/stat/types'
-import {OptionalFilter} from 'pages/stats/common/filters/FiltersPanel'
-import {ChartType, ReportConfig} from 'pages/stats/custom-reports/types'
+import { FilterKey, StaticFilter } from 'models/stat/types'
+import { OptionalFilter } from 'pages/stats/common/filters/FiltersPanel'
+import { ChartType, ReportConfig } from 'pages/stats/custom-reports/types'
 import ArticleViewsGraph from 'pages/stats/help-center/components/ArticleViewsGraph/ArticleViewsGraph'
-import {ArticleViewsTrendCard} from 'pages/stats/help-center/components/ArticleViewsTrendCard/ArticleViewsTrendCard'
+import { ArticleViewsTrendCard } from 'pages/stats/help-center/components/ArticleViewsTrendCard/ArticleViewsTrendCard'
 import NoSearchTable, {
     NO_SEARCH_TABLE_TITLE,
 } from 'pages/stats/help-center/components/NoSearchTable/NoSearchTable'
-import {PerformanceByArticleChart} from 'pages/stats/help-center/components/PerformanceByArticle/PerformanceByArticleChart'
-import {SearchesTrendCard} from 'pages/stats/help-center/components/SearchesTrendCard/SearchesTrendCard'
+import { PerformanceByArticleChart } from 'pages/stats/help-center/components/PerformanceByArticle/PerformanceByArticleChart'
+import { SearchesTrendCard } from 'pages/stats/help-center/components/SearchesTrendCard/SearchesTrendCard'
 import SearchResultDonut from 'pages/stats/help-center/components/SearchResultDonut/SearchResultDonut'
-import {SearchTermsTableChart} from 'pages/stats/help-center/components/SearchTermsTable/SearchTermsTableChart'
+import { SearchTermsTableChart } from 'pages/stats/help-center/components/SearchTermsTable/SearchTermsTableChart'
 import {
     HelpCenterMetric,
     HelpCenterMetricConfig,
     SEARCH_RESULTS_DONUT_TITLE,
     SEARCH_RESULTS_DONUT_TOOLTIP,
 } from 'pages/stats/help-center/HelpCenterMetricsConfig'
-import {STATS_ROUTES} from 'routes/constants'
+import { STATS_ROUTES } from 'routes/constants'
 
 const PAGE_TITLE_HELP_CENTER = 'Help Center'
 

@@ -1,5 +1,5 @@
-import {RuleEngineData, RuleEngineRoutes} from '../ruleEngine'
-import {Task} from './Task'
+import { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
+import { Task } from './Task'
 
 export class UploadAnExternalDocTask extends Task {
     constructor(data: RuleEngineData, routes: RuleEngineRoutes) {
@@ -8,7 +8,7 @@ export class UploadAnExternalDocTask extends Task {
             'Help AI Agent give accurate answers by accessing your documents',
             'RECOMMENDED',
             data,
-            routes
+            routes,
         )
     }
 
@@ -18,7 +18,7 @@ export class UploadAnExternalDocTask extends Task {
     }
 
     protected getFeatureUrl({
-        routes: {aiAgentRoutes},
+        routes: { aiAgentRoutes },
     }: {
         data: RuleEngineData
         routes: RuleEngineRoutes

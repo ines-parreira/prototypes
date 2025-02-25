@@ -1,4 +1,4 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
 import {
     fetchAutomationDatasetByEventTypeTimeSeries,
@@ -8,7 +8,7 @@ import {
     useAutomationDatasetTimeSeries,
     useBillableTicketDatasetTimeSeries,
 } from 'hooks/reporting/automate/timeSeries'
-import {useAverageCSATScorePerDimensionTimeSeries} from 'hooks/reporting/quality-management/satisfaction/useAverageScorePerDimensionTimeSeries'
+import { useAverageCSATScorePerDimensionTimeSeries } from 'hooks/reporting/quality-management/satisfaction/useAverageScorePerDimensionTimeSeries'
 import {
     fetchTimeSeries,
     fetchTimeSeriesPerDimension,
@@ -20,10 +20,10 @@ import {
     interactionsByEventTypeTimeSeriesQueryFactory,
     interactionsTimeSeriesQueryFactory,
 } from 'models/reporting/queryFactories/automate_v2/timeseries'
-import {averageCSATScorePerDimensionTimeSeriesFactory} from 'models/reporting/queryFactories/satisfaction/averageCSATScorePerDimensionQueryFactory'
-import {ReportingGranularity} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
-import {assumeMock} from 'utils/testing'
+import { averageCSATScorePerDimensionTimeSeriesFactory } from 'models/reporting/queryFactories/satisfaction/averageCSATScorePerDimensionQueryFactory'
+import { ReportingGranularity } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/useTimeSeries')
 const useTimeSeriesMock = assumeMock(useTimeSeries)
@@ -46,20 +46,20 @@ describe('Automate V2 time series', () => {
     describe('useAutomationDatasetTimeSeries', () => {
         it('should pass the query to the useTimeSeriesHook', () => {
             renderHook(
-                ({statsFilters, timezone}) =>
+                ({ statsFilters, timezone }) =>
                     useAutomationDatasetTimeSeries(
                         statsFilters,
                         timezone,
-                        granularity
+                        granularity,
                     ),
-                {initialProps: {statsFilters, timezone, granularity}}
+                { initialProps: { statsFilters, timezone, granularity } },
             )
 
             expect(useTimeSeriesMock.mock.calls[0]).toEqual([
                 interactionsTimeSeriesQueryFactory(
                     statsFilters,
                     timezone,
-                    granularity
+                    granularity,
                 ),
             ])
         })
@@ -68,20 +68,20 @@ describe('Automate V2 time series', () => {
     describe('useAutomationDatasetTimeSeries', () => {
         it('should pass the query to the useTimeSeriesHook', () => {
             renderHook(
-                ({statsFilters, timezone}) =>
+                ({ statsFilters, timezone }) =>
                     useAutomationDatasetByEventTypeTimeSeries(
                         statsFilters,
                         timezone,
-                        granularity
+                        granularity,
                     ),
-                {initialProps: {statsFilters, timezone, granularity}}
+                { initialProps: { statsFilters, timezone, granularity } },
             )
 
             expect(useTimeSeriesPerDimensionMock.mock.calls[0]).toEqual([
                 interactionsByEventTypeTimeSeriesQueryFactory(
                     statsFilters,
                     timezone,
-                    granularity
+                    granularity,
                 ),
             ])
         })
@@ -90,20 +90,20 @@ describe('Automate V2 time series', () => {
     describe('useBillableTicketDatasetTimeSeries', () => {
         it('should pass the query to the useTimeSeriesHook', () => {
             renderHook(
-                ({statsFilters, timezone}) =>
+                ({ statsFilters, timezone }) =>
                     useBillableTicketDatasetTimeSeries(
                         statsFilters,
                         timezone,
-                        granularity
+                        granularity,
                     ),
-                {initialProps: {statsFilters, timezone, granularity}}
+                { initialProps: { statsFilters, timezone, granularity } },
             )
 
             expect(useTimeSeriesMock.mock.calls[0]).toEqual([
                 billableTicketDatasetExcludingAIAgentTimeSeriesQueryFactory(
                     statsFilters,
                     timezone,
-                    granularity
+                    granularity,
                 ),
             ])
         })
@@ -113,12 +113,12 @@ describe('Automate V2 time series', () => {
         it('should pass the query to the useTimeSeriesHook', () => {
             const dimension = 'some-dimension'
             renderHook(
-                ({statsFilters, timezone, granularity}) =>
+                ({ statsFilters, timezone, granularity }) =>
                     useAverageCSATScorePerDimensionTimeSeries(
                         dimension,
                         statsFilters,
                         timezone,
-                        granularity
+                        granularity,
                     ),
                 {
                     initialProps: {
@@ -126,7 +126,7 @@ describe('Automate V2 time series', () => {
                         timezone,
                         granularity,
                     },
-                }
+                },
             )
 
             expect(useTimeSeriesPerDimensionMock).toHaveBeenCalledWith(
@@ -134,8 +134,8 @@ describe('Automate V2 time series', () => {
                     dimension,
                     statsFilters,
                     timezone,
-                    granularity
-                )
+                    granularity,
+                ),
             )
         })
     })
@@ -153,13 +153,13 @@ describe('Automate V2 time series', () => {
             },
         ])(
             'should pass the respective query to the fetchTimeSeriesHook',
-            async ({method, hook}) => {
+            async ({ method, hook }) => {
                 await method(statsFilters, timezone, granularity)
 
                 expect(fetchTimeSeriesMock.mock.calls[0]).toEqual([
                     hook(statsFilters, timezone, granularity),
                 ])
-            }
+            },
         )
 
         it.each([
@@ -169,13 +169,13 @@ describe('Automate V2 time series', () => {
             },
         ])(
             'should pass the respective query to the fetchTimeSeriesHook',
-            async ({method, hook}) => {
+            async ({ method, hook }) => {
                 await method(statsFilters, timezone, granularity)
 
                 expect(fetchTimeSeriesPerDimensionMock.mock.calls[0]).toEqual([
                     hook(statsFilters, timezone, granularity),
                 ])
-            }
+            },
         )
 
         describe('fetchAutomationDatasetTimeSeries', () => {
@@ -183,14 +183,14 @@ describe('Automate V2 time series', () => {
                 await fetchAutomationDatasetTimeSeries(
                     statsFilters,
                     timezone,
-                    granularity
+                    granularity,
                 )
 
                 expect(fetchTimeSeriesMock.mock.calls[0]).toEqual([
                     interactionsTimeSeriesQueryFactory(
                         statsFilters,
                         timezone,
-                        granularity
+                        granularity,
                     ),
                 ])
             })
@@ -201,14 +201,14 @@ describe('Automate V2 time series', () => {
                 await fetchAutomationDatasetByEventTypeTimeSeries(
                     statsFilters,
                     timezone,
-                    granularity
+                    granularity,
                 )
 
                 expect(fetchTimeSeriesPerDimensionMock.mock.calls[0]).toEqual([
                     interactionsByEventTypeTimeSeriesQueryFactory(
                         statsFilters,
                         timezone,
-                        granularity
+                        granularity,
                     ),
                 ])
             })
@@ -219,14 +219,14 @@ describe('Automate V2 time series', () => {
                 await fetchBillableTicketDatasetTimeSeries(
                     statsFilters,
                     timezone,
-                    granularity
+                    granularity,
                 )
 
                 expect(fetchTimeSeriesMock.mock.calls[0]).toEqual([
                     billableTicketDatasetExcludingAIAgentTimeSeriesQueryFactory(
                         statsFilters,
                         timezone,
-                        granularity
+                        granularity,
                     ),
                 ])
             })

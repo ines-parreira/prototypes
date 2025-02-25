@@ -1,13 +1,13 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
 export default function useChildOrder(
     container: HTMLDivElement | null,
     names: string[],
-    ids: string[]
+    ids: string[],
 ) {
     return useMemo(() => {
         if (!container || !names.length) {
-            return {handlesMap: {}, panelOrder: []}
+            return { handlesMap: {}, panelOrder: [] }
         }
 
         const selectors = [
@@ -24,14 +24,14 @@ export default function useChildOrder(
             })
             .filter((mapping): mapping is [string, string] => !!mapping)
             .reduce(
-                (acc, [name, id]) => ({...acc, [name]: id}),
-                {} as Record<string, string>
+                (acc, [name, id]) => ({ ...acc, [name]: id }),
+                {} as Record<string, string>,
             )
 
         const panelOrder = els
             .map((element) => element.getAttribute('data-panel-name'))
             .filter((el): el is string => !!el)
 
-        return {handlesMap, panelOrder}
+        return { handlesMap, panelOrder }
     }, [container, ids, names])
 }

@@ -1,9 +1,11 @@
-import {Map, List} from 'immutable'
-import React, {useState} from 'react'
-import {Dropdown, DropdownMenu, DropdownToggle} from 'reactstrap'
+import React, { useState } from 'react'
+
+import { List, Map } from 'immutable'
+import { Dropdown, DropdownMenu, DropdownToggle } from 'reactstrap'
 
 import PeopleSearchInput from './PeopleSearchInput'
 import PeopleSearchResults from './PeopleSearchResults'
+
 import css from './UncontrolledPeopleSearchInput.less'
 
 type Props = {
@@ -30,7 +32,7 @@ export default function UncontrolledPeopleSearchInput({
     const filteredTeams = teams.filter((team) =>
         (team!.get('name') as string)
             .toLowerCase()
-            .includes(filter.toLowerCase())
+            .includes(filter.toLowerCase()),
     ) as List<Map<any, any>>
 
     const filteredUsers = users.filter((user) => {

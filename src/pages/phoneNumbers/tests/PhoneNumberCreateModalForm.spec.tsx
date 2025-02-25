@@ -1,13 +1,14 @@
-import {cleanup, fireEvent, render, screen} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { cleanup, fireEvent, render, screen } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {capabilities as capabilitiesFixtures} from 'fixtures/phoneNumber'
+import { capabilities as capabilitiesFixtures } from 'fixtures/phoneNumber'
 import * as apiCalls from 'models/phoneNumber/resources'
-import {PhoneNumber} from 'models/phoneNumber/types'
-import {RootState, StoreDispatch} from 'state/types'
-import {mockQueryClientProvider} from 'tests/reactQueryTestingUtils'
+import { PhoneNumber } from 'models/phoneNumber/types'
+import { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import PhoneNumberCreateModalForm from '../PhoneNumberCreateModalForm'
 import * as phoneNumberUtils from '../utils'
@@ -17,12 +18,12 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({})
 
 jest.spyOn(apiCalls, 'fetchPhoneCapabilities').mockReturnValue(
-    new Promise((resolve) => resolve(capabilitiesFixtures))
+    new Promise((resolve) => resolve(capabilitiesFixtures)),
 )
 
 const getAddressValidationAlertMessageSpy = jest.spyOn(
     phoneNumberUtils,
-    'getAddressValidationAlertMessage'
+    'getAddressValidationAlertMessage',
 )
 
 describe('<PhoneNumberCreateModalForm/>', () => {
@@ -31,7 +32,7 @@ describe('<PhoneNumberCreateModalForm/>', () => {
     const onClose: jest.MockedFunction<() => void> = jest.fn()
 
     const renderComponent = (
-        props: Partial<ComponentProps<typeof PhoneNumberCreateModalForm>> = {}
+        props: Partial<ComponentProps<typeof PhoneNumberCreateModalForm>> = {},
     ) =>
         render(
             <Provider store={store}>
@@ -43,20 +44,20 @@ describe('<PhoneNumberCreateModalForm/>', () => {
                         {...props}
                     />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
     afterEach(cleanup)
 
     it('should render Alert message when there is one', () => {
         getAddressValidationAlertMessageSpy.mockReturnValue(
-            'test message' as any
+            'test message' as any,
         )
 
         renderComponent()
         expect(screen.getByText('test message')).toBeVisible()
         expect(
-            screen.getByRole('button', {name: /Create phone number/})
+            screen.getByRole('button', { name: /Create phone number/ }),
         ).toBeAriaDisabled()
     })
 
@@ -66,13 +67,13 @@ describe('<PhoneNumberCreateModalForm/>', () => {
         renderComponent()
         expect(screen.queryByText('test message')).toBeNull()
         expect(
-            screen.getByRole('button', {name: /Create phone number/})
+            screen.getByRole('button', { name: /Create phone number/ }),
         ).not.toBeAriaDisabled()
     })
 
     describe('render()', () => {
         it('should not render when isOpen is false', () => {
-            renderComponent({isOpen: false})
+            renderComponent({ isOpen: false })
 
             expect(screen.queryByText('Create Phone Number')).toBeNull()
         })
@@ -84,7 +85,7 @@ describe('<PhoneNumberCreateModalForm/>', () => {
         })
 
         it('should render no steps when no address validation is required', () => {
-            const {getByText, queryByText} = renderComponent()
+            const { getByText, queryByText } = renderComponent()
 
             fireEvent.click(getByText('United States'))
             expect(queryByText('Create Phone Number')).not.toBe(null)
@@ -92,12 +93,12 @@ describe('<PhoneNumberCreateModalForm/>', () => {
         })
 
         it('should render a second with for address validation for certain countries', () => {
-            const {getByText, queryByText} = renderComponent()
+            const { getByText, queryByText } = renderComponent()
 
             fireEvent.click(getByText('Australia'))
 
             expect(queryByText('Step 1 of 2 - Phone Information')).not.toBe(
-                null
+                null,
             )
             expect(queryByText('Step 2 of 2 - Address Verification')).toBe(null)
 
@@ -109,7 +110,7 @@ describe('<PhoneNumberCreateModalForm/>', () => {
 
             expect(queryByText('Step 1 of 2 - Phone Information')).toBe(null)
             expect(queryByText('Step 2 of 2 - Address Verification')).not.toBe(
-                null
+                null,
             )
 
             expect(queryByText('Business name')).not.toBe(null)
@@ -122,7 +123,7 @@ describe('<PhoneNumberCreateModalForm/>', () => {
             fireEvent.click(getByText('Back'))
 
             expect(queryByText('Step 1 of 2 - Phone Information')).not.toBe(
-                null
+                null,
             )
             expect(queryByText('Step 2 of 2 - Address Verification')).toBe(null)
 

@@ -1,5 +1,6 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import css from './SteppedSlider.less'
 
@@ -85,7 +86,7 @@ const handle = (color: string) => (
 )
 
 export const SteppedSlider: React.FC<SteppedSliderProps> = (props) => {
-    const {steps, stepKey, color, backgroundColor, onChange} = props
+    const { steps, stepKey, color, backgroundColor, onChange } = props
 
     const [isDragging, setIsDragging] = useState(false)
     const [showTooltip, setShowTooltip] = useState(false)
@@ -99,7 +100,7 @@ export const SteppedSlider: React.FC<SteppedSliderProps> = (props) => {
 
     const currentTrackPosition = useMemo(
         () => (stepKeyIndex / (stepCount - 1)) * 100,
-        [stepCount, stepKeyIndex]
+        [stepCount, stepKeyIndex],
     )
 
     const getStepKeyFromPosition = useCallback(
@@ -108,7 +109,7 @@ export const SteppedSlider: React.FC<SteppedSliderProps> = (props) => {
             const step = Math.round(position / stepSize)
             return steps[Math.max(0, Math.min(step, stepCount - 1))].key
         },
-        [steps, stepCount]
+        [steps, stepCount],
     )
 
     const handleMouseDown = (e: React.MouseEvent) => {
@@ -127,7 +128,7 @@ export const SteppedSlider: React.FC<SteppedSliderProps> = (props) => {
                 onChange(newStepKey)
             }
         },
-        [stepKey, getStepKeyFromPosition, onChange]
+        [stepKey, getStepKeyFromPosition, onChange],
     )
 
     useEffect(() => {

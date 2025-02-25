@@ -1,5 +1,6 @@
-import {LiveCallQueueAgent} from '@gorgias/api-queries'
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
+
+import { LiveCallQueueAgent } from '@gorgias/api-queries'
 
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBody from 'pages/common/components/table/TableBody'
@@ -10,14 +11,15 @@ import {
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 
 import LiveVoiceAgentRow from './LiveVoiceAgentRow'
+import { AgentStatusCategory, groupAgentsByStatus } from './utils'
+
 import css from './LiveVoiceAgentsList.less'
-import {AgentStatusCategory, groupAgentsByStatus} from './utils'
 
 type Props = {
     agents: LiveCallQueueAgent[]
 }
 
-export default function LiveVoiceAgentsList({agents}: Props) {
+export default function LiveVoiceAgentsList({ agents }: Props) {
     const data: WithChildren<Data>[] = useMemo(() => {
         const categories = groupAgentsByStatus(agents)
 

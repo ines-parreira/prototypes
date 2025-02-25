@@ -1,8 +1,9 @@
-import {List, Map} from 'immutable'
 import React from 'react'
 
-import {RuleItemActions} from 'pages/settings/rules/types'
-import {RuleOperation} from 'state/rules/types'
+import { List, Map } from 'immutable'
+
+import { RuleItemActions } from 'pages/settings/rules/types'
+import { RuleOperation } from 'state/rules/types'
 
 type Props = {
     rule: Map<any, any>
@@ -10,12 +11,12 @@ type Props = {
     parent: List<any>
 }
 
-export default function DeleteBinaryExpression({actions, parent}: Props) {
+export default function DeleteBinaryExpression({ actions, parent }: Props) {
     const handleClick = () => {
         actions.modifyCodeAST(
             parent,
             null,
-            RuleOperation.DeleteBinaryExpression
+            RuleOperation.DeleteBinaryExpression,
         )
     }
     return (

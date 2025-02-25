@@ -1,7 +1,9 @@
-import useMetricTrend, {fetchMetricTrend} from 'hooks/reporting/useMetricTrend'
-import {responseRateQueryFactory} from 'models/reporting/queryFactories/satisfaction/responseRateQueryFactory'
-import {StatsFilters} from 'models/stat/types'
-import {getPreviousPeriod} from 'utils/reporting'
+import useMetricTrend, {
+    fetchMetricTrend,
+} from 'hooks/reporting/useMetricTrend'
+import { responseRateQueryFactory } from 'models/reporting/queryFactories/satisfaction/responseRateQueryFactory'
+import { StatsFilters } from 'models/stat/types'
+import { getPreviousPeriod } from 'utils/reporting'
 
 export const useResponseRateTrend = (filters: StatsFilters, timezone: string) =>
     useMetricTrend(
@@ -11,13 +13,13 @@ export const useResponseRateTrend = (filters: StatsFilters, timezone: string) =>
                 ...filters,
                 period: getPreviousPeriod(filters.period),
             },
-            timezone
-        )
+            timezone,
+        ),
     )
 
 export const fetchResponseRateTrend = (
     filters: StatsFilters,
-    timezone: string
+    timezone: string,
 ) =>
     fetchMetricTrend(
         responseRateQueryFactory(filters, timezone),
@@ -26,6 +28,6 @@ export const fetchResponseRateTrend = (
                 ...filters,
                 period: getPreviousPeriod(filters.period),
             },
-            timezone
-        )
+            timezone,
+        ),
     )

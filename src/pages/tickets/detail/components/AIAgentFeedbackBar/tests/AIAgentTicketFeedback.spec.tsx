@@ -1,19 +1,21 @@
-import {Tag} from '@gorgias/api-queries'
-import {render} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {TicketFeedback} from 'models/aiAgentFeedback/types'
-import {TicketMessage} from 'models/ticket/types'
-import {useAIAgentMessageEvents} from 'pages/tickets/detail/hooks/useAIAgentMessageEvents'
-import {getAIAgentMessages} from 'state/ticket/selectors'
-import {RootState, StoreDispatch} from 'state/types'
-import {assumeMock} from 'utils/testing'
+import { Tag } from '@gorgias/api-queries'
+
+import { TicketFeedback } from 'models/aiAgentFeedback/types'
+import { TicketMessage } from 'models/ticket/types'
+import { useAIAgentMessageEvents } from 'pages/tickets/detail/hooks/useAIAgentMessageEvents'
+import { getAIAgentMessages } from 'state/ticket/selectors'
+import { RootState, StoreDispatch } from 'state/types'
+import { assumeMock } from 'utils/testing'
 
 import AIAgentTicketFeedback from '../AIAgentTicketFeedback'
-import {TicketEventEnum} from '../types'
-import {messageFeedback} from './fixtures'
+import { TicketEventEnum } from '../types'
+import { messageFeedback } from './fixtures'
 
 jest.mock('state/ticket/selectors')
 jest.mock('state/ui/ticketAIAgentFeedback')
@@ -40,7 +42,7 @@ jest.mock(
             >
                 {children}
             </div>
-        )
+        ),
 )
 
 const getAIAgentMessagesMock = assumeMock(getAIAgentMessages)
@@ -78,31 +80,31 @@ describe('AIAgentTicketFeedback', () => {
             },
         ])
 
-        const {queryByTestId} = render(
+        const { queryByTestId } = render(
             <Provider store={store}>
                 <AIAgentTicketFeedback ticketFeedback={ticketFeedback} />
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            queryByTestId('ticket-feedback-messages')
+            queryByTestId('ticket-feedback-messages'),
         ).not.toBeInTheDocument()
     })
 
     it('should render messages count when aiMessage is public', () => {
-        const {getByTestId} = render(
+        const { getByTestId } = render(
             <Provider store={store}>
                 <AIAgentTicketFeedback ticketFeedback={ticketFeedback} />
-            </Provider>
+            </Provider>,
         )
 
         expect(getByTestId('ticket-feedback-messages')).toHaveTextContent(
-            '1 message'
+            '1 message',
         )
     })
 
     it('should not render resource ("Using") section when no resources are used', () => {
-        const {queryByText} = render(
+        const { queryByText } = render(
             <Provider store={store}>
                 <AIAgentTicketFeedback
                     ticketFeedback={{
@@ -117,14 +119,14 @@ describe('AIAgentTicketFeedback', () => {
                         ],
                     }}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(queryByText('Using')).not.toBeInTheDocument()
     })
 
     it('should render resource ("Using") section when there are guidances used', () => {
-        const {queryByText, queryByTestId} = render(
+        const { queryByText, queryByTestId } = render(
             <Provider store={store}>
                 <AIAgentTicketFeedback
                     ticketFeedback={{
@@ -148,17 +150,17 @@ describe('AIAgentTicketFeedback', () => {
                         ],
                     }}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(queryByText('Using')).toBeInTheDocument()
         expect(queryByTestId('ticket-feedback-guidances')).toHaveTextContent(
-            /2 Guidances/
+            /2 Guidances/,
         )
     })
 
     it('should render resource ("Using") section when there are knowledges used', () => {
-        const {queryByText, queryByTestId} = render(
+        const { queryByText, queryByTestId } = render(
             <Provider store={store}>
                 <AIAgentTicketFeedback
                     ticketFeedback={{
@@ -185,17 +187,17 @@ describe('AIAgentTicketFeedback', () => {
                         ],
                     }}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(queryByText('Using')).toBeInTheDocument()
         expect(queryByTestId('ticket-feedback-knowledges')).toHaveTextContent(
-            /2 Knowledge sources/
+            /2 Knowledge sources/,
         )
     })
 
     it('should render resource ("Using") section when there are actions used', () => {
-        const {queryByText, queryByTestId} = render(
+        const { queryByText, queryByTestId } = render(
             <Provider store={store}>
                 <AIAgentTicketFeedback
                     ticketFeedback={{
@@ -221,17 +223,17 @@ describe('AIAgentTicketFeedback', () => {
                         ],
                     }}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(queryByText('Using')).toBeInTheDocument()
         expect(queryByTestId('ticket-feedback-actions')).toHaveTextContent(
-            /2 Actions/
+            /2 Actions/,
         )
     })
 
     it('should not render orders section when there are orders used', () => {
-        const {queryByText, queryAllByTestId} = render(
+        const { queryByText, queryAllByTestId } = render(
             <Provider store={store}>
                 <AIAgentTicketFeedback
                     ticketFeedback={{
@@ -244,7 +246,7 @@ describe('AIAgentTicketFeedback', () => {
                         ],
                     }}
                 />
-            </Provider>
+            </Provider>,
         )
 
         const orders = queryAllByTestId('ticket-feedback-order')
@@ -254,7 +256,7 @@ describe('AIAgentTicketFeedback', () => {
     })
 
     it('should render orders section when there are orders used', () => {
-        const {queryByText, queryAllByTestId} = render(
+        const { queryByText, queryAllByTestId } = render(
             <Provider store={store}>
                 <AIAgentTicketFeedback
                     ticketFeedback={{
@@ -278,7 +280,7 @@ describe('AIAgentTicketFeedback', () => {
                         ],
                     }}
                 />
-            </Provider>
+            </Provider>,
         )
 
         const orders = queryAllByTestId('ticket-feedback-order')
@@ -297,7 +299,7 @@ describe('AIAgentTicketFeedback', () => {
             },
         ])
 
-        const {queryByText} = render(
+        const { queryByText } = render(
             <Provider store={store}>
                 <AIAgentTicketFeedback
                     ticketFeedback={{
@@ -310,7 +312,7 @@ describe('AIAgentTicketFeedback', () => {
                         ],
                     }}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(queryByText('Ticket events')).not.toBeInTheDocument()
@@ -332,10 +334,10 @@ describe('AIAgentTicketFeedback', () => {
                 action: null,
             },
         ])
-        const {queryByText} = render(
+        const { queryByText } = render(
             <Provider store={store}>
                 <AIAgentTicketFeedback ticketFeedback={ticketFeedback} />
-            </Provider>
+            </Provider>,
         )
 
         expect(queryByText('Ticket events')).toBeInTheDocument()
@@ -370,10 +372,10 @@ describe('AIAgentTicketFeedback', () => {
                 action: TicketEventEnum.SNOOZE,
             },
         ])
-        const {queryByText, queryAllByTestId} = render(
+        const { queryByText, queryAllByTestId } = render(
             <Provider store={store}>
                 <AIAgentTicketFeedback ticketFeedback={ticketFeedback} />
-            </Provider>
+            </Provider>,
         )
 
         const ticketEvents = queryAllByTestId('ticket-event')
@@ -405,10 +407,10 @@ describe('AIAgentTicketFeedback', () => {
                 action: TicketEventEnum.CLOSE,
             },
         ])
-        const {queryByText, queryByTestId} = render(
+        const { queryByText, queryByTestId } = render(
             <Provider store={store}>
                 <AIAgentTicketFeedback ticketFeedback={ticketFeedback} />
-            </Provider>
+            </Provider>,
         )
 
         expect(queryByText('Ticket events')).toBeInTheDocument()
@@ -424,7 +426,7 @@ describe('AIAgentTicketFeedback', () => {
         expect(links?.[0]).toHaveTextContent('AI Agent Configuration')
         expect(links?.[0]).toHaveAttribute(
             'href',
-            '/app/automation/shopify/fast-cars/ai-agent'
+            '/app/automation/shopify/fast-cars/ai-agent',
         )
     })
 })

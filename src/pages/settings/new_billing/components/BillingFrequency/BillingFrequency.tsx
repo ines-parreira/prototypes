@@ -1,7 +1,7 @@
 import React from 'react'
 
-import {Cadence} from 'models/billing/types'
-import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
+import { Cadence } from 'models/billing/types'
+import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 
 import css from './BillingFrequency.less'
 

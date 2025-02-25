@@ -1,18 +1,19 @@
-import {waitFor} from '@testing-library/react'
+import React, { ComponentProps } from 'react'
+
+import { waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {createBrowserHistory} from 'history'
-import {fromJS, Map} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import { createBrowserHistory } from 'history'
+import { fromJS, Map } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {customer} from 'fixtures/customer'
-import {ticket} from 'fixtures/ticket'
-import {RootState, StoreDispatch} from 'state/types'
-import {renderWithRouter} from 'utils/testing'
+import { customer } from 'fixtures/customer'
+import { ticket } from 'fixtures/ticket'
+import { RootState, StoreDispatch } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
-import {CustomerDetailContainer} from '../CustomerDetailContainer'
+import { CustomerDetailContainer } from '../CustomerDetailContainer'
 
 jest.mock('../../common/components/CustomerForm', () => () => (
     <div>CustomerForm</div>
@@ -21,7 +22,7 @@ jest.mock('../../common/components/CustomerForm', () => () => (
 jest.mock(
     'pages/common/utils/DatetimeLabel',
     () =>
-        ({dateTime}: {dateTime: string}) => <div>{dateTime}</div>
+        ({ dateTime }: { dateTime: string }) => <div>{dateTime}</div>,
 )
 
 const mockSetRecentItem = jest.fn()
@@ -38,7 +39,7 @@ describe('<CustomerDetailContainer />', () => {
         activeCustomer: fromJS({}),
         customerHistory: fromJS({}),
         customersIsLoading: jest.fn(),
-        fetchCustomer: jest.fn().mockResolvedValue({resp: {id: 1}}),
+        fetchCustomer: jest.fn().mockResolvedValue({ resp: { id: 1 } }),
         fetchCustomerHistory: jest.fn(),
     } as unknown as ComponentProps<typeof CustomerDetailContainer>
     const defaultStore = {
@@ -57,7 +58,7 @@ describe('<CustomerDetailContainer />', () => {
     })
 
     it('should display the customer and its history of messages', () => {
-        const {container} = renderWithRouter(
+        const { container } = renderWithRouter(
             <Provider store={store}>
                 <CustomerDetailContainer
                     {...minProps}
@@ -72,7 +73,7 @@ describe('<CustomerDetailContainer />', () => {
             {
                 path: '/foo/:customerId?',
                 route: '/foo/1',
-            }
+            },
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -82,11 +83,11 @@ describe('<CustomerDetailContainer />', () => {
         const history = createBrowserHistory()
         history.push('/foo/1')
 
-        const {rerender} = renderWithRouter(
+        const { rerender } = renderWithRouter(
             <Provider store={store}>
                 <CustomerDetailContainer {...minProps} />
             </Provider>,
-            {history, path: '/foo/:customerId?'}
+            { history, path: '/foo/:customerId?' },
         )
 
         expect(minProps.fetchCustomer).toHaveBeenCalledWith('1')
@@ -94,20 +95,20 @@ describe('<CustomerDetailContainer />', () => {
         rerender(
             <Provider store={store}>
                 <CustomerDetailContainer {...minProps} />
-            </Provider>
+            </Provider>,
         )
         expect(minProps.fetchCustomer).toHaveBeenLastCalledWith('2')
     })
 
     it('should display an unknown state when no active customer is provided', () => {
-        const {getByText} = renderWithRouter(
+        const { getByText } = renderWithRouter(
             <Provider store={store}>
                 <CustomerDetailContainer {...minProps} />
             </Provider>,
             {
                 path: '/foo/:customerId?',
                 route: '/foo/1',
-            }
+            },
         )
         expect(getByText(/Unknown customer/i)).toBeTruthy()
     })
@@ -115,7 +116,7 @@ describe('<CustomerDetailContainer />', () => {
     it('should display a loader when active customer is being loaded', () => {
         const customersIsLoading = (type: string) => type === 'active'
 
-        const {getByText} = renderWithRouter(
+        const { getByText } = renderWithRouter(
             <Provider store={store}>
                 <CustomerDetailContainer
                     {...minProps}
@@ -125,7 +126,7 @@ describe('<CustomerDetailContainer />', () => {
             {
                 path: '/foo/:customerId?',
                 route: '/foo/1',
-            }
+            },
         )
 
         expect(getByText(/Loading customer/i)).toBeTruthy()
@@ -145,7 +146,7 @@ describe('<CustomerDetailContainer />', () => {
             {
                 path: '/foo/:customerId?',
                 route: '/foo/1',
-            }
+            },
         )
 
         await waitFor(() =>
@@ -153,8 +154,8 @@ describe('<CustomerDetailContainer />', () => {
                 activeCustomer.get('id'),
                 expect.objectContaining({
                     successCondition: expect.any(Function),
-                })
-            )
+                }),
+            ),
         )
     })
 
@@ -162,7 +163,7 @@ describe('<CustomerDetailContainer />', () => {
         const activeCustomer = fromJS({
             id: 1,
         })
-        const {getByText} = renderWithRouter(
+        const { getByText } = renderWithRouter(
             <Provider store={store}>
                 <CustomerDetailContainer
                     {...minProps}
@@ -172,7 +173,7 @@ describe('<CustomerDetailContainer />', () => {
             {
                 path: '/foo/:customerId?',
                 route: '/foo/1',
-            }
+            },
         )
 
         userEvent.click(getByText(/Edit customer/))
@@ -182,25 +183,25 @@ describe('<CustomerDetailContainer />', () => {
     it('should display loader when history of customer is loading', () => {
         const customersIsLoading = (type: string) => type === 'history'
 
-        const {getByText} = renderWithRouter(
+        const { getByText } = renderWithRouter(
             <Provider store={store}>
                 <CustomerDetailContainer
                     {...minProps}
-                    activeCustomer={fromJS({id: 1})}
+                    activeCustomer={fromJS({ id: 1 })}
                     customersIsLoading={customersIsLoading}
                 />
             </Provider>,
             {
                 path: '/foo/:customerId?',
                 route: '/foo/1',
-            }
+            },
         )
 
         expect(getByText(/Loading history/i)).toBeTruthy()
     })
 
     it('should display message when no history is present', () => {
-        const {getByText} = renderWithRouter(
+        const { getByText } = renderWithRouter(
             <Provider store={store}>
                 <CustomerDetailContainer
                     {...minProps}
@@ -215,11 +216,11 @@ describe('<CustomerDetailContainer />', () => {
             {
                 path: '/foo/:customerId?',
                 route: '/foo/1',
-            }
+            },
         )
 
         expect(
-            getByText(/This customer has no activity recorded/i)
+            getByText(/This customer has no activity recorded/i),
         ).toBeTruthy()
     })
 
@@ -234,7 +235,7 @@ describe('<CustomerDetailContainer />', () => {
             {
                 path: '/foo/:customerId?',
                 route: '/foo/1',
-            }
+            },
         )
 
         expect(mockSetRecentItem).toHaveBeenCalledWith(mockActiveCustomer)

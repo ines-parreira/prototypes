@@ -1,9 +1,10 @@
-import noop from 'lodash/noop'
-import React, {useCallback} from 'react'
-import {connect} from 'react-redux'
+import React, { useCallback } from 'react'
 
-import {useTagSearch} from 'hooks/reporting/common/useTagSearch'
-import {FilterKey, TagFilter, TagFilterInstanceId} from 'models/stat/types'
+import noop from 'lodash/noop'
+import { connect } from 'react-redux'
+
+import { useTagSearch } from 'hooks/reporting/common/useTagSearch'
+import { FilterKey, TagFilter, TagFilterInstanceId } from 'models/stat/types'
 import Filter from 'pages/stats/common/components/Filter'
 import {
     LogicalOperatorEnum,
@@ -13,7 +14,7 @@ import {
     FilterLabels,
     tagsFilterLogicalOperators,
 } from 'pages/stats/common/filters/constants'
-import {logSegmentEvent} from 'pages/stats/common/filters/helpers'
+import { logSegmentEvent } from 'pages/stats/common/filters/helpers'
 import {
     OptionalFilterProps,
     RemovableFilter,
@@ -22,14 +23,14 @@ import {
     createFilterOptions,
     getFilterError,
 } from 'pages/stats/common/filters/utils'
-import {DropdownOption} from 'pages/stats/types'
+import { DropdownOption } from 'pages/stats/types'
 import {
     getPageStatsFiltersWithLogicalOperators,
     getSavedFiltersWithLogicalOperators,
 } from 'state/stats/selectors'
-import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
-import {RootState} from 'state/types'
-import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
+import { mergeStatsFiltersWithLogicalOperator } from 'state/stats/statsSlice'
+import { RootState } from 'state/types'
+import { statFiltersClean, statFiltersDirty } from 'state/ui/stats/actions'
 import {
     removeFilterFromSavedFilterDraft,
     upsertSavedFilterFilter,
@@ -55,7 +56,7 @@ type Props = {
 
 const emptyTagFilter = (
     filterInstanceId: TagFilterInstanceId,
-    excludedOperator: LogicalOperatorEnum | undefined
+    excludedOperator: LogicalOperatorEnum | undefined,
 ) => ({
     operator:
         excludedOperator === LogicalOperatorEnum.ONE_OF
@@ -77,7 +78,7 @@ export const TagsFilter = ({
     dispatchStatFiltersClean = noop,
     isDisabled,
 }: Props) => {
-    const {handleTagsSearch, onLoad, tags, shouldLoadMore, tagsState} =
+    const { handleTagsSearch, onLoad, tags, shouldLoadMore, tagsState } =
         useTagSearch()
 
     const tagOptions = createFilterOptions(value.values, tagsState)
@@ -112,7 +113,7 @@ export const TagsFilter = ({
 
             dispatchUpdate(tagsToUpdate)
         },
-        [dispatchUpdate, otherValue, value.filterInstanceId, value.operator]
+        [dispatchUpdate, otherValue, value.filterInstanceId, value.operator],
     )
 
     const handleFilterOperatorChange = useCallback(
@@ -130,14 +131,14 @@ export const TagsFilter = ({
 
             dispatchUpdate(tagsToUpdate)
         },
-        [dispatchUpdate, otherValue, value.filterInstanceId, value.values]
+        [dispatchUpdate, otherValue, value.filterInstanceId, value.values],
     )
 
     const onOptionChange = (opt: DropdownOption) => {
         const id = Number(opt.value)
         if (value.values.includes(id)) {
             handleFilterValuesChange(
-                value.values.filter((tagId) => tagId !== id)
+                value.values.filter((tagId) => tagId !== id),
             )
         } else {
             handleFilterValuesChange([...value.values, id])
@@ -152,28 +153,28 @@ export const TagsFilter = ({
         dispatchStatFiltersClean()
     }
 
-    const {warningType, warningMessage} = tagsWarningType
-        ? {warningType: tagsWarningType, warningMessage: undefined}
+    const { warningType, warningMessage } = tagsWarningType
+        ? { warningType: tagsWarningType, warningMessage: undefined }
         : getFilterError({
-              options: [{options: [...stateOptions]}],
+              options: [{ options: [...stateOptions] }],
               selectedOptions: tagOptions,
           })
 
     return (
         <Filter
             filterName={FilterLabels[FilterKey.Tags]}
-            filterErrors={{warningType, warningMessage}}
-            filterOptionGroups={[{options}]}
+            filterErrors={{ warningType, warningMessage }}
+            filterOptionGroups={[{ options }]}
             selectedOptions={tagOptions}
             logicalOperators={tagsFilterLogicalOperators.filter(
-                (operator) => operator !== otherValue?.operator
+                (operator) => operator !== otherValue?.operator,
             )}
             selectedLogicalOperator={value.operator}
             onChangeOption={onOptionChange}
             onSearch={handleTagsSearch}
             onSelectAll={() => {
                 handleFilterValuesChange(
-                    options.map((tag) => Number(tag.value))
+                    options.map((tag) => Number(tag.value)),
                 )
             }}
             onRemoveAll={() => {
@@ -206,35 +207,35 @@ export const TagsFilter = ({
 
 export const getFilterInstanceProps = (
     filter: TagFilter[] | undefined,
-    ownProps: Pick<Props, 'filterInstanceId'>
+    ownProps: Pick<Props, 'filterInstanceId'>,
 ) => {
     const tagFilters = filter ?? []
     let currentInstance = tagFilters.find(
-        (filter) => filter.filterInstanceId === ownProps.filterInstanceId
+        (filter) => filter.filterInstanceId === ownProps.filterInstanceId,
     )
     const otherInstanceId =
         ownProps.filterInstanceId === TagFilterInstanceId.First
             ? TagFilterInstanceId.Second
             : TagFilterInstanceId.First
     const otherInstance = tagFilters.find(
-        (filter) => filter.filterInstanceId === otherInstanceId
+        (filter) => filter.filterInstanceId === otherInstanceId,
     )
 
     if (tagFilters.length === 0 || !currentInstance) {
         currentInstance = emptyTagFilter(
             ownProps.filterInstanceId ?? TagFilterInstanceId.First,
-            otherInstance?.operator
+            otherInstance?.operator,
         )
     }
 
-    return {value: currentInstance, otherValue: otherInstance}
+    return { value: currentInstance, otherValue: otherInstance }
 }
 
 export const TagsFilterWithState = connect(
     (state: RootState, ownProps: Pick<Props, 'filterInstanceId'>) =>
         getFilterInstanceProps(
             getPageStatsFiltersWithLogicalOperators(state)[FilterKey.Tags],
-            ownProps
+            ownProps,
         ),
     {
         dispatchUpdate: (filter: TagFilter[]) =>
@@ -252,14 +253,14 @@ export const TagsFilterWithState = connect(
             }),
         dispatchStatFiltersDirty: statFiltersDirty,
         dispatchStatFiltersClean: statFiltersClean,
-    }
+    },
 )(TagsFilter)
 
 export const TagsFilterWithSavedState = connect(
     (state: RootState, ownProps: Pick<Props, 'filterInstanceId'>) =>
         getFilterInstanceProps(
             getSavedFiltersWithLogicalOperators(state)[FilterKey.Tags],
-            ownProps
+            ownProps,
         ),
     {
         dispatchUpdate: (filter: TagFilter[]) =>
@@ -281,5 +282,5 @@ export const TagsFilterWithSavedState = connect(
                 filterKey: FilterKey.Tags,
                 filterInstanceId,
             }),
-    }
+    },
 )(TagsFilter)

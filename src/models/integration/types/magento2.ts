@@ -1,7 +1,7 @@
 // g/integrations/magento2/schemas.py
-import {IntegrationType} from '../constants'
-import type {Integration} from './'
-import type {IntegrationBase} from './base'
+import { IntegrationType } from '../constants'
+import type { Integration } from './'
+import type { IntegrationBase } from './base'
 
 export type Magento2Integration = IntegrationBase & {
     type: IntegrationType.Magento2
@@ -19,6 +19,6 @@ export type Magento2IntegrationMeta = {
 }
 
 export const isMagento2Integration = (
-    integration: Maybe<Integration>
+    integration: Maybe<Integration>,
 ): integration is Magento2Integration =>
     integration?.type === IntegrationType.Magento2

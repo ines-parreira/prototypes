@@ -1,7 +1,6 @@
-import {User} from '@gorgias/api-queries'
-import {Syntax} from 'esprima'
-import {BaseCallExpression, BaseNode} from 'estree'
-import {fromJS, List, Map, Seq} from 'immutable'
+import { Syntax } from 'esprima'
+import { BaseCallExpression, BaseNode } from 'estree'
+import { fromJS, List, Map, Seq } from 'immutable'
 import _isArray from 'lodash/isArray'
 import _isInteger from 'lodash/isInteger'
 import _isNumber from 'lodash/isNumber'
@@ -9,28 +8,29 @@ import _isObject from 'lodash/isObject'
 import _isString from 'lodash/isString'
 import moment from 'moment'
 
-import {fromAST} from 'common/utils'
+import { User } from '@gorgias/api-queries'
 
-import {UNARY_OPERATORS, TIMEDELTA_OPERATOR_DEFAULT_VALUE} from '../../config'
-import {UserRole} from '../../config/types/user'
-import {ViewType, ViewVisibility} from '../../models/view/types'
-import {tryLocalStorage} from '../../services/common/utils'
+import { fromAST } from 'common/utils'
+
+import { TIMEDELTA_OPERATOR_DEFAULT_VALUE, UNARY_OPERATORS } from '../../config'
+import { UserRole } from '../../config/types/user'
+import { ViewType, ViewVisibility } from '../../models/view/types'
+import { tryLocalStorage } from '../../services/common/utils'
 import {
     getAST,
-    getFirstExpressionOfAST,
-    toJS,
-    hasRole,
     getCode,
+    getFirstExpressionOfAST,
+    hasRole,
+    toJS,
 } from '../../utils'
-import {isTimedelta} from '../../utils/ast'
-import {Agents} from '../agents/types'
+import { isTimedelta } from '../../utils/ast'
+import { Agents } from '../agents/types'
 import {
     CollectionOperator,
-    TimedeltaOperator,
     DatetimeOperator,
+    TimedeltaOperator,
 } from '../rules/types'
-
-import {ViewFilter} from './types'
+import { ViewFilter } from './types'
 
 export const rawify = (data: Maybe<string | number | boolean>): string => {
     if (typeof data === 'string') {
@@ -50,17 +50,17 @@ export const rawify = (data: Maybe<string | number | boolean>): string => {
  */
 function resolveSecondArg(
     callee: string,
-    rightValue: Maybe<Record<string, unknown>>
+    rightValue: Maybe<Record<string, unknown>>,
 ): Maybe<string> {
     const isTimedeltaCallee = Object.values(TimedeltaOperator).includes(
-        callee as any
+        callee as any,
     )
     const isDatetimeCallee = Object.values(DatetimeOperator).includes(
-        callee as any
+        callee as any,
     )
     const isUnaryCallee = Object.keys(UNARY_OPERATORS).includes(callee)
     const isCollectionOperator = Object.values(CollectionOperator).includes(
-        callee as any
+        callee as any,
     )
     const currentRawValue =
         rightValue && rightValue.raw ? (rightValue.raw as string) : null
@@ -79,7 +79,7 @@ function resolveSecondArg(
         if (rightValue && rightValue.type === 'ArrayExpression') {
             return (
                 '[' +
-                (rightValue.elements as {raw: string}[])
+                (rightValue.elements as { raw: string }[])
                     .map((elem) => elem.raw)
                     .join(', ') +
                 ']'
@@ -114,7 +114,7 @@ export function addFilterAST(view: Map<any, any>, filter: ViewFilter) {
 // traverse filters_ast, remove the call expressions and return a new tree
 export function removeFilterAST(
     view: Map<any, any>,
-    index: number
+    index: number,
 ): Maybe<Map<any, any>> {
     // As always, we assume that we only have && operators
     const codeSplit = (view.get('filters') as string).split('&&')
@@ -127,7 +127,7 @@ function setIn(
     ast: Map<any, any>,
     index: number,
     path: Array<string | number>,
-    value: unknown
+    value: unknown,
 ): Map<any, any> {
     let count = 0
 
@@ -136,7 +136,7 @@ function setIn(
             case 'Program':
                 return node.setIn(
                     ['body', 0],
-                    walker(node.getIn(['body', 0], fromJS({})))
+                    walker(node.getIn(['body', 0], fromJS({}))),
                 )
             case 'ExpressionStatement':
                 return node.set('expression', walker(node.get('expression')))
@@ -163,7 +163,7 @@ function setIn(
 export function getIn(
     ast: Map<any, any>,
     index: number,
-    path: Array<string | number>
+    path: Array<string | number>,
 ): Maybe<Map<any, any>> | string {
     let count = 0
 
@@ -204,7 +204,7 @@ export function getIn(
 export function updateFilterOperator(
     ast: Map<any, any>,
     index: number,
-    operator: string
+    operator: string,
 ): Map<any, any> {
     let filter = getIn(ast, index, []) as Map<any, any>
     const rightArgs = filter.getIn(['arguments', 1])
@@ -217,7 +217,7 @@ export function updateFilterOperator(
     if (rightRaw) {
         const secondArg = getFirstExpressionOfAST(getAST(rightRaw))
         filter = filter.update('arguments', (args: List<any>) =>
-            args.push(secondArg)
+            args.push(secondArg),
         )
     }
 
@@ -231,7 +231,7 @@ function updateAstLoc(ast: Map<any, any>) {
 export function updateFilterValue(
     ast: Map<any, any>,
     index: number,
-    value: string | number | Array<string | number> | null
+    value: string | number | Array<string | number> | null,
 ): Map<any, any> {
     if (_isArray(value)) {
         const astLiterals = value.map((item) => ({
@@ -246,7 +246,7 @@ export function updateFilterValue(
         }
 
         return updateAstLoc(
-            setIn(ast, index, ['arguments', 1], arrayExpression)
+            setIn(ast, index, ['arguments', 1], arrayExpression),
         )
     }
     const raw = rawify(value)
@@ -255,8 +255,8 @@ export function updateFilterValue(
             ast,
             index,
             ['arguments', 1],
-            getFirstExpressionOfAST(getAST(raw))
-        )
+            getFirstExpressionOfAST(getAST(raw)),
+        ),
     )
 }
 
@@ -276,7 +276,7 @@ export function updateCustomFieldFilter(
     ast: Map<any, any>,
     index: number,
     customFieldId: number,
-    customFieldOperator: string
+    customFieldOperator: string,
 ) {
     const isInitialAstWithoutLiteral =
         getIn(ast, index, ['arguments', 0, 'property', 'name']) !== 'value'
@@ -327,7 +327,7 @@ export function agentsTypingMessage(agents: Agents): string {
 }
 
 // Class responsible for getting and storing recent views
-export type StoredView = {inserted_datetime: string; updated_datetime: string}
+export type StoredView = { inserted_datetime: string; updated_datetime: string }
 export class RecentViewsStorage {
     storage: Maybe<Storage>
     storageKey: string
@@ -342,7 +342,7 @@ export class RecentViewsStorage {
     }
 
     get(): Maybe<{
-        [key: string]: {inserted_datetime: string; updated_datetime: string}
+        [key: string]: { inserted_datetime: string; updated_datetime: string }
     }> {
         if (!this.storage) {
             return
@@ -352,7 +352,7 @@ export class RecentViewsStorage {
 
         try {
             recentViews = JSON.parse(
-                this.storage.getItem(this.storageKey) as string
+                this.storage.getItem(this.storageKey) as string,
             )
         } catch (error) {
             console.error(error)
@@ -364,7 +364,10 @@ export class RecentViewsStorage {
         }
 
         const views: {
-            [key: string]: {inserted_datetime: string; updated_datetime: string}
+            [key: string]: {
+                inserted_datetime: string
+                updated_datetime: string
+            }
         } = {}
         const now = moment.utc().toISOString()
 
@@ -392,8 +395,8 @@ export class RecentViewsStorage {
 export const recentViewsStorage = new RecentViewsStorage()
 
 function getViewTypeUrl(
-    viewType: ViewType
-): Maybe<{detail: string; list: string}> {
+    viewType: ViewType,
+): Maybe<{ detail: string; list: string }> {
     const typeMap = {
         [ViewType.TicketList]: {
             detail: 'ticket',
@@ -419,7 +422,7 @@ export function activeViewUrl(
         pathname: string
         search: string
     },
-    navigation: Map<any, any>
+    navigation: Map<any, any>,
 ): string {
     const viewType = view.get('type', '')
     const viewId = view.get('id')
@@ -462,10 +465,10 @@ export function activeViewUrl(
 
 export function addViewIfMissing(
     views: List<any>,
-    newView: {id: number}
+    newView: { id: number },
 ): List<any> {
     const existing = views.find(
-        (view: Map<any, any>) => view.get('id') === newView.id
+        (view: Map<any, any>) => view.get('id') === newView.id,
     )
     return existing ? views : views.push(fromJS(newView))
 }
@@ -473,18 +476,18 @@ export function addViewIfMissing(
 export function isViewSharedWithUser(
     view: {
         visibility: string
-        shared_with_users: Array<{id: number}>
-        shared_with_teams: Array<{id: number}>
+        shared_with_users: Array<{ id: number }>
+        shared_with_teams: Array<{ id: number }>
     },
     user: Map<any, any>,
-    teams: List<Map<any, any>> | Seq.Indexed<Map<any, any>>
+    teams: List<Map<any, any>> | Seq.Indexed<Map<any, any>>,
 ): boolean {
     const isAgent = hasRole(user, UserRole.Agent)
     const userId = user.get('id')
     const userTeams = teams.filter((team) =>
         (team!.get('members', []) as List<any>).some(
-            (member: Map<any, any>) => member.get('id') === userId
-        )
+            (member: Map<any, any>) => member.get('id') === userId,
+        ),
     )
 
     const isViewPublic = view.visibility === ViewVisibility.Public
@@ -492,11 +495,11 @@ export function isViewSharedWithUser(
     const isViewPrivate = view.visibility === ViewVisibility.Private
 
     const isSharedWithUser = view.shared_with_users.some(
-        (sharedWithUser) => sharedWithUser.id === userId
+        (sharedWithUser) => sharedWithUser.id === userId,
     )
 
     const isSharedWithTeam = view.shared_with_teams.some((sharedWithTeam) =>
-        userTeams.some((userTeam) => userTeam!.get('id') === sharedWithTeam.id)
+        userTeams.some((userTeam) => userTeam!.get('id') === sharedWithTeam.id),
     )
 
     return (
@@ -515,7 +518,7 @@ export function getViewFilters(node: BaseNode = {} as BaseNode) {
                     : _isObject(value)
                       ? acc.concat(findCallExpressions(value as BaseNode))
                       : acc,
-            [] as BaseCallExpression[]
+            [] as BaseCallExpression[],
         )
 
     const callExpressions = findCallExpressions(node)
@@ -551,7 +554,7 @@ export function getViewFilters(node: BaseNode = {} as BaseNode) {
                     secondExpression.value) ||
                 (secondExpression.type === Syntax.ArrayExpression &&
                     secondExpression.elements.map(
-                        (element) => 'value' in element && element.value
+                        (element) => 'value' in element && element.value,
                     ))
 
             return acc.concat({

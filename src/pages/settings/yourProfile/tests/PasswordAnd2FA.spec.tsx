@@ -1,13 +1,14 @@
-import {fireEvent, screen} from '@testing-library/react'
-import {createMemoryHistory} from 'history'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, screen } from '@testing-library/react'
+import { createMemoryHistory } from 'history'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {RootState, StoreDispatch} from 'state/types'
-import {assumeMock, renderWithRouter} from 'utils/testing'
+import { RootState, StoreDispatch } from 'state/types'
+import { assumeMock, renderWithRouter } from 'utils/testing'
 
 import ChangePasswordContainer from '../ChangePassword'
 import PasswordAnd2FA from '../PasswordAnd2FA'
@@ -35,18 +36,18 @@ describe('<PasswordAnd2FA />', () => {
                 renderWithRouter(
                     <Provider store={store}>
                         <PasswordAnd2FA />
-                    </Provider>
+                    </Provider>,
                 )
 
                 // test page title
                 expect(
-                    screen.getByText(hasPassword ? 'Password & 2FA' : '2FA')
+                    screen.getByText(hasPassword ? 'Password & 2FA' : '2FA'),
                 ).toBeInTheDocument()
 
                 expect(ChangePasswordContainerMock).toHaveBeenCalledTimes(
-                    hasPassword ? 1 : 0
+                    hasPassword ? 1 : 0,
                 )
-            }
+            },
         )
 
         it.each([true, false])(
@@ -61,14 +62,14 @@ describe('<PasswordAnd2FA />', () => {
                 renderWithRouter(
                     <Provider store={store}>
                         <PasswordAnd2FA />
-                    </Provider>
+                    </Provider>,
                 )
 
                 // test label presence
                 expect(screen.getByText('2FA Disabled')).toBeInTheDocument()
                 // test action button presence
                 expect(screen.getByText('Enable 2FA')).toBeInTheDocument()
-            }
+            },
         )
 
         it('should always render with 2FA section according to 2fa status', () => {
@@ -80,7 +81,7 @@ describe('<PasswordAnd2FA />', () => {
             renderWithRouter(
                 <Provider store={store}>
                     <PasswordAnd2FA />
-                </Provider>
+                </Provider>,
             )
 
             // test label presence
@@ -101,11 +102,11 @@ describe('<PasswordAnd2FA />', () => {
             renderWithRouter(
                 <Provider store={store}>
                     <PasswordAnd2FA />
-                </Provider>
+                </Provider>,
             )
 
             expect(
-                screen.queryByText('Verify Your Identity')
+                screen.queryByText('Verify Your Identity'),
             ).not.toBeInTheDocument()
         })
 
@@ -115,11 +116,11 @@ describe('<PasswordAnd2FA />', () => {
             renderWithRouter(
                 <Provider store={store}>
                     <PasswordAnd2FA />
-                </Provider>
+                </Provider>,
             )
 
             expect(
-                screen.queryByText('Verify Your Identity')
+                screen.queryByText('Verify Your Identity'),
             ).toBeInTheDocument()
         })
 
@@ -129,7 +130,7 @@ describe('<PasswordAnd2FA />', () => {
             renderWithRouter(
                 <Provider store={store}>
                     <PasswordAnd2FA />
-                </Provider>
+                </Provider>,
             )
             fireEvent.click(screen.getByText('Continue'))
 
@@ -147,7 +148,7 @@ describe('<PasswordAnd2FA />', () => {
                 <Provider store={store}>
                     <PasswordAnd2FA />
                 </Provider>,
-                {history}
+                { history },
             )
 
             expect(history.location.pathname).toBe('/settings')

@@ -1,8 +1,10 @@
-import classnames from 'classnames'
 import React from 'react'
 
-import {Paths} from '../../../../rest_api/help_center_api/client.generated'
+import classnames from 'classnames'
+
+import { Paths } from '../../../../rest_api/help_center_api/client.generated'
 import useHelpCenterArticleTree from '../hooks/useHelpCenterArticleTree'
+
 import css from './MessageCard.less'
 
 type Props = {
@@ -33,7 +35,7 @@ const MessageCard = ({
                     <i
                         className={classnames(
                             'material-icons',
-                            css.successIcon
+                            css.successIcon,
                         )}
                     >
                         check_circle
@@ -61,9 +63,9 @@ export const StatefulMessageCard = ({
     articleId: number
     locale: Paths.GetCategoryTree.Parameters.Locale
 }) => {
-    const {map, isInitialLoading} = useHelpCenterArticleTree(
+    const { map, isInitialLoading } = useHelpCenterArticleTree(
         helpCenterId,
-        locale
+        locale,
     )
 
     return (

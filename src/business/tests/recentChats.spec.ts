@@ -1,7 +1,7 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
-import {shouldTicketBeDisplayedInRecentChats} from '../recentChats'
-import {TicketChannel, TicketStatus} from '../types/ticket'
+import { shouldTicketBeDisplayedInRecentChats } from '../recentChats'
+import { TicketChannel, TicketStatus } from '../types/ticket'
 
 const defaultTicket = {
     id: 1,
@@ -52,14 +52,14 @@ describe('Business', () => {
                 }),
             }
 
-            const currentUser = fromJS({id: 1})
+            const currentUser = fromJS({ id: 1 })
 
             it('should return true because the ticket is unassigned and the setting `auto_assign_to_teams` is disabled', () => {
                 const res = shouldTicketBeDisplayedInRecentChats(
                     defaultTicket,
                     ticketAssignmentSettings.autoAssignDisabled,
                     currentUser,
-                    true
+                    true,
                 )
 
                 expect(res).toEqual(true)
@@ -73,11 +73,11 @@ describe('Business', () => {
                         defaultTicket,
                         ticketAssignmentSettings.channelsDontIncludeChat,
                         currentUser,
-                        true
+                        true,
                     )
 
                     expect(res).toEqual(true)
-                }
+                },
             )
 
             it('should return false because the ticket is closed', () => {
@@ -90,7 +90,7 @@ describe('Business', () => {
                     ticket,
                     ticketAssignmentSettings.autoAssignDisabled,
                     currentUser,
-                    true
+                    true,
                 )
 
                 expect(res).toEqual(false)
@@ -106,7 +106,7 @@ describe('Business', () => {
                     ticket,
                     ticketAssignmentSettings.autoAssignDisabled,
                     currentUser,
-                    true
+                    true,
                 )
 
                 expect(res).toEqual(false)
@@ -122,7 +122,7 @@ describe('Business', () => {
                     ticket,
                     ticketAssignmentSettings.autoAssignDisabled,
                     currentUser,
-                    true
+                    true,
                 )
 
                 expect(res).toEqual(false)
@@ -138,7 +138,7 @@ describe('Business', () => {
                     ticket,
                     ticketAssignmentSettings.autoAssignDisabled,
                     currentUser,
-                    true
+                    true,
                 )
 
                 expect(res).toEqual(false)
@@ -154,7 +154,7 @@ describe('Business', () => {
                     ticket,
                     ticketAssignmentSettings.autoAssignDisabled,
                     currentUser,
-                    true
+                    true,
                 )
 
                 expect(res).toEqual(false)
@@ -168,11 +168,11 @@ describe('Business', () => {
                         defaultTicket,
                         ticketAssignmentSettings.autoAssignEnabled,
                         currentUser,
-                        true
+                        true,
                     )
 
                     expect(res).toEqual(false)
-                }
+                },
             )
         })
     })

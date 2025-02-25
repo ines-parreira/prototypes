@@ -1,8 +1,8 @@
-import {usePhoneNumberCapabilitiesMap} from 'models/phoneNumber/queries'
+import { usePhoneNumberCapabilitiesMap } from 'models/phoneNumber/queries'
 import {
+    PhoneCapabilities,
     PhoneCountry,
     PhoneType,
-    PhoneCapabilities,
 } from 'models/phoneNumber/types'
 
 export function usePhoneNumberCapabilities({

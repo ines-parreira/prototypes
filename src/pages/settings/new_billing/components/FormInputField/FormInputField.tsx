@@ -28,7 +28,7 @@ export function FormInputField<
     transform,
     ...inputProps
 }: IFormInputFieldProps<TFieldName, TFieldValues>) {
-    const {field, fieldState} = useController({
+    const { field, fieldState } = useController({
         name,
         rules,
     })

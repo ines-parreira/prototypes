@@ -1,7 +1,7 @@
 import React from 'react'
 
-import {CarouselData} from 'pages/common/components/HeroImageCarousel/HeroImageCarousel'
-import {assetsUrl} from 'utils'
+import { CarouselData } from 'pages/common/components/HeroImageCarousel/HeroImageCarousel'
+import { assetsUrl } from 'utils'
 
 export enum ConvertFeatures {
     Default = 'Default',
@@ -31,7 +31,7 @@ export const PaywallConfig: Record<ConvertFeatures, PaywallFeature> = {
         slidesData: [
             {
                 imageUrl: assetsUrl(
-                    '/img/paywalls/screens/convert-tmlewin.png'
+                    '/img/paywalls/screens/convert-tmlewin.png',
                 ),
                 description: (
                     <>

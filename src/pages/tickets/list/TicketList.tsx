@@ -1,7 +1,3 @@
-import {useAgentActivity} from '@gorgias/realtime'
-import classnames from 'classnames'
-import decorateComponentWithProps from 'decorate-component-with-props'
-import {List, Map} from 'immutable'
 import React, {
     ComponentProps,
     useCallback,
@@ -9,31 +5,37 @@ import React, {
     useMemo,
     useState,
 } from 'react'
-import {useLocation, useParams} from 'react-router-dom'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import classnames from 'classnames'
+import decorateComponentWithProps from 'decorate-component-with-props'
+import { List, Map } from 'immutable'
+import { useLocation, useParams } from 'react-router-dom'
+
+import { useAgentActivity } from '@gorgias/realtime'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {SearchRankSource} from 'hooks/useSearchRankScenario'
+import { SearchRankSource } from 'hooks/useSearchRankScenario'
 import useTitle from 'hooks/useTitle'
-import {EntityType} from 'models/view/types'
+import { EntityType } from 'models/view/types'
 import CreateTicketButton from 'pages/common/components/CreateTicket/CreateTicketButton'
 import SearchRankScenarioProvider from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioProvider'
 import ViewTable from 'pages/common/components/ViewTable/ViewTable'
-import {isCreationUrl, isSearchUrl} from 'pages/common/utils/url'
+import { isCreationUrl, isSearchUrl } from 'pages/common/utils/url'
 import MacroContainer from 'pages/tickets/common/macros/MacroContainer'
-import {TicketListActions} from 'pages/tickets/list/components/TicketListActions'
+import { TicketListActions } from 'pages/tickets/list/components/TicketListActions'
 import css from 'pages/tickets/list/TicketList.less'
-import {fetchTags} from 'state/tags/actions'
-import {getTickets} from 'state/tickets/selectors'
-import {updateSelectedItemsIds} from 'state/views/actions'
+import { fetchTags } from 'state/tags/actions'
+import { getTickets } from 'state/tickets/selectors'
+import { updateSelectedItemsIds } from 'state/views/actions'
 import {
     areAllActiveViewItemsSelected,
     getActiveView,
-    getSelectedItemsIds,
     hasActiveView as getHasActiveView,
+    getSelectedItemsIds,
 } from 'state/views/selectors'
-import {compactInteger} from 'utils'
+import { compactInteger } from 'utils'
 
 const TicketList = () => {
     const dispatch = useAppDispatch()
@@ -44,27 +46,27 @@ const TicketList = () => {
     const tickets = useAppSelector(getTickets)
     const allViewItemsSelected = useAppSelector(areAllActiveViewItemsSelected)
 
-    const {viewTickets} = useAgentActivity()
+    const { viewTickets } = useAgentActivity()
 
     useEffect(() => {
         const ticketIds = tickets.map(
-            (item: Map<any, any>) => item.get('id') as number
+            (item: Map<any, any>) => item.get('id') as number,
         )
         viewTickets(ticketIds.toJS())
     }, [tickets, viewTickets])
 
     const [isMacroModalOpen, setIsMacroModalOpen] = useState(false)
 
-    const {pathname} = useLocation()
-    const params = useParams<{viewId?: string}>()
+    const { pathname } = useLocation()
+    const params = useParams<{ viewId?: string }>()
     const isSearch = useMemo(() => isSearchUrl(pathname, 'tickets'), [pathname])
     const isUpdate = useMemo(
         () => !isCreationUrl(pathname, 'tickets'),
-        [pathname]
+        [pathname],
     )
     const isEditMode = useMemo(
         () => activeView.get('editMode') as boolean,
-        [activeView]
+        [activeView],
     )
 
     const onComplete = useCallback(
@@ -75,7 +77,7 @@ const TicketList = () => {
                 location: 'full-width-mode',
             })
         },
-        [dispatch]
+        [dispatch],
     )
 
     useEffect(() => {
@@ -92,7 +94,7 @@ const TicketList = () => {
             title = activeView.get('name')
             if (activeView.get('count', 0) > 0) {
                 title = `(${compactInteger(
-                    activeView.get('count', 0)
+                    activeView.get('count', 0),
                 )}) ${title}`
             }
         } else {
@@ -117,7 +119,7 @@ const TicketList = () => {
             urlViewId={params.viewId}
             ActionsComponent={decorateComponentWithProps<
                 ComponentProps<typeof TicketListActions>,
-                {openMacroModal: () => void}
+                { openMacroModal: () => void }
             >(TicketListActions, {
                 openMacroModal: () => setIsMacroModalOpen(true),
             })}

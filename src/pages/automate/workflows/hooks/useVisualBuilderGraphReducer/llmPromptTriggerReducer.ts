@@ -1,6 +1,5 @@
-import {produce} from 'immer'
-
-import {ulid} from 'ulidx'
+import { produce } from 'immer'
+import { ulid } from 'ulidx'
 
 import {
     isLLMPromptTriggerNodeType,
@@ -72,13 +71,13 @@ export function isVisualBuilderLLMPromptTriggerAction(action: {
     type: string
 }): action is VisualBuilderLLMPromptTriggerAction {
     return Object.keys(visualBuilderLLMPromptTriggerActionTypes).includes(
-        action.type
+        action.type,
     )
 }
 
 export function llmPromptTriggerReducer(
     graph: VisualBuilderGraph,
-    action: VisualBuilderLLMPromptTriggerAction
+    action: VisualBuilderLLMPromptTriggerAction,
 ): VisualBuilderGraph {
     switch (action.type) {
         case 'SET_LLM_PROMPT_TRIGGER_INSTRUCTIONS':
@@ -117,7 +116,7 @@ export function llmPromptTriggerReducer(
 
                 if (node) {
                     const index = node.data.inputs.findIndex(
-                        (input) => input.id === action.id
+                        (input) => input.id === action.id,
                     )
 
                     if (index !== -1) {
@@ -131,7 +130,7 @@ export function llmPromptTriggerReducer(
 
                 if (node) {
                     const index = node.data.inputs.findIndex(
-                        (input) => input.id === action.input.id
+                        (input) => input.id === action.input.id,
                     )
 
                     if (index !== -1) {

@@ -1,7 +1,8 @@
-import {cleanup, render, screen} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {CustomerLabel} from 'pages/common/utils/labels'
+import { cleanup, render, screen } from '@testing-library/react'
+
+import { CustomerLabel } from 'pages/common/utils/labels'
 import * as voiceCallHooks from 'pages/tickets/detail/components/TicketVoiceCall/hooks'
 
 import VoiceCallCustomerLabel from '../VoiceCallCustomerLabel/VoiceCallCustomerLabel'
@@ -16,7 +17,7 @@ const useCustomerDetailsSpy = jest.spyOn(voiceCallHooks, 'useCustomerDetails')
 
 describe('VoiceCallCustomerLabel', () => {
     const renderComponent = (
-        props: ComponentProps<typeof VoiceCallCustomerLabel>
+        props: ComponentProps<typeof VoiceCallCustomerLabel>,
     ) => render(<VoiceCallCustomerLabel {...props} />)
 
     afterEach(() => {
@@ -27,18 +28,18 @@ describe('VoiceCallCustomerLabel', () => {
         useCustomerDetailsSpy.mockReturnValue({
             customer: 'Customer Name',
         } as any)
-        renderComponent({customerId: 1, phoneNumber: '1234567890'})
+        renderComponent({ customerId: 1, phoneNumber: '1234567890' })
 
         expect(
-            screen.getByText('CustomerLabel Customer Name')
+            screen.getByText('CustomerLabel Customer Name'),
         ).toBeInTheDocument()
     })
 
     it('should render phone number when customer does not exist', () => {
         useCustomerDetailsSpy.mockReturnValue({
-            error: {response: {status: 404}},
+            error: { response: { status: 404 } },
         } as any)
-        renderComponent({customerId: 1, phoneNumber: '1234567890'})
+        renderComponent({ customerId: 1, phoneNumber: '1234567890' })
 
         expect(screen.getByText('CustomerLabel 1234567890')).toBeInTheDocument()
     })
@@ -55,7 +56,7 @@ describe('VoiceCallCustomerLabel', () => {
         })
 
         expect(useCustomerDetailsSpy.mock.calls?.[0]?.[0]?.isEnabled).toBe(
-            false
+            false,
         )
         expect(screen.getByText('CustomerLabel NameProp')).toBeInTheDocument()
     })

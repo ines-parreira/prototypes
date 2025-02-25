@@ -1,9 +1,9 @@
 import * as esprima from 'esprima'
-import {fromJS, Map, List} from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 import moment from 'moment'
 import randomstring from 'randomstring'
 
-import {isPrivateAsset} from 'common/utils'
+import { isPrivateAsset } from 'common/utils'
 import {
     ADMIN_ROLE,
     AGENT_ROLE,
@@ -17,13 +17,13 @@ import {
     TimeFormatType,
 } from 'constants/datetime'
 import schemasJSON from 'fixtures/openapi.json'
-import {Account} from 'state/currentAccount/types'
+import { Account } from 'state/currentAccount/types'
 import * as utils from 'utils'
-import {assertUnreachable, getCode} from 'utils'
-import {getDateAndTimeFormat} from 'utils/datetime'
+import { assertUnreachable, getCode } from 'utils'
+import { getDateAndTimeFormat } from 'utils/datetime'
 import * as envUtils from 'utils/environment'
-import {isDevelopment, isProduction, isStaging} from 'utils/environment'
-import {mockProductionEnvironment} from 'utils/testing'
+import { isDevelopment, isProduction, isStaging } from 'utils/environment'
+import { mockProductionEnvironment } from 'utils/testing'
 
 jest.mock('common/utils')
 jest.mock('utils/environment')
@@ -34,12 +34,12 @@ describe('global utils', () => {
     const compactDateFormat = getDateAndTimeFormat(
         DateFormatType.en_US,
         TimeFormatType.AmPm,
-        DateAndTimeFormatting.CompactDate
+        DateAndTimeFormatting.CompactDate,
     )
     const compactDateWithTimeFormat = getDateAndTimeFormat(
         DateFormatType.en_US,
         TimeFormatType.AmPm,
-        DateAndTimeFormatting.CompactDateWithTime
+        DateAndTimeFormatting.CompactDateWithTime,
     )
 
     describe('formatDatetime', () => {
@@ -68,7 +68,7 @@ describe('global utils', () => {
 
         it('valid default format', () => {
             expect(
-                utils.formatDatetime('2013-05-10 12:00', compactDateFormat)
+                utils.formatDatetime('2013-05-10 12:00', compactDateFormat),
             ).toBe('05/10/2013')
         })
 
@@ -77,8 +77,8 @@ describe('global utils', () => {
                 utils.formatDatetime(
                     '2013-05-10 12:00',
                     compactDateFormat,
-                    'xxx'
-                )
+                    'xxx',
+                ),
             ).toBe('05/10/2013')
         })
 
@@ -86,32 +86,32 @@ describe('global utils', () => {
             const time = utils.formatDatetime(
                 '2016-06-09T07:30:07+00:00',
                 'YYYY-DD-MM HH:mm',
-                'Europe/Paris'
+                'Europe/Paris',
             )
             expect(time).toBe('2016-09-06 09:30')
         })
 
         it('timestamp input as string', () => {
             expect(utils.formatDatetime('1480695366', compactDateFormat)).toBe(
-                '12/02/2016'
+                '12/02/2016',
             )
         })
 
         it('timestamp input as number', () => {
             expect(utils.formatDatetime(1480695366, compactDateFormat)).toBe(
-                '12/02/2016'
+                '12/02/2016',
             )
         })
 
         it('timestamp input as string decimal', () => {
             expect(
-                utils.formatDatetime('1318781876.721', compactDateFormat)
+                utils.formatDatetime('1318781876.721', compactDateFormat),
             ).toBe('10/16/2011')
         })
 
         it('timestamp input as number decimal', () => {
             expect(
-                utils.formatDatetime(1318781876.721, compactDateFormat)
+                utils.formatDatetime(1318781876.721, compactDateFormat),
             ).toBe('10/16/2011')
         })
 
@@ -119,8 +119,8 @@ describe('global utils', () => {
             expect(
                 utils.formatDatetime(
                     moment('2016-06-09T19:21:30'),
-                    compactDateWithTimeFormat
-                )
+                    compactDateWithTimeFormat,
+                ),
             ).toBe('06/09/2016 07:21 PM')
         })
 
@@ -128,8 +128,8 @@ describe('global utils', () => {
             expect(
                 utils.formatDatetime(
                     moment('2016-06-09 19:21:30+0300'),
-                    compactDateWithTimeFormat
-                )
+                    compactDateWithTimeFormat,
+                ),
             ).toBe('06/09/2016 04:21 PM')
         })
     })
@@ -312,13 +312,13 @@ describe('global utils', () => {
 
         it('should exclude any sub-page', () => {
             expect(utils.isStrictTicketPath('/app/tickets/1/sub-page')).toBe(
-                false
+                false,
             )
             expect(utils.isStrictTicketPath('/app/ticket/1/sub-page')).toBe(
-                false
+                false,
             )
             expect(utils.isStrictTicketPath('/app/views/1/sub-page')).toBe(
-                false
+                false,
             )
         })
     })
@@ -375,7 +375,7 @@ describe('global utils', () => {
 
     describe('hasRole', () => {
         it('should determine if user has required role (observer agent)', () => {
-            const user = fromJS({role: {name: OBSERVER_AGENT_ROLE}})
+            const user = fromJS({ role: { name: OBSERVER_AGENT_ROLE } })
             expect(utils.hasRole(user, OBSERVER_AGENT_ROLE)).toEqual(true)
             expect(utils.hasRole(user, LITE_AGENT_ROLE)).toEqual(false)
             expect(utils.hasRole(user, BASIC_AGENT_ROLE)).toEqual(false)
@@ -383,7 +383,7 @@ describe('global utils', () => {
             expect(utils.hasRole(user, ADMIN_ROLE)).toEqual(false)
         })
         it('should determine if user has required role (agent)', () => {
-            const user = fromJS({role: {name: AGENT_ROLE}})
+            const user = fromJS({ role: { name: AGENT_ROLE } })
             expect(utils.hasRole(user, OBSERVER_AGENT_ROLE)).toEqual(true)
             expect(utils.hasRole(user, LITE_AGENT_ROLE)).toEqual(true)
             expect(utils.hasRole(user, BASIC_AGENT_ROLE)).toEqual(true)
@@ -392,7 +392,7 @@ describe('global utils', () => {
         })
 
         it('should determine if user has required role (admin)', () => {
-            const user = fromJS({role: {name: ADMIN_ROLE}})
+            const user = fromJS({ role: { name: ADMIN_ROLE } })
             expect(utils.hasRole(user, OBSERVER_AGENT_ROLE)).toEqual(true)
             expect(utils.hasRole(user, LITE_AGENT_ROLE)).toEqual(true)
             expect(utils.hasRole(user, BASIC_AGENT_ROLE)).toEqual(true)
@@ -435,15 +435,15 @@ describe('global utils', () => {
     describe('resolvePropertyName', () => {
         it('should resolve property name', () => {
             expect(utils.resolvePropertyName('Attachment')).toEqual(
-                'Attachment'
+                'Attachment',
             )
             expect(utils.resolvePropertyName('Widget')).toEqual('Widget')
             expect(utils.resolvePropertyName('View')).toEqual('View')
             expect(utils.resolvePropertyName('UserSetting')).toEqual(
-                'UserSetting'
+                'UserSetting',
             )
             expect(utils.resolvePropertyName('UserConnection')).toEqual(
-                'UserConnection'
+                'UserConnection',
             )
             expect(utils.resolvePropertyName('ViewCount')).toEqual('ViewCount')
             expect(utils.resolvePropertyName('User')).toEqual('User')
@@ -452,29 +452,29 @@ describe('global utils', () => {
             expect(utils.resolvePropertyName('Account')).toEqual('Account')
             expect(utils.resolvePropertyName('UserAuth')).toEqual('UserAuth')
             expect(utils.resolvePropertyName('Integration')).toEqual(
-                'Integration'
+                'Integration',
             )
             expect(utils.resolvePropertyName('Role')).toEqual('Role')
             expect(utils.resolvePropertyName('Action')).toEqual('Action')
             expect(utils.resolvePropertyName('UserChannel')).toEqual(
-                'UserChannel'
+                'UserChannel',
             )
             expect(utils.resolvePropertyName('SourceAddress')).toEqual(
-                'SourceAddress'
+                'SourceAddress',
             )
             expect(utils.resolvePropertyName('Event')).toEqual('Event')
             expect(utils.resolvePropertyName('Tag')).toEqual('Tag')
             expect(utils.resolvePropertyName('Source')).toEqual('Source')
             expect(utils.resolvePropertyName('SatisfactionSurvey')).toEqual(
-                'SatisfactionSurvey'
+                'SatisfactionSurvey',
             )
             expect(utils.resolvePropertyName('IntegrationHTTP')).toEqual(
-                'IntegrationHTTP'
+                'IntegrationHTTP',
             )
             expect(utils.resolvePropertyName('Rule')).toEqual('Rule')
 
             expect(utils.resolvePropertyName('Message')).toEqual(
-                'TicketMessage'
+                'TicketMessage',
             )
         })
     })
@@ -484,7 +484,7 @@ describe('global utils', () => {
 
         it('should find property (always use ref)', () => {
             expect(
-                utils.findProperty('ticket.tags.name', schemas, true)
+                utils.findProperty('ticket.tags.name', schemas, true),
             ).toEqual(
                 (
                     schemas.getIn([
@@ -493,7 +493,7 @@ describe('global utils', () => {
                         'properties',
                         'name',
                     ]) as Map<any, any>
-                ).toJS()
+                ).toJS(),
             )
         })
 
@@ -506,10 +506,10 @@ describe('global utils', () => {
                         'properties',
                         'customer',
                     ]) as Map<any, any>
-                ).toJS()
+                ).toJS(),
             )
             expect(
-                utils.findProperty('message.source.from.address', schemas)
+                utils.findProperty('message.source.from.address', schemas),
             ).toEqual(
                 (
                     schemas.getIn([
@@ -518,7 +518,7 @@ describe('global utils', () => {
                         'properties',
                         'address',
                     ]) as Map<any, any>
-                ).toJS()
+                ).toJS(),
             )
             expect(utils.findProperty('ticket.tags.name', schemas)).toEqual(
                 (
@@ -528,7 +528,7 @@ describe('global utils', () => {
                         'properties',
                         'tags',
                     ]) as Map<any, any>
-                ).toJS()
+                ).toJS(),
             )
         })
     })
@@ -538,22 +538,22 @@ describe('global utils', () => {
 
         it('should return first operator when there is no default', () => {
             expect(['isEmpty', 'isNotEmpty']).toContain(
-                utils.getDefaultOperator('ticket.snooze_datetime', schemas)
+                utils.getDefaultOperator('ticket.snooze_datetime', schemas),
             )
             expect(['eq', 'neq']).toContain(
-                utils.getDefaultOperator('ticket.language', schemas)
+                utils.getDefaultOperator('ticket.language', schemas),
             )
             expect(['eq', 'neq']).toContain(
-                utils.getDefaultOperator('ticket.channel', schemas)
+                utils.getDefaultOperator('ticket.channel', schemas),
             )
         })
 
         it('should return default operator', () => {
             expect(
-                utils.getDefaultOperator('ticket.created_datetime', schemas)
+                utils.getDefaultOperator('ticket.created_datetime', schemas),
             ).toBe('gteTimedelta')
             expect(utils.getDefaultOperator('ticket.tags', schemas)).toBe(
-                'containsAll'
+                'containsAll',
             )
         })
     })
@@ -570,24 +570,24 @@ describe('global utils', () => {
 
             expect(
                 utils.replaceAttachmentURL(
-                    'https://uploads.gorgias.io/foo/bar.pdf'
-                )
+                    'https://uploads.gorgias.io/foo/bar.pdf',
+                ),
             ).toBe(
-                'https://acme.gorgias.com/api/attachment/download/foo/bar.pdf'
+                'https://acme.gorgias.com/api/attachment/download/foo/bar.pdf',
             )
         })
 
         it('should replace attachment url for a .io production environment', () => {
             ;(isProduction as jest.Mock).mockReturnValueOnce(true)
             const oldLocation = window.location
-            window.location = {hostname: 'acme.gorgias.io'} as Location
+            window.location = { hostname: 'acme.gorgias.io' } as Location
 
             expect(
                 utils.replaceAttachmentURL(
-                    'https://uploads.gorgias.io/foo/bar.pdf'
-                )
+                    'https://uploads.gorgias.io/foo/bar.pdf',
+                ),
             ).toBe(
-                'https://acme.gorgias.io/api/attachment/download/foo/bar.pdf'
+                'https://acme.gorgias.io/api/attachment/download/foo/bar.pdf',
             )
 
             window.location = oldLocation
@@ -598,10 +598,10 @@ describe('global utils', () => {
 
             expect(
                 utils.replaceAttachmentURL(
-                    'https://uploads.gorgias.xyz/foo/bar.pdf'
-                )
+                    'https://uploads.gorgias.xyz/foo/bar.pdf',
+                ),
             ).toBe(
-                'https://acme.gorgias.xyz/api/attachment/download/foo/bar.pdf'
+                'https://acme.gorgias.xyz/api/attachment/download/foo/bar.pdf',
             )
         })
 
@@ -610,10 +610,10 @@ describe('global utils', () => {
 
             expect(
                 utils.replaceAttachmentURL(
-                    'https://uploads.gorgi.us/development/foo/bar.pdf'
-                )
+                    'https://uploads.gorgi.us/development/foo/bar.pdf',
+                ),
             ).toBe(
-                'http://acme.gorgias.docker/api/attachment/download/foo/bar.pdf'
+                'http://acme.gorgias.docker/api/attachment/download/foo/bar.pdf',
             )
         })
 
@@ -622,8 +622,8 @@ describe('global utils', () => {
 
             expect(
                 utils.replaceAttachmentURLToExternalSource(
-                    'http://acme.gorgias.docker/api/attachment/download/foo/bar.pdf?format=1000x'
-                )
+                    'http://acme.gorgias.docker/api/attachment/download/foo/bar.pdf?format=1000x',
+                ),
             ).toBe('https://uploads.gorgi.us/development/foo/bar.pdf')
         })
     })
@@ -644,7 +644,7 @@ describe('global utils', () => {
 
         it('should work with no format', () => {
             expect(
-                utils.parseMedia('<img src="http://gorgias.io/hello" />')
+                utils.parseMedia('<img src="http://gorgias.io/hello" />'),
             ).toMatchSnapshot()
         })
 
@@ -652,8 +652,8 @@ describe('global utils', () => {
             expect(
                 utils.parseMedia(
                     '<img src="http://gorgias.io/hello" />',
-                    '100x100'
-                )
+                    '100x100',
+                ),
             ).toMatchSnapshot()
         })
 
@@ -668,21 +668,21 @@ describe('global utils', () => {
 
         it('should work with direct image', () => {
             expect(
-                utils.parseMedia('<img src="http://gorgias.io/image.jpg" />')
+                utils.parseMedia('<img src="http://gorgias.io/image.jpg" />'),
             ).toMatchSnapshot()
         })
 
         it('should work with pathname', () => {
             expect(
-                utils.parseMedia('<img src="http://gorgias.io/test/x.jpg" />')
+                utils.parseMedia('<img src="http://gorgias.io/test/x.jpg" />'),
             ).toMatchSnapshot()
         })
 
         it('should work with search query but not uri-encode it', () => {
             expect(
                 utils.parseMedia(
-                    '<img src="http://gorgias.io/test/x.jpg?x=123&y=456#123" />'
-                )
+                    '<img src="http://gorgias.io/test/x.jpg?x=123&y=456#123" />',
+                ),
             ).toMatchSnapshot()
         })
 
@@ -700,15 +700,15 @@ describe('global utils', () => {
 <img src="http://some-image" alt="bla ">
 <strong><img src="https://image2"></strong>
 </div>
-`)
+`),
             ).toMatchSnapshot()
         })
 
         it('should not proxify a proxified image', () => {
             expect(
                 utils.parseMedia(
-                    `<img src="${window.IMAGE_PROXY_URL}http://gorgias.io/hello" />`
-                )
+                    `<img src="${window.IMAGE_PROXY_URL}http://gorgias.io/hello" />`,
+                ),
             ).toMatchSnapshot()
         })
 
@@ -718,10 +718,10 @@ describe('global utils', () => {
 
             expect(
                 utils.parseMedia(
-                    `<img src="https://uploads.gorgias.io/hello.png" />`
-                )
+                    `<img src="https://uploads.gorgias.io/hello.png" />`,
+                ),
             ).toBe(
-                '<img src="https://acme.gorgias.com/api/attachment/download/hello.png?format=1000x"/>'
+                '<img src="https://acme.gorgias.com/api/attachment/download/hello.png?format=1000x"/>',
             )
         })
 
@@ -730,10 +730,10 @@ describe('global utils', () => {
 
             expect(
                 utils.parseMedia(
-                    `<audio src="https://uploads.gorgias.io/hello" />`
-                )
+                    `<audio src="https://uploads.gorgias.io/hello" />`,
+                ),
             ).toBe(
-                '<audio src="https://acme.gorgias.com/api/attachment/download/hello"></audio>'
+                '<audio src="https://acme.gorgias.com/api/attachment/download/hello"></audio>',
             )
         })
     })
@@ -754,7 +754,7 @@ describe('global utils', () => {
             (port) => {
                 const url = `https://foobar.com:${port}`
                 expect(utils.validateWebhookURL(url, true)).toBe(null)
-            }
+            },
         )
 
         it.each([22, 123, 442, 79, 90, 801, 180, 8099, 18080, 1e6])(
@@ -762,9 +762,9 @@ describe('global utils', () => {
             (port) => {
                 const url = `https://foobar.com:${port}`
                 expect(utils.validateWebhookURL(url, true)).toBe(
-                    'Port not allowed'
+                    'Port not allowed',
                 )
-            }
+            },
         )
 
         it('should require a TLD', () => {
@@ -834,7 +834,7 @@ describe('global utils', () => {
             }
 
             expect(utils.errorToChildren(error)).toMatch(
-                '<li>Hello: world</li><li>Receiver: Missing data</li><li>Receiver: Invalid value</li>'
+                '<li>Hello: world</li><li>Receiver: Missing data</li><li>Receiver: Invalid value</li>',
             )
         })
 
@@ -861,7 +861,7 @@ describe('global utils', () => {
             }
 
             expect(utils.errorToChildren(error)).toMatch(
-                '<li>Hello: world</li><li>Nested Field: Invalid value</li><li>Nested Field: Try again</li><li>Nested Data: Not good.</li>'
+                '<li>Hello: world</li><li>Nested Field: Invalid value</li><li>Nested Field: Try again</li><li>Nested Data: Not good.</li>',
             )
         })
 
@@ -881,7 +881,7 @@ describe('global utils', () => {
             }
 
             expect(utils.errorToChildren(error)).toMatch(
-                '<li>Item: malicious <img /></li>'
+                '<li>Item: malicious <img /></li>',
             )
         })
     })
@@ -936,13 +936,13 @@ describe('global utils', () => {
         const state = {
             object: fromJS({
                 users: [
-                    {id: 1, name: 'Homer'},
-                    {id: 2, name: 'Marge'},
+                    { id: 1, name: 'Homer' },
+                    { id: 2, name: 'Marge' },
                 ],
             }) as Map<any, any>,
             list: fromJS([
-                {id: 3, name: 'Lisa'},
-                {id: 4, name: 'Bart'},
+                { id: 3, name: 'Lisa' },
+                { id: 4, name: 'Bart' },
             ]) as List<any>,
         }
         const selectorFromMap = (s: typeof state) => s.object || fromJS({})
@@ -968,7 +968,7 @@ describe('global utils', () => {
 
         it('should build asset URLs from a given path', () => {
             expect(utils.assetsUrl('/some-image.jpg')).toBe(
-                'https://gorgias-assets/web-app/assets/some-image.jpg'
+                'https://gorgias-assets/web-app/assets/some-image.jpg',
             )
         })
 
@@ -976,7 +976,7 @@ describe('global utils', () => {
             envVarsMock.GORGIAS_ASSETS_URL = undefined
 
             expect(utils.assetsUrl('/some-image.jpg')).toBe(
-                '/assets/some-image.jpg'
+                '/assets/some-image.jpg',
             )
         })
 
@@ -984,19 +984,19 @@ describe('global utils', () => {
             envVarsMock.GORGIAS_ASSETS_URL = '//'
 
             expect(utils.assetsUrl('/some-image.jpg')).toBe(
-                '/assets/some-image.jpg'
+                '/assets/some-image.jpg',
             )
         })
 
         it('properly joins paths when all parts contain leading and trailing slashes', () => {
             expect(utils.assetsUrl('/some-image.jpg')).toBe(
-                'https://gorgias-assets/web-app/assets/some-image.jpg'
+                'https://gorgias-assets/web-app/assets/some-image.jpg',
             )
         })
 
         it('properly joins paths when the parts have no leading or trailing slashes', () => {
             expect(utils.assetsUrl('some-image.jpg')).toBe(
-                'https://gorgias-assets/web-app/assets/some-image.jpg'
+                'https://gorgias-assets/web-app/assets/some-image.jpg',
             )
         })
     })
@@ -1009,13 +1009,13 @@ describe('global utils', () => {
                 'https://gorgias.com',
             ]
             const randomUrls = Array.from(
-                {length: 10},
+                { length: 10 },
                 () =>
                     `${
                         randomBaseUrls[
                             Math.floor(Math.random() * randomBaseUrls.length)
                         ]
-                    }${randomstring.generate()}`
+                    }${randomstring.generate()}`,
             )
 
             const dataset: {
@@ -1062,14 +1062,14 @@ describe('global utils', () => {
                     utils.castGorgiasVideosForUnsupportedSources({
                         html: data.rawHtml,
                         hyperlinksSupported: true,
-                    })
+                    }),
                 ).toEqual(data.expectedHtmlHyperLinks)
 
                 expect(
                     utils.castGorgiasVideosForUnsupportedSources({
                         html: data.rawHtml,
                         hyperlinksSupported: false,
-                    })
+                    }),
                 ).toEqual(data.expectedHtmlNoHyperLinks)
             }
         })
@@ -1120,7 +1120,7 @@ describe('global utils', () => {
 
             for (const data of dataset) {
                 expect(
-                    utils.extractGorgiasVideoDivFromHtmlContent(data.rawHtml)
+                    utils.extractGorgiasVideoDivFromHtmlContent(data.rawHtml),
                 ).toEqual({
                     htmlCleaned: data.expectedHtmlFinal,
                     videoUrls: data.expectedVideoUrls,
@@ -1173,7 +1173,7 @@ describe('global utils', () => {
 
             for (const data of dataset) {
                 expect(utils.fixVideoUrlForReactPlayer(data.rawUrl)).toEqual(
-                    data.expectedUrl
+                    data.expectedUrl,
                 )
             }
         })
@@ -1245,7 +1245,7 @@ describe('global utils', () => {
         it('should throw an error', () => {
             // Type cast only for testing purposes
             expect(() => assertUnreachable('foo' as never)).toThrowError(
-                "Didn't expect to get here"
+                "Didn't expect to get here",
             )
         })
     })

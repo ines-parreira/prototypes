@@ -1,6 +1,8 @@
-import {LoadingSpinner, Skeleton, Badge} from '@gorgias/merchant-ui-kit'
+import React, { ReactNode, useEffect, useState } from 'react'
+
 import classnames from 'classnames'
-import React, {ReactNode, useEffect, useState} from 'react'
+
+import { Badge, LoadingSpinner, Skeleton } from '@gorgias/merchant-ui-kit'
 
 import aiAgentAvatarSrc from 'assets/img/ai-agent/ai-agent-avatar.png'
 import error from 'assets/img/icons/error.svg'
@@ -10,11 +12,12 @@ import {
     ProcessingStatus,
 } from 'models/aiAgentPlayground/types'
 import Avatar from 'pages/common/components/Avatar/Avatar'
-import {assertUnreachable} from 'utils'
-import {sanitizeHtmlDefault} from 'utils/html'
+import { assertUnreachable } from 'utils'
+import { sanitizeHtmlDefault } from 'utils/html'
 
-import {PlaygroundChannels} from '../PlaygroundChat/PlaygroundChat.types'
+import { PlaygroundChannels } from '../PlaygroundChat/PlaygroundChat.types'
 import TicketEvent from '../TicketEvent/TicketEvent'
+
 import css from './PlaygroundMessage.less'
 
 export const AI_AGENT_SENDER = 'AI Agent'
@@ -169,7 +172,7 @@ const MessageContainer = ({
                         <i
                             className={classnames(
                                 'material-icons',
-                                css.avatarIcon
+                                css.avatarIcon,
                             )}
                         >
                             account_circle
@@ -182,7 +185,7 @@ const MessageContainer = ({
                                 ? type === MessageType.INTERNAL_NOTE
                                     ? css.aiAgentInternalNoteTypeSender
                                     : css.aiAgentTypeSender
-                                : css.shopperTypeSender
+                                : css.shopperTypeSender,
                         )}
                     >
                         {sender}
@@ -190,7 +193,7 @@ const MessageContainer = ({
                     <i
                         className={classnames(
                             'material-icons',
-                            css.messageTypeIcon
+                            css.messageTypeIcon,
                         )}
                         title={`${channel} channel`}
                     >
@@ -202,7 +205,7 @@ const MessageContainer = ({
                 <div
                     className={classnames(
                         css.messageContainer,
-                        type === MessageType.ERROR && css.messageErrorContainer
+                        type === MessageType.ERROR && css.messageErrorContainer,
                     )}
                 >
                     {children}
@@ -214,7 +217,7 @@ const MessageContainer = ({
 
 const PlaygroundPlaceholderMessage = () => {
     const [processingStatus, setProcessingStatus] = useState(
-        ProcessingStatus.CHECKING_PERMISSIONS
+        ProcessingStatus.CHECKING_PERMISSIONS,
     )
 
     useEffect(() => {
@@ -222,7 +225,7 @@ const PlaygroundPlaceholderMessage = () => {
 
         const aiAgentProcessingStatusUpdate = (
             newStatus: ProcessingStatus,
-            delay: number
+            delay: number,
         ) => {
             return setTimeout(() => {
                 setProcessingStatus(newStatus)
@@ -233,9 +236,9 @@ const PlaygroundPlaceholderMessage = () => {
             aiAgentProcessingStatusUpdate(ProcessingStatus.SUMMARIZING, 5000),
             aiAgentProcessingStatusUpdate(
                 ProcessingStatus.GATHERING_INFO,
-                10000
+                10000,
             ),
-            aiAgentProcessingStatusUpdate(ProcessingStatus.GENERATING, 15000)
+            aiAgentProcessingStatusUpdate(ProcessingStatus.GENERATING, 15000),
         )
         return () => {
             timeoutsToClear.forEach(clearTimeout)
@@ -246,7 +249,7 @@ const PlaygroundPlaceholderMessage = () => {
         <div
             className={classnames(
                 css.messageContent,
-                css.aiAgentLoadingSkeletonContainer
+                css.aiAgentLoadingSkeletonContainer,
             )}
             role="status"
             aria-live="polite"

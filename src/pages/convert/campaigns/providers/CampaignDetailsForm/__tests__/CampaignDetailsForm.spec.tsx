@@ -1,46 +1,45 @@
-import {
-    RenderResult,
-    render,
-    screen,
-    waitFor,
-    act,
-    fireEvent,
-} from '@testing-library/react'
-import userEvent, {TargetElement} from '@testing-library/user-event'
-import {fromJS, Map} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
 
-import {Provider} from 'react-redux'
+import {
+    act,
+    fireEvent,
+    render,
+    RenderResult,
+    screen,
+    waitFor,
+} from '@testing-library/react'
+import userEvent, { TargetElement } from '@testing-library/user-event'
+import { fromJS, Map } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {AttachmentEnum} from 'common/types'
-import {User} from 'config/types/user'
+import { AttachmentEnum } from 'common/types'
+import { User } from 'config/types/user'
 import {
     campaign as campaignFixture,
-    campaignSchedule as campaignScheduleFixture,
     campaignProductRecommendationAttachment,
+    campaignSchedule as campaignScheduleFixture,
 } from 'fixtures/campaign'
-
-import {channelConnection} from 'fixtures/channelConnection'
-import {integrationsState} from 'fixtures/integrations'
-import {utmConfiguration} from 'fixtures/utmConfiguration'
-import {useSuggestCampaignCopy} from 'models/convert/campaign/queries'
+import { channelConnection } from 'fixtures/channelConnection'
+import { integrationsState } from 'fixtures/integrations'
+import { utmConfiguration } from 'fixtures/utmConfiguration'
+import { useSuggestCampaignCopy } from 'models/convert/campaign/queries'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
-import {useGetPreviewProducts} from 'pages/convert/campaigns/hooks/useGetPreviewProducts'
-import {useUtm} from 'pages/convert/campaigns/hooks/useUtm'
-import {CampaignScheduleModeEnum} from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import { useGetPreviewProducts } from 'pages/convert/campaigns/hooks/useGetPreviewProducts'
+import { useUtm } from 'pages/convert/campaigns/hooks/useUtm'
+import { CampaignScheduleModeEnum } from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
+import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import useIsCampaignProritizationEnabled from 'pages/convert/common/hooks/useIsCampaignProritizationEnabled'
-import {useConvertGeneralSettings} from 'pages/stats/convert/hooks/useConvertGeneralSettings'
-import {getNewMessageAttachments} from 'state/newMessage/selectors'
-import {RootState, StoreDispatch} from 'state/types'
-import {toJS} from 'utils'
-import {getLDClient} from 'utils/launchDarkly'
-import {assumeMock, flushPromises} from 'utils/testing'
+import { useConvertGeneralSettings } from 'pages/stats/convert/hooks/useConvertGeneralSettings'
+import { getNewMessageAttachments } from 'state/newMessage/selectors'
+import { RootState, StoreDispatch } from 'state/types'
+import { toJS } from 'utils'
+import { getLDClient } from 'utils/launchDarkly'
+import { assumeMock, flushPromises } from 'utils/testing'
 
-import {Campaign} from '../../../types/Campaign'
-import {CampaignDetailsForm} from '../CampaignDetailsForm'
+import { Campaign } from '../../../types/Campaign'
+import { CampaignDetailsForm } from '../CampaignDetailsForm'
 
 jest.mock('utils/launchDarkly')
 jest.mock('pages/common/forms/RichField/RichFieldEditor')
@@ -62,15 +61,15 @@ jest.mock('pages/stats/convert/hooks/useConvertGeneralSettings')
 jest.mock('pages/convert/common/hooks/useIsCampaignProritizationEnabled')
 jest.mock('models/convert/campaign/queries')
 const useGetOrCreateChannelConnectionMock = assumeMock(
-    useGetOrCreateChannelConnection
+    useGetOrCreateChannelConnection,
 )
 const useIsCampaignProritizationEnabledMock = assumeMock(
-    useIsCampaignProritizationEnabled
+    useIsCampaignProritizationEnabled,
 )
 const useUtmMock = assumeMock(useUtm)
 const useGetPreviewProductsMock = assumeMock(useGetPreviewProducts)
 const mockStore = configureMockStore<RootState, StoreDispatch>()
-const defaultState = {integrations: fromJS(integrationsState)} as RootState
+const defaultState = { integrations: fromJS(integrationsState) } as RootState
 const mockUseConvertGeneralSettings = assumeMock(useConvertGeneralSettings)
 const mockGenerateSuggestions = jest.fn()
 
@@ -112,14 +111,14 @@ const shopifyChatIntegration: Map<any, any> = fromJS({
 const shopifyIntegration = fromJS({
     type: 'shopify',
     id: '1',
-    meta: {shop_domain: 'shop-domain.com'},
+    meta: { shop_domain: 'shop-domain.com' },
 })
 
 const campaign = fromJS(campaignFixture)
 
 const isConvertSubscriberSpy = jest.spyOn(
     isConvertSubscriberHook,
-    'useIsConvertSubscriber'
+    'useIsConvertSubscriber',
 )
 
 describe('<CampaignDetailsForm />', () => {
@@ -133,7 +132,7 @@ describe('<CampaignDetailsForm />', () => {
         mockUseConvertGeneralSettings.mockReturnValue({
             emailDisclaimer: {
                 enabled: true,
-                disclaimer: {en: 'foo'},
+                disclaimer: { en: 'foo' },
                 disclaimer_default_accepted: true,
             },
             isLoading: false,
@@ -176,7 +175,7 @@ describe('<CampaignDetailsForm />', () => {
         return render(
             <Provider store={mockStore(defaultState)}>
                 <CampaignDetailsForm {...props} />
-            </Provider>
+            </Provider>,
         )
     }
 
@@ -198,7 +197,7 @@ describe('<CampaignDetailsForm />', () => {
 
         it('disables the button until the form is valid', async () => {
             expect(
-                screen.getByRole('button', {name: 'Create'})
+                screen.getByRole('button', { name: 'Create' }),
             ).toBeAriaDisabled()
 
             result.rerender(
@@ -207,7 +206,7 @@ describe('<CampaignDetailsForm />', () => {
                         {...defaultProps}
                         campaign={toJS(campaign)}
                     />
-                </Provider>
+                </Provider>,
             )
 
             act(() => {
@@ -216,7 +215,7 @@ describe('<CampaignDetailsForm />', () => {
 
             await waitFor(() => {
                 expect(
-                    screen.getByRole('button', {name: 'Create'})
+                    screen.getByRole('button', { name: 'Create' }),
                 ).toBeAriaEnabled()
             })
         })
@@ -232,7 +231,7 @@ describe('<CampaignDetailsForm />', () => {
                         isEditMode={false}
                         createCampaign={undefined}
                     />
-                </Provider>
+                </Provider>,
             )
 
             act(() => {
@@ -241,18 +240,18 @@ describe('<CampaignDetailsForm />', () => {
 
             await waitFor(() => {
                 expect(
-                    screen.getByRole('button', {name: 'Create'})
+                    screen.getByRole('button', { name: 'Create' }),
                 ).toBeAriaEnabled()
             })
 
-            userEvent.click(screen.getByRole('button', {name: 'Create'}))
+            userEvent.click(screen.getByRole('button', { name: 'Create' }))
 
             await waitFor(() => {
                 const activateButton = screen.getByText('Create')
                 activateButton.click()
 
                 expect(consoleErrorMock).toBeCalledWith(
-                    'Cannot create campaign!'
+                    'Cannot create campaign!',
                 )
             })
         })
@@ -290,7 +289,7 @@ describe('<CampaignDetailsForm />', () => {
             result.rerender(
                 <Provider store={mockStore(defaultState)}>
                     <CampaignDetailsForm {...props} />
-                </Provider>
+                </Provider>,
             )
 
             act(() => {
@@ -298,7 +297,7 @@ describe('<CampaignDetailsForm />', () => {
             })
 
             const scheduleOption = result.container.querySelector(
-                `#${CampaignScheduleModeEnum.Schedule}`
+                `#${CampaignScheduleModeEnum.Schedule}`,
             )
             expect(scheduleOption).toBeChecked()
         })
@@ -319,7 +318,7 @@ describe('<CampaignDetailsForm />', () => {
             result.rerender(
                 <Provider store={mockStore(defaultState)}>
                     <CampaignDetailsForm {...props} />
-                </Provider>
+                </Provider>,
             )
 
             act(() => {
@@ -327,7 +326,7 @@ describe('<CampaignDetailsForm />', () => {
             })
 
             const scheduleOption = result.container.querySelector(
-                `#${CampaignScheduleModeEnum.Schedule}`
+                `#${CampaignScheduleModeEnum.Schedule}`,
             ) as TargetElement
 
             act(() => {
@@ -335,7 +334,7 @@ describe('<CampaignDetailsForm />', () => {
             })
 
             userEvent.click(
-                screen.getByRole('button', {name: 'Update Campaign'})
+                screen.getByRole('button', { name: 'Update Campaign' }),
             )
 
             expect(onUpdateCampaign).toHaveBeenCalledTimes(1)
@@ -348,14 +347,14 @@ describe('<CampaignDetailsForm />', () => {
                         schedule_rule: 'anytime',
                         start_datetime: expect.any(String),
                     },
-                })
+                }),
             )
         })
 
         it('updates state on suggestion apply', async () => {
             isConvertSubscriberSpy.mockImplementation(() => true)
             mockGenerateSuggestions.mockResolvedValue({
-                data: {suggestions: ['Suggestion 1', 'Suggestion 2']},
+                data: { suggestions: ['Suggestion 1', 'Suggestion 2'] },
             })
 
             const props = {
@@ -366,7 +365,7 @@ describe('<CampaignDetailsForm />', () => {
             result.rerender(
                 <Provider store={mockStore(defaultState)}>
                     <CampaignDetailsForm {...props} />
-                </Provider>
+                </Provider>,
             )
 
             act(() => {
@@ -392,14 +391,14 @@ describe('<CampaignDetailsForm />', () => {
                         copySuggestion: 'Suggestion 1',
                         delay: 0,
                     },
-                })
+                }),
             )
         })
 
         it('updates state on suggestion apply when campaign had meta', async () => {
             isConvertSubscriberSpy.mockImplementation(() => true)
             mockGenerateSuggestions.mockResolvedValue({
-                data: {suggestions: ['Suggestion 1', 'Suggestion 2']},
+                data: { suggestions: ['Suggestion 1', 'Suggestion 2'] },
             })
 
             const props = {
@@ -411,7 +410,7 @@ describe('<CampaignDetailsForm />', () => {
             result.rerender(
                 <Provider store={mockStore(defaultState)}>
                     <CampaignDetailsForm {...props} />
-                </Provider>
+                </Provider>,
             )
 
             act(() => {
@@ -436,7 +435,7 @@ describe('<CampaignDetailsForm />', () => {
                     meta: expect.objectContaining({
                         copySuggestion: 'Suggestion 1',
                     }),
-                })
+                }),
             )
         })
     })
@@ -451,7 +450,7 @@ describe('<CampaignDetailsForm />', () => {
         it('renders the banner when campaign is light, is subscriber, is shopify', () => {
             isConvertSubscriberSpy.mockImplementation(() => true)
 
-            const {queryByText} = renderComponent({
+            const { queryByText } = renderComponent({
                 ...defaultProps,
                 isShopifyStore: true,
                 campaign: lightCampaign,
@@ -460,14 +459,14 @@ describe('<CampaignDetailsForm />', () => {
             expect(
                 queryByText(bannerText, {
                     exact: false,
-                })
+                }),
             ).toBeInTheDocument()
         })
 
         it('does not render the banner when is not a Convert subscriber', () => {
             isConvertSubscriberSpy.mockImplementation(() => false)
 
-            const {queryByText} = renderComponent({
+            const { queryByText } = renderComponent({
                 ...defaultProps,
                 campaign: lightCampaign,
             })
@@ -475,19 +474,19 @@ describe('<CampaignDetailsForm />', () => {
             expect(
                 queryByText(bannerText, {
                     exact: false,
-                })
+                }),
             ).not.toBeInTheDocument()
         })
 
         it('does not render the banner when campaign is not light', () => {
             isConvertSubscriberSpy.mockImplementation(() => true)
 
-            const {queryByText} = renderComponent(defaultProps)
+            const { queryByText } = renderComponent(defaultProps)
 
             expect(
                 queryByText(bannerText, {
                     exact: false,
-                })
+                }),
             ).not.toBeInTheDocument()
         })
 
@@ -501,7 +500,7 @@ describe('<CampaignDetailsForm />', () => {
                 },
             })
 
-            const {queryByText} = renderComponent({
+            const { queryByText } = renderComponent({
                 ...defaultProps,
                 integration: integration,
                 campaign: lightCampaign,
@@ -510,7 +509,7 @@ describe('<CampaignDetailsForm />', () => {
             expect(
                 queryByText(bannerText, {
                     exact: false,
-                })
+                }),
             ).not.toBeInTheDocument()
         })
     })
@@ -524,10 +523,10 @@ describe('<CampaignDetailsForm />', () => {
                         ...campaignProductRecommendationAttachment,
                         content_type: AttachmentEnum.ProductRecommendation,
                     },
-                ])
+                ]),
             )
 
-            const {queryByText} = renderComponent(defaultProps)
+            const { queryByText } = renderComponent(defaultProps)
 
             await waitFor(() => {
                 expect(
@@ -535,8 +534,8 @@ describe('<CampaignDetailsForm />', () => {
                         'Product recommendations will be personalized for each product page',
                         {
                             exact: false,
-                        }
-                    )
+                        },
+                    ),
                 ).toBeInTheDocument()
             })
         })
@@ -549,10 +548,10 @@ describe('<CampaignDetailsForm />', () => {
         })
 
         it('renders campaign frequency section', () => {
-            const {getByText} = renderComponent(defaultProps)
+            const { getByText } = renderComponent(defaultProps)
 
             expect(
-                getByText('Time between campaign displays')
+                getByText('Time between campaign displays'),
             ).toBeInTheDocument()
 
             expect(getByText('Maximum campaign displays')).toBeInTheDocument()
@@ -568,36 +567,36 @@ describe('<CampaignDetailsForm />', () => {
                 displayScheduleSection: true,
             }
 
-            const {container} = renderComponent(props)
+            const { container } = renderComponent(props)
 
             act(() => {
                 fireEvent.click(
                     container.querySelector(
-                        '#maximum-displayed-campaigns'
-                    ) as Element
+                        '#maximum-displayed-campaigns',
+                    ) as Element,
                 )
                 fireEvent.click(
                     container.querySelector(
-                        '#time-between-campaigns'
-                    ) as Element
+                        '#time-between-campaigns',
+                    ) as Element,
                 )
             })
 
             userEvent.click(
-                screen.getByRole('button', {name: 'Update Campaign'})
+                screen.getByRole('button', { name: 'Update Campaign' }),
             )
             await waitFor(() => {
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
                 expect(toJS(onUpdateCampaign.mock.calls[0][0])).toEqual(
                     expect.objectContaining({
                         meta: expect.objectContaining({
-                            maxCampaignDisplaysInSession: {value: 8},
+                            maxCampaignDisplaysInSession: { value: 8 },
                             minimumTimeBetweenCampaigns: {
                                 value: 30,
                                 unit: 'seconds',
                             },
                         }),
-                    })
+                    }),
                 )
             })
         })

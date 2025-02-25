@@ -1,7 +1,8 @@
-import {Meta, StoryObj} from '@storybook/react'
 import React from 'react'
 
-import {HelpCenterLayout} from '../../types/layout.enum'
+import { Meta, StoryObj } from '@storybook/react'
+
+import { HelpCenterLayout } from '../../types/layout.enum'
 import logoUrl from './assets/preview-story-example.png'
 import HelpCenterPreview from './HelpCenterPreview'
 import HelpCenterPreviewAutomation from './HelpCenterPreviewAutomation'
@@ -34,7 +35,7 @@ export const AutomationPreview: Story = {
             <HelpCenterPreviewAutomation
                 primaryColor="#E03997"
                 flows={[
-                    {name: 'Submit a product idea', id: '1'},
+                    { name: 'Submit a product idea', id: '1' },
                     {
                         name: 'Get replacement parts with long name included in this string',
                         id: '2',

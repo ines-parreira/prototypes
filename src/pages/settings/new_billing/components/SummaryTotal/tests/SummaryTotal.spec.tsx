@@ -1,18 +1,18 @@
-import {screen, waitFor} from '@testing-library/react'
-import MockAdapter from 'axios-mock-adapter'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { screen, waitFor } from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
+import { mockFlags } from 'jest-launchdarkly-mock'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import {
     basicMonthlyAutomationPlan,
     basicMonthlyHelpdeskPlan,
 } from 'fixtures/productPrices'
 import client from 'models/api/resources'
-import {Cadence} from 'models/billing/types'
-import {SelectedPlans} from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'
-
-import {renderWithStoreAndQueryClientAndRouter} from 'tests/renderWithStoreAndQueryClientAndRouter'
+import { Cadence } from 'models/billing/types'
+import { SelectedPlans } from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'
+import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import SummaryTotal from '../SummaryTotal'
 
@@ -57,7 +57,7 @@ describe('SummaryTotal without coupons', () => {
                 totalProductAmount={totalProductAmount}
                 cadence={cadence}
                 currency={currency}
-            />
+            />,
         )
 
         expect(screen.queryByLabelText('Old price')).not.toBeInTheDocument()
@@ -70,7 +70,7 @@ describe('SummaryTotal without coupons', () => {
                 totalProductAmount={totalProductAmountDifferent}
                 cadence={cadence}
                 currency={currency}
-            />
+            />,
         )
 
         expect(screen.getByLabelText('Old price')).toBeInTheDocument()
@@ -106,13 +106,13 @@ describe('SummaryTotal with coupons', () => {
                 totalProductAmount={totalProductAmount}
                 cadence={cadence}
                 currency={currency}
-            />
+            />,
         )
 
         await waitFor(() => {
             expect(screen.queryByLabelText('Subtotal')).toBeVisible()
             expect(
-                screen.queryByLabelText('Discount amount')
+                screen.queryByLabelText('Discount amount'),
             ).toBeInTheDocument()
         })
     })
@@ -138,13 +138,13 @@ describe('SummaryTotal with coupons', () => {
                 totalProductAmount={totalProductAmount}
                 cadence={cadence}
                 currency={currency}
-            />
+            />,
         )
 
         await waitFor(() => {
             expect(screen.queryByLabelText('Subtotal')).not.toBeInTheDocument()
             expect(
-                screen.queryByLabelText('Discount amount')
+                screen.queryByLabelText('Discount amount'),
             ).not.toBeInTheDocument()
         })
     })
@@ -181,7 +181,7 @@ describe('SummaryTotal with coupons', () => {
                 totalProductAmount={totalProductAmount}
                 cadence={cadence}
                 currency={currency}
-            />
+            />,
         )
 
         await waitFor(() => {
@@ -202,13 +202,13 @@ describe('SummaryTotal with coupons', () => {
                 totalProductAmount={totalProductAmount}
                 cadence={cadence}
                 currency={currency}
-            />
+            />,
         )
 
         await waitFor(() => {
             expect(screen.queryByLabelText('Subtotal')).not.toBeInTheDocument()
             expect(
-                screen.queryByLabelText('Discount amount')
+                screen.queryByLabelText('Discount amount'),
             ).not.toBeInTheDocument()
             expect(screen.getByLabelText('Total price')).toBeInTheDocument()
         })
@@ -225,7 +225,7 @@ describe('SummaryTotal with coupons', () => {
                 totalProductAmount={totalProductAmount}
                 cadence={cadence}
                 currency={currency}
-            />
+            />,
         )
 
         await waitFor(() => {
@@ -236,7 +236,7 @@ describe('SummaryTotal with coupons', () => {
         await waitFor(() => {
             expect(screen.queryByLabelText('Subtotal')).not.toBeInTheDocument()
             expect(
-                screen.queryByLabelText('Discount amount')
+                screen.queryByLabelText('Discount amount'),
             ).not.toBeInTheDocument()
             expect(screen.getByLabelText('Total price')).toBeInTheDocument()
         })

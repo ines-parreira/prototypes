@@ -1,9 +1,10 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
 import React from 'react'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import Button from 'pages/common/components/button/Button'
 
-import {LinkItem, LinkEntity, LinkItemEventHandlers} from './LinkItem'
+import { LinkEntity, LinkItem, LinkItemEventHandlers } from './LinkItem'
 
 import css from './LinkList.less'
 
@@ -55,7 +56,7 @@ export const LinkList = ({
                     className={css['add-link']}
                     isDisabled={isLimitExceeded}
                     intent="secondary"
-                    style={isLimitExceeded ? {pointerEvents: 'none'} : {}}
+                    style={isLimitExceeded ? { pointerEvents: 'none' } : {}}
                     onClick={onAddNew}
                 >
                     <i className="material-icons">add</i>
@@ -67,7 +68,7 @@ export const LinkList = ({
                     target={`help-${name}`}
                     placement="top-start"
                     innerProps={{
-                        style: {width: 180, textAlign: 'left'},
+                        style: { width: 180, textAlign: 'left' },
                     }}
                 >
                     {`The maximum number of links is ${limit}`}

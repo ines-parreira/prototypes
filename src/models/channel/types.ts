@@ -1,4 +1,4 @@
-import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
+import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
 
 export type Channel = {
     id: string
@@ -10,7 +10,7 @@ export type Channel = {
     updated_datetime: string | null
 }
 
-export type LegacyChannel = Channel & {slug: TicketChannel}
+export type LegacyChannel = Channel & { slug: TicketChannel }
 
 export type ChannelLike = Channel | ChannelIdentifier
 export type ChannelIdentifier = TicketChannel | TicketMessageSourceType | string

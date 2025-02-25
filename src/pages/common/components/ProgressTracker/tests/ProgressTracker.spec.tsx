@@ -1,5 +1,6 @@
-import {render} from '@testing-library/react'
 import React from 'react'
+
+import { render } from '@testing-library/react'
 
 import Button from 'pages/common/components/button/Button'
 
@@ -7,7 +8,7 @@ import ProgressTracker from '../ProgressTracker'
 import TrackerCircle from '../TrackerCircle'
 
 jest.mock('../TrackerCircle', () =>
-    jest.fn(() => <div data-testid="tracker-circle" />)
+    jest.fn(() => <div data-testid="tracker-circle" />),
 )
 
 describe('ProgressTracker', () => {
@@ -41,21 +42,21 @@ describe('ProgressTracker', () => {
                 percentage: (defaultProps.step / defaultProps.totalSteps) * 100,
                 color: defaultProps.stepTrackerColor,
             }),
-            {}
+            {},
         )
     })
 
     it('should render the step label and count', () => {
-        const {getByText} = render(
-            <ProgressTracker {...defaultProps} stepLabel="Steps" />
+        const { getByText } = render(
+            <ProgressTracker {...defaultProps} stepLabel="Steps" />,
         )
 
         expect(getByText('Steps 3/8')).toBeInTheDocument()
     })
 
     it('should render without the step label', () => {
-        const {getByText, queryAllByText} = render(
-            <ProgressTracker {...defaultProps} stepLabel={undefined} />
+        const { getByText, queryAllByText } = render(
+            <ProgressTracker {...defaultProps} stepLabel={undefined} />,
         )
 
         expect(getByText('3/8')).toBeInTheDocument()
@@ -63,7 +64,7 @@ describe('ProgressTracker', () => {
     })
 
     it('should render the CTA buttons', () => {
-        const {getByText} = render(<ProgressTracker {...defaultProps} />)
+        const { getByText } = render(<ProgressTracker {...defaultProps} />)
 
         expect(getByText('Back')).toBeInTheDocument()
         expect(getByText('Next')).toBeInTheDocument()

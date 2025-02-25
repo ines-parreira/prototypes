@@ -1,4 +1,4 @@
-import {createContext, RefObject, useContext} from 'react'
+import { createContext, RefObject, useContext } from 'react'
 
 export type SortableAccordionItemContextType = {
     dragRef: RefObject<HTMLDivElement> | null

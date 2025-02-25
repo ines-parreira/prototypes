@@ -1,7 +1,8 @@
-import {render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ReactElement} from 'react'
-import {Provider} from 'react-redux'
+import React, { ReactElement } from 'react'
+
+import { render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import {
@@ -9,9 +10,8 @@ import {
     TicketMessageSourceType,
     TicketStatus,
 } from 'business/types/ticket'
-import {channels as mockChannels} from 'fixtures/channels'
-
-import {IntegrationType} from 'models/integration/types'
+import { channels as mockChannels } from 'fixtures/channels'
+import { IntegrationType } from 'models/integration/types'
 import * as Avatar from 'pages/common/components/Avatar/Avatar'
 import * as channelsService from 'services/channels'
 
@@ -21,7 +21,7 @@ import * as labels from '../labels'
 const integrationJsObject = {
     type: 'email',
     name: 'common',
-    meta: {address: 'specific'},
+    meta: { address: 'specific' },
 }
 const integrationMap = fromJS(integrationJsObject)
 
@@ -55,11 +55,11 @@ describe('components utils: labels', () => {
                         return render(
                             <Provider
                                 store={mockStore({
-                                    currentUser: fromJS({timezone: 'utc'}),
+                                    currentUser: fromJS({ timezone: 'utc' }),
                                 })}
                             >
                                 {comp}
-                            </Provider>
+                            </Provider>,
                         )
                     },
                 },
@@ -92,7 +92,7 @@ describe('components utils: labels', () => {
                     ),
                     wrapper: (comp: ReactElement) => {
                         return render(
-                            <Provider store={mockStore()}>{comp}</Provider>
+                            <Provider store={mockStore()}>{comp}</Provider>,
                         )
                     },
                 },
@@ -116,7 +116,7 @@ describe('components utils: labels', () => {
                     ),
                     wrapper: (comp: ReactElement) => {
                         return render(
-                            <Provider store={mockStore()}>{comp}</Provider>
+                            <Provider store={mockStore()}>{comp}</Provider>,
                         )
                     },
                 },
@@ -127,7 +127,7 @@ describe('components utils: labels', () => {
                     },
                     expected: (
                         <labels.CustomerLabel
-                            customer={{name: 'Luigi', id: '8'}}
+                            customer={{ name: 'Luigi', id: '8' }}
                         />
                     ),
                 },
@@ -154,7 +154,7 @@ describe('components utils: labels', () => {
                         />
                     ),
                 },
-            ].forEach(({type, value, wrapper}) => {
+            ].forEach(({ type, value, wrapper }) => {
                 it(`${type} label`, () => {
                     AvatarSpy.mockImplementation((() => (
                         <div data-testid="avatar" />
@@ -164,18 +164,18 @@ describe('components utils: labels', () => {
                     if (wrapper) {
                         result = wrapper(
                             <labels.RenderLabel
-                                field={fromJS({name: type})}
+                                field={fromJS({ name: type })}
                                 value={fromJS(value)}
-                            />
+                            />,
                         ).container
                     } else {
                         result = render(
                             <Provider store={mockStore({})}>
                                 <labels.RenderLabel
-                                    field={fromJS({name: type})}
+                                    field={fromJS({ name: type })}
                                     value={fromJS(value)}
                                 />
-                            </Provider>
+                            </Provider>,
                         ).container
                     }
 
@@ -186,52 +186,52 @@ describe('components utils: labels', () => {
 
         describe('ValueRendered', () => {
             it('should display the address to prevent confusion', () => {
-                const {container} = render(
+                const { container } = render(
                     <Provider store={mockStore({})}>
                         <labels.IntegrationsDetailLabel
                             integration={fromJS({
                                 type: IntegrationType.Email,
                                 name: 'common',
-                                meta: {address: 'specific'},
+                                meta: { address: 'specific' },
                             })}
                         />
-                    </Provider>
+                    </Provider>,
                 )
                 expect(container.firstChild).toMatchSnapshot()
             })
 
             it('should display the name because the address is empty', () => {
-                const {container} = render(
+                const { container } = render(
                     <Provider store={mockStore({})}>
                         <labels.IntegrationsDetailLabel
                             integration={fromJS({
                                 type: IntegrationType.Email,
                                 name: 'common',
-                                meta: {address: ''},
+                                meta: { address: '' },
                             })}
                         />
-                    </Provider>
+                    </Provider>,
                 )
                 expect(container.firstChild).toMatchSnapshot()
             })
 
             it('should display the name because the type is facebook', () => {
-                const {container} = render(
+                const { container } = render(
                     <Provider store={mockStore({})}>
                         <labels.IntegrationsDetailLabel
                             integration={fromJS({
                                 type: IntegrationType.Facebook,
                                 name: 'common',
-                                meta: {address: 'specific'},
+                                meta: { address: 'specific' },
                             })}
                         />
-                    </Provider>
+                    </Provider>,
                 )
                 expect(container.firstChild).toMatchSnapshot()
             })
 
             it('should display name and address formatted in-lined', () => {
-                const {container} = render(
+                const { container } = render(
                     <Provider store={mockStore({})}>
                         <labels.IntegrationsDetailLabel
                             integration={fromJS({
@@ -240,13 +240,13 @@ describe('components utils: labels', () => {
                                 address: 'inlined email',
                             })}
                         />
-                    </Provider>
+                    </Provider>,
                 )
                 expect(container.firstChild).toMatchSnapshot()
             })
 
             it('should display name and address formatted as aircall eg: with address into parenthesis', () => {
-                const {container} = render(
+                const { container } = render(
                     <Provider store={mockStore({})}>
                         <labels.IntegrationsDetailLabel
                             integration={fromJS({
@@ -255,13 +255,13 @@ describe('components utils: labels', () => {
                                 address: 'aircall style',
                             })}
                         />
-                    </Provider>
+                    </Provider>,
                 )
                 expect(container.firstChild).toMatchSnapshot()
             })
 
             it('should display correctly for app type integrations', () => {
-                const {getByAltText} = render(
+                const { getByAltText } = render(
                     <Provider store={mockStore({})}>
                         <labels.IntegrationsDetailLabel
                             integration={fromJS({
@@ -270,7 +270,7 @@ describe('components utils: labels', () => {
                                 name: 'An App Integration',
                             })}
                         />
-                    </Provider>
+                    </Provider>,
                 )
                 expect(getByAltText('TikTok Shop')).toBeDefined()
             })
@@ -286,7 +286,7 @@ describe('components utils: labels', () => {
                 <labels.AgentLabel
                     name="Marie Curie"
                     profilePictureUrl="https://gorgias.io/profilepicture.png"
-                />
+                />,
             )
 
             const avatar = screen.getByTestId('avatar')
@@ -294,7 +294,9 @@ describe('components utils: labels', () => {
         })
 
         it('should render the name of the agent because a name is passed', () => {
-            const {getByText} = render(<labels.AgentLabel name="Marie Curie" />)
+            const { getByText } = render(
+                <labels.AgentLabel name="Marie Curie" />,
+            )
 
             const name = getByText('Marie Curie')
             expect(name).toBeInTheDocument()
@@ -302,8 +304,8 @@ describe('components utils: labels', () => {
         })
 
         it('should render the name of the agent with semibold style because the `semibold` option is passed', () => {
-            const {getByText} = render(
-                <labels.AgentLabel name="Marie Curie" semibold />
+            const { getByText } = render(
+                <labels.AgentLabel name="Marie Curie" semibold />,
             )
 
             const name = getByText('Marie Curie')
@@ -322,7 +324,7 @@ describe('components utils: labels', () => {
                     name="Marie Curie"
                     shouldDisplayAvatar
                     badgeColor="testColor"
-                />
+                />,
             )
 
             const avatar = screen.getByTestId('avatar')
@@ -360,8 +362,8 @@ describe('components utils: labels', () => {
         })
 
         it('should not render the name of the agent because no name is passed', () => {
-            const {container} = render(
-                <labels.AgentLabel profilePictureUrl="https://gorgias.io/profilepicture.png" />
+            const { container } = render(
+                <labels.AgentLabel profilePictureUrl="https://gorgias.io/profilepicture.png" />,
             )
 
             const name = container.querySelector('.name')
@@ -372,20 +374,20 @@ describe('components utils: labels', () => {
     describe('<TeamLabel/>', () => {
         describe('render()', () => {
             it('should render without avatar', () => {
-                const {container} = render(<labels.TeamLabel name="Team 1" />)
+                const { container } = render(<labels.TeamLabel name="Team 1" />)
                 expect(container.firstChild).toMatchSnapshot()
             })
 
             it('should render with default avatar', () => {
-                const {container} = render(
-                    <labels.TeamLabel name="Team 1" shouldDisplayAvatar />
+                const { container } = render(
+                    <labels.TeamLabel name="Team 1" shouldDisplayAvatar />,
                 )
 
                 expect(container.firstChild).toMatchSnapshot()
             })
 
             it('should render with emoji', () => {
-                const {container} = render(
+                const { container } = render(
                     <labels.TeamLabel
                         name="Team 1"
                         shouldDisplayAvatar
@@ -398,19 +400,19 @@ describe('components utils: labels', () => {
                             skin: null,
                             unified: '1f609',
                         })}
-                    />
+                    />,
                 )
 
                 expect(container.firstChild).toMatchSnapshot()
             })
 
             it('should render with default avatar and "team" icon', () => {
-                const {container} = render(
+                const { container } = render(
                     <labels.TeamLabel
                         name="Team 1"
                         shouldDisplayAvatar
                         shouldDisplayTeamIcon
-                    />
+                    />,
                 )
 
                 expect(container.firstChild).toMatchSnapshot()
@@ -421,20 +423,20 @@ describe('components utils: labels', () => {
     describe('<TimedeltaLabel/>', () => {
         describe('render()', () => {
             it('should render with hour duration', () => {
-                const {container} = render(
-                    <labels.TimedeltaLabel duration={'1h'} />
+                const { container } = render(
+                    <labels.TimedeltaLabel duration={'1h'} />,
                 )
                 expect(container.firstChild).toMatchSnapshot()
             })
             it('should render with minute duration', () => {
-                const {container} = render(
-                    <labels.TimedeltaLabel duration={'1m'} />
+                const { container } = render(
+                    <labels.TimedeltaLabel duration={'1m'} />,
                 )
                 expect(container.firstChild).toMatchSnapshot()
             })
             it('should render with day duration', () => {
-                const {container} = render(
-                    <labels.TimedeltaLabel duration={'1d'} />
+                const { container } = render(
+                    <labels.TimedeltaLabel duration={'1d'} />,
                 )
                 expect(container.firstChild).toMatchSnapshot()
             })

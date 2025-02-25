@@ -1,19 +1,19 @@
+import React, { useMemo, useRef, useState } from 'react'
+
+import { useIsHeadlessShopifyStore } from '../../hooks/useIsHeadlessShopifyStore'
 import _reduce from 'lodash/reduce'
-import React, {useMemo, useRef, useState} from 'react'
 
 import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import DropdownSection from 'pages/common/components/dropdown/DropdownSection'
-
-import {TriggerConfigValue} from 'pages/convert/campaigns/types/TriggerConfig'
+import { TriggerConfigValue } from 'pages/convert/campaigns/types/TriggerConfig'
 import ConvertSubscriptionModal from 'pages/convert/common/components/ConvertSubscriptionModal'
 
-import {useAvailableTriggerList} from '../../hooks/useAvailableTriggerList'
-import {useIsHeadlessShopifyStore} from '../../hooks/useIsHeadlessShopifyStore'
+import { useAvailableTriggerList } from '../../hooks/useAvailableTriggerList'
+import { CampaignTriggerType } from '../../types/enums/CampaignTriggerType.enum'
 
-import {CampaignTriggerType} from '../../types/enums/CampaignTriggerType.enum'
 import css from './AdvancedTriggersSelect.less'
 
 type Props = {
@@ -75,7 +75,7 @@ export const AdvancedTriggersSelect = ({
                 }
                 return acc
             },
-            {} as Record<string, TriggerConfigValue>
+            {} as Record<string, TriggerConfigValue>,
         )
     }, [upsellAvailable, triggersAvailableToSubscribers, options])
 
@@ -96,10 +96,10 @@ export const AdvancedTriggersSelect = ({
                 },
                 {} as Record<
                     string,
-                    (TriggerConfigValue & {key: CampaignTriggerType})[]
-                >
+                    (TriggerConfigValue & { key: CampaignTriggerType })[]
+                >,
             ),
-        [options]
+        [options],
     )
 
     return (
@@ -112,11 +112,11 @@ export const AdvancedTriggersSelect = ({
                 ref={buttonRef}
                 onClick={() => setIsOpen(!isOpen)}
             >
-                <i className="material-icons mr-2" style={{fontSize: 16}}>
+                <i className="material-icons mr-2" style={{ fontSize: 16 }}>
                     add
                 </i>
                 Add condition
-                <i className="material-icons ml-2" style={{fontSize: 20}}>
+                <i className="material-icons ml-2" style={{ fontSize: 20 }}>
                     arrow_drop_down
                 </i>
             </Button>
@@ -147,7 +147,7 @@ export const AdvancedTriggersSelect = ({
                                     />
                                 ))}
                             </DropdownSection>
-                        )
+                        ),
                     )}
                     {upsellAvailable && (
                         <DropdownSection
@@ -165,7 +165,7 @@ export const AdvancedTriggersSelect = ({
                                         isDisabled={true}
                                         onClick={handleClickItem}
                                     />
-                                )
+                                ),
                             )}
                         </DropdownSection>
                     )}

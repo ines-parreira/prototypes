@@ -1,10 +1,11 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
 import React from 'react'
-import {Link} from 'react-router-dom'
+
+import { Link } from 'react-router-dom'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import MaximumCampaignDisplayed from 'pages/convert/campaigns/components/MaximumCampaignDisplayed'
 import TimeBetweenCampaigns from 'pages/convert/campaigns/components/TimeBetweenCampaigns'
-
 import {
     CampaignDisplaysInSession,
     MinimumTimeBetweenCampaigns,
@@ -17,10 +18,10 @@ type Props = {
     maximumCampaignsDisplayed?: CampaignDisplaysInSession | null
     timeBetweenCampaigns?: MinimumTimeBetweenCampaigns | null
     onChangeMaximumCampaignDisplayed: (
-        value: CampaignDisplaysInSession | null
+        value: CampaignDisplaysInSession | null,
     ) => void
     onChangeTimeBetweenCampaigns: (
-        value: MinimumTimeBetweenCampaigns | null
+        value: MinimumTimeBetweenCampaigns | null,
     ) => void
     onValidationChange?: (isValid: boolean) => void
 }

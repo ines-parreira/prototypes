@@ -1,25 +1,25 @@
-import {Label, Skeleton} from '@gorgias/merchant-ui-kit'
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
-import {useHistory, useParams} from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
+import { ulid } from 'ulidx'
 
-import {ulid} from 'ulidx'
+import { Label, Skeleton } from '@gorgias/merchant-ui-kit'
 
 import orderSelectionIcon from 'assets/img/workflows/icons/order-selection-sm-neutral.svg'
-import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
+import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
 import useHumanReadableOrderConditions from 'pages/aiAgent/actions/hooks/useHumanReadableOrderConditions'
 import useUpsertAction from 'pages/aiAgent/actions/hooks/useUpsertAction'
-import {StoreWorkflowsConfiguration} from 'pages/aiAgent/actions/types'
-import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import {useAiAgentOnboardingNotification} from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
+import { StoreWorkflowsConfiguration } from 'pages/aiAgent/actions/types'
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import useGetAppFromTemplateApp from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
 import useGetIsActionStepEnabled from 'pages/automate/actionsPlatform/hooks/useGetIsActionStepEnabled'
-import {ActionTemplate} from 'pages/automate/actionsPlatform/types'
+import { ActionTemplate } from 'pages/automate/actionsPlatform/types'
 import ReusableLLMPromptCallNodeLabel from 'pages/automate/workflows/editor/visualBuilder/nodes/ReusableLLMPromptCallNodeLabel'
-import {useVisualBuilderGraphReducer} from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
-import {computeNodesPositions} from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer/utils'
-import {getWorkflowVariableListForNode} from 'pages/automate/workflows/models/variables.model'
+import { useVisualBuilderGraphReducer } from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
+import { computeNodesPositions } from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer/utils'
+import { getWorkflowVariableListForNode } from 'pages/automate/workflows/models/variables.model'
 import {
     transformVisualBuilderGraphIntoWfConfiguration,
     walkVisualBuilderGraph,
@@ -34,7 +34,7 @@ import {
     WorkflowConfigurationBuilder,
 } from 'pages/automate/workflows/models/workflowConfiguration.model'
 import Button from 'pages/common/components/button/Button'
-import {Chip} from 'pages/common/components/Chip'
+import { Chip } from 'pages/common/components/Chip'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
@@ -47,17 +47,17 @@ type Props = {
     onClose: () => void
 }
 
-const UseCaseTemplateModal = ({template, onClose}: Props) => {
+const UseCaseTemplateModal = ({ template, onClose }: Props) => {
     const history = useHistory()
     const [step, setStep] = useState<'selection' | 'confirmation'>('selection')
-    const {apps} = useApps()
+    const { apps } = useApps()
 
-    const getAppFromTemplateApp = useGetAppFromTemplateApp({apps})
+    const getAppFromTemplateApp = useGetAppFromTemplateApp({ apps })
 
     const templateNodes = useMemo(() => {
         const graph =
             transformWorkflowConfigurationIntoVisualBuilderGraph<LLMPromptTriggerNodeType>(
-                template
+                template,
             )
         const nodes: ReusableLLMPromptCallNodeType[] = []
 
@@ -95,12 +95,12 @@ const UseCaseTemplateModal = ({template, onClose}: Props) => {
     const [graph, dispatch] = useVisualBuilderGraphReducer(
         computeNodesPositions(
             transformWorkflowConfigurationIntoVisualBuilderGraph<LLMPromptTriggerNodeType>(
-                configuration
-            )
-        )
+                configuration,
+            ),
+        ),
     )
 
-    const {shopName, shopType} = useParams<{
+    const { shopName, shopType } = useParams<{
         shopName: string
         shopType: 'shopify'
     }>()
@@ -111,7 +111,7 @@ const UseCaseTemplateModal = ({template, onClose}: Props) => {
         isSuccess: isCreateActionSuccess,
     } = useUpsertAction('create', shopName, shopType)
 
-    const {data: steps = []} = useGetWorkflowConfigurationTemplates({
+    const { data: steps = [] } = useGetWorkflowConfigurationTemplates({
         triggers: ['reusable-llm-prompt'],
     })
 
@@ -123,16 +123,16 @@ const UseCaseTemplateModal = ({template, onClose}: Props) => {
                 graph,
                 graph.nodes[0].id,
                 steps,
-                apps
+                apps,
             ),
-        [graph, steps, apps]
+        [graph, steps, apps],
     )
     const conditions = useHumanReadableOrderConditions({
         variables,
         conditions: graph.nodes[0].data.conditions,
     })
 
-    const {routes} = useAiAgentNavigation({shopName})
+    const { routes } = useAiAgentNavigation({ shopName })
 
     const handleCreateAndEnable = useCallback(() => {
         return createAction([
@@ -144,7 +144,7 @@ const UseCaseTemplateModal = ({template, onClose}: Props) => {
             transformVisualBuilderGraphIntoWfConfiguration(
                 graph,
                 false,
-                steps
+                steps,
             ) as StoreWorkflowsConfiguration,
         ])
     }, [createAction, graph, shopName, shopType, steps])
@@ -153,7 +153,7 @@ const UseCaseTemplateModal = ({template, onClose}: Props) => {
         const configuration = transformVisualBuilderGraphIntoWfConfiguration(
             graph,
             false,
-            steps
+            steps,
         )
 
         history.push(routes.newAction(), configuration)
@@ -162,7 +162,7 @@ const UseCaseTemplateModal = ({template, onClose}: Props) => {
     const {
         isLoading: isLoadingOnboardingNotificationState,
         handleOnTriggerActivateAiAgentNotification,
-    } = useAiAgentOnboardingNotification({shopName})
+    } = useAiAgentOnboardingNotification({ shopName })
 
     useEffect(() => {
         if (isCreateActionSuccess) {
@@ -192,7 +192,7 @@ const UseCaseTemplateModal = ({template, onClose}: Props) => {
                                 if (
                                     !getIsActionStepEnabled(
                                         templateNode.data
-                                            .configuration_internal_id
+                                            .configuration_internal_id,
                                     )
                                 ) {
                                     return null
@@ -205,7 +205,7 @@ const UseCaseTemplateModal = ({template, onClose}: Props) => {
                                                 .configuration_id &&
                                         step.internal_id ===
                                             templateNode.data
-                                                .configuration_internal_id
+                                                .configuration_internal_id,
                                 )
                                 /* istanbul ignore next if */
                                 if (!step) {
@@ -263,7 +263,7 @@ const UseCaseTemplateModal = ({template, onClose}: Props) => {
                                                 let beforeNodeId = endNodeId
 
                                                 for (const templateNode of templateNodes.slice(
-                                                    index
+                                                    index,
                                                 )) {
                                                     const node =
                                                         graph.nodes.find(
@@ -282,7 +282,7 @@ const UseCaseTemplateModal = ({template, onClose}: Props) => {
                                                                             .data
                                                                             .configuration_internal_id
                                                                 )
-                                                            }
+                                                            },
                                                         )
 
                                                     if (node) {
@@ -339,7 +339,7 @@ const UseCaseTemplateModal = ({template, onClose}: Props) => {
                                                 node.data.configuration_id &&
                                             step.internal_id ===
                                                 node.data
-                                                    .configuration_internal_id
+                                                    .configuration_internal_id,
                                     )
 
                                     if (!step) {
@@ -347,7 +347,7 @@ const UseCaseTemplateModal = ({template, onClose}: Props) => {
                                     }
 
                                     const app = getAppFromTemplateApp(
-                                        step.apps[0]
+                                        step.apps[0],
                                     )
 
                                     if (!app) {
@@ -408,7 +408,7 @@ const UseCaseTemplateModal = ({template, onClose}: Props) => {
                         onClick={() => {
                             if (
                                 graph.apps?.every(
-                                    (app) => app.type === 'shopify'
+                                    (app) => app.type === 'shopify',
                                 )
                             ) {
                                 setStep('confirmation')

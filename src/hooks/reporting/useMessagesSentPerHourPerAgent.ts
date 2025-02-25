@@ -1,4 +1,4 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
 import {
     fetchMessagesSentMetricPerAgent,
@@ -6,7 +6,7 @@ import {
     useMessagesSentMetricPerAgent,
     useOnlineTimePerAgent,
 } from 'hooks/reporting/metricsPerAgent'
-import {calculateDecile} from 'hooks/reporting/ticket-insights/useCustomFieldsTicketCountPerCustomFields'
+import { calculateDecile } from 'hooks/reporting/ticket-insights/useCustomFieldsTicketCountPerCustomFields'
 import {
     calculateMetricPerHour,
     periodAndAgentOnlyFilters,
@@ -15,7 +15,7 @@ import {
     MetricWithDecile,
     MetricWithDecileFetch,
 } from 'hooks/reporting/useMetricPerDimension'
-import {OrderDirection} from 'models/api/types'
+import { OrderDirection } from 'models/api/types'
 import {
     AgentTimeTrackingDimension,
     AgentTimeTrackingMeasure,
@@ -24,8 +24,8 @@ import {
     HelpdeskMessageDimension,
     HelpdeskMessageMeasure,
 } from 'models/reporting/cubes/HelpdeskMessageCube'
-import {StatsFilters} from 'models/stat/types'
-import {matchAndCalculateAllEntries, sortAllData} from 'utils/reporting'
+import { StatsFilters } from 'models/stat/types'
+import { matchAndCalculateAllEntries, sortAllData } from 'utils/reporting'
 
 const senderIdField = HelpdeskMessageDimension.SenderId
 const userIdField = AgentTimeTrackingDimension.UserId
@@ -35,14 +35,14 @@ const onlineTimeField = AgentTimeTrackingMeasure.OnlineTime
 const formatResult = (
     messagesSent: MetricWithDecile,
     onlineTime: MetricWithDecile,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ): MetricWithDecile['data'] => {
     let metricValue: number | null = null
 
     if (messagesSent.data?.value && onlineTime.data?.value) {
         metricValue = calculateMetricPerHour(
             messagesSent.data.value,
-            onlineTime.data.value
+            onlineTime.data.value,
         )
     }
 
@@ -55,14 +55,14 @@ const formatResult = (
                   senderIdField,
                   userIdField,
                   messageCountField,
-                  onlineTimeField
+                  onlineTimeField,
               )
             : []
 
     const sortedData = sortAllData(data, messageCountField, sorting)
 
     const maxValue = Math.max(
-        ...sortedData.map((item) => Number(item[messageCountField]))
+        ...sortedData.map((item) => Number(item[messageCountField])),
     )
     return {
         allData: sortedData,
@@ -75,24 +75,24 @@ export const useMessagesSentPerHourPerAgent = (
     statsFilters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
-    agentAssigneeId?: string
+    agentAssigneeId?: string,
 ): MetricWithDecile => {
     const messagesSent = useMessagesSentMetricPerAgent(
         periodAndAgentOnlyFilters(statsFilters),
         timezone,
         sorting,
-        String(agentAssigneeId)
+        String(agentAssigneeId),
     )
     const onlineTime = useOnlineTimePerAgent(
         periodAndAgentOnlyFilters(statsFilters),
         timezone,
         sorting,
-        String(agentAssigneeId)
+        String(agentAssigneeId),
     )
 
     const data = useMemo(
         () => formatResult(messagesSent, onlineTime, sorting),
-        [messagesSent, onlineTime, sorting]
+        [messagesSent, onlineTime, sorting],
     )
 
     return {
@@ -106,20 +106,20 @@ export const fetchMessagesSentPerHourPerAgent: MetricWithDecileFetch = async (
     statsFilters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
-    agentAssigneeId?: string
+    agentAssigneeId?: string,
 ): Promise<MetricWithDecile> => {
     return Promise.all([
         fetchMessagesSentMetricPerAgent(
             periodAndAgentOnlyFilters(statsFilters),
             timezone,
             sorting,
-            agentAssigneeId
+            agentAssigneeId,
         ),
         fetchOnlineTimePerAgent(
             periodAndAgentOnlyFilters(statsFilters),
             timezone,
             sorting,
-            agentAssigneeId
+            agentAssigneeId,
         ),
     ])
         .then(([messagesSent, onlineTime]) => ({

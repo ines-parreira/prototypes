@@ -1,38 +1,39 @@
-import {useAgentActivity} from '@gorgias/realtime'
-import {fromJS, List, Map} from 'immutable'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
+
+import { fromJS, List, Map } from 'immutable'
 import _pick from 'lodash/pick'
-import React, {useEffect, useMemo, useRef, useState} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {useLocation, useParams} from 'react-router-dom'
+import { connect, ConnectedProps } from 'react-redux'
+import { useLocation, useParams } from 'react-router-dom'
+
+import { useAgentActivity } from '@gorgias/realtime'
 
 import {
     TicketChannel,
     TicketMessageSourceType,
     TicketStatus,
 } from 'business/types/ticket'
-import {logEvent, SegmentEvent} from 'common/segment'
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
-
 import useAsyncFn from 'hooks/useAsyncFn'
 import useEffectOnce from 'hooks/useEffectOnce'
 import useKey from 'hooks/useKey'
 import usePrevious from 'hooks/usePrevious'
-import {RecentItems} from 'hooks/useRecentItems/constants'
+import { RecentItems } from 'hooks/useRecentItems/constants'
 import useRecentItems from 'hooks/useRecentItems/useRecentItems'
 import useSearch from 'hooks/useSearch'
-import useDraftMessages, {DRAFT_TICKET_STORE} from 'hooks/useTicketDraft'
+import useDraftMessages, { DRAFT_TICKET_STORE } from 'hooks/useTicketDraft'
 import useTitle from 'hooks/useTitle'
-import {MacroActionName} from 'models/macroAction/types'
-import {PickedTicket, pickedTicketFields} from 'models/search/types'
-import {Ticket} from 'models/ticket/types'
-import {useListVoiceCalls} from 'models/voiceCall/queries'
+import { MacroActionName } from 'models/macroAction/types'
+import { PickedTicket, pickedTicketFields } from 'models/search/types'
+import { Ticket } from 'models/ticket/types'
+import { useListVoiceCalls } from 'models/voiceCall/queries'
 import Loader from 'pages/common/components/Loader/Loader'
 import LocalForageManager from 'services/localForageManager/localForageManager'
 import pendingMessageManager from 'services/pendingMessageManager/pendingMessageManager'
 import shortcutManager from 'services/shortcutManager'
 import socketManager from 'services/socketManager/socketManager'
-import {JoinEventType} from 'services/socketManager/types'
-import {fetchCustomer, fetchCustomerHistory} from 'state/customers/actions'
+import { JoinEventType } from 'services/socketManager/types'
+import { fetchCustomer, fetchCustomerHistory } from 'state/customers/actions'
 import {
     DEPRECATED_getActiveCustomer,
     getCustomersState,
@@ -49,9 +50,9 @@ import {
     TicketMessageActionValidationError,
     TicketMessageInvalidSendDataError,
 } from 'state/newMessage/errors'
-import {canSend, getNewMessageSource} from 'state/newMessage/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { canSend, getNewMessageSource } from 'state/newMessage/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 import {
     clearTicket,
     fetchTicket,
@@ -60,20 +61,21 @@ import {
     setCustomer,
     setStatus,
 } from 'state/ticket/actions'
-import {getSourceTypeOfResponse} from 'state/ticket/utils'
-import {updateCursor} from 'state/tickets/actions'
-import {RootState} from 'state/types'
-import {getActiveView} from 'state/views/selectors'
-import type {OnToggleUnreadFn} from 'tickets/pages/SplitTicketPage'
-import {isMacOs} from 'utils/platform'
+import { getSourceTypeOfResponse } from 'state/ticket/utils'
+import { updateCursor } from 'state/tickets/actions'
+import { RootState } from 'state/types'
+import { getActiveView } from 'state/views/selectors'
+import type { OnToggleUnreadFn } from 'tickets/pages/SplitTicketPage'
+import { isMacOs } from 'utils/platform'
 
-import {updateMessageText} from './components/ReplyArea/TicketReplyEditor'
+import { updateMessageText } from './components/ReplyArea/TicketReplyEditor'
 import useGoToNextTicket from './components/TicketNavigation/hooks/useGoToNextTicket'
 import useGoToPreviousTicket from './components/TicketNavigation/hooks/useGoToPreviousTicket'
 import TicketView from './components/TicketView'
 import useDraftTicketActivityTracking from './hooks/useDraftTicketActivityTracking'
 import useTicketActivityTracking from './hooks/useTicketActivityTracking'
-import {useTicketFieldsCheck} from './hooks/useTicketFieldsCheck'
+import { useTicketFieldsCheck } from './hooks/useTicketFieldsCheck'
+
 import css from './TicketDetail.less'
 
 export type SubmitArgs = {
@@ -115,18 +117,18 @@ export const TicketDetailContainer = ({
     onToggleUnread,
 }: Props) => {
     const dispatch = useAppDispatch()
-    const {ticketId: ticketIdParam} = useParams<{ticketId: string}>()
-    const {customer: customerId} = useSearch<{customer?: string}>()
+    const { ticketId: ticketIdParam } = useParams<{ ticketId: string }>()
+    const { customer: customerId } = useSearch<{ customer?: string }>()
     const ticketIdParamRef = useRef(ticketIdParam)
     const hasSelectedDefaultChannel = useRef(false)
-    const {setRecentItem} = useRecentItems<PickedTicket>(RecentItems.Tickets)
-    const {data: voiceCallsData, isLoading: isVoiceCallsDataLoading} =
+    const { setRecentItem } = useRecentItems<PickedTicket>(RecentItems.Tickets)
+    const { data: voiceCallsData, isLoading: isVoiceCallsDataLoading } =
         useListVoiceCalls(
-            {ticket_id: ticket.get('id')},
+            { ticket_id: ticket.get('id') },
             {
                 enabled: !!ticket.get('id'),
                 refetchOnWindowFocus: false,
-            }
+            },
         )
     const location = useLocation<{
         source?: string
@@ -136,9 +138,9 @@ export const TicketDetailContainer = ({
             address: string
         }
     }>()
-    const {sender, source, receiver} = location.state ?? {}
+    const { sender, source, receiver } = location.state ?? {}
 
-    const {temporaryId} = useDraftMessages(ticketIdParam === 'new')
+    const { temporaryId } = useDraftMessages(ticketIdParam === 'new')
 
     useDraftTicketActivityTracking(temporaryId)
 
@@ -156,16 +158,16 @@ export const TicketDetailContainer = ({
             Number(ticketIdParam) === ticketId &&
             ticketStatus !== TicketStatus.Closed
             ? ticketId
-            : undefined
+            : undefined,
     )
 
     const recipients = useMemo(
         () => (newMessageSource.get('to') || fromJS([])) as List<any>,
-        [newMessageSource]
+        [newMessageSource],
     )
     const customer = useMemo(
         () => (ticket.get('customer') || fromJS({})) as Map<any, any>,
-        [ticket]
+        [ticket],
     )
     const prevCustomer = usePrevious(customer)
     const isLoading =
@@ -181,7 +183,7 @@ export const TicketDetailContainer = ({
             ticket.get('channel') === TicketChannel.Phone &&
             !voiceCallsData &&
             isVoiceCallsDataLoading,
-        [ticket, voiceCallsData, isVoiceCallsDataLoading]
+        [ticket, voiceCallsData, isVoiceCallsDataLoading],
     )
 
     useEffect(() => {
@@ -194,7 +196,7 @@ export const TicketDetailContainer = ({
             const sourceType = getSourceTypeOfResponse(
                 ticket.get('messages'),
                 ticket.get('via'),
-                ticket.get('id')
+                ticket.get('id'),
             )
             prepare(sourceType)
             hasSelectedDefaultChannel.current = true
@@ -207,7 +209,7 @@ export const TicketDetailContainer = ({
         voiceCallsData,
     ])
 
-    const {checkTicketFieldErrors} = useTicketFieldsCheck(ticketId)
+    const { checkTicketFieldErrors } = useTicketFieldsCheck(ticketId)
 
     useEffect(() => {
         if (
@@ -235,13 +237,13 @@ export const TicketDetailContainer = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    const {goToTicket: goToPrevious, isEnabled: isPrevEnabled} =
+    const { goToTicket: goToPrevious, isEnabled: isPrevEnabled } =
         useGoToPreviousTicket(ticketIdParam)
 
-    const {goToTicket: goToNext, isEnabled: isNextEnabled} =
+    const { goToTicket: goToNext, isEnabled: isNextEnabled } =
         useGoToNextTicket(ticketIdParam)
 
-    const [{loading: isGoToPrevOrNextTicketPending}, goToPrevOrNextTicket] =
+    const [{ loading: isGoToPrevOrNextTicketPending }, goToPrevOrNextTicket] =
         useAsyncFn(
             async (direction: 'prev' | 'next') => {
                 // Disable Ticket navigation via keyboard shortcuts (`<-` & `->`) when
@@ -259,13 +261,16 @@ export const TicketDetailContainer = ({
                 goToNext,
                 isPrevEnabled,
                 isNextEnabled,
-            ]
+            ],
         )
 
-    const prepareAndSubmitNewTicket = ({status, resetMessage}: SubmitArgs) => {
+    const prepareAndSubmitNewTicket = ({
+        status,
+        resetMessage,
+    }: SubmitArgs) => {
         let submittedTicket
         const receiver = newMessage.getIn(['newMessage', 'receiver'])
-        const sender = {id: currentUser.get('id')}
+        const sender = { id: currentUser.get('id') }
 
         const sourceType = newMessage.getIn(['newMessage', 'source', 'type'])
         submittedTicket = ticket.setIn(['newMessage', 'sender'], sender)
@@ -273,10 +278,10 @@ export const TicketDetailContainer = ({
         const hasInternalNoteAction = (
             ticket.getIn(
                 ['state', 'appliedMacro', 'actions'],
-                fromJS([])
+                fromJS([]),
             ) as List<Map<any, any>>
         ).some(
-            (action) => action?.get('name') === MacroActionName.AddInternalNote
+            (action) => action?.get('name') === MacroActionName.AddInternalNote,
         )
 
         // Ensure that a customer is always set on the ticket when created
@@ -290,7 +295,7 @@ export const TicketDetailContainer = ({
             ticket.getIn(['state', 'appliedMacro', 'actions']),
             currentUser,
             resetMessage,
-            temporaryId
+            temporaryId,
         )
     }
 
@@ -300,7 +305,7 @@ export const TicketDetailContainer = ({
         resetMessage = true,
     }: SubmitArgs) => {
         try {
-            const {messageId, messageToSend, replyAreaState} =
+            const { messageId, messageToSend, replyAreaState } =
                 await prepareTicketMessage({
                     status,
                     macroActions: ticket.getIn([
@@ -326,7 +331,7 @@ export const TicketDetailContainer = ({
                 messageId,
                 messageToSend,
                 action,
-                resetMessage
+                resetMessage,
             )
         } catch (error) {
             if (
@@ -345,7 +350,7 @@ export const TicketDetailContainer = ({
     }: SubmitArgs) => {
         if (
             status === TicketStatus.Closed &&
-            checkTicketFieldErrors({includeMacro: true})
+            checkTicketFieldErrors({ includeMacro: true })
         ) {
             return
         }
@@ -364,18 +369,18 @@ export const TicketDetailContainer = ({
 
         // The ticket does not exist yet.
         if (!ticket.get('id')) {
-            const {error} = ((await prepareAndSubmitNewTicket({
+            const { error } = ((await prepareAndSubmitNewTicket({
                 status,
                 action,
                 resetMessage,
-            })) || {}) as {error: unknown}
+            })) || {}) as { error: unknown }
 
             if (error) {
                 return
             }
             LocalForageManager.clearTable(DRAFT_TICKET_STORE)
         } else {
-            await submitNewMessage({status, action, resetMessage})
+            await submitNewMessage({ status, action, resetMessage })
         }
 
         const callback = onGoToNextTicket || maybeGoToNextTicket
@@ -391,7 +396,7 @@ export const TicketDetailContainer = ({
                 action: () => {
                     if (!isGoToPrevOrNextTicketPending) {
                         logEvent(
-                            SegmentEvent.TicketKeyboardShortcutsPreviousNavigation
+                            SegmentEvent.TicketKeyboardShortcutsPreviousNavigation,
                         )
                         void goToPrevOrNextTicket('prev')
                     }
@@ -401,7 +406,7 @@ export const TicketDetailContainer = ({
                 action: () => {
                     if (!isGoToPrevOrNextTicketPending) {
                         logEvent(
-                            SegmentEvent.TicketKeyboardShortcutsNextNavigation
+                            SegmentEvent.TicketKeyboardShortcutsNextNavigation,
                         )
                         void goToPrevOrNextTicket('next')
                     }
@@ -423,7 +428,7 @@ export const TicketDetailContainer = ({
                         e.preventDefault()
                         e.stopImmediatePropagation()
                     }
-                    void submit({status: TicketStatus.Closed})
+                    void submit({ status: TicketStatus.Closed })
                 },
             },
         })
@@ -457,7 +462,7 @@ export const TicketDetailContainer = ({
     useEffect(() => {
         if ((ticket.get('id', '') as number).toString() !== ticketIdParam) {
             clearTicket()
-            void fetchTicket(ticketIdParam || '', {isCurrentlyOnTicket: true})
+            void fetchTicket(ticketIdParam || '', { isCurrentlyOnTicket: true })
         }
 
         showTicket()
@@ -470,7 +475,7 @@ export const TicketDetailContainer = ({
             // map default channel (email) to address, for the receivers select.
             const receiver = activeCustomer.set(
                 'address',
-                activeCustomer.get('email')
+                activeCustomer.get('email'),
             )
 
             if (
@@ -561,7 +566,7 @@ export const TicketDetailContainer = ({
                 {
                     to: [receiver],
                 },
-                false
+                false,
             )
         }
     })
@@ -598,7 +603,7 @@ export const TicketDetailContainer = ({
         )
     }
 
-    useKey(ctrlFPredicate, trackCtrlFKeyCombo, {event: 'keydown'})
+    useKey(ctrlFPredicate, trackCtrlFKeyCombo, { event: 'keydown' })
 
     const showTicket = () => {
         setIsTicketHidden(false)
@@ -633,7 +638,7 @@ export const TicketDetailContainer = ({
                 notify({
                     status: NotificationStatus.Success,
                     message: 'Ticket has been closed',
-                })
+                }),
             )
 
             const callback = onGoToNextTicket || maybeGoToNextTicket
@@ -641,7 +646,7 @@ export const TicketDetailContainer = ({
         })
     }
 
-    const {joinTicket, leaveTicket} = useAgentActivity()
+    const { joinTicket, leaveTicket } = useAgentActivity()
 
     useEffect(() => {
         if (ticketIdParam && ticketIdParam !== 'new') {
@@ -696,7 +701,7 @@ const connector = connect(
         setStatus,
         submitTicket,
         updateCursor,
-    }
+    },
 )
 
 export default connector(TicketDetailContainer)

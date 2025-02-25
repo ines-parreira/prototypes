@@ -1,12 +1,13 @@
-import {render} from '@testing-library/react'
-import type {ReactNode} from 'react'
+import type { ReactNode } from 'react'
 import React from 'react'
 
-import {getCurrentAccountId} from 'state/currentAccount/selectors'
-import {getCurrentUserId} from 'state/currentUser/selectors'
+import { render } from '@testing-library/react'
+
+import { getCurrentAccountId } from 'state/currentAccount/selectors'
+import { getCurrentUserId } from 'state/currentUser/selectors'
 
 import useAuthentication from '../../hooks/useAuthentication'
-import Provider, {KNOCK_FEED_ID} from '../Provider'
+import Provider, { KNOCK_FEED_ID } from '../Provider'
 
 jest.mock('@knocklabs/react', () => ({
     KnockFeedProvider: ({
@@ -56,12 +57,16 @@ const getCurrentUserIdMock = getCurrentUserId as unknown as jest.Mock
 jest.mock('../../hooks/useAuthentication', () => jest.fn())
 const useAuthenticationMock = useAuthentication as jest.Mock
 
-jest.mock('../ClientProvider', () => ({children}: {children: ReactNode}) => (
-    <div>
-        <p>ClientProvider</p>
-        {children}
-    </div>
-))
+jest.mock(
+    '../ClientProvider',
+    () =>
+        ({ children }: { children: ReactNode }) => (
+            <div>
+                <p>ClientProvider</p>
+                {children}
+            </div>
+        ),
+)
 
 describe('Provider', () => {
     beforeEach(() => {
@@ -75,7 +80,7 @@ describe('Provider', () => {
     })
 
     it('should render the KnockProvider', () => {
-        const {getByText} = render(<Provider>Boop</Provider>)
+        const { getByText } = render(<Provider>Boop</Provider>)
         expect(getByText('KnockProvider')).toBeInTheDocument()
         expect(getByText('apiKey: api-key')).toBeInTheDocument()
         expect(getByText('userId: 2.123')).toBeInTheDocument()
@@ -83,13 +88,13 @@ describe('Provider', () => {
     })
 
     it('should render the KnockFeedProvider', () => {
-        const {getByText} = render(<Provider>Boop</Provider>)
+        const { getByText } = render(<Provider>Boop</Provider>)
         expect(getByText('KnockFeedProvider')).toBeInTheDocument()
         expect(getByText(`feedId: ${KNOCK_FEED_ID}`)).toBeInTheDocument()
     })
 
     it('should render the ClientProvider', () => {
-        const {getByText} = render(<Provider>Boop</Provider>)
+        const { getByText } = render(<Provider>Boop</Provider>)
         expect(getByText('ClientProvider')).toBeInTheDocument()
     })
 })

@@ -1,16 +1,17 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
-import {useGetWorkflowConfigurationTemplate} from 'models/workflows/queries'
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+
+import { useGetWorkflowConfigurationTemplate } from 'models/workflows/queries'
 import ActionFormMerchantInputValue from 'pages/aiAgent/actions/components/ActionFormMerchantInputValue'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import useGetAppFromTemplateApp from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
-import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
+import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {
     ReusableLLMPromptCallNodeType,
     VisualBuilderGraphAppApp,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import {Drawer} from 'pages/common/components/Drawer'
+import { Drawer } from 'pages/common/components/Drawer'
 import InputField from 'pages/common/forms/input/InputField'
 
 import NodeEditorDrawerHeader from '../NodeEditorDrawerHeader'
@@ -22,13 +23,13 @@ export default function ReusableLLMPromptCallEditor({
 }: {
     nodeInEdition: ReusableLLMPromptCallNodeType
 }) {
-    const {dispatch, visualBuilderGraph} = useVisualBuilderContext()
+    const { dispatch, visualBuilderGraph } = useVisualBuilderContext()
 
-    const {data: step} = useGetWorkflowConfigurationTemplate(
-        nodeInEdition.data.configuration_id
+    const { data: step } = useGetWorkflowConfigurationTemplate(
+        nodeInEdition.data.configuration_id,
     )
-    const {apps, actionsApps} = useApps()
-    const getAppFromTemplateApp = useGetAppFromTemplateApp({apps})
+    const { apps, actionsApps } = useApps()
+    const getAppFromTemplateApp = useGetAppFromTemplateApp({ apps })
 
     if (!step) {
         return <LoadingSpinner size="medium" />
@@ -40,7 +41,7 @@ export default function ReusableLLMPromptCallEditor({
 
     const actionsApp = actionsApps.find(
         (actionsApp) =>
-            templateApp.type === 'app' && actionsApp.id === templateApp.app_id
+            templateApp.type === 'app' && actionsApp.id === templateApp.app_id,
     )
     const app = getAppFromTemplateApp(templateApp)
 
@@ -55,7 +56,7 @@ export default function ReusableLLMPromptCallEditor({
         actionsApp &&
         visualBuilderGraph.apps?.find(
             (app): app is VisualBuilderGraphAppApp =>
-                app.type === 'app' && app.app_id === actionsApp.id
+                app.type === 'app' && app.app_id === actionsApp.id,
         )
 
     return (

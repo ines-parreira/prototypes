@@ -6,17 +6,16 @@ import {
     CardHeader,
     CardTitle,
 } from 'pages/aiAgent/Onboarding/components/Card'
-
 import TopElementsCard from 'pages/aiAgent/Onboarding/components/TopElementsCard'
 import TopProductsCard from 'pages/aiAgent/Onboarding/components/TopProductsCard'
-import {useGetKnowledgeDatasQuery} from 'pages/aiAgent/Onboarding/hooks/useGetKnowledgeDatasQuery'
+import { useGetKnowledgeDatasQuery } from 'pages/aiAgent/Onboarding/hooks/useGetKnowledgeDatasQuery'
 import TrackerCircle from 'pages/common/components/ProgressTracker/TrackerCircle'
-import {LineChart} from 'pages/stats/common/components/charts/LineChart/LineChart'
+import { LineChart } from 'pages/stats/common/components/charts/LineChart/LineChart'
 
 import css from './KnowledgePreview.less'
 
 const KnowledgePreview = () => {
-    const {data} = useGetKnowledgeDatasQuery()
+    const { data } = useGetKnowledgeDatasQuery()
 
     const graphOptions = {
         elements: {

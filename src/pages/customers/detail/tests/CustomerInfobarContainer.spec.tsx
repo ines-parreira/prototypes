@@ -1,15 +1,16 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {selectContext, fetchWidgets} from 'state/widgets/actions'
-import {assumeMock} from 'utils/testing'
+import { fetchWidgets, selectContext } from 'state/widgets/actions'
+import { assumeMock } from 'utils/testing'
 
-import {Infobar} from '../../../common/components/infobar/Infobar/Infobar'
-import {CustomerInfobarContainer} from '../CustomerInfobarContainer'
+import { Infobar } from '../../../common/components/infobar/Infobar/Infobar'
+import { CustomerInfobarContainer } from '../CustomerInfobarContainer'
 
 jest.mock('state/widgets/actions')
 jest.mock(
@@ -32,7 +33,7 @@ jest.mock(
                 <div>widgets: {JSON.stringify(widgets)}</div>
                 <div>context: {context}</div>
             </div>
-        )
+        ),
 )
 
 const mockedSelectContext = assumeMock(selectContext)
@@ -43,7 +44,7 @@ store.dispatch = jest.fn()
 
 describe('<CustomerInfobarContainer />', () => {
     const minProps = {
-        activeCustomer: fromJS({name: 'Don Draper'}),
+        activeCustomer: fromJS({ name: 'Don Draper' }),
         activeCustomerId: 1,
         isEditingWidgets: false,
         sources: fromJS({
@@ -56,10 +57,10 @@ describe('<CustomerInfobarContainer />', () => {
     } as unknown as ComponentProps<typeof CustomerInfobarContainer>
 
     it('should render infobar for active customer', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <CustomerInfobarContainer {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
         expect(mockedSelectContext).toHaveBeenCalledWith('customer')
@@ -68,13 +69,13 @@ describe('<CustomerInfobarContainer />', () => {
     })
 
     it('should not render anything without a customer id', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <CustomerInfobarContainer
                     {...minProps}
                     activeCustomerId={null}
                 />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })

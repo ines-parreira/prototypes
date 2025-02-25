@@ -1,4 +1,4 @@
-import type {Ticket} from 'models/ticket/types'
+import type { Ticket } from 'models/ticket/types'
 
 export type SortField =
     | 'created_datetime'

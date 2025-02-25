@@ -1,6 +1,6 @@
-import {campaignTrigger} from 'fixtures/campaign'
+import { campaignTrigger } from 'fixtures/campaign'
 
-import {areTriggersEqual} from '../areTriggersEqual'
+import { areTriggersEqual } from '../areTriggersEqual'
 
 describe('areTriggersEqual', () => {
     it('should return true when triggers are equal', () => {

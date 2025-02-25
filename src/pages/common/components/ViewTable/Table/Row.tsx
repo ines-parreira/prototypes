@@ -1,19 +1,17 @@
-import classnames from 'classnames'
-import {Map, List} from 'immutable'
-import React, {useEffect, useRef} from 'react'
+import React, { useEffect, useRef } from 'react'
 
-import {useDesktopOnlyShowGlobalNavFeatureFlag} from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
+import classnames from 'classnames'
+import { List, Map } from 'immutable'
+
+import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
 import useAgentsViewing from 'hooks/realtime/useAgentsViewing'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {EntityType} from 'models/view/types'
-
+import { EntityType } from 'models/view/types'
 import ViewingIndicator from 'pages/common/components/ViewingIndicator/ViewingIndicator'
 import css from 'pages/common/components/ViewTable/Table.less'
 import CheckBox from 'pages/common/forms/CheckBox'
-import {scrollToReactNode} from 'pages/common/utils/keyboard'
-
+import { scrollToReactNode } from 'pages/common/utils/keyboard'
 import * as viewsActions from 'state/views/actions'
-
 import * as viewsUtils from 'state/views/utils'
 
 import Cell from './Cell'
@@ -54,7 +52,7 @@ export default function Row({
         dispatch(viewsActions.toggleIdInSelectedItemsIds(item.get('id')))
     }
 
-    const {agentsViewing} = useAgentsViewing(item.get('id') as number)
+    const { agentsViewing } = useAgentsViewing(item.get('id') as number)
 
     return (
         <tr
@@ -70,7 +68,7 @@ export default function Row({
                     className={classnames(
                         'cell-wrapper clickable d-none d-md-table-cell smallest',
                         /* istanbul ignore next */
-                        showGlobalNav ? 'cell-global-nav' : 'cell-short'
+                        showGlobalNav ? 'cell-global-nav' : 'cell-short',
                     )}
                     onClick={toggleSelection}
                 >
@@ -79,7 +77,7 @@ export default function Row({
                         agentsViewing.length > 0 && (
                             <ViewingIndicator
                                 title={viewsUtils.agentsViewingMessage(
-                                    agentsViewing
+                                    agentsViewing,
                                 )}
                             />
                         )

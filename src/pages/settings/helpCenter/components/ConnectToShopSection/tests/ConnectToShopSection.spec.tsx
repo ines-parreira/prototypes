@@ -1,22 +1,23 @@
-import {act, fireEvent, render, waitFor} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { act, fireEvent, render, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {ThemeProvider} from 'core/theme'
-import {account} from 'fixtures/account'
-import {billingState} from 'fixtures/billing'
-import {IntegrationType} from 'models/integration/constants'
-import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
-import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
-import {RootState, StoreDispatch} from 'state/types'
-import {initialState as uiState} from 'state/ui/helpCenter/reducer'
+import { ThemeProvider } from 'core/theme'
+import { account } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
+import { IntegrationType } from 'models/integration/constants'
+import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { initialState as articlesState } from 'state/entities/helpCenter/articles/reducer'
+import { initialState as categoriesState } from 'state/entities/helpCenter/categories/reducer'
+import { RootState, StoreDispatch } from 'state/types'
+import { initialState as uiState } from 'state/ui/helpCenter/reducer'
 
-import {ConnectToShopSection} from '../ConnectToShopSection'
+import { ConnectToShopSection } from '../ConnectToShopSection'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -34,7 +35,7 @@ const defaultState: Partial<RootState> = {
             categories: categoriesState,
         },
     } as any,
-    ui: {helpCenter: {...uiState, currentId: 1}} as any,
+    ui: { helpCenter: { ...uiState, currentId: 1 } } as any,
     integrations: fromJS({
         integrations: [
             {
@@ -79,7 +80,7 @@ const defaultState: Partial<RootState> = {
 
 const store = mockStore(defaultState)
 
-const ReduxProvider = ({children}: {children?: React.ReactNode}) => (
+const ReduxProvider = ({ children }: { children?: React.ReactNode }) => (
     <Provider store={store}>{children}</Provider>
 )
 
@@ -92,14 +93,14 @@ describe('<ConnectToShopSection />', () => {
     it('renders in disabled state while fetching data', async () => {
         const onUpdate = jest.fn()
 
-        const {container, getAllByText, getByText} = render(
+        const { container, getAllByText, getByText } = render(
             <ThemeProvider>
                 <ConnectToShopSection
                     shopName={getHelpCentersResponseFixture.data[0].shop_name}
                     onUpdate={onUpdate}
                 />
             </ThemeProvider>,
-            {wrapper: ReduxProvider}
+            { wrapper: ReduxProvider },
         )
 
         expect(container).toMatchSnapshot()
@@ -135,7 +136,7 @@ describe('<ConnectToShopSection />', () => {
     it('should display appropriate store logo when shopType is provided', () => {
         const onUpdate = jest.fn()
 
-        const {getByText, getByAltText} = render(
+        const { getByText, getByAltText } = render(
             <ThemeProvider>
                 <ConnectToShopSection
                     shopName={'Meow shop'}
@@ -143,7 +144,7 @@ describe('<ConnectToShopSection />', () => {
                     onUpdate={onUpdate}
                 />
             </ThemeProvider>,
-            {wrapper: ReduxProvider}
+            { wrapper: ReduxProvider },
         )
 
         expect(getByText('Meow shop')).toBeInTheDocument()
@@ -151,21 +152,21 @@ describe('<ConnectToShopSection />', () => {
         expect(imgElement).toBeInTheDocument()
         expect(imgElement).toHaveAttribute(
             'src',
-            '/assets/img/integrations/shopify.png'
+            '/assets/img/integrations/shopify.png',
         )
     })
 
     it('should display a default store logo when shopType is not provided', () => {
         const onUpdate = jest.fn()
 
-        const {getByText, getByAltText} = render(
+        const { getByText, getByAltText } = render(
             <ThemeProvider>
                 <ConnectToShopSection
                     shopName={'Meow shop'}
                     onUpdate={onUpdate}
                 />
             </ThemeProvider>,
-            {wrapper: ReduxProvider}
+            { wrapper: ReduxProvider },
         )
 
         expect(getByText('Meow shop')).toBeInTheDocument()

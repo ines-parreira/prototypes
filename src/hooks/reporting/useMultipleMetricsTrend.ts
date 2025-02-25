@@ -1,10 +1,10 @@
-import {Cubes} from 'models/reporting/cubes'
+import { Cubes } from 'models/reporting/cubes'
 import {
     fetchPostReporting,
     usePostReporting,
     UsePostReportingQueryData,
 } from 'models/reporting/queries'
-import {ReportingQuery} from 'models/reporting/types'
+import { ReportingQuery } from 'models/reporting/types'
 
 export type MultipleMetricsData<TCube extends Cubes> = Record<
     TCube['measures'],
@@ -21,12 +21,12 @@ export type MultipleMetricsTrend<TCube extends Cubes> = {
 }
 
 const multipleMetricsSelect = <TCube extends Cubes>(
-    data: UsePostReportingQueryData<Record<TCube['measures'], string>[]>
+    data: UsePostReportingQueryData<Record<TCube['measures'], string>[]>,
 ) => data.data.data[0]
 
 export const useMultipleMetricsTrends = <TCube extends Cubes>(
     currentPeriodQuery: ReportingQuery<TCube>,
-    previousPeriodQuery: ReportingQuery<TCube>
+    previousPeriodQuery: ReportingQuery<TCube>,
 ): MultipleMetricsTrend<TCube> => {
     const currentMetrics = usePostReporting<
         Record<TCube['measures'], string>[],
@@ -40,7 +40,7 @@ export const useMultipleMetricsTrends = <TCube extends Cubes>(
         Record<TCube['measures'], string>[],
         Record<TCube['measures'], string>,
         TCube
-    >([previousPeriodQuery], {select: multipleMetricsSelect})
+    >([previousPeriodQuery], { select: multipleMetricsSelect })
 
     const data = currentPeriodQuery.measures.reduce((acc, measure) => {
         acc[measure] = {
@@ -63,7 +63,7 @@ export const useMultipleMetricsTrends = <TCube extends Cubes>(
 
 export const fetchMultipleMetricsTrends = async <TCube extends Cubes>(
     currentPeriodQuery: ReportingQuery<TCube>,
-    previousPeriodQuery: ReportingQuery<TCube>
+    previousPeriodQuery: ReportingQuery<TCube>,
 ): Promise<MultipleMetricsTrend<TCube>> => {
     const currentMetrics = fetchPostReporting<
         Record<TCube['measures'], string>[],

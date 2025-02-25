@@ -1,4 +1,4 @@
-import {fromJS, Map} from 'immutable'
+import { fromJS, Map } from 'immutable'
 
 import rechargeEvent from '../recharge'
 
@@ -22,7 +22,7 @@ describe('rechargeEvent', () => {
     it('Should return a subscription a broken event if actionConfig is a subscription', () => {
         const event = rechargeEvent({
             integration: Map(),
-            actionConfig: {...actionConfig, objectType: 'subscription'},
+            actionConfig: { ...actionConfig, objectType: 'subscription' },
             payload: Map(),
             data: fromJS({
                 subscriptions: [],
@@ -39,8 +39,8 @@ describe('rechargeEvent', () => {
     it('Should return a subscription a broken event if actionConfig is a subscription', () => {
         const event = rechargeEvent({
             integration: Map(),
-            actionConfig: {...actionConfig, objectType: 'subscription'},
-            payload: fromJS({subscription_id: 1}),
+            actionConfig: { ...actionConfig, objectType: 'subscription' },
+            payload: fromJS({ subscription_id: 1 }),
             data: fromJS({}),
         })
 
@@ -54,10 +54,10 @@ describe('rechargeEvent', () => {
     it('Should return a subscription a broken event if actionConfig is a subscription', () => {
         const event = rechargeEvent({
             integration: Map(),
-            actionConfig: {...actionConfig, objectType: 'subscription'},
-            payload: fromJS({subscription_id: 1}),
+            actionConfig: { ...actionConfig, objectType: 'subscription' },
+            payload: fromJS({ subscription_id: 1 }),
             data: fromJS({
-                subscriptions: [{id: 2}],
+                subscriptions: [{ id: 2 }],
             }),
         })
 
@@ -75,10 +75,10 @@ describe('rechargeEvent', () => {
                     store_name: 'store_name',
                 },
             }),
-            actionConfig: {...actionConfig, objectType: 'subscription'},
-            payload: fromJS({subscription_id: 1}),
+            actionConfig: { ...actionConfig, objectType: 'subscription' },
+            payload: fromJS({ subscription_id: 1 }),
             data: fromJS({
-                subscriptions: [{id: 1}],
+                subscriptions: [{ id: 1 }],
                 customer: {
                     hash: 'hash',
                 },
@@ -95,7 +95,7 @@ describe('rechargeEvent', () => {
     it('Should return a charge broken event if actionConfig is a charge', () => {
         const event = rechargeEvent({
             integration: Map(),
-            actionConfig: {...actionConfig, objectType: 'charge'},
+            actionConfig: { ...actionConfig, objectType: 'charge' },
             payload: Map(),
             data: Map(),
         })
@@ -110,7 +110,7 @@ describe('rechargeEvent', () => {
     it('Should return a charge broken event if actionConfig is a charge', () => {
         const event = rechargeEvent({
             integration: Map(),
-            actionConfig: {...actionConfig, objectType: 'charge'},
+            actionConfig: { ...actionConfig, objectType: 'charge' },
             payload: Map(),
             data: fromJS({
                 charges: [],
@@ -127,10 +127,10 @@ describe('rechargeEvent', () => {
     it('Should return a charge broken event if actionConfig is a charge', () => {
         const event = rechargeEvent({
             integration: Map(),
-            actionConfig: {...actionConfig, objectType: 'charge'},
-            payload: fromJS({charge_id: 1}),
+            actionConfig: { ...actionConfig, objectType: 'charge' },
+            payload: fromJS({ charge_id: 1 }),
             data: fromJS({
-                charges: [{id: 2}],
+                charges: [{ id: 2 }],
             }),
         })
 
@@ -148,10 +148,10 @@ describe('rechargeEvent', () => {
                     store_name: 'store_name',
                 },
             }),
-            actionConfig: {...actionConfig, objectType: 'charge'},
-            payload: fromJS({charge_id: 1}),
+            actionConfig: { ...actionConfig, objectType: 'charge' },
+            payload: fromJS({ charge_id: 1 }),
             data: fromJS({
-                charges: [{id: 1}],
+                charges: [{ id: 1 }],
                 customer: {
                     hash: 'hash',
                 },

@@ -1,24 +1,25 @@
-import {Meta, StoryFn} from '@storybook/react'
-import {QueryClientProvider} from '@tanstack/react-query'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { Meta, StoryFn } from '@storybook/react'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {appQueryClient} from 'api/queryClient'
-import {UserRole} from 'config/types/user'
-import {customFieldDefinitionKeys} from 'custom-fields/hooks/queries/queries'
-import {customFieldsMockResponse} from 'fixtures/customField'
-import {integrationsState} from 'fixtures/integrations'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {FilterKey} from 'models/stat/types'
-import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
-import {SavedFiltersActions} from 'pages/stats/common/filters/SavedFiltersActions/SavedFiltersActions'
-import {activeParams} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
-import {initialState} from 'state/stats/statsSlice'
-import {RootState} from 'state/types'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
+import { appQueryClient } from 'api/queryClient'
+import { UserRole } from 'config/types/user'
+import { customFieldDefinitionKeys } from 'custom-fields/hooks/queries/queries'
+import { customFieldsMockResponse } from 'fixtures/customField'
+import { integrationsState } from 'fixtures/integrations'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { FilterKey } from 'models/stat/types'
+import { FiltersPanel } from 'pages/stats/common/filters/FiltersPanel'
+import { SavedFiltersActions } from 'pages/stats/common/filters/SavedFiltersActions/SavedFiltersActions'
+import { activeParams } from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
+import { initialState } from 'state/stats/statsSlice'
+import { RootState } from 'state/types'
+import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
 
 const defaultState = {
     stats: {
@@ -29,7 +30,7 @@ const defaultState = {
     },
     ui: uiStatsInitialState,
     integrations: fromJS(integrationsState),
-    currentUser: fromJS({role: {name: UserRole.Admin}}),
+    currentUser: fromJS({ role: { name: UserRole.Admin } }),
 } as unknown as RootState
 
 const storyConfig: Meta = {
@@ -45,8 +46,8 @@ const FiltersPanelWithSavedFilters: StoryFn<
     })
     appQueryClient.setQueryData(['savedFilters', 'listAnalyticsFilters'], {
         data: [
-            {id: 1, name: 'Temp Filter 1', filter_group: []},
-            {id: 2, name: 'Temp Filter 2', filter_group: []},
+            { id: 1, name: 'Temp Filter 1', filter_group: [] },
+            { id: 2, name: 'Temp Filter 2', filter_group: [] },
         ],
     })
     return (

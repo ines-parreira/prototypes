@@ -1,4 +1,4 @@
-import {CampaignScheduleRuleValueEnum} from '../types/enums/CampaignScheduleSettingsValues.enum'
+import { CampaignScheduleRuleValueEnum } from '../types/enums/CampaignScheduleSettingsValues.enum'
 
 export const DURATION_VALUES = [
     {

@@ -1,23 +1,25 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import {fromJS, Map} from 'immutable'
+import React from 'react'
+
+import { fromJS, Map } from 'immutable'
 import _get from 'lodash/get'
 import _some from 'lodash/some'
-import React from 'react'
-import {Form} from 'reactstrap'
+import { Form } from 'reactstrap'
+
+import { Label } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {IntegrationType} from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import Caption from 'pages/common/forms/Caption/Caption'
 import GroupAddon from 'pages/common/forms/input/GroupAddon'
 import InputField from 'pages/common/forms/input/InputField'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import TextInput from 'pages/common/forms/input/TextInput'
-import {updateOrCreateIntegrationRequest} from 'state/integrations/actions'
+import { updateOrCreateIntegrationRequest } from 'state/integrations/actions'
 
 import IntegrationActionButtons from './IntegrationActionButtons'
 import {
-    StoreAdminNewUrlInput,
     STORE_ADMIN_URL_INPUT_ID,
+    StoreAdminNewUrlInput,
 } from './StoreAdminNewUrlInput'
 
 type Props = {
@@ -47,12 +49,12 @@ const ManualIntegrationForm = ({
         adminURLSuffix: meta.get('admin_url_suffix', ''),
     }
 
-    const currentValues = {...metaValues, ...authInitialValues}
+    const currentValues = { ...metaValues, ...authInitialValues }
 
     const [values, setValues] = React.useState(currentValues)
     const [errors, setErrors] = React.useState({})
 
-    const {storeURL}: {storeURL: string} = values
+    const { storeURL }: { storeURL: string } = values
 
     return (
         <Form
@@ -76,7 +78,7 @@ const ManualIntegrationForm = ({
 
                 const data = {
                     type: IntegrationType.Magento2,
-                    ...(auth && {connections: [{data: auth}]}),
+                    ...(auth && { connections: [{ data: auth }] }),
                     deactivated_datetime: null,
                     meta: {
                         store_url: values.storeURL,
@@ -86,13 +88,13 @@ const ManualIntegrationForm = ({
                 }
                 void dispatch(
                     updateOrCreateIntegrationRequest(
-                        integration.mergeDeep(data)
-                    )
+                        integration.mergeDeep(data),
+                    ),
                 ).then((response) => {
                     const error = _get(response, 'error')
 
                     if (error) {
-                        const {meta} = _get(error, 'response.data.error.data')
+                        const { meta } = _get(error, 'response.data.error.data')
                         if (meta) {
                             setErrors(meta)
                         }
@@ -118,7 +120,7 @@ const ManualIntegrationForm = ({
                         onChange={(value) =>
                             setValues({
                                 ...values,
-                                ...{adminURLSuffix: value},
+                                ...{ adminURLSuffix: value },
                             })
                         }
                         isRequired
@@ -148,7 +150,7 @@ const ManualIntegrationForm = ({
                 label="Consumer key"
                 value={values.consumerKey}
                 onChange={(value: string) =>
-                    setValues({...values, ...{consumerKey: value}})
+                    setValues({ ...values, ...{ consumerKey: value } })
                 }
                 isRequired={!isUpdate}
             />
@@ -160,7 +162,7 @@ const ManualIntegrationForm = ({
                 label="Consumer secret"
                 value={values.consumerSecret}
                 onChange={(value: string) =>
-                    setValues({...values, ...{consumerSecret: value}})
+                    setValues({ ...values, ...{ consumerSecret: value } })
                 }
                 isRequired={!isUpdate}
             />
@@ -172,7 +174,7 @@ const ManualIntegrationForm = ({
                 label="Access token"
                 value={values.accessToken}
                 onChange={(value: string) =>
-                    setValues({...values, ...{accessToken: value}})
+                    setValues({ ...values, ...{ accessToken: value } })
                 }
                 isRequired={!isUpdate}
             />
@@ -184,7 +186,7 @@ const ManualIntegrationForm = ({
                 label="Access token secret"
                 value={values.accessTokenSecret}
                 onChange={(value: string) =>
-                    setValues({...values, ...{accessTokenSecret: value}})
+                    setValues({ ...values, ...{ accessTokenSecret: value } })
                 }
                 isRequired={!isUpdate}
             />

@@ -1,4 +1,4 @@
-import {wyboTheme, Theme, STATUSES} from 'reapop'
+import { STATUSES, Theme, wyboTheme } from 'reapop'
 
 const colors = {
     [STATUSES.info]: 'var(--main-primary)',

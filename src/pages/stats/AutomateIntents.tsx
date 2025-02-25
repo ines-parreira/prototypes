@@ -1,5 +1,6 @@
-import {fromJS, Map} from 'immutable'
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
+
+import { fromJS, Map } from 'immutable'
 
 import {
     INTENTS_BREAKDOWN_PER_DAY,
@@ -7,19 +8,17 @@ import {
     INTENTS_OVERVIEW,
     stats as statsConfig,
 } from 'config/stats'
-
 import useStatResource from 'hooks/reporting/useStatResource'
-
 import useAppSelector from 'hooks/useAppSelector'
 import {
-    OneDimensionalChart,
     LegacyStatsFilters,
+    OneDimensionalChart,
     TwoDimensionalChart,
 } from 'models/stat/types'
-import {AutomateIntentsFilters} from 'pages/stats/AutomateIntentsFilters'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
+import { AutomateIntentsFilters } from 'pages/stats/AutomateIntentsFilters'
+import { getCleanStatsFiltersWithTimezone } from 'state/ui/stats/selectors'
 
-import {BarStat} from './common/components/charts/BarStat'
+import { BarStat } from './common/components/charts/BarStat'
 import KeyMetricStat from './common/components/charts/KeyMetricStat/KeyMetricStat'
 import TableStat from './common/components/charts/TableStat/TableStat'
 import KeyMetricStatWrapper from './KeyMetricStatWrapper'
@@ -29,13 +28,13 @@ import StatWrapper from './StatWrapper'
 const AUTOMATION_INTENTS_STAT_NAME = 'automation-intents'
 
 export default function AutomateIntents() {
-    const {cleanStatsFilters: statsFilters} = useAppSelector(
-        getCleanStatsFiltersWithTimezone
+    const { cleanStatsFilters: statsFilters } = useAppSelector(
+        getCleanStatsFiltersWithTimezone,
     )
 
     const pageStatsFilters = useMemo<LegacyStatsFilters>(() => {
-        const {channels, period} = statsFilters
-        return {channels, period}
+        const { channels, period } = statsFilters
+        return { channels, period }
     }, [statsFilters])
 
     const [intentsOverview, isFetchingIntentsOverview] =
@@ -97,7 +96,7 @@ export default function AutomateIntents() {
                                 data={stat.getIn(['data', 'data'])}
                                 legend={stat.getIn(['data', 'legend'])}
                                 config={statsConfig.get(
-                                    INTENTS_BREAKDOWN_PER_DAY
+                                    INTENTS_BREAKDOWN_PER_DAY,
                                 )}
                             />
                         )}
@@ -112,7 +111,7 @@ export default function AutomateIntents() {
                     >
                         {(stat) => (
                             <TableStat
-                                context={{tagColors: null}}
+                                context={{ tagColors: null }}
                                 data={stat.getIn(['data', 'data'])}
                                 meta={stat.get('meta')}
                                 config={statsConfig.get(INTENTS_OCCURRENCE)}

@@ -1,7 +1,7 @@
+import React, { useState } from 'react'
+
 import classnames from 'classnames'
 import _upperFirst from 'lodash/upperFirst'
-import React, {useState} from 'react'
-
 import {
     DropdownItem,
     DropdownMenu,
@@ -9,9 +9,9 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
-import {VisibilityStatus} from 'models/helpCenter/types'
+import { VisibilityStatus } from 'models/helpCenter/types'
 import Button from 'pages/common/components/button/Button'
-import {objKeys} from 'utils'
+import { objKeys } from 'utils'
 
 import css from './SelectVisibilityStatus.less'
 
@@ -50,17 +50,17 @@ const SelectVisibilityStatus = ({
         UNLISTED: {
             title: 'Unlisted',
             description: `${_upperFirst(
-                type
+                type,
             )} is accessible only via direct link and is not indexed by search engines.`,
             icon: 'visibility_off',
         },
         PUBLIC: {
             title: 'Public',
             description: `${_upperFirst(
-                type
+                type,
             )} is public to everyone visiting your Help Center.`,
             descriptionInheritUnlisted: `${_upperFirst(
-                type
+                type,
             )} is currently only accessible via direct link because one of its parent categories is unlisted.`,
             icon: 'visibility',
         },
@@ -79,7 +79,7 @@ const SelectVisibilityStatus = ({
                             <i
                                 className={classnames(
                                     css.icon,
-                                    'material-icons'
+                                    'material-icons',
                                 )}
                             >
                                 {optionsVisibilityStatus[status].icon}
@@ -94,7 +94,7 @@ const SelectVisibilityStatus = ({
                         <i
                             className={classnames(
                                 'material-icons',
-                                css.dropdownIcon
+                                css.dropdownIcon,
                             )}
                         >
                             arrow_drop_down
@@ -124,7 +124,7 @@ const SelectVisibilityStatus = ({
                                 <i
                                     className={classnames(
                                         css.icon,
-                                        'material-icons'
+                                        'material-icons',
                                     )}
                                 >
                                     {optionsVisibilityStatus[key].icon}

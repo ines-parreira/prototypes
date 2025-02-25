@@ -1,9 +1,9 @@
-import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
-import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
-import {StoreState} from 'state/types'
+import { initialState as articlesState } from 'state/entities/helpCenter/articles/reducer'
+import { initialState as categoriesState } from 'state/entities/helpCenter/categories/reducer'
+import { StoreState } from 'state/types'
 
-import {initialState as uiState} from '../reducer'
-import {getCurrentHelpCenterId, getViewLanguage} from '../selectors'
+import { initialState as uiState } from '../reducer'
+import { getCurrentHelpCenterId, getViewLanguage } from '../selectors'
 
 const store: Partial<StoreState> = {
     entities: {
@@ -12,7 +12,7 @@ const store: Partial<StoreState> = {
             categories: categoriesState,
         },
     } as any,
-    ui: {helpCenter: uiState} as any,
+    ui: { helpCenter: uiState } as any,
 }
 
 const nextStore: Partial<StoreState> = {
@@ -23,7 +23,7 @@ const nextStore: Partial<StoreState> = {
         },
     } as any,
     ui: {
-        helpCenter: {...uiState, currentLanguage: 'en-US', currentId: 1},
+        helpCenter: { ...uiState, currentLanguage: 'en-US', currentId: 1 },
     } as any,
 }
 

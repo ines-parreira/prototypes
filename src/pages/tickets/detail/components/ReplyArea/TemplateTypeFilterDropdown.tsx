@@ -1,5 +1,6 @@
-import classNames from 'classnames'
 import React from 'react'
+
+import classNames from 'classnames'
 import {
     DropdownItem,
     DropdownMenu,
@@ -7,7 +8,7 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
-import {TicketChannel} from 'business/types/ticket'
+import { TicketChannel } from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
 import useWhatsAppEditor from 'pages/integrations/integration/components/whatsapp/useWhatsAppEditor'
 import {
@@ -15,15 +16,16 @@ import {
     isNewMessagePublic,
 } from 'state/newMessage/selectors'
 
+import { TemplateTypeFilterOption } from './types'
+
 import css from './TemplateTypeFilterDropdown.less'
-import {TemplateTypeFilterOption} from './types'
 
 type Props = {
     value: TemplateTypeFilterOption
 }
 
-export default function TemplateTypeFilterDropdown({value}: Props) {
-    const {setSelectedTemplateType} = useWhatsAppEditor()
+export default function TemplateTypeFilterDropdown({ value }: Props) {
+    const { setSelectedTemplateType } = useWhatsAppEditor()
 
     const channel = useAppSelector(getNewMessageChannel)
     const isPublicNewMessage = useAppSelector(isNewMessagePublic)
@@ -52,7 +54,7 @@ export default function TemplateTypeFilterDropdown({value}: Props) {
                 <TemplateTypeDropdownItem
                     onClick={() =>
                         setSelectedTemplateType(
-                            TemplateTypeFilterOption.Templates
+                            TemplateTypeFilterOption.Templates,
                         )
                     }
                     isSelected={value === TemplateTypeFilterOption.Templates}

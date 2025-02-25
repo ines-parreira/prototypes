@@ -1,1 +1,1 @@
-export {default} from './ScheduledCancellationSummary'
+export { default } from './ScheduledCancellationSummary'

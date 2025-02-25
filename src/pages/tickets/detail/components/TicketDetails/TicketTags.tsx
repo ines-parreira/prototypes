@@ -1,10 +1,12 @@
-import {Badge, Tooltip, BadgeIcon} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
-import {List, Map} from 'immutable'
-import _uniqueId from 'lodash/uniqueId'
-import React, {ComponentProps, useMemo, useState} from 'react'
+import React, { ComponentProps, useMemo, useState } from 'react'
 
-import {getElementWrapInfo} from 'common/utils'
+import classnames from 'classnames'
+import { List, Map } from 'immutable'
+import _uniqueId from 'lodash/uniqueId'
+
+import { Badge, BadgeIcon, Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { getElementWrapInfo } from 'common/utils'
 import useCallbackRef from 'hooks/useCallbackRef'
 import useElementSize from 'hooks/useElementSize'
 import Button from 'pages/common/components/button/Button'
@@ -12,6 +14,7 @@ import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import TicketTag from 'pages/common/components/TicketTag'
 
 import TagDropdown from './TagDropdown'
+
 import css from './TicketTags.less'
 
 type Props = {
@@ -44,7 +47,7 @@ const TicketTags = ({
 
                 return first > second ? 1 : second > first ? -1 : 0
             }),
-        [ticketTags]
+        [ticketTags],
     )
 
     const uniqueId = useMemo(() => _uniqueId(), [])
@@ -73,7 +76,7 @@ const TicketTags = ({
             showAllTags
                 ? wrappedElementCount && wrappedElementCount > 0
                 : false,
-        [showAllTags, wrappedElementCount]
+        [showAllTags, wrappedElementCount],
     )
 
     let formula = right ? -1 : Number.MAX_SAFE_INTEGER
@@ -106,12 +109,12 @@ const TicketTags = ({
                         {
                             [css.right]: right,
                         },
-                        className
+                        className,
                     )}
                 >
                     {!isDisabled && (
                         <TagDropdown
-                            addTag={({name}) => addTag?.(name!)}
+                            addTag={({ name }) => addTag?.(name!)}
                             shouldBindKeys={shouldBindKeys}
                             ticketTags={ticketTags}
                             transparent={transparent}
@@ -157,7 +160,7 @@ const TicketTags = ({
                                 <BadgeIcon
                                     className={classnames(
                                         'material-icons-round',
-                                        css.displayMoreIcon
+                                        css.displayMoreIcon,
                                     )}
                                     icon="arrow_drop_down"
                                 />
@@ -186,7 +189,7 @@ const TicketTags = ({
                         className={classnames({
                             [css.hidden]: !derivedShowAllTags,
                         })}
-                        style={{order: (tags.size + 1) * 10}}
+                        style={{ order: (tags.size + 1) * 10 }}
                     >
                         <ButtonIconLabel
                             className={css.button}

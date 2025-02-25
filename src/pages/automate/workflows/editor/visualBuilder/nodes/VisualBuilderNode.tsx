@@ -1,7 +1,7 @@
-import classnames from 'classnames'
-import React, {ReactNode, useCallback, MouseEvent} from 'react'
+import React, { MouseEvent, ReactNode, useCallback } from 'react'
 
-import {Handle, Position} from 'reactflow'
+import classnames from 'classnames'
+import { Handle, Position } from 'reactflow'
 
 import css from './VisualBuilderNode.less'
 
@@ -32,7 +32,7 @@ const VisualBuilderNode = ({
                 event.stopPropagation()
             }
         },
-        [isClickable]
+        [isClickable],
     )
 
     return (
@@ -43,7 +43,7 @@ const VisualBuilderNode = ({
                 [css.isErrored]: isErrored,
                 [css.isGreyedOut]: isGreyedOut,
             })}
-            style={{height}}
+            style={{ height }}
             onClick={handleClick}
         >
             {source && (

@@ -1,6 +1,6 @@
-import {Map} from 'immutable'
+import { Map } from 'immutable'
 
-import {GorgiasApiError} from '../../models/api/types'
+import { GorgiasApiError } from '../../models/api/types'
 
 export type Macro = Map<any, any>
 export type State = Map<any, any>

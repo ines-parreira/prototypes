@@ -1,13 +1,11 @@
-import React, {FunctionComponent} from 'react'
+import React, { FunctionComponent } from 'react'
 
 import previewDark from 'assets/img/help-center/preview-dark.svg'
 import previewLight from 'assets/img/help-center/preview-light.svg'
-
 import ColorField from 'pages/common/forms/ColorField'
 
-import {PreviewRadioButton} from '../../../../common/components/PreviewRadioButton'
-
-import {HelpCenterTheme} from '../../types'
+import { PreviewRadioButton } from '../../../../common/components/PreviewRadioButton'
+import { HelpCenterTheme } from '../../types'
 
 import css from './ThemeSwitch.less'
 

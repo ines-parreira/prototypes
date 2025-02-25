@@ -1,34 +1,38 @@
-import {screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {account} from 'fixtures/account'
-import {billingState} from 'fixtures/billing'
+import { screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { account } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
 import {
     AUTOMATION_PRODUCT_ID,
     basicYearlyAutomationPlan,
     basicYearlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
-import {FilterKey} from 'models/stat/types'
-import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
-import {AUTO_QA_FILTER_KEYS} from 'pages/stats/common/filters/constants'
+import { FilterKey } from 'models/stat/types'
+import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
+import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
-import {BusiestTimesOfDays} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDays'
-import {BusiestTimesOfDaysDownloadDataButton} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysDownloadDataButton'
-import {BusiestTimesOfDaysTable} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysTable'
+import { BusiestTimesOfDays } from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDays'
+import { BusiestTimesOfDaysDownloadDataButton } from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysDownloadDataButton'
+import { BusiestTimesOfDaysTable } from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysTable'
 import {
     BUSIEST_TIME_OF_DAY_OPTIONAL_FILTERS,
     BUSIEST_TIME_OF_DAY_PAGE_TITLE,
 } from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesReportConfig'
-import {BusiestTimeOfDaysMetrics} from 'pages/stats/support-performance/busiest-times-of-days/types'
-import {getMetricQuery} from 'pages/stats/support-performance/busiest-times-of-days/utils'
-import {SupportPerformanceFilters} from 'pages/stats/support-performance/SupportPerformanceFilters'
-import {RootState} from 'state/types'
-import {busiestTimesSlice, initialState} from 'state/ui/stats/busiestTimesSlice'
-import {assumeMock, renderWithStore} from 'utils/testing'
+import { BusiestTimeOfDaysMetrics } from 'pages/stats/support-performance/busiest-times-of-days/types'
+import { getMetricQuery } from 'pages/stats/support-performance/busiest-times-of-days/utils'
+import { SupportPerformanceFilters } from 'pages/stats/support-performance/SupportPerformanceFilters'
+import { RootState } from 'state/types'
+import {
+    busiestTimesSlice,
+    initialState,
+} from 'state/ui/stats/busiestTimesSlice'
+import { assumeMock, renderWithStore } from 'utils/testing'
 
 jest.mock('pages/stats/support-performance/SupportPerformanceFilters')
 const FiltersMock = assumeMock(SupportPerformanceFilters)
@@ -38,7 +42,7 @@ jest.mock(
         return props.optionalFilters?.map((optionalFilter) => (
             <div key={optionalFilter}>{optionalFilter}</div>
         ))
-    }
+    },
 )
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
@@ -46,21 +50,21 @@ jest.mock('pages/stats/DrillDownModal.tsx', () => ({
 jest.mock('pages/stats/AnalyticsFooter.tsx')
 const AnalyticsFooterMock = assumeMock(AnalyticsFooter)
 jest.mock(
-    'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysTable'
+    'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysTable',
 )
 const BusiestTimesOfDaysTableMock = assumeMock(BusiestTimesOfDaysTable)
 jest.mock(
-    'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysDownloadDataButton'
+    'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysDownloadDataButton',
 )
 const BusiestTimesOfDaysDownloadDataButtonMock = assumeMock(
-    BusiestTimesOfDaysDownloadDataButton
+    BusiestTimesOfDaysDownloadDataButton,
 )
 const componentMock = () => <div />
 
 describe('BusiestTimesOfDays page', () => {
     const defaultState = {
         ui: {
-            stats: {[busiestTimesSlice.name]: initialState},
+            stats: { [busiestTimesSlice.name]: initialState },
         },
         billing: fromJS(billingState),
     } as RootState
@@ -70,7 +74,7 @@ describe('BusiestTimesOfDays page', () => {
         AnalyticsFooterMock.mockImplementation(componentMock)
         BusiestTimesOfDaysTableMock.mockImplementation(componentMock)
         BusiestTimesOfDaysDownloadDataButtonMock.mockImplementation(
-            componentMock
+            componentMock,
         )
     })
 
@@ -80,7 +84,7 @@ describe('BusiestTimesOfDays page', () => {
         renderWithStore(<BusiestTimesOfDays />, defaultState)
 
         expect(
-            screen.getByText(BUSIEST_TIME_OF_DAY_PAGE_TITLE)
+            screen.getByText(BUSIEST_TIME_OF_DAY_PAGE_TITLE),
         ).toBeInTheDocument()
         expect(BusiestTimesOfDaysTableMock).toHaveBeenCalledWith(
             {
@@ -88,16 +92,16 @@ describe('BusiestTimesOfDays page', () => {
                 useMetricQuery: getMetricQuery(defaultMetric),
                 isHeatmapMode: true,
             },
-            {}
+            {},
         )
     })
 
     it('should render FiltersPanel with New Filters when flag is enabled', () => {
-        mockFlags({[FeatureFlagKey.AnalyticsNewFilters]: true})
+        mockFlags({ [FeatureFlagKey.AnalyticsNewFilters]: true })
 
-        const {getByText} = renderWithStore(
+        const { getByText } = renderWithStore(
             <BusiestTimesOfDays />,
-            defaultState
+            defaultState,
         )
 
         BUSIEST_TIME_OF_DAY_OPTIONAL_FILTERS.forEach((optionalFilter) => {
@@ -114,9 +118,9 @@ describe('BusiestTimesOfDays page', () => {
             FilterKey.Score,
         ]
 
-        const {getByText} = renderWithStore(
+        const { getByText } = renderWithStore(
             <BusiestTimesOfDays />,
-            defaultState
+            defaultState,
         )
 
         extendedBusiestTimeOfDaysOptionalFilters.forEach((optionalFilter) => {
@@ -147,7 +151,7 @@ describe('BusiestTimesOfDays page', () => {
             ...AUTO_QA_FILTER_KEYS,
         ]
 
-        const {getByText} = renderWithStore(<BusiestTimesOfDays />, state)
+        const { getByText } = renderWithStore(<BusiestTimesOfDays />, state)
 
         extendedBusiestTimeOfDaysOptionalFilters.forEach((optionalFilter) => {
             expect(getByText(optionalFilter)).toBeInTheDocument()

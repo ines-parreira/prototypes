@@ -1,14 +1,12 @@
-import {renderHook} from '@testing-library/react-hooks'
-
-import {mockFlags} from 'jest-launchdarkly-mock'
-
-import moment from 'moment'
-
 import React from 'react'
-import {Provider} from 'react-redux'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {channels} from 'fixtures/channels'
+import { renderHook } from '@testing-library/react-hooks'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import moment from 'moment'
+import { Provider } from 'react-redux'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { channels } from 'fixtures/channels'
 import {
     fetchTableReportData,
     useTableReportData,
@@ -18,19 +16,19 @@ import {
     fetchChannelsTableReportData,
     useChannelsReportMetrics,
 } from 'hooks/reporting/support-performance/channels/useChannelsReportMetrics'
-import {getCsvFileNameWithDates} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
-import {useSortedChannels} from 'hooks/reporting/support-performance/useSortedChannels'
-import {OrderDirection} from 'models/api/types'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {ReportingGranularity} from 'models/reporting/types'
-import {TagFilterInstanceId} from 'models/stat/types'
-import {BusiestTimeOfDaysMetrics} from 'pages/stats/support-performance/busiest-times-of-days/types'
-import {columnsOrder} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
-import {saveReport} from 'services/reporting/channelsReportingService'
-import {RootState} from 'state/types'
-import {agentPerformanceSlice} from 'state/ui/stats/agentPerformanceSlice'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
-import {assumeMock, mockStore} from 'utils/testing'
+import { getCsvFileNameWithDates } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
+import { useSortedChannels } from 'hooks/reporting/support-performance/useSortedChannels'
+import { OrderDirection } from 'models/api/types'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { ReportingGranularity } from 'models/reporting/types'
+import { TagFilterInstanceId } from 'models/stat/types'
+import { BusiestTimeOfDaysMetrics } from 'pages/stats/support-performance/busiest-times-of-days/types'
+import { columnsOrder } from 'pages/stats/support-performance/channels/ChannelsTableConfig'
+import { saveReport } from 'services/reporting/channelsReportingService'
+import { RootState } from 'state/types'
+import { agentPerformanceSlice } from 'state/ui/stats/agentPerformanceSlice'
+import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
+import { assumeMock, mockStore } from 'utils/testing'
 
 jest.mock('hooks/reporting/support-performance/useSortedChannels')
 
@@ -106,7 +104,7 @@ describe('useChannelsReportMetrics', () => {
     }
 
     beforeEach(() => {
-        mockFlags({[FeatureFlagKey.AnalyticsNewFilters]: false})
+        mockFlags({ [FeatureFlagKey.AnalyticsNewFilters]: false })
         useSortedChannelsMock.mockReturnValue({
             sortedChannels: channels,
             isLoading: false,
@@ -118,8 +116,8 @@ describe('useChannelsReportMetrics', () => {
     })
 
     it('should return channels metrics', () => {
-        const {result} = renderHook(() => useChannelsReportMetrics(), {
-            wrapper: ({children}) => (
+        const { result } = renderHook(() => useChannelsReportMetrics(), {
+            wrapper: ({ children }) => (
                 <Provider store={mockStore(state)}> {children} </Provider>
             ),
         })
@@ -129,7 +127,7 @@ describe('useChannelsReportMetrics', () => {
 
     it('should call one of hooks with the legacy stats filters', () => {
         renderHook(() => useChannelsReportMetrics(), {
-            wrapper: ({children}) => (
+            wrapper: ({ children }) => (
                 <Provider store={mockStore(state)}> {children} </Provider>
             ),
         })
@@ -140,15 +138,15 @@ describe('useChannelsReportMetrics', () => {
                 channels: mockedChannels,
             }),
             expect.anything(),
-            expect.anything()
+            expect.anything(),
         )
     })
 
     it('should call one of hooks with stats filters with default logical operator', () => {
-        mockFlags({[FeatureFlagKey.AnalyticsNewFilters]: true})
+        mockFlags({ [FeatureFlagKey.AnalyticsNewFilters]: true })
 
         renderHook(() => useChannelsReportMetrics(), {
-            wrapper: ({children}) => (
+            wrapper: ({ children }) => (
                 <Provider store={mockStore(state)}> {children} </Provider>
             ),
         })
@@ -164,7 +162,7 @@ describe('useChannelsReportMetrics', () => {
                 channels: withDefaultLogicalOperator(mockedChannels),
             }),
             expect.anything(),
-            expect.anything()
+            expect.anything(),
         )
     })
 
@@ -197,14 +195,14 @@ describe('useChannelsReportMetrics', () => {
             }
             const fileName = getCsvFileNameWithDates(
                 statsFilters.period,
-                CHANNELS_REPORT_FILE_NAME
+                CHANNELS_REPORT_FILE_NAME,
             )
 
             const result = await fetchChannelsTableReportData(
                 statsFilters,
                 userTimezone,
                 granularity,
-                context
+                context,
             )
 
             expect(result).toEqual({
@@ -245,14 +243,14 @@ describe('useChannelsReportMetrics', () => {
             }
             const fileName = getCsvFileNameWithDates(
                 statsFilters.period,
-                CHANNELS_REPORT_FILE_NAME
+                CHANNELS_REPORT_FILE_NAME,
             )
 
             const result = await fetchChannelsTableReportData(
                 statsFilters,
                 userTimezone,
                 granularity,
-                context
+                context,
             )
 
             expect(result).toEqual({

@@ -1,5 +1,6 @@
-import React, {useCallback, useMemo} from 'react'
-import {useHistory} from 'react-router-dom'
+import React, { useCallback, useMemo } from 'react'
+
+import { useHistory } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import Button from 'pages/common/components/button/Button'
@@ -9,12 +10,12 @@ import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import PageHeader from 'pages/common/components/PageHeader'
 import css from 'pages/settings/settings.less'
-import {getCurrentUserState} from 'state/currentUser/selectors'
+import { getCurrentUserState } from 'state/currentUser/selectors'
 
 import ChangePassword from './ChangePassword'
 import TwoFactorAuthenticationSection from './twoFactorAuthentication/TwoFactorAuthenticationSection'
-import {buildPasswordAnd2FaText} from './twoFactorAuthentication/utils'
-import {isRecentLogin} from './utils'
+import { buildPasswordAnd2FaText } from './twoFactorAuthentication/utils'
+import { isRecentLogin } from './utils'
 
 export default function PasswordAnd2FA() {
     const currentUser = useAppSelector(getCurrentUserState)

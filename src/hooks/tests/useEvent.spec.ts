@@ -1,5 +1,5 @@
-import {fireEvent} from '@testing-library/react'
-import {act, renderHook} from '@testing-library/react-hooks'
+import { fireEvent } from '@testing-library/react'
+import { act, renderHook } from '@testing-library/react-hooks'
 
 import useEvent from '../useEvent'
 
@@ -11,7 +11,9 @@ describe('useEvent', () => {
         jest.spyOn(target, 'addEventListener')
         jest.spyOn(target, 'removeEventListener')
 
-        const {unmount} = renderHook(() => useEvent('click', listener, target))
+        const { unmount } = renderHook(() =>
+            useEvent('click', listener, target),
+        )
 
         act(() => {
             fireEvent.click(target)
@@ -30,19 +32,19 @@ describe('useEvent', () => {
         expect(target.addEventListener).toHaveBeenCalledWith(
             'click',
             listener,
-            undefined
+            undefined,
         )
         expect(target.removeEventListener).toHaveBeenCalledWith(
             'click',
             listener,
-            undefined
+            undefined,
         )
     })
 
     it('should handle default target if target is not provided', () => {
         const listener = jest.fn()
 
-        const {unmount} = renderHook(() => useEvent('click', listener))
+        const { unmount } = renderHook(() => useEvent('click', listener))
 
         act(() => {
             fireEvent.click(window)
@@ -62,13 +64,13 @@ describe('useEvent', () => {
     it('should add and remove event listener with options', () => {
         const listener = jest.fn()
         const target = document.createElement('div')
-        const options = {capture: true, passive: true}
+        const options = { capture: true, passive: true }
 
         jest.spyOn(target, 'addEventListener')
         jest.spyOn(target, 'removeEventListener')
 
-        const {unmount} = renderHook(() =>
-            useEvent('click', listener, target, options)
+        const { unmount } = renderHook(() =>
+            useEvent('click', listener, target, options),
         )
 
         act(() => {
@@ -88,12 +90,12 @@ describe('useEvent', () => {
         expect(target.addEventListener).toHaveBeenCalledWith(
             'click',
             listener,
-            options
+            options,
         )
         expect(target.removeEventListener).toHaveBeenCalledWith(
             'click',
             listener,
-            options
+            options,
         )
     })
 
@@ -115,8 +117,8 @@ describe('useEvent', () => {
             passive: false,
         })
 
-        const {rerender, unmount} = renderHook(
-            ({type, listener, target, options}) =>
+        const { rerender, unmount } = renderHook(
+            ({ type, listener, target, options }) =>
                 useEvent(type, listener, target, options),
             {
                 initialProps: {
@@ -125,13 +127,13 @@ describe('useEvent', () => {
                     target: target as Element,
                     options: getOptions(),
                 },
-            }
+            },
         )
 
         expect(target.addEventListener).toBeCalledWith(
             'click',
             listener,
-            getOptions()
+            getOptions(),
         )
 
         // Change the type
@@ -145,7 +147,7 @@ describe('useEvent', () => {
         expect(target.addEventListener).toBeCalledWith(
             'focus',
             listener,
-            getOptions()
+            getOptions(),
         )
         expect(target.removeEventListener).toBeCalledTimes(1)
 
@@ -160,7 +162,7 @@ describe('useEvent', () => {
         expect(target.addEventListener).toBeCalledWith(
             'focus',
             otherListener,
-            getOptions()
+            getOptions(),
         )
         expect(target.removeEventListener).toBeCalledTimes(2)
 
@@ -175,7 +177,7 @@ describe('useEvent', () => {
         expect(otherTarget.addEventListener).toBeCalledWith(
             'focus',
             otherListener,
-            getOptions()
+            getOptions(),
         )
         expect(target.removeEventListener).toBeCalledTimes(3)
 
@@ -190,7 +192,7 @@ describe('useEvent', () => {
         expect(otherTarget.addEventListener).toBeCalledWith(
             'focus',
             otherListener,
-            getOtherOptions()
+            getOtherOptions(),
         )
 
         expect(otherTarget.removeEventListener).toBeCalledTimes(1)

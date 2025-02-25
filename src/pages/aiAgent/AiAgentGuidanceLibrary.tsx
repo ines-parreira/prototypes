@@ -1,27 +1,29 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import React from 'react'
+
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import BackLink from 'pages/common/components/BackLink'
 import Button from 'pages/common/components/button/Button'
 import history from 'pages/history'
 
+import { GuidanceAiSuggestionsList } from './components/GuidanceAiSuggestionsList/GuidanceAiSuggestionsList'
+import { GuidanceTemplatesList } from './components/GuidanceTemplatesList/GuidanceTemplatesList'
+import { useAiAgentNavigation } from './hooks/useAiAgentNavigation'
+import { useGuidanceAiSuggestions } from './hooks/useGuidanceAiSuggestions'
+import { useGuidanceTemplates } from './hooks/useGuidanceTemplates'
+
 import css from './AiAgentGuidanceLibrary.less'
-import {GuidanceAiSuggestionsList} from './components/GuidanceAiSuggestionsList/GuidanceAiSuggestionsList'
-import {GuidanceTemplatesList} from './components/GuidanceTemplatesList/GuidanceTemplatesList'
-import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
-import {useGuidanceAiSuggestions} from './hooks/useGuidanceAiSuggestions'
-import {useGuidanceTemplates} from './hooks/useGuidanceTemplates'
 
 type Props = {
     helpCenterId: number
     shopName: string
 }
 
-export const AiAgentGuidanceLibrary = ({helpCenterId, shopName}: Props) => {
-    const {guidanceTemplates} = useGuidanceTemplates()
-    const {routes} = useAiAgentNavigation({shopName})
+export const AiAgentGuidanceLibrary = ({ helpCenterId, shopName }: Props) => {
+    const { guidanceTemplates } = useGuidanceTemplates()
+    const { routes } = useAiAgentNavigation({ shopName })
 
-    const {guidanceAISuggestions, isLoadingAiGuidances} =
+    const { guidanceAISuggestions, isLoadingAiGuidances } =
         useGuidanceAiSuggestions({
             helpCenterId,
             shopName,

@@ -1,17 +1,17 @@
-import {useCallback, useState} from 'react'
+import { useCallback, useState } from 'react'
 
-import {HttpRequestNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { HttpRequestNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 const renderWithVariables = (
     string: string,
-    variables: Record<string, string>
+    variables: Record<string, string>,
 ) => {
     let result = string
 
     for (const path in variables) {
         result = result.replace(
             new RegExp(`{{${path.replace(/\./g, '\\.')}[^{}]*}}`, 'g'),
-            variables[path]
+            variables[path],
         )
     }
 
@@ -23,7 +23,7 @@ const corsProxyKey = '8e6f1be6-hvcl-6975-iuhu-f45d4c8e8b86'
 
 async function fetchToken(
     refreshTokenUrl: string,
-    refreshToken: string
+    refreshToken: string,
 ): Promise<string> {
     try {
         const body = JSON.stringify({
@@ -41,7 +41,7 @@ async function fetchToken(
 
         const tokenResponse = await fetch(
             `${corsProxyBaseUrl}/${refreshTokenUrl}`,
-            requestOptions
+            requestOptions,
         )
 
         if (!tokenResponse.ok) {
@@ -69,8 +69,8 @@ const useSendTestRequest = (
         | 'bodyContentType'
     >,
     onResponse: (
-        result: NonNullable<HttpRequestNodeType['data']['testRequestResult']>
-    ) => void
+        result: NonNullable<HttpRequestNodeType['data']['testRequestResult']>,
+    ) => void,
 ) => {
     const [isLoading, setIsLoading] = useState(false)
 
@@ -78,7 +78,7 @@ const useSendTestRequest = (
         async (
             variables: Record<string, string> = {},
             refreshToken?: string,
-            refreshTokenUrl?: string
+            refreshTokenUrl?: string,
         ) => {
             setIsLoading(true)
 
@@ -105,11 +105,11 @@ const useSendTestRequest = (
                     (acc, header) => {
                         acc[header.name.toLowerCase()] = renderWithVariables(
                             header.value,
-                            variables
+                            variables,
                         )
                         return acc
                     },
-                    {}
+                    {},
                 )
 
                 if (config.bodyContentType) {
@@ -120,7 +120,7 @@ const useSendTestRequest = (
                     if (refreshTokenUrl) {
                         headers['authorization'] = await fetchToken(
                             refreshTokenUrl,
-                            refreshToken
+                            refreshToken,
                         )
                     }
                 }
@@ -130,13 +130,13 @@ const useSendTestRequest = (
                 const res = await fetch(
                     `${corsProxyBaseUrl}/${renderWithVariables(
                         config.url,
-                        variables
+                        variables,
                     )}`,
                     {
                         method: config.method,
                         headers,
                         body,
-                    }
+                    },
                 )
 
                 onResponse({
@@ -144,15 +144,15 @@ const useSendTestRequest = (
                     content: res.body ? await res.text() : undefined,
                 })
             } catch {
-                onResponse({status: 500})
+                onResponse({ status: 500 })
             } finally {
                 setIsLoading(false)
             }
         },
-        [config, onResponse]
+        [config, onResponse],
     )
 
-    return {isLoading, sendTestRequest}
+    return { isLoading, sendTestRequest }
 }
 
 export default useSendTestRequest

@@ -1,21 +1,18 @@
-import {renderHook} from '@testing-library/react-hooks'
-
+import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment'
 
-import {AutomateStatsMeasureLabelMap} from 'hooks/reporting/automate/automateStatsMeasureLabelMap'
-
-import {AutomateTrendMetrics} from 'hooks/reporting/automate/types'
+import { AutomateStatsMeasureLabelMap } from 'hooks/reporting/automate/automateStatsMeasureLabelMap'
+import { AutomateTrendMetrics } from 'hooks/reporting/automate/types'
 import {
     fetchAutomateMetricsTimeSeries,
     useAutomateMetricsTimeSeries,
     useAutomateMetricsTrend,
 } from 'hooks/reporting/automate/useAutomationDataset'
-
-import {useNewAutomateFilters} from 'hooks/reporting/automate/useNewAutomateFilters'
-import {getCsvFileNameWithDates} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
-import {AutomationBillingEventMeasure} from 'models/reporting/cubes/automate/AutomationBillingEventCube'
-import {ReportingGranularity} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import { useNewAutomateFilters } from 'hooks/reporting/automate/useNewAutomateFilters'
+import { getCsvFileNameWithDates } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
+import { AutomationBillingEventMeasure } from 'models/reporting/cubes/automate/AutomationBillingEventCube'
+import { ReportingGranularity } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
 import {
     DECREASE_IN_FIRST_RESPONSE,
     DECREASE_IN_RESOLUTION_TIME,
@@ -24,7 +21,6 @@ import {
     AUTOMATED_INTERACTIONS_LABEL,
     AUTOMATION_RATE_LABEL,
 } from 'pages/stats/self-service/constants'
-
 import {
     AUTOMATE_IMPACT_FILENAME,
     AUTOMATE_PERFORMANCE_FEATURE_FILENAME,
@@ -41,8 +37,8 @@ import {
     EMPTY_LABEL,
     PREVIOUS_PERIOD_LABEL,
 } from 'services/reporting/constants'
-import {createCsv} from 'utils/file'
-import {assumeMock} from 'utils/testing'
+import { createCsv } from 'utils/file'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/automate/useNewAutomateFilters')
 const useNewAutomateFiltersMock = assumeMock(useNewAutomateFilters)
@@ -50,10 +46,10 @@ const useNewAutomateFiltersMock = assumeMock(useNewAutomateFilters)
 jest.mock('hooks/reporting/automate/useAutomationDataset')
 const useAutomateMetricsTrendMock = assumeMock(useAutomateMetricsTrend)
 const useAutomateMetricsTimeSeriesV2Mock = assumeMock(
-    useAutomateMetricsTimeSeries
+    useAutomateMetricsTimeSeries,
 )
 const fetchAutomateMetricsTimeSeriesMock = assumeMock(
-    fetchAutomateMetricsTimeSeries
+    fetchAutomateMetricsTimeSeries,
 )
 
 const buildQuery = <T>(isFetching: boolean, data?: T) => ({
@@ -78,15 +74,15 @@ describe('reporting', () => {
     const trendData = {
         [AutomateTrendMetrics.DecreaseInResolutionTime]: buildQuery(
             false,
-            trendReportData
+            trendReportData,
         ),
         [AutomateTrendMetrics.DecreaseInFirstResponseTime]: buildQuery(
             false,
-            trendReportData
+            trendReportData,
         ),
         [AutomateTrendMetrics.AutomationRate]: buildQuery(
             false,
-            trendReportData
+            trendReportData,
         ),
         [AutomateTrendMetrics.Interactions]: buildQuery(false, trendReportData),
     }
@@ -103,26 +99,26 @@ describe('reporting', () => {
     }
     const impactReportFileName = getCsvFileNameWithDates(
         period,
-        AUTOMATE_IMPACT_FILENAME
+        AUTOMATE_IMPACT_FILENAME,
     )
     const performanceReportFileName = getCsvFileNameWithDates(
         period,
-        AUTOMATE_PERFORMANCE_FILENAME
+        AUTOMATE_PERFORMANCE_FILENAME,
     )
     const performanceByFeatureReportFileName = getCsvFileNameWithDates(
         period,
-        AUTOMATE_PERFORMANCE_FEATURE_FILENAME
+        AUTOMATE_PERFORMANCE_FEATURE_FILENAME,
     )
     const reportGroupFileName = getCsvFileNameWithDates(
         period,
-        OVERVIEW_METRICS_FILENAME
+        OVERVIEW_METRICS_FILENAME,
     )
 
     beforeEach(() => {
         useNewAutomateFiltersMock.mockReturnValue({
             granularity: ReportingGranularity.Day,
             isAnalyticsNewFiltersAutomate: true,
-            statsFilters: {period},
+            statsFilters: { period },
             userTimezone: 'UTC',
         })
         useAutomateMetricsTrendMock.mockReturnValue(trendData)
@@ -130,7 +126,7 @@ describe('reporting', () => {
     })
 
     it('should call saveReport with a report', () => {
-        const {result} = renderHook(() => useAutomateOverviewReportData())
+        const { result } = renderHook(() => useAutomateOverviewReportData())
 
         expect(result.current).toEqual({
             files: {
@@ -192,7 +188,7 @@ describe('reporting', () => {
                     ...trendReportData,
                     value: null,
                     prevValue: null,
-                }
+                },
             ),
             [AutomateTrendMetrics.AutomationRate]: buildQuery(false, {
                 ...trendReportData,
@@ -216,7 +212,7 @@ describe('reporting', () => {
         useAutomateMetricsTrendMock.mockReturnValue(emptyTrendData)
         useAutomateMetricsTimeSeriesV2Mock.mockReturnValue(emptyTimeSeries)
 
-        const {result} = renderHook(() => useAutomateOverviewReportData())
+        const { result } = renderHook(() => useAutomateOverviewReportData())
 
         expect(result.current).toEqual({
             files: {
@@ -258,7 +254,7 @@ describe('reporting', () => {
         }
         const fileName = getCsvFileNameWithDates(
             statsFilters.period,
-            AUTOMATE_PERFORMANCE_FEATURE_FILENAME
+            AUTOMATE_PERFORMANCE_FEATURE_FILENAME,
         )
 
         beforeEach(() => {
@@ -270,7 +266,7 @@ describe('reporting', () => {
                 statsFilters,
                 timezone,
                 granularity,
-                context
+                context,
             )
 
             expect(response).toEqual({
@@ -278,8 +274,8 @@ describe('reporting', () => {
                     [fileName]: createCsv(
                         formatPerformanceFeatureData(
                             AutomateStatsMeasureLabelMap,
-                            timeSeries.automatedInteractionTimeSeries
-                        )
+                            timeSeries.automatedInteractionTimeSeries,
+                        ),
                     ),
                 },
                 fileName,
@@ -303,7 +299,7 @@ describe('reporting', () => {
         }
         const fileName = getCsvFileNameWithDates(
             statsFilters.period,
-            AUTOMATE_PERFORMANCE_FILENAME
+            AUTOMATE_PERFORMANCE_FILENAME,
         )
 
         beforeEach(() => {
@@ -315,13 +311,13 @@ describe('reporting', () => {
                 statsFilters,
                 timezone,
                 granularity,
-                context
+                context,
             )
 
             expect(result).toEqual({
                 files: {
                     [fileName]: createCsv(
-                        formatPerformanceReportData(timeSeries)
+                        formatPerformanceReportData(timeSeries),
                     ),
                 },
                 fileName,

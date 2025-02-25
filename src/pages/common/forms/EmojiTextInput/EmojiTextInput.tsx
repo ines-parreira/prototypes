@@ -1,4 +1,4 @@
-import React, {ReactNode, useCallback} from 'react'
+import React, { ReactNode, useCallback } from 'react'
 
 import EmojiSelect from 'pages/common/components/ViewTable/EmojiSelect/EmojiSelect'
 import Caption from 'pages/common/forms/Caption/Caption'
@@ -37,7 +37,7 @@ export default function EmojiTextInput({
         (emoji: string) => {
             onEmojiChange(emoji)
         },
-        [onEmojiChange]
+        [onEmojiChange],
     )
 
     const onEmojiClear = useCallback(() => {
@@ -48,7 +48,7 @@ export default function EmojiTextInput({
         (value) => {
             onChange(value)
         },
-        [onChange]
+        [onChange],
     )
 
     return (

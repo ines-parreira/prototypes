@@ -1,18 +1,20 @@
-import classnames from 'classnames'
-import {fromJS, List, Map} from 'immutable'
-import React, {useEffect, useMemo, useRef} from 'react'
+import React, { useEffect, useMemo, useRef } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import classnames from 'classnames'
+import { fromJS, List, Map } from 'immutable'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import Timeline from 'pages/common/components/timeline/Timeline'
 import TicketBody from 'pages/tickets/detail/components/TicketBody'
-import {getCustomersState} from 'state/customers/selectors'
-import {displayHistoryOnNextPage, toggleHistory} from 'state/ticket/actions'
-import {getBody, getDisplayHistory} from 'state/ticket/selectors'
-import type {OnToggleUnreadFn} from 'tickets/pages/SplitTicketPage'
+import { getCustomersState } from 'state/customers/selectors'
+import { displayHistoryOnNextPage, toggleHistory } from 'state/ticket/actions'
+import { getBody, getDisplayHistory } from 'state/ticket/selectors'
+import type { OnToggleUnreadFn } from 'tickets/pages/SplitTicketPage'
 
-import {SubmitArgs} from '../TicketDetailContainer'
+import { SubmitArgs } from '../TicketDetailContainer'
+
 import css from './TicketView.less'
 
 type Props = {
@@ -43,7 +45,7 @@ export const TicketView = ({
 
     const customerHistory = useMemo(
         () => (customers.get('customerHistory') as Map<any, any>) || fromJS({}),
-        [customers]
+        [customers],
     )
 
     useEffect(() => {
@@ -87,7 +89,7 @@ export const TicketView = ({
 
     const isShopperTyping = useMemo(
         () => ticket.getIn(['_internal', 'isShopperTyping']) as boolean,
-        [ticket]
+        [ticket],
     )
 
     return (
@@ -104,7 +106,7 @@ export const TicketView = ({
                             className={classnames(
                                 css.closeTrigger,
                                 'd-flex',
-                                'align-items-center'
+                                'align-items-center',
                             )}
                             onClick={handleHistoryToggle}
                         >

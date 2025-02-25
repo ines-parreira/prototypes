@@ -1,5 +1,6 @@
-import {produce} from 'immer'
-import {useCallback} from 'react'
+import { useCallback } from 'react'
+
+import { produce } from 'immer'
 
 import {
     getAutomatedMessageNodeTouched,
@@ -13,7 +14,7 @@ import {
     getOrderSelectionNodeTouched,
     getTextReplyNodeTouched,
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import {VisualBuilderGraph} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { VisualBuilderGraph } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 const useTouchWorkflowGraph = () => {
     return useCallback((graph: VisualBuilderGraph) => {
@@ -31,7 +32,7 @@ const useTouchWorkflowGraph = () => {
                     case 'conditions':
                         node.data.touched = getConditionsNodeTouched(
                             graph.edges,
-                            node
+                            node,
                         )
                         break
                     case 'multiple_choices':

@@ -1,14 +1,17 @@
 import moment from 'moment'
 
-import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
-import {OrderDirection} from 'models/api/types'
+import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
+import { OrderDirection } from 'models/api/types'
 import {
     HelpdeskMessageDimension,
     HelpdeskMessageMeasure,
     HelpdeskMessageMember,
 } from 'models/reporting/cubes/HelpdeskMessageCube'
-import {TicketDimension, TicketMember} from 'models/reporting/cubes/TicketCube'
-import {TicketMessagesMember} from 'models/reporting/cubes/TicketMessagesCube'
+import {
+    TicketDimension,
+    TicketMember,
+} from 'models/reporting/cubes/TicketCube'
+import { TicketMessagesMember } from 'models/reporting/cubes/TicketMessagesCube'
 import {
     ticketsRepliedMetricPerAgentQueryFactory,
     ticketsRepliedMetricPerTicketDrillDownQueryFactory,
@@ -19,7 +22,7 @@ import {
     ReportingFilterOperator,
     ReportingGranularity,
 } from 'models/reporting/types'
-import {LegacyStatsFilters, StatsFilters} from 'models/stat/types'
+import { LegacyStatsFilters, StatsFilters } from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
@@ -101,7 +104,7 @@ describe('ticketsRepliedTimeSeriesQueryFactory', () => {
         const query = ticketsRepliedTimeSeriesQueryFactory(
             statsFilters,
             timezone,
-            granularity
+            granularity,
         )
 
         expect(query).toEqual({
@@ -170,7 +173,7 @@ describe('ticketsRepliedMetricPerAgent', () => {
 
     it('should build a query', () => {
         expect(
-            ticketsRepliedMetricPerAgentQueryFactory(statsFilters, timezone)
+            ticketsRepliedMetricPerAgentQueryFactory(statsFilters, timezone),
         ).toEqual({
             dimensions: [TicketDimension.MessageSenderId],
             filters: [
@@ -236,10 +239,10 @@ describe('ticketsRepliedMetricPerAgent', () => {
 
         expect(
             ticketsRepliedMetricPerAgentQueryFactory(
-                {...statsFilters, agents},
+                { ...statsFilters, agents },
                 timezone,
-                sorting
-            )
+                sorting,
+            ),
         ).toEqual({
             dimensions: [TicketDimension.MessageSenderId],
             filters: [
@@ -326,8 +329,8 @@ describe('ticketsRepliedMetricPerTickerQueryFactory', () => {
         expect(
             ticketsRepliedMetricPerTicketDrillDownQueryFactory(
                 statsFilters,
-                timezone
-            )
+                timezone,
+            ),
         ).toEqual({
             ...ticketsRepliedQueryFactory(statsFilters, timezone),
             measures: [],
@@ -347,14 +350,14 @@ describe('ticketsRepliedMetricPerTickerQueryFactory', () => {
 
     it('should build a query with agents filter and sorting', () => {
         const agents = [2]
-        const filters = {...statsFilters, agents}
+        const filters = { ...statsFilters, agents }
 
         expect(
             ticketsRepliedMetricPerTicketDrillDownQueryFactory(
                 filters,
                 timezone,
-                sorting
-            )
+                sorting,
+            ),
         ).toEqual({
             ...ticketsRepliedQueryFactory(filters, timezone),
             measures: [],

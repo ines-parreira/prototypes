@@ -44,9 +44,9 @@ describe('bigcommerce integration resource', () => {
                     integrationId,
                     customerId: customer.id,
                     orderId,
-                })
+                }),
             ).resolves.toEqual(
-                bigCommerceCalculateOrderRefundDataResponseApiFixture
+                bigCommerceCalculateOrderRefundDataResponseApiFixture,
             )
         })
 
@@ -63,11 +63,11 @@ describe('bigcommerce integration resource', () => {
                     integrationId,
                     customerId: customer.id,
                     orderId,
-                })
+                }),
             ).rejects.toThrow(
                 new BigCommerceGeneralError(
-                    BigCommerceGeneralErrorMessage.defaultError
-                )
+                    BigCommerceGeneralErrorMessage.defaultError,
+                ),
             )
         })
 
@@ -84,11 +84,11 @@ describe('bigcommerce integration resource', () => {
                     integrationId,
                     customerId: customer.id,
                     orderId,
-                })
+                }),
             ).rejects.toThrow(
                 new BigCommerceGeneralError(
-                    BigCommerceGeneralErrorMessage.rateLimitingError
-                )
+                    BigCommerceGeneralErrorMessage.rateLimitingError,
+                ),
             )
         })
     })
@@ -113,7 +113,7 @@ describe('bigcommerce integration resource', () => {
                             },
                         ],
                     },
-                })
+                }),
             ).resolves.toEqual(bigCommerceAvailablePaymentOptionsDataResponse)
         })
 
@@ -133,11 +133,11 @@ describe('bigcommerce integration resource', () => {
                     payload: {
                         items: [],
                     },
-                })
+                }),
             ).rejects.toThrow(
                 new BigCommerceGeneralError(
-                    BigCommerceGeneralErrorMessage.defaultError
-                )
+                    BigCommerceGeneralErrorMessage.defaultError,
+                ),
             )
         })
 
@@ -157,11 +157,11 @@ describe('bigcommerce integration resource', () => {
                     payload: {
                         items: [],
                     },
-                })
+                }),
             ).rejects.toThrow(
                 new BigCommerceGeneralError(
-                    BigCommerceGeneralErrorMessage.rateLimitingError
-                )
+                    BigCommerceGeneralErrorMessage.rateLimitingError,
+                ),
             )
         })
 
@@ -181,11 +181,11 @@ describe('bigcommerce integration resource', () => {
                     payload: {
                         items: [],
                     },
-                })
+                }),
             ).rejects.toThrow(
                 new BigCommerceGeneralError(
-                    BigCommerceGeneralErrorMessage.defaultRefundError
-                )
+                    BigCommerceGeneralErrorMessage.defaultRefundError,
+                ),
             )
         })
     })

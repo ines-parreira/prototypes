@@ -1,5 +1,6 @@
+import React, { Dispatch, SetStateAction } from 'react'
+
 import classnames from 'classnames'
-import React, {Dispatch, SetStateAction} from 'react'
 
 import InputField from 'pages/common/forms/input/InputField'
 import settingsCss from 'pages/settings/settings.less'

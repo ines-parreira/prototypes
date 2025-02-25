@@ -1,7 +1,9 @@
-import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
-import {render, act, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
+
+import { act, render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
 
 import Legend from '../Legend'
 
@@ -31,10 +33,10 @@ describe('<Legend />', () => {
     })
 
     it('should not render the checkbox if toggleLegend is false', () => {
-        const {container} = render(<Legend items={items} />)
+        const { container } = render(<Legend items={items} />)
 
         expect(
-            container.querySelectorAll("input[type='checkbox']")
+            container.querySelectorAll("input[type='checkbox']"),
         ).toHaveLength(0)
     })
 

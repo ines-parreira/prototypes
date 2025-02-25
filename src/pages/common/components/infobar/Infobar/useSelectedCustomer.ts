@@ -1,12 +1,13 @@
-import {fromJS} from 'immutable'
-import {useState} from 'react'
+import { useState } from 'react'
+
+import { fromJS } from 'immutable'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {SearchRank} from 'hooks/useSearchRankScenario'
-import {ApiListResponseLegacyPagination} from 'models/api/types'
-import {Customer} from 'models/customer/types'
-import {fetchPreviewCustomer} from 'state/infobar/actions'
-import {FETCH_PREVIEW_CUSTOMER_SUCCESS} from 'state/infobar/constants'
+import { SearchRank } from 'hooks/useSearchRankScenario'
+import { ApiListResponseLegacyPagination } from 'models/api/types'
+import { Customer } from 'models/customer/types'
+import { fetchPreviewCustomer } from 'state/infobar/actions'
+import { FETCH_PREVIEW_CUSTOMER_SUCCESS } from 'state/infobar/constants'
 
 export const useSelectedCustomer = (searchRank: SearchRank) => {
     const dispatch = useAppDispatch()
@@ -16,10 +17,10 @@ export const useSelectedCustomer = (searchRank: SearchRank) => {
         useState(false)
 
     const onSearchResultClick = async (customerId: number, index: number) => {
-        searchRank.registerResultSelection({index, id: customerId})
+        searchRank.registerResultSelection({ index, id: customerId })
         setIsFetchingCustomer(true)
         const result = (await dispatch(
-            fetchPreviewCustomer(String(customerId))
+            fetchPreviewCustomer(String(customerId)),
         )) as {
             type: string
             resp: ApiListResponseLegacyPagination<Customer[]>

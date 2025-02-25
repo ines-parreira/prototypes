@@ -1,7 +1,7 @@
-import {renderHook} from '@testing-library/react-hooks'
-
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { renderHook } from '@testing-library/react-hooks'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -15,18 +15,18 @@ import {
     useBreachedSlaTicketsTrend,
     useSatisfiedSlaTicketsTrend,
 } from 'hooks/reporting/sla/useSLAsTicketsTrends'
-import {TicketSLAStatus} from 'models/reporting/cubes/sla/TicketSLACube'
-import {RootState, StoreDispatch} from 'state/types'
-import {assumeMock} from 'utils/testing'
+import { TicketSLAStatus } from 'models/reporting/cubes/sla/TicketSLACube'
+import { RootState, StoreDispatch } from 'state/types'
+import { assumeMock } from 'utils/testing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 jest.mock('hooks/reporting/sla/useSatisfiedOrBreachedTicketsInPolicyPerStatus')
 const useTicketsInPolicyPerStatusTrendMock = assumeMock(
-    useSatisfiedOrBreachedTicketsInPolicyPerStatusTrend
+    useSatisfiedOrBreachedTicketsInPolicyPerStatusTrend,
 )
 const fetchTicketsInPolicyPerStatusTrendMock = assumeMock(
-    fetchSatisfiedOrBreachedTicketsInPolicyPerStatusTrend
+    fetchSatisfiedOrBreachedTicketsInPolicyPerStatusTrend,
 )
 
 describe('SLAsTicketsTrends', () => {
@@ -52,22 +52,22 @@ describe('SLAsTicketsTrends', () => {
             },
         ])(
             'should call $hook.name with correct ticket status $expectedTicketStatus',
-            ({hook, expectedTicketStatus}) => {
+            ({ hook, expectedTicketStatus }) => {
                 renderHook(() => hook(filters, userTimezone), {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <Provider store={mockStore({})}>{children}</Provider>
                     ),
                 })
 
                 expect(
-                    useTicketsInPolicyPerStatusTrendMock
+                    useTicketsInPolicyPerStatusTrendMock,
                 ).toHaveBeenCalledWith(
                     filters,
                     userTimezone,
                     undefined,
-                    expectedTicketStatus
+                    expectedTicketStatus,
                 )
-            }
+            },
         )
     })
 
@@ -83,18 +83,18 @@ describe('SLAsTicketsTrends', () => {
             },
         ])(
             'should call $hook.name with correct ticket status $expectedTicketStatus',
-            async ({fetch, expectedTicketStatus}) => {
+            async ({ fetch, expectedTicketStatus }) => {
                 await fetch(filters, userTimezone)
 
                 expect(
-                    fetchTicketsInPolicyPerStatusTrendMock
+                    fetchTicketsInPolicyPerStatusTrendMock,
                 ).toHaveBeenCalledWith(
                     filters,
                     userTimezone,
                     undefined,
-                    expectedTicketStatus
+                    expectedTicketStatus,
                 )
-            }
+            },
         )
     })
 })

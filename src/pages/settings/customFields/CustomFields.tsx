@@ -1,18 +1,19 @@
-import classNames from 'classnames'
-import React, {useState} from 'react'
-import {Link, NavLink, useParams} from 'react-router-dom'
-import {Container} from 'reactstrap'
+import React, { useState } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {AI_MANAGED_TYPES, OBJECT_TYPE_SETTINGS} from 'custom-fields/constants'
-import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import {useUpdateCustomFieldDefinitions} from 'custom-fields/hooks/queries/useUpdateCustomFieldDefinitions'
-import {CustomFieldObjectTypes, ListParams} from 'custom-fields/types'
+import classNames from 'classnames'
+import { Link, NavLink, useParams } from 'react-router-dom'
+import { Container } from 'reactstrap'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { AI_MANAGED_TYPES, OBJECT_TYPE_SETTINGS } from 'custom-fields/constants'
+import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import { useUpdateCustomFieldDefinitions } from 'custom-fields/hooks/queries/useUpdateCustomFieldDefinitions'
+import { CustomFieldObjectTypes, ListParams } from 'custom-fields/types'
 import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
 import useCallbackRef from 'hooks/useCallbackRef'
 import useDebouncedValue from 'hooks/useDebouncedValue'
 import useTitle from 'hooks/useTitle'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import Navigation from 'pages/common/components/Navigation/Navigation'
@@ -22,8 +23,7 @@ import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNa
 import Video from 'pages/common/components/Video/Video'
 import List from 'pages/settings/customFields/components/List'
 import settingsCss from 'pages/settings/settings.less'
-
-import {CUSTOM_FIELD_ROUTES} from 'routes/constants'
+import { CUSTOM_FIELD_ROUTES } from 'routes/constants'
 
 import css from './CustomFields.less'
 
@@ -36,7 +36,7 @@ export default function CustomFields({
     const customFieldTitleLabel = OBJECT_TYPE_SETTINGS[objectType].TITLE_LABEL
     const MAX_FIELDS = OBJECT_TYPE_SETTINGS[objectType].MAX_FIELDS
     useTitle(`${customFieldTitleLabel} fields`)
-    const {activeTab} = useParams<{activeTab: string}>()
+    const { activeTab } = useParams<{ activeTab: string }>()
     const [activeCursor, setActiveCursor] = useState<Maybe<string>>(null)
     const [archivedCursor, setArchivedCursor] = useState<Maybe<string>>(null)
     const [listingNode, setListingNode] = useCallbackRef()
@@ -55,11 +55,14 @@ export default function CustomFields({
         search: debouncedSearch,
     }
     const {
-        data: {data: activeFields = [], meta: activeFieldsPaginationMeta} = {},
+        data: {
+            data: activeFields = [],
+            meta: activeFieldsPaginationMeta,
+        } = {},
         isLoading: isLoadingActive,
     } = useCustomFieldDefinitions(activeParams)
 
-    const {mutate: mutateCustomFieldPriorities} =
+    const { mutate: mutateCustomFieldPriorities } =
         useUpdateCustomFieldDefinitions(activeParams)
 
     const {
@@ -93,7 +96,7 @@ export default function CustomFields({
     const customFieldsCountingTowardsTheLimit = activeFields.filter(
         (field) =>
             field.managed_type == null ||
-            !Object.values(AI_MANAGED_TYPES).includes(field.managed_type)
+            !Object.values(AI_MANAGED_TYPES).includes(field.managed_type),
     )
 
     const createFieldButton =
@@ -137,7 +140,7 @@ export default function CustomFields({
                         fluid
                         className={classNames(
                             css.info,
-                            settingsCss.pageContainer
+                            settingsCss.pageContainer,
                         )}
                     >
                         <div
@@ -274,19 +277,19 @@ export default function CustomFields({
                                         fetchPrevItems={() => {
                                             activeTab === 'active'
                                                 ? setActiveCursor(
-                                                      paginationMeta?.prev_cursor
+                                                      paginationMeta?.prev_cursor,
                                                   )
                                                 : setArchivedCursor(
-                                                      paginationMeta?.prev_cursor
+                                                      paginationMeta?.prev_cursor,
                                                   )
                                         }}
                                         fetchNextItems={() => {
                                             activeTab === 'active'
                                                 ? setActiveCursor(
-                                                      paginationMeta?.next_cursor
+                                                      paginationMeta?.next_cursor,
                                                   )
                                                 : setArchivedCursor(
-                                                      paginationMeta?.next_cursor
+                                                      paginationMeta?.next_cursor,
                                                   )
                                         }}
                                     />

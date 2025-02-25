@@ -1,35 +1,39 @@
-import noop from 'lodash/noop'
-import React, {useCallback} from 'react'
-import {connect} from 'react-redux'
+import React, { useCallback } from 'react'
 
-import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
+import noop from 'lodash/noop'
+import { connect } from 'react-redux'
+
+import { FilterKey, StatsFiltersWithLogicalOperator } from 'models/stat/types'
 import Filter from 'pages/stats/common/components/Filter'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import {
     FilterLabels,
     resolutionCompletenessFilterLogicalOperators,
 } from 'pages/stats/common/filters/constants'
-import {emptyFilter, logSegmentEvent} from 'pages/stats/common/filters/helpers'
+import {
+    emptyFilter,
+    logSegmentEvent,
+} from 'pages/stats/common/filters/helpers'
 import {
     OptionalFilterProps,
     RemovableFilter,
 } from 'pages/stats/common/filters/types'
-import {DropdownOption} from 'pages/stats/types'
+import { DropdownOption } from 'pages/stats/types'
 import {
     getPageStatsFiltersWithLogicalOperators,
     getSavedFiltersWithLogicalOperators,
 } from 'state/stats/selectors'
-import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
-import {RootState} from 'state/types'
-import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
+import { mergeStatsFiltersWithLogicalOperator } from 'state/stats/statsSlice'
+import { RootState } from 'state/types'
+import { statFiltersClean, statFiltersDirty } from 'state/ui/stats/actions'
 import {
     removeFilterFromSavedFilterDraft,
     upsertSavedFilterFilter,
 } from 'state/ui/stats/filtersSlice'
 
 const COMPLETION_OPTIONS = [
-    {value: '1', label: 'Complete'},
-    {value: '0', label: 'Incomplete'},
+    { value: '1', label: 'Complete' },
+    { value: '0', label: 'Incomplete' },
 ]
 
 type Props = {
@@ -38,7 +42,7 @@ type Props = {
         value: Exclude<
             StatsFiltersWithLogicalOperator[FilterKey.ResolutionCompleteness],
             undefined
-        >
+        >,
     ) => void
     dispatchRemove: () => void
     dispatchStatFiltersDirty?: () => void
@@ -70,13 +74,13 @@ export function ResolutionCompletenessFilter({
                 operator: value.operator,
             })
         },
-        [dispatchUpdate, value.operator]
+        [dispatchUpdate, value.operator],
     )
 
     const onOptionChange = (opt: DropdownOption) => {
         if (value.values.includes(opt.value)) {
             handleFilterValuesChange(
-                value.values.filter((val) => val !== opt.value)
+                value.values.filter((val) => val !== opt.value),
             )
         } else {
             handleFilterValuesChange([...value.values, opt.value])
@@ -84,7 +88,7 @@ export function ResolutionCompletenessFilter({
     }
 
     const selectedOptions = COMPLETION_OPTIONS.filter((option) =>
-        value.values.includes(option.value)
+        value.values.includes(option.value),
     )
 
     const handleDropdownClosed = () => {
@@ -99,13 +103,13 @@ export function ResolutionCompletenessFilter({
                 operator: operator,
             })
         },
-        [dispatchUpdate, value?.values]
+        [dispatchUpdate, value?.values],
     )
 
     return (
         <Filter
             filterName={FilterLabels[FilterKey.ResolutionCompleteness]}
-            filterErrors={{warningType}}
+            filterErrors={{ warningType }}
             selectedOptions={selectedOptions}
             filterOptionGroups={filterOptions}
             onChangeOption={onOptionChange}
@@ -113,7 +117,7 @@ export function ResolutionCompletenessFilter({
             onChangeLogicalOperator={handleFilterOperatorChange}
             onSelectAll={() => {
                 handleFilterValuesChange(
-                    COMPLETION_OPTIONS.map((option) => option.value)
+                    COMPLETION_OPTIONS.map((option) => option.value),
                 )
             }}
             onRemoveAll={() => {
@@ -153,7 +157,7 @@ export const ResolutionCompletenessFilterWithState = connect(
             }),
         dispatchStatFiltersDirty: statFiltersDirty,
         dispatchStatFiltersClean: statFiltersClean,
-    }
+    },
 )(ResolutionCompletenessFilter)
 
 export const ResolutionCompletenessFilterWithSavedState = connect(
@@ -173,5 +177,5 @@ export const ResolutionCompletenessFilterWithSavedState = connect(
             removeFilterFromSavedFilterDraft({
                 filterKey: FilterKey.ResolutionCompleteness,
             }),
-    }
+    },
 )(ResolutionCompletenessFilter)

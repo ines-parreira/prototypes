@@ -1,22 +1,23 @@
-import {createMemoryHistory} from 'history'
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {TicketChannel} from 'business/types/ticket'
+import { createMemoryHistory } from 'history'
+
+import { TicketChannel } from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
-import {StoreIntegration} from 'models/integration/types'
-import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
-import {getShopUrlFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
-import {SELF_SERVICE_PREVIEW_ROUTES} from 'pages/automate/common/components/preview/constants'
+import { StoreIntegration } from 'models/integration/types'
+import { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
+import { getShopUrlFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
+import { SELF_SERVICE_PREVIEW_ROUTES } from 'pages/automate/common/components/preview/constants'
 import SelfServicePreview from 'pages/automate/common/components/preview/SelfServicePreview'
 import SelfServicePreviewContainer from 'pages/automate/common/components/preview/SelfServicePreviewContainer'
 import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'
-import {SelfServiceChannel} from 'pages/automate/common/hooks/useSelfServiceChannels'
-import {getChatsApplicationAutomationSettings} from 'state/entities/chatsApplicationAutomationSettings/selectors'
-import {getContactFormsAutomationSettings} from 'state/entities/contactForm/contactFormsAutomationSettings'
-import {getHelpCentersAutomationSettings} from 'state/entities/helpCenter/helpCentersAutomationSettings'
+import { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
+import { getChatsApplicationAutomationSettings } from 'state/entities/chatsApplicationAutomationSettings/selectors'
+import { getContactFormsAutomationSettings } from 'state/entities/contactForm/contactFormsAutomationSettings'
+import { getHelpCentersAutomationSettings } from 'state/entities/helpCenter/helpCentersAutomationSettings'
 
-import {PREVIEW_MODE_QUERY_PARAM} from '../../../constants/preview-mode'
-import {HELP_CENTER_DEFAULT_LOCALE} from '../../settings/helpCenter/constants'
+import { PREVIEW_MODE_QUERY_PARAM } from '../../../constants/preview-mode'
+import { HELP_CENTER_DEFAULT_LOCALE } from '../../settings/helpCenter/constants'
 import {
     getAbsoluteUrl,
     getHelpCenterDomain,
@@ -40,27 +41,27 @@ const ConnectedChannelsPreview = ({
             createMemoryHistory({
                 initialEntries: [SELF_SERVICE_PREVIEW_ROUTES.HOME],
             }),
-        []
+        [],
     )
     const applicationsAutomationSettings = useAppSelector(
-        getChatsApplicationAutomationSettings
+        getChatsApplicationAutomationSettings,
     )
 
     const helpCentersAutomationSettings = useAppSelector(
-        getHelpCentersAutomationSettings
+        getHelpCentersAutomationSettings,
     )
     const contactFormsAutomationSettings = useAppSelector(
-        getContactFormsAutomationSettings
+        getContactFormsAutomationSettings,
     )
 
     let isArticleRecommendationEnabled = false
     let isOrderManagementEnabled = false
     let workflowsEntrypoints:
-        | {workflow_id: string; enabled: boolean}[]
+        | { workflow_id: string; enabled: boolean }[]
         | undefined
 
     if (channel?.type === TicketChannel.Chat) {
-        const {articleRecommendation, orderManagement, workflows} =
+        const { articleRecommendation, orderManagement, workflows } =
             applicationsAutomationSettings[channel.value.meta.app_id!]
 
         isArticleRecommendationEnabled = articleRecommendation.enabled
@@ -75,7 +76,7 @@ const ConnectedChannelsPreview = ({
 
         if (automationSettings !== undefined) {
             workflowsEntrypoints = automationSettings.workflows.map(
-                ({id, enabled}) => ({workflow_id: id, enabled})
+                ({ id, enabled }) => ({ workflow_id: id, enabled }),
             )
         }
     } else if (channel?.type === TicketChannel.ContactForm) {
@@ -86,7 +87,7 @@ const ConnectedChannelsPreview = ({
             isOrderManagementEnabled =
                 automationSettings.order_management.enabled
             workflowsEntrypoints = automationSettings.workflows.map(
-                ({id, enabled}) => ({workflow_id: id, enabled})
+                ({ id, enabled }) => ({ workflow_id: id, enabled }),
             )
         }
     }
@@ -154,7 +155,7 @@ const ConnectedChannelsPreview = ({
                         isArticleRecommendationEnabled:
                             isArticleRecommendationEnabled &&
                             Boolean(
-                                selfServiceConfiguration.articleRecommendationHelpCenterId
+                                selfServiceConfiguration.articleRecommendationHelpCenterId,
                             ),
                         workflowsEntrypoints,
                     }}

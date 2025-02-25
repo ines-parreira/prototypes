@@ -1,9 +1,9 @@
-import {CampaignsTotalsMetricNames} from 'pages/stats/convert/services/constants'
-import {TooltipData} from 'pages/stats/types'
+import { CampaignsTotalsMetricNames } from 'pages/stats/convert/services/constants'
+import { TooltipData } from 'pages/stats/types'
 
 export const OverviewMetricConfig: Record<
     CampaignsTotalsMetricNames,
-    {title: string; hint: TooltipData}
+    { title: string; hint: TooltipData }
 > = {
     [CampaignsTotalsMetricNames.gmv]: {
         title: 'Total store revenue',
@@ -28,7 +28,7 @@ export const OverviewMetricConfig: Record<
     },
     [CampaignsTotalsMetricNames.impressions]: {
         title: 'Impressions',
-        hint: {title: `How often the selected campaigns were displayed.`},
+        hint: { title: `How often the selected campaigns were displayed.` },
     },
     [CampaignsTotalsMetricNames.engagement]: {
         title: 'Engagement',

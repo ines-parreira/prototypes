@@ -1,18 +1,18 @@
 import React, {
     Component,
     ComponentProps,
-    ReactNode,
-    KeyboardEvent,
     FormEvent,
+    KeyboardEvent,
+    ReactNode,
     RefObject,
 } from 'react'
-import {Button, Form, Popover, PopoverBody} from 'reactstrap'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { Button, Form, Popover, PopoverBody } from 'reactstrap'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import CheckBox from 'pages/common/forms/CheckBox'
-import {focusElement} from 'utils/html'
-
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
+import { focusElement } from 'utils/html'
+import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import css from './Popover.less'
 
@@ -46,9 +46,9 @@ export default class TaxesPopover extends Component<Props, State> {
     }
 
     componentDidUpdate(prevProps: Props, prevState: State) {
-        const {actionName} = this.props
-        const {isOpen} = this.state
-        const {isOpen: wasOpen} = prevState
+        const { actionName } = this.props
+        const { isOpen } = this.state
+        const { isOpen: wasOpen } = prevState
 
         const onOpen = !wasOpen && isOpen
         const onClose = wasOpen && !isOpen
@@ -58,7 +58,7 @@ export default class TaxesPopover extends Component<Props, State> {
             logEvent(
                 actionName === ShopifyActionType.CreateOrder
                     ? SegmentEvent.ShopifyCreateOrderTaxesPopoverOpen
-                    : SegmentEvent.ShopifyDuplicateOrderTaxesPopoverOpen
+                    : SegmentEvent.ShopifyDuplicateOrderTaxesPopoverOpen,
             )
         } else if (onClose) {
             focusElement(() => this._buttonElement as HTMLButtonElement)
@@ -72,7 +72,7 @@ export default class TaxesPopover extends Component<Props, State> {
     }
 
     _toggle = () => {
-        const {isOpen} = this.state
+        const { isOpen } = this.state
 
         this.setState({
             isOpen: !isOpen,
@@ -88,12 +88,12 @@ export default class TaxesPopover extends Component<Props, State> {
     }
 
     _onChargeTaxesChange = (newValue: boolean) => {
-        this.setState({taxExempt: !newValue})
+        this.setState({ taxExempt: !newValue })
     }
 
     _onSubmit = (event: FormEvent) => {
-        const {actionName, onChange} = this.props
-        const {taxExempt} = this.state
+        const { actionName, onChange } = this.props
+        const { taxExempt } = this.state
 
         event.preventDefault()
         this._toggle()
@@ -102,25 +102,25 @@ export default class TaxesPopover extends Component<Props, State> {
         logEvent(
             actionName === ShopifyActionType.CreateOrder
                 ? SegmentEvent.ShopifyCreateOrderTaxesPopoverApply
-                : SegmentEvent.ShopifyDuplicateOrderTaxesPopoverApply
+                : SegmentEvent.ShopifyDuplicateOrderTaxesPopoverApply,
         )
     }
 
     _onClose = () => {
-        const {actionName} = this.props
+        const { actionName } = this.props
 
         this._toggle()
 
         logEvent(
             actionName === ShopifyActionType.CreateOrder
                 ? SegmentEvent.ShopifyCreateOrderTaxesPopoverClose
-                : SegmentEvent.ShopifyDuplicateOrderTaxesPopoverClose
+                : SegmentEvent.ShopifyDuplicateOrderTaxesPopoverClose,
         )
     }
 
     render() {
-        const {id, children, placement, editable, container} = this.props
-        const {isOpen, taxExempt} = this.state
+        const { id, children, placement, editable, container } = this.props
+        const { isOpen, taxExempt } = this.state
 
         return (
             <div>

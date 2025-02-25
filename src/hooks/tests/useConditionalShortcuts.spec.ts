@@ -1,4 +1,4 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 import _noop from 'lodash/noop'
 
 import shortcutManager from 'services/shortcutManager'
@@ -13,7 +13,7 @@ jest.mock('services/shortcutManager', () => ({
 describe('useConditionalShortcuts', () => {
     const component = 'MyComponent'
     const actions = {
-        MY_SHORTCUT: {action: _noop},
+        MY_SHORTCUT: { action: _noop },
     }
 
     beforeEach(() => {
@@ -32,8 +32,8 @@ describe('useConditionalShortcuts', () => {
     })
 
     it('should unbind the component on unmount', () => {
-        const {unmount} = renderHook(() =>
-            useConditionalShortcuts(true, component, actions)
+        const { unmount } = renderHook(() =>
+            useConditionalShortcuts(true, component, actions),
         )
         unmount()
         expect(shortcutManager.unbind).toHaveBeenCalledWith(component)

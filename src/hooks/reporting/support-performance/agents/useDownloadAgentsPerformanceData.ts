@@ -1,4 +1,4 @@
-import {User} from 'config/types/user'
+import { User } from 'config/types/user'
 import {
     fetchTableReportData,
     TableDataSources,
@@ -27,27 +27,27 @@ import {
     fetchTicketAverageHandleTimePerAgent,
     fetchTicketsRepliedMetricPerAgent,
 } from 'hooks/reporting/metricsPerAgent'
-import {fetchOneTouchTicketsPercentageMetricTrend} from 'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricTrend'
-import {fetchPercentageOfClosedTicketsMetricPerAgent} from 'hooks/reporting/support-performance/agents/usePercentageOfClosedTicketsMetricPerAgent'
-import {getCsvFileNameWithDates} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
-import {fetchMessagesSentPerHour} from 'hooks/reporting/useMessagesSentPerHour'
-import {fetchMessagesSentPerHourPerAgent} from 'hooks/reporting/useMessagesSentPerHourPerAgent'
-import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
-import {fetchTicketsClosedPerHour} from 'hooks/reporting/useTicketsClosedPerHour'
-import {fetchTicketsClosedPerHourPerAgent} from 'hooks/reporting/useTicketsClosedPerHourPerAgent'
-import {fetchTicketsRepliedPerHour} from 'hooks/reporting/useTicketsRepliedPerHour'
-import {fetchTicketsRepliedPerHourPerAgent} from 'hooks/reporting/useTicketsRepliedPerHourPerAgent'
+import { fetchOneTouchTicketsPercentageMetricTrend } from 'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricTrend'
+import { fetchPercentageOfClosedTicketsMetricPerAgent } from 'hooks/reporting/support-performance/agents/usePercentageOfClosedTicketsMetricPerAgent'
+import { getCsvFileNameWithDates } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useAgentsTableConfigSetting } from 'hooks/reporting/useAgentsTableConfigSetting'
+import { fetchMessagesSentPerHour } from 'hooks/reporting/useMessagesSentPerHour'
+import { fetchMessagesSentPerHourPerAgent } from 'hooks/reporting/useMessagesSentPerHourPerAgent'
+import { MetricWithDecile } from 'hooks/reporting/useMetricPerDimension'
+import { fetchTicketsClosedPerHour } from 'hooks/reporting/useTicketsClosedPerHour'
+import { fetchTicketsClosedPerHourPerAgent } from 'hooks/reporting/useTicketsClosedPerHourPerAgent'
+import { fetchTicketsRepliedPerHour } from 'hooks/reporting/useTicketsRepliedPerHour'
+import { fetchTicketsRepliedPerHourPerAgent } from 'hooks/reporting/useTicketsRepliedPerHourPerAgent'
 import useAppSelector from 'hooks/useAppSelector'
-import {Channel} from 'models/channel/types'
-import {ReportingGranularity} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
-import {BusiestTimeOfDaysMetrics} from 'pages/stats/support-performance/busiest-times-of-days/types'
-import {createAgentsReport} from 'services/reporting/agentsPerformanceReportingService'
-import {getSortedAgents} from 'state/ui/stats/agentPerformanceSlice'
-import {TicketInsightsOrder} from 'state/ui/stats/ticketInsightsSlice'
-import {AgentsTableColumn, ChannelsTableColumns} from 'state/ui/stats/types'
+import { Channel } from 'models/channel/types'
+import { ReportingGranularity } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
+import { BusiestTimeOfDaysMetrics } from 'pages/stats/support-performance/busiest-times-of-days/types'
+import { createAgentsReport } from 'services/reporting/agentsPerformanceReportingService'
+import { getSortedAgents } from 'state/ui/stats/agentPerformanceSlice'
+import { TicketInsightsOrder } from 'state/ui/stats/ticketInsightsSlice'
+import { AgentsTableColumn, ChannelsTableColumns } from 'state/ui/stats/types'
 
 export const AGENTS_REPORT_FILE_NAME = 'agents-metrics'
 
@@ -188,34 +188,34 @@ export const agentsSummaryDataSources: TableSummaryDataSources<AgentsReportData>
 
 export const useDownloadAgentsPerformanceData = () => {
     const agents = useAppSelector<User[]>(getSortedAgents)
-    const {columnsOrder} = useAgentsTableConfigSetting()
-    const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
+    const { columnsOrder } = useAgentsTableConfigSetting()
+    const { cleanStatsFilters, userTimezone } = useNewStatsFilters()
 
-    const {data: reportData, isFetching} = useTableReportData<
+    const { data: reportData, isFetching } = useTableReportData<
         keyof AgentsReportData,
         MetricWithDecile
     >(cleanStatsFilters, userTimezone, agentsMetricsDataSources)
 
-    const {data: summaryData, isFetching: summaryIsLoading} =
+    const { data: summaryData, isFetching: summaryIsLoading } =
         useTableReportData<keyof AgentsReportSummaryData, Metric>(
             cleanStatsFilters,
             userTimezone,
-            agentsSummaryDataSources
+            agentsSummaryDataSources,
         )
 
-    const {files} = createAgentsReport(
+    const { files } = createAgentsReport(
         agents,
         reportData,
         summaryData,
         columnsOrder,
         getCsvFileNameWithDates(
             cleanStatsFilters.period,
-            AGENTS_REPORT_FILE_NAME
-        )
+            AGENTS_REPORT_FILE_NAME,
+        ),
     )
     const fileName = getCsvFileNameWithDates(
         cleanStatsFilters.period,
-        AGENTS_REPORT_FILE_NAME
+        AGENTS_REPORT_FILE_NAME,
     )
 
     return {
@@ -236,13 +236,13 @@ export const fetchAgentsTableReportData = async (
         selectedBTODMetric: BusiestTimeOfDaysMetrics
         customFieldsOrder: TicketInsightsOrder
         selectedCustomFieldId: string | null
-    }
+    },
 ) => {
     const metricConfig = agentsMetricsDataSources
     const summaryConfig = agentsSummaryDataSources
     const fileName = getCsvFileNameWithDates(
         cleanStatsFilters.period,
-        AGENTS_REPORT_FILE_NAME
+        AGENTS_REPORT_FILE_NAME,
     )
     return Promise.all([
         fetchTableReportData(cleanStatsFilters, userTimezone, metricConfig),
@@ -256,10 +256,10 @@ export const fetchAgentsTableReportData = async (
                     metrics.data,
                     summary.data,
                     context.columnsOrder,
-                    fileName
+                    fileName,
                 ),
                 fileName,
             }
         })
-        .catch(() => ({isLoading: false, files: {}, fileName}))
+        .catch(() => ({ isLoading: false, files: {}, fileName }))
 }

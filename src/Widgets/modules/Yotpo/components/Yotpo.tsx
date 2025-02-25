@@ -4,12 +4,12 @@ import Template, {
     CustomizationContext,
     TemplateCustomization,
 } from 'Widgets/modules/Template'
-import {WidgetProps} from 'Widgets/modules/Widget'
+import { WidgetProps } from 'Widgets/modules/Widget'
 
-import {customerCustomization} from './Customer'
-import {loyaltyCustomization} from './Loyalty'
-import {reviewsCustomization} from './Reviews'
-import {reviewStatisticsCustomization} from './ReviewStatistics'
+import { customerCustomization } from './Customer'
+import { loyaltyCustomization } from './Loyalty'
+import { reviewsCustomization } from './Reviews'
+import { reviewStatisticsCustomization } from './ReviewStatistics'
 
 export const customization: TemplateCustomization = {
     card: [

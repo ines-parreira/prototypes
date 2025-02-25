@@ -1,6 +1,6 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
 
 import * as selectors from '../selectors'
 
@@ -10,8 +10,8 @@ describe('auths selectors', () => {
     beforeEach(() => {
         state = {
             auths: fromJS([
-                {data: {token: '1'}, type: 'api_key'},
-                {data: {token: '2'}, type: 'api_key'},
+                { data: { token: '1' }, type: 'api_key' },
+                { data: { token: '2' }, type: 'api_key' },
             ]),
         } as RootState
     })
@@ -19,7 +19,7 @@ describe('auths selectors', () => {
     it('should select the first auth of type api_key', () => {
         expect(selectors.getApiKey(state)).toEqualImmutable('1')
         expect(
-            selectors.getApiKey({auths: fromJS([])} as RootState)
+            selectors.getApiKey({ auths: fromJS([]) } as RootState),
         ).toEqualImmutable('')
         expect(
             selectors.getApiKey({
@@ -31,7 +31,7 @@ describe('auths selectors', () => {
                         },
                     },
                 ]),
-            } as RootState)
+            } as RootState),
         ).toEqualImmutable('')
     })
 })

@@ -1,20 +1,21 @@
-import {useCreateMacro as useCreateMacroPrimitive} from '@gorgias/api-queries'
-import {QueryClient, useQueryClient} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
+import { QueryClient, useQueryClient } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
+
+import { useCreateMacro as useCreateMacroPrimitive } from '@gorgias/api-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {assumeMock} from 'utils/testing'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { assumeMock } from 'utils/testing'
 
-import {useCreateMacro} from '../useCreateMacro'
+import { useCreateMacro } from '../useCreateMacro'
 
 jest.mock('@gorgias/api-queries', () => ({
     __esModule: true,
     useCreateMacro: jest.fn(),
     queryKeys: {
         macros: {
-            listMacros: () => ({pop: () => null}),
+            listMacros: () => ({ pop: () => null }),
         },
     },
 }))
@@ -43,13 +44,13 @@ describe('useCreateMacro', () => {
             () =>
                 ({
                     invalidateQueries: invalidateQueriesMock,
-                }) as unknown as QueryClient
+                }) as unknown as QueryClient,
         )
     })
 
     it('should handle settled request', () => {
         const onSettled = jest.fn()
-        const {result} = renderHook(() => useCreateMacro())
+        const { result } = renderHook(() => useCreateMacro())
 
         void result.current.mutateAsync(
             {
@@ -59,7 +60,7 @@ describe('useCreateMacro', () => {
             },
             {
                 onSettled,
-            }
+            },
         )
         ;(
             useCreateMacroPrimitiveMock.mock.calls[0][0]
@@ -74,7 +75,7 @@ describe('useCreateMacro', () => {
     it('should handle failed request', () => {
         const errorMessage = 'nope'
         const onSettled = jest.fn()
-        const {result} = renderHook(() => useCreateMacro(errorMessage))
+        const { result } = renderHook(() => useCreateMacro(errorMessage))
         void result.current.mutateAsync(
             {
                 data: {
@@ -83,7 +84,7 @@ describe('useCreateMacro', () => {
             },
             {
                 onSettled,
-            }
+            },
         )
         ;(
             useCreateMacroPrimitiveMock.mock.calls[0][0]
@@ -109,7 +110,7 @@ describe('useCreateMacro', () => {
     it('should handle successful request', () => {
         const id = 111
         const onSettled = jest.fn()
-        const {result} = renderHook(() => useCreateMacro())
+        const { result } = renderHook(() => useCreateMacro())
         void result.current.mutateAsync(
             {
                 data: {
@@ -118,7 +119,7 @@ describe('useCreateMacro', () => {
             },
             {
                 onSettled,
-            }
+            },
         )
         ;(
             useCreateMacroPrimitiveMock.mock.calls[0][0]

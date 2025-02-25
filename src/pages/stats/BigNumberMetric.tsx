@@ -1,6 +1,8 @@
-import {Skeleton} from '@gorgias/merchant-ui-kit'
+import React, { ReactNode } from 'react'
+
 import classnames from 'classnames'
-import React, {ReactNode} from 'react'
+
+import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import css from './BigNumberMetric.less'
 
@@ -26,7 +28,7 @@ export default function BigNumberMetric({
             className={classnames(
                 className,
                 css.wrapper,
-                'heading-page-semibold'
+                'heading-page-semibold',
             )}
         >
             {children}

@@ -1,8 +1,8 @@
-import {DROPDOWN_NESTING_DELIMITER} from 'custom-fields/constants'
-import {isCustomFieldValueEmpty} from 'custom-fields/helpers/isCustomFieldValueEmpty'
-import {CustomFieldValue} from 'custom-fields/types'
+import { DROPDOWN_NESTING_DELIMITER } from 'custom-fields/constants'
+import { isCustomFieldValueEmpty } from 'custom-fields/helpers/isCustomFieldValueEmpty'
+import { CustomFieldValue } from 'custom-fields/types'
 
-import {DROPDOWN_NESTING_FANCY_DELIMITER} from '../constants'
+import { DROPDOWN_NESTING_FANCY_DELIMITER } from '../constants'
 
 export function getLabel(choice?: CustomFieldValue | CustomFieldValue[]) {
     if (!Array.isArray(choice) && isCustomFieldValueEmpty(choice)) return ''

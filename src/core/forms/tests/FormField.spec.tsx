@@ -1,11 +1,12 @@
-import {render} from '@testing-library/react'
 import React from 'react'
-import {useController} from 'react-hook-form'
+
+import { render } from '@testing-library/react'
+import { useController } from 'react-hook-form'
 
 import InputField from 'pages/common/forms/input/InputField'
-import {assumeMock, getLastMockCall} from 'utils/testing'
+import { assumeMock, getLastMockCall } from 'utils/testing'
 
-import {FormField} from '../components/FormField'
+import { FormField } from '../components/FormField'
 
 jest.mock('react-hook-form', () => ({
     useController: jest.fn(),
@@ -30,7 +31,7 @@ describe('FormField', () => {
         const errorMessage = 'error'
         useControllerMock.mockReturnValue({
             field: formFieldProps,
-            fieldState: {error: {message: errorMessage}},
+            fieldState: { error: { message: errorMessage } },
         } as unknown as ReturnType<typeof useController>)
     })
 
@@ -39,7 +40,7 @@ describe('FormField', () => {
             validate: 'should be a function',
         }
         render(
-            <FormField {...defaultProps} isRequired validation={validation} />
+            <FormField {...defaultProps} isRequired validation={validation} />,
         )
 
         expect(useControllerMock).toHaveBeenCalledWith({
@@ -61,7 +62,7 @@ describe('FormField', () => {
                 onChange: expect.any(Function),
                 error: 'error',
             },
-            {}
+            {},
         )
 
         getLastMockCall(InputFieldMock)[0].onChange!('test')
@@ -80,7 +81,7 @@ describe('FormField', () => {
                 onChange: expect.any(Function),
                 error: 'error',
             },
-            {}
+            {},
         )
     })
 

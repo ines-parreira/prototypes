@@ -1,12 +1,15 @@
-import {Skeleton} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
 import React from 'react'
 
-import {UserSearchResult} from 'models/search/types'
+import classNames from 'classnames'
+
+import { Skeleton } from '@gorgias/merchant-ui-kit'
+
+import { UserSearchResult } from 'models/search/types'
 
 import DialPad from './DialPad'
-import css from './PhoneDevice.less'
 import PhoneDeviceDialerBodyResultsList from './PhoneDeviceDialerBodyResultsList'
+
+import css from './PhoneDevice.less'
 
 type Props = {
     value: string
@@ -44,7 +47,7 @@ export default function PhoneDeviceDialerBody({
     if (isLoading) {
         return (
             <div className={classNames(css.skeleton, css.results)}>
-                {Array.from({length: 4}).map((_, index) => (
+                {Array.from({ length: 4 }).map((_, index) => (
                     <Skeleton key={index} height={52} count={1} />
                 ))}
             </div>

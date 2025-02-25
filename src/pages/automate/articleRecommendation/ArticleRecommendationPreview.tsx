@@ -1,14 +1,15 @@
-import {createMemoryHistory} from 'history'
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
-import {SELF_SERVICE_PREVIEW_ROUTES} from 'pages/automate/common/components/preview/constants'
+import { createMemoryHistory } from 'history'
+
+import { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
+import { SELF_SERVICE_PREVIEW_ROUTES } from 'pages/automate/common/components/preview/constants'
 import SelfServiceFeatureDisabledOnChannelAlert from 'pages/automate/common/components/preview/SelfServiceFeatureDisabledOnChannelAlert'
 import SelfServicePreview from 'pages/automate/common/components/preview/SelfServicePreview'
 import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'
 import UncontrolledSelfServicePreviewContainer from 'pages/automate/common/components/preview/UncontrolledSelfServicePreviewContainer'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
-import {SelfServiceChatChannel} from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 
 type Props = {
     channels: SelfServiceChatChannel[]
@@ -26,10 +27,10 @@ const ArticleRecommendationPreview = ({
             channels
                 .map((v) => v.value.meta.app_id)
                 .filter((value): value is string => Boolean(value)),
-        [channels]
+        [channels],
     )
 
-    const {applicationsAutomationSettings} =
+    const { applicationsAutomationSettings } =
         useApplicationsAutomationSettings(chatApplicationsIds)
 
     const history = useMemo(
@@ -39,7 +40,7 @@ const ArticleRecommendationPreview = ({
                     SELF_SERVICE_PREVIEW_ROUTES.ARTICLE_RECOMMENDATION,
                 ],
             }),
-        []
+        [],
     )
 
     return (

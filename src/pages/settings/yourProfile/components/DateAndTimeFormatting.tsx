@@ -1,6 +1,9 @@
 import React from 'react'
 
-import {DateFormattingSetting, TimeFormattingSetting} from 'models/agents/types'
+import {
+    DateFormattingSetting,
+    TimeFormattingSetting,
+} from 'models/agents/types'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 
 import css from './DateAndTimeFormatting.less'
@@ -28,7 +31,7 @@ export default function DateAndTimeFormatting({
                         label: value.label,
                         value: key,
                         caption: value.caption,
-                    })
+                    }),
                 )}
                 selectedValue={dateFormat}
                 className={css.settingWrapper}

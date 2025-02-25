@@ -1,21 +1,21 @@
-import {logEvent, SegmentEvent} from 'common/segment'
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {_goToNextOrPrevTicket, clearTicket} from 'state/ticket/actions'
+import { _goToNextOrPrevTicket, clearTicket } from 'state/ticket/actions'
 
 export default function usePrevNextTicketNavigation(
     direction: 'prev' | 'next',
-    ticketNumber: string
+    ticketNumber: string,
 ) {
     const dispatch = useAppDispatch()
 
     const goToNextOrPrevTicket = async (
         direction: 'prev' | 'next',
-        ticketNumber: string
+        ticketNumber: string,
     ) => {
         dispatch(clearTicket())
 
         await dispatch(
-            _goToNextOrPrevTicket(parseFloat(ticketNumber), direction)
+            _goToNextOrPrevTicket(parseFloat(ticketNumber), direction),
         )
     }
 

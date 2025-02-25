@@ -1,16 +1,15 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
+import { useEffect, useState } from 'react'
 
-import {useEffect, useState} from 'react'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useAIAgentUserId} from 'hooks/reporting/automate/useAIAgentUserId'
-
-import {MetricTrendFetch} from 'hooks/reporting/useMetricTrend'
-import {StatsFilters} from 'models/stat/types'
-import {AGENT_COST_PER_TICKET} from 'pages/automate/automate-metrics/constants'
-import {useMoneySavedPerInteractionWithAutomate} from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
-import {formatMetricValue, MetricValueFormat} from 'pages/stats/common/utils'
-import {FormattedTrendDataWithLabel} from 'services/reporting/supportPerformanceReportingService'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
+import { MetricTrendFetch } from 'hooks/reporting/useMetricTrend'
+import { StatsFilters } from 'models/stat/types'
+import { AGENT_COST_PER_TICKET } from 'pages/automate/automate-metrics/constants'
+import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
+import { formatMetricValue, MetricValueFormat } from 'pages/stats/common/utils'
+import { FormattedTrendDataWithLabel } from 'services/reporting/supportPerformanceReportingService'
 
 export const useTrendReportData = (
     cleanStatsFilters: StatsFilters,
@@ -19,7 +18,7 @@ export const useTrendReportData = (
         fetchTrend: MetricTrendFetch
         metricFormat: MetricValueFormat
         title: string
-    }[]
+    }[],
 ) => {
     const isAutomateNonFilteredDenominatorInAutomationRate:
         | boolean
@@ -29,7 +28,7 @@ export const useTrendReportData = (
         ]
     const aiAgentUserId = useAIAgentUserId()
     const costSavedPerInteraction = useMoneySavedPerInteractionWithAutomate(
-        AGENT_COST_PER_TICKET
+        AGENT_COST_PER_TICKET,
     )
     const [trendData, setTrendData] = useState<{
         isFetching: boolean
@@ -46,8 +45,8 @@ export const useTrendReportData = (
                 userTimezone,
                 isAutomateNonFilteredDenominatorInAutomationRate,
                 aiAgentUserId,
-                costSavedPerInteraction
-            )
+                costSavedPerInteraction,
+            ),
         )
         void Promise.all([...workloadTrendPromises])
             .then((results) => {
@@ -57,16 +56,16 @@ export const useTrendReportData = (
                         label: r.title,
                         value: formatMetricValue(
                             results[index].data?.value,
-                            r.metricFormat
+                            r.metricFormat,
                         ),
                         prevValue: formatMetricValue(
                             results[index].data?.prevValue,
-                            r.metricFormat
+                            r.metricFormat,
                         ),
                     })),
                 })
             })
-            .catch(() => setTrendData({isFetching: false, data: []}))
+            .catch(() => setTrendData({ isFetching: false, data: [] }))
     }, [
         aiAgentUserId,
         cleanStatsFilters,

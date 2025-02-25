@@ -1,11 +1,11 @@
+import React, { useCallback, useRef, useState } from 'react'
+
 import classnames from 'classnames'
-import React, {useCallback, useRef, useState} from 'react'
 
-import {UploadType} from 'common/types'
+import { UploadType } from 'common/types'
 import useAppSelector from 'hooks/useAppSelector'
-import FileField, {FileFieldContainer} from 'pages/common/forms/FileField'
-
-import {getCurrentIntegration} from 'state/integrations/selectors'
+import FileField, { FileFieldContainer } from 'pages/common/forms/FileField'
+import { getCurrentIntegration } from 'state/integrations/selectors'
 
 import css from './ImageField.less'
 
@@ -102,7 +102,7 @@ const PreviewHeaderLogo = ({
                     css.imagePreviewHeader,
                     {
                         [css.imagePreviewDisabled]: isDisabled,
-                    }
+                    },
                 )}
                 onClick={onSelect}
             >
@@ -200,7 +200,7 @@ const ImageField = ({
     const onDiscard = useCallback(() => fileField.current?.handleRemove(), [])
     const onSelect = useCallback(
         () => fileField.current?.handleButtonClick(),
-        []
+        [],
     )
 
     return (

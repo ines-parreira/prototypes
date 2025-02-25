@@ -1,30 +1,30 @@
-import {AxiosError} from 'axios'
+import { AxiosError } from 'axios'
 import {
     AtomicBlockUtils,
+    EditorChangeType,
     EditorState,
     Modifier,
     RichUtils,
     SelectionState,
-    EditorChangeType,
 } from 'draft-js'
-import {fromJS, Map, List} from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 import _get from 'lodash/get'
 
-import {draftjsGorgiasCustomBlockRenderers} from 'common/editor'
-import {UploadType} from 'common/types'
-import {uploadFiles} from 'common/utils'
-import {DEFAULT_IMAGE_WIDTH, DEFAULT_VIDEO_WIDTH} from 'config/editor'
-import {notify as notifyAction} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {ConnectedAction} from 'state/types'
-import {getEntitySelectionState} from 'utils/editor'
-import {getFileTooLargeError, getMaxAttachmentSize} from 'utils/file'
-import {linkify} from 'utils/linkify'
+import { draftjsGorgiasCustomBlockRenderers } from 'common/editor'
+import { UploadType } from 'common/types'
+import { uploadFiles } from 'common/utils'
+import { DEFAULT_IMAGE_WIDTH, DEFAULT_VIDEO_WIDTH } from 'config/editor'
+import { notify as notifyAction } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { ConnectedAction } from 'state/types'
+import { getEntitySelectionState } from 'utils/editor'
+import { getFileTooLargeError, getMaxAttachmentSize } from 'utils/file'
+import { linkify } from 'utils/linkify'
 
-import {PluginMethods} from './types'
+import { PluginMethods } from './types'
 
 const uploadPicture = (file: File, uploadType?: UploadType) => {
-    return uploadFiles([file], uploadType ? {type: uploadType} : null)
+    return uploadFiles([file], uploadType ? { type: uploadType } : null)
         .then((files) => files[0])
         .catch((error) => {
             let errorMessage = (
@@ -44,13 +44,13 @@ const uploadPicture = (file: File, uploadType?: UploadType) => {
         })
 }
 
-export const isImage = (file: {type: string}) => {
+export const isImage = (file: { type: string }) => {
     return file.type.includes('image/')
 }
 
 export const removeLink = (
     entityKey: string,
-    editorState: EditorState
+    editorState: EditorState,
 ): EditorState => {
     const contentState = editorState.getCurrentContent()
     const selection = getEntitySelectionState(contentState, entityKey)
@@ -58,7 +58,7 @@ export const removeLink = (
         const newState = RichUtils.toggleLink(editorState, selection, null)
         const endOfLinkSelection = selection.set(
             'anchorOffset',
-            selection.getFocusOffset()
+            selection.getFocusOffset(),
         ) as SelectionState
         return EditorState.forceSelection(newState, endOfLinkSelection)
     }
@@ -68,7 +68,7 @@ export const removeLink = (
 export const addImage = (
     editorState: EditorState,
     url: string,
-    size = 0
+    size = 0,
 ): EditorState => {
     const entityContentState = editorState
         .getCurrentContent()
@@ -81,21 +81,21 @@ export const addImage = (
     const newEditorState = AtomicBlockUtils.insertAtomicBlock(
         editorState,
         entityKey,
-        ' '
+        ' ',
     )
 
     // forcing the current selection ensures that it will be at it's right place
     return EditorState.forceSelection(
         newEditorState,
-        newEditorState.getSelection()
+        newEditorState.getSelection(),
     )
 }
 
 export const insertInlineImages = (
     files: Array<File>,
-    {getEditorState, setEditorState, getProps}: PluginMethods,
+    { getEditorState, setEditorState, getProps }: PluginMethods,
     notify: ConnectedAction<typeof notifyAction>,
-    uploadType?: UploadType
+    uploadType?: UploadType,
 ) => {
     // don't exceed maximum attachment file size
     const editorState = getEditorState()
@@ -127,17 +127,17 @@ export const insertInlineImages = (
 
                 // upload image then replace img src
                 uploadPicture(file, uploadType)
-                    .then((res: {url: string}) => {
+                    .then((res: { url: string }) => {
                         const editorState = getEditorState()
                         const contentState = editorState.getCurrentContent()
                         const newContentState = contentState.mergeEntityData(
                             imageKey,
-                            {src: res.url}
+                            { src: res.url },
                         )
                         const newEditorState = EditorState.push(
                             editorState,
                             newContentState,
-                            'update-pasted-image-url' as EditorChangeType
+                            'update-pasted-image-url' as EditorChangeType,
                         )
 
                         setEditorState(newEditorState)
@@ -151,30 +151,30 @@ export const insertInlineImages = (
                         const contentState = editorState.getCurrentContent()
                         const entitySelection = getEntitySelectionState(
                             contentState,
-                            imageKey
+                            imageKey,
                         )
                         const newContentState = Modifier.applyEntity(
                             contentState,
                             entitySelection!,
-                            null
+                            null,
                         )
                         const newEditorState = EditorState.push(
                             editorState,
                             newContentState,
-                            'remove-pasted-image' as EditorChangeType
+                            'remove-pasted-image' as EditorChangeType,
                         )
 
                         setEditorState(newEditorState)
 
                         void notify({
                             status: NotificationStatus.Error,
-                            message: (err as {error: string}).error,
+                            message: (err as { error: string }).error,
                         })
 
                         window.URL.revokeObjectURL(blobURL)
                         return resolve(err)
                     })
-            })
+            }),
         )
     })
 
@@ -185,7 +185,7 @@ export const insertInlineImages = (
 
 export const addVideo = (
     editorState: EditorState,
-    url: string
+    url: string,
 ): EditorState => {
     const entityContentState = editorState
         .getCurrentContent()
@@ -197,20 +197,20 @@ export const addVideo = (
     const newEditorState = AtomicBlockUtils.insertAtomicBlock(
         editorState,
         entityKey,
-        ' '
+        ' ',
     )
 
     // forcing the current selection ensures that it will be at it's right place
     return EditorState.forceSelection(
         newEditorState,
-        newEditorState.getSelection()
+        newEditorState.getSelection(),
     )
 }
 
 export const addDiscountCodeLink = (
     editorState: EditorState,
     url: string,
-    code: string
+    code: string,
 ): EditorState => {
     let contentState = editorState
         .getCurrentContent()
@@ -220,7 +220,7 @@ export const addDiscountCodeLink = (
             {
                 url: url,
                 code: code,
-            }
+            },
         )
     const selection = editorState.getSelection()
     const entityKey = contentState.getLastCreatedEntityKey()
@@ -230,7 +230,7 @@ export const addDiscountCodeLink = (
         selection,
         code || url,
         undefined,
-        entityKey
+        entityKey,
     )
 
     return EditorState.push(editorState, contentState, 'apply-entity')
@@ -239,11 +239,11 @@ export const addDiscountCodeLink = (
 export const linkifyWithTemplate = (url: string) => {
     const noTemplateUrl = url.replace(
         /{{(.*?)}}/g,
-        (m, group: string) => `**${group}**`
+        (m, group: string) => `**${group}**`,
     )
     const parsedUrl = linkify.match(noTemplateUrl)?.[0]?.url || noTemplateUrl
     return parsedUrl.replace(
         /\*\*(.*?)\*\*/g,
-        (m, group: string) => `{{${group}}}`
+        (m, group: string) => `{{${group}}}`,
     )
 }

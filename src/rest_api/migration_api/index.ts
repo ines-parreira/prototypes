@@ -1,10 +1,10 @@
 import memoize from 'memoize-one'
-import OpenAPIClientAxios, {Document} from 'openapi-client-axios'
+import OpenAPIClientAxios, { Document } from 'openapi-client-axios'
 
-import {getAccessToken, getBearerAuthorizationHeader} from 'rest_api/auth'
-import {isProduction, isStaging} from 'utils/environment'
+import { getAccessToken, getBearerAuthorizationHeader } from 'rest_api/auth'
+import { isProduction, isStaging } from 'utils/environment'
 
-import {Client} from './client.generated'
+import { Client } from './client.generated'
 import OpenAPIDoc from './migration.openapi.json'
 
 function getMigrationApiBaseUrl() {
@@ -20,7 +20,7 @@ function getMigrationApiBaseUrl() {
 
 export const migrationAPI = new OpenAPIClientAxios({
     definition: OpenAPIDoc as unknown as Document,
-    withServer: {url: getMigrationApiBaseUrl()},
+    withServer: { url: getMigrationApiBaseUrl() },
 })
 
 async function buildMigrationClient(): Promise<Client> {

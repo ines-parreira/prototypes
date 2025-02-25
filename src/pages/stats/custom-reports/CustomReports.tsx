@@ -1,17 +1,18 @@
-import React, {useCallback, useState} from 'react'
-import {useHistory} from 'react-router-dom'
+import React, { useCallback, useState } from 'react'
 
-import {useCustomReportActions} from 'hooks/reporting/custom-reports/useCustomReportActions'
-import {useDashboardNameValidation} from 'hooks/reporting/custom-reports/useDashboardNameValidation'
-import {useNotify} from 'hooks/useNotify'
+import { useHistory } from 'react-router-dom'
+
+import { useCustomReportActions } from 'hooks/reporting/custom-reports/useCustomReportActions'
+import { useDashboardNameValidation } from 'hooks/reporting/custom-reports/useDashboardNameValidation'
+import { useNotify } from 'hooks/useNotify'
 import Button from 'pages/common/components/button/Button'
-import {CreateCustomReport} from 'pages/stats/custom-reports/CreateCustomReport/CreateCustomReport'
-import {CustomReportsModal} from 'pages/stats/custom-reports/CustomReportsModal/CustomReportsModal'
+import { CreateCustomReport } from 'pages/stats/custom-reports/CreateCustomReport/CreateCustomReport'
+import { CustomReportsModal } from 'pages/stats/custom-reports/CustomReportsModal/CustomReportsModal'
 import {
     DashboardName,
     DashboardNameValue,
 } from 'pages/stats/custom-reports/DashboardName'
-import {getDashboardPath} from 'pages/stats/custom-reports/utils'
+import { getDashboardPath } from 'pages/stats/custom-reports/utils'
 import {
     StatsPageContent,
     StatsPageHeader,
@@ -42,9 +43,9 @@ export const CustomReports = () => {
         emoji: '',
     })
 
-    const {error} = useDashboardNameValidation(details.name)
+    const { error } = useDashboardNameValidation(details.name)
 
-    const {createDashboardHandler, isCreateMutationLoading} =
+    const { createDashboardHandler, isCreateMutationLoading } =
         useCustomReportActions()
 
     const handleCreateCustomReport = useCallback(
@@ -61,7 +62,7 @@ export const CustomReports = () => {
                 },
             })
         },
-        [closeModal, createDashboardHandler, details, history]
+        [closeModal, createDashboardHandler, details, history],
     )
 
     return (

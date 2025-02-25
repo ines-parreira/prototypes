@@ -1,11 +1,12 @@
-import classNames from 'classnames'
-import React, {RefObject} from 'react'
+import React, { RefObject } from 'react'
 
-import {ActionTemplate, App} from 'pages/automate/actionsPlatform/types'
+import classNames from 'classnames'
+
+import { ActionTemplate, App } from 'pages/automate/actionsPlatform/types'
 import ReusableLLMPromptCallNodeStatusLabel from 'pages/automate/workflows/components/ReusableLLMPromptCallNodeStatusLabel'
 import ReusableLLMPromptCallNodeLabel from 'pages/automate/workflows/editor/visualBuilder/nodes/ReusableLLMPromptCallNodeLabel'
 import IconButton from 'pages/common/components/button/IconButton'
-import {useReorderDnD} from 'pages/common/hooks/useReorderDnD'
+import { useReorderDnD } from 'pages/common/hooks/useReorderDnD'
 
 import css from './StepListItem.less'
 
@@ -41,17 +42,17 @@ export const StepListItem = ({
     hasMissingValues,
 }: StepListItemProps) => {
     const type = `steps`
-    const {dragRef, dropRef, handlerId, isDragging} = useReorderDnD(
-        {type, position: index},
+    const { dragRef, dropRef, handlerId, isDragging } = useReorderDnD(
+        { type, position: index },
         [type],
-        {onHover: onMove, onDrop, onCancel}
+        { onHover: onMove, onDrop, onCancel },
     )
 
     return (
         <li
             data-handler-id={handlerId}
             ref={dropRef as RefObject<HTMLLIElement>}
-            style={{opacity: isDragging ? 0 : 1}}
+            style={{ opacity: isDragging ? 0 : 1 }}
             className={classNames(css.container, {
                 [css.isClickable]: isClickable,
             })}

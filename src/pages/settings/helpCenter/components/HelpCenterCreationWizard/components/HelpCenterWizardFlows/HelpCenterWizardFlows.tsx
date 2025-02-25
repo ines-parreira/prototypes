@@ -1,20 +1,23 @@
-import {Skeleton} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
-import {TicketChannel} from 'business/types/ticket'
+import classnames from 'classnames'
+
+import { Skeleton } from '@gorgias/merchant-ui-kit'
+
+import { TicketChannel } from 'business/types/ticket'
 import WorkflowsFeatureList, {
     Entrypoint,
 } from 'pages/automate/common/components/WorkflowsFeatureList'
-import {ChannelLanguage} from 'pages/automate/common/types'
+import { ChannelLanguage } from 'pages/automate/common/types'
 import useWorkflowChannelSupport, {
     WorkflowChannelSupportContext,
 } from 'pages/automate/workflows/hooks/useWorkflowChannelSupport'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
-import {useHelpCenterFlows} from '../../hooks/useHelpCenterFlows'
-import {AnimatedFadeInOut} from '../AnimatedFadeInOut/AnimatedFadeInOut'
+import { useHelpCenterFlows } from '../../hooks/useHelpCenterFlows'
+import { AnimatedFadeInOut } from '../AnimatedFadeInOut/AnimatedFadeInOut'
+
 import css from './HelpCenterWizardFlows.less'
 
 const FLOWS_LIMIT = 5
@@ -57,7 +60,7 @@ const HelpCenterWizardFlows = ({
 
     const workflowChannelSupportContext = useWorkflowChannelSupport(
         shopType,
-        shopName
+        shopName,
     )
 
     const onShowMore = () => {

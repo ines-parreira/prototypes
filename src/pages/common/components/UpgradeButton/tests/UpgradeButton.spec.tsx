@@ -1,28 +1,29 @@
-import {render} from '@testing-library/react'
 import React from 'react'
+
+import { render } from '@testing-library/react'
 
 import UpgradeButton from '../UpgradeButton'
 
 describe('UpgradeButton', () => {
     it('should display with default props', () => {
-        const {container} = render(<UpgradeButton />)
+        const { container } = render(<UpgradeButton />)
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should display with custom props', () => {
-        const {container} = render(
-            <UpgradeButton label="a label" className="button-class" />
+        const { container } = render(
+            <UpgradeButton label="a label" className="button-class" />,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should display with custom callback', () => {
-        const {container} = render(
+        const { container } = render(
             <UpgradeButton
                 label="a label"
                 className="button-class"
                 onClick={jest.fn()}
-            />
+            />,
         )
         expect(container.firstChild).toMatchSnapshot()
     })

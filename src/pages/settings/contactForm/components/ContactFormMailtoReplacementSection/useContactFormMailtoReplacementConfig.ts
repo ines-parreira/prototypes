@@ -1,20 +1,21 @@
-import {useQueryClient} from '@tanstack/react-query'
-import {useCallback, useEffect, useMemo, useState} from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+
+import { useQueryClient } from '@tanstack/react-query'
 // eslint-disable-next-line no-restricted-imports
-import {useDispatch} from 'react-redux'
+import { useDispatch } from 'react-redux'
 
-import {isGorgiasApiError} from 'models/api/types'
-import {Components} from 'rest_api/help_center_api/client.generated'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { isGorgiasApiError } from 'models/api/types'
+import { Components } from 'rest_api/help_center_api/client.generated'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
-import {useEmailIntegrations} from '../../hooks/useEmailIntegrations'
+import { useEmailIntegrations } from '../../hooks/useEmailIntegrations'
 import {
     contactFormMailtoReplacementConfigKeys,
     useGetContactFormMailtoReplacementConfig,
     useUpsertContactFormMailtoReplacementConfig,
 } from './queries'
-import {sortEmailByDomainAndName} from './utils'
+import { sortEmailByDomainAndName } from './utils'
 
 type MailtoReplacementConfigGetDto =
     Components.Schemas.MailtoReplacementConfigGetDto
@@ -35,7 +36,7 @@ export const useContactFormMailtoReplacementConfig = ({
     contactFormId: number
 }) => {
     const dispatch = useDispatch()
-    const {emailIntegrations} = useEmailIntegrations()
+    const { emailIntegrations } = useEmailIntegrations()
 
     const queryClient = useQueryClient()
 
@@ -44,13 +45,13 @@ export const useContactFormMailtoReplacementConfig = ({
             emailIntegrations
                 .map((emailIntegration) => emailIntegration.meta.address)
                 .sort(sortEmailByDomainAndName),
-        [emailIntegrations]
+        [emailIntegrations],
     )
     const [emailList, setEmailList] = useState<string[]>(
-        emailsFromEmailIntegrations
+        emailsFromEmailIntegrations,
     )
 
-    const {data: mailtoReplacementConfig, isLoading} =
+    const { data: mailtoReplacementConfig, isLoading } =
         useGetContactFormMailtoReplacementConfig(contactFormId)
 
     const queryKey = contactFormMailtoReplacementConfigKeys.get(contactFormId)
@@ -61,7 +62,7 @@ export const useContactFormMailtoReplacementConfig = ({
      * If request failed we fallback to the state we have before we call `mutation` function.
      * cf. https://tanstack.com/query/v4/docs/react/guides/optimistic-updates
      * */
-    const {mutate: upsertMailtoReplacementConfigMutate, isSuccess} =
+    const { mutate: upsertMailtoReplacementConfigMutate, isSuccess } =
         useUpsertContactFormMailtoReplacementConfig<{
             previousMailtoReplacementConfig:
                 | MailtoReplacementConfigGetDto
@@ -76,7 +77,7 @@ export const useContactFormMailtoReplacementConfig = ({
 
                 const previousMailtoReplacementConfig =
                     queryClient.getQueryData<MailtoReplacementConfigGetDto>(
-                        queryKey
+                        queryKey,
                     )
 
                 // Optimistically update to the new value
@@ -97,12 +98,12 @@ export const useContactFormMailtoReplacementConfig = ({
                             ? error.response?.data.error.msg
                             : `Whoops, something went wrong during ${contactFormId} mailto replacement config update`,
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
                 queryClient.setQueryData(
                     queryKey,
                     // null is needed to update the state when creation of config failed. setQueryData doesn't update the state if we pass undefined
-                    context?.previousMailtoReplacementConfig ?? null
+                    context?.previousMailtoReplacementConfig ?? null,
                 )
             },
             onSuccess: (data, _, context) => {
@@ -123,7 +124,7 @@ export const useContactFormMailtoReplacementConfig = ({
                                 ? REVERTED_EMAIl_MESSAGE
                                 : MESSAGE_BY_STATUS_CODE[200],
                             status: NotificationStatus.Success,
-                        })
+                        }),
                     )
                 } else {
                     const messageByStatusCode =
@@ -134,7 +135,7 @@ export const useContactFormMailtoReplacementConfig = ({
                         notify({
                             message: messageByStatusCode,
                             status: NotificationStatus.Success,
-                        })
+                        }),
                     )
                 }
             },
@@ -144,8 +145,8 @@ export const useContactFormMailtoReplacementConfig = ({
         setEmailList(
             emailsFromEmailIntegrations.filter(
                 (selectedEmail) =>
-                    !mailtoReplacementConfig?.emails.includes(selectedEmail)
-            )
+                    !mailtoReplacementConfig?.emails.includes(selectedEmail),
+            ),
         )
     }, [emailsFromEmailIntegrations, mailtoReplacementConfig, isSuccess])
 
@@ -153,15 +154,15 @@ export const useContactFormMailtoReplacementConfig = ({
         (emails: string[]) => {
             upsertMailtoReplacementConfigMutate([
                 undefined,
-                {contact_form_id: contactFormId},
-                {...mailtoReplacementConfig, emails},
+                { contact_form_id: contactFormId },
+                { ...mailtoReplacementConfig, emails },
             ])
         },
         [
             contactFormId,
             mailtoReplacementConfig,
             upsertMailtoReplacementConfigMutate,
-        ]
+        ],
     )
 
     return {

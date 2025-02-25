@@ -1,8 +1,9 @@
-import {fireEvent, render, screen} from '@testing-library/react'
-import {act} from '@testing-library/react-hooks'
 import React from 'react'
 
-import {Expander, ExpanderProps} from '../Expander'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { act } from '@testing-library/react-hooks'
+
+import { Expander, ExpanderProps } from '../Expander'
 
 const defaultProps = {
     isLoading: false,
@@ -20,7 +21,7 @@ const renderTemplate = (props: ExpanderProps = defaultProps) =>
 
 describe('Expander', () => {
     it('render the section in loading', () => {
-        renderTemplate({...defaultProps, isLoading: true})
+        renderTemplate({ ...defaultProps, isLoading: true })
 
         expect(getSkeleton()).toBeInTheDocument()
     })
@@ -34,7 +35,7 @@ describe('Expander', () => {
     })
 
     it('render the component after loading with no tasksCount', () => {
-        renderTemplate({...defaultProps, tasksCount: undefined})
+        renderTemplate({ ...defaultProps, tasksCount: undefined })
 
         expect(getSkeleton()).toBeNull()
         expect(screen.getByText('Show all tasks (0 total)')).toBeInTheDocument()
@@ -42,7 +43,7 @@ describe('Expander', () => {
     })
 
     it('should expand when clicking on expand button', () => {
-        renderTemplate({...defaultProps, isExpanded: true})
+        renderTemplate({ ...defaultProps, isExpanded: true })
 
         act(() => {
             fireEvent.click(getButton())

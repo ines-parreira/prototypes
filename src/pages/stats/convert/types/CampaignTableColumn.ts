@@ -1,7 +1,7 @@
-import {TooltipData} from 'pages/stats/types'
+import { TooltipData } from 'pages/stats/types'
 
-import {CampaignTableKeys} from './enums/CampaignTableKeys.enum'
-import {CampaignTableValueFormat} from './enums/CampaignTableValueFormat.enum'
+import { CampaignTableKeys } from './enums/CampaignTableKeys.enum'
+import { CampaignTableValueFormat } from './enums/CampaignTableValueFormat.enum'
 
 export interface CampaignTableColumn {
     className?: string

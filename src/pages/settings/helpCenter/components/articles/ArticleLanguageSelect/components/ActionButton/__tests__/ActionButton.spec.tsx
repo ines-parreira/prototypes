@@ -1,20 +1,21 @@
-import {fireEvent, render, waitFor} from '@testing-library/react'
 import React from 'react'
 
-import {ActionButton} from '../ActionButton'
+import { fireEvent, render, waitFor } from '@testing-library/react'
+
+import { ActionButton } from '../ActionButton'
 
 describe('<ActionButton />', () => {
     it('matches default snapshot', () => {
-        const {container} = render(<ActionButton>Action</ActionButton>)
+        const { container } = render(<ActionButton>Action</ActionButton>)
         expect(container).toMatchSnapshot()
     })
 
     it('applies the correct variant class', () => {
-        const {getByRole, rerender} = render(
-            <ActionButton variant="danger">Delete</ActionButton>
+        const { getByRole, rerender } = render(
+            <ActionButton variant="danger">Delete</ActionButton>,
         )
 
-        const btn = getByRole('button', {name: 'Delete'})
+        const btn = getByRole('button', { name: 'Delete' })
 
         expect(btn.classList.contains('destructive')).toBe(true)
 
@@ -24,8 +25,8 @@ describe('<ActionButton />', () => {
     })
 
     it('shows the tooltip on hover', async () => {
-        const {getByText} = render(
-            <ActionButton help="help me!">Show help</ActionButton>
+        const { getByText } = render(
+            <ActionButton help="help me!">Show help</ActionButton>,
         )
 
         fireEvent.mouseOver(getByText('Show help'))

@@ -1,16 +1,18 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
+import { render, screen } from '@testing-library/react'
+
 import '@testing-library/jest-dom'
-import {ToneOfVoice} from '../../constants'
-import {TicketPreview} from '../TicketPreview'
+
+import { ToneOfVoice } from '../../constants'
+import { TicketPreview } from '../TicketPreview'
 
 describe('TicketPreview', () => {
     const signature = 'Best regards, AI Agent'
 
     it('renders nothing if toneOfVoice is null', () => {
-        const {container} = render(
-            <TicketPreview toneOfVoice={null} signature={signature} />
+        const { container } = render(
+            <TicketPreview toneOfVoice={null} signature={signature} />,
         )
         expect(container).toBeEmptyDOMElement()
     })
@@ -20,19 +22,19 @@ describe('TicketPreview', () => {
             <TicketPreview
                 toneOfVoice={ToneOfVoice.Friendly}
                 signature={signature}
-            />
+            />,
         )
 
         expect(screen.getByText('Hey Alex,')).toBeInTheDocument()
         expect(
             screen.getByText(
-                "We totally get it—sometimes things just don't work out. You can return your items within 30 days of purchase for a full refund or exchange, as long as they're unused and in their original packaging."
-            )
+                "We totally get it—sometimes things just don't work out. You can return your items within 30 days of purchase for a full refund or exchange, as long as they're unused and in their original packaging.",
+            ),
         ).toBeInTheDocument()
         expect(
             screen.getByText(
-                'Feel free to reach out if you have any questions!'
-            )
+                'Feel free to reach out if you have any questions!',
+            ),
         ).toBeInTheDocument()
         expect(screen.getByText(signature)).toBeInTheDocument()
     })
@@ -42,19 +44,19 @@ describe('TicketPreview', () => {
             <TicketPreview
                 toneOfVoice={ToneOfVoice.Professional}
                 signature={signature}
-            />
+            />,
         )
 
         expect(screen.getByText('Hi Alex,')).toBeInTheDocument()
         expect(
             screen.getByText(
-                'We accept returns within 30 days of purchase for a full refund or exchange, provided the items are unused and in their original packaging.'
-            )
+                'We accept returns within 30 days of purchase for a full refund or exchange, provided the items are unused and in their original packaging.',
+            ),
         ).toBeInTheDocument()
         expect(
             screen.getByText(
-                'If you have any questions or need further assistance, please feel free to reach out.'
-            )
+                'If you have any questions or need further assistance, please feel free to reach out.',
+            ),
         ).toBeInTheDocument()
         expect(screen.getByText(signature)).toBeInTheDocument()
     })
@@ -64,19 +66,19 @@ describe('TicketPreview', () => {
             <TicketPreview
                 toneOfVoice={ToneOfVoice.Sophisticated}
                 signature={signature}
-            />
+            />,
         )
 
         expect(screen.getByText('Dear Alex,')).toBeInTheDocument()
         expect(
             screen.getByText(
-                'We are pleased to inform you that we accept returns within 30 days of purchase for a full refund or exchange, contingent upon the items being unused and in their original packaging.'
-            )
+                'We are pleased to inform you that we accept returns within 30 days of purchase for a full refund or exchange, contingent upon the items being unused and in their original packaging.',
+            ),
         ).toBeInTheDocument()
         expect(
             screen.getByText(
-                'Should you require any further assistance or have additional inquiries, please do not hesitate to reach out.'
-            )
+                'Should you require any further assistance or have additional inquiries, please do not hesitate to reach out.',
+            ),
         ).toBeInTheDocument()
         expect(screen.getByText(signature)).toBeInTheDocument()
     })
@@ -87,13 +89,13 @@ describe('TicketPreview', () => {
                 toneOfVoice={ToneOfVoice.Custom}
                 signature={signature}
                 customToneOfVoiceGuidance="This is a custom tone of voice guidance"
-            />
+            />,
         )
 
         expect(
             screen.getByText(
-                "Click 'Generate Preview' to view a response using your custom tone of voice"
-            )
+                "Click 'Generate Preview' to view a response using your custom tone of voice",
+            ),
         ).toBeInTheDocument()
         expect(screen.getByText('Generate preview')).toBeInTheDocument()
         expect(screen.getByText(signature)).toBeInTheDocument()
@@ -109,11 +111,11 @@ describe('TicketPreview', () => {
                     'This is a custom tone of voice preview'
                 }
                 onGenerateCustomToneOfVoicePreview={() => {}}
-            />
+            />,
         )
 
         expect(
-            screen.getByText('This is a custom tone of voice preview')
+            screen.getByText('This is a custom tone of voice preview'),
         ).toBeInTheDocument()
     })
 
@@ -124,7 +126,7 @@ describe('TicketPreview', () => {
                 signature={signature}
                 customToneOfVoiceGuidance=""
                 onGenerateCustomToneOfVoicePreview={() => {}}
-            />
+            />,
         )
 
         const generatePreviewBtn = screen.getByRole('button', {
@@ -133,8 +135,8 @@ describe('TicketPreview', () => {
 
         expect(
             screen.getByText(
-                "Click 'Generate Preview' to view a response using your custom tone of voice"
-            )
+                "Click 'Generate Preview' to view a response using your custom tone of voice",
+            ),
         ).toBeInTheDocument()
         expect(generatePreviewBtn).toBeInTheDocument()
         expect(generatePreviewBtn).toBeAriaDisabled()
@@ -148,13 +150,13 @@ describe('TicketPreview', () => {
                 customToneOfVoiceGuidance="This is a custom tone of voice guidance"
                 isError
                 onGenerateCustomToneOfVoicePreview={() => {}}
-            />
+            />,
         )
 
         expect(
             screen.getByText(
-                'Preview could not be generated. Make sure instructions are not vague or contradictory and try again.'
-            )
+                'Preview could not be generated. Make sure instructions are not vague or contradictory and try again.',
+            ),
         ).toBeInTheDocument()
     })
 
@@ -166,13 +168,13 @@ describe('TicketPreview', () => {
                 customToneOfVoiceGuidance="This is a custom tone of voice guidance"
                 isLoadingCustomToneOfVoicePreview
                 onGenerateCustomToneOfVoicePreview={() => {}}
-            />
+            />,
         )
         const generatePreviewBtn = screen.getByRole('button', {
             name: 'Loading... Generate preview',
         })
         const skeletonElement = document.querySelector(
-            '.react-loading-skeleton'
+            '.react-loading-skeleton',
         )
         expect(skeletonElement).toBeInTheDocument()
 

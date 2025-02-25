@@ -1,6 +1,6 @@
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {useCustomFieldDefinition} from 'custom-fields/hooks/queries/useCustomFieldDefinition'
+import { useCustomFieldDefinition } from 'custom-fields/hooks/queries/useCustomFieldDefinition'
 import Loader from 'pages/common/components/Loader/Loader'
 
 import CustomFieldInput from './CustomFieldInput'
@@ -12,7 +12,7 @@ type Props = Omit<ComponentProps<typeof CustomFieldInput>, 'customField'> & {
 /**
  * Wraps a <CustomFieldInput/> but takes a custom field ID rather than a custom field definition.
  */
-function CustomFieldIdInput({customFieldId, ...props}: Props) {
+function CustomFieldIdInput({ customFieldId, ...props }: Props) {
     const customField = useCustomFieldDefinition(customFieldId)
 
     if (customField.isLoading) {

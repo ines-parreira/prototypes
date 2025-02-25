@@ -1,11 +1,11 @@
 import {
+    BigCommerceAvailablePaymentOptionsData,
     BigCommerceRefundItemsPayloadComponent,
+    BigCommerceRefundMethod,
+    BigCommerceRefundType,
     CalculateOrderRefundDataResponse,
     HandlingItemRefundData,
     ShippingItemRefundData,
-    BigCommerceRefundType,
-    BigCommerceAvailablePaymentOptionsData,
-    BigCommerceRefundMethod,
 } from 'models/integration/types'
 
 export enum BigCommerceRefundActionType {

@@ -1,15 +1,15 @@
 import MockAdapter from 'axios-mock-adapter'
-import {fromJS} from 'immutable'
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+import { fromJS } from 'immutable'
+import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import client from 'models/api/resources'
-import {Customer, CustomerDraft} from 'models/customer/types'
+import { Customer, CustomerDraft } from 'models/customer/types'
 import history from 'pages/history'
-import {StoreDispatch} from 'state/types'
+import { StoreDispatch } from 'state/types'
 
 import * as actions from '../actions'
-import {initialState} from '../reducers'
+import { initialState } from '../reducers'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -17,7 +17,7 @@ const mockStore = configureMockStore(middlewares)
 jest.mock('pages/history')
 jest.mock('state/notifications/actions', () => {
     return {
-        notify: jest.fn((args: unknown) => () => ({payload: args})),
+        notify: jest.fn((args: unknown) => () => ({ payload: args })),
     }
 })
 jest.mock('reapop', () => {
@@ -34,13 +34,15 @@ describe('customers actions', () => {
     let mockServer: MockAdapter
 
     beforeEach(() => {
-        store = mockStore({customers: initialState})
+        store = mockStore({ customers: initialState })
         mockServer = new MockAdapter(client)
     })
 
     describe('fetch customer', () => {
         it('fetches customer', () => {
-            mockServer.onGet('/api/customers/2/').reply(200, {data: {id: 2}})
+            mockServer
+                .onGet('/api/customers/2/')
+                .reply(200, { data: { id: 2 } })
 
             return store
                 .dispatch(actions.fetchCustomer('2'))
@@ -50,16 +52,16 @@ describe('customers actions', () => {
         it('fetches customer with highlights', () => {
             mockServer
                 .onGet('/api/customers/2/')
-                .reply(200, {data: [{id: 2, highlights: {id: ['1']}}]})
+                .reply(200, { data: [{ id: 2, highlights: { id: ['1'] } }] })
 
             return store.dispatch(actions.fetchCustomer('2')).then(() =>
                 expect(store.getActions()).toMatchObject([
-                    {type: 'FETCH_CUSTOMER_START'},
+                    { type: 'FETCH_CUSTOMER_START' },
                     {
-                        resp: {data: [{highlights: {id: ['1']}, id: 2}]},
+                        resp: { data: [{ highlights: { id: ['1'] }, id: 2 }] },
                         type: 'FETCH_CUSTOMER_SUCCESS',
                     },
-                ])
+                ]),
             )
         })
 
@@ -92,7 +94,7 @@ describe('customers actions', () => {
             email: 'steve@acme.gorgias.io',
         } as unknown as CustomerDraft
 
-        mockServer.onPost('/api/customers/').reply(200, {data})
+        mockServer.onPost('/api/customers/').reply(200, { data })
 
         return store
             .dispatch(actions.submitCustomer(data))
@@ -106,7 +108,7 @@ describe('customers actions', () => {
             email: 'steve@acme.gorgias.io',
         } as unknown as Customer
 
-        mockServer.onPut('/api/customers/2/').reply(200, {data})
+        mockServer.onPut('/api/customers/2/').reply(200, { data })
 
         return store
             .dispatch(actions.submitCustomer(data, data.id))
@@ -136,7 +138,7 @@ describe('customers actions', () => {
     it('fetch customer history', () => {
         mockServer
             .onGet('/api/customers/2/tickets/')
-            .reply(200, {data: [{id: 1}]})
+            .reply(200, { data: [{ id: 1 }] })
 
         return store
             .dispatch(actions.fetchCustomerHistory(2))
@@ -148,7 +150,7 @@ describe('customers actions', () => {
                     .dispatch(
                         actions.fetchCustomerHistory(2, {
                             successCondition: () => false,
-                        })
+                        }),
                     )
                     .then(() => expect(store.getActions()).toMatchSnapshot())
             })
@@ -157,7 +159,7 @@ describe('customers actions', () => {
     it('merge customers', () => {
         mockServer
             .onPut('/api/customers/merge?target_id=2&source_id=3')
-            .reply(200, {data: [{id: 1}]})
+            .reply(200, { data: [{ id: 1 }] })
 
         return store
             .dispatch(actions.mergeCustomers(2, 3, {} as Customer))

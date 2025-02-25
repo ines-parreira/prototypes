@@ -1,11 +1,12 @@
-import {ListTagsOrderBy} from '@gorgias/api-queries'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import _pick from 'lodash/pick'
 
-import {tags as tagsFixtures} from 'fixtures/tag'
+import { ListTagsOrderBy } from '@gorgias/api-queries'
+
+import { tags as tagsFixtures } from 'fixtures/tag'
 import client from 'models/api/resources'
-import {OrderDirection} from 'models/api/types'
+import { OrderDirection } from 'models/api/types'
 
 import {
     createTag,
@@ -33,14 +34,14 @@ describe('tag resources', () => {
                 data: tagsFixtures,
                 meta,
             })
-            const res = await fetchTags({search: 'hello'})
+            const res = await fetchTags({ search: 'hello' })
             expect(res).toMatchSnapshot()
         })
 
         it('should reject an error on fail', () => {
-            mockedServer.onGet('/api/tags/').reply(503, {message: 'error'})
+            mockedServer.onGet('/api/tags/').reply(503, { message: 'error' })
             return expect(fetchTags()).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                new Error('Request failed with status code 503'),
             )
         })
 
@@ -57,8 +58,8 @@ describe('tag resources', () => {
                     {
                         order_by: `${ListTagsOrderBy.CreatedDatetime}:${OrderDirection.Asc}`,
                     },
-                    {cancelToken: source.token}
-                )
+                    { cancelToken: source.token },
+                ),
             ).rejects.toEqual(new axios.Cancel())
         })
 
@@ -73,7 +74,7 @@ describe('tag resources', () => {
                     order_by: `${ListTagsOrderBy.Usage}:${direction}`,
                 })
                 expect(mockedServer.history.get[0].params).toMatchSnapshot()
-            }
+            },
         )
     })
 
@@ -87,9 +88,9 @@ describe('tag resources', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onGet(/\/api\/tags\/\d+\//)
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(fetchTag(1)).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                new Error('Request failed with status code 503'),
             )
         })
     })
@@ -106,9 +107,9 @@ describe('tag resources', () => {
         })
 
         it('should reject an error on fail', () => {
-            mockedServer.onPost('/api/tags/').reply(503, {message: 'error'})
+            mockedServer.onPost('/api/tags/').reply(503, { message: 'error' })
             return expect(createTag(tagDraftMock)).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                new Error('Request failed with status code 503'),
             )
         })
     })
@@ -123,9 +124,9 @@ describe('tag resources', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onDelete(/\/api\/tags\/\d+\//)
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(deleteTag(1)).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                new Error('Request failed with status code 503'),
             )
         })
     })
@@ -141,9 +142,9 @@ describe('tag resources', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onPut(/\/api\/tags\/\d+\//)
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(updateTag(tagsFixtures[0])).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                new Error('Request failed with status code 503'),
             )
         })
     })

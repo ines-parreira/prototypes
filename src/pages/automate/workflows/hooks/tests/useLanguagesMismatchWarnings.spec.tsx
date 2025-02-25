@@ -1,12 +1,10 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
-
-import {TicketChannel} from 'business/types/ticket'
-
-import {useGetWorkflowConfigurations} from 'models/workflows/queries'
-import {ChannelLanguage} from 'pages/automate/common/types'
-import {assumeMock} from 'utils/testing'
+import { TicketChannel } from 'business/types/ticket'
+import { useGetWorkflowConfigurations } from 'models/workflows/queries'
+import { ChannelLanguage } from 'pages/automate/common/types'
+import { assumeMock } from 'utils/testing'
 
 import useLanguagesMismatchWarnings from '../useLanguagesMismatchWarnings'
 
@@ -20,12 +18,12 @@ jest.mock('models/workflows/queries', () => ({
     useGetWorkflowConfigurations: jest.fn(),
 }))
 const useGetWorkflowConfigurationsMock = assumeMock(
-    useGetWorkflowConfigurations
+    useGetWorkflowConfigurations,
 )
 
 describe('useLanguagesMismatchWarnings', () => {
     beforeEach(() => {
-        useFlagsMock.mockReturnValue({ChatMultiLanguages: false})
+        useFlagsMock.mockReturnValue({ ChatMultiLanguages: false })
         useGetWorkflowConfigurationsMock.mockReturnValue({
             isLoading: false,
             data: [],
@@ -33,11 +31,11 @@ describe('useLanguagesMismatchWarnings', () => {
     })
 
     it('initializes correctly', () => {
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useLanguagesMismatchWarnings(TicketChannel.Chat, 123, [
                 'en-US',
                 'fr-FR',
-            ])
+            ]),
         )
         expect(result.current.getLanguagesMismatchWarning).toBeDefined()
     })
@@ -45,11 +43,11 @@ describe('useLanguagesMismatchWarnings', () => {
     it('returns error when there is no overlap between channel and workflow languages', () => {
         useGetWorkflowConfigurationsMock.mockReturnValue({
             isLoading: false,
-            data: [{id: 'workflow1', available_languages: ['es-ES']}],
+            data: [{ id: 'workflow1', available_languages: ['es-ES'] }],
         } as unknown as ReturnType<typeof useGetWorkflowConfigurations>)
 
-        const {result} = renderHook(() =>
-            useLanguagesMismatchWarnings(TicketChannel.Chat, 123, ['en-US'])
+        const { result } = renderHook(() =>
+            useLanguagesMismatchWarnings(TicketChannel.Chat, 123, ['en-US']),
         )
 
         const warning = result.current.getLanguagesMismatchWarning('workflow1')
@@ -60,16 +58,18 @@ describe('useLanguagesMismatchWarnings', () => {
     })
 
     it('returns warning for mono-language channels with multiple workflow languages', () => {
-        useFlagsMock.mockReturnValue({ChatMultiLanguages: true})
+        useFlagsMock.mockReturnValue({ ChatMultiLanguages: true })
         useGetWorkflowConfigurationsMock.mockReturnValue({
             isLoading: false,
-            data: [{id: 'workflow1', available_languages: ['en-US', 'fr-FR']}],
+            data: [
+                { id: 'workflow1', available_languages: ['en-US', 'fr-FR'] },
+            ],
         } as unknown as ReturnType<typeof useGetWorkflowConfigurations>)
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useLanguagesMismatchWarnings(TicketChannel.ContactForm, 123, [
                 'en-US',
-            ])
+            ]),
         )
 
         const warning = result.current.getLanguagesMismatchWarning('workflow1')
@@ -82,14 +82,14 @@ describe('useLanguagesMismatchWarnings', () => {
     it('returns warning for extra channel languages', () => {
         useGetWorkflowConfigurationsMock.mockReturnValue({
             isLoading: false,
-            data: [{id: 'workflow1', available_languages: ['en-US']}],
+            data: [{ id: 'workflow1', available_languages: ['en-US'] }],
         } as unknown as ReturnType<typeof useGetWorkflowConfigurations>)
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useLanguagesMismatchWarnings(TicketChannel.Chat, 123, [
                 'en-US',
                 'fr-FR',
-            ])
+            ]),
         )
 
         const warning = result.current.getLanguagesMismatchWarning('workflow1')
@@ -102,11 +102,13 @@ describe('useLanguagesMismatchWarnings', () => {
     it('returns warning for extra workflow languages', () => {
         useGetWorkflowConfigurationsMock.mockReturnValue({
             isLoading: false,
-            data: [{id: 'workflow1', available_languages: ['en-US', 'fr-FR']}],
+            data: [
+                { id: 'workflow1', available_languages: ['en-US', 'fr-FR'] },
+            ],
         } as unknown as ReturnType<typeof useGetWorkflowConfigurations>)
 
-        const {result} = renderHook(() =>
-            useLanguagesMismatchWarnings(TicketChannel.Chat, 123, ['en-US'])
+        const { result } = renderHook(() =>
+            useLanguagesMismatchWarnings(TicketChannel.Chat, 123, ['en-US']),
         )
 
         const warning = result.current.getLanguagesMismatchWarning('workflow1')
@@ -119,11 +121,11 @@ describe('useLanguagesMismatchWarnings', () => {
     it('returns nothing when channel and workflow languages match', () => {
         useGetWorkflowConfigurationsMock.mockReturnValue({
             isLoading: false,
-            data: [{id: 'workflow1', available_languages: ['en-US']}],
+            data: [{ id: 'workflow1', available_languages: ['en-US'] }],
         } as unknown as ReturnType<typeof useGetWorkflowConfigurations>)
 
-        const {result} = renderHook(() =>
-            useLanguagesMismatchWarnings(TicketChannel.Chat, 123, ['en-US'])
+        const { result } = renderHook(() =>
+            useLanguagesMismatchWarnings(TicketChannel.Chat, 123, ['en-US']),
         )
 
         const warning = result.current.getLanguagesMismatchWarning('workflow1')
@@ -136,8 +138,8 @@ describe('useLanguagesMismatchWarnings', () => {
             data: undefined,
         } as unknown as ReturnType<typeof useGetWorkflowConfigurations>)
 
-        const {result} = renderHook(() =>
-            useLanguagesMismatchWarnings(TicketChannel.Chat, 123, ['en-US'])
+        const { result } = renderHook(() =>
+            useLanguagesMismatchWarnings(TicketChannel.Chat, 123, ['en-US']),
         )
 
         const warning = result.current.getLanguagesMismatchWarning('workflow1')
@@ -146,13 +148,13 @@ describe('useLanguagesMismatchWarnings', () => {
     it('handles cs-CZ workflow language matching cz channel language correctly', () => {
         useGetWorkflowConfigurationsMock.mockReturnValue({
             isLoading: false,
-            data: [{id: 'workflow1', available_languages: ['cs-CZ']}],
+            data: [{ id: 'workflow1', available_languages: ['cs-CZ'] }],
         } as unknown as ReturnType<typeof useGetWorkflowConfigurations>)
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useLanguagesMismatchWarnings(TicketChannel.Chat, 123, [
                 'cz' as ChannelLanguage,
-            ])
+            ]),
         )
 
         const warning = result.current.getLanguagesMismatchWarning('workflow1')

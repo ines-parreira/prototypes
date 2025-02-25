@@ -1,8 +1,8 @@
-import {render, screen} from '@testing-library/react'
-import {fromJS, Map} from 'immutable'
 import React from 'react'
 
-import {Provider} from 'react-redux'
+import { render, screen } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import {
@@ -11,43 +11,43 @@ import {
     shopifyColor,
     shopifyDateMetafield,
     shopifyDateTimeMetafield,
+    shopifyDimension,
     shopifyFileReference,
     shopifyJson,
-    shopifyMetaobjectReference,
-    shopifyMixedReference,
-    shopifyMultiTextLineFieldMetafield,
-    shopifyPageReference,
-    shopifyProductReference,
-    shopifyNumberDecimal,
-    shopifyNumberInteger,
-    shopifyProductVariantReference,
-    shopifyRichTextField,
-    shopifySingleTextLineFieldMetafield,
-    shopifyUrl,
-    shopifyUrlMetafield,
-    shopifyDimension,
-    shopifyWeight,
-    shopifyVolume,
-    shopifyRating,
-    shopifyMoney,
-    shopifyListSingleLineTextField,
-    shopifyListVariantReference,
+    shopifyListCollectionReference,
+    shopifyListColor,
+    shopifyListDate,
+    shopifyListDatetime,
+    shopifyListDimension,
     shopifyListFileReference,
     shopifyListMetaobjectReference,
     shopifyListMixedReference,
     shopifyListNumberDecimal,
     shopifyListNumberInteger,
-    shopifyListDate,
-    shopifyListDatetime,
-    shopifyListProductReference,
-    shopifyListCollectionReference,
     shopifyListPageReference,
-    shopifyListUrl,
-    shopifyListColor,
-    shopifyListWeight,
-    shopifyListVolume,
-    shopifyListDimension,
+    shopifyListProductReference,
     shopifyListRating,
+    shopifyListSingleLineTextField,
+    shopifyListUrl,
+    shopifyListVariantReference,
+    shopifyListVolume,
+    shopifyListWeight,
+    shopifyMetaobjectReference,
+    shopifyMixedReference,
+    shopifyMoney,
+    shopifyMultiTextLineFieldMetafield,
+    shopifyNumberDecimal,
+    shopifyNumberInteger,
+    shopifyPageReference,
+    shopifyProductReference,
+    shopifyProductVariantReference,
+    shopifyRating,
+    shopifyRichTextField,
+    shopifySingleTextLineFieldMetafield,
+    shopifyUrl,
+    shopifyUrlMetafield,
+    shopifyVolume,
+    shopifyWeight,
 } from 'fixtures/shopify'
 import {
     IntegrationContext,
@@ -60,7 +60,7 @@ const integrationContext: IntegrationContextType = {
     integration: Map<string, unknown>(
         fromJS({
             name: 'test-store',
-        })
+        }),
     ),
     integrationId: 1,
 }
@@ -72,7 +72,7 @@ describe('<MetaField/>', () => {
     })
 
     const store = mockStore({
-        currentAccount: fromJS({domain: 'domain'}),
+        currentAccount: fromJS({ domain: 'domain' }),
     })
 
     describe('render()', () => {
@@ -80,7 +80,7 @@ describe('<MetaField/>', () => {
             render(
                 <Provider store={store}>
                     <Metafield metafield={shopifyUrlMetafield()} />
-                </Provider>
+                </Provider>,
             )
             expect(screen.getByText(`google.ro`))
             expect(screen.getByRole('button'))
@@ -92,12 +92,12 @@ describe('<MetaField/>', () => {
                     <Metafield
                         metafield={shopifySingleTextLineFieldMetafield()}
                     />
-                </Provider>
+                </Provider>,
             )
             expect(
                 screen.getByText(
-                    `testing single line with a lot of text testing single line with a lot of text`
-                )
+                    `testing single line with a lot of text testing single line with a lot of text`,
+                ),
             )
             expect(screen.getByRole('button'))
         })
@@ -108,12 +108,12 @@ describe('<MetaField/>', () => {
                     <Metafield
                         metafield={shopifyMultiTextLineFieldMetafield()}
                     />
-                </Provider>
+                </Provider>,
             )
             expect(
                 screen.getByText(
-                    `testing\\nmulti\\nline\\nwith\\na\\nlot\\nof\\ntext\\ntesting\\nmulti\\nline\\nwith\\na\\n...`
-                )
+                    `testing\\nmulti\\nline\\nwith\\na\\nlot\\nof\\ntext\\ntesting\\nmulti\\nline\\nwith\\na\\n...`,
+                ),
             )
             expect(screen.getByRole('button'))
         })
@@ -124,12 +124,12 @@ describe('<MetaField/>', () => {
             render(
                 <Provider store={store}>
                     <Metafield metafield={metafield} />
-                </Provider>
+                </Provider>,
             )
             expect(
                 screen.getByText(
-                    `testing metafield\\nwith less than 80 characters`
-                )
+                    `testing metafield\\nwith less than 80 characters`,
+                ),
             )
             expect(screen.getByRole('button'))
         })
@@ -138,7 +138,7 @@ describe('<MetaField/>', () => {
             render(
                 <Provider store={store}>
                     <Metafield metafield={shopifyDateMetafield()} />
-                </Provider>
+                </Provider>,
             )
             expect(screen.getByText(`Feb 6, 2024`))
             expect(screen.getByRole('button'))
@@ -148,7 +148,7 @@ describe('<MetaField/>', () => {
             render(
                 <Provider store={store}>
                     <Metafield metafield={shopifyDateTimeMetafield()} />
-                </Provider>
+                </Provider>,
             )
             expect(screen.getByText(`Feb 6, 2024`))
             expect(screen.getByText(`01:30 PM`))
@@ -159,10 +159,10 @@ describe('<MetaField/>', () => {
             render(
                 <Provider store={store}>
                     <Metafield metafield={shopifyProductVariantReference()} />
-                </Provider>
+                </Provider>,
             )
             expect(
-                screen.getByText(`gid://shopify/ProductVariant/40416320323627`)
+                screen.getByText(`gid://shopify/ProductVariant/40416320323627`),
             )
             expect(screen.getByRole('button'))
         })
@@ -171,7 +171,7 @@ describe('<MetaField/>', () => {
             render(
                 <Provider store={store}>
                     <Metafield metafield={shopifyFileReference()} />
-                </Provider>
+                </Provider>,
             )
             expect(screen.getByText(`gid://shopify/MediaImage/22300347564075`))
             expect(screen.getByRole('button'))
@@ -181,7 +181,7 @@ describe('<MetaField/>', () => {
             render(
                 <Provider store={store}>
                     <Metafield metafield={shopifyMetaobjectReference()} />
-                </Provider>
+                </Provider>,
             )
             expect(screen.getByText(`gid://shopify/Metaobject/79372845099`))
             expect(screen.getByRole('button'))
@@ -191,7 +191,7 @@ describe('<MetaField/>', () => {
             render(
                 <Provider store={store}>
                     <Metafield metafield={shopifyMixedReference()} />
-                </Provider>
+                </Provider>,
             )
             expect(screen.getByText(`gid://shopify/Metaobject/79372845099`))
             expect(screen.getByRole('button'))
@@ -201,7 +201,7 @@ describe('<MetaField/>', () => {
             render(
                 <Provider store={store}>
                     <Metafield metafield={shopifyBoolean(true)} />
-                </Provider>
+                </Provider>,
             )
             expect(screen.getByText(`true`))
             expect(screen.getByRole('button'))
@@ -211,7 +211,7 @@ describe('<MetaField/>', () => {
             render(
                 <Provider store={store}>
                     <Metafield metafield={shopifyBoolean(false)} />
-                </Provider>
+                </Provider>,
             )
             expect(screen.getByText(`false`))
             expect(screen.getByRole('button'))
@@ -221,7 +221,7 @@ describe('<MetaField/>', () => {
             render(
                 <Provider store={store}>
                     <Metafield metafield={shopifyColor()} />
-                </Provider>
+                </Provider>,
             )
             expect(screen.getByText(`#2b78b6`))
             expect(screen.getByRole('button'))
@@ -231,7 +231,7 @@ describe('<MetaField/>', () => {
             render(
                 <Provider store={store}>
                     <Metafield metafield={shopifyNumberDecimal()} />
-                </Provider>
+                </Provider>,
             )
             expect(screen.getByText(`123.22`))
             expect(screen.getByRole('button'))
@@ -241,7 +241,7 @@ describe('<MetaField/>', () => {
             render(
                 <Provider store={store}>
                     <Metafield metafield={shopifyNumberInteger()} />
-                </Provider>
+                </Provider>,
             )
             expect(screen.getByText(`123`))
             expect(screen.getByRole('button'))
@@ -251,7 +251,7 @@ describe('<MetaField/>', () => {
             render(
                 <Provider store={store}>
                     <Metafield metafield={shopifyJson()} />
-                </Provider>
+                </Provider>,
             )
             expect(screen.queryByText(`foo`))
             expect(screen.getByRole('button'))
@@ -261,7 +261,7 @@ describe('<MetaField/>', () => {
             render(
                 <Provider store={store}>
                     <Metafield metafield={shopifyUrl('https://gorgias.com')} />
-                </Provider>
+                </Provider>,
             )
             expect(screen.getByText('gorgias.com'))
             expect(screen.getByRole('button'))
@@ -272,10 +272,10 @@ describe('<MetaField/>', () => {
                 <Provider store={store}>
                     <Metafield
                         metafield={shopifyUrl(
-                            'https://gorgias.com/app/customer/101'
+                            'https://gorgias.com/app/customer/101',
                         )}
                     />
-                </Provider>
+                </Provider>,
             )
             expect(screen.getByText('gorgias.com/app/cust...'))
             expect(screen.getByRole('button'))
@@ -287,7 +287,7 @@ describe('<MetaField/>', () => {
                     <IntegrationContext.Provider value={integrationContext}>
                         <Metafield metafield={shopifyProductReference()} />
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
             expect(screen.getByText('471971234070'))
             expect(screen.getByRole('button'))
@@ -299,7 +299,7 @@ describe('<MetaField/>', () => {
                     <IntegrationContext.Provider value={integrationContext}>
                         <Metafield metafield={shopifyCollectionReference()} />
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
             expect(screen.getByText('471971234070'))
             expect(screen.getByRole('button'))
@@ -311,7 +311,7 @@ describe('<MetaField/>', () => {
                     <IntegrationContext.Provider value={integrationContext}>
                         <Metafield metafield={shopifyPageReference()} />
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
             expect(screen.getByText('471971234070'))
             expect(screen.getByRole('button'))
@@ -321,12 +321,12 @@ describe('<MetaField/>', () => {
             render(
                 <Provider store={store}>
                     <Metafield metafield={shopifyRichTextField()} />
-                </Provider>
+                </Provider>,
             )
             expect(
                 screen.queryByText(
-                    'adsa adasda asdasda b c d e f g h i j k l m  sadasda'
-                )
+                    'adsa adasda asdasda b c d e f g h i j k l m  sadasda',
+                ),
             )
             expect(screen.getByRole('button'))
         })
@@ -337,7 +337,7 @@ describe('<MetaField/>', () => {
             render(
                 <Provider store={store}>
                     <Metafield metafield={metafield} />
-                </Provider>
+                </Provider>,
             )
             expect(screen.queryByText('test_rich_text_field'))
         })
@@ -346,7 +346,7 @@ describe('<MetaField/>', () => {
             render(
                 <Provider store={store}>
                     <Metafield metafield={shopifyDimension()} />
-                </Provider>
+                </Provider>,
             )
             expect(screen.getByText('123 cm'))
             expect(screen.getByRole('button'))
@@ -356,7 +356,7 @@ describe('<MetaField/>', () => {
             render(
                 <Provider store={store}>
                     <Metafield metafield={shopifyWeight()} />
-                </Provider>
+                </Provider>,
             )
             expect(screen.getByText('123 oz'))
             expect(screen.getByRole('button'))
@@ -366,7 +366,7 @@ describe('<MetaField/>', () => {
             render(
                 <Provider store={store}>
                     <Metafield metafield={shopifyVolume()} />
-                </Provider>
+                </Provider>,
             )
             expect(screen.getByText('123 fl oz'))
             expect(screen.getByRole('button'))
@@ -376,7 +376,7 @@ describe('<MetaField/>', () => {
             render(
                 <Provider store={store}>
                     <Metafield metafield={shopifyRating()} />
-                </Provider>
+                </Provider>,
             )
             expect(screen.getByText('4.5 out of 5.0'))
             expect(screen.getByRole('button'))
@@ -386,7 +386,7 @@ describe('<MetaField/>', () => {
             render(
                 <Provider store={store}>
                     <Metafield metafield={shopifyMoney()} />
-                </Provider>
+                </Provider>,
             )
             expect(screen.getByText('$123.00'))
             expect(screen.getByRole('button'))
@@ -396,7 +396,7 @@ describe('<MetaField/>', () => {
             render(
                 <Provider store={store}>
                     <Metafield metafield={shopifyListSingleLineTextField()} />
-                </Provider>
+                </Provider>,
             )
             expect(screen.getByText('test1'))
             expect(screen.getByText('test2'))
@@ -407,7 +407,7 @@ describe('<MetaField/>', () => {
             render(
                 <Provider store={store}>
                     <Metafield metafield={shopifyListVariantReference()} />
-                </Provider>
+                </Provider>,
             )
             expect(screen.getByText('test1'))
             expect(screen.getByText('test2'))
@@ -418,7 +418,7 @@ describe('<MetaField/>', () => {
             render(
                 <Provider store={store}>
                     <Metafield metafield={shopifyListFileReference()} />
-                </Provider>
+                </Provider>,
             )
             expect(screen.getByText('test1'))
             expect(screen.getByText('test2'))
@@ -429,7 +429,7 @@ describe('<MetaField/>', () => {
             render(
                 <Provider store={store}>
                     <Metafield metafield={shopifyListMetaobjectReference()} />
-                </Provider>
+                </Provider>,
             )
             expect(screen.getByText('test1'))
             expect(screen.getByText('test2'))
@@ -440,7 +440,7 @@ describe('<MetaField/>', () => {
             render(
                 <Provider store={store}>
                     <Metafield metafield={shopifyListMixedReference()} />
-                </Provider>
+                </Provider>,
             )
             expect(screen.getByText('test1'))
             expect(screen.getByText('test2'))
@@ -451,7 +451,7 @@ describe('<MetaField/>', () => {
             render(
                 <Provider store={store}>
                     <Metafield metafield={shopifyListNumberDecimal()} />
-                </Provider>
+                </Provider>,
             )
             expect(screen.getByText('3.23'))
             expect(screen.getByText('222.54'))
@@ -462,7 +462,7 @@ describe('<MetaField/>', () => {
             render(
                 <Provider store={store}>
                     <Metafield metafield={shopifyListNumberInteger()} />
-                </Provider>
+                </Provider>,
             )
             expect(screen.getByText('3424'))
             expect(screen.getByText('534'))
@@ -473,7 +473,7 @@ describe('<MetaField/>', () => {
             render(
                 <Provider store={store}>
                     <Metafield metafield={shopifyListDate()} />
-                </Provider>
+                </Provider>,
             )
             expect(screen.getByText('Feb 2, 2024'))
             expect(screen.getByText('May 2, 2024'))
@@ -484,7 +484,7 @@ describe('<MetaField/>', () => {
             render(
                 <Provider store={store}>
                     <Metafield metafield={shopifyListDatetime()} />
-                </Provider>
+                </Provider>,
             )
             expect(screen.getByText('Feb 2, 2024'))
             expect(screen.getByText('12:24 PM'))
@@ -499,7 +499,7 @@ describe('<MetaField/>', () => {
                     <IntegrationContext.Provider value={integrationContext}>
                         <Metafield metafield={shopifyListProductReference()} />
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
             expect(screen.getByText('40416320523627'))
             expect(screen.getByText('40416320323627'))
@@ -514,7 +514,7 @@ describe('<MetaField/>', () => {
                             metafield={shopifyListCollectionReference()}
                         />
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
             expect(screen.getByText('40416320523627'))
             expect(screen.getByText('40416320323627'))
@@ -527,7 +527,7 @@ describe('<MetaField/>', () => {
                     <IntegrationContext.Provider value={integrationContext}>
                         <Metafield metafield={shopifyListPageReference()} />
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
             expect(screen.getByText('40416320523627'))
             expect(screen.getByText('40416320323627'))
@@ -538,7 +538,7 @@ describe('<MetaField/>', () => {
             render(
                 <Provider store={store}>
                     <Metafield metafield={shopifyListUrl()} />
-                </Provider>
+                </Provider>,
             )
             expect(screen.getByText('gorgias.com/about'))
             expect(screen.getByText('admin.shopify.com/st...'))
@@ -549,7 +549,7 @@ describe('<MetaField/>', () => {
             render(
                 <Provider store={store}>
                     <Metafield metafield={shopifyListColor()} />
-                </Provider>
+                </Provider>,
             )
             expect(screen.getByText('#85bc62'))
             expect(screen.getByText('#2189bd'))
@@ -560,7 +560,7 @@ describe('<MetaField/>', () => {
             render(
                 <Provider store={store}>
                     <Metafield metafield={shopifyListWeight()} />
-                </Provider>
+                </Provider>,
             )
             expect(screen.getByText('12 kg'))
             expect(screen.getByText('11 g'))
@@ -571,7 +571,7 @@ describe('<MetaField/>', () => {
             render(
                 <Provider store={store}>
                     <Metafield metafield={shopifyListVolume()} />
-                </Provider>
+                </Provider>,
             )
             expect(screen.getByText('12 L'))
             expect(screen.getByText('11 m³'))
@@ -582,7 +582,7 @@ describe('<MetaField/>', () => {
             render(
                 <Provider store={store}>
                     <Metafield metafield={shopifyListDimension()} />
-                </Provider>
+                </Provider>,
             )
             expect(screen.getByText('12 m'))
             expect(screen.getByText('11 cm'))
@@ -593,7 +593,7 @@ describe('<MetaField/>', () => {
             render(
                 <Provider store={store}>
                     <Metafield metafield={shopifyListRating()} />
-                </Provider>
+                </Provider>,
             )
             expect(screen.getByText('3.2 out of 5.0'))
             expect(screen.getByText('4.2 out of 5.0'))

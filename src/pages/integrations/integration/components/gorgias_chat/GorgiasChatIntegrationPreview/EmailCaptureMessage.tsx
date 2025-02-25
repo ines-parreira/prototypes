@@ -4,7 +4,6 @@ import {
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from 'config/integrations/gorgias_chat'
-
 import InputPrompt from 'gorgias-design-system/Input/InputPrompt'
 
 import css from './ChatIntegrationPreview.less'
@@ -14,7 +13,10 @@ type Props = {
     required?: boolean
 }
 
-const EmailCaptureMessage: React.FC<Props> = ({language, required = true}) => {
+const EmailCaptureMessage: React.FC<Props> = ({
+    language,
+    required = true,
+}) => {
     const translatedTexts =
         GORGIAS_CHAT_WIDGET_TEXTS[
             language || GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT

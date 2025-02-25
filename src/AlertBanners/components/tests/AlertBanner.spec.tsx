@@ -1,9 +1,10 @@
-import {fireEvent, screen, render} from '@testing-library/react'
 import React from 'react'
 
-import {AlertBannerTypes} from '../../types'
-import {AlertBanner, AlertBannerProps} from '../AlertBanner'
-import {CTA} from '../CTA'
+import { fireEvent, render, screen } from '@testing-library/react'
+
+import { AlertBannerTypes } from '../../types'
+import { AlertBanner, AlertBannerProps } from '../AlertBanner'
+import { CTA } from '../CTA'
 
 jest.mock('../CTA', () => ({
     CTA: jest.fn(() => <div>CTA</div>),
@@ -18,22 +19,22 @@ describe('<AlertBanner/>', () => {
         render(<AlertBanner {...minProps} />)
 
         expect(
-            screen.getByText('musketeer', {selector: 'b'})
+            screen.getByText('musketeer', { selector: 'b' }),
         ).toBeInTheDocument()
     })
 
     it('should render banner with correct aria-live', () => {
-        const {rerender} = render(
+        const { rerender } = render(
             <AlertBanner
                 {...minProps}
                 type={AlertBannerTypes.Critical}
                 aria-label="target"
-            />
+            />,
         )
 
         expect(screen.getByLabelText('target')).toHaveAttribute(
             'aria-live',
-            'assertive'
+            'assertive',
         )
 
         rerender(
@@ -41,12 +42,12 @@ describe('<AlertBanner/>', () => {
                 {...minProps}
                 type={AlertBannerTypes.Info}
                 aria-label="target"
-            />
+            />,
         )
 
         expect(screen.getByLabelText('target')).toHaveAttribute(
             'aria-live',
-            'polite'
+            'polite',
         )
     })
 
@@ -58,7 +59,7 @@ describe('<AlertBanner/>', () => {
 
         expect(
             infoIcon.compareDocumentPosition(message) &
-                Node.DOCUMENT_POSITION_FOLLOWING
+                Node.DOCUMENT_POSITION_FOLLOWING,
         ).toBeTruthy()
     })
 
@@ -71,11 +72,11 @@ describe('<AlertBanner/>', () => {
                         the <b>musketeer</b> is here
                     </div>
                 }
-            />
+            />,
         )
 
         expect(
-            screen.getByText('musketeer', {selector: 'b'})
+            screen.getByText('musketeer', { selector: 'b' }),
         ).toBeInTheDocument()
     })
 
@@ -94,8 +95,8 @@ describe('<AlertBanner/>', () => {
     it('should have a close button and call it on click', () => {
         const onClose = jest.fn()
 
-        const {getByText} = render(
-            <AlertBanner {...minProps} onClose={onClose} />
+        const { getByText } = render(
+            <AlertBanner {...minProps} onClose={onClose} />,
         )
 
         fireEvent.click(getByText('close'))
@@ -109,20 +110,20 @@ describe('<AlertBanner/>', () => {
     })
 
     it('should render with correct container class based on textPosition', () => {
-        const {rerender, container} = render(
-            <AlertBanner {...minProps} textPosition="center" />
+        const { rerender, container } = render(
+            <AlertBanner {...minProps} textPosition="center" />,
         )
 
         expect(container.querySelector('.centralContainer')).toBeInTheDocument()
         expect(
-            container.querySelector('.leftContainer')
+            container.querySelector('.leftContainer'),
         ).not.toBeInTheDocument()
 
         rerender(<AlertBanner {...minProps} textPosition="left" />)
 
         expect(container.querySelector('.leftContainer')).toBeInTheDocument()
         expect(
-            container.querySelector('.centralContainer')
+            container.querySelector('.centralContainer'),
         ).not.toBeInTheDocument()
     })
 })

@@ -1,6 +1,6 @@
-import {visualBuilderGraphReusableLLMPromptTriggerFixture} from 'pages/automate/workflows/tests/visualBuilderGraph.fixtures'
+import { visualBuilderGraphReusableLLMPromptTriggerFixture } from 'pages/automate/workflows/tests/visualBuilderGraph.fixtures'
 
-import {reusableLLMPromptTriggerReducer} from '../reusableLLMPromptTriggerReducer'
+import { reusableLLMPromptTriggerReducer } from '../reusableLLMPromptTriggerReducer'
 
 describe('reusableLLMPromptTriggerReducer', () => {
     test('ADD_REUSABLE_LLM_PROMPT_TRIGGER_INPUT', () => {
@@ -11,8 +11,8 @@ describe('reusableLLMPromptTriggerReducer', () => {
 
         expect(
             nextG.nodes.find(
-                (node) => node.type === 'reusable_llm_prompt_trigger'
-            )?.data
+                (node) => node.type === 'reusable_llm_prompt_trigger',
+            )?.data,
         ).toEqual(
             expect.objectContaining({
                 inputs: [
@@ -29,7 +29,7 @@ describe('reusableLLMPromptTriggerReducer', () => {
                         data_type: 'string',
                     },
                 ],
-            })
+            }),
         )
     })
 
@@ -42,12 +42,12 @@ describe('reusableLLMPromptTriggerReducer', () => {
 
         expect(
             nextG.nodes.find(
-                (node) => node.type === 'reusable_llm_prompt_trigger'
-            )?.data
+                (node) => node.type === 'reusable_llm_prompt_trigger',
+            )?.data,
         ).toEqual(
             expect.objectContaining({
                 inputs: [],
-            })
+            }),
         )
     })
 
@@ -65,8 +65,8 @@ describe('reusableLLMPromptTriggerReducer', () => {
 
         expect(
             nextG.nodes.find(
-                (node) => node.type === 'reusable_llm_prompt_trigger'
-            )?.data
+                (node) => node.type === 'reusable_llm_prompt_trigger',
+            )?.data,
         ).toEqual(
             expect.objectContaining({
                 inputs: [
@@ -77,7 +77,7 @@ describe('reusableLLMPromptTriggerReducer', () => {
                         data_type: 'number',
                     },
                 ],
-            })
+            }),
         )
     })
 
@@ -90,12 +90,12 @@ describe('reusableLLMPromptTriggerReducer', () => {
 
         expect(
             nextG.nodes.find(
-                (node) => node.type === 'reusable_llm_prompt_trigger'
-            )?.data
+                (node) => node.type === 'reusable_llm_prompt_trigger',
+            )?.data,
         ).toEqual(
             expect.objectContaining({
                 requires_confirmation: true,
-            })
+            }),
         )
     })
 
@@ -108,29 +108,29 @@ describe('reusableLLMPromptTriggerReducer', () => {
 
         expect(
             nextG.nodes.find(
-                (node) => node.type === 'reusable_llm_prompt_trigger'
-            )?.data
+                (node) => node.type === 'reusable_llm_prompt_trigger',
+            )?.data,
         ).toEqual(
             expect.objectContaining({
                 conditionsType: 'and',
                 conditions: [],
-            })
+            }),
         )
 
         nextG = reusableLLMPromptTriggerReducer(nextG, {
             type: 'ADD_REUSABLE_LLM_PROMPT_TRIGGER_CONDITION',
-            condition: {doesNotExist: [{var: 'objects.order.name'}]},
+            condition: { doesNotExist: [{ var: 'objects.order.name' }] },
         })
 
         expect(
             nextG.nodes.find(
-                (node) => node.type === 'reusable_llm_prompt_trigger'
-            )?.data
+                (node) => node.type === 'reusable_llm_prompt_trigger',
+            )?.data,
         ).toEqual(
             expect.objectContaining({
                 conditionsType: 'and',
-                conditions: [{doesNotExist: [{var: 'objects.order.name'}]}],
-            })
+                conditions: [{ doesNotExist: [{ var: 'objects.order.name' }] }],
+            }),
         )
 
         nextG = reusableLLMPromptTriggerReducer(nextG, {
@@ -140,13 +140,13 @@ describe('reusableLLMPromptTriggerReducer', () => {
 
         expect(
             nextG.nodes.find(
-                (node) => node.type === 'reusable_llm_prompt_trigger'
-            )?.data
+                (node) => node.type === 'reusable_llm_prompt_trigger',
+            )?.data,
         ).toEqual(
             expect.objectContaining({
                 conditionsType: null,
                 conditions: [],
-            })
+            }),
         )
     })
 
@@ -159,7 +159,7 @@ describe('reusableLLMPromptTriggerReducer', () => {
 
         nextG = reusableLLMPromptTriggerReducer(nextG, {
             type: 'ADD_REUSABLE_LLM_PROMPT_TRIGGER_CONDITION',
-            condition: {doesNotExist: [{var: 'objects.order.name'}]},
+            condition: { doesNotExist: [{ var: 'objects.order.name' }] },
         })
         nextG = reusableLLMPromptTriggerReducer(nextG, {
             type: 'DELETE_REUSABLE_LLM_PROMPT_TRIGGER_CONDITION',
@@ -168,13 +168,13 @@ describe('reusableLLMPromptTriggerReducer', () => {
 
         expect(
             nextG.nodes.find(
-                (node) => node.type === 'reusable_llm_prompt_trigger'
-            )?.data
+                (node) => node.type === 'reusable_llm_prompt_trigger',
+            )?.data,
         ).toEqual(
             expect.objectContaining({
                 conditionsType: 'and',
                 conditions: [],
-            })
+            }),
         )
     })
 
@@ -187,23 +187,23 @@ describe('reusableLLMPromptTriggerReducer', () => {
 
         nextG = reusableLLMPromptTriggerReducer(nextG, {
             type: 'ADD_REUSABLE_LLM_PROMPT_TRIGGER_CONDITION',
-            condition: {doesNotExist: [{var: 'objects.order.name'}]},
+            condition: { doesNotExist: [{ var: 'objects.order.name' }] },
         })
         nextG = reusableLLMPromptTriggerReducer(nextG, {
             type: 'SET_REUSABLE_LLM_PROMPT_TRIGGER_CONDITION',
             index: 0,
-            condition: {exists: [{var: 'objects.order.name'}]},
+            condition: { exists: [{ var: 'objects.order.name' }] },
         })
 
         expect(
             nextG.nodes.find(
-                (node) => node.type === 'reusable_llm_prompt_trigger'
-            )?.data
+                (node) => node.type === 'reusable_llm_prompt_trigger',
+            )?.data,
         ).toEqual(
             expect.objectContaining({
                 conditionsType: 'and',
-                conditions: [{exists: [{var: 'objects.order.name'}]}],
-            })
+                conditions: [{ exists: [{ var: 'objects.order.name' }] }],
+            }),
         )
     })
 })

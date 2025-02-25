@@ -1,6 +1,8 @@
-import {Skeleton} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
 import React from 'react'
+
+import classNames from 'classnames'
+
+import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import css from './PendingTasksSection.less'
 

@@ -1,12 +1,13 @@
-import {fireEvent, render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {phoneNumbers} from 'fixtures/newPhoneNumber'
-import {updateOrCreateIntegration} from 'state/integrations/actions'
-import {RootState, StoreDispatch} from 'state/types'
+import { phoneNumbers } from 'fixtures/newPhoneNumber'
+import { updateOrCreateIntegration } from 'state/integrations/actions'
+import { RootState, StoreDispatch } from 'state/types'
 
 import VoiceIntegrationCreate from '../VoiceIntegrationCreate'
 
@@ -14,8 +15,8 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({
     entities: {
         newPhoneNumbers: phoneNumbers.reduce(
-            (acc, number) => ({...acc, [number.id]: number}),
-            {}
+            (acc, number) => ({ ...acc, [number.id]: number }),
+            {},
         ),
     },
 } as RootState)
@@ -57,65 +58,65 @@ const submittedPayload = {
 describe('<VoiceIntegrationCreate/>', () => {
     describe('render()', () => {
         it('should render', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <VoiceIntegrationCreate selectedPhoneNumberId={1} />
-                </Provider>
+                </Provider>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should submit a valid payload with the selected phone_number_id', () => {
-            const {container, getByText, getByLabelText} = render(
+            const { container, getByText, getByLabelText } = render(
                 <Provider store={store}>
                     <VoiceIntegrationCreate selectedPhoneNumberId={1} />
-                </Provider>
+                </Provider>,
             )
 
             fireEvent.change(getByLabelText('Integration title'), {
-                target: {value: 'My Voice integration'},
+                target: { value: 'My Voice integration' },
             })
 
             fireEvent.click(getByText('Add Voice'))
 
             expect(updateOrCreateIntegration).toHaveBeenCalledWith(
-                fromJS(submittedPayload)
+                fromJS(submittedPayload),
             )
             expect(store.dispatch).toHaveBeenCalledTimes(1)
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should submit a valid payload', () => {
-            const {getByText, getByLabelText} = render(
+            const { getByText, getByLabelText } = render(
                 <Provider store={store}>
                     <VoiceIntegrationCreate selectedPhoneNumberId={1} />
-                </Provider>
+                </Provider>,
             )
 
             fireEvent.change(getByLabelText('Integration title'), {
-                target: {value: 'My Voice integration'},
+                target: { value: 'My Voice integration' },
             })
 
             fireEvent.click(getByText('Add Voice'))
 
             expect(updateOrCreateIntegration).toHaveBeenCalledWith(
-                fromJS(submittedPayload)
+                fromJS(submittedPayload),
             )
             expect(store.dispatch).toHaveBeenCalledTimes(1)
         })
 
         it("should prefill the title field using the phone number's name", () => {
-            const {container, getByText} = render(
+            const { container, getByText } = render(
                 <Provider store={store}>
                     <VoiceIntegrationCreate selectedPhoneNumberId={1} />
-                </Provider>
+                </Provider>,
             )
 
             fireEvent.click(getByText('Add Voice'))
 
             expect(updateOrCreateIntegration).toHaveBeenCalledWith(
-                fromJS({...submittedPayload, name: 'A Phone Number - Voice'})
+                fromJS({ ...submittedPayload, name: 'A Phone Number - Voice' }),
             )
             expect(store.dispatch).toHaveBeenCalledTimes(1)
             expect(container.firstChild).toMatchSnapshot()

@@ -1,5 +1,6 @@
+import React, { ForwardedRef, forwardRef, HTMLProps, ReactNode } from 'react'
+
 import classnames from 'classnames'
-import React, {ForwardedRef, forwardRef, HTMLProps, ReactNode} from 'react'
 
 import css from './DropdownItemLabel.less'
 
@@ -11,8 +12,16 @@ type Props = {
 } & Omit<HTMLProps<HTMLDivElement>, 'prefix'>
 
 const DropdownItemLabel = (
-    {caption, children, className, prefix, suffix, isDisabled, ...other}: Props,
-    ref: ForwardedRef<HTMLDivElement>
+    {
+        caption,
+        children,
+        className,
+        prefix,
+        suffix,
+        isDisabled,
+        ...other
+    }: Props,
+    ref: ForwardedRef<HTMLDivElement>,
 ) => {
     return (
         <div

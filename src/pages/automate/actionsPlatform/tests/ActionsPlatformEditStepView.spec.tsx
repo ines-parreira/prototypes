@@ -1,23 +1,24 @@
-import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
-import {produce} from 'immer'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { produce } from 'immer'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {ulid} from 'ulidx'
+import { ulid } from 'ulidx'
 
 import {
     useDownloadWorkflowConfigurationStepLogs,
     useGetWorkflowConfigurationTemplates,
 } from 'models/workflows/queries'
-import {WorkflowConfigurationBuilder} from 'pages/automate/workflows/models/workflowConfiguration.model'
-import {RootState, StoreDispatch} from 'state/types'
+import { WorkflowConfigurationBuilder } from 'pages/automate/workflows/models/workflowConfiguration.model'
+import { RootState, StoreDispatch } from 'state/types'
 
-import {useDisplayAiAgentMovedBanner} from '../../common/hooks/useDisplayAiAgentMovedBanner'
+import { useDisplayAiAgentMovedBanner } from '../../common/hooks/useDisplayAiAgentMovedBanner'
 import ActionsPlatformEditStepView from '../ActionsPlatformEditStepView'
 import useApps from '../hooks/useApps'
 import useEditActionTemplate from '../hooks/useEditActionTemplate'
-import {ActionTemplate} from '../types'
+import { ActionTemplate } from '../types'
 
 jest.mock('models/workflows/queries')
 jest.mock('../hooks/useEditActionTemplate')
@@ -46,12 +47,12 @@ mockUseApps.mockReturnValue({
 
 const mockUseEditActionTemplate = jest.mocked(useEditActionTemplate)
 const mockUseDownloadWorkflowConfigurationStepLogs = jest.mocked(
-    useDownloadWorkflowConfigurationStepLogs
+    useDownloadWorkflowConfigurationStepLogs,
 )
 const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])()
 const mockEditActionTemplate = jest.fn()
 const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
-    useGetWorkflowConfigurationTemplates
+    useGetWorkflowConfigurationTemplates,
 )
 
 mockUseEditActionTemplate.mockReturnValue({
@@ -119,7 +120,7 @@ describe('<ActionsPlatformEditStepView />', () => {
                 <ActionsPlatformEditStepView
                     template={template as ActionTemplate}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByDisplayValue(template.name)).toBeInTheDocument()
@@ -134,7 +135,7 @@ describe('<ActionsPlatformEditStepView />', () => {
                         draft.is_draft = true
                     })}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('draft')).toBeInTheDocument()
@@ -148,7 +149,7 @@ describe('<ActionsPlatformEditStepView />', () => {
                         draft.is_draft = true
                     })}
                 />
-            </Provider>
+            </Provider>,
         )
 
         act(() => {
@@ -172,7 +173,7 @@ describe('<ActionsPlatformEditStepView />', () => {
                 <ActionsPlatformEditStepView
                     template={template as ActionTemplate}
                 />
-            </Provider>
+            </Provider>,
         )
 
         act(() => {
@@ -181,7 +182,7 @@ describe('<ActionsPlatformEditStepView />', () => {
 
         act(() => {
             fireEvent.change(screen.getByDisplayValue('test http request'), {
-                target: {value: 'http request'},
+                target: { value: 'http request' },
             })
         })
 
@@ -204,12 +205,12 @@ describe('<ActionsPlatformEditStepView />', () => {
                 <ActionsPlatformEditStepView
                     template={template as ActionTemplate}
                 />
-            </Provider>
+            </Provider>,
         )
 
         act(() => {
             fireEvent.change(screen.getByDisplayValue('test step'), {
-                target: {value: ''},
+                target: { value: '' },
             })
         })
 
@@ -238,7 +239,7 @@ describe('<ActionsPlatformEditStepView />', () => {
                 <ActionsPlatformEditStepView
                     template={template as ActionTemplate}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('AI Agent Moved Banner')).toBeInTheDocument()
@@ -252,11 +253,11 @@ describe('<ActionsPlatformEditStepView />', () => {
                 <ActionsPlatformEditStepView
                     template={template as ActionTemplate}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            screen.queryByText('AI Agent Moved Banner')
+            screen.queryByText('AI Agent Moved Banner'),
         ).not.toBeInTheDocument()
     })
 })

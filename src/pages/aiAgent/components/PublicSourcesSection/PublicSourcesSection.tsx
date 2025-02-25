@@ -1,25 +1,27 @@
-import {Label, Tooltip} from '@gorgias/merchant-ui-kit'
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
+
+import { Label, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {useSearchParam} from 'hooks/useSearchParam'
+import { useSearchParam } from 'hooks/useSearchParam'
 import Button from 'pages/common/components/button/Button'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import useHelpCenterCustomDomainHostnames from 'pages/settings/helpCenter/hooks/useHelpCenterCustomDomainHostnames'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 import {
     ARTICLE_INGESTION_LOGS_STATUS,
     WIZARD_POST_COMPLETION_QUERY_KEY,
     WIZARD_POST_COMPLETION_STATE,
 } from '../../constants'
-import {usePublicResourceMutation} from '../../hooks/usePublicResourcesMutation'
-import {usePublicResourcesPooling} from '../../hooks/usePublicResourcesPooling'
-import {PublicSourcesItem} from './PublicSourcesItem'
+import { usePublicResourceMutation } from '../../hooks/usePublicResourcesMutation'
+import { usePublicResourcesPooling } from '../../hooks/usePublicResourcesPooling'
+import { PublicSourcesItem } from './PublicSourcesItem'
+import { SourceItem } from './types'
+import { mergeSources } from './utils'
+
 import css from './PublicSourcesSection.less'
-import {SourceItem} from './types'
-import {mergeSources} from './utils'
 
 const SOURCES_LIMIT = 10
 
@@ -55,14 +57,14 @@ export const PublicSourcesSection = ({
     const dispatch = useAppDispatch()
     const [wizardQueryParam] = useSearchParam(WIZARD_POST_COMPLETION_QUERY_KEY)
 
-    const {articleIngestionLogsStatus} = usePublicResourcesPooling({
+    const { articleIngestionLogsStatus } = usePublicResourcesPooling({
         helpCenterId,
         shopName,
     })
 
     useEffect(() => {
         const pendingResourcesCount = articleIngestionLogsStatus.filter(
-            (status) => status === ARTICLE_INGESTION_LOGS_STATUS.PENDING
+            (status) => status === ARTICLE_INGESTION_LOGS_STATUS.PENDING,
         ).length
 
         if (setPendingResourcesCount) {
@@ -74,7 +76,7 @@ export const PublicSourcesSection = ({
 
         if (isPostCompletionWizardPage && !pendingResourcesCount) {
             const isSuccessResources = articleIngestionLogsStatus.every(
-                (status) => status === ARTICLE_INGESTION_LOGS_STATUS.SUCCESSFUL
+                (status) => status === ARTICLE_INGESTION_LOGS_STATUS.SUCCESSFUL,
             )
 
             if (isSuccessResources) {
@@ -91,9 +93,8 @@ export const PublicSourcesSection = ({
         setIsSuccessResources,
     ])
 
-    const {deletePublicResource, addPublicResource} = usePublicResourceMutation(
-        {helpCenterId}
-    )
+    const { deletePublicResource, addPublicResource } =
+        usePublicResourceMutation({ helpCenterId })
     const [sources, setSources] = useState<SourceItem[]>(sourceItems ?? [])
 
     useEffect(() => {
@@ -133,7 +134,7 @@ export const PublicSourcesSection = ({
                 notify({
                     status: NotificationStatus.Success,
                     message: 'Public URL successfully deleted',
-                })
+                }),
             )
         } catch {
             setSources((prev) => [...prev, source])
@@ -142,7 +143,7 @@ export const PublicSourcesSection = ({
                     status: NotificationStatus.Error,
                     message:
                         'Error during Public URL deletion. Try one more time or contact support',
-                })
+                }),
             )
         }
     }
@@ -151,8 +152,8 @@ export const PublicSourcesSection = ({
         try {
             const newSources: SourceItem[] = sources.map((source) =>
                 source.id === sourceId
-                    ? {...source, status: 'loading', url}
-                    : {...source}
+                    ? { ...source, status: 'loading', url }
+                    : { ...source },
             )
 
             setSources(newSources)
@@ -165,9 +166,9 @@ export const PublicSourcesSection = ({
             setSources((prev) =>
                 prev.map((source) =>
                     source.id === sourceId
-                        ? {...source, status: 'error'}
-                        : {...source}
-                )
+                        ? { ...source, status: 'error' }
+                        : { ...source },
+                ),
             )
 
             void dispatch(
@@ -175,7 +176,7 @@ export const PublicSourcesSection = ({
                     status: NotificationStatus.Error,
                     message:
                         'Error during Public URL sync. Try different URL or contact support',
-                })
+                }),
             )
         }
     }
@@ -185,7 +186,7 @@ export const PublicSourcesSection = ({
         .map((s) => s.url)
         .filter((url): url is string => !!url)
 
-    const {customDomainHostnames} =
+    const { customDomainHostnames } =
         useHelpCenterCustomDomainHostnames(selectedHelpCenterId)
 
     return (

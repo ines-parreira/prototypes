@@ -1,25 +1,26 @@
-import {renderHook} from '@testing-library/react-hooks/dom'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { renderHook } from '@testing-library/react-hooks/dom'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {account} from 'fixtures/account'
-import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
+import { account } from 'fixtures/account'
+import { useAgentsTableConfigSetting } from 'hooks/reporting/useAgentsTableConfigSetting'
 import {
-    AgentsTableViews,
     agentPerformanceTableActiveView,
+    AgentsTableViews,
     TableColumnsOrderWithOnlineTime,
 } from 'pages/stats/support-performance/agents/AgentsTableConfig'
-import {submitSetting} from 'state/currentAccount/actions'
+import { submitSetting } from 'state/currentAccount/actions'
 import {
     AccountSettingAgentsTableConfig,
     AccountSettingType,
 } from 'state/currentAccount/types'
-import {RootState, StoreDispatch} from 'state/types'
-import {AgentsTableColumn} from 'state/ui/stats/types'
-import {assumeMock} from 'utils/testing'
+import { RootState, StoreDispatch } from 'state/types'
+import { AgentsTableColumn } from 'state/ui/stats/types'
+import { assumeMock } from 'utils/testing'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])
 jest.mock('state/currentAccount/actions')
@@ -31,8 +32,8 @@ describe('useAgentsTableConfigSetting', () => {
             currentAccount: fromJS(account),
         } as RootState
 
-        const {result} = renderHook(() => useAgentsTableConfigSetting(), {
-            wrapper: ({children}) => (
+        const { result } = renderHook(() => useAgentsTableConfigSetting(), {
+            wrapper: ({ children }) => (
                 <Provider store={mockStore(state)}>{children}</Provider>
             ),
         })
@@ -50,7 +51,7 @@ describe('useAgentsTableConfigSetting', () => {
             (column) => ({
                 id: column,
                 visibility: true,
-            })
+            }),
         )
 
         const view = {
@@ -75,14 +76,14 @@ describe('useAgentsTableConfigSetting', () => {
         } as RootState
 
         it('should return OnlineTime metrics when feature flag is disabled', () => {
-            const {result} = renderHook(() => useAgentsTableConfigSetting(), {
-                wrapper: ({children}) => (
+            const { result } = renderHook(() => useAgentsTableConfigSetting(), {
+                wrapper: ({ children }) => (
                     <Provider store={mockStore(state)}>{children}</Provider>
                 ),
             })
 
             expect(result.current.columnsOrder).toContain(
-                AgentsTableColumn.OnlineTime
+                AgentsTableColumn.OnlineTime,
             )
             expect(result.current.currentView.metrics).toContainEqual({
                 id: AgentsTableColumn.OnlineTime,
@@ -97,7 +98,7 @@ describe('useAgentsTableConfigSetting', () => {
             (column) => ({
                 id: column,
                 visibility: true,
-            })
+            }),
         )
         const view = {
             id: 'test',
@@ -120,8 +121,8 @@ describe('useAgentsTableConfigSetting', () => {
             }),
         } as RootState
 
-        const {result} = renderHook(() => useAgentsTableConfigSetting(), {
-            wrapper: ({children}) => (
+        const { result } = renderHook(() => useAgentsTableConfigSetting(), {
+            wrapper: ({ children }) => (
                 <Provider store={mockStore(state)}>{children}</Provider>
             ),
         })
@@ -142,7 +143,7 @@ describe('useAgentsTableConfigSetting', () => {
         ]
         const unsupportedColumn = 'agent_unsupported_column'
         const restOfTheColumns = TableColumnsOrderWithOnlineTime.filter(
-            (column) => !columnsSavedInCustomOrder.includes(column)
+            (column) => !columnsSavedInCustomOrder.includes(column),
         )
         const metrics = Object.values([
             ...columnsSavedInCustomOrder,
@@ -173,8 +174,8 @@ describe('useAgentsTableConfigSetting', () => {
             }),
         } as RootState
 
-        const {result} = renderHook(() => useAgentsTableConfigSetting(), {
-            wrapper: ({children}) => (
+        const { result } = renderHook(() => useAgentsTableConfigSetting(), {
+            wrapper: ({ children }) => (
                 <Provider store={mockStore(state)}>{children}</Provider>
             ),
         })
@@ -195,8 +196,8 @@ describe('useAgentsTableConfigSetting', () => {
         } as RootState
         const store = mockStore(state)
 
-        const {result} = renderHook(() => useAgentsTableConfigSetting(), {
-            wrapper: ({children}) => (
+        const { result } = renderHook(() => useAgentsTableConfigSetting(), {
+            wrapper: ({ children }) => (
                 <Provider store={store}>{children}</Provider>
             ),
         })

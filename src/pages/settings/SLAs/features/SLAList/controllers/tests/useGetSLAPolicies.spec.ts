@@ -1,11 +1,12 @@
+import { renderHook } from '@testing-library/react-hooks'
+
 import {
     HttpResponse,
     ListSlaPolicies200,
     useListSlaPolicies,
 } from '@gorgias/api-queries'
-import {renderHook} from '@testing-library/react-hooks'
 
-import {slaPolicy1, UISLAPolicy1} from 'pages/settings/SLAs/fixtures/fixtures'
+import { slaPolicy1, UISLAPolicy1 } from 'pages/settings/SLAs/fixtures/fixtures'
 
 import makeUISLAPolicy from '../makeUISLAPolicy'
 import useGetSLAPolicies from '../useGetSLAPolicies'
@@ -32,13 +33,13 @@ const generateMockUseListSlaPolicies = () => {
 describe('useGetSLAPolicies', () => {
     beforeEach(() => {
         mockUseListSlaPolicies.mockImplementation(
-            generateMockUseListSlaPolicies()
+            generateMockUseListSlaPolicies(),
         )
     })
     it('should transform api query data', () => {
         mockMakeUISLAPolicy.mockImplementation(() => UISLAPolicy1)
 
-        const {result} = renderHook(() => useGetSLAPolicies())
+        const { result } = renderHook(() => useGetSLAPolicies())
 
         expect(result.current.data).toEqual([UISLAPolicy1])
     })
@@ -50,7 +51,7 @@ describe('useGetSLAPolicies', () => {
         }
         mockMakeUISLAPolicy.mockImplementation(() => UISLAPolicy1)
 
-        const {result} = renderHook(() => useGetSLAPolicies())
+        const { result } = renderHook(() => useGetSLAPolicies())
 
         expect(result.current.data).toEqual([
             UISLAPolicy1WithoutUpdatedDatetime,

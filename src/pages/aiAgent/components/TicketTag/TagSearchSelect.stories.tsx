@@ -1,12 +1,13 @@
-import {Meta, StoryObj} from '@storybook/react'
-import {QueryClientProvider} from '@tanstack/react-query'
-import {Map} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { Meta, StoryObj } from '@storybook/react'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { Map } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {appQueryClient} from 'api/queryClient'
-import {user} from 'fixtures/users'
+import { appQueryClient } from 'api/queryClient'
+import { user } from 'fixtures/users'
 
 import TagSearchSelect from './TagSearchSelect'
 

@@ -1,10 +1,9 @@
 import client from 'models/api/resources'
-
 import {
-    SearchResponse,
-    SearchParams,
-    SearchEngine,
     SearchApiResponse,
+    SearchEngine,
+    SearchParams,
+    SearchResponse,
 } from 'models/search/types'
 
 export const SEARCH_ENDPOINT = '/api/search/'
@@ -21,9 +20,9 @@ export const search = async <T>({
             type,
             query,
         },
-        {cancelToken}
+        { cancelToken },
     )
-    const result: SearchResponse<T> = {...res.data}
+    const result: SearchResponse<T> = { ...res.data }
     const headers = res.headers as
         | Record<typeof SEARCH_ENGINE_HEADER, SearchEngine>
         | undefined

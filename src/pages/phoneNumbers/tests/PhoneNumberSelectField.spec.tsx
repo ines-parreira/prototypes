@@ -1,12 +1,13 @@
-import {render} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {phoneNumbers} from 'fixtures/newPhoneNumber'
-import {IntegrationType} from 'models/integration/types'
-import {NewPhoneNumber} from 'models/phoneNumber/types'
-import {RootState, StoreDispatch} from 'state/types'
+import { phoneNumbers } from 'fixtures/newPhoneNumber'
+import { IntegrationType } from 'models/integration/types'
+import { NewPhoneNumber } from 'models/phoneNumber/types'
+import { RootState, StoreDispatch } from 'state/types'
 
 import PhoneNumberSelectField from '../PhoneNumberSelectField'
 
@@ -14,8 +15,8 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({
     entities: {
         newPhoneNumbers: phoneNumbers.reduce(
-            (acc, number) => ({...acc, [number.id]: number}),
-            {}
+            (acc, number) => ({ ...acc, [number.id]: number }),
+            {},
         ),
     },
 } as RootState)
@@ -28,33 +29,33 @@ describe('<PhoneNumberSelectField/>', () => {
 
     describe('render()', () => {
         it('should render', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <PhoneNumberSelectField
                         value={phoneNumbers[0]}
                         onChange={onChange}
                         onCreate={onCreate}
                     />
-                </Provider>
+                </Provider>,
             )
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should open a modal form when selecting the create option', () => {
-            const {baseElement} = render(
+            const { baseElement } = render(
                 <Provider store={store}>
                     <PhoneNumberSelectField
                         value="_new"
                         onChange={onChange}
                         onCreate={onCreate}
                     />
-                </Provider>
+                </Provider>,
             )
             expect(baseElement).toMatchSnapshot()
         })
 
         it('should hide phone numbers that have attached integrations', () => {
-            const existingIntegration = {type: IntegrationType.Sms}
+            const existingIntegration = { type: IntegrationType.Sms }
             const store = mockStore({
                 entities: {
                     newPhoneNumbers: phoneNumbers.reduce(
@@ -69,12 +70,12 @@ describe('<PhoneNumberSelectField/>', () => {
                                         : [existingIntegration],
                             },
                         }),
-                        {}
+                        {},
                     ),
                 },
             } as RootState)
 
-            const {container, queryByText} = render(
+            const { container, queryByText } = render(
                 <Provider store={store}>
                     <PhoneNumberSelectField
                         value={phoneNumbers[0]}
@@ -82,7 +83,7 @@ describe('<PhoneNumberSelectField/>', () => {
                         onCreate={onCreate}
                         integrationType={IntegrationType.Sms}
                     />
-                </Provider>
+                </Provider>,
             )
             expect(queryByText(/\+1 213 373 4253/)).toBeTruthy()
             expect(queryByText(/\+1 415 111 2223/)).toBeFalsy()
@@ -97,12 +98,12 @@ describe('<PhoneNumberSelectField/>', () => {
                             ...acc,
                             [number.id]: number,
                         }),
-                        {}
+                        {},
                     ),
                 },
             } as RootState)
 
-            const {container, queryByText} = render(
+            const { container, queryByText } = render(
                 <Provider store={store}>
                     <PhoneNumberSelectField
                         value={phoneNumbers[0]}
@@ -110,7 +111,7 @@ describe('<PhoneNumberSelectField/>', () => {
                         onCreate={onCreate}
                         integrationType={IntegrationType.Sms}
                     />
-                </Provider>
+                </Provider>,
             )
             expect(queryByText(/\+1 213 373 4253/)).toBeTruthy()
             expect(queryByText(/\+1 415 111 2223/)).toBeFalsy()

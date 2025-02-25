@@ -1,13 +1,14 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useCleanStatsFiltersWithLogicalOperators } from 'hooks/reporting/useCleanStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {ReportingGranularity} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
-import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { ReportingGranularity } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
+import { getPageStatsFiltersWithLogicalOperators } from 'state/stats/selectors'
 import {
     getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
     getCleanStatsFiltersWithTimezone,
@@ -22,22 +23,22 @@ export const useNewAutomateFilters = (): {
     const isAnalyticsNewFiltersAutomate: boolean | undefined =
         !!useFlags()[FeatureFlagKey.AnalyticsNewFiltersAutomate]
     const pageStatsFiltersWithLogicalOperators = useAppSelector(
-        getPageStatsFiltersWithLogicalOperators
+        getPageStatsFiltersWithLogicalOperators,
     )
     useCleanStatsFiltersWithLogicalOperators(
-        pageStatsFiltersWithLogicalOperators
+        pageStatsFiltersWithLogicalOperators,
     )
     const {
         cleanStatsFilters: legacyStatsFilters,
         userTimezone,
         granularity,
     } = useAppSelector(getCleanStatsFiltersWithTimezone)
-    const {cleanStatsFilters: statsFiltersWithLogicalOperators} =
+    const { cleanStatsFilters: statsFiltersWithLogicalOperators } =
         useAppSelector(getCleanStatsFiltersWithLogicalOperatorsWithTimezone)
 
     const pageStatsFilters = useMemo(() => {
         if (isAnalyticsNewFiltersAutomate) {
-            const {channels, period} = statsFiltersWithLogicalOperators
+            const { channels, period } = statsFiltersWithLogicalOperators
             return {
                 channels:
                     channels !== undefined
@@ -46,7 +47,7 @@ export const useNewAutomateFilters = (): {
                 period,
             }
         }
-        const {channels, period} = legacyStatsFilters
+        const { channels, period } = legacyStatsFilters
         return {
             channels: channels !== undefined ? channels : [],
             period,

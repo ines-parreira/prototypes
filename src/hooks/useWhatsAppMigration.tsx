@@ -1,26 +1,26 @@
-import {isValidPhoneNumber} from 'libphonenumber-js'
-import {get, isEmpty, isString, noop} from 'lodash'
-import React, {createContext, useContext, useMemo, useState} from 'react'
+import React, { createContext, useContext, useMemo, useState } from 'react'
+
+import { isValidPhoneNumber } from 'libphonenumber-js'
+import { get, isEmpty, isString, noop } from 'lodash'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useSearch from 'hooks/useSearch'
 import {
-    startMigration,
-    requestVerificationCode,
-    validateVerificationCode,
     getMigrationProgress,
     registerNumber,
+    requestVerificationCode,
+    startMigration,
+    validateVerificationCode,
 } from 'models/integration/resources/whatsapp'
 import {
     WhatsAppCodeVerificationMethod,
-    WhatsAppPhoneNumberVerificationStatus,
     WhatsAppMigrationProgress,
     WhatsAppPhoneNumberStatus,
+    WhatsAppPhoneNumberVerificationStatus,
 } from 'models/integration/types'
 import history from 'pages/history'
-
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 import useDebouncedEffect from './useDebouncedEffect'
 import useLocalStorage from './useLocalStorage'
@@ -96,7 +96,7 @@ export type WhatsAppMigration = Migration
 export type WhatsAppMigrationState = State
 export type WhatsAppMigrationActions = Actions
 export type WhatsAppMigrationTarget = Target
-export {Status as WhatsAppMigrationStatus, Step as WhatsAppMigrationStep}
+export { Status as WhatsAppMigrationStatus, Step as WhatsAppMigrationStep }
 
 const PROGRESS_STORAGE_KEY = 'whatsapp_migration_progress'
 const TARGET_STORAGE_KEY = 'whatsapp_migration_target'
@@ -162,17 +162,17 @@ export default function useWhatsAppMigration(): Migration {
 
 function useMigration(): Migration {
     const dispatch = useAppDispatch()
-    const {step} = useSearch<{step: string | undefined}>()
+    const { step } = useSearch<{ step: string | undefined }>()
     const currentStep = toStep(step)
 
     const [target, setTarget] = useLocalStorage<Maybe<Target>>(
         TARGET_STORAGE_KEY,
-        DEFAULT_TARGET
+        DEFAULT_TARGET,
     )
 
     const [progress, setProgress] = useLocalStorage<Maybe<Progress>>(
         PROGRESS_STORAGE_KEY,
-        null
+        null,
     )
     const [verification, setVerification] = useLocalStorage<
         Maybe<Verification>
@@ -194,17 +194,17 @@ function useMigration(): Migration {
             await fetchProgress(target)
         },
         [target],
-        1000
+        1000,
     )
 
     const status = useMemo(
-        () => getStatusFromPersistedState({target, progress, verification}),
-        [progress, target, verification]
+        () => getStatusFromPersistedState({ target, progress, verification }),
+        [progress, target, verification],
     )
 
-    const {isStarted, isVerified, isCompleted} = useMemo(() => {
+    const { isStarted, isVerified, isCompleted } = useMemo(() => {
         const isStarted = ![Status.NotStarted, Status.NotSubmitted].includes(
-            status
+            status,
         )
         const isVerified = [Status.Verified, Status.Completed].includes(status)
         const isCompleted = status === Status.Completed
@@ -293,7 +293,7 @@ function useMigration(): Migration {
             notify({
                 status: NotificationStatus.Success,
                 message: 'The phone number has been successfully migrated.',
-            })
+            }),
         )
 
         reset()
@@ -301,14 +301,14 @@ function useMigration(): Migration {
     }
 
     const requestNewCode = async (
-        method: CodeVerificationMethod = verificationMethod
+        method: CodeVerificationMethod = verificationMethod,
     ) => {
         if (!progress?.waba_phone_number_id) {
             void dispatch(
                 notify({
                     status: NotificationStatus.Error,
                     message: 'Failed to request code.',
-                })
+                }),
             )
             return
         }
@@ -334,7 +334,7 @@ function useMigration(): Migration {
     }
 
     const validateTarget = () => {
-        const {errors} = validateTargetWithFriendlyErrors(target)
+        const { errors } = validateTargetWithFriendlyErrors(target)
         if (!isEmpty(errors)) {
             setErrors(errors)
             throw new Error('Validation error: invalid target.')
@@ -347,14 +347,14 @@ function useMigration(): Migration {
     const start = async (): Promise<string> => {
         if (!target) {
             throw new Error(
-                'The WABA ID or phone number you entered are invalid. Try again.'
+                'The WABA ID or phone number you entered are invalid. Try again.',
             )
         }
 
         try {
             setIsLoading(true)
-            const {phone_number, waba_id} = target
-            return await startMigration({phone_number, waba_id})
+            const { phone_number, waba_id } = target
+            return await startMigration({ phone_number, waba_id })
         } catch (error) {
             void dispatch(
                 notify({
@@ -362,7 +362,7 @@ function useMigration(): Migration {
                     message:
                         getErrorMessage(error) ||
                         'The WABA ID or phone number you entered are invalid. Try again.',
-                })
+                }),
             )
             throw error
         } finally {
@@ -372,7 +372,7 @@ function useMigration(): Migration {
 
     const requestCode = async (
         phoneNumberId: string,
-        method: CodeVerificationMethod = verificationMethod
+        method: CodeVerificationMethod = verificationMethod,
     ) => {
         try {
             setIsLoading(true)
@@ -390,7 +390,7 @@ function useMigration(): Migration {
                 notify({
                     status: NotificationStatus.Success,
                     message: `We ${action} ${number} with a one-time code`,
-                })
+                }),
             )
 
             setVerification({
@@ -404,7 +404,7 @@ function useMigration(): Migration {
                     message:
                         getErrorMessage(error) ||
                         'Failed to request verification code.',
-                })
+                }),
             )
             throw error
         } finally {
@@ -418,7 +418,7 @@ function useMigration(): Migration {
                 notify({
                     status: NotificationStatus.Error,
                     message: 'Failed to verify code.',
-                })
+                }),
             )
             throw new Error('Missing phone number ID, cannot request code.')
         }
@@ -434,7 +434,7 @@ function useMigration(): Migration {
                 notify({
                     status: NotificationStatus.Error,
                     message: getErrorMessage(error) || 'Failed to verify code.',
-                })
+                }),
             )
             throw error
         } finally {
@@ -450,7 +450,7 @@ function useMigration(): Migration {
                 notify({
                     status: NotificationStatus.Error,
                     message: 'Failed to register number.',
-                })
+                }),
             )
             throw new Error('Missing waba_id.')
         }
@@ -460,7 +460,7 @@ function useMigration(): Migration {
                 notify({
                     status: NotificationStatus.Error,
                     message: 'Failed to register number.',
-                })
+                }),
             )
             throw new Error('Missing waba_phone_number_id.')
         }
@@ -477,7 +477,7 @@ function useMigration(): Migration {
                     status: NotificationStatus.Error,
                     message:
                         getErrorMessage(error) || 'Failed to register number.',
-                })
+                }),
             )
             throw error
         } finally {
@@ -630,11 +630,11 @@ function getErrorMessage(error: unknown): string | undefined {
 }
 
 type ValidationResult<T, E> =
-    | {isValid: true; data: T; errors: undefined}
-    | {isValid: false; data: undefined; errors: E}
+    | { isValid: true; data: T; errors: undefined }
+    | { isValid: false; data: undefined; errors: E }
 
 function validateTargetWithFriendlyErrors(
-    target: Maybe<Target>
+    target: Maybe<Target>,
 ): ValidationResult<Target, Errors> {
     const errors: Errors = {}
 

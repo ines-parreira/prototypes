@@ -1,6 +1,7 @@
-import {act, fireEvent, render, screen} from '@testing-library/react'
 import React from 'react'
-import {ReactFlowProvider} from 'reactflow'
+
+import { act, fireEvent, render, screen } from '@testing-library/react'
+import { ReactFlowProvider } from 'reactflow'
 
 import VisualBuilderNode from '../VisualBuilderNode'
 
@@ -15,7 +16,7 @@ describe('<VisualBuilderNode />', () => {
                         test
                     </VisualBuilderNode>
                 </ReactFlowProvider>
-            </div>
+            </div>,
         )
 
         act(() => {

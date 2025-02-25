@@ -1,12 +1,12 @@
-import {User} from 'config/types/user'
+import { User } from 'config/types/user'
 import {
     fetchTableReportData,
     TableDataSources,
     TableSummaryDataSources,
 } from 'hooks/reporting/common/useTableReportData'
-import {Metric} from 'hooks/reporting/metrics'
-import {getCsvFileNameWithDates} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
-import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
+import { Metric } from 'hooks/reporting/metrics'
+import { getCsvFileNameWithDates } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
+import { MetricWithDecile } from 'hooks/reporting/useMetricPerDimension'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     VoiceCallCube,
@@ -18,14 +18,13 @@ import {
     VoiceEventsByAgentDimension,
     VoiceEventsByAgentMeasure,
 } from 'models/reporting/cubes/VoiceEventsByAgent'
-import {ReportingGranularity} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
-
+import { ReportingGranularity } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
-import {VOICE_AGENTS_CALL_ACTIVITY_FILE_NAME} from 'pages/stats/voice/constants/voiceAgents'
+import { VOICE_AGENTS_CALL_ACTIVITY_FILE_NAME } from 'pages/stats/voice/constants/voiceAgents'
 import {
     fetchAnsweredCallsMetric,
     fetchAverageTalkTimeMetric,
@@ -42,11 +41,11 @@ import {
     fetchOutboundCallsMetricPerAgent,
     fetchTotalCallsMetricPerAgent,
 } from 'pages/stats/voice/hooks/metricsPerDimension'
-import {useNewVoiceStatsFilters} from 'pages/stats/voice/hooks/useNewVoiceStatsFilters'
-import {useVoiceAgentsMetrics} from 'pages/stats/voice/hooks/useVoiceAgentsMetrics'
-import {useVoiceAgentsSummaryMetrics} from 'pages/stats/voice/hooks/useVoiceAgentsSummaryMetrics'
-import {getSortedAgents} from 'state/ui/stats/agentPerformanceSlice'
-import {createCsv} from 'utils/file'
+import { useNewVoiceStatsFilters } from 'pages/stats/voice/hooks/useNewVoiceStatsFilters'
+import { useVoiceAgentsMetrics } from 'pages/stats/voice/hooks/useVoiceAgentsMetrics'
+import { useVoiceAgentsSummaryMetrics } from 'pages/stats/voice/hooks/useVoiceAgentsSummaryMetrics'
+import { getSortedAgents } from 'state/ui/stats/agentPerformanceSlice'
+import { createCsv } from 'utils/file'
 
 export interface VoiceAgentsPerformanceReportData<T = MetricWithDecile> {
     totalCallsMetric: T
@@ -70,10 +69,10 @@ const getAgentMetric = (
         | VoiceEventsByAgentCube['dimensions'],
     outputMeasure:
         | VoiceCallCube['measures']
-        | VoiceEventsByAgentCube['measures']
+        | VoiceEventsByAgentCube['measures'],
 ) => {
     const metricValue = (data.data?.allData ?? []).find(
-        (item) => Number(item[filteringDimension]) === agentId
+        (item) => Number(item[filteringDimension]) === agentId,
     )?.[outputMeasure]
 
     return typeof metricValue === 'string' ? Number(metricValue) : metricValue
@@ -81,80 +80,80 @@ const getAgentMetric = (
 
 const getTotalCallsMetric = (
     agentId: number,
-    totalCallsMetric: MetricWithDecile
+    totalCallsMetric: MetricWithDecile,
 ) =>
     formatMetric.decimal(
         getAgentMetric(
             agentId,
             totalCallsMetric,
             VoiceCallDimension.FilteringAgentId,
-            VoiceCallMeasure.VoiceCallCount
-        )
+            VoiceCallMeasure.VoiceCallCount,
+        ),
     )
 
 const getAnsweredCallsMetric = (
     agentId: number,
-    answeredCallsMetric: MetricWithDecile
+    answeredCallsMetric: MetricWithDecile,
 ) =>
     formatMetric.decimal(
         getAgentMetric(
             agentId,
             answeredCallsMetric,
             VoiceCallDimension.FilteringAgentId,
-            VoiceCallMeasure.VoiceCallCount
-        )
+            VoiceCallMeasure.VoiceCallCount,
+        ),
     )
 
 const getMissedCallsMetric = (
     agentId: number,
-    missedCallsMetric: MetricWithDecile
+    missedCallsMetric: MetricWithDecile,
 ) =>
     formatMetric.decimal(
         getAgentMetric(
             agentId,
             missedCallsMetric,
             VoiceCallDimension.FilteringAgentId,
-            VoiceCallMeasure.VoiceCallCount
-        )
+            VoiceCallMeasure.VoiceCallCount,
+        ),
     )
 
 const getDeclinedCallsMetric = (
     agentId: number,
-    declinedCallsMetric: MetricWithDecile
+    declinedCallsMetric: MetricWithDecile,
 ) =>
     formatMetric.decimal(
         getAgentMetric(
             agentId,
             declinedCallsMetric,
             VoiceEventsByAgentDimension.AgentId,
-            VoiceEventsByAgentMeasure.VoiceEventsCount
-        )
+            VoiceEventsByAgentMeasure.VoiceEventsCount,
+        ),
     )
 
 const getOutboundCallsMetric = (
     agentId: number,
-    outboundCallsMetric: MetricWithDecile
+    outboundCallsMetric: MetricWithDecile,
 ) =>
     formatMetric.decimal(
         getAgentMetric(
             agentId,
             outboundCallsMetric,
             VoiceCallDimension.FilteringAgentId,
-            VoiceCallMeasure.VoiceCallCount
-        )
+            VoiceCallMeasure.VoiceCallCount,
+        ),
     )
 
 const getAverageTalkTimeMetric = (
     agentId: number,
-    averageTalkTimeMetric: MetricWithDecile
+    averageTalkTimeMetric: MetricWithDecile,
 ) =>
     formatMetric.decimal(
         getAgentMetric(
             agentId,
             averageTalkTimeMetric,
             VoiceCallDimension.AgentId,
-            VoiceCallMeasure.VoiceCallAverageTalkTime
-        )
+            VoiceCallMeasure.VoiceCallAverageTalkTime,
+        ),
     )
 
 const getMetricAverage = (metric: Metric, length: number) =>
@@ -164,7 +163,7 @@ export const createReport = (
     agents: User[],
     data: VoiceAgentsPerformanceReportData,
     summaryData: VoiceAgentsPerformanceReportData<Metric>,
-    fileName: string
+    fileName: string,
 ) => {
     const {
         totalCallsMetric,
@@ -188,19 +187,28 @@ export const createReport = (
         [
             'Team average',
             formatMetric.decimal(
-                getMetricAverage(summaryData.totalCallsMetric, agents.length)
+                getMetricAverage(summaryData.totalCallsMetric, agents.length),
             ),
             formatMetric.decimal(
-                getMetricAverage(summaryData.answeredCallsMetric, agents.length)
+                getMetricAverage(
+                    summaryData.answeredCallsMetric,
+                    agents.length,
+                ),
             ),
             formatMetric.decimal(
-                getMetricAverage(summaryData.missedCallsMetric, agents.length)
+                getMetricAverage(summaryData.missedCallsMetric, agents.length),
             ),
             formatMetric.decimal(
-                getMetricAverage(summaryData.declinedCallsMetric, agents.length)
+                getMetricAverage(
+                    summaryData.declinedCallsMetric,
+                    agents.length,
+                ),
             ),
             formatMetric.decimal(
-                getMetricAverage(summaryData.outboundCallsMetric, agents.length)
+                getMetricAverage(
+                    summaryData.outboundCallsMetric,
+                    agents.length,
+                ),
             ),
             formatMetric.decimal(summaryData.averageTalkTimeMetric.data?.value),
         ],
@@ -227,17 +235,17 @@ export const createReport = (
 
 export const useVoiceAgentsReportData = () => {
     const agents = useAppSelector<User[]>(getSortedAgents)
-    const {cleanStatsFilters, userTimezone} = useNewVoiceStatsFilters()
-    const {reportData, isLoading, period} = useVoiceAgentsMetrics(
+    const { cleanStatsFilters, userTimezone } = useNewVoiceStatsFilters()
+    const { reportData, isLoading, period } = useVoiceAgentsMetrics(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
-    const {summaryData, isLoading: summaryIsLoading} =
+    const { summaryData, isLoading: summaryIsLoading } =
         useVoiceAgentsSummaryMetrics(cleanStatsFilters, userTimezone)
 
     const fileName = getCsvFileNameWithDates(
         period,
-        VOICE_AGENTS_CALL_ACTIVITY_FILE_NAME
+        VOICE_AGENTS_CALL_ACTIVITY_FILE_NAME,
     )
     return {
         ...createReport(agents, reportData, summaryData, fileName),
@@ -247,12 +255,15 @@ export const useVoiceAgentsReportData = () => {
 
 const agentsMetricsDataSources: TableDataSources<VoiceAgentsPerformanceReportData> =
     [
-        {fetchData: fetchTotalCallsMetricPerAgent, title: 'totalCallsMetric'},
+        { fetchData: fetchTotalCallsMetricPerAgent, title: 'totalCallsMetric' },
         {
             fetchData: fetchAnsweredCallsMetricPerAgent,
             title: 'answeredCallsMetric',
         },
-        {fetchData: fetchMissedCallsMetricPerAgent, title: 'missedCallsMetric'},
+        {
+            fetchData: fetchMissedCallsMetricPerAgent,
+            title: 'missedCallsMetric',
+        },
         {
             fetchData: fetchDeclinedCallsMetricPerAgent,
             title: 'declinedCallsMetric',
@@ -269,12 +280,15 @@ const agentsMetricsDataSources: TableDataSources<VoiceAgentsPerformanceReportDat
 
 const agentsSummaryDataSources: TableSummaryDataSources<VoiceAgentsPerformanceReportData> =
     [
-        {fetchData: fetchTotalCallsMetric, title: 'totalCallsMetric'},
-        {fetchData: fetchAnsweredCallsMetric, title: 'answeredCallsMetric'},
-        {fetchData: fetchMissedCallsMetric, title: 'missedCallsMetric'},
-        {fetchData: fetchDeclinedCallsMetric, title: 'declinedCallsMetric'},
-        {fetchData: fetchOutboundCallsMetric, title: 'outboundCallsMetric'},
-        {fetchData: fetchAverageTalkTimeMetric, title: 'averageTalkTimeMetric'},
+        { fetchData: fetchTotalCallsMetric, title: 'totalCallsMetric' },
+        { fetchData: fetchAnsweredCallsMetric, title: 'answeredCallsMetric' },
+        { fetchData: fetchMissedCallsMetric, title: 'missedCallsMetric' },
+        { fetchData: fetchDeclinedCallsMetric, title: 'declinedCallsMetric' },
+        { fetchData: fetchOutboundCallsMetric, title: 'outboundCallsMetric' },
+        {
+            fetchData: fetchAverageTalkTimeMetric,
+            title: 'averageTalkTimeMetric',
+        },
     ]
 
 export const fetchVoiceAgentsReportData = async (
@@ -283,13 +297,13 @@ export const fetchVoiceAgentsReportData = async (
     _: ReportingGranularity,
     context: {
         agents: User[]
-    }
+    },
 ) => {
     const metricConfig = agentsMetricsDataSources
     const summaryConfig = agentsSummaryDataSources
     const fileName = getCsvFileNameWithDates(
         cleanStatsFilters.period,
-        VOICE_AGENTS_CALL_ACTIVITY_FILE_NAME
+        VOICE_AGENTS_CALL_ACTIVITY_FILE_NAME,
     )
     return Promise.all([
         fetchTableReportData(cleanStatsFilters, userTimezone, metricConfig),
@@ -305,12 +319,12 @@ export const fetchVoiceAgentsReportData = async (
                         context.agents,
                         metricsData,
                         summaryData,
-                        fileName
+                        fileName,
                     ),
                     fileName,
                 }
             }
-            return {isLoading: false, files: {}, fileName}
+            return { isLoading: false, files: {}, fileName }
         })
-        .catch(() => ({isLoading: false, files: {}, fileName}))
+        .catch(() => ({ isLoading: false, files: {}, fileName }))
 }

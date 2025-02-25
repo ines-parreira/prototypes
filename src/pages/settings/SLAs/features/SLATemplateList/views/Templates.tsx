@@ -1,13 +1,14 @@
-import classNames from 'classnames'
 import React from 'react'
-import {Link} from 'react-router-dom'
+
+import classNames from 'classnames'
+import { Link } from 'react-router-dom'
 
 import Button from 'pages/common/components/button/Button'
 import {
     CustomCardLink,
     TemplateCardLink,
 } from 'pages/common/components/TemplateCard'
-import {SLATemplate} from 'pages/settings/SLAs/config/templates'
+import { SLATemplate } from 'pages/settings/SLAs/config/templates'
 
 import css from './Templates.less'
 
@@ -23,7 +24,7 @@ export default function Templates({
 }) {
     return (
         <div className={classNames(css.wrapper, className)}>
-            {templates.map(({icon, description, ...template}) => (
+            {templates.map(({ icon, description, ...template }) => (
                 <TemplateCardLink
                     key={template.name}
                     icon={

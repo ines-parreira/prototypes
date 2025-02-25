@@ -1,37 +1,37 @@
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+
 import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
-import {parse} from 'qs'
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
-import {Link, useLocation, useHistory} from 'react-router-dom'
-import {Container, Breadcrumb, BreadcrumbItem} from 'reactstrap'
+import { parse } from 'qs'
+import { Link, useHistory, useLocation } from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem, Container } from 'reactstrap'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import useEffectOnce from 'hooks/useEffectOnce'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
-import {fetchRules} from 'models/rule/resources'
-import {fetchRuleRecipes} from 'models/ruleRecipe/resources'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import { fetchRules } from 'models/rule/resources'
+import { fetchRuleRecipes } from 'models/ruleRecipe/resources'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import Search from 'pages/common/components/Search'
-import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {ruleRecipesFetched} from 'state/entities/ruleRecipes/actions'
-import {getSortedRuleRecipes} from 'state/entities/ruleRecipes/selectors'
-import {rulesFetched} from 'state/entities/rules/actions'
+import { useHelpCenterList } from 'pages/settings/helpCenter/hooks/useHelpCenterList'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { ruleRecipesFetched } from 'state/entities/ruleRecipes/actions'
+import { getSortedRuleRecipes } from 'state/entities/ruleRecipes/selectors'
+import { rulesFetched } from 'state/entities/rules/actions'
 import {
     getRulesLimitStatus,
     getSortedRules,
 } from 'state/entities/rules/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {RuleLimitStatus} from 'state/rules/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { RuleLimitStatus } from 'state/rules/types'
 
 import CreateCustomRuleFooter from './components/CreateCustomRuleFooter'
 import RuleLibrary from './ruleLibrary/RuleLibrary'
@@ -52,7 +52,7 @@ export function RulesLibraryContainer() {
                 from: 'rules-library',
             })
         }, 400),
-        [currentAccount]
+        [currentAccount],
     )
 
     const dispatch = useAppDispatch()
@@ -60,10 +60,12 @@ export function RulesLibraryContainer() {
     const ruleRecipes = useAppSelector(getSortedRuleRecipes)
     const limitStatus = useAppSelector(getRulesLimitStatus)
 
-    const {isLoading: isHelpCenterLoading} = useHelpCenterList({per_page: 900})
+    const { isLoading: isHelpCenterLoading } = useHelpCenterList({
+        per_page: 900,
+    })
     const isReady = useMemo(() => !isHelpCenterLoading, [isHelpCenterLoading])
 
-    const [{loading: isFetchingRules}, handleFetchRules] = useAsyncFn(
+    const [{ loading: isFetchingRules }, handleFetchRules] = useAsyncFn(
         async () => {
             try {
                 const res = await fetchRules()
@@ -73,13 +75,13 @@ export function RulesLibraryContainer() {
                     notify({
                         message: 'Failed to fetch rules',
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
             }
-        }
+        },
     )
 
-    const [{loading: isFetchingRecipes}, handleFetchRecipes] = useAsyncFn(
+    const [{ loading: isFetchingRecipes }, handleFetchRecipes] = useAsyncFn(
         async () => {
             try {
                 const res = await fetchRuleRecipes()
@@ -89,10 +91,10 @@ export function RulesLibraryContainer() {
                     notify({
                         message: 'Failed to fetch template rules',
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
             }
-        }
+        },
     )
 
     const [searchTerm, setSearchTerm] = useState('')
@@ -102,7 +104,7 @@ export function RulesLibraryContainer() {
     const history = useHistory()
 
     useEffect(() => {
-        const {install, ...restSearch} = parse(location.search, {
+        const { install, ...restSearch } = parse(location.search, {
             ignoreQueryPrefix: true,
         })
         if (install !== undefined) setAutoInstall(true)
@@ -111,7 +113,7 @@ export function RulesLibraryContainer() {
 
         if (searchSlug) {
             const rule = rules.find(
-                (rule) => rule.settings?.slug === searchSlug
+                (rule) => rule.settings?.slug === searchSlug,
             )
             if (rule) {
                 history.replace(`/app/settings/rules/${rule.id}`)
@@ -123,7 +125,7 @@ export function RulesLibraryContainer() {
     useDebouncedEffect(
         () => setDebouncedSearchTerm(searchTerm),
         [searchTerm],
-        200
+        200,
     )
 
     useEffectOnce(() => {

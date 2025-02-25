@@ -1,19 +1,20 @@
-import React, {useMemo} from 'react'
-import {useLocation} from 'react-router-dom'
+import React, { useMemo } from 'react'
+
+import { useLocation } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {ConvertPlan, ProductType} from 'models/billing/types'
+import { ConvertPlan, ProductType } from 'models/billing/types'
 import css from 'pages/convert/common/components/ConvertSubscriptionModal/ConvertSubscriptionModal.less'
 import CanduActionInfobar from 'pages/settings/new_billing/components/CanduActionInfobar'
 import SubscriptionModal from 'pages/settings/new_billing/components/SubscriptionModal/SubscriptionModal'
-import {getDefaultConvertPlanIndex} from 'pages/settings/new_billing/utils/getDefaultConvertPlanIndex'
+import { getDefaultConvertPlanIndex } from 'pages/settings/new_billing/utils/getDefaultConvertPlanIndex'
 import {
-    getCheapestConvertPrice,
     getAvailableConvertPlans,
+    getCheapestConvertPrice,
     getCurrentConvertPlan,
     getCurrentHelpdeskPlan,
 } from 'state/billing/selectors'
-import {isTrialing} from 'state/currentAccount/selectors'
+import { isTrialing } from 'state/currentAccount/selectors'
 
 type Props = {
     canduId: string
@@ -42,7 +43,7 @@ const ConvertSubscriptionModal = ({
         const convertInitialIndex = getDefaultConvertPlanIndex(
             currentHelpdeskPlan?.cadence,
             convertAvailablePlans,
-            currentHelpdeskPlan?.name
+            currentHelpdeskPlan?.name,
         )
 
         if (convertInitialIndex === -1) {

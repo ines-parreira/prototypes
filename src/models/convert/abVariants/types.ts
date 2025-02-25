@@ -1,4 +1,4 @@
-import {Components, Paths} from 'rest_api/revenue_addon_api/client.generated'
+import { Components, Paths } from 'rest_api/revenue_addon_api/client.generated'
 
 export type ABVariantParams =
     | Paths.CreateAbGroup.PathParameters

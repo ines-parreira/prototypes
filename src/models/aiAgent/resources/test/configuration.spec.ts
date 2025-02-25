@@ -1,15 +1,13 @@
 import MockAdapter from 'axios-mock-adapter'
 
-import {AiAgentOnboardingState} from 'models/aiAgent/types'
+import { AiAgentOnboardingState } from 'models/aiAgent/types'
 import authClient from 'models/api/resources'
-import {getAccountConfigurationWithHttpIntegrationFixture} from 'pages/aiAgent/fixtures/accountConfiguration.fixture'
+import { getAccountConfigurationWithHttpIntegrationFixture } from 'pages/aiAgent/fixtures/accountConfiguration.fixture'
+import { getOnboardingNotificationStateFixture } from 'pages/aiAgent/fixtures/onboardingNotificationState.fixture'
+import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
+import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 
-import {getOnboardingNotificationStateFixture} from 'pages/aiAgent/fixtures/onboardingNotificationState.fixture'
-import {getStoreConfigurationFixture} from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
-
-import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-
-import {HelpCenter} from '../../../helpCenter/types'
+import { HelpCenter } from '../../../helpCenter/types'
 import {
     apiClient,
     createAccountConfiguration,
@@ -70,7 +68,7 @@ describe('Configuration', () => {
                 .reply(400)
 
             await expect(
-                getAccountConfiguration(accountDomain)
+                getAccountConfiguration(accountDomain),
             ).rejects.toThrow('Request failed with status code 400')
         })
     })
@@ -93,7 +91,7 @@ describe('Configuration', () => {
                 .reply(201, accountConfiguration)
 
             const res = await createAccountConfiguration(
-                createAccountConfigurationPayload
+                createAccountConfigurationPayload,
             )
             expect(res.data).toEqual(accountConfiguration)
         })
@@ -104,7 +102,7 @@ describe('Configuration', () => {
                 .reply(400)
 
             await expect(
-                createAccountConfiguration(createAccountConfigurationPayload)
+                createAccountConfiguration(createAccountConfigurationPayload),
             ).rejects.toThrow('Request failed with status code 400')
         })
     })
@@ -130,7 +128,7 @@ describe('Configuration', () => {
                 .reply(400)
 
             await expect(
-                upsertAccountConfiguration(accountConfiguration)
+                upsertAccountConfiguration(accountConfiguration),
             ).rejects.toThrow('Request failed with status code 400')
         })
     })
@@ -138,28 +136,31 @@ describe('Configuration', () => {
     describe('getStoreConfiguration', () => {
         const accountDomain = 'myAccountDomain'
         const storeConfiguration = getStoreConfigurationFixture()
-        const {storeName} = storeConfiguration
+        const { storeName } = storeConfiguration
 
         it('should resolve with the correct data on success', async () => {
             apiServer
                 .onGet(
-                    `/config/accounts/${accountDomain}/stores/${storeName}/configuration?with_wizard=false`
+                    `/config/accounts/${accountDomain}/stores/${storeName}/configuration?with_wizard=false`,
                 )
                 .reply(200, storeConfiguration)
 
-            const res = await getStoreConfiguration({accountDomain, storeName})
+            const res = await getStoreConfiguration({
+                accountDomain,
+                storeName,
+            })
             expect(res.data).toEqual(storeConfiguration)
         })
 
         it('should handle an error correctly', async () => {
             apiServer
                 .onGet(
-                    `/config/accounts/${accountDomain}/stores/${storeName}/configuration?with_wizard=false`
+                    `/config/accounts/${accountDomain}/stores/${storeName}/configuration?with_wizard=false`,
                 )
                 .reply(400)
 
             await expect(
-                getStoreConfiguration({accountDomain, storeName})
+                getStoreConfiguration({ accountDomain, storeName }),
             ).rejects.toThrow('Request failed with status code 400')
         })
     })
@@ -167,18 +168,18 @@ describe('Configuration', () => {
     describe('createStoreConfiguration', () => {
         const accountDomain = 'myAccountDomain'
         const storeConfiguration = getStoreConfigurationFixture()
-        const {storeName} = storeConfiguration
+        const { storeName } = storeConfiguration
 
         it('should resolve with the correct data on success', async () => {
             apiServer
                 .onPost(
-                    `/config/accounts/${accountDomain}/stores/${storeName}/configuration`
+                    `/config/accounts/${accountDomain}/stores/${storeName}/configuration`,
                 )
                 .reply(201, storeConfiguration)
 
             const res = await createStoreConfiguration(
                 accountDomain,
-                storeConfiguration
+                storeConfiguration,
             )
             expect(res.data).toEqual(storeConfiguration)
         })
@@ -186,12 +187,12 @@ describe('Configuration', () => {
         it('should handle an error correctly', async () => {
             apiServer
                 .onPost(
-                    `/config/accounts/${accountDomain}/stores/${storeName}/configuration`
+                    `/config/accounts/${accountDomain}/stores/${storeName}/configuration`,
                 )
                 .reply(400)
 
             await expect(
-                createStoreConfiguration(accountDomain, storeConfiguration)
+                createStoreConfiguration(accountDomain, storeConfiguration),
             ).rejects.toThrow('Request failed with status code 400')
         })
     })
@@ -199,18 +200,18 @@ describe('Configuration', () => {
     describe('upsertStoreConfiguration', () => {
         const accountDomain = 'myAccountDomain'
         const storeConfiguration = getStoreConfigurationFixture()
-        const {storeName} = storeConfiguration
+        const { storeName } = storeConfiguration
 
         it('should resolve with the correct data on success', async () => {
             apiServer
                 .onPut(
-                    `/config/accounts/${accountDomain}/stores/${storeName}/configuration`
+                    `/config/accounts/${accountDomain}/stores/${storeName}/configuration`,
                 )
                 .reply(200, storeConfiguration)
 
             const res = await upsertStoreConfiguration(
                 accountDomain,
-                storeConfiguration
+                storeConfiguration,
             )
             expect(res.data).toEqual(storeConfiguration)
         })
@@ -218,12 +219,12 @@ describe('Configuration', () => {
         it('should handle an error correctly', async () => {
             apiServer
                 .onPut(
-                    `/config/accounts/${accountDomain}/stores/${storeName}/configuration`
+                    `/config/accounts/${accountDomain}/stores/${storeName}/configuration`,
                 )
                 .reply(400)
 
             await expect(
-                upsertStoreConfiguration(accountDomain, storeConfiguration)
+                upsertStoreConfiguration(accountDomain, storeConfiguration),
             ).rejects.toThrow('Request failed with status code 400')
         })
     })
@@ -236,13 +237,13 @@ describe('Configuration', () => {
         it('should resolve with the correct data on success', async () => {
             apiServer
                 .onPost(
-                    `/config/accounts/${accountDomain}/stores/${storeName}/snippet`
+                    `/config/accounts/${accountDomain}/stores/${storeName}/snippet`,
                 )
                 .reply(200, helpCenter)
 
             const res = await createStoreSnippetHelpCenter(
                 accountDomain,
-                storeName
+                storeName,
             )
             expect(res.data).toEqual(helpCenter)
         })
@@ -250,29 +251,29 @@ describe('Configuration', () => {
         it('should handle an error correctly', async () => {
             apiServer
                 .onPost(
-                    `/config/accounts/${accountDomain}/stores/${storeName}/snippet`
+                    `/config/accounts/${accountDomain}/stores/${storeName}/snippet`,
                 )
                 .reply(400)
 
             await expect(
-                createStoreSnippetHelpCenter(accountDomain, storeName)
+                createStoreSnippetHelpCenter(accountDomain, storeName),
             ).rejects.toThrow('Request failed with status code 400')
         })
     })
 
     describe('getWelcomePageAcknowledged', () => {
         it('should resolve with the correct data on success', async () => {
-            const data = {acknowledged: false}
+            const data = { acknowledged: false }
 
             apiServer
                 .onGet(
-                    `/config/accounts/${accountDomain}/stores/${storeName}/welcome-page`
+                    `/config/accounts/${accountDomain}/stores/${storeName}/welcome-page`,
                 )
                 .reply(200, data)
 
             const res = await getWelcomePageAcknowledged(
                 accountDomain,
-                storeName
+                storeName,
             )
             expect(res.data).toEqual(data)
         })
@@ -280,29 +281,29 @@ describe('Configuration', () => {
         it('should handle an error correctly', async () => {
             apiServer
                 .onGet(
-                    `/config/accounts/${accountDomain}/stores/${storeName}/welcome-page`
+                    `/config/accounts/${accountDomain}/stores/${storeName}/welcome-page`,
                 )
                 .reply(400)
 
             await expect(
-                getWelcomePageAcknowledged(accountDomain, storeName)
+                getWelcomePageAcknowledged(accountDomain, storeName),
             ).rejects.toThrow('Request failed with status code 400')
         })
     })
 
     describe('createWelcomePageAcknowledged', () => {
         it('should resolve with the correct data on success', async () => {
-            const data = {acknowledged: true}
+            const data = { acknowledged: true }
 
             apiServer
                 .onPost(
-                    `/config/accounts/${accountDomain}/stores/${storeName}/welcome-page`
+                    `/config/accounts/${accountDomain}/stores/${storeName}/welcome-page`,
                 )
                 .reply(200, data)
 
             const res = await createWelcomePageAcknowledged(
                 accountDomain,
-                storeName
+                storeName,
             )
             expect(res.data).toEqual(data)
         })
@@ -310,32 +311,32 @@ describe('Configuration', () => {
         it('should handle an error correctly', async () => {
             apiServer
                 .onPost(
-                    `/config/accounts/${accountDomain}/stores/${storeName}/welcome-page`
+                    `/config/accounts/${accountDomain}/stores/${storeName}/welcome-page`,
                 )
                 .reply(500)
 
             await expect(
-                createWelcomePageAcknowledged(accountDomain, storeName)
+                createWelcomePageAcknowledged(accountDomain, storeName),
             ).rejects.toThrow('Request failed with status code 500')
         })
     })
 
     describe('getOnboardingNotificationState', () => {
         const mockedOnboardingNotificationState =
-            getOnboardingNotificationStateFixture({shopName: storeName})
+            getOnboardingNotificationStateFixture({ shopName: storeName })
 
         it('should resolve with the correct data on success', async () => {
             const data = mockedOnboardingNotificationState
 
             apiServer
                 .onGet(
-                    `/config/accounts/${accountDomain}/stores/${storeName}/onboarding-notification`
+                    `/config/accounts/${accountDomain}/stores/${storeName}/onboarding-notification`,
                 )
                 .reply(200, data)
 
             const res = await getOnboardingNotificationState(
                 accountDomain,
-                storeName
+                storeName,
             )
             expect(res.data).toEqual(data)
         })
@@ -343,19 +344,19 @@ describe('Configuration', () => {
         it('should handle an error correctly', async () => {
             apiServer
                 .onGet(
-                    `/config/accounts/${accountDomain}/stores/${storeName}/onboarding-notification`
+                    `/config/accounts/${accountDomain}/stores/${storeName}/onboarding-notification`,
                 )
                 .reply(400)
 
             await expect(
-                getOnboardingNotificationState(accountDomain, storeName)
+                getOnboardingNotificationState(accountDomain, storeName),
             ).rejects.toThrow('Request failed with status code 400')
         })
     })
 
     describe('createOnboardingNotificationState', () => {
         const mockedOnboardingNotificationState =
-            getOnboardingNotificationStateFixture({shopName: storeName})
+            getOnboardingNotificationStateFixture({ shopName: storeName })
 
         it('should resolve with the correct data on success', async () => {
             const data = {
@@ -365,7 +366,7 @@ describe('Configuration', () => {
 
             apiServer
                 .onPost(
-                    `/config/accounts/${accountDomain}/stores/${storeName}/onboarding-notification`
+                    `/config/accounts/${accountDomain}/stores/${storeName}/onboarding-notification`,
                 )
                 .reply(201, data)
 
@@ -375,7 +376,7 @@ describe('Configuration', () => {
                 {
                     shopName: storeName,
                     onboardingState: AiAgentOnboardingState.VisitedAiAgent,
-                }
+                },
             )
             expect(res.data).toEqual(data)
         })
@@ -383,21 +384,21 @@ describe('Configuration', () => {
         it('should handle an error correctly', async () => {
             apiServer
                 .onPost(
-                    `/config/accounts/${accountDomain}/stores/${storeName}/onboarding-notification`
+                    `/config/accounts/${accountDomain}/stores/${storeName}/onboarding-notification`,
                 )
                 .reply(400)
 
             await expect(
                 createOnboardingNotificationState(accountDomain, storeName, {
                     shopName: storeName,
-                })
+                }),
             ).rejects.toThrow('Request failed with status code 400')
         })
     })
 
     describe('upsertOnboardingNotificationState', () => {
         const mockedOnboardingNotificationState =
-            getOnboardingNotificationStateFixture({shopName: storeName})
+            getOnboardingNotificationStateFixture({ shopName: storeName })
 
         it('should resolve with the correct data on success', async () => {
             const data = {
@@ -407,7 +408,7 @@ describe('Configuration', () => {
 
             apiServer
                 .onPut(
-                    `/config/accounts/${accountDomain}/stores/${storeName}/onboarding-notification`
+                    `/config/accounts/${accountDomain}/stores/${storeName}/onboarding-notification`,
                 )
                 .reply(200, data)
 
@@ -417,7 +418,7 @@ describe('Configuration', () => {
                 {
                     ...mockedOnboardingNotificationState,
                     onboardingState: AiAgentOnboardingState.VisitedAiAgent,
-                }
+                },
             )
             expect(res.data).toEqual(data)
         })
@@ -425,14 +426,14 @@ describe('Configuration', () => {
         it('should handle an error correctly', async () => {
             apiServer
                 .onPut(
-                    `/config/accounts/${accountDomain}/stores/${storeName}/onboarding-notification`
+                    `/config/accounts/${accountDomain}/stores/${storeName}/onboarding-notification`,
                 )
                 .reply(400)
 
             await expect(
                 upsertOnboardingNotificationState(accountDomain, storeName, {
                     ...mockedOnboardingNotificationState,
-                })
+                }),
             ).rejects.toThrow('Request failed with status code 400')
         })
     })
@@ -454,7 +455,7 @@ describe('Configuration', () => {
 
         describe('getOnboardingData', () => {
             it('should resolve with the correct data on success', async () => {
-                const mockData = [{id: 1, name: 'Test Onboarding'}]
+                const mockData = [{ id: 1, name: 'Test Onboarding' }]
 
                 apiServer.onGet('/onboardings').reply(200, mockData)
 
@@ -466,19 +467,19 @@ describe('Configuration', () => {
                 apiServer.onGet('/onboardings').reply(400)
 
                 await expect(getOnboardingData()).rejects.toThrow(
-                    'Request failed with status code 400'
+                    'Request failed with status code 400',
                 )
             })
         })
 
         describe('getOnboardingDataByShopName', () => {
             it('should resolve with the correct data on success', async () => {
-                const mockData = [{id: 1, name: 'Test Onboarding'}]
+                const mockData = [{ id: 1, name: 'Test Onboarding' }]
                 const shopName = 'TestShop'
 
                 // 🔹 FIX: Ensure mock request includes correct params
                 apiServer
-                    .onGet('/onboardings', {params: {shop_name: shopName}}) // Incorrect approach
+                    .onGet('/onboardings', { params: { shop_name: shopName } }) // Incorrect approach
                     .reply(200, mockData)
 
                 const res = await getOnboardingDataByShopName(shopName)
@@ -489,18 +490,18 @@ describe('Configuration', () => {
                 const shopName = 'NonExistentShop'
 
                 apiServer
-                    .onGet('/onboardings', {params: {shop_name: shopName}})
+                    .onGet('/onboardings', { params: { shop_name: shopName } })
                     .reply(400)
 
                 await expect(
-                    getOnboardingDataByShopName(shopName)
+                    getOnboardingDataByShopName(shopName),
                 ).rejects.toThrow('Request failed with status code 400')
             })
         })
 
         describe('createOnboardingData', () => {
             it('should resolve with the correct data on success', async () => {
-                const mockData = {id: 1, name: 'New Onboarding'}
+                const mockData = { id: 1, name: 'New Onboarding' }
 
                 apiServer.onPost('/onboardings').reply(201, mockData)
 
@@ -514,14 +515,14 @@ describe('Configuration', () => {
                 apiServer.onPost('/onboardings').reply(400)
 
                 await expect(
-                    createOnboardingData({shopName: 'New Onboarding'})
+                    createOnboardingData({ shopName: 'New Onboarding' }),
                 ).rejects.toThrow('Request failed with status code 400')
             })
         })
 
         describe('updateOnboardingData', () => {
             it('should resolve with the correct data on success', async () => {
-                const mockData = {id: 1, name: 'Updated Onboarding'}
+                const mockData = { id: 1, name: 'Updated Onboarding' }
 
                 apiServer.onPut('/onboardings/1').reply(200, mockData)
 
@@ -535,7 +536,7 @@ describe('Configuration', () => {
                 apiServer.onPut('/onboardings/1').reply(400)
 
                 await expect(
-                    updateOnboardingData(1, {shopName: 'Updated Onboarding'})
+                    updateOnboardingData(1, { shopName: 'Updated Onboarding' }),
                 ).rejects.toThrow('Request failed with status code 400')
             })
         })

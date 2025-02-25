@@ -1,16 +1,16 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
 
-import {IntegrationType} from 'models/integration/constants'
+import { render, screen } from '@testing-library/react'
+import { Provider } from 'react-redux'
+
+import { IntegrationType } from 'models/integration/constants'
 import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
     GorgiasChatIntegration,
 } from 'models/integration/types'
-import {GorgiasChatPositionAlignmentEnum} from 'models/integration/types/gorgiasChat'
-
-import {mockStore} from 'utils/testing'
+import { GorgiasChatPositionAlignmentEnum } from 'models/integration/types/gorgiasChat'
+import { mockStore } from 'utils/testing'
 
 import SelfServiceChatIntegrationArticleRecommendationPage from '../SelfServiceChatIntegrationArticleRecommendationPage'
 
@@ -62,10 +62,10 @@ describe('<SelfServiceChatIntegrationArticleRecommendationPage />', () => {
                 <SelfServiceChatIntegrationArticleRecommendationPage
                     integration={mockIntegration}
                 />
-            </Provider>
+            </Provider>,
         )
         expect(
-            screen.getByText('What size should I order?')
+            screen.getByText('What size should I order?'),
         ).toBeInTheDocument()
     })
 })

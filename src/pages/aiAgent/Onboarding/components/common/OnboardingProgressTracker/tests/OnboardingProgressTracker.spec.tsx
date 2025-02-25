@@ -1,5 +1,6 @@
-import {render, screen, fireEvent} from '@testing-library/react'
 import React from 'react'
+
+import { fireEvent, render, screen } from '@testing-library/react'
 
 import OnboardingProgressTracker from '../OnboardingProgressTracker'
 
@@ -33,7 +34,7 @@ describe('OnboardingProgressTracker', () => {
                 {...defaultProps}
                 step={3}
                 totalSteps={3}
-            />
+            />,
         )
 
         expect(screen.getByText('Finish')).toBeInTheDocument()

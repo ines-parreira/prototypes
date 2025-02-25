@@ -1,13 +1,14 @@
+import React, { MouseEvent, useContext } from 'react'
+
 import classnames from 'classnames'
-import React, {MouseEvent, useContext} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {Template} from 'models/widget/types'
-import {getWidgetTitle} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
-import {getIntegrationById} from 'state/integrations/selectors'
-import {removeEditedWidget} from 'state/widgets/actions'
-import {WidgetContext} from 'Widgets/contexts/WidgetContext'
+import { Template } from 'models/widget/types'
+import { getWidgetTitle } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
+import { getIntegrationById } from 'state/integrations/selectors'
+import { removeEditedWidget } from 'state/widgets/actions'
+import { WidgetContext } from 'Widgets/contexts/WidgetContext'
 import WidgetPanel from 'Widgets/modules/WidgetPanel/components/WidgetPanel'
 
 import css from './Placeholder.less'
@@ -19,11 +20,11 @@ type Props = {
     isEditing?: boolean
 }
 
-export default function Placeholder({template, isEditing}: Props) {
+export default function Placeholder({ template, isEditing }: Props) {
     const dispatch = useAppDispatch()
     const widget = useContext(WidgetContext)
     const integration = useAppSelector(
-        getIntegrationById(Number(widget.integration_id)) || null
+        getIntegrationById(Number(widget.integration_id)) || null,
     )
 
     const handleDeleteWidget = (evt: MouseEvent) => {
@@ -66,7 +67,7 @@ export default function Placeholder({template, isEditing}: Props) {
                         className={classnames(
                             css.delete,
                             'material-icons',
-                            'text-danger'
+                            'text-danger',
                         )}
                         onClick={handleDeleteWidget}
                     >

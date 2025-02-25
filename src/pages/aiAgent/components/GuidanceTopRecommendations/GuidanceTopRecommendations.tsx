@@ -1,8 +1,9 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
-import {GuidanceAiSuggestionsList} from 'pages/aiAgent/components/GuidanceAiSuggestionsList/GuidanceAiSuggestionsList'
-import {AIGuidance} from 'pages/aiAgent/types'
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+
+import { GuidanceAiSuggestionsList } from 'pages/aiAgent/components/GuidanceAiSuggestionsList/GuidanceAiSuggestionsList'
+import { AIGuidance } from 'pages/aiAgent/types'
 
 import css from './GuidanceTopRecommendations.less'
 

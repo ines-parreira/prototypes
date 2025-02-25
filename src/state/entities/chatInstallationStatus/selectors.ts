@@ -1,6 +1,6 @@
-import {StoreState} from '../../types'
-import {ChatInstallationStatusState} from './types'
+import { StoreState } from '../../types'
+import { ChatInstallationStatusState } from './types'
 
 export const getChatInstallationStatus = (
-    state: StoreState
+    state: StoreState,
 ): ChatInstallationStatusState => state.entities.chatInstallationStatus

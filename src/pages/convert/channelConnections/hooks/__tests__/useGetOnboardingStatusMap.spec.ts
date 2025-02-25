@@ -1,11 +1,11 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {useListChannelConnections} from 'models/convert/channelConnection/queries'
-import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
-import {assumeMock} from 'utils/testing'
+import { useListChannelConnections } from 'models/convert/channelConnection/queries'
+import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
+import { assumeMock } from 'utils/testing'
 
-import {useGetOnboardingStatusMap} from '../useGetOnboardingStatusMap'
+import { useGetOnboardingStatusMap } from '../useGetOnboardingStatusMap'
 
 jest.mock('pages/common/hooks/useIsConvertSubscriber', () => ({
     useIsConvertSubscriber: jest.fn(),
@@ -21,8 +21,8 @@ jest.mock('hooks/useAppDispatch', () => jest.fn())
 const useAppDispatchMock = assumeMock(useAppDispatch)
 
 const mockChannelConnections = [
-    {external_id: '1', is_onboarded: true, is_setup: false},
-    {external_id: '2', is_onboarded: false, is_setup: true},
+    { external_id: '1', is_onboarded: true, is_setup: false },
+    { external_id: '2', is_onboarded: false, is_setup: true },
 ]
 
 describe('useGetOnboardingStatusMap', () => {
@@ -37,8 +37,8 @@ describe('useGetOnboardingStatusMap', () => {
 
     it.each([
         [false, [], {}],
-        [true, mockChannelConnections, {'1': true, '2': false}],
-        [false, mockChannelConnections, {'1': false, '2': true}],
+        [true, mockChannelConnections, { '1': true, '2': false }],
+        [false, mockChannelConnections, { '1': false, '2': true }],
     ])(
         'should return the onboarding status map correctly',
         (isSubscriber, channelConnections, expectedResult) => {
@@ -47,10 +47,10 @@ describe('useGetOnboardingStatusMap', () => {
                 data: channelConnections,
             } as any)
 
-            const {result} = renderHook(() => useGetOnboardingStatusMap())
+            const { result } = renderHook(() => useGetOnboardingStatusMap())
 
             expect(result.current.onboardingMap).toEqual(expectedResult)
-        }
+        },
     )
     it('should dispatch an error', () => {
         useIsConvertSubscriberMock.mockReturnValue(true)

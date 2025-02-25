@@ -1,19 +1,18 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 
 import Button from 'pages/common/components/button/Button'
 import InputField from 'pages/common/forms/input/InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {Value} from 'pages/common/forms/SelectField/types'
-import {convertTriggerOperatorsToSelectOptions} from 'pages/convert/campaigns/utils/convertTriggerOperatorsToSelectOptions'
-import {getMoneySymbol} from 'utils/getMoneySymbol'
+import { Value } from 'pages/common/forms/SelectField/types'
+import { convertTriggerOperatorsToSelectOptions } from 'pages/convert/campaigns/utils/convertTriggerOperatorsToSelectOptions'
+import { getMoneySymbol } from 'utils/getMoneySymbol'
 
-import {useIntegrationContext} from '../../containers/IntegrationProvider'
+import { useIntegrationContext } from '../../containers/IntegrationProvider'
+import { AdvancedTriggerBaseProps } from '../../types/AdvancedTriggerBaseProps'
+import { CampaignTriggerOperator } from '../../types/enums/CampaignTriggerOperator.enum'
+import { handleTriggerOperatorChange } from '../../utils/handleTriggerOperatorChange'
+import { isTriggerValueNonNegative } from '../../utils/isTriggerValueNonNegative'
 
-import {AdvancedTriggerBaseProps} from '../../types/AdvancedTriggerBaseProps'
-
-import {CampaignTriggerOperator} from '../../types/enums/CampaignTriggerOperator.enum'
-import {handleTriggerOperatorChange} from '../../utils/handleTriggerOperatorChange'
-import {isTriggerValueNonNegative} from '../../utils/isTriggerValueNonNegative'
 import css from './style.less'
 
 type Props = AdvancedTriggerBaseProps
@@ -25,12 +24,12 @@ export const AmountSpentTrigger = ({
     onUpdateTrigger,
 }: Props): JSX.Element => {
     const [innerOperator, setInnerOperator] = useState<CampaignTriggerOperator>(
-        trigger.operator
+        trigger.operator,
     )
     const [innerValue, setInnerValue] = useState<string>(
-        trigger.value as string
+        trigger.value as string,
     )
-    const {shopifyIntegration} = useIntegrationContext()
+    const { shopifyIntegration } = useIntegrationContext()
 
     const handleChangeOperator = (operator: Value) =>
         handleTriggerOperatorChange(
@@ -38,7 +37,7 @@ export const AmountSpentTrigger = ({
             id,
             trigger,
             setInnerOperator,
-            onUpdateTrigger
+            onUpdateTrigger,
         )
 
     const handleChangeValue = (value: string) => {
@@ -57,7 +56,7 @@ export const AmountSpentTrigger = ({
 
     const currencySymbol = getMoneySymbol(
         shopifyIntegration?.meta?.currency ?? 'USD',
-        true
+        true,
     )
 
     useEffect(() => {
@@ -82,7 +81,7 @@ export const AmountSpentTrigger = ({
                 onChange={handleChangeOperator}
                 options={convertTriggerOperatorsToSelectOptions(trigger.type)}
             />
-            <div style={{display: 'flex', flexGrow: 1}}>
+            <div style={{ display: 'flex', flexGrow: 1 }}>
                 <InputField
                     className={css.fullWidth}
                     prefix={currencySymbol}

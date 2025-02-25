@@ -1,7 +1,7 @@
-import {createReducer} from '@reduxjs/toolkit'
+import { createReducer } from '@reduxjs/toolkit'
 
-import {changeHelpCenterId, changeViewLanguage} from './actions'
-import {HelpCenterState} from './types'
+import { changeHelpCenterId, changeViewLanguage } from './actions'
+import { HelpCenterState } from './types'
 
 export const initialState: HelpCenterState = {
     currentLanguage: null,
@@ -10,10 +10,10 @@ export const initialState: HelpCenterState = {
 
 export default createReducer<HelpCenterState>(initialState, (builder) =>
     builder
-        .addCase(changeViewLanguage, (state, {payload}) => {
+        .addCase(changeViewLanguage, (state, { payload }) => {
             state.currentLanguage = payload
         })
-        .addCase(changeHelpCenterId, (state, {payload}) => {
+        .addCase(changeHelpCenterId, (state, { payload }) => {
             state.currentId = payload
-        })
+        }),
 )

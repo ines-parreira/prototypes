@@ -1,9 +1,9 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {useFlags} from 'launchdarkly-react-client-sdk'
+import { renderHook } from '@testing-library/react-hooks'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { FeatureFlagKey } from 'config/featureFlags'
 
-import {useShowAiAgentStandaloneMenu} from '../useShowAiAgentStandaloneMenu'
+import { useShowAiAgentStandaloneMenu } from '../useShowAiAgentStandaloneMenu'
 
 jest.mock('launchdarkly-react-client-sdk')
 const mockUseFlags = jest.mocked(useFlags)
@@ -14,7 +14,7 @@ describe('useShowAiAgentStandaloneMenu', () => {
             [FeatureFlagKey.ConvAiStandaloneMenu]: true,
         })
 
-        const {result} = renderHook(() => useShowAiAgentStandaloneMenu())
+        const { result } = renderHook(() => useShowAiAgentStandaloneMenu())
 
         expect(result.current).toEqual(true)
     })
@@ -24,7 +24,7 @@ describe('useShowAiAgentStandaloneMenu', () => {
             [FeatureFlagKey.ConvAiStandaloneMenu]: false,
         })
 
-        const {result} = renderHook(() => useShowAiAgentStandaloneMenu())
+        const { result } = renderHook(() => useShowAiAgentStandaloneMenu())
 
         expect(result.current).toEqual(false)
     })

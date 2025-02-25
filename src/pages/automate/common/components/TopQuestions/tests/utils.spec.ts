@@ -1,6 +1,6 @@
-import {AIArticle} from 'models/helpCenter/types'
+import { AIArticle } from 'models/helpCenter/types'
 
-import {filteredSortedTopQuestionsFromFetchedArticles} from '../utils'
+import { filteredSortedTopQuestionsFromFetchedArticles } from '../utils'
 
 describe('filteredSortedTopQuestionsFromFetchedArticles', () => {
     it('returns an empty array if fetchedArticles is null', () => {
@@ -58,7 +58,7 @@ describe('filteredSortedTopQuestionsFromFetchedArticles', () => {
             },
         ]
         const result = filteredSortedTopQuestionsFromFetchedArticles(
-            fetchedArticles as AIArticle[]
+            fetchedArticles as AIArticle[],
         )
         expect(result).toEqual(expected)
     })

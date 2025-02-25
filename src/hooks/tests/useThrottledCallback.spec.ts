@@ -1,4 +1,4 @@
-import {renderHook} from '@testing-library/react-hooks/dom'
+import { renderHook } from '@testing-library/react-hooks/dom'
 import noop from 'lodash/noop'
 
 import useThrottledCallback from '../useThrottledCallback'
@@ -7,18 +7,18 @@ jest.useFakeTimers()
 
 describe('useThrottledCallback', () => {
     it('should render', () => {
-        const {result} = renderHook(() => {
+        const { result } = renderHook(() => {
             useThrottledCallback(noop, 200)
         })
         expect(result.error).toBeUndefined()
     })
 
     it('should return function same length and wrapped name', () => {
-        let {result} = renderHook(() =>
+        let { result } = renderHook(() =>
             useThrottledCallback(
                 (a: number, b: number, c: number) => a + b + c,
-                200
-            )
+                200,
+            ),
         )
 
         expect(result.current.length).toBe(3)
@@ -28,7 +28,7 @@ describe('useThrottledCallback', () => {
             return a + b + c
         }
         result = renderHook(() =>
-            useThrottledCallback(namedFunction, 100)
+            useThrottledCallback(namedFunction, 100),
         ).result
 
         expect(result.current.length).toBe(3)
@@ -36,15 +36,15 @@ describe('useThrottledCallback', () => {
     })
 
     it('should return a new callback if delay is changed', () => {
-        const {result, rerender} = renderHook(
-            ({delay}) => useThrottledCallback(noop, delay),
+        const { result, rerender } = renderHook(
+            ({ delay }) => useThrottledCallback(noop, delay),
             {
-                initialProps: {delay: 200},
-            }
+                initialProps: { delay: 200 },
+            },
         )
 
         const cb1 = result.current
-        rerender({delay: 123})
+        rerender({ delay: 123 })
 
         expect(cb1).not.toBe(result.current)
     })
@@ -52,26 +52,26 @@ describe('useThrottledCallback', () => {
     it('should return a new callback if the passed callback has changed', () => {
         const initialCallback = noop
 
-        const {result, rerender} = renderHook(
-            ({callback}) => useThrottledCallback(callback, 200),
+        const { result, rerender } = renderHook(
+            ({ callback }) => useThrottledCallback(callback, 200),
             {
-                initialProps: {callback: initialCallback},
-            }
+                initialProps: { callback: initialCallback },
+            },
         )
         const initialResult = result.current
 
-        rerender({callback: initialCallback})
+        rerender({ callback: initialCallback })
 
         expect(result.current).toBe(initialResult)
 
-        rerender({callback: () => void 0})
+        rerender({ callback: () => void 0 })
 
         expect(result.current).not.toBe(initialCallback)
     })
 
     it('should invoke given callback immediately', () => {
         const cb = jest.fn()
-        const {result} = renderHook(() => useThrottledCallback(cb, 200))
+        const { result } = renderHook(() => useThrottledCallback(cb, 200))
 
         result.current()
         expect(cb).toHaveBeenCalledTimes(1)
@@ -79,7 +79,7 @@ describe('useThrottledCallback', () => {
 
     it('should pass parameters to callback', () => {
         const cb = jest.fn(noop)
-        const {result} = renderHook(() => useThrottledCallback(cb, 200))
+        const { result } = renderHook(() => useThrottledCallback(cb, 200))
 
         result.current(1, 'abc')
         expect(cb).toHaveBeenCalledWith(1, 'abc')
@@ -87,7 +87,7 @@ describe('useThrottledCallback', () => {
 
     it('should ignore consequential calls occurred within delay, but execute last call after delay is passed', () => {
         const cb = jest.fn()
-        const {result} = renderHook(() => useThrottledCallback(cb, 200))
+        const { result } = renderHook(() => useThrottledCallback(cb, 200))
 
         result.current()
         result.current()
@@ -107,7 +107,7 @@ describe('useThrottledCallback', () => {
 
     it('should drop trailing execution if `noTrailing is set to true`', () => {
         const cb = jest.fn()
-        const {result} = renderHook(() => useThrottledCallback(cb, 200, true))
+        const { result } = renderHook(() => useThrottledCallback(cb, 200, true))
 
         result.current()
         result.current()

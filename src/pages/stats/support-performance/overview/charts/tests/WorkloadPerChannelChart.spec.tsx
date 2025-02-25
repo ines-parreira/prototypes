@@ -1,36 +1,37 @@
-import {render, screen} from '@testing-library/react'
+import React from 'react'
+
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import LD from 'launchdarkly-react-client-sdk'
-import React from 'react'
-import {Provider} from 'react-redux'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {TicketChannel} from 'business/types/ticket'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {agents} from 'fixtures/agents'
-import {integrationsState} from 'fixtures/integrations'
+import { TicketChannel } from 'business/types/ticket'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { agents } from 'fixtures/agents'
+import { integrationsState } from 'fixtures/integrations'
 import {
     useWorkloadPerChannelDistribution,
     useWorkloadPerChannelDistributionForPreviousPeriod,
 } from 'hooks/reporting/distributions'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-import {ReportingGranularity} from 'models/reporting/types'
-import {LegacyStatsFilters} from 'models/stat/types'
-import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { ReportingGranularity } from 'models/reporting/types'
+import { LegacyStatsFilters } from 'models/stat/types'
+import { DEFAULT_TIMEZONE } from 'pages/stats/convert/constants/components'
 import GaugeChart from 'pages/stats/GaugeChart'
-import {WorkloadPerChannelChart} from 'pages/stats/support-performance/overview/charts/WorkloadPerChannelChart'
-import {fromLegacyStatsFilters} from 'state/stats/utils'
-import {RootState, StoreDispatch} from 'state/types'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
-import {assumeMock} from 'utils/testing'
+import { WorkloadPerChannelChart } from 'pages/stats/support-performance/overview/charts/WorkloadPerChannelChart'
+import { fromLegacyStatsFilters } from 'state/stats/utils'
+import { RootState, StoreDispatch } from 'state/types'
+import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('pages/stats/GaugeChart')
 const gaugeChartMock = assumeMock(GaugeChart)
 
 jest.mock('hooks/reporting/distributions')
 const useWorkloadPerChannelDistributionMock = assumeMock(
-    useWorkloadPerChannelDistribution
+    useWorkloadPerChannelDistribution,
 )
 jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
 const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
@@ -57,7 +58,7 @@ describe('<WorkloadPerChannelChart />', () => {
             filters: fromLegacyStatsFilters(defaultStatsFilters),
         },
         ui: {
-            stats: {filters: uiStatsInitialState},
+            stats: { filters: uiStatsInitialState },
         },
     } as RootState
 
@@ -77,7 +78,7 @@ describe('<WorkloadPerChannelChart />', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         useWorkloadPerChannelDistributionMock.mockReturnValue(
-            workloadDistribution
+            workloadDistribution,
         )
         gaugeChartMock.mockImplementation(() => <div />)
         useNewStatsFiltersMock.mockReturnValue({
@@ -95,14 +96,14 @@ describe('<WorkloadPerChannelChart />', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <WorkloadPerChannelChart />
-            </Provider>
+            </Provider>,
         )
 
         expect(gaugeChartMock).toHaveBeenCalledWith(
             {
                 data: workloadDistribution.data,
             },
-            {}
+            {},
         )
     })
 
@@ -114,11 +115,11 @@ describe('<WorkloadPerChannelChart />', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <WorkloadPerChannelChart />
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            document.querySelector('.react-loading-skeleton')
+            document.querySelector('.react-loading-skeleton'),
         ).toBeInTheDocument()
     })
 
@@ -133,16 +134,16 @@ describe('<WorkloadPerChannelChart />', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <WorkloadPerChannelChart />
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            document.querySelector('.react-loading-skeleton')
+            document.querySelector('.react-loading-skeleton'),
         ).toBeInTheDocument()
         expect(useWorkloadPerChannelDistributionMock).toHaveBeenCalledWith(
             expect.anything(),
             expect.anything(),
-            false
+            false,
         )
         expect(screen.getByText('refresh')).toBeInTheDocument()
     })
@@ -158,16 +159,16 @@ describe('<WorkloadPerChannelChart />', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <WorkloadPerChannelChart />
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            document.querySelector('.react-loading-skeleton')
+            document.querySelector('.react-loading-skeleton'),
         ).toBeInTheDocument()
         expect(useWorkloadPerChannelDistributionMock).toHaveBeenCalledWith(
             expect.anything(),
             expect.anything(),
-            false
+            false,
         )
         expect(screen.queryByText('refresh')).not.toBeInTheDocument()
     })
@@ -183,7 +184,7 @@ describe('<WorkloadPerChannelChart />', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <WorkloadPerChannelChart />
-            </Provider>
+            </Provider>,
         )
 
         const refreshIcon = screen.getByText('refresh')
@@ -192,7 +193,7 @@ describe('<WorkloadPerChannelChart />', () => {
         expect(useWorkloadPerChannelDistributionMock).toHaveBeenCalledWith(
             expect.anything(),
             expect.anything(),
-            true
+            true,
         )
         expect(screen.queryByText('refresh')).not.toBeInTheDocument()
     })
@@ -212,13 +213,13 @@ describe('<WorkloadPerChannelChart />', () => {
             render(
                 <Provider store={mockStore(defaultState)}>
                     <WorkloadPerChannelChart />
-                </Provider>
+                </Provider>,
             )
 
             expect(useWorkloadPerChannelDistributionMock).toHaveBeenCalledWith(
                 defaultStatsFilters,
                 DEFAULT_TIMEZONE,
-                true
+                true,
             )
         })
 
@@ -240,13 +241,13 @@ describe('<WorkloadPerChannelChart />', () => {
             render(
                 <Provider store={mockStore(defaultState)}>
                     <WorkloadPerChannelChart />
-                </Provider>
+                </Provider>,
             )
 
             expect(useWorkloadPerChannelDistributionMock).toHaveBeenCalledWith(
                 fromLegacyStatsFilters(defaultStatsFilters),
                 DEFAULT_TIMEZONE,
-                true
+                true,
             )
         })
     })

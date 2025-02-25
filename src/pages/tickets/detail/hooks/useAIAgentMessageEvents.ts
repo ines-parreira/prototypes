@@ -1,18 +1,18 @@
-import {Tag} from '@gorgias/api-queries'
+import { Tag } from '@gorgias/api-queries'
 
-import {TicketStatus} from 'business/types/ticket'
+import { TicketStatus } from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
-import {MacroActionName} from 'models/macroAction/types'
-import {TicketMessage} from 'models/ticket/types'
-import {TicketEventEnum} from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
-import {getTags} from 'state/tags/selectors'
+import { MacroActionName } from 'models/macroAction/types'
+import { TicketMessage } from 'models/ticket/types'
+import { TicketEventEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
+import { getTags } from 'state/tags/selectors'
 
 export const getActionAndTagsFromMessage = (
     allTags: Tag[],
-    message?: TicketMessage
-): {action: TicketEventEnum | null; tags: Tag[]} => {
+    message?: TicketMessage,
+): { action: TicketEventEnum | null; tags: Tag[] } => {
     if (!message) {
-        return {tags: [], action: null}
+        return { tags: [], action: null }
     }
 
     const messageTagNames = (message.actions
@@ -24,17 +24,17 @@ export const getActionAndTagsFromMessage = (
         .filter((tag) => !!tag && tag.name.indexOf('ai_') !== 0) as Tag[]
 
     const isHandover = message.actions?.some(
-        (action) => action.name === MacroActionName.SetAssignee
+        (action) => action.name === MacroActionName.SetAssignee,
     )
 
     const isSnoozed = message.actions?.some(
-        (action) => action.name === MacroActionName.SnoozeTicket
+        (action) => action.name === MacroActionName.SnoozeTicket,
     )
 
     const isClosed = message.actions?.some(
         (action) =>
             action.name === MacroActionName.SetStatus &&
-            action.arguments?.status === TicketStatus.Closed
+            action.arguments?.status === TicketStatus.Closed,
     )
 
     const actionType = isClosed
@@ -45,7 +45,7 @@ export const getActionAndTagsFromMessage = (
             ? TicketEventEnum.ASSIGN_TICKET
             : null
 
-    return {tags: messageTags, action: actionType}
+    return { tags: messageTags, action: actionType }
 }
 
 type ActionAndTags = {
@@ -54,7 +54,7 @@ type ActionAndTags = {
 }
 
 export const useAIAgentMessageEvents = (
-    messages?: TicketMessage[]
+    messages?: TicketMessage[],
 ): ActionAndTags[] => {
     const allTags: Tag[] = useAppSelector(getTags).toJS()
 
@@ -63,6 +63,6 @@ export const useAIAgentMessageEvents = (
     }
 
     return messages.map((message) =>
-        getActionAndTagsFromMessage(allTags, message)
+        getActionAndTagsFromMessage(allTags, message),
     )
 }

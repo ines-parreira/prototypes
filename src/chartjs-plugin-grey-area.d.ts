@@ -1,4 +1,4 @@
-import type {ChartType} from 'chart.js'
+import type { ChartType } from 'chart.js'
 
 declare module 'chart.js' {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

@@ -1,4 +1,4 @@
-import {CreateArticleDto} from 'models/helpCenter/types'
+import { CreateArticleDto } from 'models/helpCenter/types'
 
 import {
     ArticleModeModified,
@@ -31,7 +31,7 @@ describe('articleMode', () => {
                     mode: 'modified',
                     onDelete: mockedDeleteArticle,
                     onSave: mockedUpdateArticle,
-                })
+                }),
             ).toEqual(true)
 
             expect(
@@ -39,14 +39,14 @@ describe('articleMode', () => {
                     mode: 'unchanged_not_published',
                     onDelete: mockedDeleteArticle,
                     onPublish: jest.fn(),
-                })
+                }),
             ).toEqual(true)
 
             expect(
                 canDelete({
                     mode: 'unchanged_published',
                     onDelete: mockedDeleteArticle,
-                })
+                }),
             ).toEqual(true)
         })
 
@@ -55,7 +55,7 @@ describe('articleMode', () => {
                 canDelete({
                     mode: 'new',
                     onCreate: mockedCreateArticle,
-                })
+                }),
             ).toEqual(false)
         })
     })
@@ -102,7 +102,7 @@ describe('articleMode', () => {
                     translation: newTranslationData,
                 },
                 false,
-                handlers
+                handlers,
             ) as ArticleModeNew
 
             expect(modeNew.mode).toEqual('new')
@@ -113,7 +113,7 @@ describe('articleMode', () => {
                 {
                     translation: newTranslationData,
                 },
-                true
+                true,
             )
 
             await modeNew.onCreate(false)
@@ -122,7 +122,7 @@ describe('articleMode', () => {
                 {
                     translation: newTranslationData,
                 },
-                false
+                false,
             )
         })
 
@@ -133,7 +133,7 @@ describe('articleMode', () => {
                     translation: newTranslationData,
                 },
                 false,
-                handlers
+                handlers,
             ) as ArticleModeNew
 
             expect(modeNew.mode).toEqual('new')
@@ -145,7 +145,7 @@ describe('articleMode', () => {
                     ...existingArticleData,
                     translation: newTranslationData,
                 },
-                true
+                true,
             )
 
             await modeNew.onCreate(false)
@@ -155,7 +155,7 @@ describe('articleMode', () => {
                     ...existingArticleData,
                     translation: newTranslationData,
                 },
-                false
+                false,
             )
         })
 
@@ -166,11 +166,11 @@ describe('articleMode', () => {
                     translation: existingTranslationData,
                 },
                 false,
-                handlers
+                handlers,
             ) as ArticleModeUnchangedNotPublished
 
             expect(modeUnchangedNotPublished.mode).toEqual(
-                'unchanged_not_published'
+                'unchanged_not_published',
             )
 
             await modeUnchangedNotPublished.onPublish()
@@ -180,7 +180,7 @@ describe('articleMode', () => {
                     ...existingArticleData,
                     translation: existingTranslationData,
                 },
-                true
+                true,
             )
 
             await modeUnchangedNotPublished.onDelete()
@@ -195,7 +195,7 @@ describe('articleMode', () => {
                     translation: existingTranslationData,
                 },
                 true,
-                handlers
+                handlers,
             ) as ArticleModeModified
 
             expect(modeModified.mode).toEqual('modified')
@@ -207,7 +207,7 @@ describe('articleMode', () => {
                     ...existingArticleData,
                     translation: existingTranslationData,
                 },
-                true
+                true,
             )
 
             await modeModified.onSave(false)
@@ -217,7 +217,7 @@ describe('articleMode', () => {
                     ...existingArticleData,
                     translation: existingTranslationData,
                 },
-                false
+                false,
             )
 
             await modeModified.onDelete()
@@ -229,10 +229,13 @@ describe('articleMode', () => {
             const modeUnchangedPublished = getArticleMode(
                 {
                     ...existingArticleData,
-                    translation: {...existingTranslationData, is_current: true},
+                    translation: {
+                        ...existingTranslationData,
+                        is_current: true,
+                    },
                 },
                 false,
-                handlers
+                handlers,
             ) as ArticleModeUnchangedPublished
 
             expect(modeUnchangedPublished.mode).toEqual('unchanged_published')

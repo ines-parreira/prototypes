@@ -1,3 +1,5 @@
+import React, { ComponentProps } from 'react'
+
 import {
     cleanup,
     fireEvent,
@@ -5,11 +7,10 @@ import {
     screen,
     within,
 } from '@testing-library/react'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import { Provider } from 'react-redux'
 
-import {whatsAppMessageTemplates} from 'fixtures/whatsAppMessageTemplates'
-import {mockStore} from 'utils/testing'
+import { whatsAppMessageTemplates } from 'fixtures/whatsAppMessageTemplates'
+import { mockStore } from 'utils/testing'
 
 import WhatsAppMessageTemplateBody from '../WhatsAppMessageTemplateBody'
 
@@ -17,7 +18,7 @@ describe('WhatsAppMessageTemplateBody', () => {
     const onInputChange = jest.fn()
 
     const renderComponent = (
-        props: Partial<ComponentProps<typeof WhatsAppMessageTemplateBody>> = {}
+        props: Partial<ComponentProps<typeof WhatsAppMessageTemplateBody>> = {},
     ) =>
         render(
             <Provider store={mockStore({} as any)}>
@@ -27,7 +28,7 @@ describe('WhatsAppMessageTemplateBody', () => {
                     onChange={onInputChange}
                     {...props}
                 />
-            </Provider>
+            </Provider>,
         )
 
     afterEach(cleanup)
@@ -38,18 +39,18 @@ describe('WhatsAppMessageTemplateBody', () => {
     })
 
     it('should render all variables as inputs when isPreview=false', () => {
-        renderComponent({isPreview: false})
+        renderComponent({ isPreview: false })
         expect(screen.getAllByTestId('wa-variable-input')).toHaveLength(2)
     })
 
     it('should call onInputChange when input value changes', () => {
-        renderComponent({isPreview: false})
+        renderComponent({ isPreview: false })
 
         const input = within(
-            screen.getAllByTestId('wa-variable-input')[1]
+            screen.getAllByTestId('wa-variable-input')[1],
         ).getByRole('textbox')
 
-        fireEvent.change(input, {target: {value: 'hiii'}})
+        fireEvent.change(input, { target: { value: 'hiii' } })
         expect(onInputChange).toHaveBeenCalledWith([undefined, 'hiii'])
     })
 })

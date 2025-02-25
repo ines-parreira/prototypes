@@ -1,4 +1,8 @@
-import {CustomField, isCustomField, isCustomFieldAIManagedType} from '../types'
+import {
+    CustomField,
+    isCustomField,
+    isCustomFieldAIManagedType,
+} from '../types'
 
 describe('custom field types', () => {
     describe('isCustomField', () => {

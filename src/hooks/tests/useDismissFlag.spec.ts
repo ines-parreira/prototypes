@@ -1,22 +1,22 @@
-import {act, renderHook} from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react-hooks'
 
-import {useDismissFlag} from '../useDismissFlag'
+import { useDismissFlag } from '../useDismissFlag'
 
 describe('useDismissFlag', () => {
     it('should return the default visibility', () => {
-        const {result} = renderHook(() => useDismissFlag('key'))
+        const { result } = renderHook(() => useDismissFlag('key'))
         expect(result.current.isDismissed).toBe(true)
     })
 
     it('should return the set visibility', () => {
-        const {result} = renderHook(() => useDismissFlag('key', true))
+        const { result } = renderHook(() => useDismissFlag('key', true))
         expect(result.current.isDismissed).toBe(false)
     })
 
     describe('flag is dismissed using the api', () => {
         it('saves the dismiss state in localStorage', () => {
             const lsSpy = jest.spyOn(Storage.prototype, 'setItem')
-            const {result} = renderHook(() => useDismissFlag('key'))
+            const { result } = renderHook(() => useDismissFlag('key'))
 
             act(() => {
                 result.current.dismiss()
@@ -26,7 +26,7 @@ describe('useDismissFlag', () => {
         })
 
         it('updates the visibility', () => {
-            const {result} = renderHook(() => useDismissFlag('key'))
+            const { result } = renderHook(() => useDismissFlag('key'))
 
             act(() => {
                 result.current.dismiss()
@@ -46,7 +46,7 @@ describe('useDismissFlag', () => {
         })
 
         it('should return the visibility from localStorage', () => {
-            const {result} = renderHook(() => useDismissFlag('key', true))
+            const { result } = renderHook(() => useDismissFlag('key', true))
             expect(result.current.isDismissed).toBe(true)
         })
     })

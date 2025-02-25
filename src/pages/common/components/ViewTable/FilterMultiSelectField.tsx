@@ -1,15 +1,16 @@
-import type {Map} from 'immutable'
+import React, { ComponentType, useCallback, useMemo } from 'react'
+
+import type { Map } from 'immutable'
 import _debounce from 'lodash/debounce'
-import React, {ComponentType, useCallback, useMemo} from 'react'
 
 import useEffectOnce from 'hooks/useEffectOnce'
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
-import {Option} from 'pages/common/forms/MultiSelectOptionsField/types'
+import { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
 import withCancellableRequest, {
     CancellableRequestInjectedProps,
 } from 'pages/common/utils/withCancellableRequest'
-import {fieldEnumSearch} from 'state/views/actions'
-import {FieldSearchResult} from 'state/views/types'
+import { fieldEnumSearch } from 'state/views/actions'
+import { FieldSearchResult } from 'state/views/types'
 
 type Props = {
     plural: string
@@ -56,7 +57,7 @@ export function FilterMultiSelectField(props: Props) {
 
             setOptions(mapSearchResults(data ? data.toJS() : []))
         },
-        [field, fieldEnumSearchCancellable, mapSearchResults]
+        [field, fieldEnumSearchCancellable, mapSearchResults],
     )
 
     useEffectOnce(() => {
@@ -66,7 +67,7 @@ export function FilterMultiSelectField(props: Props) {
     // handleSearch must be a stable function for debounce to work
     const handleInputChange = useMemo(
         () => _debounce(handleSearch, 1000),
-        [handleSearch]
+        [handleSearch],
     )
 
     const handleChange = (options: Option[]) => {
@@ -94,5 +95,5 @@ export default withCancellableRequest<
     typeof fieldEnumSearch
 >(
     'fieldEnumSearchCancellable',
-    fieldEnumSearch
+    fieldEnumSearch,
 )(FilterMultiSelectField)

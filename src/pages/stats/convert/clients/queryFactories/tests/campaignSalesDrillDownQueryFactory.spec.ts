@@ -1,17 +1,17 @@
 import moment from 'moment'
 
-import {TicketChannel} from 'business/types/ticket'
-import {OrderDirection} from 'models/api/types'
-import {LegacyStatsFilters} from 'models/stat/types'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import { TicketChannel } from 'business/types/ticket'
+import { OrderDirection } from 'models/api/types'
+import { LegacyStatsFilters } from 'models/stat/types'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import {
     Cube,
     FilterOperator,
     OrderConversionDimension,
     SharedDimension,
 } from 'pages/stats/convert/clients/constants'
-import {campaignSalesDrillDownQueryFactory} from 'pages/stats/convert/clients/queryFactories/campaignSalesDrillDownQueryFactory'
-import {getDateRange} from 'pages/stats/convert/clients/utils'
+import { campaignSalesDrillDownQueryFactory } from 'pages/stats/convert/clients/queryFactories/campaignSalesDrillDownQueryFactory'
+import { getDateRange } from 'pages/stats/convert/clients/utils'
 
 describe('campaignSalesDrillDownQueryFactory', () => {
     const periodStart = moment()
@@ -43,8 +43,8 @@ describe('campaignSalesDrillDownQueryFactory', () => {
                 statsFilters,
                 timezone,
                 sorting,
-                abVariant
-            )
+                abVariant,
+            ),
         ).toEqual({
             dimensions: [
                 OrderConversionDimension.customerId,
@@ -61,7 +61,7 @@ describe('campaignSalesDrillDownQueryFactory', () => {
                     operator: FilterOperator.inDateRange,
                     values: getDateRange(
                         periodStart.toISOString(),
-                        periodEnd.toISOString()
+                        periodEnd.toISOString(),
                     ),
                 },
                 {
@@ -99,8 +99,8 @@ describe('campaignSalesDrillDownQueryFactory', () => {
                 LogicalOperatorEnum.ONE_OF,
                 statsFilters,
                 timezone,
-                sorting
-            )
+                sorting,
+            ),
         ).toEqual({
             dimensions: [
                 OrderConversionDimension.customerId,
@@ -117,7 +117,7 @@ describe('campaignSalesDrillDownQueryFactory', () => {
                     operator: FilterOperator.inDateRange,
                     values: getDateRange(
                         periodStart.toISOString(),
-                        periodEnd.toISOString()
+                        periodEnd.toISOString(),
                     ),
                 },
                 {

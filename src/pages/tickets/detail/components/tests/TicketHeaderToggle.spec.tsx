@@ -1,10 +1,11 @@
-import {render} from '@testing-library/react'
 import React from 'react'
-import {MemoryRouter, Route, Switch} from 'react-router-dom'
+
+import { render } from '@testing-library/react'
+import { MemoryRouter, Route, Switch } from 'react-router-dom'
 
 import * as useShowGlobalNavFeatureFlag from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
 
-import {TicketHeaderToggle} from '../TicketHeaderToggle'
+import { TicketHeaderToggle } from '../TicketHeaderToggle'
 
 jest.mock('common/navigation/hooks/useShowGlobalNavFeatureFlag')
 
@@ -28,14 +29,14 @@ describe('TicketHeaderToggle', () => {
                         <TicketHeaderToggle />
                     </Route>
                 </Switch>
-            </MemoryRouter>
+            </MemoryRouter>,
         )
     }
 
     it('renders Toggle when feature flag is true and not in split view', () => {
         mockUseFeatureFlag.mockReturnValue(true)
 
-        const {getByTestId} = renderWithRouter('/ticket/123')
+        const { getByTestId } = renderWithRouter('/ticket/123')
 
         expect(getByTestId('toggle-component')).toBeInTheDocument()
     })
@@ -43,7 +44,7 @@ describe('TicketHeaderToggle', () => {
     it('renders null when feature flag is false', () => {
         mockUseFeatureFlag.mockReturnValue(false)
 
-        const {container} = renderWithRouter('/ticket/123')
+        const { container } = renderWithRouter('/ticket/123')
 
         expect(container.firstChild).toBeNull()
     })
@@ -51,7 +52,7 @@ describe('TicketHeaderToggle', () => {
     it('renders null when in split view, even if feature flag is true', () => {
         mockUseFeatureFlag.mockReturnValue(true)
 
-        const {container} = renderWithRouter('/views/123/456')
+        const { container } = renderWithRouter('/views/123/456')
 
         expect(container.firstChild).toBeNull()
     })

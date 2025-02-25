@@ -1,7 +1,8 @@
-import {fromJS} from 'immutable'
-import React, {useState, useEffect, useMemo} from 'react'
-import {Link} from 'react-router-dom'
-import {Label} from 'reactstrap'
+import React, { useEffect, useMemo, useState } from 'react'
+
+import { fromJS } from 'immutable'
+import { Link } from 'react-router-dom'
+import { Label } from 'reactstrap'
 
 import {
     getPrimaryLanguageFromChatConfig,
@@ -10,25 +11,25 @@ import {
 } from 'config/integrations/gorgias_chat'
 import InputField from 'pages/common/forms/input/InputField'
 import CampaignPreview from 'pages/convert/campaigns/components/CampaignPreview'
-import {StepProps} from 'pages/convert/campaigns/components/ContactCaptureForm/types'
-import {transformTransitoryToAttachment} from 'pages/convert/campaigns/components/ContactCaptureForm/utils'
-import {useIntegrationContext} from 'pages/convert/campaigns/containers/IntegrationProvider'
-import {useCampaignDetailsContext} from 'pages/convert/campaigns/hooks/useCampaignDetailsContext'
-import {useChatPreviewProps} from 'pages/convert/campaigns/hooks/useChatPreviewProps'
-import {useConvertGeneralSettings} from 'pages/stats/convert/hooks/useConvertGeneralSettings'
-import {sanitizeHtmlDefault} from 'utils/html'
+import { StepProps } from 'pages/convert/campaigns/components/ContactCaptureForm/types'
+import { transformTransitoryToAttachment } from 'pages/convert/campaigns/components/ContactCaptureForm/utils'
+import { useIntegrationContext } from 'pages/convert/campaigns/containers/IntegrationProvider'
+import { useCampaignDetailsContext } from 'pages/convert/campaigns/hooks/useCampaignDetailsContext'
+import { useChatPreviewProps } from 'pages/convert/campaigns/hooks/useChatPreviewProps'
+import { useConvertGeneralSettings } from 'pages/stats/convert/hooks/useConvertGeneralSettings'
+import { sanitizeHtmlDefault } from 'utils/html'
 
 import css from './Customization.less'
 
 export const Customization = (props: StepProps) => {
-    const {attachmentData, setAttachmentData, setNextButtonActive} = props
+    const { attachmentData, setAttachmentData, setNextButtonActive } = props
 
-    const {chatIntegration} = useIntegrationContext()
+    const { chatIntegration } = useIntegrationContext()
     const chatPreviewProps = useChatPreviewProps(fromJS(chatIntegration || {}))
-    const {campaign} = useCampaignDetailsContext()
+    const { campaign } = useCampaignDetailsContext()
 
     const [emailFieldLabel, setEmailFieldLabel] = useState(
-        attachmentData.forms.email.label
+        attachmentData.forms.email.label,
     )
     const [cta, setCta] = useState(attachmentData.forms.email.cta)
     const [nextButtonEnabled, setInnerNextButtonEnabled] = useState(false)
@@ -57,10 +58,10 @@ export const Customization = (props: StepProps) => {
     }, [nextButtonEnabled, setNextButtonActive])
 
     const defaultLanguage = getPrimaryLanguageFromChatConfig(
-        chatIntegration?.meta
+        chatIntegration?.meta,
     )
 
-    const {emailDisclaimer: emailDisclaimerSettings} =
+    const { emailDisclaimer: emailDisclaimerSettings } =
         useConvertGeneralSettings(chatIntegration)
 
     return (
@@ -114,7 +115,7 @@ export const Customization = (props: StepProps) => {
                     }
                     className={css.campaignPreview}
                     contactCaptureForm={transformTransitoryToAttachment(
-                        attachmentData
+                        attachmentData,
                     )}
                     html={sanitizeHtmlDefault(campaign.message_html || '')}
                     authorName={campaign.meta?.agentName ?? ``}

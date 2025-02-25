@@ -1,44 +1,46 @@
-import {
-    createIntegration,
-    updateIntegration,
-    deleteIntegration,
-    sendVerificationEmail,
-    EmailIntegration,
-} from '@gorgias/api-client'
-import {HttpResponse, Integration} from '@gorgias/api-queries'
-import {QueryClientProvider} from '@tanstack/react-query'
-import {waitFor} from '@testing-library/react'
-import {renderHook} from '@testing-library/react-hooks'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
-import {Provider} from 'react-redux'
-import {MemoryRouter} from 'react-router-dom'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { waitFor } from '@testing-library/react'
+import { renderHook } from '@testing-library/react-hooks'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
+import { MemoryRouter } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import {
+    createIntegration,
+    deleteIntegration,
+    EmailIntegration,
+    sendVerificationEmail,
+    updateIntegration,
+} from '@gorgias/api-client'
+import { HttpResponse, Integration } from '@gorgias/api-queries'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import * as localStorage from 'hooks/useLocalStorage'
 import socketManager from 'services/socketManager'
-import {fetchIntegration, onCreateSuccess} from 'state/integrations/actions'
-import {DELETE_INTEGRATION_SUCCESS} from 'state/integrations/constants'
-import {notify} from 'state/notifications/actions'
-import {RootState, StoreDispatch} from 'state/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { fetchIntegration, onCreateSuccess } from 'state/integrations/actions'
+import { DELETE_INTEGRATION_SUCCESS } from 'state/integrations/constants'
+import { notify } from 'state/notifications/actions'
+import { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
+
+import {
+    EmailIntegrationOnboardingStep,
+    stepUrl,
+    useEmailOnboarding,
+    useEmailOnboardingCompleteCheck,
+    UseEmailOnboardingHookOptions,
+    UseEmailOnboardingHookResult,
+} from '../hooks/useEmailOnboarding'
 
 const mockStore = createMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const queryClient = mockQueryClient()
 const store = mockStore({})
-
-import {
-    EmailIntegrationOnboardingStep,
-    UseEmailOnboardingHookOptions,
-    UseEmailOnboardingHookResult,
-    stepUrl,
-    useEmailOnboarding,
-    useEmailOnboardingCompleteCheck,
-} from '../hooks/useEmailOnboarding'
 
 jest.mock('pages/history')
 jest.mock('@gorgias/api-client')
@@ -55,7 +57,7 @@ jest.mock(
             useHistory: () => ({
                 push: mockHistoryPush,
             }),
-        }) as Record<string, unknown>
+        }) as Record<string, unknown>,
 )
 
 const mockHistoryPush = jest.fn()
@@ -69,7 +71,7 @@ assumeMock(useAppDispatch).mockReturnValue(mockDispatch)
 
 const render = (options?: UseEmailOnboardingHookOptions, path?: string) => {
     return renderHook(() => useEmailOnboarding(options), {
-        wrapper: ({children}) => (
+        wrapper: ({ children }) => (
             <MemoryRouter initialEntries={[path ?? '/']}>
                 <Provider store={store}>
                     <QueryClientProvider client={queryClient}>
@@ -96,7 +98,7 @@ describe('useEmailOnboarding()', () => {
         })
     })
     it('should have an initial state', () => {
-        const {result} = render()
+        const { result } = render()
         const state: UseEmailOnboardingHookResult = result.current
         expect(state.integration).toEqual(undefined)
         expect(state.errors).toEqual(undefined)
@@ -106,7 +108,7 @@ describe('useEmailOnboarding()', () => {
         expect(state.isSending).toEqual(false)
         expect(state.isRequested).toEqual(false)
         expect(state.currentStep).toEqual(
-            EmailIntegrationOnboardingStep.ConnectIntegration
+            EmailIntegrationOnboardingStep.ConnectIntegration,
         )
         expect(typeof state.connectIntegration).toEqual('function')
         expect(typeof state.sendVerification).toEqual('function')
@@ -116,9 +118,9 @@ describe('useEmailOnboarding()', () => {
 
     describe('current step', () => {
         it('should return ConnectIntegration when no integration is provided', () => {
-            const {result} = render()
+            const { result } = render()
             expect(result.current.currentStep).toEqual(
-                EmailIntegrationOnboardingStep.ConnectIntegration
+                EmailIntegrationOnboardingStep.ConnectIntegration,
             )
         })
 
@@ -130,9 +132,9 @@ describe('useEmailOnboarding()', () => {
                     verified: false,
                 },
             } as EmailIntegration
-            const {result} = render({integration})
+            const { result } = render({ integration })
             expect(result.current.currentStep).toEqual(
-                EmailIntegrationOnboardingStep.ForwardingSetup
+                EmailIntegrationOnboardingStep.ForwardingSetup,
             )
         })
 
@@ -142,9 +144,9 @@ describe('useEmailOnboarding()', () => {
                     verified: true,
                 },
             } as EmailIntegration
-            const {result} = render({integration})
+            const { result } = render({ integration })
             expect(result.current.currentStep).toEqual(
-                EmailIntegrationOnboardingStep.Verification
+                EmailIntegrationOnboardingStep.Verification,
             )
         })
 
@@ -157,49 +159,49 @@ describe('useEmailOnboarding()', () => {
             } as EmailIntegration
 
             it('should return ForwardingSetup when the the URL is set to forwarding', () => {
-                const {result} = render(
-                    {integration},
-                    '/app/settings/channels/email/1/onboarding/forwarding-setup'
+                const { result } = render(
+                    { integration },
+                    '/app/settings/channels/email/1/onboarding/forwarding-setup',
                 )
                 expect(result.current.currentStep).toEqual(
-                    EmailIntegrationOnboardingStep.ForwardingSetup
+                    EmailIntegrationOnboardingStep.ForwardingSetup,
                 )
             })
 
             it('should return ForwardingSetup when the the URL is set to forwarding and a verification has been sent', () => {
-                const {result} = render(
-                    {integration},
-                    '/app/settings/channels/email/1/onboarding/forwarding-setup'
+                const { result } = render(
+                    { integration },
+                    '/app/settings/channels/email/1/onboarding/forwarding-setup',
                 )
                 expect(result.current.currentStep).toEqual(
-                    EmailIntegrationOnboardingStep.ForwardingSetup
+                    EmailIntegrationOnboardingStep.ForwardingSetup,
                 )
             })
 
             it('should return ConnectIntegration when the URL is set to connect', () => {
-                const {result} = render(
-                    {integration},
-                    '/app/settings/channels/email/1/onboarding/connect-integration'
+                const { result } = render(
+                    { integration },
+                    '/app/settings/channels/email/1/onboarding/connect-integration',
                 )
                 expect(result.current.currentStep).toEqual(
-                    EmailIntegrationOnboardingStep.ConnectIntegration
+                    EmailIntegrationOnboardingStep.ConnectIntegration,
                 )
             })
 
             it('should return Verification when the URL is set to verification and a verification has been sent', () => {
                 mockIsRequested(true)
-                const {result} = render(
-                    {integration},
-                    '/app/settings/channels/email/1/onboarding/verification'
+                const { result } = render(
+                    { integration },
+                    '/app/settings/channels/email/1/onboarding/verification',
                 )
                 expect(result.current.currentStep).toEqual(
-                    EmailIntegrationOnboardingStep.Verification
+                    EmailIntegrationOnboardingStep.Verification,
                 )
             })
 
             it('should return ForwardingSetup when the URL is set to verification and a verification has not been sent', () => {
                 mockIsRequested(false)
-                const {result} = render(
+                const { result } = render(
                     {
                         integration: {
                             ...integration,
@@ -208,26 +210,26 @@ describe('useEmailOnboarding()', () => {
                             },
                         } as EmailIntegration,
                     },
-                    '/app/settings/channels/email/1/onboarding/verification'
+                    '/app/settings/channels/email/1/onboarding/verification',
                 )
                 expect(result.current.currentStep).toEqual(
-                    EmailIntegrationOnboardingStep.ForwardingSetup
+                    EmailIntegrationOnboardingStep.ForwardingSetup,
                 )
             })
 
             it('should return Domain Verification when the URL is set to domain-verification', () => {
-                const {result} = render(
-                    {integration},
-                    '/app/settings/channels/email/1/onboarding/domain-verification'
+                const { result } = render(
+                    { integration },
+                    '/app/settings/channels/email/1/onboarding/domain-verification',
                 )
                 expect(result.current.currentStep).toEqual(
-                    EmailIntegrationOnboardingStep.DomainVerification
+                    EmailIntegrationOnboardingStep.DomainVerification,
                 )
             })
 
             it('should return Forwarding Setup when URL is set to domain-verification and forwarding is not verified and not requested', () => {
                 mockIsRequested(false)
-                const {result} = render(
+                const { result } = render(
                     {
                         integration: {
                             ...integration,
@@ -236,16 +238,16 @@ describe('useEmailOnboarding()', () => {
                             },
                         } as EmailIntegration,
                     },
-                    '/app/settings/channels/email/1/onboarding/domain-verification'
+                    '/app/settings/channels/email/1/onboarding/domain-verification',
                 )
                 expect(result.current.currentStep).toEqual(
-                    EmailIntegrationOnboardingStep.ForwardingSetup
+                    EmailIntegrationOnboardingStep.ForwardingSetup,
                 )
             })
 
             it('should return Verification when URL is set to domain-verification and forwarding is requested but not verified', () => {
                 mockIsRequested(true)
-                const {result} = render(
+                const { result } = render(
                     {
                         integration: {
                             ...integration,
@@ -254,10 +256,10 @@ describe('useEmailOnboarding()', () => {
                             },
                         } as EmailIntegration,
                     },
-                    '/app/settings/channels/email/1/onboarding/domain-verification'
+                    '/app/settings/channels/email/1/onboarding/domain-verification',
                 )
                 expect(result.current.currentStep).toEqual(
-                    EmailIntegrationOnboardingStep.Verification
+                    EmailIntegrationOnboardingStep.Verification,
                 )
             })
         })
@@ -266,7 +268,7 @@ describe('useEmailOnboarding()', () => {
     describe('actions', () => {
         describe('connectIntegration()', () => {
             it('creates the integration if it does not exist', async () => {
-                const {result} = render()
+                const { result } = render()
 
                 const payload = {
                     name: 'Support Email',
@@ -289,19 +291,19 @@ describe('useEmailOnboarding()', () => {
 
                 await waitFor(() => {
                     expect(createIntegrationMock).toHaveBeenCalledWith(
-                        {...payload, type: 'email'},
-                        undefined
+                        { ...payload, type: 'email' },
+                        undefined,
                     )
 
                     expect(onSuccessMock).toHaveBeenCalledWith(
                         mockDispatch,
                         integration,
                         true,
-                        true
+                        true,
                     )
 
                     expect(mockHistoryPush).toHaveBeenCalledWith(
-                        '/app/settings/channels/email/1/onboarding/forwarding-setup'
+                        '/app/settings/channels/email/1/onboarding/forwarding-setup',
                     )
                 })
             })
@@ -315,7 +317,7 @@ describe('useEmailOnboarding()', () => {
                     },
                 }
 
-                const {result} = render({
+                const { result } = render({
                     integration: integration as EmailIntegration,
                 })
 
@@ -329,20 +331,20 @@ describe('useEmailOnboarding()', () => {
                     expect(updateIntegrationMock).toHaveBeenCalledWith(
                         1,
                         integration,
-                        undefined
+                        undefined,
                     )
 
                     expect(onSuccessMock).toHaveBeenCalledWith(
                         mockDispatch,
                         integration,
                         true,
-                        true
+                        true,
                     )
                 })
             })
 
             it('should set errors if the API call fails', async () => {
-                const {result, waitForValueToChange} = render()
+                const { result, waitForValueToChange } = render()
 
                 const payload = {
                     name: 'Support Email',
@@ -370,8 +372,8 @@ describe('useEmailOnboarding()', () => {
                 await waitForValueToChange(() => result.current.errors)
 
                 expect(createIntegrationMock).toHaveBeenCalledWith(
-                    {...payload, type: 'email'},
-                    undefined
+                    { ...payload, type: 'email' },
+                    undefined,
                 )
 
                 expect(result.current.errors).toEqual({
@@ -391,7 +393,7 @@ describe('useEmailOnboarding()', () => {
             })
 
             it('sends a verification email', async () => {
-                const {result} = render({integration})
+                const { result } = render({ integration })
 
                 sendVerificationEmailMock.mockResolvedValue({
                     data: undefined,
@@ -404,19 +406,19 @@ describe('useEmailOnboarding()', () => {
                 await waitFor(() => {
                     expect(sendVerificationEmailMock).toHaveBeenCalledWith(
                         1,
-                        undefined
+                        undefined,
                     )
 
                     expect(result.current.isRequested).toBe(true)
 
                     expect(mockHistoryPush).toHaveBeenCalledWith(
-                        '/app/settings/channels/email/1/onboarding/verification'
+                        '/app/settings/channels/email/1/onboarding/verification',
                     )
                 })
             })
 
             it('should display a banner if the sending fails', async () => {
-                const {result} = render({integration})
+                const { result } = render({ integration })
 
                 sendVerificationEmailMock.mockRejectedValue({
                     isAxiosError: true,
@@ -436,7 +438,7 @@ describe('useEmailOnboarding()', () => {
                 await waitFor(() => {
                     expect(sendVerificationEmailMock).toHaveBeenCalledWith(
                         1,
-                        undefined
+                        undefined,
                     )
                     expect(result.current.isRequested).toBe(false)
                     expect(notify).toHaveBeenCalledWith({
@@ -447,7 +449,7 @@ describe('useEmailOnboarding()', () => {
             })
 
             it('should trigger an integration refetch if the integration has already been verified', async () => {
-                const {result} = render({integration})
+                const { result } = render({ integration })
 
                 sendVerificationEmailMock.mockRejectedValue({
                     isAxiosError: true,
@@ -467,18 +469,18 @@ describe('useEmailOnboarding()', () => {
                 await waitFor(() => {
                     expect(sendVerificationEmailMock).toHaveBeenCalledWith(
                         1,
-                        undefined
+                        undefined,
                     )
                     expect(result.current.isRequested).toBe(false)
                     expect(fetchIntegration).toHaveBeenCalledWith(
                         String(integration.id),
-                        'email'
+                        'email',
                     )
                 })
             })
 
             it('should display a generic error message if the sending fails without details', async () => {
-                const {result} = render({integration})
+                const { result } = render({ integration })
 
                 sendVerificationEmailMock.mockRejectedValue({
                     isAxiosError: true,
@@ -492,7 +494,7 @@ describe('useEmailOnboarding()', () => {
                 await waitFor(() => {
                     expect(sendVerificationEmailMock).toHaveBeenCalledWith(
                         1,
-                        undefined
+                        undefined,
                     )
                     expect(result.current.isRequested).toBe(false)
                     expect(notify).toHaveBeenCalledWith({
@@ -503,13 +505,13 @@ describe('useEmailOnboarding()', () => {
             })
 
             it('is a no-op if no integration is connected', () => {
-                const {result} = render()
+                const { result } = render()
                 result.current.sendVerification()
                 expect(sendVerificationEmailMock).not.toHaveBeenCalled()
             })
 
             it('should change requested and pending flags after sending a verification request', async () => {
-                const {result, waitForValueToChange} = render({integration})
+                const { result, waitForValueToChange } = render({ integration })
 
                 sendVerificationEmailMock.mockResolvedValue({
                     data: undefined,
@@ -529,7 +531,7 @@ describe('useEmailOnboarding()', () => {
             it('should should change pending back to false after the timeout expires', async () => {
                 jest.useFakeTimers()
 
-                const {result, waitForValueToChange} = render({integration})
+                const { result, waitForValueToChange } = render({ integration })
 
                 sendVerificationEmailMock.mockResolvedValue({
                     data: undefined,
@@ -556,7 +558,7 @@ describe('useEmailOnboarding()', () => {
             it('should subscribe to integration events while pending', async () => {
                 jest.useFakeTimers()
 
-                const {result, waitForValueToChange} = render({integration})
+                const { result, waitForValueToChange } = render({ integration })
 
                 sendVerificationEmailMock.mockResolvedValue({
                     data: undefined,
@@ -574,7 +576,7 @@ describe('useEmailOnboarding()', () => {
 
                 expect(socketManager.join).toHaveBeenCalledWith(
                     'integration',
-                    integration.id
+                    integration.id,
                 )
 
                 jest.advanceTimersByTime(2 * 60 * 1000 + 500)
@@ -584,7 +586,7 @@ describe('useEmailOnboarding()', () => {
 
                 expect(socketManager.leave).toHaveBeenCalledWith(
                     'integration',
-                    integration.id
+                    integration.id,
                 )
             })
         })
@@ -596,7 +598,7 @@ describe('useEmailOnboarding()', () => {
             } as EmailIntegration
 
             it('deletes the integration', async () => {
-                const {result} = render({integration})
+                const { result } = render({ integration })
 
                 deleteIntegrationMock.mockResolvedValue({
                     data: undefined,
@@ -607,20 +609,20 @@ describe('useEmailOnboarding()', () => {
                 await waitFor(() => {
                     expect(deleteIntegrationMock).toHaveBeenCalledWith(
                         1,
-                        undefined
+                        undefined,
                     )
                     expect(mockDispatch).toHaveBeenCalledWith({
                         type: DELETE_INTEGRATION_SUCCESS,
                         id: 1,
                     })
                     expect(mockHistoryPush).toHaveBeenCalledWith(
-                        '/app/settings/channels/email'
+                        '/app/settings/channels/email',
                     )
                 })
             })
 
             it('should display a banner if the deleting fails', async () => {
-                const {result} = render({integration})
+                const { result } = render({ integration })
 
                 deleteIntegrationMock.mockRejectedValue({
                     isAxiosError: true,
@@ -638,7 +640,7 @@ describe('useEmailOnboarding()', () => {
                 await waitFor(() => {
                     expect(deleteIntegrationMock).toHaveBeenCalledWith(
                         1,
-                        undefined
+                        undefined,
                     )
                     expect(notify).toHaveBeenCalledWith({
                         message: 'Deletion failed',
@@ -648,7 +650,7 @@ describe('useEmailOnboarding()', () => {
             })
 
             it('should display a generic error message if the deleting fails without details', async () => {
-                const {result} = render({integration})
+                const { result } = render({ integration })
 
                 deleteIntegrationMock.mockRejectedValue({
                     isAxiosError: true,
@@ -660,7 +662,7 @@ describe('useEmailOnboarding()', () => {
                 await waitFor(() => {
                     expect(deleteIntegrationMock).toHaveBeenCalledWith(
                         1,
-                        undefined
+                        undefined,
                     )
                     expect(notify).toHaveBeenCalledWith({
                         message: 'Failed to delete integration',
@@ -670,7 +672,7 @@ describe('useEmailOnboarding()', () => {
             })
 
             it('is a no-op if no integration is connected', () => {
-                const {result} = render()
+                const { result } = render()
                 result.current.deleteIntegration()
                 expect(deleteIntegrationMock).not.toHaveBeenCalled()
             })
@@ -684,51 +686,51 @@ describe('useEmailOnboarding()', () => {
 
             it('should redirect to the integrations page if no integration is connected', () => {
                 mockIsRequested(false)
-                const {result} = render()
+                const { result } = render()
                 result.current.goBack()
                 expect(mockHistoryPush).toHaveBeenCalledWith(
-                    '/app/settings/channels/email'
+                    '/app/settings/channels/email',
                 )
             })
 
             it('should redirect to the integrations page if the current step is Connect Integration', () => {
                 mockIsRequested(false)
-                const {result} = render(
-                    {integration},
-                    '/app/settings/channels/email/1/onboarding/connect-integration'
+                const { result } = render(
+                    { integration },
+                    '/app/settings/channels/email/1/onboarding/connect-integration',
                 )
                 result.current.goBack()
                 expect(mockHistoryPush).toHaveBeenCalledWith(
-                    '/app/settings/channels/email'
+                    '/app/settings/channels/email',
                 )
             })
 
             it('should redirect to the Connect Integration if the current step is Forwarding', () => {
                 mockIsRequested(false)
-                const {result} = render(
-                    {integration},
-                    '/app/settings/channels/email/1/onboarding/forwarding-setup'
+                const { result } = render(
+                    { integration },
+                    '/app/settings/channels/email/1/onboarding/forwarding-setup',
                 )
                 result.current.goBack()
                 expect(mockHistoryPush).toHaveBeenCalledWith(
-                    '/app/settings/channels/email/1/onboarding/connect-integration'
+                    '/app/settings/channels/email/1/onboarding/connect-integration',
                 )
             })
 
             it('should redirect to the Forwarding Setup if the current step is Verification', () => {
                 mockIsRequested(true)
-                const {result} = render(
-                    {integration},
-                    '/app/settings/channels/email/1/onboarding/verification'
+                const { result } = render(
+                    { integration },
+                    '/app/settings/channels/email/1/onboarding/verification',
                 )
                 result.current.goBack()
                 expect(mockHistoryPush).toHaveBeenCalledWith(
-                    '/app/settings/channels/email/1/onboarding/forwarding-setup'
+                    '/app/settings/channels/email/1/onboarding/forwarding-setup',
                 )
             })
 
             it('should redirect to the Verification if the current step is Domain Verification', () => {
-                const {result} = render(
+                const { result } = render(
                     {
                         integration: {
                             ...integration,
@@ -737,11 +739,11 @@ describe('useEmailOnboarding()', () => {
                             },
                         } as EmailIntegration,
                     },
-                    '/app/settings/channels/email/1/onboarding/domain-verification'
+                    '/app/settings/channels/email/1/onboarding/domain-verification',
                 )
                 result.current.goBack()
                 expect(mockHistoryPush).toHaveBeenCalledWith(
-                    '/app/settings/channels/email/1/onboarding/verification'
+                    '/app/settings/channels/email/1/onboarding/verification',
                 )
             })
         })
@@ -754,34 +756,34 @@ describe('useEmailOnboarding()', () => {
 
             it('should redirect to the integrations page if no integration is connected', () => {
                 mockIsRequested(false)
-                const {result} = render()
+                const { result } = render()
                 result.current.goToNext()
                 expect(mockHistoryPush).toHaveBeenCalledWith(
-                    '/app/settings/channels/email'
+                    '/app/settings/channels/email',
                 )
             })
 
             it('should redirect to Forwarding Setup if the current step is Connect Integration', () => {
                 mockIsRequested(false)
-                const {result} = render(
-                    {integration},
-                    '/app/settings/channels/email/1/onboarding/connect-integration'
+                const { result } = render(
+                    { integration },
+                    '/app/settings/channels/email/1/onboarding/connect-integration',
                 )
                 result.current.goToNext()
                 expect(mockHistoryPush).toHaveBeenCalledWith(
-                    '/app/settings/channels/email/1/onboarding/forwarding-setup'
+                    '/app/settings/channels/email/1/onboarding/forwarding-setup',
                 )
             })
 
             it('should redirect to the Verification if the current step is Forwarding Setup', () => {
                 mockIsRequested(false)
-                const {result} = render(
-                    {integration},
-                    '/app/settings/channels/email/1/onboarding/forwarding-setup'
+                const { result } = render(
+                    { integration },
+                    '/app/settings/channels/email/1/onboarding/forwarding-setup',
                 )
                 result.current.goToNext()
                 expect(mockHistoryPush).toHaveBeenCalledWith(
-                    '/app/settings/channels/email/1/onboarding/verification'
+                    '/app/settings/channels/email/1/onboarding/verification',
                 )
             })
 
@@ -790,7 +792,7 @@ describe('useEmailOnboarding()', () => {
                 mockFlags({
                     [FeatureFlagKey.NewDomainVerification]: false,
                 })
-                const {result} = render(
+                const { result } = render(
                     {
                         integration: {
                             ...integration,
@@ -799,16 +801,16 @@ describe('useEmailOnboarding()', () => {
                             },
                         } as EmailIntegration,
                     },
-                    '/app/settings/channels/email/1/onboarding/verification'
+                    '/app/settings/channels/email/1/onboarding/verification',
                 )
                 result.current.goToNext()
                 expect(mockHistoryPush).toHaveBeenCalledWith(
-                    '/app/settings/channels/email'
+                    '/app/settings/channels/email',
                 )
             })
 
             it('should redirect to the Domain Verification if the current step is Verification', () => {
-                const {result} = render(
+                const { result } = render(
                     {
                         integration: {
                             ...integration,
@@ -817,16 +819,16 @@ describe('useEmailOnboarding()', () => {
                             },
                         } as EmailIntegration,
                     },
-                    '/app/settings/channels/email/1/onboarding/verification'
+                    '/app/settings/channels/email/1/onboarding/verification',
                 )
                 result.current.goToNext()
                 expect(mockHistoryPush).toHaveBeenCalledWith(
-                    '/app/settings/channels/email/1/onboarding/domain-verification'
+                    '/app/settings/channels/email/1/onboarding/domain-verification',
                 )
             })
 
             it('should redirect to the integrations page if the current step is Domain Verification', () => {
-                const {result} = render(
+                const { result } = render(
                     {
                         integration: {
                             ...integration,
@@ -835,11 +837,11 @@ describe('useEmailOnboarding()', () => {
                             },
                         } as EmailIntegration,
                     },
-                    '/app/settings/channels/email/1/onboarding/domain-verification'
+                    '/app/settings/channels/email/1/onboarding/domain-verification',
                 )
                 result.current.goToNext()
                 expect(mockHistoryPush).toHaveBeenCalledWith(
-                    '/app/settings/channels/email'
+                    '/app/settings/channels/email',
                 )
             })
         })
@@ -849,13 +851,13 @@ describe('useEmailOnboarding()', () => {
         describe('stepUrl()', () => {
             it('should return the connect step URL if no integration provided', () => {
                 expect(stepUrl()).toEqual(
-                    '/app/settings/channels/email/new/onboarding/connect-integration'
+                    '/app/settings/channels/email/new/onboarding/connect-integration',
                 )
 
                 expect(
-                    stepUrl(EmailIntegrationOnboardingStep.ConnectIntegration)
+                    stepUrl(EmailIntegrationOnboardingStep.ConnectIntegration),
                 ).toEqual(
-                    '/app/settings/channels/email/new/onboarding/connect-integration'
+                    '/app/settings/channels/email/new/onboarding/connect-integration',
                 )
             })
 
@@ -867,28 +869,28 @@ describe('useEmailOnboarding()', () => {
                 expect(
                     stepUrl(
                         EmailIntegrationOnboardingStep.ConnectIntegration,
-                        integration
-                    )
+                        integration,
+                    ),
                 ).toEqual(
-                    '/app/settings/channels/email/1/onboarding/connect-integration'
+                    '/app/settings/channels/email/1/onboarding/connect-integration',
                 )
 
                 expect(
                     stepUrl(
                         EmailIntegrationOnboardingStep.ForwardingSetup,
-                        integration
-                    )
+                        integration,
+                    ),
                 ).toEqual(
-                    '/app/settings/channels/email/1/onboarding/forwarding-setup'
+                    '/app/settings/channels/email/1/onboarding/forwarding-setup',
                 )
 
                 expect(
                     stepUrl(
                         EmailIntegrationOnboardingStep.Verification,
-                        integration
-                    )
+                        integration,
+                    ),
                 ).toEqual(
-                    '/app/settings/channels/email/1/onboarding/verification'
+                    '/app/settings/channels/email/1/onboarding/verification',
                 )
             })
         })
@@ -905,13 +907,13 @@ describe('useEmailOnboarding()', () => {
             const localStorageSpy = jest.spyOn(localStorage, 'default')
             localStorageSpy.mockReturnValueOnce([false, setValue, jest.fn()])
 
-            const {result} = renderHook(() =>
-                useEmailOnboardingCompleteCheck(integration)
+            const { result } = renderHook(() =>
+                useEmailOnboardingCompleteCheck(integration),
             )
 
             expect(localStorageSpy).toHaveBeenCalledWith(
                 'email-onboarding-completed-1',
-                false
+                false,
             )
             expect(result.current.isOnboardingComplete).toBe(false)
 

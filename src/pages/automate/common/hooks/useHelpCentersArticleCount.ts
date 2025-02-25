@@ -1,12 +1,12 @@
-import {useEffect, useState} from 'react'
+import { useEffect, useState } from 'react'
 
-import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 
 export const useHelpCentersArticleCount = (helpCenterIds?: number[]) => {
-    const {client} = useHelpCenterApi()
+    const { client } = useHelpCenterApi()
 
     const [articlesCount, setArticlesCount] = useState<
-        Array<{helpCenterId: number; count?: number}> | undefined
+        Array<{ helpCenterId: number; count?: number }> | undefined
     >()
 
     useEffect(() => {
@@ -30,9 +30,9 @@ export const useHelpCentersArticleCount = (helpCenterIds?: number[]) => {
                             count: data.data.meta.item_count,
                         }
                     } catch {
-                        return {helpCenterId}
+                        return { helpCenterId }
                     }
-                })
+                }),
             )
 
             if (isCurrent) {

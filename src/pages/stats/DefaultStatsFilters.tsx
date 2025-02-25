@@ -1,23 +1,22 @@
+import React, { ReactNode, useEffect, useMemo } from 'react'
+
 import _isEqual from 'lodash/isEqual'
 import moment from 'moment-timezone'
 
-import React, {ReactNode, useEffect, useMemo} from 'react'
-
-import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-
+import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import useCurrentFilters from 'hooks/reporting/useCurrentFilters'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {StatsFiltersWithLogicalOperator} from 'models/stat/types'
-import {activeParams} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
-import {getTimezone} from 'state/currentUser/selectors'
-import {getStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
+import { StatsFiltersWithLogicalOperator } from 'models/stat/types'
+import { activeParams } from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
+import { getTimezone } from 'state/currentUser/selectors'
+import { getStatsFiltersWithLogicalOperators } from 'state/stats/selectors'
 import {
-    resetStatsFilters,
     defaultStatsFilters,
+    resetStatsFilters,
     setStatsFiltersWithLogicalOperators,
 } from 'state/stats/statsSlice'
-import {isCleanStatsDirty} from 'state/ui/stats/selectors'
+import { isCleanStatsDirty } from 'state/ui/stats/selectors'
 
 type Props = {
     children?: ReactNode
@@ -49,11 +48,11 @@ export default function DefaultStatsFilters({
         },
     }
 
-    const {filters, persistFilters} = useCurrentFilters(defaultFilters)
+    const { filters, persistFilters } = useCurrentFilters(defaultFilters)
 
     const isReady = useMemo(
         () => !_isEqual(statsFilters, defaultStatsFilters),
-        [statsFilters]
+        [statsFilters],
     )
 
     useEffect(() => {

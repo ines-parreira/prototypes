@@ -1,9 +1,10 @@
-import {act, fireEvent, render} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
+import { act, fireEvent, render } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
 import useAppSelector from 'hooks/useAppSelector'
-import {FILTER_WARNING_ICON} from 'pages/stats/common/components/Filter/constants'
+import { FILTER_WARNING_ICON } from 'pages/stats/common/components/Filter/constants'
 import {
     FiltersEditableTitle,
     getTooltipContent,
@@ -11,8 +12,8 @@ import {
     NOT_EXISTENT_ADMIN_ERROR,
     NOT_EXISTENT_AGENT_ERROR,
 } from 'pages/stats/common/filters/FiltersEditableTitle/FiltersEditableTitle'
-import {isTeamLead} from 'utils'
-import {assumeMock} from 'utils/testing'
+import { isTeamLead } from 'utils'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('utils')
 const isTeamLeadMock = assumeMock(isTeamLead)
@@ -31,13 +32,13 @@ describe('FiltersEditableTitle', () => {
     })
 
     it('should render the component', () => {
-        const {getByText, queryByText, container} = render(
+        const { getByText, queryByText, container } = render(
             <FiltersEditableTitle
                 isEditMode={false}
                 title="Filter title"
                 toggleIsEditMode={() => {}}
                 onChange={jest.fn()}
-            />
+            />,
         )
 
         expect(getByText('Filter title')).toBeTruthy()
@@ -45,14 +46,14 @@ describe('FiltersEditableTitle', () => {
         expect(getByText('tune')).toBeTruthy()
 
         expect(
-            container.getElementsByClassName('material-icons icon').length
+            container.getElementsByClassName('material-icons icon').length,
         ).toBe(1)
 
         expect(queryByText(FILTER_WARNING_ICON)).toBeFalsy()
     })
 
     it('should render the component with edit mode without the error icon', () => {
-        const {getByText, queryByText, container, getByPlaceholderText} =
+        const { getByText, queryByText, container, getByPlaceholderText } =
             render(
                 <FiltersEditableTitle
                     isEditMode={true}
@@ -60,7 +61,7 @@ describe('FiltersEditableTitle', () => {
                     toggleIsEditMode={toggleIsEditModeMock}
                     errorType="non-existent"
                     onChange={jest.fn()}
-                />
+                />,
             )
 
         expect(getByText('tune')).toBeTruthy()
@@ -69,40 +70,40 @@ describe('FiltersEditableTitle', () => {
 
         const input = getByPlaceholderText(/Name Filter/i)
 
-        fireEvent.change(input, {target: {value: 'New value'}})
+        fireEvent.change(input, { target: { value: 'New value' } })
 
         expect(queryByText(FILTER_WARNING_ICON)).toBeFalsy()
     })
 
     it('should only have the error icon on read mode', () => {
-        const {getByText, container} = render(
+        const { getByText, container } = render(
             <FiltersEditableTitle
                 isEditMode={false}
                 title=""
                 toggleIsEditMode={() => {}}
                 errorType="non-existent"
                 onChange={jest.fn()}
-            />
+            />,
         )
 
         expect(
             container.getElementsByClassName(
-                'material-icons icon disableTuneIcon'
-            ).length
+                'material-icons icon disableTuneIcon',
+            ).length,
         ).toBe(1)
 
         expect(getByText(FILTER_WARNING_ICON)).toBeInTheDocument()
     })
 
     it('should render the component and switch to edit mode', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <FiltersEditableTitle
                 isEditMode={false}
                 title="Filter title"
                 toggleIsEditMode={toggleIsEditModeMock}
                 errorType="non-existent"
                 onChange={jest.fn()}
-            />
+            />,
         )
 
         act(() => {
@@ -123,8 +124,8 @@ describe('getTooltipContent', () => {
         'should return the right error message ',
         (canEdit, errorType, expected) => {
             expect(getTooltipContent(canEdit, errorType as any)).toEqual(
-                expected
+                expected,
             )
-        }
+        },
     )
 })

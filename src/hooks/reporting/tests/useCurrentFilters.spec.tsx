@@ -1,4 +1,4 @@
-import {act, renderHook} from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react-hooks'
 
 import useCurrentFilters, {
     CURRENT_FILTERS,
@@ -17,7 +17,7 @@ import {
     StatsFiltersWithLogicalOperator,
     TagFilterInstanceId,
 } from 'models/stat/types'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 
 const period = {
     start_datetime: '2019-09-19T00:00:00Z',
@@ -59,7 +59,7 @@ describe('useCurrentFilters', () => {
     })
 
     it('should return the default value', () => {
-        const {result} = renderHook(() => useCurrentFilters({period}))
+        const { result } = renderHook(() => useCurrentFilters({ period }))
         const response = JSON.stringify({
             period: filters.period,
         })
@@ -68,7 +68,7 @@ describe('useCurrentFilters', () => {
     })
 
     it('should save the filters on sessionStorage and return them', () => {
-        const {result} = renderHook(() => useCurrentFilters({period}))
+        const { result } = renderHook(() => useCurrentFilters({ period }))
 
         act(() => {
             result.current.persistFilters(filters)
@@ -76,20 +76,20 @@ describe('useCurrentFilters', () => {
 
         const response = JSON.stringify(filters)
         expect(sessionStorage.getItem(CURRENT_FILTERS)).toStrictEqual(response)
-        expect(result.current.filters).toStrictEqual({period})
+        expect(result.current.filters).toStrictEqual({ period })
     })
 
     it('should return default value if the filters retried are not correctly typed', () => {
         sessionStorage.setItem(
             CURRENT_FILTERS,
-            JSON.stringify({period, test: 'false'})
+            JSON.stringify({ period, test: 'false' }),
         )
-        const {result} = renderHook(() => useCurrentFilters({period}))
-        expect(result.current.filters).toStrictEqual({period})
+        const { result } = renderHook(() => useCurrentFilters({ period }))
+        expect(result.current.filters).toStrictEqual({ period })
         expect(logSpy).toHaveBeenCalledWith(
             new Error(
-                'There seems to be an error with the filters retrieved from session storage'
-            )
+                'There seems to be an error with the filters retrieved from session storage',
+            ),
         )
     })
 })
@@ -104,7 +104,7 @@ describe('getShallowTypedFilters', () => {
 
     it('should return default filters if already equal', () => {
         expect(
-            getShallowTypedFilters(JSON.stringify(defaultValue), defaultValue)
+            getShallowTypedFilters(JSON.stringify(defaultValue), defaultValue),
         ).toStrictEqual(defaultValue)
     })
 
@@ -135,7 +135,7 @@ describe('getShallowTypedFilters', () => {
         }
 
         expect(
-            getShallowTypedFilters(JSON.stringify(filters), defaultValue)
+            getShallowTypedFilters(JSON.stringify(filters), defaultValue),
         ).toStrictEqual(filters)
     })
 
@@ -162,12 +162,12 @@ describe('getShallowTypedFilters', () => {
         }
 
         expect(
-            getShallowTypedFilters(JSON.stringify(filters), defaultValue)
+            getShallowTypedFilters(JSON.stringify(filters), defaultValue),
         ).toStrictEqual(defaultValue)
         expect(logSpy).toHaveBeenCalledWith(
             new Error(
-                'There seems to be an error with the filters retrieved from session storage'
-            )
+                'There seems to be an error with the filters retrieved from session storage',
+            ),
         )
         expect(
             getShallowTypedFilters(
@@ -178,8 +178,8 @@ describe('getShallowTypedFilters', () => {
                     },
                     test: 'fail',
                 }),
-                defaultValue
-            )
+                defaultValue,
+            ),
         ).toStrictEqual(defaultValue)
     })
 })
@@ -201,12 +201,12 @@ describe('getValidator', () => {
         'should test every similar FilterKey type',
         (filterKey) => {
             expect(getValidator(filterKey)).toEqual(isFilterWithLogicalOperator)
-        }
+        },
     )
 
     it('should test FilterKey.AggregationWindow', () => {
         expect(getValidator(FilterKey.AggregationWindow)).toEqual(
-            isAggregationWindowFilter
+            isAggregationWindowFilter,
         )
     })
 
@@ -216,7 +216,7 @@ describe('getValidator', () => {
 
     it('should test FilterKey.CustomFields', () => {
         expect(getValidator(FilterKey.CustomFields)).toEqual(
-            isCustomFieldFilter
+            isCustomFieldFilter,
         )
     })
 

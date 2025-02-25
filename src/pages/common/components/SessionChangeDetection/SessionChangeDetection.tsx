@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 
 import Modal from '../modal/Modal'
 import ModalBody from '../modal/ModalBody'
 import ModalHeader from '../modal/ModalHeader'
-import {logoutUser} from './logoutUser'
+import { logoutUser } from './logoutUser'
 
 const AUTO_LOGOUT_SECONDS = 5
 

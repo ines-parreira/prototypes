@@ -1,14 +1,15 @@
-import {useCallback} from 'react'
-import {useStore} from 'react-redux'
-import {useHistory} from 'react-router-dom'
+import { useCallback } from 'react'
+
+import { useStore } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {isGorgiasApiError} from 'models/api/types'
+import { isGorgiasApiError } from 'models/api/types'
 import GorgiasApi from 'services/gorgiasApi'
-import {setCurrentSubscription} from 'state/currentAccount/actions'
-import {getIsCurrentSubscriptionTrialingOrCanceled} from 'state/currentAccount/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { setCurrentSubscription } from 'state/currentAccount/actions'
+import { getIsCurrentSubscriptionTrialingOrCanceled } from 'state/currentAccount/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 export const useStartSubscription = () => {
     const dispatch = useAppDispatch()
@@ -37,7 +38,7 @@ export const useStartSubscription = () => {
                             'You will be redirected in a few seconds to a secure page.',
                         dismissAfter: 5000,
                         dismissible: false,
-                    })
+                    }),
                 )
 
                 setTimeout(() => {
@@ -55,7 +56,7 @@ export const useStartSubscription = () => {
                     notify({
                         status: NotificationStatus.Success,
                         message: 'Your subscription has started!',
-                    })
+                    }),
                 )
             }
         } catch (exception) {
@@ -67,7 +68,7 @@ export const useStartSubscription = () => {
                 notify({
                     status: NotificationStatus.Error,
                     title: errorMsg,
-                })
+                }),
             )
         }
     }, [dispatch, history, store])

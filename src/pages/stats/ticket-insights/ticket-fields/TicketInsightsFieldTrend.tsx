@@ -1,11 +1,11 @@
 import React from 'react'
 
-import {useTicketsFieldTrend} from 'hooks/reporting/useTicketsFieldTrend'
+import { useTicketsFieldTrend } from 'hooks/reporting/useTicketsFieldTrend'
 import ChartCard from 'pages/stats/ChartCard'
 import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
-import {formatLabeledTooltipTimeSeriesData} from 'pages/stats/common/utils'
-import {LINES_COLORS} from 'pages/stats/constants'
-import {DashboardChartProps} from 'pages/stats/custom-reports/types'
+import { formatLabeledTooltipTimeSeriesData } from 'pages/stats/common/utils'
+import { LINES_COLORS } from 'pages/stats/constants'
+import { DashboardChartProps } from 'pages/stats/custom-reports/types'
 import {
     TicketInsightsFieldsMetric,
     TicketInsightsFieldsMetricConfig,
@@ -16,10 +16,15 @@ export function TicketInsightsFieldTrend({
     chartId,
     dashboard,
 }: DashboardChartProps) {
-    const {data, legendInfo, legendDatasetVisibility, granularity, isFetching} =
-        useTicketsFieldTrend()
+    const {
+        data,
+        legendInfo,
+        legendDatasetVisibility,
+        granularity,
+        isFetching,
+    } = useTicketsFieldTrend()
 
-    const {hint, title} =
+    const { hint, title } =
         TicketInsightsFieldsMetricConfig[
             TicketInsightsFieldsMetric.TicketInsightsFieldTrend
         ]
@@ -37,7 +42,7 @@ export function TicketInsightsFieldTrend({
                 data={formatLabeledTooltipTimeSeriesData(
                     data,
                     legendInfo,
-                    granularity
+                    granularity,
                 )}
                 displayLegend
                 toggleLegend

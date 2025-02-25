@@ -1,12 +1,12 @@
-import {useContext} from 'react'
+import { useContext } from 'react'
 
-import {RuleContext} from './rule/RuleProvider'
+import { RuleContext } from './rule/RuleProvider'
 
 export const useRuleContext = () => {
     const context = useContext(RuleContext)
     if (!context) {
         throw new Error(
-            'useRuleContext must be used within a RuleContext.Provider'
+            'useRuleContext must be used within a RuleContext.Provider',
         )
     }
 

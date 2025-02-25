@@ -1,5 +1,3 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
 import React, {
     ForwardedRef,
     forwardRef,
@@ -7,6 +5,10 @@ import React, {
     ReactNode,
     useCallback,
 } from 'react'
+
+import classnames from 'classnames'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useId from 'hooks/useId'
 
@@ -20,8 +22,8 @@ export type BaseEdgeButtonProps = {
 }
 
 const BaseEdgeButton = (
-    {isDisabled, disabledTooltip, onClick, children}: BaseEdgeButtonProps,
-    ref: ForwardedRef<HTMLDivElement>
+    { isDisabled, disabledTooltip, onClick, children }: BaseEdgeButtonProps,
+    ref: ForwardedRef<HTMLDivElement>,
 ) => {
     const randomId = useId()
     const id = `base-edge-button-${randomId}`
@@ -32,7 +34,7 @@ const BaseEdgeButton = (
                 onClick?.(event)
             }
         },
-        [isDisabled, onClick]
+        [isDisabled, onClick],
     )
 
     return (

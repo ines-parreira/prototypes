@@ -1,11 +1,11 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
 
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {AttachmentEnum} from 'common/types'
+import { AttachmentEnum } from 'common/types'
 import {
     CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
     CHAT_AUTO_RESPONDER_REPLY_IN_DAY,
@@ -18,14 +18,14 @@ import {
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
 } from 'config/integrations/gorgias_chat'
-import {billingState} from 'fixtures/billing'
+import { billingState } from 'fixtures/billing'
 import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
 } from 'models/integration/types'
-import {PositionAxis} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/types'
-import {SETTING_TYPE_BUSINESS_HOURS} from 'state/currentAccount/constants'
-import {RootState, StoreDispatch} from 'state/types'
+import { PositionAxis } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/types'
+import { SETTING_TYPE_BUSINESS_HOURS } from 'state/currentAccount/constants'
+import { RootState, StoreDispatch } from 'state/types'
 
 import AutoResponder from '../AutoResponder'
 import ChatIntegrationPreview from '../ChatIntegrationPreview'
@@ -35,13 +35,13 @@ import RequiredEmailCapture from '../RequiredEmailCapture'
 
 const mainColor = '#123456'
 const conversationColor = '#456789'
-const currentUser = fromJS({name: 'Charles'})
+const currentUser = fromJS({ name: 'Charles' })
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ConversationTimestamp.tsx',
-    () => () => <div>ConversationTimestampMock</div>
+    () => () => <div>ConversationTimestampMock</div>,
 )
 
 const defaultState = {
@@ -95,59 +95,61 @@ describe('<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/>', 
             conversationColor: conversationColor,
             currentUser: currentUser,
             customerInitialMessages: [],
-            agentMessages: [{content: 'test', isHtml: false, attachments: []}],
+            agentMessages: [
+                { content: 'test', isHtml: false, attachments: [] },
+            ],
         }
 
         it('should display the avatar team picture in the header because the URL is set and the option is enabled', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore(defaultState)}>
                     <ChatIntegrationPreview {...minProps}>
                         <MessageContent {...messageContentMinProps} />
                     </ChatIntegrationPreview>
-                </Provider>
+                </Provider>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should not display button if hideButton provided', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore(defaultState)}>
                     <ChatIntegrationPreview {...minProps} hideButton>
                         <MessageContent {...messageContentMinProps} />
                     </ChatIntegrationPreview>
-                </Provider>
+                </Provider>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should display the online status because chat is online', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore(defaultState)}>
                     <ChatIntegrationPreview {...minProps}>
                         <MessageContent {...messageContentMinProps} />
                     </ChatIntegrationPreview>
-                </Provider>
+                </Provider>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should display the offline status because chat is offline', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore(defaultState)}>
                     <ChatIntegrationPreview {...minProps} isOnline={false}>
                         <MessageContent {...messageContentMinProps} />
                     </ChatIntegrationPreview>
-                </Provider>
+                </Provider>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should display optional email capture', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore(defaultState)}>
                     <ChatIntegrationPreview {...minProps}>
                         <OptionalEmailCapture
@@ -156,14 +158,14 @@ describe('<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/>', 
                             language={GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT}
                         />
                     </ChatIntegrationPreview>
-                </Provider>
+                </Provider>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should display required email capture', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore(defaultState)}>
                     <ChatIntegrationPreview {...minProps} renderFooter={false}>
                         <RequiredEmailCapture
@@ -171,26 +173,26 @@ describe('<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/>', 
                             name="My little chat integration"
                         />
                     </ChatIntegrationPreview>
-                </Provider>
+                </Provider>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should display the sliders when editing the position', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore(defaultState)}>
                     <ChatIntegrationPreview {...minProps}>
                         <MessageContent {...messageContentMinProps} />
                     </ChatIntegrationPreview>
-                </Provider>
+                </Provider>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should display auto responder', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore(defaultState)}>
                     <ChatIntegrationPreview {...minProps} renderFooter={false}>
                         <AutoResponder
@@ -201,14 +203,14 @@ describe('<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/>', 
                             }
                         />
                     </ChatIntegrationPreview>
-                </Provider>
+                </Provider>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should display display the offsets when editing axis x', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore(defaultState)}>
                     <ChatIntegrationPreview
                         {...minProps}
@@ -221,14 +223,14 @@ describe('<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/>', 
                     >
                         <MessageContent {...messageContentMinProps} />
                     </ChatIntegrationPreview>
-                </Provider>
+                </Provider>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should display display the offsets when editing axis y', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore(defaultState)}>
                     <ChatIntegrationPreview
                         {...minProps}
@@ -237,14 +239,14 @@ describe('<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/>', 
                     >
                         <MessageContent {...messageContentMinProps} />
                     </ChatIntegrationPreview>
-                </Provider>
+                </Provider>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should display display product cards', () => {
-            const {getByText} = render(
+            const { getByText } = render(
                 <Provider store={mockStore(defaultState)}>
                     <ChatIntegrationPreview
                         {...minProps}
@@ -284,7 +286,7 @@ describe('<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/>', 
                             }}
                         />
                     </ChatIntegrationPreview>
-                </Provider>
+                </Provider>,
             )
 
             expect(getByText('ADIDAS | SUPERSTAR 80S')).toBeInTheDocument()
@@ -299,7 +301,7 @@ describe('<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/>', 
         ])(
             'should display typical response time for %s',
             (autoResponderReply) => {
-                const {container} = render(
+                const { container } = render(
                     <Provider store={mockStore(defaultState)}>
                         <ChatIntegrationPreview
                             {...minProps}
@@ -310,11 +312,11 @@ describe('<Provider store={mockStore(defaultState)}><ChatIntegrationPreview/>', 
                         >
                             <MessageContent {...messageContentMinProps} />
                         </ChatIntegrationPreview>
-                    </Provider>
+                    </Provider>,
                 )
 
                 expect(container.firstChild).toMatchSnapshot()
-            }
+            },
         )
     })
 })

@@ -1,17 +1,17 @@
-import {renderHook} from '@testing-library/react-hooks'
-
+import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment'
 
 import {
     fetchInternalComplianceTrend,
     useInternalComplianceTrend,
 } from 'hooks/reporting/support-performance/auto-qa/useInternalComplianceTrend'
-import useMetricTrend, {fetchMetricTrend} from 'hooks/reporting/useMetricTrend'
-import {internalComplianceQueryFactory} from 'models/reporting/queryFactories/auto-qa/internalComplianceQueryFactory'
-
-import {StatsFilters} from 'models/stat/types'
-import {formatReportingQueryDate, getPreviousPeriod} from 'utils/reporting'
-import {assumeMock} from 'utils/testing'
+import useMetricTrend, {
+    fetchMetricTrend,
+} from 'hooks/reporting/useMetricTrend'
+import { internalComplianceQueryFactory } from 'models/reporting/queryFactories/auto-qa/internalComplianceQueryFactory'
+import { StatsFilters } from 'models/stat/types'
+import { formatReportingQueryDate, getPreviousPeriod } from 'utils/reporting'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/useMetricTrend')
 const useMetricTrendMock = assumeMock(useMetricTrend)
@@ -39,8 +39,8 @@ describe('InternalComplianceTrend', () => {
                         ...statsFilters,
                         period: getPreviousPeriod(statsFilters.period),
                     },
-                    timezone
-                )
+                    timezone,
+                ),
             )
         })
     })
@@ -48,7 +48,7 @@ describe('InternalComplianceTrend', () => {
     describe('fetchInternalComplianceTrend', () => {
         it('should pass query factories with two periods', () => {
             renderHook(() =>
-                fetchInternalComplianceTrend(statsFilters, timezone)
+                fetchInternalComplianceTrend(statsFilters, timezone),
             )
 
             expect(fetchMetricTrendMock).toHaveBeenCalledWith(
@@ -58,8 +58,8 @@ describe('InternalComplianceTrend', () => {
                         ...statsFilters,
                         period: getPreviousPeriod(statsFilters.period),
                     },
-                    timezone
-                )
+                    timezone,
+                ),
             )
         })
     })

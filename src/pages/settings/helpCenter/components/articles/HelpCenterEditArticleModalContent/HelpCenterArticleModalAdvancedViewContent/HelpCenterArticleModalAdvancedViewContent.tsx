@@ -1,5 +1,6 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
 import React from 'react'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import {
     Article,
@@ -7,22 +8,23 @@ import {
     LocaleCode,
 } from 'models/helpCenter/types'
 import IconButton from 'pages/common/components/button/IconButton'
-import {HELP_CENTER_DEFAULT_LAYOUT} from 'pages/settings/helpCenter/constants'
+import { HELP_CENTER_DEFAULT_LAYOUT } from 'pages/settings/helpCenter/constants'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
-import {useEditionManager} from 'pages/settings/helpCenter/providers/EditionManagerContext'
-import {ArticleMode} from 'pages/settings/helpCenter/types/articleMode'
+import { useEditionManager } from 'pages/settings/helpCenter/providers/EditionManagerContext'
+import { ArticleMode } from 'pages/settings/helpCenter/types/articleMode'
 import {
     getHelpCenterDomain,
     isExistingArticle,
 } from 'pages/settings/helpCenter/utils/helpCenter.utils'
-import {Components} from 'rest_api/help_center_api/client.generated'
+import { Components } from 'rest_api/help_center_api/client.generated'
 
-import {ActionType, OptionItem} from '../../ArticleLanguageSelect'
+import { ActionType, OptionItem } from '../../ArticleLanguageSelect'
 import HelpCenterEditAdvancedArticleForm from '../../HelpCenterEditAdvancedArticleForm'
 import HelpCenterEditModalFooter from '../../HelpCenterEditModalFooter'
 import HelpCenterEditModalHeader from '../../HelpCenterEditModalHeader'
+import { HelpCenterArticleModalView } from '../types'
+
 import css from '../HelpCenterEditArticleModalContent.less'
-import {HelpCenterArticleModalView} from '../types'
 
 type Props = {
     onArticleLanguageSelect: (localeCode: LocaleCode) => void
@@ -32,11 +34,11 @@ type Props = {
 
     onArticleLanguageSelectActionClick: (
         action: ActionType,
-        option: OptionItem
+        option: OptionItem,
     ) => void
 
     // should be removed
-    counters?: {charCount: number}
+    counters?: { charCount: number }
 
     // should be defined inside this component as a local state to manage the CTA states
     // of "Save Changes" | "Create article" | "Publish article"
@@ -142,7 +144,7 @@ const HelpCenterArticleModalAdvancedViewContent = ({
                                   ...prevSelectedArticle,
                                   translation,
                               }
-                            : prevSelectedArticle
+                            : prevSelectedArticle,
                     )
                 }
                 domain={helpCenterDomain}

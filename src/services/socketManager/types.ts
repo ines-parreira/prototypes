@@ -1,22 +1,23 @@
-import {VoiceCallRecording} from '@gorgias/api-types'
-import {Map} from 'immutable'
+import { Map } from 'immutable'
 
-import {RecentChatTicket} from 'business/types/recentChats'
-import {TicketChannel} from 'business/types/ticket'
+import { VoiceCallRecording } from '@gorgias/api-types'
+
+import { RecentChatTicket } from 'business/types/recentChats'
+import { TicketChannel } from 'business/types/ticket'
 import {
     EcommerceStore,
     Shopper,
     ShopperAddress,
     ShopperOrder,
 } from 'models/customerEcommerceData/types'
-import {CustomerExternalData} from 'models/customerExternalData/types'
-import {MacrosProperties} from 'models/macro/types'
-import {Section} from 'models/section/types'
-import {Ticket} from 'models/ticket/types'
-import {View} from 'models/view/types'
-import {VoiceCall} from 'models/voiceCall/types'
-import {Account} from 'state/currentAccount/types'
-import {ActionData} from 'state/infobar/utils'
+import { CustomerExternalData } from 'models/customerExternalData/types'
+import { MacrosProperties } from 'models/macro/types'
+import { Section } from 'models/section/types'
+import { Ticket } from 'models/ticket/types'
+import { View } from 'models/view/types'
+import { VoiceCall } from 'models/voiceCall/types'
+import { Account } from 'state/currentAccount/types'
+import { ActionData } from 'state/infobar/utils'
 
 export type SendData = {
     clientId?: string
@@ -28,7 +29,7 @@ export type SendData = {
 export type SendEvent = {
     name: string
     dataToSend: (
-        value?: string | number[] | Record<string, unknown>
+        value?: string | number[] | Record<string, unknown>,
     ) => SendData
     onLeave?: (value?: string) => void
 }
@@ -212,7 +213,7 @@ export type ViewCountUpdatedEvent = {
         type: 'view-count-updated'
     }
     view: View
-    counts: {[key: string]: number}
+    counts: { [key: string]: number }
 }
 
 export type ViewSectionCreatedEvent = {
@@ -366,7 +367,7 @@ export type VoiceCallTransferFailedEvent = {
     event: {
         type: SocketEventType.VoiceCallTransferFailed
         data: {
-            error: {message: string}
+            error: { message: string }
         }
     }
 }

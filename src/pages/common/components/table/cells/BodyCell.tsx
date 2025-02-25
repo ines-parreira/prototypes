@@ -1,8 +1,10 @@
+import React, { forwardRef, HTMLProps, MouseEvent, ReactNode } from 'react'
+
 import classNames from 'classnames'
-import React, {forwardRef, HTMLProps, MouseEvent, ReactNode} from 'react'
+
+import BodyCellContent from './BodyCellContent'
 
 import css from './BodyCell.less'
-import BodyCellContent from './BodyCellContent'
 
 export type Props = Omit<HTMLProps<HTMLTableCellElement>, 'size'> & {
     children?: ReactNode
@@ -30,7 +32,7 @@ const BodyCell = forwardRef<HTMLTableCellElement, Props>(
             width,
             ...otherProps
         }: Props,
-        ref
+        ref,
     ) => {
         return (
             <td
@@ -52,7 +54,7 @@ const BodyCell = forwardRef<HTMLTableCellElement, Props>(
                 </BodyCellContent>
             </td>
         )
-    }
+    },
 )
 
 export default BodyCell

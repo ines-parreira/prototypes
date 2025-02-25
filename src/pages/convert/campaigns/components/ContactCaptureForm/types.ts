@@ -1,12 +1,12 @@
 type SetAttachmentDataCallback = (
-    state: TransitoryAttachmentData
+    state: TransitoryAttachmentData,
 ) => TransitoryAttachmentData
 
 export type StepProps = {
     setNextButtonActive: (state: boolean) => void
     attachmentData: TransitoryAttachmentData
     setAttachmentData: (
-        data: TransitoryAttachmentData | SetAttachmentDataCallback
+        data: TransitoryAttachmentData | SetAttachmentDataCallback,
     ) => void | TransitoryAttachmentData
 }
 

@@ -1,43 +1,43 @@
-import {OrderDirection} from 'models/api/types'
-import {DrillDownReportingQuery} from 'models/job/types'
-import {TicketDimension} from 'models/reporting/cubes/TicketCube'
-import {TicketMessagesDimension} from 'models/reporting/cubes/TicketMessagesCube'
-import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
-import {ticketHandleTimePerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
-import {accuracyDrillDownQueryFactory} from 'models/reporting/queryFactories/auto-qa/accuracyQueryFactory'
-import {brandVoiceDrillDownQueryFactory} from 'models/reporting/queryFactories/auto-qa/brandVoiceQueryFactory'
-import {communicationSkillsDrillDownQueryFactory} from 'models/reporting/queryFactories/auto-qa/communicationSkillsQueryFactory'
-import {efficiencyDrillDownQueryFactory} from 'models/reporting/queryFactories/auto-qa/efficiencyQueryFactory'
-import {internalComplianceDrillDownQueryFactory} from 'models/reporting/queryFactories/auto-qa/internalComplianceQueryFactory'
-import {languageProficiencyDrillDownQueryFactory} from 'models/reporting/queryFactories/auto-qa/languageProficiencyQueryFactory'
-import {resolutionCompletenessDrillDownQueryFactory} from 'models/reporting/queryFactories/auto-qa/resolutionCompletenessQueryFactory'
-import {reviewedClosedTicketsDrillDownQueryFactory} from 'models/reporting/queryFactories/auto-qa/reviewedClosedTicketsQueryFactory'
-import {averageCSATScorePerDimensionDrillDownQueryFactory} from 'models/reporting/queryFactories/satisfaction/averageCSATScorePerDimensionQueryFactory'
-import {averageScoreDrillDownQueryFactory} from 'models/reporting/queryFactories/satisfaction/averageScoreQueryFactory'
-import {responseRateDrillDownQueryFactory} from 'models/reporting/queryFactories/satisfaction/responseRateQueryFactory'
-import {satisfactionScoreDrillDownQueryFactory} from 'models/reporting/queryFactories/satisfaction/satisfactionScoreQueryFactory'
-import {surveysSentDrillDownQueryFactory} from 'models/reporting/queryFactories/satisfaction/surveysSentQueryFactory'
+import { OrderDirection } from 'models/api/types'
+import { DrillDownReportingQuery } from 'models/job/types'
+import { TicketDimension } from 'models/reporting/cubes/TicketCube'
+import { TicketMessagesDimension } from 'models/reporting/cubes/TicketMessagesCube'
+import { VoiceCallSegment } from 'models/reporting/cubes/VoiceCallCube'
+import { ticketHandleTimePerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
+import { accuracyDrillDownQueryFactory } from 'models/reporting/queryFactories/auto-qa/accuracyQueryFactory'
+import { brandVoiceDrillDownQueryFactory } from 'models/reporting/queryFactories/auto-qa/brandVoiceQueryFactory'
+import { communicationSkillsDrillDownQueryFactory } from 'models/reporting/queryFactories/auto-qa/communicationSkillsQueryFactory'
+import { efficiencyDrillDownQueryFactory } from 'models/reporting/queryFactories/auto-qa/efficiencyQueryFactory'
+import { internalComplianceDrillDownQueryFactory } from 'models/reporting/queryFactories/auto-qa/internalComplianceQueryFactory'
+import { languageProficiencyDrillDownQueryFactory } from 'models/reporting/queryFactories/auto-qa/languageProficiencyQueryFactory'
+import { resolutionCompletenessDrillDownQueryFactory } from 'models/reporting/queryFactories/auto-qa/resolutionCompletenessQueryFactory'
+import { reviewedClosedTicketsDrillDownQueryFactory } from 'models/reporting/queryFactories/auto-qa/reviewedClosedTicketsQueryFactory'
+import { averageCSATScorePerDimensionDrillDownQueryFactory } from 'models/reporting/queryFactories/satisfaction/averageCSATScorePerDimensionQueryFactory'
+import { averageScoreDrillDownQueryFactory } from 'models/reporting/queryFactories/satisfaction/averageScoreQueryFactory'
+import { responseRateDrillDownQueryFactory } from 'models/reporting/queryFactories/satisfaction/responseRateQueryFactory'
+import { satisfactionScoreDrillDownQueryFactory } from 'models/reporting/queryFactories/satisfaction/satisfactionScoreQueryFactory'
+import { surveysSentDrillDownQueryFactory } from 'models/reporting/queryFactories/satisfaction/surveysSentQueryFactory'
 import {
     breachedTicketsDrillDownQueryFactory,
     satisfiedOrBreachedTicketsDrillDownQueryFactory,
 } from 'models/reporting/queryFactories/sla/satisfiedOrBreachedTickets'
-import {closedTicketsPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
-import {customerSatisfactionMetricDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
-import {firstResponseTimeMetricPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
-import {resolutionTimeMetricPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
-import {messagesPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesPerTicket'
-import {messagesSentMetricPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
-import {oneTouchTicketsPerTicketQueryFactory} from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
-import {openTicketsPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/openTickets'
-import {ticketsCreatedPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsCreated'
-import {ticketsRepliedMetricPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
+import { closedTicketsPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/closedTickets'
+import { customerSatisfactionMetricDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
+import { firstResponseTimeMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
+import { resolutionTimeMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
+import { messagesPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesPerTicket'
+import { messagesSentMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesSent'
+import { oneTouchTicketsPerTicketQueryFactory } from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
+import { openTicketsPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/openTickets'
+import { ticketsCreatedPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsCreated'
+import { ticketsRepliedMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsReplied'
 import {
-    customFieldsTicketCountPerTicketDrillDownQueryFactory,
-    coverageRateTicketDrillDownQueryFactory,
     aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory,
+    coverageRateTicketDrillDownQueryFactory,
     customFieldsTicketCountPerIntentLevelPerTicketDrillDownQueryFactory,
+    customFieldsTicketCountPerTicketDrillDownQueryFactory,
 } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
-import {tagsTicketCountDrillDownQueryFactory} from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
+import { tagsTicketCountDrillDownQueryFactory } from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
 import {
     isFilterWithLogicalOperator,
     withDefaultLogicalOperator,
@@ -56,12 +56,12 @@ import {
     StatsFilters,
     StatsFiltersWithLogicalOperator,
 } from 'models/stat/types'
-import {campaignSalesDrillDownQueryFactory} from 'pages/stats/convert/clients/queryFactories/campaignSalesDrillDownQueryFactory'
-import {AutoQAAgentsTableColumn} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
-import {ChannelColumnConfig} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
-import {OverviewMetric} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
-import {fromLegacyStatsFilters} from 'state/stats/utils'
-import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
+import { campaignSalesDrillDownQueryFactory } from 'pages/stats/convert/clients/queryFactories/campaignSalesDrillDownQueryFactory'
+import { AutoQAAgentsTableColumn } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
+import { ChannelColumnConfig } from 'pages/stats/support-performance/channels/ChannelsTableConfig'
+import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
+import { fromLegacyStatsFilters } from 'state/stats/utils'
+import { DrillDownMetric } from 'state/ui/stats/drillDownSlice'
 import {
     AgentsTableColumn,
     AIInsightsMetric,
@@ -79,24 +79,24 @@ import {
 export type DrillDownQueryFactory = (
     statsFilters: StatsFilters,
     timezone: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ) => DrillDownReportingQuery
 
 const queryBuilderWithAgentFilter =
     (
         agentId: number,
-        queryBuilder: DrillDownQueryFactory
+        queryBuilder: DrillDownQueryFactory,
     ): DrillDownQueryFactory =>
     (
         statsFilters: StatsFilters,
         timezone: string,
-        sorting?: OrderDirection
+        sorting?: OrderDirection,
     ) => {
         const areFiltersWithLogicalOperator = Object.values(FilterKey).some(
             (val) =>
                 val !== FilterKey.Period &&
                 val !== FilterKey.AggregationWindow &&
-                isFilterWithLogicalOperator(statsFilters?.[val] || [])
+                isFilterWithLogicalOperator(statsFilters?.[val] || []),
         )
         const statsFiltersWithLogicalOperators = areFiltersWithLogicalOperator
             ? (statsFilters as StatsFiltersWithLogicalOperator)
@@ -108,25 +108,25 @@ const queryBuilderWithAgentFilter =
                 agents: withDefaultLogicalOperator([agentId]),
             },
             timezone,
-            sorting
+            sorting,
         )
     }
 
 const queryBuilderWithChannelFilter =
     (
         channel: string,
-        queryBuilder: DrillDownQueryFactory
+        queryBuilder: DrillDownQueryFactory,
     ): DrillDownQueryFactory =>
     (
         statsFilters: StatsFilters,
         timezone: string,
-        sorting?: OrderDirection
+        sorting?: OrderDirection,
     ) => {
         const areFiltersWithLogicalOperator = Object.values(FilterKey).some(
             (val) =>
                 val !== FilterKey.Period &&
                 val !== FilterKey.AggregationWindow &&
-                isFilterWithLogicalOperator(statsFilters?.[val] || [])
+                isFilterWithLogicalOperator(statsFilters?.[val] || []),
         )
         const statsFiltersWithLogicalOperators = areFiltersWithLogicalOperator
             ? (statsFilters as StatsFiltersWithLogicalOperator)
@@ -138,16 +138,16 @@ const queryBuilderWithChannelFilter =
                 channels: withDefaultLogicalOperator(
                     [channel],
                     statsFiltersWithLogicalOperators[FilterKey.Channels]
-                        ?.operator
+                        ?.operator,
                 ),
             },
             timezone,
-            sorting
+            sorting,
         )
     }
 
 export const getDrillDownQuery = (
-    metricName: DrillDownMetric
+    metricName: DrillDownMetric,
 ): DrillDownQueryFactory => {
     switch (metricName.metricName) {
         case OverviewMetric.CustomerSatisfaction:
@@ -175,87 +175,87 @@ export const getDrillDownQuery = (
         case AgentsTableColumn.CustomerSatisfaction:
             return queryBuilderWithAgentFilter(
                 metricName.perAgentId,
-                customerSatisfactionMetricDrillDownQueryFactory
+                customerSatisfactionMetricDrillDownQueryFactory,
             )
         case AgentsTableColumn.MedianFirstResponseTime:
             return queryBuilderWithAgentFilter(
                 metricName.perAgentId,
-                firstResponseTimeMetricPerTicketDrillDownQueryFactory
+                firstResponseTimeMetricPerTicketDrillDownQueryFactory,
             )
         case AgentsTableColumn.MedianResolutionTime:
             return queryBuilderWithAgentFilter(
                 metricName.perAgentId,
-                resolutionTimeMetricPerTicketDrillDownQueryFactory
+                resolutionTimeMetricPerTicketDrillDownQueryFactory,
             )
         case AgentsTableColumn.MessagesSent:
             return queryBuilderWithAgentFilter(
                 metricName.perAgentId,
-                messagesSentMetricPerTicketDrillDownQueryFactory
+                messagesSentMetricPerTicketDrillDownQueryFactory,
             )
         case AgentsTableColumn.PercentageOfClosedTickets:
         case AgentsTableColumn.ClosedTicketsPerHour:
         case AgentsTableColumn.ClosedTickets:
             return queryBuilderWithAgentFilter(
                 metricName.perAgentId,
-                closedTicketsPerTicketDrillDownQueryFactory
+                closedTicketsPerTicketDrillDownQueryFactory,
             )
         case AgentsTableColumn.RepliedTickets:
         case AgentsTableColumn.RepliedTicketsPerHour:
             return queryBuilderWithAgentFilter(
                 metricName.perAgentId,
-                ticketsRepliedMetricPerTicketDrillDownQueryFactory
+                ticketsRepliedMetricPerTicketDrillDownQueryFactory,
             )
         case AgentsTableColumn.OneTouchTickets:
             return queryBuilderWithAgentFilter(
                 metricName.perAgentId,
-                oneTouchTicketsPerTicketQueryFactory
+                oneTouchTicketsPerTicketQueryFactory,
             )
         case AgentsTableColumn.TicketHandleTime:
             return queryBuilderWithAgentFilter(
                 metricName.perAgentId,
-                ticketHandleTimePerTicketDrillDownQueryFactory
+                ticketHandleTimePerTicketDrillDownQueryFactory,
             )
         case AutoQAMetric.ReviewedClosedTickets:
             return reviewedClosedTicketsDrillDownQueryFactory
         case AutoQAAgentsTableColumn.ResolutionCompleteness:
             return queryBuilderWithAgentFilter(
                 metricName.perAgentId,
-                resolutionCompletenessDrillDownQueryFactory
+                resolutionCompletenessDrillDownQueryFactory,
             )
         case AutoQAAgentsTableColumn.CommunicationSkills:
             return queryBuilderWithAgentFilter(
                 metricName.perAgentId,
-                communicationSkillsDrillDownQueryFactory
+                communicationSkillsDrillDownQueryFactory,
             )
         case AutoQAAgentsTableColumn.LanguageProficiency:
             return queryBuilderWithAgentFilter(
                 metricName.perAgentId,
-                languageProficiencyDrillDownQueryFactory
+                languageProficiencyDrillDownQueryFactory,
             )
         case AutoQAAgentsTableColumn.Accuracy:
             return queryBuilderWithAgentFilter(
                 metricName.perAgentId,
-                accuracyDrillDownQueryFactory
+                accuracyDrillDownQueryFactory,
             )
         case AutoQAAgentsTableColumn.Efficiency:
             return queryBuilderWithAgentFilter(
                 metricName.perAgentId,
-                efficiencyDrillDownQueryFactory
+                efficiencyDrillDownQueryFactory,
             )
         case AutoQAAgentsTableColumn.InternalCompliance:
             return queryBuilderWithAgentFilter(
                 metricName.perAgentId,
-                internalComplianceDrillDownQueryFactory
+                internalComplianceDrillDownQueryFactory,
             )
         case AutoQAAgentsTableColumn.BrandVoice:
             return queryBuilderWithAgentFilter(
                 metricName.perAgentId,
-                brandVoiceDrillDownQueryFactory
+                brandVoiceDrillDownQueryFactory,
             )
         case AutoQAAgentsTableColumn.ReviewedClosedTickets:
             return queryBuilderWithAgentFilter(
                 metricName.perAgentId,
-                reviewedClosedTicketsDrillDownQueryFactory
+                reviewedClosedTicketsDrillDownQueryFactory,
             )
         case AutoQAMetric.ResolutionCompleteness:
             return resolutionCompletenessDrillDownQueryFactory
@@ -273,15 +273,15 @@ export const getDrillDownQuery = (
             return surveysSentDrillDownQueryFactory
         case SatisfactionMetric.AverageCSATPerAssignee:
             return averageCSATScorePerDimensionDrillDownQueryFactory(
-                TicketDimension.AssigneeUserId
+                TicketDimension.AssigneeUserId,
             )
         case SatisfactionMetric.AverageCSATPerChannel:
             return averageCSATScorePerDimensionDrillDownQueryFactory(
-                TicketDimension.Channel
+                TicketDimension.Channel,
             )
         case SatisfactionMetric.AverageCSATPerIntegration:
             return averageCSATScorePerDimensionDrillDownQueryFactory(
-                TicketMessagesDimension.Integration
+                TicketMessagesDimension.Integration,
             )
         case AutoQAMetric.Accuracy:
             return accuracyDrillDownQueryFactory
@@ -306,26 +306,26 @@ export const getDrillDownQuery = (
         case ChannelsTableColumns.CustomerSatisfaction:
             return queryBuilderWithChannelFilter(
                 metricName.perChannel,
-                ChannelColumnConfig[metricName.metricName].drillDownQuery
+                ChannelColumnConfig[metricName.metricName].drillDownQuery,
             )
         case TagsMetric.TicketCount:
             return (
                 statsFilters: StatsFilters,
                 timezone: string,
-                sorting?: OrderDirection
+                sorting?: OrderDirection,
             ) =>
                 tagsTicketCountDrillDownQueryFactory(
                     statsFilters,
                     timezone,
                     metricName.tagId,
                     metricName.dateRange || statsFilters.period,
-                    sorting
+                    sorting,
                 )
         case TicketFieldsMetric.TicketCustomFieldsTicketCount:
             return (
                 statsFilters: StatsFilters,
                 timezone: string,
-                sorting?: OrderDirection
+                sorting?: OrderDirection,
             ) =>
                 customFieldsTicketCountPerTicketDrillDownQueryFactory(
                     statsFilters,
@@ -333,13 +333,13 @@ export const getDrillDownQuery = (
                     String(metricName.customFieldId),
                     metricName.customFieldValue,
                     metricName.dateRange || statsFilters.period,
-                    sorting
+                    sorting,
                 )
         case AIInsightsMetric.TicketCustomFieldsTicketCount:
             return (
                 statsFilters: StatsFilters,
                 timezone: string,
-                sorting?: OrderDirection
+                sorting?: OrderDirection,
             ) =>
                 customFieldsTicketCountPerIntentLevelPerTicketDrillDownQueryFactory(
                     statsFilters,
@@ -347,13 +347,13 @@ export const getDrillDownQuery = (
                     String(metricName.customFieldId),
                     metricName.customFieldValue,
                     metricName.dateRange || statsFilters.period,
-                    sorting
+                    sorting,
                 )
         case AIInsightsMetric.TicketDrillDownPerCoverageRate:
             return (
                 statsFilters: StatsFilters,
                 timezone: string,
-                sorting?: OrderDirection
+                sorting?: OrderDirection,
             ) =>
                 coverageRateTicketDrillDownQueryFactory(
                     statsFilters,
@@ -361,28 +361,28 @@ export const getDrillDownQuery = (
                     String(metricName.customFieldId),
                     metricName.customFieldValue,
                     metricName.dateRange || statsFilters.period,
-                    sorting
+                    sorting,
                 )
 
         case AIInsightsMetric.TicketDrillDownPerCustomerSatisfaction:
             return (
                 statsFilters: StatsFilters,
                 timezone: string,
-                sorting?: OrderDirection
+                sorting?: OrderDirection,
             ) =>
                 aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory(
                     statsFilters,
                     timezone,
                     String(metricName.customFieldId),
                     String(metricName.perAgentId),
-                    sorting
+                    sorting,
                 )
 
         case ConvertMetric.CampaignSalesCount:
             return (
                 statsFilters: StatsFilters,
                 timezone: string,
-                sorting?: OrderDirection
+                sorting?: OrderDirection,
             ) =>
                 campaignSalesDrillDownQueryFactory(
                     metricName.shopName,
@@ -391,7 +391,7 @@ export const getDrillDownQuery = (
                     statsFilters,
                     timezone,
                     sorting,
-                    metricName.abVariant
+                    metricName.abVariant,
                 )
         case VoiceMetric.AverageTalkTime:
             return (statsFilters: StatsFilters, timezone: string) =>
@@ -401,7 +401,7 @@ export const getDrillDownQuery = (
                 waitingTimeCallsListQueryFactory(
                     statsFilters,
                     timezone,
-                    VoiceCallSegment.inboundCalls
+                    VoiceCallSegment.inboundCalls,
                 )
         case VoiceMetric.QueueAverageTalkTime:
             return (statsFilters: StatsFilters) =>
@@ -410,31 +410,31 @@ export const getDrillDownQuery = (
             return (statsFilters: StatsFilters) =>
                 liveDashboardWaitingTimeCallsListQueryFactory(
                     statsFilters,
-                    VoiceCallSegment.inboundCalls
+                    VoiceCallSegment.inboundCalls,
                 )
         case VoiceMetric.QueueInboundCalls:
             return (statsFilters: StatsFilters) =>
                 liveDashBoardVoiceCallListQueryFactory(
                     statsFilters,
-                    VoiceCallSegment.inboundCalls
+                    VoiceCallSegment.inboundCalls,
                 )
         case VoiceMetric.QueueMissedInboundCalls:
             return (statsFilters: StatsFilters) =>
                 liveDashBoardVoiceCallListQueryFactory(
                     statsFilters,
-                    VoiceCallSegment.missedCalls
+                    VoiceCallSegment.missedCalls,
                 )
         case VoiceMetric.QueueOutboundCalls:
             return (statsFilters: StatsFilters) =>
                 liveDashBoardVoiceCallListQueryFactory(
                     statsFilters,
-                    VoiceCallSegment.outboundCalls
+                    VoiceCallSegment.outboundCalls,
                 )
         case VoiceAgentsMetric.AgentTotalCalls:
             return queryBuilderWithAgentFilter(
                 metricName.perAgentId,
                 (statsFilters: StatsFilters, timezone: string) =>
-                    voiceCallListQueryFactory(statsFilters, timezone)
+                    voiceCallListQueryFactory(statsFilters, timezone),
             )
         case VoiceAgentsMetric.AgentInboundAnsweredCalls:
             return queryBuilderWithAgentFilter(
@@ -443,8 +443,8 @@ export const getDrillDownQuery = (
                     voiceCallListQueryFactory(
                         statsFilters,
                         timezone,
-                        VoiceCallSegment.answeredCallsByAgent
-                    )
+                        VoiceCallSegment.answeredCallsByAgent,
+                    ),
             )
         case VoiceAgentsMetric.AgentInboundMissedCalls:
             return queryBuilderWithAgentFilter(
@@ -453,8 +453,8 @@ export const getDrillDownQuery = (
                     voiceCallListQueryFactory(
                         statsFilters,
                         timezone,
-                        VoiceCallSegment.missedCallsByAgent
-                    )
+                        VoiceCallSegment.missedCallsByAgent,
+                    ),
             )
         case VoiceAgentsMetric.AgentOutboundCalls:
             return queryBuilderWithAgentFilter(
@@ -463,14 +463,14 @@ export const getDrillDownQuery = (
                     voiceCallListQueryFactory(
                         statsFilters,
                         timezone,
-                        VoiceCallSegment.outboundCalls
-                    )
+                        VoiceCallSegment.outboundCalls,
+                    ),
             )
         case VoiceAgentsMetric.AgentAverageTalkTime:
             return queryBuilderWithAgentFilter(
                 metricName.perAgentId,
                 (statsFilters: StatsFilters, timezone: string) =>
-                    connectedCallsListQueryFactory(statsFilters, timezone)
+                    connectedCallsListQueryFactory(statsFilters, timezone),
             )
     }
 }

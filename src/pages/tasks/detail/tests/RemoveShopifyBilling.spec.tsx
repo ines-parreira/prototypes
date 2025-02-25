@@ -1,17 +1,17 @@
-import {fireEvent, render, waitFor, screen} from '@testing-library/react'
+import React from 'react'
+
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import user from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
-import React from 'react'
-import {Provider} from 'react-redux'
-
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import client from 'models/api/resources'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {RootState, StoreDispatch} from 'state/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { RootState, StoreDispatch } from 'state/types'
 
 import RemoveShopifyBilling from '../RemoveShopifyBilling'
 
@@ -33,13 +33,13 @@ describe('<RemoveShopifyBilling />', () => {
     })
 
     it('should submit the form', async () => {
-        const {getByText, getByRole} = render(
+        const { getByText, getByRole } = render(
             <Provider store={store}>
                 <RemoveShopifyBilling />
-            </Provider>
+            </Provider>,
         )
 
-        const button = getByRole('button', {name: 'Remove Shopify Billing'})
+        const button = getByRole('button', { name: 'Remove Shopify Billing' })
         fireEvent.click(button)
         fireEvent.click(getByText('Confirm'))
 
@@ -49,7 +49,7 @@ describe('<RemoveShopifyBilling />', () => {
                 JSON.stringify({
                     name: 'remove_shopify_billing',
                     params: {},
-                })
+                }),
             )
         })
 
@@ -61,13 +61,13 @@ describe('<RemoveShopifyBilling />', () => {
     })
 
     it('should disable the submit button when the form is not valid', () => {
-        const {getByRole} = render(
+        const { getByRole } = render(
             <Provider store={store}>
                 <RemoveShopifyBilling />
-            </Provider>
+            </Provider>,
         )
 
-        const button = getByRole('button', {name: 'Remove Shopify Billing'})
+        const button = getByRole('button', { name: 'Remove Shopify Billing' })
         expect(button).toHaveProperty('disabled')
     })
 
@@ -77,7 +77,7 @@ describe('<RemoveShopifyBilling />', () => {
         render(
             <Provider store={store}>
                 <RemoveShopifyBilling />
-            </Provider>
+            </Provider>,
         )
         const button = screen.getByRole('button', {
             name: 'Remove Shopify Billing',
@@ -91,7 +91,7 @@ describe('<RemoveShopifyBilling />', () => {
                 JSON.stringify({
                     name: 'remove_shopify_billing',
                     params: {},
-                })
+                }),
             )
         })
 

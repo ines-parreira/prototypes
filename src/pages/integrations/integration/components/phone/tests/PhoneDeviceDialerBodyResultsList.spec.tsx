@@ -1,7 +1,8 @@
-import {fireEvent, render, screen, within} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {UserSearchResult} from 'models/search/types'
+import { fireEvent, render, screen, within } from '@testing-library/react'
+
+import { UserSearchResult } from 'models/search/types'
 
 import PhoneDeviceDialerBodyResultsList from '../PhoneDeviceDialerBodyResultsList'
 
@@ -13,12 +14,12 @@ describe('PhoneDeviceDialerBodyResultsList', () => {
     const mockResults: UserSearchResult[] = [
         {
             id: '1',
-            customer: {name: 'John Doe'},
+            customer: { name: 'John Doe' },
             address: '123 Main St',
         },
         {
             id: '2',
-            customer: {name: 'Jane Smith'},
+            customer: { name: 'Jane Smith' },
             address: '456 Elm St',
         },
     ] as any
@@ -41,7 +42,7 @@ describe('PhoneDeviceDialerBodyResultsList', () => {
 
         fireEvent.click(screen.getByText('John Doe'))
         expect(defaultProps.onCustomerSelect).toHaveBeenCalledWith(
-            defaultProps.results[0]
+            defaultProps.results[0],
         )
     })
 
@@ -52,11 +53,11 @@ describe('PhoneDeviceDialerBodyResultsList', () => {
         }
         const renderResult = renderComponent(props)
         const highlightedResult = renderResult.container.querySelector(
-            '.highlighted'
+            '.highlighted',
         ) as HTMLElement
 
         expect(
-            within(highlightedResult).getByText('Jane Smith')
+            within(highlightedResult).getByText('Jane Smith'),
         ).toBeInTheDocument()
     })
 })

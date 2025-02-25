@@ -1,27 +1,28 @@
-import {Map} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useMemo} from 'react'
-import {NavLink} from 'react-router-dom'
+import React, { useMemo } from 'react'
+
+import { Map } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { NavLink } from 'react-router-dom'
 
 import dotError from 'assets/img/icons/dot-error.svg'
-import {FeatureFlagKey} from 'config/featureFlags'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
-import {getHasAutomate} from 'state/billing/selectors'
-import {getChatInstallationStatus} from 'state/entities/chatInstallationStatus/selectors'
+import { getHasAutomate } from 'state/billing/selectors'
+import { getChatInstallationStatus } from 'state/entities/chatInstallationStatus/selectors'
 
-import {IntegrationType} from '../../../../../models/integration/types'
+import { IntegrationType } from '../../../../../models/integration/types'
 import SecondaryNavbar from '../../../../common/components/SecondaryNavbar/SecondaryNavbar'
-
 import GorgiasChatIntegrationConnectedChannel from './GorgiasChatIntegrationConnectedChannel'
-import css from './GorgiasChatIntegrationNavigation.less'
 import useIsQuickRepliesEnabled from './GorgiasChatIntegrationQuickReplies/hooks/useIsQuickRepliesEnabled'
+
+import css from './GorgiasChatIntegrationNavigation.less'
 
 type Props = {
     integration: Map<any, any>
 }
 
-const GorgiasChatIntegrationNavigation = ({integration}: Props) => {
+const GorgiasChatIntegrationNavigation = ({ integration }: Props) => {
     const isQuickRepliesEnabled = useIsQuickRepliesEnabled()
 
     const integrationId: number = integration.get('id')
@@ -30,11 +31,11 @@ const GorgiasChatIntegrationNavigation = ({integration}: Props) => {
     const storeIntegrations = useStoreIntegrations()
     const shopIntegrationId: number | null = integration.getIn(
         ['meta', 'shop_integration_id'],
-        null
+        null,
     )
     const hasAutomate = useAppSelector(getHasAutomate)
     const storeIntegration = storeIntegrations.find(
-        (integration) => integration.id === shopIntegrationId
+        (integration) => integration.id === shopIntegrationId,
     )
     const changeAutomateSettingButtomPosition =
         useFlags()[FeatureFlagKey.ChangeAutomateSettingButtomPosition]
@@ -48,7 +49,7 @@ const GorgiasChatIntegrationNavigation = ({integration}: Props) => {
     const baseURL = useMemo(
         () =>
             `/app/settings/channels/${IntegrationType.GorgiasChat}/${integrationId}`,
-        [integrationId]
+        [integrationId],
     )
     const isChatMultiLanguagesEnabled =
         useFlags()[FeatureFlagKey.ChatMultiLanguages]

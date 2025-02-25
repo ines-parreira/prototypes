@@ -1,34 +1,34 @@
-import {fromJS, Map} from 'immutable'
-import React, {ReactNode, useContext, useMemo} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
+import React, { ReactNode, useContext, useMemo } from 'react'
+
+import { fromJS, Map } from 'immutable'
+import { connect, ConnectedProps } from 'react-redux'
 
 import logo from 'assets/img/infobar/shopify.svg'
-import {logEvent, SegmentEvent} from 'common/segment'
-import {shopifyAdminBaseUrl} from 'config/integrations/shopify'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { shopifyAdminBaseUrl } from 'config/integrations/shopify'
 import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
+import { IntegrationType, ShopifyIntegration } from 'models/integration/types'
 import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
-import {InfobarAction} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import { InfobarAction } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import * as integrationsSelectors from 'state/integrations/selectors'
-import {RootState} from 'state/types'
-
+import { RootState } from 'state/types'
 import DraftOrderModal from 'Widgets/modules/Shopify/modules/DraftOrderModal'
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
+import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 import {
-    CardHeaderTitle,
     CardHeaderIcon,
-    ExpandAllButton,
     CardHeaderSubtitle,
+    CardHeaderTitle,
+    ExpandAllButton,
 } from 'Widgets/modules/Template/modules/Card'
-import {CardCustomization} from 'Widgets/modules/Template/modules/Card/types'
-import {StaticField} from 'Widgets/modules/Template/modules/Field'
+import { CardCustomization } from 'Widgets/modules/Template/modules/Card/types'
+import { StaticField } from 'Widgets/modules/Template/modules/Field'
 
-import {CustomizationContext} from '../../Template'
-import {ShopifyContext} from '../contexts/ShopifyContext'
-import {getShopifyResourceIds} from '../helpers/getShopifyResourceIds'
+import { CustomizationContext } from '../../Template'
+import { ShopifyContext } from '../contexts/ShopifyContext'
+import { getShopifyResourceIds } from '../helpers/getShopifyResourceIds'
 
 function Wrapper({
     source,
@@ -37,7 +37,7 @@ function Wrapper({
     source: Map<any, any>
     children: ReactNode
 }) {
-    const {target_id, customer_id} = getShopifyResourceIds(source.toJS())
+    const { target_id, customer_id } = getShopifyResourceIds(source.toJS())
     const shopifyContextData = useMemo(
         () => ({
             data_source: 'Customer' as const,
@@ -46,7 +46,7 @@ function Wrapper({
                 customer_id,
             },
         }),
-        [target_id, customer_id]
+        [target_id, customer_id],
     )
     return (
         <ShopifyContext.Provider value={shopifyContextData}>
@@ -63,8 +63,8 @@ const AfterTitleContainer = ({
     source,
     integrations,
 }: AfterTitleProps & ConnectedProps<typeof connector>) => {
-    const {integration} = useContext(IntegrationContext)
-    const {hideActionsForCustomer = false} =
+    const { integration } = useContext(IntegrationContext)
+    const { hideActionsForCustomer = false } =
         useContext(CustomizationContext) || {}
 
     const actions: Array<InfobarAction> = [
@@ -75,8 +75,8 @@ const AfterTitleContainer = ({
                     value: ShopifyActionType.CreateOrder,
                     label: 'Create order',
                     parameters: [
-                        {name: 'draft_order_id', type: 'hidden'},
-                        {name: 'payment_pending', type: 'hidden'},
+                        { name: 'draft_order_id', type: 'hidden' },
+                        { name: 'payment_pending', type: 'hidden' },
                     ],
                 },
             ],
@@ -131,7 +131,7 @@ const AfterTitleContainer = ({
 const connector = connect((state: RootState) => ({
     integrations:
         integrationsSelectors.getIntegrationsByType<ShopifyIntegration>(
-            IntegrationType.Shopify
+            IntegrationType.Shopify,
         )(state),
 }))
 
@@ -143,9 +143,9 @@ type TitleWrapperProps = {
     isEditing: boolean
 }
 
-function TitleWrapper({children, source, isEditing}: TitleWrapperProps) {
+function TitleWrapper({ children, source, isEditing }: TitleWrapperProps) {
     const currentAccount = useAppSelector(getCurrentAccountState)
-    const {integration} = useContext(IntegrationContext)
+    const { integration } = useContext(IntegrationContext)
     const shopName: string = integration.getIn(['meta', 'shop_name'])
     const href = `${shopifyAdminBaseUrl(shopName)}/customers/${(
         (source.get('id') as string) || ''

@@ -1,29 +1,29 @@
-import {render, screen} from '@testing-library/react'
-import {fromJS, Map} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
-import type {ReactNode} from 'react'
-import {DndProvider} from 'react-dnd'
-import {HTML5Backend} from 'react-dnd-html5-backend'
-import {Provider} from 'react-redux'
-import {StaticRouter} from 'react-router-dom'
+import type { ReactNode } from 'react'
+
+import { render, screen } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+import { Provider } from 'react-redux'
+import { StaticRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
-import {NavBarProvider} from 'common/navigation/components/NavBarProvider'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {AGENT_ROLE} from 'config/user'
-import {useFlag} from 'core/flags'
-import {ThemeProvider} from 'core/theme'
-import {account, automationSubscriptionProductPrices} from 'fixtures/account'
-import {billingState} from 'fixtures/billing'
-import {integrationsState} from 'fixtures/integrations'
-import {user} from 'fixtures/users'
-import {getStoreConfigurationFixture} from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
-import {useAiAgentItemEnabled} from 'pages/aiAgent/hooks/useAiAgentItemEnabled'
-import {useStoreConfiguration} from 'pages/aiAgent/hooks/useStoreConfiguration'
-import {RootState} from 'state/types'
-
-import {assumeMock} from 'utils/testing'
+import { NavBarProvider } from 'common/navigation/components/NavBarProvider'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { AGENT_ROLE } from 'config/user'
+import { useFlag } from 'core/flags'
+import { ThemeProvider } from 'core/theme'
+import { account, automationSubscriptionProductPrices } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
+import { integrationsState } from 'fixtures/integrations'
+import { user } from 'fixtures/users'
+import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
+import { useAiAgentItemEnabled } from 'pages/aiAgent/hooks/useAiAgentItemEnabled'
+import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
+import { RootState } from 'state/types'
+import { assumeMock } from 'utils/testing'
 
 import AutomateNavbar from '../AutomateNavbar'
 
@@ -51,7 +51,7 @@ jest.mock('common/notifications/components/Button', () => ({
 jest.mock('pages/aiAgent/hooks/useAiAgentItemEnabled')
 const useAiAgentItemEnabledMock = assumeMock(useAiAgentItemEnabled)
 
-const wrapper = ({children}: {children: ReactNode}) => (
+const wrapper = ({ children }: { children: ReactNode }) => (
     <StaticRouter location="/app">
         <NavBarProvider>{children}</NavBarProvider>
     </StaticRouter>
@@ -85,12 +85,12 @@ describe('<AutomateNavbar />', () => {
                 deactivated_datetime: null,
                 type: 'shopify',
             },
-        ])
+        ]),
     )
 
     describe('render()', () => {
         it('should render automate navbar for agent without Automate and without legacy automate features', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider
                     store={mockStore({
                         ...defaultState,
@@ -101,7 +101,7 @@ describe('<AutomateNavbar />', () => {
                         }),
                         currentUser: fromJS({
                             ...user,
-                            role: {name: AGENT_ROLE},
+                            role: { name: AGENT_ROLE },
                         }),
                     })}
                 >
@@ -111,14 +111,14 @@ describe('<AutomateNavbar />', () => {
                         </ThemeProvider>
                     </DndProvider>
                 </Provider>,
-                {wrapper}
+                { wrapper },
             )
 
             expect(container).toMatchSnapshot()
         })
 
         it('should render automate navbar for agent with Automate', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider
                     store={mockStore({
                         ...defaultState,
@@ -132,7 +132,7 @@ describe('<AutomateNavbar />', () => {
                         }),
                         currentUser: fromJS({
                             ...user,
-                            role: {name: AGENT_ROLE},
+                            role: { name: AGENT_ROLE },
                         }),
                     })}
                 >
@@ -142,14 +142,14 @@ describe('<AutomateNavbar />', () => {
                         </ThemeProvider>
                     </DndProvider>
                 </Provider>,
-                {wrapper}
+                { wrapper },
             )
 
             expect(container).toMatchSnapshot()
         })
 
         it('should render automate navbar for admin without Automate and without legacy automate features', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider
                     store={mockStore({
                         ...defaultState,
@@ -166,14 +166,14 @@ describe('<AutomateNavbar />', () => {
                         </ThemeProvider>
                     </DndProvider>
                 </Provider>,
-                {wrapper}
+                { wrapper },
             )
 
             expect(container).toMatchSnapshot()
         })
 
         it('should render automate navbar for admin with Automate', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider
                     store={mockStore({
                         ...defaultState,
@@ -193,7 +193,7 @@ describe('<AutomateNavbar />', () => {
                         </ThemeProvider>
                     </DndProvider>
                 </Provider>,
-                {wrapper}
+                { wrapper },
             )
 
             expect(container).toMatchSnapshot()
@@ -202,7 +202,7 @@ describe('<AutomateNavbar />', () => {
         it('should render automate navbar with actions internal platform', () => {
             mockUseFlag.mockReturnValue(true)
 
-            const {queryByText} = render(
+            const { queryByText } = render(
                 <Provider
                     store={mockStore({
                         ...defaultState,
@@ -222,7 +222,7 @@ describe('<AutomateNavbar />', () => {
                         </ThemeProvider>
                     </DndProvider>
                 </Provider>,
-                {wrapper}
+                { wrapper },
             )
 
             expect(queryByText('Actions platform')).toBeInTheDocument()
@@ -254,7 +254,7 @@ describe('<AutomateNavbar />', () => {
                         </ThemeProvider>
                     </DndProvider>
                 </Provider>,
-                {wrapper}
+                { wrapper },
             )
 
             expect(screen.getByText('AI Agent Overview')).toBeInTheDocument()
@@ -266,7 +266,7 @@ describe('<AutomateNavbar />', () => {
                 [FeatureFlagKey.StandaloneConvAiOverviewPage]: true,
             })
 
-            const {queryByText} = render(
+            const { queryByText } = render(
                 <Provider
                     store={mockStore({
                         ...defaultState,
@@ -286,7 +286,7 @@ describe('<AutomateNavbar />', () => {
                         </ThemeProvider>
                     </DndProvider>
                 </Provider>,
-                {wrapper}
+                { wrapper },
             )
 
             expect(queryByText('AI Agent Overview')).not.toBeInTheDocument()
@@ -298,7 +298,7 @@ describe('<AutomateNavbar />', () => {
                 [FeatureFlagKey.StandaloneConvAiOverviewPage]: false,
             })
 
-            const {queryByText} = render(
+            const { queryByText } = render(
                 <Provider
                     store={mockStore({
                         ...defaultState,
@@ -318,7 +318,7 @@ describe('<AutomateNavbar />', () => {
                         </ThemeProvider>
                     </DndProvider>
                 </Provider>,
-                {wrapper}
+                { wrapper },
             )
 
             expect(queryByText('AI Agent Overview')).not.toBeInTheDocument()

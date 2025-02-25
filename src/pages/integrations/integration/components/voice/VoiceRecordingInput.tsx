@@ -1,16 +1,17 @@
-import classnames from 'classnames'
 import React from 'react'
+
+import classnames from 'classnames'
 
 import Button from 'pages/common/components/button/Button'
 import Caption from 'pages/common/forms/Caption/Caption'
-import {replaceAttachmentURL} from 'utils'
+import { replaceAttachmentURL } from 'utils'
 
 import css from './VoiceMessageField.less'
 
 type PropsVoiceRecordingInput = {
     voiceRecordingPath: Maybe<string>
     onVoiceRecordingUpload: (
-        event: React.ChangeEvent<HTMLInputElement>
+        event: React.ChangeEvent<HTMLInputElement>,
     ) => Promise<void>
     uploadLabel?: string
     replaceLabel?: string

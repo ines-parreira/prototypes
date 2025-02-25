@@ -1,34 +1,39 @@
-import {Skeleton} from '@gorgias/merchant-ui-kit'
-import React, {useMemo} from 'react'
-import {useRouteMatch} from 'react-router-dom'
+import React, { useMemo } from 'react'
+
+import { useRouteMatch } from 'react-router-dom'
+
+import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import navbarCss from 'assets/css/navbar.less'
 import useEffectOnce from 'hooks/useEffectOnce'
 import useLocalStorage from 'hooks/useLocalStorage'
-import {GorgiasChatIntegration, IntegrationType} from 'models/integration/types'
-
-import {useGetOnboardingStatusMap} from 'pages/convert/channelConnections/hooks/useGetOnboardingStatusMap'
+import {
+    GorgiasChatIntegration,
+    IntegrationType,
+} from 'models/integration/types'
+import { useGetOnboardingStatusMap } from 'pages/convert/channelConnections/hooks/useGetOnboardingStatusMap'
 import {
     CONVERT_NAVBAR_COLLAPSED_SECTIONS_KEY,
     CONVERT_ROUTING_PARAM,
     MAX_EXPANDED_SECTIONS_BY_DEFAULT,
 } from 'pages/convert/common/constants'
-import {useGetSortedIntegrations} from 'pages/convert/common/hooks/useGetSortedIntegrations'
+import { useGetSortedIntegrations } from 'pages/convert/common/hooks/useGetSortedIntegrations'
 
 import ConvertNavbarSectionBlock from './ConvertNavbarSectionBlock'
+
 import css from './ConvertNavbarView.less'
 
 type SectionKey = `${IntegrationType.GorgiasChat}:${string}`
 
 const getSectionKeyFromIntegration = (
-    integration: GorgiasChatIntegration
+    integration: GorgiasChatIntegration,
 ): SectionKey => {
     return `${integration.type}:${integration.id}`
 }
 
 const ConvertNavbarView = () => {
     const convertPathPrefix = `/app/convert/${CONVERT_ROUTING_PARAM}`
-    const match = useRouteMatch<{id: string}>({
+    const match = useRouteMatch<{ id: string }>({
         path: [
             `${convertPathPrefix}/setup`,
             `${convertPathPrefix}/performance`,
@@ -39,7 +44,7 @@ const ConvertNavbarView = () => {
         ],
         exact: false,
     })
-    const {onboardingMap, isLoading, isError} = useGetOnboardingStatusMap()
+    const { onboardingMap, isLoading, isError } = useGetOnboardingStatusMap()
 
     const sortedIntegrations = useGetSortedIntegrations()
     const initialCollapsedSections = useMemo(
@@ -49,11 +54,11 @@ const ConvertNavbarView = () => {
                       .slice(MAX_EXPANDED_SECTIONS_BY_DEFAULT)
                       .map(getSectionKeyFromIntegration)
                 : [],
-        [sortedIntegrations]
+        [sortedIntegrations],
     )
     const [collapsedSections, setCollapsedSections] = useLocalStorage<string[]>(
         CONVERT_NAVBAR_COLLAPSED_SECTIONS_KEY,
-        initialCollapsedSections
+        initialCollapsedSections,
     )
 
     useEffectOnce(() => {
@@ -61,7 +66,7 @@ const ConvertNavbarView = () => {
             return
         }
 
-        const {id} = match.params
+        const { id } = match.params
         const key = `${IntegrationType.GorgiasChat}:${id}`
 
         const newCollapsedSections = [...collapsedSections]

@@ -1,12 +1,13 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
-import {Elements} from '@stripe/react-stripe-js'
-import {loadStripe, Stripe} from '@stripe/stripe-js'
+import React, { useEffect } from 'react'
 
-import React, {useEffect} from 'react'
+import { Elements } from '@stripe/react-stripe-js'
+import { loadStripe, Stripe } from '@stripe/stripe-js'
 
-import {useTheme} from 'core/theme'
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+
+import { useTheme } from 'core/theme'
 import Button from 'pages/common/components/button/Button'
-import {reportCRMGrowthError} from 'pages/settings/new_billing/utils/reportCRMGrowthError'
+import { reportCRMGrowthError } from 'pages/settings/new_billing/utils/reportCRMGrowthError'
 
 type StripeElementsProviderProps = {
     clientSecret?: string
@@ -16,7 +17,7 @@ export const StripeElementsProvider: React.FC<StripeElementsProviderProps> = ({
     children,
     clientSecret,
 }) => {
-    const {tokens} = useTheme()
+    const { tokens } = useTheme()
     const [stripe, setStripe] = React.useState<Stripe | null>()
     const [error, setError] = React.useState<Error | null>(null)
 
@@ -118,7 +119,7 @@ const getStripe = (() => {
 
         reportCRMGrowthError(
             error,
-            `Failed to load stripe (trial: ${totalAttempts}`
+            `Failed to load stripe (trial: ${totalAttempts}`,
         )
 
         throw new Error('Failed to load Stripe.js')

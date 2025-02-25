@@ -1,5 +1,5 @@
-import {phoneNumbers} from 'fixtures/phoneNumber'
-import {IntegrationType} from 'models/integration/types'
+import { phoneNumbers } from 'fixtures/phoneNumber'
+import { IntegrationType } from 'models/integration/types'
 import {
     NewPhoneNumber,
     OldPhoneNumber,
@@ -8,22 +8,22 @@ import {
     PhoneType,
 } from 'models/phoneNumber/types'
 
-import {validationAlertMessages} from '../constants'
+import { validationAlertMessages } from '../constants'
 import {
+    buildInternationalNumber,
     countryCode,
+    formatAsNationalNumber,
+    formatPhoneNumberInternational,
     friendlyName,
+    getAddressValidationAlertMessage,
+    getAvailableStates,
+    getCountryFromPhoneNumber,
     hasCapability,
     isNewPhoneNumber,
     isTwilioNumber,
     isWhatsAppNumber,
-    buildInternationalNumber,
-    formatAsNationalNumber,
-    getCountryFromPhoneNumber,
     normalizeNumber,
-    formatPhoneNumberInternational,
     shouldValidateAddress,
-    getAvailableStates,
-    getAddressValidationAlertMessage,
 } from '../utils'
 
 describe('isNewPhoneNumber()', () => {
@@ -31,7 +31,7 @@ describe('isNewPhoneNumber()', () => {
         expect(
             isNewPhoneNumber({
                 connections: [],
-            } as unknown as NewPhoneNumber)
+            } as unknown as NewPhoneNumber),
         ).toBe(true)
     })
 
@@ -39,7 +39,7 @@ describe('isNewPhoneNumber()', () => {
         expect(
             isNewPhoneNumber({
                 meta: {},
-            } as OldPhoneNumber)
+            } as OldPhoneNumber),
         ).toBe(false)
     })
 })
@@ -54,7 +54,7 @@ describe('isWhatsAppNumber()', () => {
                         meta: {},
                     },
                 ],
-            } as NewPhoneNumber)
+            } as NewPhoneNumber),
         ).toBe(true)
     })
 
@@ -62,7 +62,7 @@ describe('isWhatsAppNumber()', () => {
         expect(
             isWhatsAppNumber({
                 connections: [],
-            } as unknown as NewPhoneNumber)
+            } as unknown as NewPhoneNumber),
         ).toBe(false)
     })
 })
@@ -79,7 +79,7 @@ describe('isTwilioNumber()', () => {
                         },
                     },
                 ],
-            } as NewPhoneNumber)
+            } as NewPhoneNumber),
         ).toBe(true)
     })
 
@@ -87,7 +87,7 @@ describe('isTwilioNumber()', () => {
         expect(
             isTwilioNumber({
                 connections: [],
-            } as unknown as NewPhoneNumber)
+            } as unknown as NewPhoneNumber),
         ).toBe(false)
     })
 })
@@ -97,16 +97,16 @@ describe('hasCapability()', () => {
         const numberWithBothCapabilities = phoneNumbers[0]
         const numberWithoutSmsCapability = phoneNumbers[2]
         expect(
-            hasCapability(numberWithBothCapabilities, IntegrationType.Phone)
+            hasCapability(numberWithBothCapabilities, IntegrationType.Phone),
         ).toEqual(true)
         expect(
-            hasCapability(numberWithBothCapabilities, IntegrationType.Sms)
+            hasCapability(numberWithBothCapabilities, IntegrationType.Sms),
         ).toEqual(true)
         expect(
-            hasCapability(numberWithoutSmsCapability, IntegrationType.Phone)
+            hasCapability(numberWithoutSmsCapability, IntegrationType.Phone),
         ).toEqual(true)
         expect(
-            hasCapability(numberWithoutSmsCapability, IntegrationType.Sms)
+            hasCapability(numberWithoutSmsCapability, IntegrationType.Sms),
         ).toEqual(false)
     })
 })
@@ -122,7 +122,7 @@ describe('countryCode()', () => {
                         meta: {},
                     },
                 ],
-            } as NewPhoneNumber)
+            } as NewPhoneNumber),
         ).toEqual('US')
     })
 
@@ -139,7 +139,7 @@ describe('countryCode()', () => {
                         },
                     },
                 ],
-            } as NewPhoneNumber)
+            } as NewPhoneNumber),
         ).toEqual(PhoneCountry.US)
     })
 
@@ -149,7 +149,7 @@ describe('countryCode()', () => {
                 meta: {
                     country: PhoneCountry.US,
                 },
-            } as OldPhoneNumber)
+            } as OldPhoneNumber),
         ).toEqual(PhoneCountry.US)
     })
 })
@@ -161,7 +161,7 @@ describe('friendlyName()', () => {
                 meta: {
                     friendly_name: '+123',
                 },
-            } as OldPhoneNumber)
+            } as OldPhoneNumber),
         ).toEqual('+123')
     })
 
@@ -170,7 +170,7 @@ describe('friendlyName()', () => {
             friendlyName({
                 phone_number_friendly: '+123',
                 connections: [],
-            } as unknown as NewPhoneNumber)
+            } as unknown as NewPhoneNumber),
         ).toEqual('+123')
     })
 })
@@ -178,16 +178,16 @@ describe('friendlyName()', () => {
 describe('buildInternationalNumber()', () => {
     it('should return unformatted numbers in international format', () => {
         expect(buildInternationalNumber('234 567 8910', 'US')).toEqual(
-            '+12345678910'
+            '+12345678910',
         )
         expect(buildInternationalNumber('2 34 56 78 91', 'FR')).toEqual(
-            '+33234567891'
+            '+33234567891',
         )
     })
 
     it("should use the given country's calling code if given an international number", () => {
         expect(buildInternationalNumber('+1 234 567 8910', 'FR')).toEqual(
-            '+332345678910'
+            '+332345678910',
         )
     })
 })
@@ -201,7 +201,7 @@ describe('formatAsNationalNumber()', () => {
         'should strip the country calling code when given an international number',
         (number, nationalNumber) => {
             expect(formatAsNationalNumber(number)).toEqual(nationalNumber)
-        }
+        },
     )
 
     it.each([
@@ -211,7 +211,7 @@ describe('formatAsNationalNumber()', () => {
         'should return the given number if not in international format',
         (number, nationalNumber) => {
             expect(formatAsNationalNumber(number)).toEqual(nationalNumber)
-        }
+        },
     )
 })
 
@@ -224,20 +224,20 @@ describe('normalizeNumber()', () => {
         'should remove spaces and brakets from international formatted numbers',
         (number, normalizedNumber) => {
             expect(normalizeNumber(number)).toEqual(normalizedNumber)
-        }
+        },
     )
 })
 
 describe('formatPhoneNumberInternational', () => {
     it('should return formatted number for a valid number', () => {
         expect(formatPhoneNumberInternational('+12133734253')).toBe(
-            '+1 213 373 4253'
+            '+1 213 373 4253',
         )
     })
 
     it('should return unformatted number for an invalid number', () => {
         expect(formatPhoneNumberInternational('+1abc3734253')).toBe(
-            '+1abc3734253'
+            '+1abc3734253',
         )
     })
 
@@ -269,41 +269,41 @@ describe('getCountryFromPhoneNumber()', () => {
         'should infer country when given short, invalid numbers',
         (number, country) => {
             expect(getCountryFromPhoneNumber(number)).toEqual(country)
-        }
+        },
     )
 })
 
 describe('shouldValidateAddress()', () => {
     const countries = [
-        {country: PhoneCountry.US},
-        {country: PhoneCountry.CA},
-        {country: PhoneCountry.FR},
-        {country: PhoneCountry.GB},
-        {country: PhoneCountry.DE},
-        {country: PhoneCountry.NZ},
-        {country: PhoneCountry.AU, type: PhoneType.Mobile},
+        { country: PhoneCountry.US },
+        { country: PhoneCountry.CA },
+        { country: PhoneCountry.FR },
+        { country: PhoneCountry.GB },
+        { country: PhoneCountry.DE },
+        { country: PhoneCountry.NZ },
+        { country: PhoneCountry.AU, type: PhoneType.Mobile },
     ]
 
-    it.each(countries)('should not validate address', ({country, type}) =>
-        expect(shouldValidateAddress(country, type)).toBe(false)
+    it.each(countries)('should not validate address', ({ country, type }) =>
+        expect(shouldValidateAddress(country, type)).toBe(false),
     )
 
-    it.each([{country: PhoneCountry.AU, type: PhoneType.Local}])(
+    it.each([{ country: PhoneCountry.AU, type: PhoneType.Local }])(
         'should validate address',
-        ({country, type}) =>
-            expect(shouldValidateAddress(country, type)).toBe(true)
+        ({ country, type }) =>
+            expect(shouldValidateAddress(country, type)).toBe(true),
     )
 })
 
 describe('getAvailableStates()', () => {
     it('should only include a selected list of states', () => {
         expect(
-            getAvailableStates('US').find((state) => state.name === 'New York')
+            getAvailableStates('US').find((state) => state.name === 'New York'),
         ).toBeDefined()
         expect(
             getAvailableStates('US').find(
-                (state) => state.name === 'New Hampshire'
-            )
+                (state) => state.name === 'New Hampshire',
+            ),
         ).toBeUndefined()
     })
 
@@ -323,7 +323,7 @@ describe('getAddressValidationAlertMessage', () => {
 
     it('should return a message when country is AU and type is mobile', () => {
         expect(
-            getAddressValidationAlertMessage(PhoneCountry.AU, PhoneType.Mobile)
+            getAddressValidationAlertMessage(PhoneCountry.AU, PhoneType.Mobile),
         ).toEqual(validationAlertMessages[PhoneCountry.AU])
     })
 
@@ -336,8 +336,8 @@ describe('getAddressValidationAlertMessage', () => {
         'should return alert message for selected country',
         (country: PhoneCountry) => {
             expect(getAddressValidationAlertMessage(country)).toEqual(
-                validationAlertMessages[country]
+                validationAlertMessages[country],
             )
-        }
+        },
     )
 })

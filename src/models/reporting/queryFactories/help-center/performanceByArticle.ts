@@ -1,5 +1,5 @@
-import {OrderDirection} from 'models/api/types'
-import {StatsFilters} from 'models/stat/types'
+import { OrderDirection } from 'models/api/types'
+import { StatsFilters } from 'models/stat/types'
 import {
     HelpCenterStatsFiltersMembers,
     statsFiltersToReportingFilters,
@@ -11,11 +11,11 @@ import {
     HelpCenterTrackingEventMeasures,
     HelpCenterTrackingEventSegment,
 } from '../../cubes/HelpCenterTrackingEventCube'
-import {ReportingQuery} from '../../types'
+import { ReportingQuery } from '../../types'
 
 export const performanceByArticleQueryFactory = (
     statsFilters: StatsFilters,
-    timezone: string
+    timezone: string,
 ): ReportingQuery<HelpCenterTrackingEventCube> => ({
     measures: [HelpCenterTrackingEventMeasures.ArticleView],
     dimensions: [
@@ -29,7 +29,7 @@ export const performanceByArticleQueryFactory = (
     filters: [
         ...statsFiltersToReportingFilters(
             HelpCenterStatsFiltersMembers,
-            statsFilters
+            statsFilters,
         ),
     ],
     order: [[HelpCenterTrackingEventMeasures.ArticleView, OrderDirection.Desc]],
@@ -37,7 +37,7 @@ export const performanceByArticleQueryFactory = (
 
 export const performanceByArticleCountQueryFactory = (
     statsFilters: StatsFilters,
-    timezone: string
+    timezone: string,
 ) => ({
     measures: [HelpCenterTrackingEventMeasures.ArticleCount],
     dimensions: [],
@@ -46,7 +46,7 @@ export const performanceByArticleCountQueryFactory = (
     filters: [
         ...statsFiltersToReportingFilters(
             HelpCenterStatsFiltersMembers,
-            statsFilters
+            statsFilters,
         ),
     ],
 })

@@ -1,8 +1,3 @@
-import classnames from 'classnames'
-import _capitalize from 'lodash/capitalize'
-import _union from 'lodash/union'
-import _without from 'lodash/without'
-import _xor from 'lodash/xor'
 import React, {
     Children,
     Component,
@@ -20,20 +15,27 @@ import React, {
     useRef,
     useState,
 } from 'react'
+
+import classnames from 'classnames'
+import _capitalize from 'lodash/capitalize'
+import _union from 'lodash/union'
+import _without from 'lodash/without'
+import _xor from 'lodash/xor'
 import {
-    Input,
     DropdownItem,
     DropdownMenu,
     DropdownToggle,
+    Input,
     UncontrolledDropdown,
 } from 'reactstrap'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {LabelWithTooltip} from 'pages/common/components/LabelWithTooltip/LabelWithTooltip'
+import { LabelWithTooltip } from 'pages/common/components/LabelWithTooltip/LabelWithTooltip'
 import CheckBox from 'pages/common/forms/CheckBox'
-import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
+import { statFiltersClean, statFiltersDirty } from 'state/ui/stats/actions'
 
 import QuickSelectionOption from './QuickSelectionOption'
+
 import css from './SelectFilter.less'
 
 type Value = string | number
@@ -68,9 +70,9 @@ type ItemProps = {
     icon?: string | ReactNode
 }
 
-const Item = ({label, value, icon}: ItemProps) => {
-    const {handleChange, isChecked, isDisplayed} = useContext(
-        SelectFilterItemContext
+const Item = ({ label, value, icon }: ItemProps) => {
+    const { handleChange, isChecked, isDisplayed } = useContext(
+        SelectFilterItemContext,
     )
 
     if (!isDisplayed(label)) {
@@ -128,10 +130,9 @@ const SelectFilterGroupContext = createContext<GroupContext>({
     },
 })
 
-const Group = ({items, label, value}: GroupProps) => {
-    const {getCheckedStatus, handleChange, isChecked, isDisplayed} = useContext(
-        SelectFilterGroupContext
-    )
+const Group = ({ items, label, value }: GroupProps) => {
+    const { getCheckedStatus, handleChange, isChecked, isDisplayed } =
+        useContext(SelectFilterGroupContext)
 
     if (!isDisplayed(label, items)) {
         return null
@@ -144,7 +145,7 @@ const Group = ({items, label, value}: GroupProps) => {
             isChecked={isChecked(value)}
             onChange={() => handleChange(value, items)}
             isIndeterminate={
-                getCheckedStatus({items, value}) === CheckedStatus.Partial
+                getCheckedStatus({ items, value }) === CheckedStatus.Partial
             }
         >
             <LabelWithTooltip label={label} />
@@ -233,7 +234,7 @@ const SelectFilter = ({
     const items = useMemo(
         () => (children ? getItems(children) : []),
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [children]
+        [children],
     )
 
     const toggleLabel = useMemo(() => {
@@ -255,14 +256,14 @@ const SelectFilter = ({
                       Children.toArray(children).filter(
                           (child) =>
                               (child as GroupElement).type.displayName ===
-                              SelectFilter.Group.displayName
+                              SelectFilter.Group.displayName,
                       ) as GroupElement[]
-                  ).map(({props: {value, items}}) => ({
+                  ).map(({ props: { value, items } }) => ({
                       value,
                       items,
                   }))
                 : [],
-        [children]
+        [children],
     )
 
     const updateGroupValue = (nextValue: Value[]) => {
@@ -304,13 +305,13 @@ const SelectFilter = ({
             updateGroupValue(nextValue)
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [isDisabled, isMultiple, isRequired, value, onChange]
+        [isDisabled, isMultiple, isRequired, value, onChange],
     )
 
     const handleToggle = useCallback(
         (
             event: KeyboardEvent<Element> | MouseEvent<Element>,
-            isOpen: boolean
+            isOpen: boolean,
         ) => {
             if (isOpen && event.currentTarget === toggleRef.current) {
                 dispatch(statFiltersDirty())
@@ -318,7 +319,7 @@ const SelectFilter = ({
                 dispatch(statFiltersClean())
             }
         },
-        [dispatch]
+        [dispatch],
     )
 
     const handleGroupChange = useCallback(
@@ -336,7 +337,7 @@ const SelectFilter = ({
             setSelectedGroupIds(nextValue)
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [isDisabled, selectedGroupIds, onChange]
+        [isDisabled, selectedGroupIds, onChange],
     )
 
     const getCheckedStatus = useCallback(
@@ -348,7 +349,7 @@ const SelectFilter = ({
             }
             return CheckedStatus.Partial
         },
-        [selectedGroupIds, value]
+        [selectedGroupIds, value],
     )
 
     const isItemDisplayed = (label: string) =>
@@ -363,11 +364,11 @@ const SelectFilter = ({
         }
 
         const groupItemValues = items.filter((item) =>
-            groupItems?.includes(item.props.value)
+            groupItems?.includes(item.props.value),
         )
         if (
             groupItemValues.some((item) =>
-                item.props.label.toLowerCase().includes(search.toLowerCase())
+                item.props.label.toLowerCase().includes(search.toLowerCase()),
             )
         ) {
             return true
@@ -401,7 +402,7 @@ const SelectFilter = ({
                         caret
                         className={classnames(
                             toggleClassName,
-                            css.dropdownToggle
+                            css.dropdownToggle,
                         )}
                         color="secondary"
                         type="button"
@@ -415,7 +416,7 @@ const SelectFilter = ({
                             header
                             className={classnames(
                                 'dropdown-item-input',
-                                css.dropdownItemInput
+                                css.dropdownItemInput,
                             )}
                         >
                             <Input
@@ -437,11 +438,11 @@ const SelectFilter = ({
                                     } else {
                                         onChange(
                                             items.map(
-                                                ({props: {value}}) => value
-                                            )
+                                                ({ props: { value } }) => value,
+                                            ),
                                         )
                                         setSelectedGroupIds(
-                                            groups.map(({value}) => value)
+                                            groups.map(({ value }) => value),
                                         )
                                     }
                                 }}

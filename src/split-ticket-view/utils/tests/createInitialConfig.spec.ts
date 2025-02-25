@@ -1,6 +1,6 @@
-import {Config} from 'panels'
+import { Config } from 'panels'
 
-import {LayoutKeys} from '../../constants'
+import { LayoutKeys } from '../../constants'
 import createInitialConfig from '../createInitialConfig'
 
 const defaultConfig: Config = [

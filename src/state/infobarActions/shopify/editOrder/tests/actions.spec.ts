@@ -1,19 +1,19 @@
 import MockAdapter from 'axios-mock-adapter'
-import {fromJS, Map} from 'immutable'
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+import { fromJS, Map } from 'immutable'
+import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {
-    shopifyCalculateEditOrderFixture,
     shopifyCalculatedEditOrderFixture,
+    shopifyCalculateEditOrderFixture,
     shopifyDraftOrderPayloadFixture,
     shopifyOrderFixture,
 } from '../../../../../fixtures/shopify'
 import client from '../../../../../models/api/resources'
-import {IntegrationType} from '../../../../../models/integration/types'
-import {StoreDispatch} from '../../../../types'
+import { IntegrationType } from '../../../../../models/integration/types'
+import { StoreDispatch } from '../../../../types'
 import * as actions from '../actions'
-import {initialState} from '../reducers'
+import { initialState } from '../reducers'
 
 jest.mock('lodash/debounce', () => (fn: Record<string, unknown>) => {
     fn.cancel = jest.fn()
@@ -31,7 +31,7 @@ describe('infobarActions.shopify.editOrder actions', () => {
     const mockServer = new MockAdapter(client)
     mockServer
         .onPost(
-            `/integrations/${IntegrationType.Shopify}/order/edit/calculate/`
+            `/integrations/${IntegrationType.Shopify}/order/edit/calculate/`,
         )
         .reply(200, {
             data: {
@@ -50,11 +50,11 @@ describe('infobarActions.shopify.editOrder actions', () => {
                         editOrder: initialState
                             .set(
                                 'payload',
-                                fromJS(shopifyDraftOrderPayloadFixture())
+                                fromJS(shopifyDraftOrderPayloadFixture()),
                             )
                             .set(
                                 'calculatedEditOrder',
-                                fromJS(shopifyCalculatedEditOrderFixture())
+                                fromJS(shopifyCalculatedEditOrderFixture()),
                             ),
                     },
                 },
@@ -71,7 +71,7 @@ describe('infobarActions.shopify.editOrder actions', () => {
                         order.getIn(['line_items', 0]) as Map<any, any>
                     ).set('quantity', 6),
                     index: 0,
-                })
+                }),
             )
             expect(store.getActions()).toMatchSnapshot()
         })
@@ -80,7 +80,7 @@ describe('infobarActions.shopify.editOrder actions', () => {
                 actions.onLineItemChange(integrationId, {
                     remove: true,
                     index: 0,
-                })
+                }),
             )
             expect(store.getActions()).toMatchSnapshot()
         })

@@ -1,10 +1,15 @@
-import {render, screen} from '@testing-library/react'
+import React, { useState } from 'react'
+
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import React, {useState} from 'react'
 
-import {StoreAdminNewUrlInput} from '../StoreAdminNewUrlInput'
+import { StoreAdminNewUrlInput } from '../StoreAdminNewUrlInput'
 
-const WrapperComponent = ({onChange}: {onChange?: (value: string) => void}) => {
+const WrapperComponent = ({
+    onChange,
+}: {
+    onChange?: (value: string) => void
+}) => {
     const [value, setValue] = useState('')
 
     return (
@@ -25,18 +30,18 @@ describe('<StoreAdminUrlInput />', () => {
 
         await userEvent.type(
             screen.getByRole('textbox'),
-            '   https://admin.hello.us.com/index.php   '
+            '   https://admin.hello.us.com/index.php   ',
         )
 
         expect(onChangeMock).toHaveBeenCalledWith(
-            'admin.hello.us.com/index.php'
+            'admin.hello.us.com/index.php',
         )
 
         userEvent.clear(screen.getByRole('textbox'))
 
         await userEvent.type(
             screen.getByRole('textbox'),
-            '   http://some.site.com/index.php'
+            '   http://some.site.com/index.php',
         )
 
         expect(onChangeMock).toHaveBeenLastCalledWith('some.site.com/index.php')
@@ -61,8 +66,8 @@ describe('<StoreAdminUrlInput />', () => {
 
             expect(
                 screen.getByRole<HTMLInputElement>('textbox').validity
-                    .patternMismatch
+                    .patternMismatch,
             ).toBe(result)
-        }
+        },
     )
 })

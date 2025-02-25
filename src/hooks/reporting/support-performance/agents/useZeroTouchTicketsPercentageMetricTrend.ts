@@ -4,13 +4,13 @@ import {
     useClosedTicketsTrend,
     useZeroTouchTicketsTrend,
 } from 'hooks/reporting/metricTrends'
-import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-import {StatsFilters} from 'models/stat/types'
-import {calculatePercentage} from 'utils/reporting'
+import { MetricTrend } from 'hooks/reporting/useMetricTrend'
+import { StatsFilters } from 'models/stat/types'
+import { calculatePercentage } from 'utils/reporting'
 
 const formatData = (
     zeroTouchTicketsTrend: MetricTrend,
-    closedTicketsTrend: MetricTrend
+    closedTicketsTrend: MetricTrend,
 ) => {
     let metricValue: number | null = null
     let prevMetricValue: number | null = null
@@ -18,7 +18,7 @@ const formatData = (
     if (closedTicketsTrend.data?.value && zeroTouchTicketsTrend.data?.value) {
         metricValue = calculatePercentage(
             zeroTouchTicketsTrend.data.value,
-            closedTicketsTrend.data.value
+            closedTicketsTrend.data.value,
         )
     }
 
@@ -28,7 +28,7 @@ const formatData = (
     ) {
         prevMetricValue = calculatePercentage(
             zeroTouchTicketsTrend.data.prevValue,
-            closedTicketsTrend.data.prevValue
+            closedTicketsTrend.data.prevValue,
         )
     }
 
@@ -40,11 +40,11 @@ const formatData = (
 
 export const useZeroTouchTicketsPercentageMetricTrend = (
     statsFilters: StatsFilters,
-    timezone: string
+    timezone: string,
 ): MetricTrend => {
     const zeroTouchTicketsTrend = useZeroTouchTicketsTrend(
         statsFilters,
-        timezone
+        timezone,
     )
     const closedTicketsTrend = useClosedTicketsTrend(statsFilters, timezone)
 
@@ -62,7 +62,7 @@ export const useZeroTouchTicketsPercentageMetricTrend = (
 
 export const fetchZeroTouchTicketsPercentageMetricTrend = (
     statsFilters: StatsFilters,
-    timezone: string
+    timezone: string,
 ): Promise<MetricTrend> =>
     Promise.all([
         fetchZeroTouchTicketsTrend(statsFilters, timezone),

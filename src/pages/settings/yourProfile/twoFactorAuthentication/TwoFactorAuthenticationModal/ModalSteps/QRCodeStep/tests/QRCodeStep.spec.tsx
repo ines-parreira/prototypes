@@ -1,8 +1,9 @@
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import React from 'react'
 
-import {authenticatorData} from 'fixtures/authenticatorData'
-import {AuthenticatorData} from 'models/twoFactorAuthentication/types'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+
+import { authenticatorData } from 'fixtures/authenticatorData'
+import { AuthenticatorData } from 'models/twoFactorAuthentication/types'
 
 import QRCodeStep from '../QRCodeStep'
 
@@ -16,26 +17,26 @@ describe('<QRCodeStep />', () => {
         const waitForLoadingToEnd = async () => {
             await waitFor(() => {
                 expect(() =>
-                    screen.queryByText('QR code is loading. Please wait.')
+                    screen.queryByText('QR code is loading. Please wait.'),
                 ).toHaveLength(0)
             })
 
             await waitFor(() => {
                 expect(() => screen.queryAllByText('Loading...')).toHaveLength(
-                    0
+                    0,
                 )
             })
         }
 
         it('should render the component with the loading component', async () => {
-            const {container} = render(
+            const { container } = render(
                 <QRCodeStep
                     authenticatorData={authenticatorData}
                     errorText={''}
                     setErrorText={setErrorTextMock}
                     setVerificationCode={setVerificationCodeMock}
                     setIsLoading={jest.fn()}
-                />
+                />,
             )
 
             await screen.findByText('QR code is loading. Please wait.')
@@ -44,14 +45,14 @@ describe('<QRCodeStep />', () => {
         })
 
         it('should render the component with the qr code', async () => {
-            const {container} = render(
+            const { container } = render(
                 <QRCodeStep
                     authenticatorData={authenticatorData}
                     errorText={''}
                     setErrorText={setErrorTextMock}
                     setVerificationCode={setVerificationCodeMock}
                     setIsLoading={jest.fn()}
-                />
+                />,
             )
 
             await waitForLoadingToEnd()
@@ -63,14 +64,14 @@ describe('<QRCodeStep />', () => {
         })
 
         it('should render the component without the qrcode container', async () => {
-            const {container} = render(
+            const { container } = render(
                 <QRCodeStep
                     authenticatorData={{} as AuthenticatorData}
                     errorText={'foo error banner'}
                     setErrorText={setErrorTextMock}
                     setVerificationCode={setVerificationCodeMock}
                     setIsLoading={jest.fn()}
-                />
+                />,
             )
 
             await waitForLoadingToEnd()
@@ -79,20 +80,20 @@ describe('<QRCodeStep />', () => {
         })
 
         it('should trigger actions on input change', () => {
-            const {getByPlaceholderText} = render(
+            const { getByPlaceholderText } = render(
                 <QRCodeStep
                     authenticatorData={authenticatorData}
                     setVerificationCode={setVerificationCodeMock}
                     setErrorText={setErrorTextMock}
                     setIsLoading={jest.fn()}
-                />
+                />,
             )
 
             const inputField = getByPlaceholderText(
-                'Enter 6-digit verification code from app or recovery code'
+                'Enter 6-digit verification code from app or recovery code',
             ) as HTMLInputElement
 
-            fireEvent.change(inputField, {target: {value: '123456'}})
+            fireEvent.change(inputField, { target: { value: '123456' } })
 
             expect(setVerificationCodeMock).toHaveBeenCalled()
             expect(setErrorTextMock).toHaveBeenCalled()

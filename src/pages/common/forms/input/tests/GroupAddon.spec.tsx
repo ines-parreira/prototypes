@@ -1,9 +1,10 @@
-import {render} from '@testing-library/react'
 import React from 'react'
+
+import { render } from '@testing-library/react'
 
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import TextInput from 'pages/common/forms/input/TextInput'
-import {reportError} from 'utils/errors'
+import { reportError } from 'utils/errors'
 
 import GroupAddon from '../GroupAddon'
 
@@ -12,11 +13,11 @@ const reportErrorMock = reportError as jest.Mock
 
 describe('<GroupAddon />', () => {
     it('should render an GroupAddon inside a group input wrapper', () => {
-        const {container} = render(
+        const { container } = render(
             <InputGroup>
                 <TextInput onChange={() => null} />
                 <GroupAddon>.postfix</GroupAddon>
-            </InputGroup>
+            </InputGroup>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -25,7 +26,7 @@ describe('<GroupAddon />', () => {
         render(<GroupAddon>.postfix</GroupAddon>)
         expect(reportErrorMock).toHaveBeenCalledTimes(1)
         expect(reportErrorMock).toHaveBeenCalledWith(
-            new Error('GroupAddon must be inside an InputGroup')
+            new Error('GroupAddon must be inside an InputGroup'),
         )
     })
 })

@@ -1,12 +1,13 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {NOT_AVAILABLE_PLACEHOLDER} from 'pages/stats/common/utils'
+import { render } from '@testing-library/react'
+
+import { NOT_AVAILABLE_PLACEHOLDER } from 'pages/stats/common/utils'
 import CommentBodyCell from 'pages/stats/quality-management/satisfaction/ScoredSurveysChart/CommentBodyCell'
 
 describe('<CommentBodyCell>', () => {
     it('should render comment', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <table>
                 <tbody>
                     <tr>
@@ -15,7 +16,7 @@ describe('<CommentBodyCell>', () => {
                         />
                     </tr>
                 </tbody>
-            </table>
+            </table>,
         )
 
         expect(getByText('Great & helpful as always!')).toBeInTheDocument()
@@ -23,28 +24,28 @@ describe('<CommentBodyCell>', () => {
 
     it('should truncate comment with elipsis when longer than 250 chars', () => {
         const longComment = 'a'.repeat(300)
-        const {getByText} = render(
+        const { getByText } = render(
             <table>
                 <tbody>
                     <tr>
                         <CommentBodyCell comment={longComment} />
                     </tr>
                 </tbody>
-            </table>
+            </table>,
         )
 
         expect(getByText(`${longComment.slice(0, 247)}...`)).toBeInTheDocument()
     })
 
     it('should render NOT_AVAILABLE_PLACEHOLDER when comment is not provided', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <table>
                 <tbody>
                     <tr>
                         <CommentBodyCell comment={null} />
                     </tr>
                 </tbody>
-            </table>
+            </table>,
         )
 
         expect(getByText(NOT_AVAILABLE_PLACEHOLDER)).toBeInTheDocument()

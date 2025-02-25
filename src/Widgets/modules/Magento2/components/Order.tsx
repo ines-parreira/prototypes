@@ -1,26 +1,27 @@
-import {Badge, ColorType} from '@gorgias/merchant-ui-kit'
-import {fromJS, List, Map} from 'immutable'
-import React, {Component, ContextType, ReactNode} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
+import React, { Component, ContextType, ReactNode } from 'react'
+
+import { fromJS, List, Map } from 'immutable'
+import { connect, ConnectedProps } from 'react-redux'
+
+import { Badge, ColorType } from '@gorgias/merchant-ui-kit'
 
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import {getActiveCustomerIntegrationDataByIntegrationId} from 'state/customers/selectors'
-import {getIntegrationDataByIntegrationId} from 'state/ticket/selectors'
-import {RootState} from 'state/types'
-import {devLog, humanizeString, isCurrentlyOnTicket} from 'utils'
-import {getTrackingUrl} from 'utils/delivery'
-
-import {getValueFromData} from 'Widgets/modules/Template/helpers/fieldDataMappers'
-import {CardCustomization} from 'Widgets/modules/Template/modules/Card'
-import {StaticField} from 'Widgets/modules/Template/modules/Field'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
+import { getActiveCustomerIntegrationDataByIntegrationId } from 'state/customers/selectors'
+import { getIntegrationDataByIntegrationId } from 'state/ticket/selectors'
+import { RootState } from 'state/types'
+import { devLog, humanizeString, isCurrentlyOnTicket } from 'utils'
+import { getTrackingUrl } from 'utils/delivery'
+import { getValueFromData } from 'Widgets/modules/Template/helpers/fieldDataMappers'
+import { CardCustomization } from 'Widgets/modules/Template/modules/Card'
+import { StaticField } from 'Widgets/modules/Template/modules/Field'
 
 import css from './Order.less'
 
 function getIntegrationData(
     state: RootState,
     integrationId: number,
-    customerId: number
+    customerId: number,
 ) {
     const integrationData = isCurrentlyOnTicket()
         ? getIntegrationDataByIntegrationId(integrationId)(state)
@@ -31,7 +32,7 @@ function getIntegrationData(
             {
                 customerId,
                 integrationId,
-            }
+            },
         )
         return fromJS({}) as Map<any, any>
     }
@@ -57,22 +58,22 @@ class BeforeContentContainer extends Component<BeforeContentProps> {
     static contextType = IntegrationContext
     context!: ContextType<typeof IntegrationContext>
     render() {
-        const {source, getIntegrationData} = this.props
+        const { source, getIntegrationData } = this.props
 
         const state = ((source.get('state') as string) || '').toLowerCase()
 
-        const {integrationId} = this.context
+        const { integrationId } = this.context
 
         const customerIntegrationData = getIntegrationData(
             integrationId!,
-            source.get('customer_id')
+            source.get('customer_id'),
         )
 
         const shipments = (customerIntegrationData.get('shipments') ||
             fromJS([])) as List<any>
         const orderShipments = shipments.filter(
             (shipment: Map<any, any>) =>
-                shipment.get('order_id') === source.get('entity_id')
+                shipment.get('order_id') === source.get('entity_id'),
         ) as List<any>
 
         return (
@@ -99,7 +100,7 @@ const connectorBeforeContent = connect((state: RootState) => {
     return {
         getIntegrationData: (
             integrationId: number,
-            customerId: number
+            customerId: number,
         ): Map<any, any> => {
             return getIntegrationData(state, integrationId, customerId)
         },
@@ -114,8 +115,8 @@ export class Shipments extends Component<{
     static contextType = IntegrationContext
     context!: ContextType<typeof IntegrationContext>
     render() {
-        const {shipments} = this.props
-        const {integration} = this.context
+        const { shipments } = this.props
+        const { integration } = this.context
 
         const storeUrl = integration.getIn(['meta', 'store_url']) as string
         const adminUrlSuffix = integration.getIn([
@@ -127,7 +128,7 @@ export class Shipments extends Component<{
             const lastTrack = (
                 shipment.get('tracks', fromJS([])) as List<any>
             ).maxBy(
-                (track: Map<any, any>) => track.get('updated_at') as string
+                (track: Map<any, any>) => track.get('updated_at') as string,
             ) as Map<any, any>
 
             let trackComponent = null
@@ -178,7 +179,7 @@ export class Shipments extends Component<{
                             <StaticField key={item.get('order_item_id')}>
                                 {item.get('qty')} x {item.get('name')}
                             </StaticField>
-                        )
+                        ),
                     )}
                 </div>
             )
@@ -192,8 +193,8 @@ export class CreditMemos extends Component<{
     static contextType = IntegrationContext
     context!: ContextType<typeof IntegrationContext>
     render() {
-        const {creditMemos} = this.props
-        const {integration} = this.context
+        const { creditMemos } = this.props
+        const { integration } = this.context
 
         const storeUrl = integration.getIn(['meta', 'store_url']) as string
         const adminUrlSuffix: string = integration.getIn([
@@ -241,7 +242,7 @@ export class CreditMemos extends Component<{
                             <StaticField key={item.get('order_item_id')}>
                                 {item.get('qty')} x {item.get('name')}
                             </StaticField>
-                        )
+                        ),
                     )}
                 </div>
             )
@@ -257,19 +258,19 @@ class AfterContentContainer extends Component<AfterContentProps> {
     static contextType = IntegrationContext
     context!: ContextType<typeof IntegrationContext>
     render() {
-        const {source, getIntegrationData} = this.props
-        const {integrationId} = this.context
+        const { source, getIntegrationData } = this.props
+        const { integrationId } = this.context
 
         const customerIntegrationData = getIntegrationData(
             integrationId!,
-            source.get('customer_id')
+            source.get('customer_id'),
         )
 
         const creditMemos = (customerIntegrationData.get('credit_memos') ||
             fromJS([])) as List<any>
         const orderCreditMemos = creditMemos.filter(
             (creditMemo: Map<any, any>) =>
-                creditMemo.get('order_id') === source.get('entity_id')
+                creditMemo.get('order_id') === source.get('entity_id'),
         ) as List<any>
 
         return !orderCreditMemos.isEmpty() ? (
@@ -297,8 +298,8 @@ class TitleWrapper extends Component<TitleWrapperProps> {
     static contextType = IntegrationContext
     context!: ContextType<typeof IntegrationContext>
     render() {
-        const {children, source} = this.props
-        const {integration} = this.context
+        const { children, source } = this.props
+        const { integration } = this.context
 
         const storeUrl: string = integration.getIn(['meta', 'store_url'])
         const adminUrlSuffix: string = integration.getIn([

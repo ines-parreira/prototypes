@@ -1,16 +1,17 @@
-import React, {ReactNode} from 'react'
+import React, { ReactNode } from 'react'
 
 import Collapse from 'pages/common/components/Collapse/Collapse'
 
+import { useAccordionItemContext } from './AccordionItemContext'
+
 import css from './AccordionBody.less'
-import {useAccordionItemContext} from './AccordionItemContext'
 
 type Props = {
     children?: ReactNode
 }
 
-const AccordionBody = ({children}: Props) => {
-    const {isExpanded} = useAccordionItemContext()
+const AccordionBody = ({ children }: Props) => {
+    const { isExpanded } = useAccordionItemContext()
 
     return (
         <Collapse isOpen={isExpanded}>

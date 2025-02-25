@@ -1,15 +1,18 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { ReactNode, useMemo } from 'react'
+
 import classnames from 'classnames'
-import React, {ReactNode, useMemo} from 'react'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import {
     SelfServiceChannel,
     SelfServiceChannelType,
 } from 'pages/automate/common/hooks/useSelfServiceChannels'
-import {getChannelName} from 'pages/automate/workflows/hooks/useWorkflowChannelSupport'
+import { getChannelName } from 'pages/automate/workflows/hooks/useWorkflowChannelSupport'
+
+import ChannelsLink from './ChannelLink'
 
 import css from '../WorkflowsPublisher.less'
-import ChannelsLink from './ChannelLink'
 
 type Props = {
     maxWorkflowsLimitReached: boolean
@@ -30,7 +33,7 @@ const ChannelWarning = ({
 }: Props) => {
     const iconId = `channel-warning-icon-${channel.type}-${channel.value.id}`
 
-    const {message, icon} = useMemo(() => {
+    const { message, icon } = useMemo(() => {
         let message = missMatchMessage
         let icon = 'error'
 
@@ -55,7 +58,7 @@ const ChannelWarning = ({
             )
         }
 
-        return {message, icon}
+        return { message, icon }
     }, [
         missMatchMessage,
         onlySupportedChannels,

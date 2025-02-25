@@ -1,18 +1,19 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {fireEvent, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {billingState} from 'fixtures/billing'
-import {RootState, StoreDispatch} from 'state/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {renderWithRouter} from 'utils/testing'
+import { billingState } from 'fixtures/billing'
+import { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { renderWithRouter } from 'utils/testing'
 
 import ActionEventRow from '../components/ActionEventRow'
-import {LlmTriggeredExecution} from '../types'
+import { LlmTriggeredExecution } from '../types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const queryClient = mockQueryClient()
@@ -45,7 +46,7 @@ describe('ActionEventRow', () => {
             triggerable: false,
             success: true,
         } as LlmTriggeredExecution
-        const {rerender} = renderWithRouter(
+        const { rerender } = renderWithRouter(
             <Provider store={defaultStore}>
                 <QueryClientProvider client={queryClient}>
                     <ActionEventRow
@@ -58,7 +59,7 @@ describe('ActionEventRow', () => {
             {
                 path: '/:shopType/:shopName/ai-agent/actions/events/:id',
                 route: '/shopify/my-shop/ai-agent/actions/events/01J0KCFRTMPCESV2KYRG29GQ9H',
-            }
+            },
         )
 
         expect(screen.queryByText('keyboard_arrow_right')).toBeInTheDocument()
@@ -71,10 +72,10 @@ describe('ActionEventRow', () => {
                     <ActionEventRow
                         isSelected={false}
                         onClick={jest.fn()}
-                        execution={{...execution, success: false}}
+                        execution={{ ...execution, success: false }}
                     />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.queryByText('SUCCESS')).not.toBeInTheDocument()
@@ -97,7 +98,7 @@ describe('ActionEventRow', () => {
             triggerable: false,
         } as LlmTriggeredExecution
         const handleClick = jest.fn()
-        const {rerender} = renderWithRouter(
+        const { rerender } = renderWithRouter(
             <Provider store={defaultStore}>
                 <QueryClientProvider client={queryClient}>
                     <ActionEventRow
@@ -106,7 +107,7 @@ describe('ActionEventRow', () => {
                         execution={execution}
                     />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
         expect(screen.getByRole('row')).not.toHaveClass('isSelected')
 
@@ -119,7 +120,7 @@ describe('ActionEventRow', () => {
                         execution={execution}
                     />
                 </QueryClientProvider>{' '}
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByRole('row')).toHaveClass('isSelected')
@@ -128,7 +129,7 @@ describe('ActionEventRow', () => {
 
         fireEvent.click(screen.getByText('user_journey_id'))
         expect(mockHistoryPush).toHaveBeenCalledWith(
-            '/app/ticket/user_journey_id'
+            '/app/ticket/user_journey_id',
         )
     })
 })

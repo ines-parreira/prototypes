@@ -1,13 +1,13 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
 import * as types from '../constants'
-import reducer, {initialState} from '../reducers'
+import reducer, { initialState } from '../reducers'
 import * as utils from '../utils'
 
 describe('infobar reducers', () => {
     it('initial state', () => {
-        expect(reducer(undefined, {type: 'FOO_TYPE'})).toEqualImmutable(
-            initialState
+        expect(reducer(undefined, { type: 'FOO_TYPE' })).toEqualImmutable(
+            initialState,
         )
     })
 
@@ -17,7 +17,7 @@ describe('infobar reducers', () => {
             integration_id: '5',
             user_id: '34',
             ticket_id: '1',
-            payload: {order_id: 4194477515},
+            payload: { order_id: 4194477515 },
             callback: jest.fn(),
         }
         const actionId = utils.actionButtonHashForData(data)
@@ -28,7 +28,7 @@ describe('infobar reducers', () => {
                 type: types.EXECUTE_ACTION_START,
                 data,
                 id: actionId,
-            }).toJS()
+            }).toJS(),
         ).toMatchSnapshot()
 
         // start with callback
@@ -38,7 +38,7 @@ describe('infobar reducers', () => {
                 callback: data.callback,
                 data,
                 id: actionId,
-            }).toJS()
+            }).toJS(),
         ).toMatchSnapshot()
 
         // success
@@ -52,14 +52,14 @@ describe('infobar reducers', () => {
                                 callback: data.callback,
                             },
                         ],
-                    })
+                    }),
                 ),
                 {
                     type: types.EXECUTE_ACTION_SUCCESS,
                     data,
                     id: actionId,
-                }
-            ).toJS()
+                },
+            ).toJS(),
         ).toMatchSnapshot()
         expect(data.callback).toBeCalledWith(data)
 
@@ -74,14 +74,14 @@ describe('infobar reducers', () => {
                                 callback: data.callback,
                             },
                         ],
-                    })
+                    }),
                 ),
                 {
                     type: types.EXECUTE_ACTION_ERROR,
                     data,
                     id: actionId,
-                }
-            ).toJS()
+                },
+            ).toJS(),
         ).toMatchSnapshot()
         expect(data.callback).toBeCalledWith(data)
     })

@@ -1,18 +1,22 @@
-import noop from 'lodash/noop'
-import React, {useCallback} from 'react'
-import {connect} from 'react-redux'
+import React, { useCallback } from 'react'
 
-import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
+import noop from 'lodash/noop'
+import { connect } from 'react-redux'
+
+import { FilterKey, StatsFiltersWithLogicalOperator } from 'models/stat/types'
 import Filter from 'pages/stats/common/components/Filter'
 import {
     LogicalOperatorEnum,
     LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'
 import {
-    FilterLabels,
     efficiencyFilterLogicalOperators,
+    FilterLabels,
 } from 'pages/stats/common/filters/constants'
-import {emptyFilter, logSegmentEvent} from 'pages/stats/common/filters/helpers'
+import {
+    emptyFilter,
+    logSegmentEvent,
+} from 'pages/stats/common/filters/helpers'
 import {
     OptionalFilterProps,
     RemovableFilter,
@@ -21,14 +25,14 @@ import {
     getScoreLabelByValue,
     getScoreLabelsAndValues,
 } from 'pages/stats/common/filters/utils'
-import {DropdownOption} from 'pages/stats/types'
+import { DropdownOption } from 'pages/stats/types'
 import {
     getPageStatsFiltersWithLogicalOperators,
     getSavedFiltersWithLogicalOperators,
 } from 'state/stats/selectors'
-import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
-import {RootState} from 'state/types'
-import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
+import { mergeStatsFiltersWithLogicalOperator } from 'state/stats/statsSlice'
+import { RootState } from 'state/types'
+import { statFiltersClean, statFiltersDirty } from 'state/ui/stats/actions'
 import {
     removeFilterFromSavedFilterDraft,
     upsertSavedFilterFilter,
@@ -42,7 +46,7 @@ type Props = {
         value: Exclude<
             StatsFiltersWithLogicalOperator[FilterKey.Efficiency],
             undefined
-        >
+        >,
     ) => void
     dispatchRemove: () => void
     dispatchStatFiltersDirty?: () => void
@@ -70,7 +74,7 @@ export function EfficiencyFilter({
                 operator: value.operator,
             })
         },
-        [dispatchUpdate, value.operator]
+        [dispatchUpdate, value.operator],
     )
 
     const filterOptions = [
@@ -87,7 +91,7 @@ export function EfficiencyFilter({
     const onOptionChange = (opt: DropdownOption) => {
         if (value.values.includes(opt.value)) {
             handleFilterValuesChange(
-                value.values.filter((score) => score !== opt.value)
+                value.values.filter((score) => score !== opt.value),
             )
         } else {
             handleFilterValuesChange([...value.values, opt.value])
@@ -101,7 +105,7 @@ export function EfficiencyFilter({
                 operator: operator,
             })
         },
-        [dispatchUpdate, value.values]
+        [dispatchUpdate, value.values],
     )
 
     const handleDropdownOpen = () => {
@@ -110,7 +114,7 @@ export function EfficiencyFilter({
     const handleDropdownClosed = () => {
         logSegmentEvent(
             FilterKey.Efficiency,
-            LogicalOperatorLabel[value.operator]
+            LogicalOperatorLabel[value.operator],
         )
         dispatchStatFiltersClean()
     }
@@ -118,7 +122,7 @@ export function EfficiencyFilter({
     return (
         <Filter
             filterName={FilterLabels[FilterKey.Efficiency]}
-            filterErrors={{warningType}}
+            filterErrors={{ warningType }}
             selectedOptions={selectedScoreOption}
             selectedLogicalOperator={value.operator}
             logicalOperators={efficiencyFilterLogicalOperators}
@@ -162,7 +166,7 @@ export const EfficiencyFilterWithState = connect(
             }),
         dispatchStatFiltersDirty: statFiltersDirty,
         dispatchStatFiltersClean: statFiltersClean,
-    }
+    },
 )(EfficiencyFilter)
 
 export const EfficiencyFilterWithSavedState = connect(
@@ -180,5 +184,5 @@ export const EfficiencyFilterWithSavedState = connect(
             removeFilterFromSavedFilterDraft({
                 filterKey: FilterKey.Efficiency,
             }),
-    }
+    },
 )(EfficiencyFilter)

@@ -1,78 +1,78 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
 import {
     useClosedTicketsMetricPerAgent,
     useCustomerSatisfactionMetricPerAgent,
     useMedianFirstResponseTimeMetricPerAgent,
-    useMessagesSentMetricPerAgent,
     useMedianResolutionTimeMetricPerAgent,
-    useTicketsRepliedMetricPerAgent,
+    useMessagesSentMetricPerAgent,
     useOnlineTimePerAgent,
     useTicketAverageHandleTimePerAgent,
+    useTicketsRepliedMetricPerAgent,
 } from 'hooks/reporting/metricsPerAgent'
-import {useOneTouchTicketsPercentageMetricPerAgent} from 'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricPerAgent'
-import {usePercentageOfClosedTicketsMetricPerAgent} from 'hooks/reporting/support-performance/agents/usePercentageOfClosedTicketsMetricPerAgent'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-import {useMessagesSentPerHourPerAgent} from 'hooks/reporting/useMessagesSentPerHourPerAgent'
-import {useTicketsClosedPerHourPerAgent} from 'hooks/reporting/useTicketsClosedPerHourPerAgent'
-import {useTicketsRepliedPerHourPerAgent} from 'hooks/reporting/useTicketsRepliedPerHourPerAgent'
+import { useOneTouchTicketsPercentageMetricPerAgent } from 'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricPerAgent'
+import { usePercentageOfClosedTicketsMetricPerAgent } from 'hooks/reporting/support-performance/agents/usePercentageOfClosedTicketsMetricPerAgent'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useMessagesSentPerHourPerAgent } from 'hooks/reporting/useMessagesSentPerHourPerAgent'
+import { useTicketsClosedPerHourPerAgent } from 'hooks/reporting/useTicketsClosedPerHourPerAgent'
+import { useTicketsRepliedPerHourPerAgent } from 'hooks/reporting/useTicketsRepliedPerHourPerAgent'
 
 export function useAgentsMetrics() {
-    const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone } = useNewStatsFilters()
 
     const customerSatisfactionMetric = useCustomerSatisfactionMetricPerAgent(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
     const percentageOfClosedTicketsMetric =
         usePercentageOfClosedTicketsMetricPerAgent(
             cleanStatsFilters,
-            userTimezone
+            userTimezone,
         )
     const closedTicketsMetric = useClosedTicketsMetricPerAgent(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
     const medianFirstResponseTimeMetric =
         useMedianFirstResponseTimeMetricPerAgent(
             cleanStatsFilters,
-            userTimezone
+            userTimezone,
         )
     const messagesSentMetric = useMessagesSentMetricPerAgent(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
     const medianResolutionTimeMetric = useMedianResolutionTimeMetricPerAgent(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
     const ticketsRepliedMetric = useTicketsRepliedMetricPerAgent(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
     const oneTouchTicketsMetric = useOneTouchTicketsPercentageMetricPerAgent(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
     const repliedTicketsPerHourMetric = useTicketsRepliedPerHourPerAgent(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
     const onlineTimeMetric = useOnlineTimePerAgent(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
     const messagesSentPerHourMetric = useMessagesSentPerHourPerAgent(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
     const closedTicketsPerHourMetric = useTicketsClosedPerHourPerAgent(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
     const ticketHandleTimeMetric = useTicketAverageHandleTimePerAgent(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
 
     const loading = useMemo(() => {

@@ -1,6 +1,7 @@
-import {render, screen, fireEvent, act, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
+
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import MaximumCampaignDisplayed from '../MaximumCampaignDisplayed'
 
@@ -16,15 +17,15 @@ describe('<MaximumCampaignDisplayed />', () => {
         render(<MaximumCampaignDisplayed {...defaultProps} />)
 
         expect(
-            screen.getByText('Maximum campaign displays')
+            screen.getByText('Maximum campaign displays'),
         ).toBeInTheDocument()
     })
 
     it('feature is enabled', () => {
         render(
             <MaximumCampaignDisplayed
-                {...{...defaultProps, ...{config: {value: 30}}}}
-            />
+                {...{ ...defaultProps, ...{ config: { value: 30 } } }}
+            />,
         )
 
         const toggleInput = screen.getByRole('checkbox')
@@ -35,8 +36,8 @@ describe('<MaximumCampaignDisplayed />', () => {
         const onChangeMock = jest.fn()
         render(
             <MaximumCampaignDisplayed
-                {...{...defaultProps, ...{onChange: onChangeMock}}}
-            />
+                {...{ ...defaultProps, ...{ onChange: onChangeMock } }}
+            />,
         )
 
         const toggleInput = screen.getByRole('checkbox')
@@ -46,16 +47,16 @@ describe('<MaximumCampaignDisplayed />', () => {
         })
 
         await waitFor(() => {
-            expect(onChangeMock).toHaveBeenCalledWith({value: 3})
+            expect(onChangeMock).toHaveBeenCalledWith({ value: 3 })
         })
     })
 
     it('user can modify values', async () => {
         const onChangeMock = jest.fn()
-        const {container} = render(
+        const { container } = render(
             <MaximumCampaignDisplayed
-                {...{...defaultProps, ...{onChange: onChangeMock}}}
-            />
+                {...{ ...defaultProps, ...{ onChange: onChangeMock } }}
+            />,
         )
 
         const toggleInput = screen.getByRole('checkbox')
@@ -64,7 +65,7 @@ describe('<MaximumCampaignDisplayed />', () => {
         })
 
         const valueInput = container.querySelector(
-            'input[type="number"]'
+            'input[type="number"]',
         ) as Element
 
         userEvent.clear(valueInput)

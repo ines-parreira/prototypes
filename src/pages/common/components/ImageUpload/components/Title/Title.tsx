@@ -1,8 +1,9 @@
-import {Tooltip as TooltipComponent} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
-import React, {ReactChild, FunctionComponent, createRef} from 'react'
+import React, { createRef, FunctionComponent, ReactChild } from 'react'
 
-import {UncontrolledTooltipProps} from 'reactstrap'
+import classNames from 'classnames'
+import { UncontrolledTooltipProps } from 'reactstrap'
+
+import { Tooltip as TooltipComponent } from '@gorgias/merchant-ui-kit'
 
 import css from './Title.less'
 
@@ -29,7 +30,7 @@ export const Title: FunctionComponent<TitleProps> = ({
                         role="img"
                         className={classNames(
                             css.help,
-                            'material-icons-outlined ml-2'
+                            'material-icons-outlined ml-2',
                         )}
                     >
                         info

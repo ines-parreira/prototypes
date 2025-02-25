@@ -1,30 +1,31 @@
-import {Meta, StoryFn} from '@storybook/react'
-import {QueryClientProvider} from '@tanstack/react-query'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { Meta, StoryFn } from '@storybook/react'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {appQueryClient} from 'api/queryClient'
-import {UserRole} from 'config/types/user'
-import {customFieldDefinitionKeys} from 'custom-fields/hooks/queries/queries'
-import {customFieldsMockResponse} from 'fixtures/customField'
-import {integrationsState} from 'fixtures/integrations'
-import {FilterKey} from 'models/stat/types'
-import {FiltersPanel} from 'pages/stats/common/filters/FiltersPanel'
-import {activeParams} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
-import {initialState} from 'state/stats/statsSlice'
-import {RootState} from 'state/types'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
+import { appQueryClient } from 'api/queryClient'
+import { UserRole } from 'config/types/user'
+import { customFieldDefinitionKeys } from 'custom-fields/hooks/queries/queries'
+import { customFieldsMockResponse } from 'fixtures/customField'
+import { integrationsState } from 'fixtures/integrations'
+import { FilterKey } from 'models/stat/types'
+import { FiltersPanel } from 'pages/stats/common/filters/FiltersPanel'
+import { activeParams } from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
+import { initialState } from 'state/stats/statsSlice'
+import { RootState } from 'state/types'
+import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
 
 const defaultState = {
     stats: initialState,
     ui: {
-        stats: {filters: uiStatsInitialState},
+        stats: { filters: uiStatsInitialState },
     },
     integrations: fromJS(integrationsState),
-    currentUser: fromJS({role: {name: UserRole.Agent}}),
+    currentUser: fromJS({ role: { name: UserRole.Agent } }),
 } as RootState
 
 const storyConfig: Meta = {

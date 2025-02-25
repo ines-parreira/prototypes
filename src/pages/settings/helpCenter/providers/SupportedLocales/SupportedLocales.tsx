@@ -6,8 +6,8 @@ import React, {
     useState,
 } from 'react'
 
-import {Locale} from '../../../../../models/helpCenter/types'
-import {useHelpCenterApi} from '../../hooks/useHelpCenterApi'
+import { Locale } from '../../../../../models/helpCenter/types'
+import { useHelpCenterApi } from '../../hooks/useHelpCenterApi'
 
 const SupportedLocalesContext = createContext<Locale[] | null>(null)
 
@@ -15,8 +15,8 @@ type Props = {
     children: ReactNode
 }
 
-export const SupportedLocalesProvider: React.FC<Props> = ({children}) => {
-    const {client} = useHelpCenterApi()
+export const SupportedLocalesProvider: React.FC<Props> = ({ children }) => {
+    const { client } = useHelpCenterApi()
     const [locales, setLocales] = useState<Locale[]>([])
 
     useEffect(() => {
@@ -27,7 +27,7 @@ export const SupportedLocalesProvider: React.FC<Props> = ({children}) => {
                 const localesResponse = response.data
 
                 const sortedLocales = localesResponse.sort((a, b) =>
-                    a.name.localeCompare(b.name)
+                    a.name.localeCompare(b.name),
                 )
 
                 setLocales(sortedLocales)
@@ -49,7 +49,7 @@ export const useSupportedLocales = () => {
 
     if (!locales) {
         throw new Error(
-            `useSupportedLocales should be used inside the SupportedLocalesContext provider`
+            `useSupportedLocales should be used inside the SupportedLocalesContext provider`,
         )
     }
 

@@ -1,15 +1,15 @@
-import {useQueryClient} from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     agentsKeys,
     useCreateAgent as usePureCreateAgent,
 } from 'models/agents/queries'
-import {CREATE_AGENT_SUCCESS} from 'state/agents/constants'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { CREATE_AGENT_SUCCESS } from 'state/agents/constants'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
-import {handleError} from './errorHandler'
+import { handleError } from './errorHandler'
 
 export const useCreateAgent = () => {
     const dispatch = useAppDispatch()
@@ -28,7 +28,7 @@ export const useCreateAgent = () => {
                 notify({
                     status: NotificationStatus.Success,
                     message: `Team member created. We've sent login instructions to ${data.data.email}.`,
-                })
+                }),
             )
         },
         onError: (error) =>

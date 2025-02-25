@@ -11,7 +11,12 @@ type Props = {
     description?: string
 }
 
-export default function AgentCard({name, url, badgeColor, description}: Props) {
+export default function AgentCard({
+    name,
+    url,
+    badgeColor,
+    description,
+}: Props) {
     return (
         <div className={css.container}>
             <Avatar

@@ -1,30 +1,31 @@
-import {Badge, ColorType} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
-import {Emoji} from 'emoji-mart'
-import {Map} from 'immutable'
 import React from 'react'
 
-import {isImmutable} from 'common/utils'
-import {UserRole} from 'config/types/user'
-import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
-import useAppSelector from 'hooks/useAppSelector'
+import classnames from 'classnames'
+import { Emoji } from 'emoji-mart'
+import { Map } from 'immutable'
 
-import {SourceType} from 'models/ticket/types'
+import { Badge, ColorType } from '@gorgias/merchant-ui-kit'
+
+import { isImmutable } from 'common/utils'
+import { UserRole } from 'config/types/user'
+import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
+import useAppSelector from 'hooks/useAppSelector'
+import { SourceType } from 'models/ticket/types'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import SourceIcon from 'pages/common/components/SourceIcon'
 import TicketTag from 'pages/common/components/TicketTag'
-import {getHumanAgents} from 'state/agents/selectors'
-import {getDisplayName} from 'state/customers/helpers'
-import {getIntegrationChannel} from 'state/integrations/selectors'
-import {getTeams} from 'state/teams/selectors'
-import {parseTimeDelta} from 'tickets/common/utils'
-
-import {sanitizeHtmlDefault} from 'utils/html'
+import { getHumanAgents } from 'state/agents/selectors'
+import { getDisplayName } from 'state/customers/helpers'
+import { getIntegrationChannel } from 'state/integrations/selectors'
+import { getTeams } from 'state/teams/selectors'
+import { parseTimeDelta } from 'tickets/common/utils'
+import { sanitizeHtmlDefault } from 'utils/html'
 
 import DatetimeLabel from './DatetimeLabel'
+
 import css from './labels.less'
 
-export const RecipientsLabel = ({recipients}: {recipients: string}) => (
+export const RecipientsLabel = ({ recipients }: { recipients: string }) => (
     <>
         {recipients.split(',').map((recipient) => (
             <div key={recipient} className={css.recipientLabel}>
@@ -87,7 +88,7 @@ export function AgentLabel({
                         [css.aiAgent]: isAIAgent,
                     })}
                     {...(typeof maxWidth !== 'undefined'
-                        ? {style: {maxWidth: `${maxWidth}px`}}
+                        ? { style: { maxWidth: `${maxWidth}px` } }
                         : {})}
                 >
                     {name}
@@ -133,7 +134,7 @@ export const TeamLabel = ({
             <span
                 className={css.name}
                 {...(typeof maxWidth !== 'undefined'
-                    ? {style: {maxWidth: `${maxWidth}px`}}
+                    ? { style: { maxWidth: `${maxWidth}px` } }
                     : {})}
             >
                 {name}
@@ -141,7 +142,7 @@ export const TeamLabel = ({
                     <span
                         className={classnames(
                             css.nameIcon,
-                            'material-icons md-2'
+                            'material-icons md-2',
                         )}
                     >
                         people
@@ -221,7 +222,7 @@ export const StatusLabel = ({
     )
 }
 
-export const ChannelLabel = ({channel}: {channel: SourceType}) => (
+export const ChannelLabel = ({ channel }: { channel: SourceType }) => (
     <SourceIcon type={channel} variant="secondary" />
 )
 
@@ -264,7 +265,11 @@ export const IntegrationsDetailLabel = ({
     )
 }
 
-export const RoleLabel = ({role}: {role: {id?: number; name: UserRole}}) => {
+export const RoleLabel = ({
+    role,
+}: {
+    role: { id?: number; name: UserRole }
+}) => {
     let color: ColorType | undefined
     let label = null
 
@@ -298,7 +303,7 @@ export const UserAssigneeLabel = ({
     const agents = useAppSelector(getHumanAgents)
 
     const agent = agents.find(
-        (agent: Map<any, any>) => agent.get('id') === assigneeUser.get('id')
+        (agent: Map<any, any>) => agent.get('id') === assigneeUser.get('id'),
     ) as Map<any, any>
     const avatarUrl =
         assigneeUser.getIn(['meta', 'profile_picture_url']) ||
@@ -329,7 +334,7 @@ export const TeamAssigneeLabel = ({
     const teams = useAppSelector(getTeams)
 
     const team = teams.find(
-        (team) => team!.get('id') === assigneeTeam.get('id')
+        (team) => team!.get('id') === assigneeTeam.get('id'),
     )
     const emoji = team && (team.getIn(['decoration', 'emoji']) as Map<any, any>)
 

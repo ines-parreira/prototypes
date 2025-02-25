@@ -1,4 +1,4 @@
-import {AppDetail, Category} from 'models/integration/types/app'
+import { AppDetail, Category } from 'models/integration/types/app'
 
 export const DEFAULT_VALUES = {
     title: 'App name',
@@ -15,7 +15,7 @@ export const DEFAULT_VALUES = {
 
 export function mapDefaults(config: AppDetail): AppDetail {
     if (!config.isUnapproved) return config
-    const configWithDefaults = {...config}
+    const configWithDefaults = { ...config }
     if (!config.title) {
         configWithDefaults.title = DEFAULT_VALUES.title
     }

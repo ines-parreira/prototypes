@@ -1,23 +1,23 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
-import {integrationsStateWithShopify} from 'fixtures/integrations'
-import {user} from 'fixtures/users'
+import { integrationsStateWithShopify } from 'fixtures/integrations'
+import { user } from 'fixtures/users'
 import {
     withDefaultLogicalOperator,
     withLogicalOperator,
 } from 'models/reporting/queryFactories/utils'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
-import {initialState as currentUserInitialState} from 'state/currentUser/reducers'
-import {STATS_STORE_INTEGRATION_TYPES} from 'state/stats/constants'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
+import { DEFAULT_TIMEZONE } from 'pages/stats/convert/constants/components'
+import { initialState as currentUserInitialState } from 'state/currentUser/reducers'
+import { STATS_STORE_INTEGRATION_TYPES } from 'state/stats/constants'
 import {
     getPageStatsFilters,
     getPageStatsFiltersWithLogicalOperators,
 } from 'state/stats/selectors'
-import {initialState as initialStatsFiltersState} from 'state/stats/statsSlice'
-import {fromFiltersWithLogicalOperators} from 'state/stats/utils'
-import {RootState, StoreState} from 'state/types'
-import {initialState} from 'state/ui/stats/filtersSlice'
+import { initialState as initialStatsFiltersState } from 'state/stats/statsSlice'
+import { fromFiltersWithLogicalOperators } from 'state/stats/utils'
+import { RootState, StoreState } from 'state/types'
+import { initialState } from 'state/ui/stats/filtersSlice'
 import {
     getCleanStatsFilters,
     getCleanStatsFiltersWithInitialStoreIntegration,
@@ -28,7 +28,7 @@ import {
 
 const store = {
     ui: {
-        stats: {filters: initialState},
+        stats: { filters: initialState },
     },
 } as StoreState
 
@@ -42,7 +42,7 @@ describe('ui/stats/selectors', () => {
     describe('getCleanStatsFilters', () => {
         it('should return clean StatsFilters state', () => {
             expect(getCleanStatsFilters(store)).toEqual(
-                initialState.cleanStatsFilters
+                initialState.cleanStatsFilters,
             )
         })
     })
@@ -60,17 +60,18 @@ describe('ui/stats/selectors', () => {
                             currentUser: true,
                         },
                     },
-                })
+                }),
             ),
             ui: {
-                stats: {filters: initialState},
+                stats: { filters: initialState },
             },
             stats: initialStatsFiltersState,
         } as RootState
 
         it('should return pageStatsFilters if no cleanStatsFilters are stored', () => {
             expect(
-                getCleanStatsFiltersWithTimezone(defaultState).cleanStatsFilters
+                getCleanStatsFiltersWithTimezone(defaultState)
+                    .cleanStatsFilters,
             ).toEqual(getPageStatsFilters(defaultState))
         })
 
@@ -95,13 +96,13 @@ describe('ui/stats/selectors', () => {
             } as RootState
 
             expect(
-                getCleanStatsFiltersWithTimezone(state).cleanStatsFilters
+                getCleanStatsFiltersWithTimezone(state).cleanStatsFilters,
             ).toEqual(fromFiltersWithLogicalOperators(cleanStatsFilters))
         })
 
         it('should return user`s Timezone', () => {
             expect(
-                getCleanStatsFiltersWithTimezone(defaultState).userTimezone
+                getCleanStatsFiltersWithTimezone(defaultState).userTimezone,
             ).toEqual(user.timezone)
         })
 
@@ -109,7 +110,7 @@ describe('ui/stats/selectors', () => {
             const state = {
                 currentUser: currentUserInitialState.mergeDeep(
                     fromJS({
-                        ...{...user, timezone: null},
+                        ...{ ...user, timezone: null },
                         _internal: {
                             loading: {
                                 settings: {
@@ -118,16 +119,16 @@ describe('ui/stats/selectors', () => {
                                 currentUser: true,
                             },
                         },
-                    })
+                    }),
                 ),
                 ui: {
-                    stats: {filters: initialState},
+                    stats: { filters: initialState },
                 },
                 stats: initialStatsFiltersState,
             } as RootState
 
             expect(
-                getCleanStatsFiltersWithTimezone(state).userTimezone
+                getCleanStatsFiltersWithTimezone(state).userTimezone,
             ).toEqual(DEFAULT_TIMEZONE)
         })
     })
@@ -145,10 +146,10 @@ describe('ui/stats/selectors', () => {
                             currentUser: true,
                         },
                     },
-                })
+                }),
             ),
             ui: {
-                stats: {filters: initialState},
+                stats: { filters: initialState },
             },
             stats: initialStatsFiltersState,
         } as RootState
@@ -156,8 +157,8 @@ describe('ui/stats/selectors', () => {
         it('should return pageStatsFilters if no cleanStatsFilters are stored', () => {
             expect(
                 getCleanStatsFiltersWithLogicalOperatorsWithTimezone(
-                    defaultState
-                ).cleanStatsFilters
+                    defaultState,
+                ).cleanStatsFilters,
             ).toEqual(getPageStatsFiltersWithLogicalOperators(defaultState))
         })
 
@@ -182,15 +183,15 @@ describe('ui/stats/selectors', () => {
             } as RootState
             expect(
                 getCleanStatsFiltersWithLogicalOperatorsWithTimezone(state)
-                    .cleanStatsFilters
+                    .cleanStatsFilters,
             ).toEqual(cleanStatsFilters)
         })
 
         it('should return user`s Timezone', () => {
             expect(
                 getCleanStatsFiltersWithLogicalOperatorsWithTimezone(
-                    defaultState
-                ).userTimezone
+                    defaultState,
+                ).userTimezone,
             ).toEqual(user.timezone)
         })
 
@@ -198,7 +199,7 @@ describe('ui/stats/selectors', () => {
             const state = {
                 currentUser: currentUserInitialState.mergeDeep(
                     fromJS({
-                        ...{...user, timezone: null},
+                        ...{ ...user, timezone: null },
                         _internal: {
                             loading: {
                                 settings: {
@@ -207,17 +208,17 @@ describe('ui/stats/selectors', () => {
                                 currentUser: true,
                             },
                         },
-                    })
+                    }),
                 ),
                 ui: {
-                    stats: {filters: initialState},
+                    stats: { filters: initialState },
                 },
                 stats: initialStatsFiltersState,
             } as RootState
 
             expect(
                 getCleanStatsFiltersWithLogicalOperatorsWithTimezone(state)
-                    .userTimezone
+                    .userTimezone,
             ).toEqual(DEFAULT_TIMEZONE)
         })
     })
@@ -259,7 +260,7 @@ describe('ui/stats/selectors', () => {
 
             expect(
                 getCleanStatsFiltersWithInitialStoreIntegration(state)
-                    .statsFilters.integrations
+                    .statsFilters.integrations,
             ).toEqual([selectedIntegrationId])
         })
 
@@ -300,14 +301,14 @@ describe('ui/stats/selectors', () => {
 
             expect(
                 getCleanStatsFiltersWithInitialStoreIntegration(state)
-                    .statsFilters.integrations
+                    .statsFilters.integrations,
             ).toEqual([selectedIntegrationId])
         })
 
         it('should return integrations filter with first storeIntegration if not set', () => {
             const state = {
                 ui: {
-                    stats: {filters: initialState},
+                    stats: { filters: initialState },
                 },
                 stats: initialStatsFiltersState,
                 integrations: integrationsStateWithShopify,
@@ -315,7 +316,7 @@ describe('ui/stats/selectors', () => {
 
             expect(
                 getCleanStatsFiltersWithInitialStoreIntegration(state)
-                    .statsFilters.integrations
+                    .statsFilters.integrations,
             ).toEqual([
                 integrationsStateWithShopify.getIn(['integrations', 0, 'id']),
             ])

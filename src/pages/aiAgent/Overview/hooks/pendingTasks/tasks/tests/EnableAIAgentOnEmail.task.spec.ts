@@ -1,6 +1,6 @@
-import {AiAgentStoreConfigurationFixture} from '../../tests/AiAgentStoreConfiguration.fixture'
-import {EnableAIAgentOnEmailTask} from '../EnableAIAgentOnEmail.task'
-import {buildRuleEngineData, buildRuleEngineRoutes} from './utils'
+import { AiAgentStoreConfigurationFixture } from '../../tests/AiAgentStoreConfiguration.fixture'
+import { EnableAIAgentOnEmailTask } from '../EnableAIAgentOnEmail.task'
+import { buildRuleEngineData, buildRuleEngineRoutes } from './utils'
 
 describe('EnableAIAgentOnEmail', () => {
     it('should display the task if ai agent store configuration email disabled', () => {
@@ -13,7 +13,7 @@ describe('EnableAIAgentOnEmail', () => {
             buildRuleEngineData({
                 aiAgentStoreConfiguration,
             }),
-            buildRuleEngineRoutes()
+            buildRuleEngineRoutes(),
         )
         expect(task.display).toBe(true)
     })
@@ -29,7 +29,7 @@ describe('EnableAIAgentOnEmail', () => {
             buildRuleEngineData({
                 aiAgentStoreConfiguration,
             }),
-            buildRuleEngineRoutes()
+            buildRuleEngineRoutes(),
         )
         expect(task.display).toBe(false)
     })

@@ -1,12 +1,11 @@
-import {ContentState, EditorState} from 'draft-js'
-import {fromJS} from 'immutable'
+import { ContentState, EditorState } from 'draft-js'
+import { fromJS } from 'immutable'
 
-import {TicketMessageSourceType} from 'business/types/ticket'
-
+import { TicketMessageSourceType } from 'business/types/ticket'
 import addMention from 'pages/common/draftjs/plugins/mentions/modifiers/addMention'
 
-import {NewMessage} from '../types'
-import {getMentionIds, upsertNewMessageAction} from '../utils'
+import { NewMessage } from '../types'
+import { getMentionIds, upsertNewMessageAction } from '../utils'
 
 describe('Utils', () => {
     describe('getMentionIds', () => {
@@ -14,21 +13,21 @@ describe('Utils', () => {
             //@ts-ignore
             const editorState = EditorState.push(
                 EditorState.createEmpty(),
-                ContentState.createFromText('@Bob')
+                ContentState.createFromText('@Bob'),
             )
             const newEditorState = addMention(
                 editorState,
-                fromJS({name: 'Bob', id: 8}),
+                fromJS({ name: 'Bob', id: 8 }),
                 '@',
                 '@',
-                'SEGMENTED'
+                'SEGMENTED',
             )
 
             expect(
                 getMentionIds(
                     newEditorState.getCurrentContent(),
-                    TicketMessageSourceType.InternalNote
-                )
+                    TicketMessageSourceType.InternalNote,
+                ),
             ).toMatchSnapshot()
         })
 
@@ -36,7 +35,7 @@ describe('Utils', () => {
             const contentState = ContentState.createFromText('Foo')
 
             expect(
-                getMentionIds(contentState, TicketMessageSourceType.Email)
+                getMentionIds(contentState, TicketMessageSourceType.Email),
             ).toMatchSnapshot()
         })
     })

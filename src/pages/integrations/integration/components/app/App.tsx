@@ -1,17 +1,19 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import {isEmpty} from 'lodash'
-import React, {useState, useEffect} from 'react'
-import {Link, NavLink, useParams} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
+import React, { useEffect, useState } from 'react'
 
-import {AlertBanner, AlertBannerTypes} from 'AlertBanners'
-import {logEvent, SegmentEvent} from 'common/segment'
+import { isEmpty } from 'lodash'
+import { Link, NavLink, useParams } from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { AlertBanner, AlertBannerTypes } from 'AlertBanners'
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
 import useSearch from 'hooks/useSearch'
 import useTitle from 'hooks/useTitle'
-import {disconnectApp, fetchApp} from 'models/integration/resources'
+import { disconnectApp, fetchApp } from 'models/integration/resources'
 import {
     AppDetail as AppDetailType,
     TrialPeriod,
@@ -28,14 +30,14 @@ import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNa
 import AppAdvanced from 'pages/integrations/Advanced'
 import AlloyConnectButton from 'pages/integrations/components/AlloyConnectButton'
 import ConnectLink from 'pages/integrations/components/ConnectLink'
-import {mapAppToDetail} from 'pages/integrations/mappers/appToDetail'
-import {mapDefaults} from 'pages/integrations/mappers/mapDefaults'
-import {getApplicationById} from 'services/applications'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {fetchIntegrations} from 'state/integrations/actions'
-import {getIntegrationsByAppId} from 'state/integrations/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { mapAppToDetail } from 'pages/integrations/mappers/appToDetail'
+import { mapDefaults } from 'pages/integrations/mappers/mapDefaults'
+import { getApplicationById } from 'services/applications'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { fetchIntegrations } from 'state/integrations/actions'
+import { getIntegrationsByAppId } from 'state/integrations/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 import IntegrationsList from './IntegrationsList'
 
@@ -51,12 +53,12 @@ function queryStringToBool(flag?: string): boolean {
 
 export default function AppDetail() {
     const dispatch = useAppDispatch()
-    const {appId, extra = Tab.Details} = useParams<{
+    const { appId, extra = Tab.Details } = useParams<{
         appId: string
         extra?: string
     }>()
 
-    const search = useSearch<{preview?: string}>()
+    const search = useSearch<{ preview?: string }>()
     const preview = queryStringToBool(search.preview)
 
     const [appItem, setAppDetail] = useState<AppDetailType | null>(null)
@@ -65,7 +67,7 @@ export default function AppDetail() {
     const baseURL = `/app/settings/integrations/app/${appId}`
 
     const hasConnections = !isEmpty(
-        useAppSelector(getIntegrationsByAppId(appId))
+        useAppSelector(getIntegrationsByAppId(appId)),
     )
 
     useEffectOnce(() => {
@@ -202,7 +204,7 @@ function AppCTA({
     const [isModalOpen, setModalOpen] = useState(false)
 
     const hasConnections = !isEmpty(
-        useAppSelector(getIntegrationsByAppId(appId))
+        useAppSelector(getIntegrationsByAppId(appId)),
     )
 
     const supportsMultipleConnections =
@@ -226,7 +228,7 @@ function AppCTA({
                     notify({
                         status: NotificationStatus.Success,
                         message: `${title} has been disconnected.`,
-                    })
+                    }),
                 )
             } else {
                 throw new Error(`Not disconnected`)
@@ -236,7 +238,7 @@ function AppCTA({
                 notify({
                     status: NotificationStatus.Error,
                     message: `Sorry, something went wrong. ${title} is still connected.`,
-                })
+                }),
             )
         } finally {
             setModalOpen(false)

@@ -1,23 +1,22 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 
-import {countries} from 'config/countries'
-
+import { countries } from 'config/countries'
 import Button from 'pages/common/components/button/Button'
 import Caption from 'pages/common/forms/Caption/Caption'
-import {getCountryLabel} from 'pages/common/forms/CountryInput/utils'
+import { getCountryLabel } from 'pages/common/forms/CountryInput/utils'
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
-import {Option} from 'pages/common/forms/MultiSelectOptionsField/types'
+import { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {Value} from 'pages/common/forms/SelectField/types'
-import {CampaignTrigger} from 'pages/convert/campaigns/types/CampaignTrigger'
-import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
-import {countryCodeValidator} from 'pages/convert/campaigns/validators/countryCodeValidator'
-import {ValidationError} from 'pages/convert/campaigns/validators/validationError'
+import { Value } from 'pages/common/forms/SelectField/types'
+import { CampaignTrigger } from 'pages/convert/campaigns/types/CampaignTrigger'
+import { CampaignTriggerOperator } from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
+import { countryCodeValidator } from 'pages/convert/campaigns/validators/countryCodeValidator'
+import { ValidationError } from 'pages/convert/campaigns/validators/validationError'
 
-import {AdvancedTriggerBaseProps} from '../../types/AdvancedTriggerBaseProps'
+import { AdvancedTriggerBaseProps } from '../../types/AdvancedTriggerBaseProps'
+import { convertTriggerOperatorsToSelectOptions } from '../../utils/convertTriggerOperatorsToSelectOptions'
+import { handleTriggerOperatorChange } from '../../utils/handleTriggerOperatorChange'
 
-import {convertTriggerOperatorsToSelectOptions} from '../../utils/convertTriggerOperatorsToSelectOptions'
-import {handleTriggerOperatorChange} from '../../utils/handleTriggerOperatorChange'
 import css from './style.less'
 
 type Props = AdvancedTriggerBaseProps
@@ -34,7 +33,7 @@ export const CustomerCountryTrigger = ({
     onTriggerValidationUpdate,
 }: Props) => {
     const [innerOperator, setInnerOperator] = useState<CampaignTriggerOperator>(
-        trigger.operator
+        trigger.operator,
     )
     const [innerValue, setInnerValue] = useState<Option[]>([])
     const [innerError, setInnerError] = useState<string | null>(null)
@@ -45,7 +44,7 @@ export const CustomerCountryTrigger = ({
             id,
             trigger,
             setInnerOperator,
-            onUpdateTrigger
+            onUpdateTrigger,
         )
 
     const handleChangeValue = (value: Option[]) => {
@@ -96,7 +95,7 @@ export const CustomerCountryTrigger = ({
             setInnerValue(
                 (trigger.value as string)
                     .split(',')
-                    .map((v) => ({value: v, label: getCountryLabel(v)}))
+                    .map((v) => ({ value: v, label: getCountryLabel(v) })),
             )
         }
 

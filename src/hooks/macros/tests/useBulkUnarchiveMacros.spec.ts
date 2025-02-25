@@ -1,19 +1,20 @@
-import {useBulkUnarchiveMacros as useBulkUnarchiveMacrosPrimitive} from '@gorgias/api-queries'
-import {QueryClient, useQueryClient} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
+import { QueryClient, useQueryClient } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {useBulkUnarchiveMacros} from 'hooks/macros/useBulkUnarchiveMacros'
+import { useBulkUnarchiveMacros as useBulkUnarchiveMacrosPrimitive } from '@gorgias/api-queries'
+
+import { useBulkUnarchiveMacros } from 'hooks/macros/useBulkUnarchiveMacros'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {assumeMock} from 'utils/testing'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('@gorgias/api-queries', () => ({
     __esModule: true,
     useBulkUnarchiveMacros: jest.fn(),
     queryKeys: {
         macros: {
-            listMacros: () => ({pop: () => null}),
+            listMacros: () => ({ pop: () => null }),
         },
     },
 }))
@@ -42,18 +43,18 @@ describe('useBulkUnarchiveMacros', () => {
             () =>
                 ({
                     invalidateQueries: invalidateQueriesMock,
-                }) as unknown as QueryClient
+                }) as unknown as QueryClient,
         )
     })
 
     it('should handle successsful request with useBulkUnarchiveMacros with a single macro', () => {
         const onSuccess = jest.fn()
-        const {result} = renderHook(() => useBulkUnarchiveMacros())
+        const { result } = renderHook(() => useBulkUnarchiveMacros())
         void result.current.mutateAsync(
-            {data: {ids: [1]}},
+            { data: { ids: [1] } },
             {
                 onSuccess,
-            }
+            },
         )
         ;(
             useBulkUnarchiveMacrosMock.mock.calls[0][0]
@@ -72,12 +73,12 @@ describe('useBulkUnarchiveMacros', () => {
 
     it('should handle successsful request with useBulkUnarchiveMacros with multiple macros', () => {
         const onSuccess = jest.fn()
-        const {result} = renderHook(() => useBulkUnarchiveMacros())
+        const { result } = renderHook(() => useBulkUnarchiveMacros())
         void result.current.mutateAsync(
-            {data: {ids: [1, 2]}},
+            { data: { ids: [1, 2] } },
             {
                 onSuccess,
-            }
+            },
         )
         ;(
             useBulkUnarchiveMacrosMock.mock.calls[0][0]
@@ -87,7 +88,7 @@ describe('useBulkUnarchiveMacros', () => {
         )?.onSuccess({
             data: {
                 data: {
-                    data: [{id: 1}, {id: 2}],
+                    data: [{ id: 1 }, { id: 2 }],
                 },
             },
         })
@@ -102,12 +103,12 @@ describe('useBulkUnarchiveMacros', () => {
 
     it('should handle failed request with useBulkUnarchiveMacros', () => {
         const onError = jest.fn()
-        const {result} = renderHook(() => useBulkUnarchiveMacros())
+        const { result } = renderHook(() => useBulkUnarchiveMacros())
         void result.current.mutateAsync(
-            {data: {ids: [1, 2]}},
+            { data: { ids: [1, 2] } },
             {
                 onError,
-            }
+            },
         )
         ;(
             useBulkUnarchiveMacrosMock.mock.calls[0][0]

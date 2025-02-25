@@ -1,4 +1,4 @@
-import {AiAgentScopes} from 'pages/aiAgent/Onboarding/types'
+import { AiAgentScopes } from 'pages/aiAgent/Onboarding/types'
 
 export const mapScopeToPreviewType = (scope: AiAgentScopes[]) => {
     if (scope.length === 1 && scope.includes(AiAgentScopes.SALES)) {

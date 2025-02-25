@@ -1,31 +1,29 @@
-import {render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import {fromJS} from 'immutable'
+import React, { PropsWithChildren } from 'react'
 
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { fromJS } from 'immutable'
 import moment from 'moment-timezone'
 
-import React, {PropsWithChildren} from 'react'
-
-import {UserRole} from 'config/types/user'
-
-import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import {agents} from 'fixtures/agents'
-import {GreyArea} from 'hooks/reporting/automate/types'
-import {useAIAgentUserId} from 'hooks/reporting/automate/useAIAgentUserId'
-import {useAutomateMetricsTrend} from 'hooks/reporting/automate/useAutomationDataset'
-import {calculateGreyArea} from 'hooks/reporting/automate/utils'
-import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-import {StatsFiltersWithLogicalOperator} from 'models/stat/types'
-import {AutomatedInteractionsMetric} from 'pages/automate/automate-metrics/AutomatedInteractionsMetric'
-import {getTimeSeriesFormattedData} from 'pages/stats/automate/overview/utils'
+import { UserRole } from 'config/types/user'
+import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import { agents } from 'fixtures/agents'
+import { GreyArea } from 'hooks/reporting/automate/types'
+import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
+import { useAutomateMetricsTrend } from 'hooks/reporting/automate/useAutomationDataset'
+import { calculateGreyArea } from 'hooks/reporting/automate/utils'
+import { MetricTrend } from 'hooks/reporting/useMetricTrend'
+import { StatsFiltersWithLogicalOperator } from 'models/stat/types'
+import { AutomatedInteractionsMetric } from 'pages/automate/automate-metrics/AutomatedInteractionsMetric'
+import { getTimeSeriesFormattedData } from 'pages/stats/automate/overview/utils'
 import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
-import {useReportChartRestrictions} from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
-import {TicketDistributionChart} from 'pages/stats/ticket-insights/ticket-fields/TicketDistributionTable'
-import {TwoDimensionalDataItem} from 'pages/stats/types'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {getStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
-import {getSelectedCustomField} from 'state/ui/stats/ticketInsightsSlice'
-import {assumeMock} from 'utils/testing'
+import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
+import { TicketDistributionChart } from 'pages/stats/ticket-insights/ticket-fields/TicketDistributionTable'
+import { TwoDimensionalDataItem } from 'pages/stats/types'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { getStatsFiltersWithLogicalOperators } from 'state/stats/selectors'
+import { getSelectedCustomField } from 'state/ui/stats/ticketInsightsSlice'
+import { assumeMock } from 'utils/testing'
 
 import AutomateAiAgentStats from '../AutomateAiAgentStats'
 
@@ -33,7 +31,7 @@ jest.mock(
     'hooks/useAppSelector',
     () =>
         (fn: () => any): any =>
-            fn()
+            fn(),
 )
 
 jest.mock('state/stats/selectors')
@@ -74,12 +72,12 @@ const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
 jest.mock(
     'pages/stats/StatsPage',
     () =>
-        ({children}: PropsWithChildren<any>) => (
+        ({ children }: PropsWithChildren<any>) => (
             <>
                 <div>stats-page</div>
                 <>{children}</>
             </>
-        )
+        ),
 )
 
 jest.mock('pages/stats/common/filters/FiltersPanelWrapper', () => () => (
@@ -98,7 +96,7 @@ jest.mock(
     'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect',
     () => ({
         CustomFieldSelect: () => <div>custom-field-select</div>,
-    })
+    }),
 )
 
 jest.mock(
@@ -107,7 +105,7 @@ jest.mock(
         TicketDistributionChart: jest.fn(() => (
             <div>ticket-distribution-table</div>
         )),
-    })
+    }),
 )
 const TicketDistributionTableMock = TicketDistributionChart as jest.Mock
 
@@ -115,7 +113,7 @@ jest.mock(
     'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldTrend',
     () => ({
         TicketInsightsFieldTrend: () => <div>ticket-insights-field-trend</div>,
-    })
+    }),
 )
 
 jest.mock(
@@ -124,7 +122,7 @@ jest.mock(
         CustomFieldsTicketCountBreakdownTableChart: () => (
             <div>custom-fields-ticket-count-breakdown-report</div>
         ),
-    })
+    }),
 )
 
 jest.mock(
@@ -133,7 +131,7 @@ jest.mock(
         AutomatedInteractionsMetric: jest.fn(() => (
             <div>automated-interactions-metric</div>
         )),
-    })
+    }),
 )
 const AutomatedInteractionsMetricMock = assumeMock(AutomatedInteractionsMetric)
 
@@ -163,14 +161,14 @@ describe('AutomateAiAgentStats', () => {
             },
         },
         customFields = [
-            {label: 'AI Intent', managed_type: 'ai_intent'},
-            {label: 'AI Agent Outcome', managed_type: 'ai_outcome'},
-            {label: 'My custom field', managed_type: null},
+            { label: 'AI Intent', managed_type: 'ai_intent' },
+            { label: 'AI Agent Outcome', managed_type: 'ai_outcome' },
+            { label: 'My custom field', managed_type: null },
         ],
         customFieldsIsLoading = false,
         aiAgentUserId = '5',
         automatedInteractionByEventTypesTimeSeriesData = [
-            {label: 'AI Agent', values: [{x: '5', y: 10}]},
+            { label: 'AI Agent', values: [{ x: '5', y: 10 }] },
         ],
         greyArea = {
             from: moment(new Date('2024-09-17')),
@@ -191,11 +189,11 @@ describe('AutomateAiAgentStats', () => {
         getCurrentUserMock.mockReturnValue(
             fromJS({
                 ...agents[0],
-                role: {name: UserRole.Admin},
-            })
+                role: { name: UserRole.Admin },
+            }),
         )
         useAIAgentUserIdMock.mockReturnValue(
-            aiAgentUserId === null ? undefined : aiAgentUserId
+            aiAgentUserId === null ? undefined : aiAgentUserId,
         )
 
         calculateGreyAreaMock.mockReturnValue(greyArea)
@@ -212,12 +210,12 @@ describe('AutomateAiAgentStats', () => {
         })
 
         const customFieldResponse = customFieldsIsLoading
-            ? {isLoading: true}
+            ? { isLoading: true }
             : {
-                  data: {data: customFields},
+                  data: { data: customFields },
               }
         useCustomFieldDefinitionsMock.mockReturnValue(
-            customFieldResponse as ReturnType<typeof useCustomFieldDefinitions>
+            customFieldResponse as ReturnType<typeof useCustomFieldDefinitions>,
         )
 
         getTimeSeriesFormattedDataMock.mockReturnValue({
@@ -250,18 +248,18 @@ describe('AutomateAiAgentStats', () => {
 
         expect(screen.queryByText('custom-field-select')).toBeInTheDocument()
         expect(
-            screen.queryByText('ticket-distribution-table')
+            screen.queryByText('ticket-distribution-table'),
         ).toBeInTheDocument()
         expect(TicketDistributionTableMock).toHaveBeenCalled()
         expect(
-            screen.queryByText('ticket-insights-field-trend')
+            screen.queryByText('ticket-insights-field-trend'),
         ).toBeInTheDocument()
         expect(
-            screen.queryByText('custom-fields-ticket-count-breakdown-report')
+            screen.queryByText('custom-fields-ticket-count-breakdown-report'),
         ).toBeInTheDocument()
 
         expect(
-            screen.queryByText('automated-interactions-metric')
+            screen.queryByText('automated-interactions-metric'),
         ).toBeInTheDocument()
         expect(AutomatedInteractionsMetricMock).toHaveBeenCalledWith(
             {
@@ -274,7 +272,7 @@ describe('AutomateAiAgentStats', () => {
                     },
                 },
             },
-            {}
+            {},
         )
 
         expect(screen.queryByText('line-chart')).toBeInTheDocument()
@@ -282,36 +280,36 @@ describe('AutomateAiAgentStats', () => {
             {
                 isCurvedLine: false,
                 yAxisBeginAtZero: true,
-                data: [{label: 'AI Agent', values: [{x: '5', y: 10}]}],
+                data: [{ label: 'AI Agent', values: [{ x: '5', y: 10 }] }],
                 _displayLegacyTooltip: true,
                 greyArea: {
                     start: 'Sep 17th, 2024',
                     end: 'Sep 20th, 2024',
                 },
             },
-            {}
+            {},
         )
     })
 
     it('should not show the ticket insights if there are no AI Agent custom fields', () => {
         renderComponent({
             customFields: [
-                {label: 'My custom field', managed_type: null},
-                {label: 'Another custom field', managed_type: null},
+                { label: 'My custom field', managed_type: null },
+                { label: 'Another custom field', managed_type: null },
             ],
         })
 
         expect(
-            screen.queryByText('custom-field-select')
+            screen.queryByText('custom-field-select'),
         ).not.toBeInTheDocument()
         expect(
-            screen.queryByText('ticket-distribution-table')
+            screen.queryByText('ticket-distribution-table'),
         ).not.toBeInTheDocument()
         expect(
-            screen.queryByText('ticket-insights-field-trend')
+            screen.queryByText('ticket-insights-field-trend'),
         ).not.toBeInTheDocument()
         expect(
-            screen.queryByText('custom-fields-ticket-count-breakdown-report')
+            screen.queryByText('custom-fields-ticket-count-breakdown-report'),
         ).not.toBeInTheDocument()
     })
 
@@ -321,7 +319,7 @@ describe('AutomateAiAgentStats', () => {
         })
 
         expect(
-            screen.queryByText('ticket-insights-field-trend')
+            screen.queryByText('ticket-insights-field-trend'),
         ).not.toBeInTheDocument()
     })
 
@@ -339,16 +337,16 @@ describe('AutomateAiAgentStats', () => {
 
         expect(
             screen.queryByText(
-                'There is no activity during the selected time period. AI Agent may have been disabled or not set up during this time.'
-            )
+                'There is no activity during the selected time period. AI Agent may have been disabled or not set up during this time.',
+            ),
         ).toBeInTheDocument()
 
         userEvent.click(screen.getByLabelText('Close Icon'))
 
         expect(
             screen.queryByText(
-                'There is no activity during the selected time period. AI Agent may have been disabled or not set up during this time.'
-            )
+                'There is no activity during the selected time period. AI Agent may have been disabled or not set up during this time.',
+            ),
         ).not.toBeInTheDocument()
     })
 
@@ -357,7 +355,7 @@ describe('AutomateAiAgentStats', () => {
             automatedInteractionTrend: {
                 isFetching: false,
                 isError: false,
-                data: {value: 0, prevValue: 0},
+                data: { value: 0, prevValue: 0 },
             },
             automatedInteractionByEventTypesTimeSeriesData: [],
         })
@@ -371,7 +369,7 @@ describe('AutomateAiAgentStats', () => {
         renderComponent({
             greyArea: null,
             automatedInteractionByEventTypesTimeSeriesData: [
-                {label: 'AI Agent', values: [{x: '5', y: 10}]},
+                { label: 'AI Agent', values: [{ x: '5', y: 10 }] },
             ],
         })
 
@@ -380,11 +378,11 @@ describe('AutomateAiAgentStats', () => {
             {
                 isCurvedLine: false,
                 yAxisBeginAtZero: true,
-                data: [{label: 'AI Agent', values: [{x: '5', y: 10}]}],
+                data: [{ label: 'AI Agent', values: [{ x: '5', y: 10 }] }],
                 _displayLegacyTooltip: true,
                 greyArea: undefined,
             },
-            {}
+            {},
         )
     })
 })

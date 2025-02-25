@@ -1,5 +1,6 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import React, {useRef} from 'react'
+import React, { useRef } from 'react'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import IconButton from 'pages/common/components/button/IconButton'
 

@@ -1,15 +1,15 @@
-import {searchCustomers as apiSearchCustomers} from '@gorgias/api-client'
-import {CancelToken} from 'axios'
+import { CancelToken } from 'axios'
+
+import { searchCustomers as apiSearchCustomers } from '@gorgias/api-client'
 
 import client from 'models/api/resources'
-import {deepMapKeysToSnakeCase} from 'models/api/utils'
-
-import {Customer} from 'models/customer/types'
+import { deepMapKeysToSnakeCase } from 'models/api/utils'
+import { Customer } from 'models/customer/types'
 import {
     CustomerSearchOptions,
     CustomerWithHighlightsResponse,
 } from 'models/search/types'
-import {mergeEntitiesWithHighlights} from 'models/search/utils'
+import { mergeEntitiesWithHighlights } from 'models/search/utils'
 
 export const searchCustomers = async ({
     search,
@@ -25,15 +25,15 @@ export const searchCustomers = async ({
         {
             ...deepMapKeysToSnakeCase({
                 ...rest,
-                ...(cursor ? {cursor} : {}),
-                ...(withHighlights === true ? {withHighlights: true} : {}),
+                ...(cursor ? { cursor } : {}),
+                ...(withHighlights === true ? { withHighlights: true } : {}),
             }),
         },
-        {...(cancelToken ? {cancelToken} : {})}
+        { ...(cancelToken ? { cancelToken } : {}) },
     )
 
 export const searchCustomersWithHighlights = async (
-    options: Omit<CustomerSearchOptions, 'withHighlights'>
+    options: Omit<CustomerSearchOptions, 'withHighlights'>,
 ) =>
     searchCustomers({
         ...options,
@@ -43,7 +43,7 @@ export const searchCustomersWithHighlights = async (
         data: {
             ...resp.data,
             data: (resp.data?.data as CustomerWithHighlightsResponse[]).map(
-                mergeEntitiesWithHighlights
+                mergeEntitiesWithHighlights,
             ),
         },
     }))

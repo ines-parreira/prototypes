@@ -1,21 +1,23 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
+import React, { useEffect, useState } from 'react'
+
+import { useFlags } from 'launchdarkly-react-client-sdk'
 import _noop from 'lodash/noop'
 import moment from 'moment'
-import React, {useEffect, useState} from 'react'
 // eslint-disable-next-line no-restricted-imports
-import {useDispatch} from 'react-redux'
+import { useDispatch } from 'react-redux'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
 import Filter from 'pages/stats/common/components/Filter'
-import {PeriodFilter} from 'pages/stats/common/filters/PeriodFilter'
-import {DropdownOption} from 'pages/stats/types'
-import {getPageStatsFilters} from 'state/stats/selectors'
-import {setStatsFilters} from 'state/stats/statsSlice'
+import { PeriodFilter } from 'pages/stats/common/filters/PeriodFilter'
+import { DropdownOption } from 'pages/stats/types'
+import { getPageStatsFilters } from 'state/stats/selectors'
+import { setStatsFilters } from 'state/stats/statsSlice'
+
+import BackToActionFormButton from './BackToActionFormButton'
 
 import css from './ActionEventsHeader.less'
-import BackToActionFormButton from './BackToActionFormButton'
 
 type Props = {
     initialStartDate: Date
@@ -52,7 +54,7 @@ export default function ActionEventsHeader({
                     start_datetime: moment(initialStartDate).format(),
                     end_datetime: moment(initialEndDate).format(),
                 },
-            })
+            }),
         )
         setIsPeriodFilterSet(true)
     })
@@ -96,7 +98,7 @@ export default function ActionEventsHeader({
                 from: startDateFilter,
                 to: endDateFilter,
                 status: statusFilterOptions.map(
-                    (dropDownValue) => dropDownValue.value
+                    (dropDownValue) => dropDownValue.value,
                 ) as ('success' | 'error' | 'partial_success')[],
             })
         } else {
@@ -107,7 +109,7 @@ export default function ActionEventsHeader({
                     statusFilterOptions.length === statusValues.length
                         ? undefined
                         : statusFilterOptions.some(
-                              (option) => option.value === 'success'
+                              (option) => option.value === 'success',
                           ),
             })
         }
@@ -125,8 +127,8 @@ export default function ActionEventsHeader({
             setStatusFilterOptions(
                 statusFilterOptions.filter(
                     (statusFilterOption) =>
-                        statusFilterOption.value !== option.value
-                )
+                        statusFilterOption.value !== option.value,
+                ),
             )
         } else {
             setStatusFilterOptions([...statusFilterOptions, option])

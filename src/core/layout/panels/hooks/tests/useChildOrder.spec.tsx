@@ -1,20 +1,21 @@
-import {render} from '@testing-library/react'
-import {renderHook} from '@testing-library/react-hooks'
-import React, {useState} from 'react'
+import React, { useState } from 'react'
+
+import { render } from '@testing-library/react'
+import { renderHook } from '@testing-library/react-hooks'
 
 import useChildOrder from '../useChildOrder'
 
 describe('useChildOrder', () => {
     it('should return an empty state if there is no container', () => {
-        const {result} = renderHook(() => useChildOrder(null, [], []))
-        expect(result.current).toEqual({handlesMap: {}, panelOrder: []})
+        const { result } = renderHook(() => useChildOrder(null, [], []))
+        expect(result.current).toEqual({ handlesMap: {}, panelOrder: [] })
     })
 
     it('should return an empty array if no panel names are given', () => {
         let result: ReturnType<typeof useChildOrder> | null = null
         const Test = () => {
             const [container, setContainer] = useState<HTMLDivElement | null>(
-                null
+                null,
             )
             result = useChildOrder(container, [], [])
 
@@ -22,7 +23,7 @@ describe('useChildOrder', () => {
         }
 
         render(<Test />)
-        expect(result).toEqual({handlesMap: {}, panelOrder: []})
+        expect(result).toEqual({ handlesMap: {}, panelOrder: [] })
     })
 
     it('should return panel names and a map of handles in the order they appear in the DOM', () => {
@@ -31,12 +32,12 @@ describe('useChildOrder', () => {
 
         const Test = () => {
             const [container, setContainer] = useState<HTMLDivElement | null>(
-                null
+                null,
             )
-            const {handlesMap, panelOrder} = useChildOrder(
+            const { handlesMap, panelOrder } = useChildOrder(
                 container,
                 ['panel2', 'panel4', 'panel3', 'panel1'],
-                ['handle-23', 'handle-98']
+                ['handle-23', 'handle-98'],
             )
             handles = handlesMap
             order = panelOrder
@@ -54,7 +55,7 @@ describe('useChildOrder', () => {
         }
 
         render(<Test />)
-        expect(handles).toEqual({panel3: 'handle-23', panel4: 'handle-98'})
+        expect(handles).toEqual({ panel3: 'handle-23', panel4: 'handle-98' })
         expect(order).toEqual(['panel1', 'panel2', 'panel3', 'panel4'])
     })
 })

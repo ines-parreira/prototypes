@@ -1,9 +1,10 @@
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { renderHook } from '@testing-library/react-hooks'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {AiAgentOverviewRootStateFixture} from 'pages/aiAgent/Overview/tests/AiAgentOverviewRootState.fixture'
+import { AiAgentOverviewRootStateFixture } from 'pages/aiAgent/Overview/tests/AiAgentOverviewRootState.fixture'
 
 import useSelfServiceChatChannels from '../useSelfServiceChatChannels'
 import useSelfServiceStoreIntegration from '../useSelfServiceStoreIntegration'
@@ -28,125 +29,125 @@ describe('useSelfServiceChatChannels', () => {
         const hook = renderHook(
             () => useSelfServiceChatChannels(shopType, shopName),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={configureMockStore()(rootState)}>
                         {children}
                     </Provider>
                 ),
-            }
+            },
         )
 
         expect(hook.result.current).toEqual([])
     })
 
     it('returns an empty array if there is no chat integration', () => {
-        const mockedStoreIntegration = {id: 'storeIntegration123'}
+        const mockedStoreIntegration = { id: 'storeIntegration123' }
 
         const rootState = AiAgentOverviewRootStateFixture.start().build()
 
         useSelfServiceStoreIntegrationMock.mockReturnValue(
-            mockedStoreIntegration
+            mockedStoreIntegration,
         )
 
         const hook = renderHook(
             () => useSelfServiceChatChannels(shopType, shopName),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={configureMockStore()(rootState)}>
                         {children}
                     </Provider>
                 ),
-            }
+            },
         )
 
         expect(hook.result.current).toEqual([])
     })
 
     it('returns only published chat integrations for the store by default', () => {
-        const mockedStoreIntegration = {id: 'storeIntegration123'}
+        const mockedStoreIntegration = { id: 'storeIntegration123' }
 
         const rootState = AiAgentOverviewRootStateFixture.start()
             .withChatIntegration()
             .withChatIntegration()
             .withChatIntegration()
-            .withChatIntegration({isDraft: true})
+            .withChatIntegration({ isDraft: true })
             .build()
 
         useSelfServiceStoreIntegrationMock.mockReturnValue(
-            mockedStoreIntegration
+            mockedStoreIntegration,
         )
 
         const hook = renderHook(
             () => useSelfServiceChatChannels(shopType, shopName),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={configureMockStore()(rootState)}>
                         {children}
                     </Provider>
                 ),
-            }
+            },
         )
 
         expect(hook.result.current).toHaveLength(3)
     })
 
     it('returns all chat integrations for the store if showDrafts is true', () => {
-        const mockedStoreIntegration = {id: 'storeIntegration123'}
+        const mockedStoreIntegration = { id: 'storeIntegration123' }
 
         const rootState = AiAgentOverviewRootStateFixture.start()
             .withChatIntegration()
             .withChatIntegration()
             .withChatIntegration()
-            .withChatIntegration({isDraft: true})
+            .withChatIntegration({ isDraft: true })
             .build()
 
         useSelfServiceStoreIntegrationMock.mockReturnValue(
-            mockedStoreIntegration
+            mockedStoreIntegration,
         )
 
         const hook = renderHook(
             () => useSelfServiceChatChannels(shopType, shopName, true),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={configureMockStore()(rootState)}>
                         {children}
                     </Provider>
                 ),
-            }
+            },
         )
 
         expect(hook.result.current).toHaveLength(4)
     })
 
     it('handles changes in showDraftChats prop', () => {
-        const mockedStoreIntegration = {id: 'storeIntegration123'}
+        const mockedStoreIntegration = { id: 'storeIntegration123' }
 
         const rootState = AiAgentOverviewRootStateFixture.start()
             .withChatIntegration()
             .withChatIntegration()
-            .withChatIntegration({isDraft: true})
+            .withChatIntegration({ isDraft: true })
             .build()
 
         useSelfServiceStoreIntegrationMock.mockReturnValue(
-            mockedStoreIntegration
+            mockedStoreIntegration,
         )
 
         const hook = renderHook(
-            ({showDrafts}) =>
+            ({ showDrafts }) =>
                 useSelfServiceChatChannels(shopType, shopName, showDrafts),
             {
-                initialProps: {showDrafts: false},
-                wrapper: ({children}) => (
+                initialProps: { showDrafts: false },
+                wrapper: ({ children }) => (
                     <Provider store={configureMockStore()(rootState)}>
                         {children}
                     </Provider>
                 ),
-            }
+            },
         )
 
         expect(hook.result.current).toHaveLength(2) // Only published
 
-        hook.rerender({showDrafts: true})
+        hook.rerender({ showDrafts: true })
 
         expect(hook.result.current).toHaveLength(3) // Published + draft
     })

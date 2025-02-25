@@ -1,13 +1,14 @@
-import {act, fireEvent, render} from '@testing-library/react'
+import React from 'react'
+
+import { act, fireEvent, render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import moment from 'moment-timezone'
-import React from 'react'
-import {Provider} from 'react-redux'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {initialState} from 'state/stats/statsSlice'
-import {RootState} from 'state/types'
+import { initialState } from 'state/stats/statsSlice'
+import { RootState } from 'state/types'
 
 import CampaignSchedulePicker from '../CampaignSchedulePicker'
 
@@ -19,7 +20,7 @@ describe('CampaignSchedulePicker', () => {
     } as RootState
 
     it('renders', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={mockStore(defaultState)}>
                 <CampaignSchedulePicker
                     timezone="UTC"
@@ -27,7 +28,7 @@ describe('CampaignSchedulePicker', () => {
                     endDate={null}
                     onChange={jest.fn()}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(getByText('From')).toBeInTheDocument()
@@ -35,7 +36,7 @@ describe('CampaignSchedulePicker', () => {
     })
 
     it('renders notice if not end date is not definied', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={mockStore(defaultState)}>
                 <CampaignSchedulePicker
                     timezone="UTC"
@@ -43,19 +44,19 @@ describe('CampaignSchedulePicker', () => {
                     endDate={null}
                     onChange={jest.fn()}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(
             getByText(
-                /The campaign will run indefinitely if no end date is set./
-            )
+                /The campaign will run indefinitely if no end date is set./,
+            ),
         ).toBeInTheDocument()
     })
 
     it('end date is definied and user can clear it', () => {
         const onChangeSpy = jest.fn()
-        const {getByText, container} = render(
+        const { getByText, container } = render(
             <Provider store={mockStore(defaultState)}>
                 <CampaignSchedulePicker
                     timezone="UTC"
@@ -63,11 +64,11 @@ describe('CampaignSchedulePicker', () => {
                     endDate={'2024-09-10'}
                     onChange={onChangeSpy}
                 />
-            </Provider>
+            </Provider>,
         )
 
         const input = container.querySelector(
-            'input[name="to"]'
+            'input[name="to"]',
         ) as HTMLInputElement
         expect(input.value).toBe('Sep 10, 2024')
         expect(getByText('cancel')).toBeInTheDocument()
@@ -77,14 +78,14 @@ describe('CampaignSchedulePicker', () => {
         expect(onChangeSpy).toBeCalledWith(
             expect.objectContaining({
                 endDate: null,
-            })
+            }),
         )
     })
 
     it('user is able to select start date', () => {
         const onChangeSpy = jest.fn()
 
-        const {getByLabelText, getAllByText, getAllByRole} = render(
+        const { getByLabelText, getAllByText, getAllByRole } = render(
             <Provider store={mockStore(defaultState)}>
                 <CampaignSchedulePicker
                     timezone="UTC"
@@ -92,7 +93,7 @@ describe('CampaignSchedulePicker', () => {
                     endDate={'2024-09-10'}
                     onChange={onChangeSpy}
                 />
-            </Provider>
+            </Provider>,
         )
 
         // Open calendar
@@ -118,7 +119,7 @@ describe('CampaignSchedulePicker', () => {
     it('user is able to select end date', () => {
         const onChangeSpy = jest.fn()
 
-        const {getByLabelText, getAllByText, getAllByRole} = render(
+        const { getByLabelText, getAllByText, getAllByRole } = render(
             <Provider store={mockStore(defaultState)}>
                 <CampaignSchedulePicker
                     timezone="UTC"
@@ -126,7 +127,7 @@ describe('CampaignSchedulePicker', () => {
                     endDate={null}
                     onChange={onChangeSpy}
                 />
-            </Provider>
+            </Provider>,
         )
 
         // Open calendar

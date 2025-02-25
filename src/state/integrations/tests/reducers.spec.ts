@@ -1,15 +1,15 @@
-import {fromJS, Map, Seq} from 'immutable'
+import { fromJS, Map, Seq } from 'immutable'
 
-import {integrationsState} from '../../../fixtures/integrations'
+import { integrationsState } from '../../../fixtures/integrations'
 import {
     EmailMigrationInboundVerification,
+    EmailMigrationInboundVerificationStatus,
     GorgiasChatStatusEnum,
     IntegrationType,
-    EmailMigrationInboundVerificationStatus,
 } from '../../../models/integration/types'
-import {RootState} from '../../types'
+import { RootState } from '../../types'
 import * as types from '../constants'
-import reducer, {initialState} from '../reducers'
+import reducer, { initialState } from '../reducers'
 import {
     DEPRECATED_getIntegrationsState,
     getEmailIntegrations,
@@ -32,9 +32,9 @@ describe('integrations reducers', () => {
                     (integrations as Map<any, any>)
                         .valueSeq()
                         .filter(
-                            (int: Map<any, any>) => int.get('id') !== action.id
+                            (int: Map<any, any>) => int.get('id') !== action.id,
                         ) as Seq.Indexed<Map<any, any>>
-                ).toList()
+                ).toList(),
             )
             .setIn(['state', 'loading', 'delete'], false)
 
@@ -47,7 +47,7 @@ describe('integrations reducers', () => {
         })
         const expected = DEPRECATED_getIntegrationsState(state).setIn(
             ['state', 'loading', 'delete'],
-            false
+            false,
         )
         expect(newState).toEqual(expected)
     })
@@ -86,7 +86,7 @@ describe('integrations reducers', () => {
                 IntegrationType.GorgiasChat,
                 'shopifyCheckoutChatBannerVisible',
             ],
-            false
+            false,
         )
 
         expect(initialFlagValue).toEqual(true)
@@ -99,7 +99,7 @@ describe('integrations reducers', () => {
         integrationTypes.forEach((integrationType) => {
             it(`should set the data because there is no current page (${integrationType})`, () => {
                 const onboardingIntegrations = {
-                    data: [{id: 1}],
+                    data: [{ id: 1 }],
                     meta: {
                         page: 1,
                         nb_pages: 1,
@@ -112,12 +112,12 @@ describe('integrations reducers', () => {
                         type: types.FETCH_ONBOARDING_INTEGRATIONS_SUCCESS,
                         resp: onboardingIntegrations,
                         integrationType,
-                    })
+                    }),
                 ).toEqual(
                     DEPRECATED_getIntegrationsState(state).setIn(
                         ['extra', integrationType, 'onboardingIntegrations'],
-                        fromJS(onboardingIntegrations)
-                    )
+                        fromJS(onboardingIntegrations),
+                    ),
                 )
             })
 
@@ -130,10 +130,10 @@ describe('integrations reducers', () => {
                         'meta',
                         'page',
                     ],
-                    1
+                    1,
                 )
                 const onboardingIntegrations = {
-                    data: [{id: 1}],
+                    data: [{ id: 1 }],
                     meta: {
                         page: 2,
                         nb_pages: 2,
@@ -147,14 +147,14 @@ describe('integrations reducers', () => {
                         resp: onboardingIntegrations,
                         forceOverride: true,
                         integrationType,
-                    })
+                    }),
                 ).toEqual(
                     DEPRECATED_getIntegrationsState({
                         integrations: integrationsState,
                     } as RootState).setIn(
                         ['extra', integrationType, 'onboardingIntegrations'],
-                        fromJS(onboardingIntegrations)
-                    )
+                        fromJS(onboardingIntegrations),
+                    ),
                 )
             })
 
@@ -167,10 +167,10 @@ describe('integrations reducers', () => {
                         'meta',
                         'page',
                     ],
-                    1
+                    1,
                 )
                 const onboardingIntegrations = {
-                    data: [{id: 1}],
+                    data: [{ id: 1 }],
                     meta: {
                         page: 1,
                         nb_pages: 2,
@@ -183,14 +183,14 @@ describe('integrations reducers', () => {
                         type: types.FETCH_ONBOARDING_INTEGRATIONS_SUCCESS,
                         resp: onboardingIntegrations,
                         integrationType,
-                    })
+                    }),
                 ).toEqual(
                     DEPRECATED_getIntegrationsState({
                         integrations: integrationsState,
                     } as RootState).setIn(
                         ['extra', integrationType, 'onboardingIntegrations'],
-                        fromJS(onboardingIntegrations)
-                    )
+                        fromJS(onboardingIntegrations),
+                    ),
                 )
             })
 
@@ -206,10 +206,10 @@ describe('integrations reducers', () => {
                             'meta',
                             'page',
                         ],
-                        1
+                        1,
                     )
                     const onboardingIntegrations = {
-                        data: [{id: 1}],
+                        data: [{ id: 1 }],
                         meta: {
                             page: 2,
                             nb_pages: 2,
@@ -222,7 +222,7 @@ describe('integrations reducers', () => {
                             type: types.FETCH_ONBOARDING_INTEGRATIONS_SUCCESS,
                             resp: onboardingIntegrations,
                             integrationType,
-                        })
+                        }),
                     ).toEqual(
                         DEPRECATED_getIntegrationsState({
                             integrations: integrationsState,
@@ -233,10 +233,10 @@ describe('integrations reducers', () => {
                                 'onboardingIntegrations',
                                 'meta',
                             ],
-                            fromJS(onboardingIntegrations.meta)
-                        )
+                            fromJS(onboardingIntegrations.meta),
+                        ),
                     )
-                }
+                },
             )
         })
     })
@@ -257,10 +257,10 @@ describe('integrations reducers', () => {
                             {
                                 id: 241,
                                 type: IntegrationType.GorgiasChat,
-                                meta: {foo: 'bar'},
+                                meta: { foo: 'bar' },
                             },
                         ],
-                    })
+                    }),
                 )
 
                 const action = {
@@ -269,7 +269,7 @@ describe('integrations reducers', () => {
                 }
 
                 expect(reducer(integrationsState, action)).toMatchSnapshot()
-            }
+            },
         )
     })
 
@@ -283,7 +283,7 @@ describe('integrations reducers', () => {
                     type: IntegrationType.GorgiasChat,
                 }
                 const updatedIntegration = Object.assign({}, integration, {
-                    meta: {foo: 'bar'},
+                    meta: { foo: 'bar' },
                 })
 
                 const integrationsState = initialState.mergeDeep(
@@ -292,12 +292,12 @@ describe('integrations reducers', () => {
                             {
                                 id: 241,
                                 type: IntegrationType.GorgiasChat,
-                                meta: {foo: 'bar'},
+                                meta: { foo: 'bar' },
                             },
                             integration,
                         ],
-                        state: {loading: {updateIntegration: 118712}},
-                    })
+                        state: { loading: { updateIntegration: 118712 } },
+                    }),
                 )
 
                 const action = {
@@ -306,7 +306,7 @@ describe('integrations reducers', () => {
                 }
 
                 expect(reducer(integrationsState, action)).toMatchSnapshot()
-            }
+            },
         )
     })
 
@@ -321,10 +321,10 @@ describe('integrations reducers', () => {
                         },
                     ],
                     state: {
-                        loading: {chatStatus: {}},
-                        error: {chatStatus: {}},
+                        loading: { chatStatus: {} },
+                        error: { chatStatus: {} },
                     },
-                })
+                }),
             )
 
             const action = {
@@ -347,8 +347,8 @@ describe('integrations reducers', () => {
                             meta: {},
                         },
                     ],
-                    state: {loading: {chatStatus: {}}},
-                })
+                    state: { loading: { chatStatus: {} } },
+                }),
             )
 
             const action = {
@@ -372,10 +372,10 @@ describe('integrations reducers', () => {
                         },
                     ],
                     state: {
-                        loading: {chatStatus: {}},
-                        error: {chatStatus: {}},
+                        loading: { chatStatus: {} },
+                        error: { chatStatus: {} },
                     },
-                })
+                }),
             )
 
             const action = {
@@ -405,7 +405,7 @@ describe('integrations reducers', () => {
                             },
                         ],
                     },
-                })
+                }),
             )
 
             const action = {
@@ -417,9 +417,11 @@ describe('integrations reducers', () => {
             expect(
                 (
                     reducer(integrationsState, action).toJS() as {
-                        migrations: {email: EmailMigrationInboundVerification[]}
+                        migrations: {
+                            email: EmailMigrationInboundVerification[]
+                        }
                     }
-                ).migrations?.email
+                ).migrations?.email,
             ).toEqual([
                 {
                     integration: {

@@ -1,5 +1,6 @@
 import React from 'react'
-import {Switch, Route} from 'react-router-dom'
+
+import { Route, Switch } from 'react-router-dom'
 
 import App from 'pages/App'
 import TicketDetailContainer from 'pages/tickets/detail/TicketDetailContainer'

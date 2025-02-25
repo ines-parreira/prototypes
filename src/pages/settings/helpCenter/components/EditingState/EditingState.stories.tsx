@@ -1,9 +1,9 @@
-import {Meta, Story} from '@storybook/react'
 import React from 'react'
 
-import {EditingStateEnum} from '../../constants'
+import { Meta, Story } from '@storybook/react'
 
-import EditingState, {EditingStateProps} from './EditingState'
+import { EditingStateEnum } from '../../constants'
+import EditingState, { EditingStateProps } from './EditingState'
 
 const storyConfig: Meta = {
     title: 'Help Center/EditingState',
@@ -20,7 +20,7 @@ const storyConfig: Meta = {
     },
 }
 
-const Template: Story<EditingStateProps> = ({state}) => {
+const Template: Story<EditingStateProps> = ({ state }) => {
     return <EditingState state={state} />
 }
 

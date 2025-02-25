@@ -1,4 +1,4 @@
-import React, {RefObject, useEffect, useMemo, useState} from 'react'
+import React, { RefObject, useEffect, useMemo, useState } from 'react'
 
 import VisualBuilderActionIcon from 'pages/automate/workflows/components/VisualBuilderActionIcon'
 import {
@@ -17,7 +17,7 @@ import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import Search from 'pages/common/components/Search'
 
-import {useToolbarContext} from '../ToolbarContext'
+import { useToolbarContext } from '../ToolbarContext'
 
 import css from './WorkflowVariableDropdown.less'
 
@@ -48,9 +48,9 @@ const WorkflowVariableDropdown = ({
     const workflowVariables = useMemo(
         () =>
             filterManyVariables(workflowVariablesProp, (variable) =>
-                workflowVariablesDataTypes.includes(variable.type)
+                workflowVariablesDataTypes.includes(variable.type),
             ),
-        [workflowVariablesProp, workflowVariablesDataTypes]
+        [workflowVariablesProp, workflowVariablesDataTypes],
     )
     const allVariables = useMemo(
         () =>
@@ -62,7 +62,7 @@ const WorkflowVariableDropdown = ({
                     return variable
                 }
             }),
-        [workflowVariables, workflowVariablesDataTypes]
+        [workflowVariables, workflowVariablesDataTypes],
     )
 
     const [searchQuery, setSearchQuery] = useState<string>('')
@@ -86,18 +86,18 @@ const WorkflowVariableDropdown = ({
 
         if (selectedCategory == null) {
             const searchResults = allVariables.filter((variable) =>
-                variable.name.toLowerCase().includes(query.toLowerCase())
+                variable.name.toLowerCase().includes(query.toLowerCase()),
             )
 
             setSearchResults(searchResults)
         } else {
             const category = workflowVariables.find(
-                (category) => category.name === selectedCategory?.name
+                (category) => category.name === selectedCategory?.name,
             )
 
             if (category && 'variables' in category) {
                 const searchResults = category.variables.filter((variable) =>
-                    variable.name.toLowerCase().includes(query.toLowerCase())
+                    variable.name.toLowerCase().includes(query.toLowerCase()),
                 )
 
                 setSelectedCategory({

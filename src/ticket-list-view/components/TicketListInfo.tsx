@@ -7,7 +7,7 @@ type TicketListInfoTextProps = {
     subText: string
     action?: React.ReactNode
 }
-const TicketListInfo = ({text, subText, action}: TicketListInfoTextProps) => {
+const TicketListInfo = ({ text, subText, action }: TicketListInfoTextProps) => {
     return (
         <div className={css.container}>
             <div className={css.content}>

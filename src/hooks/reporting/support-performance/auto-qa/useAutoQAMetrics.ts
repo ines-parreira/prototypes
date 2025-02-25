@@ -1,81 +1,81 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {useAccuracyPerAgent} from 'hooks/reporting/support-performance/auto-qa/useAccuracyPerAgent'
-import {useAccuracyTrend} from 'hooks/reporting/support-performance/auto-qa/useAccuracyTrend'
-import {useBrandVoicePerAgent} from 'hooks/reporting/support-performance/auto-qa/useBrandVoicePerAgent'
-import {useBrandVoiceTrend} from 'hooks/reporting/support-performance/auto-qa/useBrandVoiceTrend'
-import {useCommunicationSkillsPerAgent} from 'hooks/reporting/support-performance/auto-qa/useCommunicationSkillsPerAgent'
-import {useCommunicationSkillsTrend} from 'hooks/reporting/support-performance/auto-qa/useCommunicationSkillsTrend'
-import {useEfficiencyPerAgent} from 'hooks/reporting/support-performance/auto-qa/useEfficiencyPerAgent'
-import {useEfficiencyTrend} from 'hooks/reporting/support-performance/auto-qa/useEfficiencyTrend'
-import {useInternalCompliancePerAgent} from 'hooks/reporting/support-performance/auto-qa/useInternalCompliancePerAgent'
-import {useInternalComplianceTrend} from 'hooks/reporting/support-performance/auto-qa/useInternalComplianceTrend'
-import {useLanguageProficiencyPerAgent} from 'hooks/reporting/support-performance/auto-qa/useLanguageProficiencyPerAgent'
-import {useLanguageProficiencyTrend} from 'hooks/reporting/support-performance/auto-qa/useLanguageProficiencyTrend'
-import {useResolutionCompletenessPerAgent} from 'hooks/reporting/support-performance/auto-qa/useResolutionCompletenessPerAgent'
-import {useResolutionCompletenessTrend} from 'hooks/reporting/support-performance/auto-qa/useResolutionCompletenessTrend'
-import {useReviewedClosedTicketsPerAgent} from 'hooks/reporting/support-performance/auto-qa/useReviewedClosedTicketsPerAgent'
-import {useReviewedClosedTicketsTrend} from 'hooks/reporting/support-performance/auto-qa/useReviewedClosedTicketsTrend'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useAccuracyPerAgent } from 'hooks/reporting/support-performance/auto-qa/useAccuracyPerAgent'
+import { useAccuracyTrend } from 'hooks/reporting/support-performance/auto-qa/useAccuracyTrend'
+import { useBrandVoicePerAgent } from 'hooks/reporting/support-performance/auto-qa/useBrandVoicePerAgent'
+import { useBrandVoiceTrend } from 'hooks/reporting/support-performance/auto-qa/useBrandVoiceTrend'
+import { useCommunicationSkillsPerAgent } from 'hooks/reporting/support-performance/auto-qa/useCommunicationSkillsPerAgent'
+import { useCommunicationSkillsTrend } from 'hooks/reporting/support-performance/auto-qa/useCommunicationSkillsTrend'
+import { useEfficiencyPerAgent } from 'hooks/reporting/support-performance/auto-qa/useEfficiencyPerAgent'
+import { useEfficiencyTrend } from 'hooks/reporting/support-performance/auto-qa/useEfficiencyTrend'
+import { useInternalCompliancePerAgent } from 'hooks/reporting/support-performance/auto-qa/useInternalCompliancePerAgent'
+import { useInternalComplianceTrend } from 'hooks/reporting/support-performance/auto-qa/useInternalComplianceTrend'
+import { useLanguageProficiencyPerAgent } from 'hooks/reporting/support-performance/auto-qa/useLanguageProficiencyPerAgent'
+import { useLanguageProficiencyTrend } from 'hooks/reporting/support-performance/auto-qa/useLanguageProficiencyTrend'
+import { useResolutionCompletenessPerAgent } from 'hooks/reporting/support-performance/auto-qa/useResolutionCompletenessPerAgent'
+import { useResolutionCompletenessTrend } from 'hooks/reporting/support-performance/auto-qa/useResolutionCompletenessTrend'
+import { useReviewedClosedTicketsPerAgent } from 'hooks/reporting/support-performance/auto-qa/useReviewedClosedTicketsPerAgent'
+import { useReviewedClosedTicketsTrend } from 'hooks/reporting/support-performance/auto-qa/useReviewedClosedTicketsTrend'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
 
 export const useAutoQAMetrics = () => {
-    const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone } = useNewStatsFilters()
 
     const reviewedClosedTicketsTrend = useReviewedClosedTicketsTrend(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
     const resolutionCompletenessTrend = useResolutionCompletenessTrend(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
     const communicationSkillsTrend = useCommunicationSkillsTrend(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
     const languageProficiencyTrend = useLanguageProficiencyTrend(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
     const accuracyTrend = useAccuracyTrend(cleanStatsFilters, userTimezone)
     const efficiencyTrend = useEfficiencyTrend(cleanStatsFilters, userTimezone)
     const internalComplianceTrend = useInternalComplianceTrend(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
     const brandVoiceTrend = useBrandVoiceTrend(cleanStatsFilters, userTimezone)
 
     const resolutionCompletenessPerAgent = useResolutionCompletenessPerAgent(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
     const reviewedClosedTicketsPerAgent = useReviewedClosedTicketsPerAgent(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
     const communicationSkillsPerAgent = useCommunicationSkillsPerAgent(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
     const languageProficiencyPerAgent = useLanguageProficiencyPerAgent(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
     const accuracyPerAgent = useAccuracyPerAgent(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
     const efficiencyPerAgent = useEfficiencyPerAgent(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
     const internalCompliancePerAgent = useInternalCompliancePerAgent(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
     const brandVoicePerAgent = useBrandVoicePerAgent(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
 
     const loading = useMemo(() => {

@@ -1,7 +1,7 @@
 import React from 'react'
 
-import {SelectableOption} from 'pages/common/forms/SelectField/types'
-import {AccountSettingBusinessHours} from 'state/currentAccount/types'
+import { SelectableOption } from 'pages/common/forms/SelectField/types'
+import { AccountSettingBusinessHours } from 'state/currentAccount/types'
 
 export const DEFAULT_BUSINESS_HOUR: AccountSettingBusinessHours['data']['business_hours'][number] =
     Object.freeze({
@@ -21,14 +21,14 @@ export const DAYS_OPTIONS: Readonly<SelectableOption[]> = Object.freeze([
         text: 'Weekdays',
         value: '1,2,3,4,5',
     },
-    {label: <i>Weekend</i>, text: 'Weekend', value: '6,7'},
-    {label: 'Monday', value: '1'},
-    {label: 'Tuesday', value: '2'},
-    {label: 'Wednesday', value: '3'},
-    {label: 'Thursday', value: '4'},
-    {label: 'Friday', value: '5'},
-    {label: 'Saturday', value: '6'},
-    {label: 'Sunday', value: '7'},
+    { label: <i>Weekend</i>, text: 'Weekend', value: '6,7' },
+    { label: 'Monday', value: '1' },
+    { label: 'Tuesday', value: '2' },
+    { label: 'Wednesday', value: '3' },
+    { label: 'Thursday', value: '4' },
+    { label: 'Friday', value: '5' },
+    { label: 'Saturday', value: '6' },
+    { label: 'Sunday', value: '7' },
 ])
 
 export const MAX_BUSINESS_HOURS = 20

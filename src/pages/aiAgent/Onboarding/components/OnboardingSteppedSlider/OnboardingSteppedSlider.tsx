@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {SteppedSlider} from 'pages/common/components/SteppedSlider/SteppedSlider'
+import { SteppedSlider } from 'pages/common/components/SteppedSlider/SteppedSlider'
 
 const COLOR = '#C34CED'
 const BACKGROUND_COLOR = 'var(--accessory-magenta-2)'
@@ -17,7 +17,7 @@ type Props = {
 }
 
 export const OnboardingSteppedSlider = (props: Props) => {
-    const {steps, stepKey, onChange} = props
+    const { steps, stepKey, onChange } = props
 
     return (
         <SteppedSlider

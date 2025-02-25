@@ -1,10 +1,10 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {useOutboundCall} from 'hooks/integrations/phone/useOutboundCall'
-import {PhoneIntegration} from 'models/integration/types'
+import { useOutboundCall } from 'hooks/integrations/phone/useOutboundCall'
+import { PhoneIntegration } from 'models/integration/types'
 import * as userSelectors from 'state/currentUser/selectors'
 import * as ticketSelectors from 'state/ticket/selectors'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
 import useDialerOutboundCall from '../useDialerOutboundCall'
 import usePhoneNumbers from '../usePhoneNumbers'
@@ -26,7 +26,7 @@ const usePhoneNumbersMock = assumeMock(usePhoneNumbers)
 
 describe('useDialerOutboundCall', () => {
     const useOutboundCallMockFn = jest.fn()
-    const render = ({selectedCustomer}: {selectedCustomer: any}) =>
+    const render = ({ selectedCustomer }: { selectedCustomer: any }) =>
         renderHook(() =>
             useDialerOutboundCall({
                 inputValue: 'inputValue',
@@ -37,7 +37,7 @@ describe('useDialerOutboundCall', () => {
                         phone_number_id: 1,
                     } as any,
                 } as PhoneIntegration,
-            })
+            }),
         )
 
     beforeEach(() => {
@@ -47,12 +47,12 @@ describe('useDialerOutboundCall', () => {
                 phone_number: 'phone_number',
             }),
         } as any)
-        getTicketSpy.mockReturnValue({id: 5} as any)
+        getTicketSpy.mockReturnValue({ id: 5 } as any)
         useOutboundCallMock.mockReturnValue(useOutboundCallMockFn)
     })
 
     it('should call useOutboundCall hook with inputValue', () => {
-        const {result} = render({selectedCustomer: null})
+        const { result } = render({ selectedCustomer: null })
 
         result.current()
 
@@ -67,8 +67,11 @@ describe('useDialerOutboundCall', () => {
     })
 
     it('should call useOutboundCall hook with selectedCustomer address', () => {
-        const {result} = render({
-            selectedCustomer: {address: 'address', customer: {name: 'name'}},
+        const { result } = render({
+            selectedCustomer: {
+                address: 'address',
+                customer: { name: 'name' },
+            },
         })
 
         result.current()

@@ -1,7 +1,7 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
 import * as activityTracker from 'services/activityTracker'
-import {ActivityEvents} from 'services/activityTracker'
+import { ActivityEvents } from 'services/activityTracker'
 
 import useDraftTicketActivityTracking from '../useDraftTicketActivityTracking'
 
@@ -13,7 +13,7 @@ describe('useDraftTicketActivityTracking', () => {
     it('should register activity tracker hooks when the temporaryId is defined', () => {
         const mockRegisterActivityTrackerHooks = jest.spyOn(
             activityTracker,
-            'registerActivityTrackerHooks'
+            'registerActivityTrackerHooks',
         )
         const mockTemporaryId = '1'
         const mockProperties = {
@@ -42,8 +42,8 @@ describe('useDraftTicketActivityTracking', () => {
     it('should log an event when the temporaryId is defined', () => {
         const mockTemporaryId = '1'
 
-        const {unmount} = renderHook(() =>
-            useDraftTicketActivityTracking(mockTemporaryId)
+        const { unmount } = renderHook(() =>
+            useDraftTicketActivityTracking(mockTemporaryId),
         )
 
         expect(mockLogActivityEvent).toHaveBeenLastCalledWith(
@@ -51,7 +51,7 @@ describe('useDraftTicketActivityTracking', () => {
             {
                 temporaryId: mockTemporaryId,
                 entityType: 'ticket-draft',
-            }
+            },
         )
 
         unmount()
@@ -61,12 +61,14 @@ describe('useDraftTicketActivityTracking', () => {
             {
                 temporaryId: mockTemporaryId,
                 entityType: 'ticket-draft',
-            }
+            },
         )
     })
 
     it('should not log an event when the temporaryId is null on mount', () => {
-        const {unmount} = renderHook(() => useDraftTicketActivityTracking(null))
+        const { unmount } = renderHook(() =>
+            useDraftTicketActivityTracking(null),
+        )
         expect(mockLogActivityEvent).not.toHaveBeenCalled()
 
         unmount()

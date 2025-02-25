@@ -1,5 +1,6 @@
-import {render} from '@testing-library/react'
 import React from 'react'
+
+import { render } from '@testing-library/react'
 
 import ProvinceInput from '../ProvinceInput'
 
@@ -13,25 +14,25 @@ describe('<ProvinceInput/>', () => {
     })
 
     it('should render with dropdown', () => {
-        const {container} = render(
+        const { container } = render(
             <ProvinceInput
                 label="State or province"
                 onChange={onChange}
                 country="United States"
                 name="stateOrProvince"
-            />
+            />,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render with text input', () => {
-        const {container} = render(
+        const { container } = render(
             <ProvinceInput
                 label="State or province"
                 onChange={onChange}
                 country="France"
                 name="stateOrProvince"
-            />
+            />,
         )
         expect(container.firstChild).toMatchSnapshot()
     })

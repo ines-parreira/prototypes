@@ -1,9 +1,9 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
 import useShortcuts from 'hooks/useShortcuts'
 
-import {useNavBar} from '../useNavBar/useNavBar'
-import {useNavBarShortcuts} from '../useNavBarShortcuts'
+import { useNavBar } from '../useNavBar/useNavBar'
+import { useNavBarShortcuts } from '../useNavBarShortcuts'
 
 jest.mock('hooks/useShortcuts', () => jest.fn())
 jest.mock('../useNavBar/useNavBar', () => ({
@@ -22,7 +22,7 @@ describe('useNavBarShortcuts', () => {
 
     beforeEach(() => {
         onMenuToggle = jest.fn()
-        useNavBarMock.mockReturnValue({onMenuToggle})
+        useNavBarMock.mockReturnValue({ onMenuToggle })
     })
 
     it('should register navbar shortcuts', () => {
@@ -38,9 +38,9 @@ describe('useNavBarShortcuts', () => {
     it('should toggle the navbar', () => {
         renderHook(() => useNavBarShortcuts())
 
-        const {action: toggleNavBar} = (
+        const { action: toggleNavBar } = (
             useShortcutsMock.mock.calls as [
-                [string, {TOGGLE_NAVBAR: {action: () => void}}],
+                [string, { TOGGLE_NAVBAR: { action: () => void } }],
             ]
         )[0][1].TOGGLE_NAVBAR
 

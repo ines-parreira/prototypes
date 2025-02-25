@@ -1,4 +1,4 @@
-import {fromJS, Map, List} from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 import _compact from 'lodash/compact'
 import _forEach from 'lodash/forEach'
 import _forIn from 'lodash/forIn'
@@ -14,40 +14,40 @@ import _pickBy from 'lodash/pickBy'
 import _size from 'lodash/size'
 import _sortBy from 'lodash/sortBy'
 import _toLower from 'lodash/toLower'
-import moment, {MomentInput} from 'moment'
+import moment, { MomentInput } from 'moment'
 import momentTimezone from 'moment-timezone'
 
-import {isImmutable} from 'common/utils'
-import {DateTimeResultFormatType} from 'constants/datetime'
-import {CustomerEcommerceData} from 'models/customerEcommerceData/types'
+import { isImmutable } from 'common/utils'
+import { DateTimeResultFormatType } from 'constants/datetime'
+import { CustomerEcommerceData } from 'models/customerEcommerceData/types'
 import {
-    Template,
     CardTemplate,
-    Source,
+    isCardTemplate,
+    isListTemplate,
     isSourceRecord,
     isWrapperTemplate,
-    isListTemplate,
-    isCardTemplate,
+    Source,
+    Template,
 } from 'models/widget/types'
 import {
     CUSTOM_WIDGET_TYPE,
-    CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
     CUSTOMER_ECOMMERCE_DATA_KEY,
-    WOOCOMMERCE_WIDGET_TYPE,
     CUSTOMER_EXTERNAL_DATA_KEY,
+    CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
     STANDALONE_WIDGET_TYPE,
+    WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
-import {WidgetEnvironment} from 'state/widgets/types'
-import {getSourcePathFromContext} from 'state/widgets/utils'
+import { WidgetEnvironment } from 'state/widgets/types'
+import { getSourcePathFromContext } from 'state/widgets/utils'
 import * as utils from 'utils'
-import {formatDatetime} from 'utils'
-import {reportError} from 'utils/errors'
+import { formatDatetime } from 'utils'
+import { reportError } from 'utils/errors'
 
 /**
  * Check if is an array of objects (and no an array of string for example)
  */
 export function isArrayOfObjects(
-    value: any
+    value: any,
 ): value is Record<string, unknown>[] {
     return _isArray(value) && !!value.length && _isObject(value[0])
 }
@@ -99,7 +99,7 @@ export const isCustomerDataPresent = (data: any) => {
  * Ex: ticket.orders[] to ticket.orders
  */
 export function stripLastListsFromPath(
-    path: string | Template['absolutePath'] = []
+    path: string | Template['absolutePath'] = [],
 ) {
     let newPath = path
 
@@ -160,7 +160,7 @@ export function isBoolean(string: any) {
 export function areSourcesReady(
     sources: Map<any, any>,
     context: WidgetEnvironment,
-    everySources = false
+    everySources = false,
 ): boolean {
     // for every source
     const currentSource = sources.get(context) as Map<any, any>
@@ -194,7 +194,7 @@ export function areSourcesReady(
 export function canDisplayWidget(
     template: Template,
     environmentData: Map<string, unknown>,
-    source: Source
+    source: Source,
 ) {
     if (template.type !== 'wrapper') {
         return false
@@ -211,7 +211,7 @@ export function isWidgetEmpty(template: Template, source: Source): boolean {
         const childTemplates = template.widgets
         if (!childTemplates || !childTemplates.length) return true
         return childTemplates.every((subWidget) =>
-            isWidgetEmpty(subWidget, data)
+            isWidgetEmpty(subWidget, data),
         )
     }
 
@@ -220,7 +220,7 @@ export function isWidgetEmpty(template: Template, source: Source): boolean {
         if (hasCustomAction(template)) return false
         if (!childTemplates || !childTemplates.length) return true
         return childTemplates.every((subWidget) =>
-            isWidgetEmpty(subWidget, data)
+            isWidgetEmpty(subWidget, data),
         )
     }
 
@@ -262,7 +262,7 @@ export function makeWrapper({
         if (hasNoSimpleWidget(firstWidget.toJS())) {
             wrapperWidget = wrapperWidget.set(
                 'widgets',
-                firstWidget.get('widgets', fromJS([]))
+                firstWidget.get('widgets', fromJS([])),
             )
         }
     }
@@ -296,7 +296,7 @@ export function jsonToTemplate(value: any, key = '', isChildOfList = false) {
         if (isObject(value)) {
             // remove private keys from source
             const filteredValue = _omitBy(value, (v, k: string) =>
-                k.startsWith('_')
+                k.startsWith('_'),
             )
 
             let enhancedValues: Record<string, unknown> = {}
@@ -385,7 +385,7 @@ export function jsonToTemplate(value: any, key = '', isChildOfList = false) {
  */
 export function jsonToWidgets(
     json: Record<string, unknown>,
-    context = WidgetEnvironment.Ticket
+    context = WidgetEnvironment.Ticket,
 ) {
     const defaultWidgets: Map<string, unknown>[] = []
 
@@ -398,11 +398,11 @@ export function jsonToWidgets(
             getSourcePathFromContext(context, 'integrations') as string[],
             getSourcePathFromContext(
                 context,
-                CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE
+                CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
             ) as string[],
             getSourcePathFromContext(
                 context,
-                WOOCOMMERCE_WIDGET_TYPE
+                WOOCOMMERCE_WIDGET_TYPE,
             ) as string[],
         ]
 
@@ -439,7 +439,7 @@ export function jsonToWidgets(
                     ]
                     typeByPath = typeByPath.set(
                         newPath,
-                        fromJS({type, integrationId: parseInt(datumId)})
+                        fromJS({ type, integrationId: parseInt(datumId) }),
                     )
                 }
 
@@ -449,13 +449,13 @@ export function jsonToWidgets(
                     type = CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE
                     typeByPath = typeByPath.set(
                         newPath,
-                        fromJS({type, appId: datumId})
+                        fromJS({ type, appId: datumId }),
                     )
                 }
 
                 if (
                     mutableDataSourcePath.includes(
-                        CUSTOMER_ECOMMERCE_DATA_KEY
+                        CUSTOMER_ECOMMERCE_DATA_KEY,
                     ) &&
                     (datum as CustomerEcommerceData).store.type ===
                         WOOCOMMERCE_WIDGET_TYPE
@@ -467,7 +467,7 @@ export function jsonToWidgets(
                             type,
                             integrationId: (datum as CustomerEcommerceData)
                                 .store.helpdesk_integration_id,
-                        })
+                        }),
                     )
                 }
 
@@ -495,14 +495,14 @@ export function jsonToWidgets(
 
             const widgetType = typeByPath.getIn(
                 [sourcePath, 'type'],
-                CUSTOM_WIDGET_TYPE
+                CUSTOM_WIDGET_TYPE,
             )
 
             return fromJS({
                 type: widgetType,
                 order: i,
                 context,
-                template: makeWrapper({child: template, widgetType}),
+                template: makeWrapper({ child: template, widgetType }),
                 sourcePath,
                 integration_id:
                     typeByPath.getIn([sourcePath, 'integrationId']) || null,
@@ -530,7 +530,7 @@ export function jsonToWidgets(
  */
 export function getLocalTime(
     timezoneOffset: string,
-    datetimeFormat: DateTimeResultFormatType
+    datetimeFormat: DateTimeResultFormatType,
 ) {
     const timezoneDifference = parseInt(timezoneOffset.substring(0, 3))
     const localTime = moment.utc().utcOffset(timezoneDifference)
@@ -544,11 +544,11 @@ export function getLocalTime(
 export function getDisplayCustomerLastSeenOnChat(
     customerLastSeenOnChatUtcDateTimeStamp: MomentInput,
     timezone: string | null,
-    referenceDay: MomentInput = null
+    referenceDay: MomentInput = null,
 ) {
     const now = momentTimezone.utc()
     const customerLastSeenOnChatUtcDateTime = momentTimezone.utc(
-        customerLastSeenOnChatUtcDateTimeStamp
+        customerLastSeenOnChatUtcDateTimeStamp,
     )
 
     const diff = now.diff(customerLastSeenOnChatUtcDateTime)

@@ -1,4 +1,4 @@
-import {getInitialConfiguration} from '../utils'
+import { getInitialConfiguration } from '../utils'
 
 describe('getInitialConfiguration()', () => {
     it('should return initial Action configuration', () => {

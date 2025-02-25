@@ -1,13 +1,13 @@
-import {Expression, Literal, Super} from 'estree'
-import {fromJS, Map, List, Iterable} from 'immutable'
+import { Expression, Literal, Super } from 'estree'
+import { fromJS, Iterable, List, Map } from 'immutable'
 
-import {toImmutable} from 'common/utils'
-import {CodeASTType} from 'pages/settings/rules/types'
-import {ACTION_DEFAULT_STATE} from 'state/rules/constants'
-import {RuleOperation} from 'state/rules/types'
-import {updateCallExpression, getObjectExpression} from 'state/rules/utils'
-import {SchemasState} from 'state/schemas/types'
-import {getCode, getAST, toJS} from 'utils'
+import { toImmutable } from 'common/utils'
+import { CodeASTType } from 'pages/settings/rules/types'
+import { ACTION_DEFAULT_STATE } from 'state/rules/constants'
+import { RuleOperation } from 'state/rules/types'
+import { getObjectExpression, updateCallExpression } from 'state/rules/utils'
+import { SchemasState } from 'state/schemas/types'
+import { getAST, getCode, toJS } from 'utils'
 
 export const BASIC_PADDING = 0
 export const PADDING_STEP = 18
@@ -37,7 +37,7 @@ export function computeLeftPadding(depth: number) {
 export type SyntaxTree = Expression | Super
 
 export const getSyntaxTreeLeaves = (
-    syntaxTree?: SyntaxTree
+    syntaxTree?: SyntaxTree,
 ): Iterable<number, Literal['value']> | null => {
     if (syntaxTree === undefined || syntaxTree.type === undefined) {
         return null
@@ -50,7 +50,7 @@ export const getSyntaxTreeLeaves = (
             return List([syntaxTree.value])
         case 'MemberExpression':
             return getSyntaxTreeLeaves(syntaxTree.object)!.concat(
-                getSyntaxTreeLeaves(syntaxTree.property)
+                getSyntaxTreeLeaves(syntaxTree.property),
             )
         default:
             throw Error(`Unknown type: ${syntaxTree.type}`)
@@ -62,7 +62,7 @@ export const updateCodeAst = (
     ast: CodeASTType,
     path: List<any>,
     value: Maybe<string | Record<string, unknown>>,
-    operation: `${RuleOperation}`
+    operation: `${RuleOperation}`,
 ) => {
     const immutableAst = toImmutable<Map<any, any>, CodeASTType>(ast)
     const immutablePath = toImmutable<List<any>, List<any>>(path)
@@ -94,7 +94,7 @@ export const updateCodeAst = (
                 const pathParentCallExpression =
                     immutablePath.setSize(argumentsIndex)
                 const calleeName = newAst.getIn(
-                    pathParentCallExpression.push('callee', 'name')
+                    pathParentCallExpression.push('callee', 'name'),
                 )
 
                 if (calleeName === 'Action') {
@@ -108,8 +108,8 @@ export const updateCodeAst = (
                                     string,
                                     Record<string, unknown>
                                 >
-                            )[value as string] || {}
-                        )
+                            )[value as string] || {},
+                        ),
                     )
                 }
             }
@@ -146,7 +146,7 @@ export const updateCodeAst = (
                 fromJS({
                     type: 'BlockStatement',
                     body: [value],
-                })
+                }),
             )
         } else {
             newAst = immutableAst.updateIn(
@@ -162,7 +162,7 @@ export const updateCodeAst = (
 
                     // add conditions at the end of the body
                     return list.push(value)
-                }
+                },
             )
         }
     }
@@ -170,7 +170,7 @@ export const updateCodeAst = (
         const lastIndex = immutablePath.last()
         const pathNew = immutablePath.pop()
         newAst = immutableAst.updateIn(pathNew.toJS(), (list: List<any>) =>
-            list.delete(lastIndex)
+            list.delete(lastIndex),
         )
     }
 
@@ -214,9 +214,9 @@ export const updateCodeAst = (
                     (
                         immutableAst.getIn(immutablePath) as Map<any, any>
                     ).toJS() as Record<string, unknown>,
-                    value
-                )
-            )
+                    value,
+                ),
+            ),
         )
     }
 

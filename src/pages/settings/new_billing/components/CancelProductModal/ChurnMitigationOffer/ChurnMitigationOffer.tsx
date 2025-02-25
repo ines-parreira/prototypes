@@ -6,7 +6,9 @@ type ChurnMitigationOfferProps = {
     canduContentId: string | null
 }
 
-const ChurnMitigationOffer = ({canduContentId}: ChurnMitigationOfferProps) => {
+const ChurnMitigationOffer = ({
+    canduContentId,
+}: ChurnMitigationOfferProps) => {
     return (
         <div>
             {canduContentId ? (

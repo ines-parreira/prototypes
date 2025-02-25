@@ -1,5 +1,5 @@
 import React from 'react'
-import type {ComponentType} from 'react'
+import type { ComponentType } from 'react'
 
 import useIsMobileResolution from './useIsMobileResolution'
 
@@ -8,7 +8,7 @@ export type WithIsMobileResolutionProps = {
 }
 
 export default function withIsMobileResolution<T extends object>(
-    Component: ComponentType<T & WithIsMobileResolutionProps>
+    Component: ComponentType<T & WithIsMobileResolutionProps>,
 ) {
     return (props: T) => {
         const isMobileResolution = useIsMobileResolution()

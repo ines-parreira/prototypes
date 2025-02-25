@@ -1,15 +1,17 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { ComponentProps } from 'react'
+
 import _isEqual from 'lodash/isEqual'
 import _some from 'lodash/some'
-import React, {ComponentProps} from 'react'
-import {FormGroup, FormText, Label} from 'reactstrap'
+import { FormGroup, FormText, Label } from 'reactstrap'
 
-import {HTTPForm} from 'models/integration/types'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { HTTPForm } from 'models/integration/types'
 import Select from 'pages/common/components/ast/widget/ReactSelect'
 import JsonField from 'pages/common/forms/JsonField'
-import {SelectableOption} from 'pages/common/forms/SelectField/types'
+import { SelectableOption } from 'pages/common/forms/SelectField/types'
 
-import {CONTEXT_SPECIAL_VARIABLE, DEFAULT_FORM} from './constants'
+import { CONTEXT_SPECIAL_VARIABLE, DEFAULT_FORM } from './constants'
 
 type Props = {
     form: HTTPForm
@@ -22,7 +24,7 @@ type State = {
 
 export default class JSONBody extends React.Component<Props, State> {
     presetOptions = [
-        {label: 'JSON template', value: DEFAULT_FORM},
+        { label: 'JSON template', value: DEFAULT_FORM },
         {
             label: 'Send the entire ticket/message JSON',
             value: CONTEXT_SPECIAL_VARIABLE,
@@ -35,18 +37,18 @@ export default class JSONBody extends React.Component<Props, State> {
 
     UNSAFE_componentWillMount() {
         if (!this._formIsPresetOption(this.props.form)) {
-            this.setState({cachedForm: this.props.form})
+            this.setState({ cachedForm: this.props.form })
         }
     }
 
     _onDropdownChange = (form: Record<string, unknown> | string) => {
         this.props.onChange(
-            _isEqual(form, DEFAULT_FORM) ? this.state.cachedForm : form
+            _isEqual(form, DEFAULT_FORM) ? this.state.cachedForm : form,
         )
     }
 
     _onJSONChange = (form: HTTPForm) => {
-        this.setState({cachedForm: form})
+        this.setState({ cachedForm: form })
         this.props.onChange(form)
     }
 
@@ -55,18 +57,18 @@ export default class JSONBody extends React.Component<Props, State> {
             | string
             | null
             | Record<string, unknown>
-            | Array<Record<string, unknown>>
+            | Array<Record<string, unknown>>,
     ): boolean => {
         const presetOptionsValues = this.presetOptions.map(
-            (option) => option.value
+            (option) => option.value,
         )
         return _some(presetOptionsValues, (presetOptionValue) =>
-            _isEqual(presetOptionValue, form)
+            _isEqual(presetOptionValue, form),
         )
     }
 
     render() {
-        const {form} = this.props
+        const { form } = this.props
 
         const dropdownValue = this._formIsPresetOption(form)
             ? (form as Record<string, unknown> | string)

@@ -1,5 +1,3 @@
-import classnames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {
     ChangeEvent,
     useContext,
@@ -8,32 +6,35 @@ import React, {
     useState,
 } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
+import classnames from 'classnames'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import {getCurrentDomain} from 'state/currentAccount/selectors'
-import {getActiveCustomerId} from 'state/customers/selectors'
-import {executeAction} from 'state/infobar/actions'
-import {isEditing} from 'state/widgets/selectors'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
+import { getCurrentDomain } from 'state/currentAccount/selectors'
+import { getActiveCustomerId } from 'state/customers/selectors'
+import { executeAction } from 'state/infobar/actions'
+import { isEditing } from 'state/widgets/selectors'
+import { FieldCustomization } from 'Widgets/modules/Template/types'
 
-import {FieldCustomization} from 'Widgets/modules/Template/types'
+import { ShopifyContext } from '../contexts/ShopifyContext'
+import { ShopifyActionType } from '../types'
 
-import {ShopifyContext} from '../contexts/ShopifyContext'
-import {ShopifyActionType} from '../types'
 import css from './OrderNotesField.less'
 
 type Props = {
     source: string
 }
 
-export function OrderNotesField({source}: Props) {
+export function OrderNotesField({ source }: Props) {
     const [value, setValue] = useState<string>(source)
     const [submittedValue, setSubmittedValue] = useState<string>(source)
 
-    const {integrationId} = useContext(IntegrationContext)
-    const {widget_resource_ids} = useContext(ShopifyContext)
+    const { integrationId } = useContext(IntegrationContext)
+    const { widget_resource_ids } = useContext(ShopifyContext)
     const textAreaRef = useRef<HTMLTextAreaElement>(null)
     const activeCustomerId = useAppSelector(getActiveCustomerId)
     const domain = useAppSelector(getCurrentDomain)
@@ -79,7 +80,7 @@ export function OrderNotesField({source}: Props) {
                 integrationId,
                 customerId: activeCustomerId?.toString(),
                 payload,
-            })
+            }),
         )
         setSubmittedValue(value)
     }

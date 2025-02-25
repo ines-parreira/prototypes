@@ -1,8 +1,8 @@
 import React from 'react'
 
 import {
-    AIArticleToggleOptionValue,
     AIArticleToggleOption,
+    AIArticleToggleOptionValue,
 } from 'models/helpCenter/types'
 
 export const AI_ARTICLES_TOGGLE_OPTIONS: AIArticleToggleOption[] = [

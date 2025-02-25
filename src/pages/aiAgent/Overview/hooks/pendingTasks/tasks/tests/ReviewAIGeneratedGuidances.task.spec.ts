@@ -1,36 +1,36 @@
-import {GuidancesDataFixture} from '../../tests/GuidancesData.fixture'
-import {ReviewAIGeneratedGuidancesTask} from '../ReviewAIGeneratedGuidances.task'
-import {buildRuleEngineData, buildRuleEngineRoutes} from './utils'
+import { GuidancesDataFixture } from '../../tests/GuidancesData.fixture'
+import { ReviewAIGeneratedGuidancesTask } from '../ReviewAIGeneratedGuidances.task'
+import { buildRuleEngineData, buildRuleEngineRoutes } from './utils'
 
 describe('ReviewAIGeneratedGuidances', () => {
     it.each([
         {
             reason: '1 UNLISTED guidances',
             guidances: GuidancesDataFixture.start()
-                .withUnlistedGuidance({aiGenerated: true})
+                .withUnlistedGuidance({ aiGenerated: true })
                 .build(),
         },
         {
             reason: '2 UNLISTED guidances',
             guidances: GuidancesDataFixture.start()
-                .withUnlistedGuidance({aiGenerated: true})
+                .withUnlistedGuidance({ aiGenerated: true })
                 .build(),
         },
         {
             reason: 'mixed scenario',
             guidances: GuidancesDataFixture.start()
-                .withUnlistedGuidance({aiGenerated: true})
+                .withUnlistedGuidance({ aiGenerated: true })
                 .withUnlistedGuidance()
                 .withPublicGuidance()
-                .withPublicGuidance({aiGenerated: true})
+                .withPublicGuidance({ aiGenerated: true })
                 .build(),
         },
-    ])('should display the task if $reason is applied', ({guidances}) => {
+    ])('should display the task if $reason is applied', ({ guidances }) => {
         const task = new ReviewAIGeneratedGuidancesTask(
             buildRuleEngineData({
                 guidances,
             }),
-            buildRuleEngineRoutes()
+            buildRuleEngineRoutes(),
         )
         expect(task.display).toBe(true)
     })
@@ -43,15 +43,15 @@ describe('ReviewAIGeneratedGuidances', () => {
         {
             reason: '1 PUBLIC AI generated guidance exists',
             guidances: GuidancesDataFixture.start()
-                .withPublicGuidance({aiGenerated: true})
+                .withPublicGuidance({ aiGenerated: true })
                 .build(),
         },
         {
             reason: 'multiple PUBLIC AI generated guidance exists',
             guidances: GuidancesDataFixture.start()
-                .withPublicGuidance({aiGenerated: true})
-                .withPublicGuidance({aiGenerated: true})
-                .withPublicGuidance({aiGenerated: true})
+                .withPublicGuidance({ aiGenerated: true })
+                .withPublicGuidance({ aiGenerated: true })
+                .withPublicGuidance({ aiGenerated: true })
                 .build(),
         },
         {
@@ -68,12 +68,12 @@ describe('ReviewAIGeneratedGuidances', () => {
                 .withUnlistedGuidance()
                 .build(),
         },
-    ])('should not display the task if $reason', ({guidances}) => {
+    ])('should not display the task if $reason', ({ guidances }) => {
         const task = new ReviewAIGeneratedGuidancesTask(
             buildRuleEngineData({
                 guidances,
             }),
-            buildRuleEngineRoutes()
+            buildRuleEngineRoutes(),
         )
         expect(task.display).toBe(false)
     })

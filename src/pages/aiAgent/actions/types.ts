@@ -3,8 +3,8 @@ import {
     LLMPromptTriggerNodeType,
     VisualBuilderGraph,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import {WfConfigurationResponseDto} from 'pages/automate/workflows/types'
-import {Paths, Components} from 'rest_api/workflows_api/client.generated'
+import { WfConfigurationResponseDto } from 'pages/automate/workflows/types'
+import { Components, Paths } from 'rest_api/workflows_api/client.generated'
 
 export type StoreWorkflowsConfiguration =
     Paths.StoreWfConfigurationControllerList.Responses.$200[number]
@@ -14,7 +14,7 @@ export type ActionAppConnected = Components.Schemas.GetAppResponseDto
 
 export type Trigger =
     Components.Schemas.UpsertStoreWfConfigurationRequestBodyDto['triggers'][number]
-export type LlmPromptTrigger = Extract<Trigger, {kind: 'llm-prompt'}>
+export type LlmPromptTrigger = Extract<Trigger, { kind: 'llm-prompt' }>
 
 export type TemplateConfiguration =
     Components.Schemas.ListWfConfigurationTemplatesResponseDto[number]
@@ -24,7 +24,7 @@ export type ObjectInput = LlmPromptTrigger['settings']['object_inputs'][number]
 
 export type Input =
     | CustomInput
-    | Omit<Extract<ObjectInput, {kind: 'product'}>, 'integration_id'>
+    | Omit<Extract<ObjectInput, { kind: 'product' }>, 'integration_id'>
 export type MerchantInput = Exclude<
     WfConfigurationResponseDto['inputs'],
     null | undefined

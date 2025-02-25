@@ -1,11 +1,12 @@
-import {render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {AILibraryArticleItem} from 'models/helpCenter/types'
-import {AIArticlesListFixture} from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
-import AIArticleRow, {AIArticleRowProps} from '../AIArticleRow'
+import { AILibraryArticleItem } from 'models/helpCenter/types'
+import { AIArticlesListFixture } from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
+
+import AIArticleRow, { AIArticleRowProps } from '../AIArticleRow'
 
 describe('AIArticleRow', () => {
     const article: AILibraryArticleItem = {
@@ -31,7 +32,7 @@ describe('AIArticleRow', () => {
             ...defaultProps,
             onSelect,
         }
-        const {getByTestId} = render(<AIArticleRow {...props} />)
+        const { getByTestId } = render(<AIArticleRow {...props} />)
         const articleRow = getByTestId('ai-article-row')
         userEvent.click(articleRow)
         expect(onSelect).toHaveBeenCalledWith(article)

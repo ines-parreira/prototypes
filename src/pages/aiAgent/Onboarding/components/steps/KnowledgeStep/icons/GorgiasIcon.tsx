@@ -1,6 +1,6 @@
 import React from 'react'
 
-const GorgiasIcon: React.FC<{size?: string}> = ({size}) => {
+const GorgiasIcon: React.FC<{ size?: string }> = ({ size }) => {
     return (
         <svg
             height={size ? size : 'auto'}

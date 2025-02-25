@@ -1,9 +1,10 @@
-import classNames from 'classnames'
-import {produce} from 'immer'
 import React from 'react'
-import {FormGroup, Label} from 'reactstrap'
 
-import {ContactPhoneNumber} from 'models/helpCenter/types'
+import classNames from 'classnames'
+import { produce } from 'immer'
+import { FormGroup, Label } from 'reactstrap'
+
+import { ContactPhoneNumber } from 'models/helpCenter/types'
 import Button from 'pages/common/components/button/Button'
 import InputField from 'pages/common/forms/input/InputField'
 import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
@@ -62,7 +63,7 @@ const PhoneNumbersForm: React.FC<Props> = ({
                                     value={phoneNumber.reference}
                                     onChange={changePhoneNumber(
                                         'reference',
-                                        index
+                                        index,
                                     )}
                                     isDisabled={disabled}
                                     className={css.phoneNumberInput}
@@ -81,7 +82,7 @@ const PhoneNumbersForm: React.FC<Props> = ({
                                     value={phoneNumber.phone_number}
                                     onChange={changePhoneNumber(
                                         'phone_number',
-                                        index
+                                        index,
                                     )}
                                     className={css.phoneNumberInput}
                                     disabled={disabled}
@@ -92,7 +93,7 @@ const PhoneNumbersForm: React.FC<Props> = ({
                                         css.deleteIcon,
                                         {
                                             [css.disabled]: disabled,
-                                        }
+                                        },
                                     )}
                                     onClick={() => removePhoneNumber(index)}
                                 >

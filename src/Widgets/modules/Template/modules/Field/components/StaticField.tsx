@@ -1,6 +1,6 @@
-import React, {ReactNode, useContext} from 'react'
+import React, { ReactNode, useContext } from 'react'
 
-import {EditionContext} from 'providers/infobar/EditionContext'
+import { EditionContext } from 'providers/infobar/EditionContext'
 
 import UIStaticField from './views/StaticField'
 
@@ -11,6 +11,6 @@ type Props = {
 }
 
 export default function StaticField(props: Props) {
-    const {isEditing} = useContext(EditionContext)
+    const { isEditing } = useContext(EditionContext)
     return <UIStaticField {...props} isDisabled={isEditing} />
 }

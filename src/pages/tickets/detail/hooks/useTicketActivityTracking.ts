@@ -1,4 +1,4 @@
-import {useEffect} from 'react'
+import { useEffect } from 'react'
 
 import {
     ActivityEvents,
@@ -18,7 +18,7 @@ export default function useTicketActivityTracking(ticketId?: number) {
 
             logActivityEvent(
                 ActivityEvents.UserStartedWorkingOnTicket,
-                eventProperties
+                eventProperties,
             )
             const registerHooks = async () => {
                 unregisterBrowserHooks = await registerActivityTrackerHooks({

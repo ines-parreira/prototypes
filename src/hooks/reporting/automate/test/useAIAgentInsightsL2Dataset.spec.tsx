@@ -1,8 +1,8 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment'
 
-import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import {ticketFieldDefinitions} from 'fixtures/customField'
+import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import { ticketFieldDefinitions } from 'fixtures/customField'
 import {
     EnrichedTicketCustomFieldsWithAutomationOpportunity,
     EnrichedTicketCustomFieldsWithSuccessRate,
@@ -20,13 +20,13 @@ import {
     useInsightPerformanceMetrics,
     useSuccessRateForIntentTrendMetric,
 } from 'hooks/reporting/automate/useAIAgentInsightsL2Dataset'
-import {useAIAgentUserId} from 'hooks/reporting/automate/useAIAgentUserId'
-import {filterMetricDataByIntentLevel} from 'hooks/reporting/automate/utils'
-import {QueryReturnType} from 'hooks/reporting/useMetricPerDimension'
-import {OrderDirection} from 'models/api/types'
-import {TicketCustomFieldsCube} from 'models/reporting/cubes/TicketCustomFieldsCube'
-import {StatsFilters} from 'models/stat/types'
-import {assumeMock} from 'utils/testing'
+import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
+import { filterMetricDataByIntentLevel } from 'hooks/reporting/automate/utils'
+import { QueryReturnType } from 'hooks/reporting/useMetricPerDimension'
+import { OrderDirection } from 'models/api/types'
+import { TicketCustomFieldsCube } from 'models/reporting/cubes/TicketCustomFieldsCube'
+import { StatsFilters } from 'models/stat/types'
+import { assumeMock } from 'utils/testing'
 
 const timezone = 'UTC'
 
@@ -45,14 +45,14 @@ const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
 const useAIAgentUserIdMock = assumeMock(useAIAgentUserId)
 const useAIAgentTicketsPerIntentMock = assumeMock(useAIAgentTicketsPerIntent)
 const useAutomationOpportunityPerIntentMock = assumeMock(
-    useAutomationOpportunityPerIntent
+    useAutomationOpportunityPerIntent,
 )
 
 const filterMetricDataByIntentLevelMock = assumeMock(
-    filterMetricDataByIntentLevel
+    filterMetricDataByIntentLevel,
 )
 const useCustomerSatisfactionPerIntentMock = assumeMock(
-    useCustomerSatisfactionPerIntent
+    useCustomerSatisfactionPerIntent,
 )
 
 const useSuccessRatePerIntentMock = assumeMock(useSuccessRatePerIntent)
@@ -92,7 +92,7 @@ const intentLevel = 2
 describe('useAiAgentInsightsL2Dataset', () => {
     beforeEach(() => {
         useCustomFieldDefinitionsMock.mockReturnValue({
-            data: {data: ticketFieldDefinitions},
+            data: { data: ticketFieldDefinitions },
             isLoading: false,
         } as any)
 
@@ -112,17 +112,17 @@ describe('useAiAgentInsightsL2Dataset', () => {
                 isError: false,
             })
         filterMetricDataByIntentLevelMock
-            .mockReturnValueOnce([{automationOpportunity: 10}])
-            .mockReturnValueOnce([{automationOpportunity: 5}])
+            .mockReturnValueOnce([{ automationOpportunity: 10 }])
+            .mockReturnValueOnce([{ automationOpportunity: 5 }])
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useAutomatedOpportunityForIntentTrendMetric({
                 filters: statsFilters,
                 timezone,
                 sorting,
                 intentId,
                 intentLevel,
-            })
+            }),
         )
 
         expect(result.current.data.value).toBe(10)
@@ -154,17 +154,17 @@ describe('useAiAgentInsightsL2Dataset', () => {
                 isError: false,
             })
         filterMetricDataByIntentLevelMock
-            .mockReturnValueOnce([{tickets: 5}])
-            .mockReturnValueOnce([{tickets: 4}])
+            .mockReturnValueOnce([{ tickets: 5 }])
+            .mockReturnValueOnce([{ tickets: 4 }])
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useAIAgentTicketsForIntentTrendMetric({
                 filters: statsFilters,
                 timezone,
                 sorting,
                 intentId,
                 intentLevel,
-            })
+            }),
         )
 
         expect(result.current.data.value).toBe(5)
@@ -196,17 +196,17 @@ describe('useAiAgentInsightsL2Dataset', () => {
                 isError: false,
             })
         filterMetricDataByIntentLevelMock
-            .mockReturnValueOnce([{avgCustomerSatisfaction: 3}])
-            .mockReturnValueOnce([{avgCustomerSatisfaction: 4}])
+            .mockReturnValueOnce([{ avgCustomerSatisfaction: 3 }])
+            .mockReturnValueOnce([{ avgCustomerSatisfaction: 4 }])
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useCustomerSatisfactionForIntentTrendMetric({
                 filters: statsFilters,
                 timezone,
                 sorting,
                 intentId,
                 intentLevel,
-            })
+            }),
         )
 
         expect(result.current.data.value).toBe(3)
@@ -232,17 +232,17 @@ describe('useAiAgentInsightsL2Dataset', () => {
                 isError: false,
             })
         filterMetricDataByIntentLevelMock
-            .mockReturnValueOnce([{successRate: 50}])
-            .mockReturnValueOnce([{successRate: 75}])
+            .mockReturnValueOnce([{ successRate: 50 }])
+            .mockReturnValueOnce([{ successRate: 75 }])
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useSuccessRateForIntentTrendMetric({
                 filters: statsFilters,
                 timezone,
                 sorting,
                 intentId,
                 intentLevel,
-            })
+            }),
         )
 
         expect(result.current.data.value).toBe(50)
@@ -259,8 +259,8 @@ describe('useAiAgentInsightsL2Dataset', () => {
             isError: false,
         })
         filterMetricDataByIntentLevelMock
-            .mockReturnValueOnce([{automationOpportunity: 10}])
-            .mockReturnValueOnce([{automationOpportunity: 5}])
+            .mockReturnValueOnce([{ automationOpportunity: 10 }])
+            .mockReturnValueOnce([{ automationOpportunity: 5 }])
         // ticketsPerIntent
         useAIAgentTicketsPerIntentMock
             .mockReturnValueOnce({
@@ -284,8 +284,8 @@ describe('useAiAgentInsightsL2Dataset', () => {
                 isError: false,
             })
         filterMetricDataByIntentLevelMock
-            .mockReturnValueOnce([{tickets: 5}])
-            .mockReturnValueOnce([{tickets: 4}])
+            .mockReturnValueOnce([{ tickets: 5 }])
+            .mockReturnValueOnce([{ tickets: 4 }])
         // successRatePerIntent
         useSuccessRatePerIntentMock
             .mockReturnValueOnce({
@@ -303,8 +303,8 @@ describe('useAiAgentInsightsL2Dataset', () => {
                 isError: false,
             })
         filterMetricDataByIntentLevelMock
-            .mockReturnValueOnce([{successRate: 50}])
-            .mockReturnValueOnce([{successRate: 75}])
+            .mockReturnValueOnce([{ successRate: 50 }])
+            .mockReturnValueOnce([{ successRate: 75 }])
 
         // customerSatisfactionPerIntent
         useCustomerSatisfactionPerIntentMock
@@ -329,24 +329,24 @@ describe('useAiAgentInsightsL2Dataset', () => {
                 isError: false,
             })
         filterMetricDataByIntentLevelMock
-            .mockReturnValueOnce([{avgCustomerSatisfaction: 3}])
-            .mockReturnValueOnce([{avgCustomerSatisfaction: 4}])
+            .mockReturnValueOnce([{ avgCustomerSatisfaction: 3 }])
+            .mockReturnValueOnce([{ avgCustomerSatisfaction: 4 }])
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useInsightPerformanceMetrics({
                 filters: statsFilters,
                 timezone,
                 sorting,
                 intentId,
                 intentLevel,
-            })
+            }),
         )
 
         expect(result.current.automationOpportunityPerIntent.data.value).toBe(
-            10
+            10,
         )
         expect(
-            result.current.automationOpportunityPerIntent.data.prevValue
+            result.current.automationOpportunityPerIntent.data.prevValue,
         ).toBe(5)
         expect(result.current.ticketsPerIntent.data.value).toBe(5)
         expect(result.current.ticketsPerIntent.data.prevValue).toBe(4)
@@ -354,20 +354,20 @@ describe('useAiAgentInsightsL2Dataset', () => {
         expect(result.current.successRatePerIntent.data.prevValue).toBe(75)
         expect(result.current.customerSatisfactionPerIntent.data.value).toBe(3)
         expect(
-            result.current.customerSatisfactionPerIntent.data.prevValue
+            result.current.customerSatisfactionPerIntent.data.prevValue,
         ).toBe(4)
         expect(result.current.automationOpportunityPerIntent.isFetching).toBe(
-            false
+            false,
         )
         expect(result.current.automationOpportunityPerIntent.isError).toBe(
-            false
+            false,
         )
         expect(result.current.ticketsPerIntent.isFetching).toBe(false)
         expect(result.current.ticketsPerIntent.isError).toBe(false)
         expect(result.current.successRatePerIntent.isFetching).toBe(false)
         expect(result.current.successRatePerIntent.isError).toBe(false)
         expect(result.current.customerSatisfactionPerIntent.isFetching).toBe(
-            false
+            false,
         )
         expect(result.current.customerSatisfactionPerIntent.isError).toBe(false)
     })

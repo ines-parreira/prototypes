@@ -1,7 +1,7 @@
-import type {BillingContactDetailResponse} from 'state/billing/types'
+import type { BillingContactDetailResponse } from 'state/billing/types'
 
 export const getIsMissingBillingtInformation = (
-    state?: BillingContactDetailResponse
+    state?: BillingContactDetailResponse,
 ): boolean => {
     return (
         !!state &&

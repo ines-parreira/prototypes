@@ -1,14 +1,13 @@
-import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
-
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-
-import {ReportingGranularity} from 'models/reporting/types'
-import {BusiestTimesOfDaysTable} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysTable'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { ReportingGranularity } from 'models/reporting/types'
+import { BusiestTimesOfDaysTable } from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysTable'
 import {
     BusiestTimeOfDaysMetrics,
     columnsOrder,
@@ -17,7 +16,7 @@ import {
     get24Hours,
     hourFromHourIndex,
 } from 'pages/stats/support-performance/busiest-times-of-days/utils'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
 const mockStore = configureMockStore([thunk])
 jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
@@ -40,7 +39,9 @@ describe('<BusiestTimesOfDaysTable />', () => {
         })
     })
 
-    const queryMock = jest.fn().mockReturnValue({data: [[]], isLoading: false})
+    const queryMock = jest
+        .fn()
+        .mockReturnValue({ data: [[]], isLoading: false })
 
     it('should render all columns and rows', () => {
         render(
@@ -50,16 +51,16 @@ describe('<BusiestTimesOfDaysTable />', () => {
                     useMetricQuery={queryMock}
                     isHeatmapMode={false}
                 />
-            </Provider>
+            </Provider>,
         )
 
         columnsOrder.forEach((column) =>
-            expect(screen.getByText(column.label)).toBeInTheDocument()
+            expect(screen.getByText(column.label)).toBeInTheDocument(),
         )
         get24Hours().forEach((hour) =>
             expect(
-                screen.getByText(hourFromHourIndex(hour))
-            ).toBeInTheDocument()
+                screen.getByText(hourFromHourIndex(hour)),
+            ).toBeInTheDocument(),
         )
     })
 
@@ -71,11 +72,11 @@ describe('<BusiestTimesOfDaysTable />', () => {
                     useMetricQuery={queryMock}
                     isHeatmapMode={false}
                 />
-            </Provider>
+            </Provider>,
         )
         act(() => {
             const tableRow = document.getElementsByClassName('container')[0]
-            fireEvent.scroll(tableRow, {target: {scrollLeft: 50}})
+            fireEvent.scroll(tableRow, { target: { scrollLeft: 50 } })
         })
 
         await waitFor(() => {
@@ -91,11 +92,11 @@ describe('<BusiestTimesOfDaysTable />', () => {
                     useMetricQuery={queryMock}
                     isHeatmapMode={false}
                 />
-            </Provider>
+            </Provider>,
         )
         act(() => {
             const tableRow = document.getElementsByClassName('container')[0]
-            fireEvent.scroll(tableRow, {target: {scrollLeft: 0}})
+            fireEvent.scroll(tableRow, { target: { scrollLeft: 0 } })
         })
 
         await waitFor(() => {

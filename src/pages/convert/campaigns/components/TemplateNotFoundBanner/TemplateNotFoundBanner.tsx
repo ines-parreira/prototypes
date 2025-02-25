@@ -1,5 +1,6 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
+
+import { Link } from 'react-router-dom'
 
 import Button from 'pages/common/components/button/Button'
 
@@ -9,7 +10,7 @@ type OwnProps = {
     integrationId: number
 }
 
-const TemplateNotFoundBanner = ({integrationId}: OwnProps) => {
+const TemplateNotFoundBanner = ({ integrationId }: OwnProps) => {
     return (
         <div className={css.container}>
             <div className={css.center}>

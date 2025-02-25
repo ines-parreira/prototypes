@@ -1,14 +1,15 @@
-import {searchTickets as apiSearchTickets} from '@gorgias/api-client'
 import axios from 'axios'
 
-import {ticket} from 'fixtures/ticket'
-import {ApiListResponseCursorPagination} from 'models/api/types'
+import { searchTickets as apiSearchTickets } from '@gorgias/api-client'
+
+import { ticket } from 'fixtures/ticket'
+import { ApiListResponseCursorPagination } from 'models/api/types'
 import {
     searchTickets,
     searchTicketsWithHighlights,
 } from 'models/ticket/resources'
-import {Ticket} from 'models/ticket/types'
-import {assumeMock} from 'utils/testing'
+import { Ticket } from 'models/ticket/types'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('@gorgias/api-client')
 const searchTicketsMock = assumeMock(apiSearchTickets)
@@ -27,7 +28,7 @@ describe('ticket resources', () => {
 
     describe('searchTickets', () => {
         beforeEach(() => {
-            searchTicketsMock.mockResolvedValue({data: defaultData} as any)
+            searchTicketsMock.mockResolvedValue({ data: defaultData } as any)
         })
 
         it('should resolve with the ticket list and meta on success', async () => {
@@ -65,8 +66,8 @@ describe('ticket resources', () => {
 
             expect(searchTicketsMock).toHaveBeenCalledWith(
                 options,
-                {cursor, limit},
-                {}
+                { cursor, limit },
+                {},
             )
         })
 
@@ -85,7 +86,7 @@ describe('ticket resources', () => {
                     filters: '',
                 },
                 {},
-                {cancelToken: source.token}
+                { cancelToken: source.token },
             )
         })
 
@@ -97,12 +98,12 @@ describe('ticket resources', () => {
                 withHighlights: true,
             }
 
-            await searchTickets({...options, ...params})
+            await searchTickets({ ...options, ...params })
 
             expect(searchTicketsMock).toHaveBeenCalledWith(
-                {...options, filters: ''},
-                {with_highlights: params.withHighlights},
-                {}
+                { ...options, filters: '' },
+                { with_highlights: params.withHighlights },
+                {},
             )
         })
 
@@ -114,12 +115,12 @@ describe('ticket resources', () => {
                 trackTotalHits: true,
             }
 
-            await searchTickets({...options, ...params})
+            await searchTickets({ ...options, ...params })
 
             expect(searchTicketsMock).toHaveBeenCalledWith(
-                {...options, filters: ''},
-                {track_total_hits: params.trackTotalHits},
-                {}
+                { ...options, filters: '' },
+                { track_total_hits: params.trackTotalHits },
+                {},
             )
         })
     })
@@ -138,7 +139,7 @@ describe('ticket resources', () => {
                     ],
                 },
             } as any)
-            const options = {search: 'foo', filters: ''}
+            const options = { search: 'foo', filters: '' }
 
             const response = await searchTicketsWithHighlights(options)
 
@@ -146,8 +147,8 @@ describe('ticket resources', () => {
                 {
                     ...options,
                 },
-                {with_highlights: true},
-                {}
+                { with_highlights: true },
+                {},
             )
 
             expect(response.data.data).toEqual([

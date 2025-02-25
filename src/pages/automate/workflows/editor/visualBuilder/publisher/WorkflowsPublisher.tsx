@@ -1,22 +1,23 @@
 import React from 'react'
 
-import {useParams} from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
-import {TicketChannel} from 'business/types/ticket'
+import { TicketChannel } from 'business/types/ticket'
 import useKey from 'hooks/useKey'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import useSelfServiceHelpCenterChannels from 'pages/automate/common/hooks/useSelfServiceHelpCenterChannels'
 import useSelfServiceStandaloneContactFormChannels from 'pages/automate/common/hooks/useSelfServiceStandaloneContactFormChannels'
-import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
-import {Drawer} from 'pages/common/components/Drawer'
+import { useWorkflowEditorContext } from 'pages/automate/workflows/hooks/useWorkflowEditor'
+import { Drawer } from 'pages/common/components/Drawer'
 
 import EditorDrawerHeader from '../EditorDrawerHeader'
-import nodeEditorCss from '../NodeEditorDrawer.less'
 import ChatChannels from './channels/ChatChannels'
 import ContactFormChannels from './channels/ContactFormChannels'
 import HelpCenterChannels from './channels/HelpCenterChannels'
 import ChannelsLink from './helper/ChannelLink'
 import NoChannelsAlert from './helper/NoChannelAlert'
+
+import nodeEditorCss from '../NodeEditorDrawer.less'
 import css from './WorkflowsPublisher.less'
 
 export default function WorkflowsPublisher() {
@@ -25,7 +26,7 @@ export default function WorkflowsPublisher() {
         isFlowPublishingInChannels,
         configuration,
     } = useWorkflowEditorContext()
-    const {shopType, shopName} = useParams<{
+    const { shopType, shopName } = useParams<{
         shopType: string
         shopName: string
     }>()
@@ -33,7 +34,7 @@ export default function WorkflowsPublisher() {
 
     const helpCentersChannels = useSelfServiceHelpCenterChannels(
         shopType,
-        shopName
+        shopName,
     )
     const standaloneContactFormsChannels =
         useSelfServiceStandaloneContactFormChannels(shopType, shopName)
@@ -49,7 +50,7 @@ export default function WorkflowsPublisher() {
             setFlowPublishingInChannels(false)
         },
         undefined,
-        [setFlowPublishingInChannels]
+        [setFlowPublishingInChannels],
     )
     return (
         <Drawer

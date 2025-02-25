@@ -1,22 +1,23 @@
-import {fromJS, List, Map} from 'immutable'
-import {useCallback, useContext} from 'react'
-import {useParams} from 'react-router-dom'
+import { useCallback, useContext } from 'react'
 
-import {SegmentEvent, logEvent} from 'common/segment'
+import { fromJS, List, Map } from 'immutable'
+import { useParams } from 'react-router-dom'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
-import {WizardContext} from 'pages/common/components/wizard/Wizard'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {DEPRECATED_getIntegrations} from 'state/integrations/selectors'
+import { WizardContext } from 'pages/common/components/wizard/Wizard'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { DEPRECATED_getIntegrations } from 'state/integrations/selectors'
 
 const useLogWizardEvent = () => {
-    const {integrationId} = useParams<{
+    const { integrationId } = useParams<{
         integrationId: string
     }>()
 
     const currentAccount = useAppSelector(getCurrentAccountState)
     const wizardContext = useContext(WizardContext)
     const integrations: List<Map<any, any>> = useAppSelector(
-        DEPRECATED_getIntegrations
+        DEPRECATED_getIntegrations,
     )
 
     const logWizardEvent = useCallback(
@@ -24,7 +25,7 @@ const useLogWizardEvent = () => {
             const integration =
                 integrations.find(
                     (integration) =>
-                        integration?.get('id') === Number(integrationId)
+                        integration?.get('id') === Number(integrationId),
                 ) || fromJS({})
 
             logEvent(event, {
@@ -34,7 +35,12 @@ const useLogWizardEvent = () => {
                 ...data,
             })
         },
-        [currentAccount, integrations, integrationId, wizardContext?.activeStep]
+        [
+            currentAccount,
+            integrations,
+            integrationId,
+            wizardContext?.activeStep,
+        ],
     )
 
     return logWizardEvent

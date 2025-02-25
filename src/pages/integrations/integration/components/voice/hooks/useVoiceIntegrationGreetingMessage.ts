@@ -1,33 +1,32 @@
+import { useCallback, useEffect, useState } from 'react'
+
 import {
     UpdateWaitMusicPreferences,
-    WaitMusicType,
     useUpdateWaitMusicPreferences,
+    WaitMusicType,
 } from '@gorgias/api-queries'
-import {useCallback, useEffect, useState} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {DEFAULT_GREETING_MESSAGE} from 'models/integration/constants'
+import { DEFAULT_GREETING_MESSAGE } from 'models/integration/constants'
 import {
+    LocalWaitMusicPreferences,
     PhoneIntegration,
     VoiceMessage,
-    LocalWaitMusicPreferences,
 } from 'models/integration/types'
-import {updatePhoneGreetingMessageConfiguration} from 'pages/integrations/integration/components/phone/actions'
+import { updatePhoneGreetingMessageConfiguration } from 'pages/integrations/integration/components/phone/actions'
+import { fetchIntegrations } from 'state/integrations/actions'
+import { UPDATE_INTEGRATION_ERROR } from 'state/integrations/constants'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
-import {fetchIntegrations} from 'state/integrations/actions'
-
-import {UPDATE_INTEGRATION_ERROR} from 'state/integrations/constants'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-
-import {DEFAULT_WAIT_MUSIC_PREFERENCES} from '../waitMusicLibraryConstants'
+import { DEFAULT_WAIT_MUSIC_PREFERENCES } from '../waitMusicLibraryConstants'
 import useVoiceMessageValidation from './useVoiceMessageValidation'
 
 export default function useVoiceIntegrationGreetingMessage(
-    integration: PhoneIntegration
+    integration: PhoneIntegration,
 ) {
     const dispatch = useAppDispatch()
-    const {areVoiceMessagesTheSame, areWaitMusicPreferencesTheSame} =
+    const { areVoiceMessagesTheSame, areWaitMusicPreferencesTheSame } =
         useVoiceMessageValidation()
 
     const integrationGreetingMessage =
@@ -44,32 +43,34 @@ export default function useVoiceIntegrationGreetingMessage(
     const [waitMusicPayload, setWaitMusicPayload] =
         useState<LocalWaitMusicPreferences>(integrationWaitMusic)
 
-    const {mutate: updateWaitMusicPreferences, isLoading: isWaitMusicLoading} =
-        useUpdateWaitMusicPreferences({
-            mutation: {
-                onSuccess: () => {
-                    void dispatch(
-                        notify({
-                            status: NotificationStatus.Success,
-                            message: 'Wait music successfully updated.',
-                        })
-                    )
-                    void dispatch(fetchIntegrations())
-                },
-                onError: (error) => {
-                    void dispatch({
-                        type: UPDATE_INTEGRATION_ERROR,
-                        error,
-                        verbose: true,
-                    })
-                },
+    const {
+        mutate: updateWaitMusicPreferences,
+        isLoading: isWaitMusicLoading,
+    } = useUpdateWaitMusicPreferences({
+        mutation: {
+            onSuccess: () => {
+                void dispatch(
+                    notify({
+                        status: NotificationStatus.Success,
+                        message: 'Wait music successfully updated.',
+                    }),
+                )
+                void dispatch(fetchIntegrations())
             },
-        })
+            onError: (error) => {
+                void dispatch({
+                    type: UPDATE_INTEGRATION_ERROR,
+                    error,
+                    verbose: true,
+                })
+            },
+        },
+    })
 
     const canSubmitGreetingMessage = useCallback(() => {
         return !areVoiceMessagesTheSame(
             greetingMessagePayload,
-            greetingMessagePreferences
+            greetingMessagePreferences,
         )
     }, [
         areVoiceMessagesTheSame,
@@ -94,7 +95,7 @@ export default function useVoiceIntegrationGreetingMessage(
         }
         return !areWaitMusicPreferencesTheSame(
             waitMusicPayload,
-            waitMusicPreferences
+            waitMusicPreferences,
         )
     }, [areWaitMusicPreferencesTheSame, waitMusicPayload, waitMusicPreferences])
 
@@ -107,7 +108,7 @@ export default function useVoiceIntegrationGreetingMessage(
         if (
             !areVoiceMessagesTheSame(
                 greetingMessagePreferences,
-                integrationGreetingMessage
+                integrationGreetingMessage,
             )
         ) {
             setGreetingMessagePreferences(integrationGreetingMessage)
@@ -116,7 +117,7 @@ export default function useVoiceIntegrationGreetingMessage(
         if (
             !areWaitMusicPreferencesTheSame(
                 waitMusicPreferences,
-                integrationWaitMusic
+                integrationWaitMusic,
             )
         ) {
             setWaitMusicPreferences(integrationWaitMusic)
@@ -164,7 +165,7 @@ export default function useVoiceIntegrationGreetingMessage(
                     library: waitMusicPayload.library,
                 }
             }
-            return {type: waitMusicPayload.type}
+            return { type: waitMusicPayload.type }
         }, [waitMusicPayload, waitMusicPreferences])
 
     const makeApiCalls = useCallback(async () => {
@@ -173,8 +174,8 @@ export default function useVoiceIntegrationGreetingMessage(
             if (canSubmitGreetingMessage()) {
                 await dispatch(
                     updatePhoneGreetingMessageConfiguration(
-                        greetingMessagePayload
-                    )
+                        greetingMessagePayload,
+                    ),
                 )
                 if (!canSubmitWaitMusic()) {
                     void dispatch(fetchIntegrations())

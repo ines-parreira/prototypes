@@ -1,8 +1,9 @@
-import {Map} from 'immutable'
 import React from 'react'
-import {Col, Container, Row} from 'reactstrap'
 
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import { Map } from 'immutable'
+import { Col, Container, Row } from 'reactstrap'
+
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import LinkAlert from 'pages/common/components/Alert/LinkAlert'
 import Loader from 'pages/common/components/Loader/Loader'
 import useAuthenticationPolling from 'pages/integrations/integration/hooks/useAuthenticationPolling'
@@ -18,7 +19,7 @@ type Props = {
     redirectUri: string
 }
 
-function Integration({integration, loading, redirectUri}: Props) {
+function Integration({ integration, loading, redirectUri }: Props) {
     const isSubmitting = !!loading.get('updateIntegration')
     const isManual = integration.getIn(['meta', 'is_manual'], false)
     const isSyncOver = integration.getIn(['meta', 'import_state', 'is_over'])

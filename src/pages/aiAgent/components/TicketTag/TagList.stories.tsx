@@ -1,5 +1,6 @@
-import {Meta, StoryObj} from '@storybook/react'
-import React, {useState} from 'react'
+import React, { useState } from 'react'
+
+import { Meta, StoryObj } from '@storybook/react'
 
 import TagList from './TagList'
 

@@ -1,26 +1,29 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
-import {noop, startCase} from 'lodash'
-import React, {useCallback, useMemo} from 'react'
-import {useParams} from 'react-router-dom'
+import React, { useCallback, useMemo } from 'react'
 
-import {TicketChannel} from 'business/types/ticket'
-import {SegmentEvent, logEvent} from 'common/segment'
-import {getPrimaryLanguageFromChatConfig} from 'config/integrations/gorgias_chat'
-import {useGetHelpCenter} from 'models/helpCenter/queries'
-import {useGetWorkflowConfigurations} from 'models/workflows/queries'
+import classNames from 'classnames'
+import { noop, startCase } from 'lodash'
+import { useParams } from 'react-router-dom'
+
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+
+import { TicketChannel } from 'business/types/ticket'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { getPrimaryLanguageFromChatConfig } from 'config/integrations/gorgias_chat'
+import { useGetHelpCenter } from 'models/helpCenter/queries'
+import { useGetWorkflowConfigurations } from 'models/workflows/queries'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import useSelfServiceChannels from 'pages/automate/common/hooks/useSelfServiceChannels'
-import {SelfServiceChatChannel} from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import {AutomateFeatures} from 'pages/automate/common/types'
+import { AutomateFeatures } from 'pages/automate/common/types'
 
 import ConnectedChannelsPreview from '../ConnectedChannelsPreview'
+import { ConnectedChannelsEmptyView } from './ConnectedChannelsEmptyView'
+import { CurrentlyViewingDropdown } from './CurrentlyViewingDropdown'
+import { FeatureSettings } from './FeatureSettings'
+import { FlowsSettings } from './FlowsSettings'
+
 import css from './ConnectedChannelsChatView.less'
-import {ConnectedChannelsEmptyView} from './ConnectedChannelsEmptyView'
-import {CurrentlyViewingDropdown} from './CurrentlyViewingDropdown'
-import {FeatureSettings} from './FeatureSettings'
-import {FlowsSettings} from './FlowsSettings'
 
 interface Props {
     channelId?: string
@@ -35,7 +38,7 @@ export const ConnectedChannelsChatView = ({
     shopType: extShopType,
     hideDropdown,
 }: Props) => {
-    const {shopType: shopTypeParam, shopName: shopNameParam} = useParams<{
+    const { shopType: shopTypeParam, shopName: shopNameParam } = useParams<{
         shopType: string
         shopName: string
     }>()
@@ -47,17 +50,18 @@ export const ConnectedChannelsChatView = ({
         storeIntegration,
         isFetchPending: isSelfServiceConfigurationFetchPending,
     } = useSelfServiceConfiguration(shopType, shopName)
-    const {data: workflowConfigurations = []} = useGetWorkflowConfigurations()
+    const { data: workflowConfigurations = [] } = useGetWorkflowConfigurations()
 
-    const {data: helpCenterData, isError: helpCenterIsError} = useGetHelpCenter(
-        selfServiceConfiguration?.articleRecommendationHelpCenterId ?? 0,
-        {},
-        {
-            enabled:
-                !!selfServiceConfiguration?.articleRecommendationHelpCenterId,
-            retry: 1,
-        }
-    )
+    const { data: helpCenterData, isError: helpCenterIsError } =
+        useGetHelpCenter(
+            selfServiceConfiguration?.articleRecommendationHelpCenterId ?? 0,
+            {},
+            {
+                enabled:
+                    !!selfServiceConfiguration?.articleRecommendationHelpCenterId,
+                retry: 1,
+            },
+        )
 
     const isHelpCenterSelfServiceDeleted =
         !!helpCenterData?.deleted_datetime ||
@@ -69,17 +73,17 @@ export const ConnectedChannelsChatView = ({
     const chatChannels = useMemo(() => {
         return channels.filter(
             (channel): channel is SelfServiceChatChannel =>
-                channel.type === TicketChannel.Chat
+                channel.type === TicketChannel.Chat,
         )
     }, [channels])
 
     const [selectedChannel, setSelectedChannel] = React.useState<string | null>(
-        () => channelId ?? chatChannels[0]?.value.meta.app_id ?? null
+        () => channelId ?? chatChannels[0]?.value.meta.app_id ?? null,
     )
 
     const currentChannel =
         chatChannels.find(
-            (channel) => channel.value.meta.app_id === selectedChannel
+            (channel) => channel.value.meta.app_id === selectedChannel,
         ) ?? chatChannels[0]
 
     const {
@@ -89,7 +93,7 @@ export const ConnectedChannelsChatView = ({
     } = useApplicationsAutomationSettings(
         chatChannels
             .map((c) => c.value.meta?.app_id)
-            .filter((c): c is string => !!c)
+            .filter((c): c is string => !!c),
     )
 
     // check if one of the id in the chatChannels in the automationSettings
@@ -124,16 +128,16 @@ export const ConnectedChannelsChatView = ({
                 void handleChatApplicationAutomationSettingsUpdate(
                     {
                         ...applicationsAutomationSettings[selectedChannel],
-                        [key]: {enabled: value},
+                        [key]: { enabled: value },
                     },
-                    `${readableKey} ${value ? 'enabled' : 'disabled'}`
+                    `${readableKey} ${value ? 'enabled' : 'disabled'}`,
                 )
             },
         [
             applicationsAutomationSettings,
             selectedChannel,
             handleChatApplicationAutomationSettingsUpdate,
-        ]
+        ],
     )
 
     const automationSettingsWorkflows = useMemo(() => {
@@ -206,7 +210,7 @@ export const ConnectedChannelsChatView = ({
                         selfServiceConfiguration?.workflowsEntrypoints
                     }
                     primaryLanguage={getPrimaryLanguageFromChatConfig(
-                        currentChannel.value.meta
+                        currentChannel.value.meta,
                     )}
                     configurations={workflowConfigurations ?? []}
                     automationSettingsWorkflows={automationSettingsWorkflows}
@@ -221,7 +225,7 @@ export const ConnectedChannelsChatView = ({
                             SegmentEvent.AutomateChannelUpdateFromChannels,
                             {
                                 page: 'Channels',
-                            }
+                            },
                         )
                         const applicationAutomationSettings =
                             applicationsAutomationSettings?.[selectedChannel!]
@@ -236,7 +240,7 @@ export const ConnectedChannelsChatView = ({
                             },
                             `${
                                 action === 'reorder' ? 'Flows' : 'Flow'
-                            } ${readableAction}`
+                            } ${readableAction}`,
                         )
                     }}
                 />

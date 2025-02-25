@@ -1,8 +1,9 @@
-import {render, screen, waitFor} from '@testing-library/react'
-import {renderHook, act} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { render, screen, waitFor } from '@testing-library/react'
+import { act, renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -14,7 +15,7 @@ import {
     bigCommerceOrderFixture,
     bigCommerceShippingAddressesFixture,
 } from 'fixtures/bigcommerce'
-import {integrationsState} from 'fixtures/integrations'
+import { integrationsState } from 'fixtures/integrations'
 import {
     BigCommerceActionType,
     BigCommerceCheckout,
@@ -22,7 +23,7 @@ import {
 import OrderModalRenderWrapper, {
     OrderModal,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/OrderModal'
-import {useCheckout} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/OrderModalHelper'
+import { useCheckout } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/OrderModalHelper'
 import {
     IntegrationContext,
     IntegrationContextType,
@@ -30,11 +31,11 @@ import {
 
 import {
     addCheckoutBillingAddress,
-    upsertCheckoutConsignment,
-    onInit,
-    checkProductsValidity,
     checkAddressValidity,
     checkCheckoutValidity,
+    checkProductsValidity,
+    onInit,
+    upsertCheckoutConsignment,
 } from '../utils'
 import * as utils from '../utils'
 
@@ -75,7 +76,7 @@ describe('OrderModal', () => {
 
     beforeAll(() => {
         ;(onInit as jest.MockedFunction<typeof onInit>).mockImplementation(
-            () => new Promise((resolve) => resolve())
+            () => new Promise((resolve) => resolve()),
         )
     })
 
@@ -84,14 +85,14 @@ describe('OrderModal', () => {
     })
 
     it('should render Create Order', async () => {
-        const {rerender, baseElement} = render(<div id="App" />)
+        const { rerender, baseElement } = render(<div id="App" />)
         rerender(
             <>
                 <div id="App" />
                 <Provider store={store}>
                     <OrderModal {...createOrderProps} />
                 </Provider>
-            </>
+            </>,
         )
 
         await screen.findByText('Address')
@@ -100,14 +101,14 @@ describe('OrderModal', () => {
     })
 
     it('should render Duplicate Order', async () => {
-        const {rerender, baseElement} = render(<div id="App" />)
+        const { rerender, baseElement } = render(<div id="App" />)
         rerender(
             <>
                 <div id="App" />
                 <Provider store={store}>
                     <OrderModal {...duplicateOrderProps} />
                 </Provider>
-            </>
+            </>,
         )
 
         await screen.findByText('Address')
@@ -155,24 +156,24 @@ describe('OrderModalConnected', () => {
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <OrderModalRenderWrapper {...orderModalProps} />
                 </IntegrationContext.Provider>
-            </Provider>
+            </Provider>,
         )
     }
 
     it('Create Order - renders null when `isOpen` is false', () => {
-        const {container} = renderSubject({})
+        const { container } = renderSubject({})
         expect(container.firstChild).toBe(null)
     })
 
     it('Duplicate Order - renders null when `isOpen` is false', () => {
-        const {container} = renderSubject({
+        const { container } = renderSubject({
             orderModalProps: duplicateOrderProps,
         })
         expect(container.firstChild).toBe(null)
     })
 
     it('Create Order - renders null when IntegrationContext has no integrationId', () => {
-        const {container} = renderSubject({
+        const { container } = renderSubject({
             integrationContextValue: {
                 integrationId: null,
                 integration: fromJS({}),
@@ -182,7 +183,7 @@ describe('OrderModalConnected', () => {
     })
 
     it('Duplicate Order - renders null when IntegrationContext has no integrationId', () => {
-        const {container} = renderSubject({
+        const { container } = renderSubject({
             integrationContextValue: {
                 integrationId: null,
                 integration: fromJS({}),
@@ -194,7 +195,7 @@ describe('OrderModalConnected', () => {
 
     it('Create Order - renders when `isOpen` is `true` and IntegrationContext has value', () => {
         createOrderProps.isOpen = true
-        const {rerender} = render(<div id="App" />)
+        const { rerender } = render(<div id="App" />)
         rerender(
             <>
                 <div id="App" />
@@ -205,17 +206,17 @@ describe('OrderModalConnected', () => {
                         <OrderModalRenderWrapper {...createOrderProps} />
                     </IntegrationContext.Provider>
                 </Provider>
-            </>
+            </>,
         )
 
         expect(
-            screen.getByRole('button', {name: /Create draft order/i})
+            screen.getByRole('button', { name: /Create draft order/i }),
         ).toBeTruthy()
     })
 
     it('Duplicate Order - renders when `isOpen` is `true` and IntegrationContext has value', () => {
         duplicateOrderProps.isOpen = true
-        const {rerender} = render(<div id="App" />)
+        const { rerender } = render(<div id="App" />)
         rerender(
             <>
                 <div id="App" />
@@ -226,20 +227,20 @@ describe('OrderModalConnected', () => {
                         <OrderModalRenderWrapper {...duplicateOrderProps} />
                     </IntegrationContext.Provider>
                 </Provider>
-            </>
+            </>,
         )
 
         expect(
-            screen.getByRole('button', {name: /Create draft order/i})
+            screen.getByRole('button', { name: /Create draft order/i }),
         ).toBeTruthy()
     })
 
     it('`Create order` button does not send a create BigCommerce order action', () => {
         const bigcommerceCreateOrderSpy = jest.spyOn(
             utils,
-            'bigcommerceCreateOrderFromCheckoutCart'
+            'bigcommerceCreateOrderFromCheckoutCart',
         )
-        const {rerender} = render(<div id="App" />)
+        const { rerender } = render(<div id="App" />)
         rerender(
             <>
                 <div id="App" />
@@ -250,10 +251,10 @@ describe('OrderModalConnected', () => {
                         <OrderModalRenderWrapper {...createOrderProps} />
                     </IntegrationContext.Provider>
                 </Provider>
-            </>
+            </>,
         )
 
-        screen.getByRole('button', {name: /Create draft order/i}).click()
+        screen.getByRole('button', { name: /Create draft order/i }).click()
 
         expect(bigcommerceCreateOrderSpy).toHaveBeenCalledTimes(0)
     })
@@ -261,9 +262,9 @@ describe('OrderModalConnected', () => {
     it('`Create order` button does not send a create BigCommerce order action', () => {
         const bigcommerceCreateOrderSpy = jest.spyOn(
             utils,
-            'bigcommerceCreateOrderFromCheckoutCart'
+            'bigcommerceCreateOrderFromCheckoutCart',
         )
-        const {rerender} = render(<div id="App" />)
+        const { rerender } = render(<div id="App" />)
         rerender(
             <>
                 <div id="App" />
@@ -274,10 +275,10 @@ describe('OrderModalConnected', () => {
                         <OrderModalRenderWrapper {...duplicateOrderProps} />
                     </IntegrationContext.Provider>
                 </Provider>
-            </>
+            </>,
         )
 
-        screen.getByRole('button', {name: /Create draft order/i}).click()
+        screen.getByRole('button', { name: /Create draft order/i }).click()
 
         expect(bigcommerceCreateOrderSpy).toHaveBeenCalledTimes(0)
     })
@@ -286,7 +287,7 @@ describe('OrderModalConnected', () => {
     test.skip('`Create order` button sends a create BigCommerce order action', () => {
         const bigcommerceCreateOrderSpy = jest.spyOn(
             utils,
-            'bigcommerceCreateOrderFromCheckoutCart'
+            'bigcommerceCreateOrderFromCheckoutCart',
         )
         ;(
             checkProductsValidity as jest.MockedFunction<
@@ -304,10 +305,10 @@ describe('OrderModalConnected', () => {
             >
         ).mockReturnValue(true)
         renderSubject({
-            orderModalProps: {...createOrderProps, isOpen: true},
+            orderModalProps: { ...createOrderProps, isOpen: true },
         })
 
-        screen.getByRole('button', {name: /Create draft order/i}).click()
+        screen.getByRole('button', { name: /Create draft order/i }).click()
 
         expect(bigcommerceCreateOrderSpy).toHaveBeenCalled()
     })
@@ -335,7 +336,7 @@ describe('useCheckout', () => {
             setCustomAddresses: jest.fn(),
         }
 
-        const {result} = renderHook(() => useCheckout(defaultProps))
+        const { result } = renderHook(() => useCheckout(defaultProps))
 
         expect(result.current).toMatchObject({
             cart: null,
@@ -372,21 +373,21 @@ describe('useCheckout', () => {
                 typeof addCheckoutBillingAddress
             >
         ).mockReturnValueOnce(
-            new Promise((resolve) => resolve(bigCommerceCheckoutFixture))
+            new Promise((resolve) => resolve(bigCommerceCheckoutFixture)),
         )
         ;(
             upsertCheckoutConsignment as jest.MockedFunction<
                 typeof upsertCheckoutConsignment
             >
         ).mockReturnValueOnce(
-            new Promise((resolve) => resolve(bigCommerceCheckoutFixture))
+            new Promise((resolve) => resolve(bigCommerceCheckoutFixture)),
         )
 
         act(() => {
             void result.current.onSelectAddress(
                 bigCommerceShippingAddressesFixture[0],
                 'billing',
-                'test2@gorgias.com'
+                'test2@gorgias.com',
             )
         })
 

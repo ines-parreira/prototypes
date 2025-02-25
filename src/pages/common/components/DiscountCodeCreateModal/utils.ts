@@ -1,4 +1,4 @@
-import {screen} from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 export const setupValidModalParameters = async () => {
@@ -8,20 +8,20 @@ export const setupValidModalParameters = async () => {
     const discountTypeSelect = screen.getByLabelText('Discount type')
     const discountValueInput = screen.getByLabelText('Discount')
     const minRequirementsRadio = screen.getByLabelText(
-        'Minimum purchase amount'
+        'Minimum purchase amount',
     )
     const noMinRequirementsRadio = screen.getByLabelText(
-        'No minimum requirements'
+        'No minimum requirements',
     )
 
     userEvent.click(discountTypeSelect)
-    userEvent.click(screen.getByRole('menuitem', {name: 'Percentage'}))
+    userEvent.click(screen.getByRole('menuitem', { name: 'Percentage' }))
 
     // set discount min amount
     userEvent.click(noMinRequirementsRadio)
     userEvent.click(minRequirementsRadio)
     const minPurchaseAmountInput = screen.getByLabelText(
-        'Minimum purchase amount value'
+        'Minimum purchase amount value',
     )
     userEvent.clear(minPurchaseAmountInput)
     await userEvent.type(minPurchaseAmountInput, '199')

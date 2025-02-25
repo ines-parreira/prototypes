@@ -1,10 +1,8 @@
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
 import shopifyIcon from 'assets/img/integrations/shopify.png'
-import {Integration} from 'models/integration/types'
-
-import {Value} from 'pages/common/forms/SelectField/types'
-
+import { Integration } from 'models/integration/types'
+import { Value } from 'pages/common/forms/SelectField/types'
 import SelectStatsFilter from 'pages/stats/common/SelectStatsFilter'
 
 import css from './IntegrationMultiSelect.less'

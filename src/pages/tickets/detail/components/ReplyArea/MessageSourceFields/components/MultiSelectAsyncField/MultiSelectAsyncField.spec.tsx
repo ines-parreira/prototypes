@@ -1,15 +1,16 @@
-import {act, render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import _debounce from 'lodash/debounce'
 import React from 'react'
 
-import {ReceiverValue} from 'state/ticket/utils'
-import {isEmail} from 'utils'
+import { act, render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import _debounce from 'lodash/debounce'
+
+import { ReceiverValue } from 'state/ticket/utils'
+import { isEmail } from 'utils'
 
 import MultiSelectAsyncField from './MultiSelectAsyncField'
 
 jest.mock('lodash/debounce', () =>
-    jest.fn((fn: (...args: any[]) => void) => fn)
+    jest.fn((fn: (...args: any[]) => void) => fn),
 )
 
 describe('MultiSelectAsyncField component', () => {
@@ -88,11 +89,11 @@ describe('MultiSelectAsyncField component', () => {
             .mockImplementation(
                 (_, callback: (options: ReceiverValue[]) => void) => {
                     callback(options)
-                }
+                },
             )
 
         render(
-            <MultiSelectAsyncField {...minProps} loadOptions={loadOptions} />
+            <MultiSelectAsyncField {...minProps} loadOptions={loadOptions} />,
         )
         act(() => {
             userEvent.paste(screen.getByRole('textbox'), 'Something')
@@ -116,20 +117,20 @@ describe('MultiSelectAsyncField component', () => {
                 {...minProps}
                 value={value}
                 onChange={onChange}
-            />
+            />,
         )
 
         act(() => {
             userEvent.paste(
                 screen.getByRole('textbox'),
-                'alex@gorgias.io, Romain <romain@gorgias.io>, wrongaddress'
+                'alex@gorgias.io, Romain <romain@gorgias.io>, wrongaddress',
             )
         })
 
         expect(onChange).toBeCalledWith([
             value[0],
-            {value: 'alex@gorgias.io'},
-            {value: 'romain@gorgias.io', name: 'Romain'},
+            { value: 'alex@gorgias.io' },
+            { value: 'romain@gorgias.io', name: 'Romain' },
         ])
     })
 
@@ -140,7 +141,7 @@ describe('MultiSelectAsyncField component', () => {
             value: 'john.doe@example.com',
         }
         minProps.loadOptions.mockImplementation(
-            (value, cb: (receivers: ReceiverValue[]) => void) => cb([receiver])
+            (value, cb: (receivers: ReceiverValue[]) => void) => cb([receiver]),
         )
         render(<MultiSelectAsyncField {...minProps} />)
 
@@ -165,7 +166,7 @@ describe('MultiSelectAsyncField component', () => {
         })
 
         expect(document.querySelector('.emptySuggestions')).toHaveTextContent(
-            'Type to search'
+            'Type to search',
         )
     })
 
@@ -182,13 +183,13 @@ describe('MultiSelectAsyncField component', () => {
         })
 
         expect(
-            document.getElementsByClassName('react-loading-skeleton').length
+            document.getElementsByClassName('react-loading-skeleton').length,
         ).toEqual(3)
     })
 
     it('should render no results when the query returns no result', () => {
         minProps.loadOptions.mockImplementation(
-            (value, cb: (receivers: ReceiverValue[]) => void) => cb([])
+            (value, cb: (receivers: ReceiverValue[]) => void) => cb([]),
         )
         render(<MultiSelectAsyncField {...minProps} />)
 
@@ -197,7 +198,7 @@ describe('MultiSelectAsyncField component', () => {
         })
 
         expect(document.querySelector('.emptySuggestions')).toHaveTextContent(
-            'No results'
+            'No results',
         )
     })
 })

@@ -1,12 +1,13 @@
-import {Map} from 'immutable'
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { Map } from 'immutable'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
-import {UniqueDiscountOffer} from 'models/convert/discountOffer/types'
-import {DiscountCode} from 'models/discountCodes/types'
-import {useToolbarContext} from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import { UniqueDiscountOffer } from 'models/convert/discountOffer/types'
+import { DiscountCode } from 'models/discountCodes/types'
+import { useToolbarContext } from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import DiscountCodeResults from '../DiscountCodeResults/DiscountCodeResults'
 import TabNavigator from '../TabNavigator/TabNavigator'
@@ -18,8 +19,8 @@ enum DiscountCodesTabs {
 }
 
 const navigatorTabs = [
-    {label: 'Generic Codes', value: DiscountCodesTabs.Generic},
-    {label: 'Unique Codes Offer', value: DiscountCodesTabs.Unique},
+    { label: 'Generic Codes', value: DiscountCodesTabs.Generic },
+    { label: 'Unique Codes Offer', value: DiscountCodesTabs.Unique },
 ]
 
 export type DiscountResultsBaseProps<T> = {
@@ -35,7 +36,7 @@ export type DiscountCodeResultsWrapperProps = DiscountResultsBaseProps<
 export const DiscountCodeResultsWrapper: React.FC<
     DiscountCodeResultsWrapperProps
 > = (props: DiscountCodeResultsWrapperProps) => {
-    const {canAddUniqueDiscountOffer, supportsUniqueDiscountOffer} =
+    const { canAddUniqueDiscountOffer, supportsUniqueDiscountOffer } =
         useToolbarContext()
     const currentAccount = useAppSelector(getCurrentAccountState)
 

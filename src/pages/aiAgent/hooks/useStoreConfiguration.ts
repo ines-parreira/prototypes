@@ -1,4 +1,4 @@
-import {useGetStoreConfigurationPure} from 'models/aiAgent/queries'
+import { useGetStoreConfigurationPure } from 'models/aiAgent/queries'
 
 export const useStoreConfiguration = ({
     shopName,
@@ -20,7 +20,7 @@ export const useStoreConfiguration = ({
             storeName: shopName,
             withWizard,
         },
-        {retry: 1, refetchOnWindowFocus: false, enabled: enabled ?? true}
+        { retry: 1, refetchOnWindowFocus: false, enabled: enabled ?? true },
     )
 
     return {

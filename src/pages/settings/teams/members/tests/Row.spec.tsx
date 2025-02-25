@@ -1,7 +1,8 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {UserRole} from 'config/types/user'
+import { render } from '@testing-library/react'
+
+import { UserRole } from 'config/types/user'
 
 import Row from '../Row'
 
@@ -33,7 +34,7 @@ const minProps = {
 
 describe('<Row />', () => {
     it('should render', () => {
-        const {container} = render(<Row {...minProps} />)
+        const { container } = render(<Row {...minProps} />)
 
         expect(container.firstChild).toMatchSnapshot()
     })

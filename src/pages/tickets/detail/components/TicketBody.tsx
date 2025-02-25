@@ -1,16 +1,17 @@
+import React, { useCallback, useEffect, useMemo, useRef } from 'react'
+
 import classnames from 'classnames'
-import {List} from 'immutable'
-import React, {useCallback, useEffect, useMemo, useRef} from 'react'
-import {Components, Virtuoso, VirtuosoHandle} from 'react-virtuoso'
+import { List } from 'immutable'
+import { Components, Virtuoso, VirtuosoHandle } from 'react-virtuoso'
 
 import useAppSelector from 'hooks/useAppSelector'
 import useSearch from 'hooks/useSearch'
 import useSelectedIndex from 'hooks/useSelectedIndex'
-import {TicketElement, TicketMessage} from 'models/ticket/types'
+import { TicketElement, TicketMessage } from 'models/ticket/types'
 import VoiceRecordingsProvider from 'pages/integrations/integration/components/voice/VoiceRecordingsProvider'
-import {SubmitArgs} from 'pages/tickets/detail/TicketDetailContainer'
-import {getDisplayHistory} from 'state/ticket/selectors'
-import type {OnToggleUnreadFn} from 'tickets/pages/SplitTicketPage'
+import { SubmitArgs } from 'pages/tickets/detail/TicketDetailContainer'
+import { getDisplayHistory } from 'state/ticket/selectors'
+import type { OnToggleUnreadFn } from 'tickets/pages/SplitTicketPage'
 
 import {
     useExpandedMessages,
@@ -19,12 +20,13 @@ import {
     useKeyboardNavigation,
     useLastMessageDatetimeAfterMount,
 } from '../hooks'
-import {getVoiceCallIndex} from '../utils'
+import { getVoiceCallIndex } from '../utils'
 import MessageQuoteContext from './MessageQuoteContext'
-import css from './TicketBody.less'
 import TicketBodyElement from './TicketBodyElement'
-import TicketFooter, {TicketFooterContext} from './TicketFooter'
+import TicketFooter, { TicketFooterContext } from './TicketFooter'
 import TicketHeaderWrapper from './TicketHeaderWrapper/TicketHeaderWrapper'
+
+import css from './TicketBody.less'
 
 interface Props {
     customScrollParentRef?: React.RefObject<HTMLDivElement>
@@ -56,15 +58,15 @@ export default function TicketBody({
         useHighlightedElements()
     const lastMessageDatetimeAfterMount =
         useLastMessageDatetimeAfterMount(elements)
-    const {call_id: voiceCallId} = useSearch<{call_id?: string}>()
+    const { call_id: voiceCallId } = useSearch<{ call_id?: string }>()
 
     const maxIndex = elements.size - 1
     const {
         index: selectedIndex,
         next: nextIndex,
         previous: previousIndex,
-    } = useSelectedIndex(maxIndex, {initial: maxIndex})
-    useKeyboardNavigation({next: nextIndex, previous: previousIndex})
+    } = useSelectedIndex(maxIndex, { initial: maxIndex })
+    useKeyboardNavigation({ next: nextIndex, previous: previousIndex })
 
     const isHistoryDisplayed = useAppSelector(getDisplayHistory)
     useEffect(() => {
@@ -74,32 +76,32 @@ export default function TicketBody({
             })
         } else {
             if (!isHistoryDisplayed) return
-            virtuosoRef.current?.scrollTo({top: 0})
+            virtuosoRef.current?.scrollTo({ top: 0 })
         }
     }, [groupedElements, isHistoryDisplayed, voiceCallId])
 
     const getFollowOutput = useCallback(
         (isAtBottom: boolean) => (isAtBottom ? 'smooth' : false),
-        []
+        [],
     )
     const virtuosoComponents: Components<TicketFooterContext> = useMemo(
         () => ({
             Footer: TicketFooter,
             Item: (props) => {
-                const {context: __context, style, children, ...rest} = props
+                const { context: __context, style, children, ...rest } = props
                 return (
-                    <div {...rest} style={{...style, position: 'relative'}}>
+                    <div {...rest} style={{ ...style, position: 'relative' }}>
                         {children}
                     </div>
                 )
             },
         }),
-        []
+        [],
     )
 
     const footerContext = useMemo(
-        (): TicketFooterContext => ({isShopperTyping, shopperName, submit}),
-        [isShopperTyping, shopperName, submit]
+        (): TicketFooterContext => ({ isShopperTyping, shopperName, submit }),
+        [isShopperTyping, shopperName, submit],
     )
 
     const getItemContent = useCallback(
@@ -135,7 +137,7 @@ export default function TicketBody({
             setStatus,
             onGoToNextTicket,
             onToggleUnread,
-        ]
+        ],
     )
 
     return (

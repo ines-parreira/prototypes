@@ -1,13 +1,14 @@
 import React from 'react'
-import {NavLink} from 'react-router-dom'
 
-import {PhoneFunction} from 'business/twilio'
+import { NavLink } from 'react-router-dom'
+
+import { PhoneFunction } from 'business/twilio'
 import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationType, PhoneIntegration} from 'models/integration/types'
+import { IntegrationType, PhoneIntegration } from 'models/integration/types'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
-import {getPhoneIntegrations} from 'state/integrations/selectors'
+import { getPhoneIntegrations } from 'state/integrations/selectors'
 
-import {getDefaultRoutes} from '../../utils/defaultRoutes'
+import { getDefaultRoutes } from '../../utils/defaultRoutes'
 
 type Props = {
     integration?: PhoneIntegration
@@ -21,7 +22,7 @@ export default function VoiceIntegrationSecondaryNavigation({
     if (!integration) {
         const routes = getDefaultRoutes(
             '/app/settings/channels/phone',
-            phoneIntegrations
+            phoneIntegrations,
         )
 
         return (

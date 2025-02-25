@@ -1,11 +1,11 @@
-import React, {useState} from 'react'
-import {Link, useHistory, useParams} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
+import React, { useState } from 'react'
+
+import { Link, useHistory, useParams } from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
 import AutomateView from 'pages/automate/common/components/AutomateView'
 import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
-
-import {ORDER_MANAGEMENT} from 'pages/automate/common/components/constants'
+import { ORDER_MANAGEMENT } from 'pages/automate/common/components/constants'
 import Button from 'pages/common/components/button/Button'
 
 import ReportOrderIssueScenarioList from './components/ReportOrderIssueScenarioList'
@@ -16,14 +16,14 @@ import css from './ReportOrderIssueFlowView.less'
 
 const ReportOrderIssueFlowView = () => {
     const history = useHistory()
-    const {shopName} = useParams<{shopName: string}>()
-    const {scenarios, selfServiceConfiguration, handleScenariosUpdate} =
+    const { shopName } = useParams<{ shopName: string }>()
+    const { scenarios, selfServiceConfiguration, handleScenariosUpdate } =
         useReportOrderIssueFlowScenarios(shopName)
     const [hasHoveredScenario, setHasHoveredScenario] = useState(false)
 
     const handleCreateScenarioClick = () => {
         history.push(
-            `/app/automation/shopify/${shopName}/order-management/report-issue/new`
+            `/app/automation/shopify/${shopName}/order-management/report-issue/new`,
         )
     }
 

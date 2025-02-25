@@ -6,7 +6,7 @@ type Props = {
     value: number
 }
 
-export function ProductStockQuantity({value}: Props) {
+export function ProductStockQuantity({ value }: Props) {
     let className
     if (value < 1) {
         className = css.danger

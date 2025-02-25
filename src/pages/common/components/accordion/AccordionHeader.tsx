@@ -1,16 +1,18 @@
+import React, { ReactNode } from 'react'
+
 import classnames from 'classnames'
-import React, {ReactNode} from 'react'
+
+import { useAccordionItemContext } from './AccordionItemContext'
 
 import css from './AccordionHeader.less'
-import {useAccordionItemContext} from './AccordionItemContext'
 
 export type AccordionHeaderProps = {
     action?: ReactNode
     children?: ReactNode
 }
 
-const AccordionHeader = ({action, children}: AccordionHeaderProps) => {
-    const {isExpanded, isDisabled, toggleItem} = useAccordionItemContext()
+const AccordionHeader = ({ action, children }: AccordionHeaderProps) => {
+    const { isExpanded, isDisabled, toggleItem } = useAccordionItemContext()
 
     return (
         <div

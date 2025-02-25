@@ -1,19 +1,19 @@
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {Redirect, useParams} from 'react-router-dom'
-import {Container} from 'reactstrap'
+import { Redirect, useParams } from 'react-router-dom'
+import { Container } from 'reactstrap'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationType} from 'models/integration/constants'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import { IntegrationType } from 'models/integration/constants'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import PageHeader from 'pages/common/components/PageHeader'
-import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
-import {CONVERT_ROUTE_PARAM_NAME} from 'pages/convert/common/constants'
-import {ConvertRouteParams} from 'pages/convert/common/types'
+import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
+import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
+import { ConvertRouteParams } from 'pages/convert/common/types'
 import css from 'pages/settings/settings.less'
-import {getIntegrationsByTypes} from 'state/integrations/selectors'
+import { getIntegrationsByTypes } from 'state/integrations/selectors'
 
-import {ClickTrackingCustomDomain} from '../ClickTrackingCustomDomain'
+import { ClickTrackingCustomDomain } from '../ClickTrackingCustomDomain'
 
 const ClickTrackingSettingsView = () => {
     const hasManyIntegrations =
@@ -57,7 +57,7 @@ const ClickTrackingSettingsView = () => {
 
 function ClickTrackingSettingsOrPaywallPage() {
     const isConvertSubscriber = useIsConvertSubscriber()
-    const {[CONVERT_ROUTE_PARAM_NAME]: integrationId} =
+    const { [CONVERT_ROUTE_PARAM_NAME]: integrationId } =
         useParams<ConvertRouteParams>()
 
     const redirectUrl = useMemo(() => {

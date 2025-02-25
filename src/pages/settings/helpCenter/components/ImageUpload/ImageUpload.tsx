@@ -1,16 +1,15 @@
-import React, {FunctionComponent, createRef} from 'react'
+import React, { createRef, FunctionComponent } from 'react'
 
 import {
-    Title,
-    DropZone,
     DropText,
+    DropZone,
+    DropZoneProps,
     HelpText,
     HelpTextProps,
-    DropZoneProps,
+    Title,
 } from '../../../../common/components/ImageUpload'
-
-import {replaceUploadUrls} from '../../utils/helpCenter.utils'
-import {useLocalImage} from './hooks'
+import { replaceUploadUrls } from '../../utils/helpCenter.utils'
+import { useLocalImage } from './hooks'
 
 import css from './ImageUpload.less'
 
@@ -46,7 +45,7 @@ export const ImageUpload: FunctionComponent<ImageUploadProps> = ({
         handleOnDropFile,
         handleOnRemoveFile,
         localImage,
-    } = useLocalImage({file, onChangeFile, isTouched})
+    } = useLocalImage({ file, onChangeFile, isTouched })
 
     const closeSpan = (
         <span
@@ -108,7 +107,7 @@ export const ImageUpload: FunctionComponent<ImageUploadProps> = ({
     return (
         <div className={css.container}>
             {title && (
-                <Title help={info} Tooltip={{style: {width: 180}}}>
+                <Title help={info} Tooltip={{ style: { width: 180 } }}>
                     {title}
                 </Title>
             )}

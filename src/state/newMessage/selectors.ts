@@ -1,20 +1,19 @@
-import {ContentState} from 'draft-js'
-import {fromJS, Map, List} from 'immutable'
-import {createSelector} from 'reselect'
+import { ContentState } from 'draft-js'
+import { fromJS, List, Map } from 'immutable'
+import { createSelector } from 'reselect'
 
-import {TicketMessageSourceType, TicketChannel} from 'business/types/ticket'
-import {isImmutable} from 'common/utils'
-import {IntegrationType} from 'models/integration/types'
-import {MacroAction, MacroActionName} from 'models/macroAction/types'
-import {isAccountActive} from 'state/currentAccount/selectors'
-import {getChannelSignature} from 'state/integrations/selectors'
-import {hasContentlessAction} from 'state/ticket/selectors'
+import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
+import { isImmutable } from 'common/utils'
+import { IntegrationType } from 'models/integration/types'
+import { MacroAction, MacroActionName } from 'models/macroAction/types'
+import { isAccountActive } from 'state/currentAccount/selectors'
+import { getChannelSignature } from 'state/integrations/selectors'
+import { hasContentlessAction } from 'state/ticket/selectors'
+import { RootState } from 'state/types'
+import { isForwardedMessage } from 'tickets/common/utils'
+import { createImmutableSelector } from 'utils'
 
-import {RootState} from 'state/types'
-import {isForwardedMessage} from 'tickets/common/utils'
-import {createImmutableSelector} from 'utils'
-
-import {NewMessageState, ReceiverProperty} from './types'
+import { NewMessageState, ReceiverProperty } from './types'
 
 export const getReceiversProperties = () => Object.values(ReceiverProperty)
 
@@ -24,7 +23,7 @@ export const getNewMessageState = (state: RootState): NewMessageState =>
 export const getLoading = createImmutableSelector(
     getNewMessageState,
     (state) =>
-        (state.getIn(['_internal', 'loading']) || fromJS({})) as Map<any, any>
+        (state.getIn(['_internal', 'loading']) || fromJS({})) as Map<any, any>,
 )
 
 // in props usage
@@ -40,27 +39,27 @@ export const makeIsLoading = (state: RootState) => (name: string) =>
 export const getShowConvertToForwardPopover = createSelector(
     getNewMessageState,
     (state) =>
-        state.getIn(['state', 'showConvertToForwardPopover'], false) as boolean
+        state.getIn(['state', 'showConvertToForwardPopover'], false) as boolean,
 )
 
 export const isDirty = createSelector(
     getNewMessageState,
-    (state) => state.getIn(['state', 'dirty'], false) as boolean
+    (state) => state.getIn(['state', 'dirty'], false) as boolean,
 )
 
 export const isCacheAdded = createSelector(
     getNewMessageState,
-    (state) => state.getIn(['state', 'cacheAdded'], false) as boolean
+    (state) => state.getIn(['state', 'cacheAdded'], false) as boolean,
 )
 
 export const isNewMessageEmailExtraAdded = createSelector(
     getNewMessageState,
-    (state) => state.getIn(['state', 'emailExtraAdded'], false) as boolean
+    (state) => state.getIn(['state', 'emailExtraAdded'], false) as boolean,
 )
 
 export const getNewMessage = createImmutableSelector(
     getNewMessageState,
-    (state) => (state.get('newMessage') || fromJS({})) as Map<any, any>
+    (state) => (state.get('newMessage') || fromJS({})) as Map<any, any>,
 )
 
 export const getNewMessageActions = createSelector(
@@ -68,15 +67,15 @@ export const getNewMessageActions = createSelector(
     (state) =>
         (
             (state.getIn(['newMessage', 'actions']) as List<any>) ?? fromJS([])
-        ).toJS() as MacroAction[]
+        ).toJS() as MacroAction[],
 )
 
 export const getNewMessageExternalTemplateAction = createSelector(
     getNewMessageActions,
     (actions) =>
         actions.find(
-            (action) => action.name === MacroActionName.ApplyExternalTemplate
-        )
+            (action) => action.name === MacroActionName.ApplyExternalTemplate,
+        ),
 )
 
 export const hasValidExternalTemplate = createSelector(
@@ -86,63 +85,63 @@ export const hasValidExternalTemplate = createSelector(
         const isWhatsAppChannel =
             newMessage.get('channel') === TicketChannel.WhatsApp
         const externalTemplateAction = newMessageActions.find(
-            (action) => action.name === MacroActionName.ApplyExternalTemplate
+            (action) => action.name === MacroActionName.ApplyExternalTemplate,
         )
 
         if (!isWhatsAppChannel || !externalTemplateAction) return false
 
         const hasIncompleteBodyVariables =
             !!externalTemplateAction?.arguments.body?.find(
-                (argument) => !argument.value
+                (argument) => !argument.value,
             )
         const hasIncompleteHeaderVariables =
             !!externalTemplateAction?.arguments.header?.find(
-                (argument) => !argument.value
+                (argument) => !argument.value,
             )
 
         return !hasIncompleteBodyVariables && !hasIncompleteHeaderVariables
-    }
+    },
 )
 
 export const getNewMessageContentState = createImmutableSelector(
     getNewMessageState,
-    (state) => state.getIn(['state', 'contentState']) as ContentState
+    (state) => state.getIn(['state', 'contentState']) as ContentState,
 )
 
 export const getNewMessageType = createSelector(
     getNewMessage,
     (state) =>
         (state.getIn(['source', 'type']) as TicketMessageSourceType) ||
-        TicketMessageSourceType.Email
+        TicketMessageSourceType.Email,
 )
 
 export const getNewMessageChannel = createSelector(
     getNewMessage,
-    (state) => (state.get('channel') as TicketChannel) || TicketChannel.Email
+    (state) => (state.get('channel') as TicketChannel) || TicketChannel.Email,
 )
 
 export const getNewMessageSource = createImmutableSelector(
     getNewMessage,
-    (state) => (state.get('source') || fromJS({})) as Map<any, any>
+    (state) => (state.get('source') || fromJS({})) as Map<any, any>,
 )
 
 export const getNewMessageExtra = createSelector(
     getNewMessage,
-    (state) => state.getIn(['source', 'extra'], fromJS({})) as Map<any, any>
+    (state) => state.getIn(['source', 'extra'], fromJS({})) as Map<any, any>,
 )
 
 export const getNewMessageAttachments = createImmutableSelector(
     getNewMessage,
-    (state) => (state.get('attachments') || fromJS([])) as List<any>
+    (state) => (state.get('attachments') || fromJS([])) as List<any>,
 )
 
 export const isNewMessagePublic = createImmutableSelector(
     getNewMessage,
-    (state) => (state.get('public') as boolean) || false
+    (state) => (state.get('public') as boolean) || false,
 )
 
 export const isForward = createSelector(getNewMessage, (message) =>
-    isForwardedMessage(message)
+    isForwardedMessage(message),
 )
 
 // in props usage
@@ -151,7 +150,7 @@ export const isForward = createSelector(getNewMessage, (message) =>
 export const getNewMessageSourceProperty = (property: string) =>
     createImmutableSelector(
         getNewMessageSource,
-        (state) => (state.get(property) || fromJS({})) as Map<any, any>
+        (state) => (state.get(property) || fromJS({})) as Map<any, any>,
     )
 
 // in component usage
@@ -177,17 +176,17 @@ export const getContactProperties = (sourceType: TicketMessageSourceType) =>
     createImmutableSelector(
         getMandatoryContactProperties(),
         getOptionalContactProperties(sourceType),
-        (mandatory, optional) => mandatory.concat(optional)
+        (mandatory, optional) => mandatory.concat(optional),
     ) as (state?: RootState) => ReceiverProperty[]
 
 export const getNewMessageMandatoryContactProperties = createImmutableSelector(
     getMandatoryContactProperties(),
-    (contactProperties) => contactProperties
+    (contactProperties) => contactProperties,
 )
 
 export const getNewMessageContactProperties = createImmutableSelector(
     getNewMessageType,
-    (sourceType) => getContactProperties(sourceType)({} as RootState)
+    (sourceType) => getContactProperties(sourceType)({} as RootState),
 )
 
 // true if mandatory contact properties (such as 'to') are not empty for current new message
@@ -199,7 +198,7 @@ export const areNewMessageContactPropertiesFulfilled = createImmutableSelector(
             const value = getFromSource(property)
             return isImmutable(value) ? !value.isEmpty() : !!value
         })
-    }
+    },
 )
 
 // return all recipients values merged in an immutable array
@@ -220,12 +219,12 @@ export const getNewMessageRecipients = createImmutableSelector(
                     return nextResult
                 }, fromJS([]))
         )
-    }
+    },
 )
 
 export const hasNewMessageRecipients = createSelector(
     getNewMessageRecipients,
-    (recipients) => !recipients.isEmpty()
+    (recipients) => !recipients.isEmpty(),
 )
 
 export const hasContent = createSelector(
@@ -237,7 +236,7 @@ export const hasContent = createSelector(
             (message.get('attachments') || fromJS([])) as List<any>
         ).isEmpty()
         return hasText || hasAttachments || isForward
-    }
+    },
 )
 
 export const canSend = createSelector(
@@ -253,14 +252,14 @@ export const canSend = createSelector(
         isPublic,
         hasContent,
         hasContentlessAction,
-        hasValidExternalTemplate
+        hasValidExternalTemplate,
     ) => {
         return (
             isAccountActive &&
             (hasRecipients || !isPublic) &&
             (hasContent || hasContentlessAction || hasValidExternalTemplate)
         )
-    }
+    },
 )
 
 export const getNewMessageSignature = (state: RootState): Map<any, any> => {
@@ -268,7 +267,7 @@ export const getNewMessageSignature = (state: RootState): Map<any, any> => {
     const sourceFrom = getNewMessageSourceProperty('from')(state)
     return getChannelSignature(
         sourceType as unknown as IntegrationType,
-        sourceFrom.get('address')
+        sourceFrom.get('address'),
     )(state)
 }
 
@@ -276,5 +275,5 @@ export const getNewMessageDiscountCodes = createImmutableSelector(
     getNewMessageState,
     (state) =>
         (state.getIn(['state', 'inserted_discounts']) as List<any>) ||
-        fromJS([])
+        fromJS([]),
 )

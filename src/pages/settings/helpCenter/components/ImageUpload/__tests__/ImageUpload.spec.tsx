@@ -1,7 +1,8 @@
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import React from 'react'
 
-import {ImageUpload} from '../ImageUpload'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+
+import { ImageUpload } from '../ImageUpload'
 
 describe('<ImageUpload />', () => {
     const changeFileFn = jest.fn()
@@ -26,14 +27,14 @@ describe('<ImageUpload />', () => {
     })
 
     it('matches snapshot', () => {
-        const {container} = render(<ImageUpload {...baseProps} />)
+        const { container } = render(<ImageUpload {...baseProps} />)
 
         expect(container).toMatchSnapshot()
     })
 
     it('shows the defaultPreview only if the component is in untouched state', async () => {
-        const {rerender} = render(
-            <ImageUpload {...baseProps} defaultPreview="preview.png" />
+        const { rerender } = render(
+            <ImageUpload {...baseProps} defaultPreview="preview.png" />,
         )
 
         await screen.findByAltText('preview.png')
@@ -44,7 +45,7 @@ describe('<ImageUpload />', () => {
                 isTouched
                 file={dummyFile}
                 defaultPreview="preview.png"
-            />
+            />,
         )
 
         await screen.findByAltText('image.png')
@@ -62,7 +63,7 @@ describe('<ImageUpload />', () => {
                 {...baseProps}
                 isTouched={false}
                 defaultPreview={oldBucketAttachmentUrl}
-            />
+            />,
         )
 
         await screen.findByAltText(expectedUrl)
@@ -79,7 +80,7 @@ describe('<ImageUpload />', () => {
                     items: [dummyFile],
                     files: [dummyFile],
                 },
-            })
+            }),
         )
 
         expect(changeFileFn).toHaveBeenCalled()

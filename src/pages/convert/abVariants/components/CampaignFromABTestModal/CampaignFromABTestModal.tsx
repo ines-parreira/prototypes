@@ -1,24 +1,24 @@
-import {Badge} from '@gorgias/merchant-ui-kit'
-import React, {useCallback, useMemo, useState} from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
+
+import { Badge } from '@gorgias/merchant-ui-kit'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {CampaignCreatePayload} from 'models/convert/campaign/types'
+import { CampaignCreatePayload } from 'models/convert/campaign/types'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import RadioButton from 'pages/common/components/RadioButton'
-import {generateVariantName} from 'pages/convert/abVariants/utils/generateVariantName'
-import {useCreateCampaign} from 'pages/convert/campaigns/hooks/useCreateCampaign'
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
-
-import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
-import {createCampaignFromVariant} from 'pages/convert/campaigns/utils/createCampaignFromVariant'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import { generateVariantName } from 'pages/convert/abVariants/utils/generateVariantName'
+import { useCreateCampaign } from 'pages/convert/campaigns/hooks/useCreateCampaign'
+import { Campaign } from 'pages/convert/campaigns/types/Campaign'
+import { CampaignVariant } from 'pages/convert/campaigns/types/CampaignVariant'
+import { createCampaignFromVariant } from 'pages/convert/campaigns/utils/createCampaignFromVariant'
+import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import history from 'pages/history'
-import {getIntegrationById} from 'state/integrations/selectors'
-import {toJS} from 'utils'
+import { getIntegrationById } from 'state/integrations/selectors'
+import { toJS } from 'utils'
 
 import css from './CampaignFromABTestModal.less'
 
@@ -37,16 +37,16 @@ export type VariantEntry = {
 }
 
 const CampaignFromABTestModal: React.FC<Props> = (props) => {
-    const {isOpen, campaign, integrationId, onClose} = props
+    const { isOpen, campaign, integrationId, onClose } = props
 
     const [selectedVariant, setSelectedVariant] = useState(campaign.id)
 
     const integration = useAppSelector(getIntegrationById(integrationId))
-    const {channelConnection} = useGetOrCreateChannelConnection(
-        toJS(integration)
+    const { channelConnection } = useGetOrCreateChannelConnection(
+        toJS(integration),
     )
 
-    const {mutateAsync: createCampaign, isLoading} = useCreateCampaign()
+    const { mutateAsync: createCampaign, isLoading } = useCreateCampaign()
 
     const onVariantClick = (value: any) => {
         setSelectedVariant(value)
@@ -66,24 +66,24 @@ const CampaignFromABTestModal: React.FC<Props> = (props) => {
                 isWinner: campaign.ab_group?.winner_variant_id === variant.id,
             })),
         ],
-        [campaign]
+        [campaign],
     )
 
     const handleCreateCampaign = useCallback(async () => {
         if (!!channelConnection) {
             const selectedVariantEntry = variants.find(
-                (variant) => variant.variantId === selectedVariant
+                (variant) => variant.variantId === selectedVariant,
             )
             const campaignData = createCampaignFromVariant(
                 campaign,
                 channelConnection.id,
-                selectedVariantEntry?.variant
+                selectedVariantEntry?.variant,
             ) as CampaignCreatePayload
             const response = await createCampaign([undefined, campaignData])
             const newCampaign = response?.data as Campaign
 
             history.push(
-                `/app/convert/${integrationId}/campaigns/${newCampaign?.id}`
+                `/app/convert/${integrationId}/campaigns/${newCampaign?.id}`,
             )
         }
     }, [

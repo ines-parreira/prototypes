@@ -6,41 +6,38 @@ import {
     ContextBanner,
     useBanners,
 } from 'AlertBanners'
-import {FeatureFlagKey} from 'config/featureFlags'
-
-import {useFlag} from 'core/flags'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationType} from 'models/integration/constants'
-
+import { IntegrationType } from 'models/integration/constants'
 import useStoresRequiringScriptTagMigration from 'pages/common/components/ScriptTagMigrationBanner/hooks/useStoresRequiringScriptTagMigration'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {makeGetRedirectUri} from 'state/integrations/selectors'
-
-import {isAdmin} from 'utils'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { makeGetRedirectUri } from 'state/integrations/selectors'
+import { isAdmin } from 'utils'
 
 export function useScriptTagMigrationBanner() {
-    const {addBanner, removeBanner} = useBanners()
+    const { addBanner, removeBanner } = useBanners()
 
     const bannerList: Record<string, boolean> = useFlag(
         FeatureFlagKey.GlobalBannerRefactor,
         {
             scriptTagMigrationBanner: false,
-        }
+        },
     )
 
     const migrationDueDate: string = useFlag(
         FeatureFlagKey.ChatScopeUpdateDueDate,
-        ''
+        '',
     )
 
     const showMigrationBanner: boolean = useFlag(
         FeatureFlagKey.ChatScopeUpdateBanner,
-        false
+        false,
     )
 
     const reinstallsOnShopifyCallback: boolean = useFlag(
         FeatureFlagKey.ChatScopeReinstallOnShopifyCallback,
-        false
+        false,
     )
 
     const getRedirectUri = useAppSelector(makeGetRedirectUri)
@@ -58,12 +55,13 @@ export function useScriptTagMigrationBanner() {
 
     const storesRequiringPermissionUpdates =
         storesRequiringScriptTagMigration.filter(
-            ({storeRequiresPermissionUpdates}) => storeRequiresPermissionUpdates
+            ({ storeRequiresPermissionUpdates }) =>
+                storeRequiresPermissionUpdates,
         )
 
     const gorgiasChatsRequiringReinstall =
         storesRequiringScriptTagMigration.filter(
-            ({gorgiasChatRequiresReinstall}) => gorgiasChatRequiresReinstall
+            ({ gorgiasChatRequiresReinstall }) => gorgiasChatRequiresReinstall,
         )
 
     const redirectUri = getRedirectUri(IntegrationType.Shopify)
@@ -82,7 +80,7 @@ export function useScriptTagMigrationBanner() {
             ? '/app/settings/channels/gorgias_chat'
             : `/app/settings/channels/gorgias_chat/${
                   gorgiasChatsRequiringReinstall[0]?.gorgiasChatIntegration?.get(
-                      'id'
+                      'id',
                   ) as string
               }/installation`
 

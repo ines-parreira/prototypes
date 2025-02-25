@@ -1,13 +1,13 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment'
 
-import {useMetric} from 'hooks/reporting/useMetric'
-import {voiceCallCountQueryFactory} from 'models/reporting/queryFactories/voice/voiceCall'
-import {StatsFilters} from 'models/stat/types'
-import {formatReportingQueryDate} from 'utils/reporting'
-import {assumeMock} from 'utils/testing'
+import { useMetric } from 'hooks/reporting/useMetric'
+import { voiceCallCountQueryFactory } from 'models/reporting/queryFactories/voice/voiceCall'
+import { StatsFilters } from 'models/stat/types'
+import { formatReportingQueryDate } from 'utils/reporting'
+import { assumeMock } from 'utils/testing'
 
-import {useVoiceCallCountMetric} from '../useVoiceCallCountMetric'
+import { useVoiceCallCountMetric } from '../useVoiceCallCountMetric'
 
 jest.mock('hooks/reporting/useMetric')
 const useMetricMock = assumeMock(useMetric)
@@ -26,7 +26,7 @@ describe('useVoiceCallCountMetric', () => {
         } as any)
 
         const results = renderHook(() =>
-            useVoiceCallCountMetric(statsFilters, 'UTC')
+            useVoiceCallCountMetric(statsFilters, 'UTC'),
         )
 
         expect(useMetricMock.mock.calls[0]).toEqual([

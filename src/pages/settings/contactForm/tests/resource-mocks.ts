@@ -1,16 +1,16 @@
 import MockAdapter from 'axios-mock-adapter'
 
 import {
-    ContactFormListFixtures,
-    ContactFormGeneric500ErrorFixture,
-    ContactFormFixture,
     ContactFormEmptyListFixture,
+    ContactFormFixture,
+    ContactFormGeneric500ErrorFixture,
+    ContactFormListFixtures,
 } from '../fixtures/contacForm'
 import {
-    PageEmbedmentsListFixture,
+    PageEmbedmentFixture,
     PageEmbedmentsEmptyListFixture,
     PageEmbedmentsGeneric500ErrorFixture,
-    PageEmbedmentFixture,
+    PageEmbedmentsListFixture,
 } from '../fixtures/pageEmbedment'
 import {
     ShopifyPagesEmptyListFixture,
@@ -28,7 +28,7 @@ export const mockResourceServerReplies = (
         getContactForms: 'success',
         createContactForm: 'success',
         getShopifyPages: 'success',
-    }
+    },
 ) => {
     if (options.getContactForms === 'success') {
         mockedServer

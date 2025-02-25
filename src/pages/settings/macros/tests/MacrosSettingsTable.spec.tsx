@@ -1,19 +1,20 @@
-import {QueryClient, useQueryClient} from '@tanstack/react-query'
-import {act, render, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import React, {ComponentProps} from 'react'
-import {useRouteMatch} from 'react-router-dom'
+import React, { ComponentProps } from 'react'
 
-import {useFlag} from 'core/flags'
-import {macros} from 'fixtures/macro'
-import {useBulkArchiveMacros, useBulkUnarchiveMacros} from 'hooks/macros'
+import { QueryClient, useQueryClient } from '@tanstack/react-query'
+import { act, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { useRouteMatch } from 'react-router-dom'
+
+import { useFlag } from 'core/flags'
+import { macros } from 'fixtures/macro'
+import { useBulkArchiveMacros, useBulkUnarchiveMacros } from 'hooks/macros'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
-import {OrderDirection} from 'models/api/types'
-import {MacroSortableProperties} from 'models/macro/types'
-import {assumeMock} from 'utils/testing'
+import { OrderDirection } from 'models/api/types'
+import { MacroSortableProperties } from 'models/macro/types'
+import { assumeMock } from 'utils/testing'
 
-import {MacrosSettingsTable} from '../MacrosSettingsTable'
+import { MacrosSettingsTable } from '../MacrosSettingsTable'
 
 jest.mock('@gorgias/merchant-ui-kit', () => {
     return {
@@ -48,10 +49,10 @@ jest.mock(
             ...jest.requireActual('react-router-dom'),
             useRouteMatch: jest.fn(),
             Link: jest.fn(
-                ({children}: {children: React.ReactNode}) => children
+                ({ children }: { children: React.ReactNode }) => children,
             ),
-            NavLink: ({children}: {children: React.ReactNode}) => children,
-        }) as Record<string, unknown>
+            NavLink: ({ children }: { children: React.ReactNode }) => children,
+        }) as Record<string, unknown>,
 )
 const mockUseRouteMatch = useRouteMatch as jest.Mock
 
@@ -95,7 +96,7 @@ describe('<MacrosSettingsTable />', () => {
             () =>
                 ({
                     invalidateQueries: invalidateQueriesMock,
-                }) as unknown as QueryClient
+                }) as unknown as QueryClient,
         )
     })
 
@@ -116,8 +117,8 @@ describe('<MacrosSettingsTable />', () => {
     } as unknown as ComponentProps<typeof MacrosSettingsTable>
 
     it('should display a loading when fetching macros', () => {
-        const {rerender} = render(
-            <MacrosSettingsTable {...minProps} isLoading={true} />
+        const { rerender } = render(
+            <MacrosSettingsTable {...minProps} isLoading={true} />,
         )
 
         expect(screen.getByText('Loading...')).toBeInTheDocument()
@@ -144,7 +145,7 @@ describe('<MacrosSettingsTable />', () => {
         userEvent.click(screen.getAllByTitle('Duplicate macro')[0])
 
         expect(minProps.onMacroDuplicate).toHaveBeenCalledWith(
-            macrosFixtures[0]
+            macrosFixtures[0],
         )
     })
 
@@ -155,7 +156,7 @@ describe('<MacrosSettingsTable />', () => {
             userEvent.click(screen.getAllByTitle('Delete macro')[0])
         })
         act(() => {
-            userEvent.click(screen.getByText('Confirm', {exact: false}))
+            userEvent.click(screen.getByText('Confirm', { exact: false }))
         })
 
         expect(minProps.onMacroDelete).toHaveBeenCalledWith(1)
@@ -172,7 +173,7 @@ describe('<MacrosSettingsTable />', () => {
         },
     ])(
         'should change sort column when clicking header cell',
-        ({label, property}) => {
+        ({ label, property }) => {
             render(<MacrosSettingsTable {...minProps} />)
 
             userEvent.click(screen.getByText(label))
@@ -180,9 +181,9 @@ describe('<MacrosSettingsTable />', () => {
             expect(minProps.onSortOptionsChange).toHaveBeenNthCalledWith(
                 1,
                 property,
-                OrderDirection.Asc
+                OrderDirection.Asc,
             )
-        }
+        },
     )
 
     it('should invert sorting to desc order when clicking on the current sorted property', () => {
@@ -192,7 +193,7 @@ describe('<MacrosSettingsTable />', () => {
                 options={{
                     order_by: `${MacroSortableProperties.Name}:${OrderDirection.Asc}`,
                 }}
-            />
+            />,
         )
 
         userEvent.click(screen.getByText('Macro'))
@@ -200,7 +201,7 @@ describe('<MacrosSettingsTable />', () => {
 
         expect(minProps.onSortOptionsChange).toHaveBeenCalledWith(
             MacroSortableProperties.Name,
-            OrderDirection.Desc
+            OrderDirection.Desc,
         )
     })
 
@@ -211,7 +212,7 @@ describe('<MacrosSettingsTable />', () => {
                 options={{
                     order_by: `${MacroSortableProperties.Name}:${OrderDirection.Desc}`,
                 }}
-            />
+            />,
         )
 
         userEvent.click(screen.getByText('Macro'))
@@ -219,7 +220,7 @@ describe('<MacrosSettingsTable />', () => {
 
         expect(minProps.onSortOptionsChange).toHaveBeenCalledWith(
             MacroSortableProperties.Name,
-            OrderDirection.Asc
+            OrderDirection.Asc,
         )
     })
 
@@ -229,12 +230,12 @@ describe('<MacrosSettingsTable />', () => {
         userEvent.click(screen.getByText('Usage count'))
         expect(minProps.onSortOptionsChange).toHaveBeenLastCalledWith(
             MacroSortableProperties.Usage,
-            OrderDirection.Desc
+            OrderDirection.Desc,
         )
         userEvent.click(screen.getByText('Last updated'))
         expect(minProps.onSortOptionsChange).toHaveBeenLastCalledWith(
             MacroSortableProperties.UpdatedDatetime,
-            OrderDirection.Desc
+            OrderDirection.Desc,
         )
     })
 
@@ -246,17 +247,17 @@ describe('<MacrosSettingsTable />', () => {
                 {...minProps}
                 selectedMacrosIds={selectedMacrosIds}
                 macros={macrosFixtures}
-            />
+            />,
         )
 
         screen.getByText('Archive').click()
 
         expect(mockMutateBulkArchive).toHaveBeenCalledWith({
-            data: {ids: selectedMacrosIds},
+            data: { ids: selectedMacrosIds },
         })
 
         await waitFor(() =>
-            expect(minProps.setSelectedMacrosIds).toHaveBeenCalledWith([])
+            expect(minProps.setSelectedMacrosIds).toHaveBeenCalledWith([]),
         )
     })
 
@@ -268,16 +269,16 @@ describe('<MacrosSettingsTable />', () => {
                 {...minProps}
                 selectedMacrosIds={selectedMacrosIds}
                 macros={macrosFixtures}
-            />
+            />,
         )
 
         screen.getByText('Archive').click()
 
         expect(mockMutateBulkArchive).toHaveBeenCalledWith({
-            data: {ids: selectedMacrosIds},
+            data: { ids: selectedMacrosIds },
         })
         await waitFor(() =>
-            expect(minProps.setSelectedMacrosIds).toHaveBeenCalledWith([])
+            expect(minProps.setSelectedMacrosIds).toHaveBeenCalledWith([]),
         )
     })
 
@@ -290,16 +291,16 @@ describe('<MacrosSettingsTable />', () => {
                 {...minProps}
                 selectedMacrosIds={selectedMacrosIds}
                 macros={macrosFixtures}
-            />
+            />,
         )
 
         screen.getByText('Unarchive').click()
 
         expect(mockMutateBulkUnarchive).toHaveBeenCalledWith({
-            data: {ids: selectedMacrosIds},
+            data: { ids: selectedMacrosIds },
         })
         await waitFor(() =>
-            expect(minProps.setSelectedMacrosIds).toHaveBeenCalledWith([])
+            expect(minProps.setSelectedMacrosIds).toHaveBeenCalledWith([]),
         )
     })
 
@@ -314,12 +315,12 @@ describe('<MacrosSettingsTable />', () => {
         const macroIds = [1, 2]
 
         mockUseFlag.mockReturnValue(true)
-        const {rerender} = render(
+        const { rerender } = render(
             <MacrosSettingsTable
                 {...minProps}
                 macros={macrosFixtures}
                 selectedMacrosIds={[]}
-            />
+            />,
         )
 
         const checkboxAll = screen.getByLabelText('Select all')
@@ -336,7 +337,7 @@ describe('<MacrosSettingsTable />', () => {
                 {...minProps}
                 macros={macrosFixtures}
                 selectedMacrosIds={[1]}
-            />
+            />,
         )
         expect(checkboxAll).toHaveProperty('indeterminate', true)
 
@@ -349,7 +350,7 @@ describe('<MacrosSettingsTable />', () => {
                 {...minProps}
                 macros={macrosFixtures}
                 selectedMacrosIds={[]}
-            />
+            />,
         )
         expect(checkboxAll).toHaveProperty('indeterminate', false)
         expect(checkboxAll).not.toBeChecked()
@@ -363,7 +364,7 @@ describe('<MacrosSettingsTable />', () => {
                 {...minProps}
                 macros={macrosFixtures}
                 selectedMacrosIds={macroIds}
-            />
+            />,
         )
         expect(checkboxAll).toBeChecked()
 

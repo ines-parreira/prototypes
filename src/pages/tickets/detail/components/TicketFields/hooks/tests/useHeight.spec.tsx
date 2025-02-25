@@ -1,7 +1,8 @@
-import {render} from '@testing-library/react'
-import {renderHook, act} from '@testing-library/react-hooks/dom'
+import React, { createRef, forwardRef } from 'react'
+
+import { render } from '@testing-library/react'
+import { act, renderHook } from '@testing-library/react-hooks/dom'
 import noop from 'lodash/noop'
-import React, {createRef, forwardRef} from 'react'
 
 import useHeight from '../useHeight'
 
@@ -30,14 +31,14 @@ const HookWrapper = forwardRef<HTMLDivElement, Record<string, unknown>>(
                 width: 200,
             }}
         />
-    )
+    ),
 )
 
 let mockCounter = 0
 jest.spyOn(Element.prototype, 'getBoundingClientRect').mockImplementation(
     function () {
         // @ts-ignore ts(2683)
-        const {left, top, width, height} = window.getComputedStyle(this)
+        const { left, top, width, height } = window.getComputedStyle(this)
 
         mockCounter += 10
         return {
@@ -46,7 +47,7 @@ jest.spyOn(Element.prototype, 'getBoundingClientRect').mockImplementation(
             width: parseInt(width) + mockCounter,
             height: parseInt(height),
         } as unknown as DOMRect
-    }
+    },
 )
 
 const mockScrollHeight = 100
@@ -64,7 +65,7 @@ describe('useHeight', () => {
 
     it('should return default height', () => {
         const ref = createRef<HTMLDivElement>()
-        const {result} = renderHook(() => useHeight(ref, 0, false))
+        const { result } = renderHook(() => useHeight(ref, 0, false))
 
         expect(result.current).toBeUndefined()
     })
@@ -81,7 +82,7 @@ describe('useHeight', () => {
     it('should set the initial value for the height', () => {
         const ref = createRef<HTMLDivElement>()
         render(<HookWrapper ref={ref} />)
-        const {result} = renderHook(() => useHeight(ref, 5, true))
+        const { result } = renderHook(() => useHeight(ref, 5, true))
 
         expect(result.current).toBe(150)
     })
@@ -89,7 +90,7 @@ describe('useHeight', () => {
     it('should track the height value', () => {
         const ref = createRef<HTMLDivElement>()
         render(<HookWrapper ref={ref} />)
-        const {result} = renderHook(() => useHeight(ref, 5, true))
+        const { result } = renderHook(() => useHeight(ref, 5, true))
 
         act(() => {
             resizeListener({})

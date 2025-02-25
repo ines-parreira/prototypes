@@ -1,7 +1,8 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {useCallback, useState} from 'react'
+import { useCallback, useState } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
@@ -11,9 +12,12 @@ import {
     useDeleteHelpCenterTranslation,
     useUpdateHelpCenter,
 } from 'models/helpCenter/queries'
-import {HelpCenter, HelpCenterCreationWizardStep} from 'models/helpCenter/types'
-import {IntegrationType} from 'models/integration/constants'
-import {Integration} from 'models/integration/types'
+import {
+    HelpCenter,
+    HelpCenterCreationWizardStep,
+} from 'models/helpCenter/types'
+import { IntegrationType } from 'models/integration/constants'
+import { Integration } from 'models/integration/types'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 import history from 'pages/history'
 import {
@@ -24,15 +28,15 @@ import {
     NEXT_ACTION,
     PlatformType,
 } from 'pages/settings/helpCenter/constants'
-import {useEnableArticleRecommendation} from 'pages/settings/helpCenter/hooks/useEnableArticleRecommendation'
-import {HelpCenterLayout} from 'pages/settings/helpCenter/types/layout.enum'
-import {getNewHelpCenterTranslation} from 'pages/settings/helpCenter/utils/helpCenter.utils'
-import {getCurrentDomain} from 'state/currentAccount/selectors'
+import { useEnableArticleRecommendation } from 'pages/settings/helpCenter/hooks/useEnableArticleRecommendation'
+import { HelpCenterLayout } from 'pages/settings/helpCenter/types/layout.enum'
+import { getNewHelpCenterTranslation } from 'pages/settings/helpCenter/utils/helpCenter.utils'
+import { getCurrentDomain } from 'state/currentAccount/selectors'
 import {
     helpCenterCreated,
     helpCenterUpdated,
 } from 'state/entities/helpCenter/helpCenters'
-import {getIntegrationsByTypes} from 'state/integrations/selectors'
+import { getIntegrationsByTypes } from 'state/integrations/selectors'
 
 import {
     getHelpCenterWizardInitialData,
@@ -79,7 +83,7 @@ type HelpCenterWizardOutput = {
 }
 
 const getNewHelpCenterSearchParams = (
-    successModalParams?: SuccessModalParams
+    successModalParams?: SuccessModalParams,
 ) => {
     if (!successModalParams || successModalParams.articlesCount === undefined)
         return undefined
@@ -102,7 +106,7 @@ const getNewHelpCenterSearchParams = (
 
 export const useHelpCenterCreationWizard = (
     helpCenter: HelpCenter | undefined,
-    step: HelpCenterCreationWizardStep
+    step: HelpCenterCreationWizardStep,
 ): HelpCenterWizardOutput => {
     const isHelpCenterOnePagerEnabled =
         useFlags()[FeatureFlagKey.HelpCenterOnePager] || false
@@ -116,15 +120,15 @@ export const useHelpCenterCreationWizard = (
             IntegrationType.Shopify,
             IntegrationType.BigCommerce,
             IntegrationType.Magento2,
-        ])
+        ]),
     )
 
     const [newHelpCenter, setNewHelpCenter] =
         useState<HelpCenterCreationWizard>(defaultHelpCenter)
 
-    const {mutateAsync: createHelpCenterMutateAsync, isLoading: isCreating} =
+    const { mutateAsync: createHelpCenterMutateAsync, isLoading: isCreating } =
         useCreateHelpCenter()
-    const {mutateAsync: updateHelpCenterMutateAsync, isLoading: isUpdating} =
+    const { mutateAsync: updateHelpCenterMutateAsync, isLoading: isUpdating } =
         useUpdateHelpCenter()
     const {
         mutateAsync: createHelpCenterTranslationMutateAsync,
@@ -143,18 +147,18 @@ export const useHelpCenterCreationWizard = (
         const initialData = getHelpCenterWizardInitialData(
             accountCurrentDomain,
             allStoreIntegrations,
-            isHelpCenterOnePagerEnabled
+            isHelpCenterOnePagerEnabled,
         )
 
         setNewHelpCenter(
-            helpCenter ? newHelpCenter : {...newHelpCenter, ...initialData}
+            helpCenter ? newHelpCenter : { ...newHelpCenter, ...initialData },
         )
     })
 
     const handleAction = (
         redirectTo: NEXT_ACTION,
         id?: number,
-        searchParams?: string
+        searchParams?: string,
     ) => {
         switch (redirectTo) {
             case NEXT_ACTION.BACK_HOME:
@@ -187,7 +191,7 @@ export const useHelpCenterCreationWizard = (
                 ...payload,
             }))
         },
-        [setNewHelpCenter]
+        [setNewHelpCenter],
     )
 
     const handleCreateHelpCenter = async (payload: Partial<HelpCenter>) => {
@@ -207,7 +211,7 @@ export const useHelpCenterCreationWizard = (
             handleOnError(
                 error,
                 'Help center not successfully created.',
-                dispatch
+                dispatch,
             )
 
             return null
@@ -222,7 +226,7 @@ export const useHelpCenterCreationWizard = (
         try {
             const res = await updateHelpCenterMutateAsync([
                 undefined,
-                {help_center_id: helpCenter.id},
+                { help_center_id: helpCenter.id },
                 fieldsToUpdate,
             ])
 
@@ -235,7 +239,7 @@ export const useHelpCenterCreationWizard = (
             handleOnError(
                 error,
                 'Help center not successfully updated.',
-                dispatch
+                dispatch,
             )
 
             return null
@@ -273,7 +277,7 @@ export const useHelpCenterCreationWizard = (
     const handleTranslations = async (helpCenterId: number) => {
         const otherLocales = !isUpdate
             ? newHelpCenter?.supportedLocales?.filter(
-                  (locale) => locale !== newHelpCenter.defaultLocale
+                  (locale) => locale !== newHelpCenter.defaultLocale,
               )
             : newHelpCenter?.supportedLocales
 
@@ -285,7 +289,7 @@ export const useHelpCenterCreationWizard = (
                 ) {
                     return createHelpCenterTranslationMutateAsync([
                         undefined,
-                        {help_center_id: helpCenterId},
+                        { help_center_id: helpCenterId },
                         getNewHelpCenterTranslation(locale),
                     ])
                 }
@@ -299,7 +303,7 @@ export const useHelpCenterCreationWizard = (
                 ) {
                     return deleteHelpCenterTranslationMutateAsync([
                         undefined,
-                        {help_center_id: helpCenterId, locale},
+                        { help_center_id: helpCenterId, locale },
                     ])
                 }
             }) || []
@@ -311,7 +315,7 @@ export const useHelpCenterCreationWizard = (
             handleOnError(
                 error,
                 'Translations not successfully updated.',
-                dispatch
+                dispatch,
             )
         }
     }
@@ -324,7 +328,7 @@ export const useHelpCenterCreationWizard = (
                     helpCenterUpdated({
                         ...payload,
                         supported_locales: newHelpCenter.supportedLocales,
-                    })
+                    }),
                 )
                 break
             case HelpCenterCreationWizardStep.Branding:
@@ -332,7 +336,7 @@ export const useHelpCenterCreationWizard = (
                 dispatch(
                     helpCenterUpdated({
                         ...payload,
-                    })
+                    }),
                 )
                 break
             default:

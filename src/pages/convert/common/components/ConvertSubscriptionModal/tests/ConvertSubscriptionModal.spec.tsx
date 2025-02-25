@@ -1,18 +1,19 @@
-import {waitFor, screen} from '@testing-library/react'
-import MockAdapter from 'axios-mock-adapter'
-import {fromJS} from 'immutable'
-import moment from 'moment'
 import React from 'react'
+
+import { screen, waitFor } from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
+import { fromJS } from 'immutable'
+import moment from 'moment'
 import * as ReactRouterDom from 'react-router-dom'
 
-import {UserRole} from 'config/types/user'
-import {account} from 'fixtures/account'
-import {billingState} from 'fixtures/billing'
+import { UserRole } from 'config/types/user'
+import { account } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
 import client from 'models/api/resources'
 import ConvertSubscriptionModal from 'pages/convert/common/components/ConvertSubscriptionModal/ConvertSubscriptionModal'
-import {payingWithCreditCard} from 'pages/settings/new_billing/fixtures'
-import {RootState} from 'state/types'
-import {renderWithStoreAndQueryClientAndRouter} from 'tests/renderWithStoreAndQueryClientAndRouter'
+import { payingWithCreditCard } from 'pages/settings/new_billing/fixtures'
+import { RootState } from 'state/types'
+import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 const useLocationSpy = jest.spyOn(ReactRouterDom, 'useLocation')
 
@@ -29,7 +30,7 @@ describe('ConvertSubscriptionModal', () => {
 
     const defaultState: Partial<RootState> = {
         currentUser: fromJS({
-            role: {name: UserRole.Admin},
+            role: { name: UserRole.Admin },
         }),
         currentAccount: fromJS({
             ...account,
@@ -57,17 +58,17 @@ describe('ConvertSubscriptionModal', () => {
     }
 
     beforeEach(() => {
-        useLocationSpy.mockReturnValue({pathname: defaultLocation} as any)
+        useLocationSpy.mockReturnValue({ pathname: defaultLocation } as any)
     })
 
     it('should not render', () => {
         renderWithStoreAndQueryClientAndRouter(
             <ConvertSubscriptionModal {...minProps} isOpen={false} />,
-            defaultState
+            defaultState,
         )
 
         const canduDataId = document.querySelector(
-            `[data-candu-id="${canduId}"]`
+            `[data-candu-id="${canduId}"]`,
         )
         expect(canduDataId).toBeNull()
     })
@@ -77,18 +78,18 @@ describe('ConvertSubscriptionModal', () => {
 
         renderWithStoreAndQueryClientAndRouter(
             <ConvertSubscriptionModal {...minProps} />,
-            defaultState
+            defaultState,
         )
 
         const canduDataId = document.querySelector(
-            `[data-candu-id="${canduId}"]`
+            `[data-candu-id="${canduId}"]`,
         )
         expect(canduDataId).not.toBeNull()
 
         await waitFor(() =>
             expect(
-                screen.getByText('I agree to the', {exact: false})
-            ).toBeInTheDocument()
+                screen.getByText('I agree to the', { exact: false }),
+            ).toBeInTheDocument(),
         )
     })
 
@@ -115,7 +116,7 @@ describe('ConvertSubscriptionModal', () => {
 
         renderWithStoreAndQueryClientAndRouter(
             <ConvertSubscriptionModal {...minProps} />,
-            stateWithTrial
+            stateWithTrial,
         )
 
         expect(screen.queryByText('I agree to')).not.toBeInTheDocument()

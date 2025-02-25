@@ -1,11 +1,12 @@
-import {screen, render, waitFor, fireEvent} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
 
 import MacroFilters from '../MacroFilters'
 
@@ -31,19 +32,19 @@ describe('<MacroFilters />', () => {
         onChange: jest.fn(),
     }
     it('should render MacroFilters', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultStore)}>
                 <MacroFilters {...minProps} />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render correctly set filters after click language', async () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={mockStore(defaultStore)}>
                 <MacroFilters {...minProps} />
-            </Provider>
+            </Provider>,
         )
         await waitFor(() => {
             screen.getByText('English')
@@ -56,10 +57,10 @@ describe('<MacroFilters />', () => {
     })
 
     it('should render correctly set filters after click tags', async () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={mockStore(defaultStore)}>
                 <MacroFilters {...minProps} />
-            </Provider>
+            </Provider>,
         )
         await waitFor(() => {
             screen.getByText('English')

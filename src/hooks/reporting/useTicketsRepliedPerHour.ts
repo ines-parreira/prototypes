@@ -1,4 +1,4 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
 import {
     fetchOnlineTimeMetric,
@@ -11,7 +11,7 @@ import {
     calculateMetricPerHour,
     periodAndAgentOnlyFilters,
 } from 'hooks/reporting/useMessagesSentPerHour'
-import {StatsFilters} from 'models/stat/types'
+import { StatsFilters } from 'models/stat/types'
 
 const formatResult = (repliedTickets: Metric, onlineTime: Metric) => {
     let metricValue: number | null = null
@@ -19,7 +19,7 @@ const formatResult = (repliedTickets: Metric, onlineTime: Metric) => {
     if (repliedTickets.data?.value && onlineTime.data?.value) {
         metricValue = calculateMetricPerHour(
             repliedTickets.data.value,
-            onlineTime.data.value
+            onlineTime.data.value,
         )
     }
 
@@ -30,20 +30,20 @@ const formatResult = (repliedTickets: Metric, onlineTime: Metric) => {
 
 export const useTicketsRepliedPerHour = (
     statsFilters: StatsFilters,
-    timezone: string
+    timezone: string,
 ): Metric => {
     const repliedTickets = useTicketsRepliedMetric(
         periodAndAgentOnlyFilters(statsFilters),
-        timezone
+        timezone,
     )
     const onlineTime = useOnlineTimeMetric(
         periodAndAgentOnlyFilters(statsFilters),
-        timezone
+        timezone,
     )
 
     const data = useMemo(
         () => formatResult(repliedTickets, onlineTime),
-        [onlineTime, repliedTickets]
+        [onlineTime, repliedTickets],
     )
 
     return {
@@ -55,16 +55,16 @@ export const useTicketsRepliedPerHour = (
 
 export const fetchTicketsRepliedPerHour = async (
     statsFilters: StatsFilters,
-    timezone: string
+    timezone: string,
 ): Promise<Metric> => {
     return Promise.all([
         fetchTicketsRepliedMetric(
             periodAndAgentOnlyFilters(statsFilters),
-            timezone
+            timezone,
         ),
         fetchOnlineTimeMetric(
             periodAndAgentOnlyFilters(statsFilters),
-            timezone
+            timezone,
         ),
     ])
         .then(([repliedTickets, onlineTime]) => ({
@@ -72,5 +72,9 @@ export const fetchTicketsRepliedPerHour = async (
             isFetching: false,
             isError: false,
         }))
-        .catch(() => ({data: {value: null}, isFetching: false, isError: true}))
+        .catch(() => ({
+            data: { value: null },
+            isFetching: false,
+            isError: true,
+        }))
 }

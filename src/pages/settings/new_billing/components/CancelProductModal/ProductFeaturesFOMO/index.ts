@@ -1,1 +1,1 @@
-export {default} from './ProductFeaturesFOMO'
+export { default } from './ProductFeaturesFOMO'

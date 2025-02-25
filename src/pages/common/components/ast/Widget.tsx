@@ -1,58 +1,58 @@
-import {EditorState} from 'draft-js'
-import {fromJS, List, Map} from 'immutable'
+import React, { Component, ComponentProps } from 'react'
+
+import { EditorState } from 'draft-js'
+import { fromJS, List, Map } from 'immutable'
 import drop from 'lodash/drop'
 import _get from 'lodash/get'
 import _isArray from 'lodash/isArray'
 import _isUndefined from 'lodash/isUndefined'
-import React, {Component, ComponentProps} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {Input} from 'reactstrap'
-import {InputType} from 'reactstrap/lib/Input'
+import { connect, ConnectedProps } from 'react-redux'
+import { Input } from 'reactstrap'
+import { InputType } from 'reactstrap/lib/Input'
 
-import {UploadType} from 'common/types'
+import { UploadType } from 'common/types'
 import {
     DateAndTimeFormatting,
     DateTimeResultFormatType,
 } from 'constants/datetime'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
-import {getDateAndTimeFormatter} from 'state/currentUser/selectors'
-import {humanizeChannel} from 'state/ticket/utils'
-import {formatDatetime, humanizeString} from 'utils'
+import { getDateAndTimeFormatter } from 'state/currentUser/selectors'
+import { humanizeChannel } from 'state/ticket/utils'
+import { formatDatetime, humanizeString } from 'utils'
 
-import {BASIC_OPERATORS} from '../../../../config'
+import { BASIC_OPERATORS } from '../../../../config'
 import {
     caseInsensitiveOperators,
     collectionOperators,
     deprecatedOperators,
     timedeltaOperators,
 } from '../../../../config/rules'
-
-import {IntegrationType} from '../../../../models/integration/types'
-import {makeHasIntegrationOfTypes} from '../../../../state/integrations/selectors'
-import {RuleOperation} from '../../../../state/rules/types'
-import {RootState} from '../../../../state/types'
-import {stringToDatetime} from '../../../../utils/date'
-import {convertToHTML, getPlainText} from '../../../../utils/editor'
-import {removeSuffix} from '../../../../utils/string'
+import { IntegrationType } from '../../../../models/integration/types'
+import { makeHasIntegrationOfTypes } from '../../../../state/integrations/selectors'
+import { RuleOperation } from '../../../../state/rules/types'
+import { RootState } from '../../../../state/types'
+import { stringToDatetime } from '../../../../utils/date'
+import { convertToHTML, getPlainText } from '../../../../utils/editor'
+import { removeSuffix } from '../../../../utils/string'
 import DatePicker from '../../../common/forms/DatePicker'
-import {RuleItemActions} from '../../../settings/rules/types'
+import { RuleItemActions } from '../../../settings/rules/types'
 import MultiSelectField from '../../forms/MultiSelectField'
 import RichFieldWithVariables from '../../forms/RichFieldWithVariables'
 import TimedeltaPicker from '../../forms/TimedeltaPicker'
-
-import css from './Widget.less'
 import AssigneeTeamSelect from './widget/AssigneeTeamSelect'
 import AssigneeUserSelect from './widget/AssigneeUserSelect'
 import CustomFieldIdInput from './widget/CustomFieldIdInput'
 import CustomFieldSelect from './widget/CustomFieldSelect'
 import IntegrationSelect from './widget/IntegrationSelect'
-import {IntentsSentimentsSelect} from './widget/IntentsSentimentsSelect'
+import { IntentsSentimentsSelect } from './widget/IntentsSentimentsSelect'
 import MacroSelect from './widget/MacroSelect'
 import Select from './widget/ReactSelect'
 import SelfServiceFlowSelect from './widget/SelfServiceFlowSelect'
 import SelfServiceStoreIntegrationSelect from './widget/SelfServiceStoreIntegrationSelect'
 import StatusSelect from './widget/StatusSelect'
 import TagsSelect from './widget/TagsSelect'
+
+import css from './Widget.less'
 
 type Property = {
     key: {
@@ -96,7 +96,7 @@ export class Widget extends Component<Props, State> {
 
     constructor(props: Props) {
         super(props)
-        const {config, parent, properties} = props
+        const { config, parent, properties } = props
 
         // Concerns rich fields of Actions:
         // We get the property of the text field if the current field is a rich field and has a text version.
@@ -110,7 +110,7 @@ export class Widget extends Component<Props, State> {
     _getTextField = (
         config: Record<string, unknown>,
         parent: List<any>,
-        properties: Array<Property>
+        properties: Array<Property>,
     ) => {
         const textFieldParent = parent.slice(0, -3)
         const textFieldPropIndex = properties.findIndex((property) => {
@@ -127,7 +127,7 @@ export class Widget extends Component<Props, State> {
     }
 
     UNSAFE_componentWillReceiveProps(nextProps: Props) {
-        const {config, parent, properties} = nextProps
+        const { config, parent, properties } = nextProps
         // update text field state when props changes
         if (config.widget === 'rich-field' && config.textField) {
             this.setState(this._getTextField(config, parent, properties))
@@ -135,7 +135,7 @@ export class Widget extends Component<Props, State> {
     }
 
     _handleChange = (value: any) => {
-        const {actions, parent} = this.props
+        const { actions, parent } = this.props
 
         let newValue = value
 
@@ -159,9 +159,9 @@ export class Widget extends Component<Props, State> {
     _input = (
         value: any,
         type: InputType = 'text',
-        caseInsensitive = false
+        caseInsensitive = false,
     ) => {
-        const {config = {}, className, compact} = this.props
+        const { config = {}, className, compact } = this.props
 
         return (
             <DEPRECATED_InputField
@@ -180,7 +180,7 @@ export class Widget extends Component<Props, State> {
     }
 
     _textarea = (value: any) => {
-        const {config = {}, className} = this.props
+        const { config = {}, className } = this.props
 
         return (
             <DEPRECATED_InputField
@@ -198,8 +198,8 @@ export class Widget extends Component<Props, State> {
 
     _onRichFieldChange = (editorState: EditorState) => {
         const contentState = editorState.getCurrentContent()
-        const {actions, parent} = this.props
-        const {textFieldParent} = this.state
+        const { actions, parent } = this.props
+        const { textFieldParent } = this.state
 
         // fill the text field with the text version
         let ast
@@ -207,7 +207,7 @@ export class Widget extends Component<Props, State> {
             ast = actions.modifyCodeAST(
                 textFieldParent as any,
                 getPlainText(contentState),
-                RuleOperation.Update
+                RuleOperation.Update,
             )
         }
 
@@ -215,13 +215,13 @@ export class Widget extends Component<Props, State> {
             parent,
             convertToHTML(contentState),
             RuleOperation.Update,
-            ast
+            ast,
         )
     }
 
     _richField = (html: any) => {
-        const {config = {}, properties, hasIntegrationOfTypes} = this.props
-        const {textFieldPropIndex} = this.state
+        const { config = {}, properties, hasIntegrationOfTypes } = this.props
+        const { textFieldPropIndex } = this.state
         const value = {
             text: properties[textFieldPropIndex].value.value,
             html: html,
@@ -261,7 +261,7 @@ export class Widget extends Component<Props, State> {
 
     _datetimeSelect = (
         datetime: string,
-        datetimeFormat: DateTimeResultFormatType
+        datetimeFormat: DateTimeResultFormatType,
     ) => {
         const date = datetime ? stringToDatetime(datetime) : null
         return (
@@ -282,7 +282,7 @@ export class Widget extends Component<Props, State> {
                                     date
                                         ? formatDatetime(
                                               date,
-                                              datetimeFormat
+                                              datetimeFormat,
                                           ).toString()
                                         : ''
                                 }
@@ -310,9 +310,9 @@ export class Widget extends Component<Props, State> {
 
     _snoozePicker = (value: any) => {
         const units = [
-            {label: 'minute(s)', value: 'm'},
-            {label: 'hour(s)', value: 'h'},
-            {label: 'day(s)', value: 'd'},
+            { label: 'minute(s)', value: 'm' },
+            { label: 'hour(s)', value: 'h' },
+            { label: 'day(s)', value: 'd' },
         ]
 
         return (
@@ -350,7 +350,7 @@ export class Widget extends Component<Props, State> {
                     const newRight = List(drop(left.toJS(), path.length))
                     return this._resolveLeft(
                         newLeft.concat(newRight) as List<any>,
-                        schemas
+                        schemas,
                     )
                 }
             }
@@ -424,7 +424,7 @@ export class Widget extends Component<Props, State> {
                         label:
                             _get(prop, ['meta', 'rules', 'label']) ||
                             humanizeString(
-                                removeSuffix(key, '_datetime')
+                                removeSuffix(key, '_datetime'),
                             ).toLowerCase(),
                     })
                     widget.description = prop.description
@@ -454,7 +454,7 @@ export class Widget extends Component<Props, State> {
                             return deprecatedOperators.includes(widget.value)
                         }
                         return true
-                    }
+                    },
                 ) as Map<any, any>
                 widget.options = operators.toJS()
             }
@@ -470,7 +470,7 @@ export class Widget extends Component<Props, State> {
             const calleeName = rule.getIn(
                 (
                     parent.slice(0, -3).concat(['callee', 'name']) as List<any>
-                ).insert(0, 'code_ast')
+                ).insert(0, 'code_ast'),
             )
             widget.type = right
                 ? (right.getIn(['meta', 'rules', 'widget']) as string)
@@ -524,14 +524,14 @@ export class Widget extends Component<Props, State> {
                 widget.hiddenOptions = (
                     right.getIn(
                         ['meta', 'rules', 'hidden_options'],
-                        List([])
+                        List([]),
                     ) as List<string>
                 ).toJS()
 
                 widget.deprecatedOptions = (
                     right.getIn(
                         ['meta', 'rules', 'deprecated_options'],
-                        List([])
+                        List([]),
                     ) as List<string>
                 ).toJS()
 
@@ -542,7 +542,7 @@ export class Widget extends Component<Props, State> {
         const operatorName = rule.getIn(
             (
                 parent.slice(0, -3).concat(['callee', 'name']) as List<any>
-            ).insert(0, 'code_ast')
+            ).insert(0, 'code_ast'),
         )
         const isOperatorRelative = timedeltaOperators.includes(operatorName)
 
@@ -731,7 +731,7 @@ export class Widget extends Component<Props, State> {
 const connector = connect((state: RootState) => ({
     hasIntegrationOfTypes: makeHasIntegrationOfTypes(state),
     datetimeFormat: getDateAndTimeFormatter(state)(
-        DateAndTimeFormatting.CompactDateWithTime
+        DateAndTimeFormatting.CompactDateWithTime,
     ),
 }))
 

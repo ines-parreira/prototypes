@@ -1,13 +1,13 @@
-import {flatMap, uniq} from 'lodash'
+import { flatMap, uniq } from 'lodash'
 import moment from 'moment-timezone'
 
 import {
     WorkflowStepMetrics,
     WorkflowStepMetricsMap,
 } from 'hooks/reporting/automate/utils'
-import {Period} from 'models/stat/types'
-import {toPercentage} from 'pages/automate/automate-metrics/utils'
-import {last7DaysStatsFilters} from 'pages/automate/common/utils/last7DaysStatsFilters'
+import { Period } from 'models/stat/types'
+import { toPercentage } from 'pages/automate/automate-metrics/utils'
+import { last7DaysStatsFilters } from 'pages/automate/common/utils/last7DaysStatsFilters'
 
 interface WorkflowAnalyticsDateRangeProps {
     startDatetime: string | null
@@ -17,7 +17,7 @@ interface WorkflowAnalyticsDateRangeProps {
 
 export const shouldDisplayTooltip = (
     value: number | null | undefined,
-    shouldDisplayZero: boolean
+    shouldDisplayZero: boolean,
 ) => {
     return shouldDisplayZero || isValidNumber(value)
 }
@@ -28,12 +28,12 @@ export const isValidNumber = (value: number | null | undefined) => {
 
 export const displayMetric = (
     value: number | null | undefined,
-    shouldDisplayZero: boolean
+    shouldDisplayZero: boolean,
 ) => (isValidNumber(value) ? value : shouldDisplayZero ? '0' : '-')
 
 export const displayPercentMetric = (
     value: number | null | undefined,
-    shouldDisplayZero: boolean
+    shouldDisplayZero: boolean,
 ) =>
     isValidNumber(value) ? toPercentage(value!) : shouldDisplayZero ? '0%' : '-'
 
@@ -50,10 +50,10 @@ const preprocessDateString = (dateString: string) => {
 }
 
 export const getWorkflowAnalyticsDateRange = (
-    params: WorkflowAnalyticsDateRangeProps
+    params: WorkflowAnalyticsDateRangeProps,
 ): Period => {
-    const {flowUpdateDatetime} = params
-    let {startDatetime, endDatetime} = params
+    const { flowUpdateDatetime } = params
+    let { startDatetime, endDatetime } = params
     const last7DaysPeriod = last7DaysStatsFilters().period
 
     if (!startDatetime || !endDatetime) {
@@ -81,9 +81,9 @@ export const getWorkflowAnalyticsDateRange = (
 }
 
 export const getWorkflowAnalyticsPreviousDateRange = (
-    params: WorkflowAnalyticsDateRangeProps
+    params: WorkflowAnalyticsDateRangeProps,
 ): Period | null => {
-    const {flowUpdateDatetime, startDatetime, endDatetime} = params
+    const { flowUpdateDatetime, startDatetime, endDatetime } = params
 
     const flowUpdateDate = moment(preprocessDateString(flowUpdateDatetime))
     const startDate = moment(preprocessDateString(startDatetime!))

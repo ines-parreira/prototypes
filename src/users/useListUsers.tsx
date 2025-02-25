@@ -1,22 +1,27 @@
-import {queryKeys} from '@gorgias/api-queries'
-import {useInfiniteQuery, UseInfiniteQueryOptions} from '@tanstack/react-query'
-import {useEffect} from 'react'
+import { useEffect } from 'react'
 
-import {handleError} from 'hooks/agents/errorHandler'
+import {
+    useInfiniteQuery,
+    UseInfiniteQueryOptions,
+} from '@tanstack/react-query'
+
+import { queryKeys } from '@gorgias/api-queries'
+
+import { handleError } from 'hooks/agents/errorHandler'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {fetchAgents} from 'models/agents/resources'
+import { fetchAgents } from 'models/agents/resources'
 
 export default function useListUsers(
     params?: Parameters<typeof fetchAgents>[0],
     query?: UseInfiniteQueryOptions<
         Awaited<ReturnType<typeof fetchAgents>>,
         unknown
-    >
+    >,
 ) {
     const dispatch = useAppDispatch()
     const response = useInfiniteQuery({
         queryKey: queryKeys.users.listUsers(),
-        queryFn: async ({pageParam}) =>
+        queryFn: async ({ pageParam }) =>
             fetchAgents({
                 ...params,
                 cursor: pageParam,

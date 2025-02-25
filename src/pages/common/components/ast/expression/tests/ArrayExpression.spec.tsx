@@ -1,12 +1,13 @@
-import {render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import ArrayExpression from 'pages/common/components/ast/expression/ArrayExpression'
-import {RuleItemActions} from 'pages/settings/rules/types'
+import { RuleItemActions } from 'pages/settings/rules/types'
 
 const mockStore = configureMockStore([thunk])
 
@@ -33,11 +34,11 @@ describe('<ArrayExpression />', () => {
         render(
             <Provider store={mockStore({})}>
                 <ArrayExpression {...minProps} elements={elements} />
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            screen.queryByText('This field cannot be empty')
+            screen.queryByText('This field cannot be empty'),
         ).not.toBeInTheDocument()
     })
 
@@ -45,11 +46,11 @@ describe('<ArrayExpression />', () => {
         render(
             <Provider store={mockStore({})}>
                 <ArrayExpression {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            screen.getByText('This field cannot be empty')
+            screen.getByText('This field cannot be empty'),
         ).toBeInTheDocument()
     })
 })

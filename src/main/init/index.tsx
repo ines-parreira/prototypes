@@ -4,19 +4,18 @@
 // and any selectors imported later that have the same specificity
 // will take precedence.
 import 'assets/css/main.less'
-
 import './initNotifications'
 import './initQueryClient'
 import './initSocketManager'
 
 import React from 'react'
-import {render} from 'react-dom'
+
+import { render } from 'react-dom'
 
 import 'init'
 
-import {store} from 'common/store'
+import { store } from 'common/store'
 import Root from 'pages/Root'
-
 // eslint-disable-next-line
 import mobileScrollManager from 'services/mobileScrollManager.js'
 

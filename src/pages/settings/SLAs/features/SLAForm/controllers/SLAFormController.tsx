@@ -1,27 +1,28 @@
-import {useGetSlaPolicy} from '@gorgias/api-queries'
-import {validateCreateSlaPolicyBody} from '@gorgias/api-validators'
 import React from 'react'
-import {useLocation, useParams} from 'react-router-dom'
 
-import {toFormErrors} from 'core/forms'
-import {SLATemplate} from 'pages/settings/SLAs/config/templates'
+import { useLocation, useParams } from 'react-router-dom'
+
+import { useGetSlaPolicy } from '@gorgias/api-queries'
+import { validateCreateSlaPolicyBody } from '@gorgias/api-validators'
+
+import { toFormErrors } from 'core/forms'
+import { SLATemplate } from 'pages/settings/SLAs/config/templates'
 import Loader from 'pages/settings/SLAs/features/Loader/Loader'
 
 import SLAFormView from '../views/SLAFormView'
-
 import makeCreateSLAPolicyBody from './makeCreateSLAPolicyBody'
 import makeMappedFormSLAPolicy from './makeMappedFormSLAPolicy'
-import useFormValues, {SLAFormValues} from './useFormValues'
+import useFormValues, { SLAFormValues } from './useFormValues'
 import useSubmitPolicy from './useSubmitPolicy'
 
 export default function SLAFormController() {
-    const {policyId} = useParams<{policyId?: string}>()
+    const { policyId } = useParams<{ policyId?: string }>()
     const location = useLocation<{
         template?: SLATemplate
     }>()
 
     const isNewPolicy = policyId === 'new'
-    const {data, isLoading} = useGetSlaPolicy(
+    const { data, isLoading } = useGetSlaPolicy(
         isNewPolicy ? '' : policyId || '',
         {
             query: {
@@ -32,7 +33,7 @@ export default function SLAFormController() {
                 refetchOnMount: 'always',
                 refetchOnWindowFocus: false,
             },
-        }
+        },
     )
     const template = location.state?.template
         ? {
@@ -46,11 +47,11 @@ export default function SLAFormController() {
 
     const validator = (values: SLAFormValues) => {
         return toFormErrors(
-            validateCreateSlaPolicyBody(makeCreateSLAPolicyBody(values))
+            validateCreateSlaPolicyBody(makeCreateSLAPolicyBody(values)),
         )
     }
 
-    const {save, isLoading: isSubmitting} = useSubmitPolicy()
+    const { save, isLoading: isSubmitting } = useSubmitPolicy()
 
     const handleFormSubmit = (data: SLAFormValues) => {
         void save(data)

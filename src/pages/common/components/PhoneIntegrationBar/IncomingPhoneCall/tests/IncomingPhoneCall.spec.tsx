@@ -1,24 +1,24 @@
-import {act, cleanup, fireEvent, render, screen} from '@testing-library/react'
-import {Call} from '@twilio/voice-sdk'
+import React, { ComponentProps } from 'react'
+
+import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
+import { Call } from '@twilio/voice-sdk'
 import MockAdapter from 'axios-mock-adapter'
-import {History} from 'history'
-import {fromJS} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
-import {Router} from 'react-router-dom'
+import { History } from 'history'
+import { fromJS } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
+import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import client from 'models/api/resources'
 import * as hooks from 'pages/common/components/PhoneIntegrationBar/hooks'
 import useMicrophonePermissions from 'pages/integrations/integration/components/voice/useMicrophonePermissions'
-import {RootState, StoreDispatch} from 'state/types'
-import {mockIncomingCall} from 'tests/twilioMocks'
+import { RootState, StoreDispatch } from 'state/types'
+import { mockIncomingCall } from 'tests/twilioMocks'
+import { assumeMock } from 'utils/testing'
 
-import {assumeMock} from 'utils/testing'
-
-import {MICROPHONE_PERMISSION_REQUIRED_MESSAGE} from '../../constants'
+import { MICROPHONE_PERMISSION_REQUIRED_MESSAGE } from '../../constants'
 import IncomingPhoneCall from '../IncomingPhoneCall'
 
 jest.mock('@twilio/voice-sdk')
@@ -26,12 +26,12 @@ jest.mock('@twilio/voice-sdk')
 jest.mock(
     'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel',
     () =>
-        ({agentId}: {agentId: number}) => (
+        ({ agentId }: { agentId: number }) => (
             <div>VoiceCallAgentLabel {agentId}</div>
-        )
+        ),
 )
 jest.mock(
-    'pages/integrations/integration/components/voice/useMicrophonePermissions'
+    'pages/integrations/integration/components/voice/useMicrophonePermissions',
 )
 
 const useMicrophonePermissionsMock = assumeMock(useMicrophonePermissions)
@@ -51,7 +51,7 @@ describe('<IncomingPhoneCall />', () => {
                 <Provider store={mockStore(state)}>
                     <IncomingPhoneCall {...props} />
                 </Provider>
-            </Router>
+            </Router>,
         )
 
     beforeEach(() => {
@@ -71,7 +71,7 @@ describe('<IncomingPhoneCall />', () => {
                     {
                         id: integrationId,
                         name: 'My Phone Integration',
-                        meta: {emoji: '❤️'},
+                        meta: { emoji: '❤️' },
                     },
                 ],
             }),
@@ -85,7 +85,9 @@ describe('<IncomingPhoneCall />', () => {
             transferFromAgentId: null,
         })
 
-        useMicrophonePermissionsMock.mockReturnValue({permissionDenied: false})
+        useMicrophonePermissionsMock.mockReturnValue({
+            permissionDenied: false,
+        })
 
         mockFlags({})
         cleanup()
@@ -94,7 +96,7 @@ describe('<IncomingPhoneCall />', () => {
     it('should accept call', () => {
         const call = mockIncomingCall(integrationId, ticketId) as Call
 
-        renderComponent({call})
+        renderComponent({ call })
 
         fireEvent.click(screen.getByText(/Accept/))
         expect(call.accept).toHaveBeenCalled()
@@ -107,7 +109,7 @@ describe('<IncomingPhoneCall />', () => {
         mockedServer.onPost('/integrations/phone/call/declined').reply(201)
         mockedServer.onPost('/integrations/phone/call/cancelled').reply(201)
 
-        renderComponent({call})
+        renderComponent({ call })
 
         fireEvent.click(screen.getByText(/Decline/))
         expect(call.reject).toHaveBeenCalled()
@@ -124,7 +126,7 @@ describe('<IncomingPhoneCall />', () => {
                 call_sid: call.customParameters.get('call_sid'),
             })
             expect(lastPostRequest.url).toEqual(
-                '/integrations/phone/call/declined'
+                '/integrations/phone/call/declined',
             )
             done()
         })
@@ -133,12 +135,12 @@ describe('<IncomingPhoneCall />', () => {
     it('should open ticket page', () => {
         const call = mockIncomingCall(integrationId, ticketId) as Call
 
-        renderComponent({call})
+        renderComponent({ call })
 
         fireEvent.click(
             screen.getByText(
-                state.integrations.getIn(['integrations', 0, 'name'])
-            )
+                state.integrations.getIn(['integrations', 0, 'name']),
+            ),
         )
         expect(history.push).toHaveBeenCalledWith(`/app/ticket/${ticketId}`)
     })
@@ -149,12 +151,12 @@ describe('<IncomingPhoneCall />', () => {
 
         const call = mockIncomingCall(integrationId, ticketId) as Call
 
-        renderComponent({call})
+        renderComponent({ call })
 
         fireEvent.click(
             screen.getByText(
-                state.integrations.getIn(['integrations', 0, 'name'])
-            )
+                state.integrations.getIn(['integrations', 0, 'name']),
+            ),
         )
         expect(history.push).not.toHaveBeenCalled()
     })
@@ -163,7 +165,7 @@ describe('<IncomingPhoneCall />', () => {
         const call = mockIncomingCall(integrationId) as Call
         jest.useFakeTimers()
 
-        const {getByText} = renderComponent({call})
+        const { getByText } = renderComponent({ call })
 
         expect(getByText('Waiting for 00:00')).toBeInTheDocument()
         act(() => {
@@ -187,7 +189,7 @@ describe('<IncomingPhoneCall />', () => {
             transferFromAgentId: 3,
         })
 
-        renderComponent({call})
+        renderComponent({ call })
 
         expect(screen.getByText('Incoming transfer...')).toBeInTheDocument()
         expect(screen.getByText('VoiceCallAgentLabel 3')).toBeInTheDocument()
@@ -204,43 +206,45 @@ describe('<IncomingPhoneCall />', () => {
             transferFromAgentId: null,
         })
 
-        renderComponent({call})
+        renderComponent({ call })
 
         expect(screen.queryByText('Incoming transfer...')).toBeNull()
         expect(screen.getByText('Incoming call...')).toBeInTheDocument()
     })
 
     it('should display error message when microphone permissions are not enabled', () => {
-        useMicrophonePermissionsMock.mockReturnValue({permissionDenied: true})
+        useMicrophonePermissionsMock.mockReturnValue({ permissionDenied: true })
 
         const call = mockIncomingCall(integrationId) as Call
 
-        renderComponent({call})
+        renderComponent({ call })
 
         /* should check every second */
         expect(useMicrophonePermissionsMock).toHaveBeenCalledWith(1000)
 
         expect(
-            screen.getByText(MICROPHONE_PERMISSION_REQUIRED_MESSAGE)
+            screen.getByText(MICROPHONE_PERMISSION_REQUIRED_MESSAGE),
         ).toBeInTheDocument()
 
         expect(
-            screen.getByRole('button', {name: /Accept/})
+            screen.getByRole('button', { name: /Accept/ }),
         ).not.toBeAriaDisabled()
     })
 
     it('should not display error message when microphone permissions are enabled', () => {
-        useMicrophonePermissionsMock.mockReturnValue({permissionDenied: false})
+        useMicrophonePermissionsMock.mockReturnValue({
+            permissionDenied: false,
+        })
 
         const call = mockIncomingCall(integrationId) as Call
 
-        renderComponent({call})
+        renderComponent({ call })
 
         expect(
-            screen.queryByText(MICROPHONE_PERMISSION_REQUIRED_MESSAGE)
+            screen.queryByText(MICROPHONE_PERMISSION_REQUIRED_MESSAGE),
         ).toBeNull()
         expect(
-            screen.getByRole('button', {name: /Accept/})
+            screen.getByRole('button', { name: /Accept/ }),
         ).not.toBeAriaDisabled()
     })
 })

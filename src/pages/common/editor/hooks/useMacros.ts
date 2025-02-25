@@ -1,14 +1,14 @@
-import {useCallback, useRef, useState} from 'react'
+import { useCallback, useRef, useState } from 'react'
 
-import {MacrosProperties} from 'models/macro/types'
+import { MacrosProperties } from 'models/macro/types'
 
 type Options = {
     initialFilters: MacrosProperties
 }
 
-export default function useMacros({initialFilters}: Options) {
+export default function useMacros({ initialFilters }: Options) {
     const [filters, setFilters] = useState<MacrosProperties>(
-        initialFilters || {}
+        initialFilters || {},
     )
     const [query, setQuery] = useState('')
     const [isActive, setIsActive] = useState(false)
@@ -24,9 +24,9 @@ export default function useMacros({initialFilters}: Options) {
 
     const handleChangeFilters = useCallback(
         (changedFilters: MacrosProperties) => {
-            setFilters((s) => ({...s, ...changedFilters}))
+            setFilters((s) => ({ ...s, ...changedFilters }))
         },
-        []
+        [],
     )
 
     return {

@@ -1,10 +1,10 @@
-import {waitFor} from '@testing-library/react'
-import {renderHook, act} from '@testing-library/react-hooks/dom'
+import { waitFor } from '@testing-library/react'
+import { act, renderHook } from '@testing-library/react-hooks/dom'
 
-import {DEBOUNCE_TIME, RecentItems} from 'hooks/useRecentItems/constants'
+import { DEBOUNCE_TIME, RecentItems } from 'hooks/useRecentItems/constants'
 import useRecentItems from 'hooks/useRecentItems/useRecentItems'
 import LocalForageManager from 'services/localForageManager/localForageManager'
-import {flushPromises} from 'utils/testing'
+import { flushPromises } from 'utils/testing'
 
 const mockSetItem = jest.fn().mockResolvedValue(true)
 const mockObserveTableUnsubscribe = jest.fn()
@@ -33,12 +33,12 @@ describe('useRecentItems', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         jest.spyOn(LocalForageManager, 'getTable').mockReturnValue(
-            mockGetTableObject
+            mockGetTableObject,
         )
         jest.spyOn(LocalForageManager, 'observeTable').mockImplementation(
             mockObserveTable.mockReturnValue({
                 unsubscribe: mockObserveTableUnsubscribe,
-            })
+            }),
         )
     })
 
@@ -47,12 +47,12 @@ describe('useRecentItems', () => {
     })
 
     it('should return loading state', async () => {
-        const {result} = renderHook(() => useRecentItems(RecentItems.Tickets))
+        const { result } = renderHook(() => useRecentItems(RecentItems.Tickets))
 
         expect(result.current).toEqual(
             expect.objectContaining({
                 isGettingItems: true,
-            })
+            }),
         )
 
         await waitFor(() => result.current)
@@ -60,20 +60,20 @@ describe('useRecentItems', () => {
         expect(result.current).toEqual(
             expect.objectContaining({
                 isGettingItems: false,
-            })
+            }),
         )
     })
 
     it('should observe table', async () => {
-        const {result} = renderHook(() => useRecentItems(RecentItems.Tickets))
+        const { result } = renderHook(() => useRecentItems(RecentItems.Tickets))
         await waitFor(() => result.current)
 
         expect(mockObserveTable).toHaveBeenCalled()
     })
 
     it('should unsubscribe from table observable', async () => {
-        const {result, unmount} = renderHook(() =>
-            useRecentItems(RecentItems.Tickets)
+        const { result, unmount } = renderHook(() =>
+            useRecentItems(RecentItems.Tickets),
         )
         await waitFor(() => result.current)
 
@@ -83,16 +83,16 @@ describe('useRecentItems', () => {
     })
 
     it('should return no items by default', async () => {
-        const {result} = renderHook(() => useRecentItems(RecentItems.Tickets))
+        const { result } = renderHook(() => useRecentItems(RecentItems.Tickets))
         await waitFor(() => result.current)
 
         expect(result.current.items).toEqual([])
     })
 
     it('should return reverse sorted items', async () => {
-        mockGetItems.mockResolvedValue({0: 'foo', 1: 'bar', 2: 'baz'})
+        mockGetItems.mockResolvedValue({ 0: 'foo', 1: 'bar', 2: 'baz' })
 
-        const {result} = renderHook(() => useRecentItems(RecentItems.Tickets))
+        const { result } = renderHook(() => useRecentItems(RecentItems.Tickets))
         await waitFor(() => result.current)
 
         expect(result.current.items).toEqual(['baz', 'bar', 'foo'])
@@ -101,11 +101,11 @@ describe('useRecentItems', () => {
     it('should set item', async () => {
         jest.useFakeTimers().setSystemTime(mockDate)
 
-        const {result} = renderHook(() => useRecentItems(RecentItems.Tickets))
+        const { result } = renderHook(() => useRecentItems(RecentItems.Tickets))
         await waitFor(() => result.current)
 
         await act(async () => {
-            await result.current.setRecentItem({id: 1})
+            await result.current.setRecentItem({ id: 1 })
             jest.runAllTimers()
             await flushPromises()
         })
@@ -114,21 +114,21 @@ describe('useRecentItems', () => {
             (mockDate + DEBOUNCE_TIME).toString(),
             {
                 id: 1,
-            }
+            },
         )
     })
 
     it('should not set item twice if same item is provided', async () => {
         jest.useFakeTimers().setSystemTime(mockDate)
 
-        const {result} = renderHook(() => useRecentItems(RecentItems.Tickets))
+        const { result } = renderHook(() => useRecentItems(RecentItems.Tickets))
         await waitFor(() => result.current)
 
         await act(async () => {
-            await result.current.setRecentItem({id: 1})
+            await result.current.setRecentItem({ id: 1 })
             jest.runAllTimers()
             await flushPromises()
-            await result.current.setRecentItem({id: 1})
+            await result.current.setRecentItem({ id: 1 })
             jest.runAllTimers()
             await flushPromises()
         })
@@ -139,18 +139,18 @@ describe('useRecentItems', () => {
     it('should set item again if same item is provided, with updated fields', async () => {
         jest.useFakeTimers().setSystemTime(mockDate)
 
-        const {result} = renderHook(() =>
-            useRecentItems<any>(RecentItems.Tickets)
+        const { result } = renderHook(() =>
+            useRecentItems<any>(RecentItems.Tickets),
         )
         await waitFor(() => result.current)
 
         await act(async () => {
-            await result.current.setRecentItem({id: 1})
+            await result.current.setRecentItem({ id: 1 })
             jest.runAllTimers()
             await flushPromises()
             mockLength.mockResolvedValue(1)
             mockIterate.mockResolvedValue(mockDate.toString())
-            await result.current.setRecentItem({id: 1, foo: 'bar'})
+            await result.current.setRecentItem({ id: 1, foo: 'bar' })
             jest.runAllTimers()
             await flushPromises()
         })
@@ -167,11 +167,11 @@ describe('useRecentItems', () => {
         mockKeys.mockResolvedValue([mockDate.toString()])
         mockIterate.mockResolvedValue(mockDate.toString())
 
-        const {result} = renderHook(() => useRecentItems(RecentItems.Tickets))
+        const { result } = renderHook(() => useRecentItems(RecentItems.Tickets))
         await waitFor(() => result.current)
 
         await act(async () => {
-            await result.current.setRecentItem({id: 1})
+            await result.current.setRecentItem({ id: 1 })
             jest.runAllTimers()
             await flushPromises()
         })
@@ -181,7 +181,7 @@ describe('useRecentItems', () => {
             (mockDate + DEBOUNCE_TIME).toString(),
             {
                 id: 1,
-            }
+            },
         )
     })
 
@@ -190,13 +190,13 @@ describe('useRecentItems', () => {
         mockLength.mockResolvedValue(5)
         mockKeys.mockResolvedValue(['0', '1', '2', '3', '4'])
 
-        const {result} = renderHook(() =>
-            useRecentItems(RecentItems.Tickets, 5)
+        const { result } = renderHook(() =>
+            useRecentItems(RecentItems.Tickets, 5),
         )
         await waitFor(() => result.current)
 
         await act(async () => {
-            await result.current.setRecentItem({id: 1})
+            await result.current.setRecentItem({ id: 1 })
             jest.runAllTimers()
             await flushPromises()
         })
@@ -204,7 +204,7 @@ describe('useRecentItems', () => {
         expect(mockRemoveItems).toHaveBeenCalledWith(['0'])
         expect(mockSetItem).toHaveBeenCalledWith(
             (mockDate + DEBOUNCE_TIME).toString(),
-            {id: 1}
+            { id: 1 },
         )
     })
 })

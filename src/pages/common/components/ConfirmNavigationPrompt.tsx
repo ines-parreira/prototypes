@@ -1,7 +1,8 @@
-import {Location} from 'history'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+
+import { Location } from 'history'
 import _noop from 'lodash/noop'
-import React, {useState, useRef, useCallback, useEffect} from 'react'
-import {Prompt} from 'react-router-dom'
+import { Prompt } from 'react-router-dom'
 
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
@@ -39,7 +40,7 @@ export const ConfirmNavigationPrompt = ({
             }
             return
         },
-        [enabled]
+        [enabled],
     )
 
     useEffect(() => {

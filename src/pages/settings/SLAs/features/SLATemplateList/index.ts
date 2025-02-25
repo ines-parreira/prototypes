@@ -1,1 +1,1 @@
-export {default as SLATemplateList} from 'pages/settings/SLAs/features/SLATemplateList/controllers/SLATemplateListController'
+export { default as SLATemplateList } from 'pages/settings/SLAs/features/SLATemplateList/controllers/SLATemplateListController'

@@ -1,7 +1,8 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {assetsUrl} from 'utils'
+import { Meta, Story } from '@storybook/react'
+
+import { assetsUrl } from 'utils'
 
 import HeroImageCarousel from './HeroImageCarousel'
 
@@ -28,17 +29,17 @@ const defaultProps: ComponentProps<typeof HeroImageCarousel> = {
     slides: [
         {
             imageUrl: assetsUrl(
-                '/img/paywalls/screens/automate_paywall_flows.png'
+                '/img/paywalls/screens/automate_paywall_flows.png',
             ),
         },
         {
             imageUrl: assetsUrl(
-                '/img/paywalls/screens/automate_paywall_article_recommendation.png'
+                '/img/paywalls/screens/automate_paywall_article_recommendation.png',
             ),
         },
         {
             imageUrl: assetsUrl(
-                '/img/paywalls/screens/automate_paywall_order_management.png'
+                '/img/paywalls/screens/automate_paywall_order_management.png',
             ),
         },
     ],
@@ -49,7 +50,7 @@ const withHeadingAndDescriptionProps: ComponentProps<typeof HeroImageCarousel> =
         slides: [
             {
                 imageUrl: assetsUrl(
-                    '/img/paywalls/screens/automate_paywall_flows.png'
+                    '/img/paywalls/screens/automate_paywall_flows.png',
                 ),
                 description:
                     'Build personalized, automated interactions with Flows and Quick Responses.',
@@ -57,14 +58,14 @@ const withHeadingAndDescriptionProps: ComponentProps<typeof HeroImageCarousel> =
             },
             {
                 imageUrl: assetsUrl(
-                    '/img/paywalls/screens/automate_paywall_article_recommendation.png'
+                    '/img/paywalls/screens/automate_paywall_article_recommendation.png',
                 ),
                 description: 'Recommend Help Center articles with AI.',
                 header: 'I am the Heading 2',
             },
             {
                 imageUrl: assetsUrl(
-                    '/img/paywalls/screens/automate_paywall_order_management.png'
+                    '/img/paywalls/screens/automate_paywall_order_management.png',
                 ),
                 description:
                     'Let customers manage and track orders on your Chat, Help Center, and Contact Form.',
@@ -77,19 +78,19 @@ const withHeadingProps: ComponentProps<typeof HeroImageCarousel> = {
     slides: [
         {
             imageUrl: assetsUrl(
-                '/img/paywalls/screens/automate_paywall_flows.png'
+                '/img/paywalls/screens/automate_paywall_flows.png',
             ),
             header: 'I am the Heading 1',
         },
         {
             imageUrl: assetsUrl(
-                '/img/paywalls/screens/automate_paywall_article_recommendation.png'
+                '/img/paywalls/screens/automate_paywall_article_recommendation.png',
             ),
             header: 'I am the Heading 2',
         },
         {
             imageUrl: assetsUrl(
-                '/img/paywalls/screens/automate_paywall_order_management.png'
+                '/img/paywalls/screens/automate_paywall_order_management.png',
             ),
             header: 'I am the Heading 3',
         },
@@ -100,20 +101,20 @@ const withDescriptionProps: ComponentProps<typeof HeroImageCarousel> = {
     slides: [
         {
             imageUrl: assetsUrl(
-                '/img/paywalls/screens/automate_paywall_flows.png'
+                '/img/paywalls/screens/automate_paywall_flows.png',
             ),
             description:
                 'Build personalized, automated interactions with Flows and Quick Responses.',
         },
         {
             imageUrl: assetsUrl(
-                '/img/paywalls/screens/automate_paywall_article_recommendation.png'
+                '/img/paywalls/screens/automate_paywall_article_recommendation.png',
             ),
             description: 'Recommend Help Center articles with AI.',
         },
         {
             imageUrl: assetsUrl(
-                '/img/paywalls/screens/automate_paywall_order_management.png'
+                '/img/paywalls/screens/automate_paywall_order_management.png',
             ),
             description:
                 'Let customers manage and track orders on your Chat, Help Center, and Contact Form.',
@@ -125,7 +126,7 @@ const singleSlideWithButton: ComponentProps<typeof HeroImageCarousel> = {
     slides: [
         {
             imageUrl: assetsUrl(
-                '/img/paywalls/screens/automate_paywall_flows.png'
+                '/img/paywalls/screens/automate_paywall_flows.png',
             ),
             description:
                 'Build personalized, automated interactions with Flows and Quick Responses.',

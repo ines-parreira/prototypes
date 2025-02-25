@@ -1,16 +1,17 @@
-import classNames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import moment from 'moment'
-import React, {MouseEvent, useCallback} from 'react'
+import React, { MouseEvent, useCallback } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import classNames from 'classnames'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import moment from 'moment'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import {
     HelpCenter,
     HelpCenterCreationWizardStep,
     Locale,
 } from 'models/helpCenter/types'
 import Button from 'pages/common/components/button/Button'
-import {LanguageTagList} from 'pages/common/components/LanguageTagList'
+import { LanguageTagList } from 'pages/common/components/LanguageTagList'
 import Loader from 'pages/common/components/Loader/Loader'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
@@ -21,8 +22,9 @@ import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 
 import IconButton from '../../../common/components/button/IconButton'
-import css from './HelpCenterTable.less'
 import StoreName from './StoreName'
+
+import css from './HelpCenterTable.less'
 
 type Props = {
     isLoading: boolean
@@ -32,7 +34,7 @@ type Props = {
     }
     onClick: (
         helpCenter: HelpCenter,
-        shouldNavigateToWizardCreation?: boolean
+        shouldNavigateToWizardCreation?: boolean,
     ) => void
     duplicateHelpCenter: (helpCenter: HelpCenter) => void
 }
@@ -53,7 +55,7 @@ export const HelpCenterTable: React.FC<Props> = ({
 
             duplicateHelpCenter(helpCenter)
         },
-        [duplicateHelpCenter]
+        [duplicateHelpCenter],
     )
 
     const isHelpCenterCreationWizardInProgress = useCallback(
@@ -64,7 +66,7 @@ export const HelpCenterTable: React.FC<Props> = ({
                 !helpCenter.wizard.completed
             )
         },
-        [helpCenterCreationWizard]
+        [helpCenterCreationWizard],
     )
 
     const handleNextPage = useCallback(
@@ -74,7 +76,7 @@ export const HelpCenterTable: React.FC<Props> = ({
 
             onClick(helpCenter, shouldNavigateToWizardCreation)
         },
-        [onClick, isHelpCenterCreationWizardInProgress]
+        [onClick, isHelpCenterCreationWizardInProgress],
     )
 
     if (isLoading) {
@@ -96,7 +98,7 @@ export const HelpCenterTable: React.FC<Props> = ({
             </TableHead>
             <TableBody>
                 {list.map((helpCenter) => {
-                    const {id} = helpCenter
+                    const { id } = helpCenter
                     const isHCWizardInProgress =
                         isHelpCenterCreationWizardInProgress(helpCenter)
 
@@ -125,7 +127,7 @@ export const HelpCenterTable: React.FC<Props> = ({
                             </BodyCell>
                             <BodyCell innerClassName={css.bodyCell}>
                                 {moment(helpCenter.updated_datetime).format(
-                                    'L'
+                                    'L',
                                 )}
                             </BodyCell>
 
@@ -149,7 +151,7 @@ export const HelpCenterTable: React.FC<Props> = ({
                                 className={css.lastBodyCell}
                                 innerClassName={classNames(
                                     css.bodyCell,
-                                    css.lastBodyCellInner
+                                    css.lastBodyCellInner,
                                 )}
                             >
                                 {isHCWizardInProgress ? (
@@ -169,7 +171,7 @@ export const HelpCenterTable: React.FC<Props> = ({
                                     <IconButton
                                         className={classNames(
                                             css.iconButton,
-                                            css.chevronRight
+                                            css.chevronRight,
                                         )}
                                         fillStyle="ghost"
                                         intent="secondary"

@@ -1,6 +1,6 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {Rating} from 'models/helpCenter/types'
+import { Rating } from 'models/helpCenter/types'
 
 export function calculateRatingScore(rating: Rating | undefined) {
     const up = rating?.up || 0

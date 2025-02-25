@@ -1,7 +1,7 @@
-import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
+import { CampaignTriggerOperator } from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
 
-import {validateCurrentUrl} from '../currentUrlValidator'
-import {ValidationError} from '../validationError'
+import { validateCurrentUrl } from '../currentUrlValidator'
+import { ValidationError } from '../validationError'
 
 describe('validationErrors', () => {
     describe('validateCurrentUrl', () => {
@@ -29,7 +29,7 @@ describe('validationErrors', () => {
             ],
         ])('should raise an exception', (path, operator, message) => {
             expect(() => validateCurrentUrl(path, operator)).toThrow(
-                ValidationError
+                ValidationError,
             )
             expect(() => validateCurrentUrl(path, operator)).toThrow(message)
         })
@@ -39,7 +39,7 @@ describe('validationErrors', () => {
             ['some-relative-url', CampaignTriggerOperator.Contains],
         ])('should not raise an exception', (path, operator) => {
             expect(() => validateCurrentUrl(path, operator)).not.toThrow(
-                ValidationError
+                ValidationError,
             )
         })
     })

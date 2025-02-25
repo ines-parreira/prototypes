@@ -1,8 +1,8 @@
 import {
-    MouseEvent as ReactMouseEvent,
     ChangeEvent,
-    useState,
+    MouseEvent as ReactMouseEvent,
     useEffect,
+    useState,
 } from 'react'
 
 export const useLocalImage = ({
@@ -28,7 +28,7 @@ export const useLocalImage = ({
 
     const handleOnChangeFile = (
         event: ChangeEvent<HTMLInputElement>,
-        ref: HTMLInputElement | null
+        ref: HTMLInputElement | null,
     ) => {
         if (event?.target?.files) {
             const file = Array.from(event.target.files)[0]

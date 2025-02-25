@@ -1,11 +1,12 @@
-import {render, waitFor} from '@testing-library/react'
+import React from 'react'
+
+import { render, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
-import React from 'react'
 
 import client from 'models/api/resources'
 
-import {SsoToggleButton} from '../SsoToggleButton'
+import { SsoToggleButton } from '../SsoToggleButton'
 
 const basicProps = {
     id: 'google',
@@ -25,18 +26,18 @@ describe('<SsoToggleButton/>', () => {
     })
 
     it('should render properly', () => {
-        const {container} = render(<SsoToggleButton {...basicProps} />)
+        const { container } = render(<SsoToggleButton {...basicProps} />)
         expect(container).toMatchSnapshot()
     })
 
     it('should directly save when trying to enable SSO', () => {
         const setValue = jest.fn()
-        const {container} = render(
+        const { container } = render(
             <SsoToggleButton
                 {...basicProps}
                 value={false}
                 setValue={setValue}
-            />
+            />,
         )
 
         userEvent.click(container.getElementsByClassName('slider')[0])
@@ -47,8 +48,12 @@ describe('<SsoToggleButton/>', () => {
         mockServer.onGet('/api/sso/users').reply(200, {})
 
         const setValue = jest.fn()
-        const {container} = render(
-            <SsoToggleButton {...basicProps} value={true} setValue={setValue} />
+        const { container } = render(
+            <SsoToggleButton
+                {...basicProps}
+                value={true}
+                setValue={setValue}
+            />,
         )
 
         userEvent.click(container.getElementsByClassName('slider')[0])
@@ -56,16 +61,20 @@ describe('<SsoToggleButton/>', () => {
     })
 
     it('should show a confirmation popup when trying to disable active SSO with active users', async () => {
-        mockServer.onGet('/api/sso/users').reply(200, {google: 123})
+        mockServer.onGet('/api/sso/users').reply(200, { google: 123 })
 
         const setValue = jest.fn()
-        const {container, findByText} = render(
-            <SsoToggleButton {...basicProps} value={true} setValue={setValue} />
+        const { container, findByText } = render(
+            <SsoToggleButton
+                {...basicProps}
+                value={true}
+                setValue={setValue}
+            />,
         )
 
         userEvent.click(container.getElementsByClassName('slider')[0])
         expect(
-            await findByText('Deactivate Google Single Sign-On?')
+            await findByText('Deactivate Google Single Sign-On?'),
         ).not.toBeNull()
 
         userEvent.click(await findByText('Deactivate'))

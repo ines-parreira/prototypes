@@ -1,15 +1,18 @@
-import {Label, Tooltip} from '@gorgias/merchant-ui-kit'
-import {Map} from 'immutable'
-import React, {useState} from 'react'
-import {Col, Container, Row} from 'reactstrap'
+import React, { useState } from 'react'
+
+import { Map } from 'immutable'
+import { Col, Container, Row } from 'reactstrap'
+
+import { Label, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useId from 'hooks/useId'
-import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
+import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 import settingsCss from 'pages/settings/settings.less'
 
-import css from './Create.less'
 import ManualIntegrationForm from './ManualIntegrationForm'
 import OneClickIntegrationForm from './OneClickIntegrationForm'
+
+import css from './Create.less'
 
 type Props = {
     integration: Map<any, any>
@@ -17,7 +20,7 @@ type Props = {
     redirectUri: string
 }
 
-function Create({integration, loading, redirectUri}: Props) {
+function Create({ integration, loading, redirectUri }: Props) {
     const [isManual, setManual] = useState(false)
     const isSubmitting = Boolean(loading.get('updateIntegration'))
 
@@ -65,7 +68,7 @@ function Create({integration, loading, redirectUri}: Props) {
                         />
                         <Tooltip
                             autohide
-                            delay={{show: 200, hide: 0}}
+                            delay={{ show: 200, hide: 0 }}
                             placement="bottom"
                             target={tooltipTargetId}
                             innerProps={{

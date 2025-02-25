@@ -1,6 +1,7 @@
+import React from 'react'
+
 import classnames from 'classnames'
 import moment from 'moment'
-import React from 'react'
 
 import css from './ChatIntegrationPreview.less'
 

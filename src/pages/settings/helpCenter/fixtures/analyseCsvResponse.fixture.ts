@@ -1,4 +1,4 @@
-import {Components} from 'rest_api/help_center_api/client.generated'
+import { Components } from 'rest_api/help_center_api/client.generated'
 
 export const analyseCsvResponse: Components.Schemas.AnalyseCsvResponseSuccessDto =
     {
@@ -65,11 +65,11 @@ export const analyseCsvResponse: Components.Schemas.AnalyseCsvResponseSuccessDto
                     'requester;customer data;how to',
                 ],
             },
-            {name: 'is_published', samples: ['true', 'false']},
-            {name: 'is_private', samples: ['false', 'true']},
-            {name: 'show_toc', samples: ['false', 'true']},
-            {name: 'is_featured', samples: ['false', 'true']},
-            {name: 'editor_type', samples: ['wysiwyg']},
+            { name: 'is_published', samples: ['true', 'false'] },
+            { name: 'is_private', samples: ['false', 'true'] },
+            { name: 'show_toc', samples: ['false', 'true'] },
+            { name: 'is_featured', samples: ['false', 'true'] },
+            { name: 'editor_type', samples: ['wysiwyg'] },
             {
                 name: 'user_id',
                 samples: [
@@ -150,9 +150,9 @@ export const analyseCsvResponse: Components.Schemas.AnalyseCsvResponseSuccessDto
                     '/integrations',
                 ],
             },
-            {name: 'is_stale', samples: ['false']},
-            {name: 'stale_reason', samples: ['Article updated']},
-            {name: 'stale_source', samples: ['API']},
+            { name: 'is_stale', samples: ['false'] },
+            { name: 'stale_reason', samples: ['Article updated'] },
+            { name: 'stale_source', samples: ['API'] },
             {
                 name: 'stale_triggered_at',
                 samples: [
@@ -163,8 +163,8 @@ export const analyseCsvResponse: Components.Schemas.AnalyseCsvResponseSuccessDto
                     '2021-08-03T13:09:24Z',
                 ],
             },
-            {name: 'permission_groups', samples: []},
-            {name: 'permission_groups_names', samples: []},
+            { name: 'permission_groups', samples: [] },
+            { name: 'permission_groups_names', samples: [] },
             {
                 name: 'updated_at',
                 samples: [

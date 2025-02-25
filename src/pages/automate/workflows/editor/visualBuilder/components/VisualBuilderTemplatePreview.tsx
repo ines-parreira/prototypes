@@ -1,9 +1,10 @@
-import React, {PropsWithChildren, useCallback} from 'react'
+import React, { PropsWithChildren, useCallback } from 'react'
+
 import {
+    ControlButton,
+    Controls,
     ReactFlow,
     ReactFlowProvider,
-    Controls,
-    ControlButton,
     useReactFlow,
 } from 'reactflow'
 
@@ -17,12 +18,12 @@ import {
     VisualBuilderContext,
 } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {
-    WorkflowChannelSupportContext,
     createWorkflowChannelSupportContextForPreview,
+    WorkflowChannelSupportContext,
 } from 'pages/automate/workflows/hooks/useWorkflowChannelSupport'
 import {
-    WorkflowEditorContext,
     createWorkflowEditorContextForPreview,
+    WorkflowEditorContext,
 } from 'pages/automate/workflows/hooks/useWorkflowEditor'
 import {
     ChannelTriggerNodeType,
@@ -39,8 +40,9 @@ import MultipleChoicesNode from '../nodes/MultipleChoicesNode'
 import OrderSelectionNode from '../nodes/OrderSelectionNode'
 import ShopperAuthenticationNode from '../nodes/ShopperAuthenticationNode'
 import TextReplyNode from '../nodes/TextReplyNode'
+import { VisualBuilderBackground } from './VisualBuilderBackground'
+
 import css from '../WorkflowVisualBuilder.less'
-import {VisualBuilderBackground} from './VisualBuilderBackground'
 
 type VisualBuilderTemplatePreviewProps = {
     visualBuilderGraph: VisualBuilderGraph
@@ -65,7 +67,7 @@ const edgeTypes = {
 function VisualBuilderTemplatePreview({
     visualBuilderGraph,
 }: VisualBuilderTemplatePreviewProps) {
-    const {fitView} = useReactFlow()
+    const { fitView } = useReactFlow()
     const handleFitView = useCallback(() => fitView(), [fitView])
     return (
         <ReactFlow
@@ -112,7 +114,9 @@ function VisualBuilderTemplatePreview({
 }
 
 function withProviders<
-    T extends {visualBuilderGraph: VisualBuilderGraph<ChannelTriggerNodeType>},
+    T extends {
+        visualBuilderGraph: VisualBuilderGraph<ChannelTriggerNodeType>
+    },
 >(Component: React.FC<T>): React.FC<T> {
     return (props: PropsWithChildren<T>) => {
         const workflowEditorContextValue =
@@ -122,7 +126,7 @@ function withProviders<
         const selfServiceStoreIntegrationContextValue =
             createSelfServiceStoreIntegrationContextForPreview()
         const visualBuilderContextValue = createVisualBuilderContextForPreview(
-            props.visualBuilderGraph
+            props.visualBuilderGraph,
         )
         return (
             <StoreIntegrationContext.Provider

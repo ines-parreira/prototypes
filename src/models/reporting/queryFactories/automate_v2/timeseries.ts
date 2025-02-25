@@ -1,7 +1,7 @@
 import {
-    AutomationDatasetMeasure,
     AutomationDatasetCube,
     AutomationDatasetDimension,
+    AutomationDatasetMeasure,
 } from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
 import {
     BillableTicketDatasetCube,
@@ -18,13 +18,13 @@ import {
     ReportingGranularity,
     TimeSeriesQuery,
 } from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
-import {getFilterDateRange} from 'utils/reporting'
+import { StatsFilters } from 'models/stat/types'
+import { getFilterDateRange } from 'utils/reporting'
 
 export const interactionsTimeSeriesQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    granularity: ReportingGranularity
+    granularity: ReportingGranularity,
 ): TimeSeriesQuery<AutomationDatasetCube> => ({
     measures: [
         AutomationDatasetMeasure.AutomatedInteractions,
@@ -49,7 +49,7 @@ export const interactionsTimeSeriesQueryFactory = (
 export const interactionsByEventTypeTimeSeriesQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    granularity: ReportingGranularity
+    granularity: ReportingGranularity,
 ): TimeSeriesQuery<AutomationDatasetCube> => ({
     measures: [AutomationDatasetMeasure.AutomatedInteractions],
     dimensions: [AutomationDatasetDimension.EventType],
@@ -72,7 +72,7 @@ export const billableTicketDatasetExcludingAIAgentTimeSeriesQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity,
-    aiAgentUserId?: string
+    aiAgentUserId?: string,
 ): TimeSeriesQuery<BillableTicketDatasetCube> => ({
     measures: [BillableTicketDatasetMeasure.BillableTicketCount],
     dimensions: [],

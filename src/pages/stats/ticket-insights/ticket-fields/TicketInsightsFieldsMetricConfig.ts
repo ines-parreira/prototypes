@@ -1,4 +1,4 @@
-import {TooltipData} from 'pages/stats/types'
+import { TooltipData } from 'pages/stats/types'
 
 export enum TicketInsightsFieldsMetric {
     TicketDistribution = 'ticket-distribution',

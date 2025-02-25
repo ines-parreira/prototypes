@@ -1,21 +1,21 @@
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useFlag} from 'core/flags'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import Template, {
-    TemplateCustomization,
     CustomizationContext,
+    TemplateCustomization,
 } from 'Widgets/modules/Template'
-import {WidgetProps} from 'Widgets/modules/Widget'
+import { WidgetProps } from 'Widgets/modules/Widget'
 
-import {customerCustomization} from './Customer'
-import {draftOrderCustomization} from './DraftOrder'
-import {editableListCustomization} from './EditableListField'
-import {fulfillmentCustomization} from './Fulfillment'
-import {itemCustomization} from './Item'
-import {orderCustomization} from './Order'
-import {orderNotesCustomization} from './OrderNotesField'
-import {shippingAddressCustomization} from './ShippingAddress'
+import { customerCustomization } from './Customer'
+import { draftOrderCustomization } from './DraftOrder'
+import { editableListCustomization } from './EditableListField'
+import { fulfillmentCustomization } from './Fulfillment'
+import { itemCustomization } from './Item'
+import { orderCustomization } from './Order'
+import { orderNotesCustomization } from './OrderNotesField'
+import { shippingAddressCustomization } from './ShippingAddress'
 
 export const customization: TemplateCustomization = {
     card: [
@@ -49,12 +49,12 @@ export const customization: TemplateCustomization = {
 
 export default function ShopifyWidget(props: WidgetProps) {
     const hideActionsForCustomer = useFlag(
-        FeatureFlagKey.ShopifyHideActionButtons
+        FeatureFlagKey.ShopifyHideActionButtons,
     )
 
     return (
         <CustomizationContext.Provider
-            value={{...customization, hideActionsForCustomer}}
+            value={{ ...customization, hideActionsForCustomer }}
         >
             <Template {...props} />
         </CustomizationContext.Provider>

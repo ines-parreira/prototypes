@@ -1,30 +1,34 @@
-import {Skeleton} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
-import React, {UIEventHandler, useEffect, useMemo, useState} from 'react'
+import React, { UIEventHandler, useEffect, useMemo, useState } from 'react'
 
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-import {useCustomFieldsTicketCountPerCustomFields} from 'hooks/reporting/ticket-insights/useCustomFieldsTicketCountPerCustomFields'
-import {BREAKDOWN_FIELD} from 'hooks/reporting/withBreakdown'
+import classNames from 'classnames'
+
+import { Skeleton } from '@gorgias/merchant-ui-kit'
+
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useCustomFieldsTicketCountPerCustomFields } from 'hooks/reporting/ticket-insights/useCustomFieldsTicketCountPerCustomFields'
+import { BREAKDOWN_FIELD } from 'hooks/reporting/withBreakdown'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useMeasure from 'hooks/useMeasure'
-import {OrderDirection} from 'models/api/types'
-import {NumberedPagination} from 'pages/common/components/Paginations'
+import { OrderDirection } from 'models/api/types'
+import { NumberedPagination } from 'pages/common/components/Paginations'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import {TableBodyRowExpandable} from 'pages/common/components/table/TableBodyRowExpandable'
+import { TableBodyRowExpandable } from 'pages/common/components/table/TableBodyRowExpandable'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import css from 'pages/stats/BreakdownTable.less'
-import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
+import { NoDataAvailable } from 'pages/stats/NoDataAvailable'
 import {
     CustomFieldsTicketCountDataRowContent,
     DataRowProps,
 } from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountDataRowContent'
-
-import {formatDates} from 'pages/stats/utils'
-import {setOrder, TicketInsightsOrder} from 'state/ui/stats/ticketInsightsSlice'
+import { formatDates } from 'pages/stats/utils'
+import {
+    setOrder,
+    TicketInsightsOrder,
+} from 'state/ui/stats/ticketInsightsSlice'
 
 export const CUSTOM_FIELD_COLUMN_LABEL = 'Value / Category'
 export const TOTAL_COLUMN_LABEL = 'Total'
@@ -35,10 +39,10 @@ const DATA_COLUMN_WIDTH = 120
 export const CustomFieldsTicketCountBreakdownTable = ({
     selectedCustomField,
 }: {
-    selectedCustomField: {id: number; label: string}
+    selectedCustomField: { id: number; label: string }
 }) => {
     const [currentPage, setCurrentPage] = useState(1)
-    const [ref, {width}] = useMeasure<HTMLDivElement>()
+    const [ref, { width }] = useMeasure<HTMLDivElement>()
     const [isTableScrolled, setIsTableScrolled] = useState(false)
     const handleScroll: UIEventHandler<HTMLDivElement> = (event) => {
         if (event.currentTarget.scrollLeft > 0) {
@@ -50,9 +54,9 @@ export const CustomFieldsTicketCountBreakdownTable = ({
 
     const dispatch = useAppDispatch()
     const setOrdering = (column: TicketInsightsOrder['column']) =>
-        dispatch(setOrder({column}))
+        dispatch(setOrder({ column }))
 
-    const {granularity} = useNewStatsFilters()
+    const { granularity } = useNewStatsFilters()
     const {
         data: customFieldDataRows,
         dateTimes,
@@ -67,7 +71,7 @@ export const CustomFieldsTicketCountBreakdownTable = ({
     const currentPageOfCustomFieldDataRows = useMemo(() => {
         return customFieldDataRows.slice(
             (currentPage - 1) * CUSTOM_FIELDS_PER_PAGE,
-            currentPage * CUSTOM_FIELDS_PER_PAGE
+            currentPage * CUSTOM_FIELDS_PER_PAGE,
         )
     }, [currentPage, customFieldDataRows])
 
@@ -84,7 +88,7 @@ export const CustomFieldsTicketCountBreakdownTable = ({
                 })}
                 onScroll={handleScroll}
             >
-                <TableWrapper className={css.table} style={{width}}>
+                <TableWrapper className={css.table} style={{ width }}>
                     <TableHead>
                         <HeaderCellProperty
                             colSpan={2}
@@ -93,7 +97,7 @@ export const CustomFieldsTicketCountBreakdownTable = ({
                                 {
                                     [css.withShadow]: isTableScrolled,
                                 },
-                                css.categoryHeader
+                                css.categoryHeader,
                             )}
                             direction={
                                 order.direction === OrderDirection.Asc
@@ -143,7 +147,7 @@ export const CustomFieldsTicketCountBreakdownTable = ({
                                           dateTimes={dateTimes}
                                           isTableScrolled={isTableScrolled}
                                       />
-                                  )
+                                  ),
                               )
                             : currentPageOfCustomFieldDataRows.map((row) => (
                                   <TableBodyRowExpandable<DataRowProps>
@@ -167,7 +171,7 @@ export const CustomFieldsTicketCountBreakdownTable = ({
                 {hasPagination && (
                     <NumberedPagination
                         count={Math.ceil(
-                            customFieldDataRows.length / CUSTOM_FIELDS_PER_PAGE
+                            customFieldDataRows.length / CUSTOM_FIELDS_PER_PAGE,
                         )}
                         page={currentPage}
                         onChange={setCurrentPage}
@@ -190,9 +194,9 @@ export const LoadingRow = ({
         <TableBodyRow>
             <BodyCell
                 className={classNames(
-                    {[css.withShadow]: isTableScrolled},
+                    { [css.withShadow]: isTableScrolled },
                     css.sticky,
-                    css.categoryColumn
+                    css.categoryColumn,
                 )}
             >
                 <Skeleton inline width={CATEGORY_COLUMN_WIDTH} />

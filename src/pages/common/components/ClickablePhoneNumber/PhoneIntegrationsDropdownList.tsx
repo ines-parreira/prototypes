@@ -1,16 +1,17 @@
+import React, { useCallback } from 'react'
+
 import classnames from 'classnames'
 import parsePhoneNumber from 'libphonenumber-js'
-import React, {useCallback} from 'react'
-import {DropdownItem} from 'reactstrap'
+import { DropdownItem } from 'reactstrap'
 
-import {useOutboundCall} from 'hooks/integrations/phone/useOutboundCall'
+import { useOutboundCall } from 'hooks/integrations/phone/useOutboundCall'
 import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
 import useAppSelector from 'hooks/useAppSelector'
-import {PhoneIntegration} from 'models/integration/types'
-import {NewPhoneNumber} from 'models/phoneNumber/types'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {getNewPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
-import {DEPRECATED_getTicket} from 'state/ticket/selectors'
+import { PhoneIntegration } from 'models/integration/types'
+import { NewPhoneNumber } from 'models/phoneNumber/types'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { getNewPhoneNumbers } from 'state/entities/phoneNumbers/selectors'
+import { DEPRECATED_getTicket } from 'state/ticket/selectors'
 
 type Props = {
     address: string
@@ -27,7 +28,7 @@ const PhoneIntegrationsDropdownList = ({
     const ticketId = useAppSelector(DEPRECATED_getTicket).get('id')
     const agentId = useAppSelector(getCurrentUser).get('id')
 
-    const {call, device} = useVoiceDevice()
+    const { call, device } = useVoiceDevice()
     const makeOutboundCall = useOutboundCall()
 
     const toAddress = parsePhoneNumber(address)?.format('E.164') || ''
@@ -46,7 +47,7 @@ const PhoneIntegrationsDropdownList = ({
                 agentId,
             })
         },
-        [makeOutboundCall, toAddress, customerName, ticketId, agentId]
+        [makeOutboundCall, toAddress, customerName, ticketId, agentId],
     )
 
     return (

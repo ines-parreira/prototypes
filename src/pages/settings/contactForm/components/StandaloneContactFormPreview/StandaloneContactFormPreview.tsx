@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react'
+import React, { ReactNode } from 'react'
 
 import css from './StandaloneContactFormPreview.less'
 
@@ -7,7 +7,7 @@ type Props = {
     name?: string
 }
 
-const StandaloneContactFormPreview = ({children, name}: Props) => {
+const StandaloneContactFormPreview = ({ children, name }: Props) => {
     return (
         <div className={css.container}>
             <div className={css.topBar} />

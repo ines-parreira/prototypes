@@ -1,23 +1,23 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import LD from 'launchdarkly-react-client-sdk'
 import React from 'react'
-import {Provider} from 'react-redux'
-import {Router} from 'react-router-dom'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import LD from 'launchdarkly-react-client-sdk'
+import { Provider } from 'react-redux'
+import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {UserRole} from 'config/types/user'
-import {integrationsState} from 'fixtures/integrations'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { UserRole } from 'config/types/user'
+import { integrationsState } from 'fixtures/integrations'
 import history from 'pages/history'
 
 import useStoresRequiringScriptTagMigration from '../../ScriptTagMigrationBanner/hooks/useStoresRequiringScriptTagMigration'
-
 import ScriptTagMigrationModal from '../ScriptTagMigrationModal'
 
 jest.mock(
-    '../../ScriptTagMigrationBanner/hooks/useStoresRequiringScriptTagMigration'
+    '../../ScriptTagMigrationBanner/hooks/useStoresRequiringScriptTagMigration',
 )
 
 const mockStore = configureMockStore([thunk])
@@ -36,25 +36,25 @@ describe('<ScriptTagMigrationModal />', () => {
         ;(useStoresRequiringScriptTagMigration as jest.Mock).mockImplementation(
             () => [
                 {
-                    storeIntegration: {meta: {shop_name: 'test-shop-name'}},
+                    storeIntegration: { meta: { shop_name: 'test-shop-name' } },
                     storeRequiresPermissionUpdates: true,
                     gorgiasChatIntegration: undefined,
                     gorgiasChatRequiresReinstall: false,
                 },
-            ]
+            ],
         )
 
         render(
             <Router history={history}>
                 <Provider
                     store={mockStore({
-                        currentUser: fromJS({role: {name: UserRole.Admin}}),
+                        currentUser: fromJS({ role: { name: UserRole.Admin } }),
                         integrations: fromJS(integrationsState),
                     })}
                 >
                     <ScriptTagMigrationModal />
                 </Provider>
-            </Router>
+            </Router>,
         )
 
         expect(document.body.children).toMatchSnapshot()
@@ -76,20 +76,20 @@ describe('<ScriptTagMigrationModal />', () => {
                     gorgiasChatIntegration: undefined,
                     gorgiasChatRequiresReinstall: false,
                 },
-            ]
+            ],
         )
 
         render(
             <Router history={history}>
                 <Provider
                     store={mockStore({
-                        currentUser: fromJS({role: {name: UserRole.Admin}}),
+                        currentUser: fromJS({ role: { name: UserRole.Admin } }),
                         integrations: fromJS(integrationsState),
                     })}
                 >
                     <ScriptTagMigrationModal />
                 </Provider>
-            </Router>
+            </Router>,
         )
 
         expect(document.body.children).toMatchSnapshot()
@@ -106,25 +106,25 @@ describe('<ScriptTagMigrationModal />', () => {
         ;(useStoresRequiringScriptTagMigration as jest.Mock).mockImplementation(
             () => [
                 {
-                    storeIntegration: {meta: {shop_name: 'test-shop-name'}},
+                    storeIntegration: { meta: { shop_name: 'test-shop-name' } },
                     storeRequiresPermissionUpdates: true,
                     gorgiasChatIntegration: undefined,
                     gorgiasChatRequiresReinstall: false,
                 },
-            ]
+            ],
         )
 
         render(
             <Router history={history}>
                 <Provider
                     store={mockStore({
-                        currentUser: fromJS({role: {name: UserRole.Admin}}),
+                        currentUser: fromJS({ role: { name: UserRole.Admin } }),
                         integrations: fromJS(integrationsState),
                     })}
                 >
                     <ScriptTagMigrationModal />
                 </Provider>
-            </Router>
+            </Router>,
         )
 
         expect(document.body.children).toMatchSnapshot()

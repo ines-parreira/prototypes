@@ -1,9 +1,9 @@
 import React from 'react'
 
-import {Link, useRouteMatch} from 'react-router-dom'
+import { Link, useRouteMatch } from 'react-router-dom'
 
 import AutomatePaywallView from 'pages/automate/common/components/AutomatePaywallView'
-import {AutomateFeatures} from 'pages/automate/common/types'
+import { AutomateFeatures } from 'pages/automate/common/types'
 import Button from 'pages/common/components/button/Button'
 
 import css from './EmptyView.less'
@@ -37,7 +37,7 @@ const getNameByView = (view: ConnectedChannelViewKind) => {
 
 const getUrlByView = (
     view: ConnectedChannelViewKind,
-    params: Record<string, string>
+    params: Record<string, string>,
 ) => {
     if (view === AutomateFeatures.AutomateChat) {
         return `/app/settings/channels/gorgias_chat/${params.integrationId}/installation`
@@ -70,7 +70,7 @@ export const ConnectedChannelsEmptyView = ({
                             isSpecificChannelView
                                 ? getUrlByView(view, match.params)
                                 : `/app/settings/${getIntegrationTypeByView(
-                                      view
+                                      view,
                                   )}`
                         }
                     >

@@ -1,13 +1,14 @@
-import {fireEvent, render} from '@testing-library/react'
-import {List, fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render } from '@testing-library/react'
+import { fromJS, List } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import useElementSize from 'hooks/useElementSize'
 import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
-import {RootState, StoreDispatch} from 'state/types'
-import {assumeMock} from 'utils/testing'
+import { RootState, StoreDispatch } from 'state/types'
+import { assumeMock } from 'utils/testing'
 
 import AddTagsAction from '../AddTagsAction'
 
@@ -17,7 +18,7 @@ const mockedTicketTags = assumeMock(TicketTags)
 jest.mock('hooks/useElementSize', () => jest.fn())
 jest.mock(
     'pages/tickets/detail/components/TicketDetails/TagDropdown',
-    () => () => 'TagDropdownMock'
+    () => () => 'TagDropdownMock',
 )
 
 const useElementSizeMock = useElementSize as jest.Mock
@@ -32,7 +33,7 @@ describe('<AddTagsAction />', () => {
 
     const props = {
         index: 0,
-        args: fromJS({tags: [tag1, tag2].join(',')}),
+        args: fromJS({ tags: [tag1, tag2].join(',') }),
         updateActionArgs: jest.fn(),
     }
 
@@ -40,17 +41,17 @@ describe('<AddTagsAction />', () => {
         /* eslint-disable  @typescript-eslint/no-unsafe-member-access */
         mockedTicketTags.mockImplementation(
             jest.requireActual(
-                'pages/tickets/detail/components/TicketDetails/TicketTags'
-            ).default
+                'pages/tickets/detail/components/TicketDetails/TicketTags',
+            ).default,
         )
         /* eslint-enable */
     })
 
     it('should render the tag dropdown to add tags', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <AddTagsAction {...props} />
-            </Provider>
+            </Provider>,
         )
 
         expect(getByText('TagDropdownMock')).toBeInTheDocument()
@@ -60,19 +61,21 @@ describe('<AddTagsAction />', () => {
 
     it('should pass down ticket tags', () => {
         mockedTicketTags.mockImplementation(
-            ({ticketTags}: {ticketTags: List<any>}) => (
+            ({ ticketTags }: { ticketTags: List<any> }) => (
                 <div>{JSON.stringify(ticketTags.toJS())}</div>
-            )
+            ),
         )
 
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <AddTagsAction {...props} />
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            getByText(JSON.stringify([tag1, tag2].map((tag) => ({name: tag}))))
+            getByText(
+                JSON.stringify([tag1, tag2].map((tag) => ({ name: tag }))),
+            ),
         ).toBeInTheDocument()
     })
 
@@ -80,22 +83,22 @@ describe('<AddTagsAction />', () => {
         const newTag = 'new tag'
 
         mockedTicketTags.mockImplementation(
-            ({addTag}: {addTag?: (tag: string) => void}) => (
+            ({ addTag }: { addTag?: (tag: string) => void }) => (
                 <div onClick={() => addTag?.(newTag)}>TicketTagsMock</div>
-            )
+            ),
         )
 
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <AddTagsAction {...props} />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(getByText('TicketTagsMock'))
 
         expect(props.updateActionArgs).toHaveBeenCalledWith(
             props.index,
-            fromJS({tags: [tag1, tag2, newTag].join(',')})
+            fromJS({ tags: [tag1, tag2, newTag].join(',') }),
         )
     })
 
@@ -103,24 +106,24 @@ describe('<AddTagsAction />', () => {
         const removedTag = 'tag1'
 
         mockedTicketTags.mockImplementation(
-            ({removeTag}: {removeTag?: (tag: string) => void}) => (
+            ({ removeTag }: { removeTag?: (tag: string) => void }) => (
                 <div onClick={() => removeTag?.(removedTag)}>
                     TicketTagsMock
                 </div>
-            )
+            ),
         )
 
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <AddTagsAction {...props} />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(getByText('TicketTagsMock'))
 
         expect(props.updateActionArgs).toHaveBeenCalledWith(
             props.index,
-            fromJS({tags: tag2})
+            fromJS({ tags: tag2 }),
         )
     })
 })

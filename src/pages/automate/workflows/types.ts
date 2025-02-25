@@ -1,4 +1,4 @@
-import {Components} from 'rest_api/workflows_api/client.generated'
+import { Components } from 'rest_api/workflows_api/client.generated'
 
 export type ListWfConfigurationsResponseDto =
     Components.Schemas.ListWfConfigurationsResponseDto

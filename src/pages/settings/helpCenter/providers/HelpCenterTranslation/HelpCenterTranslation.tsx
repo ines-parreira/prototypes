@@ -9,26 +9,26 @@ import React, {
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {ContactForm, UpdateSubjectLinesProps} from 'models/contactForm/types'
+import { ContactForm, UpdateSubjectLinesProps } from 'models/contactForm/types'
 import {
-    EmailIntegration,
     ContactInfoDto,
+    EmailIntegration,
     HelpCenter,
     HelpCenterTranslation,
 } from 'models/helpCenter/types'
-import {useContactFormApi} from 'pages/settings/contactForm/hooks/useContactFormApi'
-import {catchAsync} from 'pages/settings/contactForm/utils/errorHandling'
-import {HELP_CENTER_DEFAULT_LOCALE} from 'pages/settings/helpCenter/constants'
-import {useHelpCenterActions} from 'pages/settings/helpCenter/hooks/useHelpCenterActions'
-import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import {Paths} from 'rest_api/help_center_api/client.generated'
-import {getContactFormById} from 'state/entities/contactForm/contactForms'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {getViewLanguage} from 'state/ui/helpCenter'
-import {reportError} from 'utils/errors'
+import { useContactFormApi } from 'pages/settings/contactForm/hooks/useContactFormApi'
+import { catchAsync } from 'pages/settings/contactForm/utils/errorHandling'
+import { HELP_CENTER_DEFAULT_LOCALE } from 'pages/settings/helpCenter/constants'
+import { useHelpCenterActions } from 'pages/settings/helpCenter/hooks/useHelpCenterActions'
+import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import { Paths } from 'rest_api/help_center_api/client.generated'
+import { getContactFormById } from 'state/entities/contactForm/contactForms'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { getViewLanguage } from 'state/ui/helpCenter'
+import { reportError } from 'utils/errors'
 
-import {getGenericMessageFromError} from '../../utils'
+import { getGenericMessageFromError } from '../../utils'
 
 export type HelpCenterTranslationState = {
     contactFormId: number | null
@@ -81,7 +81,7 @@ const defaultTranslation: HelpCenterTranslationState = {
 }
 
 const TranslationContext = createContext<HelpCenterTranslationContext | null>(
-    null
+    null,
 )
 
 export const HelpCenterTranslationProvider: React.FC<Props> = ({
@@ -89,8 +89,8 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
     helpCenter,
 }: Props) => {
     const dispatch = useAppDispatch()
-    const {client} = useHelpCenterApi()
-    const {fetchHelpCenterTranslations} = useHelpCenterActions()
+    const { client } = useHelpCenterApi()
+    const { fetchHelpCenterTranslations } = useHelpCenterActions()
     const viewLanguage =
         useAppSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
     const [translation, setTranslation] =
@@ -105,7 +105,7 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
     })
     const [isDirty, setIsDirty] = useState(false)
     const contactFormFromCache = useAppSelector(
-        getContactFormById(translation.contactFormId)
+        getContactFormById(translation.contactFormId),
     )
 
     const {
@@ -121,14 +121,14 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
         if (contactForm.subject_lines) {
             if (
                 contactForm.subject_lines.options.some(
-                    (option) => option.trim() === ''
+                    (option) => option.trim() === '',
                 )
             ) {
                 void dispatch(
                     notify({
                         message: `Could not update the Help Center: some subject lines are empty.`,
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
                 return
             }
@@ -137,17 +137,17 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
         try {
             if (emailIntegration.email && emailIntegration.id) {
                 await client.updateHelpCenter(
-                    {help_center_id: helpCenter.id},
+                    { help_center_id: helpCenter.id },
                     {
                         email_integration: {
                             id: emailIntegration.id,
                             email: emailIntegration.email,
                         },
-                    }
+                    },
                 )
             }
 
-            const {chatAppKey, contactInfo} = translation
+            const { chatAppKey, contactInfo } = translation
             await client.updateHelpCenterTranslation(
                 {
                     help_center_id: helpCenter.id,
@@ -156,7 +156,7 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
                 {
                     chat_app_key: chatAppKey,
                     contact_info: contactInfo,
-                }
+                },
             )
 
             if (translation.contactFormId) {
@@ -176,7 +176,7 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
 
                 await updateContactFormViaApi(
                     translation.contactFormId,
-                    updates
+                    updates,
                 )
             }
 
@@ -186,7 +186,7 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
                 notify({
                     message: 'Help Center updated with success',
                     status: NotificationStatus.Success,
-                })
+                }),
             )
         } catch (err) {
             const errorMessage = getGenericMessageFromError(err)
@@ -195,7 +195,7 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
                 notify({
                     message: `Could not update the Help Center: ${errorMessage}`,
                     status: NotificationStatus.Error,
-                })
+                }),
             )
 
             reportError(err as Error)
@@ -220,7 +220,7 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
             })
             setIsDirty(true)
         },
-        [setTranslation, translation]
+        [setTranslation, translation],
     )
 
     const handleOnUpdateContactForm = useCallback(
@@ -231,7 +231,7 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
             }))
             setIsDirty(true)
         },
-        []
+        [],
     )
 
     const handleOnEmailIntegrationUpdate = useCallback(
@@ -239,13 +239,13 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
             setEmailIntegration(payload)
             setIsDirty(true)
         },
-        []
+        [],
     )
 
     const resetTranslation = useCallback(
         (translation: HelpCenterTranslation) => {
             setTranslation((draftSettings) => {
-                const {contact_info, chat_app_key, contact_form_id} =
+                const { contact_info, chat_app_key, contact_form_id } =
                     translation
 
                 return {
@@ -276,7 +276,7 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
                 }
             })
         },
-        []
+        [],
     )
 
     const resetEmailIntegration = useCallback(
@@ -286,7 +286,7 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
                 id: emailIntegration?.id || null,
             })
         },
-        []
+        [],
     )
 
     const resetContactForm = useCallback((contactForm: ContactForm) => {
@@ -300,7 +300,7 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
         resetEmailIntegration(helpCenter?.email_integration || undefined)
         if (contactFormFromCache) resetContactForm(contactFormFromCache)
         const currentTranslation = helpCenter.translations?.find(
-            (t) => t.locale === viewLanguage
+            (t) => t.locale === viewLanguage,
         )
         if (currentTranslation) resetTranslation(currentTranslation)
         setIsDirty(false)
@@ -320,7 +320,7 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
 
     useEffect(() => {
         const currentTranslation = helpCenter.translations?.find(
-            (t) => t.locale === viewLanguage
+            (t) => t.locale === viewLanguage,
         )
         if (!currentTranslation) return
         resetTranslation(currentTranslation)
@@ -347,7 +347,7 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
             if (!contactFormId) return
 
             const [error, result] = await catchAsync(() =>
-                fetchContactFormById(contactFormId)
+                fetchContactFormById(contactFormId),
             )
 
             if (error) {
@@ -355,7 +355,7 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
                     notify({
                         message: 'Something went wrong',
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
             }
 
@@ -364,7 +364,7 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
                     notify({
                         message: 'Contact Form not found',
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
             }
         }
@@ -396,7 +396,7 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
             translation,
             updateHelpCenter,
             reset,
-        ]
+        ],
     )
 
     return (
@@ -411,7 +411,7 @@ export const useHelpCenterTranslation = (): HelpCenterTranslationContext => {
 
     if (!translationContext) {
         throw new Error(
-            'useHelpCenterTranslation must be used within a HelpCenterTranslationProvider'
+            'useHelpCenterTranslation must be used within a HelpCenterTranslationProvider',
         )
     }
 

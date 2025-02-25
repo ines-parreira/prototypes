@@ -1,16 +1,18 @@
-import classNames from 'classnames'
-import {CompositeDecorator, Editor, EditorState} from 'draft-js'
-import React, {useCallback, useEffect, useMemo} from 'react'
+import React, { useCallback, useEffect, useMemo } from 'react'
 
-import {useTranslationsPreviewContext} from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
-import {useWorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
+import classNames from 'classnames'
+import { CompositeDecorator, Editor, EditorState } from 'draft-js'
+
+import { useTranslationsPreviewContext } from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
+import { useWorkflowEditorContext } from 'pages/automate/workflows/hooks/useWorkflowEditor'
 import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
-import {contentStateFromTextOrHTML} from 'utils/editor'
+import { contentStateFromTextOrHTML } from 'utils/editor'
 
 import createWorkflowVariablesPlugin from '../../../../draftjs/plugins/variables'
-import {getWorkflowVariableListForNode} from '../../../../models/variables.model'
+import { getWorkflowVariableListForNode } from '../../../../models/variables.model'
 
 import 'draft-js/dist/Draft.css'
+
 import css from './TranslationPreviewField.less'
 
 type Props = {
@@ -18,22 +20,22 @@ type Props = {
     nodeId: string
 }
 
-export default function TranslationsPreviewField({nodeId, tkey}: Props) {
-    const {translateKey} = useWorkflowEditorContext()
-    const {previewLanguageList, previewLanguage, translatedGraph} =
+export default function TranslationsPreviewField({ nodeId, tkey }: Props) {
+    const { translateKey } = useWorkflowEditorContext()
+    const { previewLanguageList, previewLanguage, translatedGraph } =
         useTranslationsPreviewContext()
     const workflowVariables = useMemo(
         () => getWorkflowVariableListForNode(translatedGraph, nodeId, [], []),
-        [translatedGraph, nodeId]
+        [translatedGraph, nodeId],
     )
     const workflowsVariablesPlugin = useMemo(
         () => createWorkflowVariablesPlugin(),
-        []
+        [],
     )
     const [editorState, setEditorState] = React.useState(() =>
         EditorState.createEmpty(
-            new CompositeDecorator(workflowsVariablesPlugin.decorators as any)
-        )
+            new CompositeDecorator(workflowsVariablesPlugin.decorators as any),
+        ),
     )
     const translatedText = useMemo(() => {
         return previewLanguage ? translateKey(tkey, previewLanguage) : ''
@@ -42,12 +44,12 @@ export default function TranslationsPreviewField({nodeId, tkey}: Props) {
         (editorState: EditorState) => {
             setEditorState(workflowsVariablesPlugin.onChange(editorState))
         },
-        [workflowsVariablesPlugin]
+        [workflowsVariablesPlugin],
     )
     useEffect(() => {
         const newEditorState = EditorState.createWithContent(
             contentStateFromTextOrHTML(translatedText),
-            new CompositeDecorator(workflowsVariablesPlugin.decorators as any)
+            new CompositeDecorator(workflowsVariablesPlugin.decorators as any),
         )
         setEditorState(workflowsVariablesPlugin.onChange(newEditorState))
     }, [translatedText, workflowsVariablesPlugin])

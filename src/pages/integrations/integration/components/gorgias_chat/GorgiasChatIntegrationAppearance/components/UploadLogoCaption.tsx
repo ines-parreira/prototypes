@@ -1,12 +1,12 @@
-import React, {useRef} from 'react'
+import React, { useRef } from 'react'
 
-import UploadLogoModal, {UploadLogoModalHandle} from './UploadLogoModal'
+import UploadLogoModal, { UploadLogoModalHandle } from './UploadLogoModal'
 
 type UploadLogoCaptionProps = {
     onConfirm: (url: string) => void
 }
 
-const UploadLogoCaption: React.FC<UploadLogoCaptionProps> = ({onConfirm}) => {
+const UploadLogoCaption: React.FC<UploadLogoCaptionProps> = ({ onConfirm }) => {
     const modal = useRef<UploadLogoModalHandle>(null)
 
     return (

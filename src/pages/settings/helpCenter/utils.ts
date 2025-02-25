@@ -1,4 +1,4 @@
-import axios, {AxiosError} from 'axios'
+import axios, { AxiosError } from 'axios'
 
 export const getGenericMessageFromError = (err: unknown) => {
     if (axios.isAxiosError(err) && err.response?.status === 400) {
@@ -10,11 +10,11 @@ export const getGenericMessageFromError = (err: unknown) => {
 }
 
 const isHelpCenterApiError = (
-    error: AxiosError
-): error is AxiosError<{message: string}> => {
+    error: AxiosError,
+): error is AxiosError<{ message: string }> => {
     const data = error.response?.data
     return (
-        'message' in (data as {message: unknown}) &&
+        'message' in (data as { message: unknown }) &&
         typeof (data as Record<string, unknown>).message === 'string'
     )
 }

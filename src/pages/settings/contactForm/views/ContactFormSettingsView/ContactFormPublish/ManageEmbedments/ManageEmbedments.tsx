@@ -1,17 +1,18 @@
-import {useQueryClient} from '@tanstack/react-query'
+import React, { useEffect, useState } from 'react'
+
+import { useQueryClient } from '@tanstack/react-query'
 import classNames from 'classnames'
 import _upperFirst from 'lodash/upperFirst'
-import React, {useState, useEffect} from 'react'
-import {useHistory, Link} from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
-import {SegmentEvent, logEvent} from 'common/segment'
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {ContactFormPageEmbedment} from 'models/contactForm/types'
+import { ContactFormPageEmbedment } from 'models/contactForm/types'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
-import {PageEmbedmentPosition} from 'pages/common/components/PageEmbedmentForm'
-import {EmbeddablePage} from 'pages/common/components/PageEmbedmentForm/types'
+import { PageEmbedmentPosition } from 'pages/common/components/PageEmbedmentForm'
+import { EmbeddablePage } from 'pages/common/components/PageEmbedmentForm/types'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
@@ -27,21 +28,21 @@ import {
     CONTACT_FORM_PUBLISH_PATH,
 } from 'pages/settings/contactForm/constants'
 import contactFormCss from 'pages/settings/contactForm/contactForm.less'
-import {useCurrentContactForm} from 'pages/settings/contactForm/hooks/useCurrentContactForm'
-import {useIsShopifyCredentialsWorking} from 'pages/settings/contactForm/hooks/useIsShopifyCredentialsWorking'
+import { useCurrentContactForm } from 'pages/settings/contactForm/hooks/useCurrentContactForm'
+import { useIsShopifyCredentialsWorking } from 'pages/settings/contactForm/hooks/useIsShopifyCredentialsWorking'
 import {
     contactFormPageEmbedmentsKeys,
-    useUpdatePageEmbedment,
     useDeletePageEmbedment,
     useGetShopifyPages,
+    useUpdatePageEmbedment,
 } from 'pages/settings/contactForm/queries'
-import {insertContactFormIdParam} from 'pages/settings/contactForm/utils/navigation'
+import { insertContactFormIdParam } from 'pages/settings/contactForm/utils/navigation'
 import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal'
 import settingsCss from 'pages/settings/settings.less'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 import css from './ManageEmbedments.less'
 
@@ -53,18 +54,18 @@ const PositionOptions = Object.values(PageEmbedmentPosition).map(
     (position) => ({
         value: position,
         label: _upperFirst(position.toLowerCase()),
-    })
+    }),
 )
 
 const resetDraftPositions = (
-    embedments: ContactFormPageEmbedment[]
+    embedments: ContactFormPageEmbedment[],
 ): Record<number, PageEmbedmentPosition> =>
     embedments.reduce(
         (acc, embedment) => ({
             ...acc,
             [embedment.id]: embedment.position ?? PageEmbedmentPosition.TOP,
         }),
-        {}
+        {},
     )
 
 const ManageEmbedments = ({
@@ -85,15 +86,15 @@ const ManageEmbedments = ({
         number | null
     >(null)
 
-    const {isWorking, isLoading} = useIsShopifyCredentialsWorking()
+    const { isWorking, isLoading } = useIsShopifyCredentialsWorking()
 
     useEffect(() => {
         if (!isWorking && !isLoading) {
             history.push(
                 insertContactFormIdParam(
                     CONTACT_FORM_PUBLISH_PATH,
-                    contactForm.id
-                )
+                    contactForm.id,
+                ),
             )
         }
     }, [embedments.length, history, contactForm, isWorking, isLoading])
@@ -110,7 +111,7 @@ const ManageEmbedments = ({
         onSuccess: async (updatedPageEmbedment) => {
             if (!updatedPageEmbedment) {
                 return void appDispatch(
-                    notify({message: 'Something went wrong'})
+                    notify({ message: 'Something went wrong' }),
                 )
             }
 
@@ -118,11 +119,11 @@ const ManageEmbedments = ({
                 notify({
                     message: 'Form position updated',
                     status: NotificationStatus.Success,
-                })
+                }),
             )
 
             await queryClient.invalidateQueries(
-                contactFormPageEmbedmentsKeys.lists(contactForm.id)
+                contactFormPageEmbedmentsKeys.lists(contactForm.id),
             )
         },
         onError: () => {
@@ -130,7 +131,7 @@ const ManageEmbedments = ({
                 notify({
                     message: 'Something went wrong',
                     status: NotificationStatus.Error,
-                })
+                }),
             )
         },
     })
@@ -141,11 +142,11 @@ const ManageEmbedments = ({
                 notify({
                     message: 'Form removed from page.',
                     status: NotificationStatus.Success,
-                })
+                }),
             )
 
             await queryClient.invalidateQueries(
-                contactFormPageEmbedmentsKeys.lists(contactForm.id)
+                contactFormPageEmbedmentsKeys.lists(contactForm.id),
             )
         },
         onError: () => {
@@ -153,7 +154,7 @@ const ManageEmbedments = ({
                 notify({
                     message: 'Something went wrong',
                     status: NotificationStatus.Error,
-                })
+                }),
             )
         },
     })
@@ -165,15 +166,15 @@ const ManageEmbedments = ({
     const availablePages = pages.filter((page) =>
         embedments.every(
             (pageEmbedment) =>
-                pageEmbedment.page_external_id !== page.external_id
-        )
+                pageEmbedment.page_external_id !== page.external_id,
+        ),
     )
 
     const onPositionChange = (
         embedmentId: number,
-        newPosition: PageEmbedmentPosition
+        newPosition: PageEmbedmentPosition,
     ) => {
-        setDraftPositions({...draftPositions, [embedmentId]: newPosition})
+        setDraftPositions({ ...draftPositions, [embedmentId]: newPosition })
     }
 
     const onDelete = (embedmentId: number) => async () => {
@@ -203,8 +204,8 @@ const ManageEmbedments = ({
                         contact_form_id: contactForm.id,
                         embedment_id: embedment.id,
                     },
-                    {position: newPosition},
-                ]
+                    { position: newPosition },
+                ],
             )
 
             if (pageEmbedment) {
@@ -224,7 +225,7 @@ const ManageEmbedments = ({
         (embedment) =>
             embedment.id &&
             embedment.position &&
-            draftPositions[embedment.id] !== embedment.position
+            draftPositions[embedment.id] !== embedment.position,
     )
 
     if (!contactForm) return null
@@ -233,14 +234,14 @@ const ManageEmbedments = ({
         <div
             className={classNames(
                 contactFormCss.mtXl,
-                settingsCss.contentWrapper
+                settingsCss.contentWrapper,
             )}
         >
             <section className={contactFormCss.mbM}>
                 <h2
                     className={classNames(
                         contactFormCss.sectionTitle,
-                        contactFormCss.mbXxs
+                        contactFormCss.mbXxs,
                     )}
                 >
                     Manage embedded pages
@@ -257,7 +258,7 @@ const ManageEmbedments = ({
                 <TableWrapper>
                     <TableHead>
                         <HeaderCellProperty
-                            style={{width: '50%'}}
+                            style={{ width: '50%' }}
                             title="Page"
                         />
                         <HeaderCellProperty
@@ -269,7 +270,7 @@ const ManageEmbedments = ({
                                     <Link
                                         to={insertContactFormIdParam(
                                             CONTACT_FORM_PUBLISH_PATH,
-                                            contactForm.id
+                                            contactForm.id,
                                         )}
                                     >
                                         HTML <br /> code
@@ -289,7 +290,7 @@ const ManageEmbedments = ({
                                           contactForm.shop_name
                                       }.myshopify.com/${
                                           embedment.page_path_url.startsWith(
-                                              '/'
+                                              '/',
                                           )
                                               ? embedment.page_path_url.slice(1)
                                               : embedment.page_path_url
@@ -313,14 +314,14 @@ const ManageEmbedments = ({
                                         <BodyCell>
                                             <SelectField
                                                 fixedWidth
-                                                style={{width: '200px'}}
+                                                style={{ width: '200px' }}
                                                 dropdownMenuClassName={
                                                     css.dropdownMenu
                                                 }
                                                 onChange={(value) =>
                                                     onPositionChange(
                                                         embedment.id,
-                                                        value as PageEmbedmentPosition
+                                                        value as PageEmbedmentPosition,
                                                     )
                                                 }
                                                 value={
@@ -365,7 +366,7 @@ const ManageEmbedments = ({
                                                     </>
                                                 }
                                                 onConfirm={onDelete(
-                                                    embedment.id
+                                                    embedment.id,
                                                 )}
                                                 placement="bottom"
                                                 title={
@@ -409,7 +410,7 @@ const ManageEmbedments = ({
                                         </BodyCell>
                                     </TableBodyRow>
                                 )
-                            }
+                            },
                         )}
                     </TableBody>
                 </TableWrapper>
@@ -425,7 +426,7 @@ const ManageEmbedments = ({
                                 account_domain: currentAccount.get('domain'),
                                 contact_form_id: contactForm.id,
                                 page_embedments_count: embedments.length,
-                            }
+                            },
                         )
                         setIsEmbedModalOpen(true)
                     }}

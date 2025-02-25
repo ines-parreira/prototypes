@@ -1,5 +1,6 @@
+import React, { ReactNode } from 'react'
+
 import classnames from 'classnames'
-import React, {ReactNode} from 'react'
 
 import errorIcon from 'assets/img/icons/error.svg'
 import infoIcon from 'assets/img/icons/info.svg'
@@ -42,7 +43,7 @@ export default function ModalBanners({
             <div
                 className={classnames(
                     css.banner,
-                    bannerTypeToClassMapper[bannerType]
+                    bannerTypeToClassMapper[bannerType],
                 )}
             >
                 <img

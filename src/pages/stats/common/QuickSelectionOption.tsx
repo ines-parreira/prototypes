@@ -1,6 +1,7 @@
-import classnames from 'classnames'
 import React from 'react'
-import {DropdownItem} from 'reactstrap'
+
+import classnames from 'classnames'
+import { DropdownItem } from 'reactstrap'
 
 import CheckBox from 'pages/common/forms/CheckBox'
 

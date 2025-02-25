@@ -1,24 +1,26 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
+import React, { ChangeEvent, useCallback, useContext, useMemo } from 'react'
+
 import classnames from 'classnames'
-import {fromJS, List, Map} from 'immutable'
-import React, {ChangeEvent, useCallback, useContext, useMemo} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {Button, Form} from 'reactstrap'
+import { fromJS, List, Map } from 'immutable'
+import { connect, ConnectedProps } from 'react-redux'
+import { Button, Form } from 'reactstrap'
+
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import {
     getFinalRefundOrderPayload,
     getFormattedRefundAmount,
 } from 'business/shopify/order'
-import {getRefundAmount} from 'business/shopify/refund'
+import { getRefundAmount } from 'business/shopify/refund'
 import usePrevious from 'hooks/usePrevious'
 import useUpdateEffect from 'hooks/useUpdateEffect'
-import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
+import { IntegrationType, ShopifyIntegration } from 'models/integration/types'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
-import {InfobarModalProps} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
+import { InfobarModalProps } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
 import {
     onCancel,
@@ -28,10 +30,9 @@ import {
     onReset,
     setPayload,
 } from 'state/infobarActions/shopify/refundOrder/actions'
-import {getRefundOrderState} from 'state/infobarActions/shopify/refundOrder/selectors'
-import {getIntegrationsByType} from 'state/integrations/selectors'
-import {RootState} from 'state/types'
-
+import { getRefundOrderState } from 'state/infobarActions/shopify/refundOrder/selectors'
+import { getIntegrationsByType } from 'state/integrations/selectors'
+import { RootState } from 'state/types'
 import OrderForm from 'Widgets/modules/Shopify/modules/Order/modules/OrderForm'
 
 import css from './RefundOrderModal.less'
@@ -69,7 +70,7 @@ export const RefundOrderModalContainer = ({
     title,
 }: Props) => {
     const previousIsOpen = usePrevious(isOpen)
-    const {integrationId} = useContext(IntegrationContext)
+    const { integrationId } = useContext(IntegrationContext)
 
     useUpdateEffect(() => {
         if (!previousIsOpen && isOpen) {
@@ -82,18 +83,18 @@ export const RefundOrderModalContainer = ({
     const integration = useMemo(
         () =>
             integrations.find(
-                (integration) => integration.id === integrationId
+                (integration) => integration.id === integrationId,
             ),
-        [integrations, integrationId]
+        [integrations, integrationId],
     )
 
     const shopName = useMemo(
         () => integration?.meta.shop_name || '',
-        [integration]
+        [integration],
     )
 
     const handleReasonChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const {value} = event.target
+        const { value } = event.target
         const newPayload = payload?.set('note', value)
 
         newPayload && setPayload(newPayload)
@@ -133,7 +134,7 @@ export const RefundOrderModalContainer = ({
         (lineItem: Map<string, any>, index: number) => {
             void onLineItemChange(integrationId!, lineItem, index)
         },
-        [integrationId, onLineItemChange]
+        [integrationId, onLineItemChange],
     )
 
     const amount = !!payload ? getRefundAmount(payload) : 0
@@ -214,11 +215,11 @@ export const RefundOrderModalContainer = ({
 const connector = connect(
     (state: RootState) => ({
         integrations: getIntegrationsByType<ShopifyIntegration>(
-            IntegrationType.Shopify
+            IntegrationType.Shopify,
         )(state),
         loading: getRefundOrderState(state).get('loading') as boolean,
         loadingMessage: getRefundOrderState(state).get(
-            'loadingMessage'
+            'loadingMessage',
         ) as string,
         payload: getRefundOrderState(state).get('payload') as Map<
             any,
@@ -234,7 +235,7 @@ const connector = connect(
         onPayloadChange,
         onReset,
         setPayload,
-    }
+    },
 )
 
 export default connector(RefundOrderModalContainer)

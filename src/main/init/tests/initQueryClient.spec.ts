@@ -1,7 +1,7 @@
-import {queryCache} from 'api/queryClient'
-import {store} from 'common/store'
-import {voiceCallsKeys} from 'models/voiceCall/queries'
-import {updateQueryTimestamp} from 'state/queries/actions'
+import { queryCache } from 'api/queryClient'
+import { store } from 'common/store'
+import { voiceCallsKeys } from 'models/voiceCall/queries'
+import { updateQueryTimestamp } from 'state/queries/actions'
 
 jest.mock('api/queryClient', () => ({
     queryCache: {
@@ -23,7 +23,9 @@ const updateQueryTimestampMock = updateQueryTimestamp as jest.Mock
 
 describe('initQueryClient', () => {
     beforeEach(() => {
-        updateQueryTimestampMock.mockReturnValue({type: 'updateQueryTimestamp'})
+        updateQueryTimestampMock.mockReturnValue({
+            type: 'updateQueryTimestamp',
+        })
     })
 
     it('should update query timestamp when query cache updates for subscribed query keys', () => {
@@ -32,30 +34,30 @@ describe('initQueryClient', () => {
 
         const [[subscribe]] = (queryCache.subscribe as jest.Mock).mock.calls
         const subscribedQueryEvent = {
-            query: {queryKey: [voiceCallsKeys.all()[0]]},
+            query: { queryKey: [voiceCallsKeys.all()[0]] },
             type: 'added',
         }
 
         ;(subscribe as (e: typeof subscribedQueryEvent) => void)(
-            subscribedQueryEvent
+            subscribedQueryEvent,
         )
 
         expect(updateQueryTimestampMock).toHaveBeenCalledWith(
-            voiceCallsKeys.all()
+            voiceCallsKeys.all(),
         )
         expect(store.dispatch).toHaveBeenCalledWith({
             type: 'updateQueryTimestamp',
         })
 
         const unsubscribedQueryEvent = {
-            query: {queryKey: ['non-subscribed-query-key']},
+            query: { queryKey: ['non-subscribed-query-key'] },
             type: 'added',
         }
         ;(subscribe as (e: typeof unsubscribedQueryEvent) => void)(
-            unsubscribedQueryEvent
+            unsubscribedQueryEvent,
         )
         expect(updateQueryTimestampMock).not.toHaveBeenCalledWith(
-            unsubscribedQueryEvent.query.queryKey
+            unsubscribedQueryEvent.query.queryKey,
         )
     })
 })

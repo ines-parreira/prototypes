@@ -1,11 +1,14 @@
+// eslint-disable-line import/no-unresolved
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+
 import classnames from 'classnames'
-import {parse} from 'csv-parse/sync' // eslint-disable-line import/no-unresolved
-import {stringify} from 'csv-stringify/sync' // eslint-disable-line import/no-unresolved
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
+import { parse } from 'csv-parse/sync'
+// eslint-disable-line import/no-unresolved
+import { stringify } from 'csv-stringify/sync'
 
 import {
-    PaywallConfig,
     paywallConfigs as defaultPaywallConfigs,
+    PaywallConfig,
 } from 'config/paywalls'
 import {
     SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE,
@@ -17,30 +20,29 @@ import {
 import useStatResource from 'hooks/reporting/useStatResource'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {useGetSelfServiceConfigurations} from 'models/selfServiceConfiguration/queries'
-import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
-import {LegacyStatsFilters, TwoDimensionalChart} from 'models/stat/types'
-import {useGetWorkflowConfigurations} from 'models/workflows/queries'
-import {ORDER_MANAGEMENT} from 'pages/automate/common/components/constants'
-
+import { useGetSelfServiceConfigurations } from 'models/selfServiceConfiguration/queries'
+import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
+import { LegacyStatsFilters, TwoDimensionalChart } from 'models/stat/types'
+import { useGetWorkflowConfigurations } from 'models/workflows/queries'
+import { ORDER_MANAGEMENT } from 'pages/automate/common/components/constants'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import withEcommerceIntegration from 'pages/automate/common/utils/withStoreIntegrations'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import HeaderTitle from 'pages/common/components/HeaderTitle'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
-import {useGetAIArticles} from 'pages/settings/helpCenter/queries'
-import {DEPRECATED_SelfServiceStatsPageFilters} from 'pages/stats/self-service/DEPRECATED_SelfServiceStatsPageFilters'
-import {AccountFeature} from 'state/currentAccount/types'
-import {getIntegrations} from 'state/integrations/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
-import {assetsUrl} from 'utils'
+import { useGetAIArticles } from 'pages/settings/helpCenter/queries'
+import { DEPRECATED_SelfServiceStatsPageFilters } from 'pages/stats/self-service/DEPRECATED_SelfServiceStatsPageFilters'
+import { AccountFeature } from 'state/currentAccount/types'
+import { getIntegrations } from 'state/integrations/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { getCleanStatsFiltersWithTimezone } from 'state/ui/stats/selectors'
+import { assetsUrl } from 'utils'
 
 import TableStat from '../common/components/charts/TableStat/TableStat'
-import {DEFAULT_LOCALE} from '../common/utils'
+import { DEFAULT_LOCALE } from '../common/utils'
 import AIBanner from '../help-center/components/AIBanner'
 import StatsPage from '../StatsPage'
 import StatWrapper from '../StatWrapper'
@@ -50,10 +52,10 @@ import {
     PAGE_DESCRIPTION,
     PAGE_TITLE_PERFORMANCE_BY_FEATURES,
 } from './constants'
-import {SelfServiceFeaturePreview} from './SelfServiceFeaturePreview'
+import { SelfServiceFeaturePreview } from './SelfServiceFeaturePreview'
+import SelfServiceStatsPagePaywallCustomCta from './SelfServiceStatsPagePaywallCustomCta'
 
 import css from './SelfServiceStatsPage.less'
-import SelfServiceStatsPagePaywallCustomCta from './SelfServiceStatsPagePaywallCustomCta'
 
 export const SelfServiceStatsPage = (): JSX.Element => {
     const [noActivityAlertDismissed, setNoActivityAlertDismissed] =
@@ -61,11 +63,11 @@ export const SelfServiceStatsPage = (): JSX.Element => {
 
     const dispatch = useAppDispatch()
     const integrations = useAppSelector(getIntegrations)
-    const {cleanStatsFilters: statsFilters} = useAppSelector(
-        getCleanStatsFiltersWithTimezone
+    const { cleanStatsFilters: statsFilters } = useAppSelector(
+        getCleanStatsFiltersWithTimezone,
     )
     const pageStatsFilters = useMemo<LegacyStatsFilters>(() => {
-        const {period, integrations} = statsFilters
+        const { period, integrations } = statsFilters
         return {
             period,
             integrations,
@@ -85,7 +87,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                 notify({
                     status: NotificationStatus.Error,
                     message: 'Could not fetch Flows, please try again later.',
-                })
+                }),
             )
         }
     }, [dispatch, isWorkflowConfigurationsFetchError])
@@ -94,7 +96,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
         (csvData: string): string => {
             try {
                 if (!workflowConfigurations?.length || !csvData) return csvData
-                const flows = parse(csvData, {columns: true}) as {
+                const flows = parse(csvData, { columns: true }) as {
                     Flow: string
                     [key: string]: any
                 }[]
@@ -102,7 +104,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                 flows.forEach((flow) => {
                     flow.Flow =
                         workflowConfigurations.find(
-                            (configuration) => configuration.id === flow.Flow
+                            (configuration) => configuration.id === flow.Flow,
                         )?.name ?? flow.Flow
                 })
                 return stringify(flows, {
@@ -111,12 +113,12 @@ export const SelfServiceStatsPage = (): JSX.Element => {
             } catch (err) {
                 console.error(
                     'Error while renaming configurationId to Flow name',
-                    err
+                    err,
                 )
             }
             return csvData
         },
-        [workflowConfigurations]
+        [workflowConfigurations],
     )
 
     const {
@@ -129,21 +131,21 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                     status: NotificationStatus.Error,
                     message:
                         'Could not fetch Self-service configurations, please try again later.',
-                })
+                }),
             )
         },
     })
 
     const reportIssueDisabled = selfServiceConfigurations.every(
-        (config) => !config.reportIssuePolicy.enabled
+        (config) => !config.reportIssuePolicy.enabled,
     )
 
     const returnOrderDisabled = selfServiceConfigurations.every(
-        (config) => !config.returnOrderPolicy.enabled
+        (config) => !config.returnOrderPolicy.enabled,
     )
 
     const articleRecommendationDisabled = selfServiceConfigurations.every(
-        (config) => !config.articleRecommendationHelpCenterId
+        (config) => !config.articleRecommendationHelpCenterId,
     )
 
     const articleRecommendationHelpCenterIds = selfServiceConfigurations
@@ -192,18 +194,18 @@ export const SelfServiceStatsPage = (): JSX.Element => {
         statsFilters: pageStatsFilters,
     })
 
-    const {data: fetchedArticles, isLoading: isLoadingAIArticles} =
+    const { data: fetchedArticles, isLoading: isLoadingAIArticles } =
         useGetAIArticles(DEFAULT_LOCALE)
 
     const articleRecommendationWithAIArticleHelpCenterId =
         fetchedArticles &&
         articleRecommendationHelpCenterIds.find(
             (helpCenterId) =>
-                !fetchedArticles.every(({reviews}) =>
+                !fetchedArticles.every(({ reviews }) =>
                     reviews?.some(
-                        (review) => review.help_center_id === helpCenterId
-                    )
-                )
+                        (review) => review.help_center_id === helpCenterId,
+                    ),
+                ),
         )
 
     const productsWithMostIssuesAndReturnRequestsNoData =
@@ -212,7 +214,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
 
     const buildCtaRedirectUrl = useCallback(
         (
-            feature: 'orderManagement' | 'articleRecommendation' | 'trainMyAi'
+            feature: 'orderManagement' | 'articleRecommendation' | 'trainMyAi',
         ) => {
             if (!storeIntegrations.length) return '/app/automation/'
 
@@ -231,7 +233,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                     return '/app/automation/'
             }
         },
-        [storeIntegrations]
+        [storeIntegrations],
     )
 
     const allSectionsNoData =
@@ -276,11 +278,11 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                     >
                         {(stat) => (
                             <TableStat
-                                context={{tagColors: null}}
+                                context={{ tagColors: null }}
                                 data={stat.getIn(['data', 'data'])}
                                 meta={stat.get('meta')}
                                 config={statsConfig.get(
-                                    SELF_SERVICE_WORKFLOWS_PERFORMANCE
+                                    SELF_SERVICE_WORKFLOWS_PERFORMANCE,
                                 )}
                                 name={SELF_SERVICE_WORKFLOWS_PERFORMANCE}
                                 integrations={integrations}
@@ -327,7 +329,7 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                                           <i
                                               className={classnames(
                                                   'material-icons mr-1',
-                                                  css.articleLinkIcon
+                                                  css.articleLinkIcon,
                                               )}
                                           >
                                               auto_awesome
@@ -347,20 +349,20 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                                         description="Enable Article Recommendation to automatically recommend relevant help center articles to customers."
                                         buttonText="Go to article recommendation"
                                         buttonRedirectUrl={buildCtaRedirectUrl(
-                                            'articleRecommendation'
+                                            'articleRecommendation',
                                         )}
                                         imageUrl={assetsUrl(
-                                            '/img/presentationals/article-recommendation-preview.png'
+                                            '/img/presentationals/article-recommendation-preview.png',
                                         )}
                                         imageAltText="Article Recommendation feature preview"
                                     />
                                 ) : (
                                     <TableStat
-                                        context={{tagColors: null}}
+                                        context={{ tagColors: null }}
                                         data={stat.getIn(['data', 'data'])}
                                         meta={stat.get('meta')}
                                         config={statsConfig.get(
-                                            SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE
+                                            SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE,
                                         )}
                                         name={
                                             SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE
@@ -411,20 +413,20 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                                         description="Monitor order issues with the report issue flow"
                                         buttonText={`Go to ${ORDER_MANAGEMENT}`}
                                         buttonRedirectUrl={buildCtaRedirectUrl(
-                                            'orderManagement'
+                                            'orderManagement',
                                         )}
                                         imageUrl={assetsUrl(
-                                            '/img/presentationals/report-issue-preview.png'
+                                            '/img/presentationals/report-issue-preview.png',
                                         )}
                                         imageAltText="Report Issue feature preview"
                                     />
                                 ) : (
                                     <TableStat
-                                        context={{tagColors: null}}
+                                        context={{ tagColors: null }}
                                         data={stat.getIn(['data', 'data'])}
                                         meta={stat.get('meta')}
                                         config={statsConfig.get(
-                                            SELF_SERVICE_TOP_REPORTED_ISSUES
+                                            SELF_SERVICE_TOP_REPORTED_ISSUES,
                                         )}
                                     />
                                 )}
@@ -454,20 +456,20 @@ export const SelfServiceStatsPage = (): JSX.Element => {
                                         description={`Enable and customize these Flows in ${ORDER_MANAGEMENT}.`}
                                         buttonText={`Go to ${ORDER_MANAGEMENT}`}
                                         buttonRedirectUrl={buildCtaRedirectUrl(
-                                            'orderManagement'
+                                            'orderManagement',
                                         )}
                                         imageUrl={assetsUrl(
-                                            '/img/presentationals/return-order-preview.png'
+                                            '/img/presentationals/return-order-preview.png',
                                         )}
                                         imageAltText="Return Order feature preview"
                                     />
                                 ) : (
                                     <TableStat
-                                        context={{tagColors: null}}
+                                        context={{ tagColors: null }}
                                         data={stat.getIn(['data', 'data'])}
                                         meta={stat.get('meta')}
                                         config={statsConfig.get(
-                                            SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES_AND_RETURN_REQUESTS
+                                            SELF_SERVICE_PRODUCTS_WITH_MOST_ISSUES_AND_RETURN_REQUESTS,
                                         )}
                                     />
                                 )}
@@ -501,10 +503,10 @@ export default withFeaturePaywall(
             ),
             customCta: <SelfServiceStatsPagePaywallCustomCta />,
         } as PaywallConfig,
-    }
+    },
 )(
     withEcommerceIntegration(
         PAGE_TITLE_PERFORMANCE_BY_FEATURES,
-        SelfServiceStatsPage
-    )
+        SelfServiceStatsPage,
+    ),
 )

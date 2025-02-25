@@ -1,7 +1,8 @@
-import {Map} from 'immutable'
-import React, {useRef, useState} from 'react'
+import React, { useRef, useState } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { Map } from 'immutable'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import Button from 'pages/common/components/button/Button'
 import Dropdown, {
     DropdownContext,
@@ -65,7 +66,7 @@ export function AddFilterDropdown({
                                         >
                                             {field.get('title')}
                                         </DropdownItem>
-                                    )
+                                    ),
                                 )}
                             </DropdownBody>
                         )

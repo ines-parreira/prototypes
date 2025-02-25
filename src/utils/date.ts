@@ -1,4 +1,4 @@
-import moment, {Moment} from 'moment-timezone'
+import moment, { Moment } from 'moment-timezone'
 
 /**
  * Convert a string to a moment object if the string represents a valid datetime, else returns null.
@@ -22,7 +22,7 @@ export const stringToDatetime = (data: string): Moment | null => {
  */
 export const stringToDatetimeWithTimeZone = (
     data: string,
-    timeZone: string
+    timeZone: string,
 ): Moment | null => {
     let datetime = null
 
@@ -93,7 +93,7 @@ export const getDetailedFormattedDate = (date: string, locale?: string) => {
     }
     return new Intl.DateTimeFormat(
         locale ?? 'en-US',
-        DETAILED_FORMATTED_DATE_OPTIONS
+        DETAILED_FORMATTED_DATE_OPTIONS,
     ).format(new Date(date))
 }
 

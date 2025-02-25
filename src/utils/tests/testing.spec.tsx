@@ -12,7 +12,7 @@ import {
 describe('testing', () => {
     describe('renderWithRouter', () => {
         it('should render', () => {
-            const {container} = renderWithRouter(<div>Bloup</div>)
+            const { container } = renderWithRouter(<div>Bloup</div>)
             expect(container.firstChild).toMatchSnapshot()
         })
     })

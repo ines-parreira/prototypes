@@ -1,5 +1,6 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps, useRef, useState} from 'react'
+import React, { ComponentProps, useRef, useState } from 'react'
+
+import { Meta, Story } from '@storybook/react'
 
 import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
@@ -9,7 +10,7 @@ import DropdownQuickSelect from 'pages/common/components/dropdown/DropdownQuickS
 
 import InputGroup from './InputGroup'
 import NumberInput from './NumberInput'
-import SelectInputBox, {SelectInputBoxContext} from './SelectInputBox'
+import SelectInputBox, { SelectInputBoxContext } from './SelectInputBox'
 import TextInput from './TextInput'
 
 const storyConfig: Meta = {
@@ -18,10 +19,10 @@ const storyConfig: Meta = {
 }
 
 const WithNumberInputTemplate: Story<ComponentProps<typeof InputGroup>> = (
-    props
+    props,
 ) => {
     const [firstInputCount, setFirstInputCount] = useState<number | undefined>(
-        0
+        0,
     )
     const [secondInputCount, setSecondInputCount] = useState<
         number | undefined
@@ -46,8 +47,8 @@ const WithNumberInputTemplate: Story<ComponentProps<typeof InputGroup>> = (
 }
 
 const WithSelectInputTemplate: Story<
-    ComponentProps<typeof InputGroup> & {options: string[]}
-> = ({options, ...other}) => {
+    ComponentProps<typeof InputGroup> & { options: string[] }
+> = ({ options, ...other }) => {
     const selectRef = useRef(null)
     const floatingSelectRef = useRef(null)
     const [isSelectOpen, setIsSelectOpen] = useState(false)
@@ -133,8 +134,8 @@ const WithSelectInputTemplate: Story<
                                                 setMultiValue(
                                                     multiValue.filter(
                                                         (item) =>
-                                                            item !== option
-                                                    )
+                                                            item !== option,
+                                                    ),
                                                 )
                                             } else {
                                                 setMultiValue([
@@ -156,7 +157,7 @@ const WithSelectInputTemplate: Story<
 }
 
 const WithTextInputTemplate: Story<ComponentProps<typeof InputGroup>> = (
-    props
+    props,
 ) => {
     const [firstTextInput, setFirstTextInput] = useState<string>('')
     const [secondTextInput, setSecondTextInput] = useState<string>('')

@@ -1,8 +1,9 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {agents} from 'fixtures/agents'
-import {AgentAvatar} from 'pages/stats/common/AgentAvatar'
+import { render, screen } from '@testing-library/react'
+
+import { agents } from 'fixtures/agents'
+import { AgentAvatar } from 'pages/stats/common/AgentAvatar'
 
 describe('<AgentAvatar>', () => {
     const agent = agents[0]

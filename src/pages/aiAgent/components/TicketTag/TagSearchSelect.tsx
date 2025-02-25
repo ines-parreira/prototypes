@@ -1,9 +1,10 @@
-import React, {useRef, useState} from 'react'
+import React, { useRef, useState } from 'react'
 
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import {TagDropdownMenu} from 'tags'
+import { TagDropdownMenu } from 'tags'
 
-import {AI_AGENT_TAGS_SET} from '../../constants'
+import { AI_AGENT_TAGS_SET } from '../../constants'
+
 import css from './TagSearchSelect.less'
 
 type Props = {
@@ -11,11 +12,11 @@ type Props = {
     defaultTag?: string
 }
 
-const TagSearchSelect = ({onSelect, defaultTag}: Props) => {
+const TagSearchSelect = ({ onSelect, defaultTag }: Props) => {
     const dropdownAnchor = useRef<HTMLDivElement>(null)
     const [isOpen, setIsOpen] = useState(false)
     const [selectedTag, setSelectedTag] = useState<string | undefined>(
-        defaultTag
+        defaultTag,
     )
 
     const handleTagSelection = (tagName?: string) => {

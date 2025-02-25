@@ -1,18 +1,19 @@
-import {fireEvent, render} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import type {ReactNode} from 'react'
+import type { ReactNode } from 'react'
 import React from 'react'
-import {StaticRouter} from 'react-router-dom'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {UserRole} from 'config/types/user'
+import { fireEvent, render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { StaticRouter } from 'react-router-dom'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { UserRole } from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {getHasAutomate} from 'state/billing/selectors'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {closePanels} from 'state/layout/actions'
-import {assumeMock} from 'utils/testing'
+import { getHasAutomate } from 'state/billing/selectors'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { closePanels } from 'state/layout/actions'
+import { assumeMock } from 'utils/testing'
 
-import MainNavigation, {ActiveContent} from '../MainNavigation'
+import MainNavigation, { ActiveContent } from '../MainNavigation'
 
 jest.mock(
     'common/segment',
@@ -20,7 +21,7 @@ jest.mock(
         ({
             ...jest.requireActual('common/segment'),
             logEvent: jest.fn(),
-        }) as typeof import('common/segment')
+        }) as typeof import('common/segment'),
 )
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())
@@ -33,9 +34,9 @@ const getCurrentUserMock = assumeMock(getCurrentUser)
 jest.mock('state/billing/selectors')
 const getHasAutomateMock = assumeMock(getHasAutomate)
 
-jest.mock('state/layout/actions', () => ({closePanels: jest.fn()}))
+jest.mock('state/layout/actions', () => ({ closePanels: jest.fn() }))
 
-const wrapper = ({children}: {children: ReactNode}) => (
+const wrapper = ({ children }: { children: ReactNode }) => (
     <StaticRouter location="/app">{children}</StaticRouter>
 )
 
@@ -44,7 +45,7 @@ describe('MainNavigation', () => {
 
     beforeEach(() => {
         getCurrentUserMock.mockReturnValue(
-            fromJS({role: {name: UserRole.BasicAgent}})
+            fromJS({ role: { name: UserRole.BasicAgent } }),
         )
         dispatch = jest.fn()
         useAppDispatchMock.mockReturnValue(dispatch)
@@ -52,25 +53,25 @@ describe('MainNavigation', () => {
     })
 
     it('should log an event and close panels when a menu item is clicked', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <MainNavigation activeContent={ActiveContent.Settings} />,
-            {wrapper}
+            { wrapper },
         )
         const el = getByText('Tickets')
         expect(el).toBeInTheDocument()
         fireEvent.click(el)
         expect(logEvent).toHaveBeenCalledWith(
             SegmentEvent.MenuMainLinkClicked,
-            {link: 'tickets'}
+            { link: 'tickets' },
         )
         expect(closePanels).toHaveBeenCalled()
         expect(dispatch).toHaveBeenCalled()
     })
 
     it('should render the title based on the active content', () => {
-        const {getAllByText} = render(
+        const { getAllByText } = render(
             <MainNavigation activeContent={ActiveContent.Tickets} />,
-            {wrapper}
+            { wrapper },
         )
         const el = getAllByText('Tickets')[0]
         expect(el).toBeInTheDocument()

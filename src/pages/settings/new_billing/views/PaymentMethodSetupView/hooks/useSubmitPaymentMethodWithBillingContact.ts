@@ -1,12 +1,12 @@
-import {useUpdateBillingContactWithSideEffects} from 'pages/settings/new_billing/hooks/useUpdateBillingContactWithSideEffects'
-import {reportCRMGrowthError} from 'pages/settings/new_billing/utils/reportCRMGrowthError'
-import {useSubmitPaymentMethod} from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useSubmitPaymentMethod'
-import {BillingContactUpdatePayload} from 'state/billing/types'
+import { useUpdateBillingContactWithSideEffects } from 'pages/settings/new_billing/hooks/useUpdateBillingContactWithSideEffects'
+import { reportCRMGrowthError } from 'pages/settings/new_billing/utils/reportCRMGrowthError'
+import { useSubmitPaymentMethod } from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useSubmitPaymentMethod'
+import { BillingContactUpdatePayload } from 'state/billing/types'
 
 export const useSubmitPaymentMethodWithBillingContact = (
-    overrides?: Parameters<typeof useSubmitPaymentMethod>['0']
+    overrides?: Parameters<typeof useSubmitPaymentMethod>['0'],
 ) => {
-    const {submitPaymentMethod, isLoading: isSubmitPaymentMethodLoading} =
+    const { submitPaymentMethod, isLoading: isSubmitPaymentMethodLoading } =
         useSubmitPaymentMethod(overrides)
 
     const updateBillingContact = useUpdateBillingContactWithSideEffects({
@@ -20,7 +20,7 @@ export const useSubmitPaymentMethodWithBillingContact = (
     })
 
     const submitPaymentMethodWithBillingContact = (
-        billingContact: BillingContactUpdatePayload
+        billingContact: BillingContactUpdatePayload,
     ) => updateBillingContact.mutateAsync([billingContact])
 
     return {

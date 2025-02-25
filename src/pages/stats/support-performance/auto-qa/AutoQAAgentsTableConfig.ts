@@ -1,14 +1,14 @@
-import {User} from 'config/types/user'
-import {useAccuracyPerAgent} from 'hooks/reporting/support-performance/auto-qa/useAccuracyPerAgent'
-import {useBrandVoicePerAgent} from 'hooks/reporting/support-performance/auto-qa/useBrandVoicePerAgent'
-import {useCommunicationSkillsPerAgent} from 'hooks/reporting/support-performance/auto-qa/useCommunicationSkillsPerAgent'
-import {useEfficiencyPerAgent} from 'hooks/reporting/support-performance/auto-qa/useEfficiencyPerAgent'
-import {useInternalCompliancePerAgent} from 'hooks/reporting/support-performance/auto-qa/useInternalCompliancePerAgent'
-import {useLanguageProficiencyPerAgent} from 'hooks/reporting/support-performance/auto-qa/useLanguageProficiencyPerAgent'
-import {useResolutionCompletenessPerAgent} from 'hooks/reporting/support-performance/auto-qa/useResolutionCompletenessPerAgent'
-import {useReviewedClosedTicketsPerAgent} from 'hooks/reporting/support-performance/auto-qa/useReviewedClosedTicketsPerAgent'
-import {isMediumOrSmallScreen} from 'pages/common/utils/mobile'
-import {MetricValueFormat} from 'pages/stats/common/utils'
+import { User } from 'config/types/user'
+import { useAccuracyPerAgent } from 'hooks/reporting/support-performance/auto-qa/useAccuracyPerAgent'
+import { useBrandVoicePerAgent } from 'hooks/reporting/support-performance/auto-qa/useBrandVoicePerAgent'
+import { useCommunicationSkillsPerAgent } from 'hooks/reporting/support-performance/auto-qa/useCommunicationSkillsPerAgent'
+import { useEfficiencyPerAgent } from 'hooks/reporting/support-performance/auto-qa/useEfficiencyPerAgent'
+import { useInternalCompliancePerAgent } from 'hooks/reporting/support-performance/auto-qa/useInternalCompliancePerAgent'
+import { useLanguageProficiencyPerAgent } from 'hooks/reporting/support-performance/auto-qa/useLanguageProficiencyPerAgent'
+import { useResolutionCompletenessPerAgent } from 'hooks/reporting/support-performance/auto-qa/useResolutionCompletenessPerAgent'
+import { useReviewedClosedTicketsPerAgent } from 'hooks/reporting/support-performance/auto-qa/useReviewedClosedTicketsPerAgent'
+import { isMediumOrSmallScreen } from 'pages/common/utils/mobile'
+import { MetricValueFormat } from 'pages/stats/common/utils'
 import {
     AGENT_NAME_COLUMN_WIDTH,
     METRIC_COLUMN_WIDTH,
@@ -27,9 +27,9 @@ import {
     REVIEWED_CLOSED_TICKETS_LABEL,
     TrendCardConfig,
 } from 'pages/stats/support-performance/auto-qa/AutoQAMetricsConfig'
-import {TooltipData} from 'pages/stats/types'
-import {AutoQAAgentMetric} from 'state/ui/stats/drillDownSlice'
-import {AutoQAMetric} from 'state/ui/stats/types'
+import { TooltipData } from 'pages/stats/types'
+import { AutoQAAgentMetric } from 'state/ui/stats/drillDownSlice'
+import { AutoQAMetric } from 'state/ui/stats/types'
 
 export enum AutoQAAgentsTableColumn {
     AgentName = 'auto_qa_table_agent_name',
@@ -128,7 +128,7 @@ export const AutoQAAgentsColumnConfig: Record<
 }
 
 export const getQuery = (
-    column: AutoQAAgentsTableColumn
+    column: AutoQAAgentsTableColumn,
 ): MetricQueryPerAgentQuery => {
     switch (column) {
         case AutoQAAgentsTableColumn.AgentName:
@@ -171,7 +171,7 @@ export const getColumnAlignment = (column: AutoQAAgentsTableColumn) =>
     column === AutoQAAgentsTableColumn.AgentName ? 'left' : 'right'
 
 const isAutoQAAgentsMetric = (
-    column: AutoQAAgentsTableColumn
+    column: AutoQAAgentsTableColumn,
 ): column is AutoQAAgentMetric => column !== AutoQAAgentsTableColumn.AgentName
 
 export const buildAgentMetric = (column: AutoQAAgentMetric, agent: User) => ({
@@ -182,7 +182,7 @@ export const buildAgentMetric = (column: AutoQAAgentMetric, agent: User) => ({
 
 export function getDrillDownMetricData(
     column: AutoQAAgentsTableColumn,
-    agent: User
+    agent: User,
 ) {
     if (isAutoQAAgentsMetric(column)) {
         return buildAgentMetric(column, agent)

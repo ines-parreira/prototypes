@@ -15,7 +15,7 @@ type Props = {
 }
 
 const OnboardingProgressTracker = (props: Props) => {
-    const {step, totalSteps, onBackClick, onNextClick, isLoading} = props
+    const { step, totalSteps, onBackClick, onNextClick, isLoading } = props
 
     const onBackBtnClick = () => {
         // TODO: set step in state here

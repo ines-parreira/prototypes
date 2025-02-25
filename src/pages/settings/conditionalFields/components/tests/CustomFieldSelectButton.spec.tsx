@@ -1,16 +1,18 @@
-import {RequirementType} from '@gorgias/api-types'
-import {fireEvent, screen} from '@testing-library/react'
 import React from 'react'
 
-import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import {CustomField, CustomFieldObjectTypes} from 'custom-fields/types'
+import { fireEvent, screen } from '@testing-library/react'
+
+import { RequirementType } from '@gorgias/api-types'
+
+import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import { CustomField, CustomFieldObjectTypes } from 'custom-fields/types'
 import {
+    ticketDropdownFieldDefinition,
     ticketInputFieldDefinition,
     ticketNumberFieldDefinition,
-    ticketDropdownFieldDefinition,
 } from 'fixtures/customField'
-import {renderWithStoreAndQueryClientProvider} from 'tests/renderWithStoreAndQueryClientProvider'
-import {assumeMock} from 'utils/testing'
+import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
+import { assumeMock } from 'utils/testing'
 
 import CustomFieldSelectButton from '../CustomFieldSelectButton'
 
@@ -47,7 +49,7 @@ const defaultProps = {
 describe('CustomFieldSelectButton', () => {
     beforeEach(() => {
         useCustomFieldDefinitionsMock.mockReturnValue({
-            data: {data: customFields},
+            data: { data: customFields },
             isLoading: false,
         } as any)
     })
@@ -56,7 +58,7 @@ describe('CustomFieldSelectButton', () => {
             isLoading: true,
         } as any)
         renderWithStoreAndQueryClientProvider(
-            <CustomFieldSelectButton {...defaultProps} />
+            <CustomFieldSelectButton {...defaultProps} />,
         )
         expect(screen.queryByText('Add Ticket field')).not.toBeInTheDocument()
         expect(screen.queryByRole('combobox')).not.toBeInTheDocument()
@@ -64,7 +66,7 @@ describe('CustomFieldSelectButton', () => {
 
     it('should render only the button by default', () => {
         renderWithStoreAndQueryClientProvider(
-            <CustomFieldSelectButton {...defaultProps} />
+            <CustomFieldSelectButton {...defaultProps} />,
         )
 
         expect(screen.getByRole('combobox')).toBeInTheDocument()
@@ -73,7 +75,7 @@ describe('CustomFieldSelectButton', () => {
 
     it('should list all fields on click', () => {
         renderWithStoreAndQueryClientProvider(
-            <CustomFieldSelectButton {...defaultProps} />
+            <CustomFieldSelectButton {...defaultProps} />,
         )
 
         fireEvent.click(screen.getByRole('combobox'))
@@ -84,7 +86,7 @@ describe('CustomFieldSelectButton', () => {
 
     it('should not show ignored fields', () => {
         renderWithStoreAndQueryClientProvider(
-            <CustomFieldSelectButton {...defaultProps} ignoreIds={[1, 2]} />
+            <CustomFieldSelectButton {...defaultProps} ignoreIds={[1, 2]} />,
         )
 
         fireEvent.click(screen.getByRole('combobox'))
@@ -95,18 +97,18 @@ describe('CustomFieldSelectButton', () => {
 
     it('should show an error when all fields are already selected', () => {
         renderWithStoreAndQueryClientProvider(
-            <CustomFieldSelectButton {...defaultProps} ignoreIds={[1, 2, 3]} />
+            <CustomFieldSelectButton {...defaultProps} ignoreIds={[1, 2, 3]} />,
         )
 
         expect(
-            screen.getByText('All the possible custom fields have been set.')
+            screen.getByText('All the possible custom fields have been set.'),
         ).toBeInTheDocument()
     })
 
     it('should trigger onChange when choosing a field', () => {
         const onSelect = jest.fn()
         renderWithStoreAndQueryClientProvider(
-            <CustomFieldSelectButton {...defaultProps} onSelect={onSelect} />
+            <CustomFieldSelectButton {...defaultProps} onSelect={onSelect} />,
         )
 
         fireEvent.click(screen.getByRole('combobox'))

@@ -1,1 +1,1 @@
-export {default} from './components/BigCommerce'
+export { default } from './components/BigCommerce'

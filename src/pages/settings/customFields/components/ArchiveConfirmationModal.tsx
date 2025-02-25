@@ -1,8 +1,8 @@
 import React from 'react'
 
-import {OBJECT_TYPES, OBJECT_TYPE_SETTINGS} from 'custom-fields/constants'
-import {CustomFieldObjectTypes} from 'custom-fields/types'
-import {ConfirmationModal} from 'pages/settings/helpCenter/components/ConfirmationModal'
+import { OBJECT_TYPE_SETTINGS, OBJECT_TYPES } from 'custom-fields/constants'
+import { CustomFieldObjectTypes } from 'custom-fields/types'
+import { ConfirmationModal } from 'pages/settings/helpCenter/components/ConfirmationModal'
 
 export type Props = {
     customFieldLabel: string

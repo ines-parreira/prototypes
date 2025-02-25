@@ -1,7 +1,7 @@
 import {
     canEnableMetaSetting,
-    FacebookRole,
     FACEBOOK_USER_TYPES,
+    FacebookRole,
     getFacebookUserTypeByRoles,
     hasFacebookRole,
     PERMISSIONS_PER_INTEGRATION_META_SETTING,
@@ -19,11 +19,11 @@ describe('facebook roles and permissions utils', () => {
             'should return the correct user type based on roles',
             (facebookUserType) => {
                 const userType = getFacebookUserTypeByRoles(
-                    facebookUserType.roles
+                    facebookUserType.roles,
                 )
 
                 expect(userType).toBe(facebookUserType.name)
-            }
+            },
         )
     })
 
@@ -64,7 +64,7 @@ describe('facebook roles and permissions utils', () => {
             [
                 PERMISSIONS_PER_INTEGRATION_META_SETTING.messenger_enabled.slice(
                     0,
-                    -1
+                    -1,
                 ),
                 'messenger_enabled',
                 false,
@@ -77,7 +77,7 @@ describe('facebook roles and permissions utils', () => {
             [
                 PERMISSIONS_PER_INTEGRATION_META_SETTING.posts_enabled.slice(
                     0,
-                    -1
+                    -1,
                 ),
                 'posts_enabled',
                 false,
@@ -90,7 +90,7 @@ describe('facebook roles and permissions utils', () => {
             [
                 PERMISSIONS_PER_INTEGRATION_META_SETTING.mentions_enabled.slice(
                     0,
-                    -1
+                    -1,
                 ),
                 'mentions_enabled',
                 false,
@@ -103,7 +103,7 @@ describe('facebook roles and permissions utils', () => {
             [
                 PERMISSIONS_PER_INTEGRATION_META_SETTING.instagram_comments_enabled.slice(
                     0,
-                    -1
+                    -1,
                 ),
                 'instagram_comments_enabled',
                 false,
@@ -116,7 +116,7 @@ describe('facebook roles and permissions utils', () => {
             [
                 PERMISSIONS_PER_INTEGRATION_META_SETTING.instagram_mentions_enabled.slice(
                     0,
-                    -1
+                    -1,
                 ),
                 'instagram_mentions_enabled',
                 false,
@@ -129,7 +129,7 @@ describe('facebook roles and permissions utils', () => {
             [
                 PERMISSIONS_PER_INTEGRATION_META_SETTING.instagram_ads_enabled.slice(
                     0,
-                    -1
+                    -1,
                 ),
                 'instagram_ads_enabled',
                 false,
@@ -142,7 +142,7 @@ describe('facebook roles and permissions utils', () => {
             [
                 PERMISSIONS_PER_INTEGRATION_META_SETTING.recommendations_enabled.slice(
                     0,
-                    -1
+                    -1,
                 ),
                 'recommendations_enabled',
                 false,
@@ -152,11 +152,11 @@ describe('facebook roles and permissions utils', () => {
             (permissions, metaSettingToCheck, expectedValue) => {
                 const canEnable = canEnableMetaSetting(
                     permissions,
-                    metaSettingToCheck
+                    metaSettingToCheck,
                 )
 
                 expect(canEnable).toBe(expectedValue)
-            }
+            },
         )
     })
 })

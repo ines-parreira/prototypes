@@ -1,9 +1,9 @@
 import React from 'react'
 
 import {
+    GORGIAS_CHAT_SSP_TEXTS,
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
-    GORGIAS_CHAT_SSP_TEXTS,
 } from 'config/integrations/gorgias_chat'
 
 import BotMessages from './BotMessages'
@@ -15,7 +15,11 @@ type Props = {
     language?: string
 }
 
-const OfflineMessages: React.FC<Props> = ({mainColor, chatTitle, language}) => {
+const OfflineMessages: React.FC<Props> = ({
+    mainColor,
+    chatTitle,
+    language,
+}) => {
     const widgetTranslatedTexts =
         GORGIAS_CHAT_WIDGET_TEXTS[
             language || GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT

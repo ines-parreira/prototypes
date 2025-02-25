@@ -1,8 +1,8 @@
-import classnames from 'classnames'
-import _noop from 'lodash/noop'
 import React from 'react'
 
-import {DropdownItem} from 'reactstrap'
+import classnames from 'classnames'
+import _noop from 'lodash/noop'
+import { DropdownItem } from 'reactstrap'
 
 import css from './CollapsedAction.less'
 

@@ -1,25 +1,26 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import * as reactQuery from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
-import _get from 'lodash/get'
 import React from 'react'
 
-import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { QueryClientProvider } from '@tanstack/react-query'
+import * as reactQuery from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
+import _get from 'lodash/get'
 
-import {buildSDKMocks} from '../../../../rest_api/help_center_api/tests/buildSdkMocks'
+import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+
+import { buildSDKMocks } from '../../../../rest_api/help_center_api/tests/buildSdkMocks'
 import {
-    useGetShopifyPages,
-    useGetPageEmbedments,
     useCreatePageEmbedment,
-    useUpdatePageEmbedment,
-    useGetArticleTemplates,
-    useGetArticleTemplate,
     useGetAIArticlesByHelpCenterAndStore,
+    useGetArticleTemplate,
+    useGetArticleTemplates,
+    useGetPageEmbedments,
+    useGetShopifyPages,
+    useUpdatePageEmbedment,
     useUpsertArticleTemplateReview,
 } from '../queries'
 import * as resources from '../resources'
-import {mockResourceServerReplies} from './resource-mocks'
+import { mockResourceServerReplies } from './resource-mocks'
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi')
 const mockedUseHelpCenterApi = useHelpCenterApi as jest.MockedFunction<
@@ -28,12 +29,12 @@ const mockedUseHelpCenterApi = useHelpCenterApi as jest.MockedFunction<
 
 const getAIGeneratedArticlesByHelpCenterAndStore = jest.spyOn(
     resources,
-    'getAIGeneratedArticlesByHelpCenterAndStore'
+    'getAIGeneratedArticlesByHelpCenterAndStore',
 )
 
 const queryClient = mockQueryClient()
 
-const wrapper: React.FC = ({children}) => (
+const wrapper: React.FC = ({ children }) => (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 )
 
@@ -55,17 +56,17 @@ describe('useGetShopifyPages', () => {
             getShopifyPages: 'success',
         })
 
-        const {result, waitFor} = renderHook(
+        const { result, waitFor } = renderHook(
             () => useGetShopifyPages(helpCenterId),
             {
                 wrapper,
-            }
+            },
         )
 
         await waitFor(() => expect(result.current.isSuccess).toBeTruthy())
 
         expect(result.current.data).toEqual(
-            mocks.fixtures.ShopifyPagesListFixture
+            mocks.fixtures.ShopifyPagesListFixture,
         )
     })
 
@@ -74,17 +75,17 @@ describe('useGetShopifyPages', () => {
             getShopifyPages: 'error',
         })
 
-        const {result, waitFor} = renderHook(
+        const { result, waitFor } = renderHook(
             () => useGetShopifyPages(helpCenterId),
             {
                 wrapper,
-            }
+            },
         )
 
         await waitFor(() => {
             expect(result.current.isError).toBeTruthy()
             expect(result.current.error).toMatchInlineSnapshot(
-                `[Error: Request failed with status code 500]`
+                `[Error: Request failed with status code 500]`,
             )
         })
     })
@@ -108,17 +109,17 @@ describe('useGetPageEmbedments', () => {
             getPageEmbedments: 'success',
         })
 
-        const {result, waitFor} = renderHook(
+        const { result, waitFor } = renderHook(
             () => useGetPageEmbedments(helpCenterId),
             {
                 wrapper,
-            }
+            },
         )
 
         await waitFor(() => expect(result.current.isSuccess).toBeTruthy())
 
         expect(result.current.data).toEqual(
-            mocks.fixtures.PageEmbedmentsListFixture
+            mocks.fixtures.PageEmbedmentsListFixture,
         )
     })
 
@@ -127,17 +128,17 @@ describe('useGetPageEmbedments', () => {
             getPageEmbedments: 'error',
         })
 
-        const {result, waitFor} = renderHook(
+        const { result, waitFor } = renderHook(
             () => useGetPageEmbedments(helpCenterId),
             {
                 wrapper,
-            }
+            },
         )
 
         await waitFor(() => {
             expect(result.current.isError).toBeTruthy()
             expect(result.current.error).toMatchInlineSnapshot(
-                `[Error: Request failed with status code 500]`
+                `[Error: Request failed with status code 500]`,
             )
         })
     })
@@ -169,7 +170,7 @@ describe('useCreatePageEmbedment', () => {
             createPageEmbedment: 'success',
         })
 
-        const {result, waitFor} = renderHook(() => useCreatePageEmbedment(), {
+        const { result, waitFor } = renderHook(() => useCreatePageEmbedment(), {
             wrapper,
         })
 
@@ -178,7 +179,7 @@ describe('useCreatePageEmbedment', () => {
         await waitFor(() => expect(result.current.isSuccess).toBeTruthy())
 
         expect(_get(result, ['current', 'data'])).toEqual(
-            mocks.fixtures.PageEmbedmentFixture
+            mocks.fixtures.PageEmbedmentFixture,
         )
     })
 
@@ -187,7 +188,7 @@ describe('useCreatePageEmbedment', () => {
             createPageEmbedment: 'error',
         })
 
-        const {result, waitFor} = renderHook(() => useCreatePageEmbedment(), {
+        const { result, waitFor } = renderHook(() => useCreatePageEmbedment(), {
             wrapper,
         })
 
@@ -196,7 +197,7 @@ describe('useCreatePageEmbedment', () => {
         await waitFor(() => {
             expect(result.current.isError).toBeTruthy()
             expect(result.current.error).toMatchInlineSnapshot(
-                `[Error: Request failed with status code 500]`
+                `[Error: Request failed with status code 500]`,
             )
         })
     })
@@ -229,7 +230,7 @@ describe('useUpdatePageEmbedment', () => {
             updatePageEmbedment: 'success',
         })
 
-        const {result, waitFor} = renderHook(() => useUpdatePageEmbedment(), {
+        const { result, waitFor } = renderHook(() => useUpdatePageEmbedment(), {
             wrapper,
         })
 
@@ -238,7 +239,7 @@ describe('useUpdatePageEmbedment', () => {
         await waitFor(() => expect(result.current.isSuccess).toBeTruthy())
 
         expect(_get(result, ['current', 'data'])).toEqual(
-            mocks.fixtures.PageEmbedmentFixture
+            mocks.fixtures.PageEmbedmentFixture,
         )
     })
 
@@ -247,7 +248,7 @@ describe('useUpdatePageEmbedment', () => {
             updatePageEmbedment: 'error',
         })
 
-        const {result, waitFor} = renderHook(() => useUpdatePageEmbedment(), {
+        const { result, waitFor } = renderHook(() => useUpdatePageEmbedment(), {
             wrapper,
         })
 
@@ -256,7 +257,7 @@ describe('useUpdatePageEmbedment', () => {
         await waitFor(() => {
             expect(result.current.isError).toBeTruthy()
             expect(result.current.error).toMatchInlineSnapshot(
-                `[Error: Request failed with status code 500]`
+                `[Error: Request failed with status code 500]`,
             )
         })
     })
@@ -280,17 +281,17 @@ describe('useGetArticleTemplates', () => {
             getArticleTemplates: 'success',
         })
 
-        const {result, waitFor} = renderHook(
+        const { result, waitFor } = renderHook(
             () => useGetArticleTemplates(locale),
             {
                 wrapper,
-            }
+            },
         )
 
         await waitFor(() => expect(result.current.isSuccess).toBeTruthy())
 
         expect(result.current.data).toEqual(
-            mocks.fixtures.ArticleTemplatesListFixture
+            mocks.fixtures.ArticleTemplatesListFixture,
         )
     })
 
@@ -299,17 +300,17 @@ describe('useGetArticleTemplates', () => {
             getArticleTemplates: 'error',
         })
 
-        const {result, waitFor} = renderHook(
+        const { result, waitFor } = renderHook(
             () => useGetArticleTemplates(locale),
             {
                 wrapper,
-            }
+            },
         )
 
         await waitFor(() => {
             expect(result.current.isError).toBeTruthy()
             expect(result.current.error).toMatchInlineSnapshot(
-                `[Error: Request failed with status code 500]`
+                `[Error: Request failed with status code 500]`,
             )
         })
     })
@@ -334,17 +335,17 @@ describe('useGetArticleTemplate', () => {
             getArticleTemplate: 'success',
         })
 
-        const {result, waitFor} = renderHook(
+        const { result, waitFor } = renderHook(
             () => useGetArticleTemplate(templateKey, locale),
             {
                 wrapper,
-            }
+            },
         )
 
         await waitFor(() => expect(result.current.isSuccess).toBeTruthy())
 
         expect(result.current.data).toEqual(
-            mocks.fixtures.ArticleTemplatesListFixture[0]
+            mocks.fixtures.ArticleTemplatesListFixture[0],
         )
     })
 
@@ -353,17 +354,17 @@ describe('useGetArticleTemplate', () => {
             getArticleTemplate: 'error',
         })
 
-        const {result, waitFor} = renderHook(
+        const { result, waitFor } = renderHook(
             () => useGetArticleTemplate(templateKey, locale),
             {
                 wrapper,
-            }
+            },
         )
 
         await waitFor(() => {
             expect(result.current.isError).toBeTruthy()
             expect(result.current.error).toMatchInlineSnapshot(
-                `[Error: Request failed with status code 500]`
+                `[Error: Request failed with status code 500]`,
             )
         })
     })
@@ -389,42 +390,42 @@ describe('useGetAIGeneratedArticlesByHelpCenterAndStore', () => {
             getAIGeneratedArticlesByHelpCenterAndStore: 'success',
         })
 
-        const {result, waitFor} = renderHook(
+        const { result, waitFor } = renderHook(
             () =>
                 useGetAIArticlesByHelpCenterAndStore(
                     helpCenterId,
                     storeIntegrationId,
-                    locale
+                    locale,
                 ),
             {
                 wrapper,
-            }
+            },
         )
 
         await waitFor(() => expect(result.current.isSuccess).toBeTruthy())
 
         expect(result.current.data).toEqual(
-            mocks.fixtures.AIArticlesListFixture
+            mocks.fixtures.AIArticlesListFixture,
         )
     })
 
     it('disables query if helpCenterId is null', async () => {
         const useQuerySpy = jest.spyOn(reactQuery, 'useQuery')
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useGetAIArticlesByHelpCenterAndStore(
                     null,
                     storeIntegrationId,
-                    locale
+                    locale,
                 ),
             {
                 wrapper,
-            }
+            },
         )
 
         expect(
-            getAIGeneratedArticlesByHelpCenterAndStore
+            getAIGeneratedArticlesByHelpCenterAndStore,
         ).toHaveBeenCalledTimes(0)
 
         expect(result.current.data).toBeUndefined()
@@ -450,20 +451,20 @@ describe('useGetAIGeneratedArticlesByHelpCenterAndStore', () => {
     it('disables query if storeIntegrationId is null', async () => {
         const useQuerySpy = jest.spyOn(reactQuery, 'useQuery')
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useGetAIArticlesByHelpCenterAndStore(
                     helpCenterId,
                     null,
-                    locale
+                    locale,
                 ),
             {
                 wrapper,
-            }
+            },
         )
 
         expect(
-            getAIGeneratedArticlesByHelpCenterAndStore
+            getAIGeneratedArticlesByHelpCenterAndStore,
         ).toHaveBeenCalledTimes(0)
 
         expect(result.current.data).toBeUndefined()
@@ -491,22 +492,22 @@ describe('useGetAIGeneratedArticlesByHelpCenterAndStore', () => {
             getAIGeneratedArticlesByHelpCenterAndStore: 'error',
         })
 
-        const {result, waitFor} = renderHook(
+        const { result, waitFor } = renderHook(
             () =>
                 useGetAIArticlesByHelpCenterAndStore(
                     helpCenterId,
                     storeIntegrationId,
-                    locale
+                    locale,
                 ),
             {
                 wrapper,
-            }
+            },
         )
 
         await waitFor(() => {
             expect(result.current.isError).toBeTruthy()
             expect(result.current.error).toMatchInlineSnapshot(
-                `[Error: Request failed with status code 404]`
+                `[Error: Request failed with status code 404]`,
             )
         })
     })
@@ -538,11 +539,11 @@ describe('useUpsertArticleTemplateReview', () => {
             upsertArticleTemplateReview: 'success',
         })
 
-        const {result, waitFor} = renderHook(
+        const { result, waitFor } = renderHook(
             () => useUpsertArticleTemplateReview(),
             {
                 wrapper,
-            }
+            },
         )
 
         result.current.mutate([sdkMocks.client, pathParams, payload])
@@ -557,11 +558,11 @@ describe('useUpsertArticleTemplateReview', () => {
             upsertArticleTemplateReview: 'error',
         })
 
-        const {result, waitFor} = renderHook(
+        const { result, waitFor } = renderHook(
             () => useUpsertArticleTemplateReview(),
             {
                 wrapper,
-            }
+            },
         )
 
         result.current.mutate([sdkMocks.client, pathParams, payload])
@@ -569,7 +570,7 @@ describe('useUpsertArticleTemplateReview', () => {
         await waitFor(() => {
             expect(result.current.isError).toBeTruthy()
             expect(result.current.error).toMatchInlineSnapshot(
-                `[Error: Request failed with status code 500]`
+                `[Error: Request failed with status code 500]`,
             )
         })
     })

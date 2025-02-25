@@ -1,6 +1,6 @@
-import {GuidancesDataFixture} from '../../tests/GuidancesData.fixture'
-import {Create3to5GuidancesTask} from '../Create3to5Guidances.task'
-import {buildRuleEngineData, buildRuleEngineRoutes} from './utils'
+import { GuidancesDataFixture } from '../../tests/GuidancesData.fixture'
+import { Create3to5GuidancesTask } from '../Create3to5Guidances.task'
+import { buildRuleEngineData, buildRuleEngineRoutes } from './utils'
 
 describe.each([
     {
@@ -69,13 +69,13 @@ describe.each([
             .withUnlistedGuidance()
             .build(),
     },
-])('Create3to5Guidances', ({guidances, display, type}) => {
+])('Create3to5Guidances', ({ guidances, display, type }) => {
     it(`should ${display ? '' : 'not '}display the task if ${guidances.length} guidances ${type ? `of type ${type} ` : ''}exists`, () => {
         const task = new Create3to5GuidancesTask(
             buildRuleEngineData({
                 guidances,
             }),
-            buildRuleEngineRoutes()
+            buildRuleEngineRoutes(),
         )
         expect(task.display).toBe(display)
     })

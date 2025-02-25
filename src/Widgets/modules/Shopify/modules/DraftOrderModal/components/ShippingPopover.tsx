@@ -1,25 +1,25 @@
-import classnames from 'classnames'
-import {fromJS, Map, List} from 'immutable'
 import React, {
+    ChangeEvent,
     Component,
     ComponentProps,
-    ReactNode,
-    ChangeEvent,
     FormEvent,
     KeyboardEvent,
+    ReactNode,
     RefObject,
 } from 'react'
-import {Button, Form, Input, Popover, PopoverBody} from 'reactstrap'
 
-import {formatPrice} from 'business/shopify/number'
-import {logEvent, SegmentEvent} from 'common/segment'
+import classnames from 'classnames'
+import { fromJS, List, Map } from 'immutable'
+import { Button, Form, Input, Popover, PopoverBody } from 'reactstrap'
+
+import { formatPrice } from 'business/shopify/number'
+import { logEvent, SegmentEvent } from 'common/segment'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import RadioButton from 'pages/common/components/RadioButton'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
-import {focusElement} from 'utils/html'
-
+import { focusElement } from 'utils/html'
 import AmountInput from 'Widgets/modules/Shopify/modules/AmountInput'
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
+import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import popoverCss from './Popover.less'
 import css from './ShippingPopover.less'
@@ -55,7 +55,7 @@ export default class ShippingPopover extends Component<Props, State> {
     _firstInputElement?: HTMLInputElement
 
     _isFreeShipping = (value: Map<any, any>): boolean => {
-        const {currencyCode} = this.props
+        const { currencyCode } = this.props
 
         return (
             value.get('custom') === true &&
@@ -66,7 +66,7 @@ export default class ShippingPopover extends Component<Props, State> {
     }
 
     _initState = (): Omit<State, 'isOpen'> => {
-        const {value} = this.props
+        const { value } = this.props
 
         if (!value) {
             return {
@@ -97,9 +97,9 @@ export default class ShippingPopover extends Component<Props, State> {
     }
 
     componentDidUpdate(prevProps: Props, prevState: State) {
-        const {actionName} = this.props
-        const {isOpen} = this.state
-        const {isOpen: wasOpen} = prevState
+        const { actionName } = this.props
+        const { isOpen } = this.state
+        const { isOpen: wasOpen } = prevState
 
         const onOpen = !wasOpen && isOpen
         const onClose = wasOpen && !isOpen
@@ -109,7 +109,7 @@ export default class ShippingPopover extends Component<Props, State> {
             logEvent(
                 actionName === ShopifyActionType.CreateOrder
                     ? SegmentEvent.ShopifyCreateOrderShippingPopoverOpen
-                    : SegmentEvent.ShopifyDuplicateOrderShippingPopoverOpen
+                    : SegmentEvent.ShopifyDuplicateOrderShippingPopoverOpen,
             )
         } else if (onClose) {
             focusElement(() => this._buttonElement as HTMLButtonElement)
@@ -123,7 +123,7 @@ export default class ShippingPopover extends Component<Props, State> {
     }
 
     _toggle = () => {
-        const {isOpen} = this.state
+        const { isOpen } = this.state
 
         this.setState({
             isOpen: !isOpen,
@@ -131,8 +131,8 @@ export default class ShippingPopover extends Component<Props, State> {
     }
 
     _getShippingRateTitle() {
-        const {value, availableShippingRates} = this.props
-        const {handle} = this.state
+        const { value, availableShippingRates } = this.props
+        const { handle } = this.state
 
         if (!!value && value.get('title')) {
             return value.get('title') as string
@@ -140,7 +140,7 @@ export default class ShippingPopover extends Component<Props, State> {
 
         const shippingRate = availableShippingRates.find(
             (availableShippingRate: Map<any, any>) =>
-                availableShippingRate.get('handle') === handle
+                availableShippingRate.get('handle') === handle,
         ) as Map<any, any>
 
         return shippingRate ? (shippingRate.get('title') as string) : null
@@ -155,21 +155,21 @@ export default class ShippingPopover extends Component<Props, State> {
     }
 
     _onHandleChange = (newHandle: string) => {
-        this.setState({handle: newHandle})
+        this.setState({ handle: newHandle })
     }
 
     _onTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
         const title = event.target.value
-        this.setState({title})
+        this.setState({ title })
     }
 
     _onPriceChange = (price: number) => {
-        this.setState({price})
+        this.setState({ price })
     }
 
     _onSubmit = (event: FormEvent) => {
-        const {currencyCode, onChange, actionName} = this.props
-        const {handle, title, price} = this.state
+        const { currencyCode, onChange, actionName } = this.props
+        const { handle, title, price } = this.state
 
         event.preventDefault()
         this._toggle()
@@ -182,7 +182,7 @@ export default class ShippingPopover extends Component<Props, State> {
                         handle: null,
                         price: formatPrice(0, currencyCode),
                         title: ShippingPopover._FREE_SHIPPING_TITLE,
-                    })
+                    }),
                 )
                 break
             case 'custom':
@@ -192,7 +192,7 @@ export default class ShippingPopover extends Component<Props, State> {
                         handle: null,
                         price: price || 0,
                         title: title || 'Custom',
-                    })
+                    }),
                 )
                 break
             default:
@@ -202,7 +202,7 @@ export default class ShippingPopover extends Component<Props, State> {
                         handle,
                         price: null,
                         title: null,
-                    })
+                    }),
                 )
                 break
         }
@@ -211,12 +211,12 @@ export default class ShippingPopover extends Component<Props, State> {
             actionName === ShopifyActionType.CreateOrder
                 ? SegmentEvent.ShopifyCreateOrderShippingPopoverApply
                 : SegmentEvent.ShopifyDuplicateOrderShippingPopoverApply,
-            {handle}
+            { handle },
         )
     }
 
     _onRemove = () => {
-        const {actionName, onChange} = this.props
+        const { actionName, onChange } = this.props
 
         this._toggle()
         onChange(fromJS(null))
@@ -230,19 +230,19 @@ export default class ShippingPopover extends Component<Props, State> {
         logEvent(
             actionName === ShopifyActionType.CreateOrder
                 ? SegmentEvent.ShopifyCreateOrderShippingPopoverRemove
-                : SegmentEvent.ShopifyDuplicateOrderShippingPopoverRemove
+                : SegmentEvent.ShopifyDuplicateOrderShippingPopoverRemove,
         )
     }
 
     _onClose = () => {
-        const {actionName} = this.props
+        const { actionName } = this.props
 
         this._toggle()
 
         logEvent(
             actionName === ShopifyActionType.CreateOrder
                 ? SegmentEvent.ShopifyCreateOrderShippingPopoverClose
-                : SegmentEvent.ShopifyDuplicateOrderShippingPopoverClose
+                : SegmentEvent.ShopifyDuplicateOrderShippingPopoverClose,
         )
     }
 
@@ -257,7 +257,7 @@ export default class ShippingPopover extends Component<Props, State> {
             availableShippingRates,
             container,
         } = this.props
-        const {isOpen, handle, title, price} = this.state
+        const { isOpen, handle, title, price } = this.state
 
         return (
             <div>
@@ -292,18 +292,18 @@ export default class ShippingPopover extends Component<Props, State> {
                             {availableShippingRates.map(
                                 (
                                     availableShippingRate: Map<any, any>,
-                                    index
+                                    index,
                                 ) => (
                                     <RadioButton
                                         key={availableShippingRate.get(
-                                            'handle'
+                                            'handle',
                                         )}
                                         className={css.radioButton}
                                         label={
                                             <span className="d-inline-block ml-1">
                                                 <span className="d-block">
                                                     {availableShippingRate.get(
-                                                        'title'
+                                                        'title',
                                                     )}
                                                     <br />
                                                     <MoneyAmount
@@ -311,7 +311,7 @@ export default class ShippingPopover extends Component<Props, State> {
                                                             currencyCode
                                                         }
                                                         amount={availableShippingRate.getIn(
-                                                            ['price', 'amount']
+                                                            ['price', 'amount'],
                                                         )}
                                                     />
                                                 </span>
@@ -319,7 +319,7 @@ export default class ShippingPopover extends Component<Props, State> {
                                         }
                                         name="handle"
                                         value={availableShippingRate.get(
-                                            'handle'
+                                            'handle',
                                         )}
                                         isSelected={
                                             handle ===
@@ -332,14 +332,14 @@ export default class ShippingPopover extends Component<Props, State> {
                                         }
                                         onChange={this._onHandleChange}
                                     />
-                                )
+                                ),
                             )}
                             <RadioFieldSet
                                 className="mb-3"
                                 name="handle"
                                 options={[
-                                    {value: 'free', label: 'Free shipping'},
-                                    {value: 'custom', label: 'Custom'},
+                                    { value: 'free', label: 'Free shipping' },
+                                    { value: 'custom', label: 'Custom' },
                                 ]}
                                 selectedValue={handle}
                                 onChange={this._onHandleChange}
@@ -352,7 +352,7 @@ export default class ShippingPopover extends Component<Props, State> {
                                     value={title}
                                     className={classnames(
                                         popoverCss.titleInput,
-                                        css.titleInput
+                                        css.titleInput,
                                     )}
                                     required={handle === 'custom'}
                                     disabled={handle !== 'custom'}

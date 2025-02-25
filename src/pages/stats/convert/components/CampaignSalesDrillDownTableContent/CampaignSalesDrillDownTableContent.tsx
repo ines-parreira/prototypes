@@ -1,23 +1,22 @@
 import React from 'react'
 
-import {useEnrichedDrillDownData} from 'hooks/reporting/useDrillDownData'
-import {EnrichmentFields} from 'models/reporting/types'
+import { useEnrichedDrillDownData } from 'hooks/reporting/useDrillDownData'
+import { EnrichmentFields } from 'models/reporting/types'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-import {DrillDownTableContentSkeleton} from 'pages/stats/common/components/Table/DrillDownTableContentSkeleton'
+import { DrillDownTableContentSkeleton } from 'pages/stats/common/components/Table/DrillDownTableContentSkeleton'
 import {
     formatCurrency,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
-import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
-import {useGetCampaignSalesDrillDownData} from 'pages/stats/convert/hooks/useGetCampaignSalesDrillDownData'
-import {formatConvertCampaignSalesDrillDownRowData} from 'pages/stats/DrillDownFormatters'
-import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
+import { useCampaignStatsFilters } from 'pages/stats/convert/hooks/useCampaignStatsFilters'
+import { useGetCampaignSalesDrillDownData } from 'pages/stats/convert/hooks/useGetCampaignSalesDrillDownData'
+import { formatConvertCampaignSalesDrillDownRowData } from 'pages/stats/DrillDownFormatters'
+import { DrillDownMetric } from 'state/ui/stats/drillDownSlice'
 
 import css from './CampaignSalesDrillDownTableContent.less'
 
@@ -44,14 +43,14 @@ export const CampaignSalesDrillDownTableContent = ({
 }: {
     metricData: DrillDownMetric
 }) => {
-    const {data, isFetching} = useEnrichedDrillDownData(
+    const { data, isFetching } = useEnrichedDrillDownData(
         metricData,
         [EnrichmentFields.CustomerIntegrationDataByExternalId],
         formatConvertCampaignSalesDrillDownRowData,
-        EnrichmentFields.OrderCustomerId
+        EnrichmentFields.OrderCustomerId,
     )
 
-    const {campaigns} = useCampaignStatsFilters()
+    const { campaigns } = useCampaignStatsFilters()
 
     const enrichedData = useGetCampaignSalesDrillDownData(data, campaigns)
 
@@ -128,7 +127,7 @@ export const CampaignSalesDrillDownTableContent = ({
                                 {item.amount && item.currency
                                     ? formatCurrency(
                                           parseFloat(item.amount),
-                                          item.currency
+                                          item.currency,
                                       )
                                     : NOT_AVAILABLE_PLACEHOLDER}
                             </BodyCell>

@@ -1,9 +1,11 @@
-import classNames from 'classnames'
 import React from 'react'
 
-import {Cadence} from 'models/billing/types'
+import classNames from 'classnames'
 
-import {formatAmount} from '../../utils/formatAmount'
+import { Cadence } from 'models/billing/types'
+
+import { formatAmount } from '../../utils/formatAmount'
+
 import css from './SummaryTotal.less'
 
 export type SummaryTotalWithDiscountsProps = {
@@ -31,7 +33,7 @@ const SummaryTotalWithDiscounts = ({
                             <span aria-label="Subtotal">
                                 {formatAmount(
                                     totalWithoutDiscounts / 100,
-                                    currency
+                                    currency,
                                 )}
                             </span>
                             /{cadence}

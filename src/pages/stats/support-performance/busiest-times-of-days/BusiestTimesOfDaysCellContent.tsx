@@ -1,6 +1,8 @@
-import {Skeleton} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
 import React from 'react'
+
+import classnames from 'classnames'
+
+import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import {
@@ -8,7 +10,7 @@ import {
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
 import heatmapCss from 'pages/stats/heatmap.less'
-import {METRIC_COLUMN_WIDTH} from 'pages/stats/support-performance/agents/AgentsTableConfig'
+import { METRIC_COLUMN_WIDTH } from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import css from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDays.less'
 import {
     BTODColumns,
@@ -16,7 +18,7 @@ import {
     HOUR_COLUMN,
     isHourCell,
 } from 'pages/stats/support-performance/busiest-times-of-days/types'
-import {hourFromHourIndex} from 'pages/stats/support-performance/busiest-times-of-days/utils'
+import { hourFromHourIndex } from 'pages/stats/support-performance/busiest-times-of-days/utils'
 
 export const BusiestTimesOfDaysCellContent = ({
     isLoading,
@@ -49,12 +51,12 @@ export const BusiestTimesOfDaysCellContent = ({
                 className,
                 [heatmapCss.heatmap],
                 isHeatmapMode && !isLoading && heatmapCss[`p${String(decile)}`],
-                isWorkingHour && css.redTransparentStripesPseudoElement
+                isWorkingHour && css.redTransparentStripesPseudoElement,
             )}
             innerClassName={classnames(
                 [heatmapCss.heatmap],
                 isHeatmapMode && !isLoading && heatmapCss[`p${String(decile)}`],
-                css.cellContent
+                css.cellContent,
             )}
             justifyContent={justify}
             size={'small'}
@@ -87,7 +89,7 @@ const Content = ({
             {formatMetricValue(
                 metricValue === 0 ? null : metricValue,
                 'integer',
-                NOT_AVAILABLE_PLACEHOLDER
+                NOT_AVAILABLE_PLACEHOLDER,
             )}
         </span>
     )

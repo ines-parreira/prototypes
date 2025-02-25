@@ -1,13 +1,14 @@
-import {fromJS, Map, List} from 'immutable'
+import React, { useMemo } from 'react'
+
+import { fromJS, List, Map } from 'immutable'
 import _capitalize from 'lodash/capitalize'
-import React, {useMemo} from 'react'
-import {Button} from 'reactstrap'
+import { Button } from 'reactstrap'
 
 import * as viewsConfig from 'config/views'
 import CustomFieldSelect from 'pages/common/components/ast/widget/CustomFieldSelect'
-import {humanizeString} from 'utils'
+import { humanizeString } from 'utils'
 
-import {getCustomFieldIdFromObjectPath} from './utils'
+import { getCustomFieldIdFromObjectPath } from './utils'
 
 type Props = {
     view: Map<any, any>
@@ -15,7 +16,7 @@ type Props = {
     onCustomFieldChange: (customFieldId: number) => void
 }
 
-export default function Left({objectPath, view, onCustomFieldChange}: Props) {
+export default function Left({ objectPath, view, onCustomFieldChange }: Props) {
     // just remove the first object name. Ex: ticket.customer.id ==> customer.id
     const suffixPath = objectPath.split('.').slice(1).join('.')
 
@@ -31,7 +32,7 @@ export default function Left({objectPath, view, onCustomFieldChange}: Props) {
     const field = fields.find(
         (f: Map<any, any>) =>
             f.get('path') === suffixPath ||
-            (isCustomFieldObject && f.get('path') === 'custom_fields')
+            (isCustomFieldObject && f.get('path') === 'custom_fields'),
     ) as Map<any, any>
 
     return (

@@ -1,7 +1,7 @@
-import {OnboardingNotificationState} from 'models/aiAgent/types'
+import { OnboardingNotificationState } from 'models/aiAgent/types'
 
 export const getOnboardingNotificationStateFixture = (
-    props?: Partial<OnboardingNotificationState>
+    props?: Partial<OnboardingNotificationState>,
 ): OnboardingNotificationState => ({
     shopName: 'test-shop',
     welcomePageVisitedDatetimes: [],

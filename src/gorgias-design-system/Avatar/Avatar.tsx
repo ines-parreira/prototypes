@@ -1,10 +1,10 @@
+import React, { HTMLAttributes } from 'react'
+
 import styled from '@emotion/styled'
-import React, {HTMLAttributes} from 'react'
 
-import {gorgiasColors} from '../styles'
-
+import { gorgiasColors } from '../styles'
 import BotIcon from './icons/BotIcon'
-import {getInitials} from './utils'
+import { getInitials } from './utils'
 
 export const StyledAvatarName = styled.span`
     color: ${gorgiasColors.dark};
@@ -34,26 +34,26 @@ const StyledStatusIndicator = styled.div`
 `
 
 export const StyledAvatar = styled.div<
-    Pick<AvatarProps, 'src' | 'isBot'> & {size: number}
+    Pick<AvatarProps, 'src' | 'isBot'> & { size: number }
 >`
     display: inline-block;
     position: relative;
 
     border-radius: 50%;
 
-    background-image: ${({isBot, src}) => (isBot ? 'none' : `url(${src!})`)};
+    background-image: ${({ isBot, src }) => (isBot ? 'none' : `url(${src!})`)};
     background-size: cover;
     background-position: center;
-    background-color: ${({isBot}) =>
+    background-color: ${({ isBot }) =>
         isBot ? gorgiasColors.neutralGrey4 : gorgiasColors.neutralGrey2};
 
     svg {
         width: 64.31%;
     }
 
-    ${({size}) =>
+    ${({ size }) =>
         `width: ${size}px; height: ${size}px; font-size: ${Math.floor(
-            size * 0.375
+            size * 0.375,
         )}px;`}
 
     font-weight: 600;
@@ -63,7 +63,7 @@ export const StyledAvatar = styled.div<
     align-items: center;
 
     text-transform: uppercase;
-    color: ${({src}) => (src ? 'transparent' : gorgiasColors.neutralGrey4)};
+    color: ${({ src }) => (src ? 'transparent' : gorgiasColors.neutralGrey4)};
 `
 
 export type AvatarProps = {

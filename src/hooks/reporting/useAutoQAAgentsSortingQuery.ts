@@ -1,15 +1,16 @@
-import {PayloadAction} from '@reduxjs/toolkit'
-import {useEffect} from 'react'
-// eslint-disable-next-line no-restricted-imports
-import {useDispatch} from 'react-redux'
+import { useEffect } from 'react'
 
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
+import { PayloadAction } from '@reduxjs/toolkit'
+// eslint-disable-next-line no-restricted-imports
+import { useDispatch } from 'react-redux'
+
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { MetricWithDecile } from 'hooks/reporting/useMetricPerDimension'
 import useAppSelector from 'hooks/useAppSelector'
-import {opposite, OrderDirection} from 'models/api/types'
-import {StatsFilters} from 'models/stat/types'
-import {AutoQAAgentsTableColumn} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
-import {DEFAULT_SORTING_DIRECTION} from 'state/ui/stats/agentPerformanceSlice'
+import { opposite, OrderDirection } from 'models/api/types'
+import { StatsFilters } from 'models/stat/types'
+import { AutoQAAgentsTableColumn } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
+import { DEFAULT_SORTING_DIRECTION } from 'state/ui/stats/agentPerformanceSlice'
 import {
     getAgentSorting,
     pageSet,
@@ -24,22 +25,22 @@ export const useAutoQAAgentsSortingQuery = (
         statsFilters: StatsFilters,
         timezone: string,
         sorting?: OrderDirection,
-        agentAssigneeId?: string
+        agentAssigneeId?: string,
     ) => MetricWithDecile,
     statsFilters: {
         cleanStatsFilters: StatsFilters
         userTimezone: string
-    }
+    },
 ) => {
     const dispatch = useDispatch()
-    const {cleanStatsFilters, userTimezone} = statsFilters
+    const { cleanStatsFilters, userTimezone } = statsFilters
     useResetPageOnQueryUpdate(pageSet)
 
     const sorting = useAppSelector(getAgentSorting)
-    const {isFetching, data} = useQuery(
+    const { isFetching, data } = useQuery(
         cleanStatsFilters,
         userTimezone,
-        sorting?.direction
+        sorting?.direction,
     )
 
     const sortCallback = () => {
@@ -50,7 +51,7 @@ export const useAutoQAAgentsSortingQuery = (
                     sorting.field === column
                         ? opposite(sorting.direction)
                         : DEFAULT_SORTING_DIRECTION,
-            })
+            }),
         )
     }
 
@@ -81,10 +82,10 @@ export const useAutoQAAgentsSortingQuery = (
 }
 
 const useResetPageOnQueryUpdate = (
-    pageSet: (page: number) => PayloadAction<number>
+    pageSet: (page: number) => PayloadAction<number>,
 ) => {
     const dispatch = useDispatch()
-    const {cleanStatsFilters} = useNewStatsFilters()
+    const { cleanStatsFilters } = useNewStatsFilters()
 
     useEffect(() => {
         dispatch(pageSet(1))

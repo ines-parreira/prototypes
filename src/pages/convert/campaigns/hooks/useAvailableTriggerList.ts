@@ -1,10 +1,11 @@
+import { useMemo } from 'react'
+
 import _pickBy from 'lodash/pickBy'
-import {useMemo} from 'react'
 
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 
-import {CONVERT_LIGHT_TRIGGERS, TRIGGERS_CONFIG} from '../constants/triggers'
-import {TriggerConfigValue} from '../types/TriggerConfig'
+import { CONVERT_LIGHT_TRIGGERS, TRIGGERS_CONFIG } from '../constants/triggers'
+import { TriggerConfigValue } from '../types/TriggerConfig'
 
 type FnArguments = {
     isConvertSubscriber?: boolean
@@ -30,7 +31,7 @@ export function useAvailableTriggerList({
             if (
                 isLightCampaign &&
                 !CONVERT_LIGHT_TRIGGERS.includes(
-                    triggerType as CampaignTriggerType
+                    triggerType as CampaignTriggerType,
                 )
             ) {
                 return false

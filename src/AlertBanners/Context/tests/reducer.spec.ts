@@ -1,6 +1,6 @@
-import {AlertBannerTypes, BannerCategories, ContextBanner} from '../../types'
-import {bannersReducer} from '../reducer'
-import {BannerActionTypes} from '../types'
+import { AlertBannerTypes, BannerCategories, ContextBanner } from '../../types'
+import { bannersReducer } from '../reducer'
+import { BannerActionTypes } from '../types'
 
 const banner1 = {
     type: AlertBannerTypes.Critical,

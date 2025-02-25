@@ -1,5 +1,5 @@
 import gorgiasLogo from '../assets/img/icons/gorgias-icon-logo-black.png'
-import {PaywallConfig} from '../config/paywalls'
+import { PaywallConfig } from '../config/paywalls'
 
 export const testimonial: PaywallConfig['testimonial'] = {
     author: {

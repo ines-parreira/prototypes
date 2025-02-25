@@ -1,11 +1,11 @@
-import type {CreditCard} from 'models/billing/types'
-import {isCardExpired} from 'pages/settings/new_billing/utils/isCardExpired'
+import type { CreditCard } from 'models/billing/types'
+import { isCardExpired } from 'pages/settings/new_billing/utils/isCardExpired'
 
 describe('isCardExpired', () => {
     it('should return false if expiration date is in the future', () => {
         // Given we are on November 2024
         const mockCurrentDate = new Date(2024, 10, 4) // months are 0-indexed, so 10 represents November
-        jest.useFakeTimers({now: mockCurrentDate})
+        jest.useFakeTimers({ now: mockCurrentDate })
 
         // with a card expiring on December 2024
         const cardNotExpired: CreditCard = {
@@ -20,7 +20,7 @@ describe('isCardExpired', () => {
     it('should return false if expiration date is same month', () => {
         // Given we are on November 2024
         const mockCurrentDate = new Date(2024, 10, 4) // months are 0-indexed, so 10 represents November
-        jest.useFakeTimers({now: mockCurrentDate})
+        jest.useFakeTimers({ now: mockCurrentDate })
 
         // with a card expiring on November 2024 (cards expire at the end of the expiring month)
         const cardNotExpired: CreditCard = {
@@ -35,7 +35,7 @@ describe('isCardExpired', () => {
     it('should return true if expiration date is in the past of same year', () => {
         // Given we are on November 2024
         const mockCurrentDate = new Date(2024, 10, 4) // months are 0-indexed, so 10 represents November
-        jest.useFakeTimers({now: mockCurrentDate})
+        jest.useFakeTimers({ now: mockCurrentDate })
 
         // with a card expiring on October 2024 (cards expire at the end of the expiring month)
         const cardExpired: CreditCard = {

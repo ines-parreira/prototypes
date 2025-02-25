@@ -1,35 +1,37 @@
+import React, { useMemo, useState } from 'react'
+
 import _keyBy from 'lodash/keyBy'
-import React, {useMemo, useState} from 'react'
-import {useHistory} from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 import useOrderBy from 'hooks/useOrderBy'
-import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
+import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
 import AutomateListView from 'pages/automate/common/components/AutomateListView'
 import Button from 'pages/common/components/button/Button'
 
-import css from './ActionsPlatformTemplatesView.less'
 import ActionsPlatformTemplatesFilters from './components/ActionsPlatformTemplatesFilters'
 import ActionsPlatformTemplatesTable from './components/ActionsPlatformTemplatesTable'
 import ActionsPlatformTemplatesTableRow from './components/ActionsPlatformTemplatesTableRow'
 import useApps from './hooks/useApps'
 import useDeleteActionTemplate from './hooks/useDeleteActionTemplate'
 import useGetAppFromTemplateApp from './hooks/useGetAppFromTemplateApp'
-import {App} from './types'
+import { App } from './types'
+
+import css from './ActionsPlatformTemplatesView.less'
 
 const ActionsPlatformStepsView = () => {
-    const {data: steps = [], isInitialLoading: isGetStepsInitialLoading} =
+    const { data: steps = [], isInitialLoading: isGetStepsInitialLoading } =
         useGetWorkflowConfigurationTemplates({
             triggers: ['reusable-llm-prompt'],
         })
-    const {deleteActionTemplate, isLoading: isDeleteActionTemplateLoading} =
+    const { deleteActionTemplate, isLoading: isDeleteActionTemplateLoading } =
         useDeleteActionTemplate()
-    const {apps, isLoading: areAppsLoading, actionsApps} = useApps()
-    const getAppFromTemplateApp = useGetAppFromTemplateApp({apps})
+    const { apps, isLoading: areAppsLoading, actionsApps } = useApps()
+    const getAppFromTemplateApp = useGetAppFromTemplateApp({ apps })
     const history = useHistory()
 
     const [name, setName] = useState('')
     const [selectedApp, setSelectedApp] = useState<App | null>(null)
-    const {orderDirection, orderBy, orderParam, toggleOrderBy} =
+    const { orderDirection, orderBy, orderParam, toggleOrderBy } =
         useOrderBy<'updated_datetime'>('updated_datetime')
 
     const filteredSteps = useMemo(() => {
@@ -72,7 +74,7 @@ const ActionsPlatformStepsView = () => {
         const actionsAppsById = _keyBy(actionsApps, 'id')
 
         return apps.filter(
-            (app) => app.type !== 'app' || app.id in actionsAppsById
+            (app) => app.type !== 'app' || app.id in actionsAppsById,
         )
     }, [apps, actionsApps])
 
@@ -114,7 +116,7 @@ const ActionsPlatformStepsView = () => {
                     <Button
                         onClick={() => {
                             history.push(
-                                '/app/automation/actions-platform/steps/new'
+                                '/app/automation/actions-platform/steps/new',
                             )
                         }}
                     >
@@ -141,12 +143,12 @@ const ActionsPlatformStepsView = () => {
                         app={getAppFromTemplateApp(step.apps[0])}
                         onClick={() => {
                             history.push(
-                                `/app/automation/actions-platform/steps/edit/${step.id}`
+                                `/app/automation/actions-platform/steps/edit/${step.id}`,
                             )
                         }}
                         onDelete={() => {
                             void deleteActionTemplate([
-                                {internal_id: step.internal_id},
+                                { internal_id: step.internal_id },
                             ])
                         }}
                         isDisabled={isDeleteActionTemplateLoading}

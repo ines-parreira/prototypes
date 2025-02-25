@@ -1,10 +1,11 @@
-import {CreateSlaPolicyBody, SLAPolicyMetric} from '@gorgias/api-types'
 import _isNumber from 'lodash/isNumber'
 
-import {SLAFormValues} from './useFormValues'
+import { CreateSlaPolicyBody, SLAPolicyMetric } from '@gorgias/api-types'
+
+import { SLAFormValues } from './useFormValues'
 
 export default function makeCreateSLAPolicyBody(
-    formPolicy: SLAFormValues
+    formPolicy: SLAFormValues,
 ): CreateSlaPolicyBody {
     return {
         ...formPolicy,

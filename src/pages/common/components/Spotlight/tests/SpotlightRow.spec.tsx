@@ -1,12 +1,12 @@
-import {render, screen} from '@testing-library/react'
+import React, { ComponentProps } from 'react'
+
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {createBrowserHistory, History} from 'history'
-import React, {ComponentProps} from 'react'
-import {MemoryRouter, Router} from 'react-router-dom'
+import { createBrowserHistory, History } from 'history'
+import { MemoryRouter, Router } from 'react-router-dom'
 
-import {mockSearchRank} from 'fixtures/searchRank'
-import {EntityType} from 'hooks/useSearchRankScenario'
-
+import { mockSearchRank } from 'fixtures/searchRank'
+import { EntityType } from 'hooks/useSearchRankScenario'
 import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
 import SpotlightRow from 'pages/common/components/Spotlight/SpotlightRow'
 import * as platform from 'utils/platform'
@@ -24,20 +24,20 @@ describe('<SpotlightRow/>', () => {
     }
 
     it('should render with minimal props', () => {
-        const {container} = render(<SpotlightRow {...minProps} />)
+        const { container } = render(<SpotlightRow {...minProps} />)
 
         expect(container).toMatchSnapshot()
     })
 
     it('should render with icon', () => {
-        const {container} = render(<SpotlightRow {...minProps} icon={'🚀'} />)
+        const { container } = render(<SpotlightRow {...minProps} icon={'🚀'} />)
 
         expect(container).toMatchSnapshot()
     })
 
     it('should shrink info flex container', () => {
-        const {container} = render(
-            <SpotlightRow {...minProps} shrinkInfo={true} />
+        const { container } = render(
+            <SpotlightRow {...minProps} shrinkInfo={true} />,
         )
 
         expect(container).toMatchSnapshot()
@@ -47,7 +47,7 @@ describe('<SpotlightRow/>', () => {
         render(
             <SearchRankScenarioContext.Provider value={mockSearchRank}>
                 <SpotlightRow {...minProps} />
-            </SearchRankScenarioContext.Provider>
+            </SearchRankScenarioContext.Provider>,
         )
 
         userEvent.click(screen.getByText(minProps.title))
@@ -66,7 +66,7 @@ describe('<SpotlightRow/>', () => {
                 <SearchRankScenarioContext.Provider value={mockSearchRank}>
                     <SpotlightRow {...minProps} selected={true} />
                 </SearchRankScenarioContext.Provider>
-            </Router>
+            </Router>,
         )
         screen.getByText(minProps.title)
         history.push(minProps.link)
@@ -102,7 +102,7 @@ describe('<SpotlightRow/>', () => {
         })
 
         render(<SpotlightRow {...minProps} />)
-        userEvent.click(screen.getByText(minProps.title), {ctrlKey: true})
+        userEvent.click(screen.getByText(minProps.title), { ctrlKey: true })
 
         expect(mockOnClose).not.toHaveBeenCalled()
     })
@@ -114,16 +114,16 @@ describe('<SpotlightRow/>', () => {
         })
 
         render(<SpotlightRow {...minProps} />)
-        userEvent.click(screen.getByText(minProps.title), {metaKey: true})
+        userEvent.click(screen.getByText(minProps.title), { metaKey: true })
 
         expect(mockOnClose).not.toHaveBeenCalled()
     })
 
     it('should highlight the row', () => {
-        const {container} = render(
+        const { container } = render(
             <MemoryRouter>
                 <SpotlightRow {...minProps} selected={true} />
-            </MemoryRouter>
+            </MemoryRouter>,
         )
         expect(container).toMatchSnapshot()
     })
@@ -144,7 +144,7 @@ describe('<SpotlightRow/>', () => {
 
         expect(screen.getByText(messageWithoutEmTag)).toBeInTheDocument()
         expect(
-            screen.getByText(messageWithoutEmTag).tagName.toLocaleLowerCase()
+            screen.getByText(messageWithoutEmTag).tagName.toLocaleLowerCase(),
         ).toEqual('em')
     })
 

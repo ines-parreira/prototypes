@@ -1,30 +1,31 @@
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
-import {LLMPromptTriggerNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
+import { LLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
-import {ActionTemplate} from '../types'
+import { ActionTemplate } from '../types'
 import ActionsPlatformTemplateConditions from './ActionsPlatformTemplateConditions'
 import ActionsPlatformTemplateConfirmation from './ActionsPlatformTemplateConfirmation'
-import css from './ActionsPlatformTemplateFormView.less'
 import ActionsPlatformTemplateInstructions from './ActionsPlatformTemplateInstructions'
 import ActionsPlatformTemplateName from './ActionsPlatformTemplateName'
 import ActionsPlatformTemplateSteps from './ActionsPlatformTemplateSteps'
+
+import css from './ActionsPlatformTemplateFormView.less'
 
 type Props = {
     onEditSteps: () => void
     steps: ActionTemplate[]
 }
 
-const ActionsPlatformTemplateFormView = ({onEditSteps, steps}: Props) => {
-    const {visualBuilderGraph, dispatch, getVariableListForNode} =
+const ActionsPlatformTemplateFormView = ({ onEditSteps, steps }: Props) => {
+    const { visualBuilderGraph, dispatch, getVariableListForNode } =
         useVisualBuilderContext<LLMPromptTriggerNodeType>()
 
     const triggerNode = visualBuilderGraph.nodes[0]
 
     const variables = useMemo(
         () => getVariableListForNode(triggerNode.id),
-        [getVariableListForNode, triggerNode.id]
+        [getVariableListForNode, triggerNode.id],
     )
 
     return (

@@ -1,4 +1,4 @@
-import {AxiosError} from 'axios'
+import { AxiosError } from 'axios'
 
 import history from 'pages/history'
 import {
@@ -11,10 +11,10 @@ import {
 export const transformBundleError = (
     error: unknown,
     errorMessage: string,
-    integration_id?: number
+    integration_id?: number,
 ): Notification => {
     const responseError = error as AxiosError<{
-        error?: {msg: string}
+        error?: { msg: string }
     }>
     let message = errorMessage
     let buttons: NotificationButton[] = []
@@ -27,7 +27,7 @@ export const transformBundleError = (
                     name: 'Update permissions',
                     onClick: () => {
                         history.push(
-                            `/app/settings/integrations/shopify/${integration_id}`
+                            `/app/settings/integrations/shopify/${integration_id}`,
                         )
                     },
                     primary: false,

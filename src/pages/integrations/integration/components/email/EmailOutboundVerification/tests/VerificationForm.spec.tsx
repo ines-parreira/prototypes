@@ -1,16 +1,22 @@
-import {cleanup, fireEvent, render, RenderResult} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import {
+    cleanup,
+    fireEvent,
+    render,
+    RenderResult,
+} from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {RootState, StoreDispatch} from 'state/types'
+import { RootState, StoreDispatch } from 'state/types'
 
-import VerificationForm, {Props} from '../VerificationForm/VerificationForm'
+import VerificationForm, { Props } from '../VerificationForm/VerificationForm'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 const store = mockStore({} as RootState)
 
-const getFields = ({getByLabelText, queryByLabelText}: RenderResult) => ({
+const getFields = ({ getByLabelText, queryByLabelText }: RenderResult) => ({
     emailAddress: queryByLabelText(/email address/i),
     address: getByLabelText(/^address/i),
     city: getByLabelText(/city/i),
@@ -26,7 +32,7 @@ describe('VerificationForm', () => {
         return render(
             <Provider store={store}>
                 <VerificationForm {...props} />
-            </Provider>
+            </Provider>,
         )
     }
 
@@ -34,7 +40,7 @@ describe('VerificationForm', () => {
         it('should display submit button', () => {
             const container = renderComponent({
                 showSubmitButton: true,
-                initialValues: {email: 'email@email.com'},
+                initialValues: { email: 'email@email.com' },
             })
 
             const submitButton = container.getByRole('button', {
@@ -57,9 +63,9 @@ describe('VerificationForm', () => {
         it('displays email field as disabled', () => {
             const container = renderComponent({
                 showSubmitButton: true,
-                initialValues: {email: 'email@email.com'},
+                initialValues: { email: 'email@email.com' },
             })
-            const {emailAddress} = getFields(container)
+            const { emailAddress } = getFields(container)
             expect(emailAddress).toBeDisabled()
         })
 
@@ -68,14 +74,14 @@ describe('VerificationForm', () => {
             (fieldName) => {
                 const container = renderComponent({
                     showSubmitButton: true,
-                    initialValues: {email: 'email@email.com'},
+                    initialValues: { email: 'email@email.com' },
                 })
                 const field = (getFields(container) as Record<any, any>)[
                     fieldName
                 ]
 
                 expect(field).toBeEnabled()
-            }
+            },
         )
     })
 
@@ -93,7 +99,7 @@ describe('VerificationForm', () => {
 
         it('displays state field when country is US', () => {
             const container = renderComponent(props)
-            const {state} = getFields(container)
+            const { state } = getFields(container)
 
             expect(state).toBeVisible()
             expect(state).toBeEnabled()
@@ -108,23 +114,23 @@ describe('VerificationForm', () => {
                     state: '',
                 },
             })
-            const {state} = getFields(container)
+            const { state } = getFields(container)
 
             expect(state).not.toBeInTheDocument()
         })
 
         it('does not display submit button if showSubmitButton is not passed', () => {
-            const {queryByRole} = renderComponent()
+            const { queryByRole } = renderComponent()
             expect(
                 queryByRole('button', {
                     name: /submit/i,
-                })
+                }),
             ).not.toBeInTheDocument()
         })
 
         it('does not display email address field if emailAddress is not passed', () => {
             const container = renderComponent()
-            const {emailAddress} = getFields(container)
+            const { emailAddress } = getFields(container)
             expect(emailAddress).not.toBeInTheDocument()
         })
     })
@@ -144,7 +150,7 @@ describe('VerificationForm', () => {
 
         it('displays all fields as disabled and prefilled', () => {
             const container = renderComponent(props)
-            const {emailAddress, address, city, country, state, zip} =
+            const { emailAddress, address, city, country, state, zip } =
                 getFields(container)
 
             expect(emailAddress).toBeDisabled()
@@ -155,20 +161,20 @@ describe('VerificationForm', () => {
             expect(zip).toBeDisabled()
 
             expect(
-                container.getByDisplayValue(props.initialValues.email)
+                container.getByDisplayValue(props.initialValues.email),
             ).toBeVisible()
             expect(
-                container.getByDisplayValue(props.initialValues.address)
+                container.getByDisplayValue(props.initialValues.address),
             ).toBeVisible()
             expect(
-                container.getByDisplayValue(props.initialValues.city)
+                container.getByDisplayValue(props.initialValues.city),
             ).toBeVisible()
             expect(
-                container.getByText(props.initialValues.country)
+                container.getByText(props.initialValues.country),
             ).toBeVisible()
             expect(container.getByText(props.initialValues.state)).toBeVisible()
             expect(
-                container.getByDisplayValue(props.initialValues.zip)
+                container.getByDisplayValue(props.initialValues.zip),
             ).toBeVisible()
         })
     })

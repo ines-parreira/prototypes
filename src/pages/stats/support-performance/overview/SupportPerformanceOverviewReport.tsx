@@ -1,17 +1,18 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useGridSize} from 'hooks/useGridSize'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useGridSize } from 'hooks/useGridSize'
 import useLocalStorage from 'hooks/useLocalStorage'
-import {FilterKey} from 'models/stat/types'
-import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
+import { FilterKey } from 'models/stat/types'
+import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
-import {CustomReportComponent} from 'pages/stats/custom-reports/CustomReportComponent'
+import { CustomReportComponent } from 'pages/stats/custom-reports/CustomReportComponent'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
 import StatsPage from 'pages/stats/StatsPage'
-import {DownloadOverviewData} from 'pages/stats/support-performance/overview/DownloadOverviewData'
+import { DownloadOverviewData } from 'pages/stats/support-performance/overview/DownloadOverviewData'
 import {
     PERFORMANCE_OVERVIEW_OPTIONAL_FILTERS,
     STATS_TIPS_VISIBILITY_KEY,
@@ -20,7 +21,7 @@ import {
     OverviewChart,
     SupportPerformanceOverviewReportConfig,
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
-import {SupportPerformanceFilters} from 'pages/stats/support-performance/SupportPerformanceFilters'
+import { SupportPerformanceFilters } from 'pages/stats/support-performance/SupportPerformanceFilters'
 import TipsToggle from 'pages/stats/TipsToggle'
 
 export default function SupportPerformanceOverviewReport() {
@@ -29,7 +30,7 @@ export default function SupportPerformanceOverviewReport() {
 
     const [areTipsVisible, setAreTipsVisible] = useLocalStorage(
         STATS_TIPS_VISIBILITY_KEY,
-        true
+        true,
     )
     const getGridCellSize = useGridSize()
 

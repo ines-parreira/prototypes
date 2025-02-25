@@ -1,16 +1,16 @@
-import classnames from 'classnames'
-
 import React from 'react'
 
-import {AutomateStatsMeasureLabelMap} from 'hooks/reporting/automate/automateStatsMeasureLabelMap'
-import {AutomateTimeseries, GreyArea} from 'hooks/reporting/automate/types'
+import classnames from 'classnames'
+
+import { AutomateStatsMeasureLabelMap } from 'hooks/reporting/automate/automateStatsMeasureLabelMap'
+import { AutomateTimeseries, GreyArea } from 'hooks/reporting/automate/types'
 import {
     addZeroValueTimeSeriesForGreyArea,
     sortByAutomateFeatureLabels,
 } from 'hooks/reporting/automate/utils'
-import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
-import {AutomationBillingEventMeasure} from 'models/reporting/cubes/automate/AutomationBillingEventCube'
-import {ReportingGranularity} from 'models/reporting/types'
+import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
+import { AutomationBillingEventMeasure } from 'models/reporting/cubes/automate/AutomationBillingEventCube'
+import { ReportingGranularity } from 'models/reporting/types'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import css from 'pages/stats/automate/overview/AutomateOverview.less'
 import {
@@ -21,7 +21,7 @@ import {
     AUTOMATED_INTERACTIONS_LABEL,
     AUTOMATION_RATE_LABEL,
 } from 'pages/stats/self-service/constants'
-import {AutomatedInteractionByFeatures} from 'pages/stats/types'
+import { AutomatedInteractionByFeatures } from 'pages/stats/types'
 
 export function getGreyAreaHint(showGreyArea: GreyArea | null) {
     return (
@@ -31,7 +31,7 @@ export function getGreyAreaHint(showGreyArea: GreyArea | null) {
                     <i
                         className={classnames(
                             'material-icons-outlined',
-                            css.crossLine
+                            css.crossLine,
                         )}
                     >
                         {'texture'}
@@ -51,24 +51,24 @@ export function getGreyAreaHint(showGreyArea: GreyArea | null) {
 export const formatAutomationRateTimeSeriesData = (
     automationRateTimeSeries: TimeSeriesDataItem[][],
     granularity: ReportingGranularity,
-    showGreyArea: GreyArea | null
+    showGreyArea: GreyArea | null,
 ) => {
     const automationRateTimeSeriesData = formatTimeSeriesData(
         automationRateTimeSeries,
         AUTOMATION_RATE_LABEL,
-        granularity
+        granularity,
     )
 
     return addZeroValueTimeSeriesForGreyArea(
         showGreyArea,
-        automationRateTimeSeriesData
+        automationRateTimeSeriesData,
     )
 }
 
 export function getTimeSeriesFormattedData(
     timeSeries: AutomateTimeseries,
     granularity: ReportingGranularity,
-    showGreyArea: GreyArea | null
+    showGreyArea: GreyArea | null,
 ) {
     const {
         automationRateTimeSeries,
@@ -79,7 +79,7 @@ export function getTimeSeriesFormattedData(
     const automatedInteractionTimeSeriesData = formatTimeSeriesData(
         automatedInteractionTimeSeries,
         AUTOMATED_INTERACTIONS_LABEL,
-        granularity
+        granularity,
     )
 
     const hasAutomatedInteractionsByAutoResponders =
@@ -88,8 +88,8 @@ export function getTimeSeriesFormattedData(
                 (item) =>
                     (item.label as AutomatedInteractionByFeatures) ===
                         AutomationBillingEventMeasure.AutomatedInteractionsByAutoResponders &&
-                    item.value > 0
-            )
+                    item.value > 0,
+            ),
         )
     const hasAutomatedInteractionsByQuickResponse =
         automatedInteractionByEventTypesTimeSeries.some((item) =>
@@ -97,8 +97,8 @@ export function getTimeSeriesFormattedData(
                 (item) =>
                     (item.label as AutomatedInteractionByFeatures) ===
                         AutomationBillingEventMeasure.AutomatedInteractionsByQuickResponse &&
-                    item.value > 0
-            )
+                    item.value > 0,
+            ),
         )
 
     const automatedInteractionByEventTypesTimeSeriesData =
@@ -109,9 +109,9 @@ export function getTimeSeriesFormattedData(
                     ? AutomateStatsMeasureLabelMap[
                           item[0].label as AutomatedInteractionByFeatures
                       ]
-                    : 'Others'
+                    : 'Others',
             ),
-            granularity
+            granularity,
         )
             .filter((item) => {
                 if (
@@ -141,16 +141,16 @@ export function getTimeSeriesFormattedData(
         automationRateTimeSeriesData: formatAutomationRateTimeSeriesData(
             automationRateTimeSeries,
             granularity,
-            showGreyArea
+            showGreyArea,
         ),
         automatedInteractionTimeSeriesData: addZeroValueTimeSeriesForGreyArea(
             showGreyArea,
-            automatedInteractionTimeSeriesData
+            automatedInteractionTimeSeriesData,
         ),
         automatedInteractionByEventTypesTimeSeriesData:
             addZeroValueTimeSeriesForGreyArea(
                 showGreyArea,
-                automatedInteractionByEventTypesTimeSeriesData
+                automatedInteractionByEventTypesTimeSeriesData,
             ),
         exportableData: {
             automationRateTimeSeries,

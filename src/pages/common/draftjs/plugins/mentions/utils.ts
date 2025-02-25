@@ -1,5 +1,5 @@
-import {EditorState, SelectionState} from 'draft-js'
-import {List, Map} from 'immutable'
+import { EditorState, SelectionState } from 'draft-js'
+import { List, Map } from 'immutable'
 import _deburr from 'lodash/deburr'
 
 /**
@@ -24,15 +24,15 @@ export const decodeOffsetKey = (offsetKey: string): DecodedOffset => {
 // Get the first 5 suggestions that match
 export const defaultSuggestionsFilter = (
     searchValue: string,
-    suggestions: List<Map<string, string>>
+    suggestions: List<Map<string, string>>,
 ) => {
     const value = _deburr(searchValue.toLowerCase())
     const filteredSuggestions = suggestions.filter(
         (suggestion) =>
             !value ||
             _deburr((suggestion?.get('name') || '').toLowerCase()).indexOf(
-                value
-            ) > -1
+                value,
+            ) > -1,
     )
     const size = filteredSuggestions.size < 5 ? filteredSuggestions.size : 5
 
@@ -68,7 +68,7 @@ export const getWordAt = (string: string, position: number) => {
 
 export const getSearchText = (
     editorState: EditorState,
-    selection: SelectionState
+    selection: SelectionState,
 ) => {
     const anchorKey = selection.getAnchorKey()
     const anchorOffset = selection.getAnchorOffset() - 1
@@ -82,7 +82,7 @@ export const getTypeByTrigger = (trigger: string): string =>
     trigger === '@' ? 'mention' : `${trigger}mention`
 
 export const getRelativeParent = (
-    element: HTMLElement | null
+    element: HTMLElement | null,
 ): HTMLElement | null => {
     if (!element) {
         return null
@@ -106,11 +106,11 @@ export const positionSuggestions = ({
 }: {
     decoratorRect: DOMRect
     popover: HTMLElement
-    state: {isActive: boolean}
-    props: {suggestions: List<any>}
+    state: { isActive: boolean }
+    props: { suggestions: List<any> }
 }) => {
     const relativeParent = getRelativeParent(popover.parentElement)
-    const relativeRect: Partial<Element & {top: number; left: number}> = {}
+    const relativeRect: Partial<Element & { top: number; left: number }> = {}
 
     if (relativeParent) {
         relativeRect.scrollLeft = relativeParent.scrollLeft

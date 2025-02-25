@@ -1,20 +1,20 @@
+import React, { Component, ComponentType, ContextType, ReactNode } from 'react'
+
 import classnames from 'classnames'
-import {fromJS, List, Map} from 'immutable'
-
-import {LDFlagSet} from 'launchdarkly-js-client-sdk'
-import {withLDConsumer} from 'launchdarkly-react-client-sdk'
+import { fromJS, List, Map } from 'immutable'
+import { LDFlagSet } from 'launchdarkly-js-client-sdk'
+import { withLDConsumer } from 'launchdarkly-react-client-sdk'
 import _isArray from 'lodash/isArray'
-import {parse, stringify} from 'qs'
-import React, {Component, ComponentType, ContextType, ReactNode} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {RouteComponentProps} from 'react-router-dom'
+import { parse, stringify } from 'qs'
+import { connect, ConnectedProps } from 'react-redux'
+import { RouteComponentProps } from 'react-router-dom'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {getConfigByName} from 'config/views'
-import {EntityType, ViewType, ViewVisibility} from 'models/view/types'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { getConfigByName } from 'config/views'
+import { EntityType, ViewType, ViewVisibility } from 'models/view/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
-import {Separator} from 'pages/common/components/Separator/Separator'
+import { Separator } from 'pages/common/components/Separator/Separator'
 import DeactivatedViewMessage from 'pages/common/components/ViewTable/DeactivatedViewMessage'
 import FilterTopbar from 'pages/common/components/ViewTable/FilterTopbar'
 import Header from 'pages/common/components/ViewTable/Header'
@@ -24,17 +24,17 @@ import css from 'pages/common/components/ViewTable/ViewTable.less'
 import withViewSearchUrlSync, {
     ViewSearchUrlSyncInjectedProps,
 } from 'pages/common/components/ViewTable/withViewSearchUrlSync'
-import {isCreationUrl} from 'pages/common/utils/url'
+import { isCreationUrl } from 'pages/common/utils/url'
 import withCancellableRequest, {
     CancellableRequestInjectedProps,
 } from 'pages/common/utils/withCancellableRequest'
 import withRouter from 'pages/common/utils/withRouter'
 import history from 'pages/history'
-import {tryLocalStorage} from 'services/common/utils'
-import {RootState} from 'state/types'
-import {activeViewIdSet} from 'state/ui/views/actions'
-import {fetchViewItems, setViewActive, updateView} from 'state/views/actions'
-import {SEARCH_VIEW_FIELD_CONFIG_STORAGE_KEY} from 'state/views/constants'
+import { tryLocalStorage } from 'services/common/utils'
+import { RootState } from 'state/types'
+import { activeViewIdSet } from 'state/ui/views/actions'
+import { fetchViewItems, setViewActive, updateView } from 'state/views/actions'
+import { SEARCH_VIEW_FIELD_CONFIG_STORAGE_KEY } from 'state/views/constants'
 import {
     getActiveView,
     getNavigation,
@@ -46,7 +46,7 @@ import {
     makeIsLoading,
 } from 'state/views/selectors'
 
-import {ViewTableHeaderContainer} from './ViewTableHeaderContainer'
+import { ViewTableHeaderContainer } from './ViewTableHeaderContainer'
 
 type OwnProps = {
     className?: string
@@ -62,9 +62,9 @@ type OwnProps = {
 
 type Props = OwnProps &
     RouteComponentProps<
-        {visibility: ViewVisibility},
+        { visibility: ViewVisibility },
         any,
-        {viewName?: string; filters?: string}
+        { viewName?: string; filters?: string }
     > &
     ViewSearchUrlSyncInjectedProps &
     ConnectedProps<typeof connector> &
@@ -98,7 +98,7 @@ export class ViewTableContainer extends Component<Props> {
             urlSearchView,
             updateView,
             activeViewIdSet,
-            match: {params},
+            match: { params },
         } = this.props
         const viewType = config.get('type') as ViewType
 
@@ -106,12 +106,12 @@ export class ViewTableContainer extends Component<Props> {
             let fieldConfig: string[] | null = null
             tryLocalStorage(() => {
                 const storedFieldConfig = localStorage.getItem(
-                    SEARCH_VIEW_FIELD_CONFIG_STORAGE_KEY
+                    SEARCH_VIEW_FIELD_CONFIG_STORAGE_KEY,
                 )
 
                 try {
                     const parsedFieldConfig = JSON.parse(
-                        storedFieldConfig as string
+                        storedFieldConfig as string,
                     )
 
                     if (_isArray(parsedFieldConfig)) {
@@ -122,9 +122,9 @@ export class ViewTableContainer extends Component<Props> {
 
             updateView(
                 urlSearchView.merge({
-                    ...(!!fieldConfig ? {fields: fieldConfig} : {}),
+                    ...(!!fieldConfig ? { fields: fieldConfig } : {}),
                 }),
-                false
+                false,
             )
         } else if (isCreationUrl(location.pathname, 'tickets')) {
             updateView(
@@ -132,20 +132,20 @@ export class ViewTableContainer extends Component<Props> {
                     config.get('newView') as (
                         params?: ViewVisibility,
                         viewName?: string,
-                        filters?: string
+                        filters?: string,
                     ) => Map<any, any>
                 )(
                     params.visibility,
                     location.state?.viewName,
-                    location.state?.filters
-                )
+                    location.state?.filters,
+                ),
             )
             void fetchViewItemsCancellable(
                 null,
                 null,
                 null,
                 this.context,
-                undefined
+                undefined,
             )
         } else if (activeView.isEmpty() || urlViewId) {
             const suggestedViewId = getViewIdToDisplay(viewType, urlViewId)
@@ -164,8 +164,8 @@ export class ViewTableContainer extends Component<Props> {
             ) {
                 history.push(
                     `/app/${config.get(
-                        'routeList'
-                    )}/${suggestedViewId.toString()}`
+                        'routeList',
+                    )}/${suggestedViewId.toString()}`,
                 )
             }
 
@@ -183,9 +183,10 @@ export class ViewTableContainer extends Component<Props> {
 
         void fetchViewItems(
             null,
-            parse(location.search, {ignoreQueryPrefix: true}).cursor as string,
+            parse(location.search, { ignoreQueryPrefix: true })
+                .cursor as string,
             null,
-            this.context
+            this.context,
         )
     }
 
@@ -203,7 +204,7 @@ export class ViewTableContainer extends Component<Props> {
             fetchViewItemsCancellable,
             updateView,
             setViewActive,
-            match: {params},
+            match: { params },
             getView,
             hasActiveView,
             urlSearchView,
@@ -211,15 +212,15 @@ export class ViewTableContainer extends Component<Props> {
 
         const prevSuggestedViewId = getViewIdToDisplay(
             prevProps.config.get('type'),
-            prevProps.urlViewId
+            prevProps.urlViewId,
         )
         const currentSuggestedViewId = getViewIdToDisplay(
             this.props.config.get('type'),
-            this.props.urlViewId
+            this.props.urlViewId,
         )
 
         const urlCursor =
-            (parse(location.search, {ignoreQueryPrefix: true})
+            (parse(location.search, { ignoreQueryPrefix: true })
                 .cursor as string) || null
         const storedCursor = navigation.get('current_cursor') || null
 
@@ -238,9 +239,9 @@ export class ViewTableContainer extends Component<Props> {
             updateView(
                 (
                     config.get('newView') as (
-                        params?: ViewVisibility
+                        params?: ViewVisibility,
                     ) => Map<any, any>
-                )(params.visibility)
+                )(params.visibility),
             )
             shouldFetchViewItems = true
         } else if (
@@ -268,14 +269,22 @@ export class ViewTableContainer extends Component<Props> {
         if (urlCursor !== storedCursor) {
             if (prevProps.isLoading('fetchList') && !isLoading('fetchList')) {
                 // if the stored cursor has changed after a fetch, update the cursor in the URL
-                const query = parse(location.search, {ignoreQueryPrefix: true})
+                const query = parse(location.search, {
+                    ignoreQueryPrefix: true,
+                })
                 const cursorToSet = !isOnFirstPage ? storedCursor : null
                 if (cursorToSet) {
                     query.cursor = cursorToSet
-                    history.push({...location, search: stringify(query)} as any)
+                    history.push({
+                        ...location,
+                        search: stringify(query),
+                    } as any)
                 } else if (query.cursor) {
                     delete query.cursor
-                    history.push({...location, search: stringify(query)} as any)
+                    history.push({
+                        ...location,
+                        search: stringify(query),
+                    } as any)
                 }
             } else if (
                 !isLoading('fetchList') &&
@@ -289,7 +298,7 @@ export class ViewTableContainer extends Component<Props> {
                     urlCursor,
                     null,
                     this.context,
-                    undefined
+                    undefined,
                 )
             }
         }
@@ -300,13 +309,13 @@ export class ViewTableContainer extends Component<Props> {
                 null,
                 null,
                 this.context,
-                this._getSearchParams()
+                this._getSearchParams(),
             )
         }
     }
 
     _getSearchParams = () => {
-        const {flags, isSearch} = this.props
+        const { flags, isSearch } = this.props
         const isTrackTotalHitsEnabled =
             !!flags?.[FeatureFlagKey.TrackTotalSearchHits]
         return isSearch && isTrackTotalHitsEnabled
@@ -317,7 +326,7 @@ export class ViewTableContainer extends Component<Props> {
     }
 
     _getItemUrl = (item: Map<any, any>): string => {
-        const {config} = this.props
+        const { config } = this.props
         if (!config) {
             return ''
         }
@@ -378,7 +387,7 @@ export class ViewTableContainer extends Component<Props> {
     }
 
     render() {
-        const {activeView, isSearch, isUpdate, type, className} = this.props
+        const { activeView, isSearch, isUpdate, type, className } = this.props
         const hasFilters = type === EntityType.Ticket
 
         if (activeView.isEmpty()) {
@@ -433,7 +442,7 @@ const connector = connect(
         fetchViewItems,
         setViewActive,
         updateView,
-    }
+    },
 )
 
 export default withRouter(
@@ -443,6 +452,6 @@ export default withRouter(
         typeof fetchViewItems
     >(
         'fetchViewItemsCancellable',
-        fetchViewItems
-    )(connector(withViewSearchUrlSync(withLDConsumer()(ViewTableContainer))))
+        fetchViewItems,
+    )(connector(withViewSearchUrlSync(withLDConsumer()(ViewTableContainer)))),
 )

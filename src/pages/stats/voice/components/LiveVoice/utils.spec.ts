@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 import {
     LiveCallQueueAgent,
     LiveCallQueueAgentCallStatusesItemStatus,
@@ -5,26 +7,25 @@ import {
     VoiceCallDirection,
     VoiceCallStatus,
 } from '@gorgias/api-queries'
-import moment from 'moment'
 
-import {OrderDirection} from 'models/api/types'
-import {VoiceCallDisplayStatus} from 'models/voiceCall/types'
-import {getMoment} from 'utils/date'
-import {assumeMock} from 'utils/testing'
+import { OrderDirection } from 'models/api/types'
+import { VoiceCallDisplayStatus } from 'models/voiceCall/types'
+import { getMoment } from 'utils/date'
+import { assumeMock } from 'utils/testing'
 
-import {LiveVoiceStatusFilterOption} from './types'
+import { LiveVoiceStatusFilterOption } from './types'
 import {
-    groupAgentsByStatus,
     AgentStatusCategory,
-    getOldestCall,
-    isAgentBusy,
-    isAgentAvailable,
-    isLiveInboundVoiceCallAnswered,
-    formatVoiceCallsData,
     filterLiveCallsByStatus,
-    orderLiveVoiceCallsByOngoingTime,
-    isLiveCallRinging,
+    formatVoiceCallsData,
     getLiveVoicePeriodFilter,
+    getOldestCall,
+    groupAgentsByStatus,
+    isAgentAvailable,
+    isAgentBusy,
+    isLiveCallRinging,
+    isLiveInboundVoiceCallAnswered,
+    orderLiveVoiceCallsByOngoingTime,
 } from './utils'
 
 jest.mock('utils/date')
@@ -219,9 +220,9 @@ describe('utils', () => {
                         is_available_for_call
                             ? AgentStatusCategory.Available
                             : AgentStatusCategory.Unavailable
-                    ]
+                    ],
                 ).toEqual([onlineAgent, offlineAgent1, offlineAgent2])
-            }
+            },
         )
     })
 
@@ -360,7 +361,7 @@ describe('utils', () => {
     describe('isLiveInboundVoiceCallAnswered', () => {
         it('should return true for status Answered', () => {
             const result = isLiveInboundVoiceCallAnswered(
-                VoiceCallStatus.Answered
+                VoiceCallStatus.Answered,
             )
 
             expect(result).toBe(true)
@@ -433,7 +434,7 @@ describe('utils', () => {
         it('should return all voice calls for status ALL', () => {
             const result = filterLiveCallsByStatus(
                 voiceCalls,
-                LiveVoiceStatusFilterOption.ALL
+                LiveVoiceStatusFilterOption.ALL,
             )
 
             expect(result).toEqual(voiceCalls)
@@ -442,7 +443,7 @@ describe('utils', () => {
         it('should return only inbound unanswered calls for status IN_QUEUE', () => {
             const result = filterLiveCallsByStatus(
                 voiceCalls,
-                LiveVoiceStatusFilterOption.IN_QUEUE
+                LiveVoiceStatusFilterOption.IN_QUEUE,
             )
 
             expect(result).toEqual([inboundRinging])
@@ -451,7 +452,7 @@ describe('utils', () => {
         it('should return outbound calls and inbound answered calls for status IN_PROGRESS', () => {
             const result = filterLiveCallsByStatus(
                 voiceCalls,
-                LiveVoiceStatusFilterOption.IN_PROGRESS
+                LiveVoiceStatusFilterOption.IN_PROGRESS,
             )
 
             expect(result).toEqual([
@@ -481,7 +482,7 @@ describe('utils', () => {
         it('should order voice calls by ongoing time in ascending order', () => {
             const result = orderLiveVoiceCallsByOngoingTime(
                 voiceCalls as LiveCallQueueVoiceCall[],
-                OrderDirection.Asc
+                OrderDirection.Asc,
             )
 
             expect(result.map((voiceCall) => voiceCall.id)).toEqual([2, 1, 3])
@@ -490,7 +491,7 @@ describe('utils', () => {
         it('should order voice calls by ongoing time in descending order', () => {
             const result = orderLiveVoiceCallsByOngoingTime(
                 voiceCalls as LiveCallQueueVoiceCall[],
-                OrderDirection.Desc
+                OrderDirection.Desc,
             )
 
             expect(result.map((voiceCall) => voiceCall.id)).toEqual([3, 1, 2])
@@ -515,11 +516,11 @@ describe('utils', () => {
             },
         ])(
             'should return correct period filter for timezone %s',
-            ({expectedResult, timezone}) => {
+            ({ expectedResult, timezone }) => {
                 const result = getLiveVoicePeriodFilter(timezone)
 
                 expect(result).toEqual(expectedResult)
-            }
+            },
         )
     })
 })

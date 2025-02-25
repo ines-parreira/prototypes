@@ -11,7 +11,7 @@ describe('resolvePunctuators', () => {
 
     it('should throw error when type is not supported', () => {
         expect(() => resolvePunctuators('UnaryExpression', 'string')).toThrow(
-            'Unsupported type: UnaryExpression'
+            'Unsupported type: UnaryExpression',
         )
     })
 })

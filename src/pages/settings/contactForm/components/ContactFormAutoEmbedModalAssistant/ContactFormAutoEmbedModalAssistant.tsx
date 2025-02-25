@@ -1,35 +1,35 @@
-import {useQueryClient} from '@tanstack/react-query'
-import {get} from 'lodash'
-import _noop from 'lodash/noop'
 import React from 'react'
-import {useHistory} from 'react-router-dom'
+
+import { useQueryClient } from '@tanstack/react-query'
+import { get } from 'lodash'
+import _noop from 'lodash/noop'
+import { useHistory } from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {CreateShopifyPageEmbedmentDto} from 'models/contactForm/types'
+import { CreateShopifyPageEmbedmentDto } from 'models/contactForm/types'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-
 import PageEmbedmentForm, {
-    EmbedMode,
     EmbeddablePage,
-    usePageEmbedmentForm,
+    EmbedMode,
     SHOPIFY_PAGE_EMBEDMENT_PATH_PREFIX,
+    usePageEmbedmentForm,
 } from 'pages/common/components/PageEmbedmentForm'
 import {
     CONTACT_FORM_EMBED_FORM_TEXTS,
     CONTACT_FORM_MANAGE_EMBEDMENTS_PATH,
 } from 'pages/settings/contactForm/constants'
-import {insertContactFormIdParam} from 'pages/settings/contactForm/utils/navigation'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { insertContactFormIdParam } from 'pages/settings/contactForm/utils/navigation'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 import {
     contactFormPageEmbedmentsKeys,
     useCreatePageEmbedment,
 } from '../../queries'
-import {MODAL_LABELS} from './constants'
+import { MODAL_LABELS } from './constants'
 
 import css from './ContactFormAutoEmbedModalAssistant.less'
 
@@ -54,7 +54,7 @@ const ContactFormAutoEmbedModalAssistant = (
         onClose: _noop,
         pages: [],
         contactFormId: 0,
-    }
+    },
 ) => {
     const {
         state: pageEmbedmentForm,
@@ -73,7 +73,7 @@ const ContactFormAutoEmbedModalAssistant = (
                 void appDispatch(
                     notify({
                         message: 'Something went wrong',
-                    })
+                    }),
                 )
                 return
             }
@@ -82,18 +82,18 @@ const ContactFormAutoEmbedModalAssistant = (
                 notify({
                     message: 'Form embedded to page.',
                     status: NotificationStatus.Success,
-                })
+                }),
             )
 
             await queryClient.invalidateQueries(
-                contactFormPageEmbedmentsKeys.all(contactFormId)
+                contactFormPageEmbedmentsKeys.all(contactFormId),
             )
 
             history.push(
                 insertContactFormIdParam(
                     CONTACT_FORM_MANAGE_EMBEDMENTS_PATH,
-                    contactFormId
-                )
+                    contactFormId,
+                ),
             )
             handleOnClose()
         },
@@ -119,7 +119,7 @@ const ContactFormAutoEmbedModalAssistant = (
                 notify({
                     message,
                     status: NotificationStatus.Error,
-                })
+                }),
             )
         },
     })
@@ -146,7 +146,7 @@ const ContactFormAutoEmbedModalAssistant = (
 
         createPageEmbedmentMutation.mutate([
             undefined,
-            {contact_form_id: contactFormId},
+            { contact_form_id: contactFormId },
             payload,
         ])
     }

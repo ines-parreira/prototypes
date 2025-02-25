@@ -1,4 +1,4 @@
-import {Call} from '@twilio/voice-sdk'
+import { Call } from '@twilio/voice-sdk'
 
 type ConnectionParameters = {
     integrationId: number
@@ -10,7 +10,7 @@ type ConnectionParameters = {
 
 export function useConnectionParameters(call: Call): ConnectionParameters {
     const integrationId = parseInt(
-        call.customParameters.get('integration_id') as string
+        call.customParameters.get('integration_id') as string,
     )
     const ticketId =
         call.direction === Call.CallDirection.Incoming
@@ -27,7 +27,7 @@ export function useConnectionParameters(call: Call): ConnectionParameters {
             : (call.customParameters.get('To') as string)
 
     const transferFromAgentIdToNumber = Number(
-        call.customParameters.get('transfer.from')
+        call.customParameters.get('transfer.from'),
     )
     const transferFromAgentId = isNaN(transferFromAgentIdToNumber)
         ? null

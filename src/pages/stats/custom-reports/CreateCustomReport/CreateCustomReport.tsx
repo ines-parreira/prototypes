@@ -1,8 +1,7 @@
 import React from 'react'
 
-import {DASHBOARDS_DOCUMENTATION_URL} from 'pages/stats/custom-reports/constants'
-
-import {ChartsFrameSVG} from 'pages/stats/custom-reports/CreateCustomReport/ChartsFrameSVG'
+import { DASHBOARDS_DOCUMENTATION_URL } from 'pages/stats/custom-reports/constants'
+import { ChartsFrameSVG } from 'pages/stats/custom-reports/CreateCustomReport/ChartsFrameSVG'
 import css from 'pages/stats/custom-reports/CreateCustomReport/CreateCustomReport.less'
 
 export const CREATE_CUSTOM_REPORT = '📊 Dashboards'

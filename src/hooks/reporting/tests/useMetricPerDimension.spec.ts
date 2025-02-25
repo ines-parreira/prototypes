@@ -1,8 +1,8 @@
-import {UseQueryResult} from '@tanstack/react-query'
-import {waitFor} from '@testing-library/react'
-import {renderHook} from '@testing-library/react-hooks'
+import { UseQueryResult } from '@tanstack/react-query'
+import { waitFor } from '@testing-library/react'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {defaultEnrichmentFields} from 'hooks/reporting/useDrillDownData'
+import { defaultEnrichmentFields } from 'hooks/reporting/useDrillDownData'
 import {
     fetchMetricPerDimension,
     fetchMetricPerDimensionWithEnrichment,
@@ -17,9 +17,9 @@ import {
     VALUE_FIELD,
     withBreakdown,
 } from 'hooks/reporting/withBreakdown'
-import {withEnrichment} from 'hooks/reporting/withEnrichment'
-import {TicketCubeWithJoins} from 'models/reporting/cubes/TicketCube'
-import {TicketCustomFieldsCube} from 'models/reporting/cubes/TicketCustomFieldsCube'
+import { withEnrichment } from 'hooks/reporting/withEnrichment'
+import { TicketCubeWithJoins } from 'models/reporting/cubes/TicketCube'
+import { TicketCustomFieldsCube } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {
     TicketMessagesCube,
     TicketMessagesDimension,
@@ -30,12 +30,12 @@ import {
     useEnrichedPostReporting,
     usePostReporting,
 } from 'models/reporting/queries'
-import {medianFirstResponseTimeMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
-import {messagesSentMetricPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
-import {customFieldsTicketCountQueryFactory} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
-import {postEnrichedReporting} from 'models/reporting/resources'
-import {EnrichmentFields, ReportingQuery} from 'models/reporting/types'
-import {assumeMock} from 'utils/testing'
+import { medianFirstResponseTimeMetricPerAgentQueryFactory } from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
+import { messagesSentMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesSent'
+import { customFieldsTicketCountQueryFactory } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
+import { postEnrichedReporting } from 'models/reporting/resources'
+import { EnrichmentFields, ReportingQuery } from 'models/reporting/types'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('models/reporting/queries')
 const usePostReportingMock = assumeMock(usePostReporting)
@@ -56,17 +56,17 @@ describe('MetricPerDimension', () => {
                     end_datetime: '2020-01-02T03:04:56.789-10:00',
                 },
             },
-            'timezone'
+            'timezone',
         )
     const agentId = 456
     const metricValue = 4567
 
     const data = Array.from(Array(150).keys()).map((index) => ({
         [TicketMessagesDimension.FirstHelpdeskMessageUserId]: String(
-            agentId + index
+            agentId + index,
         ),
         [TicketMessagesMeasure.MedianFirstResponseTime]: String(
-            metricValue + index
+            metricValue + index,
         ),
     }))
 
@@ -81,8 +81,8 @@ describe('MetricPerDimension', () => {
         it('should usePostReporting with query and select', () => {
             usePostReportingMock.mockReturnValue(mockedResponse)
 
-            const {result} = renderHook(() =>
-                useMetricPerDimension(query, String(agentId))
+            const { result } = renderHook(() =>
+                useMetricPerDimension(query, String(agentId)),
             )
 
             expect(result.current).toEqual({
@@ -100,8 +100,8 @@ describe('MetricPerDimension', () => {
             const agentId = 'notInResponse'
             usePostReportingMock.mockReturnValue(mockedResponse)
 
-            const {result} = renderHook(() =>
-                useMetricPerDimension(query, agentId)
+            const { result } = renderHook(() =>
+                useMetricPerDimension(query, agentId),
             )
 
             expect(result.current?.data?.value).toBeNull()
@@ -110,7 +110,7 @@ describe('MetricPerDimension', () => {
         it('should return null when called without entity', () => {
             usePostReportingMock.mockReturnValue(mockedResponse)
 
-            const {result} = renderHook(() => useMetricPerDimension(query))
+            const { result } = renderHook(() => useMetricPerDimension(query))
 
             expect(result.current?.data?.value).toBeNull()
         })
@@ -122,8 +122,8 @@ describe('MetricPerDimension', () => {
                 data: undefined,
             })
 
-            const {result} = renderHook(() =>
-                useMetricPerDimension(query, agentIdNotInResponse)
+            const { result } = renderHook(() =>
+                useMetricPerDimension(query, agentIdNotInResponse),
             )
 
             expect(result.current?.data).toBeNull()
@@ -141,16 +141,16 @@ describe('MetricPerDimension', () => {
                     .mockImplementation(
                         (
                             query,
-                            {select}: {select: (data: unknown) => unknown}
+                            { select }: { select: (data: unknown) => unknown },
                         ) => ({
                             ...mockedResponse,
                             data: select(mockedClientResponse),
-                        })
-                    )
+                        }),
+                    ),
             )
 
-            const {result} = renderHook(() =>
-                useMetricPerDimension(query, String(agentId))
+            const { result } = renderHook(() =>
+                useMetricPerDimension(query, String(agentId)),
             )
 
             expect(result.current?.data?.allData).toEqual(mockedResponse.data)
@@ -201,12 +201,12 @@ describe('MetricPerDimension', () => {
             const agentIdNotInResponse = 'notInResponse'
             fetchPostReportingMock.mockRejectedValue({
                 ...mockedResponse,
-                data: {data: undefined},
+                data: { data: undefined },
             } as unknown as ReturnType<typeof fetchPostReporting>)
 
             const result = await fetchMetricPerDimension(
                 query,
-                agentIdNotInResponse
+                agentIdNotInResponse,
             )
 
             expect(result?.data).toBeNull()
@@ -215,12 +215,12 @@ describe('MetricPerDimension', () => {
         it('should return null on error', async () => {
             const agentIdNotInResponse = 'notInResponse'
             fetchPostReportingMock.mockRejectedValue(
-                {} as unknown as ReturnType<typeof fetchPostReporting>
+                {} as unknown as ReturnType<typeof fetchPostReporting>,
             )
 
             const result = await fetchMetricPerDimension(
                 query,
-                agentIdNotInResponse
+                agentIdNotInResponse,
             )
 
             expect(result?.data).toEqual(null)
@@ -242,7 +242,7 @@ describe('useMetricPerDimensionWithBreakdown', () => {
                 },
             },
             'timezone',
-            customFieldId
+            customFieldId,
         )
     const metricValue = 5
     const data = [
@@ -265,14 +265,14 @@ describe('useMetricPerDimensionWithBreakdown', () => {
     it('should usePostReporting with query and select', () => {
         usePostReportingMock.mockReturnValue(
             withBreakdown(
-                {data: mockedResponse} as any,
+                { data: mockedResponse } as any,
                 BREAKDOWN_FIELD,
-                VALUE_FIELD
-            ).data as any
+                VALUE_FIELD,
+            ).data as any,
         )
 
-        const {result} = renderHook(() =>
-            useMetricPerDimensionWithBreakdown(query)
+        const { result } = renderHook(() =>
+            useMetricPerDimensionWithBreakdown(query),
         )
 
         expect(result.current).toEqual({
@@ -313,14 +313,14 @@ describe('useMetricPerDimensionWithEnrichment', () => {
         }
         const query = messagesSentMetricPerTicketDrillDownQueryFactory(
             statsFilters,
-            timezone
+            timezone,
         )
         const results = [
-            {[EnrichmentFields.TicketId]: 1, metric: 123},
-            {[EnrichmentFields.TicketId]: 2, metric: 456},
-            {[EnrichmentFields.TicketId]: 3, metric: 789},
-            {[EnrichmentFields.TicketId]: 4, metric: 369},
-            {[EnrichmentFields.TicketId]: 5, metric: 529},
+            { [EnrichmentFields.TicketId]: 1, metric: 123 },
+            { [EnrichmentFields.TicketId]: 2, metric: 456 },
+            { [EnrichmentFields.TicketId]: 3, metric: 789 },
+            { [EnrichmentFields.TicketId]: 4, metric: 369 },
+            { [EnrichmentFields.TicketId]: 5, metric: 529 },
         ]
         const enrichments = [
             {
@@ -354,12 +354,12 @@ describe('useMetricPerDimensionWithEnrichment', () => {
         useEnrichedPostReportingMock.mockReturnValue(mockedResponse as any)
         postEnrichedReportingMock.mockResolvedValue(mockedResponse as any)
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useMetricPerDimensionWithEnrichment(
                 query,
                 defaultEnrichmentFields,
-                EnrichmentFields.TicketId
-            )
+                EnrichmentFields.TicketId,
+            ),
         )
 
         const queryFunction =
@@ -369,11 +369,11 @@ describe('useMetricPerDimensionWithEnrichment', () => {
 
         await waitFor(() => {
             expect(useEnrichedPostReportingMock).toHaveBeenCalledWith(
-                {query, enrichment_fields: defaultEnrichmentFields},
+                { query, enrichment_fields: defaultEnrichmentFields },
                 {
                     select: expect.any(Function),
                     queryFn: expect.any(Function),
-                }
+                },
             )
             expect(result.current).toEqual({
                 isFetching: mockedResponse.isFetching,
@@ -386,7 +386,7 @@ describe('useMetricPerDimensionWithEnrichment', () => {
                 mockedResponse,
                 query.dimensions[0],
                 defaultEnrichmentFields,
-                EnrichmentFields.TicketId
+                EnrichmentFields.TicketId,
             )
         })
     })
@@ -402,18 +402,18 @@ describe('fetchMetricPerDimensionWithEnrichment', () => {
 
     const mockApiResponse = {
         data: [
-            {testMeasure: '100', testDimension: '1'},
-            {testMeasure: '200', testDimension: '2'},
+            { testMeasure: '100', testDimension: '1' },
+            { testMeasure: '200', testDimension: '2' },
         ],
         enrichment: [
-            {testDimension: '1', extraInfo: 'Info 1'},
-            {testDimension: '2', extraInfo: 'Info 2'},
+            { testDimension: '1', extraInfo: 'Info 1' },
+            { testDimension: '2', extraInfo: 'Info 2' },
         ],
     }
 
     const mockEnrichedData = {
         data: {
-            data: [{testMeasure: '100', testDimension: '1', enriched: true}],
+            data: [{ testMeasure: '100', testDimension: '1', enriched: true }],
         },
     }
     it('should fetch and return enriched data successfully', async () => {
@@ -423,18 +423,18 @@ describe('fetchMetricPerDimensionWithEnrichment', () => {
         const result = await fetchMetricPerDimensionWithEnrichment(
             mockQuery as any,
             mockEnrichmentFields,
-            mockEnrichmentIdField
+            mockEnrichmentIdField,
         )
 
         expect(postEnrichedReportingMock).toHaveBeenCalledWith(
             mockQuery,
-            mockEnrichmentFields
+            mockEnrichmentFields,
         )
         expect(withEnrichmentMock).toHaveBeenCalledWith(
             mockApiResponse,
             'testDimension',
             mockEnrichmentFields,
-            mockEnrichmentIdField
+            mockEnrichmentIdField,
         )
         expect(result).toEqual({
             data: {
@@ -451,12 +451,12 @@ describe('fetchMetricPerDimensionWithEnrichment', () => {
         const result = await fetchMetricPerDimensionWithEnrichment(
             mockQuery as any,
             mockEnrichmentFields,
-            mockEnrichmentIdField
+            mockEnrichmentIdField,
         )
 
         expect(postEnrichedReportingMock).toHaveBeenCalledWith(
             mockQuery,
-            mockEnrichmentFields
+            mockEnrichmentFields,
         )
         expect(result).toEqual({
             data: null,

@@ -1,24 +1,25 @@
+import React, { ComponentType, memo, ReactNode } from 'react'
+
 import cn from 'classnames'
 import _isEqual from 'lodash/isEqual'
-import React, {ComponentType, ReactNode, memo} from 'react'
-import {Container} from 'reactstrap'
+import { Container } from 'reactstrap'
 
-import {GlobalNavigation} from 'common/navigation'
-import {useDesktopOnlyShowGlobalNavFeatureFlag} from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
-import {CollapsibleNavBarWrapper} from 'core/navigation/components/CollapsibleNavBarWrapper'
+import { GlobalNavigation } from 'common/navigation'
+import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
+import { CollapsibleNavBarWrapper } from 'core/navigation/components/CollapsibleNavBarWrapper'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import FullPage from 'pages/common/components/FullPage'
-import {ErrorBoundary} from 'pages/ErrorBoundary'
-import {closePanels, openPanel} from 'state/layout/actions'
-import {getCurrentOpenedPanel} from 'state/layout/selectors'
+import { ErrorBoundary } from 'pages/ErrorBoundary'
+import { closePanels, openPanel } from 'state/layout/actions'
+import { getCurrentOpenedPanel } from 'state/layout/selectors'
 import {
     changeActiveTab,
     changeTicketMessage,
 } from 'state/ui/ticketAIAgentFeedback'
-import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants'
+import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constants'
 
 import css from './App.less'
 
@@ -51,8 +52,8 @@ const App = ({
 
     const Wrapper = containerPadding ? FullPage : Container
     const wrapperProps = containerPadding
-        ? {noContainerWidthLimit}
-        : {fluid: true, className: cn(css['main-content'])}
+        ? { noContainerWidthLimit }
+        : { fluid: true, className: cn(css['main-content']) }
     const content = !!Content ? <Content /> : children
 
     const hasOpenedPanel = !!openedPanel
@@ -62,9 +63,9 @@ const App = ({
         dispatch(
             changeActiveTab({
                 activeTab: TicketAIAgentFeedbackTab.CustomerInformation,
-            })
+            }),
         )
-        dispatch(changeTicketMessage({message: undefined}))
+        dispatch(changeTicketMessage({ message: undefined }))
     }
 
     return (

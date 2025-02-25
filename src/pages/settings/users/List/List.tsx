@@ -1,25 +1,28 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
+import React, { useEffect } from 'react'
+
 import cs from 'classnames'
-import React, {useEffect} from 'react'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
+
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {usePaginatedQuery} from 'hooks/usePaginatedQuery/usePaginatedQuery'
-import {useListAgent} from 'models/agents/queries'
-import {AgentsRelationshipsParam} from 'models/agents/types'
-import {isStarterTier} from 'models/billing/utils'
+import { usePaginatedQuery } from 'hooks/usePaginatedQuery/usePaginatedQuery'
+import { useListAgent } from 'models/agents/queries'
+import { AgentsRelationshipsParam } from 'models/agents/types'
+import { isStarterTier } from 'models/billing/utils'
 import Button from 'pages/common/components/button/Button'
 import Navigation from 'pages/common/components/Navigation/Navigation'
 import PageHeader from 'pages/common/components/PageHeader'
 import settingsCss from 'pages/settings/settings.less'
-import {getCurrentHelpdeskPlan} from 'state/billing/selectors'
-import {getAccountOwnerId} from 'state/currentAccount/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
+import { getAccountOwnerId } from 'state/currentAccount/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+
+import Row from './Row'
 
 import css from './List.less'
-import Row from './Row'
 
 const STALE_TIME = 1000 * 60 * 5 // 5 minutes
 const AGENTS_PER_PAGE = 15
@@ -35,7 +38,7 @@ const UserList = () => {
             limit: AGENTS_PER_PAGE,
             relationships: AgentsRelationshipsParam.AvailabilityStatus,
         },
-        {keepPreviousData: true, staleTime: STALE_TIME, retry: false}
+        { keepPreviousData: true, staleTime: STALE_TIME, retry: false },
     )
 
     useEffect(() => {
@@ -44,12 +47,12 @@ const UserList = () => {
                 notify({
                     status: NotificationStatus.Error,
                     message: "Couldn't load user list. Please try again.",
-                })
+                }),
             )
         }
     }, [paginatedAgents.error, dispatch])
 
-    const {data: {data: agents = []} = {}} = paginatedAgents.data ?? {}
+    const { data: { data: agents = [] } = {} } = paginatedAgents.data ?? {}
 
     const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
     const isStarterPlan = isStarterTier(currentHelpdeskPlan)

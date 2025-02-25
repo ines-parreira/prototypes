@@ -1,23 +1,24 @@
+import React, { useEffect, useState } from 'react'
+
 import classNames from 'classnames'
-import React, {useEffect, useState} from 'react'
-import {ReactCountryFlag} from 'react-country-flag'
+import { ReactCountryFlag } from 'react-country-flag'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {isWhatsAppIntegration} from 'models/integration/types'
-import {SourceAddress} from 'models/ticket/types'
-import {useListWhatsAppMessageTemplates} from 'models/whatsAppMessageTemplates/queries'
+import { isWhatsAppIntegration } from 'models/integration/types'
+import { SourceAddress } from 'models/ticket/types'
+import { useListWhatsAppMessageTemplates } from 'models/whatsAppMessageTemplates/queries'
 import {
     WhatsAppMessageTemplate,
     WhatsAppMessageTemplateStatus,
 } from 'models/whatsAppMessageTemplates/types'
 import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
 import Loader from 'pages/common/components/Loader/Loader'
-import {whatsAppFlagCodes} from 'pages/integrations/integration/components/whatsapp/constants'
+import { whatsAppFlagCodes } from 'pages/integrations/integration/components/whatsapp/constants'
 import useWhatsAppEditor from 'pages/integrations/integration/components/whatsapp/useWhatsAppEditor'
 import WhatsAppMessageTemplateMessage from 'pages/integrations/integration/components/whatsapp/WhatsAppMessageTemplateMessage'
-import {getNewPhoneNumberByNumber} from 'state/entities/phoneNumbers/selectors'
-import {getIntegrations} from 'state/integrations/selectors'
-import {makeGetNewMessageSourceProperty} from 'state/newMessage/selectors'
+import { getNewPhoneNumberByNumber } from 'state/entities/phoneNumbers/selectors'
+import { getIntegrations } from 'state/integrations/selectors'
+import { makeGetNewMessageSourceProperty } from 'state/newMessage/selectors'
 
 import css from './WhatsAppMessageTemplateNavigator.less'
 
@@ -26,20 +27,20 @@ export default function WhatsAppMessageTemplateNavigator() {
         useState<WhatsAppMessageTemplate>()
 
     const fromPhoneNumber = useAppSelector(makeGetNewMessageSourceProperty)(
-        'from'
+        'from',
     )?.toJS?.() as SourceAddress
     const phoneNumber = useAppSelector(
-        getNewPhoneNumberByNumber(fromPhoneNumber?.address)
+        getNewPhoneNumberByNumber(fromPhoneNumber?.address),
     )
     const integrations = useAppSelector(getIntegrations)
     const currentIntegration = integrations?.find(
         (integration) =>
             isWhatsAppIntegration(integration) &&
-            integration.meta.routing?.phone_number === fromPhoneNumber?.address
+            integration.meta.routing?.phone_number === fromPhoneNumber?.address,
     )
 
-    const {searchFilter, selectNewTemplate} = useWhatsAppEditor()
-    const {data, isLoading, refetch} = useListWhatsAppMessageTemplates({
+    const { searchFilter, selectNewTemplate } = useWhatsAppEditor()
+    const { data, isLoading, refetch } = useListWhatsAppMessageTemplates({
         is_supported: true,
         waba_id: phoneNumber?.whatsapp_phone_number?.waba_id,
         status: WhatsAppMessageTemplateStatus.Approved,

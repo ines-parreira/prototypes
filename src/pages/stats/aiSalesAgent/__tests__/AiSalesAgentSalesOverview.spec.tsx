@@ -1,6 +1,6 @@
-import {render, screen} from '@testing-library/react'
-
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import AiSalesAgentSalesOverview from '../AiSalesAgentSalesOverview'
 
@@ -8,7 +8,7 @@ jest.mock(
     'hooks/useAppSelector',
     () =>
         (fn: () => any): any =>
-            fn()
+            fn(),
 )
 
 jest.mock('pages/stats/common/filters/FiltersPanelWrapper', () => () => (
@@ -26,7 +26,7 @@ jest.mock('pages/stats/DrillDownModal', () => ({
 // Mock charts
 jest.mock(
     'pages/stats/aiSalesAgent/charts/GmvInfluencedMetricCard',
-    () => () => <div>gmv-influenced-metric-card</div>
+    () => () => <div>gmv-influenced-metric-card</div>,
 )
 
 jest.mock('pages/stats/aiSalesAgent/charts/GmvMetricCard', () => () => (
@@ -43,7 +43,7 @@ jest.mock('pages/stats/aiSalesAgent/charts/TotalAIConvMetricCard', () => () => (
 
 jest.mock(
     'pages/stats/aiSalesAgent/charts/GmvInfluencedOverTimeChart',
-    () => () => <div>gmv-influenced-over-time-chart</div>
+    () => () => <div>gmv-influenced-over-time-chart</div>,
 )
 
 jest.mock('pages/stats/aiSalesAgent/charts/AverageOrderValueCard', () => () => (
@@ -52,7 +52,7 @@ jest.mock('pages/stats/aiSalesAgent/charts/AverageOrderValueCard', () => () => (
 
 jest.mock(
     'pages/stats/aiSalesAgent/charts/TotalNumberOfOrdersCard',
-    () => () => <div>total-number-of-orders-card</div>
+    () => () => <div>total-number-of-orders-card</div>,
 )
 
 describe('AiSalesAgentSalesOverview', () => {

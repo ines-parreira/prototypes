@@ -1,22 +1,23 @@
-import {EmailDNSRecord} from '@gorgias/api-queries'
+import React from 'react'
+
 import classnames from 'classnames'
 
-import React from 'react'
+import { EmailDNSRecord } from '@gorgias/api-queries'
 
 import useId from 'hooks/useId'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 
 import CopyButton from './CopyButton'
-
 import RecordDiffStatus from './RecordDiffStatus'
+
 import css from './RecordItem.less'
 
 type Props = {
     record: EmailDNSRecord
 }
 
-const RecordItem = ({record}: Props) => {
+const RecordItem = ({ record }: Props) => {
     const id = useId()
     const hostID = 'record-host-' + id
     const valueID = 'record-value-' + id

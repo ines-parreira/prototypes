@@ -1,7 +1,8 @@
-import {fireEvent, render} from '@testing-library/react'
 import React from 'react'
 
-import {RepositionableImageUpload} from '../RepositionableImageUpload'
+import { fireEvent, render } from '@testing-library/react'
+
+import { RepositionableImageUpload } from '../RepositionableImageUpload'
 
 describe('<RepositionableImageUpload />', () => {
     const submitFn = jest.fn()
@@ -27,22 +28,22 @@ describe('<RepositionableImageUpload />', () => {
     })
 
     it('matches snapshot with preview', () => {
-        const {container} = render(
+        const { container } = render(
             <RepositionableImageUpload
                 {...baseProps}
                 defaultPreview="imageUrl"
-            />
+            />,
         )
 
         expect(container).toMatchSnapshot()
     })
 
     it('shows image and remove image if default preview and not touched', () => {
-        const {getByText, getByAltText} = render(
+        const { getByText, getByAltText } = render(
             <RepositionableImageUpload
                 {...baseProps}
                 defaultPreview="imageUrl"
-            />
+            />,
         )
 
         getByText('Remove image')
@@ -50,8 +51,8 @@ describe('<RepositionableImageUpload />', () => {
     })
 
     it('does not show image nor remove image if no default preview', () => {
-        const {getByText, queryByText, queryByAltText} = render(
-            <RepositionableImageUpload {...baseProps} />
+        const { getByText, queryByText, queryByAltText } = render(
+            <RepositionableImageUpload {...baseProps} />,
         )
 
         expect(queryByText('Remove image')).toBeNull()
@@ -60,23 +61,23 @@ describe('<RepositionableImageUpload />', () => {
     })
 
     it('does not show image if image is saving', () => {
-        const {queryByAltText} = render(
+        const { queryByAltText } = render(
             <RepositionableImageUpload
                 {...baseProps}
                 isSavingBannerImage
                 defaultPreview="imageUrl"
-            />
+            />,
         )
 
         expect(queryByAltText('imageUrl')).toBeNull()
     })
 
     it('shows reposition button on mouse enter and hides it on mouse leave, and shows drag image on click', () => {
-        const {getByText, queryByText, getByTestId} = render(
+        const { getByText, queryByText, getByTestId } = render(
             <RepositionableImageUpload
                 {...baseProps}
                 defaultPreview="imageUrl"
-            />
+            />,
         )
 
         expect(queryByText('Reposition')).toBeNull()

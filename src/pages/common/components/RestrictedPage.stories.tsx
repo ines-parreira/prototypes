@@ -1,8 +1,9 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {PageSection} from '../../../config/pages'
-import {UserRole} from '../../../config/types/user'
+import { Meta, Story } from '@storybook/react'
+
+import { PageSection } from '../../../config/pages'
+import { UserRole } from '../../../config/types/user'
 import RestrictedPage from './RestrictedPage'
 
 const storyConfig: Meta = {
@@ -40,6 +41,6 @@ export const Default = Template.bind({})
 Default.args = defaultProps
 
 export const ForSpecificPage = Template.bind({})
-ForSpecificPage.args = {...defaultProps, page: PageSection.NewBilling}
+ForSpecificPage.args = { ...defaultProps, page: PageSection.NewBilling }
 
 export default storyConfig

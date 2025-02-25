@@ -1,26 +1,27 @@
-import {render} from '@testing-library/react'
 import React from 'react'
+
+import { render } from '@testing-library/react'
 
 import ShortcutIcon from '../ShortcutIcon'
 
 describe('<ShortcutIcon />', () => {
     it('should render an icon', () => {
-        const {container} = render(<ShortcutIcon>⌘</ShortcutIcon>)
+        const { container } = render(<ShortcutIcon>⌘</ShortcutIcon>)
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render a dark icon', () => {
-        const {container} = render(<ShortcutIcon type="dark">⌘</ShortcutIcon>)
+        const { container } = render(<ShortcutIcon type="dark">⌘</ShortcutIcon>)
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render a ghost icon', () => {
-        const {container} = render(
+        const { container } = render(
             <ShortcutIcon fillStyle="ghost" type="dark">
                 ⌘
-            </ShortcutIcon>
+            </ShortcutIcon>,
         )
 
         expect(container.firstChild).toMatchSnapshot()

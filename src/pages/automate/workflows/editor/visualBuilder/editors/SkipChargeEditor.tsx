@@ -1,9 +1,10 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
-import {SkipChargeNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import {Drawer} from 'pages/common/components/Drawer'
+import { Label } from '@gorgias/merchant-ui-kit'
+
+import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
+import { SkipChargeNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { Drawer } from 'pages/common/components/Drawer'
 
 import TextInputWithVariables from '../components/variables/TextInputWithVariables'
 import NodeEditorDrawerHeader from '../NodeEditorDrawerHeader'
@@ -15,11 +16,11 @@ export default function SkipChargeEditor({
 }: {
     nodeInEdition: SkipChargeNodeType
 }) {
-    const {dispatch, getVariableListForNode} = useVisualBuilderContext()
+    const { dispatch, getVariableListForNode } = useVisualBuilderContext()
 
     const workflowVariables = useMemo(
         () => getVariableListForNode(nodeInEdition.id),
-        [getVariableListForNode, nodeInEdition.id]
+        [getVariableListForNode, nodeInEdition.id],
     )
 
     return (

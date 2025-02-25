@@ -3,15 +3,15 @@ import {
     useDrillDownData,
     useEnrichedDrillDownData,
 } from 'hooks/reporting/useDrillDownData'
-import {EnrichmentFields} from 'models/reporting/types'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import { EnrichmentFields } from 'models/reporting/types'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import {
     formatConvertCampaignSalesDrillDownRowData,
     formatTicketDrillDownRowData,
     formatVoiceDrillDownRowData,
 } from 'pages/stats/DrillDownFormatters'
-import {getDrillDownHook} from 'pages/stats/DrillDownHookConfig'
-import {OverviewMetric} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
+import { getDrillDownHook } from 'pages/stats/DrillDownHookConfig'
+import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import {
     AgentsMetrics,
     ChannelsMetrics,
@@ -20,14 +20,14 @@ import {
 } from 'state/ui/stats/drillDownSlice'
 import {
     AgentsTableColumn,
-    TicketFieldsMetric,
-    SlaMetric,
-    ConvertMetric,
-    VoiceMetric,
-    VoiceAgentsMetric,
     ChannelsTableColumns,
+    ConvertMetric,
+    SlaMetric,
+    TicketFieldsMetric,
+    VoiceAgentsMetric,
+    VoiceMetric,
 } from 'state/ui/stats/types'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/useDrillDownData')
 
@@ -36,21 +36,21 @@ const useEnrichedDrillDownDataMock = assumeMock(useEnrichedDrillDownData)
 
 describe('getDrillDownHook', () => {
     const agentsMetrics: AgentsMetrics[] = [
-        {metricName: AgentsTableColumn.CustomerSatisfaction, perAgentId: 123},
+        { metricName: AgentsTableColumn.CustomerSatisfaction, perAgentId: 123 },
         {
             metricName: AgentsTableColumn.MedianFirstResponseTime,
             perAgentId: 123,
         },
-        {metricName: AgentsTableColumn.MedianResolutionTime, perAgentId: 123},
-        {metricName: AgentsTableColumn.MessagesSent, perAgentId: 123},
+        { metricName: AgentsTableColumn.MedianResolutionTime, perAgentId: 123 },
+        { metricName: AgentsTableColumn.MessagesSent, perAgentId: 123 },
         {
             metricName: AgentsTableColumn.PercentageOfClosedTickets,
             perAgentId: 123,
         },
-        {metricName: AgentsTableColumn.ClosedTickets, perAgentId: 123},
-        {metricName: AgentsTableColumn.RepliedTickets, perAgentId: 123},
-        {metricName: AgentsTableColumn.OneTouchTickets, perAgentId: 123},
-        {metricName: AgentsTableColumn.TicketHandleTime, perAgentId: 123},
+        { metricName: AgentsTableColumn.ClosedTickets, perAgentId: 123 },
+        { metricName: AgentsTableColumn.RepliedTickets, perAgentId: 123 },
+        { metricName: AgentsTableColumn.OneTouchTickets, perAgentId: 123 },
+        { metricName: AgentsTableColumn.TicketHandleTime, perAgentId: 123 },
     ]
     const channelMetrics: ChannelsMetrics[] = [
         {
@@ -65,13 +65,16 @@ describe('getDrillDownHook', () => {
             metricName: ChannelsTableColumns.MedianResolutionTime,
             perChannel: 'email',
         },
-        {metricName: ChannelsTableColumns.MessagesSent, perChannel: 'email'},
+        { metricName: ChannelsTableColumns.MessagesSent, perChannel: 'email' },
         {
             metricName: ChannelsTableColumns.CreatedTicketsPercentage,
             perChannel: 'email',
         },
-        {metricName: ChannelsTableColumns.ClosedTickets, perChannel: 'email'},
-        {metricName: ChannelsTableColumns.TicketsReplied, perChannel: 'email'},
+        { metricName: ChannelsTableColumns.ClosedTickets, perChannel: 'email' },
+        {
+            metricName: ChannelsTableColumns.TicketsReplied,
+            perChannel: 'email',
+        },
         {
             metricName: ChannelsTableColumns.TicketHandleTime,
             perChannel: 'email',
@@ -83,24 +86,24 @@ describe('getDrillDownHook', () => {
             customFieldId: 123,
             customFieldValue: ['some::customField'],
         },
-        {metricName: OverviewMetric.OpenTickets},
-        {metricName: OverviewMetric.TicketsClosed},
-        {metricName: OverviewMetric.TicketsCreated},
-        {metricName: OverviewMetric.TicketsReplied},
-        {metricName: OverviewMetric.MessagesSent},
-        {metricName: OverviewMetric.MessagesPerTicket},
-        {metricName: OverviewMetric.MedianResolutionTime},
-        {metricName: OverviewMetric.MedianFirstResponseTime},
-        {metricName: OverviewMetric.CustomerSatisfaction},
-        {metricName: OverviewMetric.OneTouchTickets},
-        {metricName: OverviewMetric.TicketHandleTime},
-        {metricName: OverviewMetric.TicketHandleTime},
+        { metricName: OverviewMetric.OpenTickets },
+        { metricName: OverviewMetric.TicketsClosed },
+        { metricName: OverviewMetric.TicketsCreated },
+        { metricName: OverviewMetric.TicketsReplied },
+        { metricName: OverviewMetric.MessagesSent },
+        { metricName: OverviewMetric.MessagesPerTicket },
+        { metricName: OverviewMetric.MedianResolutionTime },
+        { metricName: OverviewMetric.MedianFirstResponseTime },
+        { metricName: OverviewMetric.CustomerSatisfaction },
+        { metricName: OverviewMetric.OneTouchTickets },
+        { metricName: OverviewMetric.TicketHandleTime },
+        { metricName: OverviewMetric.TicketHandleTime },
     ]
     const slaMetrics: SlaMetrics[] = [
         {
             metricName: SlaMetric.AchievementRate,
         },
-        {metricName: SlaMetric.BreachedTicketsRate},
+        { metricName: SlaMetric.BreachedTicketsRate },
     ]
     const convertMetrics: DrillDownMetric[] = [
         {
@@ -115,14 +118,14 @@ describe('getDrillDownHook', () => {
     ]
 
     const voiceMetrics = [
-        {metricName: VoiceMetric.AverageWaitTime},
-        {metricName: VoiceMetric.AverageTalkTime},
-        {metricName: VoiceMetric.QueueAverageWaitTime},
-        {metricName: VoiceMetric.QueueAverageTalkTime},
-        {metricName: VoiceMetric.QueueInboundCalls},
-        {metricName: VoiceMetric.QueueMissedInboundCalls},
-        {metricName: VoiceMetric.QueueOutboundCalls},
-        {metricName: VoiceAgentsMetric.AgentTotalCalls, perAgentId: 123},
+        { metricName: VoiceMetric.AverageWaitTime },
+        { metricName: VoiceMetric.AverageTalkTime },
+        { metricName: VoiceMetric.QueueAverageWaitTime },
+        { metricName: VoiceMetric.QueueAverageTalkTime },
+        { metricName: VoiceMetric.QueueInboundCalls },
+        { metricName: VoiceMetric.QueueMissedInboundCalls },
+        { metricName: VoiceMetric.QueueOutboundCalls },
+        { metricName: VoiceAgentsMetric.AgentTotalCalls, perAgentId: 123 },
         {
             metricName: VoiceAgentsMetric.AgentInboundMissedCalls,
             perAgentId: 123,
@@ -131,8 +134,8 @@ describe('getDrillDownHook', () => {
             metricName: VoiceAgentsMetric.AgentInboundAnsweredCalls,
             perAgentId: 123,
         },
-        {metricName: VoiceAgentsMetric.AgentOutboundCalls, perAgentId: 123},
-        {metricName: VoiceAgentsMetric.AgentAverageTalkTime, perAgentId: 123},
+        { metricName: VoiceAgentsMetric.AgentOutboundCalls, perAgentId: 123 },
+        { metricName: VoiceAgentsMetric.AgentAverageTalkTime, perAgentId: 123 },
     ]
 
     it.each([
@@ -149,9 +152,9 @@ describe('getDrillDownHook', () => {
                 metricData,
                 defaultEnrichmentFields,
                 formatTicketDrillDownRowData,
-                EnrichmentFields.TicketId
+                EnrichmentFields.TicketId,
             )
-        }
+        },
     )
 
     it.each(voiceMetrics)(
@@ -161,9 +164,9 @@ describe('getDrillDownHook', () => {
             hook(metricData)
             expect(useDrillDownDataMock).toHaveBeenCalledWith(
                 metricData,
-                formatVoiceDrillDownRowData
+                formatVoiceDrillDownRowData,
             )
-        }
+        },
     )
 
     it.each(convertMetrics)(
@@ -175,8 +178,8 @@ describe('getDrillDownHook', () => {
                 metricData,
                 [EnrichmentFields.CustomerIntegrationDataByExternalId],
                 formatConvertCampaignSalesDrillDownRowData,
-                EnrichmentFields.OrderCustomerId
+                EnrichmentFields.OrderCustomerId,
             )
-        }
+        },
     )
 })

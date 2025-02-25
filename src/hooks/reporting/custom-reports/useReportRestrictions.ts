@@ -1,14 +1,14 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
+import { useMemo } from 'react'
 
-import {useMemo} from 'react'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
-import {getComponentConfig} from 'pages/stats/custom-reports/config'
-import {STATS_ROUTES} from 'routes/constants'
-import {getHasAutomate} from 'state/billing/selectors'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {isTeamLead} from 'utils'
+import { getComponentConfig } from 'pages/stats/custom-reports/config'
+import { STATS_ROUTES } from 'routes/constants'
+import { getHasAutomate } from 'state/billing/selectors'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { isTeamLead } from 'utils'
 
 export type RestrictionsMap = Record<string, boolean | undefined>
 
@@ -22,7 +22,7 @@ export const useReportRestrictions = () => {
     const isTeamLeadOrAdmin = isTeamLead(user)
     const isAutoQANavLinkAvailable = useMemo(
         () => isTeamLeadOrAdmin && hasAutomate,
-        [hasAutomate, isTeamLeadOrAdmin]
+        [hasAutomate, isTeamLeadOrAdmin],
     )
     const restrictionsMap: RestrictionsMap = useMemo(
         () => ({
@@ -37,7 +37,7 @@ export const useReportRestrictions = () => {
             isAutoQANavLinkAvailable,
             isHelpCenterAnalyticsEnabled,
             isNewSatisfactionReportEnabled,
-        ]
+        ],
     )
     return {
         restrictionsMap,
@@ -46,14 +46,14 @@ export const useReportRestrictions = () => {
 
 export const isChartRestricted = (
     restrictionsMap: RestrictionsMap,
-    chartId: string
+    chartId: string,
 ) => {
-    const {reportConfig} = getComponentConfig(chartId)
+    const { reportConfig } = getComponentConfig(chartId)
     if (!reportConfig) return false
     return !!restrictionsMap[reportConfig.reportPath]
 }
 
 export const useIsChartRestricted = (chartId: string) => {
-    const {restrictionsMap} = useReportRestrictions()
+    const { restrictionsMap } = useReportRestrictions()
     return isChartRestricted(restrictionsMap, chartId)
 }

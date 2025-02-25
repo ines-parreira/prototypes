@@ -1,9 +1,9 @@
-import {act, renderHook} from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react-hooks'
 
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
-import type {ContextValue} from '../../Context'
-import type {PanelConfig, PanelState} from '../../types'
+import type { ContextValue } from '../../Context'
+import type { PanelConfig, PanelState } from '../../types'
 import usePanel from '../usePanel'
 import usePanels from '../usePanels'
 
@@ -21,20 +21,20 @@ describe('usePanel', () => {
 
     beforeEach(() => {
         addPanel = jest.fn()
-        usePanelsMock.mockReturnValue({addPanel} as unknown as ContextValue)
+        usePanelsMock.mockReturnValue({ addPanel } as unknown as ContextValue)
     })
 
     it('should return the default panel state', () => {
-        const {result} = renderHook(() => usePanel('panel1', config))
-        expect(result.current).toEqual({size: 0})
+        const { result } = renderHook(() => usePanel('panel1', config))
+        expect(result.current).toEqual({ size: 0 })
     })
 
     it('should return the updated panel state when the listener is called', () => {
-        const {result} = renderHook(() => usePanel('panel1', config))
+        const { result } = renderHook(() => usePanel('panel1', config))
         expect(addPanel).toHaveBeenCalledWith(
             'panel1',
             config,
-            expect.any(Function)
+            expect.any(Function),
         )
         const [[, , listener]] = addPanel.mock.calls as [
             string,
@@ -42,8 +42,8 @@ describe('usePanel', () => {
             (state: PanelState) => void,
         ][]
         act(() => {
-            listener({size: 100})
+            listener({ size: 100 })
         })
-        expect(result.current).toEqual({size: 100})
+        expect(result.current).toEqual({ size: 100 })
     })
 })

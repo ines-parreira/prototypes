@@ -1,8 +1,9 @@
-import {act, render, fireEvent, screen} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { act, fireEvent, render, screen } from '@testing-library/react'
 
 import FileField from 'pages/common/forms/FileField'
-import {assumeMock, getLastMockCall} from 'utils/testing'
+import { assumeMock, getLastMockCall } from 'utils/testing'
 
 import CardEditForm, * as CardEditExports from '../CardEditForm'
 
@@ -23,8 +24,8 @@ describe('<CardEditForm/>', () => {
         },
         hiddenFields: [],
         orderByOptions: [
-            {label: 'Value DESC', value: '-value'},
-            {label: 'Value ASC', value: '+value'},
+            { label: 'Value DESC', value: '-value' },
+            { label: 'Value ASC', value: '+value' },
         ],
         onSubmit: jest.fn(),
         onCancel: jest.fn(),
@@ -35,7 +36,7 @@ describe('<CardEditForm/>', () => {
 
         act(() => {
             fireEvent.click(
-                screen.getByText(CardEditExports.CANCEL_BUTTON_TEXT)
+                screen.getByText(CardEditExports.CANCEL_BUTTON_TEXT),
             )
         })
 
@@ -55,42 +56,42 @@ describe('<CardEditForm/>', () => {
         fireEvent.change(
             screen.getByLabelText(CardEditExports.TITLE_FIELD_LABEL),
             {
-                target: {value: 'New Title'},
-            }
+                target: { value: 'New Title' },
+            },
         )
 
         fireEvent.change(
             screen.getByLabelText(CardEditExports.LINK_FIELD_LABEL),
             {
-                target: {value: 'https://link.com'},
-            }
+                target: { value: 'https://link.com' },
+            },
         )
 
         act(() => {
             ;(
                 getLastMockCall(mockedFileField)[0].onChange as (
-                    value: string
+                    value: string,
                 ) => void
             )(pictureUrl)
         })
 
         fireEvent.click(screen.getByText('Pick a color'))
         await screen.findByPlaceholderText('ex: #eeeeee')
-        fireEvent.click(screen.getByRole('button', {name: `color ${color}`}))
+        fireEvent.click(screen.getByRole('button', { name: `color ${color}` }))
 
         fireEvent.click(
-            screen.getByLabelText(CardEditExports.DISPLAY_CARD_FIELD_LABEL)
+            screen.getByLabelText(CardEditExports.DISPLAY_CARD_FIELD_LABEL),
         )
 
         fireEvent.change(
             screen.getByLabelText(CardEditExports.LIMIT_FIELD_LABEL),
             {
-                target: {value: limit},
-            }
+                target: { value: limit },
+            },
         )
 
         fireEvent.click(
-            screen.getByLabelText(CardEditExports.ORDER_FIELD_LABEL)
+            screen.getByLabelText(CardEditExports.ORDER_FIELD_LABEL),
         )
         screen.getAllByRole('menuitem')[0].click()
 
@@ -107,7 +108,7 @@ describe('<CardEditForm/>', () => {
                 displayCard: false,
                 limit,
                 orderBy: props.orderByOptions[0].value,
-            })
+            }),
         )
     })
 
@@ -124,27 +125,27 @@ describe('<CardEditForm/>', () => {
                     'limit',
                     'orderBy',
                 ]}
-            />
+            />,
         )
 
         expect(
-            screen.queryByLabelText(CardEditExports.TITLE_FIELD_LABEL)
+            screen.queryByLabelText(CardEditExports.TITLE_FIELD_LABEL),
         ).toBeNull()
         expect(
-            screen.queryByLabelText(CardEditExports.LINK_FIELD_LABEL)
+            screen.queryByLabelText(CardEditExports.LINK_FIELD_LABEL),
         ).toBeNull()
         expect(
-            screen.queryByLabelText(CardEditExports.DISPLAY_CARD_FIELD_LABEL)
+            screen.queryByLabelText(CardEditExports.DISPLAY_CARD_FIELD_LABEL),
         ).toBeNull()
         expect(
-            screen.queryByLabelText(CardEditExports.ICON_FIELD_LABEL)
+            screen.queryByLabelText(CardEditExports.ICON_FIELD_LABEL),
         ).toBeNull()
         expect(screen.queryByText('Pick a color')).toBeNull()
         expect(
-            screen.queryByLabelText(CardEditExports.LIMIT_FIELD_LABEL)
+            screen.queryByLabelText(CardEditExports.LIMIT_FIELD_LABEL),
         ).toBeNull()
         expect(
-            screen.queryByLabelText(CardEditExports.ORDER_FIELD_LABEL)
+            screen.queryByLabelText(CardEditExports.ORDER_FIELD_LABEL),
         ).toBeNull()
     })
 })

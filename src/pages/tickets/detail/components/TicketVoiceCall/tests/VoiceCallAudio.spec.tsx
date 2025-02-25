@@ -1,5 +1,6 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import {
     VoiceCall,
@@ -12,18 +13,18 @@ import DownloadableDeletableRecording from '../../PhoneEvent/DownloadableDeletab
 import VoiceCallAudio from '../VoiceCallAudio'
 
 jest.mock('../../PhoneEvent/DownloadableDeletableRecording', () =>
-    jest.fn(() => null)
+    jest.fn(() => null),
 )
 jest.mock(
     'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel',
     () =>
-        ({agentId}: {agentId: number}) => (
+        ({ agentId }: { agentId: number }) => (
             <div>VoiceCallAgentLabel {agentId}</div>
-        )
+        ),
 )
 
 const renderComponent = (audio: VoiceCallRecording) => {
-    const voiceCall = {id: 1, integration_id: 2, external_id: '3'}
+    const voiceCall = { id: 1, integration_id: 2, external_id: '3' }
     const type = VoiceCallRecordingType.Recording
 
     return render(
@@ -31,12 +32,12 @@ const renderComponent = (audio: VoiceCallRecording) => {
             audio={audio}
             type={type}
             voiceCall={voiceCall as VoiceCall}
-        />
+        />,
     )
 }
 
 describe('VoiceCallAudio', () => {
-    const voiceCall = {id: 1, integration_id: 2, external_id: '3'}
+    const voiceCall = { id: 1, integration_id: 2, external_id: '3' }
     const audio = {
         type: VoiceCallRecordingType.Recording,
         url: 'http://example.com/audio.mp3',
@@ -49,7 +50,7 @@ describe('VoiceCallAudio', () => {
         renderComponent(audio)
 
         expect(
-            screen.queryByTestId('recording-failure')
+            screen.queryByTestId('recording-failure'),
         ).not.toBeInTheDocument()
         expect(DownloadableDeletableRecording).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -57,7 +58,7 @@ describe('VoiceCallAudio', () => {
                 deleteRecordingURL: `/api/integrations/${voiceCall.integration_id}/calls/${voiceCall.external_id}/recordings/${audio.external_id}`,
                 callId: voiceCall.id,
             }),
-            {}
+            {},
         )
     })
 
@@ -69,7 +70,7 @@ describe('VoiceCallAudio', () => {
         renderComponent(privateRecording)
 
         expect(
-            screen.getByTestId('private-recording-warning')
+            screen.getByTestId('private-recording-warning'),
         ).toBeInTheDocument()
         expect(DownloadableDeletableRecording).not.toHaveBeenCalled()
     })

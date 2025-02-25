@@ -1,17 +1,18 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {fireEvent, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
-import {Provider} from 'react-redux'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {account} from 'fixtures/account'
-import {AI_AGENT, OPTIMIZE} from 'pages/aiAgent/constants'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {mockStore, renderWithRouter} from 'utils/testing'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
 
-import {Level2IntentsContainer} from './Level2IntentsContainer'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { account } from 'fixtures/account'
+import { AI_AGENT, OPTIMIZE } from 'pages/aiAgent/constants'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { mockStore, renderWithRouter } from 'utils/testing'
+
+import { Level2IntentsContainer } from './Level2IntentsContainer'
 
 jest.mock('pages/aiAgent/hooks/useAiAgentEnabled', () => ({
     useAiAgentEnabled: jest.fn().mockReturnValue(true),
@@ -25,7 +26,7 @@ jest.mock(
     'pages/aiAgent/insights/widgets/AdjustedPeriodFilter/AdjustedPeriodFilter',
     () => ({
         AdjustedPeriodFilter: jest.fn(() => <></>),
-    })
+    }),
 )
 
 jest.mock('../Level2IntentsPerformance/Level2IntentsPerformance', () => ({
@@ -69,25 +70,28 @@ const renderComponent = () =>
         {
             path: `/:shopType/:shopName/ai-agent/optimize/intentId`,
             route: `/${SHOP_TYPE}/${SHOP_NAME}/ai-agent/optimize/intentId`,
-        }
+        },
     )
 
 describe('Level2IntentsContainer', () => {
     describe.each([
-        {flag: true, title: OPTIMIZE},
-        {flag: false, title: AI_AGENT},
-    ])('with feature flag conv-ai-standalone-menu = $flag', ({flag, title}) => {
-        it('renders the component', () => {
-            mockFlags({[FeatureFlagKey.ConvAiStandaloneMenu]: flag})
+        { flag: true, title: OPTIMIZE },
+        { flag: false, title: AI_AGENT },
+    ])(
+        'with feature flag conv-ai-standalone-menu = $flag',
+        ({ flag, title }) => {
+            it('renders the component', () => {
+                mockFlags({ [FeatureFlagKey.ConvAiStandaloneMenu]: flag })
 
-            renderComponent()
+                renderComponent()
 
-            expect(
-                screen.getByText('Back To AI Agent Performance')
-            ).toBeInTheDocument()
-            expect(screen.getAllByText(title).length).toBeGreaterThan(0)
-        })
-    })
+                expect(
+                    screen.getByText('Back To AI Agent Performance'),
+                ).toBeInTheDocument()
+                expect(screen.getAllByText(title).length).toBeGreaterThan(0)
+            })
+        },
+    )
 
     it('calls history.push with the correct route on BackLink click', () => {
         renderComponent()
@@ -96,7 +100,7 @@ describe('Level2IntentsContainer', () => {
         fireEvent.click(backLink)
 
         expect(mockHistoryPush).toHaveBeenCalledWith(
-            `/app/automation/${SHOP_TYPE}/${SHOP_NAME}/ai-agent/optimize`
+            `/app/automation/${SHOP_TYPE}/${SHOP_NAME}/ai-agent/optimize`,
         )
     })
 })

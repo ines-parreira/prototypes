@@ -1,4 +1,4 @@
-import {updateQueryTimestamp} from '../actions'
+import { updateQueryTimestamp } from '../actions'
 import * as constants from '../constants'
 
 describe('queries actions', () => {

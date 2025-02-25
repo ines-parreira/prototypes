@@ -1,12 +1,3 @@
-import {Label, Tooltip} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
-import {produce} from 'immer'
-import {fromJS, List, Map} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {set} from 'lodash'
-import _cloneDeep from 'lodash/cloneDeep'
-import _defaults from 'lodash/defaults'
-import _merge from 'lodash/merge'
 import React, {
     SyntheticEvent,
     useEffect,
@@ -14,8 +5,17 @@ import React, {
     useRef,
     useState,
 } from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {Link, useHistory} from 'react-router-dom'
+
+import classNames from 'classnames'
+import { produce } from 'immer'
+import { fromJS, List, Map } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { set } from 'lodash'
+import _cloneDeep from 'lodash/cloneDeep'
+import _defaults from 'lodash/defaults'
+import _merge from 'lodash/merge'
+import { connect, ConnectedProps } from 'react-redux'
+import { Link, useHistory } from 'react-router-dom'
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -23,17 +23,20 @@ import {
     Label as ReactStrapLabel,
 } from 'reactstrap'
 
-import {SegmentEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
+import { Label, Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
 import {
+    getGorgiasChatLanguageOptions,
     getPrimaryLanguageFromChatConfig,
     GORGIAS_CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
     GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
-    GORGIAS_CHAT_NAME_MAX_LENGTH,
     GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH,
     GORGIAS_CHAT_DEFAULT_COLOR,
     GORGIAS_CHAT_DEFAULT_FONTS,
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
+    GORGIAS_CHAT_NAME_MAX_LENGTH,
     GORGIAS_CHAT_OFFLINE_MODE_ENABLED_DATETIME_DEFAULT,
     GORGIAS_CHAT_WIDGET_AVATAR_TYPE_DEFAULT,
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
@@ -46,9 +49,8 @@ import {
     GORGIAS_CHAT_WIDGET_TEXTS_DEFAULTS,
     isTextsMultiLanguage,
     LanguageItem,
-    getGorgiasChatLanguageOptions,
 } from 'config/integrations/gorgias_chat'
-import {LanguageChat} from 'constants/languages'
+import { LanguageChat } from 'constants/languages'
 import Launcher from 'gorgias-design-system/Launcher/Launcher'
 import {
     GorgiasChatAvatarImageType,
@@ -61,30 +63,28 @@ import {
     GorgiasChatPositionAlignmentEnum,
     IntegrationType,
 } from 'models/integration/types'
-import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
+import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
-import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
-
+import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 import * as ToggleButton from 'pages/common/components/ToggleButton'
 import CheckBox from 'pages/common/forms/CheckBox'
 import ColorField from 'pages/common/forms/ColorField'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
-
 import InputField from 'pages/common/forms/input/InputField'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 import ToggleInput from 'pages/common/forms/ToggleInput'
-import {useOnClickOutside} from 'pages/common/hooks/useOnClickOutside'
-import {PositionAxis} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/types'
+import { useOnClickOutside } from 'pages/common/hooks/useOnClickOutside'
+import { PositionAxis } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/types'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
 import AutoResponderMessages from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/AutoResponderMessages'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
 import ConversationTimestamp from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ConversationTimestamp'
 import OfflineMessages from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/OfflineMessages'
 import GorgiasChatIntegrationPreviewContainer from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
-import {Tab} from 'pages/integrations/integration/types'
-import {FontSelectField} from 'pages/settings/common/FontSelectField/FontSelectField'
+import { Tab } from 'pages/integrations/integration/types'
+import { FontSelectField } from 'pages/settings/common/FontSelectField/FontSelectField'
 import {
     Texts,
     TextsMultiLanguage,
@@ -92,21 +92,21 @@ import {
 } from 'rest_api/gorgias_chat_protected_api/types'
 import * as IntegrationsActions from 'state/integrations/actions'
 import * as integrationSelectors from 'state/integrations/selectors'
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
 
 import useIntegrationPageViewLogEvent from '../../../hooks/useIntegrationPageViewLogEvent'
-import {CustomizeTranslationsButton} from '../components/CustomizeTranslationsButton'
+import { CustomizeTranslationsButton } from '../components/CustomizeTranslationsButton'
 import ChatHomePreview from '../GorgiasChatIntegrationPreview/ChatHomePreview'
 import ChatIntegrationPreviewContent from '../GorgiasChatIntegrationPreview/ChatIntegrationPreviewContent'
-import {defaultChatFontFamily} from '../GorgiasChatIntegrationPreview/CustomizedChatLauncher'
+import { defaultChatFontFamily } from '../GorgiasChatIntegrationPreview/CustomizedChatLauncher'
 import useSelfServiceConfiguration from '../hooks/useSelfServiceConfiguration'
-import {CustomizeToneOfVoiceBlock} from './components/CustomizeToneOfVoiceBlock'
-import ImageField, {ImageFieldVariant} from './components/ImageField'
+import { CustomizeToneOfVoiceBlock } from './components/CustomizeToneOfVoiceBlock'
+import ImageField, { ImageFieldVariant } from './components/ImageField'
 import UploadLogoCaption from './components/UploadLogoCaption'
+import { multiLanguageInitialTextsEmptyData } from './GorgiasTranslateText/GorgiasTranslateText'
+import { StoreNameDropdown } from './StoreNameDropdown'
 
 import css from './GorgiasChatIntegrationAppearance.less'
-import {multiLanguageInitialTextsEmptyData} from './GorgiasTranslateText/GorgiasTranslateText'
-import {StoreNameDropdown} from './StoreNameDropdown'
 
 export const defaultContent = {
     type: IntegrationType.GorgiasChat,
@@ -236,11 +236,11 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                 isInitialized: false,
                 editedPositionAxis: null,
             },
-            defaultContent
-        )
+            defaultContent,
+        ),
     )
     const [texts, setTexts] = useState<TextsMultiLanguage>(
-        multiLanguageInitialTextsEmptyData
+        multiLanguageInitialTextsEmptyData,
     )
 
     const integrationChat = integration.toJS() as GorgiasChatIntegration
@@ -265,7 +265,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
     const storeIntegrations = storeIntegrationsProp as List<Map<any, any>>
 
     const [storeIntegrationId, setStoreIntegrationId] = useState(
-        integration.getIn(['meta', 'shop_integration_id'], null)
+        integration.getIn(['meta', 'shop_integration_id'], null),
     )
 
     useIntegrationPageViewLogEvent(
@@ -273,7 +273,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
         {
             isReady: !loading.get('integration'),
             integration: integration,
-        }
+        },
     )
 
     const integrationDefaultLanguage = useMemo(() => {
@@ -370,7 +370,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                             offlineIntroductionTextsFromToneOfVoice,
                     }))
                 }
-            }
+            },
         )
     }, [
         chatMultiLanguagesEnabled,
@@ -406,22 +406,22 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                     position: {
                         alignment: integration.getIn(
                             ['decoration', 'position', 'alignment'],
-                            GORGIAS_CHAT_WIDGET_POSITION_DEFAULT.alignment
+                            GORGIAS_CHAT_WIDGET_POSITION_DEFAULT.alignment,
                         ),
                         offsetX: integration.getIn(
                             ['decoration', 'position', 'offsetX'],
-                            GORGIAS_CHAT_WIDGET_POSITION_DEFAULT.offsetX
+                            GORGIAS_CHAT_WIDGET_POSITION_DEFAULT.offsetX,
                         ),
                         offsetY: integration.getIn(
                             ['decoration', 'position', 'offsetY'],
-                            GORGIAS_CHAT_WIDGET_POSITION_DEFAULT.offsetY
+                            GORGIAS_CHAT_WIDGET_POSITION_DEFAULT.offsetY,
                         ),
                     },
                     language: integration.getIn(['meta', 'language']),
                     languages: integration.getIn(['meta', 'languages']),
                     avatarType: integration.getIn(
                         ['decoration', 'avatar_type'],
-                        GORGIAS_CHAT_WIDGET_AVATAR_TYPE_DEFAULT
+                        GORGIAS_CHAT_WIDGET_AVATAR_TYPE_DEFAULT,
                     ),
                     avatarTeamPictureUrl: integration.getIn([
                         'decoration',
@@ -436,18 +436,18 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                     launcher: integration
                         .getIn(
                             ['decoration', 'launcher'],
-                            fromJS({type: GorgiasChatLauncherType.ICON})
+                            fromJS({ type: GorgiasChatLauncherType.ICON }),
                         )
                         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
                         .toJS(),
                     avatar: {
                         imageType: integration.getIn(
                             ['decoration', 'avatar', 'image_type'],
-                            GorgiasChatAvatarImageType.AGENT_PICTURE
+                            GorgiasChatAvatarImageType.AGENT_PICTURE,
                         ),
                         nameType: integration.getIn(
                             ['decoration', 'avatar', 'name_type'],
-                            GorgiasChatAvatarNameType.AGENT_FIRST_NAME
+                            GorgiasChatAvatarNameType.AGENT_FIRST_NAME,
                         ),
                         companyLogoUrl: integration.getIn([
                             'decoration',
@@ -461,7 +461,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                     ]),
                     backgroundColorStyle: integration.getIn(
                         ['decoration', 'background_color_style'],
-                        GorgiasChatBackgroundColorStyle.Gradient
+                        GorgiasChatBackgroundColorStyle.Gradient,
                     ),
                     headerPictureUrl: integration.getIn([
                         'decoration',
@@ -473,15 +473,15 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                     ]),
                     displayBotLabel: integration.getIn(
                         ['decoration', 'display_bot_label'],
-                        true
+                        true,
                     ),
                     useMainColorOutsideBusinessHours: integration.getIn(
                         ['decoration', 'use_main_color_outside_business_hours'],
-                        false
+                        false,
                     ),
                 },
-                defaultContent
-            )
+                defaultContent,
+            ),
         )
     }
 
@@ -511,7 +511,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
 
         const storeIntegration = storeIntegrations.find(
             (storeIntegration) =>
-                storeIntegration?.get('id') === storeIntegrationId
+                storeIntegration?.get('id') === storeIntegrationId,
         )
 
         const form: SubmitForm = {
@@ -621,37 +621,37 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                 set(
                     textsDraft,
                     `${path}.introductionText`,
-                    state.introductionText
+                    state.introductionText,
                 )
                 set(
                     textsDraft,
                     `${path}.offlineIntroductionText`,
-                    state.offlineIntroductionText
+                    state.offlineIntroductionText,
                 )
             })
 
             void IntegrationsActions.updateApplicationTexts(
                 chatApplicationId as string,
-                textsIncludingSyncedState
+                textsIncludingSyncedState,
             )
         }
 
         const integrationResult = (
             actionToUse(fromJS(form)) as unknown as Promise<any>
-        ).then(({error} = {}) => {
+        ).then(({ error } = {}) => {
             if (error) {
                 return
             }
 
             // reload the integration
-            setState((prevState) => ({...prevState, isInitialized: false}))
+            setState((prevState) => ({ ...prevState, isInitialized: false }))
         })
 
         return integrationResult
     }
 
     const setLanguage = (language: string) => {
-        const newState: Partial<State> = {language}
+        const newState: Partial<State> = { language }
 
         // Sync `languages` with `language` when feature flag is OFF, as a way to soften the code cleaning late (to drop `language`).
         // Theoretically, `setLanguage()` callback is only reachable with `!chatMultiLanguagesEnabled` but we keep the check for safety.
@@ -687,7 +687,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                 GORGIAS_CHAT_WIDGET_TEXTS[language].chatWithUs
         }
 
-        setState((prevState) => ({...prevState, ...newState}))
+        setState((prevState) => ({ ...prevState, ...newState }))
     }
 
     const {
@@ -737,7 +737,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
     useOnClickOutside(launcherCustomizationRef, () => {
         setIsChatOpenInPreview(true)
     })
-    const {selfServiceConfiguration, selfServiceConfigurationEnabled} =
+    const { selfServiceConfiguration, selfServiceConfigurationEnabled } =
         useSelfServiceConfiguration(integration)
 
     const chatPreview = (
@@ -797,7 +797,9 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
             >
                 <ChatIntegrationPreviewContent
                     style={
-                        preview === PREVIEW_HOME_PAGE ? {padding: '0 20px'} : {}
+                        preview === PREVIEW_HOME_PAGE
+                            ? { padding: '0 20px' }
+                            : {}
                     }
                 >
                     {preview === PREVIEW_HOME_PAGE ? (
@@ -981,15 +983,15 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                             storeIntegrations.find(
                                                 (storeIntegration) =>
                                                     storeIntegration?.get(
-                                                        'id'
-                                                    ) === storeIntegrationId
+                                                        'id',
+                                                    ) === storeIntegrationId,
                                             )
 
                                         setStoreIntegrationId(
-                                            storeIntegrationId
+                                            storeIntegrationId,
                                         )
                                         prefillWithStorename(
-                                            storeIntegration.get('name')
+                                            storeIntegration.get('name'),
                                         )
                                     }}
                                 />
@@ -1021,13 +1023,13 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                     type="select"
                                     value={language}
                                     options={getGorgiasChatLanguageOptions(
-                                        enableNewLanguages
+                                        enableNewLanguages,
                                     ).toJS()}
                                     onChange={setLanguage}
                                     label="Language"
                                 >
                                     {getGorgiasChatLanguageOptions(
-                                        enableNewLanguages
+                                        enableNewLanguages,
                                     ).map((option) => {
                                         const value = option?.get('value')
                                         const label = option?.get('label')
@@ -1163,7 +1165,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                             <i
                                                 className={classNames(
                                                     'material-icons-outlined',
-                                                    css.tooltipIcon
+                                                    css.tooltipIcon,
                                                 )}
                                             >
                                                 info
@@ -1193,7 +1195,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                 <RadioFieldSet
                                     className={classNames(
                                         'mb-3',
-                                        css.radioFieldSet
+                                        css.radioFieldSet,
                                     )}
                                     options={backgroundColorStyleOptions}
                                     selectedValue={backgroundColorStyle}
@@ -1214,7 +1216,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                             <div
                                 className={classNames(
                                     css.formGroup,
-                                    css.fontInputWrapper
+                                    css.fontInputWrapper,
                                 )}
                             >
                                 <FontSelectField
@@ -1255,7 +1257,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                                     <h3
                                                         className={classNames(
                                                             css.subtitle,
-                                                            'mb-2'
+                                                            'mb-2',
                                                         )}
                                                     >
                                                         Standard logo
@@ -1276,7 +1278,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                                     <h3
                                                         className={classNames(
                                                             css.subtitle,
-                                                            'mb-2'
+                                                            'mb-2',
                                                         )}
                                                     >
                                                         Dark logo
@@ -1286,7 +1288,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                                                     <i
                                                                         className={classNames(
                                                                             'material-icons-outlined',
-                                                                            css.tooltipIcon
+                                                                            css.tooltipIcon,
                                                                         )}
                                                                     >
                                                                         info
@@ -1373,7 +1375,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                             <h2
                                                 className={classNames(
                                                     css.title,
-                                                    'mb-1'
+                                                    'mb-1',
                                                 )}
                                             >
                                                 Company logo
@@ -1543,14 +1545,14 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                             <InputField
                                                 className={classNames(
                                                     css.formGroup,
-                                                    css.launcherLabelInput
+                                                    css.launcherLabelInput,
                                                 )}
                                                 type="text"
                                                 label="Label"
                                                 value={state.launcher.label}
                                                 onFocus={() => {
                                                     setIsChatOpenInPreview(
-                                                        false
+                                                        false,
                                                     )
                                                 }}
                                                 onChange={(value: string) => {
@@ -1562,7 +1564,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                                         },
                                                     }))
                                                     setIsChatOpenInPreview(
-                                                        false
+                                                        false,
                                                     )
                                                 }}
                                                 isRequired
@@ -1584,7 +1586,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                     value={position.alignment}
                                     options={GORGIAS_CHAT_WIDGET_POSITION_OPTIONS.toJS()}
                                     onChange={(
-                                        alignment: GorgiasChatPositionAlignmentEnum
+                                        alignment: GorgiasChatPositionAlignmentEnum,
                                     ) => {
                                         setState((prevState) => ({
                                             ...prevState,
@@ -1608,7 +1610,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                                     {label}
                                                 </option>
                                             )
-                                        }
+                                        },
                                     )}
                                 </DEPRECATED_InputField>
                                 <div className={css.positionInputsWrapper}>
@@ -1619,7 +1621,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                                 <i
                                                     className={classNames(
                                                         'material-icons-outlined',
-                                                        css.tooltipIcon
+                                                        css.tooltipIcon,
                                                     )}
                                                 >
                                                     info
@@ -1679,7 +1681,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                                 <i
                                                     className={classNames(
                                                         'material-icons-outlined',
-                                                        css.tooltipIcon
+                                                        css.tooltipIcon,
                                                     )}
                                                 >
                                                     info
@@ -1748,7 +1750,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                     intent="secondary"
                                     onClick={() => {
                                         history.push(
-                                            '/app/settings/channels/gorgias_chat'
+                                            '/app/settings/channels/gorgias_chat',
                                         )
                                     }}
                                     className={css.cancelButton}
@@ -1774,7 +1776,7 @@ const mapStateToProps = (state: RootState) => {
             ])(state),
         gorgiasChatIntegrations:
             integrationSelectors.DEPRECATED_getIntegrationsByTypes(
-                IntegrationType.GorgiasChat
+                IntegrationType.GorgiasChat,
             )(state),
     }
 }

@@ -1,19 +1,19 @@
-import {screen} from '@testing-library/react'
-
 import React from 'react'
 
-import {useSatisfactionScoreTrend} from 'hooks/reporting/quality-management/satisfaction/useSatisfactionScoreTrend'
-import {TREND_BADGE_FORMAT} from 'pages/stats/common/components/TrendBadge'
-import {formatMetricTrend, formatMetricValue} from 'pages/stats/common/utils'
-import {SatisfactionMetricConfig} from 'pages/stats/quality-management/satisfaction/SatisfactionMetricsConfig'
-import {SatisfactionScoreTrendCard} from 'pages/stats/quality-management/satisfaction/SatisfactionScoreTrendCard'
-import {RootState} from 'state/types'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
-import {SatisfactionMetric} from 'state/ui/stats/types'
-import {assumeMock, renderWithStore} from 'utils/testing'
+import { screen } from '@testing-library/react'
+
+import { useSatisfactionScoreTrend } from 'hooks/reporting/quality-management/satisfaction/useSatisfactionScoreTrend'
+import { TREND_BADGE_FORMAT } from 'pages/stats/common/components/TrendBadge'
+import { formatMetricTrend, formatMetricValue } from 'pages/stats/common/utils'
+import { SatisfactionMetricConfig } from 'pages/stats/quality-management/satisfaction/SatisfactionMetricsConfig'
+import { SatisfactionScoreTrendCard } from 'pages/stats/quality-management/satisfaction/SatisfactionScoreTrendCard'
+import { RootState } from 'state/types'
+import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
+import { SatisfactionMetric } from 'state/ui/stats/types'
+import { assumeMock, renderWithStore } from 'utils/testing'
 
 jest.mock(
-    'hooks/reporting/quality-management/satisfaction/useSatisfactionScoreTrend'
+    'hooks/reporting/quality-management/satisfaction/useSatisfactionScoreTrend',
 )
 const useSatisfactionScoreTrendMock = assumeMock(useSatisfactionScoreTrend)
 
@@ -28,7 +28,7 @@ describe('SatisfactionScoreTrendCard', () => {
             },
         },
         ui: {
-            stats: {filters: uiStatsInitialState},
+            stats: { filters: uiStatsInitialState },
         },
     } as RootState
     const value = 5
@@ -54,17 +54,17 @@ describe('SatisfactionScoreTrendCard', () => {
                     value,
                     SatisfactionMetricConfig[
                         SatisfactionMetric.SatisfactionScore
-                    ].metricFormat
-                )
-            )
+                    ].metricFormat,
+                ),
+            ),
         ).toBeInTheDocument()
         expect(
             screen.getByText(
                 String(
                     formatMetricTrend(value, prevValue, TREND_BADGE_FORMAT)
-                        .formattedTrend
-                )
-            )
+                        .formattedTrend,
+                ),
+            ),
         ).toBeInTheDocument()
     })
 })

@@ -1,19 +1,21 @@
-import {render, fireEvent, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
+// sort-imports-ignore
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-// eslint-disable-next-line import/order
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {applications as mockApplications} from 'fixtures/applications'
-import {channels as mockChannels} from 'fixtures/channels'
-import {applicationsQueryKeys as mockApplicationsQueryKeys} from 'models/application/queries'
-import {channelsQueryKeys as mockChannelsQueryKeys} from 'models/channel/queries'
-import {ChannelIdentifier} from 'services/channels'
+import { applications as mockApplications } from 'fixtures/applications'
+import { channels as mockChannels } from 'fixtures/channels'
+import { applicationsQueryKeys as mockApplicationsQueryKeys } from 'models/application/queries'
+import { channelsQueryKeys as mockChannelsQueryKeys } from 'models/channel/queries'
+import { ChannelIdentifier } from 'services/channels'
 import shortcutManager from 'services/shortcutManager'
-import {makeExecuteKeyboardAction} from 'utils/testing'
+import { makeExecuteKeyboardAction } from 'utils/testing'
 
 import ChannelSelect from '../ChannelSelect'
 
@@ -45,14 +47,14 @@ describe('<ChannelSelect />', () => {
     it('should render a list of (new and legacy) channels', () => {
         const store = configureMockStore()({
             integrations: fromJS({
-                integrations: [{type: 'email'}],
+                integrations: [{ type: 'email' }],
             }),
         })
 
         render(
             <Provider store={store}>
                 <ChannelSelect />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.queryByText('Email')).toBeInTheDocument()
@@ -61,10 +63,10 @@ describe('<ChannelSelect />', () => {
 
     it('should trigger a channel change when selecting a channel', () => {
         const store = configureMockStore([thunk])({
-            ticket: fromJS({messages: []}),
+            ticket: fromJS({ messages: [] }),
             integrations: fromJS({
                 integrations: [
-                    {type: 'email', meta: {address: 'test@gorgias.com'}},
+                    { type: 'email', meta: { address: 'test@gorgias.com' } },
                 ],
             }),
         })
@@ -72,7 +74,7 @@ describe('<ChannelSelect />', () => {
         render(
             <Provider store={store}>
                 <ChannelSelect />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(screen.getByText('Email'))
@@ -87,25 +89,25 @@ describe('<ChannelSelect />', () => {
     it('should trigger channel change on keyboard shorcuts usage', () => {
         const store = configureMockStore()({
             integrations: fromJS({
-                integrations: [{type: 'email'}],
+                integrations: [{ type: 'email' }],
             }),
         })
 
         render(
             <Provider store={store}>
                 <ChannelSelect />
-            </Provider>
+            </Provider>,
         )
 
         makeExecuteKeyboardAction(
             shortcutManagerMock,
             shortcutEventMock,
-            'TicketDetailContainer'
+            'TicketDetailContainer',
         )('FORWARD_REPLY')
         makeExecuteKeyboardAction(
             shortcutManagerMock,
             shortcutEventMock,
-            'TicketDetailContainer'
+            'TicketDetailContainer',
         )('INTERNAL_NOTE_REPLY')
 
         expect(store.getActions()).toEqual([

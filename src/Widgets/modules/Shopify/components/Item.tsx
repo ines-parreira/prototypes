@@ -1,10 +1,12 @@
-import {Badge} from '@gorgias/merchant-ui-kit'
-import {fromJS, List, Map} from 'immutable'
-import React, {createContext, FunctionComponent, useContext} from 'react'
+import React, { createContext, FunctionComponent, useContext } from 'react'
 
-import {StaticField} from 'Widgets/modules/Template/modules/Field'
+import { fromJS, List, Map } from 'immutable'
 
-import {OrderContext} from './Order'
+import { Badge } from '@gorgias/merchant-ui-kit'
+
+import { StaticField } from 'Widgets/modules/Template/modules/Field'
+
+import { OrderContext } from './Order'
 
 const OrderItemContext = createContext<{
     refundedQuantity: number | null
@@ -13,7 +15,7 @@ const OrderItemContext = createContext<{
 })
 
 const BeforeContent = () => {
-    const {refundedQuantity} = useContext(OrderItemContext)
+    const { refundedQuantity } = useContext(OrderItemContext)
 
     if (!refundedQuantity) {
         return null
@@ -30,14 +32,14 @@ const BeforeContent = () => {
 
 interface ItemCustomization {
     BeforeContent: React.FC
-    Wrapper: React.FC<{source: any; children: React.ReactNode}>
+    Wrapper: React.FC<{ source: any; children: React.ReactNode }>
 }
 
-const Wrapper: FunctionComponent<{source: Map<string, unknown>}> = ({
+const Wrapper: FunctionComponent<{ source: Map<string, unknown> }> = ({
     source: item,
     children,
 }) => {
-    const {order} = useContext(OrderContext)
+    const { order } = useContext(OrderContext)
     const itemId = item.get('id') as number
     const refunds = order.get('refunds', fromJS([])) as List<any>
 
@@ -49,13 +51,13 @@ const Wrapper: FunctionComponent<{source: Map<string, unknown>}> = ({
             ).filter(
                 (lineItem: Map<string, number>) =>
                     lineItem.get('line_item_id').toString() ===
-                    itemId.toString()
+                    itemId.toString(),
             )
         })
         .filter((refundedItemInfo) =>
             typeof refundedItemInfo === 'undefined'
                 ? false
-                : !refundedItemInfo.isEmpty()
+                : !refundedItemInfo.isEmpty(),
         ) // remove falsey data
         .flatten(true) // flatten all those refund info in one List
         .reduce((total = 0, refund: Map<string, number>) => {

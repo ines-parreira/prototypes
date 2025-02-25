@@ -1,9 +1,11 @@
-import {Badge} from '@gorgias/merchant-ui-kit'
-import {fromJS} from 'immutable'
 import React from 'react'
 
+import { fromJS } from 'immutable'
+
+import { Badge } from '@gorgias/merchant-ui-kit'
+
 import useAppDispatch from 'hooks/useAppDispatch'
-import {EmailIntegration} from 'models/integration/types'
+import { EmailIntegration } from 'models/integration/types'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Pagination from 'pages/common/components/Pagination'
@@ -14,7 +16,7 @@ import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import useClientSidePagination from 'pages/common/hooks/useClientSidePagination'
-import {deleteIntegration} from 'state/integrations/actions'
+import { deleteIntegration } from 'state/integrations/actions'
 
 import EmptyMigrationTableRow from './EmptyMigrationTableRow'
 
@@ -24,8 +26,10 @@ type Props = {
     integrations: EmailIntegration[]
 }
 
-export default function StartMigrationIntegrationsTable({integrations}: Props) {
-    const {paginatedItems, ...pagination} = useClientSidePagination({
+export default function StartMigrationIntegrationsTable({
+    integrations,
+}: Props) {
+    const { paginatedItems, ...pagination } = useClientSidePagination({
         items: integrations,
         itemsPerPage: 5,
     })
@@ -69,8 +73,8 @@ export default function StartMigrationIntegrationsTable({integrations}: Props) {
                                             onConfirm={() =>
                                                 dispatch(
                                                     deleteIntegration(
-                                                        fromJS(integration)
-                                                    )
+                                                        fromJS(integration),
+                                                    ),
                                                 )
                                             }
                                             data-testid="delete-button"

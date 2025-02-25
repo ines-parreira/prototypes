@@ -1,21 +1,22 @@
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {billingState} from 'fixtures/billing'
-import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
-import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
-import {RootState, StoreDispatch} from 'state/types'
-import {initialState as uiState} from 'state/ui/helpCenter/reducer'
-import {renderWithRouter} from 'utils/testing'
+import { billingState } from 'fixtures/billing'
+import { initialState as articlesState } from 'state/entities/helpCenter/articles/reducer'
+import { initialState as categoriesState } from 'state/entities/helpCenter/categories/reducer'
+import { RootState, StoreDispatch } from 'state/types'
+import { initialState as uiState } from 'state/ui/helpCenter/reducer'
+import { renderWithRouter } from 'utils/testing'
 
-import {getSingleHelpCenterResponseFixture} from '../../fixtures/getHelpCentersResponse.fixture'
-import {getLocalesResponseFixture} from '../../fixtures/getLocalesResponse.fixtures'
+import { getSingleHelpCenterResponseFixture } from '../../fixtures/getHelpCentersResponse.fixture'
+import { getLocalesResponseFixture } from '../../fixtures/getLocalesResponse.fixtures'
 import useCurrentHelpCenter from '../../hooks/useCurrentHelpCenter'
 import * as helpCenterApi from '../../hooks/useHelpCenterApi'
-import {useSupportedLocales} from '../../providers/SupportedLocales'
-import {useHasAccessToAILibrary} from '../AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
+import { useSupportedLocales } from '../../providers/SupportedLocales'
+import { useHasAccessToAILibrary } from '../AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
 import HelpCenterCustomizationView from '../HelpCenterCustomizationView'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
@@ -30,7 +31,7 @@ const defaultState: Partial<RootState> = {
             },
         },
     } as any,
-    ui: {helpCenter: {...uiState, currentId: 1}} as any,
+    ui: { helpCenter: { ...uiState, currentId: 1 } } as any,
     billing: fromJS(billingState),
 }
 const store = mockStore(defaultState)
@@ -44,7 +45,7 @@ jest.spyOn(helpCenterApi, 'useAbilityChecker').mockReturnValue({
 
 jest.mock('../../hooks/useCurrentHelpCenter')
 ;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
-    getSingleHelpCenterResponseFixture
+    getSingleHelpCenterResponseFixture,
 )
 
 jest.mock('../../providers/SupportedLocales')
@@ -60,10 +61,10 @@ describe('<HelpCenterCustomizationView />', () => {
     const props = {}
 
     it('should render the component', () => {
-        const {container} = renderWithRouter(
+        const { container } = renderWithRouter(
             <Provider store={store}>
                 <HelpCenterCustomizationView {...props} />
-            </Provider>
+            </Provider>,
         )
         expect(container).toMatchSnapshot()
     })

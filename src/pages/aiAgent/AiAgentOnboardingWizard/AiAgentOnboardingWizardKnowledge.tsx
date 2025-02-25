@@ -1,10 +1,12 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
-import {AiAgentNotificationType} from 'automate/notifications/types'
-import {logEvent, SegmentEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { Label } from '@gorgias/merchant-ui-kit'
+
+import { AiAgentNotificationType } from 'automate/notifications/types'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     AiAgentOnboardingState,
@@ -19,11 +21,11 @@ import WizardFooter, {
     FOOTER_BUTTONS,
 } from 'pages/common/components/wizard/WizardFooter'
 import WizardStepSkeleton from 'pages/common/components/wizard/WizardStepSkeleton'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
-import {ExternalFilesSection} from '../components/Knowledge/ExternalFilesSection'
-import {CreatePublicSourcesSection} from '../components/StoreConfigForm/StoreConfigForm'
+import { ExternalFilesSection } from '../components/Knowledge/ExternalFilesSection'
+import { CreatePublicSourcesSection } from '../components/StoreConfigForm/StoreConfigForm'
 import {
     AI_AGENT_STEPS_DESCRIPTIONS,
     AI_AGENT_STEPS_LABELS,
@@ -31,14 +33,15 @@ import {
     WIZARD_BUTTON_ACTIONS,
     WizardPostCompletionPathway,
 } from '../constants'
-import {useAiAgentOnboardingNotification} from '../hooks/useAiAgentOnboardingNotification'
-import {AiAgentOnboardingWizardProps} from './AiAgentOnboardingWizard'
+import { useAiAgentOnboardingNotification } from '../hooks/useAiAgentOnboardingNotification'
+import { AiAgentOnboardingWizardProps } from './AiAgentOnboardingWizard'
+import { useAiAgentOnboardingWizard } from './hooks/useAiAgentOnboardingWizard'
+
 import css from './AiAgentOnboardingWizardKnowledge.less'
-import {useAiAgentOnboardingWizard} from './hooks/useAiAgentOnboardingWizard'
 
 type Props = AiAgentOnboardingWizardProps
 
-const AiAgentOnboardingWizardStepKnowledge = ({shopName}: Props) => {
+const AiAgentOnboardingWizardStepKnowledge = ({ shopName }: Props) => {
     const dispatch = useAppDispatch()
     const {
         handleOnSave,
@@ -47,7 +50,7 @@ const AiAgentOnboardingWizardStepKnowledge = ({shopName}: Props) => {
         isLoading: isLoadingOnboardingNotificationState,
         isAiAgentOnboardingNotificationEnabled,
         onboardingNotificationState,
-    } = useAiAgentOnboardingNotification({shopName})
+    } = useAiAgentOnboardingNotification({ shopName })
 
     const [publicUrls, setPublicUrls] = useState<string[]>([])
     const [pendingUrlCount, setPendingUrlCount] = useState(0)
@@ -84,7 +87,7 @@ const AiAgentOnboardingWizardStepKnowledge = ({shopName}: Props) => {
             faqHelpCenters.length === 1 &&
             !isUpdateWizardSetup
         ) {
-            handleFormUpdate({helpCenterId: faqHelpCenters[0].id})
+            handleFormUpdate({ helpCenterId: faqHelpCenters[0].id })
         }
 
         // Trigger effect on storeConfiguration change to update values after fetching store configuration
@@ -96,7 +99,7 @@ const AiAgentOnboardingWizardStepKnowledge = ({shopName}: Props) => {
     ])
 
     const selectedHelpCenter = faqHelpCenters.find(
-        (helpCenter) => helpCenter.id === storeFormValues.helpCenterId
+        (helpCenter) => helpCenter.id === storeFormValues.helpCenterId,
     )
 
     const handleHelpCenterChange = (helpCenterId: number) => {
@@ -125,7 +128,7 @@ const AiAgentOnboardingWizardStepKnowledge = ({shopName}: Props) => {
             pendingUrlCount,
             publicUrls.length,
             selectedHelpCenter,
-        ]
+        ],
     )
 
     const hasNoKnowledgeSourceExceptPendingPublicUrl = useMemo(
@@ -133,7 +136,7 @@ const AiAgentOnboardingWizardStepKnowledge = ({shopName}: Props) => {
             hasNoKnowledgeSource &&
             !!publicUrls.length &&
             publicUrls.length === pendingUrlCount,
-        [hasNoKnowledgeSource, pendingUrlCount, publicUrls.length]
+        [hasNoKnowledgeSource, pendingUrlCount, publicUrls.length],
     )
 
     const getRedirectionPathway = () => {
@@ -177,7 +180,7 @@ const AiAgentOnboardingWizardStepKnowledge = ({shopName}: Props) => {
         })
 
         handleOnPerformActionPostReceivedNotification(
-            AiAgentNotificationType.FinishAiAgentSetup
+            AiAgentNotificationType.FinishAiAgentSetup,
         )
     }, [
         handleOnPerformActionPostReceivedNotification,
@@ -191,7 +194,7 @@ const AiAgentOnboardingWizardStepKnowledge = ({shopName}: Props) => {
             void handleOnFinishedSetup()
         }
 
-        const {redirectTo, onCompletePathway} = getRedirectionPathway()
+        const { redirectTo, onCompletePathway } = getRedirectionPathway()
         handleSave({
             publicUrls,
             hasExternalFiles,
@@ -213,7 +216,7 @@ const AiAgentOnboardingWizardStepKnowledge = ({shopName}: Props) => {
                     message:
                         'Documents must finish uploading before moving forward.',
                     status: NotificationStatus.Error,
-                })
+                }),
             )
         } else {
             void dispatch(
@@ -231,7 +234,7 @@ const AiAgentOnboardingWizardStepKnowledge = ({shopName}: Props) => {
                             primary: false,
                         },
                     ],
-                })
+                }),
             )
         }
     }

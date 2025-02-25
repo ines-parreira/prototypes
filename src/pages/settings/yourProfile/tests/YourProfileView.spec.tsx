@@ -1,4 +1,5 @@
-import {SelectField} from '@gorgias/merchant-ui-kit'
+import React, { ComponentProps } from 'react'
+
 import {
     act,
     fireEvent,
@@ -8,19 +9,23 @@ import {
     within,
 } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {fromJS, Map} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import { fromJS, Map } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {THEME_NAME} from 'core/theme'
-import type {ColorTokens} from 'core/theme'
-import {user} from 'fixtures/users'
-import {DateFormattingSetting, TimeFormattingSetting} from 'models/agents/types'
+import { SelectField } from '@gorgias/merchant-ui-kit'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { THEME_NAME } from 'core/theme'
+import type { ColorTokens } from 'core/theme'
+import { user } from 'fixtures/users'
+import {
+    DateFormattingSetting,
+    TimeFormattingSetting,
+} from 'models/agents/types'
 import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
-import {YourProfileView} from 'pages/settings/yourProfile/components/YourProfileView'
+import { YourProfileView } from 'pages/settings/yourProfile/components/YourProfileView'
 
 jest.mock('common/segment')
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
@@ -30,7 +35,9 @@ const minProps: ComponentProps<typeof YourProfileView> = {
     updateCurrentUser: jest.fn(),
     currentUser: fromJS(user),
     submitSetting: jest.fn(),
-    preferences: fromJS({data: {date_format: 'en_GB', time_format: '24-hour'}}),
+    preferences: fromJS({
+        data: { date_format: 'en_GB', time_format: '24-hour' },
+    }),
     setTheme: jest.fn(),
     theme: {
         name: THEME_NAME.Dark,
@@ -78,14 +85,14 @@ jest.mock('pages/common/components/UnsavedChangesPrompt', () => () => null)
 jest.mock(
     'pages/common/forms/PhoneNumberInput/PhoneNumberInput',
     () =>
-        ({value, disabled}: ComponentProps<typeof PhoneNumberInput>) => (
+        ({ value, disabled }: ComponentProps<typeof PhoneNumberInput>) => (
             <input
                 type="text"
                 value={value}
                 data-testid="phone-input"
                 disabled={disabled}
             />
-        )
+        ),
 )
 
 const defaultState = {}
@@ -113,10 +120,10 @@ describe('YourProfileView', () => {
     describe('render', () => {
         describe('personal information section', () => {
             it('should render name input', () => {
-                const {getByLabelText} = render(
+                const { getByLabelText } = render(
                     <Provider store={mockedStore(defaultState)}>
                         <YourProfileView {...minProps} />
-                    </Provider>
+                    </Provider>,
                 )
                 const yourName = getByLabelText(/Your name/)
 
@@ -128,16 +135,16 @@ describe('YourProfileView', () => {
             })
 
             it('should render email input', () => {
-                const {getByLabelText} = render(
+                const { getByLabelText } = render(
                     <Provider store={mockedStore(defaultState)}>
                         <YourProfileView {...minProps} />
-                    </Provider>
+                    </Provider>,
                 )
                 const yourEmail = getByLabelText(/Your email/)
 
                 expect(yourEmail).toHaveAttribute(
                     'placeholder',
-                    'john.doe@acme.com'
+                    'john.doe@acme.com',
                 )
                 expect(yourEmail).toHaveAttribute('name', 'email')
                 expect(yourEmail).toHaveAttribute('type', 'email')
@@ -146,10 +153,10 @@ describe('YourProfileView', () => {
             })
 
             it('should render bio input', () => {
-                const {getByLabelText} = render(
+                const { getByLabelText } = render(
                     <Provider store={mockedStore(defaultState)}>
                         <YourProfileView {...minProps} />
-                    </Provider>
+                    </Provider>,
                 )
                 const yourBio = getByLabelText(/Your bio/)
 
@@ -162,10 +169,10 @@ describe('YourProfileView', () => {
 
         describe('date and time settings', () => {
             it('should render timezone select', () => {
-                const {getByLabelText} = render(
+                const { getByLabelText } = render(
                     <Provider store={mockedStore(defaultState)}>
                         <YourProfileView {...minProps} />
-                    </Provider>
+                    </Provider>,
                 )
                 const timezone = getByLabelText(/Timezone/)
                 const options = within(timezone).getAllByRole('option')
@@ -179,10 +186,10 @@ describe('YourProfileView', () => {
             })
 
             it('should render date format', () => {
-                const {getByText} = render(
+                const { getByText } = render(
                     <Provider store={mockedStore(defaultState)}>
                         <YourProfileView {...minProps} />
-                    </Provider>
+                    </Provider>,
                 )
                 const legend = getByText('Date format')
                 const fieldset = legend.closest('fieldset')!
@@ -190,18 +197,18 @@ describe('YourProfileView', () => {
                 expect(radios).toHaveLength(2)
 
                 expect(
-                    within(fieldset).getByLabelText('Day/Month/Year')
+                    within(fieldset).getByLabelText('Day/Month/Year'),
                 ).toHaveAttribute('checked')
                 expect(
-                    within(fieldset).getByLabelText('Month/Day/Year')
+                    within(fieldset).getByLabelText('Month/Day/Year'),
                 ).not.toHaveAttribute('checked')
             })
 
             it('should render time format', () => {
-                const {getByText} = render(
+                const { getByText } = render(
                     <Provider store={mockedStore(defaultState)}>
                         <YourProfileView {...minProps} />
-                    </Provider>
+                    </Provider>,
                 )
                 const legend = getByText('Time format')
                 const fieldset = legend.closest('fieldset')!
@@ -209,20 +216,20 @@ describe('YourProfileView', () => {
                 expect(radios).toHaveLength(2)
 
                 expect(
-                    within(fieldset).getByLabelText('24-hour')
+                    within(fieldset).getByLabelText('24-hour'),
                 ).toHaveAttribute('checked')
                 expect(
-                    within(fieldset).getByLabelText('AM/PM')
+                    within(fieldset).getByLabelText('AM/PM'),
                 ).not.toHaveAttribute('checked')
             })
         })
 
         describe('account preferences', () => {
             it('should render theme select', () => {
-                const {getByLabelText} = render(
+                const { getByLabelText } = render(
                     <Provider store={mockedStore(defaultState)}>
                         <YourProfileView {...minProps} />
-                    </Provider>
+                    </Provider>,
                 )
 
                 expect(getByLabelText(/System/)).not.toHaveAttribute('checked')
@@ -232,28 +239,28 @@ describe('YourProfileView', () => {
             })
 
             it('should render macro display', () => {
-                const {getByLabelText} = render(
+                const { getByLabelText } = render(
                     <Provider store={mockedStore(defaultState)}>
                         <YourProfileView {...minProps} />
-                    </Provider>
+                    </Provider>,
                 )
 
                 expect(getByLabelText(/Macro prediction/)).not.toHaveAttribute(
-                    'checked'
+                    'checked',
                 )
                 expect(getByLabelText(/Macro suggestions/)).toHaveAttribute(
-                    'checked'
+                    'checked',
                 )
                 expect(
-                    getByLabelText(/Display macro search view by default/)
+                    getByLabelText(/Display macro search view by default/),
                 ).not.toHaveAttribute('checked')
             })
 
             it('should expand to show the phone number field when enabling call forwarding', () => {
-                const {getByLabelText, getByTestId} = render(
+                const { getByLabelText, getByTestId } = render(
                     <Provider store={mockedStore(defaultState)}>
                         <YourProfileView {...minProps} />
-                    </Provider>
+                    </Provider>,
                 )
 
                 fireEvent.click(getByLabelText(/Enable call forwarding/i))
@@ -263,10 +270,10 @@ describe('YourProfileView', () => {
 
         describe('profile picture', () => {
             it('should render avatar upload input', () => {
-                const {getByText} = render(
+                const { getByText } = render(
                     <Provider store={mockedStore(defaultState)}>
                         <YourProfileView {...minProps} />
-                    </Provider>
+                    </Provider>,
                 )
 
                 expect(getByText('Select a file')).toBeInTheDocument()
@@ -281,7 +288,7 @@ describe('YourProfileView', () => {
                 .fn()
                 .mockReturnValueOnce(Promise.resolve())
             const preferences: Map<any, any> = fromJS({
-                data: {time_format: 'bar'},
+                data: { time_format: 'bar' },
             })
             const settingLabel = '24-hour'
             const newPreferences: Map<any, any> = fromJS({
@@ -289,7 +296,7 @@ describe('YourProfileView', () => {
             })
             const expectedPreferences = preferences
                 .update('data', (data: Map<any, any>) =>
-                    data.mergeDeep(newPreferences)
+                    data.mergeDeep(newPreferences),
                 )
                 .toJS()
 
@@ -299,21 +306,21 @@ describe('YourProfileView', () => {
                         {...minProps}
                         updateCurrentUser={updateCurrentUserSpy}
                         submitSetting={submitSetting}
-                        preferences={fromJS({data: {time_format: 'bar'}})}
+                        preferences={fromJS({ data: { time_format: 'bar' } })}
                     />
-                </Provider>
+                </Provider>,
             )
 
             act(() => {
                 userEvent.click(
                     screen.getByRole('radio', {
                         name: settingLabel,
-                    })
+                    }),
                 )
             })
             act(() => {
                 userEvent.click(
-                    screen.getByRole('button', {name: 'Save Changes'})
+                    screen.getByRole('button', { name: 'Save Changes' }),
                 )
             })
 
@@ -321,7 +328,7 @@ describe('YourProfileView', () => {
                 expect(updateCurrentUserSpy.mock.calls).toMatchSnapshot()
                 expect(submitSetting).toHaveBeenCalledWith(
                     expectedPreferences,
-                    false
+                    false,
                 )
                 expect(logEventMock).toHaveBeenLastCalledWith(
                     SegmentEvent.UserSettingsUpdated,
@@ -330,7 +337,7 @@ describe('YourProfileView', () => {
                         oldSettings: (
                             preferences.get('data') as Map<any, any>
                         ).toJS(),
-                    }
+                    },
                 )
             })
         })
@@ -348,33 +355,33 @@ describe('YourProfileView', () => {
                             {...minProps}
                             updateCurrentUser={updateCurrentUserSpy}
                         />
-                    </Provider>
+                    </Provider>,
                 )
                 act(() => {
                     void userEvent.type(
                         screen.getByRole('textbox', {
                             name: 'Your email required',
                         }),
-                        'q'
+                        'q',
                     )
                 })
                 act(() => {
                     void userEvent.type(
                         screen.getByPlaceholderText('Your password'),
-                        'a-password'
+                        'a-password',
                     )
                 })
 
                 act(() => {
                     userEvent.click(
-                        screen.getByRole('button', {name: 'Save Changes'})
+                        screen.getByRole('button', { name: 'Save Changes' }),
                     )
                 })
 
                 expect(updateCurrentUserSpy.mock.calls).toMatchSnapshot()
                 expect(updateCurrentUserSpy).toHaveBeenCalled()
                 expect(logEventMock).toHaveBeenCalledTimes(0)
-            }
+            },
         )
 
         it('should submit user data and update user preferences because date format and time format preferences were changed', async () => {
@@ -398,7 +405,7 @@ describe('YourProfileView', () => {
                 },
             })
 
-            const {getByLabelText} = render(
+            const { getByLabelText } = render(
                 <Provider store={mockedStore(defaultState)}>
                     <YourProfileView
                         {...minProps}
@@ -406,11 +413,11 @@ describe('YourProfileView', () => {
                         submitSetting={submitSettingSpy}
                         preferences={fromJS(preferences)}
                     />
-                </Provider>
+                </Provider>,
             )
 
             fireEvent.click(
-                getByLabelText(DateFormattingSetting.en_GB.label) // en_GB
+                getByLabelText(DateFormattingSetting.en_GB.label), // en_GB
             )
             fireEvent.click(getByLabelText(TimeFormattingSetting[0])) // 24-hour
 
@@ -419,7 +426,7 @@ describe('YourProfileView', () => {
             await waitFor(() => {
                 expect(submitSettingSpy).toHaveBeenCalledWith(
                     expectedPreferences.toJS(),
-                    false
+                    false,
                 )
                 expect(logEventMock).toHaveBeenLastCalledWith(
                     SegmentEvent.UserSettingsUpdated,
@@ -430,7 +437,7 @@ describe('YourProfileView', () => {
                         oldSettings: (
                             preferences.get('data') as Map<any, any>
                         ).toJS(),
-                    }
+                    },
                 )
             })
         })
@@ -444,12 +451,12 @@ describe('YourProfileView', () => {
             render(
                 <Provider store={mockedStore(defaultState)}>
                     <YourProfileView {...minProps} setTheme={setThemeSpy} />
-                </Provider>
+                </Provider>,
             )
 
             // Dark theme is selected by default
             await waitFor(() =>
-                expect(screen.getAllByRole('radio')[5]).toBeChecked()
+                expect(screen.getAllByRole('radio')[5]).toBeChecked(),
             )
             // Select light theme
             userEvent.click(screen.getAllByRole('radio')[6])
@@ -467,11 +474,14 @@ describe('YourProfileView', () => {
                         {...minProps}
                         currentUser={fromJS({
                             ...user,
-                            meta: {...user.meta, profile_picture_url: fileUrl},
+                            meta: {
+                                ...user.meta,
+                                profile_picture_url: fileUrl,
+                            },
                         })}
                         updateCurrentUser={updateCurrentUserSpy}
                     />
-                </Provider>
+                </Provider>,
             )
 
             userEvent.click(screen.getByText('Save Changes'))
@@ -494,7 +504,7 @@ describe('YourProfileView', () => {
                             },
                         })}
                     />
-                </Provider>
+                </Provider>,
             )
 
             const removePictureButton = screen.getByText('Remove Picture')
@@ -513,7 +523,7 @@ describe('YourProfileView', () => {
             render(
                 <Provider store={mockedStore(defaultState)}>
                     <YourProfileView {...props} />
-                </Provider>
+                </Provider>,
             )
             const userName = screen.getByPlaceholderText('John Doe')
 
@@ -524,7 +534,7 @@ describe('YourProfileView', () => {
             render(
                 <Provider store={mockedStore(defaultState)}>
                     <YourProfileView {...minProps} />
-                </Provider>
+                </Provider>,
             )
 
             const userName = screen.getByDisplayValue(user.name)

@@ -1,14 +1,14 @@
-import {fromJS, Map, List} from 'immutable'
 import React from 'react'
-import {connect, ConnectedProps} from 'react-redux'
+
+import { fromJS, List, Map } from 'immutable'
+import { connect, ConnectedProps } from 'react-redux'
 
 import * as viewsConfig from 'config/views'
-
-import {EntityType} from 'models/view/types'
+import { EntityType } from 'models/view/types'
 import css from 'pages/common/components/MergeTickets/SelectTargetTicket.less'
 import Search from 'pages/common/components/Search'
 import Table from 'pages/common/components/ViewTable/Table'
-import {searchTickets} from 'state/mergeTickets/actions'
+import { searchTickets } from 'state/mergeTickets/actions'
 
 type Props = ConnectedProps<typeof connector> & {
     sourceTicket: Map<any, any>
@@ -32,22 +32,22 @@ class SelectTargetTicket extends React.Component<Props, State> {
     }
 
     componentDidMount() {
-        this.setState({listIsLoading: true}, () => this._search())
+        this.setState({ listIsLoading: true }, () => this._search())
     }
 
     _search = () => {
-        const {query} = this.state
+        const { query } = this.state
 
         this.props
             .search(
                 query,
                 this.props.sourceTicket.get('id') as number,
-                query ? null : this.props.customerId
+                query ? null : this.props.customerId,
             )
             .then((data) => {
                 this.setState({
-                    tickets: fromJS((data as {data: unknown}).data),
-                    navigation: fromJS((data as {meta: unknown}).meta),
+                    tickets: fromJS((data as { data: unknown }).data),
+                    navigation: fromJS((data as { meta: unknown }).meta),
                     listIsLoading: false,
                 })
             })
@@ -66,7 +66,7 @@ class SelectTargetTicket extends React.Component<Props, State> {
                 query,
                 listIsLoading: true,
             },
-            () => this._search()
+            () => this._search(),
         )
     }
 
@@ -75,25 +75,25 @@ class SelectTargetTicket extends React.Component<Props, State> {
             {
                 listIsLoading: true,
             },
-            () => this._search()
+            () => this._search(),
         )
     }
 
     render() {
-        const {sourceTicket, updateTargetTicket} = this.props
-        const {tickets, navigation} = this.state
+        const { sourceTicket, updateTargetTicket } = this.props
+        const { tickets, navigation } = this.state
 
         const baseView = viewsConfig.defaultMergeTicketsView(
-            sourceTicket.get('id') as number
+            sourceTicket.get('id') as number,
         )
 
         const config = viewsConfig.getConfigByName(EntityType.Ticket)
         const fields = (config.get('fields') as List<Map<any, any>>).filter(
             (field) => {
                 return (baseView.get('fields') as List<any>).includes(
-                    (field as Map<any, any>).get('name') as string
+                    (field as Map<any, any>).get('name') as string,
                 )
-            }
+            },
         )
 
         return (

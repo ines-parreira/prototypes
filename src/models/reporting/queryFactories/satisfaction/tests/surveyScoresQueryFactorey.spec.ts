@@ -1,12 +1,12 @@
 import moment from 'moment'
 
 import {
-    TicketSatisfactionSurveyMeasure,
     TicketSatisfactionSurveyDimension,
+    TicketSatisfactionSurveyMeasure,
 } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
-import {surveyScoresQueryFactory} from 'models/reporting/queryFactories/satisfaction/surveyScoresQueryFactory'
-import {ReportingFilterOperator} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import { surveyScoresQueryFactory } from 'models/reporting/queryFactories/satisfaction/surveyScoresQueryFactory'
+import { ReportingFilterOperator } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
 import {
     statsFiltersToReportingFilters,
     TicketStatsFiltersMembers,
@@ -33,7 +33,7 @@ describe('surveyScoresQueryFactory', () => {
             filters: [
                 ...statsFiltersToReportingFilters(
                     TicketStatsFiltersMembers,
-                    statsFilters
+                    statsFilters,
                 ),
                 {
                     member: TicketSatisfactionSurveyDimension.SurveyScore,

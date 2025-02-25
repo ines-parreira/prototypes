@@ -1,9 +1,9 @@
-import {BANNER_DETAILS} from './constants'
+import { BANNER_DETAILS } from './constants'
 
 export const getBannerDetails = (
     isSubscribedToAutomation: boolean,
     contactFormId: number,
-    shopName: string | null
+    shopName: string | null,
 ) => {
     if (!shopName) {
         return {

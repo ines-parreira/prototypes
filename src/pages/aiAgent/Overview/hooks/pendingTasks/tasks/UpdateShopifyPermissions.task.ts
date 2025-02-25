@@ -1,5 +1,5 @@
-import {RuleEngineData, RuleEngineRoutes} from '../ruleEngine'
-import {Task} from './Task'
+import { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
+import { Task } from './Task'
 
 export class UpdateShopifyPermissionsTask extends Task {
     constructor(data: RuleEngineData, routes: RuleEngineRoutes) {
@@ -8,17 +8,19 @@ export class UpdateShopifyPermissionsTask extends Task {
             'This will give AI Agent access to specific Shopify information',
             'RECOMMENDED',
             data,
-            routes
+            routes,
         )
     }
 
     // Shopify integration must have required scope
-    protected shouldBeDisplayed({shopifyIntegration}: RuleEngineData): boolean {
+    protected shouldBeDisplayed({
+        shopifyIntegration,
+    }: RuleEngineData): boolean {
         return !shopifyIntegration.hasRequiredPermissions
     }
 
     protected getFeatureUrl({
-        data: {shopifyIntegration},
+        data: { shopifyIntegration },
     }: {
         data: RuleEngineData
         routes: RuleEngineRoutes

@@ -1,13 +1,16 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {TimeSeriesDataItem, useTimeSeries} from 'hooks/reporting/useTimeSeries'
-import {ReportingGranularity} from 'models/reporting/types'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import {
+    TimeSeriesDataItem,
+    useTimeSeries,
+} from 'hooks/reporting/useTimeSeries'
+import { ReportingGranularity } from 'models/reporting/types'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import {
     campaignImpressionTimeSeriesQueryFactory,
     campaignOrdersTimeSeriesQueryFactory,
 } from 'pages/stats/convert/clients/CampaignCubeQueries'
-import {CubeFilterParams} from 'pages/stats/convert/clients/types'
+import { CubeFilterParams } from 'pages/stats/convert/clients/types'
 
 export type GetCampaignPerformance = {
     isFetching: boolean
@@ -25,7 +28,7 @@ const useCampaignPerformanceTimeSeries = (
     startDate: string,
     endDate: string,
     timezone: string,
-    granularity?: ReportingGranularity
+    granularity?: ReportingGranularity,
 ): GetCampaignPerformance => {
     const attrs: CubeFilterParams = useMemo(
         () => ({
@@ -45,15 +48,15 @@ const useCampaignPerformanceTimeSeries = (
             timezone,
             campaignsOperator,
             granularity,
-        ]
+        ],
     )
 
     const campaignImpressionsSeries = useTimeSeries(
-        campaignImpressionTimeSeriesQueryFactory(attrs)
+        campaignImpressionTimeSeriesQueryFactory(attrs),
     )
 
     const campaignOrdersSeries = useTimeSeries(
-        campaignOrdersTimeSeriesQueryFactory(attrs)
+        campaignOrdersTimeSeriesQueryFactory(attrs),
     )
 
     const data = useMemo(() => {

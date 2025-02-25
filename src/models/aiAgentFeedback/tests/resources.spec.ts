@@ -1,17 +1,17 @@
-import {InternalAxiosRequestConfig} from 'axios'
+import { InternalAxiosRequestConfig } from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
-import {apiClient} from 'models/aiAgent/resources/configuration'
+import { apiClient } from 'models/aiAgent/resources/configuration'
 import {
+    deleteAIAgentTicketMessagesFeedback,
     getAIAgentTicketMessagesFeedback,
     submitAIAgentTicketMessagesFeedback,
-    deleteAIAgentTicketMessagesFeedback,
 } from 'models/aiAgentFeedback/resources'
 import gorgiasAppsAuthInterceptor from 'utils/gorgiasAppsAuth'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
-import {ReportIssueOption} from '../constants'
-import {SubmitMessageFeedback, DeleteMessageFeedback} from '../types'
+import { ReportIssueOption } from '../constants'
+import { DeleteMessageFeedback, SubmitMessageFeedback } from '../types'
 
 const mockedServer = new MockAdapter(apiClient)
 
@@ -30,7 +30,7 @@ describe('AI Agent Feedback resources', () => {
             (config: InternalAxiosRequestConfig<any>) => {
                 config.headers.Authorization = 'Bearer mock-token'
                 return Promise.resolve(config)
-            }
+            },
         )
 
         // Mock the default export of the gorgiasAppsAuthInterceptor
@@ -42,7 +42,7 @@ describe('AI Agent Feedback resources', () => {
         const expectedFeedback = {
             shopName: 'sf-bicycle',
             shopType: 'shopify',
-            messages: [{messageId: 1}, {messageId: 2}],
+            messages: [{ messageId: 1 }, { messageId: 2 }],
         }
 
         mockedServer
@@ -57,10 +57,10 @@ describe('AI Agent Feedback resources', () => {
         const messageIds = [1, 2]
         mockedServer
             .onGet(`/feedback/messages?ids=${messageIds.join(',')}`)
-            .reply(503, {message: 'error'})
+            .reply(503, { message: 'error' })
 
         return expect(
-            getAIAgentTicketMessagesFeedback(messageIds)
+            getAIAgentTicketMessagesFeedback(messageIds),
         ).rejects.toEqual(new Error('Request failed with status code 503'))
     })
 
@@ -76,8 +76,8 @@ describe('AI Agent Feedback resources', () => {
                 },
             ],
             feedbackOnMessage: [
-                {type: 'binary', feedback: 'thumbs_up'},
-                {type: 'resource', resourceType: 'article', resourceId: 2},
+                { type: 'binary', feedback: 'thumbs_up' },
+                { type: 'resource', resourceType: 'article', resourceId: 2 },
             ],
         }
 
@@ -87,7 +87,7 @@ describe('AI Agent Feedback resources', () => {
 
         const feedback = await submitAIAgentTicketMessagesFeedback(
             messageId,
-            feedbackToSubmit
+            feedbackToSubmit,
         )
         expect(feedback.data).toEqual(feedbackToSubmit)
     })
@@ -101,7 +101,7 @@ describe('AI Agent Feedback resources', () => {
                     type: 'issue',
                     feedback: ReportIssueOption.IncorrectLanguageUsed,
                 },
-                {type: 'resource', resourceType: 'article', resourceId: 2},
+                { type: 'resource', resourceType: 'article', resourceId: 2 },
             ],
         }
 
@@ -111,7 +111,7 @@ describe('AI Agent Feedback resources', () => {
 
         const feedback = await deleteAIAgentTicketMessagesFeedback(
             messageId,
-            feedbackToDelete
+            feedbackToDelete,
         )
         expect(feedback.data).toEqual(feedbackToDelete)
     })

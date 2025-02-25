@@ -1,10 +1,10 @@
-import {act, renderHook} from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react-hooks'
 
-import {notificationSounds} from 'services'
-import {defaultSound} from 'services/NotificationSounds'
-import {getNotificationSettings} from 'state/currentUser/selectors'
+import { notificationSounds } from 'services'
+import { defaultSound } from 'services/NotificationSounds'
+import { getNotificationSettings } from 'state/currentUser/selectors'
 
-import type {Notification} from '../../types'
+import type { Notification } from '../../types'
 import getNotificationConfig from '../../utils/getNotificationConfig'
 import useNotifications from '../useNotifications'
 import useToasts from '../useToasts'
@@ -55,7 +55,7 @@ describe('useToasts', () => {
     })
 
     it('should return no notifications by default', () => {
-        const {result} = renderHook(() => useToasts())
+        const { result } = renderHook(() => useToasts())
 
         expect(result.current).toEqual({
             dismiss: expect.any(Function),
@@ -64,35 +64,35 @@ describe('useToasts', () => {
     })
 
     it('should return notifications when they come in', () => {
-        const {result} = renderHook(() => useToasts())
+        const { result } = renderHook(() => useToasts())
 
         const [[listener]] = useNotificationsMock.mock.calls as [
             (n: Notification) => void,
         ][]
 
         act(() => {
-            listener({id: '1'} as unknown as Notification)
+            listener({ id: '1' } as unknown as Notification)
         })
         expect(result.current).toEqual({
             dismiss: expect.any(Function),
-            notifications: [{id: '1'}],
+            notifications: [{ id: '1' }],
         })
     })
 
     it('should automatically dismiss notifications after 5 seconds', () => {
-        const {result} = renderHook(() => useToasts())
+        const { result } = renderHook(() => useToasts())
 
         const [[listener]] = useNotificationsMock.mock.calls as [
             (n: Notification) => void,
         ][]
 
         act(() => {
-            listener({id: '1'} as unknown as Notification)
+            listener({ id: '1' } as unknown as Notification)
         })
         jest.advanceTimersByTime(4999)
         expect(result.current).toEqual({
             dismiss: expect.any(Function),
-            notifications: [{id: '1'}],
+            notifications: [{ id: '1' }],
         })
 
         act(() => {
@@ -105,14 +105,14 @@ describe('useToasts', () => {
     })
 
     it('should manually dismiss a notification', () => {
-        const {result} = renderHook(() => useToasts())
+        const { result } = renderHook(() => useToasts())
 
         const [[listener]] = useNotificationsMock.mock.calls as [
             (n: Notification) => void,
         ][]
 
         act(() => {
-            listener({id: '1'} as unknown as Notification)
+            listener({ id: '1' } as unknown as Notification)
         })
         act(() => {
             result.current.dismiss('1')
@@ -131,7 +131,7 @@ describe('useToasts', () => {
         ][]
 
         act(() => {
-            listener({id: '1'} as unknown as Notification)
+            listener({ id: '1' } as unknown as Notification)
         })
 
         expect(play).toHaveBeenCalledWith(defaultSound.sound, 5)
@@ -162,7 +162,7 @@ describe('useToasts', () => {
         ][]
 
         act(() => {
-            listener({id: '1'} as unknown as Notification)
+            listener({ id: '1' } as unknown as Notification)
         })
 
         expect(play).toHaveBeenCalledWith('definite', 5)
@@ -193,7 +193,7 @@ describe('useToasts', () => {
         ][]
 
         act(() => {
-            listener({id: '1'} as unknown as Notification)
+            listener({ id: '1' } as unknown as Notification)
         })
 
         expect(play).not.toHaveBeenCalled()

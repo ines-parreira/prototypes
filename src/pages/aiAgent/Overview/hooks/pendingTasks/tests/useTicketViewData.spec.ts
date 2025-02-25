@@ -1,10 +1,10 @@
-import {renderHook} from '@testing-library/react-hooks/dom'
+import { renderHook } from '@testing-library/react-hooks/dom'
 
-import {useGetAccountConfiguration} from 'models/aiAgent/queries'
-import {useGetViewTicketUpdates} from 'models/view/queries'
-import {assumeMock} from 'utils/testing'
+import { useGetAccountConfiguration } from 'models/aiAgent/queries'
+import { useGetViewTicketUpdates } from 'models/view/queries'
+import { assumeMock } from 'utils/testing'
 
-import {useTicketViewData} from '../useTicketViewData'
+import { useTicketViewData } from '../useTicketViewData'
 
 jest.mock('models/aiAgent/queries', () => ({
     useGetAccountConfiguration: jest.fn(),
@@ -27,8 +27,8 @@ describe('useTicketViewData', () => {
             data: undefined,
         } as any)
 
-        const {result} = renderHook(() =>
-            useTicketViewData({accountDomain: 'example'})
+        const { result } = renderHook(() =>
+            useTicketViewData({ accountDomain: 'example' }),
         )
 
         expect(result.current.isLoading).toBe(true)
@@ -41,7 +41,7 @@ describe('useTicketViewData', () => {
             data: {
                 data: {
                     accountConfiguration: {
-                        views: {Close: {id: 123}},
+                        views: { Close: { id: 123 } },
                     },
                 },
             },
@@ -51,8 +51,8 @@ describe('useTicketViewData', () => {
             data: undefined,
         } as any)
 
-        const {result} = renderHook(() =>
-            useTicketViewData({accountDomain: 'example'})
+        const { result } = renderHook(() =>
+            useTicketViewData({ accountDomain: 'example' }),
         )
 
         expect(result.current.isLoading).toBe(true)
@@ -65,7 +65,7 @@ describe('useTicketViewData', () => {
             data: {
                 data: {
                     accountConfiguration: {
-                        views: {Close: {id: 123}},
+                        views: { Close: { id: 123 } },
                     },
                 },
             },
@@ -83,12 +83,12 @@ describe('useTicketViewData', () => {
             },
         } as any)
 
-        const {result} = renderHook(() =>
-            useTicketViewData({accountDomain: 'example'})
+        const { result } = renderHook(() =>
+            useTicketViewData({ accountDomain: 'example' }),
         )
 
         expect(result.current.isLoading).toBe(false)
-        expect(result.current.data).toEqual({viewId: 123, ticketId: 456})
+        expect(result.current.data).toEqual({ viewId: 123, ticketId: 456 })
     })
 
     it('should return undefined ticketId and viewId if hooks are not successful', () => {
@@ -101,8 +101,8 @@ describe('useTicketViewData', () => {
             data: undefined,
         } as any)
 
-        const {result} = renderHook(() =>
-            useTicketViewData({accountDomain: 'example'})
+        const { result } = renderHook(() =>
+            useTicketViewData({ accountDomain: 'example' }),
         )
 
         expect(result.current.isLoading).toBe(false)
@@ -118,7 +118,7 @@ describe('useTicketViewData', () => {
             data: {
                 data: {
                     accountConfiguration: {
-                        views: {All: {id: 123}},
+                        views: { All: { id: 123 } },
                     },
                 },
             },
@@ -128,8 +128,8 @@ describe('useTicketViewData', () => {
             data: undefined,
         } as any)
 
-        const {result} = renderHook(() =>
-            useTicketViewData({accountDomain: 'example'})
+        const { result } = renderHook(() =>
+            useTicketViewData({ accountDomain: 'example' }),
         )
 
         expect(result.current.isLoading).toBe(false)

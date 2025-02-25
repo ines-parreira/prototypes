@@ -1,19 +1,18 @@
-import axios, {CancelToken, AxiosError, AxiosResponse} from 'axios'
+import axios, { AxiosError, AxiosResponse, CancelToken } from 'axios'
 import _noop from 'lodash/noop'
 
 import client from 'models/api/resources'
-import {searchCustomers} from 'models/customer/resources'
-
-import {Customer} from 'models/customer/types'
+import { searchCustomers } from 'models/customer/resources'
+import { Customer } from 'models/customer/types'
 import history from 'pages/history'
-import {ActionExecutedEvent} from 'services/socketManager/types'
+import { ActionExecutedEvent } from 'services/socketManager/types'
 import * as constants from 'state/infobar/constants'
 import * as utils from 'state/infobar/utils'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {StoreDispatch, RootState} from 'state/types'
-import {onApiError} from 'state/utils'
-import {isCurrentlyOnTicket, stripErrorMessage} from 'utils'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { RootState, StoreDispatch } from 'state/types'
+import { onApiError } from 'state/utils'
+import { isCurrentlyOnTicket, stripErrorMessage } from 'utils'
 
 export const searchWithHighlights =
     (query: string, cancelToken?: CancelToken) =>
@@ -42,7 +41,7 @@ export const searchWithHighlights =
                     error,
                     reason: 'Failed to do the search. Please try again...',
                 }) as unknown as Promise<void>
-            }
+            },
         )
     }
 
@@ -76,7 +75,7 @@ export const similarCustomer =
                         type: constants.SEARCH_SIMILAR_CUSTOMER_ERROR,
                         reason: 'Failed to search for similar customers. Please try again...',
                     }) as unknown as Promise<void>
-                }
+                },
             )
     }
 
@@ -99,9 +98,9 @@ export const fetchPreviewCustomer =
                 },
                 (
                     error: AxiosError<{
-                        response?: {status: number}
-                        error?: {msg?: string}
-                    }>
+                        response?: { status: number }
+                        error?: { msg?: string }
+                    }>,
                 ) => {
                     const reason =
                         "Couldn't fetch the customer. Please try again in a few minutes."
@@ -115,7 +114,7 @@ export const fetchPreviewCustomer =
                         error,
                         reason,
                     }) as unknown as Promise<void>
-                }
+                },
             )
     }
 
@@ -142,7 +141,7 @@ export const executeAction =
     }) =>
     (dispatch: StoreDispatch, getState: () => RootState): string => {
         const state = getState()
-        const {ticket} = state
+        const { ticket } = state
 
         const ticketId = ticket.get('id') as number | undefined
 
@@ -171,7 +170,7 @@ export const executeAction =
                 dismissAfter: 0,
                 closeOnNext: true,
                 message: 'Executing action...',
-            })
+            }),
         )
 
         dispatch({
@@ -237,7 +236,7 @@ export const handleExecutedAction =
                     dismissAfter: 0,
                     message: stripErrorMessage(response.msg),
                     buttons,
-                })
+                }),
             )
 
             return dispatch({
@@ -251,7 +250,7 @@ export const handleExecutedAction =
             notify({
                 status: NotificationStatus.Success,
                 title: 'Action successfully executed',
-            })
+            }),
         )
 
         return dispatch({

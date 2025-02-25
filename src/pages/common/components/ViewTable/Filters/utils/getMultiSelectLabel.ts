@@ -1,5 +1,5 @@
-import {getStealthLabel} from 'custom-fields/components/MultiLevelSelect/helpers/getLabels'
-import {CustomFieldValue} from 'custom-fields/types'
+import { getStealthLabel } from 'custom-fields/components/MultiLevelSelect/helpers/getLabels'
+import { CustomFieldValue } from 'custom-fields/types'
 
 export default function getMultiSelectLabel(values?: CustomFieldValue[]) {
     return values?.length

@@ -1,11 +1,12 @@
-import {act, renderHook} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
-import React, {ComponentType} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentType } from 'react'
+
+import { act, renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {account} from 'fixtures/account'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { account } from 'fixtures/account'
 import useSearchRankScenario, {
     DATABASE_TYPE,
     EntityType,
@@ -13,8 +14,8 @@ import useSearchRankScenario, {
     SearchRankResponse,
     SearchRankSource,
 } from 'hooks/useSearchRankScenario'
-import {SearchEngine} from 'models/search/types'
-import {RootState, StoreDispatch} from 'state/types'
+import { SearchEngine } from 'models/search/types'
+import { RootState, StoreDispatch } from 'state/types'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 jest.mock('common/segment')
@@ -46,19 +47,19 @@ describe('useSearchRankScenario', () => {
 
     it('should log search success when user clicks the result', () => {
         const selectedResultObjectId = 'bar'
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useSearchRankScenario(
                     SearchRankSource.CustomerProfile,
-                    defaultScenarioTimeout
+                    defaultScenarioTimeout,
                 ),
             {
-                wrapper: (({children}) => (
+                wrapper: (({ children }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
                 )) as ComponentType,
-            }
+            },
         )
 
         act(() => {
@@ -103,25 +104,25 @@ describe('useSearchRankScenario', () => {
     })
 
     it('should set isRunning flag to true when scenario is running', () => {
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useSearchRankScenario(
                     SearchRankSource.CustomerProfile,
-                    defaultScenarioTimeout
+                    defaultScenarioTimeout,
                 ),
             {
-                wrapper: (({children}) => (
+                wrapper: (({ children }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
                 )) as ComponentType,
-            }
+            },
         )
 
         expect(result.current.isRunning).toBe(false)
 
         act(() => {
-            const {registerResultsRequest, registerResultsResponse} =
+            const { registerResultsRequest, registerResultsResponse } =
                 result.current
             registerResultsRequest(defaultResultsRequest)
             registerResultsResponse(defaultResultsResponse)
@@ -133,23 +134,23 @@ describe('useSearchRankScenario', () => {
     })
 
     it('should log search failure immediately when results are empty', () => {
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useSearchRankScenario(
                     SearchRankSource.CustomerProfile,
-                    defaultScenarioTimeout
+                    defaultScenarioTimeout,
                 ),
             {
-                wrapper: (({children}) => (
+                wrapper: (({ children }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
                 )) as ComponentType,
-            }
+            },
         )
 
         act(() => {
-            const {registerResultsRequest, registerResultsResponse} =
+            const { registerResultsRequest, registerResultsResponse } =
                 result.current
             registerResultsRequest(defaultResultsRequest)
             registerResultsResponse({
@@ -162,28 +163,28 @@ describe('useSearchRankScenario', () => {
             SegmentEvent.SearchQueryRanked,
             expect.objectContaining({
                 rank: -1,
-            })
+            }),
         )
     })
 
     it('should log search failure if no result selection is registered within the timeout', () => {
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useSearchRankScenario(
                     SearchRankSource.CustomerProfile,
-                    defaultScenarioTimeout
+                    defaultScenarioTimeout,
                 ),
             {
-                wrapper: (({children}) => (
+                wrapper: (({ children }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
                 )) as ComponentType,
-            }
+            },
         )
 
         act(() => {
-            const {registerResultsRequest, registerResultsResponse} =
+            const { registerResultsRequest, registerResultsResponse } =
                 result.current
             registerResultsRequest(defaultResultsRequest)
             registerResultsResponse(defaultResultsResponse)
@@ -194,24 +195,24 @@ describe('useSearchRankScenario', () => {
             SegmentEvent.SearchQueryRanked,
             expect.objectContaining({
                 rank: -1,
-            })
+            }),
         )
     })
 
     it('should log rank when second results request is registered', () => {
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useSearchRankScenario(
                     SearchRankSource.CustomerProfile,
-                    defaultScenarioTimeout
+                    defaultScenarioTimeout,
                 ),
             {
-                wrapper: (({children}) => (
+                wrapper: (({ children }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
                 )) as ComponentType,
-            }
+            },
         )
 
         act(() => {
@@ -238,24 +239,24 @@ describe('useSearchRankScenario', () => {
             expect.objectContaining({
                 search_query: 'foo',
                 rank: 2,
-            })
+            }),
         )
     })
 
     it('should log rank on unmount', () => {
-        const {result, unmount} = renderHook(
+        const { result, unmount } = renderHook(
             () =>
                 useSearchRankScenario(
                     SearchRankSource.CustomerProfile,
-                    defaultScenarioTimeout
+                    defaultScenarioTimeout,
                 ),
             {
-                wrapper: (({children}) => (
+                wrapper: (({ children }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
                 )) as ComponentType,
-            }
+            },
         )
 
         act(() => {
@@ -278,24 +279,24 @@ describe('useSearchRankScenario', () => {
             SegmentEvent.SearchQueryRanked,
             expect.objectContaining({
                 rank: 2,
-            })
+            }),
         )
     })
 
     it('should log rank on endScenario call', () => {
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useSearchRankScenario(
                     SearchRankSource.CustomerProfile,
-                    defaultScenarioTimeout
+                    defaultScenarioTimeout,
                 ),
             {
-                wrapper: (({children}) => (
+                wrapper: (({ children }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
                 )) as ComponentType,
-            }
+            },
         )
 
         act(() => {
@@ -319,26 +320,26 @@ describe('useSearchRankScenario', () => {
             SegmentEvent.SearchQueryRanked,
             expect.objectContaining({
                 rank: 2,
-            })
+            }),
         )
     })
 
     it(`should log ${
         DATABASE_TYPE[SearchEngine.PG]
     } database type by default`, () => {
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useSearchRankScenario(
                     SearchRankSource.CustomerProfile,
-                    defaultScenarioTimeout
+                    defaultScenarioTimeout,
                 ),
             {
-                wrapper: (({children}) => (
+                wrapper: (({ children }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
                 )) as ComponentType,
-            }
+            },
         )
 
         act(() => {
@@ -365,24 +366,24 @@ describe('useSearchRankScenario', () => {
             SegmentEvent.SearchQueryRanked,
             expect.objectContaining({
                 database_type: DATABASE_TYPE[SearchEngine.PG],
-            })
+            }),
         )
     })
 
     it('should log rank once when two requests are registered', () => {
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useSearchRankScenario(
                     SearchRankSource.CustomerProfile,
-                    defaultScenarioTimeout
+                    defaultScenarioTimeout,
                 ),
             {
-                wrapper: (({children}) => (
+                wrapper: (({ children }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
                 )) as ComponentType,
-            }
+            },
         )
 
         act(() => {

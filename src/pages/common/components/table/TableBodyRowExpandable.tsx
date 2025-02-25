@@ -1,18 +1,19 @@
-import classnames from 'classnames'
-import React, {ComponentProps, FC, useState} from 'react'
+import React, { ComponentProps, FC, useState } from 'react'
 
-import {SCREEN_SIZE, useScreenSize} from 'hooks/useScreenSize'
+import classnames from 'classnames'
+
+import { SCREEN_SIZE, useScreenSize } from 'hooks/useScreenSize'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import css from 'pages/common/components/table/TableBodyRowExpandable.less'
 
-export type WithChildren<T> = T & {children: WithChildren<T>[]}
+export type WithChildren<T> = T & { children: WithChildren<T>[] }
 
 type Props<T> = {
     tableBodyRowProps?: Omit<ComponentProps<typeof TableBodyRow>, 'children'>
     level?: number
     RowContentComponent: FC<T>
-    rowContentProps: WithChildren<T & {onClick?: () => void}>
+    rowContentProps: WithChildren<T & { onClick?: () => void }>
     innerClassName?: string
     isDefaultExpanded?: boolean
 }
@@ -38,7 +39,7 @@ export const TableBodyRowExpandable = <T,>({
                 <BodyCell
                     onClick={toggleExpand}
                     width={COLUMN_WIDTH}
-                    style={{border: 0}}
+                    style={{ border: 0 }}
                     innerStyle={{
                         left: `${
                             level *
@@ -51,7 +52,7 @@ export const TableBodyRowExpandable = <T,>({
                         <i
                             className={classnames(
                                 'material-icons-round',
-                                css['comfortable']
+                                css['comfortable'],
                             )}
                         >
                             {isExpanded ? 'arrow_drop_down' : 'arrow_right'}

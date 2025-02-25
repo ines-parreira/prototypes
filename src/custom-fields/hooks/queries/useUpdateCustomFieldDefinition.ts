@@ -1,16 +1,15 @@
-import {useQueryClient} from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 
-import {OBJECT_TYPE_SETTINGS} from 'custom-fields/constants'
-
+import { OBJECT_TYPE_SETTINGS } from 'custom-fields/constants'
 import {
     customFieldDefinitionKeys,
     useUpdateCustomField,
 } from 'custom-fields/hooks/queries/queries'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {isGorgiasApiError} from 'models/api/types'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {errorToChildren} from 'utils'
+import { isGorgiasApiError } from 'models/api/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { errorToChildren } from 'utils'
 
 export const useUpdateCustomFieldDefinition = () => {
     const dispatch = useAppDispatch()
@@ -27,7 +26,7 @@ export const useUpdateCustomFieldDefinition = () => {
                         OBJECT_TYPE_SETTINGS[data.object_type].TITLE_LABEL
                     } field updated successfully.`,
                     status: NotificationStatus.Success,
-                })
+                }),
             )
         },
         onError: (error) => {
@@ -39,7 +38,7 @@ export const useUpdateCustomFieldDefinition = () => {
                     message: errorToChildren(error) || undefined,
                     allowHTML: true,
                     status: NotificationStatus.Error,
-                })
+                }),
             )
         },
     })

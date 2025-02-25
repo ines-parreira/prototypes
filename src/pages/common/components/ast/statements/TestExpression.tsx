@@ -1,13 +1,14 @@
-import {Map, List} from 'immutable'
 import React from 'react'
 
-import {RuleItemActions} from 'pages/settings/rules/types'
+import { List, Map } from 'immutable'
+
+import { RuleItemActions } from 'pages/settings/rules/types'
 
 import Expression from '../expression/Expression'
-import {ExpressionProps} from '../expression/expressionReference'
+import { ExpressionProps } from '../expression/expressionReference'
 import AddLogicalCondition from '../operations/AddLogicalCondition'
 import DeleteBlockStatementItem from '../operations/DeleteBlockStatementItem'
-import {computeLeftPadding} from '../utils'
+import { computeLeftPadding } from '../utils'
 
 const TestExpression = ({
     actions,
@@ -23,7 +24,7 @@ const TestExpression = ({
     return (
         <div
             className="test"
-            style={{paddingLeft: computeLeftPadding(depth)}}
+            style={{ paddingLeft: computeLeftPadding(depth) }}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
         >

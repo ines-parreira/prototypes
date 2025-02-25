@@ -1,7 +1,8 @@
-import {produce} from 'immer'
 import React from 'react'
 
-import {DateAndTimeFormatting} from 'constants/datetime'
+import { produce } from 'immer'
+
+import { DateAndTimeFormatting } from 'constants/datetime'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     ConditionSchema,
@@ -19,12 +20,13 @@ import {
     getCurrentUser,
     getDateAndTimeFormatter,
 } from 'state/currentUser/selectors'
-import {StoreState} from 'state/types'
-import {formatDatetime} from 'utils'
-import {stringToDatetime} from 'utils/date'
+import { StoreState } from 'state/types'
+import { formatDatetime } from 'utils'
+import { stringToDatetime } from 'utils/date'
+
+import { TIMEPERIOD_REGEX } from '../constants'
 
 import css from '../ConditionsNodeEditor.less'
-import {TIMEPERIOD_REGEX} from '../constants'
 
 type Props = {
     condition: Exclude<DateSchema, ExistsSchema | DoesNotExistSchema>
@@ -77,7 +79,7 @@ export const DateConditionType = ({
                             }
 
                             schema[1] = nextValue.toISOString()
-                        })
+                        }),
                     )
                 }}
             >
@@ -90,8 +92,8 @@ export const DateConditionType = ({
                                       getDateAndTimeFormatter({
                                           currentUser,
                                       } as unknown as StoreState)(
-                                          DateAndTimeFormatting.ShortDateWithYear
-                                      )
+                                          DateAndTimeFormatting.ShortDateWithYear,
+                                      ),
                                   ).toString()
                                 : ''
                         }
@@ -133,7 +135,7 @@ export const DateConditionType = ({
                             }
 
                             schema[1] = `${sign}${nextValue ?? 1}${unit}`
-                        })
+                        }),
                     )
                 }}
                 isDisabled={isDisabled}
@@ -153,7 +155,7 @@ export const DateConditionType = ({
                             schema[1] = `${sign}${value}${
                                 nextValue as IntervalUnit
                             }`
-                        })
+                        }),
                     )
                 }}
                 options={[
@@ -191,7 +193,7 @@ export const DateConditionType = ({
                             schema[1] = `${
                                 nextValue as IntervalSign
                             }${value}${unit}`
-                        })
+                        }),
                     )
                 }}
                 options={[

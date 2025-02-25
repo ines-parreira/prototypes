@@ -1,12 +1,14 @@
-import {Label, Tooltip} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
-import {UserRole} from 'config/types/user'
-import {ORDERED_ROLES_META_BY_USER_ROLE} from 'config/user'
-import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
+import { Label, Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { UserRole } from 'config/types/user'
+import { ORDERED_ROLES_META_BY_USER_ROLE } from 'config/user'
+import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
+
+import { AgentState } from './types'
 
 import css from './Detail.less'
-import {AgentState} from './types'
 
 type Props = {
     role: UserRole

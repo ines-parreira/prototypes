@@ -1,5 +1,6 @@
+import React, { useRef, useState } from 'react'
+
 import classnames from 'classnames'
-import React, {useRef, useState} from 'react'
 
 import {
     EXPAND_CONTAINER_MARKER,
@@ -18,7 +19,7 @@ export default function ExpandAllButton() {
 
     const onClick = () => {
         const container = buttonRef.current?.closest(
-            `[${EXPAND_CONTAINER_MARKER}]`
+            `[${EXPAND_CONTAINER_MARKER}]`,
         )
 
         if (!container) {
@@ -27,10 +28,10 @@ export default function ExpandAllButton() {
 
         const targets = shouldClose
             ? container.querySelectorAll<HTMLElement>(
-                  `[${EXPAND_TARGET_MARKER}]:not([${TARGET_CLOSED_MARKER}=true])`
+                  `[${EXPAND_TARGET_MARKER}]:not([${TARGET_CLOSED_MARKER}=true])`,
               )
             : container.querySelectorAll<HTMLElement>(
-                  `[${EXPAND_TARGET_MARKER}][${TARGET_CLOSED_MARKER}=true]`
+                  `[${EXPAND_TARGET_MARKER}][${TARGET_CLOSED_MARKER}=true]`,
               )
 
         targets.forEach((target) => {

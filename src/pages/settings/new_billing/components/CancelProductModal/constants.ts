@@ -1,6 +1,6 @@
-import {isProduction} from 'utils/environment'
+import { isProduction } from 'utils/environment'
 
-import {CancellationReason, ReasonsToCanduContent} from './types'
+import { CancellationReason, ReasonsToCanduContent } from './types'
 
 export const CHURN_MITIGATION_OFFER_ZAPIER_URL = isProduction()
     ? 'https://hooks.zapier.com/hooks/catch/11610441/30s3nqr/'
@@ -46,52 +46,52 @@ export const HELPDESK_CANCELLATION_REASONS: CancellationReason[] = [
             label: HelpdeskPrimaryReasonLabel.DoesNotFitMyNeeds,
         },
         secondaryReasons: [
-            {label: HelpdeskSecondaryReasonLabel.IDontGetEnoughTickets},
-            {label: HelpdeskSecondaryReasonLabel.NotAnEcommerceStore},
-            {label: CommonReasonLabel.Other},
+            { label: HelpdeskSecondaryReasonLabel.IDontGetEnoughTickets },
+            { label: HelpdeskSecondaryReasonLabel.NotAnEcommerceStore },
+            { label: CommonReasonLabel.Other },
         ],
     },
     {
-        primaryReason: {label: HelpdeskPrimaryReasonLabel.InternalReasons},
+        primaryReason: { label: HelpdeskPrimaryReasonLabel.InternalReasons },
         secondaryReasons: [
-            {label: HelpdeskSecondaryReasonLabel.BusinessSlowingDown},
-            {label: HelpdeskSecondaryReasonLabel.ClosingStore},
-            {label: HelpdeskSecondaryReasonLabel.ConsolidatingAccounts},
-            {label: HelpdeskSecondaryReasonLabel.GotAcquired},
-            {label: CommonReasonLabel.Other},
+            { label: HelpdeskSecondaryReasonLabel.BusinessSlowingDown },
+            { label: HelpdeskSecondaryReasonLabel.ClosingStore },
+            { label: HelpdeskSecondaryReasonLabel.ConsolidatingAccounts },
+            { label: HelpdeskSecondaryReasonLabel.GotAcquired },
+            { label: CommonReasonLabel.Other },
         ],
     },
     {
-        primaryReason: {label: HelpdeskPrimaryReasonLabel.PoorExperience},
+        primaryReason: { label: HelpdeskPrimaryReasonLabel.PoorExperience },
         secondaryReasons: [
-            {label: HelpdeskSecondaryReasonLabel.IDontSeeTheValue},
-            {label: HelpdeskSecondaryReasonLabel.InadequateHelp},
-            {label: CommonReasonLabel.Other},
+            { label: HelpdeskSecondaryReasonLabel.IDontSeeTheValue },
+            { label: HelpdeskSecondaryReasonLabel.InadequateHelp },
+            { label: CommonReasonLabel.Other },
         ],
     },
     {
-        primaryReason: {label: HelpdeskPrimaryReasonLabel.Pricing},
+        primaryReason: { label: HelpdeskPrimaryReasonLabel.Pricing },
         secondaryReasons: [
-            {label: HelpdeskSecondaryReasonLabel.HelpdeskPricingTiers},
-            {label: HelpdeskSecondaryReasonLabel.TooExpensive},
-            {label: CommonReasonLabel.Other},
+            { label: HelpdeskSecondaryReasonLabel.HelpdeskPricingTiers },
+            { label: HelpdeskSecondaryReasonLabel.TooExpensive },
+            { label: CommonReasonLabel.Other },
         ],
     },
     {
-        primaryReason: {label: HelpdeskPrimaryReasonLabel.Product},
+        primaryReason: { label: HelpdeskPrimaryReasonLabel.Product },
         secondaryReasons: [
-            {label: HelpdeskSecondaryReasonLabel.DifficultUIUX},
-            {label: HelpdeskSecondaryReasonLabel.Features},
-            {label: HelpdeskSecondaryReasonLabel.OutagesAndStability},
-            {label: CommonReasonLabel.Other},
+            { label: HelpdeskSecondaryReasonLabel.DifficultUIUX },
+            { label: HelpdeskSecondaryReasonLabel.Features },
+            { label: HelpdeskSecondaryReasonLabel.OutagesAndStability },
+            { label: CommonReasonLabel.Other },
         ],
     },
     {
-        primaryReason: {label: CommonReasonLabel.IPreferNotToSay},
+        primaryReason: { label: CommonReasonLabel.IPreferNotToSay },
         secondaryReasons: [],
     },
     {
-        primaryReason: {label: CommonReasonLabel.Other},
+        primaryReason: { label: CommonReasonLabel.Other },
         secondaryReasons: [],
     },
 ]

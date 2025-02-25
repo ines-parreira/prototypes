@@ -1,13 +1,14 @@
-import React, {memo} from 'react'
-import {NodeProps} from 'reactflow'
+import React, { memo } from 'react'
+
+import { NodeProps } from 'reactflow'
 
 import useSplitLLMPromptTriggerInputs from 'pages/automate/workflows/hooks/useSplitLLMPromptTriggerInputs'
-import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
+import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {
     useVisualBuilderNodeProps,
     VisualBuilderNodeProps,
 } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
-import {LLMPromptTriggerNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { LLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 import LLMPromptTriggerNodeBadge from './LLMPromptTriggerNodeBadge'
 import LLMPromptTriggerNodeLabel from './LLMPromptTriggerNodeLabel'
@@ -46,15 +47,15 @@ const LLMPromptTriggerNode = memo(function LLMPromptTriggerNode({
 })
 
 export default function LLMPromptTriggerNodeWrapper(
-    node: NodeProps<LLMPromptTriggerNodeType['data']>
+    node: NodeProps<LLMPromptTriggerNodeType['data']>,
 ) {
-    const {visualBuilderGraph} = useVisualBuilderContext()
+    const { visualBuilderGraph } = useVisualBuilderContext()
 
     const commonProps = useVisualBuilderNodeProps(node)
 
     const [inputs] = useSplitLLMPromptTriggerInputs(
         node.data.inputs,
-        visualBuilderGraph.nodes
+        visualBuilderGraph.nodes,
     )
 
     return (

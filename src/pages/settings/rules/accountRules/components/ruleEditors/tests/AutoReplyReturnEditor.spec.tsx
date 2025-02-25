@@ -1,14 +1,15 @@
-import {render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {integrationsState} from 'fixtures/integrations'
-import {emptyRuleRecipeFixture} from 'fixtures/ruleRecipe'
-import {ManagedRulesSlugs} from 'state/rules/types'
-import {RootState, StoreDispatch} from 'state/types'
+import { integrationsState } from 'fixtures/integrations'
+import { emptyRuleRecipeFixture } from 'fixtures/ruleRecipe'
+import { ManagedRulesSlugs } from 'state/rules/types'
+import { RootState, StoreDispatch } from 'state/types'
 
 import AutoReplyReturnEditor from '../AutoReplyReturnEditor'
 
@@ -40,10 +41,10 @@ describe('<AutoReplyReturnEditor/>', () => {
     } as RootState)
 
     it('should render component', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <AutoReplyReturnEditor {...minProps} />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -63,7 +64,7 @@ describe('<AutoReplyReturnEditor/>', () => {
         render(
             <Provider store={store}>
                 <AutoReplyReturnEditor {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
         if (valid) {

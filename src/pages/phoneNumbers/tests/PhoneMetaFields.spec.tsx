@@ -1,8 +1,9 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {PhoneCountry, PhoneType} from 'business/twilio'
-import {PhoneNumberMeta} from 'models/phoneNumber/types'
+import { render } from '@testing-library/react'
+
+import { PhoneCountry, PhoneType } from 'business/twilio'
+import { PhoneNumberMeta } from 'models/phoneNumber/types'
 
 import PhoneMetaFields from '../PhoneMetaFields'
 
@@ -12,7 +13,7 @@ describe('<PhoneMetaFields />', () => {
     > = jest.fn()
 
     it('should render when a country and a state are selected', () => {
-        const {queryByText} = render(
+        const { queryByText } = render(
             <PhoneMetaFields
                 onChange={onChange}
                 value={{
@@ -20,7 +21,7 @@ describe('<PhoneMetaFields />', () => {
                     type: PhoneType.Local,
                     state: 'AL',
                 }}
-            />
+            />,
         )
 
         expect(queryByText('United States')).not.toBe(null)
@@ -29,14 +30,14 @@ describe('<PhoneMetaFields />', () => {
     })
 
     it('should render when a country and a state are selected', () => {
-        const {queryByText} = render(
+        const { queryByText } = render(
             <PhoneMetaFields
                 onChange={onChange}
                 value={{
                     country: PhoneCountry.CA,
                     type: PhoneType.TollFree,
                 }}
-            />
+            />,
         )
 
         expect(queryByText('Canada')).not.toBe(null)

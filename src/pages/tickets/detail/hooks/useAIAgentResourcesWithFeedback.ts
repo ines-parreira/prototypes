@@ -4,8 +4,8 @@ import {
     TicketFeedback,
 } from 'models/aiAgentFeedback/types'
 
-import {useGetAiAgentFeedback} from '../../../../models/aiAgentFeedback/queries'
-import {ActionStatus} from '../components/AIAgentFeedbackBar/types'
+import { useGetAiAgentFeedback } from '../../../../models/aiAgentFeedback/queries'
+import { ActionStatus } from '../components/AIAgentFeedbackBar/types'
 
 export type ActionWithFeedback = {
     feedback: Feedback
@@ -17,18 +17,18 @@ export type ActionWithFeedback = {
 
 export type PreviousMessageWithHardAction = {
     id: number
-    hardAction: {id: number; name: string}
+    hardAction: { id: number; name: string }
 } | null
 
 export const useAIAgentResourcesWithFeedbackUtil = {
     getPreviousMessageWithHardAction: (
         ticketFeedback: TicketFeedback | undefined,
-        messageFeedback: MessageFeedback | undefined
+        messageFeedback: MessageFeedback | undefined,
     ) => {
         let hardActionCount = 0
         let previousMessageWithHardAction: {
             id: number
-            hardAction: {id: number; name: string}
+            hardAction: { id: number; name: string }
         } | null = null
         if (
             ticketFeedback &&
@@ -50,17 +50,17 @@ export const useAIAgentResourcesWithFeedbackUtil = {
                 }
             }
         }
-        return {hardActionCount, previousMessageWithHardAction}
+        return { hardActionCount, previousMessageWithHardAction }
     },
     checkIfMessageFeedbackHasHardAction: (
         actionsWithFeedback: ActionWithFeedback,
         previousMessageWithHardAction: PreviousMessageWithHardAction,
-        messageFeedback: MessageFeedback | undefined | null
+        messageFeedback: MessageFeedback | undefined | null,
     ) => {
         if (messageFeedback) {
             return !!actionsWithFeedback.find(
                 (action) =>
-                    action.id === previousMessageWithHardAction?.hardAction.id
+                    action.id === previousMessageWithHardAction?.hardAction.id,
             )
         }
         return false
@@ -68,9 +68,9 @@ export const useAIAgentResourcesWithFeedbackUtil = {
 }
 
 export const useAIAgentResourcesWithFeedback = (
-    messageFeedback?: MessageFeedback | null
+    messageFeedback?: MessageFeedback | null,
 ) => {
-    const {data} = useGetAiAgentFeedback({
+    const { data } = useGetAiAgentFeedback({
         refetchOnWindowFocus: false,
     })
     const ticketFeedback = data?.data
@@ -83,14 +83,14 @@ export const useAIAgentResourcesWithFeedback = (
         }
     }
 
-    const {actions, guidance, knowledge, feedbackOnResource} = messageFeedback
+    const { actions, guidance, knowledge, feedbackOnResource } = messageFeedback
 
     const actionsWithFeedback = actions.map((action) => {
         const feedback = feedbackOnResource.find(
             (feedback) =>
                 (feedback.resourceType === 'soft_action' ||
                     feedback.resourceType === 'hard_action') &&
-                feedback.resourceId === action.id
+                feedback.resourceId === action.id,
         )
 
         return {
@@ -103,7 +103,7 @@ export const useAIAgentResourcesWithFeedback = (
         const feedback = feedbackOnResource.find(
             (feedback) =>
                 feedback.resourceType === 'guidance' &&
-                feedback.resourceId === guide.id
+                feedback.resourceId === guide.id,
         )
 
         return {
@@ -116,7 +116,7 @@ export const useAIAgentResourcesWithFeedback = (
         const feedback = feedbackOnResource.find(
             (feedback) =>
                 feedback.resourceType === knowledge.type &&
-                feedback.resourceId === knowledge.id
+                feedback.resourceId === knowledge.id,
         )
 
         return {
@@ -125,10 +125,10 @@ export const useAIAgentResourcesWithFeedback = (
         }
     })
 
-    const {hardActionCount, previousMessageWithHardAction} =
+    const { hardActionCount, previousMessageWithHardAction } =
         useAIAgentResourcesWithFeedbackUtil.getPreviousMessageWithHardAction(
             ticketFeedback,
-            messageFeedback
+            messageFeedback,
         )
 
     if (messageFeedback.summary && hardActionCount > 0) {
@@ -154,7 +154,7 @@ export const useAIAgentResourcesWithFeedback = (
             const actionPendingRegex =
                 /is waiting for confirmation from the customer/
             const actionPendingMatch = actionPendingRegex.exec(
-                messageFeedback.summary
+                messageFeedback.summary,
             )
             if (
                 !actionPendingMatch &&
@@ -164,7 +164,7 @@ export const useAIAgentResourcesWithFeedback = (
                 !useAIAgentResourcesWithFeedbackUtil.checkIfMessageFeedbackHasHardAction(
                     actionsWithFeedback,
                     previousMessageWithHardAction,
-                    messageFeedback
+                    messageFeedback,
                 )
             ) {
                 const action = {

@@ -1,6 +1,7 @@
+import React, { ReactNode, useMemo, useRef, useState } from 'react'
+
 import classnames from 'classnames'
-import React, {ReactNode, useMemo, useRef, useState} from 'react'
-import {Transition} from 'react-transition-group'
+import { Transition } from 'react-transition-group'
 
 import usePrevious from 'hooks/usePrevious'
 

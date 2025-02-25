@@ -1,7 +1,6 @@
-import React, {FC, HTMLAttributes, useMemo, useRef, useState} from 'react'
+import React, { FC, HTMLAttributes, useMemo, useRef, useState } from 'react'
 
-import {useListShopifyCustomerSegments} from 'models/integration/queries'
-
+import { useListShopifyCustomerSegments } from 'models/integration/queries'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
@@ -36,9 +35,9 @@ const CustomerSegmentSelector: FC<Props> = ({
     const [search, setSearch] = useState<string>('')
     const [isSelectOpen, setIsSelectOpen] = useState(false)
 
-    const {data: customerSegmentData} = useListShopifyCustomerSegments(
+    const { data: customerSegmentData } = useListShopifyCustomerSegments(
         integrationId,
-        {enabled: !!integrationId}
+        { enabled: !!integrationId },
     )
 
     const customerSegments = useMemo<Option[]>(() => {
@@ -53,7 +52,7 @@ const CustomerSegmentSelector: FC<Props> = ({
                 (segment): Option => ({
                     label: segment.name,
                     value: segment.id.toString(),
-                })
+                }),
             ) ?? []
 
         segments.push(...shopifySegements)

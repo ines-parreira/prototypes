@@ -1,6 +1,6 @@
-import {useEffect, useState} from 'react'
+import { useEffect, useState } from 'react'
 
-import {getLDClient} from 'utils/launchDarkly'
+import { getLDClient } from 'utils/launchDarkly'
 
 export default function useLaunchDarklyClient() {
     const [isLdInitialized, setIsLdInitialized] = useState(false)
@@ -18,5 +18,5 @@ export default function useLaunchDarklyClient() {
         }
     }, [])
 
-    return {ldClient, isLdInitialized}
+    return { ldClient, isLdInitialized }
 }

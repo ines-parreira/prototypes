@@ -1,4 +1,4 @@
-import {ActionsData} from '../useFetchActionsData'
+import { ActionsData } from '../useFetchActionsData'
 
 type AllKeys = keyof ActionsDataFixture
 type ConfiguredActionsDataFixture<
@@ -35,7 +35,7 @@ export class ActionsDataFixture {
         return this as ActionsDataFixtureFullyConfigured
     }
 
-    private withAction({isDraft}: WithActionArgs) {
+    private withAction({ isDraft }: WithActionArgs) {
         const id = `${this.internalData.actionId++}`
         this.actionsData.push({
             id,
@@ -44,14 +44,14 @@ export class ActionsDataFixture {
     }
 
     withPublishedAction() {
-        this.withAction({isDraft: false})
+        this.withAction({ isDraft: false })
         return this as ConfiguredActionsDataFixture<
             'withPublishedAction' | 'withDraftAction' | 'build'
         >
     }
 
     withDraftAction() {
-        this.withAction({isDraft: true})
+        this.withAction({ isDraft: true })
         return this as ConfiguredActionsDataFixture<
             'withPublishedAction' | 'withDraftAction' | 'build'
         >

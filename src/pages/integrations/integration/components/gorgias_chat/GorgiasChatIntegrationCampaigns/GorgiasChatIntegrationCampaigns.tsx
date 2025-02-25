@@ -1,13 +1,14 @@
-import {Map} from 'immutable'
 import React from 'react'
-import {Link} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
-import {IntegrationType} from 'models/integration/constants'
+import { Map } from 'immutable'
+import { Link } from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
+
+import { IntegrationType } from 'models/integration/constants'
 import PageHeader from 'pages/common/components/PageHeader'
 import ConvertCampaignsListPlaceholder from 'pages/convert/common/components/ConvertCampaignsListPlaceholder/ConvertCampaignsListPlaceholder'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
-import {Tab} from 'pages/integrations/integration/types'
+import { Tab } from 'pages/integrations/integration/types'
 
 type Props = {
     integration: Map<any, any>

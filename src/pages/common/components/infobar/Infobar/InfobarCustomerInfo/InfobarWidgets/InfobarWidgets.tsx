@@ -1,30 +1,31 @@
+import React, { useContext } from 'react'
+
 import classnames from 'classnames'
-import {List, Map, fromJS} from 'immutable'
-import React, {useContext} from 'react'
+import { fromJS, List, Map } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {CustomerEcommerceData} from 'models/customerEcommerceData/types'
-import {Integration, IntegrationType} from 'models/integration/types'
-import {ImmutableSource, Source, Template} from 'models/widget/types'
+import { CustomerEcommerceData } from 'models/customerEcommerceData/types'
+import { Integration, IntegrationType } from 'models/integration/types'
+import { ImmutableSource, Source, Template } from 'models/widget/types'
 import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
-import {getWidgetTitle} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
-import {canDisplayWidget} from 'pages/common/components/infobar/utils'
-import {EditionContext} from 'providers/infobar/EditionContext'
-import {getIntegrations} from 'state/integrations/selectors'
+import { getWidgetTitle } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
+import { canDisplayWidget } from 'pages/common/components/infobar/utils'
+import { EditionContext } from 'providers/infobar/EditionContext'
+import { getIntegrations } from 'state/integrations/selectors'
 import {
     CUSTOM_WIDGET_TYPE,
     CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
     STANDALONE_WIDGET_TYPE,
     WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
-import {getWidgetsState} from 'state/widgets/selectors'
-import {WidgetEnvironment, WidgetType} from 'state/widgets/types'
-import {getSourcePathFromContext} from 'state/widgets/utils'
-
-import {compare} from 'utils'
+import { getWidgetsState } from 'state/widgets/selectors'
+import { WidgetEnvironment, WidgetType } from 'state/widgets/types'
+import { getSourcePathFromContext } from 'state/widgets/utils'
+import { compare } from 'utils'
 import RootWidget from 'Widgets/modules/Widget'
 
-import {InfobarTabs} from './InfobarTabs'
+import { InfobarTabs } from './InfobarTabs'
+
 import css from './InfobarWidgets.less'
 
 const Widget = React.memo(RootWidget)
@@ -34,7 +35,7 @@ type DisplayList = Array<
           type: 'data'
           integrationId: number
       }
-    | {type: 'widget'; widget: Map<string, unknown> | undefined}
+    | { type: 'widget'; widget: Map<string, unknown> | undefined }
 >
 
 type PreparedDisplayList = {
@@ -60,7 +61,7 @@ const InfobarWidgets = ({
 }: Props) => {
     const integrations = useAppSelector(getIntegrations)
     const widgetState = useAppSelector(getWidgetsState)
-    const {isEditing} = useContext(EditionContext)
+    const { isEditing } = useContext(EditionContext)
     if (!widgets) {
         return null
     }
@@ -71,11 +72,11 @@ const InfobarWidgets = ({
 
     const genericSourcePath = getSourcePathFromContext(
         context,
-        'integrations'
+        'integrations',
     ) as string[]
     const integrationDatas = source.getIn(
         genericSourcePath,
-        fromJS([])
+        fromJS([]),
     ) as List<Map<string, unknown>>
 
     const widgetsWithoutIntegration = widgets.filter((widget) =>
@@ -84,7 +85,7 @@ const InfobarWidgets = ({
             CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
             WOOCOMMERCE_WIDGET_TYPE,
             STANDALONE_WIDGET_TYPE,
-        ].includes(widget?.get('type') as string)
+        ].includes(widget?.get('type') as string),
     )
 
     // We build a single list of all elements we want to display
@@ -159,7 +160,7 @@ const InfobarWidgets = ({
                             isEditing &&
                             widgetState.getIn(
                                 ['_internal', 'drag', 'isDragging'],
-                                false
+                                false,
                             )
                         )
                     }
@@ -183,7 +184,7 @@ const InfobarWidgets = ({
                                 // Since we create a new array on each render, we need to stringify it
                                 // for memo to work. We will then parse it back in the component
                                 absolutePath={JSON.stringify(
-                                    item.absolutePath || []
+                                    item.absolutePath || [],
                                 )}
                                 source={passedSource}
                                 template={item.template}
@@ -232,14 +233,14 @@ function getPreparedDisplayList({
             if (widgetType === CUSTOM_WIDGET_TYPE) {
                 sourcePath = getSourcePathFromContext(
                     widget.get('context') as WidgetEnvironment,
-                    widgetType
+                    widgetType,
                 ) as string[]
             } else if (widgetType === STANDALONE_WIDGET_TYPE) {
                 sourcePath = []
             } else if (widgetType === CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE) {
                 sourcePath = getSourcePathFromContext(
                     widget.get('context') as WidgetEnvironment,
-                    widgetType
+                    widgetType,
                 ) as string[]
 
                 const appId = widget.get('app_id') as string
@@ -253,7 +254,7 @@ function getPreparedDisplayList({
             } else if (widgetType === WOOCOMMERCE_WIDGET_TYPE) {
                 sourcePath = getSourcePathFromContext(
                     widget.get('context') as WidgetEnvironment,
-                    widgetType
+                    widgetType,
                 ) as string[]
                 const integrationId = widget.get('integration_id') as number
                 const ecommerceData: Record<string, CustomerEcommerceData> = (
@@ -267,11 +268,11 @@ function getPreparedDisplayList({
                 }
 
                 const currentEcommerceDataEntry = Object.entries(
-                    ecommerceData
+                    ecommerceData,
                 ).find(
                     ([, customerEcommerceData]) =>
                         customerEcommerceData.store.helpdesk_integration_id ===
-                        integrationId
+                        integrationId,
                 )
                 if (!currentEcommerceDataEntry) {
                     return
@@ -283,7 +284,7 @@ function getPreparedDisplayList({
 
                 if (widgetType !== IntegrationType.Http) {
                     selectedIntegrations = integrations.filter(
-                        (integration) => integration.type === widgetType
+                        (integration) => integration.type === widgetType,
                     )
                 } else {
                     selectedIntegrations = integrations.filter(
@@ -291,7 +292,7 @@ function getPreparedDisplayList({
                             integration.id.toString() ===
                             (
                                 widget.get('integration_id', '') as string
-                            )?.toString()
+                            )?.toString(),
                     )
                 }
 
@@ -320,7 +321,7 @@ function getPreparedDisplayList({
             const integrationId = item.integrationId.toString()
 
             integration = integrations.find(
-                (integration) => integration.id.toString() === integrationId
+                (integration) => integration.id.toString() === integrationId,
             )
 
             if (!integrations.length) {
@@ -332,11 +333,11 @@ function getPreparedDisplayList({
                     (widget) =>
                         (
                             widget?.get('integration_id') as string
-                        )?.toString() === integration?.id.toString()
+                        )?.toString() === integration?.id.toString(),
                 )
             } else {
                 widget = widgets.find(
-                    (widget) => widget?.get('type') === integration?.type
+                    (widget) => widget?.get('type') === integration?.type,
                 )
             }
 
@@ -360,7 +361,7 @@ function getPreparedDisplayList({
                 source,
                 (
                     source.getIn(sourcePath, fromJS({})) as ImmutableSource
-                )?.toJS() as Source
+                )?.toJS() as Source,
             )
         ) {
             return
@@ -377,12 +378,12 @@ function getPreparedDisplayList({
     // Here we add the non-displayed widgets to the list.
     if (isEditing) {
         const displayedWidgetsIds = preparedDisplayList.map(
-            (item) => item.widget.get('id') as string
+            (item) => item.widget.get('id') as string,
         )
 
         const nonDisplayedWidgets = widgets.filter(
             (widget = fromJS({})) =>
-                !displayedWidgetsIds.includes(widget.get('id') as string)
+                !displayedWidgetsIds.includes(widget.get('id') as string),
         )
 
         const nonDisplayedItems: PreparedDisplayList = []
@@ -402,6 +403,6 @@ function getPreparedDisplayList({
     }
 
     return preparedDisplayList.sort((a, b) =>
-        compare(a.widget.get('order'), b.widget.get('order'))
+        compare(a.widget.get('order'), b.widget.get('order')),
     )
 }

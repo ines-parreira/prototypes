@@ -1,22 +1,22 @@
-import classnames from 'classnames'
-import {fromJS} from 'immutable'
+import React, { useEffect, useState } from 'react'
 
-import React, {useEffect, useState} from 'react'
-import {Link} from 'react-router-dom'
-import {Col, Container, Form, FormGroup, Label, Row} from 'reactstrap'
+import classnames from 'classnames'
+import { fromJS } from 'immutable'
+import { Link } from 'react-router-dom'
+import { Col, Container, Form, FormGroup, Label, Row } from 'reactstrap'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
-import {SmsIntegration, isSmsIntegration} from 'models/integration/types'
+import { isSmsIntegration, SmsIntegration } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
 import css from 'pages/integrations/integration/components/sms/SmsIntegrationPreferences.less'
-import {INTEGRATION_REMOVAL_CONFIGURATION_TEXT} from 'pages/integrations/integration/constants'
+import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 import PhoneNumberTitle from 'pages/phoneNumbers/PhoneNumberTitle'
 import settingsCss from 'pages/settings/settings.less'
-import {getNewPhoneNumber} from 'state/entities/phoneNumbers/selectors'
+import { getNewPhoneNumber } from 'state/entities/phoneNumbers/selectors'
 import {
     deleteIntegration,
     updateOrCreateIntegration,
@@ -37,7 +37,7 @@ export default function SmsIntegrationPreferences({
 
     const dispatch = useAppDispatch()
 
-    const [{loading: isLoading}, handleSubmit] = useAsyncFn(
+    const [{ loading: isLoading }, handleSubmit] = useAsyncFn(
         async (event: React.FormEvent) => {
             event.preventDefault()
             await dispatch(
@@ -49,14 +49,14 @@ export default function SmsIntegrationPreferences({
                             emoji,
                             phone_number_id: phoneNumberId,
                         },
-                    })
-                )
+                    }),
+                ),
             )
         },
-        [integration, title, emoji, dispatch]
+        [integration, title, emoji, dispatch],
     )
 
-    const [{loading: isDeleting}, handleDelete] = useAsyncFn(async () => {
+    const [{ loading: isDeleting }, handleDelete] = useAsyncFn(async () => {
         await dispatch(deleteIntegration(fromJS(integration)))
     }, [integration, dispatch])
 
@@ -64,7 +64,7 @@ export default function SmsIntegrationPreferences({
         if (!isSmsIntegration(integration)) {
             return
         }
-        const {meta} = integration
+        const { meta } = integration
 
         setTitle(integration.name)
         setEmoji(meta.emoji)
@@ -109,7 +109,7 @@ export default function SmsIntegrationPreferences({
                                     className={classnames(
                                         css.appRow,
                                         'ml-1',
-                                        'mr-1'
+                                        'mr-1',
                                     )}
                                 >
                                     <Col lg={8} className="pl-0">

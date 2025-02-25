@@ -1,10 +1,11 @@
-import {Map} from 'immutable'
-import React, {ReactNode} from 'react'
+import React, { ReactNode } from 'react'
 
-import {CardCustomization} from 'Widgets/modules/Template/modules/Card'
-import {CardHeaderTitle} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderTitle'
+import { Map } from 'immutable'
 
-import {useStore} from '../hooks/useStore'
+import { CardCustomization } from 'Widgets/modules/Template/modules/Card'
+import { CardHeaderTitle } from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderTitle'
+
+import { useStore } from '../hooks/useStore'
 
 export const orderCustomization: CardCustomization = {
     TitleWrapper,

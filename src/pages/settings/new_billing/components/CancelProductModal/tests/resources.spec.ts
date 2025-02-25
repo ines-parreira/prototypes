@@ -2,8 +2,8 @@ import MockAdapter from 'axios-mock-adapter'
 
 import client from 'models/api/resources'
 
-import {CHURN_MITIGATION_OFFER_ZAPIER_URL} from '../constants'
-import {sendAcceptedChurnMitigationOfferToSupport} from '../resources'
+import { CHURN_MITIGATION_OFFER_ZAPIER_URL } from '../constants'
+import { sendAcceptedChurnMitigationOfferToSupport } from '../resources'
 
 const mockServer = new MockAdapter(client)
 
@@ -24,7 +24,7 @@ describe('sendAcceptedChurnMitigationOfferToSupport', () => {
     it('should send accepted churn mitigation offer to support successfully', async () => {
         mockServer
             .onPost(CHURN_MITIGATION_OFFER_ZAPIER_URL)
-            .reply(200, {success: true})
+            .reply(200, { success: true })
 
         const result = await sendAcceptedChurnMitigationOfferToSupport(payload)
 
@@ -34,7 +34,7 @@ describe('sendAcceptedChurnMitigationOfferToSupport', () => {
     it('should handle failure when sending churn mitigation offer to support', async () => {
         mockServer
             .onPost(CHURN_MITIGATION_OFFER_ZAPIER_URL)
-            .reply(400, {random: 'Response'})
+            .reply(400, { random: 'Response' })
 
         const result = await sendAcceptedChurnMitigationOfferToSupport(payload)
 

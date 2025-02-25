@@ -2,36 +2,36 @@ import {
     fetchMetricPerDimension,
     useMetricPerDimension,
 } from 'hooks/reporting/useMetricPerDimension'
-import {OrderDirection} from 'models/api/types'
-import {reviewedClosedTicketsPerAgentQueryFactory} from 'models/reporting/queryFactories/auto-qa/reviewedClosedTicketsQueryFactory'
-import {StatsFilters} from 'models/stat/types'
+import { OrderDirection } from 'models/api/types'
+import { reviewedClosedTicketsPerAgentQueryFactory } from 'models/reporting/queryFactories/auto-qa/reviewedClosedTicketsQueryFactory'
+import { StatsFilters } from 'models/stat/types'
 
 export const useReviewedClosedTicketsPerAgent = (
     statsFilters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
-    agentAssigneeId?: string
+    agentAssigneeId?: string,
 ) =>
     useMetricPerDimension(
         reviewedClosedTicketsPerAgentQueryFactory(
             statsFilters,
             timezone,
-            sorting
+            sorting,
         ),
-        agentAssigneeId
+        agentAssigneeId,
     )
 
 export const fetchReviewedClosedTicketsPerAgent = (
     statsFilters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
-    agentAssigneeId?: string
+    agentAssigneeId?: string,
 ) =>
     fetchMetricPerDimension(
         reviewedClosedTicketsPerAgentQueryFactory(
             statsFilters,
             timezone,
-            sorting
+            sorting,
         ),
-        agentAssigneeId
+        agentAssigneeId,
     )

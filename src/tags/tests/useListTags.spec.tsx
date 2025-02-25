@@ -1,20 +1,22 @@
-import {queryKeys} from '@gorgias/api-queries'
-import {QueryClientProvider} from '@tanstack/react-query'
-import * as reactQuery from '@tanstack/react-query'
-import {waitFor} from '@testing-library/react'
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
 
+import { QueryClientProvider } from '@tanstack/react-query'
+import * as reactQuery from '@tanstack/react-query'
+import { waitFor } from '@testing-library/react'
+import { renderHook } from '@testing-library/react-hooks'
+
+import { queryKeys } from '@gorgias/api-queries'
+
 import {
-    axiosSuccessResponse,
     apiListCursorPaginationResponse,
+    axiosSuccessResponse,
 } from 'fixtures/axiosResponse'
-import {tags} from 'fixtures/tag'
-import {handleError} from 'hooks/agents/errorHandler'
+import { tags } from 'fixtures/tag'
+import { handleError } from 'hooks/agents/errorHandler'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {fetchTags} from 'models/tag/resources'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { fetchTags } from 'models/tag/resources'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 import useListTags from '../useListTags'
 
@@ -35,16 +37,16 @@ const useInfiniteQuerySpy = jest.spyOn(reactQuery, 'useInfiniteQuery')
 
 describe('useListTags', () => {
     it('should call useListTags with proper params and return the response', async () => {
-        const params = {search: 'refund'}
+        const params = { search: 'refund' }
         const query = {
             staleTime: 10000,
             enabled: true,
         }
         mockFetchTags.mockResolvedValueOnce(
-            axiosSuccessResponse(apiListCursorPaginationResponse(tags))
+            axiosSuccessResponse(apiListCursorPaginationResponse(tags)),
         )
-        const {result} = renderHook(() => useListTags(params, query), {
-            wrapper: ({children}) => (
+        const { result } = renderHook(() => useListTags(params, query), {
+            wrapper: ({ children }) => (
                 <QueryClientProvider client={queryClient}>
                     {children}
                 </QueryClientProvider>
@@ -59,10 +61,10 @@ describe('useListTags', () => {
                 queryFn: expect.any(Function),
                 getNextPageParam: expect.any(Function),
                 ...query,
-            })
+            }),
         )
         expect(mockFetchTags).toHaveBeenCalledWith(
-            expect.objectContaining(params)
+            expect.objectContaining(params),
         )
         await waitFor(() => expect(result.current.isLoading).toBe(false))
         expect(result.current.data?.pages[0]).toEqual(
@@ -70,7 +72,7 @@ describe('useListTags', () => {
                 data: expect.objectContaining({
                     data: tags,
                 }),
-            })
+            }),
         )
     })
 
@@ -79,8 +81,8 @@ describe('useListTags', () => {
         mockFetchTags.mockRejectedValueOnce({
             response: errorMsgMock,
         })
-        const {result} = renderHook(() => useListTags(), {
-            wrapper: ({children}) => (
+        const { result } = renderHook(() => useListTags(), {
+            wrapper: ({ children }) => (
                 <QueryClientProvider client={queryClient}>
                     {children}
                 </QueryClientProvider>
@@ -93,7 +95,7 @@ describe('useListTags', () => {
                 response: errorMsgMock,
             }),
             expect.any(String),
-            dispatchMock
+            dispatchMock,
         )
         expect(result.current.isLoading).toBe(false)
     })

@@ -1,8 +1,8 @@
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {Provider} from 'react-redux'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -10,12 +10,12 @@ import {
     convertBundle,
     installBundleMockImplementation,
 } from 'fixtures/convertBundle'
-import {useGetConvertBundle} from 'pages/convert/bundles/hooks/useGetConvertBundle'
-import {useInstallBundle} from 'pages/convert/bundles/hooks/useInstallBundle'
+import { useGetConvertBundle } from 'pages/convert/bundles/hooks/useGetConvertBundle'
+import { useInstallBundle } from 'pages/convert/bundles/hooks/useInstallBundle'
 import * as useIsManualInstallationMethodRequired from 'pages/convert/common/hooks/useIsManualInstallationMethodRequired'
 import * as useThemeAppExtensionInstallation from 'pages/integrations/integration/components/gorgias_chat/hooks/useThemeAppExtensionInstallation'
-import {RootState, StoreDispatch} from 'state/types'
-import {assumeMock} from 'utils/testing'
+import { RootState, StoreDispatch } from 'state/types'
+import { assumeMock } from 'utils/testing'
 
 import ConvertInstallModal from '../ConvertInstallModal'
 
@@ -36,12 +36,12 @@ const useInstallBundleMock = assumeMock(useInstallBundle)
 
 const useThemeAppExtensionInstallationSpy = jest.spyOn(
     useThemeAppExtensionInstallation,
-    'default'
+    'default',
 )
 
 const useIsManualInstallationMethodRequiredSpy = jest.spyOn(
     useIsManualInstallationMethodRequired,
-    'default'
+    'default',
 )
 
 describe('ConvertInstallModal', () => {
@@ -73,15 +73,15 @@ describe('ConvertInstallModal', () => {
                         onSubmit={jest.fn()}
                         onClose={jest.fn()}
                     />
-                </Provider>
+                </Provider>,
             )
             expect(
-                screen.getByText('Install the campaign bundle')
+                screen.getByText('Install the campaign bundle'),
             ).toBeInTheDocument()
 
             // renders radio buttons for installation methods
             const oneClickRadioButton = screen.getByText(
-                '1-click installation for Shopify'
+                '1-click installation for Shopify',
             )
             const manualRadioButton = screen.getByText('Manual install')
             expect(oneClickRadioButton).toBeInTheDocument()
@@ -99,7 +99,7 @@ describe('ConvertInstallModal', () => {
                         onSubmit={jest.fn()}
                         onClose={onClose}
                     />
-                </Provider>
+                </Provider>,
             )
             const cancelButton = screen.getByText('Cancel')
             fireEvent.click(cancelButton)
@@ -120,7 +120,7 @@ describe('ConvertInstallModal', () => {
                         onSubmit={onSubmit}
                         onClose={jest.fn()}
                     />
-                </Provider>
+                </Provider>,
             )
 
             const installButton = screen.getByText('Next')
@@ -157,14 +157,14 @@ describe('ConvertInstallModal', () => {
                         onSubmit={jest.fn()}
                         onClose={jest.fn()}
                     />
-                </Provider>
+                </Provider>,
             )
             expect(
-                screen.getByText('Install the campaign bundle')
+                screen.getByText('Install the campaign bundle'),
             ).toBeInTheDocument()
 
             expect(
-                screen.queryByText('1-click installation for Shopify')
+                screen.queryByText('1-click installation for Shopify'),
             ).not.toBeInTheDocument()
             expect(screen.getByText('Manual install')).toBeInTheDocument()
         })

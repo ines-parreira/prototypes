@@ -1,13 +1,13 @@
-import classnames from 'classnames'
-import React, {useState, useCallback, useContext} from 'react'
-import {Dropdown, DropdownMenu, DropdownToggle} from 'reactstrap'
+import React, { useCallback, useContext, useState } from 'react'
 
-import type {TicketMessage} from 'models/ticket/types'
+import classnames from 'classnames'
+import { Dropdown, DropdownMenu, DropdownToggle } from 'reactstrap'
+
+import type { TicketMessage } from 'models/ticket/types'
 import PrivateReplyModal from 'pages/common/components/PrivateReplyToFBComment/PrivateReplyModal/PrivateReplyModal'
 import IntentsFeedback from 'pages/tickets/detail/components/TicketMessages/IntentsFeedback/IntentsFeedback'
 
 import SourceDetailsContext from '../SourceDetailsContext'
-
 import HideAction from './CollapsedActions/HideAction'
 import IntentsAction from './CollapsedActions/IntentsAction'
 import PrivateReplyAction from './CollapsedActions/PrivateReplyAction'
@@ -78,7 +78,7 @@ const CollapsedSourceActions: React.FC<CollapsedSourceActionsProps> = ({
         meta,
         integration_id: integrationId,
         message_id: messageId,
-        sender: {id: senderId},
+        sender: { id: senderId },
         id: ticketMessageId,
         ticket_id: ticketId,
         body_text: bodyText,
@@ -86,7 +86,7 @@ const CollapsedSourceActions: React.FC<CollapsedSourceActionsProps> = ({
         created_datetime: messageCreatedDatetime,
     } = message
 
-    const {setFocus} = useContext(SourceDetailsContext)
+    const { setFocus } = useContext(SourceDetailsContext)
 
     const [isOpen, setOpen] = useState(false)
 
@@ -136,7 +136,7 @@ const CollapsedSourceActions: React.FC<CollapsedSourceActionsProps> = ({
                         'btn',
                         'btn-secondary',
                         'hidden-sm-down',
-                        css.dropdownToggle
+                        css.dropdownToggle,
                     )}
                 >
                     <i className="material-icons" title="More">

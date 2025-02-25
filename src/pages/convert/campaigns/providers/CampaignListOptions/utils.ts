@@ -1,6 +1,6 @@
 import history from 'pages/history'
 
-import {PartialOptionsParams} from './context'
+import { PartialOptionsParams } from './context'
 
 export function updateUrlWithSearchParams(params: PartialOptionsParams) {
     const currentParams = new URLSearchParams(location.search)

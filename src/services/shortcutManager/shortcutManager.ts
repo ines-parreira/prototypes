@@ -4,12 +4,12 @@ import _get from 'lodash/get'
 import _isFunction from 'lodash/isFunction'
 import _isObject from 'lodash/isObject'
 import _merge from 'lodash/merge'
-import Mousetrap, {ExtendedKeyboardEvent} from 'mousetrap'
+import Mousetrap, { ExtendedKeyboardEvent } from 'mousetrap'
 
 import keymap from 'config/shortcuts'
-import {isEditable} from 'services/common/utils'
+import { isEditable } from 'services/common/utils'
 
-import {getModifier, isButton, closest} from './utils'
+import { closest, getModifier, isButton } from './utils'
 
 const mousetrap = new Mousetrap()
 
@@ -37,7 +37,7 @@ export class ShortcutManager {
     _stopCallback = (
         e: ExtendedKeyboardEvent,
         element: Element,
-        combo: string
+        combo: string,
     ) => {
         // if one of the element's parents
         // has the class "shortcuts-enable" then no need to stop.
@@ -59,7 +59,7 @@ export class ShortcutManager {
         return isEditable(element) || isButton(element)
     }
 
-    _keymap: typeof keymap & {[key: string]: KeyMap} = _clone(keymap)
+    _keymap: typeof keymap & { [key: string]: KeyMap } = _clone(keymap)
 
     _getComponentKeymap(component: string) {
         if (!this._keymap[component] || !this._keymap[component].actions) {
@@ -75,10 +75,10 @@ export class ShortcutManager {
         this._keymap[component] = keymap
     }
 
-    _bound: {name: string; paused: boolean}[] = []
+    _bound: { name: string; paused: boolean }[] = []
     bind(
         component = 'global',
-        actions: {[key: string]: Partial<KeyboardAction>} = {}
+        actions: { [key: string]: Partial<KeyboardAction> } = {},
     ) {
         // allow overwriting shortcut properties from components and
         // merge actions into the keymap object,
@@ -88,7 +88,7 @@ export class ShortcutManager {
         // from different component.
         this._setComponentKeymap(
             component,
-            _merge(this._getComponentKeymap(component), {actions})
+            _merge(this._getComponentKeymap(component), { actions }),
         )
         const index = _findIndex(this._bound, (b) => b.name === component)
 
@@ -194,7 +194,7 @@ export class ShortcutManager {
         const config = _get(
             this._keymap,
             [component, 'actions', actionName],
-            {}
+            {},
         )
 
         if (!config) {

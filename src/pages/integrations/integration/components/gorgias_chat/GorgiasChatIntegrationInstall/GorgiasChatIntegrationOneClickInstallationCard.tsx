@@ -1,13 +1,13 @@
-import {fromJS, Map} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useRef, useState} from 'react'
+import React, { useRef, useState } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { fromJS, Map } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
-import {IntegrationType} from 'models/integration/constants'
+import { IntegrationType } from 'models/integration/constants'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import Modal from 'pages/common/components/modal/Modal'
@@ -15,7 +15,7 @@ import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import SkeletonLoader from 'pages/common/components/SkeletonLoader'
-import {updateOrCreateIntegrationRequest} from 'state/integrations/actions'
+import { updateOrCreateIntegrationRequest } from 'state/integrations/actions'
 import {
     getStoreIntegrations,
     makeGetPreRedirectUri,
@@ -25,10 +25,11 @@ import useShopifyThemeAppExtension from '../hooks/useShopifyThemeAppExtension'
 import useThemeAppExtensionInstallation, {
     getGorgiasMainThemeAppExtensionId,
 } from '../hooks/useThemeAppExtensionInstallation'
-import css from './GorgiasChatIntegrationOneClickInstallationCard.less'
 import GorgiasChatIntegrationVisibilityControls, {
     GorgiasChatIntegrationVisibilityControlsHandle,
 } from './GorgiasChatIntegrationVisibilityControls'
+
+import css from './GorgiasChatIntegrationOneClickInstallationCard.less'
 
 type Props = {
     integration: Map<any, any>
@@ -66,14 +67,14 @@ const GorgiasChatIntegrationOneClickInstallationCard = ({
     const shopIntegrationId = integration.getIn(['meta', 'shop_integration_id'])
 
     const storeIntegration = storeIntegrations.find(
-        (storeIntegration) => storeIntegration.id === shopIntegrationId
+        (storeIntegration) => storeIntegration.id === shopIntegrationId,
     )
     const isStoreOfShopifyType =
         storeIntegration?.type === IntegrationType.Shopify
 
-    const {shouldUseThemeAppExtensionInstallation} =
+    const { shouldUseThemeAppExtensionInstallation } =
         useThemeAppExtensionInstallation(
-            isStoreOfShopifyType ? storeIntegration : undefined
+            isStoreOfShopifyType ? storeIntegration : undefined,
         )
 
     const {
@@ -95,7 +96,7 @@ const GorgiasChatIntegrationOneClickInstallationCard = ({
 
     const getRedirectUri = useAppSelector(makeGetPreRedirectUri)
 
-    const [{loading: isUninstallPending}, handleUninstall] =
+    const [{ loading: isUninstallPending }, handleUninstall] =
         useAsyncFn(async () => {
             const meta: Map<any, any> = integration.get('meta')
 
@@ -120,12 +121,12 @@ const GorgiasChatIntegrationOneClickInstallationCard = ({
             window.open(
                 themeAppExtensionInstallationUrl,
                 '_blank',
-                'noopener noreferrer'
+                'noopener noreferrer',
             )
         }
     }
 
-    const [{loading: isInstallPending}, handleInstall] =
+    const [{ loading: isInstallPending }, handleInstall] =
         useAsyncFn(async () => {
             const shopIntegrationId = integration.getIn([
                 'meta',
@@ -145,7 +146,7 @@ const GorgiasChatIntegrationOneClickInstallationCard = ({
                     .set('shopify_integration_ids', [shopIntegrationId])
                     .setIn(
                         ['installation', 'visibility'],
-                        visibilityControlsRef.current?.visibility
+                        visibilityControlsRef.current?.visibility,
                     ),
             }
 
@@ -155,8 +156,8 @@ const GorgiasChatIntegrationOneClickInstallationCard = ({
                     undefined,
                     null,
                     true,
-                    openShopifyThemeSettingsInNewTabIfNeeded
-                )
+                    openShopifyThemeSettingsInNewTabIfNeeded,
+                ),
             )
         }, [
             integration,
@@ -165,7 +166,7 @@ const GorgiasChatIntegrationOneClickInstallationCard = ({
         ])
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [{loading}, handleShopifyScriptTagScope] = useAsyncFn(async () => {
+    const [{ loading }, handleShopifyScriptTagScope] = useAsyncFn(async () => {
         if (!isInstallOnShopifyCallbackEnabled || hasShopifyScriptTagScope) {
             await handleInstall()
         } else {
@@ -308,7 +309,7 @@ const GorgiasChatIntegrationOneClickInstallationCard = ({
                         <div className={css.installedIcon}>
                             <i
                                 className="material-icons text-success"
-                                style={{fontSize: 24}}
+                                style={{ fontSize: 24 }}
                             >
                                 check_circle
                             </i>

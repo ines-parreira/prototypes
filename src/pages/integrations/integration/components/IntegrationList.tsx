@@ -1,23 +1,24 @@
-import classnames from 'classnames'
-import {List, Map} from 'immutable'
-import moment from 'moment'
-import React, {ReactNode} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {Link, RouteComponentProps} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem, Container, Table} from 'reactstrap'
+import React, { ReactNode } from 'react'
 
-import {isChannel} from 'config'
-import {IntegrationType} from 'models/integration/types'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import classnames from 'classnames'
+import { List, Map } from 'immutable'
+import moment from 'moment'
+import { connect, ConnectedProps } from 'react-redux'
+import { Link, RouteComponentProps } from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem, Container, Table } from 'reactstrap'
+
+import { isChannel } from 'config'
+import { IntegrationType } from 'models/integration/types'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import withRouter from 'pages/common/utils/withRouter'
-import {getIntegrationConfig} from 'state/integrations/helpers'
-import {notify} from 'state/notifications/actions'
-
-import css from '../../../settings/settings.less'
+import { getIntegrationConfig } from 'state/integrations/helpers'
+import { notify } from 'state/notifications/actions'
 
 import NoIntegration from './NoIntegration'
+
+import css from '../../../settings/settings.less'
 
 type Props = {
     integrationType: IntegrationType
@@ -48,7 +49,7 @@ class IntegrationList extends React.Component<Props> {
 
     displayAircallWebhookWarning = (
         integrationType: IntegrationType,
-        integrations: List<Map<any, any>>
+        integrations: List<Map<any, any>>,
     ) => {
         if (integrationType !== IntegrationType.Aircall) {
             return
@@ -58,7 +59,7 @@ class IntegrationList extends React.Component<Props> {
 
         const olderIntegrations = integrations.filter((integration) => {
             return moment(integration!.get('created_datetime')).isBefore(
-                maxDate
+                maxDate,
             )
         })
 
@@ -133,7 +134,7 @@ class IntegrationList extends React.Component<Props> {
                     {alert}
                     {this.displayAircallWebhookWarning(
                         integrationType,
-                        integrations
+                        integrations,
                     )}
 
                     {integrations.isEmpty() && (
@@ -152,7 +153,7 @@ class IntegrationList extends React.Component<Props> {
                             {integrations
                                 .valueSeq()
                                 .map((integration) =>
-                                    integrationToItemDisplay(integration!)
+                                    integrationToItemDisplay(integration!),
                                 )}
                         </tbody>
                     </Table>

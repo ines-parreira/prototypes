@@ -1,5 +1,6 @@
 import React from 'react'
-import {useHistory} from 'react-router-dom'
+
+import { useHistory } from 'react-router-dom'
 
 import outOfRecoveryCodesImage from 'assets/img/auth/out-of-recovery-codes.svg'
 import useSearch from 'hooks/useSearch'

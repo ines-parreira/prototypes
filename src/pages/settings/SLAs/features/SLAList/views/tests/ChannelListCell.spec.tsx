@@ -1,8 +1,9 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {TicketChannel} from 'business/types/ticket'
-import {UISLAPolicy} from 'pages/settings/SLAs/features/SLAList/types'
+import { render } from '@testing-library/react'
+
+import { TicketChannel } from 'business/types/ticket'
+import { UISLAPolicy } from 'pages/settings/SLAs/features/SLAList/types'
 
 import ChannelListCell from '../ChannelListCell'
 
@@ -13,7 +14,9 @@ const mockUISLAPolicy = {
 
 describe('<ChannelList />', () => {
     it('should render a list of channels', () => {
-        const {getByText} = render(<ChannelListCell policy={mockUISLAPolicy} />)
+        const { getByText } = render(
+            <ChannelListCell policy={mockUISLAPolicy} />,
+        )
 
         expect(getByText(TicketChannel.Email)).toBeInTheDocument()
         expect(getByText(TicketChannel.Sms)).toBeInTheDocument()
@@ -28,8 +31,8 @@ describe('<ChannelList />', () => {
             TicketChannel.Facebook,
             TicketChannel.Twitter,
         ]
-        const {getByText} = render(
-            <ChannelListCell policy={{...mockUISLAPolicy, channels}} />
+        const { getByText } = render(
+            <ChannelListCell policy={{ ...mockUISLAPolicy, channels }} />,
         )
 
         expect(getByText('+1')).toBeInTheDocument()

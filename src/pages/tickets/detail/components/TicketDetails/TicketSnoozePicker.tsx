@@ -1,10 +1,11 @@
-import moment, {Moment} from 'moment-timezone'
-import React, {ReactNode} from 'react'
+import React, { ReactNode } from 'react'
 
-import {TimeFormatType} from 'constants/datetime'
+import moment, { Moment } from 'moment-timezone'
+
+import { TimeFormatType } from 'constants/datetime'
 import useAppSelector from 'hooks/useAppSelector'
 import DatePicker from 'pages/common/forms/DatePicker'
-import {getTimeFormatPreferenceSetting} from 'state/currentUser/selectors'
+import { getTimeFormatPreferenceSetting } from 'state/currentUser/selectors'
 
 type Props = {
     children?: ReactNode
@@ -27,7 +28,7 @@ const TicketSnoozePicker = ({
 
     const formattedDate = moment.tz(datetime, timezone!)
     const snoozeDatetime = formattedDate.isValid() ? formattedDate : moment()
-    const ranges: {[label: string]: [Moment, Moment]} = {
+    const ranges: { [label: string]: [Moment, Moment] } = {
         '1 hour': [moment().add(1, 'hours'), moment().add(1, 'hours')],
         '3 hours': [moment().add(3, 'hours'), moment().add(3, 'hours')],
         '6 hours': [moment().add(6, 'hours'), moment().add(6, 'hours')],

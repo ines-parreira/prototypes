@@ -1,6 +1,8 @@
-import {LoadingSpinner, Skeleton} from '@gorgias/merchant-ui-kit'
+import React, { ReactNode } from 'react'
+
 import classNames from 'classnames'
-import React, {ReactNode} from 'react'
+
+import { LoadingSpinner, Skeleton } from '@gorgias/merchant-ui-kit'
 
 import css from './TopQuestionCard.less'
 
@@ -11,11 +13,11 @@ type Props = {
     onDismiss: () => Promise<void>
 }
 
-const Header = ({children}: {children: ReactNode}) => (
+const Header = ({ children }: { children: ReactNode }) => (
     <div className={css.header}>{children}</div>
 )
 
-const TicketsCount = ({ticketsCount}: Pick<Props, 'ticketsCount'>) => (
+const TicketsCount = ({ ticketsCount }: Pick<Props, 'ticketsCount'>) => (
     <div className={css.ticketsCount}>
         <span>
             {ticketsCount} {ticketsCount > 1 ? 'tickets' : 'ticket'}
@@ -23,7 +25,7 @@ const TicketsCount = ({ticketsCount}: Pick<Props, 'ticketsCount'>) => (
     </div>
 )
 
-const Title = ({title}: Pick<Props, 'title'>) => (
+const Title = ({ title }: Pick<Props, 'title'>) => (
     <div className={css.title}>
         <span>
             <i className="material-icons rounded mr-1">article</i> {title}
@@ -31,7 +33,7 @@ const Title = ({title}: Pick<Props, 'title'>) => (
     </div>
 )
 
-const CreateArticle = ({onCreateArticle}: Pick<Props, 'onCreateArticle'>) => {
+const CreateArticle = ({ onCreateArticle }: Pick<Props, 'onCreateArticle'>) => {
     const [isCreating, setIsCreating] = React.useState(false)
 
     return isCreating ? (
@@ -54,7 +56,7 @@ const CreateArticle = ({onCreateArticle}: Pick<Props, 'onCreateArticle'>) => {
     )
 }
 
-const Dismiss = ({onDismiss}: Pick<Props, 'onDismiss'>) => {
+const Dismiss = ({ onDismiss }: Pick<Props, 'onDismiss'>) => {
     const [isDismissing, setIsDismissing] = React.useState(false)
 
     return (
@@ -96,7 +98,7 @@ export const TopQuestionCard = ({
 
 export const TopQuestionCardGhost = () => <div className={css.container}></div>
 
-const LoadingDiv = ({heightPx}: {heightPx: number}) => (
+const LoadingDiv = ({ heightPx }: { heightPx: number }) => (
     <Skeleton height={heightPx} baseColor="#d2d7de" highlightColor="#f4f5f7" />
 )
 

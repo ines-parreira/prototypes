@@ -1,5 +1,6 @@
-import {useQueryClient} from '@tanstack/react-query'
-import {useEffect, useMemo, useState} from 'react'
+import { useEffect, useMemo, useState } from 'react'
+
+import { useQueryClient } from '@tanstack/react-query'
 
 import {
     channelConnectionKeys,
@@ -12,14 +13,17 @@ import {
     ChannelConnectionCreatePayload,
     ChannelConnectionListOptions,
 } from 'models/convert/channelConnection/types'
-import {GorgiasChatIntegration, IntegrationType} from 'models/integration/types'
+import {
+    GorgiasChatIntegration,
+    IntegrationType,
+} from 'models/integration/types'
 import useGetChatInstallationStatus from 'pages/convert/common/hooks/useGetChatInstallationStatus'
 
 const READ_RETRIES = 3
 
 export const useGetOrCreateChannelConnection = (
     integration: GorgiasChatIntegration | undefined,
-    retries = READ_RETRIES
+    retries = READ_RETRIES,
 ) => {
     const queryClient = useQueryClient()
 
@@ -38,10 +42,10 @@ export const useGetOrCreateChannelConnection = (
 
     const shouldFetchList = useMemo(
         () => Object.keys(options).length > 0,
-        [options]
+        [options],
     )
 
-    const {installed, method} = useGetChatInstallationStatus(integration)
+    const { installed, method } = useGetChatInstallationStatus(integration)
     const channelConnectionData: ChannelConnectionCreatePayload =
         useMemo(() => {
             const data: ChannelConnectionCreatePayload = {

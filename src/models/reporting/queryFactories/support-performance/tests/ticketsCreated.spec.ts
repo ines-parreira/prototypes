@@ -1,4 +1,4 @@
-import {OrderDirection} from 'models/api/types'
+import { OrderDirection } from 'models/api/types'
 import {
     TicketDimension,
     TicketMeasure,
@@ -17,7 +17,7 @@ import {
     ReportingFilterOperator,
     ReportingGranularity,
 } from 'models/reporting/types'
-import {LegacyStatsFilters, StatsFilters} from 'models/stat/types'
+import { LegacyStatsFilters, StatsFilters } from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
@@ -130,7 +130,7 @@ describe('ticketsCreatedTimeSeriesQueryFactory', () => {
         const query = ticketsCreatedTimeSeriesQueryFactory(
             statsFilters,
             timezone,
-            granularity
+            granularity,
         )
 
         expect(query).toEqual({
@@ -171,7 +171,7 @@ describe('ticketsCreatedTimeSeriesQueryFactory', () => {
         const query = ticketsCreatedTimeSeriesQueryFactory(
             filters,
             timezone,
-            granularity
+            granularity,
         )
 
         expect(query).toEqual({
@@ -229,7 +229,7 @@ describe('ticketsCreatedPerTicketDrillDownQueryFactory', () => {
     it('should build expected query', () => {
         const query = ticketsCreatedPerTicketDrillDownQueryFactory(
             statsFilters,
-            timezone
+            timezone,
         )
 
         expect(query).toEqual({
@@ -251,7 +251,7 @@ describe('ticketsCreatedPerTicketDrillDownQueryFactory', () => {
         const query = ticketsCreatedPerTicketDrillDownQueryFactory(
             statsFilters,
             timezone,
-            sorting
+            sorting,
         )
 
         expect(query).toEqual({

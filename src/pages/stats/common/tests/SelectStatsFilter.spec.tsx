@@ -1,6 +1,7 @@
-import {render} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -15,13 +16,13 @@ describe('<SelectStatsFilter />', () => {
     }
 
     const items = [
-        {label: 'Api', value: '1', type: 'api'},
-        {label: 'Chat', value: '2', type: 'chat'},
-        {label: 'Email', value: '3', type: 'email'},
+        { label: 'Api', value: '1', type: 'api' },
+        { label: 'Chat', value: '2', type: 'chat' },
+        { label: 'Email', value: '3', type: 'email' },
     ]
 
     it('should render a filter with items', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore({})}>
                 <SelectStatsFilter {...commonProps}>
                     {items.map((item) => (
@@ -32,7 +33,7 @@ describe('<SelectStatsFilter />', () => {
                         />
                     ))}
                 </SelectStatsFilter>
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()

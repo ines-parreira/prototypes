@@ -1,8 +1,9 @@
-import {render} from '@testing-library/react'
-import _noop from 'lodash/noop'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {AvailableIntentItem} from '../AvailableIntentItem'
+import { render } from '@testing-library/react'
+import _noop from 'lodash/noop'
+
+import { AvailableIntentItem } from '../AvailableIntentItem'
 
 const minProps: ComponentProps<typeof AvailableIntentItem> = {
     messageId: 1,
@@ -18,13 +19,13 @@ const minProps: ComponentProps<typeof AvailableIntentItem> = {
 
 describe('<AvailableIntentItem/>', () => {
     it('should display the available intent with an enable add button', () => {
-        const {container} = render(<AvailableIntentItem {...minProps} />)
+        const { container } = render(<AvailableIntentItem {...minProps} />)
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should display the available intent with a disabled add button and a tooltip', () => {
-        const {container} = render(
-            <AvailableIntentItem {...minProps} isDisabled={true} />
+        const { container } = render(
+            <AvailableIntentItem {...minProps} isDisabled={true} />,
         )
         expect(container.firstChild).toMatchSnapshot()
     })

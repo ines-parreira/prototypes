@@ -12,7 +12,7 @@ export function buildPasswordAnd2FaText(hasPassword: boolean) {
 
 export function check2FARequired(
     twoFAEnforcedDatetime: Maybe<string>,
-    has2FAEnabled: boolean
+    has2FAEnabled: boolean,
 ) {
     if (!twoFAEnforcedDatetime) {
         return false

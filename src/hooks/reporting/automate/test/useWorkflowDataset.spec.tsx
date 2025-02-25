@@ -1,16 +1,17 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
-import moment from 'moment'
 import React from 'react'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
+import moment from 'moment'
 
 import {
     useWorkflowDataset,
     useWorkflowStepDatasetTrend,
 } from 'hooks/reporting/automate/useWorkflowDataset'
-import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
-import {WorkflowStatsFilters} from 'models/stat/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { useMetricPerDimension } from 'hooks/reporting/useMetricPerDimension'
+import { WorkflowStatsFilters } from 'models/stat/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 const queryClient = mockQueryClient()
 const timezone = 'UTC'
@@ -117,10 +118,10 @@ const workflowStepDropoffMock = [
 ]
 
 const steps = [
-    {id: '01J0TNP9PYAF1K20MHTPJJ9TDK', kind: 'message', settings: {}},
-    {id: '01J0TNPZA42S2YMV18WW2X00JZ', kind: 'message', settings: {}},
-    {id: '01J0TNPZA4XSKK0DG5TDKR02FK', kind: 'end', settings: {}},
-    {id: '01J0TNP9PYPAVEYD4Z19EKH9GW', kind: 'handover', settings: {}},
+    { id: '01J0TNP9PYAF1K20MHTPJJ9TDK', kind: 'message', settings: {} },
+    { id: '01J0TNPZA42S2YMV18WW2X00JZ', kind: 'message', settings: {} },
+    { id: '01J0TNPZA4XSKK0DG5TDKR02FK', kind: 'end', settings: {} },
+    { id: '01J0TNP9PYPAVEYD4Z19EKH9GW', kind: 'handover', settings: {} },
 ]
 
 describe('useWorkflowDataset', () => {
@@ -136,41 +137,41 @@ describe('useWorkflowDataset', () => {
         })
 
         jest.spyOn(queryClient, 'invalidateQueries')
-        const {result} = renderHook(
+        const { result } = renderHook(
             () => useWorkflowDataset(filters, timezone, steps as any),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         {children}
                     </QueryClientProvider>
                 ),
-            }
+            },
         )
 
         expect(result.current).toMatchObject({
             workflowMetrics: {
                 workflowAutomatedInteractions: {
-                    data: {prevValue: null, value: 3},
+                    data: { prevValue: null, value: 3 },
                     isError: false,
                     isFetching: true,
                 },
                 workflowAutomationRate: {
-                    data: {prevValue: 1, value: 1},
+                    data: { prevValue: 1, value: 1 },
                     isError: false,
                     isFetching: true,
                 },
                 workflowDropoff: {
-                    data: {prevValue: null, value: 0},
+                    data: { prevValue: null, value: 0 },
                     isError: false,
                     isFetching: true,
                 },
                 workflowTicketCreated: {
-                    data: {prevValue: null, value: 0},
+                    data: { prevValue: null, value: 0 },
                     isError: false,
                     isFetching: true,
                 },
                 workflowTotalViews: {
-                    data: {prevValue: null, value: 3},
+                    data: { prevValue: null, value: 3 },
                     isError: false,
                     isFetching: true,
                 },
@@ -199,15 +200,15 @@ describe('useWorkflowDataset', () => {
         })
 
         jest.spyOn(queryClient, 'invalidateQueries')
-        const {result} = renderHook(
+        const { result } = renderHook(
             () => useWorkflowStepDatasetTrend(filters, timezone, steps as any),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         {children}
                     </QueryClientProvider>
                 ),
-            }
+            },
         )
 
         expect(result.current.data).toHaveProperty('01J0TNP9PYAF1K20MHTPJJ9TDK')

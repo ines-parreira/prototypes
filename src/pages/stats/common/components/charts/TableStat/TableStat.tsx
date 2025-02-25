@@ -1,17 +1,18 @@
-import {Tooltip, Badge} from '@gorgias/merchant-ui-kit'
+import React, { Component, ReactText } from 'react'
+
 import classnames from 'classnames'
-import {Map, List} from 'immutable'
+import { List, Map } from 'immutable'
 import _isFunction from 'lodash/isFunction'
 import _trim from 'lodash/trim'
 import _truncate from 'lodash/truncate'
 import moment from 'moment-timezone'
-import React, {Component, ReactText} from 'react'
-import {Link, RouteComponentProps} from 'react-router-dom'
-import {Table} from 'reactstrap'
+import { Link, RouteComponentProps } from 'react-router-dom'
+import { Table } from 'reactstrap'
+
+import { Badge, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import expandDown from 'assets/img/infobar/expand-down.svg'
 import expandUp from 'assets/img/infobar/expand-up-blue.svg'
-
 import {
     SATISFACTION_SURVEY_MAX_COMMENT_LENGTH,
     SATISFACTION_SURVEY_MAX_SCORE,
@@ -22,13 +23,13 @@ import {
     StatValueType,
     TICKET_MAX_SUBJECT_LENGTH,
 } from 'config/stats'
-import {Integration, StoreIntegration} from 'models/integration/types'
-import {REASONS_DROPDOWN_OPTIONS} from 'models/selfServiceConfiguration/constants'
-import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
-import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
-import {LegacyStatsFilters} from 'models/stat/types'
-import {WorkflowConfigurationShallow} from 'pages/automate/workflows/models/workflowConfiguration.types'
-import {SelectableOption} from 'pages/common/forms/SelectField/types'
+import { Integration, StoreIntegration } from 'models/integration/types'
+import { REASONS_DROPDOWN_OPTIONS } from 'models/selfServiceConfiguration/constants'
+import { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
+import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
+import { LegacyStatsFilters } from 'models/stat/types'
+import { WorkflowConfigurationShallow } from 'pages/automate/workflows/models/workflowConfiguration.types'
+import { SelectableOption } from 'pages/common/forms/SelectField/types'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import withRouter from 'pages/common/utils/withRouter'
 import DistributionVariantStat, {
@@ -78,7 +79,7 @@ export class TableStat extends Component<
 
     _getShopTypeAndShopName = (shopIntegrationId: number) => {
         const shopIntegration = this.props.integrations?.find(
-            (integration) => integration.id === shopIntegrationId
+            (integration) => integration.id === shopIntegrationId,
         ) as Maybe<StoreIntegration>
 
         if (!shopIntegration) {
@@ -96,9 +97,9 @@ export class TableStat extends Component<
         line: List<any>,
         metric: Map<any, any>,
         lineIndex: number,
-        metricIndex: number
+        metricIndex: number,
     ) => {
-        const {meta, config, context, data} = this.props
+        const { meta, config, context, data } = this.props
         const axis = data.getIn(['axes', 'x', metricIndex]) as Map<any, any>
         const type = axis.get('type')
         const callbackData = {
@@ -117,13 +118,13 @@ export class TableStat extends Component<
             'cell',
         ]) as StatConfigCallbacks['cell']
         if (!_isFunction(callback)) {
-            callback = ({value}) => value
+            callback = ({ value }) => value
         }
 
         switch (type) {
             case StatValueType.Issues: {
                 const value = (metric.get('value') as Map<any, any>).sort(
-                    (a, b) => b - a
+                    (a, b) => b - a,
                 )
                 return (
                     <div>
@@ -132,7 +133,7 @@ export class TableStat extends Component<
                                 const translatedIssue = (
                                     REASONS_DROPDOWN_OPTIONS as SelectableOption[]
                                 ).find(
-                                    (option) => option.value === issue
+                                    (option) => option.value === issue,
                                 )?.label
 
                                 return (
@@ -157,7 +158,7 @@ export class TableStat extends Component<
                             openTickets={
                                 callback(
                                     callbackData,
-                                    callbackContext
+                                    callbackContext,
                                 ) as number
                             }
                             channelsBreakdown={details}
@@ -197,7 +198,7 @@ export class TableStat extends Component<
                                             metric.getIn([
                                                 'extra',
                                                 'lastSession',
-                                            ])
+                                            ]),
                                         ).format('hh:mm a')}
                                     </>
                                 ) : metric.getIn(['extra', 'firstSession']) ? (
@@ -207,7 +208,7 @@ export class TableStat extends Component<
                                             metric.getIn([
                                                 'extra',
                                                 'firstSession',
-                                            ])
+                                            ]),
                                         ).format('hh:mm a')}
                                     </>
                                 ) : null}
@@ -223,7 +224,7 @@ export class TableStat extends Component<
                                         ? formatDuration(value)
                                         : 'No information',
                                 },
-                                context
+                                context,
                             )}
                         </span>
                     </div>
@@ -256,11 +257,11 @@ export class TableStat extends Component<
                                               'name',
                                           ]),
                                       },
-                                      context
+                                      context,
                                   )
                                 : callback(
-                                      {...callbackData, value: 'Unassigned'},
-                                      context
+                                      { ...callbackData, value: 'Unassigned' },
+                                      context,
                                   )}
                         </div>
                     </div>
@@ -268,15 +269,15 @@ export class TableStat extends Component<
             }
             case StatValueType.Delta: {
                 const previousStartDatetime = moment(
-                    meta.get('previous_start_datetime')
+                    meta.get('previous_start_datetime'),
                 )
                 const previousEndDatetime = moment(
-                    meta.get('previous_end_datetime')
+                    meta.get('previous_end_datetime'),
                 )
 
                 const tooltipDelta = formatComparedPeriodString(
                     previousStartDatetime,
-                    previousEndDatetime
+                    previousEndDatetime,
                 )
 
                 const id = `difference-${lineIndex}`
@@ -321,13 +322,13 @@ export class TableStat extends Component<
                         ...callbackData,
                         value: `${metric.get('value') as number}%`,
                     },
-                    callbackContext
+                    callbackContext,
                 )
             }
             case StatValueType.QuickResponseAutomationRate: {
                 const value = metric.get('value') as number
                 const [shopType, shopName] = this._getShopTypeAndShopName(
-                    metric.get('shop_integration_id')
+                    metric.get('shop_integration_id'),
                 )
 
                 if (!shopType || !shopName) {
@@ -354,7 +355,7 @@ export class TableStat extends Component<
                                 <span
                                     className={classnames(
                                         'material-icons',
-                                        css.lowAutomationRateIcon
+                                        css.lowAutomationRateIcon,
                                     )}
                                     id={tooltipId}
                                 >
@@ -374,19 +375,19 @@ export class TableStat extends Component<
 
                 return (
                     this.props.workflowConfigurations?.find(
-                        (configuration) => configuration.id === value
+                        (configuration) => configuration.id === value,
                     )?.name ?? value
                 )
             }
             case StatValueType.WorkflowAutomationRate: {
                 const value = metric.get('value') as number
                 const [shopType, shopName] = this._getShopTypeAndShopName(
-                    metric.get('shop_integration_id')
+                    metric.get('shop_integration_id'),
                 )
                 const configurationId = metric.get('configuration_id') as string
                 const workflowConfiguration =
                     this.props.workflowConfigurations?.find(
-                        (configuration) => configuration.id === configurationId
+                        (configuration) => configuration.id === configurationId,
                     )
 
                 if (!workflowConfiguration || !shopType || !shopName) {
@@ -424,7 +425,7 @@ export class TableStat extends Component<
             case StatValueType.Currency: {
                 return formatCurrency(
                     metric.get('value'),
-                    metric.get('currency')
+                    metric.get('currency'),
                 ) as string
             }
             case StatValueType.CustomerLink: {
@@ -450,7 +451,7 @@ export class TableStat extends Component<
                             _trim(metric.get('comment')) || 'Go to ticket',
                             {
                                 length: SATISFACTION_SURVEY_MAX_COMMENT_LENGTH,
-                            }
+                            },
                         )}
                     </Link>
                 )
@@ -463,7 +464,7 @@ export class TableStat extends Component<
                         {_truncate(
                             metric.get('subject') ||
                                 `Ticket #${metric.get('ticket_id') as string}`,
-                            {length: TICKET_MAX_SUBJECT_LENGTH}
+                            { length: TICKET_MAX_SUBJECT_LENGTH },
                         )}
                     </Link>
                 )
@@ -483,7 +484,7 @@ export class TableStat extends Component<
                         <a
                             className={classnames(
                                 'material-icons-outlined',
-                                css.openArticle
+                                css.openArticle,
                             )}
                             href={metric.getIn(['value', 'url'])}
                             target={'_blank'}
@@ -497,7 +498,7 @@ export class TableStat extends Component<
             case StatValueType.QuickResponseTitle: {
                 const value = metric.get('value') as number
                 const [shopType, shopName] = this._getShopTypeAndShopName(
-                    metric.get('shop_integration_id')
+                    metric.get('shop_integration_id'),
                 )
 
                 if (!shopType || !shopName) {
@@ -518,7 +519,7 @@ export class TableStat extends Component<
                 const value = metric!.get('value') as string
                 if (type === StatValueType.WorkflowName) {
                     return !this.props.workflowConfigurations?.some(
-                        (configuration) => configuration.id === value
+                        (configuration) => configuration.id === value,
                     )
                 }
                 return false
@@ -528,9 +529,9 @@ export class TableStat extends Component<
 
     // Render the table
     render() {
-        const {data, config} = this.props
+        const { data, config } = this.props
         const showLines = config.getIn(['tableOptions', 'showLines'])
-        const {expanded} = this.state
+        const { expanded } = this.state
 
         const initialLines = data.get('lines') as List<List<Map<any, any>>>
         const filteredLines =
@@ -554,20 +555,20 @@ export class TableStat extends Component<
                                 className={classnames(
                                     css.lineCell,
                                     css[`${type}`],
-                                    'link-full-td'
+                                    'link-full-td',
                                 )}
                             >
                                 <span
                                     className={classnames(
                                         css['cell-wrapper'],
-                                        'cell-content'
+                                        'cell-content',
                                     )}
                                 >
                                     {this._renderCell(
                                         line!,
                                         metric!,
                                         lineIdx!,
-                                        metricIdx!
+                                        metricIdx!,
                                     )}
                                 </span>
                             </td>
@@ -643,7 +644,7 @@ export class TableStat extends Component<
                 {displayExpandButton && (
                     <button
                         onClick={() =>
-                            this.setState({expanded: !this.state.expanded})
+                            this.setState({ expanded: !this.state.expanded })
                         }
                         className={css.showLinesButton}
                     >

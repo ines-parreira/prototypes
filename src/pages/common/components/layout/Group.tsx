@@ -1,4 +1,3 @@
-import classnames from 'classnames'
 import React, {
     Children,
     createContext,
@@ -7,6 +6,8 @@ import React, {
     ReactNode,
     useMemo,
 } from 'react'
+
+import classnames from 'classnames'
 
 import css from './Group.less'
 
@@ -46,15 +47,15 @@ export default function Group({
             orientation === 'vertical'
                 ? ['top', 'middle', 'bottom']
                 : ['left', 'center', 'right'],
-        [orientation]
+        [orientation],
     )
     const validChildren = useMemo<ReactElement[]>(
         () => Children.toArray(children).filter(isValidElement),
-        [children]
+        [children],
     )
 
     return (
-        <GroupContext.Provider value={{isDisabled}}>
+        <GroupContext.Provider value={{ isDisabled }}>
             <span
                 className={classnames(className, css.group, css[orientation])}
             >

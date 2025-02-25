@@ -1,20 +1,19 @@
-import React, {useContext} from 'react'
+import React, { useContext } from 'react'
 
-import {LEAF_TYPES} from 'models/widget/constants'
+import { LEAF_TYPES } from 'models/widget/constants'
 import {
-    Template as TemplateType,
-    isSourceRecord,
-    Source,
-    isSourceArray,
-    isWrapperTemplate,
     isCardTemplate,
     isLeafType,
     isListTemplate,
+    isSourceArray,
+    isSourceRecord,
+    isWrapperTemplate,
+    Source,
+    Template as TemplateType,
 } from 'models/widget/types'
-import {EditionContext} from 'providers/infobar/EditionContext'
-import {STANDALONE_WIDGET_TYPE} from 'state/widgets/constants'
-
-import {WidgetContext} from 'Widgets/contexts/WidgetContext'
+import { EditionContext } from 'providers/infobar/EditionContext'
+import { STANDALONE_WIDGET_TYPE } from 'state/widgets/constants'
+import { WidgetContext } from 'Widgets/contexts/WidgetContext'
 import {
     getStringFromData,
     getValueFromData,
@@ -24,12 +23,12 @@ import Field from 'Widgets/modules/Template/modules/Field'
 import List from 'Widgets/modules/Template/modules/List'
 import Wrapper from 'Widgets/modules/Template/modules/Wrapper'
 
-import {CustomizationContext} from '../contexts/CustomizationContext'
+import { CustomizationContext } from '../contexts/CustomizationContext'
 import {
     seekCardCustomization,
     seekFieldCustomization,
 } from '../helpers/customization'
-import {seekNextValues} from '../helpers/iterator'
+import { seekNextValues } from '../helpers/iterator'
 
 type Props = {
     template: TemplateType | null
@@ -50,7 +49,7 @@ export function Template({
     source,
     isFirstOfList,
 }: Props) {
-    const {isEditing} = useContext(EditionContext)
+    const { isEditing } = useContext(EditionContext)
     const widget = useContext(WidgetContext)
     const customization = useContext(CustomizationContext)
 
@@ -100,7 +99,7 @@ export function Template({
 
         const cardCustomization = seekCardCustomization(
             customization?.card,
-            template
+            template,
         )
 
         return (
@@ -126,7 +125,7 @@ export function Template({
     const fieldCustomization = seekFieldCustomization(
         customization?.field,
         source,
-        template
+        template,
     )
     return (
         <Field

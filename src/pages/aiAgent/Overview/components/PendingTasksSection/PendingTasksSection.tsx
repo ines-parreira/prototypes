@@ -1,17 +1,18 @@
+import React, { useState } from 'react'
+
 import classNames from 'classnames'
-import React, {useState} from 'react'
 
 import partyPopperImg from 'assets/img/ai-agent/ai-agent_party-popper.svg'
+import { CardTitle } from 'pages/aiAgent/Onboarding/components/Card'
+import { OverviewCard } from 'pages/aiAgent/Overview/components/OverviewCard/OverviewCard'
 
-import {CardTitle} from 'pages/aiAgent/Onboarding/components/Card'
-import {OverviewCard} from 'pages/aiAgent/Overview/components/OverviewCard/OverviewCard'
+import { Task } from '../../hooks/pendingTasks/tasks/Task'
+import { PendingTask } from '../PendingTask/PendingTask'
+import { PendingTasksCompletionBar } from '../PendingTasksCompletionBar/PendingTasksCompletionBar'
+import { Expander } from './Expander'
+import { StorePicker } from './StorePicker'
 
-import {Task} from '../../hooks/pendingTasks/tasks/Task'
-import {PendingTask} from '../PendingTask/PendingTask'
-import {PendingTasksCompletionBar} from '../PendingTasksCompletionBar/PendingTasksCompletionBar'
-import {Expander} from './Expander'
 import css from './PendingTasksSection.less'
-import {StorePicker} from './StorePicker'
 
 export const pendingTasksCollapsibleId = 'overview-pending-tasks-collapsible'
 
@@ -72,7 +73,7 @@ export const PendingTasksSection = ({
                             <i
                                 className={classNames(
                                     'material-icons',
-                                    css.titleIcon
+                                    css.titleIcon,
                                 )}
                             >
                                 auto_awesome
@@ -125,7 +126,7 @@ export const PendingTasksSection = ({
                                     isExpanded={isPendingTasksExpanded}
                                     onClick={() =>
                                         setIsPendingTasksExpanded(
-                                            !isPendingTasksExpanded
+                                            !isPendingTasksExpanded,
                                         )
                                     }
                                 />

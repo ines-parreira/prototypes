@@ -1,22 +1,29 @@
-import {Label, Tooltip, Badge, BadgeIcon} from '@gorgias/merchant-ui-kit'
-import React, {Fragment, useCallback, useEffect, useMemo, useState} from 'react'
+import React, {
+    Fragment,
+    useCallback,
+    useEffect,
+    useMemo,
+    useState,
+} from 'react'
 
-import {SegmentEvent} from 'common/segment'
-import {logEventWithSampling} from 'common/segment/segment'
+import { Badge, BadgeIcon, Label, Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { SegmentEvent } from 'common/segment'
+import { logEventWithSampling } from 'common/segment/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     FeedbackOnMessage,
     ResourceFeedbackOnMessage,
 } from 'models/aiAgentFeedback/types'
 import SelectInputBox from 'pages/common/forms/input/SelectInputBox'
-import {useAIAgentGetOtherResources} from 'pages/tickets/detail/hooks/useAIAgentGetOtherResources'
-import {addTags, removeTag} from 'state/ticket/actions'
+import { useAIAgentGetOtherResources } from 'pages/tickets/detail/hooks/useAIAgentGetOtherResources'
+import { addTags, removeTag } from 'state/ticket/actions'
 
-import {RESOURCE_ICONS, RESOURCE_LABELS} from './constants'
+import { RESOURCE_ICONS, RESOURCE_LABELS } from './constants'
 import Deprecated_MultiLevelSelect from './Deprecated_MultiLevelSelect/Deprecated_MultiLevelSelect'
+import InfoIconWithTooltip from './InfoIconWithTooltip'
 
 import css from './FeedbackOtherResourcesSelect.less'
-import InfoIconWithTooltip from './InfoIconWithTooltip'
 
 export const NO_RELEVANT_RESOURCES_LABEL = 'No relevant resources'
 export const AI_NO_RESOURCES_TAG = 'ai_no_resources'
@@ -46,7 +53,7 @@ const FeedbackOtherResourcesSelect = ({
 }: Props) => {
     const [isOpen, setIsOpen] = useState(false)
     const [badgeElements, setBadgeElements] = useState<Array<HTMLSpanElement>>(
-        []
+        [],
     )
     const [isTagOverflowing, setIsTagOverflowing] = useState<Array<boolean>>([])
     const {
@@ -78,8 +85,8 @@ const FeedbackOtherResourcesSelect = ({
             badgeElements.map(
                 (_item, i) =>
                     badgeElements[i]?.offsetWidth <
-                    badgeElements[i]?.scrollWidth
-            )
+                    badgeElements[i]?.scrollWidth,
+            ),
         )
     }, [badgeElements])
 
@@ -90,14 +97,14 @@ const FeedbackOtherResourcesSelect = ({
                     case 'soft_action': {
                         return `${RESOURCE_LABELS.soft_action}${
                             actionsOptions.find(
-                                (option) => option.value === v.resourceId
+                                (option) => option.value === v.resourceId,
                             )?.label
                         }`
                     }
                     case 'hard_action': {
                         return `${RESOURCE_LABELS.hard_action}${
                             actionsOptions.find(
-                                (option) => option.value === v.resourceId
+                                (option) => option.value === v.resourceId,
                             )?.label
                         }`
                     }
@@ -105,7 +112,7 @@ const FeedbackOtherResourcesSelect = ({
                         return `${RESOURCE_LABELS.guidance}${
                             guidanceOptions.find(
                                 (option) =>
-                                    option.value.toString() === v.resourceId
+                                    option.value.toString() === v.resourceId,
                             )?.label
                         }`
                     }
@@ -113,7 +120,7 @@ const FeedbackOtherResourcesSelect = ({
                         return `${RESOURCE_LABELS.article}${
                             articlesOptions.find(
                                 (option) =>
-                                    option.value.toString() === v.resourceId
+                                    option.value.toString() === v.resourceId,
                             )?.label
                         }`
                     }
@@ -121,7 +128,7 @@ const FeedbackOtherResourcesSelect = ({
                         return `${RESOURCE_LABELS.macro}${
                             macrosOptions.find(
                                 (option) =>
-                                    option.value?.toString() === v.resourceId
+                                    option.value?.toString() === v.resourceId,
                             )?.label
                         }`
                     }
@@ -129,7 +136,7 @@ const FeedbackOtherResourcesSelect = ({
                         return `${RESOURCE_LABELS.external_snippet}${
                             snippetsOptions.find(
                                 (option) =>
-                                    option.value.toString() === v.resourceId
+                                    option.value.toString() === v.resourceId,
                             )?.label
                         }`
                     }
@@ -137,7 +144,7 @@ const FeedbackOtherResourcesSelect = ({
                         return `${RESOURCE_LABELS.file_external_snippet}${
                             fileSnippetsOptions.find(
                                 (option) =>
-                                    option.value.toString() === v.resourceId
+                                    option.value.toString() === v.resourceId,
                             )?.label
                         }`
                     }
@@ -172,7 +179,7 @@ const FeedbackOtherResourcesSelect = ({
             SegmentEvent.AiAgentFeedbackOtherReasonSelectClicked,
             {
                 accountId,
-            }
+            },
         )
     }, [accountId])
 
@@ -183,7 +190,7 @@ const FeedbackOtherResourcesSelect = ({
                 : [...values, value]
             setValues(newValues)
         },
-        [values]
+        [values],
     )
 
     const handleSubmitNoRelevantResources = useCallback(
@@ -192,7 +199,7 @@ const FeedbackOtherResourcesSelect = ({
                 await dispatch(addTags(AI_NO_RESOURCES_TAG))
             }
         },
-        [dispatch]
+        [dispatch],
     )
 
     const handleRemoveNoRelevantResources = useCallback(
@@ -201,7 +208,7 @@ const FeedbackOtherResourcesSelect = ({
                 await dispatch(removeTag(AI_NO_RESOURCES_TAG))
             }
         },
-        [dispatch]
+        [dispatch],
     )
 
     const handleApply = useCallback(async () => {
@@ -209,7 +216,7 @@ const FeedbackOtherResourcesSelect = ({
 
         // Submit the new values
         const newValuesToSubmit = values.filter(
-            (value) => !initialFormattedValues.find((val) => val === value)
+            (value) => !initialFormattedValues.find((val) => val === value),
         )
 
         await handleSubmitNoRelevantResources(newValuesToSubmit)
@@ -218,7 +225,7 @@ const FeedbackOtherResourcesSelect = ({
 
         // Check if there are any values to remove
         const valuesToRemove = initialFormattedValues.filter(
-            (value) => !values.find((val) => val === value)
+            (value) => !values.find((val) => val === value),
         )
 
         await handleRemoveNoRelevantResources(valuesToRemove)
@@ -251,7 +258,7 @@ const FeedbackOtherResourcesSelect = ({
             onRemove,
             values,
             handleRemoveNoRelevantResources,
-        ]
+        ],
     )
 
     return (
@@ -263,26 +270,26 @@ const FeedbackOtherResourcesSelect = ({
                 onChange={handleChange}
                 choices={[
                     ...actionsOptions.map(
-                        (action) => `${RESOURCE_LABELS.action}${action.label}`
+                        (action) => `${RESOURCE_LABELS.action}${action.label}`,
                     ),
                     ...guidanceOptions.map(
                         (guidance) =>
-                            `${RESOURCE_LABELS.guidance}${guidance.label}`
+                            `${RESOURCE_LABELS.guidance}${guidance.label}`,
                     ),
                     ...articlesOptions.map(
                         (article) =>
-                            `${RESOURCE_LABELS.article}${article.label}`
+                            `${RESOURCE_LABELS.article}${article.label}`,
                     ),
                     ...snippetsOptions.map(
                         (snippet) =>
-                            `${RESOURCE_LABELS.external_snippet}${snippet.label}`
+                            `${RESOURCE_LABELS.external_snippet}${snippet.label}`,
                     ),
                     ...fileSnippetsOptions.map(
                         (snippet) =>
-                            `${RESOURCE_LABELS.file_external_snippet}${snippet.label}`
+                            `${RESOURCE_LABELS.file_external_snippet}${snippet.label}`,
                     ),
                     ...macrosOptions.map(
-                        (macro) => `${RESOURCE_LABELS.macro}${macro.label}`
+                        (macro) => `${RESOURCE_LABELS.macro}${macro.label}`,
                     ),
                     NO_RELEVANT_RESOURCES_LABEL,
                 ]}
@@ -296,7 +303,10 @@ const FeedbackOtherResourcesSelect = ({
                         Select resources AI Agent should have used
                         <InfoIconWithTooltip
                             id="tooltip-select-ai-agent-rsources"
-                            tooltipProps={{autohide: true, placement: 'bottom'}}
+                            tooltipProps={{
+                                autohide: true,
+                                placement: 'bottom',
+                            }}
                         >
                             <>
                                 Select any existing resources that could have

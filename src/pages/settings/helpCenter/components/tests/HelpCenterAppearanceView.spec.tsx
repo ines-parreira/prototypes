@@ -1,28 +1,29 @@
-import {fireEvent, waitFor} from '@testing-library/react'
-import {fromJS} from 'immutable'
+import React, { FC } from 'react'
+
+import { fireEvent, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
 import _keyBy from 'lodash/keyBy'
-import React, {FC} from 'react'
-import {Provider} from 'react-redux'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {billingState} from 'fixtures/billing'
-import {FontCatalogueModal} from 'pages/settings/common/FontSelectField/components/FontCatalogueModal/FontCatalogueModal'
-import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
-import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
+import { billingState } from 'fixtures/billing'
+import { FontCatalogueModal } from 'pages/settings/common/FontSelectField/components/FontCatalogueModal/FontCatalogueModal'
+import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
+import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
-import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
-import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
-import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
-import {RootState, StoreDispatch} from 'state/types'
-import {initialState as uiState} from 'state/ui/helpCenter/reducer'
-import {renderWithRouter} from 'utils/testing'
+import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
+import { initialState as articlesState } from 'state/entities/helpCenter/articles/reducer'
+import { initialState as categoriesState } from 'state/entities/helpCenter/categories/reducer'
+import { RootState, StoreDispatch } from 'state/types'
+import { initialState as uiState } from 'state/ui/helpCenter/reducer'
+import { renderWithRouter } from 'utils/testing'
 
-import {getHelpCenterTranslationsResponseFixture} from '../../fixtures/getHelpCenterTranslationsResponse.fixture'
-import {HelpCenterTranslationProvider} from '../../providers/HelpCenterTranslation'
-import {useHasAccessToAILibrary} from '../AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
-import {HelpCenterAppearanceView} from '../HelpCenterAppearanceView/HelpCenterAppearanceView'
+import { getHelpCenterTranslationsResponseFixture } from '../../fixtures/getHelpCenterTranslationsResponse.fixture'
+import { HelpCenterTranslationProvider } from '../../providers/HelpCenterTranslation'
+import { useHasAccessToAILibrary } from '../AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
+import { HelpCenterAppearanceView } from '../HelpCenterAppearanceView/HelpCenterAppearanceView'
 
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
     thunk,
@@ -58,17 +59,17 @@ const defaultState: Partial<RootState> = {
             categories: categoriesState,
         },
     } as any,
-    ui: {helpCenter: {...uiState, currentId: 1}} as any,
+    ui: { helpCenter: { ...uiState, currentId: 1 } } as any,
     billing: fromJS(billingState),
 }
 
 const mockedUpdateHelpCenter = jest
     .fn()
-    .mockResolvedValue({data: getSingleHelpCenterResponseFixture})
+    .mockResolvedValue({ data: getSingleHelpCenterResponseFixture })
 
 const mockedGetHelpCenter = jest
     .fn()
-    .mockResolvedValue({data: getSingleHelpCenterResponseFixture})
+    .mockResolvedValue({ data: getSingleHelpCenterResponseFixture })
 
 const mockedUpdateHelpCenterTranslation = jest.fn()
 const mockedListHelpCenterTranslations = jest
@@ -76,9 +77,9 @@ const mockedListHelpCenterTranslations = jest
     .mockResolvedValue(getHelpCenterTranslationsResponseFixture)
 const mockedListGoogleFonts = jest.fn().mockResolvedValue({
     data: [
-        {family: 'Roboto', category: 'serif'},
-        {family: 'Adriana', category: 'serif'},
-        {family: 'Tambourin', category: 'serif'},
+        { family: 'Roboto', category: 'serif' },
+        { family: 'Adriana', category: 'serif' },
+        { family: 'Tambourin', category: 'serif' },
     ],
 })
 
@@ -94,7 +95,7 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
                 listGoogleFonts: mockedListGoogleFonts,
             },
         }),
-        useAbilityChecker: () => ({isPassingRulesCheck: () => true}),
+        useAbilityChecker: () => ({ isPassingRulesCheck: () => true }),
     }
 })
 
@@ -107,10 +108,10 @@ jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 ;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
 
 jest.mock(
-    'pages/settings/common/FontSelectField/components/FontCatalogueModal/FontCatalogueModal'
+    'pages/settings/common/FontSelectField/components/FontCatalogueModal/FontCatalogueModal',
 )
 ;(FontCatalogueModal as jest.Mock).mockReturnValue(
-    <div id="FontCatalogueModal-mocked"></div>
+    <div id="FontCatalogueModal-mocked"></div>,
 )
 
 const route = {
@@ -118,7 +119,7 @@ const route = {
     route: '/app/settings/help-center/1/appearance',
 }
 
-const DefaultProviders: FC = ({children}) => (
+const DefaultProviders: FC = ({ children }) => (
     <Provider store={mockedStore(defaultState)}>
         <HelpCenterTranslationProvider
             helpCenter={getSingleHelpCenterResponseFixture}
@@ -130,23 +131,23 @@ const DefaultProviders: FC = ({children}) => (
 
 describe('<HelpCenterAppearanceView />', () => {
     it('should render the component', () => {
-        const {container} = renderWithRouter(
+        const { container } = renderWithRouter(
             <DefaultProviders>
                 <HelpCenterAppearanceView />
             </DefaultProviders>,
 
-            route
+            route,
         )
 
         expect(container).toMatchSnapshot()
     })
 
     it('disables "Save Changes" button if there are no changes', () => {
-        const {getByRole, getByLabelText} = renderWithRouter(
+        const { getByRole, getByLabelText } = renderWithRouter(
             <DefaultProviders>
                 <HelpCenterAppearanceView />
             </DefaultProviders>,
-            route
+            route,
         )
 
         const saveBtn = getByRole('button', {
@@ -160,7 +161,7 @@ describe('<HelpCenterAppearanceView />', () => {
         fireEvent.click(
             getByLabelText('Dark Theme', {
                 selector: '[role="radio"]',
-            })
+            }),
         )
         expect(saveBtn).toBeAriaEnabled()
 
@@ -168,17 +169,17 @@ describe('<HelpCenterAppearanceView />', () => {
         fireEvent.click(
             getByLabelText('Light Theme', {
                 selector: '[role="radio"]',
-            })
+            }),
         )
         expect(saveBtn).toBeAriaDisabled()
     })
 
     it('restores the default state when "Cancel" is clicked', () => {
-        const {getByRole, getByLabelText} = renderWithRouter(
+        const { getByRole, getByLabelText } = renderWithRouter(
             <DefaultProviders>
                 <HelpCenterAppearanceView />
             </DefaultProviders>,
-            route
+            route,
         )
 
         const cancelBtn = getByRole('button', {
@@ -191,7 +192,7 @@ describe('<HelpCenterAppearanceView />', () => {
         fireEvent.click(
             getByLabelText('Dark Theme', {
                 selector: '[role="radio"]',
-            })
+            }),
         )
         expect(saveBtn).toBeAriaEnabled()
 
@@ -224,14 +225,14 @@ describe('<HelpCenterAppearanceView />', () => {
                         categories: categoriesState,
                     },
                 } as any,
-                ui: {helpCenter: {...uiState, currentId: 1}} as any,
+                ui: { helpCenter: { ...uiState, currentId: 1 } } as any,
             }
 
-            const {getByText, getByRole} = renderWithRouter(
+            const { getByText, getByRole } = renderWithRouter(
                 <Provider store={mockedStore(defaultState)}>
                     <HelpCenterAppearanceView />
                 </Provider>,
-                route
+                route,
             )
 
             // dismissing the only image set to a URL value
@@ -240,7 +241,7 @@ describe('<HelpCenterAppearanceView />', () => {
             fireEvent.click(
                 getByRole('button', {
                     name: 'Save Changes',
-                })
+                }),
             )
 
             await waitFor(() => {
@@ -251,9 +252,9 @@ describe('<HelpCenterAppearanceView />', () => {
                     },
                     expect.objectContaining({
                         [imageField]: null,
-                    })
+                    }),
                 )
             })
-        }
+        },
     )
 })

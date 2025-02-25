@@ -1,12 +1,11 @@
-import {renderHook} from '@testing-library/react-hooks/dom'
+import { renderHook } from '@testing-library/react-hooks/dom'
 
-import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import {ticketFieldDefinitions} from 'fixtures/customField'
-import {useMultipleMetricsTrends} from 'hooks/reporting/useMultipleMetricsTrend'
-import {StatsFilters, StatType} from 'models/stat/types'
-
-import {useAutomatedInteractions} from 'pages/aiAgent/Overview/hooks/kpis/useAutomatedInteractions'
-import {assumeMock} from 'utils/testing'
+import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import { ticketFieldDefinitions } from 'fixtures/customField'
+import { useMultipleMetricsTrends } from 'hooks/reporting/useMultipleMetricsTrend'
+import { StatsFilters, StatType } from 'models/stat/types'
+import { useAutomatedInteractions } from 'pages/aiAgent/Overview/hooks/kpis/useAutomatedInteractions'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/useMultipleMetricsTrend')
 const useMultipleMetricsTrendsMock = assumeMock(useMultipleMetricsTrends)
@@ -25,7 +24,7 @@ const filters: StatsFilters = {
 describe('useAutomatedInteractions', () => {
     beforeEach(() => {
         useCustomFieldDefinitionsMock.mockReturnValue({
-            data: {data: ticketFieldDefinitions},
+            data: { data: ticketFieldDefinitions },
             isLoading: false,
         } as any)
     })
@@ -41,8 +40,8 @@ describe('useAutomatedInteractions', () => {
             isFetching: false,
         } as any)
 
-        const {result} = renderHook(() =>
-            useAutomatedInteractions(filters, timezone)
+        const { result } = renderHook(() =>
+            useAutomatedInteractions(filters, timezone),
         )
 
         expect(result.current).toEqual({
@@ -61,8 +60,8 @@ describe('useAutomatedInteractions', () => {
             isFetching: true,
         } as any)
 
-        const {result} = renderHook(() =>
-            useAutomatedInteractions(filters, timezone)
+        const { result } = renderHook(() =>
+            useAutomatedInteractions(filters, timezone),
         )
 
         expect(result.current).toEqual({

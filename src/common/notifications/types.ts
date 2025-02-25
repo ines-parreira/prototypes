@@ -1,9 +1,10 @@
-import type {ChannelType} from '@knocklabs/types'
-import type {ComponentType, ReactNode} from 'react'
+import type { ComponentType, ReactNode } from 'react'
 
-import type {SoundValue} from 'services/NotificationSounds'
+import type { ChannelType } from '@knocklabs/types'
 
-import type {ParentProps} from './components/NotificationContent'
+import type { SoundValue } from 'services/NotificationSounds'
+
+import type { ParentProps } from './components/NotificationContent'
 
 export type Channel = {
     type: ChannelType
@@ -22,7 +23,7 @@ export type Notification<T = unknown> = {
 export type RawNotification<T = unknown> = UnionOmit<Notification<T>, 'id'>
 
 export type Setting = {
-    channels: {[k in ChannelType]?: boolean}
+    channels: { [k in ChannelType]?: boolean }
     sound: '' | SoundValue
 }
 
@@ -44,7 +45,7 @@ export type CategoryConfig = {
 
 export type NotificationConfig<T = unknown> = {
     type: string
-    component: ComponentType<{notification: Notification<T>} & ParentProps>
+    component: ComponentType<{ notification: Notification<T> } & ParentProps>
     mapType?: (notification: Notification<T>) => string
     workflow: string
     settings?: {

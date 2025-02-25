@@ -1,5 +1,3 @@
-import classnames from 'classnames'
-import Clipboard from 'clipboard'
 import React, {
     Dispatch,
     SetStateAction,
@@ -8,7 +6,10 @@ import React, {
     useState,
 } from 'react'
 
-import {RecoveryCode} from 'models/twoFactorAuthentication/types'
+import classnames from 'classnames'
+import Clipboard from 'clipboard'
+
+import { RecoveryCode } from 'models/twoFactorAuthentication/types'
 import Button from 'pages/common/components/button/Button'
 import settingsCss from 'pages/settings/settings.less'
 
@@ -33,7 +34,7 @@ export default function RecoveryCodesStep({
             btoa(
                 recoveryCodes
                     .map((recoveryCode: RecoveryCode) => recoveryCode.code)
-                    .join('\n')
+                    .join('\n'),
             )
 
         const downloadLinkElement = document.createElement('a')
@@ -73,7 +74,7 @@ export default function RecoveryCodesStep({
             <div
                 className={classnames(
                     modalStepsCss.textSection,
-                    settingsCss.mb32
+                    settingsCss.mb32,
                 )}
             >
                 {`Recovery codes are your last resort for account access if you can't receive two-factor codes. We recommend using a password manager for security. Examples include`}{' '}
@@ -149,7 +150,7 @@ export default function RecoveryCodesStep({
                         data-clipboard-text={recoveryCodes
                             .map(
                                 (recoveryCode: RecoveryCode) =>
-                                    recoveryCode.code
+                                    recoveryCode.code,
                             )
                             .join('\n')}
                         leadingIcon="content_copy"

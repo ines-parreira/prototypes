@@ -1,9 +1,10 @@
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import React from 'react'
 
-import {DOCUMENTATION_LINK_TEXT} from 'services/reporting/constants'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
-import {HintTooltip} from '../HintTooltip'
+import { DOCUMENTATION_LINK_TEXT } from 'services/reporting/constants'
+
+import { HintTooltip } from '../HintTooltip'
 
 describe('<HintTooltip />', () => {
     const content = 'Hint tooltip content'
@@ -13,7 +14,7 @@ describe('<HintTooltip />', () => {
 
         fireEvent.mouseOver(screen.getByText('info'))
         await waitFor(() =>
-            expect(screen.getByText(content)).toBeInTheDocument()
+            expect(screen.getByText(content)).toBeInTheDocument(),
         )
     })
 
@@ -23,8 +24,8 @@ describe('<HintTooltip />', () => {
         fireEvent.mouseOver(screen.getByText('info'))
         await waitFor(() =>
             expect(
-                screen.getByText(DOCUMENTATION_LINK_TEXT)
-            ).toBeInTheDocument()
+                screen.getByText(DOCUMENTATION_LINK_TEXT),
+            ).toBeInTheDocument(),
         )
     })
 
@@ -35,12 +36,12 @@ describe('<HintTooltip />', () => {
                 title={content}
                 link="gorgias.com"
                 linkText={customLinkText}
-            />
+            />,
         )
 
         fireEvent.mouseOver(screen.getByText('info'))
         await waitFor(() =>
-            expect(screen.getByText(customLinkText)).toBeInTheDocument()
+            expect(screen.getByText(customLinkText)).toBeInTheDocument(),
         )
     })
 })

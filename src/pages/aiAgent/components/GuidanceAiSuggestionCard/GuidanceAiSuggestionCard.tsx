@@ -1,9 +1,11 @@
-import classNames from 'classnames'
 import React from 'react'
 
-import {TemplateCard} from 'pages/common/components/TemplateCard'
+import classNames from 'classnames'
 
-import {AIGuidance} from '../../types'
+import { TemplateCard } from 'pages/common/components/TemplateCard'
+
+import { AIGuidance } from '../../types'
+
 import css from './GuidanceAiSuggestionCard.less'
 
 type Props = {
@@ -25,7 +27,7 @@ export const GuidanceAiSuggestionCard = ({
                     <i
                         className={classNames(
                             'material-icons',
-                            css.autoAwesome
+                            css.autoAwesome,
                         )}
                     >
                         auto_awesome

@@ -1,31 +1,31 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {screen, fireEvent, within, waitFor} from '@testing-library/react'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
-import {Provider} from 'react-redux'
-import {useParams} from 'react-router-dom'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, screen, waitFor, within } from '@testing-library/react'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {getAiAgentStoreFixture} from 'pages/aiAgent/fixtures/aiAgentStoreFixture'
-import {getStoreConfigurationFixture} from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
-import {useGetOrCreateSnippetHelpCenter} from 'pages/aiAgent/hooks/useGetOrCreateSnippetHelpCenter'
-import {usePublicResources} from 'pages/aiAgent/hooks/usePublicResources'
-import {useAiAgentStoreConfigurationContext} from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
-import {notify} from 'state/notifications/actions'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { getAiAgentStoreFixture } from 'pages/aiAgent/fixtures/aiAgentStoreFixture'
+import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
+import { useGetOrCreateSnippetHelpCenter } from 'pages/aiAgent/hooks/useGetOrCreateSnippetHelpCenter'
+import { usePublicResources } from 'pages/aiAgent/hooks/usePublicResources'
+import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock, renderWithRouter } from 'utils/testing'
 
-import {NotificationStatus} from 'state/notifications/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock, renderWithRouter} from 'utils/testing'
-
-import {useAiAgentOnboardingNotification} from '../../hooks/useAiAgentOnboardingNotification'
-import {AiAgentPreviewModeSettingsContainer} from '../AiAgentPreviewModeSettingsContainer'
+import { useAiAgentOnboardingNotification } from '../../hooks/useAiAgentOnboardingNotification'
+import { AiAgentPreviewModeSettingsContainer } from '../AiAgentPreviewModeSettingsContainer'
 
 jest.mock('react-router-dom', () => {
     const actualReactRouterDom =
         jest.requireActual<typeof import('react-router-dom')>(
-            'react-router-dom'
+            'react-router-dom',
         )
     return {
         ...actualReactRouterDom,
@@ -43,14 +43,14 @@ jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext', () => ({
     useAiAgentStoreConfigurationContext: jest.fn(),
 }))
 const mockUseAiAgentStoreConfigurationContext = assumeMock(
-    useAiAgentStoreConfigurationContext
+    useAiAgentStoreConfigurationContext,
 )
 
 jest.mock('pages/aiAgent/hooks/useGetOrCreateSnippetHelpCenter', () => ({
     useGetOrCreateSnippetHelpCenter: jest.fn(),
 }))
 const mockUseGetOrCreateSnippetHelpCenter = assumeMock(
-    useGetOrCreateSnippetHelpCenter
+    useGetOrCreateSnippetHelpCenter,
 )
 
 jest.mock('pages/aiAgent/hooks/usePublicResources', () => ({
@@ -62,7 +62,7 @@ jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingNotification', () => ({
     useAiAgentOnboardingNotification: jest.fn(),
 }))
 const mockUseAiAgentOnboardingNotification = assumeMock(
-    useAiAgentOnboardingNotification
+    useAiAgentOnboardingNotification,
 )
 
 const defaultUseAiAgentOnboardingNotification = {
@@ -89,14 +89,14 @@ const renderComponent = () =>
             <QueryClientProvider client={queryClient}>
                 <AiAgentPreviewModeSettingsContainer />
             </QueryClientProvider>
-        </Provider>
+        </Provider>,
     )
 
 describe('AiAgentPreviewModeSettingsView', () => {
     const mockUpdateStoreConfiguration = jest.fn()
     beforeEach(() => {
         jest.resetAllMocks()
-        mockUseParams.mockReturnValue({shopName: 'Test Shop'})
+        mockUseParams.mockReturnValue({ shopName: 'Test Shop' })
         mockFlags({
             [FeatureFlagKey.FollowUpAiAgentPreviewMode]: true,
         })
@@ -113,13 +113,13 @@ describe('AiAgentPreviewModeSettingsView', () => {
         })
         mockUsePublicResources.mockReturnValue({
             sourceItems: [
-                {id: 1, url: 'https://test1.com', status: 'done'},
-                {id: 2, url: 'https://test2.com', status: 'done'},
+                { id: 1, url: 'https://test1.com', status: 'done' },
+                { id: 2, url: 'https://test2.com', status: 'done' },
             ],
             isSourceItemsListLoading: false,
         } as unknown as ReturnType<typeof usePublicResources>)
         mockUseAiAgentOnboardingNotification.mockReturnValue(
-            defaultUseAiAgentOnboardingNotification
+            defaultUseAiAgentOnboardingNotification,
         )
     })
 
@@ -139,15 +139,15 @@ describe('AiAgentPreviewModeSettingsView', () => {
 
         // The animated div should initially not be visible
         const animatedDiv = screen.getByLabelText(
-            'preview duration form section'
+            'preview duration form section',
         )
-        expect(animatedDiv).toHaveStyle({height: '0px'})
+        expect(animatedDiv).toHaveStyle({ height: '0px' })
 
         // Toggle the input
         fireEvent.click(screen.getByLabelText('Enable Preview'))
 
         // The div should now be visible with height set
-        expect(animatedDiv).toHaveStyle({height: '166px'})
+        expect(animatedDiv).toHaveStyle({ height: '166px' })
     })
 
     it('handles duration input change and shows an error if the input is invalid', () => {
@@ -155,35 +155,35 @@ describe('AiAgentPreviewModeSettingsView', () => {
 
         // Change duration to an invalid number (e.g., 0)
         const durationInput = screen.getByLabelText('Set duration')
-        fireEvent.change(durationInput, {target: {value: '-1'}})
+        fireEvent.change(durationInput, { target: { value: '-1' } })
 
         // Error message should be shown
         expect(
-            screen.getByText('Duration must be greater than 0d')
+            screen.getByText('Duration must be greater than 0d'),
         ).toBeInTheDocument()
 
         // Change duration to another invalid number (e.g., 31)
-        fireEvent.change(durationInput, {target: {value: '31'}})
+        fireEvent.change(durationInput, { target: { value: '31' } })
         expect(
-            screen.getByText('Duration must be less than 30d')
+            screen.getByText('Duration must be less than 30d'),
         ).toBeInTheDocument()
 
-        fireEvent.change(durationInput, {target: {value: ''}})
+        fireEvent.change(durationInput, { target: { value: '' } })
         expect(screen.getByText('Duration is required')).toBeInTheDocument()
     })
 
     it('displays the correct expiry date when duration is valid', () => {
         const mockDate = new Date(2024, 9, 22) // Months are 0-indexed, so 9 represents October
-        jest.useFakeTimers({now: mockDate})
+        jest.useFakeTimers({ now: mockDate })
 
         renderComponent()
 
         const durationInput = screen.getByLabelText('Set duration')
-        fireEvent.change(durationInput, {target: {value: '7'}})
+        fireEvent.change(durationInput, { target: { value: '7' } })
         const formattedDate = 'Tuesday, October 29'
 
         expect(
-            screen.getByText(`Preview will automatically disable on`)
+            screen.getByText(`Preview will automatically disable on`),
         ).toBeInTheDocument()
         expect(screen.getByText(`${formattedDate}`)).toBeInTheDocument()
 
@@ -208,13 +208,13 @@ describe('AiAgentPreviewModeSettingsView', () => {
         expect(screen.getByText('Enable Preview')).toBeInTheDocument()
         const labelElement = screen.getByText(/Merchant needs at least/i)
         expect(
-            within(labelElement).getByText(/1 email connected/i)
+            within(labelElement).getByText(/1 email connected/i),
         ).toBeInTheDocument()
         expect(
-            within(labelElement).getByText(/1 knowledge added/i)
+            within(labelElement).getByText(/1 knowledge added/i),
         ).toBeInTheDocument()
         expect(
-            within(labelElement).getByText(/to enable Preview\./i)
+            within(labelElement).getByText(/to enable Preview\./i),
         ).toBeInTheDocument()
     })
 
@@ -239,13 +239,13 @@ describe('AiAgentPreviewModeSettingsView', () => {
         expect(screen.getByText('Enable Preview')).toBeInTheDocument()
         const labelElement = screen.getByText(/Merchant needs at least/i)
         expect(
-            within(labelElement).getByText(/1 email connected/i)
+            within(labelElement).getByText(/1 email connected/i),
         ).toBeInTheDocument()
         expect(
-            within(labelElement).getByText(/1 knowledge added/i)
+            within(labelElement).getByText(/1 knowledge added/i),
         ).toBeInTheDocument()
         expect(
-            within(labelElement).getByText(/to enable Preview\./i)
+            within(labelElement).getByText(/to enable Preview\./i),
         ).toBeInTheDocument()
     })
 
@@ -253,13 +253,13 @@ describe('AiAgentPreviewModeSettingsView', () => {
         renderComponent()
         fireEvent.click(screen.getByText('Enable Preview'))
         fireEvent.change(screen.getByLabelText('Set duration'), {
-            target: {value: '10'},
+            target: { value: '10' },
         })
         fireEvent.click(screen.getByText('Save Changes'))
 
         await waitFor(() => {
             expect(
-                defaultUseAiAgentOnboardingNotification.handleOnCancelActivateAiAgentNotification
+                defaultUseAiAgentOnboardingNotification.handleOnCancelActivateAiAgentNotification,
             ).toHaveBeenCalled()
         })
     })
@@ -268,7 +268,7 @@ describe('AiAgentPreviewModeSettingsView', () => {
         renderComponent()
         fireEvent.click(screen.getByText('Enable Preview'))
         fireEvent.change(screen.getByLabelText('Set duration'), {
-            target: {value: '10'},
+            target: { value: '10' },
         })
         fireEvent.click(screen.getByText('Save Changes'))
 
@@ -392,7 +392,7 @@ describe('AiAgentPreviewModeSettingsView', () => {
         renderComponent()
         fireEvent.click(screen.getByText('Enable Preview'))
         const durationInput = screen.getByLabelText('Set duration')
-        fireEvent.change(durationInput, {target: {value: '-1'}})
+        fireEvent.change(durationInput, { target: { value: '-1' } })
         fireEvent.click(screen.getByText('Save Changes'))
 
         expect(mockUpdateStoreConfiguration).not.toHaveBeenCalled()
@@ -402,7 +402,7 @@ describe('AiAgentPreviewModeSettingsView', () => {
             status: NotificationStatus.Error,
         })
 
-        fireEvent.change(durationInput, {target: {value: '33'}})
+        fireEvent.change(durationInput, { target: { value: '33' } })
         fireEvent.click(screen.getByText('Save Changes'))
 
         expect(mockUpdateStoreConfiguration).not.toHaveBeenCalled()
@@ -412,7 +412,7 @@ describe('AiAgentPreviewModeSettingsView', () => {
             status: NotificationStatus.Error,
         })
 
-        fireEvent.change(durationInput, {target: {value: ''}})
+        fireEvent.change(durationInput, { target: { value: '' } })
         fireEvent.click(screen.getByText('Save Changes'))
 
         expect(mockUpdateStoreConfiguration).not.toHaveBeenCalled()
@@ -427,7 +427,7 @@ describe('AiAgentPreviewModeSettingsView', () => {
         renderComponent()
         fireEvent.click(screen.getByText('Enable Preview'))
         fireEvent.change(screen.getByLabelText('Set duration'), {
-            target: {value: '15'},
+            target: { value: '15' },
         })
 
         fireEvent.click(screen.getByText('Cancel'))
@@ -436,7 +436,7 @@ describe('AiAgentPreviewModeSettingsView', () => {
 
     it('displays the correct expiry date when duration is valid', () => {
         const mockCurrentDate = new Date(2024, 10, 4) // months are 0-indexed, so 10 represents November
-        jest.useFakeTimers({now: mockCurrentDate})
+        jest.useFakeTimers({ now: mockCurrentDate })
         const mockExpiryDate = new Date(mockCurrentDate)
         mockExpiryDate.setDate(mockCurrentDate.getDate() + 9)
 
@@ -461,7 +461,7 @@ describe('AiAgentPreviewModeSettingsView', () => {
         expect(screen.getByText('Set duration')).toBeInTheDocument()
         expect(screen.getByDisplayValue('9')).toBeInTheDocument()
         expect(
-            screen.getByText(`Preview will automatically disable on`)
+            screen.getByText(`Preview will automatically disable on`),
         ).toBeInTheDocument()
         expect(screen.getByText('Wednesday, November 13')).toBeInTheDocument()
 

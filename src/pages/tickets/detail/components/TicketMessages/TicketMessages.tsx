@@ -1,24 +1,24 @@
-import {fromJS, Map} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import moment, {Moment} from 'moment'
-import React, {useEffect, useMemo} from 'react'
+import React, { useEffect, useMemo } from 'react'
 
-import {SegmentEvent} from 'common/segment'
-import {logEventWithSampling} from 'common/segment/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
+import { fromJS, Map } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import moment, { Moment } from 'moment'
+
+import { SegmentEvent } from 'common/segment'
+import { logEventWithSampling } from 'common/segment/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     isTicketMessageDeleted,
     isTicketMessageHidden,
 } from 'models/ticket/predicates'
-import {MessageMetadataType, TicketMessage} from 'models/ticket/types'
-import {HighlightedElements} from 'pages/tickets/detail/components/AuditLogEvent'
-
-import {AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS} from 'state/agents/constants'
-import {getCurrentAccountId} from 'state/currentAccount/selectors'
-import {shouldDisplayAuditLogEvents as getShouldDisplayAuditLogEvents} from 'state/ticket/selectors'
-import {buildFirstTicketMessage} from 'state/ticket/utils'
-import {getSelectedAIMessage} from 'state/ui/ticketAIAgentFeedback'
+import { MessageMetadataType, TicketMessage } from 'models/ticket/types'
+import { HighlightedElements } from 'pages/tickets/detail/components/AuditLogEvent'
+import { AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS } from 'state/agents/constants'
+import { getCurrentAccountId } from 'state/currentAccount/selectors'
+import { shouldDisplayAuditLogEvents as getShouldDisplayAuditLogEvents } from 'state/ticket/selectors'
+import { buildFirstTicketMessage } from 'state/ticket/utils'
+import { getSelectedAIMessage } from 'state/ui/ticketAIAgentFeedback'
 
 import AIAgentDraftMessage from '../AIAgentDraftMessage/AIAgentDraftMessage'
 import {
@@ -26,7 +26,7 @@ import {
     DRAFT_MESSAGE_TAG,
     SAMPLE_RATE,
 } from '../AIAgentFeedbackBar/constants'
-import {isTrialMessageFromAIAgent} from '../AIAgentFeedbackBar/utils'
+import { isTrialMessageFromAIAgent } from '../AIAgentFeedbackBar/utils'
 import Container from './Container'
 import Message from './Message'
 
@@ -66,7 +66,7 @@ export default function TicketMessages({
     const message = buildFirstTicketMessage(messages[0], id, ticketMeta)
 
     const shouldDisplayAuditLogEvents = useAppSelector(
-        getShouldDisplayAuditLogEvents
+        getShouldDisplayAuditLogEvents,
     )
 
     const isAIAgentMessage =
@@ -112,7 +112,7 @@ export default function TicketMessages({
                     accountId,
                     banner: bannerType,
                 },
-                sampleRate
+                sampleRate,
             )
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -123,7 +123,7 @@ export default function TicketMessages({
     }
 
     const groupAfterLastCustomerMessage = moment(message.sent_datetime).isAfter(
-        lastCustomerMessage.get('sent_datetime')
+        lastCustomerMessage.get('sent_datetime'),
     )
 
     const showMessageStatusIndicator =
@@ -138,7 +138,7 @@ export default function TicketMessages({
                     message.from_agent &&
                     !isNaN(message.id!) &&
                     highlightedElements.first <= message.id! &&
-                    message.id! <= highlightedElements.last
+                    message.id! <= highlightedElements.last,
             )
             .indexOf(true) !== -1
 
@@ -149,7 +149,7 @@ export default function TicketMessages({
                   message.id &&
                   lastCustomerMessage.get('id') &&
                   message.id === lastCustomerMessage.get('id')
-              )
+              ),
     )
 
     if (isAIAgentDraftMessage) {
@@ -195,7 +195,7 @@ export default function TicketMessages({
             shouldDisplayAuditLogEvents={shouldDisplayAuditLogEvents}
             customer={customer}
             lastCustomerMessageDateTime={lastCustomerMessage.get(
-                'sent_datetime'
+                'sent_datetime',
             )}
         >
             {messages.map((message: TicketMessage, index: number) => (

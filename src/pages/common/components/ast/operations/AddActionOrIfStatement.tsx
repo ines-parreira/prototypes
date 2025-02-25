@@ -1,16 +1,17 @@
-import {List, Map} from 'immutable'
 import React from 'react'
+
+import { List, Map } from 'immutable'
 import {
-    UncontrolledButtonDropdown,
-    DropdownToggle,
-    DropdownMenu,
     DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+    UncontrolledButtonDropdown,
 } from 'reactstrap'
 
 import Errors from 'pages/common/components/ast/Errors'
-import {computeLeftPadding} from 'pages/common/components/ast/utils'
-import {RuleItemActions} from 'pages/settings/rules/types'
-import {RuleOperation} from 'state/rules/types'
+import { computeLeftPadding } from 'pages/common/components/ast/utils'
+import { RuleItemActions } from 'pages/settings/rules/types'
+import { RuleOperation } from 'state/rules/types'
 
 import useHoverable from '../../../hooks/useHoverable'
 
@@ -34,7 +35,7 @@ export default function AddActionOrIfStatement({
     parent,
     hoverableClassName,
 }: Props) {
-    const {setRef} = useHoverable()
+    const { setRef } = useHoverable()
 
     const addAction = () => {
         const actionNode = {
@@ -62,7 +63,7 @@ export default function AddActionOrIfStatement({
         actions.modifyCodeAST(
             parent.push('body'),
             actionNode,
-            RuleOperation.Insert
+            RuleOperation.Insert,
         )
     }
 
@@ -104,7 +105,7 @@ export default function AddActionOrIfStatement({
         actions.modifyCodeAST(
             parent.push('body'),
             actionNode,
-            RuleOperation.Insert
+            RuleOperation.Insert,
         )
     }
 
@@ -115,7 +116,7 @@ export default function AddActionOrIfStatement({
     return (
         <span className={hoverableClassName || ''} ref={setRef}>
             <UncontrolledButtonDropdown
-                style={{paddingLeft: computeLeftPadding(depth)}}
+                style={{ paddingLeft: computeLeftPadding(depth) }}
                 className="AddActionOrIfStatement"
             >
                 <DropdownToggle

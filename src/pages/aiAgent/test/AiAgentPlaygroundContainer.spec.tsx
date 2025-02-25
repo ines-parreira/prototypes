@@ -1,30 +1,31 @@
-import {screen, within} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { screen, within } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {account} from 'fixtures/account'
-import {user} from 'fixtures/users'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { account } from 'fixtures/account'
+import { user } from 'fixtures/users'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     useGetAccountConfiguration,
     useGetStoreConfigurationPure,
 } from 'models/aiAgent/queries'
-import {useAiAgentEnabled} from 'pages/aiAgent/hooks/useAiAgentEnabled'
-import {notify} from 'state/notifications/actions'
-import {RootState} from 'state/types'
-import {assumeMock, renderWithRouter} from 'utils/testing'
+import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
+import { notify } from 'state/notifications/actions'
+import { RootState } from 'state/types'
+import { assumeMock, renderWithRouter } from 'utils/testing'
 
-import {AiAgentPlaygroundContainer} from '../AiAgentPlaygroundContainer'
-import {AI_AGENT, TEST} from '../constants'
-import {getAccountConfigurationWithHttpIntegrationFixture} from '../fixtures/accountConfiguration.fixture'
-import {getStoreConfigurationFixture} from '../fixtures/storeConfiguration.fixtures'
-import {useGetOrCreateSnippetHelpCenter} from '../hooks/useGetOrCreateSnippetHelpCenter'
-import {usePlaygroundMessages} from '../hooks/usePlaygroundMessages'
-import {usePublicResources} from '../hooks/usePublicResources'
+import { AiAgentPlaygroundContainer } from '../AiAgentPlaygroundContainer'
+import { AI_AGENT, TEST } from '../constants'
+import { getAccountConfigurationWithHttpIntegrationFixture } from '../fixtures/accountConfiguration.fixture'
+import { getStoreConfigurationFixture } from '../fixtures/storeConfiguration.fixtures'
+import { useGetOrCreateSnippetHelpCenter } from '../hooks/useGetOrCreateSnippetHelpCenter'
+import { usePlaygroundMessages } from '../hooks/usePlaygroundMessages'
+import { usePublicResources } from '../hooks/usePublicResources'
 
 const mockStore = configureMockStore()
 
@@ -50,7 +51,7 @@ const mockNotify = assumeMock(notify)
 
 jest.mock('models/aiAgent/queries')
 const mockUseGetStoreConfigurationPure = assumeMock(
-    useGetStoreConfigurationPure
+    useGetStoreConfigurationPure,
 )
 const mockUseGetAccountConfiguration = assumeMock(useGetAccountConfiguration)
 
@@ -64,7 +65,7 @@ jest.mock('../hooks/useGetOrCreateSnippetHelpCenter', () => ({
     useGetOrCreateSnippetHelpCenter: jest.fn(),
 }))
 const mockUseGetOrCreateSnippetHelpCenter = jest.mocked(
-    useGetOrCreateSnippetHelpCenter
+    useGetOrCreateSnippetHelpCenter,
 )
 jest.mock('pages/aiAgent/hooks/useAiAgentEnabled')
 const mockUseEnableAiAgent = jest.mocked(useAiAgentEnabled)
@@ -78,7 +79,7 @@ jest.mock('pages/aiAgent/hooks/useAccountStoreConfiguration', () => ({
 const storeConfiguration = getStoreConfigurationFixture({})
 
 const accountConfiguration = getAccountConfigurationWithHttpIntegrationFixture(
-    {}
+    {},
 )
 
 const renderComponent = () => {
@@ -89,7 +90,7 @@ const renderComponent = () => {
         {
             path: `/app/automation/:shopType/:shopName/ai-agent/test`,
             route: '/app/automation/shopify/gorgias-product-demo/ai-agent/test',
-        }
+        },
     )
 }
 
@@ -117,7 +118,7 @@ describe('AiAgentPlayground', () => {
 
         mockUseGetOrCreateSnippetHelpCenter.mockReturnValue({
             isLoading: false,
-            helpCenter: {id: 1},
+            helpCenter: { id: 1 },
         } as unknown as ReturnType<typeof useGetOrCreateSnippetHelpCenter>)
 
         renderComponent()
@@ -128,7 +129,7 @@ describe('AiAgentPlayground', () => {
     it('should notify when account configuration is exists but no http integration', () => {
         mockUseGetOrCreateSnippetHelpCenter.mockReturnValue({
             isLoading: false,
-            helpCenter: {id: 1},
+            helpCenter: { id: 1 },
         } as unknown as ReturnType<typeof useGetOrCreateSnippetHelpCenter>)
 
         mockUseGetStoreConfigurationPure.mockReturnValue({
@@ -160,7 +161,7 @@ describe('AiAgentPlayground', () => {
             expect.objectContaining({
                 message:
                     'There was an error initializing the AI Agent Test mode',
-            })
+            }),
         )
     })
 
@@ -176,18 +177,18 @@ describe('AiAgentPlayground', () => {
         } as unknown as ReturnType<typeof useGetStoreConfigurationPure>)
 
         mockUseGetAccountConfiguration.mockReturnValue({
-            data: {data: {accountConfiguration}},
+            data: { data: { accountConfiguration } },
             error: undefined,
             isLoading: false,
         } as unknown as ReturnType<typeof useGetAccountConfiguration>)
 
         mockUseGetOrCreateSnippetHelpCenter.mockReturnValue({
             isLoading: false,
-            helpCenter: {id: 1},
+            helpCenter: { id: 1 },
         } as unknown as ReturnType<typeof useGetOrCreateSnippetHelpCenter>)
 
         mockUsePublicResources.mockReturnValue({
-            sourceItems: [{status: 'done', id: 60}],
+            sourceItems: [{ status: 'done', id: 60 }],
             isSourceItemsListLoading: false,
         })
 
@@ -218,7 +219,7 @@ describe('AiAgentPlayground', () => {
             isLoading: false,
         } as unknown as ReturnType<typeof useGetStoreConfigurationPure>)
         mockUseGetAccountConfiguration.mockReturnValue({
-            data: {data: {accountConfiguration}},
+            data: { data: { accountConfiguration } },
             error: undefined,
             isLoading: false,
         } as unknown as ReturnType<typeof useGetAccountConfiguration>)
@@ -232,7 +233,7 @@ describe('AiAgentPlayground', () => {
         } as unknown as ReturnType<typeof useGetOrCreateSnippetHelpCenter>)
         renderComponent()
         expect(screen.getByRole('alert')).toHaveTextContent(
-            'Test AI Agent as a customerAt least one knowledge source is required to use test mode'
+            'Test AI Agent as a customerAt least one knowledge source is required to use test mode',
         )
     })
 
@@ -247,16 +248,16 @@ describe('AiAgentPlayground', () => {
             isLoading: false,
         } as unknown as ReturnType<typeof useGetStoreConfigurationPure>)
         mockUseGetAccountConfiguration.mockReturnValue({
-            data: {data: {accountConfiguration}},
+            data: { data: { accountConfiguration } },
             error: undefined,
             isLoading: false,
         } as unknown as ReturnType<typeof useGetAccountConfiguration>)
         mockUseGetOrCreateSnippetHelpCenter.mockReturnValue({
             isLoading: false,
-            helpCenter: {id: 1},
+            helpCenter: { id: 1 },
         } as unknown as ReturnType<typeof useGetOrCreateSnippetHelpCenter>)
         mockUsePublicResources.mockReturnValue({
-            sourceItems: [{status: 'done', id: 60}],
+            sourceItems: [{ status: 'done', id: 60 }],
             isSourceItemsListLoading: false,
         })
         mockUsePlaygroundMessages.mockReturnValue({
@@ -271,17 +272,22 @@ describe('AiAgentPlayground', () => {
     })
 
     describe.each([
-        {flag: true, title: TEST},
-        {flag: false, title: AI_AGENT},
-    ])('with feature flag conv-ai-standalone-menu = $flag', ({flag, title}) => {
-        it('renders component with title = "$title"', () => {
-            mockFlags({[FeatureFlagKey.ConvAiStandaloneMenu]: flag})
+        { flag: true, title: TEST },
+        { flag: false, title: AI_AGENT },
+    ])(
+        'with feature flag conv-ai-standalone-menu = $flag',
+        ({ flag, title }) => {
+            it('renders component with title = "$title"', () => {
+                mockFlags({ [FeatureFlagKey.ConvAiStandaloneMenu]: flag })
 
-            renderComponent()
+                renderComponent()
 
-            expect(
-                within(document.querySelector('.page-header')!).getByText(title)
-            ).toBeInTheDocument()
-        })
-    })
+                expect(
+                    within(document.querySelector('.page-header')!).getByText(
+                        title,
+                    ),
+                ).toBeInTheDocument()
+            })
+        },
+    )
 })

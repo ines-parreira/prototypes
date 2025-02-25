@@ -1,27 +1,29 @@
 import _find from 'lodash/find'
 import _get from 'lodash/get'
 
-import {TicketMessageSourceType} from 'business/types/ticket'
+import { TicketMessageSourceType } from 'business/types/ticket'
 import {
     RECHARGE_CANCELLATION_REASONS,
     RECHARGE_DEFAULT_CANCELLATION_REASON,
 } from 'config/integrations/constants/recharge'
-import {Order} from 'constants/integrations/types/shopify'
-
-import {Customer} from 'models/customer/types'
-import {IntegrationType, Category, PricingPlan} from 'models/integration/types'
-import {MacroActionName} from 'models/macroAction/types'
-
-import {AccountFeature} from 'state/currentAccount/types'
+import { Order } from 'constants/integrations/types/shopify'
+import { Customer } from 'models/customer/types'
+import {
+    Category,
+    IntegrationType,
+    PricingPlan,
+} from 'models/integration/types'
+import { MacroActionName } from 'models/macroAction/types'
+import { AccountFeature } from 'state/currentAccount/types'
 import {
     CUSTOM_WIDGET_TYPE,
-    CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
     CUSTOMER_ECOMMERCE_DATA_KEY,
-    WOOCOMMERCE_WIDGET_TYPE,
     CUSTOMER_EXTERNAL_DATA_KEY,
+    CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
     STANDALONE_WIDGET_TYPE,
+    WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
-import {WidgetEnvironment} from 'state/widgets/types'
+import { WidgetEnvironment } from 'state/widgets/types'
 import daysToHours from 'utils/daysToHours'
 import hoursToSeconds from 'utils/hoursToSeconds'
 
@@ -231,7 +233,7 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         longDescription: '',
         benefits: [],
         categories: [],
-        company: {name: 'Gorgias', url: 'https://www.gorgias.com/'},
+        company: { name: 'Gorgias', url: 'https://www.gorgias.com/' },
         screenshots: [],
         pricingPlan: PricingPlan.FREE,
         privacyPolicy: '',
@@ -258,7 +260,7 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         pricingLink:
             'https://docs.gorgias.com/en-US/billing-and-subscriptions-81852#voice-tickets',
         pricingDetails: 'Try without commitment',
-        company: {name: 'Gorgias', url: 'https://www.gorgias.com/'},
+        company: { name: 'Gorgias', url: 'https://www.gorgias.com/' },
         setupGuide: 'https://docs.gorgias.com/en-US/phone-integration-81798',
         supportEmail: 'support@gorgias.com',
     },
@@ -282,7 +284,7 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         pricingLink:
             'https://docs.gorgias.com/en-US/billing-and-subscriptions-81852#sms-tickets',
         pricingDetails: 'Try without commitment',
-        company: {name: 'Gorgias', url: 'https://www.gorgias.com/'},
+        company: { name: 'Gorgias', url: 'https://www.gorgias.com/' },
         setupGuide:
             'https://docs.gorgias.com/en-US/gorgias-sms-integration-81919',
         supportEmail: 'support@gorgias.com',
@@ -318,7 +320,7 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         longDescription: '',
         benefits: [],
         categories: [Category.CHAT],
-        company: {name: 'Gorgias', url: 'https://www.gorgias.com/'},
+        company: { name: 'Gorgias', url: 'https://www.gorgias.com/' },
         screenshots: [],
         pricingPlan: PricingPlan.FREE,
         privacyPolicy: '',
@@ -342,7 +344,7 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         pricingPlan: PricingPlan.FREE,
         pricingDetails: '',
         pricingLink: '',
-        company: {name: 'Gorgias', url: 'https://www.gorgias.com/'},
+        company: { name: 'Gorgias', url: 'https://www.gorgias.com/' },
         privacyPolicy: 'https://www.facebook.com/about/privacy',
         setupGuide:
             'https://docs.gorgias.com/facebook-messenger/connect-your-social-channels-facebook-instagram',
@@ -365,7 +367,7 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         pricingPlan: PricingPlan.RECURRING,
         pricingDetails: 'Pricing starting at $30/user/month, billed annually.',
         pricingLink: '',
-        company: {name: 'Aircall', url: 'https://aircall.io/'},
+        company: { name: 'Aircall', url: 'https://aircall.io/' },
         privacyPolicy: 'https://aircall.io/privacy-faqs/',
         setupGuide: 'https://docs.gorgias.com/voice-and-phone/aircall',
     },
@@ -384,7 +386,7 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
             'Initiate actions in an automation tool like Zapier using the available triggers.',
         ],
         categories: [],
-        company: {name: 'Gorgias', url: 'https://www.gorgias.com/'},
+        company: { name: 'Gorgias', url: 'https://www.gorgias.com/' },
         screenshots: [
             '/img/integrations/screenshots/http-1.jpg',
             '/img/integrations/screenshots/http-2.jpg',
@@ -439,7 +441,7 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         pricingPlan: PricingPlan.RECURRING,
         pricingDetails: '',
         pricingLink: 'https://www.shopify.com/pricing',
-        company: {name: 'Gorgias', url: 'https://www.gorgias.com/'},
+        company: { name: 'Gorgias', url: 'https://www.gorgias.com/' },
         privacyPolicy: 'https://www.shopify.com/legal/privacy',
         setupGuide: 'https://docs.gorgias.com/ecommerce-integrations/shopify',
     },
@@ -466,7 +468,7 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         pricingPlan: PricingPlan.RECURRING,
         pricingDetails: 'Contact BigCommerce for pricing details.',
         pricingLink: 'https://www.bigcommerce.com/essentials/pricing/',
-        company: {name: 'Gorgias', url: 'https://www.gorgias.com/'},
+        company: { name: 'Gorgias', url: 'https://www.gorgias.com/' },
         privacyPolicy: 'https://www.bigcommerce.com/privacy/',
         setupGuide: 'https://docs.gorgias.com/bigcommerce-105241',
     },
@@ -489,7 +491,7 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         pricingPlan: PricingPlan.FREE,
         pricingDetails: '',
         pricingLink: 'https://www.gorgias.com/pricing',
-        company: {name: 'Gorgias', url: 'https://www.gorgias.com/'},
+        company: { name: 'Gorgias', url: 'https://www.gorgias.com/' },
         privacyPolicy: 'https://twitter.com/privacy',
         setupGuide:
             'https://updates.gorgias.com/publications/twitter-replies-mentions-and-quote-tweets-1',
@@ -513,7 +515,7 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         pricingPlan: PricingPlan.FREE,
         pricingDetails: '',
         pricingLink: 'https://business.adobe.com/products/magento/pricing.html',
-        company: {name: 'Gorgias', url: 'https://www.gorgias.com/'},
+        company: { name: 'Gorgias', url: 'https://www.gorgias.com/' },
         privacyPolicy: 'https://magento.com/',
         setupGuide: 'https://docs.gorgias.com/ecommerce-integrations/magento-2',
     },
@@ -535,7 +537,7 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         pricingDetails:
             'Starting at 1% + 10¢ per transaction. Get started for free',
         pricingLink: 'https://rechargepayments.com/products/',
-        company: {name: 'Gorgias', url: 'https://www.gorgias.com/'},
+        company: { name: 'Gorgias', url: 'https://www.gorgias.com/' },
         privacyPolicy: 'https://rechargepayments.com/privacy-policy/',
         setupGuide:
             'https://docs.gorgias.com/subscription-integrations/recharge',
@@ -558,7 +560,7 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         pricingPlan: PricingPlan.RECURRING,
         pricingDetails: 'Starting at $49/month',
         pricingLink: 'https://smile.io/pricing',
-        company: {name: 'Smile', url: 'https://smile.io/'},
+        company: { name: 'Smile', url: 'https://smile.io/' },
         privacyPolicy: 'https://smile.io/privacy-policy',
         setupGuide: 'https://docs.gorgias.com/reward-and-loyalty/smile',
     },
@@ -587,7 +589,7 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         pricingPlan: PricingPlan.RECURRING,
         pricingDetails: 'Free and premium plans available.',
         pricingLink: 'https://www.yotpo.com/pricing/',
-        company: {name: 'Gorgias', url: 'https://www.gorgias.com/'},
+        company: { name: 'Gorgias', url: 'https://www.gorgias.com/' },
         privacyPolicy: 'https://www.yotpo.com/privacy-policy/',
         setupGuide:
             'https://docs.gorgias.com/reward-and-loyalty/yotpo-customer-data',
@@ -597,7 +599,7 @@ export const INTEGRATION_TYPE_CONFIG: IntegrationConfig[] = [
         title: 'Klaviyo - 🗄 DEPRECATED',
         benefits: [],
         categories: [Category.LOYALTY],
-        company: {name: 'Gorgias', url: 'https://www.gorgias.com/'},
+        company: { name: 'Gorgias', url: 'https://www.gorgias.com/' },
         screenshots: [],
         pricingPlan: PricingPlan.FREE,
         description:
@@ -1240,7 +1242,7 @@ export const ACTION_TEMPLATES: ActionTemplate[] = [
                             'orders',
                             '0',
                             'financial_status',
-                        ])
+                        ]),
                     )
                 },
                 error: "The last order has already been refunded or hasn't been paid for yet.",
@@ -1299,7 +1301,7 @@ export const ACTION_TEMPLATES: ActionTemplate[] = [
                             'orders',
                             '0',
                             'financial_status',
-                        ])
+                        ]),
                     )
                 },
                 error: "The last order has already been refunded or hasn't been paid for yet.",
@@ -1360,7 +1362,7 @@ export const ACTION_TEMPLATES: ActionTemplate[] = [
                             'orders',
                             '0',
                             'financial_status',
-                        ])
+                        ]),
                     )
                 },
                 error: "The last order has already been refunded or hasn't been paid for yet.",
@@ -1425,7 +1427,7 @@ export const ACTION_TEMPLATES: ActionTemplate[] = [
                         (option: string) => ({
                             value: option,
                             label: option,
-                        })
+                        }),
                     ),
                     allowCustomValue: true,
                 },
@@ -1557,7 +1559,7 @@ export const ACTION_TEMPLATES: ActionTemplate[] = [
                     })
 
                     return ['SUCCESS', 'PARTIALLY_REFUNDED'].includes(
-                        _get(rechargeIntegration, ['charges', '0', 'status'])
+                        _get(rechargeIntegration, ['charges', '0', 'status']),
                     )
                 },
                 error: 'The last charge is not refundable.',
@@ -1614,7 +1616,7 @@ export const ACTION_TEMPLATES: ActionTemplate[] = [
                             'orders',
                             '0',
                             'charge_status',
-                        ])
+                        ]),
                     )
                 },
                 error: 'The last order is not refundable.',
@@ -1668,7 +1670,7 @@ export const ACTION_TEMPLATES: ActionTemplate[] = [
 ]
 
 export const DEFAULT_ACTIONS = ACTION_TEMPLATES.map<string>(
-    (template) => template.name
+    (template) => template.name,
 )
 
 /*

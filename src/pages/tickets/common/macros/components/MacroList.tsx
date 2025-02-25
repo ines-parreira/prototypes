@@ -1,14 +1,17 @@
-import {Macro} from '@gorgias/api-queries'
-import classnames from 'classnames'
-import _noop from 'lodash/noop'
 import React from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import classnames from 'classnames'
+import _noop from 'lodash/noop'
+
+import { Macro } from '@gorgias/api-queries'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
-import {getCurrentUser} from 'state/currentUser/selectors'
+import { getCurrentUser } from 'state/currentUser/selectors'
 
-import {isMacroDisabled} from '../utils'
+import { isMacroDisabled } from '../utils'
+
 import css from './MacroList.less'
 
 type Props = {
@@ -44,7 +47,7 @@ const MacroList = ({
             {searchResults.map((macro: Macro) => {
                 const isDisabled = isMacroDisabled(
                     macro,
-                    areExternalActionsDisabled
+                    areExternalActionsDisabled,
                 )
                 const isActive = macro.id === currentMacro?.id
                 return (
@@ -59,7 +62,7 @@ const MacroList = ({
 
                             logEvent(SegmentEvent.MacroAppliedSearchbar, {
                                 is_recommended: isSuggestion(
-                                    macro.relevance_rank ?? 0
+                                    macro.relevance_rank ?? 0,
                                 ),
                                 macro_id: macro.id,
                                 rank: macro.relevance_rank,
@@ -74,7 +77,7 @@ const MacroList = ({
                             <span
                                 className={classnames(
                                     'material-icons',
-                                    css.automated
+                                    css.automated,
                                 )}
                             >
                                 auto_awesome

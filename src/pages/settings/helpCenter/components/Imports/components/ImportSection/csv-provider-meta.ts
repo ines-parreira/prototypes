@@ -1,6 +1,6 @@
 import fileIconSrc from 'assets/img/icons/file-icon.svg'
 
-import {MigrationProviderMeta} from './types'
+import { MigrationProviderMeta } from './types'
 
 // CSV will not be fetched from API and will be stored locally for convenience
 export const csvProviderMeta: MigrationProviderMeta = {

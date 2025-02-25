@@ -1,11 +1,11 @@
-import {fireEvent, render} from '@testing-library/react'
 import React from 'react'
 
-import {getLDClient} from 'utils/launchDarkly'
+import { fireEvent, render } from '@testing-library/react'
 
-import {categories, notifications} from '../../data'
-import {Settings} from '../../types'
+import { getLDClient } from 'utils/launchDarkly'
 
+import { categories, notifications } from '../../data'
+import { Settings } from '../../types'
 import EventSettings from '../EventSettings'
 
 jest.mock('utils/launchDarkly', () => ({
@@ -15,7 +15,7 @@ jest.mock('utils/launchDarkly', () => ({
 jest.mock(
     '../SoundSelect',
     () =>
-        ({onChange}: {onChange: (sound: string) => void}) => (
+        ({ onChange }: { onChange: (sound: string) => void }) => (
             <select
                 onChange={(e) => {
                     onChange(e.target.value)
@@ -24,7 +24,7 @@ jest.mock(
                 <option value="sound 1">sound 1</option>
                 <option value="sound 2">sound 2</option>
             </select>
-        )
+        ),
 )
 
 jest.mock('../../data', () => ({
@@ -104,29 +104,29 @@ describe('EventSettings', () => {
     it.each(notificationsWithSettings.map((n) => [n.type, n.settings?.label]))(
         'should render event %s',
         async (_, label) => {
-            const {getByText} = render(
+            const { getByText } = render(
                 <EventSettings
                     settings={settings}
                     onChangeChannel={jest.fn()}
                     onChangeSound={jest.fn()}
-                />
+                />,
             )
 
             await getLDClient()?.waitForInitialization()
 
             expect(getByText(label as string)).toBeInTheDocument()
-        }
+        },
     )
 
     it('should call a function to handle a channel change', async () => {
         const onChangeChannel = jest.fn()
 
-        const {getAllByRole} = render(
+        const { getAllByRole } = render(
             <EventSettings
                 settings={settings}
                 onChangeChannel={onChangeChannel}
                 onChangeSound={jest.fn()}
-            />
+            />,
         )
 
         await getLDClient()?.waitForInitialization()
@@ -137,29 +137,29 @@ describe('EventSettings', () => {
         expect(onChangeChannel).toHaveBeenCalledWith(
             'user.mentioned',
             'in_app_feed',
-            false
+            false,
         )
     })
 
     it('should call a function to handle a sound change', async () => {
         const onChangeSound = jest.fn()
 
-        const {getAllByRole} = render(
+        const { getAllByRole } = render(
             <EventSettings
                 settings={settings}
                 onChangeChannel={jest.fn()}
                 onChangeSound={onChangeSound}
-            />
+            />,
         )
 
         await getLDClient()?.waitForInitialization()
 
         const combobox = getAllByRole('combobox')[0]
-        fireEvent.change(combobox, {target: {value: 'sound 1'}})
+        fireEvent.change(combobox, { target: { value: 'sound 1' } })
 
         expect(onChangeSound).toHaveBeenCalledWith(
             'legacy-chat-and-messaging',
-            'sound 1'
+            'sound 1',
         )
     })
 })

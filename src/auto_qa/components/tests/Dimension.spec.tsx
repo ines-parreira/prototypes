@@ -1,14 +1,19 @@
-import {TicketQAScoreDimension} from '@gorgias/api-queries'
-import {fireEvent, render} from '@testing-library/react'
 import React from 'react'
 
+import { fireEvent, render } from '@testing-library/react'
+
+import { TicketQAScoreDimension } from '@gorgias/api-queries'
+
 import Dimension from 'auto_qa/components/Dimension'
-import {dimensionConfig, SupportedTicketQAScoreDimension} from 'auto_qa/config'
-import {logEvent, SegmentEvent} from 'common/segment'
+import {
+    dimensionConfig,
+    SupportedTicketQAScoreDimension,
+} from 'auto_qa/config'
+import { logEvent, SegmentEvent } from 'common/segment'
 
 jest.mock('common/segment', () => ({
     logEvent: jest.fn(),
-    SegmentEvent: {AutoQATicketInteraction: 'auto-qa-ticket-interaction'},
+    SegmentEvent: { AutoQATicketInteraction: 'auto-qa-ticket-interaction' },
 }))
 
 describe('Dimension', () => {
@@ -27,13 +32,13 @@ describe('Dimension', () => {
 
     it('should render the component', () => {
         const onChange = jest.fn()
-        const {getByText, queryByText} = render(
+        const { getByText, queryByText } = render(
             <Dimension
                 config={dimensionConfig.communication_skills}
                 dimension={defaultDimension}
                 onChange={onChange}
                 ticketId={1}
-            />
+            />,
         )
         expect(getByText('Communication')).toBeInTheDocument()
         expect(getByText('5/5')).toBeInTheDocument()
@@ -42,13 +47,13 @@ describe('Dimension', () => {
 
     it('should automatically expand if the prediction is below the configured threshold', () => {
         const onChange = jest.fn()
-        const {getByText} = render(
+        const { getByText } = render(
             <Dimension
                 config={dimensionConfig.communication_skills}
-                dimension={{...defaultDimension, prediction: 4}}
+                dimension={{ ...defaultDimension, prediction: 4 }}
                 onChange={onChange}
                 ticketId={1}
-            />
+            />,
         )
         expect(getByText('Beepity-boopity')).toBeInTheDocument()
     })
@@ -65,16 +70,16 @@ describe('Dimension', () => {
             prediction: 5,
             explanation: 'Beepity-boopity',
         } as SupportedTicketQAScoreDimension
-        const {queryByText} = render(
+        const { queryByText } = render(
             <Dimension
                 config={dimensionConfig.accuracy}
                 dimension={accuracyDimension}
                 onChange={onChange}
                 ticketId={1}
-            />
+            />,
         )
         expect(
-            queryByText('AI generated, edit to improve AI model')
+            queryByText('AI generated, edit to improve AI model'),
         ).not.toBeInTheDocument()
     })
 
@@ -83,32 +88,32 @@ describe('Dimension', () => {
         const accuracyDimension = {
             name: 'accuracy',
         } as SupportedTicketQAScoreDimension
-        const {container, queryByText} = render(
+        const { container, queryByText } = render(
             <Dimension
                 config={dimensionConfig.accuracy}
                 dimension={accuracyDimension}
                 onChange={onChange}
                 ticketId={1}
-            />
+            />,
         )
         const content = container.getElementsByClassName('content')[0]
         fireEvent.click(content)
         const textArea = container.getElementsByClassName('textarea')[0]
         fireEvent.focus(textArea)
         expect(
-            queryByText('Please select a score before adding a comment')
+            queryByText('Please select a score before adding a comment'),
         ).toBeInTheDocument()
     })
 
     it('should call onChange when the prediction changes', () => {
         const onChange = jest.fn()
-        const {getByRole, getByText} = render(
+        const { getByRole, getByText } = render(
             <Dimension
                 config={dimensionConfig.communication_skills}
                 dimension={defaultDimension}
                 onChange={onChange}
                 ticketId={1}
-            />
+            />,
         )
 
         const el = getByRole('combobox')
@@ -119,17 +124,19 @@ describe('Dimension', () => {
 
     it('should call onChange when the explanation changes', () => {
         const onChange = jest.fn()
-        const {getByText} = render(
+        const { getByText } = render(
             <Dimension
                 config={dimensionConfig.communication_skills}
                 dimension={defaultDimension}
                 onChange={onChange}
                 ticketId={1}
-            />
+            />,
         )
 
         fireEvent.click(getByText('arrow_right'))
-        fireEvent.change(getByText('Beepity-boopity'), {target: {value: 'Yup'}})
+        fireEvent.change(getByText('Beepity-boopity'), {
+            target: { value: 'Yup' },
+        })
         expect(onChange).toHaveBeenCalledWith(5, 'Yup')
     })
 
@@ -142,11 +149,11 @@ describe('Dimension', () => {
                 dimension={defaultDimension}
                 onChange={onChange}
                 ticketId={1}
-            />
+            />,
         )
 
         const expandButton = document.querySelector(
-            `button[area-label="expand_${dimensionName}"]`
+            `button[area-label="expand_${dimensionName}"]`,
         )
 
         expect(expandButton).toBeInTheDocument()
@@ -160,7 +167,7 @@ describe('Dimension', () => {
             {
                 ticket_id: 1,
                 type: `${dimensionName}_toggle_clicked`,
-            }
+            },
         )
     })
 
@@ -170,14 +177,14 @@ describe('Dimension', () => {
         render(
             <Dimension
                 config={dimensionConfig[dimensionName]}
-                dimension={{...defaultDimension, prediction: 4}}
+                dimension={{ ...defaultDimension, prediction: 4 }}
                 onChange={onChange}
                 ticketId={1}
-            />
+            />,
         )
 
         const expandButton = document.querySelector(
-            `button[area-label="expand_${dimensionName}"]`
+            `button[area-label="expand_${dimensionName}"]`,
         )
 
         expect(expandButton).toBeInTheDocument()

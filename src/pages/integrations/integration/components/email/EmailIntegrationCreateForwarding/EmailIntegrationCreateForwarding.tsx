@@ -1,16 +1,17 @@
+import React, { Component } from 'react'
+
 import classnames from 'classnames'
 import Clipboard from 'clipboard'
-import {Map} from 'immutable'
-import React, {Component} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {Link} from 'react-router-dom'
+import { Map } from 'immutable'
+import { connect, ConnectedProps } from 'react-redux'
+import { Link } from 'react-router-dom'
 import {
     Breadcrumb,
     BreadcrumbItem,
     Container,
+    Input,
     InputGroup,
     InputGroupAddon,
-    Input,
 } from 'reactstrap'
 
 import exchange from 'assets/img/integrations/exchange.svg'
@@ -18,18 +19,17 @@ import groups from 'assets/img/integrations/google-groups.svg'
 import office from 'assets/img/integrations/office.svg'
 import outlook from 'assets/img/integrations/outlook.svg'
 import zoho from 'assets/img/integrations/zoho.svg'
-
 import Button from 'pages/common/components/button/Button'
 
-import {IntegrationType} from '../../../../../../models/integration/types'
-import {sendVerificationEmail} from '../../../../../../state/integrations/actions'
-import {getForwardingEmailAddress} from '../../../../../../state/integrations/selectors'
-import {notify} from '../../../../../../state/notifications/actions'
-import {RootState} from '../../../../../../state/types'
+import { IntegrationType } from '../../../../../../models/integration/types'
+import { sendVerificationEmail } from '../../../../../../state/integrations/actions'
+import { getForwardingEmailAddress } from '../../../../../../state/integrations/selectors'
+import { notify } from '../../../../../../state/notifications/actions'
+import { RootState } from '../../../../../../state/types'
 import PageHeader from '../../../../../common/components/PageHeader'
 import history from '../../../../../history'
-import settingsCss from '../../../../../settings/settings.less'
 
+import settingsCss from '../../../../../settings/settings.less'
 import css from './EmailIntegrationCreateForwarding.less'
 
 const servicesWithTutorials = [
@@ -80,30 +80,30 @@ export class EmailIntegrationCreateForwarding extends Component<Props, State> {
         if (this.props.integration.get('type') === IntegrationType.Email) {
             const clipboard = new Clipboard('#copy-forwarding-email')
             clipboard.on('success', () => {
-                this.setState({isCopied: true})
+                this.setState({ isCopied: true })
                 setTimeout(() => {
-                    this.setState({isCopied: false})
+                    this.setState({ isCopied: false })
                 }, 1500)
             })
         }
     }
 
     _onSubmit = () => {
-        const {integration} = this.props
-        this.setState({isLoading: true})
+        const { integration } = this.props
+        this.setState({ isLoading: true })
         void this.props.sendVerificationEmail().then(() => {
-            this.setState({isLoading: false})
+            this.setState({ isLoading: false })
             history.push(
                 `/app/settings/channels/email/${
                     integration.get('id') as number
-                }/verification`
+                }/verification`,
             )
         })
     }
 
     _renderInstructions = () => {
-        const {forwardingEmailAddress, integration} = this.props
-        const {isLoading} = this.state
+        const { forwardingEmailAddress, integration } = this.props
+        const { isLoading } = this.state
         const address = integration.getIn(['meta', 'address'], '')
 
         return (
@@ -180,7 +180,7 @@ export class EmailIntegrationCreateForwarding extends Component<Props, State> {
     }
 
     render() {
-        const {integration} = this.props
+        const { integration } = this.props
 
         return (
             <div className="full-width">
@@ -219,7 +219,7 @@ const connector = connect(
     {
         sendVerificationEmail,
         notify,
-    }
+    },
 )
 
 export default connector(EmailIntegrationCreateForwarding)

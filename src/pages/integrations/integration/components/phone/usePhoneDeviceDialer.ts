@@ -1,11 +1,12 @@
-import {isValidPhoneNumber} from 'libphonenumber-js'
-import {createRef, useCallback, useEffect, useState} from 'react'
+import { createRef, useCallback, useEffect, useState } from 'react'
+
+import { isValidPhoneNumber } from 'libphonenumber-js'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {UserSearchResult} from 'models/search/types'
-import {PhoneNumberInputHandle} from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
-import {getCountryFromPhoneNumber} from 'pages/phoneNumbers/utils'
-import {getPhoneIntegrations} from 'state/integrations/selectors'
+import { UserSearchResult } from 'models/search/types'
+import { PhoneNumberInputHandle } from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
+import { getCountryFromPhoneNumber } from 'pages/phoneNumbers/utils'
+import { getPhoneIntegrations } from 'state/integrations/selectors'
 
 import useDialerOutboundCall from './useDialerOutboundCall'
 import usePhoneDeviceDialerCustomerSuggestions from './usePhoneDeviceDialerCustomerSuggestions'
@@ -26,9 +27,9 @@ export default function usePhoneDeviceDialer({
     const textInputRef = createRef<HTMLInputElement>()
     const phoneIntegrations = useAppSelector(getPhoneIntegrations)
     const [selectedIntegration, setSelectedIntegration] = useState(
-        phoneIntegrations[0]
+        phoneIntegrations[0],
     )
-    const {getPhoneNumberById} = usePhoneNumbers()
+    const { getPhoneNumberById } = usePhoneNumbers()
 
     const isSearchTypeCustomer = /[a-zA-Z]/.test(inputValue)
     const isCallButtonDisabled = isSearchTypeCustomer && !selectedCustomer
@@ -39,15 +40,15 @@ export default function usePhoneDeviceDialer({
         }
 
         const selectedIntegrationPhoneNumber = getPhoneNumberById(
-            selectedIntegration.meta.phone_number_id
+            selectedIntegration.meta.phone_number_id,
         )
         const selectedIntegrationCountryCode = getCountryFromPhoneNumber(
-            selectedIntegrationPhoneNumber.phone_number
+            selectedIntegrationPhoneNumber.phone_number,
         )
 
         if (selectedIntegrationCountryCode) {
             phoneNumberInputRef.current?.onCountryChange(
-                selectedIntegrationCountryCode
+                selectedIntegrationCountryCode,
             )
         }
     }, [

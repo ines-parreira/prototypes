@@ -1,20 +1,21 @@
+import React, { UIEventHandler, useState } from 'react'
+
 import classNames from 'classnames'
-import React, {UIEventHandler, useState} from 'react'
 // eslint-disable-next-line no-restricted-imports
-import {useDispatch} from 'react-redux'
-import {Link} from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import useMeasure from 'hooks/useMeasure'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {NumberedPagination} from 'pages/common/components/Paginations'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { NumberedPagination } from 'pages/common/components/Paginations'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-import {AgentAvatar} from 'pages/stats/common/AgentAvatar'
+import { AgentAvatar } from 'pages/stats/common/AgentAvatar'
 import {
     useAnsweredCallsMetric,
     useDeclinedCallsMetric,
@@ -24,19 +25,23 @@ import {
 } from 'pages/stats/voice/hooks/agentMetrics'
 import {
     useAnsweredCallsMetricPerAgent,
+    useDeclinedCallsMetricPerAgent,
     useMissedCallsMetricPerAgent,
     useOutboundCallsMetricPerAgent,
     useTotalCallsMetricPerAgent,
-    useDeclinedCallsMetricPerAgent,
 } from 'pages/stats/voice/hooks/metricsPerDimension'
-import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
-import {getPaginatedAgents, pageSet} from 'state/ui/stats/agentPerformanceSlice'
-import {VoiceAgentsMetric} from 'state/ui/stats/types'
+import { mergeStatsFiltersWithLogicalOperator } from 'state/stats/statsSlice'
+import {
+    getPaginatedAgents,
+    pageSet,
+} from 'state/ui/stats/agentPerformanceSlice'
+import { VoiceAgentsMetric } from 'state/ui/stats/types'
 
 import AverageTalkTimeCell from './AverageTalkTimeCell'
 import CallsCountCell from './CallsCountCell'
 import TeamAverageCallsCountCell from './TeamAverageCallsCountCell'
 import TeamAverageTalkTimeCell from './TeamAverageTalkTimeCell'
+
 import css from './VoiceAgentsTable.less'
 
 export const VoiceAgentsTable = () => {
@@ -46,7 +51,7 @@ export const VoiceAgentsTable = () => {
         agents: paginatedAgents,
         allAgents: agents,
     } = useAppSelector(getPaginatedAgents)
-    const [ref, {width}] = useMeasure<HTMLDivElement>()
+    const [ref, { width }] = useMeasure<HTMLDivElement>()
     const [isTableScrolled, setIsTableScrolled] = useState(false)
     const dispatch = useDispatch()
 
@@ -66,7 +71,7 @@ export const VoiceAgentsTable = () => {
         dispatch(
             mergeStatsFiltersWithLogicalOperator({
                 agents: withDefaultLogicalOperator([agentId]),
-            })
+            }),
         )
     }
 
@@ -79,7 +84,7 @@ export const VoiceAgentsTable = () => {
     return (
         <>
             <div ref={ref} className={css.container} onScroll={handleScroll}>
-                <TableWrapper className={css.table} style={{width}}>
+                <TableWrapper className={css.table} style={{ width }}>
                     <TableHead
                         className={classNames(css.tableHead, css.tableRow)}
                     >
@@ -182,7 +187,7 @@ export const VoiceAgentsTable = () => {
                                         }
                                         className={classNames(
                                             css.container,
-                                            css.agentsContainer
+                                            css.agentsContainer,
                                         )}
                                     >
                                         <AgentAvatar agent={agent} />

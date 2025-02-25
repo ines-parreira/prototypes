@@ -1,8 +1,9 @@
-import {Meta, StoryObj} from '@storybook/react'
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
-import {HelpCenterLayout} from '../../types/layout.enum'
-import {LayoutSwitch, LayoutSwitchProps} from './LayoutSwitch'
+import { Meta, StoryObj } from '@storybook/react'
+
+import { HelpCenterLayout } from '../../types/layout.enum'
+import { LayoutSwitch, LayoutSwitchProps } from './LayoutSwitch'
 
 const storyConfig: Meta = {
     title: 'Help center/LayoutSwitch',
@@ -15,14 +16,14 @@ const Template: Story = {
     render: (args: LayoutSwitchProps) => {
         // eslint-disable-next-line react-hooks/rules-of-hooks
         const [selectedLayout, setSelectedLayout] = useState<HelpCenterLayout>(
-            args.selectedLayout
+            args.selectedLayout,
         )
 
         const handleLayoutChange = (layout: HelpCenterLayout) =>
             setSelectedLayout(layout)
 
         return (
-            <div style={{width: '680px'}}>
+            <div style={{ width: '680px' }}>
                 <LayoutSwitch
                     {...args}
                     selectedLayout={selectedLayout}

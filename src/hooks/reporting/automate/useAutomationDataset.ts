@@ -1,39 +1,38 @@
-import {useFilteredAutomatedInteractions} from 'hooks/reporting/automate/automationTrends'
+import { useFilteredAutomatedInteractions } from 'hooks/reporting/automate/automationTrends'
 import {
     fetchAutomationDatasetByEventTypeTimeSeries,
     useAutomationDatasetByEventTypeTimeSeries,
 } from 'hooks/reporting/automate/timeSeries'
 import {
-    AutomateTimeseries as CalculatedTimeSeries,
     AutomateTrendMetrics,
+    AutomateTimeseries as CalculatedTimeSeries,
 } from 'hooks/reporting/automate/types'
 import {
     fetchAutomationRateTimeSeriesData,
     useAutomationRateTimeSeriesData,
 } from 'hooks/reporting/automate/useAutomationRateTimeSeriesData'
-import {useAutomationRateTrend} from 'hooks/reporting/automate/useAutomationRateTrend'
-import {useDecreaseInFirstResponseTimeTrend} from 'hooks/reporting/automate/useDecreaseInFirstResponseTimeTrend'
-import {useDecreaseInResolutionTimeTrend} from 'hooks/reporting/automate/useDecreaseInResolutionTimeTrend'
+import { useAutomationRateTrend } from 'hooks/reporting/automate/useAutomationRateTrend'
+import { useDecreaseInFirstResponseTimeTrend } from 'hooks/reporting/automate/useDecreaseInFirstResponseTimeTrend'
+import { useDecreaseInResolutionTimeTrend } from 'hooks/reporting/automate/useDecreaseInResolutionTimeTrend'
 import {
     fetchFilteredAutomatedInteractionsSeries,
     useFilteredAutomatedInteractionsSeries,
 } from 'hooks/reporting/automate/useFilteredAutomatedInteractionsSeries'
-import {automateInteractionsByEventTypeToTimeSeries} from 'hooks/reporting/automate/utils'
-import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-
-import {ReportingGranularity} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import { automateInteractionsByEventTypeToTimeSeries } from 'hooks/reporting/automate/utils'
+import { MetricTrend } from 'hooks/reporting/useMetricTrend'
+import { ReportingGranularity } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
 
 export const useAutomateMetricsTimeSeries = (
     filters: StatsFilters,
     timezone: string,
-    granularity: ReportingGranularity
+    granularity: ReportingGranularity,
 ): CalculatedTimeSeries => {
     const filteredAutomatedInteractionsDataByEventType =
         useAutomationDatasetByEventTypeTimeSeries(
             filters,
             timezone,
-            granularity
+            granularity,
         )
     const filteredAutomatedInteractionsSeries =
         useFilteredAutomatedInteractionsSeries(filters, timezone, granularity)
@@ -41,7 +40,7 @@ export const useAutomateMetricsTimeSeries = (
     const automationRates = useAutomationRateTimeSeriesData(
         filters,
         timezone,
-        granularity
+        granularity,
     )
 
     return {
@@ -60,7 +59,7 @@ export const useAutomateMetricsTimeSeries = (
             automateInteractionsByEventTypeToTimeSeries(
                 filters,
                 granularity,
-                filteredAutomatedInteractionsDataByEventType.data
+                filteredAutomatedInteractionsDataByEventType.data,
             ),
     }
 }
@@ -70,25 +69,25 @@ export const fetchAutomateMetricsTimeSeries = async (
     timezone: string,
     granularity: ReportingGranularity,
     isAutomateNonFilteredDenominatorInAutomationRate: boolean | undefined,
-    aiAgentUserId: string | undefined
+    aiAgentUserId: string | undefined,
 ): Promise<CalculatedTimeSeries> => {
     return Promise.all([
         fetchAutomationDatasetByEventTypeTimeSeries(
             filters,
             timezone,
-            granularity
+            granularity,
         ),
         fetchFilteredAutomatedInteractionsSeries(
             filters,
             timezone,
-            granularity
+            granularity,
         ),
         fetchAutomationRateTimeSeriesData(
             filters,
             timezone,
             granularity,
             isAutomateNonFilteredDenominatorInAutomationRate,
-            aiAgentUserId
+            aiAgentUserId,
         ),
     ]).then(
         ([
@@ -106,31 +105,31 @@ export const fetchAutomateMetricsTimeSeries = async (
                     automateInteractionsByEventTypeToTimeSeries(
                         filters,
                         granularity,
-                        filteredAutomatedInteractionsDataByEventType
+                        filteredAutomatedInteractionsDataByEventType,
                     ),
             }
-        }
+        },
     )
 }
 
 export const useAutomateMetricsTrend = (
     filters: StatsFilters,
-    timezone: string
+    timezone: string,
 ): Record<AutomateTrendMetrics, MetricTrend> => {
     const automationRate = useAutomationRateTrend(filters, timezone)
     const filteredAutomatedInteractions = useFilteredAutomatedInteractions(
         filters,
-        timezone
+        timezone,
     )
 
     const decreaseInFirstResponseTime = useDecreaseInFirstResponseTimeTrend(
         filters,
-        timezone
+        timezone,
     )
 
     const decreaseInResolutionTime = useDecreaseInResolutionTimeTrend(
         filters,
-        timezone
+        timezone,
     )
 
     return {

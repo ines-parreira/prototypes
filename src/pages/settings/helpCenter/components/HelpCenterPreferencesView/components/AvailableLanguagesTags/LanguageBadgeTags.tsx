@@ -1,24 +1,24 @@
-import {produce} from 'immer'
-import _keyBy from 'lodash/keyBy'
-import React, {useCallback, useMemo, useState} from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 
-import {Locale, LocaleCode} from 'models/helpCenter/types'
-import {BadgeItemProps} from 'pages/common/components/BadgetItem'
+import { produce } from 'immer'
+import _keyBy from 'lodash/keyBy'
+
+import { Locale, LocaleCode } from 'models/helpCenter/types'
+import { BadgeItemProps } from 'pages/common/components/BadgetItem'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 
-import {FlagLanguageItem} from '../../../../../../common/components/LanguageBulletList'
-import {localeToSelectOption} from '../../../../utils/localeSelectOptions'
-import {DynamicBadgeList} from '../BadgeList'
-
-import {transformToSelectedLocale} from './utils'
+import { FlagLanguageItem } from '../../../../../../common/components/LanguageBulletList'
+import { localeToSelectOption } from '../../../../utils/localeSelectOptions'
+import { DynamicBadgeList } from '../BadgeList'
+import { transformToSelectedLocale } from './utils'
 
 function ensureDefaultLanguageIsFirst(
     locales: LocaleCode[],
-    defaultLocale: LocaleCode | null
+    defaultLocale: LocaleCode | null,
 ): LocaleCode[] {
     if (!defaultLocale) return locales
 
@@ -55,17 +55,17 @@ export const LanguageBadgeTags = ({
 
     const localesByCode = useMemo(
         () => _keyBy(availableLocales, 'code'),
-        [availableLocales]
+        [availableLocales],
     )
 
     const localeOptions = useMemo(
         () => availableLocales.map(localeToSelectOption),
-        [availableLocales]
+        [availableLocales],
     )
 
     const selectedLocales = ensureDefaultLanguageIsFirst(
         availableLanguages,
-        defaultLanguage
+        defaultLanguage,
     )
         .filter((localeCode) => localesByCode[localeCode])
         .map((localeCode, _index, allLocales) => {
@@ -83,7 +83,7 @@ export const LanguageBadgeTags = ({
 
             return transformToSelectedLocale(
                 locale,
-                defaultLanguageLabel ?? singleLanguageLabel
+                defaultLanguageLabel ?? singleLanguageLabel,
             )
         })
 
@@ -101,18 +101,18 @@ export const LanguageBadgeTags = ({
                 availableLanguages,
                 (draftLocales) => {
                     const index = draftLocales.findIndex(
-                        (localeId) => localeId === locale.id
+                        (localeId) => localeId === locale.id,
                     )
 
                     if (index >= 0) {
                         draftLocales.splice(index, 1)
                     }
-                }
+                },
             )
 
             updateAvailableLanguages(newAvailabelLanguages)
         },
-        [availableLanguages, updateAvailableLanguages]
+        [availableLanguages, updateAvailableLanguages],
     )
 
     const handleOnClickDeleteLocale = () => {
@@ -129,7 +129,7 @@ export const LanguageBadgeTags = ({
 
     const handleOnAttemptRemoveLocale = (
         _: React.MouseEvent,
-        item: BadgeItemProps
+        item: BadgeItemProps,
     ) => {
         if (showModalQuestion) {
             setPendingLocale(item)

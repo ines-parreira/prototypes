@@ -1,9 +1,9 @@
-import {ExpressionFieldType} from '@gorgias/api-types'
+import { ExpressionFieldType } from '@gorgias/api-types'
 
-import {CustomField, CustomFieldState} from 'custom-fields/types'
+import { CustomField, CustomFieldState } from 'custom-fields/types'
 
-import {isCustomFieldValueEmpty} from './isCustomFieldValueEmpty'
-import {isFieldRequired} from './isFieldRequired'
+import { isCustomFieldValueEmpty } from './isCustomFieldValueEmpty'
+import { isFieldRequired } from './isFieldRequired'
 
 export function isFieldErrored({
     fieldState,
@@ -16,6 +16,6 @@ export function isFieldErrored({
 }) {
     return Boolean(
         isFieldRequired(fieldDefinition, conditionalRequirementType) &&
-            isCustomFieldValueEmpty(fieldState?.value)
+            isCustomFieldValueEmpty(fieldState?.value),
     )
 }

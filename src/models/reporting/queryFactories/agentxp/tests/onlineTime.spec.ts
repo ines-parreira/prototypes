@@ -1,7 +1,7 @@
 import moment from 'moment/moment'
 
-import {TicketChannel} from 'business/types/ticket'
-import {OrderDirection} from 'models/api/types'
+import { TicketChannel } from 'business/types/ticket'
+import { OrderDirection } from 'models/api/types'
 import {
     AgentTimeTrackingDimension,
     AgentTimeTrackingMeasure,
@@ -11,9 +11,9 @@ import {
     onlineTimePerAgentQueryFactory,
     onlineTimeQueryFactory,
 } from 'models/reporting/queryFactories/agentxp/onlineTime'
-import {ReportingFilterOperator} from 'models/reporting/types'
-import {LegacyStatsFilters} from 'models/stat/types'
-import {formatReportingQueryDate} from 'utils/reporting'
+import { ReportingFilterOperator } from 'models/reporting/types'
+import { LegacyStatsFilters } from 'models/stat/types'
+import { formatReportingQueryDate } from 'utils/reporting'
 
 describe('onlineTimePerAgentQueryFactory', () => {
     const periodStart = moment()
@@ -59,7 +59,7 @@ describe('onlineTimePerAgentQueryFactory', () => {
 
         it('should build the query with sorting', () => {
             expect(
-                onlineTimeQueryFactory(statsFilters, timezone, sorting)
+                onlineTimeQueryFactory(statsFilters, timezone, sorting),
             ).toEqual({
                 dimensions: [],
                 filters: [
@@ -89,7 +89,7 @@ describe('onlineTimePerAgentQueryFactory', () => {
     describe('onlineTimePerAgentQueryFactory', () => {
         it('should build the query', () => {
             expect(
-                onlineTimePerAgentQueryFactory(statsFilters, timezone)
+                onlineTimePerAgentQueryFactory(statsFilters, timezone),
             ).toEqual({
                 dimensions: [AgentTimeTrackingDimension.UserId],
                 filters: [
@@ -116,7 +116,7 @@ describe('onlineTimePerAgentQueryFactory', () => {
 
         it('should build the query with sorting', () => {
             expect(
-                onlineTimePerAgentQueryFactory(statsFilters, timezone, sorting)
+                onlineTimePerAgentQueryFactory(statsFilters, timezone, sorting),
             ).toEqual({
                 dimensions: [AgentTimeTrackingDimension.UserId],
                 filters: [

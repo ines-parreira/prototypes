@@ -1,7 +1,9 @@
-import {Label} from '@gorgias/merchant-ui-kit'
+import React, { useEffect, useState } from 'react'
+
 import classNames from 'classnames'
 import copy from 'copy-to-clipboard'
-import React, {useEffect, useState} from 'react'
+
+import { Label } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -16,19 +18,19 @@ import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import InputField from 'pages/common/forms/input/InputField'
 import TextArea from 'pages/common/forms/TextArea'
 import settingsCss from 'pages/settings/settings.less'
-import {getCategories} from 'state/entities/helpCenter/categories'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { getCategories } from 'state/entities/helpCenter/categories'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
-import {HELP_CENTER_TITLE_MAX_LENGTH} from '../../constants'
-import {useEditionManager} from '../../providers/EditionManagerContext'
+import { HELP_CENTER_TITLE_MAX_LENGTH } from '../../constants'
+import { useEditionManager } from '../../providers/EditionManagerContext'
 import {
     getAbsoluteUrl,
     getArticleUrl,
     slugify,
 } from '../../utils/helpCenter.utils'
-import {isOneOfParentsUnlisted} from '../HelpCenterCategoryEdit/utils'
-import {SearchEnginePreview} from '../SearchEnginePreview'
+import { isOneOfParentsUnlisted } from '../HelpCenterCategoryEdit/utils'
+import { SearchEnginePreview } from '../SearchEnginePreview'
 import SelectVisibilityStatus from '../SelectVisibilityStatus/SelectVisibilityStatus'
 import ArticleCategorySelect from './ArticleCategorySelect'
 
@@ -40,7 +42,7 @@ type Props = {
     translation: CreateArticleTranslationDto | LocalArticleTranslation
     domain: string
     onChange: (
-        translation: CreateArticleTranslationDto | LocalArticleTranslation
+        translation: CreateArticleTranslationDto | LocalArticleTranslation,
     ) => void
     onCategoryChange: (categoryId: number | null) => void
 }
@@ -55,18 +57,18 @@ export const HelpCenterEditAdvancedArticleForm = ({
 }: Props): JSX.Element => {
     const dispatch = useAppDispatch()
 
-    const {selectedCategoryId} = useEditionManager()
+    const { selectedCategoryId } = useEditionManager()
 
     const categories = useAppSelector(getCategories)
     const [showNotification, setShowNotification] = useState(false)
     const [isParentUnlisted, setIsParentUnlisted] = useState(false)
 
-    const slugPrefix = getAbsoluteUrl({domain, locale: translation.locale})
+    const slugPrefix = getAbsoluteUrl({ domain, locale: translation.locale })
     const slugSuffix = articleId ? `-${articleId.toString()}` : ''
 
     useEffect(() => {
         setIsParentUnlisted(
-            isOneOfParentsUnlisted(categories, selectedCategoryId)
+            isOneOfParentsUnlisted(categories, selectedCategoryId),
         )
     }, [selectedCategoryId, categories])
 
@@ -106,12 +108,12 @@ export const HelpCenterEditAdvancedArticleForm = ({
             category_id: selectedCategoryId,
         })
         setShowNotification(
-            isOneOfParentsUnlisted(categories, selectedCategoryId)
+            isOneOfParentsUnlisted(categories, selectedCategoryId),
         )
     }
 
     const copyURL = () => {
-        const {locale, slug} = translation
+        const { locale, slug } = translation
         const isUnlisted =
             isOneOfParentsUnlisted(categories, selectedCategoryId) ||
             translation.visibility_status === 'UNLISTED'
@@ -129,14 +131,14 @@ export const HelpCenterEditAdvancedArticleForm = ({
                 articleId,
                 unlistedId,
                 isUnlisted,
-            })
+            }),
         )
 
         void dispatch(
             notify({
                 message: 'Link copied with success',
                 status: NotificationStatus.Success,
-            })
+            }),
         )
     }
 
@@ -236,7 +238,7 @@ export const HelpCenterEditAdvancedArticleForm = ({
                 required
             />
             <SearchEnginePreview
-                baseUrl={getAbsoluteUrl({domain}, false)}
+                baseUrl={getAbsoluteUrl({ domain }, false)}
                 title={translation.seo_meta.title ?? translation.title}
                 description={
                     translation.seo_meta.description ?? translation.excerpt

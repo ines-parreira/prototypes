@@ -1,18 +1,19 @@
-import {screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {billingState} from 'fixtures/billing'
-import {user} from 'fixtures/users'
-import {RootState, StoreDispatch} from 'state/types'
-import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { billingState } from 'fixtures/billing'
+import { user } from 'fixtures/users'
+import { RootState, StoreDispatch } from 'state/types'
+import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
-import {AutomateSavingsCard} from '../AutomateSavingsCard'
+import { AutomateSavingsCard } from '../AutomateSavingsCard'
 
 // Mock the useFlags hook and other necessary hooks
 jest.mock('launchdarkly-react-client-sdk')
@@ -43,7 +44,7 @@ describe('AutomateSavingsCard', () => {
                     ticketHandleTime={300}
                     hasAgentCosts={true}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('$1,000')).toBeInTheDocument()

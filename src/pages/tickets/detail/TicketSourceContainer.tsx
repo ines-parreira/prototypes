@@ -1,15 +1,15 @@
-import React, {useEffect} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {useParams} from 'react-router-dom'
-import {bindActionCreators} from 'redux'
+import React, { useEffect } from 'react'
+
+import { connect, ConnectedProps } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import { bindActionCreators } from 'redux'
 
 import useSearch from '../../../hooks/useSearch'
-import {fetchCustomer} from '../../../state/customers/actions'
-import {fetchTicket} from '../../../state/ticket/actions'
-import {RootState} from '../../../state/types'
+import { fetchCustomer } from '../../../state/customers/actions'
+import { fetchTicket } from '../../../state/ticket/actions'
+import { RootState } from '../../../state/types'
 import * as widgetsActions from '../../../state/widgets/actions'
-
-import {getSourcesWithCustomer} from '../../../state/widgets/selectors'
+import { getSourcesWithCustomer } from '../../../state/widgets/selectors'
 import SourceWrapper from '../../common/components/sourceWidgets/SourceWrapper'
 
 export const TicketSourceContainer = ({
@@ -18,11 +18,11 @@ export const TicketSourceContainer = ({
     ticket,
     widgets,
 }: ConnectedProps<typeof connector>) => {
-    const {customer} = useSearch<{customer?: string}>()
-    const params = useParams<{ticketId: string}>()
+    const { customer } = useSearch<{ customer?: string }>()
+    const params = useParams<{ ticketId: string }>()
 
     useEffect(() => {
-        actions.fetchTicket(params.ticketId, {isCurrentlyOnTicket: true})
+        actions.fetchTicket(params.ticketId, { isCurrentlyOnTicket: true })
 
         if (customer) {
             if (
@@ -61,7 +61,7 @@ const connector = connect(
             fetchTicket: bindActionCreators(fetchTicket, dispatch),
             widgets: bindActionCreators(widgetsActions, dispatch),
         },
-    })
+    }),
 )
 
 export default connector(TicketSourceContainer)

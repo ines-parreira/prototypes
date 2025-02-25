@@ -1,7 +1,7 @@
-import {AiAgentStoreConfigurationFixture} from '../../tests/AiAgentStoreConfiguration.fixture'
-import {EmailIntegrationsDataFixture} from '../../tests/EmailIntegrationsData.fixture'
-import {ConnectYourDefaultEmailTask} from '../ConnectYourDefaultEmail.task'
-import {buildRuleEngineData, buildRuleEngineRoutes} from './utils'
+import { AiAgentStoreConfigurationFixture } from '../../tests/AiAgentStoreConfiguration.fixture'
+import { EmailIntegrationsDataFixture } from '../../tests/EmailIntegrationsData.fixture'
+import { ConnectYourDefaultEmailTask } from '../ConnectYourDefaultEmail.task'
+import { buildRuleEngineData, buildRuleEngineRoutes } from './utils'
 
 describe('ConnectYourDefaultEmail', () => {
     it('should display the task if email channel is enabled, and a default email integration is set in store configuration', () => {
@@ -28,7 +28,7 @@ describe('ConnectYourDefaultEmail', () => {
                     {
                         email: emailIntegrations[1].address,
                         id: emailIntegrations[1].id,
-                    }
+                    },
                 )
                 .withEmailChannelEnabled()
                 .build()
@@ -38,7 +38,7 @@ describe('ConnectYourDefaultEmail', () => {
                 emailIntegrations,
                 aiAgentStoreConfiguration,
             }),
-            buildRuleEngineRoutes()
+            buildRuleEngineRoutes(),
         )
         expect(task.display).toBe(true)
     })
@@ -53,7 +53,7 @@ describe('ConnectYourDefaultEmail', () => {
             buildRuleEngineData({
                 aiAgentStoreConfiguration,
             }),
-            buildRuleEngineRoutes()
+            buildRuleEngineRoutes(),
         )
         expect(task.display).toBe(false)
     })
@@ -73,7 +73,7 @@ describe('ConnectYourDefaultEmail', () => {
                 aiAgentStoreConfiguration,
                 emailIntegrations,
             }),
-            buildRuleEngineRoutes()
+            buildRuleEngineRoutes(),
         )
         expect(task.display).toBe(false)
     })
@@ -95,7 +95,7 @@ describe('ConnectYourDefaultEmail', () => {
                 aiAgentStoreConfiguration,
                 emailIntegrations,
             }),
-            buildRuleEngineRoutes()
+            buildRuleEngineRoutes(),
         )
         expect(task.display).toBe(false)
     })
@@ -123,7 +123,7 @@ describe('ConnectYourDefaultEmail', () => {
                 aiAgentStoreConfiguration,
                 emailIntegrations,
             }),
-            buildRuleEngineRoutes()
+            buildRuleEngineRoutes(),
         )
         expect(task.display).toBe(false)
     })

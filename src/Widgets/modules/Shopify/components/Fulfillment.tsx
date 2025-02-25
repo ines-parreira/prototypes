@@ -1,11 +1,12 @@
-import {Badge, ColorType} from '@gorgias/merchant-ui-kit'
-import {Map} from 'immutable'
 import React from 'react'
 
-import {humanizeString} from 'utils'
+import { Map } from 'immutable'
 
-import {CardCustomization} from 'Widgets/modules/Template/modules/Card'
-import {StaticField} from 'Widgets/modules/Template/modules/Field'
+import { Badge, ColorType } from '@gorgias/merchant-ui-kit'
+
+import { humanizeString } from 'utils'
+import { CardCustomization } from 'Widgets/modules/Template/modules/Card'
+import { StaticField } from 'Widgets/modules/Template/modules/Field'
 
 type BeforeContentProps = {
     source: Map<any, any>
@@ -23,7 +24,7 @@ const shipmentStatusColors: Record<string, ColorType> = {
     failure: 'error',
 }
 
-const BeforeContent = ({source}: BeforeContentProps) => {
+const BeforeContent = ({ source }: BeforeContentProps) => {
     const shipmentStatus = source.get('shipment_status') as
         | undefined
         | keyof typeof shipmentStatusColors

@@ -1,16 +1,16 @@
 import axios from 'axios'
-import {List, Map} from 'immutable'
+import { List, Map } from 'immutable'
 import _debounce from 'lodash/debounce'
 
 import {
     initRefundOrderLineItems,
     initRefundOrderPayload,
 } from 'business/shopify/order'
-import {getTotalQuantities} from 'business/shopify/refund'
-import {logEvent, SegmentEvent} from 'common/segment'
+import { getTotalQuantities } from 'business/shopify/refund'
+import { logEvent, SegmentEvent } from 'common/segment'
 import GorgiasApi from 'services/gorgiasApi'
-import type {StoreDispatch, RootState} from 'state/types'
-import {onApiError} from 'state/utils'
+import type { RootState, StoreDispatch } from 'state/types'
+import { onApiError } from 'state/utils'
 
 import {
     SET_INITIAL_STATE,
@@ -19,10 +19,10 @@ import {
     SET_ORDER_ID,
     SET_PAYLOAD,
     SET_REFUND,
-    SET_TRANSACTIONS,
     SET_RESTOCK,
+    SET_TRANSACTIONS,
 } from './constants'
-import {getRefundOrderState} from './selectors'
+import { getRefundOrderState } from './selectors'
 
 //$TsFixMe remove once gorgiasApi is migrated
 type TypeSafeGorgiasApi = {
@@ -30,7 +30,7 @@ type TypeSafeGorgiasApi = {
     calculateRefund: (
         integrationId: number,
         orderId: number,
-        payload: Map<any, any>
+        payload: Map<any, any>,
     ) => Promise<Map<any, any>>
 }
 
@@ -124,17 +124,17 @@ export const onLineItemChange =
                     ).find(
                         (refundLineItem: Map<any, any>) =>
                             refundLineItem.get('line_item_id') ===
-                            lineItem.get('id')
+                            lineItem.get('id'),
                     ) as Maybe<Map<any, any>>
 
                     return refundLineItem
                         ? refundLineItem.set(
                               'quantity',
-                              lineItem.get('quantity')
+                              lineItem.get('quantity'),
                           )
                         : undefined
                 })
-                .filter((lineItem) => !!lineItem)
+                .filter((lineItem) => !!lineItem),
         )
 
         dispatch(setLineItems(newLineItems))
@@ -153,7 +153,7 @@ export const calculateRefund = _debounce(
     async (
         integrationId: number,
         dispatch: StoreDispatch,
-        getState: () => RootState
+        getState: () => RootState,
     ) => {
         try {
             dispatch(setLoading(true, 'Calculating refund...'))
@@ -169,7 +169,7 @@ export const calculateRefund = _debounce(
             const suggestedRefund = await api.calculateRefund(
                 integrationId,
                 orderId,
-                payload
+                payload,
             )
 
             const promises = [
@@ -195,12 +195,12 @@ export const calculateRefund = _debounce(
                 onApiError(
                     error,
                     'Error while calculating refund',
-                    setLoading(false)
-                )
+                    setLoading(false),
+                ),
             )
         }
     },
-    500
+    500,
 )
 
 export const onCancel = (via: string) => () => {
@@ -217,5 +217,5 @@ export const onReset = () => (dispatch: StoreDispatch) => resetState(dispatch)
 
 export const resetState = _debounce(
     (dispatch: StoreDispatch) => dispatch(setInitialState()),
-    250
+    250,
 )

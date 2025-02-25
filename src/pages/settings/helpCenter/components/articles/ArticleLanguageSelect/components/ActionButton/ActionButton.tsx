@@ -1,8 +1,9 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
 import useId from 'hooks/useId'
-import Button, {type ButtonProps} from 'pages/common/components/button/Button'
+import Button, { type ButtonProps } from 'pages/common/components/button/Button'
 
 export type ActionButtonVariant = 'danger' | 'neutral'
 

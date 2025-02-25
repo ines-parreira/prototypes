@@ -1,14 +1,14 @@
-import {UseQueryOptions, useMutation, useQuery} from '@tanstack/react-query'
+import { useMutation, useQuery, UseQueryOptions } from '@tanstack/react-query'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {DATE_FEATURE_AVAILABLE} from 'pages/tickets/detail/components/AIAgentFeedbackBar/constants'
-import {getAIAgentMessages} from 'state/ticket/selectors'
-import {MutationOverrides} from 'types/query'
+import { DATE_FEATURE_AVAILABLE } from 'pages/tickets/detail/components/AIAgentFeedbackBar/constants'
+import { getAIAgentMessages } from 'state/ticket/selectors'
+import { MutationOverrides } from 'types/query'
 
 import {
+    deleteAIAgentTicketMessagesFeedback,
     getAIAgentTicketMessagesFeedback,
     submitAIAgentTicketMessagesFeedback,
-    deleteAIAgentTicketMessagesFeedback,
 } from './resources'
 
 export const aiAgentFeedbackKeys = {
@@ -21,13 +21,13 @@ export const aiAgentFeedbackKeys = {
 export const useGetAiAgentFeedback = (
     overrides?: UseQueryOptions<
         Awaited<ReturnType<typeof getAIAgentTicketMessagesFeedback>>
-    >
+    >,
 ) => {
     const aiMessages = useAppSelector(getAIAgentMessages)
     const messageIds = aiMessages
         .filter(
             (message) =>
-                new Date(message.created_datetime) > DATE_FEATURE_AVAILABLE
+                new Date(message.created_datetime) > DATE_FEATURE_AVAILABLE,
         )
         .map((message) => message.id) as number[]
 
@@ -44,7 +44,7 @@ export const useSubmitAIAgentTicketMessagesFeedback = <TContext = unknown>(
         typeof submitAIAgentTicketMessagesFeedback,
         false,
         TContext
-    >
+    >,
 ) => {
     return useMutation({
         mutationFn: (params) => submitAIAgentTicketMessagesFeedback(...params),
@@ -53,7 +53,7 @@ export const useSubmitAIAgentTicketMessagesFeedback = <TContext = unknown>(
 }
 
 export const useDeleteAIAgentTicketMessagesFeedback = (
-    overrides?: MutationOverrides<typeof deleteAIAgentTicketMessagesFeedback>
+    overrides?: MutationOverrides<typeof deleteAIAgentTicketMessagesFeedback>,
 ) => {
     return useMutation({
         mutationFn: (params) => deleteAIAgentTicketMessagesFeedback(...params),

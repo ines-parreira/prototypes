@@ -1,15 +1,14 @@
-import {UseQueryResult} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
+import { UseQueryResult } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {fetchMetric, useMetric} from 'hooks/reporting/useMetric'
+import { fetchMetric, useMetric } from 'hooks/reporting/useMetric'
 import {
     TicketMessagesCube,
     TicketMessagesMeasure,
 } from 'models/reporting/cubes/TicketMessagesCube'
-
-import {fetchPostReporting, usePostReporting} from 'models/reporting/queries'
-import {ReportingQuery} from 'models/reporting/types'
-import {assumeMock} from 'utils/testing'
+import { fetchPostReporting, usePostReporting } from 'models/reporting/queries'
+import { ReportingQuery } from 'models/reporting/types'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('models/reporting/queries')
 const usePostReportingMock = assumeMock(usePostReporting)
@@ -33,7 +32,7 @@ describe('Metric', () => {
         })
 
         it('should return isFetching=false when no queries are fetching', () => {
-            const {result} = renderHook(() => useMetric(defaultQuery))
+            const { result } = renderHook(() => useMetric(defaultQuery))
 
             expect(result.current.isFetching).toBe(false)
         })
@@ -44,13 +43,13 @@ describe('Metric', () => {
                 isFetching: true,
             })
 
-            const {result} = renderHook(() => useMetric(defaultQuery))
+            const { result } = renderHook(() => useMetric(defaultQuery))
 
             expect(result.current.isFetching).toBe(true)
         })
 
         it('should return isError=false when no queries errored', () => {
-            const {result} = renderHook(() => useMetric(defaultQuery))
+            const { result } = renderHook(() => useMetric(defaultQuery))
 
             expect(result.current.isError).toBe(false)
         })
@@ -61,13 +60,13 @@ describe('Metric', () => {
                 isError: true,
             } as UseQueryResult)
 
-            const {result} = renderHook(() => useMetric(defaultQuery))
+            const { result } = renderHook(() => useMetric(defaultQuery))
 
             expect(result.current.isError).toBe(true)
         })
 
         it('should not return data when one the queries does not have data', () => {
-            const {result} = renderHook(() => useMetric(defaultQuery))
+            const { result } = renderHook(() => useMetric(defaultQuery))
 
             expect(result.current.data).toBe(undefined)
         })
@@ -78,7 +77,7 @@ describe('Metric', () => {
                 data: 1,
             } as UseQueryResult)
 
-            const {result} = renderHook(() => useMetric(defaultQuery))
+            const { result } = renderHook(() => useMetric(defaultQuery))
 
             expect(result.current.data).toEqual({
                 value: 1,
@@ -100,7 +99,7 @@ describe('Metric', () => {
                 [defaultQuery],
                 expect.objectContaining({
                     select,
-                })
+                }),
             )
             expect(
                 select?.({
@@ -112,7 +111,7 @@ describe('Metric', () => {
                             },
                         ],
                     },
-                } as any)
+                } as any),
             ).toEqual(medianFirstResponseTime)
         })
     })
@@ -138,7 +137,7 @@ describe('Metric', () => {
 
         beforeEach(() => {
             fetchPostReportingMock.mockResolvedValue({
-                data: {...defaultReporting, data: rawResponse},
+                data: { ...defaultReporting, data: rawResponse },
             } as unknown as ReturnType<typeof fetchPostReporting>)
         })
 
@@ -164,7 +163,7 @@ describe('Metric', () => {
 
         it('should not return data when one the queries does not have data', async () => {
             fetchPostReportingMock.mockResolvedValue({
-                data: {...defaultReporting, data: undefined},
+                data: { ...defaultReporting, data: undefined },
             } as unknown as ReturnType<typeof fetchPostReporting>)
 
             const result = await fetchMetric(defaultQuery)

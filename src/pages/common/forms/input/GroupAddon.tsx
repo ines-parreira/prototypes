@@ -1,12 +1,13 @@
+import React, { HTMLProps, useContext } from 'react'
+
 import classnames from 'classnames'
-import React, {HTMLProps, useContext} from 'react'
 
 import {
-    GroupPositionContext,
     GroupContext,
+    GroupPositionContext,
 } from 'pages/common/components/layout/Group'
-import {InputGroupContext} from 'pages/common/forms/input/InputGroup'
-import {reportError} from 'utils/errors'
+import { InputGroupContext } from 'pages/common/forms/input/InputGroup'
+import { reportError } from 'utils/errors'
 
 import css from './GroupAddon.less'
 
@@ -14,7 +15,7 @@ type Props = {
     isDisabled?: boolean
 } & HTMLProps<HTMLSpanElement>
 
-function GroupAddon({className, isDisabled = false, ...props}: Props) {
+function GroupAddon({ className, isDisabled = false, ...props }: Props) {
     const groupContext = useContext(GroupContext)
     const appendPosition = useContext(GroupPositionContext) || ''
     const isNotInsideInputGroup = !useContext(InputGroupContext)
@@ -31,7 +32,7 @@ function GroupAddon({className, isDisabled = false, ...props}: Props) {
                 css[appendPosition],
                 {
                     [css.isDisabled]: groupContext?.isDisabled || isDisabled,
-                }
+                },
             )}
             {...props}
         />

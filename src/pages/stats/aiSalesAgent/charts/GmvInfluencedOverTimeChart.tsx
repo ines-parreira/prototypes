@@ -1,19 +1,18 @@
-import {TooltipItem} from 'chart.js'
 import React from 'react'
 
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-import {TimeSeriesHook} from 'hooks/reporting/useTimeSeries'
+import { TooltipItem } from 'chart.js'
 
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { TimeSeriesHook } from 'hooks/reporting/useTimeSeries'
 import {
     AiSalesAgentChart,
     AiSalesAgentChartConfig,
 } from 'pages/stats/aiSalesAgent/AiSalesAgentMetricsConfig'
 import ChartCard from 'pages/stats/ChartCard'
 import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
-
-import {formatTimeSeriesData} from 'pages/stats/common/utils'
-import {DashboardChartProps} from 'pages/stats/custom-reports/types'
-import {TooltipData} from 'pages/stats/types'
+import { formatTimeSeriesData } from 'pages/stats/common/utils'
+import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { TooltipData } from 'pages/stats/types'
 
 export const percentLabel = (value: number | string) => {
     return typeof value === 'number'
@@ -22,7 +21,7 @@ export const percentLabel = (value: number | string) => {
 }
 
 export const renderTooltipLabel = (isPercentage = false) => {
-    return ({raw, dataset}: TooltipItem<'line'>) => {
+    return ({ raw, dataset }: TooltipItem<'line'>) => {
         return `${dataset?.label || ''}:  ${
             isPercentage ? percentLabel(raw as number) : (raw as number)
         }`
@@ -40,12 +39,13 @@ const Chart = ({
     hint?: TooltipData
     useTimeSeries: TimeSeriesHook
 } & DashboardChartProps) => {
-    const {cleanStatsFilters, userTimezone, granularity} = useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone, granularity } =
+        useNewStatsFilters()
 
     const timeSeries = useTimeSeries(
         cleanStatsFilters,
         userTimezone,
-        granularity
+        granularity,
     )
 
     return (

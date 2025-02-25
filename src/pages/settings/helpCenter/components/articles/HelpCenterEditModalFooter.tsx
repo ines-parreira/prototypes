@@ -1,5 +1,5 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import React, {useState} from 'react'
+import React, { useState } from 'react'
+
 import {
     DropdownItem,
     DropdownMenu,
@@ -7,18 +7,19 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
 import down from 'assets/img/icons/rating-down.svg'
 import star from 'assets/img/icons/rating-star.svg'
 import up from 'assets/img/icons/rating-up.svg'
 import useId from 'hooks/useId'
-
-import {Rating} from 'models/helpCenter/types'
+import { Rating } from 'models/helpCenter/types'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import Group from 'pages/common/components/layout/Group'
 
-import {useAbilityChecker} from '../../hooks/useHelpCenterApi'
-import {useRatingScore} from '../../hooks/useRatingScore'
+import { useAbilityChecker } from '../../hooks/useHelpCenterApi'
+import { useRatingScore } from '../../hooks/useRatingScore'
 import {
     ArticleMode,
     ArticleModeModified,
@@ -26,8 +27,8 @@ import {
     ArticleModeUnchangedNotPublished,
     canDelete,
 } from '../../types/articleMode'
-import {articleRequiredFields} from '../../utils/helpCenter.utils'
-import {ConfirmationModal} from '../ConfirmationModal'
+import { articleRequiredFields } from '../../utils/helpCenter.utils'
+import { ConfirmationModal } from '../ConfirmationModal'
 
 import css from './HelpCenterEditModalFooter.less'
 
@@ -36,7 +37,7 @@ type Props = {
     canSave: boolean
     requiredFields: typeof articleRequiredFields
     onDiscard: () => void
-    counters?: {charCount: number}
+    counters?: { charCount: number }
     articleMode: ArticleMode
     hasOnePagerLayout?: boolean
 }
@@ -51,11 +52,11 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
     hasOnePagerLayout,
 }: Props) => {
     const [pendingDeleteArticle, setPendingDeleteArticle] = useState(false)
-    const {isPassingRulesCheck} = useAbilityChecker()
+    const { isPassingRulesCheck } = useAbilityChecker()
     const warningTooltipId = 'article-editor-warning-tooltip-' + useId()
 
-    const canManageArticle = isPassingRulesCheck(({can}) =>
-        can('manage', 'ArticleEntity')
+    const canManageArticle = isPassingRulesCheck(({ can }) =>
+        can('manage', 'ArticleEntity'),
     )
 
     const handleOnDeleteConfirm = () => {
@@ -94,7 +95,7 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
                 </Tooltip>
             )}
 
-            <DropdownMenu right style={{width: '100%'}}>
+            <DropdownMenu right style={{ width: '100%' }}>
                 <DropdownItem onClick={() => mode.onSave(false)}>
                     Save Changes
                 </DropdownItem>
@@ -132,7 +133,7 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
                 </Tooltip>
             )}
 
-            <DropdownMenu right style={{width: '100%'}}>
+            <DropdownMenu right style={{ width: '100%' }}>
                 <DropdownItem onClick={() => mode.onCreate(false)}>
                     Save Draft
                 </DropdownItem>
@@ -150,7 +151,7 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
     )
 
     const buttonsForUnchangedNotPublished = (
-        mode: ArticleModeUnchangedNotPublished
+        mode: ArticleModeUnchangedNotPublished,
     ) => (
         <Button className={css.submitButton} onClick={mode.onPublish}>
             Publish Article
@@ -258,7 +259,7 @@ export const HelpCenterEditModalFooter: React.FC<Props> = ({
                             Are you sure you want to delete this article?
                         </span>
                     }
-                    style={{width: '100%', maxWidth: 610}}
+                    style={{ width: '100%', maxWidth: 610 }}
                     onClose={() => setPendingDeleteArticle(false)}
                     onConfirm={handleOnDeleteConfirm}
                 >

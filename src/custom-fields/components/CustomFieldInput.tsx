@@ -1,15 +1,15 @@
 import React from 'react'
 
 import MultiLevelSelect from 'custom-fields/components/MultiLevelSelect'
-import {getNumberOrUndefined} from 'custom-fields/helpers/getNumberOrUndefined'
+import { getNumberOrUndefined } from 'custom-fields/helpers/getNumberOrUndefined'
 import {
     isDropdownInput,
     isNumberInput,
     isTextInput,
 } from 'custom-fields/helpers/typeGuards'
-import {CustomField, CustomFieldValue} from 'custom-fields/types'
+import { CustomField, CustomFieldValue } from 'custom-fields/types'
 
-import {MultiLevelSelectProps} from './MultiLevelSelect/MultiLevelSelect'
+import { MultiLevelSelectProps } from './MultiLevelSelect/MultiLevelSelect'
 import StealthInput from './StealthInput'
 
 export type CustomFieldInputProps = {
@@ -19,7 +19,7 @@ export type CustomFieldInputProps = {
     hasError?: boolean
     isDisabled?: boolean
     onChange: (
-        nextValue: CustomFieldValue | CustomFieldValue[] | undefined
+        nextValue: CustomFieldValue | CustomFieldValue[] | undefined,
     ) => void
     onFocus?: () => void
     onBlur?: () => void

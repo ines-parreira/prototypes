@@ -1,4 +1,4 @@
-import {SocketManager} from 'services/socketManager/socketManager'
+import { SocketManager } from 'services/socketManager/socketManager'
 import {
     JoinEventType,
     SendEvent,
@@ -21,7 +21,7 @@ const joinEvents: SendEvent[] = [
         onLeave: function (id) {
             return (this as unknown as SocketManager).send(
                 SocketEventType.AgentTypingStopped,
-                id
+                id,
             )
         },
     },

@@ -1,13 +1,15 @@
+import React, { ComponentType, CSSProperties } from 'react'
+
 import classNames from 'classnames'
 import _isEqual from 'lodash/isEqual'
-import React, {ComponentType, CSSProperties} from 'react'
 
-import {TAGS_LIMIT} from 'models/integration/constants'
+import { TAGS_LIMIT } from 'models/integration/constants'
 
 import Dropdown from './Dropdown'
-import css from './MultiSelectOptionsField.less'
 import OptionTag from './Tag'
-import {Option} from './types'
+import { Option } from './types'
+
+import css from './MultiSelectOptionsField.less'
 
 type Props = {
     allowCustomOptions?: boolean
@@ -62,7 +64,7 @@ export default function MultiSelectOptionsField(props: Props) {
     const [input, setInput] = React.useState('')
     const [isFocused, setIsFocused] = React.useState(false)
     const [filteredOptions, setFilteredOptions] = React.useState(
-        filterOptions(options, selectedOptions)
+        filterOptions(options, selectedOptions),
     )
 
     if (!_isEqual(previousSelectedOptions, selectedOptions)) {
@@ -91,10 +93,10 @@ export default function MultiSelectOptionsField(props: Props) {
     function filterOptions(
         options: Option[],
         selectedOptions: Option[],
-        input: string = ''
+        input: string = '',
     ): Option[] {
         return options.filter((option: Option) => {
-            const {value, label} = option
+            const { value, label } = option
             const alreadySelected = hasOptionValue(selectedOptions, value)
             const matchesInput =
                 matchInput &&
@@ -110,7 +112,7 @@ export default function MultiSelectOptionsField(props: Props) {
 
     function findOptionByValue(
         options: Option[],
-        value: any
+        value: any,
     ): Option | undefined {
         return options.find((option: Option) => option.value === value)
     }
@@ -119,7 +121,7 @@ export default function MultiSelectOptionsField(props: Props) {
         const newSelectedOptions = selectedOptions.filter(
             (selectedOption: Option) => {
                 return selectedOption.value !== option.value
-            }
+            },
         )
         onChange(newSelectedOptions)
     }
@@ -189,7 +191,7 @@ export default function MultiSelectOptionsField(props: Props) {
                     label: option.label,
                     value: processedValue,
                 },
-            ])
+            ]),
         )
 
         // Check if chosen option is a suggested tag and log the event
@@ -204,7 +206,7 @@ export default function MultiSelectOptionsField(props: Props) {
 
     function tagExistsInOptions(tag: string, options: Option[]) {
         return options.some(
-            (option) => option.label === tag && option.value === tag
+            (option) => option.label === tag && option.value === tag,
         )
     }
 

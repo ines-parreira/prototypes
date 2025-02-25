@@ -1,4 +1,4 @@
-import {useGetPlaygroundExecutions} from 'models/aiAgent/queries'
+import { useGetPlaygroundExecutions } from 'models/aiAgent/queries'
 
 type Args = {
     accountDomain: string
@@ -10,12 +10,12 @@ export const useFetchAiAgentPlaygroundExecutionsData = ({
     storeName,
     enabled,
 }: Args) => {
-    const {data, isLoading} = useGetPlaygroundExecutions(
+    const { data, isLoading } = useGetPlaygroundExecutions(
         {
             accountDomain,
             storeName,
         },
-        {enabled}
+        { enabled },
     )
 
     return {

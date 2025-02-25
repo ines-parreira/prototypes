@@ -1,16 +1,17 @@
+import { useCallback, useEffect, useMemo, useState } from 'react'
+
 import {
     EmailDomain,
     useDeleteEmailIntegrationDomain,
     useGetEmailIntegrationDomain,
     useVerifyEmailIntegrationDomain,
 } from '@gorgias/api-queries'
-import {useCallback, useEffect, useMemo, useState} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useInterval from 'hooks/useInterval'
 import useLocalStorage from 'hooks/useLocalStorage'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 import {
     parseRecordsCurrentValues,
@@ -46,7 +47,7 @@ export type UseDomainVerificationRequestHookOptions = {
  */
 export function DEPRECATED_useDomainVerification(
     domainName: string,
-    options?: UseDomainVerificationRequestHookOptions
+    options?: UseDomainVerificationRequestHookOptions,
 ): UseDomainVerificationRequestHookResult {
     const dispatch = useAppDispatch()
 
@@ -56,13 +57,13 @@ export function DEPRECATED_useDomainVerification(
         setRequestedAt,
     } = useRequestStatus(domainName)
 
-    const {data, isLoading: isFetching} = useGetEmailIntegrationDomain(
+    const { data, isLoading: isFetching } = useGetEmailIntegrationDomain(
         domainName,
         {
             query: {
                 refetchInterval: DOMAIN_REFETCH_INTERVAL,
             },
-        }
+        },
     )
 
     const [domain, setDomain] = useState<EmailDomain | undefined>()
@@ -79,7 +80,7 @@ export function DEPRECATED_useDomainVerification(
 
             const recordsWithCurrentValues =
                 await populateCurrentValuesForDNSRecords(
-                    domain.data?.sending_dns_records ?? []
+                    domain.data?.sending_dns_records ?? [],
                 )
             const records = parseRecordsCurrentValues(recordsWithCurrentValues)
 
@@ -94,7 +95,7 @@ export function DEPRECATED_useDomainVerification(
         void transformDomainRecords()
     }, [data?.data])
 
-    const {mutate: triggerVerify, isLoading: isVerifying} =
+    const { mutate: triggerVerify, isLoading: isVerifying } =
         useVerifyEmailIntegrationDomain({
             mutation: {
                 onSuccess: async () => {
@@ -105,7 +106,7 @@ export function DEPRECATED_useDomainVerification(
                             message:
                                 'The status of your domain verification is being checked.',
                             status: NotificationStatus.Success,
-                        })
+                        }),
                     )
                 },
                 onError: async () => {
@@ -114,13 +115,13 @@ export function DEPRECATED_useDomainVerification(
                             message:
                                 'Requesting a domain verification failed. Please try again.',
                             status: NotificationStatus.Error,
-                        })
+                        }),
                     )
                 },
             },
         })
 
-    const {mutate: triggerDelete, isLoading: isDeleting} =
+    const { mutate: triggerDelete, isLoading: isDeleting } =
         useDeleteEmailIntegrationDomain({
             mutation: {
                 onSuccess: () => {
@@ -131,11 +132,11 @@ export function DEPRECATED_useDomainVerification(
         })
 
     const verifyDomain = useCallback(() => {
-        triggerVerify({domainName})
+        triggerVerify({ domainName })
     }, [triggerVerify, domainName])
 
     const deleteDomain = useCallback(() => {
-        triggerDelete({domainName})
+        triggerDelete({ domainName })
     }, [triggerDelete, domainName])
 
     return {
@@ -153,7 +154,7 @@ export function DEPRECATED_useDomainVerification(
 function useRequestStatus(domainName: string) {
     const [requestedAt, setRequestedAt] = useLocalStorage<Date | null>(
         domainVerificationStorageKey(domainName),
-        null
+        null,
     )
 
     const [currentTime, setCurrentTime] = useState(new Date())
@@ -161,19 +162,19 @@ function useRequestStatus(domainName: string) {
     const isRequested = !!requestedAt
     const isPending = useMemo(
         () => computeIsPending(requestedAt, currentTime),
-        [requestedAt, currentTime]
+        [requestedAt, currentTime],
     )
 
     useInterval(() => {
         setCurrentTime(new Date())
     }, DOMAIN_VERIFICATION_TIMEOUT_IN_SECONDS * 1000)
 
-    return {isPending, isRequested, setRequestedAt}
+    return { isPending, isRequested, setRequestedAt }
 }
 
 export function computeIsPending(
     requestedAt: Date | null,
-    currentTime: Date
+    currentTime: Date,
 ): boolean {
     if (!requestedAt) {
         return false

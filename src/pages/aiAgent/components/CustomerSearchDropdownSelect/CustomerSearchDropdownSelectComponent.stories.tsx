@@ -1,7 +1,8 @@
-import {Meta, StoryObj} from '@storybook/react'
 import React from 'react'
 
-import {CustomerSearchDropdownSelectComponent} from './CustomerSearchDropdownSelectComponent'
+import { Meta, StoryObj } from '@storybook/react'
+
+import { CustomerSearchDropdownSelectComponent } from './CustomerSearchDropdownSelectComponent'
 
 const meta: Meta<typeof CustomerSearchDropdownSelectComponent> = {
     title: 'AI Agent/Playground/Customer Search',
@@ -57,7 +58,7 @@ const customerList = [
 
 export const Default: Story = {
     render: (args) => (
-        <div style={{height: '200px'}}>
+        <div style={{ height: '200px' }}>
             <CustomerSearchDropdownSelectComponent {...args} />
         </div>
     ),
@@ -77,7 +78,7 @@ export const Default: Story = {
 
 export const SearchLoading: Story = {
     render: (args) => (
-        <div style={{height: '200px'}}>
+        <div style={{ height: '200px' }}>
             <CustomerSearchDropdownSelectComponent {...args} />
         </div>
     ),

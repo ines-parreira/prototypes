@@ -1,24 +1,26 @@
-import {VoiceCallDirection} from '@gorgias/api-queries'
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {VoiceCallStatus} from 'models/voiceCall/types'
-import {assumeMock} from 'utils/testing'
+import { render, screen } from '@testing-library/react'
 
-import {VoiceCallSummary} from '../../models/types'
+import { VoiceCallDirection } from '@gorgias/api-queries'
+
+import { VoiceCallStatus } from 'models/voiceCall/types'
+import { assumeMock } from 'utils/testing'
+
+import { VoiceCallSummary } from '../../models/types'
 import LiveVoiceCallStatusLabel from './LiveVoiceCallStatusLabel'
-import {isLiveInboundVoiceCallAnswered, isLiveCallRinging} from './utils'
+import { isLiveCallRinging, isLiveInboundVoiceCallAnswered } from './utils'
 
 jest.mock('./utils')
 
 const isLiveInboundVoiceCallAnsweredMock = assumeMock(
-    isLiveInboundVoiceCallAnswered
+    isLiveInboundVoiceCallAnswered,
 )
 const isLiveCallRingingMock = assumeMock(isLiveCallRinging)
 
 const renderComponent = (
     direction: VoiceCallDirection,
-    status: VoiceCallSummary['status']
+    status: VoiceCallSummary['status'],
 ) => {
     render(<LiveVoiceCallStatusLabel direction={direction} status={status} />)
 }
@@ -30,7 +32,7 @@ describe('LiveVoiceCallStatusLabel', () => {
 
             renderComponent(
                 VoiceCallDirection.Outbound,
-                VoiceCallStatus.Ringing
+                VoiceCallStatus.Ringing,
             )
 
             expect(screen.getByText('Ringing')).toBeInTheDocument()
@@ -41,7 +43,7 @@ describe('LiveVoiceCallStatusLabel', () => {
 
             renderComponent(
                 VoiceCallDirection.Outbound,
-                VoiceCallStatus.Connected
+                VoiceCallStatus.Connected,
             )
 
             expect(screen.getByText('In progress')).toBeInTheDocument()
@@ -54,7 +56,7 @@ describe('LiveVoiceCallStatusLabel', () => {
 
             renderComponent(
                 VoiceCallDirection.Inbound,
-                VoiceCallStatus.Answered
+                VoiceCallStatus.Answered,
             )
 
             expect(screen.getByText('In progress')).toBeInTheDocument()

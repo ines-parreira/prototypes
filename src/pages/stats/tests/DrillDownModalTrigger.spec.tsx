@@ -1,23 +1,22 @@
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-
-import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
-import {OverviewMetric} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
-import {RootState, StoreDispatch} from 'state/types'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
+import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
+import { RootState, StoreDispatch } from 'state/types'
 import {
     DrillDownMetric,
     setMetricData,
     setShouldUseNewFilterData,
 } from 'state/ui/stats/drillDownSlice'
-import {VoiceAgentsMetric, VoiceMetric} from 'state/ui/stats/types'
-import {assumeMock} from 'utils/testing'
+import { VoiceAgentsMetric, VoiceMetric } from 'state/ui/stats/types'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('common/segment')
 const logEventMock = assumeMock(logEvent)
@@ -44,7 +43,7 @@ describe('<DrillDownModalTrigger />', () => {
                 <DrillDownModalTrigger metricData={metricData}>
                     {trigger}
                 </DrillDownModalTrigger>
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(screen.getByText(trigger))
@@ -53,7 +52,7 @@ describe('<DrillDownModalTrigger />', () => {
             expect(store.getActions()).toContainEqual(setMetricData(metricData))
             expect(logEventMock).toHaveBeenCalledWith(
                 SegmentEvent.StatClicked,
-                {metric: metricData.metricName}
+                { metric: metricData.metricName },
             )
         })
     })
@@ -72,7 +71,7 @@ describe('<DrillDownModalTrigger />', () => {
                 >
                     {trigger}
                 </DrillDownModalTrigger>
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(screen.getByText(trigger))
@@ -80,7 +79,7 @@ describe('<DrillDownModalTrigger />', () => {
         await waitFor(() => {
             expect(store.getActions()).toContainEqual(setMetricData(metricData))
             expect(store.getActions()).toContainEqual(
-                setShouldUseNewFilterData(true)
+                setShouldUseNewFilterData(true),
             )
         })
     })
@@ -96,7 +95,7 @@ describe('<DrillDownModalTrigger />', () => {
                 <DrillDownModalTrigger enabled={false} metricData={metricData}>
                     {trigger}
                 </DrillDownModalTrigger>
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(screen.getByText(trigger))
@@ -130,16 +129,16 @@ describe('<DrillDownModalTrigger />', () => {
                     <DrillDownModalTrigger metricData={metricData}>
                         {trigger}
                     </DrillDownModalTrigger>
-                </Provider>
+                </Provider>,
             )
 
             userEvent.hover(screen.getByText(trigger))
 
             await waitFor(() => {
                 expect(
-                    screen.getByText('Click to view calls')
+                    screen.getByText('Click to view calls'),
                 ).toBeInTheDocument()
             })
-        }
+        },
     )
 })

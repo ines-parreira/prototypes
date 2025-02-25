@@ -1,10 +1,14 @@
-import {render} from '@testing-library/react'
-import {Map} from 'immutable'
 import React from 'react'
 
-import {LIVE_OVERVIEW_METRICS, stats} from 'config/stats'
+import { render } from '@testing-library/react'
+import { Map } from 'immutable'
 
-import {NO_VALUE_PLACEHOLDER, renderValue} from '../KeyMetricStat/KeyMetricCell'
+import { LIVE_OVERVIEW_METRICS, stats } from 'config/stats'
+
+import {
+    NO_VALUE_PLACEHOLDER,
+    renderValue,
+} from '../KeyMetricStat/KeyMetricCell'
 
 const MockDonutKeyMetricStat = jest.fn()
 jest.mock('../KeyMetricStat/DistributionKeyMetricStat', () => (props: any) => {
@@ -22,7 +26,7 @@ describe('KeyMetricCell', () => {
             const config = stats.get(LIVE_OVERVIEW_METRICS)
 
             expect(renderValue(config, null, 'someString', null)).toEqual(
-                NO_VALUE_PLACEHOLDER
+                NO_VALUE_PLACEHOLDER,
             )
         })
 
@@ -43,7 +47,7 @@ describe('KeyMetricCell', () => {
             expect(MockDonutKeyMetricStat).toHaveBeenCalledWith({
                 config,
                 formattedValue: Map(
-                    values.map((value, i) => [String(i), value])
+                    values.map((value, i) => [String(i), value]),
                 ),
             })
         })

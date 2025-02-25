@@ -1,7 +1,7 @@
-import React, {useCallback, useMemo, useState} from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {Source} from 'models/widget/types'
+import { Source } from 'models/widget/types'
 import Button from 'pages/common/components/button/Button'
 import {
     Button as ButtonType,
@@ -9,7 +9,6 @@ import {
     OnRemoveButton,
     OnSubmitButton,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
-
 import Modal from 'pages/common/components/modal/Modal'
 import {
     removeEditedWidget,
@@ -18,8 +17,9 @@ import {
 } from 'state/widgets/actions'
 
 import EditableButton from './Button'
-import css from './Editor.less'
 import Form from './Form'
+
+import css from './Editor.less'
 
 type Props = {
     templatePath: string
@@ -28,7 +28,7 @@ type Props = {
     buttons: ButtonType[]
 }
 
-export function Editor({templatePath, absolutePath, source, buttons}: Props) {
+export function Editor({ templatePath, absolutePath, source, buttons }: Props) {
     const dispatch = useAppDispatch()
     const [isFormOpen, setFormOpen] = useState<boolean>(false)
     const [editorIndex, setFormIndex] = useState<number | null>(null)
@@ -37,22 +37,22 @@ export function Editor({templatePath, absolutePath, source, buttons}: Props) {
             dispatch(
                 removeEditedWidget(
                     `${templatePath}.meta.custom.buttons`,
-                    absolutePath
-                )
+                    absolutePath,
+                ),
             )
 
             const newButtons = buttons.filter(
-                (_, currentIndex) => currentIndex !== index
+                (_, currentIndex) => currentIndex !== index,
             )
 
             if (buttons.length > 0) {
                 dispatch(
-                    startWidgetEdition(`${templatePath}.meta.custom.buttons`)
+                    startWidgetEdition(`${templatePath}.meta.custom.buttons`),
                 )
                 dispatch(updateCustomActions(newButtons))
             }
         },
-        [buttons, absolutePath, templatePath, dispatch]
+        [buttons, absolutePath, templatePath, dispatch],
     )
 
     const handleSubmit = useCallback<OnSubmitButton>(
@@ -69,7 +69,7 @@ export function Editor({templatePath, absolutePath, source, buttons}: Props) {
 
             dispatch(updateCustomActions(newButtons))
         },
-        [buttons, templatePath, dispatch]
+        [buttons, templatePath, dispatch],
     )
 
     const handleOpenForm = useCallback<OnOpenForm>((index) => {
@@ -93,7 +93,7 @@ export function Editor({templatePath, absolutePath, source, buttons}: Props) {
                 index: editorIndex,
             }),
         }),
-        [buttons, editorIndex, handleCloseForm, handleSubmit]
+        [buttons, editorIndex, handleCloseForm, handleSubmit],
     )
 
     return (

@@ -1,9 +1,10 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
-import {BrowserRouter as Router} from 'react-router-dom'
 
-import {useReportChartRestrictions} from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
-import {assumeMock} from 'utils/testing'
+import { render, screen } from '@testing-library/react'
+import { BrowserRouter as Router } from 'react-router-dom'
+
+import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
+import { assumeMock } from 'utils/testing'
 
 import AutomateNavbarPaywallNavbarLink from '../AutomateNavbarPaywallNavbarLink'
 
@@ -11,7 +12,7 @@ jest.mock(
     'pages/stats/report-chart-restrictions/useReportChartRestrictions',
     () => ({
         useReportChartRestrictions: jest.fn(),
-    })
+    }),
 )
 const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
 
@@ -28,7 +29,7 @@ describe('AutomateNavbarPaywallNavbarLink', () => {
                 <AutomateNavbarPaywallNavbarLink to="/test">
                     Test Link
                 </AutomateNavbarPaywallNavbarLink>
-            </Router>
+            </Router>,
         )
         expect(screen.getByText('Test Link')).toBeInTheDocument()
     })
@@ -39,7 +40,7 @@ describe('AutomateNavbarPaywallNavbarLink', () => {
                 <AutomateNavbarPaywallNavbarLink to="/test" isNested>
                     Test Link
                 </AutomateNavbarPaywallNavbarLink>
-            </Router>
+            </Router>,
         )
 
         expect(screen.getByRole('link').closest('div')).toHaveClass('isNested')

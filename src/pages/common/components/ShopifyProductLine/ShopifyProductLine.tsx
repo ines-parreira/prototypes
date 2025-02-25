@@ -1,33 +1,36 @@
+import React, { ChangeEvent, useCallback, useEffect, useState } from 'react'
+
 import classnames from 'classnames'
-import {Map} from 'immutable'
-import React, {ChangeEvent, useCallback, useEffect, useState} from 'react'
-import {Input, ListGroup, ListGroupItem} from 'reactstrap'
+import { Map } from 'immutable'
+import { Input, ListGroup, ListGroupItem } from 'reactstrap'
 
 import {
     INTEGRATION_DATA_ITEM_TYPE_PRODUCT,
     PRODUCTS_PER_PAGE,
 } from 'constants/integration'
-import {Product, Variant} from 'constants/integrations/types/shopify'
+import { Product, Variant } from 'constants/integrations/types/shopify'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
-import {IntegrationType} from 'models/integration/constants'
-import {IntegrationDataItem, ProductCardDetails} from 'models/integration/types'
+import { IntegrationType } from 'models/integration/constants'
+import {
+    IntegrationDataItem,
+    ProductCardDetails,
+} from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
-
 import ProductAutomations from 'pages/common/components/ProductAutomations/ProductAutomations'
-import {transformShopifyProductToProductCardDetails} from 'pages/common/draftjs/plugins/toolbar/utils'
-import {shopifyDataMappers} from 'pages/common/forms/ProductSearchInput/Mappings'
+import { transformShopifyProductToProductCardDetails } from 'pages/common/draftjs/plugins/toolbar/utils'
+import { shopifyDataMappers } from 'pages/common/forms/ProductSearchInput/Mappings'
 import Result, {
     Props as ResultProps,
 } from 'pages/common/forms/ProductSearchInput/Result'
-import {RichFieldEditorPlacement} from 'pages/common/forms/RichField/enums'
-import {ProductRecommendationAttachment} from 'pages/convert/campaigns/types/CampaignAttachment'
-import {ConvertShopifyProductLineHeader} from 'pages/convert/common/components/ConvertShopifyProductLineHeader/ConvertShopifyProductLineHeader'
+import { RichFieldEditorPlacement } from 'pages/common/forms/RichField/enums'
+import { ProductRecommendationAttachment } from 'pages/convert/campaigns/types/CampaignAttachment'
+import { ConvertShopifyProductLineHeader } from 'pages/convert/common/components/ConvertShopifyProductLineHeader/ConvertShopifyProductLineHeader'
 import GorgiasApi from 'services/gorgiasApi'
-import {getIconFromType} from 'state/integrations/helpers'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {getIconFromUrl} from 'utils'
+import { getIconFromType } from 'state/integrations/helpers'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { getIconFromUrl } from 'utils'
 
 import css from './ShopifyProductLine.less'
 
@@ -38,7 +41,7 @@ type OwnProps = {
     productClicked: (productCardDetails: ProductCardDetails) => void
     canAddProductAutomations: boolean
     productAutomationClicked: (
-        attachment: ProductRecommendationAttachment
+        attachment: ProductRecommendationAttachment,
     ) => void
     onResetStoreChoice?: () => void
     placementType?: RichFieldEditorPlacement
@@ -46,7 +49,7 @@ type OwnProps = {
 
 const generateResultProps = (
     disableOutOfStockProducts: boolean,
-    props: ResultProps
+    props: ResultProps,
 ): ResultProps => {
     if (disableOutOfStockProducts) {
         return props
@@ -59,7 +62,7 @@ const generateResultProps = (
 
 const generateVariantName = (
     productOptions?: Array<Record<string, any>>,
-    variantOptions?: Record<string, any>
+    variantOptions?: Record<string, any>,
 ) => {
     if (!productOptions?.length || !variantOptions) return undefined
     let variantName = ''
@@ -69,7 +72,7 @@ const generateVariantName = (
             ' ',
             productOption.name,
             ': ',
-            variantOptions[index]
+            variantOptions[index],
         )
         if (index < productOptions.length - 1)
             variantName = variantName.concat(' | ')
@@ -109,15 +112,15 @@ export default function ShopifyProductLine({
         try {
             const results = (await gorgiasApi.search(
                 `/api/integrations/${shopifyIntegration.get(
-                    'id'
+                    'id',
                 )}/${INTEGRATION_DATA_ITEM_TYPE_PRODUCT}/`,
-                filter
+                filter,
             )) as Array<IntegrationDataItem<Product>>
 
             setShopifyProducts(
                 results.filter(
-                    (result): boolean => result.data.variants.length > 0
-                )
+                    (result): boolean => result.data.variants.length > 0,
+                ),
             )
             setSubResults([])
         } catch {
@@ -125,7 +128,7 @@ export default function ShopifyProductLine({
                 notify({
                     status: NotificationStatus.Error,
                     message: "Couldn't fetch Shopify products",
-                })
+                }),
             )
         } finally {
             setIsLoading(false)
@@ -139,7 +142,7 @@ export default function ShopifyProductLine({
             setIsLoading(true)
             setFilter(event.target.value)
         },
-        [setFilter, setIsLoading]
+        [setFilter, setIsLoading],
     )
 
     const handleProductClick = useCallback(
@@ -152,7 +155,7 @@ export default function ShopifyProductLine({
                     transformShopifyProductToProductCardDetails(
                         result,
                         shopifyIntegration,
-                        disableVariantStep && variants.length > 1
+                        disableVariantStep && variants.length > 1,
                     )
                 productClicked(productCardDetails)
             } else {
@@ -161,7 +164,7 @@ export default function ShopifyProductLine({
             }
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [productClicked, shopifyProducts, disableVariantStep]
+        [productClicked, shopifyProducts, disableVariantStep],
     )
 
     const handleSubResultClicked = useCallback(
@@ -180,11 +183,11 @@ export default function ShopifyProductLine({
 
             const variantTitle = generateVariantName(
                 clickedResult?.data?.options,
-                pickedOptions
+                pickedOptions,
             )
 
             const variantImage = clickedResult?.data?.images?.find(
-                (image) => image.id === result.image_id
+                (image) => image.id === result.image_id,
             )
 
             const variantCardDetails = {
@@ -196,7 +199,7 @@ export default function ShopifyProductLine({
                 compareAtPrice: result?.compare_at_price,
                 currency: shopifyIntegration.get('currency'),
                 link: `https://${shopifyIntegration.get(
-                    'shop_domain'
+                    'shop_domain',
                 )}/products/${clickedResult?.data.handle || ''}?variant=${
                     result?.id || ''
                 }`,
@@ -210,7 +213,7 @@ export default function ShopifyProductLine({
             productClicked(variantCardDetails)
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [productClicked, subResults, generateVariantName]
+        [productClicked, subResults, generateVariantName],
     )
 
     const handleBackClicked = useCallback(() => {
@@ -234,7 +237,7 @@ export default function ShopifyProductLine({
                 <div
                     className={classnames(
                         'input-icon input-icon-left',
-                        css.searchInput
+                        css.searchInput,
                     )}
                 >
                     <i className="icon material-icons md-2">
@@ -286,7 +289,7 @@ export default function ShopifyProductLine({
                             <div>
                                 <img
                                     src={getIconFromType(
-                                        IntegrationType.Shopify
+                                        IntegrationType.Shopify,
                                     )}
                                     alt="Shopify logo"
                                     className={css.shopifyLogo}
@@ -325,7 +328,7 @@ export default function ShopifyProductLine({
                                             key={result.id}
                                             tag="button"
                                             id={'resultRow'.concat(
-                                                index.toString()
+                                                index.toString(),
                                             )}
                                             action
                                             className={classnames({
@@ -344,7 +347,7 @@ export default function ShopifyProductLine({
                                             <Result
                                                 {...generateResultProps(
                                                     disableOutOfStockProducts,
-                                                    productDetails
+                                                    productDetails,
                                                 )}
                                             />
                                         </ListGroupItem>
@@ -364,7 +367,7 @@ export default function ShopifyProductLine({
                                             const productDetails =
                                                 shopifyDataMappers.variants(
                                                     clickedResult,
-                                                    subResult
+                                                    subResult,
                                                 )
                                             return (
                                                 <ListGroupItem
@@ -382,7 +385,7 @@ export default function ShopifyProductLine({
                                                     onClick={(event) => {
                                                         event.preventDefault()
                                                         handleSubResultClicked(
-                                                            index
+                                                            index,
                                                         )
                                                     }}
                                                 >
@@ -390,13 +393,13 @@ export default function ShopifyProductLine({
                                                         <Result
                                                             {...generateResultProps(
                                                                 disableOutOfStockProducts,
-                                                                productDetails
+                                                                productDetails,
                                                             )}
                                                         />
                                                     )}
                                                 </ListGroupItem>
                                             )
-                                        }
+                                        },
                                     )}
                                 </ListGroup>
                             )}

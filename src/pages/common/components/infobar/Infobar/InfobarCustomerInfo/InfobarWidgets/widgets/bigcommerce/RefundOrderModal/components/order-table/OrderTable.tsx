@@ -1,5 +1,6 @@
-import React, {Dispatch, useMemo, useState} from 'react'
-import {Table} from 'reactstrap'
+import React, { Dispatch, useMemo, useState } from 'react'
+
+import { Table } from 'reactstrap'
 
 import {
     BigCommerceAvailablePaymentOptionsData,
@@ -12,10 +13,11 @@ import {
     ShippingItemRefundData,
 } from 'models/integration/types'
 
-import {BIGCOMMERCE_REFUND_ACTION_TYPE} from '../../types'
-import {OrderLineItemRow} from './OrderLineItemRow'
+import { BIGCOMMERCE_REFUND_ACTION_TYPE } from '../../types'
+import { OrderLineItemRow } from './OrderLineItemRow'
+import { TotalsSummaryComponent } from './TotalsSummaryComponent'
+
 import bigcommerceTableCss from './OrderTable.less'
-import {TotalsSummaryComponent} from './TotalsSummaryComponent'
 
 type Props = {
     orderLevelRefundData: OrderLevelRefundData
@@ -60,13 +62,13 @@ export default function OrderTable({
         Object.values(shippingRefundData).forEach(
             (refundData: ShippingItemRefundData) => {
                 shippingCostBaseTotal += parseFloat(
-                    refundData.shipping_data.base_cost
+                    refundData.shipping_data.base_cost,
                 )
                 shippingCostPaidTotal += refundData.initial_amount
 
                 availableShippingCostTotal += refundData.available_amount
                 refundedShippingCostTotal += refundData.refunded_amount
-            }
+            },
         )
         return [
             shippingCostBaseTotal,
@@ -90,7 +92,7 @@ export default function OrderTable({
                 initialHandlingFeeTotal += refundData.initial_amount
                 availableHandlingFeeTotal += refundData.available_amount
                 refundedHandlingFeeTotal += refundData.refunded_amount
-            }
+            },
         )
         return [
             initialHandlingFeeTotal,
@@ -100,10 +102,10 @@ export default function OrderTable({
     }, [handlingRefundData])
 
     const [isShippingCostRefunded, setIsShippingCostRefunded] = useState(
-        availableShippingCostTotal <= 0
+        availableShippingCostTotal <= 0,
     )
     const [isHandlingFeeRefunded, setIsHandlingFeeRefunded] = useState(
-        availableHandlingFeeTotal <= 0
+        availableHandlingFeeTotal <= 0,
     )
 
     return (
@@ -149,7 +151,7 @@ export default function OrderTable({
                                     currencyCode={currencyCode}
                                 />
                             )
-                        }
+                        },
                     )}
                 </tbody>
             </Table>

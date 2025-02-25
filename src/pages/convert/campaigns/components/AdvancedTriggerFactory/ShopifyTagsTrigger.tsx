@@ -1,38 +1,37 @@
-import React, {useEffect, useMemo, useState} from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
-import {useShopifyTags} from 'models/integration/queries'
-import {ShopifyTags} from 'models/integration/types'
+import { useShopifyTags } from 'models/integration/queries'
+import { ShopifyTags } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
-import {Option} from 'pages/common/forms/MultiSelectOptionsField/types'
+import { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {Value} from 'pages/common/forms/SelectField/types'
+import { Value } from 'pages/common/forms/SelectField/types'
 
-import {useIntegrationContext} from '../../containers/IntegrationProvider'
+import { useIntegrationContext } from '../../containers/IntegrationProvider'
+import { AdvancedTriggerBaseProps } from '../../types/AdvancedTriggerBaseProps'
+import { CampaignTriggerOperator } from '../../types/enums/CampaignTriggerOperator.enum'
+import { convertTriggerOperatorsToSelectOptions } from '../../utils/convertTriggerOperatorsToSelectOptions'
+import { handleTriggerOperatorChange } from '../../utils/handleTriggerOperatorChange'
 
-import {AdvancedTriggerBaseProps} from '../../types/AdvancedTriggerBaseProps'
-
-import {CampaignTriggerOperator} from '../../types/enums/CampaignTriggerOperator.enum'
-import {convertTriggerOperatorsToSelectOptions} from '../../utils/convertTriggerOperatorsToSelectOptions'
-import {handleTriggerOperatorChange} from '../../utils/handleTriggerOperatorChange'
 import css from './style.less'
 
 type Props = AdvancedTriggerBaseProps
 
-export const ShopifyTagsTrigger = ({id, trigger, onUpdateTrigger}: Props) => {
+export const ShopifyTagsTrigger = ({ id, trigger, onUpdateTrigger }: Props) => {
     const [innerOperator, setInnerOperator] = useState<CampaignTriggerOperator>(
-        trigger.operator
+        trigger.operator,
     )
     const [innerValue, setInnerValue] = useState<Option[]>([])
 
-    const {shopifyIntegration} = useIntegrationContext()
-    const {data} = useShopifyTags(
+    const { shopifyIntegration } = useIntegrationContext()
+    const { data } = useShopifyTags(
         shopifyIntegration?.id ?? -1,
-        ShopifyTags.customers
+        ShopifyTags.customers,
     )
 
     const shopifyCustomerTags = useMemo(() => {
-        return data?.map((tag) => ({label: tag, value: tag})) ?? []
+        return data?.map((tag) => ({ label: tag, value: tag })) ?? []
     }, [data])
 
     const handleChangeOperator = (operator: Value) =>
@@ -41,7 +40,7 @@ export const ShopifyTagsTrigger = ({id, trigger, onUpdateTrigger}: Props) => {
             id,
             trigger,
             setInnerOperator,
-            onUpdateTrigger
+            onUpdateTrigger,
         )
 
     const handleChangeValue = (value: Option[]) => {
@@ -58,7 +57,7 @@ export const ShopifyTagsTrigger = ({id, trigger, onUpdateTrigger}: Props) => {
             setInnerValue(
                 (trigger.value as string)
                     .split(',')
-                    .map((v) => ({value: v, label: v}))
+                    .map((v) => ({ value: v, label: v })),
             )
         }
     }, [trigger.operator, trigger.value])

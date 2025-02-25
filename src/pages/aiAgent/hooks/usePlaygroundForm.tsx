@@ -1,11 +1,12 @@
-import React, {useCallback, useMemo, useState} from 'react'
-import {Link} from 'react-router-dom'
+import React, { useCallback, useMemo, useState } from 'react'
 
-import {PlaygroundFormValues} from '../components/PlaygroundChat/PlaygroundChat.types'
-import {DEFAULT_PLAYGROUND_CUSTOMER} from '../constants'
-import {useAiAgentNavigation} from './useAiAgentNavigation'
-import {usePublicResources} from './usePublicResources'
-import {usePublicResourcesPooling} from './usePublicResourcesPooling'
+import { Link } from 'react-router-dom'
+
+import { PlaygroundFormValues } from '../components/PlaygroundChat/PlaygroundChat.types'
+import { DEFAULT_PLAYGROUND_CUSTOMER } from '../constants'
+import { useAiAgentNavigation } from './useAiAgentNavigation'
+import { usePublicResources } from './usePublicResources'
+import { usePublicResourcesPooling } from './usePublicResourcesPooling'
 
 const INITIAL_FORM_VALUES: PlaygroundFormValues = {
     message: '',
@@ -24,14 +25,14 @@ export const usePlaygroundForm = ({
     const [formValues, setFormValues] =
         useState<PlaygroundFormValues>(INITIAL_FORM_VALUES)
 
-    const {sourceItems} = usePublicResources({
+    const { sourceItems } = usePublicResources({
         helpCenterId: snippetHelpCenterId,
     })
     usePublicResourcesPooling({
         helpCenterId: snippetHelpCenterId,
         shopName,
     })
-    const {routes} = useAiAgentNavigation({shopName})
+    const { routes } = useAiAgentNavigation({ shopName })
 
     const isPendingResources = sourceItems
         ? sourceItems.some((item) => item.status === 'loading')
@@ -51,7 +52,7 @@ export const usePlaygroundForm = ({
 
     const isFormValid = useMemo(
         () => validateFormValues(formValues),
-        [formValues]
+        [formValues],
     )
 
     const clearForm = useCallback(() => {
@@ -59,7 +60,7 @@ export const usePlaygroundForm = ({
     }, [])
     const isDisabled = useMemo(
         () => isPendingResources || isKnowledgeBaseEmpty || !isFormValid,
-        [isFormValid, isKnowledgeBaseEmpty, isPendingResources]
+        [isFormValid, isKnowledgeBaseEmpty, isPendingResources],
     )
 
     const disabledMessage = useMemo(() => {
@@ -83,14 +84,14 @@ export const usePlaygroundForm = ({
     const onFormValuesChange = useCallback(
         <Key extends keyof PlaygroundFormValues>(
             key: Key,
-            value: PlaygroundFormValues[Key]
+            value: PlaygroundFormValues[Key],
         ) => {
             setFormValues((preFormValues) => ({
                 ...preFormValues,
                 [key]: value,
             }))
         },
-        []
+        [],
     )
 
     return {

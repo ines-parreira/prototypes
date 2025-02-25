@@ -6,17 +6,17 @@ import {
     VoiceCallStatus,
 } from '@gorgias/api-queries'
 
-import {OrderDirection} from 'models/api/types'
+import { OrderDirection } from 'models/api/types'
 import {
     VoiceCallStatus as LegacyVoiceCallStatus,
     VoiceCallDisplayStatus,
 } from 'models/voiceCall/types'
-import {getMoment} from 'utils/date'
-import {formatReportingQueryDate} from 'utils/reporting'
+import { getMoment } from 'utils/date'
+import { formatReportingQueryDate } from 'utils/reporting'
 
-import {VoiceCallSummary} from '../../models/types'
-import {VoiceCallTableColumnName} from '../VoiceCallTable/constants'
-import {LiveVoiceStatusFilterOption} from './types'
+import { VoiceCallSummary } from '../../models/types'
+import { VoiceCallTableColumnName } from '../VoiceCallTable/constants'
+import { LiveVoiceStatusFilterOption } from './types'
 
 export enum AgentStatusCategory {
     Busy = 'Busy',
@@ -41,13 +41,13 @@ export const isAgentAvailable = (agent: LiveCallQueueAgent): boolean => {
 }
 
 const sortOnlineAgentsFirst = (
-    agents: LiveCallQueueAgent[]
+    agents: LiveCallQueueAgent[],
 ): LiveCallQueueAgent[] => {
     return agents.sort((agentA) => (agentA.online ? -1 : 1))
 }
 
 export const groupAgentsByStatus = (
-    agents: LiveCallQueueAgent[]
+    agents: LiveCallQueueAgent[],
 ): Record<AgentStatusCategory, LiveCallQueueAgent[]> => {
     const busyAgents: LiveCallQueueAgent[] = []
     const availableAgents: LiveCallQueueAgent[] = []
@@ -72,7 +72,7 @@ export const groupAgentsByStatus = (
 }
 
 export const getOldestCall = (
-    agent: LiveCallQueueAgent
+    agent: LiveCallQueueAgent,
 ): LiveCallQueueAgentCallStatusesItem | null => {
     if (!agent.call_statuses?.length) {
         return null
@@ -92,7 +92,7 @@ export const getOldestCall = (
 }
 
 export const formatVoiceCallsData = (
-    voiceCalls: LiveCallQueueVoiceCall[]
+    voiceCalls: LiveCallQueueVoiceCall[],
 ): VoiceCallSummary[] =>
     voiceCalls.map((voiceCall) => {
         const agentId =
@@ -122,7 +122,7 @@ export const formatVoiceCallsData = (
     })
 
 export const isLiveInboundVoiceCallAnswered = (
-    status: VoiceCallStatus
+    status: VoiceCallStatus,
 ): boolean => {
     switch (status) {
         case VoiceCallStatus.Ringing:
@@ -149,7 +149,7 @@ export const isLiveCallRinging = (status: VoiceCallStatus): boolean => {
 
 export const filterLiveCallsByStatus = (
     voiceCalls: LiveCallQueueVoiceCall[],
-    statusFilter: LiveVoiceStatusFilterOption
+    statusFilter: LiveVoiceStatusFilterOption,
 ): LiveCallQueueVoiceCall[] => {
     switch (statusFilter) {
         case LiveVoiceStatusFilterOption.ALL:
@@ -158,35 +158,35 @@ export const filterLiveCallsByStatus = (
             return voiceCalls.filter(
                 (voiceCall) =>
                     voiceCall.direction === VoiceCallDirection.Inbound &&
-                    !isLiveInboundVoiceCallAnswered(voiceCall.status)
+                    !isLiveInboundVoiceCallAnswered(voiceCall.status),
             )
         case LiveVoiceStatusFilterOption.IN_PROGRESS:
             return voiceCalls.filter(
                 (voiceCall) =>
                     voiceCall.direction === VoiceCallDirection.Outbound ||
-                    isLiveInboundVoiceCallAnswered(voiceCall.status)
+                    isLiveInboundVoiceCallAnswered(voiceCall.status),
             )
     }
 }
 
 export const orderLiveVoiceCallsByOngoingTime = (
     voiceCalls: LiveCallQueueVoiceCall[],
-    orderDirection: OrderDirection
+    orderDirection: OrderDirection,
 ): LiveCallQueueVoiceCall[] => {
     return voiceCalls.sort((voiceCallA, voiceCallB) =>
         orderDirection === OrderDirection.Asc
             ? voiceCallB.created_datetime.localeCompare(
-                  voiceCallA.created_datetime
+                  voiceCallA.created_datetime,
               )
             : voiceCallA.created_datetime.localeCompare(
-                  voiceCallB.created_datetime
-              )
+                  voiceCallB.created_datetime,
+              ),
     )
 }
 
 export const getLiveVoicePeriodFilter = (
-    timezone: string
-): {start_datetime: string; end_datetime: string} => {
+    timezone: string,
+): { start_datetime: string; end_datetime: string } => {
     const now = getMoment().tz(timezone)
 
     return {

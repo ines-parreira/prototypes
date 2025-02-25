@@ -1,7 +1,8 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import useSearch from 'hooks/useSearch'
 import {
     WhatsAppMigrationContextProvider,
@@ -16,7 +17,7 @@ import WhatsAppMigrationPreamble from './WhatsAppMigrationPreamble'
 import WhatsAppMigrationVerificationForm from './WhatsAppMigrationVerificationForm'
 
 export default function WhatsAppIntegrationMigration(): JSX.Element | null {
-    const {step} = useSearch<{step: string | undefined}>()
+    const { step } = useSearch<{ step: string | undefined }>()
     const debugEnabled = useFlags()[FeatureFlagKey.WhatsAppMigrationsDebug]
 
     return (

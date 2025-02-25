@@ -1,9 +1,9 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {useFlags} from 'launchdarkly-react-client-sdk'
+import { renderHook } from '@testing-library/react-hooks'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {ShopifyIntegration} from 'models/integration/types'
-import {getEnvironment, GorgiasUIEnv} from 'utils/environment'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { ShopifyIntegration } from 'models/integration/types'
+import { getEnvironment, GorgiasUIEnv } from 'utils/environment'
 
 import useThemeAppExtensionInstallation from '../useThemeAppExtensionInstallation'
 
@@ -31,8 +31,8 @@ describe('useThemeAppExtensionInstallation', () => {
                 created_datetime: new Date().toISOString(),
             } as ShopifyIntegration
 
-            const {result} = renderHook(() =>
-                useThemeAppExtensionInstallation(shopifyIntegration)
+            const { result } = renderHook(() =>
+                useThemeAppExtensionInstallation(shopifyIntegration),
             )
 
             expect(result.current).toEqual({
@@ -40,7 +40,7 @@ describe('useThemeAppExtensionInstallation', () => {
                 themeAppExtensionInstallationUrl: null,
                 themeAppExtensionEnabled: false,
             })
-        }
+        },
     )
 
     it('should return true if shopify store created_datetime is after the switch date', () => {
@@ -56,8 +56,8 @@ describe('useThemeAppExtensionInstallation', () => {
             name: 'test-store',
         } as ShopifyIntegration
 
-        const {result} = renderHook(() =>
-            useThemeAppExtensionInstallation(shopifyIntegration)
+        const { result } = renderHook(() =>
+            useThemeAppExtensionInstallation(shopifyIntegration),
         )
 
         expect(result.current).toEqual({
@@ -75,8 +75,8 @@ describe('useThemeAppExtensionInstallation', () => {
                 switchTimestamp.toString(),
         })
 
-        const {result} = renderHook(() =>
-            useThemeAppExtensionInstallation(undefined)
+        const { result } = renderHook(() =>
+            useThemeAppExtensionInstallation(undefined),
         )
 
         expect(result.current).toEqual({
@@ -99,8 +99,8 @@ describe('useThemeAppExtensionInstallation', () => {
             name: 'test-store',
         } as ShopifyIntegration
 
-        const {result} = renderHook(() =>
-            useThemeAppExtensionInstallation(shopifyIntegration)
+        const { result } = renderHook(() =>
+            useThemeAppExtensionInstallation(shopifyIntegration),
         )
 
         expect(result.current).toEqual({

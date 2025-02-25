@@ -1,13 +1,14 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
-import React, {ComponentType} from 'react'
-import {Provider} from 'react-redux'
-import {createStore} from 'redux'
+import React, { ComponentType } from 'react'
 
-import {IntegrationType} from 'models/integration/types'
-import {RootState} from 'state/types'
+import { renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import { createStore } from 'redux'
 
-import {useShopifyIntegrations} from '../useShopifyIntegrations'
+import { IntegrationType } from 'models/integration/types'
+import { RootState } from 'state/types'
+
+import { useShopifyIntegrations } from '../useShopifyIntegrations'
 
 const defaultState = {
     integrations: fromJS({
@@ -36,16 +37,16 @@ describe('useShopifyIntegrations', () => {
         it('returns only the ordered shopify integrations', () => {
             const store = createStore(
                 (state) => state as RootState,
-                defaultState
+                defaultState,
             )
             const hookOptions = {
-                wrapper: (({children}) => (
+                wrapper: (({ children }) => (
                     <Provider store={store}>{children}</Provider>
                 )) as ComponentType,
             }
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () => useShopifyIntegrations(),
-                hookOptions
+                hookOptions,
             )
 
             expect(result.current).toStrictEqual([
@@ -72,13 +73,13 @@ describe('useShopifyIntegrations', () => {
                 }),
             })
             const hookOptions = {
-                wrapper: (({children}) => (
+                wrapper: (({ children }) => (
                     <Provider store={store}>{children}</Provider>
                 )) as ComponentType,
             }
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () => useShopifyIntegrations(),
-                hookOptions
+                hookOptions,
             )
 
             expect(result.current).toStrictEqual([])

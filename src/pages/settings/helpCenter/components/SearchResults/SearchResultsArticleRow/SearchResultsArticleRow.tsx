@@ -1,36 +1,37 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { FC, useCallback, useMemo } from 'react'
+
 import _keyBy from 'lodash/keyBy'
-import React, {FC, useCallback, useMemo} from 'react'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import down from 'assets/img/icons/rating-down-white.svg'
 import star from 'assets/img/icons/rating-star.svg'
 import up from 'assets/img/icons/rating-up-white.svg'
-
 import useAppDispatch from 'hooks/useAppDispatch'
-import {Article, LocaleCode} from 'models/helpCenter/types'
-import {LanguageList} from 'pages/common/components/LanguageBulletList'
+import { Article, LocaleCode } from 'models/helpCenter/types'
+import { LanguageList } from 'pages/common/components/LanguageBulletList'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import {ArticleRowActionTypes} from 'pages/settings/helpCenter/constants'
-import {changeViewLanguage} from 'state/ui/helpCenter/actions'
-import {sanitizeHtmlDefault} from 'utils/html'
+import { ArticleRowActionTypes } from 'pages/settings/helpCenter/constants'
+import { changeViewLanguage } from 'state/ui/helpCenter/actions'
+import { sanitizeHtmlDefault } from 'utils/html'
 
-import {useArticleRowActions} from '../../../hooks/useArticleRowActions'
-import {useRatingScore} from '../../../hooks/useRatingScore'
-import {useSupportedLocales} from '../../../providers/SupportedLocales'
-import {TableActions} from '../../TableActions'
+import { useArticleRowActions } from '../../../hooks/useArticleRowActions'
+import { useRatingScore } from '../../../hooks/useRatingScore'
+import { useSupportedLocales } from '../../../providers/SupportedLocales'
+import { TableActions } from '../../TableActions'
 import VisibilityCell from '../../VisibilityCell/VisibilityCell'
-import nestingCss from '../nesting.less'
-import {SearchResultsLoadingContent} from '../SearchResultsLoadingContent'
-import {isLoading, SearchResultArticle} from '../types'
-import {isResultOrAncestorUnlisted} from '../utils'
+import { SearchResultsLoadingContent } from '../SearchResultsLoadingContent'
+import { isLoading, SearchResultArticle } from '../types'
+import { isResultOrAncestorUnlisted } from '../utils'
 
+import nestingCss from '../nesting.less'
 import css from './SearchResultsArticleRow.less'
 
 const Highlight: FC<{
     article: Article
     hits: SearchResultArticle['algoliaHits']
-}> = ({article, hits}) => {
+}> = ({ article, hits }) => {
     const localizedAlgoliaHit = hits[article.translation.locale]
 
     const matchingHighlightedTitleDraft =
@@ -41,7 +42,7 @@ const Highlight: FC<{
         matchingHighlightedTitleDraft?.matchLevel === 'partial'
     ) {
         const sanitizedTitleDraft = sanitizeHtmlDefault(
-            matchingHighlightedTitleDraft.value
+            matchingHighlightedTitleDraft.value,
         )
 
         return (
@@ -63,7 +64,7 @@ type Props = {
     onArticleClickSettings: (
         action: ArticleRowActionTypes,
         article: Article,
-        isArticleOrAncestorUnlisted: boolean
+        isArticleOrAncestorUnlisted: boolean,
     ) => void
 }
 
@@ -141,7 +142,7 @@ export const SearchResultsArticleRow: FC<Props> = ({
                     />
                 )}
             </BodyCell>
-            <BodyCell style={{width: 77, minWidth: 77}}>
+            <BodyCell style={{ width: 77, minWidth: 77 }}>
                 <div className={css.rating} id={`rating-${article.id}`}>
                     <img alt="star" src={star} />
                     <div className={css['rating-text']}>{ratingScore}%</div>
@@ -180,7 +181,7 @@ export const SearchResultsArticleRow: FC<Props> = ({
                 )}
             </BodyCell>
             <BodyCell
-                style={{width: 110, minWidth: 110}}
+                style={{ width: 110, minWidth: 110 }}
                 className={css['nested-cell']}
             >
                 {entity !== null && (
@@ -191,7 +192,7 @@ export const SearchResultsArticleRow: FC<Props> = ({
                     />
                 )}
             </BodyCell>
-            <BodyCell style={{width: 105, minWidth: 105}}>
+            <BodyCell style={{ width: 105, minWidth: 105 }}>
                 {entity?.translation && (
                     <LanguageList
                         id={article.id}
@@ -202,12 +203,12 @@ export const SearchResultsArticleRow: FC<Props> = ({
                     />
                 )}
             </BodyCell>
-            <BodyCell style={{width: 120}} innerClassName={css.actions}>
+            <BodyCell style={{ width: 120 }} innerClassName={css.actions}>
                 <TableActions
                     actions={articleRowActions}
                     onClick={(
                         ev: React.MouseEvent,
-                        name: ArticleRowActionTypes
+                        name: ArticleRowActionTypes,
                     ) => {
                         ev.stopPropagation()
                         if (entity !== null) {
@@ -218,7 +219,7 @@ export const SearchResultsArticleRow: FC<Props> = ({
                             onArticleClickSettings(
                                 name,
                                 entity,
-                                isAncestorUnlisted
+                                isAncestorUnlisted,
                             )
                         }
                     }}

@@ -1,16 +1,17 @@
-import {Skeleton} from '@gorgias/merchant-ui-kit'
-import React, {useCallback} from 'react'
-import {useHistory, useLocation, useParams} from 'react-router-dom'
+import React, { useCallback } from 'react'
 
-import {SegmentEvent, logEvent} from 'common/segment'
+import { useHistory, useLocation, useParams } from 'react-router-dom'
+
+import { Skeleton } from '@gorgias/merchant-ui-kit'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
-
-import {ErrorBoundary} from 'pages/ErrorBoundary'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {notify} from 'state/notifications/actions'
-import {Notification} from 'state/notifications/types'
+import { ErrorBoundary } from 'pages/ErrorBoundary'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { notify } from 'state/notifications/actions'
+import { Notification } from 'state/notifications/types'
 
 import WorkflowAnalytics from './WorkflowAnalytics'
 import WorkflowAnalyticsFilters from './WorkflowAnalyticsFilters'
@@ -19,28 +20,28 @@ const PERFORMANCE_BY_FEATURE_ROUTE = 'stats-automate-performance-by-features'
 
 export default function WorkflowAnalyticsContainer() {
     const currentAccountId: number = useAppSelector(getCurrentAccountState).get(
-        'id'
+        'id',
     )
-    const {shopType, shopName, editWorkflowId} = useParams<{
+    const { shopType, shopName, editWorkflowId } = useParams<{
         shopType: string
         shopName: string
         editWorkflowId: string
     }>()
     const dispatch = useAppDispatch()
     const history = useHistory()
-    const location = useLocation<{from?: string}>()
-    const {from} = location.state || {}
+    const location = useLocation<{ from?: string }>()
+    const { from } = location.state || {}
 
     const notifyMerchant = useCallback(
         (message: Notification) => {
             void dispatch(notify(message))
         },
-        [dispatch]
+        [dispatch],
     )
 
     const goToWorkflowEditorPage = useCallback(() => {
         history.push(
-            `/app/automation/${shopType}/${shopName}/flows/edit/${editWorkflowId}`
+            `/app/automation/${shopType}/${shopName}/flows/edit/${editWorkflowId}`,
         )
     }, [history, shopName, shopType, editWorkflowId])
 

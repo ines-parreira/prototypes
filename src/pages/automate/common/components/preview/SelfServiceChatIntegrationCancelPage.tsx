@@ -5,25 +5,25 @@ import {
     GORGIAS_CHAT_SSP_TEXTS,
 } from 'config/integrations/gorgias_chat'
 import useAppSelector from 'hooks/useAppSelector'
-import {GorgiasChatIntegration} from 'models/integration/types'
+import { GorgiasChatIntegration } from 'models/integration/types'
 import MessageContent from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/MessageContent'
-import {getCurrentUser} from 'state/currentUser/selectors'
+import { getCurrentUser } from 'state/currentUser/selectors'
 
 import useOrderDates from './hooks/useOrderDates'
-import {useSelfServicePreviewContext} from './SelfServicePreviewContext'
+import { useSelfServicePreviewContext } from './SelfServicePreviewContext'
 
 type Props = {
     integration: GorgiasChatIntegration
 }
 
-const SelfServiceChatIntegrationCancelPage = ({integration}: Props) => {
+const SelfServiceChatIntegrationCancelPage = ({ integration }: Props) => {
     const currentUser = useAppSelector(getCurrentUser)
 
     const language = getPrimaryLanguageFromChatConfig(integration.meta)
     const sspTexts = GORGIAS_CHAT_SSP_TEXTS[language]
 
-    const {automatedResponseMessageContent} = useSelfServicePreviewContext()
-    const {orderPlacedDate} = useOrderDates(language)
+    const { automatedResponseMessageContent } = useSelfServicePreviewContext()
+    const { orderPlacedDate } = useOrderDates(language)
 
     const templatedMessage = (
         <>

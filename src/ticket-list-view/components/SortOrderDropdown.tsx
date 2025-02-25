@@ -1,14 +1,17 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { useRef, useState } from 'react'
+
 import cn from 'classnames'
-import React, {useRef, useState} from 'react'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import IconButton from 'pages/common/components/button/IconButton'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import {LabelWithTooltip} from 'pages/common/components/LabelWithTooltip/LabelWithTooltip'
+import { LabelWithTooltip } from 'pages/common/components/LabelWithTooltip/LabelWithTooltip'
 
-import {sortOrderOptions, SortOrder} from '../hooks/useSortOrder'
+import { SortOrder, sortOrderOptions } from '../hooks/useSortOrder'
+
 import css from './SortOrderDropdown.less'
 
 type Props = {
@@ -16,14 +19,14 @@ type Props = {
     value: SortOrder
 }
 
-export default function SortingDropdown({onChange, value}: Props) {
+export default function SortingDropdown({ onChange, value }: Props) {
     const targetRef = useRef<HTMLButtonElement>(null)
     const [isOpen, setIsOpen] = useState(false)
 
     return (
         <>
             <IconButton
-                className={cn(css.icon, {[css.isOpen]: isOpen})}
+                className={cn(css.icon, { [css.isOpen]: isOpen })}
                 ref={targetRef}
                 intent="secondary"
                 fillStyle="ghost"
@@ -34,7 +37,7 @@ export default function SortingDropdown({onChange, value}: Props) {
             >
                 swap_vert
             </IconButton>
-            <Tooltip target={targetRef} innerProps={{fade: false}}>
+            <Tooltip target={targetRef} innerProps={{ fade: false }}>
                 Sort view by
             </Tooltip>
             <Dropdown

@@ -1,14 +1,16 @@
-import {ListMacrosParams, useListMacros, Macro} from '@gorgias/api-queries'
-import classnames from 'classnames'
-import React, {useCallback, useEffect, useState} from 'react'
-import {NavLink, useRouteMatch} from 'react-router-dom'
+import React, { useCallback, useEffect, useState } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useFlag} from 'core/flags'
-import {useCreateMacro, useDeleteMacro} from 'hooks/macros'
+import classnames from 'classnames'
+import { NavLink, useRouteMatch } from 'react-router-dom'
+
+import { ListMacrosParams, Macro, useListMacros } from '@gorgias/api-queries'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
+import { useCreateMacro, useDeleteMacro } from 'hooks/macros'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {OrderDirection} from 'models/api/types'
-import {MacroSortableProperties} from 'models/macro/types'
+import { OrderDirection } from 'models/api/types'
+import { MacroSortableProperties } from 'models/macro/types'
 import MacroFilters from 'pages/common/components/MacroFilters/MacroFilters'
 import Navigation from 'pages/common/components/Navigation/Navigation'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -17,12 +19,13 @@ import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNa
 import Video from 'pages/common/components/Video/Video'
 import history from 'pages/history'
 import settingsCss from 'pages/settings/settings.less'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
-import {MacrosCreateDropdown} from './MacrosCreateDropdown'
-import css from './MacrosSettingsContent.less'
+import { MacrosCreateDropdown } from './MacrosCreateDropdown'
 import MacrosSettingsTable from './MacrosSettingsTable'
+
+import css from './MacrosSettingsContent.less'
 
 export const STALE_TIME_MS = 15 * 60 * 1000 // 15 minutes
 
@@ -34,20 +37,20 @@ export function MacrosSettingsContent() {
     const [listMacrosParams, setListMacrosParams] = useState<ListMacrosParams>({
         order_by: 'created_datetime:asc',
     })
-    const {data, isLoading, isError} = useListMacros(
+    const { data, isLoading, isError } = useListMacros(
         {
             ...listMacrosParams,
-            ...(isArchivingAvailable && isArchiveTab ? {archived: true} : {}),
+            ...(isArchivingAvailable && isArchiveTab ? { archived: true } : {}),
         },
         {
             query: {
                 staleTime: STALE_TIME_MS,
             },
-        }
+        },
     )
 
-    const {mutate: createMacro} = useCreateMacro('Failed to duplicate macro')
-    const {mutate: deleteMacro} = useDeleteMacro()
+    const { mutate: createMacro } = useCreateMacro('Failed to duplicate macro')
+    const { mutate: deleteMacro } = useDeleteMacro()
     const [selectedMacrosIds, setSelectedMacrosIds] = useState<number[]>([])
 
     useEffect(() => {
@@ -56,7 +59,7 @@ export function MacrosSettingsContent() {
                 notify({
                     message: 'Failed to fetch macros',
                     status: NotificationStatus.Error,
-                })
+                }),
             )
         }
     }, [dispatch, isError])
@@ -85,7 +88,7 @@ export function MacrosSettingsContent() {
                         })
                     }
                 },
-            }
+            },
         )
     }
 
@@ -93,7 +96,7 @@ export function MacrosSettingsContent() {
         if (!macro) {
             return
         }
-        const {actions, name, language} = macro
+        const { actions, name, language } = macro
         createMacro(
             {
                 data: {
@@ -106,7 +109,7 @@ export function MacrosSettingsContent() {
                 onSuccess: (resp) => {
                     history.push(`/app/settings/macros/${resp.data.id}`)
                 },
-            }
+            },
         )
     }
 
@@ -121,7 +124,7 @@ export function MacrosSettingsContent() {
                 ...listMacrosParams,
                 order_by: `${order_by}:${order_dir}`,
             }),
-        [listMacrosParams]
+        [listMacrosParams],
     )
 
     const fetchNextItems = useCallback(() => {
@@ -175,9 +178,9 @@ export function MacrosSettingsContent() {
             <div
                 className={classnames(
                     settingsCss.pageContainer,
-                    {[settingsCss.pb0]: !isArchivingAvailable},
+                    { [settingsCss.pb0]: !isArchivingAvailable },
                     'd-flex',
-                    'justify-content-between'
+                    'justify-content-between',
                 )}
                 data-candu-id="setting-macros-description"
             >

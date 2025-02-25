@@ -1,22 +1,23 @@
-import {Tag} from '@gorgias/api-queries'
-import {Map} from 'immutable'
+import { Map } from 'immutable'
 
-import {RecentChatTicket} from 'business/types/recentChats'
-import {User} from 'config/types/user'
+import { Tag } from '@gorgias/api-queries'
+
+import { RecentChatTicket } from 'business/types/recentChats'
+import { User } from 'config/types/user'
 import {
-    IntegrationType,
+    Integration,
     IntegrationAuthentication,
     IntegrationExtra,
-    Integration,
+    IntegrationType,
 } from 'models/integration/types'
-import {NewPhoneNumber, OldPhoneNumber} from 'models/phoneNumber/types'
-import {Section} from 'models/section/types'
-import {Team} from 'models/team/types'
-import {View} from 'models/view/types'
-import {Application} from 'services/applications'
-import {Channel} from 'services/channels'
-import {BillingProducts} from 'state/billing/types'
-import {Account} from 'state/currentAccount/types'
+import { NewPhoneNumber, OldPhoneNumber } from 'models/phoneNumber/types'
+import { Section } from 'models/section/types'
+import { Team } from 'models/team/types'
+import { View } from 'models/view/types'
+import { Application } from 'services/applications'
+import { Channel } from 'services/channels'
+import { BillingProducts } from 'state/billing/types'
+import { Account } from 'state/currentAccount/types'
 
 export type Schemas = Map<any, any>
 
@@ -70,7 +71,10 @@ export type GorgiasInitialState = {
         }
         items: View[]
         recent?: {
-            [key: string]: {inserted_datetime: string; updated_datetime: string}
+            [key: string]: {
+                inserted_datetime: string
+                updated_datetime: string
+            }
         }
     }
     viewSections: {
@@ -87,11 +91,11 @@ export type InitialRootState = {
     currentAccount: Map<any, any>
     currentUSer: Map<any, any>
     entities: {
-        sections: {[key: string]: Section}
-        tags: {[key: string]: Tag}
-        views: {[key: string]: View}
-        phoneNumbers: {[key: number]: OldPhoneNumber}
-        newPhoneNumbers: {[key: number]: NewPhoneNumber}
+        sections: { [key: string]: Section }
+        tags: { [key: string]: Tag }
+        views: { [key: string]: View }
+        phoneNumbers: { [key: number]: OldPhoneNumber }
+        newPhoneNumbers: { [key: number]: NewPhoneNumber }
     }
     integrations: Map<any, any>
     schemas: Map<any, any>

@@ -1,23 +1,23 @@
-import {fireEvent, render, RenderResult} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render, RenderResult } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {UserSettingType} from 'config/types/user'
+import { UserSettingType } from 'config/types/user'
 import {
     DateFormatType,
-    TimeFormatType,
-    DateTimeFormatType,
     DateTimeFormatMapper,
+    DateTimeFormatType,
     DateTimeResultFormatType,
+    TimeFormatType,
 } from 'constants/datetime'
 
-import {ZendeskIntegration} from '../../../../../models/integration/types'
+import { ZendeskIntegration } from '../../../../../models/integration/types'
 import history from '../../../../history'
-import {ImportZendeskDataList} from '../ImportZendeskDataList'
-
+import { ImportZendeskDataList } from '../ImportZendeskDataList'
 import {
     failedImport,
     pendingImport,
@@ -55,7 +55,7 @@ const renderComponent = (props: DefaultProps): RenderResult => {
     return render(
         <Provider store={store}>
             <ImportZendeskDataList {...props} />
-        </Provider>
+        </Provider>,
     )
 }
 
@@ -70,7 +70,7 @@ describe('<ImportZendeskDataList/>', () => {
     }
     describe('rendering', () => {
         it('should render the list of imports', () => {
-            const {getAllByRole} = renderComponent({
+            const { getAllByRole } = renderComponent({
                 ...defaultProps,
                 zendeskImports: [successImport, pendingImport, failedImport],
             })
@@ -78,7 +78,7 @@ describe('<ImportZendeskDataList/>', () => {
         })
 
         it('should render a paused import', () => {
-            const {getByText} = renderComponent({
+            const { getByText } = renderComponent({
                 ...defaultProps,
                 zendeskImports: [successImport],
             })
@@ -86,7 +86,7 @@ describe('<ImportZendeskDataList/>', () => {
             expect(getByText(successImport.name)).toBeDefined()
         })
         it('should render a synchronizing import', () => {
-            const {getByText} = renderComponent({
+            const { getByText } = renderComponent({
                 ...defaultProps,
                 zendeskImports: [
                     {
@@ -103,31 +103,31 @@ describe('<ImportZendeskDataList/>', () => {
         })
 
         it('should render a pending import', () => {
-            const {getByText, getByRole} = renderComponent({
+            const { getByText, getByRole } = renderComponent({
                 ...defaultProps,
                 zendeskImports: [pendingImport],
             })
             expect(getByText('Progress 10%')).toBeDefined()
             expect(getByText(pendingImport.name)).toBeDefined()
             expect(getByRole('progressbar').getAttribute('style')).toEqual(
-                'width: 10%;'
+                'width: 10%;',
             )
         })
 
         it('should render a pending import for rate limit back off', () => {
-            const {getByText, getByRole} = renderComponent({
+            const { getByText, getByRole } = renderComponent({
                 ...defaultProps,
                 zendeskImports: [rateLimitedImport],
             })
             expect(getByText('Progress 10%')).toBeDefined()
             expect(getByText(pendingImport.name)).toBeDefined()
             expect(getByRole('progressbar').getAttribute('style')).toEqual(
-                'width: 10%;'
+                'width: 10%;',
             )
         })
 
         it('should render a failed import', () => {
-            const {getByText} = renderComponent({
+            const { getByText } = renderComponent({
                 ...defaultProps,
                 zendeskImports: [failedImport],
             })
@@ -142,14 +142,14 @@ describe('<ImportZendeskDataList/>', () => {
                     push: mockedPush,
                 }),
             }))
-            const {getByRole, getByText} = renderComponent({
+            const { getByRole, getByText } = renderComponent({
                 ...defaultProps,
                 zendeskImports: [successImport],
             })
             const row = getByRole('row')
             fireEvent.click(row)
             expect(history.push).toBeCalledWith(
-                `/app/settings/import-data/zendesk/${successImport.id}`
+                `/app/settings/import-data/zendesk/${successImport.id}`,
             )
             expect(getByText('Completed on 11/27/2020 06:19 PM')).toBeDefined()
         })

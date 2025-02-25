@@ -1,6 +1,7 @@
 import 'reactflow/dist/style.css'
 
-import React, {useCallback} from 'react'
+import React, { useCallback } from 'react'
+
 import {
     MiniMap,
     NodeMouseHandler,
@@ -8,9 +9,8 @@ import {
     ReactFlowProvider,
 } from 'reactflow'
 
-import {gorgiasColors} from 'gorgias-design-system/styles'
-import {VisualBuilderBackground} from 'pages/automate/workflows/editor/visualBuilder/components/VisualBuilderBackground'
-
+import { gorgiasColors } from 'gorgias-design-system/styles'
+import { VisualBuilderBackground } from 'pages/automate/workflows/editor/visualBuilder/components/VisualBuilderBackground'
 import CustomEdge from 'pages/automate/workflows/editor/visualBuilder/CustomEdge'
 import NodeEditorDrawer from 'pages/automate/workflows/editor/visualBuilder/NodeEditorDrawer'
 import CancelOrderNode from 'pages/automate/workflows/editor/visualBuilder/nodes/CancelOrderNode'
@@ -30,7 +30,7 @@ import ReusableLLMPromptTriggerNode from 'pages/automate/workflows/editor/visual
 import SkipChargeNode from 'pages/automate/workflows/editor/visualBuilder/nodes/SkipChargeNode'
 import UpdateShippingAddressNode from 'pages/automate/workflows/editor/visualBuilder/nodes/UpdateShippingAddressNode'
 import css from 'pages/automate/workflows/editor/visualBuilder/WorkflowVisualBuilder.less'
-import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
+import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 
 import VisualBuilderControls from './VisualBuilderControls'
 
@@ -66,16 +66,16 @@ const WorkflowVisualBuilder = ({
     isMiniMapHidden: isMiniMapHiddenProp = false,
     isDisabled = false,
 }: Props) => {
-    const {visualBuilderGraph, dispatch} = useVisualBuilderContext()
+    const { visualBuilderGraph, dispatch } = useVisualBuilderContext()
 
     const visualBuilderNodeEditing = visualBuilderGraph.nodeEditingId
         ? visualBuilderGraph.nodes.find(
-              (n) => n.id === visualBuilderGraph.nodeEditingId
+              (n) => n.id === visualBuilderGraph.nodeEditingId,
           )
         : null
 
     const handleDrawerEditorClose = useCallback(() => {
-        dispatch({type: 'CLOSE_EDITOR'})
+        dispatch({ type: 'CLOSE_EDITOR' })
     }, [dispatch])
 
     const handleNodeClick = useCallback<NodeMouseHandler>(
@@ -85,7 +85,7 @@ const WorkflowVisualBuilder = ({
                 nodeId: node.id,
             })
         },
-        [dispatch]
+        [dispatch],
     )
     // for big flows we disable some features to improve performance
     const isDegradedMode = visualBuilderGraph.nodes.length > 800

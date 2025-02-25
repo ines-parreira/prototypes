@@ -7,7 +7,7 @@ type Props = {
     disabled?: boolean
 }
 
-const getClassName = ({value, disabled}: Props) => {
+const getClassName = ({ value, disabled }: Props) => {
     if (disabled) {
         return css.grey
     }
@@ -21,9 +21,9 @@ const getClassName = ({value, disabled}: Props) => {
     return css.success
 }
 
-export function ProductStockQuantity({value, disabled}: Props) {
+export function ProductStockQuantity({ value, disabled }: Props) {
     return (
-        <span className={getClassName({value, disabled})}>
+        <span className={getClassName({ value, disabled })}>
             {new Intl.NumberFormat().format(value)}
         </span>
     )

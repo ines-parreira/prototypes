@@ -1,11 +1,12 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {assumeMock} from 'utils/testing'
+import { render } from '@testing-library/react'
+
+import { assumeMock } from 'utils/testing'
 
 import useIsMobileResolution from '../useIsMobileResolution'
 import withIsMobileResolution from '../withIsMobileResolution'
-import type {WithIsMobileResolutionProps} from '../withIsMobileResolution'
+import type { WithIsMobileResolutionProps } from '../withIsMobileResolution'
 
 jest.mock('../useIsMobileResolution', () => jest.fn())
 const useIsMobileResolutionMock = assumeMock(useIsMobileResolution)
@@ -17,10 +18,10 @@ describe('withIsMobileResolution', () => {
         let givenIsMobileResolution: boolean | null = null
 
         const TestComponent = withIsMobileResolution(
-            ({isMobileResolution}: WithIsMobileResolutionProps) => {
+            ({ isMobileResolution }: WithIsMobileResolutionProps) => {
                 givenIsMobileResolution = isMobileResolution
                 return null
-            }
+            },
         )
 
         render(<TestComponent />)

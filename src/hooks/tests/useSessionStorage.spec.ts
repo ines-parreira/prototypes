@@ -1,4 +1,4 @@
-import {renderHook, act} from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react-hooks'
 
 import useSessionStorage from '../useSessionStorage'
 
@@ -12,8 +12,8 @@ describe('useSessionStorage', () => {
     })
 
     it('should return the initial value and a function to set the value', () => {
-        const {result} = renderHook(() =>
-            useSessionStorage('testKey', 'initialValue')
+        const { result } = renderHook(() =>
+            useSessionStorage('testKey', 'initialValue'),
         )
 
         const [state, setState] = result.current
@@ -24,8 +24,8 @@ describe('useSessionStorage', () => {
     })
 
     it('should update the value in sessionStorage when setState is called', () => {
-        const {result} = renderHook(() =>
-            useSessionStorage('testKey', 'initialValue')
+        const { result } = renderHook(() =>
+            useSessionStorage('testKey', 'initialValue'),
         )
 
         act(() => {
@@ -39,22 +39,22 @@ describe('useSessionStorage', () => {
     it('should parse the value correctly from sessionStorage', () => {
         sessionStorage.setItem('testKey', '{"name": "John"}')
 
-        const {result} = renderHook(() => useSessionStorage('testKey', {}))
+        const { result } = renderHook(() => useSessionStorage('testKey', {}))
 
-        expect(result.current[0]).toEqual({name: 'John'})
+        expect(result.current[0]).toEqual({ name: 'John' })
 
         act(() => {
             const [, setState] = result.current
-            setState({name: 'Mary'})
+            setState({ name: 'Mary' })
         })
 
-        expect(result.current[0]).toEqual({name: 'Mary'})
+        expect(result.current[0]).toEqual({ name: 'Mary' })
         expect(sessionStorage.getItem('testKey')).toBe('{"name":"Mary"}')
     })
 
     it('should handle raw values correctly', () => {
-        const {result} = renderHook(() =>
-            useSessionStorage('testKey', 'initialValue', true)
+        const { result } = renderHook(() =>
+            useSessionStorage('testKey', 'initialValue', true),
         )
 
         act(() => {
@@ -70,8 +70,8 @@ describe('useSessionStorage', () => {
             throw new Error('Mocked parsing error')
         })
 
-        const {result} = renderHook(() =>
-            useSessionStorage('testKey', 'initialValue')
+        const { result } = renderHook(() =>
+            useSessionStorage('testKey', 'initialValue'),
         )
 
         expect(result.current[0]).toBe('initialValue')
@@ -82,8 +82,8 @@ describe('useSessionStorage', () => {
             throw new Error('Mocked storage error')
         })
 
-        const {result} = renderHook(() =>
-            useSessionStorage('testKey', 'initialValue')
+        const { result } = renderHook(() =>
+            useSessionStorage('testKey', 'initialValue'),
         )
 
         act(() => {

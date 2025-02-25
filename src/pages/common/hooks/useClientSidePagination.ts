@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import { useState } from 'react'
 
 export default function useClientSidePagination<T>({
     items,
@@ -12,7 +12,7 @@ export default function useClientSidePagination<T>({
     const pageCount = Math.ceil(items.length / itemsPerPage)
     const paginatedItems = items.slice(
         (page - 1) * itemsPerPage,
-        page * itemsPerPage
+        page * itemsPerPage,
     )
 
     return {

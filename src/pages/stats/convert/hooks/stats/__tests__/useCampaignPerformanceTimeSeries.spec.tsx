@@ -1,13 +1,13 @@
-import {UseQueryResult} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
+import { UseQueryResult } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {usePostReporting} from 'models/reporting/queries'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import { usePostReporting } from 'models/reporting/queries'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import {
     CampaignOrderEventsMeasure,
     OrderConversionMeasure,
 } from 'pages/stats/convert/clients/constants'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
 import useCampaignPerformanceTimeSeries from '../useCampaignPerformanceTimeSeries'
 
@@ -47,8 +47,8 @@ describe('useCampaignPerformanceTimeSeries', () => {
             isError: true,
         } as UseQueryResult)
 
-        const {result} = renderHook(() =>
-            useCampaignPerformanceTimeSeries(...hookArgs)
+        const { result } = renderHook(() =>
+            useCampaignPerformanceTimeSeries(...hookArgs),
         )
 
         expect(result.current.isError).toBe(true)
@@ -77,8 +77,8 @@ describe('useCampaignPerformanceTimeSeries', () => {
             ],
         } as UseQueryResult)
 
-        const {result} = renderHook(() =>
-            useCampaignPerformanceTimeSeries(...hookArgs)
+        const { result } = renderHook(() =>
+            useCampaignPerformanceTimeSeries(...hookArgs),
         )
 
         expect(usePostReportingMock).toHaveBeenCalledTimes(2)
@@ -100,7 +100,7 @@ describe('useCampaignPerformanceTimeSeries', () => {
                     timezone: 'UTC',
                 }),
             ],
-            expect.anything()
+            expect.anything(),
         )
         expect(usePostReportingMock).toHaveBeenCalledWith(
             [
@@ -120,7 +120,7 @@ describe('useCampaignPerformanceTimeSeries', () => {
                     timezone: 'UTC',
                 }),
             ],
-            expect.anything()
+            expect.anything(),
         )
 
         expect(result.current).toEqual({

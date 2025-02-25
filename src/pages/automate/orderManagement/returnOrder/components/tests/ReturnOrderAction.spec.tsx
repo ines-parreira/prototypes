@@ -1,11 +1,12 @@
-import {render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {ReturnActionType} from 'models/selfServiceConfiguration/types'
-import {RootState, StoreDispatch} from 'state/types'
+import { ReturnActionType } from 'models/selfServiceConfiguration/types'
+import { RootState, StoreDispatch } from 'state/types'
 
 import ReturnOrderAction from '../ReturnOrderAction'
 
@@ -22,7 +23,9 @@ describe('<ReturnOrderAction />', () => {
                                 id: 1,
                                 name: 'Loop Returns',
                                 type: 'http',
-                                http: {url: 'https://api.loopreturns.com/test'},
+                                http: {
+                                    url: 'https://api.loopreturns.com/test',
+                                },
                             },
                         ],
                     }),
@@ -35,7 +38,7 @@ describe('<ReturnOrderAction />', () => {
                         type: ReturnActionType.LoopReturns,
                     }}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('Loop Returns')).toBeInTheDocument()

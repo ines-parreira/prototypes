@@ -1,7 +1,8 @@
-import {Meta, StoryObj} from '@storybook/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import Status, {StatusType} from './Status'
+import { Meta, StoryObj } from '@storybook/react'
+
+import Status, { StatusType } from './Status'
 
 const meta: Meta<typeof Status> = {
     title: 'Common/Status',

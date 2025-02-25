@@ -1,16 +1,18 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment/moment'
 
 import {
     fetchReviewedClosedTicketsTrend,
     useReviewedClosedTicketsTrend,
 } from 'hooks/reporting/support-performance/auto-qa/useReviewedClosedTicketsTrend'
-import useMetricTrend, {fetchMetricTrend} from 'hooks/reporting/useMetricTrend'
-import {reviewedClosedTicketsQueryFactory} from 'models/reporting/queryFactories/auto-qa/reviewedClosedTicketsQueryFactory'
-import {ReportingQuery} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
-import {formatReportingQueryDate, getPreviousPeriod} from 'utils/reporting'
-import {assumeMock} from 'utils/testing'
+import useMetricTrend, {
+    fetchMetricTrend,
+} from 'hooks/reporting/useMetricTrend'
+import { reviewedClosedTicketsQueryFactory } from 'models/reporting/queryFactories/auto-qa/reviewedClosedTicketsQueryFactory'
+import { ReportingQuery } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
+import { formatReportingQueryDate, getPreviousPeriod } from 'utils/reporting'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/useMetricTrend')
 const useMetricTrendMock = assumeMock(useMetricTrend)
@@ -28,13 +30,13 @@ describe('ReviewedClosedTicketsTrend', () => {
     const timezone = 'someTimeZone'
 
     useMetricTrendMock.mockImplementation(
-        ((queryCreator: ReportingQuery) => queryCreator) as any
+        ((queryCreator: ReportingQuery) => queryCreator) as any,
     )
 
     describe('useReviewedClosedTicketsTrend', () => {
         it('should pass query factories with two periods', () => {
             renderHook(() =>
-                useReviewedClosedTicketsTrend(statsFilters, timezone)
+                useReviewedClosedTicketsTrend(statsFilters, timezone),
             )
 
             expect(useMetricTrendMock).toHaveBeenCalledWith(
@@ -44,8 +46,8 @@ describe('ReviewedClosedTicketsTrend', () => {
                         ...statsFilters,
                         period: getPreviousPeriod(statsFilters.period),
                     },
-                    timezone
-                )
+                    timezone,
+                ),
             )
         })
     })
@@ -61,8 +63,8 @@ describe('ReviewedClosedTicketsTrend', () => {
                         ...statsFilters,
                         period: getPreviousPeriod(statsFilters.period),
                     },
-                    timezone
-                )
+                    timezone,
+                ),
             )
         })
     })

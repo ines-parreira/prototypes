@@ -1,62 +1,64 @@
-import {
-    useCreateAnalyticsCustomReport,
-    useDeleteAnalyticsCustomReport,
-    AnalyticsCustomReport,
-    AnalyticsCustomReportType,
-    HttpResponse,
-    CreateAnalyticsCustomReportBody,
-    useListAnalyticsCustomReports,
-    useUpdateAnalyticsCustomReport,
-    getListAnalyticsCustomReportsQueryOptions,
-    getGetAnalyticsCustomReportQueryOptions,
-    UpdateAnalyticsCustomReportBody,
-} from '@gorgias/api-queries'
-import {
-    QueryClientProvider,
-    UseMutationResult,
-    UseMutateFunction,
-} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
 
 import {
-    useCustomReportActions,
-    CUSTOM_REPORT_DUPLICATE_SUCCESS_MESSAGE,
-    CUSTOM_REPORT_DUPLICATE_ERROR_MESSAGE,
-    CUSTOM_REPORT_DELETED_SUCCESS_MESSAGE,
+    QueryClientProvider,
+    UseMutateFunction,
+    UseMutationResult,
+} from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
+
+import {
+    AnalyticsCustomReport,
+    AnalyticsCustomReportType,
+    CreateAnalyticsCustomReportBody,
+    getGetAnalyticsCustomReportQueryOptions,
+    getListAnalyticsCustomReportsQueryOptions,
+    HttpResponse,
+    UpdateAnalyticsCustomReportBody,
+    useCreateAnalyticsCustomReport,
+    useDeleteAnalyticsCustomReport,
+    useListAnalyticsCustomReports,
+    useUpdateAnalyticsCustomReport,
+} from '@gorgias/api-queries'
+
+import {
     CUSTOM_REPORT_DELETED_ERROR_MESSAGE,
+    CUSTOM_REPORT_DELETED_SUCCESS_MESSAGE,
+    CUSTOM_REPORT_DUPLICATE_ERROR_MESSAGE,
+    CUSTOM_REPORT_DUPLICATE_SUCCESS_MESSAGE,
     SUCCESSFULLY_CREATED,
+    useCustomReportActions,
 } from 'hooks/reporting/custom-reports/useCustomReportActions'
-import {CustomReportChildType} from 'models/stat/types'
+import { CustomReportChildType } from 'models/stat/types'
 import * as constants from 'pages/stats/custom-reports/constants'
-import {CustomReportSchema} from 'pages/stats/custom-reports/types'
-import {getErrorMessage} from 'pages/stats/custom-reports/utils'
-import {OverviewChart} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { CustomReportSchema } from 'pages/stats/custom-reports/types'
+import { getErrorMessage } from 'pages/stats/custom-reports/utils'
+import { OverviewChart } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 const queryClient = mockQueryClient()
 
 const useCreateAnalyticsCustomReportMock = assumeMock(
-    useCreateAnalyticsCustomReport
+    useCreateAnalyticsCustomReport,
 )
 const useDeleteAnalyticsCustomReportMock = assumeMock(
-    useDeleteAnalyticsCustomReport
+    useDeleteAnalyticsCustomReport,
 )
 const useListAnalyticsCustomReportsMock = assumeMock(
-    useListAnalyticsCustomReports
+    useListAnalyticsCustomReports,
 )
 const useUpdateAnalyticsCustomReportMock = assumeMock(
-    useUpdateAnalyticsCustomReport
+    useUpdateAnalyticsCustomReport,
 )
 jest.mock('@gorgias/api-queries')
 const getListAnalyticsCustomReportsQueryOptionsMock = assumeMock(
-    getListAnalyticsCustomReportsQueryOptions
+    getListAnalyticsCustomReportsQueryOptions,
 )
 const getGetAnalyticsCustomReportQueryOptionsMock = assumeMock(
-    getGetAnalyticsCustomReportQueryOptions
+    getGetAnalyticsCustomReportQueryOptions,
 )
 jest.mock('pages/stats/custom-reports/constants', () => ({
     MAX_DASHBOARDS_ALLOWED: 3,
@@ -107,18 +109,18 @@ const createMutateMock = jest.fn() as jest.MockedFunction<
     UseMutateFunction<
         HttpResponse<AnalyticsCustomReport>,
         unknown,
-        {data: CreateAnalyticsCustomReportBody},
+        { data: CreateAnalyticsCustomReportBody },
         unknown
     >
 >
 const deleteMutateMock = jest.fn() as jest.MockedFunction<
-    UseMutateFunction<HttpResponse<void>, unknown, {id: number}, unknown>
+    UseMutateFunction<HttpResponse<void>, unknown, { id: number }, unknown>
 >
 const updateMutationMock = jest.fn() as jest.MockedFunction<
     UseMutateFunction<
         HttpResponse<AnalyticsCustomReport>,
         unknown,
-        {id: number; data: CreateAnalyticsCustomReportBody}
+        { id: number; data: CreateAnalyticsCustomReportBody }
     >
 >
 
@@ -147,13 +149,13 @@ describe('useCustomReportActions', () => {
         } as UseMutationResult<
             HttpResponse<AnalyticsCustomReport>,
             unknown,
-            {data: CreateAnalyticsCustomReportBody}
+            { data: CreateAnalyticsCustomReportBody }
         >)
 
         useDeleteAnalyticsCustomReportMock.mockReturnValue({
             ...baseMutationResult,
             mutate: deleteMutateMock,
-        } as UseMutationResult<HttpResponse<void>, unknown, {id: number}>)
+        } as UseMutationResult<HttpResponse<void>, unknown, { id: number }>)
 
         useListAnalyticsCustomReportsMock.mockReturnValue({
             queryKey: invalidationKeys,
@@ -169,7 +171,7 @@ describe('useCustomReportActions', () => {
         })
 
         getGetAnalyticsCustomReportQueryOptionsMock.mockImplementation(
-            (id: number) => ({queryKey: ['customReports', id]})
+            (id: number) => ({ queryKey: ['customReports', id] }),
         )
     })
 
@@ -177,8 +179,8 @@ describe('useCustomReportActions', () => {
 
     describe('duplicateReportHandler', () => {
         it('should duplicate report and show success notification', () => {
-            const {result} = renderHook(() => useCustomReportActions(), {
-                wrapper: ({children}) => (
+            const { result } = renderHook(() => useCustomReportActions(), {
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         {children}
                     </QueryClientProvider>
@@ -189,7 +191,7 @@ describe('useCustomReportActions', () => {
 
             const [mutateArg, mutateOptions] = createMutateMock.mock
                 .calls[0] as [
-                {data: CreateAnalyticsCustomReportBody},
+                { data: CreateAnalyticsCustomReportBody },
                 {
                     onSuccess?: () => void
                     onError?: () => void
@@ -209,7 +211,7 @@ describe('useCustomReportActions', () => {
                 expect.objectContaining({
                     onSuccess: expect.any(Function),
                     onError: expect.any(Function),
-                })
+                }),
             )
 
             if (mutateOptions.onSuccess) {
@@ -227,8 +229,8 @@ describe('useCustomReportActions', () => {
         })
 
         it('should show error notification when duplication fails', () => {
-            const {result} = renderHook(() => useCustomReportActions(), {
-                wrapper: ({children}) => (
+            const { result } = renderHook(() => useCustomReportActions(), {
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         {children}
                     </QueryClientProvider>
@@ -239,7 +241,7 @@ describe('useCustomReportActions', () => {
 
             const [, mutateOptions] = createMutateMock.mock.calls[0] as [
                 unknown,
-                {onError?: () => void},
+                { onError?: () => void },
             ]
             if (mutateOptions.onError) {
                 mutateOptions.onError()
@@ -254,8 +256,8 @@ describe('useCustomReportActions', () => {
 
     describe('deleteReportHandler', () => {
         it('should delete report and show success notification', () => {
-            const {result} = renderHook(() => useCustomReportActions(), {
-                wrapper: ({children}) => (
+            const { result } = renderHook(() => useCustomReportActions(), {
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         {children}
                     </QueryClientProvider>
@@ -266,7 +268,7 @@ describe('useCustomReportActions', () => {
 
             const [mutateArg, mutateOptions] = deleteMutateMock.mock
                 .calls[0] as [
-                {id: number},
+                { id: number },
                 {
                     onSuccess?: () => void
                     onError?: () => void
@@ -280,7 +282,7 @@ describe('useCustomReportActions', () => {
                 expect.objectContaining({
                     onSuccess: expect.any(Function),
                     onError: expect.any(Function),
-                })
+                }),
             )
 
             if (mutateOptions.onSuccess) {
@@ -300,8 +302,8 @@ describe('useCustomReportActions', () => {
         })
 
         it('should show error notification when deletion fails', () => {
-            const {result} = renderHook(() => useCustomReportActions(), {
-                wrapper: ({children}) => (
+            const { result } = renderHook(() => useCustomReportActions(), {
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         {children}
                     </QueryClientProvider>
@@ -315,7 +317,7 @@ describe('useCustomReportActions', () => {
 
             const [, mutateOptions] = deleteMutateMock.mock.calls[0] as [
                 unknown,
-                {onError?: () => void},
+                { onError?: () => void },
             ]
             if (mutateOptions.onError) {
                 mutateOptions.onError()
@@ -371,8 +373,8 @@ describe('useCustomReportActions', () => {
         }
 
         it('should call updateDashboard mutation', () => {
-            const {result} = renderHook(() => useCustomReportActions(), {
-                wrapper: ({children}) => (
+            const { result } = renderHook(() => useCustomReportActions(), {
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         {children}
                     </QueryClientProvider>
@@ -383,7 +385,7 @@ describe('useCustomReportActions', () => {
 
             const [mutateArg, mutateOptions] = updateMutationMock.mock
                 .calls[0] as [
-                {id: number; data: UpdateAnalyticsCustomReportBody},
+                { id: number; data: UpdateAnalyticsCustomReportBody },
                 {
                     onSuccess?: (data: any) => void
                     onError?: () => void
@@ -399,18 +401,18 @@ describe('useCustomReportActions', () => {
                 expect.objectContaining({
                     onSuccess: expect.any(Function),
                     onError: expect.any(Function),
-                })
+                }),
             )
 
             if (mutateOptions.onSuccess) {
                 mutateOptions.onSuccess({
-                    data: {id: customReport.id, ...expectPayload.data},
+                    data: { id: customReport.id, ...expectPayload.data },
                 })
             }
 
             expect(invalidateQueriesMock).toHaveBeenCalledWith(
                 getGetAnalyticsCustomReportQueryOptionsMock(customReport.id)
-                    .queryKey
+                    .queryKey,
             )
 
             expect(invalidateQueriesMock).toHaveBeenCalledWith(invalidationKeys)
@@ -422,8 +424,8 @@ describe('useCustomReportActions', () => {
         })
 
         it('should show a different message when saving multiple charts', () => {
-            const {result} = renderHook(() => useCustomReportActions(), {
-                wrapper: ({children}) => (
+            const { result } = renderHook(() => useCustomReportActions(), {
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         {children}
                     </QueryClientProvider>
@@ -436,7 +438,7 @@ describe('useCustomReportActions', () => {
             })
 
             const [, mutateOptions] = updateMutationMock.mock.calls[0] as [
-                {id: number; data: UpdateAnalyticsCustomReportBody},
+                { id: number; data: UpdateAnalyticsCustomReportBody },
                 {
                     onSuccess?: (data: any) => void
                     onError?: () => void
@@ -444,7 +446,7 @@ describe('useCustomReportActions', () => {
             ]
 
             if (mutateOptions.onSuccess) {
-                mutateOptions.onSuccess({data: {id: customReport.id}})
+                mutateOptions.onSuccess({ data: { id: customReport.id } })
             }
 
             expect(notify).toHaveBeenCalledWith({
@@ -454,8 +456,8 @@ describe('useCustomReportActions', () => {
         })
 
         it('should show error notification when saving fails', () => {
-            const {result} = renderHook(() => useCustomReportActions(), {
-                wrapper: ({children}) => (
+            const { result } = renderHook(() => useCustomReportActions(), {
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         {children}
                     </QueryClientProvider>
@@ -465,7 +467,7 @@ describe('useCustomReportActions', () => {
             result.current.updateDashboardHandler(updateHandlerData)
 
             const [, mutateOptions] = updateMutationMock.mock.calls[0] as [
-                {id: number; data: CreateAnalyticsCustomReportBody},
+                { id: number; data: CreateAnalyticsCustomReportBody },
                 {
                     onSuccess?: () => void
                     onError?: () => void
@@ -531,8 +533,8 @@ describe('useCustomReportActions', () => {
         }
 
         it('should call updateDashboard mutation', () => {
-            const {result} = renderHook(() => useCustomReportActions(), {
-                wrapper: ({children}) => (
+            const { result } = renderHook(() => useCustomReportActions(), {
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         {children}
                     </QueryClientProvider>
@@ -543,7 +545,7 @@ describe('useCustomReportActions', () => {
 
             const [mutateArg, mutateOptions] = updateMutationMock.mock
                 .calls[0] as [
-                {id: number; data: CreateAnalyticsCustomReportBody},
+                { id: number; data: CreateAnalyticsCustomReportBody },
                 {
                     onSuccess?: (data: any) => void
                     onError?: () => void
@@ -551,7 +553,7 @@ describe('useCustomReportActions', () => {
             ]
 
             if (mutateOptions.onSuccess) {
-                mutateOptions.onSuccess({data: expectedPayload})
+                mutateOptions.onSuccess({ data: expectedPayload })
             }
 
             expect(mutateArg).toEqual({
@@ -605,8 +607,8 @@ describe('useCustomReportActions', () => {
         }
 
         it('should remove chart from dashboard', () => {
-            const {result} = renderHook(() => useCustomReportActions(), {
-                wrapper: ({children}) => (
+            const { result } = renderHook(() => useCustomReportActions(), {
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         {children}
                     </QueryClientProvider>
@@ -617,7 +619,7 @@ describe('useCustomReportActions', () => {
 
             const [mutateArg, mutateOptions] = updateMutationMock.mock
                 .calls[0] as [
-                {id: number; data: CreateAnalyticsCustomReportBody},
+                { id: number; data: CreateAnalyticsCustomReportBody },
                 {
                     onSuccess?: (data: any) => void
                     onError?: () => void
@@ -626,7 +628,7 @@ describe('useCustomReportActions', () => {
 
             if (mutateOptions.onSuccess) {
                 mutateOptions.onSuccess({
-                    data: {...expectedPayload, id: customReport.id},
+                    data: { ...expectedPayload, id: customReport.id },
                 })
             }
 
@@ -637,7 +639,7 @@ describe('useCustomReportActions', () => {
 
             expect(invalidateQueriesMock).toHaveBeenCalledWith(
                 getGetAnalyticsCustomReportQueryOptionsMock(customReport.id)
-                    .queryKey
+                    .queryKey,
             )
 
             expect(invalidateQueriesMock).toHaveBeenCalledWith(invalidationKeys)
@@ -687,8 +689,8 @@ describe('useCustomReportActions', () => {
                 },
             } as any)
 
-            const {result} = renderHook(() => useCustomReportActions(), {
-                wrapper: ({children}) => (
+            const { result } = renderHook(() => useCustomReportActions(), {
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         {children}
                     </QueryClientProvider>
@@ -743,8 +745,8 @@ describe('useCustomReportActions', () => {
         }
 
         it('should call createDashboard action with correct params', () => {
-            const {result} = renderHook(() => useCustomReportActions(), {
-                wrapper: ({children}) => (
+            const { result } = renderHook(() => useCustomReportActions(), {
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         {children}
                     </QueryClientProvider>
@@ -755,7 +757,7 @@ describe('useCustomReportActions', () => {
 
             const [mutateArg, mutateOptions] = createMutateMock.mock
                 .calls[0] as [
-                {data: CreateAnalyticsCustomReportBody},
+                { data: CreateAnalyticsCustomReportBody },
                 {
                     onSuccess: (data: any) => void
                     onError: () => void
@@ -788,15 +790,15 @@ describe('useCustomReportActions', () => {
                 expect.objectContaining({
                     onSuccess: expect.any(Function),
                     onError: expect.any(Function),
-                })
+                }),
             )
 
             if (mutateOptions.onSuccess) {
-                mutateOptions.onSuccess({id: 'new_id'})
+                mutateOptions.onSuccess({ id: 'new_id' })
             }
 
             expect(invalidateQueriesMock).toHaveBeenCalledWith(
-                createInvalidateKey
+                createInvalidateKey,
             )
 
             expect(notify).toHaveBeenCalledWith({
@@ -859,8 +861,8 @@ describe('useCustomReportActions', () => {
                 },
             } as any)
 
-            const {result} = renderHook(() => useCustomReportActions(), {
-                wrapper: ({children}) => (
+            const { result } = renderHook(() => useCustomReportActions(), {
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         {children}
                     </QueryClientProvider>
@@ -868,11 +870,11 @@ describe('useCustomReportActions', () => {
             })
 
             result.current.createDashboardHandler(
-                createHandlerDataWithoutChartIds
+                createHandlerDataWithoutChartIds,
             )
 
             const mutateOptions = createMutateMock.mock.calls[0] as [
-                {data: CreateAnalyticsCustomReportBody},
+                { data: CreateAnalyticsCustomReportBody },
                 {
                     onSuccess: (data: any) => void
                     onError: () => void
@@ -888,8 +890,8 @@ describe('useCustomReportActions', () => {
         })
 
         it('should show error notification when duplication fails', () => {
-            const {result} = renderHook(() => useCustomReportActions(), {
-                wrapper: ({children}) => (
+            const { result } = renderHook(() => useCustomReportActions(), {
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         {children}
                     </QueryClientProvider>
@@ -900,7 +902,7 @@ describe('useCustomReportActions', () => {
 
             const [, mutateOptions] = createMutateMock.mock.calls[0] as [
                 unknown,
-                {onError?: () => void},
+                { onError?: () => void },
             ]
 
             if (mutateOptions.onError) {

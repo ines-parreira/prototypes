@@ -1,23 +1,25 @@
-import {WaitMusicType} from '@gorgias/api-queries'
-import _pick from 'lodash/pick'
 import React from 'react'
+
+import _pick from 'lodash/pick'
+
+import { WaitMusicType } from '@gorgias/api-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     IvrMenuAction,
     IvrMenuActionType,
+    LocalWaitMusicPreferences,
     PhoneIntegrationIvrSettings,
     PhoneIntegrationVoicemailOutsideBusinessHoursSettings,
     PhoneIntegrationVoicemailSettings,
     VoiceMessage,
     VoiceMessageType,
-    LocalWaitMusicPreferences,
 } from 'models/integration/types'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {getBase64} from 'utils/file'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { getBase64 } from 'utils/file'
 
-import {getAudioFileDuration} from '../utils'
+import { getAudioFileDuration } from '../utils'
 
 export default function useVoiceMessageValidation() {
     const dispatch = useAppDispatch()
@@ -26,7 +28,7 @@ export default function useVoiceMessageValidation() {
         event: React.ChangeEvent<HTMLInputElement>,
         maxRecordingDuration?: number,
         maxRecordingSizeInMB?: number,
-        newErrorMessages = false
+        newErrorMessages = false,
     ) => {
         if (!event.target.files) {
             return null
@@ -44,7 +46,7 @@ export default function useVoiceMessageValidation() {
                         ? `File too large. Upload a recording smaller than ${maxRecordingSizeInMB}MB.`
                         : `Invalid file size. The max size is ${maxRecordingSizeInMB} MB.`,
                     status: NotificationStatus.Error,
-                })
+                }),
             )
             return null
         }
@@ -59,7 +61,7 @@ export default function useVoiceMessageValidation() {
                         notify({
                             message: `Please upload an audio file of ${maxRecordingDuration} seconds or less.`,
                             status: NotificationStatus.Error,
-                        })
+                        }),
                     )
                     return null
                 }
@@ -69,7 +71,7 @@ export default function useVoiceMessageValidation() {
                         message:
                             'Invalid audio file format provided. Please upload a valid mp3 file.',
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
                 return null
             }
@@ -81,7 +83,7 @@ export default function useVoiceMessageValidation() {
             new_voice_recording_file_name: uploadedFile.name,
             new_voice_recording_file_type: uploadedFile.type,
         }
-        return {url, newVoiceFields}
+        return { url, newVoiceFields }
     }
 
     const validateVoiceMessage = (payload: Maybe<VoiceMessage>) => {
@@ -98,7 +100,7 @@ export default function useVoiceMessageValidation() {
                 notify({
                     message: `Cannot save. Upload a recording to use it as your voicemail.`,
                     status: NotificationStatus.Error,
-                })
+                }),
             )
             return false
         }
@@ -116,7 +118,7 @@ export default function useVoiceMessageValidation() {
      * @param payload
      */
     const canPayloadBeSubmitted = (
-        payload: Maybe<PhoneIntegrationVoicemailSettings>
+        payload: Maybe<PhoneIntegrationVoicemailSettings>,
     ) => {
         if (!payload) {
             return true
@@ -143,7 +145,7 @@ export default function useVoiceMessageValidation() {
         payload:
             | Maybe<PhoneIntegrationVoicemailSettings>
             | Maybe<PhoneIntegrationVoicemailOutsideBusinessHoursSettings>
-            | Maybe<VoiceMessage>
+            | Maybe<VoiceMessage>,
     ): Maybe<VoiceMessage> => {
         if (!payload || !('voice_message_type' in payload)) {
             return null
@@ -174,7 +176,7 @@ export default function useVoiceMessageValidation() {
      * @param payload
      */
     const _cleanUpOutsideBusinessHoursPayload = (
-        payload: Maybe<PhoneIntegrationVoicemailOutsideBusinessHoursSettings>
+        payload: Maybe<PhoneIntegrationVoicemailOutsideBusinessHoursSettings>,
     ): Maybe<PhoneIntegrationVoicemailOutsideBusinessHoursSettings> => {
         if (!payload) {
             return null
@@ -201,7 +203,7 @@ export default function useVoiceMessageValidation() {
     const _isValidTextToSpeech = (
         payload:
             | Maybe<PhoneIntegrationVoicemailSettings>
-            | Maybe<PhoneIntegrationVoicemailOutsideBusinessHoursSettings>
+            | Maybe<PhoneIntegrationVoicemailOutsideBusinessHoursSettings>,
     ) => {
         if (!payload || !('voice_message_type' in payload)) {
             return true
@@ -213,7 +215,7 @@ export default function useVoiceMessageValidation() {
     }
 
     const isValidTextToSpeech = (
-        payload: Maybe<PhoneIntegrationVoicemailSettings>
+        payload: Maybe<PhoneIntegrationVoicemailSettings>,
     ): boolean => {
         return (
             _isValidTextToSpeech(payload) &&
@@ -222,7 +224,7 @@ export default function useVoiceMessageValidation() {
     }
 
     const cleanUpPayload = (
-        payload: Maybe<PhoneIntegrationVoicemailSettings>
+        payload: Maybe<PhoneIntegrationVoicemailSettings>,
     ): Maybe<PhoneIntegrationVoicemailSettings> => {
         if (!payload) {
             return null
@@ -238,7 +240,7 @@ export default function useVoiceMessageValidation() {
         }
 
         const outsideBusinessHoursPayload = _cleanUpOutsideBusinessHoursPayload(
-            payload?.outside_business_hours
+            payload?.outside_business_hours,
         )
 
         if (outsideBusinessHoursPayload) {
@@ -248,7 +250,7 @@ export default function useVoiceMessageValidation() {
     }
 
     const cleanUpIvrPayload = (
-        payload: Maybe<PhoneIntegrationIvrSettings>
+        payload: Maybe<PhoneIntegrationIvrSettings>,
     ): Maybe<PhoneIntegrationIvrSettings> => {
         if (!payload) {
             return null
@@ -273,7 +275,7 @@ export default function useVoiceMessageValidation() {
                 if (option.action === IvrMenuActionType.SendToSms) {
                     const cleanVoiceMessage =
                         _cleanUpVoiceMessageSettings(
-                            option.sms_deflection.confirmation_message
+                            option.sms_deflection.confirmation_message,
                         ) ?? option.sms_deflection.confirmation_message
                     return {
                         ...option,
@@ -284,7 +286,7 @@ export default function useVoiceMessageValidation() {
                     }
                 }
                 return option
-            }
+            },
         )
         return {
             greeting_message: cleanGreetingMessage,
@@ -294,7 +296,7 @@ export default function useVoiceMessageValidation() {
 
     const areVoiceMessagesTheSame = (
         voiceMessage: VoiceMessage,
-        other: VoiceMessage
+        other: VoiceMessage,
     ) => {
         if (
             voiceMessage.voice_message_type === VoiceMessageType.TextToSpeech &&
@@ -335,7 +337,7 @@ export default function useVoiceMessageValidation() {
 
     const areWaitMusicPreferencesTheSame = (
         preferences: LocalWaitMusicPreferences,
-        other: LocalWaitMusicPreferences
+        other: LocalWaitMusicPreferences,
     ) => {
         if (
             preferences.type === WaitMusicType.Library &&

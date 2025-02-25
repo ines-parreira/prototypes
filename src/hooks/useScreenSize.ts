@@ -9,7 +9,7 @@ export enum SCREEN_SIZE {
 export const screenBreakPoints = [768, 1024]
 
 export const useScreenSize = (): SCREEN_SIZE => {
-    const {width} = useWindowSize()
+    const { width } = useWindowSize()
 
     if (width <= screenBreakPoints[0]) {
         return SCREEN_SIZE.SMALL

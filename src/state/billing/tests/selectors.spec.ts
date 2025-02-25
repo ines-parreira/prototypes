@@ -1,26 +1,26 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
-import {automationSubscriptionProductPrices} from 'fixtures/account'
+import { automationSubscriptionProductPrices } from 'fixtures/account'
 import * as billingFixtures from 'fixtures/billing'
 import {
     AUTOMATION_PRODUCT_ID,
-    CONVERT_PRODUCT_ID,
-    HELPDESK_PRODUCT_ID,
-    SMS_PRODUCT_ID,
-    VOICE_PRODUCT_ID,
     basicMonthlyAutomationPlan,
     basicMonthlyHelpdeskPlan,
+    CONVERT_PRODUCT_ID,
     convertPlan1,
     customHelpdeskPlan,
+    HELPDESK_PRODUCT_ID,
     legacyBasicHelpdeskPlan,
+    SMS_PRODUCT_ID,
     smsPlan1,
+    VOICE_PRODUCT_ID,
     voicePlan1,
 } from 'fixtures/productPrices'
-import {Cadence, ProductType} from 'models/billing/types'
-import {AccountFeature} from 'state/currentAccount/types'
-import {RootState} from 'state/types'
+import { Cadence, ProductType } from 'models/billing/types'
+import { AccountFeature } from 'state/currentAccount/types'
+import { RootState } from 'state/types'
 
-import {initialState} from '../reducers'
+import { initialState } from '../reducers'
 import * as selectors from '../selectors'
 
 describe('billing selectors', () => {
@@ -40,12 +40,12 @@ describe('billing selectors', () => {
             integrations: fromJS({
                 // 6 active integrations to test plan integrations limits
                 integrations: [
-                    {id: 1},
-                    {id: 2},
-                    {id: 3},
-                    {id: 4},
-                    {id: 5},
-                    {id: 6},
+                    { id: 1 },
+                    { id: 2 },
+                    { id: 3 },
+                    { id: 4 },
+                    { id: 5 },
+                    { id: 6 },
                 ],
             }),
         } as RootState
@@ -53,10 +53,10 @@ describe('billing selectors', () => {
 
     it('getBillingState (deprecated)', () => {
         expect(
-            selectors.DEPRECATED_getBillingState({} as RootState)
+            selectors.DEPRECATED_getBillingState({} as RootState),
         ).toEqualImmutable(fromJS({}))
         expect(selectors.DEPRECATED_getBillingState(state)).toEqualImmutable(
-            state.billing
+            state.billing,
         )
     })
 
@@ -71,26 +71,26 @@ describe('billing selectors', () => {
 
     it('creditCard', () => {
         expect(selectors.creditCard({} as RootState)).toEqualImmutable(
-            fromJS({})
+            fromJS({}),
         )
         expect(selectors.creditCard(state)).toEqualImmutable(
-            state.billing.get('creditCard')
+            state.billing.get('creditCard'),
         )
     })
 
     it('paymentMethod', () => {
         expect(selectors.paymentMethod({} as RootState)).toBe('')
         expect(selectors.paymentMethod(state)).toEqualImmutable(
-            state.billing.get('paymentMethod')
+            state.billing.get('paymentMethod'),
         )
     })
 
     it('currentUsage', () => {
         expect(selectors.getCurrentUsage({} as RootState)).toEqualImmutable(
-            fromJS({})
+            fromJS({}),
         )
         expect(selectors.getCurrentUsage(state)).toEqualImmutable(
-            state.billing.get('currentUsage')
+            state.billing.get('currentUsage'),
         )
     })
 
@@ -108,7 +108,7 @@ describe('billing selectors', () => {
                             products: automationSubscriptionProductPrices,
                         },
                     }),
-                })
+                }),
             ).toBeTruthy()
         })
 
@@ -120,7 +120,7 @@ describe('billing selectors', () => {
     describe('getProducts', () => {
         it('should return products', () => {
             expect(
-                selectors.getAvailablePlansByProduct(state)
+                selectors.getAvailablePlansByProduct(state),
             ).toMatchSnapshot()
         })
     })
@@ -178,7 +178,7 @@ describe('billing selectors', () => {
     describe('getCurrentHelpdeskProduct', () => {
         it('should return the current helpdesk product', () => {
             expect(selectors.getCurrentHelpdeskPlan(state)).toEqual(
-                basicMonthlyHelpdeskPlan
+                basicMonthlyHelpdeskPlan,
             )
         })
     })
@@ -194,9 +194,9 @@ describe('billing selectors', () => {
                             'products',
                             AUTOMATION_PRODUCT_ID,
                         ],
-                        basicMonthlyAutomationPlan.price_id
+                        basicMonthlyAutomationPlan.price_id,
                     ),
-                })
+                }),
             ).toEqual(basicMonthlyAutomationPlan)
         })
     })
@@ -208,9 +208,9 @@ describe('billing selectors', () => {
                     ...state,
                     currentAccount: state.currentAccount.setIn(
                         ['current_subscription', 'products', VOICE_PRODUCT_ID],
-                        voicePlan1.price_id
+                        voicePlan1.price_id,
                     ),
-                })
+                }),
             ).toEqual(voicePlan1)
         })
     })
@@ -222,9 +222,9 @@ describe('billing selectors', () => {
                     ...state,
                     currentAccount: state.currentAccount.setIn(
                         ['current_subscription', 'products', SMS_PRODUCT_ID],
-                        smsPlan1.price_id
+                        smsPlan1.price_id,
                     ),
-                })
+                }),
             ).toEqual(smsPlan1)
         })
     })
@@ -232,10 +232,10 @@ describe('billing selectors', () => {
     describe('currentAccountHasProduct', () => {
         it('should indicate if the account has the product', () => {
             expect(
-                selectors.currentAccountHasProduct(ProductType.Helpdesk)(state)
+                selectors.currentAccountHasProduct(ProductType.Helpdesk)(state),
             ).toBe(true)
             expect(
-                selectors.currentAccountHasProduct(ProductType.Voice)(state)
+                selectors.currentAccountHasProduct(ProductType.Voice)(state),
             ).toBe(false)
         })
     })
@@ -255,7 +255,7 @@ describe('billing selectors', () => {
     describe('getCheapestConvertPrice', () => {
         it('should return the cheapest non-zero Convert price', () => {
             expect(selectors.getCheapestConvertPrice(state)).toEqual(
-                convertPlan1
+                convertPlan1,
             )
         })
     })
@@ -269,7 +269,7 @@ describe('billing selectors', () => {
     describe('getCurrentHelpdeskCadence', () => {
         it('should return the product cadence', () => {
             expect(selectors.getCurrentHelpdeskCadence(state)).toBe(
-                Cadence.Month
+                Cadence.Month,
             )
         })
     })
@@ -287,15 +287,15 @@ describe('billing selectors', () => {
                                 'products',
                                 HELPDESK_PRODUCT_ID,
                             ],
-                            product.price_id
+                            product.price_id,
                         ),
                         billing: state.billing.mergeIn(
                             ['products', 0, 'prices'],
-                            fromJS([legacyBasicHelpdeskPlan])
+                            fromJS([legacyBasicHelpdeskPlan]),
                         ),
-                    })
+                    }),
                 ).toBe(product.is_legacy)
-            }
+            },
         )
     })
 
@@ -312,15 +312,15 @@ describe('billing selectors', () => {
                                 'products',
                                 HELPDESK_PRODUCT_ID,
                             ],
-                            product.price_id
+                            product.price_id,
                         ),
                         billing: state.billing.mergeIn(
                             ['products', 0, 'prices'],
-                            fromJS([customHelpdeskPlan])
+                            fromJS([customHelpdeskPlan]),
                         ),
-                    })
+                    }),
                 ).toBe(!!product.custom)
-            }
+            },
         )
     })
 
@@ -335,9 +335,9 @@ describe('billing selectors', () => {
                             'products',
                             AUTOMATION_PRODUCT_ID,
                         ],
-                        basicMonthlyAutomationPlan.price_id
+                        basicMonthlyAutomationPlan.price_id,
                     ),
-                })
+                }),
             ).toMatchSnapshot()
         })
     })
@@ -355,7 +355,7 @@ describe('billing selectors', () => {
                 ...state,
                 currentAccount: state.currentAccount.setIn(
                     ['current_subscription', 'products'],
-                    fromJS(products)
+                    fromJS(products),
                 ),
             })
 
@@ -375,15 +375,15 @@ describe('billing selectors', () => {
                 ...state,
                 currentAccount: state.currentAccount.setIn(
                     ['current_subscription', 'products', CONVERT_PRODUCT_ID],
-                    'price_unknown_id'
+                    'price_unknown_id',
                 ),
             })
 
             expect(
-                currentPlansByProduct && 'helpdesk' in currentPlansByProduct
+                currentPlansByProduct && 'helpdesk' in currentPlansByProduct,
             ).toBe(true)
             expect(
-                currentPlansByProduct && 'convert' in currentPlansByProduct
+                currentPlansByProduct && 'convert' in currentPlansByProduct,
             ).toBe(false)
         })
     })
@@ -423,10 +423,10 @@ describe('billing selectors', () => {
             expect(cheapestProductPrices.voice).toEqual(voicePlan1)
             expect(cheapestProductPrices.sms).toEqual(smsPlan1)
             expect(cheapestProductPrices.automation).toEqual(
-                basicMonthlyAutomationPlan
+                basicMonthlyAutomationPlan,
             )
             expect(cheapestProductPrices.helpdesk).toEqual(
-                basicMonthlyHelpdeskPlan
+                basicMonthlyHelpdeskPlan,
             )
             expect(cheapestProductPrices.convert).toEqual(convertPlan1)
 
@@ -445,7 +445,7 @@ describe('billing selectors', () => {
                 ...state,
                 currentAccount: state.currentAccount.setIn(
                     ['current_subscription', 'products'],
-                    fromJS(products)
+                    fromJS(products),
                 ),
             })
             expect(isVettedForPhone).toBeTruthy()
@@ -459,7 +459,7 @@ describe('billing selectors', () => {
                 ...state,
                 currentAccount: state.currentAccount.setIn(
                     ['current_subscription', 'products'],
-                    fromJS(products)
+                    fromJS(products),
                 ),
             })
 

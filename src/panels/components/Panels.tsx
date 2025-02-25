@@ -1,13 +1,14 @@
+import React, { Children, cloneElement, Fragment, ReactElement } from 'react'
+
 import _isEqual from 'lodash/isEqual'
-import React, {Children, cloneElement, Fragment, ReactElement} from 'react'
 
 import usePrevious from 'hooks/usePrevious'
 import useUpdateEffect from 'hooks/useUpdateEffect'
 
-import {usePanels, useScreenSize} from '../hooks'
-import type {Config} from '../types'
-
+import { usePanels, useScreenSize } from '../hooks'
+import type { Config } from '../types'
 import Handle from './Handle'
+
 import css from './Panels.less'
 
 type Props = {
@@ -26,7 +27,7 @@ export default function Panels({
     onResize,
 }: Props) {
     const [screenWidth] = useScreenSize()
-    const {panelWidths, resizeStartHandlers} = usePanels(config)
+    const { panelWidths, resizeStartHandlers } = usePanels(config)
     const previousPanelWidths = usePrevious(panelWidths)
 
     useUpdateEffect(() => {
@@ -52,7 +53,7 @@ export default function Panels({
                                 onResizeStart={resizeStartHandlers[index - 1]}
                             />
                         )}
-                        {cloneElement(child, {width: panelWidths[index]})}
+                        {cloneElement(child, { width: panelWidths[index] })}
                     </Fragment>
                 )
             })}

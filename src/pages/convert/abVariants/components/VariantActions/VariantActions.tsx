@@ -1,9 +1,8 @@
-import React, {useCallback, useMemo} from 'react'
+import React, { useCallback, useMemo } from 'react'
 
 import IconButton from 'pages/common/components/button/IconButton'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
-
-import {VariantTableEntry} from 'pages/convert/abVariants/types/VariantTableEntry'
+import { VariantTableEntry } from 'pages/convert/abVariants/types/VariantTableEntry'
 
 type Props = {
     variantName: string
@@ -25,7 +24,7 @@ const VariantActions: React.FC<Props> = (props) => {
     } = props
 
     const renderConfirmation = useCallback(
-        ({uid, onDisplayConfirmation}) => {
+        ({ uid, onDisplayConfirmation }) => {
             return (
                 <IconButton
                     className="mr-1"
@@ -41,7 +40,7 @@ const VariantActions: React.FC<Props> = (props) => {
                 </IconButton>
             )
         },
-        [isDeletingDisabled]
+        [isDeletingDisabled],
     )
 
     const deleteButton = useMemo(() => {

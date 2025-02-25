@@ -1,1 +1,1 @@
-export {default} from './components/WidgetPanel'
+export { default } from './components/WidgetPanel'

@@ -1,5 +1,6 @@
 import React from 'react'
-import {Container} from 'reactstrap'
+
+import { Container } from 'reactstrap'
 
 import PageHeader from '../common/components/PageHeader'
 

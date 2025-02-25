@@ -1,15 +1,16 @@
-import {render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {ContactFormFixture} from '../../../../fixtures/contacForm'
-import {ContactFormTableRow} from '../ContactFormTableRow'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { ContactFormFixture } from '../../../../fixtures/contacForm'
+import { ContactFormTableRow } from '../ContactFormTableRow'
 
 const mockedLocales = [
-    {name: 'English', code: 'en-US'},
-    {name: 'Spanish', code: 'es-ES'},
-    {name: 'French', code: 'fr-FR'},
-    {name: 'German', code: 'de-DE'},
+    { name: 'English', code: 'en-US' },
+    { name: 'Spanish', code: 'es-ES' },
+    { name: 'French', code: 'fr-FR' },
+    { name: 'German', code: 'de-DE' },
 ]
 
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales', () => ({
@@ -24,12 +25,12 @@ describe('<ContactFormTableRow />', () => {
             shop_name: 'storename',
         }
 
-        const {container} = render(
+        const { container } = render(
             <ContactFormTableRow
                 key={form.id}
                 form={form}
                 onClick={jest.fn()}
-            />
+            />,
         )
 
         screen.getByText(form.name)
@@ -45,12 +46,12 @@ describe('<ContactFormTableRow />', () => {
             shop_name: null,
         }
 
-        const {container} = render(
+        const { container } = render(
             <ContactFormTableRow
                 key={form.id}
                 form={form}
                 onClick={jest.fn()}
-            />
+            />,
         )
 
         screen.getByText(form.name)
@@ -66,7 +67,7 @@ describe('<ContactFormTableRow />', () => {
                 key={ContactFormFixture.id}
                 form={ContactFormFixture}
                 onClick={mockedOnClick}
-            />
+            />,
         )
 
         const contactFormName = screen.getByText(ContactFormFixture.name)

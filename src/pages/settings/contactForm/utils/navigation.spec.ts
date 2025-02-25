@@ -1,6 +1,6 @@
-import {insertContactFormIdParam} from 'pages/settings/contactForm/utils/navigation'
+import { insertContactFormIdParam } from 'pages/settings/contactForm/utils/navigation'
 
-import {CONTACT_FORM_ID_PARAM} from '../constants'
+import { CONTACT_FORM_ID_PARAM } from '../constants'
 
 describe('navigation', () => {
     describe('insertContactFormIdParam()', () => {
@@ -19,18 +19,18 @@ describe('navigation', () => {
             'should insert the id to the correct place in the link',
             (path, expectedValue) => {
                 expect(insertContactFormIdParam(path, EXPECTED_ID)).toEqual(
-                    expectedValue
+                    expectedValue,
                 )
-            }
+            },
         )
 
         it('should throw if there is no template in path', () => {
             const pathWithoutTemplate = '/aaaaa/aaaa/aaaaa'
 
             expect(() =>
-                insertContactFormIdParam(pathWithoutTemplate, 1)
+                insertContactFormIdParam(pathWithoutTemplate, 1),
             ).toThrow(
-                `Path "${pathWithoutTemplate}" doesn't contain id param template (${CONTACT_FORM_ID_PARAM})`
+                `Path "${pathWithoutTemplate}" doesn't contain id param template (${CONTACT_FORM_ID_PARAM})`,
             )
         })
     })

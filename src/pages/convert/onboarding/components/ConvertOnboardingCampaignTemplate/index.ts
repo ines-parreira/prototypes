@@ -1,1 +1,1 @@
-export {default} from './ConvertOnboardingCampaignTemplate'
+export { default } from './ConvertOnboardingCampaignTemplate'

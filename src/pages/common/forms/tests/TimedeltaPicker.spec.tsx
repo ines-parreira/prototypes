@@ -1,7 +1,8 @@
-import {fireEvent, render} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {TIMEDELTA_OPERATOR_DEFAULT_QUANTITY} from 'config'
+import { fireEvent, render } from '@testing-library/react'
+
+import { TIMEDELTA_OPERATOR_DEFAULT_QUANTITY } from 'config'
 
 import TimedeltaPicker from '../TimedeltaPicker'
 
@@ -12,25 +13,29 @@ describe('TimedeltaPicker component', () => {
     }
 
     it('should render correct passed data', () => {
-        const {container} = render(<TimedeltaPicker {...minProps} value="2w" />)
+        const { container } = render(
+            <TimedeltaPicker {...minProps} value="2w" />,
+        )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should ignore incorrect passed data and use default values instead', () => {
-        const {container} = render(<TimedeltaPicker {...minProps} value="d1" />)
+        const { container } = render(
+            <TimedeltaPicker {...minProps} value="d1" />,
+        )
 
         expect(container.getElementsByTagName('input')[0].value).toBe(
-            `${TIMEDELTA_OPERATOR_DEFAULT_QUANTITY}`
+            `${TIMEDELTA_OPERATOR_DEFAULT_QUANTITY}`,
         )
         expect(container.getElementsByTagName('button')[2].textContent).toMatch(
-            /day/i
+            /day/i,
         )
     })
 
     it('should handle unit change', () => {
-        const {getAllByText, getByText} = render(
-            <TimedeltaPicker {...minProps} />
+        const { getAllByText, getByText } = render(
+            <TimedeltaPicker {...minProps} />,
         )
 
         fireEvent.click(getAllByText('arrow_drop_down')[1])
@@ -43,7 +48,7 @@ describe('TimedeltaPicker component', () => {
     })
 
     it('should handle quantity change', () => {
-        const {container} = render(<TimedeltaPicker {...minProps} />)
+        const { container } = render(<TimedeltaPicker {...minProps} />)
 
         const firstValue = '5'
         fireEvent.change(container.getElementsByTagName('input')[0], {
@@ -64,23 +69,23 @@ describe('TimedeltaPicker component', () => {
 
     it('should display received value and unit', () => {
         const value = '5'
-        const {container} = render(
-            <TimedeltaPicker {...minProps} value={`${value}w`} />
+        const { container } = render(
+            <TimedeltaPicker {...minProps} value={`${value}w`} />,
         )
 
         expect(container.getElementsByTagName('input')[0].value).toBe(
-            `${value}`
+            `${value}`,
         )
         expect(container.getElementsByTagName('button')[2].textContent).toMatch(
-            /week/i
+            /week/i,
         )
     })
 
     it('should forward minimum and maximum quantity', () => {
         const min = 5
         const max = 10
-        const {container} = render(
-            <TimedeltaPicker {...minProps} value="5d" min={min} max={max} />
+        const { container } = render(
+            <TimedeltaPicker {...minProps} value="5d" min={min} max={max} />,
         )
 
         expect(container.getElementsByTagName('input')[0].min).toEqual(`${min}`)

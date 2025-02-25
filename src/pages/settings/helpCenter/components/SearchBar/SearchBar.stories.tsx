@@ -1,13 +1,13 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {getSingleHelpCenterResponseFixture as helpCenter} from '../../fixtures/getHelpCentersResponse.fixture'
+import { Meta, Story } from '@storybook/react'
+
+import { getSingleHelpCenterResponseFixture as helpCenter } from '../../fixtures/getHelpCentersResponse.fixture'
 import {
     SearchContextProvider,
     useSearchContext,
 } from '../../providers/SearchContext'
-
-import {SearchBar} from './SearchBar'
+import { SearchBar } from './SearchBar'
 
 const storyConfig: Meta = {
     title: 'Help center/SearchBar',
@@ -22,7 +22,7 @@ type TemplateProps = ComponentProps<typeof SearchBar> & {
 }
 
 const DumpResultsComponent = () => {
-    const {searchResults} = useSearchContext()
+    const { searchResults } = useSearchContext()
 
     const colorsByState = {
         loading: '#f7d15d',
@@ -42,7 +42,7 @@ const DumpResultsComponent = () => {
         >
             <h2>(debugging) content of the SearchContext</h2>
 
-            <p style={{color}}>
+            <p style={{ color }}>
                 {searchResults ? (
                     <pre>{JSON.stringify(searchResults, null, 4)}</pre>
                 ) : (

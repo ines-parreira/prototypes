@@ -1,7 +1,7 @@
-import {AxiosResponse} from 'axios'
+import { AxiosResponse } from 'axios'
 
-import {getAiAgentCustomer} from 'models/aiAgentPlayground/resources'
-import {GetPlaygroundCustomerResponse} from 'models/aiAgentPlayground/types'
+import { getAiAgentCustomer } from 'models/aiAgentPlayground/resources'
+import { GetPlaygroundCustomerResponse } from 'models/aiAgentPlayground/types'
 
 import {
     CustomerHttpIntegrationDataMock,
@@ -128,7 +128,7 @@ describe('playground-ticket util', () => {
                             },
                         },
                     },
-                }) as unknown as AxiosResponse<GetPlaygroundCustomerResponse>
+                }) as unknown as AxiosResponse<GetPlaygroundCustomerResponse>,
             )
 
             const result = await getTicketCustomer({

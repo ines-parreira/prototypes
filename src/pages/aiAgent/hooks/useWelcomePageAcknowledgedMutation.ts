@@ -1,4 +1,4 @@
-import {useQueryClient} from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 
 import {
     getWelcomePageAcknowledgedKey,
@@ -12,7 +12,7 @@ export const useWelcomePageAcknowledgedMutation = ({
 }) => {
     const queryClient = useQueryClient()
 
-    const {isLoading, mutateAsync: createWelcomePageAcknowledged} =
+    const { isLoading, mutateAsync: createWelcomePageAcknowledged } =
         useCreateWelcomePageAcknowledged({
             onSuccess: () => {
                 void queryClient.invalidateQueries({

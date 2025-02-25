@@ -1,10 +1,11 @@
-import {fireEvent, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {SegmentEvent, logEvent} from 'common/segment'
-import {withLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {FilterKey} from 'models/stat/types'
+import { fireEvent, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { withLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { FilterKey } from 'models/stat/types'
 import {
     FILTER_CLEAR_ICON,
     FILTER_DESELECT_ALL_LABEL,
@@ -19,21 +20,21 @@ import {
     CommunicationSkillsFilterWithState,
     MAX_SCORE_VALUE,
 } from 'pages/stats/common/filters/CommunicationSkillsFilter'
-import {FilterLabels} from 'pages/stats/common/filters/constants'
+import { FilterLabels } from 'pages/stats/common/filters/constants'
 import {
     getScoreLabelByValue,
     getScoreLabelsAndValues,
 } from 'pages/stats/common/filters/utils'
 import * as statsSlice from 'state/stats/statsSlice'
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
 import * as filtersSlice from 'state/ui/stats/filtersSlice'
-import {renderWithStore} from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 const mockedRemove = jest.fn()
 
 jest.mock('common/segment', () => ({
     logEvent: jest.fn(),
-    SegmentEvent: {StatFilterSelected: 'stat-filter-selected'},
+    SegmentEvent: { StatFilterSelected: 'stat-filter-selected' },
 }))
 
 const defaultState = {
@@ -46,7 +47,7 @@ const defaultState = {
 } as RootState
 
 const scoreLabels = getScoreLabelsAndValues(MAX_SCORE_VALUE, true).map(
-    ({label}) => label
+    ({ label }) => label,
 )
 
 describe('CommunicationSkillsFilter', () => {
@@ -64,7 +65,7 @@ describe('CommunicationSkillsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState
+            defaultState,
         )
 
     it('should render CommunicationSkillsFilter component just fine if value is undefined', () => {
@@ -77,11 +78,11 @@ describe('CommunicationSkillsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState
+            defaultState,
         )
 
         expect(
-            screen.getByText(FilterLabels[FilterKey.CommunicationSkills])
+            screen.getByText(FilterLabels[FilterKey.CommunicationSkills]),
         ).toBeInTheDocument()
         expect(screen.getByText(FILTER_VALUE_PLACEHOLDER)).toBeTruthy()
     })
@@ -94,7 +95,7 @@ describe('CommunicationSkillsFilter', () => {
         const starElements = screen.getAllByText(/[★☆]+/)
         const ratings = starElements.map((element) => element.textContent)
         const starCounts = ratings.map(
-            (rating) => (rating?.match(/★/g) || []).length
+            (rating) => (rating?.match(/★/g) || []).length,
         )
 
         scoreLabels.forEach((starLabel) => {
@@ -111,19 +112,19 @@ describe('CommunicationSkillsFilter', () => {
 
         expect(
             screen.queryByText(
-                getScoreLabelByValue(numberOfStars, MAX_SCORE_VALUE)
-            )
+                getScoreLabelByValue(numberOfStars, MAX_SCORE_VALUE),
+            ),
         ).toBeFalsy()
 
         fireEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         fireEvent.click(
             screen.getByText(
-                getScoreLabelByValue(numberOfStars, MAX_SCORE_VALUE)
-            )
+                getScoreLabelByValue(numberOfStars, MAX_SCORE_VALUE),
+            ),
         )
 
         expect(dispatchUpdate).toHaveBeenCalledWith(
-            withLogicalOperator([`${numberOfStars}`])
+            withLogicalOperator([`${numberOfStars}`]),
         )
     })
 
@@ -139,32 +140,32 @@ describe('CommunicationSkillsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState
+            defaultState,
         )
 
         fireEvent.click(
-            screen.getByText(LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF])
+            screen.getByText(LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF]),
         )
         fireEvent.click(
             screen.getAllByText(
-                getScoreLabelByValue(numberOfStars, MAX_SCORE_VALUE)
-            )[1]
+                getScoreLabelByValue(numberOfStars, MAX_SCORE_VALUE),
+            )[1],
         )
 
         expect(dispatchUpdate).toHaveBeenCalledWith(withLogicalOperator([]))
     })
 
     it('should dispatch the right action on select/deselect all', () => {
-        const {rerenderComponent} = renderComponent()
+        const { rerenderComponent } = renderComponent()
         fireEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         fireEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
 
         expect(dispatchUpdate).toHaveBeenCalledWith(
             withLogicalOperator(
-                Array.from({length: MAX_SCORE_VALUE})
+                Array.from({ length: MAX_SCORE_VALUE })
                     .fill(undefined)
-                    .map((_, index) => `${MAX_SCORE_VALUE - index}`)
-            )
+                    .map((_, index) => `${MAX_SCORE_VALUE - index}`),
+            ),
         )
 
         rerenderComponent(
@@ -176,7 +177,7 @@ describe('CommunicationSkillsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState
+            defaultState,
         )
 
         fireEvent.click(screen.getByText(FILTER_DESELECT_ALL_LABEL))
@@ -199,13 +200,13 @@ describe('CommunicationSkillsFilter', () => {
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
         const isOneOfRadioLabel = screen.getByLabelText(
-            new RegExp(LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF], 'i')
+            new RegExp(LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF], 'i'),
         )
         const isNotOneOfRadioLabel = screen.getByLabelText(
             new RegExp(
                 LogicalOperatorLabel[LogicalOperatorEnum.NOT_ONE_OF],
-                'i'
-            )
+                'i',
+            ),
         )
 
         userEvent.click(isNotOneOfRadioLabel)
@@ -225,13 +226,13 @@ describe('CommunicationSkillsFilter', () => {
 
     it('should dispatch cleanFilters action and call segment analytics log event on filter dropdown close', () => {
         const numberOfStars = 5
-        const {rerenderComponent} = renderComponent()
+        const { rerenderComponent } = renderComponent()
 
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         userEvent.click(
             screen.getByText(
-                getScoreLabelByValue(numberOfStars, MAX_SCORE_VALUE)
-            )
+                getScoreLabelByValue(numberOfStars, MAX_SCORE_VALUE),
+            ),
         )
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
@@ -244,7 +245,7 @@ describe('CommunicationSkillsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState
+            defaultState,
         )
 
         expect(dispatchStatFiltersClean).toHaveBeenCalledWith()
@@ -261,19 +262,19 @@ describe('CommunicationSkillsFilter', () => {
         it('should render CommunicationSkillsFilterWithState component', () => {
             const spy = jest.spyOn(
                 statsSlice,
-                'mergeStatsFiltersWithLogicalOperator'
+                'mergeStatsFiltersWithLogicalOperator',
             )
 
             renderWithStore(
                 <CommunicationSkillsFilterWithState />,
-                defaultState
+                defaultState,
             )
 
             userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
             userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
 
             expect(
-                screen.getByText(FilterLabels[FilterKey.CommunicationSkills])
+                screen.getByText(FilterLabels[FilterKey.CommunicationSkills]),
             ).toBeInTheDocument()
             expect(spy).toHaveBeenCalled()
 
@@ -289,18 +290,18 @@ describe('CommunicationSkillsFilter', () => {
             const spy = jest.spyOn(filtersSlice, 'upsertSavedFilterFilter')
             const removeSpy = jest.spyOn(
                 filtersSlice,
-                'removeFilterFromSavedFilterDraft'
+                'removeFilterFromSavedFilterDraft',
             )
 
             renderWithStore(
                 <CommunicationSkillsFilterWithSavedState />,
-                defaultState
+                defaultState,
             )
             userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
             userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
 
             expect(
-                screen.getByText(FilterLabels[FilterKey.CommunicationSkills])
+                screen.getByText(FilterLabels[FilterKey.CommunicationSkills]),
             ).toBeInTheDocument()
             expect(spy).toHaveBeenCalled()
 

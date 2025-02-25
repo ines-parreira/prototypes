@@ -2,7 +2,7 @@ import React from 'react'
 
 import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
 import useCallbackRef from 'hooks/useCallbackRef'
-import {AiAgentOnboardingWizardStep} from 'models/aiAgent/types'
+import { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
 import WizardFooter, {
     FOOTER_BUTTONS,
 } from 'pages/common/components/wizard/WizardFooter'
@@ -14,9 +14,10 @@ import {
     AI_AGENT_STEPS_TITLES,
     WIZARD_BUTTON_ACTIONS,
 } from '../constants'
-import {AiAgentOnboardingWizardProps} from './AiAgentOnboardingWizard'
+import { AiAgentOnboardingWizardProps } from './AiAgentOnboardingWizard'
+import { useAiAgentOnboardingWizard } from './hooks/useAiAgentOnboardingWizard'
+
 import css from './AiAgentOnboardingWizardEducation.less'
-import {useAiAgentOnboardingWizard} from './hooks/useAiAgentOnboardingWizard'
 
 type Props = AiAgentOnboardingWizardProps
 
@@ -24,7 +25,7 @@ const AiAgentOnboardingWizardStepEducation: React.FC<Props> = () => {
     const [ref, setRef] = useCallbackRef()
     useInjectStyleToCandu(ref)
 
-    const {handleSave, isLoading} = useAiAgentOnboardingWizard({
+    const { handleSave, isLoading } = useAiAgentOnboardingWizard({
         step: AiAgentOnboardingWizardStep.Education,
     })
 

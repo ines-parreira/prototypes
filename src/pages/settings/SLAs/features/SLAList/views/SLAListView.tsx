@@ -11,12 +11,12 @@ import {
 } from 'pages/settings/SLAs/features/SLAList/types'
 
 import PageHeader from '../../PageHeader/PageHeader'
-
-import {columnConfig} from './config'
+import { columnConfig } from './config'
 import Header from './Header'
-import css from './SLAListView.less'
 import TableRow from './TableRow'
 import useSortablePolicies from './useSortablePolicies'
+
+import css from './SLAListView.less'
 
 type SLAListViewProps = {
     data: UISLAPolicy[]
@@ -30,10 +30,8 @@ export default function SLAListView({
     onPolicyPriorityChange,
     isSubmitting,
 }: SLAListViewProps) {
-    const {policies, handleMovePolicy, handleDropPolicy} = useSortablePolicies(
-        data,
-        onPolicyPriorityChange
-    )
+    const { policies, handleMovePolicy, handleDropPolicy } =
+        useSortablePolicies(data, onPolicyPriorityChange)
 
     return (
         <div className={css.pageContainer}>

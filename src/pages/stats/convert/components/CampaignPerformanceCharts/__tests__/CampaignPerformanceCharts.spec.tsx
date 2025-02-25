@@ -1,19 +1,17 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-
-import {fromJS} from 'immutable'
-
 import React from 'react'
 
-import {campaign} from 'fixtures/campaign'
-import {integrationsState, shopifyIntegration} from 'fixtures/integrations'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fromJS } from 'immutable'
 
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import { campaign } from 'fixtures/campaign'
+import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import CampaignPerformanceCharts from 'pages/stats/convert/components/CampaignPerformanceCharts/CampaignPerformanceCharts'
 import useCampaignPerformanceTimeSeries from 'pages/stats/convert/hooks/stats/useCampaignPerformanceTimeSeries'
-import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
-import {useReportChartRestrictions} from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock, renderWithStore} from 'utils/testing'
+import { useCampaignStatsFilters } from 'pages/stats/convert/hooks/useCampaignStatsFilters'
+import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock, renderWithStore } from 'utils/testing'
 
 jest.mock('pages/stats/report-chart-restrictions/useReportChartRestrictions')
 const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
@@ -23,7 +21,7 @@ const useCampaignStatsFiltersMock = assumeMock(useCampaignStatsFilters)
 
 jest.mock('pages/stats/convert/hooks/stats/useCampaignPerformanceTimeSeries')
 const useCampaignPerformanceTimeSeriesMock = assumeMock(
-    useCampaignPerformanceTimeSeries
+    useCampaignPerformanceTimeSeries,
 )
 
 jest.mock('pages/stats/common/components/charts/LineChart/LineChart', () => ({
@@ -60,7 +58,7 @@ describe('CampaignPerformanceCharts', () => {
     })
 
     it('renders', () => {
-        const {getAllByText} = renderWithStore(
+        const { getAllByText } = renderWithStore(
             <QueryClientProvider client={queryClient}>
                 <CampaignPerformanceCharts />
             </QueryClientProvider>,
@@ -71,7 +69,7 @@ describe('CampaignPerformanceCharts', () => {
                         shopifyIntegration,
                     ],
                 }),
-            }
+            },
         )
 
         expect(useCampaignPerformanceTimeSeriesMock).toHaveBeenCalledTimes(2)

@@ -1,16 +1,19 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
-import React, {useMemo, useState} from 'react'
-import {Redirect} from 'react-router-dom'
+import React, { useMemo, useState } from 'react'
 
-import {LocaleCode} from 'models/helpCenter/types'
+import { Redirect } from 'react-router-dom'
+
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+
+import { LocaleCode } from 'models/helpCenter/types'
+
+import { GuidanceForm } from './components/GuidanceForm/GuidanceForm'
+import { useAiAgentNavigation } from './hooks/useAiAgentNavigation'
+import { useGuidanceAiSuggestions } from './hooks/useGuidanceAiSuggestions'
+import { useGuidanceArticleMutation } from './hooks/useGuidanceArticleMutation'
+import { GuidanceFormFields } from './types'
+import { mapGuidanceFormFieldsToGuidanceArticle } from './utils/guidance.utils'
 
 import css from './AiAgentGuidanceContainer.less'
-import {GuidanceForm} from './components/GuidanceForm/GuidanceForm'
-import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
-import {useGuidanceAiSuggestions} from './hooks/useGuidanceAiSuggestions'
-import {useGuidanceArticleMutation} from './hooks/useGuidanceArticleMutation'
-import {GuidanceFormFields} from './types'
-import {mapGuidanceFormFieldsToGuidanceArticle} from './utils/guidance.utils'
 
 type Props = {
     shopName: string
@@ -25,26 +28,29 @@ export const AiAgentGuidanceAiSuggestionNewView = ({
     guidanceHelpCenterId,
     locale,
 }: Props) => {
-    const {routes} = useAiAgentNavigation({shopName})
+    const { routes } = useAiAgentNavigation({ shopName })
     const [onSubmitLoading, setOnSubmitLoading] = useState(false)
 
-    const {guidanceAISuggestions, isLoadingAiGuidances, invalidateAiGuidances} =
-        useGuidanceAiSuggestions({
-            helpCenterId: guidanceHelpCenterId,
-            shopName,
-        })
+    const {
+        guidanceAISuggestions,
+        isLoadingAiGuidances,
+        invalidateAiGuidances,
+    } = useGuidanceAiSuggestions({
+        helpCenterId: guidanceHelpCenterId,
+        shopName,
+    })
 
     const aiGuidanceSuggestion = useMemo(() => {
         if (!guidanceAISuggestions || !aiGuidanceId) {
             return null
         }
         const aiGuidanceSuggestion = guidanceAISuggestions.find(
-            (aiGuidance) => aiGuidance.key === aiGuidanceId
+            (aiGuidance) => aiGuidance.key === aiGuidanceId,
         )
         return aiGuidanceSuggestion
     }, [aiGuidanceId, guidanceAISuggestions])
 
-    const {createGuidanceArticle, isGuidanceArticleUpdating} =
+    const { createGuidanceArticle, isGuidanceArticleUpdating } =
         useGuidanceArticleMutation({
             guidanceHelpCenterId,
         })
@@ -55,8 +61,8 @@ export const AiAgentGuidanceAiSuggestionNewView = ({
             mapGuidanceFormFieldsToGuidanceArticle(
                 guidanceFormFields,
                 locale,
-                aiGuidanceSuggestion?.key
-            )
+                aiGuidanceSuggestion?.key,
+            ),
         )
         await invalidateAiGuidances()
         setOnSubmitLoading(false)

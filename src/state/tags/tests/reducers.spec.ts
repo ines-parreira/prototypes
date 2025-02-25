@@ -1,27 +1,28 @@
-import {Tag} from '@gorgias/api-queries'
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
-import {GorgiasAction} from 'state/types'
+import { Tag } from '@gorgias/api-queries'
+
+import { GorgiasAction } from 'state/types'
 
 import * as types from '../constants'
-import reducer, {initialState} from '../reducers'
+import reducer, { initialState } from '../reducers'
 
 describe('tags reducers', () => {
     // Simulates current tags in state
     const currentFakeTags = fromJS([
-        {id: 1, name: 'current_fake_name'},
-        {id: 2, name: 'other_current_fake_name'},
+        { id: 1, name: 'current_fake_name' },
+        { id: 2, name: 'other_current_fake_name' },
     ])
 
     // Simulates the arrival of new tags
     const newFakeTags = fromJS([
-        {id: 3, name: 'new_fake_name'},
-        {id: 4, name: 'other_new_fake_name'},
+        { id: 3, name: 'new_fake_name' },
+        { id: 4, name: 'other_new_fake_name' },
     ])
 
     it('initial state', () => {
         expect(reducer(undefined, {} as GorgiasAction)).toEqualImmutable(
-            initialState
+            initialState,
         )
     })
 
@@ -30,8 +31,8 @@ describe('tags reducers', () => {
         expect(
             reducer(initialState, {
                 type: types.FETCH_TAG_LIST_SUCCESS,
-                resp: {data: newFakeTags, meta: {page: 1}},
-            }).toJS()
+                resp: { data: newFakeTags, meta: { page: 1 } },
+            }).toJS(),
         ).toMatchSnapshot()
     })
 
@@ -44,36 +45,39 @@ describe('tags reducers', () => {
                 {
                     type: types.ADD_TAGS,
                     tags: newFakeTags,
-                }
-            ).toJS()
+                },
+            ).toJS(),
         ).toMatchSnapshot()
     })
 
     it('select tag', () => {
         expect(
-            reducer(initialState.mergeDeep({items: currentFakeTags}), {
+            reducer(initialState.mergeDeep({ items: currentFakeTags }), {
                 type: types.SELECT_TAG,
-                tag: {id: 1} as Tag,
-            }).toJS()
+                tag: { id: 1 } as Tag,
+            }).toJS(),
         ).toMatchSnapshot()
     })
 
     it('select all tags from current value', () => {
         expect(
-            reducer(initialState.mergeDeep({items: currentFakeTags}), {
+            reducer(initialState.mergeDeep({ items: currentFakeTags }), {
                 type: types.SELECT_TAG_ALL,
-                payload: {tags: [{id: 1}, {id: 2}] as Tag[]},
-            }).toJS()
+                payload: { tags: [{ id: 1 }, { id: 2 }] as Tag[] },
+            }).toJS(),
         ).toMatchSnapshot()
     })
 
     it('select all tags with provided value', () => {
         const result = reducer(
-            initialState.mergeDeep({items: currentFakeTags}),
+            initialState.mergeDeep({ items: currentFakeTags }),
             {
                 type: types.SELECT_TAG_ALL,
-                payload: {tags: [{id: 1}, {id: 2}] as Tag[], value: false},
-            }
+                payload: {
+                    tags: [{ id: 1 }, { id: 2 }] as Tag[],
+                    value: false,
+                },
+            },
         )
 
         expect(result.getIn(['_internal', 'selectAll'])).toBeFalsy()
@@ -82,29 +86,29 @@ describe('tags reducers', () => {
 
     it('edit tag', () => {
         expect(
-            reducer(initialState.mergeDeep({items: currentFakeTags}), {
+            reducer(initialState.mergeDeep({ items: currentFakeTags }), {
                 type: types.EDIT_TAG,
-                tag: {id: 1} as Tag,
-            }).toJS()
+                tag: { id: 1 } as Tag,
+            }).toJS(),
         ).toMatchSnapshot()
     })
 
     it('cancel edit tag', () => {
         expect(
-            reducer(initialState.mergeDeep({items: currentFakeTags}), {
+            reducer(initialState.mergeDeep({ items: currentFakeTags }), {
                 type: types.EDIT_TAG_CANCEL,
-                tag: {id: 1} as Tag,
-            }).toJS()
+                tag: { id: 1 } as Tag,
+            }).toJS(),
         ).toMatchSnapshot()
     })
 
     it('save tag', () => {
         // success
         expect(
-            reducer(initialState.mergeDeep({items: currentFakeTags}), {
+            reducer(initialState.mergeDeep({ items: currentFakeTags }), {
                 type: types.SAVE_TAG,
-                tag: {id: 1, name: 'edited_name'} as Tag,
-            }).toJS()
+                tag: { id: 1, name: 'edited_name' } as Tag,
+            }).toJS(),
         ).toMatchSnapshot()
     })
 
@@ -113,31 +117,31 @@ describe('tags reducers', () => {
         expect(
             reducer(initialState, {
                 type: types.CREATE_TAG_START,
-            }).toJS()
+            }).toJS(),
         ).toMatchSnapshot()
 
         // success
         expect(
             reducer(initialState, {
                 type: types.CREATE_TAG_SUCCESS,
-                tag: {id: 1, foo: 'bar'} as Tag & {foo: string},
-            }).toJS()
+                tag: { id: 1, foo: 'bar' } as Tag & { foo: string },
+            }).toJS(),
         ).toMatchSnapshot()
 
         // error
         expect(
             reducer(initialState, {
                 type: types.CREATE_TAG_ERROR,
-            }).toJS()
+            }).toJS(),
         ).toMatchSnapshot()
     })
 
     it('remove tag', () => {
         expect(
-            reducer(initialState.mergeDeep({items: currentFakeTags}), {
+            reducer(initialState.mergeDeep({ items: currentFakeTags }), {
                 type: types.REMOVE_TAG,
                 id: 1,
-            }).toJS()
+            }).toJS(),
         ).toMatchSnapshot()
     })
 
@@ -161,9 +165,9 @@ describe('tags reducers', () => {
                     }),
                     {
                         type: types.RESET_META,
-                    }
+                    },
                 ).toJS() as Record<string, unknown>
-            ).meta
+            ).meta,
         ).toEqual({})
     })
 })

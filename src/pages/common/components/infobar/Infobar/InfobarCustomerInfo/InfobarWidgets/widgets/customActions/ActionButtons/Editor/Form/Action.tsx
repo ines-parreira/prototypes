@@ -1,26 +1,28 @@
-import {Label} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
-import {AVAILABLE_HTTP_METHODS} from 'config'
-import {httpMethodsWithBody} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/httpMethodsWithBody'
+import { Label } from '@gorgias/merchant-ui-kit'
+
+import { AVAILABLE_HTTP_METHODS } from 'config'
+import { httpMethodsWithBody } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/httpMethodsWithBody'
 import {
     Action as ActionType,
     OnChangeAction,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 import InputField from 'pages/common/forms/input/InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {validateWebhookURL, validateWebhookURLToPattern} from 'utils'
+import { validateWebhookURL, validateWebhookURLToPattern } from 'utils'
 
-import css from './Actions.less'
 import Body from './Body'
 import Parameters from './Parameters'
+
+import css from './Actions.less'
 
 type Props = {
     action: ActionType
     onChange: OnChangeAction
 }
 
-export default function Action({action, onChange}: Props) {
+export default function Action({ action, onChange }: Props) {
     return (
         <div className="http">
             <div className={css.formParamRow}>

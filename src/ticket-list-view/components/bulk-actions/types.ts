@@ -1,12 +1,12 @@
-import {JobType} from '@gorgias/api-queries'
+import { JobType } from '@gorgias/api-queries'
 
-import {Item} from 'components/Dropdown'
-import {Update} from 'jobs'
+import { Item } from 'components/Dropdown'
+import { Update } from 'jobs'
 
 export type Job = {
     label: string
     type?: JobType
-    params?: (item?: Item | null) => {updates: XOR<Update>}
+    params?: (item?: Item | null) => { updates: XOR<Update> }
     className?: string
     subItem?: string
     event?: string

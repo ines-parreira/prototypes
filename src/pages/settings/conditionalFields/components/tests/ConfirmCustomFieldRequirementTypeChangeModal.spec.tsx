@@ -1,20 +1,22 @@
-import {RequirementType} from '@gorgias/api-queries'
-import {fireEvent, screen, render, waitFor} from '@testing-library/react'
 import React from 'react'
-import {Link} from 'react-router-dom'
 
-import {OBJECT_TYPES} from 'custom-fields/constants'
-import {useUpdateCustomFieldDefinition} from 'custom-fields/hooks/queries/useUpdateCustomFieldDefinition'
-import {CustomField} from 'custom-fields/types'
-import {CUSTOM_FIELD_ROUTES} from 'routes/constants'
-import {assumeMock, getLastMockCall} from 'utils/testing'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { Link } from 'react-router-dom'
+
+import { RequirementType } from '@gorgias/api-queries'
+
+import { OBJECT_TYPES } from 'custom-fields/constants'
+import { useUpdateCustomFieldDefinition } from 'custom-fields/hooks/queries/useUpdateCustomFieldDefinition'
+import { CustomField } from 'custom-fields/types'
+import { CUSTOM_FIELD_ROUTES } from 'routes/constants'
+import { assumeMock, getLastMockCall } from 'utils/testing'
 
 import ConfirmCustomFieldRequirementTypeChangeModal from '../ConfirmCustomFieldRequirementTypeChangeModal'
 
 jest.mock('custom-fields/hooks/queries/useUpdateCustomFieldDefinition')
 
 const mockUpdateCustomFieldDefinition = assumeMock(
-    useUpdateCustomFieldDefinition
+    useUpdateCustomFieldDefinition,
 )
 
 jest.mock(
@@ -23,9 +25,9 @@ jest.mock(
         ({
             ...jest.requireActual('react-router-dom'),
             Link: jest.fn(
-                ({children}: {children: React.ReactNode}) => children
+                ({ children }: { children: React.ReactNode }) => children,
             ),
-        }) as Record<string, unknown>
+        }) as Record<string, unknown>,
 )
 const mockedLink = assumeMock(Link)
 
@@ -58,15 +60,15 @@ describe('ConfirmCustomFieldRequirementTypeChangeModal', () => {
             <ConfirmCustomFieldRequirementTypeChangeModal
                 {...defaultProps}
                 customField={mockCustomField}
-            />
+            />,
         )
 
         expect(
             screen.getByText(
                 (__content, element) =>
                     element?.textContent ===
-                    'This field is currently set to required. Changing to conditional visibility will override any current behaviors. To modify conditional visibility options, visit Ticket Field Settings.'
-            )
+                    'This field is currently set to required. Changing to conditional visibility will override any current behaviors. To modify conditional visibility options, visit Ticket Field Settings.',
+            ),
         ).toBeInTheDocument()
     })
 
@@ -76,8 +78,11 @@ describe('ConfirmCustomFieldRequirementTypeChangeModal', () => {
             render(
                 <ConfirmCustomFieldRequirementTypeChangeModal
                     {...defaultProps}
-                    customField={{...mockCustomField, object_type: objectType}}
-                />
+                    customField={{
+                        ...mockCustomField,
+                        object_type: objectType,
+                    }}
+                />,
             )
 
             const button = screen.getByRole('button', {
@@ -86,9 +91,9 @@ describe('ConfirmCustomFieldRequirementTypeChangeModal', () => {
             expect(button).toBeInTheDocument()
 
             expect(getLastMockCall(mockedLink)[0]?.to).toEqual(
-                `/app/settings/${CUSTOM_FIELD_ROUTES[objectType]}/${mockCustomField.id}/edit`
+                `/app/settings/${CUSTOM_FIELD_ROUTES[objectType]}/${mockCustomField.id}/edit`,
             )
-        }
+        },
     )
 
     it('displays correct text for always visible customer field', () => {
@@ -103,15 +108,15 @@ describe('ConfirmCustomFieldRequirementTypeChangeModal', () => {
             <ConfirmCustomFieldRequirementTypeChangeModal
                 {...defaultProps}
                 customField={visibleField}
-            />
+            />,
         )
 
         expect(
             screen.getByText(
                 (__content, element) =>
                     element?.textContent ===
-                    'This field is currently set to always visible. Changing to conditional visibility will override any current behaviors. To modify conditional visibility options, visit Customer Field Settings.'
-            )
+                    'This field is currently set to always visible. Changing to conditional visibility will override any current behaviors. To modify conditional visibility options, visit Customer Field Settings.',
+            ),
         ).toBeInTheDocument()
     })
 
@@ -126,10 +131,10 @@ describe('ConfirmCustomFieldRequirementTypeChangeModal', () => {
             <ConfirmCustomFieldRequirementTypeChangeModal
                 {...defaultProps}
                 customField={mockCustomField}
-            />
+            />,
         )
 
-        const confirmButton = screen.getByRole('button', {name: 'Confirm'})
+        const confirmButton = screen.getByRole('button', { name: 'Confirm' })
         fireEvent.click(confirmButton)
 
         await waitFor(() => {
@@ -159,17 +164,17 @@ describe('ConfirmCustomFieldRequirementTypeChangeModal', () => {
             <ConfirmCustomFieldRequirementTypeChangeModal
                 {...defaultProps}
                 customField={mockCustomField}
-            />
+            />,
         )
-        const confirmButton = screen.getByRole('button', {name: /Confirm/})
+        const confirmButton = screen.getByRole('button', { name: /Confirm/ })
 
         await waitFor(() => {
             expect(
-                screen.getByRole('button', {name: /See Ticket Field/})
+                screen.getByRole('button', { name: /See Ticket Field/ }),
             ).toBeAriaDisabled()
             expect(confirmButton).toBeAriaDisabled()
             expect(
-                screen.getByRole('button', {name: 'Cancel'})
+                screen.getByRole('button', { name: 'Cancel' }),
             ).toBeAriaDisabled()
         })
     })

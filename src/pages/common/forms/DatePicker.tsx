@@ -1,4 +1,3 @@
-import moment, {Moment} from 'moment-timezone'
 import React, {
     ReactNode,
     useCallback,
@@ -7,13 +6,15 @@ import React, {
     useRef,
     useState,
 } from 'react'
-import DateRangePicker, {
-    EventHandler,
-    Props as DateRangeProps,
-} from 'react-bootstrap-daterangepicker'
-import {Tooltip} from 'reactstrap'
 
-import {useTheme} from 'core/theme'
+import moment, { Moment } from 'moment-timezone'
+import DateRangePicker, {
+    Props as DateRangeProps,
+    EventHandler,
+} from 'react-bootstrap-daterangepicker'
+import { Tooltip } from 'reactstrap'
+
+import { useTheme } from 'core/theme'
 import useUpdateEffect from 'hooks/useUpdateEffect'
 
 import css from './DatePicker.less'
@@ -145,7 +146,7 @@ export const DatePicker = ({
                 setTooltipTarget(event.target as HTMLElement)
             }
         },
-        [setIsTooltipOpen, setTooltipTarget]
+        [setIsTooltipOpen, setTooltipTarget],
     )
 
     const hideTooltip = useCallback(
@@ -155,7 +156,7 @@ export const DatePicker = ({
                 setIsTooltipOpen(false)
             }
         },
-        [setIsTooltipOpen, setTooltipTarget]
+        [setIsTooltipOpen, setTooltipTarget],
     )
 
     const startHandlingTooltipHover = () => {
@@ -195,11 +196,11 @@ export const DatePicker = ({
                             picker.endDate.format('YYYY-MM-DDTHH:mm')
                         const startDate = moment(strippedTimeStartDate).tz(
                             timezone,
-                            true
+                            true,
                         )
                         const endDate = moment(strippedTimeEndDate).tz(
                             timezone,
-                            true
+                            true,
                         )
                         onSubmit(startDate, endDate)
                     } else {
@@ -222,45 +223,45 @@ export const DatePicker = ({
                     dateRangerPickerElement.current = target.container?.get(0)
                     dateRangerPickerElement.current.classList.add(
                         theme.resolvedName,
-                        'displayed'
+                        'displayed',
                     )
 
                     if (pickerV2Styles) {
                         dateRangerPickerElement.current.classList.add(
                             'picker-v2',
-                            'apply-v2-styles'
+                            'apply-v2-styles',
                         )
                     }
 
                     if (rangesOnLeft) {
                         dateRangerPickerElement.current.classList.add(
                             'picker-v2',
-                            'ranges-on-left'
+                            'ranges-on-left',
                         )
                     }
 
                     if (actionButtonsOnTheBottom) {
                         dateRangerPickerElement.current.classList.add(
                             'picker-v2',
-                            'action-buttons-on-the-bottom'
+                            'action-buttons-on-the-bottom',
                         )
 
                         if (rangeDatesInFooter) {
                             dateRangerPickerElement.current.classList.add(
-                                'range-dates-in-footer'
+                                'range-dates-in-footer',
                             )
                         }
                     }
 
                     if (additionalPickerClassName) {
                         dateRangerPickerElement.current.classList.add(
-                            additionalPickerClassName
+                            additionalPickerClassName,
                         )
                     }
 
                     const cancelBtn =
                         dateRangerPickerElement.current?.querySelector(
-                            '.cancelBtn'
+                            '.cancelBtn',
                         )
                     if (cancelBtn) {
                         ;(cancelBtn as HTMLElement).innerText = 'Clear'
@@ -272,7 +273,7 @@ export const DatePicker = ({
                     // so event listeners to display the tooltip on days hover are put back
                     // each time user navigates to the previous or next month
                     const observer = new MutationObserver(
-                        startHandlingTooltipHover
+                        startHandlingTooltipHover,
                     )
                     observer.observe(dateRangerPickerElement.current, {
                         childList: true,
@@ -281,7 +282,7 @@ export const DatePicker = ({
 
                     const ranges =
                         dateRangerPickerElement.current?.querySelector(
-                            '.ranges ul'
+                            '.ranges ul',
                         )
                     if (ranges && rangesLabel) {
                         if (showRangesLabel) {
@@ -294,7 +295,7 @@ export const DatePicker = ({
                     endHandlingTooltipHover()
                     dateRangerPickerElement.current?.classList.remove(
                         theme.resolvedName,
-                        'displayed'
+                        'displayed',
                     )
                     onHide?.()
                 }}

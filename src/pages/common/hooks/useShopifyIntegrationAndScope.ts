@@ -1,26 +1,25 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {
     isShopifyIntegration,
     ShopifyIntegration,
 } from 'models/integration/types'
-
-import {getShopifyIntegrationByShopName} from 'state/integrations/selectors'
+import { getShopifyIntegrationByShopName } from 'state/integrations/selectors'
 
 /**
  * Search for a Shopify integration by shop name
  * and return the integration id if found and if it needs to be updated
  */
 export const useShopifyIntegrationAndScope = (
-    shopName: string
+    shopName: string,
 ): {
     integrationId: number | null
     integration: ShopifyIntegration | null
     needScopeUpdate: boolean
 } => {
     const integration = useAppSelector(
-        getShopifyIntegrationByShopName(shopName)
+        getShopifyIntegrationByShopName(shopName),
     )
 
     return useMemo(() => {

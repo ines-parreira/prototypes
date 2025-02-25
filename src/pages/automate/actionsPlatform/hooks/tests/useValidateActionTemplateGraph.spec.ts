@@ -1,4 +1,4 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
 import {
     buildEdgeCommonProperties,
@@ -9,8 +9,8 @@ import useValidateActionTemplateGraph from '../useValidateActionTemplateGraph'
 
 describe('useValidateActionTemplateGraph()', () => {
     it('should validate action template graph', () => {
-        const {result} = renderHook(() =>
-            useValidateActionTemplateGraph(() => [])
+        const { result } = renderHook(() =>
+            useValidateActionTemplateGraph(() => []),
         )
 
         expect(
@@ -267,7 +267,7 @@ describe('useValidateActionTemplateGraph()', () => {
                         source: 'conditions1',
                         target: 'end1',
                         data: {
-                            conditions: {and: []},
+                            conditions: { and: [] },
                         },
                     },
                     {
@@ -324,7 +324,7 @@ describe('useValidateActionTemplateGraph()', () => {
                         type: 'app',
                     },
                 ],
-            })
+            }),
         ).toEqual(
             expect.objectContaining({
                 nodes: [
@@ -463,13 +463,13 @@ describe('useValidateActionTemplateGraph()', () => {
                 errors: {
                     name: 'Action name is required',
                 },
-            })
+            }),
         )
     })
 
     it('should trigger error for long name & not enough steps', () => {
-        const {result} = renderHook(() =>
-            useValidateActionTemplateGraph(() => [])
+        const { result } = renderHook(() =>
+            useValidateActionTemplateGraph(() => []),
         )
 
         expect(
@@ -526,14 +526,14 @@ describe('useValidateActionTemplateGraph()', () => {
                         type: 'app',
                     },
                 ],
-            })
+            }),
         ).toEqual(
             expect.objectContaining({
                 errors: {
                     name: 'Action name must be less than 100 characters',
                     nodes: 'At least one Action step is required',
                 },
-            })
+            }),
         )
     })
 })

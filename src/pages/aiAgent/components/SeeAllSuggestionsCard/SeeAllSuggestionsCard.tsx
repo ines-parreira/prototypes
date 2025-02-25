@@ -1,19 +1,21 @@
-import classNames from 'classnames'
 import React from 'react'
 
-import {SegmentEvent, logEvent} from 'common/segment'
+import classNames from 'classnames'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import Button from 'pages/common/components/button/Button'
 import history from 'pages/history'
 
-import {useAiAgentNavigation} from '../../hooks/useAiAgentNavigation'
+import { useAiAgentNavigation } from '../../hooks/useAiAgentNavigation'
+
 import css from './SeeAllSuggestionsCard.less'
 
 type Props = {
     shopName: string
 }
 
-export const SeeAllSuggestionsCard = ({shopName}: Props) => {
-    const {routes} = useAiAgentNavigation({shopName})
+export const SeeAllSuggestionsCard = ({ shopName }: Props) => {
+    const { routes } = useAiAgentNavigation({ shopName })
 
     const onSeeAllSugestionsClick = () => {
         logEvent(SegmentEvent.AiAgentGuidanceLibraryViewed, {

@@ -1,12 +1,12 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {useListBundles} from 'models/convert/bundle/queries'
+import { useListBundles } from 'models/convert/bundle/queries'
 
 export const useGetConvertBundle = (
     storeIntegrationId: number,
-    chatIntegrationId?: number
+    chatIntegrationId?: number,
 ) => {
-    const {data: bundles, isLoading} = useListBundles({
+    const { data: bundles, isLoading } = useListBundles({
         enabled: !!storeIntegrationId || !!chatIntegrationId,
     })
 
@@ -21,5 +21,5 @@ export const useGetConvertBundle = (
         })
     }, [bundles, storeIntegrationId, chatIntegrationId])
 
-    return {isLoading, bundle}
+    return { isLoading, bundle }
 }

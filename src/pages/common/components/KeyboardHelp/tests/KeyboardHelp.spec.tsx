@@ -1,9 +1,10 @@
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import React from 'react'
+
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import keymap from 'config/shortcuts'
 import shortcutManager from 'services/shortcutManager'
-import {makeExecuteKeyboardAction} from 'utils/testing'
+import { makeExecuteKeyboardAction } from 'utils/testing'
 
 import KeyboardHelp from '../KeyboardHelp'
 
@@ -29,7 +30,7 @@ describe('<KeyboardHelp />', () => {
         makeExecuteKeyboardAction(
             shortcutManagerMock,
             shortcutEventMock,
-            'KeyboardHelp'
+            'KeyboardHelp',
         )('SHOW_HELP')
 
         expect(screen.getByText(/Keyboard shortcuts/)).toBeInTheDocument()
@@ -38,16 +39,16 @@ describe('<KeyboardHelp />', () => {
             screen.getByText(
                 `${
                     keymap['App'].actions.GO_HOME.key as string
-                }${badgeContentMock}`
-            )
+                }${badgeContentMock}`,
+            ),
         ).toBeInTheDocument()
 
-        fireEvent.keyDown(document.body, {key: 'Escape'})
+        fireEvent.keyDown(document.body, { key: 'Escape' })
 
         await waitFor(() =>
             expect(
-                screen.queryByText(/Keyboard shortcuts/)
-            ).not.toBeInTheDocument()
+                screen.queryByText(/Keyboard shortcuts/),
+            ).not.toBeInTheDocument(),
         )
     })
 })

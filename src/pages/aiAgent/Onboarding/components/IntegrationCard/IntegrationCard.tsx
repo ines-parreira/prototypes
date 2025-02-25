@@ -1,10 +1,10 @@
-import React, {ReactNode} from 'react'
+import React, { ReactNode } from 'react'
 
 import {
     Card,
-    CardHeader,
     CardContent,
     CardFooter,
+    CardHeader,
 } from 'pages/aiAgent/Onboarding/components/Card'
 import Button from 'pages/common/components/button/Button'
 

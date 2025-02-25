@@ -1,18 +1,19 @@
-import {fireEvent, render, screen} from '@testing-library/react'
-import moment from 'moment-timezone'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render, screen } from '@testing-library/react'
+import moment from 'moment-timezone'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {DateTimeFormatMapper, DateTimeFormatType} from 'constants/datetime'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { DateTimeFormatMapper, DateTimeFormatType } from 'constants/datetime'
 import DEPRECATED_PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
-import {CALENDAR_ICON} from 'pages/stats/common/PeriodPicker'
-import {getNewSetOfRanges} from 'pages/stats/constants'
-import {initialState, mergeStatsFilters} from 'state/stats/statsSlice'
-import {RootState} from 'state/types'
-import {formatDatetime} from 'utils'
+import { CALENDAR_ICON } from 'pages/stats/common/PeriodPicker'
+import { getNewSetOfRanges } from 'pages/stats/constants'
+import { initialState, mergeStatsFilters } from 'state/stats/statsSlice'
+import { RootState } from 'state/types'
+import { formatDatetime } from 'utils'
 
 const RENDERED_ATTRIBUTE_NAME = 'data-range-key'
 
@@ -44,14 +45,14 @@ describe('DEPRECATED_PeriodStatsFilter', () => {
                         end_datetime: '2021-05-03T19:22:43.000Z',
                     }}
                 />
-            </Provider>
+            </Provider>,
         )
         expect(screen.getByText(CALENDAR_ICON)).toBeInTheDocument()
     })
 
     it('should merge stats filters on period change', () => {
         const store = mockStore(defaultState)
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <DEPRECATED_PeriodStatsFilter
                     value={{
@@ -59,7 +60,7 @@ describe('DEPRECATED_PeriodStatsFilter', () => {
                         end_datetime: '2021-05-03T19:22:43.000Z',
                     }}
                 />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(getByText('Today'))
@@ -70,7 +71,7 @@ describe('DEPRECATED_PeriodStatsFilter', () => {
                     start_datetime: '2017-02-14T00:00:00Z',
                     end_datetime: '2017-02-14T23:59:59Z',
                 },
-            })
+            }),
         )
     })
 
@@ -80,10 +81,10 @@ describe('DEPRECATED_PeriodStatsFilter', () => {
             start_datetime: '2021-05-02T19:22:43.000Z',
             end_datetime: '2021-05-03T19:22:43.000Z',
         }
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <DEPRECATED_PeriodStatsFilter value={value} />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(
@@ -92,12 +93,12 @@ describe('DEPRECATED_PeriodStatsFilter', () => {
                     value.start_datetime,
                     DateTimeFormatMapper[
                         DateTimeFormatType.SHORT_DATE_WITH_YEAR_EN_US
-                    ]
+                    ],
                 ).toString(),
                 {
                     exact: false,
-                }
-            )
+                },
+            ),
         )
 
         expect(logEvent).toHaveBeenCalledWith(
@@ -106,7 +107,7 @@ describe('DEPRECATED_PeriodStatsFilter', () => {
                 eventDate: moment().format(),
                 startDate: value.start_datetime,
                 endDate: value.end_datetime,
-            }
+            },
         )
     })
 
@@ -119,7 +120,7 @@ describe('DEPRECATED_PeriodStatsFilter', () => {
         render(
             <Provider store={store}>
                 <DEPRECATED_PeriodStatsFilter value={value} />
-            </Provider>
+            </Provider>,
         )
 
         expect(store.getActions()).toContainEqual(
@@ -128,7 +129,7 @@ describe('DEPRECATED_PeriodStatsFilter', () => {
                     start_datetime: '2020-05-02T00:00:00Z',
                     end_datetime: '2020-07-31T23:59:59Z',
                 },
-            })
+            }),
         )
     })
 
@@ -142,12 +143,12 @@ describe('DEPRECATED_PeriodStatsFilter', () => {
         render(
             <Provider store={store}>
                 <DEPRECATED_PeriodStatsFilter value={value} />
-            </Provider>
+            </Provider>,
         )
 
         const defaultRangesKeys = Object.keys(getNewSetOfRanges())
         const allRangesRenderedAttributes = Array.from(
-            document.querySelectorAll(`[${RENDERED_ATTRIBUTE_NAME}]`)
+            document.querySelectorAll(`[${RENDERED_ATTRIBUTE_NAME}]`),
         ).map((e) => e.getAttribute(RENDERED_ATTRIBUTE_NAME))
 
         expect(allRangesRenderedAttributes).toEqual(defaultRangesKeys)

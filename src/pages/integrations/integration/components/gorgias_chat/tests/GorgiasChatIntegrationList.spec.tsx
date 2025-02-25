@@ -1,15 +1,14 @@
-import {render} from '@testing-library/react'
-import {fromJS, Map, List} from 'immutable'
-
-import LD from 'launchdarkly-react-client-sdk'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render } from '@testing-library/react'
+import { fromJS, List, Map } from 'immutable'
+import LD from 'launchdarkly-react-client-sdk'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-
-import {RootState, StoreDispatch} from 'state/types'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { RootState, StoreDispatch } from 'state/types'
 
 import {
     GorgiasChatCreationWizardStatus,
@@ -73,7 +72,7 @@ describe('<GorgiasChatIntegrationList />', () => {
         ]) as List<Map<any, any>>,
     }
     const defaultState = {
-        integrations: fromJS({integrations: props.integrations}),
+        integrations: fromJS({ integrations: props.integrations }),
     } as RootState
 
     beforeEach(() => {
@@ -85,28 +84,28 @@ describe('<GorgiasChatIntegrationList />', () => {
     })
 
     it('should display correcty the list of chat integrations', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <GorgiasChatIntegrationList {...props} />
-            </Provider>
+            </Provider>,
         )
         expect(container).toMatchSnapshot()
     })
 
     it('should display associated Shopify store to chat integration', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={mockStore(defaultState)}>
                 <GorgiasChatIntegrationList {...props} />
-            </Provider>
+            </Provider>,
         )
         expect(getByText(/my associated Shopify store/)).toBeDefined()
     })
 
     it('should display disconnected icon if Shopify store is disconnected', () => {
-        const {getByAltText} = render(
+        const { getByAltText } = render(
             <Provider store={mockStore(defaultState)}>
                 <GorgiasChatIntegrationList {...props} />
-            </Provider>
+            </Provider>,
         )
         expect(getByAltText(/warning icon/)).toBeDefined()
     })

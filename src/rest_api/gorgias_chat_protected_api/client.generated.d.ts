@@ -1,8 +1,8 @@
 import {
-    OpenAPIClient,
-    Parameters,
-    OperationResponse,
     AxiosRequestConfig,
+    OpenAPIClient,
+    OperationResponse,
+    Parameters,
 } from 'openapi-client-axios'
 
 declare namespace Paths {
@@ -140,7 +140,7 @@ export interface OperationMethods {
                 Paths.GetInstallationSnippet.HeaderParameters
         > | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<any>
     /**
      * getApplications - Get applications
@@ -148,7 +148,7 @@ export interface OperationMethods {
     'getApplications'(
         parameters?: Parameters<Paths.GetApplications.HeaderParameters> | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<any>
     /**
      * getApplicationAgents - Get application agents
@@ -159,7 +159,7 @@ export interface OperationMethods {
                 Paths.GetApplicationAgents.HeaderParameters
         > | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<any>
     /**
      * getApplicationTexts - GET application texts
@@ -170,7 +170,7 @@ export interface OperationMethods {
                 Paths.GetApplicationTexts.HeaderParameters
         > | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<any>
     /**
      * updateApplicationTexts - Update application texts
@@ -181,7 +181,7 @@ export interface OperationMethods {
                 Paths.UpdateApplicationTexts.HeaderParameters
         > | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<any>
     /**
      * getInstallationStatus - GET installation status
@@ -192,7 +192,7 @@ export interface OperationMethods {
                 Paths.GetInstallationStatus.HeaderParameters
         > | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<any>
     /**
      * getTranslations - Get translations
@@ -203,7 +203,7 @@ export interface OperationMethods {
                 Paths.GetTranslations.HeaderParameters
         > | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<any>
     /**
      * getApplicationAutomationSettings - GET application automation settings
@@ -214,7 +214,7 @@ export interface OperationMethods {
                 Paths.GetApplicationAutomationSettings.HeaderParameters
         > | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<any>
     /**
      * upsertApplicationAutomationSettings - Upsert application automation settings
@@ -225,7 +225,7 @@ export interface OperationMethods {
                 Paths.UpsertApplicationAutomationSettings.HeaderParameters
         > | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<any>
 }
 
@@ -240,7 +240,7 @@ export interface PathsDictionary {
                     Paths.GetInstallationSnippet.HeaderParameters
             > | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<any>
     }
     ['/helpdesk/applications']: {
@@ -250,7 +250,7 @@ export interface PathsDictionary {
         'get'(
             parameters?: Parameters<Paths.GetApplications.HeaderParameters> | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<any>
     }
     ['/helpdesk/applications/{applicationId}/agents']: {
@@ -263,7 +263,7 @@ export interface PathsDictionary {
                     Paths.GetApplicationAgents.HeaderParameters
             > | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<any>
     }
     ['/applications/{applicationId}/texts']: {
@@ -276,7 +276,7 @@ export interface PathsDictionary {
                     Paths.GetApplicationTexts.HeaderParameters
             > | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<any>
         /**
          * updateApplicationTexts - Update application texts
@@ -287,7 +287,7 @@ export interface PathsDictionary {
                     Paths.UpdateApplicationTexts.HeaderParameters
             > | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<any>
     }
     ['/applications/{applicationId}/installation-status']: {
@@ -300,7 +300,7 @@ export interface PathsDictionary {
                     Paths.GetInstallationStatus.HeaderParameters
             > | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<any>
     }
     ['/translations']: {
@@ -313,7 +313,7 @@ export interface PathsDictionary {
                     Paths.GetTranslations.HeaderParameters
             > | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<any>
     }
     ['/applications/{applicationId}/automation-settings']: {
@@ -326,7 +326,7 @@ export interface PathsDictionary {
                     Paths.UpsertApplicationAutomationSettings.HeaderParameters
             > | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<any>
         /**
          * getApplicationAutomationSettings - GET application automation settings
@@ -337,7 +337,7 @@ export interface PathsDictionary {
                     Paths.GetApplicationAutomationSettings.HeaderParameters
             > | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<any>
     }
 }

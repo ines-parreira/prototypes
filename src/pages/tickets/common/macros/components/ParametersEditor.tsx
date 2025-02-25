@@ -1,13 +1,15 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import {Map, List} from 'immutable'
-import React, {Component} from 'react'
-import {Row, Col} from 'reactstrap'
+import React, { Component } from 'react'
+
+import { List, Map } from 'immutable'
+import { Col, Row } from 'reactstrap'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import IconButton from 'pages/common/components/button/IconButton'
 import InputField from 'pages/common/forms/input/InputField'
 
-import {MAX_HEADER_LENGTH} from '../../../../../config'
-import {hasUnicodeChars} from '../../../../../utils'
+import { MAX_HEADER_LENGTH } from '../../../../../config'
+import { hasUnicodeChars } from '../../../../../utils'
 
 type Props = {
     list: List<any>
@@ -24,8 +26,8 @@ export default class ParametersEditor extends Component<Props> {
                     value: '',
                     editable: false,
                     required: true,
-                })
-            )
+                }),
+            ),
         )
     }
 
@@ -44,7 +46,7 @@ export default class ParametersEditor extends Component<Props> {
     }
 
     render() {
-        const {list, name} = this.props
+        const { list, name } = this.props
 
         return (
             <div>
@@ -65,7 +67,7 @@ export default class ParametersEditor extends Component<Props> {
                                     placeholder="Key"
                                     value={dict.get('key')}
                                     error={this.validateHeaderName(
-                                        dict.get('key')
+                                        dict.get('key'),
                                     )}
                                     isRequired
                                     form="macro_form"
@@ -102,7 +104,7 @@ export default class ParametersEditor extends Component<Props> {
                                         this.changeValue(
                                             'required',
                                             index!,
-                                            !dict.get('required')
+                                            !dict.get('required'),
                                         )
                                     }
                                 />
@@ -124,7 +126,7 @@ export default class ParametersEditor extends Component<Props> {
                                         this.changeValue(
                                             'editable',
                                             index!,
-                                            !dict.get('editable')
+                                            !dict.get('editable'),
                                         )
                                     }
                                 >

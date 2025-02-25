@@ -1,17 +1,19 @@
-import {Label} from '@gorgias/merchant-ui-kit'
+import React, { useMemo } from 'react'
+
 import _noop from 'lodash/noop'
-import React, {useMemo} from 'react'
+
+import { Label } from '@gorgias/merchant-ui-kit'
 
 import ActionFormInputs from 'pages/aiAgent/actions/components/ActionFormInputs'
-import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
-import {ReusableLLMPromptTriggerNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import {Drawer} from 'pages/common/components/Drawer'
+import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
+import { ReusableLLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { Drawer } from 'pages/common/components/Drawer'
 import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 import CheckBox from 'pages/common/forms/CheckBox'
 
 import NodeEditorDrawerHeader from '../NodeEditorDrawerHeader'
-import {ConditionsBranchBody} from './ConditionsNodeEditor/ConditionsBranchBody'
-import {buildConditionSchemaByVariableType} from './ConditionsNodeEditor/utils'
+import { ConditionsBranchBody } from './ConditionsNodeEditor/ConditionsBranchBody'
+import { buildConditionSchemaByVariableType } from './ConditionsNodeEditor/utils'
 
 import css from './NodeEditor.less'
 
@@ -30,7 +32,7 @@ export default function ReusableLLMPromptTriggerEditor({
 
     const workflowVariables = useMemo(
         () => getVariableListForNode(nodeInEdition.id),
-        [getVariableListForNode, nodeInEdition.id]
+        [getVariableListForNode, nodeInEdition.id],
     )
 
     const isDraft = visualBuilderGraph.is_draft
@@ -139,7 +141,7 @@ export default function ReusableLLMPromptTriggerEditor({
                                     const newCondition =
                                         buildConditionSchemaByVariableType(
                                             variable.type,
-                                            variable.value
+                                            variable.value,
                                         )
 
                                     dispatch({

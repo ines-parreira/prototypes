@@ -4,8 +4,8 @@ import {
     CreateArticleDto,
     UpdateArticleTranslationDto,
 } from 'models/helpCenter/types'
-import {slugify} from 'pages/settings/helpCenter/utils/helpCenter.utils'
-import {Components} from 'rest_api/help_center_api/client.generated'
+import { slugify } from 'pages/settings/helpCenter/utils/helpCenter.utils'
+import { Components } from 'rest_api/help_center_api/client.generated'
 
 import {
     AIGuidance,
@@ -16,7 +16,7 @@ import {
 } from '../types'
 
 export const mapGuidanceToArticleApi = (
-    guidanceArticle: GuidanceArticle | CreateGuidanceArticle
+    guidanceArticle: GuidanceArticle | CreateGuidanceArticle,
 ): CreateArticleDto => {
     return {
         template_key: guidanceArticle.templateKey,
@@ -36,7 +36,7 @@ export const mapGuidanceToArticleApi = (
 }
 
 export const mapUpdateGuidanceArticleToArticleApi = (
-    updateGuidanceArticle: UpdateGuidanceArticle
+    updateGuidanceArticle: UpdateGuidanceArticle,
 ): UpdateArticleTranslationDto => {
     return {
         title: updateGuidanceArticle.title,
@@ -49,7 +49,7 @@ export const mapUpdateGuidanceArticleToArticleApi = (
 }
 
 export const mapArticleApiToGuidanceArticle = (
-    article: ArticleWithLocalTranslationAndRating | ArticleWithLocalTranslation
+    article: ArticleWithLocalTranslationAndRating | ArticleWithLocalTranslation,
 ): GuidanceArticle => {
     return {
         id: article.id,
@@ -65,7 +65,7 @@ export const mapArticleApiToGuidanceArticle = (
 export const mapGuidanceFormFieldsToGuidanceArticle = (
     formValues: GuidanceFormFields,
     locale: GuidanceArticle['locale'],
-    templateKey?: string
+    templateKey?: string,
 ): CreateGuidanceArticle => {
     return {
         title: formValues.name,
@@ -77,7 +77,7 @@ export const mapGuidanceFormFieldsToGuidanceArticle = (
 }
 
 export const mapAIGuidanceDTOToAIGuidance = (
-    aiGuidance: Components.Schemas.AIGuidanceDto
+    aiGuidance: Components.Schemas.AIGuidanceDto,
 ): AIGuidance => {
     return {
         key: aiGuidance.key,

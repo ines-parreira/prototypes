@@ -1,12 +1,12 @@
-import {waitFor} from '@testing-library/react'
-import {renderHook} from '@testing-library/react-hooks'
+import { waitFor } from '@testing-library/react'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {TicketChannel} from 'business/types/ticket'
-import {User} from 'config/types/user'
-import {agents} from 'fixtures/agents'
-import {integrationsState} from 'fixtures/integrations'
-import {useAIAgentUser} from 'hooks/reporting/automate/useAIAgentUserId'
-import {useTrendReportData} from 'hooks/reporting/common/useTrendReportData'
+import { TicketChannel } from 'business/types/ticket'
+import { User } from 'config/types/user'
+import { agents } from 'fixtures/agents'
+import { integrationsState } from 'fixtures/integrations'
+import { useAIAgentUser } from 'hooks/reporting/automate/useAIAgentUserId'
+import { useTrendReportData } from 'hooks/reporting/common/useTrendReportData'
 import {
     fetchClosedTicketsTrend,
     fetchMessagesSentTrend,
@@ -14,11 +14,11 @@ import {
     fetchTicketsCreatedTrend,
     fetchTicketsRepliedTrend,
 } from 'hooks/reporting/metricTrends'
-import {workloadReportSource} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
-import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-import {LegacyStatsFilters} from 'models/stat/types'
-import {useMoneySavedPerInteractionWithAutomate} from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
-import {formatMetricValue} from 'pages/stats/common/utils'
+import { workloadReportSource } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
+import { MetricTrend } from 'hooks/reporting/useMetricTrend'
+import { LegacyStatsFilters } from 'models/stat/types'
+import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
+import { formatMetricValue } from 'pages/stats/common/utils'
 import {
     MESSAGES_SENT_LABEL,
     OPEN_TICKETS_LABEL,
@@ -26,7 +26,7 @@ import {
     TICKETS_CREATED_LABEL,
     TICKETS_REPLIED_LABEL,
 } from 'services/reporting/constants'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/metricTrends')
 const useOpenTicketsTrendMock = assumeMock(fetchOpenTicketsTrend)
@@ -40,7 +40,7 @@ const useAIAgentUserMock = assumeMock(useAIAgentUser)
 
 jest.mock('pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate')
 const useMoneySavedPerInteractionWithAutomateMock = assumeMock(
-    useMoneySavedPerInteractionWithAutomate
+    useMoneySavedPerInteractionWithAutomate,
 )
 
 describe('useTrendReport', () => {
@@ -111,8 +111,12 @@ describe('useTrendReport', () => {
     })
 
     it('should return the labeled data', async () => {
-        const {result} = renderHook(() =>
-            useTrendReportData(defaultStatsFilters, 'UTC', workloadReportSource)
+        const { result } = renderHook(() =>
+            useTrendReportData(
+                defaultStatsFilters,
+                'UTC',
+                workloadReportSource,
+            ),
         )
 
         await waitFor(() => {
@@ -122,46 +126,46 @@ describe('useTrendReport', () => {
                     {
                         label: OPEN_TICKETS_LABEL,
                         value: formatMetricValue(
-                            openTicketsMetricTrend.data.value
+                            openTicketsMetricTrend.data.value,
                         ),
                         prevValue: formatMetricValue(
-                            openTicketsMetricTrend.data.prevValue
+                            openTicketsMetricTrend.data.prevValue,
                         ),
                     },
                     {
                         label: TICKETS_CREATED_LABEL,
                         value: formatMetricValue(
-                            createdTicketsMetricTrend.data.value
+                            createdTicketsMetricTrend.data.value,
                         ),
                         prevValue: formatMetricValue(
-                            createdTicketsMetricTrend.data.prevValue
+                            createdTicketsMetricTrend.data.prevValue,
                         ),
                     },
                     {
                         label: TICKETS_REPLIED_LABEL,
                         value: formatMetricValue(
-                            repliedTicketsMetricTrend.data.value
+                            repliedTicketsMetricTrend.data.value,
                         ),
                         prevValue: formatMetricValue(
-                            repliedTicketsMetricTrend.data.prevValue
+                            repliedTicketsMetricTrend.data.prevValue,
                         ),
                     },
                     {
                         label: TICKETS_CLOSED_LABEL,
                         value: formatMetricValue(
-                            closedTicketsMetricTrend.data.value
+                            closedTicketsMetricTrend.data.value,
                         ),
                         prevValue: formatMetricValue(
-                            closedTicketsMetricTrend.data.prevValue
+                            closedTicketsMetricTrend.data.prevValue,
                         ),
                     },
                     {
                         label: MESSAGES_SENT_LABEL,
                         value: formatMetricValue(
-                            messagesSentMetricTrend.data.value
+                            messagesSentMetricTrend.data.value,
                         ),
                         prevValue: formatMetricValue(
-                            messagesSentMetricTrend.data.prevValue
+                            messagesSentMetricTrend.data.prevValue,
                         ),
                     },
                 ],
@@ -172,8 +176,12 @@ describe('useTrendReport', () => {
     it('should return the labeled data', async () => {
         useOpenTicketsTrendMock.mockRejectedValue({})
 
-        const {result} = renderHook(() =>
-            useTrendReportData(defaultStatsFilters, 'UTC', workloadReportSource)
+        const { result } = renderHook(() =>
+            useTrendReportData(
+                defaultStatsFilters,
+                'UTC',
+                workloadReportSource,
+            ),
         )
 
         await waitFor(() => {

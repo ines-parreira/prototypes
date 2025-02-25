@@ -1,7 +1,8 @@
-import {History} from 'history'
 import React from 'react'
 
-import {TicketChannel} from 'business/types/ticket'
+import { History } from 'history'
+
+import { TicketChannel } from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     PolicyKey,
@@ -13,10 +14,10 @@ import SelfServicePreviewContainer from 'pages/automate/common/components/previe
 import SelfServicePreviewContext, {
     SelfServicePreviewContextType,
 } from 'pages/automate/common/components/preview/SelfServicePreviewContext'
-import {getChatsApplicationAutomationSettings} from 'state/entities/chatsApplicationAutomationSettings/selectors'
-import {getContactFormsAutomationSettings} from 'state/entities/contactForm/contactFormsAutomationSettings'
+import { getChatsApplicationAutomationSettings } from 'state/entities/chatsApplicationAutomationSettings/selectors'
+import { getContactFormsAutomationSettings } from 'state/entities/contactForm/contactFormsAutomationSettings'
 
-import {useOrderManagementPreviewContext} from './OrderManagementPreviewContext'
+import { useOrderManagementPreviewContext } from './OrderManagementPreviewContext'
 
 type Props = {
     history: History
@@ -29,13 +30,13 @@ const OrderManagementPreview = ({
     hoveredOrderManagementFlow,
     history,
 }: Props) => {
-    const {channels, channel, onChannelChange} =
+    const { channels, channel, onChannelChange } =
         useOrderManagementPreviewContext()
     const applicationsAutomationSettings = useAppSelector(
-        getChatsApplicationAutomationSettings
+        getChatsApplicationAutomationSettings,
     )
     const contactFormsAutomationSettings = useAppSelector(
-        getContactFormsAutomationSettings
+        getContactFormsAutomationSettings,
     )
 
     return (
@@ -63,7 +64,7 @@ const OrderManagementPreview = ({
                         applicationAutomationSettings?.workflows.entrypoints
                 } else if (channel.type === TicketChannel.HelpCenter) {
                     isOrderManagementDisabled = Boolean(
-                        channel.value.self_service_deactivated_datetime
+                        channel.value.self_service_deactivated_datetime,
                     )
                 } else if (channel.type === TicketChannel.ContactForm) {
                     const applicationAutomationSettings =
@@ -76,7 +77,7 @@ const OrderManagementPreview = ({
                             (workflow) => ({
                                 ...workflow,
                                 workflow_id: workflow.id,
-                            })
+                            }),
                         )
                 }
 

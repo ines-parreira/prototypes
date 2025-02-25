@@ -1,12 +1,13 @@
-import {act, fireEvent, screen} from '@testing-library/react'
 import React from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
-import {TagsReportDownloadDataButton} from 'pages/stats/ticket-insights/tags/TagsReportDownloadDataButton'
-import {useTagsReportData} from 'services/reporting/tagsReportingService'
-import {saveZippedFiles} from 'utils/file'
-import {assumeMock, renderWithStore} from 'utils/testing'
+import { act, fireEvent, screen } from '@testing-library/react'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { DOWNLOAD_DATA_BUTTON_LABEL } from 'pages/stats/constants'
+import { TagsReportDownloadDataButton } from 'pages/stats/ticket-insights/tags/TagsReportDownloadDataButton'
+import { useTagsReportData } from 'services/reporting/tagsReportingService'
+import { saveZippedFiles } from 'utils/file'
+import { assumeMock, renderWithStore } from 'utils/testing'
 
 jest.mock('services/reporting/tagsReportingService')
 const useTagsReportDataMock = assumeMock(useTagsReportData)
@@ -38,7 +39,7 @@ describe('<TagsReportDownloadDataButton />', () => {
         expect(
             screen.getByRole('button', {
                 name: new RegExp(DOWNLOAD_DATA_BUTTON_LABEL),
-            })
+            }),
         ).toBeInTheDocument()
     })
 
@@ -61,7 +62,7 @@ describe('<TagsReportDownloadDataButton />', () => {
             SegmentEvent.StatDownloadClicked,
             expect.objectContaining({
                 name: 'all-metrics',
-            })
+            }),
         )
     })
 })

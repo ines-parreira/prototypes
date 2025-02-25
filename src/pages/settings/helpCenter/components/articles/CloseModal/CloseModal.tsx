@@ -1,8 +1,8 @@
-import classNames from 'classnames'
 import React from 'react'
 
-import Button from 'pages/common/components/button/Button'
+import classNames from 'classnames'
 
+import Button from 'pages/common/components/button/Button'
 import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 
 import css from './CloseModal.less'
@@ -66,7 +66,7 @@ export const CloseModal = ({
                     </div>
                 </div>
             }
-            style={{width: '100%', maxWidth: 600}}
+            style={{ width: '100%', maxWidth: 600 }}
             onClose={onContinueEditing}
         >
             {children}

@@ -1,13 +1,14 @@
-import {screen, waitFor, within} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import MockAdapter from 'axios-mock-adapter'
-import {fromJS} from 'immutable'
 import React from 'react'
 
+import { screen, waitFor, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import MockAdapter from 'axios-mock-adapter'
+import { fromJS } from 'immutable'
+
 import {
-    HELPDESK_PRODUCT_ID,
     basicMonthlyHelpdeskPlan,
     currentProductsUsage,
+    HELPDESK_PRODUCT_ID,
     products,
 } from 'fixtures/productPrices'
 import client from 'models/api/resources'
@@ -15,11 +16,11 @@ import {
     CommonReasonLabel,
     HelpdeskPrimaryReasonLabel,
 } from 'pages/settings/new_billing/components/CancelProductModal/constants'
-import {payingWithCreditCard} from 'pages/settings/new_billing/fixtures'
-import {RootState} from 'state/types'
-import {renderWithStoreAndQueryClientAndRouter} from 'tests/renderWithStoreAndQueryClientAndRouter'
-import {renderWithStoreAndQueryClientProvider} from 'tests/renderWithStoreAndQueryClientProvider'
-import {assumeMock} from 'utils/testing'
+import { payingWithCreditCard } from 'pages/settings/new_billing/fixtures'
+import { RootState } from 'state/types'
+import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
+import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
+import { assumeMock } from 'utils/testing'
 
 import ScheduledCancellationSummary from '../../../components/ScheduledCancellationSummary'
 import BillingProcessView from '../BillingProcessView'
@@ -30,11 +31,11 @@ jest.mock('state/notifications/actions')
 jest.mock(
     '../../../components/ScheduledCancellationSummary/ScheduledCancellationSummary',
     () =>
-        jest.fn(() => <div data-testid="scheduled-cancellation-summary"></div>)
+        jest.fn(() => <div data-testid="scheduled-cancellation-summary"></div>),
 )
 
 const ScheduledCancellationSummaryMock = assumeMock(
-    ScheduledCancellationSummary
+    ScheduledCancellationSummary,
 )
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
@@ -80,7 +81,7 @@ describe('UsageAndPlansView', () => {
     it('should render', async () => {
         mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
 
-        const {container} = renderWithStoreAndQueryClientAndRouter(
+        const { container } = renderWithStoreAndQueryClientAndRouter(
             <BillingProcessView
                 currentUsage={currentProductsUsage}
                 contactBilling={jest.fn()}
@@ -91,7 +92,7 @@ describe('UsageAndPlansView', () => {
                 isTrialing={false}
                 isCurrentSubscriptionCanceled={false}
             />,
-            storeInitialState
+            storeInitialState,
         )
         await waitFor(() => {
             expect(screen.queryByText('See Plans Details')).toBeInTheDocument()
@@ -114,12 +115,12 @@ describe('UsageAndPlansView', () => {
                 isTrialing={false}
                 isCurrentSubscriptionCanceled={true}
             />,
-            storeInitialState
+            storeInitialState,
         )
 
         await waitFor(() => {
             expect(
-                screen.queryByTestId('scheduled-cancellation-summary')
+                screen.queryByTestId('scheduled-cancellation-summary'),
             ).not.toBeInTheDocument()
         })
     })
@@ -153,12 +154,12 @@ describe('UsageAndPlansView', () => {
                 isTrialing={false}
                 isCurrentSubscriptionCanceled={false}
             />,
-            alteredStore
+            alteredStore,
         )
 
         await waitFor(() => {
             expect(
-                screen.queryByTestId('scheduled-cancellation-summary')
+                screen.queryByTestId('scheduled-cancellation-summary'),
             ).toBeInTheDocument()
         })
 
@@ -168,7 +169,7 @@ describe('UsageAndPlansView', () => {
                 onContactUs: expect.any(Function),
                 cancelledProducts: ['Helpdesk'],
             },
-            {}
+            {},
         )
     })
 
@@ -186,7 +187,7 @@ describe('UsageAndPlansView', () => {
                 isTrialing={false}
                 isCurrentSubscriptionCanceled={true}
             />,
-            storeInitialState
+            storeInitialState,
         )
 
         await waitFor(() => {
@@ -194,7 +195,7 @@ describe('UsageAndPlansView', () => {
                 name: 'Cancel auto-renewal',
             })
             expect(
-                screen.queryByText('Cancel Helpdesk auto-renewal')
+                screen.queryByText('Cancel Helpdesk auto-renewal'),
             ).not.toBeInTheDocument()
         })
 
@@ -206,14 +207,14 @@ describe('UsageAndPlansView', () => {
 
         await waitFor(() => {
             expect(
-                screen.getByText('Cancel Helpdesk auto-renewal')
+                screen.getByText('Cancel Helpdesk auto-renewal'),
             ).toBeVisible()
         })
 
         expect(
             screen.queryByText(
-                'Your opinion means a lot to us. Please tell us why you are cancelling your plan.'
-            )
+                'Your opinion means a lot to us. Please tell us why you are cancelling your plan.',
+            ),
         ).not.toBeInTheDocument()
 
         userEvent.click(screen.getByText('Continue cancelling'))
@@ -221,67 +222,67 @@ describe('UsageAndPlansView', () => {
         await waitFor(() => {
             expect(
                 screen.getByText(
-                    'Your opinion means a lot to us. Please tell us why you are cancelling your plan.'
-                )
+                    'Your opinion means a lot to us. Please tell us why you are cancelling your plan.',
+                ),
             ).toBeVisible()
         })
 
         userEvent.click(
-            within(screen.getByRole('combobox')).getByText('arrow_drop_down')
+            within(screen.getByRole('combobox')).getByText('arrow_drop_down'),
         )
 
         await waitFor(() => {
             expect(
                 screen.getByRole('option', {
                     name: HelpdeskPrimaryReasonLabel.DoesNotFitMyNeeds,
-                })
+                }),
             ).toBeVisible()
         })
 
         expect(
-            screen.queryByText('Could you please share more?')
+            screen.queryByText('Could you please share more?'),
         ).not.toBeInTheDocument()
 
         userEvent.click(
             screen.getByRole('option', {
                 name: HelpdeskPrimaryReasonLabel.DoesNotFitMyNeeds,
-            })
+            }),
         )
 
         await waitFor(() => {
             expect(
-                screen.getByText('Could you please share more?')
+                screen.getByText('Could you please share more?'),
             ).toBeVisible()
         })
 
         expect(
-            screen.queryByText('Please share any additional details')
+            screen.queryByText('Please share any additional details'),
         ).not.toBeInTheDocument()
 
         userEvent.click(
             screen.getByRole('radio', {
                 name: CommonReasonLabel.Other,
-            })
+            }),
         )
 
         await waitFor(() => {
             expect(
-                screen.getByText('Please share any additional details')
+                screen.getByText('Please share any additional details'),
             ).toBeVisible()
         })
 
         expect(
-            screen.getByRole('button', {name: 'Continue cancelling'})
+            screen.getByRole('button', { name: 'Continue cancelling' }),
         ).toBeAriaDisabled()
 
         await userEvent.type(
             screen.getByPlaceholderText("It didn't work out for me because..."),
-            'Some other reason'
+            'Some other reason',
         )
 
         await waitFor(() => {
             expect(
-                screen.getByRole('button', {name: 'Continue cancelling'})
+                screen.getByRole('button', { name: 'Continue cancelling' }),
             ).toBeAriaEnabled()
         })
     })

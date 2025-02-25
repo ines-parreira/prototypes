@@ -1,23 +1,23 @@
-import {configureStore} from '@reduxjs/toolkit'
+import { configureStore } from '@reduxjs/toolkit'
 
-import {OrderDirection} from 'models/api/types'
+import { OrderDirection } from 'models/api/types'
 import {
     Intent,
     IntentTableColumn,
 } from 'pages/aiAgent/insights/IntentTableWidget/types'
 import {
-    intentSlice,
-    initialState,
-    sortingSet,
-    sortingLoading,
-    sortingLoaded,
-    pageSet,
-    getIntentSorting,
-    isSortingMetricLoading,
+    getIntentIntents,
     getIntentPagination,
+    getIntentSorting,
     getPaginatedIntents,
     getSortedIntents,
-    getIntentIntents,
+    initialState,
+    intentSlice,
+    isSortingMetricLoading,
+    pageSet,
+    sortingLoaded,
+    sortingLoading,
+    sortingSet,
 } from 'state/ui/stats/insightsSlice'
 
 describe('Intent Slice', () => {
@@ -57,8 +57,8 @@ describe('Intent Slice', () => {
 
         it('should handle sortingLoaded action', () => {
             const lastSortingMetricMock = [
-                {name: 'order/cancel', automationOpportunity: 5},
-                {name: 'order/return', automationOpportunity: 3},
+                { name: 'order/cancel', automationOpportunity: 5 },
+                { name: 'order/return', automationOpportunity: 3 },
             ] as unknown as Intent[]
 
             store.dispatch(sortingLoaded(lastSortingMetricMock))
@@ -135,7 +135,7 @@ describe('Intent Slice', () => {
 
             const paginatedIntents = getPaginatedIntents.resultFunc(
                 allIntents,
-                pagination
+                pagination,
             )
             expect(paginatedIntents.intents.length).toBe(2) // First page items
             expect(paginatedIntents.allIntents.length).toBe(3)
@@ -205,7 +205,7 @@ describe('Intent Slice', () => {
 
             const result = getSortedIntents.resultFunc(
                 mockIntents,
-                ascendingSorting
+                ascendingSorting,
             )
 
             expect(result).toEqual([
@@ -238,7 +238,7 @@ describe('Intent Slice', () => {
 
             const result = getSortedIntents.resultFunc(
                 mockIntents,
-                invalidSorting
+                invalidSorting,
             )
 
             expect(result).toEqual(mockIntents)
@@ -252,7 +252,7 @@ describe('Intent Slice', () => {
             }
             const result = getSortedIntents.resultFunc(
                 mockIntents,
-                ascendingSorting
+                ascendingSorting,
             )
 
             expect(result).toEqual([
@@ -285,7 +285,7 @@ describe('Intent Slice', () => {
             }
             const result = getSortedIntents.resultFunc(
                 mockIntents,
-                mixedSorting
+                mixedSorting,
             )
 
             expect(result).toEqual([

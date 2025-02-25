@@ -1,10 +1,10 @@
-import React, {ReactNode} from 'react'
+import React, { ReactNode } from 'react'
 
 import css from './SelectFieldDropdownAction.less'
 
 const SelectFieldDropdownAction: React.FC<{
     icon?: ReactNode
-}> = ({icon, children}) => (
+}> = ({ icon, children }) => (
     <div className={css.dropdownAction}>
         <div className={css.dropdownActionIcon}>{icon}</div>
         {children}

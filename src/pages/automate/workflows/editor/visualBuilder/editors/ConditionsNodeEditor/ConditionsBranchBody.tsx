@@ -1,5 +1,6 @@
-import {produce} from 'immer'
-import React, {useCallback} from 'react'
+import React, { useCallback } from 'react'
+
+import { produce } from 'immer'
 
 import {
     BooleanSchema,
@@ -12,30 +13,31 @@ import {
     StringSchema,
     VarSchema,
 } from 'pages/automate/workflows/models/conditions.types'
-import {findVariable} from 'pages/automate/workflows/models/variables.model'
+import { findVariable } from 'pages/automate/workflows/models/variables.model'
 import {
     WorkflowVariable,
     WorkflowVariableList,
 } from 'pages/automate/workflows/models/variables.types'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {Condition} from 'pages/common/components/Condition/Condition'
+import { Condition } from 'pages/common/components/Condition/Condition'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
-import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
+import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 import WorkflowVariableDropdown from 'pages/common/draftjs/plugins/toolbar/components/WorkflowVariableDropdown'
 import WorkflowVariablePicker from 'pages/common/draftjs/plugins/toolbar/components/WorkflowVariablePicker'
 
-import {BooleanConditionType} from './conditions/BooleanConditionType'
-import {DateConditionType} from './conditions/DateConditionType'
-import {NumberConditionType} from './conditions/NumberConditionType'
-import {StringConditionType} from './conditions/StringConditionType'
-import css from './ConditionsNodeEditor.less'
-import {getOperatorListByVariable} from './constants'
+import { BooleanConditionType } from './conditions/BooleanConditionType'
+import { DateConditionType } from './conditions/DateConditionType'
+import { NumberConditionType } from './conditions/NumberConditionType'
+import { StringConditionType } from './conditions/StringConditionType'
+import { getOperatorListByVariable } from './constants'
 import {
-    isIntervalOperator,
     isExistenceOperator,
+    isIntervalOperator,
     isStringOrNumberOperator,
 } from './utils'
+
+import css from './ConditionsNodeEditor.less'
 
 interface Props {
     type: 'and' | 'or' | null
@@ -50,7 +52,7 @@ interface Props {
     onVariableSelect: (variable: WorkflowVariable) => void
     onConditionChange: (
         condition: ConditionSchema,
-        conditionIndex: number
+        conditionIndex: number,
     ) => void
     onConditionDelete: (conditionIndex: number) => void
     onDeleteBranch: () => void
@@ -108,7 +110,7 @@ export const ConditionsBranchBody = ({
                             onChange={(updatedCondition) =>
                                 onConditionChange(
                                     updatedCondition,
-                                    conditionIndex
+                                    conditionIndex,
                                 )
                             }
                             isDisabled={isDisabled}
@@ -127,7 +129,7 @@ export const ConditionsBranchBody = ({
                             onChange={(updatedCondition) =>
                                 onConditionChange(
                                     updatedCondition,
-                                    conditionIndex
+                                    conditionIndex,
                                 )
                             }
                             isDisabled={isDisabled}
@@ -151,7 +153,7 @@ export const ConditionsBranchBody = ({
                             onChange={(updatedCondition) =>
                                 onConditionChange(
                                     updatedCondition,
-                                    conditionIndex
+                                    conditionIndex,
                                 )
                             }
                             isDisabled={isDisabled}
@@ -173,7 +175,7 @@ export const ConditionsBranchBody = ({
                             onChange={(updatedCondition) =>
                                 onConditionChange(
                                     updatedCondition,
-                                    conditionIndex
+                                    conditionIndex,
                                 )
                             }
                             isDisabled={isDisabled}
@@ -186,7 +188,7 @@ export const ConditionsBranchBody = ({
                 }
             }
         },
-        [conditions, onConditionChange, isDisabled, errors, onConditionBlur]
+        [conditions, onConditionChange, isDisabled, errors, onConditionBlur],
     )
 
     const handleOperatorSelect = useCallback(
@@ -229,10 +231,10 @@ export const ConditionsBranchBody = ({
 
                     delete draft[key]
                 }),
-                index
+                index,
             )
         },
-        [onConditionChange]
+        [onConditionChange],
     )
 
     return (
@@ -272,7 +274,7 @@ export const ConditionsBranchBody = ({
                         <div className={css.conditionListWrapper}>
                             {conditions.map((condition, index) => {
                                 const operator = Object.keys(
-                                    condition
+                                    condition,
                                 )[0] as ConditionKey
                                 const value = (
                                     condition as unknown as Record<
@@ -290,7 +292,7 @@ export const ConditionsBranchBody = ({
                                         ) {
                                             return variable
                                         }
-                                    }
+                                    },
                                 )
 
                                 if (!variable) return null
@@ -317,7 +319,7 @@ export const ConditionsBranchBody = ({
                                             operators={operators}
                                             onOperatorSelect={handleOperatorSelect(
                                                 condition,
-                                                index
+                                                index,
                                             )}
                                             isDisabled={isDisabled}
                                             icon={
@@ -349,15 +351,15 @@ export const ConditionsBranchBody = ({
                         />
                         {canDeleteBranch && (
                             <ConfirmationPopover
-                                buttonProps={{intent: 'destructive'}}
-                                cancelButtonProps={{intent: 'secondary'}}
+                                buttonProps={{ intent: 'destructive' }}
+                                cancelButtonProps={{ intent: 'secondary' }}
                                 content="Deleting this branch wil also delete any steps added below and cannot be undone."
                                 title={<b>Delete branch and children?</b>}
                                 onConfirm={onDeleteBranch}
                                 confirmLabel="Delete"
                                 showCancelButton
                             >
-                                {({uid, onDisplayConfirmation}) => (
+                                {({ uid, onDisplayConfirmation }) => (
                                     <Button
                                         id={uid}
                                         intent="destructive"

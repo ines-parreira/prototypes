@@ -1,6 +1,5 @@
-import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
-import typography from '@gorgias/design-tokens/dist/tokens/typography.json'
-import {Skeleton} from '@gorgias/merchant-ui-kit'
+import React, { ReactNode, useCallback, useMemo } from 'react'
+
 import {
     ChartData,
     ChartMeta,
@@ -8,17 +7,20 @@ import {
     Plugin,
     TooltipModel,
 } from 'chart.js'
-import React, {ReactNode, useCallback, useMemo} from 'react'
-import {Doughnut} from 'react-chartjs-2'
+import { Doughnut } from 'react-chartjs-2'
 
-import {ChartTooltip} from 'pages/stats/ChartTooltip'
+import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
+import typography from '@gorgias/design-tokens/dist/tokens/typography.json'
+import { Skeleton } from '@gorgias/merchant-ui-kit'
+
+import { ChartTooltip } from 'pages/stats/ChartTooltip'
 import css from 'pages/stats/common/components/charts/Chart.less'
-import {useCustomTooltip} from 'pages/stats/common/useCustomTooltip'
+import { useCustomTooltip } from 'pages/stats/common/useCustomTooltip'
 import Legend from 'pages/stats/Legend'
-import {OneDimensionalDataItem} from 'pages/stats/types'
-import {renderTickLabelAsNumber} from 'pages/stats/utils'
+import { OneDimensionalDataItem } from 'pages/stats/types'
+import { renderTickLabelAsNumber } from 'pages/stats/utils'
 
-import {DonutChartTooltip} from './DonutChartTooltip'
+import { DonutChartTooltip } from './DonutChartTooltip'
 
 const STAT_COLORS = [
     colors['📺 Classic'].Main.Primary.value,
@@ -80,13 +82,13 @@ const DonutChart = ({
 }: DoughnutStatProps) => {
     const total = useMemo(
         () => data.reduce((acc, i) => acc + i.value, 0),
-        [data]
+        [data],
     )
-    const {customTooltip, tooltipData, tooltipStyle} = useCustomTooltip()
+    const { customTooltip, tooltipData, tooltipStyle } = useCustomTooltip()
 
     const chartColors = useCallback(
         (index: number) => customColors?.[index] || STAT_COLORS[index],
-        [customColors]
+        [customColors],
     )
 
     const formattedData: ChartData<'doughnut'> = useMemo(() => {
@@ -107,7 +109,7 @@ const DonutChart = ({
     const options: ChartOptions<'doughnut'> = useMemo(
         () => ({
             elements: {
-                arc: {borderWidth: 1},
+                arc: { borderWidth: 1 },
             },
             cutout: '65%',
             interaction: {
@@ -124,12 +126,12 @@ const DonutChart = ({
                 },
             },
         }),
-        [customTooltip]
+        [customTooltip],
     )
 
     const plugins = useMemo(
         () => (!children ? [innerLabelPlugin] : []),
-        [children]
+        [children],
     )
 
     if (isLoading) {
@@ -173,7 +175,7 @@ const DonutChart = ({
             {displayLegend && (
                 <Legend
                     className={legendClassName}
-                    items={data.map(({label}, index) => ({
+                    items={data.map(({ label }, index) => ({
                         label,
                         color: chartColors(index),
                     }))}

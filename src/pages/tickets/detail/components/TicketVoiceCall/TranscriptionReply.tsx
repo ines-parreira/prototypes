@@ -1,8 +1,10 @@
-import {VoiceCallRecordingTranscriptionSpeakersItem} from '@gorgias/api-queries'
-import classnames from 'classnames'
 import React from 'react'
 
-import {getFormattedDurationTranscriptionStart} from 'models/voiceCall/utils'
+import classnames from 'classnames'
+
+import { VoiceCallRecordingTranscriptionSpeakersItem } from '@gorgias/api-queries'
+
+import { getFormattedDurationTranscriptionStart } from 'models/voiceCall/utils'
 import VoiceCallAgentLabel from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'
 import VoiceCallCustomerLabel from 'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel'
 
@@ -38,7 +40,7 @@ export default function TranscriptionReply({
         <span
             className={classnames(
                 css.replySpeaker,
-                css[`speaker-${speakerColorIndex}`]
+                css[`speaker-${speakerColorIndex}`],
             )}
         >
             {defaultSpeakerLabel}

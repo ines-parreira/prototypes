@@ -1,10 +1,11 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {RootState, StoreDispatch} from 'state/types'
+import { RootState, StoreDispatch } from 'state/types'
 
 import SetAssigneeAction from '../SetAssigneeAction'
 
@@ -20,27 +21,27 @@ describe('<SetAssigneeAction/>', () => {
         }
 
         it('should render user dropdown', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <SetAssigneeAction {...minProps} handleUsers />
-                </Provider>
+                </Provider>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render team dropdown', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <SetAssigneeAction {...minProps} handleTeams />
-                </Provider>
+                </Provider>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render user dropdown with current assignee', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <SetAssigneeAction
                         {...minProps}
@@ -55,14 +56,14 @@ describe('<SetAssigneeAction/>', () => {
                         })}
                         handleUsers
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render team dropdown with current assignee', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <SetAssigneeAction
                         {...minProps}
@@ -77,7 +78,7 @@ describe('<SetAssigneeAction/>', () => {
                         })}
                         handleTeams
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(container.firstChild).toMatchSnapshot()

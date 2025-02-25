@@ -1,14 +1,15 @@
-import {act, renderHook} from '@testing-library/react-hooks'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { act, renderHook } from '@testing-library/react-hooks'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {customer} from 'fixtures/customer'
-import {useCustomerSearch} from 'pages/common/components/infobar/Infobar/useCustomerSearch'
-import {searchWithHighlights} from 'state/infobar/actions'
+import { customer } from 'fixtures/customer'
+import { useCustomerSearch } from 'pages/common/components/infobar/Infobar/useCustomerSearch'
+import { searchWithHighlights } from 'state/infobar/actions'
 import * as constants from 'state/infobar/constants'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
 const mockStore = configureMockStore([thunk])
 jest.mock('state/infobar/actions')
@@ -20,7 +21,7 @@ describe('useCustomerSearch', () => {
             searchWithHighlightsMock.mockReturnValue({
                 type: constants.SEARCH_CUSTOMERS_SUCCESS,
                 resp: {
-                    data: {data: [{entity: customer, highlights: {}}]},
+                    data: { data: [{ entity: customer, highlights: {} }] },
                 },
             } as any)
         })
@@ -28,8 +29,8 @@ describe('useCustomerSearch', () => {
         it('should return customers with highlights', async () => {
             const query = 'some query'
 
-            const {result} = renderHook(() => useCustomerSearch(), {
-                wrapper: ({children}) => (
+            const { result } = renderHook(() => useCustomerSearch(), {
+                wrapper: ({ children }) => (
                     <Provider store={mockStore({})}>{children}</Provider>
                 ),
             })
@@ -40,7 +41,7 @@ describe('useCustomerSearch', () => {
 
             expect(searchWithHighlightsMock).toHaveBeenCalledWith(
                 query,
-                expect.anything()
+                expect.anything(),
             )
         })
     })

@@ -1,16 +1,17 @@
-import {render, screen} from '@testing-library/react'
-import moment from 'moment'
 import React from 'react'
 
-import {useScoredSurveys} from 'hooks/reporting/quality-management/satisfaction/useScoredSurveys'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-import {ReportingGranularity} from 'models/reporting/types'
-import {LegacyStatsFilters} from 'models/stat/types'
-import {NumberedPagination} from 'pages/common/components/Paginations'
+import { render, screen } from '@testing-library/react'
+import moment from 'moment'
+
+import { useScoredSurveys } from 'hooks/reporting/quality-management/satisfaction/useScoredSurveys'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { ReportingGranularity } from 'models/reporting/types'
+import { LegacyStatsFilters } from 'models/stat/types'
+import { NumberedPagination } from 'pages/common/components/Paginations'
 import ScoredSurveysChart from 'pages/stats/quality-management/satisfaction/ScoredSurveysChart/ScoredSurveysChart'
 import ScoredSurveysTable from 'pages/stats/quality-management/satisfaction/ScoredSurveysChart/ScoredSurveysTable'
-import {formatReportingQueryDate} from 'utils/reporting'
-import {assumeMock} from 'utils/testing'
+import { formatReportingQueryDate } from 'utils/reporting'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/quality-management/satisfaction/useScoredSurveys')
 const useScoredSurveysMock = assumeMock(useScoredSurveys)
@@ -22,7 +23,7 @@ jest.mock('pages/common/components/Paginations')
 const NumberedPaginationMock = assumeMock(NumberedPagination)
 
 jest.mock(
-    'pages/stats/quality-management/satisfaction/ScoredSurveysChart/ScoredSurveysTable'
+    'pages/stats/quality-management/satisfaction/ScoredSurveysChart/ScoredSurveysTable',
 )
 const ScoredSurveysTableMock = assumeMock(ScoredSurveysTable)
 
@@ -90,7 +91,7 @@ describe('<CommentHighlightsChart/>', () => {
                     },
                 ],
             }),
-            {}
+            {},
         )
     })
 
@@ -105,7 +106,7 @@ describe('<CommentHighlightsChart/>', () => {
 
         expect(screen.getByText('No data available')).toBeInTheDocument()
         expect(
-            screen.getByText('Try adjusting filters to get results.')
+            screen.getByText('Try adjusting filters to get results.'),
         ).toBeInTheDocument()
     })
 
@@ -113,7 +114,7 @@ describe('<CommentHighlightsChart/>', () => {
         useScoredSurveysMock.mockReturnValue({
             isFetching: false,
             isError: false,
-            data: Array.from({length: 20}, () => ({
+            data: Array.from({ length: 20 }, () => ({
                 ticketId: '1',
                 surveyScore: '5',
                 comment: 'Great service',

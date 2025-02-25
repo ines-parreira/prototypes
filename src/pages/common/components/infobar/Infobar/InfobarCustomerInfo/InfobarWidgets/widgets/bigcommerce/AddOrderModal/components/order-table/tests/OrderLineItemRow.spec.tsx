@@ -1,7 +1,8 @@
-import {render, screen, waitFor} from '@testing-library/react'
+import React, { ComponentProps } from 'react'
+
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {produce} from 'immer'
-import React, {ComponentProps} from 'react'
+import { produce } from 'immer'
 
 import {
     bigCommerceLineItemFixture,
@@ -42,7 +43,7 @@ jest.mock('lodash/debounce', () => (fn: (...args: any[]) => void) => fn)
 describe('<OrderLineItemRow/>', () => {
     describe('render()', () => {
         it('should render', () => {
-            const {container} = render(<OrderLineItemRow {...defaultProps} />)
+            const { container } = render(<OrderLineItemRow {...defaultProps} />)
 
             expect(container.firstChild).toMatchSnapshot()
         })
@@ -51,12 +52,12 @@ describe('<OrderLineItemRow/>', () => {
             const product = bigCommerceProductFixture()
             product.image_url = ''
 
-            const {container} = render(
+            const { container } = render(
                 <OrderLineItemRow
                     {...defaultProps}
                     lineItem={lineItem}
                     product={product}
-                />
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -68,12 +69,12 @@ describe('<OrderLineItemRow/>', () => {
             lineItem.list_price = 0
             const product = bigCommerceProductFixture()
 
-            const {container} = render(
+            const { container } = render(
                 <OrderLineItemRow
                     {...defaultProps}
                     lineItem={lineItem}
                     product={product}
-                />
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -91,12 +92,12 @@ describe('<OrderLineItemRow/>', () => {
                 ]
             })
             const product = bigCommerceProductFixture()
-            const {container} = render(
+            const { container } = render(
                 <OrderLineItemRow
                     {...defaultProps}
                     lineItem={lineItem}
                     product={product}
-                />
+                />,
             )
 
             expect(screen.getByText(/Option Value/i)).toBeInTheDocument()
@@ -104,10 +105,10 @@ describe('<OrderLineItemRow/>', () => {
 
             // Opens the modifiers popover
             expect(
-                screen.queryByText(/Test Radio Buttons/i)
+                screen.queryByText(/Test Radio Buttons/i),
             ).not.toBeInTheDocument()
 
-            userEvent.click(screen.getByRole('button', {name: /modify/i}))
+            userEvent.click(screen.getByRole('button', { name: /modify/i }))
 
             expect(screen.getByText(/Test Radio Buttons/i)).toBeInTheDocument()
         })
@@ -118,7 +119,7 @@ describe('<OrderLineItemRow/>', () => {
             const onChangeMock = jest.fn()
 
             render(
-                <OrderLineItemRow {...defaultProps} onChange={onChangeMock} />
+                <OrderLineItemRow {...defaultProps} onChange={onChangeMock} />,
             )
 
             await userEvent.type(screen.getByRole('textbox'), '5')
@@ -132,7 +133,7 @@ describe('<OrderLineItemRow/>', () => {
             const onDeleteMock = jest.fn()
 
             render(
-                <OrderLineItemRow {...defaultProps} onDelete={onDeleteMock} />
+                <OrderLineItemRow {...defaultProps} onDelete={onDeleteMock} />,
             )
 
             userEvent.click(screen.getByText('close'))
@@ -151,10 +152,10 @@ describe('<OrderLineItemRow/>', () => {
                 {...defaultProps}
                 lineItem={lineItem}
                 onLineItemDiscount={onLineItemDiscountMock}
-            />
+            />,
         )
 
-        userEvent.click(screen.getByRole('button', {name: /78/i}))
+        userEvent.click(screen.getByRole('button', { name: /78/i }))
         userEvent.clear(screen.getByLabelText('Discount amount'))
 
         userEvent.clear(screen.getByLabelText('Discount amount'))
@@ -162,7 +163,7 @@ describe('<OrderLineItemRow/>', () => {
 
         await waitFor(() => {
             expect(
-                screen.getByText('Discount cannot be higher than the price.')
+                screen.getByText('Discount cannot be higher than the price.'),
             ).toBeInTheDocument()
         })
 
@@ -171,11 +172,11 @@ describe('<OrderLineItemRow/>', () => {
 
         await waitFor(() => {
             expect(
-                screen.getByRole('button', {name: /Apply/i})
+                screen.getByRole('button', { name: /Apply/i }),
             ).toBeAriaEnabled()
         })
 
-        userEvent.click(screen.getByRole('button', {name: /Apply/i}))
+        userEvent.click(screen.getByRole('button', { name: /Apply/i }))
 
         expect(onLineItemDiscountMock).toHaveBeenCalledWith(0, 73, 'add')
     })

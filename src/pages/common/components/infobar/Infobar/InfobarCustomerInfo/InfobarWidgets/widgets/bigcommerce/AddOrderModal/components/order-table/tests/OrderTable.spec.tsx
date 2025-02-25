@@ -1,5 +1,6 @@
-import {render} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { render } from '@testing-library/react'
 
 import {
     bigCommerceLineItemFixture,
@@ -41,7 +42,7 @@ jest.mock('../../../utils', () => ({
 describe('<OrderTable/>', () => {
     describe('rendering', () => {
         it('should render with items', () => {
-            const {container} = render(<OrderTable {...minProps} />)
+            const { container } = render(<OrderTable {...minProps} />)
 
             expect(container).toMatchSnapshot()
         })
@@ -49,7 +50,7 @@ describe('<OrderTable/>', () => {
         it('should render without items', () => {
             minProps.lineItems = []
             minProps.products = new Map()
-            const {container} = render(<OrderTable {...minProps} />)
+            const { container } = render(<OrderTable {...minProps} />)
 
             expect(container).toMatchSnapshot()
         })

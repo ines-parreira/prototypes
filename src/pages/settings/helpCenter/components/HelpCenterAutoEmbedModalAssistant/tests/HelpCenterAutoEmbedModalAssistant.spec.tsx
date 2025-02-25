@@ -1,15 +1,16 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {ShopifyPagesListFixture} from 'pages/settings/contactForm/fixtures/shopifyPage'
-import {HELP_CENTER_EMBED_FORM_TEXTS} from 'pages/settings/helpCenter/constants'
-import {useCreatePageEmbedment} from 'pages/settings/helpCenter/queries'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
-import {MODAL_LABELS} from '../constants'
+import { ShopifyPagesListFixture } from 'pages/settings/contactForm/fixtures/shopifyPage'
+import { HELP_CENTER_EMBED_FORM_TEXTS } from 'pages/settings/helpCenter/constants'
+import { useCreatePageEmbedment } from 'pages/settings/helpCenter/queries'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
+
+import { MODAL_LABELS } from '../constants'
 import HelpCenterAutoEmbedModalAssistant from '../HelpCenterAutoEmbedModalAssistant'
 
 const queryClient = mockQueryClient()
@@ -45,11 +46,11 @@ describe('<HelpCenterAutoEmbedModalAssistant />', () => {
                     pages={pages}
                     helpCenterId={helpCenterId}
                 />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
-        screen.getByText(MODAL_LABELS.TITLE, {selector: 'div'})
-        screen.getByRole('button', {name: MODAL_LABELS.EMBED})
+        screen.getByText(MODAL_LABELS.TITLE, { selector: 'div' })
+        screen.getByRole('button', { name: MODAL_LABELS.EMBED })
         screen.getByText(MODAL_LABELS.CANCEL)
 
         // a PageEmbedmentForm label
@@ -70,7 +71,7 @@ describe('<HelpCenterAutoEmbedModalAssistant />', () => {
                     pages={pages}
                     helpCenterId={helpCenterId}
                 />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         const cancelButton = screen.getByText(MODAL_LABELS.CANCEL)
@@ -93,7 +94,7 @@ describe('<HelpCenterAutoEmbedModalAssistant />', () => {
                     pages={pages}
                     helpCenterId={helpCenterId}
                 />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         const embedButton = screen.getByRole('button', {
@@ -103,10 +104,10 @@ describe('<HelpCenterAutoEmbedModalAssistant />', () => {
         expect(embedButton).toBeAriaDisabled()
 
         const pageNameInput = screen.getByPlaceholderText(
-            HELP_CENTER_EMBED_FORM_TEXTS.PageNamePlaceholder
+            HELP_CENTER_EMBED_FORM_TEXTS.PageNamePlaceholder,
         )
         const pageSlugInput = screen.getByPlaceholderText(
-            HELP_CENTER_EMBED_FORM_TEXTS.PageSlugPlaceholder
+            HELP_CENTER_EMBED_FORM_TEXTS.PageSlugPlaceholder,
         )
 
         // Set the page name and slug

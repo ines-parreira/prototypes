@@ -1,9 +1,11 @@
-import classnames from 'classnames'
 import React from 'react'
 
-import {TicketMessage} from 'models/ticket/types'
+import classnames from 'classnames'
+
+import { TicketMessage } from 'models/ticket/types'
 
 import SourceActionsFooter from './SourceActionsFooter'
+
 import css from './SourceDetails.less'
 
 type Props = {
@@ -14,7 +16,7 @@ type Props = {
 }
 
 export default function SourceDetailsFooter(props: Props) {
-    const {message, isMessageHidden, isMessageDeleted} = props
+    const { message, isMessageHidden, isMessageDeleted } = props
     return (
         <div className={classnames(css.wrapper, props.className)}>
             <SourceActionsFooter

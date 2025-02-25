@@ -1,9 +1,9 @@
 import isURL from 'validator/lib/isURL'
 
-import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
+import { CampaignTriggerOperator } from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
 
-import {ValidatorType} from './types'
-import {ValidationError} from './validationError'
+import { ValidatorType } from './types'
+import { ValidationError } from './validationError'
 
 export const validateCurrentUrl: ValidatorType = (value, operator) => {
     if (!value) {
@@ -18,7 +18,7 @@ export const validateCurrentUrl: ValidatorType = (value, operator) => {
         decodeURI(value)
     } catch {
         throw new ValidationError(
-            'The URL appears to be malformed. Please review and re-enter.'
+            'The URL appears to be malformed. Please review and re-enter.',
         )
     }
 
@@ -29,7 +29,7 @@ export const validateCurrentUrl: ValidatorType = (value, operator) => {
         }
 
         throw new ValidationError(
-            'The URL you provided is incorrect. Please enter a relative or absolute URL.'
+            'The URL you provided is incorrect. Please enter a relative or absolute URL.',
         )
     }
 }

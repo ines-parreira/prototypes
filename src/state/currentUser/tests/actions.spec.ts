@@ -1,21 +1,20 @@
 import MockAdapter from 'axios-mock-adapter'
-import {fromJS} from 'immutable'
-
+import { fromJS } from 'immutable'
 import mockDate from 'mockdate'
 import moment from 'moment'
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {UserSetting, UserSettingType} from 'config/types/user'
+import { UserSetting, UserSettingType } from 'config/types/user'
 import client from 'models/api/resources'
 import history from 'pages/history'
 import * as notificationActions from 'state/notifications/actions'
-import {StoreDispatch} from 'state/types'
+import { StoreDispatch } from 'state/types'
 
 import * as actions from '../actions'
 import * as types from '../constants'
-import {OPEN_TWO_FA_MODAL_URL, TWO_FA_REQUIRED_AFTER_DAYS} from '../constants'
-import {initialState} from '../reducers'
+import { OPEN_TWO_FA_MODAL_URL, TWO_FA_REQUIRED_AFTER_DAYS } from '../constants'
+import { initialState } from '../reducers'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -46,7 +45,7 @@ describe('current user actions', () => {
         mockServer.onPut('/api/users/0/').reply(200, data)
         return store
             .dispatch(
-                actions.changePassword(data.old_password, data.new_password)
+                actions.changePassword(data.old_password, data.new_password),
             )
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
@@ -63,8 +62,8 @@ describe('current user actions', () => {
                 actions.changePassword(
                     data.old_password,
                     data.new_password,
-                    data.two_fa_code
-                )
+                    data.two_fa_code,
+                ),
             )
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
@@ -78,7 +77,7 @@ describe('current user actions', () => {
             } as unknown as UserSetting
             mockServer
                 .onPost('/api/users/0/settings/')
-                .reply(200, {...data, id: 1})
+                .reply(200, { ...data, id: 1 })
             return store
                 .dispatch(actions.submitSetting(data, false))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
@@ -127,7 +126,7 @@ describe('current user actions', () => {
             }
             mockServer
                 .onPost('/api/users/0/settings/')
-                .reply(200, {...newSetting, id: 1})
+                .reply(200, { ...newSetting, id: 1 })
             mockServer.onGet('/api/activity/chats/').reply(200, chats)
             return store
                 .dispatch(actions.submitSetting(newSetting, false))
@@ -224,7 +223,7 @@ describe('current user actions', () => {
                                 two_fa_enforced_datetime: moment()
                                     .subtract(
                                         TWO_FA_REQUIRED_AFTER_DAYS,
-                                        'days'
+                                        'days',
                                     )
                                     .toString(),
                             },

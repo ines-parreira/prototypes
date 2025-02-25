@@ -1,16 +1,16 @@
 import React from 'react'
 
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
-import {METRICS} from 'pages/stats/convert/constants/ConvertPerformanceOverviewConfig'
-import {useCampaignTotalStats} from 'pages/stats/convert/hooks/useCampaignTotalStats'
-import {DashboardChartProps} from 'pages/stats/custom-reports/types'
+import { METRICS } from 'pages/stats/convert/constants/ConvertPerformanceOverviewConfig'
+import { useCampaignTotalStats } from 'pages/stats/convert/hooks/useCampaignTotalStats'
+import { DashboardChartProps } from 'pages/stats/custom-reports/types'
 import MetricCard from 'pages/stats/MetricCard'
 
 export const ImpressionsKPIChart = ({
     chartId,
     dashboard,
 }: DashboardChartProps) => {
-    const {data, isLoading} = useCampaignTotalStats()
+    const { data, isLoading } = useCampaignTotalStats()
 
     return (
         <MetricCard

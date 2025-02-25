@@ -1,20 +1,20 @@
-import {screen} from '@testing-library/react'
-
-import {createMemoryHistory} from 'history'
-import {fromJS} from 'immutable'
-import {keyBy} from 'lodash'
 import React from 'react'
-import {Provider} from 'react-redux'
-import {Router} from 'react-router-dom'
+
+import { screen } from '@testing-library/react'
+import { createMemoryHistory } from 'history'
+import { fromJS } from 'immutable'
+import { keyBy } from 'lodash'
+import { Provider } from 'react-redux'
+import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {billingState} from 'fixtures/billing'
-import {WorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
-import {visualBuilderGraphSimpleChoicesFixture} from 'pages/automate/workflows/tests/visualBuilderGraph.fixtures'
-import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
-import {RootState} from 'state/types'
-import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
+import { billingState } from 'fixtures/billing'
+import { WorkflowEditorContext } from 'pages/automate/workflows/hooks/useWorkflowEditor'
+import { visualBuilderGraphSimpleChoicesFixture } from 'pages/automate/workflows/tests/visualBuilderGraph.fixtures'
+import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
+import { RootState } from 'state/types'
+import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import WorkflowVisualBuilder from '../WorkflowVisualBuilder'
 
@@ -37,7 +37,7 @@ const mockedStore = mockStore({
                 automationSettingsByContactFormId: {
                     [contactForm.id]: {
                         workflows: [],
-                        order_management: {enabled: false},
+                        order_management: { enabled: false },
                     },
                 },
             },
@@ -48,13 +48,13 @@ const mockedStore = mockStore({
     },
 })
 
-const renderWithRouter = (ui: React.ReactElement, {route = '/'} = {}) => {
-    const history = createMemoryHistory({initialEntries: [route]})
+const renderWithRouter = (ui: React.ReactElement, { route = '/' } = {}) => {
+    const history = createMemoryHistory({ initialEntries: [route] })
     return {
         ...renderWithQueryClientProvider(
             <Provider store={mockedStore}>
                 <Router history={history}>{ui}</Router>
-            </Provider>
+            </Provider>,
         ),
         history,
     }
@@ -108,7 +108,7 @@ describe('<WorkflowVisualBuilder />', () => {
                     dispatch={jest.fn()}
                     visualBuilderGraph={visualBuilderGraphSimpleChoicesFixture}
                 />
-            </WorkflowEditorContext.Provider>
+            </WorkflowEditorContext.Provider>,
         )
 
         expect(screen.getByText('entrypoint')).toBeInTheDocument()

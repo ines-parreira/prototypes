@@ -1,6 +1,9 @@
-import {OrderDirection} from 'models/api/types'
-import {TicketDimension, TicketMember} from 'models/reporting/cubes/TicketCube'
-import {TicketCustomFieldsMember} from 'models/reporting/cubes/TicketCustomFieldsCube'
+import { OrderDirection } from 'models/api/types'
+import {
+    TicketDimension,
+    TicketMember,
+} from 'models/reporting/cubes/TicketCube'
+import { TicketCustomFieldsMember } from 'models/reporting/cubes/TicketCustomFieldsCube'
 import {
     TicketTagsEnrichedDimension,
     TicketTagsEnrichedMeasure,
@@ -18,8 +21,8 @@ import {
     ReportingFilterOperator,
     ReportingGranularity,
 } from 'models/reporting/types'
-import {StatsFilters, TagFilterInstanceId} from 'models/stat/types'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import { StatsFilters, TagFilterInstanceId } from 'models/stat/types'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
@@ -58,7 +61,7 @@ describe('tagsTicketCount query factories', () => {
                     ...NotSpamNorTrashedTicketsFilter,
                     ...statsFiltersToReportingFilters(
                         TicketStatsFiltersMembers,
-                        statsFilters
+                        statsFilters,
                     ),
                 ],
                 segments: [],
@@ -69,7 +72,7 @@ describe('tagsTicketCount query factories', () => {
             const query = tagsTicketCountQueryFactory(
                 statsFilters,
                 timezone,
-                sorting
+                sorting,
             )
 
             expect(query).toEqual({
@@ -80,7 +83,7 @@ describe('tagsTicketCount query factories', () => {
                     ...NotSpamNorTrashedTicketsFilter,
                     ...statsFiltersToReportingFilters(
                         TicketStatsFiltersMembers,
-                        statsFilters
+                        statsFilters,
                     ),
                 ],
                 order: [[TicketTagsEnrichedMeasure.TicketCount, sorting]],
@@ -95,7 +98,7 @@ describe('tagsTicketCount query factories', () => {
                 statsFilters,
                 timezone,
                 granularity,
-                sorting
+                sorting,
             )
 
             expect(query).toEqual({
@@ -125,7 +128,7 @@ describe('tagsTicketCount query factories', () => {
                 timezone,
                 tagId,
                 tagNarrowedPeriod,
-                sorting
+                sorting,
             )
 
             expect(query).toEqual({
@@ -135,7 +138,7 @@ describe('tagsTicketCount query factories', () => {
                     ...tagsTicketCountQueryFactory(
                         statsFilters,
                         timezone,
-                        sorting
+                        sorting,
                     ).filters,
                     {
                         member: TicketTagsEnrichedDimension.TagId,
@@ -147,10 +150,10 @@ describe('tagsTicketCount query factories', () => {
                         operator: ReportingFilterOperator.InDateRange,
                         values: [
                             formatReportingQueryDate(
-                                tagNarrowedPeriod.start_datetime
+                                tagNarrowedPeriod.start_datetime,
                             ),
                             formatReportingQueryDate(
-                                tagNarrowedPeriod.end_datetime
+                                tagNarrowedPeriod.end_datetime,
                             ),
                         ],
                     },
@@ -187,7 +190,7 @@ describe('tagsTicketCount query factories', () => {
                 timezone,
                 tagId,
                 tagNarrowedPeriod,
-                sorting
+                sorting,
             )
 
             expect(query).toEqual({
@@ -206,10 +209,10 @@ describe('tagsTicketCount query factories', () => {
                         operator: ReportingFilterOperator.InDateRange,
                         values: [
                             formatReportingQueryDate(
-                                tagNarrowedPeriod.start_datetime
+                                tagNarrowedPeriod.start_datetime,
                             ),
                             formatReportingQueryDate(
-                                tagNarrowedPeriod.end_datetime
+                                tagNarrowedPeriod.end_datetime,
                             ),
                         ],
                     },
@@ -227,7 +230,7 @@ describe('tagsTicketCount query factories', () => {
                     timezone,
                     customFieldId,
                     perAgentId,
-                    sorting
+                    sorting,
                 )
 
             expect(query.filters).toEqual([
@@ -261,10 +264,10 @@ describe('tagsTicketCount query factories', () => {
                     operator: ReportingFilterOperator.InDateRange,
                     values: [
                         formatReportingQueryDate(
-                            statsFilters.period.start_datetime
+                            statsFilters.period.start_datetime,
                         ),
                         formatReportingQueryDate(
-                            statsFilters.period.end_datetime
+                            statsFilters.period.end_datetime,
                         ),
                     ],
                 },
@@ -295,7 +298,7 @@ describe('tagsTicketCount query factories', () => {
                 customFieldId,
                 customFieldsValueStrings,
                 customFieldPeriod,
-                sorting
+                sorting,
             )
 
             expect(query.filters).toEqual([

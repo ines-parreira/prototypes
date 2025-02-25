@@ -1,25 +1,25 @@
 import '@testing-library/jest-dom/extend-expect'
-import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
-import {fireEvent, screen} from '@testing-library/react'
-import {fromJS, Map} from 'immutable'
+
 import React from 'react'
 
-import {Provider} from 'react-redux'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, screen } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {account} from 'fixtures/account'
-import {billingState} from 'fixtures/billing'
-import {chatIntegrationFixtures} from 'fixtures/chat'
-import {integrationsState, shopifyIntegration} from 'fixtures/integrations'
-import {StoreIntegration} from 'models/integration/types'
-import {EmailIntegrationStep} from 'pages/aiAgent/Onboarding/components/steps/EmailIntegrationStep/EmailIntegrationStep'
-import {useShopifyIntegrations} from 'pages/aiAgent/Onboarding/hooks/useShopifyIntegrations'
-import {WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
-import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
-import {useEmailIntegrations} from 'pages/settings/contactForm/hooks/useEmailIntegrations'
-
-import {RootState, StoreDispatch} from 'state/types'
-import {renderWithRouter} from 'utils/testing'
+import { account } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
+import { chatIntegrationFixtures } from 'fixtures/chat'
+import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
+import { StoreIntegration } from 'models/integration/types'
+import { EmailIntegrationStep } from 'pages/aiAgent/Onboarding/components/steps/EmailIntegrationStep/EmailIntegrationStep'
+import { useShopifyIntegrations } from 'pages/aiAgent/Onboarding/hooks/useShopifyIntegrations'
+import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
+import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
+import { useEmailIntegrations } from 'pages/settings/contactForm/hooks/useEmailIntegrations'
+import { RootState, StoreDispatch } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
 jest.mock('pages/aiAgent/Onboarding/hooks/useShopifyIntegrations')
 jest.mock('pages/common/hooks/useShopifyIntegrationAndScope')
@@ -52,7 +52,7 @@ const defaultProps = {
 
 const renderComponent = (
     props = defaultProps,
-    shopifyIntegrations: StoreIntegration[] = []
+    shopifyIntegrations: StoreIntegration[] = [],
 ) => {
     mockUseShopifyIntegrations.mockReturnValue(shopifyIntegrations)
 
@@ -61,7 +61,7 @@ const renderComponent = (
             <Provider store={mockStore(defaultState)}>
                 <EmailIntegrationStep {...props} />
             </Provider>
-        </QueryClientProvider>
+        </QueryClientProvider>,
     )
 }
 
@@ -103,13 +103,15 @@ describe('EmailIntegrationStep', () => {
         fireEvent.click(screen.getByText(/Next/i))
 
         expect(mockGoToStep).toHaveBeenCalledWith(
-            WizardStepEnum.PERSONALITY_PREVIEW
+            WizardStepEnum.PERSONALITY_PREVIEW,
         )
     })
 
     it('navigates back to Shopify Integration if integration is missing', () => {
-        mockUseShopifyIntegrationAndScope.mockReturnValue({integration: false})
-        renderComponent({...defaultProps, currentStep: 3})
+        mockUseShopifyIntegrationAndScope.mockReturnValue({
+            integration: false,
+        })
+        renderComponent({ ...defaultProps, currentStep: 3 })
 
         jest.runAllTimers()
 
@@ -117,7 +119,7 @@ describe('EmailIntegrationStep', () => {
 
         fireEvent.click(screen.getByText(/Back/i))
         expect(mockGoToStep).toHaveBeenCalledWith(
-            WizardStepEnum.SHOPIFY_INTEGRATION
+            WizardStepEnum.SHOPIFY_INTEGRATION,
         )
     })
 

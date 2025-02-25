@@ -1,24 +1,24 @@
-import {render, act, fireEvent, waitFor} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import _noop from 'lodash/noop'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { act, fireEvent, render, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import _noop from 'lodash/noop'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {account} from 'fixtures/account'
-import {billingState} from 'fixtures/billing'
-import {emptyManagedRule} from 'fixtures/rule'
+import { account } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
+import { emptyManagedRule } from 'fixtures/rule'
 import {
     emptyRuleRecipeFixture,
     emptyRuleRecipeFixtureWithSections,
 } from 'fixtures/ruleRecipe'
-import {user} from 'fixtures/users'
-import {createRule} from 'models/rule/resources'
-import {createSection} from 'models/section/resources'
-import {createTag} from 'models/tag/resources'
-import {createView} from 'models/view/resources'
-
+import { user } from 'fixtures/users'
+import { createRule } from 'models/rule/resources'
+import { createSection } from 'models/section/resources'
+import { createTag } from 'models/tag/resources'
+import { createView } from 'models/view/resources'
 import RuleRecipeCard from 'pages/settings/rules/ruleLibrary/components/RuleRecipeCard'
 
 jest.mock('models/view/resources')
@@ -27,7 +27,7 @@ jest.mock('models/tag/resources', () => {
     return {
         ...resource,
         createTag: jest.fn(),
-        fetchTags: jest.fn().mockResolvedValue({data: {data: []}}),
+        fetchTags: jest.fn().mockResolvedValue({ data: { data: [] } }),
     } as Record<string, unknown>
 })
 jest.mock('models/rule/resources')
@@ -35,7 +35,7 @@ jest.mock('models/section/resources', () => {
     const resource = jest.requireActual('models/section/resources')
     return {
         ...resource,
-        createSection: jest.fn().mockResolvedValue({id: 1}),
+        createSection: jest.fn().mockResolvedValue({ id: 1 }),
     } as Record<string, unknown>
 })
 jest.mock('reapop', () => {
@@ -75,7 +75,7 @@ describe('<RuleRecipeCard/>', () => {
             billing: fromJS(billingState),
             currentAccount: fromJS(account),
             currentUser: fromJS(user),
-            integrations: fromJS({integrations: []}),
+            integrations: fromJS({ integrations: [] }),
         })
         createRuleMock.mockReset()
         createViewMock.mockReset()
@@ -84,15 +84,15 @@ describe('<RuleRecipeCard/>', () => {
 
     describe('render', () => {
         it('should render cards for the library', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={defaultStore}>
                     <RuleRecipeCard {...minProps} />
-                </Provider>
+                </Provider>,
             )
             expect(container.firstChild).toMatchSnapshot()
         })
         it('should render install check mark on installed automation rule', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={defaultStore}>
                     <RuleRecipeCard
                         {...minProps}
@@ -102,15 +102,15 @@ describe('<RuleRecipeCard/>', () => {
                         }}
                         isInstalled={true}
                     />
-                </Provider>
+                </Provider>,
             )
             expect(container.firstChild).toMatchSnapshot()
         })
         it('should render open the modal on load when specified', async () => {
-            const {getByRole} = render(
+            const { getByRole } = render(
                 <Provider store={defaultStore}>
                     <RuleRecipeCard {...minProps} isModalOpenOnLoad={true} />
-                </Provider>
+                </Provider>,
             )
             await waitFor(() => {
                 const modal = getByRole('dialog')
@@ -118,10 +118,10 @@ describe('<RuleRecipeCard/>', () => {
             })
         })
         it('should open modal on click', async () => {
-            const {container, getByText, findByRole} = render(
+            const { container, getByText, findByRole } = render(
                 <Provider store={defaultStore}>
                     <RuleRecipeCard {...minProps} />
-                </Provider>
+                </Provider>,
             )
             act(() => {
                 fireEvent.click(getByText('my rule'))
@@ -132,10 +132,10 @@ describe('<RuleRecipeCard/>', () => {
     })
     describe('install', () => {
         it('should install rule on click', async () => {
-            const {getByText, findByRole} = render(
+            const { getByText, findByRole } = render(
                 <Provider store={defaultStore}>
                     <RuleRecipeCard {...minProps} />
-                </Provider>
+                </Provider>,
             )
             act(() => {
                 fireEvent.click(getByText('my rule'))
@@ -154,13 +154,13 @@ describe('<RuleRecipeCard/>', () => {
             expect(createTagMock.mock.calls).toMatchSnapshot()
         })
         it('should install rule and rules in sections on click', async () => {
-            const {getByText, findByRole} = render(
+            const { getByText, findByRole } = render(
                 <Provider store={defaultStore}>
                     <RuleRecipeCard
                         {...minProps}
                         recipe={emptyRuleRecipeFixtureWithSections}
                     />
-                </Provider>
+                </Provider>,
             )
             act(() => {
                 fireEvent.click(getByText('my rule'))
@@ -190,7 +190,7 @@ describe('<RuleRecipeCard/>', () => {
                         isModalOpenOnLoad={true}
                         recipe={emptyRuleRecipeFixtureWithSections}
                     />
-                </Provider>
+                </Provider>,
             )
 
             await waitFor(() => {

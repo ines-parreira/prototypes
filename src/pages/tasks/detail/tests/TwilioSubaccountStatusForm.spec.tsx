@@ -1,12 +1,13 @@
-import {render, waitFor, fireEvent} from '@testing-library/react'
-import MockAdapter from 'axios-mock-adapter'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render, waitFor } from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import client from 'models/api/resources'
-import {RootState, StoreDispatch} from 'state/types'
+import { RootState, StoreDispatch } from 'state/types'
 
 import TwilioSubaccountStatusForm, {
     TwilioSubaccountStatus,
@@ -28,10 +29,10 @@ mockedServer.onGet('/api/integrations/phone/tasks').reply(200, {
 describe('<TwilioSubaccountStatusForm />', () => {
     describe('render()', () => {
         it('should render with the Twillio subaccount details', async () => {
-            const {container, queryByText} = render(
+            const { container, queryByText } = render(
                 <Provider store={store}>
                     <TwilioSubaccountStatusForm />
-                </Provider>
+                </Provider>,
             )
 
             await waitFor(() => {
@@ -42,10 +43,10 @@ describe('<TwilioSubaccountStatusForm />', () => {
         })
 
         it('should allow updating the status', async () => {
-            const {queryByText, getByText} = render(
+            const { queryByText, getByText } = render(
                 <Provider store={store}>
                     <TwilioSubaccountStatusForm />
-                </Provider>
+                </Provider>,
             )
 
             await waitFor(() => {
@@ -57,8 +58,11 @@ describe('<TwilioSubaccountStatusForm />', () => {
                 expect(mockedServer.history.post[0].data).toBe(
                     JSON.stringify({
                         name: 'set_subaccount_status',
-                        params: {status: 'active', sub_account_sid: 'SID_123'},
-                    })
+                        params: {
+                            status: 'active',
+                            sub_account_sid: 'SID_123',
+                        },
+                    }),
                 )
             })
         })

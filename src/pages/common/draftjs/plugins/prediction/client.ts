@@ -1,7 +1,7 @@
-import axios, {AxiosError, AxiosInstance, CancelTokenSource} from 'axios'
+import axios, { AxiosError, AxiosInstance, CancelTokenSource } from 'axios'
 
-import {createClient} from 'models/api/resources'
-import {reportError} from 'utils/errors'
+import { createClient } from 'models/api/resources'
+import { reportError } from 'utils/errors'
 
 export const PREDICTION_REQUEST_TIMEOUT = 2000
 export const PHRASE_PREDICTION_ERROR_TAG_NAME = 'phrase_prediction'
@@ -42,13 +42,13 @@ export class PhrasePredictionClient {
         this.cancelTokenSource = axios.CancelToken.source()
 
         try {
-            const response = await this.client.post<{prediction: string}>(
+            const response = await this.client.post<{ prediction: string }>(
                 this.predictionUrl,
-                {query, context},
+                { query, context },
                 {
                     timeout: PREDICTION_REQUEST_TIMEOUT,
                     cancelToken: this.cancelTokenSource.token,
-                }
+                },
             )
             return response.data.prediction
         } catch (error) {
@@ -111,5 +111,5 @@ export class PhrasePredictionClient {
 
 export default new PhrasePredictionClient(
     window.PHRASE_PREDICTION_URL,
-    window.PHRASE_FEEDBACK_URL
+    window.PHRASE_FEEDBACK_URL,
 )

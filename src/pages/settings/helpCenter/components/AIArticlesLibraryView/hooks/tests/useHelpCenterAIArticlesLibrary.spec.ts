@@ -1,19 +1,19 @@
-import {renderHook, act} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
+import { act, renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {AIArticleToggleOptionValue} from 'models/helpCenter/types'
-import {IntegrationType} from 'models/integration/constants'
-import {useListStoreMappings} from 'models/storeMapping/queries'
+import { AIArticleToggleOptionValue } from 'models/helpCenter/types'
+import { IntegrationType } from 'models/integration/constants'
+import { useListStoreMappings } from 'models/storeMapping/queries'
 import {
     AIArticlesListFixture,
     AILibraryArticleItemsFixture,
 } from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
-import {useGetAIArticles} from 'pages/settings/helpCenter/hooks/useGetAIArticles'
-import {StoreState} from 'state/types'
-import {assumeMock} from 'utils/testing'
+import { useGetAIArticles } from 'pages/settings/helpCenter/hooks/useGetAIArticles'
+import { StoreState } from 'state/types'
+import { assumeMock } from 'utils/testing'
 
-import {useHelpCenterAIArticlesLibrary} from '../useHelpCenterAIArticlesLibrary'
+import { useHelpCenterAIArticlesLibrary } from '../useHelpCenterAIArticlesLibrary'
 
 jest.mock('pages/settings/helpCenter/hooks/useGetAIArticles')
 jest.mock('models/storeMapping/queries')
@@ -36,29 +36,33 @@ describe('useHelpCenterAIArticlesLibrary', () => {
         mockedUseListStoreMappings.mockImplementation(
             () =>
                 ({
-                    data: [{store_id: 1}, {store_id: 2}],
-                }) as unknown as ReturnType<typeof useListStoreMappings>
+                    data: [{ store_id: 1 }, { store_id: 2 }],
+                }) as unknown as ReturnType<typeof useListStoreMappings>,
         )
         mockedUseAppSelector.mockImplementation((selector) =>
             selector({
                 integrations: fromJS({
                     integrations: [
-                        {id: 1, type: IntegrationType.Shopify, name: 'My Shop'},
+                        {
+                            id: 1,
+                            type: IntegrationType.Shopify,
+                            name: 'My Shop',
+                        },
                     ],
                 }),
-            } as unknown as StoreState)
+            } as unknown as StoreState),
         )
     })
 
     it('should return the new AI articles with the correct counters', () => {
-        const {result} = renderHook(() =>
-            useHelpCenterAIArticlesLibrary(1, 'en-US', 'My Shop')
+        const { result } = renderHook(() =>
+            useHelpCenterAIArticlesLibrary(1, 'en-US', 'My Shop'),
         )
 
         expect(mockedUseConditionalGetAIArticles).toHaveBeenCalled()
 
         expect(result.current.articles).toEqual(
-            AILibraryArticleItemsFixture.filter((aiArticle) => aiArticle.isNew)
+            AILibraryArticleItemsFixture.filter((aiArticle) => aiArticle.isNew),
         )
         expect(result.current.isLoading).toBe(false)
 
@@ -70,8 +74,8 @@ describe('useHelpCenterAIArticlesLibrary', () => {
     })
 
     it("should return that it doesn't have any new articles", () => {
-        const {result} = renderHook(() =>
-            useHelpCenterAIArticlesLibrary(1, 'en-US', 'My Shop')
+        const { result } = renderHook(() =>
+            useHelpCenterAIArticlesLibrary(1, 'en-US', 'My Shop'),
         )
 
         // we have new articles, but we didn't generated at least 5 articles
@@ -79,18 +83,18 @@ describe('useHelpCenterAIArticlesLibrary', () => {
     })
 
     it('should select the first article by default', () => {
-        const {result} = renderHook(() =>
-            useHelpCenterAIArticlesLibrary(1, 'en-US', 'My Shop')
+        const { result } = renderHook(() =>
+            useHelpCenterAIArticlesLibrary(1, 'en-US', 'My Shop'),
         )
 
         expect(result.current.selectedArticle).toEqual(
-            AILibraryArticleItemsFixture[0]
+            AILibraryArticleItemsFixture[0],
         )
     })
 
     it('should handle the selection of an article', () => {
-        const {result} = renderHook(() =>
-            useHelpCenterAIArticlesLibrary(1, 'en-US', 'My Shop')
+        const { result } = renderHook(() =>
+            useHelpCenterAIArticlesLibrary(1, 'en-US', 'My Shop'),
         )
 
         act(() => {
@@ -98,27 +102,29 @@ describe('useHelpCenterAIArticlesLibrary', () => {
         })
 
         expect(result.current.selectedArticle).toEqual(
-            AILibraryArticleItemsFixture[1]
+            AILibraryArticleItemsFixture[1],
         )
     })
 
     it('should handle the selection of an article type', () => {
-        const {result} = renderHook(() =>
-            useHelpCenterAIArticlesLibrary(1, 'en-US', 'My Shop')
+        const { result } = renderHook(() =>
+            useHelpCenterAIArticlesLibrary(1, 'en-US', 'My Shop'),
         )
 
         act(() => {
             result.current.setSelectedArticleType(
-                AIArticleToggleOptionValue.Old
+                AIArticleToggleOptionValue.Old,
             )
         })
 
         expect(result.current.selectedArticleType).toBe(
-            AIArticleToggleOptionValue.Old
+            AIArticleToggleOptionValue.Old,
         )
 
         expect(result.current.articles).toEqual(
-            AILibraryArticleItemsFixture.filter((aiArticle) => !aiArticle.isNew)
+            AILibraryArticleItemsFixture.filter(
+                (aiArticle) => !aiArticle.isNew,
+            ),
         )
     })
 
@@ -126,11 +132,11 @@ describe('useHelpCenterAIArticlesLibrary', () => {
         mockedUseListStoreMappings.mockImplementation(
             () =>
                 ({
-                    data: [{store_id: 3}],
-                }) as unknown as ReturnType<typeof useListStoreMappings>
+                    data: [{ store_id: 3 }],
+                }) as unknown as ReturnType<typeof useListStoreMappings>,
         )
-        const {result} = renderHook(() =>
-            useHelpCenterAIArticlesLibrary(1, 'en-US', 'My Shop')
+        const { result } = renderHook(() =>
+            useHelpCenterAIArticlesLibrary(1, 'en-US', 'My Shop'),
         )
 
         expect(result.current.showLinkToConnectEmailToStore).toBe(false)
@@ -140,21 +146,29 @@ describe('useHelpCenterAIArticlesLibrary', () => {
         mockedUseListStoreMappings.mockImplementation(
             () =>
                 ({
-                    data: [{store_id: 3}],
-                }) as unknown as ReturnType<typeof useListStoreMappings>
+                    data: [{ store_id: 3 }],
+                }) as unknown as ReturnType<typeof useListStoreMappings>,
         )
         mockedUseAppSelector.mockImplementation((selector) =>
             selector({
                 integrations: fromJS({
                     integrations: [
-                        {id: 1, type: IntegrationType.Shopify, name: 'My Shop'},
-                        {id: 2, type: IntegrationType.Magento2, name: 'Shop X'},
+                        {
+                            id: 1,
+                            type: IntegrationType.Shopify,
+                            name: 'My Shop',
+                        },
+                        {
+                            id: 2,
+                            type: IntegrationType.Magento2,
+                            name: 'Shop X',
+                        },
                     ],
                 }),
-            } as unknown as StoreState)
+            } as unknown as StoreState),
         )
-        const {result} = renderHook(() =>
-            useHelpCenterAIArticlesLibrary(1, 'en-US', 'My Shop')
+        const { result } = renderHook(() =>
+            useHelpCenterAIArticlesLibrary(1, 'en-US', 'My Shop'),
         )
 
         expect(result.current.hasStoreConnectionOrDefaultStore).toBe(true)
@@ -166,11 +180,19 @@ describe('useHelpCenterAIArticlesLibrary', () => {
             selector({
                 integrations: fromJS({
                     integrations: [
-                        {id: 1, type: IntegrationType.Shopify, name: 'My Shop'},
-                        {id: 2, type: IntegrationType.Magento2, name: 'Shop X'},
+                        {
+                            id: 1,
+                            type: IntegrationType.Shopify,
+                            name: 'My Shop',
+                        },
+                        {
+                            id: 2,
+                            type: IntegrationType.Magento2,
+                            name: 'Shop X',
+                        },
                     ],
                 }),
-            } as unknown as StoreState)
+            } as unknown as StoreState),
         )
         mockedUseConditionalGetAIArticles.mockImplementation(() => {
             return {
@@ -179,8 +201,8 @@ describe('useHelpCenterAIArticlesLibrary', () => {
             } as unknown as ReturnType<typeof useGetAIArticles>
         })
 
-        const {result} = renderHook(() =>
-            useHelpCenterAIArticlesLibrary(1, 'en-US', null)
+        const { result } = renderHook(() =>
+            useHelpCenterAIArticlesLibrary(1, 'en-US', null),
         )
 
         expect(result.current.hasStoreConnectionOrDefaultStore).toBe(false)
@@ -207,14 +229,14 @@ describe('useHelpCenterAIArticlesLibrary', () => {
             isLoading: false,
         })
 
-        const {result} = renderHook(() =>
-            useHelpCenterAIArticlesLibrary(1, 'en-US', 'My Shop')
+        const { result } = renderHook(() =>
+            useHelpCenterAIArticlesLibrary(1, 'en-US', 'My Shop'),
         )
 
         expect(mockedUseConditionalGetAIArticles).toHaveBeenCalled()
 
         expect(result.current.articles).toEqual(
-            AILibraryArticleItemsFixture.filter((aiArticle) => aiArticle.isNew)
+            AILibraryArticleItemsFixture.filter((aiArticle) => aiArticle.isNew),
         )
         expect(result.current.isLoading).toBe(false)
 

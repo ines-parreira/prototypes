@@ -1,48 +1,51 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
-import {useParams} from 'react-router-dom'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import classNames from 'classnames'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { useParams } from 'react-router-dom'
+
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {isPreviewModeActivated} from 'pages/aiAgent/components/StoreConfigForm/StoreConfigForm.utils'
-import {useAiAgentEnabled} from 'pages/aiAgent/hooks/useAiAgentEnabled'
-import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import {useAiAgentOnboardingNotification} from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
-import {useStoreConfiguration} from 'pages/aiAgent/hooks/useStoreConfiguration'
-import {useStoreConfigurationMutation} from 'pages/aiAgent/hooks/useStoreConfigurationMutation'
-import {isAiAgentEnabled} from 'pages/aiAgent/util'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {notify} from 'state/notifications/actions'
+import { isPreviewModeActivated } from 'pages/aiAgent/components/StoreConfigForm/StoreConfigForm.utils'
+import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
+import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
+import { useStoreConfigurationMutation } from 'pages/aiAgent/hooks/useStoreConfigurationMutation'
+import { isAiAgentEnabled } from 'pages/aiAgent/util'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { notify } from 'state/notifications/actions'
+
+import { FeatureSettings } from './FeatureSettings'
 
 import css from './ConnectedChannelsChatView.less'
 import cssEmail from './ConnectedChannelsEmailView.less'
-import {FeatureSettings} from './FeatureSettings'
 
 export const ConnectedChannelsEmailView = () => {
     const isAiAgentOnboardingWizardEnabled =
         useFlags()[FeatureFlagKey.AiAgentOnboardingWizard]
     const isTrialModeAvailable = useFlags()[FeatureFlagKey.AiAgentTrialMode]
 
-    const {shopName} = useParams<{
+    const { shopName } = useParams<{
         shopType: string
         shopName: string
     }>()
-    const aiAgentNavigation = useAiAgentNavigation({shopName})
+    const aiAgentNavigation = useAiAgentNavigation({ shopName })
 
     const dispatch = useAppDispatch()
     const currentAccount = useAppSelector(getCurrentAccountState)
 
     const accountDomain = currentAccount.get('domain')
 
-    const {storeConfiguration, isLoading} = useStoreConfiguration({
+    const { storeConfiguration, isLoading } = useStoreConfiguration({
         shopName,
         accountDomain,
     })
 
-    const {updateSettingsAfterAiAgentEnabled} = useAiAgentEnabled({
+    const { updateSettingsAfterAiAgentEnabled } = useAiAgentEnabled({
         monitoredEmailIntegrations:
             storeConfiguration?.monitoredEmailIntegrations ?? [],
         monitoredChatIntegrations:
@@ -67,7 +70,7 @@ export const ConnectedChannelsEmailView = () => {
     const {
         isLoading: isLoadingOnboardingNotificationState,
         handleOnCancelActivateAiAgentNotification,
-    } = useAiAgentOnboardingNotification({shopName})
+    } = useAiAgentOnboardingNotification({ shopName })
 
     if (isLoading || isLoadingOnboardingNotificationState) {
         return (
@@ -83,7 +86,7 @@ export const ConnectedChannelsEmailView = () => {
     const isAIAgentToggled = isAiAgentEnabled(
         deactivatedDatetime !== undefined
             ? deactivatedDatetime
-            : new Date().toISOString()
+            : new Date().toISOString(),
     )
 
     const isDisabled =
@@ -127,7 +130,7 @@ export const ConnectedChannelsEmailView = () => {
             void dispatch(
                 notify({
                     message: 'Could not update store configuration',
-                })
+                }),
             )
         }
         if (!isAIAgentToggled && isAiAgentOnboardingWizardEnabled) {

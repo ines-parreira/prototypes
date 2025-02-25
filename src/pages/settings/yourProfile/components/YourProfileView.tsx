@@ -1,21 +1,23 @@
-import {SelectField} from '@gorgias/merchant-ui-kit'
+import React, { Component, SyntheticEvent } from 'react'
+
 import classnames from 'classnames'
-import {Map} from 'immutable'
+import { Map } from 'immutable'
 import _isEqual from 'lodash/isEqual'
 import _merge from 'lodash/merge'
 import _omit from 'lodash/omit'
 import _pick from 'lodash/pick'
 import _sortBy from 'lodash/sortBy'
 import moment from 'moment-timezone'
-import React, {Component, SyntheticEvent} from 'react'
-import {Link} from 'react-router-dom'
-import {Form, FormGroup, FormText, Label} from 'reactstrap'
+import { Link } from 'react-router-dom'
+import { Form, FormGroup, FormText, Label } from 'reactstrap'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {UploadType} from 'common/types'
-import {EditableUserProfile, User, UserSetting} from 'config/types/user'
-import {withTheme} from 'core/theme'
-import type {HelpdeskThemeName, WithThemeProps} from 'core/theme'
+import { SelectField } from '@gorgias/merchant-ui-kit'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { UploadType } from 'common/types'
+import { EditableUserProfile, User, UserSetting } from 'config/types/user'
+import { withTheme } from 'core/theme'
+import type { HelpdeskThemeName, WithThemeProps } from 'core/theme'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import Button from 'pages/common/components/button/Button'
 import Group from 'pages/common/components/layout/Group'
@@ -39,14 +41,14 @@ const timezones = _sortBy(
     More info at: https://github.com/moment/moment-timezone/issues/498
     */
         .filter((name) => name !== 'US/Pacific-New'),
-    (item) => moment.tz(item).utcOffset()
+    (item) => moment.tz(item).utcOffset(),
 )
 
 const timezoneToOptionMap = new global.Map(
     timezones.map((timezone) => [
         timezone,
-        {value: `(UTC${moment.tz(timezone).format('Z')}) ${timezone}`},
-    ])
+        { value: `(UTC${moment.tz(timezone).format('Z')}) ${timezone}` },
+    ]),
 )
 
 const defaultContent: Pick<
@@ -65,7 +67,7 @@ const defaultContent: Pick<
     bio: '',
     timezone: '',
     language: '',
-    meta: {profile_picture_url: null},
+    meta: { profile_picture_url: null },
 }
 
 type Props = {
@@ -73,7 +75,7 @@ type Props = {
     currentUser: Map<any, any>
     submitSetting: (
         object: UserSetting,
-        notification: boolean
+        notification: boolean,
     ) => Promise<unknown>
     preferences: Map<any, any>
 } & WithThemeProps
@@ -111,7 +113,7 @@ export class YourProfileView extends Component<Props, State> {
                 preferences: props.preferences.get('data'),
                 hasChangedEmail: false,
             },
-            this._getForm(props)
+            this._getForm(props),
         )
 
         if (!this.props.currentUser.isEmpty()) {
@@ -133,7 +135,7 @@ export class YourProfileView extends Component<Props, State> {
 
         return _pick(
             props.currentUser.toJS(),
-            Object.keys(defaultContent)
+            Object.keys(defaultContent),
         ) as typeof defaultContent
     }
 
@@ -155,21 +157,21 @@ export class YourProfileView extends Component<Props, State> {
             this.state,
             // metadata is not editable from this component
             // so there is no point to send potential outdated data.
-            Object.keys(_omit(defaultContent, ['meta', 'language']))
+            Object.keys(_omit(defaultContent, ['meta', 'language'])),
         ) as EditableUserProfile
 
-        this.setState({isLoading: true})
+        this.setState({ isLoading: true })
 
         const newSettings = this.props.preferences
             .update('data', (data: Map<any, any>) =>
-                data.mergeDeep(this.state.preferences)
+                data.mergeDeep(this.state.preferences),
             )
             .toJS()
 
         if (
             !_isEqual(
                 (this.props.preferences.get('data') as Map<string, any>).toJS(),
-                this.state.preferences.toJS()
+                this.state.preferences.toJS(),
             )
         ) {
             logEvent(SegmentEvent.UserSettingsUpdated, {
@@ -185,7 +187,7 @@ export class YourProfileView extends Component<Props, State> {
             this.props.submitSetting(newSettings, false),
         ])
 
-        this.setState({isLoading: false})
+        this.setState({ isLoading: false })
 
         if (user.email === normalizedValues.email) {
             this.setState({
@@ -214,7 +216,7 @@ export class YourProfileView extends Component<Props, State> {
     }
 
     render() {
-        const {isLoading, hasChangedEmail, password_confirmation} = this.state
+        const { isLoading, hasChangedEmail, password_confirmation } = this.state
 
         return (
             <div className="full-width">
@@ -243,7 +245,7 @@ export class YourProfileView extends Component<Props, State> {
                                         value={this.state.name}
                                         onChange={(name) => {
                                             this.isDirty = true
-                                            this.setState({name})
+                                            this.setState({ name })
                                         }}
                                         className={settingsCss.inputField}
                                     />
@@ -269,7 +271,7 @@ export class YourProfileView extends Component<Props, State> {
                                             isRequired
                                             value={password_confirmation}
                                             onChange={(
-                                                password_confirmation
+                                                password_confirmation,
                                             ) => {
                                                 this.isDirty = true
                                                 this.setState({
@@ -296,7 +298,7 @@ export class YourProfileView extends Component<Props, State> {
                                         value={this.state.bio}
                                         onChange={(bio) => {
                                             this.isDirty = true
-                                            this.setState({bio})
+                                            this.setState({ bio })
                                         }}
                                         className={settingsCss.inputField}
                                     />
@@ -313,7 +315,7 @@ export class YourProfileView extends Component<Props, State> {
                                             options={timezones}
                                             optionMapper={(timezone) =>
                                                 timezoneToOptionMap.get(
-                                                    timezone
+                                                    timezone,
                                                 )!
                                             }
                                             selectedOption={this.state.timezone}
@@ -328,12 +330,12 @@ export class YourProfileView extends Component<Props, State> {
                                     <DateAndTimeFormatting
                                         dateFormat={
                                             this.state.preferences.get(
-                                                'date_format'
+                                                'date_format',
                                             ) as string
                                         }
                                         timeFormat={
                                             this.state.preferences.get(
-                                                'time_format'
+                                                'time_format',
                                             ) as string
                                         }
                                         onSelectDateFormat={(value: string) => {
@@ -342,7 +344,7 @@ export class YourProfileView extends Component<Props, State> {
                                                 preferences:
                                                     this.state.preferences.set(
                                                         'date_format',
-                                                        value
+                                                        value,
                                                     ),
                                             })
                                         }}
@@ -352,7 +354,7 @@ export class YourProfileView extends Component<Props, State> {
                                                 preferences:
                                                     this.state.preferences.set(
                                                         'time_format',
-                                                        value
+                                                        value,
                                                     ),
                                             })
                                         }}
@@ -362,7 +364,7 @@ export class YourProfileView extends Component<Props, State> {
                             <FormGroup
                                 className={classnames(
                                     settingsCss.profilePicture,
-                                    settingsCss.inputField
+                                    settingsCss.inputField,
                                 )}
                             >
                                 <Label className="control-label">
@@ -389,7 +391,7 @@ export class YourProfileView extends Component<Props, State> {
                                             },
                                             () => {
                                                 void this._saveProfilePicture()
-                                            }
+                                            },
                                         )
                                     }
                                     uploadType={UploadType.Profile}
@@ -415,12 +417,12 @@ export class YourProfileView extends Component<Props, State> {
                                                         {
                                                             profile_picture_url:
                                                                 null,
-                                                        }
+                                                        },
                                                     ),
                                                 },
                                                 () => {
                                                     void this._saveProfilePicture()
-                                                }
+                                                },
                                             )
                                         }}
                                     >
@@ -450,7 +452,7 @@ export class YourProfileView extends Component<Props, State> {
                                     <FormGroup
                                         className={classnames(
                                             settingsCss.inputField,
-                                            'body-regular'
+                                            'body-regular',
                                         )}
                                     >
                                         <Group
@@ -461,7 +463,7 @@ export class YourProfileView extends Component<Props, State> {
                                                 name="prefill_best_macro"
                                                 isToggled={
                                                     this.state.preferences.get(
-                                                        'prefill_best_macro'
+                                                        'prefill_best_macro',
                                                     ) as boolean
                                                 }
                                                 onClick={(value: boolean) => {
@@ -470,7 +472,7 @@ export class YourProfileView extends Component<Props, State> {
                                                         preferences:
                                                             this.state.preferences.set(
                                                                 'prefill_best_macro',
-                                                                value
+                                                                value,
                                                             ),
                                                     })
                                                 }}
@@ -478,7 +480,7 @@ export class YourProfileView extends Component<Props, State> {
                                                 <i
                                                     className={classnames(
                                                         'material-icons',
-                                                        settingsCss.AIIcon
+                                                        settingsCss.AIIcon,
                                                     )}
                                                 >
                                                     auto_awesome
@@ -511,7 +513,7 @@ export class YourProfileView extends Component<Props, State> {
                                                 isToggled={
                                                     this.state.preferences.get(
                                                         'show_macros_suggestions',
-                                                        true
+                                                        true,
                                                     ) as boolean
                                                 }
                                                 onClick={(value: boolean) => {
@@ -520,7 +522,7 @@ export class YourProfileView extends Component<Props, State> {
                                                         preferences:
                                                             this.state.preferences.set(
                                                                 'show_macros_suggestions',
-                                                                value
+                                                                value,
                                                             ),
                                                     })
                                                 }}
@@ -528,7 +530,7 @@ export class YourProfileView extends Component<Props, State> {
                                                 <i
                                                     className={classnames(
                                                         'material-icons',
-                                                        settingsCss.AIIcon
+                                                        settingsCss.AIIcon,
                                                     )}
                                                 >
                                                     auto_awesome
@@ -561,7 +563,7 @@ export class YourProfileView extends Component<Props, State> {
                                                 name="show_macros"
                                                 isToggled={
                                                     this.state.preferences.get(
-                                                        'show_macros'
+                                                        'show_macros',
                                                     ) as boolean
                                                 }
                                                 onClick={(value: boolean) => {
@@ -570,7 +572,7 @@ export class YourProfileView extends Component<Props, State> {
                                                         preferences:
                                                             this.state.preferences.set(
                                                                 'show_macros',
-                                                                value
+                                                                value,
                                                             ),
                                                     })
                                                 }}
@@ -602,19 +604,19 @@ export class YourProfileView extends Component<Props, State> {
                                     forwardCalls={
                                         this.state.preferences.get(
                                             'forward_calls',
-                                            false
+                                            false,
                                         ) as boolean
                                     }
                                     forwardingPhoneNumber={
                                         this.state.preferences.get(
                                             'forwarding_phone_number',
-                                            ''
+                                            '',
                                         ) as string
                                     }
                                     forwardWhenOffline={
                                         this.state.preferences.get(
                                             'forward_when_offline',
-                                            false
+                                            false,
                                         ) as boolean
                                     }
                                     setPreference={(preferenceKey, value) => {
@@ -623,7 +625,7 @@ export class YourProfileView extends Component<Props, State> {
                                             preferences:
                                                 this.state.preferences.set(
                                                     preferenceKey,
-                                                    value
+                                                    value,
                                                 ),
                                         })
                                     }}

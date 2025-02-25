@@ -1,17 +1,16 @@
-import {useEffect} from 'react'
+import { useEffect } from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
-
-import {ContactFormAutomationSettings} from 'models/contactForm/types'
-import {useContactFormApi} from 'pages/settings/contactForm/hooks/useContactFormApi'
+import { ContactFormAutomationSettings } from 'models/contactForm/types'
+import { useContactFormApi } from 'pages/settings/contactForm/hooks/useContactFormApi'
 import {
     contactFormsAutomationSettingsFetched,
     getContactFormsAutomationSettings,
 } from 'state/entities/contactForm/contactFormsAutomationSettings'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 const useContactFormsAutomationSettings = (contactFormIds: number[]) => {
     const dispatch = useAppDispatch()
@@ -22,11 +21,11 @@ const useContactFormsAutomationSettings = (contactFormIds: number[]) => {
     } = useContactFormApi()
 
     const contactFormsAutomationSettings = useAppSelector(
-        getContactFormsAutomationSettings
+        getContactFormsAutomationSettings,
     )
 
     const [
-        {loading: isFetchPending},
+        { loading: isFetchPending },
         handleContactFormAutomationSettingsFetch,
     ] = useAsyncFn(
         async (contactFormIds: number[]) => {
@@ -37,76 +36,76 @@ const useContactFormsAutomationSettings = (contactFormIds: number[]) => {
             try {
                 const responses = await Promise.all(
                     contactFormIds.map((contactFormId) =>
-                        fetchAutomationSettingsByContactFormId(contactFormId)
-                    )
+                        fetchAutomationSettingsByContactFormId(contactFormId),
+                    ),
                 )
                 const automationSettingsIdMap = responses
                     .filter(
                         (
-                            response
+                            response,
                         ): response is {
                             type: string
                             payload: {
                                 contactFormId: string
                                 automationSettings: ContactFormAutomationSettings
                             }
-                        } => Boolean(response?.payload)
+                        } => Boolean(response?.payload),
                     )
                     .map((response) => response?.payload)
 
                 void dispatch(
                     contactFormsAutomationSettingsFetched(
-                        automationSettingsIdMap
-                    )
+                        automationSettingsIdMap,
+                    ),
                 )
             } catch {
                 void dispatch(
                     notify({
                         message: 'Failed to fetch',
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
             }
         },
-        [isReady]
+        [isReady],
     )
 
     const [
-        {loading: isUpdatePending},
+        { loading: isUpdatePending },
         handleContactFormAutomationSettingsUpdate,
     ] = useAsyncFn(
         async (
             contactFormId: number,
             automationSettings: Partial<ContactFormAutomationSettings>,
-            notificationMessage?: string
+            notificationMessage?: string,
         ) => {
             try {
                 await upsertAutomationSettingsByContactFormId(
                     contactFormId,
-                    automationSettings
+                    automationSettings,
                 )
 
                 void dispatch(
                     notify({
                         message: notificationMessage ?? 'Successfully updated',
                         status: NotificationStatus.Success,
-                    })
+                    }),
                 )
             } catch {
                 void dispatch(
                     notify({
                         message: 'Failed to update',
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
             }
         },
-        []
+        [],
     )
 
     useEffect(() => {
         const valuesMissing = contactFormIds.filter(
-            (id) => !(id.toString() in contactFormsAutomationSettings)
+            (id) => !(id.toString() in contactFormsAutomationSettings),
         )
 
         if (valuesMissing.length) {

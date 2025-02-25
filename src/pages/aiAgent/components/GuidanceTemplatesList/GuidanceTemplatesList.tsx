@@ -1,12 +1,13 @@
 import React from 'react'
 
-import {SegmentEvent, logEvent} from 'common/segment'
+import { logEvent, SegmentEvent } from 'common/segment'
 import history from 'pages/history'
 
-import {useAiAgentNavigation} from '../../hooks/useAiAgentNavigation'
-import {GuidanceTemplate} from '../../types'
-import {CreateNewGuidanceCard} from '../CreateNewGuidanceCard/CreateNewGuidanceCard'
-import {GuidanceTemplateCard} from '../GuidanceTemplateCard/GuidanceTemplateCard'
+import { useAiAgentNavigation } from '../../hooks/useAiAgentNavigation'
+import { GuidanceTemplate } from '../../types'
+import { CreateNewGuidanceCard } from '../CreateNewGuidanceCard/CreateNewGuidanceCard'
+import { GuidanceTemplateCard } from '../GuidanceTemplateCard/GuidanceTemplateCard'
+
 import css from './GuidanceTemplatesList.less'
 
 type Props = {
@@ -20,7 +21,7 @@ export const GuidanceTemplatesList = ({
     shopName,
     source,
 }: Props) => {
-    const {routes} = useAiAgentNavigation({shopName})
+    const { routes } = useAiAgentNavigation({ shopName })
 
     const onTemplateClick = (template: GuidanceTemplate) => {
         logEvent(SegmentEvent.AiAgentGuidanceCardClicked, {

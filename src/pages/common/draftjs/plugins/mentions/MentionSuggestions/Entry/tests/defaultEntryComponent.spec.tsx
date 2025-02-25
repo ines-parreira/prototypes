@@ -1,11 +1,11 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
 
 import DefaultEntryComponent from '../DefaultEntryComponent'
 
 describe('DefaultEntryComponent', () => {
     it('should render', () => {
-        const {container} = render(
+        const { container } = render(
             DefaultEntryComponent({
                 mention: fromJS({
                     name: 'Marie Curie',
@@ -18,7 +18,7 @@ describe('DefaultEntryComponent', () => {
                 theme: {
                     mentionSuggestionsEntryText: 'my-class-name',
                 },
-            })
+            }),
         )
 
         expect(container.firstChild).toMatchSnapshot()

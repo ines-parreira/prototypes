@@ -1,6 +1,6 @@
-import React, {useRef, useState} from 'react'
+import React, { useRef, useState } from 'react'
 
-import {ReturnsDropdownOptionsList} from 'models/selfServiceConfiguration/constants'
+import { ReturnsDropdownOptionsList } from 'models/selfServiceConfiguration/constants'
 import {
     FilterOperatorEnum,
     SelfServiceConfigurationFilter,
@@ -21,7 +21,7 @@ type Props = {
     onChange: (eligibility?: SelfServiceConfigurationFilter) => void
 }
 
-const ReturnOrderEligibility = ({eligibility, onChange}: Props) => {
+const ReturnOrderEligibility = ({ eligibility, onChange }: Props) => {
     const [isConditionSelectOpen, setIsConditionSelectOpen] = useState(false)
     const targetRef = useRef<HTMLDivElement>(null)
     const floatingRef = useRef<HTMLDivElement>(null)
@@ -45,7 +45,7 @@ const ReturnOrderEligibility = ({eligibility, onChange}: Props) => {
     }
 
     const value = ReturnsDropdownOptionsList.find(
-        (option) => option.value === eligibility?.key
+        (option) => option.value === eligibility?.key,
     )?.label
 
     return (
@@ -85,7 +85,7 @@ const ReturnOrderEligibility = ({eligibility, onChange}: Props) => {
                                                 onClick={handleKeyChange}
                                                 shouldCloseOnSelect
                                             />
-                                        )
+                                        ),
                                     )}
                                 </DropdownBody>
                             </Dropdown>

@@ -1,5 +1,5 @@
-import {checkIfTrackerIsEnabled} from 'services/activityTracker/utils'
-import {getLDClient} from 'utils/launchDarkly'
+import { checkIfTrackerIsEnabled } from 'services/activityTracker/utils'
+import { getLDClient } from 'utils/launchDarkly'
 
 jest.mock('utils/launchDarkly')
 const variationMock = getLDClient().variation as jest.Mock

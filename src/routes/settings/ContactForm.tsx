@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {Route, Switch} from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 
 import {
     CONTACT_FORM_ABOUT_PATH,
@@ -9,14 +9,13 @@ import {
     CONTACT_FORM_FORMS_PATH,
     CONTACT_FORM_SETTINGS_PATH,
 } from 'pages/settings/contactForm/constants'
-
 import ContactFormCreateView from 'pages/settings/contactForm/views/ContactFormCreateView'
 import ContactFormSettingsView from 'pages/settings/contactForm/views/ContactFormSettingsView'
 import ContactFormStartView from 'pages/settings/contactForm/views/ContactFormStartView'
-import {HelpCenterApiClientProvider} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import {SupportedLocalesProvider} from 'pages/settings/helpCenter/providers/SupportedLocales'
+import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import { SupportedLocalesProvider } from 'pages/settings/helpCenter/providers/SupportedLocales'
 
-import {renderAppSettings} from './helpers/settingsRenderer'
+import { renderAppSettings } from './helpers/settingsRenderer'
 
 export function ContactForm() {
     return (

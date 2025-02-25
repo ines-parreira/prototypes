@@ -1,24 +1,24 @@
+import React, { useMemo } from 'react'
+
 import moment from 'moment'
 
-import React, {useMemo} from 'react'
-
-import {useAIAgentUserId} from 'hooks/reporting/automate/useAIAgentUserId'
-import {useAutomateMetricsTimeSeries} from 'hooks/reporting/automate/useAutomationDataset'
-import {useNewAutomateFilters} from 'hooks/reporting/automate/useNewAutomateFilters'
-import {calculateGreyArea} from 'hooks/reporting/automate/utils'
+import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
+import { useAutomateMetricsTimeSeries } from 'hooks/reporting/automate/useAutomationDataset'
+import { useNewAutomateFilters } from 'hooks/reporting/automate/useNewAutomateFilters'
+import { calculateGreyArea } from 'hooks/reporting/automate/utils'
 import useAppSelector from 'hooks/useAppSelector'
-import {FilterKey} from 'models/stat/types'
-import {AUTOMATED_INTERACTION_TOOLTIP} from 'pages/automate/automate-metrics/constants'
+import { FilterKey } from 'models/stat/types'
+import { AUTOMATED_INTERACTION_TOOLTIP } from 'pages/automate/automate-metrics/constants'
 import {
     getGreyAreaHint,
     getTimeSeriesFormattedData,
 } from 'pages/stats/automate/overview/utils'
 import ChartCard from 'pages/stats/ChartCard'
-import {default as LineChart} from 'pages/stats/common/components/charts/LineChart/LineChart'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-import {SHORT_FORMAT} from 'pages/stats/common/utils'
-import {DashboardChartProps} from 'pages/stats/custom-reports/types'
-import {getStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
+import { default as LineChart } from 'pages/stats/common/components/charts/LineChart/LineChart'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
+import { SHORT_FORMAT } from 'pages/stats/common/utils'
+import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { getStatsFiltersWithLogicalOperators } from 'state/stats/selectors'
 
 const AUTOMATED_INTERACTIONS_LABEL = 'AI Agent'
 
@@ -41,23 +41,23 @@ export function AutomatedInteractionsOverTimeChart({
                 values: [Number(aiAgentUserId)],
             },
         }),
-        [aiAgentUserId, statsFilters]
+        [aiAgentUserId, statsFilters],
     )
 
-    const {userTimezone, granularity} = useNewAutomateFilters()
+    const { userTimezone, granularity } = useNewAutomateFilters()
     const timeseries = useAutomateMetricsTimeSeries(
         statsFiltersWithAiAgent,
         userTimezone,
-        granularity
+        granularity,
     )
 
     const greyArea = useMemo(
         () =>
             calculateGreyArea(
                 moment(statsFilters.period.start_datetime),
-                moment(statsFilters.period.end_datetime)
+                moment(statsFilters.period.end_datetime),
             ),
-        [statsFilters.period.end_datetime, statsFilters.period.start_datetime]
+        [statsFilters.period.end_datetime, statsFilters.period.start_datetime],
     )
 
     const greyAreaChartParam = useMemo(
@@ -68,20 +68,20 @@ export function AutomatedInteractionsOverTimeChart({
                       end: greyArea.to.format(SHORT_FORMAT),
                   }
                 : undefined,
-        [greyArea]
+        [greyArea],
     )
 
-    const {automatedInteractionByEventTypesTimeSeriesData} =
+    const { automatedInteractionByEventTypesTimeSeriesData } =
         getTimeSeriesFormattedData(timeseries, granularity, greyArea)
 
     const data = automatedInteractionByEventTypesTimeSeriesData.find(
-        (item) => item.label === AUTOMATED_INTERACTIONS_LABEL
+        (item) => item.label === AUTOMATED_INTERACTIONS_LABEL,
     )
 
     return (
         <ChartCard
             title={AUTOMATED_INTERACTIONS_OVER_TIME_CHART_TITLE}
-            hint={{title: AUTOMATED_INTERACTION_TOOLTIP}}
+            hint={{ title: AUTOMATED_INTERACTION_TOOLTIP }}
             {...getGreyAreaHint(greyArea)}
             chartId={chartId}
             dashboard={dashboard}

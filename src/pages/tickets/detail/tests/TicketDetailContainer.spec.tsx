@@ -1,42 +1,44 @@
-import {useAgentActivity} from '@gorgias/realtime'
-import {QueryClientProvider} from '@tanstack/react-query'
-import {act, waitFor, fireEvent} from '@testing-library/react'
+import React, { ComponentProps } from 'react'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { act, fireEvent, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
-import {createMemoryHistory} from 'history'
-import {fromJS, Map} from 'immutable'
+import { createMemoryHistory } from 'history'
+import { fromJS, Map } from 'immutable'
 import moment from 'moment'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
-import {logEvent, SegmentEvent} from 'common/segment'
+import { useAgentActivity } from '@gorgias/realtime'
+
+import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
+import { logEvent, SegmentEvent } from 'common/segment'
 import useFlag from 'core/flags/hooks/useFlag'
-import {OBJECT_TYPES} from 'custom-fields/constants'
-import {useCustomFieldsConditionsEvaluationResults} from 'custom-fields/hooks/useCustomFieldsConditionsEvaluationResults'
+import { OBJECT_TYPES } from 'custom-fields/constants'
+import { useCustomFieldsConditionsEvaluationResults } from 'custom-fields/hooks/useCustomFieldsConditionsEvaluationResults'
 import {
     ticketDropdownFieldDefinition,
     ticketInputFieldDefinition,
 } from 'fixtures/customField'
 import client from 'models/api/resources'
-import {MacroActionName} from 'models/macroAction/types'
+import { MacroActionName } from 'models/macroAction/types'
 import * as voiceCallQueries from 'models/voiceCall/queries'
 import useGoToNextTicket from 'pages/tickets/detail/components/TicketNavigation/hooks/useGoToNextTicket'
 import useGoToPreviousTicket from 'pages/tickets/detail/components/TicketNavigation/hooks/useGoToPreviousTicket'
 import localForageManager from 'services/localForageManager/localForageManager'
 import pendingMessageManager from 'services/pendingMessageManager/pendingMessageManager'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
-import {useSplitTicketView} from 'split-ticket-view-toggle'
-import {initialState as currentUser} from 'state/currentUser/reducers'
+import { useSplitTicketView } from 'split-ticket-view-toggle'
+import { initialState as currentUser } from 'state/currentUser/reducers'
 import {
     TicketMessageActionValidationError,
     TicketMessageInvalidSendDataError,
 } from 'state/newMessage/errors'
-import {triggerTicketFieldsErrors} from 'state/ticket/actions'
+import { triggerTicketFieldsErrors } from 'state/ticket/actions'
 import * as ticketUtils from 'state/ticket/utils'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import * as customFieldsUtils from 'utils/customFields'
 import {
     assumeMock,
@@ -47,7 +49,7 @@ import {
 
 import TicketView from '../components/TicketView'
 import useTicketActivityTracking from '../hooks/useTicketActivityTracking'
-import {TicketDetailContainer} from '../TicketDetailContainer'
+import { TicketDetailContainer } from '../TicketDetailContainer'
 
 const mockedServer = new MockAdapter(client)
 const queryClient = mockQueryClient()
@@ -67,14 +69,14 @@ const voiceCallsSpy = jest.spyOn(voiceCallQueries, 'useListVoiceCalls')
 jest.mock('services/shortcutManager/shortcutManager')
 jest.mock('../components/TicketView', () => {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const {TicketStatus} = require('business/types/ticket')
-    return ({submit, setStatus}: ComponentProps<typeof TicketView>) => (
+    const { TicketStatus } = require('business/types/ticket')
+    return ({ submit, setStatus }: ComponentProps<typeof TicketView>) => (
         <div>
             <div
                 data-testid="TicketView-submit"
                 onClick={() => {
                     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-                    submit({status: TicketStatus.Closed})
+                    submit({ status: TicketStatus.Closed })
                 }}
             />
             <div
@@ -123,7 +125,7 @@ jest.mock('services/activityTracker')
 
 jest.spyOn(customFieldsUtils, 'mergeFieldsStateWithMacroValues')
 const spiedMergeFieldsStateWithMacroValues = assumeMock(
-    customFieldsUtils.mergeFieldsStateWithMacroValues
+    customFieldsUtils.mergeFieldsStateWithMacroValues,
 )
 
 jest.mock('split-ticket-view-toggle/hooks/useSplitTicketView')
@@ -131,13 +133,13 @@ const useSplitTicketViewMock = useSplitTicketView as jest.Mock
 
 const mockGoToPreviousTicket = jest.fn()
 jest.mock(
-    'pages/tickets/detail/components/TicketNavigation/hooks/useGoToPreviousTicket'
+    'pages/tickets/detail/components/TicketNavigation/hooks/useGoToPreviousTicket',
 )
 const mockUseGoToPreviousTicket = useGoToPreviousTicket as jest.Mock
 
 const mockGoToNextTicket = jest.fn()
 jest.mock(
-    'pages/tickets/detail/components/TicketNavigation/hooks/useGoToNextTicket'
+    'pages/tickets/detail/components/TicketNavigation/hooks/useGoToNextTicket',
 )
 const mockUseGoToNextTicket = useGoToNextTicket as jest.Mock
 
@@ -151,7 +153,7 @@ jest.mock(
             evaluationResults: [],
             conditionsLoading: false,
         })),
-    })
+    }),
 )
 
 jest.mock('@gorgias/realtime')
@@ -258,7 +260,7 @@ describe('TicketDetailContainer component', () => {
         setStatusMock.mockImplementation((status, callback) => {
             act(callback)
         })
-        useSplitTicketViewMock.mockReturnValue({isEnabled: false})
+        useSplitTicketViewMock.mockReturnValue({ isEnabled: false })
         mockUseGoToPreviousTicket.mockReturnValue({
             goToTicket: mockGoToPreviousTicket,
             isEnabled: false,
@@ -281,7 +283,7 @@ describe('TicketDetailContainer component', () => {
     })
 
     it('should render container for new ticket', () => {
-        const {container} = renderWithRouter(
+        const { container } = renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockedStore}>
                     <TicketDetailContainer {...minProps} />
@@ -290,7 +292,7 @@ describe('TicketDetailContainer component', () => {
             {
                 path: '/foo/:ticketId',
                 route: '/foo/new',
-            }
+            },
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -306,7 +308,7 @@ describe('TicketDetailContainer component', () => {
             {
                 path: '/foo/:ticketId',
                 route: '/foo/new',
-            }
+            },
         )
 
         expect(document.title).toEqual('New ticket')
@@ -322,7 +324,7 @@ describe('TicketDetailContainer component', () => {
             {
                 path: '/foo/:ticketId',
                 route: '/foo/new?customer=1',
-            }
+            },
         )
 
         expect(minProps.fetchCustomer).toBeCalledWith('1')
@@ -335,7 +337,7 @@ describe('TicketDetailContainer component', () => {
             email: 'pizza@pepperoni.com',
         }) as Map<any, any>
 
-        const {rerender} = renderWithRouter(
+        const { rerender } = renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockedStore}>
                     <TicketDetailContainer {...minProps} />
@@ -344,7 +346,7 @@ describe('TicketDetailContainer component', () => {
             {
                 path: '/foo/:ticketId',
                 route: '/foo/new?customer=1',
-            }
+            },
         )
 
         rerender(
@@ -355,16 +357,16 @@ describe('TicketDetailContainer component', () => {
                         activeCustomer={activeCustomer}
                     />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(minProps.setCustomer).toBeCalledWith(
-            activeCustomer.set('address', activeCustomer.get('email'))
+            activeCustomer.set('address', activeCustomer.get('email')),
         )
     })
 
     it('should not go to next ticket when setting status closed and history is open', () => {
-        const {getByTestId} = renderWithRouter(
+        const { getByTestId } = renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockedStore}>
                     <TicketDetailContainer
@@ -373,7 +375,7 @@ describe('TicketDetailContainer component', () => {
                         canSendMessage
                         ticket={existingTicket.setIn(
                             ['_internal', 'displayHistory'],
-                            true
+                            true,
                         )}
                         newMessage={fromJS({
                             newMessage: {
@@ -389,7 +391,7 @@ describe('TicketDetailContainer component', () => {
             {
                 path: '/foo/:ticketId',
                 route: `/foo/${existingTicket.get('id') as string}`,
-            }
+            },
         )
 
         userEvent.click(getByTestId('TicketView-submit'))
@@ -397,7 +399,7 @@ describe('TicketDetailContainer component', () => {
     })
 
     it('should go to next ticket when setting status closed and history is closed', async () => {
-        const {getByTestId} = renderWithRouter(
+        const { getByTestId } = renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockedStore}>
                     <TicketDetailContainer
@@ -406,7 +408,7 @@ describe('TicketDetailContainer component', () => {
                         canSendMessage
                         ticket={existingTicket.setIn(
                             ['_internal', 'displayHistory'],
-                            false
+                            false,
                         )}
                         newMessage={fromJS({
                             newMessage: {
@@ -422,7 +424,7 @@ describe('TicketDetailContainer component', () => {
             {
                 path: '/foo/:ticketId',
                 route: `/foo/${existingTicket.get('id') as string}`,
-            }
+            },
         )
 
         userEvent.click(getByTestId('TicketView-submit'))
@@ -431,7 +433,7 @@ describe('TicketDetailContainer component', () => {
 
     it('should use the close callback prop when setting status closed and history is closed', async () => {
         const mockCallback = jest.fn()
-        const {getByTestId} = renderWithRouter(
+        const { getByTestId } = renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockedStore}>
                     <TicketDetailContainer
@@ -440,7 +442,7 @@ describe('TicketDetailContainer component', () => {
                         canSendMessage
                         ticket={existingTicket.setIn(
                             ['_internal', 'displayHistory'],
-                            false
+                            false,
                         )}
                         newMessage={fromJS({
                             newMessage: {
@@ -457,7 +459,7 @@ describe('TicketDetailContainer component', () => {
             {
                 path: '/foo/:ticketId',
                 route: `/foo/${existingTicket.get('id') as string}`,
-            }
+            },
         )
 
         userEvent.click(getByTestId('TicketView-submit'))
@@ -471,7 +473,7 @@ describe('TicketDetailContainer component', () => {
         }
 
         const route = '/foo/new?customer=1'
-        const history = createMemoryHistory({initialEntries: [route]})
+        const history = createMemoryHistory({ initialEntries: [route] })
         history.location.state = {
             receiver: expectedReceiver,
         }
@@ -485,19 +487,19 @@ describe('TicketDetailContainer component', () => {
                 path: '/foo/:ticketId',
                 route,
                 history,
-            }
+            },
         )
 
         expect(minProps.setReceivers).toBeCalledWith(
             {
                 to: [expectedReceiver],
             },
-            false
+            false,
         )
     })
 
     it('should update cursor of the view when the id of the ticket changes', () => {
-        const activeView = fromJS({order_by: 'updated_datetime'}) as Map<
+        const activeView = fromJS({ order_by: 'updated_datetime' }) as Map<
             any,
             any
         >
@@ -505,7 +507,7 @@ describe('TicketDetailContainer component', () => {
             id: 9999,
             updated_datetime: '2018-12-20',
         }) as Map<any, any>
-        const {rerender} = renderWithRouter(
+        const { rerender } = renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockedStore}>
                     <TicketDetailContainer {...minProps} />
@@ -514,7 +516,7 @@ describe('TicketDetailContainer component', () => {
             {
                 path: '/foo/:ticketId',
                 route: '/foo/new?customer=1',
-            }
+            },
         )
 
         rerender(
@@ -526,21 +528,21 @@ describe('TicketDetailContainer component', () => {
                         ticket={newTicket}
                     />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(minProps.updateCursor).toBeCalledWith(
-            newTicket.get(activeView.get('order_by'))
+            newTicket.get(activeView.get('order_by')),
         )
     })
 
     it("should NOT update the cursor of the view when ticket's attributes change", () => {
-        const activeView = fromJS({order_by: 'updated_datetime'})
+        const activeView = fromJS({ order_by: 'updated_datetime' })
         const props = {
             ...minProps,
             activeView,
         }
-        const {rerender} = renderWithRouter(
+        const { rerender } = renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockedStore}>
                     <TicketDetailContainer {...props} />
@@ -549,7 +551,7 @@ describe('TicketDetailContainer component', () => {
             {
                 path: '/foo/:ticketId',
                 route: '/foo/new?customer=1',
-            }
+            },
         )
         rerender(
             <QueryClientProvider client={queryClient}>
@@ -558,11 +560,11 @@ describe('TicketDetailContainer component', () => {
                         {...props}
                         ticket={minProps.ticket.set(
                             'updated_datetime',
-                            moment()
+                            moment(),
                         )}
                     />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(minProps.updateCursor).not.toHaveBeenCalled()
@@ -573,7 +575,7 @@ describe('TicketDetailContainer component', () => {
             'from no recipients to one recipient',
         () => {
             const id = 80
-            const {rerender} = renderWithRouter(
+            const { rerender } = renderWithRouter(
                 <QueryClientProvider client={queryClient}>
                     <Provider store={mockedStore}>
                         <TicketDetailContainer {...minProps} />
@@ -582,7 +584,7 @@ describe('TicketDetailContainer component', () => {
                 {
                     path: '/foo/:ticketId',
                     route: '/foo/new',
-                }
+                },
             )
 
             rerender(
@@ -601,11 +603,11 @@ describe('TicketDetailContainer component', () => {
                             })}
                         />
                     </Provider>
-                </QueryClientProvider>
+                </QueryClientProvider>,
             )
 
             expect(minProps.findAndSetCustomer).toBeCalledWith(id)
-        }
+        },
     )
 
     it(
@@ -632,7 +634,7 @@ describe('TicketDetailContainer component', () => {
                 }),
                 newMessage: newMessageState,
             }
-            const {rerender} = renderWithRouter(
+            const { rerender } = renderWithRouter(
                 <QueryClientProvider client={queryClient}>
                     <Provider store={mockedStore}>
                         <TicketDetailContainer {...props} />
@@ -641,7 +643,7 @@ describe('TicketDetailContainer component', () => {
                 {
                     path: '/foo/:ticketId',
                     route: '/foo/new',
-                }
+                },
             )
 
             rerender(
@@ -660,10 +662,10 @@ describe('TicketDetailContainer component', () => {
                             })}
                         />
                     </Provider>
-                </QueryClientProvider>
+                </QueryClientProvider>,
             )
             expect(minProps.findAndSetCustomer).toBeCalledWith(id)
-        }
+        },
     )
 
     it(
@@ -687,7 +689,7 @@ describe('TicketDetailContainer component', () => {
                 }),
                 newMessage: newMessageState,
             }
-            const {rerender} = renderWithRouter(
+            const { rerender } = renderWithRouter(
                 <QueryClientProvider client={queryClient}>
                     <Provider store={mockedStore}>
                         <TicketDetailContainer {...props} />
@@ -696,7 +698,7 @@ describe('TicketDetailContainer component', () => {
                 {
                     path: '/foo/:ticketId',
                     route: '/foo/new',
-                }
+                },
             )
 
             rerender(
@@ -714,11 +716,11 @@ describe('TicketDetailContainer component', () => {
                             })}
                         />
                     </Provider>
-                </QueryClientProvider>
+                </QueryClientProvider>,
             )
 
             expect(minProps.findAndSetCustomer).not.toHaveBeenCalled()
-        }
+        },
     )
 
     it('should restore the original customer of the ticket', () => {
@@ -761,7 +763,7 @@ describe('TicketDetailContainer component', () => {
             }),
         }
 
-        const {rerender} = renderWithRouter(
+        const { rerender } = renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockedStore}>
                     <TicketDetailContainer {...props} />
@@ -770,7 +772,7 @@ describe('TicketDetailContainer component', () => {
             {
                 path: '/foo/:ticketId',
                 route: '/foo/new?customer=1',
-            }
+            },
         )
         expect(minProps.setCustomer).not.toHaveBeenCalled()
 
@@ -785,14 +787,14 @@ describe('TicketDetailContainer component', () => {
                         })}
                     />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(minProps.setCustomer).toHaveBeenCalledWith(
             fromJS({
                 ...activeCustomer,
                 address: activeCustomer.email,
-            })
+            }),
         )
     })
 
@@ -818,7 +820,7 @@ describe('TicketDetailContainer component', () => {
                 newMessage: newMessageState,
             }
 
-            const {rerender} = renderWithRouter(
+            const { rerender } = renderWithRouter(
                 <QueryClientProvider client={queryClient}>
                     <Provider store={mockedStore}>
                         <TicketDetailContainer {...props} />
@@ -827,7 +829,7 @@ describe('TicketDetailContainer component', () => {
                 {
                     path: '/foo/:ticketId',
                     route: '/foo/new',
-                }
+                },
             )
 
             rerender(
@@ -845,11 +847,11 @@ describe('TicketDetailContainer component', () => {
                             })}
                         />
                     </Provider>
-                </QueryClientProvider>
+                </QueryClientProvider>,
             )
 
             expect(minProps.findAndSetCustomer).not.toHaveBeenCalled()
-        }
+        },
     )
 
     it('should set the customer to null because the ticket is new and the recipients have been removed', () => {
@@ -879,7 +881,7 @@ describe('TicketDetailContainer component', () => {
                 ],
             }),
         }
-        const {rerender} = renderWithRouter(
+        const { rerender } = renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockedStore}>
                     <TicketDetailContainer {...props} />
@@ -888,17 +890,17 @@ describe('TicketDetailContainer component', () => {
             {
                 path: '/foo/:ticketId',
                 route: '/foo/new',
-            }
+            },
         )
         rerender(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockedStore}>
                     <TicketDetailContainer
                         {...props}
-                        newMessageSource={fromJS({to: []})}
+                        newMessageSource={fromJS({ to: [] })}
                     />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(minProps.setCustomer).toBeCalledWith(null)
@@ -931,7 +933,7 @@ describe('TicketDetailContainer component', () => {
             {
                 path: '/foo/:ticketId',
                 route: '/foo/new',
-            }
+            },
         )
 
         expect(minProps.setCustomer).not.toBeCalled()
@@ -942,10 +944,10 @@ describe('TicketDetailContainer component', () => {
 
         const ticket = newTicket.setIn(
             ['state', 'appliedMacro', 'actions'],
-            fromJS([{name: MacroActionName.AddInternalNote}])
+            fromJS([{ name: MacroActionName.AddInternalNote }]),
         )
 
-        const {getByTestId} = renderWithRouter(
+        const { getByTestId } = renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockedStore}>
                     <TicketDetailContainer
@@ -966,18 +968,18 @@ describe('TicketDetailContainer component', () => {
             {
                 path: '/foo/:ticketId',
                 route: '/foo/new',
-            }
+            },
         )
 
         userEvent.click(getByTestId('TicketView-submit'))
         await waitFor(() =>
             // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
-            expect(submitMock.mock.calls[0][0].get('customer')).toBeUndefined()
+            expect(submitMock.mock.calls[0][0].get('customer')).toBeUndefined(),
         )
     })
 
     it('should defer sending new message when new message is of type email', async () => {
-        const {getByTestId} = renderWithRouter(
+        const { getByTestId } = renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockedStore}>
                     <TicketDetailContainer
@@ -991,7 +993,7 @@ describe('TicketDetailContainer component', () => {
             {
                 path: '/foo/:ticketId',
                 route: '/foo/1',
-            }
+            },
         )
 
         userEvent.click(getByTestId('TicketView-submit'))
@@ -1005,8 +1007,8 @@ describe('TicketDetailContainer component', () => {
                     replyAreaState: undefined,
                     resetMessage: true,
                     ticketId: '1',
-                }
-            )
+                },
+            ),
         )
     })
 
@@ -1035,7 +1037,7 @@ describe('TicketDetailContainer component', () => {
             type: 'foo',
         }
         prepareTicketMessageMock.mockResolvedValue(preparedFacebookData)
-        const {getByTestId} = renderWithRouter(
+        const { getByTestId } = renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockedStore}>
                     <TicketDetailContainer
@@ -1049,7 +1051,7 @@ describe('TicketDetailContainer component', () => {
             {
                 path: '/foo/:ticketId',
                 route: '/foo/1',
-            }
+            },
         )
 
         userEvent.click(getByTestId('TicketView-submit'))
@@ -1059,13 +1061,13 @@ describe('TicketDetailContainer component', () => {
                 1,
                 preparedFacebookData.messageToSend,
                 undefined,
-                true
-            )
+                true,
+            ),
         )
     })
 
     it('should send a deferred message when sending a new deferred message', async () => {
-        const {getByTestId} = renderWithRouter(
+        const { getByTestId } = renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockedStore}>
                     <TicketDetailContainer
@@ -1079,7 +1081,7 @@ describe('TicketDetailContainer component', () => {
             {
                 path: '/foo/:ticketId',
                 route: '/foo/1',
-            }
+            },
         )
 
         userEvent.click(getByTestId('TicketView-submit'))
@@ -1094,8 +1096,8 @@ describe('TicketDetailContainer component', () => {
                     replyAreaState: undefined,
                     resetMessage: true,
                     ticketId: '1',
-                }
-            )
+                },
+            ),
         )
     })
 
@@ -1110,14 +1112,14 @@ describe('TicketDetailContainer component', () => {
                 () =>
                     new Promise((resolve) => {
                         resolveSubmit = resolve
-                    })
+                    }),
             )
             const history = createMemoryHistory({
                 initialEntries: [
                     `/foo/${(ticket.get('id') as string) || 'new'}`,
                 ],
             })
-            const {getByTestId} = renderWithRouter(
+            const { getByTestId } = renderWithRouter(
                 <QueryClientProvider client={queryClient}>
                     <Provider store={mockedStore}>
                         <TicketDetailContainer
@@ -1133,7 +1135,7 @@ describe('TicketDetailContainer component', () => {
                 {
                     path: '/foo/:ticketId',
                     history,
-                }
+                },
             )
 
             userEvent.click(getByTestId('TicketView-submit'))
@@ -1145,10 +1147,10 @@ describe('TicketDetailContainer component', () => {
             await waitFor(() => {
                 expect(minProps.goToNextTicket).toHaveBeenLastCalledWith(
                     123,
-                    expect.any(Promise)
+                    expect.any(Promise),
                 )
             })
-        }
+        },
     )
 
     it.each<[string, Error]>([
@@ -1162,7 +1164,7 @@ describe('TicketDetailContainer component', () => {
         ],
     ])('should not throw %s', async (testName, error) => {
         prepareTicketMessageMock.mockRejectedValue(error)
-        const {getByTestId} = renderWithRouter(
+        const { getByTestId } = renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockedStore}>
                     <TicketDetailContainer
@@ -1176,7 +1178,7 @@ describe('TicketDetailContainer component', () => {
             {
                 path: '/foo/:ticketId',
                 route: '/foo/1',
-            }
+            },
         )
 
         userEvent.click(getByTestId('TicketView-submit'))
@@ -1187,7 +1189,7 @@ describe('TicketDetailContainer component', () => {
         [
             string,
             string,
-            () => {goToTicket: jest.Mock; isEnabled: boolean},
+            () => { goToTicket: jest.Mock; isEnabled: boolean },
             SegmentEvent,
         ]
     >([
@@ -1260,22 +1262,22 @@ describe('TicketDetailContainer component', () => {
                 {
                     path: '/foo/:ticketId',
                     route: '/foo/1',
-                }
+                },
             )
 
             execKeyboardAction(actionName)
             execKeyboardAction(actionName)
 
             expect(callMock.goToTicket).toHaveBeenCalledTimes(
-                callMock.isEnabled ? 1 : 0
+                callMock.isEnabled ? 1 : 0,
             )
 
             expect(logEvent).toHaveBeenCalledWith(trackedEvent)
-        }
+        },
     )
 
     it('should track the control / cmd + f combo', () => {
-        const {container} = renderWithRouter(
+        const { container } = renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockedStore}>
                     <TicketDetailContainer {...minProps} />
@@ -1284,17 +1286,17 @@ describe('TicketDetailContainer component', () => {
             {
                 path: '/foo/:ticketId',
                 route: '/foo/1',
-            }
+            },
         )
 
-        fireEvent.keyDown(container.firstChild!, {key: 'f', ctrlKey: true})
+        fireEvent.keyDown(container.firstChild!, { key: 'f', ctrlKey: true })
         expect(logEvent).toHaveBeenCalledWith(
-            SegmentEvent.TicketMessageSearchKeyPressed
+            SegmentEvent.TicketMessageSearchKeyPressed,
         )
     })
 
     it('should not track the control / cmd + f combo if on a new ticket', () => {
-        const {container} = renderWithRouter(
+        const { container } = renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockedStore}>
                     <TicketDetailContainer {...minProps} />
@@ -1303,10 +1305,10 @@ describe('TicketDetailContainer component', () => {
             {
                 path: '/foo/:ticketId',
                 route: '/foo/new',
-            }
+            },
         )
 
-        fireEvent.keyDown(container.firstChild!, {key: 'f', ctrlKey: true})
+        fireEvent.keyDown(container.firstChild!, { key: 'f', ctrlKey: true })
         expect(logEvent).not.toHaveBeenCalled()
     })
 
@@ -1323,7 +1325,7 @@ describe('TicketDetailContainer component', () => {
             {
                 path: '/foo/:ticketId',
                 route: '/foo/new',
-            }
+            },
         )
 
         makeExecuteKeyboardAction(shortcutManagerMock)('SUBMIT_TICKET')
@@ -1344,7 +1346,7 @@ describe('TicketDetailContainer component', () => {
             {
                 path: '/foo/:ticketId',
                 route: '/foo/new',
-            }
+            },
         )
 
         makeExecuteKeyboardAction(shortcutManagerMock)('SUBMIT_TICKET')
@@ -1369,19 +1371,19 @@ describe('TicketDetailContainer component', () => {
             {
                 path: '/foo/:ticketId',
                 route: '/foo/1',
-            }
+            },
         )
 
         expect(mockSetRecentItem).toHaveBeenCalledWith(
             expect.objectContaining({
                 id: existingTicket.get('id'),
                 customer: mockCustomer,
-            })
+            }),
         )
     })
 
     it('should clear ticket draft stored in local forage when current ticket is new and successfully created', async () => {
-        const {getByTestId} = renderWithRouter(
+        const { getByTestId } = renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockedStore}>
                     <TicketDetailContainer
@@ -1393,7 +1395,7 @@ describe('TicketDetailContainer component', () => {
             {
                 path: '/foo/:ticketId',
                 route: '/foo/new',
-            }
+            },
         )
 
         userEvent.click(getByTestId('TicketView-submit'))
@@ -1404,14 +1406,14 @@ describe('TicketDetailContainer component', () => {
     it('should not clear ticket draft stored in local forage when current ticket is new but sending has failed', async () => {
         const error = new Error('ticket not created')
 
-        const {getByTestId} = renderWithRouter(
+        const { getByTestId } = renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockedStore}>
                     <TicketDetailContainer
                         {...minProps}
                         canSendMessage={true}
                         submitTicket={() => {
-                            return Promise.resolve({error})
+                            return Promise.resolve({ error })
                         }}
                     />
                 </Provider>
@@ -1419,7 +1421,7 @@ describe('TicketDetailContainer component', () => {
             {
                 path: '/foo/:ticketId',
                 route: '/foo/new',
-            }
+            },
         )
 
         userEvent.click(getByTestId('TicketView-submit'))
@@ -1435,11 +1437,11 @@ describe('TicketDetailContainer component', () => {
                 mockedServer.onGet('/api/custom-fields/').reply(200, {
                     data: [
                         ticketDropdownFieldDefinition,
-                        {...ticketInputFieldDefinition, required: true},
+                        { ...ticketInputFieldDefinition, required: true },
                     ],
                 })
 
-                const {getByTestId} = renderWithRouter(
+                const { getByTestId } = renderWithRouter(
                     <QueryClientProvider client={queryClient}>
                         <Provider store={mockedStore}>
                             <TicketDetailContainer
@@ -1454,7 +1456,7 @@ describe('TicketDetailContainer component', () => {
                     {
                         path: '/foo/:ticketId',
                         route: '/foo/new',
-                    }
+                    },
                 )
                 await waitFor(() => {
                     expect(queryClient.isFetching()).toBe(0)
@@ -1462,11 +1464,11 @@ describe('TicketDetailContainer component', () => {
                 userEvent.click(getByTestId('TicketView-submit'))
 
                 expect(
-                    useCustomFieldsConditionsEvaluationResults
+                    useCustomFieldsConditionsEvaluationResults,
                 ).toHaveBeenCalledWith(
                     OBJECT_TYPES.TICKET,
-                    {tags: []},
-                    conditionalFieldsEnabled
+                    { tags: [] },
+                    conditionalFieldsEnabled,
                 )
                 expect(triggerTicketFieldsErrors).toHaveBeenNthCalledWith(1, [
                     ticketInputFieldDefinition.id,
@@ -1476,18 +1478,18 @@ describe('TicketDetailContainer component', () => {
                     ticketInputFieldDefinition.id,
                 ])
                 expect(
-                    spiedMergeFieldsStateWithMacroValues
+                    spiedMergeFieldsStateWithMacroValues,
                 ).toHaveBeenCalledTimes(1)
                 makeExecuteKeyboardAction(shortcutManagerMock)(
-                    'SUBMIT_CLOSE_TICKET'
+                    'SUBMIT_CLOSE_TICKET',
                 )
                 expect(triggerTicketFieldsErrors).toHaveBeenNthCalledWith(3, [
                     ticketInputFieldDefinition.id,
                 ])
                 expect(
-                    spiedMergeFieldsStateWithMacroValues
+                    spiedMergeFieldsStateWithMacroValues,
                 ).toHaveBeenCalledTimes(2)
-            }
+            },
         )
     })
 
@@ -1496,7 +1498,7 @@ describe('TicketDetailContainer component', () => {
             voiceCallsSpy.mockImplementation((() => ({
                 isLoading: true,
             })) as jest.MockedFn<any>)
-            const {getByText} = renderWithRouter(
+            const { getByText } = renderWithRouter(
                 <QueryClientProvider client={queryClient}>
                     <Provider store={mockedStore}>
                         <TicketDetailContainer
@@ -1504,12 +1506,12 @@ describe('TicketDetailContainer component', () => {
                                 ...minProps,
                                 ticket: existingTicket.set(
                                     'channel',
-                                    TicketChannel.Phone
+                                    TicketChannel.Phone,
                                 ),
                             }}
                         />
                     </Provider>
-                </QueryClientProvider>
+                </QueryClientProvider>,
             )
 
             expect(getByText('Loading ticket...')).toBeInTheDocument()
@@ -1519,7 +1521,7 @@ describe('TicketDetailContainer component', () => {
             voiceCallsSpy.mockImplementation((() => ({
                 isLoading: true,
             })) as jest.MockedFn<any>)
-            const {queryByText} = renderWithRouter(
+            const { queryByText } = renderWithRouter(
                 <QueryClientProvider client={queryClient}>
                     <Provider store={mockedStore}>
                         <TicketDetailContainer
@@ -1527,12 +1529,12 @@ describe('TicketDetailContainer component', () => {
                                 ...minProps,
                                 ticket: existingTicket.set(
                                     'channel',
-                                    TicketChannel.Email
+                                    TicketChannel.Email,
                                 ),
                             }}
                         />
                     </Provider>
-                </QueryClientProvider>
+                </QueryClientProvider>,
             )
 
             expect(queryByText('Loading ticket...')).not.toBeInTheDocument()
@@ -1541,13 +1543,13 @@ describe('TicketDetailContainer component', () => {
         it('should not show loading spinner and prepare message when voice calls are loaded and ticket channel is Voice', () => {
             voiceCallsSpy.mockImplementation((() => ({
                 isLoading: false,
-                data: {data: [{}]},
+                data: { data: [{}] },
             })) as jest.MockedFn<any>)
             jest.spyOn(
                 ticketUtils,
-                'getSourceTypeOfResponse'
+                'getSourceTypeOfResponse',
             ).mockReturnValueOnce(TicketMessageSourceType.Phone)
-            const {queryByText} = renderWithRouter(
+            const { queryByText } = renderWithRouter(
                 <QueryClientProvider client={queryClient}>
                     <Provider store={mockedStore}>
                         <TicketDetailContainer
@@ -1555,17 +1557,17 @@ describe('TicketDetailContainer component', () => {
                                 ...minProps,
                                 ticket: existingTicket.set(
                                     'channel',
-                                    TicketChannel.Phone
+                                    TicketChannel.Phone,
                                 ),
                             }}
                         />
                     </Provider>
-                </QueryClientProvider>
+                </QueryClientProvider>,
             )
 
             expect(queryByText('Loading ticket...')).not.toBeInTheDocument()
             expect(minProps.prepare).toHaveBeenCalledWith(
-                TicketMessageSourceType.Phone
+                TicketMessageSourceType.Phone,
             )
         })
     })
@@ -1583,7 +1585,7 @@ describe('TicketDetailContainer component', () => {
             {
                 path: '/foo/:ticketId',
                 route: '/foo/1',
-            }
+            },
         )
 
         expect(mockUseTicketActivityTracking).toHaveBeenCalledWith(1)
@@ -1599,7 +1601,7 @@ describe('TicketDetailContainer component', () => {
             {
                 path: '/foo/:ticketId',
                 route: '/foo/new',
-            }
+            },
         )
 
         expect(mockUseTicketActivityTracking).toHaveBeenCalledWith(undefined)
@@ -1618,14 +1620,14 @@ describe('TicketDetailContainer component', () => {
             {
                 path: '/foo/:ticketId',
                 route: '/foo/1',
-            }
+            },
         )
 
         expect(mockUseTicketActivityTracking).toHaveBeenCalledWith(undefined)
     })
 
     it('should call joinTicket and leaveTicket from realtime package on mount / unmount', () => {
-        const {unmount} = renderWithRouter(
+        const { unmount } = renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockedStore}>
                     <TicketDetailContainer {...minProps} />
@@ -1634,7 +1636,7 @@ describe('TicketDetailContainer component', () => {
             {
                 path: '/foo/:ticketId',
                 route: '/foo/1',
-            }
+            },
         )
 
         expect(mockJoinTicket).toHaveBeenCalled()

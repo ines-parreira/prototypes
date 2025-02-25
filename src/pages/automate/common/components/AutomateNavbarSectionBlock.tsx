@@ -1,33 +1,35 @@
-import {Badge} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
-
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
+import classNames from 'classnames'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { Badge } from '@gorgias/merchant-ui-kit'
+
 import cssNavbar from 'assets/css/navbar.less'
-import {FeatureFlagKey} from 'config/featureFlags'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationType} from 'models/integration/constants'
-import {ShopType} from 'models/selfServiceConfiguration/types'
-import {isPreviewModeActivated} from 'pages/aiAgent/components/StoreConfigForm/StoreConfigForm.utils'
-import {AI_AGENT} from 'pages/aiAgent/constants'
-import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import {useStoreConfiguration} from 'pages/aiAgent/hooks/useStoreConfiguration'
+import { IntegrationType } from 'models/integration/constants'
+import { ShopType } from 'models/selfServiceConfiguration/types'
+import { isPreviewModeActivated } from 'pages/aiAgent/components/StoreConfigForm/StoreConfigForm.utils'
+import { AI_AGENT } from 'pages/aiAgent/constants'
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
 import NavbarLink from 'pages/common/components/navbar/NavbarLink'
 import NavbarSectionBlock from 'pages/common/components/navbar/NavbarSectionBlock'
-import {getHasAutomate} from 'state/billing/selectors'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {getIconFromType} from 'state/integrations/helpers'
-import {assetsUrl} from 'utils'
+import { getHasAutomate } from 'state/billing/selectors'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { getIconFromType } from 'state/integrations/helpers'
+import { assetsUrl } from 'utils'
 
 import AutomateNavbarPaywallNavbarLink from './AutomateNavbarPaywallNavbarLink'
-import css from './AutomateNavbarSectionBlock.less'
 import {
     ARTICLE_RECOMMENDATION,
     CHANNELS,
     FLOWS,
     ORDER_MANAGEMENT,
 } from './constants'
+
+import css from './AutomateNavbarSectionBlock.less'
 
 type Props = {
     shopType: ShopType
@@ -48,12 +50,12 @@ const AutomateNavbarSectionBlock = ({
 
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
-    const {storeConfiguration} = useStoreConfiguration({
+    const { storeConfiguration } = useStoreConfiguration({
         shopName,
         accountDomain,
     })
 
-    const {routes: aiAgentRoutes} = useAiAgentNavigation({shopName})
+    const { routes: aiAgentRoutes } = useAiAgentNavigation({ shopName })
 
     const isTrialModeAvailable = useFlags()[FeatureFlagKey.AiAgentTrialMode]
     const hasAiAgentPreview =
@@ -119,7 +121,7 @@ const AutomateNavbarSectionBlock = ({
                     <div
                         className={classNames(
                             cssNavbar['link-wrapper'],
-                            cssNavbar.isNested
+                            cssNavbar.isNested,
                         )}
                         {...(shouldRenderCanduIds && {
                             ['data-candu-id']: 'automate-link-ai-agent',
@@ -128,7 +130,7 @@ const AutomateNavbarSectionBlock = ({
                         <NavbarLink
                             to={{
                                 pathname: aiAgentRoutes.main,
-                                state: {from: FROM_LOCATION},
+                                state: { from: FROM_LOCATION },
                             }}
                         >
                             <span className={cssNavbar['item-name']}>
@@ -159,7 +161,7 @@ const AutomateNavbarSectionBlock = ({
                         <div
                             className={classNames(
                                 cssNavbar['link-wrapper'],
-                                cssNavbar.isNested
+                                cssNavbar.isNested,
                             )}
                             {...(shouldRenderCanduIds && {
                                 ['data-candu-id']: 'automate-link-ai-agent',
@@ -168,7 +170,7 @@ const AutomateNavbarSectionBlock = ({
                             <NavbarLink
                                 to={{
                                     pathname: aiAgentRoutes.main,
-                                    state: {from: FROM_LOCATION},
+                                    state: { from: FROM_LOCATION },
                                 }}
                             >
                                 <span className={cssNavbar['item-name']}>
@@ -182,7 +184,7 @@ const AutomateNavbarSectionBlock = ({
                     <div
                         className={classNames(
                             cssNavbar['link-wrapper'],
-                            cssNavbar.isNested
+                            cssNavbar.isNested,
                         )}
                         {...(shouldRenderCanduIds && {
                             ['data-candu-id']: 'automate-link-flows',
@@ -191,7 +193,7 @@ const AutomateNavbarSectionBlock = ({
                         <NavbarLink
                             to={{
                                 pathname: `/app/automation/${shopType}/${shopName}/flows`,
-                                state: {from: FROM_LOCATION},
+                                state: { from: FROM_LOCATION },
                             }}
                         >
                             <span className={cssNavbar['item-name']}>
@@ -214,7 +216,7 @@ const AutomateNavbarSectionBlock = ({
                 <div
                     className={classNames(
                         cssNavbar['link-wrapper'],
-                        cssNavbar.isNested
+                        cssNavbar.isNested,
                     )}
                     {...(shouldRenderCanduIds && {
                         ['data-candu-id']: 'automate-link-order-management',
@@ -223,7 +225,7 @@ const AutomateNavbarSectionBlock = ({
                     <NavbarLink
                         to={{
                             pathname: `/app/automation/shopify/${shopName}/order-management`,
-                            state: {from: FROM_LOCATION},
+                            state: { from: FROM_LOCATION },
                         }}
                     >
                         <span className={cssNavbar['item-name']}>
@@ -236,7 +238,7 @@ const AutomateNavbarSectionBlock = ({
                 <div
                     className={classNames(
                         cssNavbar['link-wrapper'],
-                        cssNavbar.isNested
+                        cssNavbar.isNested,
                     )}
                     {...(shouldRenderCanduIds && {
                         ['data-candu-id']:
@@ -246,7 +248,7 @@ const AutomateNavbarSectionBlock = ({
                     <NavbarLink
                         to={{
                             pathname: `/app/automation/${shopType}/${shopName}/article-recommendation`,
-                            state: {from: FROM_LOCATION},
+                            state: { from: FROM_LOCATION },
                         }}
                     >
                         <span className={cssNavbar['item-name']}>
@@ -267,7 +269,7 @@ const AutomateNavbarSectionBlock = ({
             <div
                 className={classNames(
                     cssNavbar['link-wrapper'],
-                    cssNavbar.isNested
+                    cssNavbar.isNested,
                 )}
                 {...(shouldRenderCanduIds && {
                     ['data-candu-id']: 'automate-link-connected-channels',
@@ -276,7 +278,7 @@ const AutomateNavbarSectionBlock = ({
                 <NavbarLink
                     to={{
                         pathname: `/app/automation/${shopType}/${shopName}/connected-channels`,
-                        state: {from: FROM_LOCATION},
+                        state: { from: FROM_LOCATION },
                     }}
                 >
                     <span className={cssNavbar['item-name']}>{CHANNELS}</span>

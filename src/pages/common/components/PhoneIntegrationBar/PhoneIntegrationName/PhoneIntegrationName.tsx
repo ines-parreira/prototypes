@@ -1,9 +1,10 @@
-import classnames from 'classnames'
 import React from 'react'
-import {connect, ConnectedProps} from 'react-redux'
 
-import {getIntegrationById} from 'state/integrations/selectors'
-import {RootState} from 'state/types'
+import classnames from 'classnames'
+import { connect, ConnectedProps } from 'react-redux'
+
+import { getIntegrationById } from 'state/integrations/selectors'
+import { RootState } from 'state/types'
 
 import css from './PhoneIntegrationName.less'
 
@@ -26,7 +27,7 @@ function PhoneIntegrationName({
     const integrationEmoji = integration.getIn(['meta', 'emoji'])
 
     return (
-        <span className={classnames(css.container, {[css.primary]: primary})}>
+        <span className={classnames(css.container, { [css.primary]: primary })}>
             {!!integrationEmoji && (
                 <span className="mr-2">{integrationEmoji}</span>
             )}

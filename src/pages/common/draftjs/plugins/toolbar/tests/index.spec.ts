@@ -1,8 +1,8 @@
-import {KeyboardEvent} from 'react'
+import { KeyboardEvent } from 'react'
 
-import {PluginMethods} from '../../types'
+import { PluginMethods } from '../../types'
 import createPlugin from '../index'
-import {ActionName} from '../types'
+import { ActionName } from '../types'
 
 describe('toolbar plugin', () => {
     const mockedPluginMethods: PluginMethods = {
@@ -23,7 +23,7 @@ describe('toolbar plugin', () => {
                     key: 'a',
                     ctrlKey: true,
                 } as KeyboardEvent,
-                mockedPluginMethods
+                mockedPluginMethods,
             )
             const ctrlK = plugin.keyBindingFn!(
                 {
@@ -31,7 +31,7 @@ describe('toolbar plugin', () => {
                     ctrlKey: true,
                     stopPropagation: jest.fn(),
                 } as unknown as KeyboardEvent,
-                mockedPluginMethods
+                mockedPluginMethods,
             )
             expect(ctrlA).not.toBe('insert-link')
             expect(ctrlK).toBe('insert-link')
@@ -48,7 +48,7 @@ describe('toolbar plugin', () => {
                     key: 'k',
                     ctrlKey: true,
                 } as KeyboardEvent,
-                mockedPluginMethods
+                mockedPluginMethods,
             )
             expect(ctrlK).not.toBe('insert-link')
         })

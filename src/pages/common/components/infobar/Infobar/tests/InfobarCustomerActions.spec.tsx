@@ -1,8 +1,9 @@
-import {render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {SegmentEvent, logEvent} from 'common/segment'
+import { render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 
 import InfobarCustomerActions from '../InfobarCustomerActions'
 
@@ -16,7 +17,7 @@ jest.mock(
         ({
             ...jest.requireActual('common/segment'),
             logEvent: jest.fn(),
-        }) as Record<string, unknown>
+        }) as Record<string, unknown>,
 )
 
 const commonProps: ComponentProps<typeof InfobarCustomerActions> = {
@@ -40,7 +41,7 @@ const commonProps: ComponentProps<typeof InfobarCustomerActions> = {
 
 describe('InfobarCustomerActions component', () => {
     it('should not render "set as customer" button because the agent is not on a ticket', () => {
-        const {container} = render(
+        const { container } = render(
             <InfobarCustomerActions
                 {...commonProps}
                 sources={fromJS({
@@ -48,33 +49,35 @@ describe('InfobarCustomerActions component', () => {
                         id: 1,
                     },
                 })}
-            />
+            />,
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should not render "set as customer" nor "merge" buttons because the customers are the same', () => {
-        const {container} = render(
+        const { container } = render(
             <InfobarCustomerActions
                 {...commonProps}
                 selectedCustomer={commonProps.customer}
-            />
+            />,
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should not render "merge" button because there is no customer to merge the selected customer with', () => {
-        const {container} = render(
-            <InfobarCustomerActions {...commonProps} customer={fromJS({})} />
+        const { container } = render(
+            <InfobarCustomerActions {...commonProps} customer={fromJS({})} />,
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render "set as customer" and "merge" button', () => {
-        const {container} = render(<InfobarCustomerActions {...commonProps} />)
+        const { container } = render(
+            <InfobarCustomerActions {...commonProps} />,
+        )
 
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -88,7 +91,7 @@ describe('InfobarCustomerActions component', () => {
             SegmentEvent.CustomerMergeClicked,
             expect.objectContaining({
                 location: 'search',
-            })
+            }),
         )
     })
 })

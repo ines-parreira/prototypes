@@ -1,10 +1,11 @@
-import {useElements} from '@stripe/react-stripe-js'
-import type {StripePaymentElementChangeEvent} from '@stripe/stripe-js'
-import {useEffect, useRef, useState} from 'react'
+import { useEffect, useRef, useState } from 'react'
+
+import { useElements } from '@stripe/react-stripe-js'
+import type { StripePaymentElementChangeEvent } from '@stripe/stripe-js'
 
 export const useStripeElementPaymentState = <Selected>(
     selector: (state: StripePaymentElementChangeEvent) => Selected = (state) =>
-        state as Selected
+        state as Selected,
 ) => {
     const selectorRef = useRef(selector)
     selectorRef.current = selector

@@ -1,14 +1,15 @@
-import {cleanup, fireEvent, render, screen} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
 
-import {EmailMigrationInboundVerification} from 'models/integration/types'
-import {mockStore} from 'utils/testing'
+import { cleanup, fireEvent, render, screen } from '@testing-library/react'
+import { Provider } from 'react-redux'
+
+import { EmailMigrationInboundVerification } from 'models/integration/types'
+import { mockStore } from 'utils/testing'
 
 import MigrationEmailForwarding from '../EmailMigration/MigrationEmailForwarding'
 
 const migration = {
-    integration: {meta: {}},
+    integration: { meta: {} },
 } as unknown as EmailMigrationInboundVerification
 
 describe('MigrationEmailForwarding', () => {
@@ -21,7 +22,7 @@ describe('MigrationEmailForwarding', () => {
                     migrations={migrations}
                     onNextClick={onNextClick}
                 />
-            </Provider>
+            </Provider>,
         )
 
     afterEach(cleanup)
@@ -32,7 +33,7 @@ describe('MigrationEmailForwarding', () => {
         fireEvent.click(
             screen.getByRole('button', {
                 name: /next/i,
-            })
+            }),
         )
         expect(onNextClick).toHaveBeenCalled()
     })
@@ -43,7 +44,7 @@ describe('MigrationEmailForwarding', () => {
         fireEvent.click(
             screen.getByRole('button', {
                 name: /next/i,
-            })
+            }),
         )
         expect(onNextClick).not.toHaveBeenCalled()
     })

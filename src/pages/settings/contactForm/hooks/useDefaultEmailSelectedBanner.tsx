@@ -1,6 +1,6 @@
-import React, {useMemo, useState} from 'react'
+import React, { useMemo, useState } from 'react'
 
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 
 export type Params = {
     isDefaultIntegrationSelected: boolean

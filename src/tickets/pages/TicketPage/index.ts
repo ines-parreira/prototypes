@@ -1,1 +1,1 @@
-export {default as useTicketPage} from './useTicketPage'
+export { default as useTicketPage } from './useTicketPage'

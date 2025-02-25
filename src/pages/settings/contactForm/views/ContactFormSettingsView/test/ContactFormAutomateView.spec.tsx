@@ -1,7 +1,8 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {ContactFormAutomateView} from '../ContactFormAutomateView'
+import { render } from '@testing-library/react'
+
+import { ContactFormAutomateView } from '../ContactFormAutomateView'
 
 jest.mock(
     'pages/automate/connectedChannels/components/ConnectedChannelsContactFormView',
@@ -9,13 +10,13 @@ jest.mock(
         ConnectedChannelsContactFormView: ({
             contactForm,
         }: {
-            contactForm: {id: string}
+            contactForm: { id: string }
         }) => (
             <div data-testid="ConnectedChannelsContactFormView">
                 {contactForm.id}
             </div>
         ),
-    })
+    }),
 )
 
 jest.mock('pages/settings/contactForm/hooks/useCurrentContactForm', () => ({
@@ -32,9 +33,9 @@ describe('ContactFormAutomateView', () => {
     })
 
     it('should render ConnectedChannelsContactFormView', () => {
-        const {getByTestId} = render(<ContactFormAutomateView />)
+        const { getByTestId } = render(<ContactFormAutomateView />)
         expect(
-            getByTestId('ConnectedChannelsContactFormView')
+            getByTestId('ConnectedChannelsContactFormView'),
         ).toHaveTextContent('1')
     })
 })

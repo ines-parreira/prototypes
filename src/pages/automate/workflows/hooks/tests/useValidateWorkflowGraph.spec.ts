@@ -1,4 +1,4 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
 import {
     buildEdgeCommonProperties,
@@ -9,7 +9,7 @@ import useValidateWorkflowGraph from '../useValidateWorkflowGraph'
 
 describe('useValidateWorkflowGraph()', () => {
     it('should validate workflow graph', () => {
-        const {result} = renderHook(() => useValidateWorkflowGraph(() => []))
+        const { result } = renderHook(() => useValidateWorkflowGraph(() => []))
 
         expect(
             result.current(
@@ -124,7 +124,7 @@ describe('useValidateWorkflowGraph()', () => {
                                     html: '',
                                     text: '',
                                 },
-                                choices: [{event_id: 'choice1', label: ''}],
+                                choices: [{ event_id: 'choice1', label: '' }],
                                 touched: {
                                     choices: {
                                         choice1: {
@@ -209,7 +209,7 @@ describe('useValidateWorkflowGraph()', () => {
                             source: 'conditions1',
                             target: 'end1',
                             data: {
-                                conditions: {and: []},
+                                conditions: { and: [] },
                             },
                         },
                         {
@@ -247,8 +247,8 @@ describe('useValidateWorkflowGraph()', () => {
                     choiceEventIdEditing: null,
                     branchIdsEditing: [],
                 },
-                false
-            )
+                false,
+            ),
         ).toEqual(
             expect.objectContaining({
                 nodes: [
@@ -354,7 +354,7 @@ describe('useValidateWorkflowGraph()', () => {
                 errors: {
                     name: 'You must add a flow name in order to save',
                 },
-            })
+            }),
         )
     })
 })

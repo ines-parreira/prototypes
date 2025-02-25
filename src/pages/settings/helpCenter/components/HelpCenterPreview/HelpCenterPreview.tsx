@@ -1,5 +1,6 @@
+import React, { ReactNode } from 'react'
+
 import classnames from 'classnames'
-import React, {ReactNode} from 'react'
 
 import css from './HelpCenterPreview.less'
 
@@ -9,7 +10,7 @@ type Props = {
     logoUrl?: string | null
 }
 
-const HelpCenterPreview = ({children, name, logoUrl}: Props) => {
+const HelpCenterPreview = ({ children, name, logoUrl }: Props) => {
     return (
         <div className={css.container}>
             {name || logoUrl ? (
@@ -28,7 +29,7 @@ const HelpCenterPreview = ({children, name, logoUrl}: Props) => {
                     <i
                         className={classnames(
                             'material-icons-outlined',
-                            css.menu
+                            css.menu,
                         )}
                     >
                         menu

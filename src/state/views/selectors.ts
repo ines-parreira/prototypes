@@ -1,11 +1,11 @@
-import {fromJS, Map, List} from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 import moment from 'moment'
-import {createSelector} from 'reselect'
+import { createSelector } from 'reselect'
 
-import {UserSettingType} from 'config/types/user'
+import { UserSettingType } from 'config/types/user'
 import * as viewsConfig from 'config/views'
-import {BASE_VIEW_ID} from 'constants/view'
-import {OrderDirection} from 'models/api/types'
+import { BASE_VIEW_ID } from 'constants/view'
+import { OrderDirection } from 'models/api/types'
 import {
     EntityType,
     View,
@@ -18,7 +18,7 @@ import {
     TicketNavbarElement,
     TicketNavbarSectionElement,
 } from 'pages/tickets/navbar/TicketNavbarContent'
-import {tryLocalStorage} from 'services/common/utils'
+import { tryLocalStorage } from 'services/common/utils'
 import {
     DEPRECATED_getViewsOrderingSetting,
     getViewsOrderingSetting,
@@ -28,24 +28,24 @@ import {
     getSettingsByType as getCurrentUserSettingsByType,
     makeGetSettingsByType,
 } from 'state/currentUser/selectors'
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
 import {
     getPrivateTicketNavbarElements,
     getPublicTicketNavbarElements,
 } from 'state/ui/ticketNavbar/selectors'
-import {TicketNavbarElementType} from 'state/ui/ticketNavbar/types'
-import {createImmutableSelector, isCurrentlyOnView} from 'utils'
+import { TicketNavbarElementType } from 'state/ui/ticketNavbar/types'
+import { createImmutableSelector, isCurrentlyOnView } from 'utils'
 
-import {SYSTEM_VIEWS} from './constants'
-import {ViewsState} from './types'
-import {sortViews} from './utils'
+import { SYSTEM_VIEWS } from './constants'
+import { ViewsState } from './types'
+import { sortViews } from './utils'
 
 export const getViewsState = (state: RootState): ViewsState =>
     state.views || fromJS({})
 
 export const getViews = createImmutableSelector(
     getViewsState,
-    (state) => state.get('items', fromJS([])) as List<any>
+    (state) => state.get('items', fromJS([])) as List<any>,
 )
 
 export const getViewPlainJS = createSelector(
@@ -54,16 +54,16 @@ export const getViewPlainJS = createSelector(
         const view = views.find(
             (view: Map<any, any>) => view.get('id') === parseInt(id),
             null,
-            fromJS({})
+            fromJS({}),
         ) as Map<any, any>
 
         return view.isEmpty() ? null : (view.toJS() as View)
-    }
+    },
 )
 
 export const getSystemTicketNavbarElementsByCategory = (
     category: 'views_top' | 'views_bottom',
-    includeHiddenViews = false
+    includeHiddenViews = false,
 ) =>
     createSelector(
         getViews,
@@ -72,12 +72,12 @@ export const getSystemTicketNavbarElementsByCategory = (
         (
             views: List<Map<any, any>>,
             viewsOrderingSettings,
-            viewsVisibilitySettings
+            viewsVisibilitySettings,
         ) => {
             const hiddenViews = viewsVisibilitySettings?.data.hidden_views
             const systemViewsNames = SYSTEM_VIEWS.filter(
-                (view) => view.category === category
-            ).map(({name}) => name)
+                (view) => view.category === category,
+            ).map(({ name }) => name)
 
             return (
                 views
@@ -103,14 +103,14 @@ export const getSystemTicketNavbarElementsByCategory = (
                                 (first.get('id') as number).toString()
                             ]?.display_order ||
                             (SYSTEM_VIEWS.find(
-                                (view) => view.name === first.get('name')
+                                (view) => view.name === first.get('name'),
                             )?.displayOrder as number)
                         const secondViewDisplayOrder =
                             viewsOrderingSettings.data?.[category]?.[
                                 (second.get('id') as number).toString()
                             ]?.display_order ||
                             (SYSTEM_VIEWS.find(
-                                (view) => view.name === second.get('name')
+                                (view) => view.name === second.get('name'),
                             )?.displayOrder as number)
 
                         return firstViewDisplayOrder - secondViewDisplayOrder
@@ -121,9 +121,9 @@ export const getSystemTicketNavbarElementsByCategory = (
                     ({
                         data: view,
                         type: TicketNavbarElementType.View,
-                    }) as unknown as TicketNavbarElement
+                    }) as unknown as TicketNavbarElement,
             )
-        }
+        },
     )
 
 export const getTopSystemTicketNavbarElements =
@@ -140,57 +140,57 @@ export const getBottomSystemTicketNavbarWithHiddenElements =
 
 export const getActiveView = createImmutableSelector(
     getViewsState,
-    (state) => (state.get('active') || fromJS({})) as Map<any, any>
+    (state) => (state.get('active') || fromJS({})) as Map<any, any>,
 )
 
 export const hasActiveView = createSelector(
     getActiveView,
-    (state) => !state.isEmpty()
+    (state) => !state.isEmpty(),
 )
 
 export const hasActiveViewOfType = (type: string) =>
     createSelector(
         hasActiveView,
         getActiveView,
-        (isActive, activeView) => isActive && activeView.get('type') === type
+        (isActive, activeView) => isActive && activeView.get('type') === type,
     )
 
 export const isDirty = createSelector(
     getActiveView,
-    (state) => (state.get('dirty') as boolean) || false
+    (state) => (state.get('dirty') as boolean) || false,
 )
 
 export const isActiveViewTrashView = createSelector(getActiveView, (state) =>
     (state.get('filters', '') as string).includes(
-        'isNotEmpty(ticket.trashed_datetime)'
-    )
+        'isNotEmpty(ticket.trashed_datetime)',
+    ),
 )
 
 export const isEditMode = createSelector(
     getActiveView,
-    (state) => (state.get('editMode') as boolean) || false
+    (state) => (state.get('editMode') as boolean) || false,
 )
 
 export const areFiltersValid = createSelector(getActiveView, (view) => {
     const filters = (view.get('filters') as string) || ''
     return ![", '')", ', [])'].some((pattern: string) =>
-        filters.includes(pattern)
+        filters.includes(pattern),
     )
 })
 
 export const getActiveViewOrderDirection = createSelector(
     getActiveView,
-    (state) => (state.get('order_dir') as OrderDirection) || ''
+    (state) => (state.get('order_dir') as OrderDirection) || '',
 )
 
 export const getActiveViewOrderBy = createSelector(
     getActiveView,
-    (state) => (state.get('order_by') as string) || ''
+    (state) => (state.get('order_by') as string) || '',
 )
 
 export const getActiveViewFilters = createSelector(
     getActiveView,
-    (state) => (state.get('filters') as string) || ''
+    (state) => (state.get('filters') as string) || '',
 )
 
 export const getActiveViewConfig = createSelector(getActiveView, (view) => {
@@ -199,7 +199,7 @@ export const getActiveViewConfig = createSelector(getActiveView, (view) => {
 
 export const areAllActiveViewItemsSelected = createSelector(
     getActiveView,
-    (state) => (state.get('allItemsSelected') as boolean) || false
+    (state) => (state.get('allItemsSelected') as boolean) || false,
 )
 
 /**
@@ -212,14 +212,14 @@ export const getPristineActiveView = createImmutableSelector(
     getActiveView,
     (views, activeView) =>
         (views.find(
-            (v: Map<any, any>) => v.get('id') === activeView.get('id')
-        ) || fromJS({})) as Map<any, any>
+            (v: Map<any, any>) => v.get('id') === activeView.get('id'),
+        ) || fromJS({})) as Map<any, any>,
 )
 
 export const getSelectedItemsIds = createImmutableSelector(
     getViewsState,
     (state) =>
-        state.getIn(['_internal', 'selectedItemsIds'], fromJS([])) as List<any>
+        state.getIn(['_internal', 'selectedItemsIds'], fromJS([])) as List<any>,
 )
 
 export const getNavigation = createImmutableSelector(
@@ -228,7 +228,7 @@ export const getNavigation = createImmutableSelector(
         (state.getIn(['_internal', 'navigation']) || fromJS({})) as Map<
             any,
             any
-        >
+        >,
 )
 
 /**
@@ -236,18 +236,18 @@ export const getNavigation = createImmutableSelector(
  */
 export const isOnFirstPage = createImmutableSelector(
     getNavigation,
-    (state) => !state.get('prev_items')
+    (state) => !state.get('prev_items'),
 )
 
 export const getLastViewId = createSelector(
     getViewsState,
-    (state) => state.getIn(['_internal', 'lastViewId']) as number
+    (state) => state.getIn(['_internal', 'lastViewId']) as number,
 )
 
 export const getLoading = createSelector(
     getViewsState,
     (state) =>
-        state.getIn(['_internal', 'loading'], fromJS({})) as Map<any, any>
+        state.getIn(['_internal', 'loading'], fromJS({})) as Map<any, any>,
 )
 
 // in props usage
@@ -264,22 +264,22 @@ const _getViewsByType = (
     views: List<any>,
     currentUserSettings: Map<any, any>,
     accountSettings: Map<any, any>,
-    type: ViewType
+    type: ViewType,
 ) => {
     const filteredViews = views.filter(
-        (view: Map<any, any>) => view.get('type') === type
+        (view: Map<any, any>) => view.get('type') === type,
     )
     const publicViews = filteredViews
         .filter(
             (view: Map<any, any>) =>
-                view.get('visibility') !== ViewVisibility.Private
+                view.get('visibility') !== ViewVisibility.Private,
         )
         .map((view: Map<any, any>) => {
             const viewId = view.get('id') as number
 
             const displayOrder = accountSettings.getIn(
                 ['data', 'views', viewId.toString(), 'display_order'],
-                view.get('display_order', 0)
+                view.get('display_order', 0),
             ) as number
 
             // TODO: hide property should be removed down the line once Immutable is removed
@@ -290,18 +290,18 @@ const _getViewsByType = (
     const privateViews = filteredViews
         .filter(
             (view: Map<any, any>) =>
-                view.get('visibility') === ViewVisibility.Private
+                view.get('visibility') === ViewVisibility.Private,
         )
         .map((view: Map<any, any>) => {
             const viewId = view.get('id') as number
             const viewSetting = currentUserSettings.getIn(
                 ['data', viewId.toString()],
-                fromJS({})
+                fromJS({}),
             ) as Map<any, any>
 
             const displayOrder = viewSetting.get(
                 'display_order',
-                view.get('display_order', 0)
+                view.get('display_order', 0),
             ) as number
 
             // TODO: hide property should be removed down the line once Immutable is removed
@@ -320,7 +320,7 @@ export const makeGetViewsByType = () => {
             getSettingsByType(state, UserSettingType.ViewsOrdering),
         (state: RootState) => DEPRECATED_getViewsOrderingSetting(state),
         (state: RootState, type: ViewType) => type,
-        _getViewsByType
+        _getViewsByType,
     )
 }
 
@@ -330,7 +330,7 @@ const getViewsByType = (type: ViewType) =>
         getCurrentUserSettingsByType(UserSettingType.ViewsOrdering),
         DEPRECATED_getViewsOrderingSetting,
         (views, currentUserSettings, accountSettings) =>
-            _getViewsByType(views, currentUserSettings, accountSettings, type)
+            _getViewsByType(views, currentUserSettings, accountSettings, type),
     )
 
 export const getViewIdToDisplay =
@@ -343,7 +343,7 @@ export const getViewIdToDisplay =
                     // Prevent suggesting a view with the wrong type
                     const matchingView = views.find(
                         (view: Map<any, any>) =>
-                            view.get('id') === parseInt(urlViewId)
+                            view.get('id') === parseInt(urlViewId),
                     )
                     if (matchingView) {
                         return parseInt(urlViewId)
@@ -358,9 +358,9 @@ export const getViewIdToDisplay =
                 }
 
                 return parseInt(
-                    (views.first() as Map<any, any>).get('id') as string
+                    (views.first() as Map<any, any>).get('id') as string,
                 )
-            }
+            },
         )(state)
 
 /**
@@ -372,8 +372,8 @@ export const getView = (id: string, configName: Maybe<EntityType> = null) =>
             if (!configName) {
                 console.error(
                     `Can't get new view with config name "${String(
-                        configName
-                    )}"`
+                        configName,
+                    )}"`,
                 )
                 return fromJS({}) as Map<any, any>
             }
@@ -388,7 +388,7 @@ export const getView = (id: string, configName: Maybe<EntityType> = null) =>
         return views.find(
             (view: Map<any, any>) => view.get('id') === parseInt(id),
             null,
-            fromJS({})
+            fromJS({}),
         ) as Map<any, any>
     })
 
@@ -408,7 +408,7 @@ export const makeGetViewCount =
 
 export const getRecentViews = createSelector(
     getViewsState,
-    (state) => (state.get('recent') || fromJS({})) as Map<any, any>
+    (state) => (state.get('recent') || fromJS({})) as Map<any, any>,
 )
 
 export const getViewIdsOrderedByCollapsedSections = () =>
@@ -417,7 +417,7 @@ export const getViewIdsOrderedByCollapsedSections = () =>
         getViewsByType(ViewType.CustomerList),
         (ticketViews, userViews) => {
             const hiddenSectionIds: number[] = JSON.parse(
-                window.localStorage.getItem('collapsed-view-sections') || '[]'
+                window.localStorage.getItem('collapsed-view-sections') || '[]',
             )
 
             return ticketViews
@@ -425,12 +425,12 @@ export const getViewIdsOrderedByCollapsedSections = () =>
                 .sort(
                     (view1: Map<any, any>, view2: Map<any, any>) =>
                         +hiddenSectionIds.includes(view1.get('section_id')) -
-                        +hiddenSectionIds.includes(view2.get('section_id'))
+                        +hiddenSectionIds.includes(view2.get('section_id')),
                 )
                 .map(
-                    (view: Map<any, any>) => view.get('id') as number
+                    (view: Map<any, any>) => view.get('id') as number,
                 ) as List<any>
-        }
+        },
     )
 /**
  * Get id of views which have their counts expired
@@ -452,14 +452,14 @@ export const getExpiredViewsCounts = () =>
                     if (countUpdatedAt) {
                         const expireAt = moment(countUpdatedAt as string).add(
                             viewsConfig.getExpirationTimeForCount(count),
-                            's'
+                            's',
                         )
                         return expireAt.isBefore(moment.utc())
                     }
                     return true
                 })
                 .map(([viewId]) => parseInt(viewId))
-        }
+        },
     )
 
 export const shouldFetchActiveViewTickets = createSelector(
@@ -473,7 +473,7 @@ export const shouldFetchActiveViewTickets = createSelector(
         activeView,
         isLoadingFetchList,
         isLoadingFetchListDiscreet,
-        isOnFirstPage
+        isOnFirstPage,
     ) => {
         const isFetchingView = isLoadingFetchList || isLoadingFetchListDiscreet
         const isEditing = activeView.get('editMode') || false
@@ -487,7 +487,7 @@ export const shouldFetchActiveViewTickets = createSelector(
             return false
         }
         return true
-    }
+    },
 )
 
 export const getDefaultTicketView = createSelector(
@@ -499,14 +499,14 @@ export const getDefaultTicketView = createSelector(
         publicElements,
         privateElements,
         topSystemElements,
-        bottomSystemElements
+        bottomSystemElements,
     ) => {
         if (topSystemElements[0]?.data) {
             return topSystemElements[0].data
         }
 
         const viewCategories = tryLocalStorage(() =>
-            window.localStorage.getItem('viewCategories')
+            window.localStorage.getItem('viewCategories'),
         )
         const [firstCategory] = viewCategories
             ? (JSON.parse(viewCategories) as ViewCategoryNavbar[])
@@ -527,5 +527,5 @@ export const getDefaultTicketView = createSelector(
         }
 
         return bottomSystemElements[0]?.data || null
-    }
+    },
 )

@@ -1,6 +1,9 @@
-import {ReportingFilterOperator, ReportingParams} from 'models/reporting/types'
+import {
+    ReportingFilterOperator,
+    ReportingParams,
+} from 'models/reporting/types'
 
-import {PageInteractionsDimension, PageInteractionsMeasure} from './constants'
+import { PageInteractionsDimension, PageInteractionsMeasure } from './constants'
 
 export type PageInteractionsFilterParams = {
     shopName: string
@@ -14,7 +17,7 @@ type QueryParams = {
 
 export const getPageInteractionsCountAfterDate = (
     filters: PageInteractionsFilterParams,
-    queryParams: QueryParams
+    queryParams: QueryParams,
 ): ReportingParams => {
     return [
         {

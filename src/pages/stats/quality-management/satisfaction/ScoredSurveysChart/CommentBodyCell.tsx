@@ -1,10 +1,11 @@
-import _truncate from 'lodash/truncate'
 import React from 'react'
+
+import _truncate from 'lodash/truncate'
 
 import BodyCell, {
     Props as BodyCellProps,
 } from 'pages/common/components/table/cells/BodyCell'
-import {NOT_AVAILABLE_PLACEHOLDER} from 'pages/stats/common/utils'
+import { NOT_AVAILABLE_PLACEHOLDER } from 'pages/stats/common/utils'
 
 const MAX_COMMENT_LENGTH = 250
 

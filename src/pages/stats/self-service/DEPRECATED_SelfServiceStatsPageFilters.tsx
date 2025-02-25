@@ -1,6 +1,6 @@
-import React, {useCallback} from 'react'
+import React, { useCallback } from 'react'
 
-import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
+import { useCleanStatsFiltersWithLogicalOperators } from 'hooks/reporting/useCleanStatsFilters'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
@@ -9,7 +9,7 @@ import {
     getStatsFilters,
     getStatsFiltersWithLogicalOperators,
 } from 'state/stats/selectors'
-import {mergeStatsFilters} from 'state/stats/statsSlice'
+import { mergeStatsFilters } from 'state/stats/statsSlice'
 
 /**
  * @deprecated
@@ -20,17 +20,17 @@ export const DEPRECATED_SelfServiceStatsPageFilters = () => {
     const dispatch = useAppDispatch()
 
     const pageStatsFiltersWithLogicalOperators = useAppSelector(
-        getStatsFiltersWithLogicalOperators
+        getStatsFiltersWithLogicalOperators,
     )
     useCleanStatsFiltersWithLogicalOperators(
-        pageStatsFiltersWithLogicalOperators
+        pageStatsFiltersWithLogicalOperators,
     )
     const statsFilters = useAppSelector(getStatsFilters)
     const handleIntegrationsFilterChange = useCallback(
         (values) => {
-            dispatch(mergeStatsFilters({integrations: values as number[]}))
+            dispatch(mergeStatsFilters({ integrations: values as number[] }))
         },
-        [dispatch]
+        [dispatch],
     )
 
     return (

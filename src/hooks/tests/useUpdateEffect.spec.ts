@@ -1,4 +1,4 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
 import useUpdateEffect from '../useUpdateEffect'
 
@@ -6,7 +6,7 @@ describe('useUpdateEffect', () => {
     it('should run effect on update', () => {
         const effect = jest.fn()
 
-        const {rerender} = renderHook(() => useUpdateEffect(effect))
+        const { rerender } = renderHook(() => useUpdateEffect(effect))
         expect(effect).not.toHaveBeenCalled()
 
         rerender()

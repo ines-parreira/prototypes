@@ -1,9 +1,8 @@
-import {Macro} from '@gorgias/api-queries'
-import {createAction} from '@reduxjs/toolkit'
+import { createAction } from '@reduxjs/toolkit'
 import * as Sentry from '@sentry/react'
-import axios, {AxiosError, CancelToken} from 'axios'
-import {ContentState, convertFromHTML} from 'draft-js'
-import {fromJS, List, Map} from 'immutable'
+import axios, { AxiosError, CancelToken } from 'axios'
+import { ContentState, convertFromHTML } from 'draft-js'
+import { fromJS, List, Map } from 'immutable'
 import _assign from 'lodash/assign'
 import _isNull from 'lodash/isNull'
 import _omit from 'lodash/omit'
@@ -11,84 +10,84 @@ import _pick from 'lodash/pick'
 import _split from 'lodash/split'
 import _throttle from 'lodash/throttle'
 
+import { Macro } from '@gorgias/api-queries'
+
 import {
     TicketChannel,
-    TicketVia,
     TicketMessageSourceType,
     TicketStatus,
+    TicketVia,
 } from 'business/types/ticket'
-import {logEvent, SegmentEvent} from 'common/segment'
+import { logEvent, SegmentEvent } from 'common/segment'
 import {
     fetchTicketReplyMacro,
     triggerTicketFieldsRefreshAndInvalidation,
 } from 'common/state'
-import {AttachmentEnum, GenericAttachment} from 'common/types'
-import {isImmutable, uploadFiles} from 'common/utils'
-import {ActionTemplateExecution} from 'config'
-import {UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_VIDEOS} from 'config/integrations/shopify'
-import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
-import {ShopifyProductCardContentType} from 'constants/integrations/shopify'
-import {isCustomFieldValueEmpty} from 'custom-fields/helpers/isCustomFieldValueEmpty'
+import { AttachmentEnum, GenericAttachment } from 'common/types'
+import { isImmutable, uploadFiles } from 'common/utils'
+import { ActionTemplateExecution } from 'config'
+import { UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_VIDEOS } from 'config/integrations/shopify'
+import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
+import { ShopifyProductCardContentType } from 'constants/integrations/shopify'
+import { isCustomFieldValueEmpty } from 'custom-fields/helpers/isCustomFieldValueEmpty'
 import client from 'models/api/resources'
-import {Customer} from 'models/customer/types'
-import {CustomerChannel} from 'models/customerChannel/types'
-import {DiscountCode} from 'models/discountCodes/types'
+import { Customer } from 'models/customer/types'
+import { CustomerChannel } from 'models/customerChannel/types'
+import { DiscountCode } from 'models/discountCodes/types'
 import {
     MacroAction,
     MacroActionName,
     MacroActionType,
 } from 'models/macroAction/types'
-import {search} from 'models/search/resources'
-import {SearchType, UserSearchResult} from 'models/search/types'
-import {mapNormalizedToArray} from 'models/ticket/mappers'
+import { search } from 'models/search/resources'
+import { SearchType, UserSearchResult } from 'models/search/types'
+import { mapNormalizedToArray } from 'models/ticket/mappers'
 import {
-    Ticket as TicketResponse,
-    TicketAssignee,
     Attachment,
+    TicketAssignee,
+    Ticket as TicketResponse,
 } from 'models/ticket/types'
-import {renderTemplate} from 'pages/common/utils/template'
+import { renderTemplate } from 'pages/common/utils/template'
 import {
     AttachmentPosition,
     AttachmentType,
 } from 'pages/convert/campaigns/types/CampaignAttachment'
 import history from 'pages/history'
-import {ActivityEvents, logActivityEvent} from 'services/activityTracker'
-import {isNewChannel} from 'services/channels'
+import { ActivityEvents, logActivityEvent } from 'services/activityTracker'
+import { isNewChannel } from 'services/channels'
 import socketManager from 'services/socketManager/socketManager'
-import {SocketEventType} from 'services/socketManager/types'
+import { SocketEventType } from 'services/socketManager/types'
 import * as agentSelectors from 'state/agents/selectors'
 import {
     getCurrentAccountState,
     getDefaultIntegrationSettings,
 } from 'state/currentAccount/selectors'
 import * as integrationSelectors from 'state/integrations/selectors'
-import {NEW_MESSAGE_SUBMIT_TICKET_ERROR} from 'state/newMessage/constants'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { NEW_MESSAGE_SUBMIT_TICKET_ERROR } from 'state/newMessage/constants'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 import * as ticketConstants from 'state/ticket/constants'
-import {getAllCustomerIdsFromTicket} from 'state/ticket/helpers'
+import { getAllCustomerIdsFromTicket } from 'state/ticket/helpers'
 import * as ticketSelectors from 'state/ticket/selectors'
-import {FullTicketStateWithoutImmutable} from 'state/ticket/types'
+import { FullTicketStateWithoutImmutable } from 'state/ticket/types'
 import {
-    guessReceiversFromTicket,
-    receiversValueFromState,
-    receiversStateFromValue,
-    getNewMessageSender,
     getLastSameSourceTypeMessage,
+    getNewMessageSender,
     getSourceTypeOfResponse,
+    guessReceiversFromTicket,
     persistLastSenderChannel,
+    receiversStateFromValue,
+    receiversValueFromState,
 } from 'state/ticket/utils'
-import type {CurrentUser, RootState, StoreDispatch} from 'state/types'
+import type { CurrentUser, RootState, StoreDispatch } from 'state/types'
 import {
     castGorgiasVideosForUnsupportedSources,
     getActionTemplate,
     toJS,
 } from 'utils'
-
-import {getMomentNow} from 'utils/date'
-import {convertToHTML} from 'utils/editor'
-
-import {reportError} from 'utils/errors'
+import { getMomentNow } from 'utils/date'
+import { convertToHTML } from 'utils/editor'
+import { reportError } from 'utils/errors'
 
 import * as constants from './constants'
 import {
@@ -110,7 +109,7 @@ import {
     updateNewMessageWithContentState,
 } from './responseUtils'
 import * as selectors from './selectors'
-import {MacroActions, Message, NewMessage, ReplyAreaState} from './types'
+import { MacroActions, Message, NewMessage, ReplyAreaState } from './types'
 import {
     applyExternalTemplateAction,
     getProductCardAttachmentsDeletionOrder,
@@ -122,14 +121,14 @@ export const addAttachments =
     (ticket: Map<any, any>, atts: FileList | GenericAttachment[] | File[]) =>
     (
         dispatch: StoreDispatch,
-        getState: () => RootState
+        getState: () => RootState,
         // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
     ): Promise<ReturnType<StoreDispatch>> | ReturnType<StoreDispatch> => {
         dispatch({
             type: constants.NEW_MESSAGE_ADD_ATTACHMENT_START,
         })
 
-        const {newMessage} = getState()
+        const { newMessage } = getState()
 
         let attachments = atts
         const newMessageSourceType = newMessage.getIn([
@@ -175,7 +174,7 @@ export const addAttachments =
                         <li>You can only send images or videos.</li>
                     </ul>
                 `,
-                    })
+                    }),
                 )
                 return dispatch({
                     type: constants.NEW_MESSAGE_ADD_ATTACHMENT_ERROR,
@@ -189,7 +188,7 @@ export const addAttachments =
         return uploadFiles(attachments).then(
             (resp: GenericAttachment[]) => {
                 const state = getState()
-                const {ticket: _ticket} = state
+                const { ticket: _ticket } = state
 
                 if (ticket.get('id') !== _ticket.get('id')) {
                     return Promise.resolve()
@@ -214,7 +213,7 @@ export const addAttachments =
                     error,
                     reason: 'Failed to upload files. Please try again later',
                 })
-            }
+            },
         )
     }
 
@@ -222,15 +221,15 @@ export const addAttachment =
     (
         ticket: Map<any, any>,
         attachment: AttachmentType,
-        sortAttachments?: boolean
+        sortAttachments?: boolean,
     ) =>
     (
         dispatch: StoreDispatch,
-        getState: () => RootState
+        getState: () => RootState,
         // eslint-disable-next-line @typescript-eslint/no-redundant-type-constituents
     ): Promise<ReturnType<StoreDispatch>> | ReturnType<StoreDispatch> => {
         const state = getState()
-        const {ticket: _ticket} = state
+        const { ticket: _ticket } = state
 
         if (ticket.get('id') !== _ticket.get('id')) {
             return Promise.resolve()
@@ -241,10 +240,10 @@ export const addAttachment =
                 selectors.getNewMessageAttachments(state).toArray() as Map<
                     any,
                     any
-                >[]
+                >[],
             )
             indicesToDelete.forEach((index) =>
-                dispatch(deleteAttachment(index))
+                dispatch(deleteAttachment(index)),
             )
         }
 
@@ -271,17 +270,17 @@ const _throttledIsTyping = _throttle(
         socketManager.send(SocketEventType.AgentTypingStarted, ticketId)
     },
     constants.TYPING_ACTIVITY_AGENT_TIMEOUT_MS,
-    {trailing: false}
+    { trailing: false },
 ) // we don't want to throw event after the ticket has been left
 
 export const setResponseText =
     (args: Map<any, any> = fromJS({})) =>
     (
         dispatch: StoreDispatch,
-        getState: () => RootState
+        getState: () => RootState,
     ): ReturnType<StoreDispatch> => {
         const state = getState()
-        const {ticket, currentUser, newMessage} = state
+        const { ticket, currentUser, newMessage } = state
         const contentState = args.get('contentState') as ContentState
         const ticketId = ticket.get('id') as string
         const signature = selectors.getNewMessageSignature(state)
@@ -330,7 +329,7 @@ export const addEmailExtra = createAction<{
  */
 export const setReceivers = (
     receivers: Record<string, unknown> = {},
-    replaceAll = true
+    replaceAll = true,
 ) => ({
     type: constants.NEW_MESSAGE_SET_RECEIVERS,
     receivers,
@@ -366,7 +365,7 @@ export const setActiveCustomerAsReceiver =
             ? TicketChannel.Phone
             : sourceType
         const customerChannel = customerChannels.find(
-            (channel: CustomerChannel) => channel.type === sourceTypeToSearch
+            (channel: CustomerChannel) => channel.type === sourceTypeToSearch,
         )
         const address = customerChannel
             ? customerChannel.address
@@ -374,7 +373,7 @@ export const setActiveCustomerAsReceiver =
         const name = ticket.getIn(['customer', 'name'])
 
         if (address && name) {
-            void dispatch(setReceivers({to: [{name, address}]}, false))
+            void dispatch(setReceivers({ to: [{ name, address }] }, false))
         }
     }
 
@@ -385,16 +384,16 @@ export const setSender =
     (sender?: Maybe<string>) =>
     (
         dispatch: StoreDispatch,
-        getState: () => RootState
+        getState: () => RootState,
     ): ReturnType<StoreDispatch> => {
         const state = getState()
-        const {integrations, ticket} = state
+        const { integrations, ticket } = state
         const sourceType = selectors.getNewMessageType(state)
-        const {getSendersForChannel} = integrationSelectors
+        const { getSendersForChannel } = integrationSelectors
         const defaultSettings = getDefaultIntegrationSettings(state)
 
         const channels = fromJS(
-            getSendersForChannel(sourceType)(state)
+            getSendersForChannel(sourceType)(state),
         ) as List<any>
 
         let _sender: Map<any, any> = fromJS({})
@@ -402,7 +401,7 @@ export const setSender =
             _sender =
                 channels.find(
                     (channel: Map<any, any>) =>
-                        channel.get('address') === sender
+                        channel.get('address') === sender,
                 ) || fromJS({})
         }
 
@@ -413,7 +412,7 @@ export const setSender =
                     sourceType,
                     channels,
                     integrations,
-                    defaultSettings
+                    defaultSettings,
                 ) || fromJS({})
         }
 
@@ -473,7 +472,7 @@ export const setNewMessageActions = (actions?: MacroAction[]) => ({
 
 export const addNewMessageDiscountCode = (
     ticketId: string,
-    discountCode: DiscountCode
+    discountCode: DiscountCode,
 ) => ({
     type: constants.SET_NEW_MESSAGE_DISCOUNT_CODE,
     discountCode,
@@ -513,10 +512,10 @@ export const prepare =
                 selectors.getNewMessageAttachments(state).toArray() as Map<
                     any,
                     any
-                >[]
+                >[],
             )
             indicesToDelete.forEach((index) =>
-                dispatch(deleteAttachment(index))
+                dispatch(deleteAttachment(index)),
             )
         }
 
@@ -537,7 +536,7 @@ export const prepare =
                 // NOTE. TicketMessageSourceType includes TicketChannel values so casting to string to compare works.
                 const hyperlinksSupported =
                     !UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_VIDEOS.map((x) =>
-                        x.toString()
+                        x.toString(),
                     ).includes(sourceType as string)
 
                 const newHtmlContent = castGorgiasVideosForUnsupportedSources({
@@ -553,7 +552,7 @@ export const prepare =
                     const newContentState =
                         ContentState.createFromBlockArray(contentBlocks)
                     const newSelectionState = selectionAfter(
-                        newContentState.getBlocksAsArray() as any
+                        newContentState.getBlocksAsArray() as any,
                     )
 
                     dispatch(
@@ -564,8 +563,8 @@ export const prepare =
                                 dirty: true,
                                 forceFocus: true,
                                 forceUpdate: true,
-                            })
-                        )
+                            }),
+                        ),
                     )
                 }
             }
@@ -576,7 +575,7 @@ export const prepare =
                 //$TsFixMe remove casting once ticket selectors are migrated
                 const messages = (
                     ticketSelectors.getMessages as (
-                        state: RootState
+                        state: RootState,
                     ) => List<any>
                 )(state)
                 let attachments: FileList | Attachment[] = []
@@ -584,8 +583,8 @@ export const prepare =
                     attachments = (attachments as Array<Attachment>).concat(
                         toJS<Attachment[]>(
                             (message.get('attachments') ||
-                                fromJS([])) as List<any>
-                        )
+                                fromJS([])) as List<any>,
+                        ),
                     )
                 })
 
@@ -593,7 +592,7 @@ export const prepare =
                     selectors.getNewMessageAttachments(state)
                 const currentAttachmentsUrls = currentAttachments.map(
                     (attachment: Map<any, any>) =>
-                        attachment.get('url') as string
+                        attachment.get('url') as string,
                 ) as List<any>
 
                 // Filter out all attachments already present in the state, to avoid setting them again when changing
@@ -602,16 +601,16 @@ export const prepare =
                     (attachment) =>
                         !currentAttachmentsUrls.includes(attachment.url) &&
                         attachment.content_type !==
-                            ShopifyProductCardContentType
+                            ShopifyProductCardContentType,
                 )
 
                 dispatch(
                     setSubject(
-                        `Fwd: ${currentTicket.get('subject', '') as string}`
-                    )
+                        `Fwd: ${currentTicket.get('subject', '') as string}`,
+                    ),
                 )
                 dispatch(setSourceType(TicketMessageSourceType.Email))
-                dispatch(setSourceExtra({forward: true}))
+                dispatch(setSourceExtra({ forward: true }))
                 dispatch(setSender())
                 void dispatch(setReceivers())
                 dispatch({
@@ -634,7 +633,7 @@ export const prepare =
                 if (contentState !== userInputContentState) {
                     responseTextArgs = responseTextArgs.set(
                         'emailExtraAdded',
-                        false
+                        false,
                     )
                 }
                 dispatch(setResponseText(responseTextArgs))
@@ -652,7 +651,7 @@ export const prepare =
                 const newMessageState = selectors.getNewMessageState(newState)
                 const receiverName = newMessageState.getIn(
                     ['newMessage', 'source', 'to', 0, 'name'],
-                    ''
+                    '',
                 ) as string
                 const contentState = newMessageState.getIn([
                     'state',
@@ -666,10 +665,10 @@ export const prepare =
                 }
 
                 const newContentState = ContentState.createFromText(
-                    `@${receiverName} `
+                    `@${receiverName} `,
                 )
                 const newSelectionState = selectionAfter(
-                    newContentState.getBlocksAsArray() as any
+                    newContentState.getBlocksAsArray() as any,
                 )
 
                 dispatch(
@@ -680,8 +679,8 @@ export const prepare =
                             dirty: true,
                             forceFocus: true,
                             forceUpdate: true,
-                        })
-                    )
+                        }),
+                    ),
                 )
                 break
             }
@@ -700,7 +699,7 @@ export const updatePotentialCustomers =
     (
         query: string,
         type: SearchType = SearchType.UserChannelEmail,
-        cancelToken?: CancelToken
+        cancelToken?: CancelToken,
     ) =>
     (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> =>
         search<UserSearchResult>({
@@ -728,7 +727,7 @@ export const updatePotentialCustomers =
                     error,
                     reason: 'Failed to do the search. Please try again...',
                 })
-            }
+            },
         )
 
 export const initializeMessageDraft = () => (dispatch: StoreDispatch) => {
@@ -750,7 +749,7 @@ export function prepareTicketDataToSend(
     newMessageState: Map<any, any>,
     status: Maybe<string>,
     actionsForMacro: Maybe<MacroActions>,
-    currentUser: CurrentUser
+    currentUser: CurrentUser,
 ): Maybe<{
     ticket: FullTicketStateWithoutImmutable
     newMessage: NewMessage
@@ -758,7 +757,7 @@ export function prepareTicketDataToSend(
 }> {
     const ticket = toJS<FullTicketStateWithoutImmutable>(ticketState)
     const replyAreaState = toReplyAreaState(
-        newMessageState.get('state') as Map<any, any>
+        newMessageState.get('state') as Map<any, any>,
     )
     let newMessage = (
         newMessageState.get('newMessage') as Map<any, any>
@@ -769,7 +768,7 @@ export function prepareTicketDataToSend(
             ...newMessage,
             source: {
                 ...newMessage.source,
-                to: newMessage?.source?.to?.map(({name, address}) => ({
+                to: newMessage?.source?.to?.map(({ name, address }) => ({
                     name,
                     address,
                 })),
@@ -780,7 +779,7 @@ export function prepareTicketDataToSend(
     ticket.status = (status as TicketStatus) || ticket.status
 
     if (ticket.assignee_user) {
-        ticket.assignee_user = {id: ticket.assignee_user.id} as TicketAssignee
+        ticket.assignee_user = { id: ticket.assignee_user.id } as TicketAssignee
     }
 
     // Prepare newMessage to send it.
@@ -790,20 +789,20 @@ export function prepareTicketDataToSend(
 
         // Transform empty message with macro to internal note
         if (!selectors.hasContent(state) && !!ticket.state?.appliedMacro) {
-            const {newMessage: editedNewMessage, newActions} =
+            const { newMessage: editedNewMessage, newActions } =
                 transformToInternalNote(
                     newMessage,
                     actions,
                     `Applied macro "${
                         (ticket.state.appliedMacro as Macro).name
-                    }"`
+                    }"`,
                 )
             newMessage = editedNewMessage
             actions = newActions
         }
 
         const sourceType = newMessage.source.type
-        const {emailExtraAdded, contentState} = replyAreaState
+        const { emailExtraAdded, contentState } = replyAreaState
 
         const isFacebookComment =
             newMessage.channel === TicketMessageSourceType.Facebook &&
@@ -819,7 +818,7 @@ export function prepareTicketDataToSend(
             const newContentState = addEmailExtraContent(contentState, {
                 signature: selectors.getNewMessageSignature(state),
                 replyThreadMessages: getReplyThreadMessages(
-                    ticketSelectors.getBody(state).toJS()
+                    ticketSelectors.getBody(state).toJS(),
                 ),
                 ticket: ticketState.toJS(),
                 isForwarded: selectors.isForward(state),
@@ -827,7 +826,7 @@ export function prepareTicketDataToSend(
 
             newMessage = updateNewMessageWithContentState(
                 newMessage,
-                newContentState
+                newContentState,
             )
             replyAreaState.emailExtraAdded = true
             replyAreaState.contentState = newContentState
@@ -835,7 +834,7 @@ export function prepareTicketDataToSend(
 
         const lastSameTypeMessage = getLastSameSourceTypeMessage(
             ticketState.get('messages'),
-            sourceType
+            sourceType,
         )
 
         if (ticket.messages.length && lastSameTypeMessage) {
@@ -845,7 +844,7 @@ export function prepareTicketDataToSend(
                 newMessage.source.extra = _assign(
                     {},
                     newMessage.source.extra,
-                    lastMessage.source.extra
+                    lastMessage.source.extra,
                 )
             }
         }
@@ -857,7 +856,7 @@ export function prepareTicketDataToSend(
 
         if (!newMessage.sender) {
             newMessage.sender = fromJS(
-                _pick(currentUser.toJS(), ['email', 'id', 'name'])
+                _pick(currentUser.toJS(), ['email', 'id', 'name']),
             )
         }
 
@@ -873,7 +872,7 @@ export function prepareTicketDataToSend(
                         title: 'Your message cannot be sent',
                         message:
                             'You cannot send an attachment without a message in a Facebook comment.',
-                    })
+                    }),
                 )
                 return null
             }
@@ -892,8 +891,8 @@ export function prepareTicketDataToSend(
                         {
                             ticket: ticketState.toJS(),
                             currentUser: currentUser.toJS(),
-                        }
-                    )
+                        },
+                    ),
                 )
                 .concat(newMessage.actions ?? fromJS([])) as List<Map<any, any>>
         }
@@ -909,7 +908,7 @@ export function prepareTicketDataToSend(
             state,
             ticket,
             newMessage,
-            ticket.channel
+            ticket.channel,
         )
         if (discountCodes?.length) {
             newMessage.meta = newMessage.meta || {}
@@ -932,7 +931,7 @@ export const prepareNewMessageDiscountCodes = (
     state: RootState,
     ticket: FullTicketStateWithoutImmutable,
     newMessage: NewMessage,
-    channel: string
+    channel: string,
 ): string[] => {
     const discountCodes = selectors.getNewMessageDiscountCodes(state)
     if (!discountCodes || discountCodes.isEmpty()) return []
@@ -956,7 +955,7 @@ export const prepareNewMessageDiscountCodes = (
     const confirmedDiscountCodes = discountCodes.filter(
         (discountCode: Map<any, any>) => {
             return currentMessage.includes(discountCode.get('code'))
-        }
+        },
     )
     if (confirmedDiscountCodes?.isEmpty()) return []
 
@@ -964,7 +963,8 @@ export const prepareNewMessageDiscountCodes = (
     const customerData = getAllCustomerIdsFromTicket(
         fromJS(ticket),
         (integration) =>
-            integration.get('__integration_type__') === SHOPIFY_INTEGRATION_TYPE
+            integration.get('__integration_type__') ===
+            SHOPIFY_INTEGRATION_TYPE,
     )
     confirmedDiscountCodes.forEach((discountCode: Map<any, any>) => {
         logEvent(SegmentEvent.InsertDiscountCodeAdded, {
@@ -982,7 +982,7 @@ export const prepareNewMessageDiscountCodes = (
 
     return confirmedDiscountCodes
         .map(
-            (discountCode: Map<any, any>) => discountCode.get('code') as string
+            (discountCode: Map<any, any>) => discountCode.get('code') as string,
         )
         .flatten()
         .toArray() as string[]
@@ -991,7 +991,7 @@ export const prepareNewMessageDiscountCodes = (
 export const formatAction = (
     action: Map<any, any>,
     template: Map<any, any>,
-    context: Record<string, unknown>
+    context: Record<string, unknown>,
 ) => {
     /**
      * Verify if any argument of the action is a `listDict`, i.e. a data structure as such :
@@ -1031,7 +1031,7 @@ export const formatAction = (
                 if (element.get('value') !== '') {
                     newArgs = newArgs.setIn(
                         [key, renderTemplate(element.get('key'), context)],
-                        renderTemplate(element.get('value'), context)
+                        renderTemplate(element.get('value'), context),
                     )
                 }
             })
@@ -1046,7 +1046,7 @@ export const formatAction = (
             'status',
             template.get('execution') !== ActionTemplateExecution.Front
                 ? 'pending'
-                : 'success'
+                : 'success',
         )
 }
 
@@ -1074,7 +1074,7 @@ export function prepareTicketMessage({
 } = {}) {
     return (
         dispatch: StoreDispatch,
-        getState: () => RootState
+        getState: () => RootState,
     ): Promise<{
         messageId: number
         messageToSend: NewMessage
@@ -1082,7 +1082,7 @@ export function prepareTicketMessage({
     }> =>
         new Promise((resolve, reject) => {
             const state = getState()
-            const {ticket, currentUser, newMessage} = state
+            const { ticket, currentUser, newMessage } = state
             // temporary message id
             let messageId = getMomentNow()
             let messageToSend: NewMessage
@@ -1100,7 +1100,7 @@ export function prepareTicketMessage({
                     newMessage,
                     status,
                     macroActions,
-                    currentUser
+                    currentUser,
                 )
 
                 if (!dataToSend || _isNull(dataToSend)) {
@@ -1124,7 +1124,7 @@ export function prepareTicketMessage({
                 if (messageToSend?.source?.from?.address) {
                     const integration =
                         integrationSelectors.getIntegrationByAddress(
-                            messageToSend.source.from.address
+                            messageToSend.source.from.address,
                         )(state)
 
                     if (integration) {
@@ -1137,7 +1137,7 @@ export function prepareTicketMessage({
             if (messageToSend.actions) {
                 for (const messageAction of messageToSend.actions as any) {
                     const template = getActionTemplate(
-                        (fromJS(messageAction) as Map<any, any>).get('name')
+                        (fromJS(messageAction) as Map<any, any>).get('name'),
                     )
 
                     // We can't just have a fallback in the get, in case ticket.customer.data === null
@@ -1150,7 +1150,7 @@ export function prepareTicketMessage({
                     if (template && template.validators) {
                         for (const validator of template.validators) {
                             const res = validator.validate(
-                                customer as unknown as Customer
+                                customer as unknown as Customer,
                             )
 
                             if (!res) {
@@ -1163,8 +1163,8 @@ export function prepareTicketMessage({
                                 })
                                 return reject(
                                     new TicketMessageActionValidationError(
-                                        validator.error
-                                    )
+                                        validator.error,
+                                    ),
                                 )
                             }
                         }
@@ -1183,11 +1183,11 @@ export function prepareTicketMessage({
                         },
                     }),
                     fromJS(getActionTemplate(MacroActionName.SetStatus)),
-                    {}
+                    {},
                 )
                 messageToSend = upsertNewMessageAction(
                     messageToSend,
-                    closeTicketAction
+                    closeTicketAction,
                 )
             }
 
@@ -1211,7 +1211,7 @@ export function prepareTicketMessage({
             Sentry.addBreadcrumb({
                 message: `Preparing ticket message: ${messageToSend.body_text?.substring(
                     0,
-                    50
+                    50,
                 )}...`,
                 data: {
                     status,
@@ -1231,7 +1231,7 @@ export function prepareTicketMessage({
                 //$TsFixMe remove casting once ticket selectors are migrated
                 messages: (
                     ticketSelectors.getMessages as (
-                        state: RootState
+                        state: RootState,
                     ) => List<any>
                 )(state),
                 ticketId: ticket.get('id'),
@@ -1243,7 +1243,9 @@ export function prepareTicketMessage({
 
             // clear the message (since it was just sent) but force the focus on the field
             dispatch(
-                setResponseText(fromJS({forceFocus: true, forceUpdate: true}))
+                setResponseText(
+                    fromJS({ forceFocus: true, forceUpdate: true }),
+                ),
             )
             dispatch(resetReceiversAndSender)
             resolve({
@@ -1265,14 +1267,14 @@ export function sendTicketMessage(
     messageToSend: NewMessage,
     action: Maybe<string>,
     resetMessage = true,
-    ticketId?: Maybe<string>
+    ticketId?: Maybe<string>,
 ) {
     return (
         dispatch: StoreDispatch,
-        getState: () => RootState
+        getState: () => RootState,
     ): Promise<Message> =>
         new Promise((resolve) => {
-            const {ticket} = getState()
+            const { ticket } = getState()
             let promise
 
             const ticketIdArg = ticketId || (ticket.get('id') as number)
@@ -1283,12 +1285,12 @@ export function sendTicketMessage(
                     `/api/tickets/${ticketIdToUse}/messages/${
                         messageToSend.id || ''
                     }/${action ? `?action=${action}` : ''}`,
-                    messageToSend
+                    messageToSend,
                 )
             } else {
                 promise = client.post<Message>(
                     `/api/tickets/${ticketIdToUse}/messages/`,
-                    messageToSend
+                    messageToSend,
                 )
             }
 
@@ -1311,7 +1313,7 @@ export function sendTicketMessage(
                 .then(
                     (resp) => {
                         const state = getState()
-                        const {ticket: _ticket} = state
+                        const { ticket: _ticket } = state
 
                         // if we changed the displayed ticket (e.g. submit and close), we don't want to change the state.
                         if (
@@ -1323,7 +1325,7 @@ export function sendTicketMessage(
                             //$TsFixMe remove casting once ticket selectors are migrated
                             const messages = (
                                 ticketSelectors.getMessages as (
-                                    state: RootState
+                                    state: RootState,
                                 ) => List<any>
                             )(state)
                             const via = ticketSelectors.getVia(state)
@@ -1339,7 +1341,7 @@ export function sendTicketMessage(
                                 getSourceTypeOfResponse(
                                     messages.push(resp),
                                     via,
-                                    _ticket.get('id')
+                                    _ticket.get('id'),
                                 )
                             if (
                                 [
@@ -1364,7 +1366,7 @@ export function sendTicketMessage(
                             message: messageToSend,
                             messageId,
                         })
-                    }
+                    },
                 )
                 .then(resolve as any)
         })
@@ -1377,10 +1379,10 @@ export function retrySubmitTicketMessage(message: Map<any, any>) {
                 status: message.getIn(['_internal', 'status']),
                 resetMessage: false,
                 retryMessage: message,
-            })
-        ).then(({messageId, messageToSend}) => {
+            }),
+        ).then(({ messageId, messageToSend }) => {
             return dispatch(
-                sendTicketMessage(messageId, messageToSend, null, false)
+                sendTicketMessage(messageId, messageToSend, null, false),
             )
         })
     }
@@ -1392,13 +1394,13 @@ export function submitTicket(
     macroActions: Maybe<MacroActions>,
     currentUser: CurrentUser,
     resetMessage = true,
-    temporaryTicketId: string | null = null
+    temporaryTicketId: string | null = null,
 ) {
     return async (
         dispatch: StoreDispatch,
-        getState: () => RootState
+        getState: () => RootState,
     ): Promise<ReturnType<StoreDispatch>> => {
-        const {newMessage} = getState()
+        const { newMessage } = getState()
 
         dispatch({
             type: constants.NEW_MESSAGE_SUBMIT_TICKET_START,
@@ -1411,7 +1413,7 @@ export function submitTicket(
             newMessage,
             status,
             macroActions,
-            currentUser
+            currentUser,
         )
 
         // in case of,
@@ -1434,16 +1436,16 @@ export function submitTicket(
                 mapNormalizedToArray(ticketToSend.custom_fields)
                     .filter(
                         (customField) =>
-                            !isCustomFieldValueEmpty(customField.value)
+                            !isCustomFieldValueEmpty(customField.value),
                     )
-                    .map(({id, value}) => ({id, value}))
+                    .map(({ id, value }) => ({ id, value }))
 
             const response = await client.post<TicketResponse>(
                 '/api/tickets/',
                 {
                     ...ticketToSend,
                     custom_fields: customFields,
-                }
+                },
             )
 
             const data = response?.data
@@ -1459,10 +1461,10 @@ export function submitTicket(
             history.push(`/app/ticket/${data.id}`)
 
             const state = getState()
-            const {ticket} = state
+            const { ticket } = state
 
             if (data.id !== ticket.get('id') && ticket.get('id')) {
-                return Promise.resolve({resp: data})
+                return Promise.resolve({ resp: data })
             }
 
             dispatch(resetReceiversAndSender)
@@ -1496,16 +1498,16 @@ export function resetFromTicket(ticket: Map<any, any>) {
 
 export function resetReceiversAndSender(
     dispatch: StoreDispatch,
-    getState: () => RootState
+    getState: () => RootState,
 ): ReturnType<StoreDispatch> {
     const state = getState()
-    const {ticket} = state
+    const { ticket } = state
     const type = selectors.getNewMessageType(state)
     // set receivers according to last sent message
     const receivers = guessReceiversFromTicket(
         ticket,
         type,
-        integrationSelectors.getChannelsByType(type)(state)
+        integrationSelectors.getChannelsByType(type)(state),
     )
     const receiversValues = receiversValueFromState(receivers, type)
     void dispatch(setReceivers(receiversStateFromValue(receiversValues, type)))
@@ -1519,7 +1521,7 @@ export const newMessageResetFromMessage = createAction<{
 }>(constants.NEW_MESSAGE_RESET_FROM_MESSAGE)
 
 export const setShowConvertToForwardPopover = createAction<boolean>(
-    constants.NEW_MESSAGE_SHOW_CONVERT_TO_FORWARD_POPOVER
+    constants.NEW_MESSAGE_SHOW_CONVERT_TO_FORWARD_POPOVER,
 )
 
 export const setNewMessageForChatCampaign = createAction<{
@@ -1533,5 +1535,5 @@ export const restoreNewMessageDraft = createAction<
 >(constants.RESTORE_NEW_MESSAGE_DRAFT)
 
 export const restoreNewMessageBodyText = createAction<MessageContext>(
-    constants.RESTORE_NEW_MESSAGE_BODY_TEXT
+    constants.RESTORE_NEW_MESSAGE_BODY_TEXT,
 )

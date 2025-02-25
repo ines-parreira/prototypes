@@ -1,3 +1,5 @@
+import { renderHook } from '@testing-library/react-hooks'
+
 import {
     CustomFieldCondition,
     ExpressionFieldSource,
@@ -5,12 +7,11 @@ import {
     ExpressionOperator,
     TicketStatus,
 } from '@gorgias/api-types'
-import {renderHook} from '@testing-library/react-hooks'
 
-import {OBJECT_TYPES} from 'custom-fields/constants'
-import {customFieldCondition} from 'fixtures/customFieldCondition'
+import { OBJECT_TYPES } from 'custom-fields/constants'
+import { customFieldCondition } from 'fixtures/customFieldCondition'
 
-import {evaluateCustomFieldsConditions} from '../evaluateCustomFieldsConditions'
+import { evaluateCustomFieldsConditions } from '../evaluateCustomFieldsConditions'
 
 const requiredWhenOpenCustomFieldCondition = {
     ...customFieldCondition,
@@ -61,8 +62,8 @@ describe('evaluateCustomFieldsConditions', () => {
             OBJECT_TYPES.TICKET,
             {
                 status: TicketStatus.Open,
-                custom_fields: {100: {value: 'high'}},
-            }
+                custom_fields: { 100: { value: 'high' } },
+            },
         )
 
         expect(result).toEqual({
@@ -81,10 +82,10 @@ describe('evaluateCustomFieldsConditions', () => {
             {
                 status: TicketStatus.Open,
                 custom_fields: {},
-            }
+            },
         )
 
-        expect(result).toEqual({500: ExpressionFieldType.Required})
+        expect(result).toEqual({ 500: ExpressionFieldType.Required })
     })
 
     it('returns only one visible field, as the condition for required is not met', () => {
@@ -96,11 +97,11 @@ describe('evaluateCustomFieldsConditions', () => {
             OBJECT_TYPES.TICKET,
             {
                 status: TicketStatus.Closed,
-                custom_fields: {100: {value: 'high'}},
-            }
+                custom_fields: { 100: { value: 'high' } },
+            },
         )
 
-        expect(result).toEqual({501: ExpressionFieldType.Visible})
+        expect(result).toEqual({ 501: ExpressionFieldType.Visible })
     })
 
     it.each([
@@ -144,20 +145,20 @@ describe('evaluateCustomFieldsConditions', () => {
                 OBJECT_TYPES.TICKET,
                 {
                     status: TicketStatus.Open,
-                    custom_fields: {100: {value: 'high'}},
-                }
+                    custom_fields: { 100: { value: 'high' } },
+                },
             )
 
             expect(result).toEqual({
                 500: ExpressionFieldType.Required,
                 501: ExpressionFieldType.Required,
             })
-        }
+        },
     )
 
     it('supports only ticket for now', () => {
-        const {result} = renderHook(() =>
-            evaluateCustomFieldsConditions([], OBJECT_TYPES.CUSTOMER, {})
+        const { result } = renderHook(() =>
+            evaluateCustomFieldsConditions([], OBJECT_TYPES.CUSTOMER, {}),
         )
         expect(result.error?.message).toBe('Unsupported object type: Customer')
     })
@@ -247,14 +248,14 @@ describe('evaluateCustomFieldsConditions', () => {
 
             const sourceObject = {
                 custom_fields: {
-                    1: {value: currentFieldValue},
+                    1: { value: currentFieldValue },
                 },
             }
 
             const result = evaluateCustomFieldsConditions(
                 conditions,
                 OBJECT_TYPES.TICKET,
-                sourceObject
+                sourceObject,
             )
 
             if (expectedResult) {
@@ -264,6 +265,6 @@ describe('evaluateCustomFieldsConditions', () => {
             } else {
                 expect(result).toEqual({})
             }
-        }
+        },
     )
 })

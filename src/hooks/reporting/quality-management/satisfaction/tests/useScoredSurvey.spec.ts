@@ -1,4 +1,4 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment'
 
 import {
@@ -9,20 +9,20 @@ import {
     fetchMetricPerDimensionWithEnrichment,
     useMetricPerDimensionWithEnrichment,
 } from 'hooks/reporting/useMetricPerDimension'
-import {TicketDimension} from 'models/reporting/cubes/TicketCube'
-import {TicketSatisfactionSurveyDimension} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
-import {scoredSurveysQueryFactory} from 'models/reporting/queryFactories/satisfaction/scoredSurveysQueryFactory'
-import {EnrichmentFields} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
-import {formatReportingQueryDate} from 'utils/reporting'
-import {assumeMock} from 'utils/testing'
+import { TicketDimension } from 'models/reporting/cubes/TicketCube'
+import { TicketSatisfactionSurveyDimension } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
+import { scoredSurveysQueryFactory } from 'models/reporting/queryFactories/satisfaction/scoredSurveysQueryFactory'
+import { EnrichmentFields } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
+import { formatReportingQueryDate } from 'utils/reporting'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/useMetricPerDimension')
 const useMetricPerDimensionWithEnrichmentMock = assumeMock(
-    useMetricPerDimensionWithEnrichment
+    useMetricPerDimensionWithEnrichment,
 )
 const fetchMetricPerDimensionWithEnrichmentMock = assumeMock(
-    fetchMetricPerDimensionWithEnrichment
+    fetchMetricPerDimensionWithEnrichment,
 )
 
 const mockData = {
@@ -75,24 +75,24 @@ describe('ScoredSurveys', () => {
             useMetricPerDimensionWithEnrichmentMock.mockReturnValue(mockData)
 
             fetchMetricPerDimensionWithEnrichmentMock.mockResolvedValue(
-                Promise.resolve(mockData)
+                Promise.resolve(mockData),
             )
         })
         it('should pass query factories with 3 arguments', () => {
             renderHook(() => useScoredSurveys(statsFilters, timezone, limit))
 
             expect(
-                useMetricPerDimensionWithEnrichmentMock
+                useMetricPerDimensionWithEnrichmentMock,
             ).toHaveBeenCalledWith(
                 scoredSurveysQueryFactory(statsFilters, timezone, limit),
                 [EnrichmentFields.CustomerName, EnrichmentFields.AssigneeName],
-                EnrichmentFields.TicketId
+                EnrichmentFields.TicketId,
             )
         })
 
         it('should format data', () => {
-            const {result} = renderHook(() =>
-                useScoredSurveys(statsFilters, timezone, limit)
+            const { result } = renderHook(() =>
+                useScoredSurveys(statsFilters, timezone, limit),
             )
 
             expect(result.current).toEqual({
@@ -143,8 +143,8 @@ describe('ScoredSurveys', () => {
                 },
             } as any)
 
-            const {result} = renderHook(() =>
-                useScoredSurveys(statsFilters, timezone, limit)
+            const { result } = renderHook(() =>
+                useScoredSurveys(statsFilters, timezone, limit),
             )
 
             expect(result.current).toEqual({
@@ -170,11 +170,11 @@ describe('ScoredSurveys', () => {
             await fetchScoredSurveys(statsFilters, timezone, limit)
 
             expect(
-                fetchMetricPerDimensionWithEnrichmentMock
+                fetchMetricPerDimensionWithEnrichmentMock,
             ).toHaveBeenCalledWith(
                 scoredSurveysQueryFactory(statsFilters, timezone, limit),
                 [EnrichmentFields.CustomerName, EnrichmentFields.AssigneeName],
-                EnrichmentFields.TicketId
+                EnrichmentFields.TicketId,
             )
         })
 
@@ -182,7 +182,11 @@ describe('ScoredSurveys', () => {
             fetchMetricPerDimensionWithEnrichmentMock.mockRejectedValueOnce({})
             const res = await fetchScoredSurveys(statsFilters, timezone)
 
-            expect(res).toEqual({data: null, isError: true, isFetching: false})
+            expect(res).toEqual({
+                data: null,
+                isError: true,
+                isFetching: false,
+            })
         })
 
         it('should format data', async () => {

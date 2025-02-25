@@ -1,9 +1,9 @@
-import {useQuery} from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 
-import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
-import {useConvertApi} from 'pages/convert/common/hooks/useConvertApi'
-import {RevenueAddonClient} from 'rest_api/revenue_addon_api/client'
-import {Components} from 'rest_api/revenue_addon_api/client.generated'
+import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
+import { useConvertApi } from 'pages/convert/common/hooks/useConvertApi'
+import { RevenueAddonClient } from 'rest_api/revenue_addon_api/client'
+import { Components } from 'rest_api/revenue_addon_api/client.generated'
 
 export enum BundleOnboardingStatus {
     INSTALLED = 'installed',
@@ -28,14 +28,14 @@ export const convertStatusKeys = {
 
 export const getConvertStatusAndUsage = async (
     client: RevenueAddonClient | undefined,
-    shopIntegrationId?: number
+    shopIntegrationId?: number,
 ) => {
     if (!client) return null
 
     const res = await client.get_status_and_usage(
         shopIntegrationId && {
             shop_integration_id: shopIntegrationId,
-        }
+        },
     )
 
     if (res.status !== 200) return null
@@ -45,12 +45,12 @@ export const getConvertStatusAndUsage = async (
 
 const useGetConvertStatus = (
     fetchForAll = false,
-    shopIntegrationId?: number
+    shopIntegrationId?: number,
 ) => {
     const isConvertSubscriber = useIsConvertSubscriber()
-    const {client} = useConvertApi()
+    const { client } = useConvertApi()
 
-    const {data} = useQuery({
+    const { data } = useQuery({
         queryKey: convertStatusKeys.shop(shopIntegrationId),
         queryFn: async () =>
             getConvertStatusAndUsage(client, shopIntegrationId),

@@ -1,35 +1,33 @@
-import {StripeAddressElementChangeEvent} from '@stripe/stripe-js'
+import React, { useMemo } from 'react'
+
+import { StripeAddressElementChangeEvent } from '@stripe/stripe-js'
 import mapValues from 'lodash/mapValues'
-import React, {useMemo} from 'react'
+import { SubmitHandler } from 'react-hook-form'
+import { useStore } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 
-import {SubmitHandler} from 'react-hook-form'
-
-import {useStore} from 'react-redux'
-import {useHistory} from 'react-router-dom'
-
-import {logEvent, SegmentEvent} from 'common/segment'
-import {Form} from 'core/forms'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { Form } from 'core/forms'
 import useAppSelector from 'hooks/useAppSelector'
-import {StripePaymentMethodType} from 'models/billing/types'
+import { StripePaymentMethodType } from 'models/billing/types'
 import BackLink from 'pages/settings/new_billing/components/BackLink'
-import {BillingInformationFields} from 'pages/settings/new_billing/components/BillingInformationFields/BillingInformationFields'
+import { BillingInformationFields } from 'pages/settings/new_billing/components/BillingInformationFields/BillingInformationFields'
 import Card from 'pages/settings/new_billing/components/Card'
-import {FormSubmitButton} from 'pages/settings/new_billing/components/FormSubmitButton/FormSubmitButton'
+import { FormSubmitButton } from 'pages/settings/new_billing/components/FormSubmitButton/FormSubmitButton'
 import {
     BILLING_BASE_PATH,
     BILLING_PAYMENT_PATH,
 } from 'pages/settings/new_billing/constants'
-import {useStripeElementPaymentState} from 'pages/settings/new_billing/hooks/useStripeElementPaymentState'
-import {filterTaxIdsByAddress} from 'pages/settings/new_billing/utils/filterTaxIdsByAddress'
-import {getIsMissingBillingtInformation} from 'pages/settings/new_billing/utils/getIsMissingBillingtInformation'
-import {StripePaymentFields} from 'pages/settings/new_billing/views/PaymentMethodSetupView/components/StripePaymentFields/StripePaymentFields'
+import { useStripeElementPaymentState } from 'pages/settings/new_billing/hooks/useStripeElementPaymentState'
+import { filterTaxIdsByAddress } from 'pages/settings/new_billing/utils/filterTaxIdsByAddress'
+import { getIsMissingBillingtInformation } from 'pages/settings/new_billing/utils/getIsMissingBillingtInformation'
+import { StripePaymentFields } from 'pages/settings/new_billing/views/PaymentMethodSetupView/components/StripePaymentFields/StripePaymentFields'
 import {
     ISubscriptionSummaryProps,
     SubscriptionSummary,
 } from 'pages/settings/new_billing/views/PaymentMethodSetupView/components/SubscriptionSummary/SubscriptionSummary'
-import {VerificationChargeDisclaimer} from 'pages/settings/new_billing/views/PaymentMethodSetupView/components/VerificationChargeDisclaimer/VerificationChargeDisclaimer'
-
-import {useSubmitPaymentMethodWithBillingContact} from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useSubmitPaymentMethodWithBillingContact'
+import { VerificationChargeDisclaimer } from 'pages/settings/new_billing/views/PaymentMethodSetupView/components/VerificationChargeDisclaimer/VerificationChargeDisclaimer'
+import { useSubmitPaymentMethodWithBillingContact } from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useSubmitPaymentMethodWithBillingContact'
 import {
     BillingContactDetailResponse,
     BillingContactUpdatePayload,
@@ -38,8 +36,7 @@ import {
     getCurrentAccountState,
     getIsCurrentSubscriptionTrialingOrCanceled,
 } from 'state/currentAccount/selectors'
-
-import {getCurrentUser} from 'state/currentUser/selectors'
+import { getCurrentUser } from 'state/currentUser/selectors'
 
 import css from './FormContainer.less'
 
@@ -58,12 +55,12 @@ export const FormContainer: React.FC<
         hasCreditCard: boolean
         billingInformation: BillingContactDetailResponse
     } & Pick<ISubscriptionSummaryProps<FormFields>, 'dispatchBillingError'>
-> = ({hasCreditCard, billingInformation, dispatchBillingError}) => {
+> = ({ hasCreditCard, billingInformation, dispatchBillingError }) => {
     const isStartingSubscription = useAppSelector(
-        getIsCurrentSubscriptionTrialingOrCanceled
+        getIsCurrentSubscriptionTrialingOrCanceled,
     )
     const selectedPaymentMethodType = useStripeElementPaymentState(
-        (event) => event.value.type
+        (event) => event.value.type,
     ) as Maybe<StripePaymentMethodType>
 
     const shouldDisplayBillingInformationFields =
@@ -71,7 +68,7 @@ export const FormContainer: React.FC<
 
     const defaultValues = useDefaultValues(
         billingInformation,
-        shouldDisplayBillingInformationFields
+        shouldDisplayBillingInformationFields,
     )
 
     const handleValidSubmit = useHandleValidSubmit()
@@ -114,7 +111,7 @@ export const FormContainer: React.FC<
 
 const useDefaultValues = (
     billingInformation: BillingContactDetailResponse,
-    shouldDisplayBillingInformationFields: boolean
+    shouldDisplayBillingInformationFields: boolean,
 ) => {
     return useMemo(() => {
         const baseValues: FormFields = {
@@ -154,7 +151,7 @@ const useHandleValidSubmit = (): SubmitHandler<FormFields> => {
     const history = useHistory()
     const store = useStore()
 
-    const {submitPaymentMethodWithBillingContact, submitPaymentMethod} =
+    const { submitPaymentMethodWithBillingContact, submitPaymentMethod } =
         useSubmitPaymentMethodWithBillingContact({
             onSuccess: () => {
                 const isStartingSubscription =

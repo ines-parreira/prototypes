@@ -1,19 +1,21 @@
 import React from 'react'
-import {useHistory} from 'react-router-dom'
-import {Col} from 'reactstrap'
+
+import { useHistory } from 'react-router-dom'
+import { Col } from 'reactstrap'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {EmailMigrationInboundVerification} from 'models/integration/types'
+import { EmailMigrationInboundVerification } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import TextInput from 'pages/common/forms/input/TextInput'
 import useClipboard from 'pages/common/hooks/useClipboard'
-import {getForwardingEmailAddress} from 'state/integrations/selectors'
+import { getForwardingEmailAddress } from 'state/integrations/selectors'
 
-import {providerTutorials} from './constants'
+import { providerTutorials } from './constants'
 import EmailForwardingTable from './EmailForwardingTable'
-import css from './MigrationEmailForwarding.less'
 import MigrationTutorialList from './MigrationTutorialList'
+
+import css from './MigrationEmailForwarding.less'
 
 type Props = {
     migrations: EmailMigrationInboundVerification[]
@@ -25,7 +27,7 @@ export default function MigrationEmailForwarding({
     onNextClick,
 }: Props) {
     const forwardingEmailAddress = useAppSelector(getForwardingEmailAddress)
-    const {copyButtonText} = useClipboard('#copy-email-address')
+    const { copyButtonText } = useClipboard('#copy-email-address')
     const history = useHistory()
 
     const isNextButtonDisabled = !!migrations.length

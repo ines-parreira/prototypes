@@ -1,21 +1,22 @@
-import {Label} from '@gorgias/merchant-ui-kit'
+import React, { useCallback } from 'react'
+
 import copy from 'copy-to-clipboard'
-import {isEmpty} from 'lodash'
-import React, {useCallback} from 'react'
+import { isEmpty } from 'lodash'
+
+import { Label } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import Button from 'pages/common/components/button/Button'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import TextInput from 'pages/common/forms/input/TextInput'
-
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 type Props = {
     label?: string
 }
 
-export default function BaseEmailIntegrationInputField({label}: Props) {
+export default function BaseEmailIntegrationInputField({ label }: Props) {
     const dispatch = useAppDispatch()
     const baseAddress =
         window.GORGIAS_STATE?.integrations?.authentication?.email
@@ -28,14 +29,14 @@ export default function BaseEmailIntegrationInputField({label}: Props) {
                 notify({
                     status: NotificationStatus.Success,
                     title: 'Address copied to clipboard',
-                })
+                }),
             )
         } catch {
             void dispatch(
                 notify({
                     status: NotificationStatus.Error,
                     title: 'Failed to copy address',
-                })
+                }),
             )
         }
 

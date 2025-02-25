@@ -1,4 +1,4 @@
-import {type ChatIntegrationsStatusData} from '../useFetchChatIntegrationsStatusData'
+import { type ChatIntegrationsStatusData } from '../useFetchChatIntegrationsStatusData'
 
 type AllKeys = keyof ChatIntegrationsStatusDataFixture
 type ConfiguredChatIntegrationsStatusData<
@@ -32,7 +32,7 @@ export class ChatIntegrationsStatusDataFixture {
         return this as ChatIntegrationsStatusDataFullyConfigured
     }
 
-    withChatIntegrationStatus({isInstalled = false} = {}) {
+    withChatIntegrationStatus({ isInstalled = false } = {}) {
         const id = this.internalData.chatIntegrationId++
         this.chatIntegrationsStatusData.push({
             installed: isInstalled,

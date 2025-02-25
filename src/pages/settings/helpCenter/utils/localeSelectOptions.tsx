@@ -1,7 +1,7 @@
 import React from 'react'
 
-import {Locale, LocaleCode} from '../../../../models/helpCenter/types'
-import {FlagLanguageItem} from '../../../common/components/LanguageBulletList'
+import { Locale, LocaleCode } from '../../../../models/helpCenter/types'
+import { FlagLanguageItem } from '../../../common/components/LanguageBulletList'
 
 export type LocaleOption = {
     id: LocaleCode
@@ -12,7 +12,7 @@ export type LocaleOption = {
 
 export const getLocaleSelectOptions = (
     supportedLocales: Locale[],
-    helpCenterLocales: LocaleCode[]
+    helpCenterLocales: LocaleCode[],
 ): LocaleOption[] => {
     return supportedLocales
         .filter((locale) => helpCenterLocales.includes(locale.code))

@@ -1,7 +1,8 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {VerificationChargeDisclaimer} from '../VerificationChargeDisclaimer'
+import { render, screen } from '@testing-library/react'
+
+import { VerificationChargeDisclaimer } from '../VerificationChargeDisclaimer'
 
 describe('VerificationChargeDisclaimer', () => {
     it('should display the one dollar charge disclaimer', () => {
@@ -9,7 +10,7 @@ describe('VerificationChargeDisclaimer', () => {
 
         expect(screen.getByText('A temporary $1 charge')).toBeVisible()
         expect(
-            screen.getByText('will be applied to new payment methods, and be')
+            screen.getByText('will be applied to new payment methods, and be'),
         ).toBeVisible()
         expect(screen.getByText('refunded within 7 days.')).toBeVisible()
     })

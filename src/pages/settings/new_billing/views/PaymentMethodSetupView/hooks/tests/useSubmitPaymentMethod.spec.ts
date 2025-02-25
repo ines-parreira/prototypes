@@ -1,13 +1,14 @@
-import {confirmBillingPaymentMethodSetup} from '@gorgias/api-client'
-import {useStripe} from '@stripe/react-stripe-js'
-import {act} from '@testing-library/react-hooks'
+import { useStripe } from '@stripe/react-stripe-js'
+import { act } from '@testing-library/react-hooks'
 
-import {CRM_GROWTH_SENTRY_TEAM} from 'common/const/sentryTeamNames'
-import {renderHookWithStoreAndQueryClientProvider} from 'tests/renderHookWithStoreAndQueryClientProvider'
-import {reportError} from 'utils/errors'
-import {assumeMock} from 'utils/testing'
+import { confirmBillingPaymentMethodSetup } from '@gorgias/api-client'
 
-import {useSubmitPaymentMethod} from '../useSubmitPaymentMethod'
+import { CRM_GROWTH_SENTRY_TEAM } from 'common/const/sentryTeamNames'
+import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
+import { reportError } from 'utils/errors'
+import { assumeMock } from 'utils/testing'
+
+import { useSubmitPaymentMethod } from '../useSubmitPaymentMethod'
 
 jest.mock('@stripe/react-stripe-js', () => ({
     useElements: jest.fn().mockReturnValue({}),
@@ -36,8 +37,8 @@ describe('useSubmitPaymentMethod hook', () => {
     })
 
     it('should call confirmBillingPaymentMethodSetup on submit', async () => {
-        const {result, waitFor} = renderHookWithStoreAndQueryClientProvider(
-            useSubmitPaymentMethod
+        const { result, waitFor } = renderHookWithStoreAndQueryClientProvider(
+            useSubmitPaymentMethod,
         )
 
         await act(async () => {
@@ -46,8 +47,8 @@ describe('useSubmitPaymentMethod hook', () => {
 
         await waitFor(() => {
             expect(
-                assumeMock(confirmBillingPaymentMethodSetup)
-            ).toHaveBeenCalledWith({id: 'test_setup_intent_id'}, undefined)
+                assumeMock(confirmBillingPaymentMethodSetup),
+            ).toHaveBeenCalledWith({ id: 'test_setup_intent_id' }, undefined)
         })
     })
 
@@ -58,17 +59,17 @@ describe('useSubmitPaymentMethod hook', () => {
             confirmSetup: jest.fn().mockRejectedValue(error),
         } as any)
 
-        const {result} = renderHookWithStoreAndQueryClientProvider(
-            useSubmitPaymentMethod
+        const { result } = renderHookWithStoreAndQueryClientProvider(
+            useSubmitPaymentMethod,
         )
 
         await expect(result.current.submitPaymentMethod()).rejects.toThrow(
-            'Stripe setup intent failed'
+            'Stripe setup intent failed',
         )
 
         expect(reportError).toHaveBeenLastCalledWith(error, {
-            tags: {team: CRM_GROWTH_SENTRY_TEAM},
-            extra: {context: 'Failed to confirm stripe setup intent'},
+            tags: { team: CRM_GROWTH_SENTRY_TEAM },
+            extra: { context: 'Failed to confirm stripe setup intent' },
         })
     })
 
@@ -77,17 +78,17 @@ describe('useSubmitPaymentMethod hook', () => {
 
         assumeMock(confirmBillingPaymentMethodSetup).mockRejectedValue(error)
 
-        const {result} = renderHookWithStoreAndQueryClientProvider(
-            useSubmitPaymentMethod
+        const { result } = renderHookWithStoreAndQueryClientProvider(
+            useSubmitPaymentMethod,
         )
 
         await expect(result.current.submitPaymentMethod()).rejects.toThrow(
-            'Billing payment method setup failed'
+            'Billing payment method setup failed',
         )
 
         expect(reportError).toHaveBeenLastCalledWith(error, {
-            tags: {team: CRM_GROWTH_SENTRY_TEAM},
-            extra: {context: 'Failed to confirm stripe setup intent'},
+            tags: { team: CRM_GROWTH_SENTRY_TEAM },
+            extra: { context: 'Failed to confirm stripe setup intent' },
         })
     })
 
@@ -96,12 +97,12 @@ describe('useSubmitPaymentMethod hook', () => {
             confirmSetup: jest.fn().mockResolvedValue(
                 new Promise(() => {
                     // Never resolves
-                })
+                }),
             ),
         } as any)
 
-        const {result, waitFor} = renderHookWithStoreAndQueryClientProvider(
-            useSubmitPaymentMethod
+        const { result, waitFor } = renderHookWithStoreAndQueryClientProvider(
+            useSubmitPaymentMethod,
         )
 
         expect(result.current.isLoading).toBe(false)
@@ -123,11 +124,11 @@ describe('useSubmitPaymentMethod hook', () => {
                 new Promise((resolve) => {
                     resolveConfirmBillingPaymentMethodSetup = () =>
                         resolve({} as any)
-                })
+                }),
         )
 
-        const {result, waitFor} = renderHookWithStoreAndQueryClientProvider(
-            useSubmitPaymentMethod
+        const { result, waitFor } = renderHookWithStoreAndQueryClientProvider(
+            useSubmitPaymentMethod,
         )
 
         expect(result.current.isLoading).toBe(false)

@@ -1,1 +1,1 @@
-export {default} from './ConvertPaywallView'
+export { default } from './ConvertPaywallView'

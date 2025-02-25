@@ -1,4 +1,4 @@
-import React, {ReactNode, useEffect, useMemo, useState} from 'react'
+import React, { ReactNode, useEffect, useMemo, useState } from 'react'
 
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import useWindowSize from 'hooks/useWindowSize'
@@ -11,10 +11,10 @@ type Props = {
     children?: ReactNode
 }
 
-export default function SynchronizedScrollTopProvider({children}: Props) {
+export default function SynchronizedScrollTopProvider({ children }: Props) {
     const [scrollTop, setScrollTop] = useState(0)
     const [scrollHeight, setScrollHeight] = useState(0)
-    const {width: windowWidth} = useWindowSize()
+    const { width: windowWidth } = useWindowSize()
 
     const value = useMemo<SynchronizedScrollTopValue>(
         () => ({
@@ -23,7 +23,7 @@ export default function SynchronizedScrollTopProvider({children}: Props) {
             scrollHeight,
             setScrollHeight,
         }),
-        [scrollTop, scrollHeight]
+        [scrollTop, scrollHeight],
     )
 
     const reset = () => {

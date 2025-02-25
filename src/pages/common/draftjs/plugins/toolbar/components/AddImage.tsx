@@ -1,14 +1,15 @@
-import classnames from 'classnames'
-import React, {Component, createRef, KeyboardEvent, RefObject} from 'react'
+import React, { Component, createRef, KeyboardEvent, RefObject } from 'react'
 
-import {UploadType} from 'common/types'
+import classnames from 'classnames'
+
+import { UploadType } from 'common/types'
 import Button from 'pages/common/components/button/Button'
 import Popover from 'pages/common/draftjs/plugins/toolbar/components/ButtonPopover'
-import {ActionInjectedProps} from 'pages/common/draftjs/plugins/toolbar/types'
-import {addImage} from 'pages/common/draftjs/plugins/utils'
+import { ActionInjectedProps } from 'pages/common/draftjs/plugins/toolbar/types'
+import { addImage } from 'pages/common/draftjs/plugins/utils'
 import FileField from 'pages/common/forms/FileField'
 import TextInput from 'pages/common/forms/input/TextInput'
-import {getMaxAttachmentSize} from 'utils/file'
+import { getMaxAttachmentSize } from 'utils/file'
 
 import css from './AddImage.less'
 
@@ -43,20 +44,20 @@ export default class AddImage extends Component<Props, State> {
         const editorState = this.props.getEditorState()
         const maxSize = getMaxAttachmentSize(
             editorState,
-            this.props.attachments
+            this.props.attachments,
         )
-        this.setState({maxSize})
+        this.setState({ maxSize })
     }
 
     _changeMode = (mode: string) => {
-        this.setState({mode})
+        this.setState({ mode })
     }
 
-    _handleImage = (files: Array<{url: string; size: number}>) => {
+    _handleImage = (files: Array<{ url: string; size: number }>) => {
         files.forEach((file) => {
             this._addImage(file.url, file.size)
         })
-        this.setState({isOpen: false})
+        this.setState({ isOpen: false })
     }
 
     _addImage = (url: string, size = 0) => {
@@ -90,13 +91,13 @@ export default class AddImage extends Component<Props, State> {
 
         if (e.key === 'Escape') {
             e.preventDefault()
-            this.setState({isOpen: false})
+            this.setState({ isOpen: false })
         }
     }
 
-    _onPopoverOpen = () => this.setState({isOpen: true})
+    _onPopoverOpen = () => this.setState({ isOpen: true })
 
-    _onPopoverClose = () => this.setState({isOpen: false})
+    _onPopoverClose = () => this.setState({ isOpen: false })
 
     render() {
         return (
@@ -145,7 +146,7 @@ export default class AddImage extends Component<Props, State> {
                                 ref={this.inputRef}
                                 placeholder="External image url..."
                                 onChange={(value) =>
-                                    this.setState({url: value})
+                                    this.setState({ url: value })
                                 }
                                 value={this.state.url}
                                 onKeyDown={this._onKeyDown}

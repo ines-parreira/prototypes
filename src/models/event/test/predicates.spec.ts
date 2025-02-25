@@ -1,7 +1,7 @@
-import {fromJS, Map} from 'immutable'
+import { fromJS, Map } from 'immutable'
 
-import {SYSTEM_RULE_TYPE} from 'models/event/constants'
-import {TicketEventType, TICKET_EVENT_TYPES} from 'models/event/types'
+import { SYSTEM_RULE_TYPE } from 'models/event/constants'
+import { TICKET_EVENT_TYPES, TicketEventType } from 'models/event/types'
 
 import {
     isRuleExecutedType,
@@ -79,7 +79,7 @@ describe('Event predicates', () => {
         describe('should return falsy value', () => {
             it('because the context is empty', () => {
                 const ruleExecutedEvent = getEvent(
-                    TICKET_EVENT_TYPES.RuleExecuted
+                    TICKET_EVENT_TYPES.RuleExecuted,
                 )
                 const event = getValidEvent().set('context', '')
                 const events = fromJS([ruleExecutedEvent, event])
@@ -88,7 +88,7 @@ describe('Event predicates', () => {
 
             it('because the context is null', () => {
                 const ruleExecutedEvent = getEvent(
-                    TICKET_EVENT_TYPES.RuleExecuted
+                    TICKET_EVENT_TYPES.RuleExecuted,
                 )
                 const event = getValidEvent().set('context', null)
                 const events = fromJS([ruleExecutedEvent, event])
@@ -116,7 +116,7 @@ describe('Event predicates', () => {
 
             it('because there is only the "rule executed" event in the events array', () => {
                 const ruleExecutedEvent = getEvent(
-                    TICKET_EVENT_TYPES.RuleExecuted
+                    TICKET_EVENT_TYPES.RuleExecuted,
                 )
                 const events = fromJS([ruleExecutedEvent])
                 expect(isViaRuleEvent(ruleExecutedEvent, events)).toBeFalsy()
@@ -124,7 +124,7 @@ describe('Event predicates', () => {
 
             it('because the context is different', () => {
                 const ruleExecutedEvent = getEvent(
-                    TICKET_EVENT_TYPES.RuleExecuted
+                    TICKET_EVENT_TYPES.RuleExecuted,
                 ).set('context', 'bar')
                 const event = getValidEvent()
                 const events = fromJS([ruleExecutedEvent, event])
@@ -133,7 +133,7 @@ describe('Event predicates', () => {
 
             it('because the created datetime is not older', () => {
                 const ruleExecutedEvent = getEvent(
-                    TICKET_EVENT_TYPES.RuleExecuted
+                    TICKET_EVENT_TYPES.RuleExecuted,
                 ).set('created_datetime', '2019-11-15 20:00:00.000000')
                 const event = getValidEvent()
                 const events = fromJS([ruleExecutedEvent, event])

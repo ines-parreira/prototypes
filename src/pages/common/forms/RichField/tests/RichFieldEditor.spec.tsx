@@ -1,21 +1,20 @@
-import {render, fireEvent} from '@testing-library/react'
-import {convertToHTML} from 'draft-convert'
-import {ContentState, EditorState} from 'draft-js'
-import {fromJS} from 'immutable'
+import React, { ComponentProps, LegacyRef } from 'react'
+
+import { fireEvent, render } from '@testing-library/react'
+import { convertToHTML } from 'draft-convert'
+import { ContentState, EditorState } from 'draft-js'
+import { fromJS } from 'immutable'
 import _noop from 'lodash/noop'
 import _omit from 'lodash/omit'
-import React, {ComponentProps, LegacyRef} from 'react'
-
-import {Provider} from 'react-redux'
+import { Provider } from 'react-redux'
 
 import shortcutManager from 'services/shortcutManager/shortcutManager'
-import {convertFromHTML} from 'utils/editor'
-
-import {mockStore} from 'utils/testing'
+import { convertFromHTML } from 'utils/editor'
+import { mockStore } from 'utils/testing'
 
 import toolbarPlugin from '../../../draftjs/plugins/toolbar/index'
 import provideToolbarPlugin from '../provideToolbarPlugin'
-import {RichFieldEditor} from '../RichFieldEditor'
+import { RichFieldEditor } from '../RichFieldEditor'
 
 // mock random key generation so they match from a snapshot to the other
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
@@ -64,12 +63,12 @@ describe('RichFieldEditor', () => {
         editorState = EditorState.createWithContent(contentState)
         editorState = EditorState.moveFocusToEnd(editorState)
 
-        const {container} = render(
+        const { container } = render(
             <RichFieldEditor
                 {...defaultProps}
                 editorState={editorState}
                 onChange={mockOnChange}
-            />
+            />,
         )
         const html = '<div>a<br><br>b<br><br>c</div>'
         const editor = container.querySelector('.public-DraftEditor-content')!
@@ -108,7 +107,7 @@ describe('RichFieldEditor', () => {
                 editorState={editorState}
                 onChange={onChangeSpy}
                 ref={instanceRef}
-            />
+            />,
         )
         const text = 'a\n\nb\n\nc'
         // html copied from draft-js contains the data-editor=editorKey attribute
@@ -127,7 +126,7 @@ describe('RichFieldEditor', () => {
     it('should focus the end of input on initial focus', () => {
         const mockOnFocus = jest.fn()
 
-        const {container, rerender} = render(
+        const { container, rerender } = render(
             <Provider store={mockStore({})}>
                 <RichFieldEditor
                     {...defaultProps}
@@ -135,7 +134,7 @@ describe('RichFieldEditor', () => {
                     editorState={editorState}
                     onFocus={mockOnFocus}
                 />
-            </Provider>
+            </Provider>,
         )
         const editor = container.querySelector('.public-DraftEditor-content')!
         fireEvent.focus(editor)
@@ -151,18 +150,18 @@ describe('RichFieldEditor', () => {
                     onFocus={mockOnFocus}
                     isFocused={true}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(defaultProps.onChange).toHaveBeenCalledWith(
-            expect.objectContaining(EditorState.moveFocusToEnd(editorState))
+            expect.objectContaining(EditorState.moveFocusToEnd(editorState)),
         )
     })
 
     it('should call detect grammarly when editor is focused', () => {
         const mockOnFocus = jest.fn()
         const mockDetectGrammarly = jest.fn()
-        const {container} = render(
+        const { container } = render(
             <RichFieldEditor
                 {...defaultProps}
                 editorKey="editor"
@@ -170,7 +169,7 @@ describe('RichFieldEditor', () => {
                 onFocus={mockOnFocus}
                 detectGrammarly={mockDetectGrammarly}
                 placeholder="foo"
-            />
+            />,
         )
 
         const editor = container.querySelector('.public-DraftEditor-content')!
@@ -181,13 +180,13 @@ describe('RichFieldEditor', () => {
 
     it('should blacklist navbar shortcuts when editor is focused', () => {
         const mockOnFocus = jest.fn()
-        const {container} = render(
+        const { container } = render(
             <RichFieldEditor
                 {...defaultProps}
                 editorKey="editor"
                 editorState={editorState}
                 onFocus={mockOnFocus}
-            />
+            />,
         )
 
         const editor = container.querySelector('.public-DraftEditor-content')!
@@ -203,13 +202,13 @@ describe('RichFieldEditor', () => {
     it('should clear navbar shortcuts when editor is blurred', () => {
         const mockOnFocus = jest.fn()
 
-        const {container} = render(
+        const { container } = render(
             <RichFieldEditor
                 {...defaultProps}
                 editorKey="editor"
                 editorState={editorState}
                 onFocus={mockOnFocus}
-            />
+            />,
         )
         const editor = container.querySelector('.public-DraftEditor-content')
         fireEvent.focus(editor!)
@@ -226,16 +225,16 @@ describe('RichFieldEditor', () => {
         const spyOnchange = jest.fn()
         const WrappedRichFieldEditor = provideToolbarPlugin(RichFieldEditor)
 
-        const {container} = render(
+        const { container } = render(
             <WrappedRichFieldEditor
                 {..._omit(defaultProps, 'createToolbarPlugin')}
                 editorKey="editor"
                 editorState={editorState}
                 onChange={spyOnchange}
-            />
+            />,
         )
         const editor = container.querySelector('.public-DraftEditor-content')!
-        fireEvent.keyDown(editor, {ctrlKey: true, key: 'b', keyCode: 66})
+        fireEvent.keyDown(editor, { ctrlKey: true, key: 'b', keyCode: 66 })
 
         expect(spyOnchange.mock.calls).toMatchSnapshot()
     })
@@ -245,14 +244,14 @@ describe('RichFieldEditor', () => {
         contentState = convertFromHTML('html')
         editorState = EditorState.createWithContent(contentState)
         editorState = EditorState.moveFocusToEnd(editorState)
-        const {container} = render(
+        const { container } = render(
             <RichFieldEditor
                 {...defaultProps}
                 editorKey="editor"
                 editorState={editorState}
                 onChange={onChangeSpy}
                 canAddVideoPlayer
-            />
+            />,
         )
         const text = 'https://www.youtube.com/watch?v=4sLFpe-xbhk'
         const editor = container.querySelector('.public-DraftEditor-content')!
@@ -273,14 +272,14 @@ describe('RichFieldEditor', () => {
         contentState = convertFromHTML('html')
         editorState = EditorState.createWithContent(contentState)
         editorState = EditorState.moveFocusToEnd(editorState)
-        const {container} = render(
+        const { container } = render(
             <RichFieldEditor
                 {...defaultProps}
                 editorKey="editor"
                 editorState={editorState}
                 onChange={onChangeSpy}
                 canAddVideoPlayer={false}
-            />
+            />,
         )
         const text = 'https://www.youtube.com/watch?v=4sLFpe-xbhk'
         const editor = container.querySelector('.public-DraftEditor-content')!
@@ -294,7 +293,7 @@ describe('RichFieldEditor', () => {
             onChangeSpy.mock.calls[onChangeSpy.mock.calls.length - 1]
         const convertedHTML = convertToHTML(newContentState.getCurrentContent())
         expect(convertedHTML).toBe(
-            '<p>htmlhttps://www.youtube.com/watch?v=4sLFpe-xbhk</p>'
+            '<p>htmlhttps://www.youtube.com/watch?v=4sLFpe-xbhk</p>',
         )
     })
 
@@ -305,17 +304,17 @@ describe('RichFieldEditor', () => {
         // without the keyBindingFn, the enter key would insert a newline
         editorState = EditorState.moveFocusToEnd(editorState)
 
-        const {container} = render(
+        const { container } = render(
             <WrappedRichFieldEditor
                 {...defaultProps}
                 editorKey="editor"
                 editorState={editorState}
                 onChange={onChangeSpy}
-            />
+            />,
         )
         const editor = container.querySelector('.public-DraftEditor-content')!
         fireEvent.focus(editor)
-        fireEvent.keyDown(editor, {ctrlKey: true, key: 'Enter', keyCode: 13})
+        fireEvent.keyDown(editor, { ctrlKey: true, key: 'Enter', keyCode: 13 })
 
         const [newContentState]: EditorState[] =
             onChangeSpy.mock.calls[onChangeSpy.mock.calls.length - 1]

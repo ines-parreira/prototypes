@@ -1,6 +1,7 @@
-import {useEffect, useRef, useState} from 'react'
-import {useDragDropManager} from 'react-dnd'
-import {Unsubscribe} from 'redux'
+import { useEffect, useRef, useState } from 'react'
+
+import { useDragDropManager } from 'react-dnd'
+import { Unsubscribe } from 'redux'
 
 const useAutoScrollOnDragging = (speedRatio = 30) => {
     const [isDragging, setIsDragging] = useState<boolean>(false)
@@ -23,7 +24,7 @@ const useAutoScrollOnDragging = (speedRatio = 30) => {
 
                 if (scrollableAreaRef.current && offset) {
                     const margin = 100
-                    const {bottom, top} =
+                    const { bottom, top } =
                         scrollableAreaRef.current.getBoundingClientRect()
                     const topLimit = top + margin
                     const bottomLimit = bottom - margin
@@ -61,7 +62,7 @@ const useAutoScrollOnDragging = (speedRatio = 30) => {
         }
     }, [monitor])
 
-    return {scrollableAreaRef}
+    return { scrollableAreaRef }
 }
 
 export default useAutoScrollOnDragging

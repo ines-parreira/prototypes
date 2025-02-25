@@ -1,19 +1,21 @@
-import classnames from 'classnames'
 import React from 'react'
 
-import {HELP_CENTER_TEXTS} from 'config/helpCenter'
-import {HelpCenter} from 'models/helpCenter/types'
+import classnames from 'classnames'
 
-import {LINE_ITEMS} from './constants'
+import { HELP_CENTER_TEXTS } from 'config/helpCenter'
+import { HelpCenter } from 'models/helpCenter/types'
+
+import { LINE_ITEMS } from './constants'
 import useOrderDates from './hooks/useOrderDates'
+import { useSelfServicePreviewContext } from './SelfServicePreviewContext'
+
 import css from './SelfServiceHelpCenterRequestSentPage.less'
-import {useSelfServicePreviewContext} from './SelfServicePreviewContext'
 
 type Props = {
     helpCenter: HelpCenter
 }
 
-const SelfServiceHelpCenterRequestSentPage = ({helpCenter}: Props) => {
+const SelfServiceHelpCenterRequestSentPage = ({ helpCenter }: Props) => {
     const helpCenterTexts = HELP_CENTER_TEXTS[helpCenter.default_locale]
 
     const {
@@ -21,7 +23,7 @@ const SelfServiceHelpCenterRequestSentPage = ({helpCenter}: Props) => {
         automatedResponseMessageContent,
         reportOrderIssueReason,
     } = useSelfServicePreviewContext()
-    const {orderPlacedDate} = useOrderDates(helpCenter.default_locale)
+    const { orderPlacedDate } = useOrderDates(helpCenter.default_locale)
 
     const getTotalAmountLabel = () => {
         switch (orderManagementFlow) {
@@ -40,7 +42,7 @@ const SelfServiceHelpCenterRequestSentPage = ({helpCenter}: Props) => {
                 <i
                     className={classnames(
                         'material-icons',
-                        css.checkCircleIcon
+                        css.checkCircleIcon,
                     )}
                 >
                     check_circle
@@ -71,7 +73,7 @@ const SelfServiceHelpCenterRequestSentPage = ({helpCenter}: Props) => {
                         <div className={css.orderDetailsTitle}>
                             {helpCenterTexts.orderNumber.replace(
                                 '{{orderNumber}}',
-                                '#3089'
+                                '#3089',
                             )}
                         </div>
                         <div className={css.orderDetailsDescription}>

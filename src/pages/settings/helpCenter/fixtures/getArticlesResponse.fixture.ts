@@ -1,4 +1,4 @@
-import {Article, ArticlesListPage} from 'models/helpCenter/types'
+import { Article, ArticlesListPage } from 'models/helpCenter/types'
 
 export const getArticlesResponseFixture: ArticlesListPage = {
     object: 'list',
@@ -325,7 +325,7 @@ export const getArticlesResponseFixture: ArticlesListPage = {
                 excerpt: '',
                 content: '<p>Uncategorized article</p>',
                 slug: 'uncategorized-article',
-                seo_meta: {title: null, description: null},
+                seo_meta: { title: null, description: null },
                 is_current: true,
                 rating: {
                     up: 0,
@@ -371,7 +371,7 @@ export const getSingleArticleEnglish: Article = {
         excerpt: '',
         content: '<p>Uncategorized article</p>',
         slug: 'uncategorized-article',
-        seo_meta: {title: null, description: null},
+        seo_meta: { title: null, description: null },
         is_current: true,
         rating: {
             up: 0,

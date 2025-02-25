@@ -1,5 +1,5 @@
-import {RuleEngineData, RuleEngineRoutes} from '../ruleEngine'
-import {Task} from './Task'
+import { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
+import { Task } from './Task'
 
 export class DefineHandoverTopicsTask extends Task {
     constructor(data: RuleEngineData, routes: RuleEngineRoutes) {
@@ -8,7 +8,7 @@ export class DefineHandoverTopicsTask extends Task {
             'Define topics for AI Agent to always hand over to agents',
             'RECOMMENDED',
             data,
-            routes
+            routes,
         )
     }
 
@@ -18,7 +18,7 @@ export class DefineHandoverTopicsTask extends Task {
     }
 
     protected getFeatureUrl({
-        routes: {aiAgentRoutes},
+        routes: { aiAgentRoutes },
     }: {
         data: RuleEngineData
         routes: RuleEngineRoutes

@@ -1,5 +1,6 @@
-import {act, render} from '@testing-library/react'
 import React from 'react'
+
+import { act, render } from '@testing-library/react'
 
 import RelativeTime from '../RelativeTime'
 
@@ -15,8 +16,8 @@ describe('RelativeTime', () => {
     })
 
     it('should automatically re-render as time passes', () => {
-        const {getByText} = render(
-            <RelativeTime datetime={new Date(startTime + 1000).toString()} />
+        const { getByText } = render(
+            <RelativeTime datetime={new Date(startTime + 1000).toString()} />,
         )
         expect(getByText('now')).toBeInTheDocument()
 

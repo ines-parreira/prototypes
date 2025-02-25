@@ -1,15 +1,14 @@
-import {initialState as contactformState} from 'state/entities/contactForm/reducer'
-import {StoreState} from 'state/types'
+import { initialState as contactformState } from 'state/entities/contactForm/reducer'
+import { StoreState } from 'state/types'
+import { getCurrentContactFormId } from 'state/ui/contactForm/selectors'
 
-import {getCurrentContactFormId} from 'state/ui/contactForm/selectors'
-
-import {initialState as uiState} from '../reducer'
+import { initialState as uiState } from '../reducer'
 
 const store: Partial<StoreState> = {
     entities: {
         contactForm: contactformState,
     } as any,
-    ui: {contactForm: uiState} as any,
+    ui: { contactForm: uiState } as any,
 }
 
 const nextStore: Partial<StoreState> = {
@@ -17,7 +16,7 @@ const nextStore: Partial<StoreState> = {
         contactForm: contactformState,
     } as any,
     ui: {
-        contactForm: {...uiState, currentId: 1},
+        contactForm: { ...uiState, currentId: 1 },
     } as any,
 }
 

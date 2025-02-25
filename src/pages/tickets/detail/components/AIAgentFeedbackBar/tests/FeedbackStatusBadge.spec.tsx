@@ -1,10 +1,11 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {setAgentFeedbackMessageStatus} from 'state/agents/actions'
+import { render, screen } from '@testing-library/react'
+
+import { setAgentFeedbackMessageStatus } from 'state/agents/actions'
 
 import FeedbackStatusBadge from '../FeedbackStatusBadge'
-import {FeedbackStatus, ResourceSection} from '../types'
+import { FeedbackStatus, ResourceSection } from '../types'
 
 const mockDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockDispatch)
@@ -17,7 +18,7 @@ describe('FeedbackStatusBadge', () => {
             <FeedbackStatusBadge
                 status={null}
                 resourceSection={resourceSection}
-            />
+            />,
         )
         expect(screen.queryByRole('status')).toBeNull()
     })
@@ -27,14 +28,14 @@ describe('FeedbackStatusBadge', () => {
             <FeedbackStatusBadge
                 status={FeedbackStatus.SAVING}
                 resourceSection={resourceSection}
-            />
+            />,
         )
         expect(screen.getByText('saving')).toBeInTheDocument()
 
         expect(
             screen
                 .queryByTestId('badge-test-id')
-                ?.querySelector('.icon-circle-o-notch')
+                ?.querySelector('.icon-circle-o-notch'),
         ).toBeInTheDocument()
     })
 
@@ -43,13 +44,13 @@ describe('FeedbackStatusBadge', () => {
             <FeedbackStatusBadge
                 status={FeedbackStatus.ERROR}
                 resourceSection={resourceSection}
-            />
+            />,
         )
         expect(screen.getByText('error')).toBeInTheDocument()
         expect(
             screen
                 .queryByTestId('badge-test-id')
-                ?.querySelector('.material-icons')
+                ?.querySelector('.material-icons'),
         ).toHaveTextContent('warning')
     })
 
@@ -58,13 +59,13 @@ describe('FeedbackStatusBadge', () => {
             <FeedbackStatusBadge
                 status={FeedbackStatus.SAVED}
                 resourceSection={resourceSection}
-            />
+            />,
         )
         expect(screen.getByText('saved')).toBeInTheDocument()
         expect(
             screen
                 .queryByTestId('badge-test-id')
-                ?.querySelector('.material-icons')
+                ?.querySelector('.material-icons'),
         ).toHaveTextContent('check_circle')
     })
 
@@ -75,7 +76,7 @@ describe('FeedbackStatusBadge', () => {
             <FeedbackStatusBadge
                 status={FeedbackStatus.SAVED}
                 resourceSection={resourceSection}
-            />
+            />,
         )
 
         expect(mockDispatch).not.toHaveBeenCalled()
@@ -84,7 +85,7 @@ describe('FeedbackStatusBadge', () => {
         jest.advanceTimersByTime(5000)
 
         expect(mockDispatch).toHaveBeenCalledWith(
-            setAgentFeedbackMessageStatus(null, resourceSection)
+            setAgentFeedbackMessageStatus(null, resourceSection),
         )
 
         jest.useRealTimers()
@@ -93,11 +94,11 @@ describe('FeedbackStatusBadge', () => {
     it('clears timeout on unmount', () => {
         const clearTimeoutSpy = jest.spyOn(global, 'clearTimeout')
 
-        const {unmount} = render(
+        const { unmount } = render(
             <FeedbackStatusBadge
                 status={FeedbackStatus.SAVED}
                 resourceSection={resourceSection}
-            />
+            />,
         )
 
         unmount()

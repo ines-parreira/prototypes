@@ -1,4 +1,4 @@
-import {isProduction, isStaging} from 'utils/environment'
+import { isProduction, isStaging } from 'utils/environment'
 
 export function getHelpCenterApiBaseUrl(): string {
     // Use helpdesk's host

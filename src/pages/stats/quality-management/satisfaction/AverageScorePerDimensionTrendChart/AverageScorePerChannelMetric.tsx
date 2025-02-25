@@ -1,38 +1,38 @@
-import React, {useCallback, useMemo} from 'react'
+import React, { useCallback, useMemo } from 'react'
 
-import {getMetricQuery} from 'hooks/reporting/quality-management/satisfaction/utils'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-
+import { getMetricQuery } from 'hooks/reporting/quality-management/satisfaction/utils'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
-import {TicketDimension} from 'models/reporting/cubes/TicketCube'
-import {LineChart} from 'pages/stats/common/components/charts/LineChart/LineChart'
-import {formatLabeledTooltipTimeSeriesData} from 'pages/stats/common/utils'
-import {LINES_COLORS} from 'pages/stats/constants'
+import { TicketDimension } from 'models/reporting/cubes/TicketCube'
+import { LineChart } from 'pages/stats/common/components/charts/LineChart/LineChart'
+import { formatLabeledTooltipTimeSeriesData } from 'pages/stats/common/utils'
+import { LINES_COLORS } from 'pages/stats/constants'
 import css from 'pages/stats/quality-management/satisfaction/AverageScorePerDimensionTrendChart/AverageScoreMetric.less'
 import {
-    getFormattedInfo,
     formatZeroToNALabel,
+    getFormattedInfo,
 } from 'pages/stats/quality-management/satisfaction/AverageScorePerDimensionTrendChart/utils'
-import {getAllAgentsJS} from 'state/agents/selectors'
-import {getIntegrations} from 'state/integrations/selectors'
+import { getAllAgentsJS } from 'state/agents/selectors'
+import { getIntegrations } from 'state/integrations/selectors'
 
 const DIMENSION = TicketDimension.Channel
 
 export const AverageScorePerChannelMetric = () => {
-    const {cleanStatsFilters, userTimezone, granularity} = useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone, granularity } =
+        useNewStatsFilters()
     const useMetricQuery = getMetricQuery(DIMENSION)
     const integrations = useAppSelector(getIntegrations)
     const agents = useAppSelector(getAllAgentsJS)
 
     const getAgentDetails = useCallback(
         (id: number) => agents.find((agent) => agent.id === id),
-        [agents]
+        [agents],
     )
 
-    const {isFetching, data, isError} = useMetricQuery(
+    const { isFetching, data, isError } = useMetricQuery(
         cleanStatsFilters,
         userTimezone,
-        granularity
+        granularity,
     )
 
     const {
@@ -48,7 +48,7 @@ export const AverageScorePerChannelMetric = () => {
                 integrations,
                 getAgentDetails,
             }),
-        [data, getAgentDetails, integrations]
+        [data, getAgentDetails, integrations],
     )
 
     const isLoading = isFetching || !dataToRender || !labels || !tooltips
@@ -67,9 +67,9 @@ export const AverageScorePerChannelMetric = () => {
             customColors={LINES_COLORS}
             data={formatLabeledTooltipTimeSeriesData(
                 dataToRender,
-                {labels, tooltips},
+                { labels, tooltips },
                 granularity,
-                [true]
+                [true],
             )}
             yShowZeroAsNA
             renderYTickLabel={formatZeroToNALabel}

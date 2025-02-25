@@ -1,15 +1,16 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {useCreatedVsClosedTicketsTimeSeries} from 'hooks/reporting/useCreatedVsClosedTicketsTimeSeries'
+import { render, screen } from '@testing-library/react'
+
+import { useCreatedVsClosedTicketsTimeSeries } from 'hooks/reporting/useCreatedVsClosedTicketsTimeSeries'
 import BarChart from 'pages/stats/common/components/charts/BarChart/BarChart'
-import {TicketsCreatedVsClosedChart} from 'pages/stats/support-performance/overview/charts/TicketsCreatedVsClosedChart'
-import {CREATED_VS_CLOSED_TICKETS_LABEL} from 'services/reporting/constants'
-import {assumeMock} from 'utils/testing'
+import { TicketsCreatedVsClosedChart } from 'pages/stats/support-performance/overview/charts/TicketsCreatedVsClosedChart'
+import { CREATED_VS_CLOSED_TICKETS_LABEL } from 'services/reporting/constants'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/useCreatedVsClosedTicketsTimeSeries')
 const createdVsClosedTicketsTimeSeriesMock = assumeMock(
-    useCreatedVsClosedTicketsTimeSeries
+    useCreatedVsClosedTicketsTimeSeries,
 )
 
 jest.mock('pages/stats/common/components/charts/BarChart/BarChart')
@@ -21,11 +22,11 @@ describe('<TicketsCreatedVsClosedChartCard />', () => {
         timeSeries: [
             {
                 label: 'MetricName',
-                values: [{x: '2022-12-11', y: 123}],
+                values: [{ x: '2022-12-11', y: 123 }],
             },
             {
                 label: 'SecondMetricName',
-                values: [{x: '2022-12-11', y: 123}],
+                values: [{ x: '2022-12-11', y: 123 }],
             },
         ],
         isLoading,
@@ -40,7 +41,7 @@ describe('<TicketsCreatedVsClosedChartCard />', () => {
         render(<TicketsCreatedVsClosedChart />)
 
         expect(
-            screen.getByText(new RegExp(CREATED_VS_CLOSED_TICKETS_LABEL))
+            screen.getByText(new RegExp(CREATED_VS_CLOSED_TICKETS_LABEL)),
         ).toBeInTheDocument()
         expect(BarChartMock).toHaveBeenCalledWith(
             {
@@ -51,7 +52,7 @@ describe('<TicketsCreatedVsClosedChartCard />', () => {
                 displayLegend: true,
                 legendOnLeft: true,
             },
-            {}
+            {},
         )
     })
 })

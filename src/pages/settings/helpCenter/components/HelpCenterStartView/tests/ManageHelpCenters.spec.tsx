@@ -1,18 +1,19 @@
-import {screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {IntegrationType} from 'models/integration/constants'
-import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
-import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
-import {RootState, StoreDispatch} from 'state/types'
-import {renderWithRouter} from 'utils/testing'
+import { IntegrationType } from 'models/integration/constants'
+import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
+import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
+import { RootState, StoreDispatch } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
-import {useHelpCenterList} from '../../../hooks/useHelpCenterList'
-import ManageHelpCenters, {ManageHelpCentersProps} from '../ManageHelpCenters'
+import { useHelpCenterList } from '../../../hooks/useHelpCenterList'
+import ManageHelpCenters, { ManageHelpCentersProps } from '../ManageHelpCenters'
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
     return {
@@ -20,10 +21,10 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
             isReady: true,
             client: {
                 listArticles: jest.fn().mockResolvedValue({
-                    data: {data: [], meta: {item_count: 0}},
+                    data: { data: [], meta: { item_count: 0 } },
                 }),
                 listArticleTranslations: jest.fn().mockResolvedValue({
-                    data: {data: [], meta: {item_count: 0}},
+                    data: { data: [], meta: { item_count: 0 } },
                 }),
             },
             agentAbility: [
@@ -33,7 +34,7 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
                 },
             ],
         }),
-        useAbilityChecker: () => ({isPassingRulesCheck: () => true}),
+        useAbilityChecker: () => ({ isPassingRulesCheck: () => true }),
     }
 })
 
@@ -75,17 +76,17 @@ describe('<ManageHelpCenters />', () => {
         } as any,
         integrations: fromJS({
             integrations: [
-                {id: 1, type: IntegrationType.Shopify, name: 'My Shop'},
-                {id: 2, type: IntegrationType.BigCommerce, name: 'Test Shop'},
+                { id: 1, type: IntegrationType.Shopify, name: 'My Shop' },
+                { id: 2, type: IntegrationType.BigCommerce, name: 'Test Shop' },
             ],
         }),
     }
 
     it('should render the component', () => {
-        const {container} = renderWithRouter(
+        const { container } = renderWithRouter(
             <Provider store={mockedStore(defaultState)}>
                 <ManageHelpCenters {...props} />
-            </Provider>
+            </Provider>,
         )
 
         expect(container).toMatchSnapshot()
@@ -99,7 +100,7 @@ describe('<ManageHelpCenters />', () => {
                     isLoading={true}
                     helpCenterList={[]}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.queryByText(/create help center/i)).toBeNull()
@@ -113,7 +114,7 @@ describe('<ManageHelpCenters />', () => {
                     isLoading={false}
                     helpCenterList={[]}
                 />
-            </Provider>
+            </Provider>,
         )
 
         screen.getByText(/You have no Help Centers at the moment./i)

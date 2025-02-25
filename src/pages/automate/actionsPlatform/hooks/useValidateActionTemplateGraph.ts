@@ -1,8 +1,9 @@
-import {produce} from 'immer'
-import _set from 'lodash/set'
-import {useCallback} from 'react'
+import { useCallback } from 'react'
 
-import {VisualBuilderContextType} from 'pages/automate/workflows/hooks/useVisualBuilder'
+import { produce } from 'immer'
+import _set from 'lodash/set'
+
+import { VisualBuilderContextType } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {
     getCancelSubscriptionNodeErrors,
     getConditionsNodeErrors,
@@ -13,10 +14,10 @@ import {
     getSkipChargeNodeErrors,
     getUpdateShippingAddressNodeErrors,
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import {VisualBuilderGraph} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { VisualBuilderGraph } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 const useValidateActionTemplateGraph = (
-    getVariableListForNode: VisualBuilderContextType['getVariableListForNode']
+    getVariableListForNode: VisualBuilderContextType['getVariableListForNode'],
 ) => {
     return useCallback(
         (graph: VisualBuilderGraph) => {
@@ -32,7 +33,7 @@ const useValidateActionTemplateGraph = (
                         _set(
                             draft.errors,
                             'name',
-                            'Action name must be less than 100 characters'
+                            'Action name must be less than 100 characters',
                         )
                     }
                 }
@@ -42,7 +43,7 @@ const useValidateActionTemplateGraph = (
                     _set(
                         draft.errors,
                         'nodes',
-                        'At least one Action step is required'
+                        'At least one Action step is required',
                     )
                 }
 
@@ -53,20 +54,20 @@ const useValidateActionTemplateGraph = (
                         case 'llm_prompt_trigger':
                             node.data.errors = getLLMPromptTriggerNodeErrors(
                                 node,
-                                getVariableListForNode(node.id)
+                                getVariableListForNode(node.id),
                             )
                             break
                         case 'http_request':
                             node.data.errors = getHTTPRequestNodeErrors(
                                 node,
-                                getVariableListForNode(node.id)
+                                getVariableListForNode(node.id),
                             )
                             break
                         case 'conditions':
                             node.data.errors = getConditionsNodeErrors(
                                 graph.edges,
                                 node,
-                                getVariableListForNode(node.id)
+                                getVariableListForNode(node.id),
                             )
                             break
                         case 'reusable_llm_prompt_call':
@@ -80,13 +81,13 @@ const useValidateActionTemplateGraph = (
                         case 'skip_charge':
                             node.data.errors = getSkipChargeNodeErrors(
                                 node,
-                                getVariableListForNode(node.id)
+                                getVariableListForNode(node.id),
                             )
                             break
                         case 'cancel_subscription':
                             node.data.errors = getCancelSubscriptionNodeErrors(
                                 node,
-                                getVariableListForNode(node.id)
+                                getVariableListForNode(node.id),
                             )
                             break
                         case 'create_discount_code':
@@ -94,27 +95,27 @@ const useValidateActionTemplateGraph = (
                         case 'replace_item':
                             node.data.errors = getReplaceItemNodeErrors(
                                 node,
-                                getVariableListForNode(node.id)
+                                getVariableListForNode(node.id),
                             )
                             break
                         case 'remove_item':
                             node.data.errors = getRemoveItemNodeErrors(
                                 node,
-                                getVariableListForNode(node.id)
+                                getVariableListForNode(node.id),
                             )
                             break
                         case 'update_shipping_address':
                             node.data.errors =
                                 getUpdateShippingAddressNodeErrors(
                                     node,
-                                    getVariableListForNode(node.id)
+                                    getVariableListForNode(node.id),
                                 )
                             break
                     }
                 })
             })
         },
-        [getVariableListForNode]
+        [getVariableListForNode],
     )
 }
 

@@ -1,19 +1,20 @@
 import React from 'react'
 
 import useCurrentHelpCenter from '../../hooks/useCurrentHelpCenter'
-import {useHelpCenterPreferencesSettings} from '../../providers/HelpCenterPreferencesSettings'
-import {useSupportedLocales} from '../../providers/SupportedLocales'
+import { useHelpCenterPreferencesSettings } from '../../providers/HelpCenterPreferencesSettings'
+import { useSupportedLocales } from '../../providers/SupportedLocales'
 import HelpCenterPageWrapper from '../HelpCenterPageWrapper'
-import {AvailableLanguagesTags} from './components/AvailableLanguagesTags'
-import {DefaultLanguageSelect} from './components/DefaultLanguageSelect'
-import {FooterActions} from './components/FooterActions'
-import {SEO} from './components/SEO'
+import { AvailableLanguagesTags } from './components/AvailableLanguagesTags'
+import { DefaultLanguageSelect } from './components/DefaultLanguageSelect'
+import { FooterActions } from './components/FooterActions'
+import { SEO } from './components/SEO'
+
 import css from './HelpCenterPreferencesView.less'
 
 export const HelpCenterPreferencesView: React.FC = () => {
     const locales = useSupportedLocales()
     const helpCenter = useCurrentHelpCenter()
-    const {savePreferences, canSavePreferences} =
+    const { savePreferences, canSavePreferences } =
         useHelpCenterPreferencesSettings()
 
     return (

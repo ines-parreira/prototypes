@@ -1,7 +1,3 @@
-import {Tooltip, Badge} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
-import {Map} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {
     Fragment,
     MouseEvent,
@@ -10,22 +6,26 @@ import React, {
     useRef,
     useState,
 } from 'react'
-import {Link, useHistory} from 'react-router-dom'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import classnames from 'classnames'
+import { Map } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { Link, useHistory } from 'react-router-dom'
+
+import { Badge, Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import {
-    LanguageUI,
     getGorgiasChatLanguageByCode,
     getPrimaryLanguageFromChatConfig,
+    LanguageUI,
 } from 'config/integrations/gorgias_chat'
-import {Language} from 'constants/languages'
+import { Language } from 'constants/languages'
 import useLocalStorage from 'hooks/useLocalStorage'
-import {GorgiasChatIntegration} from 'models/integration/types'
-
+import { GorgiasChatIntegration } from 'models/integration/types'
 import BadgeItem from 'pages/common/components/BadgetItem'
 import IconButton from 'pages/common/components/button/IconButton'
-
-import {NumberedPagination} from 'pages/common/components/Paginations/NumberedPagination'
+import { NumberedPagination } from 'pages/common/components/Paginations/NumberedPagination'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
@@ -33,29 +33,26 @@ import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import ToggleInput from 'pages/common/forms/ToggleInput'
-
-import {abVariantsUrl} from 'pages/convert/abVariants/urls'
+import { abVariantsUrl } from 'pages/convert/abVariants/urls'
 import LightCampaignBadge from 'pages/convert/campaigns/components/LightCampaignBadge/LightCampaignBadge'
 import LightCampaignModal from 'pages/convert/campaigns/components/LightCampaignModal/LightCampaignModal'
-import {ACTIVE_CAMPAIGNS_LIMIT} from 'pages/convert/campaigns/constants/lightCampaigns'
-import {useGetActiveCampaignsCount} from 'pages/convert/campaigns/hooks/useGetActiveCampaignsCount'
-import {useIsCampaignCreationAllowed} from 'pages/convert/campaigns/hooks/useIsCampaignCreationAllowed'
-import {ABGroupStatus} from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
+import { ACTIVE_CAMPAIGNS_LIMIT } from 'pages/convert/campaigns/constants/lightCampaigns'
+import { useGetActiveCampaignsCount } from 'pages/convert/campaigns/hooks/useGetActiveCampaignsCount'
+import { useIsCampaignCreationAllowed } from 'pages/convert/campaigns/hooks/useIsCampaignCreationAllowed'
+import { ABGroupStatus } from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
+import { LightCampaignModalType } from 'pages/convert/campaigns/types/enums/LightCampaignModalType'
 
-import {LightCampaignModalType} from 'pages/convert/campaigns/types/enums/LightCampaignModalType'
-
-import {SortingKeys, useSortedCampaigns} from '../../hooks/useSortedCampaigns'
-import {Campaign} from '../../types/Campaign'
+import { SortingKeys, useSortedCampaigns } from '../../hooks/useSortedCampaigns'
+import { Campaign } from '../../types/Campaign'
 import {
     CampaignStatus,
     isActiveStatus,
 } from '../../types/enums/CampaignStatus.enum'
-
-import {CampaignPreviewPopover} from '../CampaignPreviewPopover'
+import { CampaignPreviewPopover } from '../CampaignPreviewPopover'
+import ABGroupVariants from './components/ABGroupVariants'
+import { CampaignToolsCell } from './components/CampaignToolsCell'
 
 import css from './CampaignsTable.less'
-import ABGroupVariants from './components/ABGroupVariants'
-import {CampaignToolsCell} from './components/CampaignToolsCell'
 
 const TOGGLE_TOOLTIP_MAX_ACTIVE_CAMPAIGNS =
     'You already have 3 or more campaigns active. Disable them to activate this one.'
@@ -94,7 +91,7 @@ export const CampaignsTable = ({
     const history = useHistory()
     const currentDate = new Date()
 
-    const {sortBy, sortDirection, sortedCampaigns, changeSorting} =
+    const { sortBy, sortDirection, sortedCampaigns, changeSorting } =
         useSortedCampaigns(data)
 
     const [isLightModalOpen, setIsLightModalOpen] = useState(false)
@@ -109,12 +106,12 @@ export const CampaignsTable = ({
     }, [integration])
     const [lightModalDismissed, setLightModalDismissed] = useLocalStorage(
         storageKey,
-        false
+        false,
     )
 
     const handleChangeSort = useCallback(
         (key: SortingKeys) => () => changeSorting(key),
-        [changeSorting]
+        [changeSorting],
     )
 
     const campaignCreationAllowed = useIsCampaignCreationAllowed(integration)
@@ -146,7 +143,7 @@ export const CampaignsTable = ({
                 onToggleCampaign(campaign)
             }
         },
-        [isOverCampaignsLimit, lightModalDismissed, onToggleCampaign]
+        [isOverCampaignsLimit, lightModalDismissed, onToggleCampaign],
     )
 
     const chatMultiLanguagesEnabled =
@@ -154,7 +151,7 @@ export const CampaignsTable = ({
 
     const defaultLanguage = useMemo<string>(() => {
         return getPrimaryLanguageFromChatConfig(
-            (integration.toJS() as GorgiasChatIntegration).meta
+            (integration.toJS() as GorgiasChatIntegration).meta,
         )
     }, [integration])
 
@@ -177,7 +174,7 @@ export const CampaignsTable = ({
 
             const creationDate = campaign?.created_datetime
                 ? new Date(campaign.created_datetime).toLocaleDateString(
-                      'en-US'
+                      'en-US',
                   )
                 : ''
 
@@ -187,12 +184,12 @@ export const CampaignsTable = ({
                 }
 
                 const startDate = new Date(
-                    campaign.schedule.start_datetime
+                    campaign.schedule.start_datetime,
                 ).toLocaleDateString('en-US')
 
                 const endDate = campaign.schedule.end_datetime
                     ? new Date(
-                          campaign.schedule.end_datetime
+                          campaign.schedule.end_datetime,
                       ).toLocaleDateString('en-US')
                     : null
 
@@ -204,7 +201,7 @@ export const CampaignsTable = ({
             }
 
             const language = getGorgiasChatLanguageByCode(
-                (campaign.language ?? defaultLanguage) as Language
+                (campaign.language ?? defaultLanguage) as Language,
             ) as LanguageUI
 
             const isCampaignActive = isActiveStatus(campaign.status)
@@ -226,7 +223,7 @@ export const CampaignsTable = ({
             return (
                 <Fragment key={index}>
                     <TableBodyRow className={css.tableRow}>
-                        <BodyCell style={{width: 88}}>
+                        <BodyCell style={{ width: 88 }}>
                             <span id={toggleId}>
                                 <ToggleInput
                                     isToggled={isCampaignActive}
@@ -302,7 +299,7 @@ export const CampaignsTable = ({
                         <BodyCell>
                             <div>{creationDate}</div>
                         </BodyCell>
-                        <BodyCell style={{minWidth: 200}}>
+                        <BodyCell style={{ minWidth: 200 }}>
                             <div>{scheduleLabel()}</div>
                         </BodyCell>
 
@@ -320,7 +317,7 @@ export const CampaignsTable = ({
                                 />
                             </BodyCell>
                         )}
-                        <BodyCell style={{width: 110}}>
+                        <BodyCell style={{ width: 110 }}>
                             <CampaignToolsCell
                                 campaign={campaign}
                                 integration={integration}
@@ -359,7 +356,7 @@ export const CampaignsTable = ({
             onClickToggle,
             setToggleState,
             toggleState,
-        ]
+        ],
     ) /* eslint-enable react-hooks/exhaustive-deps */
 
     const start = (page - 1) * perPage
@@ -372,11 +369,11 @@ export const CampaignsTable = ({
                 className={classnames(
                     'table-integrations',
                     'mt-3',
-                    css.campaignsTable
+                    css.campaignsTable,
                 )}
             >
                 <TableHead>
-                    <HeaderCellProperty title="" style={{width: 88}} />
+                    <HeaderCellProperty title="" style={{ width: 88 }} />
                     <HeaderCellProperty
                         isOrderedBy={sortBy === 'name'}
                         direction={
@@ -398,7 +395,7 @@ export const CampaignsTable = ({
                         titleClassName={css.headerCellTitle}
                     />
                     <HeaderCellProperty
-                        style={{minWidth: 200}}
+                        style={{ minWidth: 200 }}
                         isOrderedBy={sortBy === 'schedule'}
                         direction={
                             sortBy === 'schedule' ? sortDirection : undefined
@@ -413,7 +410,7 @@ export const CampaignsTable = ({
                             titleClassName={css.headerCellTitle}
                         />
                     )}
-                    <HeaderCellProperty title="" style={{width: 110}} />
+                    <HeaderCellProperty title="" style={{ width: 110 }} />
                 </TableHead>
                 <TableBody>{paginatedRows.map(renderRows)}</TableBody>
             </TableWrapper>

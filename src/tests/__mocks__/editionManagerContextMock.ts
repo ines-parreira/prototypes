@@ -8,7 +8,7 @@ const mockedUseEditionManager = {
 
 jest.mock('pages/settings/helpCenter/providers/EditionManagerContext', () => {
     const module: Record<string, unknown> = jest.requireActual(
-        'pages/settings/helpCenter/providers/EditionManagerContext'
+        'pages/settings/helpCenter/providers/EditionManagerContext',
     )
     return {
         ...module,

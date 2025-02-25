@@ -1,39 +1,36 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import hash from 'object-hash'
+import { useCallback } from 'react'
 
-import {useCallback} from 'react'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import hash from 'object-hash'
 
 import {
     AI_AGENT_SET_AND_OPTIMIZED_TYPE,
     AI_AGENT_SET_AND_OPTIMIZED_WORKFLOW,
 } from 'automate/notifications/constants'
-import {AiAgentNotificationType} from 'automate/notifications/types'
-import {getNotificationReceivedDatetime} from 'automate/notifications/utils'
-import {logEvent, SegmentEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {UserRole} from 'config/types/user'
+import { AiAgentNotificationType } from 'automate/notifications/types'
+import { getNotificationReceivedDatetime } from 'automate/notifications/utils'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { UserRole } from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     AiAgentOnboardingState,
     OnboardingNotificationState,
 } from 'models/aiAgent/types'
-import {NotificationEvent} from 'services/notificationTracker/constants'
+import { NotificationEvent } from 'services/notificationTracker/constants'
 import {
     getAdminRecipientIds,
     logNotificationEvent,
 } from 'services/notificationTracker/notificationTracker'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { hasRole } from 'utils'
 
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {notify} from 'state/notifications/actions'
-
-import {NotificationStatus} from 'state/notifications/types'
-
-import {hasRole} from 'utils'
-
-import {useOnboardingNotificationState} from './useOnboardingNotificationState'
-import {useOnboardingNotificationStateMutation} from './useOnboardingNotificationStateMutation'
+import { useOnboardingNotificationState } from './useOnboardingNotificationState'
+import { useOnboardingNotificationStateMutation } from './useOnboardingNotificationStateMutation'
 
 export const NUMBER_OF_MILLISECONDS_IN_A_DAY = 1000 * 60 * 60 * 24
 const NUMBER_OF_DAYS_TO_TRACK = 14
@@ -53,7 +50,7 @@ export const useAiAgentOnboardingNotification = ({
     const currentUser = useAppSelector(getCurrentUser)
     const isAdmin = hasRole(currentUser, UserRole.Admin)
 
-    const {onboardingNotificationState, isLoading: isLoadingGet} =
+    const { onboardingNotificationState, isLoading: isLoadingGet } =
         useOnboardingNotificationState({
             accountDomain,
             shopName,
@@ -63,14 +60,14 @@ export const useAiAgentOnboardingNotification = ({
     const {
         isLoading: isLoadingCreateOrUpdate,
         upsertOnboardingNotificationState,
-    } = useOnboardingNotificationStateMutation({accountDomain, shopName})
+    } = useOnboardingNotificationStateMutation({ accountDomain, shopName })
 
     const isAiAgentOnboardingNotificationEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AiAgentOnboardingNotification]
 
     const handleOnSave = useCallback(
         async (
-            payload: Partial<OnboardingNotificationState>
+            payload: Partial<OnboardingNotificationState>,
         ): Promise<OnboardingNotificationState | undefined> => {
             if (
                 !isAiAgentOnboardingNotificationEnabled ||
@@ -94,7 +91,7 @@ export const useAiAgentOnboardingNotification = ({
                     notify({
                         status: NotificationStatus.Error,
                         message: 'Failed to save onboarding notification state',
-                    })
+                    }),
                 )
             }
 
@@ -106,7 +103,7 @@ export const useAiAgentOnboardingNotification = ({
             onboardingNotificationState,
             shopName,
             upsertOnboardingNotificationState,
-        ]
+        ],
     )
 
     const handleOnSendOrCancelNotification = useCallback(
@@ -151,7 +148,7 @@ export const useAiAgentOnboardingNotification = ({
                           ...notificationProps,
                           command_type: 'send-notification',
                           notification_data: notificationData,
-                      }
+                      },
             )
 
             if (!isCancel) {
@@ -165,7 +162,7 @@ export const useAiAgentOnboardingNotification = ({
             isAiAgentOnboardingNotificationEnabled,
             onboardingNotificationState,
             shopName,
-        ]
+        ],
     )
 
     const handleOnEnablementPostReceivedNotification = useCallback(() => {
@@ -183,7 +180,7 @@ export const useAiAgentOnboardingNotification = ({
             onboardingNotificationState?.finishAiAgentSetupNotificationReceivedDatetime,
             onboardingNotificationState?.activateAiAgentNotificationReceivedDatetime,
         ].filter((datetime: string | null): datetime is string =>
-            Boolean(datetime)
+            Boolean(datetime),
         )
 
         const latestReceivedNotificationDatetime =
@@ -204,7 +201,7 @@ export const useAiAgentOnboardingNotification = ({
 
         if (daysDifference <= NUMBER_OF_DAYS_TO_TRACK) {
             logEvent(
-                SegmentEvent.AiAgentEnablementPostReceivedOnboardingNotification
+                SegmentEvent.AiAgentEnablementPostReceivedOnboardingNotification,
             )
         }
     }, [
@@ -226,7 +223,7 @@ export const useAiAgentOnboardingNotification = ({
             const notificationReceivedDatetime =
                 getNotificationReceivedDatetime(
                     type,
-                    onboardingNotificationState
+                    onboardingNotificationState,
                 )
 
             if (!notificationReceivedDatetime) return
@@ -243,7 +240,7 @@ export const useAiAgentOnboardingNotification = ({
                     SegmentEvent.AiAgentActionPerformedPostReceivedOnboardingNotification,
                     {
                         type,
-                    }
+                    },
                 )
             }
         },
@@ -251,7 +248,7 @@ export const useAiAgentOnboardingNotification = ({
             isAiAgentOnboardingNotificationEnabled,
             onboardingNotificationState,
             shopName,
-        ]
+        ],
     )
 
     const handleOnTriggerActivateAiAgentNotification = useCallback(() => {
@@ -323,7 +320,7 @@ export const useAiAgentOnboardingNotification = ({
 
         handleOnEnablementPostReceivedNotification()
         handleOnPerformActionPostReceivedNotification(
-            AiAgentNotificationType.ActivateAiAgent
+            AiAgentNotificationType.ActivateAiAgent,
         )
     }, [
         handleOnEnablementPostReceivedNotification,

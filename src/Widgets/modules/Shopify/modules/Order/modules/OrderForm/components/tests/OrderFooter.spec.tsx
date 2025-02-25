@@ -1,14 +1,14 @@
-import {fireEvent, render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import {fromJS, Map} from 'immutable'
 import React from 'react'
+
+import { fireEvent, render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { fromJS, Map } from 'immutable'
 
 import {
     shopifyRefundOrderPayloadFixture,
     shopifySuggestedRefundFixture,
 } from 'fixtures/shopify'
-
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
+import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import OrderFooter from '../OrderFooter'
 
@@ -33,7 +33,7 @@ describe('<OrderFooter/>', () => {
 
     describe('render()', () => {
         it('should render', () => {
-            const {container} = render(
+            const { container } = render(
                 <OrderFooter
                     editable
                     hasShippingLine
@@ -49,14 +49,14 @@ describe('<OrderFooter/>', () => {
                     onNotifyChange={onNotifyChange}
                     onPayloadChange={onPayloadChange}
                     hasMultipleGateways={false}
-                />
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render for refund order action', () => {
-            const {container} = render(
+            const { container } = render(
                 <OrderFooter
                     editable
                     hasShippingLine
@@ -72,7 +72,7 @@ describe('<OrderFooter/>', () => {
                     onNotifyChange={onNotifyChange}
                     onPayloadChange={onPayloadChange}
                     hasMultipleGateways={false}
-                />
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -95,7 +95,7 @@ describe('<OrderFooter/>', () => {
                     onNotifyChange={onNotifyChange}
                     onPayloadChange={onPayloadChange}
                     hasMultipleGateways={true}
-                />
+                />,
             )
 
             screen.getAllByRole('textbox').forEach((textbox) => {
@@ -121,7 +121,7 @@ describe('<OrderFooter/>', () => {
                 any
             >
 
-            const {getByLabelText} = render(
+            const { getByLabelText } = render(
                 <OrderFooter
                     editable
                     hasShippingLine
@@ -137,17 +137,17 @@ describe('<OrderFooter/>', () => {
                     onNotifyChange={onNotifyChange}
                     onPayloadChange={onPayloadChange}
                     hasMultipleGateways={false}
-                />
+                />,
             )
 
             fireEvent.change(getByLabelText(/Refund with: Manual/i), {
-                target: {value: 0.2},
+                target: { value: 0.2 },
             })
 
             const transaction: Map<any, any> = refund.getIn(['transactions', 0])
             const newTransaction = transaction.set('amount', '0.20')
             expect(setPayload).toHaveBeenCalledWith(
-                payload.setIn(['transactions', 0], newTransaction)
+                payload.setIn(['transactions', 0], newTransaction),
             )
         })
 
@@ -161,7 +161,7 @@ describe('<OrderFooter/>', () => {
                 any
             >
 
-            const {getByLabelText} = render(
+            const { getByLabelText } = render(
                 <OrderFooter
                     editable
                     hasShippingLine
@@ -177,16 +177,16 @@ describe('<OrderFooter/>', () => {
                     onNotifyChange={onNotifyChange}
                     onPayloadChange={onPayloadChange}
                     hasMultipleGateways={false}
-                />
+                />,
             )
 
             fireEvent.change(getByLabelText(/Refund with: Manual/i), {
-                target: {value: 99.99},
+                target: { value: 99.99 },
             })
             const transaction: Map<any, any> = refund.getIn(['transactions', 0])
             const newTransaction = transaction.set('amount', '1.20')
             expect(setPayload).toHaveBeenCalledWith(
-                payload.setIn(['transactions', 0], newTransaction)
+                payload.setIn(['transactions', 0], newTransaction),
             )
         })
     })
@@ -198,7 +198,7 @@ describe('<OrderFooter/>', () => {
                 any
             >
 
-            const {getByLabelText} = render(
+            const { getByLabelText } = render(
                 <OrderFooter
                     editable
                     hasShippingLine
@@ -214,22 +214,22 @@ describe('<OrderFooter/>', () => {
                     onNotifyChange={onNotifyChange}
                     onPayloadChange={onPayloadChange}
                     hasMultipleGateways={false}
-                />
+                />,
             )
 
             // Use custom amount to display discrepancy field
             fireEvent.change(getByLabelText(/Refund with: Manual/i), {
-                target: {value: 0.2},
+                target: { value: 0.2 },
             })
             fireEvent.change(
                 getByLabelText(/Reason for custom refund amount/i),
                 {
-                    target: {value: 'damage'},
-                }
+                    target: { value: 'damage' },
+                },
             )
 
             expect(setPayload).toHaveBeenCalledWith(
-                payload.set('discrepancy_reason', 'damage')
+                payload.set('discrepancy_reason', 'damage'),
             )
         })
     })
@@ -241,7 +241,7 @@ describe('<OrderFooter/>', () => {
                 any
             >
 
-            const {getByText} = render(
+            const { getByText } = render(
                 <OrderFooter
                     editable
                     hasShippingLine
@@ -257,13 +257,13 @@ describe('<OrderFooter/>', () => {
                     onNotifyChange={onNotifyChange}
                     onPayloadChange={onPayloadChange}
                     hasMultipleGateways={false}
-                />
+                />,
             )
 
             userEvent.click(getByText(/Restock items/i))
 
             expect(setPayload).toHaveBeenCalledWith(
-                payload.set('restock', false)
+                payload.set('restock', false),
             )
         })
     })
@@ -272,7 +272,7 @@ describe('<OrderFooter/>', () => {
         it('should call onNotifyChange() with checkbox event', () => {
             const payload = fromJS(shopifyRefundOrderPayloadFixture())
 
-            const {getByText} = render(
+            const { getByText } = render(
                 <OrderFooter
                     editable
                     hasShippingLine
@@ -288,7 +288,7 @@ describe('<OrderFooter/>', () => {
                     onNotifyChange={onNotifyChange}
                     onPayloadChange={onPayloadChange}
                     hasMultipleGateways={false}
-                />
+                />,
             )
 
             userEvent.click(getByText(/Send notification to customer/i))

@@ -1,24 +1,25 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {waitFor} from '@testing-library/react'
-import {act, renderHook} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
+import React, { ComponentType, ReactChildren } from 'react'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { waitFor } from '@testing-library/react'
+import { act, renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
 import LD from 'launchdarkly-react-client-sdk'
-import React, {ComponentType, ReactChildren} from 'react'
-import {Provider} from 'react-redux'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {billingState} from 'fixtures/billing'
-import {IntegrationType} from 'models/integration/constants'
+import { billingState } from 'fixtures/billing'
+import { IntegrationType } from 'models/integration/constants'
 import {
-    useGetWorkflowConfigurations,
-    useDuplicateWorkflowConfiguration,
     useDeleteWorkflowConfiguration,
+    useDuplicateWorkflowConfiguration,
+    useGetWorkflowConfigurations,
 } from 'models/workflows/queries'
-import {RootState, StoreDispatch} from 'state/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import {useStoreWorkflowsApi} from '../useStoreWorkflowsApi'
-import {useSelfServiceConfigurationUpdateMockSetter} from './fixtures/mockBuilders'
+import { useStoreWorkflowsApi } from '../useStoreWorkflowsApi'
+import { useSelfServiceConfigurationUpdateMockSetter } from './fixtures/mockBuilders'
 import {
     getIntegration,
     mockWorkflowConfigurationShallow,
@@ -50,7 +51,7 @@ const queryClient = mockQueryClient()
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const renderHookOptions = {
-    wrapper: (({children}: {children: ReactChildren}) => (
+    wrapper: (({ children }: { children: ReactChildren }) => (
         <Provider store={mockStore(defaultState)}>
             <QueryClientProvider client={queryClient}>
                 {children}
@@ -60,14 +61,14 @@ const renderHookOptions = {
 }
 
 const mockedUseWorkflowConfigurations = jest.mocked(
-    useGetWorkflowConfigurations
+    useGetWorkflowConfigurations,
 )
 
 const mockedUseDuplicateWorkflowConfiguration = jest.mocked(
-    useDuplicateWorkflowConfiguration
+    useDuplicateWorkflowConfiguration,
 )
 const mockedUseDeleteWorkflowConfiguration = jest.mocked(
-    useDeleteWorkflowConfiguration
+    useDeleteWorkflowConfiguration,
 )
 describe('useStoreWorkflowsApi', () => {
     beforeEach(() => {
@@ -92,9 +93,9 @@ describe('useStoreWorkflowsApi', () => {
     })
 
     it('should return the right default values', () => {
-        const {result} = renderHook(
+        const { result } = renderHook(
             () => useStoreWorkflowsApi(() => null),
-            renderHookOptions
+            renderHookOptions,
         )
 
         expect(result.current).toEqual({
@@ -110,7 +111,7 @@ describe('useStoreWorkflowsApi', () => {
     it('should invoke the right functions when calling duplicateWorkflow', async () => {
         const duplicateWorkflowConfigurationMock = jest
             .fn()
-            .mockResolvedValue({data: {id: 4}})
+            .mockResolvedValue({ data: { id: 4 } })
 
         mockedUseDuplicateWorkflowConfiguration.mockReturnValue({
             mutateAsync: duplicateWorkflowConfigurationMock,
@@ -123,15 +124,15 @@ describe('useStoreWorkflowsApi', () => {
             handleSelfServiceConfigurationUpdate: handleUpdateMock,
         })
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () => useStoreWorkflowsApi(() => null),
-            renderHookOptions
+            renderHookOptions,
         )
 
         await act(async () => {
             const duplicatedWorkflow = await result.current.duplicateWorkflow(
                 'workflow_id',
-                14
+                14,
             )
 
             expect(duplicateWorkflowConfigurationMock).toHaveBeenCalledWith([
@@ -166,9 +167,9 @@ describe('useStoreWorkflowsApi', () => {
             handleSelfServiceConfigurationUpdate: jest.fn(),
         })
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () => useStoreWorkflowsApi(() => null),
-            renderHookOptions
+            renderHookOptions,
         )
 
         act(() => {
@@ -191,9 +192,9 @@ describe('useStoreWorkflowsApi', () => {
             handleSelfServiceConfigurationUpdate: jest.fn(),
         })
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () => useStoreWorkflowsApi(() => null),
-            renderHookOptions
+            renderHookOptions,
         )
 
         await act(async () => {

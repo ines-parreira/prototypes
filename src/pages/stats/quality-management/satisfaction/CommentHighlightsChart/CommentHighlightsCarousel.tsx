@@ -1,8 +1,10 @@
-import {Skeleton} from '@gorgias/merchant-ui-kit'
+import React, { useMemo } from 'react'
+
 import _truncate from 'lodash/truncate'
-import React, {useMemo} from 'react'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import Slider from 'react-slick'
+
+import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import analyticsColorsModern from 'assets/css/new/stats/modern.json'
 import {
@@ -11,9 +13,9 @@ import {
 } from 'hooks/reporting/quality-management/satisfaction/useCommentHighlights'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import IconButton from 'pages/common/components/button/IconButton'
-import {Separator} from 'pages/common/components/Separator/Separator'
+import { Separator } from 'pages/common/components/Separator/Separator'
 import StarRating from 'pages/common/components/StarRating'
-import {NOT_AVAILABLE_PLACEHOLDER} from 'pages/stats/common/utils'
+import { NOT_AVAILABLE_PLACEHOLDER } from 'pages/stats/common/utils'
 import css from 'pages/stats/quality-management/satisfaction/CommentHighlightsChart/CommentHighlightsCarousel.less'
 
 const VIEW_TICKET = 'View Ticket'
@@ -38,7 +40,7 @@ export default function CommentHighlightsCarousel({
 }: FormattedCommentHighlightQueryData) {
     const carouselData = useMemo(
         () => (data && data.length > 0 ? data : [NO_DATA_ITEM]),
-        [data]
+        [data],
     )
 
     const dataKey = useMemo(() => JSON.stringify(data), [data])
@@ -167,13 +169,13 @@ type TicketAssigneeProps = Pick<
     'assignedAgent' | 'assignedTeam'
 >
 
-function TicketAssignee({assignedAgent, assignedTeam}: TicketAssigneeProps) {
+function TicketAssignee({ assignedAgent, assignedTeam }: TicketAssigneeProps) {
     if (assignedAgent?.name) {
         return <>{assignedAgent.name}</>
     }
 
     if (assignedTeam) {
-        const {name, emoji} = assignedTeam
+        const { name, emoji } = assignedTeam
         return (
             <>
                 {emoji && <span>{emoji}</span>}

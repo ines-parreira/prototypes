@@ -1,15 +1,15 @@
-import {ulid} from 'ulidx'
+import { ulid } from 'ulidx'
 
-import {CampaignConfigurationBuilder} from 'pages/convert/campaigns/templates/constructor'
+import { CampaignConfigurationBuilder } from 'pages/convert/campaigns/templates/constructor'
 import {
     CampaignConfiguration,
     CampaignTemplate,
 } from 'pages/convert/campaigns/templates/types'
-import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
-import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
-import {createTriggerRule} from 'pages/convert/campaigns/utils/createTriggerRule'
-import {assetsUrl} from 'utils'
+import { CampaignStatus } from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
+import { CampaignTriggerOperator } from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
+import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import { createTriggerRule } from 'pages/convert/campaigns/utils/createTriggerRule'
+import { assetsUrl } from 'utils'
 
 export const CSM_DRIVE_LOYALTY_PROGRAM_SIGNUPS: CampaignTemplate = {
     slug: 'csm-drive-loyalty-program-signups',
@@ -59,12 +59,12 @@ export const CSM_DRIVE_LOYALTY_PROGRAM_SIGNUPS: CampaignTemplate = {
 
 Already a member? Sign in`,
                 message_html: `<div>Welcome back! <strong>Don&#x27;t forget you can save up to 15%</strong> on your orders by becoming a <a href="http://test.com/?utm_source=Gorgias&utm_medium=ChatCampaign&utm_campaign=%5BTarget%20Return%20Customers%5D-%20Drive%20Loyalty%20program%20signups?utm_source=Gorgias&utm_medium=ChatCampaign&utm_campaign=%5BTarget%20Return%20Customers%5D-%20Drive%20Loyalty%20program%20signups" target="_blank">loyalty member</a>. </div><div><br></div><div>Already a member? <a href="http://test.com/" target="_blank">Sign in</a></div>`,
-                meta: {delay: 5000},
+                meta: { delay: 5000 },
                 status: CampaignStatus.Inactive,
                 triggers: triggers,
                 trigger_rule: createTriggerRule(triggers),
                 attachments: [],
-            }
+            },
         )
 
         return Promise.resolve(builder.build())

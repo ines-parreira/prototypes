@@ -1,8 +1,9 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+
+import { Campaign } from 'pages/convert/campaigns/types/Campaign'
 
 import LightCampaignBadge from '../LightCampaignBadge'
 
@@ -17,8 +18,11 @@ describe('LightCampaignBadge', () => {
     })
 
     it('should render', () => {
-        const {getByText} = render(
-            <LightCampaignBadge campaign={campaign} integration={integration} />
+        const { getByText } = render(
+            <LightCampaignBadge
+                campaign={campaign}
+                integration={integration}
+            />,
         )
 
         expect(getByText('light')).toBeInTheDocument()
@@ -29,11 +33,11 @@ describe('LightCampaignBadge', () => {
             is_light: false,
         } as Campaign
 
-        const {queryByText} = render(
+        const { queryByText } = render(
             <LightCampaignBadge
                 campaign={notLightCampaign}
                 integration={integration}
-            />
+            />,
         )
 
         expect(queryByText('light')).not.toBeInTheDocument()
@@ -46,11 +50,11 @@ describe('LightCampaignBadge', () => {
             },
         })
 
-        const {queryByText} = render(
+        const { queryByText } = render(
             <LightCampaignBadge
                 campaign={campaign}
                 integration={notShopifyIntegration}
-            />
+            />,
         )
 
         expect(queryByText('light')).not.toBeInTheDocument()

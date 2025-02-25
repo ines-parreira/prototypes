@@ -1,11 +1,13 @@
+import React from 'react'
+
+import { isValidPhoneNumber } from 'libphonenumber-js'
+
 import {
     LegacyChannelSlug,
     UpdateCustomerBodyChannelsItem,
     useGetCustomer,
     useUpdateCustomer,
 } from '@gorgias/api-queries'
-import {isValidPhoneNumber} from 'libphonenumber-js'
-import React from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import Button from 'pages/common/components/button/Button'
@@ -15,9 +17,9 @@ import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import SourceIcon from 'pages/common/components/SourceIcon'
 import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
-import {SUBMIT_CUSTOMER_SUCCESS} from 'state/customers/constants'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { SUBMIT_CUSTOMER_SUCCESS } from 'state/customers/constants'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 import css from '../../Infobar.less'
 
@@ -25,7 +27,7 @@ type Props = {
     customerId: number
 }
 
-export default function NewPhoneNumber({customerId}: Props) {
+export default function NewPhoneNumber({ customerId }: Props) {
     const [isModalOpen, setIsModalOpen] = React.useState(false)
     const [phoneNumber, setPhoneNumber] = React.useState('')
     const [error, setError] = React.useState<string>()
@@ -46,12 +48,14 @@ export default function NewPhoneNumber({customerId}: Props) {
         },
     })
 
-    const {mutate: updateCustomer, isLoading} = useUpdateCustomer({
+    const { mutate: updateCustomer, isLoading } = useUpdateCustomer({
         mutation: {
             onError: (error: {
                 response?: {
                     data?: {
-                        error?: {data?: {channels?: {_schema?: string[]}[]}}
+                        error?: {
+                            data?: { channels?: { _schema?: string[] }[] }
+                        }
                     }
                 }
             }) => {
@@ -67,7 +71,7 @@ export default function NewPhoneNumber({customerId}: Props) {
                         message:
                             phoneNumberError ?? `Failed to update customer`,
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
             },
             onSuccess: (response) => {
@@ -75,7 +79,7 @@ export default function NewPhoneNumber({customerId}: Props) {
                     notify({
                         message: `Phone number added to customer`,
                         status: NotificationStatus.Success,
-                    })
+                    }),
                 )
                 dispatch({
                     type: SUBMIT_CUSTOMER_SUCCESS,

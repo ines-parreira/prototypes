@@ -1,18 +1,17 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {LocaleCode} from '../../../../../models/helpCenter/types'
+import { render } from '@testing-library/react'
 
-import {getLocalesResponseFixture} from '../../fixtures/getLocalesResponse.fixtures'
-
-import {getLocaleSelectOptions} from '../localeSelectOptions'
+import { LocaleCode } from '../../../../../models/helpCenter/types'
+import { getLocalesResponseFixture } from '../../fixtures/getLocalesResponse.fixtures'
+import { getLocaleSelectOptions } from '../localeSelectOptions'
 
 const helpCenterLocales: LocaleCode[] = ['en-US']
 
 const Example = () => {
     const options = getLocaleSelectOptions(
         getLocalesResponseFixture,
-        helpCenterLocales
+        helpCenterLocales,
     )
 
     return (
@@ -36,7 +35,7 @@ const Example = () => {
 
 describe('getLocaleSelectOptions()', () => {
     it('options has a label, text and value', () => {
-        const {getByTestId, getByText} = render(<Example />)
+        const { getByTestId, getByText } = render(<Example />)
 
         getByTestId('label-en-US')
         getByText('en-US')

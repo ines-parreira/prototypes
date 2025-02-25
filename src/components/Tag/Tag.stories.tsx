@@ -1,7 +1,8 @@
-import {Meta, StoryFn} from '@storybook/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import Tag, {TagColor} from './Tag'
+import { Meta, StoryFn } from '@storybook/react'
+
+import Tag, { TagColor } from './Tag'
 
 const colors: TagColor[] = [
     'black',
@@ -20,7 +21,7 @@ const storyConfig: Meta = {
     title: 'General/Tag',
     component: Tag,
     parameters: {
-        backgrounds: {default: 'grey'},
+        backgrounds: { default: 'grey' },
     },
     argTypes: {
         color: {
@@ -32,13 +33,13 @@ const storyConfig: Meta = {
         },
         text: {
             description: 'Text to display in the tag.',
-            control: {type: 'text'},
+            control: { type: 'text' },
         },
         trailIcon: {
             description: 'Icon to display after the text.',
-            control: {type: null},
+            control: { type: null },
         },
-        className: {control: {type: null}},
+        className: { control: { type: null } },
     },
 }
 
@@ -63,7 +64,7 @@ const Template: StoryFn<ComponentProps<typeof Tag>> = (args) => {
 
 export const DefaultTag = Template.bind({})
 
-DefaultTag.args = {...defaultProps}
+DefaultTag.args = { ...defaultProps }
 
 export const IconOnlyTag = Template.bind({})
 IconOnlyTag.args = {

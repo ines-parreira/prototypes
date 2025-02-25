@@ -1,13 +1,13 @@
-import {ArticleTemplateType} from 'models/helpCenter/types'
-import {ArticleTemplateCategory} from 'pages/settings/helpCenter/types/articleTemplates'
+import { ArticleTemplateType } from 'models/helpCenter/types'
+import { ArticleTemplateCategory } from 'pages/settings/helpCenter/types/articleTemplates'
 
 export const ARTICLE_TEMPLATE_CATEGORIES: Record<
     string,
     {
         label: string
-        style?: {color: string; background: string}
+        style?: { color: string; background: string }
         tooltip?: string
-        icon?: {name: string; color: string}
+        icon?: { name: string; color: string }
     }
 > = {
     [ArticleTemplateCategory.AccountAndSubscriptions]: {
@@ -60,7 +60,7 @@ export const ARTICLE_TEMPLATE_CATEGORIES: Record<
     [ArticleTemplateType.AI]: {
         label: 'Articles for you',
         tooltip: 'AI articles are available only in English',
-        icon: {name: 'auto_awesome', color: 'var(--accessory-magenta-3)'},
+        icon: { name: 'auto_awesome', color: 'var(--accessory-magenta-3)' },
     },
 }
 

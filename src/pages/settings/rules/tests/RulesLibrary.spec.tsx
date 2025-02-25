@@ -1,27 +1,27 @@
-import {screen, render, waitFor} from '@testing-library/react'
-import {createMemoryHistory, Location} from 'history'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render, screen, waitFor } from '@testing-library/react'
+import { createMemoryHistory, Location } from 'history'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import * as ReactRouterDom from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {billingState} from 'fixtures/billing'
+import { billingState } from 'fixtures/billing'
 
 import {
-    emptyRule as ruleFixture,
     emptyManagedRule,
+    emptyRule as ruleFixture,
 } from '../../../../fixtures/rule'
-import {user} from '../../../../fixtures/users'
-import {fetchRules} from '../../../../models/rule/resources'
-import {fetchRuleRecipes} from '../../../../models/ruleRecipe/resources'
-import {RulesState} from '../../../../state/entities/rules/types'
-import {RootState, StoreDispatch} from '../../../../state/types'
+import { user } from '../../../../fixtures/users'
+import { fetchRules } from '../../../../models/rule/resources'
+import { fetchRuleRecipes } from '../../../../models/ruleRecipe/resources'
+import { RulesState } from '../../../../state/entities/rules/types'
+import { RootState, StoreDispatch } from '../../../../state/types'
+import { RulesLibraryContainer } from '../RulesLibrary'
 
-import {RulesLibraryContainer} from '../RulesLibrary'
-
-const {Router} = ReactRouterDom
+const { Router } = ReactRouterDom
 
 jest.mock('../../../../models/rule/resources')
 jest.mock('../../../../models/ruleRecipe/resources')
@@ -33,7 +33,7 @@ jest.mock(
         ({
             ...jest.requireActual('react-router'),
             useLocation: jest.fn(),
-        }) as Record<string, any>
+        }) as Record<string, any>,
 )
 const useLocationSpy = (
     jest.spyOn(ReactRouterDom, 'useLocation') as jest.SpyInstance<
@@ -45,7 +45,7 @@ const useLocationSpy = (
 })
 
 const createRuleFixtures = (length: number) => {
-    return Array.from({length}, (_, i) => ({
+    return Array.from({ length }, (_, i) => ({
         ...ruleFixture,
         id: i + 1,
     })).reduce((acc, value) => {
@@ -77,10 +77,10 @@ describe('<RulesLibrary/>', () => {
     >
 
     it('should render the rules library view', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(populateStore(5))}>
                 <RulesLibraryContainer />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -90,10 +90,10 @@ describe('<RulesLibrary/>', () => {
             hash: '#rule-library',
         })
 
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(populateStore(5))}>
                 <RulesLibraryContainer />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -106,7 +106,7 @@ describe('<RulesLibrary/>', () => {
         render(
             <Provider store={mockStore(populateStore(5))}>
                 <RulesLibraryContainer />
-            </Provider>
+            </Provider>,
         )
 
         await waitFor(() => {
@@ -118,7 +118,7 @@ describe('<RulesLibrary/>', () => {
         render(
             <Provider store={mockStore(populateStore(1))}>
                 <RulesLibraryContainer />
-            </Provider>
+            </Provider>,
         )
         expect(fetchRulesMock).toHaveBeenCalled()
     })
@@ -127,7 +127,7 @@ describe('<RulesLibrary/>', () => {
         render(
             <Provider store={mockStore(populateStore(1))}>
                 <RulesLibraryContainer />
-            </Provider>
+            </Provider>,
         )
         expect(fetchRuleRecipesMock).toHaveBeenCalled()
     })
@@ -157,10 +157,10 @@ describe('<RulesLibrary/>', () => {
                 <Provider store={mockStore(store)}>
                     <RulesLibraryContainer />
                 </Provider>
-            </Router>
+            </Router>,
         )
         expect(historySpy).toBeCalledWith(
-            `/app/settings/rules/${emptyManagedRule.id}`
+            `/app/settings/rules/${emptyManagedRule.id}`,
         )
     })
 })

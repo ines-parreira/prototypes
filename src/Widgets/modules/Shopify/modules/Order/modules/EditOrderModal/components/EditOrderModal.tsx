@@ -1,40 +1,41 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
+import React, { useCallback, useContext, useMemo, useRef } from 'react'
+
 import classnames from 'classnames'
-import {fromJS, List, Map} from 'immutable'
-import React, {useCallback, useContext, useMemo, useRef} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {Link} from 'react-router-dom'
-import {Button} from 'reactstrap'
+import { fromJS, List, Map } from 'immutable'
+import { connect, ConnectedProps } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { Button } from 'reactstrap'
+
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import usePrevious from 'hooks/usePrevious'
 import useUpdateEffect from 'hooks/useUpdateEffect'
-import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import {InfobarModalProps} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
+import { IntegrationType, ShopifyIntegration } from 'models/integration/types'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { InfobarModalProps } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import {shopifyDataMappers} from 'pages/common/forms/ProductSearchInput/Mappings'
+import { shopifyDataMappers } from 'pages/common/forms/ProductSearchInput/Mappings'
 import ProductSearchInput from 'pages/common/forms/ProductSearchInput/ProductSearchInput'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
 import {
     addCustomRow,
     addRow,
-    onLineItemChange,
     onCancel,
     onInit,
+    onLineItemChange,
     onNoteChange,
     onNotifyChange,
     onReset,
 } from 'state/infobarActions/shopify/editOrder/actions'
-import {getEditOrderState} from 'state/infobarActions/shopify/editOrder/selectors'
-import {getIntegrationsByType} from 'state/integrations/selectors'
-import {RootState} from 'state/types'
-
+import { getEditOrderState } from 'state/infobarActions/shopify/editOrder/selectors'
+import { getIntegrationsByType } from 'state/integrations/selectors'
+import { RootState } from 'state/types'
 import AddCustomItemPopover from 'Widgets/modules/Shopify/modules/AddCustomItemPopover'
 import DraftOrderTable from 'Widgets/modules/Shopify/modules/OrderTable'
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
+import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import EditOrderForm from './EditOrderForm'
 
@@ -55,7 +56,7 @@ export function EditOrderModalContainer({
     addRow,
     onLineItemChange,
     defaultCurrency = 'USD',
-    data = {actionName: null, order: null},
+    data = { actionName: null, order: null },
     integrations,
     isOpen,
     loading,
@@ -76,32 +77,32 @@ export function EditOrderModalContainer({
 }: Omit<InfobarModalProps, 'data'> &
     OwnProps &
     ConnectedProps<typeof connector>) {
-    const {integrationId} = useContext(IntegrationContext)
+    const { integrationId } = useContext(IntegrationContext)
     const modalRef = useRef<HTMLDivElement>(null)
 
     const currentIntegration = useMemo(
         () =>
             integrations.find(
-                (integration) => integration.id === integrationId
+                (integration) => integration.id === integrationId,
             ),
-        [integrations, integrationId]
+        [integrations, integrationId],
     )
     const hasScope = useMemo(
         () =>
             ['write_order_edits', 'read_order_edits'].every(function (scope) {
                 return currentIntegration?.meta.oauth.scope?.includes(scope)
             }),
-        [currentIntegration]
+        [currentIntegration],
     )
     const currencyCode = useMemo(
         () => currentIntegration?.meta.currency || defaultCurrency,
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [currentIntegration]
+        [currentIntegration],
     )
     const previousIsOpen = usePrevious(isOpen)
     const lineItems = useMemo(
         () => (payload?.get('line_items') || fromJS([])) as List<Map<any, any>>,
-        [payload]
+        [payload],
     )
     const isEmpty = useMemo(() => lineItems.size === 0, [lineItems])
 
@@ -112,7 +113,7 @@ export function EditOrderModalContainer({
             handleReset()
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [data, integrationId, onClose]
+        [data, integrationId, onClose],
     )
 
     const handleReset = useCallback(() => {
@@ -122,22 +123,22 @@ export function EditOrderModalContainer({
 
     const handleLineItemUpdate = useCallback(
         (newLineItem: Map<any, any>, index: number) => {
-            void onLineItemChange(integrationId!, {newLineItem, index})
+            void onLineItemChange(integrationId!, { newLineItem, index })
         },
-        [integrationId, onLineItemChange]
+        [integrationId, onLineItemChange],
     )
 
     const handleLineItemDelete = useCallback(
         (index: number) => {
-            void onLineItemChange(integrationId!, {remove: true, index})
+            void onLineItemChange(integrationId!, { remove: true, index })
         },
-        [integrationId, onLineItemChange]
+        [integrationId, onLineItemChange],
     )
 
     const handlePaymentSubmit = useCallback(() => {
         onBulkChange(
             [
-                {name: 'note', value: payload && payload.get('note')},
+                { name: 'note', value: payload && payload.get('note') },
                 {
                     name: 'notify',
                     value: (payload && payload.get('notify')) || false,
@@ -152,7 +153,7 @@ export function EditOrderModalContainer({
             () => {
                 onSubmit()
                 handleReset()
-            }
+            },
         )
     }, [onBulkChange, payload, calculatedEditOrder, onSubmit, handleReset])
 
@@ -167,7 +168,7 @@ export function EditOrderModalContainer({
                     () => {
                         onClose()
                         handleReset()
-                    }
+                    },
                 )
             }
             shortcutManager.pause()
@@ -227,7 +228,7 @@ export function EditOrderModalContainer({
                             data.actionName!,
                             integrationId!,
                             item.data,
-                            variant
+                            variant,
                         )
                     }}
                     autoFocus={false}
@@ -268,7 +269,7 @@ export function EditOrderModalContainer({
                             }}
                             notifyCustomer={(notify: boolean) => {
                                 void onNotifyChange(
-                                    payload.set('notify', notify)
+                                    payload.set('notify', notify),
                                 )
                             }}
                         />
@@ -321,7 +322,7 @@ export function EditOrderModalContainer({
 const connector = connect(
     (state: RootState) => ({
         integrations: getIntegrationsByType<ShopifyIntegration>(
-            IntegrationType.Shopify
+            IntegrationType.Shopify,
         )(state),
         loading: getEditOrderState(state).get('loading'),
         loadingMessage: getEditOrderState(state).get('loadingMessage'),
@@ -330,7 +331,7 @@ const connector = connect(
             any
         > | null,
         calculatedEditOrder: getEditOrderState(state).get(
-            'calculatedEditOrder'
+            'calculatedEditOrder',
         ) as Map<any, any> | null,
         products: getEditOrderState(state).get('products'),
     }),
@@ -343,7 +344,7 @@ const connector = connect(
         onNotifyChange,
         onReset,
         onNoteChange,
-    }
+    },
 )
 
 export default connector(EditOrderModalContainer)

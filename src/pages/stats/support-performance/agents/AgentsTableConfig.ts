@@ -1,4 +1,4 @@
-import {User} from 'config/types/user'
+import { User } from 'config/types/user'
 import {
     Metric,
     useClosedTicketsMetric,
@@ -20,28 +20,28 @@ import {
     useTicketAverageHandleTimePerAgent,
     useTicketsRepliedMetricPerAgent,
 } from 'hooks/reporting/metricsPerAgent'
-import {useOneTouchTicketsPercentageMetricPerAgent} from 'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricPerAgent'
-import {useOneTouchTicketsPercentageMetricTrend} from 'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricTrend'
-import {usePercentageOfClosedTicketsMetricPerAgent} from 'hooks/reporting/support-performance/agents/usePercentageOfClosedTicketsMetricPerAgent'
-import {useMessagesSentPerHour} from 'hooks/reporting/useMessagesSentPerHour'
-import {useMessagesSentPerHourPerAgent} from 'hooks/reporting/useMessagesSentPerHourPerAgent'
-import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
-import {useTicketsClosedPerHour} from 'hooks/reporting/useTicketsClosedPerHour'
-import {useTicketsClosedPerHourPerAgent} from 'hooks/reporting/useTicketsClosedPerHourPerAgent'
-import {useTicketsRepliedPerHour} from 'hooks/reporting/useTicketsRepliedPerHour'
-import {useTicketsRepliedPerHourPerAgent} from 'hooks/reporting/useTicketsRepliedPerHourPerAgent'
-import {OrderDirection} from 'models/api/types'
-import {AgentTimeTrackingMember} from 'models/reporting/cubes/agentxp/AgentTimeTrackingCube'
-import {HelpdeskMessageMember} from 'models/reporting/cubes/HelpdeskMessageCube'
-import {TicketMember} from 'models/reporting/cubes/TicketCube'
-import {TicketMessagesMember} from 'models/reporting/cubes/TicketMessagesCube'
-import {StatsFilters} from 'models/stat/types'
+import { useOneTouchTicketsPercentageMetricPerAgent } from 'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricPerAgent'
+import { useOneTouchTicketsPercentageMetricTrend } from 'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricTrend'
+import { usePercentageOfClosedTicketsMetricPerAgent } from 'hooks/reporting/support-performance/agents/usePercentageOfClosedTicketsMetricPerAgent'
+import { useMessagesSentPerHour } from 'hooks/reporting/useMessagesSentPerHour'
+import { useMessagesSentPerHourPerAgent } from 'hooks/reporting/useMessagesSentPerHourPerAgent'
+import { MetricWithDecile } from 'hooks/reporting/useMetricPerDimension'
+import { useTicketsClosedPerHour } from 'hooks/reporting/useTicketsClosedPerHour'
+import { useTicketsClosedPerHourPerAgent } from 'hooks/reporting/useTicketsClosedPerHourPerAgent'
+import { useTicketsRepliedPerHour } from 'hooks/reporting/useTicketsRepliedPerHour'
+import { useTicketsRepliedPerHourPerAgent } from 'hooks/reporting/useTicketsRepliedPerHourPerAgent'
+import { OrderDirection } from 'models/api/types'
+import { AgentTimeTrackingMember } from 'models/reporting/cubes/agentxp/AgentTimeTrackingCube'
+import { HelpdeskMessageMember } from 'models/reporting/cubes/HelpdeskMessageCube'
+import { TicketMember } from 'models/reporting/cubes/TicketCube'
+import { TicketMessagesMember } from 'models/reporting/cubes/TicketMessagesCube'
+import { StatsFilters } from 'models/stat/types'
 import {
     isExtraLargeScreen,
     isMediumOrSmallScreen,
 } from 'pages/common/utils/mobile'
-import {MetricValueFormat} from 'pages/stats/common/utils'
-import {TooltipData} from 'pages/stats/types'
+import { MetricValueFormat } from 'pages/stats/common/utils'
+import { TooltipData } from 'pages/stats/types'
 import {
     CLOSED_TICKETS_PER_HOUR,
     CUSTOMER_SATISFACTION_LABEL,
@@ -57,7 +57,7 @@ import {
     TICKETS_CLOSED_LABEL,
     TICKETS_REPLIED_LABEL,
 } from 'services/reporting/constants'
-import {AgentMetricColumn} from 'state/ui/stats/drillDownSlice'
+import { AgentMetricColumn } from 'state/ui/stats/drillDownSlice'
 import {
     AgentsTableColumn,
     AgentsTableViewIdentifier,
@@ -89,7 +89,7 @@ export const agentPerformanceMetrics = TableColumnsOrderWithOnlineTime.map(
     (column) => ({
         id: column,
         visibility: true,
-    })
+    }),
 )
 
 export const AgentsTableViews: TableSetting<AgentsTableColumn> = {
@@ -268,17 +268,17 @@ export type MetricQueryPerAgentQuery = (
     statsFilters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
-    agentAssigneeId?: string
+    agentAssigneeId?: string,
 ) => MetricWithDecile
 
 export type MetricQueryHook = (
     statsFilters: StatsFilters,
     timezone: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ) => Metric
 
 export const getQuery = (
-    column: AgentsTableColumn
+    column: AgentsTableColumn,
 ): MetricQueryPerAgentQuery => {
     switch (column) {
         case AgentsTableColumn.AgentName:
@@ -330,7 +330,7 @@ export const getSummaryQuery = (column: AgentsTableColumn): MetricQueryHook => {
             return useTicketsRepliedMetric
         case AgentsTableColumn.PercentageOfClosedTickets:
             return () => ({
-                data: {value: 100},
+                data: { value: 100 },
                 isError: false,
                 isFetching: false,
             })
@@ -367,7 +367,7 @@ export const agentIdFields = [
 ]
 
 const isAgentsMetric = (
-    column: AgentsTableColumn
+    column: AgentsTableColumn,
 ): column is AgentMetricColumn =>
     column !== AgentsTableColumn.AgentName &&
     column !== AgentsTableColumn.OnlineTime &&

@@ -1,4 +1,4 @@
-import {CategoriesListPage, Category} from 'models/helpCenter/types'
+import { CategoriesListPage, Category } from 'models/helpCenter/types'
 
 export const getCategoriesResponseEnglish: CategoriesListPage = {
     data: [

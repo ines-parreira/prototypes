@@ -1,5 +1,6 @@
+import React, { useMemo } from 'react'
+
 import classnames from 'classnames'
-import React, {useMemo} from 'react'
 
 import SkeletonLoader from 'pages/common/components/SkeletonLoader'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
@@ -8,9 +9,9 @@ import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 
-import {useSortedCampaigns} from '../../../campaigns/hooks/useSortedCampaigns'
-import {Campaign} from '../../../campaigns/types/Campaign'
-import {isActiveStatus} from '../../../campaigns/types/enums/CampaignStatus.enum'
+import { useSortedCampaigns } from '../../../campaigns/hooks/useSortedCampaigns'
+import { Campaign } from '../../../campaigns/types/Campaign'
+import { isActiveStatus } from '../../../campaigns/types/enums/CampaignStatus.enum'
 
 import css from './ConvertCampaignsTablePlaceholder.less'
 
@@ -25,12 +26,12 @@ const ConvertCampaignsTablePlaceholder = ({
     isLoading,
     perPage = 25,
 }: Props) => {
-    const {sortedCampaigns} = useSortedCampaigns(data)
+    const { sortedCampaigns } = useSortedCampaigns(data)
 
     const renderRows = (campaign: Campaign) => {
         return (
             <TableBodyRow key={campaign.id} className={css.tableRow}>
-                <BodyCell style={{width: 88}}>
+                <BodyCell style={{ width: 88 }}>
                     <ToggleInput
                         isToggled={isActiveStatus(campaign.status)}
                         aria-label={`Campaign status for ${campaign.name}`}
@@ -49,7 +50,7 @@ const ConvertCampaignsTablePlaceholder = ({
 
     const paginatedRows = useMemo(
         () => sortedCampaigns.slice(0, perPage),
-        [perPage, sortedCampaigns]
+        [perPage, sortedCampaigns],
     )
 
     return (
@@ -58,7 +59,7 @@ const ConvertCampaignsTablePlaceholder = ({
                 className={classnames(
                     'table-integrations',
                     'mt-3',
-                    css.campaignsTable
+                    css.campaignsTable,
                 )}
             >
                 <TableBody>

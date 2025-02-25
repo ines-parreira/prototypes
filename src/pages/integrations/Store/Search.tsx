@@ -1,16 +1,18 @@
+import React, { useCallback, useEffect, useState } from 'react'
+
 import classnames from 'classnames'
 import debounce from 'lodash/debounce'
-import React, {useCallback, useEffect, useState} from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import useSearch from 'hooks/useSearch'
 import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'
 import history from 'pages/history'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
-import {SEARCH_URL_PARAM} from './constants'
+import { SEARCH_URL_PARAM } from './constants'
+
 import css from './Search.less'
 
 const DEBOUNCE_DURATION = 200 //ms
@@ -22,8 +24,8 @@ function setSearch(searchValue: string) {
     } else {
         history.replace(
             `?${SEARCH_URL_PARAM}=${encodeURIComponent(
-                searchValue.toLocaleLowerCase().trim()
-            )}`
+                searchValue.toLocaleLowerCase().trim(),
+            )}`,
         )
     }
 }
@@ -39,7 +41,7 @@ const debouncedTrackSearch = debounce(trackSearch, DEBOUNCE_TRACKING_DURATION)
 
 export default function Search() {
     const domain = useAppSelector(getCurrentAccountState).get('domain')
-    const search = useSearch<{[SEARCH_URL_PARAM]: string}>()
+    const search = useSearch<{ [SEARCH_URL_PARAM]: string }>()
     const searchParam = search[SEARCH_URL_PARAM]
     const [inputValue, setInputValue] = useState(searchParam || '')
 
@@ -53,7 +55,7 @@ export default function Search() {
             debouncedSetSearch(newValue)
             debouncedTrackSearch(newValue, domain)
         },
-        [domain]
+        [domain],
     )
 
     return (
@@ -71,7 +73,7 @@ export default function Search() {
                         css.clear,
                         {
                             [css.hidden]: !inputValue,
-                        }
+                        },
                     )}
                     onClick={() => setSearch('')}
                 />

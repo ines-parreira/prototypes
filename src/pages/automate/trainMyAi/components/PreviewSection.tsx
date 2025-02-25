@@ -1,12 +1,14 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
-import React, {useEffect, useState, useMemo} from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
-import {useGetHelpCenterArticle} from 'models/helpCenter/queries'
-import {HelpCenter} from 'models/helpCenter/types'
+import classNames from 'classnames'
+
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+
+import { useGetHelpCenterArticle } from 'models/helpCenter/queries'
+import { HelpCenter } from 'models/helpCenter/types'
 import CurrentHelpCenterContext from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
-import {EditionManagerContextProvider} from 'pages/settings/helpCenter/providers/EditionManagerContext'
-import {Components} from 'rest_api/ssp_api/client.generated'
+import { EditionManagerContextProvider } from 'pages/settings/helpCenter/providers/EditionManagerContext'
+import { Components } from 'rest_api/ssp_api/client.generated'
 
 import useUpdateArticleRecommendationPrediction from '../hooks/useUpdateArticleRecommendationPrediction'
 import DeletedArticlePreview from './DeletedArticlePreview'
@@ -30,14 +32,14 @@ export default function TrainMyAiPreview({
     helpCenter,
 }: Props) {
     const [noRelevantArticles, setNoRelevantArticles] = useState(
-        recommendations?.articleIdFeedback === -1
+        recommendations?.articleIdFeedback === -1,
     )
 
     const [previewArticleId, setPreviewArticleId] = useState<number>(
-        recommendations.articleIdFeedback || recommendations.articleId
+        recommendations.articleIdFeedback || recommendations.articleId,
     )
 
-    const {mutateAsync} = useUpdateArticleRecommendationPrediction({
+    const { mutateAsync } = useUpdateArticleRecommendationPrediction({
         page,
         shopName: recommendations.shopName,
         shopType: recommendations.shopType,
@@ -53,7 +55,7 @@ export default function TrainMyAiPreview({
         previewArticleId,
         recommendations?.helpCenterId,
         recommendations?.locale,
-        {enabled: !noRelevantArticles && !!previewArticleId}
+        { enabled: !noRelevantArticles && !!previewArticleId },
     )
 
     useEffect(() => {
@@ -67,9 +69,9 @@ export default function TrainMyAiPreview({
         setIsFeedbackProvided(true)
         await mutateAsync(
             [
-                {id: recommendations.id},
+                { id: recommendations.id },
                 {
-                    data: {articleIdFeedback: id},
+                    data: { articleIdFeedback: id },
                     meta: previewArticleData
                         ? {
                               articleSlugFeedback:
@@ -82,7 +84,7 @@ export default function TrainMyAiPreview({
             ],
             {
                 onError: () => setIsFeedbackProvided(false),
-            }
+            },
         )
     }
 

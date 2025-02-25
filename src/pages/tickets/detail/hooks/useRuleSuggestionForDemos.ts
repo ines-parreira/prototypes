@@ -1,16 +1,17 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useLocalStorage from 'hooks/useLocalStorage'
-import {getCurrentHelpdeskPlan, getHasAutomate} from 'state/billing/selectors'
-import {submitSetting} from 'state/currentAccount/actions'
-import {getInTicketSuggestionSettings} from 'state/currentAccount/selectors'
-import {AccountSettingType} from 'state/currentAccount/types'
-import {getTopRankMacroState} from 'state/ticket/selectors'
-import {convertLegacyPlanNameToPublicPlanName} from 'utils/paywalls'
+import { getCurrentHelpdeskPlan, getHasAutomate } from 'state/billing/selectors'
+import { submitSetting } from 'state/currentAccount/actions'
+import { getInTicketSuggestionSettings } from 'state/currentAccount/selectors'
+import { AccountSettingType } from 'state/currentAccount/types'
+import { getTopRankMacroState } from 'state/ticket/selectors'
+import { convertLegacyPlanNameToPublicPlanName } from 'utils/paywalls'
 
 const DEMO_SUGGESTION_DISMISSED_TICKETS = 'demo-suggestion-dismissed-tickets'
 
@@ -25,7 +26,7 @@ const DEMO_SUGGESTION_DISMISSED_TICKETS = 'demo-suggestion-dismissed-tickets'
  */
 export default function useRuleSuggestionForDemos(
     ticketId: number,
-    shouldCheckFrequency: boolean
+    shouldCheckFrequency: boolean,
 ) {
     const [demoSuggestionDismissedTickets, setDemoSuggestionDismissedTickets] =
         useLocalStorage<number[]>(DEMO_SUGGESTION_DISMISSED_TICKETS, [])
@@ -37,14 +38,14 @@ export default function useRuleSuggestionForDemos(
         : null
 
     const inTicketSuggestionForDemo = useAppSelector(
-        getInTicketSuggestionSettings
+        getInTicketSuggestionSettings,
     )
     const ticketDemoSuggestion = useFlags()[FeatureFlagKey.TicketDemoSuggestion]
 
     const dispatch = useAppDispatch()
 
     const isProPlus = ['pro', 'advanced', 'enterprise', 'custom'].some(
-        (priceType) => currentPlanName?.toLowerCase().includes(priceType)
+        (priceType) => currentPlanName?.toLowerCase().includes(priceType),
     )
 
     const topRankMacroState = useAppSelector(getTopRankMacroState)
@@ -104,7 +105,7 @@ export default function useRuleSuggestionForDemos(
                 data: {
                     is_demo_hidden: true,
                 },
-            })
+            }),
         )
     }
 

@@ -1,8 +1,9 @@
-import _isEmpty from 'lodash/isEmpty'
-import React, {MouseEvent, RefObject, useEffect, useRef} from 'react'
-import {GroupedVirtuosoHandle, VirtuosoHandle} from 'react-virtuoso'
+import React, { MouseEvent, RefObject, useEffect, useRef } from 'react'
 
-import {SearchRank} from 'hooks/useSearchRankScenario'
+import _isEmpty from 'lodash/isEmpty'
+import { GroupedVirtuosoHandle, VirtuosoHandle } from 'react-virtuoso'
+
+import { SearchRank } from 'hooks/useSearchRankScenario'
 import {
     isCustomer,
     isTicket,
@@ -12,15 +13,15 @@ import {
     PickedTicketWithHighlights,
     PicketVoiceCallWithHighlights,
 } from 'models/search/types'
-import {ViewType} from 'models/view/types'
-import {isVoiceCall} from 'models/voiceCall/types'
+import { ViewType } from 'models/view/types'
+import { isVoiceCall } from 'models/voiceCall/types'
 import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
 import SkeletonLoader from 'pages/common/components/SkeletonLoader'
 import {
+    CALLS_LABEL,
     CUSTOMERS_LABEL,
     FEDERATED_SEARCH_GROUP_SIZE,
     TICKETS_LABEL,
-    CALLS_LABEL,
 } from 'pages/common/components/Spotlight/constants'
 import SpotlightCustomerRow from 'pages/common/components/Spotlight/SpotlightCustomerRow'
 import css from 'pages/common/components/Spotlight/SpotlightModal.less'
@@ -29,7 +30,7 @@ import SpotlightScrollArea, {
     GroupedSpotlightScrollArea,
 } from 'pages/common/components/Spotlight/SpotlightScrollArea'
 import SpotlightTicketRow from 'pages/common/components/Spotlight/SpotlightTicketRow'
-import {Tabs} from 'pages/common/components/Spotlight/useSearch'
+import { Tabs } from 'pages/common/components/Spotlight/useSearch'
 
 import SpotlightCallRow from './SpotlightCallRow'
 
@@ -40,7 +41,7 @@ const hasNoResults = (
     tickets: unknown[],
     customers: unknown[],
     calls: unknown[],
-    searchItemsType: ViewType
+    searchItemsType: ViewType,
 ) => {
     switch (searchItemsType) {
         case ViewType.All:
@@ -57,7 +58,7 @@ const hasNoRecentResults = (
     tickets: unknown[],
     customers: unknown[],
     calls: unknown[],
-    searchItemsType: ViewType
+    searchItemsType: ViewType,
 ) => {
     switch (searchItemsType) {
         case ViewType.All:
@@ -76,7 +77,7 @@ const getData = (
     displayedCustomers: PickedCustomerWithHighlights[],
     displayedTicket: PickedTicketWithHighlights[],
     displayedCalls: PicketVoiceCallWithHighlights[],
-    showCallsTab?: boolean
+    showCallsTab?: boolean,
 ): (
     | PickedCustomerWithHighlights
     | PickedTicketWithHighlights
@@ -92,12 +93,12 @@ const getData = (
         case ViewType.All: {
             const tickets = displayedTicket.slice(
                 0,
-                FEDERATED_SEARCH_GROUP_SIZE
+                FEDERATED_SEARCH_GROUP_SIZE,
             )
             const calls = displayedCalls.slice(0, FEDERATED_SEARCH_GROUP_SIZE)
             const customers = displayedCustomers.slice(
                 0,
-                FEDERATED_SEARCH_GROUP_SIZE
+                FEDERATED_SEARCH_GROUP_SIZE,
             )
             if (showCallsTab) {
                 return [...tickets, ...calls, ...customers]
@@ -128,7 +129,7 @@ type Props = {
     selectedIndex: number
     hasSearched: boolean
     logRecentlyAccessedSegmentEvent: (
-        type: 'spotlight-ticket' | 'spotlight-customer' | 'spotlight-call'
+        type: 'spotlight-ticket' | 'spotlight-customer' | 'spotlight-call',
     ) => void
     onTabChange: (tab: string) => void
     showCallsTab?: boolean
@@ -166,13 +167,13 @@ export const SpotlightModalContent = ({
     useEffect(() => {
         const virtuosoScrollArea = virtuosoRef.current
         if (!virtuosoScrollArea) return
-        virtuosoScrollArea.scrollIntoView({index: selectedIndex})
+        virtuosoScrollArea.scrollIntoView({ index: selectedIndex })
     }, [selectedIndex])
 
     useEffect(() => {
         const virtuosoScrollArea = groupedVirtuosoRef.current
         if (!virtuosoScrollArea) return
-        virtuosoScrollArea.scrollIntoView({index: selectedIndex})
+        virtuosoScrollArea.scrollIntoView({ index: selectedIndex })
     }, [selectedIndex])
 
     if (isLoading) {
@@ -199,7 +200,7 @@ export const SpotlightModalContent = ({
             recentTickets,
             recentCustomers,
             recentCalls,
-            searchItemsType
+            searchItemsType,
         )
     ) {
         const message = showCallsTab
@@ -238,7 +239,7 @@ export const SpotlightModalContent = ({
         displayedCustomers,
         displayedTickets,
         displayedCalls,
-        showCallsTab
+        showCallsTab,
     )
 
     const ticketOnClickHandler = () => {
@@ -258,7 +259,7 @@ export const SpotlightModalContent = ({
             | PickedCustomer
             | PickedCustomerWithHighlights
             | PickedTicketWithHighlights
-            | PicketVoiceCallWithHighlights
+            | PicketVoiceCallWithHighlights,
     ) => {
         const selected = index === selectedIndex
         if (isTicket(item)) {
@@ -313,19 +314,19 @@ export const SpotlightModalContent = ({
                     groupCounts={[
                         Math.min(
                             displayedTickets.length,
-                            FEDERATED_SEARCH_GROUP_SIZE
+                            FEDERATED_SEARCH_GROUP_SIZE,
                         ),
                         ...(showCallsTab
                             ? [
                                   Math.min(
                                       displayedCalls.length,
-                                      FEDERATED_SEARCH_GROUP_SIZE
+                                      FEDERATED_SEARCH_GROUP_SIZE,
                                   ),
                               ]
                             : []),
                         Math.min(
                             displayedCustomers.length,
-                            FEDERATED_SEARCH_GROUP_SIZE
+                            FEDERATED_SEARCH_GROUP_SIZE,
                         ),
                     ]}
                     itemContent={(index) =>
@@ -390,7 +391,7 @@ const GroupHeader = ({
             targetTab: Tabs.Customers,
         }
     }
-    const {title, targetTab} = getTabDetails(index)
+    const { title, targetTab } = getTabDetails(index)
 
     return (
         <div className={css.groupContent}>

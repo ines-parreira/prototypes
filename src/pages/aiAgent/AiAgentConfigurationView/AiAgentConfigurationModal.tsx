@@ -4,7 +4,7 @@ import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import {assetsUrl} from 'utils'
+import { assetsUrl } from 'utils'
 
 import css from './AiAgentConfigurationModal.less'
 
@@ -17,7 +17,7 @@ type AiAgentConfigurationModalProps = {
 export const AiAgentConfigurationModal: React.FC<
     AiAgentConfigurationModalProps
 > = (props) => {
-    const {isOpen, onClose, onShowMe} = props
+    const { isOpen, onClose, onShowMe } = props
 
     return (
         <Modal isOpen={isOpen} onClose={onClose} size="medium">

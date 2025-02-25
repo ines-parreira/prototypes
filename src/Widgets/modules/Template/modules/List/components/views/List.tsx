@@ -1,9 +1,10 @@
-import cs from 'classnames'
-import React, {useState, ReactNode, useMemo} from 'react'
+import React, { ReactNode, useMemo, useState } from 'react'
 
-import {compare} from 'utils'
-import {isRecord} from 'utils/types'
-import {DEFAULT_LIST_ITEM_DISPLAYED_NUMBER} from 'Widgets/modules/Template/config/template'
+import cs from 'classnames'
+
+import { compare } from 'utils'
+import { isRecord } from 'utils/types'
+import { DEFAULT_LIST_ITEM_DISPLAYED_NUMBER } from 'Widgets/modules/Template/config/template'
 
 import css from './List.less'
 

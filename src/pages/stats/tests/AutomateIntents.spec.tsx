@@ -1,11 +1,12 @@
-import _noop from 'lodash/noop'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import _noop from 'lodash/noop'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {TicketChannel} from 'business/types/ticket'
-import {INTENTS_BREAKDOWN_PER_DAY, INTENTS_OVERVIEW} from 'config/stats'
+import { TicketChannel } from 'business/types/ticket'
+import { INTENTS_BREAKDOWN_PER_DAY, INTENTS_OVERVIEW } from 'config/stats'
 import {
     intentsBreakdownPerDay,
     intentsOccurrence,
@@ -13,20 +14,20 @@ import {
 } from 'fixtures/stats'
 import useStatResource from 'hooks/reporting/useStatResource'
 import AutomateIntents from 'pages/stats/AutomateIntents'
-import {fromLegacyStatsFilters} from 'state/stats/utils'
-import {RootState, StoreDispatch} from 'state/types'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
-import {renderWithRouter} from 'utils/testing'
+import { fromLegacyStatsFilters } from 'state/stats/utils'
+import { RootState, StoreDispatch } from 'state/types'
+import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
+import { renderWithRouter } from 'utils/testing'
 
 jest.mock('hooks/reporting/useStatResource')
-jest.mock('react-chartjs-2', () => ({Bar: () => <canvas />}))
+jest.mock('react-chartjs-2', () => ({ Bar: () => <canvas /> }))
 jest.spyOn(Date, 'now').mockImplementation(() => 1487076708000)
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
 }))
 jest.mock(
     'pages/stats/common/filters/DEPRECATED_ChannelsStatsFilter',
-    () => () => <div>ChannelsStatsFilter</div>
+    () => () => <div>ChannelsStatsFilter</div>,
 )
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -46,7 +47,7 @@ describe('AutomateIntents', () => {
             }),
         },
         ui: {
-            stats: {filters: uiStatsInitialState},
+            stats: { filters: uiStatsInitialState },
         },
     } as RootState
 
@@ -55,7 +56,7 @@ describe('AutomateIntents', () => {
     })
 
     it('should render the filters and stats when stats filters are defined', () => {
-        useStatResourceMock.mockImplementation(({resourceName}) => {
+        useStatResourceMock.mockImplementation(({ resourceName }) => {
             if (resourceName === INTENTS_OVERVIEW) {
                 return [intentsOverview, false, _noop]
             } else if (resourceName === INTENTS_BREAKDOWN_PER_DAY) {
@@ -64,11 +65,11 @@ describe('AutomateIntents', () => {
             return [intentsOccurrence, false, _noop]
         })
 
-        const {container} = renderWithRouter(
+        const { container } = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <AutomateIntents />
                 channels: withDefaultLogicalOperator([TicketChannel.Chat]),
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()

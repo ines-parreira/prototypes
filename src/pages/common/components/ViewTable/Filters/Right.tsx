@@ -1,42 +1,44 @@
-import {ArrayExpression, Expression, Identifier, Literal} from 'estree'
-import {List, Map, Seq} from 'immutable'
-import {LDFlagSet} from 'launchdarkly-js-client-sdk'
-import {withLDConsumer} from 'launchdarkly-react-client-sdk'
+import React, { Component, ReactNode } from 'react'
+
+import { ArrayExpression, Expression, Identifier, Literal } from 'estree'
+import { List, Map, Seq } from 'immutable'
+import { LDFlagSet } from 'launchdarkly-js-client-sdk'
+import { withLDConsumer } from 'launchdarkly-react-client-sdk'
 import _debounce from 'lodash/debounce'
 import moment from 'moment-timezone'
-import React, {Component, ReactNode} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {Input} from 'reactstrap'
+import { connect, ConnectedProps } from 'react-redux'
+import { Input } from 'reactstrap'
 
-import {timedeltaOperators} from 'config/rules'
-import {DateAndTimeFormatting, TimeFormatType} from 'constants/datetime'
+import { timedeltaOperators } from 'config/rules'
+import { DateAndTimeFormatting, TimeFormatType } from 'constants/datetime'
 import CustomFieldByIdInput from 'custom-fields/components/CustomFieldByIdInput/CustomFieldByIdInput'
-import {isMultiValue} from 'custom-fields/components/MultiLevelSelect/helpers/isMultiValue'
-import {CustomFieldValue} from 'custom-fields/types'
+import { isMultiValue } from 'custom-fields/components/MultiLevelSelect/helpers/isMultiValue'
+import { CustomFieldValue } from 'custom-fields/types'
 import TagDropdownMenu from 'pages/common/components/TagDropdownMenu/TagDropdownMenu'
 import FilterDropdown from 'pages/common/components/ViewTable/FilterDropdown'
 import FilterMultiSelectField from 'pages/common/components/ViewTable/FilterMultiSelectField'
 import DatePicker from 'pages/common/forms/DatePicker'
 import MultiSelectField from 'pages/common/forms/MultiSelectField'
-import {Option} from 'pages/common/forms/MultiSelectOptionsField/types'
+import { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
 import TimedeltaPicker from 'pages/common/forms/TimedeltaPicker'
-import {IntegrationsDetailLabel} from 'pages/common/utils/labels'
+import { IntegrationsDetailLabel } from 'pages/common/utils/labels'
 import {
     getDateAndTimeFormatter,
     getTimeFormatPreferenceSetting,
 } from 'state/currentUser/selectors'
-import {getMessagingAndAppIntegrations} from 'state/integrations/selectors'
-import {getTags} from 'state/tags/selectors'
-import {humanizeChannel} from 'state/ticket/utils'
-import {RootState} from 'state/types'
-import {updateFieldFilter} from 'state/views/actions'
+import { getMessagingAndAppIntegrations } from 'state/integrations/selectors'
+import { getTags } from 'state/tags/selectors'
+import { humanizeChannel } from 'state/ticket/utils'
+import { RootState } from 'state/types'
+import { updateFieldFilter } from 'state/views/actions'
 import * as viewsSelectors from 'state/views/selectors'
-import {FieldSearchResult} from 'state/views/types'
-import {formatDatetime, getLanguageDisplayName} from 'utils'
-import {stringToDatetime} from 'utils/date'
+import { FieldSearchResult } from 'state/views/types'
+import { formatDatetime, getLanguageDisplayName } from 'utils'
+import { stringToDatetime } from 'utils/date'
+
+import { getCustomFieldIdFromObjectPath, getMultiSelectLabel } from './utils'
 
 import css from './Right.less'
-import {getCustomFieldIdFromObjectPath, getMultiSelectLabel} from './utils'
 
 type OwnProps = {
     operator: Identifier
@@ -71,7 +73,7 @@ export class RightContainer extends Component<Props, State> {
     }
 
     componentDidMount() {
-        const {empty, node} = this.props
+        const { empty, node } = this.props
 
         if (!empty) {
             if ('value' in node) {
@@ -93,7 +95,7 @@ export class RightContainer extends Component<Props, State> {
                     renderedCustomFieldValue: (
                         node as ArrayExpression
                     ).elements.map(
-                        (opt) => (opt as Literal).value as CustomFieldValue
+                        (opt) => (opt as Literal).value as CustomFieldValue,
                     ),
                 })
             }
@@ -101,7 +103,7 @@ export class RightContainer extends Component<Props, State> {
     }
 
     componentDidUpdate() {
-        const {empty, node} = this.props
+        const { empty, node } = this.props
         // Automatically set the first option
         // if the operator is not an empty operator AND the field has only one option
         if (!empty && 'value' in node && node.value === '') {
@@ -110,7 +112,7 @@ export class RightContainer extends Component<Props, State> {
     }
 
     UNSAFE_componentWillReceiveProps(nextProps: Readonly<Props>) {
-        const {node} = nextProps
+        const { node } = nextProps
 
         if (
             this._isTicketFieldExpression() &&
@@ -120,7 +122,7 @@ export class RightContainer extends Component<Props, State> {
                     !(node as ArrayExpression).elements) ||
                 (node as ArrayExpression).elements?.length === 0)
         ) {
-            this.setState({renderedCustomFieldValue: undefined})
+            this.setState({ renderedCustomFieldValue: undefined })
         }
     }
 
@@ -129,7 +131,7 @@ export class RightContainer extends Component<Props, State> {
     }
 
     _selectFirstOption = () => {
-        const {updateFieldFilter, field, index} = this.props
+        const { updateFieldFilter, field, index } = this.props
 
         if (!field) {
             return
@@ -143,11 +145,11 @@ export class RightContainer extends Component<Props, State> {
     }
 
     _toggleDropdown = () => {
-        this.setState({dropdownOpen: !this.state.dropdownOpen})
+        this.setState({ dropdownOpen: !this.state.dropdownOpen })
     }
 
     _mapTagSearchResultsToOptions = (
-        results: FieldSearchResult[]
+        results: FieldSearchResult[],
     ): Option[] => {
         return results.map((result: FieldSearchResult) => ({
             value: result.name,
@@ -158,14 +160,14 @@ export class RightContainer extends Component<Props, State> {
     _debouncedUpdateFieldFilter = _debounce(this.props.updateFieldFilter, 300)
 
     _handleCustomFieldChange = (
-        value: CustomFieldValue | CustomFieldValue[] | undefined
+        value: CustomFieldValue | CustomFieldValue[] | undefined,
     ) => {
         this._debouncedUpdateFieldFilter(this.props.index, value)
-        this.setState({renderedCustomFieldValue: value})
+        this.setState({ renderedCustomFieldValue: value })
     }
 
     _getCustomMultiSelectLabel = (
-        value: CustomFieldValue | CustomFieldValue[] | undefined
+        value: CustomFieldValue | CustomFieldValue[] | undefined,
     ) => {
         if (isMultiValue(value)) {
             return getMultiSelectLabel(value)
@@ -174,8 +176,15 @@ export class RightContainer extends Component<Props, State> {
     }
 
     render() {
-        const {operator, node, config, field, updateFieldFilter, index, empty} =
-            this.props
+        const {
+            operator,
+            node,
+            config,
+            field,
+            updateFieldFilter,
+            index,
+            empty,
+        } = this.props
 
         if (empty) {
             return null
@@ -236,7 +245,7 @@ export class RightContainer extends Component<Props, State> {
             const integration = this.props.integrations.find(
                 (integration) =>
                     (integration!.get('id') as number).toString() ===
-                    displayedValue!.toString()
+                    displayedValue!.toString(),
             )
             if (integration) {
                 displayedValue = (
@@ -248,7 +257,7 @@ export class RightContainer extends Component<Props, State> {
             const assignee = this.props.teams.find(
                 (team) =>
                     (team!.get('id') as number).toString() ===
-                    displayedValue!.toString()
+                    displayedValue!.toString(),
             )
 
             if (assignee) {
@@ -259,7 +268,7 @@ export class RightContainer extends Component<Props, State> {
             const assignee = this.props.agents.find(
                 (agent) =>
                     (agent!.get('id') as number).toString() ===
-                    displayedValue!.toString()
+                    displayedValue!.toString(),
             )
             if (assignee) {
                 displayedValue = <span>{assignee.get('name')}</span>
@@ -270,7 +279,7 @@ export class RightContainer extends Component<Props, State> {
         } else if (field.get('name') === 'language') {
             // show the display name
             displayedValue = getLanguageDisplayName(
-                displayedValue as Maybe<string>
+                displayedValue as Maybe<string>,
             )
         } else if (
             ((field.get('path') as string) || '').endsWith('_datetime')
@@ -310,7 +319,7 @@ export class RightContainer extends Component<Props, State> {
                         <Input
                             value={formatDatetime(
                                 datetime,
-                                this.props.datetimeFormat
+                                this.props.datetimeFormat,
                             ).toString()}
                             placeholder="Choose a date..."
                         />
@@ -334,8 +343,8 @@ export class RightContainer extends Component<Props, State> {
                             updateFieldFilter(
                                 index,
                                 options.map(
-                                    (option: Option) => option.value as unknown
-                                )
+                                    (option: Option) => option.value as unknown,
+                                ),
                             )
                         }
                         mapSearchResults={this._mapTagSearchResultsToOptions}
@@ -350,14 +359,14 @@ export class RightContainer extends Component<Props, State> {
 
             if (node.type === 'ArrayExpression') {
                 const selectedOptions = node.elements.map(
-                    (opt) => (opt as Literal).value
+                    (opt) => (opt as Literal).value,
                 )
                 const options = (
                     (field.getIn(['filter', 'enum']) as List<any>).map(
                         (val: string) => ({
                             label: humanizeChannel(val),
                             value: val,
-                        })
+                        }),
                     ) as unknown as List<Map<any, any>>
                 ).toJS()
 
@@ -375,7 +384,7 @@ export class RightContainer extends Component<Props, State> {
             }
         } else if (this._isTicketFieldExpression()) {
             const customFieldId = getCustomFieldIdFromObjectPath(
-                this.props.objectPath
+                this.props.objectPath,
             )
 
             if (customFieldId) {
@@ -448,7 +457,7 @@ const connector = connect((state: RootState) => {
         areFiltersValid: viewsSelectors.areFiltersValid(state),
         tags: getTags(state),
         datetimeFormat: getDateAndTimeFormatter(state)(
-            DateAndTimeFormatting.CompactDateWithTime
+            DateAndTimeFormatting.CompactDateWithTime,
         ),
         timeSettings: getTimeFormatPreferenceSetting(state),
     }

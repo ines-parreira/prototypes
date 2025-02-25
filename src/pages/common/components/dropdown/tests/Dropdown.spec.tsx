@@ -1,9 +1,10 @@
-import {fireEvent, render, screen} from '@testing-library/react'
-import React, {ComponentProps, useRef} from 'react'
+import React, { ComponentProps, useRef } from 'react'
+
+import { fireEvent, render, screen } from '@testing-library/react'
 
 import Button from 'pages/common/components/button/Button'
 
-import Dropdown, {DropdownContext} from '../Dropdown'
+import Dropdown, { DropdownContext } from '../Dropdown'
 
 function MockedImplementation(props: Partial<ComponentProps<typeof Dropdown>>) {
     const targetRef = useRef<HTMLDivElement>(null)
@@ -24,8 +25,8 @@ function MockedImplementation(props: Partial<ComponentProps<typeof Dropdown>>) {
 
 describe('<Dropdown />', () => {
     it('should render a dropdown', () => {
-        const {container} = render(
-            <MockedImplementation>Baz</MockedImplementation>
+        const { container } = render(
+            <MockedImplementation>Baz</MockedImplementation>,
         )
 
         expect(container.parentElement).toMatchSnapshot()
@@ -45,10 +46,10 @@ describe('<Dropdown />', () => {
 
     it('should call onToggle when clicked outside of the dropdown', () => {
         const mockedOnToggle = jest.fn()
-        const {getByText} = render(
+        const { getByText } = render(
             <MockedImplementation onToggle={mockedOnToggle}>
                 Baz
-            </MockedImplementation>
+            </MockedImplementation>,
         )
 
         fireEvent.click(getByText(/Baz/))
@@ -75,7 +76,7 @@ describe('<Dropdown />', () => {
                         )
                     }
                 </DropdownContext.Consumer>
-            </MockedImplementation>
+            </MockedImplementation>,
         )
 
         expect(screen.getByText(/value/)).toBeTruthy()

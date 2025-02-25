@@ -1,6 +1,7 @@
 // Will be autogenerate with API SDK
-import {ObjectType} from '@gorgias/api-queries'
-import {useMutation, useQuery, UseQueryOptions} from '@tanstack/react-query'
+import { useMutation, useQuery, UseQueryOptions } from '@tanstack/react-query'
+
+import { ObjectType } from '@gorgias/api-queries'
 
 import {
     createCustomField,
@@ -13,8 +14,8 @@ import {
     updateCustomFieldValue,
     updatePartialCustomField,
 } from 'custom-fields/resources'
-import {ListParams} from 'custom-fields/types'
-import {MutationOverrides} from 'types/query'
+import { ListParams } from 'custom-fields/types'
+import { MutationOverrides } from 'types/query'
 
 export const customFieldDefinitionKeys = {
     all: () => ['customFieldDefinition'] as const,
@@ -43,7 +44,7 @@ export const useGetCustomFieldDefinitions = <
     TData = UseGetCustomFieldDefinitions,
 >(
     params: ListParams,
-    overrides?: UseQueryOptions<UseGetCustomFieldDefinitions, unknown, TData>
+    overrides?: UseQueryOptions<UseGetCustomFieldDefinitions, unknown, TData>,
 ) => {
     return useQuery({
         queryKey: customFieldDefinitionKeys.list(params),
@@ -60,7 +61,7 @@ export const useGetCustomFieldDefinition = <
         Awaited<ReturnType<typeof getCustomField>>,
         unknown,
         TData
-    >
+    >,
 ) => {
     return useQuery({
         queryKey: customFieldDefinitionKeys.detail(id),
@@ -70,7 +71,7 @@ export const useGetCustomFieldDefinition = <
 }
 
 export const useCreateCustomField = (
-    overrides?: MutationOverrides<typeof createCustomField>
+    overrides?: MutationOverrides<typeof createCustomField>,
 ) => {
     return useMutation({
         mutationFn: (params) => createCustomField(...params),
@@ -79,7 +80,7 @@ export const useCreateCustomField = (
 }
 
 export const useUpdateCustomField = (
-    overrides?: MutationOverrides<typeof updateCustomField>
+    overrides?: MutationOverrides<typeof updateCustomField>,
 ) => {
     return useMutation({
         mutationFn: (params) => updateCustomField(...params),
@@ -88,7 +89,7 @@ export const useUpdateCustomField = (
 }
 
 export const useUpdateCustomFields = (
-    overrides?: MutationOverrides<typeof updateCustomFields>
+    overrides?: MutationOverrides<typeof updateCustomFields>,
 ) => {
     return useMutation({
         mutationFn: (params) => updateCustomFields(...params),
@@ -97,7 +98,7 @@ export const useUpdateCustomFields = (
 }
 
 export const useUpdatePartialCustomField = (
-    overrides?: MutationOverrides<typeof updatePartialCustomField>
+    overrides?: MutationOverrides<typeof updatePartialCustomField>,
 ) => {
     return useMutation({
         mutationFn: (params) => updatePartialCustomField(...params),
@@ -121,17 +122,17 @@ export const useGetCustomFieldValues = <
         Awaited<ReturnType<typeof getCustomFieldValues>>,
         unknown,
         TData
-    >
+    >,
 ) => {
     return useQuery({
         queryKey: customFieldValueKeys.objectType(object_type, holderId),
-        queryFn: () => getCustomFieldValues({object_type, holderId}),
+        queryFn: () => getCustomFieldValues({ object_type, holderId }),
         ...overrides,
     })
 }
 
 export const useUpdateCustomFieldValue = (
-    overrides?: MutationOverrides<typeof updateCustomFieldValue>
+    overrides?: MutationOverrides<typeof updateCustomFieldValue>,
 ) => {
     return useMutation({
         mutationFn: (params) => updateCustomFieldValue(...params),
@@ -140,7 +141,7 @@ export const useUpdateCustomFieldValue = (
 }
 
 export const useDeleteCustomFieldValue = (
-    overrides?: MutationOverrides<typeof deleteCustomFieldValue>
+    overrides?: MutationOverrides<typeof deleteCustomFieldValue>,
 ) => {
     return useMutation({
         mutationFn: (params) => deleteCustomFieldValue(...params),

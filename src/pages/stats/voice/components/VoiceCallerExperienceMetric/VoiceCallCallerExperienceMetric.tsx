@@ -1,21 +1,22 @@
-import moment from 'moment'
 import React from 'react'
 
-import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-import {getAdvancedVoicePeriodFilters} from 'models/reporting/queryFactories/voice/voiceCall'
-import {StatsFilters} from 'models/stat/types'
+import moment from 'moment'
+
+import { MetricTrend } from 'hooks/reporting/useMetricTrend'
+import { getAdvancedVoicePeriodFilters } from 'models/reporting/queryFactories/voice/voiceCall'
+import { StatsFilters } from 'models/stat/types'
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
 import TrendBadge from 'pages/stats/common/components/TrendBadge'
 import {
-    NOT_AVAILABLE_PLACEHOLDER,
     comparedPeriodString,
     formatMetricValue,
+    NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
-import {DashboardChartProps} from 'pages/stats/custom-reports/types'
-import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
+import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
 import MetricCard from 'pages/stats/MetricCard'
-import {VoiceMetrics} from 'state/ui/stats/drillDownSlice'
-import {getPreviousPeriod} from 'utils/reporting'
+import { VoiceMetrics } from 'state/ui/stats/drillDownSlice'
+import { getPreviousPeriod } from 'utils/reporting'
 
 type VoiceCallCallerExperienceMetricProps = {
     title: string
@@ -38,13 +39,13 @@ function VoiceCallCallerExperienceMetric({
 }: VoiceCallCallerExperienceMetricProps) {
     const voiceCallsAverageTime = metricTrend.data?.value
     const previousPeriod = getAdvancedVoicePeriodFilters(
-        getPreviousPeriod(statsFilters.period)
+        getPreviousPeriod(statsFilters.period),
     )
 
     const metricValue = formatMetricValue(
         voiceCallsAverageTime,
         'duration',
-        NOT_AVAILABLE_PLACEHOLDER
+        NOT_AVAILABLE_PLACEHOLDER,
     )
 
     return (
@@ -67,7 +68,7 @@ function VoiceCallCallerExperienceMetric({
                         tooltipData={{
                             period: comparedPeriodString(
                                 moment(previousPeriod.start_datetime),
-                                moment(previousPeriod.end_datetime)
+                                moment(previousPeriod.end_datetime),
                             ),
                         }}
                     />

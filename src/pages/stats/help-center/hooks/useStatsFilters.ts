@@ -1,12 +1,13 @@
-import {useCallback, useEffect} from 'react'
-// eslint-disable-next-line no-restricted-imports
-import {useDispatch} from 'react-redux'
+import { useCallback, useEffect } from 'react'
 
-import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
+// eslint-disable-next-line no-restricted-imports
+import { useDispatch } from 'react-redux'
+
+import { useCleanStatsFiltersWithLogicalOperators } from 'hooks/reporting/useCleanStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
-import {LegacyStatsFilters} from 'models/stat/types'
-import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
-import {mergeStatsFilters} from 'state/stats/statsSlice'
+import { LegacyStatsFilters } from 'models/stat/types'
+import { getPageStatsFiltersWithLogicalOperators } from 'state/stats/selectors'
+import { mergeStatsFilters } from 'state/stats/statsSlice'
 
 export const useStatsFilters = (initialState: Partial<LegacyStatsFilters>) => {
     const dispatch = useDispatch()
@@ -18,7 +19,7 @@ export const useStatsFilters = (initialState: Partial<LegacyStatsFilters>) => {
         (filter: Partial<LegacyStatsFilters>) => {
             dispatch(mergeStatsFilters(filter))
         },
-        [dispatch]
+        [dispatch],
     )
 
     useEffect(() => {

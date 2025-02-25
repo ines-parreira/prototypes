@@ -1,13 +1,14 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {useFlag} from 'core/flags'
-import {assumeMock} from 'utils/testing'
+import { render, screen } from '@testing-library/react'
 
-import {useSetBanners} from '../../hooks/useSetBanners'
+import { useFlag } from 'core/flags'
+import { assumeMock } from 'utils/testing'
+
+import { useSetBanners } from '../../hooks/useSetBanners'
 import App from '../App'
 
-jest.mock('core/flags', () => ({useFlag: jest.fn()}))
+jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
 const useFlagMock = assumeMock(useFlag)
 
 jest.mock('common/notifications', () => ({
@@ -19,45 +20,45 @@ jest.mock('notifications', () => ({
     AlertNotifications: jest.fn(() => <div>alerts</div>),
 }))
 jest.mock('pages/common/components/EmailDisconnectedBanner', () =>
-    jest.fn(() => <div>dull boy</div>)
+    jest.fn(() => <div>dull boy</div>),
 )
 jest.mock(
     'pages/common/components/EmailDomainVerificationBanner/EmailDomainVerificationBanner',
-    () => jest.fn(() => <div>dull boy</div>)
+    () => jest.fn(() => <div>dull boy</div>),
 )
 jest.mock(
     'pages/common/components/EmailMigrationBanner/EmailMigrationBanner',
-    () => jest.fn(() => <div>dull boy</div>)
+    () => jest.fn(() => <div>dull boy</div>),
 )
 jest.mock('pages/common/components/KeyboardHelp/KeyboardHelp', () =>
-    jest.fn(() => <div>dull boy</div>)
+    jest.fn(() => <div>dull boy</div>),
 )
 jest.mock(
     'pages/common/components/PhoneIntegrationBar/PhoneIntegrationBar',
-    () => jest.fn(() => <div>dull boy</div>)
+    () => jest.fn(() => <div>dull boy</div>),
 )
 jest.mock(
     'pages/common/components/ScriptTagMigrationBanner/ScriptTagMigrationBanner',
-    () => jest.fn(() => <div>dull boy</div>)
+    () => jest.fn(() => <div>dull boy</div>),
 )
 jest.mock(
     'pages/common/components/ScriptTagMigrationModal/ScriptTagMigrationModal',
-    () => jest.fn(() => <div>dull boy</div>)
+    () => jest.fn(() => <div>dull boy</div>),
 )
 jest.mock('pages/common/components/SessionChangeDetection', () =>
-    jest.fn(() => <div>dull boy</div>)
+    jest.fn(() => <div>dull boy</div>),
 )
 jest.mock('pages/common/components/Spotlight/Spotlight', () =>
-    jest.fn(() => <div>dull boy</div>)
+    jest.fn(() => <div>dull boy</div>),
 )
 jest.mock(
     'pages/settings/yourProfile/twoFactorAuthentication/OutOfRecoveryCodesModal',
-    () => jest.fn(() => <div>dull boy</div>)
+    () => jest.fn(() => <div>dull boy</div>),
 )
 
 jest.mock('AlertBanners', () => jest.fn(() => <div>banners</div>))
 
-jest.mock('core/theme', () => ({useApplyTheme: jest.fn()}))
+jest.mock('core/theme', () => ({ useApplyTheme: jest.fn() }))
 jest.mock('../../hooks/useSetBanners', () => ({
     useSetBanners: jest.fn(),
 }))
@@ -80,7 +81,7 @@ describe('App component', () => {
 
     it('should apply the `globalNav` class to the AppNode', () => {
         useFlagMock.mockReturnValue(true)
-        const {container} = render(<App>boop</App>)
+        const { container } = render(<App>boop</App>)
         const child = container.firstChild as HTMLElement
         expect(child.classList.contains('globalNav')).toBe(true)
     })
@@ -91,7 +92,7 @@ describe('App component', () => {
                 <span role="img" aria-label="cool">
                     🆒
                 </span>
-            </App>
+            </App>,
         )
 
         expect(useSetBanners).toHaveBeenCalledTimes(1)

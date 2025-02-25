@@ -1,11 +1,11 @@
-import {act, renderHook} from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react-hooks'
 
 import * as segment from 'common/segment'
-import {useUpdateChannelConnection} from 'models/convert/channelConnection/queries'
-import {ChannelConnection} from 'models/convert/channelConnection/types'
-import {assumeMock} from 'utils/testing'
+import { useUpdateChannelConnection } from 'models/convert/channelConnection/queries'
+import { ChannelConnection } from 'models/convert/channelConnection/types'
+import { assumeMock } from 'utils/testing'
 
-import {useUtm} from '../useUtm'
+import { useUtm } from '../useUtm'
 
 jest.mock('models/convert/channelConnection/queries')
 
@@ -27,21 +27,22 @@ describe('useUtm', () => {
             useUtm({
                 ...(baseChannelConnection as ChannelConnection),
                 utm_enabled: false,
-            })
+            }),
         )
-        const {utmQueryString, utmEnabled} = hook.result.current
+        const { utmQueryString, utmEnabled } = hook.result.current
         expect(utmQueryString).toBe(baseChannelConnection.utm_query_string)
         expect(utmEnabled).toBe(false)
     })
 
     it('should return the updated values when the callbacks are called', () => {
         const hook = renderHook(() =>
-            useUtm(baseChannelConnection as ChannelConnection)
+            useUtm(baseChannelConnection as ChannelConnection),
         )
-        const {onUtmQueryStringChange, onUtmEnabledChange} = hook.result.current
+        const { onUtmQueryStringChange, onUtmEnabledChange } =
+            hook.result.current
         act(() => onUtmQueryStringChange('?hello=world'))
         act(() => onUtmEnabledChange(false))
-        const {utmQueryString, utmEnabled} = hook.result.current
+        const { utmQueryString, utmEnabled } = hook.result.current
         expect(utmQueryString).toBe('?hello=world')
         expect(utmEnabled).toBe(false)
     })
@@ -58,14 +59,14 @@ describe('useUtm', () => {
                 {
                     ...(baseChannelConnection as ChannelConnection),
                 },
-                campaignName
-            )
+                campaignName,
+            ),
         )
-        const {onUtmQueryStringChange} = hook.result.current
+        const { onUtmQueryStringChange } = hook.result.current
         act(() => onUtmQueryStringChange('?hello=world'))
         hook.result.current.onUtmReset()
         expect(hook.result.current.utmQueryString).toBe(
-            `?utm_source=Gorgias&utm_medium=ChatCampaign&utm_campaign=${campaignName}`
+            `?utm_source=Gorgias&utm_medium=ChatCampaign&utm_campaign=${campaignName}`,
         )
     })
 
@@ -78,15 +79,16 @@ describe('useUtm', () => {
         const hook = renderHook(() =>
             useUtm({
                 ...(baseChannelConnection as ChannelConnection),
-            })
+            }),
         )
-        const {onUtmQueryStringChange, onUtmEnabledChange} = hook.result.current
+        const { onUtmQueryStringChange, onUtmEnabledChange } =
+            hook.result.current
         act(() => onUtmQueryStringChange('?hello=world'))
         act(() => onUtmEnabledChange(false))
         await hook.result.current.onUtmApply(true)
         expect(mockOutboundCall).toBeCalledWith([
             undefined,
-            {channel_connection_id: baseChannelConnection.id},
+            { channel_connection_id: baseChannelConnection.id },
             {
                 utm_enabled: false,
                 utm_query_string: '?hello=world',
@@ -103,7 +105,7 @@ describe('useUtm', () => {
         const hook = renderHook(() => useUtm(null, 'awesome-campaign'))
         expect(hook.result.current.utmEnabled).toBe(true)
         expect(hook.result.current.utmQueryString).toBe(
-            '?utm_source=Gorgias&utm_medium=ChatCampaign&utm_campaign=awesome-campaign'
+            '?utm_source=Gorgias&utm_medium=ChatCampaign&utm_campaign=awesome-campaign',
         )
     })
 
@@ -115,13 +117,16 @@ describe('useUtm', () => {
             isLoading: false,
         } as any)
         const hook = renderHook(
-            ({channelConnection, campaignName}) =>
+            ({ channelConnection, campaignName }) =>
                 useUtm(channelConnection, campaignName),
-            {initialProps}
+            { initialProps },
         )
-        hook.rerender({channelConnection: null, campaignName: mockCampaignName})
+        hook.rerender({
+            channelConnection: null,
+            campaignName: mockCampaignName,
+        })
         expect(hook.result.current.utmQueryString).toBe(
-            `?utm_source=Gorgias&utm_medium=ChatCampaign&utm_campaign=${mockCampaignName}`
+            `?utm_source=Gorgias&utm_medium=ChatCampaign&utm_campaign=${mockCampaignName}`,
         )
     })
 
@@ -138,17 +143,17 @@ describe('useUtm', () => {
                     ...(baseChannelConnection as ChannelConnection),
                     utm_query_string: '',
                 },
-                campaignName
-            )
+                campaignName,
+            ),
         )
-        const {utmQueryString} = hook.result.current
+        const { utmQueryString } = hook.result.current
         expect(utmQueryString).toBe(
-            `?utm_source=Gorgias&utm_medium=ChatCampaign&utm_campaign=${campaignName}`
+            `?utm_source=Gorgias&utm_medium=ChatCampaign&utm_campaign=${campaignName}`,
         )
         await hook.result.current.onUtmApply(true)
         expect(mockOutboundCall).toBeCalledWith([
             undefined,
-            {channel_connection_id: baseChannelConnection.id},
+            { channel_connection_id: baseChannelConnection.id },
             {
                 utm_enabled: true,
                 utm_query_string: '',
@@ -169,10 +174,10 @@ describe('useUtm', () => {
                     ...(baseChannelConnection as ChannelConnection),
                     utm_query_string: '',
                 },
-                campaignName
-            )
+                campaignName,
+            ),
         )
-        const {utmQueryString} = hook.result.current
+        const { utmQueryString } = hook.result.current
         expect(utmQueryString).toBe('')
     })
 
@@ -185,9 +190,10 @@ describe('useUtm', () => {
         const hook = renderHook(() =>
             useUtm({
                 ...(baseChannelConnection as ChannelConnection),
-            })
+            }),
         )
-        const {onUtmQueryStringChange, onUtmEnabledChange} = hook.result.current
+        const { onUtmQueryStringChange, onUtmEnabledChange } =
+            hook.result.current
         act(() => onUtmQueryStringChange('?hello=world'))
         act(() => onUtmEnabledChange(false))
         await hook.result.current.onUtmApply(false)
@@ -206,9 +212,10 @@ describe('useUtm', () => {
         const hook = renderHook(() =>
             useUtm({
                 ...(baseChannelConnection as ChannelConnection),
-            })
+            }),
         )
-        const {onUtmEnabledChange, onUtmQueryStringChange} = hook.result.current
+        const { onUtmEnabledChange, onUtmQueryStringChange } =
+            hook.result.current
         act(() => onUtmEnabledChange(enabled))
         act(() => onUtmQueryStringChange(value))
         await hook.result.current.onUtmApply(saved)
@@ -218,7 +225,7 @@ describe('useUtm', () => {
                 saved,
                 enabled,
                 value,
-            }
+            },
         )
     })
 })

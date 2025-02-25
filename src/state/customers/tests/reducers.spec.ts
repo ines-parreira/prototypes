@@ -1,18 +1,18 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
-import {TicketStatus} from 'business/types/ticket'
-import {ViewType} from 'models/view/types'
+import { TicketStatus } from 'business/types/ticket'
+import { ViewType } from 'models/view/types'
 import * as types from 'state/customers/constants'
-import reducer, {initialState} from 'state/customers/reducers'
+import reducer, { initialState } from 'state/customers/reducers'
 import * as newMessageTypes from 'state/newMessage/constants'
 import * as ticketTypes from 'state/ticket/constants'
-import {GorgiasAction} from 'state/types'
+import { GorgiasAction } from 'state/types'
 import * as viewTypes from 'state/views/constants'
 
 describe('customers reducers', () => {
     it('initial state', () => {
         expect(reducer(undefined, {} as GorgiasAction)).toEqualImmutable(
-            initialState
+            initialState,
         )
     })
 
@@ -39,9 +39,9 @@ describe('customers reducers', () => {
                 type: viewTypes.FETCH_LIST_VIEW_SUCCESS,
                 viewType: ViewType.CustomerList,
                 fetched: respWithHighlight,
-            })
+            }),
         ).toEqualImmutable(
-            initialState.set('items', fromJS(respWithHighlight.data))
+            initialState.set('items', fromJS(respWithHighlight.data)),
         )
 
         // wrong view type
@@ -50,7 +50,7 @@ describe('customers reducers', () => {
                 type: viewTypes.FETCH_LIST_VIEW_SUCCESS,
                 viewType: ViewType.TicketList,
                 data: respWithHighlight,
-            })
+            }),
         ).toEqualImmutable(initialState)
     })
 
@@ -59,8 +59,8 @@ describe('customers reducers', () => {
             data: {
                 data: [
                     {
-                        entity: {id: 1, name: 'Pam'},
-                        highlights: {name: ['Pam']},
+                        entity: { id: 1, name: 'Pam' },
+                        highlights: { name: ['Pam'] },
                     },
                 ],
             },
@@ -69,15 +69,15 @@ describe('customers reducers', () => {
         expect(
             reducer(initialState, {
                 type: types.FETCH_CUSTOMER_START,
-            }).toJS()
+            }).toJS(),
         ).toMatchSnapshot()
 
         // success
         expect(
             reducer(initialState, {
                 type: types.FETCH_CUSTOMER_SUCCESS,
-                resp: {id: 1},
-            }).toJS()
+                resp: { id: 1 },
+            }).toJS(),
         ).toMatchSnapshot()
 
         expect(
@@ -85,14 +85,14 @@ describe('customers reducers', () => {
                 type: types.FETCH_CUSTOMER_SUCCESS,
                 resp: restDataWithHighlights,
                 withHighlight: true,
-            }).toJS()
-        ).toEqual(expect.objectContaining({active: restDataWithHighlights}))
+            }).toJS(),
+        ).toEqual(expect.objectContaining({ active: restDataWithHighlights }))
 
         // error
         expect(
             reducer(initialState, {
                 type: types.FETCH_CUSTOMER_ERROR,
-            }).toJS()
+            }).toJS(),
         ).toMatchSnapshot()
     })
 
@@ -101,7 +101,7 @@ describe('customers reducers', () => {
         expect(
             reducer(initialState, {
                 type: types.SUBMIT_CUSTOMER_START,
-            }).toJS()
+            }).toJS(),
         ).toMatchSnapshot()
 
         // success
@@ -109,8 +109,8 @@ describe('customers reducers', () => {
         expect(
             reducer(
                 initialState.mergeDeep({
-                    items: [{id: 1, name: 'Romain'}],
-                    active: {id: 1, name: 'Romain'},
+                    items: [{ id: 1, name: 'Romain' }],
+                    active: { id: 1, name: 'Romain' },
                 }),
                 {
                     type: types.SUBMIT_CUSTOMER_START,
@@ -119,16 +119,16 @@ describe('customers reducers', () => {
                         name: 'Alex',
                     },
                     isUpdate: true,
-                }
-            ).toJS()
+                },
+            ).toJS(),
         ).toMatchSnapshot()
 
         // create customer
         expect(
             reducer(
                 initialState.mergeDeep({
-                    items: [{id: 1, name: 'Romain'}],
-                    active: {id: 1, name: 'Romain'},
+                    items: [{ id: 1, name: 'Romain' }],
+                    active: { id: 1, name: 'Romain' },
                 }),
                 {
                     type: types.SUBMIT_CUSTOMER_START,
@@ -136,15 +136,15 @@ describe('customers reducers', () => {
                         name: 'Alex',
                     },
                     isUpdate: false,
-                }
-            ).toJS()
+                },
+            ).toJS(),
         ).toMatchSnapshot()
 
         // error
         expect(
             reducer(initialState, {
                 type: types.SUBMIT_CUSTOMER_ERROR,
-            }).toJS()
+            }).toJS(),
         ).toMatchSnapshot()
     })
 
@@ -152,13 +152,13 @@ describe('customers reducers', () => {
         expect(
             reducer(
                 initialState.mergeDeep({
-                    items: [{id: 1}, {id: 2}],
+                    items: [{ id: 1 }, { id: 2 }],
                 }),
                 {
                     type: types.DELETE_CUSTOMER_SUCCESS,
                     customerId: 2,
-                }
-            )
+                },
+            ),
         ).toMatchSnapshot()
     })
 
@@ -178,14 +178,14 @@ describe('customers reducers', () => {
                         item_count: 2,
                     },
                     data: [
-                        {id: 1, created_datetime: '2018-01-01'},
-                        {id: 2, created_datetime: '2018-01-02'},
-                        {id: 3, created_datetime: '2018-01-05'},
-                        {id: 4, created_datetime: '2018-01-04'},
-                        {id: 5, created_datetime: '2018-01-03'},
+                        { id: 1, created_datetime: '2018-01-01' },
+                        { id: 2, created_datetime: '2018-01-02' },
+                        { id: 3, created_datetime: '2018-01-05' },
+                        { id: 4, created_datetime: '2018-01-04' },
+                        { id: 5, created_datetime: '2018-01-03' },
                     ],
                 },
-            }).toJS()
+            }).toJS(),
         ).toMatchSnapshot()
 
         // success but no history
@@ -196,16 +196,16 @@ describe('customers reducers', () => {
                     meta: {
                         item_count: 1,
                     },
-                    data: [{id: 1}],
+                    data: [{ id: 1 }],
                 },
-            }).toJS()
+            }).toJS(),
         ).toMatchSnapshot()
 
         // error
         expect(
             reducer(fetchCustomerHistoryStartState, {
                 type: types.FETCH_CUSTOMER_HISTORY_ERROR,
-            }).toJS()
+            }).toJS(),
         ).toMatchSnapshot()
     })
 
@@ -213,7 +213,7 @@ describe('customers reducers', () => {
         expect(
             reducer(initialState, {
                 type: ticketTypes.CLEAR_TICKET,
-            }).toJS()
+            }).toJS(),
         ).toMatchSnapshot()
     })
 
@@ -233,7 +233,7 @@ describe('customers reducers', () => {
                     messages_count: 3,
                     status: TicketStatus.Open,
                 },
-            ])
+            ]),
         )
 
         expect(
@@ -243,7 +243,7 @@ describe('customers reducers', () => {
                     body_text: 'Glad to have helped you!',
                     ticket_id: 2,
                 },
-            }).toJS()
+            }).toJS(),
         ).toMatchSnapshot()
     })
 
@@ -251,9 +251,9 @@ describe('customers reducers', () => {
         const state = initialState.setIn(
             ['customerHistory', 'tickets'],
             fromJS([
-                {id: 1, excerpt: 'OK', status: TicketStatus.Open},
-                {id: 2, excerpt: 'Alright', status: TicketStatus.Open},
-            ])
+                { id: 1, excerpt: 'OK', status: TicketStatus.Open },
+                { id: 2, excerpt: 'Alright', status: TicketStatus.Open },
+            ]),
         )
 
         expect(
@@ -267,7 +267,7 @@ describe('customers reducers', () => {
                     subject: 'New subject',
                     status: TicketStatus.Closed,
                 },
-            }).toJS()
+            }).toJS(),
         ).toMatchSnapshot()
     })
 
@@ -295,8 +295,8 @@ describe('customers reducers', () => {
                     type: viewTypes.BULK_DELETE_SUCCESS,
                     viewType: ViewType.CustomerList,
                     ids: [1, 2],
-                }
-            )
+                },
+            ),
         ).toEqualImmutable(
             initialState.mergeDeep({
                 items: [
@@ -305,7 +305,7 @@ describe('customers reducers', () => {
                         name: 'Julien',
                     },
                 ],
-            })
+            }),
         )
     })
 
@@ -332,7 +332,7 @@ describe('customers reducers', () => {
                 type: viewTypes.BULK_DELETE_SUCCESS,
                 viewType: ViewType.TicketList,
                 ids: [1, 2],
-            })
+            }),
         ).toEqualImmutable(state)
     })
 
@@ -341,32 +341,32 @@ describe('customers reducers', () => {
         expect(
             reducer(initialState, {
                 type: types.MERGE_CUSTOMERS_START,
-            }).toJS()
+            }).toJS(),
         ).toMatchSnapshot()
 
         // success
         expect(
             reducer(
                 initialState.mergeDeep({
-                    active: {id: 1, name: 'Romain'},
+                    active: { id: 1, name: 'Romain' },
                 }),
                 {
                     type: types.MERGE_CUSTOMERS_SUCCESS,
-                    resp: {id: 1, name: 'Alex'},
-                }
-            ).toJS()
+                    resp: { id: 1, name: 'Alex' },
+                },
+            ).toJS(),
         ).toMatchSnapshot()
 
         // error
         expect(
             reducer(
                 initialState.mergeDeep({
-                    active: {id: 1, name: 'Romain'},
+                    active: { id: 1, name: 'Romain' },
                 }),
                 {
                     type: types.MERGE_CUSTOMERS_ERROR,
-                }
-            ).toJS()
+                },
+            ).toJS(),
         ).toMatchSnapshot()
     })
 })

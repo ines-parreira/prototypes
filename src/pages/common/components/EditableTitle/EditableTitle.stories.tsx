@@ -1,9 +1,10 @@
-import {Meta, Story} from '@storybook/react'
+import React, { ComponentProps } from 'react'
+
+import { Meta, Story } from '@storybook/react'
 import classNames from 'classnames'
-import React, {ComponentProps} from 'react'
 
 import EditableTitle from 'pages/common/components/EditableTitle/EditableTitle'
-import {FilterWarningIcon} from 'pages/stats/common/components/Filter/components/FilterWarning/FilterWarningIcon'
+import { FilterWarningIcon } from 'pages/stats/common/components/Filter/components/FilterWarning/FilterWarningIcon'
 
 const storyConfig: Meta = {
     component: EditableTitle,
@@ -11,7 +12,7 @@ const storyConfig: Meta = {
 }
 
 const DefaultTemplate: Story<ComponentProps<typeof EditableTitle>> = (
-    props
+    props,
 ) => {
     return <EditableTitle {...props} />
 }

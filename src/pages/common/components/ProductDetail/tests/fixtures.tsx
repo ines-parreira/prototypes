@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {Infocard, ProductDetail} from '../types'
+import { Infocard, ProductDetail } from '../types'
 
 export const infoCardBannerText = 'I am a banner, trust me.'
 
@@ -52,6 +52,6 @@ export const dummyProduct: ProductDetail = {
     alertBanner: {
         message: 'Beware!',
     },
-    categories: ['My category', {label: 'Wow', type: 'success'}],
+    categories: ['My category', { label: 'Wow', type: 'success' }],
     infocard: dummyInfocard,
 }

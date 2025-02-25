@@ -1,19 +1,20 @@
-import {renderHook} from '@testing-library/react-hooks'
+// sort-imports-ignore
+import { channelsQueryKeys as mockChannelsQueryKeys } from 'models/channel/queries'
+// sort-imports-ignore
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { renderHook } from '@testing-library/react-hooks'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-// eslint-disable-next-line import/order
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-// eslint-disable-next-line import/order
-import {channelsQueryKeys as mockChannelsQueryKeys} from 'models/channel/queries'
-import {channels as mockChannels} from 'fixtures/channels'
-import {useSortedChannels} from 'hooks/reporting/support-performance/useSortedChannels'
-import {OrderDirection} from 'models/api/types'
-import {RootState} from 'state/types'
-import {channelsSlice, initialState} from 'state/ui/stats/channelsSlice'
-import {ChannelsTableColumns} from 'state/ui/stats/types'
+import { channels as mockChannels } from 'fixtures/channels'
+import { useSortedChannels } from 'hooks/reporting/support-performance/useSortedChannels'
+import { OrderDirection } from 'models/api/types'
+import { RootState } from 'state/types'
+import { channelsSlice, initialState } from 'state/ui/stats/channelsSlice'
+import { ChannelsTableColumns } from 'state/ui/stats/types'
 
 jest.mock('api/queryClient', () => ({
     appQueryClient: mockQueryClient({
@@ -25,13 +26,13 @@ const mockStore = configureMockStore([thunk])
 describe('useSortedChannels', () => {
     const defaultState = {
         ui: {
-            stats: {[channelsSlice.name]: initialState},
+            stats: { [channelsSlice.name]: initialState },
         },
     } as RootState
 
     it('should return channels as is with default sorting', () => {
-        const {result} = renderHook(() => useSortedChannels(), {
-            wrapper: ({children}) => (
+        const { result } = renderHook(() => useSortedChannels(), {
+            wrapper: ({ children }) => (
                 <Provider store={mockStore(defaultState)}>
                     {' '}
                     {children}{' '}
@@ -45,7 +46,7 @@ describe('useSortedChannels', () => {
         })
         mockChannels.forEach((ch, index) => {
             expect(result.current.sortedChannels[index]).toEqual(
-                mockChannels[index]
+                mockChannels[index],
             )
         })
     })
@@ -66,8 +67,8 @@ describe('useSortedChannels', () => {
                 },
             },
         } as RootState
-        const {result} = renderHook(() => useSortedChannels(), {
-            wrapper: ({children}) => (
+        const { result } = renderHook(() => useSortedChannels(), {
+            wrapper: ({ children }) => (
                 <Provider store={mockStore(state)}>{children}</Provider>
             ),
         })
@@ -79,7 +80,7 @@ describe('useSortedChannels', () => {
         })
         reversedChannels.forEach((ch, index) => {
             expect(result.current.sortedChannels[index]).toEqual(
-                reversedChannels[index]
+                reversedChannels[index],
             )
         })
     })
@@ -113,8 +114,8 @@ describe('useSortedChannels', () => {
                 },
             },
         } as RootState
-        const {result} = renderHook(() => useSortedChannels(), {
-            wrapper: ({children}) => (
+        const { result } = renderHook(() => useSortedChannels(), {
+            wrapper: ({ children }) => (
                 <Provider store={mockStore(state)}> {children} </Provider>
             ),
         })
@@ -128,11 +129,11 @@ describe('useSortedChannels', () => {
             ...channelsWithoutSortingPosition,
         ]
         expect(result.current.sortedChannels.map((ch) => ch.slug)).toEqual(
-            expectedSort
+            expectedSort,
         )
         expectedSort.forEach((channelSlug, index) => {
             expect(result.current.sortedChannels[index].slug).toEqual(
-                channelSlug
+                channelSlug,
             )
         })
     })
@@ -154,8 +155,8 @@ describe('useSortedChannels', () => {
             },
         } as RootState
 
-        const {result} = renderHook(() => useSortedChannels(), {
-            wrapper: ({children}) => (
+        const { result } = renderHook(() => useSortedChannels(), {
+            wrapper: ({ children }) => (
                 <Provider store={mockStore(state)}> {children} </Provider>
             ),
         })

@@ -1,14 +1,15 @@
-import * as uiKit from '@gorgias/merchant-ui-kit'
-import {screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
-
-import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 import React from 'react'
 
-import {AiAgentNotificationType} from 'automate/notifications/types'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {account} from 'fixtures/account'
-import {shopifyIntegration} from 'fixtures/integrations'
+import { screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { mockFlags, resetLDMocks } from 'jest-launchdarkly-mock'
+
+import * as uiKit from '@gorgias/merchant-ui-kit'
+
+import { AiAgentNotificationType } from 'automate/notifications/types'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { account } from 'fixtures/account'
+import { shopifyIntegration } from 'fixtures/integrations'
 import {
     AUTOMATION_PRODUCT_ID,
     basicMonthlyAutomationPlan,
@@ -25,18 +26,18 @@ import {
     VOICE_PRODUCT_ID,
     voicePlan1,
 } from 'fixtures/productPrices'
-import {useGetOrCreateAccountConfiguration} from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'
-import {ProductType} from 'models/billing/types'
-import {useAiAgentOnboardingNotification} from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
-import {useStoreConfiguration} from 'pages/aiAgent/hooks/useStoreConfiguration'
-import {AlertType} from 'pages/common/components/Alert/Alert'
+import { useGetOrCreateAccountConfiguration } from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'
+import { ProductType } from 'models/billing/types'
+import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
+import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
+import { AlertType } from 'pages/common/components/Alert/Alert'
 import ProductCard from 'pages/settings/new_billing/components/ProductCard'
-import {ProductCardProps} from 'pages/settings/new_billing/components/ProductCard/ProductCard'
-import {PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP} from 'pages/settings/new_billing/constants'
-import {storeWithCanceledSubscription} from 'pages/settings/new_billing/fixtures'
+import { ProductCardProps } from 'pages/settings/new_billing/components/ProductCard/ProductCard'
+import { PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP } from 'pages/settings/new_billing/constants'
+import { storeWithCanceledSubscription } from 'pages/settings/new_billing/fixtures'
 import UsageAndPlansView from 'pages/settings/new_billing/views/UsageAndPlansView/UsageAndPlansView'
-import {renderWithStoreAndQueryClientAndRouter} from 'tests/renderWithStoreAndQueryClientAndRouter'
-import {assumeMock} from 'utils/testing'
+import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
+import { assumeMock } from 'utils/testing'
 
 // Mock ui-kit as an ES module to enable spying
 jest.mock('@gorgias/merchant-ui-kit', () => {
@@ -50,7 +51,7 @@ jest.mock('pages/settings/new_billing/components/ProductCard', () =>
     jest.fn((props: ProductCardProps) => {
         const dataTestId = `product-card--${props.type}`
         return <div data-testid={dataTestId}></div>
-    })
+    }),
 )
 
 jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingNotification')
@@ -58,10 +59,10 @@ jest.mock('pages/aiAgent/hooks/useStoreConfiguration')
 jest.mock('hooks/aiAgent/useGetOrCreateAccountConfiguration')
 
 const mockUseGetOrCreateAccountConfiguration = assumeMock(
-    useGetOrCreateAccountConfiguration
+    useGetOrCreateAccountConfiguration,
 )
 const mockUseAiAgentOnboardingNotification = assumeMock(
-    useAiAgentOnboardingNotification
+    useAiAgentOnboardingNotification,
 )
 const mockUseStoreConfiguration = assumeMock(useStoreConfiguration)
 
@@ -128,7 +129,7 @@ describe('UsageAndPlansView', () => {
             isLoading: false,
         } as unknown as ReturnType<typeof useGetOrCreateAccountConfiguration>)
         mockUseAiAgentOnboardingNotification.mockReturnValue(
-            mockedUseAiAgentOnboardingNotification
+            mockedUseAiAgentOnboardingNotification,
         )
         mockUseStoreConfiguration.mockReturnValue({
             isLoading: false,
@@ -145,7 +146,7 @@ describe('UsageAndPlansView', () => {
             description: 'Convert banner',
             type: AlertType.Info,
         }
-        const {getByText} = renderWithStoreAndQueryClientAndRouter(
+        const { getByText } = renderWithStoreAndQueryClientAndRouter(
             <UsageAndPlansView
                 contactBilling={jest.fn()}
                 periodEnd="2021-01-01"
@@ -153,7 +154,7 @@ describe('UsageAndPlansView', () => {
                 helpdeskBanner={helpdeskBanner}
                 convertBanner={convertBanner}
             />,
-            store
+            store,
         )
         expect(ProductCardMock).toHaveBeenCalledTimes(5)
         expect(ProductCardMock).toHaveBeenNthCalledWith(
@@ -165,7 +166,7 @@ describe('UsageAndPlansView', () => {
                 banner: helpdeskBanner,
                 isDisabled: false,
             },
-            {}
+            {},
         )
         expect(ProductCardMock).toHaveBeenNthCalledWith(
             2,
@@ -175,7 +176,7 @@ describe('UsageAndPlansView', () => {
                 usage: null,
                 isDisabled: false,
             },
-            {}
+            {},
         )
         expect(ProductCardMock).toHaveBeenNthCalledWith(
             3,
@@ -185,7 +186,7 @@ describe('UsageAndPlansView', () => {
                 usage: null,
                 isDisabled: false,
             },
-            {}
+            {},
         )
         expect(ProductCardMock).toHaveBeenNthCalledWith(
             4,
@@ -195,7 +196,7 @@ describe('UsageAndPlansView', () => {
                 usage: null,
                 isDisabled: false,
             },
-            {}
+            {},
         )
         expect(ProductCardMock).toHaveBeenNthCalledWith(
             5,
@@ -207,12 +208,12 @@ describe('UsageAndPlansView', () => {
                 isDisabled: false,
                 autoUpgradeEnabled: false,
             },
-            {}
+            {},
         )
 
         expect(getByText('Update')).toHaveAttribute(
             'to',
-            '/app/settings/billing/payment/frequency'
+            '/app/settings/billing/payment/frequency',
         )
     })
 
@@ -228,13 +229,13 @@ describe('UsageAndPlansView', () => {
                 },
             }),
         }
-        const {container} = renderWithStoreAndQueryClientAndRouter(
+        const { container } = renderWithStoreAndQueryClientAndRouter(
             <UsageAndPlansView
                 contactBilling={jest.fn()}
                 periodEnd="2021-01-01"
                 currentUsage={mockedUsage}
             />,
-            alteredStore
+            alteredStore,
         )
         expect(ProductCardMock).toHaveBeenCalledTimes(5)
         expect(ProductCardMock).toHaveBeenNthCalledWith(
@@ -245,7 +246,7 @@ describe('UsageAndPlansView', () => {
                 usage: mockedUsage[ProductType.Helpdesk],
                 isDisabled: false,
             },
-            {}
+            {},
         )
         expect(ProductCardMock).toHaveBeenNthCalledWith(
             2,
@@ -254,7 +255,7 @@ describe('UsageAndPlansView', () => {
                 usage: null,
                 isDisabled: true,
             },
-            {}
+            {},
         )
         expect(ProductCardMock).toHaveBeenNthCalledWith(
             3,
@@ -263,7 +264,7 @@ describe('UsageAndPlansView', () => {
                 usage: null,
                 isDisabled: true,
             },
-            {}
+            {},
         )
         expect(ProductCardMock).toHaveBeenNthCalledWith(
             4,
@@ -272,7 +273,7 @@ describe('UsageAndPlansView', () => {
                 usage: null,
                 isDisabled: true,
             },
-            {}
+            {},
         )
         expect(ProductCardMock).toHaveBeenNthCalledWith(
             5,
@@ -283,17 +284,17 @@ describe('UsageAndPlansView', () => {
                 isDisabled: false,
                 autoUpgradeEnabled: false,
             },
-            {}
+            {},
         )
 
         const updateBillingFrequencyButton = container.querySelector(
-            '#update-billing-frequency'
+            '#update-billing-frequency',
         )
         expect(updateBillingFrequencyButton).toHaveClass('disabledText')
         expect(updateBillingFrequencyButton).toHaveTextContent('Update')
         expect(container).toHaveTextContent(
             'Your Helpdesk subscription has been cancelled. ' +
-                'It will remain active until the end of your billing cycle on January 14, 2024.'
+                'It will remain active until the end of your billing cycle on January 14, 2024.',
         )
     })
 
@@ -344,7 +345,7 @@ describe('UsageAndPlansView', () => {
             }),
         }
 
-        const {container} = renderWithStoreAndQueryClientAndRouter(
+        const { container } = renderWithStoreAndQueryClientAndRouter(
             <UsageAndPlansView
                 contactBilling={jest.fn()}
                 periodEnd="2021-01-01"
@@ -352,7 +353,7 @@ describe('UsageAndPlansView', () => {
                 helpdeskBanner={helpdeskBanner}
                 smsBanner={smsBanner}
             />,
-            alteredStore
+            alteredStore,
         )
         expect(ProductCardMock).toHaveBeenCalledTimes(5)
         expect(ProductCardMock).toHaveBeenNthCalledWith(
@@ -366,7 +367,7 @@ describe('UsageAndPlansView', () => {
                 banner: helpdeskBanner,
                 isDisabled: false,
             },
-            {}
+            {},
         )
         expect(ProductCardMock).toHaveBeenNthCalledWith(
             2,
@@ -376,7 +377,7 @@ describe('UsageAndPlansView', () => {
                 usage: null,
                 isDisabled: false,
             },
-            {}
+            {},
         )
         expect(ProductCardMock).toHaveBeenNthCalledWith(
             3,
@@ -386,7 +387,7 @@ describe('UsageAndPlansView', () => {
                 usage: null,
                 isDisabled: false,
             },
-            {}
+            {},
         )
         expect(ProductCardMock).toHaveBeenNthCalledWith(
             4,
@@ -397,7 +398,7 @@ describe('UsageAndPlansView', () => {
                 isDisabled: false,
                 banner: smsBanner,
             },
-            {}
+            {},
         )
         expect(ProductCardMock).toHaveBeenNthCalledWith(
             5,
@@ -408,11 +409,11 @@ describe('UsageAndPlansView', () => {
                 isDisabled: false,
                 autoUpgradeEnabled: false,
             },
-            {}
+            {},
         )
 
         const updateBillingFrequencyButton = container.querySelector(
-            '#update-billing-frequency'
+            '#update-billing-frequency',
         )
         expect(updateBillingFrequencyButton).toHaveClass('disabledText')
         expect(updateBillingFrequencyButton).toHaveTextContent('Update')
@@ -424,7 +425,7 @@ describe('UsageAndPlansView', () => {
                 placement: 'top',
                 target: 'update-billing-frequency',
             },
-            {}
+            {},
         )
     })
 
@@ -462,13 +463,13 @@ describe('UsageAndPlansView', () => {
             }),
         }
 
-        const {container} = renderWithStoreAndQueryClientAndRouter(
+        const { container } = renderWithStoreAndQueryClientAndRouter(
             <UsageAndPlansView
                 contactBilling={jest.fn()}
                 periodEnd="2021-01-01"
                 currentUsage={alteredBilling.currentProductsUsage}
             />,
-            alteredStore
+            alteredStore,
         )
         expect(ProductCardMock).toHaveBeenCalledTimes(5)
         expect(ProductCardMock).toHaveBeenNthCalledWith(
@@ -481,10 +482,10 @@ describe('UsageAndPlansView', () => {
                 ],
                 isDisabled: true,
             },
-            {}
+            {},
         )
         const updateBillingFrequencyButton = container.querySelector(
-            '#update-billing-frequency'
+            '#update-billing-frequency',
         )
         expect(updateBillingFrequencyButton).toHaveClass('disabledText')
         expect(updateBillingFrequencyButton).toHaveTextContent('Update')
@@ -497,7 +498,7 @@ describe('UsageAndPlansView', () => {
                 placement: 'top',
                 target: 'update-billing-frequency',
             },
-            {}
+            {},
         )
     })
 
@@ -508,11 +509,11 @@ describe('UsageAndPlansView', () => {
                 periodEnd="2021-01-01"
                 currentUsage={null}
             />,
-            storeWithCanceledSubscription
+            storeWithCanceledSubscription,
         )
 
         expect(
-            screen.queryByRole('button', {name: /Update/i})
+            screen.queryByRole('button', { name: /Update/i }),
         ).not.toBeInTheDocument()
 
         expect(screen.queryByText(/Billed monthly/i)).toBeInTheDocument()
@@ -534,17 +535,17 @@ describe('UsageAndPlansView', () => {
             }),
         }
 
-        const {container} = renderWithStoreAndQueryClientAndRouter(
+        const { container } = renderWithStoreAndQueryClientAndRouter(
             <UsageAndPlansView
                 contactBilling={jest.fn()}
                 periodEnd="2021-01-01"
                 currentUsage={mockedBilling.currentProductsUsage}
             />,
-            alteredStore
+            alteredStore,
         )
 
         const updateBillingFrequencyButton = container.querySelector(
-            '#update-billing-frequency'
+            '#update-billing-frequency',
         )
         expect(updateBillingFrequencyButton).toHaveClass('disabledText')
     })
@@ -577,11 +578,11 @@ describe('UsageAndPlansView', () => {
                 periodEnd="2021-01-01"
                 currentUsage={mockedBilling.currentProductsUsage}
             />,
-            alteredStore
+            alteredStore,
         )
         expect(screen.getByText('Update').closest('a')).toHaveAttribute(
             'to',
-            '/app/settings/billing/payment/frequency'
+            '/app/settings/billing/payment/frequency',
         )
     })
 
@@ -634,7 +635,7 @@ describe('UsageAndPlansView', () => {
                 helpdeskBanner={helpdeskBanner}
                 convertBanner={convertBanner}
             />,
-            alteredStore
+            alteredStore,
         )
 
         expect(ProductCardMock).toHaveBeenCalledTimes(5)
@@ -647,7 +648,7 @@ describe('UsageAndPlansView', () => {
                 banner: helpdeskBanner,
                 isDisabled: false,
             },
-            {}
+            {},
         )
         expect(ProductCardMock).toHaveBeenNthCalledWith(
             2,
@@ -657,7 +658,7 @@ describe('UsageAndPlansView', () => {
                 usage: null,
                 isDisabled: false,
             },
-            {}
+            {},
         )
         expect(ProductCardMock).toHaveBeenNthCalledWith(
             3,
@@ -668,7 +669,7 @@ describe('UsageAndPlansView', () => {
                 isDisabled: true,
                 disabledTooltip: PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP,
             },
-            {}
+            {},
         )
         expect(ProductCardMock).toHaveBeenNthCalledWith(
             4,
@@ -679,7 +680,7 @@ describe('UsageAndPlansView', () => {
                 isDisabled: true,
                 disabledTooltip: PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP,
             },
-            {}
+            {},
         )
         expect(ProductCardMock).toHaveBeenNthCalledWith(
             5,
@@ -691,7 +692,7 @@ describe('UsageAndPlansView', () => {
                 isDisabled: false,
                 autoUpgradeEnabled: false,
             },
-            {}
+            {},
         )
     })
 
@@ -731,7 +732,7 @@ describe('UsageAndPlansView', () => {
                 periodEnd="2021-01-01"
                 currentUsage={alteredBilling.currentProductsUsage}
             />,
-            alteredStore
+            alteredStore,
         )
 
         expect(mockUseAiAgentOnboardingNotification).toHaveBeenCalledTimes(1)
@@ -740,10 +741,10 @@ describe('UsageAndPlansView', () => {
             hasAutomateSubscription: true,
         })
         expect(
-            mockedUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
+            mockedUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification,
         ).toHaveBeenCalledTimes(1)
         expect(
-            mockedUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
+            mockedUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification,
         ).toHaveBeenCalledWith({
             aiAgentNotificationType: AiAgentNotificationType.MeetAiAgent,
         })

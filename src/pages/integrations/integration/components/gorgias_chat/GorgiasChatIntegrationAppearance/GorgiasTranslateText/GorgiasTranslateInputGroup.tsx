@@ -1,15 +1,16 @@
-import {get} from 'lodash'
 import React from 'react'
-import {Col, Container, Row} from 'reactstrap'
+
+import { get } from 'lodash'
+import { Col, Container, Row } from 'reactstrap'
 
 import {
     TextsPerLanguage,
     Translations,
 } from '../../../../../../../rest_api/gorgias_chat_protected_api/types'
-
 import GorgiasTranslateInputField from './GorgiasTranslateInputField'
+import { FilterProps, OptionFormat } from './translations-available-keys'
+
 import css from './GorgiasTranslateText.less'
-import {FilterProps, OptionFormat} from './translations-available-keys'
 
 export type Props = {
     title: string

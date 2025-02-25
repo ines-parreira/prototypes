@@ -1,9 +1,9 @@
-import {Map} from 'immutable'
+import { Map } from 'immutable'
 import _trim from 'lodash/trim'
 
-import {isImmutable, toImmutable} from 'common/utils'
-import {CustomerChannel} from 'models/customerChannel/types'
-import {normalizeAddress} from 'tickets/common/utils'
+import { isImmutable, toImmutable } from 'common/utils'
+import { CustomerChannel } from 'models/customerChannel/types'
+import { normalizeAddress } from 'tickets/common/utils'
 
 /**
  * Return name of customer
@@ -14,7 +14,7 @@ export const getDisplayName = (
               name: string
               id: string
           }
-        | Map<any, any>
+        | Map<any, any>,
 ): Map<any, any> | string => {
     const immutableCustomer = toImmutable<Map<any, any>>(customer)
 
@@ -26,7 +26,7 @@ export const getDisplayName = (
 
     const formattedCustomer = immutableCustomer.set(
         'name',
-        _trim(immutableCustomer.get('name'))
+        _trim(immutableCustomer.get('name')),
     )
 
     return (
@@ -54,7 +54,7 @@ export const mergeChannels = (
                 const result = results.find(
                     (result) =>
                         normalizeAddress(result.address, result.type) ===
-                            address && result.type === channel.type
+                            address && result.type === channel.type,
                 )
 
                 if (!result) {

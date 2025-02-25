@@ -1,7 +1,7 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {useMetric} from 'hooks/reporting/useMetric'
-import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
+import { useMetric } from 'hooks/reporting/useMetric'
+import { useMetricPerDimension } from 'hooks/reporting/useMetricPerDimension'
 import {
     HelpCenterTrackingEventDimensions,
     HelpCenterTrackingEventMeasures,
@@ -10,7 +10,7 @@ import {
     noSearchResultsCountQueryFactory,
     noSearchResultsQueryFactory,
 } from 'models/reporting/queryFactories/help-center/searchResult'
-import {StatsFilters} from 'models/stat/types'
+import { StatsFilters } from 'models/stat/types'
 
 import {
     HelpCenterTableCell,
@@ -34,7 +34,7 @@ export const useNoSearchResultsMetrics = ({
         offset: itemPerPage * (currentPage - 1),
     })
     const noSearchResultCount = useMetric(
-        noSearchResultsCountQueryFactory(statsFilters, timezone)
+        noSearchResultsCountQueryFactory(statsFilters, timezone),
     )
 
     const total = noSearchResultCount.data?.value ?? 0
@@ -52,7 +52,7 @@ export const useNoSearchResultsMetrics = ({
                     value[
                         HelpCenterTrackingEventMeasures
                             .SearchRequestedQueryCount
-                    ]
+                    ],
                 )
 
                 return [
@@ -66,7 +66,7 @@ export const useNoSearchResultsMetrics = ({
                     },
                 ]
             }) ?? [],
-        [noSearchResults.data?.allData]
+        [noSearchResults.data?.allData],
     )
 
     return useMemo(
@@ -81,6 +81,6 @@ export const useNoSearchResultsMetrics = ({
             total,
             noSearchResults.isFetching,
             noSearchResultCount.isFetching,
-        ]
+        ],
     )
 }

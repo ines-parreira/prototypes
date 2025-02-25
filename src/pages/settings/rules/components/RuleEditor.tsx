@@ -1,15 +1,16 @@
+import React, { ComponentProps } from 'react'
+
 import classnames from 'classnames'
-import React, {ComponentProps} from 'react'
-import {FormGroup} from 'reactstrap'
+import { FormGroup } from 'reactstrap'
 
-import {fromAST} from 'common/utils'
+import { fromAST } from 'common/utils'
 
-import {RuleDraft} from '../../../../state/rules/types'
+import { RuleDraft } from '../../../../state/rules/types'
 import Program from '../../../common/components/ast/Program'
-import {RuleItemActions} from '../types'
+import { RuleItemActions } from '../types'
+import { RulesTriggerSelect } from './RulesTriggerSelect'
 
 import css from './RuleEditor.less'
-import {RulesTriggerSelect} from './RulesTriggerSelect'
 
 type Props = {
     ruleDraft: RuleDraft

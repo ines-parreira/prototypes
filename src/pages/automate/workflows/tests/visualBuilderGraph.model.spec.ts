@@ -1,4 +1,4 @@
-import {SHIPMONK_APPLICATION_ID} from '../models/variables.types'
+import { SHIPMONK_APPLICATION_ID } from '../models/variables.types'
 import {
     buildEdgeCommonProperties,
     buildNodeCommonProperties,
@@ -65,20 +65,20 @@ import {
     UpdateShippingAddressNodeType,
     VisualBuilderEdge,
 } from '../models/visualBuilderGraph.types'
-import {transformWorkflowConfigurationIntoVisualBuilderGraph} from '../models/workflowConfiguration.model'
-import {visualBuilderGraphSimpleChoicesFixture} from './visualBuilderGraph.fixtures'
+import { transformWorkflowConfigurationIntoVisualBuilderGraph } from '../models/workflowConfiguration.model'
+import { visualBuilderGraphSimpleChoicesFixture } from './visualBuilderGraph.fixtures'
 
 describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
     test('full graph', () => {
         const g = visualBuilderGraphSimpleChoicesFixture
         const transformed = transformVisualBuilderGraphIntoWfConfiguration(
             transformWorkflowConfigurationIntoVisualBuilderGraph(
-                transformVisualBuilderGraphIntoWfConfiguration(g, true, [])
+                transformVisualBuilderGraphIntoWfConfiguration(g, true, []),
             ),
             true,
-            []
+            [],
         )
-        const {id, is_draft, name, internal_id, initial_step_id} = transformed
+        const { id, is_draft, name, internal_id, initial_step_id } = transformed
         expect(transformed).toEqual(
             expect.objectContaining({
                 id,
@@ -86,7 +86,7 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                 name,
                 internal_id,
                 initial_step_id,
-            })
+            }),
         )
         expect(transformed.steps.length).toBe(8)
         expect(transformed.steps).toEqual(
@@ -123,7 +123,7 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                     id: 'end3',
                     kind: 'helpful-prompt',
                 }),
-            ])
+            ]),
         )
 
         expect(transformed.transitions.length).toBe(7)
@@ -157,7 +157,7 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                     from_step_id: 'file_upload1',
                     to_step_id: 'end3',
                 }),
-            ])
+            ]),
         )
     })
 
@@ -236,7 +236,7 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                 branchIdsEditing: [],
             },
             true,
-            []
+            [],
         )
 
         expect(configuration.steps).toEqual(
@@ -265,7 +265,7 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                     id: 'end1',
                     kind: 'end',
                 }),
-            ])
+            ]),
         )
     })
 
@@ -353,7 +353,7 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                 branchIdsEditing: [],
             },
             true,
-            []
+            [],
         )
         expect(configuration.entrypoints).toEqual([
             {
@@ -498,7 +498,7 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                 branchIdsEditing: [],
             },
             true,
-            []
+            [],
         )
         expect(configuration.entrypoints).toEqual([
             {
@@ -607,7 +607,7 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                 branchIdsEditing: [],
             },
             true,
-            []
+            [],
         )
         expect(configuration.entrypoints).toEqual([
             {
@@ -738,7 +738,7 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                 branchIdsEditing: [],
             },
             true,
-            []
+            [],
         )
         expect(configuration.entrypoints).toEqual([
             {
@@ -903,7 +903,7 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                 branchIdsEditing: [],
             },
             true,
-            []
+            [],
         )
         expect(configuration.entrypoints).toEqual([
             {
@@ -1093,7 +1093,7 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                                 and: [
                                     {
                                         equals: [
-                                            {var: 'objects.order.name'},
+                                            { var: 'objects.order.name' },
                                             'test',
                                         ],
                                     },
@@ -1117,7 +1117,7 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                 branchIdsEditing: [],
             },
             true,
-            []
+            [],
         )
         expect(configuration.entrypoints).toEqual([
             {
@@ -1240,7 +1240,7 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                 branchIdsEditing: [],
             },
             true,
-            []
+            [],
         )
 
         expect(configuration.steps).toEqual([
@@ -1372,7 +1372,7 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                     transitions: [],
                     available_languages: [],
                 },
-            ]
+            ],
         )
 
         expect(configuration.triggers).toEqual([
@@ -1527,7 +1527,7 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                                 and: [
                                     {
                                         equals: [
-                                            {var: 'objects.order.name'},
+                                            { var: 'objects.order.name' },
                                             'test',
                                         ],
                                     },
@@ -1551,7 +1551,7 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                 branchIdsEditing: [],
             },
             true,
-            []
+            [],
         )
         expect(configuration.entrypoints).toEqual([
             {
@@ -1620,7 +1620,9 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                             conditions: [
                                 {
                                     equals: [
-                                        {var: 'objects.order_shipmonk.status'},
+                                        {
+                                            var: 'objects.order_shipmonk.status',
+                                        },
                                         'complete',
                                     ],
                                 },
@@ -1709,7 +1711,7 @@ describe('visualBuilderGraph is transformed into workflowConfiguration', () => {
                     application_id: SHIPMONK_APPLICATION_ID,
                     integration_id: 1,
                 },
-            ]
+            ],
         )
 
         expect(configuration.triggers).toEqual([
@@ -1802,9 +1804,9 @@ describe('touched', () => {
                         },
                     ],
                     conditionsType: 'and',
-                    conditions: [{equals: [{var: ''}, '']}],
+                    conditions: [{ equals: [{ var: '' }, ''] }],
                 },
-            })
+            }),
         ).toEqual({
             conditions: {
                 0: true,
@@ -1858,7 +1860,7 @@ describe('touched', () => {
                     ],
                     bodyContentType: null,
                 },
-            })
+            }),
         ).toEqual({
             headers: {
                 '0': {
@@ -1903,7 +1905,7 @@ describe('touched', () => {
                         source: 'conditions1',
                         target: 'end1',
                         data: {
-                            conditions: {and: []},
+                            conditions: { and: [] },
                         },
                     },
                 ],
@@ -1922,8 +1924,8 @@ describe('touched', () => {
                             },
                         },
                     },
-                }
-            )
+                },
+            ),
         ).toEqual({
             branches: {
                 conditions1_branch1: {
@@ -1957,9 +1959,9 @@ describe('touched', () => {
                         },
                     ],
                     conditionsType: 'and',
-                    conditions: [{equals: [{var: ''}, '']}],
+                    conditions: [{ equals: [{ var: '' }, ''] }],
                 },
-            })
+            }),
         ).toEqual({
             conditions: {
                 0: true,
@@ -1991,7 +1993,7 @@ describe('touched', () => {
                         },
                     ],
                 },
-            })
+            }),
         ).toEqual({
             content: true,
             choices: {
@@ -2089,7 +2091,7 @@ describe('errors', () => {
                     touched: {
                         api_key: true,
                     },
-                })
+                }),
             ).toEqual({
                 api_key: 'API key is required',
             })
@@ -2104,7 +2106,7 @@ describe('errors', () => {
                     touched: {
                         refresh_token: true,
                     },
-                })
+                }),
             ).toEqual({
                 refresh_token: 'Refresh token is required',
             })
@@ -2165,7 +2167,7 @@ describe('errors', () => {
                 data: {
                     touched: {
                         inputs: {
-                            input1: {name: true, instructions: true},
+                            input1: { name: true, instructions: true },
                         },
                     },
                     instructions: '',
@@ -2201,12 +2203,12 @@ describe('errors', () => {
                 type: 'llm_prompt_trigger',
                 data: {
                     touched: {
-                        conditions: {0: true},
+                        conditions: { 0: true },
                     },
                     instructions: '',
                     inputs: [],
                     conditionsType: 'and',
-                    conditions: [{startsWith: [{var: 'variable1'}, null]}],
+                    conditions: [{ startsWith: [{ var: 'variable1' }, null] }],
                     requires_confirmation: false,
                 },
             }
@@ -2214,7 +2216,7 @@ describe('errors', () => {
             const errors = getLLMPromptTriggerNodeErrors(node, [])
 
             expect(errors).toEqual({
-                conditions: {0: 'Invalid variables'},
+                conditions: { 0: 'Invalid variables' },
             })
         })
 
@@ -2224,12 +2226,12 @@ describe('errors', () => {
                 type: 'llm_prompt_trigger',
                 data: {
                     touched: {
-                        conditions: {0: true},
+                        conditions: { 0: true },
                     },
                     instructions: '',
                     inputs: [],
                     conditionsType: 'and',
-                    conditions: [{equals: [{var: 'variable1'}, '']}],
+                    conditions: [{ equals: [{ var: 'variable1' }, ''] }],
                     requires_confirmation: false,
                 },
             }
@@ -2244,7 +2246,7 @@ describe('errors', () => {
             ])
 
             expect(errors).toEqual({
-                conditions: {0: 'Enter a value'},
+                conditions: { 0: 'Enter a value' },
             })
         })
 
@@ -2254,12 +2256,12 @@ describe('errors', () => {
                 type: 'llm_prompt_trigger',
                 data: {
                     touched: {
-                        conditions: {0: true},
+                        conditions: { 0: true },
                     },
                     instructions: '',
                     inputs: [],
                     conditionsType: 'and',
-                    conditions: [{equals: [{var: 'variable1'}, 0]}],
+                    conditions: [{ equals: [{ var: 'variable1' }, 0] }],
                     requires_confirmation: false,
                 },
             }
@@ -2274,7 +2276,7 @@ describe('errors', () => {
             ])
 
             expect(errors).toEqual({
-                conditions: {0: 'Enter a value'},
+                conditions: { 0: 'Enter a value' },
             })
         })
 
@@ -2284,13 +2286,13 @@ describe('errors', () => {
                 type: 'llm_prompt_trigger',
                 data: {
                     touched: {
-                        conditions: {0: true},
+                        conditions: { 0: true },
                     },
                     instructions: '',
                     inputs: [],
                     conditionsType: 'and',
                     conditions: [
-                        {greaterThan: [{var: 'variable1'}, undefined]},
+                        { greaterThan: [{ var: 'variable1' }, undefined] },
                     ],
                     requires_confirmation: false,
                 },
@@ -2306,7 +2308,7 @@ describe('errors', () => {
             ])
 
             expect(errors).toEqual({
-                conditions: {0: 'Choose a date'},
+                conditions: { 0: 'Choose a date' },
             })
         })
     })
@@ -2330,7 +2332,7 @@ describe('errors', () => {
                     name: 'Some name',
                     method: 'POST',
                     url: 'https://example.com',
-                    headers: [{name: 'test', value: 'test'}],
+                    headers: [{ name: 'test', value: 'test' }],
                     bodyContentType: 'application/json',
                     json: '{"key": "value"}',
                     formUrlencoded: [],
@@ -2437,7 +2439,7 @@ describe('errors', () => {
                     name: '',
                     method: 'GET',
                     url: '',
-                    headers: [{name: '', value: ''}],
+                    headers: [{ name: '', value: '' }],
                     bodyContentType: null,
                     json: null,
                     formUrlencoded: [],
@@ -2502,7 +2504,7 @@ describe('errors', () => {
                     headers: [],
                     bodyContentType: 'application/x-www-form-urlencoded',
                     json: null,
-                    formUrlencoded: [{key: '', value: ''}],
+                    formUrlencoded: [{ key: '', value: '' }],
                     variables: [],
                 },
             }
@@ -2574,7 +2576,7 @@ describe('errors', () => {
                     data: {
                         name: 'Some name',
                         conditions: {
-                            and: [{equals: [{var: 'variable1'}, 'value']}],
+                            and: [{ equals: [{ var: 'variable1' }, 'value'] }],
                         },
                     },
                 },
@@ -2704,7 +2706,7 @@ describe('errors', () => {
                     data: {
                         name: '',
                         conditions: {
-                            and: [{equals: [{var: 'variable1'}, null]}],
+                            and: [{ equals: [{ var: 'variable1' }, null] }],
                         },
                     },
                 },
@@ -2750,7 +2752,7 @@ describe('errors', () => {
                     data: {
                         name: '',
                         conditions: {
-                            and: [{equals: [{var: 'variable1'}, '']}],
+                            and: [{ equals: [{ var: 'variable1' }, ''] }],
                         },
                     },
                 },
@@ -2803,7 +2805,7 @@ describe('errors', () => {
                     data: {
                         name: '',
                         conditions: {
-                            and: [{equals: [{var: 'variable1'}, 0]}],
+                            and: [{ equals: [{ var: 'variable1' }, 0] }],
                         },
                     },
                 },
@@ -2857,7 +2859,12 @@ describe('errors', () => {
                         name: '',
                         conditions: {
                             and: [
-                                {greaterThan: [{var: 'variable1'}, undefined]},
+                                {
+                                    greaterThan: [
+                                        { var: 'variable1' },
+                                        undefined,
+                                    ],
+                                },
                             ],
                         },
                     },
@@ -2971,7 +2978,7 @@ describe('errors', () => {
                 data: {
                     touched: {
                         inputs: {
-                            input1: {name: true, instructions: true},
+                            input1: { name: true, instructions: true },
                         },
                     },
                     inputs: [
@@ -3006,11 +3013,11 @@ describe('errors', () => {
                 type: 'reusable_llm_prompt_trigger',
                 data: {
                     touched: {
-                        conditions: {0: true},
+                        conditions: { 0: true },
                     },
                     inputs: [],
                     conditionsType: 'and',
-                    conditions: [{startsWith: [{var: 'variable1'}, null]}],
+                    conditions: [{ startsWith: [{ var: 'variable1' }, null] }],
                     requires_confirmation: false,
                 },
             }
@@ -3018,7 +3025,7 @@ describe('errors', () => {
             const errors = getReusableLLMPromptTriggerNodeErrors(node, [])
 
             expect(errors).toEqual({
-                conditions: {0: 'Invalid variables'},
+                conditions: { 0: 'Invalid variables' },
             })
         })
 
@@ -3028,11 +3035,11 @@ describe('errors', () => {
                 type: 'reusable_llm_prompt_trigger',
                 data: {
                     touched: {
-                        conditions: {0: true},
+                        conditions: { 0: true },
                     },
                     inputs: [],
                     conditionsType: 'and',
-                    conditions: [{equals: [{var: 'variable1'}, '']}],
+                    conditions: [{ equals: [{ var: 'variable1' }, ''] }],
                     requires_confirmation: false,
                 },
             }
@@ -3047,7 +3054,7 @@ describe('errors', () => {
             ])
 
             expect(errors).toEqual({
-                conditions: {0: 'Enter a value'},
+                conditions: { 0: 'Enter a value' },
             })
         })
 
@@ -3057,11 +3064,11 @@ describe('errors', () => {
                 type: 'reusable_llm_prompt_trigger',
                 data: {
                     touched: {
-                        conditions: {0: true},
+                        conditions: { 0: true },
                     },
                     inputs: [],
                     conditionsType: 'and',
-                    conditions: [{equals: [{var: 'variable1'}, 0]}],
+                    conditions: [{ equals: [{ var: 'variable1' }, 0] }],
                     requires_confirmation: false,
                 },
             }
@@ -3076,7 +3083,7 @@ describe('errors', () => {
             ])
 
             expect(errors).toEqual({
-                conditions: {0: 'Enter a value'},
+                conditions: { 0: 'Enter a value' },
             })
         })
 
@@ -3086,12 +3093,12 @@ describe('errors', () => {
                 type: 'reusable_llm_prompt_trigger',
                 data: {
                     touched: {
-                        conditions: {0: true},
+                        conditions: { 0: true },
                     },
                     inputs: [],
                     conditionsType: 'and',
                     conditions: [
-                        {greaterThan: [{var: 'variable1'}, undefined]},
+                        { greaterThan: [{ var: 'variable1' }, undefined] },
                     ],
                     requires_confirmation: false,
                 },
@@ -3107,7 +3114,7 @@ describe('errors', () => {
             ])
 
             expect(errors).toEqual({
-                conditions: {0: 'Choose a date'},
+                conditions: { 0: 'Choose a date' },
             })
         })
     })
@@ -3130,7 +3137,7 @@ describe('errors', () => {
                         html: 'some html',
                         text: 'some text',
                     },
-                    choices: [{event_id: 'choice1', label: 'Option 1'}],
+                    choices: [{ event_id: 'choice1', label: 'Option 1' }],
                 },
             }
 
@@ -3224,7 +3231,7 @@ describe('errors', () => {
                         html: '',
                         text: '',
                     },
-                    choices: [{event_id: 'choice1', label: ''}],
+                    choices: [{ event_id: 'choice1', label: '' }],
                 },
             }
 
@@ -3255,7 +3262,7 @@ describe('errors', () => {
                         html: '',
                         text: '',
                     },
-                    choices: [{event_id: 'choice1', label: '{{variable1}}'}],
+                    choices: [{ event_id: 'choice1', label: '{{variable1}}' }],
                 },
             }
 
@@ -3286,7 +3293,7 @@ describe('errors', () => {
                         html: '',
                         text: '',
                     },
-                    choices: [{event_id: 'choice1', label: '{{'}],
+                    choices: [{ event_id: 'choice1', label: '{{' }],
                 },
             }
 
@@ -5525,7 +5532,7 @@ describe('getReusableLLMPromptCallNodeHasInputs()', () => {
                         data_type: 'string',
                     },
                 ],
-            })
+            }),
         ).toEqual(true)
     })
 
@@ -5533,7 +5540,7 @@ describe('getReusableLLMPromptCallNodeHasInputs()', () => {
         expect(
             getReusableLLMPromptCallNodeHasInputs({
                 inputs: [],
-            })
+            }),
         ).toEqual(false)
     })
 
@@ -5557,8 +5564,8 @@ describe('getReusableLLMPromptCallNodeHasMissingValues()', () => {
                         },
                     ],
                 },
-                {input1: 'value1'}
-            )
+                { input1: 'value1' },
+            ),
         ).toEqual(false)
     })
 
@@ -5576,8 +5583,8 @@ describe('getReusableLLMPromptCallNodeHasMissingValues()', () => {
                         },
                     ],
                 },
-                {}
-            )
+                {},
+            ),
         ).toEqual(true)
     })
 
@@ -5588,8 +5595,8 @@ describe('getReusableLLMPromptCallNodeHasMissingValues()', () => {
                 {
                     inputs: [],
                 },
-                {}
-            )
+                {},
+            ),
         ).toEqual(false)
     })
 })
@@ -5609,8 +5616,8 @@ describe('getReusableLLMPromptCallNodeHasAllValues()', () => {
                         },
                     ],
                 },
-                {}
-            )
+                {},
+            ),
         ).toEqual(false)
     })
 
@@ -5628,8 +5635,8 @@ describe('getReusableLLMPromptCallNodeHasAllValues()', () => {
                         },
                     ],
                 },
-                {input1: 'value1'}
-            )
+                { input1: 'value1' },
+            ),
         ).toEqual(true)
     })
 
@@ -5640,8 +5647,8 @@ describe('getReusableLLMPromptCallNodeHasAllValues()', () => {
                 {
                     inputs: [],
                 },
-                {}
-            )
+                {},
+            ),
         ).toEqual(false)
     })
 })
@@ -5650,40 +5657,40 @@ describe('getReusableLLMPromptCallNodeHasMissingCredentials()', () => {
     it('should return true if API key app has missing credentials', () => {
         expect(
             getReusableLLMPromptCallNodeHasMissingCredentials(
-                {type: 'app', app_id: '', api_key: ''},
-                {auth_type: 'api-key'},
-                false
-            )
+                { type: 'app', app_id: '', api_key: '' },
+                { auth_type: 'api-key' },
+                false,
+            ),
         ).toEqual(true)
     })
 
     it('should return true if OAuth2 token app has missing credentials', () => {
         expect(
             getReusableLLMPromptCallNodeHasMissingCredentials(
-                {type: 'app', app_id: '', refresh_token: ''},
-                {auth_type: 'oauth2-token'},
-                false
-            )
+                { type: 'app', app_id: '', refresh_token: '' },
+                { auth_type: 'oauth2-token' },
+                false,
+            ),
         ).toEqual(true)
     })
 
     it('should return false if API key app has credentials', () => {
         expect(
             getReusableLLMPromptCallNodeHasMissingCredentials(
-                {type: 'app', app_id: '', api_key: 'test'},
-                {auth_type: 'api-key'},
-                false
-            )
+                { type: 'app', app_id: '', api_key: 'test' },
+                { auth_type: 'api-key' },
+                false,
+            ),
         ).toEqual(false)
     })
 
     it('should return false if template', () => {
         expect(
             getReusableLLMPromptCallNodeHasMissingCredentials(
-                {type: 'app', app_id: '', api_key: ''},
-                {auth_type: 'api-key'},
-                true
-            )
+                { type: 'app', app_id: '', api_key: '' },
+                { auth_type: 'api-key' },
+                true,
+            ),
         ).toEqual(false)
     })
 })
@@ -5691,19 +5698,22 @@ describe('getReusableLLMPromptCallNodeHasMissingCredentials()', () => {
 describe('getReusableLLMPromptCallNodeHasCredentials()', () => {
     it('should return true if action template type is app and it is not a template', () => {
         expect(
-            getReusableLLMPromptCallNodeHasCredentials({type: 'app'}, false)
+            getReusableLLMPromptCallNodeHasCredentials({ type: 'app' }, false),
         ).toEqual(true)
     })
 
     it('should return false if action template type is app and it is a template', () => {
         expect(
-            getReusableLLMPromptCallNodeHasCredentials({type: 'app'}, true)
+            getReusableLLMPromptCallNodeHasCredentials({ type: 'app' }, true),
         ).toEqual(false)
     })
 
     it('should return false if action template type is not an app', () => {
         expect(
-            getReusableLLMPromptCallNodeHasCredentials({type: 'shopify'}, false)
+            getReusableLLMPromptCallNodeHasCredentials(
+                { type: 'shopify' },
+                false,
+            ),
         ).toEqual(false)
     })
 })
@@ -5711,19 +5721,19 @@ describe('getReusableLLMPromptCallNodeHasCredentials()', () => {
 describe('getReusableLLMPromptCallNodeIsClickable()', () => {
     it('should return true if node has credentials', () => {
         expect(getReusableLLMPromptCallNodeIsClickable(true, false)).toEqual(
-            true
+            true,
         )
     })
 
     it('should return true if node has inputs', () => {
         expect(getReusableLLMPromptCallNodeIsClickable(false, true)).toEqual(
-            true
+            true,
         )
     })
 
     it('should return false if node has no credentials & no inputs', () => {
         expect(getReusableLLMPromptCallNodeIsClickable(false, false)).toEqual(
-            false
+            false,
         )
     })
 })
@@ -5731,8 +5741,8 @@ describe('getReusableLLMPromptCallNodeIsClickable()', () => {
 describe('getReusableLLMPromptCallNodeStatuses()', () => {
     it('should return statuses', () => {
         const statuses = getReusableLLMPromptCallNodeStatuses({
-            graphApp: {type: 'app', app_id: '', api_key: ''},
-            actionsApp: {auth_type: 'api-key'},
+            graphApp: { type: 'app', app_id: '', api_key: '' },
+            actionsApp: { auth_type: 'api-key' },
             step: {
                 inputs: [
                     {
@@ -5743,8 +5753,8 @@ describe('getReusableLLMPromptCallNodeStatuses()', () => {
                     },
                 ],
             },
-            values: {input1: 'value1'},
-            templateApp: {type: 'app'},
+            values: { input1: 'value1' },
+            templateApp: { type: 'app' },
             isTemplate: false,
         })
 

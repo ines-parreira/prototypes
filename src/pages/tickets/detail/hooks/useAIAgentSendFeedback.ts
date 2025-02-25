@@ -1,24 +1,25 @@
-import {useQueryClient} from '@tanstack/react-query'
-import {AxiosResponse} from 'axios'
-import {useCallback} from 'react'
+import { useCallback } from 'react'
+
+import { useQueryClient } from '@tanstack/react-query'
+import { AxiosResponse } from 'axios'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     aiAgentFeedbackKeys,
-    useSubmitAIAgentTicketMessagesFeedback,
     useDeleteAIAgentTicketMessagesFeedback,
+    useSubmitAIAgentTicketMessagesFeedback,
 } from 'models/aiAgentFeedback/queries'
 import {
     DeleteMessageFeedback,
     SubmitMessageFeedback,
     TicketFeedback,
 } from 'models/aiAgentFeedback/types'
-import {TicketMessage} from 'models/ticket/types'
-import {setAgentFeedbackMessageStatus} from 'state/agents/actions'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {getAIAgentMessages} from 'state/ticket/selectors'
+import { TicketMessage } from 'models/ticket/types'
+import { setAgentFeedbackMessageStatus } from 'state/agents/actions'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { getAIAgentMessages } from 'state/ticket/selectors'
 
 import {
     FeedbackStatus,
@@ -30,7 +31,7 @@ export const useAIAgentSendFeedback = () => {
     const messageIds = aiMessages.map((message) => message.id) as number[]
     const queryKey = aiAgentFeedbackKeys.detail(messageIds)
 
-    const {mutateAsync: submitAIAgentTicketMessagesFeedback} =
+    const { mutateAsync: submitAIAgentTicketMessagesFeedback } =
         useSubmitAIAgentTicketMessagesFeedback<{
             previousFeedback: AxiosResponse<TicketFeedback, any> | undefined
         }>({
@@ -69,14 +70,14 @@ export const useAIAgentSendFeedback = () => {
                                             }
                                         }
                                         return message
-                                    }
+                                    },
                                 ),
                             ],
                         },
                     })
                 }
 
-                return {previousFeedback}
+                return { previousFeedback }
             },
             onError: (error, variables, context) => {
                 if (context) {
@@ -84,7 +85,7 @@ export const useAIAgentSendFeedback = () => {
                         AxiosResponse<TicketFeedback, any>
                     >(
                         aiAgentFeedbackKeys.detail(messageIds),
-                        context.previousFeedback
+                        context.previousFeedback,
                     )
                 }
 
@@ -93,7 +94,7 @@ export const useAIAgentSendFeedback = () => {
                         message:
                             'There was an error sending the feedback. Please try again.',
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
 
                 const [, , resourceSection] = variables
@@ -101,8 +102,8 @@ export const useAIAgentSendFeedback = () => {
                     dispatch(
                         setAgentFeedbackMessageStatus(
                             FeedbackStatus.ERROR,
-                            resourceSection
-                        )
+                            resourceSection,
+                        ),
                     )
                 }
             },
@@ -116,14 +117,14 @@ export const useAIAgentSendFeedback = () => {
                     dispatch(
                         setAgentFeedbackMessageStatus(
                             FeedbackStatus.SAVED,
-                            resourceSection
-                        )
+                            resourceSection,
+                        ),
                     )
                 }
             },
         })
 
-    const {mutateAsync: deleteAIAgentTicketMessagesFeedback} =
+    const { mutateAsync: deleteAIAgentTicketMessagesFeedback } =
         useDeleteAIAgentTicketMessagesFeedback({
             onSuccess: () => {
                 void queryClient.invalidateQueries({
@@ -136,7 +137,7 @@ export const useAIAgentSendFeedback = () => {
                         message:
                             'There was an error deleting the feedback. Please try again.',
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
             },
         })
@@ -147,14 +148,14 @@ export const useAIAgentSendFeedback = () => {
     const aiAgentSendFeedback = async (
         message: TicketMessage,
         payload: SubmitMessageFeedback,
-        resourceSection?: ResourceSection
+        resourceSection?: ResourceSection,
     ) => {
         if (resourceSection) {
             dispatch(
                 setAgentFeedbackMessageStatus(
                     FeedbackStatus.SAVING,
-                    resourceSection
-                )
+                    resourceSection,
+                ),
             )
         }
 
@@ -167,7 +168,7 @@ export const useAIAgentSendFeedback = () => {
 
     const aiAgentDeleteFeedback = async (
         message: TicketMessage,
-        payload: DeleteMessageFeedback
+        payload: DeleteMessageFeedback,
     ) => {
         await deleteAIAgentTicketMessagesFeedback([message.id!, payload])
     }

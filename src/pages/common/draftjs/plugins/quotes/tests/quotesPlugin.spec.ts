@@ -1,10 +1,11 @@
-import {ContentBlock, ContentState, DraftBlockType} from 'draft-js'
+import { ContentBlock, ContentState, DraftBlockType } from 'draft-js'
 
-import {selectWholeContentState} from '../../../../../../utils/editor'
+import { selectWholeContentState } from '../../../../../../utils/editor'
+import { setQuoteDepth } from '../quotesEditorUtils'
+import { createQuotesPlugin, WRAPPABLE_BLOCK_TYPES } from '../quotesPlugin'
+import { QUOTES_WRAPPER_INNER_ELEMENT_CLASS_NAME_PREFIX } from '../QuotesWrapper'
+
 import styles from '../quotesBlockStyle.less'
-import {setQuoteDepth} from '../quotesEditorUtils'
-import {createQuotesPlugin, WRAPPABLE_BLOCK_TYPES} from '../quotesPlugin'
-import {QUOTES_WRAPPER_INNER_ELEMENT_CLASS_NAME_PREFIX} from '../QuotesWrapper'
 
 describe('quotesPlugin', () => {
     describe('blockRenderMap', () => {
@@ -20,7 +21,7 @@ describe('quotesPlugin', () => {
             contentState = ContentState.createFromBlockArray([
                 contentState
                     .getFirstBlock()
-                    .merge({type: blockType}) as ContentBlock,
+                    .merge({ type: blockType }) as ContentBlock,
             ])
             return contentState.getFirstBlock()
         }
@@ -29,8 +30,8 @@ describe('quotesPlugin', () => {
             const quotesPlugin = createQuotesPlugin()
             expect(
                 quotesPlugin.blockStyleFn(
-                    createContentBlockWithType('unstyled')
-                )
+                    createContentBlockWithType('unstyled'),
+                ),
             ).not.toBeDefined()
         })
 
@@ -43,11 +44,11 @@ describe('quotesPlugin', () => {
             contentState = setQuoteDepth(
                 contentState,
                 selectWholeContentState(contentState),
-                depth
+                depth,
             )
 
             const style = quotesPlugin.blockStyleFn(
-                contentState.getFirstBlock()
+                contentState.getFirstBlock(),
             )
             expect(style).toContain(styles.replyThread)
             expect(style).toContain(styles['quoteDepth' + depth.toString()])
@@ -64,17 +65,17 @@ describe('quotesPlugin', () => {
                 contentState = setQuoteDepth(
                     contentState,
                     selectWholeContentState(contentState),
-                    depth
+                    depth,
                 )
 
                 const style = quotesPlugin.blockStyleFn(
-                    contentState.getFirstBlock()
+                    contentState.getFirstBlock(),
                 )
                 expect(style).toContain(
                     QUOTES_WRAPPER_INNER_ELEMENT_CLASS_NAME_PREFIX +
-                        depth.toString()
+                        depth.toString(),
                 )
-            }
+            },
         )
     })
 })

@@ -1,8 +1,8 @@
-import {AutomatePlan} from 'models/billing/types'
-import {getPlanPrice} from 'models/billing/utils'
+import { AutomatePlan } from 'models/billing/types'
+import { getPlanPrice } from 'models/billing/utils'
 
 export const convertSecondsToHours = (
-    seconds?: string | number | null
+    seconds?: string | number | null,
 ): string => {
     if (!seconds) {
         return '0'
@@ -15,7 +15,7 @@ export const convertSecondsToHours = (
 }
 
 export const convertSecondsToMinutes = (
-    seconds?: string | number | null
+    seconds?: string | number | null,
 ): string => {
     if (!seconds) {
         return '0'
@@ -49,17 +49,17 @@ export const formatValue = (val: string) => {
 
 export const formatOnFocus = (
     setValue: (val: string | number) => void,
-    val: string | number
+    val: string | number,
 ) => {
     setValue(Number(val.toString().replace(/[^0-9.]/g, '')) || '')
 }
 export const formatOnBlur = (
     setValue: (val: string | number) => void,
     val: string | number,
-    timeUnit: string
+    timeUnit: string,
 ) => {
     setValue(
-        `${Number(val.toString().replace(/[^0-9.]/g, '')) || 0}${timeUnit}`
+        `${Number(val.toString().replace(/[^0-9.]/g, '')) || 0}${timeUnit}`,
     )
 }
 
@@ -79,16 +79,16 @@ export const getFirstResponseTimeWithAutomate = (val: string | number) => {
 
 export const getAutomateSubscriptionPrice = (
     automatePlans: AutomatePlan[],
-    numberOfClosedTickets: number
+    numberOfClosedTickets: number,
 ) => {
     const numQuota = numberOfClosedTickets * 0.3
     const sortedPlans = automatePlans.sort(
-        (a, b) => (a?.num_quota_tickets || 0) - (b?.num_quota_tickets || 0)
+        (a, b) => (a?.num_quota_tickets || 0) - (b?.num_quota_tickets || 0),
     )
     const firstPlanWithHigherQuota = sortedPlans.find(
         (plan) =>
             plan?.num_quota_tickets !== null &&
-            plan?.num_quota_tickets > numQuota
+            plan?.num_quota_tickets > numQuota,
     )
 
     return getPlanPrice(firstPlanWithHigherQuota)

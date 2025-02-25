@@ -1,5 +1,5 @@
 import * as types from '../constants'
-import reducer, {initialState} from '../reducers'
+import reducer, { initialState } from '../reducers'
 
 describe('auths reducers', () => {
     it('fetch auths pagination', () => {
@@ -27,7 +27,7 @@ describe('auths reducers', () => {
             reducer(initialState, {
                 type: types.FETCH_USER_AUTHS_SUCCESS,
                 resp: resp.data,
-            })
+            }),
         ).toMatchSnapshot()
     })
 
@@ -43,7 +43,7 @@ describe('auths reducers', () => {
             reducer(initialState, {
                 type: types.RESET_API_KEY_SUCCESS,
                 resp,
-            })
+            }),
         ).toMatchSnapshot()
     })
 })

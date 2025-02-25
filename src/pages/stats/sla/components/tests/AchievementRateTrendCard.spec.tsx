@@ -1,22 +1,23 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render, screen } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {useTicketSlaAchievementRateTrend} from 'hooks/reporting/sla/useTicketSlaAchievementRate'
-import {TREND_BADGE_FORMAT} from 'pages/stats/common/components/TrendBadge'
-import {formatMetricTrend, formatMetricValue} from 'pages/stats/common/utils'
-import {AchievementRateTrendCard} from 'pages/stats/sla/components/AchievementRateTrendCard'
-import {SlaMetricConfig} from 'pages/stats/sla/SlaConfig'
-import {RootState} from 'state/types'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
-import {SlaMetric} from 'state/ui/stats/types'
-import {assumeMock} from 'utils/testing'
+import { useTicketSlaAchievementRateTrend } from 'hooks/reporting/sla/useTicketSlaAchievementRate'
+import { TREND_BADGE_FORMAT } from 'pages/stats/common/components/TrendBadge'
+import { formatMetricTrend, formatMetricValue } from 'pages/stats/common/utils'
+import { AchievementRateTrendCard } from 'pages/stats/sla/components/AchievementRateTrendCard'
+import { SlaMetricConfig } from 'pages/stats/sla/SlaConfig'
+import { RootState } from 'state/types'
+import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
+import { SlaMetric } from 'state/ui/stats/types'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/sla/useTicketSlaAchievementRate')
 const useTicketSlaAchievementRateTrendMock = assumeMock(
-    useTicketSlaAchievementRateTrend
+    useTicketSlaAchievementRateTrend,
 )
 
 const mockStore = configureMockStore([thunk])
@@ -32,7 +33,7 @@ describe('AchievementRateTrendCard', () => {
             },
         },
         ui: {
-            stats: {filters: uiStatsInitialState},
+            stats: { filters: uiStatsInitialState },
         },
     } as RootState
     const value = 5
@@ -53,24 +54,24 @@ describe('AchievementRateTrendCard', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <AchievementRateTrendCard />
-            </Provider>
+            </Provider>,
         )
 
         expect(
             screen.getByText(
                 formatMetricValue(
                     value,
-                    SlaMetricConfig[SlaMetric.AchievementRate].metricFormat
-                )
-            )
+                    SlaMetricConfig[SlaMetric.AchievementRate].metricFormat,
+                ),
+            ),
         ).toBeInTheDocument()
         expect(
             screen.getByText(
                 String(
                     formatMetricTrend(value, prevValue, TREND_BADGE_FORMAT)
-                        .formattedTrend
-                )
-            )
+                        .formattedTrend,
+                ),
+            ),
         ).toBeInTheDocument()
     })
 })

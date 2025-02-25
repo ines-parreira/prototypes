@@ -1,30 +1,27 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
-import {TicketChannel} from 'business/types/ticket'
-import {automationSubscriptionProductPrices} from 'fixtures/account'
+import { TicketChannel } from 'business/types/ticket'
+import { automationSubscriptionProductPrices } from 'fixtures/account'
 import * as billingFixtures from 'fixtures/billing'
-import {IntegrationType} from 'models/integration/constants'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
-
-import {StatsFiltersWithLogicalOperator} from 'models/stat/types'
-
-import {getIntegration} from 'pages/automate/workflows/hooks/tests/fixtures/utils'
-import {initialState as billingInitialState} from 'state/billing/reducers'
+import { IntegrationType } from 'models/integration/constants'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { StatsFiltersWithLogicalOperator } from 'models/stat/types'
+import { getIntegration } from 'pages/automate/workflows/hooks/tests/fixtures/utils'
+import { initialState as billingInitialState } from 'state/billing/reducers'
 import {
-    getStatsFilters,
-    getStatsStoreIntegrations,
-    getStoreIntegrationsStatsFilter,
     getMessagingAndAppIntegrationsStatsFilter,
-    getStatsMessagingAndAppIntegrations,
-    getSLAPoliciesStatsFilter,
     getPageStatsFilters,
     getPageStatsFiltersWithLogicalOperators,
+    getSLAPoliciesStatsFilter,
+    getStatsFilters,
     getStatsFiltersWithInitialStoreIntegration,
+    getStatsMessagingAndAppIntegrations,
+    getStatsStoreIntegrations,
     getStoreIntegrations,
+    getStoreIntegrationsStatsFilter,
 } from 'state/stats/selectors'
-import {initialState} from 'state/stats/statsSlice'
-
-import {RootState} from 'state/types'
+import { initialState } from 'state/stats/statsSlice'
+import { RootState } from 'state/types'
 
 jest.mock('moment-timezone', () => () => {
     const moment: (date: string) => Record<string, unknown> =
@@ -36,7 +33,7 @@ jest.mock('moment-timezone', () => () => {
 describe('stats selectors', () => {
     let defaultState: RootState
     const defaultStatsFilters = {
-        period: {start_datetime: '0', end_datetime: '0'},
+        period: { start_datetime: '0', end_datetime: '0' },
     } as StatsFiltersWithLogicalOperator
     const gmailIntegration = {
         id: 1,
@@ -61,7 +58,7 @@ describe('stats selectors', () => {
             }
             const state = {
                 ...defaultState,
-                stats: {filters: statFilters},
+                stats: { filters: statFilters },
             }
 
             expect(getStatsFilters(state)).toEqual({
@@ -104,7 +101,7 @@ describe('stats selectors', () => {
         it('should return only Shopify store integrations', () => {
             const state = {
                 billing: billingInitialState.mergeDeep(
-                    billingFixtures.billingState
+                    billingFixtures.billingState,
                 ),
                 integrations: fromJS({
                     integrations: [
@@ -126,7 +123,7 @@ describe('stats selectors', () => {
                     },
                 }),
                 billing: billingInitialState.mergeDeep(
-                    billingFixtures.billingState
+                    billingFixtures.billingState,
                 ),
                 integrations: fromJS({
                     integrations: [
@@ -193,7 +190,7 @@ describe('stats selectors', () => {
             }
 
             expect(selector(state)).toEqual(
-                expectedIntegrations.map((integration) => integration.id)
+                expectedIntegrations.map((integration) => integration.id),
             )
         })
     })
@@ -375,7 +372,7 @@ describe('stats selectors', () => {
             }
 
             expect(getSLAPoliciesStatsFilter(state)).toEqual(
-                state.stats.filters.slaPolicies.values
+                state.stats.filters.slaPolicies.values,
             )
         })
 

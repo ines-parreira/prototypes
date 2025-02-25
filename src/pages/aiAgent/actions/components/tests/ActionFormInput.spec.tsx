@@ -1,7 +1,8 @@
-import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
 import React from 'react'
 
-import {useFlag} from 'core/flags'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+
+import { useFlag } from 'core/flags'
 
 import ActionFormInput from '../ActionFormInput'
 
@@ -27,12 +28,12 @@ describe('<ActionFormInput />', () => {
                 }}
                 onDelete={jest.fn()}
                 onChange={jest.fn()}
-            />
+            />,
         )
 
         expect(screen.getByDisplayValue('some name')).toBeInTheDocument()
         expect(
-            screen.getByDisplayValue('some instructions')
+            screen.getByDisplayValue('some instructions'),
         ).toBeInTheDocument()
     })
 
@@ -49,7 +50,7 @@ describe('<ActionFormInput />', () => {
                 }}
                 onDelete={mockOnDelete}
                 onChange={jest.fn()}
-            />
+            />,
         )
 
         act(() => {
@@ -62,7 +63,7 @@ describe('<ActionFormInput />', () => {
     it('should change input', () => {
         const mockOnChange = jest.fn()
 
-        const {rerender} = render(
+        const { rerender } = render(
             <ActionFormInput
                 input={{
                     id: 'someid',
@@ -72,12 +73,12 @@ describe('<ActionFormInput />', () => {
                 }}
                 onDelete={jest.fn()}
                 onChange={mockOnChange}
-            />
+            />,
         )
 
         act(() => {
             fireEvent.change(screen.getByDisplayValue('some name'), {
-                target: {value: 'new name'},
+                target: { value: 'new name' },
             })
         })
 
@@ -90,7 +91,7 @@ describe('<ActionFormInput />', () => {
 
         act(() => {
             fireEvent.change(screen.getByDisplayValue('some instructions'), {
-                target: {value: 'new instructions'},
+                target: { value: 'new instructions' },
             })
         })
 
@@ -135,7 +136,7 @@ describe('<ActionFormInput />', () => {
                 }}
                 onDelete={jest.fn()}
                 onChange={mockOnChange}
-            />
+            />,
         )
 
         act(() => {
@@ -163,15 +164,15 @@ describe('<ActionFormInput />', () => {
                 onDelete={jest.fn()}
                 onChange={jest.fn()}
                 isDisabled
-            />
+            />,
         )
 
         expect(screen.getAllByText('String')[0].parentElement).toHaveClass(
-            'disabled'
+            'disabled',
         )
         expect(screen.getByDisplayValue('some name')).toBeDisabled()
         expect(screen.getByDisplayValue('some instructions')).toBeDisabled()
-        expect(screen.getByRole('button', {name: 'close'})).toBeAriaDisabled()
+        expect(screen.getByRole('button', { name: 'close' })).toBeAriaDisabled()
     })
 
     it('should render semi immutable input', () => {
@@ -186,15 +187,15 @@ describe('<ActionFormInput />', () => {
                 onDelete={jest.fn()}
                 onChange={jest.fn()}
                 isSemiImmutable
-            />
+            />,
         )
 
         expect(screen.getAllByText('String')[0].parentElement).toHaveClass(
-            'disabled'
+            'disabled',
         )
         expect(screen.getByDisplayValue('some name')).not.toBeDisabled()
         expect(screen.getByDisplayValue('some instructions')).not.toBeDisabled()
-        expect(screen.getByRole('button', {name: 'close'})).toBeAriaDisabled()
+        expect(screen.getByRole('button', { name: 'close' })).toBeAriaDisabled()
     })
 
     it('should render tooltip for disabled input', async () => {
@@ -210,7 +211,7 @@ describe('<ActionFormInput />', () => {
                 onChange={jest.fn()}
                 isDisabled
                 disabledTooltip="some tooltip text"
-            />
+            />,
         )
 
         act(() => {
@@ -235,7 +236,7 @@ describe('<ActionFormInput />', () => {
                 }}
                 onDelete={jest.fn()}
                 onChange={jest.fn()}
-            />
+            />,
         )
 
         act(() => {
@@ -261,7 +262,7 @@ describe('<ActionFormInput />', () => {
                 onChange={jest.fn()}
                 onNameBlur={mockOnNameBlur}
                 onInstructionsBlur={mockOnInstructionsBlur}
-            />
+            />,
         )
 
         act(() => {
@@ -291,14 +292,14 @@ describe('<ActionFormInput />', () => {
                     name: 'Name is required',
                     instructions: 'Description is required',
                 }}
-            />
+            />,
         )
 
         expect(screen.getAllByRole('textbox')[1].parentElement).toHaveClass(
-            'hasError'
+            'hasError',
         )
         expect(screen.getAllByRole('textbox')[2].parentElement).toHaveClass(
-            'hasError'
+            'hasError',
         )
     })
 })

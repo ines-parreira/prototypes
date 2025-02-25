@@ -1,5 +1,5 @@
-import {OrderDirection} from 'models/api/types'
-import {RootState} from 'state/types'
+import { OrderDirection } from 'models/api/types'
+import { RootState } from 'state/types'
 import {
     channelsSlice,
     getChannelsSorting,
@@ -10,12 +10,12 @@ import {
     sortingSet,
     toggleHeatmapMode,
 } from 'state/ui/stats/channelsSlice'
-import {ChannelsTableColumns} from 'state/ui/stats/types'
+import { ChannelsTableColumns } from 'state/ui/stats/types'
 
 describe('channelsSlice', () => {
     const defaultState = {
         ui: {
-            stats: {[channelsSlice.name]: initialState},
+            stats: { [channelsSlice.name]: initialState },
         },
     } as RootState
 
@@ -26,11 +26,11 @@ describe('channelsSlice', () => {
     it('should toggle heatmapMode state', () => {
         const newState = channelsSlice.reducer(
             initialState,
-            toggleHeatmapMode()
+            toggleHeatmapMode(),
         )
 
         expect(newState.heatmapMode).toEqual(
-            !defaultState.ui.stats[channelsSlice.name].heatmapMode
+            !defaultState.ui.stats[channelsSlice.name].heatmapMode,
         )
     })
 
@@ -41,7 +41,7 @@ describe('channelsSlice', () => {
 
             const newState = channelsSlice.reducer(
                 initialState,
-                sortingSet({field, direction})
+                sortingSet({ field, direction }),
             )
 
             expect(newState.sorting).toEqual({
@@ -55,7 +55,7 @@ describe('channelsSlice', () => {
         it('should set sorting loading', () => {
             const newState = channelsSlice.reducer(
                 initialState,
-                sortingLoading()
+                sortingLoading(),
             )
 
             expect(newState.sorting).toEqual({
@@ -79,7 +79,7 @@ describe('channelsSlice', () => {
                         lastSortingMetric: null,
                     },
                 },
-                sortingLoaded(orderedChannelSlugs)
+                sortingLoaded(orderedChannelSlugs),
             )
 
             expect(newState.sorting).toEqual({
@@ -92,7 +92,7 @@ describe('channelsSlice', () => {
 
         it('should return the sorting', () => {
             expect(getChannelsSorting(defaultState)).toEqual(
-                defaultState.ui.stats[channelsSlice.name].sorting
+                defaultState.ui.stats[channelsSlice.name].sorting,
             )
         })
     })

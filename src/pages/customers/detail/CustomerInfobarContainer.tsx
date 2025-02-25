@@ -1,5 +1,6 @@
-import React, {useEffect} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
+import React, { useEffect } from 'react'
+
+import { connect, ConnectedProps } from 'react-redux'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import Infobar from 'pages/common/components/infobar/Infobar/Infobar'
@@ -7,11 +8,11 @@ import {
     DEPRECATED_getActiveCustomer,
     getActiveCustomerId,
 } from 'state/customers/selectors'
-import {InfobarState} from 'state/infobar/types'
-import {RootState} from 'state/types'
+import { InfobarState } from 'state/infobar/types'
+import { RootState } from 'state/types'
 import * as actions from 'state/widgets/actions'
-import {getSources} from 'state/widgets/selectors'
-import {WidgetEnvironment} from 'state/widgets/types'
+import { getSources } from 'state/widgets/selectors'
+import { WidgetEnvironment } from 'state/widgets/types'
 
 type Props = {
     infobar: InfobarState

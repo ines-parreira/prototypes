@@ -1,18 +1,19 @@
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {integrationsState} from 'fixtures/integrations'
-import {tags} from 'fixtures/tag'
-import {createRule} from 'models/rule/resources'
-import {TagsState} from 'state/entities/tags/types'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {RootState, StoreDispatch} from 'state/types'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { integrationsState } from 'fixtures/integrations'
+import { tags } from 'fixtures/tag'
+import { createRule } from 'models/rule/resources'
+import { TagsState } from 'state/entities/tags/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { RootState, StoreDispatch } from 'state/types'
 
 import RuleCreationModalContent from '../RuleCreationModalContent'
 
@@ -51,26 +52,26 @@ describe('<RuleCreationModalContent />', () => {
                     ...acc,
                     [value.id]: value,
                 }),
-                {}
+                {},
             ),
         } as any,
     })
 
     it('should render', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <RuleCreationModalContent {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should clear the value when the condition key change', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <RuleCreationModalContent {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.focus(getByText(/Channel/))
@@ -80,26 +81,28 @@ describe('<RuleCreationModalContent />', () => {
     })
 
     it('should disable submit when the form is not valid', () => {
-        const {getByPlaceholderText, getByText, getByRole} = render(
+        const { getByPlaceholderText, getByText, getByRole } = render(
             <Provider store={store}>
                 <RuleCreationModalContent {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.change(getByPlaceholderText(/\[Auto assign\] foo/), {
-            target: {value: ''},
+            target: { value: '' },
         })
         fireEvent.focus(getByText(/Channel/))
         fireEvent.click(screen.getByText('Tag'))
 
-        expect(getByRole('button', {name: /^Create Rule$/})).toBeAriaDisabled()
+        expect(
+            getByRole('button', { name: /^Create Rule$/ }),
+        ).toBeAriaDisabled()
     })
 
     it('should call onClose when clicking on "Create rule later"', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <RuleCreationModalContent {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(getByText(/Create rule later/))
@@ -108,16 +111,16 @@ describe('<RuleCreationModalContent />', () => {
     })
 
     it('should log a segment event and call onClose when successfully creating a new rule', async () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <RuleCreationModalContent {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(getByText(/^Create Rule$/))
 
         expect(logEventMock).toHaveBeenCalledWith(
-            SegmentEvent.TeamWizardCreatedRule
+            SegmentEvent.TeamWizardCreatedRule,
         )
         expect(createRule).toHaveBeenCalled()
 
@@ -130,10 +133,10 @@ describe('<RuleCreationModalContent />', () => {
         ;(
             createRule as jest.MockedFunction<typeof createRule>
         ).mockImplementationOnce(() => Promise.reject())
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <RuleCreationModalContent {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(getByText(/^Create Rule$/))
@@ -147,10 +150,10 @@ describe('<RuleCreationModalContent />', () => {
     })
 
     it('should render a shorthand selection when selecting several items', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <RuleCreationModalContent {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.focus(getByText(/email/))

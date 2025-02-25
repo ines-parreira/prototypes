@@ -1,26 +1,27 @@
-import classnames from 'classnames'
-import React, {useEffect, useMemo, useState} from 'react'
-import {Link} from 'react-router-dom'
-import {UncontrolledTooltip} from 'reactstrap'
+import React, { useEffect, useMemo, useState } from 'react'
 
-import {IntegrationType} from 'models/integration/constants'
-import {ShopifyCustomerTagsInput} from 'pages/convert/campaigns/components/ContactCaptureForm/ShopifyCustomerTagsInput'
-import {ErrorMessage} from 'pages/convert/campaigns/components/ContactCaptureForm/styled'
+import classnames from 'classnames'
+import { Link } from 'react-router-dom'
+import { UncontrolledTooltip } from 'reactstrap'
+
+import { IntegrationType } from 'models/integration/constants'
+import { ShopifyCustomerTagsInput } from 'pages/convert/campaigns/components/ContactCaptureForm/ShopifyCustomerTagsInput'
+import { ErrorMessage } from 'pages/convert/campaigns/components/ContactCaptureForm/styled'
 import {
     StepProps,
     TransitoryAttachmentData,
     TransitoryAttachmentSubscriber,
 } from 'pages/convert/campaigns/components/ContactCaptureForm/types'
-import {useIntegrationContext} from 'pages/convert/campaigns/containers/IntegrationProvider'
-import {getIconFromType} from 'state/integrations/helpers'
+import { useIntegrationContext } from 'pages/convert/campaigns/containers/IntegrationProvider'
+import { getIconFromType } from 'state/integrations/helpers'
 
 import css from './SetUp.less'
 
 export const SetUp = (props: StepProps) => {
     const tagsLimit = 5
-    const {attachmentData, setAttachmentData, setNextButtonActive} = props
+    const { attachmentData, setAttachmentData, setNextButtonActive } = props
 
-    const {chatIntegration} = useIntegrationContext()
+    const { chatIntegration } = useIntegrationContext()
 
     const [shopifyTarget, setShopifyTarget] =
         useState<TransitoryAttachmentSubscriber>({
@@ -42,7 +43,7 @@ export const SetUp = (props: StepProps) => {
         tags: {
             label: string
             value: string
-        }[]
+        }[],
     ) => {
         setShopifyTarget((state) => {
             return {

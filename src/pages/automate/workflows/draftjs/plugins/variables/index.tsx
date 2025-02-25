@@ -1,15 +1,16 @@
-import {ContentBlock, ContentState, EditorState} from 'draft-js'
-import findWithRegex from 'find-with-regex'
 import React from 'react'
 
-import {workflowVariableRegex} from 'pages/automate/workflows/models/variables.model'
-import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
+import { ContentBlock, ContentState, EditorState } from 'draft-js'
+import findWithRegex from 'find-with-regex'
+
+import { workflowVariableRegex } from 'pages/automate/workflows/models/variables.model'
+import { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
 import {
     DecoratorComponentProps,
     DecoratorStrategyCallback,
 } from 'pages/common/draftjs/plugins/types'
 
-import {addEntityToVariable} from './utils'
+import { addEntityToVariable } from './utils'
 import WorkflowVariableTag, {
     WorkflowVariableTagProps,
 } from './WorkflowVariableTag'
@@ -27,7 +28,7 @@ export default function createWorkflowVariablesPlugin(options: Options = {}) {
                 strategy: (
                     contentBlock: ContentBlock,
                     callback: DecoratorStrategyCallback,
-                    contentState: ContentState
+                    contentState: ContentState,
                 ) => {
                     contentBlock.findEntityRanges((character) => {
                         const entityKey = character.getEntity()
@@ -39,7 +40,7 @@ export default function createWorkflowVariablesPlugin(options: Options = {}) {
                     }, callback)
                 },
                 component: (props: DecoratorComponentProps) => {
-                    const {contentState, entityKey, children} = props
+                    const { contentState, entityKey, children } = props
 
                     const handleClick = (element: HTMLElement) => {
                         options.onClick?.(entityKey, element)
@@ -76,9 +77,9 @@ export default function createWorkflowVariablesPlugin(options: Options = {}) {
                                 newContentState,
                                 start,
                                 end,
-                                options.getVariables?.()
+                                options.getVariables?.(),
                             )
-                        }
+                        },
                     )
                 }
             })
@@ -87,7 +88,7 @@ export default function createWorkflowVariablesPlugin(options: Options = {}) {
                 const newEditorState = EditorState.push(
                     editorState,
                     newContentState,
-                    'apply-entity'
+                    'apply-entity',
                 )
                 const currentSelection = editorState.getSelection()
                 // only if editor is focused,
@@ -96,7 +97,7 @@ export default function createWorkflowVariablesPlugin(options: Options = {}) {
                     // restore selection after replaceText
                     return EditorState.forceSelection(
                         newEditorState,
-                        currentSelection
+                        currentSelection,
                     )
                 }
                 return newEditorState

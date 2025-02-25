@@ -1,24 +1,26 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import moment from 'moment'
-import React, {useEffect, useMemo} from 'react'
-import {Link, useHistory} from 'react-router-dom'
+import React, { useEffect, useMemo } from 'react'
 
-import {AlertBannerTypes} from 'AlertBanners'
-import {FeatureFlagKey} from 'config/featureFlags'
+import classNames from 'classnames'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import moment from 'moment'
+import { Link, useHistory } from 'react-router-dom'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { AlertBannerTypes } from 'AlertBanners'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {Cadence, ProductType} from 'models/billing/types'
-import {isLegacyAutomate} from 'models/billing/utils'
+import { Cadence, ProductType } from 'models/billing/types'
+import { isLegacyAutomate } from 'models/billing/utils'
 import useMeetAiAgentNotifications from 'pages/aiAgent/hooks/useMeetAiAgentNotification'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
 import BillingScheduledDowngrades from 'pages/settings/new_billing/components/BillingScheduledDowngrades/BillingScheduledDowngrades'
 import {
     getCurrentAutomatePlan,
+    getCurrentConvertPlan,
     getCurrentHelpdeskCadence,
     getCurrentHelpdeskPlan,
-    getCurrentConvertPlan,
     getCurrentSmsPlan,
     getCurrentVoicePlan,
 } from 'state/billing/selectors'
@@ -30,11 +32,11 @@ import {
 import {
     getCurrentSubscription,
     hasCreditCard as getHasCreditCard,
-    isTrialing,
     shouldPayWithShopify as getShouldPayWithShopify,
+    isTrialing,
 } from 'state/currentAccount/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStyle} from 'state/notifications/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStyle } from 'state/notifications/types'
 
 import ProductCard from '../../components/ProductCard'
 import {
@@ -91,25 +93,25 @@ const UsageAndPlansView = ({
         ? isLegacyAutomate(currentAutomatePlan)
         : false
     const trialingStart = moment(
-        currentSubscription.get('trial_start_datetime')
+        currentSubscription.get('trial_start_datetime'),
     )
     const trialingEnd = moment(currentSubscription.get('trial_end_datetime'))
     const trialPeriodStart = useMemo(
         () => trialingStart.format(DATE_FORMAT),
-        [trialingStart]
+        [trialingStart],
     )
 
     const trialPeriodEnd = useMemo(
         () => trialingEnd.format(DATE_FORMAT),
-        [trialingEnd]
+        [trialingEnd],
     )
 
     const hasSubscription = useMemo(
         () => !currentSubscription.isEmpty(),
-        [currentSubscription]
+        [currentSubscription],
     )
     const scheduledToCancelAt = currentSubscription.get(
-        'scheduled_to_cancel_at'
+        'scheduled_to_cancel_at',
     )
     // in the last 3 days of the trial show banner
     const showTrialBanner = useMemo(() => {
@@ -163,7 +165,7 @@ const UsageAndPlansView = ({
                             text: 'Review Subscription',
                         },
                         id: 'trial-start-subscription',
-                    })
+                    }),
                 )
             } else if (showTrialBanner) {
                 const CTA = {
@@ -187,7 +189,7 @@ const UsageAndPlansView = ({
                         type: AlertBannerTypes.Warning,
                         CTA,
                         message: `Your free trial is ending on ${trialPeriodEnd}.`,
-                    })
+                    }),
                 )
             }
         }
@@ -224,7 +226,7 @@ const UsageAndPlansView = ({
                             cycle on{' '}
                             <span>
                                 {moment(scheduledToCancelAt).format(
-                                    DATE_FORMAT
+                                    DATE_FORMAT,
                                 )}
                             </span>
                             .
@@ -287,7 +289,7 @@ const UsageAndPlansView = ({
                                     className={css.link}
                                     onClick={() =>
                                         contactBilling(
-                                            TicketPurpose.MONTHLY_TO_YEARLY
+                                            TicketPurpose.MONTHLY_TO_YEARLY,
                                         )
                                     }
                                 >
@@ -376,7 +378,7 @@ const UsageAndPlansView = ({
                     banner={convertBanner}
                     isDisabled={!currentConvertPlan && !!scheduledToCancelAt}
                     autoUpgradeEnabled={Boolean(
-                        convertStatus && convertStatus.auto_upgrade_enabled
+                        convertStatus && convertStatus.auto_upgrade_enabled,
                     )}
                 />
             </div>

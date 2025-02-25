@@ -1,9 +1,8 @@
-import {Macro} from '@gorgias/api-queries'
+import { Macro } from '@gorgias/api-queries'
+import { RequirementType } from '@gorgias/api-types'
 
-import {RequirementType} from '@gorgias/api-types'
-
-import {ticketInputFieldDefinition} from 'fixtures/customField'
-import {macroFixture, setCustomFieldValueAction} from 'fixtures/macro'
+import { ticketInputFieldDefinition } from 'fixtures/customField'
+import { macroFixture, setCustomFieldValueAction } from 'fixtures/macro'
 
 import {
     getInvalidTicketFieldIds,
@@ -13,29 +12,29 @@ import {
 describe('getInvalidTicketFieldIds', () => {
     it('should return empty array if no fields are invalid', () => {
         const fieldsState = {
-            1: {id: 1, value: 'ok'},
-            2: {id: 2, value: 'ok'},
+            1: { id: 1, value: 'ok' },
+            2: { id: 2, value: 'ok' },
         }
         const fieldDefinitions = [
             ticketInputFieldDefinition,
-            {...ticketInputFieldDefinition, id: 2},
+            { ...ticketInputFieldDefinition, id: 2 },
         ]
         expect(
             getInvalidTicketFieldIds({
                 fieldsState,
                 fieldDefinitions,
                 evaluatedConditions: {},
-            })
+            }),
         ).toEqual([])
     })
     it('should return an array of invalid field ids', () => {
         const fieldsState = {
-            1: {id: 1, value: 'ok'},
-            2: {id: 2, value: undefined},
+            1: { id: 1, value: 'ok' },
+            2: { id: 2, value: undefined },
         }
         const fieldDefinitions = [
             ticketInputFieldDefinition,
-            {...ticketInputFieldDefinition, id: 2, required: true},
+            { ...ticketInputFieldDefinition, id: 2, required: true },
             {
                 ...ticketInputFieldDefinition,
                 id: 3,
@@ -48,7 +47,7 @@ describe('getInvalidTicketFieldIds', () => {
                 fieldsState,
                 fieldDefinitions,
                 evaluatedConditions: {},
-            })
+            }),
         ).toEqual([2])
     })
 })
@@ -56,8 +55,8 @@ describe('getInvalidTicketFieldIds', () => {
 describe('mergeFieldsStateWithMacroValues', () => {
     it('should return a fields state where macro action values, related to field values, replace their respective field value', () => {
         const fieldsState = {
-            1: {id: 1, value: 'ok'},
-            2: {id: 2, value: 'ok'},
+            1: { id: 1, value: 'ok' },
+            2: { id: 2, value: 'ok' },
         }
         const appliedMacro: Macro = {
             ...macroFixture,
@@ -75,10 +74,10 @@ describe('mergeFieldsStateWithMacroValues', () => {
             ],
         }
         expect(
-            mergeFieldsStateWithMacroValues({fieldsState, appliedMacro})
+            mergeFieldsStateWithMacroValues({ fieldsState, appliedMacro }),
         ).toEqual({
-            1: {id: 1, value: setCustomFieldValueAction.arguments.value},
-            2: {id: 2, value: 'ok'},
+            1: { id: 1, value: setCustomFieldValueAction.arguments.value },
+            2: { id: 2, value: 'ok' },
         })
     })
 })

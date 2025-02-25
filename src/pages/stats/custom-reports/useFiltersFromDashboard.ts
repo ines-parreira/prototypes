@@ -1,13 +1,13 @@
 import uniq from 'lodash/uniq'
 
-import {StaticFilter} from 'models/stat/types'
-import {OptionalFilter} from 'pages/stats/common/filters/FiltersPanel'
-import {getComponentConfig} from 'pages/stats/custom-reports/config'
-import {CustomReportSchema} from 'pages/stats/custom-reports/types'
-import {getChildrenOfTypeChart} from 'pages/stats/custom-reports/utils'
+import { StaticFilter } from 'models/stat/types'
+import { OptionalFilter } from 'pages/stats/common/filters/FiltersPanel'
+import { getComponentConfig } from 'pages/stats/custom-reports/config'
+import { CustomReportSchema } from 'pages/stats/custom-reports/types'
+import { getChildrenOfTypeChart } from 'pages/stats/custom-reports/utils'
 
 function getFiltersByConfigId(chartId: string) {
-    const {reportConfig} = getComponentConfig(chartId)
+    const { reportConfig } = getComponentConfig(chartId)
 
     return {
         persistentFilters: reportConfig?.reportFilters.persistent || [],

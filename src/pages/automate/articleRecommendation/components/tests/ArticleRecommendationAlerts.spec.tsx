@@ -1,5 +1,6 @@
-import {screen, render} from '@testing-library/react'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import {
     ConnectedChannelsInfoAlert,
@@ -13,14 +14,14 @@ describe('ArticleRecommendationAlerts', () => {
         render(<NoHelpCenterAlert />)
 
         expect(
-            screen.getByText(/create a help center and add articles/i)
+            screen.getByText(/create a help center and add articles/i),
         ).toBeInTheDocument()
     })
     it('should render <ManyHelpCentersAlert />', () => {
         render(<ManyHelpCentersAlert shopName="shop-name" shopType="shopify" />)
 
         expect(
-            screen.getByText(/make sure the desired help center/i)
+            screen.getByText(/make sure the desired help center/i),
         ).toBeInTheDocument()
     })
     it('should render <EmptyHelpCenterAlert />', () => {
@@ -33,7 +34,7 @@ describe('ArticleRecommendationAlerts', () => {
             <ConnectedChannelsInfoAlert
                 shopName="shop-name"
                 shopType="shopify"
-            />
+            />,
         )
 
         expect(screen.getByText(/control where customer/i)).toBeInTheDocument()

@@ -1,12 +1,13 @@
-import {useEffect, useMemo, useRef} from 'react'
-import {matchPath, useHistory, useLocation} from 'react-router-dom'
+import { useEffect, useMemo, useRef } from 'react'
+
+import { matchPath, useHistory, useLocation } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import useIsMobileResolution from 'hooks/useIsMobileResolution/useIsMobileResolution'
 import usePrevious from 'hooks/usePrevious'
-import {ViewType} from 'models/view/types'
-import {getActiveView} from 'state/views/selectors'
-import {isStrictTicketPath} from 'utils'
+import { ViewType } from 'models/view/types'
+import { getActiveView } from 'state/views/selectors'
+import { isStrictTicketPath } from 'utils'
 
 import useSplitTicketView from './useSplitTicketView'
 
@@ -22,30 +23,30 @@ export default function useSplitTicketViewSwitcher() {
         state: locationState,
     } = useLocation<LocationState>()
     const previousPath = usePrevious(path)
-    const {isEnabled, shouldRedirectToSplitView} = useSplitTicketView()
+    const { isEnabled, shouldRedirectToSplitView } = useSplitTicketView()
     const activeView = useAppSelector(getActiveView)
     const isMobileResolution = useIsMobileResolution()
     const isSplitTicketViewEnabled = useMemo(
         () => isEnabled && !isMobileResolution,
-        [isEnabled, isMobileResolution]
+        [isEnabled, isMobileResolution],
     )
     const previousIsSplitTicketViewEnabled = useRef<boolean | undefined>(
-        undefined
+        undefined,
     )
 
     const shouldSkipRedirect = locationState?.skipRedirect
 
     const activeViewId = useMemo(
         () => activeView.get('id') as number | undefined,
-        [activeView]
+        [activeView],
     )
 
     const activeViewType = useMemo(
         () => activeView.get('type') as ViewType | undefined,
-        [activeView]
+        [activeView],
     )
 
-    const {ticketId, viewId} = useMemo(() => {
+    const { ticketId, viewId } = useMemo(() => {
         let match = matchPath(path, '/app/views/:viewId/:ticketId?')
         if (!match) {
             match = matchPath(path, '/app/tickets/:viewId/:viewSlug?')
@@ -117,7 +118,7 @@ export default function useSplitTicketViewSwitcher() {
                     activeViewId && activeViewId.toString() !== viewId
                         ? activeViewId
                         : viewId
-                }`
+                }`,
             )
             return
         }

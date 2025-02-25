@@ -1,8 +1,7 @@
-import {UseQueryResult} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
+import { UseQueryResult } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {getCsvFileNameWithDates} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
-
+import { getCsvFileNameWithDates } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
 import {
     fetchCustomFieldsTicketCountTimeSeries,
     useCustomFieldsTicketCountTimeSeries,
@@ -11,10 +10,9 @@ import {
     getPeriodDateTimes,
     TimeSeriesDataItem,
 } from 'hooks/reporting/useTimeSeries'
-import {OrderDirection} from 'models/api/types'
-import {ReportingGranularity} from 'models/reporting/types'
-import {formatDates} from 'pages/stats/utils'
-
+import { OrderDirection } from 'models/api/types'
+import { ReportingGranularity } from 'models/reporting/types'
+import { formatDates } from 'pages/stats/utils'
 import {
     fetchCustomFieldsReportData,
     formatData,
@@ -23,15 +21,15 @@ import {
     useCustomFieldsReportData,
 } from 'services/reporting/ticketFieldsReportingService'
 import * as files from 'utils/file'
-import {getFilterDateRange} from 'utils/reporting'
-import {assumeMock} from 'utils/testing'
+import { getFilterDateRange } from 'utils/reporting'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/timeSeries')
 const useCustomFieldsTicketCountTimeSeriesMock = assumeMock(
-    useCustomFieldsTicketCountTimeSeries
+    useCustomFieldsTicketCountTimeSeries,
 )
 const fetchCustomFieldsTicketCountTimeSeriesMock = assumeMock(
-    fetchCustomFieldsTicketCountTimeSeries
+    fetchCustomFieldsTicketCountTimeSeries,
 )
 jest.mock('utils/file')
 
@@ -72,7 +70,7 @@ describe('ticketFieldsReportingService', () => {
     }
     const dateTimes = getPeriodDateTimes(
         getFilterDateRange(statsFilters.period),
-        granularity
+        granularity,
     ).map((item) => formatDates(granularity, item))
     const formattedReport = [
         [...LEVEL_LABELS, ...dateTimes],
@@ -85,14 +83,14 @@ describe('ticketFieldsReportingService', () => {
             isLoading: false,
         } as UseQueryResult<Record<string, TimeSeriesDataItem[][]>>)
         fetchCustomFieldsTicketCountTimeSeriesMock.mockResolvedValue(
-            timeSeriesData
+            timeSeriesData,
         )
     })
 
     describe('formatData', () => {
         it('should format data', () => {
             expect(
-                formatData(data, dateTimes, customFieldsOrder.direction)
+                formatData(data, dateTimes, customFieldsOrder.direction),
             ).toEqual(formattedReport)
         })
     })
@@ -102,20 +100,20 @@ describe('ticketFieldsReportingService', () => {
         const selectedCustomFieldId = 2
         const fileName = getCsvFileNameWithDates(
             statsFilters.period,
-            TICKET_FIELDS_DOWNLOAD_FILE_NAME
+            TICKET_FIELDS_DOWNLOAD_FILE_NAME,
         )
 
         it('should call createCsv with a report', () => {
             const createCsvSpy = jest.spyOn(files, 'createCsv')
 
-            const {result} = renderHook(() =>
+            const { result } = renderHook(() =>
                 useCustomFieldsReportData(
                     statsFilters,
                     userTimezone,
                     granularity,
                     customFieldsOrder,
-                    String(selectedCustomFieldId)
-                )
+                    String(selectedCustomFieldId),
+                ),
             )
 
             expect(createCsvSpy).toHaveBeenCalledWith(formattedReport)
@@ -128,14 +126,14 @@ describe('ticketFieldsReportingService', () => {
             })
         })
         it('should return a report', () => {
-            const {result} = renderHook(() =>
+            const { result } = renderHook(() =>
                 useCustomFieldsReportData(
                     statsFilters,
                     userTimezone,
                     granularity,
                     customFieldsOrder,
-                    String(selectedCustomFieldId)
-                )
+                    String(selectedCustomFieldId),
+                ),
             )
 
             expect(result.current).toEqual({
@@ -151,7 +149,7 @@ describe('ticketFieldsReportingService', () => {
         const selectedCustomFieldId = 2
         const fileName = getCsvFileNameWithDates(
             statsFilters.period,
-            TICKET_FIELDS_DOWNLOAD_FILE_NAME
+            TICKET_FIELDS_DOWNLOAD_FILE_NAME,
         )
 
         it('should call createCsv with a report', async () => {
@@ -164,7 +162,7 @@ describe('ticketFieldsReportingService', () => {
                 {
                     customFieldsOrder,
                     selectedCustomFieldId: String(selectedCustomFieldId),
-                }
+                },
             )
 
             expect(createCsvSpy).toHaveBeenCalledWith(formattedReport)
@@ -185,7 +183,7 @@ describe('ticketFieldsReportingService', () => {
                 {
                     customFieldsOrder,
                     selectedCustomFieldId: String(selectedCustomFieldId),
-                }
+                },
             )
 
             expect(result).toEqual({
@@ -203,7 +201,7 @@ describe('ticketFieldsReportingService', () => {
                 {
                     customFieldsOrder,
                     selectedCustomFieldId: null,
-                }
+                },
             )
 
             expect(result).toEqual({
@@ -223,7 +221,7 @@ describe('ticketFieldsReportingService', () => {
                 {
                     customFieldsOrder,
                     selectedCustomFieldId: String(selectedCustomFieldId),
-                }
+                },
             )
 
             expect(result).toEqual({

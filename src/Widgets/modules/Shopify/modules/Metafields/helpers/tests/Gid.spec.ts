@@ -1,6 +1,6 @@
-import {ShopifyMetafieldType} from '@gorgias/api-queries'
+import { ShopifyMetafieldType } from '@gorgias/api-queries'
 
-import {extractGid, prepareGidUrl} from '../Gid'
+import { extractGid, prepareGidUrl } from '../Gid'
 
 describe('extractGid', () => {
     it('should extractGid', () => {
@@ -14,7 +14,7 @@ describe('extractGid', () => {
         (url: any) => {
             const gid = extractGid(url)
             expect(gid).toEqual(undefined)
-        }
+        },
     )
 })
 
@@ -25,10 +25,10 @@ describe('prepareGuidUrl()', () => {
         const url = prepareGidUrl(
             ShopifyMetafieldType.ProductReference,
             storeName,
-            gid
+            gid,
         )
         expect(url).toEqual(
-            `https://admin.shopify.com/store/${storeName}/products/${gid}`
+            `https://admin.shopify.com/store/${storeName}/products/${gid}`,
         )
     })
 
@@ -38,10 +38,10 @@ describe('prepareGuidUrl()', () => {
         const url = prepareGidUrl(
             ShopifyMetafieldType.PageReference,
             storeName,
-            gid
+            gid,
         )
         expect(url).toEqual(
-            `https://admin.shopify.com/store/${storeName}/pages/${gid}`
+            `https://admin.shopify.com/store/${storeName}/pages/${gid}`,
         )
     })
 
@@ -51,10 +51,10 @@ describe('prepareGuidUrl()', () => {
         const url = prepareGidUrl(
             ShopifyMetafieldType.CollectionReference,
             storeName,
-            gid
+            gid,
         )
         expect(url).toEqual(
-            `https://admin.shopify.com/store/${storeName}/collections/${gid}`
+            `https://admin.shopify.com/store/${storeName}/collections/${gid}`,
         )
     })
 

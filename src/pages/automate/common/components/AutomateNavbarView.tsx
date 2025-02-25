@@ -1,17 +1,17 @@
-import React, {useMemo} from 'react'
-import {useRouteMatch} from 'react-router-dom'
+import React, { useMemo } from 'react'
+
+import { useRouteMatch } from 'react-router-dom'
 
 import navbarCss from 'assets/css/navbar.less'
 import useEffectOnce from 'hooks/useEffectOnce'
 import useLocalStorage from 'hooks/useLocalStorage'
-import {IntegrationType, StoreIntegration} from 'models/integration/types'
-import {ShopType} from 'models/selfServiceConfiguration/types'
-import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
+import { IntegrationType, StoreIntegration } from 'models/integration/types'
+import { ShopType } from 'models/selfServiceConfiguration/types'
+import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
-import {compare} from 'utils'
+import { compare } from 'utils'
 
 import AutomateNavbarSectionBlock from './AutomateNavbarSectionBlock'
-
 import {
     AUTOMATION_NAVBAR_COLLAPSED_AAO_SECTIONS_KEY,
     MAX_EXPANDED_AAO_SECTIONS_BY_DEFAULT,
@@ -20,13 +20,13 @@ import {
 type SectionKey = `${ShopType}:${string}`
 
 const getSectionKeyFromStoreIntegration = (
-    integration: StoreIntegration
+    integration: StoreIntegration,
 ): SectionKey => {
     return `${integration.type}:${getShopNameFromStoreIntegration(integration)}`
 }
 
 const AutomateNavbarView = () => {
-    const match = useRouteMatch<{shopType?: string; shopName: string}>({
+    const match = useRouteMatch<{ shopType?: string; shopName: string }>({
         path: [
             '/app/automation/:shopType/:shopName/ai-agent',
             '/app/automation/:shopType/:shopName/flows',
@@ -40,18 +40,18 @@ const AutomateNavbarView = () => {
     const storeIntegrations = useStoreIntegrations()
     const sortedStoreIntegrations = useMemo(
         () => [...storeIntegrations].sort((a, b) => compare(a.name, b.name)),
-        [storeIntegrations]
+        [storeIntegrations],
     )
     const initialCollapsedSections = useMemo(
         () =>
             storeIntegrations.length > MAX_EXPANDED_AAO_SECTIONS_BY_DEFAULT
                 ? storeIntegrations.map(getSectionKeyFromStoreIntegration)
                 : [],
-        [storeIntegrations]
+        [storeIntegrations],
     )
     const [collapsedSections, setCollapsedSections] = useLocalStorage<string[]>(
         AUTOMATION_NAVBAR_COLLAPSED_AAO_SECTIONS_KEY,
-        initialCollapsedSections
+        initialCollapsedSections,
     )
 
     useEffectOnce(() => {
@@ -59,7 +59,7 @@ const AutomateNavbarView = () => {
             return
         }
 
-        const {shopType = IntegrationType.Shopify, shopName} = match.params
+        const { shopType = IntegrationType.Shopify, shopName } = match.params
         const key = `${shopType}:${shopName}`
 
         const newCollapsedSections = [...collapsedSections]
@@ -93,9 +93,9 @@ const AutomateNavbarView = () => {
     const firstShopifyIntegration = useMemo(
         () =>
             sortedStoreIntegrations.find(
-                (integration) => integration.type === IntegrationType.Shopify
+                (integration) => integration.type === IntegrationType.Shopify,
             ),
-        [sortedStoreIntegrations]
+        [sortedStoreIntegrations],
     )
     return (
         <div className={navbarCss.category}>

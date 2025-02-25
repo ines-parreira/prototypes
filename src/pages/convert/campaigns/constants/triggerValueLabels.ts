@@ -1,5 +1,5 @@
-import {CampaignTriggerBusinessHoursValuesEnum} from '../types/enums/CampaignTriggerBusinessHoursValues.enum'
-import {CampaignTriggerDeviceTypeValueEnum} from '../types/enums/CampaignTriggerDeviceTypeValue.enum'
+import { CampaignTriggerBusinessHoursValuesEnum } from '../types/enums/CampaignTriggerBusinessHoursValues.enum'
+import { CampaignTriggerDeviceTypeValueEnum } from '../types/enums/CampaignTriggerDeviceTypeValue.enum'
 
 export const BUSINESS_HOURS_VALUES = [
     {

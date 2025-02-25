@@ -1,4 +1,4 @@
-import React, {createContext, useMemo, ReactNode} from 'react'
+import React, { createContext, ReactNode, useMemo } from 'react'
 
 type Props = {
     activeScreen?: string
@@ -9,7 +9,7 @@ type ScreensContextState = Pick<Props, 'activeScreen'>
 
 export const ScreensContext = createContext<ScreensContextState | null>(null)
 
-const Screens = ({activeScreen, children}: Props) => {
+const Screens = ({ activeScreen, children }: Props) => {
     const contextValue = useMemo<ScreensContextState>(() => {
         return {
             activeScreen,

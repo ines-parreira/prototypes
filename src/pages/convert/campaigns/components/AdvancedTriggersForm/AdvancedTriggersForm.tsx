@@ -1,9 +1,9 @@
-import React, {useMemo, useEffect} from 'react'
+import React, { useEffect, useMemo } from 'react'
 
-import {AdvancedTriggerFactory} from 'pages/convert/campaigns/components/AdvancedTriggerFactory'
-import {useTriggers} from 'pages/convert/campaigns/containers/TriggersProvider'
-import {CampaignTriggerMap} from 'pages/convert/campaigns/types/CampaignTriggerMap'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import { AdvancedTriggerFactory } from 'pages/convert/campaigns/components/AdvancedTriggerFactory'
+import { useTriggers } from 'pages/convert/campaigns/containers/TriggersProvider'
+import { CampaignTriggerMap } from 'pages/convert/campaigns/types/CampaignTriggerMap'
+import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 
 type Props = {
     triggers: CampaignTriggerMap
@@ -22,7 +22,7 @@ export const AdvancedTriggersForm = ({
     triggers,
     onValidationChange,
 }: Props): JSX.Element => {
-    const {areTriggersValid} = useTriggers()
+    const { areTriggersValid } = useTriggers()
 
     const formTriggers = useMemo<CampaignTriggerMap>(() => {
         return Object.entries(triggers).reduce((acc, [id, trigger]) => {
@@ -41,7 +41,7 @@ export const AdvancedTriggersForm = ({
 
         // Update state only if state will change
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [areTriggersValid]
+        [areTriggersValid],
     )
 
     return (

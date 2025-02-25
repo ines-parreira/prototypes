@@ -1,13 +1,11 @@
+import React, { useCallback, useEffect, useState } from 'react'
+
+import { useIsHeadlessShopifyStore } from '../../../../hooks/useIsHeadlessShopifyStore'
 import classnames from 'classnames'
-import React, {useCallback, useEffect, useState} from 'react'
 
-import {DEFAULT_CAROUSEL_CONFIGURATION} from '../../../../constants/visuals'
-
-import {ProductCard} from '../../../../containers/ProductCard'
-
-import {useIsHeadlessShopifyStore} from '../../../../hooks/useIsHeadlessShopifyStore'
-
-import {CampaignProduct} from '../../../../types/CampaignProduct'
+import { DEFAULT_CAROUSEL_CONFIGURATION } from '../../../../constants/visuals'
+import { ProductCard } from '../../../../containers/ProductCard'
+import { CampaignProduct } from '../../../../types/CampaignProduct'
 
 import css from './ProductCarousel.less'
 
@@ -31,7 +29,7 @@ export const ProductCarousel = ({
 }: Props) => {
     const [currentElement, setCurrentElement] = useState<number>(0)
     const [translate, setTranslate] = useState(
-        configuration.carouselNavigationPadding
+        configuration.carouselNavigationPadding,
     )
     const isHeadlessStore = useIsHeadlessShopifyStore()
 
@@ -52,7 +50,7 @@ export const ProductCarousel = ({
 
             return nextTranslate * -1
         },
-        [configuration]
+        [configuration],
     )
 
     const updateCurrentElement = (nextElement: number) => {
@@ -83,7 +81,7 @@ export const ProductCarousel = ({
     return (
         <div
             className={css.container}
-            style={{maxWidth: configuration.carouselMaxWidth}}
+            style={{ maxWidth: configuration.carouselMaxWidth }}
         >
             <div
                 className={css.slides}
@@ -123,7 +121,7 @@ export const ProductCarousel = ({
                     <div
                         className={classnames(
                             css.buttonBaseControl,
-                            css.leftSide
+                            css.leftSide,
                         )}
                         onClick={handleMovePrevious}
                     >
@@ -134,7 +132,7 @@ export const ProductCarousel = ({
                     <div
                         className={classnames(
                             css.buttonBaseControl,
-                            css.rightSide
+                            css.rightSide,
                         )}
                     >
                         <i className="material-icons" onClick={handleMoveNext}>

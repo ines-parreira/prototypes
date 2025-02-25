@@ -1,4 +1,4 @@
-import {renderHook} from '@testing-library/react-hooks/dom'
+import { renderHook } from '@testing-library/react-hooks/dom'
 import noop from 'lodash/noop'
 
 import useDebouncedEffect from '../useDebouncedEffect'
@@ -8,7 +8,7 @@ jest.useFakeTimers()
 // Note: more detailed tests we have in useDebouncedCallback which is being used under the hood
 describe('useDebouncedEffect', () => {
     it('should render', () => {
-        const {result} = renderHook(() => {
+        const { result } = renderHook(() => {
             useDebouncedEffect(noop, [], 200)
         })
         expect(result.error).toBeUndefined()

@@ -1,4 +1,3 @@
-import classNames from 'classnames'
 import React, {
     CSSProperties,
     FC,
@@ -9,8 +8,10 @@ import React, {
     useRef,
 } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useFlag} from 'core/flags'
+import classNames from 'classnames'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 
 import css from './Tag.less'
 
@@ -47,7 +48,7 @@ const Tag: FC<Props & HTMLAttributes<HTMLDivElement>> = (
         trailIcon,
         ...props
     },
-    forwardedRef: ForwardedRef<HTMLDivElement>
+    forwardedRef: ForwardedRef<HTMLDivElement>,
 ) => {
     const ref = useRef<HTMLInputElement>(null)
     useImperativeHandle(forwardedRef, () => ref.current!)

@@ -1,21 +1,21 @@
-import {Map} from 'immutable'
-import React, {useEffect, useMemo, useState} from 'react'
-import {Modal, ModalBody, ModalHeader} from 'reactstrap'
+import React, { useEffect, useMemo, useState } from 'react'
 
-import {useAppNode} from 'appNode'
+import { Map } from 'immutable'
+import { Modal, ModalBody, ModalHeader } from 'reactstrap'
+
+import { useAppNode } from 'appNode'
 import {
     BundleActionResponse,
     BundleInstallationMethod,
     BundleStatus,
 } from 'models/convert/bundle/types'
-import {IntegrationType} from 'models/integration/constants'
+import { IntegrationType } from 'models/integration/constants'
 import Button from 'pages/common/components/button/Button'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
+import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 import BundleManualInstallationCard from 'pages/convert/bundles/components/BundleManualInstallationCard/BundleManualInstallationCard'
-import {useGetConvertBundle} from 'pages/convert/bundles/hooks/useGetConvertBundle'
-import {useInstallBundle} from 'pages/convert/bundles/hooks/useInstallBundle'
-
+import { useGetConvertBundle } from 'pages/convert/bundles/hooks/useGetConvertBundle'
+import { useInstallBundle } from 'pages/convert/bundles/hooks/useInstallBundle'
 import useIsManualInstallationMethodRequired from 'pages/convert/common/hooks/useIsManualInstallationMethodRequired'
 import useThemeAppExtensionInstallation from 'pages/integrations/integration/components/gorgias_chat/hooks/useThemeAppExtensionInstallation'
 
@@ -58,7 +58,7 @@ const ConvertInstallModal = ({
 
     const integrationId = useMemo(
         () => parseInt(integration.get('id')) || 0,
-        [integration]
+        [integration],
     )
 
     const onInstall = (data: BundleActionResponse) => {
@@ -73,18 +73,18 @@ const ConvertInstallModal = ({
 
     const isManualMethodRequired = useIsManualInstallationMethodRequired(
         chatIntegration.toJS(),
-        integration.toJS()
+        integration.toJS(),
     )
 
     useEffect(() => {
         setInstallationMethod(
             isManualMethodRequired
                 ? BundleInstallationMethod.Manual
-                : BundleInstallationMethod.OneClick
+                : BundleInstallationMethod.OneClick,
         )
     }, [isManualMethodRequired])
 
-    const {bundle} = useGetConvertBundle(integrationId)
+    const { bundle } = useGetConvertBundle(integrationId)
 
     useEffect(() => {
         if (
@@ -96,15 +96,15 @@ const ConvertInstallModal = ({
         }
     }, [bundle])
 
-    const {shouldUseThemeAppExtensionInstallation} =
+    const { shouldUseThemeAppExtensionInstallation } =
         useThemeAppExtensionInstallation(
-            isConnectedToShopify ? integration.toJS() : undefined
+            isConnectedToShopify ? integration.toJS() : undefined,
         )
 
-    const {isSubmitting, installBundle} = useInstallBundle(
+    const { isSubmitting, installBundle } = useInstallBundle(
         integrationId,
         installationMethod,
-        onInstall
+        onInstall,
     )
 
     const manualInstallationLabel = useMemo(() => {
@@ -155,7 +155,7 @@ const ConvertInstallModal = ({
                                 caption="Install the campaign bundle on your Shopify store in one click."
                                 onClick={() => {
                                     setInstallationMethod(
-                                        BundleInstallationMethod.OneClick
+                                        BundleInstallationMethod.OneClick,
                                     )
                                 }}
                             />
@@ -171,7 +171,7 @@ const ConvertInstallModal = ({
                             caption={manualInstallationLabel}
                             onClick={() => {
                                 setInstallationMethod(
-                                    BundleInstallationMethod.Manual
+                                    BundleInstallationMethod.Manual,
                                 )
                             }}
                         />

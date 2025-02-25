@@ -1,4 +1,4 @@
-import {act, renderHook} from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react-hooks'
 
 import useHighlightedElements from '../useHighlightedElements'
 
@@ -12,25 +12,25 @@ describe('useHighlightedElements', () => {
     })
 
     it('should return null by default', () => {
-        const {result} = renderHook(() => useHighlightedElements())
+        const { result } = renderHook(() => useHighlightedElements())
         expect(result.current[0]).toEqual(null)
     })
 
     it('should return the highlighted elements range when set', () => {
-        const {result} = renderHook(() => useHighlightedElements())
+        const { result } = renderHook(() => useHighlightedElements())
         act(() => {
-            result.current[1]({first: 1, last: 3})
+            result.current[1]({ first: 1, last: 3 })
         })
-        expect(result.current[0]).toEqual({first: 1, last: 3})
+        expect(result.current[0]).toEqual({ first: 1, last: 3 })
     })
 
     it('should automatically reset the highlighted elements after 1 second', () => {
-        const {result} = renderHook(() => useHighlightedElements())
+        const { result } = renderHook(() => useHighlightedElements())
         act(() => {
-            result.current[1]({first: 1, last: 3})
+            result.current[1]({ first: 1, last: 3 })
         })
         jest.advanceTimersByTime(999)
-        expect(result.current[0]).toEqual({first: 1, last: 3})
+        expect(result.current[0]).toEqual({ first: 1, last: 3 })
 
         act(() => {
             jest.advanceTimersByTime(1)

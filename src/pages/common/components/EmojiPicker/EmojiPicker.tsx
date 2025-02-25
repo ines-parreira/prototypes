@@ -1,6 +1,7 @@
+import React, { ComponentProps, CSSProperties } from 'react'
+
 import classNames from 'classnames'
-import {Picker} from 'emoji-mart'
-import React, {ComponentProps, CSSProperties} from 'react'
+import { Picker } from 'emoji-mart'
 
 import css from './EmojiPicker.less'
 

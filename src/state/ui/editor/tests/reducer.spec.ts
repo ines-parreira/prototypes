@@ -1,5 +1,5 @@
-import {linkEditionStarted, linkEditionEnded} from '../actions'
-import reducer, {initialState} from '../reducer'
+import { linkEditionEnded, linkEditionStarted } from '../actions'
+import reducer, { initialState } from '../reducer'
 
 describe('editor reducer', () => {
     describe('linkEditionStarted action', () => {

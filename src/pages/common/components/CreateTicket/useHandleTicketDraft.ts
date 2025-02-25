@@ -1,8 +1,9 @@
-import {LocationDescriptor} from 'history'
-import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
-import {useHistory} from 'react-router-dom'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { LocationDescriptor } from 'history'
+import { useHistory } from 'react-router-dom'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
 import {
@@ -11,7 +12,7 @@ import {
     TicketDraft,
 } from 'hooks/useTicketDraft'
 import LocalForageManager from 'services/localForageManager/localForageManager'
-import {getCurrentUser} from 'state/currentUser/selectors'
+import { getCurrentUser } from 'state/currentUser/selectors'
 
 export default function useHandleTicketDraft() {
     const history = useHistory()
@@ -34,7 +35,7 @@ export default function useHandleTicketDraft() {
             await localForage.ready()
             subscription = LocalForageManager.observeTable(
                 DRAFT_TICKET_STORE,
-                checkDraft
+                checkDraft,
             )
         }
 
@@ -64,7 +65,7 @@ export default function useHandleTicketDraft() {
                     name: string
                     address: string
                 }
-            }>
+            }>,
         ) => {
             await localForage.clear()
             history.push(params)
@@ -73,11 +74,11 @@ export default function useHandleTicketDraft() {
                 user_id: currentUser.get('id'),
             })
         },
-        [currentUser, history, localForage]
+        [currentUser, history, localForage],
     )
 
     return useMemo(
-        () => ({hasDraft, onResumeDraft, onDiscardDraft}),
-        [hasDraft, onResumeDraft, onDiscardDraft]
+        () => ({ hasDraft, onResumeDraft, onDiscardDraft }),
+        [hasDraft, onResumeDraft, onDiscardDraft],
     )
 }

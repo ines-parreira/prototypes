@@ -1,5 +1,6 @@
+import React, { useState } from 'react'
+
 import moment from 'moment'
-import React, {useState} from 'react'
 
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
@@ -14,7 +15,7 @@ type Props = {
     onSubmit: () => void
 }
 
-const RequestABTestModal = ({isOpen, onClose, onSubmit}: Props) => {
+const RequestABTestModal = ({ isOpen, onClose, onSubmit }: Props) => {
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
     const formattedDate = moment.utc(moment(Date.now())).format('MMM D, YYYY')

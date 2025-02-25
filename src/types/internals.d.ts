@@ -1,14 +1,14 @@
-import {Middleware} from 'redux'
+import { Middleware } from 'redux'
 
-import {Page} from 'services/statusPageManager/types'
-import {GorgiasInitialState, InitialReactQueryState} from 'types'
-import {SystemMessage} from 'utils'
+import { Page } from 'services/statusPageManager/types'
+import { GorgiasInitialState, InitialReactQueryState } from 'types'
+import { SystemMessage } from 'utils'
 
 declare global {
     interface Window {
-        GORGIAS_CONSTANTS: {[key: string]: any}
+        GORGIAS_CONSTANTS: { [key: string]: any }
         GORGIAS_STATE: GorgiasInitialState & InitialReactQueryState
-        SEGMENT_EVENTS_TO_TRACK?: {data: any; type: string}[]
+        SEGMENT_EVENTS_TO_TRACK?: { data: any; type: string }[]
         SYSTEM_MESSAGES: SystemMessage[]
         GORGIAS_RELEASE: string
         SHARED_WORKER_BUILD_URL: string
@@ -29,7 +29,7 @@ declare global {
             on: (
                 event: string,
                 id: string,
-                callback: (e: Record<string, any>) => void
+                callback: (e: Record<string, any>) => void,
             ) => void
             destroy: (target: string, id: string) => Promise<void>
             do: (action: string, id: string) => void
@@ -51,7 +51,7 @@ declare global {
         loadGorgiasChat?: (isAiAgentPath: boolean) => void
         GORGIAS_SUPPORT_EMAIL: string
         STRIPE_PUBLIC_KEY?: string
-        Hotswap?: (params: {token: string; onClose?: () => void}) => {
+        Hotswap?: (params: { token: string; onClose?: () => void }) => {
             open: () => void
         }
         DISABLE_ACTIVITY_POLLING: string
@@ -65,7 +65,7 @@ declare global {
         Candu?: {
             elementCanduRootMap?: Map<
                 HTMLElement,
-                {root: HTMLElement; shadowChild: ShadowRoot}
+                { root: HTMLElement; shadowChild: ShadowRoot }
             >
             init: (params: {
                 clientToken: string
@@ -93,7 +93,7 @@ declare global {
     function jestSetTimeout(
         value: () => void,
         second: number,
-        test: () => void
+        test: () => void,
     ): void
 
     namespace JSX {

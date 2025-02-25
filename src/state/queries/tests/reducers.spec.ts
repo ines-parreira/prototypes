@@ -1,7 +1,7 @@
-import {GorgiasAction} from 'state/types'
+import { GorgiasAction } from 'state/types'
 
 import * as constants from '../constants'
-import reducer, {initialState} from '../reducers'
+import reducer, { initialState } from '../reducers'
 
 jest.mock('utils/date', () => ({
     getMoment: () => ({
@@ -20,7 +20,7 @@ describe('queries reducers', () => {
             reducer(undefined, {
                 type: constants.UPDATE_QUERY_TIMESTAMP,
                 queryKey,
-            })
+            }),
         ).toEqual({
             ...initialState,
             timestamp: {

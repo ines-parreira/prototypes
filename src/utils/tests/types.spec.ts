@@ -1,16 +1,16 @@
-import {updateRecord, isRecord} from '../types'
+import { isRecord, updateRecord } from '../types'
 
 describe('updateRecord', () => {
     it('should update value of the given object at the given key accordingly with the given value', () => {
-        const record = {a: 1, b: 2}
+        const record = { a: 1, b: 2 }
         updateRecord(record, 'a', 3)
-        expect(record).toEqual({a: 3, b: 2})
+        expect(record).toEqual({ a: 3, b: 2 })
     })
 })
 
 describe('isRecord', () => {
     it.each([
-        [{a: 1, b: 2}, true],
+        [{ a: 1, b: 2 }, true],
         [{}, true],
         [new Set([]), true],
         [new Map(), true],
@@ -28,6 +28,6 @@ describe('isRecord', () => {
         'should return correct outcome according to its input',
         (input, outcome) => {
             expect(isRecord(input)).toBe(outcome)
-        }
+        },
     )
 })

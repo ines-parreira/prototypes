@@ -1,14 +1,15 @@
-import {render, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {personNames} from 'fixtures/personNames'
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { personNames } from 'fixtures/personNames'
 import Shoutout, {
     SHOUTOUT_MAX_PERSONS,
     SHOUTOUT_NO_VALUE_PLACEHOLDER,
 } from 'pages/stats/common/components/Shoutout/Shoutout'
-import {ChartsActionMenu} from 'pages/stats/custom-reports/ChartsActionMenu/ChartsActionMenu'
-import {assumeMock} from 'utils/testing'
+import { ChartsActionMenu } from 'pages/stats/custom-reports/ChartsActionMenu/ChartsActionMenu'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('pages/stats/custom-reports/ChartsActionMenu/ChartsActionMenu')
 const ChartsActionMenuMock = assumeMock(ChartsActionMenu)
@@ -20,11 +21,11 @@ describe('<Shoutout />', () => {
         multiplePersonsLabel: (count: number) => `${count} agents`,
     }
 
-    const person = {name: personNames[0]}
+    const person = { name: personNames[0] }
     const fewPersonsList = personNames
         .slice(0, SHOUTOUT_MAX_PERSONS)
-        .map((name) => ({name}))
-    const manyPersonsList = personNames.map((name) => ({name}))
+        .map((name) => ({ name }))
+    const manyPersonsList = personNames.map((name) => ({ name }))
 
     it('should display the person name if only one person was provided', () => {
         render(<Shoutout {...commonProps} persons={[person]} />)
@@ -37,7 +38,7 @@ describe('<Shoutout />', () => {
         render(<Shoutout {...commonProps} persons={[]} value={null} />)
 
         const noValuePlaceholder = screen.getAllByText(
-            SHOUTOUT_NO_VALUE_PLACEHOLDER
+            SHOUTOUT_NO_VALUE_PLACEHOLDER,
         )
         expect(noValuePlaceholder).toHaveLength(3)
     })
@@ -51,7 +52,7 @@ describe('<Shoutout />', () => {
         })
 
         const agentsCountLabel = screen.getByText(
-            new RegExp(`${fewPersonsList.length} agents`)
+            new RegExp(`${fewPersonsList.length} agents`),
         )
         expect(agentsCountLabel).toBeInTheDocument()
     })
@@ -60,7 +61,7 @@ describe('<Shoutout />', () => {
         render(<Shoutout {...commonProps} persons={manyPersonsList} />)
 
         const tooltipTrigger = screen.getByLabelText(
-            'Hover to display more people'
+            'Hover to display more people',
         )
 
         userEvent.hover(tooltipTrigger)
@@ -68,9 +69,9 @@ describe('<Shoutout />', () => {
         const xMoreText = await waitFor(() =>
             screen.getByText(
                 new RegExp(
-                    `${manyPersonsList.length - SHOUTOUT_MAX_PERSONS} more`
-                )
-            )
+                    `${manyPersonsList.length - SHOUTOUT_MAX_PERSONS} more`,
+                ),
+            ),
         )
 
         expect(xMoreText).toBeInTheDocument()
@@ -92,7 +93,7 @@ describe('<Shoutout />', () => {
                 {...commonProps}
                 persons={manyPersonsList}
                 chartId="123"
-            />
+            />,
         )
 
         expect(screen.getByText('ChartsActionMenu')).toBeInTheDocument()

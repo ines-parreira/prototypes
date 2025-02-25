@@ -1,35 +1,34 @@
-import {render} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {RootState, StoreDispatch} from 'state/types'
+import { RootState, StoreDispatch } from 'state/types'
 
-import {getSingleHelpCenterResponseFixture as helpCenter} from '../../fixtures/getHelpCentersResponse.fixture'
-import {getLocalesResponseFixture} from '../../fixtures/getLocalesResponse.fixtures'
-import {useHelpCenterIdParam} from '../../hooks/useHelpCenterIdParam'
-import {useSearchContext} from '../../providers/SearchContext'
-
-import {useSupportedLocales} from '../../providers/SupportedLocales'
-
-import {SearchView} from './SearchView'
+import { getSingleHelpCenterResponseFixture as helpCenter } from '../../fixtures/getHelpCentersResponse.fixture'
+import { getLocalesResponseFixture } from '../../fixtures/getLocalesResponse.fixtures'
+import { useHelpCenterIdParam } from '../../hooks/useHelpCenterIdParam'
+import { useSearchContext } from '../../providers/SearchContext'
+import { useSupportedLocales } from '../../providers/SupportedLocales'
+import { SearchView } from './SearchView'
 
 jest.mock('../../providers/SearchContext')
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
     const dep: Record<string, unknown> = jest.requireActual(
-        'pages/settings/helpCenter/hooks/useHelpCenterApi'
+        'pages/settings/helpCenter/hooks/useHelpCenterApi',
     )
     return {
         ...dep,
-        useAbilityChecker: () => ({isPassingRulesCheck: () => true}),
+        useAbilityChecker: () => ({ isPassingRulesCheck: () => true }),
     }
 })
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-const wrapper = ({children}: {children?: React.ReactNode}) => (
+const wrapper = ({ children }: { children?: React.ReactNode }) => (
     <Provider store={store}>{children}</Provider>
 )
 
@@ -47,7 +46,7 @@ const defaultState: Partial<RootState> = {
                     '1': helpCenter,
                 },
             },
-            articles: {articlesById: {}},
+            articles: { articlesById: {} },
             categories: {
                 categoriesById: {
                     '0': {
@@ -92,7 +91,7 @@ const defaultState: Partial<RootState> = {
             },
         },
     } as any,
-    ui: {helpCenter: {currentId: 1, currentLanguage: 'en-US'}} as any,
+    ui: { helpCenter: { currentId: 1, currentLanguage: 'en-US' } } as any,
 }
 
 const store = mockStore(defaultState)
@@ -105,7 +104,7 @@ describe('SearchView', () => {
             searchReady: true,
         })
 
-        const {container} = render(
+        const { container } = render(
             <SearchView
                 helpCenter={helpCenter}
                 onArticleClick={jest.fn()}
@@ -116,7 +115,7 @@ describe('SearchView', () => {
                 canUpdateArticle={true}
                 canUpdateCategory={true}
             />,
-            {wrapper}
+            { wrapper },
         )
 
         expect(container).toMatchSnapshot()
@@ -132,7 +131,7 @@ describe('SearchView', () => {
             searchReady: true,
         })
 
-        const {container} = render(
+        const { container } = render(
             <SearchView
                 helpCenter={helpCenter}
                 onArticleClick={jest.fn()}
@@ -143,7 +142,7 @@ describe('SearchView', () => {
                 canUpdateArticle={true}
                 canUpdateCategory={true}
             />,
-            {wrapper}
+            { wrapper },
         )
 
         expect(container).toMatchSnapshot()
@@ -158,7 +157,7 @@ describe('SearchView', () => {
             searchReady: true,
         })
 
-        const {container} = render(
+        const { container } = render(
             <SearchView
                 helpCenter={helpCenter}
                 onArticleClick={jest.fn()}
@@ -169,7 +168,7 @@ describe('SearchView', () => {
                 canUpdateArticle={true}
                 canUpdateCategory={true}
             />,
-            {wrapper}
+            { wrapper },
         )
 
         expect(container).toMatchSnapshot()
@@ -187,7 +186,7 @@ describe('SearchView', () => {
             searchReady: true,
         })
 
-        const {container} = render(
+        const { container } = render(
             <SearchView
                 helpCenter={helpCenter}
                 onArticleClick={jest.fn()}
@@ -198,7 +197,7 @@ describe('SearchView', () => {
                 canUpdateArticle={true}
                 canUpdateCategory={true}
             />,
-            {wrapper}
+            { wrapper },
         )
 
         expect(container).toMatchSnapshot()
@@ -267,7 +266,7 @@ describe('SearchView', () => {
             searchReady: true,
         })
 
-        const {container} = render(
+        const { container } = render(
             <SearchView
                 helpCenter={helpCenter}
                 onArticleClick={jest.fn()}
@@ -278,7 +277,7 @@ describe('SearchView', () => {
                 canUpdateArticle={true}
                 canUpdateCategory={true}
             />,
-            {wrapper}
+            { wrapper },
         )
 
         expect(container).toMatchSnapshot()

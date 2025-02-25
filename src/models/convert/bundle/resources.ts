@@ -1,4 +1,4 @@
-import {RevenueAddonClient} from 'rest_api/revenue_addon_api/client'
+import { RevenueAddonClient } from 'rest_api/revenue_addon_api/client'
 
 export const listBundles = async (client: RevenueAddonClient | undefined) => {
     if (!client) return null

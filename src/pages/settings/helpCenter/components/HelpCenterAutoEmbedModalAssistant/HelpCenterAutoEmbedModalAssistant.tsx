@@ -1,35 +1,34 @@
-import {useQueryClient} from '@tanstack/react-query'
-import {get} from 'lodash'
-import _noop from 'lodash/noop'
 import React from 'react'
-import {useHistory} from 'react-router-dom'
+
+import { useQueryClient } from '@tanstack/react-query'
+import { get } from 'lodash'
+import _noop from 'lodash/noop'
+import { useHistory } from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {CreateShopifyPageEmbedmentDto} from 'models/contactForm/types'
+import { CreateShopifyPageEmbedmentDto } from 'models/contactForm/types'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-
 import PageEmbedmentForm, {
-    EmbedMode,
     EmbeddablePage,
-    usePageEmbedmentForm,
+    EmbedMode,
     SHOPIFY_PAGE_EMBEDMENT_PATH_PREFIX,
+    usePageEmbedmentForm,
 } from 'pages/common/components/PageEmbedmentForm'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 import {
     HELP_CENTER_BASE_PATH,
     HELP_CENTER_EMBED_FORM_TEXTS,
 } from '../../constants'
-
 import {
     helpCenterPageEmbedmentsKeys,
     useCreatePageEmbedment,
 } from '../../queries'
-import {MODAL_LABELS} from './constants'
+import { MODAL_LABELS } from './constants'
 
 import css from './HelpCenterAutoEmbedModalAssistant.less'
 
@@ -54,7 +53,7 @@ const HelpCenterAutoEmbedModalAssistant = (
         onClose: _noop,
         pages: [],
         helpCenterId: 0,
-    }
+    },
 ) => {
     const {
         state: pageEmbedmentForm,
@@ -73,7 +72,7 @@ const HelpCenterAutoEmbedModalAssistant = (
                 void appDispatch(
                     notify({
                         message: 'Something went wrong',
-                    })
+                    }),
                 )
                 return
             }
@@ -82,15 +81,15 @@ const HelpCenterAutoEmbedModalAssistant = (
                 notify({
                     message: 'Help Center embedded to page.',
                     status: NotificationStatus.Success,
-                })
+                }),
             )
 
             await queryClient.invalidateQueries(
-                helpCenterPageEmbedmentsKeys.all(helpCenterId)
+                helpCenterPageEmbedmentsKeys.all(helpCenterId),
             )
 
             history.push(
-                `${HELP_CENTER_BASE_PATH}/${helpCenterId}/publish-track/embedments`
+                `${HELP_CENTER_BASE_PATH}/${helpCenterId}/publish-track/embedments`,
             )
             handleOnClose()
         },
@@ -116,7 +115,7 @@ const HelpCenterAutoEmbedModalAssistant = (
                 notify({
                     message,
                     status: NotificationStatus.Error,
-                })
+                }),
             )
         },
     })
@@ -143,7 +142,7 @@ const HelpCenterAutoEmbedModalAssistant = (
 
         createPageEmbedmentMutation.mutate([
             undefined,
-            {help_center_id: helpCenterId},
+            { help_center_id: helpCenterId },
             payload,
         ])
     }

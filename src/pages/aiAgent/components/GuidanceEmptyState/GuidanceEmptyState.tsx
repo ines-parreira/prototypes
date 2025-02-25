@@ -1,18 +1,21 @@
-import {Badge} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
 import React from 'react'
-import {Link} from 'react-router-dom'
+
+import classNames from 'classnames'
+import { Link } from 'react-router-dom'
+
+import { Badge } from '@gorgias/merchant-ui-kit'
 
 import imgSrc from 'assets/img/ai-agent/guidance-empty-state.png'
-import {SegmentEvent, logEvent} from 'common/segment'
+import { logEvent, SegmentEvent } from 'common/segment'
 import Button from 'pages/common/components/button/Button'
 import history from 'pages/history'
 
-import {useAiAgentNavigation} from '../../hooks/useAiAgentNavigation'
-import {useGuidanceTemplates} from '../../hooks/useGuidanceTemplates'
-import {GuidanceTemplate} from '../../types'
-import {CreateNewGuidanceCard} from '../CreateNewGuidanceCard/CreateNewGuidanceCard'
-import {GuidanceTemplateCard} from '../GuidanceTemplateCard/GuidanceTemplateCard'
+import { useAiAgentNavigation } from '../../hooks/useAiAgentNavigation'
+import { useGuidanceTemplates } from '../../hooks/useGuidanceTemplates'
+import { GuidanceTemplate } from '../../types'
+import { CreateNewGuidanceCard } from '../CreateNewGuidanceCard/CreateNewGuidanceCard'
+import { GuidanceTemplateCard } from '../GuidanceTemplateCard/GuidanceTemplateCard'
+
 import css from './GuidanceEmptyState.less'
 
 const SHOW_TEMPLATES_COUNT = 7
@@ -21,9 +24,9 @@ type Props = {
     shopName: string
 }
 
-export const GuidanceEmptyState = ({shopName}: Props) => {
-    const {routes} = useAiAgentNavigation({shopName})
-    const {guidanceTemplates} = useGuidanceTemplates()
+export const GuidanceEmptyState = ({ shopName }: Props) => {
+    const { routes } = useAiAgentNavigation({ shopName })
+    const { guidanceTemplates } = useGuidanceTemplates()
     const onNewClick = () => {
         history.push(routes.newGuidanceArticle)
     }
@@ -48,7 +51,7 @@ export const GuidanceEmptyState = ({shopName}: Props) => {
                                 <i
                                     className={classNames(
                                         'material-icons',
-                                        css.autoAwesome
+                                        css.autoAwesome,
                                     )}
                                 >
                                     auto_awesome

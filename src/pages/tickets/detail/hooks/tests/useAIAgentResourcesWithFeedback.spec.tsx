@@ -1,16 +1,17 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {ReportIssueOption} from 'models/aiAgentFeedback/constants'
-import {MessageFeedback, TicketFeedback} from 'models/aiAgentFeedback/types'
-import {RootState, StoreDispatch} from 'state/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { ReportIssueOption } from 'models/aiAgentFeedback/constants'
+import { MessageFeedback, TicketFeedback } from 'models/aiAgentFeedback/types'
+import { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import {ActionStatus} from '../../components/AIAgentFeedbackBar/types'
+import { ActionStatus } from '../../components/AIAgentFeedbackBar/types'
 import {
     ActionWithFeedback,
     useAIAgentResourcesWithFeedback,
@@ -32,7 +33,7 @@ const messageFeedback: MessageFeedback = {
     executionId: '923665aa-5081-49b3-9cca-2ad6e1823175',
     summary:
         'AI Agent sent a response and left the ticket open pending further information from the customer.',
-    orders: [{id: 3324, name: '#3324', url: 'https://gorgias.com'}],
+    orders: [{ id: 3324, name: '#3324', url: 'https://gorgias.com' }],
     allowsFeedback: true,
     feedbackOnMessage: [
         {
@@ -41,15 +42,15 @@ const messageFeedback: MessageFeedback = {
         },
     ],
     actions: [
-        {type: 'soft_action', id: 1, name: 'Get loyalty points'},
-        {type: 'soft_action', id: 2, name: 'Get shipping address'},
-        {type: 'hard_action', id: 3, name: 'Change shipping address'},
-        {type: 'hard_action', id: 4, name: 'Refund order'},
+        { type: 'soft_action', id: 1, name: 'Get loyalty points' },
+        { type: 'soft_action', id: 2, name: 'Get shipping address' },
+        { type: 'hard_action', id: 3, name: 'Change shipping address' },
+        { type: 'hard_action', id: 4, name: 'Refund order' },
     ],
     guidance: [
-        {id: 1, name: 'Cancelling an order'},
-        {id: 2, name: 'Refund'},
-        {id: 3, name: 'Shipping'},
+        { id: 1, name: 'Cancelling an order' },
+        { id: 2, name: 'Refund' },
+        { id: 3, name: 'Shipping' },
     ],
     knowledge: [
         {
@@ -63,7 +64,7 @@ const messageFeedback: MessageFeedback = {
             name: 'Shipping times',
             url: 'https://artemis.gorgias.help/en-US#article-13609',
         },
-        {type: 'macro', id: 236, name: 'Damaged items'},
+        { type: 'macro', id: 236, name: 'Damaged items' },
     ],
     feedbackOnResource: [
         {
@@ -112,14 +113,14 @@ const messageFeedback: MessageFeedback = {
 describe('useAIAgentResourcesWithFeedback', () => {
     const renderHookWithStore = (messageFeedback?: MessageFeedback) =>
         renderHook(() => useAIAgentResourcesWithFeedback(messageFeedback), {
-            wrapper: ({children}) => (
+            wrapper: ({ children }) => (
                 <QueryClientProvider client={queryClient}>
                     <Provider store={mockStore(store)}>{children}</Provider>
                 </QueryClientProvider>
             ),
         })
     it('returns empty arrays if no messageFeedback is provided', () => {
-        const {result} = renderHookWithStore()
+        const { result } = renderHookWithStore()
         expect(result.current).toEqual({
             actions: [],
             guidance: [],
@@ -131,14 +132,14 @@ describe('useAIAgentResourcesWithFeedback', () => {
         const mockCheckIfMessageFeedbackHasHardAction = jest
             .spyOn(
                 useAIAgentResourcesWithFeedbackUtil,
-                'checkIfMessageFeedbackHasHardAction'
+                'checkIfMessageFeedbackHasHardAction',
             )
             .mockReturnValue(false)
 
         const mockGetPreviousMessageWithHardAction = jest
             .spyOn(
                 useAIAgentResourcesWithFeedbackUtil,
-                'getPreviousMessageWithHardAction'
+                'getPreviousMessageWithHardAction',
             )
             .mockReturnValue({
                 hardActionCount: 1,
@@ -150,7 +151,7 @@ describe('useAIAgentResourcesWithFeedback', () => {
                     },
                 },
             })
-        const {result} = renderHookWithStore(messageFeedback)
+        const { result } = renderHookWithStore(messageFeedback)
         expect(result.current).toEqual({
             actions: [
                 {
@@ -186,9 +187,9 @@ describe('useAIAgentResourcesWithFeedback', () => {
                 },
             ],
             guidance: [
-                {id: 1, name: 'Cancelling an order', feedback: 'thumbs_up'},
-                {id: 2, name: 'Refund', feedback: 'thumbs_down'},
-                {id: 3, name: 'Shipping', feedback: null},
+                { id: 1, name: 'Cancelling an order', feedback: 'thumbs_up' },
+                { id: 2, name: 'Refund', feedback: 'thumbs_down' },
+                { id: 3, name: 'Shipping', feedback: null },
             ],
             knowledge: [
                 {
@@ -221,14 +222,14 @@ describe('useAIAgentResourcesWithFeedback', () => {
         const mockCheckIfMessageFeedbackHasHardAction = jest
             .spyOn(
                 useAIAgentResourcesWithFeedbackUtil,
-                'checkIfMessageFeedbackHasHardAction'
+                'checkIfMessageFeedbackHasHardAction',
             )
             .mockReturnValue(false)
 
         const mockGetPreviousMessageWithHardAction = jest
             .spyOn(
                 useAIAgentResourcesWithFeedbackUtil,
-                'getPreviousMessageWithHardAction'
+                'getPreviousMessageWithHardAction',
             )
             .mockReturnValue({
                 hardActionCount: 1,
@@ -241,7 +242,7 @@ describe('useAIAgentResourcesWithFeedback', () => {
                 },
             })
 
-        const {result} = renderHookWithStore({
+        const { result } = renderHookWithStore({
             ...messageFeedback,
             summary: 'AI Agent performed the Refund order action.',
         })
@@ -280,9 +281,9 @@ describe('useAIAgentResourcesWithFeedback', () => {
                 },
             ],
             guidance: [
-                {id: 1, name: 'Cancelling an order', feedback: 'thumbs_up'},
-                {id: 2, name: 'Refund', feedback: 'thumbs_down'},
-                {id: 3, name: 'Shipping', feedback: null},
+                { id: 1, name: 'Cancelling an order', feedback: 'thumbs_up' },
+                { id: 2, name: 'Refund', feedback: 'thumbs_down' },
+                { id: 3, name: 'Shipping', feedback: null },
             ],
             knowledge: [
                 {
@@ -314,7 +315,7 @@ describe('useAIAgentResourcesWithFeedback', () => {
 
 describe('getPreviousMessageWithHardAction', () => {
     it('should return null when there are no messages', () => {
-        const ticketFeedback = {messages: []}
+        const ticketFeedback = { messages: [] }
         const messageFeedback: MessageFeedback = {
             messageId: 1,
         } as MessageFeedback
@@ -322,7 +323,7 @@ describe('getPreviousMessageWithHardAction', () => {
         const result =
             useAIAgentResourcesWithFeedbackUtil.getPreviousMessageWithHardAction(
                 ticketFeedback,
-                messageFeedback
+                messageFeedback,
             )
 
         expect(result).toEqual({
@@ -334,8 +335,8 @@ describe('getPreviousMessageWithHardAction', () => {
     it('should return null when no actions are found before messageFeedback', () => {
         const ticketFeedback = {
             messages: [
-                {messageId: 1, actions: []},
-                {messageId: 2, actions: []},
+                { messageId: 1, actions: [] },
+                { messageId: 2, actions: [] },
             ],
         } as unknown as TicketFeedback
         const messageFeedback: MessageFeedback = {
@@ -345,7 +346,7 @@ describe('getPreviousMessageWithHardAction', () => {
         const result =
             useAIAgentResourcesWithFeedbackUtil.getPreviousMessageWithHardAction(
                 ticketFeedback,
-                messageFeedback
+                messageFeedback,
             )
 
         expect(result).toEqual({
@@ -357,11 +358,11 @@ describe('getPreviousMessageWithHardAction', () => {
     it('should return previous message with a hard action', () => {
         const ticketFeedback = {
             messages: [
-                {messageId: 1, actions: []},
+                { messageId: 1, actions: [] },
                 {
                     messageId: 2,
                     actions: [
-                        {id: 101, name: 'Cancel order', type: 'hard_action'},
+                        { id: 101, name: 'Cancel order', type: 'hard_action' },
                     ],
                 },
             ],
@@ -373,7 +374,7 @@ describe('getPreviousMessageWithHardAction', () => {
         const result =
             useAIAgentResourcesWithFeedbackUtil.getPreviousMessageWithHardAction(
                 ticketFeedback,
-                messageFeedback
+                messageFeedback,
             )
 
         expect(result).toEqual({
@@ -395,13 +396,13 @@ describe('getPreviousMessageWithHardAction', () => {
                 {
                     messageId: 1,
                     actions: [
-                        {id: 101, name: 'Cancel order', type: 'hard_action'},
+                        { id: 101, name: 'Cancel order', type: 'hard_action' },
                     ],
                 },
                 {
                     messageId: 2,
                     actions: [
-                        {id: 102, name: 'Refund order', type: 'hard_action'},
+                        { id: 102, name: 'Refund order', type: 'hard_action' },
                     ],
                 },
             ],
@@ -413,7 +414,7 @@ describe('getPreviousMessageWithHardAction', () => {
         const result =
             useAIAgentResourcesWithFeedbackUtil.getPreviousMessageWithHardAction(
                 ticketFeedback,
-                messageFeedback
+                messageFeedback,
             )
 
         expect(result).toEqual({
@@ -435,19 +436,19 @@ describe('getPreviousMessageWithHardAction', () => {
                 {
                     messageId: 1,
                     actions: [
-                        {id: 101, name: 'Cancel order', type: 'hard_action'},
+                        { id: 101, name: 'Cancel order', type: 'hard_action' },
                     ],
                 },
                 {
                     messageId: 2,
                     actions: [
-                        {id: 102, name: 'Refund order', type: 'hard_action'},
+                        { id: 102, name: 'Refund order', type: 'hard_action' },
                     ],
                 },
                 {
                     messageId: 3, // This message is after the feedback message, so it should be ignored
                     actions: [
-                        {id: 103, name: 'Close ticket', type: 'hard_action'},
+                        { id: 103, name: 'Close ticket', type: 'hard_action' },
                     ],
                 },
             ],
@@ -459,7 +460,7 @@ describe('getPreviousMessageWithHardAction', () => {
         const result =
             useAIAgentResourcesWithFeedbackUtil.getPreviousMessageWithHardAction(
                 ticketFeedback,
-                messageFeedback
+                messageFeedback,
             )
 
         expect(result).toEqual({
@@ -486,7 +487,7 @@ describe('checkIfMessageFeedbackHasHardAction', () => {
             useAIAgentResourcesWithFeedbackUtil.checkIfMessageFeedbackHasHardAction(
                 actionsWithFeedback,
                 previousMessageWithHardAction,
-                messageFeedback
+                messageFeedback,
             )
 
         expect(result).toBe(false)
@@ -506,14 +507,14 @@ describe('checkIfMessageFeedbackHasHardAction', () => {
         ] as unknown as ActionWithFeedback
         const previousMessageWithHardAction = {
             id: 1,
-            hardAction: {id: 102, name: 'Hard Action 1'},
+            hardAction: { id: 102, name: 'Hard Action 1' },
         }
 
         const result =
             useAIAgentResourcesWithFeedbackUtil.checkIfMessageFeedbackHasHardAction(
                 actionsWithFeedback,
                 previousMessageWithHardAction,
-                messageFeedback
+                messageFeedback,
             )
 
         expect(result).toBe(false)
@@ -539,14 +540,14 @@ describe('checkIfMessageFeedbackHasHardAction', () => {
         ] as unknown as ActionWithFeedback
         const previousMessageWithHardAction = {
             id: 1,
-            hardAction: {id: 102, name: 'Hard Action 1'},
+            hardAction: { id: 102, name: 'Hard Action 1' },
         }
 
         const result =
             useAIAgentResourcesWithFeedbackUtil.checkIfMessageFeedbackHasHardAction(
                 actionsWithFeedback,
                 previousMessageWithHardAction,
-                messageFeedback
+                messageFeedback,
             )
 
         expect(result).toBe(true)
@@ -570,7 +571,7 @@ describe('checkIfMessageFeedbackHasHardAction', () => {
             useAIAgentResourcesWithFeedbackUtil.checkIfMessageFeedbackHasHardAction(
                 actionsWithFeedback,
                 previousMessageWithHardAction,
-                messageFeedback
+                messageFeedback,
             )
 
         expect(result).toBe(false)
@@ -590,14 +591,14 @@ describe('checkIfMessageFeedbackHasHardAction', () => {
         ] as unknown as ActionWithFeedback
         const previousMessageWithHardAction = {
             id: 1,
-            hardAction: {id: 102, name: 'Hard Action 1'},
+            hardAction: { id: 102, name: 'Hard Action 1' },
         }
 
         const result =
             useAIAgentResourcesWithFeedbackUtil.checkIfMessageFeedbackHasHardAction(
                 actionsWithFeedback,
                 previousMessageWithHardAction,
-                messageFeedback
+                messageFeedback,
             )
 
         expect(result).toBe(false)

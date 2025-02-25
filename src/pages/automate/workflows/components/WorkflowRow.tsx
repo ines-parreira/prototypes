@@ -1,20 +1,18 @@
-import React, {useCallback, useMemo, useRef, useState} from 'react'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
 
-import {DateAndTimeFormatting} from 'constants/datetime'
+import { DateAndTimeFormatting } from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import {StoreIntegration} from 'models/integration/types'
-
-import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
+import { StoreIntegration } from 'models/integration/types'
+import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import IconButton from 'pages/common/components/button/IconButton'
-
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import DropdownSection from 'pages/common/components/dropdown/DropdownSection'
-import {LanguageList} from 'pages/common/components/LanguageBulletList'
+import { LanguageList } from 'pages/common/components/LanguageBulletList'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import {formatDatetime} from 'utils'
+import { formatDatetime } from 'utils'
 
 import {
     LanguageCode,
@@ -22,8 +20,8 @@ import {
     WorkflowConfigurationShallow,
 } from '../models/workflowConfiguration.types'
 import DeleteWorkflowAction from './DeleteWorkflowAction'
+import { DraftBadge } from './DraftBadge'
 
-import {DraftBadge} from './DraftBadge'
 import css from './WorkflowsRow.less'
 
 type Props = {
@@ -32,8 +30,8 @@ type Props = {
     onDelete: (workflowId: string) => Promise<void>
     onDuplicate: (
         workflowId: string,
-        storeIntegrationId: number
-    ) => Promise<{id: string}>
+        storeIntegrationId: number,
+    ) => Promise<{ id: string }>
     goToEditWorkflowPage: (workflowId: string) => void
     isUpdatePending: boolean
     storeIntegrations: StoreIntegration[]
@@ -41,8 +39,8 @@ type Props = {
 }
 
 function getLanguageList(
-    availableLanguages: LanguageCode[]
-): {code: LanguageCode; name: string}[] {
+    availableLanguages: LanguageCode[],
+): { code: LanguageCode; name: string }[] {
     return availableLanguages.map((code) => ({
         code,
         name:
@@ -53,7 +51,7 @@ function getLanguageList(
 
 // Notify merchant does not support JSX elements, so we need to use a string
 export const getLink = (
-    storeIntegration: StoreIntegration
+    storeIntegration: StoreIntegration,
 ) => `Successfully duplicated to <br />
 <a href='/app/automation/${
     storeIntegration.type
@@ -76,23 +74,23 @@ const WorkflowRow = ({
     const dropdownRef = useRef<HTMLDivElement>(null)
 
     const datetimeFormat = useGetDateAndTimeFormat(
-        DateAndTimeFormatting.CompactDate
+        DateAndTimeFormatting.CompactDate,
     )
 
     const currentFirstSorted = useMemo(() => {
         return [...storeIntegrations].sort(
-            ({id: integrationIdA}, {id: integrationIdB}) => {
+            ({ id: integrationIdA }, { id: integrationIdB }) => {
                 if (integrationIdA === storeIntegrationId) return -1
                 if (integrationIdB === storeIntegrationId) return 1
                 return 0
-            }
+            },
         )
     }, [storeIntegrationId, storeIntegrations])
 
     const isCurrentStore = useCallback(
         (storeIntegration: StoreIntegration) =>
             storeIntegration.id === storeIntegrationId,
-        [storeIntegrationId]
+        [storeIntegrationId],
     )
 
     const handleToggle = () => setIsOpen(!isOpen)
@@ -125,7 +123,7 @@ const WorkflowRow = ({
                         getLanguageList(workflow.available_languages)[0]
                     }
                     languageList={getLanguageList(
-                        workflow.available_languages
+                        workflow.available_languages,
                     ).reverse()}
                 />
             </BodyCell>
@@ -182,13 +180,13 @@ const WorkflowRow = ({
                                             setIsOpen(false)
                                             await onDuplicate(
                                                 workflow.id,
-                                                value
+                                                value,
                                             )
                                             notifyMerchant(
                                                 isCurrentStore(storeIntegration)
                                                     ? 'Successfully duplicated'
                                                     : getLink(storeIntegration),
-                                                'success'
+                                                'success',
                                             )
                                         }}
                                     />

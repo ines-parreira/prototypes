@@ -1,11 +1,13 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import React, {useState} from 'react'
+import React, { useState } from 'react'
+
+import { Label } from '@gorgias/merchant-ui-kit'
 
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import TextArea from 'pages/common/forms/TextArea'
 
-import {INITIAL_FORM_VALUES, SIGNATURE_MAX_LENGTH} from '../../../constants'
-import {FormValues, UpdateValue} from '../../../types'
+import { INITIAL_FORM_VALUES, SIGNATURE_MAX_LENGTH } from '../../../constants'
+import { FormValues, UpdateValue } from '../../../types'
+
 import css from './SignatureFormComponent.less'
 
 type SignatureFormComponentProps = {

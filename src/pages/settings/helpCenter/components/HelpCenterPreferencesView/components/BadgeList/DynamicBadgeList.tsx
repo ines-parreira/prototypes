@@ -1,15 +1,16 @@
 import React from 'react'
+
 import {
     Dropdown,
-    DropdownToggle,
-    DropdownMenu,
     DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
     Input,
 } from 'reactstrap'
 
-import {BadgeItemProps} from 'pages/common/components/BadgetItem'
+import { BadgeItemProps } from 'pages/common/components/BadgetItem'
 
-import {BadgeList} from './BadgeList'
+import { BadgeList } from './BadgeList'
 
 import css from './DynamicBadgeList.less'
 
@@ -53,7 +54,7 @@ export const DynamicBadgeList: React.FC<Props> = ({
         })
 
     const shouldDisplayButton = availableList.some(
-        (item) => !selectedIds.includes(item.id)
+        (item) => !selectedIds.includes(item.id),
     )
 
     const handleOnToggle = () => {
@@ -66,7 +67,7 @@ export const DynamicBadgeList: React.FC<Props> = ({
     const buttonEl = shouldDisplayButton && (
         <Dropdown direction="down" isOpen={isOpen} toggle={handleOnToggle}>
             <DropdownToggle className={css['add-btn']} type="button">
-                <i className="material-icons" style={{fontSize: 16}}>
+                <i className="material-icons" style={{ fontSize: 16 }}>
                     add
                 </i>
             </DropdownToggle>
@@ -87,7 +88,7 @@ export const DynamicBadgeList: React.FC<Props> = ({
                         },
                     },
                 }}
-                style={{paddingTop: 0}}
+                style={{ paddingTop: 0 }}
             >
                 <div className={css['dropdown-header']}>
                     <div>

@@ -1,11 +1,13 @@
-import {Label} from '@gorgias/merchant-ui-kit'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+
 import _debounce from 'lodash/debounce'
-import React, {useMemo, useCallback, useEffect, useState} from 'react'
+
+import { Label } from '@gorgias/merchant-ui-kit'
 
 import InputField from 'pages/common/forms/input/InputField'
 import contactFormCss from 'pages/settings/contactForm/contactForm.less'
-import {catchAsync} from 'pages/settings/contactForm/utils/errorHandling'
-import {getNameValidationError} from 'pages/settings/helpCenter/utils/validations'
+import { catchAsync } from 'pages/settings/contactForm/utils/errorHandling'
+import { getNameValidationError } from 'pages/settings/helpCenter/utils/validations'
 
 type ContactFormNameInputSectionProps = {
     onChange: (name: string) => void
@@ -53,12 +55,12 @@ const ContactFormNameInputSection = ({
             if (!isApiReady || !isNameCheckEnabled) return
 
             const [error, result] = await catchAsync(() =>
-                checkContactFormName(name)
+                checkContactFormName(name),
             )
 
             setIsFormNameAvailable(!error && !!result)
         }, NAME_CHECK_DEBOUNCE_TIMEOUT),
-        [isApiReady, checkContactFormName, isNameCheckEnabled]
+        [isApiReady, checkContactFormName, isNameCheckEnabled],
     )
 
     const onNameChange = (name: string) => {

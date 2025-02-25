@@ -1,6 +1,6 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {useSalesKpis} from '../useSalesKpis'
+import { useSalesKpis } from '../useSalesKpis'
 
 jest.mock('pages/aiAgent/Overview/hooks/kpis/useCoverageRate', () => ({
     useCoverageRate: jest.fn(() => 'mockCoverageRate'),
@@ -20,7 +20,7 @@ const filters = {
 
 describe('useSalesKpis', () => {
     it('should return metrics containing correct KPIs', () => {
-        const {result} = renderHook(() => useSalesKpis(filters, timezone))
+        const { result } = renderHook(() => useSalesKpis(filters, timezone))
 
         expect(result.current.metrics).toEqual([
             'mockCoverageRate',

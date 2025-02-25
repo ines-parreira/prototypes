@@ -1,11 +1,12 @@
+import React, { ComponentProps, ReactNode, useState } from 'react'
+
 import classnames from 'classnames'
-import React, {ComponentProps, ReactNode, useState} from 'react'
 
-import {CardEditFormState} from '../../types'
-import css from './Card.less'
+import { CardEditFormState } from '../../types'
 import CardEditForm from './CardEditForm'
-
 import CardHeader from './CardHeader'
+
+import css from './Card.less'
 
 type CardEditFormProps = ComponentProps<typeof CardEditForm>
 

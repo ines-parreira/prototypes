@@ -1,46 +1,46 @@
-import {Map, fromJS} from 'immutable'
-import React, {ComponentProps, ElementType, useContext, useMemo} from 'react'
+import React, { ComponentProps, ElementType, useContext, useMemo } from 'react'
+
+import { fromJS, Map } from 'immutable'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationType} from 'models/integration/constants'
+import { IntegrationType } from 'models/integration/constants'
 import {
     CardMeta,
+    CardTemplate,
+    isListTemplate,
+    isSourceRecord,
     ListMeta,
     PartialTemplate,
-    Template,
-    isListTemplate,
-    CardTemplate,
     Source,
-    isSourceRecord,
+    Template,
 } from 'models/widget/types'
 import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
-import {getWidgetTitle} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
+import { getWidgetTitle } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
 import CustomActions from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions'
 import {
     hasCustomAction,
     isSimpleTemplateWidget,
 } from 'pages/common/components/infobar/utils'
-import {renderInfobarTemplate} from 'pages/common/utils/infobar'
-import {renderTemplate} from 'pages/common/utils/template'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import { renderInfobarTemplate } from 'pages/common/utils/infobar'
+import { renderTemplate } from 'pages/common/utils/template'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import {
     removeEditedWidget,
-    updateEditedWidget,
     startWidgetEdition,
     stopWidgetEdition,
+    updateEditedWidget,
 } from 'state/widgets/actions'
-import {getWidgetsState} from 'state/widgets/selectors'
-import {updateRecord} from 'utils/types'
-
-import {WidgetContext} from 'Widgets/contexts/WidgetContext'
-import {DEFAULT_LIST_ITEM_DISPLAYED_NUMBER} from 'Widgets/modules/Template/config/template'
-import {StaticField} from 'Widgets/modules/Template/modules/Field'
+import { getWidgetsState } from 'state/widgets/selectors'
+import { updateRecord } from 'utils/types'
+import { WidgetContext } from 'Widgets/contexts/WidgetContext'
+import { DEFAULT_LIST_ITEM_DISPLAYED_NUMBER } from 'Widgets/modules/Template/config/template'
+import { StaticField } from 'Widgets/modules/Template/modules/Field'
 
 import UICard from '../components/views'
-import {canDrop} from '../helpers/canDrop'
-import {isDefaultOpen} from '../helpers/isDefaultOpen'
-import {CardEditFormState, HiddenField} from '../types'
+import { canDrop } from '../helpers/canDrop'
+import { isDefaultOpen } from '../helpers/isDefaultOpen'
+import { CardEditFormState, HiddenField } from '../types'
 
 export const NO_DATA_TEXT = 'No data'
 
@@ -97,7 +97,9 @@ export default function Card(props: Props) {
 
     const handleEditionStart = () => {
         dispatch(
-            startWidgetEdition(isParentList ? parentTemplatePath : templatePath)
+            startWidgetEdition(
+                isParentList ? parentTemplatePath : templatePath,
+            ),
         )
     }
 
@@ -145,8 +147,8 @@ export default function Card(props: Props) {
         dispatch(
             removeEditedWidget(
                 templatePath,
-                isParentList ? parentAbsolutePath : absolutePath
-            )
+                isParentList ? parentAbsolutePath : absolutePath,
+            ),
         )
     }
 
@@ -164,14 +166,14 @@ export default function Card(props: Props) {
             limit: Number(
                 (isListTemplate(parentTemplate) &&
                     parentTemplate.meta?.limit) ||
-                    DEFAULT_LIST_ITEM_DISPLAYED_NUMBER
+                    DEFAULT_LIST_ITEM_DISPLAYED_NUMBER,
             ),
             orderBy:
                 (isListTemplate(parentTemplate) &&
                     parentTemplate.meta?.orderBy) ||
                 '',
         }),
-        [template, parentTemplate]
+        [template, parentTemplate],
     )
 
     const getCardTitle = () => {
@@ -220,16 +222,16 @@ export default function Card(props: Props) {
     }
 
     const orderByOptions = childTemplates.filter(isSimpleTemplateWidget).reduce(
-        (acc, {title = '', path}) => {
+        (acc, { title = '', path }) => {
             ;['-', '+'].forEach((order) =>
                 acc.push({
                     value: `${order}${typeof path === 'string' ? path : ''}`,
                     label: `${title} (${order === '-' ? 'DESC' : 'ASC'})`,
-                })
+                }),
             )
             return acc
         },
-        [] as {value: string; label: string}[]
+        [] as { value: string; label: string }[],
     )
 
     return (
@@ -249,7 +251,7 @@ export default function Card(props: Props) {
                 title &&
                 renderInfobarTemplate(
                     title,
-                    isSourceRecord(source) ? source : undefined
+                    isSourceRecord(source) ? source : undefined,
                 )
             }
             dynamicLink={renderTemplate(link, source)}
@@ -262,7 +264,7 @@ export default function Card(props: Props) {
                 isEditing &&
                 canDrop(
                     widgetsState.getIn(['_internal', 'drag', 'group']),
-                    absolutePath
+                    absolutePath,
                 )
             }
             isDraggable={!isParentList}
@@ -330,8 +332,13 @@ function buildExtensions({
     // We don’t want to convert object to immutable objects if card has no extensions
     // Because it has a performance cost
     if (hasExtension(extensions)) {
-        const {AfterTitle, BeforeContent, AfterContent, TitleWrapper, Wrapper} =
-            extensions
+        const {
+            AfterTitle,
+            BeforeContent,
+            AfterContent,
+            TitleWrapper,
+            Wrapper,
+        } = extensions
         const legacyProps = {
             template: fromJS(template) as Map<string, unknown>,
             source: fromJS(source) as Map<string, unknown>,

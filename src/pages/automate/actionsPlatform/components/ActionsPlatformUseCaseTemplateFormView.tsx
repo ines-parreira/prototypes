@@ -1,30 +1,31 @@
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {SimplifiedStepBuilderSteps} from 'pages/aiAgent/actions/components/SimplifiedStepBuilderSteps'
-import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
-import {LLMPromptTriggerNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { SimplifiedStepBuilderSteps } from 'pages/aiAgent/actions/components/SimplifiedStepBuilderSteps'
+import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
+import { LLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
-import {ActionTemplate} from '../types'
+import { ActionTemplate } from '../types'
 import ActionsPlatformTemplateConditions from './ActionsPlatformTemplateConditions'
 import ActionsPlatformTemplateConfirmation from './ActionsPlatformTemplateConfirmation'
-import css from './ActionsPlatformTemplateFormView.less'
 import ActionsPlatformTemplateInstructions from './ActionsPlatformTemplateInstructions'
 import ActionsPlatformTemplateName from './ActionsPlatformTemplateName'
 import ActionsPlatformUseCaseTemplateCategory from './ActionsPlatformUseCaseTemplateCategory'
+
+import css from './ActionsPlatformTemplateFormView.less'
 
 type Props = {
     steps: ActionTemplate[]
 }
 
-const ActionsPlatformUseCaseTemplateFormView = ({steps}: Props) => {
-    const {visualBuilderGraph, dispatch, getVariableListForNode} =
+const ActionsPlatformUseCaseTemplateFormView = ({ steps }: Props) => {
+    const { visualBuilderGraph, dispatch, getVariableListForNode } =
         useVisualBuilderContext<LLMPromptTriggerNodeType>()
 
     const triggerNode = visualBuilderGraph.nodes[0]
 
     const variables = useMemo(
         () => getVariableListForNode(triggerNode.id),
-        [getVariableListForNode, triggerNode.id]
+        [getVariableListForNode, triggerNode.id],
     )
 
     return (

@@ -2,8 +2,7 @@ import React from 'react'
 
 import messengerIcon from 'assets/img/integrations/facebook-messenger-dark-icon.svg'
 import instagramDirectMessageIcon from 'assets/img/integrations/Instagram-direct-message-blue.svg'
-
-import {TicketMessage} from 'models/ticket/types'
+import { TicketMessage } from 'models/ticket/types'
 import PrivateReplyButton from 'pages/common/components/PrivateReplyToFBComment/PrivateReplyButton'
 
 import CollapsedAction from './CollapsedAction'
@@ -19,8 +18,8 @@ export type PrivateReplyActionComponent = React.FC<{
 const makePrivateReplyAction: (props: {
     isFacebookComment: boolean
 }) => PrivateReplyActionComponent =
-    ({isFacebookComment}) =>
-    ({id, onClick, disabled}) => (
+    ({ isFacebookComment }) =>
+    ({ id, onClick, disabled }) => (
         <CollapsedAction
             id={id}
             icon={
@@ -66,7 +65,7 @@ const PrivateReplyAction: React.FC<PrivateReplyActionProps> = ({
         ticketMessageId={ticketMessageId!}
         meta={meta!}
         messageCreatedDatetime={messageCreatedDatetime}
-        buttonComponent={makePrivateReplyAction({isFacebookComment})}
+        buttonComponent={makePrivateReplyAction({ isFacebookComment })}
         isFacebookComment={isFacebookComment}
         onClick={onClick}
     />

@@ -1,7 +1,7 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment/moment'
 
-import {OrderDirection} from 'models/api/types'
+import { OrderDirection } from 'models/api/types'
 import {
     VoiceCallDimension,
     VoiceCallMeasure,
@@ -10,15 +10,15 @@ import {
     usePostReporting,
     UsePostReportingQueryData,
 } from 'models/reporting/queries'
-import {voiceCallListQueryFactory} from 'models/reporting/queryFactories/voice/voiceCall'
-import {StatsFilters} from 'models/stat/types'
-import {VoiceCallStatus} from 'models/voiceCall/types'
-import {formatReportingQueryDate} from 'utils/reporting'
-import {assumeMock} from 'utils/testing'
+import { voiceCallListQueryFactory } from 'models/reporting/queryFactories/voice/voiceCall'
+import { StatsFilters } from 'models/stat/types'
+import { VoiceCallStatus } from 'models/voiceCall/types'
+import { formatReportingQueryDate } from 'utils/reporting'
+import { assumeMock } from 'utils/testing'
 
-import {CALL_LIST_PAGE_SIZE} from '../../constants/voiceOverview'
-import {VoiceCallStatListItem} from '../../models/types'
-import {selectVoiceCallData, useVoiceCallList} from '../useVoiceCallList'
+import { CALL_LIST_PAGE_SIZE } from '../../constants/voiceOverview'
+import { VoiceCallStatListItem } from '../../models/types'
+import { selectVoiceCallData, useVoiceCallList } from '../useVoiceCallList'
 
 jest.mock('models/reporting/queries')
 const usePostReportingMock = assumeMock(usePostReporting)
@@ -41,7 +41,7 @@ describe('useVoiceCallList', () => {
                     'UTC',
                     undefined,
                     CALL_LIST_PAGE_SIZE,
-                    0
+                    0,
                 ),
             ],
             {
@@ -59,8 +59,8 @@ describe('useVoiceCallList', () => {
                 5,
                 undefined,
                 VoiceCallDimension.Duration,
-                OrderDirection.Desc
-            )
+                OrderDirection.Desc,
+            ),
         )
 
         expect(usePostReportingMock.mock.calls[0]).toEqual([
@@ -72,7 +72,7 @@ describe('useVoiceCallList', () => {
                     5,
                     0,
                     VoiceCallDimension.Duration,
-                    OrderDirection.Desc
+                    OrderDirection.Desc,
                 ),
             ],
             {

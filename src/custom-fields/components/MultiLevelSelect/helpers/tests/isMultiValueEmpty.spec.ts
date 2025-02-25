@@ -1,4 +1,4 @@
-import {CustomFieldValue} from 'custom-fields/types'
+import { CustomFieldValue } from 'custom-fields/types'
 
 import isMultiValueEmpty from '../isMultiValueEmpty'
 

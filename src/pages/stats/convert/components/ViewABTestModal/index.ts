@@ -1,1 +1,1 @@
-export {default} from './ViewABTestModal'
+export { default } from './ViewABTestModal'

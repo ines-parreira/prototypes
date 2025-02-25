@@ -1,20 +1,21 @@
-import {List, Map, fromJS} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {getHasShopifyScriptTagScopes} from 'config/integrations/gorgias_chat'
+import { fromJS, List, Map } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { getHasShopifyScriptTagScopes } from 'config/integrations/gorgias_chat'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     GorgiasChatInstallationMethod,
     IntegrationType,
     latestSnippetVersion,
 } from 'models/integration/types'
-import {getChatInstallationStatus} from 'state/entities/chatInstallationStatus/selectors'
-import {getStoreIntegrations} from 'state/integrations/selectors'
+import { getChatInstallationStatus } from 'state/entities/chatInstallationStatus/selectors'
+import { getStoreIntegrations } from 'state/integrations/selectors'
 
 const useChatMigrationBanner = (
-    integration: Map<any, any>
+    integration: Map<any, any>,
 ): {
     showScriptTagMigrationBanner: boolean
     showSnippetV3MigrationBanner: boolean
@@ -31,12 +32,12 @@ const useChatMigrationBanner = (
         : undefined
     const storeIntegration = shopIntegrationId
         ? storeIntegrations.find(
-              (storeIntegration) => storeIntegration.id === shopIntegrationId
+              (storeIntegration) => storeIntegration.id === shopIntegrationId,
           )
         : undefined
     const shopifyIntegrationIds: List<number> = integration.getIn(
         ['meta', 'shopify_integration_ids'],
-        fromJS([])
+        fromJS([]),
     )
     const isOneClickInstallation = shopIntegrationId
         ? shopifyIntegrationIds.includes(shopIntegrationId)
@@ -55,7 +56,7 @@ const useChatMigrationBanner = (
         GorgiasChatInstallationMethod.Asset
     const fiveDays = 1000 * 60 * 60 * 24 * 5
 
-    const {minimumSnippetVersion} = useAppSelector(getChatInstallationStatus)
+    const { minimumSnippetVersion } = useAppSelector(getChatInstallationStatus)
 
     const activeOrRecentOneClickUsage = useMemo(() => {
         // `one_click_installation_datetime` can be null despite oneClick installation to true,
@@ -72,7 +73,7 @@ const useChatMigrationBanner = (
                     return diff < fiveDays
                 }
                 return false
-            }
+            },
         )
     }, [
         fiveDays,
@@ -91,7 +92,7 @@ const useChatMigrationBanner = (
         showSnippetV3Banner,
         showScriptTagBanner,
     }:
-        | {showSnippetV3Banner: boolean; showScriptTagBanner: boolean}
+        | { showSnippetV3Banner: boolean; showScriptTagBanner: boolean }
         | undefined = useMemo(() => {
         let showScriptTagBanner = false
         let showSnippetV3Banner = false
@@ -102,7 +103,7 @@ const useChatMigrationBanner = (
                 minimumSnippetVersion !== latestSnippetVersion &&
                 isChatSnippetV3BannerEnabled
             showScriptTagBanner = false
-            return {showSnippetV3Banner, showScriptTagBanner}
+            return { showSnippetV3Banner, showScriptTagBanner }
         }
 
         showScriptTagBanner =
@@ -121,7 +122,7 @@ const useChatMigrationBanner = (
             // Do not show 2 banners at the same time.
             !showScriptTagBanner
 
-        return {showSnippetV3Banner, showScriptTagBanner}
+        return { showSnippetV3Banner, showScriptTagBanner }
     }, [
         activeOrRecentOneClickUsage,
         hasScriptTagFeatureFlagOn,

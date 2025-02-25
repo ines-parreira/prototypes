@@ -1,15 +1,16 @@
-import {renderHook} from '@testing-library/react-hooks/dom'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { renderHook } from '@testing-library/react-hooks/dom'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {usePerformanceTips} from 'hooks/reporting/usePerformanceTips'
+import { usePerformanceTips } from 'hooks/reporting/usePerformanceTips'
 import useAppSelector from 'hooks/useAppSelector'
-import {MetricName} from 'services/reporting/constants'
+import { MetricName } from 'services/reporting/constants'
 import * as tipProvider from 'services/supportPerformanceTipService'
-import {RootState, StoreDispatch} from 'state/types'
-import {PlanName} from 'utils/paywalls'
-import {assumeMock} from 'utils/testing'
+import { RootState, StoreDispatch } from 'state/types'
+import { PlanName } from 'utils/paywalls'
+import { assumeMock } from 'utils/testing'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 jest.mock('hooks/useAppSelector')
@@ -32,7 +33,7 @@ describe('usePerformanceTips', () => {
     it('should use planName from state and tipProvider', () => {
         const mock = jest.spyOn(tipProvider, 'getPerformanceTip')
         renderHook(() => usePerformanceTips(lowerIsBetterMetric, value), {
-            wrapper: ({children}) => (
+            wrapper: ({ children }) => (
                 <Provider store={mockStore(defaultState)}>{children}</Provider>
             ),
         })
@@ -45,7 +46,7 @@ describe('usePerformanceTips', () => {
 
         const mock = jest.spyOn(tipProvider, 'getPerformanceTip')
         renderHook(() => usePerformanceTips(lowerIsBetterMetric, value), {
-            wrapper: ({children}) => (
+            wrapper: ({ children }) => (
                 <Provider store={mockStore(defaultState)}>{children}</Provider>
             ),
         })

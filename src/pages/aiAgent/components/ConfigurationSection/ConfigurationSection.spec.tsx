@@ -1,7 +1,8 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {ConfigurationSection} from './ConfigurationSection'
+import { render, screen } from '@testing-library/react'
+
+import { ConfigurationSection } from './ConfigurationSection'
 
 // Mock CSS module
 jest.mock('./ConfigurationSection.less', () => ({}))
@@ -15,7 +16,7 @@ jest.mock('@gorgias/merchant-ui-kit', () => ({
         children: React.ReactNode
         className?: string
     }) => <div className={className}>{children}</div>,
-    ColorType: {Magenta: 'magenta'},
+    ColorType: { Magenta: 'magenta' },
 }))
 
 describe('ConfigurationSection Component', () => {
@@ -32,7 +33,7 @@ describe('ConfigurationSection Component', () => {
 
     it('renders subtitle when provided', () => {
         render(
-            <ConfigurationSection {...defaultProps} subtitle="Test Subtitle" />
+            <ConfigurationSection {...defaultProps} subtitle="Test Subtitle" />,
         )
         expect(screen.getByText('Test Subtitle')).toBeInTheDocument()
     })
@@ -62,10 +63,10 @@ describe('ConfigurationSection Component', () => {
 
     it('h2 element has correct data attributes', () => {
         render(<ConfigurationSection {...defaultProps} />)
-        const heading = screen.getByRole('heading', {level: 2})
+        const heading = screen.getByRole('heading', { level: 2 })
         expect(heading).toHaveAttribute(
             'data-candu-id',
-            'ai-agent-configuration-knowledge'
+            'ai-agent-configuration-knowledge',
         )
     })
 

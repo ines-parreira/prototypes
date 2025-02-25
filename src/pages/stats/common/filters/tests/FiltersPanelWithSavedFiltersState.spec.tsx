@@ -1,24 +1,25 @@
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {account} from 'fixtures/account'
-import {billingState} from 'fixtures/billing'
+import { fromJS } from 'immutable'
+
+import { account } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
 import {
     AUTOMATION_PRODUCT_ID,
     basicYearlyAutomationPlan,
     basicYearlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
-import {FiltersPanelComponent} from 'pages/stats/common/filters/FiltersPanel'
-import {SavedFilterComponentMap} from 'pages/stats/common/filters/FiltersPanelConfig'
-import {FiltersPanelWithSavedFiltersState} from 'pages/stats/common/filters/FiltersPanelWithSavedFiltersState'
-import {getHasAutomate} from 'state/billing/selectors'
+import { FiltersPanelComponent } from 'pages/stats/common/filters/FiltersPanel'
+import { SavedFilterComponentMap } from 'pages/stats/common/filters/FiltersPanelConfig'
+import { FiltersPanelWithSavedFiltersState } from 'pages/stats/common/filters/FiltersPanelWithSavedFiltersState'
+import { getHasAutomate } from 'state/billing/selectors'
 import * as statsSlice from 'state/stats/statsSlice'
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
 import * as filtersSlice from 'state/ui/stats/filtersSlice'
-import {assumeMock, renderWithStore} from 'utils/testing'
+import { assumeMock, renderWithStore } from 'utils/testing'
 
-import {SAVEABLE_FILTERS} from '../constants'
+import { SAVEABLE_FILTERS } from '../constants'
 
 jest.mock('state/billing/selectors', () => ({
     __esModule: true,
@@ -61,7 +62,7 @@ describe('SavedFiltersPanel', () => {
                 optionalFilters: SAVEABLE_FILTERS,
                 filterComponentMap: SavedFilterComponentMap,
             }),
-            {}
+            {},
         )
     })
 })

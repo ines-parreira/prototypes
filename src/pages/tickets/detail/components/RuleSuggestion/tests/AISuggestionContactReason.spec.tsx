@@ -1,14 +1,14 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {fireEvent, screen, render, waitFor} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {Provider} from 'react-redux'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {emailTicket} from 'state/ticket/tests/fixtures'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { emailTicket } from 'state/ticket/tests/fixtures'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import AISuggestionContactReason from '../AISuggestionContactReason'
 
@@ -94,9 +94,9 @@ describe('<AISuggestionContactReason />', () => {
         }
         const store = mockStore({
             ticket: fromJS(ticket),
-            state: fromJS({custom_fields: customFields}),
+            state: fromJS({ custom_fields: customFields }),
         })
-        const {container} = render(
+        const { container } = render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={store}>
                     <AISuggestionContactReason
@@ -107,7 +107,7 @@ describe('<AISuggestionContactReason />', () => {
                         }}
                     />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
         expect(container).toMatchSnapshot()
         expect(mockStore)
@@ -134,22 +134,22 @@ describe('<AISuggestionContactReason />', () => {
         }
         const store = mockStore({
             ticket: fromJS(ticket),
-            state: fromJS({custom_fields: customFields}),
+            state: fromJS({ custom_fields: customFields }),
         })
         jest.useFakeTimers()
-        const {container} = render(
+        const { container } = render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore(store)}>
                     <AISuggestionContactReason ticket={ticket} />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
         fireEvent.click(screen.getByText(/Confirm/))
         jest.runAllTimers()
         await waitFor(() =>
             expect(
-                screen.getByText('Thanks for the feedback!')
-            ).toBeInTheDocument()
+                screen.getByText('Thanks for the feedback!'),
+            ).toBeInTheDocument(),
         )
         expect(container).toMatchSnapshot()
     })

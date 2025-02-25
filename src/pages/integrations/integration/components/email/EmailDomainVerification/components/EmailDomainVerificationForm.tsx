@@ -1,9 +1,11 @@
-import {useUpdateEmailIntegrationDomain} from '@gorgias/api-queries'
-import React, {useCallback, useState} from 'react'
-import {FormGroup, Label} from 'reactstrap'
+import React, { useCallback, useState } from 'react'
+
+import { FormGroup, Label } from 'reactstrap'
+
+import { useUpdateEmailIntegrationDomain } from '@gorgias/api-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {isGorgiasApiError} from 'models/api/types'
+import { isGorgiasApiError } from 'models/api/types'
 import {
     DEFAULT_EMAIL_DKIM_KEY_SIZE,
     EmailProvider,
@@ -15,10 +17,10 @@ import {
 } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
-import {getDomainFromEmailAddress} from '../../helpers'
+import { getDomainFromEmailAddress } from '../../helpers'
 
 import css from './EmailDomainVerificationForm.less'
 
@@ -28,7 +30,7 @@ export type Props = {
     onDeleteDomain?: () => void
 }
 
-export default function EmailDomainVerificationForm({integration}: Props) {
+export default function EmailDomainVerificationForm({ integration }: Props) {
     const dispatch = useAppDispatch()
     const [dkimKeySize, setDkimKeySize] = useState(DEFAULT_EMAIL_DKIM_KEY_SIZE)
 
@@ -43,14 +45,16 @@ export default function EmailDomainVerificationForm({integration}: Props) {
             const message =
                 (isGorgiasApiError(error) && error.response?.data.error.msg) ||
                 'Failed to create domain'
-            void dispatch(notify({message, status: NotificationStatus.Error}))
+            void dispatch(notify({ message, status: NotificationStatus.Error }))
         },
-        [dispatch]
+        [dispatch],
     )
 
-    const {mutate: updateDomain, isLoading} = useUpdateEmailIntegrationDomain({
-        mutation: {onError},
-    })
+    const { mutate: updateDomain, isLoading } = useUpdateEmailIntegrationDomain(
+        {
+            mutation: { onError },
+        },
+    )
 
     return (
         <>
@@ -83,7 +87,7 @@ export default function EmailDomainVerificationForm({integration}: Props) {
                 onClick={() => {
                     updateDomain({
                         domainName,
-                        data: {dkim_key_size: dkimKeySize},
+                        data: { dkim_key_size: dkimKeySize },
                     })
                 }}
             >

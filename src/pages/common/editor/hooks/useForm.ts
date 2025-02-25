@@ -1,11 +1,11 @@
-import {FormEvent, useCallback, useRef, useState} from 'react'
+import { FormEvent, useCallback, useRef, useState } from 'react'
 
-import {TicketStatus} from 'business/types/ticket'
-import {SubmitArgs} from 'pages/tickets/detail/TicketDetailContainer'
+import { TicketStatus } from 'business/types/ticket'
+import { SubmitArgs } from 'pages/tickets/detail/TicketDetailContainer'
 
 export default function useForm(submit: (args: SubmitArgs) => any) {
     const [ticketStatus, setTicketStatus] = useState<TicketStatus>(
-        TicketStatus.Open
+        TicketStatus.Open,
     )
     const formRef = useRef<HTMLFormElement | null>(null)
 
@@ -22,12 +22,12 @@ export default function useForm(submit: (args: SubmitArgs) => any) {
             }
 
             if (form.checkValidity()) {
-                submit({status: ticketStatus})
+                submit({ status: ticketStatus })
             }
 
             setTicketStatus(TicketStatus.Open)
         },
-        [ticketStatus, submit]
+        [ticketStatus, submit],
     )
 
     return {

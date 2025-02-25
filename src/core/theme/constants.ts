@@ -1,6 +1,6 @@
-import {THEME_NAME} from '@gorgias/design-tokens'
+import { THEME_NAME } from '@gorgias/design-tokens'
 
-import type {HelpdeskThemeName} from './types'
+import type { HelpdeskThemeName } from './types'
 
 type ThemeConfig = {
     icon: string

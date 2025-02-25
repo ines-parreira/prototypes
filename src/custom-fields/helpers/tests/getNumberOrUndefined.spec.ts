@@ -1,7 +1,7 @@
-import {isCustomFieldValueEmpty} from 'custom-fields/helpers/isCustomFieldValueEmpty'
-import {assumeMock} from 'utils/testing'
+import { isCustomFieldValueEmpty } from 'custom-fields/helpers/isCustomFieldValueEmpty'
+import { assumeMock } from 'utils/testing'
 
-import {getNumberOrUndefined} from '../getNumberOrUndefined'
+import { getNumberOrUndefined } from '../getNumberOrUndefined'
 
 jest.mock('../isCustomFieldValueEmpty')
 
@@ -21,7 +21,7 @@ describe('getNumberOrUndefined', () => {
         'should return undefined when value is not a number or string',
         (value) => {
             expect(getNumberOrUndefined(value)).toBeUndefined()
-        }
+        },
     )
 
     it.each([

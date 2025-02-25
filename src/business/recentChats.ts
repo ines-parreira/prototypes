@@ -1,7 +1,7 @@
-import {fromJS, Map, List} from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 
-import {RecentChatTicket} from './types/recentChats'
-import {TicketStatus} from './types/ticket'
+import { RecentChatTicket } from './types/recentChats'
+import { TicketStatus } from './types/ticket'
 
 /**
  * Return whether or not a ticket update received via websockets should be displayed in the current user's recent chats.
@@ -10,7 +10,7 @@ export function shouldTicketBeDisplayedInRecentChats(
     ticket: RecentChatTicket,
     ticketAssignmentSetting: Map<any, any>,
     currentUser: Map<any, any>,
-    currentUserIsAvailable: boolean
+    currentUserIsAvailable: boolean,
 ) {
     const ticketShouldBeHidden =
         ticket.status === TicketStatus.Closed ||
@@ -35,7 +35,7 @@ export function shouldTicketBeDisplayedInRecentChats(
     const channelSetForTicketAssignmentSettings = (
         ticketAssignmentSetting.getIn(
             ['data', 'assignment_channels'],
-            fromJS([])
+            fromJS([]),
         ) as List<any>
     ).includes(ticket.channel)
     const autoAssignIsEnabledForTicketChannel =

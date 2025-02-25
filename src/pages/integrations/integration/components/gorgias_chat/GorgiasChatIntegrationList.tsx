@@ -1,17 +1,15 @@
+import React, { useMemo } from 'react'
+
 import classnames from 'classnames'
-import {List, Map} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useMemo} from 'react'
-import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
+import { List, Map } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { Breadcrumb, BreadcrumbItem, Container } from 'reactstrap'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-
+import { FeatureFlagKey } from 'config/featureFlags'
 import Button from 'pages/common/components/button/Button'
+import { getIntegrationConfig } from 'state/integrations/helpers'
 
-import {getIntegrationConfig} from 'state/integrations/helpers'
-
-import {IntegrationType} from '../../../../../models/integration/types'
-
+import { IntegrationType } from '../../../../../models/integration/types'
 import PageHeader from '../../../../common/components/PageHeader'
 import HeaderCell from '../../../../common/components/table/cells/HeaderCell'
 import HeaderCellProperty from '../../../../common/components/table/cells/HeaderCellProperty'
@@ -19,19 +17,18 @@ import TableBody from '../../../../common/components/table/TableBody'
 import TableHead from '../../../../common/components/table/TableHead'
 import TableWrapper from '../../../../common/components/table/TableWrapper'
 import history from '../../../../history'
-import settingsCss from '../../../../settings/settings.less'
-
 import NoIntegration from '../NoIntegration'
-
-import css from './GorgiasChatIntegrationList.less'
 import GorgiasChatIntegrationListRow from './GorgiasChatIntegrationListRow'
+
+import settingsCss from '../../../../settings/settings.less'
+import css from './GorgiasChatIntegrationList.less'
 
 type Props = {
     integrations: List<Map<any, any>>
     loading: Map<any, any>
 }
 
-function GorgiasChatIntegrationList({integrations, loading}: Props) {
+function GorgiasChatIntegrationList({ integrations, loading }: Props) {
     const isChatCreationWizardEnabled =
         useFlags()[FeatureFlagKey.ChatCreationWizard]
 
@@ -47,9 +44,9 @@ function GorgiasChatIntegrationList({integrations, loading}: Props) {
         () =>
             integrations.filter(
                 (integration) =>
-                    integration?.get('type') === IntegrationType.GorgiasChat
+                    integration?.get('type') === IntegrationType.GorgiasChat,
             ) as List<Map<any, any>>,
-        [integrations]
+        [integrations],
     )
     const shopifyIntegrations = useMemo(
         () =>
@@ -58,13 +55,13 @@ function GorgiasChatIntegrationList({integrations, loading}: Props) {
                     IntegrationType.Shopify,
                     IntegrationType.BigCommerce,
                     IntegrationType.Magento2,
-                ].includes(integration?.get('type'))
+                ].includes(integration?.get('type')),
             ) as List<Map<any, any>>,
-        [integrations]
+        [integrations],
     )
 
     const integrationTitle = getIntegrationConfig(
-        IntegrationType.GorgiasChat
+        IntegrationType.GorgiasChat,
     )!.title
 
     const chatMultiLanguagesEnabled =
@@ -90,7 +87,7 @@ function GorgiasChatIntegrationList({integrations, loading}: Props) {
                                 isChatCreationWizardEnabled
                                     ? 'create-wizard'
                                     : 'appearance'
-                            }`
+                            }`,
                         )
                     }
                 >
@@ -103,7 +100,7 @@ function GorgiasChatIntegrationList({integrations, loading}: Props) {
                 fluid
                 className={classnames(
                     settingsCss.pageContainer,
-                    settingsCss.pb0
+                    settingsCss.pb0,
                 )}
             >
                 {chats.isEmpty() && (
@@ -143,11 +140,11 @@ function GorgiasChatIntegrationList({integrations, loading}: Props) {
                                         integrations={shopifyIntegrations}
                                         isLoadingIntegrations={loading.get(
                                             'integrations',
-                                            true
+                                            true,
                                         )}
                                         key={chat.get('id')}
                                     />
-                                )
+                                ),
                         )}
                     </TableBody>
                 </TableWrapper>

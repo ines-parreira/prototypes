@@ -1,16 +1,16 @@
-import {List, Map} from 'immutable'
-import React, {useMemo} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
+import React, { useMemo } from 'react'
 
-import {ViewVisibility} from 'models/view/types'
+import { List, Map } from 'immutable'
+import { connect, ConnectedProps } from 'react-redux'
+
+import { ViewVisibility } from 'models/view/types'
 import RadioChoiceField from 'pages/common/forms/RadioChoiceField'
-import {getHumanAgents} from 'state/agents/selectors'
-import {getTeams} from 'state/teams/selectors'
-import {RootState} from 'state/types'
+import { getHumanAgents } from 'state/agents/selectors'
+import { getTeams } from 'state/teams/selectors'
+import { RootState } from 'state/types'
 
-import Alert, {AlertType} from '../../Alert/Alert'
+import Alert, { AlertType } from '../../Alert/Alert'
 import Loader from '../../Loader/Loader'
-
 import PrivateBody from './PrivateBody'
 import PublicBody from './PublicBody'
 import SharedBody from './SharedBody'
@@ -34,9 +34,9 @@ type OwnProps = {
 type Props = OwnProps & ConnectedProps<typeof connector>
 
 const choices = [
-    {value: ViewVisibility.Public, label: 'Public'},
-    {value: ViewVisibility.Shared, label: 'Shared'},
-    {value: ViewVisibility.Private, label: 'Private'},
+    { value: ViewVisibility.Public, label: 'Public' },
+    { value: ViewVisibility.Shared, label: 'Shared' },
+    { value: ViewVisibility.Private, label: 'Private' },
 ]
 
 export function ViewSharingModalBodyContainer({
@@ -64,10 +64,10 @@ export function ViewSharingModalBodyContainer({
             teams.filter((team) =>
                 selectedTeams.every(
                     (selectedTeam: Map<any, any>) =>
-                        selectedTeam.get('id') !== team?.get('id')
-                )
+                        selectedTeam.get('id') !== team?.get('id'),
+                ),
             ) as List<any>,
-        [teams, selectedTeams]
+        [teams, selectedTeams],
     )
 
     const availableUsers = useMemo(
@@ -75,10 +75,10 @@ export function ViewSharingModalBodyContainer({
             users.filter((user: Map<any, any>) =>
                 selectedUsers.every(
                     (selectedUser: Map<any, any>) =>
-                        selectedUser.get('id') !== user.get('id')
-                )
+                        selectedUser.get('id') !== user.get('id'),
+                ),
             ) as List<any>,
-        [users, selectedUsers]
+        [users, selectedUsers],
     )
 
     if (isLoading) {

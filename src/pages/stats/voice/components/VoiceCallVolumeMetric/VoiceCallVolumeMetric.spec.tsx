@@ -1,11 +1,12 @@
-import {fireEvent, render, waitFor} from '@testing-library/react'
 import React from 'react'
 
-import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-import {StatsFilters} from 'models/stat/types'
-import {formatMetricValue} from 'pages/stats/common/utils'
-import {useVoiceCallCountTrend} from 'pages/stats/voice/hooks/useVoiceCallCountTrend'
-import {assumeMock} from 'utils/testing'
+import { fireEvent, render, waitFor } from '@testing-library/react'
+
+import { MetricTrend } from 'hooks/reporting/useMetricTrend'
+import { StatsFilters } from 'models/stat/types'
+import { formatMetricValue } from 'pages/stats/common/utils'
+import { useVoiceCallCountTrend } from 'pages/stats/voice/hooks/useVoiceCallCountTrend'
+import { assumeMock } from 'utils/testing'
 
 import VoiceCallVolumeMetric from './VoiceCallVolumeMetric'
 
@@ -29,7 +30,7 @@ describe('<VoiceCallVolumeMetric />', () => {
                 statsFilters={statsFilters}
                 metricTrend={trendValue}
                 moreIsBetter={moreIsBetter}
-            />
+            />,
         )
     }
 
@@ -43,7 +44,7 @@ describe('<VoiceCallVolumeMetric />', () => {
             isFetching: false,
         }
 
-        const {getByText, container} = renderComponent(trendValue)
+        const { getByText, container } = renderComponent(trendValue)
 
         expect(getByText('Total calls')).toBeInTheDocument()
         expect(getByText('50%')).toHaveClass('positive')
@@ -53,11 +54,11 @@ describe('<VoiceCallVolumeMetric />', () => {
         await waitFor(() => {
             expect(container.querySelector('.tooltip')).toBeInTheDocument()
             expect(
-                document.querySelector('.tooltip-inner')?.textContent
+                document.querySelector('.tooltip-inner')?.textContent,
             ).toEqual(
                 `Vs. ${formatMetricValue(
-                    trendValue.data.prevValue
-                )} on Feb 2nd, 2021`
+                    trendValue.data.prevValue,
+                )} on Feb 2nd, 2021`,
             )
         })
     })
@@ -72,7 +73,7 @@ describe('<VoiceCallVolumeMetric />', () => {
             isFetching: false,
         }
 
-        const {getByText} = renderComponent(trendValue, false)
+        const { getByText } = renderComponent(trendValue, false)
 
         expect(getByText('Total calls')).toBeInTheDocument()
         expect(getByText('50%')).toHaveClass('negative')
@@ -86,7 +87,7 @@ describe('<VoiceCallVolumeMetric />', () => {
             isFetching: false,
         }
 
-        const {getByText} = renderComponent(trendValue, false)
+        const { getByText } = renderComponent(trendValue, false)
 
         expect(getByText('Total calls')).toBeInTheDocument()
         expect(getByText('-')).toBeInTheDocument()

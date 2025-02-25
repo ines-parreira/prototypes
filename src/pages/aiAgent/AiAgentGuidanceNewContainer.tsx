@@ -1,15 +1,18 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import React from 'react'
-import {useParams} from 'react-router-dom'
 
-import {AiAgentGuidanceNewView} from './AiAgentGuidanceNewView'
+import { useParams } from 'react-router-dom'
+
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+
+import { AiAgentGuidanceNewView } from './AiAgentGuidanceNewView'
+import { AiAgentLayout } from './components/AiAgentLayout/AiAgentLayout'
+import { GuidanceBreadcrumbs } from './components/GuidanceBreadcrumbs/GuidanceBreadcrumbs'
+import { useAiAgentHelpCenter } from './hooks/useAiAgentHelpCenter'
+
 import css from './AiAgentMainViewContainer.less'
-import {AiAgentLayout} from './components/AiAgentLayout/AiAgentLayout'
-import {GuidanceBreadcrumbs} from './components/GuidanceBreadcrumbs/GuidanceBreadcrumbs'
-import {useAiAgentHelpCenter} from './hooks/useAiAgentHelpCenter'
 
 export const AiAgentGuidanceNewContainer = () => {
-    const {shopName} = useParams<{
+    const { shopName } = useParams<{
         shopName: string
     }>()
     const guidanceHelpCenter = useAiAgentHelpCenter({

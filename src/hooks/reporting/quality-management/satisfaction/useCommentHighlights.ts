@@ -1,15 +1,15 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {UserRole} from 'config/types/user'
-import {useMetricPerDimensionWithEnrichment} from 'hooks/reporting/useMetricPerDimension'
+import { UserRole } from 'config/types/user'
+import { useMetricPerDimensionWithEnrichment } from 'hooks/reporting/useMetricPerDimension'
 import useAppSelector from 'hooks/useAppSelector'
-import {TicketDimension} from 'models/reporting/cubes/TicketCube'
-import {TicketSatisfactionSurveyDimension} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
-import {commentHighlightsQueryFactory} from 'models/reporting/queryFactories/satisfaction/commentHighlightsQueryFactory'
-import {EnrichmentFields} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
-import {getHumanAndAutomationBotAgentsJS} from 'state/agents/selectors'
-import {getTeamsMinimalWithEmojiJS} from 'state/teams/selectors'
+import { TicketDimension } from 'models/reporting/cubes/TicketCube'
+import { TicketSatisfactionSurveyDimension } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
+import { commentHighlightsQueryFactory } from 'models/reporting/queryFactories/satisfaction/commentHighlightsQueryFactory'
+import { EnrichmentFields } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
+import { getHumanAndAutomationBotAgentsJS } from 'state/agents/selectors'
+import { getTeamsMinimalWithEmojiJS } from 'state/teams/selectors'
 
 type CommentHighlightsUserData = {
     name: string
@@ -40,14 +40,14 @@ export type FormattedCommentHighlightQueryData = {
 export const useCommentHighlights = (
     filters: StatsFilters,
     timezone: string,
-    queryScores: string[]
+    queryScores: string[],
 ): FormattedCommentHighlightQueryData => {
     const agents = useAppSelector(getHumanAndAutomationBotAgentsJS)
     const teams = useAppSelector(getTeamsMinimalWithEmojiJS)
-    const {data, isFetching, isError} = useMetricPerDimensionWithEnrichment(
+    const { data, isFetching, isError } = useMetricPerDimensionWithEnrichment(
         commentHighlightsQueryFactory(filters, timezone, queryScores),
         [EnrichmentFields.CustomerName, EnrichmentFields.AssigneeName],
-        EnrichmentFields.TicketId
+        EnrichmentFields.TicketId,
     )
 
     const formattedData = useMemo(
@@ -65,7 +65,7 @@ export const useCommentHighlights = (
                     result[TicketDimension.AssigneeTeamId] || null
 
                 const team = teams.find(
-                    (team) => String(team.id) === assignedTeamId
+                    (team) => String(team.id) === assignedTeamId,
                 )
 
                 const assignedTeam = team
@@ -76,7 +76,7 @@ export const useCommentHighlights = (
                     : null
 
                 const agent = agents.find(
-                    (agent) => String(agent.id) === assignedUserId
+                    (agent) => String(agent.id) === assignedUserId,
                 )
 
                 const assignedAgent = agent
@@ -99,7 +99,7 @@ export const useCommentHighlights = (
                     customerName,
                 }
             }),
-        [agents, data?.allData, teams]
+        [agents, data?.allData, teams],
     )
 
     return {

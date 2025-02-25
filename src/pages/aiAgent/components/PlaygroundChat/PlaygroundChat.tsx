@@ -1,31 +1,32 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useCallback, useEffect, useRef, useState} from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 
-import {AiAgentNotificationType} from 'automate/notifications/types'
-import {FeatureFlagKey} from 'config/featureFlags'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { AiAgentNotificationType } from 'automate/notifications/types'
+import { FeatureFlagKey } from 'config/featureFlags'
 import {
     AccountConfigurationWithHttpIntegration,
     AiAgentOnboardingState,
     OnboardingNotificationState,
     StoreConfiguration,
 } from 'models/aiAgent/types'
-import {PlaygroundPromptType} from 'models/aiAgentPlayground/types'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import { PlaygroundPromptType } from 'models/aiAgentPlayground/types'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 
-import {useAiAgentOnboardingNotification} from '../../hooks/useAiAgentOnboardingNotification'
-import {usePlaygroundForm} from '../../hooks/usePlaygroundForm'
-import {usePlaygroundMessages} from '../../hooks/usePlaygroundMessages'
+import { useAiAgentOnboardingNotification } from '../../hooks/useAiAgentOnboardingNotification'
+import { usePlaygroundForm } from '../../hooks/usePlaygroundForm'
+import { usePlaygroundMessages } from '../../hooks/usePlaygroundMessages'
 import {
-    mapPlaygroundPromptToMessage,
     mapPlaygroundFormValuesToMessage,
+    mapPlaygroundPromptToMessage,
 } from '../../utils/playground-messages.utils'
-import {PlaygroundInputSection} from '../PlaygroundInputSection/PlaygroundInputSection'
+import { PlaygroundInputSection } from '../PlaygroundInputSection/PlaygroundInputSection'
 import PlaygroundMessageComponent, {
     AI_AGENT_SENDER,
 } from '../PlaygroundMessage/PlaygroundMessage'
+import { PlaygroundChannels } from './PlaygroundChat.types'
 
 import css from './PlaygroundChat.less'
-import {PlaygroundChannels} from './PlaygroundChat.types'
 
 type Props = {
     storeData: StoreConfiguration
@@ -80,7 +81,7 @@ export const PlaygroundChat = ({
     const onPromptMessage = (prompt: PlaygroundPromptType) => {
         const playgroundMessage = mapPlaygroundPromptToMessage(
             prompt,
-            formValues.customer.name || formValues.customer.email
+            formValues.customer.name || formValues.customer.email,
         )
         void onMessageSend(playgroundMessage, {
             customer: formValues.customer,

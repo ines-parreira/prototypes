@@ -1,8 +1,9 @@
-import {render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentType} from 'react'
+import React, { ComponentType } from 'react'
 
-import {ActionType} from 'models/rule/types'
+import { render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+
+import { ActionType } from 'models/rule/types'
 
 import Action from '../Action'
 
@@ -10,7 +11,7 @@ jest.mock('../ActionSelect', () => () => <div>ActionSelect</div>)
 
 describe('Action', () => {
     describe('render()', () => {
-        const MockedChild: ComponentType<{properties: any[]}> = () => <div />
+        const MockedChild: ComponentType<{ properties: any[] }> = () => <div />
         const minProps = {
             actions: {
                 modifyCodeAST: jest.fn(),
@@ -21,8 +22,8 @@ describe('Action', () => {
             parent: fromJS([]),
             properties: [
                 {
-                    key: {name: 'name'},
-                    value: {value: ''},
+                    key: { name: 'name' },
+                    value: { value: '' },
                 },
             ],
             rule: fromJS({}),
@@ -42,17 +43,17 @@ describe('Action', () => {
 
                 expect(
                     screen.getByText(
-                        'An extensive use of automatic Facebook actions may deactivate your page on Facebook!'
-                    )
+                        'An extensive use of automatic Facebook actions may deactivate your page on Facebook!',
+                    ),
                 ).toBeInTheDocument()
-            }
+            },
         )
 
         it('should render an error saying an action cannot be empty', () => {
             render(<Action {...minProps} value="" />)
 
             expect(
-                screen.getByText('An action cannot be empty')
+                screen.getByText('An action cannot be empty'),
             ).toBeInTheDocument()
         })
 
@@ -60,7 +61,7 @@ describe('Action', () => {
             render(<Action {...minProps} value="setTeamAssignee" />)
 
             expect(
-                screen.getByText(/To set up team auto-assignment, go to the/)
+                screen.getByText(/To set up team auto-assignment, go to the/),
             ).toBeInTheDocument()
         })
 
@@ -71,15 +72,15 @@ describe('Action', () => {
                     value="setTags"
                     properties={[
                         {
-                            key: {name: 'tags'},
-                            value: {value: 'tag'},
+                            key: { name: 'tags' },
+                            value: { value: 'tag' },
                         },
                     ]}
-                />
+                />,
             )
 
             expect(
-                screen.queryByText('Tags cannot not be empty')
+                screen.queryByText('Tags cannot not be empty'),
             ).not.toBeInTheDocument()
         })
 
@@ -90,11 +91,11 @@ describe('Action', () => {
                     value="setTags"
                     properties={[
                         {
-                            key: {name: 'tags'},
-                            value: {value: ''},
+                            key: { name: 'tags' },
+                            value: { value: '' },
                         },
                     ]}
-                />
+                />,
             )
 
             expect(screen.getByText('Tags cannot be empty')).toBeInTheDocument()
@@ -107,16 +108,16 @@ describe('Action', () => {
                     value="sendEmail"
                     properties={[
                         {
-                            key: {name: 'title'},
-                            value: {value: ''},
+                            key: { name: 'title' },
+                            value: { value: '' },
                         },
                     ]}
-                />
+                />,
             )
 
             expect(screen.getByText('Body must be filled')).toBeInTheDocument()
             expect(
-                screen.getByText('Email must have at least one recipient')
+                screen.getByText('Email must have at least one recipient'),
             ).toBeInTheDocument()
         })
 

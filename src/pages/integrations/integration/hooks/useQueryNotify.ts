@@ -1,9 +1,9 @@
-import {useEffect} from 'react'
+import { useEffect } from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useSearch from 'hooks/useSearch'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 // Display a notification based on some query params
 export default function useQueryNotify() {
@@ -14,7 +14,7 @@ export default function useQueryNotify() {
         message_type?: NotificationStatus
     }>()
     useEffect(() => {
-        const {message, message_type, error} = search
+        const { message, message_type, error } = search
 
         if (error === 'need_scope_update') {
             void dispatch(
@@ -22,7 +22,7 @@ export default function useQueryNotify() {
                     status: message_type || NotificationStatus.Error,
                     message:
                         'You need to update your app permissions in order to do that.',
-                })
+                }),
             )
         }
 
@@ -31,7 +31,7 @@ export default function useQueryNotify() {
                 notify({
                     status: message_type || NotificationStatus.Info,
                     message: decodeURIComponent(message.replace(/\+/g, ' ')),
-                })
+                }),
             )
         }
     }, [dispatch, search])

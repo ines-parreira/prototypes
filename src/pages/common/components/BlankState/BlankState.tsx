@@ -1,5 +1,6 @@
+import React, { ReactNode, useState } from 'react'
+
 import _sample from 'lodash/sample'
-import React, {ReactNode, useState} from 'react'
 
 import useEffectOnce from 'hooks/useEffectOnce'
 
@@ -15,12 +16,12 @@ type Props = {
 }
 
 const headers: Header[] = [
-    {title: 'Great job!', emojis: ['✨', '🌈']},
-    {title: 'Great job, you crushed it!', emojis: ['🔥']},
-    {title: "Great job, let's celebrate!", emojis: ['🎉', '🎊', '🏆']},
+    { title: 'Great job!', emojis: ['✨', '🌈'] },
+    { title: 'Great job, you crushed it!', emojis: ['🔥'] },
+    { title: "Great job, let's celebrate!", emojis: ['🎉', '🎊', '🏆'] },
 ]
 
-const BlankState = ({message}: Props) => {
+const BlankState = ({ message }: Props) => {
     const [header, setHeader] = useState<Header>()
     const [emoji, setEmoji] = useState<string>()
 

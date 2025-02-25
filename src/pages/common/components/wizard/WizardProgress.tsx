@@ -1,7 +1,9 @@
-import classnames from 'classnames'
-import React, {HTMLAttributes, ReactNode, useContext} from 'react'
+import React, { HTMLAttributes, ReactNode, useContext } from 'react'
 
-import {WizardContext} from './Wizard'
+import classnames from 'classnames'
+
+import { WizardContext } from './Wizard'
+
 import css from './WizardProgress.less'
 
 type Props = {
@@ -10,12 +12,16 @@ type Props = {
         | ((activeStepPosition: number, totalSteps: number) => ReactNode)
 } & HTMLAttributes<HTMLDivElement>
 
-export default function WizardProgress({children, className, ...other}: Props) {
+export default function WizardProgress({
+    children,
+    className,
+    ...other
+}: Props) {
     const wizardContext = useContext(WizardContext)
 
     if (wizardContext === null) {
         throw new Error(
-            'WizardProgress must be used within a WizardContext.Provider'
+            'WizardProgress must be used within a WizardContext.Provider',
         )
     }
 
@@ -24,7 +30,7 @@ export default function WizardProgress({children, className, ...other}: Props) {
             {typeof children === 'function'
                 ? children(
                       wizardContext.activeStepIndex + 1,
-                      wizardContext.totalSteps
+                      wizardContext.totalSteps,
                   )
                 : children}
         </div>

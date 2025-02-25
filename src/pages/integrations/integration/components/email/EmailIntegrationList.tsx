@@ -1,9 +1,10 @@
-import {List, Map} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
+import { List, Map } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useEffectOnce from 'hooks/useEffectOnce'
 import {
@@ -11,17 +12,17 @@ import {
     IntegrationType,
     isEmailIntegration,
 } from 'models/integration/types'
-import {useListStoreMappings} from 'models/storeMapping/queries'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import { useListStoreMappings } from 'models/storeMapping/queries'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Loader from 'pages/common/components/Loader/Loader'
 import history from 'pages/history'
-import {fetchIntegrations} from 'state/integrations/actions'
-import {getIntegrationsByTypes} from 'state/integrations/helpers'
+import { fetchIntegrations } from 'state/integrations/actions'
+import { getIntegrationsByTypes } from 'state/integrations/helpers'
 
 import IntegrationList from '../IntegrationList'
 import EmailIntegrationListItem from './EmailIntegrationListItem'
-import {isBaseEmailIntegration, isOutboundDomainVerified} from './helpers'
-import {fetchEmailDomains} from './resources'
+import { isBaseEmailIntegration, isOutboundDomainVerified } from './helpers'
+import { fetchEmailDomains } from './resources'
 
 type Props = {
     integrations: List<Map<any, any>>
@@ -29,7 +30,7 @@ type Props = {
 }
 
 export default function EmailIntegrationList(props: Props): JSX.Element {
-    const {integrations, loading} = props
+    const { integrations, loading } = props
 
     const showStoreMapping: boolean | undefined =
         useFlags()[FeatureFlagKey.EnableEmailToStoreMapping]
@@ -39,7 +40,7 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
 
     const dispatch = useAppDispatch()
 
-    const {data: storeMappings, isFetching: isLoadingStoreMappings} =
+    const { data: storeMappings, isFetching: isLoadingStoreMappings } =
         useListStoreMappings(
             integrations
                 .map((integration) => integration?.get('id') as number)
@@ -52,7 +53,7 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
                         acc[mapping.integration_id] = mapping.store_id
                         return acc
                     }, {}),
-            }
+            },
         )
 
     useEffect(() => {
@@ -62,7 +63,7 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
                 setEmailDomains(domains)
                 setIsLoadingDomains(false)
             },
-            () => setIsLoadingDomains(false)
+            () => setIsLoadingDomains(false),
         )
     }, [])
 
@@ -111,7 +112,7 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
             }
 
             return isOutboundDomainVerified(integration)
-        }
+        },
     )
 
     return (
@@ -138,7 +139,7 @@ export default function EmailIntegrationList(props: Props): JSX.Element {
             integrationType={IntegrationType.Email}
             integrations={getIntegrationsByTypes(
                 integrations,
-                EMAIL_INTEGRATION_TYPES
+                EMAIL_INTEGRATION_TYPES,
             )}
             longTypeDescription={longTypeDescription}
             createIntegration={() =>

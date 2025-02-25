@@ -1,13 +1,14 @@
 import React from 'react'
-import {useHistory, useLocation} from 'react-router-dom'
 
-import {AlertBanner} from 'AlertBanners'
+import { useHistory, useLocation } from 'react-router-dom'
+
+import { AlertBanner } from 'AlertBanners'
 import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
-import {EmailMigrationStatus} from 'models/integration/types'
-import {getEmailMigrationStatus} from 'state/integrations/selectors'
+import { EmailMigrationStatus } from 'models/integration/types'
+import { getEmailMigrationStatus } from 'state/integrations/selectors'
 
-import {computeEmailMigrationStatusBanner} from './helpers'
+import { computeEmailMigrationStatusBanner } from './helpers'
 import useMigrationBannerStatus from './hooks/useMigrationBannerStatus'
 
 export default function EmailMigrationBanner() {

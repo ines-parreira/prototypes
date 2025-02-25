@@ -1,9 +1,9 @@
-import {Components, Paths} from 'rest_api/revenue_addon_api/client.generated'
+import { Components, Paths } from 'rest_api/revenue_addon_api/client.generated'
 
 export type SettingsParams = (
     | Paths.GetSettings.PathParameters
     | Paths.UpdateSetting.PathParameters
-) & {setting_type?: string}
+) & { setting_type?: string }
 
 export type SettingsListParams = Paths.GetSettings.QueryParameters
 

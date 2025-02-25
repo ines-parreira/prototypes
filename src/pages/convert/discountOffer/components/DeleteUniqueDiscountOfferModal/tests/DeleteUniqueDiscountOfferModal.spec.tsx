@@ -1,18 +1,19 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {act, render, screen, waitFor} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
-import configureMockStore, {MockStore} from 'redux-mock-store'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { act, render, screen, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import configureMockStore, { MockStore } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {useModalManager, useModalManagerApi} from 'hooks/useModalManager'
-import {useDeleteDiscountOffer} from 'models/convert/discountOffer/queries'
-import {deleteAttachment} from 'state/newMessage/actions'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { useModalManager, useModalManagerApi } from 'hooks/useModalManager'
+import { useDeleteDiscountOffer } from 'models/convert/discountOffer/queries'
+import { deleteAttachment } from 'state/newMessage/actions'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
-import {DeleteUniqueDiscountOfferModal} from '../DeleteUniqueDiscountOfferModal'
+import { DeleteUniqueDiscountOfferModal } from '../DeleteUniqueDiscountOfferModal'
 
 jest.mock('models/convert/discountOffer/queries')
 jest.mock('hooks/useModalManager')
@@ -29,7 +30,7 @@ describe('<DeleteUniqueDiscountOfferModal />', () => {
     const queryClient = mockQueryClient()
     let store: MockStore
 
-    const props = {isOpen: true, onClose: jest.fn()}
+    const props = { isOpen: true, onClose: jest.fn() }
 
     beforeEach(() => {
         store = mockStore({
@@ -38,7 +39,7 @@ describe('<DeleteUniqueDiscountOfferModal />', () => {
                     attachments: [
                         {
                             content_type: 'application/discountOffer',
-                            extra: {discount_offer_id: '1'},
+                            extra: { discount_offer_id: '1' },
                         },
                     ],
                 },
@@ -65,7 +66,7 @@ describe('<DeleteUniqueDiscountOfferModal />', () => {
                 <QueryClientProvider client={queryClient}>
                     <DeleteUniqueDiscountOfferModal {...props} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         act(() => {
@@ -75,7 +76,7 @@ describe('<DeleteUniqueDiscountOfferModal />', () => {
 
         await waitFor(() => {
             expect(
-                useDeleteDiscountOfferMock().mutateAsync
+                useDeleteDiscountOfferMock().mutateAsync,
             ).not.toHaveBeenCalled()
         })
     })
@@ -94,7 +95,7 @@ describe('<DeleteUniqueDiscountOfferModal />', () => {
                 <QueryClientProvider client={queryClient}>
                     <DeleteUniqueDiscountOfferModal {...props} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         act(() => {
@@ -105,8 +106,8 @@ describe('<DeleteUniqueDiscountOfferModal />', () => {
         await waitFor(() => {
             expect(screen.getByText(new RegExp(mockPrefix))).toBeInTheDocument()
             expect(
-                useDeleteDiscountOfferMock().mutateAsync
-            ).toHaveBeenCalledWith([undefined, {discount_offer_id: '1'}])
+                useDeleteDiscountOfferMock().mutateAsync,
+            ).toHaveBeenCalledWith([undefined, { discount_offer_id: '1' }])
             expect(deleteAttachmentMock).toHaveBeenCalledWith(0)
         })
     })
@@ -124,7 +125,7 @@ describe('<DeleteUniqueDiscountOfferModal />', () => {
                 <QueryClientProvider client={queryClient}>
                     <DeleteUniqueDiscountOfferModal {...props} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         act(() => {
@@ -135,8 +136,8 @@ describe('<DeleteUniqueDiscountOfferModal />', () => {
         await waitFor(() => {
             expect(screen.getByText(new RegExp(mockPrefix))).toBeInTheDocument()
             expect(
-                useDeleteDiscountOfferMock().mutateAsync
-            ).toHaveBeenCalledWith([undefined, {discount_offer_id: '5'}])
+                useDeleteDiscountOfferMock().mutateAsync,
+            ).toHaveBeenCalledWith([undefined, { discount_offer_id: '5' }])
             expect(deleteAttachmentMock).not.toHaveBeenCalled()
         })
     })
@@ -147,7 +148,7 @@ describe('<DeleteUniqueDiscountOfferModal />', () => {
                 <QueryClientProvider client={queryClient}>
                     <DeleteUniqueDiscountOfferModal {...props} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         act(() => {

@@ -1,13 +1,14 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
-import {TicketChannel} from 'business/types/ticket'
-import {SegmentEvent, logEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { TicketChannel } from 'business/types/ticket'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
 import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
-import {getHasAutomate} from 'state/billing/selectors'
+import { getHasAutomate } from 'state/billing/selectors'
 
 import css from './GorgiasChatIntegrationConnectedChannel.less'
 

@@ -1,5 +1,6 @@
-import {Badge} from '@gorgias/merchant-ui-kit'
 import React from 'react'
+
+import { Badge } from '@gorgias/merchant-ui-kit'
 
 import css from './FakeTicketComponent.less'
 
@@ -8,7 +9,7 @@ type FakeTicketProps = {
     description: string
     closed: boolean
 }
-const FakeTicket = ({title, description, closed}: FakeTicketProps) => (
+const FakeTicket = ({ title, description, closed }: FakeTicketProps) => (
     <div className={css.fakeTicket}>
         <div className={css.fakeTicketTitleWrapper}>
             <span className={css.fakeTicketTitle}>{title}</span>

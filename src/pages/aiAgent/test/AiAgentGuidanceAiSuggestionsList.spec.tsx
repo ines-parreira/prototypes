@@ -1,17 +1,18 @@
-import {screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import history from 'pages/history'
-import {renderWithRouter} from 'utils/testing'
+import { screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
-import {GuidanceAiSuggestionsList} from '../components/GuidanceAiSuggestionsList/GuidanceAiSuggestionsList'
-import {getAIGuidanceFixture} from '../fixtures/aiGuidance.fixture'
+import history from 'pages/history'
+import { renderWithRouter } from 'utils/testing'
+
+import { GuidanceAiSuggestionsList } from '../components/GuidanceAiSuggestionsList/GuidanceAiSuggestionsList'
+import { getAIGuidanceFixture } from '../fixtures/aiGuidance.fixture'
 
 jest.mock('pages/history')
 
 const renderComponent = (
-    params: React.ComponentProps<typeof GuidanceAiSuggestionsList>
+    params: React.ComponentProps<typeof GuidanceAiSuggestionsList>,
 ) => {
     renderWithRouter(<GuidanceAiSuggestionsList {...params} />, {
         path: `/:shopType/:shopName/ai-agent/guidance/templates`,
@@ -20,25 +21,28 @@ const renderComponent = (
 }
 describe('<GuidanceAiSuggestionsList />', () => {
     it('should return null if no guidance ai suggestions and no banner', () => {
-        renderComponent({guidanceAiSuggestions: [], shopName: 'test'})
+        renderComponent({ guidanceAiSuggestions: [], shopName: 'test' })
         expect(
-            screen.queryByText('See All Suggestions')
+            screen.queryByText('See All Suggestions'),
         ).not.toBeInTheDocument()
         expect(
             screen.queryByText(
-                'You’ve added all AI-generated suggestions to your library.'
-            )
+                'You’ve added all AI-generated suggestions to your library.',
+            ),
         ).not.toBeInTheDocument()
     })
 
     it('should render ai guidance suggestions', () => {
         const aiGuidance = getAIGuidanceFixture('ai_guidance_id1')
 
-        renderComponent({guidanceAiSuggestions: [aiGuidance], shopName: 'test'})
+        renderComponent({
+            guidanceAiSuggestions: [aiGuidance],
+            shopName: 'test',
+        })
 
         expect(screen.getByText(aiGuidance.name)).toBeInTheDocument()
         expect(
-            screen.queryByText('See All Suggestions')
+            screen.queryByText('See All Suggestions'),
         ).not.toBeInTheDocument()
     })
 
@@ -64,8 +68,8 @@ describe('<GuidanceAiSuggestionsList />', () => {
 
         expect(
             screen.getByText(
-                'You’ve added all AI-generated suggestions to your library.'
-            )
+                'You’ve added all AI-generated suggestions to your library.',
+            ),
         ).toBeInTheDocument()
     })
 
@@ -82,7 +86,7 @@ describe('<GuidanceAiSuggestionsList />', () => {
         userEvent.click(aiGuidanceSuggestion)
 
         expect(history.push).toHaveBeenCalledWith(
-            '/app/automation/shopify/test/ai-agent/guidance/library/ai_guidance_id1'
+            '/app/automation/shopify/test/ai-agent/guidance/library/ai_guidance_id1',
         )
     })
 
@@ -99,7 +103,7 @@ describe('<GuidanceAiSuggestionsList />', () => {
         userEvent.click(seeAllSuggestionsCard)
 
         expect(history.push).toHaveBeenCalledWith(
-            '/app/automation/shopify/test/ai-agent/guidance/library'
+            '/app/automation/shopify/test/ai-agent/guidance/library',
         )
     })
 })

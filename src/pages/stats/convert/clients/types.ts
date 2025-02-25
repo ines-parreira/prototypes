@@ -1,9 +1,9 @@
-import {TicketChannel} from 'business/types/ticket'
-import {OrderDirection} from 'models/api/types'
-import {ReportingGranularity} from 'models/reporting/types'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import { TicketChannel } from 'business/types/ticket'
+import { OrderDirection } from 'models/api/types'
+import { ReportingGranularity } from 'models/reporting/types'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 
-import {SharedDimension} from './constants'
+import { SharedDimension } from './constants'
 
 export type CubeFilter = {
     member: any

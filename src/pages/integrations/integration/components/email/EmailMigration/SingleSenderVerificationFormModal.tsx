@@ -1,7 +1,8 @@
-import React, {ComponentProps} from 'react'
-import {ModalHeader} from 'reactstrap'
+import React, { ComponentProps } from 'react'
 
-import {SenderInformation} from 'models/singleSenderVerification/types'
+import { ModalHeader } from 'reactstrap'
+
+import { SenderInformation } from 'models/singleSenderVerification/types'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'

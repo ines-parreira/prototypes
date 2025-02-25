@@ -1,7 +1,7 @@
-import {convertFromHTML} from 'draft-convert'
-import {EditorState} from 'draft-js'
+import { convertFromHTML } from 'draft-convert'
+import { EditorState } from 'draft-js'
 
-import {setConnectedLinks, parseUrl, ConnectedLinksEntityData} from '../utils'
+import { ConnectedLinksEntityData, parseUrl, setConnectedLinks } from '../utils'
 
 describe('Connected Links utils', () => {
     describe('parseUrl', () => {
@@ -12,49 +12,49 @@ describe('Connected Links utils', () => {
 
         it('should match protocol', () => {
             expect(parseUrl('http://gorgias.io', 'https://gorgias.io')).toBe(
-                'https://gorgias.io/'
+                'https://gorgias.io/',
             )
             expect(parseUrl('https://gorgias.io', 'http://gorgias.io')).toBe(
-                'http://gorgias.io/'
+                'http://gorgias.io/',
             )
             expect(parseUrl('gorgias.io', 'https://gorgias.io')).toBe(
-                'https://gorgias.io/'
+                'https://gorgias.io/',
             )
         })
 
         it('should add www subdomain', () => {
             expect(parseUrl('http://gorgias.io', 'http://www.gorgias.io')).toBe(
-                'http://www.gorgias.io/'
+                'http://www.gorgias.io/',
             )
         })
 
         it('should transform protocol and www', () => {
             expect(
-                parseUrl('http://gorgias.io', 'https://www.gorgias.io')
+                parseUrl('http://gorgias.io', 'https://www.gorgias.io'),
             ).toBe('https://www.gorgias.io/')
         })
 
         it('should not mimic other protocols', () => {
             expect(parseUrl('http://gorgias.io', 'ftp://gorgias.io')).toBe(
-                'http://gorgias.io/'
+                'http://gorgias.io/',
             )
         })
 
         it('should not mimic other subdomains', () => {
             expect(
-                parseUrl('http://gorgias.io', 'http://pizza.gorgias.io')
+                parseUrl('http://gorgias.io', 'http://pizza.gorgias.io'),
             ).toBe('http://gorgias.io/')
         })
 
         it('should decode encoded URI', () => {
             expect(parseUrl('https://example.com/foo%21')).toBe(
-                'https://example.com/foo!'
+                'https://example.com/foo!',
             )
         })
 
         it('should not throw on malformed URI', () => {
             expect(parseUrl('https://example.com%')).toBe(
-                'https://example.com%'
+                'https://example.com%',
             )
         })
     })
@@ -70,7 +70,7 @@ describe('Connected Links utils', () => {
                             })
                         }
                     },
-                })('<a href="https://gorgias.io/">https://gorgias.io/</a>')
+                })('<a href="https://gorgias.io/">https://gorgias.io/</a>'),
             )
 
             editorState = setConnectedLinks(editorState)
@@ -82,7 +82,7 @@ describe('Connected Links utils', () => {
                     contentState
                         .getEntity(entityKey)
                         .getData() as ConnectedLinksEntityData
-                ).connected
+                ).connected,
             ).toBe(true)
         })
 
@@ -96,7 +96,7 @@ describe('Connected Links utils', () => {
                             })
                         }
                     },
-                })('<a href="https://gorgias.io/">gorgias.io</a>')
+                })('<a href="https://gorgias.io/">gorgias.io</a>'),
             )
 
             editorState = setConnectedLinks(editorState)
@@ -108,7 +108,7 @@ describe('Connected Links utils', () => {
                     contentState
                         .getEntity(entityKey)
                         .getData() as ConnectedLinksEntityData
-                ).connected
+                ).connected,
             ).toBe(true)
         })
 
@@ -122,7 +122,7 @@ describe('Connected Links utils', () => {
                             })
                         }
                     },
-                })('<a href="https://www.gorgias.io/">gorgias.io</a>')
+                })('<a href="https://www.gorgias.io/">gorgias.io</a>'),
             )
 
             editorState = setConnectedLinks(editorState)
@@ -134,7 +134,7 @@ describe('Connected Links utils', () => {
                     contentState
                         .getEntity(entityKey)
                         .getData() as ConnectedLinksEntityData
-                ).connected
+                ).connected,
             ).toBe(true)
         })
     })

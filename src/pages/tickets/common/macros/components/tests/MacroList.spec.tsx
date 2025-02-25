@@ -1,14 +1,16 @@
-import {Macro} from '@gorgias/api-queries'
-import {render, fireEvent, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { fireEvent, render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {logEvent} from 'common/segment'
-import {user} from 'fixtures/users'
-import {RootState} from 'state/types'
+import { Macro } from '@gorgias/api-queries'
+
+import { logEvent } from 'common/segment'
+import { user } from 'fixtures/users'
+import { RootState } from 'state/types'
 
 import MacroListContainer from '../MacroList'
 
@@ -23,14 +25,14 @@ describe('MacroList component', () => {
     }
 
     const macros = [
-        {id: 1, name: 'Pizza Pepperoni', relevance_rank: 1},
-        {id: 2, name: 'Pizza Capricciosa'},
+        { id: 1, name: 'Pizza Pepperoni', relevance_rank: 1 },
+        { id: 2, name: 'Pizza Capricciosa' },
         {
             id: 3,
             name: 'Pizza Margherita',
-            actions: [{name: 'http'}],
+            actions: [{ name: 'http' }],
         },
-        {id: 4, name: ''},
+        { id: 4, name: '' },
     ] as Macro[]
 
     const minProps: ComponentProps<typeof MacroListContainer> = {
@@ -45,12 +47,12 @@ describe('MacroList component', () => {
         render(
             <Provider store={mockStore(defaultStore)}>
                 <MacroListContainer {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText(macros[0].name!)).toHaveClass('active')
         expect(screen.getByText(macros[0].name!).textContent).toMatch(
-            /auto_awesome/
+            /auto_awesome/,
         )
         expect(screen.getByText(macros[1].name!)).toBeInTheDocument()
         expect(screen.getByText(macros[2].name!)).toBeInTheDocument()
@@ -65,7 +67,7 @@ describe('MacroList component', () => {
                     currentMacro={macros[1]}
                     areExternalActionsDisabled
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText(macros[1].name!)).toHaveClass('active')
@@ -73,14 +75,14 @@ describe('MacroList component', () => {
     })
 
     it('should send event to segment on send', () => {
-        const {getAllByText} = render(
+        const { getAllByText } = render(
             <Provider store={mockStore(defaultStore)}>
                 <MacroListContainer
                     {...minProps}
                     currentMacro={macros[1]}
                     areExternalActionsDisabled
                 />
-            </Provider>
+            </Provider>,
         )
         fireEvent.click(getAllByText('Pizza Capricciosa')[0])
         expect(logEventMock.mock.calls[0]).toEqual([

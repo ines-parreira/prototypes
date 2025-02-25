@@ -1,19 +1,20 @@
-import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
-import {ChartArea, TooltipItem} from 'chart.js'
+import { ChartArea, TooltipItem } from 'chart.js'
 import moment from 'moment'
 
-import {DisplayEventType} from 'hooks/reporting/automate/automateStatsMeasureLabelMap'
-import {getAutomateColorsForEventType} from 'hooks/reporting/automate/utils'
-import {ReportingGranularity} from 'models/reporting/types'
+import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
+
+import { DisplayEventType } from 'hooks/reporting/automate/automateStatsMeasureLabelMap'
+import { getAutomateColorsForEventType } from 'hooks/reporting/automate/utils'
+import { ReportingGranularity } from 'models/reporting/types'
 import {
+    formatDates,
     getGradient,
+    getIconNameBySign,
+    getUtcPeriodFromDateAndGranularity,
+    highlightString,
     renderTickLabelAsNumber,
     renderTickLabelAsPercentage,
     renderTooltipLabelAsPercentage,
-    formatDates,
-    getUtcPeriodFromDateAndGranularity,
-    getIconNameBySign,
-    highlightString,
 } from 'pages/stats/utils'
 import {
     MONTH_AND_YEAR_SHORT,
@@ -22,7 +23,7 @@ import {
     SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_US,
     SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_WORLD,
 } from 'utils/date'
-import {formatReportingQueryDate} from 'utils/reporting'
+import { formatReportingQueryDate } from 'utils/reporting'
 
 describe('getGradient', () => {
     it('should return color if canvasArea or canvasContext is not defined', () => {
@@ -33,40 +34,40 @@ describe('getGradient', () => {
 
     it('should return gradient if canvasArea and canvasContext are defined', () => {
         const color = 'red'
-        const canvasArea = {bottom: 100} as ChartArea
-        const linearGradient = {addColorStop: jest.fn()}
+        const canvasArea = { bottom: 100 } as ChartArea
+        const linearGradient = { addColorStop: jest.fn() }
         const canvasContext = {
             createLinearGradient: jest.fn(() => linearGradient),
         } as any as CanvasRenderingContext2D
 
         expect(getGradient(color, canvasArea, canvasContext)).toEqual(
-            linearGradient
+            linearGradient,
         )
         expect(canvasContext.createLinearGradient).toHaveBeenCalledWith(
             0,
             0,
             0,
-            100
+            100,
         )
     })
 })
 
 describe('renderTooltipLabelAsPercentage', () => {
     const baseContext = {
-        dataset: {label: 'label'},
-        parsed: {y: 50},
+        dataset: { label: 'label' },
+        parsed: { y: 50 },
     } as any as TooltipItem<'line'>
 
     it('should return formatted label', function () {
         expect(renderTooltipLabelAsPercentage(baseContext)).toEqual(
-            'label: 50%'
+            'label: 50%',
         )
     })
 
     it('should return label if y is null', function () {
         const context = {
             ...baseContext,
-            parsed: {y: null},
+            parsed: { y: null },
         } as any as TooltipItem<'line'>
 
         expect(renderTooltipLabelAsPercentage(context)).toEqual('label')
@@ -130,7 +131,7 @@ describe('formatDates', () => {
             locale: 'world',
             granularity: ReportingGranularity.Day,
             formatted: date.format(
-                SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_WORLD
+                SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_WORLD,
             ),
         },
         {
@@ -161,13 +162,13 @@ describe('formatDates', () => {
         },
     ])(
         'should format dates based on granularity ($granularity) and Users`s locale ($locale)',
-        ({locale, granularity, formatted}) => {
+        ({ locale, granularity, formatted }) => {
             languageMock.mockReturnValue(locale)
 
             expect(formatDates(granularity, date.toISOString())).toEqual(
-                formatted
+                formatted,
             )
-        }
+        },
     )
 })
 
@@ -189,13 +190,13 @@ describe('getPeriodEndDateTime', () => {
             granularity: ReportingGranularity.Day,
             period: {
                 start_datetime: formatReportingQueryDate(
-                    moment.utc(startDateTime).toISOString()
+                    moment.utc(startDateTime).toISOString(),
                 ),
                 end_datetime: formatReportingQueryDate(
                     moment
                         .utc(startDateTime)
                         .endOf(ReportingGranularity.Day)
-                        .toISOString()
+                        .toISOString(),
                 ),
             },
         },
@@ -215,7 +216,7 @@ describe('getPeriodEndDateTime', () => {
                         .utc(startDateTime)
                         .clone()
                         .add(6, 'days')
-                        .toISOString()
+                        .toISOString(),
                 ),
             },
         },
@@ -223,10 +224,10 @@ describe('getPeriodEndDateTime', () => {
             granularity: ReportingGranularity.Month,
             period: {
                 start_datetime: formatReportingQueryDate(
-                    moment(startDateTime).startOf('month').toISOString()
+                    moment(startDateTime).startOf('month').toISOString(),
                 ),
                 end_datetime: formatReportingQueryDate(
-                    moment(startDateTime).endOf('month').toISOString()
+                    moment(startDateTime).endOf('month').toISOString(),
                 ),
             },
         },
@@ -234,11 +235,11 @@ describe('getPeriodEndDateTime', () => {
 
     it.each(testCases)(
         'should return end date time based on granularity ($granularity) and start date time',
-        ({period, granularity}) => {
+        ({ period, granularity }) => {
             expect(
-                getUtcPeriodFromDateAndGranularity(startDateTime, granularity)
+                getUtcPeriodFromDateAndGranularity(startDateTime, granularity),
             ).toEqual(period)
-        }
+        },
     )
 })
 
@@ -271,7 +272,7 @@ describe('highlightString', () => {
 
     it('should highlight string with multiple matches', () => {
         expect(highlightString('test test', 'es')).toEqual(
-            't<b>es</b>t t<b>es</b>t'
+            't<b>es</b>t t<b>es</b>t',
         )
     })
 
@@ -292,29 +293,29 @@ describe('getAutomateColorsForEventType', () => {
     const classicColors = colors['📺 Classic']
     it('should return Exact colors', () => {
         expect(
-            getAutomateColorsForEventType(DisplayEventType.AI_AGENT)
+            getAutomateColorsForEventType(DisplayEventType.AI_AGENT),
         ).toEqual(classicColors.Accessory.Navy_text.value)
         expect(
-            getAutomateColorsForEventType(DisplayEventType.WORKFLOWS)
+            getAutomateColorsForEventType(DisplayEventType.WORKFLOWS),
         ).toEqual(classicColors.Main.Variations.Primary_3.value)
         expect(
             getAutomateColorsForEventType(
-                DisplayEventType.QUICK_RESPONSES_DEPRECATED
-            )
+                DisplayEventType.QUICK_RESPONSES_DEPRECATED,
+            ),
         ).toEqual(classicColors.Feedback.Variations.Warning_3.value)
         expect(
             getAutomateColorsForEventType(
-                DisplayEventType.ARTICLE_RECOMMENDATION
-            )
+                DisplayEventType.ARTICLE_RECOMMENDATION,
+            ),
         ).toEqual(classicColors.Accessory.Purple_text.value)
         expect(
-            getAutomateColorsForEventType(DisplayEventType.RETURN_ORDER)
+            getAutomateColorsForEventType(DisplayEventType.RETURN_ORDER),
         ).toEqual(classicColors.Feedback.Variations.Error_3.value)
         expect(
-            getAutomateColorsForEventType(DisplayEventType.REPORT_ORDER_ISSUE)
+            getAutomateColorsForEventType(DisplayEventType.REPORT_ORDER_ISSUE),
         ).toEqual(classicColors.Neutral.Grey_5.value)
         expect(
-            getAutomateColorsForEventType(DisplayEventType.AUTORESPONDERS)
+            getAutomateColorsForEventType(DisplayEventType.AUTORESPONDERS),
         ).toEqual(classicColors.Accessory.Yellow_text.value)
     })
 })

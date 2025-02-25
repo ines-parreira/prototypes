@@ -1,5 +1,6 @@
-import {cleanup, render, screen} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { cleanup, render, screen } from '@testing-library/react'
 
 import EmailVerificationStatusLabel, {
     EmailVerificationStatus,
@@ -7,7 +8,7 @@ import EmailVerificationStatusLabel, {
 
 describe('EmailVerificationStatusLabel', () => {
     const renderComponent = (
-        props: ComponentProps<typeof EmailVerificationStatusLabel>
+        props: ComponentProps<typeof EmailVerificationStatusLabel>,
     ) => render(<EmailVerificationStatusLabel {...props} />)
 
     afterEach(cleanup)
@@ -34,7 +35,7 @@ describe('EmailVerificationStatusLabel', () => {
             label: 'Verified',
         },
     ])('displays correct state', (state) => {
-        renderComponent({status: state.status})
+        renderComponent({ status: state.status })
 
         const icon = screen.getByText(state.icon)
         expect(icon).toBeVisible()
@@ -45,9 +46,9 @@ describe('EmailVerificationStatusLabel', () => {
     it.each(['small', 'normal'] as ComponentProps<
         typeof EmailVerificationStatusLabel
     >['size'][])('should have "size" className', (size) => {
-        renderComponent({status: EmailVerificationStatus.Unverified, size})
+        renderComponent({ status: EmailVerificationStatus.Unverified, size })
         expect(screen.getByTestId('email-verification-status')).toHaveClass(
-            size as string
+            size as string,
         )
     })
 })

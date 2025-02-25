@@ -1,9 +1,9 @@
 import MockAdapter from 'axios-mock-adapter'
 
-import {ShopifyTags} from 'models/integration/types'
+import { ShopifyTags } from 'models/integration/types'
 
 import client from '../../../api/resources'
-import {fetchShopTags} from '../shopify'
+import { fetchShopTags } from '../shopify'
 
 const mockedServer = new MockAdapter(client)
 
@@ -17,7 +17,9 @@ describe('Shopify shop tag resources', () => {
             const integrationId = 1
             const tagsType = ShopifyTags.customers
             const response = {
-                data: {shop: {customerTags: {edges: [{node: 'test-tag'}]}}},
+                data: {
+                    shop: { customerTags: { edges: [{ node: 'test-tag' }] } },
+                },
             }
             const expectedResult = ['test-tag']
 
@@ -35,7 +37,9 @@ describe('Shopify shop tag resources', () => {
             const integrationId = 1
             const tagsType = ShopifyTags.orders
             const response = {
-                data: {shop: {orderTags: {edges: [{node: 'test-tag'}]}}},
+                data: {
+                    shop: { orderTags: { edges: [{ node: 'test-tag' }] } },
+                },
             }
             const expectedResult = ['test-tag']
 
@@ -55,10 +59,10 @@ describe('Shopify shop tag resources', () => {
 
             mockedServer
                 .onGet(`integrations/shopify/shop-tags/${tagsType}/list/`)
-                .reply(500, {message: 'error'})
+                .reply(500, { message: 'error' })
 
             return expect(
-                fetchShopTags(integrationId, tagsType)
+                fetchShopTags(integrationId, tagsType),
             ).rejects.toEqual(new Error('Request failed with status code 500'))
         })
     })

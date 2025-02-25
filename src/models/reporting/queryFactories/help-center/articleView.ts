@@ -1,11 +1,11 @@
-import {OrderDirection} from 'models/api/types'
+import { OrderDirection } from 'models/api/types'
 import {
     HelpCenterTrackingEventCube,
     HelpCenterTrackingEventDimensions,
     HelpCenterTrackingEventMeasures,
 } from 'models/reporting/cubes/HelpCenterTrackingEventCube'
-import {ReportingGranularity, TimeSeriesQuery} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import { ReportingGranularity, TimeSeriesQuery } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
 import {
     getFilterDateRange,
     HelpCenterStatsFiltersMembers,
@@ -14,13 +14,13 @@ import {
 
 export const articleViewQueryFactory = (
     statsFilters: StatsFilters,
-    timezone: string
+    timezone: string,
 ) => ({
     measures: [HelpCenterTrackingEventMeasures.ArticleView],
     dimensions: [],
     filters: statsFiltersToReportingFilters(
         HelpCenterStatsFiltersMembers,
-        statsFilters
+        statsFilters,
     ),
     timezone,
 })
@@ -28,7 +28,7 @@ export const articleViewQueryFactory = (
 export const articleViewTimeSeriesQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    granularity: ReportingGranularity
+    granularity: ReportingGranularity,
 ): TimeSeriesQuery<HelpCenterTrackingEventCube> => ({
     measures: [HelpCenterTrackingEventMeasures.ArticleView],
     timeDimensions: [
@@ -44,7 +44,7 @@ export const articleViewTimeSeriesQueryFactory = (
     filters: [
         ...statsFiltersToReportingFilters(
             HelpCenterStatsFiltersMembers,
-            filters
+            filters,
         ),
     ],
 })

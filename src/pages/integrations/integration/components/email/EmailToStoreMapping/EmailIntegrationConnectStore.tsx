@@ -1,39 +1,41 @@
-import {fromJS, Map} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useCallback, useState} from 'react'
+import React, { useCallback, useState } from 'react'
+
+import { fromJS, Map } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationType} from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import {getIconFromType} from 'state/integrations/helpers'
-import {getStoreIntegrations} from 'state/integrations/selectors'
+import { getIconFromType } from 'state/integrations/helpers'
+import { getStoreIntegrations } from 'state/integrations/selectors'
 
-import {FeatureFlagKey} from '../../../../../../config/featureFlags'
+import { FeatureFlagKey } from '../../../../../../config/featureFlags'
 import {
     useCreateStoreMapping,
     useDeleteStoreMapping,
     useListStoreMappings,
     useUpdateStoreMapping,
 } from '../../../../../../models/storeMapping/queries'
-import {StoreMapping} from '../../../../../../models/storeMapping/types'
+import { StoreMapping } from '../../../../../../models/storeMapping/types'
+import { StoreNameDropdown } from './StoreNameDropdown'
+
 import css from './EmailIntegrationConnectStore.less'
-import {StoreNameDropdown} from './StoreNameDropdown'
 
 type Props = {
     integration: Map<any, any>
 }
 
-const EmailIntegrationConnectStore = ({integration}: Props) => {
+const EmailIntegrationConnectStore = ({ integration }: Props) => {
     const storeIntegrations = useAppSelector(getStoreIntegrations)
     const showStoreMapping: boolean | undefined =
         useFlags()[FeatureFlagKey.EnableEmailToStoreMapping]
     const [storeIntegrationId, setStoreIntegration] = useState<number | null>(
-        null
+        null,
     )
     const {
         data: storeMapping,
@@ -49,7 +51,7 @@ const EmailIntegrationConnectStore = ({integration}: Props) => {
             onSuccess(data) {
                 setStoreIntegration(data?.store_id ?? null)
             },
-        }
+        },
     )
     const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -65,11 +67,11 @@ const EmailIntegrationConnectStore = ({integration}: Props) => {
         return refetch()
     }, [refetch])
 
-    const {mutate: createStoreMapping, isLoading: isCreating} =
+    const { mutate: createStoreMapping, isLoading: isCreating } =
         useCreateStoreMapping()
-    const {mutate: updateStoreMapping, isLoading: isUpdating} =
+    const { mutate: updateStoreMapping, isLoading: isUpdating } =
         useUpdateStoreMapping()
-    const {mutate: deleteStoreMapping, isLoading: isDeleting} =
+    const { mutate: deleteStoreMapping, isLoading: isDeleting } =
         useDeleteStoreMapping()
 
     const handleCreateOrUpdate = useCallback(() => {
@@ -82,7 +84,7 @@ const EmailIntegrationConnectStore = ({integration}: Props) => {
                 onSettled: handleSettled,
             })
         } else {
-            createStoreMapping([payload], {onSuccess: handleSettled})
+            createStoreMapping([payload], { onSuccess: handleSettled })
         }
     }, [
         storeMapping,
@@ -96,7 +98,7 @@ const EmailIntegrationConnectStore = ({integration}: Props) => {
     const isDirty = storeIntegrationId !== storeMapping?.store_id
     const storeIntegration = storeMapping?.store_id
         ? storeIntegrations.find(
-              (integration) => integration.id === storeMapping?.store_id
+              (integration) => integration.id === storeMapping?.store_id,
           )
         : undefined
 

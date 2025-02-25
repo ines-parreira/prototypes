@@ -1,9 +1,10 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {fireEvent, screen} from '@testing-library/react'
 import React from 'react'
 
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {renderWithRouter} from 'utils/testing'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, screen } from '@testing-library/react'
+
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { renderWithRouter } from 'utils/testing'
 
 import ActionStepAccordionItem, {
     ActionStepAccordionItemProps,
@@ -301,7 +302,7 @@ describe('<ActionStepAccordionItem />', () => {
         renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <ActionStepAccordionItem {...defaultProps} />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(screen.getByText('Cancel order.')).toBeInTheDocument()
@@ -313,7 +314,7 @@ describe('<ActionStepAccordionItem />', () => {
         renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <ActionStepAccordionItem {...httpRequestStepProps} />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         const stepElement = document.getElementById('step_3')
@@ -322,7 +323,7 @@ describe('<ActionStepAccordionItem />', () => {
         }
 
         expect(
-            screen.getByText('https://jsonplaceholder.typicode.com/users')
+            screen.getByText('https://jsonplaceholder.typicode.com/users'),
         ).toBeInTheDocument()
         expect(screen.getByText('SUCCESS')).toBeInTheDocument()
     })
@@ -331,7 +332,7 @@ describe('<ActionStepAccordionItem />', () => {
         renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <ActionStepAccordionItem {...nestedStepProps} />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(screen.getByText('Custom Step')).toBeInTheDocument()
@@ -358,7 +359,7 @@ describe('<ActionStepAccordionItem />', () => {
         renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <ActionStepAccordionItem {...errorProps} />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         fireEvent.click(screen.getByText('Cancel order.'))

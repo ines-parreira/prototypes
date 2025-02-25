@@ -1,15 +1,16 @@
-import {act, render} from '@testing-library/react'
 import React from 'react'
 
-import {createContextConsumer} from 'utils/testing'
+import { act, render } from '@testing-library/react'
 
-jest.unmock('../SynchronizedScrollTopProvider')
+import { createContextConsumer } from 'utils/testing'
 
 import SynchronizedScrollTopContext from '../SynchronizedScrollTopContext'
 import SynchronizedScrollTopProvider from '../SynchronizedScrollTopProvider'
 
+jest.unmock('../SynchronizedScrollTopProvider')
+
 const SynchronizedScrollTopConsumer = createContextConsumer(
-    SynchronizedScrollTopContext
+    SynchronizedScrollTopContext,
 )
 
 describe('<SynchronizedScrollTopProvider />', () => {
@@ -29,11 +30,11 @@ describe('<SynchronizedScrollTopProvider />', () => {
         render(
             <SynchronizedScrollTopProvider>
                 <SynchronizedScrollTopConsumer />
-            </SynchronizedScrollTopProvider>
+            </SynchronizedScrollTopProvider>,
         )
 
         expect(
-            SynchronizedScrollTopConsumer.getLastContextValue()
+            SynchronizedScrollTopConsumer.getLastContextValue(),
         ).toMatchObject({
             scrollTop: 0,
             scrollHeight: 0,
@@ -44,17 +45,17 @@ describe('<SynchronizedScrollTopProvider />', () => {
         render(
             <SynchronizedScrollTopProvider>
                 <SynchronizedScrollTopConsumer />
-            </SynchronizedScrollTopProvider>
+            </SynchronizedScrollTopProvider>,
         )
 
         act(() => {
             SynchronizedScrollTopConsumer.getLastContextValue()?.setScrollHeight(
-                20
+                20,
             )
         })
 
         expect(
-            SynchronizedScrollTopConsumer.getLastContextValue()
+            SynchronizedScrollTopConsumer.getLastContextValue(),
         ).toMatchObject({
             scrollHeight: 20,
         })
@@ -64,17 +65,17 @@ describe('<SynchronizedScrollTopProvider />', () => {
         render(
             <SynchronizedScrollTopProvider>
                 <SynchronizedScrollTopConsumer />
-            </SynchronizedScrollTopProvider>
+            </SynchronizedScrollTopProvider>,
         )
 
         act(() => {
             SynchronizedScrollTopConsumer.getLastContextValue()?.setScrollTop(
-                50
+                50,
             )
         })
 
         expect(
-            SynchronizedScrollTopConsumer.getLastContextValue()
+            SynchronizedScrollTopConsumer.getLastContextValue(),
         ).toMatchObject({
             scrollTop: 50,
         })
@@ -84,14 +85,14 @@ describe('<SynchronizedScrollTopProvider />', () => {
         render(
             <SynchronizedScrollTopProvider>
                 <SynchronizedScrollTopConsumer />
-            </SynchronizedScrollTopProvider>
+            </SynchronizedScrollTopProvider>,
         )
         act(() => {
             SynchronizedScrollTopConsumer.getLastContextValue()?.setScrollHeight(
-                20
+                20,
             )
             SynchronizedScrollTopConsumer.getLastContextValue()?.setScrollTop(
-                50
+                50,
             )
         })
         act(() => {
@@ -102,7 +103,7 @@ describe('<SynchronizedScrollTopProvider />', () => {
         })
 
         expect(
-            SynchronizedScrollTopConsumer.getLastContextValue()
+            SynchronizedScrollTopConsumer.getLastContextValue(),
         ).toMatchObject({
             scrollTop: 0,
             scrollHeight: 0,
@@ -111,32 +112,32 @@ describe('<SynchronizedScrollTopProvider />', () => {
 
     it('should debounce reset scrollTop and scrollHeight on window width change', () => {
         global.innerWidth = 300
-        const {rerender} = render(
+        const { rerender } = render(
             <SynchronizedScrollTopProvider>
                 <SynchronizedScrollTopConsumer />
-            </SynchronizedScrollTopProvider>
+            </SynchronizedScrollTopProvider>,
         )
         act(() => {
             SynchronizedScrollTopConsumer.getLastContextValue()?.setScrollHeight(
-                20
+                20,
             )
             SynchronizedScrollTopConsumer.getLastContextValue()?.setScrollTop(
-                50
+                50,
             )
         })
         global.innerWidth = 400
         rerender(
             <SynchronizedScrollTopProvider>
                 <SynchronizedScrollTopConsumer />
-            </SynchronizedScrollTopProvider>
+            </SynchronizedScrollTopProvider>,
         )
         rerender(
             <SynchronizedScrollTopProvider>
                 <SynchronizedScrollTopConsumer />
-            </SynchronizedScrollTopProvider>
+            </SynchronizedScrollTopProvider>,
         )
         expect(
-            SynchronizedScrollTopConsumer.getLastContextValue()
+            SynchronizedScrollTopConsumer.getLastContextValue(),
         ).not.toMatchObject({
             scrollTop: 0,
             scrollHeight: 0,
@@ -146,7 +147,7 @@ describe('<SynchronizedScrollTopProvider />', () => {
             jest.runAllTimers()
         })
         expect(
-            SynchronizedScrollTopConsumer.getLastContextValue()
+            SynchronizedScrollTopConsumer.getLastContextValue(),
         ).toMatchObject({
             scrollTop: 0,
             scrollHeight: 0,

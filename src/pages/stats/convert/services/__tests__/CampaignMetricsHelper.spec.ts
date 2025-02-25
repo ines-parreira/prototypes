@@ -1,7 +1,7 @@
 import moment from 'moment'
 
-import {ReportingGranularity} from 'models/reporting/types'
-import {Stat} from 'models/stat/types'
+import { ReportingGranularity } from 'models/reporting/types'
+import { Stat } from 'models/stat/types'
 import {
     CampaignOrderEventsDimension,
     CampaignOrderEventsMeasure,
@@ -16,25 +16,25 @@ import {
     getDataFromResult,
     getDataFromStatResult,
     getMetricFromCubeData,
+    transformToCampaignAbTestEvent,
     transformToCampaignCalculatedTotals,
     transformToCampaignConversionRateOverTime,
     transformToCampaignCTROverTime,
     transformToCampaignEventsTotals,
     transformToCampaignOrdersTotals,
+    transformToCampaignRevenueOverTime,
     transformToCampaignsPerformanceTable,
     transformToChatConversionRateOverTime,
     transformToRevenueByDate,
     transformToRevenueShareOverTime,
     transformToStoreTotal,
-    transformToCampaignAbTestEvent,
-    transformToCampaignRevenueOverTime,
 } from 'pages/stats/convert/services/CampaignMetricsHelper'
 import {
     AbTestMetricNames,
     CampaignsTotalsMetricNames,
     GRAPH_LABEL_DATE_FORMAT,
 } from 'pages/stats/convert/services/constants'
-import {RevenueByDate} from 'pages/stats/convert/services/types'
+import { RevenueByDate } from 'pages/stats/convert/services/types'
 
 describe('Campaign metrics helper tests', () => {
     const cubeDataMissing = {
@@ -50,9 +50,9 @@ describe('Campaign metrics helper tests', () => {
 
         it.each([
             [statResponse, [1, 2, 3, 4]],
-            [{data: 'need one more'}, []],
-            [{data: {nodata: 'no metric'}}, []],
-            [{nodata: 'no metric'}, []],
+            [{ data: 'need one more' }, []],
+            [{ data: { nodata: 'no metric' } }, []],
+            [{ nodata: 'no metric' }, []],
             [{}, []],
             [null, []],
             [undefined, []],
@@ -71,9 +71,9 @@ describe('Campaign metrics helper tests', () => {
 
         it.each([
             [response, [1, 2, 3, 4]],
-            [{data: 'need one more'}, []],
-            [{data: {nodata: 'no metric'}}, []],
-            [{nodata: 'no metric'}, []],
+            [{ data: 'need one more' }, []],
+            [{ data: { nodata: 'no metric' } }, []],
+            [{ nodata: 'no metric' }, []],
             [{}, []],
             [null, []],
             [undefined, []],
@@ -86,15 +86,15 @@ describe('Campaign metrics helper tests', () => {
     describe('getMetricFromCubeData', () => {
         const cubeResponse = {
             data: {
-                data: [{someKey: 'someVal'}],
+                data: [{ someKey: 'someVal' }],
             },
         }
 
         it.each([
-            [cubeResponse, {someKey: 'someVal'}],
-            [{data: 'need one more'}, {}],
-            [{data: {nodata: 'no metric'}}, {}],
-            [{nodata: 'no metric'}, {}],
+            [cubeResponse, { someKey: 'someVal' }],
+            [{ data: 'need one more' }, {}],
+            [{ data: { nodata: 'no metric' } }, {}],
+            [{ nodata: 'no metric' }, {}],
             [{}, {}],
             [null, {}],
             [undefined, {}],
@@ -153,7 +153,7 @@ describe('Campaign metrics helper tests', () => {
         it('should return the defaults for missing data', () => {
             const result = transformToCampaignOrdersTotals(
                 cubeDataMissing,
-                currency
+                currency,
             )
             expect(result).toStrictEqual({
                 [CampaignsTotalsMetricNames.revenue]: '$0',
@@ -182,7 +182,7 @@ describe('Campaign metrics helper tests', () => {
         it('should return correct data', () => {
             const result = transformToCampaignCalculatedTotals(
                 orderCubeData,
-                totalCubeData
+                totalCubeData,
             )
             expect(result).toStrictEqual({
                 [CampaignsTotalsMetricNames.influencedRevenueShare]: '75%',
@@ -192,7 +192,7 @@ describe('Campaign metrics helper tests', () => {
         it('should return the defaults for missing data', () => {
             const result = transformToCampaignCalculatedTotals(
                 cubeDataMissing,
-                cubeDataMissing
+                cubeDataMissing,
             )
             expect(result).toStrictEqual({
                 [CampaignsTotalsMetricNames.influencedRevenueShare]: '0%',
@@ -202,7 +202,7 @@ describe('Campaign metrics helper tests', () => {
         it('should return the defaults for wrong data', () => {
             const result = transformToCampaignCalculatedTotals(
                 undefined,
-                undefined
+                undefined,
             )
             expect(result).toStrictEqual({
                 [CampaignsTotalsMetricNames.influencedRevenueShare]: '0%',
@@ -283,7 +283,7 @@ describe('Campaign metrics helper tests', () => {
             const result = transformToRevenueShareOverTime(
                 revenueDataPoint,
                 revenueByDate,
-                ReportingGranularity.Day
+                ReportingGranularity.Day,
             )
             expect(result).toStrictEqual({
                 x: 'Feb 28th',
@@ -295,7 +295,7 @@ describe('Campaign metrics helper tests', () => {
             const result = transformToRevenueShareOverTime(
                 revenueDataPoint,
                 {},
-                ReportingGranularity.Day
+                ReportingGranularity.Day,
             )
             expect(result).toStrictEqual({
                 x: 'Feb 28th',
@@ -316,7 +316,7 @@ describe('Campaign metrics helper tests', () => {
         it('should return correct data', () => {
             const result = transformToCampaignCTROverTime(
                 ctrDataPoint,
-                ReportingGranularity.Day
+                ReportingGranularity.Day,
             )
             expect(result).toStrictEqual({
                 x: '2023-01-16',
@@ -337,7 +337,7 @@ describe('Campaign metrics helper tests', () => {
         it('should return correct data', () => {
             const result = transformToCampaignConversionRateOverTime(
                 conversionDataPoint,
-                ReportingGranularity.Day
+                ReportingGranularity.Day,
             )
             expect(result).toStrictEqual({
                 x: '2023-02-01',
@@ -460,7 +460,7 @@ describe('Campaign metrics helper tests', () => {
             const result = backFillGraphData(
                 [graphData1, []],
                 startDate,
-                endDate
+                endDate,
             )
             expect(result).toMatchSnapshot()
         })
@@ -478,7 +478,7 @@ describe('Campaign metrics helper tests', () => {
             const result = backFillGraphData(
                 [graphData1, []],
                 startDate,
-                endDate
+                endDate,
             )
             expect(result).toStrictEqual([])
         })
@@ -514,7 +514,7 @@ describe('Campaign metrics helper tests', () => {
                 weeklyData,
                 startDate,
                 endDate,
-                granularity
+                granularity,
             )
             expect(result).toStrictEqual([
                 [
@@ -579,7 +579,7 @@ describe('Campaign metrics helper tests', () => {
                 weeklyData,
                 startDate,
                 endDate,
-                granularity
+                granularity,
             )
             expect(result).toStrictEqual([
                 [
@@ -686,7 +686,7 @@ describe('Campaign metrics helper tests', () => {
                 campaignEventsPerformanceData,
                 campaignOrdersPerformanceData,
                 campaignEventsOrdersPerformanceData,
-                totalStoreData
+                totalStoreData,
             )
             expect(result).toMatchSnapshot()
         })
@@ -695,12 +695,12 @@ describe('Campaign metrics helper tests', () => {
             const result = transformToCampaignsPerformanceTable(
                 SharedDimension.campaignId,
                 [
-                    {[EventsDimension.campaignId]: 'campaign1'},
-                    {[EventsDimension.campaignId]: 'campaign2'},
+                    { [EventsDimension.campaignId]: 'campaign1' },
+                    { [EventsDimension.campaignId]: 'campaign2' },
                 ],
                 [],
                 [],
-                {}
+                {},
             )
             expect(result).toMatchSnapshot()
         })
@@ -727,7 +727,7 @@ describe('Campaign metrics helper tests', () => {
                         [CampaignOrderEventsDimension.campaignId]: 'campaign1',
                     },
                 ],
-                {}
+                {},
             )
             expect(result).toMatchSnapshot()
         })
@@ -761,7 +761,7 @@ describe('Campaign metrics helper tests', () => {
         it('should return correct data', () => {
             const result = transformToCampaignRevenueOverTime(
                 ctrDataPoint,
-                ReportingGranularity.Day
+                ReportingGranularity.Day,
             )
             expect(result).toStrictEqual({
                 x: '2024-08-16',

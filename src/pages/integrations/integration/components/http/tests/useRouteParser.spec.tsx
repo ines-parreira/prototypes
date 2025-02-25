@@ -1,20 +1,21 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import * as ReactRouterDom from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {integrationBase} from 'fixtures/integrations'
-import {IntegrationType} from 'models/integration/constants'
+import { integrationBase } from 'fixtures/integrations'
+import { IntegrationType } from 'models/integration/constants'
 
 import {
     EVENTS_PATH,
     INTEGRATIONS_LIST_PATH,
     NEW_INTEGRATION_PATH,
 } from '../constants'
-import {useRouteParser} from '../useRouteParser'
+import { useRouteParser } from '../useRouteParser'
 
 jest.mock('react-router', () => ({
     ...jest.requireActual<Record<string, unknown>>('react-router'),
@@ -22,7 +23,7 @@ jest.mock('react-router', () => ({
 }))
 const useParamsMock = jest.spyOn(ReactRouterDom, 'useParams')
 
-const integration = {...integrationBase, type: IntegrationType.Http}
+const integration = { ...integrationBase, type: IntegrationType.Http }
 const integrationBaseId = integrationBase.id.toString()
 
 const mockStore = configureMockStore([thunk])
@@ -60,7 +61,7 @@ describe('useRouteParser', () => {
             },
         ],
         [
-            {integrationId: INTEGRATIONS_LIST_PATH},
+            { integrationId: INTEGRATIONS_LIST_PATH },
             {
                 ...defaultData,
                 isList: true,
@@ -68,7 +69,7 @@ describe('useRouteParser', () => {
             },
         ],
         [
-            {integrationId: integrationBaseId},
+            { integrationId: integrationBaseId },
             {
                 ...defaultData,
                 isIntegration: true,
@@ -77,7 +78,7 @@ describe('useRouteParser', () => {
             },
         ],
         [
-            {integrationId: NEW_INTEGRATION_PATH},
+            { integrationId: NEW_INTEGRATION_PATH },
             {
                 ...defaultData,
                 isIntegration: true,
@@ -86,7 +87,7 @@ describe('useRouteParser', () => {
             },
         ],
         [
-            {integrationId: integrationBaseId, extra: EVENTS_PATH},
+            { integrationId: integrationBaseId, extra: EVENTS_PATH },
             {
                 ...defaultData,
                 integration,
@@ -110,8 +111,8 @@ describe('useRouteParser', () => {
         ],
     ])('should return the correct data', (routeParams, expectedData) => {
         useParamsMock.mockReturnValue(routeParams)
-        const {result} = renderHook(() => useRouteParser(), {
-            wrapper: ({children}) => (
+        const { result } = renderHook(() => useRouteParser(), {
+            wrapper: ({ children }) => (
                 <Provider store={store}>{children}</Provider>
             ),
         })

@@ -1,9 +1,9 @@
-import classNames from 'classnames'
-import {fromJS, Map} from 'immutable'
-import _truncate from 'lodash/truncate'
+import React, { useCallback, useEffect, useState } from 'react'
 
-import React, {useCallback, useEffect, useState} from 'react'
-import {Link} from 'react-router-dom'
+import classNames from 'classnames'
+import { fromJS, Map } from 'immutable'
+import _truncate from 'lodash/truncate'
+import { Link } from 'react-router-dom'
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -14,11 +14,11 @@ import {
     Row,
 } from 'reactstrap'
 
-import {IntegrationType} from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import PageHeader from 'pages/common/components/PageHeader'
 import CheckBox from 'pages/common/forms/CheckBox'
-import {INTEGRATION_REMOVAL_CONFIGURATION_TEXT} from 'pages/integrations/integration/constants'
+import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 import css from 'pages/settings/settings.less'
 import {
     deleteIntegration,
@@ -66,7 +66,7 @@ export default function TwitterIntegrationDetail({
                                 direct_messages_enabled: directMessagesEnabled,
                             },
                         },
-                    })
+                    }),
                 ) as unknown as Promise<any>)
             } catch (error) {
                 console.error(error)
@@ -81,14 +81,14 @@ export default function TwitterIntegrationDetail({
             tweetsRepliesEnabled,
             mentionsEnabled,
             directMessagesEnabled,
-        ]
+        ],
     )
 
     const onDelete = useCallback(async () => {
         try {
             setIsDeleting(true)
             await (actions.deleteIntegration(
-                integration
+                integration,
             ) as unknown as Promise<any>)
         } catch (error) {
             console.error(error)
@@ -108,15 +108,15 @@ export default function TwitterIntegrationDetail({
         const integrationAbout = integration.getIn(['meta', 'about'], '')
         const tweetsRepliesEnabled = integration.getIn(
             ['meta', 'settings', 'tweets_replies_enabled'],
-            false
+            false,
         )
         const mentionsEnabled = integration.getIn(
             ['meta', 'settings', 'mentions_enabled'],
-            false
+            false,
         )
         const directMessagesEnabled = integration.getIn(
             ['meta', 'settings', 'direct_messages_enabled'],
-            false
+            false,
         )
 
         setIntegrationName(integrationName)

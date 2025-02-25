@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react'
+import React, { ReactNode } from 'react'
 
 import css from './CardsWrapper.less'
 
@@ -7,7 +7,7 @@ type Props = {
     children: ReactNode
 }
 
-export default function Category({header, children}: Props) {
+export default function Category({ header, children }: Props) {
     return (
         <section>
             {header && <header className={css.header}>{header}</header>}

@@ -1,10 +1,10 @@
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES} from 'config/integrations'
+import { CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES } from 'config/integrations'
 import {
+    GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ENABLED_DEFAULT,
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
-    GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from 'config/integrations/gorgias_chat'
 
@@ -33,7 +33,7 @@ const AutoResponder = ({
         return autoResponderReply === GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC
             ? widgetTranslatedTexts['waitTimeMediumReply'].replace(
                   '{waitTime}',
-                  '5'
+                  '5',
               )
             : `${
                   autoResponderReply === CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES

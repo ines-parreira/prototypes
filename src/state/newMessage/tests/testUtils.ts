@@ -1,14 +1,14 @@
 import _omit from 'lodash/omit'
 
 import {
-    convertToHTML,
     BlockSnapshot,
+    ContentStateSelectionSnapshot,
+    convertToHTML,
     getContentStateBlocksSnapshot,
     getContentStateSelectionSnapshot,
-    ContentStateSelectionSnapshot,
 } from '../../../utils/editor'
-import {MessageContext} from '../responseUtils'
-import {ReplyAreaState} from '../types'
+import { MessageContext } from '../responseUtils'
+import { ReplyAreaState } from '../types'
 
 export type MessageContextSnapshot = Omit<
     MessageContext,
@@ -25,7 +25,7 @@ export const getMessageContextSnapshot = ({
     selectionState,
     ...context
 }: MessageContext): MessageContextSnapshot => {
-    const {args} = action
+    const { args } = action
     const argsContentState = args.get('contentState')
     const snapshot: MessageContextSnapshot = {
         ...context,
@@ -38,14 +38,14 @@ export const getMessageContextSnapshot = ({
         contentState: convertToHTML(contentState),
         state: state.setIn(
             ['state', 'contentState'],
-            convertToHTML(state.getIn(['state', 'contentState']))
+            convertToHTML(state.getIn(['state', 'contentState'])),
         ),
     }
 
     if (selectionState) {
         snapshot.selectionState = getContentStateSelectionSnapshot(
             contentState,
-            selectionState
+            selectionState,
         )
     }
 
@@ -60,12 +60,12 @@ export type ReplyAreaStateSnapshot = Omit<
 }
 
 export const getReplyAreaStateSnapshot = (
-    replyAreaState: ReplyAreaState
+    replyAreaState: ReplyAreaState,
 ): ReplyAreaStateSnapshot => {
     const snapshot: ReplyAreaStateSnapshot = {
         ..._omit(replyAreaState, 'selectionState'),
         contentState: getContentStateBlocksSnapshot(
-            replyAreaState.contentState
+            replyAreaState.contentState,
         ),
     }
     return snapshot

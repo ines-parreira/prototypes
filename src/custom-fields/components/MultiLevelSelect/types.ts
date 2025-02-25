@@ -1,6 +1,6 @@
-import {CustomFieldValue} from 'custom-fields/types'
+import { CustomFieldValue } from 'custom-fields/types'
 
-import {CHOICE_VALUES_SYMBOL} from './constants'
+import { CHOICE_VALUES_SYMBOL } from './constants'
 
 // CHOICE_VALUES_SYMBOL prevents an admin to accidentally override the key of leaf values
 // While the use of a Set removes duplicate end values

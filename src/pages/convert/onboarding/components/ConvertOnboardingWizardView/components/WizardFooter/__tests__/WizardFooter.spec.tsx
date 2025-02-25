@@ -1,6 +1,7 @@
-import {render, fireEvent} from '@testing-library/react'
 import React from 'react'
-import {BrowserRouter as Router} from 'react-router-dom'
+
+import { fireEvent, render } from '@testing-library/react'
+import { BrowserRouter as Router } from 'react-router-dom'
 
 import WizardFooter from '../WizardFooter'
 
@@ -11,7 +12,7 @@ describe('WizardFooter', () => {
     const handleBack = jest.fn()
 
     test('renders correctly with buttons', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Router>
                 <WizardFooter
                     integrationId={integrationId}
@@ -19,7 +20,7 @@ describe('WizardFooter', () => {
                     handleNextStep={handleNextStep}
                     handleBack={handleBack}
                 />
-            </Router>
+            </Router>,
         )
 
         expect(getByText('Save & Customize Later')).toBeInTheDocument()
@@ -28,7 +29,7 @@ describe('WizardFooter', () => {
     })
 
     test('calls handleNextStep when Finish Setup button is clicked', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Router>
                 <WizardFooter
                     integrationId={integrationId}
@@ -36,7 +37,7 @@ describe('WizardFooter', () => {
                     handleNextStep={handleNextStep}
                     handleBack={handleBack}
                 />
-            </Router>
+            </Router>,
         )
 
         fireEvent.click(getByText('Finish Setup'))
@@ -45,7 +46,7 @@ describe('WizardFooter', () => {
     })
 
     test('calls handleBack when Previous button is clicked', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Router>
                 <WizardFooter
                     integrationId={integrationId}
@@ -53,7 +54,7 @@ describe('WizardFooter', () => {
                     handleNextStep={handleNextStep}
                     handleBack={handleBack}
                 />
-            </Router>
+            </Router>,
         )
 
         fireEvent.click(getByText('Previous'))

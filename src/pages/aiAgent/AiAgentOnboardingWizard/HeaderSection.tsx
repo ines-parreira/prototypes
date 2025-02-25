@@ -1,10 +1,12 @@
-import classnames from 'classnames'
 import React from 'react'
+
+import classnames from 'classnames'
 
 import CheckBox from 'pages/common/forms/CheckBox'
 
-import {AiAgentChannel} from '../constants'
-import {FormValues, WizardFormValues} from '../types'
+import { AiAgentChannel } from '../constants'
+import { FormValues, WizardFormValues } from '../types'
+
 import css from './HeaderSection.less'
 
 type HeaderSectionProps = {
@@ -33,7 +35,7 @@ export const HeaderSection = ({
         }
 
         handleFormUpdate({
-            wizard: {...wizard, enabledChannels: newChannels},
+            wizard: { ...wizard, enabledChannels: newChannels },
         })
     }
 

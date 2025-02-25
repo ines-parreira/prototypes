@@ -1,11 +1,11 @@
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {LocaleCode, NonRootCategory} from 'models/helpCenter/types'
-import {Option} from 'pages/common/forms/SelectField/types'
-import {useHelpCenterCategories} from 'pages/settings/helpCenter/hooks/useHelpCenterCategories'
-import {isNonRootCategory} from 'state/entities/helpCenter/categories'
+import { LocaleCode, NonRootCategory } from 'models/helpCenter/types'
+import { Option } from 'pages/common/forms/SelectField/types'
+import { useHelpCenterCategories } from 'pages/settings/helpCenter/hooks/useHelpCenterCategories'
+import { isNonRootCategory } from 'state/entities/helpCenter/categories'
 
-import {CategoryDropdownOptionLabel} from '../../../CategoryDropdownOptionLabel/CategoryDropdownOptionLabel'
+import { CategoryDropdownOptionLabel } from '../../../CategoryDropdownOptionLabel/CategoryDropdownOptionLabel'
 
 interface UseCategoriesOptions {
     locale: LocaleCode
@@ -14,7 +14,7 @@ interface UseCategoriesOptions {
 export const NO_CATEGORY_OPTION = 'null'
 
 export const getCategoryDropdownOption = (
-    category: NonRootCategory
+    category: NonRootCategory,
 ): Option => {
     return {
         label: <CategoryDropdownOptionLabel category={category} />,
@@ -23,8 +23,8 @@ export const getCategoryDropdownOption = (
     }
 }
 
-const useCategoriesOptions = ({locale}: UseCategoriesOptions) => {
-    const {categories} = useHelpCenterCategories({
+const useCategoriesOptions = ({ locale }: UseCategoriesOptions) => {
+    const { categories } = useHelpCenterCategories({
         locale,
     })
 
@@ -32,11 +32,11 @@ const useCategoriesOptions = ({locale}: UseCategoriesOptions) => {
         const nonRootCategories = categories.filter(isNonRootCategory)
         const newOptions = nonRootCategories
             .filter(
-                (category) => category.available_locales.indexOf(locale) > -1
+                (category) => category.available_locales.indexOf(locale) > -1,
             )
             .map((category) => getCategoryDropdownOption(category))
         return [
-            {label: '- No category -', value: NO_CATEGORY_OPTION},
+            { label: '- No category -', value: NO_CATEGORY_OPTION },
             ...newOptions,
         ]
     }, [locale, categories])

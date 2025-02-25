@@ -1,7 +1,7 @@
 import moment from 'moment'
 
-import {TicketChannel} from 'business/types/ticket'
-import {OrderDirection} from 'models/api/types'
+import { TicketChannel } from 'business/types/ticket'
+import { OrderDirection } from 'models/api/types'
 import {
     TicketDimension,
     TicketMember,
@@ -13,15 +13,15 @@ import {
     TicketMessagesMember,
     TicketMessagesSegment,
 } from 'models/reporting/cubes/TicketMessagesCube'
-import {CHANNEL_DIMENSION} from 'models/reporting/queryFactories/support-performance/constants'
+import { CHANNEL_DIMENSION } from 'models/reporting/queryFactories/support-performance/constants'
 import {
     medianResolutionTimeMetricPerAgentQueryFactory,
-    resolutionTimeMetricPerTicketDrillDownQueryFactory,
-    medianResolutionTimeQueryFactory,
     medianResolutionTimeMetricPerChannelQueryFactory,
+    medianResolutionTimeQueryFactory,
+    resolutionTimeMetricPerTicketDrillDownQueryFactory,
 } from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
-import {ReportingFilterOperator} from 'models/reporting/types'
-import {LegacyStatsFilters} from 'models/stat/types'
+import { ReportingFilterOperator } from 'models/reporting/types'
+import { LegacyStatsFilters } from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
@@ -48,8 +48,8 @@ describe('medianResolutionTimeMetricPerAgent', () => {
         expect(
             medianResolutionTimeMetricPerAgentQueryFactory(
                 statsFilters,
-                timezone
-            )
+                timezone,
+            ),
         ).toEqual({
             dimensions: [TicketDimension.AssigneeUserId],
             filters: [
@@ -94,10 +94,10 @@ describe('medianResolutionTimeMetricPerAgent', () => {
 
         expect(
             medianResolutionTimeMetricPerAgentQueryFactory(
-                {...statsFilters, agents},
+                { ...statsFilters, agents },
                 timezone,
-                sorting
-            )
+                sorting,
+            ),
         ).toEqual({
             dimensions: [TicketDimension.AssigneeUserId],
             filters: [
@@ -163,8 +163,8 @@ describe('medianResolutionTimeMetricPerChannelQueryFactory', () => {
         expect(
             medianResolutionTimeMetricPerChannelQueryFactory(
                 statsFilters,
-                timezone
-            )
+                timezone,
+            ),
         ).toEqual({
             dimensions: [CHANNEL_DIMENSION],
             filters: [
@@ -209,10 +209,10 @@ describe('medianResolutionTimeMetricPerChannelQueryFactory', () => {
 
         expect(
             medianResolutionTimeMetricPerChannelQueryFactory(
-                {...statsFilters, agents},
+                { ...statsFilters, agents },
                 timezone,
-                sorting
-            )
+                sorting,
+            ),
         ).toEqual({
             dimensions: [CHANNEL_DIMENSION],
             filters: [
@@ -278,8 +278,8 @@ describe('resolutionTimeMetricPerTicketQueryFactory', () => {
         expect(
             resolutionTimeMetricPerTicketDrillDownQueryFactory(
                 statsFilters,
-                timezone
-            )
+                timezone,
+            ),
         ).toEqual({
             ...medianResolutionTimeQueryFactory(statsFilters, timezone),
             measures: [],
@@ -298,14 +298,14 @@ describe('resolutionTimeMetricPerTicketQueryFactory', () => {
 
     it('should build a query with agents filter and sorting', () => {
         const agents = [2]
-        const filters = {...statsFilters, agents}
+        const filters = { ...statsFilters, agents }
 
         expect(
             resolutionTimeMetricPerTicketDrillDownQueryFactory(
                 filters,
                 timezone,
-                sorting
-            )
+                sorting,
+            ),
         ).toEqual({
             ...medianResolutionTimeQueryFactory(filters, timezone),
             measures: [],

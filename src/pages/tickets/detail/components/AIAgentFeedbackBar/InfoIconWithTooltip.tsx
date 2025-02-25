@@ -1,8 +1,11 @@
-import {Placement} from '@floating-ui/react'
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import React, {ReactNode} from 'react'
+import React, { ReactNode } from 'react'
+
+import { Placement } from '@floating-ui/react'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import StatsHelpIcon from '../../../../stats/common/components/StatsHelpIcon'
+
 import css from './InfoIconWithTooltip.less'
 
 type Props = {
@@ -13,7 +16,11 @@ type Props = {
     }
     children: ReactNode
 }
-const InfoIconWithTooltip: React.FC<Props> = ({id, tooltipProps, children}) => {
+const InfoIconWithTooltip: React.FC<Props> = ({
+    id,
+    tooltipProps,
+    children,
+}) => {
     return (
         <span className={css.infoIconWithTooltip}>
             <StatsHelpIcon id={id} />

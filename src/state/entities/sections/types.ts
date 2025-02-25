@@ -1,12 +1,11 @@
-import {PayloadActionCreator} from '@reduxjs/toolkit'
+import { PayloadActionCreator } from '@reduxjs/toolkit'
 
-import {Section} from '../../../models/section/types'
-
+import { Section } from '../../../models/section/types'
 import {
-    SECTIONS_FETCHED,
-    SECTION_UPDATED,
-    SECTION_DELETED,
     SECTION_CREATED,
+    SECTION_DELETED,
+    SECTION_UPDATED,
+    SECTIONS_FETCHED,
 } from './constants'
 
 export type SectionsState = {

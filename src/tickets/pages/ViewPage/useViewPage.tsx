@@ -1,19 +1,17 @@
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {globalNavigationPanel} from 'common/navigation'
-import {useDesktopOnlyShowGlobalNavFeatureFlag} from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
-import {useIsOnboardingHidden} from 'common/onboarding'
-
-import {MOBILE_BREAKPOINT} from 'hooks/useIsMobileResolution/constants'
-
+import { globalNavigationPanel } from 'common/navigation'
+import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
+import { useIsOnboardingHidden } from 'common/onboarding'
+import { MOBILE_BREAKPOINT } from 'hooks/useIsMobileResolution/constants'
 import App from 'pages/App'
-import {PanelLayoutConfig} from 'pages/PanelLayout'
+import { PanelLayoutConfig } from 'pages/PanelLayout'
 import OnboardingSidePanel from 'pages/tickets/list/OnboardingSidePanel'
 import TicketList from 'pages/tickets/list/TicketList'
 import TicketNavbar from 'pages/tickets/navbar/TicketNavbar'
 import {
-    DEFAULT_NAVBAR_WIDTH,
     DEFAULT_INFOBAR_WIDTH,
+    DEFAULT_NAVBAR_WIDTH,
     LayoutKeys,
 } from 'split-ticket-view/constants'
 
@@ -49,12 +47,12 @@ export default function useViewPage() {
                     DEFAULT_INFOBAR_WIDTH,
                     Math.max(
                         Math.round(window.innerWidth / 2),
-                        DEFAULT_INFOBAR_WIDTH
+                        DEFAULT_INFOBAR_WIDTH,
                     ),
                 ],
             },
         ],
-        [showGlobalNav, isHidden, onHide]
+        [showGlobalNav, isHidden, onHide],
     )
 
     const config = useMemo(
@@ -62,7 +60,7 @@ export default function useViewPage() {
             isHidden
                 ? defaultConfig.slice(0, showGlobalNav ? 3 : 2)
                 : defaultConfig,
-        [defaultConfig, showGlobalNav, isHidden]
+        [defaultConfig, showGlobalNav, isHidden],
     )
 
     return useMemo(
@@ -74,6 +72,6 @@ export default function useViewPage() {
             fallbackWidth: MOBILE_BREAKPOINT,
             layoutKey: LayoutKeys.FULL_TICKET,
         }),
-        [config]
+        [config],
     )
 }

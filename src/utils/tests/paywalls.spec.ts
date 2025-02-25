@@ -1,9 +1,9 @@
-import {automationProduct, helpdeskProduct} from 'fixtures/productPrices'
+import { automationProduct, helpdeskProduct } from 'fixtures/productPrices'
 
-import {AccountFeature} from '../../state/currentAccount/types'
+import { AccountFeature } from '../../state/currentAccount/types'
 import {
-    getCheapestPriceNameForFeature,
     convertLegacyPlanNameToPublicPlanName,
+    getCheapestPriceNameForFeature,
 } from '../paywalls'
 
 const publicPrices = [...helpdeskProduct.prices, ...automationProduct.prices]
@@ -26,9 +26,9 @@ describe('convertLegacyPlanNameToPublicPlanName()', () => {
         'should return the public name for the legacy name %s',
         (name) => {
             expect(
-                convertLegacyPlanNameToPublicPlanName(name)
+                convertLegacyPlanNameToPublicPlanName(name),
             ).toMatchSnapshot()
-        }
+        },
     )
 })
 
@@ -37,14 +37,14 @@ describe('getCheapestPriceNameForFeature()', () => {
         'should return the cheaper plan to access the feature %s',
         (feature) => {
             expect(
-                getCheapestPriceNameForFeature(feature, publicPrices)
+                getCheapestPriceNameForFeature(feature, publicPrices),
             ).toMatchSnapshot()
-        }
+        },
     )
 
     it('should return undefined when feature not found in the plans', () => {
         expect(
-            getCheapestPriceNameForFeature(AccountFeature.InstagramComment, [])
+            getCheapestPriceNameForFeature(AccountFeature.InstagramComment, []),
         ).toBe(undefined)
     })
 })

@@ -1,4 +1,4 @@
-import {toDuration} from '../utils'
+import { toDuration } from '../utils'
 
 describe('toDuration', () => {
     it.each([
@@ -18,9 +18,9 @@ describe('toDuration', () => {
                         value,
                         prevValue,
                     },
-                })
+                }),
             ).toEqual('0h 0m')
-        }
+        },
     )
     it.each([[1, null]])(
         'Should return 1s when value=%s and prevValue=%s',
@@ -33,9 +33,9 @@ describe('toDuration', () => {
                         value,
                         prevValue,
                     },
-                })
+                }),
             ).toEqual('1s')
-        }
+        },
     )
     it.each([[60, null]])(
         'Should return 1m when value=%s and prevValue=%s',
@@ -48,8 +48,8 @@ describe('toDuration', () => {
                         value,
                         prevValue,
                     },
-                })
+                }),
             ).toEqual('1m')
-        }
+        },
     )
 })

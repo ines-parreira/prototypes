@@ -1,10 +1,10 @@
-import React, {useEffect, useRef, useState} from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import CheckBox from 'pages/common/forms/CheckBox'
-import {Paths} from 'rest_api/ssp_api/client.generated'
+import { Paths } from 'rest_api/ssp_api/client.generated'
 
 import SelectInputBox, {
     SelectInputBoxContext,
@@ -64,7 +64,10 @@ export default function RecommendationFilter({
             setFeedbackDropdownInputLabel('All Customer Feedback')
         } else {
             setFeedbackDropdownInputLabel(
-                feedbackOptions.map(getFeedbackOptionLabel).sort().join(' and ')
+                feedbackOptions
+                    .map(getFeedbackOptionLabel)
+                    .sort()
+                    .join(' and '),
             )
         }
     }, [feedbackOptions])
@@ -101,7 +104,7 @@ export default function RecommendationFilter({
                                             (feedbackOption) => {
                                                 const label =
                                                     getFeedbackOptionLabel(
-                                                        feedbackOption
+                                                        feedbackOption,
                                                     )
                                                 return (
                                                     <DropdownItem
@@ -117,7 +120,7 @@ export default function RecommendationFilter({
                                                         {label}
                                                     </DropdownItem>
                                                 )
-                                            }
+                                            },
                                         )}
                                     </DropdownBody>
                                 </Dropdown>

@@ -1,12 +1,13 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
-import React, {ComponentType} from 'react'
-import {Provider} from 'react-redux'
-import {createStore} from 'redux'
+import React, { ComponentType } from 'react'
 
-import {IntegrationType} from 'models/integration/types'
-import {useGetFirstValidIntegration} from 'pages/stats/convert/hooks/useGetFirstValidIntegration'
-import {RootState} from 'state/types'
+import { renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import { createStore } from 'redux'
+
+import { IntegrationType } from 'models/integration/types'
+import { useGetFirstValidIntegration } from 'pages/stats/convert/hooks/useGetFirstValidIntegration'
+import { RootState } from 'state/types'
 
 const integrationBigCommerce = {
     id: 3,
@@ -46,7 +47,7 @@ describe('useGetFirstValidIntegration', () => {
     describe('customer has several integrations', () => {
         const store = createStore((state) => state as RootState, defaultState)
         const hookOptions = {
-            wrapper: (({children}) => (
+            wrapper: (({ children }) => (
                 <Provider store={store}>{children}</Provider>
             )) as ComponentType,
         }
@@ -63,13 +64,13 @@ describe('useGetFirstValidIntegration', () => {
         ])(
             'For integration IDs "%p" returns only one selected integration ID %p',
             (integrationIds, expectedIntegration) => {
-                const {result} = renderHook(
+                const { result } = renderHook(
                     () => useGetFirstValidIntegration(integrationIds),
-                    hookOptions
+                    hookOptions,
                 )
 
                 expect(result.current).toStrictEqual(expectedIntegration)
-            }
+            },
         )
     })
 
@@ -82,13 +83,13 @@ describe('useGetFirstValidIntegration', () => {
                 }),
             })
             const hookOptions = {
-                wrapper: (({children}) => (
+                wrapper: (({ children }) => (
                     <Provider store={store}>{children}</Provider>
                 )) as ComponentType,
             }
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () => useGetFirstValidIntegration([1, 2]),
-                hookOptions
+                hookOptions,
             )
 
             expect(result.current).toStrictEqual(null)

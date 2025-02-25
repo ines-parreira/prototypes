@@ -1,13 +1,16 @@
-import {OrderDirection} from 'models/api/types'
+import { OrderDirection } from 'models/api/types'
 import {
     HandleTimeCubeWithJoins,
     HandleTimeDimension,
     HandleTimeMeasure,
 } from 'models/reporting/cubes/agentxp/HandleTimeCube'
-import {TicketDimension, TicketSegment} from 'models/reporting/cubes/TicketCube'
-import {CHANNEL_DIMENSION} from 'models/reporting/queryFactories/support-performance/constants'
-import {ReportingQuery} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import {
+    TicketDimension,
+    TicketSegment,
+} from 'models/reporting/cubes/TicketCube'
+import { CHANNEL_DIMENSION } from 'models/reporting/queryFactories/support-performance/constants'
+import { ReportingQuery } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     perDimensionQueryFactory,
@@ -19,7 +22,7 @@ import {
 export const ticketAverageHandleTimeQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ): ReportingQuery<HandleTimeCubeWithJoins> => ({
     filters: [
         ...statsFiltersToReportingFilters(TicketStatsFiltersMembers, filters),
@@ -38,7 +41,7 @@ export const ticketAverageHandleTimeQueryFactory = (
 export const ticketAverageHandleTimePerAgentQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ): ReportingQuery<HandleTimeCubeWithJoins> => ({
     ...ticketAverageHandleTimeQueryFactory(filters, timezone, sorting),
     measures: [HandleTimeMeasure.AverageHandleTime],
@@ -54,13 +57,13 @@ export const ticketAverageHandleTimePerAgentQueryFactory = (
 export const ticketAverageHandleTimePerAgentPerChannelQueryFactory =
     perDimensionQueryFactory(
         ticketAverageHandleTimePerAgentQueryFactory,
-        CHANNEL_DIMENSION
+        CHANNEL_DIMENSION,
     )
 
 export const ticketHandleTimeQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ): ReportingQuery<HandleTimeCubeWithJoins> => ({
     filters: [
         ...statsFiltersToReportingFilters(TicketStatsFiltersMembers, filters),
@@ -79,7 +82,7 @@ export const ticketHandleTimeQueryFactory = (
 export const ticketHandleTimePerTicketDrillDownQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ): ReportingQuery<HandleTimeCubeWithJoins> => ({
     ...ticketHandleTimeQueryFactory(filters, timezone, sorting),
     measures: [],

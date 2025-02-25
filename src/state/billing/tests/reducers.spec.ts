@@ -1,9 +1,9 @@
-import {fromJS, Map} from 'immutable'
+import { fromJS, Map } from 'immutable'
 
-import {StoreAction} from 'state/types'
+import { StoreAction } from 'state/types'
 
 import * as types from '../constants'
-import reducer, {initialState} from '../reducers'
+import reducer, { initialState } from '../reducers'
 
 const card = {
     brand: 'visa',
@@ -15,7 +15,7 @@ const card = {
 describe('billing reducers', () => {
     it('initial state', () => {
         expect(reducer(undefined, {} as StoreAction)).toEqualImmutable(
-            initialState
+            initialState,
         )
     })
 
@@ -33,7 +33,7 @@ describe('billing reducers', () => {
             reducer(initialState, {
                 type: types.FETCH_INVOICES_SUCCESS,
                 resp: invoices,
-            })
+            }),
         ).toMatchSnapshot()
     })
 
@@ -42,7 +42,7 @@ describe('billing reducers', () => {
             reducer(initialState, {
                 type: types.FETCH_CREDIT_CARD_SUCCESS,
                 resp: card,
-            })
+            }),
         ).toMatchSnapshot()
     })
 
@@ -51,7 +51,7 @@ describe('billing reducers', () => {
             reducer(initialState, {
                 type: types.UPDATE_CREDIT_CARD_SUCCESS,
                 resp: card,
-            })
+            }),
         ).toMatchSnapshot()
     })
 
@@ -71,7 +71,7 @@ describe('billing reducers', () => {
             reducer(initialState, {
                 type: types.FETCH_CURRENT_USAGE_SUCCESS,
                 resp: usage,
-            })
+            }),
         ).toMatchSnapshot()
     })
 
@@ -125,7 +125,7 @@ describe('billing reducers', () => {
             const state = initialState.set('invoices', fromJS(invoices))
             const action = {
                 type: types.UPDATE_INVOICE_IN_LIST,
-                invoice: fromJS({id: 'in_2', paid: true}),
+                invoice: fromJS({ id: 'in_2', paid: true }),
             }
             expect(reducer(state, action)).toMatchSnapshot()
         })

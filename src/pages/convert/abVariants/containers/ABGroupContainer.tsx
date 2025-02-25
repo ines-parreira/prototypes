@@ -1,39 +1,36 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import React, {ReactNode, useCallback, useMemo} from 'react'
-import {Link, NavLink, useParams, useLocation} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
+import React, { ReactNode, useCallback, useMemo } from 'react'
 
-import {useDismissFlag} from 'hooks/useDismissFlag'
-import {useModalManager} from 'hooks/useModalManager'
+import { Link, NavLink, useLocation, useParams } from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { useDismissFlag } from 'hooks/useDismissFlag'
+import { useModalManager } from 'hooks/useModalManager'
 import Button from 'pages/common/components/button/Button'
-
 import PageHeader from 'pages/common/components/PageHeader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
-
 import StartABTestModal from 'pages/convert/abVariants/components/StartABTestModal'
 import StopABTestModal from 'pages/convert/abVariants/components/StopABTestModal'
-import {usePauseABGroup} from 'pages/convert/abVariants/hooks/usePauseABGroup'
-import {useStartABGroup} from 'pages/convert/abVariants/hooks/useStartABGroup'
-import {useStopABGroup} from 'pages/convert/abVariants/hooks/useStopABGroup'
-import {ABVariantModalType} from 'pages/convert/abVariants/types/enums'
-
+import { usePauseABGroup } from 'pages/convert/abVariants/hooks/usePauseABGroup'
+import { useStartABGroup } from 'pages/convert/abVariants/hooks/useStartABGroup'
+import { useStopABGroup } from 'pages/convert/abVariants/hooks/useStopABGroup'
+import { ABVariantModalType } from 'pages/convert/abVariants/types/enums'
 import {
     abVariantAddUrl,
     abVariantControlVariantUrl,
     abVariantEditorUrl,
     abVariantsUrl,
 } from 'pages/convert/abVariants/urls'
-
-import {generateVariantName} from 'pages/convert/abVariants/utils/generateVariantName'
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
-import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
-import {ABGroupStatus} from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
+import { generateVariantName } from 'pages/convert/abVariants/utils/generateVariantName'
+import { Campaign } from 'pages/convert/campaigns/types/Campaign'
+import { CampaignVariant } from 'pages/convert/campaigns/types/CampaignVariant'
+import { ABGroupStatus } from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
 import {
-    CONVERT_ROUTE_PARAM_NAME,
     CONVERT_ROUTE_CAMPAIGN_PARAM_NAME,
+    CONVERT_ROUTE_PARAM_NAME,
 } from 'pages/convert/common/constants'
-import {ConvertRouteAbVariantParams} from 'pages/convert/common/types'
+import { ConvertRouteAbVariantParams } from 'pages/convert/common/types'
 import history from 'pages/history'
 
 import css from './ABGroupContainer.less'
@@ -57,19 +54,19 @@ export const ABGroupContainer: React.FC<Props> = ({
         return `convert:abVariant:${ABVariantModalType.StartABGroup}`
     }, [])
 
-    const {isDismissed, dismiss} = useDismissFlag(
+    const { isDismissed, dismiss } = useDismissFlag(
         storageAbVariantModalKey,
-        true
+        true,
     )
 
     const stopModalManager = useModalManager('stopModal')
     const startModalManager = useModalManager('startModal')
 
-    const {mutateAsync: startABGroup, isLoading: isLoadingStartABGroup} =
+    const { mutateAsync: startABGroup, isLoading: isLoadingStartABGroup } =
         useStartABGroup()
-    const {mutateAsync: pauseABGroup, isLoading: isLoadingPauseABGroup} =
+    const { mutateAsync: pauseABGroup, isLoading: isLoadingPauseABGroup } =
         usePauseABGroup()
-    const {mutateAsync: stopABGroup, isLoading: isLoadingStopABGroup} =
+    const { mutateAsync: stopABGroup, isLoading: isLoadingStopABGroup } =
         useStopABGroup()
 
     const variants = useMemo(() => {
@@ -121,24 +118,24 @@ export const ABGroupContainer: React.FC<Props> = ({
     }
 
     const handleStartABGroup = useCallback(async () => {
-        await startABGroup([undefined, {campaign_id: campaign.id}])
+        await startABGroup([undefined, { campaign_id: campaign.id }])
     }, [campaign, startABGroup])
 
     const handlePauseABGroup = useCallback(async () => {
-        await pauseABGroup([undefined, {campaign_id: campaign.id}])
+        await pauseABGroup([undefined, { campaign_id: campaign.id }])
     }, [campaign, pauseABGroup])
 
     const handleStopABGroup = useCallback(
         async (variantId: string | null) => {
             await stopABGroup([
                 undefined,
-                {campaign_id: campaign.id},
-                {winner_variant_id: variantId},
+                { campaign_id: campaign.id },
+                { winner_variant_id: variantId },
             ])
 
             stopModalManager.closeModal()
         },
-        [stopABGroup, campaign, stopModalManager]
+        [stopABGroup, campaign, stopModalManager],
     )
 
     const onStartClick = () => {
@@ -252,7 +249,7 @@ export const ABGroupContainer: React.FC<Props> = ({
                                 ? abVariantEditorUrl(
                                       integrationId,
                                       campaignId,
-                                      variant.id
+                                      variant.id,
                                   )
                                 : abVariantAddUrl(integrationId, campaignId)
                         }

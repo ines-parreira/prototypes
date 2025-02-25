@@ -1,14 +1,15 @@
-import {fireEvent, render, screen} from '@testing-library/react'
-import {Call} from '@twilio/voice-sdk'
-import {fromJS} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
-import {Provider} from 'react-redux'
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+
+import { fireEvent, render, screen } from '@testing-library/react'
+import { Call } from '@twilio/voice-sdk'
+import { fromJS } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
+import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {RootState, StoreDispatch} from 'state/types'
-import {mockOutgoingCall} from 'tests/twilioMocks'
+import { RootState, StoreDispatch } from 'state/types'
+import { mockOutgoingCall } from 'tests/twilioMocks'
 
 import OutgoingPhoneCall from '../OutgoingPhoneCall'
 
@@ -30,7 +31,7 @@ describe('<OutgoingPhoneCall/>', () => {
                     {
                         id: integrationId,
                         name: 'My Phone Integration',
-                        meta: {emoji: '❤️'},
+                        meta: { emoji: '❤️' },
                     },
                 ],
             }),
@@ -45,14 +46,14 @@ describe('<OutgoingPhoneCall/>', () => {
         render(
             <Provider store={store}>
                 <OutgoingPhoneCall call={call} />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('My Phone Integration')).toBeInTheDocument()
         expect(
             screen.getByText(
-                state.integrations.getIn(['integrations', 0, 'name'])
-            )
+                state.integrations.getIn(['integrations', 0, 'name']),
+            ),
         ).toBeInTheDocument()
         expect(screen.getByText('Outgoing call to')).toBeInTheDocument()
     })
@@ -63,7 +64,7 @@ describe('<OutgoingPhoneCall/>', () => {
         render(
             <Provider store={store}>
                 <OutgoingPhoneCall call={call} />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(screen.getByText('End Call'))

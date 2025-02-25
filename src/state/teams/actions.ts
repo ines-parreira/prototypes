@@ -1,5 +1,5 @@
-import {Team} from 'models/team/types'
-import {StoreDispatch} from 'state/types'
+import { Team } from 'models/team/types'
+import { StoreDispatch } from 'state/types'
 
 import {
     DELETE_TEAM_SUCCESS,

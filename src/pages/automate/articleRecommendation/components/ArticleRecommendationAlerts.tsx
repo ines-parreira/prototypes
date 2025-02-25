@@ -1,10 +1,11 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
+
+import { Link } from 'react-router-dom'
 
 import useLocalStorage from 'hooks/useLocalStorage'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 
-import {CLOSED_MANY_HELP_CENTERS_ALERT_KEY} from '../constants'
+import { CLOSED_MANY_HELP_CENTERS_ALERT_KEY } from '../constants'
 
 import css from './ArticleRecommendationAlerts.less'
 
@@ -29,7 +30,7 @@ export const ManyHelpCentersAlert = ({
 }) => {
     const [closedAlerts, setClosedAlerts] = useLocalStorage<string[]>(
         CLOSED_MANY_HELP_CENTERS_ALERT_KEY,
-        []
+        [],
     )
     const key = `${shopType}:${shopName}`
 

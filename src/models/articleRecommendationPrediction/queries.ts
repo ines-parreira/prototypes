@@ -1,8 +1,8 @@
-import {useQuery, useMutation} from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 
-import {getGorgiasSSPApiClient} from 'rest_api/ssp_api/client'
-import {OperationMethods, Paths} from 'rest_api/ssp_api/client.generated'
-import {MutationOverrides} from 'types/query'
+import { getGorgiasSSPApiClient } from 'rest_api/ssp_api/client'
+import { OperationMethods, Paths } from 'rest_api/ssp_api/client.generated'
+import { MutationOverrides } from 'types/query'
 
 export const ARTICLE_RECOMMENDATION_PREDICTION_QUERY_KEY =
     'article-recommendation-prediction'
@@ -72,7 +72,7 @@ export const useArticleRecommendationPredictions = ({
 export const useUpdateArticleRecommendationPredictions = (
     overrides?: MutationOverrides<
         OperationMethods['updateArticleRecommendationPredictions']
-    >
+    >,
 ) => {
     return useMutation({
         mutationFn: async (params) => {

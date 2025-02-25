@@ -1,4 +1,4 @@
-import {isEmpty} from 'lodash'
+import { isEmpty } from 'lodash'
 
 import {
     EmailMigrationInboundVerification,
@@ -7,12 +7,12 @@ import {
     EmailMigrationOutboundVerificationStatus,
     EmailMigrationSenderVerificationIntegration,
 } from 'models/integration/types'
-import {VerificationStatus} from 'models/singleSenderVerification/types'
+import { VerificationStatus } from 'models/singleSenderVerification/types'
 
-import {EmailVerificationStatus} from '../EmailVerificationStatusLabel'
+import { EmailVerificationStatus } from '../EmailVerificationStatusLabel'
 
 export const computeMigrationInboundVerificationStatus = (
-    migration: EmailMigrationInboundVerification
+    migration: EmailMigrationInboundVerification,
 ): EmailVerificationStatus => {
     if (
         migration.status === EmailMigrationInboundVerificationStatus.Initiated
@@ -42,35 +42,35 @@ export const computeMigrationInboundVerificationStatus = (
 }
 
 export const getInboundUnverifiedMigrations = (
-    migrations: EmailMigrationInboundVerification[]
+    migrations: EmailMigrationInboundVerification[],
 ) => {
     return migrations.filter(
         (migration) =>
             computeMigrationInboundVerificationStatus(migration) !==
-            EmailVerificationStatus.Success
+            EmailVerificationStatus.Success,
     )
 }
 
 export const getSingleSenderUnverifiedIntegrations = (
-    verification: EmailMigrationOutboundVerification
+    verification: EmailMigrationOutboundVerification,
 ) => {
     return verification.integrations.filter(
         (integration) =>
             computeSingleSenderVerificationStatus(integration) !==
-            EmailVerificationStatus.Success
+            EmailVerificationStatus.Success,
     )
 }
 
 export const getSubmittedSingleSenderVerificationsForDomain = (
-    verification: EmailMigrationOutboundVerification
+    verification: EmailMigrationOutboundVerification,
 ) => {
     return verification.integrations.filter(
-        (integration) => !isEmpty(integration.sender_verification)
+        (integration) => !isEmpty(integration.sender_verification),
     )
 }
 
 export const getSubmittedIncompleteVerifications = (
-    verification: EmailMigrationOutboundVerification
+    verification: EmailMigrationOutboundVerification,
 ) => {
     return verification.integrations.filter(
         (integration) =>
@@ -78,13 +78,13 @@ export const getSubmittedIncompleteVerifications = (
             [
                 EmailVerificationStatus.Pending,
                 EmailVerificationStatus.Failed,
-            ].includes(computeSingleSenderVerificationStatus(integration))
+            ].includes(computeSingleSenderVerificationStatus(integration)),
     )
 }
 
 /* single sender verification status for an individual domain */
 export const computeSingleSenderVerificationStatus = (
-    integration: EmailMigrationSenderVerificationIntegration
+    integration: EmailMigrationSenderVerificationIntegration,
 ) => {
     const status = integration.sender_verification?.status
 
@@ -103,7 +103,7 @@ export const computeSingleSenderVerificationStatus = (
 
 /* single sender verification status for a specific domain */
 export const computeDomainSingleSenderVerificationStatus = (
-    verification: EmailMigrationOutboundVerification
+    verification: EmailMigrationOutboundVerification,
 ) => {
     const allSubmittedVerifications =
         getSubmittedSingleSenderVerificationsForDomain(verification)
@@ -119,7 +119,7 @@ export const computeDomainSingleSenderVerificationStatus = (
         allSubmittedVerifications.some(
             (integration) =>
                 computeSingleSenderVerificationStatus(integration) ===
-                EmailVerificationStatus.Failed
+                EmailVerificationStatus.Failed,
         )
     ) {
         return EmailVerificationStatus.Failed
@@ -131,7 +131,7 @@ export const computeDomainSingleSenderVerificationStatus = (
 }
 
 export const computeDomainVerificationStatus = (
-    verification: EmailMigrationOutboundVerification
+    verification: EmailMigrationOutboundVerification,
 ) => {
     return verification.status ===
         EmailMigrationOutboundVerificationStatus.Unverified
@@ -140,9 +140,9 @@ export const computeDomainVerificationStatus = (
 }
 
 export const listAddressDetailsInline = (
-    integration: EmailMigrationSenderVerificationIntegration
+    integration: EmailMigrationSenderVerificationIntegration,
 ) => {
-    const {address, city, state, zip, country} =
+    const { address, city, state, zip, country } =
         integration.sender_verification ?? {}
     const stateAndZip = [state, zip].filter(Boolean).join(' ')
     return [address, city, stateAndZip, country].filter(Boolean).join(', ')

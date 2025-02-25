@@ -1,10 +1,10 @@
 import EventTracker from '@gorgias/event-tracker-api'
 
-import {UserRole} from 'config/types/user'
-import {ingestionEndpoint, reportSentryError} from 'services/activityTracker'
-import {GorgiasAppAuthService} from 'utils/gorgiasAppsAuth'
+import { UserRole } from 'config/types/user'
+import { ingestionEndpoint, reportSentryError } from 'services/activityTracker'
+import { GorgiasAppAuthService } from 'utils/gorgiasAppsAuth'
 
-import {checkIfAiAgentOnboardingNotificationIsEnabled} from './utils'
+import { checkIfAiAgentOnboardingNotificationIsEnabled } from './utils'
 
 const appAuthService = new GorgiasAppAuthService()
 const notificationTrackerInstance = EventTracker.initialize({
@@ -23,7 +23,7 @@ const notificationTrackerInstance = EventTracker.initialize({
 
 export const getAdminRecipientIds = () => {
     const allAdmins = window.GORGIAS_STATE?.agents?.all.filter(
-        (agent) => agent.role.name === UserRole.Admin
+        (agent) => agent.role.name === UserRole.Admin,
     )
 
     const adminIdsList = allAdmins?.map((admin) => ({
@@ -31,7 +31,7 @@ export const getAdminRecipientIds = () => {
     }))
 
     const sortedAdminIds = [...(adminIdsList || [])].sort((a, b) =>
-        a.id.localeCompare(b.id)
+        a.id.localeCompare(b.id),
     )
 
     return sortedAdminIds

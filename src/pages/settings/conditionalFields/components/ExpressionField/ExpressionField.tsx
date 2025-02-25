@@ -1,14 +1,15 @@
 import React from 'react'
 
-import {useFieldArray, useFormState} from 'core/forms'
-import {OBJECT_TYPES} from 'custom-fields/constants'
-import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import { useFieldArray, useFormState } from 'core/forms'
+import { OBJECT_TYPES } from 'custom-fields/constants'
+import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import Caption from 'pages/common/forms/Caption/Caption'
 
-import {DEFAULT_EXPRESSION_RULE} from '../../constants'
-import {AddButton} from './AddButton'
+import { DEFAULT_EXPRESSION_RULE } from '../../constants'
+import { AddButton } from './AddButton'
+import { ExpressionRow } from './ExpressionRow'
+
 import css from './ExpressionField.less'
-import {ExpressionRow} from './ExpressionRow'
 
 type ExpressionFieldProps = {
     className?: string
@@ -17,8 +18,8 @@ type ExpressionFieldProps = {
 export const ExpressionField = function ExpressionField({
     className,
 }: ExpressionFieldProps) {
-    const {errors} = useFormState({name: 'expression'})
-    const {data} = useCustomFieldDefinitions({
+    const { errors } = useFormState({ name: 'expression' })
+    const { data } = useCustomFieldDefinitions({
         archived: false,
         object_type: OBJECT_TYPES.TICKET,
     })

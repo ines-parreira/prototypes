@@ -1,28 +1,28 @@
-import {render} from '@testing-library/react'
-import {Moment} from 'moment'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {Metric} from 'hooks/reporting/metrics'
-import {useMetric} from 'hooks/reporting/useMetric'
-import {voiceCallAverageWaitTimeQueryFactory} from 'models/reporting/queryFactories/voice/voiceCall'
+import { render } from '@testing-library/react'
+import { Moment } from 'moment'
+
+import { Metric } from 'hooks/reporting/metrics'
+import { useMetric } from 'hooks/reporting/useMetric'
+import { voiceCallAverageWaitTimeQueryFactory } from 'models/reporting/queryFactories/voice/voiceCall'
 import * as constants from 'pages/stats/voice/constants/liveVoice'
+import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
+import { formatReportingQueryDate } from 'utils/reporting'
+import { assumeMock } from 'utils/testing'
 
-import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
-import {formatReportingQueryDate} from 'utils/reporting'
-import {assumeMock} from 'utils/testing'
-
-import {useAverageTalkTimeMetric} from '../../hooks/agentMetrics'
-import {useVoiceCallCountMetric} from '../../hooks/useVoiceCallCountMetric'
+import { useAverageTalkTimeMetric } from '../../hooks/agentMetrics'
+import { useVoiceCallCountMetric } from '../../hooks/useVoiceCallCountMetric'
 import LiveVoiceMetricCard from './LiveVoiceMetricCard'
 import LiveVoiceMetrics from './LiveVoiceMetrics'
-import {LiveVoiceStatusFilterOption} from './types'
-import {filterLiveCallsByStatus, getLiveVoicePeriodFilter} from './utils'
+import { LiveVoiceStatusFilterOption } from './types'
+import { filterLiveCallsByStatus, getLiveVoicePeriodFilter } from './utils'
 
 const renderComponent = (
     props: Partial<ComponentProps<typeof LiveVoiceMetrics>> = {
         liveVoiceCalls: [],
         isLoadingVoiceCalls: false,
-    }
+    },
 ) => {
     return render(
         <LiveVoiceMetrics
@@ -30,10 +30,10 @@ const renderComponent = (
             isLoadingVoiceCalls={props.isLoadingVoiceCalls ?? false}
             cleanStatsFilters={
                 props.cleanStatsFilters ?? {
-                    period: {start_datetime: 'start', end_datetime: 'end'},
+                    period: { start_datetime: 'start', end_datetime: 'end' },
                 }
             }
-        />
+        />,
     )
 }
 
@@ -49,7 +49,7 @@ jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
 jest.mock('pages/stats/voice/components/LiveVoice/utils')
 
 const voiceCallAverageWaitTimeQueryFactoryMock = assumeMock(
-    voiceCallAverageWaitTimeQueryFactory
+    voiceCallAverageWaitTimeQueryFactory,
 )
 const useVoiceCallCountMetricMock = assumeMock(useVoiceCallCountMetric)
 const useAverageTalkTimeMetricMock = assumeMock(useAverageTalkTimeMetric)
@@ -68,23 +68,23 @@ const defaultPeriodFilter = {
 describe('LiveVoiceMetrics', () => {
     beforeEach(() => {
         getBusinessHoursSettingsMock.mockReturnValue({
-            data: {timezone: 'Europe/Paris'},
+            data: { timezone: 'Europe/Paris' },
         } as any)
         useMetricMock.mockReturnValue({
-            data: {value: 1},
+            data: { value: 1 },
             isFetching: false,
         } as Metric)
         useVoiceCallCountMetricMock.mockReturnValue({
-            data: {value: 1},
+            data: { value: 1 },
             isFetching: false,
         } as Metric)
         useAverageTalkTimeMetricMock.mockReturnValue({
-            data: {value: 1},
+            data: { value: 1 },
             isFetching: false,
         } as Metric)
 
         formatReportingQueryDateMock.mockImplementation((date) =>
-            (date as Moment).format()
+            (date as Moment).format(),
         )
         filterLiveCallsByStatusMock.mockReturnValue([] as any)
         getLiveVoicePeriodFilterMock.mockReturnValue(defaultPeriodFilter)
@@ -117,7 +117,7 @@ describe('LiveVoiceMetrics', () => {
             title: constants.AVERAGE_TALK_TIME_METRIC_TITLE,
             hint: constants.AVERAGE_TALK_TIME_METRIC_HINT,
         },
-    ])('should render %p LiveVoiceMetricCard', ({title, hint}) => {
+    ])('should render %p LiveVoiceMetricCard', ({ title, hint }) => {
         renderComponent()
 
         expect(LiveVoiceMetricCardMock).toHaveBeenCalledWith(
@@ -125,7 +125,7 @@ describe('LiveVoiceMetrics', () => {
                 title,
                 hint,
             }),
-            {}
+            {},
         )
     })
 
@@ -144,7 +144,7 @@ describe('LiveVoiceMetrics', () => {
         },
     ])(
         'should call hooks with correct timezone',
-        ({businessHours, expectedTimezone}) => {
+        ({ businessHours, expectedTimezone }) => {
             getBusinessHoursSettingsMock.mockReturnValue(businessHours as any)
 
             const filters = {
@@ -156,29 +156,29 @@ describe('LiveVoiceMetrics', () => {
             expect(useMetricMock).toHaveBeenCalledWith(
                 voiceCallAverageWaitTimeQueryFactoryMock(
                     filters,
-                    expectedTimezone
-                )
+                    expectedTimezone,
+                ),
             )
             expect(useVoiceCallCountMetricMock).toHaveBeenCalledWith(
                 filters,
                 expectedTimezone,
-                'VoiceCall.inboundCalls'
+                'VoiceCall.inboundCalls',
             )
             expect(useVoiceCallCountMetricMock).toHaveBeenCalledWith(
                 filters,
                 expectedTimezone,
-                'VoiceCall.outboundCalls'
+                'VoiceCall.outboundCalls',
             )
             expect(useVoiceCallCountMetricMock).toHaveBeenCalledWith(
                 filters,
                 expectedTimezone,
-                'VoiceCall.missedCalls'
+                'VoiceCall.missedCalls',
             )
             expect(useAverageTalkTimeMetricMock).toHaveBeenCalledWith(
                 filters,
-                expectedTimezone
+                expectedTimezone,
             )
-        }
+        },
     )
 
     it('should render correct calls in queue count', () => {
@@ -192,11 +192,11 @@ describe('LiveVoiceMetrics', () => {
                 title: constants.CALLS_IN_QUEUE_METRIC_TITLE,
                 value: 2,
             }),
-            {}
+            {},
         )
         expect(filterLiveCallsByStatusMock).toHaveBeenCalledWith(
             [{}],
-            LiveVoiceStatusFilterOption.IN_QUEUE
+            LiveVoiceStatusFilterOption.IN_QUEUE,
         )
     })
 })

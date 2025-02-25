@@ -1,24 +1,26 @@
 import 'draft-js/dist/Draft.css'
 
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
-import {ContentState, EditorState} from 'draft-js'
-import Editor from 'draft-js-plugins-editor'
-import createSingleLinePlugin from 'draft-js-single-line-plugin'
 import React, {
+    ForwardedRef,
+    forwardRef,
+    memo,
     useCallback,
+    useEffect,
+    useImperativeHandle,
     useMemo,
     useRef,
     useState,
-    useEffect,
-    memo,
-    forwardRef,
-    ForwardedRef,
-    useImperativeHandle,
 } from 'react'
 
+import classnames from 'classnames'
+import { ContentState, EditorState } from 'draft-js'
+import Editor from 'draft-js-plugins-editor'
+import createSingleLinePlugin from 'draft-js-single-line-plugin'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
 import createWorkflowVariablesPlugin from 'pages/automate/workflows/draftjs/plugins/variables'
-import {toLiquidSyntax} from 'pages/automate/workflows/models/variables.model'
+import { toLiquidSyntax } from 'pages/automate/workflows/models/variables.model'
 import {
     WorkflowVariable,
     WorkflowVariableList,
@@ -28,8 +30,8 @@ import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvide
 import InputGroup, {
     InputGroupContext,
 } from 'pages/common/forms/input/InputGroup'
-import {insertText} from 'utils'
-import {contentStateFromTextOrHTML} from 'utils/editor'
+import { insertText } from 'utils'
+import { contentStateFromTextOrHTML } from 'utils/editor'
 
 import css from './TextInputWithVariables.less'
 
@@ -59,7 +61,7 @@ const TextInputWithVariables = (
         toolTipMessage = 'Variables are automatically created and can be used to recall information from previous steps in a flow',
         error,
     }: Props,
-    ref: ForwardedRef<Editor>
+    ref: ForwardedRef<Editor>,
 ) => {
     const editorRef = useRef<Editor | null>(null)
 
@@ -70,14 +72,14 @@ const TextInputWithVariables = (
 
     const plugins = useMemo(
         () => [
-            createWorkflowVariablesPlugin({size: 'small'}),
-            createSingleLinePlugin({stripEntities: false}),
+            createWorkflowVariablesPlugin({ size: 'small' }),
+            createSingleLinePlugin({ stripEntities: false }),
         ],
-        []
+        [],
     )
 
     const [editorState, setEditorState] = useState(() =>
-        EditorState.createWithContent(contentStateFromTextOrHTML(value))
+        EditorState.createWithContent(contentStateFromTextOrHTML(value)),
     )
 
     const handleChange = useCallback(
@@ -88,7 +90,7 @@ const TextInputWithVariables = (
                 if (plugin.onChange && editorRef.current) {
                     newEditorState = plugin.onChange(
                         newEditorState,
-                        editorRef.current.getPluginMethods()
+                        editorRef.current.getPluginMethods(),
                     )
                 }
             })
@@ -101,7 +103,7 @@ const TextInputWithVariables = (
                 onChange(nextValue)
             }
         },
-        [value, onChange]
+        [value, onChange],
     )
     const handleVariableSelect = (variable: WorkflowVariable) => {
         const newEditorState = insertText(
@@ -114,14 +116,14 @@ const TextInputWithVariables = (
                         : variable.type === 'array'
                           ? 'json'
                           : undefined,
-            })
+            }),
         )
 
         handleChange(
             EditorState.forceSelection(
                 newEditorState,
-                newEditorState.getSelection()
-            )
+                newEditorState.getSelection(),
+            ),
         )
     }
 
@@ -136,7 +138,7 @@ const TextInputWithVariables = (
             return (
                 EditorState.push as (
                     editorState: EditorState,
-                    contentState: ContentState
+                    contentState: ContentState,
                 ) => EditorState
             )(editorState, contentStateFromTextOrHTML(value))
         })
@@ -165,13 +167,13 @@ const TextInputWithVariables = (
                                         plugins={plugins}
                                         onFocus={() => {
                                             inputGroupContext?.setIsFocused(
-                                                true
+                                                true,
                                             )
                                             onFocus?.()
                                         }}
                                         onBlur={() => {
                                             inputGroupContext?.setIsFocused(
-                                                false
+                                                false,
                                             )
                                             onBlur?.()
                                         }}
@@ -189,7 +191,7 @@ const TextInputWithVariables = (
                                     <i
                                         className={classnames(
                                             'material-icons',
-                                            css.buttonIcon
+                                            css.buttonIcon,
                                         )}
                                     >
                                         arrow_drop_down

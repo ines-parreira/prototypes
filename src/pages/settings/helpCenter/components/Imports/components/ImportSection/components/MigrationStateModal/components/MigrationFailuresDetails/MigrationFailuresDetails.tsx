@@ -1,6 +1,8 @@
-import {Badge} from '@gorgias/merchant-ui-kit'
+import React, { Fragment, useMemo, useState } from 'react'
+
 import cn from 'classnames'
-import React, {Fragment, useMemo, useState} from 'react'
+
+import { Badge } from '@gorgias/merchant-ui-kit'
 
 import Collapse from 'pages/common/components/Collapse/Collapse'
 
@@ -21,16 +23,16 @@ export interface MigrationFailuresSectionItem {
     message: string
 }
 
-const MigrationFailuresDetails: React.FC<Props> = ({title, sections}) => {
+const MigrationFailuresDetails: React.FC<Props> = ({ title, sections }) => {
     const [isOpen, setIsOpen] = useState(false)
     const totalCount = sections.reduce(
         (acc, section) => acc + section.items.length,
-        0
+        0,
     )
 
     const visibleSections = useMemo(
-        () => sections.filter(({items}) => items.length > 0),
-        [sections]
+        () => sections.filter(({ items }) => items.length > 0),
+        [sections],
     )
 
     const handleToggle = () => setIsOpen((prev) => !prev)
@@ -59,7 +61,7 @@ const MigrationFailuresDetails: React.FC<Props> = ({title, sections}) => {
                         css.headerToggleIcon,
                         {
                             [css.open]: isOpen,
-                        }
+                        },
                     )}
                 >
                     expand_more

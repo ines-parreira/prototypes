@@ -1,14 +1,16 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { Component, ComponentType, FormEvent, ReactNode } from 'react'
+
 import _isUndefined from 'lodash/isUndefined'
 import _noop from 'lodash/noop'
 import _omit from 'lodash/omit'
 import _uniqueId from 'lodash/uniqueId'
-import React, {Component, ComponentType, ReactNode, FormEvent} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {Form, Label, Popover, PopoverBody, PopoverHeader} from 'reactstrap'
+import { connect, ConnectedProps } from 'react-redux'
+import { Form, Label, Popover, PopoverBody, PopoverHeader } from 'reactstrap'
 
-import {WithAppNodeProps, withAppNode} from 'appNode'
-import Button, {type ButtonProps} from 'pages/common/components/button/Button'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { withAppNode, WithAppNodeProps } from 'appNode'
+import Button, { type ButtonProps } from 'pages/common/components/button/Button'
 import DEPRECATED_BooleanField from 'pages/common/forms/DEPRECATED_BooleanField'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
@@ -20,14 +22,14 @@ import {
     IntegrationContext,
     IntegrationContextType,
 } from 'providers/infobar/IntegrationContext'
+import { executeAction } from 'state/infobar/actions'
+import { getPendingActionCallbacks } from 'state/infobar/selectors'
+import { actionButtonHashForData } from 'state/infobar/utils'
+import { RootState } from 'state/types'
 
-import {executeAction} from 'state/infobar/actions'
-import {getPendingActionCallbacks} from 'state/infobar/selectors'
-import {actionButtonHashForData} from 'state/infobar/utils'
-import {RootState} from 'state/types'
+import { InfobarModalProps, Option, Parameter } from './types'
 
 import css from './ActionButtons.less'
-import {InfobarModalProps, Option, Parameter} from './types'
 
 type ActionButtonContextType = {
     actionError: string | null
@@ -35,7 +37,7 @@ type ActionButtonContextType = {
 export const ActionButtonContext = React.createContext<ActionButtonContextType>(
     {
         actionError: null,
-    }
+    },
 )
 
 type Props = {
@@ -88,12 +90,12 @@ export class ActionButtonContainer extends Component<Props, State> {
     }
 
     componentDidMount() {
-        const {options} = this.props
+        const { options } = this.props
 
         const actionId = this.generateActionId(this.props, {
             actionName: this.props.options[0].value,
         } as any)
-        this.setState({actionId})
+        this.setState({ actionId })
 
         const defaultParameters: Record<string, unknown> = {}
         const parameters = options[0].parameters
@@ -104,7 +106,7 @@ export class ActionButtonContainer extends Component<Props, State> {
         if (parameters) {
             parameters.forEach((parameter) => {
                 defaultParameters[parameter.name] = _isUndefined(
-                    parameter.defaultValue
+                    parameter.defaultValue,
                 )
                     ? null
                     : parameter.defaultValue
@@ -178,7 +180,7 @@ export class ActionButtonContainer extends Component<Props, State> {
 
     updateActionName = (actionName: string | number) => {
         const currentOption = this.props.options.find(
-            (option) => option.value === actionName
+            (option) => option.value === actionName,
         )
         const parameters: Record<string, unknown> = {}
 
@@ -188,13 +190,13 @@ export class ActionButtonContainer extends Component<Props, State> {
             })
         }
 
-        this.setState({actionName: actionName.toString(), parameters})
+        this.setState({ actionName: actionName.toString(), parameters })
     }
 
     updateActionParameter = (
         name: string,
         value: string | number | boolean | Record<string, unknown>,
-        callback: () => void = _noop
+        callback: () => void = _noop,
     ) => {
         this.setState(
             {
@@ -203,7 +205,7 @@ export class ActionButtonContainer extends Component<Props, State> {
                     [name]: value,
                 },
             },
-            callback
+            callback,
         )
     }
 
@@ -212,23 +214,23 @@ export class ActionButtonContainer extends Component<Props, State> {
             name: string
             value: string | number | boolean | Record<string, unknown>
         }>,
-        callback: () => void = _noop
+        callback: () => void = _noop,
     ) => {
-        const {parameters} = this.state
+        const { parameters } = this.state
 
-        values.forEach(({name, value}) => {
+        values.forEach(({ name, value }) => {
             ;(parameters as Record<string, unknown>)[name] = value
         })
 
-        this.setState({parameters}, callback)
+        this.setState({ parameters }, callback)
     }
 
     renderActionParameters = () => {
-        const {options} = this.props
-        const {actionName, parameters: actionParameters} = this.state
+        const { options } = this.props
+        const { actionName, parameters: actionParameters } = this.state
 
         let currentOption = options.find(
-            (option) => option.value === actionName
+            (option) => option.value === actionName,
         )
 
         if (!currentOption) {
@@ -272,8 +274,8 @@ export class ActionButtonContainer extends Component<Props, State> {
     }
 
     renderModal(Modal: ComponentType<InfobarModalProps>) {
-        const {title, modalData} = this.props
-        const {isUiOpen} = this.state
+        const { title, modalData } = this.props
+        const { isUiOpen } = this.state
         return (
             <Modal
                 title={title}
@@ -288,8 +290,8 @@ export class ActionButtonContainer extends Component<Props, State> {
     }
 
     renderPopover() {
-        const {options, popover, title, appNode} = this.props
-        const {actionName, isUiOpen} = this.state
+        const { options, popover, title, appNode } = this.props
+        const { actionName, isUiOpen } = this.state
         const multipleOptions = options.length > 1
 
         return (
@@ -311,14 +313,14 @@ export class ActionButtonContainer extends Component<Props, State> {
                                   <Label key="label">Type</Label>,
                                   <SelectField
                                       key="input"
-                                      style={{marginBottom: '1rem'}}
+                                      style={{ marginBottom: '1rem' }}
                                       onChange={this.updateActionName}
                                       value={actionName}
                                       options={options.map(
                                           (option: Option) => ({
                                               value: option.value,
                                               label: option.label,
-                                          })
+                                          }),
                                       )}
                                   />,
                               ]
@@ -342,7 +344,7 @@ export class ActionButtonContainer extends Component<Props, State> {
             actionError,
             leadingIcon,
         } = this.props
-        const {isLoading} = this.state
+        const { isLoading } = this.state
         const hasError = !!actionError
         const tooltipTargetID = `${this.id}-tooltip-target`
         return (
@@ -374,9 +376,9 @@ export class ActionButtonContainer extends Component<Props, State> {
 
 export const withActionButtonContext = (Component: any) => {
     return (props: any) => {
-        const {actionError} = React.useContext(ActionButtonContext)
-        const {customerId} = React.useContext(CustomerContext)
-        const {integrationId} = React.useContext(IntegrationContext)
+        const { actionError } = React.useContext(ActionButtonContext)
+        const { customerId } = React.useContext(CustomerContext)
+        const { integrationId } = React.useContext(IntegrationContext)
 
         return (
             <Component
@@ -395,9 +397,9 @@ const connector = connect(
     }),
     {
         executeAction,
-    }
+    },
 )
 
 export default connector(
-    withActionButtonContext(withAppNode(ActionButtonContainer))
+    withActionButtonContext(withAppNode(ActionButtonContainer)),
 )

@@ -1,6 +1,12 @@
-import classnames from 'classnames'
 import React from 'react'
-import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
+
+import classnames from 'classnames'
+import {
+    Dropdown,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+} from 'reactstrap'
 
 import InputField from 'pages/common/forms/input/InputField'
 
@@ -34,7 +40,7 @@ interface DropdownButtonWithSearch {
 }
 
 const DropdownButtonWithSearch: React.FC<DropdownButtonWithSearch> = (
-    props
+    props,
 ) => {
     const [isOpen, setOpen] = React.useState(false)
     const [search, setSearch] = React.useState('')
@@ -48,7 +54,7 @@ const DropdownButtonWithSearch: React.FC<DropdownButtonWithSearch> = (
     }
 
     const filteredList: Option[] = props.options.filter((option: Option) =>
-        option.label.toLowerCase().includes(search.toLowerCase())
+        option.label.toLowerCase().includes(search.toLowerCase()),
     )
 
     const onSelectOption = (ev: React.MouseEvent, option: Option) => {
@@ -76,7 +82,7 @@ const DropdownButtonWithSearch: React.FC<DropdownButtonWithSearch> = (
             >
                 {props.materialIconLabel && (
                     <>
-                        <i className="material-icons" style={{fontSize: 20}}>
+                        <i className="material-icons" style={{ fontSize: 20 }}>
                             {props.materialIconLabel}
                         </i>{' '}
                     </>

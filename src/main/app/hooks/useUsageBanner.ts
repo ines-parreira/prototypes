@@ -1,9 +1,10 @@
-import {Map} from 'immutable'
-import {useEffect} from 'react'
+import { useEffect } from 'react'
+
+import { Map } from 'immutable'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {handleUsageBanner} from 'state/notifications/actions'
+import { handleUsageBanner } from 'state/notifications/actions'
 
 export function useUsageBanner() {
     const dispatch = useAppDispatch()
@@ -21,7 +22,7 @@ export function useUsageBanner() {
                 newAccountStatus,
                 currentAccountStatus: newAccountStatus,
                 notification: notification ? notification.toJS() : null,
-            })
+            }),
         )
     }, [currentAccount, dispatch])
 }

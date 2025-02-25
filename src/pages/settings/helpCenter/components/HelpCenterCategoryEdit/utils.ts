@@ -1,5 +1,5 @@
-import {Category, LocaleCode, NonRootCategory} from 'models/helpCenter/types'
-import {isNonRootCategory} from 'state/entities/helpCenter/categories'
+import { Category, LocaleCode, NonRootCategory } from 'models/helpCenter/types'
+import { isNonRootCategory } from 'state/entities/helpCenter/categories'
 
 /**
  * Filter out the children of the provided category from the provided categories
@@ -7,13 +7,13 @@ import {isNonRootCategory} from 'state/entities/helpCenter/categories'
 export const eligibleParentCategories = (
     categories: Category[],
     locale: LocaleCode,
-    currentCategory?: Category
+    currentCategory?: Category,
 ): NonRootCategory[] => {
     if (!currentCategory) {
         return categories
             .filter(isNonRootCategory)
             .filter(
-                (category) => category.available_locales.indexOf(locale) > -1
+                (category) => category.available_locales.indexOf(locale) > -1,
             )
     }
 
@@ -21,7 +21,7 @@ export const eligibleParentCategories = (
         for (const current of root.children) {
             childrenIds.push(current)
             const foundCategory = categories.find(
-                (category) => category.id === current
+                (category) => category.id === current,
             )
             if (foundCategory) {
                 traverseChildren(foundCategory, childrenIds)
@@ -38,19 +38,19 @@ export const eligibleParentCategories = (
             (category) =>
                 category.available_locales.indexOf(locale) > -1 &&
                 category.id !== currentCategory.id &&
-                !childrenCategoryIds.includes(category.id)
+                !childrenCategoryIds.includes(category.id),
         )
 }
 
 export const isOneOfParentsUnlisted = (
     categories: Category[],
-    categoryId: number | null
+    categoryId: number | null,
 ): boolean => {
     let isUnlisted = false
     const traverseParents = (categoryId: number | null) => {
         if (categoryId) {
             const currentCategory = categories.find(
-                (category) => category.id === categoryId
+                (category) => category.id === categoryId,
             )
             isUnlisted =
                 isUnlisted ||

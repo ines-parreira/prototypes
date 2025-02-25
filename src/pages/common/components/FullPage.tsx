@@ -1,7 +1,8 @@
+import React, { ReactNode } from 'react'
+
 import classnames from 'classnames'
-import React, {ReactNode} from 'react'
-import {RouteComponentProps} from 'react-router-dom'
-import {Container, Row, Col} from 'reactstrap'
+import { RouteComponentProps } from 'react-router-dom'
+import { Col, Container, Row } from 'reactstrap'
 
 import appCss from 'pages/App.less'
 import withRouter from 'pages/common/utils/withRouter'
@@ -15,14 +16,14 @@ type OwnProps = {
 
 type Props = OwnProps & RouteComponentProps
 
-function FullPage({children, noContainerWidthLimit}: Props) {
+function FullPage({ children, noContainerWidthLimit }: Props) {
     return (
         <Container
             fluid
             className={classnames(
                 'container-padding',
                 appCss['main-content'],
-                css.container
+                css.container,
             )}
         >
             <Row

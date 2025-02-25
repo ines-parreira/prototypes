@@ -1,11 +1,12 @@
-import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
-import _noop from 'lodash/noop'
 import React from 'react'
 
-import {utmConfiguration} from 'fixtures/utmConfiguration'
-import {useCampaignFormContext} from 'pages/convert/campaigns/hooks/useCampaignFormContext'
-import {CampaignFormConfigurationType} from 'pages/convert/campaigns/providers/CampaignDetailsForm/configurationContext'
-import {assumeMock} from 'utils/testing'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import _noop from 'lodash/noop'
+
+import { utmConfiguration } from 'fixtures/utmConfiguration'
+import { useCampaignFormContext } from 'pages/convert/campaigns/hooks/useCampaignFormContext'
+import { CampaignFormConfigurationType } from 'pages/convert/campaigns/providers/CampaignDetailsForm/configurationContext'
+import { assumeMock } from 'utils/testing'
 
 import AddUtm from '../AddUtm'
 
@@ -38,9 +39,9 @@ describe('<AddUtm />', () => {
         })
         render(<AddUtm {...defaultProps} />)
         const utmQueryStringInput = screen.getByPlaceholderText(
-            '?utm_source=Gorgias&utm_medium=ChatCampaign&utm_campaign=campaignName'
+            '?utm_source=Gorgias&utm_medium=ChatCampaign&utm_campaign=campaignName',
         )
-        fireEvent.change(utmQueryStringInput, {target: {value: '?foo=bar'}})
+        fireEvent.change(utmQueryStringInput, { target: { value: '?foo=bar' } })
         expect(mockCallback).toBeCalledWith('?foo=bar')
     })
 

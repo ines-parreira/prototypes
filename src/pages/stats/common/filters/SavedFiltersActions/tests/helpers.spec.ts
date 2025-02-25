@@ -1,18 +1,18 @@
-import {ReportingGranularity} from 'models/reporting/types'
+import { ReportingGranularity } from 'models/reporting/types'
 import {
     FilterComponentKey,
     FilterKey,
     StatsFiltersWithLogicalOperator,
     TagFilterInstanceId,
 } from 'models/stat/types'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-import {OptionalFilter} from 'pages/stats/common/filters/FiltersPanel'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
+import { OptionalFilter } from 'pages/stats/common/filters/FiltersPanel'
 import {
     areFiltersFilled,
     isFilterFilled,
 } from 'pages/stats/common/filters/SavedFiltersActions/helpers'
-import {isTeamLead} from 'utils'
-import {assumeMock} from 'utils/testing'
+import { isTeamLead } from 'utils'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('utils')
 const isTeamLeadMock = assumeMock(isTeamLead)
@@ -169,14 +169,14 @@ describe('isFilterFilled', () => {
         'should return true for filled values',
         (filterKey) => {
             expect(isFilterFilled(filterKey, filtersMock)).toBe(true)
-        }
+        },
     )
 
     it.each(filterKeysMock)(
         'should return false for empty values',
         (filterKey) => {
             expect(isFilterFilled(filterKey, emptyFiltersMock)).toBe(false)
-        }
+        },
     )
 })
 
@@ -189,7 +189,7 @@ describe('areFiltersFilled', () => {
     })
     it('should return true when theres one filled filter', () => {
         expect(
-            areFiltersFilled(filterKeysMock, filtersWithOnlyOneFilledFilter)
+            areFiltersFilled(filterKeysMock, filtersWithOnlyOneFilledFilter),
         ).toBe(true)
     })
 })

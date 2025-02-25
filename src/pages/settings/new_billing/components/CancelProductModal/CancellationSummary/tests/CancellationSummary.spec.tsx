@@ -1,5 +1,6 @@
-import {render} from '@testing-library/react'
 import React from 'react'
+
+import { render } from '@testing-library/react'
 
 import {
     convertPlan0,
@@ -8,10 +9,10 @@ import {
     smsPlan0,
     voicePlan0,
 } from 'fixtures/productPrices'
-import {Cadence, ProductType} from 'models/billing/types'
-import {assumeMock} from 'utils/testing'
+import { Cadence, ProductType } from 'models/billing/types'
+import { assumeMock } from 'utils/testing'
 
-import {HELPDESK_CANCELLATION_SCENARIO} from '../../scenarios'
+import { HELPDESK_CANCELLATION_SCENARIO } from '../../scenarios'
 import SummaryBody from '../../UI/SummaryBody'
 import SummaryHeader from '../../UI/SummaryHeader'
 import CancellationSummary from '../CancellationSummary'
@@ -68,14 +69,14 @@ describe('CancellationSummary', () => {
     }
 
     it('renders Helpdesk cancellation summary with all products', () => {
-        const {getByTestId} = render(
+        const { getByTestId } = render(
             <CancellationSummary
                 subscriptionProducts={subscriptionProducts}
                 cancellingProducts={
                     HELPDESK_CANCELLATION_SCENARIO.productsToCancel
                 }
                 periodEnd="February 14, 2024"
-            />
+            />,
         )
         expect(getByTestId('summary-body')).toBeInTheDocument()
         expect(SummaryBodyMock).toHaveBeenCalledWith(
@@ -130,7 +131,7 @@ describe('CancellationSummary', () => {
                 cadence: 'year',
                 total: 0,
             },
-            {}
+            {},
         )
 
         expect(getByTestId('summary-header')).toBeInTheDocument()
@@ -138,19 +139,19 @@ describe('CancellationSummary', () => {
             {
                 periodEnd: 'February 14, 2024',
             },
-            {}
+            {},
         )
     })
 
     it('renders with only Voice product stricken out, total of 4000 and Voice product being at the bottom of summary', () => {
         const cancellingProducts = [ProductType.Voice]
 
-        const {getByTestId} = render(
+        const { getByTestId } = render(
             <CancellationSummary
                 subscriptionProducts={subscriptionProducts}
                 cancellingProducts={cancellingProducts}
                 periodEnd="February 14, 2024"
-            />
+            />,
         )
 
         expect(getByTestId('summary-body')).toBeInTheDocument()
@@ -206,14 +207,14 @@ describe('CancellationSummary', () => {
                 cadence: 'year',
                 total: 4000,
             },
-            {}
+            {},
         )
         expect(getByTestId('summary-header')).toBeInTheDocument()
         expect(SummaryHeaderMock).toHaveBeenCalledWith(
             {
                 periodEnd: 'February 14, 2024',
             },
-            {}
+            {},
         )
     })
 
@@ -226,7 +227,7 @@ describe('CancellationSummary', () => {
             ProductType.Convert,
         ]
 
-        const {getByTestId} = render(
+        const { getByTestId } = render(
             <CancellationSummary
                 subscriptionProducts={{
                     ...subscriptionProducts,
@@ -236,7 +237,7 @@ describe('CancellationSummary', () => {
                 }}
                 cancellingProducts={cancellingProducts}
                 periodEnd="February 14, 2024"
-            />
+            />,
         )
 
         expect(SummaryBodyMock).toHaveBeenCalledWith(
@@ -264,7 +265,7 @@ describe('CancellationSummary', () => {
                 cadence: 'year',
                 total: 0,
             },
-            {}
+            {},
         )
 
         expect(getByTestId('summary-header')).toBeInTheDocument()
@@ -272,7 +273,7 @@ describe('CancellationSummary', () => {
             {
                 periodEnd: 'February 14, 2024',
             },
-            {}
+            {},
         )
     })
 })

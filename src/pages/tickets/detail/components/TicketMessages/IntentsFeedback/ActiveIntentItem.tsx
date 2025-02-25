@@ -1,18 +1,19 @@
-import _noop from 'lodash/noop'
 import React from 'react'
 
-import type {Option} from '../../../../../common/components/RichDropdown/types'
+import _noop from 'lodash/noop'
+
+import type { Option } from '../../../../../common/components/RichDropdown/types'
+import { DropdownOptionButton } from './DropdownOptionButton'
+import { DropdownOptionItem } from './DropdownOptionItem'
 
 import css from './ActiveIntentItem.less'
-import {DropdownOptionButton} from './DropdownOptionButton'
-import {DropdownOptionItem} from './DropdownOptionItem'
 
 type Props = {
     option: Option
     onReject?: (key: string) => void
 }
 
-export const ActiveIntentItem = ({option, onReject = _noop}: Props) => (
+export const ActiveIntentItem = ({ option, onReject = _noop }: Props) => (
     <DropdownOptionItem
         renderAction={() => (
             <DropdownOptionButton

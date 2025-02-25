@@ -1,23 +1,24 @@
-import {act, renderHook} from '@testing-library/react-hooks'
-import {mockFlags} from 'jest-launchdarkly-mock'
-import {KeyboardEvent} from 'react'
+import { KeyboardEvent } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {customer} from 'fixtures/customer'
-import {ticket} from 'fixtures/ticket'
-import {voiceCall} from 'fixtures/voiceCalls'
+import { act, renderHook } from '@testing-library/react-hooks'
+import { mockFlags } from 'jest-launchdarkly-mock'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { customer } from 'fixtures/customer'
+import { ticket } from 'fixtures/ticket'
+import { voiceCall } from 'fixtures/voiceCalls'
 import useAppSelector from 'hooks/useAppSelector'
 import useLocalStorageWithExpiry from 'hooks/useLocalStorageWithExpiry'
-import {searchCustomersWithHighlights} from 'models/customer/resources'
-import {searchTicketsWithHighlights} from 'models/ticket/resources'
-import {ViewType} from 'models/view/types'
-import {searchVoiceCallsWithHighlights} from 'models/voiceCall/resources'
-import {useSearch} from 'pages/common/components/Spotlight/useSearch'
-import {assumeMock} from 'utils/testing'
+import { searchCustomersWithHighlights } from 'models/customer/resources'
+import { searchTicketsWithHighlights } from 'models/ticket/resources'
+import { ViewType } from 'models/view/types'
+import { searchVoiceCallsWithHighlights } from 'models/voiceCall/resources'
+import { useSearch } from 'pages/common/components/Spotlight/useSearch'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('models/customer/resources')
 const searchCustomersWithHighlightsMock = assumeMock(
-    searchCustomersWithHighlights
+    searchCustomersWithHighlights,
 )
 jest.mock('models/ticket/resources')
 const searchTicketsWithHighlightsMock = assumeMock(searchTicketsWithHighlights)
@@ -26,7 +27,7 @@ const searchCallsWithHighlightsMock = assumeMock(searchVoiceCallsWithHighlights)
 jest.mock('hooks/useAppDispatch', () => jest.fn())
 jest.mock('hooks/useSearchRankScenario', () => ({
     ...jest.requireActual<Record<string, unknown>>(
-        'hooks/useSearchRankScenario'
+        'hooks/useSearchRankScenario',
     ),
     useSearchRankScenario: jest.fn(),
     default: jest.fn().mockReturnValue({
@@ -70,7 +71,7 @@ describe('useSearch', () => {
                 remove: jest.fn(),
             }
         })
-        mockFlags({[FeatureFlagKey.VoiceCallSearch]: true})
+        mockFlags({ [FeatureFlagKey.VoiceCallSearch]: true })
         useAppSelectorMock.mockReturnValue(true)
     })
 
@@ -78,12 +79,12 @@ describe('useSearch', () => {
         searchCustomersWithHighlightsMock.mockResolvedValue({
             data: {
                 data: [customerWithHighlightsResponse],
-                meta: {next_cursor: '', prev_cursor: null},
+                meta: { next_cursor: '', prev_cursor: null },
                 object: '',
                 uri: '',
             },
         } as any)
-        const {result} = renderHook(() => useSearch())
+        const { result } = renderHook(() => useSearch())
         await act(async () => {
             await result.current.fetchSearchItems('john', ViewType.CustomerList)
         })
@@ -100,12 +101,12 @@ describe('useSearch', () => {
         searchTicketsWithHighlightsMock.mockResolvedValue({
             data: {
                 data: [ticketWithHighlightsResponse],
-                meta: {next_cursor: '', prev_cursor: null},
+                meta: { next_cursor: '', prev_cursor: null },
                 object: '',
                 uri: '',
             },
         } as any)
-        const {result} = renderHook(() => useSearch())
+        const { result } = renderHook(() => useSearch())
         await act(async () => {
             await result.current.fetchSearchItems('john', ViewType.TicketList)
         })
@@ -122,12 +123,12 @@ describe('useSearch', () => {
         searchCallsWithHighlightsMock.mockResolvedValue({
             data: {
                 data: [callWithHighlightsResponse],
-                meta: {next_cursor: '', prev_cursor: null},
+                meta: { next_cursor: '', prev_cursor: null },
                 object: '',
                 uri: '',
             },
         } as any)
-        const {result} = renderHook(() => useSearch())
+        const { result } = renderHook(() => useSearch())
         await act(async () => {
             await result.current.fetchSearchItems('john', ViewType.CallList)
         })
@@ -144,7 +145,7 @@ describe('useSearch', () => {
         searchTicketsWithHighlightsMock.mockResolvedValue({
             data: {
                 data: [ticketWithHighlightsResponse],
-                meta: {next_cursor: '', prev_cursor: null},
+                meta: { next_cursor: '', prev_cursor: null },
                 object: '',
                 uri: '',
             },
@@ -152,7 +153,7 @@ describe('useSearch', () => {
         searchCustomersWithHighlightsMock.mockResolvedValue({
             data: {
                 data: [customerWithHighlightsResponse],
-                meta: {next_cursor: '', prev_cursor: null},
+                meta: { next_cursor: '', prev_cursor: null },
                 object: '',
                 uri: '',
             },
@@ -160,13 +161,13 @@ describe('useSearch', () => {
         searchCallsWithHighlightsMock.mockResolvedValue({
             data: {
                 data: [callWithHighlightsResponse],
-                meta: {next_cursor: '', prev_cursor: null},
+                meta: { next_cursor: '', prev_cursor: null },
                 object: '',
                 uri: '',
             },
         } as any)
 
-        const {result} = renderHook(() => useSearch())
+        const { result } = renderHook(() => useSearch())
         act(() => {
             result.current.handleSearchInput('some query')
         })
@@ -209,7 +210,7 @@ describe('useSearch', () => {
             }
         })
 
-        const {result, waitForNextUpdate} = renderHook(() => useSearch())
+        const { result, waitForNextUpdate } = renderHook(() => useSearch())
 
         await act(async () => await waitForNextUpdate())
         act(() => {

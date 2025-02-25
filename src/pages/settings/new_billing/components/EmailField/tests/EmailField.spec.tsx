@@ -1,10 +1,10 @@
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-
 import React from 'react'
 
-import {Form} from 'core/forms'
-import {EmailField} from 'pages/settings/new_billing/components/EmailField/EmailField'
-import {FormSubmitButton} from 'pages/settings/new_billing/components/FormSubmitButton/FormSubmitButton'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+
+import { Form } from 'core/forms'
+import { EmailField } from 'pages/settings/new_billing/components/EmailField/EmailField'
+import { FormSubmitButton } from 'pages/settings/new_billing/components/FormSubmitButton/FormSubmitButton'
 
 describe('EmailField', () => {
     it('should render email field', () => {
@@ -12,14 +12,14 @@ describe('EmailField', () => {
             <Form onValidSubmit={jest.fn()}>
                 <EmailField />
                 <FormSubmitButton />
-            </Form>
+            </Form>,
         )
 
         expect(screen.getByLabelText('Email')).toBeVisible()
         expect(
-            screen.getByText('Invoices are sent to this email address.')
+            screen.getByText('Invoices are sent to this email address.'),
         ).toBeVisible()
-        expect(screen.getByRole('textbox', {name: 'Email'})).toBeVisible()
+        expect(screen.getByRole('textbox', { name: 'Email' })).toBeVisible()
         expect(screen.getByPlaceholderText('your@email.com')).toBeVisible()
     })
 
@@ -28,11 +28,11 @@ describe('EmailField', () => {
             <Form onValidSubmit={jest.fn()}>
                 <EmailField />
                 <FormSubmitButton />
-            </Form>
+            </Form>,
         )
 
         fireEvent.change(screen.getByRole('textbox'), {
-            target: {value: 'not an email'},
+            target: { value: 'not an email' },
         })
 
         // Tries to submit the form to trigger validation
@@ -41,8 +41,8 @@ describe('EmailField', () => {
         await waitFor(() => {
             expect(
                 screen.getByText(
-                    'Email format must include @ and a domain, e.g. example@domain.com.'
-                )
+                    'Email format must include @ and a domain, e.g. example@domain.com.',
+                ),
             ).toBeVisible()
         })
     })
@@ -52,11 +52,11 @@ describe('EmailField', () => {
             <Form onValidSubmit={jest.fn()}>
                 <EmailField />
                 <FormSubmitButton />
-            </Form>
+            </Form>,
         )
 
         fireEvent.change(screen.getByRole('textbox'), {
-            target: {value: ''},
+            target: { value: '' },
         })
 
         // Tries to submit the form to trigger validation
@@ -71,15 +71,15 @@ describe('EmailField', () => {
         render(
             <Form
                 onValidSubmit={jest.fn()}
-                defaultValues={{email: 'default-email@gorgias.com'}}
+                defaultValues={{ email: 'default-email@gorgias.com' }}
             >
                 <EmailField />
                 <FormSubmitButton />
-            </Form>
+            </Form>,
         )
 
         expect(screen.getByRole('textbox')).toHaveValue(
-            'default-email@gorgias.com'
+            'default-email@gorgias.com',
         )
     })
 })

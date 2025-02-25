@@ -1,1 +1,1 @@
-export {default} from './CanduActionInfobar'
+export { default } from './CanduActionInfobar'

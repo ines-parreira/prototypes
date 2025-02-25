@@ -1,22 +1,23 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useGridSize} from 'hooks/useGridSize'
-import {FilterKey} from 'models/stat/types'
-import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useGridSize } from 'hooks/useGridSize'
+import { FilterKey } from 'models/stat/types'
+import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
-import {CustomReportComponent} from 'pages/stats/custom-reports/CustomReportComponent'
+import { CustomReportComponent } from 'pages/stats/custom-reports/CustomReportComponent'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
 import StatsPage from 'pages/stats/StatsPage'
-import {AutoQADownloadDataButton} from 'pages/stats/support-performance/auto-qa/AutoQADownloadDataButton'
+import { AutoQADownloadDataButton } from 'pages/stats/support-performance/auto-qa/AutoQADownloadDataButton'
 import {
     AUTO_QA_PAGE_TITLE,
     AutoQAChart,
     AutoQAReportConfig,
 } from 'pages/stats/support-performance/auto-qa/AutoQAReportConfig'
-import {SupportPerformanceFilters} from 'pages/stats/support-performance/SupportPerformanceFilters'
+import { SupportPerformanceFilters } from 'pages/stats/support-performance/SupportPerformanceFilters'
 
 export default function AutoQA() {
     const getGridCellSize = useGridSize()
@@ -84,7 +85,7 @@ export default function AutoQA() {
 
                     <DashboardGridCell
                         size={getGridCellSize(
-                            manualDimensionTrendCardColumnWidth
+                            manualDimensionTrendCardColumnWidth,
                         )}
                     >
                         <CustomReportComponent
@@ -94,7 +95,7 @@ export default function AutoQA() {
                     </DashboardGridCell>
                     <DashboardGridCell
                         size={getGridCellSize(
-                            manualDimensionTrendCardColumnWidth
+                            manualDimensionTrendCardColumnWidth,
                         )}
                     >
                         <CustomReportComponent
@@ -104,7 +105,7 @@ export default function AutoQA() {
                     </DashboardGridCell>
                     <DashboardGridCell
                         size={getGridCellSize(
-                            manualDimensionTrendCardColumnWidth
+                            manualDimensionTrendCardColumnWidth,
                         )}
                     >
                         <CustomReportComponent
@@ -130,7 +131,7 @@ export default function AutoQA() {
                     </DashboardGridCell>
                     <DashboardGridCell
                         size={getGridCellSize(
-                            manualDimensionTrendCardColumnWidth
+                            manualDimensionTrendCardColumnWidth,
                         )}
                     >
                         <CustomReportComponent

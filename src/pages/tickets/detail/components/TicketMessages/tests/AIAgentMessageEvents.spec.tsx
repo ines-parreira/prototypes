@@ -1,10 +1,11 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {TicketMessage} from 'models/ticket/types'
+import { render, screen } from '@testing-library/react'
 
-import {useAIAgentMessageEvents} from '../../../hooks/useAIAgentMessageEvents'
-import {TicketEventEnum} from '../../AIAgentFeedbackBar/types'
+import { TicketMessage } from 'models/ticket/types'
+
+import { useAIAgentMessageEvents } from '../../../hooks/useAIAgentMessageEvents'
+import { TicketEventEnum } from '../../AIAgentFeedbackBar/types'
 import AIAgentMessageEvents from '../AIAgentMessageEvents'
 
 jest.mock('../../../hooks/useAIAgentMessageEvents')
@@ -29,13 +30,13 @@ describe('AIAgentMessageEvents', () => {
         render(<AIAgentMessageEvents message={message} />)
         expect(screen.queryByText('Tagged')).not.toBeInTheDocument()
         expect(
-            screen.queryByTestId('ai-agent-message-action')
+            screen.queryByTestId('ai-agent-message-action'),
         ).not.toBeInTheDocument()
     })
     it('renders tagged event when tags are present', () => {
         mockedUseAIAgentMessageEvents.mockReturnValue([
             {
-                tags: [{name: 'tag1'}, {name: 'tag2'}],
+                tags: [{ name: 'tag1' }, { name: 'tag2' }],
                 action: null,
             },
         ])
@@ -53,7 +54,7 @@ describe('AIAgentMessageEvents', () => {
         render(<AIAgentMessageEvents message={message} />)
 
         expect(
-            screen.getByTestId('ai-agent-message-action')
+            screen.getByTestId('ai-agent-message-action'),
         ).toBeInTheDocument()
         expect(screen.getByText('Closed')).toBeInTheDocument()
     })

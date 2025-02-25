@@ -1,10 +1,10 @@
 import React from 'react'
 
-import {AdvancedTriggersForm} from 'pages/convert/campaigns/components/AdvancedTriggersForm'
-import {AdvancedTriggersSelect} from 'pages/convert/campaigns/components/AdvancedTriggersSelect'
-import {CampaignDelay} from 'pages/convert/campaigns/components/CampaignDelay'
-import {TriggersProvider} from 'pages/convert/campaigns/containers/TriggersProvider'
-import {useCampaignDetailsContext} from 'pages/convert/campaigns/hooks/useCampaignDetailsContext'
+import { AdvancedTriggersForm } from 'pages/convert/campaigns/components/AdvancedTriggersForm'
+import { AdvancedTriggersSelect } from 'pages/convert/campaigns/components/AdvancedTriggersSelect'
+import { CampaignDelay } from 'pages/convert/campaigns/components/CampaignDelay'
+import { TriggersProvider } from 'pages/convert/campaigns/containers/TriggersProvider'
+import { useCampaignDetailsContext } from 'pages/convert/campaigns/hooks/useCampaignDetailsContext'
 
 import css from './CampaignAudienceStep.less'
 

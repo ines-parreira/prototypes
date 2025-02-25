@@ -2,11 +2,11 @@
 import _isUndefined from 'lodash/isUndefined'
 import notification from 'push.js'
 
-import {User} from 'config/types/user'
-import {devLog} from 'utils'
-import {isDevelopment} from 'utils/environment'
+import { User } from 'config/types/user'
+import { devLog } from 'utils'
+import { isDevelopment } from 'utils/environment'
 
-import {SegmentEvent} from './types'
+import { SegmentEvent } from './types'
 
 export const SAMPLE_RATE_FOR_HIGH_TRAFFIC = 0.1
 const shouldSendEvent = () =>
@@ -29,7 +29,7 @@ export const logEvent = (event: SegmentEvent, props = {}) => {
 export const logEventWithSampling = (
     event: SegmentEvent,
     props = {},
-    sampleRate = SAMPLE_RATE_FOR_HIGH_TRAFFIC
+    sampleRate = SAMPLE_RATE_FOR_HIGH_TRAFFIC,
 ) => {
     if (Math.random() <= sampleRate) {
         logEvent(event, props)

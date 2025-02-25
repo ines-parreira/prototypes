@@ -1,7 +1,9 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
 import React from 'react'
-import {Link} from 'react-router-dom'
+
+import classNames from 'classnames'
+import { Link } from 'react-router-dom'
+
+import { Label } from '@gorgias/merchant-ui-kit'
 
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'

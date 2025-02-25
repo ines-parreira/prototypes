@@ -1,17 +1,18 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {ComposedElements} from '../react'
+import { render } from '@testing-library/react'
+
+import { ComposedElements } from '../react'
 
 describe('react', () => {
     describe('<ComposedElements />', () => {
         it('should return null when children array is empty', () => {
-            const {container} = render(<ComposedElements elements={[]} />)
+            const { container } = render(<ComposedElements elements={[]} />)
             expect(container.firstChild).toBe(null)
         })
 
         it('should render children of the composed elements', () => {
-            const {container} = render(
+            const { container } = render(
                 <ComposedElements
                     elements={[
                         <div key="outer-wrapper" />,
@@ -19,13 +20,13 @@ describe('react', () => {
                     ]}
                 >
                     Foo
-                </ComposedElements>
+                </ComposedElements>,
             )
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should pass props to the first wrapped component', () => {
-            const {container} = render(
+            const { container } = render(
                 <ComposedElements
                     className="foo"
                     elements={[
@@ -34,18 +35,18 @@ describe('react', () => {
                     ]}
                 >
                     Foo
-                </ComposedElements>
+                </ComposedElements>,
             )
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should filter out invalid elements', () => {
-            const {container} = render(
+            const { container } = render(
                 <ComposedElements
                     elements={[<div key="wrapper" />, undefined, 1, 'foo']}
                 >
                     <span>Foo</span>
-                </ComposedElements>
+                </ComposedElements>,
             )
             expect(container.firstChild).toMatchSnapshot()
         })

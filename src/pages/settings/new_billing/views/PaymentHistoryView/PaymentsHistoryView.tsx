@@ -1,24 +1,25 @@
-import {AxiosError} from 'axios'
+import React, { useEffect, useState } from 'react'
+
+import { AxiosError } from 'axios'
 import classNames from 'classnames'
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 import moment from 'moment'
-import React, {useEffect, useState} from 'react'
 // eslint-disable-next-line no-restricted-imports
-import {useDispatch} from 'react-redux'
-import {Table} from 'reactstrap'
+import { useDispatch } from 'react-redux'
+import { Table } from 'reactstrap'
 
 import useInjectStyleToCandu from 'hooks/candu/useInjectStyleToCandu'
 import useAppSelector from 'hooks/useAppSelector'
 import useCallbackRef from 'hooks/useCallbackRef'
 import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
-import {formatAmount} from 'pages/settings/new_billing/utils/formatAmount'
+import { formatAmount } from 'pages/settings/new_billing/utils/formatAmount'
 import GorgiasApi from 'services/gorgiasApi'
-import {fetchInvoices, updateInvoiceInList} from 'state/billing/actions'
-import {invoices as getInvoices} from 'state/billing/selectors'
-import {Invoice, PaymentIntentStatus, PaymentType} from 'state/billing/types'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { fetchInvoices, updateInvoiceInList } from 'state/billing/actions'
+import { invoices as getInvoices } from 'state/billing/selectors'
+import { Invoice, PaymentIntentStatus, PaymentType } from 'state/billing/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 import css from './PaymentHistoryView.less'
 
@@ -29,7 +30,7 @@ const PaymentsHistoryView = () => {
 
     const [isLoading, setIsLoading] = useState(true)
     const [invoiceBeingPaid, setInvoiceBeingPaid] = useState<Invoice | null>(
-        null
+        null,
     )
     const [descriptionNode, setDescriptionNode] = useCallbackRef()
     useInjectStyleToCandu(descriptionNode)
@@ -50,7 +51,7 @@ const PaymentsHistoryView = () => {
             dispatch(updateInvoiceInList(fromJS(invoice)))
         } catch (error) {
             const responseError = error as AxiosError<{
-                error?: {msg: string}
+                error?: { msg: string }
             }>
 
             if (responseError.response?.status === 402) {
@@ -67,7 +68,7 @@ const PaymentsHistoryView = () => {
                 notify({
                     message: errorMsg,
                     status: NotificationStatus.Error,
-                })
+                }),
             )
         } finally {
             setInvoiceBeingPaid(null)
@@ -88,7 +89,7 @@ const PaymentsHistoryView = () => {
             }
         } catch (error) {
             const responseError = error as AxiosError<{
-                error?: {msg: string}
+                error?: { msg: string }
             }>
             const errorMsg =
                 responseError.response?.data.error?.msg ||
@@ -98,7 +99,7 @@ const PaymentsHistoryView = () => {
                 notify({
                     status: NotificationStatus.Error,
                     title: errorMsg,
-                })
+                }),
             )
         } finally {
             setInvoiceBeingPaid(null)
@@ -147,7 +148,7 @@ const PaymentsHistoryView = () => {
                                     <td
                                         className={classNames(
                                             'align-middle',
-                                            css.invoiceDate
+                                            css.invoiceDate,
                                         )}
                                     >
                                         {moment.unix(invoice.date).format('LL')}
@@ -158,7 +159,7 @@ const PaymentsHistoryView = () => {
                                     <td
                                         className={classNames(
                                             'align-middle',
-                                            css.invoiceDescription
+                                            css.invoiceDescription,
                                         )}
                                     >
                                         {invoice.description}
@@ -168,7 +169,7 @@ const PaymentsHistoryView = () => {
                                             <span
                                                 className={classNames(
                                                     css.badge,
-                                                    css.statusPaid
+                                                    css.statusPaid,
                                                 )}
                                             >
                                                 Paid
@@ -177,7 +178,7 @@ const PaymentsHistoryView = () => {
                                             <span
                                                 className={classNames(
                                                     css.badge,
-                                                    css.statusUnpaid
+                                                    css.statusUnpaid,
                                                 )}
                                             >
                                                 Unpaid
@@ -206,7 +207,7 @@ const PaymentsHistoryView = () => {
                                                     }
                                                     onClick={() => {
                                                         void confirmPayment(
-                                                            invoice
+                                                            invoice,
                                                         )
                                                     }}
                                                 >
@@ -218,7 +219,7 @@ const PaymentsHistoryView = () => {
                                                     PaymentIntentStatus.RequiresSource,
                                                     PaymentIntentStatus.RequiresPaymentMethod,
                                                 ].includes(
-                                                    paymentIntent?.status
+                                                    paymentIntent?.status,
                                                 ) && (
                                                     <Button
                                                         intent="primary"
@@ -228,7 +229,7 @@ const PaymentsHistoryView = () => {
                                                         }
                                                         onClick={() => {
                                                             void retryPayment(
-                                                                invoice
+                                                                invoice,
                                                             )
                                                         }}
                                                     >

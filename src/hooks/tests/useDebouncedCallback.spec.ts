@@ -1,4 +1,4 @@
-import {renderHook} from '@testing-library/react-hooks/dom'
+import { renderHook } from '@testing-library/react-hooks/dom'
 import noop from 'lodash/noop'
 
 import useDebouncedCallback from '../useDebouncedCallback'
@@ -7,18 +7,18 @@ jest.useFakeTimers()
 
 describe('useDebouncedCallback', () => {
     it('should render', () => {
-        const {result} = renderHook(() => {
+        const { result } = renderHook(() => {
             useDebouncedCallback(noop, 200)
         })
         expect(result.error).toBeUndefined()
     })
 
     it('should return function same length and wrapped name', () => {
-        let {result} = renderHook(() =>
+        let { result } = renderHook(() =>
             useDebouncedCallback(
                 (a: number, b: number, c: number) => a + b + c,
-                200
-            )
+                200,
+            ),
         )
 
         expect(result.current.length).toBe(3)
@@ -28,7 +28,7 @@ describe('useDebouncedCallback', () => {
             return a + b + c
         }
         result = renderHook(() =>
-            useDebouncedCallback(namedFunction, 100)
+            useDebouncedCallback(namedFunction, 100),
         ).result
 
         expect(result.current.length).toBe(3)
@@ -36,22 +36,22 @@ describe('useDebouncedCallback', () => {
     })
 
     it('should return new callback if delay is changed', () => {
-        const {result, rerender} = renderHook(
-            ({delay}) => useDebouncedCallback(noop, delay),
+        const { result, rerender } = renderHook(
+            ({ delay }) => useDebouncedCallback(noop, delay),
             {
-                initialProps: {delay: 200},
-            }
+                initialProps: { delay: 200 },
+            },
         )
 
         const cb1 = result.current
-        rerender({delay: 123})
+        rerender({ delay: 123 })
 
         expect(cb1).not.toBe(result.current)
     })
 
     it('should run given callback only after specified delay since last call', () => {
         const cb = jest.fn()
-        const {result} = renderHook(() => useDebouncedCallback(cb, 200))
+        const { result } = renderHook(() => useDebouncedCallback(cb, 200))
 
         result.current()
         expect(cb).not.toHaveBeenCalled()
@@ -68,7 +68,7 @@ describe('useDebouncedCallback', () => {
 
     it('should pass parameters to callback', () => {
         const cb = jest.fn(noop)
-        const {result} = renderHook(() => useDebouncedCallback(cb, 200))
+        const { result } = renderHook(() => useDebouncedCallback(cb, 200))
 
         result.current(1, 'abc')
         jest.advanceTimersByTime(200)
@@ -79,15 +79,15 @@ describe('useDebouncedCallback', () => {
         const callback = jest.fn(noop)
         const changedCallback = jest.fn(noop)
 
-        const {result, rerender} = renderHook(
-            ({callback}) => useDebouncedCallback(callback, 200),
-            {initialProps: {callback}}
+        const { result, rerender } = renderHook(
+            ({ callback }) => useDebouncedCallback(callback, 200),
+            { initialProps: { callback } },
         )
 
         result.current()
         jest.advanceTimersByTime(100)
 
-        rerender({callback: changedCallback})
+        rerender({ callback: changedCallback })
         result.current()
         jest.advanceTimersByTime(200)
 
@@ -98,8 +98,8 @@ describe('useDebouncedCallback', () => {
     it('should cancel debounce execution after component unmount', () => {
         const cb = jest.fn()
 
-        const {result, unmount} = renderHook(() =>
-            useDebouncedCallback(cb, 150, 200)
+        const { result, unmount } = renderHook(() =>
+            useDebouncedCallback(cb, 150, 200),
         )
 
         result.current()
@@ -114,7 +114,7 @@ describe('useDebouncedCallback', () => {
     it('should force execute callback after maxWait milliseconds', () => {
         const cb = jest.fn()
 
-        const {result} = renderHook(() => useDebouncedCallback(cb, 150, 200))
+        const { result } = renderHook(() => useDebouncedCallback(cb, 150, 200))
 
         result.current()
         expect(cb).not.toHaveBeenCalled()
@@ -130,7 +130,7 @@ describe('useDebouncedCallback', () => {
     it('should not execute callback twice if maxWait equals delay', () => {
         const cb = jest.fn()
 
-        const {result} = renderHook(() => useDebouncedCallback(cb, 200, 200))
+        const { result } = renderHook(() => useDebouncedCallback(cb, 200, 200))
 
         result.current()
         expect(cb).not.toHaveBeenCalled()

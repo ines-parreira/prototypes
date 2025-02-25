@@ -1,8 +1,10 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
 import React from 'react'
 
-import {User} from 'config/types/user'
+import classNames from 'classnames'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { User } from 'config/types/user'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import css from 'pages/stats/common/AgentAvatar.less'
 
@@ -11,7 +13,7 @@ export const AgentAvatar = ({
     avatarSize = 36,
     className,
 }: {
-    agent: {id: number} & Partial<User>
+    agent: { id: number } & Partial<User>
     avatarSize?: number
     className?: string
 }) => {

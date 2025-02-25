@@ -1,14 +1,14 @@
-import {applyCustomActionTemplate} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/helpers/templating'
+import { applyCustomActionTemplate } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/helpers/templating'
 import {
     Parameter,
     TemplateContext,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
-import {mapTemplateParameters} from '../mapTemplateParameters'
+import { mapTemplateParameters } from '../mapTemplateParameters'
 
 jest.mock(
-    'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/helpers/templating'
+    'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/helpers/templating',
 )
 const applyCustomActionTemplateMock = assumeMock(applyCustomActionTemplate)
 

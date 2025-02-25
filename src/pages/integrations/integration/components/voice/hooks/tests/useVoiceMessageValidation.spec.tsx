@@ -1,18 +1,23 @@
-import {WaitMusicType} from '@gorgias/api-queries'
-import {act, renderHook} from '@testing-library/react-hooks'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { act, renderHook } from '@testing-library/react-hooks'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {IvrMenuActionType, VoiceMessageType} from 'models/integration/constants'
+import { WaitMusicType } from '@gorgias/api-queries'
+
 import {
+    IvrMenuActionType,
+    VoiceMessageType,
+} from 'models/integration/constants'
+import {
+    LocalWaitMusicPreferences,
     PhoneIntegrationIvrSettings,
     PhoneIntegrationVoicemailSettings,
     VoiceMessage,
-    LocalWaitMusicPreferences,
 } from 'models/integration/types'
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
 
 import * as utils from '../../utils'
 import useVoiceMessageValidation from '../useVoiceMessageValidation'
@@ -20,7 +25,7 @@ import useVoiceMessageValidation from '../useVoiceMessageValidation'
 const mockStore = configureMockStore<RootState>([thunk])({} as RootState)
 const getAudioFileDurationSpy = jest.spyOn(utils, 'getAudioFileDuration')
 
-const wrapper = ({children}: {children: React.ReactNode}) => (
+const wrapper = ({ children }: { children: React.ReactNode }) => (
     <Provider store={mockStore}>{children}</Provider>
 )
 
@@ -42,16 +47,16 @@ describe('useVoiceMessageValidation().canPayloadBeSubmitted', () => {
     })
 
     const renderCanPayloadBeSubmittedHook = (
-        payload: Maybe<PhoneIntegrationVoicemailSettings>
+        payload: Maybe<PhoneIntegrationVoicemailSettings>,
     ) =>
         renderHook(
             () => {
-                const {canPayloadBeSubmitted} = useVoiceMessageValidation()
+                const { canPayloadBeSubmitted } = useVoiceMessageValidation()
                 return canPayloadBeSubmitted(payload)
             },
             {
                 wrapper,
-            }
+            },
         )
 
     it('canPayloadBeSubmitted message_type = None', () => {
@@ -60,7 +65,7 @@ describe('useVoiceMessageValidation().canPayloadBeSubmitted', () => {
             allow_to_leave_voicemail: true,
         }
 
-        const {result} = renderCanPayloadBeSubmittedHook(payload)
+        const { result } = renderCanPayloadBeSubmittedHook(payload)
         expect(result.current).toBe(true)
     })
 
@@ -71,7 +76,7 @@ describe('useVoiceMessageValidation().canPayloadBeSubmitted', () => {
             allow_to_leave_voicemail: true,
         }
 
-        const {result} = renderCanPayloadBeSubmittedHook(payload)
+        const { result } = renderCanPayloadBeSubmittedHook(payload)
 
         expect(result.current).toBe(true)
     })
@@ -82,13 +87,13 @@ describe('useVoiceMessageValidation().canPayloadBeSubmitted', () => {
             allow_to_leave_voicemail: true,
         }
 
-        const {result} = renderCanPayloadBeSubmittedHook(payload)
+        const { result } = renderCanPayloadBeSubmittedHook(payload)
 
         expect(result.current).toBe(false)
         const notification = mockStore.getActions()[0]
         expect(notification).toHaveProperty(
             'payload.message',
-            'Cannot save. Upload a recording to use it as your voicemail.'
+            'Cannot save. Upload a recording to use it as your voicemail.',
         )
     })
 
@@ -99,7 +104,7 @@ describe('useVoiceMessageValidation().canPayloadBeSubmitted', () => {
             allow_to_leave_voicemail: true,
         }
 
-        const {result} = renderCanPayloadBeSubmittedHook(payload)
+        const { result } = renderCanPayloadBeSubmittedHook(payload)
 
         expect(result.current).toBe(true)
     })
@@ -111,7 +116,7 @@ describe('useVoiceMessageValidation().canPayloadBeSubmitted', () => {
             allow_to_leave_voicemail: true,
         }
 
-        const {result} = renderCanPayloadBeSubmittedHook(payload)
+        const { result } = renderCanPayloadBeSubmittedHook(payload)
 
         expect(result.current).toBe(false)
     })
@@ -127,7 +132,7 @@ describe('useVoiceMessageValidation().canPayloadBeSubmitted', () => {
             },
         }
 
-        const {result} = renderCanPayloadBeSubmittedHook(payload)
+        const { result } = renderCanPayloadBeSubmittedHook(payload)
 
         expect(result.current).toBe(false)
     })
@@ -143,7 +148,7 @@ describe('useVoiceMessageValidation().canPayloadBeSubmitted', () => {
             },
         }
 
-        const {result} = renderCanPayloadBeSubmittedHook(payload)
+        const { result } = renderCanPayloadBeSubmittedHook(payload)
 
         expect(result.current).toBe(false)
     })
@@ -168,7 +173,7 @@ describe('useVoiceMessageValidation().useVoiceMessageValidation', () => {
             },
             {
                 wrapper,
-            }
+            },
         )
 
     it('is successful', async () => {
@@ -184,17 +189,17 @@ describe('useVoiceMessageValidation().useVoiceMessageValidation', () => {
         } as unknown as React.ChangeEvent<HTMLInputElement>
         getAudioFileDurationSpy.mockResolvedValue(5)
 
-        const {result} = renderUseVoiceMessageValidationHook()
+        const { result } = renderUseVoiceMessageValidationHook()
         await act(async () => {
             const voiceRecordingUpload =
                 await result.current.validateVoiceRecordingUpload(event, 10)
 
             expect(voiceRecordingUpload).toBeTruthy()
             if (voiceRecordingUpload) {
-                const {url, newVoiceFields} = voiceRecordingUpload
+                const { url, newVoiceFields } = voiceRecordingUpload
                 expect(url).toEqual(mockObjectURL)
                 expect(newVoiceFields?.new_voice_recording_file_name).toEqual(
-                    fileName
+                    fileName,
                 )
             }
         })
@@ -213,12 +218,12 @@ describe('useVoiceMessageValidation().useVoiceMessageValidation', () => {
         } as unknown as React.ChangeEvent<HTMLInputElement>
         getAudioFileDurationSpy.mockResolvedValue(5000)
 
-        const {result} = renderUseVoiceMessageValidationHook()
+        const { result } = renderUseVoiceMessageValidationHook()
 
         await act(async () => {
             const res = await result.current.validateVoiceRecordingUpload(
                 event,
-                10
+                10,
             )
             expect(res).toBeNull()
         })
@@ -226,7 +231,7 @@ describe('useVoiceMessageValidation().useVoiceMessageValidation', () => {
         const notification = mockStore.getActions()[0]
         expect(notification).toHaveProperty(
             'payload.message',
-            'Please upload an audio file of 10 seconds or less.'
+            'Please upload an audio file of 10 seconds or less.',
         )
     })
 
@@ -235,7 +240,7 @@ describe('useVoiceMessageValidation().useVoiceMessageValidation', () => {
         const audioFile = new File(['test data'], fileName, {
             type: 'audio/mpeg',
         })
-        Object.defineProperty(audioFile, 'size', {value: 1_000_000 + 1})
+        Object.defineProperty(audioFile, 'size', { value: 1_000_000 + 1 })
         const event = {
             target: {
                 files: [audioFile],
@@ -243,14 +248,14 @@ describe('useVoiceMessageValidation().useVoiceMessageValidation', () => {
         } as unknown as React.ChangeEvent<HTMLInputElement>
         getAudioFileDurationSpy.mockResolvedValue(5)
 
-        const {result} = renderUseVoiceMessageValidationHook()
+        const { result } = renderUseVoiceMessageValidationHook()
 
         await act(async () => {
             const res = await result.current.validateVoiceRecordingUpload(
                 event,
                 10,
                 1,
-                true
+                true,
             )
             expect(res).toBeNull()
         })
@@ -258,7 +263,7 @@ describe('useVoiceMessageValidation().useVoiceMessageValidation', () => {
         const notification = mockStore.getActions()[0]
         expect(notification).toHaveProperty(
             'payload.message',
-            'File too large. Upload a recording smaller than 1MB.'
+            'File too large. Upload a recording smaller than 1MB.',
         )
     })
 
@@ -275,18 +280,18 @@ describe('useVoiceMessageValidation().useVoiceMessageValidation', () => {
         } as unknown as React.ChangeEvent<HTMLInputElement>
         getAudioFileDurationSpy.mockRejectedValue(new Error())
 
-        const {result} = renderUseVoiceMessageValidationHook()
+        const { result } = renderUseVoiceMessageValidationHook()
 
         await act(async () => {
             const res = await result.current.validateVoiceRecordingUpload(
                 event,
-                10
+                10,
             )
             expect(res).toBeNull()
             const notification = mockStore.getActions()[0]
             expect(notification).toHaveProperty(
                 'payload.message',
-                'Invalid audio file format provided. Please upload a valid mp3 file.'
+                'Invalid audio file format provided. Please upload a valid mp3 file.',
             )
         })
     })
@@ -298,16 +303,16 @@ describe('useVoiceMessageValidation().cleanUpPayload', () => {
     })
 
     const renderCleanUpPayloadHook = (
-        payload: Maybe<PhoneIntegrationVoicemailSettings>
+        payload: Maybe<PhoneIntegrationVoicemailSettings>,
     ) =>
         renderHook(
             () => {
-                const {cleanUpPayload} = useVoiceMessageValidation()
+                const { cleanUpPayload } = useVoiceMessageValidation()
                 return cleanUpPayload(payload)
             },
             {
                 wrapper,
-            }
+            },
         )
 
     it('cleans up for outside_business_hours - use same settings', () => {
@@ -328,7 +333,7 @@ describe('useVoiceMessageValidation().cleanUpPayload', () => {
             },
         }
 
-        const {result} = renderCleanUpPayloadHook(payload)
+        const { result } = renderCleanUpPayloadHook(payload)
         expect(result.current).toEqual(expected)
     })
 
@@ -360,7 +365,7 @@ describe('useVoiceMessageValidation().cleanUpPayload', () => {
             },
         }
 
-        const {result} = renderCleanUpPayloadHook(payload)
+        const { result } = renderCleanUpPayloadHook(payload)
         expect(result.current).toEqual(expected)
     })
 
@@ -384,7 +389,7 @@ describe('useVoiceMessageValidation().cleanUpPayload', () => {
             },
         }
 
-        const {result} = renderCleanUpPayloadHook(payload)
+        const { result } = renderCleanUpPayloadHook(payload)
         expect(result.current).toEqual(expected)
     })
 
@@ -400,7 +405,7 @@ describe('useVoiceMessageValidation().cleanUpPayload', () => {
             },
         }
 
-        const {result} = renderCleanUpPayloadHook(payload)
+        const { result } = renderCleanUpPayloadHook(payload)
         expect(result.current).toEqual(payload)
     })
 
@@ -422,7 +427,7 @@ describe('useVoiceMessageValidation().cleanUpPayload', () => {
             },
         }
 
-        const {result} = renderCleanUpPayloadHook(payload)
+        const { result } = renderCleanUpPayloadHook(payload)
         expect(result.current).toEqual(payload)
     })
 })
@@ -433,16 +438,16 @@ describe('useVoiceMessageValidation().isValidTextToSpeech', () => {
     })
 
     const renderIsValidTextToSpeechHook = (
-        payload: Maybe<PhoneIntegrationVoicemailSettings>
+        payload: Maybe<PhoneIntegrationVoicemailSettings>,
     ) =>
         renderHook(
             () => {
-                const {isValidTextToSpeech} = useVoiceMessageValidation()
+                const { isValidTextToSpeech } = useVoiceMessageValidation()
                 return isValidTextToSpeech(payload)
             },
             {
                 wrapper,
-            }
+            },
         )
 
     it('checks invalid text to speech content for outside business hours', () => {
@@ -455,7 +460,7 @@ describe('useVoiceMessageValidation().isValidTextToSpeech', () => {
                 text_to_speech_content: '',
             },
         }
-        const {result} = renderIsValidTextToSpeechHook(payload)
+        const { result } = renderIsValidTextToSpeechHook(payload)
         expect(result.current).toEqual(false)
     })
 
@@ -469,7 +474,7 @@ describe('useVoiceMessageValidation().isValidTextToSpeech', () => {
                 voice_message_type: VoiceMessageType.None,
             },
         }
-        const {result} = renderIsValidTextToSpeechHook(payload)
+        const { result } = renderIsValidTextToSpeechHook(payload)
         expect(result.current).toEqual(false)
     })
 
@@ -484,7 +489,7 @@ describe('useVoiceMessageValidation().isValidTextToSpeech', () => {
                 text_to_speech_content: 'another message',
             },
         }
-        const {result} = renderIsValidTextToSpeechHook(payload)
+        const { result } = renderIsValidTextToSpeechHook(payload)
         expect(result.current).toEqual(true)
     })
 
@@ -498,7 +503,7 @@ describe('useVoiceMessageValidation().isValidTextToSpeech', () => {
                 voice_recording_file_path: 'file.mp3',
             },
         }
-        const {result} = renderIsValidTextToSpeechHook(payload)
+        const { result } = renderIsValidTextToSpeechHook(payload)
         expect(result.current).toEqual(true)
     })
 })
@@ -509,20 +514,20 @@ describe('useVoiceMessageValidation().cleanUpIvrPayload', () => {
     })
 
     const renderCleanUpPayloadHook = (
-        payload: Maybe<PhoneIntegrationIvrSettings>
+        payload: Maybe<PhoneIntegrationIvrSettings>,
     ) =>
         renderHook(
             () => {
-                const {cleanUpIvrPayload} = useVoiceMessageValidation()
+                const { cleanUpIvrPayload } = useVoiceMessageValidation()
                 return cleanUpIvrPayload(payload)
             },
             {
                 wrapper,
-            }
+            },
         )
 
     it('handles null values', () => {
-        const {result} = renderCleanUpPayloadHook(null)
+        const { result } = renderCleanUpPayloadHook(null)
         expect(result.current).toEqual(null)
     })
 
@@ -532,7 +537,7 @@ describe('useVoiceMessageValidation().cleanUpIvrPayload', () => {
             menu_options: [],
         } as unknown as PhoneIntegrationIvrSettings
 
-        const {result} = renderCleanUpPayloadHook(payload)
+        const { result } = renderCleanUpPayloadHook(payload)
         expect(result.current).toEqual(payload)
     })
 
@@ -553,7 +558,7 @@ describe('useVoiceMessageValidation().cleanUpIvrPayload', () => {
             menu_options: [],
         }
 
-        const {result} = renderCleanUpPayloadHook(payload)
+        const { result } = renderCleanUpPayloadHook(payload)
         expect(result.current).toEqual(expected)
     })
 
@@ -631,7 +636,7 @@ describe('useVoiceMessageValidation().cleanUpIvrPayload', () => {
             ],
         }
 
-        const {result} = renderCleanUpPayloadHook(payload)
+        const { result } = renderCleanUpPayloadHook(payload)
         expect(result.current).toEqual(expected)
     })
 })
@@ -643,45 +648,45 @@ describe('useVoiceMessageValidation().areVoiceMessagesTheSame', () => {
 
     const renderAreVoiceMessagesTheSame = (
         voiceMessage: VoiceMessage,
-        other: VoiceMessage
+        other: VoiceMessage,
     ) =>
         renderHook(
             () => {
-                const {areVoiceMessagesTheSame} = useVoiceMessageValidation()
+                const { areVoiceMessagesTheSame } = useVoiceMessageValidation()
                 return areVoiceMessagesTheSame(voiceMessage, other)
             },
             {
                 wrapper,
-            }
+            },
         )
 
     it('should not be the same when they have different type', () => {
-        const {result} = renderAreVoiceMessagesTheSame(
+        const { result } = renderAreVoiceMessagesTheSame(
             {
                 voice_message_type: VoiceMessageType.None,
             },
             {
                 voice_message_type: VoiceMessageType.TextToSpeech,
                 text_to_speech_content: 'Hello!',
-            }
+            },
         )
         expect(result.current).toBe(false)
     })
 
     it('should be the same when they are both none', () => {
-        const {result} = renderAreVoiceMessagesTheSame(
+        const { result } = renderAreVoiceMessagesTheSame(
             {
                 voice_message_type: VoiceMessageType.None,
             },
             {
                 voice_message_type: VoiceMessageType.None,
-            }
+            },
         )
         expect(result.current).toBe(true)
     })
 
     it('should be the same when they are both TTS and have the same text', () => {
-        const {result} = renderAreVoiceMessagesTheSame(
+        const { result } = renderAreVoiceMessagesTheSame(
             {
                 voice_message_type: VoiceMessageType.TextToSpeech,
                 text_to_speech_content: 'Hello!',
@@ -689,13 +694,13 @@ describe('useVoiceMessageValidation().areVoiceMessagesTheSame', () => {
             {
                 voice_message_type: VoiceMessageType.TextToSpeech,
                 text_to_speech_content: 'Hello!',
-            }
+            },
         )
         expect(result.current).toBe(true)
     })
 
     it('should not be the same when they are both TTS but have different text', () => {
-        const {result} = renderAreVoiceMessagesTheSame(
+        const { result } = renderAreVoiceMessagesTheSame(
             {
                 voice_message_type: VoiceMessageType.TextToSpeech,
                 text_to_speech_content: 'Hello!',
@@ -703,13 +708,13 @@ describe('useVoiceMessageValidation().areVoiceMessagesTheSame', () => {
             {
                 voice_message_type: VoiceMessageType.TextToSpeech,
                 text_to_speech_content: 'Ciao!',
-            }
+            },
         )
         expect(result.current).toBe(false)
     })
 
     it('should be the same when they are both custom recording and have the same audio file URL', () => {
-        const {result} = renderAreVoiceMessagesTheSame(
+        const { result } = renderAreVoiceMessagesTheSame(
             {
                 voice_message_type: VoiceMessageType.VoiceRecording,
                 voice_recording_file_path: 'example.mp3',
@@ -717,13 +722,13 @@ describe('useVoiceMessageValidation().areVoiceMessagesTheSame', () => {
             {
                 voice_message_type: VoiceMessageType.VoiceRecording,
                 voice_recording_file_path: 'example.mp3',
-            }
+            },
         )
         expect(result.current).toBe(true)
     })
 
     it('should not be the same when they are both custom recording but have different audio file URL', () => {
-        const {result} = renderAreVoiceMessagesTheSame(
+        const { result } = renderAreVoiceMessagesTheSame(
             {
                 voice_message_type: VoiceMessageType.VoiceRecording,
                 voice_recording_file_path: 'example.mp3',
@@ -731,7 +736,7 @@ describe('useVoiceMessageValidation().areVoiceMessagesTheSame', () => {
             {
                 voice_message_type: VoiceMessageType.VoiceRecording,
                 voice_recording_file_path: 'new_upload.mp3',
-            }
+            },
         )
         expect(result.current).toBe(false)
     })
@@ -747,10 +752,13 @@ describe('useVoiceMessageValidation().areVoiceMessagesTheSame', () => {
         },
     ])(
         'should not be the same when they are both custom recording and have the same audio file URL, but one of them has new file data',
-        ({voiceMessage, other}) => {
-            const {result} = renderAreVoiceMessagesTheSame(voiceMessage, other)
+        ({ voiceMessage, other }) => {
+            const { result } = renderAreVoiceMessagesTheSame(
+                voiceMessage,
+                other,
+            )
             expect(result.current).toBe(false)
-        }
+        },
     )
 })
 
@@ -761,33 +769,33 @@ describe('useVoiceMessageValidation().areWaitMusicPreferencesTheSame', () => {
 
     const renderAreWaitMusicPreferencesTheSame = (
         preferences: LocalWaitMusicPreferences,
-        other: LocalWaitMusicPreferences
+        other: LocalWaitMusicPreferences,
     ) =>
         renderHook(
             () => {
-                const {areWaitMusicPreferencesTheSame} =
+                const { areWaitMusicPreferencesTheSame } =
                     useVoiceMessageValidation()
                 return areWaitMusicPreferencesTheSame(preferences, other)
             },
             {
                 wrapper,
-            }
+            },
         )
 
     it('should not be the same when they have different type', () => {
-        const {result} = renderAreWaitMusicPreferencesTheSame(
+        const { result } = renderAreWaitMusicPreferencesTheSame(
             {
                 type: WaitMusicType.Library,
             },
             {
                 type: WaitMusicType.CustomRecording,
-            }
+            },
         )
         expect(result.current).toBe(false)
     })
 
     it('should be the same when they are both library and have the same key', () => {
-        const {result} = renderAreWaitMusicPreferencesTheSame(
+        const { result } = renderAreWaitMusicPreferencesTheSame(
             {
                 type: WaitMusicType.Library,
                 library: {
@@ -805,13 +813,13 @@ describe('useVoiceMessageValidation().areWaitMusicPreferencesTheSame', () => {
                     key: 'ringtone',
                     name: 'Ringtone',
                 },
-            }
+            },
         )
         expect(result.current).toBe(true)
     })
 
     it('should not be the same when they are both library but have different key', () => {
-        const {result} = renderAreWaitMusicPreferencesTheSame(
+        const { result } = renderAreWaitMusicPreferencesTheSame(
             {
                 type: WaitMusicType.Library,
                 library: {
@@ -829,13 +837,13 @@ describe('useVoiceMessageValidation().areWaitMusicPreferencesTheSame', () => {
                     key: 'catchy_jingle',
                     name: 'Catchy Jingle',
                 },
-            }
+            },
         )
         expect(result.current).toBe(false)
     })
 
     it('should be the same when they are both custom recording and have the same audio file URL', () => {
-        const {result} = renderAreWaitMusicPreferencesTheSame(
+        const { result } = renderAreWaitMusicPreferencesTheSame(
             {
                 type: WaitMusicType.CustomRecording,
                 custom_recording: {
@@ -853,13 +861,13 @@ describe('useVoiceMessageValidation().areWaitMusicPreferencesTheSame', () => {
                         'https://uploads.gorgias.io/phone/CoolRockRiffs.mp3',
                     audio_file_type: 'audio/mpeg',
                 },
-            }
+            },
         )
         expect(result.current).toBe(true)
     })
 
     it('should not be the same when they are both custom recording but have different audio file URL', () => {
-        const {result} = renderAreWaitMusicPreferencesTheSame(
+        const { result } = renderAreWaitMusicPreferencesTheSame(
             {
                 type: WaitMusicType.CustomRecording,
                 custom_recording: {
@@ -877,7 +885,7 @@ describe('useVoiceMessageValidation().areWaitMusicPreferencesTheSame', () => {
                         'https://uploads.gorgias.io/phone/MagicBossaNova.mp3',
                     audio_file_type: 'audio/mpeg',
                 },
-            }
+            },
         )
         expect(result.current).toBe(false)
     })
@@ -927,12 +935,12 @@ describe('useVoiceMessageValidation().areWaitMusicPreferencesTheSame', () => {
         },
     ])(
         'should not be the same when they are both custom recording and have the same audio file URL, but one of them has new file data',
-        ({preferences, other}) => {
-            const {result} = renderAreWaitMusicPreferencesTheSame(
+        ({ preferences, other }) => {
+            const { result } = renderAreWaitMusicPreferencesTheSame(
                 preferences,
-                other
+                other,
             )
             expect(result.current).toBe(false)
-        }
+        },
     )
 })

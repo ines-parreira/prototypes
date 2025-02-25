@@ -1,8 +1,10 @@
-import classnames from 'classnames'
 import React from 'react'
 
+import classnames from 'classnames'
+
+import { TicketEventEnum } from './types'
+
 import css from './TicketEvent.less'
-import {TicketEventEnum} from './types'
 
 type Props = {
     eventType: TicketEventEnum
@@ -11,21 +13,21 @@ type Props = {
     children?: React.ReactNode
 }
 
-export const TicketEventToIcon: {[key in TicketEventEnum]: string} = {
+export const TicketEventToIcon: { [key in TicketEventEnum]: string } = {
     [TicketEventEnum.CLOSE]: 'check',
     [TicketEventEnum.ASSIGN_TICKET]: 'person_add',
     [TicketEventEnum.SNOOZE]: 'timer',
     [TicketEventEnum.TAGGED]: 'label',
 }
 
-export const TicketEventToLabel: {[key in TicketEventEnum]: string} = {
+export const TicketEventToLabel: { [key in TicketEventEnum]: string } = {
     [TicketEventEnum.CLOSE]: 'Closed',
     [TicketEventEnum.ASSIGN_TICKET]: 'Handed over',
     [TicketEventEnum.SNOOZE]: 'Snoozed',
     [TicketEventEnum.TAGGED]: 'Tagged',
 }
 
-const TicketEvent = ({eventType, isFirst, isLast, children}: Props) => {
+const TicketEvent = ({ eventType, isFirst, isLast, children }: Props) => {
     return (
         <div className={css.ticketEventContainer}>
             <div className={css.ticketEventBadge}>
@@ -35,7 +37,7 @@ const TicketEvent = ({eventType, isFirst, isLast, children}: Props) => {
                         css.badgeIconContainer,
                         eventType === TicketEventEnum.CLOSE
                             ? css.badgeIconContainerGreen
-                            : css.badgeIconContainerBlack
+                            : css.badgeIconContainerBlack,
                     )}
                 >
                     <i className={classnames('material-icons', css.badgeIcon)}>

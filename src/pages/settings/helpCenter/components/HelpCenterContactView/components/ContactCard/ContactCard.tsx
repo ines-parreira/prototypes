@@ -1,5 +1,6 @@
+import React, { ReactNode } from 'react'
+
 import classNames from 'classnames'
-import React, {ReactNode} from 'react'
 
 import css from './ContactCard.less'
 
@@ -23,7 +24,7 @@ const ContactCard: React.FC<Props> = ({
     className,
 }: Props) => (
     <div className={classNames(css.container, className)}>
-        <div className={classNames(css.card, {[css.disabled]: disabled})}>
+        <div className={classNames(css.card, { [css.disabled]: disabled })}>
             <div
                 className={classNames(css.header, {
                     [css.clickable]: clickable && !disabled,

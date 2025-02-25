@@ -1,6 +1,6 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {User} from 'config/types/user'
+import { User } from 'config/types/user'
 import {
     fetchMessagesSentMetricPerAgent,
     fetchOnlineTimePerAgent,
@@ -19,15 +19,15 @@ import {
     HelpdeskMessageDimension,
     HelpdeskMessageMeasure,
 } from 'models/reporting/cubes/HelpdeskMessageCube'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/metricsPerAgent')
 const useMessagesSentMetricPerAgentMock = assumeMock(
-    useMessagesSentMetricPerAgent
+    useMessagesSentMetricPerAgent,
 )
 const useOnlineTimePerAgentMock = assumeMock(useOnlineTimePerAgent)
 const fetchMessagesSentMetricPerAgentMock = assumeMock(
-    fetchMessagesSentMetricPerAgent
+    fetchMessagesSentMetricPerAgent,
 )
 const fetchOnlineTimePerAgentMock = assumeMock(fetchOnlineTimePerAgent)
 
@@ -82,21 +82,21 @@ describe('MessagesSentPerAgent', () => {
     describe('useMessagesSentPerHourPerAgent', () => {
         beforeEach(() => {
             useMessagesSentMetricPerAgentMock.mockReturnValue(
-                useMessagesSentMetricPerAgentReturnValue
+                useMessagesSentMetricPerAgentReturnValue,
             )
             useOnlineTimePerAgentMock.mockReturnValue(
-                useOnlineTimePerAgentReturnValue
+                useOnlineTimePerAgentReturnValue,
             )
         })
 
         it('should calculate the metric from messages sent and online time', () => {
-            const {result} = renderHook(() =>
+            const { result } = renderHook(() =>
                 useMessagesSentPerHourPerAgent(
                     statsFilters,
                     timeZone,
                     undefined,
-                    String(agent.id)
-                )
+                    String(agent.id),
+                ),
             )
 
             expect(result.current).toEqual({
@@ -104,10 +104,10 @@ describe('MessagesSentPerAgent', () => {
                     allData: [
                         {
                             [HelpdeskMessageMeasure.MessageCount]: String(
-                                messagesSentValue / (onlineTimeValue / 60 / 60)
+                                messagesSentValue / (onlineTimeValue / 60 / 60),
                             ),
                             [HelpdeskMessageDimension.SenderId]: String(
-                                agent.id
+                                agent.id,
                             ),
                         },
                     ],
@@ -120,13 +120,13 @@ describe('MessagesSentPerAgent', () => {
         })
 
         it('should handle no data', () => {
-            const {result} = renderHook(() =>
+            const { result } = renderHook(() =>
                 useMessagesSentPerHourPerAgent(
                     statsFilters,
                     timeZone,
                     undefined,
-                    String(agent.id)
-                )
+                    String(agent.id),
+                ),
             )
 
             expect(result.current).toEqual({
@@ -134,10 +134,10 @@ describe('MessagesSentPerAgent', () => {
                     allData: [
                         {
                             [HelpdeskMessageMeasure.MessageCount]: String(
-                                messagesSentValue / (onlineTimeValue / 60 / 60)
+                                messagesSentValue / (onlineTimeValue / 60 / 60),
                             ),
                             [HelpdeskMessageDimension.SenderId]: String(
-                                agent.id
+                                agent.id,
                             ),
                         },
                     ],
@@ -155,8 +155,8 @@ describe('MessagesSentPerAgent', () => {
                     statsFilters,
                     timeZone,
                     undefined,
-                    String(agent.id)
-                )
+                    String(agent.id),
+                ),
             )
 
             expect(useMessagesSentMetricPerAgentMock).toHaveBeenCalledWith(
@@ -166,7 +166,7 @@ describe('MessagesSentPerAgent', () => {
                 },
                 timeZone,
                 undefined,
-                String(agent.id)
+                String(agent.id),
             )
             expect(useOnlineTimePerAgentMock).toHaveBeenCalledWith(
                 {
@@ -175,7 +175,7 @@ describe('MessagesSentPerAgent', () => {
                 },
                 timeZone,
                 undefined,
-                String(agent.id)
+                String(agent.id),
             )
         })
 
@@ -187,8 +187,8 @@ describe('MessagesSentPerAgent', () => {
                     },
                     timeZone,
                     undefined,
-                    String(agent.id)
-                )
+                    String(agent.id),
+                ),
             )
 
             expect(useMessagesSentMetricPerAgentMock).toHaveBeenCalledWith(
@@ -197,7 +197,7 @@ describe('MessagesSentPerAgent', () => {
                 },
                 timeZone,
                 undefined,
-                String(agent.id)
+                String(agent.id),
             )
             expect(useOnlineTimePerAgentMock).toHaveBeenCalledWith(
                 {
@@ -205,7 +205,7 @@ describe('MessagesSentPerAgent', () => {
                 },
                 timeZone,
                 undefined,
-                String(agent.id)
+                String(agent.id),
             )
         })
 
@@ -219,13 +219,13 @@ describe('MessagesSentPerAgent', () => {
                 data: null,
             })
 
-            const {result} = renderHook(() =>
+            const { result } = renderHook(() =>
                 useMessagesSentPerHourPerAgent(
                     statsFilters,
                     timeZone,
                     undefined,
-                    String(agent.id)
-                )
+                    String(agent.id),
+                ),
             )
 
             expect(result.current).toEqual({
@@ -243,10 +243,10 @@ describe('MessagesSentPerAgent', () => {
     describe('fetchMessagesSentPerHourPerAgent', () => {
         beforeEach(() => {
             fetchMessagesSentMetricPerAgentMock.mockResolvedValue(
-                useMessagesSentMetricPerAgentReturnValue
+                useMessagesSentMetricPerAgentReturnValue,
             )
             fetchOnlineTimePerAgentMock.mockResolvedValue(
-                useOnlineTimePerAgentReturnValue
+                useOnlineTimePerAgentReturnValue,
             )
         })
 
@@ -255,7 +255,7 @@ describe('MessagesSentPerAgent', () => {
                 statsFilters,
                 timeZone,
                 undefined,
-                String(agent.id)
+                String(agent.id),
             )
 
             expect(result).toEqual({
@@ -263,10 +263,10 @@ describe('MessagesSentPerAgent', () => {
                     allData: [
                         {
                             [HelpdeskMessageMeasure.MessageCount]: String(
-                                messagesSentValue / (onlineTimeValue / 60 / 60)
+                                messagesSentValue / (onlineTimeValue / 60 / 60),
                             ),
                             [HelpdeskMessageDimension.SenderId]: String(
-                                agent.id
+                                agent.id,
                             ),
                         },
                     ],
@@ -283,7 +283,7 @@ describe('MessagesSentPerAgent', () => {
                 statsFilters,
                 timeZone,
                 undefined,
-                String(agent.id)
+                String(agent.id),
             )
 
             expect(result).toEqual({
@@ -291,10 +291,10 @@ describe('MessagesSentPerAgent', () => {
                     allData: [
                         {
                             [HelpdeskMessageMeasure.MessageCount]: String(
-                                messagesSentValue / (onlineTimeValue / 60 / 60)
+                                messagesSentValue / (onlineTimeValue / 60 / 60),
                             ),
                             [HelpdeskMessageDimension.SenderId]: String(
-                                agent.id
+                                agent.id,
                             ),
                         },
                     ],
@@ -311,7 +311,7 @@ describe('MessagesSentPerAgent', () => {
                 statsFilters,
                 timeZone,
                 undefined,
-                String(agent.id)
+                String(agent.id),
             )
 
             expect(fetchMessagesSentMetricPerAgentMock).toHaveBeenCalledWith(
@@ -321,7 +321,7 @@ describe('MessagesSentPerAgent', () => {
                 },
                 timeZone,
                 undefined,
-                String(agent.id)
+                String(agent.id),
             )
             expect(fetchOnlineTimePerAgentMock).toHaveBeenCalledWith(
                 {
@@ -330,7 +330,7 @@ describe('MessagesSentPerAgent', () => {
                 },
                 timeZone,
                 undefined,
-                String(agent.id)
+                String(agent.id),
             )
         })
 
@@ -341,7 +341,7 @@ describe('MessagesSentPerAgent', () => {
                 },
                 timeZone,
                 undefined,
-                String(agent.id)
+                String(agent.id),
             )
 
             expect(fetchMessagesSentMetricPerAgentMock).toHaveBeenCalledWith(
@@ -350,7 +350,7 @@ describe('MessagesSentPerAgent', () => {
                 },
                 timeZone,
                 undefined,
-                String(agent.id)
+                String(agent.id),
             )
             expect(fetchOnlineTimePerAgentMock).toHaveBeenCalledWith(
                 {
@@ -358,7 +358,7 @@ describe('MessagesSentPerAgent', () => {
                 },
                 timeZone,
                 undefined,
-                String(agent.id)
+                String(agent.id),
             )
         })
 
@@ -376,7 +376,7 @@ describe('MessagesSentPerAgent', () => {
                 statsFilters,
                 timeZone,
                 undefined,
-                String(agent.id)
+                String(agent.id),
             )
 
             expect(result).toEqual({
@@ -404,7 +404,7 @@ describe('MessagesSentPerAgent', () => {
                 statsFilters,
                 timeZone,
                 undefined,
-                String(agent.id)
+                String(agent.id),
             )
 
             expect(result).toEqual({

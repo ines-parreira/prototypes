@@ -1,9 +1,10 @@
-import {act, fireEvent, render, screen} from '@testing-library/react'
-import {createDragDropManager} from 'dnd-core'
 import React from 'react'
-import {DndProvider} from 'react-dnd'
-import {HTML5Backend} from 'react-dnd-html5-backend'
-import {Provider} from 'react-redux'
+
+import { act, fireEvent, render, screen } from '@testing-library/react'
+import { createDragDropManager } from 'dnd-core'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -11,20 +12,20 @@ import {
     SAVE_BUTTON_TEXT,
     TOGGLE_LABEL,
 } from 'pages/stats/common/components/Table/EditTableColumns'
-import {AgentsEditColumns} from 'pages/stats/support-performance/agents/AgentsEditColumns'
+import { AgentsEditColumns } from 'pages/stats/support-performance/agents/AgentsEditColumns'
 import {
     agentPerformanceTableActiveView,
     TableLabels,
 } from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import * as currentAccount from 'state/currentAccount/actions'
-import {RootState, StoreDispatch} from 'state/types'
-import {AgentsTableColumn} from 'state/ui/stats/types'
+import { RootState, StoreDispatch } from 'state/types'
+import { AgentsTableColumn } from 'state/ui/stats/types'
 
 const manager = createDragDropManager(HTML5Backend, undefined, undefined)
 
 const submitSettingSpy = jest.spyOn(
     currentAccount,
-    'submitAgentTableConfigView'
+    'submitAgentTableConfigView',
 )
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -37,7 +38,7 @@ describe('<AgentsEditColumns>', () => {
                 <DndProvider manager={manager}>
                     <AgentsEditColumns />
                 </DndProvider>
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText(TOGGLE_LABEL)).toBeInTheDocument()
@@ -49,7 +50,7 @@ describe('<AgentsEditColumns>', () => {
                 <DndProvider manager={manager}>
                     <AgentsEditColumns />
                 </DndProvider>
-            </Provider>
+            </Provider>,
         )
 
         act(() => {
@@ -65,7 +66,7 @@ describe('<AgentsEditColumns>', () => {
                 <DndProvider manager={manager}>
                     <AgentsEditColumns />
                 </DndProvider>
-            </Provider>
+            </Provider>,
         )
 
         const element = screen.getByText(columnTitle)
@@ -84,7 +85,7 @@ describe('<AgentsEditColumns>', () => {
                 <DndProvider manager={manager}>
                     <AgentsEditColumns />
                 </DndProvider>
-            </Provider>
+            </Provider>,
         )
 
         const element = screen.getByText(columnTitle)
@@ -114,14 +115,14 @@ describe('<AgentsEditColumns>', () => {
                 <DndProvider manager={manager}>
                     <AgentsEditColumns />
                 </DndProvider>
-            </Provider>
+            </Provider>,
         )
 
         const items = document.getElementsByClassName('dropdown-item')
 
         agentPerformanceTableActiveView.metrics.forEach((column, index) => {
             expect(items[index]).toHaveTextContent(
-                new RegExp(TableLabels[column.id])
+                new RegExp(TableLabels[column.id]),
             )
         })
     })
@@ -137,7 +138,7 @@ describe('<AgentsEditColumns>', () => {
                 <DndProvider manager={manager}>
                     <AgentsEditColumns />
                 </DndProvider>
-            </Provider>
+            </Provider>,
         )
 
         const optionItem = screen.getByLabelText(firstOrderableItemLabel)
@@ -153,7 +154,7 @@ describe('<AgentsEditColumns>', () => {
         const allItems = document.getElementsByClassName('dropdown-item')
         expect(allItems[1]).toHaveTextContent(new RegExp(lastItemLabel))
         expect(allItems[2]).toHaveTextContent(
-            new RegExp(firstOrderableItemLabel)
+            new RegExp(firstOrderableItemLabel),
         )
         expect(screen.getByText(SAVE_BUTTON_TEXT)).toBeEnabled()
     })

@@ -1,30 +1,29 @@
 import parsePhoneNumber, {
     CountryCode,
-    isValidPhoneNumber,
     formatIncompletePhoneNumber,
     getCountryCallingCode,
+    isValidPhoneNumber,
     Metadata,
 } from 'libphonenumber-js'
-import {has, get, toString, parseInt, join, startsWith} from 'lodash'
+import { get, has, join, parseInt, startsWith, toString } from 'lodash'
 
-import {State, states} from 'config/states'
-import {IntegrationType} from 'models/integration/types'
+import { State, states } from 'config/states'
+import { IntegrationType } from 'models/integration/types'
 import {
-    PhoneNumber,
-    PhoneCountry,
-    PhoneCapabilities,
     NewPhoneNumber,
     OldPhoneNumber,
-    PhoneConnectionType,
+    PhoneCapabilities,
     PhoneConnection,
+    PhoneConnectionType,
+    PhoneCountry,
+    PhoneNumber,
+    PhoneType,
     TwilioPhoneConnection,
     WhatsAppPhoneConnection,
-    PhoneType,
 } from 'models/phoneNumber/types'
-
 import rawCountries from 'pages/phoneNumbers/options/countries.json'
 
-import {validationAlertMessages} from './constants'
+import { validationAlertMessages } from './constants'
 
 const CAPABILITY_KEY: Record<
     IntegrationType.Sms | IntegrationType.Phone | IntegrationType.WhatsApp,
@@ -89,7 +88,7 @@ const AVAILABLE_STATES: Record<string, string[]> = {
 
 export function shouldValidateAddress(
     country: PhoneCountry,
-    type?: PhoneType
+    type?: PhoneType,
 ): boolean {
     return country === PhoneCountry.AU && type !== PhoneType.Mobile
 }
@@ -97,7 +96,7 @@ export function shouldValidateAddress(
 export function getAvailableStates(country: string): State[] {
     const availableStates = AVAILABLE_STATES[country] ?? []
     return (states[country] ?? []).filter((state) =>
-        availableStates.includes(state.code)
+        availableStates.includes(state.code),
     )
 }
 
@@ -115,7 +114,7 @@ export function hasCapability(
     integrationType:
         | IntegrationType.Sms
         | IntegrationType.Phone
-        | IntegrationType.WhatsApp
+        | IntegrationType.WhatsApp,
 ): boolean {
     return !!phoneNumber.capabilities[CAPABILITY_KEY[integrationType]]
 }
@@ -141,19 +140,19 @@ export function friendlyName(phoneNumber: PhoneNumber) {
 }
 
 export function isNewPhoneNumber(
-    number: PhoneNumber
+    number: PhoneNumber,
 ): number is NewPhoneNumber {
     return has(number, 'connections')
 }
 
 export function isOldPhoneNumber(
-    number: PhoneNumber
+    number: PhoneNumber,
 ): number is OldPhoneNumber {
     return !isNewPhoneNumber(number)
 }
 
 export function isWhatsAppNumber(
-    number: PhoneNumber
+    number: PhoneNumber,
 ): number is NewPhoneNumber {
     return (
         isNewPhoneNumber(number) &&
@@ -168,13 +167,13 @@ export function isTwilioNumber(number: PhoneNumber): number is NewPhoneNumber {
 }
 
 export function isTwilioConnection(
-    connection: PhoneConnection
+    connection: PhoneConnection,
 ): connection is TwilioPhoneConnection {
     return connection.type === PhoneConnectionType.Twilio
 }
 
 export function isWhatsAppConnection(
-    connection: PhoneConnection
+    connection: PhoneConnection,
 ): connection is WhatsAppPhoneConnection {
     return connection.type === PhoneConnectionType.WhatsApp
 }
@@ -188,7 +187,7 @@ export function formatPhoneNumberInternational(number?: string): string {
 }
 
 export function getCountryFromPhoneNumber(
-    number: string
+    number: string,
 ): CountryCode | undefined {
     const parsedNumber = parsePhoneNumber(number)
 
@@ -213,7 +212,7 @@ export function getCountryFromPhoneNumber(
 
 export function buildInternationalNumber(
     nationalNumber: string,
-    country: CountryCode
+    country: CountryCode,
 ): string {
     const callingCode = getCountryCallingCode(country)
     return normalizeNumber(
@@ -221,13 +220,13 @@ export function buildInternationalNumber(
             '+',
             toString(callingCode),
             formatAsNationalNumber(nationalNumber, country),
-        ])
+        ]),
     )
 }
 
 export function formatAsNationalNumber(
     number: string,
-    country?: CountryCode
+    country?: CountryCode,
 ): string {
     if (!startsWith(number, '+')) {
         return number
@@ -248,7 +247,7 @@ export function normalizeNumber(number: string): string {
 
 export const getAddressValidationAlertMessage = (
     country?: PhoneCountry,
-    type?: PhoneType
+    type?: PhoneType,
 ): React.JSX.Element | null => {
     const isAustralianLocalType =
         country === PhoneCountry.AU && type !== PhoneType.Mobile

@@ -1,5 +1,6 @@
-import {render, fireEvent, waitFor} from '@testing-library/react'
 import React from 'react'
+
+import { fireEvent, render, waitFor } from '@testing-library/react'
 
 import CancellationSummaryFooter from '../CancellationSummaryFooter'
 
@@ -12,11 +13,11 @@ describe('CancellationSummaryFooter', () => {
     })
 
     it('renders correctly', () => {
-        const {getByRole} = render(
+        const { getByRole } = render(
             <CancellationSummaryFooter
                 onConfirm={onConfirmMock}
                 isLoading={isLoading}
-            />
+            />,
         )
 
         const confirmButton = getByRole('button', {
@@ -27,11 +28,11 @@ describe('CancellationSummaryFooter', () => {
     })
 
     it('calls onConfirm when "Confirm" button is clicked and agreement is checked', async () => {
-        const {getByRole} = render(
+        const { getByRole } = render(
             <CancellationSummaryFooter
                 onConfirm={onConfirmMock}
                 isLoading={isLoading}
-            />
+            />,
         )
 
         const confirmButton = getByRole('button', {
@@ -51,11 +52,11 @@ describe('CancellationSummaryFooter', () => {
     })
 
     it('does not call onConfirm when "Confirm" button is clicked and agreement is not checked', async () => {
-        const {getByRole} = render(
+        const { getByRole } = render(
             <CancellationSummaryFooter
                 onConfirm={onConfirmMock}
                 isLoading={isLoading}
-            />
+            />,
         )
 
         const confirmButton = getByRole('button', {
@@ -69,11 +70,11 @@ describe('CancellationSummaryFooter', () => {
     })
 
     it('disables "Confirm" button when isLoading is true', () => {
-        const {getByRole} = render(
+        const { getByRole } = render(
             <CancellationSummaryFooter
                 onConfirm={onConfirmMock}
                 isLoading={true}
-            />
+            />,
         )
 
         const confirmButton = getByRole('button', {

@@ -1,22 +1,23 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {HelpCenter} from 'models/helpCenter/types'
+import { HelpCenter } from 'models/helpCenter/types'
 import {
     IntegrationType,
     ShopifyIntegration,
     ShopifyIntegrationMeta,
 } from 'models/integration/types'
-import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
-import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
-import {RootState} from 'state/types'
-import {assumeMock} from 'utils/testing'
+import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
+import { useHelpCenterList } from 'pages/settings/helpCenter/hooks/useHelpCenterList'
+import { RootState } from 'state/types'
+import { assumeMock } from 'utils/testing'
 
-import {useTopQuestionsStoresWithHelpCenters} from '../useTopQuestionsStoresWithHelpCenters'
+import { useTopQuestionsStoresWithHelpCenters } from '../useTopQuestionsStoresWithHelpCenters'
 
 const defaultState = {
     integrations: fromJS({
@@ -105,13 +106,13 @@ describe('useTopQuestionsStoresWithHelpCenters', () => {
             fetchMore: jest.fn(),
         })
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () => useTopQuestionsStoresWithHelpCenters(),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={mockStore}>{children}</Provider>
                 ),
-            }
+            },
         )
 
         expect(result.current).toEqual({
@@ -192,20 +193,20 @@ describe('useTopQuestionsStoresWithHelpCenters', () => {
     it('ignores stores with 0 help center', () => {
         mockUseHelpCenterList.mockReturnValue({
             helpCenters: helpCenters.filter(
-                ({shop_name}) => shop_name !== 'shop-2'
+                ({ shop_name }) => shop_name !== 'shop-2',
             ) as HelpCenter[],
             isLoading: false,
             hasMore: false,
             fetchMore: jest.fn(),
         })
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () => useTopQuestionsStoresWithHelpCenters(),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={mockStore}>{children}</Provider>
                 ),
-            }
+            },
         )
 
         expect(result.current).toEqual({
@@ -262,13 +263,13 @@ describe('useTopQuestionsStoresWithHelpCenters', () => {
             fetchMore: jest.fn(),
         })
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () => useTopQuestionsStoresWithHelpCenters(),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={mockStore}>{children}</Provider>
                 ),
-            }
+            },
         )
 
         expect(result.current).toEqual({

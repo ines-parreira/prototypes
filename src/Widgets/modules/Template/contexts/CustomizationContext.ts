@@ -1,7 +1,7 @@
-import {createContext} from 'react'
+import { createContext } from 'react'
 
-import {TemplateCustomization} from '../types'
+import { TemplateCustomization } from '../types'
 
 export const CustomizationContext = createContext<TemplateCustomization | null>(
-    null
+    null,
 )

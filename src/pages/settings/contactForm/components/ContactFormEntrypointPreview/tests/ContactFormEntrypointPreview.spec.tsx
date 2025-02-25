@@ -1,24 +1,26 @@
-import {IntegrationType} from '@gorgias/api-queries'
-import {QueryClientProvider} from '@tanstack/react-query'
-import {render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import _keyBy from 'lodash/keyBy'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import _keyBy from 'lodash/keyBy'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {useListWorkflowEntryPoints} from 'models/workflows/queries'
+import { IntegrationType } from '@gorgias/api-queries'
+
+import { useListWorkflowEntryPoints } from 'models/workflows/queries'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import {CONTACT_FORM_DEFAULT_AUTOMATION_SETTINGS} from 'pages/settings/contactForm/constants'
-import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
+import { CONTACT_FORM_DEFAULT_AUTOMATION_SETTINGS } from 'pages/settings/contactForm/constants'
+import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
 import {
     automationSettingsFixture,
     selfServiceConfigurationFixture,
 } from 'pages/settings/contactForm/fixtures/selfServiceConfiguration'
-import {Components} from 'rest_api/help_center_api/client.generated'
-import {getHasAutomate} from 'state/billing/selectors'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { Components } from 'rest_api/help_center_api/client.generated'
+import { getHasAutomate } from 'state/billing/selectors'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import ContactFormEntrypointPreview from '../ContactFormEntrypointPreview'
 
@@ -106,14 +108,14 @@ const renderComponent = ({
                     isFormHidden={isFormHidden}
                 />
             </Provider>
-        </QueryClientProvider>
+        </QueryClientProvider>,
     )
 }
 
 describe('<ContactFormEntrypointPreview />', () => {
     beforeEach(() => {
         mockUseSelfServiceConfiguration.mockReturnValue(
-            mockSelfServiceConfiguration
+            mockSelfServiceConfiguration,
         )
         mockGetHasAutomate.mockReturnValue(true)
         mockedUseListWorkflowEntryPoints.mockReturnValue({

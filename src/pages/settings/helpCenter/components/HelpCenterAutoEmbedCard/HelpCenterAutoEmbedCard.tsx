@@ -1,26 +1,27 @@
-import {Tooltip, Badge} from '@gorgias/merchant-ui-kit'
+import React from 'react'
+
 import classnames from 'classnames'
 import _noop from 'lodash/noop'
-import React from 'react'
-import {Link, useHistory} from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
-import {SegmentEvent, logEvent} from 'common/segment'
+import { Badge, Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
-import {HelpCenterPageEmbedment} from 'models/helpCenter/types'
+import { HelpCenterPageEmbedment } from 'models/helpCenter/types'
 import Button from 'pages/common/components/button/Button'
-import {EmbeddablePage} from 'pages/common/components/PageEmbedmentForm/types'
-import {linkToShopifyIntegration} from 'pages/settings/contactForm/utils/navigation'
+import { EmbeddablePage } from 'pages/common/components/PageEmbedmentForm/types'
+import { linkToShopifyIntegration } from 'pages/settings/contactForm/utils/navigation'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { getCurrentUser } from 'state/currentUser/selectors'
 
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {getCurrentUser} from 'state/currentUser/selectors'
-
-import {HELP_CENTER_BASE_PATH} from '../../constants'
-import {useGetShopifyPages} from '../../queries'
+import { HELP_CENTER_BASE_PATH } from '../../constants'
+import { useGetShopifyPages } from '../../queries'
 import HelpCenterAutoEmbedModalAssistant from '../HelpCenterAutoEmbedModalAssistant'
 import {
-    HELP_CENTER_AUTO_EMBED_CARD_TEST_ID,
     HELP_CENTER_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID,
     HELP_CENTER_AUTO_EMBED_CARD_ID,
+    HELP_CENTER_AUTO_EMBED_CARD_TEST_ID,
 } from './constants'
 
 import css from './HelpCenterAutoEmbedCard.less'
@@ -29,7 +30,7 @@ const CardContent = (props: {
     hasEmbeddedPages: boolean
     isDisabled: boolean
 }) => {
-    const {hasEmbeddedPages, isDisabled} = props
+    const { hasEmbeddedPages, isDisabled } = props
 
     return (
         <div>
@@ -86,8 +87,8 @@ const HelpCenterAutoEmbedCard = ({
     const availablePages = pages.filter((page) =>
         pageEmbedments.every(
             (pageEmbedment) =>
-                pageEmbedment.page_external_id !== page.external_id
-        )
+                pageEmbedment.page_external_id !== page.external_id,
+        ),
     )
 
     if (isNotConnected) {
@@ -163,7 +164,7 @@ const HelpCenterAutoEmbedCard = ({
         if (hasEmbeddedPages) {
             const navigateToEmbedmentManagement = () => {
                 history.push(
-                    `${HELP_CENTER_BASE_PATH}/${helpCenterId}/publish-track/embedments`
+                    `${HELP_CENTER_BASE_PATH}/${helpCenterId}/publish-track/embedments`,
                 )
             }
             return (
@@ -178,7 +179,7 @@ const HelpCenterAutoEmbedCard = ({
                 >
                     <i
                         className="material-icons text-success"
-                        style={{fontSize: 24}}
+                        style={{ fontSize: 24 }}
                     >
                         check_circle
                     </i>

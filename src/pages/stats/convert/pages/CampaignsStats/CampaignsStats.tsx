@@ -1,31 +1,28 @@
+import React, { useMemo } from 'react'
+
 import classNames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {isEmpty} from 'lodash'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { isEmpty } from 'lodash'
+import { Redirect, useParams } from 'react-router-dom'
 
-import React, {useMemo} from 'react'
-import {Redirect, useParams} from 'react-router-dom'
-
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useGridSize} from 'hooks/useGridSize'
-import {FilterKey} from 'models/stat/types'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useGridSize } from 'hooks/useGridSize'
+import { FilterKey } from 'models/stat/types'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
 import ConvertLimitBanner from 'pages/convert/campaigns/components/ConvertLimitBanner/ConvertLimitBanner'
-
-import {CONVERT_ROUTE_PARAM_NAME} from 'pages/convert/common/constants'
-import {useIsConvertPerformanceViewEnabled} from 'pages/convert/common/hooks/useIsConvertPerformanceViewEnabled'
-import {ConvertRouteParams} from 'pages/convert/common/types'
+import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
+import { useIsConvertPerformanceViewEnabled } from 'pages/convert/common/hooks/useIsConvertPerformanceViewEnabled'
+import { ConvertRouteParams } from 'pages/convert/common/types'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
-import {CampaignsLegacyReportConfig} from 'pages/stats/convert/campaigns/CampaignsLegacyReportConfig'
+import { CampaignsLegacyReportConfig } from 'pages/stats/convert/campaigns/CampaignsLegacyReportConfig'
 import DownloadOverviewData from 'pages/stats/convert/components/DownloadOverviewData'
 import RequestABTest from 'pages/stats/convert/components/RequestABTest'
-import {RevenueFilters} from 'pages/stats/convert/containers/RevenueFilters'
-import {RevenueStatsContent} from 'pages/stats/convert/containers/RevenueStatsContent'
-
-import {useShopifyIntegrations} from 'pages/stats/convert/hooks/useShopifyIntegrations'
-
+import { RevenueFilters } from 'pages/stats/convert/containers/RevenueFilters'
+import { RevenueStatsContent } from 'pages/stats/convert/containers/RevenueStatsContent'
+import { useShopifyIntegrations } from 'pages/stats/convert/hooks/useShopifyIntegrations'
 import css from 'pages/stats/convert/pages/CampaignsStats/CampaignsStats.less'
-import {CampaignStatsFilters} from 'pages/stats/convert/providers/CampaignStatsFilters'
+import { CampaignStatsFilters } from 'pages/stats/convert/providers/CampaignStatsFilters'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
 import StatsPage from 'pages/stats/StatsPage'
@@ -37,10 +34,10 @@ type CampaignsStatsProps = {
 export const CAMPAIGNS_REPORT_TITLE = 'Campaigns'
 const CAMPAIGN_PERFORMANCE_REPORT_TITLE = 'Performance'
 
-const CampaignsStats = ({isConvertSubscriber}: CampaignsStatsProps) => {
+const CampaignsStats = ({ isConvertSubscriber }: CampaignsStatsProps) => {
     const AnalyticsNewFiltersConvert =
         !!useFlags()[FeatureFlagKey.AnalyticsNewFiltersConvert]
-    const {[CONVERT_ROUTE_PARAM_NAME]: chatIntegrationId} =
+    const { [CONVERT_ROUTE_PARAM_NAME]: chatIntegrationId } =
         useParams<ConvertRouteParams>()
 
     const showButton = isConvertSubscriber && chatIntegrationId
@@ -100,7 +97,7 @@ const CampaignsStats = ({isConvertSubscriber}: CampaignsStatsProps) => {
 }
 
 function CampaignStatsOrPaywallPage() {
-    const {[CONVERT_ROUTE_PARAM_NAME]: chatIntegrationId} =
+    const { [CONVERT_ROUTE_PARAM_NAME]: chatIntegrationId } =
         useParams<ConvertRouteParams>()
 
     const isConvertSubscriber = useIsConvertSubscriber()

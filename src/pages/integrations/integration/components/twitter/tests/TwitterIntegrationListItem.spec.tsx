@@ -1,8 +1,9 @@
-import {render} from '@testing-library/react'
-import {fromJS, Map} from 'immutable'
 import React from 'react'
 
-import {IntegrationType} from '../../../../../../models/integration/types'
+import { render } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
+
+import { IntegrationType } from '../../../../../../models/integration/types'
 import TwitterIntegrationListItem from '../TwitterIntegrationListItem'
 
 describe('<TwitterIntegrationListItem/>', () => {
@@ -28,8 +29,8 @@ describe('<TwitterIntegrationListItem/>', () => {
 
     describe('render()', () => {
         it('should render', () => {
-            const {container} = render(
-                <TwitterIntegrationListItem integration={integration} />
+            const { container } = render(
+                <TwitterIntegrationListItem integration={integration} />,
             )
             expect(container.firstChild).toMatchSnapshot()
         })

@@ -1,4 +1,4 @@
-import {Category} from 'models/integration/types/app'
+import { Category } from 'models/integration/types/app'
 
 export const CATEGORY_DATA: {
     [key in Category]: {

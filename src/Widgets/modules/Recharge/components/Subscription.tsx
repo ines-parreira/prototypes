@@ -1,35 +1,36 @@
-import {Badge, ColorType} from '@gorgias/merchant-ui-kit'
-import {fromJS, Map} from 'immutable'
 import React, {
     ContextType,
-    ReactNode,
     createContext,
-    useContext,
     FunctionComponent,
+    ReactNode,
+    useContext,
 } from 'react'
-import {connect, ConnectedProps} from 'react-redux'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { fromJS, Map } from 'immutable'
+import { connect, ConnectedProps } from 'react-redux'
+
+import { Badge, ColorType } from '@gorgias/merchant-ui-kit'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import {
     RECHARGE_CANCELLATION_REASONS,
     RECHARGE_DEFAULT_CANCELLATION_REASON,
 } from 'config/integrations/constants/recharge'
 import useAppSelector from 'hooks/useAppSelector'
 import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
-import type {InfobarAction} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
+import type { InfobarAction } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-import {renderTemplate} from 'pages/common/utils/template'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {getActiveCustomerIntegrationDataByIntegrationId} from 'state/customers/selectors'
+import { renderTemplate } from 'pages/common/utils/template'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { getActiveCustomerIntegrationDataByIntegrationId } from 'state/customers/selectors'
 import * as ticketSelectors from 'state/ticket/selectors'
-import {RootState} from 'state/types'
-import {devLog, humanizeString, isCurrentlyOnTicket} from 'utils'
+import { RootState } from 'state/types'
+import { devLog, humanizeString, isCurrentlyOnTicket } from 'utils'
+import { CardCustomization } from 'Widgets/modules/Template/modules/Card'
+import { StaticField } from 'Widgets/modules/Template/modules/Field'
 
-import {CardCustomization} from 'Widgets/modules/Template/modules/Card'
-import {StaticField} from 'Widgets/modules/Template/modules/Field'
-
-import {formatRechargeDateTime} from '../helpers/formatRechargeDateTime'
+import { formatRechargeDateTime } from '../helpers/formatRechargeDateTime'
 
 const OrderContext = createContext<{
     order: Map<string, unknown> | null
@@ -60,8 +61,8 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
     context!: ContextType<typeof OrderContext>
 
     render() {
-        const {isEditing, source} = this.props
-        const {integrationId, isSubscriptionCancelled} = this.context
+        const { isEditing, source } = this.props
+        const { integrationId, isSubscriptionCancelled } = this.context
 
         if (isEditing || !integrationId) {
             return null
@@ -79,7 +80,10 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
                                 label: 'Cancellation reason',
                                 type: 'select',
                                 options: RECHARGE_CANCELLATION_REASONS.map(
-                                    (option) => ({value: option, label: option})
+                                    (option) => ({
+                                        value: option,
+                                        label: option,
+                                    }),
                                 ),
                                 defaultValue:
                                     RECHARGE_DEFAULT_CANCELLATION_REASON,
@@ -101,7 +105,7 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
             },
             {
                 key: 'activate',
-                options: [{value: 'rechargeActivateSubscription'}],
+                options: [{ value: 'rechargeActivateSubscription' }],
                 popover: 'This will activate the subscription in Recharge.',
                 title: (
                     <div>
@@ -118,7 +122,7 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
 
         // remove removed actions from list of available actions
         actions = actions.filter(
-            (action) => !ignoredActions.includes(action.key)
+            (action) => !ignoredActions.includes(action.key),
         )
         const payload = {
             subscription_id: source.get('id'),
@@ -130,7 +134,7 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
                 <StaticField label="Created">
                     <DatetimeLabel
                         dateTime={formatRechargeDateTime(
-                            source.get('created_at')
+                            source.get('created_at'),
                         )}
                     />
                 </StaticField>
@@ -152,12 +156,12 @@ export function TitleWrapperContainer({
     template,
 }: TitleWrapperProps) {
     const currentAccount = useAppSelector(getCurrentAccountState)
-    const {integration, integrationId} = useContext(IntegrationContext)
+    const { integration, integrationId } = useContext(IntegrationContext)
     const storeName = integration.getIn(['meta', 'store_name']) as string
 
     const customerHash = getIntegrationData(
         integrationId!,
-        source.get('customer_id')
+        source.get('customer_id'),
     ).getIn(['customer', 'hash']) as string
     const subscriptionId = source.get('id') as string
     let link = undefined
@@ -169,7 +173,7 @@ export function TitleWrapperContainer({
         if (customLink) {
             link = renderTemplate(
                 customLink,
-                source.set('customerHash', customerHash).toJS()
+                source.set('customerHash', customerHash).toJS(),
             )
         }
     }
@@ -208,10 +212,10 @@ const connectorTitleWrapper = connect((state: RootState) => {
         getIntegrationData: (integrationId: number, customerId: number) => {
             const integrationData = isCurrentlyOnTicket()
                 ? ticketSelectors.getIntegrationDataByIntegrationId(
-                      integrationId
+                      integrationId,
                   )(state)
                 : getActiveCustomerIntegrationDataByIntegrationId(
-                      integrationId as any
+                      integrationId as any,
                   )(state)
 
             if (integrationData.getIn(['customer', 'id']) !== customerId) {
@@ -220,7 +224,7 @@ const connectorTitleWrapper = connect((state: RootState) => {
                     {
                         customerId,
                         integrationId,
-                    }
+                    },
                 )
                 return fromJS({}) as Map<any, any>
             }
@@ -232,11 +236,11 @@ const connectorTitleWrapper = connect((state: RootState) => {
 
 export const TitleWrapper = connectorTitleWrapper(TitleWrapperContainer)
 
-export const Wrapper: FunctionComponent<{source: Map<string, any>}> = ({
+export const Wrapper: FunctionComponent<{ source: Map<string, any> }> = ({
     source: order = fromJS({}) as Map<string, any>,
     children,
 }) => {
-    const {integrationId, integration} = useContext(IntegrationContext)
+    const { integrationId, integration } = useContext(IntegrationContext)
     const isCancelled =
         !!order.get('cancelled_at') || order.get('status') === 'CANCELLED'
     return (

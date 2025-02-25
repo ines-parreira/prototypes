@@ -1,5 +1,6 @@
-import {fromJS, List, Map} from 'immutable'
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
+
+import { fromJS, List, Map } from 'immutable'
 
 import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
 
@@ -24,25 +25,27 @@ const AddTagsAction = ({
                 .get('tags', '')
                 .split(',')
                 .filter((t) => !!t),
-        [args]
+        [args],
     )
 
     const addTag = (tag: string) => {
         const newTagList = splitIncomingTags.concat(tag).join(',')
-        updateActionArgs(index, fromJS({tags: newTagList}))
+        updateActionArgs(index, fromJS({ tags: newTagList }))
     }
 
     const removeTag = (tag: string) => {
         const initialTagList = [...splitIncomingTags]
         initialTagList.splice(initialTagList.indexOf(tag), 1)
         const newTagList = initialTagList.join(',')
-        updateActionArgs(index, fromJS({tags: newTagList}))
+        updateActionArgs(index, fromJS({ tags: newTagList }))
     }
 
     const ticketTags = useMemo(
         () =>
-            fromJS(splitIncomingTags.map((tag) => ({name: tag}))) as List<any>,
-        [splitIncomingTags]
+            fromJS(
+                splitIncomingTags.map((tag) => ({ name: tag })),
+            ) as List<any>,
+        [splitIncomingTags],
     )
 
     return (

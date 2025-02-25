@@ -1,6 +1,6 @@
-import {PayloadActionCreator} from '@reduxjs/toolkit'
+import { PayloadActionCreator } from '@reduxjs/toolkit'
 
-import {ContactForm} from 'models/contactForm/types'
+import { ContactForm } from 'models/contactForm/types'
 
 export enum ContactFormsActions {
     CONTACTFORM_UPDATED = 'CONTACTFORM/CONTACTFORM_FETCHED',

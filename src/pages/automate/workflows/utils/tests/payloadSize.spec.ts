@@ -1,4 +1,4 @@
-import {getPayloadSizeToLimitRate, isPayloadTooLarge} from '../payloadSize'
+import { getPayloadSizeToLimitRate, isPayloadTooLarge } from '../payloadSize'
 
 function generateMockPayload(sizeInBytes: number): string {
     const repeatingString = 'abcdefghijklmnopqrstuvwxyz0123456789'
@@ -14,13 +14,13 @@ describe('getPayloadSizeToLimitRate:', () => {
     it('should return more than 1 if size is more than 1MB', () => {
         const payload = generateMockPayload(1024 * 1025)
         expect(
-            getPayloadSizeToLimitRate(payload, MAX_SIZE_IN_BYTES)
+            getPayloadSizeToLimitRate(payload, MAX_SIZE_IN_BYTES),
         ).toBeGreaterThan(1)
     })
     it('should return less than 1 if size is less than 1MB', () => {
         const payload = generateMockPayload(1024 * 1023)
         expect(
-            getPayloadSizeToLimitRate(payload, MAX_SIZE_IN_BYTES)
+            getPayloadSizeToLimitRate(payload, MAX_SIZE_IN_BYTES),
         ).toBeLessThan(1)
     })
 })

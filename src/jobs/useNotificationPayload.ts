@@ -1,16 +1,18 @@
-import {JobType} from '@gorgias/api-queries'
+import { useCallback, useRef } from 'react'
+
 import _uniqueId from 'lodash/uniqueId'
-import {useCallback, useRef} from 'react'
-import {POSITIONS} from 'reapop'
+import { POSITIONS } from 'reapop'
+
+import { JobType } from '@gorgias/api-queries'
 
 import {
     AlertNotification,
     NotificationStatus,
     NotificationStyle,
 } from 'state/notifications/types'
-import {buildJobMessage} from 'utils/notificationUtils'
+import { buildJobMessage } from 'utils/notificationUtils'
 
-import {Update} from './types'
+import { Update } from './types'
 
 type Props = {
     level: 'ticket' | 'view'
@@ -18,7 +20,7 @@ type Props = {
     ticketIds?: number[]
 }
 
-const useNotificationPayload = ({level, objectType, ticketIds}: Props) => {
+const useNotificationPayload = ({ level, objectType, ticketIds }: Props) => {
     const notification = useRef<{
         message: string
         id: string
@@ -29,14 +31,14 @@ const useNotificationPayload = ({level, objectType, ticketIds}: Props) => {
             type: JobType,
             params?: {
                 updates: XOR<Update>
-            }
+            },
         ) => {
             const message = buildJobMessage(
                 type,
                 level === 'view',
                 objectType,
                 params || {},
-                ticketIds?.length
+                ticketIds?.length,
             )
             notification.current = {
                 id: _uniqueId('notification-'),
@@ -44,14 +46,14 @@ const useNotificationPayload = ({level, objectType, ticketIds}: Props) => {
             }
             return notification.current
         },
-        [level, objectType, ticketIds?.length]
+        [level, objectType, ticketIds?.length],
     )
 
     const getNotificationPayload = useCallback(
         ({
             id,
             message,
-        }: {id?: string; message?: string} = {}): AlertNotification => {
+        }: { id?: string; message?: string } = {}): AlertNotification => {
             return {
                 id: id ?? notification.current?.id,
                 buttons: [],
@@ -65,7 +67,7 @@ const useNotificationPayload = ({level, objectType, ticketIds}: Props) => {
                 style: NotificationStyle.Alert,
             }
         },
-        []
+        [],
     )
 
     return {

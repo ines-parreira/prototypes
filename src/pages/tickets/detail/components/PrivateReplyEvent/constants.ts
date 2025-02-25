@@ -12,5 +12,5 @@ export const PRIVATE_REPLY_ACTIONS_MAP = Object.freeze({
 })
 
 export const PRIVATE_REPLY_ACTIONS = Object.freeze(
-    Object.values(PRIVATE_REPLY_ACTIONS_MAP)
+    Object.values(PRIVATE_REPLY_ACTIONS_MAP),
 )

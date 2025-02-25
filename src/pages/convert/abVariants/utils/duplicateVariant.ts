@@ -1,11 +1,11 @@
-import {ulid} from 'ulidx'
+import { ulid } from 'ulidx'
 
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
-import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
+import { Campaign } from 'pages/convert/campaigns/types/Campaign'
+import { CampaignVariant } from 'pages/convert/campaigns/types/CampaignVariant'
 
 const fromVariant = (
     variants: CampaignVariant[],
-    variantId: string
+    variantId: string,
 ): CampaignVariant | undefined => {
     const variantIdx = variants.findIndex((item) => item.id === variantId)
 
@@ -33,7 +33,7 @@ const fromControlVersion = (campaign: Campaign): CampaignVariant => {
 export const duplicateVariant = (
     currentVariants: CampaignVariant[],
     campaign: Campaign,
-    variantId: string | null
+    variantId: string | null,
 ): [string | undefined, CampaignVariant[]] => {
     const variants = [...currentVariants]
 

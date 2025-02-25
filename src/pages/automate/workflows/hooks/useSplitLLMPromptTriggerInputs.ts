@@ -1,4 +1,4 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
 import {
     LLMPromptTriggerNodeType,
@@ -7,7 +7,7 @@ import {
 
 const useSplitLLMPromptTriggerInputs = (
     inputs: LLMPromptTriggerNodeType['data']['inputs'],
-    nodes: VisualBuilderGraph['nodes']
+    nodes: VisualBuilderGraph['nodes'],
 ) => {
     return useMemo(() => {
         const templateInputs = nodes.reduce<string[]>((inputs, node) => {
@@ -52,7 +52,7 @@ const useSplitLLMPromptTriggerInputs = (
                 if ('kind' in input && input.kind === 'product') {
                     if (
                         templateInputs.includes(
-                            `{{objects.products.${input.id}}}`
+                            `{{objects.products.${input.id}}}`,
                         )
                     ) {
                         return [inputsTuple[0], [...inputsTuple[1], input]]
@@ -63,7 +63,7 @@ const useSplitLLMPromptTriggerInputs = (
 
                 return inputsTuple
             },
-            [[], []]
+            [[], []],
         )
     }, [inputs, nodes])
 }

@@ -1,4 +1,4 @@
-import {act, renderHook} from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react-hooks'
 
 import useAsyncFn from '../useAsyncFn'
 
@@ -39,8 +39,8 @@ describe('useAsyncFn', () => {
         })
 
         const renderUseAsyncFn = () =>
-            renderHook(({fn}) => useAsyncFn(fn), {
-                initialProps: {fn: adder},
+            renderHook(({ fn }) => useAsyncFn(fn), {
+                initialProps: { fn: adder },
             })
 
         it('should not have a value initially', () => {
@@ -63,7 +63,7 @@ describe('useAsyncFn', () => {
             act(() => {
                 void callback(2, 7)
             })
-            hook.rerender({fn: (...args) => adder(...args)})
+            hook.rerender({ fn: (...args) => adder(...args) })
             await hook.waitForNextUpdate()
 
             const [state] = hook.result.current
@@ -76,26 +76,26 @@ describe('useAsyncFn', () => {
     })
 
     it('should only consider last call and discard previous ones', async () => {
-        const queuedPromises: {id: number; resolve: () => void}[] = []
+        const queuedPromises: { id: number; resolve: () => void }[] = []
         const delayedFunction1 = () => {
             return new Promise<number>((resolve) =>
-                queuedPromises.push({id: 1, resolve: () => resolve(1)})
+                queuedPromises.push({ id: 1, resolve: () => resolve(1) }),
             )
         }
         const delayedFunction2 = () => {
             return new Promise<number>((resolve) =>
-                queuedPromises.push({id: 2, resolve: () => resolve(2)})
+                queuedPromises.push({ id: 2, resolve: () => resolve(2) }),
             )
         }
 
-        const hook = renderHook(({fn}) => useAsyncFn(fn, [fn]), {
-            initialProps: {fn: delayedFunction1},
+        const hook = renderHook(({ fn }) => useAsyncFn(fn, [fn]), {
+            initialProps: { fn: delayedFunction1 },
         })
         act(() => {
             void hook.result.current[1]() // invoke 1st callback
         })
 
-        hook.rerender({fn: delayedFunction2})
+        hook.rerender({ fn: delayedFunction2 })
         act(() => {
             void hook.result.current[1]() // invoke 2nd callback
         })
@@ -105,16 +105,19 @@ describe('useAsyncFn', () => {
             queuedPromises[0].resolve()
         })
         await hook.waitForNextUpdate()
-        expect(hook.result.current[0]).toEqual({loading: false, value: 2})
+        expect(hook.result.current[0]).toEqual({ loading: false, value: 2 })
     })
 
     it('should keep the value of initialState when loading', async () => {
         const fetch = () => Promise.resolve('new state')
-        const initialState = {loading: false, value: 'init state'}
+        const initialState = { loading: false, value: 'init state' }
 
-        const hook = renderHook(({fn}) => useAsyncFn(fn, [fn], initialState), {
-            initialProps: {fn: fetch},
-        })
+        const hook = renderHook(
+            ({ fn }) => useAsyncFn(fn, [fn], initialState),
+            {
+                initialProps: { fn: fetch },
+            },
+        )
 
         const [state, callback] = hook.result.current
         expect(state.loading).toBe(false)

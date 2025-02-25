@@ -1,7 +1,8 @@
-import {render} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -9,8 +10,8 @@ import {
     DEFAULT_IVR_DEFLECTION_CONFIRMATION_MESSAGE,
     DEFAULT_IVR_DEFLECTION_SMS_CONTENT,
 } from 'models/integration/constants'
-import {IvrSmsDeflection, VoiceMessageType} from 'models/integration/types'
-import {RootState, StoreDispatch} from 'state/types'
+import { IvrSmsDeflection, VoiceMessageType } from 'models/integration/types'
+import { RootState, StoreDispatch } from 'state/types'
 
 import IvrMenuActionSendToSMSField from '../IvrMenuActionSendToSMSField'
 
@@ -23,7 +24,7 @@ describe('<IvrMenuActionSendToSMSField />', () => {
     const renderComponent = (
         settings: IvrSmsDeflection,
         integrations: any = [],
-        isDrawerOpen = false
+        isDrawerOpen = false,
     ) =>
         render(
             <Provider store={mockStore({})}>
@@ -34,17 +35,17 @@ describe('<IvrMenuActionSendToSMSField />', () => {
                     setDrawerOpen={mockSetDrawerOpen}
                     onChange={mockOnChange}
                 />
-            </Provider>
+            </Provider>,
         )
 
     it('should render defaults', () => {
-        const {getByText, getAllByText, getByLabelText} = renderComponent(
+        const { getByText, getAllByText, getByLabelText } = renderComponent(
             {
                 confirmation_message:
                     DEFAULT_IVR_DEFLECTION_CONFIRMATION_MESSAGE,
             },
             [],
-            true
+            true,
         )
 
         expect(getByText('Add message')).toBeInTheDocument()
@@ -55,18 +56,18 @@ describe('<IvrMenuActionSendToSMSField />', () => {
         expect(getByLabelText('Custom recording')).not.toBeChecked()
         expect(getByLabelText('Text-to-speech')).toBeChecked()
         expect(
-            getByText(DEFAULT_IVR_DEFLECTION_SMS_CONTENT)
+            getByText(DEFAULT_IVR_DEFLECTION_SMS_CONTENT),
         ).toBeInTheDocument()
         expect(getByText('Save Changes')).toBeInTheDocument()
         expect(
             getByText(
-                'This message will be sent to callers in a form of SMS once this IVR option is selected'
-            )
+                'This message will be sent to callers in a form of SMS once this IVR option is selected',
+            ),
         ).toBeInTheDocument()
     })
 
     it('should render prefilled values', () => {
-        const {getByText} = renderComponent(
+        const { getByText } = renderComponent(
             {
                 confirmation_message: {
                     voice_message_type: VoiceMessageType.TextToSpeech,
@@ -81,7 +82,7 @@ describe('<IvrMenuActionSendToSMSField />', () => {
                     name: 'TEST SMS INTEGRATION',
                 },
             ],
-            true
+            true,
         )
 
         expect(getByText('Edit message')).toBeInTheDocument()
@@ -91,7 +92,7 @@ describe('<IvrMenuActionSendToSMSField />', () => {
     })
 
     it('should save values', async () => {
-        const {getByText} = renderComponent(
+        const { getByText } = renderComponent(
             {
                 confirmation_message: {
                     voice_message_type: VoiceMessageType.TextToSpeech,
@@ -110,7 +111,7 @@ describe('<IvrMenuActionSendToSMSField />', () => {
                     name: 'Another integration',
                 },
             ],
-            true
+            true,
         )
 
         await userEvent.type(getByText('confirmation message'), ' test')
@@ -132,7 +133,7 @@ describe('<IvrMenuActionSendToSMSField />', () => {
     it.each(['confirmation message', 'sms content'])(
         'should disable save changes button',
         (inputText) => {
-            const {getByText, getByRole} = renderComponent(
+            const { getByText, getByRole } = renderComponent(
                 {
                     confirmation_message: {
                         voice_message_type: VoiceMessageType.TextToSpeech,
@@ -147,19 +148,19 @@ describe('<IvrMenuActionSendToSMSField />', () => {
                         name: 'TEST SMS INTEGRATION',
                     },
                 ],
-                true
+                true,
             )
 
             userEvent.clear(getByText(inputText))
 
             expect(
-                getByRole('button', {name: 'Save Changes'})
+                getByRole('button', { name: 'Save Changes' }),
             ).toBeAriaDisabled()
-        }
+        },
     )
 
     it('should not allow saving without integration', () => {
-        const {getByText} = renderComponent(
+        const { getByText } = renderComponent(
             {
                 confirmation_message: {
                     voice_message_type: VoiceMessageType.TextToSpeech,
@@ -168,7 +169,7 @@ describe('<IvrMenuActionSendToSMSField />', () => {
                 sms_content: 'sms content',
             },
             [],
-            true
+            true,
         )
 
         userEvent.click(getByText('Save Changes'))
@@ -177,7 +178,7 @@ describe('<IvrMenuActionSendToSMSField />', () => {
     })
 
     it('should not allow saving without recording', () => {
-        const {getByText} = renderComponent(
+        const { getByText } = renderComponent(
             {
                 confirmation_message: {
                     voice_message_type: VoiceMessageType.VoiceRecording,
@@ -190,7 +191,7 @@ describe('<IvrMenuActionSendToSMSField />', () => {
                     name: 'TEST SMS INTEGRATION',
                 },
             ],
-            true
+            true,
         )
 
         userEvent.click(getByText('Save Changes'))
@@ -199,7 +200,7 @@ describe('<IvrMenuActionSendToSMSField />', () => {
     })
 
     it('should not close drawer on cancel', () => {
-        const {getByText} = renderComponent(
+        const { getByText } = renderComponent(
             {
                 confirmation_message: {
                     voice_message_type: VoiceMessageType.VoiceRecording,
@@ -212,7 +213,7 @@ describe('<IvrMenuActionSendToSMSField />', () => {
                     name: 'TEST SMS INTEGRATION',
                 },
             ],
-            true
+            true,
         )
 
         userEvent.click(getByText('Cancel'))
@@ -221,7 +222,7 @@ describe('<IvrMenuActionSendToSMSField />', () => {
     })
 
     it('should open drawer on new option', () => {
-        const {getByText, container} = renderComponent(
+        const { getByText, container } = renderComponent(
             {
                 confirmation_message: {
                     voice_message_type: VoiceMessageType.VoiceRecording,
@@ -234,7 +235,7 @@ describe('<IvrMenuActionSendToSMSField />', () => {
                     name: 'TEST SMS INTEGRATION',
                 },
             ],
-            false
+            false,
         )
 
         userEvent.click(getByText('Add message'))
@@ -249,7 +250,7 @@ describe('<IvrMenuActionSendToSMSField />', () => {
     })
 
     it('should open drawer on existing settings', async () => {
-        const {getByText, queryByText} = renderComponent(
+        const { getByText, queryByText } = renderComponent(
             {
                 confirmation_message: {
                     voice_message_type: VoiceMessageType.VoiceRecording,
@@ -263,7 +264,7 @@ describe('<IvrMenuActionSendToSMSField />', () => {
                     name: 'TEST SMS INTEGRATION',
                 },
             ],
-            false
+            false,
         )
 
         userEvent.click(getByText('Edit message'))
@@ -281,7 +282,7 @@ describe('<IvrMenuActionSendToSMSField />', () => {
     })
 
     it('should open drawer on new settings', async () => {
-        const {getByText, queryByText} = renderComponent(
+        const { getByText, queryByText } = renderComponent(
             {
                 confirmation_message: {
                     voice_message_type: VoiceMessageType.VoiceRecording,
@@ -293,7 +294,7 @@ describe('<IvrMenuActionSendToSMSField />', () => {
                     name: 'TEST SMS INTEGRATION',
                 },
             ],
-            false
+            false,
         )
 
         userEvent.click(getByText('Add message'))
@@ -302,9 +303,9 @@ describe('<IvrMenuActionSendToSMSField />', () => {
         // type something
         await userEvent.type(
             getByText(
-                'Hello! Thanks for choosing our messaging service. How can I help you?'
+                'Hello! Thanks for choosing our messaging service. How can I help you?',
             ),
-            ' test'
+            ' test',
         )
 
         userEvent.click(getByText('keyboard_tab'))
@@ -314,8 +315,8 @@ describe('<IvrMenuActionSendToSMSField />', () => {
         userEvent.click(getByText('Add message'))
         expect(
             queryByText(
-                'Hello! Thanks for choosing our messaging service. How can I help you? test'
-            )
+                'Hello! Thanks for choosing our messaging service. How can I help you? test',
+            ),
         ).toBeNull()
     })
 })

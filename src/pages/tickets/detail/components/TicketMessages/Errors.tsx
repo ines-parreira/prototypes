@@ -1,9 +1,9 @@
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {TicketMessageSourceType} from '../../../../../business/types/ticket'
-import {TicketMessage} from '../../../../../models/ticket/types'
+import { fromJS } from 'immutable'
 
+import { TicketMessageSourceType } from '../../../../../business/types/ticket'
+import { TicketMessage } from '../../../../../models/ticket/types'
 import Error from './Error'
 
 type Props = {
@@ -15,7 +15,7 @@ type Props = {
 }
 
 const Errors = (props: Props) => {
-    const {message, loading, hasActionError, ticketId, setStatus} = props
+    const { message, loading, hasActionError, ticketId, setStatus } = props
 
     if (
         [

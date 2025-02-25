@@ -1,8 +1,7 @@
-import {MacroAction} from 'models/macroAction/types'
+import { MacroAction } from 'models/macroAction/types'
 
-import {ActionStatus} from '../../pages/tickets/detail/components/AIAgentFeedbackBar/types'
-
-import {ReportIssueOption} from './constants'
+import { ActionStatus } from '../../pages/tickets/detail/components/AIAgentFeedbackBar/types'
+import { ReportIssueOption } from './constants'
 
 export type Feedback = 'thumbs_up' | 'thumbs_down' | null
 
@@ -75,7 +74,7 @@ export type FeedbackOnMessage =
     | NoteFeedbackOnMessage
 
 export const isIssueFeedbackOnMessage = (
-    feedback: FeedbackOnMessage
+    feedback: FeedbackOnMessage,
 ): feedback is IssueFeedbackOnMessage => feedback.type === 'issue'
 
 export type MessageFeedback = {

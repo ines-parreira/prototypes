@@ -1,17 +1,17 @@
-import {getAiAgentCoverageRate} from 'hooks/reporting/automate/automateStatsCalculatedTrends'
-import {useMultipleMetricsTrends} from 'hooks/reporting/useMultipleMetricsTrend'
-import {TicketMeasure} from 'models/reporting/cubes/TicketCube'
-import {TicketCustomFieldsMeasure} from 'models/reporting/cubes/TicketCustomFieldsCube'
-import {customFieldsTicketTotalCountQueryFactory} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
-import {StatsFilters, StatType} from 'models/stat/types'
-import {useAllTickets} from 'pages/aiAgent/Overview/hooks/kpis/useAllTickets'
-import {useCustomFieldOutcome} from 'pages/aiAgent/Overview/hooks/useCustomFieldOutcome'
-import {KpiMetric} from 'pages/aiAgent/Overview/types'
-import {getPreviousPeriod} from 'utils/reporting'
+import { getAiAgentCoverageRate } from 'hooks/reporting/automate/automateStatsCalculatedTrends'
+import { useMultipleMetricsTrends } from 'hooks/reporting/useMultipleMetricsTrend'
+import { TicketMeasure } from 'models/reporting/cubes/TicketCube'
+import { TicketCustomFieldsMeasure } from 'models/reporting/cubes/TicketCustomFieldsCube'
+import { customFieldsTicketTotalCountQueryFactory } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
+import { StatsFilters, StatType } from 'models/stat/types'
+import { useAllTickets } from 'pages/aiAgent/Overview/hooks/kpis/useAllTickets'
+import { useCustomFieldOutcome } from 'pages/aiAgent/Overview/hooks/useCustomFieldOutcome'
+import { KpiMetric } from 'pages/aiAgent/Overview/types'
+import { getPreviousPeriod } from 'utils/reporting'
 
 export const useCoverageRate = (
     filters: StatsFilters,
-    timezone: string
+    timezone: string,
 ): KpiMetric => {
     const customField = useCustomFieldOutcome()
 
@@ -21,13 +21,13 @@ export const useCoverageRate = (
         customFieldsTicketTotalCountQueryFactory(
             filters,
             timezone,
-            customField
+            customField,
         ),
         customFieldsTicketTotalCountQueryFactory(
-            {...filters, period: getPreviousPeriod(filters.period)},
+            { ...filters, period: getPreviousPeriod(filters.period) },
             timezone,
-            customField
-        )
+            customField,
+        ),
     )
 
     const result = getAiAgentCoverageRate({

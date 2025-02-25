@@ -1,9 +1,10 @@
-import {render, fireEvent, waitFor, screen} from '@testing-library/react'
-import {fromJS, Map, List} from 'immutable'
-import React, {ReactNode, ComponentProps} from 'react'
+import React, { ComponentProps, ReactNode } from 'react'
 
-import {initDraftOrderPayload} from 'business/shopify/draftOrder'
-import {integrationsStateWithShopify} from 'fixtures/integrations'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fromJS, List, Map } from 'immutable'
+
+import { initDraftOrderPayload } from 'business/shopify/draftOrder'
+import { integrationsStateWithShopify } from 'fixtures/integrations'
 import {
     integrationDataItemProductFixture,
     shopifyCustomerFixture,
@@ -14,30 +15,30 @@ import {
     shopifyVariantFixture,
 } from 'fixtures/shopify'
 import ProductSearchInput from 'pages/common/forms/ProductSearchInput/ProductSearchInput'
-import {CustomerContext} from 'providers/infobar/CustomerContext'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import {getDuplicateOrderPayload} from 'state/infobarActions/shopify/createOrder/actions'
+import { CustomerContext } from 'providers/infobar/CustomerContext'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
+import { getDuplicateOrderPayload } from 'state/infobarActions/shopify/createOrder/actions'
 import AddCustomItemPopover from 'Widgets/modules/Shopify/modules/AddCustomItemPopover'
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
+import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
-import {DraftOrderModalContainer} from '../DraftOrderModal'
+import { DraftOrderModalContainer } from '../DraftOrderModal'
 import EmailInvoicePopover from '../EmailInvoicePopover'
 import OrderFooter from '../OrderFooter'
 
 jest.mock(
     'pages/common/utils/DatetimeLabel',
     () =>
-        ({dateTime}: {dateTime: string}) => (
+        ({ dateTime }: { dateTime: string }) => (
             <div data-testid="DatetimeLabel">{dateTime}</div>
-        )
+        ),
 )
 
 jest.mock(
     'pages/common/components/modal/ModalHeader',
     () =>
-        ({title}: {title: ReactNode}) => (
+        ({ title }: { title: ReactNode }) => (
             <div data-testid="Modal-Header">{title}</div>
-        )
+        ),
 )
 
 jest.mock(
@@ -60,7 +61,7 @@ jest.mock(
                 )
             }
             return null
-        }
+        },
 )
 
 const mockFromJS = fromJS
@@ -71,7 +72,7 @@ const mockShopifyInvoicePayloadFixture = shopifyInvoicePayloadFixture
 jest.mock(
     'pages/common/forms/ProductSearchInput/ProductSearchInput',
     () =>
-        ({onVariantClicked}: ComponentProps<typeof ProductSearchInput>) => {
+        ({ onVariantClicked }: ComponentProps<typeof ProductSearchInput>) => {
             const item = mockIntegrationDataItemProductFixture()
             const variant = item.data.variants[0]
 
@@ -87,20 +88,20 @@ jest.mock(
                     </div>
                 </div>
             )
-        }
+        },
 )
 
 jest.mock(
     'Widgets/modules/Shopify/modules/AddCustomItemPopover',
     () =>
-        ({onSubmit}: ComponentProps<typeof AddCustomItemPopover>) => {
+        ({ onSubmit }: ComponentProps<typeof AddCustomItemPopover>) => {
             return (
                 <div data-testid="AddCustomItemPopover">
                     <div
                         data-testid="AddCustomItemPopover_submit"
                         onClick={() =>
                             onSubmit(
-                                mockFromJS(mockShopifyCustomLineItemFixture())
+                                mockFromJS(mockShopifyCustomLineItemFixture()),
                             )
                         }
                     >
@@ -108,20 +109,20 @@ jest.mock(
                     </div>
                 </div>
             )
-        }
+        },
 )
 
 jest.mock(
     '../EmailInvoicePopover',
     () =>
-        ({onSubmit}: ComponentProps<typeof EmailInvoicePopover>) => {
+        ({ onSubmit }: ComponentProps<typeof EmailInvoicePopover>) => {
             return (
                 <div data-testid="EmailInvoicePopover">
                     <div
                         data-testid="EmailInvoicePopover_submit"
                         onClick={() =>
                             onSubmit(
-                                mockFromJS(mockShopifyInvoicePayloadFixture())
+                                mockFromJS(mockShopifyInvoicePayloadFixture()),
                             )
                         }
                     >
@@ -129,7 +130,7 @@ jest.mock(
                     </div>
                 </div>
             )
-        }
+        },
 )
 
 jest.mock(
@@ -147,7 +148,7 @@ jest.mock(
                     {`currencyCode: ${currencyCode}`}
                 </div>
             )
-        }
+        },
 )
 
 function getProducts(order: Map<any, any>) {
@@ -160,14 +161,14 @@ function getProducts(order: Map<any, any>) {
                 shopifyVariantFixture({
                     id: lineItem.get('variant_id'),
                     title: lineItem.get('variant_title'),
-                })
+                }),
             )
             let product: Map<any, any>
 
             if (products.has(productId)) {
                 product = products.get(productId)
                 product = product.update('variants', (variants: List<any>) =>
-                    variants.push(variant)
+                    variants.push(variant),
                 )
             } else {
                 product = fromJS(
@@ -175,12 +176,12 @@ function getProducts(order: Map<any, any>) {
                         id: productId,
                         title: lineItem.get('title'),
                         variants: [variant],
-                    })
+                    }),
                 )
             }
 
             products.set(productId, product)
-        }
+        },
     )
 
     return products
@@ -191,7 +192,7 @@ const customer = fromJS(shopifyCustomerFixture())
 const products = getProducts(order)
 const draftOrder = initDraftOrderPayload(customer, order, products)
 const payload = getDuplicateOrderPayload(draftOrder)
-const integrationContextValue = {integration: fromJS({}), integrationId: 1}
+const integrationContextValue = { integration: fromJS({}), integrationId: 1 }
 const minProps = {
     isOpen: true,
     title: 'Duplicate order',
@@ -237,12 +238,12 @@ const minProps = {
 
 describe('<DraftOrderModal/>', () => {
     it('should not render when the modal is closed', () => {
-        const {container} = render(
-            <CustomerContext.Provider value={{customerId: 2}}>
+        const { container } = render(
+            <CustomerContext.Provider value={{ customerId: 2 }}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <DraftOrderModalContainer {...minProps} isOpen={false} />
                 </IntegrationContext.Provider>
-            </CustomerContext.Provider>
+            </CustomerContext.Provider>,
         )
 
         expect(container.firstChild).toBeNull()
@@ -250,19 +251,19 @@ describe('<DraftOrderModal/>', () => {
 
     it('should render a spinner when missing data', () => {
         render(
-            <CustomerContext.Provider value={{customerId: 2}}>
+            <CustomerContext.Provider value={{ customerId: 2 }}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <DraftOrderModalContainer {...minProps} />
                 </IntegrationContext.Provider>
-            </CustomerContext.Provider>
+            </CustomerContext.Provider>,
         )
 
         expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
 
     it('should render with a populated order table when data is populated', () => {
-        const {container} = render(
-            <CustomerContext.Provider value={{customerId: 2}}>
+        const { container } = render(
+            <CustomerContext.Provider value={{ customerId: 2 }}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <DraftOrderModalContainer
                         {...minProps}
@@ -270,7 +271,7 @@ describe('<DraftOrderModal/>', () => {
                         payload={payload}
                     />
                 </IntegrationContext.Provider>
-            </CustomerContext.Provider>
+            </CustomerContext.Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -279,13 +280,13 @@ describe('<DraftOrderModal/>', () => {
     it('should render with an empty order table when data is empty', () => {
         const order = (fromJS(shopifyOrderFixture()) as Map<any, any>).set(
             'line_items',
-            []
+            [],
         )
         const products = fromJS([])
         const draftOrder = initDraftOrderPayload(customer, order, products)
         const payload = getDuplicateOrderPayload(draftOrder)
         render(
-            <CustomerContext.Provider value={{customerId: 2}}>
+            <CustomerContext.Provider value={{ customerId: 2 }}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <DraftOrderModalContainer
                         {...minProps}
@@ -293,7 +294,7 @@ describe('<DraftOrderModal/>', () => {
                         payload={payload}
                     />
                 </IntegrationContext.Provider>
-            </CustomerContext.Provider>
+            </CustomerContext.Provider>,
         )
 
         expect(screen.getByText('No items')).toBeInTheDocument()
@@ -303,7 +304,7 @@ describe('<DraftOrderModal/>', () => {
         const defaultCurrency = 'YEN'
 
         const integrations = integrationsStateWithShopify.get(
-            'integrations'
+            'integrations',
         ) as List<Map<any, any>>
 
         const integration = integrations
@@ -311,7 +312,7 @@ describe('<DraftOrderModal/>', () => {
             .first()
 
         render(
-            <CustomerContext.Provider value={{customerId: 2}}>
+            <CustomerContext.Provider value={{ customerId: 2 }}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <DraftOrderModalContainer
                         {...minProps}
@@ -321,11 +322,11 @@ describe('<DraftOrderModal/>', () => {
                         payload={payload}
                     />
                 </IntegrationContext.Provider>
-            </CustomerContext.Provider>
+            </CustomerContext.Provider>,
         )
 
         expect(
-            screen.getAllByText(new RegExp(defaultCurrency)).length
+            screen.getAllByText(new RegExp(defaultCurrency)).length,
         ).toBeTruthy()
     })
 
@@ -335,7 +336,7 @@ describe('<DraftOrderModal/>', () => {
             .set('invoice_sent_at', '2020-02-26T21:31:34-05:00')
         const payload = getDuplicateOrderPayload(draftOrder)
         render(
-            <CustomerContext.Provider value={{customerId: 2}}>
+            <CustomerContext.Provider value={{ customerId: 2 }}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <DraftOrderModalContainer
                         {...minProps}
@@ -344,18 +345,18 @@ describe('<DraftOrderModal/>', () => {
                         payload={payload}
                     />
                 </IntegrationContext.Provider>
-            </CustomerContext.Provider>
+            </CustomerContext.Provider>,
         )
 
         expect(screen.getByText('Invoice sent')).toBeInTheDocument()
         expect(
-            screen.getByText(draftOrder.get('invoice_sent_at'))
+            screen.getByText(draftOrder.get('invoice_sent_at')),
         ).toBeInTheDocument()
     })
 
     it('should call onInit when modal is opened', () => {
-        const {rerender} = render(
-            <CustomerContext.Provider value={{customerId: 2}}>
+        const { rerender } = render(
+            <CustomerContext.Provider value={{ customerId: 2 }}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <DraftOrderModalContainer
                         {...minProps}
@@ -364,11 +365,11 @@ describe('<DraftOrderModal/>', () => {
                         payload={payload}
                     />
                 </IntegrationContext.Provider>
-            </CustomerContext.Provider>
+            </CustomerContext.Provider>,
         )
 
         rerender(
-            <CustomerContext.Provider value={{customerId: 2}}>
+            <CustomerContext.Provider value={{ customerId: 2 }}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <DraftOrderModalContainer
                         {...minProps}
@@ -377,7 +378,7 @@ describe('<DraftOrderModal/>', () => {
                         payload={payload}
                     />
                 </IntegrationContext.Provider>
-            </CustomerContext.Provider>
+            </CustomerContext.Provider>,
         )
 
         expect(minProps.onInit).toBeCalledWith(
@@ -385,7 +386,7 @@ describe('<DraftOrderModal/>', () => {
             order,
             customer,
             'EUR',
-            expect.any(Function)
+            expect.any(Function),
         )
     })
 
@@ -393,8 +394,8 @@ describe('<DraftOrderModal/>', () => {
         const item = integrationDataItemProductFixture()
         const product = item.data
         const variant = product.variants[0]
-        const {getByTestId} = render(
-            <CustomerContext.Provider value={{customerId: 2}}>
+        const { getByTestId } = render(
+            <CustomerContext.Provider value={{ customerId: 2 }}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <DraftOrderModalContainer
                         {...minProps}
@@ -402,7 +403,7 @@ describe('<DraftOrderModal/>', () => {
                         payload={payload}
                     />
                 </IntegrationContext.Provider>
-            </CustomerContext.Provider>
+            </CustomerContext.Provider>,
         )
 
         fireEvent.click(getByTestId('ProductSearchInput_result'))
@@ -410,7 +411,7 @@ describe('<DraftOrderModal/>', () => {
             ShopifyActionType.DuplicateOrder,
             1,
             product,
-            variant
+            variant,
         )
     })
 
@@ -418,8 +419,8 @@ describe('<DraftOrderModal/>', () => {
         const draftOrder = initDraftOrderPayload(customer, order, products)
         const payload = getDuplicateOrderPayload(draftOrder)
         const lineItem = fromJS(shopifyCustomLineItemFixture())
-        const {getByTestId} = render(
-            <CustomerContext.Provider value={{customerId: 2}}>
+        const { getByTestId } = render(
+            <CustomerContext.Provider value={{ customerId: 2 }}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <DraftOrderModalContainer
                         {...minProps}
@@ -427,7 +428,7 @@ describe('<DraftOrderModal/>', () => {
                         payload={payload}
                     />
                 </IntegrationContext.Provider>
-            </CustomerContext.Provider>
+            </CustomerContext.Provider>,
         )
 
         fireEvent.click(getByTestId('AddCustomItemPopover_submit'))
@@ -440,8 +441,8 @@ describe('<DraftOrderModal/>', () => {
             .set('invoice_sent_at', '2020-02-26T21:31:34-05:00')
         const payload = getDuplicateOrderPayload(draftOrder)
         const invoicePayload = fromJS(shopifyInvoicePayloadFixture())
-        const {getByTestId} = render(
-            <CustomerContext.Provider value={{customerId: 2}}>
+        const { getByTestId } = render(
+            <CustomerContext.Provider value={{ customerId: 2 }}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <DraftOrderModalContainer
                         {...minProps}
@@ -450,7 +451,7 @@ describe('<DraftOrderModal/>', () => {
                         payload={payload}
                     />
                 </IntegrationContext.Provider>
-            </CustomerContext.Provider>
+            </CustomerContext.Provider>,
         )
 
         fireEvent.click(getByTestId('EmailInvoicePopover_submit'))
@@ -459,7 +460,7 @@ describe('<DraftOrderModal/>', () => {
             2,
             order.get('id'),
             invoicePayload,
-            expect.any(Function)
+            expect.any(Function),
         )
         expect(minProps.onClose).toHaveBeenCalled()
         expect(minProps.onReset).toHaveBeenCalled()
@@ -468,8 +469,8 @@ describe('<DraftOrderModal/>', () => {
     it('should create a paid order when clicking on "Create order as paid"', async () => {
         const draftOrder = initDraftOrderPayload(customer, order, products)
         const payload = getDuplicateOrderPayload(draftOrder)
-        const {getByText} = render(
-            <CustomerContext.Provider value={{customerId: 2}}>
+        const { getByText } = render(
+            <CustomerContext.Provider value={{ customerId: 2 }}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <DraftOrderModalContainer
                         {...minProps}
@@ -477,18 +478,18 @@ describe('<DraftOrderModal/>', () => {
                         payload={payload}
                     />
                 </IntegrationContext.Provider>
-            </CustomerContext.Provider>
+            </CustomerContext.Provider>,
         )
 
         fireEvent.click(getByText(/Create order as paid/i))
         await waitFor(() =>
             expect(minProps.onBulkChange).toHaveBeenCalledWith(
                 [
-                    {name: 'draft_order_id', value: 1},
-                    {name: 'payment_pending', value: false},
+                    { name: 'draft_order_id', value: 1 },
+                    { name: 'payment_pending', value: false },
                 ],
-                expect.any(Function)
-            )
+                expect.any(Function),
+            ),
         )
         await waitFor(() => expect(minProps.onSubmit).toHaveBeenCalled())
         await waitFor(() => expect(minProps.onReset).toHaveBeenCalled())
@@ -497,8 +498,8 @@ describe('<DraftOrderModal/>', () => {
     it('should create a pending order when clicking on "Create order as pending"', async () => {
         const draftOrder = initDraftOrderPayload(customer, order, products)
         const payload = getDuplicateOrderPayload(draftOrder)
-        const {getByText} = render(
-            <CustomerContext.Provider value={{customerId: 2}}>
+        const { getByText } = render(
+            <CustomerContext.Provider value={{ customerId: 2 }}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <DraftOrderModalContainer
                         {...minProps}
@@ -506,18 +507,18 @@ describe('<DraftOrderModal/>', () => {
                         payload={payload}
                     />
                 </IntegrationContext.Provider>
-            </CustomerContext.Provider>
+            </CustomerContext.Provider>,
         )
 
         fireEvent.click(getByText(/Create order as pending/i))
         await waitFor(() =>
             expect(minProps.onBulkChange).toHaveBeenCalledWith(
                 [
-                    {name: 'draft_order_id', value: 1},
-                    {name: 'payment_pending', value: true},
+                    { name: 'draft_order_id', value: 1 },
+                    { name: 'payment_pending', value: true },
                 ],
-                expect.any(Function)
-            )
+                expect.any(Function),
+            ),
         )
         await waitFor(() => expect(minProps.onSubmit).toHaveBeenCalled())
         await waitFor(() => expect(minProps.onReset).toHaveBeenCalled())
@@ -526,8 +527,8 @@ describe('<DraftOrderModal/>', () => {
     it('should cancel when closing the modal', () => {
         const draftOrder = initDraftOrderPayload(customer, order, products)
         const payload = getDuplicateOrderPayload(draftOrder)
-        const {getByTestId} = render(
-            <CustomerContext.Provider value={{customerId: 2}}>
+        const { getByTestId } = render(
+            <CustomerContext.Provider value={{ customerId: 2 }}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <DraftOrderModalContainer
                         {...minProps}
@@ -535,14 +536,14 @@ describe('<DraftOrderModal/>', () => {
                         payload={payload}
                     />
                 </IntegrationContext.Provider>
-            </CustomerContext.Provider>
+            </CustomerContext.Provider>,
         )
 
         fireEvent.click(getByTestId('Modal'))
         expect(minProps.onCancel).toHaveBeenCalledWith(
             ShopifyActionType.DuplicateOrder,
             1,
-            'header'
+            'header',
         )
         expect(minProps.onClose).toHaveBeenCalled()
         expect(minProps.onReset).toHaveBeenCalled()
@@ -551,8 +552,8 @@ describe('<DraftOrderModal/>', () => {
     it('should cancel when clicking on "Cancel"', () => {
         const draftOrder = initDraftOrderPayload(customer, order, products)
         const payload = getDuplicateOrderPayload(draftOrder)
-        const {getByText} = render(
-            <CustomerContext.Provider value={{customerId: 2}}>
+        const { getByText } = render(
+            <CustomerContext.Provider value={{ customerId: 2 }}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <DraftOrderModalContainer
                         {...minProps}
@@ -560,14 +561,14 @@ describe('<DraftOrderModal/>', () => {
                         payload={payload}
                     />
                 </IntegrationContext.Provider>
-            </CustomerContext.Provider>
+            </CustomerContext.Provider>,
         )
 
         fireEvent.click(getByText(/Cancel/i))
         expect(minProps.onCancel).toHaveBeenCalledWith(
             ShopifyActionType.DuplicateOrder,
             1,
-            'footer'
+            'footer',
         )
         expect(minProps.onClose).toHaveBeenCalled()
         expect(minProps.onReset).toHaveBeenCalled()
@@ -581,8 +582,8 @@ describe('<DraftOrderModal/>', () => {
         )
             .setIn([0, 'meta', 'oauth', 'scope'], 'foo')
             .toJS()
-        const {getByTestId} = render(
-            <CustomerContext.Provider value={{customerId: 2}}>
+        const { getByTestId } = render(
+            <CustomerContext.Provider value={{ customerId: 2 }}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <DraftOrderModalContainer
                         {...minProps}
@@ -591,7 +592,7 @@ describe('<DraftOrderModal/>', () => {
                         payload={payload}
                     />
                 </IntegrationContext.Provider>
-            </CustomerContext.Provider>
+            </CustomerContext.Provider>,
         )
 
         fireEvent.click(getByTestId('Modal'))

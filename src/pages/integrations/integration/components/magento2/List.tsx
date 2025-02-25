@@ -1,12 +1,14 @@
-import {List as ImmutableList, Map} from 'immutable'
 import React from 'react'
-import {Link} from 'react-router-dom'
+
+import { List as ImmutableList, Map } from 'immutable'
+import { Link } from 'react-router-dom'
 
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
 
 import NoIntegration from '../NoIntegration'
+
 import css from './List.less'
 
 type Props = {
@@ -15,7 +17,7 @@ type Props = {
     redirectUri: string
 }
 
-function List({integrations, loading, redirectUri}: Props) {
+function List({ integrations, loading, redirectUri }: Props) {
     if (loading.get('integrations', false)) {
         return <Loader />
     }
@@ -27,7 +29,7 @@ function List({integrations, loading, redirectUri}: Props) {
         ]) as string
         const storeUrl = integration?.getIn(['meta', 'store_url']) as string
         window.location.href = redirectUri.concat(
-            `?store_url=${storeUrl}&admin_url_suffix=${adminUrlSuffix}`
+            `?store_url=${storeUrl}&admin_url_suffix=${adminUrlSuffix}`,
         )
     }
 
@@ -41,7 +43,7 @@ function List({integrations, loading, redirectUri}: Props) {
                         }`
                         const isSubmitting = loading.get('updateIntegration')
                         const isDisabled = integration?.get(
-                            'deactivated_datetime'
+                            'deactivated_datetime',
                         )
                         const isManual = integration?.getIn([
                             'meta',

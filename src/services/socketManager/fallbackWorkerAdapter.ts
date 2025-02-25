@@ -7,18 +7,18 @@
  * create this adapter that behaves like the `SharedWorker` would, except it runs in the tab directly.
  */
 import _noop from 'lodash/noop'
-import io, {Socket} from 'socket.io-client'
+import io, { Socket } from 'socket.io-client'
 
-import {SegmentEvent, logEvent} from 'common/segment'
+import { logEvent, SegmentEvent } from 'common/segment'
 
 import {
-    MAX_INCREMENTAL_RECONNECT_BACKOFF,
     DISCONNECTED_NOTIFICATION_DELAY,
     INCREMENTAL_RECONNECT_BACKOFF,
     INTERNAL_SERVER_CONNECTION_ERROR_MESSAGE,
+    MAX_INCREMENTAL_RECONNECT_BACKOFF,
 } from './constants'
 import IncrementalBackoff from './incrementalBackoff'
-import {WSMessage, BroadcastChannelEvent} from './types'
+import { BroadcastChannelEvent, WSMessage } from './types'
 
 export class FallbackWorker {
     socket: Socket | null = null
@@ -85,7 +85,7 @@ export class FallbackWorker {
                 fallbackWorkerAdapter.postMessage({
                     type: BroadcastChannelEvent.WsDisconnected,
                 }),
-            DISCONNECTED_NOTIFICATION_DELAY * 1000
+            DISCONNECTED_NOTIFICATION_DELAY * 1000,
         )
     }
 
@@ -104,7 +104,7 @@ export class FallbackWorker {
             this.socket.on('connect_error', this._onSocketConnectError)
             this.socket.io.on(
                 'reconnect_attempt',
-                this._onSocketReconnectAttempt
+                this._onSocketReconnectAttempt,
             )
         } else if (this.socket.connected) {
             fallbackWorkerAdapter.postMessage({
@@ -132,17 +132,17 @@ export const fallbackWorkerAdapter = {
         onmessage: _noop,
     },
     postMessage: (message: WSMessage) =>
-        fallbackWorkerAdapter.port.onmessage({data: message}),
+        fallbackWorkerAdapter.port.onmessage({ data: message }),
 }
 
 export const fallbackBroadcastChannelAdapter = {
     addEventListener: (
         event: string,
-        handler: (event: MessageEvent) => void
+        handler: (event: MessageEvent) => void,
     ) => {
         fallbackBroadcastChannelAdapter.onmessage = handler
     },
     onmessage: _noop,
     postMessage: (message: WSMessage) =>
-        fallbackBroadcastChannelAdapter.onmessage({data: message}),
+        fallbackBroadcastChannelAdapter.onmessage({ data: message }),
 }

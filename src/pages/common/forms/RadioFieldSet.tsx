@@ -1,5 +1,6 @@
+import React, { ReactNode } from 'react'
+
 import classnames from 'classnames'
-import React, {ReactNode} from 'react'
 
 import useId from 'hooks/useId'
 
@@ -47,10 +48,10 @@ const RadioFieldSet = ({
             className={classnames(className, {
                 [css.horizontal]: isHorizontal,
             })}
-            {...(dataCanduId ? {'data-candu-id': dataCanduId} : {})}
+            {...(dataCanduId ? { 'data-candu-id': dataCanduId } : {})}
         >
             {!!label && <legend className={css.legend}>{label}</legend>}
-            {options.map(({value, label, caption, disabled}) => (
+            {options.map(({ value, label, caption, disabled }) => (
                 <RadioButton
                     key={value}
                     name={fieldsetName}

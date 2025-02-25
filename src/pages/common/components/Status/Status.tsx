@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react'
+import React, { ReactNode } from 'react'
 
 import css from './Status.less'
 
@@ -15,12 +15,12 @@ export enum StatusType {
     Info = 'info',
 }
 
-export default function Status({children, type, id}: Props) {
+export default function Status({ children, type, id }: Props) {
     return (
         <div className={css.status} id={id}>
             <div
                 className={css.dot}
-                style={{backgroundColor: `var(--dot-${type})`}}
+                style={{ backgroundColor: `var(--dot-${type})` }}
             />
             <div>{children}</div>
         </div>

@@ -1,13 +1,13 @@
-import {render} from '@testing-library/react'
-import {ContentState, EditorState} from 'draft-js'
-import _noop from 'lodash/noop'
-import React, {ComponentProps, LegacyRef} from 'react'
+import React, { ComponentProps, LegacyRef } from 'react'
 
-import {Provider} from 'react-redux'
+import { render } from '@testing-library/react'
+import { ContentState, EditorState } from 'draft-js'
+import _noop from 'lodash/noop'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {convertToHTML} from 'utils/editor'
+import { convertToHTML } from 'utils/editor'
 
 import RichField from '../RichField'
 
@@ -28,7 +28,7 @@ describe('RichField', () => {
     const mockStore = configureMockStore([thunk])
     let store = mockStore({})
     const defaultProps: ComponentProps<typeof RichField> = {
-        value: {html: undefined},
+        value: { html: undefined },
         onChange: _noop,
     }
 
@@ -37,27 +37,27 @@ describe('RichField', () => {
     })
 
     it('should render a basic input', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <RichField
                     {...defaultProps}
-                    value={{text: 'text', html: 'html'}}
+                    value={{ text: 'text', html: 'html' }}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render a MentionSuggestions component to the DOM if in internal-note mode', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <RichField
                     {...defaultProps}
-                    value={{text: 'text', html: 'html'}}
+                    value={{ text: 'text', html: 'html' }}
                     canAddMention
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -67,7 +67,7 @@ describe('RichField', () => {
         const div = document.createElement('div')
         document.body.appendChild(div)
 
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <RichField
                     {...defaultProps}
@@ -76,7 +76,7 @@ describe('RichField', () => {
                         html: 'html {{current_user.name}}',
                     }}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -90,20 +90,20 @@ describe('RichField', () => {
             current: null,
         }
 
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <RichField
                     {...defaultProps}
-                    value={{text: 'text', html: 'html'}}
+                    value={{ text: 'text', html: 'html' }}
                     ref={instanceRef}
                 />
             </Provider>,
-            {container: div}
+            { container: div },
         )
 
         // simulate typed text
         const editorState = EditorState.createWithContent(
-            ContentState.createFromText('{{current_user.name}}')
+            ContentState.createFromText('{{current_user.name}}'),
         )
         instanceRef.current?.setEditorState(editorState)
 
@@ -115,7 +115,7 @@ describe('RichField', () => {
         document.body.appendChild(div)
 
         const contentState = ContentState.createFromText('foo')
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <RichField
                     {...defaultProps}
@@ -125,7 +125,7 @@ describe('RichField', () => {
                         html: convertToHTML(contentState),
                     }}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -134,7 +134,7 @@ describe('RichField', () => {
     it('should count the characters in the text', () => {
         const text = 'This is a text 33 characters long'
 
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <RichField
                     {...defaultProps}
@@ -144,7 +144,7 @@ describe('RichField', () => {
                         html: text,
                     }}
                 />
-            </Provider>
+            </Provider>,
         )
 
         getByText(`${text.length} characters`)

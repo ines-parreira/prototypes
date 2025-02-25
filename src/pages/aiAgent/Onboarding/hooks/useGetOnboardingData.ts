@@ -1,11 +1,10 @@
-import {useQuery} from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 
-import {getOnboardingData} from 'models/aiAgent/resources/configuration'
-import {OnboardingData} from 'models/aiAgent/types'
-
-import {DiscountStrategy} from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
-import {PersuasionLevel} from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
-import {AiAgentScopes, WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
+import { getOnboardingData } from 'models/aiAgent/resources/configuration'
+import { OnboardingData } from 'models/aiAgent/types'
+import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
+import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
+import { AiAgentScopes, WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 
 type OnboardingDataWithoutId = Omit<OnboardingData, 'id'>
 
@@ -27,13 +26,13 @@ export const useGetOnboardingData = (shopName?: string) => {
         queryFn: async () => {
             const data = await getOnboardingData()
             const selectedShopData = data.find(
-                (item: OnboardingData) => item.shopName === shopName
+                (item: OnboardingData) => item.shopName === shopName,
             )
             if (shopName && selectedShopData) {
                 return selectedShopData
             }
             const onGoingOnboarding = data.find(
-                (item: OnboardingData) => !item.shopName
+                (item: OnboardingData) => !item.shopName,
             )
             if (onGoingOnboarding) {
                 return onGoingOnboarding

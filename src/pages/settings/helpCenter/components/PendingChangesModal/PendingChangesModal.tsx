@@ -1,8 +1,9 @@
-import {UnregisterCallback} from 'history'
-import React, {ReactNode, useEffect, useRef, useState} from 'react'
-import {useHistory} from 'react-router-dom'
+import React, { ReactNode, useEffect, useRef, useState } from 'react'
 
-import {CloseModal} from '../articles/CloseModal'
+import { UnregisterCallback } from 'history'
+import { useHistory } from 'react-router-dom'
+
+import { CloseModal } from '../articles/CloseModal'
 
 type PendingChangesModalProps = {
     when: boolean

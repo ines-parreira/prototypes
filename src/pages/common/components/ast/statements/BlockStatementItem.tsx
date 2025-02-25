@@ -1,9 +1,9 @@
 import React from 'react'
 
-import {StatementProps} from 'pages/common/hooks/rule/RuleProvider'
-import {useRuleContext} from 'pages/common/hooks/useRuleContext'
+import { StatementProps } from 'pages/common/hooks/rule/RuleProvider'
+import { useRuleContext } from 'pages/common/hooks/useRuleContext'
 
-import {BlockStatementItemProps} from '../types'
+import { BlockStatementItemProps } from '../types'
 
 export default function BlockStatementItem({
     actions,
@@ -13,7 +13,7 @@ export default function BlockStatementItem({
     schemas,
     depth,
 }: BlockStatementItemProps) {
-    const {Statement} = useRuleContext()
+    const { Statement } = useRuleContext()
 
     return (
         <div className="BlockStatementItem">

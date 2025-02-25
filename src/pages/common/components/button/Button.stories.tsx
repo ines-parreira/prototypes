@@ -1,5 +1,6 @@
-import {Meta, StoryObj} from '@storybook/react'
-import {ComponentProps} from 'react'
+import { ComponentProps } from 'react'
+
+import { Meta, StoryObj } from '@storybook/react'
 
 import Button from './Button'
 

@@ -1,5 +1,6 @@
-import {render} from '@testing-library/react'
 import React from 'react'
+
+import { render } from '@testing-library/react'
 
 import CustomCard from '../CustomCard'
 
@@ -10,7 +11,7 @@ describe('<CustomCard />', () => {
     }
 
     it('should display a custom card', () => {
-        const {getByText} = render(<CustomCard {...props} />)
+        const { getByText } = render(<CustomCard {...props} />)
 
         expect(getByText('add_circle')).toBeInTheDocument()
         expect(getByText(props.description)).toBeInTheDocument()

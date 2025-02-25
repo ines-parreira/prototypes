@@ -1,5 +1,6 @@
-import {render} from '@testing-library/react'
 import React from 'react'
+
+import { render } from '@testing-library/react'
 
 import Wizard from '../Wizard'
 import WizardProgress from '../WizardProgress'
@@ -7,7 +8,7 @@ import WizardStep from '../WizardStep'
 
 describe('<WizardProgress />', () => {
     it('should render', () => {
-        const {container} = render(
+        const { container } = render(
             <Wizard startAt="bar" steps={['foo', 'bar', 'baz']}>
                 <WizardStep name="foo" />
 
@@ -20,7 +21,7 @@ describe('<WizardProgress />', () => {
                         `${activeStep} out of ${totalSteps}`
                     }
                 </WizardProgress>
-            </Wizard>
+            </Wizard>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -33,8 +34,8 @@ describe('<WizardProgress />', () => {
                     {(activeStep, totalSteps) =>
                         `${activeStep} out of ${totalSteps}`
                     }
-                </WizardProgress>
-            )
+                </WizardProgress>,
+            ),
         ).toThrow()
     })
 })

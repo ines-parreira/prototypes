@@ -1,33 +1,34 @@
-import classnames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useCallback, useEffect, useState} from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import classnames from 'classnames'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {StoreConfiguration} from 'models/aiAgent/types'
-import {AiAgentLayout} from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
+import { StoreConfiguration } from 'models/aiAgent/types'
+import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
 import {
     AI_AGENT,
     DEFAULT_PREVIEW_MODE_DURATION_IN_DAYS,
     PREVIEW,
 } from 'pages/aiAgent/constants'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import InputField from 'pages/common/forms/input/InputField'
 import ToggleInput from 'pages/common/forms/ToggleInput'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { useAiAgentOnboardingNotification } from '../hooks/useAiAgentOnboardingNotification'
 
-import {useAiAgentOnboardingNotification} from '../hooks/useAiAgentOnboardingNotification'
 import css from './AiAgentPreviewModeSettingsView.less'
 
 interface AiAgentPreviewModeSettingsViewProps {
     shopName: string
     storeConfiguration: StoreConfiguration
     updateStoreConfiguration: (
-        configurationToSubmit: StoreConfiguration
+        configurationToSubmit: StoreConfiguration,
     ) => Promise<void>
     hasNoEmailConnected: boolean
     hasNoKnowledgeBase: boolean
@@ -56,17 +57,17 @@ const AiAgentPreviewModeSettingsView: React.FC<
             storeConfiguration?.isPreviewModeActive
         ) {
             const storedActivatedDatetime = new Date(
-                storeConfiguration.previewModeActivatedDatetime
+                storeConfiguration.previewModeActivatedDatetime,
             )
 
             const storedExpirationDatetime = new Date(
-                storeConfiguration.previewModeValidUntilDatetime
+                storeConfiguration.previewModeValidUntilDatetime,
             )
 
             return Math.round(
                 (storedExpirationDatetime.getTime() -
                     storedActivatedDatetime.getTime()) /
-                    NUMBER_OF_MILLISECONDS_IN_A_DAY
+                    NUMBER_OF_MILLISECONDS_IN_A_DAY,
             )
         }
 
@@ -75,7 +76,7 @@ const AiAgentPreviewModeSettingsView: React.FC<
 
     const dispatch = useAppDispatch()
     const [duration, setDuration] = useState<number>(
-        DEFAULT_PREVIEW_MODE_DURATION_IN_DAYS
+        DEFAULT_PREVIEW_MODE_DURATION_IN_DAYS,
     )
     const [durationError, setDurationError] = useState<string | null>(null)
     const [isPristine, setIsPristine] = useState<boolean>(true)
@@ -98,7 +99,7 @@ const AiAgentPreviewModeSettingsView: React.FC<
     const {
         isLoading: isLoadingOnboardingNotificationState,
         handleOnCancelActivateAiAgentNotification,
-    } = useAiAgentOnboardingNotification({shopName})
+    } = useAiAgentOnboardingNotification({ shopName })
 
     const onSubmit = async () => {
         if (!storeConfiguration || hasNoEmailConnected || hasNoKnowledgeBase) {
@@ -117,7 +118,7 @@ const AiAgentPreviewModeSettingsView: React.FC<
                 notify({
                     message: durationError,
                     status: NotificationStatus.Error,
-                })
+                }),
             )
             return
         }
@@ -152,7 +153,7 @@ const AiAgentPreviewModeSettingsView: React.FC<
                         isToggled ? 'enabled' : 'disabled'
                     } successfully`,
                     status: NotificationStatus.Success,
-                })
+                }),
             )
 
             if (isToggled) {
@@ -167,7 +168,7 @@ const AiAgentPreviewModeSettingsView: React.FC<
                         isToggled ? 'enabled' : 'disabled'
                     } Preview mode`,
                     status: NotificationStatus.Error,
-                })
+                }),
             )
         }
     }
@@ -178,7 +179,7 @@ const AiAgentPreviewModeSettingsView: React.FC<
         }
         const currentDate = new Date()
         const expiryDate = new Date(
-            currentDate.setDate(currentDate.getDate() + Number(duration))
+            currentDate.setDate(currentDate.getDate() + Number(duration)),
         )
         const dateOptions: Intl.DateTimeFormatOptions = {
             weekday: 'long',
@@ -257,7 +258,7 @@ const AiAgentPreviewModeSettingsView: React.FC<
                         className={classnames(css.animatedDiv, {
                             [css.show]: isToggled,
                         })}
-                        style={{height: isToggled ? '166px' : 0}}
+                        style={{ height: isToggled ? '166px' : 0 }}
                         aria-label="preview duration form section"
                     >
                         <section className={css.durationSection}>

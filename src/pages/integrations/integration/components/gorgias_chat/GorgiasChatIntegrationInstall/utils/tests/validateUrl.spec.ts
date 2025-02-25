@@ -1,4 +1,4 @@
-import {GorgiasChatInstallationVisibilityConditionOperator} from 'models/integration/types'
+import { GorgiasChatInstallationVisibilityConditionOperator } from 'models/integration/types'
 
 import validateUrl from '../validateUrl'
 
@@ -7,8 +7,8 @@ describe('validateUrl()', () => {
         expect(
             validateUrl(
                 'https://www.gorgias.com/?foo=bar&baz=qux#hash',
-                GorgiasChatInstallationVisibilityConditionOperator.Equal
-            )
+                GorgiasChatInstallationVisibilityConditionOperator.Equal,
+            ),
         ).toEqual('unsupported')
     })
 
@@ -41,8 +41,8 @@ describe('validateUrl()', () => {
         expect(
             validateUrl(
                 url,
-                GorgiasChatInstallationVisibilityConditionOperator.Equal
-            )
+                GorgiasChatInstallationVisibilityConditionOperator.Equal,
+            ),
         ).toEqual(expected)
     })
 
@@ -66,9 +66,9 @@ describe('validateUrl()', () => {
             expect(
                 validateUrl(
                     url,
-                    GorgiasChatInstallationVisibilityConditionOperator.Contain
-                )
+                    GorgiasChatInstallationVisibilityConditionOperator.Contain,
+                ),
             ).toEqual(expected)
-        }
+        },
     )
 })

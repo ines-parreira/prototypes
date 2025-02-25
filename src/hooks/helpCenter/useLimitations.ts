@@ -3,7 +3,7 @@ import {
     HELP_CENTER_MAX_ARTICLES,
     HELP_CENTER_MAX_ARTICLES_WARNING_THRESHOLD,
 } from 'pages/settings/helpCenter/constants'
-import {getArticles} from 'state/entities/helpCenter/articles'
+import { getArticles } from 'state/entities/helpCenter/articles'
 
 type Limitation = {
     disabled: boolean
@@ -11,7 +11,7 @@ type Limitation = {
     currentNumber: number
 }
 
-export const useLimitations = (): {[actionName: string]: Limitation} => {
+export const useLimitations = (): { [actionName: string]: Limitation } => {
     const articles = useAppSelector(getArticles)
 
     const articleCreationLimitation = {

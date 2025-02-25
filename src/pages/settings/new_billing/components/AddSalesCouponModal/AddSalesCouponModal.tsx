@@ -1,11 +1,13 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import {useMutation, useQueryClient} from '@tanstack/react-query'
-import React, {useState} from 'react'
+import React, { useState } from 'react'
+
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+
+import { Label } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {isGorgiasApiError} from 'models/api/types'
-import {getBillingStateQuery} from 'models/billing/queries'
-import {addSalesCoupon, deleteSalesCoupon} from 'models/billing/resources'
+import { isGorgiasApiError } from 'models/api/types'
+import { getBillingStateQuery } from 'models/billing/queries'
+import { addSalesCoupon, deleteSalesCoupon } from 'models/billing/resources'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
@@ -13,8 +15,11 @@ import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import TextArea from 'pages/common/forms/TextArea'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
+import { notify } from 'state/notifications/actions'
+import {
+    NotificationStatus,
+    NotificationStyle,
+} from 'state/notifications/types'
 
 import css from './AddSalesCouponModal.less'
 
@@ -39,7 +44,7 @@ export default function AddSalesCouponModal({
 
     const [reason, setReason] = useState('')
 
-    const options = availableCoupons.map((c) => ({label: c, value: c}))
+    const options = availableCoupons.map((c) => ({ label: c, value: c }))
 
     function handleCloseModalAndResetState() {
         setSelectedCoupon('')
@@ -48,7 +53,7 @@ export default function AddSalesCouponModal({
     }
 
     const applyCouponMutation = useMutation({
-        mutationFn: (params: {coupon_name: string; reason: string}) =>
+        mutationFn: (params: { coupon_name: string; reason: string }) =>
             addSalesCoupon(params),
         onSuccess: () => {
             void queryClient.invalidateQueries(getBillingStateQuery)
@@ -61,7 +66,7 @@ export default function AddSalesCouponModal({
                     showDismissButton: true,
                     noAutoDismiss: false,
                     allowHTML: true,
-                })
+                }),
             )
         },
         onError: (error) => {
@@ -76,7 +81,7 @@ export default function AddSalesCouponModal({
                     showDismissButton: true,
                     noAutoDismiss: false,
                     allowHTML: true,
-                })
+                }),
             )
         },
     })
@@ -94,7 +99,7 @@ export default function AddSalesCouponModal({
                     showDismissButton: true,
                     noAutoDismiss: false,
                     allowHTML: true,
-                })
+                }),
             )
         },
         onError: (error) => {
@@ -109,7 +114,7 @@ export default function AddSalesCouponModal({
                     showDismissButton: true,
                     noAutoDismiss: false,
                     allowHTML: true,
-                })
+                }),
             )
         },
     })

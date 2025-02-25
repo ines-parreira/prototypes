@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react'
+import React, { ReactNode } from 'react'
 
 import css from './InstallationStep.less'
 
@@ -7,7 +7,7 @@ type Props = {
     children: ReactNode
 }
 
-const InstallationStep = ({index, children}: Props) => {
+const InstallationStep = ({ index, children }: Props) => {
     return (
         <div className={css.container}>
             <div className={css.bullet}>{index}</div>

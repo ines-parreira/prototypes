@@ -1,12 +1,13 @@
-import {cleanup, fireEvent, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
-import {Provider} from 'react-redux'
 
-import {whatsAppMessageTemplates as mockWhatsAppMessageTemplates} from 'fixtures/whatsAppMessageTemplates'
-import {useListWhatsAppMessageTemplates} from 'models/whatsAppMessageTemplates/queries'
-import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
-import {mockStore} from 'utils/testing'
+import { cleanup, fireEvent, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { Provider } from 'react-redux'
+
+import { whatsAppMessageTemplates as mockWhatsAppMessageTemplates } from 'fixtures/whatsAppMessageTemplates'
+import { useListWhatsAppMessageTemplates } from 'models/whatsAppMessageTemplates/queries'
+import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
+import { mockStore } from 'utils/testing'
 
 import WhatsAppMessageTemplateNavigator from '../WhatsAppMessageTemplateNavigator'
 
@@ -31,7 +32,7 @@ jest.mock(
                 name: '',
             },
             selectNewTemplate: mockSelectNewTemplate,
-        }))
+        })),
 )
 
 describe('WhatsAppMessageTemplateNavigator', () => {
@@ -39,7 +40,7 @@ describe('WhatsAppMessageTemplateNavigator', () => {
         renderWithQueryClientProvider(
             <Provider store={mockStore({} as any)}>
                 <WhatsAppMessageTemplateNavigator />
-            </Provider>
+            </Provider>,
         )
 
     afterEach(cleanup)
@@ -47,7 +48,7 @@ describe('WhatsAppMessageTemplateNavigator', () => {
     it('should display the preview of the first template by default', () => {
         renderComponent()
         expect(
-            screen.getByText('one-time password', {exact: false})
+            screen.getByText('one-time password', { exact: false }),
         ).toBeVisible()
     })
 
@@ -55,7 +56,7 @@ describe('WhatsAppMessageTemplateNavigator', () => {
         renderComponent()
         userEvent.hover(screen.getByText('rejected_template_sample'))
         expect(
-            screen.getByText('rejected template content', {exact: false})
+            screen.getByText('rejected template content', { exact: false }),
         ).toBeVisible()
     })
 
@@ -63,7 +64,7 @@ describe('WhatsAppMessageTemplateNavigator', () => {
         renderComponent()
         fireEvent.click(screen.getByText('rejected_template_sample'))
         expect(mockSelectNewTemplate).toHaveBeenCalledWith(
-            mockWhatsAppMessageTemplates[1]
+            mockWhatsAppMessageTemplates[1],
         )
     })
     it('should display message when there are no templates', () => {
@@ -71,10 +72,10 @@ describe('WhatsAppMessageTemplateNavigator', () => {
         renderWithQueryClientProvider(
             <Provider store={mockStore({} as any)}>
                 <WhatsAppMessageTemplateNavigator />
-            </Provider>
+            </Provider>,
         )
         expect(
-            screen.getByTestId('missing-templates-instructions')
+            screen.getByTestId('missing-templates-instructions'),
         ).toBeInTheDocument()
     })
 })

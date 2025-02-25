@@ -1,26 +1,28 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useEffect} from 'react'
-import {useParams, Link} from 'react-router-dom'
+import React, { useEffect } from 'react'
+
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { Link, useParams } from 'react-router-dom'
 
 import emptyStateTemplate from 'assets/img/actions/empty-state-template.png'
-import {FeatureFlagKey} from 'config/featureFlags'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     useGetStoreWorkflowsConfigurations,
     useGetWorkflowConfigurationTemplates,
 } from 'models/workflows/queries'
-import {AiAgentLayout} from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
-import {ACTIONS, AI_AGENT} from 'pages/aiAgent/constants'
-import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
+import { ACTIONS, AI_AGENT } from 'pages/aiAgent/constants'
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import AutomateViewEmptyStateBanner from 'pages/automate/common/components/AutomateViewEmptyStateBanner'
 
-import css from './ActionsView.less'
 import ActionsList from './components/ActionsList'
 import ActionsUseCaseTemplatesCards from './components/ActionsUseCaseTemplatesCards'
 import BrowseAllActionsButton from './components/BrowseAllActionsButton'
 import CreateCustomActionButton from './components/CreateCustomActionButton'
-import {ACTIONS_DESCRIPTION} from './constants'
-import {handleError} from './hooks/errorHandler'
+import { ACTIONS_DESCRIPTION } from './constants'
+import { handleError } from './hooks/errorHandler'
+
+import css from './ActionsView.less'
 
 const MAX_TEMPLATES = 7
 
@@ -30,7 +32,7 @@ const ActionsView = () => {
     const isStandaloneMenuEnabled =
         useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
 
-    const {shopName, shopType} = useParams<{
+    const { shopName, shopType } = useParams<{
         shopType: string
         shopName: string
     }>()
@@ -44,19 +46,19 @@ const ActionsView = () => {
         storeType: shopType,
         triggers: ['llm-prompt'],
     })
-    const {routes} = useAiAgentNavigation({shopName})
+    const { routes } = useAiAgentNavigation({ shopName })
 
     const {
         data: templateConfigurations = [],
         isInitialLoading: isTemplateConfigurationsInitialLoading,
-    } = useGetWorkflowConfigurationTemplates({triggers: ['llm-prompt']})
+    } = useGetWorkflowConfigurationTemplates({ triggers: ['llm-prompt'] })
 
     useEffect(() => {
         if (isError) {
             handleError(
                 error,
                 'Failed to load actions. Please try again later.',
-                dispatch
+                dispatch,
             )
         }
     }, [dispatch, error, isError])

@@ -1,10 +1,12 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import React, {ReactElement, ReactNode} from 'react'
-import {Link} from 'react-router-dom'
+import React, { ReactElement, ReactNode } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { Link } from 'react-router-dom'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import css from './ConnectLink.less'
 

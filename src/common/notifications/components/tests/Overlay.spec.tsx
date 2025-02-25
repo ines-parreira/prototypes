@@ -1,10 +1,12 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {assumeMock} from 'utils/testing'
+import { render, screen } from '@testing-library/react'
+
+import { assumeMock } from 'utils/testing'
 
 import useNotificationsOverlay from '../../hooks/useNotificationsOverlay'
 import Overlay from '../Overlay'
+
 import css from '../Overlay.less'
 
 jest.mock('../../hooks/useNotificationsOverlay', () => jest.fn())
@@ -20,13 +22,13 @@ describe('Overlay', () => {
     })
 
     it('should render nothing if the overlay is not visible', () => {
-        const {container} = render(<Overlay />)
+        const { container } = render(<Overlay />)
         expect(container).toBeEmptyDOMElement()
     })
 
     it('should render the backdrop and feed if the overlay is visible', () => {
         useNotificationsOverlayMock.mockReturnValue([true, onToggle])
-        const {container} = render(<Overlay />)
+        const { container } = render(<Overlay />)
         expect(container.firstChild).toHaveClass(css.backdrop)
         expect(screen.getByText('Feed')).toBeInTheDocument()
     })

@@ -1,45 +1,46 @@
-import {fromJS, Map} from 'immutable'
-import React, {useCallback, useMemo} from 'react'
+import React, { useCallback, useMemo } from 'react'
 
-import {useParams} from 'react-router-dom'
+import { fromJS, Map } from 'immutable'
+import { useParams } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
-
-import {useGetCampaign, useListCampaigns} from 'models/convert/campaign/queries'
+import {
+    useGetCampaign,
+    useListCampaigns,
+} from 'models/convert/campaign/queries'
 import {
     CampaignCreatePayload,
     CampaignListOptions as CampaignListOptionsParams,
     CampaignUpdatePayload,
 } from 'models/convert/campaign/types'
-import {IntegrationType} from 'models/integration/constants'
-import {useCreateABGroup} from 'pages/convert/abVariants/hooks/useCreateABGroup'
-import {abVariantAddUrl, abVariantsUrl} from 'pages/convert/abVariants/urls'
-import {ACTIVE_CAMPAIGNS_LIMIT} from 'pages/convert/campaigns/constants/lightCampaigns'
-import {useGetActiveCampaignsCount} from 'pages/convert/campaigns/hooks/useGetActiveCampaignsCount'
-import {useIsCampaignCreationAllowed} from 'pages/convert/campaigns/hooks/useIsCampaignCreationAllowed'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import { IntegrationType } from 'models/integration/constants'
+import { useCreateABGroup } from 'pages/convert/abVariants/hooks/useCreateABGroup'
+import { abVariantAddUrl, abVariantsUrl } from 'pages/convert/abVariants/urls'
+import { ACTIVE_CAMPAIGNS_LIMIT } from 'pages/convert/campaigns/constants/lightCampaigns'
+import { useGetActiveCampaignsCount } from 'pages/convert/campaigns/hooks/useGetActiveCampaignsCount'
+import { useIsCampaignCreationAllowed } from 'pages/convert/campaigns/hooks/useIsCampaignCreationAllowed'
+import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import history from 'pages/history'
-import {getHumanAgentsJS} from 'state/agents/selectors'
+import { getHumanAgentsJS } from 'state/agents/selectors'
 import {
     getIntegrationById,
     getIntegrationByIdAndType,
 } from 'state/integrations/selectors'
-import {toJS} from 'utils'
+import { toJS } from 'utils'
 
 import {
     CONVERT_ROUTE_CAMPAIGN_PARAM_NAME,
     CONVERT_ROUTE_PARAM_NAME,
 } from '../../../common/constants'
-import {ConvertRouteCampaignDetailParams} from '../../../common/types'
-
-import {useCreateCampaign} from '../../hooks/useCreateCampaign'
-import {useDeleteCampaign} from '../../hooks/useDeleteCampaign'
-import {useUpdateCampaign} from '../../hooks/useUpdateCampaign'
-import {CampaignDetailsForm} from '../../providers/CampaignDetailsForm'
-import {Campaign} from '../../types/Campaign'
-import {chatIsShopifyStore} from '../../utils/chatIsShopifyStore'
-import {duplicateCampaign} from '../../utils/duplicateCampaign'
-import {BaseCampaignDetails} from '../BaseCampaignDetails'
+import { ConvertRouteCampaignDetailParams } from '../../../common/types'
+import { useCreateCampaign } from '../../hooks/useCreateCampaign'
+import { useDeleteCampaign } from '../../hooks/useDeleteCampaign'
+import { useUpdateCampaign } from '../../hooks/useUpdateCampaign'
+import { CampaignDetailsForm } from '../../providers/CampaignDetailsForm'
+import { Campaign } from '../../types/Campaign'
+import { chatIsShopifyStore } from '../../utils/chatIsShopifyStore'
+import { duplicateCampaign } from '../../utils/duplicateCampaign'
+import { BaseCampaignDetails } from '../BaseCampaignDetails'
 
 const CampaignDetailsFactory = (): JSX.Element => {
     const {
@@ -48,15 +49,15 @@ const CampaignDetailsFactory = (): JSX.Element => {
     } = useParams<ConvertRouteCampaignDetailParams>()
 
     const integration = useAppSelector(
-        getIntegrationById(parseInt(integrationId))
+        getIntegrationById(parseInt(integrationId)),
     )
 
-    const {channelConnection, isLoading: isChannelConnectionLoading} =
+    const { channelConnection, isLoading: isChannelConnectionLoading } =
         useGetOrCreateChannelConnection(toJS(integration))
 
-    const {data, isLoading: isCampaignLoading} = useGetCampaign(
-        {campaign_id: campaignId || ''},
-        {enabled: !!campaignId}
+    const { data, isLoading: isCampaignLoading } = useGetCampaign(
+        { campaign_id: campaignId || '' },
+        { enabled: !!campaignId },
     )
 
     const campaignListOptions = useMemo(() => {
@@ -70,13 +71,13 @@ const CampaignDetailsFactory = (): JSX.Element => {
         ) as CampaignListOptionsParams
     }, [channelConnection])
 
-    const {data: campaigns} = useListCampaigns(campaignListOptions, {
+    const { data: campaigns } = useListCampaigns(campaignListOptions, {
         enabled: !!channelConnection && !!campaignListOptions,
     })
 
     const campaignCreationAllowed = useIsCampaignCreationAllowed(integration)
     const activeCampaignsCount = useGetActiveCampaignsCount(
-        campaigns as Campaign[]
+        campaigns as Campaign[],
     )
 
     const isOverCampaignsLimit = useMemo(() => {
@@ -96,18 +97,18 @@ const CampaignDetailsFactory = (): JSX.Element => {
     const shopifyIntegration = useAppSelector(
         getIntegrationByIdAndType(
             integration.getIn(['meta', 'shop_integration_id']),
-            IntegrationType.Shopify
-        )
+            IntegrationType.Shopify,
+        ),
     )
 
     const shopify = fromJS(shopifyIntegration || {})
 
     const agents = useAppSelector(getHumanAgentsJS)
 
-    const {mutateAsync: updateCampaign} = useUpdateCampaign()
-    const {mutateAsync: createCampaign} = useCreateCampaign()
-    const {mutateAsync: deleteCampaign} = useDeleteCampaign()
-    const {mutateAsync: createABVariant} = useCreateABGroup()
+    const { mutateAsync: updateCampaign } = useUpdateCampaign()
+    const { mutateAsync: createCampaign } = useCreateCampaign()
+    const { mutateAsync: deleteCampaign } = useDeleteCampaign()
+    const { mutateAsync: createABVariant } = useCreateABGroup()
 
     const handleCreateCampaign = useCallback(
         async (campaign: Map<any, any>) => {
@@ -121,11 +122,11 @@ const CampaignDetailsFactory = (): JSX.Element => {
                 ])
                 const newCampaign = response?.data as Campaign
                 history.push(
-                    `/app/convert/${integrationId}/campaigns/${newCampaign?.id}`
+                    `/app/convert/${integrationId}/campaigns/${newCampaign?.id}`,
                 )
             }
         },
-        [channelConnection, createCampaign, integrationId]
+        [channelConnection, createCampaign, integrationId],
     )
 
     const handleUpdateCampaign = useCallback(
@@ -142,7 +143,7 @@ const CampaignDetailsFactory = (): JSX.Element => {
                 ])
             }
         },
-        [updateCampaign, channelConnection]
+        [updateCampaign, channelConnection],
     )
 
     const handleDeleteCampaign = useCallback(async () => {
@@ -155,7 +156,7 @@ const CampaignDetailsFactory = (): JSX.Element => {
                 },
             ])
             history.push(
-                `/app/convert/${integration.get('id') as string}/campaigns`
+                `/app/convert/${integration.get('id') as string}/campaigns`,
             )
         }
     }, [campaignId, channelConnection, deleteCampaign, integration])
@@ -165,16 +166,16 @@ const CampaignDetailsFactory = (): JSX.Element => {
             if (!!channelConnection) {
                 const duplicate = duplicateCampaign(
                     toJS(campaign),
-                    channelConnection.id
+                    channelConnection.id,
                 ) as CampaignCreatePayload
                 const response = await createCampaign([undefined, duplicate])
                 const newCampaign = response?.data as Campaign
                 history.push(
-                    `/app/convert/${integrationId}/campaigns/${newCampaign?.id}`
+                    `/app/convert/${integrationId}/campaigns/${newCampaign?.id}`,
                 )
             }
         },
-        [createCampaign, channelConnection, integrationId]
+        [createCampaign, channelConnection, integrationId],
     )
 
     const handleCreateABVariant = useCallback(async () => {
@@ -187,7 +188,7 @@ const CampaignDetailsFactory = (): JSX.Element => {
             return
         }
 
-        await createABVariant([undefined, {campaign_id: data.id}])
+        await createABVariant([undefined, { campaign_id: data.id }])
 
         history.push(abVariantAddUrl(integrationId, data.id))
     }, [data, createABVariant, integrationId])
@@ -198,7 +199,7 @@ const CampaignDetailsFactory = (): JSX.Element => {
 
     const isLoading = useMemo(
         () => isChannelConnectionLoading || (isCampaignLoading && !!campaignId),
-        [isChannelConnectionLoading, isCampaignLoading, campaignId]
+        [isChannelConnectionLoading, isCampaignLoading, campaignId],
     )
 
     const backUrl = `/app/convert/${integration.get('id') as string}/campaigns${

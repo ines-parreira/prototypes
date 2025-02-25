@@ -1,15 +1,15 @@
-import {fromJS, Map, List} from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 
-import {initRefundOrderLineItems} from 'business/shopify/order'
+import { initRefundOrderLineItems } from 'business/shopify/order'
 import {
-    shopifyRefundOrderPayloadFixture,
     shopifyDraftOrderPayloadFixture,
     shopifyOrderFixture,
+    shopifyRefundOrderPayloadFixture,
     shopifySuggestedRefundFixture,
 } from 'fixtures/shopify'
 
 import * as constants from '../constants'
-import reducer, {initialState} from '../reducers'
+import reducer, { initialState } from '../reducers'
 
 describe('infobarActions.shopify.refundOrder reducer', () => {
     describe('SET_LOADING', () => {
@@ -38,7 +38,7 @@ describe('infobarActions.shopify.refundOrder reducer', () => {
     describe('SET_ORDER_ID', () => {
         it('should set order id', () => {
             const orderId = 123
-            const action = {type: constants.SET_ORDER_ID, orderId}
+            const action = { type: constants.SET_ORDER_ID, orderId }
             const nextState = reducer(initialState, action)
             expect(nextState.get('orderId')).toEqualImmutable(orderId)
         })
@@ -47,7 +47,7 @@ describe('infobarActions.shopify.refundOrder reducer', () => {
     describe('SET_PAYLOAD', () => {
         it('should set payload', () => {
             const payload = fromJS(shopifyRefundOrderPayloadFixture())
-            const action = {type: constants.SET_PAYLOAD, payload}
+            const action = { type: constants.SET_PAYLOAD, payload }
             const nextState = reducer(initialState, action)
             expect(nextState.get('payload')).toEqualImmutable(payload)
         })
@@ -57,7 +57,7 @@ describe('infobarActions.shopify.refundOrder reducer', () => {
         it('should set line items', () => {
             const order = fromJS(shopifyOrderFixture())
             const lineItems = initRefundOrderLineItems(order)
-            const action = {type: constants.SET_LINE_ITEMS, lineItems}
+            const action = { type: constants.SET_LINE_ITEMS, lineItems }
             const nextState = reducer(initialState, action)
             expect(nextState.get('lineItems')).toEqualImmutable(lineItems)
         })
@@ -66,7 +66,7 @@ describe('infobarActions.shopify.refundOrder reducer', () => {
     describe('SET_REFUND', () => {
         it('should set refund', () => {
             const refund = fromJS(shopifySuggestedRefundFixture())
-            const action = {type: constants.SET_REFUND, refund}
+            const action = { type: constants.SET_REFUND, refund }
             const nextState = reducer(initialState, action)
             expect(nextState.get('refund')).toEqualImmutable(refund)
         })
@@ -74,21 +74,21 @@ describe('infobarActions.shopify.refundOrder reducer', () => {
 
     describe('SET_TRANSACTIONS', () => {
         it('should set products', () => {
-            const transaction: Map<any, any> = Map({amount: '1.00'})
+            const transaction: Map<any, any> = Map({ amount: '1.00' })
             const transactions = List([transaction])
             const payload = fromJS(shopifyRefundOrderPayloadFixture())
             const state = initialState.set('payload', payload)
-            const action = {type: constants.SET_TRANSACTIONS, transactions}
+            const action = { type: constants.SET_TRANSACTIONS, transactions }
             const nextState = reducer(state, action)
             expect(
-                nextState.getIn(['payload', 'transactions', 0, 'amount'])
+                nextState.getIn(['payload', 'transactions', 0, 'amount']),
             ).toEqual('1.00')
         })
 
         it('should keep current state if the payload is not set', () => {
             const transaction: Map<any, any> = Map()
             const transactions = List([transaction])
-            const action = {type: constants.SET_TRANSACTIONS, transactions}
+            const action = { type: constants.SET_TRANSACTIONS, transactions }
             const nextState = reducer(initialState, action)
             expect(nextState).toEqualImmutable(initialState)
         })
@@ -99,14 +99,14 @@ describe('infobarActions.shopify.refundOrder reducer', () => {
             const restock = false
             const payload = fromJS(shopifyRefundOrderPayloadFixture())
             const state = initialState.set('payload', payload)
-            const action = {type: constants.SET_RESTOCK, restock}
+            const action = { type: constants.SET_RESTOCK, restock }
             const nextState = reducer(state, action)
             expect(nextState.getIn(['payload', 'restock'])).toEqual(restock)
         })
 
         it('should keep current state if the payload is not set', () => {
             const restock = false
-            const action = {type: constants.SET_RESTOCK, restock}
+            const action = { type: constants.SET_RESTOCK, restock }
             const nextState = reducer(initialState, action)
             expect(nextState).toEqualImmutable(initialState)
         })
@@ -116,7 +116,7 @@ describe('infobarActions.shopify.refundOrder reducer', () => {
         it('should set initial state', () => {
             const payload = fromJS(shopifyDraftOrderPayloadFixture())
             const previousState = initialState.set('payload', payload)
-            const action = {type: constants.SET_INITIAL_STATE}
+            const action = { type: constants.SET_INITIAL_STATE }
             const nextState = reducer(previousState, action)
             expect(nextState).toEqualImmutable(initialState)
         })

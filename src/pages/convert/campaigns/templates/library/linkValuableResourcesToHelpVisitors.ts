@@ -1,22 +1,21 @@
 // Link to a valuable resource outside of business hours
-
-import {ulid} from 'ulidx'
+import { ulid } from 'ulidx'
 
 import {
-    WizardConfiguration,
     BannerType,
     TooltipActionType,
+    WizardConfiguration,
 } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
-import {CampaignStepsKeys} from 'pages/convert/campaigns/types/CampaignSteps'
-import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
-import {CampaignTriggerBusinessHoursValuesEnum} from 'pages/convert/campaigns/types/enums/CampaignTriggerBusinessHoursValues.enum'
-import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
-import {createTriggerRule} from 'pages/convert/campaigns/utils/createTriggerRule'
-import {assetsUrl} from 'utils'
+import { CampaignStepsKeys } from 'pages/convert/campaigns/types/CampaignSteps'
+import { CampaignStatus } from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
+import { CampaignTriggerBusinessHoursValuesEnum } from 'pages/convert/campaigns/types/enums/CampaignTriggerBusinessHoursValues.enum'
+import { CampaignTriggerOperator } from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
+import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import { createTriggerRule } from 'pages/convert/campaigns/utils/createTriggerRule'
+import { assetsUrl } from 'utils'
 
-import {CampaignConfigurationBuilder} from '../constructor'
-import {CampaignConfiguration, CampaignTemplate} from '../types'
+import { CampaignConfigurationBuilder } from '../constructor'
+import { CampaignConfiguration, CampaignTemplate } from '../types'
 
 export const LINK_VALUABLE_RESOURCES_TO_HELP_VISITORS: CampaignTemplate = {
     slug: 'link-valuable-resource-to-help-visitors',
@@ -24,7 +23,7 @@ export const LINK_VALUABLE_RESOURCES_TO_HELP_VISITORS: CampaignTemplate = {
     description: 'Guide your shoppers, even outside of your business hours',
     onboarding: false,
     preview: assetsUrl(
-        'img/campaigns/library/link-valuable-resource-to-help-visitors.png'
+        'img/campaigns/library/link-valuable-resource-to-help-visitors.png',
     ),
     getWizardConfiguration: (): WizardConfiguration => {
         return {
@@ -73,7 +72,7 @@ export const LINK_VALUABLE_RESOURCES_TO_HELP_VISITORS: CampaignTemplate = {
                 status: CampaignStatus.Inactive,
                 triggers: triggers,
                 trigger_rule: createTriggerRule(triggers),
-            }
+            },
         )
 
         return Promise.resolve(builder.build())

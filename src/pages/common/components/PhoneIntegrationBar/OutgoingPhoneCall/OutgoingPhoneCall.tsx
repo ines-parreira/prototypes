@@ -1,14 +1,15 @@
-import {Call} from '@twilio/voice-sdk'
-import classNames from 'classnames'
 import React from 'react'
 
-import {useCallStatus} from 'hooks/integrations/phone/useCallStatus'
+import { Call } from '@twilio/voice-sdk'
+import classNames from 'classnames'
+
+import { useCallStatus } from 'hooks/integrations/phone/useCallStatus'
 import Button from 'pages/common/components/button/Button'
 import PhoneCustomerName from 'pages/common/components/PhoneIntegrationBar/PhoneCustomerName/PhoneCustomerName'
 import PhoneInfobarWrapper from 'pages/common/components/PhoneIntegrationBar/PhoneInfobarWrapper/PhoneInfobarWrapper'
 import PhoneIntegrationName from 'pages/common/components/PhoneIntegrationBar/PhoneIntegrationName/PhoneIntegrationName'
 
-import {useConnectionParameters} from '../hooks'
+import { useConnectionParameters } from '../hooks'
 
 import css from './OutgoingPhoneCall.less'
 
@@ -21,7 +22,7 @@ export default function OutgoingPhoneCall({
     call,
     className,
 }: Props): JSX.Element {
-    const {integrationId, customerName, customerPhoneNumber} =
+    const { integrationId, customerName, customerPhoneNumber } =
         useConnectionParameters(call)
     const status = useCallStatus(call)
 

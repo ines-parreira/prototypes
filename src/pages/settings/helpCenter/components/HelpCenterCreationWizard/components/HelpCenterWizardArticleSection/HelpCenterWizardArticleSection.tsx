@@ -1,6 +1,8 @@
-import {Tooltip, Skeleton} from '@gorgias/merchant-ui-kit'
+import React, { useMemo, useState } from 'react'
+
 import classNames from 'classnames'
-import React, {useMemo, useState} from 'react'
+
+import { Skeleton, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import {
     ArticleTemplateType,
@@ -11,9 +13,9 @@ import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import IconButton from 'pages/common/components/button/IconButton'
 import CheckBox from 'pages/common/forms/CheckBox'
 
-import {ARTICLE_TEMPLATE_CATEGORIES} from '../../../CategoriesView/components/ArticleTemplateCard/constants'
+import { ARTICLE_TEMPLATE_CATEGORIES } from '../../../CategoriesView/components/ArticleTemplateCard/constants'
+import { AnimatedFadeInOut } from '../AnimatedFadeInOut/AnimatedFadeInOut'
 
-import {AnimatedFadeInOut} from '../AnimatedFadeInOut/AnimatedFadeInOut'
 import css from './HelpCenterWizardArticleSection.less'
 
 type Props = {
@@ -69,9 +71,9 @@ const ArticleSection: React.FC<Props> = ({
                                 <i
                                     className={classNames(
                                         'material-icons',
-                                        css.icon
+                                        css.icon,
                                     )}
-                                    style={{color: headerData.icon.color}}
+                                    style={{ color: headerData.icon.color }}
                                 >
                                     {headerData.icon.name}
                                 </i>
@@ -82,7 +84,7 @@ const ArticleSection: React.FC<Props> = ({
                                     <i
                                         className={classNames(
                                             'material-icons',
-                                            css.infoIcon
+                                            css.infoIcon,
                                         )}
                                         id={tooltipId}
                                     >

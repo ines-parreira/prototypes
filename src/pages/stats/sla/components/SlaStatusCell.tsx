@@ -1,13 +1,14 @@
-import {Tooltip, Badge} from '@gorgias/merchant-ui-kit'
-import React, {Fragment} from 'react'
+import React, { Fragment } from 'react'
+
+import { Badge, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useId from 'hooks/useId'
 import {
     TicketSLADimension,
     TicketSLAStatus,
 } from 'models/reporting/cubes/sla/TicketSLACube'
-import {formatDuration} from 'pages/stats/common/utils'
-import {SlaStatusLabel} from 'services/reporting/constants'
+import { formatDuration } from 'pages/stats/common/utils'
+import { SlaStatusLabel } from 'services/reporting/constants'
 
 export type SLAPolicyStatus = {
     [TicketSLADimension.SlaPolicyMetricName]: string
@@ -50,7 +51,7 @@ export const SLAStatusCell = ({
             current.ticketStatus === TicketSLAStatus.Breached
                 ? TicketSLAStatus.Breached
                 : acc,
-        TicketSLAStatus.Satisfied
+        TicketSLAStatus.Satisfied,
     )
 
     return (
@@ -67,7 +68,7 @@ export const SLAStatusCell = ({
             </Badge>
             <Tooltip target={badgeId}>
                 {formatted.map(
-                    ({metricName, metricStatus, delta, beforeOrAfter}) => (
+                    ({ metricName, metricStatus, delta, beforeOrAfter }) => (
                         <Fragment key={metricName}>
                             <span>
                                 <strong>{metricName}</strong>{' '}
@@ -83,7 +84,7 @@ export const SLAStatusCell = ({
                             </span>
                             <br />
                         </Fragment>
-                    )
+                    ),
                 )}
             </Tooltip>
         </div>

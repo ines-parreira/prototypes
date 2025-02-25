@@ -1,12 +1,14 @@
 import React from 'react'
-import {useHistory} from 'react-router-dom'
 
-import {logEvent} from 'common/segment'
+import { useHistory } from 'react-router-dom'
+
+import { logEvent } from 'common/segment'
 import Button from 'pages/common/components/button/Button'
-import {assetsUrl} from 'utils'
+import { assetsUrl } from 'utils'
+
+import { getBannerDetails } from './utils'
 
 import css from './FlowsBanner.less'
-import {getBannerDetails} from './utils'
 
 export type FlowsBannerProps = {
     isSubscribedToAutomation: boolean
@@ -19,10 +21,10 @@ const FlowsBanner = ({
     contactFormId,
     shopName,
 }: FlowsBannerProps): JSX.Element => {
-    const {title, description, button, track} = getBannerDetails(
+    const { title, description, button, track } = getBannerDetails(
         isSubscribedToAutomation,
         contactFormId,
-        shopName
+        shopName,
     )
     const history = useHistory()
 

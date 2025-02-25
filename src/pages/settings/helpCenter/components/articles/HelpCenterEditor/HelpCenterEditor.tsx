@@ -1,30 +1,30 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
+import React, { useCallback, useEffect, useRef } from 'react'
 
 import bytes from 'bytes'
 import classnames from 'classnames'
-import {zip} from 'lodash'
-import React, {useCallback, useEffect, useRef} from 'react'
+import { zip } from 'lodash'
 import FroalaEditorComponentType from 'react-froala-wysiwyg'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {LocaleCode} from 'models/helpCenter/types'
+import { LocaleCode } from 'models/helpCenter/types'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
-import {useEditionManager} from 'pages/settings/helpCenter/providers/EditionManagerContext'
-import {replaceUploadUrls} from 'pages/settings/helpCenter/utils/helpCenter.utils'
-import {uploadAttachments} from 'rest_api/help_center_api/uploadAttachments'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { useEditionManager } from 'pages/settings/helpCenter/providers/EditionManagerContext'
+import { replaceUploadUrls } from 'pages/settings/helpCenter/utils/helpCenter.utils'
+import { uploadAttachments } from 'rest_api/help_center_api/uploadAttachments'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
-import {FroalaEditor, config} from './froala-config'
+import { config, FroalaEditor } from './froala-config'
 import FroalaEditorComponent from './FroalaEditorComponent.js'
 import {
+    createOnCloseEventHandler,
     generateEditorAttachmentHTML,
     HELP_CENTER_EDITOR_CSS_ATTACHMENT_CONSTANTS,
-    createOnCloseEventHandler,
     validateFileAttachments,
 } from './HelpCenterEditor.utils'
-import {Editor} from './types'
+import { Editor } from './types'
 
 type Props = {
     articleId?: number
@@ -49,7 +49,7 @@ const HelpCenterEditor = ({
 }: Props) => {
     const dispatch = useAppDispatch()
     const editorRef = useRef<FroalaEditorInstance | null>(null)
-    const {setIsEditorCodeViewActive} = useEditionManager()
+    const { setIsEditorCodeViewActive } = useEditionManager()
     const nrOfFileAttachments = useRef(0)
     const editorOnRemoveAttachmentHandler = useRef<EventListener>()
 
@@ -86,7 +86,7 @@ const HelpCenterEditor = ({
     const resetEditorOnRemoveAttachmentHandlers = useCallback(
         (editor: Editor, onRemoveAttachmentHandler: EventListener) => {
             const removeAttachmentElements = editor.el.querySelectorAll(
-                '.' + HELP_CENTER_EDITOR_CSS_ATTACHMENT_CONSTANTS.closeIcon
+                '.' + HELP_CENTER_EDITOR_CSS_ATTACHMENT_CONSTANTS.closeIcon,
             )
 
             nrOfFileAttachments.current = removeAttachmentElements.length
@@ -96,7 +96,7 @@ const HelpCenterEditor = ({
                 element.addEventListener('click', onRemoveAttachmentHandler)
             })
         },
-        []
+        [],
     )
 
     return (
@@ -118,7 +118,7 @@ const HelpCenterEditor = ({
 
                         const errorMessage = validateFileAttachments(
                             nrOfFileAttachments.current,
-                            files
+                            files,
                         )
 
                         if (errorMessage !== null) {
@@ -126,7 +126,7 @@ const HelpCenterEditor = ({
                                 notify({
                                     status: NotificationStatus.Error,
                                     message: errorMessage,
-                                })
+                                }),
                             )
                             return false
                         }
@@ -162,14 +162,14 @@ const HelpCenterEditor = ({
                                             })
 
                                         editor.html.insert(html, false)
-                                    }
+                                    },
                                 )
 
                                 editor.undo.saveStep()
 
                                 resetEditorOnRemoveAttachmentHandlers(
                                     editor,
-                                    editorOnRemoveAttachmentHandler.current
+                                    editorOnRemoveAttachmentHandler.current,
                                 )
                             })
                             .catch((err) => {
@@ -177,7 +177,7 @@ const HelpCenterEditor = ({
                                     notify({
                                         status: NotificationStatus.Error,
                                         message: err.message,
-                                    })
+                                    }),
                                 )
                             })
 
@@ -202,7 +202,7 @@ const HelpCenterEditor = ({
 
                                 // intercept the insertion of the image
                                 // else by default, froala uses base64 images
-                                const {url} = res[0]
+                                const { url } = res[0]
 
                                 // This is needed to make sure the image we just uploaded is available at the given URL before trying to display it
                                 setTimeout(() => {
@@ -211,7 +211,7 @@ const HelpCenterEditor = ({
                                         false,
                                         null,
                                         editor.image.get(),
-                                        res
+                                        res,
                                     )
                                 }, 500)
                             })
@@ -220,7 +220,7 @@ const HelpCenterEditor = ({
                                     notify({
                                         message: 'Failed to upload the image',
                                         status: NotificationStatus.Error,
-                                    })
+                                    }),
                                 )
                             })
 
@@ -251,7 +251,8 @@ const HelpCenterEditor = ({
 
                         const videoProviders: string[] =
                             FroalaEditor.VIDEO_PROVIDERS.map(
-                                ({provider}: {provider: string}) => provider
+                                ({ provider }: { provider: string }) =>
+                                    provider,
                             )
                         const $popup = editor.popups
                             .get('video.insert')
@@ -261,8 +262,8 @@ const HelpCenterEditor = ({
                         // Customize video link error message
                         $popup.html(
                             `Unsupported video link.</br>Supported video platforms: ${videoProviders.join(
-                                ', '
-                            )}.`
+                                ', ',
+                            )}.`,
                         )
                     },
                     initialized: function () {
@@ -281,7 +282,7 @@ const HelpCenterEditor = ({
 
                         resetEditorOnRemoveAttachmentHandlers(
                             editor,
-                            closeClickEventHandler
+                            closeClickEventHandler,
                         )
                     },
                 },

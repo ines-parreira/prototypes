@@ -1,42 +1,45 @@
-import {createAction} from '@reduxjs/toolkit'
-import {AxiosError} from 'axios'
+import { createAction } from '@reduxjs/toolkit'
+import { AxiosError } from 'axios'
 import _get from 'lodash/get'
 import _isUndefined from 'lodash/isUndefined'
 import moment from 'moment-timezone'
 
-import {AlertBannerTypes} from 'AlertBanners'
+import { AlertBannerTypes } from 'AlertBanners'
 import {
-    User,
     EditableUserProfile,
-    UserSetting,
+    User,
     UserPreferences,
+    UserSetting,
     UserSettingType,
 } from 'config/types/user'
-import {DateAndTimeFormatting} from 'constants/datetime'
+import { DateAndTimeFormatting } from 'constants/datetime'
 import client from 'models/api/resources'
 import history from 'pages/history'
-import {check2FARequired} from 'pages/settings/yourProfile/twoFactorAuthentication/utils'
-import {fetchChats} from 'state/chats/actions'
+import { check2FARequired } from 'pages/settings/yourProfile/twoFactorAuthentication/utils'
+import { fetchChats } from 'state/chats/actions'
 import * as currentAccountSelectors from 'state/currentAccount/selectors'
 import {
     OPEN_TWO_FA_MODAL_URL,
     TWO_FA_REQUIRED_NOTIFICATION_ID,
 } from 'state/currentUser/constants'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus, NotificationStyle} from 'state/notifications/types'
-import {formatDatetime} from 'utils'
-import {getDateAndTimeFormat} from 'utils/datetime'
+import { notify } from 'state/notifications/actions'
+import {
+    NotificationStatus,
+    NotificationStyle,
+} from 'state/notifications/types'
+import { formatDatetime } from 'utils'
+import { getDateAndTimeFormat } from 'utils/datetime'
 
-import type {StoreDispatch, RootState} from '../types'
+import type { RootState, StoreDispatch } from '../types'
 import * as constants from './constants'
 import * as currentUserSelectors from './selectors'
 
 export const changePassword =
     (oldPassword: string, newPassword: string, twoFACode?: string) =>
     (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
-        dispatch({type: constants.CHANGE_PASSWORD_START})
+        dispatch({ type: constants.CHANGE_PASSWORD_START })
 
-        const payload: {[id: string]: string} = {
+        const payload: { [id: string]: string } = {
             old_password: oldPassword,
             new_password: newPassword,
         }
@@ -58,7 +61,7 @@ export const changePassword =
                         notify({
                             status: NotificationStatus.Success,
                             message: 'Password successfully changed!',
-                        })
+                        }),
                     )
                 },
                 (error: AxiosError) => {
@@ -67,7 +70,7 @@ export const changePassword =
                         error,
                         reason: 'Failed to modify your password',
                     })
-                }
+                },
             )
     }
 
@@ -92,7 +95,7 @@ export function updateCurrentUser(data: Partial<EditableUserProfile>) {
                             message: _get(data, ['meta', 'profile_picture_url'])
                                 ? 'User picture successfully updated'
                                 : 'User successfully updated',
-                        })
+                        }),
                     )
 
                     return resp
@@ -104,7 +107,7 @@ export function updateCurrentUser(data: Partial<EditableUserProfile>) {
                         verbose: true,
                         reason: 'Failed to update user',
                     })
-                }
+                },
             )
     }
 }
@@ -121,7 +124,7 @@ export function submitSettingSuccess(setting: UserSetting, isUpdate: boolean) {
 export function submitSetting(data: UserSetting, notification: boolean) {
     return (
         dispatch: StoreDispatch,
-        getState: () => RootState
+        getState: () => RootState,
     ): Promise<ReturnType<StoreDispatch>> => {
         const prevIsAvailableForChat: boolean =
             currentUserSelectors.isAvailable(getState())
@@ -134,11 +137,13 @@ export function submitSetting(data: UserSetting, notification: boolean) {
 
         if (data.id != null) {
             promise = client.put<
-                UserSetting & Omit<{[key: string]: unknown}, keyof UserSetting>
+                UserSetting &
+                    Omit<{ [key: string]: unknown }, keyof UserSetting>
             >(`/api/users/0/settings/${data.id}/`, data)
         } else {
             promise = client.post<
-                UserSetting & Omit<{[key: string]: unknown}, keyof UserSetting>
+                UserSetting &
+                    Omit<{ [key: string]: unknown }, keyof UserSetting>
             >('/api/users/0/settings/', data)
         }
 
@@ -146,12 +151,12 @@ export function submitSetting(data: UserSetting, notification: boolean) {
             .then((json) => json?.data)
             .then(
                 (resp) => {
-                    const {id, type, data: respData} = resp
+                    const { id, type, data: respData } = resp
                     dispatch(
                         submitSettingSuccess(
-                            {id, type, data: respData} as UserSetting,
-                            !!data.id
-                        )
+                            { id, type, data: respData } as UserSetting,
+                            !!data.id,
+                        ),
                     )
 
                     // Refresh chat tickets if the current user updates his availability
@@ -167,7 +172,7 @@ export function submitSetting(data: UserSetting, notification: boolean) {
                             notify({
                                 status: NotificationStatus.Success,
                                 message: 'Settings successfully updated',
-                            })
+                            }),
                         )
                     }
 
@@ -181,7 +186,7 @@ export function submitSetting(data: UserSetting, notification: boolean) {
                         reason: 'Failed to update settings',
                         verbose: data.type === UserSettingType.Preferences,
                     })
-                }
+                },
             )
     }
 }
@@ -189,7 +194,7 @@ export function submitSetting(data: UserSetting, notification: boolean) {
 export const toggleActiveStatus =
     (status: Maybe<boolean>) =>
     (dispatch: StoreDispatch, getState: () => RootState) => {
-        const {currentUser} = getState()
+        const { currentUser } = getState()
         const currentStatus = currentUser.get('is_active')
 
         if (_isUndefined(status) || status !== currentStatus) {
@@ -219,7 +224,7 @@ export const update2FAEnabled =
             notify({
                 status: NotificationStatus.Success,
                 message: `Two-Factor Authentication has successfully been ${action}`,
-            })
+            }),
         )
 
         // Update the value in the currentUser object
@@ -240,7 +245,7 @@ export const handle2FAEnforced =
         const datetimeFormat = getDateAndTimeFormat(
             dateFormatSetting,
             timeFormatSetting,
-            DateAndTimeFormatting.CompactDate
+            DateAndTimeFormatting.CompactDate,
         )
 
         const userTimezone = currentUserSelectors.getTimezone(state)
@@ -249,7 +254,7 @@ export const handle2FAEnforced =
         const has2FAEnabled = currentUserSelectors.has2FaEnabled(state)
         const is2FARequired = check2FARequired(
             twoFAEnforcedDatetime,
-            has2FAEnabled
+            has2FAEnabled,
         )
 
         // If 2FA is required redirect to the 2FA page and open the setup modal as not dismissible
@@ -263,7 +268,7 @@ export const handle2FAEnforced =
             const twoFASetupDueDate = formatDatetime(
                 moment.utc(twoFAEnforcedDatetime),
                 datetimeFormat,
-                userTimezone
+                userTimezone,
             )
 
             void dispatch(
@@ -279,7 +284,7 @@ export const handle2FAEnforced =
                             history.push(OPEN_TWO_FA_MODAL_URL)
                         },
                     },
-                })
+                }),
             )
         }
     }

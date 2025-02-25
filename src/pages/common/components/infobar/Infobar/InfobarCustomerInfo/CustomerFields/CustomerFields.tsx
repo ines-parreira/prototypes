@@ -1,14 +1,15 @@
 import React from 'react'
 
-import {OBJECT_TYPES} from 'custom-fields/constants'
-import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import {useCustomFieldValues} from 'custom-fields/hooks/queries/useCustomFieldValues'
+import { OBJECT_TYPES } from 'custom-fields/constants'
+import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import { useCustomFieldValues } from 'custom-fields/hooks/queries/useCustomFieldValues'
 
 import CustomerField from './CustomerField'
-import css from './CustomerFields.less'
-import {Heading} from './Heading'
+import { Heading } from './Heading'
 
-export default function CustomerFields({customerId}: {customerId: number}) {
+import css from './CustomerFields.less'
+
+export default function CustomerFields({ customerId }: { customerId: number }) {
     const {
         data: definitionsData,
         isLoading: isDefinitionLoading,
@@ -47,8 +48,8 @@ export default function CustomerFields({customerId}: {customerId: number}) {
                         field={field}
                         value={
                             customFieldValues.find(
-                                ({field: valueField}) =>
-                                    field.id === valueField.id
+                                ({ field: valueField }) =>
+                                    field.id === valueField.id,
                             )?.value
                         }
                         customerId={customerId}

@@ -1,13 +1,13 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
+
+import { Link } from 'react-router-dom'
 
 import Button from 'pages/common/components/button/Button'
-
 import LinkButton from 'pages/common/components/button/LinkButton'
 
-import {SUPPORT_EMAIL} from './EmailDomainVerification/constants'
+import { SUPPORT_EMAIL } from './EmailDomainVerification/constants'
 import useDomainVerification from './EmailDomainVerification/useDomainVerification'
-import {listUrl} from './hooks/useEmailOnboarding'
+import { listUrl } from './hooks/useEmailOnboarding'
 
 export default function OnboardingDomainVerificationButtons() {
     const {

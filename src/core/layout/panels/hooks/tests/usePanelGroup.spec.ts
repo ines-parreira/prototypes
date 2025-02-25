@@ -1,8 +1,8 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
-import type {ContextValue} from '../../Context'
+import type { ContextValue } from '../../Context'
 import usePanelGroup from '../usePanelGroup'
 import usePanels from '../usePanels'
 
@@ -14,7 +14,9 @@ describe('usePanelGroup', () => {
 
     beforeEach(() => {
         subtractSize = jest.fn()
-        usePanelsMock.mockReturnValue({subtractSize} as unknown as ContextValue)
+        usePanelsMock.mockReturnValue({
+            subtractSize,
+        } as unknown as ContextValue)
     })
 
     it('should not subtract any size if none is given', () => {

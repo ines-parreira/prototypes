@@ -1,10 +1,10 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {CampaignTriggerType} from '../../types/enums/CampaignTriggerType.enum'
-import {createTrigger} from '../../utils/createTrigger'
+import { Meta, Story } from '@storybook/react'
 
-import {CampaignPreviewPopover} from './CampaignPreviewPopover'
+import { CampaignTriggerType } from '../../types/enums/CampaignTriggerType.enum'
+import { createTrigger } from '../../utils/createTrigger'
+import { CampaignPreviewPopover } from './CampaignPreviewPopover'
 
 const storyConfig: Meta = {
     title: 'Convert/Chat Campaigns/Preview Popover',
@@ -35,9 +35,9 @@ const storyConfig: Meta = {
 }
 
 const Template: Story<ComponentProps<typeof CampaignPreviewPopover>> = (
-    props
+    props,
 ) => (
-    <div style={{marginTop: 280}}>
+    <div style={{ marginTop: 280 }}>
         <CampaignPreviewPopover {...props}>
             <span>Campaign name preview</span>
         </CampaignPreviewPopover>

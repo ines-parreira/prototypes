@@ -1,6 +1,6 @@
-import {Reducer} from 'react'
+import { Reducer } from 'react'
 
-import {CommonReasonLabel} from './constants'
+import { CommonReasonLabel } from './constants'
 import {
     CANCELLATION_REASONS_ACTION_TYPE,
     CancellationReasonsActionType,
@@ -18,7 +18,7 @@ export const DEFAULT_STATE: CancellationReasonsState = {
 const isReasonsSelectionCompleted = (
     primaryReason: Reason | null,
     secondaryReason: Reason | null,
-    otherReason: Reason | null
+    otherReason: Reason | null,
 ): boolean => {
     if (primaryReason?.label === CommonReasonLabel.IPreferNotToSay) {
         return true
@@ -47,7 +47,7 @@ export const cancellationReasonsReducer: Reducer<
                 completed: isReasonsSelectionCompleted(
                     action.primaryReason,
                     null,
-                    null
+                    null,
                 ),
             }
         case CancellationReasonsActionType.SecondaryReasonSelected:
@@ -58,7 +58,7 @@ export const cancellationReasonsReducer: Reducer<
                 completed: isReasonsSelectionCompleted(
                     state.primaryReason,
                     action.secondaryReason,
-                    null
+                    null,
                 ),
             }
         case CancellationReasonsActionType.OtherReasonUpdated:
@@ -68,7 +68,7 @@ export const cancellationReasonsReducer: Reducer<
                 completed: isReasonsSelectionCompleted(
                     state.primaryReason,
                     state.secondaryReason,
-                    action.otherReason
+                    action.otherReason,
                 ),
             }
         case CancellationReasonsActionType.Reset:

@@ -1,1 +1,1 @@
-export {default} from './LanguageInputSection'
+export { default } from './LanguageInputSection'

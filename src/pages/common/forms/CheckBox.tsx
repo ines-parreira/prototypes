@@ -1,5 +1,3 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
 import React, {
     ForwardedRef,
     forwardRef,
@@ -10,9 +8,14 @@ import React, {
     useRef,
 } from 'react'
 
+import classnames from 'classnames'
+
+import { Label } from '@gorgias/merchant-ui-kit'
+
 import useId from 'hooks/useId'
 
 import Caption from './Caption/Caption'
+
 import css from './CheckBox.less'
 
 export type Props = {
@@ -49,7 +52,7 @@ function CheckBox(
         inputClassName,
         ...props
     }: Props,
-    ref: ForwardedRef<HTMLInputElement>
+    ref: ForwardedRef<HTMLInputElement>,
 ) {
     const inputRef = useRef<HTMLInputElement>(null)
     useImperativeHandle(ref, () => inputRef.current!, [inputRef])

@@ -1,32 +1,34 @@
-import {produce} from 'immer'
-import React, {useCallback} from 'react'
-import {DropTargetMonitor} from 'react-dnd'
-import {connect, ConnectedProps} from 'react-redux'
+import React, { useCallback } from 'react'
 
-import {UserViewsOrderingSettingData} from 'config/types/user'
+import { produce } from 'immer'
+import { DropTargetMonitor } from 'react-dnd'
+import { connect, ConnectedProps } from 'react-redux'
+
+import { UserViewsOrderingSettingData } from 'config/types/user'
 import useLocalStorage from 'hooks/useLocalStorage'
-import {Section} from 'models/section/types'
-import {View, ViewVisibility} from 'models/view/types'
-import {AccountViewsOrderingSettingData} from 'state/currentAccount/types'
-import {SectionsState} from 'state/entities/sections/types'
-import {viewUpdated} from 'state/entities/views/actions'
-import {ViewsState} from 'state/entities/views/types'
-import {notify} from 'state/notifications/actions'
-import {RootState} from 'state/types'
+import { Section } from 'models/section/types'
+import { View, ViewVisibility } from 'models/view/types'
+import { AccountViewsOrderingSettingData } from 'state/currentAccount/types'
+import { SectionsState } from 'state/entities/sections/types'
+import { viewUpdated } from 'state/entities/views/actions'
+import { ViewsState } from 'state/entities/views/types'
+import { notify } from 'state/notifications/actions'
+import { RootState } from 'state/types'
 import {
     optimisticAccountSettingsSet,
     optimisticUserSettingsSet,
 } from 'state/ui/ticketNavbar/actions'
-import {TicketNavbarElementType} from 'state/ui/ticketNavbar/types'
+import { TicketNavbarElementType } from 'state/ui/ticketNavbar/types'
 
-import css from './TicketNavbarContent.less'
 import TicketNavbarDropTarget, {
     TicketNavbarDragObject,
-    TicketNavbarDropResult,
     TicketNavbarDropDirection,
+    TicketNavbarDropResult,
 } from './TicketNavbarDropTarget'
 import TicketNavbarSection from './TicketNavbarSection'
 import TicketNavbarView from './TicketNavbarView'
+
+import css from './TicketNavbarContent.less'
 
 export type TicketNavbarSectionElement = {
     data: Section
@@ -51,7 +53,7 @@ type OwnProps = {
         nextElement: TicketNavbarElement,
         currentElement: TicketNavbarElement,
         nextSetting: UserViewsOrderingSettingData,
-        isAccountSetting: boolean
+        isAccountSetting: boolean,
     ) => void
 }
 
@@ -72,13 +74,13 @@ export function TicketNavbarContentContainer({
 }: OwnProps & ConnectedProps<typeof connector>) {
     const [collapsedSections, setCollapsedSections] = useLocalStorage<number[]>(
         'collapsed-view-sections',
-        []
+        [],
     )
     const handleDrop = useCallback(
         (
             item: TicketNavbarDragObject,
             monitor: DropTargetMonitor,
-            direction: TicketNavbarDropDirection | null
+            direction: TicketNavbarDropDirection | null,
         ) => {
             const dropResult =
                 (monitor.getDropResult() as TicketNavbarDropResult) || {
@@ -88,7 +90,10 @@ export function TicketNavbarContentContainer({
 
             const currentElement: TicketNavbarElement =
                 item.type === TicketNavbarElementType.View
-                    ? {data: views[item.id], type: TicketNavbarElementType.View}
+                    ? {
+                          data: views[item.id],
+                          type: TicketNavbarElementType.View,
+                      }
                     : {
                           data: sections[item.id],
                           type: TicketNavbarElementType.Section,
@@ -123,14 +128,14 @@ export function TicketNavbarContentContainer({
                 dropResult,
                 elements,
                 views,
-                sections
+                sections,
             )
 
             if (isPrivate) {
                 optimisticUserSettingsSet(nextSettings)
             } else {
                 optimisticAccountSettingsSet(
-                    nextSettings as AccountViewsOrderingSettingData
+                    nextSettings as AccountViewsOrderingSettingData,
                 )
             }
 
@@ -138,11 +143,11 @@ export function TicketNavbarContentContainer({
                 nextElement,
                 currentElement,
                 nextSettings,
-                isPrivate
+                isPrivate,
             )
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [views, sections, isPrivate, viewUpdated, notify, elements]
+        [views, sections, isPrivate, viewUpdated, notify, elements],
     )
     const handleClickOnSection = (sectionId: number) => {
         if (collapsedSections) {
@@ -151,7 +156,7 @@ export function TicketNavbarContentContainer({
                     ? produce(collapsedSections, (sections) => {
                           sections.splice(sections.indexOf(sectionId), 1)
                       })
-                    : [...collapsedSections, sectionId]
+                    : [...collapsedSections, sectionId],
             )
         }
     }
@@ -197,7 +202,7 @@ export function TicketNavbarContentContainer({
                         sectionElement={element}
                         viewsCount={viewsCount}
                     />
-                )
+                ),
             )}
         </TicketNavbarDropTarget>
     )
@@ -216,7 +221,7 @@ const connector = connect(
         optimisticAccountSettingsSet,
         optimisticUserSettingsSet,
         viewUpdated,
-    }
+    },
 )
 
 export default connector(TicketNavbarContentContainer)
@@ -226,16 +231,16 @@ export const getNextSettings = (
     dropResult: TicketNavbarDropResult,
     orderedElements: TicketNavbarElement[],
     views: ViewsState,
-    sections: SectionsState
+    sections: SectionsState,
 ) => {
     const currentElement: TicketNavbarElement =
         item.type === TicketNavbarElementType.View
-            ? {data: views[item.id], type: TicketNavbarElementType.View}
+            ? { data: views[item.id], type: TicketNavbarElementType.View }
             : {
                   data: sections[item.id],
                   type: TicketNavbarElementType.Section,
                   children: Object.values(views).filter(
-                      (view) => view.section_id === item.id
+                      (view) => view.section_id === item.id,
                   ),
               }
     const isShallowContentDropped =
@@ -342,14 +347,14 @@ export const getNextSettings = (
         .reduce(
             (acc, element) => {
                 if (element.type === TicketNavbarElementType.View) {
-                    acc.views[element.data.id] = {display_order: iterator}
+                    acc.views[element.data.id] = { display_order: iterator }
                 } else {
                     acc.view_sections[element.data.id] = {
                         display_order: iterator,
                     }
                     element.children.map((view) => {
                         iterator++
-                        acc.views[view.id] = {display_order: iterator}
+                        acc.views[view.id] = { display_order: iterator }
                     })
                 }
                 iterator++
@@ -358,6 +363,6 @@ export const getNextSettings = (
             {
                 views: {},
                 view_sections: {},
-            } as UserViewsOrderingSettingData
+            } as UserViewsOrderingSettingData,
         )
 }

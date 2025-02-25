@@ -1,27 +1,29 @@
-import {Skeleton} from '@gorgias/merchant-ui-kit'
+import React, { useCallback, useEffect, useRef } from 'react'
+
 import classNames from 'classnames'
-import React, {useCallback, useEffect, useRef} from 'react'
+import { useHistory } from 'react-router-dom'
 
-import {useHistory} from 'react-router-dom'
+import { Skeleton } from '@gorgias/merchant-ui-kit'
 
-import {AiAgentNotificationType} from 'automate/notifications/types'
-import {SegmentEvent, logEvent} from 'common/segment'
+import { AiAgentNotificationType } from 'automate/notifications/types'
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     AiAgentOnboardingState,
     OnboardingNotificationState,
     StoreConfiguration,
 } from 'models/aiAgent/types'
-import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {assetsUrl} from 'utils'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { assetsUrl } from 'utils'
 
-import {WIZARD_UPDATE_QUERY_KEY} from '../../constants'
-import {useAiAgentOnboardingNotification} from '../../hooks/useAiAgentOnboardingNotification'
-import {useWelcomePageAcknowledgedMutation} from '../../hooks/useWelcomePageAcknowledgedMutation'
+import { WIZARD_UPDATE_QUERY_KEY } from '../../constants'
+import { useAiAgentOnboardingNotification } from '../../hooks/useAiAgentOnboardingNotification'
+import { useWelcomePageAcknowledgedMutation } from '../../hooks/useWelcomePageAcknowledgedMutation'
+
 import css from './AIAgentWelcomePageView.less'
 
 export type DynamicItem = {
@@ -54,8 +56,8 @@ type Props = AiAgentWelcomePageProps &
     )
 
 export const AIAgentWelcomePageView = (props: Props) => {
-    const {isLoading, createWelcomePageAcknowledged} =
-        useWelcomePageAcknowledgedMutation({shopName: props.shopName})
+    const { isLoading, createWelcomePageAcknowledged } =
+        useWelcomePageAcknowledgedMutation({ shopName: props.shopName })
 
     const {
         isAdmin,
@@ -65,7 +67,7 @@ export const AIAgentWelcomePageView = (props: Props) => {
         handleOnSendOrCancelNotification,
         handleOnPerformActionPostReceivedNotification,
         isAiAgentOnboardingNotificationEnabled,
-    } = useAiAgentOnboardingNotification({shopName: props.shopName})
+    } = useAiAgentOnboardingNotification({ shopName: props.shopName })
 
     const dispatch = useAppDispatch()
     const history = useHistory()
@@ -84,7 +86,7 @@ export const AIAgentWelcomePageView = (props: Props) => {
             : 'Prepare AI Agent to automate 60% of your email, Chat and Contact Form tickets by completing these steps:',
     }
 
-    const aiAgentNavigation = useAiAgentNavigation({shopName: props.shopName})
+    const aiAgentNavigation = useAiAgentNavigation({ shopName: props.shopName })
     const handleOnFinishSetupNotification = useCallback(async () => {
         const isFinishedSetupNotificationAlreadyReceived =
             !!onboardingNotificationState?.finishAiAgentSetupNotificationReceivedDatetime
@@ -108,7 +110,7 @@ export const AIAgentWelcomePageView = (props: Props) => {
         })
 
         handleOnPerformActionPostReceivedNotification(
-            AiAgentNotificationType.StartAiAgentSetup
+            AiAgentNotificationType.StartAiAgentSetup,
         )
     }, [
         handleOnSave,
@@ -162,7 +164,7 @@ export const AIAgentWelcomePageView = (props: Props) => {
                             ? error.message
                             : 'An unknown error occurred',
                     status: NotificationStatus.Error,
-                })
+                }),
             )
         }
     }
@@ -204,7 +206,7 @@ export const AIAgentWelcomePageView = (props: Props) => {
 
         if (isFirstVisit) {
             handleOnPerformActionPostReceivedNotification(
-                AiAgentNotificationType.MeetAiAgent
+                AiAgentNotificationType.MeetAiAgent,
             )
         }
 
@@ -278,7 +280,7 @@ export const AIAgentWelcomePageView = (props: Props) => {
                                     <img
                                         className={css.logo}
                                         src={assetsUrl(
-                                            '/img/ai-agent/ai-agent-logo.png'
+                                            '/img/ai-agent/ai-agent-logo.png',
                                         )}
                                         alt="AI Agent"
                                     />
@@ -368,7 +370,7 @@ export const AIAgentWelcomePageView = (props: Props) => {
                     <img
                         className={css.exampleImg}
                         src={assetsUrl(
-                            '/img/paywalls/screens/ai_agent_welcome_page.gif'
+                            '/img/paywalls/screens/ai_agent_welcome_page.gif',
                         )}
                         alt="AI Agent example"
                     />
@@ -454,7 +456,7 @@ const AIAgentWelcomePageViewDynamic = ({
                         <div
                             className={classNames(
                                 css.inner,
-                                item.checked ? css.checked : css.number
+                                item.checked ? css.checked : css.number,
                             )}
                         >
                             {item.checked ? (
@@ -471,7 +473,7 @@ const AIAgentWelcomePageViewDynamic = ({
                             <a
                                 className={classNames(
                                     'material-icons',
-                                    css.openInNewIcon
+                                    css.openInNewIcon,
                                 )}
                                 href={item.link}
                                 rel="noopener noreferrer"

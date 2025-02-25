@@ -1,1 +1,1 @@
-export {default} from './components/EditOrderModal'
+export { default } from './components/EditOrderModal'

@@ -1,17 +1,18 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {Map, fromJS} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
-import React, {ComponentType} from 'react'
-import {Provider} from 'react-redux'
-import {createStore} from 'redux'
+import React, { ComponentType } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {GORGIAS_CHAT_INTEGRATION_TYPE} from 'constants/integration'
-import {IntegrationType} from 'models/integration/constants'
-import {ShopifyIntegrationMeta} from 'models/integration/types/shopify'
-import {getChatInstallationStatus} from 'state/entities/chatInstallationStatus/selectors'
-import {getStoreIntegrations} from 'state/integrations/selectors'
-import {RootState} from 'state/types'
+import { renderHook } from '@testing-library/react-hooks'
+import { fromJS, Map } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
+import { createStore } from 'redux'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { GORGIAS_CHAT_INTEGRATION_TYPE } from 'constants/integration'
+import { IntegrationType } from 'models/integration/constants'
+import { ShopifyIntegrationMeta } from 'models/integration/types/shopify'
+import { getChatInstallationStatus } from 'state/entities/chatInstallationStatus/selectors'
+import { getStoreIntegrations } from 'state/integrations/selectors'
+import { RootState } from 'state/types'
 
 import useChatMigrationBanner from '../useChatMigrationBanner'
 
@@ -50,7 +51,7 @@ describe('useChatMigrationBanner', () => {
     })
 
     const sixDaysAgo = new Date(
-        Date.now() - 6 * 24 * 60 * 60 * 1000
+        Date.now() - 6 * 24 * 60 * 60 * 1000,
     ).toISOString()
     const now = new Date().toISOString()
 
@@ -118,17 +119,17 @@ describe('useChatMigrationBanner', () => {
 
             const store = createStore(
                 (state) => state as RootState,
-                defaultState
+                defaultState,
             )
             const hookOptions = {
-                wrapper: (({children}) => (
+                wrapper: (({ children }) => (
                     <Provider store={store}>{children}</Provider>
                 )) as ComponentType,
             }
 
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () => useChatMigrationBanner(mockChatIntegration),
-                hookOptions
+                hookOptions,
             )
 
             expect(result.current).toEqual({
@@ -136,6 +137,6 @@ describe('useChatMigrationBanner', () => {
                 showScriptTagMigrationBanner: (showBanners as boolean[])[1],
                 hasShopifyScriptTagScope: (showBanners as boolean[])[2],
             })
-        }
+        },
     )
 })

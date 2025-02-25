@@ -1,18 +1,19 @@
-import {render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {account} from 'fixtures/account'
-import {billingState} from 'fixtures/billing'
-import {emptyRule as ruleFixture, emptyManagedRule} from 'fixtures/rule'
-import {user} from 'fixtures/users'
-import {RuleLimitStatus} from 'state/rules/types'
-import {RootState} from 'state/types'
+import { account } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
+import { emptyManagedRule, emptyRule as ruleFixture } from 'fixtures/rule'
+import { user } from 'fixtures/users'
+import { RuleLimitStatus } from 'state/rules/types'
+import { RootState } from 'state/types'
 
-import {RulesList} from '../RulesList'
+import { RulesList } from '../RulesList'
 
 jest.mock('../../../../../state/entities/rules/actions')
 jest.mock('../components/RuleRow', () => () => (
@@ -25,7 +26,7 @@ jest.mock('../components/RuleRow', () => () => (
 ))
 
 const createRuleFixtures = (length: number) => {
-    return Array.from({length}, (_, i) => ({
+    return Array.from({ length }, (_, i) => ({
         ...ruleFixture,
         id: i + 1,
     }))
@@ -46,10 +47,10 @@ describe('<RulesList/>', () => {
 
     it('should render the rule views', () => {
         const rules = createRuleFixtures(5)
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <RulesList {...minProps} rules={rules} />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -59,10 +60,10 @@ describe('<RulesList/>', () => {
         render(
             <Provider store={store}>
                 <RulesList {...minProps} rules={rules} />
-            </Provider>
+            </Provider>,
         )
         expect(
-            screen.queryByText(emptyManagedRule.name)
+            screen.queryByText(emptyManagedRule.name),
         ).not.toBeInTheDocument()
     })
 })

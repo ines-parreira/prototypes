@@ -1,5 +1,5 @@
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useFlag} from 'core/flags'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 
 const useCanAddContactFormFlag = () => {
     return useFlag(FeatureFlagKey.ConvertContactForm)

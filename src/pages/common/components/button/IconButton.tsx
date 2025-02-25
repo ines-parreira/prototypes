@@ -1,7 +1,9 @@
-import classnames from 'classnames'
-import React, {ForwardedRef, forwardRef} from 'react'
+import React, { ForwardedRef, forwardRef } from 'react'
 
-import Button, {type ButtonProps} from './Button'
+import classnames from 'classnames'
+
+import Button, { type ButtonProps } from './Button'
+
 import css from './IconButton.less'
 
 type Props = {
@@ -18,7 +20,7 @@ const IconButton = (
         size,
         ...others
     }: Props,
-    ref: ForwardedRef<HTMLButtonElement>
+    ref: ForwardedRef<HTMLButtonElement>,
 ) => {
     return (
         <Button
@@ -26,7 +28,7 @@ const IconButton = (
                 className,
                 css.wrapper,
                 css[fillStyle || ''],
-                css[size || '']
+                css[size || ''],
             )}
             fillStyle={fillStyle}
             size={size}

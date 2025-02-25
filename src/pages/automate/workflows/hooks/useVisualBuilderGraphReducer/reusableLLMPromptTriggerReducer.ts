@@ -1,6 +1,5 @@
-import {produce} from 'immer'
-
-import {ulid} from 'ulidx'
+import { produce } from 'immer'
+import { ulid } from 'ulidx'
 
 import {
     isReusableLLMPromptTriggerNodeType,
@@ -62,19 +61,19 @@ export function isVisualBuilderReusableLLMPromptTriggerAction(action: {
     type: string
 }): action is VisualBuilderReusableLLMPromptTriggerAction {
     return Object.keys(
-        visualBuilderReusableLLMPromptTriggerActionTypes
+        visualBuilderReusableLLMPromptTriggerActionTypes,
     ).includes(action.type)
 }
 
 export function reusableLLMPromptTriggerReducer(
     graph: VisualBuilderGraph,
-    action: VisualBuilderReusableLLMPromptTriggerAction
+    action: VisualBuilderReusableLLMPromptTriggerAction,
 ): VisualBuilderGraph {
     switch (action.type) {
         case 'SET_REUSABLE_LLM_PROMPT_TRIGGER_REQUIRES_CONFIRMATION':
             return produce(graph, (draft) => {
                 const node = draft.nodes.find(
-                    isReusableLLMPromptTriggerNodeType
+                    isReusableLLMPromptTriggerNodeType,
                 )
 
                 if (node) {
@@ -85,7 +84,7 @@ export function reusableLLMPromptTriggerReducer(
         case 'ADD_REUSABLE_LLM_PROMPT_TRIGGER_INPUT':
             return produce(graph, (draft) => {
                 const node = draft.nodes.find(
-                    isReusableLLMPromptTriggerNodeType
+                    isReusableLLMPromptTriggerNodeType,
                 )
 
                 if (node) {
@@ -100,12 +99,12 @@ export function reusableLLMPromptTriggerReducer(
         case 'DELETE_REUSABLE_LLM_PROMPT_TRIGGER_INPUT':
             return produce(graph, (draft) => {
                 const node = draft.nodes.find(
-                    isReusableLLMPromptTriggerNodeType
+                    isReusableLLMPromptTriggerNodeType,
                 )
 
                 if (node) {
                     const index = node.data.inputs.findIndex(
-                        (input) => input.id === action.id
+                        (input) => input.id === action.id,
                     )
 
                     if (index !== -1) {
@@ -116,12 +115,12 @@ export function reusableLLMPromptTriggerReducer(
         case 'SET_REUSABLE_LLM_PROMPT_TRIGGER_INPUT':
             return produce(graph, (draft) => {
                 const node = draft.nodes.find(
-                    isReusableLLMPromptTriggerNodeType
+                    isReusableLLMPromptTriggerNodeType,
                 )
 
                 if (node) {
                     const index = node.data.inputs.findIndex(
-                        (input) => input.id === action.input.id
+                        (input) => input.id === action.input.id,
                     )
 
                     if (index !== -1) {
@@ -132,7 +131,7 @@ export function reusableLLMPromptTriggerReducer(
         case 'SET_REUSABLE_LLM_PROMPT_TRIGGER_CONDITIONS_TYPE':
             return produce(graph, (draft) => {
                 const node = draft.nodes.find(
-                    isReusableLLMPromptTriggerNodeType
+                    isReusableLLMPromptTriggerNodeType,
                 )
 
                 if (node) {
@@ -146,7 +145,7 @@ export function reusableLLMPromptTriggerReducer(
         case 'DELETE_REUSABLE_LLM_PROMPT_TRIGGER_CONDITION':
             return produce(graph, (draft) => {
                 const node = draft.nodes.find(
-                    isReusableLLMPromptTriggerNodeType
+                    isReusableLLMPromptTriggerNodeType,
                 )
 
                 if (node) {
@@ -156,7 +155,7 @@ export function reusableLLMPromptTriggerReducer(
         case 'ADD_REUSABLE_LLM_PROMPT_TRIGGER_CONDITION':
             return produce(graph, (draft) => {
                 const node = draft.nodes.find(
-                    isReusableLLMPromptTriggerNodeType
+                    isReusableLLMPromptTriggerNodeType,
                 )
 
                 if (node) {
@@ -166,7 +165,7 @@ export function reusableLLMPromptTriggerReducer(
         case 'SET_REUSABLE_LLM_PROMPT_TRIGGER_CONDITION':
             return produce(graph, (draft) => {
                 const node = draft.nodes.find(
-                    isReusableLLMPromptTriggerNodeType
+                    isReusableLLMPromptTriggerNodeType,
                 )
 
                 if (node) {

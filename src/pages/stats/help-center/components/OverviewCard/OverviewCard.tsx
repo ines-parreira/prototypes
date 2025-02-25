@@ -1,14 +1,15 @@
-import {Skeleton} from '@gorgias/merchant-ui-kit'
-import React, {ReactNode} from 'react'
+import React, { ReactNode } from 'react'
+
+import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
 import TrendBadge from 'pages/stats/common/components/TrendBadge'
-import {formatMetricValue} from 'pages/stats/common/utils'
-import {DashboardChartProps} from 'pages/stats/custom-reports/types'
+import { formatMetricValue } from 'pages/stats/common/utils'
+import { DashboardChartProps } from 'pages/stats/custom-reports/types'
 import MetricCard from 'pages/stats/MetricCard'
-import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
+import { NoDataAvailable } from 'pages/stats/NoDataAvailable'
 import PerformanceTip from 'pages/stats/PerformanceTip'
-import {getBadgeTooltipForPreviousPeriod} from 'pages/stats/utils'
+import { getBadgeTooltipForPreviousPeriod } from 'pages/stats/utils'
 
 import css from './OverviewCard.less'
 

@@ -1,9 +1,10 @@
-import {EditorState} from 'draft-js'
-import React, {useMemo} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
+import React, { useMemo } from 'react'
 
-import {TicketChannel} from '../../../../business/types/ticket'
-import {addEmailExtra} from '../../../../state/newMessage/actions'
+import { EditorState } from 'draft-js'
+import { connect, ConnectedProps } from 'react-redux'
+
+import { TicketChannel } from '../../../../business/types/ticket'
+import { addEmailExtra } from '../../../../state/newMessage/actions'
 import {
     getReplyThreadMessages,
     isSignatureTextAdded,
@@ -11,13 +12,16 @@ import {
 import {
     getNewMessageChannel,
     getNewMessageSignature,
-    isNewMessagePublic,
-    isNewMessageEmailExtraAdded,
     isForward,
+    isNewMessageEmailExtraAdded,
+    isNewMessagePublic,
 } from '../../../../state/newMessage/selectors'
-import {getBody, DEPRECATED_getTicket} from '../../../../state/ticket/selectors'
-import {RootState} from '../../../../state/types'
-import {convertFromHTML} from '../../../../utils/editor'
+import {
+    DEPRECATED_getTicket,
+    getBody,
+} from '../../../../state/ticket/selectors'
+import { RootState } from '../../../../state/types'
+import { convertFromHTML } from '../../../../utils/editor'
 import Ellipsis from '../../components/Ellipsis'
 
 type OwnProps = {
@@ -98,7 +102,7 @@ const connector = connect(
     },
     {
         addEmailExtra,
-    }
+    },
 )
 
 export default connector(EmailExtraButtonContainer)

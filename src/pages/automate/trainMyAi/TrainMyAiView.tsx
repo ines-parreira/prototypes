@@ -1,42 +1,45 @@
-import {Badge, LoadingSpinner} from '@gorgias/merchant-ui-kit'
-import {useQueryClient} from '@tanstack/react-query'
-import classNames from 'classnames'
-import React, {useMemo, useState, useRef, useCallback, useEffect} from 'react'
-import {Link, useParams} from 'react-router-dom'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import {SegmentEvent} from 'common/segment'
+import { useQueryClient } from '@tanstack/react-query'
+import classNames from 'classnames'
+import { Link, useParams } from 'react-router-dom'
+
+import { Badge, LoadingSpinner } from '@gorgias/merchant-ui-kit'
+
+import { SegmentEvent } from 'common/segment'
 import {
     ARTICLE_RECOMMENDATION_PREDICTION_QUERY_KEY,
     useArticleRecommendationPredictions,
 } from 'models/articleRecommendationPrediction/queries'
-import {useGetHelpCenter} from 'models/helpCenter/queries'
+import { useGetHelpCenter } from 'models/helpCenter/queries'
 import AutomateView from 'pages/automate/common/components/AutomateView'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import LinkButton from 'pages/common/components/button/LinkButton'
 import Paywall from 'pages/common/components/Paywall/Paywall'
 import ProgressBar from 'pages/common/components/ProgressBar/ProgressBar'
 
 import gorgiasLogo from '../../../assets/img/gorgias-logo.svg'
-import {assetsUrl} from '../../../utils'
-import {ARTICLE_RECOMMENDATION} from '../common/components/constants'
+import { assetsUrl } from '../../../utils'
+import { ARTICLE_RECOMMENDATION } from '../common/components/constants'
 import useApplicationsAutomationSettings from '../common/hooks/useApplicationsAutomationSettings'
-import {useHelpCenterPublishedArticlesCount} from '../common/hooks/useHelpCenterPublishedArticlesCount'
-import {useHistoryTracking} from '../common/hooks/useHistoryTracking'
+import { useHelpCenterPublishedArticlesCount } from '../common/hooks/useHelpCenterPublishedArticlesCount'
+import { useHistoryTracking } from '../common/hooks/useHistoryTracking'
 import useSelfServiceChatChannels from '../common/hooks/useSelfServiceChatChannels'
-import {getArticleRecommendationNavItems} from '../common/utils/getArticleRecommendationNavItems'
+import { getArticleRecommendationNavItems } from '../common/utils/getArticleRecommendationNavItems'
 import Header from './components/Header'
-import {StatefulMessageCard as MessageCard} from './components/MessageCard'
+import { StatefulMessageCard as MessageCard } from './components/MessageCard'
 import PreviewSection from './components/PreviewSection'
 import RecommendationDivisor from './components/RecommendationDivisor'
 import RecommendationFilterNoResults from './components/RecommendationFilterNoResults'
 import RecommendationFilters, {
-    FeedbackOptions,
     DEFAULT_FEEDBACK_OPTIONS,
+    FeedbackOptions,
 } from './components/RecommendationFilters'
 import RecommendationPagination from './components/RecommendationPagination'
-import {RecommendationDisabled} from './components/TrainMyAiAlerts'
+import { RecommendationDisabled } from './components/TrainMyAiAlerts'
+
 import css from './TrainMyAiView.less'
 
 const TrainMyAiView = () => {
@@ -44,14 +47,14 @@ const TrainMyAiView = () => {
     const rightColRef = useRef<HTMLDivElement>(null)
 
     useHistoryTracking(SegmentEvent.AutomateArticleRecommendationVisited)
-    const {shopType, shopName} = useParams<{
+    const { shopType, shopName } = useParams<{
         shopType: string
         shopName: string
     }>()
 
-    const {selfServiceConfiguration} = useSelfServiceConfiguration(
+    const { selfServiceConfiguration } = useSelfServiceConfiguration(
         shopType,
-        shopName
+        shopName,
     )
     const channels = useSelfServiceChatChannels(shopType, shopName)
 
@@ -60,10 +63,10 @@ const TrainMyAiView = () => {
             channels
                 .map((v) => v.value.meta.app_id)
                 .filter((value): value is string => Boolean(value)),
-        [channels]
+        [channels],
     )
 
-    const {applicationsAutomationSettings, isFetchPending} =
+    const { applicationsAutomationSettings, isFetchPending } =
         useApplicationsAutomationSettings(chatApplicationsIds)
 
     const helpCenterId =
@@ -76,7 +79,7 @@ const TrainMyAiView = () => {
     } = useGetHelpCenter(
         helpCenterId as number,
         {},
-        {enabled: typeof helpCenterId === 'number'}
+        { enabled: typeof helpCenterId === 'number' },
     )
 
     const isHelpCenterSelfServiceDeleted =
@@ -87,9 +90,9 @@ const TrainMyAiView = () => {
             chatApplicationsIds.some(
                 (chatApplicationsId) =>
                     applicationsAutomationSettings[chatApplicationsId]
-                        ?.articleRecommendation?.enabled
+                        ?.articleRecommendation?.enabled,
             ) && !!helpCenterId,
-        [applicationsAutomationSettings, chatApplicationsIds, helpCenterId]
+        [applicationsAutomationSettings, chatApplicationsIds, helpCenterId],
     )
 
     const helpCenterArticlesCount =
@@ -125,7 +128,7 @@ const TrainMyAiView = () => {
 
     const handleShowCompletedFilter = useCallback(
         (value: boolean) => setRecommendationFilterShowCompleted(value),
-        []
+        [],
     )
 
     const handleArticleFilter = useCallback((articleId: number | null) => {
@@ -148,7 +151,7 @@ const TrainMyAiView = () => {
                 return newOptions
             })
         },
-        [recommendationFilterFeedbackOptions]
+        [recommendationFilterFeedbackOptions],
     )
 
     useEffect(() => {
@@ -172,7 +175,7 @@ const TrainMyAiView = () => {
             : helpCenterArticlesCount === 0
 
     const hasArticleRecommendations = Boolean(
-        articleRecommendationsData?.meta?.pagination.totalSize
+        articleRecommendationsData?.meta?.pagination.totalSize,
     )
 
     const [selectedRecommendationId, setSelectedRecommendationId] = useState<
@@ -185,7 +188,7 @@ const TrainMyAiView = () => {
         }
         const articleRecommendationData =
             articleRecommendationsData?.data?.find(
-                (data) => data.id === selectedRecommendationId
+                (data) => data.id === selectedRecommendationId,
             )
 
         return articleRecommendationData
@@ -197,22 +200,22 @@ const TrainMyAiView = () => {
     const nextUnansweredRecommendationId = useCallback(
         (
             data: typeof articleRecommendationsData,
-            selectedArticleId: number | null
+            selectedArticleId: number | null,
         ) => {
             if (!data || !data.data) {
                 return null
             }
             const selectedRecommendationIndex = data.data.findIndex(
-                (item) => item.id === selectedArticleId
+                (item) => item.id === selectedArticleId,
             )
             const articlePrediction = data.data.find(
                 (item, i) =>
                     item.articleIdFeedback === null &&
-                    i > selectedRecommendationIndex
+                    i > selectedRecommendationIndex,
             )
             return articlePrediction ? articlePrediction.id : null
         },
-        []
+        [],
     )
 
     const resetCurrectPagination = () => {
@@ -233,7 +236,7 @@ const TrainMyAiView = () => {
         if (selectedRecommendationId === null) return
         const nextRecommendationId = nextUnansweredRecommendationId(
             articleRecommendationsData,
-            selectedRecommendationId
+            selectedRecommendationId,
         )
 
         setSelectedRecommendationId(nextRecommendationId)
@@ -256,7 +259,7 @@ const TrainMyAiView = () => {
     useEffect(() => {
         if (
             !articleRecommendationsData?.data?.some(
-                (item) => item.id === selectedRecommendationId
+                (item) => item.id === selectedRecommendationId,
             )
         ) {
             setSelectedRecommendationId(null)
@@ -314,7 +317,7 @@ const TrainMyAiView = () => {
                                 <i
                                     className={classNames(
                                         'material-icons',
-                                        css.AIIcon
+                                        css.AIIcon,
                                     )}
                                 >
                                     auto_awesome
@@ -425,7 +428,7 @@ const TrainMyAiView = () => {
                                                 {
                                                     [css.withButton]:
                                                         isHelpCenterEmpty,
-                                                }
+                                                },
                                             )}
                                         >
                                             <div className={css.description}>
@@ -488,7 +491,7 @@ const TrainMyAiView = () => {
                                                 }
                                                 onSelect={() =>
                                                     setSelectedRecommendationId(
-                                                        id
+                                                        id,
                                                     )
                                                 }
                                                 message={message}
@@ -496,7 +499,7 @@ const TrainMyAiView = () => {
                                                 isSuccess={!!articleIdFeedback}
                                             />
                                         )
-                                    }
+                                    },
                                 )
                             )}
                             {isFetchedArticleRecommendations &&
@@ -601,15 +604,15 @@ const TrainMyAiView = () => {
                                                             setSelectedRecommendationId(
                                                                 nextUnansweredRecommendationId(
                                                                     articleRecommendationsData,
-                                                                    selectedRecommendationId
-                                                                )
+                                                                    selectedRecommendationId,
+                                                                ),
                                                             )
                                                             leftColRef.current?.scrollTo(
                                                                 {
                                                                     top: 0,
                                                                     behavior:
                                                                         'smooth',
-                                                                }
+                                                                },
                                                             )
                                                         }}
                                                     >

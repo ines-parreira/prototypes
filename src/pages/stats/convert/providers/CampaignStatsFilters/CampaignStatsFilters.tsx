@@ -1,4 +1,3 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {
     ReactNode,
     useCallback,
@@ -7,33 +6,31 @@ import React, {
     useState,
 } from 'react'
 
-import {useParams} from 'react-router-dom'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { useParams } from 'react-router-dom'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useCleanStatsFiltersWithLogicalOperators } from 'hooks/reporting/useCleanStatsFilters'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {FilterKey} from 'models/stat/types'
-import {CONVERT_ROUTE_PARAM_NAME} from 'pages/convert/common/constants'
-import {ConvertRouteParams} from 'pages/convert/common/types'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-import {useGetCampaignsForStore} from 'pages/stats/convert/hooks/useGetCampaignsForStore'
-import {useShopifyIntegrations} from 'pages/stats/convert/hooks/useShopifyIntegrations'
-import {getIntegrationById} from 'state/integrations/selectors'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { FilterKey } from 'models/stat/types'
+import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
+import { ConvertRouteParams } from 'pages/convert/common/types'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
+import { useGetCampaignsForStore } from 'pages/stats/convert/hooks/useGetCampaignsForStore'
+import { useShopifyIntegrations } from 'pages/stats/convert/hooks/useShopifyIntegrations'
+import { getIntegrationById } from 'state/integrations/selectors'
 import {
     getPageStatsFiltersWithLogicalOperators,
     getStatsFilters,
     getStoreIntegrationsStatsFilter,
 } from 'state/stats/selectors'
-import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
+import { mergeStatsFiltersWithLogicalOperator } from 'state/stats/statsSlice'
+import { isCleanStatsDirty } from 'state/ui/stats/selectors'
+import { periodAndAggregationWindowToReportingGranularity } from 'utils/reporting'
 
-import {isCleanStatsDirty} from 'state/ui/stats/selectors'
-
-import {periodAndAggregationWindowToReportingGranularity} from 'utils/reporting'
-
-import {FiltersContext} from './context'
+import { FiltersContext } from './context'
 
 type Props = {
     children: ReactNode
@@ -41,13 +38,13 @@ type Props = {
 
 const defaultOperator = LogicalOperatorEnum.ONE_OF
 
-export const CampaignStatsFilters = ({children}: Props) => {
+export const CampaignStatsFilters = ({ children }: Props) => {
     const AnalyticsNewFiltersConvert =
         !!useFlags()[FeatureFlagKey.AnalyticsNewFiltersConvert]
-    const {[CONVERT_ROUTE_PARAM_NAME]: chatIntegrationId} =
+    const { [CONVERT_ROUTE_PARAM_NAME]: chatIntegrationId } =
         useParams<ConvertRouteParams>()
     const chatIntegration = useAppSelector(
-        getIntegrationById(parseInt(chatIntegrationId))
+        getIntegrationById(parseInt(chatIntegrationId)),
     )
     const isFilterDirty = useAppSelector(isCleanStatsDirty)
 
@@ -61,9 +58,9 @@ export const CampaignStatsFilters = ({children}: Props) => {
     const storeIntegrationId = useMemo(
         () =>
             parseInt(
-                chatIntegration.getIn(['meta', 'shop_integration_id']) ?? 0
+                chatIntegration.getIn(['meta', 'shop_integration_id']) ?? 0,
             ),
-        [chatIntegration]
+        [chatIntegration],
     )
 
     const dispatch = useAppDispatch()
@@ -78,10 +75,10 @@ export const CampaignStatsFilters = ({children}: Props) => {
         return storeStatsFilter.length ? storeStatsFilter : fallback
     }, [storeIntegrationId, integrations, storeStatsFilter])
 
-    const {campaigns, channelConnectionExternalIds} = useGetCampaignsForStore(
+    const { campaigns, channelConnectionExternalIds } = useGetCampaignsForStore(
         selectedIntegrations,
         chatIntegration.getIn(['meta', 'app_id']),
-        true
+        true,
     )
 
     const selectedCampaigns = useMemo(() => {
@@ -137,7 +134,7 @@ export const CampaignStatsFilters = ({children}: Props) => {
                 mergeStatsFiltersWithLogicalOperator({
                     campaigns: withDefaultLogicalOperator([]),
                     campaignStatuses: withDefaultLogicalOperator([]),
-                })
+                }),
             )
         }
     }, [chatIntegration, dispatch])
@@ -146,7 +143,8 @@ export const CampaignStatsFilters = ({children}: Props) => {
         if (!AnalyticsNewFiltersConvert || !isFilterDirty) {
             setSelectedCampaignIds(getCampaignIds())
             setSelectedCampaignsOperator(
-                statsFilters?.[FilterKey.Campaigns]?.operator || defaultOperator
+                statsFilters?.[FilterKey.Campaigns]?.operator ||
+                    defaultOperator,
             )
         }
     }, [
@@ -167,10 +165,10 @@ export const CampaignStatsFilters = ({children}: Props) => {
                     integrations: withDefaultLogicalOperator(integrationIds),
                     campaigns: withDefaultLogicalOperator([]),
                     campaignStatuses: withDefaultLogicalOperator([]),
-                })
+                }),
             )
         },
-        [dispatch]
+        [dispatch],
     )
 
     const handleChangeCampaigns = useCallback(
@@ -178,10 +176,10 @@ export const CampaignStatsFilters = ({children}: Props) => {
             dispatch(
                 mergeStatsFiltersWithLogicalOperator({
                     campaigns: withDefaultLogicalOperator(campaignIds),
-                })
+                }),
             )
         },
-        [dispatch]
+        [dispatch],
     )
 
     const handleChangeCampaignsByStatus = useCallback(
@@ -189,10 +187,10 @@ export const CampaignStatsFilters = ({children}: Props) => {
             dispatch(
                 mergeStatsFiltersWithLogicalOperator({
                     campaignStatuses: withDefaultLogicalOperator(statuses),
-                })
+                }),
             )
         },
-        [dispatch]
+        [dispatch],
     )
 
     return (
@@ -201,7 +199,7 @@ export const CampaignStatsFilters = ({children}: Props) => {
                 campaigns,
                 granularity: periodAndAggregationWindowToReportingGranularity(
                     statsFilters.period,
-                    statsFilters.aggregationWindow
+                    statsFilters.aggregationWindow,
                 ),
                 integrations,
                 isStorePreSelected: !!storeIntegrationId,

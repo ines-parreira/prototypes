@@ -1,4 +1,4 @@
-import {ShopifyPermissionsData} from 'pages/aiAgent/Overview/hooks/pendingTasks/useShopifyPermissionsData'
+import { ShopifyPermissionsData } from 'pages/aiAgent/Overview/hooks/pendingTasks/useShopifyPermissionsData'
 
 export class ShopifyPermissionsDataFixture {
     private readonly data: ShopifyPermissionsData

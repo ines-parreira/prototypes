@@ -1,7 +1,8 @@
-import {produce, Draft} from 'immer'
-import {chain as _chain} from 'lodash'
+import { useEffect, useMemo, useState } from 'react'
+
+import { Draft, produce } from 'immer'
+import { chain as _chain } from 'lodash'
 import _defaults from 'lodash/defaults'
-import {useEffect, useMemo, useState} from 'react'
 import isUrl from 'validator/lib/isURL'
 
 import {
@@ -11,7 +12,7 @@ import {
     NavigationLink,
     NavigationLinkGroup,
 } from '../../../../models/helpCenter/types'
-import {isURLOptions} from '../utils/navigationLinks'
+import { isURLOptions } from '../utils/navigationLinks'
 
 type Options = {
     allowEmpty: boolean
@@ -23,7 +24,7 @@ const DEFAULT_OPTIONS = {
 
 function decorateLocaleLinks(
     group: NavigationLinkGroup,
-    links: NavigationLink[]
+    links: NavigationLink[],
 ): LocalNavigationLink[] {
     return _chain(links)
         .filter((link) => link.group === group)
@@ -65,7 +66,7 @@ function draftUpdateLink<
 
 function isListValid<T extends LocalNavigationLink | LocalSocialNavigationLink>(
     links: T[],
-    options: Options
+    options: Options,
 ): boolean {
     return links.every((link) => {
         if (options.allowEmpty) {
@@ -88,7 +89,7 @@ function isListValid<T extends LocalNavigationLink | LocalSocialNavigationLink>(
 export const useNavigationLinks = (
     group: NavigationLinkGroup,
     response: NavigationLink[],
-    options?: Options
+    options?: Options,
 ): {
     links: LocalNavigationLink[]
     add: (locale: LocaleCode) => void
@@ -98,7 +99,7 @@ export const useNavigationLinks = (
     resetFields: () => void
 } => {
     const [links, setLinks] = useState<LocalNavigationLink[]>(
-        decorateLocaleLinks(group, response)
+        decorateLocaleLinks(group, response),
     )
 
     useEffect(() => {
@@ -107,7 +108,7 @@ export const useNavigationLinks = (
 
     const innerOptions = useMemo(
         () => _defaults(options, DEFAULT_OPTIONS),
-        [options]
+        [options],
     )
 
     const add = (locale: LocaleCode) => {
@@ -125,7 +126,7 @@ export const useNavigationLinks = (
                     updated_datetime: '',
                     key: `${id}-new-${locale}`,
                 })
-            })
+            }),
         )
     }
 
@@ -153,7 +154,7 @@ export const useNavigationLinks = (
 
 export const useSocialNavigationLinks = (
     response: LocalSocialNavigationLink[],
-    options?: Options
+    options?: Options,
 ): {
     links: LocalSocialNavigationLink[]
     remove: (id: number) => void
@@ -171,7 +172,7 @@ export const useSocialNavigationLinks = (
 
     const innerOptions = useMemo(
         () => _defaults(options, DEFAULT_OPTIONS),
-        [options]
+        [options],
     )
 
     const remove = (id: number) => {

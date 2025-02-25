@@ -1,6 +1,6 @@
 declare module 'draft-js-single-line-plugin' {
-    import {Plugin} from 'pages/common/draftjs/plugins/types'
-    import {Map} from 'immutable'
+    import { Plugin } from 'pages/common/draftjs/plugins/types'
+    import { Map } from 'immutable'
 
     type Options = {
         stripEntities?: boolean

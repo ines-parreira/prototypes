@@ -1,14 +1,16 @@
-import {Skeleton, Tooltip} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
 import React from 'react'
+
+import classnames from 'classnames'
+
+import { Skeleton, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import aiAgentAvatarSrc from 'assets/img/ai-agent/ai-agent-avatar.png'
 import Avatar from 'pages/common/components/Avatar/Avatar'
-
 import Button from 'pages/common/components/button/Button'
 
-import {ToneOfVoice} from '../constants'
-import {CUSTOMER_LAST_NAME, CUSTOMER_NAME, TICKET_PREVIEW} from './constants'
+import { ToneOfVoice } from '../constants'
+import { CUSTOMER_LAST_NAME, CUSTOMER_NAME, TICKET_PREVIEW } from './constants'
+
 import css from './TicketPreview.less'
 
 type TicketPreviewProps = {
@@ -94,7 +96,7 @@ const AIAgentMessage = ({
 
 const AIAgentMessageSkeleton = () => (
     <div className={css.messageSkeleton}>
-        {Array.from({length: 6}, (_, index) => (
+        {Array.from({ length: 6 }, (_, index) => (
             <Skeleton key={index} height={28} />
         ))}
     </div>
@@ -198,7 +200,7 @@ export const TicketPreview = ({
                                 <i
                                     className={classnames(
                                         'material-icons',
-                                        css.icon
+                                        css.icon,
                                     )}
                                     aria-hidden="true"
                                 >

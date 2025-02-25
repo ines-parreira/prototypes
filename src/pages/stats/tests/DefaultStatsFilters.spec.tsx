@@ -1,18 +1,17 @@
-import {render} from '@testing-library/react'
-
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-
-import {user} from 'fixtures/users'
+import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import { user } from 'fixtures/users'
 import DefaultStatsFilters from 'pages/stats/DefaultStatsFilters'
-import {defaultStatsFilters} from 'state/stats/statsSlice'
-import {RootState, StoreDispatch} from 'state/types'
-import {assumeMock} from 'utils/testing'
+import { defaultStatsFilters } from 'state/stats/statsSlice'
+import { RootState, StoreDispatch } from 'state/types'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('moment-timezone', () => () => {
     const moment: (date: string) => Record<string, unknown> =
@@ -49,19 +48,19 @@ describe('DefaultStatsFilters', () => {
     } as RootState
 
     it('should render children when stats filters are not the default stats filters', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <DefaultStatsFilters>
                     <div>Foo bar</div>
                 </DefaultStatsFilters>
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render the fallback when stats filters are the default stats filters', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider
                 store={mockStore({
                     ...defaultState,
@@ -73,7 +72,7 @@ describe('DefaultStatsFilters', () => {
                 <DefaultStatsFilters notReadyFallback={<div>fallback</div>}>
                     <div>Foo bar</div>
                 </DefaultStatsFilters>
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -85,7 +84,7 @@ describe('DefaultStatsFilters', () => {
         render(
             <Provider store={store}>
                 <DefaultStatsFilters />
-            </Provider>
+            </Provider>,
         )
 
         expect(store.getActions()).toMatchSnapshot()
@@ -96,14 +95,14 @@ describe('DefaultStatsFilters', () => {
             ...defaultState,
             currentUser: defaultState.currentUser.set(
                 'timezone',
-                'Europe/Paris'
+                'Europe/Paris',
             ),
         })
 
         render(
             <Provider store={store}>
                 <DefaultStatsFilters />
-            </Provider>
+            </Provider>,
         )
 
         expect(store.getActions()).toMatchSnapshot()
@@ -112,12 +111,12 @@ describe('DefaultStatsFilters', () => {
     it('should reset the filters on unmount', () => {
         const store = mockStore(defaultState)
 
-        const {unmount} = render(
+        const { unmount } = render(
             <Provider store={store}>
                 <DefaultStatsFilters>
                     <div>Foo bar</div>
                 </DefaultStatsFilters>
-            </Provider>
+            </Provider>,
         )
         unmount()
 
@@ -130,7 +129,7 @@ describe('DefaultStatsFilters', () => {
         render(
             <Provider store={store}>
                 <DefaultStatsFilters />
-            </Provider>
+            </Provider>,
         )
 
         expect(useCustomFieldDefinitionsMock).toHaveBeenCalled()

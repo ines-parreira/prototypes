@@ -1,11 +1,13 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import React, {useRef} from 'react'
-import {ModalFooter} from 'reactstrap'
+import React, { useRef } from 'react'
+
+import { ModalFooter } from 'reactstrap'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useAppSelector from 'hooks/useAppSelector'
 import Button from 'pages/common/components/button/Button'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {isAdmin} from 'utils'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { isAdmin } from 'utils'
 
 import css from './SubscriptionModalFooter.less'
 

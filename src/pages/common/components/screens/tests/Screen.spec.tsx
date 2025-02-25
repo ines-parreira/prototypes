@@ -1,16 +1,17 @@
-import {render} from '@testing-library/react'
 import React from 'react'
+
+import { render } from '@testing-library/react'
 
 import Screen from '../Screen'
 import Screens from '../Screens'
 
 describe('<Screen />', () => {
     it('should render', () => {
-        const {container} = render(
+        const { container } = render(
             <Screens activeScreen="leto">
                 <Screen name="artemis">Artemis</Screen>
                 <Screen name="leto">Leto</Screen>
-            </Screens>
+            </Screens>,
         )
 
         expect(container).toMatchSnapshot()

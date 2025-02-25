@@ -1,11 +1,11 @@
 import moment from 'moment/moment'
 
-import {GiveFeedbackAIAgentTask} from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/GiveFeedbackAIAgent.task'
+import { GiveFeedbackAIAgentTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/GiveFeedbackAIAgent.task'
 import {
     buildRuleEngineData,
     buildRuleEngineRoutes,
 } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/tests/utils'
-import {AiAgentStoreConfigurationFixture} from 'pages/aiAgent/Overview/hooks/pendingTasks/tests/AiAgentStoreConfiguration.fixture'
+import { AiAgentStoreConfigurationFixture } from 'pages/aiAgent/Overview/hooks/pendingTasks/tests/AiAgentStoreConfiguration.fixture'
 
 describe('GiveFeedbackAIAgentTask', () => {
     it('should display the task if the AI Agent was installed 7 days ago', () => {
@@ -18,7 +18,7 @@ describe('GiveFeedbackAIAgentTask', () => {
             buildRuleEngineData({
                 aiAgentStoreConfiguration,
             }),
-            buildRuleEngineRoutes()
+            buildRuleEngineRoutes(),
         )
         expect(task.display).toBe(true)
     })
@@ -33,7 +33,7 @@ describe('GiveFeedbackAIAgentTask', () => {
             buildRuleEngineData({
                 aiAgentStoreConfiguration,
             }),
-            buildRuleEngineRoutes()
+            buildRuleEngineRoutes(),
         )
         expect(task.display).toBe(true)
     })
@@ -48,7 +48,7 @@ describe('GiveFeedbackAIAgentTask', () => {
             buildRuleEngineData({
                 aiAgentStoreConfiguration,
             }),
-            buildRuleEngineRoutes()
+            buildRuleEngineRoutes(),
         )
         expect(task.display).toBe(false)
     })
@@ -56,9 +56,9 @@ describe('GiveFeedbackAIAgentTask', () => {
     it('should return root view when no viewId', () => {
         const task = new GiveFeedbackAIAgentTask(
             buildRuleEngineData({
-                ticketView: {viewId: undefined},
+                ticketView: { viewId: undefined },
             }),
-            buildRuleEngineRoutes()
+            buildRuleEngineRoutes(),
         )
         expect(task.featureUrl).toBe('/app/views')
     })
@@ -66,9 +66,9 @@ describe('GiveFeedbackAIAgentTask', () => {
     it('should return view/viewId when viewId exists and no ticketId', () => {
         const task = new GiveFeedbackAIAgentTask(
             buildRuleEngineData({
-                ticketView: {viewId: 123, ticketId: undefined},
+                ticketView: { viewId: 123, ticketId: undefined },
             }),
-            buildRuleEngineRoutes()
+            buildRuleEngineRoutes(),
         )
         expect(task.featureUrl).toBe('/app/views/123')
     })
@@ -76,9 +76,9 @@ describe('GiveFeedbackAIAgentTask', () => {
     it('should return view/viewId/ticketId when viewId and ticketId exist', () => {
         const task = new GiveFeedbackAIAgentTask(
             buildRuleEngineData({
-                ticketView: {viewId: 123, ticketId: 456},
+                ticketView: { viewId: 123, ticketId: 456 },
             }),
-            buildRuleEngineRoutes()
+            buildRuleEngineRoutes(),
         )
         expect(task.featureUrl).toBe('/app/ticket/456?activeTab=AI_AGENT')
     })

@@ -1,22 +1,22 @@
 import moment from 'moment'
 
-import {TicketChannel} from 'business/types/ticket'
-import {OrderDirection} from 'models/api/types'
+import { TicketChannel } from 'business/types/ticket'
+import { OrderDirection } from 'models/api/types'
 import {
     TicketDimension,
     TicketMeasure,
     TicketMember,
     TicketSegment,
 } from 'models/reporting/cubes/TicketCube'
-import {TicketMessagesMember} from 'models/reporting/cubes/TicketMessagesCube'
+import { TicketMessagesMember } from 'models/reporting/cubes/TicketMessagesCube'
 import {
     closedTicketsPerAgentQueryFactory,
     closedTicketsPerChannelQueryFactory,
     closedTicketsPerTicketDrillDownQueryFactory,
 } from 'models/reporting/queryFactories/support-performance/closedTickets'
-import {CHANNEL_DIMENSION} from 'models/reporting/queryFactories/support-performance/constants'
-import {ReportingFilterOperator} from 'models/reporting/types'
-import {LegacyStatsFilters} from 'models/stat/types'
+import { CHANNEL_DIMENSION } from 'models/reporting/queryFactories/support-performance/constants'
+import { ReportingFilterOperator } from 'models/reporting/types'
+import { LegacyStatsFilters } from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
@@ -41,7 +41,7 @@ describe('closedTicketsMetricPerAgent', () => {
 
     it('should build a query', () => {
         expect(
-            closedTicketsPerAgentQueryFactory(statsFilters, timezone)
+            closedTicketsPerAgentQueryFactory(statsFilters, timezone),
         ).toEqual({
             dimensions: [TicketDimension.AssigneeUserId],
             filters: [
@@ -83,10 +83,10 @@ describe('closedTicketsMetricPerAgent', () => {
 
         expect(
             closedTicketsPerAgentQueryFactory(
-                {...statsFilters, agents},
+                { ...statsFilters, agents },
                 timezone,
-                sorting
-            )
+                sorting,
+            ),
         ).toEqual({
             dimensions: [TicketDimension.AssigneeUserId],
             filters: [
@@ -147,7 +147,7 @@ describe('closedTicketsPerChannelQueryFactory', () => {
 
     it('should build a query', () => {
         expect(
-            closedTicketsPerChannelQueryFactory(statsFilters, timezone)
+            closedTicketsPerChannelQueryFactory(statsFilters, timezone),
         ).toEqual({
             dimensions: [CHANNEL_DIMENSION],
             filters: [
@@ -189,10 +189,10 @@ describe('closedTicketsPerChannelQueryFactory', () => {
 
         expect(
             closedTicketsPerChannelQueryFactory(
-                {...statsFilters, agents},
+                { ...statsFilters, agents },
                 timezone,
-                sorting
-            )
+                sorting,
+            ),
         ).toEqual({
             dimensions: [CHANNEL_DIMENSION],
             filters: [
@@ -253,7 +253,7 @@ describe('closedTicketsPerTicketQueryFactory', () => {
 
     it('should build a query', () => {
         expect(
-            closedTicketsPerTicketDrillDownQueryFactory(statsFilters, timezone)
+            closedTicketsPerTicketDrillDownQueryFactory(statsFilters, timezone),
         ).toEqual({
             ...closedTicketsPerAgentQueryFactory(statsFilters, timezone),
             measures: [],
@@ -274,14 +274,14 @@ describe('closedTicketsPerTicketQueryFactory', () => {
 
     it('should build a query with agents filter and sorting', () => {
         const agents = [2]
-        const filters = {...statsFilters, agents}
+        const filters = { ...statsFilters, agents }
 
         expect(
             closedTicketsPerTicketDrillDownQueryFactory(
                 filters,
                 timezone,
-                sorting
-            )
+                sorting,
+            ),
         ).toEqual({
             ...closedTicketsPerAgentQueryFactory(filters, timezone),
             measures: [],

@@ -1,30 +1,32 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { useMemo } from 'react'
+
 import classNames from 'classnames'
-import React, {useMemo} from 'react'
-import {useHistory} from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {Plan, ProductType} from 'models/billing/types'
-
+import { Plan, ProductType } from 'models/billing/types'
 import {
-    isLegacyAutomate,
-    isEnterprise,
-    isTrial,
-    isConvert,
     getOverageUnitPriceFormatted,
     getPlanPriceFormatted,
+    isConvert,
+    isEnterprise,
+    isLegacyAutomate,
+    isTrial,
 } from 'models/billing/utils'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import {
     getCheapestProductPrices,
     getCurrentHelpdeskCadence,
 } from 'state/billing/selectors'
-import {BillingBanner, CurrentUsagePerProduct} from 'state/billing/types'
+import { BillingBanner, CurrentUsagePerProduct } from 'state/billing/types'
 
-import {BILLING_PROCESS_PATH, PRODUCT_INFO} from '../../constants'
-import {formatAmount, formatNumTickets} from '../../utils/formatAmount'
-import Badge, {BadgeType} from '../Badge/Badge'
+import { BILLING_PROCESS_PATH, PRODUCT_INFO } from '../../constants'
+import { formatAmount, formatNumTickets } from '../../utils/formatAmount'
+import Badge, { BadgeType } from '../Badge/Badge'
+
 import css from './ProductCard.less'
 
 export type ProductCardProps = {
@@ -50,7 +52,7 @@ const ProductCard = ({
     const cadence = useAppSelector(getCurrentHelpdeskCadence)
     const history = useHistory()
 
-    const {className, canduOverageStatus} = useMemo(() => {
+    const { className, canduOverageStatus } = useMemo(() => {
         if (
             !usage ||
             !plan?.num_quota_tickets ||
@@ -129,7 +131,7 @@ const ProductCard = ({
                         <i
                             className={classNames(
                                 'material-icons',
-                                css.disabledLock
+                                css.disabledLock,
                             )}
                         >
                             lock
@@ -158,7 +160,7 @@ const ProductCard = ({
                 Manage
             </Button>
         ),
-        [history, type]
+        [history, type],
     )
 
     const counter = useMemo(() => {
@@ -210,7 +212,7 @@ const ProductCard = ({
         return (
             <div className={css.extraCost}>
                 {formatAmount(
-                    (usage?.data.extra_tickets_cost_in_cents ?? 0) / 100
+                    (usage?.data.extra_tickets_cost_in_cents ?? 0) / 100,
                 )}{' '}
                 extra cost
             </div>

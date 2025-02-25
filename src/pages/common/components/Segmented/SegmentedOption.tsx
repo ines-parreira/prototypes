@@ -1,9 +1,11 @@
+import React, { ChangeEvent } from 'react'
+
 import classNames from 'classnames'
-import React, {ChangeEvent} from 'react'
+
+import { ChangeSegmentedOptionFn } from './types/ChangeSegmentedOptionFn'
+import { SegmentedOptionModel } from './types/SegmentedOptionModel'
 
 import classes from './SegmentedOption.less'
-import {ChangeSegmentedOptionFn} from './types/ChangeSegmentedOptionFn'
-import {SegmentedOptionModel} from './types/SegmentedOptionModel'
 
 type SegmentedOptionProps = SegmentedOptionModel & {
     checked?: boolean

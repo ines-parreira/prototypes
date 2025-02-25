@@ -1,10 +1,11 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {NavBarDisplayMode} from 'common/navigation/hooks/useNavBar/context'
-import {useNavBar} from 'common/navigation/hooks/useNavBar/useNavBar'
+import { render, screen } from '@testing-library/react'
 
-import {CollapsibleNavBarWrapper} from '../CollapsibleNavBarWrapper'
+import { NavBarDisplayMode } from 'common/navigation/hooks/useNavBar/context'
+import { useNavBar } from 'common/navigation/hooks/useNavBar/useNavBar'
+
+import { CollapsibleNavBarWrapper } from '../CollapsibleNavBarWrapper'
 
 jest.mock('common/navigation/hooks/useNavBar/useNavBar')
 
@@ -19,12 +20,14 @@ describe('CollapsibleNavBarWrapper', () => {
         } as any)
 
         render(
-            <CollapsibleNavBarWrapper>{mockChildren}</CollapsibleNavBarWrapper>
+            <CollapsibleNavBarWrapper>{mockChildren}</CollapsibleNavBarWrapper>,
         )
 
         expect(screen.getByText('Test Content')).toBeInTheDocument()
         expect(
-            document.querySelector('[data-name="navbar-collapsible-container"]')
+            document.querySelector(
+                '[data-name="navbar-collapsible-container"]',
+            ),
         ).not.toBeInTheDocument()
     })
 
@@ -34,12 +37,14 @@ describe('CollapsibleNavBarWrapper', () => {
         } as any)
 
         render(
-            <CollapsibleNavBarWrapper>{mockChildren}</CollapsibleNavBarWrapper>
+            <CollapsibleNavBarWrapper>{mockChildren}</CollapsibleNavBarWrapper>,
         )
 
         expect(screen.getByText('Test Content')).toBeInTheDocument()
         expect(
-            document.querySelector('[data-name="navbar-collapsible-container"]')
+            document.querySelector(
+                '[data-name="navbar-collapsible-container"]',
+            ),
         ).toBeInTheDocument()
     })
 })

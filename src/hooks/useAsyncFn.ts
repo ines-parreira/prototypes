@@ -1,4 +1,4 @@
-import {DependencyList, useCallback, useRef, useState} from 'react'
+import { DependencyList, useCallback, useRef, useState } from 'react'
 
 import useIsMounted from './useIsMounted'
 
@@ -36,7 +36,7 @@ type AsyncFnResult<
 export default function useAsyncFn<T extends FunctionReturningPromise>(
     fn: T,
     deps: DependencyList = [],
-    initialState: StateFromFunctionReturningPromise<T> = {loading: false}
+    initialState: StateFromFunctionReturningPromise<T> = { loading: false },
 ): AsyncFnResult<T> {
     const lastCallId = useRef(0)
     const isMounted = useIsMounted()
@@ -47,27 +47,27 @@ export default function useAsyncFn<T extends FunctionReturningPromise>(
         (...args: Parameters<T>): ReturnType<T> => {
             const callId = ++lastCallId.current
 
-            set((prevState) => ({...prevState, loading: true}))
+            set((prevState) => ({ ...prevState, loading: true }))
 
             return fn(...args).then(
                 (value) => {
                     isMounted() &&
                         callId === lastCallId.current &&
-                        set({value, loading: false})
+                        set({ value, loading: false })
 
                     return value as unknown
                 },
                 (error) => {
                     isMounted() &&
                         callId === lastCallId.current &&
-                        set({error, loading: false})
+                        set({ error, loading: false })
 
                     return error as unknown
-                }
+                },
             ) as ReturnType<T>
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        deps
+        deps,
     )
 
     return [state, callback as unknown as T]

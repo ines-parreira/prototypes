@@ -1,25 +1,25 @@
 import _difference from 'lodash/difference'
 import _orderBy from 'lodash/orderBy'
-import moment, {Moment} from 'moment'
+import moment, { Moment } from 'moment'
 
 import {
     MetricWithDecile,
     QueryReturnType,
 } from 'hooks/reporting/useMetricPerDimension'
-import {OrderDirection} from 'models/api/types'
-import {Cubes} from 'models/reporting/cubes'
-import {AgentTimeTrackingMember} from 'models/reporting/cubes/agentxp/AgentTimeTrackingCube'
-import {AutomationBillingEventMember} from 'models/reporting/cubes/automate/AutomationBillingEventCube'
-import {AutomationDatasetFilterMember} from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
-import {BillableTicketDatasetFilterMember} from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
-import {HelpCenterTrackingEventMember} from 'models/reporting/cubes/HelpCenterTrackingEventCube'
+import { OrderDirection } from 'models/api/types'
+import { Cubes } from 'models/reporting/cubes'
+import { AgentTimeTrackingMember } from 'models/reporting/cubes/agentxp/AgentTimeTrackingCube'
+import { AutomationBillingEventMember } from 'models/reporting/cubes/automate/AutomationBillingEventCube'
+import { AutomationDatasetFilterMember } from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
+import { BillableTicketDatasetFilterMember } from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
+import { HelpCenterTrackingEventMember } from 'models/reporting/cubes/HelpCenterTrackingEventCube'
 import {
     HelpdeskMessageCubeWithJoins,
     HelpdeskMessageMember,
 } from 'models/reporting/cubes/HelpdeskMessageCube'
-import {TicketSLAMember} from 'models/reporting/cubes/sla/TicketSLACube'
-import {TicketMeasure, TicketMember} from 'models/reporting/cubes/TicketCube'
-import {TicketMessagesMember} from 'models/reporting/cubes/TicketMessagesCube'
+import { TicketSLAMember } from 'models/reporting/cubes/sla/TicketSLACube'
+import { TicketMeasure, TicketMember } from 'models/reporting/cubes/TicketCube'
+import { TicketMessagesMember } from 'models/reporting/cubes/TicketMessagesCube'
 import {
     addOptionalFilter,
     hasFilter,
@@ -167,7 +167,7 @@ export const DRILLDOWN_QUERY_LIMIT = 100
 
 export const statsFiltersToReportingFilters = (
     members: StatsFiltersMembers,
-    statsFilters: StatsFilters
+    statsFilters: StatsFilters,
 ): ReportingFilter[] => {
     const {
         period,
@@ -300,7 +300,7 @@ export const statsFiltersToReportingFilters = (
 }
 
 export const periodToReportingGranularity = (
-    period: StatsFilters['period']
+    period: StatsFilters['period'],
 ): AggregationWindow => {
     const start = moment(period.start_datetime)
     const end = moment(period.end_datetime)
@@ -321,13 +321,13 @@ export const periodToReportingGranularity = (
 
 export const periodAndAggregationWindowToReportingGranularity = (
     period: StatsFilters[FilterKey.Period],
-    aggregationWindow: StatsFilters[FilterKey.AggregationWindow]
+    aggregationWindow: StatsFilters[FilterKey.AggregationWindow],
 ): AggregationWindow => {
     return aggregationWindow ?? periodToReportingGranularity(period)
 }
 
 export const getPreviousPeriod = (
-    period: StatsFilters['period']
+    period: StatsFilters['period'],
 ): StatsFilters['period'] => {
     const start = moment(period.start_datetime).parseZone()
     const end = moment(period.end_datetime).parseZone()
@@ -340,15 +340,15 @@ export const getPreviousPeriod = (
 
 export const withFilter = <T extends ReportingQuery>(
     query: T,
-    filter: ReportingFilter
+    filter: ReportingFilter,
 ): T => {
-    return {...query, filters: [...query.filters, filter]}
+    return { ...query, filters: [...query.filters, filter] }
 }
 
 export const perDimensionQueryFactory =
     <T extends Cube>(
         queryFactory: QueryFactory<T>,
-        dimension: T['dimensions']
+        dimension: T['dimensions'],
     ) =>
     (filters: StatsFilters, timezone: string, sorting?: OrderDirection) => ({
         ...queryFactory(filters, timezone, sorting),
@@ -371,11 +371,11 @@ export const matchAndCalculateAllEntries = (
     dataAIdField: string,
     dataBIdField: string,
     dataAMeasureField: string,
-    dataBMeasureField: string
+    dataBMeasureField: string,
 ): QueryReturnType<HelpdeskMessageCubeWithJoins> =>
     dataA.data?.allData.map((item) => {
         const matchingValue = dataB.data?.allData.find(
-            (value) => value[dataBIdField] === item[dataAIdField]
+            (value) => value[dataBIdField] === item[dataAIdField],
         )?.[dataBMeasureField]
 
         return {
@@ -384,8 +384,8 @@ export const matchAndCalculateAllEntries = (
                 ? String(
                       calculate(
                           Number(item[dataAMeasureField]),
-                          Number(matchingValue)
-                      )
+                          Number(matchingValue),
+                      ),
                   )
                 : null,
         }
@@ -394,14 +394,14 @@ export const matchAndCalculateAllEntries = (
 export const sortAllData = (
     allData: QueryReturnType<HelpdeskMessageCubeWithJoins>,
     sortingField: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ) => {
     const nonNullValues = allData.filter((item) => item[sortingField] !== null)
 
     const sortedArray = _orderBy(
         nonNullValues,
         (v) => Number(v[sortingField]),
-        sorting
+        sorting,
     )
 
     return sortedArray.concat(_difference(allData, nonNullValues))

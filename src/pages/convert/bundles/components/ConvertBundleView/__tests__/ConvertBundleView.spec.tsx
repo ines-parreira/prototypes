@@ -1,20 +1,21 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-import MockAdapter from 'axios-mock-adapter'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
-import routerDom, {MemoryRouter, useParams} from 'react-router-dom'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import routerDom, { MemoryRouter, useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
-import {convertBundle} from 'fixtures/convertBundle'
+import { convertBundle } from 'fixtures/convertBundle'
 import client from 'models/api/resources'
-import {useListBundles} from 'models/convert/bundle/queries'
-import {BundleInstallationMethodResponse} from 'models/convert/bundle/types'
+import { useListBundles } from 'models/convert/bundle/queries'
+import { BundleInstallationMethodResponse } from 'models/convert/bundle/types'
 import * as useIsManualInstallationMethodRequired from 'pages/convert/common/hooks/useIsManualInstallationMethodRequired'
 import * as useThemeAppExtensionInstallation from 'pages/integrations/integration/components/gorgias_chat/hooks/useThemeAppExtensionInstallation'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 import ConvertBundleView from '../ConvertBundleView'
 
@@ -27,12 +28,16 @@ const mockStore = configureMockStore()
 const defaultState = {
     integrations: fromJS({
         integrations: [
-            {id: 123, type: 'gorgias_chat', meta: {shop_integration_id: 234}},
+            {
+                id: 123,
+                type: 'gorgias_chat',
+                meta: { shop_integration_id: 234 },
+            },
             {
                 id: 234,
                 type: 'shopify',
                 meta: {
-                    oauth: {scope: ['write_script_tags', 'read_script_tags']},
+                    oauth: { scope: ['write_script_tags', 'read_script_tags'] },
                 },
             },
         ],
@@ -50,12 +55,12 @@ const useListBundlesMock = assumeMock(useListBundles)
 
 const useThemeAppExtensionInstallationSpy = jest.spyOn(
     useThemeAppExtensionInstallation,
-    'default'
+    'default',
 )
 
 const useIsManualInstallationMethodRequiredSpy = jest.spyOn(
     useIsManualInstallationMethodRequired,
-    'default'
+    'default',
 )
 
 describe('ConvertBundleView Component', () => {
@@ -75,14 +80,14 @@ describe('ConvertBundleView Component', () => {
         })
 
         it('renders installation method selection when is installed', async () => {
-            ;(useParams as jest.Mock).mockReturnValue({id: '123'})
+            ;(useParams as jest.Mock).mockReturnValue({ id: '123' })
             useListBundlesMock.mockReturnValue({
                 data: [convertBundle],
             } as any)
 
             mockedServer
                 .onGet(`/api/revenue-addon-bundle/${convertBundle.id}/`)
-                .reply(200, {code: 'some code'})
+                .reply(200, { code: 'some code' })
 
             render(
                 <MemoryRouter>
@@ -91,16 +96,16 @@ describe('ConvertBundleView Component', () => {
                             <ConvertBundleView />
                         </Provider>
                     </QueryClientProvider>
-                </MemoryRouter>
+                </MemoryRouter>,
             )
 
             await waitFor(() => {
                 expect(screen.getByText('forum')).toBeInTheDocument()
                 expect(
-                    screen.getByText('1-click installation for Shopify')
+                    screen.getByText('1-click installation for Shopify'),
                 ).toBeInTheDocument()
                 expect(
-                    screen.getByText('Manual installation')
+                    screen.getByText('Manual installation'),
                 ).toBeInTheDocument()
                 expect(screen.getByText('some code')).toBeInTheDocument()
             })
@@ -112,7 +117,7 @@ describe('ConvertBundleView Component', () => {
         ])(
             'renders installation method selection when not installed',
             async (option, button, action) => {
-                ;(useParams as jest.Mock).mockReturnValue({id: '123'})
+                ;(useParams as jest.Mock).mockReturnValue({ id: '123' })
                 useListBundlesMock.mockReturnValue({
                     data: [],
                 } as any)
@@ -128,20 +133,20 @@ describe('ConvertBundleView Component', () => {
                                 <ConvertBundleView />
                             </Provider>
                         </QueryClientProvider>
-                    </MemoryRouter>
+                    </MemoryRouter>,
                 )
 
                 await waitFor(() => {
                     expect(
                         screen.getByText(
-                            'Select installation method for the Campaign bundle'
-                        )
+                            'Select installation method for the Campaign bundle',
+                        ),
                     ).toBeInTheDocument()
                     expect(
-                        screen.getByText('1-click install')
+                        screen.getByText('1-click install'),
                     ).toBeInTheDocument()
                     expect(
-                        screen.getByText('Manual install')
+                        screen.getByText('Manual install'),
                     ).toBeInTheDocument()
                 })
 
@@ -151,7 +156,7 @@ describe('ConvertBundleView Component', () => {
                 await waitFor(() => {
                     expect(mockedServer.history.post.length).toBe(1)
                 })
-            }
+            },
         )
     })
 
@@ -165,7 +170,7 @@ describe('ConvertBundleView Component', () => {
         })
 
         it('renders installation method selection when is installed', async () => {
-            ;(useParams as jest.Mock).mockReturnValue({id: '123'})
+            ;(useParams as jest.Mock).mockReturnValue({ id: '123' })
             useListBundlesMock.mockReturnValue({
                 data: [
                     {
@@ -177,7 +182,7 @@ describe('ConvertBundleView Component', () => {
 
             mockedServer
                 .onGet(`/api/revenue-addon-bundle/${convertBundle.id}/`)
-                .reply(200, {code: 'some code'})
+                .reply(200, { code: 'some code' })
 
             render(
                 <MemoryRouter>
@@ -186,19 +191,19 @@ describe('ConvertBundleView Component', () => {
                             <ConvertBundleView />
                         </Provider>
                     </QueryClientProvider>
-                </MemoryRouter>
+                </MemoryRouter>,
             )
 
             await waitFor(() => {
                 expect(screen.getByText('forum')).toBeInTheDocument()
                 expect(
-                    screen.queryByText('1-click installation for Shopify')
+                    screen.queryByText('1-click installation for Shopify'),
                 ).not.toBeInTheDocument()
                 expect(
-                    screen.queryByText('Quick installation for Shopify')
+                    screen.queryByText('Quick installation for Shopify'),
                 ).toBeInTheDocument()
                 expect(
-                    screen.getByText('Manual installation')
+                    screen.getByText('Manual installation'),
                 ).toBeInTheDocument()
                 expect(screen.getByText('some code')).toBeInTheDocument()
             })
@@ -206,7 +211,7 @@ describe('ConvertBundleView Component', () => {
 
         it('renders manual installation only when is not installed', async () => {
             useIsManualInstallationMethodRequiredSpy.mockReturnValue(true)
-            ;(useParams as jest.Mock).mockReturnValue({id: '123'})
+            ;(useParams as jest.Mock).mockReturnValue({ id: '123' })
             useListBundlesMock.mockReturnValue({
                 data: [],
             } as any)
@@ -222,17 +227,17 @@ describe('ConvertBundleView Component', () => {
                             <ConvertBundleView />
                         </Provider>
                     </QueryClientProvider>
-                </MemoryRouter>
+                </MemoryRouter>,
             )
 
             await waitFor(() => {
                 expect(
                     screen.getByText(
-                        'Select installation method for the Campaign bundle'
-                    )
+                        'Select installation method for the Campaign bundle',
+                    ),
                 ).toBeInTheDocument()
                 expect(
-                    screen.queryByText('1-click install')
+                    screen.queryByText('1-click install'),
                 ).not.toBeInTheDocument()
                 expect(screen.getByText('Manual install')).toBeInTheDocument()
             })

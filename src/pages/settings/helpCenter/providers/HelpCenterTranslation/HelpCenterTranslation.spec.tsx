@@ -1,23 +1,24 @@
-import {act, renderHook} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
-import React, {ComponentType} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentType } from 'react'
+
+import { act, renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {HelpCenter} from 'models/helpCenter/types'
-import {getContactFormForHelpCenterFixture} from 'pages/settings/contactForm/fixtures/contacForm'
-import {getSingleHelpCenterResponseFixtureWithTranslation} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { HelpCenter } from 'models/helpCenter/types'
+import { getContactFormForHelpCenterFixture } from 'pages/settings/contactForm/fixtures/contacForm'
+import { getSingleHelpCenterResponseFixtureWithTranslation } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import {
     HelpCenterTranslationProvider,
     useHelpCenterTranslation,
 } from 'pages/settings/helpCenter/providers/HelpCenterTranslation/HelpCenterTranslation'
-import {initialState as articlesState} from 'state/entities/helpCenter/articles'
-import {initialState as categoriesState} from 'state/entities/helpCenter/categories'
-import {RootState, StoreDispatch} from 'state/types'
-import {initialState as uiState} from 'state/ui/helpCenter'
-import {flushPromises} from 'utils/testing'
+import { initialState as articlesState } from 'state/entities/helpCenter/articles'
+import { initialState as categoriesState } from 'state/entities/helpCenter/categories'
+import { RootState, StoreDispatch } from 'state/types'
+import { initialState as uiState } from 'state/ui/helpCenter'
+import { flushPromises } from 'utils/testing'
 
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
     thunk,
@@ -36,7 +37,12 @@ const helpCenter = {
     },
     translations:
         getSingleHelpCenterResponseFixtureWithTranslation.translations?.map(
-            (t) => ({...t, help_center_id: 333, id: 555, contact_form_id: 111})
+            (t) => ({
+                ...t,
+                help_center_id: 333,
+                id: 555,
+                contact_form_id: 111,
+            }),
         ),
 }
 
@@ -62,7 +68,7 @@ const defaultState: Partial<RootState> = {
     integrations: fromJS({
         integrations: [],
     }),
-    ui: {helpCenter: {...uiState}} as any,
+    ui: { helpCenter: { ...uiState } } as any,
 }
 
 jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
@@ -106,7 +112,7 @@ function renderTestHook({
     state?: Partial<RootState>
 }) {
     return renderHook(() => useHelpCenterTranslation(), {
-        wrapper: ({children}: {children: ComponentType}) => (
+        wrapper: ({ children }: { children: ComponentType }) => (
             <Provider
                 store={mockedStore({
                     ...defaultState,
@@ -135,35 +141,35 @@ describe('useHelpCenterTranslation', () => {
                 } as any,
             }
             jest.mocked(useCurrentHelpCenter).mockReturnValue(helpCenter)
-            mockedGetHelpCenter.mockResolvedValue({data: helpCenter})
+            mockedGetHelpCenter.mockResolvedValue({ data: helpCenter })
         })
 
         it('should return valid contact form related fields', async () => {
             const {
-                result: {current},
-            } = renderTestHook({state, currentHelpCenter: helpCenter})
+                result: { current },
+            } = renderTestHook({ state, currentHelpCenter: helpCenter })
 
             await flushPromises()
 
             expect(current.contactForm.subject_lines).toEqual(
-                contactForm.subject_lines
+                contactForm.subject_lines,
             )
 
             expect(current.contactForm.card_enabled).toEqual(
-                !contactForm.deactivated_datetime
+                !contactForm.deactivated_datetime,
             )
 
             expect(current.emailIntegration.email).toEqual(
-                helpCenter.email_integration?.email
+                helpCenter.email_integration?.email,
             )
 
             expect(current.emailIntegration.id).toEqual(
-                helpCenter.email_integration?.id
+                helpCenter.email_integration?.id,
             )
         })
 
         it('updates help center correctly after changes', async () => {
-            const {result} = renderTestHook({
+            const { result } = renderTestHook({
                 state,
                 currentHelpCenter: helpCenter,
             })
@@ -227,7 +233,7 @@ describe('useHelpCenterTranslation', () => {
                             options: ['XXX'],
                         },
                     },
-                ])
+                ]),
             )
             expect(mockedUpdateHelpCenter.mock.calls[0]).toMatchInlineSnapshot(`
                 [

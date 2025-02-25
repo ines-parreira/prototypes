@@ -1,21 +1,20 @@
 // Promote quizzes that help customers choose their first purchase
-
-import {ulid} from 'ulidx'
+import { ulid } from 'ulidx'
 
 import {
-    WizardConfiguration,
     BannerType,
     TooltipActionType,
+    WizardConfiguration,
 } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
-import {CampaignStepsKeys} from 'pages/convert/campaigns/types/CampaignSteps'
-import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
-import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
-import {createTriggerRule} from 'pages/convert/campaigns/utils/createTriggerRule'
-import {assetsUrl} from 'utils'
+import { CampaignStepsKeys } from 'pages/convert/campaigns/types/CampaignSteps'
+import { CampaignStatus } from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
+import { CampaignTriggerOperator } from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
+import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import { createTriggerRule } from 'pages/convert/campaigns/utils/createTriggerRule'
+import { assetsUrl } from 'utils'
 
-import {CampaignConfigurationBuilder} from '../constructor'
-import {CampaignConfiguration, CampaignTemplate} from '../types'
+import { CampaignConfigurationBuilder } from '../constructor'
+import { CampaignConfiguration, CampaignTemplate } from '../types'
 
 export const PROMOTE_QUIZZES_TO_HELP_VISIOTOR: CampaignTemplate = {
     slug: 'promote-quizzes-to-help-choose-products',
@@ -24,7 +23,7 @@ export const PROMOTE_QUIZZES_TO_HELP_VISIOTOR: CampaignTemplate = {
         'Direct your new visitors to your quiz or gift finder, to help them in their first purchase',
     onboarding: false,
     preview: assetsUrl(
-        'img/campaigns/library/promote-quizzes-to-help-choose-products.png'
+        'img/campaigns/library/promote-quizzes-to-help-choose-products.png',
     ),
     getWizardConfiguration: (): WizardConfiguration => {
         return {
@@ -74,7 +73,7 @@ export const PROMOTE_QUIZZES_TO_HELP_VISIOTOR: CampaignTemplate = {
                 status: CampaignStatus.Inactive,
                 triggers: triggers,
                 trigger_rule: createTriggerRule(triggers),
-            }
+            },
         )
 
         return Promise.resolve(builder.build())

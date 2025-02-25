@@ -1,6 +1,6 @@
-import {AttachmentEnum} from 'common/types'
-import {UniqueDiscountOfferTypeEnum} from 'models/convert/discountOffer/types'
-import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
+import { AttachmentEnum } from 'common/types'
+import { UniqueDiscountOfferTypeEnum } from 'models/convert/discountOffer/types'
+import { ProductCardAttachment } from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
 
 /*
  * Campaign-prefixed interfaces and types are used in the context of communication
@@ -61,25 +61,25 @@ export type CampaignAttachment =
     | CampaignContactFormAttachment
 
 export const campaignAttachmentIsProduct = (
-    attachment: CampaignAttachment
+    attachment: CampaignAttachment,
 ): attachment is CampaignProductAttachment => {
     return attachment.contentType === AttachmentEnum.Product
 }
 
 export const campaignAttachmentIsDiscountOffer = (
-    attachment: CampaignAttachment
+    attachment: CampaignAttachment,
 ): attachment is CampaignDiscountOfferAttachment => {
     return attachment.contentType === AttachmentEnum.DiscountOffer
 }
 
 export const campaignAttachmentIsProductRecommendation = (
-    attachment: CampaignAttachment
+    attachment: CampaignAttachment,
 ): attachment is CampaignProductRecommendation => {
     return attachment.contentType === AttachmentEnum.ProductRecommendation
 }
 
 export const campaignAttachmentIsContactForm = (
-    attachment: CampaignAttachment
+    attachment: CampaignAttachment,
 ): attachment is CampaignContactFormAttachment =>
     attachment.contentType === AttachmentEnum.ContactForm
 
@@ -173,25 +173,25 @@ export type AttachmentType =
     | ContactCaptureFormAttachment
 
 export const attachmentIsDiscountOffer = (
-    attachment: AttachmentType
+    attachment: AttachmentType,
 ): attachment is DiscountOfferAttachment => {
     return attachment.content_type === AttachmentEnum.DiscountOffer
 }
 
 export const attachmentIsProduct = (
-    attachment: AttachmentType
+    attachment: AttachmentType,
 ): attachment is ProductCardAttachment => {
     return attachment.content_type === AttachmentEnum.Product
 }
 
 export const attachmentIsProductRecommendation = (
-    attachment: AttachmentType
+    attachment: AttachmentType,
 ): attachment is ProductRecommendationAttachment => {
     return attachment.content_type === AttachmentEnum.ProductRecommendation
 }
 
 export const attachmentIsContactCaptureForm = (
-    attachment: AttachmentType
+    attachment: AttachmentType,
 ): attachment is ContactCaptureFormAttachment => {
     return attachment.content_type === AttachmentEnum.ContactForm
 }

@@ -1,16 +1,16 @@
 import MockAdapter from 'axios-mock-adapter'
 
-import {rules as rulesFixtures} from '../../../fixtures/rule'
+import { rules as rulesFixtures } from '../../../fixtures/rule'
 import client from '../../api/resources'
 import {
-    fetchRules,
-    fetchRule,
-    createRule,
-    deleteRule,
-    updateRule,
-    reorderRules,
-    deactivateRule,
     activateRule,
+    createRule,
+    deactivateRule,
+    deleteRule,
+    fetchRule,
+    fetchRules,
+    reorderRules,
+    updateRule,
 } from '../resources'
 
 const mockedServer = new MockAdapter(client)
@@ -20,7 +20,7 @@ describe('rule resources', () => {
     beforeEach(() => {
         mockedServer.reset()
         jest.spyOn(global, 'Date').mockImplementation(
-            () => mockDate as unknown as Date
+            () => mockDate as unknown as Date,
         ) // mocks deactivated datetime
     })
 
@@ -34,9 +34,9 @@ describe('rule resources', () => {
         })
 
         it('should reject an error on fail', () => {
-            mockedServer.onGet('/api/rules/').reply(503, {message: 'error'})
+            mockedServer.onGet('/api/rules/').reply(503, { message: 'error' })
             return expect(fetchRules()).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                new Error('Request failed with status code 503'),
             )
         })
     })
@@ -52,9 +52,9 @@ describe('rule resources', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onGet(/\/api\/rules\/\d+\//)
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(fetchRule(1)).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                new Error('Request failed with status code 503'),
             )
         })
     })
@@ -65,9 +65,9 @@ describe('rule resources', () => {
             expect(res).toStrictEqual(rulesFixtures[0])
         })
         it('should reject an error on fail', () => {
-            mockedServer.onPost('/api/rules/').reply(503, {message: 'error'})
+            mockedServer.onPost('/api/rules/').reply(503, { message: 'error' })
             return expect(createRule(rulesFixtures[0])).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                new Error('Request failed with status code 503'),
             )
         })
     })
@@ -81,9 +81,9 @@ describe('rule resources', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onDelete(/\/api\/rules\/\d+\//)
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(deleteRule(1)).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                new Error('Request failed with status code 503'),
             )
         })
     })
@@ -101,9 +101,9 @@ describe('rule resources', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onPut(/\/api\/rules\/\d+\//)
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(updateRule(rulesFixtures[0])).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                new Error('Request failed with status code 503'),
             )
         })
     })
@@ -113,16 +113,16 @@ describe('rule resources', () => {
             mockedServer
                 .onPost('/api/rules/priorities/')
                 .reply(200, rulesFixtures)
-            const res = await reorderRules([{id: 1, priority: 100}])
+            const res = await reorderRules([{ id: 1, priority: 100 }])
             expect(res).toStrictEqual(rulesFixtures)
         })
 
         it('should reject an error on fail', () => {
             mockedServer
                 .onPost('/api/rules/priorities/')
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(
-                reorderRules([{id: 1, priority: 100}])
+                reorderRules([{ id: 1, priority: 100 }]),
             ).rejects.toEqual(new Error('Request failed with status code 503'))
         })
     })
@@ -139,9 +139,9 @@ describe('rule resources', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onPut(/\/api\/rules\/\d+\//)
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(activateRule(rulesFixtures[0].id)).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                new Error('Request failed with status code 503'),
             )
         })
     })
@@ -157,9 +157,9 @@ describe('rule resources', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onPut(/\/api\/rules\/\d+\//)
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(deactivateRule(rulesFixtures[0].id)).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                new Error('Request failed with status code 503'),
             )
         })
     })

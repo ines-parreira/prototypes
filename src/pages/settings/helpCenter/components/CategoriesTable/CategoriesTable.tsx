@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useState} from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -12,13 +12,14 @@ import {
     savePositions,
 } from 'state/entities/helpCenter/categories'
 
-import css from './CategoriesTable.less'
-import {CategoriesTableBasicRow} from './components/CategoriesTableBasicRow/CategoriesTableBasicRow'
+import { CategoriesTableBasicRow } from './components/CategoriesTableBasicRow/CategoriesTableBasicRow'
 import {
     CategoriesTableRow,
     CategoriesTableRowProps,
 } from './components/CategoriesTableRow'
-import {DND_ENTITIES} from './constants'
+import { DND_ENTITIES } from './constants'
+
+import css from './CategoriesTable.less'
 
 export type CategoriesPositionsType = {
     categories: number[]
@@ -75,9 +76,11 @@ export const CategoriesTable = ({
                 defaultSiblingsPositions,
             })
 
-            dispatch(savePositions({children: siblings, categoryId: parentId}))
+            dispatch(
+                savePositions({ children: siblings, categoryId: parentId }),
+            )
         },
-        [categoriesById, defaultSiblingsPositions, dispatch]
+        [categoriesById, defaultSiblingsPositions, dispatch],
     )
 
     const handleOnReorderFinish = useCallback(() => {
@@ -91,10 +94,10 @@ export const CategoriesTable = ({
                 savePositions({
                     children: defaultSiblingsPositions,
                     categoryId: parentId,
-                })
+                }),
             )
         },
-        [defaultSiblingsPositions, dispatch]
+        [defaultSiblingsPositions, dispatch],
     )
 
     const handleOnDragStart = useCallback((children) => {
@@ -104,11 +107,11 @@ export const CategoriesTable = ({
     return (
         <TableWrapper>
             <TableHead>
-                <HeaderCell style={{width: 25}} className={css.headerCell} />
+                <HeaderCell style={{ width: 25 }} className={css.headerCell} />
                 <HeaderCell className={css.headerCell} />
-                <HeaderCell style={{width: 124}} className={css.headerCell} />
-                <HeaderCell style={{width: 105}} className={css.headerCell} />
-                <HeaderCell style={{width: 160}} className={css.headerCell} />
+                <HeaderCell style={{ width: 124 }} className={css.headerCell} />
+                <HeaderCell style={{ width: 105 }} className={css.headerCell} />
+                <HeaderCell style={{ width: 160 }} className={css.headerCell} />
             </TableHead>
             <TableBody className={css['main-table']}>
                 <CategoriesTableBasicRow

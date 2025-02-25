@@ -1,7 +1,8 @@
+import React, { useEffect, useMemo, useState } from 'react'
+
 import _capitalize from 'lodash/capitalize'
-import React, {useEffect, useMemo, useState} from 'react'
-import {useParams} from 'react-router-dom'
-import {dismissNotification} from 'reapop'
+import { useParams } from 'react-router-dom'
+import { dismissNotification } from 'reapop'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -15,11 +16,11 @@ import {
 import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal/PendingChangesModal'
-import {NewSummaryPaymentSection} from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
-import {useIsPaymentEnabled} from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
-import {useHasCreditCard} from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useHasCreditCard'
-import {getCurrentPlansByProduct} from 'state/billing/selectors'
-import {CurrentProductsUsages, TicketPurpose} from 'state/billing/types'
+import { NewSummaryPaymentSection } from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
+import { useIsPaymentEnabled } from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
+import { useHasCreditCard } from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useHasCreditCard'
+import { getCurrentPlansByProduct } from 'state/billing/selectors'
+import { CurrentProductsUsages, TicketPurpose } from 'state/billing/types'
 import {
     getCurrentSubscription,
     shouldPayWithShopify as getShouldPayWithShopify,
@@ -38,9 +39,9 @@ import {
     PRICING_DETAILS_URL,
     PRODUCT_INFO,
 } from '../../constants'
+import { useBillingPlans } from '../../hooks/useBillingPlan'
+import { formatNumTickets } from '../../utils/formatAmount'
 
-import {useBillingPlans} from '../../hooks/useBillingPlan'
-import {formatNumTickets} from '../../utils/formatAmount'
 import css from './BillingProcessView.less'
 
 type Params = {
@@ -105,14 +106,14 @@ const BillingProcessView = ({
 
     // Current subscription state
     const currentSubscriptionScheduledToCancelAt = useAppSelector(
-        getCurrentSubscription
+        getCurrentSubscription,
     ).get('scheduled_to_cancel_at')
     const isCurrentSubscriptionScheduledToCancel =
         !!currentSubscriptionScheduledToCancelAt
     const currentSubscriptionProducts = useAppSelector(getCurrentPlansByProduct)
 
     // Selected product to Subscribe or Update
-    const {selectedProduct} = useParams<Params>()
+    const { selectedProduct } = useParams<Params>()
 
     const {
         selectedPlans,
@@ -170,7 +171,7 @@ const BillingProcessView = ({
                 const isEnterprisePlan =
                     selectedPlan?.price_id === ENTERPRISE_PRICE_ID
                 const tickets = `${formatNumTickets(
-                    selectedPlan?.num_quota_tickets ?? 0
+                    selectedPlan?.num_quota_tickets ?? 0,
                 )}${isEnterprisePlan ? '+' : ''}`
 
                 message += `\n • ${productName} - ${tickets} ${
@@ -220,9 +221,9 @@ const BillingProcessView = ({
                 <Card title={'Summary'}>
                     <ScheduledCancellationSummary
                         cancelledProducts={Object.keys(
-                            currentSubscriptionProducts
+                            currentSubscriptionProducts,
                         ).map(
-                            (type) => PRODUCT_INFO[type as ProductType].title
+                            (type) => PRODUCT_INFO[type as ProductType].title,
                         )}
                         scheduledToCancelAt={
                             currentSubscriptionScheduledToCancelAt

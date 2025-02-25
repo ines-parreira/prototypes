@@ -1,17 +1,17 @@
-import {renderHook} from '@testing-library/react-hooks'
-
+import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment'
 
 import {
     fetchLanguageProficiencyTrend,
     useLanguageProficiencyTrend,
 } from 'hooks/reporting/support-performance/auto-qa/useLanguageProficiencyTrend'
-import useMetricTrend, {fetchMetricTrend} from 'hooks/reporting/useMetricTrend'
-import {languageProficiencyQueryFactory} from 'models/reporting/queryFactories/auto-qa/languageProficiencyQueryFactory'
-
-import {StatsFilters} from 'models/stat/types'
-import {formatReportingQueryDate, getPreviousPeriod} from 'utils/reporting'
-import {assumeMock} from 'utils/testing'
+import useMetricTrend, {
+    fetchMetricTrend,
+} from 'hooks/reporting/useMetricTrend'
+import { languageProficiencyQueryFactory } from 'models/reporting/queryFactories/auto-qa/languageProficiencyQueryFactory'
+import { StatsFilters } from 'models/stat/types'
+import { formatReportingQueryDate, getPreviousPeriod } from 'utils/reporting'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/useMetricTrend')
 const useMetricTrendMock = assumeMock(useMetricTrend)
@@ -31,7 +31,7 @@ describe('LanguageProficiencyTrend', () => {
     describe('useLanguageProficiencyTrend', () => {
         it('should pass query factories with two periods', () => {
             renderHook(() =>
-                useLanguageProficiencyTrend(statsFilters, timezone)
+                useLanguageProficiencyTrend(statsFilters, timezone),
             )
 
             expect(useMetricTrendMock).toHaveBeenCalledWith(
@@ -41,8 +41,8 @@ describe('LanguageProficiencyTrend', () => {
                         ...statsFilters,
                         period: getPreviousPeriod(statsFilters.period),
                     },
-                    timezone
-                )
+                    timezone,
+                ),
             )
         })
     })
@@ -58,8 +58,8 @@ describe('LanguageProficiencyTrend', () => {
                         ...statsFilters,
                         period: getPreviousPeriod(statsFilters.period),
                     },
-                    timezone
-                )
+                    timezone,
+                ),
             )
         })
     })

@@ -1,22 +1,22 @@
-import {CouponSummary, ProductType} from 'models/billing/types'
+import { CouponSummary, ProductType } from 'models/billing/types'
 
-import {SelectedPlans} from '../views/BillingProcessView/BillingProcessView'
+import { SelectedPlans } from '../views/BillingProcessView/BillingProcessView'
 
 // Calculates the costs all of currently selected products, accounting for coupons.
 export const getTotalWithDiscounts = (
     selectedPlans: SelectedPlans,
-    coupon: CouponSummary | null
+    coupon: CouponSummary | null,
 ) => {
     const planAmountList = Object.entries(selectedPlans)
         .filter(([, product]) => product.isSelected && !!product.plan?.amount)
         .map(
             ([type, product]) =>
-                [type, product.plan?.amount ?? 0] as [ProductType, number]
+                [type, product.plan?.amount ?? 0] as [ProductType, number],
         )
 
     const totalAmount = planAmountList.reduce(
         (acc, [, planAmount]) => acc + planAmount,
-        0
+        0,
     )
 
     if (!coupon) {
@@ -35,7 +35,7 @@ export const getTotalWithDiscounts = (
         : planAmountList.reduce(
               (acc, [type, planAmount]) =>
                   acc + (couponAppliesToProduct(coupon, type) ? planAmount : 0),
-              0
+              0,
           )
 
     let discount = 0
@@ -61,5 +61,5 @@ export const getTotalWithDiscounts = (
 
 const couponAppliesToProduct = (
     coupon: CouponSummary,
-    productType: ProductType
+    productType: ProductType,
 ) => coupon.products?.includes(productType) ?? false

@@ -1,14 +1,16 @@
-import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
-import {render, screen, fireEvent} from '@testing-library/react'
 import React from 'react'
 
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, render, screen } from '@testing-library/react'
+
 import '@testing-library/jest-dom/extend-expect'
+
 import GorgiasChatIntegrationManualInstallationCard from '../../GorgiasChatIntegrationManualInstallationCard'
 
 // Mock the queries
 jest.mock('models/integration/queries', () => ({
     useGetInstallationSnippet: jest.fn().mockReturnValue({
-        data: {snippet: 'test-snippet', appKey: 'test-app-key'},
+        data: { snippet: 'test-snippet', appKey: 'test-app-key' },
     }),
 }))
 
@@ -24,20 +26,22 @@ describe('GorgiasChatIntegrationManualInstallationCard', () => {
 
     const renderWithQueryClient = (ui: React.ReactElement) => {
         return render(
-            <QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>
+            <QueryClientProvider client={queryClient}>
+                {ui}
+            </QueryClientProvider>,
         )
     }
 
     it('renders without crashing', () => {
         renderWithQueryClient(
-            <GorgiasChatIntegrationManualInstallationCard {...defaultProps} />
+            <GorgiasChatIntegrationManualInstallationCard {...defaultProps} />,
         )
         expect(screen.getByText('Manual installation')).toBeInTheDocument()
     })
 
     it('toggles collapse on header click', () => {
         renderWithQueryClient(
-            <GorgiasChatIntegrationManualInstallationCard {...defaultProps} />
+            <GorgiasChatIntegrationManualInstallationCard {...defaultProps} />,
         )
         const header = screen.getByText('Manual installation').closest('div')
         fireEvent.click(header!)
@@ -48,13 +52,13 @@ describe('GorgiasChatIntegrationManualInstallationCard', () => {
 
     it('changes active tab on tab click', () => {
         renderWithQueryClient(
-            <GorgiasChatIntegrationManualInstallationCard {...defaultProps} />
+            <GorgiasChatIntegrationManualInstallationCard {...defaultProps} />,
         )
         fireEvent.click(screen.getByText('Google Tag Manager'))
         expect(
             screen.getByText(
-                'Please note that if you install chat through Google Tag Managers, customers using ad-blockers might not be able to see your chat widget.'
-            )
+                'Please note that if you install chat through Google Tag Managers, customers using ad-blockers might not be able to see your chat widget.',
+            ),
         ).toBeInTheDocument()
     })
 })

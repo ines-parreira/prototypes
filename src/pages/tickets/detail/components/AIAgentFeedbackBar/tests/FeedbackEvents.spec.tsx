@@ -1,16 +1,17 @@
-import {render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {SegmentEvent} from 'common/segment'
-import {logEventWithSampling} from 'common/segment/segment'
-import {TicketMessage} from 'models/ticket/types'
-import {useAIAgentMessageEvents} from 'pages/tickets/detail/hooks/useAIAgentMessageEvents'
-import {assumeMock} from 'utils/testing'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { SegmentEvent } from 'common/segment'
+import { logEventWithSampling } from 'common/segment/segment'
+import { TicketMessage } from 'models/ticket/types'
+import { useAIAgentMessageEvents } from 'pages/tickets/detail/hooks/useAIAgentMessageEvents'
+import { assumeMock } from 'utils/testing'
 
 import FeedbackEvents from '../FeedbackEvents'
-import {TicketEventEnum} from '../types'
-import {messageFeedback} from './fixtures'
+import { TicketEventEnum } from '../types'
+import { messageFeedback } from './fixtures'
 
 jest.mock('common/segment/segment')
 jest.mock('pages/tickets/detail/hooks/useAIAgentMessageEvents')
@@ -42,7 +43,7 @@ describe('FeedbackEvents', () => {
                 messages={messages}
                 shopType={shopType}
                 shopName={shopName}
-            />
+            />,
         )
         expect(screen.getByText('Ticket events')).toBeInTheDocument()
     })
@@ -53,13 +54,13 @@ describe('FeedbackEvents', () => {
                 messages={messages}
                 shopType={shopType}
                 shopName={shopName}
-            />
+            />,
         )
         const link = screen.getByText('AI Agent Configuration')
         userEvent.click(link)
         expect(logEventMock).toHaveBeenCalledWith(
             SegmentEvent.AiAgentFeedbackResourceClicked,
-            {type: 'ai_agent_configuration_link'}
+            { type: 'ai_agent_configuration_link' },
         )
     })
 
@@ -70,7 +71,7 @@ describe('FeedbackEvents', () => {
                 messages={messages}
                 shopType={shopType}
                 shopName={shopName}
-            />
+            />,
         )
         expect(screen.queryByText('Ticket events')).not.toBeInTheDocument()
     })

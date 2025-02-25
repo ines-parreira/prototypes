@@ -1,7 +1,7 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
+
+import classNames from 'classnames'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 import {
     matchPath,
     Redirect,
@@ -9,29 +9,30 @@ import {
     Switch,
     useRouteMatch,
 } from 'react-router-dom'
-import {Container} from 'reactstrap'
+import { Container } from 'reactstrap'
 
-import {SegmentEvent, logEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {AGENT_ROLE} from 'config/user'
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { AGENT_ROLE } from 'config/user'
 import useEffectOnce from 'hooks/useEffectOnce'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
-
 import withUserRoleRequired from 'pages/common/utils/withUserRoleRequired'
 
-import {AiAgentMovedBanner} from '../common/components/AiAgentMovedBanner'
-import {FLOWS} from '../common/components/constants'
-import {useDisplayAiAgentMovedBanner} from '../common/hooks/useDisplayAiAgentMovedBanner'
-import {useHistoryTracking} from '../common/hooks/useHistoryTracking'
-import {WORKFLOWS_DESCRIPTION} from './common/constants'
+import { AiAgentMovedBanner } from '../common/components/AiAgentMovedBanner'
+import { FLOWS } from '../common/components/constants'
+import { useDisplayAiAgentMovedBanner } from '../common/hooks/useDisplayAiAgentMovedBanner'
+import { useHistoryTracking } from '../common/hooks/useHistoryTracking'
+import { WORKFLOWS_DESCRIPTION } from './common/constants'
 import WorkflowsEmptyState from './components/WorkflowsEmptyState'
 import WorkflowsList from './components/WorkflowsList'
-
 import useStoreWorkflows from './hooks/useStoreWorkflows'
-import {useStoreWorkflowsApi} from './hooks/useStoreWorkflowsApi'
-import css from './WorkflowsView.less'
+import { useStoreWorkflowsApi } from './hooks/useStoreWorkflowsApi'
 import WorkflowTemplatesViewContainer from './WorkflowTemplatesViewContainer'
+
+import css from './WorkflowsView.less'
 
 type WorkflowsViewProps = {
     shopType: string
@@ -56,7 +57,7 @@ export default function WorkflowsView({
 
     const displayAiAgentMovedBanner = useDisplayAiAgentMovedBanner()
 
-    const {path} = useRouteMatch()
+    const { path } = useRouteMatch()
 
     const {
         isUpdatePending,
@@ -102,7 +103,7 @@ export default function WorkflowsView({
                     <div
                         className={classNames(
                             css.descriptionContainer,
-                            css.descriptionContainerColumn
+                            css.descriptionContainerColumn,
                         )}
                     >
                         <div className={css.description}>
@@ -167,7 +168,7 @@ export default function WorkflowsView({
     const baseUrl = `/app/automation/${shopType}/${shopName}/flows`
     const isFlowsTemplatesRoutes = !!matchPath(
         location.pathname,
-        '/app/automation/:shopType/:shopName/flows/templates'
+        '/app/automation/:shopType/:shopName/flows/templates',
     )
 
     return (
@@ -206,7 +207,7 @@ export default function WorkflowsView({
                     exact
                     component={withUserRoleRequired(
                         WorkflowTemplatesViewContainer,
-                        AGENT_ROLE
+                        AGENT_ROLE,
                     )}
                 />
             </Switch>

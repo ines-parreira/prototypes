@@ -1,15 +1,16 @@
-import {List, Map} from 'immutable'
-import React, {ReactNode, useMemo} from 'react'
+import React, { ReactNode, useMemo } from 'react'
 
-import {logEvent, SegmentEvent, StatViewLinkClickedStat} from 'common/segment'
-import {getTicketViewField, getTicketViewFieldPath} from 'config/views'
+import { List, Map } from 'immutable'
+
+import { logEvent, SegmentEvent, StatViewLinkClickedStat } from 'common/segment'
+import { getTicketViewField, getTicketViewFieldPath } from 'config/views'
 import useAppSelector from 'hooks/useAppSelector'
-import {ViewField} from 'models/view/types'
-import {getHumanAgents} from 'state/agents/selectors'
-import {CollectionOperator, EqualityOperator} from 'state/rules/types'
-import {ViewFilter} from 'state/views/types'
+import { ViewField } from 'models/view/types'
+import { getHumanAgents } from 'state/agents/selectors'
+import { CollectionOperator, EqualityOperator } from 'state/rules/types'
+import { ViewFilter } from 'state/views/types'
 
-import {useStatsViewFilters} from './utils'
+import { useStatsViewFilters } from './utils'
 import ViewLink from './ViewLink'
 
 type Props = {
@@ -25,14 +26,14 @@ export default function TicketsClosedPerAgentViewLink({
 }: Props) {
     const agents = useAppSelector(getHumanAgents) as List<Map<any, any>>
     const agent = agents.find(
-        (agent) => (agent!.get('name') as string) === agentName
+        (agent) => (agent!.get('name') as string) === agentName,
     )
     const statsViewFilters = useStatsViewFilters(
-        getTicketViewFieldPath(getTicketViewField(ViewField.Closed))
+        getTicketViewFieldPath(getTicketViewField(ViewField.Closed)),
     )
     const filters = useMemo<ViewFilter[]>(() => {
         const assigneeLeft = getTicketViewFieldPath(
-            getTicketViewField(ViewField.Assignee)
+            getTicketViewField(ViewField.Assignee),
         )
         const assigneeFilter: ViewFilter = agent
             ? {
@@ -48,7 +49,7 @@ export default function TicketsClosedPerAgentViewLink({
         return [
             assigneeFilter,
             ...statsViewFilters.filter(
-                (filter) => filter.left !== assigneeLeft
+                (filter) => filter.left !== assigneeLeft,
             ),
         ]
     }, [agent, statsViewFilters])

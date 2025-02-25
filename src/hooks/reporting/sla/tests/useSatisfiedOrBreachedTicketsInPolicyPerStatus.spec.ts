@@ -1,4 +1,4 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
 import {
     fetchSatisfiedOrBreachedTicketsInPolicyPerStatusTrend,
@@ -9,12 +9,12 @@ import {
     fetchMetricPerDimension,
     useMetricPerDimension,
 } from 'hooks/reporting/useMetricPerDimension'
-import {OrderDirection} from 'models/api/types'
-import {TicketSLAStatus} from 'models/reporting/cubes/sla/TicketSLACube'
-import {satisfiedOrBreachedTicketsQueryFactory} from 'models/reporting/queryFactories/sla/satisfiedOrBreachedTickets'
-import {StatsFilters} from 'models/stat/types'
-import {getPreviousPeriod} from 'utils/reporting'
-import {assumeMock} from 'utils/testing'
+import { OrderDirection } from 'models/api/types'
+import { TicketSLAStatus } from 'models/reporting/cubes/sla/TicketSLACube'
+import { satisfiedOrBreachedTicketsQueryFactory } from 'models/reporting/queryFactories/sla/satisfiedOrBreachedTickets'
+import { StatsFilters } from 'models/stat/types'
+import { getPreviousPeriod } from 'utils/reporting'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/useMetricPerDimension')
 const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
@@ -39,17 +39,17 @@ describe('SatisfiedOrBreachedTicketsInPolicyPerStatus', () => {
                 useSatisfiedOrBreachedTicketsInPolicyPerStatus(
                     filters,
                     timeZone,
-                    sorting
-                )
+                    sorting,
+                ),
             )
 
             expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
                 satisfiedOrBreachedTicketsQueryFactory(
                     filters,
                     timeZone,
-                    sorting
+                    sorting,
                 ),
-                undefined
+                undefined,
             )
         })
 
@@ -59,17 +59,17 @@ describe('SatisfiedOrBreachedTicketsInPolicyPerStatus', () => {
                     filters,
                     timeZone,
                     sorting,
-                    slaStatus
-                )
+                    slaStatus,
+                ),
             )
 
             expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
                 satisfiedOrBreachedTicketsQueryFactory(
                     filters,
                     timeZone,
-                    sorting
+                    sorting,
                 ),
-                slaStatus
+                slaStatus,
             )
         })
     })
@@ -80,8 +80,8 @@ describe('SatisfiedOrBreachedTicketsInPolicyPerStatus', () => {
                 useSatisfiedOrBreachedTicketsInPolicyPerStatusTrend(
                     filters,
                     timeZone,
-                    sorting
-                )
+                    sorting,
+                ),
             )
 
             expect(useMetricPerDimensionMock).toHaveBeenNthCalledWith(
@@ -89,9 +89,9 @@ describe('SatisfiedOrBreachedTicketsInPolicyPerStatus', () => {
                 satisfiedOrBreachedTicketsQueryFactory(
                     filters,
                     timeZone,
-                    sorting
+                    sorting,
                 ),
-                undefined
+                undefined,
             )
             expect(useMetricPerDimensionMock).toHaveBeenNthCalledWith(
                 2,
@@ -101,9 +101,9 @@ describe('SatisfiedOrBreachedTicketsInPolicyPerStatus', () => {
                         period: getPreviousPeriod(filters.period),
                     },
                     timeZone,
-                    sorting
+                    sorting,
                 ),
-                undefined
+                undefined,
             )
         })
 
@@ -113,8 +113,8 @@ describe('SatisfiedOrBreachedTicketsInPolicyPerStatus', () => {
                     filters,
                     timeZone,
                     sorting,
-                    slaStatus
-                )
+                    slaStatus,
+                ),
             )
 
             expect(useMetricPerDimensionMock).toHaveBeenNthCalledWith(
@@ -122,9 +122,9 @@ describe('SatisfiedOrBreachedTicketsInPolicyPerStatus', () => {
                 satisfiedOrBreachedTicketsQueryFactory(
                     filters,
                     timeZone,
-                    sorting
+                    sorting,
                 ),
-                slaStatus
+                slaStatus,
             )
             expect(useMetricPerDimensionMock).toHaveBeenNthCalledWith(
                 2,
@@ -134,9 +134,9 @@ describe('SatisfiedOrBreachedTicketsInPolicyPerStatus', () => {
                         period: getPreviousPeriod(filters.period),
                     },
                     timeZone,
-                    sorting
+                    sorting,
                 ),
-                slaStatus
+                slaStatus,
             )
         })
 
@@ -148,13 +148,13 @@ describe('SatisfiedOrBreachedTicketsInPolicyPerStatus', () => {
                 data: null,
             })
 
-            const {result} = renderHook(() =>
+            const { result } = renderHook(() =>
                 useSatisfiedOrBreachedTicketsInPolicyPerStatusTrend(
                     filters,
                     timeZone,
                     sorting,
-                    slaStatus
-                )
+                    slaStatus,
+                ),
             )
 
             expect(result.current.isFetching).toEqual(isFetching)
@@ -168,13 +168,13 @@ describe('SatisfiedOrBreachedTicketsInPolicyPerStatus', () => {
                 data: null,
             })
 
-            const {result} = renderHook(() =>
+            const { result } = renderHook(() =>
                 useSatisfiedOrBreachedTicketsInPolicyPerStatusTrend(
                     filters,
                     timeZone,
                     sorting,
-                    slaStatus
-                )
+                    slaStatus,
+                ),
             )
 
             expect(result.current.isError).toEqual(isError)
@@ -194,7 +194,7 @@ describe('SatisfiedOrBreachedTicketsInPolicyPerStatus', () => {
             await fetchSatisfiedOrBreachedTicketsInPolicyPerStatusTrend(
                 filters,
                 timeZone,
-                sorting
+                sorting,
             )
 
             expect(fetchMetricPerDimensionMock).toHaveBeenNthCalledWith(
@@ -202,9 +202,9 @@ describe('SatisfiedOrBreachedTicketsInPolicyPerStatus', () => {
                 satisfiedOrBreachedTicketsQueryFactory(
                     filters,
                     timeZone,
-                    sorting
+                    sorting,
                 ),
-                undefined
+                undefined,
             )
             expect(fetchMetricPerDimensionMock).toHaveBeenNthCalledWith(
                 2,
@@ -214,9 +214,9 @@ describe('SatisfiedOrBreachedTicketsInPolicyPerStatus', () => {
                         period: getPreviousPeriod(filters.period),
                     },
                     timeZone,
-                    sorting
+                    sorting,
                 ),
-                undefined
+                undefined,
             )
         })
 
@@ -225,7 +225,7 @@ describe('SatisfiedOrBreachedTicketsInPolicyPerStatus', () => {
                 filters,
                 timeZone,
                 sorting,
-                slaStatus
+                slaStatus,
             )
 
             expect(fetchMetricPerDimensionMock).toHaveBeenNthCalledWith(
@@ -233,9 +233,9 @@ describe('SatisfiedOrBreachedTicketsInPolicyPerStatus', () => {
                 satisfiedOrBreachedTicketsQueryFactory(
                     filters,
                     timeZone,
-                    sorting
+                    sorting,
                 ),
-                slaStatus
+                slaStatus,
             )
             expect(fetchMetricPerDimensionMock).toHaveBeenNthCalledWith(
                 2,
@@ -245,9 +245,9 @@ describe('SatisfiedOrBreachedTicketsInPolicyPerStatus', () => {
                         period: getPreviousPeriod(filters.period),
                     },
                     timeZone,
-                    sorting
+                    sorting,
                 ),
-                slaStatus
+                slaStatus,
             )
         })
 
@@ -264,7 +264,7 @@ describe('SatisfiedOrBreachedTicketsInPolicyPerStatus', () => {
                     filters,
                     timeZone,
                     sorting,
-                    slaStatus
+                    slaStatus,
                 )
 
             expect(result.isFetching).toEqual(isFetching)
@@ -283,7 +283,7 @@ describe('SatisfiedOrBreachedTicketsInPolicyPerStatus', () => {
                     filters,
                     timeZone,
                     sorting,
-                    slaStatus
+                    slaStatus,
                 )
 
             expect(result.isError).toEqual(isError)

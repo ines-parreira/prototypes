@@ -1,9 +1,12 @@
-import React, {ComponentProps, ReactNode} from 'react'
-import {Link} from 'react-router-dom'
+import React, { ComponentProps, ReactNode } from 'react'
+
+import { Link } from 'react-router-dom'
 
 import css from './CellLinkWrapper.less'
 
-type CellLinkWrapperProps = {children: ReactNode} & ComponentProps<typeof Link>
+type CellLinkWrapperProps = { children: ReactNode } & ComponentProps<
+    typeof Link
+>
 export default function CellLinkWrapper({
     children,
     ...linkProps

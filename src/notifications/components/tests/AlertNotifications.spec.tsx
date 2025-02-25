@@ -1,9 +1,10 @@
-import {render} from '@testing-library/react'
 import React from 'react'
-import NotificationsSystem, {dismissNotification} from 'reapop'
+
+import { render } from '@testing-library/react'
+import NotificationsSystem, { dismissNotification } from 'reapop'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {NotificationIcon} from 'pages/common/components/NotificationIcon'
+import { NotificationIcon } from 'pages/common/components/NotificationIcon'
 
 import useAlertNotifications from '../../hooks/useAlertNotifications'
 import AlertNotifications from '../AlertNotifications'
@@ -33,8 +34,8 @@ describe('AlertNotifications', () => {
 
         NotificationsSystemMock.mockReturnValue(<div>NotificationsSystem</div>)
         useAlertNotificationsMock.mockReturnValue([
-            {style: 'banner', id: 1},
-            {style: 'banner', id: 2},
+            { style: 'banner', id: 1 },
+            { style: 'banner', id: 2 },
         ])
 
         dispatch = jest.fn()
@@ -42,19 +43,19 @@ describe('AlertNotifications', () => {
     })
 
     it('should render alert notifications', () => {
-        const {getByText} = render(<AlertNotifications />)
+        const { getByText } = render(<AlertNotifications />)
 
         expect(NotificationsSystem).toHaveBeenCalledWith(
             {
-                components: {NotificationIcon},
+                components: { NotificationIcon },
                 dismissNotification: expect.any(Function),
                 notifications: [
-                    {style: 'banner', id: 1},
-                    {style: 'banner', id: 2},
+                    { style: 'banner', id: 1 },
+                    { style: 'banner', id: 2 },
                 ],
                 theme: {},
             },
-            expect.any(Object)
+            expect.any(Object),
         )
         expect(getByText('NotificationsSystem')).toBeInTheDocument()
     })
@@ -62,9 +63,9 @@ describe('AlertNotifications', () => {
     it('should dismiss a notification', () => {
         render(<AlertNotifications />)
 
-        const {dismissNotification} = (
+        const { dismissNotification } = (
             NotificationsSystemMock.mock.calls as [
-                [{dismissNotification: (id: number) => void}],
+                [{ dismissNotification: (id: number) => void }],
             ]
         )[0][0]
 

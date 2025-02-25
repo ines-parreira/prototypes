@@ -1,52 +1,53 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { useMemo, useState } from 'react'
+
 import classnames from 'classnames'
-import {Map, List} from 'immutable'
-import React, {useMemo, useState} from 'react'
-import {Link} from 'react-router-dom'
-import {Label} from 'reactstrap'
+import { List, Map } from 'immutable'
+import { Link } from 'react-router-dom'
+import { Label } from 'reactstrap'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import {
     GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS,
     LanguageItem,
 } from 'config/integrations/gorgias_chat'
 import useAppSelector from 'hooks/useAppSelector'
-import {ChatContactInfoDto} from 'models/helpCenter/types'
-import {useApplications} from 'models/integration/queries'
-import {IntegrationType} from 'models/integration/types'
+import { ChatContactInfoDto } from 'models/helpCenter/types'
+import { useApplications } from 'models/integration/queries'
+import { IntegrationType } from 'models/integration/types'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import TextArea from 'pages/common/forms/TextArea'
 import ToggleInput from 'pages/common/forms/ToggleInput'
-import {useHelpCenterTranslation} from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
+import { useHelpCenterTranslation } from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
 import settingsCss from 'pages/settings/settings.less'
+import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
+import { DEPRECATED_getIntegrationsByTypes } from 'state/integrations/selectors'
+import { getViewLanguage } from 'state/ui/helpCenter'
 
-import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
-import {DEPRECATED_getIntegrationsByTypes} from 'state/integrations/selectors'
-import {getViewLanguage} from 'state/ui/helpCenter'
-
-import {MAX_DESCRIPTION_LENGTH} from '../../constants'
-import helpCenterContactViewCss from '../../HelpCenterContactView.less'
+import { MAX_DESCRIPTION_LENGTH } from '../../constants'
 import ContactCard from '../ContactCard'
-import css from './ChatApplication.less'
 import ChatCardAvatars from './ChatCardAvatars'
-
 import {
     convertDaysToName,
     formatBusinessHoursByLocale,
     getTimezoneAbbreviation,
 } from './formatting.utils'
 
+import helpCenterContactViewCss from '../../HelpCenterContactView.less'
+import css from './ChatApplication.less'
+
 const ChatApplication = () => {
     const {
-        data: {applications} = {applications: []},
+        data: { applications } = { applications: [] },
         isSuccess: hasFetchedApplications,
     } = useApplications()
 
     const {
-        translation: {chatAppKey, contactInfo},
+        translation: { chatAppKey, contactInfo },
         updateTranslation,
     } = useHelpCenterTranslation()
     const chatIntegrations = useAppSelector(
-        DEPRECATED_getIntegrationsByTypes(IntegrationType.GorgiasChat)
+        DEPRECATED_getIntegrationsByTypes(IntegrationType.GorgiasChat),
     )
 
     const chatOptions = useMemo(
@@ -63,10 +64,10 @@ const ChatApplication = () => {
                     const integrationId: number = chat.get('id')
                     const chatApplicationId: number = parseInt(
                         chat.getIn(['meta', 'app_id']) as string,
-                        10
+                        10,
                     )
                     const chatAppKey =
-                        applications.find(({id}) => id === chatApplicationId)
+                        applications.find(({ id }) => id === chatApplicationId)
                             ?.appKey || ''
 
                     let chatLanguageCodes = []
@@ -74,18 +75,18 @@ const ChatApplication = () => {
                     const chatMetaLanguages: LanguageItem[] = (
                         chat.getIn(
                             ['meta', 'languages'],
-                            List()
+                            List(),
                         ) as List<LanguageItem>
                     ).toJS()
 
                     if (chatMetaLanguages.length) {
                         const primaryChatLanguage = chatMetaLanguages.find(
-                            ({primary}) => primary
+                            ({ primary }) => primary,
                         )?.language
 
                         const secondaryChatLanguages = chatMetaLanguages
-                            .filter(({primary}) => !primary)
-                            .map(({language}) => language)
+                            .filter(({ primary }) => !primary)
+                            .map(({ language }) => language)
 
                         chatLanguageCodes = [
                             primaryChatLanguage,
@@ -105,7 +106,7 @@ const ChatApplication = () => {
                             const chatLanguage =
                                 GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS.find(
                                     (value) =>
-                                        value?.get('value') === languageCode
+                                        value?.get('value') === languageCode,
                                 )
 
                             if (chatLanguage) {
@@ -114,7 +115,7 @@ const ChatApplication = () => {
 
                             return acc
                         },
-                        []
+                        [],
                     )
 
                     const chatLanguagesLabel = chatLanguageNames.length
@@ -131,13 +132,13 @@ const ChatApplication = () => {
                         integrationId,
                     }
                 }),
-        [chatIntegrations, applications]
+        [chatIntegrations, applications],
     )
 
     const [isDescriptionTooLong, setIsDescriptionTooLong] = useState(false)
     const businessHours = useAppSelector(getBusinessHoursSettings)
     const currentHelpCenterLanguage = useAppSelector(getViewLanguage)
-    const {description: chatCardDescription, enabled} = contactInfo.chat
+    const { description: chatCardDescription, enabled } = contactInfo.chat
 
     const handleChange =
         <TKey extends keyof ChatContactInfoDto>(key: TKey) =>
@@ -154,34 +155,34 @@ const ChatApplication = () => {
         }
 
     const handleChatApplicationIdChange = (chatAppKey: string | null) => {
-        updateTranslation({chatAppKey})
+        updateTranslation({ chatAppKey })
     }
 
     const toggleChatEnabled = () => {
         handleChatApplicationIdChange(
             chatAppKey == null && chatOptions.length > 0
                 ? chatOptions[0].value
-                : null
+                : null,
         )
     }
 
     const renderBusinessHours = () => {
         if (!businessHours) return null
 
-        const {business_hours, timezone} = businessHours.data
+        const { business_hours, timezone } = businessHours.data
         const timezoneAbbreviation = getTimezoneAbbreviation(timezone)
 
-        return business_hours.map(({days, from_time, to_time}) => (
+        return business_hours.map(({ days, from_time, to_time }) => (
             <span key={days}>
                 <b>{convertDaysToName(days)}</b>&nbsp;
                 {formatBusinessHoursByLocale(
                     from_time,
-                    currentHelpCenterLanguage
+                    currentHelpCenterLanguage,
                 )}{' '}
                 -&nbsp;
                 {formatBusinessHoursByLocale(
                     to_time,
-                    currentHelpCenterLanguage
+                    currentHelpCenterLanguage,
                 )}
                 &nbsp;
                 {timezoneAbbreviation}
@@ -214,7 +215,7 @@ const ChatApplication = () => {
                             id="enable-chat-widget-info"
                             className={classnames(
                                 'material-icons',
-                                css.tooltipIcon
+                                css.tooltipIcon,
                             )}
                         >
                             info_outline
@@ -243,7 +244,7 @@ const ChatApplication = () => {
                             <span
                                 className={classnames(
                                     css['warning-icon'],
-                                    'mr-2'
+                                    'mr-2',
                                 )}
                             >
                                 <i className="material-icons">report_problem</i>
@@ -267,7 +268,7 @@ const ChatApplication = () => {
                                 options={chatOptions}
                                 onChange={(value) =>
                                     handleChatApplicationIdChange(
-                                        value as string
+                                        value as string,
                                     )
                                 }
                                 placeholder="Select a chat"
@@ -293,7 +294,7 @@ const ChatApplication = () => {
                                 id="chat-contact-card-info"
                                 className={classnames(
                                     'material-icons',
-                                    css.tooltipIcon
+                                    css.tooltipIcon,
                                 )}
                             >
                                 info_outline

@@ -1,28 +1,29 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
-import configureMockStore, {MockStore} from 'redux-mock-store'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import configureMockStore, { MockStore } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {InfobarAction} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
+import { InfobarAction } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 
-import {CustomizationContext} from '../../../Template'
-import {ShopifyContext} from '../../contexts/ShopifyContext'
-import {shippingAddressCustomization} from '../ShippingAddress'
+import { CustomizationContext } from '../../../Template'
+import { ShopifyContext } from '../../contexts/ShopifyContext'
+import { shippingAddressCustomization } from '../ShippingAddress'
 
 jest.mock(
     'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup',
     () => ({
         __esModule: true,
-        default: ({actions}: {actions: InfobarAction[]}) => (
+        default: ({ actions }: { actions: InfobarAction[] }) => (
             <div data-testid="action-buttons">
                 {actions.map((action) => (
                     <button key={action.key}>{action.child}</button>
                 ))}
             </div>
         ),
-    })
+    }),
 )
 
 const mockStore = configureMockStore([thunk])
@@ -52,7 +53,7 @@ describe('ShippingAddress', () => {
 
     describe('<AfterTitle />', () => {
         it('should render edit button when actions are not hidden', () => {
-            const {getByText} = render(
+            const { getByText } = render(
                 <Provider store={store}>
                     <ShopifyContext.Provider
                         value={{
@@ -71,14 +72,14 @@ describe('ShippingAddress', () => {
                             />
                         </CustomizationContext.Provider>
                     </ShopifyContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(getByText('Edit')).toBeInTheDocument()
         })
 
         it('should not render edit button when actions are hidden', () => {
-            const {queryByText} = render(
+            const { queryByText } = render(
                 <Provider store={store}>
                     <ShopifyContext.Provider
                         value={{
@@ -97,7 +98,7 @@ describe('ShippingAddress', () => {
                             />
                         </CustomizationContext.Provider>
                     </ShopifyContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(queryByText('Edit')).not.toBeInTheDocument()

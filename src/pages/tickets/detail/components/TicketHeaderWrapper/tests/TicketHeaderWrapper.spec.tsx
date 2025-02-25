@@ -1,9 +1,10 @@
-import {render} from '@testing-library/react'
+import React, { ComponentProps } from 'react'
+
+import { render } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
-import {fromJS} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import { fromJS } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -21,11 +22,11 @@ jest.mock('pages/tickets/detail/components/TicketHeader', () => () => (
 ))
 jest.mock(
     'pages/tickets/detail/components/TicketFields/TicketFields',
-    () => () => <div>TicketFields</div>
+    () => () => <div>TicketFields</div>,
 )
 
 jest.mock(
-    'pages/tickets/detail/components/TicketHeaderWrapper/hooks/useCollisionDetection'
+    'pages/tickets/detail/components/TicketHeaderWrapper/hooks/useCollisionDetection',
 )
 
 const mockUseCollisionDetection = useCollisionDetection as jest.Mock
@@ -58,16 +59,16 @@ describe('<TicketHeaderWrapper/>', () => {
     })
 
     it('should render history button, ticket header and separator, and ticket fields', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <TicketHeaderWrapper {...minProps} />
-            </Provider>
+            </Provider>,
         )
         expect(container).toMatchSnapshot()
     })
 
     it('should hide history button when on a new ticket and not render separator', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider
                 store={mockStore({
                     ...defaultState,
@@ -75,7 +76,7 @@ describe('<TicketHeaderWrapper/>', () => {
                 })}
             >
                 <TicketHeaderWrapper {...minProps} />
-            </Provider>
+            </Provider>,
         )
         expect(container).toMatchSnapshot()
     })

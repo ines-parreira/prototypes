@@ -1,17 +1,18 @@
-import {cleanup, fireEvent, screen} from '@testing-library/react'
 import React from 'react'
-import {act} from 'react-dom/test-utils'
-import {Provider} from 'react-redux'
+
+import { cleanup, fireEvent, screen } from '@testing-library/react'
+import { act } from 'react-dom/test-utils'
+import { Provider } from 'react-redux'
 
 import useWhatsAppEditor from 'pages/integrations/integration/components/whatsapp/useWhatsAppEditor'
-import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
-import {mockStore} from 'utils/testing'
+import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
+import { mockStore } from 'utils/testing'
 
 import WhatsAppMessageTemplateSearch from '../WhatsAppMessageTemplateSearch'
 
 jest.mock(
     'pages/integrations/integration/components/whatsapp/useWhatsAppEditor',
-    () => jest.fn()
+    () => jest.fn(),
 )
 
 const useWhatsAppEditorSpy = useWhatsAppEditor as jest.Mock
@@ -28,10 +29,10 @@ jest.mock(
     () =>
         ({
             ...jest.requireActual(
-                'pages/tickets/detail/components/ReplyArea/TemplateTypeFilterDropdown'
+                'pages/tickets/detail/components/ReplyArea/TemplateTypeFilterDropdown',
             ),
             default: () => <div>TemplateTypeFilterDropdown</div>,
-        }) as Record<string, any>
+        }) as Record<string, any>,
 )
 
 describe('WhatsAppMessageTemplateSearch', () => {
@@ -39,7 +40,7 @@ describe('WhatsAppMessageTemplateSearch', () => {
         renderWithQueryClientProvider(
             <Provider store={mockStore({} as any)}>
                 <WhatsAppMessageTemplateSearch />
-            </Provider>
+            </Provider>,
         )
 
     afterEach(() => {
@@ -62,7 +63,7 @@ describe('WhatsAppMessageTemplateSearch', () => {
             fireEvent.click(arrowButton)
         })
         expect(
-            useWhatsAppEditorMockSetters.setIsTemplateListVisible
+            useWhatsAppEditorMockSetters.setIsTemplateListVisible,
         ).toHaveBeenCalledWith(true)
     })
 
@@ -81,7 +82,7 @@ describe('WhatsAppMessageTemplateSearch', () => {
             fireEvent.click(arrowButton)
         })
         expect(
-            useWhatsAppEditorMockSetters.setIsTemplateListVisible
+            useWhatsAppEditorMockSetters.setIsTemplateListVisible,
         ).toHaveBeenCalledWith(false)
     })
 
@@ -148,7 +149,7 @@ describe('WhatsAppMessageTemplateSearch', () => {
 
         renderComponent()
         expect(
-            screen.getByText('TemplateTypeFilterDropdown')
+            screen.getByText('TemplateTypeFilterDropdown'),
         ).toBeInTheDocument()
     })
 
@@ -162,18 +163,18 @@ describe('WhatsAppMessageTemplateSearch', () => {
 
         renderComponent()
         const input = screen.getByPlaceholderText(
-            'Search WhatsApp templates by name'
+            'Search WhatsApp templates by name',
         )
         act(() => {
             input.focus()
-            fireEvent.change(input, {target: {value: 'test'}})
+            fireEvent.change(input, { target: { value: 'test' } })
         })
 
         // wait for 350ms debounce
         jest.advanceTimersByTime(350)
 
         expect(
-            useWhatsAppEditorMockSetters.setSearchFilter
+            useWhatsAppEditorMockSetters.setSearchFilter,
         ).toHaveBeenCalledWith({
             language: [],
             name: 'test',

@@ -1,26 +1,28 @@
-import useMetricTrend, {fetchMetricTrend} from 'hooks/reporting/useMetricTrend'
-import {OrderDirection} from 'models/api/types'
-import {Cubes} from 'models/reporting/cubes'
-import {ticketAverageHandleTimeQueryFactory} from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
-import {closedTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
-import {customerSatisfactionQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
-import {medianFirstResponseTimeQueryFactory} from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
-import {medianResolutionTimeQueryFactory} from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
-import {messagesPerTicketQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesPerTicket'
-import {messagesSentQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
-import {oneTouchTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
-import {openTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/openTickets'
-import {ticketsCreatedQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsCreated'
-import {ticketsRepliedQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
-import {zeroTouchTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/zeroTouchTickets'
-import {ReportingQuery} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
-import {getPreviousPeriod} from 'utils/reporting'
+import useMetricTrend, {
+    fetchMetricTrend,
+} from 'hooks/reporting/useMetricTrend'
+import { OrderDirection } from 'models/api/types'
+import { Cubes } from 'models/reporting/cubes'
+import { ticketAverageHandleTimeQueryFactory } from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
+import { closedTicketsQueryFactory } from 'models/reporting/queryFactories/support-performance/closedTickets'
+import { customerSatisfactionQueryFactory } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
+import { medianFirstResponseTimeQueryFactory } from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
+import { medianResolutionTimeQueryFactory } from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
+import { messagesPerTicketQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesPerTicket'
+import { messagesSentQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesSent'
+import { oneTouchTicketsQueryFactory } from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
+import { openTicketsQueryFactory } from 'models/reporting/queryFactories/support-performance/openTickets'
+import { ticketsCreatedQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsCreated'
+import { ticketsRepliedQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsReplied'
+import { zeroTouchTicketsQueryFactory } from 'models/reporting/queryFactories/support-performance/zeroTouchTickets'
+import { ReportingQuery } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
+import { getPreviousPeriod } from 'utils/reporting'
 
 type QueryFactory<TCube extends Cubes> = (
     statsFilters: StatsFilters,
     timezone: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ) => ReportingQuery<TCube>
 
 export const getTrendFetch =
@@ -33,8 +35,8 @@ export const getTrendFetch =
                     ...filters,
                     period: getPreviousPeriod(filters.period),
                 },
-                timezone
-            )
+                timezone,
+            ),
         )
 
 export const getTrendHook =
@@ -47,39 +49,39 @@ export const getTrendHook =
                     ...filters,
                     period: getPreviousPeriod(filters.period),
                 },
-                timezone
-            )
+                timezone,
+            ),
         )
 
 export const useCustomerSatisfactionTrend = getTrendHook(
-    customerSatisfactionQueryFactory
+    customerSatisfactionQueryFactory,
 )
 export const fetchCustomerSatisfactionTrend = getTrendFetch(
-    customerSatisfactionQueryFactory
+    customerSatisfactionQueryFactory,
 )
 
 export const useMedianFirstResponseTimeTrend = getTrendHook(
-    medianFirstResponseTimeQueryFactory
+    medianFirstResponseTimeQueryFactory,
 )
 
 export const fetchMedianFirstResponseTimeTrend = getTrendFetch(
-    medianFirstResponseTimeQueryFactory
+    medianFirstResponseTimeQueryFactory,
 )
 
 export const useMessagesPerTicketTrend = getTrendHook(
-    messagesPerTicketQueryFactory
+    messagesPerTicketQueryFactory,
 )
 
 export const fetchMessagesPerTicketTrend = getTrendFetch(
-    messagesPerTicketQueryFactory
+    messagesPerTicketQueryFactory,
 )
 
 export const useMedianResolutionTimeTrend = getTrendHook(
-    medianResolutionTimeQueryFactory
+    medianResolutionTimeQueryFactory,
 )
 
 export const fetchMedianResolutionTimeTrend = getTrendFetch(
-    medianResolutionTimeQueryFactory
+    medianResolutionTimeQueryFactory,
 )
 
 export const useOpenTicketsTrend = getTrendHook(openTicketsQueryFactory)
@@ -93,27 +95,27 @@ export const fetchClosedTicketsTrend = getTrendFetch(closedTicketsQueryFactory)
 export const useOneTouchTicketsTrend = getTrendHook(oneTouchTicketsQueryFactory)
 
 export const fetchOneTouchTicketsTrend = getTrendFetch(
-    oneTouchTicketsQueryFactory
+    oneTouchTicketsQueryFactory,
 )
 
 export const useZeroTouchTicketsTrend = getTrendHook(
-    zeroTouchTicketsQueryFactory
+    zeroTouchTicketsQueryFactory,
 )
 
 export const fetchZeroTouchTicketsTrend = getTrendFetch(
-    zeroTouchTicketsQueryFactory
+    zeroTouchTicketsQueryFactory,
 )
 
 export const useTicketsCreatedTrend = getTrendHook(ticketsCreatedQueryFactory)
 
 export const fetchTicketsCreatedTrend = getTrendFetch(
-    ticketsCreatedQueryFactory
+    ticketsCreatedQueryFactory,
 )
 
 export const useTicketsRepliedTrend = getTrendHook(ticketsRepliedQueryFactory)
 
 export const fetchTicketsRepliedTrend = getTrendFetch(
-    ticketsRepliedQueryFactory
+    ticketsRepliedQueryFactory,
 )
 
 export const useMessagesSentTrend = getTrendHook(messagesSentQueryFactory)
@@ -121,9 +123,9 @@ export const useMessagesSentTrend = getTrendHook(messagesSentQueryFactory)
 export const fetchMessagesSentTrend = getTrendFetch(messagesSentQueryFactory)
 
 export const useTicketHandleTimeTrend = getTrendHook(
-    ticketAverageHandleTimeQueryFactory
+    ticketAverageHandleTimeQueryFactory,
 )
 
 export const fetchTicketHandleTimeTrend = getTrendFetch(
-    ticketAverageHandleTimeQueryFactory
+    ticketAverageHandleTimeQueryFactory,
 )

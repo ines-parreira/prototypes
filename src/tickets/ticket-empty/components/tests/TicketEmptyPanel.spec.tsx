@@ -1,7 +1,8 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {Panels} from 'core/layout/panels'
+import { render, screen } from '@testing-library/react'
+
+import { Panels } from 'core/layout/panels'
 
 import TicketEmptyPanel from '../TicketEmptyPanel'
 
@@ -14,7 +15,7 @@ describe('TicketEmptyPanel', () => {
         render(
             <Panels size={1000}>
                 <TicketEmptyPanel />
-            </Panels>
+            </Panels>,
         )
         expect(screen.getByText('TicketWrapper')).toBeInTheDocument()
     })

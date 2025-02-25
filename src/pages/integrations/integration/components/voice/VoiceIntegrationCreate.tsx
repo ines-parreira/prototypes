@@ -1,29 +1,28 @@
+import React, { useCallback, useEffect, useState } from 'react'
+
 import classnames from 'classnames'
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
+import { Col, Container, Form, FormGroup, Label, Row } from 'reactstrap'
 
-import React, {useEffect, useCallback, useState} from 'react'
-import {Col, Container, Form, FormGroup, Label, Row} from 'reactstrap'
-
-import {PhoneFunction} from 'business/twilio'
+import { PhoneFunction } from 'business/twilio'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     DEFAULT_IVR_SETTINGS,
     DEFAULT_VOICE_MESSAGE,
 } from 'models/integration/constants'
-import {IntegrationType, VoiceMessageType} from 'models/integration/types'
-import {NewPhoneNumber} from 'models/phoneNumber/types'
+import { IntegrationType, VoiceMessageType } from 'models/integration/types'
+import { NewPhoneNumber } from 'models/phoneNumber/types'
 import Alert from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {SelectableOption} from 'pages/common/forms/SelectField/types'
+import { SelectableOption } from 'pages/common/forms/SelectField/types'
 import rawPhoneFunctionOptions from 'pages/integrations/integration/components/phone/options/functions.json'
 import PhoneNumberSelectField from 'pages/phoneNumbers/PhoneNumberSelectField'
-
 import css from 'pages/settings/settings.less'
-import {getNewPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
-import {updateOrCreateIntegration} from 'state/integrations/actions'
+import { getNewPhoneNumbers } from 'state/entities/phoneNumbers/selectors'
+import { updateOrCreateIntegration } from 'state/integrations/actions'
 
 const phoneFunctionOptions: SelectableOption[] = rawPhoneFunctionOptions
 
@@ -102,7 +101,7 @@ function VoiceIntegrationCreate({
                 setIsLoading(false)
             }
         },
-        [title, emoji, phoneFunction, phoneNumber, dispatch]
+        [title, emoji, phoneFunction, phoneNumber, dispatch],
     )
 
     return (

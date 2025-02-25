@@ -1,86 +1,87 @@
 /* eslint-disable no-console */
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React from 'react'
+
 import classnames from 'classnames'
-import {EditorState} from 'draft-js'
-import {produce} from 'immer'
-import {fromJS, Map} from 'immutable'
-import {LDFlagSet} from 'launchdarkly-js-client-sdk'
-import {withLDConsumer} from 'launchdarkly-react-client-sdk'
-import {get, set} from 'lodash'
+import { EditorState } from 'draft-js'
+import { produce } from 'immer'
+import { fromJS, Map } from 'immutable'
+import { LDFlagSet } from 'launchdarkly-js-client-sdk'
+import { withLDConsumer } from 'launchdarkly-react-client-sdk'
+import { get, set } from 'lodash'
 import _isUndefined from 'lodash/isUndefined'
 import _omitBy from 'lodash/omitBy'
 import moment from 'moment'
-import React from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {Link} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem, Form, Label} from 'reactstrap'
+import { connect, ConnectedProps } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem, Form, Label } from 'reactstrap'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
-import {LanguageChat} from 'constants/languages'
-import {IntegrationType} from 'models/integration/constants'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
+import { LanguageChat } from 'constants/languages'
+import { IntegrationType } from 'models/integration/constants'
 import {
-    GorgiasChatAvatarSettings,
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
+    GorgiasChatAvatarSettings,
     GorgiasChatBackgroundColorStyle,
     GorgiasChatIntegration,
 } from 'models/integration/types'
-import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
+import { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
 import Button from 'pages/common/components/button/Button'
 import NavigatedSuccessModal, {
     NavigatedSuccessModalName,
 } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
-import {SuccessModalIcon} from 'pages/common/components/SuccessModal/SuccessModal'
-import {ActionName} from 'pages/common/draftjs/plugins/toolbar/types'
+import { SuccessModalIcon } from 'pages/common/components/SuccessModal/SuccessModal'
+import { ActionName } from 'pages/common/draftjs/plugins/toolbar/types'
 import Caption from 'pages/common/forms/Caption/Caption'
 import RichField from 'pages/common/forms/RichField/RichField'
 import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
-import {Tab} from 'pages/integrations/integration/types'
+import { Tab } from 'pages/integrations/integration/types'
 import {
     Texts,
     TextsMultiLanguage,
     TextsPerLanguage,
     Translations,
 } from 'rest_api/gorgias_chat_protected_api/types'
-import {getCurrentConvertPlan} from 'state/billing/selectors'
+import { getCurrentConvertPlan } from 'state/billing/selectors'
 import * as IntegrationsActions from 'state/integrations/actions'
-
-import {convertToHTML} from 'utils/editor'
-import {sanitizeHtmlDefault} from 'utils/html'
+import { convertToHTML } from 'utils/editor'
+import { sanitizeHtmlDefault } from 'utils/html'
 
 import {
-    GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ENABLED_DEFAULT,
-    GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
-    GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
-    GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_OPTIONAL,
-    GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_REQUIRED_OUTSIDE_BUSINESS_HOURS_DEPRECATED,
-    GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
+    getPrimaryLanguageFromChatConfig,
+    GORGIAS_CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
+    GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
     GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
     GORGIAS_CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
-    GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
-    GORGIAS_CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
     GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS,
     GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY,
     GORGIAS_CHAT_LIVE_CHAT_OFFLINE,
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
-    GORGIAS_CHAT_WIDGET_TEXTS,
+    GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
+    GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
+    GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ENABLED_DEFAULT,
+    GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_OPTIONAL,
+    GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_REQUIRED_OUTSIDE_BUSINESS_HOURS_DEPRECATED,
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
-    getPrimaryLanguageFromChatConfig,
+    GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
+    GORGIAS_CHAT_WIDGET_TEXTS,
     isTextsMultiLanguage,
 } from '../../../../../../config/integrations/gorgias_chat'
-import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
-import {getIntegrationsByTypes} from '../../../../../../state/integrations/selectors'
-import {RootState} from '../../../../../../state/types'
+import { updateOrCreateIntegration } from '../../../../../../state/integrations/actions'
+import { getIntegrationsByTypes } from '../../../../../../state/integrations/selectors'
+import { RootState } from '../../../../../../state/types'
 import PageHeader from '../../../../../common/components/PageHeader'
 import RadioFieldSet from '../../../../../common/forms/RadioFieldSet'
 import SelectField from '../../../../../common/forms/SelectField/SelectField'
 import ToggleInput from '../../../../../common/forms/ToggleInput'
-import {isGenericEmailIntegration} from '../../email/helpers'
-import {CustomizeTranslationsButton} from '../components/CustomizeTranslationsButton'
-import {multiLanguageInitialTextsEmptyData} from '../GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateText'
+import { isGenericEmailIntegration } from '../../email/helpers'
+import { CustomizeTranslationsButton } from '../components/CustomizeTranslationsButton'
+import { multiLanguageInitialTextsEmptyData } from '../GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateText'
 import translationsAvailableKeys from '../GorgiasChatIntegrationAppearance/GorgiasTranslateText/translations-available-keys'
 import AutoResponderPreview from '../GorgiasChatIntegrationPreview/AutoResponder'
 import ChatHomePreview from '../GorgiasChatIntegrationPreview/ChatHomePreview'
@@ -94,6 +95,7 @@ import OptionalEmailCapturePreview from '../GorgiasChatIntegrationPreview/Option
 import RequiredEmailCapturePreview from '../GorgiasChatIntegrationPreview/RequiredEmailCapture'
 import GorgiasChatIntegrationPreviewContainer from '../GorgiasChatIntegrationPreviewContainer/GorgiasChatIntegrationPreviewContainer'
 import ControlTicketVolumeControls from './ControlTicketVolumeControls'
+
 import css from './GorgiasChatIntegrationPreferences.less'
 
 const emailCaptureOptions = [
@@ -277,11 +279,11 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                     avatar: {
                         imageType: integration.getIn(
                             ['decoration', 'avatar', 'image_type'],
-                            GorgiasChatAvatarImageType.AGENT_PICTURE
+                            GorgiasChatAvatarImageType.AGENT_PICTURE,
                         ),
                         nameType: integration.getIn(
                             ['decoration', 'avatar', 'name_type'],
-                            GorgiasChatAvatarNameType.AGENT_FIRST_NAME
+                            GorgiasChatAvatarNameType.AGENT_FIRST_NAME,
                         ),
                         companyLogoUrl: integration.getIn([
                             'decoration',
@@ -295,8 +297,8 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                         'control_ticket_volume',
                     ]),
                 },
-                _isUndefined
-            ) as State
+                _isUndefined,
+            ) as State,
         )
     }
 
@@ -304,11 +306,11 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         const integrationChat = integration.toJS() as GorgiasChatIntegration
         const chatApplicationId = integrationChat?.meta?.app_id
         const integrationDefaultLanguage = getPrimaryLanguageFromChatConfig(
-            integrationChat.meta
+            integrationChat.meta,
         )
 
         return IntegrationsActions.getApplicationTexts(
-            chatApplicationId as string
+            chatApplicationId as string,
         ).then((data: Texts) => {
             let textsMultiLanguage: TextsMultiLanguage | undefined = undefined
 
@@ -323,7 +325,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                 textsMultiLanguage = data as TextsMultiLanguage
             }
 
-            this.setState({texts: textsMultiLanguage})
+            this.setState({ texts: textsMultiLanguage })
 
             const textsPerLanguage =
                 textsMultiLanguage[integrationDefaultLanguage as LanguageChat]
@@ -333,7 +335,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             if (!privacyPolicyDisclaimerText) {
                 privacyPolicyDisclaimerText = get(
                     this.state.translations,
-                    'texts.privacyPolicyDisclaimer'
+                    'texts.privacyPolicyDisclaimer',
                 )
             }
             this.setState({
@@ -345,13 +347,13 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
     fetchTranslations = (integration: Map<any, any>) => {
         const integrationChat = integration.toJS() as GorgiasChatIntegration
         const integrationDefaultLanguage = getPrimaryLanguageFromChatConfig(
-            integrationChat.meta
+            integrationChat.meta,
         )
 
         return IntegrationsActions.getTranslations(
-            integrationDefaultLanguage
+            integrationDefaultLanguage,
         ).then((translations) => {
-            this.setState({translations})
+            this.setState({ translations })
         })
     }
 
@@ -456,7 +458,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
     }
 
     _setLinkedEmailIntegration = (integrationId: number) => {
-        this.setState({linkedEmailIntegration: integrationId})
+        this.setState({ linkedEmailIntegration: integrationId })
     }
 
     _setOfflineModeEnabledDatetime = (value: Date | null) => {
@@ -485,7 +487,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
     }
 
     _setSendChatTranscript = (value: boolean) => {
-        this.setState({sendChatTranscript: value})
+        this.setState({ sendChatTranscript: value })
     }
 
     // TODO. Refactor with `GorgiasTranslateInputField` as they are very similar.
@@ -510,10 +512,10 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
     }
 
     _submitPreferences = async (event: React.SyntheticEvent) => {
-        const {updateOrCreateIntegration, integration} = this.props
+        const { updateOrCreateIntegration, integration } = this.props
         event.preventDefault()
 
-        this.setState({isUpdating: true})
+        this.setState({ isUpdating: true })
 
         const existingMeta: Map<any, any> =
             integration.get('meta') || fromJS({})
@@ -556,7 +558,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
             const integrationChat = integration.toJS() as GorgiasChatIntegration
             const chatApplicationId = integrationChat?.meta?.app_id
             const integrationDefaultLanguage = getPrimaryLanguageFromChatConfig(
-                integrationChat.meta
+                integrationChat.meta,
             )
 
             let textsIncludingSyncedState = this.state.texts
@@ -568,18 +570,18 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                     set(
                         textsDraft,
                         `${path}.privacyPolicyDisclaimer`,
-                        this.state.privacyPolicyDisclaimerText
+                        this.state.privacyPolicyDisclaimerText,
                     )
-                }
+                },
             )
 
             void IntegrationsActions.updateApplicationTexts(
                 chatApplicationId as string,
-                textsIncludingSyncedState
+                textsIncludingSyncedState,
             )
         }
 
-        this.setState({isUpdating: false})
+        this.setState({ isUpdating: false })
 
         logEvent(SegmentEvent.ChatPreferencesUpdated, {
             id: integration.get('id'),
@@ -627,11 +629,11 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         const mainColor = integration.getIn(['decoration', 'main_color'])
         const conversationColor = integration.getIn(
             ['decoration', 'conversation_color'],
-            ''
+            '',
         )
 
         const language = getPrimaryLanguageFromChatConfig(
-            (integration.get('meta', Map()) as Map<any, any>).toJS()
+            (integration.get('meta', Map()) as Map<any, any>).toJS(),
         )
 
         const widgetTranslatedTexts =
@@ -642,15 +644,15 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
         const position = {
             alignment: integration.getIn(
                 ['decoration', 'position', 'alignment'],
-                GORGIAS_CHAT_WIDGET_POSITION_DEFAULT.alignment
+                GORGIAS_CHAT_WIDGET_POSITION_DEFAULT.alignment,
             ),
             offsetX: integration.getIn(
                 ['decoration', 'position', 'offsetX'],
-                GORGIAS_CHAT_WIDGET_POSITION_DEFAULT.offsetX
+                GORGIAS_CHAT_WIDGET_POSITION_DEFAULT.offsetX,
             ),
             offsetY: integration.getIn(
                 ['decoration', 'position', 'offsetY'],
-                GORGIAS_CHAT_WIDGET_POSITION_DEFAULT.offsetY
+                GORGIAS_CHAT_WIDGET_POSITION_DEFAULT.offsetY,
             ),
         }
 
@@ -833,7 +835,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                 mainColor={mainColor}
                 mainFontFamily={integration.getIn(
                     ['decoration', 'main_font_family'],
-                    GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT
+                    GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
                 )}
                 isOnline
                 language={language}
@@ -844,7 +846,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                 }
                 autoResponderReply={autoResponderReply}
                 renderPrivacyPolicyDisclaimer={previewRenderPrivacyPolicyDisclaimer(
-                    preview
+                    preview,
                 )}
                 privacyPolicyDisclaimerText={
                     this.state.privacyPolicyDisclaimerText ||
@@ -854,16 +856,16 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                 isWidgetConversation={previewIsWidgetConversation(preview)}
                 backgroundColorStyle={integration.getIn(
                     ['decoration', 'background_color_style'],
-                    GorgiasChatBackgroundColorStyle.Gradient
+                    GorgiasChatBackgroundColorStyle.Gradient,
                 )}
                 avatar={avatar}
                 displayBotLabel={integration.getIn(
                     ['decoration', 'display_bot_label'],
-                    true
+                    true,
                 )}
                 useMainColorOutsideBusinessHours={integration.getIn(
                     ['decoration', 'use_main_color_outside_business_hours'],
-                    false
+                    false,
                 )}
             >
                 <ChatIntegrationPreviewContent>
@@ -916,7 +918,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                 {
                                     'text-faded': !autoResponderEnabled,
                                 },
-                                css.dynamicDescription
+                                css.dynamicDescription,
                             )}
                         >
                             Customers can only send live chat messages when an
@@ -995,7 +997,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                     <h4
                                         className={classnames(
                                             css.title,
-                                            'mb-1'
+                                            'mb-1',
                                         )}
                                     >
                                         Live chat
@@ -1014,7 +1016,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                         <RadioFieldSet
                                             className={classnames(
                                                 'mb-3',
-                                                css.radioFieldSet
+                                                css.radioFieldSet,
                                             )}
                                             options={
                                                 liveChatAvailabilityOptions
@@ -1047,7 +1049,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                                     <Link
                                                         to={`/app/settings/channels/gorgias_chat/${
                                                             integration.get(
-                                                                'id'
+                                                                'id',
                                                             ) as string
                                                         }/languages`}
                                                     >
@@ -1080,7 +1082,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                     <div
                                         className={classnames(
                                             css.formGroup,
-                                            'd-flex'
+                                            'd-flex',
                                         )}
                                     >
                                         <ToggleInput
@@ -1091,7 +1093,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                         <div
                                             className={classnames(
                                                 css.toggleInfo,
-                                                'ml-1'
+                                                'ml-1',
                                             )}
                                         >
                                             <b>Hide chat</b>
@@ -1133,7 +1135,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                     <div
                                         className={classnames(
                                             css.formGroup,
-                                            'd-flex'
+                                            'd-flex',
                                         )}
                                     >
                                         <ToggleInput
@@ -1147,7 +1149,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                         <div
                                             className={classnames(
                                                 css.toggleInfo,
-                                                'ml-1'
+                                                'ml-1',
                                             )}
                                         >
                                             <b>
@@ -1189,7 +1191,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                     <div
                                         className={classnames(
                                             css.formGroup,
-                                            'd-flex'
+                                            'd-flex',
                                         )}
                                     >
                                         <ToggleInput
@@ -1200,7 +1202,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                         <div
                                             className={classnames(
                                                 css.toggleInfo,
-                                                'ml-1'
+                                                'ml-1',
                                             )}
                                         >
                                             <b>Hide on mobile</b>
@@ -1211,7 +1213,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                         <div
                                             className={classnames(
                                                 css.formGroup,
-                                                'd-flex'
+                                                'd-flex',
                                             )}
                                         >
                                             <ToggleInput
@@ -1228,7 +1230,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                             <div
                                                 className={classnames(
                                                     css.toggleInfo,
-                                                    'ml-1'
+                                                    'ml-1',
                                                 )}
                                             >
                                                 <b>
@@ -1247,7 +1249,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                     <h4
                                         className={classnames(
                                             css.title,
-                                            'mb-1'
+                                            'mb-1',
                                         )}
                                     >
                                         Email capture
@@ -1289,7 +1291,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                         <div
                                             className={classnames(
                                                 css.formGroup,
-                                                'd-flex'
+                                                'd-flex',
                                             )}
                                         >
                                             <ToggleInput
@@ -1298,7 +1300,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                                         offlineModeEnabledDatetime ===
                                                             null
                                                             ? new Date()
-                                                            : null
+                                                            : null,
                                                     )
                                                 }
                                                 isToggled={
@@ -1329,7 +1331,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                     <h4
                                         className={classnames(
                                             css.title,
-                                            'mb-1'
+                                            'mb-1',
                                         )}
                                     >
                                         Auto-reply with wait time
@@ -1368,7 +1370,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                         <RadioFieldSet
                                             className={classnames(
                                                 'mb-2',
-                                                css.radioFieldSet
+                                                css.radioFieldSet,
                                             )}
                                             options={autoResponderOptions}
                                             selectedValue={autoResponderReply}
@@ -1392,7 +1394,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                             </h4>
                                             <CustomizeTranslationsButton
                                                 integrationId={integration.get(
-                                                    'id'
+                                                    'id',
                                                 )}
                                                 isDisabled={
                                                     !privacyPolicyDisclaimerEnabled
@@ -1403,7 +1405,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                         <div
                                             className={classnames(
                                                 css.formGroup,
-                                                'd-flex'
+                                                'd-flex',
                                             )}
                                         >
                                             <ToggleInput
@@ -1419,7 +1421,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                             <div
                                                 className={classnames(
                                                     css.toggleInfo,
-                                                    'ml-1'
+                                                    'ml-1',
                                                 )}
                                             >
                                                 <b>
@@ -1495,7 +1497,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                         <h4
                                             className={classnames(
                                                 css.title,
-                                                'mb-1'
+                                                'mb-1',
                                             )}
                                         >
                                             Forward chat replies to customer
@@ -1522,12 +1524,12 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                                         `${integration.name} ` +
                                                         `<${integration.meta.address}>`,
                                                     value: integration.id,
-                                                })
+                                                }),
                                             )}
                                             fullWidth
                                             onChange={(integrationId) => {
                                                 this._setLinkedEmailIntegration(
-                                                    integrationId as number
+                                                    integrationId as number,
                                                 )
                                             }}
                                         />
@@ -1537,7 +1539,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                         <h4
                                             className={classnames(
                                                 css.title,
-                                                'mb-1'
+                                                'mb-1',
                                             )}
                                         >
                                             Connect email
@@ -1569,12 +1571,12 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                                         `${integration.name} ` +
                                                         `<${integration.meta.address}>`,
                                                     value: integration.id,
-                                                })
+                                                }),
                                             )}
                                             fullWidth
                                             onChange={(integrationId) => {
                                                 this._setLinkedEmailIntegration(
-                                                    integrationId as number
+                                                    integrationId as number,
                                                 )
                                             }}
                                         />
@@ -1583,7 +1585,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                             className={classnames(
                                                 css.formGroup,
                                                 css.mt32,
-                                                'd-flex'
+                                                'd-flex',
                                             )}
                                         >
                                             <ToggleInput
@@ -1596,7 +1598,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                                             <div
                                                 className={classnames(
                                                     css.toggleInfo,
-                                                    'ml-1'
+                                                    'ml-1',
                                                 )}
                                             >
                                                 <b>
@@ -1631,15 +1633,15 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
 const connector = connect(
     (state: RootState) => ({
         emailIntegrations: getIntegrationsByTypes(EMAIL_INTEGRATION_TYPES)(
-            state
+            state,
         ),
         convertProduct: getCurrentConvertPlan(state),
     }),
     {
         updateOrCreateIntegration,
-    }
+    },
 )
 
 export default withLDConsumer()(
-    connector(GorgiasChatIntegrationPreferencesComponent)
+    connector(GorgiasChatIntegrationPreferencesComponent),
 )

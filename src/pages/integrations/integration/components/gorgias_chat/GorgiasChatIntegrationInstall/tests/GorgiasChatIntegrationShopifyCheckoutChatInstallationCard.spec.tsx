@@ -1,8 +1,10 @@
-import {render, screen} from '@testing-library/react'
-import {Map} from 'immutable'
 import React from 'react'
 
+import { render, screen } from '@testing-library/react'
+import { Map } from 'immutable'
+
 import '@testing-library/jest-dom'
+
 import useShopifyCheckoutChatInstallation from '../../hooks/useShopifyCheckoutChatInstallation'
 import GorgiasChatIntegrationShopifyCheckoutChatInstallationCard from '../GorgiasChatIntegrationShopifyCheckoutChatInstallationCard'
 
@@ -30,17 +32,17 @@ describe('GorgiasChatIntegrationShopifyCheckoutChatInstallationCard', () => {
             <GorgiasChatIntegrationShopifyCheckoutChatInstallationCard
                 integration={mockIntegration}
                 isOneClickInstallation={true}
-            />
+            />,
         )
 
         // Then
         expect(
-            screen.getByText('Shopify checkout and thank you pages')
+            screen.getByText('Shopify checkout and thank you pages'),
         ).toBeInTheDocument()
         expect(screen.getByText(/Manage Chat/)).toBeInTheDocument()
-        expect(screen.getByRole('link', {name: /Manage/})).toHaveAttribute(
+        expect(screen.getByRole('link', { name: /Manage/ })).toHaveAttribute(
             'href',
-            shopifyCheckoutChatInstallationUrl
+            shopifyCheckoutChatInstallationUrl,
         )
         expect(screen.getByText('check_circle')).toBeInTheDocument()
         expect(screen.getByText('open_in_new')).toBeInTheDocument()
@@ -58,15 +60,15 @@ describe('GorgiasChatIntegrationShopifyCheckoutChatInstallationCard', () => {
             <GorgiasChatIntegrationShopifyCheckoutChatInstallationCard
                 integration={mockIntegration}
                 isOneClickInstallation={false}
-            />
+            />,
         )
 
         // Then
         expect(
-            screen.getByText('Shopify checkout and thank you pages')
+            screen.getByText('Shopify checkout and thank you pages'),
         ).toBeInTheDocument()
         expect(
-            screen.getByText(/quick installation method/)
+            screen.getByText(/quick installation method/),
         ).toBeInTheDocument()
         expect(screen.queryByRole('link')).not.toBeInTheDocument()
         expect(screen.queryByText('check_circle')).not.toBeInTheDocument()
@@ -85,23 +87,22 @@ describe('GorgiasChatIntegrationShopifyCheckoutChatInstallationCard', () => {
             <GorgiasChatIntegrationShopifyCheckoutChatInstallationCard
                 integration={mockIntegration}
                 isOneClickInstallation={true}
-            />
+            />,
         )
 
         // Then
         expect(
-            screen.getByText('Shopify checkout and thank you pages')
+            screen.getByText('Shopify checkout and thank you pages'),
         ).toBeInTheDocument()
         expect(
-            screen.getByText(/Add Chat to your checkout/)
+            screen.getByText(/Add Chat to your checkout/),
         ).toBeInTheDocument()
-        expect(screen.getByRole('link', {name: /Learn more/})).toHaveAttribute(
+        expect(
+            screen.getByRole('link', { name: /Learn more/ }),
+        ).toHaveAttribute('href', 'https://link.gorgias.com/wzv')
+        expect(screen.getByRole('link', { name: /Install/ })).toHaveAttribute(
             'href',
-            'https://link.gorgias.com/wzv'
-        )
-        expect(screen.getByRole('link', {name: /Install/})).toHaveAttribute(
-            'href',
-            shopifyCheckoutChatInstallationUrl
+            shopifyCheckoutChatInstallationUrl,
         )
         expect(screen.queryByText('check_circle')).not.toBeInTheDocument()
         expect(screen.getByText('open_in_new')).toBeInTheDocument()

@@ -1,1 +1,1 @@
-export {default} from './ContactFormAutoEmbedModalAssistant'
+export { default } from './ContactFormAutoEmbedModalAssistant'

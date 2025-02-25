@@ -1,36 +1,39 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
-import {useParams} from 'react-router-dom'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
-import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
-import {FeatureFlagKey} from 'config/featureFlags'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { useParams } from 'react-router-dom'
+
+import { Label } from '@gorgias/merchant-ui-kit'
+
+import { AI_AGENT_SENTRY_TEAM } from 'common/const/sentryTeamNames'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {useGetHelpCenterList} from 'models/helpCenter/queries'
-import {AiAgentLayout} from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
-import {ExternalFilesSection} from 'pages/aiAgent/components/Knowledge/ExternalFilesSection'
-import {useConfigurationForm} from 'pages/aiAgent/hooks/useConfigurationForm'
-import {useAiAgentStoreConfigurationContext} from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
-import {FormValues} from 'pages/aiAgent/types'
+import { useGetHelpCenterList } from 'models/helpCenter/queries'
+import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
+import { ExternalFilesSection } from 'pages/aiAgent/components/Knowledge/ExternalFilesSection'
+import { useConfigurationForm } from 'pages/aiAgent/hooks/useConfigurationForm'
+import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
+import { FormValues } from 'pages/aiAgent/types'
 import HelpCenterSelect, {
     EMPTY_HELP_CENTER_ID,
 } from 'pages/automate/common/components/HelpCenterSelect'
 import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
-import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {reportError} from 'utils/errors'
+import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { reportError } from 'utils/errors'
+
+import { ConfigurationSection } from './components/ConfigurationSection/ConfigurationSection'
+import { CreatePublicSourcesSection } from './components/StoreConfigForm/StoreConfigForm'
+import { AI_AGENT, INITIAL_FORM_VALUES, KNOWLEDGE } from './constants'
+import { useGetOrCreateSnippetHelpCenter } from './hooks/useGetOrCreateSnippetHelpCenter'
+import { getFormValuesFromStoreConfiguration } from './hooks/utils/configurationForm.utils'
 
 import css from './AiAgentKnowledgeContainer.less'
-import {ConfigurationSection} from './components/ConfigurationSection/ConfigurationSection'
-import {CreatePublicSourcesSection} from './components/StoreConfigForm/StoreConfigForm'
-import {AI_AGENT, INITIAL_FORM_VALUES, KNOWLEDGE} from './constants'
-import {useGetOrCreateSnippetHelpCenter} from './hooks/useGetOrCreateSnippetHelpCenter'
-import {getFormValuesFromStoreConfiguration} from './hooks/utils/configurationForm.utils'
 
 export const AiAgentKnowledgeContainer = () => {
     const isAiAgentSnippetsFromExternalFilesEnabled =
@@ -46,7 +49,7 @@ export const AiAgentKnowledgeContainer = () => {
         boolean | undefined
     >()
 
-    const {shopName} = useParams<{
+    const { shopName } = useParams<{
         shopName: string
     }>()
 
@@ -58,18 +61,18 @@ export const AiAgentKnowledgeContainer = () => {
 
     const isCreate = storeConfiguration === undefined
 
-    const {data: helpCenterListData, isLoading: isLoadingHelpCenters} =
+    const { data: helpCenterListData, isLoading: isLoadingHelpCenters } =
         useGetHelpCenterList(
-            {type: 'faq', per_page: HELP_CENTER_MAX_CREATION},
+            { type: 'faq', per_page: HELP_CENTER_MAX_CREATION },
             {
                 staleTime: 1000 * 60 * 5,
                 refetchOnWindowFocus: false,
-            }
+            },
         )
 
     const faqHelpCenters = useMemo(
         () => helpCenterListData?.data.data ?? [],
-        [helpCenterListData]
+        [helpCenterListData],
     )
 
     const defaultFormValues: Partial<FormValues> = useMemo(() => {
@@ -90,11 +93,11 @@ export const AiAgentKnowledgeContainer = () => {
         resetForm,
         updateValue,
         isPendingCreateOrUpdate,
-    } = useConfigurationForm({initValues: defaultFormValues, shopName})
+    } = useConfigurationForm({ initValues: defaultFormValues, shopName })
 
     const [publicUrls, setPublicUrls] = useState<string[]>([])
 
-    const {helpCenter: snippetHelpCenter} = useGetOrCreateSnippetHelpCenter({
+    const { helpCenter: snippetHelpCenter } = useGetOrCreateSnippetHelpCenter({
         accountDomain,
         shopName,
     })
@@ -113,7 +116,7 @@ export const AiAgentKnowledgeContainer = () => {
     }
 
     const onSubmit = () => {
-        void handleOnSave({shopName, publicUrls, hasExternalFiles})
+        void handleOnSave({ shopName, publicUrls, hasExternalFiles })
     }
 
     const deactivateAiAgent = useCallback(async () => {
@@ -143,12 +146,12 @@ export const AiAgentKnowledgeContainer = () => {
                     message:
                         'AI Agent has been disabled, because no Knowledge source is connected.',
                     status: NotificationStatus.Warning,
-                })
+                }),
             )
         } catch (error) {
             // nothing to notify here for the user as we do silent disable AI Agent
             reportError(error, {
-                tags: {team: AI_AGENT_SENTRY_TEAM},
+                tags: { team: AI_AGENT_SENTRY_TEAM },
                 extra: {
                     context: 'Error during disabling AI Agent',
                 },

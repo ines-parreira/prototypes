@@ -1,24 +1,24 @@
-import {act, fireEvent, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {tags} from 'fixtures/tag'
-import {useTicketCountPerTag} from 'hooks/reporting/ticket-insights/useTicketCountPerTag'
-import {OrderDirection} from 'models/api/types'
-import {ReportingGranularity} from 'models/reporting/types'
-import {formatMetricValue} from 'pages/stats/common/utils'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { tags } from 'fixtures/tag'
+import { useTicketCountPerTag } from 'hooks/reporting/ticket-insights/useTicketCountPerTag'
+import { OrderDirection } from 'models/api/types'
+import { ReportingGranularity } from 'models/reporting/types'
+import { formatMetricValue } from 'pages/stats/common/utils'
 import {
     AllUsedTagsTable,
     TAG_COLUMN_LABEL,
 } from 'pages/stats/ticket-insights/tags/AllUsedTagsTable'
-import {TOTAL_COLUMN_LABEL} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownTable'
-import {formatDates} from 'pages/stats/utils'
-import {defaultStatsFilters} from 'state/stats/statsSlice'
-import {RootState} from 'state/types'
-
-import {ValueMode} from 'state/ui/stats/types'
-import {calculatePercentage} from 'utils/reporting'
-import {assumeMock, renderWithStore} from 'utils/testing'
+import { TOTAL_COLUMN_LABEL } from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownTable'
+import { formatDates } from 'pages/stats/utils'
+import { defaultStatsFilters } from 'state/stats/statsSlice'
+import { RootState } from 'state/types'
+import { ValueMode } from 'state/ui/stats/types'
+import { calculatePercentage } from 'utils/reporting'
+import { assumeMock, renderWithStore } from 'utils/testing'
 
 jest.mock('hooks/reporting/ticket-insights/useTicketCountPerTag')
 const useTicketCountPerTagMock = assumeMock(useTicketCountPerTag)
@@ -142,7 +142,7 @@ describe('<AllUsedTagsTable />', () => {
                 heatmapMode={false}
                 valueMode={ValueMode.TotalCount}
             />,
-            defaultState
+            defaultState,
         )
 
         expect(screen.getByText(TAG_COLUMN_LABEL)).toBeInTheDocument()
@@ -169,11 +169,11 @@ describe('<AllUsedTagsTable />', () => {
                 heatmapMode={false}
                 valueMode={ValueMode.TotalCount}
             />,
-            defaultState
+            defaultState,
         )
 
         expect(
-            document.querySelector('.react-loading-skeleton')
+            document.querySelector('.react-loading-skeleton'),
         ).toBeInTheDocument()
     })
 
@@ -183,7 +183,7 @@ describe('<AllUsedTagsTable />', () => {
                 heatmapMode={true}
                 valueMode={ValueMode.TotalCount}
             />,
-            defaultState
+            defaultState,
         )
 
         expect(document.querySelector('.heatmap')).toBeInTheDocument()
@@ -192,20 +192,20 @@ describe('<AllUsedTagsTable />', () => {
     it('should render percentage mode', () => {
         const percentageValue = calculatePercentage(
             exampleDataRow.timeSeries[0].value,
-            columnTotals[0]
+            columnTotals[0],
         )
         renderWithStore(
             <AllUsedTagsTable
                 heatmapMode={false}
                 valueMode={ValueMode.Percentage}
             />,
-            defaultState
+            defaultState,
         )
 
         expect(
             screen.getByText(
-                formatMetricValue(percentageValue, 'percent-refined')
-            )
+                formatMetricValue(percentageValue, 'percent-refined'),
+            ),
         ).toBeInTheDocument()
     })
 
@@ -230,7 +230,7 @@ describe('<AllUsedTagsTable />', () => {
                 heatmapMode={false}
                 valueMode={ValueMode.TotalCount}
             />,
-            defaultState
+            defaultState,
         )
 
         const nextPageButton = screen.getByText('keyboard_arrow_right')
@@ -263,7 +263,7 @@ describe('<AllUsedTagsTable />', () => {
                 heatmapMode={false}
                 valueMode={ValueMode.TotalCount}
             />,
-            defaultState
+            defaultState,
         )
         userEvent.click(screen.getByText(columnHeader))
 
@@ -277,12 +277,12 @@ describe('<AllUsedTagsTable />', () => {
                     heatmapMode={false}
                     valueMode={ValueMode.TotalCount}
                 />,
-                defaultState
+                defaultState,
             )
             act(() => {
                 const tableRow =
                     document.getElementsByClassName('tagsTableContainer')[0]
-                fireEvent.scroll(tableRow, {target: {scrollLeft: 50}})
+                fireEvent.scroll(tableRow, { target: { scrollLeft: 50 } })
             })
 
             await waitFor(() => {
@@ -296,17 +296,17 @@ describe('<AllUsedTagsTable />', () => {
                     heatmapMode={false}
                     valueMode={ValueMode.TotalCount}
                 />,
-                defaultState
+                defaultState,
             )
             act(() => {
                 const tableRow =
                     document.getElementsByClassName('tagsTableContainer')[0]
-                fireEvent.scroll(tableRow, {target: {scrollLeft: 0}})
+                fireEvent.scroll(tableRow, { target: { scrollLeft: 0 } })
             })
 
             await waitFor(() => {
                 expect(screen.getAllByRole('cell')[0]).not.toHaveClass(
-                    'withShadow'
+                    'withShadow',
                 )
             })
         })

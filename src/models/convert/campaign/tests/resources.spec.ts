@@ -1,12 +1,12 @@
 import _omit from 'lodash/omit'
 
-import {campaign, campaignId} from 'fixtures/campaign'
-import {channelConnectionId} from 'fixtures/channelConnection'
+import { campaign, campaignId } from 'fixtures/campaign'
+import { channelConnectionId } from 'fixtures/channelConnection'
 import {
     CampaignCreatePayload,
     CampaignSuggestCopyPayload,
 } from 'models/convert/campaign/types'
-import {RevenueAddonClient} from 'rest_api/revenue_addon_api/client'
+import { RevenueAddonClient } from 'rest_api/revenue_addon_api/client'
 
 import * as resources from '../resources'
 
@@ -75,9 +75,9 @@ describe('Campaign resources', () => {
                 },
                 {
                     name: newName,
-                }
+                },
             )
-            expect(res).toEqual({...campaign, name: newName})
+            expect(res).toEqual({ ...campaign, name: newName })
         })
     })
 

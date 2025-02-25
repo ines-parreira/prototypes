@@ -1,5 +1,6 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps, useState} from 'react'
+import React, { ComponentProps, useState } from 'react'
+
+import { Meta, Story } from '@storybook/react'
 
 import * as ToggleButton from './ToggleButton'
 
@@ -9,7 +10,7 @@ const storyConfig: Meta = {
 }
 
 const TemplateWithLabel: Story<ComponentProps<typeof ToggleButton.Wrapper>> = (
-    props
+    props,
 ) => {
     const [selectedValue, setSelectedValue] = useState<number>(1)
 
@@ -43,7 +44,7 @@ const TemplateWithLabel: Story<ComponentProps<typeof ToggleButton.Wrapper>> = (
 }
 
 const TemplateWithIcon: Story<ComponentProps<typeof ToggleButton.Wrapper>> = (
-    props
+    props,
 ) => {
     const [selectedValue, setSelectedValue] = useState<number>(1)
 

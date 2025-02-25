@@ -1,12 +1,13 @@
-import {Skeleton, Tooltip} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
 import React from 'react'
 
-import useId from 'hooks/useId'
+import classnames from 'classnames'
 
-import {getTrendColorFromSign} from 'pages/stats/common/components/TrendBadge/helper'
+import { Skeleton, Tooltip } from '@gorgias/merchant-ui-kit'
+
+import useId from 'hooks/useId'
+import { getTrendColorFromSign } from 'pages/stats/common/components/TrendBadge/helper'
 import css from 'pages/stats/common/components/TrendBadge/TrendBadge.less'
-import {TrendIcon} from 'pages/stats/common/components/TrendIcon'
+import { TrendIcon } from 'pages/stats/common/components/TrendIcon'
 import {
     formatMetricTrend,
     formatMetricValue,
@@ -49,10 +50,10 @@ export default function TrendBadge({
     const id = useId()
     const badgeId = `badge-${id}`
 
-    const {formattedTrend, sign = 0} =
+    const { formattedTrend, sign = 0 } =
         value != null && prevValue != null
             ? formatMetricTrend(value, prevValue, TREND_BADGE_FORMAT)
-            : {formattedTrend: null}
+            : { formattedTrend: null }
 
     const trendColor = getTrendColorFromSign(sign, interpretAs)
 
@@ -73,7 +74,7 @@ export default function TrendBadge({
                 <Tooltip target={`#${badgeId}`}>
                     {getTooltipText(
                         formatMetricValue(prevValue, metricFormat),
-                        tooltipData.period
+                        tooltipData.period,
                     )}
                 </Tooltip>
             )}

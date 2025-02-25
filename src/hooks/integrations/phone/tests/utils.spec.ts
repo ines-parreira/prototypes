@@ -1,38 +1,36 @@
-import {EventEmitter} from 'events'
+import { waitFor } from '@testing-library/react'
+import { Call, Device, TwilioError } from '@twilio/voice-sdk'
+import { EventEmitter } from 'events'
+import { fromJS } from 'immutable'
 
-import {waitFor} from '@testing-library/react'
-import {Call, Device, TwilioError} from '@twilio/voice-sdk'
-import {fromJS} from 'immutable'
-
-import {appQueryClient} from 'api/queryClient'
+import { appQueryClient } from 'api/queryClient'
 import {
     TwilioErrorCode,
     TwilioSocketEventType,
     VoiceAppError,
     VoiceAppErrorCode,
 } from 'business/twilio'
-
 import * as api from 'hooks/integrations/phone/api'
 import * as utils from 'hooks/integrations/phone/utils'
 import {
-    generateCallId,
-    getCallSid,
-    refreshToken,
     connectDevice,
     disconnectDevice,
-    registerDevice,
-    handleDeviceEvents,
-    handleCallEvents,
+    generateCallId,
+    getCallSid,
     handleAcceptedCallEvent,
+    handleCallEvents,
+    handleDeviceEvents,
     logCallEnd,
+    refreshToken,
+    registerDevice,
 } from 'hooks/integrations/phone/utils'
-import {CALL_FAILED_MICROPHONE_PERMISSION_ERROR} from 'pages/common/components/PhoneIntegrationBar/constants'
-import {VoiceDeviceActions} from 'pages/integrations/integration/components/voice/types'
+import { CALL_FAILED_MICROPHONE_PERMISSION_ERROR } from 'pages/common/components/PhoneIntegrationBar/constants'
+import { VoiceDeviceActions } from 'pages/integrations/integration/components/voice/types'
 import slice from 'pages/integrations/integration/components/voice/voiceDeviceSlice'
-import {ActivityEvents} from 'services/activityTracker'
+import { ActivityEvents } from 'services/activityTracker'
 import * as activityTracker from 'services/activityTracker'
 import * as envUtils from 'utils/environment'
-import {reportError} from 'utils/errors'
+import { reportError } from 'utils/errors'
 import * as LDUtils from 'utils/launchDarkly'
 
 jest.mock('utils/errors')
@@ -54,13 +52,13 @@ const actions = Object.keys(slice.actions).reduce(
         ...acc,
         [key]: jest.fn(),
     }),
-    {}
+    {},
 ) as VoiceDeviceActions
 
 describe('refreshToken', () => {
     it('should update the device token', async () => {
         jest.spyOn(api, 'getToken').mockReturnValue(
-            Promise.resolve('valid-jwt')
+            Promise.resolve('valid-jwt'),
         )
 
         await refreshToken(device)
@@ -96,7 +94,7 @@ describe('connectDevice', () => {
             value: new URL('https://test'),
         })
         jest.spyOn(api, 'getToken').mockReturnValue(
-            Promise.resolve('valid-jwt')
+            Promise.resolve('valid-jwt'),
         )
     })
 
@@ -107,7 +105,7 @@ describe('connectDevice', () => {
         jest.spyOn(envUtils, 'isProduction').mockReturnValueOnce(true)
 
         const expectedError = new VoiceAppError(
-            VoiceAppErrorCode.HttpsProtoRequired
+            VoiceAppErrorCode.HttpsProtoRequired,
         )
 
         void connectDevice(dispatch, 0, actions)
@@ -124,7 +122,7 @@ describe('connectDevice', () => {
 
     it('should fail and report error if there are too many failed attempts', async () => {
         const expectedError = new VoiceAppError(
-            VoiceAppErrorCode.TooManyReconnectionAttepts
+            VoiceAppErrorCode.TooManyReconnectionAttepts,
         )
 
         void connectDevice(dispatch, 6, actions)
@@ -141,7 +139,7 @@ describe('connectDevice', () => {
 
     it('should fail and report error if it cannot obtain a token', async () => {
         const expectedError = new VoiceAppError(
-            VoiceAppErrorCode.MissingOrInvalidToken
+            VoiceAppErrorCode.MissingOrInvalidToken,
         )
 
         jest.spyOn(api, 'getToken').mockReturnValue(Promise.resolve(null))
@@ -217,7 +215,7 @@ describe('disconnectDevice', () => {
                 ...device,
                 state: Device.State.Registered,
             } as Device,
-            actions
+            actions,
         )
 
         await waitFor(() => {
@@ -235,7 +233,7 @@ describe('disconnectDevice', () => {
                 ...device,
                 state: Device.State.Unregistered,
             } as Device,
-            actions
+            actions,
         )
 
         await waitFor(() => {
@@ -254,7 +252,7 @@ describe('disconnectDevice', () => {
                 ...device,
                 state: Device.State.Destroyed,
             } as Device,
-            actions
+            actions,
         )
 
         await waitFor(() => {
@@ -279,7 +277,7 @@ describe('registerDevice', () => {
             expect(handleDeviceEvents).toHaveBeenCalledWith(
                 device,
                 dispatch,
-                actions
+                actions,
             )
         })
     })
@@ -411,7 +409,7 @@ describe('handleDeviceEvents', () => {
             expect(handleCallEvents).toHaveBeenCalledWith(
                 call,
                 dispatch,
-                actions
+                actions,
             )
         })
 
@@ -433,7 +431,7 @@ describe('handleDeviceEvents', () => {
             getLDClientSpy.mockReturnValueOnce({
                 variation: () => true,
             } as any)
-            ;(device as EventEmitter & {isBusy: boolean}).isBusy = true
+            ;(device as EventEmitter & { isBusy: boolean }).isBusy = true
             device.emit(Device.EventName.Incoming, call)
 
             expect(call.reject).toHaveBeenCalled()
@@ -625,7 +623,7 @@ describe('handleAcceptedCallEvent', () => {
             {
                 entityType: 'ticket',
                 entityId: 123456,
-            }
+            },
         )
     })
 })
@@ -643,7 +641,7 @@ describe('generateCallId', () => {
         } as unknown as Call
 
         expect(generateCallId(call)).toEqual(
-            '4ae6fde649ec113bf070d2cdd44dc622fb9e94bb595da893416c9e8ad378ab33'
+            '4ae6fde649ec113bf070d2cdd44dc622fb9e94bb595da893416c9e8ad378ab33',
         )
     })
 
@@ -657,7 +655,7 @@ describe('generateCallId', () => {
         } as unknown as Call
 
         expect(generateCallId(call)).toEqual(
-            '4ae6fde649ec113bf070d2cdd44dc622fb9e94bb595da893416c9e8ad378ab33'
+            '4ae6fde649ec113bf070d2cdd44dc622fb9e94bb595da893416c9e8ad378ab33',
         )
     })
 })
@@ -703,7 +701,7 @@ describe('logCallEnd', () => {
             {
                 entityType: 'ticket',
                 entityId: 123456,
-            }
+            },
         )
     })
 
@@ -715,13 +713,13 @@ describe('logCallEnd', () => {
         const getQueriesDataSpy = jest.spyOn(appQueryClient, 'getQueriesData')
         getQueriesDataSpy.mockReturnValue([
             [
-                ['foo', 'bar', {ticket_id: 123456}],
-                {data: [{external_id: 'CA123'}]},
+                ['foo', 'bar', { ticket_id: 123456 }],
+                { data: [{ external_id: 'CA123' }] },
             ],
         ])
 
         const call = {
-            parameters: {CallSid: 'CA123'},
+            parameters: { CallSid: 'CA123' },
             direction: Call.CallDirection.Outgoing,
             customParameters: new Map(),
         } as unknown as Call
@@ -732,7 +730,7 @@ describe('logCallEnd', () => {
             {
                 entityType: 'ticket',
                 entityId: 123456,
-            }
+            },
         )
     })
 })
@@ -742,7 +740,7 @@ describe('errorMessage', () => {
         const error = new TwilioError.TwilioError()
         error.code = TwilioErrorCode.UserMediaPermissionDenied
         expect(utils.errorMessage(error)).toEqual(
-            CALL_FAILED_MICROPHONE_PERMISSION_ERROR
+            CALL_FAILED_MICROPHONE_PERMISSION_ERROR,
         )
     })
 })
@@ -754,7 +752,7 @@ describe('isRecoverableError', () => {
             const error = new TwilioError.TwilioError()
             error.code = code
             expect(utils.isRecoverableError(error)).toBeFalsy()
-        }
+        },
     )
 
     it('should return true for recoverable errors', () => {

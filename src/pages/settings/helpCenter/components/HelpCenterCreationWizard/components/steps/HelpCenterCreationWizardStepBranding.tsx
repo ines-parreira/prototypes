@@ -1,18 +1,22 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
-// eslint-disable-next-line no-restricted-imports
-import {useDispatch} from 'react-redux'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {HelpCenter, HelpCenterCreationWizardStep} from 'models/helpCenter/types'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+// eslint-disable-next-line no-restricted-imports
+import { useDispatch } from 'react-redux'
+
+import { Label } from '@gorgias/merchant-ui-kit'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import {
+    HelpCenter,
+    HelpCenterCreationWizardStep,
+} from 'models/helpCenter/types'
 import WizardFooter, {
     FOOTER_BUTTONS,
 } from 'pages/common/components/wizard/WizardFooter'
 import WizardStepSkeleton from 'pages/common/components/wizard/WizardStepSkeleton'
-
 import ColorField from 'pages/common/forms/ColorField'
-import {FontSelectField} from 'pages/settings/common/FontSelectField/FontSelectField'
+import { FontSelectField } from 'pages/settings/common/FontSelectField/FontSelectField'
 import {
     HELP_CENTER_AVAILABLE_FONTS,
     HELP_CENTER_STEPS_DESCRIPTIONS,
@@ -20,16 +24,17 @@ import {
     HELP_CENTER_STEPS_TITLES,
     NEXT_ACTION,
 } from 'pages/settings/helpCenter/constants'
-import {useFileUpload} from 'pages/settings/helpCenter/hooks/useFileUpload'
-import {HelpCenterLayout} from 'pages/settings/helpCenter/types/layout.enum'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { useFileUpload } from 'pages/settings/helpCenter/hooks/useFileUpload'
+import { HelpCenterLayout } from 'pages/settings/helpCenter/types/layout.enum'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 import HelpCenterPreview from '../../../HelpCenterPreview/HelpCenterPreview'
 import HelpCenterPreviewHomePage from '../../../HelpCenterPreview/HelpCenterPreviewHomePage'
-import {ImageUpload} from '../../../ImageUpload'
-import {LayoutSwitch} from '../../../LayoutSwitch'
-import {useHelpCenterCreationWizard} from '../../hooks/useHelpCenterCreationWizard'
+import { ImageUpload } from '../../../ImageUpload'
+import { LayoutSwitch } from '../../../LayoutSwitch'
+import { useHelpCenterCreationWizard } from '../../hooks/useHelpCenterCreationWizard'
+
 import css from './HelpCenterCreationWizardStepBranding.less'
 
 type Props = {
@@ -48,7 +53,7 @@ const HelpCenterCreationWizardStepBranding: React.FC<Props> = ({
         isLoading: isLoading,
     } = useHelpCenterCreationWizard(
         helpCenter,
-        HelpCenterCreationWizardStep.Branding
+        HelpCenterCreationWizardStep.Branding,
     )
     const brandLogo = useFileUpload()
 
@@ -56,36 +61,36 @@ const HelpCenterCreationWizardStepBranding: React.FC<Props> = ({
         useFlags()[FeatureFlagKey.HelpCenterOnePager] || false
 
     const handlePrimaryColorChange = (primaryColor: string) => {
-        handleFormUpdate({primaryColor})
+        handleFormUpdate({ primaryColor })
     }
 
     const handlePrimaryFontFamilyChange = (primaryFontFamily: string) => {
-        handleFormUpdate({primaryFontFamily})
+        handleFormUpdate({ primaryFontFamily })
     }
 
     const handleLayoutChange = (layout: HelpCenterLayout) => {
-        handleFormUpdate({layout})
+        handleFormUpdate({ layout })
     }
 
     const handleBrandLogoChange = async () => {
         if (!brandLogo.isTouched) return
         try {
             const brandLogoUrl = await brandLogo.getFileUploadURL()
-            handleFormUpdate({brandLogoUrl})
+            handleFormUpdate({ brandLogoUrl })
             return brandLogoUrl
         } catch {
             dispatch(
                 notify({
                     status: NotificationStatus.Error,
                     message: 'Failed to upload the logo. Please try again.',
-                })
+                }),
             )
         }
     }
 
     const onFooterAction = async (buttonClicked: FOOTER_BUTTONS) => {
         const url = await handleBrandLogoChange()
-        const payload = url !== undefined ? {brandLogoUrl: url} : {}
+        const payload = url !== undefined ? { brandLogoUrl: url } : {}
 
         switch (buttonClicked) {
             case FOOTER_BUTTONS.BACK:

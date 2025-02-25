@@ -1,25 +1,27 @@
-import classNames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
+import classNames from 'classnames'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
 import navbarCss from 'assets/css/navbar.less'
-import {ActiveContent, Navbar} from 'common/navigation'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useFlag} from 'core/flags'
+import { ActiveContent, Navbar } from 'common/navigation'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
-import {useAiAgentItemEnabled} from 'pages/aiAgent/hooks/useAiAgentItemEnabled'
+import { useAiAgentItemEnabled } from 'pages/aiAgent/hooks/useAiAgentItemEnabled'
 import NavbarLink from 'pages/common/components/navbar/NavbarLink'
-import {getHasAutomate} from 'state/billing/selectors'
+import { getHasAutomate } from 'state/billing/selectors'
+
+import AutomateNavbarView from './AutomateNavbarView'
 
 import css from './AutomateNavbar.less'
-import AutomateNavbarView from './AutomateNavbarView'
 
 const AutomateNavbar = () => {
     const hasAutomate = useAppSelector(getHasAutomate)
     const hasAiAgentPreview =
         useFlags()[FeatureFlagKey.AIAgentPreviewModeAllowed]
     const isActionsInternalPlatformEnabled = useFlag(
-        FeatureFlagKey.ActionsInternalPlatform
+        FeatureFlagKey.ActionsInternalPlatform,
     )
     const hasStandaloneConvAiOverviewPage =
         useFlags()[FeatureFlagKey.StandaloneConvAiOverviewPage]
@@ -32,7 +34,7 @@ const AutomateNavbar = () => {
                     <div
                         className={classNames(
                             navbarCss['link-wrapper'],
-                            css.automate
+                            css.automate,
                         )}
                         data-candu-id="automate-link-my-automate"
                     >
@@ -45,7 +47,7 @@ const AutomateNavbar = () => {
                             <div
                                 className={classNames(
                                     navbarCss['link-wrapper'],
-                                    css.navbarItem
+                                    css.navbarItem,
                                 )}
                             >
                                 <NavbarLink

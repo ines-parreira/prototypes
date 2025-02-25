@@ -1,5 +1,6 @@
-import {render} from '@testing-library/react'
-import React, {MutableRefObject} from 'react'
+import React, { MutableRefObject } from 'react'
+
+import { render } from '@testing-library/react'
 
 import useStatefulRef from '../useStatefulRef'
 
@@ -37,7 +38,7 @@ describe('useStatefulRef', () => {
         render(<HookWrapper initialValue="initial" value="newValue" />)
 
         expect(setStateMock).toHaveBeenCalled()
-        expect(statefulRef).toMatchObject({current: 'newValue'})
+        expect(statefulRef).toMatchObject({ current: 'newValue' })
     })
 
     it('should not call setState when setting value to same value', () => {
@@ -47,13 +48,13 @@ describe('useStatefulRef', () => {
     })
 
     it('should update ref value', () => {
-        const {rerender} = render(
-            <HookWrapper initialValue="initial" value="initial" />
+        const { rerender } = render(
+            <HookWrapper initialValue="initial" value="initial" />,
         )
-        expect(statefulRef).toMatchObject({current: 'initial'})
+        expect(statefulRef).toMatchObject({ current: 'initial' })
 
         rerender(<HookWrapper initialValue="initial" value="newValue" />)
 
-        expect(statefulRef).toMatchObject({current: 'newValue'})
+        expect(statefulRef).toMatchObject({ current: 'newValue' })
     })
 })

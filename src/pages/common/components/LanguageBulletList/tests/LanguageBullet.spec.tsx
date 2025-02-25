@@ -1,11 +1,12 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {LanguageBullet} from '../LanguageBullet'
+import { render, screen } from '@testing-library/react'
+
+import { LanguageBullet } from '../LanguageBullet'
 
 describe('<LanguageBullet />', () => {
     it('displays nothing if both the code and count are missing', () => {
-        const {container} = render(<LanguageBullet />)
+        const { container } = render(<LanguageBullet />)
         expect(container.firstChild).toBeNull()
     })
 

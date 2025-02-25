@@ -1,19 +1,20 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
 
-import {abTest} from 'fixtures/abTest'
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
-import {
-    useCreateABTest as usePureCreateABTest,
-    abTestKeys,
-} from 'models/convert/abTest/queries'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {useCreateABTest} from '../useCreateABTest'
+import { abTest } from 'fixtures/abTest'
+import { axiosSuccessResponse } from 'fixtures/axiosResponse'
+import {
+    abTestKeys,
+    useCreateABTest as usePureCreateABTest,
+} from 'models/convert/abTest/queries'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
+
+import { useCreateABTest } from '../useCreateABTest'
 
 const queryClient = mockQueryClient()
 
@@ -33,7 +34,7 @@ describe('useCreateABTest', () => {
         const invalidateQueryMock = jest.spyOn(queryClient, 'invalidateQueries')
 
         renderHook(() => useCreateABTest(), {
-            wrapper: ({children}) => (
+            wrapper: ({ children }) => (
                 <QueryClientProvider client={queryClient}>
                     {children}
                 </QueryClientProvider>
@@ -42,7 +43,7 @@ describe('useCreateABTest', () => {
         usePureCreateABTestMock.mock.calls[0][0]?.onSuccess!(
             axiosSuccessResponse(abTest as any),
             [undefined, abTest as any],
-            undefined
+            undefined,
         )
 
         expect(invalidateQueryMock).toHaveBeenCalledWith({
@@ -57,7 +58,7 @@ describe('useCreateABTest', () => {
 
     it('should call handleError on error', () => {
         renderHook(() => useCreateABTest(), {
-            wrapper: ({children}) => (
+            wrapper: ({ children }) => (
                 <QueryClientProvider client={queryClient}>
                     {children}
                 </QueryClientProvider>
@@ -67,7 +68,7 @@ describe('useCreateABTest', () => {
         usePureCreateABTestMock.mock.calls[0][0]?.onError!(
             myError,
             [undefined, abTest as any],
-            undefined
+            undefined,
         )
 
         expect(notify).toHaveBeenCalledWith({

@@ -1,6 +1,7 @@
-import {Meta, Story} from '@storybook/react'
+import React, { ComponentProps, useRef, useState } from 'react'
+
+import { Meta, Story } from '@storybook/react'
 import _noop from 'lodash/noop'
-import React, {ComponentProps, useRef, useState} from 'react'
 
 import Button from 'pages/common/components/button/Button'
 
@@ -15,11 +16,11 @@ const storyConfig: Meta = {
 }
 
 const DefaultTemplate: Story<ComponentProps<typeof DropdownFooter>> = (
-    props
+    props,
 ) => <DropdownFooter {...props} />
 
 const ExampleTemplate: Story<ComponentProps<typeof DropdownFooter>> = (
-    props
+    props,
 ) => {
     const [isOpen, setIsOpen] = useState(false)
     const buttonRef = useRef<HTMLButtonElement>(null)

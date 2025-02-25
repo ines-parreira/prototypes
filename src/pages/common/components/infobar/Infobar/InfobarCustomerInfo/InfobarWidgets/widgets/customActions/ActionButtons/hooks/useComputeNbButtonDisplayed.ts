@@ -1,20 +1,20 @@
-import {useEffect, useState} from 'react'
+import { useEffect, useState } from 'react'
 
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
-import {Source} from 'models/widget/types'
-import {computeNbButtonDisplayed} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/helpers/computeNbButtonDisplayed'
-import {NB_MIN_BUTTON_DISPLAYED} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/constants'
-import {useTemplateContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/hooks/useTemplateContext'
-import {Button as ButtonType} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
+import { Source } from 'models/widget/types'
+import { computeNbButtonDisplayed } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/helpers/computeNbButtonDisplayed'
+import { NB_MIN_BUTTON_DISPLAYED } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/constants'
+import { useTemplateContext } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/hooks/useTemplateContext'
+import { Button as ButtonType } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 
 export function useComputeNbButtonDisplayed(
     buttons: ButtonType[],
     containerRef: React.RefObject<HTMLDivElement>,
-    source: Source
+    source: Source,
 ) {
     const [availableSpace, setAvailableSpace] = useState<number | undefined>()
     const [nbButtonDisplayed, setNbButtonDisplayed] = useState<number>(
-        NB_MIN_BUTTON_DISPLAYED
+        NB_MIN_BUTTON_DISPLAYED,
     )
     const templateContext = useTemplateContext(source)
 
@@ -37,12 +37,12 @@ export function useComputeNbButtonDisplayed(
                 computeNbButtonDisplayed(
                     buttons,
                     templateContext,
-                    availableSpace
-                )
+                    availableSpace,
+                ),
             )
         },
         [buttons, availableSpace],
-        200
+        200,
     )
 
     return nbButtonDisplayed

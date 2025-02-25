@@ -1,8 +1,8 @@
-import {isCustomFieldValueEmpty} from 'custom-fields/helpers/isCustomFieldValueEmpty'
-import {CustomFieldValue} from 'custom-fields/types'
+import { isCustomFieldValueEmpty } from 'custom-fields/helpers/isCustomFieldValueEmpty'
+import { CustomFieldValue } from 'custom-fields/types'
 
 export default function isMultiValueEmpty(
-    values: Array<CustomFieldValue> | undefined
+    values: Array<CustomFieldValue> | undefined,
 ) {
     return (
         !Array.isArray(values) ||

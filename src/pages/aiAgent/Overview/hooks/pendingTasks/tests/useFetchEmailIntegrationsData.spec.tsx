@@ -1,11 +1,12 @@
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { renderHook } from '@testing-library/react-hooks'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {AiAgentOverviewRootStateFixture} from 'pages/aiAgent/Overview/tests/AiAgentOverviewRootState.fixture'
+import { AiAgentOverviewRootStateFixture } from 'pages/aiAgent/Overview/tests/AiAgentOverviewRootState.fixture'
 
-import {useFetchEmailIntegrationsData} from '../useFetchEmailIntegrationsData'
+import { useFetchEmailIntegrationsData } from '../useFetchEmailIntegrationsData'
 
 const rootState = AiAgentOverviewRootStateFixture.start()
     .withGmailEmailIntegration()
@@ -15,17 +16,17 @@ const rootState = AiAgentOverviewRootStateFixture.start()
 describe('useFetchEmailIntegrationsData', () => {
     it('should not fail if the store is empty', () => {
         const hook = renderHook(() => useFetchEmailIntegrationsData(), {
-            wrapper: ({children}) => (
+            wrapper: ({ children }) => (
                 <Provider store={configureMockStore()({})}>{children}</Provider>
             ),
         })
 
-        expect(hook.result.current).toEqual({data: []})
+        expect(hook.result.current).toEqual({ data: [] })
     })
 
     it('should return well mapped emails', () => {
         const hook = renderHook(() => useFetchEmailIntegrationsData(), {
-            wrapper: ({children}) => (
+            wrapper: ({ children }) => (
                 <Provider store={configureMockStore()(rootState)}>
                     {children}
                 </Provider>

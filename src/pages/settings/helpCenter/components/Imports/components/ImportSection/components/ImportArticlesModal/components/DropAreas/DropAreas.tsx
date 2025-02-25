@@ -1,8 +1,10 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
-import {FetchedProvidersState} from '../../../../types'
+import classNames from 'classnames'
+
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+
+import { FetchedProvidersState } from '../../../../types'
 
 import css from './DropAreas.less'
 
@@ -57,7 +59,7 @@ const DropAreas: React.FC<Props> = ({
                     <i
                         className={classNames(
                             'material-icons',
-                            css.modalCloudIcon
+                            css.modalCloudIcon,
                         )}
                     >
                         cloud_upload

@@ -5,7 +5,7 @@ import * as actionsConfig from '../actions'
 
 describe('Config: actions', () => {
     describe('triggers', () => {
-        const {actions} = actionsConfig
+        const { actions } = actionsConfig
 
         it('is array', () => {
             expect(_isArray(actions)).toBe(true)

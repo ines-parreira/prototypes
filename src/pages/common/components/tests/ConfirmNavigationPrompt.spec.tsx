@@ -1,11 +1,12 @@
-import {act, render} from '@testing-library/react'
-import {createMemoryHistory} from 'history'
 import React from 'react'
-import {Router} from 'react-router-dom'
 
-import {ConfirmNavigationPrompt} from '../ConfirmNavigationPrompt'
+import { act, render } from '@testing-library/react'
+import { createMemoryHistory } from 'history'
+import { Router } from 'react-router-dom'
 
-const history = createMemoryHistory({initialEntries: ['/']})
+import { ConfirmNavigationPrompt } from '../ConfirmNavigationPrompt'
+
+const history = createMemoryHistory({ initialEntries: ['/'] })
 
 const defaultProps = {
     title: 'Confirm Navigation',
@@ -18,12 +19,12 @@ const renderComponent = (enabled: boolean) =>
     render(
         <Router history={history}>
             <ConfirmNavigationPrompt {...defaultProps} enabled={enabled} />
-        </Router>
+        </Router>,
     )
 
 describe('ConfirmNavigationPrompt', () => {
     it('stops navigation and renders prompt when trying to navigate to another page', () => {
-        const {queryByText} = renderComponent(true)
+        const { queryByText } = renderComponent(true)
 
         expect(queryByText(defaultProps.title)).not.toBeInTheDocument()
         expect(queryByText(defaultProps.bodyText)).not.toBeInTheDocument()
@@ -43,7 +44,7 @@ describe('ConfirmNavigationPrompt', () => {
     })
 
     it('does not stop navigation and does not render prompt when not enabled', () => {
-        const {queryByText} = renderComponent(false)
+        const { queryByText } = renderComponent(false)
 
         act(() => {
             history.push('/test')

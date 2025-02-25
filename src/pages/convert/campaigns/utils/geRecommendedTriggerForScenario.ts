@@ -1,12 +1,12 @@
-import {ulid} from 'ulidx'
+import { ulid } from 'ulidx'
 
-import {ProductRecommendationScenario} from 'pages/convert/campaigns/types/CampaignAttachment'
-import {CampaignTrigger} from 'pages/convert/campaigns/types/CampaignTrigger'
-import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import { ProductRecommendationScenario } from 'pages/convert/campaigns/types/CampaignAttachment'
+import { CampaignTrigger } from 'pages/convert/campaigns/types/CampaignTrigger'
+import { CampaignTriggerOperator } from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
+import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 
 export const getRecommendedTriggerForScenario = (
-    scenario: ProductRecommendationScenario
+    scenario: ProductRecommendationScenario,
 ): CampaignTrigger | undefined => {
     switch (scenario) {
         case ProductRecommendationScenario.SimilarBought:

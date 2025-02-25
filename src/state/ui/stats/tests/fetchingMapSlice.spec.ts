@@ -1,7 +1,7 @@
 import {
+    fetchingMapSlice,
     fetchStatEnded,
     fetchStatStarted,
-    fetchingMapSlice,
     initialState,
 } from 'state/ui/stats/fetchingMapSlice'
 
@@ -13,7 +13,7 @@ describe('fetchingMapSlice', () => {
                 fetchStatStarted({
                     statName: 'overview',
                     resourceName: 'total-tickets-replied',
-                })
+                }),
             )
 
             expect(newState).toEqual({
@@ -29,7 +29,7 @@ describe('fetchingMapSlice', () => {
                 fetchStatEnded({
                     statName: 'overview',
                     resourceName: 'total-tickets-replied',
-                })
+                }),
             )
 
             expect(newState).toEqual({

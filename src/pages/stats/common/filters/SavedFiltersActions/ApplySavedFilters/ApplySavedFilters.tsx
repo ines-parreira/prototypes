@@ -1,18 +1,20 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import React, {useCallback, useMemo, useRef, useState} from 'react'
-// eslint-disable-next-line no-restricted-imports
-import {useDispatch} from 'react-redux'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+// eslint-disable-next-line no-restricted-imports
+import { useDispatch } from 'react-redux'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
-import {SavedFilter, SavedFilterAPI} from 'models/stat/types'
+import { SavedFilter, SavedFilterAPI } from 'models/stat/types'
 import Button from 'pages/common/components/button/Button'
 import DropdownButton from 'pages/common/components/button/DropdownButton'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownFooter from 'pages/common/components/dropdown/DropdownFooter'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import {fromApiFormatted} from 'pages/stats/common/filters/helpers'
+import { fromApiFormatted } from 'pages/stats/common/filters/helpers'
 import css from 'pages/stats/common/filters/SavedFiltersActions/ApplySavedFilters/ApplySavedFilters.less'
 import {
     applySavedFilter,
@@ -40,7 +42,7 @@ export const APPLY_SAVED_FILTERS = 'Apply Saved Filter'
 
 const MAX_FILTER_NAME_LENGTH = 40
 
-const logSavedFilterSelection = ({name, id}: SavedFilterType) => {
+const logSavedFilterSelection = ({ name, id }: SavedFilterType) => {
     logEvent(SegmentEvent.StatSavedFilterSelected, {
         name,
         id,
@@ -49,7 +51,7 @@ const logSavedFilterSelection = ({name, id}: SavedFilterType) => {
 
 export const getApplyFiltersButtonName = (
     filters: Array<SavedFilterAPI>,
-    id: number | null
+    id: number | null,
 ) => {
     if (!id) {
         return APPLY_SAVED_FILTERS
@@ -59,7 +61,7 @@ export const getApplyFiltersButtonName = (
     )
 }
 
-const ApplySavedFilters = ({savedFilters, canEdit, isDisabled}: Props) => {
+const ApplySavedFilters = ({ savedFilters, canEdit, isDisabled }: Props) => {
     const savedFilterAppliedId = useAppSelector(getSavedFilterAppliedId)
     const savedFilterDraft = useAppSelector(getSavedFilterDraft)
     const [toggleDropdown, setToggleDropdown] = useState<boolean>(false)
@@ -76,7 +78,7 @@ const ApplySavedFilters = ({savedFilters, canEdit, isDisabled}: Props) => {
             dispatch(applySavedFilter(filter))
             setToggleDropdown(false)
         },
-        [dispatch]
+        [dispatch],
     )
 
     const content = useMemo(() => {
@@ -118,7 +120,7 @@ const ApplySavedFilters = ({savedFilters, canEdit, isDisabled}: Props) => {
             savedFilterDraft
                 ? savedFilterDraft.name || APPLY_SAVED_FILTERS
                 : getApplyFiltersButtonName(savedFilters, savedFilterAppliedId),
-        [savedFilterAppliedId, savedFilters, savedFilterDraft]
+        [savedFilterAppliedId, savedFilters, savedFilterDraft],
     )
 
     return (

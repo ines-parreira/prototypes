@@ -1,10 +1,11 @@
-import {Meta, StoryObj} from '@storybook/react'
-import React, {ComponentProps} from 'react'
-import {MemoryRouter} from 'react-router-dom'
+import React, { ComponentProps } from 'react'
+
+import { Meta, StoryObj } from '@storybook/react'
+import { MemoryRouter } from 'react-router-dom'
 
 import TicketTag from 'pages/common/components/TicketTag'
 
-import {default as TemplateCardLinkComponent} from '../TemplateCardLink'
+import { default as TemplateCardLinkComponent } from '../TemplateCardLink'
 
 const storyConfig: Meta = {
     title: 'General/TemplateCard/TemplateCardLink',

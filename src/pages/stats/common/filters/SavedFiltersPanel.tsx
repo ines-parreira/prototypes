@@ -1,17 +1,19 @@
-import {Card} from '@gorgias/analytics-ui-kit'
+import React, { useCallback, useMemo, useState } from 'react'
+
+import { useQueryClient } from '@tanstack/react-query'
+import classnames from 'classnames'
+
+import { Card } from '@gorgias/analytics-ui-kit'
 import {
     useCreateAnalyticsFilter,
     useDeleteAnalyticsFilter,
     useListAnalyticsFilters,
     useUpdateAnalyticsFilter,
 } from '@gorgias/api-queries'
-import {useQueryClient} from '@tanstack/react-query'
-import classnames from 'classnames'
-import React, {useCallback, useMemo, useState} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {isGorgiasApiError} from 'models/api/types'
+import { isGorgiasApiError } from 'models/api/types'
 import {
     SavedFilter,
     SavedFilterAPI,
@@ -21,24 +23,24 @@ import {
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import Collapse from 'pages/common/components/Collapse/Collapse'
-import {ConfirmationModal} from 'pages/settings/helpCenter/components/ConfirmationModal'
-import {FiltersEditableTitle} from 'pages/stats/common/filters/FiltersEditableTitle/FiltersEditableTitle'
-import {OptionalFilter} from 'pages/stats/common/filters/FiltersPanel'
-import {FiltersPanelWithSavedFiltersState} from 'pages/stats/common/filters/FiltersPanelWithSavedFiltersState'
+import { ConfirmationModal } from 'pages/settings/helpCenter/components/ConfirmationModal'
+import { FiltersEditableTitle } from 'pages/stats/common/filters/FiltersEditableTitle/FiltersEditableTitle'
+import { OptionalFilter } from 'pages/stats/common/filters/FiltersPanel'
+import { FiltersPanelWithSavedFiltersState } from 'pages/stats/common/filters/FiltersPanelWithSavedFiltersState'
 import {
     fromApiFormatted,
     toApiFormatted,
 } from 'pages/stats/common/filters/helpers'
-import {SavedFilterMenu} from 'pages/stats/common/filters/SavedFilterMenu'
+import { SavedFilterMenu } from 'pages/stats/common/filters/SavedFilterMenu'
 import css from 'pages/stats/common/filters/SavedFiltersPanel.less'
 import {
     areFiltersApplicable,
     areFiltersEqual,
 } from 'pages/stats/common/filters/utils'
-import {CampaignStatsFilters} from 'pages/stats/convert/providers/CampaignStatsFilters'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { CampaignStatsFilters } from 'pages/stats/convert/providers/CampaignStatsFilters'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 import {
     applySavedFilter,
     clearSavedFilterDraft,
@@ -49,7 +51,7 @@ import {
     initialiseSavedFilterDraftFromSavedFilter,
     updateSavedFilterDraftName,
 } from 'state/ui/stats/filtersSlice'
-import {isTeamLead} from 'utils'
+import { isTeamLead } from 'utils'
 
 export const FILTER_SAVED_MESSAGE = 'Filter successfully saved!'
 export const FILTER_EDIT_SAVED_MESSAGE = 'Filter successfully edited!'
@@ -85,7 +87,7 @@ type SavedFiltersError = {
 }
 
 export const isSavedFiltersError = (
-    data: unknown
+    data: unknown,
 ): data is SavedFiltersError => {
     return (
         data !== null &&
@@ -93,7 +95,7 @@ export const isSavedFiltersError = (
         Object.keys(data).some(
             (key) =>
                 key === SAVED_FILTER_NAME_FIELD_KEY ||
-                key === SAVED_FILTER_FIELD_GROUP_FIELD_KEY
+                key === SAVED_FILTER_FIELD_GROUP_FIELD_KEY,
         )
     )
 }
@@ -116,7 +118,7 @@ const getSaveConfirmationContent = () => (
 )
 
 const isSavedFilter = (
-    savedFilter: SavedFilterDraft | SavedFilter | null
+    savedFilter: SavedFilterDraft | SavedFilter | null,
 ): savedFilter is SavedFilter =>
     savedFilter !== null && 'id' in savedFilter && savedFilter.id !== undefined
 
@@ -145,7 +147,7 @@ export const SavedFiltersPanel = ({
 
     const [isEditMode, setIsEditMode] = useState(isEditingSavedFilterDraft)
     const [errorMessage, setErrorMessage] = useState<string | undefined>(
-        undefined
+        undefined,
     )
     const [isDeleteConfirmationModalOpen, setIsDeleteConfirmationModalOpen] =
         useState(false)
@@ -159,7 +161,9 @@ export const SavedFiltersPanel = ({
     const mutationConfig = {
         mutation: {
             onSuccess: () => {
-                void queryClient.invalidateQueries({queryKey: ['savedFilters']})
+                void queryClient.invalidateQueries({
+                    queryKey: ['savedFilters'],
+                })
             },
         },
     }
@@ -179,8 +183,8 @@ export const SavedFiltersPanel = ({
             dispatch(updateSavedFilterDraftName(name))
             setErrorMessage(
                 getMaxSavedFilterNameLengthErrorText(
-                    MAX_SAVED_FILTER_NAME_LENGTH
-                )
+                    MAX_SAVED_FILTER_NAME_LENGTH,
+                ),
             )
             return
         }
@@ -194,8 +198,8 @@ export const SavedFiltersPanel = ({
         } else if (originalSavedFilter) {
             dispatch(
                 initialiseSavedFilterDraftFromSavedFilter(
-                    fromApiFormatted(originalSavedFilter as SavedFilterAPI)
-                )
+                    fromApiFormatted(originalSavedFilter as SavedFilterAPI),
+                ),
             )
         }
         setIsEditMode(false)
@@ -209,7 +213,7 @@ export const SavedFiltersPanel = ({
 
     const isCurrentUserATeamLead = useMemo(
         () => isTeamLead(currentUser),
-        [currentUser]
+        [currentUser],
     )
 
     const saveHandler = useCallback(
@@ -226,15 +230,15 @@ export const SavedFiltersPanel = ({
                     .then((res) => {
                         dispatch(
                             applySavedFilter(
-                                fromApiFormatted(res.data as SavedFilterAPI)
-                            )
+                                fromApiFormatted(res.data as SavedFilterAPI),
+                            ),
                         )
 
                         void dispatch(
                             notify({
                                 status: NotificationStatus.Success,
                                 message: FILTER_EDIT_SAVED_MESSAGE,
-                            })
+                            }),
                         )
                         setIsEditMode(false)
                     })
@@ -243,7 +247,7 @@ export const SavedFiltersPanel = ({
                             notify({
                                 status: NotificationStatus.Error,
                                 message: FILTER_SAVED_ERROR_MESSAGE,
-                            })
+                            }),
                         )
 
                         if (
@@ -253,7 +257,7 @@ export const SavedFiltersPanel = ({
                             setErrorMessage(
                                 e.response.data.error.data[
                                     SAVED_FILTER_NAME_FIELD_KEY
-                                ]?.join(' ')
+                                ]?.join(' '),
                             )
                         }
                     })
@@ -268,14 +272,14 @@ export const SavedFiltersPanel = ({
                     .then((res) => {
                         dispatch(
                             applySavedFilter(
-                                fromApiFormatted(res.data as SavedFilterAPI)
-                            )
+                                fromApiFormatted(res.data as SavedFilterAPI),
+                            ),
                         )
                         void dispatch(
                             notify({
                                 status: NotificationStatus.Success,
                                 message: FILTER_SAVED_MESSAGE,
-                            })
+                            }),
                         )
                         setIsEditMode(false)
                     })
@@ -284,7 +288,7 @@ export const SavedFiltersPanel = ({
                             notify({
                                 status: NotificationStatus.Error,
                                 message: FILTER_SAVED_ERROR_MESSAGE,
-                            })
+                            }),
                         )
 
                         if (
@@ -294,26 +298,26 @@ export const SavedFiltersPanel = ({
                             setErrorMessage(
                                 e.response.data.error.data[
                                     SAVED_FILTER_NAME_FIELD_KEY
-                                ]?.join(' ')
+                                ]?.join(' '),
                             )
                         }
                     })
             }
         },
-        [createMutation, dispatch, updateMutation, setErrorMessage]
+        [createMutation, dispatch, updateMutation, setErrorMessage],
     )
 
     const deleteHandler = useCallback(
         (savedFilter: SavedFilter) => {
             void deleteMutation
-                .mutateAsync({id: savedFilter.id})
+                .mutateAsync({ id: savedFilter.id })
                 .then(() => {
                     dispatch(clearSavedFilterDraft())
                     void dispatch(
                         notify({
                             status: NotificationStatus.Success,
                             message: FILTER_DELETED_MESSAGE,
-                        })
+                        }),
                     )
                 })
                 .catch(() => {
@@ -321,18 +325,18 @@ export const SavedFiltersPanel = ({
                         notify({
                             status: NotificationStatus.Error,
                             message: FILTER_DELETED_ERROR_MESSAGE,
-                        })
+                        }),
                     )
                 })
         },
-        [deleteMutation, dispatch]
+        [deleteMutation, dispatch],
     )
 
     const duplicateSavedFilterHandler = useCallback(
         (savedFilter: SavedFilter) => {
             dispatch(duplicateSavedFilterDraftFromSavedFilter(savedFilter))
         },
-        [dispatch]
+        [dispatch],
     )
 
     return (
@@ -376,24 +380,24 @@ export const SavedFiltersPanel = ({
                                             DELETE_CONFIRMATION_BUTTON_LABEL
                                         }
                                         title={getDeleteConfirmationTitle(
-                                            savedFilter.name
+                                            savedFilter.name,
                                         )}
                                         onConfirm={() => {
                                             deleteHandler(savedFilter)
                                             setIsDeleteConfirmationModalOpen(
-                                                false
+                                                false,
                                             )
                                         }}
                                         isOpen={isDeleteConfirmationModalOpen}
                                         onClose={() => {
                                             setIsDeleteConfirmationModalOpen(
-                                                false
+                                                false,
                                             )
                                         }}
                                         className={css.confirmationModal}
                                     >
                                         {getDeleteConfirmationContent(
-                                            savedFilter.name
+                                            savedFilter.name,
                                         )}
                                     </ConfirmationModal>
                                     <SavedFilterMenu
@@ -402,14 +406,14 @@ export const SavedFiltersPanel = ({
                                                 label: DUPLICATE_FILTER_ACTION_LABEL,
                                                 callback: () =>
                                                     duplicateSavedFilterHandler(
-                                                        savedFilter
+                                                        savedFilter,
                                                     ),
                                             },
                                             {
                                                 label: DELETE_FILTER_ACTION_LABEL,
                                                 callback: () =>
                                                     setIsDeleteConfirmationModalOpen(
-                                                        true
+                                                        true,
                                                     ),
                                             },
                                         ]}
@@ -454,15 +458,15 @@ export const SavedFiltersPanel = ({
                                             onClick={() => {
                                                 if (
                                                     !isSavedFilter(
-                                                        savedFilterDraft
+                                                        savedFilterDraft,
                                                     )
                                                 ) {
                                                     saveHandler(
-                                                        savedFilterDraft
+                                                        savedFilterDraft,
                                                     )
                                                 } else {
                                                     setIsSaveConfirmationModalOpen(
-                                                        true
+                                                        true,
                                                     )
                                                 }
                                             }}
@@ -470,7 +474,7 @@ export const SavedFiltersPanel = ({
                                                 !canSaveFilter ||
                                                 areFiltersEqual(
                                                     originalSavedFilter,
-                                                    savedFilterDraft
+                                                    savedFilterDraft,
                                                 )
                                             }
                                         >
@@ -489,13 +493,13 @@ export const SavedFiltersPanel = ({
                                         onClick: () => {
                                             cancelHandler()
                                             setIsSaveConfirmationModalOpen(
-                                                false
+                                                false,
                                             )
                                         },
                                         className: css.discardChangesButton,
                                     }}
                                     title={getSaveConfirmationTitle(
-                                        savedFilterDraft.name
+                                        savedFilterDraft.name,
                                     )}
                                     onConfirm={() => {
                                         saveHandler(savedFilterDraft)

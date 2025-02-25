@@ -1,21 +1,21 @@
-import {CampaignTrigger} from './CampaignTrigger'
-import {CampaignTriggerType} from './enums/CampaignTriggerType.enum'
+import { CampaignTrigger } from './CampaignTrigger'
+import { CampaignTriggerType } from './enums/CampaignTriggerType.enum'
 
 export type CreateTriggerFn = (
     type: CampaignTriggerType,
-    payload?: CampaignTrigger
+    payload?: CampaignTrigger,
 ) => void
 
 export type UpdateTriggerFn = (
     triggerId: string,
-    payload: CampaignTrigger
+    payload: CampaignTrigger,
 ) => void
 
 export type DeleteTriggerFn = (triggerId: string) => void
 
 export type ValidateStateUpdateFn = (
     triggerId: string,
-    isValid: boolean
+    isValid: boolean,
 ) => void
 
 export type AdvancedTriggerBaseProps = {

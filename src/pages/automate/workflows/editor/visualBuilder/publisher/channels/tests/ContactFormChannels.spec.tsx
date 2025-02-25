@@ -1,10 +1,11 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {TicketChannel} from 'business/types/ticket'
+import { render } from '@testing-library/react'
+
+import { TicketChannel } from 'business/types/ticket'
 import useContactFormsAutomationSettings from 'pages/automate/common/hooks/useContactFormsAutomationSettings'
-import {SelfServiceStandaloneContactFormChannel} from 'pages/automate/common/hooks/useSelfServiceStandaloneContactFormChannels'
-import {WorkflowConfiguration} from 'pages/automate/workflows/models/workflowConfiguration.types'
+import { SelfServiceStandaloneContactFormChannel } from 'pages/automate/common/hooks/useSelfServiceStandaloneContactFormChannels'
+import { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
 
 import ChannelBlock from '../../helper/ChannelBlock'
 import useOnlySupportedChannels from '../../helper/useOnlySupportedChannels'
@@ -18,12 +19,12 @@ jest.mock(
         __esModule: true,
         default: jest.fn(),
         useContactFormsAutomationSettings: jest.fn(),
-    })
+    }),
 )
 jest.mock('../../helper/useOnlySupportedChannels', () => jest.fn())
 jest.mock('../ChannelToggle', () => jest.fn(() => <div>ChannelToggle</div>))
 jest.mock('../../helper/ChannelBlock', () =>
-    jest.fn(({children}) => <div>{children}</div>)
+    jest.fn(({ children }) => <div>{children}</div>),
 )
 
 const defaultSelfServiceStandaloneContactFormChannel = {
@@ -53,7 +54,7 @@ describe('ContactFormChannels', () => {
         ;(useContactFormsAutomationSettings as jest.Mock).mockReturnValue({
             contactFormsAutomationSettings: {
                 1: {
-                    workflows: [{id: 'workflow-1', enabled: true}],
+                    workflows: [{ id: 'workflow-1', enabled: true }],
                 },
             },
             isUpdatePending: false,
@@ -69,14 +70,14 @@ describe('ContactFormChannels', () => {
                 standaloneContactFormsChannels={[
                     defaultSelfServiceStandaloneContactFormChannel,
                 ]}
-            />
+            />,
         )
 
         expect(ChannelBlock).toHaveBeenCalledWith(
             expect.objectContaining({
                 channelType: TicketChannel.ContactForm,
             }),
-            expect.anything()
+            expect.anything(),
         )
     })
 
@@ -87,7 +88,7 @@ describe('ContactFormChannels', () => {
                 standaloneContactFormsChannels={[
                     defaultSelfServiceStandaloneContactFormChannel,
                 ]}
-            />
+            />,
         )
 
         expect(ChannelToggle).toHaveBeenCalledWith(
@@ -95,9 +96,9 @@ describe('ContactFormChannels', () => {
                 configuration: workflowConfiguration,
                 channel: defaultSelfServiceStandaloneContactFormChannel,
                 isLoading: false,
-                workflows: [{id: 'workflow-1', enabled: true}],
+                workflows: [{ id: 'workflow-1', enabled: true }],
             }),
-            expect.anything()
+            expect.anything(),
         )
     })
 
@@ -107,7 +108,7 @@ describe('ContactFormChannels', () => {
         ;(useContactFormsAutomationSettings as jest.Mock).mockReturnValue({
             contactFormsAutomationSettings: {
                 1: {
-                    workflows: [{id: 'workflow-1', enabled: true}],
+                    workflows: [{ id: 'workflow-1', enabled: true }],
                 },
             },
             isUpdatePending: false,
@@ -121,17 +122,17 @@ describe('ContactFormChannels', () => {
                 standaloneContactFormsChannels={[
                     defaultSelfServiceStandaloneContactFormChannel,
                 ]}
-            />
+            />,
         )
 
         expect(ChannelToggle).toHaveBeenCalledWith(
             expect.objectContaining({
                 handleAutomationSettingUpdate: expect.any(Function),
-                workflows: [{id: 'workflow-1', enabled: true}],
+                workflows: [{ id: 'workflow-1', enabled: true }],
                 isLoading: false,
                 onlySupportedChannels: [],
             }),
-            expect.anything()
+            expect.anything(),
         )
     })
 
@@ -139,7 +140,7 @@ describe('ContactFormChannels', () => {
         ;(useContactFormsAutomationSettings as jest.Mock).mockReturnValue({
             contactFormsAutomationSettings: {
                 1: {
-                    workflows: [{id: 'workflow-1', enabled: true}],
+                    workflows: [{ id: 'workflow-1', enabled: true }],
                 },
             },
             isUpdatePending: true,
@@ -153,14 +154,14 @@ describe('ContactFormChannels', () => {
                 standaloneContactFormsChannels={[
                     defaultSelfServiceStandaloneContactFormChannel,
                 ]}
-            />
+            />,
         )
 
         expect(ChannelToggle).toHaveBeenCalledWith(
             expect.objectContaining({
                 isLoading: true,
             }),
-            expect.anything()
+            expect.anything(),
         )
     })
 
@@ -176,10 +177,10 @@ describe('ContactFormChannels', () => {
         ;(useContactFormsAutomationSettings as jest.Mock).mockReturnValue({
             contactFormsAutomationSettings: {
                 1: {
-                    workflows: [{id: 'workflow-1', enabled: true}],
+                    workflows: [{ id: 'workflow-1', enabled: true }],
                 },
                 2: {
-                    workflows: [{id: 'workflow-2', enabled: false}],
+                    workflows: [{ id: 'workflow-2', enabled: false }],
                 },
             },
             isUpdatePending: false,
@@ -194,23 +195,23 @@ describe('ContactFormChannels', () => {
                     defaultSelfServiceStandaloneContactFormChannel,
                     anotherContactFormChannel,
                 ]}
-            />
+            />,
         )
 
         expect(ChannelToggle).toHaveBeenCalledTimes(2)
         expect(ChannelToggle).toHaveBeenCalledWith(
             expect.objectContaining({
                 channel: defaultSelfServiceStandaloneContactFormChannel,
-                workflows: [{id: 'workflow-1', enabled: true}],
+                workflows: [{ id: 'workflow-1', enabled: true }],
             }),
-            expect.anything()
+            expect.anything(),
         )
         expect(ChannelToggle).toHaveBeenCalledWith(
             expect.objectContaining({
                 channel: anotherContactFormChannel,
-                workflows: [{id: 'workflow-2', enabled: false}],
+                workflows: [{ id: 'workflow-2', enabled: false }],
             }),
-            expect.anything()
+            expect.anything(),
         )
     })
 })

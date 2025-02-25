@@ -1,6 +1,6 @@
-import {ActionsDataFixture} from '../../tests/ActionsData.fixture'
-import {SetYourActionsLiveTask} from '../SetYourActionsLive.task'
-import {buildRuleEngineData, buildRuleEngineRoutes} from './utils'
+import { ActionsDataFixture } from '../../tests/ActionsData.fixture'
+import { SetYourActionsLiveTask } from '../SetYourActionsLive.task'
+import { buildRuleEngineData, buildRuleEngineRoutes } from './utils'
 
 describe('SetYourActionsLive', () => {
     it('should display the task if at least 1 draft action exists', () => {
@@ -10,7 +10,7 @@ describe('SetYourActionsLive', () => {
             buildRuleEngineData({
                 actions,
             }),
-            buildRuleEngineRoutes()
+            buildRuleEngineRoutes(),
         )
         expect(task.display).toBe(true)
     })
@@ -22,7 +22,7 @@ describe('SetYourActionsLive', () => {
             buildRuleEngineData({
                 actions,
             }),
-            buildRuleEngineRoutes()
+            buildRuleEngineRoutes(),
         )
         expect(task.display).toBe(false)
     })

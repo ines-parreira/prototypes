@@ -1,8 +1,8 @@
-import {CancelOrderState} from './cancelOrder/types'
-import {CreateOrderState} from './createOrder/types'
-import {EditOrderState} from './editOrder/types'
-import {EditShippingAddressState} from './editShippingAddress/types'
-import {RefundOrderState} from './refundOrder/types'
+import { CancelOrderState } from './cancelOrder/types'
+import { CreateOrderState } from './createOrder/types'
+import { EditOrderState } from './editOrder/types'
+import { EditShippingAddressState } from './editShippingAddress/types'
+import { RefundOrderState } from './refundOrder/types'
 
 export type ShopifyActionsState = {
     cancelOrder: CancelOrderState

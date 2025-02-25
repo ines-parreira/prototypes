@@ -1,7 +1,8 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
 
-import {TicketChannel} from 'business/types/ticket'
+import { Link } from 'react-router-dom'
+
+import { TicketChannel } from 'business/types/ticket'
 import ChannelIcon from 'pages/automate/common/components/ChannelIcon'
 import {
     SelfServiceChannel,
@@ -15,6 +16,7 @@ import Button from 'pages/common/components/button/Button'
 import ConnectedChannelAccordionBodyChat from './ConnectedChannelAccordionBodyChat'
 import ConnectedChannelAccordionBodyHelpCenter from './ConnectedChannelAccordionBodyHelpCenter'
 import ConnectedChannelAccordionBodyStandaloneContactForm from './ConnectedChannelAccordionBodyStandaloneContactForm'
+
 import css from './ConnectedChannelAccordionItem.less'
 
 type Props = {
@@ -44,7 +46,7 @@ const channelNamePrefix = (type: SelfServiceChannelType) => {
     }
 }
 
-const ConnectedChannelAccordionItem = ({index, channel}: Props) => {
+const ConnectedChannelAccordionItem = ({ index, channel }: Props) => {
     return (
         <AccordionItem id={index.toString(10)}>
             <AccordionHeader>

@@ -1,13 +1,12 @@
-import {Skeleton} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
-import {DateAndTimeFormatting} from 'constants/datetime'
+import { Skeleton } from '@gorgias/merchant-ui-kit'
+
+import { DateAndTimeFormatting } from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-
-import {formatPercentage} from 'pages/common/utils/numbers'
-import {ABGroupValueFormat} from 'pages/convert/abVariants/components/VariantsList/types'
-
-import {formatDatetime} from 'utils'
+import { formatPercentage } from 'pages/common/utils/numbers'
+import { ABGroupValueFormat } from 'pages/convert/abVariants/components/VariantsList/types'
+import { formatDatetime } from 'utils'
 
 type Props = {
     format: ABGroupValueFormat
@@ -15,14 +14,14 @@ type Props = {
     isLoading?: boolean
 }
 
-const DataCell: React.FC<Props> = ({format, data, isLoading = false}) => {
+const DataCell: React.FC<Props> = ({ format, data, isLoading = false }) => {
     const datetimeFormat = useGetDateAndTimeFormat(
-        DateAndTimeFormatting.CompactDate
+        DateAndTimeFormatting.CompactDate,
     )
 
     if (isLoading) {
         return (
-            <div style={{width: '100%'}}>
+            <div style={{ width: '100%' }}>
                 <Skeleton count={1} width="100%" />
             </div>
         )

@@ -1,1 +1,1 @@
-export {default} from './ButtonsGroup'
+export { default } from './ButtonsGroup'

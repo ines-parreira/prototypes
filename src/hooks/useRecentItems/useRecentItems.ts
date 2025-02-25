@@ -1,24 +1,25 @@
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+
 import _debounce from 'lodash/debounce'
 import _isEmpty from 'lodash/isEmpty'
 import _isEqual from 'lodash/isEqual'
-import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 
 import useAsyncFn from 'hooks/useAsyncFn'
 import useEffectOnce from 'hooks/useEffectOnce'
-import {DEBOUNCE_TIME, RecentItems} from 'hooks/useRecentItems/constants'
+import { DEBOUNCE_TIME, RecentItems } from 'hooks/useRecentItems/constants'
 import LocalForageManager from 'services/localForageManager/localForageManager'
 
 const MAX_RECENT_ITEMS = 30
 
-const useRecentItems = <T extends {id: number}>(
+const useRecentItems = <T extends { id: number }>(
     itemType: RecentItems,
-    maxItems: number = MAX_RECENT_ITEMS
+    maxItems: number = MAX_RECENT_ITEMS,
 ) => {
     const previousItemRef = useRef<T>()
 
     const localForage = useMemo(
         () => LocalForageManager.getTable(`recent-${itemType}`),
-        [itemType]
+        [itemType],
     )
 
     const [items, setItems] = useState<T[]>([])
@@ -27,20 +28,21 @@ const useRecentItems = <T extends {id: number}>(
         await localForage.ready()
         const allItems = await localForage.getItems()
         const indexedItems: [number, T][] = Object.entries(allItems).map(
-            ([key, value]) => [parseInt(key), value]
+            ([key, value]) => [parseInt(key), value],
         )
         indexedItems.sort((a, b) => b[0] - a[0])
 
         return indexedItems.map(([, value]) => value)
     }, [localForage])
 
-    const [{loading: isGettingItems}, setRecentItems] = useAsyncFn(async () => {
-        const recentItems = await getRecentItems()
+    const [{ loading: isGettingItems }, setRecentItems] =
+        useAsyncFn(async () => {
+            const recentItems = await getRecentItems()
 
-        if (!_isEmpty(recentItems)) {
-            setItems(recentItems)
-        }
-    }, [getRecentItems])
+            if (!_isEmpty(recentItems)) {
+                setItems(recentItems)
+            }
+        }, [getRecentItems])
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const setRecentItem = useCallback(
@@ -58,7 +60,7 @@ const useRecentItems = <T extends {id: number}>(
                         if (value.id === item.id) {
                             return key
                         }
-                    }
+                    },
                 )
 
                 if (!!existingItemKey) {
@@ -83,7 +85,7 @@ const useRecentItems = <T extends {id: number}>(
             await localForage.setItem(Date.now().toString(), item)
             previousItemRef.current = item
         }, DEBOUNCE_TIME),
-        [localForage, maxItems]
+        [localForage, maxItems],
     )
 
     useEffectOnce(() => {
@@ -96,7 +98,7 @@ const useRecentItems = <T extends {id: number}>(
             await localForage.ready()
             subscription = LocalForageManager.observeTable(
                 `recent-${itemType}`,
-                setRecentItems
+                setRecentItems,
             )
         }
 
@@ -113,7 +115,7 @@ const useRecentItems = <T extends {id: number}>(
             setRecentItem,
             isGettingItems,
         }),
-        [items, setRecentItem, isGettingItems]
+        [items, setRecentItem, isGettingItems],
     )
 }
 

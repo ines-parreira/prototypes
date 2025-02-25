@@ -1,11 +1,11 @@
-import classnames from 'classnames'
+import React, { useMemo } from 'react'
 
-import React, {useMemo} from 'react'
-import {useHistory} from 'react-router-dom'
+import classnames from 'classnames'
+import { useHistory } from 'react-router-dom'
 
 import cssNavbar from 'assets/css/navbar.less'
-import {logEvent, SegmentEvent} from 'common/segment'
-import {useCustomReportActions} from 'hooks/reporting/custom-reports/useCustomReportActions'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { useCustomReportActions } from 'hooks/reporting/custom-reports/useCustomReportActions'
 import useAppSelector from 'hooks/useAppSelector'
 import NavbarBlock from 'pages/common/components/navbar/NavbarBlock'
 import NavbarLink, {
@@ -16,10 +16,10 @@ import {
     MAX_DASHBOARDS_ALLOWED,
 } from 'pages/stats/custom-reports/constants'
 import css from 'pages/stats/custom-reports/DashboardsNavbarBlock/DashboardsNavbarBlock.less'
-import {getDashboardPath} from 'pages/stats/custom-reports/utils'
-import {BASE_STATS_PATH, STATS_ROUTES} from 'routes/constants'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {isTeamLead} from 'utils'
+import { getDashboardPath } from 'pages/stats/custom-reports/utils'
+import { BASE_STATS_PATH, STATS_ROUTES } from 'routes/constants'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { isTeamLead } from 'utils'
 
 type Props = {
     navBarLinkProps: Partial<NavbarLinkProps>
@@ -35,9 +35,9 @@ const logStatDashboardNavCreateChartClicked = () => {
 
 const CREATE_DASHBOARD_PATH = `${BASE_STATS_PATH}/${STATS_ROUTES.DASHBOARDS_NEW}`
 
-export const DashboardsNavbarBlock = ({navBarLinkProps}: Props) => {
+export const DashboardsNavbarBlock = ({ navBarLinkProps }: Props) => {
     const history = useHistory()
-    const {getDashboardsHandler} = useCustomReportActions()
+    const { getDashboardsHandler } = useCustomReportActions()
 
     const dashboards = getDashboardsHandler()
 
@@ -58,12 +58,12 @@ export const DashboardsNavbarBlock = ({navBarLinkProps}: Props) => {
                       onClick: () => {
                           history.push(CREATE_DASHBOARD_PATH)
                           logEvent(
-                              SegmentEvent.StatDashboardNavCreateChartClicked
+                              SegmentEvent.StatDashboardNavCreateChartClicked,
                           )
                       },
                   },
         ],
-        [history, limitReached]
+        [history, limitReached],
     )
 
     const actionsIcon = {
@@ -83,12 +83,12 @@ export const DashboardsNavbarBlock = ({navBarLinkProps}: Props) => {
             actions={actions}
             className={css.navbar}
         >
-            {dashboards.map(({name, id, emoji}) => (
+            {dashboards.map(({ name, id, emoji }) => (
                 <div
                     key={id}
                     className={classnames(
                         cssNavbar['link-wrapper'],
-                        cssNavbar.isNested
+                        cssNavbar.isNested,
                     )}
                 >
                     <NavbarLink

@@ -1,6 +1,6 @@
-import React, {ComponentProps, forwardRef} from 'react'
+import React, { ComponentProps, forwardRef } from 'react'
 
-import {useNavBar} from '../hooks/useNavBar/useNavBar'
+import { useNavBar } from '../hooks/useNavBar/useNavBar'
 
 import css from './CollapsibleNavbarContainer.less'
 
@@ -9,8 +9,8 @@ type CollapsibleNavbarContainerProps = ComponentProps<'div'>
 export const CollapsibleNavbarContainer = forwardRef<
     HTMLDivElement,
     CollapsibleNavbarContainerProps
->(function CollapsibleNavbarContainer({children, ...props}, ref) {
-    const {navBarDisplay, onOverlayHover, onNavHover} = useNavBar()
+>(function CollapsibleNavbarContainer({ children, ...props }, ref) {
+    const { navBarDisplay, onOverlayHover, onNavHover } = useNavBar()
 
     return (
         <>

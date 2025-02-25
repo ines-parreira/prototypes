@@ -1,6 +1,6 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
-import {chatIsShopifyStore} from '../chatIsShopifyStore'
+import { chatIsShopifyStore } from '../chatIsShopifyStore'
 
 const shopifyChat = fromJS({
     meta: {

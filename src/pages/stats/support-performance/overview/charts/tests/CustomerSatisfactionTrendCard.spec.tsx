@@ -1,21 +1,22 @@
-import {fromJS} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {account} from 'fixtures/account'
-import {ActivateCustomerSatisfactionSurveyTip} from 'pages/stats/ActivateCustomerSatisfactionSurveyTip'
-import {TrendCard} from 'pages/stats/common/components/TrendCard'
-import {CustomerSatisfactionTrendCard} from 'pages/stats/support-performance/overview/charts/CustomerSatisfactionTrendCard'
-import {STATS_TIPS_VISIBILITY_KEY} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
-import {SupportPerformanceTip} from 'pages/stats/SupportPerformanceTip'
-import {AccountSettingType} from 'state/currentAccount/types'
-import {RootState} from 'state/types'
-import {assumeMock, renderWithStore} from 'utils/testing'
+import { fromJS } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { account } from 'fixtures/account'
+import { ActivateCustomerSatisfactionSurveyTip } from 'pages/stats/ActivateCustomerSatisfactionSurveyTip'
+import { TrendCard } from 'pages/stats/common/components/TrendCard'
+import { CustomerSatisfactionTrendCard } from 'pages/stats/support-performance/overview/charts/CustomerSatisfactionTrendCard'
+import { STATS_TIPS_VISIBILITY_KEY } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
+import { SupportPerformanceTip } from 'pages/stats/SupportPerformanceTip'
+import { AccountSettingType } from 'state/currentAccount/types'
+import { RootState } from 'state/types'
+import { assumeMock, renderWithStore } from 'utils/testing'
 
 jest.mock('pages/stats/ActivateCustomerSatisfactionSurveyTip')
 const ActivateCustomerSatisfactionSurveyTipMock = assumeMock(
-    ActivateCustomerSatisfactionSurveyTip
+    ActivateCustomerSatisfactionSurveyTip,
 )
 jest.mock('pages/stats/SupportPerformanceTip')
 const SupportPerformanceTipMock = assumeMock(SupportPerformanceTip)
@@ -52,7 +53,7 @@ describe('CustomerSatisfactionTrendCard', () => {
             [FeatureFlagKey.AnalyticsNewFilters]: false,
         })
         TrendCardMock.mockImplementation(
-            ({tip}: ComponentProps<typeof TrendCard>) => <div>{tip}</div>
+            ({ tip }: ComponentProps<typeof TrendCard>) => <div>{tip}</div>,
         )
         ActivateCustomerSatisfactionSurveyTipMock.mockImplementation(() => (
             <div></div>
@@ -64,7 +65,7 @@ describe('CustomerSatisfactionTrendCard', () => {
     it('should render the SupportPerformanceTip', () => {
         renderWithStore(
             <CustomerSatisfactionTrendCard chartId="ID" />,
-            defaultState
+            defaultState,
         )
 
         expect(SupportPerformanceTipMock).toHaveBeenCalled()

@@ -1,5 +1,6 @@
-import classNames from 'classnames'
 import React from 'react'
+
+import classNames from 'classnames'
 
 import css from './AIAgentFeedbackBar.less'
 
@@ -11,7 +12,7 @@ type Props = {
     }[]
 }
 
-const FeedbackOrders: React.FC<Props> = ({orders}) => {
+const FeedbackOrders: React.FC<Props> = ({ orders }) => {
     if (!orders || !orders.length) {
         return null
     }

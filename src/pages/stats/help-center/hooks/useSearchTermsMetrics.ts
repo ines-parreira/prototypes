@@ -1,7 +1,7 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {useMetric} from 'hooks/reporting/useMetric'
-import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
+import { useMetric } from 'hooks/reporting/useMetric'
+import { useMetricPerDimension } from 'hooks/reporting/useMetricPerDimension'
 import {
     HelpCenterTrackingEventDimensions,
     HelpCenterTrackingEventMeasures,
@@ -10,7 +10,7 @@ import {
     searchResultQueryCountFactory,
     searchResultTermsQueryFactory,
 } from 'models/reporting/queryFactories/help-center/searchResult'
-import {StatsFilters} from 'models/stat/types'
+import { StatsFilters } from 'models/stat/types'
 
 import {
     HelpCenterTableCell,
@@ -36,7 +36,7 @@ export const useSearchTermsMetrics = ({
         offset: itemPerPage * (currentPage - 1),
     })
     const searchResultCount = useMetric(
-        searchResultQueryCountFactory(statsFilters, timezone)
+        searchResultQueryCountFactory(statsFilters, timezone),
     )
 
     const total = searchResultCount.data?.value ?? 0
@@ -54,20 +54,20 @@ export const useSearchTermsMetrics = ({
                     value[
                         HelpCenterTrackingEventMeasures
                             .SearchRequestedQueryCount
-                    ]
+                    ],
                 )
                 const articlesClicked = Number(
                     value[
                         HelpCenterTrackingEventMeasures
                             .SearchArticlesClickedCount
-                    ]
+                    ],
                 )
 
                 const articlesClickedUnique = Number(
                     value[
                         HelpCenterTrackingEventMeasures
                             .SearchArticlesClickedCountUnique
-                    ]
+                    ],
                 )
 
                 const clickThroughRate = (articlesClicked / searchCount) * 100
@@ -89,7 +89,7 @@ export const useSearchTermsMetrics = ({
                                 ? () =>
                                       onModalOpen(
                                           searchTerm,
-                                          articlesClickedUnique
+                                          articlesClickedUnique,
                                       )
                                 : undefined,
                     },
@@ -101,7 +101,7 @@ export const useSearchTermsMetrics = ({
                     },
                 ]
             }) ?? [],
-        [onModalOpen, searchResultTerms.data?.allData]
+        [onModalOpen, searchResultTerms.data?.allData],
     )
 
     return useMemo(
@@ -116,6 +116,6 @@ export const useSearchTermsMetrics = ({
             total,
             searchResultTerms.isFetching,
             searchResultCount.isFetching,
-        ]
+        ],
     )
 }

@@ -1,15 +1,16 @@
-import {fireEvent, render, waitFor} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
 
-import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-import {StatsFilters} from 'models/stat/types'
-import {formatMetricValue} from 'pages/stats/common/utils'
+import { fireEvent, render, waitFor } from '@testing-library/react'
+import { Provider } from 'react-redux'
+
+import { MetricTrend } from 'hooks/reporting/useMetricTrend'
+import { StatsFilters } from 'models/stat/types'
+import { formatMetricValue } from 'pages/stats/common/utils'
 import * as DrillDownModalTrigger from 'pages/stats/DrillDownModalTrigger'
-import {useVoiceCallAverageTimeTrend} from 'pages/stats/voice/hooks/useVoiceCallAverageTimeTrend'
-import {VoiceMetrics} from 'state/ui/stats/drillDownSlice'
-import {VoiceMetric} from 'state/ui/stats/types'
-import {assumeMock, mockStore} from 'utils/testing'
+import { useVoiceCallAverageTimeTrend } from 'pages/stats/voice/hooks/useVoiceCallAverageTimeTrend'
+import { VoiceMetrics } from 'state/ui/stats/drillDownSlice'
+import { VoiceMetric } from 'state/ui/stats/types'
+import { assumeMock, mockStore } from 'utils/testing'
 
 import {
     AVERAGE_TALK_TIME_METRIC_TITLE,
@@ -19,12 +20,12 @@ import VoiceCallCallerExperienceMetric from './VoiceCallCallerExperienceMetric'
 
 jest.mock('pages/stats/voice/hooks/useVoiceCallAverageTimeTrend')
 const mockUseVoiceCallAverageTimeTrend = assumeMock(
-    useVoiceCallAverageTimeTrend
+    useVoiceCallAverageTimeTrend,
 )
 
 const DrillDownModalTriggerSpy = jest.spyOn(
     DrillDownModalTrigger,
-    'DrillDownModalTrigger'
+    'DrillDownModalTrigger',
 )
 
 const averageWaitTimeMetricData = {
@@ -51,7 +52,7 @@ describe('<VoiceCallCallerExperienceMetric />', () => {
 
     const renderComponent = (
         trendValue: MetricTrend,
-        metricData: VoiceMetrics = averageWaitTimeMetricData
+        metricData: VoiceMetrics = averageWaitTimeMetricData,
     ) => {
         const statsFilters: StatsFilters = {
             period: {
@@ -70,7 +71,7 @@ describe('<VoiceCallCallerExperienceMetric />', () => {
                     statsFilters={statsFilters}
                     metricData={metricData}
                 />
-            </Provider>
+            </Provider>,
         )
     }
 
@@ -88,7 +89,7 @@ describe('<VoiceCallCallerExperienceMetric />', () => {
             isFetching: false,
         }
 
-        const {getByText, container} = renderComponent(trendValue)
+        const { getByText, container } = renderComponent(trendValue)
 
         expect(getByText('Total duration')).toBeInTheDocument()
         expect(getByText('arrow_upward')).toBeInTheDocument()
@@ -98,11 +99,11 @@ describe('<VoiceCallCallerExperienceMetric />', () => {
         await waitFor(() => {
             expect(container.querySelector('.tooltip')).toBeInTheDocument()
             expect(
-                document.querySelector('.tooltip-inner')?.textContent
+                document.querySelector('.tooltip-inner')?.textContent,
             ).toEqual(
                 `Vs. ${formatMetricValue(
-                    trendValue.data.prevValue
-                )} on Jan 1st, 2024`
+                    trendValue.data.prevValue,
+                )} on Jan 1st, 2024`,
             )
         })
     })
@@ -114,7 +115,7 @@ describe('<VoiceCallCallerExperienceMetric />', () => {
             isFetching: false,
         }
 
-        const {getByText} = renderComponent(trendValue)
+        const { getByText } = renderComponent(trendValue)
 
         expect(getByText('Total duration')).toBeInTheDocument()
         expect(getByText('-')).toBeInTheDocument()
@@ -122,7 +123,7 @@ describe('<VoiceCallCallerExperienceMetric />', () => {
             expect.objectContaining({
                 enabled: false,
             }),
-            {}
+            {},
         )
     })
 
@@ -136,7 +137,7 @@ describe('<VoiceCallCallerExperienceMetric />', () => {
             isFetching: false,
         }
 
-        const {getByText} = renderComponent(trendValue)
+        const { getByText } = renderComponent(trendValue)
 
         expect(getByText('Total duration')).toBeInTheDocument()
         expect(getByText('-')).toBeInTheDocument()
@@ -158,7 +159,7 @@ describe('<VoiceCallCallerExperienceMetric />', () => {
             expect.objectContaining({
                 enabled: true,
             }),
-            {}
+            {},
         )
     })
 
@@ -172,8 +173,8 @@ describe('<VoiceCallCallerExperienceMetric />', () => {
                     enabled: true,
                     metricData: metric,
                 }),
-                {}
+                {},
             )
-        }
+        },
     )
 })

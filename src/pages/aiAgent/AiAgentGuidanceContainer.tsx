@@ -1,43 +1,45 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useEffect, useMemo} from 'react'
-import {Link, useParams} from 'react-router-dom'
+import React, { useEffect, useMemo } from 'react'
 
-import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useGetHelpCenterList} from 'models/helpCenter/queries'
-import {useAiAgentStoreConfigurationContext} from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { Link, useParams } from 'react-router-dom'
+
+import { AI_AGENT_SENTRY_TEAM } from 'common/const/sentryTeamNames'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useGetHelpCenterList } from 'models/helpCenter/queries'
+import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
-import {reportError} from 'utils/errors'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
+import { reportError } from 'utils/errors'
+
+import { AiAgentGuidanceView } from './AiAgentGuidanceView'
+import PostCompletionWizardModal from './AiAgentOnboardingWizard/PostCompletionWizardModal'
+import { AiAgentLayout } from './components/AiAgentLayout/AiAgentLayout'
+import { AI_AGENT, GUIDANCE } from './constants'
+import { useAiAgentNavigation } from './hooks/useAiAgentNavigation'
 
 import css from './AiAgentGuidanceContainer.less'
-import {AiAgentGuidanceView} from './AiAgentGuidanceView'
-import PostCompletionWizardModal from './AiAgentOnboardingWizard/PostCompletionWizardModal'
-import {AiAgentLayout} from './components/AiAgentLayout/AiAgentLayout'
-import {AI_AGENT, GUIDANCE} from './constants'
-import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
 
 export const AiAgentGuidanceContainer = () => {
-    const {shopName} = useParams<{
+    const { shopName } = useParams<{
         shopName: string
     }>()
 
     const isStandaloneMenuEnabled =
         useFlags()[FeatureFlagKey.ConvAiStandaloneMenu]
 
-    const {storeConfiguration, isLoading: isStoreConfigLoading} =
+    const { storeConfiguration, isLoading: isStoreConfigLoading } =
         useAiAgentStoreConfigurationContext()
 
-    const {data: helpCenterListData, isLoading: isLoadingHelpCenters} =
+    const { data: helpCenterListData, isLoading: isLoadingHelpCenters } =
         useGetHelpCenterList(
-            {type: 'guidance', per_page: HELP_CENTER_MAX_CREATION},
+            { type: 'guidance', per_page: HELP_CENTER_MAX_CREATION },
             {
                 staleTime: 1000 * 60 * 5,
-            }
+            },
         )
 
-    const {routes} = useAiAgentNavigation({shopName})
+    const { routes } = useAiAgentNavigation({ shopName })
 
     const guidanceHelpCenter = useMemo(
         () =>
@@ -45,10 +47,10 @@ export const AiAgentGuidanceContainer = () => {
                 ? (helpCenterListData?.data.data ?? []).find(
                       (helpCenter) =>
                           helpCenter.id ===
-                          storeConfiguration.guidanceHelpCenterId
+                          storeConfiguration.guidanceHelpCenterId,
                   )
                 : undefined,
-        [helpCenterListData, storeConfiguration]
+        [helpCenterListData, storeConfiguration],
     )
 
     useEffect(() => {
@@ -59,12 +61,12 @@ export const AiAgentGuidanceContainer = () => {
         if (storeConfiguration && !guidanceHelpCenter) {
             reportError(
                 new Error(
-                    `Can't find help center with id ${storeConfiguration.guidanceHelpCenterId} and store ${shopName}`
+                    `Can't find help center with id ${storeConfiguration.guidanceHelpCenterId} and store ${shopName}`,
                 ),
                 {
-                    tags: {team: AI_AGENT_SENTRY_TEAM},
+                    tags: { team: AI_AGENT_SENTRY_TEAM },
                     level: 'error',
-                }
+                },
             )
         }
     }, [

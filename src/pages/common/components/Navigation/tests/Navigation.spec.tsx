@@ -1,6 +1,7 @@
-import {render} from '@testing-library/react'
+import React, { ComponentProps } from 'react'
+
+import { render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import React, {ComponentProps} from 'react'
 
 import Navigation from 'pages/common/components/Navigation/Navigation'
 
@@ -18,14 +19,14 @@ describe('Navigation component', () => {
         [false, true],
     ].forEach(([hasNextItems, hasPrevItems]) => {
         it(`should render with (prev button disabled: ${String(
-            !hasPrevItems
+            !hasPrevItems,
         )}) and (next button disabled: ${String(!hasNextItems)})`, () => {
-            const {container} = render(
+            const { container } = render(
                 <Navigation
                     {...commonProps}
                     hasNextItems={hasNextItems}
                     hasPrevItems={hasPrevItems}
-                />
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -33,12 +34,12 @@ describe('Navigation component', () => {
     })
 
     it('should not render because there is no previous items nor next items', () => {
-        const {container} = render(
+        const { container } = render(
             <Navigation
                 {...commonProps}
                 hasNextItems={false}
                 hasPrevItems={false}
-            />
+            />,
         )
 
         expect(container.firstChild).toMatchSnapshot()

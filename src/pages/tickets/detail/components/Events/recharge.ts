@@ -1,6 +1,6 @@
-import {fromJS, List} from 'immutable'
+import { fromJS, List } from 'immutable'
 
-import {eventMaker} from './types'
+import { eventMaker } from './types'
 
 const rechargeEvent = ({
     integration,
@@ -15,14 +15,14 @@ const rechargeEvent = ({
         return (((data.get('subscriptions') || fromJS([])) as List<any>).find(
             (subscription: Map<any, any>) =>
                 (subscription.get('id') as number).toString() ===
-                subscriptionId.toString()
+                subscriptionId.toString(),
         ) || fromJS({})) as Map<any, any>
     }
 
     const _getCharge = (chargeId: number) => {
         return (((data.get('charges') || fromJS([])) as List<any>).find(
             (charge: Map<any, any>) =>
-                (charge.get('id') as number).toString() === chargeId.toString()
+                (charge.get('id') as number).toString() === chargeId.toString(),
         ) || fromJS({})) as Map<any, any>
     }
 

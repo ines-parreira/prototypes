@@ -1,46 +1,46 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
+import React, { ComponentProps } from 'react'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
 import _noop from 'lodash/noop'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {TicketChannel} from 'business/types/ticket'
-import {OPEN_TICKETS_ASSIGNMENT_STATUSES, USERS_STATUSES} from 'config/stats'
-import {account} from 'fixtures/account'
-import {agents} from 'fixtures/agents'
+import { TicketChannel } from 'business/types/ticket'
+import { OPEN_TICKETS_ASSIGNMENT_STATUSES, USERS_STATUSES } from 'config/stats'
+import { account } from 'fixtures/account'
+import { agents } from 'fixtures/agents'
 import {
     openTicketsAssignmentStatuses,
     supportVolumePerHour,
     usersStatuses,
 } from 'fixtures/stats'
-import {teams} from 'fixtures/teams'
+import { teams } from 'fixtures/teams'
 import useStatResource from 'hooks/reporting/useStatResource'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
-
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
 import FeaturePaywall from 'pages/common/components/FeaturePaywall/FeaturePaywall'
 import LiveOverview from 'pages/stats/LiveOverview'
-import {AccountFeature} from 'state/currentAccount/types'
-import {RootState, StoreDispatch} from 'state/types'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
-import {renderWithRouter} from 'utils/testing'
+import { AccountFeature } from 'state/currentAccount/types'
+import { RootState, StoreDispatch } from 'state/types'
+import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
+import { renderWithRouter } from 'utils/testing'
 
 jest.mock('hooks/reporting/useStatResource')
-jest.mock('react-chartjs-2', () => ({Line: () => <canvas />}))
+jest.mock('react-chartjs-2', () => ({ Line: () => <canvas /> }))
 jest.mock(
     '../../common/components/FeaturePaywall/FeaturePaywall',
     () =>
-        ({feature}: ComponentProps<typeof FeaturePaywall>) => {
+        ({ feature }: ComponentProps<typeof FeaturePaywall>) => {
             return <div>Paywall for {feature}</div>
-        }
+        },
 )
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
 }))
 jest.mock(
     'pages/stats/common/filters/DEPRECATED_ChannelsStatsFilter',
-    () => () => <div>ChannelsStatsFilter</div>
+    () => () => <div>ChannelsStatsFilter</div>,
 )
 jest.spyOn(Date, 'now').mockImplementation(() => 1487076708000)
 
@@ -69,7 +69,7 @@ describe('LiveOverview', () => {
             all: teams,
         }),
         ui: {
-            stats: {filters: uiStatsInitialState},
+            stats: { filters: uiStatsInitialState },
         },
     } as RootState
 
@@ -78,7 +78,7 @@ describe('LiveOverview', () => {
     })
 
     it('should render the filters and stats when stats filters are defined', () => {
-        useStatResourceMock.mockImplementation(({resourceName}) => {
+        useStatResourceMock.mockImplementation(({ resourceName }) => {
             if (resourceName === USERS_STATUSES) {
                 return [usersStatuses, false, _noop]
             } else if (resourceName === OPEN_TICKETS_ASSIGNMENT_STATUSES) {
@@ -87,10 +87,10 @@ describe('LiveOverview', () => {
             return [supportVolumePerHour, false, _noop]
         })
 
-        const {container} = renderWithRouter(
+        const { container } = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <LiveOverview />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -101,13 +101,13 @@ describe('LiveOverview', () => {
             ...defaultState,
             currentAccount: defaultState.currentAccount.setIn(
                 ['features', AccountFeature.OverviewLiveStatistics, 'enabled'],
-                false
+                false,
             ),
         })
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <LiveOverview />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })

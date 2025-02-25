@@ -1,12 +1,12 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {Provider} from 'react-redux'
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {IntegrationSelectContainer} from 'pages/common/components/ast/widget/IntegrationSelect'
+import { IntegrationSelectContainer } from 'pages/common/components/ast/widget/IntegrationSelect'
 
 const mockStore = configureMockStore([thunk])
 
@@ -14,13 +14,13 @@ describe('ast', () => {
     describe('widgets', () => {
         describe('IntegrationSelect', () => {
             it('should render a loading imput (no integrations)', () => {
-                const {container} = render(
+                const { container } = render(
                     <IntegrationSelectContainer
                         value={undefined}
                         fetchIntegrations={jest.fn()}
                         onChange={jest.fn()}
                         integrations={fromJS([])}
-                    />
+                    />,
                 )
 
                 expect(container.firstChild).toMatchSnapshot()
@@ -37,7 +37,7 @@ describe('ast', () => {
                         },
                     },
                 ])
-                const {container} = render(
+                const { container } = render(
                     <Provider store={mockStore({})}>
                         <IntegrationSelectContainer
                             value={1}
@@ -45,7 +45,7 @@ describe('ast', () => {
                             integrations={integrations}
                             onChange={jest.fn()}
                         />
-                    </Provider>
+                    </Provider>,
                 )
 
                 expect(container.firstChild).toMatchSnapshot()

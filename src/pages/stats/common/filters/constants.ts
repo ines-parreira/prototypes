@@ -1,6 +1,6 @@
-import {ReportingGranularity} from 'models/reporting/types'
-import {FilterComponentKey, FilterKey} from 'models/stat/types'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import { ReportingGranularity } from 'models/reporting/types'
+import { FilterComponentKey, FilterKey } from 'models/stat/types'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 
 export const channelsFilterLogicalOperators = [
     LogicalOperatorEnum.ONE_OF,

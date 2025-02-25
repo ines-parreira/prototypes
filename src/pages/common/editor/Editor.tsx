@@ -1,10 +1,12 @@
-import {ListMacrosParams} from '@gorgias/api-queries'
+import React, { useMemo } from 'react'
+
 import cn from 'classnames'
-import React, {useMemo} from 'react'
+
+import { ListMacrosParams } from '@gorgias/api-queries'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {MacrosProperties} from 'models/macro/types'
-import {Ticket} from 'models/ticket/types'
+import { MacrosProperties } from 'models/macro/types'
+import { Ticket } from 'models/ticket/types'
 import useWhatsAppEditor from 'pages/integrations/integration/components/whatsapp/useWhatsAppEditor'
 import ChannelSelect from 'pages/tickets/detail/components/ReplyArea/ChannelSelect'
 import MessageSourceFields from 'pages/tickets/detail/components/ReplyArea/MessageSourceFields/MessageSourceFields'
@@ -12,14 +14,14 @@ import TicketReplyArea from 'pages/tickets/detail/components/ReplyArea/TicketRep
 import TicketSubmitButtons from 'pages/tickets/detail/components/ReplyArea/TicketSubmitButtons'
 import WhatsAppMessageTemplateReplyArea from 'pages/tickets/detail/components/ReplyArea/WhatsAppTemplateReplyArea'
 import ReplyForm from 'pages/tickets/detail/components/ReplyForm'
-import {SubmitArgs} from 'pages/tickets/detail/TicketDetailContainer'
+import { SubmitArgs } from 'pages/tickets/detail/TicketDetailContainer'
+import { getHasAutomate } from 'state/billing/selectors'
 
-import {getHasAutomate} from 'state/billing/selectors'
-
-import css from './Editor.less'
 import useForm from './hooks/useForm'
 import useMacros from './hooks/useMacros'
 import useMacrosSearch from './hooks/useMacrosSearch'
+
+import css from './Editor.less'
 
 type Filters = Pick<
     ListMacrosParams,
@@ -44,9 +46,9 @@ export default function Editor({
     ticket,
 }: Props) {
     const hasAutomate = useAppSelector(getHasAutomate)
-    const {showWhatsAppTemplateEditor} = useWhatsAppEditor()
+    const { showWhatsAppTemplateEditor } = useWhatsAppEditor()
 
-    const {formRef, onSubmit, setTicketStatus} = useForm(submit)
+    const { formRef, onSubmit, setTicketStatus } = useForm(submit)
     const {
         hasShown,
         filters,
@@ -55,14 +57,14 @@ export default function Editor({
         onChangeActive,
         onChangeFilters,
         onChangeQuery,
-    } = useMacros({initialFilters: initialMacroFilters})
+    } = useMacros({ initialFilters: initialMacroFilters })
 
     const params: Filters = useMemo(
-        () => ({...filters, search: query}),
-        [filters, query]
+        () => ({ ...filters, search: query }),
+        [filters, query],
     )
 
-    const {data, fetchNextPage, isLoading, nextCursor} = useMacrosSearch({
+    const { data, fetchNextPage, isLoading, nextCursor } = useMacrosSearch({
         params,
         ticket,
     })

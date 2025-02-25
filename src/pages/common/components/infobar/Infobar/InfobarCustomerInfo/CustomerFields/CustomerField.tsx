@@ -1,21 +1,23 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import React, {useState} from 'react'
+import React, { useState } from 'react'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import CustomFieldInput from 'custom-fields/components/CustomFieldInput'
 import Label from 'custom-fields/components/Label'
-import {getLabel} from 'custom-fields/components/MultiLevelSelect/helpers/getLabels'
-import {isMultiValue} from 'custom-fields/components/MultiLevelSelect/helpers/isMultiValue'
-import {OBJECT_TYPES} from 'custom-fields/constants'
-import {getNumberOrUndefined} from 'custom-fields/helpers/getNumberOrUndefined'
+import { getLabel } from 'custom-fields/components/MultiLevelSelect/helpers/getLabels'
+import { isMultiValue } from 'custom-fields/components/MultiLevelSelect/helpers/isMultiValue'
+import { OBJECT_TYPES } from 'custom-fields/constants'
+import { getNumberOrUndefined } from 'custom-fields/helpers/getNumberOrUndefined'
 import {
     isDropdownInput,
     isNumberInput,
     isTextInput,
 } from 'custom-fields/helpers/typeGuards'
-import {useUpdateOrDeleteCustomerFieldValue} from 'custom-fields/hooks/queries/useUpdateOrDeleteCustomerFieldValue'
-import {CustomField, CustomFieldValue} from 'custom-fields/types'
+import { useUpdateOrDeleteCustomerFieldValue } from 'custom-fields/hooks/queries/useUpdateOrDeleteCustomerFieldValue'
+import { CustomField, CustomFieldValue } from 'custom-fields/types'
 
-import {MIN_CHARACTERS_TO_TOOLTIP} from './contstants'
+import { MIN_CHARACTERS_TO_TOOLTIP } from './contstants'
+
 import css from './CustomerField.less'
 
 export default function CustomerField({
@@ -34,9 +36,9 @@ export default function CustomerField({
         CustomFieldValue | undefined
     >(queryValue)
     const [isActive, setActive] = useState(false)
-    const {mutate: rootMutate} = useUpdateOrDeleteCustomerFieldValue(
+    const { mutate: rootMutate } = useUpdateOrDeleteCustomerFieldValue(
         {},
-        {isDisabled: !customerId}
+        { isDisabled: !customerId },
     )
     const isDropdownInputField = isDropdownInput(field)
 
@@ -52,7 +54,7 @@ export default function CustomerField({
     }
 
     const handleChange = (
-        newValue: CustomFieldValue | CustomFieldValue[] | undefined
+        newValue: CustomFieldValue | CustomFieldValue[] | undefined,
     ) => {
         if (isMultiValue(newValue)) return
         if (isDropdownInputField) {
@@ -117,7 +119,7 @@ export default function CustomerField({
                 onChange={handleChange}
                 onBlur={handleBlur}
                 onFocus={handleFocus}
-                dropdownAdditionalProps={{placement: 'bottom-end'}}
+                dropdownAdditionalProps={{ placement: 'bottom-end' }}
             />
         </Label>
     )

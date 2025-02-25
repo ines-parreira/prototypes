@@ -1,5 +1,6 @@
-import classNames from 'classnames'
 import React from 'react'
+
+import classNames from 'classnames'
 
 import css from './ProgressBar.less'
 
@@ -50,7 +51,7 @@ const checkBarType = (
     percent: number,
     barType: BarType,
     checkedBarType: BarType,
-    thresholds: Thresholds
+    thresholds: Thresholds,
 ) => {
     return (
         barType === checkedBarType ||

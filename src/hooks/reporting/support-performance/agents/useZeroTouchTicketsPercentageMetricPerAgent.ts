@@ -1,14 +1,17 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
 import {
     useClosedTicketsMetricPerAgent,
     useZeroTouchTicketsMetricPerAgent,
 } from 'hooks/reporting/metricsPerAgent'
-import {calculateDecile} from 'hooks/reporting/ticket-insights/useCustomFieldsTicketCountPerCustomFields'
-import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
-import {OrderDirection} from 'models/api/types'
-import {TicketDimension, TicketMeasure} from 'models/reporting/cubes/TicketCube'
-import {StatsFilters} from 'models/stat/types'
+import { calculateDecile } from 'hooks/reporting/ticket-insights/useCustomFieldsTicketCountPerCustomFields'
+import { MetricWithDecile } from 'hooks/reporting/useMetricPerDimension'
+import { OrderDirection } from 'models/api/types'
+import {
+    TicketDimension,
+    TicketMeasure,
+} from 'models/reporting/cubes/TicketCube'
+import { StatsFilters } from 'models/stat/types'
 import {
     calculatePercentage,
     matchAndCalculateAllEntries,
@@ -19,7 +22,7 @@ export const useZeroTouchTicketsPercentageMetricPerAgent = (
     statsFilters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
-    agentAssigneeId?: string
+    agentAssigneeId?: string,
 ): MetricWithDecile => {
     const assigneeIdField = TicketDimension.AssigneeUserId
     const ticketCountField = TicketMeasure.TicketCount
@@ -28,14 +31,14 @@ export const useZeroTouchTicketsPercentageMetricPerAgent = (
         statsFilters,
         timezone,
         sorting,
-        agentAssigneeId
+        agentAssigneeId,
     )
 
     const closedTicketsPerAgent = useClosedTicketsMetricPerAgent(
         statsFilters,
         timezone,
         sorting,
-        agentAssigneeId
+        agentAssigneeId,
     )
 
     let metricValue: number | null = null
@@ -43,7 +46,7 @@ export const useZeroTouchTicketsPercentageMetricPerAgent = (
     if (closedTicketsPerAgent.data?.value && zeroTouchTickets.data?.value) {
         metricValue = calculatePercentage(
             zeroTouchTickets.data.value,
-            closedTicketsPerAgent.data.value
+            closedTicketsPerAgent.data.value,
         )
     }
 
@@ -55,7 +58,7 @@ export const useZeroTouchTicketsPercentageMetricPerAgent = (
             assigneeIdField,
             assigneeIdField,
             ticketCountField,
-            ticketCountField
+            ticketCountField,
         )
         return sortAllData(allData, ticketCountField, sorting)
     }, [
@@ -67,7 +70,7 @@ export const useZeroTouchTicketsPercentageMetricPerAgent = (
     ])
 
     const maxValue = Math.max(
-        ...sortedData.map((item) => Number(item[ticketCountField]))
+        ...sortedData.map((item) => Number(item[ticketCountField])),
     )
 
     return {

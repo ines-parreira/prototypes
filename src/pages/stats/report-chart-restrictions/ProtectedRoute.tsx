@@ -1,6 +1,6 @@
-import {ReactElement} from 'react'
+import { ReactElement } from 'react'
 
-import {useReportChartRestrictions} from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
+import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
 
 export const ProtectedRoute = ({
     children,
@@ -9,7 +9,7 @@ export const ProtectedRoute = ({
     children: ReactElement<any, any>
     path: string | string[]
 }) => {
-    const {isRouteRestrictedToCurrentUser} = useReportChartRestrictions()
+    const { isRouteRestrictedToCurrentUser } = useReportChartRestrictions()
 
     if (
         path &&

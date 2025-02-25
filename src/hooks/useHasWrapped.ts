@@ -1,9 +1,9 @@
-import {MutableRefObject, useLayoutEffect, useMemo, useState} from 'react'
+import { MutableRefObject, useLayoutEffect, useMemo, useState } from 'react'
 
 import useStatefulRef from 'hooks/useStatefulRef'
 
 export default function useHasWrapped<E extends Element = Element>(
-    amountOfChildrenToRender?: number
+    amountOfChildrenToRender?: number,
 ): [MutableRefObject<E>, boolean] {
     const ref = useStatefulRef<E>()
     const [hasWrapped, setHasWrapped] = useState(false)
@@ -25,7 +25,7 @@ export default function useHasWrapped<E extends Element = Element>(
                     }
                 }
             }),
-        []
+        [],
     )
 
     useLayoutEffect(() => {

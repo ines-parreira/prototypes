@@ -1,8 +1,9 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import {Map} from 'immutable'
+import React, { FormEvent, useCallback, useEffect, useState } from 'react'
 
-import React, {FormEvent, useCallback, useEffect, useState} from 'react'
-import {Col, Container, Row} from 'reactstrap'
+import { Map } from 'immutable'
+import { Col, Container, Row } from 'reactstrap'
+
+import { Label } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import Button from 'pages/common/components/button/Button'
@@ -14,7 +15,7 @@ import TextInput from 'pages/common/forms/input/TextInput'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import BackToConvertButton from 'pages/convert/onboarding/components/BackToConvertButton'
 import SyncNotification from 'pages/integrations/integration/components/SyncNotification'
-import {INTEGRATION_REMOVAL_CONFIGURATION_TEXT} from 'pages/integrations/integration/constants'
+import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 import useAuthenticationPolling from 'pages/integrations/integration/hooks/useAuthenticationPolling'
 import useQueryNotify from 'pages/integrations/integration/hooks/useQueryNotify'
 import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal'
@@ -48,11 +49,11 @@ export default function Integration({
 
     const integrationSyncCustomerNotes = integration.getIn(
         ['meta', 'sync_customer_notes'],
-        true
+        true,
     )
     const integrationDefaultAddressPhoneMatchingEnabled = integration.getIn(
         ['meta', 'default_address_phone_matching_enabled'],
-        false
+        false,
     )
 
     const [isConfirmationModalShown, setIsConfirmationModalShown] =
@@ -67,8 +68,8 @@ export default function Integration({
                         default_address_phone_matching_enabled:
                             defaultAddressPhoneMatchingEnabled,
                     },
-                })
-            )
+                }),
+            ),
         )
     }, [
         dispatch,
@@ -96,7 +97,7 @@ export default function Integration({
             saveIntegrationMeta,
             defaultAddressPhoneMatchingEnabled,
             integrationDefaultAddressPhoneMatchingEnabled,
-        ]
+        ],
     )
 
     const onConfirmationModalSave = async () => {
@@ -110,7 +111,7 @@ export default function Integration({
     const onConfirmationModalDiscard = () => {
         setSyncCustomerNotes(integrationSyncCustomerNotes)
         setDefaultAddressPhoneMatchingEnabled(
-            integrationDefaultAddressPhoneMatchingEnabled
+            integrationDefaultAddressPhoneMatchingEnabled,
         )
         setIsConfirmationModalShown(false)
     }
@@ -122,7 +123,7 @@ export default function Integration({
         // important, otherwise the value will remain the default one, since at the start we will not yet have the integration data loaded
         setSyncCustomerNotes(integrationSyncCustomerNotes)
         setDefaultAddressPhoneMatchingEnabled(
-            integrationDefaultAddressPhoneMatchingEnabled
+            integrationDefaultAddressPhoneMatchingEnabled,
         )
     }, [
         integration,
@@ -144,7 +145,7 @@ export default function Integration({
     ])
 
     const needScopeUpdate = Boolean(
-        integration.getIn(['meta', 'need_scope_update'], false)
+        integration.getIn(['meta', 'need_scope_update'], false),
     )
 
     if (loading.get('integration')) {

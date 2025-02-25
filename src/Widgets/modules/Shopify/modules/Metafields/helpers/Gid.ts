@@ -1,6 +1,6 @@
-import {ShopifyMetafieldType} from '@gorgias/api-types'
+import { ShopifyMetafieldType } from '@gorgias/api-types'
 
-import {shopifyAdminBaseUrl} from 'config/integrations/shopify'
+import { shopifyAdminBaseUrl } from 'config/integrations/shopify'
 
 export function extractGid(url: string) {
     if (!url) {
@@ -15,7 +15,7 @@ export function extractGid(url: string) {
 export function prepareGidUrl(
     type: ShopifyMetafieldType,
     storeName: string,
-    gid: string
+    gid: string,
 ) {
     switch (type) {
         case 'list.product_reference':

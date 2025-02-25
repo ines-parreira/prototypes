@@ -1,7 +1,7 @@
-import {AiAgentStoreConfigurationFixture} from '../../tests/AiAgentStoreConfiguration.fixture'
-import {HelpCenterDataFixture} from '../../tests/HelpCenterData.fixture'
-import {ConnectAHelpCenterTask} from '../ConnectAHelpCenter.task'
-import {buildRuleEngineData, buildRuleEngineRoutes} from './utils'
+import { AiAgentStoreConfigurationFixture } from '../../tests/AiAgentStoreConfiguration.fixture'
+import { HelpCenterDataFixture } from '../../tests/HelpCenterData.fixture'
+import { ConnectAHelpCenterTask } from '../ConnectAHelpCenter.task'
+import { buildRuleEngineData, buildRuleEngineRoutes } from './utils'
 
 describe('ConnectAHelpCenter', () => {
     it('should display the task if no help center is connected and at least 1 helpcenter exists', () => {
@@ -19,7 +19,7 @@ describe('ConnectAHelpCenter', () => {
                 faqHelpCenters,
                 aiAgentStoreConfiguration,
             }),
-            buildRuleEngineRoutes()
+            buildRuleEngineRoutes(),
         )
         expect(task.display).toBe(true)
     })
@@ -39,7 +39,7 @@ describe('ConnectAHelpCenter', () => {
                 faqHelpCenters,
                 aiAgentStoreConfiguration,
             }),
-            buildRuleEngineRoutes()
+            buildRuleEngineRoutes(),
         )
         expect(task.display).toBe(false)
     })

@@ -1,1 +1,1 @@
-export {default} from './CampaignScheduleSummary'
+export { default } from './CampaignScheduleSummary'

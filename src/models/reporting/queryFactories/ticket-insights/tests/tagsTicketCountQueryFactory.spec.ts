@@ -1,9 +1,9 @@
-import {OrderDirection} from 'models/api/types'
+import { OrderDirection } from 'models/api/types'
 import {
-    TicketTagsEnrichedMeasure,
     TicketTagsEnrichedDimension,
+    TicketTagsEnrichedMeasure,
 } from 'models/reporting/cubes/TicketTagsEnrichedCube'
-import {tagsTicketCountQueryFactory} from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
+import { tagsTicketCountQueryFactory } from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
 import {
     NotSpamNorTrashedTicketsFilter,
     statsFiltersToReportingFilters,
@@ -34,7 +34,7 @@ describe('tagsTicketCountQueryFactory', () => {
                 ...NotSpamNorTrashedTicketsFilter,
                 ...statsFiltersToReportingFilters(
                     TicketStatsFiltersMembers,
-                    statsFilters
+                    statsFilters,
                 ),
             ],
         })
@@ -44,7 +44,7 @@ describe('tagsTicketCountQueryFactory', () => {
         const query = tagsTicketCountQueryFactory(
             statsFilters,
             timezone,
-            sorting
+            sorting,
         )
 
         expect(query).toEqual({
@@ -56,7 +56,7 @@ describe('tagsTicketCountQueryFactory', () => {
                 ...NotSpamNorTrashedTicketsFilter,
                 ...statsFiltersToReportingFilters(
                     TicketStatsFiltersMembers,
-                    statsFilters
+                    statsFilters,
                 ),
             ],
             order: [[TicketTagsEnrichedMeasure.TicketCount, sorting]],

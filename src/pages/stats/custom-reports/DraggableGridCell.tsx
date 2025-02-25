@@ -1,14 +1,16 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { forwardRef, isValidElement, useRef } from 'react'
+
 import classNames from 'classnames'
-import React, {forwardRef, isValidElement, useRef} from 'react'
 import {
-    useDrag,
-    useDrop,
-    useDragLayer,
-    DropTargetMonitor,
     DragSourceMonitor,
+    DropTargetMonitor,
+    useDrag,
+    useDragLayer,
+    useDrop,
 } from 'react-dnd'
-import {getEmptyImage} from 'react-dnd-html5-backend'
+import { getEmptyImage } from 'react-dnd-html5-backend'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useId from 'hooks/useId'
 import IconInput from 'pages/common/forms/input/IconInput'
@@ -62,7 +64,7 @@ export const createMoveHandler =
         node: HTMLElement | null,
         target: DragItem,
         handleMove: MoveHandler,
-        findChartIndex: FindChartIndex
+        findChartIndex: FindChartIndex,
     ) =>
     (item: DragItem, monitor: DropTargetMonitor) => {
         if (!node) return
@@ -124,7 +126,7 @@ export const createMoveHandler =
 export type MoveHandler = (
     srcId: string,
     targetId: string,
-    position: 'after' | 'before'
+    position: 'after' | 'before',
 ) => void
 
 export type DropHandler = () => void
@@ -165,9 +167,9 @@ export const DraggableGridCell = ({
         rect,
     })
 
-    const [{isDragging}, drag, preview] = useDrag({
+    const [{ isDragging }, drag, preview] = useDrag({
         item,
-        collect: (monitor) => ({isDragging: monitor.isDragging()}),
+        collect: (monitor) => ({ isDragging: monitor.isDragging() }),
         isDragging: createIsDragging(item),
     })
 
@@ -177,13 +179,13 @@ export const DraggableGridCell = ({
             previewRef.current,
             item,
             onMove,
-            findChartIndex
+            findChartIndex,
         ),
         drop: onDrop,
     })
 
     preview(drop(previewRef))
-    preview(getEmptyImage(), {captureDraggingState: false})
+    preview(getEmptyImage(), { captureDraggingState: false })
 
     return (
         <DashboardGridCell size={size} className="pb-0">
@@ -192,7 +194,7 @@ export const DraggableGridCell = ({
                 className={classNames(
                     css.root,
                     css.fallback,
-                    isDragging && css.isDragging
+                    isDragging && css.isDragging,
                 )}
             >
                 <Handle ref={drag} />
@@ -238,14 +240,14 @@ export const Dropzone = ({
         hover: createDropzoneHoverHandler(schemas, onMove),
     })
 
-    return <div ref={drop} style={{height: 4}} />
+    return <div ref={drop} style={{ height: 4 }} />
 }
 
 const Handle = forwardRef<HTMLSpanElement>((_, ref) => {
     const id = 'handle-' + useId()
 
     return (
-        <span ref={ref} className={css.handle} style={{width: HANDLE_WIDTH}}>
+        <span ref={ref} className={css.handle} style={{ width: HANDLE_WIDTH }}>
             <IconInput id={id} icon="drag_indicator" className={css.icon} />
             <Tooltip target={id} placement="top">
                 Drag to move chart
@@ -255,7 +257,7 @@ const Handle = forwardRef<HTMLSpanElement>((_, ref) => {
 })
 
 export const DraggablePreview = () => {
-    const {item, isDragging, currentOffset} = useDragLayer((monitor) => ({
+    const { item, isDragging, currentOffset } = useDragLayer((monitor) => ({
         item: monitor.getItem(),
         isDragging: monitor.isDragging(),
         currentOffset: monitor.getSourceClientOffset(),
@@ -263,7 +265,7 @@ export const DraggablePreview = () => {
 
     if (!isDragging || !currentOffset || !isDragItem(item)) return null
 
-    const handleOffset = {x: item.rect.width / 2 - HANDLE_WIDTH / 2, y: 0}
+    const handleOffset = { x: item.rect.width / 2 - HANDLE_WIDTH / 2, y: 0 }
 
     const x = currentOffset.x - handleOffset.x
     const y = currentOffset.y - handleOffset.y

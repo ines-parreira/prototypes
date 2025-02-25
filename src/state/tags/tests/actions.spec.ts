@@ -1,22 +1,23 @@
-import {ListTagsOrderBy, Tag} from '@gorgias/api-queries'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
-import {fromJS, Map} from 'immutable'
+import { fromJS, Map } from 'immutable'
 import _isEqual from 'lodash/isEqual'
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { ListTagsOrderBy, Tag } from '@gorgias/api-queries'
+
 import client from 'models/api/resources'
-import {OrderDirection} from 'models/api/types'
-import {TagDraft} from 'models/tag/types'
+import { OrderDirection } from 'models/api/types'
+import { TagDraft } from 'models/tag/types'
 import * as actions from 'state/tags/actions'
 import * as types from 'state/tags/constants'
-import {initialState} from 'state/tags/reducers'
-import {StoreDispatch} from 'state/types'
+import { initialState } from 'state/tags/reducers'
+import { StoreDispatch } from 'state/types'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore<MockedRootState, StoreDispatch>(
-    middlewares
+    middlewares,
 )
 
 const meta = {
@@ -39,7 +40,7 @@ describe('tags actions', () => {
     let mockServer: MockAdapter
 
     beforeEach(() => {
-        store = mockStore({tags: initialState})
+        store = mockStore({ tags: initialState })
         mockServer = new MockAdapter(client)
     })
 
@@ -51,7 +52,7 @@ describe('tags actions', () => {
     describe('fetchTags', () => {
         it('success actions', async () => {
             mockServer.onGet('/api/tags/').reply(200, {
-                data: {data: ['refund']},
+                data: { data: ['refund'] },
                 meta: {
                     prev_cursor: null,
                     next_cursor: null,
@@ -62,12 +63,12 @@ describe('tags actions', () => {
         })
 
         it('params change reverse', async () => {
-            mockServer.onGet('/api/tags/').reply(({params}) => {
+            mockServer.onGet('/api/tags/').reply(({ params }) => {
                 expect(params).toMatchSnapshot()
                 return [
                     200,
                     {
-                        data: {data: []},
+                        data: { data: [] },
                         meta: {
                             prev_cursor: null,
                             next_cursor: null,
@@ -78,17 +79,17 @@ describe('tags actions', () => {
             await store.dispatch(
                 actions.fetchTags({
                     order_by: `${ListTagsOrderBy.Usage}:${OrderDirection.Asc}`,
-                })
+                }),
             )
         })
 
         it('params search', async () => {
-            mockServer.onGet('/api/tags/').reply(({params}) => {
+            mockServer.onGet('/api/tags/').reply(({ params }) => {
                 expect(params).toMatchSnapshot()
                 return [
                     200,
                     {
-                        data: {data: []},
+                        data: { data: [] },
                         meta: {
                             prev_cursor: null,
                             next_cursor: null,
@@ -100,7 +101,7 @@ describe('tags actions', () => {
                 actions.fetchTags({
                     order_by: `${ListTagsOrderBy.Name}:${OrderDirection.Asc}`,
                     search: 'something',
-                })
+                }),
             )
         })
 
@@ -112,11 +113,11 @@ describe('tags actions', () => {
                     }
                 }) => {
                     if (config.params?.order_by === 'name:desc') {
-                        return [200, {data: ['rejected', 'refund'], meta}]
+                        return [200, { data: ['rejected', 'refund'], meta }]
                     }
 
                     return [400]
-                }
+                },
             )
 
             const expectedActions = [
@@ -134,7 +135,7 @@ describe('tags actions', () => {
             await store.dispatch(
                 actions.fetchTags({
                     order_by: `${ListTagsOrderBy.Name}:${OrderDirection.Desc}`,
-                })
+                }),
             )
 
             expect(store.getActions()).toEqual(expectedActions)
@@ -143,56 +144,56 @@ describe('tags actions', () => {
         it('should reject when cancelled', async () => {
             mockServer.onGet('/api/tags/').reply(200, {
                 data: [],
-                meta: {prev_cursor: null, next_cursor: null},
+                meta: { prev_cursor: null, next_cursor: null },
             })
             const source = axios.CancelToken.source()
             source.cancel()
 
             await expect(
                 store.dispatch(
-                    actions.fetchTags(undefined, {cancelToken: source.token})
-                )
+                    actions.fetchTags(undefined, { cancelToken: source.token }),
+                ),
             ).rejects.toEqual(new axios.Cancel())
         })
     })
 
     it('select', () => {
-        store.dispatch(actions.select({id: 1} as Tag))
+        store.dispatch(actions.select({ id: 1 } as Tag))
         expect(store.getActions()).toMatchSnapshot()
     })
 
     it('selectAll', () => {
-        store.dispatch(actions.selectAll([{id: 1} as Tag]))
+        store.dispatch(actions.selectAll([{ id: 1 } as Tag]))
         expect(store.getActions()).toMatchSnapshot()
     })
 
     it('selectAll with provided value', () => {
-        store.dispatch(actions.selectAll([{id: 1} as Tag], false))
+        store.dispatch(actions.selectAll([{ id: 1 } as Tag], false))
         expect(
             (store.getActions()[0] as ReturnType<typeof actions.selectAll>)
-                .payload.value
+                .payload.value,
         ).toEqual(false)
     })
 
     it('edit', () => {
-        store.dispatch(actions.edit({id: 1} as Tag))
+        store.dispatch(actions.edit({ id: 1 } as Tag))
         expect(store.getActions()).toMatchSnapshot()
     })
 
     it('cancel', () => {
-        store.dispatch(actions.cancel({id: 1} as Tag))
+        store.dispatch(actions.cancel({ id: 1 } as Tag))
         expect(store.getActions()).toMatchSnapshot()
     })
 
     it('save', async () => {
-        mockServer.onPut('/api/tags/1/').reply(200, {id: 1})
-        await store.dispatch(actions.save({id: 1} as Tag))
+        mockServer.onPut('/api/tags/1/').reply(200, { id: 1 })
+        await store.dispatch(actions.save({ id: 1 } as Tag))
         expect(store.getActions()).toMatchSnapshot()
     })
 
     it('create', async () => {
-        mockServer.onPost('/api/tags/').reply(200, {id: 1})
-        await store.dispatch(actions.create({name: 'tag'} as TagDraft))
+        mockServer.onPost('/api/tags/').reply(200, { id: 1 })
+        await store.dispatch(actions.create({ name: 'tag' } as TagDraft))
         expect(store.getActions()).toMatchSnapshot()
     })
 
@@ -210,7 +211,7 @@ describe('tags actions', () => {
 
     it('bulkDelete', async () => {
         mockServer.onDelete('/api/tags/').reply((config) => {
-            if (_isEqual(config.data, {ids: [1, 2]})) {
+            if (_isEqual(config.data, { ids: [1, 2] })) {
                 return [204]
             }
 
@@ -223,7 +224,7 @@ describe('tags actions', () => {
 
     it('bulkDelete error', async () => {
         mockServer.onDelete('/api/tags/').reply((config) => {
-            if (_isEqual(config.data, {ids: [1, 2]})) {
+            if (_isEqual(config.data, { ids: [1, 2] })) {
                 return [204]
             }
 
@@ -236,7 +237,7 @@ describe('tags actions', () => {
 
     it('merge', async () => {
         mockServer.onPut('/api/tags/3/merge/').reply((config) => {
-            if (_isEqual(config.data, {source_tags_ids: [1, 2]})) {
+            if (_isEqual(config.data, { source_tags_ids: [1, 2] })) {
                 return [200]
             }
 
@@ -254,7 +255,7 @@ describe('tags actions', () => {
 
     it('merge error', async () => {
         mockServer.onPut('/api/tags/3/merge/').reply((config) => {
-            if (_isEqual(config.data, {source_tags_ids: [1, 2]})) {
+            if (_isEqual(config.data, { source_tags_ids: [1, 2] })) {
                 return [200]
             }
 

@@ -1,4 +1,4 @@
-import React, {ReactNode, MouseEvent} from 'react'
+import React, { MouseEvent, ReactNode } from 'react'
 
 import closeIcon from 'assets/img/icons/close.svg'
 

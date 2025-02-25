@@ -1,4 +1,4 @@
-import {UserSetting} from '../../config/types/user'
+import { UserSetting } from '../../config/types/user'
 import client from '../api/resources'
 
 export const createUserSetting = async (data: Omit<UserSetting, 'id'>) => {
@@ -9,7 +9,7 @@ export const createUserSetting = async (data: Omit<UserSetting, 'id'>) => {
 export const updateUserSetting = async (data: UserSetting) => {
     const res = await client.put<UserSetting>(
         `/api/users/0/settings/${data.id}/`,
-        data
+        data,
     )
     return res
 }

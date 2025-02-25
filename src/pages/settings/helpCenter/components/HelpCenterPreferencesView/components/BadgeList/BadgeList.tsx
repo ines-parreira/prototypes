@@ -1,6 +1,6 @@
 import React from 'react'
 
-import BadgeItem, {BadgeItemProps} from 'pages/common/components/BadgetItem'
+import BadgeItem, { BadgeItemProps } from 'pages/common/components/BadgetItem'
 
 import css from './BadgeList.less'
 
@@ -10,7 +10,7 @@ type BadgeListProps = {
     onRemoveItem: (ev: React.MouseEvent, badge: BadgeItemProps) => void
 }
 
-export const BadgeList = ({list, suffix, onRemoveItem}: BadgeListProps) => {
+export const BadgeList = ({ list, suffix, onRemoveItem }: BadgeListProps) => {
     return (
         <div className={css.wrapper}>
             {list.map((badge) => (

@@ -1,8 +1,8 @@
-import {SegmentEvent, logEvent} from 'common/segment'
-import {Source} from 'models/widget/types'
-import {assumeMock} from 'utils/testing'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { Source } from 'models/widget/types'
+import { assumeMock } from 'utils/testing'
 
-import {getShopifyResourceIds} from '../getShopifyResourceIds'
+import { getShopifyResourceIds } from '../getShopifyResourceIds'
 
 jest.mock('common/segment', () => ({
     logEvent: jest.fn(),
@@ -20,7 +20,7 @@ describe('getShopifyResourceIds', () => {
 
         expect(logEventMock).toHaveBeenCalledWith(
             SegmentEvent.ShopifyContextDataMissing,
-            expect.any(Object)
+            expect.any(Object),
         )
     })
 
@@ -31,7 +31,7 @@ describe('getShopifyResourceIds', () => {
 
         expect(logEventMock).toHaveBeenCalledWith(
             SegmentEvent.ShopifyContextResourceIdMissing,
-            expect.any(Object)
+            expect.any(Object),
         )
     })
 

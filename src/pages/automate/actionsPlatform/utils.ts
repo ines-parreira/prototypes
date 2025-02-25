@@ -1,10 +1,10 @@
-import {VisualBuilderGraphApp} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { VisualBuilderGraphApp } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
-import {ActionsApp, ActionTemplateApp} from './types'
+import { ActionsApp, ActionTemplateApp } from './types'
 
 export const getGraphAppFromTemplateApp = (
     graphApps: VisualBuilderGraphApp[],
-    templateApp: ActionTemplateApp
+    templateApp: ActionTemplateApp,
 ): VisualBuilderGraphApp | undefined => {
     return graphApps.find((graphApp) => {
         switch (templateApp.type) {
@@ -22,13 +22,13 @@ export const getGraphAppFromTemplateApp = (
 
 export const getActionsAppFromTemplateApp = (
     actionsApps: ActionsApp[],
-    templateApp: ActionTemplateApp
+    templateApp: ActionTemplateApp,
 ): ActionsApp | undefined => {
     if (templateApp.type !== 'app') {
         return
     }
 
     return actionsApps.find(
-        (actionsApp) => actionsApp.id === templateApp.app_id
+        (actionsApp) => actionsApp.id === templateApp.app_id,
     )
 }

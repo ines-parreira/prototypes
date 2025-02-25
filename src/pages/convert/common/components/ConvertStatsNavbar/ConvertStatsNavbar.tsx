@@ -1,12 +1,13 @@
+import React, { ReactNode, useCallback, useMemo, useState } from 'react'
+
 import classNames from 'classnames'
-import React, {ReactNode, useCallback, useMemo, useState} from 'react'
 
 import cssNavbar from 'assets/css/navbar.less'
 import NavbarLink, {
     NavbarLinkProps,
 } from 'pages/common/components/navbar/NavbarLink'
 import UpgradeIcon from 'pages/common/components/UpgradeIcon'
-import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
+import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
 import ConvertSubscriptionModal from 'pages/convert/common/components/ConvertSubscriptionModal'
 
 export type ConvertNavbarLink = {
@@ -22,7 +23,7 @@ type Props = {
     commonNavLinkProps: Partial<NavbarLinkProps>
 }
 
-const ConvertStatsNavbar = ({commonNavLinkProps}: Props) => {
+const ConvertStatsNavbar = ({ commonNavLinkProps }: Props) => {
     const [isSubscriptionModalOpen, setISubscriptionModalOpen] = useState(false)
 
     const isConvertSubscriber = useIsConvertSubscriber()
@@ -54,7 +55,7 @@ const ConvertStatsNavbar = ({commonNavLinkProps}: Props) => {
                 isConvertSubscriber || !convertLink.requiresSubscriptionToBeSeen
             )
         },
-        [isConvertSubscriber]
+        [isConvertSubscriber],
     )
 
     return (
@@ -65,7 +66,7 @@ const ConvertStatsNavbar = ({commonNavLinkProps}: Props) => {
                         <div
                             className={classNames(
                                 cssNavbar['link-wrapper'],
-                                cssNavbar.isNested
+                                cssNavbar.isNested,
                             )}
                         >
                             <NavbarLink

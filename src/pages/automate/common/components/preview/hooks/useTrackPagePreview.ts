@@ -1,7 +1,8 @@
-import {useEffect, useRef, useState} from 'react'
-import {useHistory} from 'react-router-dom'
+import { useEffect, useRef, useState } from 'react'
 
-import {SELF_SERVICE_PREVIEW_ROUTES} from '../constants'
+import { useHistory } from 'react-router-dom'
+
+import { SELF_SERVICE_PREVIEW_ROUTES } from '../constants'
 
 enum PreviewStep {
     INITIAL,
@@ -39,7 +40,7 @@ const useTrackPagePreview = () => {
         }
     }, [previewStep, history])
 
-    return {ref}
+    return { ref }
 }
 
 export default useTrackPagePreview

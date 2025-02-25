@@ -1,5 +1,6 @@
-import React, {useEffect, useState} from 'react'
-import {Link} from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+
+import { Link } from 'react-router-dom'
 
 import logoRecharge from 'assets/img/integrations/recharge.svg'
 import logoShopify from 'assets/img/integrations/shopify.svg'
@@ -8,24 +9,25 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useLocalStorage from 'hooks/useLocalStorage'
 import useTitle from 'hooks/useTitle'
-import {IntegrationType} from 'models/integration/constants'
-import {fetchInstalledApps} from 'models/integration/resources'
-import {AppListItem} from 'models/integration/types'
+import { IntegrationType } from 'models/integration/constants'
+import { fetchInstalledApps } from 'models/integration/resources'
+import { AppListItem } from 'models/integration/types'
 import Alert from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
-import {fetchIntegrations} from 'state/integrations/actions'
+import { fetchIntegrations } from 'state/integrations/actions'
 import {
     getIntegrationsByTypes,
     getIntegrationsList,
 } from 'state/integrations/selectors'
-import {IntegrationListItem} from 'state/integrations/types'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { IntegrationListItem } from 'state/integrations/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 import Card from '../Card'
 import CardsWrapper from '../CardsWrapper'
 import Loader from '../Loader'
+
 import css from './Mine.less'
 
 type Item = IntegrationListItem | AppListItem
@@ -39,15 +41,18 @@ export default function Mine() {
     const installedIntegrations = useAppSelector(getIntegrationsList).filter(
         (integration) => {
             return integration.count > 0
-        }
+        },
     )
     const [isAlertDiscarded, setAlertDiscarded] = useLocalStorage(
         LOCAL_STORAGE_KEY,
-        false
+        false,
     )
 
     const appIntegrations = useAppSelector(
-        getIntegrationsByTypes([IntegrationType.App, IntegrationType.Ecommerce])
+        getIntegrationsByTypes([
+            IntegrationType.App,
+            IntegrationType.Ecommerce,
+        ]),
     )
 
     const [isLoading, setLoading] = useState(true)
@@ -63,7 +68,7 @@ export default function Mine() {
                     notify({
                         status: NotificationStatus.Error,
                         message: `Something went wrong while trying to fetch additional apps.`,
-                    })
+                    }),
                 )
             } finally {
                 setLoading(false)
@@ -79,7 +84,7 @@ export default function Mine() {
 
     const integrationApps = connectedApps.map((app) => {
         const count = appIntegrations.filter(
-            (integration) => integration.application_id === app.appId
+            (integration) => integration.application_id === app.appId,
         ).length
         return {
             ...app,

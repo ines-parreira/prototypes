@@ -1,16 +1,17 @@
-import {fireEvent, render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {SteppedSlider} from '../SteppedSlider'
+import { fireEvent, render, screen } from '@testing-library/react'
+
+import { SteppedSlider } from '../SteppedSlider'
 
 describe('SteppedSlider', () => {
     const defaultProps = {
         steps: [
-            {key: 'step1', label: 'Start'},
-            {key: 'step2', label: 'Two'},
-            {key: 'step3', label: 'Three'},
-            {key: 'step4', label: 'Four'},
-            {key: 'step5', label: 'End'},
+            { key: 'step1', label: 'Start' },
+            { key: 'step2', label: 'Two' },
+            { key: 'step3', label: 'Three' },
+            { key: 'step4', label: 'Four' },
+            { key: 'step5', label: 'End' },
         ],
         stepKey: 'step3',
         color: 'var(--accessory-magenta-3)',

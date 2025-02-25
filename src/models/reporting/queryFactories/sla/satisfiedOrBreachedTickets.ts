@@ -1,4 +1,4 @@
-import {OrderDirection} from 'models/api/types'
+import { OrderDirection } from 'models/api/types'
 import {
     TicketSLACubeWithJoins,
     TicketSLADimension,
@@ -7,14 +7,14 @@ import {
     TicketSLASegment,
     TicketSLAStatus,
 } from 'models/reporting/cubes/sla/TicketSLACube'
-import {TicketDimension} from 'models/reporting/cubes/TicketCube'
+import { TicketDimension } from 'models/reporting/cubes/TicketCube'
 import {
     ReportingFilterOperator,
     ReportingGranularity,
     ReportingQuery,
     TimeSeriesQuery,
 } from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import { StatsFilters } from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     getFilterDateRange,
@@ -26,7 +26,7 @@ import {
 export const satisfiedOrBreachedTicketsQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ): ReportingQuery<TicketSLACubeWithJoins> => ({
     measures: [TicketSLAMeasure.TicketCount],
     dimensions: [TicketSLADimension.SlaStatus],
@@ -37,7 +37,7 @@ export const satisfiedOrBreachedTicketsQueryFactory = (
         ...NotSpamNorTrashedTicketsFilter,
         ...statsFiltersToReportingFilters(
             TicketSLAStatsFiltersMembers,
-            filters
+            filters,
         ),
     ],
     timezone,
@@ -51,7 +51,7 @@ export const satisfiedOrBreachedTicketsQueryFactory = (
 export const satisfiedOrBreachedTicketsTimeSeriesQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    granularity: ReportingGranularity
+    granularity: ReportingGranularity,
 ): TimeSeriesQuery<TicketSLACubeWithJoins> => ({
     ...satisfiedOrBreachedTicketsQueryFactory(filters, timezone),
     filters: [
@@ -74,7 +74,7 @@ export const satisfiedOrBreachedTicketsTimeSeriesQueryFactory = (
 export const satisfiedOrBreachedTicketsDrillDownQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ): ReportingQuery<TicketSLACubeWithJoins> => ({
     ...satisfiedOrBreachedTicketsQueryFactory(filters, timezone, sorting),
     dimensions: [
@@ -112,7 +112,7 @@ export const satisfiedOrBreachedTicketsDrillDownQueryFactory = (
 export const breachedTicketsDrillDownQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ): ReportingQuery<TicketSLACubeWithJoins> => ({
     ...satisfiedOrBreachedTicketsQueryFactory(filters, timezone, sorting),
     dimensions: [

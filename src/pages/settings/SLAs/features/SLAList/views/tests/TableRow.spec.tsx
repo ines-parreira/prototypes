@@ -1,12 +1,13 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {useReorderDnD} from 'pages/common/hooks/useReorderDnD'
-import {TableColumn} from 'pages/settings/SLAs/features/SLAList/types'
-import {UISLAPolicy1} from 'pages/settings/SLAs/fixtures/fixtures'
+import { render } from '@testing-library/react'
+
+import { useReorderDnD } from 'pages/common/hooks/useReorderDnD'
+import { TableColumn } from 'pages/settings/SLAs/features/SLAList/types'
+import { UISLAPolicy1 } from 'pages/settings/SLAs/fixtures/fixtures'
 
 import * as SLATableConfig from '../config'
-import {columnOrder} from '../config'
+import { columnOrder } from '../config'
 import TableRow from '../TableRow'
 
 jest.mock('pages/common/hooks/useReorderDnD')
@@ -16,8 +17,8 @@ const mockUseReorderDnD = useReorderDnD as jest.Mock
 describe('<TableRow />', () => {
     beforeEach(() => {
         mockUseReorderDnD.mockReturnValue({
-            dragRef: {current: null},
-            dropRef: {current: null},
+            dragRef: { current: null },
+            dropRef: { current: null },
             handlerId: 'handlerId',
             isDragging: false,
         })
@@ -25,10 +26,10 @@ describe('<TableRow />', () => {
 
     it('should render a row', () => {
         jest.spyOn(SLATableConfig, 'getTableCell').mockImplementation(
-            (column: TableColumn) => () => <div>{column}</div>
+            (column: TableColumn) => () => <div>{column}</div>,
         )
 
-        const {getByText} = render(
+        const { getByText } = render(
             <TableRow
                 policy={UISLAPolicy1}
                 onToggle={jest.fn()}
@@ -40,7 +41,7 @@ describe('<TableRow />', () => {
                 onMovePolicy={jest.fn()}
                 onDropPolicy={jest.fn()}
                 isSubmitting={false}
-            />
+            />,
         )
 
         columnOrder.forEach((column) => {

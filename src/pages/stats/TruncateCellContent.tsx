@@ -1,6 +1,8 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { useLayoutEffect, useRef, useState } from 'react'
+
 import classNames from 'classnames'
-import React, {useRef, useLayoutEffect, useState} from 'react'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useId from 'hooks/useId'
 
@@ -24,7 +26,7 @@ export const TruncateCellContent = ({
     useLayoutEffect(() => {
         if (ref.current) {
             setIsEllipsisActive(
-                ref.current?.offsetWidth < ref.current?.scrollWidth
+                ref.current?.offsetWidth < ref.current?.scrollWidth,
             )
         }
     }, [])
@@ -39,7 +41,7 @@ export const TruncateCellContent = ({
                     {
                         [css.truncate]: isEllipsisActive && left,
                     },
-                    className
+                    className,
                 )}
             >
                 {content}

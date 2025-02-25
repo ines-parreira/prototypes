@@ -1,10 +1,11 @@
-import classNames from 'classnames'
-import React, {useCallback, useMemo} from 'react'
-import {ulid} from 'ulidx'
+import React, { useCallback, useMemo } from 'react'
 
-import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
-import {ConditionSchema} from 'pages/automate/workflows/models/conditions.types'
-import {WorkflowVariable} from 'pages/automate/workflows/models/variables.types'
+import classNames from 'classnames'
+import { ulid } from 'ulidx'
+
+import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
+import { ConditionSchema } from 'pages/automate/workflows/models/conditions.types'
+import { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
 import {
     ConditionsNodeType,
     VisualBuilderEdge,
@@ -12,31 +13,32 @@ import {
 import SortableAccordion from 'pages/common/components/accordion/SortableAccordion'
 import SortableAccordionItem from 'pages/common/components/accordion/SortableAccordionItem'
 import Button from 'pages/common/components/button/Button'
-import {Drawer} from 'pages/common/components/Drawer'
+import { Drawer } from 'pages/common/components/Drawer'
 import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 import InputField from 'pages/common/forms/input/InputField'
-import {HintTooltip} from 'pages/stats/common/HintTooltip'
+import { HintTooltip } from 'pages/stats/common/HintTooltip'
 
 import NodeEditorDrawerHeader from '../../NodeEditorDrawerHeader'
+import { ConditionsBranchItem } from './ConditionsBranchItem'
+import { buildConditionSchemaByVariableType } from './utils'
+
 import css from '../NodeEditor.less'
-import {ConditionsBranchItem} from './ConditionsBranchItem'
 import conditionsCss from './ConditionsNodeEditor.less'
-import {buildConditionSchemaByVariableType} from './utils'
 
 export default function ConditionsNodeEditor({
     nodeInEdition,
 }: {
     nodeInEdition: ConditionsNodeType
 }) {
-    const {visualBuilderGraph, dispatch, getVariableListForNode} =
+    const { visualBuilderGraph, dispatch, getVariableListForNode } =
         useVisualBuilderContext()
 
     const edges = visualBuilderGraph.edges.filter(
-        (edge) => edge.source === nodeInEdition.id
+        (edge) => edge.source === nodeInEdition.id,
     )
     const workflowVariables = useMemo(
         () => getVariableListForNode(nodeInEdition.id),
-        [getVariableListForNode, nodeInEdition.id]
+        [getVariableListForNode, nodeInEdition.id],
     )
 
     const handleAddConditionBranch = () => {
@@ -70,7 +72,7 @@ export default function ConditionsNodeEditor({
 
     const handleConditionChange = (
         branchId: string,
-        data: VisualBuilderEdge['data']
+        data: VisualBuilderEdge['data'],
     ) => {
         dispatch({
             type: 'UPDATE_CONDITIONS_NODE_BRANCH',
@@ -114,7 +116,7 @@ export default function ConditionsNodeEditor({
                     },
                 })
             },
-        [edges, dispatch]
+        [edges, dispatch],
     )
 
     const handleDeleteCondition =
@@ -125,7 +127,7 @@ export default function ConditionsNodeEditor({
             if (!edge) return
 
             const updatedConditions = conditions.filter(
-                (_, index) => index !== conditionIndex
+                (_, index) => index !== conditionIndex,
             )
 
             dispatch({
@@ -135,8 +137,8 @@ export default function ConditionsNodeEditor({
                     name: edge?.data?.name,
                     conditions: {
                         ...(type === 'and'
-                            ? {and: updatedConditions}
-                            : {or: updatedConditions}),
+                            ? { and: updatedConditions }
+                            : { or: updatedConditions }),
                     },
                 },
             })
@@ -146,12 +148,12 @@ export default function ConditionsNodeEditor({
         (
             item: VisualBuilderEdge,
             type: 'and' | 'or',
-            conditions: ConditionSchema[]
+            conditions: ConditionSchema[],
         ) =>
         (variable: WorkflowVariable) => {
             const newCondition = buildConditionSchemaByVariableType(
                 variable.type,
-                variable.value
+                variable.value,
             )
 
             dispatch({
@@ -161,8 +163,8 @@ export default function ConditionsNodeEditor({
                     ...item.data,
                     conditions: {
                         ...(type === 'and'
-                            ? {and: [...conditions, newCondition]}
-                            : {or: [...conditions, newCondition]}),
+                            ? { and: [...conditions, newCondition] }
+                            : { or: [...conditions, newCondition] }),
                     },
                 },
             })
@@ -170,7 +172,7 @@ export default function ConditionsNodeEditor({
 
     const hasMultipleChildren = (edge: VisualBuilderEdge) => {
         const targetNode = visualBuilderGraph.nodes.find(
-            (node) => node.id === edge.target
+            (node) => node.id === edge.target,
         )
         if (targetNode && targetNode.type !== 'end') {
             return true
@@ -228,7 +230,7 @@ export default function ConditionsNodeEditor({
                             <i
                                 className={classNames(
                                     'material-icons',
-                                    conditionsCss.icon
+                                    conditionsCss.icon,
                                 )}
                             >
                                 arrow_downward
@@ -272,7 +274,7 @@ export default function ConditionsNodeEditor({
                                         >
                                             <ConditionsBranchItem
                                                 hasMultipleChildren={hasMultipleChildren(
-                                                    item
+                                                    item,
                                                 )}
                                                 name={item.data?.name ?? ''}
                                                 branchId={item.id}
@@ -285,15 +287,15 @@ export default function ConditionsNodeEditor({
                                                 onConditionDelete={handleDeleteCondition(
                                                     item.id,
                                                     type,
-                                                    conditions
+                                                    conditions,
                                                 )}
                                                 onVariableSelect={handleVariableSelect(
                                                     item,
                                                     type,
-                                                    conditions
+                                                    conditions,
                                                 )}
                                                 onConditionTypeChange={handleConditionTypeChange(
-                                                    conditions
+                                                    conditions,
                                                 )}
                                                 onNameChange={(newName) =>
                                                     handleConditionChange(
@@ -303,15 +305,15 @@ export default function ConditionsNodeEditor({
                                                                 item.data
                                                                     ?.conditions,
                                                             name: newName,
-                                                        }
+                                                        },
                                                     )
                                                 }
                                                 onDeleteBranch={handleBranchDelete(
-                                                    item.id
+                                                    item.id,
                                                 )}
                                                 onConditionChange={(
                                                     updatedCondition: ConditionSchema,
-                                                    index: number
+                                                    index: number,
                                                 ) => {
                                                     const updatedConditions = [
                                                         ...conditions,
@@ -334,7 +336,7 @@ export default function ConditionsNodeEditor({
                                                                           or: updatedConditions,
                                                                       }),
                                                             },
-                                                        }
+                                                        },
                                                     )
                                                 }}
                                                 type={type}

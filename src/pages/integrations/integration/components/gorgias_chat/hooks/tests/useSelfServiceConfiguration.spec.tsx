@@ -1,11 +1,12 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {waitFor} from '@testing-library/react'
-import {act, renderHook} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {ShopType} from 'models/selfServiceConfiguration/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { waitFor } from '@testing-library/react'
+import { act, renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
+
+import { ShopType } from 'models/selfServiceConfiguration/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import useSelfServiceConfiguration from '../useSelfServiceConfiguration'
 
@@ -22,12 +23,12 @@ const initialSelfServiceConfiguration = {
 const integration = fromJS({
     type: 'shopify',
     name: 'test',
-    meta: {shop_integration_id: 1, shop_name: 'test', type: 'shopify'},
+    meta: { shop_integration_id: 1, shop_name: 'test', type: 'shopify' },
 })
 
 const mockClient = mockQueryClient()
 
-const withQueryClient = ({children}: {children: React.ReactNode}) => (
+const withQueryClient = ({ children }: { children: React.ReactNode }) => (
     <QueryClientProvider client={mockClient}>{children}</QueryClientProvider>
 )
 
@@ -37,11 +38,11 @@ describe('useSelfServiceConfiguration', () => {
     })
 
     it('returns false when selfServiceConfiguration is null', () => {
-        const {result} = renderHook(
+        const { result } = renderHook(
             () => useSelfServiceConfiguration(integration),
             {
                 wrapper: withQueryClient,
-            }
+            },
         )
 
         expect(result.current).toEqual({
@@ -53,16 +54,16 @@ describe('useSelfServiceConfiguration', () => {
     it('returns false when canTrackOrders, and canManageOrders are all false', async () => {
         const selfServiceConfiguration = {
             ...initialSelfServiceConfiguration,
-            trackOrderPolicy: {enabled: false},
-            reportIssuePolicy: {enabled: false, cases: []},
-            cancelOrderPolicy: {enabled: false},
-            returnOrderPolicy: {enabled: false},
+            trackOrderPolicy: { enabled: false },
+            reportIssuePolicy: { enabled: false, cases: [] },
+            cancelOrderPolicy: { enabled: false },
+            returnOrderPolicy: { enabled: false },
         }
 
         const useGetSelfServiceConfigurationsMock = jest.spyOn(
             // eslint-disable-next-line @typescript-eslint/no-var-requires
             require('models/selfServiceConfiguration/queries'),
-            'useGetSelfServiceConfiguration'
+            'useGetSelfServiceConfiguration',
         )
 
         useGetSelfServiceConfigurationsMock.mockImplementationOnce(() => ({
@@ -70,15 +71,15 @@ describe('useSelfServiceConfiguration', () => {
             isLoading: false,
         }))
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () => useSelfServiceConfiguration(integration),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={mockClient}>
                         {children}
                     </QueryClientProvider>
                 ),
-            }
+            },
         )
 
         await act(() =>
@@ -86,24 +87,24 @@ describe('useSelfServiceConfiguration', () => {
                 expect(result.current).toEqual({
                     selfServiceConfigurationEnabled: false,
                     selfServiceConfiguration,
-                })
-            )
+                }),
+            ),
         )
     })
 
     it('returns true when canTrackOrders is true', async () => {
         const selfServiceConfiguration = {
             ...initialSelfServiceConfiguration,
-            trackOrderPolicy: {enabled: true},
-            reportIssuePolicy: {enabled: false},
-            cancelOrderPolicy: {enabled: false},
-            returnOrderPolicy: {enabled: false},
+            trackOrderPolicy: { enabled: true },
+            reportIssuePolicy: { enabled: false },
+            cancelOrderPolicy: { enabled: false },
+            returnOrderPolicy: { enabled: false },
         }
 
         const useGetSelfServiceConfigurationsMock = jest.spyOn(
             // eslint-disable-next-line @typescript-eslint/no-var-requires
             require('models/selfServiceConfiguration/queries'),
-            'useGetSelfServiceConfiguration'
+            'useGetSelfServiceConfiguration',
         )
 
         useGetSelfServiceConfigurationsMock.mockImplementationOnce(() => ({
@@ -111,11 +112,11 @@ describe('useSelfServiceConfiguration', () => {
             isLoading: false,
         }))
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () => useSelfServiceConfiguration(integration),
             {
                 wrapper: withQueryClient,
-            }
+            },
         )
 
         await act(() =>
@@ -123,24 +124,24 @@ describe('useSelfServiceConfiguration', () => {
                 expect(result.current).toEqual({
                     selfServiceConfigurationEnabled: true,
                     selfServiceConfiguration,
-                })
-            )
+                }),
+            ),
         )
     })
 
     it('returns true when canManageOrders is true', async () => {
         const selfServiceConfiguration = {
             ...initialSelfServiceConfiguration,
-            trackOrderPolicy: {enabled: false},
-            reportIssuePolicy: {enabled: true},
-            cancelOrderPolicy: {enabled: true},
-            returnOrderPolicy: {enabled: true},
+            trackOrderPolicy: { enabled: false },
+            reportIssuePolicy: { enabled: true },
+            cancelOrderPolicy: { enabled: true },
+            returnOrderPolicy: { enabled: true },
         }
 
         const useGetSelfServiceConfigurationsMock = jest.spyOn(
             // eslint-disable-next-line @typescript-eslint/no-var-requires
             require('models/selfServiceConfiguration/queries'),
-            'useGetSelfServiceConfiguration'
+            'useGetSelfServiceConfiguration',
         )
 
         useGetSelfServiceConfigurationsMock.mockImplementationOnce(() => ({
@@ -148,11 +149,11 @@ describe('useSelfServiceConfiguration', () => {
             isLoading: false,
         }))
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () => useSelfServiceConfiguration(integration),
             {
                 wrapper: withQueryClient,
-            }
+            },
         )
 
         await act(() =>
@@ -160,8 +161,8 @@ describe('useSelfServiceConfiguration', () => {
                 expect(result.current).toEqual({
                     selfServiceConfigurationEnabled: true,
                     selfServiceConfiguration,
-                })
-            )
+                }),
+            ),
         )
     })
 })

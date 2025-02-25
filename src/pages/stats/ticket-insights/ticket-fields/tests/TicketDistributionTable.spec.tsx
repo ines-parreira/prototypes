@@ -1,11 +1,11 @@
-import {render, screen} from '@testing-library/react'
-
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render, screen } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {useTicketsDistribution} from 'hooks/reporting/useTicketsDistribution'
+import { useTicketsDistribution } from 'hooks/reporting/useTicketsDistribution'
 import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMeasure,
@@ -14,9 +14,9 @@ import {
     OUTSIDE_TOP_DATA,
     TicketDistributionChart,
 } from 'pages/stats/ticket-insights/ticket-fields/TicketDistributionTable'
-import {RootState, StoreDispatch} from 'state/types'
-import {getSelectedCustomField} from 'state/ui/stats/ticketInsightsSlice'
-import {assumeMock} from 'utils/testing'
+import { RootState, StoreDispatch } from 'state/types'
+import { getSelectedCustomField } from 'state/ui/stats/ticketInsightsSlice'
+import { assumeMock } from 'utils/testing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -31,7 +31,7 @@ jest.mock(
         ({
             ...jest.requireActual('@gorgias/merchant-ui-kit'),
             Tooltip: () => <div />,
-        }) as typeof import('@gorgias/merchant-ui-kit')
+        }) as typeof import('@gorgias/merchant-ui-kit'),
 )
 
 describe('<TicketDistributionTable>', () => {
@@ -59,7 +59,7 @@ describe('<TicketDistributionTable>', () => {
             category:
                 item[TicketCustomFieldsDimension.TicketCustomFieldsValueString],
             value: Number(
-                item[TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount]
+                item[TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount],
             ),
             valueInPercentage:
                 (100 *
@@ -67,7 +67,7 @@ describe('<TicketDistributionTable>', () => {
                         item[
                             TicketCustomFieldsMeasure
                                 .TicketCustomFieldsTicketCount
-                        ]
+                        ],
                     )) /
                 ticketsCountTotal,
             gaugePercentage:
@@ -76,7 +76,7 @@ describe('<TicketDistributionTable>', () => {
                         item[
                             TicketCustomFieldsMeasure
                                 .TicketCustomFieldsTicketCount
-                        ]
+                        ],
                     )) /
                 maxTicketCount,
         })),
@@ -88,7 +88,7 @@ describe('<TicketDistributionTable>', () => {
     }
 
     useTicketsDistributionMock.mockReturnValue(
-        useTicketsDistributionReturnValue
+        useTicketsDistributionReturnValue,
     )
     getSelectedCustomFieldMock.mockReturnValue({
         id: 123,
@@ -100,7 +100,7 @@ describe('<TicketDistributionTable>', () => {
         render(
             <Provider store={mockStore({})}>
                 <TicketDistributionChart />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByRole('table')).toBeInTheDocument()
@@ -108,8 +108,8 @@ describe('<TicketDistributionTable>', () => {
             screen.getByText(
                 data[0][
                     TicketCustomFieldsDimension.TicketCustomFieldsValueString
-                ]
-            )
+                ],
+            ),
         ).toBeInTheDocument()
     })
 
@@ -117,13 +117,13 @@ describe('<TicketDistributionTable>', () => {
         render(
             <Provider store={mockStore({})}>
                 <TicketDistributionChart />
-            </Provider>
+            </Provider>,
         )
 
         expect(
             screen.getByText(
-                useTicketsDistributionReturnValue.ticketsCountTotal
-            )
+                useTicketsDistributionReturnValue.ticketsCountTotal,
+            ),
         ).toBeInTheDocument()
     })
 
@@ -137,7 +137,7 @@ describe('<TicketDistributionTable>', () => {
         render(
             <Provider store={mockStore({})}>
                 <TicketDistributionChart />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText(OUTSIDE_TOP_DATA.title)).toBeInTheDocument()
@@ -153,7 +153,7 @@ describe('<TicketDistributionTable>', () => {
         render(
             <Provider store={mockStore({})}>
                 <TicketDistributionChart />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('No data available')).toBeInTheDocument()
@@ -164,15 +164,15 @@ describe('<TicketDistributionTable>', () => {
             ...useTicketsDistributionReturnValue,
             isFetching: true,
         })
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore({})}>
                 <TicketDistributionChart />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByRole('table')).toBeInTheDocument()
         expect(
-            container.getElementsByClassName('react-loading-skeleton')
+            container.getElementsByClassName('react-loading-skeleton'),
         ).not.toHaveLength(0)
     })
 })

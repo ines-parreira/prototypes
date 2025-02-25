@@ -16,7 +16,7 @@ describe('orderedMessages', () => {
         expect(
             orderedMessages(messages as any)
                 .map((message: Map<any, any>) => message.get('id') as number)
-                .toJS()
+                .toJS(),
         ).toEqual([1, 2])
 
         const reversedMessages = [
@@ -33,7 +33,7 @@ describe('orderedMessages', () => {
         expect(
             orderedMessages(reversedMessages as any)
                 .map((message: Map<any, any>) => message.get('id') as number)
-                .toJS()
+                .toJS(),
         ).toEqual([2, 1])
     })
 })

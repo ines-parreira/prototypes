@@ -1,23 +1,24 @@
-import {useQueryClient} from '@tanstack/react-query'
-import {useMemo} from 'react'
+import { useMemo } from 'react'
+
+import { useQueryClient } from '@tanstack/react-query'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {
     aiGeneratedGuidanceKeys,
     useGetAIGeneratedGuidances,
 } from 'models/aiAgent/queries'
-import {getValidStoreIntegrationId} from 'pages/settings/helpCenter/utils/helpCenter.utils'
-import {getStoreIntegrations} from 'state/integrations/selectors'
+import { getValidStoreIntegrationId } from 'pages/settings/helpCenter/utils/helpCenter.utils'
+import { getStoreIntegrations } from 'state/integrations/selectors'
 
-import {mapAIGuidanceDTOToAIGuidance} from '../utils/guidance.utils'
-import {useGuidanceArticles} from './useGuidanceArticles'
+import { mapAIGuidanceDTOToAIGuidance } from '../utils/guidance.utils'
+import { useGuidanceArticles } from './useGuidanceArticles'
 
 type Props = {
     helpCenterId: number
     shopName: string
 }
 
-export const useGuidanceAiSuggestions = ({helpCenterId, shopName}: Props) => {
+export const useGuidanceAiSuggestions = ({ helpCenterId, shopName }: Props) => {
     const queryClient = useQueryClient()
 
     const {
@@ -28,23 +29,23 @@ export const useGuidanceAiSuggestions = ({helpCenterId, shopName}: Props) => {
     const allStoreIntegrations = useAppSelector(getStoreIntegrations)
     const storeIntegrationId = getValidStoreIntegrationId(
         allStoreIntegrations,
-        shopName
+        shopName,
     )
 
     const invalidateAiGuidances = async () => {
         await queryClient.invalidateQueries({
             queryKey: aiGeneratedGuidanceKeys.listWithStore(
                 helpCenterId,
-                storeIntegrationId
+                storeIntegrationId,
             ),
         })
     }
 
-    const {data, isLoading: isLoadingAiGuidances} = useGetAIGeneratedGuidances(
-        helpCenterId,
-        storeIntegrationId,
-        {retry: false, refetchOnWindowFocus: false}
-    )
+    const { data, isLoading: isLoadingAiGuidances } =
+        useGetAIGeneratedGuidances(helpCenterId, storeIntegrationId, {
+            retry: false,
+            refetchOnWindowFocus: false,
+        })
 
     const aiGuidances = useMemo(() => {
         if (!data || !storeIntegrationId) {

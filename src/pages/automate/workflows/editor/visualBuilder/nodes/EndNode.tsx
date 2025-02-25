@@ -1,17 +1,19 @@
-import {Badge} from '@gorgias/merchant-ui-kit'
-import React, {memo, useMemo} from 'react'
-import {NodeProps} from 'reactflow'
+import React, { memo, useMemo } from 'react'
+
+import { NodeProps } from 'reactflow'
+
+import { Badge } from '@gorgias/merchant-ui-kit'
 
 import {
     endNodeActionIconByAction,
     endNodeActionLabelByAction,
 } from 'pages/automate/workflows/constants'
-import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
+import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {
     useVisualBuilderNodeProps,
     VisualBuilderNodeProps,
 } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
-import {EndNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { EndNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 import EdgeBlock from '../components/EdgeBlock'
 import VisualBuilderNode from './VisualBuilderNode'
@@ -53,7 +55,7 @@ const EndNode = memo(function EndNode({
 export default function EndNodeWrapper(node: NodeProps<EndNodeType['data']>) {
     const commonProps = useVisualBuilderNodeProps(node)
 
-    const {visualBuilderGraph} = useVisualBuilderContext()
+    const { visualBuilderGraph } = useVisualBuilderContext()
 
     const triggerNode = visualBuilderGraph.nodes[0]
 

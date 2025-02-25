@@ -1,18 +1,25 @@
-import classnames from 'classnames'
-import React, {ComponentProps, SyntheticEvent, ReactNode, useState} from 'react'
-import {Popover, PopoverBody} from 'reactstrap'
+import React, {
+    ComponentProps,
+    ReactNode,
+    SyntheticEvent,
+    useState,
+} from 'react'
 
-import {useAppNode} from 'appNode'
+import classnames from 'classnames'
+import { Popover, PopoverBody } from 'reactstrap'
+
+import { useAppNode } from 'appNode'
 import useId from 'hooks/useId'
 import {
     EXPAND_TARGET_MARKER,
     TARGET_CLOSED_MARKER,
 } from 'Widgets/modules/Template/config/template'
 
-import {CardEditFormState} from '../../types'
+import { CardEditFormState } from '../../types'
 import CardEditForm from './CardEditForm'
+import { CardHeaderIcon } from './CardHeaderIcon'
+
 import css from './CardHeader.less'
-import {CardHeaderIcon} from './CardHeaderIcon'
 
 export const EDIT_BUTTON_TEXT = 'edit'
 export const DELETE_BUTTON_TEXT = 'delete'
@@ -162,7 +169,7 @@ export default function CardHeader(props: CardHeaderProps) {
                     className={classnames(
                         css.dropdownIcon,
                         'clickable',
-                        'text-faded'
+                        'text-faded',
                     )}
                     onClick={onToggleOpen}
                     title={isOpen ? 'Fold this card' : 'Unfold this card'}

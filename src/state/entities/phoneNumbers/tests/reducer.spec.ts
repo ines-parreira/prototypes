@@ -1,4 +1,4 @@
-import {phoneNumbers as phoneNumbersFixtures} from 'fixtures/phoneNumber'
+import { phoneNumbers as phoneNumbersFixtures } from 'fixtures/phoneNumber'
 
 import {
     phoneNumberCreated,
@@ -13,7 +13,7 @@ describe('phoneNumbers reducer', () => {
         it('should add a new phone number to the state', () => {
             const newState = reducer(
                 {},
-                phoneNumberCreated(phoneNumbersFixtures[0])
+                phoneNumberCreated(phoneNumbersFixtures[0]),
             )
             expect(newState).toMatchSnapshot()
         })
@@ -22,8 +22,8 @@ describe('phoneNumbers reducer', () => {
     describe('deletePhoneNumner action', () => {
         it('should delete a phone numner from the state', () => {
             const newState = reducer(
-                {'1': phoneNumbersFixtures[0]},
-                phoneNumberDeleted(1)
+                { '1': phoneNumbersFixtures[0] },
+                phoneNumberDeleted(1),
             )
             expect(newState).toMatchSnapshot()
         })
@@ -33,7 +33,7 @@ describe('phoneNumbers reducer', () => {
         it('should add a new phone number to the state', () => {
             const newState = reducer(
                 {},
-                phoneNumberFetched(phoneNumbersFixtures[0])
+                phoneNumberFetched(phoneNumbersFixtures[0]),
             )
             expect(newState).toMatchSnapshot()
         })
@@ -43,7 +43,7 @@ describe('phoneNumbers reducer', () => {
         it('should add the phone numbers to the state', () => {
             const newState = reducer(
                 {},
-                phoneNumbersFetched(phoneNumbersFixtures)
+                phoneNumbersFetched(phoneNumbersFixtures),
             )
             expect(newState).toMatchSnapshot()
         })

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
 import css from './FeedbackCreateResource.less'
 
@@ -15,7 +15,7 @@ type LinkProps = {
     text: string
 }
 
-const LinkInText: React.FC<LinkProps> = ({href, text}) => {
+const LinkInText: React.FC<LinkProps> = ({ href, text }) => {
     return (
         <a href={href} target="_blank" rel="noreferrer">
             {text}
@@ -23,8 +23,11 @@ const LinkInText: React.FC<LinkProps> = ({href, text}) => {
     )
 }
 
-const FeedbackCreateResource: React.FC<Props> = ({shopName, helpCenterId}) => {
-    const aiAgentNavigation = useAiAgentNavigation({shopName})
+const FeedbackCreateResource: React.FC<Props> = ({
+    shopName,
+    helpCenterId,
+}) => {
+    const aiAgentNavigation = useAiAgentNavigation({ shopName })
     const actionLink = aiAgentNavigation.routes.newAction()
     const guidanceLink = aiAgentNavigation.routes.guidanceTemplates
     const helpCenterArticlesLink = `/app/settings/help-center/${helpCenterId}/articles`

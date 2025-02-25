@@ -1,12 +1,13 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
-import {IntegrationType} from 'models/integration/constants'
-import {getIntegrationConfig} from 'state/integrations/helpers'
+import { Link } from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
-import {BASE_PATH, EVENTS_PATH, INTEGRATIONS_LIST_PATH} from './constants'
-import {useRouteParser} from './useRouteParser'
+import { IntegrationType } from 'models/integration/constants'
+import { getIntegrationConfig } from 'state/integrations/helpers'
+
+import { BASE_PATH, EVENTS_PATH, INTEGRATIONS_LIST_PATH } from './constants'
+import { useRouteParser } from './useRouteParser'
 
 const httpConfig = getIntegrationConfig(IntegrationType.Http)
 

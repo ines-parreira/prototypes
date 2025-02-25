@@ -1,9 +1,10 @@
-import {THEME_NAME} from '@gorgias/design-tokens'
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {assumeMock} from 'utils/testing'
+import { THEME_NAME } from '@gorgias/design-tokens'
 
-import type {Theme} from '../types'
+import { assumeMock } from 'utils/testing'
+
+import type { Theme } from '../types'
 import useApplyTheme from '../useApplyTheme'
 import useTheme from '../useTheme'
 

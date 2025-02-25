@@ -1,23 +1,23 @@
-import {TicketChannel} from 'business/types/ticket'
-import {HelpCenterTrackingEventMember} from 'models/reporting/cubes/HelpCenterTrackingEventCube'
+import { TicketChannel } from 'business/types/ticket'
+import { HelpCenterTrackingEventMember } from 'models/reporting/cubes/HelpCenterTrackingEventCube'
 import {
     HelpdeskMessageDimension,
     HelpdeskMessageMeasure,
 } from 'models/reporting/cubes/HelpdeskMessageCube'
-import {TicketSLAMember} from 'models/reporting/cubes/sla/TicketSLACube'
+import { TicketSLAMember } from 'models/reporting/cubes/sla/TicketSLACube'
 import {
     TicketDimension,
     TicketMeasure,
     TicketMember,
 } from 'models/reporting/cubes/TicketCube'
-import {TicketMessagesMember} from 'models/reporting/cubes/TicketMessagesCube'
-import {messagesSentQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
-import {withLogicalOperator} from 'models/reporting/queryFactories/utils'
+import { TicketMessagesMember } from 'models/reporting/cubes/TicketMessagesCube'
+import { messagesSentQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesSent'
+import { withLogicalOperator } from 'models/reporting/queryFactories/utils'
 import {
     ReportingFilterOperator,
     ReportingGranularity,
 } from 'models/reporting/types'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import {
     agentFilter,
     calculatePercentage,
@@ -37,7 +37,7 @@ describe('reporting utils', () => {
     describe('formatReportingQueryDate', () => {
         it('should remove the timezone', () => {
             expect(
-                formatReportingQueryDate('2020-01-02T03:04:56.789-10:00')
+                formatReportingQueryDate('2020-01-02T03:04:56.789-10:00'),
             ).toBe('2020-01-02T03:04:56.789')
         })
     })
@@ -62,7 +62,7 @@ describe('reporting utils', () => {
                     efficiency: ['3', '4'],
                     internalCompliance: ['3', '4'],
                     brandVoice: ['3', '4'],
-                })
+                }),
             ).toEqual([
                 {
                     member: TicketMember.PeriodStart,
@@ -153,12 +153,12 @@ describe('reporting utils', () => {
             expect(
                 statsFiltersToReportingFilters(
                     TicketSLAStatsFiltersMembers,
-                    statsFilters
-                )
+                    statsFilters,
+                ),
             ).toEqual([
                 ...statsFiltersToReportingFilters(
                     TicketStatsFiltersMembers,
-                    statsFilters
+                    statsFilters,
                 ),
                 {
                     member: TicketSLAMember.SlaPolicyUuid,
@@ -177,7 +177,7 @@ describe('reporting utils', () => {
                     },
                     helpCenters: [1],
                     localeCodes: ['en-US'],
-                })
+                }),
             ).toEqual([
                 {
                     member: HelpCenterTrackingEventMember.PeriodStart,
@@ -211,9 +211,9 @@ describe('reporting utils', () => {
                     },
                     helpCenters: withLogicalOperator(
                         [1],
-                        LogicalOperatorEnum.NOT_ONE_OF
+                        LogicalOperatorEnum.NOT_ONE_OF,
                     ),
-                })
+                }),
             ).toEqual([
                 {
                     member: HelpCenterTrackingEventMember.PeriodStart,
@@ -240,7 +240,7 @@ describe('reporting utils', () => {
                 periodToReportingGranularity({
                     start_datetime: '2020-01-01T00:00:00.000Z',
                     end_datetime: '2021-01-01T00:00:00.000Z',
-                })
+                }),
             ).toBe(ReportingGranularity.Month)
         })
 
@@ -249,7 +249,7 @@ describe('reporting utils', () => {
                 periodToReportingGranularity({
                     start_datetime: '2020-01-01T00:00:00.000Z',
                     end_datetime: '2020-02-15T00:00:00.000Z',
-                })
+                }),
             ).toBe(ReportingGranularity.Week)
         })
 
@@ -258,7 +258,7 @@ describe('reporting utils', () => {
                 periodToReportingGranularity({
                     start_datetime: '2020-01-15T00:00:00.000Z',
                     end_datetime: '2020-02-15T00:00:00.000Z',
-                })
+                }),
             ).toBe(ReportingGranularity.Day)
         })
 
@@ -267,7 +267,7 @@ describe('reporting utils', () => {
                 periodToReportingGranularity({
                     start_datetime: '2020-01-01T00:00:00.000Z',
                     end_datetime: '2020-01-03T00:00:00.000Z',
-                })
+                }),
             ).toBe(ReportingGranularity.Day)
         })
 
@@ -276,7 +276,7 @@ describe('reporting utils', () => {
                 periodToReportingGranularity({
                     start_datetime: '2020-01-01T00:00:00.000Z',
                     end_datetime: '2020-01-01T12:00:00.000Z',
-                })
+                }),
             ).toBe(ReportingGranularity.Hour)
         })
     })
@@ -304,7 +304,7 @@ describe('reporting utils', () => {
                         end_datetime: '2020-01-03T00:00:00.000Z',
                     },
                 },
-                'timezone'
+                'timezone',
             )
             const filter = {
                 member: TicketMember.AssigneeUserId,
@@ -407,8 +407,8 @@ describe('reporting utils', () => {
                     dataAIdField,
                     dataBIdField,
                     dataAMeasureField,
-                    dataBMeasureField
-                )
+                    dataBMeasureField,
+                ),
             ).toEqual([
                 {
                     [dataAIdField]: '1',

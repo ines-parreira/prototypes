@@ -1,9 +1,9 @@
-import {StoreState} from 'state/types'
+import { StoreState } from 'state/types'
 
-import {HelpCentersAutomationSettingsState} from './types'
+import { HelpCentersAutomationSettingsState } from './types'
 
 export const getHelpCentersAutomationSettings = (
-    state: StoreState
+    state: StoreState,
 ): HelpCentersAutomationSettingsState['automationSettingsByHelpCenterId'] =>
     state.entities.helpCenter.helpCentersAutomationSettings
         .automationSettingsByHelpCenterId || {}

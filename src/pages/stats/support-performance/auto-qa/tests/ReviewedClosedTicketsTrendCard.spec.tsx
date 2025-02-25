@@ -1,21 +1,22 @@
-import {screen} from '@testing-library/react'
 import React from 'react'
 
-import {useReviewedClosedTicketsTrend} from 'hooks/reporting/support-performance/auto-qa/useReviewedClosedTicketsTrend'
-import {TREND_BADGE_FORMAT} from 'pages/stats/common/components/TrendBadge'
-import {formatMetricTrend, formatMetricValue} from 'pages/stats/common/utils'
-import {TrendCardConfig} from 'pages/stats/support-performance/auto-qa/AutoQAMetricsConfig'
-import {ReviewedClosedTicketsTrendCard} from 'pages/stats/support-performance/auto-qa/ReviewedClosedTicketsTrendCard'
-import {RootState} from 'state/types'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
-import {AutoQAMetric} from 'state/ui/stats/types'
-import {assumeMock, renderWithStore} from 'utils/testing'
+import { screen } from '@testing-library/react'
+
+import { useReviewedClosedTicketsTrend } from 'hooks/reporting/support-performance/auto-qa/useReviewedClosedTicketsTrend'
+import { TREND_BADGE_FORMAT } from 'pages/stats/common/components/TrendBadge'
+import { formatMetricTrend, formatMetricValue } from 'pages/stats/common/utils'
+import { TrendCardConfig } from 'pages/stats/support-performance/auto-qa/AutoQAMetricsConfig'
+import { ReviewedClosedTicketsTrendCard } from 'pages/stats/support-performance/auto-qa/ReviewedClosedTicketsTrendCard'
+import { RootState } from 'state/types'
+import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
+import { AutoQAMetric } from 'state/ui/stats/types'
+import { assumeMock, renderWithStore } from 'utils/testing'
 
 jest.mock(
-    'hooks/reporting/support-performance/auto-qa/useReviewedClosedTicketsTrend'
+    'hooks/reporting/support-performance/auto-qa/useReviewedClosedTicketsTrend',
 )
 const useReviewedClosedTicketsTrendMock = assumeMock(
-    useReviewedClosedTicketsTrend
+    useReviewedClosedTicketsTrend,
 )
 
 describe('NumberOfClosedTicketsReviewedTrendCard', () => {
@@ -29,7 +30,7 @@ describe('NumberOfClosedTicketsReviewedTrendCard', () => {
             },
         },
         ui: {
-            stats: {filters: uiStatsInitialState},
+            stats: { filters: uiStatsInitialState },
         },
     } as RootState
     const value = 5
@@ -54,17 +55,17 @@ describe('NumberOfClosedTicketsReviewedTrendCard', () => {
                 formatMetricValue(
                     value,
                     TrendCardConfig[AutoQAMetric.ReviewedClosedTickets]
-                        .metricFormat
-                )
-            )
+                        .metricFormat,
+                ),
+            ),
         ).toBeInTheDocument()
         expect(
             screen.getByText(
                 String(
                     formatMetricTrend(value, prevValue, TREND_BADGE_FORMAT)
-                        .formattedTrend
-                )
-            )
+                        .formattedTrend,
+                ),
+            ),
         ).toBeInTheDocument()
     })
 })

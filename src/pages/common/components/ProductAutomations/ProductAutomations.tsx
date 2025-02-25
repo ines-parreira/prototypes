@@ -1,16 +1,17 @@
-import {Badge} from '@gorgias/merchant-ui-kit'
-import React, {useState} from 'react'
-import {ListGroup, ListGroupItem} from 'reactstrap'
+import React, { useState } from 'react'
+
+import { ListGroup, ListGroupItem } from 'reactstrap'
+
+import { Badge } from '@gorgias/merchant-ui-kit'
 
 import Button from 'pages/common/components/button/Button'
 import css from 'pages/common/components/ProductAutomations/ProductAutomations.less'
 import ProductRecommendationScenarioPicker from 'pages/convert/campaigns/components/ProductRecommendationScenarioPicker/ProductRecommendationScenarioPicker'
-
-import {ProductRecommendationAttachment} from 'pages/convert/campaigns/types/CampaignAttachment'
+import { ProductRecommendationAttachment } from 'pages/convert/campaigns/types/CampaignAttachment'
 
 type Props = {
     productAutomationClicked: (
-        attachment: ProductRecommendationAttachment
+        attachment: ProductRecommendationAttachment,
     ) => void
     onClick: () => void
     onBackClicked: () => void

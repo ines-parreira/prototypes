@@ -1,12 +1,13 @@
-import {render, fireEvent, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
-import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
+import { statFiltersClean, statFiltersDirty } from 'state/ui/stats/actions'
 
 import SelectFilter from '../SelectFilter'
 
@@ -24,22 +25,22 @@ describe('<SelectFilter />', () => {
     }
 
     const items = [
-        {label: 'Api', value: '1', type: 'api'},
-        {label: 'Chat', value: '2', type: 'chat'},
-        {label: 'Email', value: '3', type: 'email'},
+        { label: 'Api', value: '1', type: 'api' },
+        { label: 'Chat', value: '2', type: 'chat' },
+        { label: 'Email', value: '3', type: 'email' },
     ]
 
     it('should render the component without any item', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore({})}>
                 <SelectFilter {...commonProps} />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render the component with selectable items', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore({})}>
                 <SelectFilter {...commonProps}>
                     {items.map((item) => (
@@ -50,13 +51,13 @@ describe('<SelectFilter />', () => {
                         />
                     ))}
                 </SelectFilter>
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should not render the component with quick selection option if multiple selection is disabled', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore({})}>
                 <SelectFilter {...commonProps} isMultiple={false}>
                     {items.map((item) => (
@@ -67,13 +68,13 @@ describe('<SelectFilter />', () => {
                         />
                     ))}
                 </SelectFilter>
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render the component with items having icons', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore({})}>
                 <SelectFilter {...commonProps}>
                     {items.map((item) => (
@@ -85,13 +86,13 @@ describe('<SelectFilter />', () => {
                         />
                     ))}
                 </SelectFilter>
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render the component with selected items', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore({})}>
                 <SelectFilter {...commonProps} value={['1', '2']}>
                     {items.map((item) => (
@@ -102,13 +103,13 @@ describe('<SelectFilter />', () => {
                         />
                     ))}
                 </SelectFilter>
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should deselect the item because selection is not required', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={mockStore({})}>
                 <SelectFilter {...commonProps} isRequired={false} value={['1']}>
                     {items.map((item) => (
@@ -119,7 +120,7 @@ describe('<SelectFilter />', () => {
                         />
                     ))}
                 </SelectFilter>
-            </Provider>
+            </Provider>,
         )
 
         const newOption = getByText(items[0].label)
@@ -130,7 +131,7 @@ describe('<SelectFilter />', () => {
     })
 
     it('should not deselect the item because selection is required', () => {
-        const {getByLabelText} = render(
+        const { getByLabelText } = render(
             <Provider store={mockStore({})}>
                 <SelectFilter {...commonProps} value={['1']} isRequired>
                     {items.map((item) => (
@@ -141,7 +142,7 @@ describe('<SelectFilter />', () => {
                         />
                     ))}
                 </SelectFilter>
-            </Provider>
+            </Provider>,
         )
 
         const selectedItem = getByLabelText(items[0].label)
@@ -152,7 +153,7 @@ describe('<SelectFilter />', () => {
     })
 
     it('should select all items', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={mockStore({})}>
                 <SelectFilter {...commonProps}>
                     {items.map((item) => (
@@ -163,7 +164,7 @@ describe('<SelectFilter />', () => {
                         />
                     ))}
                 </SelectFilter>
-            </Provider>
+            </Provider>,
         )
 
         userEvent.click(getByText(/Select all/i))
@@ -176,7 +177,7 @@ describe('<SelectFilter />', () => {
     })
 
     it('should select displayed items', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={mockStore({})}>
                 <SelectFilter {...commonProps}>
                     <InfiniteScroll onLoad={jest.fn()} shouldLoadMore={true}>
@@ -189,7 +190,7 @@ describe('<SelectFilter />', () => {
                         ))}
                     </InfiniteScroll>
                 </SelectFilter>
-            </Provider>
+            </Provider>,
         )
 
         userEvent.click(getByText(/Select all/i))
@@ -202,7 +203,7 @@ describe('<SelectFilter />', () => {
     })
 
     it('should deselect all items', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={mockStore({})}>
                 <SelectFilter {...commonProps} value={['1', '2']}>
                     {items.map((item) => (
@@ -213,7 +214,7 @@ describe('<SelectFilter />', () => {
                         />
                     ))}
                 </SelectFilter>
-            </Provider>
+            </Provider>,
         )
 
         userEvent.click(getByText(/Deselect all/i))
@@ -222,9 +223,9 @@ describe('<SelectFilter />', () => {
 
     describe('with groups', () => {
         const groups = [
-            {label: 'Group 1', value: '1', items: ['1', '2']},
-            {label: 'Group 2', value: '2', items: ['3', '2']},
-            {label: 'Group 3', value: '3', items: []},
+            { label: 'Group 1', value: '1', items: ['1', '2'] },
+            { label: 'Group 2', value: '2', items: ['3', '2'] },
+            { label: 'Group 3', value: '3', items: [] },
         ]
 
         const children = [
@@ -246,19 +247,19 @@ describe('<SelectFilter />', () => {
         ]
 
         it('should render the component with groups', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore({})}>
                     <SelectFilter {...commonProps}>{children}</SelectFilter>
-                </Provider>
+                </Provider>,
             )
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should return expected values on new selected group', () => {
-            const {getByLabelText} = render(
+            const { getByLabelText } = render(
                 <Provider store={mockStore({})}>
                     <SelectFilter {...commonProps}>{children}</SelectFilter>
-                </Provider>
+                </Provider>,
             )
 
             const newGroup = getByLabelText(groups[0].label)
@@ -269,10 +270,10 @@ describe('<SelectFilter />', () => {
         })
 
         it('should return expected values on deselected group', () => {
-            const {getByLabelText} = render(
+            const { getByLabelText } = render(
                 <Provider store={mockStore({})}>
                     <SelectFilter {...commonProps}>{children}</SelectFilter>
-                </Provider>
+                </Provider>,
             )
 
             const group = getByLabelText(groups[0].label)
@@ -286,12 +287,12 @@ describe('<SelectFilter />', () => {
         })
 
         it('should display selected group in an indeterminate state', () => {
-            const {getByLabelText} = render(
+            const { getByLabelText } = render(
                 <Provider store={mockStore({})}>
                     <SelectFilter {...commonProps} value={['1']}>
                         {children}
                     </SelectFilter>
-                </Provider>
+                </Provider>,
             )
 
             const indeterminateGroup = getByLabelText(groups[0].label)
@@ -300,12 +301,12 @@ describe('<SelectFilter />', () => {
         })
 
         it('should display expected label for partial data', () => {
-            const {getByText} = render(
+            const { getByText } = render(
                 <Provider store={mockStore({})}>
                     <SelectFilter {...commonProps} isPartial>
                         {children}
                     </SelectFilter>
-                </Provider>
+                </Provider>,
             )
 
             expect(getByText(/Select displayed/i)).toBeTruthy()
@@ -313,10 +314,10 @@ describe('<SelectFilter />', () => {
     })
 
     it('should call statFiltersDirty and statFiltersClean when opening/closing the input', async () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={mockStore({})}>
                 <SelectFilter {...commonProps} />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(getByText('All items'))

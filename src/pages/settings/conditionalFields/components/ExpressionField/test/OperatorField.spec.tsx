@@ -1,17 +1,19 @@
-import {ExpressionOperator} from '@gorgias/api-queries'
-import {SelectField} from '@gorgias/merchant-ui-kit'
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {useFormContext} from 'core/forms'
-import {ticketDropdownFieldDefinition} from 'fixtures/customField'
+import { render } from '@testing-library/react'
+
+import { ExpressionOperator } from '@gorgias/api-queries'
+import { SelectField } from '@gorgias/merchant-ui-kit'
+
+import { useFormContext } from 'core/forms'
+import { ticketDropdownFieldDefinition } from 'fixtures/customField'
 import {
     EXPRESSION_OPERATORS_BY_UI_DATA_TYPE,
     EXPRESSION_OPERATORS_LABELS,
 } from 'pages/settings/conditionalFields/constants'
-import {assumeMock, getLastMockCall} from 'utils/testing'
+import { assumeMock, getLastMockCall } from 'utils/testing'
 
-import {OperatorField} from '../OperatorField'
+import { OperatorField } from '../OperatorField'
 
 jest.mock(
     '@gorgias/merchant-ui-kit',
@@ -19,7 +21,7 @@ jest.mock(
         ({
             ...jest.requireActual('@gorgias/merchant-ui-kit'),
             SelectField: jest.fn(() => <div data-testid="Mock" />),
-        }) as Record<string, unknown>
+        }) as Record<string, unknown>,
 )
 jest.mock('core/forms', () => ({
     useFormContext: jest.fn(),
@@ -53,7 +55,7 @@ describe('OperatorField', () => {
                 optionMapper: expect.any(Function),
                 onChange: expect.any(Function),
             },
-            {}
+            {},
         )
     })
 
@@ -63,7 +65,7 @@ describe('OperatorField', () => {
                 {...defaultProps}
                 value={undefined}
                 pickedDefinition={undefined}
-            />
+            />,
         )
 
         expect(SelectFieldMock).toHaveBeenCalledWith(
@@ -72,14 +74,14 @@ describe('OperatorField', () => {
                 selectedOption: null,
                 isDisabled: true,
             }),
-            {}
+            {},
         )
     })
 
     it('should provide a correct optionMapper', () => {
         render(<OperatorField {...defaultProps} />)
 
-        const {optionMapper} = getLastMockCall(SelectFieldMock)[0]
+        const { optionMapper } = getLastMockCall(SelectFieldMock)[0]
 
         expect(optionMapper?.(ExpressionOperator.Is)).toEqual({
             value: EXPRESSION_OPERATORS_LABELS[ExpressionOperator.Is],
@@ -89,21 +91,21 @@ describe('OperatorField', () => {
     it('should call onChange and setValue with null when operator is IsNotEmpty', () => {
         render(<OperatorField {...defaultProps} />)
 
-        const {onChange} = getLastMockCall(SelectFieldMock)[0]
+        const { onChange } = getLastMockCall(SelectFieldMock)[0]
 
         onChange(ExpressionOperator.IsOneOf)
         expect(defaultProps.onChange).toHaveBeenCalledWith(
-            ExpressionOperator.IsOneOf
+            ExpressionOperator.IsOneOf,
         )
         expect(setValueMock).not.toHaveBeenCalled()
 
         onChange(ExpressionOperator.IsNotEmpty)
         expect(defaultProps.onChange).toHaveBeenCalledWith(
-            ExpressionOperator.IsNotEmpty
+            ExpressionOperator.IsNotEmpty,
         )
         expect(setValueMock).toHaveBeenCalledWith(
             `expression.${defaultProps.index}.values`,
-            null
+            null,
         )
     })
 })

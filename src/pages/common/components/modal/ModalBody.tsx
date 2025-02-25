@@ -1,7 +1,8 @@
-import classnames from 'classnames'
-import React, {ForwardedRef, forwardRef, ReactNode, useContext} from 'react'
+import React, { ForwardedRef, forwardRef, ReactNode, useContext } from 'react'
 
-import {ModalContext} from './Modal'
+import classnames from 'classnames'
+
+import { ModalContext } from './Modal'
 
 import css from './ModalBody.less'
 
@@ -11,17 +12,17 @@ type Props = {
 }
 
 const ModalBody = (
-    {children, className}: Props,
-    forwardedRef: ForwardedRef<HTMLDivElement>
+    { children, className }: Props,
+    forwardedRef: ForwardedRef<HTMLDivElement>,
 ) => {
-    const {isScrollable, bodyId} = useContext(ModalContext)
+    const { isScrollable, bodyId } = useContext(ModalContext)
 
     return (
         <div
             className={classnames(
                 css.wrapper,
-                {[css.scrollable]: isScrollable},
-                className
+                { [css.scrollable]: isScrollable },
+                className,
             )}
             id={bodyId}
             ref={forwardedRef}

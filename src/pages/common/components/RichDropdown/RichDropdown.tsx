@@ -1,16 +1,18 @@
+import React, { ReactNode } from 'react'
+
 import classnames from 'classnames'
 import _identity from 'lodash/identity'
-import React, {ReactNode} from 'react'
 import {
     DropdownMenu,
     DropdownToggle,
     UncontrolledButtonDropdown,
 } from 'reactstrap'
 
-import css from './RichDropdown.less'
 import RichDropdownOptionGroups from './RichDropdownOptionGroups'
 import RichDropdownOptions from './RichDropdownOptions'
-import {Option, OptionGroup, isOptionGroupArray} from './types'
+import { isOptionGroupArray, Option, OptionGroup } from './types'
+
+import css from './RichDropdown.less'
 
 type OptionProps = {
     options: Option[] | OptionGroup[]
@@ -46,7 +48,7 @@ export default function RichDropdown({
     )
 }
 
-function renderOptionDefault({options, onClick}: OptionProps) {
+function renderOptionDefault({ options, onClick }: OptionProps) {
     return options.length > 0 && isOptionGroupArray(options) ? (
         <RichDropdownOptionGroups onClick={onClick} options={options} />
     ) : (

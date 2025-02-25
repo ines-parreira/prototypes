@@ -1,7 +1,8 @@
-import {CursorPaginationMeta} from '@gorgias/api-queries'
-import {AxiosHeaders, AxiosResponse} from 'axios'
+import { AxiosHeaders, AxiosResponse } from 'axios'
 
-import {ApiListResponseCursorPagination} from 'models/api/types'
+import { CursorPaginationMeta } from '@gorgias/api-queries'
+
+import { ApiListResponseCursorPagination } from 'models/api/types'
 
 export function axiosSuccessResponse<D>(data: D): AxiosResponse<D> {
     return {
@@ -21,7 +22,7 @@ export function apiListCursorPaginationResponse<D>(
         next_cursor: '',
         prev_cursor: '',
         total_resources: null,
-    }
+    },
 ): ApiListResponseCursorPagination<D> {
     return {
         data,

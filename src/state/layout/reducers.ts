@@ -1,9 +1,8 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
-import {GorgiasAction} from '../types'
-
+import { GorgiasAction } from '../types'
 import * as types from './constants'
-import {LayoutState} from './types'
+import { LayoutState } from './types'
 
 const initialState: LayoutState = fromJS({
     openedPanel: null,
@@ -11,7 +10,7 @@ const initialState: LayoutState = fromJS({
 
 export default function reducer(
     state: LayoutState = initialState,
-    action: GorgiasAction
+    action: GorgiasAction,
 ): LayoutState {
     switch (action.type) {
         case types.OPEN_PANEL: {

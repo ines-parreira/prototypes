@@ -1,6 +1,7 @@
-import {List, Map} from 'immutable'
+import React, { ComponentProps } from 'react'
+
+import { List, Map } from 'immutable'
 import _upperFirst from 'lodash/upperFirst'
-import React, {ComponentProps} from 'react'
 
 import Action from 'pages/common/components/ast/actions/Action'
 import {
@@ -9,14 +10,12 @@ import {
 } from 'pages/common/components/ast/actions/config'
 import ObjectExpression from 'pages/common/components/ast/expression/ObjectExpression'
 import DeleteBinaryExpression from 'pages/common/components/ast/operations/DeleteBinaryExpression'
-
-import {getSyntaxTreeLeaves} from 'pages/common/components/ast/utils'
-
+import { getSyntaxTreeLeaves } from 'pages/common/components/ast/utils'
 import useHoverable from 'pages/common/hooks/useHoverable'
-import {useRuleContext} from 'pages/common/hooks/useRuleContext'
-import {RuleItemActions} from 'pages/settings/rules/types'
-import {OBJECT_DEFINITIONS} from 'state/rules/constants'
-import {ObjectExpressionPropertyKey} from 'state/rules/types'
+import { useRuleContext } from 'pages/common/hooks/useRuleContext'
+import { RuleItemActions } from 'pages/settings/rules/types'
+import { OBJECT_DEFINITIONS } from 'state/rules/constants'
+import { ObjectExpressionPropertyKey } from 'state/rules/types'
 
 type Props = {
     rule: Map<any, any>
@@ -37,8 +36,8 @@ export default function CallExpression({
     depth,
     arguments: funcArgs,
 }: Props) {
-    const {hovered, setRef} = useHoverable()
-    const {Expression} = useRuleContext()
+    const { hovered, setRef } = useHoverable()
+    const { Expression } = useRuleContext()
 
     const parentCallee = parent.push('callee')
     const isConditionExpression = parent.contains('test')
@@ -127,8 +126,8 @@ export default function CallExpression({
 
     // This case for handling actions.
     // Action("hello_action", {subject: "hello", body: "hello world"})
-    const actionName = funcArgs[0] as {value: string}
-    const actionArguments = funcArgs[1] as {properties: any[]}
+    const actionName = funcArgs[0] as { value: string }
+    const actionArguments = funcArgs[1] as { properties: any[] }
     const actionRootLeftSiblings = List(['actions'])
 
     return (
@@ -147,7 +146,7 @@ export default function CallExpression({
                         properties={actionArguments.properties}
                         actions={actions}
                         leftsiblings={actionRootLeftSiblings.push(
-                            actionName.value
+                            actionName.value,
                         )}
                         rule={rule}
                         schemas={schemas}

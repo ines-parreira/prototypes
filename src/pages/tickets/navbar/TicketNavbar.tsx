@@ -1,13 +1,13 @@
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+
 import _debounce from 'lodash/debounce'
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
-import {DropTargetMonitor} from 'react-dnd'
-import {connect, ConnectedProps} from 'react-redux'
-import {useHistory, useParams} from 'react-router-dom'
+import { DropTargetMonitor } from 'react-dnd'
+import { connect, ConnectedProps } from 'react-redux'
+import { useHistory, useParams } from 'react-router-dom'
 
 import navbarCss from 'assets/css/navbar.less'
-
-import {ActiveContent, Navbar} from 'common/navigation'
-import {useDesktopOnlyShowGlobalNavFeatureFlag} from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
+import { ActiveContent, Navbar } from 'common/navigation'
+import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
 import {
     UserRole,
     UserSetting,
@@ -17,48 +17,48 @@ import {
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
 import useSearch from 'hooks/useSearch'
-import {createAccountSetting, updateAccountSetting} from 'models/account'
+import { createAccountSetting, updateAccountSetting } from 'models/account'
 import {
-    fetchSections,
-    updateSection,
     createSection,
     deleteSection,
+    fetchSections,
+    updateSection,
 } from 'models/section/resources'
-import {Section, SectionDraft} from 'models/section/types'
-import {createUserSetting, updateUserSetting} from 'models/user/resources'
-import {fetchViewsPaginated, updateView} from 'models/view/resources'
-import {View, ViewCategoryNavbar, ViewVisibility} from 'models/view/types'
+import { Section, SectionDraft } from 'models/section/types'
+import { createUserSetting, updateUserSetting } from 'models/user/resources'
+import { fetchViewsPaginated, updateView } from 'models/view/resources'
+import { View, ViewCategoryNavbar, ViewVisibility } from 'models/view/types'
 import CreateTicketNavbarButton from 'pages/common/components/CreateTicket/CreateTicketNavbarButton'
 import NavbarBlock from 'pages/common/components/navbar/NavbarBlock'
 import PlaceCallNavbarButton from 'pages/common/components/PlaceCallNavbarButton'
 import RecentChats from 'pages/common/components/RecentChats'
 import useAutoScrollOnDragging from 'pages/common/hooks/useAutoScrollOnDragging'
-import {tryLocalStorage} from 'services/common/utils'
+import { tryLocalStorage } from 'services/common/utils'
 import GorgiasApi from 'services/gorgiasApi'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
 import {
     SplitTicketViewToggle,
     useSplitTicketViewSwitcher,
 } from 'split-ticket-view-toggle'
-import {submitSettingSuccess as submitAccountSettingSuccess} from 'state/currentAccount/actions'
-import {getViewsOrderingSetting} from 'state/currentAccount/selectors'
+import { submitSettingSuccess as submitAccountSettingSuccess } from 'state/currentAccount/actions'
+import { getViewsOrderingSetting } from 'state/currentAccount/selectors'
 import {
     AccountSetting,
     AccountSettingType,
     AccountViewsOrderingSettingData,
 } from 'state/currentAccount/types'
-import {submitSettingSuccess} from 'state/currentUser/actions'
-import {getViewsOrderingUserSetting} from 'state/currentUser/selectors'
+import { submitSettingSuccess } from 'state/currentUser/actions'
+import { getViewsOrderingUserSetting } from 'state/currentUser/selectors'
 import {
-    sectionUpdated,
     sectionCreated,
-    sectionsFetched,
     sectionDeleted,
+    sectionsFetched,
+    sectionUpdated,
 } from 'state/entities/sections/actions'
-import {viewsFetched, viewUpdated} from 'state/entities/views/actions'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {RootState} from 'state/types'
+import { viewsFetched, viewUpdated } from 'state/entities/views/actions'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { RootState } from 'state/types'
 import {
     optimisticAccountSettingsReset,
     optimisticUserSettingsReset,
@@ -67,27 +67,27 @@ import {
     getPrivateTicketNavbarElements,
     getPublicTicketNavbarElements,
 } from 'state/ui/ticketNavbar/selectors'
-import {TicketNavbarElementType} from 'state/ui/ticketNavbar/types'
-import {activeViewIdSet} from 'state/ui/views/actions'
-import {fetchViewsSuccess} from 'state/views/actions'
+import { TicketNavbarElementType } from 'state/ui/ticketNavbar/types'
+import { activeViewIdSet } from 'state/ui/views/actions'
+import { fetchViewsSuccess } from 'state/views/actions'
 import {
-    getTopSystemTicketNavbarElements,
     getBottomSystemTicketNavbarElements,
+    getTopSystemTicketNavbarElements,
 } from 'state/views/selectors'
-
-import {hasRole, isTicketPath} from 'utils'
-import {systemViewIcons} from 'utils/views'
+import { hasRole, isTicketPath } from 'utils'
+import { systemViewIcons } from 'utils/views'
 
 import DeleteSectionModal from './DeleteSectionModal'
 import SectionFormModal from './SectionFormModal'
-import css from './TicketNavbar.less'
-import TicketNavbarContent, {TicketNavbarElement} from './TicketNavbarContent'
+import TicketNavbarContent, { TicketNavbarElement } from './TicketNavbarContent'
 import TicketNavbarDropTarget, {
     TicketNavbarDragObject,
     TicketNavbarDropDirection,
     TicketNavbarDropResult,
 } from './TicketNavbarDropTarget'
 import TicketNavbarViewLink from './TicketNavbarViewLink'
+
+import css from './TicketNavbar.less'
 
 const viewCategories = {
     public: 'Shared views',
@@ -124,8 +124,8 @@ export function TicketNavbarContainer({
 }: Props) {
     const history = useHistory()
     const showGlobalNav = useDesktopOnlyShowGlobalNavFeatureFlag()
-    const params = useParams<{viewId?: string}>()
-    const {viewId} = useSearch<{viewId?: string}>()
+    const params = useParams<{ viewId?: string }>()
+    const { viewId } = useSearch<{ viewId?: string }>()
     const [isSectionFormModalOpened, setSectionFormModalOpened] =
         useState(false)
     const [isDeleteSectionModalOpened, setDeleteSectionModalOpened] =
@@ -135,17 +135,17 @@ export function TicketNavbarContainer({
         useState<Maybe<SectionDraft & Partial<Section>>>(null)
     const isNewSection = useMemo(
         () => !!sectionForm && sectionForm?.id == null,
-        [sectionForm]
+        [sectionForm],
     )
     const isAgent = useMemo(
         () => hasRole(currentUser, UserRole.Agent),
-        [currentUser]
+        [currentUser],
     )
 
     const systemTopElements = useAppSelector(getTopSystemTicketNavbarElements)
 
     const systemBottomElements = useAppSelector(
-        getBottomSystemTicketNavbarElements
+        getBottomSystemTicketNavbarElements,
     )
 
     const viewsCount = useAppSelector((state) => state.entities.viewsCount)
@@ -162,8 +162,8 @@ export function TicketNavbarContainer({
                     result = result.concat(page)
                 }
                 fetchViewsSuccess(
-                    {data: result},
-                    params.viewId != null ? params.viewId : (viewId as string)
+                    { data: result },
+                    params.viewId != null ? params.viewId : (viewId as string),
                 )
                 viewsFetched(result)
             } catch {
@@ -198,17 +198,17 @@ export function TicketNavbarContainer({
                     acc.concat(
                         element.type === TicketNavbarElementType.View
                             ? [element.data]
-                            : element.children
+                            : element.children,
                     ),
-                [] as View[]
+                [] as View[],
             ),
-        [sharedElements, privateElements]
+        [sharedElements, privateElements],
     )
 
     const moveCursor = useCallback(
         (direction: 'next' | 'prev') => {
             const currentIndex = allViews.findIndex(
-                (view) => view.id === activeViewId
+                (view) => view.id === activeViewId,
             )
 
             if (currentIndex === -1) {
@@ -225,17 +225,17 @@ export function TicketNavbarContainer({
             activeViewIdSet(nextView.id)
             updateUrl(
                 `/app/tickets/${nextView.id}/${encodeURIComponent(
-                    nextView.slug
-                )}`
+                    nextView.slug,
+                )}`,
             )
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [activeViewId, allViews]
+        [activeViewId, allViews],
     )
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const updateUrl = useCallback(
         _debounce((viewUrl: string) => history.push(viewUrl)),
-        []
+        [],
     )
     useEffect(() => {
         shortcutManager.bind('ViewNavbar', {
@@ -263,21 +263,21 @@ export function TicketNavbarContainer({
                 private: isPrivate,
             })
         },
-        [setSectionFormModalOpened, setSectionForm]
+        [setSectionFormModalOpened, setSectionForm],
     )
     const handleSectionRenameClick = useCallback(
         (sectionId: number) => {
             setSectionFormModalOpened(true)
             setSectionForm(sections[sectionId])
         },
-        [setSectionFormModalOpened, setSectionForm, sections]
+        [setSectionFormModalOpened, setSectionForm, sections],
     )
     const handleSectionDeleteClick = useCallback(
         (sectionId: number) => {
             setDeleteSectionModalOpened(true)
             setSectionForm(sections[sectionId])
         },
-        [setDeleteSectionModalOpened, setSectionForm, sections]
+        [setDeleteSectionModalOpened, setSectionForm, sections],
     )
     const handleSectionModalClose = useCallback(() => {
         setSectionFormModalOpened(false)
@@ -297,9 +297,9 @@ export function TicketNavbarContainer({
                 [name]: value,
             })
         },
-        [sectionForm]
+        [sectionForm],
     )
-    const [{loading: isSubmitting}, handleSectionDraftSubmit] =
+    const [{ loading: isSubmitting }, handleSectionDraftSubmit] =
         useAsyncFn(async () => {
             if (!sectionForm) {
                 return
@@ -324,7 +324,7 @@ export function TicketNavbarContainer({
                 })
             }
         }, [sectionForm, isNewSection])
-    const [{loading: isDeleting}, handleSectionDelete] =
+    const [{ loading: isDeleting }, handleSectionDelete] =
         useAsyncFn(async () => {
             if (!sectionForm || sectionForm.id == null) {
                 return
@@ -349,7 +349,7 @@ export function TicketNavbarContainer({
             nextSettingData:
                 | AccountViewsOrderingSettingData
                 | UserViewsOrderingSettingData,
-            isPrivateSetting: boolean
+            isPrivateSetting: boolean,
         ) => {
             setMovingItem(true)
             if (
@@ -409,7 +409,7 @@ export function TicketNavbarContainer({
             }
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [accountSetting, userSetting]
+        [accountSetting, userSetting],
     )
 
     const [categories, setCategories] = useState<ViewCategoryNavbar[]>(() => {
@@ -423,7 +423,7 @@ export function TicketNavbarContainer({
 
     const handleCategoryDrop = useCallback(
         (item: TicketNavbarDragObject, monitor: DropTargetMonitor) => {
-            const {categoryId, direction} =
+            const { categoryId, direction } =
                 monitor.getDropResult() as TicketNavbarDropResult
             const id = item.id as ViewCategoryNavbar
             let categories: ViewCategoryNavbar[]
@@ -437,15 +437,15 @@ export function TicketNavbarContainer({
             tryLocalStorage(() =>
                 window.localStorage.setItem(
                     'viewCategories',
-                    JSON.stringify(categories)
-                )
+                    JSON.stringify(categories),
+                ),
             )
             setCategories(categories)
         },
-        []
+        [],
     )
 
-    const {scrollableAreaRef} = useAutoScrollOnDragging()
+    const { scrollableAreaRef } = useAutoScrollOnDragging()
 
     return (
         <Navbar
@@ -455,7 +455,7 @@ export function TicketNavbarContainer({
                 <>
                     <CreateTicketNavbarButton
                         isDisabled={window.location.pathname.includes(
-                            '/ticket/new'
+                            '/ticket/new',
                         )}
                     />
                     <PlaceCallNavbarButton />
@@ -509,14 +509,14 @@ export function TicketNavbarContainer({
                                           label: 'Create view',
                                           onClick: () =>
                                               history.push(
-                                                  `/app/tickets/new/${category}`
+                                                  `/app/tickets/new/${category}`,
                                               ),
                                       },
                                       {
                                           label: 'Create section',
                                           onClick: () =>
                                               handleCreateSectionClick(
-                                                  category === 'private'
+                                                  category === 'private',
                                               ),
                                       },
                                   ]
@@ -609,7 +609,7 @@ const connector = connect(
         submitSettingSuccess,
         viewsFetched,
         viewUpdated,
-    }
+    },
 )
 
 export default connector(TicketNavbarContainer)

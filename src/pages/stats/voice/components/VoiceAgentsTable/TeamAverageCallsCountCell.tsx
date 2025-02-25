@@ -1,14 +1,15 @@
-import {Skeleton} from '@gorgias/merchant-ui-kit'
 import React from 'react'
+
+import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
-import {VOICE_METRIC_COLUMN_WIDTH} from 'pages/stats/voice/constants/voiceAgents'
-import {useTotalCallsMetric} from 'pages/stats/voice/hooks/agentMetrics'
-import {useNewVoiceStatsFilters} from 'pages/stats/voice/hooks/useNewVoiceStatsFilters'
+import { VOICE_METRIC_COLUMN_WIDTH } from 'pages/stats/voice/constants/voiceAgents'
+import { useTotalCallsMetric } from 'pages/stats/voice/hooks/agentMetrics'
+import { useNewVoiceStatsFilters } from 'pages/stats/voice/hooks/useNewVoiceStatsFilters'
 
 import css from './VoiceAgentsTable.less'
 
@@ -20,9 +21,9 @@ const TeamAverageCallsCountCell = ({
     agentsCount,
     useMetric,
 }: TeamAverageCallsCountCellProps) => {
-    const {cleanStatsFilters, userTimezone} = useNewVoiceStatsFilters()
+    const { cleanStatsFilters, userTimezone } = useNewVoiceStatsFilters()
 
-    const {data, isFetching} = useMetric(cleanStatsFilters, userTimezone)
+    const { data, isFetching } = useMetric(cleanStatsFilters, userTimezone)
     const metricValue = data?.value ? data.value / agentsCount : data?.value
 
     return (
@@ -33,7 +34,7 @@ const TeamAverageCallsCountCell = ({
                 formatMetricValue(
                     metricValue,
                     'decimal',
-                    NOT_AVAILABLE_PLACEHOLDER
+                    NOT_AVAILABLE_PLACEHOLDER,
                 )
             )}
         </BodyCell>

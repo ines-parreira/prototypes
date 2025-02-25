@@ -1,13 +1,13 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
-import {shopifyIntegration} from 'fixtures/integrations'
+import { shopifyIntegration } from 'fixtures/integrations'
 import {
     integrationDataItemProductFixture,
     shopifyProductFixture,
     shopifyVariantFixture,
 } from 'fixtures/shopify'
 
-import {transformProductToCampaignAttachment} from '../transformProductToCampaignAttachment'
+import { transformProductToCampaignAttachment } from '../transformProductToCampaignAttachment'
 
 describe('transformProductToCampaignAttachment', () => {
     it('should return a CampaignAttachment object', () => {
@@ -28,7 +28,7 @@ describe('transformProductToCampaignAttachment', () => {
 
         const result = transformProductToCampaignAttachment(
             product,
-            fromJS(shopifyIntegration)
+            fromJS(shopifyIntegration),
         )
 
         expect(result).toMatchObject({

@@ -1,16 +1,17 @@
-import {render, fireEvent} from '@testing-library/react'
 import React from 'react'
+
+import { fireEvent, render } from '@testing-library/react'
 
 import BundleManualInstallationCard from '../BundleManualInstallationCard'
 
 describe('BundleManualInstallationCard', () => {
     test('renders correctly with default props', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <BundleManualInstallationCard
                 isConnected={false}
                 isBordered={false}
                 isConnectedToShopify={false}
-            />
+            />,
         )
 
         expect(getByText('Manual installation')).toBeInTheDocument()
@@ -20,17 +21,17 @@ describe('BundleManualInstallationCard', () => {
     })
 
     test('switches tabs when tab item is clicked', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <BundleManualInstallationCard
                 isConnected={false}
                 isBordered={false}
                 isConnectedToShopify={false}
-            />
+            />,
         )
 
         fireEvent.click(getByText('Any Other Website'))
         expect(
-            getByText('Any Other Website').classList.contains('isActive')
+            getByText('Any Other Website').classList.contains('isActive'),
         ).toBe(true)
     })
 })

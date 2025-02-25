@@ -1,14 +1,15 @@
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {BadgeItemProps} from 'pages/common/components/BadgetItem'
+import { BadgeItemProps } from 'pages/common/components/BadgetItem'
 import settingsCss from 'pages/settings/settings.less'
 
-import {Locale, LocaleCode} from '../../../../../../../models/helpCenter/types'
-import {localeToSelectOption} from '../../../../utils/localeSelectOptions'
-
-import {DynamicBadgeList} from '../../../HelpCenterPreferencesView/components/BadgeList'
-
-import {localeToSelectedLanguage} from './utils'
+import {
+    Locale,
+    LocaleCode,
+} from '../../../../../../../models/helpCenter/types'
+import { localeToSelectOption } from '../../../../utils/localeSelectOptions'
+import { DynamicBadgeList } from '../../../HelpCenterPreferencesView/components/BadgeList'
+import { localeToSelectedLanguage } from './utils'
 
 type Props = {
     availableLocales: Locale[]
@@ -24,15 +25,15 @@ export const ImportedLanguagesTags: React.FC<Props> = ({
     const selectedList = useMemo(
         () =>
             availableLocales
-                .filter(({code}) => selectedLocales.includes(code))
+                .filter(({ code }) => selectedLocales.includes(code))
                 .map((l) =>
-                    localeToSelectedLanguage(l, selectedLocales.length > 1)
+                    localeToSelectedLanguage(l, selectedLocales.length > 1),
                 ),
-        [availableLocales, selectedLocales]
+        [availableLocales, selectedLocales],
     )
 
-    const handleOnAddLocale = (_: React.MouseEvent, {id}: BadgeItemProps) => {
-        const addedLocale = availableLocales.find(({code}) => code === id)
+    const handleOnAddLocale = (_: React.MouseEvent, { id }: BadgeItemProps) => {
+        const addedLocale = availableLocales.find(({ code }) => code === id)
 
         if (addedLocale) {
             onSelectedLocalesChange([...selectedLocales, addedLocale.code])
@@ -41,10 +42,10 @@ export const ImportedLanguagesTags: React.FC<Props> = ({
 
     const handleOnRemoveLocale = (
         _: React.MouseEvent,
-        {id}: BadgeItemProps
+        { id }: BadgeItemProps,
     ) => {
         onSelectedLocalesChange(
-            selectedLocales.filter((localeCode) => localeCode !== id)
+            selectedLocales.filter((localeCode) => localeCode !== id),
         )
     }
 

@@ -1,11 +1,12 @@
-import {render, fireEvent, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {actionFixture} from 'fixtures/infobarCustomActions'
+import { actionFixture } from 'fixtures/infobarCustomActions'
 
 import Button from '../Button'
 
@@ -16,20 +17,20 @@ describe('<Button/>', () => {
     const props = {
         onRemove: jest.fn(),
         onOpenForm: jest.fn(),
-        button: {label: '{{label}}', action},
-        source: {label: 'should render'},
+        button: { label: '{{label}}', action },
+        source: { label: 'should render' },
         index: 2,
     }
 
     it('should render with correct label', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider
                 store={mockStore({
-                    customers: fromJS({active: {}}),
+                    customers: fromJS({ active: {} }),
                 })}
             >
                 <Button {...props} />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -39,11 +40,11 @@ describe('<Button/>', () => {
         render(
             <Provider
                 store={mockStore({
-                    customers: fromJS({active: {}}),
+                    customers: fromJS({ active: {} }),
                 })}
             >
                 <Button {...props} />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(screen.getByText('edit'))

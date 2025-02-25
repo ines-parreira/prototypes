@@ -1,7 +1,8 @@
-import classNames from 'classnames'
 import React from 'react'
 
-import {FormField} from 'core/forms'
+import classNames from 'classnames'
+
+import { FormField } from 'core/forms'
 import ToggleInputField from 'pages/common/forms/ToggleInputField'
 import settingsCss from 'pages/settings/settings.less'
 
@@ -14,7 +15,7 @@ export default function VoiceIntegrationPreferencesTranscription(): JSX.Element 
                 <h2
                     className={classNames(
                         settingsCss.headingSection,
-                        css.sectionHeader
+                        css.sectionHeader,
                     )}
                 >
                     Transcription

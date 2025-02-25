@@ -1,20 +1,20 @@
-import classNames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
-import {Link} from 'react-router-dom'
 
-import {TicketChannel} from 'business/types/ticket'
+import classNames from 'classnames'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { Link } from 'react-router-dom'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {getLanguagesFromChatConfig} from 'config/integrations/gorgias_chat'
+import { TicketChannel } from 'business/types/ticket'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { getLanguagesFromChatConfig } from 'config/integrations/gorgias_chat'
 import useAppSelector from 'hooks/useAppSelector'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
-import {SelfServiceChatChannel} from 'pages/automate/common/hooks/useSelfServiceChatChannels'
-import {ChannelLanguage} from 'pages/automate/common/types'
+import { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import { ChannelLanguage } from 'pages/automate/common/types'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {getHasAutomate} from 'state/billing/selectors'
+import { getHasAutomate } from 'state/billing/selectors'
 
 import {
     ARTICLE_RECOMMENDATION,
@@ -22,17 +22,17 @@ import {
     ORDER_MANAGEMENT,
 } from '../../common/components/constants'
 import WorkflowsFeatureList from '../../common/components/WorkflowsFeatureList'
-import {useConnectedChannelsViewContext} from '../ConnectedChannelsViewContext'
+import { useConnectedChannelsViewContext } from '../ConnectedChannelsViewContext'
 import AutomateSubscriptionAction from './AutomateSubscriptionAction'
+import ConnectedChannelFeatureToggle from './ConnectedChannelFeatureToggle'
 
 import css from './ConnectedChannelAccordionBodyChat.less'
-import ConnectedChannelFeatureToggle from './ConnectedChannelFeatureToggle'
 
 type Props = {
     channel: SelfServiceChatChannel
 }
 
-const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
+const ConnectedChannelAccordionBodyChat = ({ channel }: Props) => {
     const applicationId = channel.value.meta.app_id!
 
     const isMLFlowRecommendationEnabled =
@@ -56,7 +56,7 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
     const applicationAutomationSettings =
         applicationsAutomationSettings[applicationId]
 
-    const {articleRecommendation, orderManagement, workflows} =
+    const { articleRecommendation, orderManagement, workflows } =
         applicationAutomationSettings
 
     const updateSettings =
@@ -64,7 +64,7 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
         (value: boolean) =>
             handleChatApplicationAutomationSettingsUpdate({
                 ...applicationAutomationSettings,
-                [key]: {enabled: value},
+                [key]: { enabled: value },
             })
 
     const renderArticleRecommendationAction = () => {
@@ -106,7 +106,7 @@ const ConnectedChannelAccordionBodyChat = ({channel}: Props) => {
             : MAX_ACTIVE_FLOWS
 
     const channelLanguages = getLanguagesFromChatConfig(
-        channel.value.meta
+        channel.value.meta,
     ) as ChannelLanguage[]
 
     return (

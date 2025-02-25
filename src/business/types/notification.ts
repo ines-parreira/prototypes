@@ -1,4 +1,4 @@
-import {NotificationStatus} from 'state/notifications/types'
+import { NotificationStatus } from 'state/notifications/types'
 
 export type Notification = {
     message: string

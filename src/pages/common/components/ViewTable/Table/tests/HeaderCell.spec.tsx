@@ -1,16 +1,16 @@
-import {fireEvent, render} from '@testing-library/react'
-import {Map, List} from 'immutable'
-
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render } from '@testing-library/react'
+import { List, Map } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {views} from 'config/views'
-import {OrderDirection} from 'models/api/types'
-import {EntityType, ViewField} from 'models/view/types'
-import {RootState, StoreDispatch} from 'state/types'
-import {fetchViewItems, setOrderDirection} from 'state/views/actions'
-import {assumeMock} from 'utils/testing'
+import { views } from 'config/views'
+import { OrderDirection } from 'models/api/types'
+import { EntityType, ViewField } from 'models/view/types'
+import { RootState, StoreDispatch } from 'state/types'
+import { fetchViewItems, setOrderDirection } from 'state/views/actions'
+import { assumeMock } from 'utils/testing'
 
 import HeaderCell from '../HeaderCell'
 
@@ -23,7 +23,7 @@ jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 
 jest.mock(
     'pages/common/components/ViewTable/ShowMoreFieldsDropdown',
-    () => () => <div>ShowMoreFieldsDropdown</div>
+    () => () => <div>ShowMoreFieldsDropdown</div>,
 )
 
 describe('ViewTable::Table::HeaderCell', () => {
@@ -47,25 +47,25 @@ describe('ViewTable::Table::HeaderCell', () => {
     }
 
     const createdViewField = viewConfigFields.find(
-        (field: Map<any, any>) => field.get('name') === ViewField.Created
+        (field: Map<any, any>) => field.get('name') === ViewField.Created,
     ) as Map<any, any>
 
     const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
     it('displays the default cell', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore({})}>
                 <HeaderCell {...minProps} />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('does not display ActionsComponent for non-main field cell', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore()}>
                 <HeaderCell {...minProps} field={viewConfigFields.get(1)} />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -74,24 +74,24 @@ describe('ViewTable::Table::HeaderCell', () => {
         ['when not in search mode', false],
         ['when in search mode', true],
     ])('displays sortable field cell when %s', (_, isSearch) => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore()}>
                 <HeaderCell
                     {...minProps}
                     field={createdViewField}
                     isSearch={isSearch}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.getElementsByClassName('clickable')).toHaveLength(1)
     })
 
     it('should display sortable field cell when in search mode', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore()}>
                 <HeaderCell {...minProps} field={createdViewField} isSearch />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.getElementsByClassName('clickable')).toHaveLength(1)
@@ -101,14 +101,14 @@ describe('ViewTable::Table::HeaderCell', () => {
         ['when not in search mode', false],
         ['when in search mode', true],
     ])('sorts by the field value on click %s', (_, isSearch) => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={mockStore()}>
                 <HeaderCell
                     {...minProps}
                     field={createdViewField}
                     isSearch={isSearch}
                 />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(getByText(createdViewField.get('title')))
@@ -122,19 +122,19 @@ describe('ViewTable::Table::HeaderCell', () => {
                 orderBy: `${createdViewField.get('path') as string}:${
                     OrderDirection.Desc
                 }`,
-            }
+            },
         )
         expect(setOrderDirectionMock).toHaveBeenCalledWith(
             createdViewField.get('path'),
-            OrderDirection.Desc
+            OrderDirection.Desc,
         )
     })
 
     it('should sort by field value on click when in search mode', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={mockStore()}>
                 <HeaderCell {...minProps} field={createdViewField} isSearch />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(getByText(createdViewField.get('title')))
@@ -144,14 +144,14 @@ describe('ViewTable::Table::HeaderCell', () => {
     })
 
     it('should not enable sort by field value on click when not in search mode and isClickable is false', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={mockStore()}>
                 <HeaderCell
                     {...minProps}
                     field={createdViewField}
                     isClickable={false}
                 />
-            </Provider>
+            </Provider>,
         )
 
         const field = getByText(createdViewField.get('title'))
@@ -166,21 +166,21 @@ describe('ViewTable::Table::HeaderCell', () => {
         ['when not in search mode', false],
         ['when in search mode', true],
     ])('should show the ShowMoreFieldsDropdown %s', (_, isSearch) => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={mockStore()}>
                 <HeaderCell
                     {...minProps}
                     shouldRenderShowMoreDropdown
                     isSearch={isSearch}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(getByText('ShowMoreFieldsDropdown')).toBeInTheDocument()
     })
 
     it('should hide the ShowMoreFieldsDropdown when not on ticket search view', () => {
-        const {queryByText} = render(
+        const { queryByText } = render(
             <Provider store={mockStore()}>
                 <HeaderCell
                     {...minProps}
@@ -188,7 +188,7 @@ describe('ViewTable::Table::HeaderCell', () => {
                     isSearch
                     type={EntityType.Customer}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(queryByText('ShowMoreFieldsDropdown')).not.toBeInTheDocument()

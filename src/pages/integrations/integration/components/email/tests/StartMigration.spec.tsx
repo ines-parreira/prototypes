@@ -1,15 +1,16 @@
-import {cleanup, fireEvent, screen, waitFor} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import {Moment} from 'moment'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { cleanup, fireEvent, screen, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Moment } from 'moment'
+import { Provider } from 'react-redux'
 import * as ReactRouterDom from 'react-router-dom'
 
-import {IntegrationType} from 'models/integration/constants'
+import { IntegrationType } from 'models/integration/constants'
 import * as resources from 'models/integration/resources/email'
 import * as migrationBannerHook from 'pages/common/components/EmailMigrationBanner/hooks/useMigrationBannerStatus'
 import * as dateUtils from 'utils/date'
-import {mockStore, renderWithRouter} from 'utils/testing'
+import { mockStore, renderWithRouter } from 'utils/testing'
 
 import StartMigration from '../EmailMigration/StartMigration'
 
@@ -21,13 +22,13 @@ jest.mock(
             startEmailMigration: jest.fn(() => ({
                 forwarding_email_address: 'test@gorgias.com',
             })),
-        }) as Record<string, any>
+        }) as Record<string, any>,
 )
 const getMomentSpy = jest.spyOn(dateUtils, 'getMoment')
 
 const mockFetchMigrationStatus = jest.fn()
 jest.spyOn(migrationBannerHook, 'default').mockImplementation(
-    () => mockFetchMigrationStatus
+    () => mockFetchMigrationStatus,
 )
 
 const mockHistoryPush = jest.fn()
@@ -44,7 +45,7 @@ jest.mock(
                 push: mockHistoryPush,
                 goBack: mockHistoryGoBack,
             }),
-        }) as Record<string, any>
+        }) as Record<string, any>,
 )
 const useLocationSpy = jest.spyOn(ReactRouterDom, 'useLocation')
 
@@ -83,7 +84,7 @@ describe('StartMigration', () => {
                 } as any)}
             >
                 <StartMigration />
-            </Provider>
+            </Provider>,
         )
 
     afterEach(cleanup)
@@ -98,7 +99,7 @@ describe('StartMigration', () => {
     })
 
     it('should navigate back when clicking "Migrate later" if page is not entry point', () => {
-        useLocationSpy.mockReturnValue({key: 'abc'} as any)
+        useLocationSpy.mockReturnValue({ key: 'abc' } as any)
         renderComponent()
         fireEvent.click(screen.getByText('Migrate later'))
         expect(mockHistoryGoBack).toHaveBeenCalled()
@@ -111,7 +112,7 @@ describe('StartMigration', () => {
         renderComponent()
         fireEvent.click(screen.getByText('Migrate later'))
         expect(mockHistoryPush).toHaveBeenCalledWith(
-            '/app/settings/channels/email'
+            '/app/settings/channels/email',
         )
     })
 
@@ -129,21 +130,21 @@ describe('StartMigration', () => {
 
     it('should display due date when it is not past deadline', () => {
         getMomentSpy.mockImplementation(
-            () => dateUtils.stringToDatetime('2023-01-10T00:00') as Moment
+            () => dateUtils.stringToDatetime('2023-01-10T00:00') as Moment,
         )
         renderComponent()
         expect(
-            screen.getByText('Migrate your emails by', {exact: false})
+            screen.getByText('Migrate your emails by', { exact: false }),
         ).toBeVisible()
     })
 
     it('should display "migrate your emails or risk deactivation" when it is past deadline', () => {
         getMomentSpy.mockImplementation(
-            () => dateUtils.stringToDatetime('2023-02-10T00:00') as Moment
+            () => dateUtils.stringToDatetime('2023-02-10T00:00') as Moment,
         )
         renderComponent()
         expect(
-            screen.getByText('Migrate your emails or risk deactivation')
+            screen.getByText('Migrate your emails or risk deactivation'),
         ).toBeVisible()
     })
 })

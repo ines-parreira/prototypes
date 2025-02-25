@@ -1,4 +1,4 @@
-import {TextsPerLanguage} from 'rest_api/gorgias_chat_protected_api/types'
+import { TextsPerLanguage } from 'rest_api/gorgias_chat_protected_api/types'
 
 import isEqualTextsPerLanguage from '../CompareTextsPerLanguage'
 
@@ -6,13 +6,13 @@ describe('isEqualTextsPerLanguage', () => {
     it('should treat objects as equal', () => {
         const draft: TextsPerLanguage = {
             //@ts-ignore ts(2322)
-            texts: {privacyPolicyDisclaimer: 'some'},
+            texts: { privacyPolicyDisclaimer: 'some' },
             sspTexts: {},
             meta: {},
         }
 
         const reference: TextsPerLanguage = {
-            texts: {privacyPolicyDisclaimer: 'some'},
+            texts: { privacyPolicyDisclaimer: 'some' },
             sspTexts: {},
             meta: {},
         }
@@ -23,7 +23,7 @@ describe('isEqualTextsPerLanguage', () => {
     it('should treat objects as equal if the only difference is undefined properties and should not mutate the input objects', () => {
         const draft: TextsPerLanguage = {
             //@ts-ignore ts(2322)
-            meta: {privacyPolicyDisclaimer: undefined},
+            meta: { privacyPolicyDisclaimer: undefined },
             texts: {},
             sspTexts: {},
         }
@@ -49,7 +49,7 @@ describe('isEqualTextsPerLanguage', () => {
 
     it('should treat objects as unequal if there are differences other than undefined properties', () => {
         const draft: TextsPerLanguage = {
-            texts: {privacyPolicyDisclaimer: 'Some Text'},
+            texts: { privacyPolicyDisclaimer: 'Some Text' },
             sspTexts: {},
             meta: {},
         }

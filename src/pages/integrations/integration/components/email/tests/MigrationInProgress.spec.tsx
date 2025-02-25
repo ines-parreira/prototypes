@@ -1,23 +1,24 @@
-import {cleanup, render, screen} from '@testing-library/react'
-import MockAdapter from 'axios-mock-adapter'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { cleanup, render, screen } from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 
 import client from 'models/api/resources'
-import {EmailMigrationInboundVerification} from 'models/integration/types'
-import {mockStore} from 'utils/testing'
+import { EmailMigrationInboundVerification } from 'models/integration/types'
+import { mockStore } from 'utils/testing'
 
 import MigrationInProgress from '../EmailMigration/MigrationInProgress'
 import * as migrationUtils from '../EmailMigration/utils'
 
 const getInboundUnverifiedMigrationsSpy = jest.spyOn(
     migrationUtils,
-    'getInboundUnverifiedMigrations'
+    'getInboundUnverifiedMigrations',
 )
 
 const migration = {
-    integration: {meta: {}},
+    integration: { meta: {} },
 } as unknown as EmailMigrationInboundVerification
 
 jest.mock('../EmailMigration/MigrationEmailForwarding', () => () => (
@@ -35,12 +36,12 @@ describe('MigrationInProgress', () => {
             <Provider
                 store={mockStore({
                     integrations: fromJS({
-                        migrations: {email: [migration]},
+                        migrations: { email: [migration] },
                     }),
                 } as any)}
             >
                 <MigrationInProgress />
-            </Provider>
+            </Provider>,
         )
 
     afterEach(cleanup)
@@ -59,7 +60,7 @@ describe('MigrationInProgress', () => {
 
         await screen.findByTestId('migration-pending')
         expect(
-            screen.getByTestId('migration-domain-verification')
+            screen.getByTestId('migration-domain-verification'),
         ).toBeVisible()
     })
 })

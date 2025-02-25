@@ -1,8 +1,9 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import React, {useRef, useState} from 'react'
+import React, { useRef, useState } from 'react'
 
-import {WorkflowVariable} from 'pages/automate/workflows/models/variables.types'
-import Button, {ButtonSize} from 'pages/common/components/button/Button'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
+import Button, { ButtonSize } from 'pages/common/components/button/Button'
 
 import WorkflowVariableDropdown from './WorkflowVariableDropdown'
 

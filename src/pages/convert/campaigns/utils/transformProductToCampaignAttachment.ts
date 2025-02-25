@@ -1,15 +1,15 @@
-import {Map} from 'immutable'
+import { Map } from 'immutable'
 
-import {AttachmentEnum} from 'common/types'
-import {Product} from 'constants/integrations/types/shopify'
-import {IntegrationDataItem} from 'models/integration/types'
-import {CampaignAttachment} from 'pages/convert/campaigns/types/CampaignAttachment'
-import {getIconFromUrl} from 'utils'
-import {findCheapestProductVariant} from 'utils/findCheapestProductVariant'
+import { AttachmentEnum } from 'common/types'
+import { Product } from 'constants/integrations/types/shopify'
+import { IntegrationDataItem } from 'models/integration/types'
+import { CampaignAttachment } from 'pages/convert/campaigns/types/CampaignAttachment'
+import { getIconFromUrl } from 'utils'
+import { findCheapestProductVariant } from 'utils/findCheapestProductVariant'
 
 export const transformProductToCampaignAttachment = (
     result: IntegrationDataItem<Product>,
-    shopifyIntegration: Map<string, any>
+    shopifyIntegration: Map<string, any>,
 ): CampaignAttachment => {
     const shopifyPlaceholderImage = 'integrations/shopify-placeholder.png'
     const shopDomain = shopifyIntegration.getIn([

@@ -1,4 +1,4 @@
-import {UserRole} from './types/user'
+import { UserRole } from './types/user'
 
 //$TsFixMe fallback values, use UserRole enum instead
 export const OBSERVER_AGENT_ROLE = UserRole.ObserverAgent

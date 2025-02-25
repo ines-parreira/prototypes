@@ -1,10 +1,11 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps, useState} from 'react'
+import React, { ComponentProps, useState } from 'react'
+
+import { Meta, Story } from '@storybook/react'
 
 import Button from 'pages/common/components/button/Button'
 import Group from 'pages/common/components/layout/Group'
 
-import Wizard, {WizardContext} from './Wizard'
+import Wizard, { WizardContext } from './Wizard'
 import WizardProgress from './WizardProgress'
 import WizardStep from './WizardStep'
 
@@ -58,7 +59,7 @@ const Template: Story<ComponentProps<typeof Wizard>> = (props) => {
                                     intent="secondary"
                                     onClick={() =>
                                         context?.setActiveStep(
-                                            context.previousStep!
+                                            context.previousStep!,
                                         )
                                     }
                                 >
@@ -68,7 +69,7 @@ const Template: Story<ComponentProps<typeof Wizard>> = (props) => {
                                 <Button
                                     onClick={() =>
                                         context?.setActiveStep(
-                                            context.nextStep!
+                                            context.nextStep!,
                                         )
                                     }
                                 >
@@ -76,7 +77,7 @@ const Template: Story<ComponentProps<typeof Wizard>> = (props) => {
                                 </Button>
                             </Group>
 
-                            <label style={{display: 'block', marginTop: 8}}>
+                            <label style={{ display: 'block', marginTop: 8 }}>
                                 <input
                                     checked={hasExtraStep}
                                     onChange={() =>
@@ -102,7 +103,7 @@ const Template: Story<ComponentProps<typeof Wizard>> = (props) => {
                                     intent="secondary"
                                     onClick={() =>
                                         context?.setActiveStep(
-                                            context.previousStep!
+                                            context.previousStep!,
                                         )
                                     }
                                 >
@@ -112,7 +113,7 @@ const Template: Story<ComponentProps<typeof Wizard>> = (props) => {
                                 <Button
                                     onClick={() =>
                                         context?.setActiveStep(
-                                            context.nextStep!
+                                            context.nextStep!,
                                         )
                                     }
                                 >
@@ -134,7 +135,7 @@ const Template: Story<ComponentProps<typeof Wizard>> = (props) => {
                                 intent="secondary"
                                 onClick={() =>
                                     context?.setActiveStep(
-                                        context.previousStep!
+                                        context.previousStep!,
                                     )
                                 }
                             >
@@ -145,7 +146,7 @@ const Template: Story<ComponentProps<typeof Wizard>> = (props) => {
                 </WizardContext.Consumer>
             </WizardStep>
 
-            <WizardProgress style={{marginTop: 8}}>
+            <WizardProgress style={{ marginTop: 8 }}>
                 {(activeStepIndex, totalSteps) =>
                     `${activeStepIndex} out of ${totalSteps}`
                 }

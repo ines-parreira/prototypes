@@ -1,5 +1,6 @@
+import React, { ReactNode } from 'react'
+
 import classNames from 'classnames'
-import React, {ReactNode} from 'react'
 import {
     DropdownItem,
     DropdownMenu,
@@ -7,9 +8,9 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
-import css from './FieldMappingSelectorDropdown.less'
+import { Option } from './types'
 
-import {Option} from './types'
+import css from './FieldMappingSelectorDropdown.less'
 
 export interface Props {
     className?: string
@@ -39,7 +40,7 @@ export default function FieldMappingSelectorDropdown({
                 </DropdownToggle>
 
                 <DropdownMenu className={css['dropdown']}>
-                    {options.map(({key, label}) => (
+                    {options.map(({ key, label }) => (
                         <DropdownItem
                             key={key}
                             onClick={() => onClick(key)}
@@ -50,7 +51,7 @@ export default function FieldMappingSelectorDropdown({
                                     <i
                                         className={classNames(
                                             'material-icons',
-                                            css['selected-mark']
+                                            css['selected-mark'],
                                         )}
                                     >
                                         check

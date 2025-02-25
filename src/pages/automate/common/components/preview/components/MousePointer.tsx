@@ -1,5 +1,6 @@
+import React, { ReactNode } from 'react'
+
 import classnames from 'classnames'
-import React, {ReactNode} from 'react'
 
 import mousePointer from 'assets/img/self-service/mouse-pointer.png'
 
@@ -11,7 +12,7 @@ type Props = {
     children: ReactNode
 }
 
-const MousePointer = ({isHovering, isAlignedToRight, children}: Props) => {
+const MousePointer = ({ isHovering, isAlignedToRight, children }: Props) => {
     return (
         <div className={css.container}>
             {children}

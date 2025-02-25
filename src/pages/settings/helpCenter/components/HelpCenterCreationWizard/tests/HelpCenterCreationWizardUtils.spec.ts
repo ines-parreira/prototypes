@@ -4,14 +4,14 @@ import {
     HelpCenterArticleItem,
     LocaleCode,
 } from 'models/helpCenter/types'
-import {IntegrationType} from 'models/integration/constants'
-import {ShopifyIntegration} from 'models/integration/types'
-import {HELP_CENTER_LANGUAGE_DEFAULT_UI} from 'pages/settings/helpCenter/constants'
-import {AIArticlesListFixture} from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
+import { IntegrationType } from 'models/integration/constants'
+import { ShopifyIntegration } from 'models/integration/types'
+import { HELP_CENTER_LANGUAGE_DEFAULT_UI } from 'pages/settings/helpCenter/constants'
+import { AIArticlesListFixture } from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
 import {
+    ArticlesListFixture,
     ArticleTemplatesListFixture,
     HelpCenterItemsListFixture,
-    ArticlesListFixture,
 } from 'pages/settings/helpCenter/fixtures/articleTemplate.fixture'
 import {
     EmptyHelpCenterUiFixture,
@@ -20,11 +20,11 @@ import {
     InvalidHelpCenterApiFixture,
     PartialHelpCenterApiFixture,
 } from 'pages/settings/helpCenter/fixtures/wizard.fixture'
-import {HelpCenterLayout} from 'pages/settings/helpCenter/types/layout.enum'
-import {mapHelpCenterArticleItemToArticle} from 'pages/settings/helpCenter/utils/helpCenter.utils'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {reportError} from 'utils/errors'
+import { HelpCenterLayout } from 'pages/settings/helpCenter/types/layout.enum'
+import { mapHelpCenterArticleItemToArticle } from 'pages/settings/helpCenter/utils/helpCenter.utils'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { reportError } from 'utils/errors'
 
 import {
     findArticleByKey,
@@ -69,7 +69,7 @@ describe('helpCenterCreationWizardUtils', () => {
 
         it('should add default platform type and default step name if wrong ones are provided', () => {
             const result = mapApiHelpCenterToUIHelpCenter(
-                InvalidHelpCenterApiFixture
+                InvalidHelpCenterApiFixture,
             )
             expect(result).toEqual(defaultUIHelpCenter)
         })
@@ -159,10 +159,10 @@ describe('helpCenterCreationWizardUtils', () => {
 
         it('should correctly map help center locales to UI', () => {
             const result = mapHelpCenterLocalesToLanguagePicker([
-                {code: 'en-US', name: 'English'},
+                { code: 'en-US', name: 'English' },
             ])
 
-            expect(result).toMatchObject([{value: 'en-US', label: 'English'}])
+            expect(result).toMatchObject([{ value: 'en-US', label: 'English' }])
         })
 
         it('should correctly get updated fields', () => {
@@ -187,7 +187,7 @@ describe('helpCenterCreationWizardUtils', () => {
 
             const result = getUpdatedFields(
                 newHelpCenter,
-                helpCenter as HelpCenter
+                helpCenter as HelpCenter,
             )
 
             expect(result).toEqual(expected)
@@ -225,10 +225,10 @@ describe('helpCenterCreationWizardUtils', () => {
             const result = mapHelpCenterArticleData(
                 articleTemplates,
                 articles,
-                'en-US'
+                'en-US',
             )
             const article = result.find(
-                (article) => article.key === 'shippingPolicy'
+                (article) => article.key === 'shippingPolicy',
             )
 
             expect(result.length).toBe(3)
@@ -239,10 +239,10 @@ describe('helpCenterCreationWizardUtils', () => {
             const result = mapAIHelpCenterArticleData(
                 aiArticles,
                 articles,
-                'en-US'
+                'en-US',
             )
             const article = result.find(
-                (article) => article.key === 'ai_Generated_1'
+                (article) => article.key === 'ai_Generated_1',
             )
 
             expect(article?.title).toBe('AI article generated')
@@ -268,16 +268,16 @@ describe('helpCenterCreationWizardUtils', () => {
 
         it('should return default UI when default language is undefined', () => {
             const result = mapHelpCenterLanguagesToLanguagePicker(
-                {id: 1} as HelpCenter,
-                []
+                { id: 1 } as HelpCenter,
+                [],
             )
             expect(result).toEqual(HELP_CENTER_LANGUAGE_DEFAULT_UI)
         })
 
         it('should return default UI when supported_languages is undefined', () => {
             const result = mapHelpCenterLanguagesToLanguagePicker(
-                {id: 1, default_locale: 'en-US'} as HelpCenter,
-                []
+                { id: 1, default_locale: 'en-US' } as HelpCenter,
+                [],
             )
             expect(result).toEqual(HELP_CENTER_LANGUAGE_DEFAULT_UI)
         })
@@ -289,18 +289,18 @@ describe('helpCenterCreationWizardUtils', () => {
             }
 
             const uiLanguageOptions = [
-                {value: 'en-US', label: 'English'},
-                {value: 'fr-CA', label: 'French'},
+                { value: 'en-US', label: 'English' },
+                { value: 'fr-CA', label: 'French' },
             ]
 
             const expected = [
-                {value: 'en-US', label: 'English', isDefault: true},
-                {value: 'fr-CA', label: 'French', isDefault: false},
+                { value: 'en-US', label: 'English', isDefault: true },
+                { value: 'fr-CA', label: 'French', isDefault: false },
             ]
 
             const result = mapHelpCenterLanguagesToLanguagePicker(
                 helpCenter as HelpCenter,
-                uiLanguageOptions
+                uiLanguageOptions,
             )
             expect(result).toEqual(expected)
         })
@@ -312,7 +312,7 @@ describe('helpCenterCreationWizardUtils', () => {
             handleOnError(
                 new Error('An error occurred'),
                 'An error occurred',
-                dispatch
+                dispatch,
             )
 
             expect(notify).toHaveBeenNthCalledWith(1, {
@@ -324,14 +324,14 @@ describe('helpCenterCreationWizardUtils', () => {
 
             expect(reportError).toHaveBeenCalledTimes(1)
             expect(reportError).toHaveBeenCalledWith(
-                new Error('An error occurred')
+                new Error('An error occurred'),
             )
         })
     })
 
     describe('isErrorRecord', () => {
         it('should return true for object', () => {
-            const error = {message: 'An error occurred'}
+            const error = { message: 'An error occurred' }
             expect(isErrorRecord(error)).toBe(true)
         })
 
@@ -354,15 +354,15 @@ describe('helpCenterCreationWizardUtils', () => {
     describe('mapEntrypointsToAutomationSettings', () => {
         it('should correctly map entrypoints to Automate settings', () => {
             const entrypoints = [
-                {workflow_id: '1', enabled: true},
-                {workflow_id: '2', enabled: false},
+                { workflow_id: '1', enabled: true },
+                { workflow_id: '2', enabled: false },
             ]
             const result = mapEntrypointsToAutomationSettings(entrypoints)
 
             expect(result).toEqual({
                 workflows: [
-                    {enabled: true, id: '1'},
-                    {enabled: false, id: '2'},
+                    { enabled: true, id: '1' },
+                    { enabled: false, id: '2' },
                 ],
             })
         })
@@ -375,7 +375,10 @@ describe('helpCenterCreationWizardUtils', () => {
                 content: 'content',
                 key: 'key',
                 type: ArticleTemplateType.Template,
-                seo_meta: {title: 'seo title', description: 'seo description'},
+                seo_meta: {
+                    title: 'seo title',
+                    description: 'seo description',
+                },
             }
             const locale: LocaleCode = 'en-US'
             expect(
@@ -383,7 +386,7 @@ describe('helpCenterCreationWizardUtils', () => {
                     article: articleItem,
                     locale,
                     shouldPublish: true,
-                })
+                }),
             ).toBeNull()
         })
 
@@ -393,7 +396,10 @@ describe('helpCenterCreationWizardUtils', () => {
                 content: 'content',
                 key: 'shippingPolicy',
                 type: ArticleTemplateType.Template,
-                seo_meta: {title: 'seo title', description: 'seo description'},
+                seo_meta: {
+                    title: 'seo title',
+                    description: 'seo description',
+                },
             }
             const locale: LocaleCode = 'en-US'
             const result = mapHelpCenterArticleItemToArticle({
@@ -414,7 +420,10 @@ describe('helpCenterCreationWizardUtils', () => {
                 content: 'content',
                 key: 'customKey',
                 type: ArticleTemplateType.Template,
-                seo_meta: {title: 'seo title', description: 'seo description'},
+                seo_meta: {
+                    title: 'seo title',
+                    description: 'seo description',
+                },
                 isSelected: true,
             }
 
@@ -423,7 +432,10 @@ describe('helpCenterCreationWizardUtils', () => {
                 content: 'content',
                 key: 'customKey',
                 type: ArticleTemplateType.Template,
-                seo_meta: {title: 'seo title', description: 'seo description'},
+                seo_meta: {
+                    title: 'seo title',
+                    description: 'seo description',
+                },
             }
 
             const articleItem3: HelpCenterArticleItem = {
@@ -431,7 +443,10 @@ describe('helpCenterCreationWizardUtils', () => {
                 content: 'content',
                 key: 'customKey',
                 type: ArticleTemplateType.Template,
-                seo_meta: {title: 'seo title', description: 'seo description'},
+                seo_meta: {
+                    title: 'seo title',
+                    description: 'seo description',
+                },
                 isSelected: false,
             }
 

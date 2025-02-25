@@ -1,13 +1,14 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
-import {StaticRouter} from 'react-router-dom'
 
-import {useFlag} from 'core/flags'
-import {assumeMock} from 'utils/testing'
+import { render, screen } from '@testing-library/react'
+import { StaticRouter } from 'react-router-dom'
+
+import { useFlag } from 'core/flags'
+import { assumeMock } from 'utils/testing'
 
 import RoutesWrapper from '../RoutesWrapper'
 
-jest.mock('core/flags', () => ({useFlag: jest.fn()}))
+jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
 const useFlagMock = assumeMock(useFlag)
 
 jest.mock(
@@ -16,7 +17,7 @@ jest.mock(
         ({
             ...jest.requireActual('../PanelRoutes'),
             default: () => <div>PanelRoutes</div>,
-        }) as typeof import('../PanelRoutes')
+        }) as typeof import('../PanelRoutes'),
 )
 jest.mock('../Routes', () => () => <div>Routes</div>)
 
@@ -29,7 +30,7 @@ describe('RoutesWrapper', () => {
         render(
             <StaticRouter location="/">
                 <RoutesWrapper />
-            </StaticRouter>
+            </StaticRouter>,
         )
         expect(screen.getByText('Routes')).toBeInTheDocument()
     })
@@ -39,7 +40,7 @@ describe('RoutesWrapper', () => {
         render(
             <StaticRouter location="/settings">
                 <RoutesWrapper />
-            </StaticRouter>
+            </StaticRouter>,
         )
         expect(screen.getByText('Routes')).toBeInTheDocument()
     })
@@ -49,7 +50,7 @@ describe('RoutesWrapper', () => {
         render(
             <StaticRouter location="/app">
                 <RoutesWrapper />
-            </StaticRouter>
+            </StaticRouter>,
         )
         expect(screen.getByText('PanelRoutes')).toBeInTheDocument()
     })

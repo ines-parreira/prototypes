@@ -1,15 +1,15 @@
-import {act, fireEvent, screen, waitFor} from '@testing-library/react'
-import {createMemoryHistory} from 'history'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
+import { createMemoryHistory } from 'history'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {useGetActionsApp} from 'models/workflows/queries'
-import {RootState, StoreDispatch} from 'state/types'
-
-import {flushPromises, renderWithRouter} from 'utils/testing'
+import { useGetActionsApp } from 'models/workflows/queries'
+import { RootState, StoreDispatch } from 'state/types'
+import { flushPromises, renderWithRouter } from 'utils/testing'
 
 import ActionsPlatformEditAppFormView from '../ActionsPlatformEditAppFormView'
 import useApps from '../hooks/useApps'
@@ -68,7 +68,7 @@ describe('<ActionsPlatformEditAppFormView />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <ActionsPlatformEditAppFormView />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('Actions platform')).toBeInTheDocument()
@@ -84,12 +84,12 @@ describe('<ActionsPlatformEditAppFormView />', () => {
             <Provider store={mockStore}>
                 <ActionsPlatformEditAppFormView />
             </Provider>,
-            {history}
+            { history },
         )
 
         act(() => {
             fireEvent.change(screen.getByDisplayValue('https://example.com'), {
-                target: {value: 'https://example2.com'},
+                target: { value: 'https://example2.com' },
             })
         })
 
@@ -100,7 +100,7 @@ describe('<ActionsPlatformEditAppFormView />', () => {
         })
 
         expect(mockEditActionsApp).toHaveBeenCalledWith([
-            {id: 'someid'},
+            { id: 'someid' },
             {
                 id: 'someid',
                 auth_type: 'api-key',
@@ -111,7 +111,7 @@ describe('<ActionsPlatformEditAppFormView />', () => {
         ])
         await waitFor(() => {
             expect(historyPushSpy).toHaveBeenCalledWith(
-                '/app/automation/actions-platform/apps'
+                '/app/automation/actions-platform/apps',
             )
         })
     })
@@ -125,12 +125,12 @@ describe('<ActionsPlatformEditAppFormView />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <ActionsPlatformEditAppFormView />
-            </Provider>
+            </Provider>,
         )
 
         act(() => {
             fireEvent.change(screen.getByDisplayValue('https://example.com'), {
-                target: {value: 'https://example2.com'},
+                target: { value: 'https://example2.com' },
             })
         })
 
@@ -155,11 +155,11 @@ describe('<ActionsPlatformEditAppFormView />', () => {
             <Provider store={mockStore}>
                 <ActionsPlatformEditAppFormView />
             </Provider>,
-            {history}
+            { history },
         )
 
         expect(history.location.pathname).toEqual(
-            '/app/automation/actions-platform/apps'
+            '/app/automation/actions-platform/apps',
         )
     })
 })

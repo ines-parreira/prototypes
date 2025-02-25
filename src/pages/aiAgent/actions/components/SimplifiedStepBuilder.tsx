@@ -1,14 +1,15 @@
-import React, {Dispatch, useState} from 'react'
+import React, { Dispatch, useState } from 'react'
 
-import {ActionTemplate} from 'pages/automate/actionsPlatform/types'
-import {VisualBuilderGraphAction} from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
-import {VisualBuilderGraph} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { ActionTemplate } from 'pages/automate/actionsPlatform/types'
+import { VisualBuilderGraphAction } from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
+import { VisualBuilderGraph } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import Button from 'pages/common/components/button/Button'
 
 import StoreAppsProvider from '../providers/StoreAppsProvider'
-import {ConvertActionToAdvancedViewDialog} from './ConvertActionToAdvancedViewDialog'
+import { ConvertActionToAdvancedViewDialog } from './ConvertActionToAdvancedViewDialog'
+import { SimplifiedStepBuilderSteps } from './SimplifiedStepBuilderSteps'
+
 import css from './SimplifiedStepBuilder.less'
-import {SimplifiedStepBuilderSteps} from './SimplifiedStepBuilderSteps'
 
 type Props = {
     graph: VisualBuilderGraph

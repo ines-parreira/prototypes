@@ -1,17 +1,17 @@
-import {render} from '@testing-library/react'
-
 import React from 'react'
 
-import {AutomateTimeseries} from 'hooks/reporting/automate/types'
+import { render } from '@testing-library/react'
+
+import { AutomateTimeseries } from 'hooks/reporting/automate/types'
 import {
     useAutomateMetricsTimeSeries,
     useAutomateMetricsTrend,
 } from 'hooks/reporting/automate/useAutomationDataset'
-import {useNewAutomateFilters} from 'hooks/reporting/automate/useNewAutomateFilters'
-import {ReportingGranularity} from 'models/reporting/types'
-import {AutomatedInteractionsPerFeatureGraphChart} from 'pages/stats/automate/overview/charts/AutomatedInteractionsPerFeatureGraphChart'
-import {LineChart} from 'pages/stats/common/components/charts/LineChart/LineChart'
-import {assumeMock} from 'utils/testing'
+import { useNewAutomateFilters } from 'hooks/reporting/automate/useNewAutomateFilters'
+import { ReportingGranularity } from 'models/reporting/types'
+import { AutomatedInteractionsPerFeatureGraphChart } from 'pages/stats/automate/overview/charts/AutomatedInteractionsPerFeatureGraphChart'
+import { LineChart } from 'pages/stats/common/components/charts/LineChart/LineChart'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('pages/stats/common/components/charts/LineChart/LineChart')
 const LineChartMock = assumeMock(LineChart)
@@ -19,7 +19,7 @@ jest.mock('hooks/reporting/automate/useAutomationDataset')
 const useAutomateMetricsTrendMock = assumeMock(useAutomateMetricsTrend)
 jest.mock('hooks/reporting/automate/useAutomationDataset')
 const useAutomateMetricsTimeSeriesMock = assumeMock(
-    useAutomateMetricsTimeSeries
+    useAutomateMetricsTimeSeries,
 )
 jest.mock('hooks/reporting/automate/useNewAutomateFilters')
 const useNewAutomateFiltersMock = assumeMock(useNewAutomateFilters)
@@ -78,7 +78,7 @@ describe('AutomatedInteractionsPerFeatureGraphChart', () => {
             },
         } as ReturnType<typeof useAutomateMetricsTrend>)
         useAutomateMetricsTimeSeriesMock.mockReturnValue(
-            automateMetricsTimeSeries
+            automateMetricsTimeSeries,
         )
         LineChartMock.mockImplementation(() => <div />)
     })
@@ -88,9 +88,9 @@ describe('AutomatedInteractionsPerFeatureGraphChart', () => {
 
         expect(LineChartMock).toHaveBeenCalledWith(
             expect.objectContaining({
-                yAxisScale: {min: 0, max: 750},
+                yAxisScale: { min: 0, max: 750 },
             }),
-            {}
+            {},
         )
     })
 })

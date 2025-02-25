@@ -1,6 +1,6 @@
-import {getSingleArticleEnglish} from 'pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
-import {getCategoriesResponseEnglish} from 'pages/settings/helpCenter/fixtures/getCategoriesTree.fixtures'
-import {getCategoriesFlatSorted} from 'pages/settings/helpCenter/fixtures/getCategoriesTreeFlatSorted.fixtures'
+import { getSingleArticleEnglish } from 'pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
+import { getCategoriesResponseEnglish } from 'pages/settings/helpCenter/fixtures/getCategoriesTree.fixtures'
+import { getCategoriesFlatSorted } from 'pages/settings/helpCenter/fixtures/getCategoriesTreeFlatSorted.fixtures'
 
 import {
     createArticleFromDto,
@@ -17,7 +17,7 @@ describe('Help Center model utils', () => {
             }
 
             expect(createArticleFromDto(getSingleArticleEnglish, 0)).toEqual(
-                expected
+                expected,
             )
         })
     })
@@ -31,7 +31,7 @@ describe('Help Center model utils', () => {
             'throws error if the locale code is not recognized',
             (value: string) => {
                 expect(() => validLocaleCode(value)).toThrow()
-            }
+            },
         )
     })
 

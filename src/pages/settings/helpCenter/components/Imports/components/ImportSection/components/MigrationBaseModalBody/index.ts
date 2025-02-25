@@ -1,1 +1,1 @@
-export {default} from './MigrationBaseModalBody'
+export { default } from './MigrationBaseModalBody'

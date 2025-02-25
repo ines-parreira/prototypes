@@ -1,13 +1,13 @@
-import {OrderDirection} from 'models/api/types'
-import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
-import {TicketDimension} from 'models/reporting/cubes/TicketCube'
+import { OrderDirection } from 'models/api/types'
+import { HelpdeskMessageCubeWithJoins } from 'models/reporting/cubes/HelpdeskMessageCube'
+import { TicketDimension } from 'models/reporting/cubes/TicketCube'
 import {
     TicketSatisfactionSurveyDimension,
     TicketSatisfactionSurveyMeasure,
     TicketSatisfactionSurveySegment,
 } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
-import {ReportingFilterOperator, ReportingQuery} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import { ReportingFilterOperator, ReportingQuery } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     statsFiltersToReportingFilters,
@@ -17,7 +17,7 @@ import {
 export const averageScoreQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
     measures: [TicketSatisfactionSurveyMeasure.AvgSurveyScore],
     dimensions: [],
@@ -36,7 +36,7 @@ export const averageScoreQueryFactory = (
 export const averageScoreDrillDownQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
     ...averageScoreQueryFactory(filters, timezone, sorting),
     filters: [

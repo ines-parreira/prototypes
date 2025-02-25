@@ -1,7 +1,8 @@
-import classNames from 'classnames'
 import React from 'react'
 
-import {diffChars} from 'utils/diffCheck'
+import classNames from 'classnames'
+
+import { diffChars } from 'utils/diffCheck'
 
 import css from './CharDiff.less'
 
@@ -10,7 +11,7 @@ type Props = {
     string2?: string
 }
 
-export default function CharDiff({string1 = '', string2 = ''}: Props) {
+export default function CharDiff({ string1 = '', string2 = '' }: Props) {
     const groups = diffChars(string1, string2)
 
     if (!groups) return null
@@ -19,7 +20,7 @@ export default function CharDiff({string1 = '', string2 = ''}: Props) {
         <span>
             {groups.map((group, index) => {
                 let value = group.value
-                const {added, removed} = group
+                const { added, removed } = group
 
                 if ((added || removed) && !/\S/.test(value)) {
                     const linebreaks = value.match(/(\r\n|\r|\n)/g)

@@ -1,2 +1,2 @@
-export {default} from './TimeBetweenCampaigns'
+export { default } from './TimeBetweenCampaigns'
 export * from './TimeBetweenCampaigns'

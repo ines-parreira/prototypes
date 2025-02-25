@@ -1,10 +1,10 @@
-import React, {useState, SyntheticEvent} from 'react'
+import React, { SyntheticEvent, useState } from 'react'
 
-import {LeafType} from 'models/widget/types'
+import { LeafType } from 'models/widget/types'
 import Button from 'pages/common/components/button/Button'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 
-import {FieldEditFormData, HiddenFields} from '../../types'
+import { FieldEditFormData, HiddenFields } from '../../types'
 
 export const TITLE_FIELD_LABEL = 'Title'
 export const TYPE_FIELD_LABEL = 'Type'
@@ -44,7 +44,7 @@ export default function FieldEditForm<T extends LeafType>({
         if (!type) {
             return
         }
-        onSubmit({title, type})
+        onSubmit({ title, type })
     }
 
     return (
@@ -68,7 +68,7 @@ export default function FieldEditForm<T extends LeafType>({
                     value={type}
                     onChange={(type) => setType(type)}
                 >
-                    {availableTypes.map(({value, label}) => (
+                    {availableTypes.map(({ value, label }) => (
                         <option key={value} value={value}>
                             {label}
                         </option>

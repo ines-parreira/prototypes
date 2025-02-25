@@ -8,7 +8,7 @@ type Props = {
     onClick: (isVisible: boolean) => void
 }
 
-export default function TipsToggle({className, isVisible, onClick}: Props) {
+export default function TipsToggle({ className, isVisible, onClick }: Props) {
     return (
         <Button
             className={className}

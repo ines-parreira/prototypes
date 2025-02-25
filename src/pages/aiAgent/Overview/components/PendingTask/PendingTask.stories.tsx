@@ -1,9 +1,9 @@
-import {Meta, StoryFn} from '@storybook/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {MemoryRouter} from 'react-router-dom'
+import { Meta, StoryFn } from '@storybook/react'
+import { MemoryRouter } from 'react-router-dom'
 
-import {PendingTask} from './PendingTask'
+import { PendingTask } from './PendingTask'
 
 const storyConfig: Meta<typeof PendingTask> = {
     title: 'AI Agent/Overview/PendingTask',
@@ -21,7 +21,7 @@ const Template: StoryFn<ComponentProps<typeof PendingTask>> = (args) => {
     args.ctaUrl = '/'
 
     return (
-        <div style={{width: '300px'}}>
+        <div style={{ width: '300px' }}>
             <PendingTask {...args} />
         </div>
     )

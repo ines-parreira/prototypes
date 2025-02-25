@@ -1,15 +1,16 @@
 import React from 'react'
 
-import {AlertBanner} from 'AlertBanners'
+import { AlertBanner } from 'AlertBanners'
 
-import css from './Detail.less'
 import Header from './Header'
 import InfoCard from './InfoCard'
 import Slides from './Slides'
-import {ProductDetail} from './types'
+import { ProductDetail } from './types'
+
+import css from './Detail.less'
 
 export default function Detail(props: ProductDetail) {
-    const {screenshots = [], longDescription, benefits, infocard} = props
+    const { screenshots = [], longDescription, benefits, infocard } = props
 
     return (
         <>
@@ -22,7 +23,9 @@ export default function Detail(props: ProductDetail) {
                     <div className={css.longDescription}>
                         <h2>About</h2>
                         <div
-                            dangerouslySetInnerHTML={{__html: longDescription}}
+                            dangerouslySetInnerHTML={{
+                                __html: longDescription,
+                            }}
                         />
                         {benefits && benefits.length > 0 && (
                             <>

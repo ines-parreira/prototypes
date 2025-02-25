@@ -1,11 +1,12 @@
-import classnames from 'classnames'
-import {fromJS, Map, List} from 'immutable'
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 
-import {displayHistoryOnNextPage} from '../../../../state/ticket/actions'
+import classnames from 'classnames'
+import { fromJS, List, Map } from 'immutable'
+
+import { displayHistoryOnNextPage } from '../../../../state/ticket/actions'
+import TimelineTicket from './TimelineTicket'
 
 import css from './Timeline.less'
-import TimelineTicket from './TimelineTicket'
 
 type Props = {
     displayHistoryOnNextPage?: typeof displayHistoryOnNextPage

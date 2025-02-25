@@ -1,23 +1,23 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {OBJECT_TYPES} from 'custom-fields/constants'
-import {evaluateCustomFieldsConditions} from 'custom-fields/helpers/evaluateCustomFieldsConditions'
+import { OBJECT_TYPES } from 'custom-fields/constants'
+import { evaluateCustomFieldsConditions } from 'custom-fields/helpers/evaluateCustomFieldsConditions'
 import {
     CustomFieldConditionsEvaluationResults,
     CustomFieldObjectTypes,
 } from 'custom-fields/types'
 
-import {useCustomFieldConditions} from './queries/useCustomFieldConditions'
+import { useCustomFieldConditions } from './queries/useCustomFieldConditions'
 
 export const useCustomFieldsConditionsEvaluationResults = (
     objectType: CustomFieldObjectTypes,
     sourceObject: Record<string, any>,
-    conditionalFieldsSupported: boolean
+    conditionalFieldsSupported: boolean,
 ): {
     evaluationResults: CustomFieldConditionsEvaluationResults
     conditionsLoading: boolean
 } => {
-    const {customFieldConditions, isLoading: conditionsLoading} =
+    const { customFieldConditions, isLoading: conditionsLoading } =
         useCustomFieldConditions({
             objectType: OBJECT_TYPES.TICKET,
             includeDeactivated: false,
@@ -29,9 +29,9 @@ export const useCustomFieldsConditionsEvaluationResults = (
             evaluateCustomFieldsConditions(
                 customFieldConditions,
                 objectType,
-                sourceObject
+                sourceObject,
             ),
-        [customFieldConditions, objectType, sourceObject]
+        [customFieldConditions, objectType, sourceObject],
     )
     return {
         evaluationResults,

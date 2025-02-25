@@ -1,12 +1,12 @@
+import React, { useMemo, useState } from 'react'
+
 import _keyBy from 'lodash/keyBy'
-import React, {useMemo, useState} from 'react'
-import {useHistory} from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 import useOrderBy from 'hooks/useOrderBy'
 import AutomateListView from 'pages/automate/common/components/AutomateListView'
 import Button from 'pages/common/components/button/Button'
 
-import css from './ActionsPlatformTemplatesView.less'
 import ActionsPlatformTemplatesFilters from './components/ActionsPlatformTemplatesFilters'
 import ActionsPlatformTemplatesTable from './components/ActionsPlatformTemplatesTable'
 import ActionsPlatformUseCaseTemplatesTableRow from './components/ActionsPlatformUseCaseTemplatesTableRow'
@@ -14,19 +14,21 @@ import useApps from './hooks/useApps'
 import useDeleteActionTemplate from './hooks/useDeleteActionTemplate'
 import useGetAppFromTemplateApp from './hooks/useGetAppFromTemplateApp'
 import useUseCaseTemplates from './hooks/useUseCaseTemplates'
-import {App} from './types'
+import { App } from './types'
+
+import css from './ActionsPlatformTemplatesView.less'
 
 const ActionsPlatformUseCaseTemplatesView = () => {
-    const {templates, isLoading: isTemplatesLoading} = useUseCaseTemplates()
-    const {deleteActionTemplate, isLoading: isDeleteActionTemplateLoading} =
+    const { templates, isLoading: isTemplatesLoading } = useUseCaseTemplates()
+    const { deleteActionTemplate, isLoading: isDeleteActionTemplateLoading } =
         useDeleteActionTemplate()
-    const {apps, isLoading: areAppsLoading, actionsApps} = useApps()
-    const getAppFromTemplateApp = useGetAppFromTemplateApp({apps})
+    const { apps, isLoading: areAppsLoading, actionsApps } = useApps()
+    const getAppFromTemplateApp = useGetAppFromTemplateApp({ apps })
     const history = useHistory()
 
     const [name, setName] = useState('')
     const [app, setApp] = useState<App | null>(null)
-    const {orderDirection, orderBy, orderParam, toggleOrderBy} =
+    const { orderDirection, orderBy, orderParam, toggleOrderBy } =
         useOrderBy<'updated_datetime'>('updated_datetime')
 
     const filteredTemplates = useMemo(() => {
@@ -69,7 +71,7 @@ const ActionsPlatformUseCaseTemplatesView = () => {
         const actionsAppsById = _keyBy(actionsApps, 'id')
 
         return apps.filter(
-            (app) => app.type !== 'app' || app.id in actionsAppsById
+            (app) => app.type !== 'app' || app.id in actionsAppsById,
         )
     }, [apps, actionsApps])
 
@@ -111,7 +113,7 @@ const ActionsPlatformUseCaseTemplatesView = () => {
                     <Button
                         onClick={() => {
                             history.push(
-                                '/app/automation/actions-platform/use-cases/new'
+                                '/app/automation/actions-platform/use-cases/new',
                             )
                         }}
                     >
@@ -138,12 +140,12 @@ const ActionsPlatformUseCaseTemplatesView = () => {
                         app={getAppFromTemplateApp(template.apps[0])}
                         onClick={() => {
                             history.push(
-                                `/app/automation/actions-platform/use-cases/edit/${template.id}`
+                                `/app/automation/actions-platform/use-cases/edit/${template.id}`,
                             )
                         }}
                         onDelete={() => {
                             void deleteActionTemplate([
-                                {internal_id: template.internal_id},
+                                { internal_id: template.internal_id },
                             ])
                         }}
                         isDisabled={isDeleteActionTemplateLoading}

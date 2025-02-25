@@ -1,10 +1,11 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
+import { render, screen } from '@testing-library/react'
+
 import {
-    TagsBlankState,
     BLANK_STATE_TEXT,
     BLANK_STATE_TITLE,
+    TagsBlankState,
 } from 'pages/stats/ticket-insights/tags/TagsBlankState'
 
 describe('<TagsBlankState>', () => {

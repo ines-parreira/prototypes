@@ -1,5 +1,6 @@
+import React, { ReactNode } from 'react'
+
 import classnames from 'classnames'
-import React, {ReactNode} from 'react'
 
 import css from './ColorPanel.less'
 
@@ -8,7 +9,7 @@ type Props = {
     children?: ReactNode
 }
 
-export default function ColorPanel({children, accentColor}: Props) {
+export default function ColorPanel({ children, accentColor }: Props) {
     return (
         <div
             className={classnames(css.wrapper)}

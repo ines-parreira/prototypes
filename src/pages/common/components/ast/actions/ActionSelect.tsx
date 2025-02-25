@@ -1,16 +1,17 @@
-import {Map, List} from 'immutable'
 import React from 'react'
+
+import { List, Map } from 'immutable'
 import {
-    UncontrolledButtonDropdown,
-    DropdownToggle,
-    DropdownMenu,
     DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+    UncontrolledButtonDropdown,
 } from 'reactstrap'
 
-import {RuleItemActions} from 'pages/settings/rules/types'
-import {RuleOperation} from 'state/rules/types'
+import { RuleItemActions } from 'pages/settings/rules/types'
+import { RuleOperation } from 'state/rules/types'
 
-import {actionsConfig, isValidActionKey} from './config'
+import { actionsConfig, isValidActionKey } from './config'
 
 type Props = {
     actions: RuleItemActions
@@ -19,7 +20,7 @@ type Props = {
     value: string
 }
 
-export default function ActionSelect({actions, parent, rule, value}: Props) {
+export default function ActionSelect({ actions, parent, rule, value }: Props) {
     const handleClick = (value: string) => {
         actions.modifyCodeAST(parent, value, RuleOperation.Update)
     }

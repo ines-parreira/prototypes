@@ -1,1 +1,1 @@
-export {default, StatusEnum} from './StatusBadge'
+export { default, StatusEnum } from './StatusBadge'

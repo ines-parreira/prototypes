@@ -1,8 +1,9 @@
 import React from 'react'
-import {Redirect} from 'react-router-dom'
+
+import { Redirect } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {getHasAutomate} from 'state/billing/selectors'
+import { getHasAutomate } from 'state/billing/selectors'
 
 import ReportOrderIssueFlowView from './ReportOrderIssueFlowView'
 

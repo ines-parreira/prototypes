@@ -1,20 +1,22 @@
 import React from 'react'
-import {Route, Switch, useRouteMatch} from 'react-router-dom'
 
-import {OnboardingPanel} from 'common/onboarding'
-import {Handle, PanelGroup, Panels} from 'core/layout/panels'
-import {GlobalNavigationPanel} from 'core/navigation'
-import {useIsMobileResolution} from 'hooks/useIsMobileResolution'
+import { Route, Switch, useRouteMatch } from 'react-router-dom'
+
+import { OnboardingPanel } from 'common/onboarding'
+import { Handle, PanelGroup, Panels } from 'core/layout/panels'
+import { GlobalNavigationPanel } from 'core/navigation'
+import { useIsMobileResolution } from 'hooks/useIsMobileResolution'
 import useWindowSize from 'hooks/useWindowSize'
-import {useOnToggleUnread} from 'tickets/dtp'
-import {TicketsNavbarPanel} from 'tickets/navigation'
-import {TicketDetailPanel} from 'tickets/ticket-detail'
-import {TicketEmptyPanel} from 'tickets/ticket-empty'
-import {TicketInfobarPanel} from 'tickets/ticket-infobar'
-import {TicketsListPanel} from 'tickets/tickets-list'
-import {ViewPanel} from 'tickets/view'
+import { useOnToggleUnread } from 'tickets/dtp'
+import { TicketsNavbarPanel } from 'tickets/navigation'
+import { TicketDetailPanel } from 'tickets/ticket-detail'
+import { TicketEmptyPanel } from 'tickets/ticket-empty'
+import { TicketInfobarPanel } from 'tickets/ticket-infobar'
+import { TicketsListPanel } from 'tickets/tickets-list'
+import { ViewPanel } from 'tickets/view'
 
-import {MobileRoutes} from './MobileRoutes'
+import { MobileRoutes } from './MobileRoutes'
+
 import css from './PanelRoutes.less'
 
 export const panelRoutesRegexps = [
@@ -25,11 +27,11 @@ export const panelRoutesRegexps = [
 ]
 
 export default function PanelRoutes() {
-    const {width} = useWindowSize()
-    const {onToggleUnread, registerOnToggleUnread} = useOnToggleUnread()
+    const { width } = useWindowSize()
+    const { onToggleUnread, registerOnToggleUnread } = useOnToggleUnread()
     const isMobileResolution = useIsMobileResolution()
 
-    const match = useRouteMatch<{viewId?: string}>('/app/views/:viewId?')
+    const match = useRouteMatch<{ viewId?: string }>('/app/views/:viewId?')
     const viewId = match?.params.viewId || 'default'
 
     if (isMobileResolution) {

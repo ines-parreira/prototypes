@@ -1,16 +1,19 @@
-import {Tooltip, Badge} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
-import {fromJS, List, Map} from 'immutable'
-import React, {useState} from 'react'
-import {Collapse} from 'reactstrap'
+import React, { useState } from 'react'
 
-import {ActionTemplateExecution} from 'config'
+import classNames from 'classnames'
+import { fromJS, List, Map } from 'immutable'
+import { Collapse } from 'reactstrap'
+
+import { Badge, Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { ActionTemplateExecution } from 'config'
 import useAppSelector from 'hooks/useAppSelector'
-import {MacroActionName} from 'models/macroAction/types'
-import {hasContent} from 'state/newMessage/selectors'
-import {getActionTemplate} from 'utils'
+import { MacroActionName } from 'models/macroAction/types'
+import { hasContent } from 'state/newMessage/selectors'
+import { getActionTemplate } from 'utils'
 
 import TicketReplyAction from './TicketReplyAction'
+
 import css from './TicketReplyActions.less'
 
 type Props = {
@@ -28,7 +31,7 @@ export default function TicketReplyActions({
         ? (appliedMacro.get('actions') as List<Map<any, any>>).filter(
               (action) =>
                   getActionTemplate(action!.get('name'))?.execution !==
-                  ActionTemplateExecution.Front
+                  ActionTemplateExecution.Front,
           )
         : fromJS([])
 
@@ -51,7 +54,7 @@ export default function TicketReplyActions({
                 : showFirst.includes(b.get('name')) ||
                     a.get('name') > b.get('name')
                   ? 1
-                  : 0
+                  : 0,
     )
 
     return (
@@ -60,7 +63,7 @@ export default function TicketReplyActions({
                 <i
                     className={classNames(
                         css.actionIcon,
-                        'material-icons mr-2'
+                        'material-icons mr-2',
                     )}
                 >
                     bolt
@@ -96,7 +99,7 @@ export default function TicketReplyActions({
                             key += `_${
                                 action.get(
                                     'title',
-                                    mapKey?.toString() || ''
+                                    mapKey?.toString() || '',
                                 ) as string
                             }`
                         }
@@ -111,7 +114,7 @@ export default function TicketReplyActions({
                                 ticketId={ticketId}
                             />
                         )
-                    }
+                    },
                 )}
             </Collapse>
         </div>

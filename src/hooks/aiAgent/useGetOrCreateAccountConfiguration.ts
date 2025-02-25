@@ -1,18 +1,18 @@
-import {useQuery, UseQueryOptions} from '@tanstack/react-query'
+import { useQuery, UseQueryOptions } from '@tanstack/react-query'
 import axios from 'axios'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
+    accountConfigurationKeys,
     CACHE_TIME_MS,
     STALE_TIME_MS,
-    accountConfigurationKeys,
 } from 'models/aiAgent/queries'
 import {
     createAccountConfiguration,
     getAccountConfiguration,
 } from 'models/aiAgent/resources/configuration'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 export function useGetOrCreateAccountConfiguration(
     params: {
@@ -22,11 +22,11 @@ export function useGetOrCreateAccountConfiguration(
     },
     overrides?: UseQueryOptions<
         Awaited<ReturnType<typeof getAccountConfiguration>>
-    >
+    >,
 ) {
     const dispatch = useAppDispatch()
 
-    const {accountId, accountDomain, storeNames} = params
+    const { accountId, accountDomain, storeNames } = params
     return useQuery({
         queryKey: accountConfigurationKeys.detail(accountDomain),
         queryFn: async () => {
@@ -45,7 +45,7 @@ export function useGetOrCreateAccountConfiguration(
                         message: 'Initializing AI Agent',
                         status: NotificationStatus.Loading,
                         closeOnNext: true,
-                    })
+                    }),
                 )
                 return await createAccountConfiguration({
                     accountId,
@@ -60,7 +60,7 @@ export function useGetOrCreateAccountConfiguration(
                 notify({
                     message: 'An error occurred while loading the AI Agent',
                     status: NotificationStatus.Error,
-                })
+                }),
             )
         },
         staleTime: STALE_TIME_MS,

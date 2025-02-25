@@ -1,9 +1,10 @@
-import {Meta, StoryObj} from '@storybook/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { Meta, StoryObj } from '@storybook/react'
 
 import TicketTag from 'pages/common/components/TicketTag'
 
-import {default as CustomCardComponent} from '../CustomCard'
+import { default as CustomCardComponent } from '../CustomCard'
 
 const storyConfig: Meta = {
     title: 'General/TemplateCard/CustomCard',

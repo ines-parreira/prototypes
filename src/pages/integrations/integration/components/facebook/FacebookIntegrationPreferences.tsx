@@ -1,15 +1,16 @@
+import React, { Component } from 'react'
+
 import classnames from 'classnames'
-import {fromJS, Map} from 'immutable'
+import { fromJS, Map } from 'immutable'
 import _isUndefined from 'lodash/isUndefined'
 import _omitBy from 'lodash/omitBy'
-import React, {Component} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {Link} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem, Container, Form} from 'reactstrap'
+import { connect, ConnectedProps } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem, Container, Form } from 'reactstrap'
 
 import {
-    CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
     CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
+    CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
     getAutoResponderReplyOptions,
 } from 'config/integrations/index'
 import Button from 'pages/common/components/button/Button'
@@ -17,7 +18,7 @@ import PageHeader from 'pages/common/components/PageHeader'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import css from 'pages/settings/settings.less'
-import {updateOrCreateIntegration} from 'state/integrations/actions'
+import { updateOrCreateIntegration } from 'state/integrations/actions'
 
 import FacebookIntegrationNavigation from './FacebookIntegrationNavigation'
 
@@ -59,8 +60,8 @@ export class FacebookIntegrationPreferences extends Component<Props, State> {
                         ]) || CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
                     isInitialized: true,
                 },
-                _isUndefined
-            ) as State
+                _isUndefined,
+            ) as State,
         )
     }
 
@@ -77,18 +78,18 @@ export class FacebookIntegrationPreferences extends Component<Props, State> {
     }
 
     _setAutoResponderEnabled = (value: boolean) => {
-        this.setState({autoResponderEnabled: value})
+        this.setState({ autoResponderEnabled: value })
     }
 
     _setAutoResponderReply = (value: string) => {
-        this.setState({autoResponderReply: value})
+        this.setState({ autoResponderReply: value })
     }
 
     _submitPreferences = async (event: React.SyntheticEvent) => {
-        const {updateOrCreateIntegration, integration} = this.props
+        const { updateOrCreateIntegration, integration } = this.props
         event.preventDefault()
 
-        this.setState({isUpdating: true})
+        this.setState({ isUpdating: true })
 
         const existingMeta: Map<any, any> =
             integration.get('meta') || fromJS({})
@@ -107,13 +108,13 @@ export class FacebookIntegrationPreferences extends Component<Props, State> {
 
         await updateOrCreateIntegration(payload)
 
-        this.setState({isUpdating: false})
+        this.setState({ isUpdating: false })
     }
 
     render() {
-        const {autoResponderEnabled, autoResponderReply, isUpdating} =
+        const { autoResponderEnabled, autoResponderReply, isUpdating } =
             this.state
-        const {integration} = this.props
+        const { integration } = this.props
 
         return (
             <div className="full-width">
@@ -172,7 +173,7 @@ export class FacebookIntegrationPreferences extends Component<Props, State> {
                                 <RadioFieldSet
                                     className="mb-3"
                                     options={getAutoResponderReplyOptions(
-                                        integration.getIn(['meta', 'language'])
+                                        integration.getIn(['meta', 'language']),
                                     )}
                                     selectedValue={autoResponderReply}
                                     onChange={this._setAutoResponderReply}

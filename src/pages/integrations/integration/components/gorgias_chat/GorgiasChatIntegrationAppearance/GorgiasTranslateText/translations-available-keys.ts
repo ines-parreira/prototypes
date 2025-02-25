@@ -1,10 +1,10 @@
-import {omit} from 'lodash'
+import { omit } from 'lodash'
 
 import {
-    GORGIAS_CHAT_NAME_MAX_LENGTH,
     GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH,
+    GORGIAS_CHAT_NAME_MAX_LENGTH,
 } from 'config/integrations/gorgias_chat'
-import {TextsPerLanguage} from 'rest_api/gorgias_chat_protected_api/types'
+import { TextsPerLanguage } from 'rest_api/gorgias_chat_protected_api/types'
 
 export type FilterProps = {
     emailCaptureEnforcement?: string
@@ -31,11 +31,11 @@ export const deleteUnusedKeys = (obj: TextsPerLanguage): TextsPerLanguage => {
     return omit(obj, keysToDelete) as TextsPerLanguage
 }
 
-const filterByAutomateSubscriber = ({isAutomateSubscriber}: FilterProps) => {
+const filterByAutomateSubscriber = ({ isAutomateSubscriber }: FilterProps) => {
     return Boolean(isAutomateSubscriber)
 }
 
-const filterByEmailCapture = ({emailCaptureEnforcement}: FilterProps) => {
+const filterByEmailCapture = ({ emailCaptureEnforcement }: FilterProps) => {
     if (emailCaptureEnforcement !== 'always-required') {
         return false
     }
@@ -45,19 +45,19 @@ const filterByEmailCapture = ({emailCaptureEnforcement}: FilterProps) => {
 export default {
     // TODO. Drop me with the feature flag `ChatMultiLanguages`.
     generalLegacySoloLanguage: {
-        'sspTexts.sendUsAMessage': {maxLength: 30},
-        'texts.leaveAMessage': {maxLength: 30},
-        'sspTexts.needHelp': {maxLength: 30},
+        'sspTexts.sendUsAMessage': { maxLength: 30 },
+        'texts.leaveAMessage': { maxLength: 30 },
+        'sspTexts.needHelp': { maxLength: 30 },
         'texts.backLabelBackAt': {
             maxLength: 35,
         },
     },
     general: {
-        'texts.chatTitle': {maxLength: GORGIAS_CHAT_NAME_MAX_LENGTH},
-        'texts.chatWithUs': {maxLength: 30},
-        'sspTexts.sendUsAMessage': {maxLength: 30},
-        'texts.leaveAMessage': {maxLength: 30},
-        'sspTexts.needHelp': {maxLength: 30},
+        'texts.chatTitle': { maxLength: GORGIAS_CHAT_NAME_MAX_LENGTH },
+        'texts.chatWithUs': { maxLength: 30 },
+        'sspTexts.sendUsAMessage': { maxLength: 30 },
+        'texts.leaveAMessage': { maxLength: 30 },
+        'sspTexts.needHelp': { maxLength: 30 },
         'texts.backLabelBackAt': {
             maxLength: 35,
         },
@@ -71,41 +71,41 @@ export default {
         },
     },
     contactForm: {
-        'texts.contactFormIntro': {maxLength: 110},
-        'texts.contactFormAskSubject': {maxLength: 35},
-        'sspTexts.trackOrderShort': {maxLength: 20},
-        'sspTexts.reportIssueShort': {maxLength: 25},
-        'sspTexts.cancelOrderShort': {maxLength: 25},
-        'texts.productQuestionShort': {maxLength: 25},
+        'texts.contactFormIntro': { maxLength: 110 },
+        'texts.contactFormAskSubject': { maxLength: 35 },
+        'sspTexts.trackOrderShort': { maxLength: 20 },
+        'sspTexts.reportIssueShort': { maxLength: 25 },
+        'sspTexts.cancelOrderShort': { maxLength: 25 },
+        'texts.productQuestionShort': { maxLength: 25 },
         'texts.contactFormAskSubjectOther': {
             maxLength: 35,
         },
-        'texts.contactFormAskMessage': {maxLength: 125},
-        'texts.contactFormAskEmail': {maxLength: 50},
+        'texts.contactFormAskMessage': { maxLength: 125 },
+        'texts.contactFormAskEmail': { maxLength: 50 },
         'texts.contactFormAskAdditionalMessage': {
             maxLength: 70,
         },
-        'texts.thatsAll': {maxLength: 15},
+        'texts.thatsAll': { maxLength: 15 },
         'texts.contactFormEndingMessage': {
             maxLength: 85,
         },
     },
     contactFormConfirmationEmail: {
-        'meta.contactFormEmailIntro': {maxLength: 20},
-        'meta.contactFormEmailMessage': {maxLength: 200},
-        'meta.contactFormEmailOutro': {maxLength: 25},
+        'meta.contactFormEmailIntro': { maxLength: 20 },
+        'meta.contactFormEmailMessage': { maxLength: 200 },
+        'meta.contactFormEmailOutro': { maxLength: 25 },
     },
     dynamicWaitTime: {
-        'texts.waitTimeShortHeader': {maxLength: 30},
-        'texts.waitTimeMediumHeader': {maxLength: 40},
-        'texts.waitTimeLongHeader': {maxLength: 40},
+        'texts.waitTimeShortHeader': { maxLength: 30 },
+        'texts.waitTimeMediumHeader': { maxLength: 40 },
+        'texts.waitTimeLongHeader': { maxLength: 40 },
         'texts.waitTimeShortEmailCaptured': {
             maxLength: 110,
         },
         'texts.waitTimeMediumEmailCaptured': {
             maxLength: 140,
         },
-        'texts.waitTimeAgentsAreBusy': {maxLength: 155},
+        'texts.waitTimeAgentsAreBusy': { maxLength: 155 },
         'sspTexts.sorryToHearThatEmailNotRequired': {
             maxLength: 70,
             filteredBy: filterByAutomateSubscriber,
@@ -118,7 +118,7 @@ export default {
             maxLength: 95,
             filteredBy: filterByAutomateSubscriber,
         },
-        'texts.waitForAnAgent': {maxLength: 30},
+        'texts.waitForAnAgent': { maxLength: 30 },
         'texts.waitTimeLongEmailCaptured': {
             maxLength: 110,
         },
@@ -127,10 +127,10 @@ export default {
         },
     },
     autoResponder: {
-        'texts.usualReplyTimeMinutes': {maxLength: 50},
-        'texts.usualReplyTimeHours': {maxLength: 50},
-        'texts.emailCaptureTriggerTypicalReplyMinutes': {maxLength: 100},
-        'texts.emailCaptureTriggerTypicalReplyHours': {maxLength: 100},
+        'texts.usualReplyTimeMinutes': { maxLength: 50 },
+        'texts.usualReplyTimeHours': { maxLength: 50 },
+        'texts.emailCaptureTriggerTypicalReplyMinutes': { maxLength: 100 },
+        'texts.emailCaptureTriggerTypicalReplyHours': { maxLength: 100 },
         'sspTexts.sorryToHearThatHandoverToLiveChatFewMinutes': {
             maxLength: 85,
             filteredBy: filterByAutomateSubscriber,
@@ -141,7 +141,7 @@ export default {
         },
     },
     emailCapture: {
-        'texts.emailCaptureInputLabel': {maxLength: 40},
+        'texts.emailCaptureInputLabel': { maxLength: 40 },
         'sspTexts.youWillGetRepliesHereAndByEmail': {
             maxLength: 60,
         },
@@ -153,9 +153,9 @@ export default {
             maxLength: 65,
             filteredBy: filterByAutomateSubscriber,
         },
-        'sspTexts.email': {maxLength: 10},
+        'sspTexts.email': { maxLength: 10 },
     },
     privacyPolicyDisclaimer: {
-        'texts.privacyPolicyDisclaimer': {maxLength: 500, isRichText: true},
+        'texts.privacyPolicyDisclaimer': { maxLength: 500, isRichText: true },
     },
 }

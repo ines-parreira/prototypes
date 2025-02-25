@@ -1,7 +1,6 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
-import {GorgiasAction} from '../../../types'
-
+import { GorgiasAction } from '../../../types'
 import {
     SET_INITIAL_STATE,
     SET_LINE_ITEMS,
@@ -9,10 +8,10 @@ import {
     SET_ORDER_ID,
     SET_PAYLOAD,
     SET_REFUND,
-    SET_TRANSACTIONS,
     SET_RESTOCK,
+    SET_TRANSACTIONS,
 } from './constants'
-import {CancelOrderState} from './types'
+import { CancelOrderState } from './types'
 
 export const initialState: CancelOrderState = fromJS({
     loading: false,
@@ -25,7 +24,7 @@ export const initialState: CancelOrderState = fromJS({
 
 export default function reducer(
     state: CancelOrderState = initialState,
-    action: GorgiasAction
+    action: GorgiasAction,
 ): CancelOrderState {
     switch (action.type) {
         case SET_LOADING:
@@ -44,7 +43,7 @@ export default function reducer(
             return state.get('payload')
                 ? state.setIn(
                       ['payload', 'refund', 'transactions'],
-                      action.transactions
+                      action.transactions,
                   )
                 : state
         case SET_RESTOCK:

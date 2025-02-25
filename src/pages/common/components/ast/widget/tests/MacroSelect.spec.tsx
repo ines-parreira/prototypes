@@ -1,15 +1,16 @@
-import {render, waitFor} from '@testing-library/react'
-import MockAdapter from 'axios-mock-adapter'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render, waitFor } from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {macros} from 'fixtures/macro'
+import { macros } from 'fixtures/macro'
 import client from 'models/api/resources'
 import MacroSelect from 'pages/common/components/ast/widget/MacroSelect'
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
 
 const mockStore = configureMockStore([thunk])
 
@@ -40,17 +41,17 @@ describe('<MacroSelect/>', () => {
                 next_cursor: null,
             },
         })
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultStore)}>
                 <MacroSelect {...minProps} />
-            </Provider>
+            </Provider>,
         )
         await waitFor(() => expect(spy).toHaveBeenCalledTimes(1))
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render when no macros available', async () => {
-        const macroWithNullActions = {...macros[0], actions: null}
+        const macroWithNullActions = { ...macros[0], actions: null }
         mockServer.onGet('/api/macros/').reply(200, {
             data: [macroWithNullActions],
             meta: {
@@ -58,10 +59,10 @@ describe('<MacroSelect/>', () => {
                 next_cursor: null,
             },
         })
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultStore)}>
                 <MacroSelect {...minProps} />
-            </Provider>
+            </Provider>,
         )
         await waitFor(() => expect(spy).toHaveBeenCalledTimes(1))
         expect(container.firstChild).toMatchSnapshot()

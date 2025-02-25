@@ -1,9 +1,9 @@
 // g/integrations/email/schemas.py
-import type {SenderVerification} from 'models/singleSenderVerification/types'
+import type { SenderVerification } from 'models/singleSenderVerification/types'
 
-import {EmailProvider, IntegrationType} from '../constants'
-import type {Integration} from './'
-import type {IntegrationBase} from './base'
+import { EmailProvider, IntegrationType } from '../constants'
+import type { Integration } from './'
+import type { IntegrationBase } from './base'
 
 export enum OutboundVerificationStatusValue {
     Unverified = 'unverified',
@@ -127,6 +127,6 @@ export type EmailMigrationOutboundVerification = {
 }
 
 export const isEmailIntegration = (
-    integration: Maybe<Integration>
+    integration: Maybe<Integration>,
 ): integration is EmailIntegration =>
     integration?.type === IntegrationType.Email

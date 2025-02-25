@@ -1,23 +1,24 @@
-import {AxiosError} from 'axios'
 import React, {
+    ReactNode,
     useCallback,
-    useState,
     useEffect,
     useMemo,
-    ReactNode,
+    useState,
 } from 'react'
-import {dismissNotification} from 'reapop'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { AxiosError } from 'axios'
+import { dismissNotification } from 'reapop'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
+    createRecoveryCodes as createRecoveryCodesResource,
+    fetchAuthenticatorDataRenewed as fetchAuthenticatorDataRenewedResource,
+    fetchAuthenticatorData as fetchAuthenticatorDataResource,
+    renewRecoveryCodes as renewRecoveryCodesResource,
     saveTwoFASecret as saveTwoFASecretResource,
     validateVerificationCode as validateVerificationCodeResource,
-    createRecoveryCodes as createRecoveryCodesResource,
-    renewRecoveryCodes as renewRecoveryCodesResource,
-    fetchAuthenticatorData as fetchAuthenticatorDataResource,
-    fetchAuthenticatorDataRenewed as fetchAuthenticatorDataRenewedResource,
 } from 'models/twoFactorAuthentication/resources'
 import {
     AuthenticatorData,
@@ -26,16 +27,17 @@ import {
 import Button from 'pages/common/components/button/Button'
 import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 import Wizard from 'pages/common/components/wizard/Wizard'
-import {check2FARequired} from 'pages/settings/yourProfile/twoFactorAuthentication/utils'
-import {getTwoFAEnforcedDatetime} from 'state/currentAccount/selectors'
-import {update2FAEnabled} from 'state/currentUser/actions'
-import {TWO_FA_REQUIRED_NOTIFICATION_ID} from 'state/currentUser/constants'
-import {has2FaEnabled as has2FaEnabledSelector} from 'state/currentUser/selectors'
+import { check2FARequired } from 'pages/settings/yourProfile/twoFactorAuthentication/utils'
+import { getTwoFAEnforcedDatetime } from 'state/currentAccount/selectors'
+import { update2FAEnabled } from 'state/currentUser/actions'
+import { TWO_FA_REQUIRED_NOTIFICATION_ID } from 'state/currentUser/constants'
+import { has2FaEnabled as has2FaEnabledSelector } from 'state/currentUser/selectors'
 
 import ModalBanners from './ModalBanners'
 import ModalContinueButton from './ModalContinueButton'
 import ModalStep from './ModalStep'
 import ModalWizardHeader from './ModalWizardHeader'
+
 import css from './TwoFactorAuthenticationModal.less'
 
 export type OwnProps = {
@@ -72,7 +74,7 @@ export default function TwoFactorAuthenticationModal({
 
     const [step, setStep] = useState(isUpdate ? 0 : 1)
     const [authenticatorData, setAuthenticatorData] = useState(
-        {} as AuthenticatorData
+        {} as AuthenticatorData,
     )
     const [errorText, setErrorText] = useState('')
     const [verificationCode, setVerificationCode] = useState('')
@@ -124,12 +126,14 @@ export default function TwoFactorAuthenticationModal({
 
                 await validateVerificationCodeResource(
                     verificationCode,
-                    useExistingSecret
+                    useExistingSecret,
                 )
 
                 return true
             } catch (error) {
-                const {response} = error as AxiosError<{error: {msg: string}}>
+                const { response } = error as AxiosError<{
+                    error: { msg: string }
+                }>
                 if (response) {
                     setErrorText(response.data.error.msg)
                 }
@@ -138,7 +142,7 @@ export default function TwoFactorAuthenticationModal({
                 return
             }
         },
-        [verificationCode]
+        [verificationCode],
     )
 
     const createRecoveryCodes = useCallback(async () => {
@@ -153,7 +157,7 @@ export default function TwoFactorAuthenticationModal({
 
             return true
         } catch (error) {
-            const {response} = error as AxiosError<{error: {msg: string}}>
+            const { response } = error as AxiosError<{ error: { msg: string } }>
             if (response) {
                 setErrorText(response.data.error.msg)
             }
@@ -170,7 +174,7 @@ export default function TwoFactorAuthenticationModal({
 
             return true
         } catch (error) {
-            const {response} = error as AxiosError<{error: {msg: string}}>
+            const { response } = error as AxiosError<{ error: { msg: string } }>
             if (response) {
                 setErrorText(response.data.error.msg)
             }
@@ -241,7 +245,7 @@ export default function TwoFactorAuthenticationModal({
 
             if (has2FAEnabled) {
                 setAuthenticatorData(
-                    await fetchAuthenticatorDataRenewedResource()
+                    await fetchAuthenticatorDataRenewedResource(),
                 )
             } else {
                 setAuthenticatorData(await fetchAuthenticatorDataResource())
@@ -260,12 +264,12 @@ export default function TwoFactorAuthenticationModal({
 
     const wizardSteps = useMemo(
         () => ({
-            ...(isUpdate ? {password: 'Password'} : {}),
+            ...(isUpdate ? { password: 'Password' } : {}),
             app_setup: 'App Setup',
             qr_code: 'Verify',
             recovery_codes: 'Recovery Codes',
         }),
-        [isUpdate]
+        [isUpdate],
     )
 
     return (
@@ -276,7 +280,7 @@ export default function TwoFactorAuthenticationModal({
             onClose={handleCancel}
             dismissible={!is2FARequired}
             backdrop="static"
-            style={{maxWidth: '600px'}}
+            style={{ maxWidth: '600px' }}
             footer={
                 <>
                     {step === 1 && !is2FARequired && (

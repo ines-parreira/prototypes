@@ -1,4 +1,4 @@
-import {useEffect} from 'react'
+import { useEffect } from 'react'
 
 import {
     ActivityEvents,
@@ -7,7 +7,7 @@ import {
 } from 'services/activityTracker'
 
 export default function useDraftTicketActivityTracking(
-    draftTicketId: string | null
+    draftTicketId: string | null,
 ) {
     useEffect(() => {
         let unregisterBrowserHooks: (() => void) | undefined
@@ -20,7 +20,7 @@ export default function useDraftTicketActivityTracking(
 
             logActivityEvent(
                 ActivityEvents.UserStartedDraftingTicket,
-                eventProperties
+                eventProperties,
             )
 
             const registerHooks = async () => {

@@ -1,5 +1,6 @@
-import {render, fireEvent} from '@testing-library/react'
 import React from 'react'
+
+import { fireEvent, render } from '@testing-library/react'
 
 import ControlledCollapsibleDetails from '../ControlledCollapsibleDetails'
 
@@ -8,7 +9,7 @@ describe('ControlledCollapsibleDetails', () => {
         title: JSX.Element,
         children: React.ReactNode,
         isOpen: boolean,
-        setIsOpen: (isOpen: boolean) => void
+        setIsOpen: (isOpen: boolean) => void,
     ) => {
         return render(
             <ControlledCollapsibleDetails
@@ -17,18 +18,18 @@ describe('ControlledCollapsibleDetails', () => {
                 setIsOpen={setIsOpen}
             >
                 {children}
-            </ControlledCollapsibleDetails>
+            </ControlledCollapsibleDetails>,
         )
     }
     it('should only render title in closed state', () => {
         const title = <h1>Test Title</h1>
         const children = <p>Test Children</p>
         const setIsOpen = jest.fn()
-        const {getByText, queryByText} = renderComponent(
+        const { getByText, queryByText } = renderComponent(
             title,
             children,
             false,
-            setIsOpen
+            setIsOpen,
         )
         expect(getByText('Test Title')).toBeInTheDocument()
         expect(getByText('keyboard_arrow_down')).toBeInTheDocument()
@@ -42,7 +43,7 @@ describe('ControlledCollapsibleDetails', () => {
         const title = <h1>Test Title</h1>
         const children = <p>Test Children</p>
         const setIsOpen = jest.fn()
-        const {getByText} = renderComponent(title, children, true, setIsOpen)
+        const { getByText } = renderComponent(title, children, true, setIsOpen)
 
         expect(getByText('Test Title')).toBeInTheDocument()
         expect(getByText('keyboard_arrow_up')).toBeInTheDocument()

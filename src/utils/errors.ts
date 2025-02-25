@@ -1,9 +1,9 @@
 import * as Sentry from '@sentry/react'
-import {BrowserTracing} from '@sentry/tracing'
-import {ScopeContext} from '@sentry/types'
+import { BrowserTracing } from '@sentry/tracing'
+import { ScopeContext } from '@sentry/types'
 
-import {User} from 'config/types/user'
-import {Account} from 'state/currentAccount/types'
+import { User } from 'config/types/user'
+import { Account } from 'state/currentAccount/types'
 import {
     GorgiasUIEnv,
     isDevelopment,
@@ -60,7 +60,7 @@ export function initErrorReporter({
         environment,
         // ignore old browsers and mobile safari
         enabled: !/^(.+Mobile.+Safari.+|.+MSIE 8\.0;.+)$/.test(
-            window.navigator.userAgent
+            window.navigator.userAgent,
         ),
         integrations: [new BrowserTracing()],
         tracesSampleRate: TRACE_SAMPLE_RATE,

@@ -1,12 +1,10 @@
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {globalNavigationPanel} from 'common/navigation'
-import {useDesktopOnlyShowGlobalNavFeatureFlag} from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
-
-import {MOBILE_BREAKPOINT} from 'hooks/useIsMobileResolution/constants'
-
+import { globalNavigationPanel } from 'common/navigation'
+import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
+import { MOBILE_BREAKPOINT } from 'hooks/useIsMobileResolution/constants'
 import App from 'pages/App'
-import {PanelLayoutConfig} from 'pages/PanelLayout'
+import { PanelLayoutConfig } from 'pages/PanelLayout'
 import TicketDetailContainer from 'pages/tickets/detail/TicketDetailContainer'
 import TicketInfobarContainer from 'pages/tickets/detail/TicketInfobarContainer'
 import TicketNavbar from 'pages/tickets/navbar/TicketNavbar'
@@ -41,12 +39,12 @@ export default function useTicketpage() {
                     DEFAULT_INFOBAR_WIDTH,
                     Math.max(
                         Math.round(window.innerWidth / 2),
-                        DEFAULT_INFOBAR_WIDTH
+                        DEFAULT_INFOBAR_WIDTH,
                     ),
                 ],
             },
         ],
-        [showGlobalNav]
+        [showGlobalNav],
     )
 
     return useMemo(
@@ -63,6 +61,6 @@ export default function useTicketpage() {
             fallbackWidth: MOBILE_BREAKPOINT,
             layoutKey: LayoutKeys.FULL_TICKET,
         }),
-        [config]
+        [config],
     )
 }

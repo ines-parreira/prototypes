@@ -1,10 +1,11 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {LocaleCode} from 'models/helpCenter/types'
-import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
+import { render, screen } from '@testing-library/react'
 
-import {LanguageList} from '../LanguageList'
+import { LocaleCode } from 'models/helpCenter/types'
+import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
+
+import { LanguageList } from '../LanguageList'
 
 const LOCALE = {
     name: 'English - USA',
@@ -19,8 +20,8 @@ const LOCALE = {
  */
 describe('<LanguageList />', () => {
     it('renders nothing if list is empty or defaultLocale is missing', () => {
-        const {container} = render(
-            <LanguageList id="1" defaultLanguage={LOCALE} languageList={[]} />
+        const { container } = render(
+            <LanguageList id="1" defaultLanguage={LOCALE} languageList={[]} />,
         )
         expect(container.firstChild).toBeNull()
     })
@@ -31,7 +32,7 @@ describe('<LanguageList />', () => {
                 id="1"
                 defaultLanguage={LOCALE}
                 languageList={getLocalesResponseFixture}
-            />
+            />,
         )
 
         const bullets = screen.getAllByLabelText(/Item for locale */).reverse()
@@ -46,14 +47,14 @@ describe('<LanguageList />', () => {
                     id="1"
                     defaultLanguage={LOCALE}
                     languageList={fewerLocales}
-                />
+                />,
             )
             const bullets = screen
                 .getAllByLabelText(/Item for locale */)
                 .reverse()
             bullets.forEach((locale, index) => {
                 expect(locale).toHaveAccessibleName(
-                    `Item for locale ${fewerLocales[index].code}`
+                    `Item for locale ${fewerLocales[index].code}`,
                 )
             })
         })
@@ -66,7 +67,7 @@ describe('<LanguageList />', () => {
                     id="1"
                     defaultLanguage={LOCALE}
                     languageList={getLocalesResponseFixture}
-                />
+                />,
             )
             screen.getByLabelText('Item for locale overflow')
         })

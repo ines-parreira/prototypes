@@ -1,15 +1,16 @@
-import classNames from 'classnames'
-import _toArray from 'lodash/toArray'
 import React, {
+    ChangeEvent,
+    createRef,
     FunctionComponent,
     ReactChild,
-    createRef,
+    RefObject,
     useCallback,
     useEffect,
     useState,
-    ChangeEvent,
-    RefObject,
 } from 'react'
+
+import classNames from 'classnames'
+import _toArray from 'lodash/toArray'
 
 import Button from 'pages/common/components/button/Button'
 
@@ -39,7 +40,7 @@ export type DropZoneProps = {
     onDrop?: (event: DragEvent) => void
     onChange?: (
         event: ChangeEvent<HTMLInputElement>,
-        ref: HTMLInputElement | null
+        ref: HTMLInputElement | null,
     ) => void
 }
 
@@ -73,7 +74,7 @@ export const DropZone: FunctionComponent<DropZoneProps> = ({
             if (event?.dataTransfer && event.dataTransfer.items.length > 0) {
                 const dragIsAccepted = accept
                     ? _toArray(event.dataTransfer.items).every((item) =>
-                          accept?.includes(item.type)
+                          accept?.includes(item.type),
                       )
                     : true
 
@@ -86,7 +87,7 @@ export const DropZone: FunctionComponent<DropZoneProps> = ({
 
             onDragIn && onDragIn(event)
         },
-        [accept, onDragIn]
+        [accept, onDragIn],
     )
 
     const handleDragOut = useCallback(
@@ -98,7 +99,7 @@ export const DropZone: FunctionComponent<DropZoneProps> = ({
             setIsDragRejected(false)
             onDragOut && onDragOut(event)
         },
-        [onDragOut]
+        [onDragOut],
     )
 
     const handleDrop = useCallback(
@@ -112,7 +113,7 @@ export const DropZone: FunctionComponent<DropZoneProps> = ({
             if (event?.dataTransfer && event.dataTransfer.items.length > 0) {
                 const dragIsAccepted = accept
                     ? _toArray(event.dataTransfer.items).every((item) =>
-                          accept?.includes(item.type)
+                          accept?.includes(item.type),
                       )
                     : true
 
@@ -121,7 +122,7 @@ export const DropZone: FunctionComponent<DropZoneProps> = ({
                 }
             }
         },
-        [accept, onDrop]
+        [accept, onDrop],
     )
 
     useEffect(() => {
@@ -164,7 +165,7 @@ export const DropZone: FunctionComponent<DropZoneProps> = ({
                             [css.rejected]: isDragRejected,
                             [css.accepted]: isDragging && !isDragRejected,
                         },
-                        className
+                        className,
                     )}
                 >
                     <div className={css.content}>{children}</div>
@@ -188,7 +189,7 @@ export const DropZone: FunctionComponent<DropZoneProps> = ({
                 id={id}
                 aria-label="Drop zone files input"
                 name={name}
-                style={{display: 'none'}}
+                style={{ display: 'none' }}
                 onChange={(...args) => {
                     if (onChange) {
                         onChange(...args, inputRef.current)

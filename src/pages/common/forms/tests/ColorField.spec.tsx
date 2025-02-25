@@ -1,5 +1,6 @@
-import {fireEvent, screen, render} from '@testing-library/react'
 import React from 'react'
+
+import { fireEvent, render, screen } from '@testing-library/react'
 
 import ColorField from '../ColorField'
 
@@ -11,7 +12,7 @@ const minProps = {
 
 describe('ColorField', () => {
     it('should render with minimal props', () => {
-        const {container} = render(<ColorField {...minProps} />)
+        const { container } = render(<ColorField {...minProps} />)
         expect(container.firstChild).toMatchSnapshot()
     })
     it('should call onChange with the clicked color as argument', async () => {

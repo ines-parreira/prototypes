@@ -1,10 +1,10 @@
-import {act, renderHook} from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react-hooks'
 
 import useMacros from '../useMacros'
 
 describe('useMacros', () => {
     it('should return the default state', () => {
-        const {result} = renderHook(() => useMacros({initialFilters: {}}))
+        const { result } = renderHook(() => useMacros({ initialFilters: {} }))
 
         expect(result.current).toEqual({
             filters: {},
@@ -18,7 +18,7 @@ describe('useMacros', () => {
     })
 
     it('should set active and shown to true on toggle', () => {
-        const {result} = renderHook(() => useMacros({initialFilters: {}}))
+        const { result } = renderHook(() => useMacros({ initialFilters: {} }))
 
         act(() => {
             result.current.onChangeActive()
@@ -28,12 +28,12 @@ describe('useMacros', () => {
             expect.objectContaining({
                 isActive: true,
                 hasShown: true,
-            })
+            }),
         )
     })
 
     it('should not change the state if the same value is passed to the toggle function', () => {
-        const {result} = renderHook(() => useMacros({initialFilters: {}}))
+        const { result } = renderHook(() => useMacros({ initialFilters: {} }))
 
         act(() => {
             result.current.onChangeActive(false)
@@ -43,12 +43,12 @@ describe('useMacros', () => {
             expect.objectContaining({
                 isActive: false,
                 hasShown: false,
-            })
+            }),
         )
     })
 
     it('should not set shown to false if active is changed back to false', () => {
-        const {result} = renderHook(() => useMacros({initialFilters: {}}))
+        const { result } = renderHook(() => useMacros({ initialFilters: {} }))
 
         act(() => {
             result.current.onChangeActive()
@@ -61,12 +61,12 @@ describe('useMacros', () => {
             expect.objectContaining({
                 isActive: false,
                 hasShown: true,
-            })
+            }),
         )
     })
 
     it('should set a new search query when onChangeQuery is called', () => {
-        const {result} = renderHook(() => useMacros({initialFilters: {}}))
+        const { result } = renderHook(() => useMacros({ initialFilters: {} }))
 
         act(() => {
             result.current.onChangeQuery('boop')
@@ -76,8 +76,8 @@ describe('useMacros', () => {
     })
 
     it('should set initial filters when given', () => {
-        const {result} = renderHook(() =>
-            useMacros({initialFilters: {languages: ['en']}})
+        const { result } = renderHook(() =>
+            useMacros({ initialFilters: { languages: ['en'] } }),
         )
         expect(result.current.filters).toEqual({
             languages: ['en'],
@@ -85,15 +85,15 @@ describe('useMacros', () => {
     })
 
     it('should set the correct filters when they are updated', () => {
-        const {result} = renderHook(() => useMacros({initialFilters: {}}))
+        const { result } = renderHook(() => useMacros({ initialFilters: {} }))
 
         act(() => {
-            result.current.onChangeFilters({languages: ['en']})
+            result.current.onChangeFilters({ languages: ['en'] })
         })
-        expect(result.current.filters).toEqual({languages: ['en']})
+        expect(result.current.filters).toEqual({ languages: ['en'] })
 
         act(() => {
-            result.current.onChangeFilters({tags: ['beep', 'boop']})
+            result.current.onChangeFilters({ tags: ['beep', 'boop'] })
         })
         expect(result.current.filters).toEqual({
             languages: ['en'],

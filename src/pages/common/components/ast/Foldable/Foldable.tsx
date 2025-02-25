@@ -1,5 +1,6 @@
+import React, { ReactNode, useState } from 'react'
+
 import classnames from 'classnames'
-import React, {ReactNode, useState} from 'react'
 
 import css from './Foldable.less'
 
@@ -8,11 +9,11 @@ type Props = {
     label: ReactNode
 }
 
-export default function Foldable({children, label}: Props) {
+export default function Foldable({ children, label }: Props) {
     const [isOpen, setOpen] = useState(true)
 
     return (
-        <div className={classnames(css.container, {[css.closed]: !isOpen})}>
+        <div className={classnames(css.container, { [css.closed]: !isOpen })}>
             <div
                 className={classnames(css['icon-wrapper'], {
                     [css.closed]: !isOpen,

@@ -1,5 +1,6 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { Meta, Story } from '@storybook/react'
 
 import DropdownBody from './DropdownBody'
 
@@ -9,7 +10,7 @@ const storyConfig: Meta = {
 }
 
 const DefaultTemplate: Story<ComponentProps<typeof DropdownBody>> = (props) => (
-    <DropdownBody {...props} style={{width: '200px'}} />
+    <DropdownBody {...props} style={{ width: '200px' }} />
 )
 
 export const Default = DefaultTemplate.bind({})

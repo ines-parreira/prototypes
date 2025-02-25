@@ -1,13 +1,13 @@
 import React from 'react'
 
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
 import ChartCard from 'pages/stats/ChartCard'
-import {DashboardChartProps} from 'pages/stats/custom-reports/types'
+import { DashboardChartProps } from 'pages/stats/custom-reports/types'
 import HelpCenterStatsTable, {
     TableCellType,
 } from 'pages/stats/help-center/components/HelpCenterStatsTable/HelpCenterStatsTable'
-import {useNoSearchResultsMetrics} from 'pages/stats/help-center/hooks/useNoSearchResultsMetrics'
-import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
+import { useNoSearchResultsMetrics } from 'pages/stats/help-center/hooks/useNoSearchResultsMetrics'
+import { NoDataAvailable } from 'pages/stats/NoDataAvailable'
 
 const ITEMS_PER_PAGE = 20
 
@@ -28,11 +28,11 @@ const columns = [
 
 export const NO_SEARCH_TABLE_TITLE = 'No search results'
 
-const NoSearchTable = ({chartId, dashboard}: DashboardChartProps) => {
-    const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
+const NoSearchTable = ({ chartId, dashboard }: DashboardChartProps) => {
+    const { cleanStatsFilters, userTimezone } = useNewStatsFilters()
     const [currentPage, setCurrentPage] = React.useState(1)
 
-    const {data, total, isLoading} = useNoSearchResultsMetrics({
+    const { data, total, isLoading } = useNoSearchResultsMetrics({
         statsFilters: cleanStatsFilters,
         timezone: userTimezone,
         currentPage: currentPage,
@@ -58,7 +58,7 @@ const NoSearchTable = ({chartId, dashboard}: DashboardChartProps) => {
                 <NoDataAvailable
                     title="No data available"
                     description="Try adjusting filters to get results."
-                    style={{height: 448}}
+                    style={{ height: 448 }}
                 />
             ) : (
                 <HelpCenterStatsTable

@@ -1,10 +1,10 @@
-import type {updateBillingContact} from 'models/billing/resources'
-import {useUpdateBillingContactWithSideEffects} from 'pages/settings/new_billing/hooks/useUpdateBillingContactWithSideEffects'
-import {reportCRMGrowthError} from 'pages/settings/new_billing/utils/reportCRMGrowthError'
-import type {MutationOverrides} from 'types/query'
+import type { updateBillingContact } from 'models/billing/resources'
+import { useUpdateBillingContactWithSideEffects } from 'pages/settings/new_billing/hooks/useUpdateBillingContactWithSideEffects'
+import { reportCRMGrowthError } from 'pages/settings/new_billing/utils/reportCRMGrowthError'
+import type { MutationOverrides } from 'types/query'
 
 export const useSubmitBillingAddress = (
-    overrides?: MutationOverrides<typeof updateBillingContact>
+    overrides?: MutationOverrides<typeof updateBillingContact>,
 ) => {
     return useUpdateBillingContactWithSideEffects({
         ...overrides,

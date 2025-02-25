@@ -1,19 +1,19 @@
-import {act, fireEvent, screen, waitFor} from '@testing-library/react'
-import {createMemoryHistory} from 'history'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
+import { createMemoryHistory } from 'history'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {IntegrationType} from 'models/integration/constants'
+import { IntegrationType } from 'models/integration/constants'
 import {
     useGetWorkflowConfigurationTemplates,
     useListActionsApps,
 } from 'models/workflows/queries'
-import {RootState, StoreDispatch} from 'state/types'
-
-import {renderWithRouterAndDnD} from 'utils/testing'
+import { RootState, StoreDispatch } from 'state/types'
+import { renderWithRouterAndDnD } from 'utils/testing'
 
 import ActionsPlatformCreateUseCaseTemplateView from '../ActionsPlatformCreateUseCaseTemplateView'
 import useApps from '../hooks/useApps'
@@ -27,7 +27,7 @@ const mockUseListActionsApps = jest.mocked(useListActionsApps)
 const mockUseApps = jest.mocked(useApps)
 const mockUseCreateActionTemplate = jest.mocked(useCreateActionTemplate)
 const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
-    useGetWorkflowConfigurationTemplates
+    useGetWorkflowConfigurationTemplates,
 )
 const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])({
     integrations: fromJS({
@@ -125,7 +125,7 @@ describe('<ActionsPlatformCreateUseCaseTemplateView />', () => {
         renderWithRouterAndDnD(
             <Provider store={mockStore}>
                 <ActionsPlatformCreateUseCaseTemplateView />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('Add Step')).toBeInTheDocument()
@@ -148,7 +148,7 @@ describe('<ActionsPlatformCreateUseCaseTemplateView />', () => {
             </Provider>,
             {
                 history,
-            }
+            },
         )
 
         act(() => {
@@ -161,25 +161,25 @@ describe('<ActionsPlatformCreateUseCaseTemplateView />', () => {
 
         act(() => {
             fireEvent.change(screen.queryAllByRole('textbox')[0], {
-                target: {value: 'Some name'},
+                target: { value: 'Some name' },
             })
         })
 
         act(() => {
             fireEvent.change(screen.queryAllByRole('textbox')[1], {
-                target: {value: 'Some description'},
+                target: { value: 'Some description' },
             })
         })
 
         act(() => {
             fireEvent.change(screen.queryAllByRole('textbox')[0], {
-                target: {value: 'Some name'},
+                target: { value: 'Some name' },
             })
         })
 
         act(() => {
             fireEvent.change(screen.queryAllByRole('textbox')[1], {
-                target: {value: 'Some description'},
+                target: { value: 'Some description' },
             })
         })
 
@@ -260,7 +260,7 @@ describe('<ActionsPlatformCreateUseCaseTemplateView />', () => {
 
         await waitFor(() => {
             expect(historyPushSpy).toHaveBeenCalledWith(
-                '/app/automation/actions-platform/use-cases'
+                '/app/automation/actions-platform/use-cases',
             )
         })
     })
@@ -276,7 +276,7 @@ describe('<ActionsPlatformCreateUseCaseTemplateView />', () => {
         renderWithRouterAndDnD(
             <Provider store={mockStore}>
                 <ActionsPlatformCreateUseCaseTemplateView />
-            </Provider>
+            </Provider>,
         )
 
         act(() => {

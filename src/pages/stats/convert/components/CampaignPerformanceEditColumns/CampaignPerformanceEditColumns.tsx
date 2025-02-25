@@ -1,19 +1,17 @@
 import React from 'react'
 
-import {UserRole} from 'config/types/user'
+import { UserRole } from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
-
-import {EditTableColumns} from 'pages/stats/common/components/Table/EditTableColumns'
-
+import { EditTableColumns } from 'pages/stats/common/components/Table/EditTableColumns'
 import {
     CAMPAIGN_TABLE_COLUMN_TITLES,
-    CampaignPerformanceTooltipConfig,
     CampaignPerformanceTableViews,
+    CampaignPerformanceTooltipConfig,
 } from 'pages/stats/convert/components/CampaignTableStats/constants'
-import {useCampaignPerformanceTableSetting} from 'pages/stats/convert/hooks/useCampaignPerformanceTableSetting'
-import {CampaignTableKeys} from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {hasRole} from 'utils'
+import { useCampaignPerformanceTableSetting } from 'pages/stats/convert/hooks/useCampaignPerformanceTableSetting'
+import { CampaignTableKeys } from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { hasRole } from 'utils'
 
 export const CampaignPerformanceEditColumns = () => {
     const currentUser = useAppSelector(getCurrentUser)

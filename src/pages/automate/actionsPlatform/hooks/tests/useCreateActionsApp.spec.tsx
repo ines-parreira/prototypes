@@ -1,7 +1,8 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -9,10 +10,10 @@ import {
     actionsAppDefinitionKeys,
     useUpsertActionsApp,
 } from 'models/workflows/queries'
-import {NotificationStatus} from 'state/notifications/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { NotificationStatus } from 'state/notifications/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import {ActionsApp} from '../../types'
+import { ActionsApp } from '../../types'
 import useCreateActionsApp from '../useCreateActionsApp'
 
 jest.mock('models/workflows/queries')
@@ -23,11 +24,11 @@ const mockStore = configureMockStore([thunk])()
 const mockUseUpsertActionsApp = useUpsertActionsApp as jest.Mock
 
 mockUseUpsertActionsApp.mockImplementation(
-    ({onSuccess}: {onSuccess: () => void}) => ({
+    ({ onSuccess }: { onSuccess: () => void }) => ({
         mutateAsync: jest.fn().mockImplementation(() => {
             onSuccess()
         }),
-    })
+    }),
 )
 
 describe('useCreateActionsApp()', () => {
@@ -46,15 +47,18 @@ describe('useCreateActionsApp()', () => {
 
         const invalidateQuerySpy = jest.spyOn(queryClient, 'invalidateQueries')
 
-        const {result} = renderHook(() => useCreateActionsApp(), {
-            wrapper: ({children}) => (
+        const { result } = renderHook(() => useCreateActionsApp(), {
+            wrapper: ({ children }) => (
                 <QueryClientProvider client={queryClient}>
                     <Provider store={mockStore}>{children}</Provider>
                 </QueryClientProvider>
             ),
         })
 
-        await result.current.createActionsApp([{id: actionsApp.id}, actionsApp])
+        await result.current.createActionsApp([
+            { id: actionsApp.id },
+            actionsApp,
+        ])
 
         expect(invalidateQuerySpy).toHaveBeenLastCalledWith({
             queryKey: actionsAppDefinitionKeys.all(),

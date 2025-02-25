@@ -1,8 +1,9 @@
-import classNames from 'classnames'
-import React, {useState, PropsWithChildren} from 'react'
-import {Popover, PopoverProps} from 'reactstrap'
+import React, { PropsWithChildren, useState } from 'react'
 
-import {TooltipStyle} from 'pages/stats/common/useCustomTooltip'
+import classNames from 'classnames'
+import { Popover, PopoverProps } from 'reactstrap'
+
+import { TooltipStyle } from 'pages/stats/common/useCustomTooltip'
 
 import css from './ChartTooltip.less'
 

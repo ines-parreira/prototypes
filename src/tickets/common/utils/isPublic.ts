@@ -1,4 +1,4 @@
-import {TicketMessageSourceType} from 'business/types/ticket'
+import { TicketMessageSourceType } from 'business/types/ticket'
 
 /**
  * Return true if source type is public type

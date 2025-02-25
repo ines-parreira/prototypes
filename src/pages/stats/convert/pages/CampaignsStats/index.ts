@@ -1,1 +1,1 @@
-export {default} from './CampaignsStats'
+export { default } from './CampaignsStats'

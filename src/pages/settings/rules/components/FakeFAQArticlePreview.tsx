@@ -1,5 +1,6 @@
-import classnames from 'classnames'
 import React from 'react'
+
+import classnames from 'classnames'
 
 import css from './MockComponents.less'
 
@@ -8,7 +9,7 @@ type Props = {
     description: string
 }
 
-export const FakeFAQArticle: React.FC<Props> = ({title, description}) => (
+export const FakeFAQArticle: React.FC<Props> = ({ title, description }) => (
     <div className={classnames(css.container, css.FAQArticle)}>
         <div className={css.articleTitle}>{title}</div>
         <p className={css.articleDescription}>{description}</p>

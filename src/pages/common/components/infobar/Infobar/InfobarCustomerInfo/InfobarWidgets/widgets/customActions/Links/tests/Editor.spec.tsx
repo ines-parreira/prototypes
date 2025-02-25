@@ -1,6 +1,7 @@
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -23,11 +24,11 @@ describe('<Editor/>', () => {
     })
 
     it('should render nothing when popover is not open', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore({})}>
                 <button id={props.target}>Click</button>
                 <Editor {...props} />
-            </Provider>
+            </Provider>,
         )
         expect(container).toMatchSnapshot()
     })
@@ -37,11 +38,11 @@ describe('<Editor/>', () => {
             <Provider store={mockStore({})}>
                 <button id={props.target}>Click</button>
                 <Editor {...props} />
-            </Provider>
+            </Provider>,
         )
-        fireEvent.click(screen.getByRole('button', {name: 'Click'}))
+        fireEvent.click(screen.getByRole('button', { name: 'Click' }))
         await waitFor(() => {
-            expect(screen.queryByRole('button', {name: 'Save'})).toBeTruthy()
+            expect(screen.queryByRole('button', { name: 'Save' })).toBeTruthy()
         })
     })
 
@@ -50,12 +51,12 @@ describe('<Editor/>', () => {
             <Provider store={mockStore({})}>
                 <button id={props.target}>Click</button>
                 <Editor {...props} link={link} index={2} isEditing />
-            </Provider>
+            </Provider>,
         )
-        fireEvent.click(screen.getByRole('button', {name: 'Click'}))
+        fireEvent.click(screen.getByRole('button', { name: 'Click' }))
         await waitFor(() => {
             expect(
-                screen.queryAllByRole('textbox')[0].getAttribute('value')
+                screen.queryAllByRole('textbox')[0].getAttribute('value'),
             ).toBe(link.label)
         })
     })
@@ -65,16 +66,16 @@ describe('<Editor/>', () => {
             <Provider store={mockStore({})}>
                 <button id={props.target}>Click</button>
                 <Editor {...props} />
-            </Provider>
+            </Provider>,
         )
-        fireEvent.click(screen.getByRole('button', {name: 'Click'}))
+        fireEvent.click(screen.getByRole('button', { name: 'Click' }))
         await waitFor(() => {
             fireEvent.change(screen.getAllByRole('textbox')[0], {
-                target: {value: ''},
+                target: { value: '' },
             })
-            expect(screen.queryByRole('button', {name: 'Save'})).toHaveProperty(
-                'disabled'
-            )
+            expect(
+                screen.queryByRole('button', { name: 'Save' }),
+            ).toHaveProperty('disabled')
         })
     })
 
@@ -83,18 +84,18 @@ describe('<Editor/>', () => {
             <Provider store={mockStore({})}>
                 <button id={props.target}>Click</button>
                 <Editor {...props} />
-            </Provider>
+            </Provider>,
         )
         const url = 'httpbin.org'
-        fireEvent.click(screen.getByRole('button', {name: 'Click'}))
+        fireEvent.click(screen.getByRole('button', { name: 'Click' }))
         await waitFor(() => {
             fireEvent.change(screen.getAllByRole('textbox')[1], {
-                target: {value: url},
+                target: { value: url },
             })
             fireEvent.blur(screen.getAllByRole('textbox')[1])
 
             expect(
-                (screen.getAllByRole('textbox')[1] as HTMLInputElement).value
+                (screen.getAllByRole('textbox')[1] as HTMLInputElement).value,
             ).toBe('https://httpbin.org')
         })
     })
@@ -104,27 +105,27 @@ describe('<Editor/>', () => {
             <Provider store={mockStore({})}>
                 <button id={props.target}>Click</button>
                 <Editor {...props} />
-            </Provider>
+            </Provider>,
         )
-        fireEvent.click(screen.getByRole('button', {name: 'Click'}))
-        await screen.findByRole('button', {name: 'Save'})
+        fireEvent.click(screen.getByRole('button', { name: 'Click' }))
+        await screen.findByRole('button', { name: 'Save' })
         fireEvent.change(screen.getAllByRole('textbox')[0], {
-            target: {value: 'ok'},
+            target: { value: 'ok' },
         })
         fireEvent.change(screen.getAllByRole('textbox')[1], {
-            target: {value: 'okok'},
+            target: { value: 'okok' },
         })
         await waitFor(() => {
             expect(
                 screen
-                    .getByRole('button', {name: 'Save'})
-                    .getAttribute('disabled')
+                    .getByRole('button', { name: 'Save' })
+                    .getAttribute('disabled'),
             ).toBeFalsy()
         })
-        fireEvent.click(screen.getByRole('button', {name: 'Save'}))
+        fireEvent.click(screen.getByRole('button', { name: 'Save' }))
         expect(props.onSubmit).toHaveBeenCalledWith(
-            {label: 'ok', url: 'okok'},
-            undefined
+            { label: 'ok', url: 'okok' },
+            undefined,
         )
     })
 
@@ -133,11 +134,11 @@ describe('<Editor/>', () => {
             <Provider store={mockStore({})}>
                 <button id={props.target}>Click</button>
                 <Editor {...props} isEditing index={2} link={link} />
-            </Provider>
+            </Provider>,
         )
-        fireEvent.click(screen.getByRole('button', {name: 'Click'}))
+        fireEvent.click(screen.getByRole('button', { name: 'Click' }))
         await waitFor(() => {
-            fireEvent.click(screen.getByRole('button', {name: 'Save'}))
+            fireEvent.click(screen.getByRole('button', { name: 'Save' }))
             expect(props.onSubmit).toHaveBeenCalledWith(link, 2)
         })
     })

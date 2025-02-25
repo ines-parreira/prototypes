@@ -1,4 +1,4 @@
-import {isMultiValue} from '../isMultiValue'
+import { isMultiValue } from '../isMultiValue'
 
 describe('isMultiValue', () => {
     test('should return true for arrays', () => {

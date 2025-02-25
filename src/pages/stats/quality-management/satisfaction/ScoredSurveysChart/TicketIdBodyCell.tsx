@@ -1,6 +1,8 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import React, {useRef} from 'react'
-import {Link} from 'react-router-dom'
+import React, { useRef } from 'react'
+
+import { Link } from 'react-router-dom'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import IconButton from 'pages/common/components/button/IconButton'
 import BodyCell, {

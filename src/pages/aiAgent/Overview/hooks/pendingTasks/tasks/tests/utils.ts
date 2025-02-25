@@ -1,7 +1,7 @@
-import {RuleEngineData, RuleEngineRoutes} from '../../ruleEngine'
+import { RuleEngineData, RuleEngineRoutes } from '../../ruleEngine'
 
 export const buildRuleEngineData = (
-    data: Partial<RuleEngineData>
+    data: Partial<RuleEngineData>,
 ): RuleEngineData => ({
     aiAgentStoreConfiguration: {} as any,
     fileIngestion: [],

@@ -1,23 +1,24 @@
-import {screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
-import React, {FC} from 'react'
-import {DndProvider} from 'react-dnd'
-import {HTML5Backend} from 'react-dnd-html5-backend'
-import {Provider} from 'react-redux'
+import React, { FC } from 'react'
+
+import { screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { mockFlags, resetLDMocks } from 'jest-launchdarkly-mock'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {getContactFormForHelpCenterFixture} from 'pages/settings/contactForm/fixtures/contacForm'
-import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
-import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
-import {RootState, StoreDispatch} from 'state/types'
-import {initialState as uiState} from 'state/ui/helpCenter/reducer'
-import {renderWithRouter} from 'utils/testing'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { getContactFormForHelpCenterFixture } from 'pages/settings/contactForm/fixtures/contacForm'
+import { initialState as articlesState } from 'state/entities/helpCenter/articles/reducer'
+import { initialState as categoriesState } from 'state/entities/helpCenter/categories/reducer'
+import { RootState, StoreDispatch } from 'state/types'
+import { initialState as uiState } from 'state/ui/helpCenter/reducer'
+import { renderWithRouter } from 'utils/testing'
 
-import {getSingleHelpCenterResponseFixtureWithTranslation} from '../../../../../fixtures/getHelpCentersResponse.fixture'
-import {HelpCenterTranslationProvider} from '../../../../../providers/HelpCenterTranslation'
+import { getSingleHelpCenterResponseFixtureWithTranslation } from '../../../../../fixtures/getHelpCentersResponse.fixture'
+import { HelpCenterTranslationProvider } from '../../../../../providers/HelpCenterTranslation'
 import ContactFormInfoSection from '../ContactFormInfoSection'
 
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
@@ -37,7 +38,12 @@ const helpCenter = {
     },
     translations:
         getSingleHelpCenterResponseFixtureWithTranslation.translations?.map(
-            (t) => ({...t, help_center_id: 333, id: 555, contact_form_id: 111})
+            (t) => ({
+                ...t,
+                help_center_id: 333,
+                id: 555,
+                contact_form_id: 111,
+            }),
         ),
 }
 
@@ -63,7 +69,7 @@ const defaultState: Partial<RootState> = {
     integrations: fromJS({
         integrations: [],
     }),
-    ui: {helpCenter: {...uiState}} as any,
+    ui: { helpCenter: { ...uiState } } as any,
 }
 
 jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
@@ -101,7 +107,7 @@ jest.mock('pages/settings/contactForm/hooks/useContactFormApi', () => {
     }
 })
 
-const DefaultProviders: FC = ({children}) => (
+const DefaultProviders: FC = ({ children }) => (
     <Provider store={mockedStore(defaultState)}>
         <HelpCenterTranslationProvider helpCenter={helpCenter}>
             {children}
@@ -127,7 +133,7 @@ describe('<ContactFormInfoSection />', () => {
                 <DndProvider backend={HTML5Backend}>
                     <ContactFormInfoSection />
                 </DndProvider>
-            </DefaultProviders>
+            </DefaultProviders>,
         )
 
         expect(screen.getAllByText('Contact form subject').length).toBe(1)

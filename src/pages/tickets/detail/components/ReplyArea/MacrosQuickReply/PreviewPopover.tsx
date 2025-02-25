@@ -1,11 +1,13 @@
+import React, { useMemo } from 'react'
+
 import _noop from 'lodash/noop'
-import React, {useMemo} from 'react'
-import {Popover, PopoverBody} from 'reactstrap'
+import { Popover, PopoverBody } from 'reactstrap'
 
-import {useAppNode} from 'appNode'
-import {MacroDraft} from 'models/macro/types'
+import { useAppNode } from 'appNode'
+import { MacroDraft } from 'models/macro/types'
 
-import {ActionPreviews} from './ActionPreviews/ActionPreviews'
+import { ActionPreviews } from './ActionPreviews/ActionPreviews'
+
 import css from './PreviewPopover.less'
 
 type Props = {
@@ -14,7 +16,7 @@ type Props = {
     actions: MacroDraft['actions']
 }
 
-export const PreviewPopover = ({isOpen, targetId, actions}: Props) => {
+export const PreviewPopover = ({ isOpen, targetId, actions }: Props) => {
     const maxHeight = useMemo(() => {
         const buttonTop = document
             .getElementById(targetId)

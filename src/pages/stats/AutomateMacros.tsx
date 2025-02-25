@@ -1,12 +1,12 @@
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {MESSAGES_SENT_PER_MACRO, stats as statsConfig} from 'config/stats'
+import { MESSAGES_SENT_PER_MACRO, stats as statsConfig } from 'config/stats'
 import useStatResource from 'hooks/reporting/useStatResource'
 import useAppSelector from 'hooks/useAppSelector'
-import {LegacyStatsFilters, TwoDimensionalChart} from 'models/stat/types'
+import { LegacyStatsFilters, TwoDimensionalChart } from 'models/stat/types'
 import {
-    getStatsFilters,
     getMessagingAndAppIntegrationsStatsFilter,
+    getStatsFilters,
     getStatsMessagingAndAppIntegrations,
 } from 'state/stats/selectors'
 
@@ -21,15 +21,15 @@ export const AUTOMATION_MACROS_STAT_NAME = 'automation-macros'
 
 export default function AutomateMacros() {
     const messagingIntegrations = useAppSelector(
-        getStatsMessagingAndAppIntegrations
+        getStatsMessagingAndAppIntegrations,
     )
     const integrationsStatsFilter = useAppSelector(
-        getMessagingAndAppIntegrationsStatsFilter
+        getMessagingAndAppIntegrationsStatsFilter,
     )
     const statsFilters = useAppSelector(getStatsFilters)
 
     const pageStatsFilters = useMemo<LegacyStatsFilters>(() => {
-        const {channels, period} = statsFilters
+        const { channels, period } = statsFilters
         return {
             channels,
             period,
@@ -78,7 +78,7 @@ export default function AutomateMacros() {
                 >
                     {(stat) => (
                         <TableStat
-                            context={{tagColors: null}}
+                            context={{ tagColors: null }}
                             data={stat.getIn(['data', 'data'])}
                             meta={stat.get('meta')}
                             config={statsConfig.get(MESSAGES_SENT_PER_MACRO)}

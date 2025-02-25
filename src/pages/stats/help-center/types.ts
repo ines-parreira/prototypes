@@ -12,7 +12,7 @@ export type HelpCenterStatsFilters = Omit<
 }
 
 export const isHelpCenterStatsFiltersValid = (
-    filters: StatsFiltersWithLogicalOperator
+    filters: StatsFiltersWithLogicalOperator,
 ): filters is HelpCenterStatsFilters =>
     Array.isArray(filters.helpCenters?.values) &&
     Array.isArray(filters.localeCodes?.values)

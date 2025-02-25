@@ -1,8 +1,8 @@
-import {useCallback, useEffect} from 'react'
+import { useCallback, useEffect } from 'react'
 
 export default function useBeforeUnload(
     enabled: boolean | (() => boolean) = true,
-    message?: string
+    message?: string,
 ) {
     const handler = useCallback(
         (event: BeforeUnloadEvent) => {
@@ -21,7 +21,7 @@ export default function useBeforeUnload(
 
             return message
         },
-        [enabled, message]
+        [enabled, message],
     )
 
     useEffect(() => {

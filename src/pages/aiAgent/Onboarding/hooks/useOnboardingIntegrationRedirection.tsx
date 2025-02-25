@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import { useState } from 'react'
 
 import useEffectOnce from 'hooks/useEffectOnce'
 import useLocalStorageWithExpiry from 'hooks/useLocalStorageWithExpiry'
@@ -14,7 +14,7 @@ export const useOnboardingIntegrationRedirection = () => {
     } = useLocalStorageWithExpiry<string | null>(
         LOCAL_STORAGE_KEY,
         REDIRECT_TTL,
-        null
+        null,
     )
 
     const [redirectUrl] = useState(storageRedirectUrl)
@@ -25,7 +25,7 @@ export const useOnboardingIntegrationRedirection = () => {
 
     const redirectToOnboardingIfOnboarding = (
         integrationType: string,
-        integrationId: string
+        integrationId: string,
     ) => {
         if (redirectUrl !== null) {
             const url = new URL(redirectUrl)
@@ -40,5 +40,5 @@ export const useOnboardingIntegrationRedirection = () => {
         window.open(integrationUrl, '_self')
     }
 
-    return {redirectToOnboardingIfOnboarding, redirectToIntegration}
+    return { redirectToOnboardingIfOnboarding, redirectToIntegration }
 }

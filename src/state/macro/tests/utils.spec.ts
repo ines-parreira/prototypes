@@ -1,14 +1,18 @@
-import {ActionTemplateExecution} from 'config'
-import {MacroActionName} from 'models/macroAction/types'
+import { ActionTemplateExecution } from 'config'
+import { MacroActionName } from 'models/macroAction/types'
 
-import {MacroApiError} from '../types'
-import {getDefaultMacro, generateDefaultAction, getErrorReason} from '../utils'
+import { MacroApiError } from '../types'
+import {
+    generateDefaultAction,
+    getDefaultMacro,
+    getErrorReason,
+} from '../utils'
 
 describe('macro utils', () => {
     describe('generateDefaultAction', () => {
         it('should return default action for setResponseText', () => {
             expect(
-                generateDefaultAction(MacroActionName.SetResponseText)
+                generateDefaultAction(MacroActionName.SetResponseText),
             ).toEqual({
                 type: 'user',
                 execution: ActionTemplateExecution.Front,

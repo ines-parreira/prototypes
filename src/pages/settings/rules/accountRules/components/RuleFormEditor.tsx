@@ -1,13 +1,14 @@
+import React, { useCallback, useMemo, useRef, useState } from 'react'
+
 import classnames from 'classnames'
-import React, {useCallback, useMemo, useRef, useState} from 'react'
-import {Link} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem, Navbar, Nav} from 'reactstrap'
+import { Link } from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem, Nav, Navbar } from 'reactstrap'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAsyncFn from 'hooks/useAsyncFn'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
-import {createRule, deleteRule, updateRule} from 'models/rule/resources'
-import {ErrorsCollector} from 'pages/common/components/ast/Errors'
+import { createRule, deleteRule, updateRule } from 'models/rule/resources'
+import { ErrorsCollector } from 'pages/common/components/ast/Errors'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
@@ -18,10 +19,9 @@ import {
     ruleDeleted,
     ruleUpdated,
 } from 'state/entities/rules/actions'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-
-import {ManagedRuleDisplayName} from 'state/rules/constants'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { ManagedRuleDisplayName } from 'state/rules/constants'
 import {
     ManagedRule,
     ManagedRuleEmptySettings,
@@ -34,12 +34,11 @@ import AutoresponderViewButton from '../../components/AutoresponderViewButton'
 import TrackedRuleLibraryLink, {
     Source,
 } from '../../components/TrackedRuleLibraryLink'
-
 import DefaultRuleEditor from './ruleEditors/DefaultRuleEditor'
 import ManagedRuleEditor from './ruleEditors/ManagedRuleEditor'
+import { RuleTicketList } from './RuleTicketList'
 
 import css from './RuleFormEditor.less'
-import {RuleTicketList} from './RuleTicketList'
 
 type Props = {
     rule?: Rule | ManagedRule
@@ -68,11 +67,11 @@ export type ManagedRuleEditorProps<T = ManagedRuleEmptySettings> =
         rule: ManagedRule<T>
         handleSubmit: (
             rule: Partial<ManagedRule<T>>,
-            hasMissingFields?: boolean
+            hasMissingFields?: boolean,
         ) => void
     }
 
-const RuleNavbar = ({activeTab, handleTabChange}: NavbarProps) => (
+const RuleNavbar = ({ activeTab, handleTabChange }: NavbarProps) => (
     <Navbar className={css.navbar}>
         <Nav
             key={'settings'}
@@ -95,20 +94,20 @@ const RuleNavbar = ({activeTab, handleTabChange}: NavbarProps) => (
     </Navbar>
 )
 
-export const RuleFormEditor = ({rule}: Props) => {
+export const RuleFormEditor = ({ rule }: Props) => {
     const editor = useRef<EditorHandle>(null)
     const dispatch = useAppDispatch()
     const [activeTab, setActiveTab] = useState('settings')
     const hasAgentPrivileges = useHasAgentPrivileges()
 
-    const [{loading: isSubmitting}, handleSubmit] = useAsyncFn(
+    const [{ loading: isSubmitting }, handleSubmit] = useAsyncFn(
         async (ruleDraft: Partial<RuleDraft>, hasMissingFields = false) => {
             if (hasMissingFields) {
                 void dispatch(
                     notify({
                         status: NotificationStatus.Error,
                         message: 'Complete required fields in order to save',
-                    })
+                    }),
                 )
                 return
             }
@@ -125,7 +124,7 @@ export const RuleFormEditor = ({rule}: Props) => {
                         notify({
                             status: NotificationStatus.Success,
                             message: 'Successfully updated rule',
-                        })
+                        }),
                     )
                     history.push('/app/settings/rules')
                 } catch {
@@ -133,7 +132,7 @@ export const RuleFormEditor = ({rule}: Props) => {
                         notify({
                             status: NotificationStatus.Error,
                             message: 'Failed to update rule',
-                        })
+                        }),
                     )
                 }
             } else {
@@ -144,7 +143,7 @@ export const RuleFormEditor = ({rule}: Props) => {
                         notify({
                             status: NotificationStatus.Success,
                             message: 'Successfully created rule',
-                        })
+                        }),
                     )
                     history.push('/app/settings/rules')
                 } catch {
@@ -152,16 +151,16 @@ export const RuleFormEditor = ({rule}: Props) => {
                         notify({
                             status: NotificationStatus.Error,
                             message: 'Failed to create rule',
-                        })
+                        }),
                     )
                 }
             }
         },
-        [rule]
+        [rule],
     )
     const [isFormDirty, setIsFormDirty] = useState(false)
 
-    const [{loading: isDeleting}, handleDelete] = useAsyncFn(async () => {
+    const [{ loading: isDeleting }, handleDelete] = useAsyncFn(async () => {
         if (!rule) {
             return
         }
@@ -173,14 +172,14 @@ export const RuleFormEditor = ({rule}: Props) => {
                 notify({
                     message: 'Successfully deleted rule',
                     status: NotificationStatus.Success,
-                })
+                }),
             )
         } catch {
             void dispatch(
                 notify({
                     status: NotificationStatus.Error,
                     message: 'Failed to delete rule',
-                })
+                }),
             )
         }
     }, [rule])
@@ -218,7 +217,7 @@ export const RuleFormEditor = ({rule}: Props) => {
             )
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        []
+        [],
     )
 
     return (
@@ -272,7 +271,7 @@ export const RuleFormEditor = ({rule}: Props) => {
                                     <p
                                         className={classnames(
                                             css.cardTitle,
-                                            'mb-1'
+                                            'mb-1',
                                         )}
                                     >
                                         Need some inspiration?

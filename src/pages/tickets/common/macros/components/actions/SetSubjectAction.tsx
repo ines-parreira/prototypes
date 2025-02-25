@@ -1,5 +1,6 @@
-import {fromJS, Map} from 'immutable'
 import React from 'react'
+
+import { fromJS, Map } from 'immutable'
 
 import TextInput from 'pages/common/forms/input/TextInput'
 
@@ -17,7 +18,7 @@ export default class SetSubjectAction extends React.Component<Props> {
     }
 
     _updateSubject = (subject: string) => {
-        this.props.updateActionArgs(this.props.index, fromJS({subject}))
+        this.props.updateActionArgs(this.props.index, fromJS({ subject }))
     }
 
     render() {
@@ -28,7 +29,7 @@ export default class SetSubjectAction extends React.Component<Props> {
                     onChange={(value) => this._updateSubject(value)}
                     value={this.props.action.getIn(
                         ['arguments', 'subject'],
-                        ''
+                        '',
                     )}
                     isRequired
                 />

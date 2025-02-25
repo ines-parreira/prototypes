@@ -1,7 +1,8 @@
-import {act, fireEvent, render} from '@testing-library/react'
 import React from 'react'
 
-import {CloseModal} from '../CloseModal'
+import { act, fireEvent, render } from '@testing-library/react'
+
+import { CloseModal } from '../CloseModal'
 
 describe('<CloseModal />', () => {
     const handleOnSave = jest.fn()
@@ -9,7 +10,7 @@ describe('<CloseModal />', () => {
     const handleOnDiscard = jest.fn()
 
     it('matches snapshot', () => {
-        const {container} = render(
+        const { container } = render(
             <CloseModal
                 isOpen
                 title="Are you sure?"
@@ -24,14 +25,14 @@ describe('<CloseModal />', () => {
             </CloseModal>,
             {
                 container: document.body,
-            }
+            },
         )
 
         expect(container).toMatchSnapshot()
     })
 
     it('calls the onSave callback', () => {
-        const {getByRole} = render(
+        const { getByRole } = render(
             <CloseModal
                 isOpen
                 title="Are you sure?"
@@ -43,18 +44,18 @@ describe('<CloseModal />', () => {
                 onDiscard={handleOnDiscard}
             >
                 Test content
-            </CloseModal>
+            </CloseModal>,
         )
 
         act(() => {
-            fireEvent.click(getByRole('button', {name: /save/i}))
+            fireEvent.click(getByRole('button', { name: /save/i }))
         })
 
         expect(handleOnSave).toHaveBeenCalled()
     })
 
     it('calls the onContinueEditing callback', () => {
-        const {getByRole} = render(
+        const { getByRole } = render(
             <CloseModal
                 isOpen
                 title="Are you sure?"
@@ -66,18 +67,18 @@ describe('<CloseModal />', () => {
                 onDiscard={handleOnDiscard}
             >
                 Test content
-            </CloseModal>
+            </CloseModal>,
         )
 
         act(() => {
-            fireEvent.click(getByRole('button', {name: /edit/i}))
+            fireEvent.click(getByRole('button', { name: /edit/i }))
         })
 
         expect(handleOnEdit).toHaveBeenCalled()
     })
 
     it('calls the onDiscard callback', () => {
-        const {getByRole} = render(
+        const { getByRole } = render(
             <CloseModal
                 isOpen
                 title="Are you sure?"
@@ -89,11 +90,11 @@ describe('<CloseModal />', () => {
                 onDiscard={handleOnDiscard}
             >
                 Test content
-            </CloseModal>
+            </CloseModal>,
         )
 
         act(() => {
-            fireEvent.click(getByRole('button', {name: /discard/i}))
+            fireEvent.click(getByRole('button', { name: /discard/i }))
         })
 
         expect(handleOnDiscard).toHaveBeenCalled()

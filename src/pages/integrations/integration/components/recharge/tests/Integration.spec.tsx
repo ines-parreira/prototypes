@@ -1,13 +1,14 @@
-import {fireEvent, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { fireEvent, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import Integration from 'pages/integrations/integration/components/recharge/Integration'
-import {INTEGRATION_REMOVAL_CONFIGURATION_TEXT} from 'pages/integrations/integration/constants'
-import {renderWithRouter} from 'utils/testing'
+import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
+import { renderWithRouter } from 'utils/testing'
 
 const mockStore = configureMockStore([thunk])
 const store = mockStore({})
@@ -22,13 +23,13 @@ describe('<RechargeIntegration/>', () => {
 
     describe('render()', () => {
         it('should render a loader because the integration is loading', () => {
-            const {container} = renderWithRouter(
+            const { container } = renderWithRouter(
                 <Provider store={store}>
                     <Integration
                         {...minProps}
-                        loading={fromJS({integration: true})}
+                        loading={fromJS({ integration: true })}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(container).toMatchSnapshot()
@@ -41,11 +42,11 @@ describe('<RechargeIntegration/>', () => {
                         {...minProps}
                         integration={fromJS({
                             meta: {
-                                sync_state: {is_initialized: false},
+                                sync_state: { is_initialized: false },
                             },
                         })}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(screen.queryByText(/currently importing/))
@@ -58,18 +59,18 @@ describe('<RechargeIntegration/>', () => {
                         {...minProps}
                         integration={fromJS({
                             meta: {
-                                sync_state: {is_initialized: true},
+                                sync_state: { is_initialized: true },
                             },
                         })}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(screen.queryByText(/All your Recharge customers/))
         })
 
         it('should display a list of shopify stores to connect to', () => {
-            const {container} = renderWithRouter(
+            const { container } = renderWithRouter(
                 <Provider store={store}>
                     <Integration
                         {...minProps}
@@ -90,36 +91,36 @@ describe('<RechargeIntegration/>', () => {
                 {
                     path: '/:integrationType/:integrationId?',
                     route: `/recharge/new`,
-                }
+                },
             )
 
             expect(container).toMatchSnapshot()
         })
 
         it('should render an integration with a delete button', () => {
-            const {container} = renderWithRouter(
+            const { container } = renderWithRouter(
                 <Provider store={store}>
                     <Integration {...minProps} />
-                </Provider>
+                </Provider>,
             )
 
             expect(container).toMatchSnapshot()
         })
 
         it('should display delete warning message and it should contain text about "saved filters"', () => {
-            const {getByRole, getByText} = renderWithRouter(
+            const { getByRole, getByText } = renderWithRouter(
                 <Provider store={store}>
                     <Integration {...minProps} />
-                </Provider>
+                </Provider>,
             )
 
             fireEvent.click(
                 getByRole('button', {
                     name: /Delete app/i,
-                })
+                }),
             )
             expect(
-                getByText(INTEGRATION_REMOVAL_CONFIGURATION_TEXT)
+                getByText(INTEGRATION_REMOVAL_CONFIGURATION_TEXT),
             ).toBeInTheDocument()
         })
 
@@ -134,10 +135,12 @@ describe('<RechargeIntegration/>', () => {
                             },
                         })}
                     />
-                </Provider>
+                </Provider>,
             )
 
-            expect(screen.getByRole('button', {name: 'Update App Permissions'}))
+            expect(
+                screen.getByRole('button', { name: 'Update App Permissions' }),
+            )
         })
 
         it('should render a reconnect button because the integration is deactivated', () => {
@@ -149,10 +152,10 @@ describe('<RechargeIntegration/>', () => {
                             deactivated_datetime: '2018-01-01 10:12',
                         })}
                     />
-                </Provider>
+                </Provider>,
             )
 
-            expect(screen.getByRole('button', {name: 'Reconnect'}))
+            expect(screen.getByRole('button', { name: 'Reconnect' }))
         })
     })
 })

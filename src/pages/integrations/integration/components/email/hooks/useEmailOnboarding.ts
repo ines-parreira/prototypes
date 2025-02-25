@@ -1,3 +1,10 @@
+import { useCallback, useEffect, useMemo, useState } from 'react'
+
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import isObject from 'lodash/isObject'
+import kebabCase from 'lodash/kebabCase'
+import { useHistory, useRouteMatch } from 'react-router-dom'
+
 import {
     CreateIntegrationBody,
     EmailIntegration,
@@ -9,29 +16,24 @@ import {
     useSendVerificationEmail,
     useUpdateIntegration,
 } from '@gorgias/api-queries'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import isObject from 'lodash/isObject'
-import kebabCase from 'lodash/kebabCase'
-import {useCallback, useEffect, useMemo, useState} from 'react'
-import {useHistory, useRouteMatch} from 'react-router-dom'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {FormErrors} from 'core/forms'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { FormErrors } from 'core/forms'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useInterval from 'hooks/useInterval'
 import useLocalStorage from 'hooks/useLocalStorage'
-import {isGorgiasApiError} from 'models/api/types'
+import { isGorgiasApiError } from 'models/api/types'
 import {
     Integration,
     IntegrationType,
     OutlookIntegration,
 } from 'models/integration/types'
 import socketManager from 'services/socketManager'
-import {JoinEventType} from 'services/socketManager/types'
-import {fetchIntegration, onCreateSuccess} from 'state/integrations/actions'
-import {DELETE_INTEGRATION_SUCCESS} from 'state/integrations/constants'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { JoinEventType } from 'services/socketManager/types'
+import { fetchIntegration, onCreateSuccess } from 'state/integrations/actions'
+import { DELETE_INTEGRATION_SUCCESS } from 'state/integrations/constants'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 export enum EmailIntegrationOnboardingStep {
     ConnectIntegration = 'ConnectIntegration',
@@ -75,11 +77,11 @@ const FORWARDING_VERIFICATION_TIMEOUT_IN_SECONDS = 2 * 60
 const ONBOARDING_COMPLETE_STORAGE_KEY = 'email-onboarding-completed'
 
 export function useEmailOnboarding(
-    options?: UseEmailOnboardingHookOptions
+    options?: UseEmailOnboardingHookOptions,
 ): UseEmailOnboardingHookResult {
     const integration = options?.integration
     const currentStep = useGetCurrentStep(integration)
-    const {goBack, goToNext} = useStepNavigation(integration)
+    const { goBack, goToNext } = useStepNavigation(integration)
 
     const {
         connectIntegration,
@@ -128,12 +130,12 @@ type UseMutationsHookResult = {
 }
 
 function useMutations(
-    integration?: EmailIntegration | undefined
+    integration?: EmailIntegration | undefined,
 ): UseMutationsHookResult {
     const dispatch = useAppDispatch()
     const history = useHistory()
     const [errors, setErrors] = useState<Errors>()
-    const {isPending, isRequested, setRequestedAt} =
+    const { isPending, isRequested, setRequestedAt } =
         useVerificationRequestStatus(integration)
 
     const connectMutationOptions = {
@@ -141,7 +143,7 @@ function useMutations(
             const integration = response.data as Integration
             onCreateSuccess(dispatch, integration, true, true)
             history.push(
-                `/app/settings/channels/email/${integration.id}/onboarding/forwarding-setup`
+                `/app/settings/channels/email/${integration.id}/onboarding/forwarding-setup`,
             )
         },
         onError: (error: HttpResponse<unknown>) => {
@@ -159,7 +161,7 @@ function useMutations(
             if (integration) {
                 setRequestedAt(new Date())
                 history.push(
-                    `/app/settings/channels/email/${integration.id}/onboarding/verification`
+                    `/app/settings/channels/email/${integration.id}/onboarding/verification`,
                 )
             }
         },
@@ -175,8 +177,8 @@ function useMutations(
                 void dispatch(
                     fetchIntegration(
                         String(integration.id),
-                        IntegrationType.Email
-                    )
+                        IntegrationType.Email,
+                    ),
                 )
             }
 
@@ -184,7 +186,7 @@ function useMutations(
                 notify({
                     status: NotificationStatus.Error,
                     message,
-                })
+                }),
             )
         },
     }
@@ -208,30 +210,27 @@ function useMutations(
                 notify({
                     status: NotificationStatus.Error,
                     message,
-                })
+                }),
             )
         },
     }
 
-    const {mutate: performCreate, isLoading: isCreating} = useCreateIntegration(
-        {
+    const { mutate: performCreate, isLoading: isCreating } =
+        useCreateIntegration({
             mutation: connectMutationOptions,
-        }
-    )
+        })
 
-    const {mutate: performUpdate, isLoading: isUpdating} = useUpdateIntegration(
-        {
+    const { mutate: performUpdate, isLoading: isUpdating } =
+        useUpdateIntegration({
             mutation: connectMutationOptions,
-        }
-    )
+        })
 
-    const {mutate: performDelete, isLoading: isDeleting} = useDeleteIntegration(
-        {
+    const { mutate: performDelete, isLoading: isDeleting } =
+        useDeleteIntegration({
             mutation: deleteMutationOptions,
-        }
-    )
+        })
 
-    const {mutate: performSend, isLoading: isSending} =
+    const { mutate: performSend, isLoading: isSending } =
         useSendVerificationEmail({
             mutation: sendMutationOptions,
         })
@@ -257,7 +256,7 @@ function useMutations(
                 })
             }
         },
-        [integration, performUpdate, performCreate]
+        [integration, performUpdate, performCreate],
     )
 
     const sendVerification = useCallback(() => {
@@ -265,7 +264,7 @@ function useMutations(
             return
         }
 
-        performSend({integrationId: integration.id})
+        performSend({ integrationId: integration.id })
     }, [integration, performSend])
 
     const deleteIntegration = useCallback(() => {
@@ -302,7 +301,7 @@ function useMutations(
 }
 
 function useGetCurrentStep(
-    integration?: EmailIntegration | undefined
+    integration?: EmailIntegration | undefined,
 ): EmailIntegrationOnboardingStep {
     const match = useRouteMatch<{
         id?: string
@@ -313,7 +312,7 @@ function useGetCurrentStep(
         exact: false,
     })
 
-    const {isRequested} = useVerificationRequestStatus(integration)
+    const { isRequested } = useVerificationRequestStatus(integration)
 
     if (!integration) {
         return EmailIntegrationOnboardingStep.ConnectIntegration
@@ -358,11 +357,11 @@ type UseVerificationStateHookResult = {
 }
 
 function useVerificationRequestStatus(
-    integration: EmailIntegration | undefined
+    integration: EmailIntegration | undefined,
 ): UseVerificationStateHookResult {
     const [requestedAt, setRequestedAt] = useLocalStorage<Date | null>(
         forwardingVerificationStorageKey(integration?.id ?? 0),
-        null
+        null,
     )
 
     const [currentTime, setCurrentTime] = useState(new Date())
@@ -370,19 +369,19 @@ function useVerificationRequestStatus(
     const isRequested = !!requestedAt
     const isPending = useMemo(
         () => computeIsPending(requestedAt, currentTime),
-        [requestedAt, currentTime]
+        [requestedAt, currentTime],
     )
 
     useInterval(() => {
         setCurrentTime(new Date())
     }, FORWARDING_VERIFICATION_TIMEOUT_IN_SECONDS * 1000)
 
-    return {isPending, isRequested, setRequestedAt}
+    return { isPending, isRequested, setRequestedAt }
 }
 
 function computeIsPending(
     requestedAt: Date | null,
-    currentTime: Date
+    currentTime: Date,
 ): boolean {
     if (!requestedAt) {
         return false
@@ -418,8 +417,8 @@ function useStepNavigation(integration: EmailIntegration | undefined) {
                 history.push(
                     stepUrl(
                         EmailIntegrationOnboardingStep.ConnectIntegration,
-                        integration
-                    )
+                        integration,
+                    ),
                 )
                 return
             }
@@ -428,8 +427,8 @@ function useStepNavigation(integration: EmailIntegration | undefined) {
                 history.push(
                     stepUrl(
                         EmailIntegrationOnboardingStep.ForwardingSetup,
-                        integration
-                    )
+                        integration,
+                    ),
                 )
                 return
             }
@@ -438,8 +437,8 @@ function useStepNavigation(integration: EmailIntegration | undefined) {
                 history.push(
                     stepUrl(
                         EmailIntegrationOnboardingStep.Verification,
-                        integration
-                    )
+                        integration,
+                    ),
                 )
             }
         }
@@ -456,8 +455,8 @@ function useStepNavigation(integration: EmailIntegration | undefined) {
                 history.push(
                     stepUrl(
                         EmailIntegrationOnboardingStep.ForwardingSetup,
-                        integration
-                    )
+                        integration,
+                    ),
                 )
                 return
             }
@@ -466,8 +465,8 @@ function useStepNavigation(integration: EmailIntegration | undefined) {
                 history.push(
                     stepUrl(
                         EmailIntegrationOnboardingStep.Verification,
-                        integration
-                    )
+                        integration,
+                    ),
                 )
                 return
             }
@@ -477,8 +476,8 @@ function useStepNavigation(integration: EmailIntegration | undefined) {
                     history.push(
                         stepUrl(
                             EmailIntegrationOnboardingStep.DomainVerification,
-                            integration
-                        )
+                            integration,
+                        ),
                     )
                     return
                 }
@@ -505,13 +504,13 @@ export const useEmailOnboardingCompleteCheck = (
         | EmailIntegration
         | GmailIntegration
         | OutlookIntegration
-        | undefined
+        | undefined,
 ) => {
     const onboardingCompleteStorageKey = `${ONBOARDING_COMPLETE_STORAGE_KEY}-${integration?.id}`
 
     const [hasCompletedOnboarding, setHasCompletedOnboarding] = useLocalStorage(
         onboardingCompleteStorageKey,
-        false
+        false,
     )
 
     const completeOnboarding = useCallback(() => {
@@ -530,7 +529,7 @@ export function listUrl(): string {
 
 export function stepUrl(
     step?: EmailIntegrationOnboardingStep,
-    integration?: EmailIntegration | undefined
+    integration?: EmailIntegration | undefined,
 ): string {
     if (!step || !integration) {
         return '/app/settings/channels/email/new/onboarding/connect-integration'

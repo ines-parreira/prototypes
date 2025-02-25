@@ -1,1 +1,1 @@
-export {default} from './MigrationStateModal'
+export { default } from './MigrationStateModal'

@@ -1,12 +1,12 @@
 import React from 'react'
-import {useWatch} from 'react-hook-form'
 
-import {TaxIdField} from 'pages/settings/new_billing/components/BillingInformationFields/components/TaxIdField'
+import { useWatch } from 'react-hook-form'
 
-import {TaxIdType} from 'state/billing/types'
+import { TaxIdField } from 'pages/settings/new_billing/components/BillingInformationFields/components/TaxIdField'
+import { TaxIdType } from 'state/billing/types'
 
 export const PSTField: React.FC = () => {
-    const province: string = useWatch({name: 'address.address.state'})
+    const province: string = useWatch({ name: 'address.address.state' })
 
     if (province === 'BC') {
         return (

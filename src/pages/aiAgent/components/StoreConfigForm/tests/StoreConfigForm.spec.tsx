@@ -1,53 +1,53 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {fireEvent, screen, waitFor} from '@testing-library/react'
+import React, { ComponentProps } from 'react'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {fromJS} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
-import {keyBy} from 'lodash'
+import { fromJS } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { keyBy } from 'lodash'
 import moment from 'moment'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
-import {logEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {billingState} from 'fixtures/billing'
+import { AI_AGENT_SENTRY_TEAM } from 'common/const/sentryTeamNames'
+import { logEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { billingState } from 'fixtures/billing'
 import * as useLocalStorageImports from 'hooks/useLocalStorage'
-import {useSearchParam} from 'hooks/useSearchParam'
-import {AiAgentScope, StoreConfiguration} from 'models/aiAgent/types'
-import {HelpCenter} from 'models/helpCenter/types'
-import {IntegrationType} from 'models/integration/types'
-import {applicationsAutomationSettingsAiAgentEnabledFixture} from 'pages/aiAgent/fixtures/applicationAutomationSettings.fixture'
-import {mockChatChannels} from 'pages/aiAgent/fixtures/chatChannels.fixture'
-import {useAccountStoreConfiguration} from 'pages/aiAgent/hooks/useAccountStoreConfiguration'
-import {useAiAgentEnabled} from 'pages/aiAgent/hooks/useAiAgentEnabled'
-import {useAiAgentOnboardingNotification} from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
-import {useConfigurationForm} from 'pages/aiAgent/hooks/useConfigurationForm'
-import {useGetOrCreateSnippetHelpCenter} from 'pages/aiAgent/hooks/useGetOrCreateSnippetHelpCenter'
-import {usePublicResources} from 'pages/aiAgent/hooks/usePublicResources'
-import {useAiAgentStoreConfigurationContext} from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
-import {FormValues} from 'pages/aiAgent/types'
+import { useSearchParam } from 'hooks/useSearchParam'
+import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
+import { HelpCenter } from 'models/helpCenter/types'
+import { IntegrationType } from 'models/integration/types'
+import { applicationsAutomationSettingsAiAgentEnabledFixture } from 'pages/aiAgent/fixtures/applicationAutomationSettings.fixture'
+import { mockChatChannels } from 'pages/aiAgent/fixtures/chatChannels.fixture'
+import { useAccountStoreConfiguration } from 'pages/aiAgent/hooks/useAccountStoreConfiguration'
+import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
+import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
+import { useConfigurationForm } from 'pages/aiAgent/hooks/useConfigurationForm'
+import { useGetOrCreateSnippetHelpCenter } from 'pages/aiAgent/hooks/useGetOrCreateSnippetHelpCenter'
+import { usePublicResources } from 'pages/aiAgent/hooks/usePublicResources'
+import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
+import { FormValues } from 'pages/aiAgent/types'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import history from 'pages/history'
-import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
+import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
 import {
     getHelpCentersResponseFixture,
     getSingleHelpCenterResponseFixture,
 } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {getHasAutomate} from 'state/billing/selectors'
+import { getHasAutomate } from 'state/billing/selectors'
+import { initialState as articlesState } from 'state/entities/helpCenter/articles'
+import { initialState as categoriesState } from 'state/entities/helpCenter/categories'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { renderWithRouter } from 'utils/testing'
 
-import {initialState as articlesState} from 'state/entities/helpCenter/articles'
-import {initialState as categoriesState} from 'state/entities/helpCenter/categories'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {renderWithRouter} from 'utils/testing'
-
-import {INITIAL_FORM_VALUES, ToneOfVoice} from '../../../constants'
+import { INITIAL_FORM_VALUES, ToneOfVoice } from '../../../constants'
 import * as util from '../../../util'
-import {StoreConfigForm} from '../StoreConfigForm'
+import { StoreConfigForm } from '../StoreConfigForm'
 
 const queryClient = mockQueryClient()
 
@@ -92,15 +92,15 @@ const mockSetSearchParam = jest.fn()
 const spyIsAiAgentEnabled = jest.spyOn(util, 'isAiAgentEnabled')
 
 const mockedUseAiAgentStoreConfigurationContext = jest.mocked(
-    useAiAgentStoreConfigurationContext
+    useAiAgentStoreConfigurationContext,
 )
 
 const mockedUseAccountStoreConfiguration = jest.mocked(
-    useAccountStoreConfiguration
+    useAccountStoreConfiguration,
 )
 
 const mockedUseGetOrCreateSnippetHelpCenter = jest.mocked(
-    useGetOrCreateSnippetHelpCenter
+    useGetOrCreateSnippetHelpCenter,
 )
 const mockedUseSelfServiceChatChannels = jest.mocked(useSelfServiceChatChannels)
 const mockedUseConfigurationForm = jest.mocked(useConfigurationForm)
@@ -108,7 +108,7 @@ const mockedUsePublicResources = jest.mocked(usePublicResources)
 const mockGetHasAutomate = jest.mocked(getHasAutomate)
 const mockUseEnableAiAgent = jest.mocked(useAiAgentEnabled)
 const mockUseAiAgentOnboardingNotification = jest.mocked(
-    useAiAgentOnboardingNotification
+    useAiAgentOnboardingNotification,
 )
 
 mockedUsePublicResources.mockReturnValue({
@@ -148,7 +148,7 @@ const mockedStore = mockStore({
                 automationSettingsByContactFormId: {
                     [contactForm.id]: {
                         workflows: [],
-                        order_management: {enabled: false},
+                        order_management: { enabled: false },
                     },
                 },
             },
@@ -174,7 +174,7 @@ const mockedStore = mockStore({
 const updateValueMocked = jest.fn()
 const mockHandleOnSave = jest
     .fn()
-    .mockImplementation((props: {onSuccess: () => void}) => {
+    .mockImplementation((props: { onSuccess: () => void }) => {
         props.onSuccess()
     })
 const mockUpdateStoreConfiguration = jest
@@ -186,13 +186,13 @@ const mockCreateStoreConfiguration = jest
 
 const useLocalStorageSpy = jest.spyOn(
     useLocalStorageImports,
-    'default'
+    'default',
 ) as jest.Mock
 
 useLocalStorageSpy.mockReturnValue([[], jest.fn()])
 
 const renderComponent = (
-    props?: Partial<ComponentProps<typeof StoreConfigForm>>
+    props?: Partial<ComponentProps<typeof StoreConfigForm>>,
 ) =>
     renderWithRouter(
         <Provider store={mockedStore}>
@@ -203,14 +203,14 @@ const renderComponent = (
                     shopType="shopify"
                     faqHelpCenters={
                         [
-                            {id: 1, name: 'help center 1', type: 'faq'},
-                            {id: 2, name: 'help center 2', type: 'faq'},
+                            { id: 1, name: 'help center 1', type: 'faq' },
+                            { id: 2, name: 'help center 2', type: 'faq' },
                         ] as unknown as HelpCenter[]
                     }
                     {...props}
                 />
             </QueryClientProvider>
-        </Provider>
+        </Provider>,
     )
 
 describe('<StoreConfigForm />', () => {
@@ -270,7 +270,7 @@ describe('<StoreConfigForm />', () => {
             "Be concise. Use an empathetic, proactive, and reassuring tone. Acknowledge the customer's feelings with apologies and empathetic expressions. You can include emojis for a personal touch (e.g., 👍) and exclamation points.",
         helpCenterId: 1,
         monitoredChatIntegrations: null,
-        monitoredEmailIntegrations: [{id: 1, email: MOCK_EMAIL_ADDRESS}],
+        monitoredEmailIntegrations: [{ id: 1, email: MOCK_EMAIL_ADDRESS }],
         wizard: undefined,
     }
 
@@ -332,7 +332,7 @@ describe('<StoreConfigForm />', () => {
             aiAgentPreviewTicketViewId: 2,
         })
         mockUseAiAgentOnboardingNotification.mockReturnValue(
-            defaultUseAiAgentOnboardingNotification
+            defaultUseAiAgentOnboardingNotification,
         )
     })
 
@@ -350,8 +350,8 @@ describe('<StoreConfigForm />', () => {
         renderComponent()
         expect(
             screen.getByText(
-                'Select one or more email addresses for AI Agent to use. It will also reply to contact forms linked to these email addresses.'
-            )
+                'Select one or more email addresses for AI Agent to use. It will also reply to contact forms linked to these email addresses.',
+            ),
         ).toBeInTheDocument()
     })
 
@@ -381,7 +381,7 @@ describe('<StoreConfigForm />', () => {
 
             await waitFor(() => {
                 expect(reportError).toHaveBeenCalledWith(expect.any(Error), {
-                    tags: {team: AI_AGENT_SENTRY_TEAM},
+                    tags: { team: AI_AGENT_SENTRY_TEAM },
                     extra: {
                         context: 'Error during disabling AI Agent',
                     },
@@ -412,8 +412,8 @@ describe('<StoreConfigForm />', () => {
 
         mockedUsePublicResources.mockReturnValue({
             sourceItems: [
-                {id: 1, url: 'https://test1.com', status: 'error'},
-                {id: 2, url: 'https://test2.com', status: 'error'},
+                { id: 1, url: 'https://test1.com', status: 'error' },
+                { id: 2, url: 'https://test2.com', status: 'error' },
             ],
             isSourceItemsListLoading: false,
         } as unknown as ReturnType<typeof usePublicResources>)
@@ -451,7 +451,7 @@ describe('<StoreConfigForm />', () => {
             renderComponent()
 
             expect(
-                screen.getByText('Select one or more chat integrations')
+                screen.getByText('Select one or more chat integrations'),
             ).toBeInTheDocument()
         })
 
@@ -463,7 +463,7 @@ describe('<StoreConfigForm />', () => {
 
             await waitFor(() => {
                 expect(
-                    screen.queryByText('Select one or more chat integrations')
+                    screen.queryByText('Select one or more chat integrations'),
                 ).not.toBeInTheDocument()
             })
         })
@@ -472,14 +472,14 @@ describe('<StoreConfigForm />', () => {
             renderComponent()
 
             const dropdown = screen.getByText(
-                'Select one or more chat integrations'
+                'Select one or more chat integrations',
             )
             fireEvent.focus(dropdown)
 
             await waitFor(() => {
                 for (const channel of mockChatChannels) {
                     expect(
-                        screen.getByText(channel.value.name)
+                        screen.getByText(channel.value.name),
                     ).toBeInTheDocument()
                 }
             })
@@ -498,7 +498,7 @@ describe('<StoreConfigForm />', () => {
             renderComponent()
 
             await waitFor(() =>
-                expect(screen.getByText(chatIntegration.value.name))
+                expect(screen.getByText(chatIntegration.value.name)),
             )
         })
 
@@ -533,7 +533,7 @@ describe('<StoreConfigForm />', () => {
 
         renderComponent()
         expect(
-            screen.getByText('One or more addresses required.')
+            screen.getByText('One or more addresses required.'),
         ).toBeInTheDocument()
     })
 
@@ -548,7 +548,7 @@ describe('<StoreConfigForm />', () => {
 
         renderComponent()
         expect(
-            screen.getAllByText('This response was created by AI').length
+            screen.getAllByText('This response was created by AI').length,
         ).toBeGreaterThan(0)
     })
 
@@ -565,7 +565,7 @@ describe('<StoreConfigForm />', () => {
         renderComponent()
 
         expect(
-            screen.queryByText('Email signature is required.')
+            screen.queryByText('Email signature is required.'),
         ).not.toBeInTheDocument()
     })
 
@@ -585,7 +585,7 @@ describe('<StoreConfigForm />', () => {
         fireEvent.blur(textArea)
 
         expect(
-            screen.getByText('Email signature is required.')
+            screen.getByText('Email signature is required.'),
         ).toBeInTheDocument()
     })
 
@@ -599,7 +599,7 @@ describe('<StoreConfigForm />', () => {
         const channelToSelect = mockChatChannels[0]
 
         const dropdown = screen.getByText(
-            'Select one or more chat integrations'
+            'Select one or more chat integrations',
         )
         fireEvent.focus(dropdown)
 
@@ -609,7 +609,7 @@ describe('<StoreConfigForm />', () => {
         await waitFor(() => {
             expect(updateValueMocked).toHaveBeenCalledWith(
                 'monitoredChatIntegrations',
-                [channelToSelect.value?.id]
+                [channelToSelect.value?.id],
             )
         })
     })
@@ -650,7 +650,7 @@ describe('<StoreConfigForm />', () => {
         const dropdown = screen.getByText('Select one or more email addresses')
         fireEvent.focus(dropdown)
         const emailCheckbox = screen.getByText(
-            MOCK_EMAIL_INTEGRATION.meta.address
+            MOCK_EMAIL_INTEGRATION.meta.address,
         )
         fireEvent.click(emailCheckbox)
 
@@ -662,7 +662,7 @@ describe('<StoreConfigForm />', () => {
                         id: MOCK_EMAIL_INTEGRATION.id,
                         email: MOCK_EMAIL_INTEGRATION.meta.address,
                     },
-                ]
+                ],
             )
         })
     })
@@ -736,7 +736,7 @@ describe('<StoreConfigForm />', () => {
 
         // Simulate the user selecting 'enabled' mode
         const radioButton = screen.getByLabelText(
-            'Directly respond to customers'
+            'Directly respond to customers',
         )
         userEvent.click(radioButton)
 
@@ -745,15 +745,15 @@ describe('<StoreConfigForm />', () => {
         expect(updateValueMocked).toHaveBeenCalledTimes(5)
         expect(updateValueMocked).toHaveBeenCalledWith(
             'deactivatedDatetime',
-            null
+            null,
         )
         expect(updateValueMocked).toHaveBeenCalledWith(
             'trialModeActivatedDatetime',
-            null
+            null,
         )
         expect(updateValueMocked).toHaveBeenCalledWith(
             'previewModeActivatedDatetime',
-            null
+            null,
         )
     })
 
@@ -774,7 +774,7 @@ describe('<StoreConfigForm />', () => {
         renderComponent({})
 
         const radioButton = screen.getByLabelText(
-            'Draft responses for agents to review before sending'
+            'Draft responses for agents to review before sending',
         )
         userEvent.click(radioButton)
 
@@ -783,15 +783,15 @@ describe('<StoreConfigForm />', () => {
         expect(updateValueMocked).toHaveBeenCalledTimes(5)
         expect(updateValueMocked).toHaveBeenCalledWith(
             'deactivatedDatetime',
-            expect.any(String)
+            expect.any(String),
         )
         expect(updateValueMocked).toHaveBeenCalledWith(
             'trialModeActivatedDatetime',
-            expect.any(String)
+            expect.any(String),
         )
         expect(updateValueMocked).toHaveBeenCalledWith(
             'previewModeActivatedDatetime',
-            expect.any(String)
+            expect.any(String),
         )
     })
 
@@ -811,15 +811,15 @@ describe('<StoreConfigForm />', () => {
         expect(updateValueMocked).toHaveBeenCalledTimes(5)
         expect(updateValueMocked).toHaveBeenCalledWith(
             'deactivatedDatetime',
-            expect.any(String)
+            expect.any(String),
         )
         expect(updateValueMocked).toHaveBeenCalledWith(
             'trialModeActivatedDatetime',
-            null
+            null,
         )
         expect(updateValueMocked).toHaveBeenCalledWith(
             'previewModeActivatedDatetime',
-            null
+            null,
         )
     })
 
@@ -834,13 +834,13 @@ describe('<StoreConfigForm />', () => {
 
         renderComponent()
         const emailChannelCheckbox = screen.getByLabelText(
-            'Enable AI Agent on Email'
+            'Enable AI Agent on Email',
         )
         fireEvent.click(emailChannelCheckbox)
 
         expect(updateValueMocked).toHaveBeenCalledWith(
             'emailChannelDeactivatedDatetime',
-            expect.any(String)
+            expect.any(String),
         )
     })
 
@@ -858,12 +858,12 @@ describe('<StoreConfigForm />', () => {
         })
         renderComponent()
         const chatChannelCheckbox = screen.getByLabelText(
-            'Enable AI Agent on Chat'
+            'Enable AI Agent on Chat',
         )
         fireEvent.click(chatChannelCheckbox)
         expect(updateValueMocked).toHaveBeenCalledWith(
             'chatChannelDeactivatedDatetime',
-            expect.any(String)
+            expect.any(String),
         )
     })
 
@@ -884,14 +884,14 @@ describe('<StoreConfigForm />', () => {
 
         renderComponent()
         const chatChannelCheckbox = screen.getByLabelText(
-            'Enable AI Agent on Chat'
+            'Enable AI Agent on Chat',
         )
         fireEvent.click(chatChannelCheckbox)
 
         expect(updateValueMocked).toHaveBeenCalledTimes(1)
         expect(updateValueMocked).toHaveBeenLastCalledWith(
             'chatChannelDeactivatedDatetime',
-            null
+            null,
         )
     })
 
@@ -925,13 +925,13 @@ describe('<StoreConfigForm />', () => {
 
         await waitFor(() => {
             expect(spyIsAiAgentEnabled).toHaveBeenCalledWith(
-                INITIAL_FORM_VALUES.deactivatedDatetime
+                INITIAL_FORM_VALUES.deactivatedDatetime,
             )
             expect(spyIsAiAgentEnabled).toHaveBeenCalledWith(
-                INITIAL_FORM_VALUES.emailChannelDeactivatedDatetime
+                INITIAL_FORM_VALUES.emailChannelDeactivatedDatetime,
             )
             expect(spyIsAiAgentEnabled).toHaveBeenCalledWith(
-                INITIAL_FORM_VALUES.chatChannelDeactivatedDatetime
+                INITIAL_FORM_VALUES.chatChannelDeactivatedDatetime,
             )
         })
     })
@@ -967,7 +967,7 @@ describe('<StoreConfigForm />', () => {
         renderComponent()
 
         expect(
-            defaultUseAiAgentOnboardingNotification.handleOnCancelActivateAiAgentNotification
+            defaultUseAiAgentOnboardingNotification.handleOnCancelActivateAiAgentNotification,
         ).toHaveBeenCalled()
     })
 
@@ -1002,7 +1002,7 @@ describe('<StoreConfigForm />', () => {
         renderComponent()
 
         expect(
-            defaultUseAiAgentOnboardingNotification.handleOnCancelActivateAiAgentNotification
+            defaultUseAiAgentOnboardingNotification.handleOnCancelActivateAiAgentNotification,
         ).toHaveBeenCalled()
     })
 
@@ -1220,14 +1220,14 @@ describe('<StoreConfigForm />', () => {
 
             expect(
                 screen.getByLabelText(
-                    /AI Agent responds to tickets sent to the following Chats/i
-                )
+                    /AI Agent responds to tickets sent to the following Chats/i,
+                ),
             ).toBeInvalid()
 
             expect(
                 screen.getByLabelText(
-                    /AI Agent responds to tickets sent to the following email addresses/i
-                )
+                    /AI Agent responds to tickets sent to the following email addresses/i,
+                ),
             ).toBeInvalid()
         })
 
@@ -1357,7 +1357,7 @@ describe('<StoreConfigForm />', () => {
             renderComponent({})
 
             expect(
-                screen.getByText('You’re currently using AI Agent Preview.')
+                screen.getByText('You’re currently using AI Agent Preview.'),
             ).toBeInTheDocument()
             expect(screen.getByText('Review Drafts')).toBeInTheDocument()
         })
@@ -1386,7 +1386,7 @@ describe('<StoreConfigForm />', () => {
             renderComponent({})
 
             expect(
-                screen.getByText('You’re currently using AI Agent Preview.')
+                screen.getByText('You’re currently using AI Agent Preview.'),
             ).toBeInTheDocument()
             expect(screen.getByText('Review Drafts')).toBeInTheDocument()
         })
@@ -1419,7 +1419,7 @@ describe('<StoreConfigForm />', () => {
             renderComponent({})
 
             expect(
-                screen.getByText('You’re currently using AI Agent Preview.')
+                screen.getByText('You’re currently using AI Agent Preview.'),
             ).toBeInTheDocument()
 
             const reviewDraftsButton = screen.getByText('Review Drafts')

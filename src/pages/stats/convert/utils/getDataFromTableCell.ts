@@ -1,10 +1,10 @@
-import {CampaignTableContentCell} from '../types/CampaignTableContentCell'
-import {CampaignTableKeys} from '../types/enums/CampaignTableKeys.enum'
+import { CampaignTableContentCell } from '../types/CampaignTableContentCell'
+import { CampaignTableKeys } from '../types/enums/CampaignTableKeys.enum'
 
 export function getDataFromTableCell(
     cell: CampaignTableContentCell,
     key: CampaignTableKeys,
-    variantId?: string
+    variantId?: string,
 ) {
     if (key === CampaignTableKeys.CampaignName) {
         return cell.campaign.name

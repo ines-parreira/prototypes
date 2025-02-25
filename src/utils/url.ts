@@ -5,7 +5,7 @@ import _trim from 'lodash/trim'
 export function encodeRFC3986URIComponent(str: string): string {
     return encodeURIComponent(str).replace(
         /[!'()*]/g,
-        (c) => `%${c.charCodeAt(0).toString(16).toUpperCase()}`
+        (c) => `%${c.charCodeAt(0).toString(16).toUpperCase()}`,
     )
 }
 
@@ -23,7 +23,7 @@ export function ensureHTTPS(url = ''): string {
 
 export function attachSearchParamsToUrl(
     baseUrl: string,
-    params: Record<string, string> = {}
+    params: Record<string, string> = {},
 ): string {
     try {
         const url = new URL(baseUrl)
@@ -31,7 +31,7 @@ export function attachSearchParamsToUrl(
         Object.entries(params).forEach(([key, value]) => {
             url.searchParams.set(
                 _trim(key),
-                encodeRFC3986URIComponent(_trim(value))
+                encodeRFC3986URIComponent(_trim(value)),
             )
         })
 

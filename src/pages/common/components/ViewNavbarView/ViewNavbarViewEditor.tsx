@@ -1,19 +1,21 @@
+import React, { Component } from 'react'
+
 import classnames from 'classnames'
-import {fromJS, Map, List} from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 import _isUndefined from 'lodash/isUndefined'
 import _merge from 'lodash/merge'
 import _pick from 'lodash/pick'
-import React, {Component} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {Link, RouteComponentProps} from 'react-router-dom'
+import { connect, ConnectedProps } from 'react-redux'
+import { Link, RouteComponentProps } from 'react-router-dom'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { logEvent, SegmentEvent } from 'common/segment'
 import ReactSortable from 'pages/common/components/dragging/ReactSortable'
 import CheckBox from 'pages/common/forms/CheckBox'
 import withRouter from 'pages/common/utils/withRouter'
-import {submitSetting} from 'state/currentUser/actions'
+import { submitSetting } from 'state/currentUser/actions'
 
-import {sortViews} from './utils'
+import { sortViews } from './utils'
+
 import css from './ViewNavbarViewEditor.less'
 
 type OwnProps = {
@@ -42,7 +44,7 @@ class ViewNavbarViewEditor extends Component<Props, State> {
                 hide: {},
                 displayOrder: {},
             },
-            this._getSettings(props.views)
+            this._getSettings(props.views),
         )
     }
 
@@ -68,7 +70,7 @@ class ViewNavbarViewEditor extends Component<Props, State> {
     _submitSetting = () => {
         const oldSettings: Record<
             string,
-            {hide: boolean; display_order: number}
+            { hide: boolean; display_order: number }
         > = {}
         this.props.views.forEach((view: Map<any, any>) => {
             oldSettings[view.get('id') as number] = _pick(view.toJS(), [
@@ -80,12 +82,12 @@ class ViewNavbarViewEditor extends Component<Props, State> {
         const newSettings: Record<string, Record<string, boolean | number>> = {}
 
         const properties = [
-            {local: 'hide', remote: 'hide'},
-            {local: 'displayOrder', remote: 'display_order'},
+            { local: 'hide', remote: 'hide' },
+            { local: 'displayOrder', remote: 'display_order' },
         ]
 
         properties.forEach(
-            ({local, remote}: {local: string; remote: string}) => {
+            ({ local, remote }: { local: string; remote: string }) => {
                 Object.keys((this.state as Record<string, any>)[local]).forEach(
                     (id: string) => {
                         newSettings[id] = newSettings[id] || {}
@@ -95,20 +97,20 @@ class ViewNavbarViewEditor extends Component<Props, State> {
                                 Record<string, boolean | number>
                             >
                         )[local][id]
-                    }
+                    },
                 )
-            }
+            },
         )
 
         return this.props.submitSetting(
             _merge(this.props.setting.toJS(), {
                 data: _merge(oldSettings, newSettings),
             }),
-            false
+            false,
         )
     }
 
-    _updateField = (value: {hide: Record<string, boolean>}) => {
+    _updateField = (value: { hide: Record<string, boolean> }) => {
         this.setState(_merge(this.state, value))
         void this._submitSetting()
 
@@ -125,7 +127,7 @@ class ViewNavbarViewEditor extends Component<Props, State> {
         this.setState(
             _merge(this.state, {
                 displayOrder: newDisplayOrder,
-            })
+            }),
         )
 
         void this._submitSetting()
@@ -153,14 +155,14 @@ class ViewNavbarViewEditor extends Component<Props, State> {
                 .map((view: Map<any, any>) => {
                     return view.set(
                         'display_order',
-                        this._getDisplayOrder(view)
+                        this._getDisplayOrder(view),
                     )
                 })
                 .sort(
                     sortViews as unknown as (
                         view1: Map<any, any>,
-                        view2: Map<any, any>
-                    ) => number
+                        view2: Map<any, any>,
+                    ) => number,
                 ) as List<any>
         }
 
@@ -199,7 +201,7 @@ class ViewNavbarViewEditor extends Component<Props, State> {
         const {
             views,
             objectName,
-            location: {pathname},
+            location: { pathname },
         } = this.props
         const createButtonClass = classnames('mt10 item', {
             active: pathname.includes(`${objectName}/new`),

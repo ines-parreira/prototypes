@@ -1,7 +1,7 @@
-import {AiAgentChannel, ToneOfVoice} from 'pages/aiAgent/constants'
-import {DiscountStrategy} from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
-import {PersuasionLevel} from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
-import {AiAgentScopes} from 'pages/aiAgent/Onboarding/types'
+import { AiAgentChannel, ToneOfVoice } from 'pages/aiAgent/constants'
+import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
+import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
+import { AiAgentScopes } from 'pages/aiAgent/Onboarding/types'
 
 export type AccountConfigurationResponse = {
     accountConfiguration: Omit<AccountConfiguration, 'helpdeskOAuth'>
@@ -13,12 +13,12 @@ export type AccountConfiguration = {
     httpIntegration?: {
         id: number
     }
-    views?: {[key: string]: {id: number}}
-    helpdeskOAuth: {accessToken: string} | null
+    views?: { [key: string]: { id: number } }
+    helpdeskOAuth: { accessToken: string } | null
 }
 
 export type AccountConfigurationWithHttpIntegration = AccountConfiguration & {
-    httpIntegration: {id: number}
+    httpIntegration: { id: number }
 }
 
 export type GetStoreConfigurationParams = {

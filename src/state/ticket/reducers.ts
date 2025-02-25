@@ -1,35 +1,37 @@
-import {fromJS, List, Map} from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 import moment from 'moment'
 
-import {FETCH_TICKET_REPLY_MACRO} from 'common/state'
-import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
-import {CustomFieldState} from 'custom-fields/types'
-import {ShopperAddress, ShopperOrder} from 'models/customerEcommerceData/types'
+import { FETCH_TICKET_REPLY_MACRO } from 'common/state'
+import { PhoneIntegrationEvent } from 'constants/integrations/types/event'
+import { CustomFieldState } from 'custom-fields/types'
+import {
+    ShopperAddress,
+    ShopperOrder,
+} from 'models/customerEcommerceData/types'
 import {
     SATISFACTION_SURVEY_DETAIL_EVENT_TYPES,
     TICKET_EVENT_TYPES,
 } from 'models/event/types'
-import {MacroActionName} from 'models/macroAction/types'
-import {Ticket} from 'models/ticket/types'
+import { MacroActionName } from 'models/macroAction/types'
+import { Ticket } from 'models/ticket/types'
 import * as customerTypes from 'state/customers/constants'
 import * as newMessageTypes from 'state/newMessage/constants'
 import ticketReplyCache from 'state/newMessage/ticketReplyCache'
-import {GorgiasAction} from 'state/types'
-
+import { GorgiasAction } from 'state/types'
 import {
     CUSTOMER_ECOMMERCE_DATA_KEY,
     CUSTOMER_EXTERNAL_DATA_KEY,
 } from 'state/widgets/constants'
-import {parseTimeDelta} from 'tickets/common/utils'
-import {compare} from 'utils'
+import { parseTimeDelta } from 'tickets/common/utils'
+import { compare } from 'utils'
 
 import * as types from './constants'
 import {
     deduplicateAuditLogEvents,
     shouldDeduplicateAuditLogEvents,
 } from './helpers'
-import {TicketState} from './types'
-import {getPendingMessageIndex, mergeActions} from './utils'
+import { TicketState } from './types'
+import { getPendingMessageIndex, mergeActions } from './utils'
 
 export const initialState: TicketState = fromJS({
     state: {
@@ -80,7 +82,7 @@ export const initialState: TicketState = fromJS({
 
 export default function reducer(
     state: TicketState = initialState,
-    action: GorgiasAction
+    action: GorgiasAction,
 ): TicketState {
     switch (action.type) {
         case newMessageTypes.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START: {
@@ -108,11 +110,11 @@ export default function reducer(
             const messageIndex = (
                 newState.getIn(
                     ['_internal', 'pendingMessages'],
-                    fromJS([])
+                    fromJS([]),
                 ) as List<any>
             ).findIndex(
                 (message: Map<any, any>) =>
-                    message.getIn(['_internal', 'id']) === action.messageId
+                    message.getIn(['_internal', 'id']) === action.messageId,
             )
 
             if (action.retry && ~messageIndex) {
@@ -127,7 +129,7 @@ export default function reducer(
 
             return newState.updateIn(
                 ['_internal', 'pendingMessages'],
-                (messages: List<any>) => messages.unshift(message)
+                (messages: List<any>) => messages.unshift(message),
             )
         }
 
@@ -135,11 +137,11 @@ export default function reducer(
             const messageIndex = (
                 state.getIn(
                     ['_internal', 'pendingMessages'],
-                    fromJS([])
+                    fromJS([]),
                 ) as List<any>
             ).findIndex(
                 (message: Map<any, any>) =>
-                    message.getIn(['_internal', 'id']) === action.messageId
+                    message.getIn(['_internal', 'id']) === action.messageId,
             )
 
             if (!~messageIndex) {
@@ -152,7 +154,7 @@ export default function reducer(
                     return message.mergeDeep({
                         failed_datetime: new Date().toISOString(),
                     })
-                }
+                },
             )
         }
 
@@ -170,7 +172,7 @@ export default function reducer(
             const newState = state.merge(action.response as Map<any, any>)
             return newState.setIn(
                 ['_internal', 'loading', 'fetchTicket'],
-                false
+                false,
             )
         }
 
@@ -181,7 +183,7 @@ export default function reducer(
         case types.CLEAR_TICKET: {
             return initialState.setIn(
                 ['_internal', 'shouldDisplayHistoryOnNextPage'],
-                state.getIn(['_internal', 'shouldDisplayHistoryOnNextPage'])
+                state.getIn(['_internal', 'shouldDisplayHistoryOnNextPage']),
             )
         }
 
@@ -189,14 +191,14 @@ export default function reducer(
             let tags: string | string[] = action.args?.get('tags') as string
             let ticketTags = state.get('tags', fromJS([])) as List<any>
             const existingTagNames = ticketTags.map(
-                (x: Map<any, any>) => x.get('name') as string
+                (x: Map<any, any>) => x.get('name') as string,
             )
 
             tags = tags ? tags.split(',').map((t) => t.trim()) : []
 
             tags.forEach((newTag) => {
                 if (!existingTagNames.includes(newTag)) {
-                    ticketTags = ticketTags.push(fromJS({name: newTag}))
+                    ticketTags = ticketTags.push(fromJS({ name: newTag }))
                 }
             })
 
@@ -208,7 +210,7 @@ export default function reducer(
             const ticketTags = state.get('tags', fromJS([])) as List<any>
 
             const index = ticketTags.findIndex(
-                (t: Map<any, any>) => t.get('name') === tag
+                (t: Map<any, any>) => t.get('name') === tag,
             )
 
             if (!~index) {
@@ -226,7 +228,7 @@ export default function reducer(
                             return m.set('request_id', action.requestId)
                         }
                         return m
-                    }
+                    },
                 ),
             })
         }
@@ -239,7 +241,7 @@ export default function reducer(
                             return m.set('request_id', null)
                         }
                         return m
-                    }
+                    },
                 ),
             })
         }
@@ -299,7 +301,7 @@ export default function reducer(
                 return state
                     .set(
                         'snooze_datetime',
-                        moment().add(parseTimeDelta(snoozeDuration)).format()
+                        moment().add(parseTimeDelta(snoozeDuration)).format(),
                     )
                     .set('status', 'closed')
             }
@@ -314,14 +316,14 @@ export default function reducer(
                 const oldActions = (
                     state.getIn(
                         ['state', 'appliedMacro', 'actions'],
-                        fromJS([])
+                        fromJS([]),
                     ) as List<any>
                 ).filter(
                     (action: Map<any, any>) =>
                         ![
                             MacroActionName.SetResponseText,
                             MacroActionName.AddAttachments,
-                        ].includes(action.get('name'))
+                        ].includes(action.get('name')),
                 ) as List<any>
 
                 if (oldActions.size)
@@ -329,8 +331,8 @@ export default function reducer(
                         'actions',
                         mergeActions(
                             oldActions,
-                            action.macro.get('actions', fromJS([]))
-                        )
+                            action.macro.get('actions', fromJS([])),
+                        ),
                     )
             }
             ticketReplyCache.set(action.ticketId as string, {
@@ -352,7 +354,7 @@ export default function reducer(
             })
             return state.setIn(
                 ['state', 'topRankMacroState'],
-                fromJS(action.topRankMacroState)
+                fromJS(action.topRankMacroState),
             )
         }
 
@@ -362,14 +364,14 @@ export default function reducer(
                 .setIn(['state', 'appliedMacro'], cache.get('macro'))
                 .setIn(
                     ['state', 'topRankMacroState'],
-                    cache.get('topRankMacroState')
+                    cache.get('topRankMacroState'),
                 )
         }
 
         case types.UPDATE_ACTION_ARGS_ON_APPLIED: {
             if (action.ticketId) {
                 let updatedCache = ticketReplyCache.get(
-                    action.ticketId as string
+                    action.ticketId as string,
                 )
 
                 const macro = updatedCache.get('macro')
@@ -386,8 +388,8 @@ export default function reducer(
                             String(action.actionIndex),
                             'arguments',
                         ],
-                        action.value
-                    )
+                        action.value,
+                    ),
                 )
             }
 
@@ -400,7 +402,7 @@ export default function reducer(
                           String(action.actionIndex),
                           'arguments',
                       ],
-                      action.value
+                      action.value,
                   )
                 : state
         }
@@ -430,7 +432,7 @@ export default function reducer(
             return state.update('messages', (messages: List<any>) => {
                 const index = messages.findIndex(
                     (message: Map<any, any>) =>
-                        message.get('id') === action.messageId
+                        message.get('id') === action.messageId,
                 )
 
                 if (!~index) {
@@ -452,7 +454,7 @@ export default function reducer(
         case types.DISPLAY_HISTORY_ON_NEXT_PAGE:
             return state.setIn(
                 ['_internal', 'shouldDisplayHistoryOnNextPage'],
-                action.state
+                action.state,
             )
 
         case customerTypes.MERGE_CUSTOMERS_SUCCESS: {
@@ -467,7 +469,7 @@ export default function reducer(
         }
 
         case types.MERGE_TICKET: {
-            const {ticket, messagesDifference} = action
+            const { ticket, messagesDifference } = action
 
             // Make sure that custom fields
             // are not reset by error when receiving new messages or merging ticket
@@ -514,7 +516,7 @@ export default function reducer(
                     if (oldData) {
                         newState = newState.setIn(
                             ['customer', dataKey],
-                            oldData
+                            oldData,
                         )
                     }
                 }
@@ -524,17 +526,17 @@ export default function reducer(
             const auditLogEvents = (state.get('events') as List<any>).filter(
                 (event: Map<any, any>) =>
                     Object.values(TICKET_EVENT_TYPES).includes(
-                        event.get('type')
+                        event.get('type'),
                     ) &&
                     event.get('object_id') === ticket?.get('id') &&
                     (newState.get('events') as List<any>).every(
                         (existingEvent: Map<any, any>) =>
-                            existingEvent.get('id') !== event.get('id')
-                    )
+                            existingEvent.get('id') !== event.get('id'),
+                    ),
             )
 
             newState = newState.updateIn(['events'], (events: List<any>) =>
-                events.concat(auditLogEvents)
+                events.concat(auditLogEvents),
             )
 
             // order messages by created datetime
@@ -542,8 +544,8 @@ export default function reducer(
                 return messages.sort((a: Map<any, any>, b: Map<any, any>) =>
                     compare(
                         a.get('created_datetime'),
-                        b.get('created_datetime')
-                    )
+                        b.get('created_datetime'),
+                    ),
                 )
             })
 
@@ -563,7 +565,7 @@ export default function reducer(
                     // pending messages don't have an id we can match on
                     const pendingIndex = getPendingMessageIndex(
                         pendingMessages,
-                        message.toJS()
+                        message.toJS(),
                     )
 
                     if (~pendingIndex) {
@@ -572,7 +574,7 @@ export default function reducer(
                             ['_internal', 'pendingMessages'],
                             (messages: List<any>) => {
                                 return messages.splice(pendingIndex, 1)
-                            }
+                            },
                         )
                     }
                 })
@@ -582,7 +584,7 @@ export default function reducer(
         }
 
         case types.MERGE_CUSTOMER: {
-            const {customer} = action
+            const { customer } = action
             let customerData = fromJS(customer) as Map<any, any>
 
             // if received customer data does not concern current customer of ticket, do nothing
@@ -611,7 +613,7 @@ export default function reducer(
         }
 
         case types.MERGE_CUSTOMER_EXTERNAL_DATA: {
-            const {customerId, externalData} = action
+            const { customerId, externalData } = action
 
             // if received customer data does not concern current customer of ticket, do nothing
             if (customerId !== state.getIn(['customer', 'id'])) {
@@ -622,7 +624,7 @@ export default function reducer(
             for (const clientId in externalData) {
                 nextState = nextState.setIn(
                     ['customer', CUSTOMER_EXTERNAL_DATA_KEY, clientId],
-                    fromJS(externalData[clientId])
+                    fromJS(externalData[clientId]),
                 )
             }
 
@@ -630,7 +632,7 @@ export default function reducer(
         }
 
         case types.MERGE_CUSTOMER_ECOMMERCE_DATA_SHOPPER: {
-            const {customerId, store, shopper} = action
+            const { customerId, store, shopper } = action
             if (!store || !shopper) {
                 return state
             }
@@ -648,7 +650,7 @@ export default function reducer(
                         store.uuid,
                         'store',
                     ],
-                    fromJS(store)
+                    fromJS(store),
                 )
                 .setIn(
                     [
@@ -657,12 +659,12 @@ export default function reducer(
                         store.uuid,
                         'shopper',
                     ],
-                    fromJS(shopper)
+                    fromJS(shopper),
                 )
         }
 
         case types.MERGE_CUSTOMER_ECOMMERCE_DATA_SHOPPER_ADDRESS: {
-            const {customerId, storeUUID, shopperAddress} = action
+            const { customerId, storeUUID, shopperAddress } = action
             if (!storeUUID || !shopperAddress) {
                 return state
             }
@@ -687,7 +689,7 @@ export default function reducer(
 
             // replace the existing address
             const existingAddressIndex = addresses.findIndex(
-                (address: ShopperAddress) => address.id === shopperAddress.id
+                (address: ShopperAddress) => address.id === shopperAddress.id,
             )
             if (existingAddressIndex !== -1) {
                 addresses[existingAddressIndex] = shopperAddress
@@ -710,7 +712,7 @@ export default function reducer(
         }
 
         case types.MERGE_CUSTOMER_ECOMMERCE_DATA_ORDER: {
-            const {customerId, storeUUID, shopperOrder} = action
+            const { customerId, storeUUID, shopperOrder } = action
             if (!storeUUID || !shopperOrder) {
                 return state
             }
@@ -735,7 +737,7 @@ export default function reducer(
 
             // replace the existing order
             const existingOrderIndex = orders.findIndex(
-                (order: ShopperOrder) => order.id === shopperOrder.id
+                (order: ShopperOrder) => order.id === shopperOrder.id,
             )
             if (existingOrderIndex !== -1) {
                 orders[existingOrderIndex] = shopperOrder
@@ -769,7 +771,7 @@ export default function reducer(
                                     action.message as unknown as Map<any, any>
                                 ).getIn(['_internal', 'id'])
                             )
-                        }
+                        },
                     )
 
                     if (~messageIndex) {
@@ -777,20 +779,20 @@ export default function reducer(
                     }
 
                     return messages
-                }
+                },
             )
         }
 
         case types.DISPLAY_TICKET_AUDIT_LOG_EVENTS:
             return state.setIn(
                 ['_internal', 'shouldDisplayAuditLogEvents'],
-                true
+                true,
             )
 
         case types.HIDE_TICKET_AUDIT_LOG_EVENTS:
             return state.setIn(
                 ['_internal', 'shouldDisplayAuditLogEvents'],
-                false
+                false,
             )
 
         case types.ADD_TICKET_AUDIT_LOG_EVENTS:
@@ -800,13 +802,13 @@ export default function reducer(
                     .filter(
                         (eventToDisplay: Map<any, any>) =>
                             !Object.values(PhoneIntegrationEvent).includes(
-                                eventToDisplay.get('type')
-                            )
+                                eventToDisplay.get('type'),
+                            ),
                     )
                     .forEach((eventToDisplay: Map<any, any>) => {
                         const index = results.findIndex(
                             (event: Map<any, any>) =>
-                                event.get('id') === eventToDisplay.get('id')
+                                event.get('id') === eventToDisplay.get('id'),
                         )
 
                         if (index === -1) {
@@ -816,7 +818,7 @@ export default function reducer(
                         }
                     })
                 return shouldDeduplicateAuditLogEvents(
-                    state.get('created_datetime')
+                    state.get('created_datetime'),
                 )
                     ? deduplicateAuditLogEvents(results)
                     : results
@@ -829,10 +831,10 @@ export default function reducer(
                         ![
                             ...Object.values(TICKET_EVENT_TYPES),
                             ...Object.values(
-                                SATISFACTION_SURVEY_DETAIL_EVENT_TYPES
+                                SATISFACTION_SURVEY_DETAIL_EVENT_TYPES,
                             ),
-                        ].includes(event.get('type'))
-                )
+                        ].includes(event.get('type')),
+                ),
             )
 
         case types.TICKET_MESSAGE_DELETED:
@@ -842,31 +844,31 @@ export default function reducer(
                     const index = messages.findIndex(
                         (message: Map<any, any>) =>
                             message.getIn(['_internal', 'id']) ===
-                            parseInt(action.payload as string)
+                            parseInt(action.payload as string),
                     )
 
                     if (!~index) {
                         return messages
                     }
                     return messages.delete(index)
-                }
+                },
             )
 
         case types.SEND_INTENT_FEEDBACK_SUCCESS:
             return state.update('messages', (messages: List<any>) =>
                 messages.map((message: Map<any, any>) => {
-                    const {messageId, intents} = action.payload as {
+                    const { messageId, intents } = action.payload as {
                         messageId: number
                         intents: any
                     }
                     return message.get('id') === messageId
                         ? message.set('intents', fromJS(intents))
                         : message
-                })
+                }),
             )
 
         case types.SET_TYPING_ACTIVITY_SHOPPER: {
-            const {isShopperTyping, isShopperTypingTimeoutId = undefined} =
+            const { isShopperTyping, isShopperTypingTimeoutId = undefined } =
                 action.payload as {
                     isShopperTyping: boolean
                     isShopperTypingTimeoutId?: number
@@ -876,7 +878,7 @@ export default function reducer(
                 .setIn(['_internal', 'isShopperTyping'], isShopperTyping)
                 .setIn(
                     ['_internal', 'isShopperTypingTimeoutId'],
-                    isShopperTypingTimeoutId
+                    isShopperTypingTimeoutId,
                 )
         }
 
@@ -893,20 +895,20 @@ export default function reducer(
             const inTicketSuggestionState = action.inTicketSuggestionState
             return state.setIn(
                 ['state', 'inTicketSuggestionState'],
-                inTicketSuggestionState
+                inTicketSuggestionState,
             )
         }
 
         case types.UPDATE_CUSTOM_FIELD_STATE: {
-            const {id} = action.payload as CustomFieldState
+            const { id } = action.payload as CustomFieldState
             return state.setIn(
                 ['custom_fields', String(id)],
-                fromJS(action.payload)
+                fromJS(action.payload),
             )
         }
 
         case types.UPDATE_CUSTOM_FIELD_VALUE: {
-            const {id, value} = action.payload as {
+            const { id, value } = action.payload as {
                 id: CustomFieldState['id']
                 value: CustomFieldState['value']
             }
@@ -915,29 +917,29 @@ export default function reducer(
                 fromJS({
                     id,
                     value,
-                })
+                }),
             )
         }
 
         case types.UPDATE_CUSTOM_FIELD_PREDICTION: {
-            const {id, prediction} = action.payload as {
+            const { id, prediction } = action.payload as {
                 id: CustomFieldState['id']
                 prediction: CustomFieldState['prediction']
             }
             return state.mergeIn(
                 ['custom_fields', String(id)],
-                fromJS({id, prediction})
+                fromJS({ id, prediction }),
             )
         }
 
         case types.UPDATE_CUSTOM_FIELD_ERROR: {
-            const {id, hasError} = action.payload as {
+            const { id, hasError } = action.payload as {
                 id: CustomFieldState['id']
                 hasError: CustomFieldState['hasError']
             }
             return state.mergeIn(
                 ['custom_fields', String(id)],
-                fromJS({id, hasError})
+                fromJS({ id, hasError }),
             )
         }
 
@@ -948,14 +950,14 @@ export default function reducer(
             erroredCustomFields.forEach((erroredId) => {
                 nextState = nextState.mergeIn(
                     ['custom_fields', String(erroredId)],
-                    fromJS({id: erroredId, hasError: true})
+                    fromJS({ id: erroredId, hasError: true }),
                 )
             })
             return nextState
         }
 
         case types.RESTORE_TICKET_DRAFT: {
-            const {assignee_team, assignee_user, customer, subject, tags} =
+            const { assignee_team, assignee_user, customer, subject, tags } =
                 action.payload as Pick<
                     Ticket,
                     | 'assignee_team'
@@ -975,14 +977,14 @@ export default function reducer(
         case types.RESTORE_TICKET_DRAFT_APPLY_MACRO: {
             return state.setIn(
                 ['state', 'appliedMacro'],
-                fromJS(action.payload)
+                fromJS(action.payload),
             )
         }
 
         case types.SET_HAS_ATTEMPTED_TO_CLOSE_TICKET: {
             return state.setIn(
                 ['state', 'hasAttemptedToCloseTicket'],
-                action.payload
+                action.payload,
             )
         }
 

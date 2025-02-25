@@ -1,19 +1,22 @@
-import {OrderDirection} from 'models/api/types'
+import { OrderDirection } from 'models/api/types'
 import {
     HelpdeskMessageCubeWithJoins,
     HelpdeskMessageDimension,
     HelpdeskMessageMeasure,
     HelpdeskMessageMember,
 } from 'models/reporting/cubes/HelpdeskMessageCube'
-import {TicketDimension, TicketMember} from 'models/reporting/cubes/TicketCube'
-import {CHANNEL_DIMENSION} from 'models/reporting/queryFactories/support-performance/constants'
+import {
+    TicketDimension,
+    TicketMember,
+} from 'models/reporting/cubes/TicketCube'
+import { CHANNEL_DIMENSION } from 'models/reporting/queryFactories/support-performance/constants'
 import {
     ReportingFilterOperator,
     ReportingGranularity,
     ReportingQuery,
     TimeSeriesQuery,
 } from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import { StatsFilters } from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
@@ -29,7 +32,7 @@ import {
 export const messagesSentQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
     measures: [HelpdeskMessageMeasure.MessageCount],
     dimensions: [],
@@ -54,7 +57,7 @@ export const messagesSentQueryFactory = (
         ...PublicAndMessageViaFilter,
         ...statsFiltersToReportingFilters(
             HelpdeskMessagesStatsFiltersMembers,
-            filters
+            filters,
         ),
     ],
     ...(sorting
@@ -67,7 +70,7 @@ export const messagesSentQueryFactory = (
 export const messagesSentTimeSeriesQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    granularity: ReportingGranularity
+    granularity: ReportingGranularity,
 ): TimeSeriesQuery<HelpdeskMessageCubeWithJoins> => ({
     ...messagesSentQueryFactory(filters, timezone),
     timeDimensions: [
@@ -81,7 +84,7 @@ export const messagesSentTimeSeriesQueryFactory = (
 
 export const messagesSentMetricPerAgentQueryFactory = perDimensionQueryFactory(
     messagesSentQueryFactory,
-    HelpdeskMessageDimension.SenderId
+    HelpdeskMessageDimension.SenderId,
 )
 
 export const messagesSentMetricPerChannelQueryFactory =
@@ -90,7 +93,7 @@ export const messagesSentMetricPerChannelQueryFactory =
 export const messagesSentMetricPerTicketDrillDownQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
     const baseQuery = messagesSentQueryFactory(filters, timezone)
 

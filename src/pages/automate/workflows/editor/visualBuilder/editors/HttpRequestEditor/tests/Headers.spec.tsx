@@ -1,5 +1,6 @@
-import {act, render, fireEvent, screen} from '@testing-library/react'
 import React from 'react'
+
+import { act, fireEvent, render, screen } from '@testing-library/react'
 
 import Headers from '../Headers'
 
@@ -18,12 +19,12 @@ describe('<Headers />', () => {
                 onChange={mockOnChange}
                 onDelete={jest.fn()}
                 onAdd={jest.fn()}
-            />
+            />,
         )
 
         act(() => {
             fireEvent.change(screen.getByDisplayValue('test name'), {
-                target: {value: 'some test name'},
+                target: { value: 'some test name' },
             })
         })
 
@@ -48,7 +49,7 @@ describe('<Headers />', () => {
                 onDelete={jest.fn()}
                 onAdd={jest.fn()}
                 onNameBlur={mockOnBlur}
-            />
+            />,
         )
 
         act(() => {

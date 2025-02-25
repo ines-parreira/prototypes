@@ -1,5 +1,4 @@
-import {SET_INVALID_CUSTOM_FIELDS_TO_ERRORED} from '../../constants'
-
+import { SET_INVALID_CUSTOM_FIELDS_TO_ERRORED } from '../../constants'
 import setInvalidCustomFieldsToErrored from '../setInvalidCustomFieldsToErrored'
 
 describe('setInvalidCustomFieldsToErrored', () => {

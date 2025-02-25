@@ -1,21 +1,22 @@
-import classnames from 'classnames'
-import {Map} from 'immutable'
-import moment, {Moment} from 'moment-timezone'
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
-import {useAppNode} from 'appNode'
-import {TicketStatus as TicketStatusEnum} from 'business/types/ticket'
-import {logEvent, SegmentEvent} from 'common/segment'
-import {UserRole} from 'config/types/user'
+import classnames from 'classnames'
+import { Map } from 'immutable'
+import moment, { Moment } from 'moment-timezone'
+
+import { useAppNode } from 'appNode'
+import { TicketStatus as TicketStatusEnum } from 'business/types/ticket'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { UserRole } from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useShortcuts from 'hooks/useShortcuts'
 import EditableTitle from 'pages/common/components/EditableTitle/EditableTitle'
 import MergeTicketsContainer from 'pages/common/components/MergeTickets/MergeTicketsContainer'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
-import {getTimezone} from 'state/currentUser/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { getTimezone } from 'state/currentUser/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 import {
     addTags,
     clearTicket,
@@ -31,21 +32,22 @@ import {
     snoozeTicket,
     ticketPartialUpdate,
 } from 'state/ticket/actions'
-import {shouldDisplayAuditLogEvents as getShouldDisplayAuditLogEvents} from 'state/ticket/selectors'
-import type {OnToggleUnreadFn} from 'tickets/pages/SplitTicketPage'
-import {hasRole} from 'utils'
+import { shouldDisplayAuditLogEvents as getShouldDisplayAuditLogEvents } from 'state/ticket/selectors'
+import type { OnToggleUnreadFn } from 'tickets/pages/SplitTicketPage'
+import { hasRole } from 'utils'
 
 import Snooze from './Snooze'
-import TicketActions, {Action} from './TicketActions'
+import TicketActions, { Action } from './TicketActions'
 import TicketAssignee from './TicketDetails/TicketAssignee/TicketAssignee'
 import TicketSnooze from './TicketDetails/TicketSnooze'
 import TicketSpam from './TicketDetails/TicketSpam'
 import TicketStatus from './TicketDetails/TicketStatus'
 import TicketTags from './TicketDetails/TicketTags'
 import TicketTrash from './TicketDetails/TicketTrash'
-import css from './TicketHeader.less'
-import {TicketHeaderToggle} from './TicketHeaderToggle'
+import { TicketHeaderToggle } from './TicketHeaderToggle'
 import TicketNavigationArrowPagination from './TicketNavigation/TicketNavigationArrowPagination'
+
+import css from './TicketHeader.less'
 
 type Props = {
     ticket: Map<any, any>
@@ -70,7 +72,7 @@ const TicketHeader = ({
     const currentUser = useAppSelector((state) => state.currentUser)
     const timezone = useAppSelector(getTimezone)
     const shouldDisplayAuditLogEvents = useAppSelector(
-        getShouldDisplayAuditLogEvents
+        getShouldDisplayAuditLogEvents,
     )
 
     const dispatch = useAppDispatch()
@@ -140,7 +142,7 @@ const TicketHeader = ({
         return dispatch(
             setTrashed(moment.utc(), () => {
                 handleGoToNextTicket()
-            })
+            }),
         )
     }
 
@@ -153,7 +155,7 @@ const TicketHeader = ({
             return dispatch(
                 snoozeTicket(datetime.format(), () => {
                     handleGoToNextTicket()
-                })
+                }),
             )
         }
         void dispatch(snoozeTicket(null))
@@ -166,7 +168,7 @@ const TicketHeader = ({
                 if (spam) {
                     handleGoToNextTicket()
                 }
-            })
+            }),
         )
     }
 
@@ -180,9 +182,9 @@ const TicketHeader = ({
                 displayAuditLogEvents(
                     ticket.get('id'),
                     (ticket.get('satisfaction_survey') as Map<any, any>)?.get(
-                        'id'
-                    )
-                )
+                        'id',
+                    ),
+                ),
             )
         } else {
             dispatch(hideAuditLogEvents())
@@ -206,7 +208,7 @@ const TicketHeader = ({
         await dispatch(
             ticketPartialUpdate({
                 is_unread: true,
-            })
+            }),
         )
 
         onToggleUnread?.(ticket.get('id'), true)
@@ -214,7 +216,7 @@ const TicketHeader = ({
             notify({
                 status: NotificationStatus.Success,
                 message: 'Ticket has been marked as unread',
-            })
+            }),
         )
     }
 
@@ -323,10 +325,10 @@ const TicketHeader = ({
                                 onConfirm={trashTicket}
                                 toggle={() => setAskTrashConfirmation(false)}
                             >
-                                {({onDisplayConfirmation}) => (
+                                {({ onDisplayConfirmation }) => (
                                     <TicketActions
                                         actions={createActions(
-                                            onDisplayConfirmation
+                                            onDisplayConfirmation,
                                         )}
                                     />
                                 )}

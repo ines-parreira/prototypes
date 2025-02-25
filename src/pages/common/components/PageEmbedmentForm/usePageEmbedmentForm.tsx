@@ -1,11 +1,11 @@
-import {Dispatch, useCallback, useReducer} from 'react'
+import { Dispatch, useCallback, useReducer } from 'react'
 
 import {
+    EmbeddablePage,
     EmbedMode,
     PageEmbedmentFormValueStateWithError,
     PageEmbedmentPosition,
     SelectedPage,
-    EmbeddablePage,
 } from './types'
 
 export type PageEmbedmentFormReducerState = {
@@ -56,11 +56,11 @@ type PageEmbedmentFormReducerActions =
           type: 'setPagePosition'
           payload: PageEmbedmentPosition
       }
-    | {type: 'reset'}
+    | { type: 'reset' }
 
 export const pageEmbedmentFormReducer = (
     state: PageEmbedmentFormReducerState,
-    action: PageEmbedmentFormReducerActions
+    action: PageEmbedmentFormReducerActions,
 ): PageEmbedmentFormReducerState => {
     switch (action.type) {
         case 'reset':
@@ -106,15 +106,15 @@ export const pageEmbedmentFormReducer = (
  */
 export const usePageEmbedmentForm = (
     reducer = pageEmbedmentFormReducer,
-    defaultValues = DEFAULT_VALUES
+    defaultValues = DEFAULT_VALUES,
 ) => {
     const [state, dispatch] = useReducer(reducer, defaultValues)
 
-    const reset = useCallback(() => dispatch({type: 'reset'}), [dispatch])
+    const reset = useCallback(() => dispatch({ type: 'reset' }), [dispatch])
 
     const isPristine = state === defaultValues
 
-    return {state, dispatch, reset, isPristine}
+    return { state, dispatch, reset, isPristine }
 }
 
 export type PageEmbedmentFormReducerDispatch =

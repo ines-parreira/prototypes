@@ -1,4 +1,4 @@
-import {isCustomFieldValueEmpty} from '../isCustomFieldValueEmpty'
+import { isCustomFieldValueEmpty } from '../isCustomFieldValueEmpty'
 
 describe('isCustomFieldValueEmpty', () => {
     it.each([

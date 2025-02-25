@@ -1,22 +1,23 @@
-import classNames from 'classnames'
-import pluralize from 'pluralize'
 import React from 'react'
 
+import classNames from 'classnames'
+import pluralize from 'pluralize'
+
 import useAppSelector from 'hooks/useAppSelector'
+import { TicketFeedback } from 'models/aiAgentFeedback/types'
+import { getAIAgentMessages } from 'state/ticket/selectors'
 
-import {TicketFeedback} from 'models/aiAgentFeedback/types'
-import {getAIAgentMessages} from 'state/ticket/selectors'
-
-import css from './AIAgentFeedbackBar.less'
-import {QA_FAILED_MESSAGE} from './constants'
+import { QA_FAILED_MESSAGE } from './constants'
 import FeedbackEvents from './FeedbackEvents'
 import FeedbackOrders from './FeedbackOrders'
+
+import css from './AIAgentFeedbackBar.less'
 
 type Props = {
     ticketFeedback?: TicketFeedback
 }
 
-const AIAgentTicketFeedback: React.FC<Props> = ({ticketFeedback}) => {
+const AIAgentTicketFeedback: React.FC<Props> = ({ ticketFeedback }) => {
     const aiMessages = useAppSelector(getAIAgentMessages)
 
     if (!ticketFeedback || !ticketFeedback.messages.length) return null
@@ -24,23 +25,23 @@ const AIAgentTicketFeedback: React.FC<Props> = ({ticketFeedback}) => {
     const publicMessageCount = ticketFeedback.messages.filter(
         (ticketFeedbackMessage) =>
             aiMessages.find(
-                (aiMessage) => aiMessage.id === ticketFeedbackMessage.messageId
-            )?.public
+                (aiMessage) => aiMessage.id === ticketFeedbackMessage.messageId,
+            )?.public,
     ).length
 
     const guidanceCount = ticketFeedback.messages.reduce(
         (count, message) => count + message.guidance.length,
-        0
+        0,
     )
 
     const actionCount = ticketFeedback.messages.reduce(
         (count, message) => count + message.actions.length,
-        0
+        0,
     )
 
     const knowledgeCount = ticketFeedback.messages.reduce(
         (count, message) => count + message.knowledge.length,
-        0
+        0,
     )
 
     const orders = ticketFeedback.messages.reduce<
@@ -52,14 +53,14 @@ const AIAgentTicketFeedback: React.FC<Props> = ({ticketFeedback}) => {
     >((orders, message) => {
         return orders.concat(
             message.orders.filter((order) =>
-                orders.every((o) => o.id !== order.id)
-            )
+                orders.every((o) => o.id !== order.id),
+            ),
         )
     }, [])
 
     const usedResourceCount = guidanceCount + actionCount + knowledgeCount
 
-    const {shopType, shopName} = ticketFeedback.messages[0]
+    const { shopType, shopName } = ticketFeedback.messages[0]
     const ticketFeedbackSummary = ticketFeedback.messages[0].summary
 
     const isOnlyDraftMessage =
@@ -102,7 +103,7 @@ const AIAgentTicketFeedback: React.FC<Props> = ({ticketFeedback}) => {
                                     <i
                                         className={classNames(
                                             'material-icons',
-                                            css.leadIcon
+                                            css.leadIcon,
                                         )}
                                     >
                                         map
@@ -121,7 +122,7 @@ const AIAgentTicketFeedback: React.FC<Props> = ({ticketFeedback}) => {
                                     <i
                                         className={classNames(
                                             'material-icons',
-                                            css.leadIcon
+                                            css.leadIcon,
                                         )}
                                     >
                                         play_circle_filled
@@ -140,7 +141,7 @@ const AIAgentTicketFeedback: React.FC<Props> = ({ticketFeedback}) => {
                                     <i
                                         className={classNames(
                                             'material-icons',
-                                            css.leadIcon
+                                            css.leadIcon,
                                         )}
                                     >
                                         article

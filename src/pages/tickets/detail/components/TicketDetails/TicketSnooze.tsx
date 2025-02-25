@@ -1,9 +1,10 @@
-import {Tooltip, Badge} from '@gorgias/merchant-ui-kit'
-import React, {useRef} from 'react'
+import React, { useRef } from 'react'
 
-import {DateAndTimeFormatting} from 'constants/datetime'
+import { Badge, Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { DateAndTimeFormatting } from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import {formatDatetime} from 'utils'
+import { formatDatetime } from 'utils'
 
 import css from './TicketSnooze.less'
 
@@ -12,10 +13,10 @@ type Props = {
     timezone: string | null
 }
 
-const TicketSnooze = ({datetime, timezone}: Props) => {
+const TicketSnooze = ({ datetime, timezone }: Props) => {
     const badgeRef = useRef<HTMLDivElement>(null)
     const datetimeFormat = useGetDateAndTimeFormat(
-        DateAndTimeFormatting.RelativeDateAndTime
+        DateAndTimeFormatting.RelativeDateAndTime,
     )
 
     if (!datetime) return null

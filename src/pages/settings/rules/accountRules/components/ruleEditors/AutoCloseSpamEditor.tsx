@@ -3,11 +3,11 @@ import React from 'react'
 import useAppDispatch from 'hooks/useAppDispatch'
 import Alert from 'pages/common/components/Alert/Alert'
 import MultiSelectField from 'pages/common/forms/MultiSelectField'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {AutoCloseSpamSettings, ManagedRuleSettings} from 'state/rules/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { AutoCloseSpamSettings, ManagedRuleSettings } from 'state/rules/types'
 
-import {ManagedRuleDetailProps} from './ManagedRuleEditor'
+import { ManagedRuleDetailProps } from './ManagedRuleEditor'
 
 import css from './ManagedRuleEditor.less'
 
@@ -29,8 +29,8 @@ export const AutoCloseSpamEditor = ({
         newList: string[],
         otherList: string[],
         callback: (
-            values: string[]
-        ) => ManagedRuleSettings<AutoCloseSpamSettings>
+            values: string[],
+        ) => ManagedRuleSettings<AutoCloseSpamSettings>,
     ) => {
         const handleChange = onChange()
         if (!handleChange) {
@@ -39,7 +39,7 @@ export const AutoCloseSpamEditor = ({
         const newValue = newList[newList.length - 1]
         if (newValue) {
             const overlap = otherList.find(
-                (other) => other.includes(newValue) || newValue.includes(other)
+                (other) => other.includes(newValue) || newValue.includes(other),
             )
             if (overlap) {
                 void dispatch(
@@ -47,7 +47,7 @@ export const AutoCloseSpamEditor = ({
                         message: `"<b>${newValue}"</b> is already included in the other list as <b>"${overlap}"</b>`,
                         status: NotificationStatus.Error,
                         allowHTML: true,
-                    })
+                    }),
                 )
                 return
             }
@@ -81,7 +81,7 @@ export const AutoCloseSpamEditor = ({
                         changeHandler(
                             values,
                             settings.block_list || [],
-                            setAllowlist
+                            setAllowlist,
                         )
                     }
                     className={css.allowList}
@@ -103,7 +103,7 @@ export const AutoCloseSpamEditor = ({
                         changeHandler(
                             values,
                             settings.allow_list || [],
-                            setBlocklist
+                            setBlocklist,
                         )
                     }
                     className={css.blockList}

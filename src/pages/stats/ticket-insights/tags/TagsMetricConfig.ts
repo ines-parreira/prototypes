@@ -1,4 +1,4 @@
-import {TooltipData} from 'pages/stats/types'
+import { TooltipData } from 'pages/stats/types'
 
 export enum TicketInsightsTagsMetric {
     AllUsedTagsTableChart = 'all-used-tags-table-chart',

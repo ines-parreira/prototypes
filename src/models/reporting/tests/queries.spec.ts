@@ -1,15 +1,18 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {defaultEnrichmentFields} from 'hooks/reporting/useDrillDownData'
+import { defaultEnrichmentFields } from 'hooks/reporting/useDrillDownData'
 import {
     fetchPostReporting,
     useEnrichedPostReporting,
     usePostReporting,
 } from 'models/reporting/queries'
-import {postEnrichedReporting, postReporting} from 'models/reporting/resources'
-import {ReportingParams} from 'models/reporting/types'
-import {mockQueryClientProvider} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import {
+    postEnrichedReporting,
+    postReporting,
+} from 'models/reporting/resources'
+import { ReportingParams } from 'models/reporting/types'
+import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('models/reporting/resources')
 const postReportingMock = assumeMock(postReporting)
@@ -43,11 +46,11 @@ describe('Reporting queries', () => {
 
     describe('usePostReporting', () => {
         it('should call postReporting and return the result', async () => {
-            const {result, waitForNextUpdate} = renderHook(
+            const { result, waitForNextUpdate } = renderHook(
                 () => usePostReporting(cubeQueries),
                 {
                     wrapper: mockQueryClientProvider(),
-                }
+                },
             )
             await waitForNextUpdate()
 
@@ -63,17 +66,17 @@ describe('Reporting queries', () => {
                 enrichment_fields: defaultEnrichmentFields,
             }
 
-            const {waitForNextUpdate} = renderHook(
+            const { waitForNextUpdate } = renderHook(
                 () => useEnrichedPostReporting(payload),
                 {
                     wrapper: mockQueryClientProvider(),
-                }
+                },
             )
             await waitForNextUpdate()
 
             expect(postEnrichedReportingMock).toHaveBeenCalledWith(
                 payload.query,
-                payload.enrichment_fields
+                payload.enrichment_fields,
             )
         })
     })

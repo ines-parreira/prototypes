@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {assetsUrl} from 'utils'
+import { assetsUrl } from 'utils'
 
 import RestrictedFeature from '../common/components/RestrictedFeature'
 

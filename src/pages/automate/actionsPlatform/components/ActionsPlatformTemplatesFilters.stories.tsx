@@ -1,7 +1,8 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {IntegrationType} from 'models/integration/constants'
+import { Meta, Story } from '@storybook/react'
+
+import { IntegrationType } from 'models/integration/constants'
 import ActionsPlatformTemplatesFilters from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplatesFilters'
 
 const storyConfig: Meta = {

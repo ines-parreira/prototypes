@@ -1,5 +1,6 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps, useState} from 'react'
+import React, { ComponentProps, useState } from 'react'
+
+import { Meta, Story } from '@storybook/react'
 
 import NumberInput from './NumberInput'
 
@@ -10,7 +11,7 @@ const storyConfig: Meta = {
 }
 
 const Template: Story<ComponentProps<typeof NumberInput>> = (
-    props: ComponentProps<typeof NumberInput>
+    props: ComponentProps<typeof NumberInput>,
 ) => {
     const [count, setCount] = useState(props.value)
 
@@ -53,7 +54,7 @@ export const WithMax = Template.bind({})
 WithMax.args = {
     ...defaultProps,
     max: 100,
-    suffix: <div style={{color: '#99A5B6', lineHeight: '20px'}}>/100</div>,
+    suffix: <div style={{ color: '#99A5B6', lineHeight: '20px' }}>/100</div>,
 }
 WithMax.parameters = templateParameters
 

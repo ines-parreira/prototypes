@@ -1,5 +1,6 @@
-import React, {FormEvent, useEffect, useState} from 'react'
-import {Form, FormGroup, Container, Label, Input} from 'reactstrap'
+import React, { FormEvent, useEffect, useState } from 'react'
+
+import { Container, Form, FormGroup, Input, Label } from 'reactstrap'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAsyncFn from 'hooks/useAsyncFn'
@@ -7,9 +8,9 @@ import client from 'models/api/resources'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {errorToChildren} from 'utils'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { errorToChildren } from 'utils'
 
 export enum TwilioSubaccountStatus {
     Active = 'active',
@@ -35,13 +36,13 @@ const TwilioSubaccountStatusForm = (): JSX.Element => {
             if (!res) {
                 return
             }
-            setFormData({...formData, ...res.data.data})
+            setFormData({ ...formData, ...res.data.data })
         } catch {
             void dispatch(
                 notify({
                     message: 'Failed to fetch Twilio Subaccount data',
                     status: NotificationStatus.Error,
-                })
+                }),
             )
         }
     })
@@ -63,7 +64,7 @@ const TwilioSubaccountStatusForm = (): JSX.Element => {
                 notify({
                     message: 'Cannot use this feature to Close a Subaccount',
                     status: NotificationStatus.Error,
-                })
+                }),
             )
             setIsLoading(false)
             return
@@ -81,7 +82,7 @@ const TwilioSubaccountStatusForm = (): JSX.Element => {
                 notify({
                     status: NotificationStatus.Success,
                     message: 'Twilio Subaccount updated successfully.',
-                })
+                }),
             )
         } catch (error) {
             void dispatch(
@@ -90,7 +91,7 @@ const TwilioSubaccountStatusForm = (): JSX.Element => {
                     message: errorToChildren(error)!,
                     allowHTML: true,
                     status: NotificationStatus.Error,
-                })
+                }),
             )
         } finally {
             setFormChanged(false)
@@ -131,7 +132,7 @@ const TwilioSubaccountStatusForm = (): JSX.Element => {
                             <SelectField
                                 id="status"
                                 options={Object.keys(
-                                    TwilioSubaccountStatus
+                                    TwilioSubaccountStatus,
                                 ).map((status) => ({
                                     label: status,
                                     value: status.toLowerCase(),

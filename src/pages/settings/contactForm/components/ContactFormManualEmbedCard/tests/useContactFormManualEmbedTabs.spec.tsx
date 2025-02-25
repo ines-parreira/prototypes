@@ -1,11 +1,11 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
+import { renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
 import LD from 'launchdarkly-react-client-sdk'
 
 import useAppSelector from 'hooks/useAppSelector'
 
-import {FeatureFlagKey} from '../../../../../../config/featureFlags'
-import {useContactFormManualEmbedInstructionsCardState} from '../useContactFormManualEmbedTabs'
+import { FeatureFlagKey } from '../../../../../../config/featureFlags'
+import { useContactFormManualEmbedInstructionsCardState } from '../useContactFormManualEmbedTabs'
 
 jest.mock('hooks/useAppSelector')
 
@@ -31,8 +31,8 @@ describe('useContactFormManualEmbedInstructionsCardState', () => {
         it('should return the "any other website" instructions card state - ', () => {
             mockedUseAppSelector.mockReturnValueOnce(fromJS({}))
 
-            const {result} = renderHook(() =>
-                useContactFormManualEmbedInstructionsCardState(code, shopName)
+            const { result } = renderHook(() =>
+                useContactFormManualEmbedInstructionsCardState(code, shopName),
             )
 
             expect(result.current).toMatchSnapshot()
@@ -49,8 +49,8 @@ describe('useContactFormManualEmbedInstructionsCardState', () => {
         it('should return "both" instructions card state when not connected to any store', () => {
             mockedUseAppSelector.mockReturnValueOnce(fromJS({}))
 
-            const {result} = renderHook(() =>
-                useContactFormManualEmbedInstructionsCardState(code, '')
+            const { result } = renderHook(() =>
+                useContactFormManualEmbedInstructionsCardState(code, ''),
             )
 
             expect(result.current).toMatchSnapshot({
@@ -61,8 +61,8 @@ describe('useContactFormManualEmbedInstructionsCardState', () => {
         it('should return the "any other website" instructions card state when connected to a non-Shopify store', () => {
             mockedUseAppSelector.mockReturnValueOnce(fromJS({}))
 
-            const {result} = renderHook(() =>
-                useContactFormManualEmbedInstructionsCardState(code, shopName)
+            const { result } = renderHook(() =>
+                useContactFormManualEmbedInstructionsCardState(code, shopName),
             )
 
             expect(result.current).toMatchSnapshot()
@@ -73,11 +73,11 @@ describe('useContactFormManualEmbedInstructionsCardState', () => {
                 fromJS({
                     type: 'shopify',
                     name: 'My Shopify Store',
-                })
+                }),
             )
 
-            const {result} = renderHook(() =>
-                useContactFormManualEmbedInstructionsCardState(code, shopName)
+            const { result } = renderHook(() =>
+                useContactFormManualEmbedInstructionsCardState(code, shopName),
             )
 
             expect(result.current).toMatchSnapshot()

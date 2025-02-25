@@ -1,14 +1,14 @@
-import {screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {campaignWithABGroup} from 'fixtures/abGroup'
-import {integrationsState, shopifyIntegration} from 'fixtures/integrations'
+import { screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { fromJS } from 'immutable'
 
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
-import {useGetTableStat} from 'pages/stats/convert/hooks/stats/useGetTableStat'
-import {assumeMock, renderWithStore} from 'utils/testing'
+import { campaignWithABGroup } from 'fixtures/abGroup'
+import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
+import { Campaign } from 'pages/convert/campaigns/types/Campaign'
+import { useGetTableStat } from 'pages/stats/convert/hooks/stats/useGetTableStat'
+import { assumeMock, renderWithStore } from 'utils/testing'
 
 import VariantsList from '../VariantList'
 
@@ -48,7 +48,7 @@ describe('<VariantsList />', () => {
                         shopifyIntegration,
                     ],
                 }),
-            }
+            },
         )
 
         expect(screen.getByText('Control Variant')).toBeInTheDocument()
@@ -78,7 +78,7 @@ describe('<VariantsList />', () => {
                         shopifyIntegration,
                     ],
                 }),
-            }
+            },
         )
 
         const deleteButtons = screen.getAllByLabelText('Delete campaign')
@@ -126,7 +126,7 @@ describe('<VariantsList />', () => {
                         shopifyIntegration,
                     ],
                 }),
-            }
+            },
         )
 
         expect(screen.getByText('Winner')).toBeInTheDocument()
@@ -157,7 +157,7 @@ describe('<VariantsList />', () => {
                         shopifyIntegration,
                     ],
                 }),
-            }
+            },
         )
 
         expect(screen.queryAllByText('33%')).toHaveLength(3)

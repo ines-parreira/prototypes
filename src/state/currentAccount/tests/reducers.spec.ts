@@ -1,4 +1,4 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
 import {
     advancedMonthlyHelpdeskPlan,
@@ -7,17 +7,16 @@ import {
     basicMonthlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
-import {AccountSetting, AccountSettingType} from 'state/currentAccount/types'
-
-import {GorgiasAction} from 'state/types'
+import { AccountSetting, AccountSettingType } from 'state/currentAccount/types'
+import { GorgiasAction } from 'state/types'
 
 import * as types from '../constants'
-import reducer, {initialState} from '../reducers'
+import reducer, { initialState } from '../reducers'
 
 describe('current account reducers', () => {
     it('initial state', () => {
         expect(reducer(undefined, {} as GorgiasAction)).toEqualImmutable(
-            initialState
+            initialState,
         )
     })
 
@@ -26,7 +25,7 @@ describe('current account reducers', () => {
         expect(
             reducer(initialState, {
                 type: types.UPDATE_ACCOUNT_START,
-            }).toJS()
+            }).toJS(),
         ).toMatchSnapshot()
         // success
         expect(
@@ -39,13 +38,13 @@ describe('current account reducers', () => {
                         },
                     ],
                 }),
-            }).toJS()
+            }).toJS(),
         ).toMatchSnapshot()
         // fail
         expect(
             reducer(initialState, {
                 type: types.UPDATE_ACCOUNT_ERROR,
-            }).toJS()
+            }).toJS(),
         ).toMatchSnapshot()
     })
 
@@ -56,7 +55,7 @@ describe('current account reducers', () => {
                 setting: {
                     hello: 'world',
                 } as any,
-            }).toJS()
+            }).toJS(),
         ).toMatchSnapshot()
         // update
         expect(
@@ -76,8 +75,8 @@ describe('current account reducers', () => {
                         hello: 'world',
                     } as any,
                     isUpdate: true,
-                }
-            ).toJS()
+                },
+            ).toJS(),
         ).toMatchSnapshot()
     })
 
@@ -87,7 +86,7 @@ describe('current account reducers', () => {
             reducer(initialState, {
                 type: types.UPDATE_ACCOUNT_OWNER_SUCCESS,
                 userId: 1,
-            }).toJS()
+            }).toJS(),
         ).toMatchSnapshot()
         done()
     })
@@ -111,14 +110,14 @@ describe('current account reducers', () => {
                 reducer(state, {
                     type: types.UPDATE_SUBSCRIPTION_SUCCESS,
                     subscription: basicSubscription,
-                }).get('current_subscription')
+                }).get('current_subscription'),
             ).toEqual(fromJS(basicSubscription))
         })
 
         it('should update the status and scheduled_to_cancel_at', () => {
             const state = initialState.set(
                 'current_subscription',
-                fromJS(basicSubscription)
+                fromJS(basicSubscription),
             )
             const updatedSubscription = {
                 ...basicSubscription,
@@ -129,7 +128,7 @@ describe('current account reducers', () => {
                 reducer(state, {
                     type: types.UPDATE_SUBSCRIPTION_SUCCESS,
                     subscription: updatedSubscription,
-                }).get('current_subscription')
+                }).get('current_subscription'),
             ).toEqual(fromJS(updatedSubscription))
         })
     })
@@ -153,7 +152,7 @@ describe('current account reducers', () => {
                 subscription: subscription,
             }
             expect(reducer(state, action).get('current_subscription')).toEqual(
-                fromJS(subscription)
+                fromJS(subscription),
             )
         })
 
@@ -178,7 +177,7 @@ describe('current account reducers', () => {
                 subscription: newSubscription,
             }
             expect(
-                reducer(state, newAction).get('current_subscription')
+                reducer(state, newAction).get('current_subscription'),
             ).toEqual(fromJS(newSubscription))
         })
     })
@@ -204,14 +203,14 @@ describe('current account reducers', () => {
                 }),
             }
             expect(
-                reducer(state, action).get('current_subscription')
+                reducer(state, action).get('current_subscription'),
             ).toBeNull()
         })
 
         it('should update the products of the subscription', () => {
             const state = initialState.set(
                 'current_subscription',
-                fromJS(subscription)
+                fromJS(subscription),
             )
             const action = {
                 type: types.UPDATE_SUBSCRIPTION_PRODUCTS,
@@ -226,7 +225,7 @@ describe('current account reducers', () => {
                         [HELPDESK_PRODUCT_ID]:
                             advancedMonthlyHelpdeskPlan.price_id,
                     },
-                })
+                }),
             )
         })
     })
@@ -236,12 +235,12 @@ describe('current account reducers', () => {
             {
                 id: 1,
                 type: AccountSettingType.DefaultIntegration,
-                data: {email: 1},
+                data: { email: 1 },
             },
             {
                 id: 2,
                 type: 'business-hours',
-                data: {dummy: 'test'},
+                data: { dummy: 'test' },
             },
         ]
         it('should update the settings', () => {
@@ -252,7 +251,7 @@ describe('current account reducers', () => {
                     {
                         id: 1,
                         type: AccountSettingType.DefaultIntegration,
-                        data: {email: 2},
+                        data: { email: 2 },
                     } as AccountSetting,
                 ],
             }
@@ -260,16 +259,16 @@ describe('current account reducers', () => {
                 {
                     id: 1,
                     type: AccountSettingType.DefaultIntegration,
-                    data: {email: 2},
+                    data: { email: 2 },
                 },
                 {
                     id: 2,
                     type: 'business-hours',
-                    data: {dummy: 'test'},
+                    data: { dummy: 'test' },
                 },
             ]
             expect(reducer(state, action).get('settings')).toEqual(
-                fromJS(expected_settings)
+                fromJS(expected_settings),
             )
         })
 
@@ -281,12 +280,12 @@ describe('current account reducers', () => {
                     {
                         id: 1,
                         type: AccountSettingType.ViewsVisibility,
-                        data: {hidden_views: []},
+                        data: { hidden_views: [] },
                     } as AccountSetting,
                 ],
             }
             expect(reducer(state, action).get('settings')).toEqual(
-                fromJS(initial_settings)
+                fromJS(initial_settings),
             )
         })
 
@@ -296,7 +295,7 @@ describe('current account reducers', () => {
                 type: types.FETCH_ACCOUNT_SETTINGS_SUCCESS,
             }
             expect(reducer(state, action).get('settings')).toEqual(
-                fromJS(initial_settings)
+                fromJS(initial_settings),
             )
         })
     })

@@ -1,28 +1,30 @@
-import {Macro} from '@gorgias/api-queries'
+import React, { Component, ComponentClass, ComponentProps } from 'react'
+
 import classnames from 'classnames'
-import {fromJS, Map, List} from 'immutable'
-import {LDFlagSet} from 'launchdarkly-js-client-sdk'
-import {withLDConsumer} from 'launchdarkly-react-client-sdk'
-import React, {Component, ComponentClass, ComponentProps} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
+import { fromJS, List, Map } from 'immutable'
+import { LDFlagSet } from 'launchdarkly-js-client-sdk'
+import { withLDConsumer } from 'launchdarkly-react-client-sdk'
+import { connect, ConnectedProps } from 'react-redux'
 import {
-    UncontrolledButtonDropdown,
-    DropdownToggle,
-    DropdownMenu,
     DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+    UncontrolledButtonDropdown,
 } from 'reactstrap'
 
-import {ACTION_TEMPLATES, ActionTemplateExecution} from 'config'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {IntegrationType} from 'models/integration/types'
-import {MacroActionName} from 'models/macroAction/types'
-import {Attachment} from 'models/ticket/types'
+import { Macro } from '@gorgias/api-queries'
+
+import { ACTION_TEMPLATES, ActionTemplateExecution } from 'config'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { IntegrationType } from 'models/integration/types'
+import { MacroActionName } from 'models/macroAction/types'
+import { Attachment } from 'models/ticket/types'
 import InputField from 'pages/common/forms/input/InputField'
-import {getSortedIntegrationActionsNames} from 'pages/tickets/common/utils'
+import { getSortedIntegrationActionsNames } from 'pages/tickets/common/utils'
 import * as integrationsSelectors from 'state/integrations/selectors'
-import {generateDefaultAction} from 'state/macro/utils'
-import {RootState} from 'state/types'
-import {getActionTemplate, humanizeString} from 'utils'
+import { generateDefaultAction } from 'state/macro/utils'
+import { RootState } from 'state/types'
+import { getActionTemplate, humanizeString } from 'utils'
 
 import AddAttachmentsAction from './actions/AddAttachmentsAction'
 import AddInternalNoteAction from './actions/AddInternalNoteAction'
@@ -35,8 +37,9 @@ import SetCustomFieldValueAction from './actions/SetCustomFieldValueAction'
 import SetStatusAction from './actions/SetStatusAction'
 import SetSubjectAction from './actions/SetSubjectAction'
 import SnoozeTicketAction from './actions/SnoozeTicketAction'
-import css from './MacroEdit.less'
 import MacroEditLanguage from './MacroEditLanguage'
+
+import css from './MacroEdit.less'
 
 type Props = {
     actions: List<any> | null
@@ -56,7 +59,7 @@ export class MacroEdit extends Component<Props> {
     _extractText = () => {
         const action: Map<any, any> = this.props.actions?.find(
             (action: Map<any, any>) =>
-                action.get('name') === MacroActionName.SetResponseText
+                action.get('name') === MacroActionName.SetResponseText,
         )
         return action
             ? (action.getIn(['arguments', 'body_text']) as string)
@@ -75,7 +78,7 @@ export class MacroEdit extends Component<Props> {
 
     _addAction = (actionName: MacroActionName) => {
         const actions = this.props.actions?.push(
-            fromJS(generateDefaultAction(actionName))
+            fromJS(generateDefaultAction(actionName)),
         )
         this.props.setActions(actions)
     }
@@ -97,11 +100,11 @@ export class MacroEdit extends Component<Props> {
 
         if (
             [currentAction.get('name'), actionName].every((action) =>
-                replyActions.includes(action)
+                replyActions.includes(action),
             )
         ) {
             let args = (currentAction.get('arguments') as Map<any, any>).delete(
-                'to'
+                'to',
             )
 
             if (currentAction.get('name') === MacroActionName.AddInternalNote) {
@@ -124,7 +127,7 @@ export class MacroEdit extends Component<Props> {
     _addAttachment = (index: number, files: Attachment[]) => {
         const actions = this.props.actions?.updateIn(
             [index, 'arguments', 'attachments'],
-            (attachments: List<any>) => attachments.concat(fromJS(files))
+            (attachments: List<any>) => attachments.concat(fromJS(files)),
         )
         this.props.setActions(actions)
     }
@@ -132,7 +135,7 @@ export class MacroEdit extends Component<Props> {
     _deleteAttachment = (actionIndex: number, fileIndex: number) => {
         const actions = this.props.actions?.updateIn(
             [actionIndex, 'arguments', 'attachments'],
-            (attachments: List<any>) => attachments.delete(fileIndex)
+            (attachments: List<any>) => attachments.delete(fileIndex),
         )
         this.props.setActions(actions)
     }
@@ -144,12 +147,12 @@ export class MacroEdit extends Component<Props> {
     }) => {
         const ticketActions = ACTION_TEMPLATES.filter(
             (template) =>
-                template.execution !== ActionTemplateExecution.External
+                template.execution !== ActionTemplateExecution.External,
         )
             .filter(
-                ({name}) =>
+                ({ name }) =>
                     isMacroForwardByEmailEnabled ||
-                    name !== MacroActionName.ForwardByEmail
+                    name !== MacroActionName.ForwardByEmail,
             )
             // remove actions that have already been used
             // except for SetCustomFieldValue which is allowed multiple times
@@ -158,14 +161,14 @@ export class MacroEdit extends Component<Props> {
                     action.name === MacroActionName.SetCustomFieldValue ||
                     !this.props.actions?.find(
                         (usedActions: Map<any, any>) =>
-                            usedActions.get('name') === action.name
-                    )
+                            usedActions.get('name') === action.name,
+                    ),
             )
 
         const nonIntegrationActions = ACTION_TEMPLATES.filter(
-            ({execution, integrationType}) =>
+            ({ execution, integrationType }) =>
                 execution === ActionTemplateExecution.External &&
-                !integrationType
+                !integrationType,
         )
 
         const hasActions = ticketActions.length > 0
@@ -440,7 +443,7 @@ export class MacroEdit extends Component<Props> {
     }
 
     render() {
-        const {className, currentMacro, flags, hasIntegrationOfTypes} =
+        const { className, currentMacro, flags, hasIntegrationOfTypes } =
             this.props
 
         const isMacroForwardByEmailEnabled =
@@ -452,10 +455,10 @@ export class MacroEdit extends Component<Props> {
         const integrationMenus: Map<any, any> =
             getSortedIntegrationActionsNames(
                 ACTION_TEMPLATES.filter(
-                    ({execution, integrationType}) =>
+                    ({ execution, integrationType }) =>
                         execution === ActionTemplateExecution.External &&
-                        !!integrationType
-                )
+                        !!integrationType,
+                ),
             )
 
         return (
@@ -498,11 +501,11 @@ export class MacroEdit extends Component<Props> {
                             (action: Map<any, any>) =>
                                 isMacroForwardByEmailEnabled ||
                                 action.get('name') !==
-                                    MacroActionName.ForwardByEmail
+                                    MacroActionName.ForwardByEmail,
                         )
                         .map(
                             (action: Map<any, any>, index) =>
-                                action.set('idx', index) // Store the initial index for action updates
+                                action.set('idx', index), // Store the initial index for action updates
                         )
                         .map((action?: Map<any, any>) => {
                             return this.renderAction(action, action?.get('idx'))
@@ -525,7 +528,7 @@ export class MacroEdit extends Component<Props> {
                             .map(
                                 (
                                     actions: Map<any, any>,
-                                    key: IntegrationType
+                                    key: IntegrationType,
                                 ) => {
                                     if (!hasIntegrationOfTypes(key)) {
                                         return null
@@ -537,8 +540,8 @@ export class MacroEdit extends Component<Props> {
                                             !this.props.actions?.find(
                                                 (usedActions: Map<any, any>) =>
                                                     usedActions.get('name') ===
-                                                    action
-                                            )
+                                                    action,
+                                            ),
                                     )
 
                                     if (filteredActions.isEmpty()) {
@@ -566,24 +569,24 @@ export class MacroEdit extends Component<Props> {
                                                                 type="button"
                                                                 onClick={() =>
                                                                     this._addAction(
-                                                                        actionName
+                                                                        actionName,
                                                                     )
                                                                 }
                                                             >
                                                                 {getActionTemplate(
-                                                                    actionName
+                                                                    actionName,
                                                                 )?.title ||
                                                                     humanizeString(
-                                                                        actionName
+                                                                        actionName,
                                                                     )}
                                                             </DropdownItem>
                                                         )
-                                                    }
+                                                    },
                                                 )}
                                             </DropdownMenu>
                                         </UncontrolledButtonDropdown>
                                     )
-                                }
+                                },
                             )
                             .toList()}
                     </div>
@@ -600,6 +603,6 @@ const connector = connect((state: RootState) => ({
 
 export default connector(
     withLDConsumer()(
-        MacroEdit as unknown as ComponentClass<Omit<Props, 'flags'>>
-    )
+        MacroEdit as unknown as ComponentClass<Omit<Props, 'flags'>>,
+    ),
 )

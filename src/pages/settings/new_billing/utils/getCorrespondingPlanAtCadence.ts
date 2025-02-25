@@ -1,4 +1,4 @@
-import {Plan, Cadence} from 'models/billing/types'
+import { Cadence, Plan } from 'models/billing/types'
 
 export type Props<T extends Plan> = {
     availablePlans: T[]
@@ -13,12 +13,12 @@ export const getCorrespondingPlanAtCadence = <T extends Plan>({
 }: Props<T>): T | undefined => {
     const switchInterval =
         cadence === Cadence.Month
-            ? {to: 'monthly', from: 'yearly'}
-            : {to: 'yearly', from: 'monthly'}
+            ? { to: 'monthly', from: 'yearly' }
+            : { to: 'yearly', from: 'monthly' }
 
     const internalId = currentPlan?.internal_id.replace(
         switchInterval.from,
-        switchInterval.to
+        switchInterval.to,
     )
 
     const plan = availablePlans.find((plan) => plan.internal_id === internalId)

@@ -1,9 +1,10 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {itemCustomization} from '../Item'
-import {OrderContext} from '../Order'
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+
+import { itemCustomization } from '../Item'
+import { OrderContext } from '../Order'
 
 // Mock Badge component
 jest.mock('@gorgias/merchant-ui-kit', () => ({
@@ -11,18 +12,18 @@ jest.mock('@gorgias/merchant-ui-kit', () => ({
     ColorType: {
         Warning: 'warning',
     },
-    Badge: ({children}: {children: React.ReactNode}) => (
+    Badge: ({ children }: { children: React.ReactNode }) => (
         <div data-testid="badge">{children}</div>
     ),
 }))
 
-const {BeforeContent, Wrapper} = itemCustomization
+const { BeforeContent, Wrapper } = itemCustomization
 
 describe('Shopify widget Item component', () => {
     describe('<BeforeContent />', () => {
         it('should not render when no refunded quantity', () => {
-            const mockItem = fromJS({id: 1})
-            const mockOrder = fromJS({refunds: []})
+            const mockItem = fromJS({ id: 1 })
+            const mockOrder = fromJS({ refunds: [] })
 
             const mockOrderContext = {
                 order: mockOrder,
@@ -36,19 +37,19 @@ describe('Shopify widget Item component', () => {
                 integration: fromJS({}),
             }
 
-            const {queryByTestId} = render(
+            const { queryByTestId } = render(
                 <OrderContext.Provider value={mockOrderContext}>
                     <Wrapper source={mockItem}>
                         <BeforeContent />
                     </Wrapper>
-                </OrderContext.Provider>
+                </OrderContext.Provider>,
             )
 
             expect(queryByTestId('badge')).not.toBeInTheDocument()
         })
 
         it('should render badge with singular text for 1 refunded item', () => {
-            const mockItem = fromJS({id: 1})
+            const mockItem = fromJS({ id: 1 })
             const mockOrder = fromJS({
                 refunds: [
                     {
@@ -74,19 +75,19 @@ describe('Shopify widget Item component', () => {
                 integration: fromJS({}),
             }
 
-            const {getByTestId} = render(
+            const { getByTestId } = render(
                 <OrderContext.Provider value={mockOrderContext}>
                     <Wrapper source={mockItem}>
                         <BeforeContent />
                     </Wrapper>
-                </OrderContext.Provider>
+                </OrderContext.Provider>,
             )
 
             expect(getByTestId('badge')).toHaveTextContent('1 item')
         })
 
         it('should render badge with plural text for multiple refunded items', () => {
-            const mockItem = fromJS({id: 1})
+            const mockItem = fromJS({ id: 1 })
             const mockOrder = fromJS({
                 refunds: [
                     {
@@ -112,19 +113,19 @@ describe('Shopify widget Item component', () => {
                 integration: fromJS({}),
             }
 
-            const {getByTestId} = render(
+            const { getByTestId } = render(
                 <OrderContext.Provider value={mockOrderContext}>
                     <Wrapper source={mockItem}>
                         <BeforeContent />
                     </Wrapper>
-                </OrderContext.Provider>
+                </OrderContext.Provider>,
             )
 
             expect(getByTestId('badge')).toHaveTextContent('2 items')
         })
 
         it('should sum quantities across multiple refunds', () => {
-            const mockItem = fromJS({id: 1})
+            const mockItem = fromJS({ id: 1 })
             const mockOrder = fromJS({
                 refunds: [
                     {
@@ -158,12 +159,12 @@ describe('Shopify widget Item component', () => {
                 integration: fromJS({}),
             }
 
-            const {getByTestId} = render(
+            const { getByTestId } = render(
                 <OrderContext.Provider value={mockOrderContext}>
                     <Wrapper source={mockItem}>
                         <BeforeContent />
                     </Wrapper>
-                </OrderContext.Provider>
+                </OrderContext.Provider>,
             )
 
             expect(getByTestId('badge')).toHaveTextContent('5 items')

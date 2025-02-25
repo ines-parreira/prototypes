@@ -1,23 +1,22 @@
-import {ChartOptions, ChartDataset} from 'chart.js'
+import React, { Component, ComponentProps } from 'react'
 
-import {Map, List} from 'immutable'
+import { ChartDataset, ChartOptions } from 'chart.js'
+import { List, Map } from 'immutable'
 import _flatten from 'lodash/flatten'
 import _isEqual from 'lodash/isEqual'
 import moment from 'moment'
-import React, {Component, ComponentProps} from 'react'
-import {Line} from 'react-chartjs-2'
-import {connect, ConnectedProps} from 'react-redux'
+import { Line } from 'react-chartjs-2'
+import { connect, ConnectedProps } from 'react-redux'
 
 import {
-    colors as colorsConfig,
     chartMaxHeight,
     chartPointRadius,
+    colors as colorsConfig,
 } from '../../../../../config/stats'
-import {getBusinessHoursRangesByUserTimezone} from '../../../../../state/currentAccount/selectors'
-import {RootState} from '../../../../../state/types'
+import { getBusinessHoursRangesByUserTimezone } from '../../../../../state/currentAccount/selectors'
+import { RootState } from '../../../../../state/types'
 import Legend from '../Legend/Legend'
-
-import {highlightTimeRanges} from './plugins'
+import { highlightTimeRanges } from './plugins'
 
 type Props = {
     data: Map<any, any>
@@ -28,7 +27,7 @@ type Props = {
 
 export class LineStatContainer extends Component<Props> {
     _getOptions = (legend: Map<any, any>) => {
-        const {config, businessRanges} = this.props
+        const { config, businessRanges } = this.props
         const defaultOptions = (
             config.get('options') as (legend: Map<any, any>) => ChartOptions
         )(legend)
@@ -51,7 +50,7 @@ export class LineStatContainer extends Component<Props> {
     }
 
     render() {
-        const {data, config, legend, meta, businessRanges} = this.props
+        const { data, config, legend, meta, businessRanges } = this.props
         const start = moment(meta.get('start_datetime'))
         const end = moment(meta.get('end_datetime'))
         const isOneDayPeriod =
@@ -59,7 +58,7 @@ export class LineStatContainer extends Component<Props> {
         const datasets = (data.get('lines') as List<any>)
             .map((line: Map<any, any>, index) => {
                 const lineName = line.get('name')
-                const {backgroundColor, label, ...lineConfig} = (
+                const { backgroundColor, label, ...lineConfig } = (
                     config.getIn(['lines', lineName]) as Map<any, any>
                 ).toJS() as Record<string, unknown>
 
@@ -125,5 +124,5 @@ const connector = connect((state: RootState) => ({
 
 // Use memo to prevent redrawing on state change
 export default connector(
-    React.memo(LineStatContainer, (prev, next) => _isEqual(prev, next))
+    React.memo(LineStatContainer, (prev, next) => _isEqual(prev, next)),
 )

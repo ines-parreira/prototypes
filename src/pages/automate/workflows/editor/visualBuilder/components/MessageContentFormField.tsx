@@ -1,20 +1,22 @@
-import {EditorState} from 'draft-js'
-import Immutable from 'immutable'
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import {UploadType} from 'common/types'
-import {IntegrationType} from 'models/integration/constants'
-import {useSelfServiceStoreIntegrationContext} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
-import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
-import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
+import { EditorState } from 'draft-js'
+import Immutable from 'immutable'
+
+import { UploadType } from 'common/types'
+import { IntegrationType } from 'models/integration/constants'
+import { useSelfServiceStoreIntegrationContext } from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
+import { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
+import { ProductCardAttachment } from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
 import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
-import {ActionName} from 'pages/common/draftjs/plugins/toolbar/types'
+import { ActionName } from 'pages/common/draftjs/plugins/toolbar/types'
 import RichField from 'pages/common/forms/RichField/RichField'
 import TicketAttachments from 'pages/tickets/detail/components/ReplyArea/TicketAttachments'
-import {convertToHTML} from 'utils/editor'
+import { convertToHTML } from 'utils/editor'
 
-import {useVisualBuilderContext} from '../../../hooks/useVisualBuilder'
-import {MessageContent} from '../../../models/workflowConfiguration.types'
+import { useVisualBuilderContext } from '../../../hooks/useVisualBuilder'
+import { MessageContent } from '../../../models/workflowConfiguration.types'
+
 import css from './MessageContentFormField.less'
 
 type MessageContentFormFieldProps = {
@@ -43,7 +45,7 @@ export default function MessageContentFormField({
     onBlur,
 }: MessageContentFormFieldProps) {
     const storeIntegration = useSelfServiceStoreIntegrationContext()
-    const {visualBuilderGraph} = useVisualBuilderContext()
+    const { visualBuilderGraph } = useVisualBuilderContext()
     const [textareaRef, setTextareaRef] = useState<RichField | null>(null)
     useEffect(() => {
         if (!visualBuilderGraph.nodeEditingId) {
@@ -56,7 +58,7 @@ export default function MessageContentFormField({
             html: content.html,
             text: content.text,
         }),
-        [content.text, content.html]
+        [content.text, content.html],
     )
     const handleChange = (editorState: EditorState) => {
         const currentContent = editorState.getCurrentContent()
@@ -67,7 +69,7 @@ export default function MessageContentFormField({
         if (convertedHTML === content.html) return
 
         if (text.length > textLimit) return
-        const {html_tkey, text_tkey} = content
+        const { html_tkey, text_tkey } = content
 
         handleUpdateContent({
             html: convertedHTML,
@@ -76,7 +78,7 @@ export default function MessageContentFormField({
             text_tkey,
             ...(typeof content.attachments === 'undefined'
                 ? {}
-                : {attachments: content.attachments}),
+                : { attachments: content.attachments }),
         })
     }
     const handleAddAttachment = (attachment: ProductCardAttachment) => {
@@ -89,7 +91,7 @@ export default function MessageContentFormField({
         handleUpdateContent({
             ...content,
             attachments: (content.attachments ?? []).filter(
-                (_, i) => i !== index
+                (_, i) => i !== index,
             ),
         })
     }
@@ -97,7 +99,7 @@ export default function MessageContentFormField({
     const attachments = useMemo(
         // eslint-disable-next-line @typescript-eslint/no-unsafe-return
         () => Immutable.fromJS(content.attachments ?? []),
-        [content.attachments]
+        [content.attachments],
     )
 
     const workflowVariablesRef = useRef(workflowVariables)
@@ -118,7 +120,7 @@ export default function MessageContentFormField({
                 shopifyIntegrations={Immutable.fromJS(
                     storeIntegration.type === IntegrationType.Shopify
                         ? [storeIntegration]
-                        : []
+                        : [],
                 )}
                 workflowVariables={workflowVariables}
             >

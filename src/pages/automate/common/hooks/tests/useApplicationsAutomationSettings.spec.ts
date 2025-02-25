@@ -1,14 +1,14 @@
-import {renderHook, act} from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react-hooks'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
-import {useGetChatsApplicationAutomationSettings} from 'models/automation/queries'
-import {upsertChatApplicationAutomationSettings} from 'models/chatApplicationAutomationSettings/resources'
-import {ChatApplicationAutomationSettings} from 'models/chatApplicationAutomationSettings/types'
-import {chatApplicationAutomationSettingsUpdated} from 'state/entities/chatsApplicationAutomationSettings/actions'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { useGetChatsApplicationAutomationSettings } from 'models/automation/queries'
+import { upsertChatApplicationAutomationSettings } from 'models/chatApplicationAutomationSettings/resources'
+import { ChatApplicationAutomationSettings } from 'models/chatApplicationAutomationSettings/types'
+import { chatApplicationAutomationSettingsUpdated } from 'state/entities/chatsApplicationAutomationSettings/actions'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 import useApplicationsAutomationSettings from '../useApplicationsAutomationSettings'
 
@@ -24,7 +24,7 @@ jest.mock('hooks/useAsyncFn', () => {
     return jest
         .fn()
         .mockImplementation(
-            (fn, deps: any, initialState: any = {loading: false}) => {
+            (fn, deps: any, initialState: any = { loading: false }) => {
                 return [
                     initialState,
                     (...args: any[]) => {
@@ -39,7 +39,7 @@ jest.mock('hooks/useAsyncFn', () => {
                         })
                     },
                 ] as never
-            }
+            },
         )
 })
 describe('useApplicationsAutomationSettings', () => {
@@ -51,7 +51,7 @@ describe('useApplicationsAutomationSettings', () => {
         ;(useAppSelector as jest.Mock).mockReturnValue({})
         ;(
             useGetChatsApplicationAutomationSettings as jest.Mock
-        ).mockReturnValue({isLoading: false})
+        ).mockReturnValue({ isLoading: false })
     })
 
     it('handles fetch error correctly', () => {
@@ -59,12 +59,12 @@ describe('useApplicationsAutomationSettings', () => {
 
         ;(
             useGetChatsApplicationAutomationSettings as jest.Mock
-        ).mockImplementation((_, {onError}) => {
+        ).mockImplementation((_, { onError }) => {
             if (onError) {
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-call
                 onError(mockError)
             }
-            return {isLoading: false, data: null, error: mockError}
+            return { isLoading: false, data: null, error: mockError }
         })
 
         renderHook(() => useApplicationsAutomationSettings(['1']))
@@ -73,7 +73,7 @@ describe('useApplicationsAutomationSettings', () => {
             notify({
                 message: 'Failed to fetch',
                 status: NotificationStatus.Error,
-            })
+            }),
         )
     })
 
@@ -89,13 +89,13 @@ describe('useApplicationsAutomationSettings', () => {
             upsertChatApplicationAutomationSettings as jest.Mock
         ).mockResolvedValue(mockSettings)
 
-        const {result} = renderHook(() =>
-            useApplicationsAutomationSettings(['1'])
+        const { result } = renderHook(() =>
+            useApplicationsAutomationSettings(['1']),
         )
 
         await act(async () => {
             await result.current.handleChatApplicationAutomationSettingsUpdate(
-                mockSettings
+                mockSettings,
             )
         })
 
@@ -105,27 +105,30 @@ describe('useApplicationsAutomationSettings', () => {
                 articleRecommendation: mockSettings.articleRecommendation,
                 orderManagement: mockSettings.orderManagement,
                 workflows: mockSettings.workflows,
-            }
+            },
         )
         expect(dispatch).toHaveBeenCalledWith(
-            chatApplicationAutomationSettingsUpdated(mockSettings)
+            chatApplicationAutomationSettingsUpdated(mockSettings),
         )
         expect(dispatch).toHaveBeenCalledWith(
             notify({
                 message: 'Successfully updated',
                 status: NotificationStatus.Success,
-            })
+            }),
         )
     })
 
     it('returns correct loading states', () => {
         ;(
             useGetChatsApplicationAutomationSettings as jest.Mock
-        ).mockReturnValue({isLoading: true})
-        ;(useAsyncFn as jest.Mock).mockReturnValue([{loading: true}, jest.fn()])
+        ).mockReturnValue({ isLoading: true })
+        ;(useAsyncFn as jest.Mock).mockReturnValue([
+            { loading: true },
+            jest.fn(),
+        ])
 
-        const {result} = renderHook(() =>
-            useApplicationsAutomationSettings(['1'])
+        const { result } = renderHook(() =>
+            useApplicationsAutomationSettings(['1']),
         )
 
         expect(result.current.isFetchPending).toBe(true)

@@ -1,10 +1,11 @@
-import classnames from 'classnames'
-import _last from 'lodash/last'
 import React from 'react'
 
-import {Source, Template} from 'models/widget/types'
+import classnames from 'classnames'
+import _last from 'lodash/last'
+
+import { Source, Template } from 'models/widget/types'
 import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
-import {stripLastListsFromPath} from 'pages/common/components/infobar/utils'
+import { stripLastListsFromPath } from 'pages/common/components/infobar/utils'
 
 import css from './Card.less'
 
@@ -15,7 +16,7 @@ type Props = {
     children: React.ReactNode
 }
 
-export default function Card({template, isParentList, children}: Props) {
+export default function Card({ template, isParentList, children }: Props) {
     const absolutePath = template.absolutePath || []
 
     let displayedTitle = stripLastListsFromPath(absolutePath)

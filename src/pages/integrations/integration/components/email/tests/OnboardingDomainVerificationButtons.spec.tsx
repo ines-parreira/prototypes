@@ -1,7 +1,8 @@
-import {screen, render, fireEvent, act} from '@testing-library/react'
 import React from 'react'
 
-import {assumeMock} from 'utils/testing'
+import { act, fireEvent, render, screen } from '@testing-library/react'
+
+import { assumeMock } from 'utils/testing'
 
 import useDomainVerification from '../EmailDomainVerification/useDomainVerification'
 import OnboardingDomainVerificationButtons from '../OnboardingDomainVerificationButtons'
@@ -23,7 +24,7 @@ describe('OnboardingDomainVerificationButtons', () => {
     beforeEach(() => {
         useDomainVerificationMock.mockReturnValue({
             domain: undefined,
-            errors: {createDomain: null},
+            errors: { createDomain: null },
         } as ReturnType<typeof useDomainVerification>)
         useDeleteEmailIntegrationMock.mockReturnValue({} as any)
     })
@@ -35,7 +36,7 @@ describe('OnboardingDomainVerificationButtons', () => {
             verifyDomain: verifyDomainFn,
             isVerifying: false,
             isPending: false,
-            errors: {createDomain: null},
+            errors: { createDomain: null },
         } as any)
 
         renderComponent()
@@ -49,7 +50,7 @@ describe('OnboardingDomainVerificationButtons', () => {
 
     it('should show "Contact support" button when domain creation error is present', () => {
         useDomainVerificationMock.mockReturnValue({
-            errors: {createDomain: 'error'},
+            errors: { createDomain: 'error' },
         } as any)
 
         renderComponent()
@@ -58,7 +59,7 @@ describe('OnboardingDomainVerificationButtons', () => {
         expect(button).toBeInTheDocument()
         expect(button.closest('a')).toHaveAttribute(
             'href',
-            'mailto:support@gorgias.com'
+            'mailto:support@gorgias.com',
         )
     })
 
@@ -71,9 +72,9 @@ describe('OnboardingDomainVerificationButtons', () => {
 
     describe('loading state', () => {
         it.each([
-            [{domain: undefined, isCreatingDomain: true, isFetching: false}],
-            [{domain: undefined, isCreatingDomain: false, isFetching: false}],
-            [{domain: {}, isCreatingDomain: false, isFetching: true}],
+            [{ domain: undefined, isCreatingDomain: true, isFetching: false }],
+            [{ domain: undefined, isCreatingDomain: false, isFetching: false }],
+            [{ domain: {}, isCreatingDomain: false, isFetching: true }],
         ])(
             'should disable buttons when domain creation is in progress or domain is being fetched',
             (useDomainVerificationState) => {
@@ -81,7 +82,7 @@ describe('OnboardingDomainVerificationButtons', () => {
                 useDomainVerificationMock.mockReturnValue({
                     ...useDomainVerificationState,
                     verifyDomain: verifyDomainFn,
-                    errors: {createDomain: null},
+                    errors: { createDomain: null },
                 } as any)
 
                 renderComponent()
@@ -91,7 +92,7 @@ describe('OnboardingDomainVerificationButtons', () => {
                 })
 
                 expect(verifyDomainFn).not.toHaveBeenCalled()
-            }
+            },
         )
     })
 })

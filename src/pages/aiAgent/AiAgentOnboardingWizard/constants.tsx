@@ -1,12 +1,12 @@
 import React from 'react'
 
-import {ToneOfVoice} from '../constants'
+import { ToneOfVoice } from '../constants'
 
 export const CUSTOMER_NAME = 'Alex'
 export const CUSTOMER_LAST_NAME = 'Home'
 export const TICKET_PREVIEW: Record<
     ToneOfVoice,
-    {greetings?: string; message: JSX.Element}
+    { greetings?: string; message: JSX.Element }
 > = {
     Friendly: {
         greetings: 'Hey',

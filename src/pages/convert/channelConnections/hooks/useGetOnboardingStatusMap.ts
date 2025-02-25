@@ -1,12 +1,12 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {useListChannelConnections} from 'models/convert/channelConnection/queries'
-import {ChannelConnectionChannel} from 'models/convert/channelConnection/types'
-import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {reportError} from 'utils/errors'
+import { useListChannelConnections } from 'models/convert/channelConnection/queries'
+import { ChannelConnectionChannel } from 'models/convert/channelConnection/types'
+import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { reportError } from 'utils/errors'
 
 export const useGetOnboardingStatusMap = () => {
     const dispatch = useAppDispatch()
@@ -27,7 +27,7 @@ export const useGetOnboardingStatusMap = () => {
                         status: NotificationStatus.Error,
                         message:
                             'Something went wrong while fetching your Convert campaigns.',
-                    })
+                    }),
                 )
                 reportError(error, {
                     tags: {
@@ -36,17 +36,17 @@ export const useGetOnboardingStatusMap = () => {
                     },
                 })
             },
-        }
+        },
     )
 
     const onboardingMap = useMemo(() => {
-        const map: {[key: string]: boolean} = {}
+        const map: { [key: string]: boolean } = {}
         if (!!channelConnections && Array.isArray(channelConnections)) {
             channelConnections.map((channelConnection) => {
                 if (!!channelConnection.external_id) {
                     map[channelConnection.external_id] = Boolean(
                         (isSubscriber && channelConnection.is_onboarded) ||
-                            (!isSubscriber && channelConnection.is_setup)
+                            (!isSubscriber && channelConnection.is_setup),
                     )
                 }
             })
@@ -54,5 +54,5 @@ export const useGetOnboardingStatusMap = () => {
         return map
     }, [isSubscriber, channelConnections])
 
-    return {onboardingMap, isLoading, isError}
+    return { onboardingMap, isLoading, isError }
 }

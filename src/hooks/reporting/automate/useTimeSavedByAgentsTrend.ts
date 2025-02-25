@@ -6,12 +6,12 @@ import {
     fetchTicketHandleTimeTrend,
     useTicketHandleTimeTrend,
 } from 'hooks/reporting/metricTrends'
-import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-import {StatsFilters} from 'models/stat/types'
+import { MetricTrend } from 'hooks/reporting/useMetricTrend'
+import { StatsFilters } from 'models/stat/types'
 
 const calculateTimeSavedByAgents = (
     ticketHandleTimeTrend: MetricTrend,
-    automatedInteractionTrend: MetricTrend
+    automatedInteractionTrend: MetricTrend,
 ) => {
     return {
         value:
@@ -25,15 +25,15 @@ const calculateTimeSavedByAgents = (
 
 export const useTimeSavedByAgentsTrend = (
     statsFilters: StatsFilters,
-    userTimezone: string
+    userTimezone: string,
 ) => {
     const automatedInteractionTrend = useFilteredAutomatedInteractions(
         statsFilters,
-        userTimezone
+        userTimezone,
     )
     const ticketHandleTimeTrend = useTicketHandleTimeTrend(
         statsFilters,
-        userTimezone
+        userTimezone,
     )
 
     return {
@@ -44,14 +44,14 @@ export const useTimeSavedByAgentsTrend = (
             ticketHandleTimeTrend.isError || automatedInteractionTrend.isError,
         data: calculateTimeSavedByAgents(
             ticketHandleTimeTrend,
-            automatedInteractionTrend
+            automatedInteractionTrend,
         ),
     }
 }
 
 export const fetchTimeSavedByAgentsTrend = async (
     statsFilters: StatsFilters,
-    userTimezone: string
+    userTimezone: string,
 ) => {
     return Promise.all([
         fetchFilteredAutomatedInteractions(statsFilters, userTimezone),
@@ -59,7 +59,7 @@ export const fetchTimeSavedByAgentsTrend = async (
     ]).then(([ticketHandleTimeTrend, automatedInteractionTrend]) => ({
         data: calculateTimeSavedByAgents(
             ticketHandleTimeTrend,
-            automatedInteractionTrend
+            automatedInteractionTrend,
         ),
         isFetching: false,
         isError: false,

@@ -1,18 +1,17 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {waitFor} from '@testing-library/react'
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { waitFor } from '@testing-library/react'
+import { renderHook } from '@testing-library/react-hooks'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {AiAgentOverviewRootStateFixture} from 'pages/aiAgent/Overview/tests/AiAgentOverviewRootState.fixture'
+import { AiAgentOverviewRootStateFixture } from 'pages/aiAgent/Overview/tests/AiAgentOverviewRootState.fixture'
+import { getInstallationStatus } from 'state/integrations/actions'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
-import {getInstallationStatus} from 'state/integrations/actions'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-
-import {assumeMock} from 'utils/testing'
-
-import {useFetchChatIntegrationsStatusData} from '../useFetchChatIntegrationsStatusData'
+import { useFetchChatIntegrationsStatusData } from '../useFetchChatIntegrationsStatusData'
 
 const queryClient = mockQueryClient()
 
@@ -31,17 +30,20 @@ describe('useFetchChatIntegrationsStatusData', () => {
                     chatIds: [],
                 }),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         <Provider store={configureMockStore()(rootState)}>
                             {children}
                         </Provider>
                     </QueryClientProvider>
                 ),
-            }
+            },
         )
 
-        expect(hook.result.current).toEqual({data: undefined, isLoading: true})
+        expect(hook.result.current).toEqual({
+            data: undefined,
+            isLoading: true,
+        })
     })
 
     it('should return chat integration with status and filter out non existing ones', async () => {
@@ -66,14 +68,14 @@ describe('useFetchChatIntegrationsStatusData', () => {
                     chatIds: [1, 2, 4],
                 }),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         <Provider store={configureMockStore()(rootState)}>
                             {children}
                         </Provider>
                     </QueryClientProvider>
                 ),
-            }
+            },
         )
 
         await waitFor(() => hook.result.current.isLoading === false)
@@ -103,9 +105,9 @@ describe('useFetchChatIntegrationsStatusData', () => {
 
     it('should return chat integration ordered by updated date, older first', async () => {
         const rootState = AiAgentOverviewRootStateFixture.start()
-            .withChatIntegration({updatedAt: '2021-01-05T00:00:00Z'})
-            .withChatIntegration({updatedAt: '2021-01-01T00:00:00Z'})
-            .withChatIntegration({updatedAt: '2021-01-06T00:00:00Z'})
+            .withChatIntegration({ updatedAt: '2021-01-05T00:00:00Z' })
+            .withChatIntegration({ updatedAt: '2021-01-01T00:00:00Z' })
+            .withChatIntegration({ updatedAt: '2021-01-06T00:00:00Z' })
             .build()
 
         getInstallationStatusMock.mockResolvedValue({
@@ -123,14 +125,14 @@ describe('useFetchChatIntegrationsStatusData', () => {
                     chatIds: [1, 2, 3],
                 }),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         <Provider store={configureMockStore()(rootState)}>
                             {children}
                         </Provider>
                     </QueryClientProvider>
                 ),
-            }
+            },
         )
 
         await waitFor(() => hook.result.current.isLoading === false)

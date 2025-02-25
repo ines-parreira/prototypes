@@ -1,22 +1,25 @@
-import {ListMacrosTagsItem, Macro} from '@gorgias/api-queries'
-import classnames from 'classnames'
-import React, {Dispatch, SetStateAction, useCallback, useMemo} from 'react'
-import {Link, useRouteMatch} from 'react-router-dom'
+import React, { Dispatch, SetStateAction, useCallback, useMemo } from 'react'
 
-import {DateTimeResultFormatType} from 'constants/datetime'
-import {ISO639English} from 'constants/languages'
-import {MacroActionName} from 'models/macroAction/types'
+import classnames from 'classnames'
+import { Link, useRouteMatch } from 'react-router-dom'
+
+import { ListMacrosTagsItem, Macro } from '@gorgias/api-queries'
+
+import { DateTimeResultFormatType } from 'constants/datetime'
+import { ISO639English } from 'constants/languages'
+import { MacroActionName } from 'models/macroAction/types'
 import IconButton from 'pages/common/components/button/IconButton'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import bodyCellCss from 'pages/common/components/table/cells/BodyCell.less'
 import BodyCellContent from 'pages/common/components/table/cells/BodyCellContent'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import CheckBox from 'pages/common/forms/CheckBox'
-import {formatDatetime} from 'utils'
+import { formatDatetime } from 'utils'
+
+import { MacrosSettingsItemTag } from './MacrosSettingsItemTag'
+import MoreActions from './MoreActions'
 
 import css from './MacrosSettingsItem.less'
-import {MacrosSettingsItemTag} from './MacrosSettingsItemTag'
-import MoreActions from './MoreActions'
 
 type Props = {
     datetimeFormat: DateTimeResultFormatType
@@ -43,7 +46,7 @@ export function MacrosSettingsItem({
     selectedMacrosIds,
     setSelectedMacrosIds,
 }: Props) {
-    const {actions, language, name, updated_datetime, usage} = macro
+    const { actions, language, name, updated_datetime, usage } = macro
     const isArchiveTab = !!useRouteMatch('/app/settings/macros/archived')
     const to = isArchiveTab
         ? {
@@ -58,8 +61,8 @@ export function MacrosSettingsItem({
         const tags = actions
             ?.filter((action) => action.name === MacroActionName.AddTags)
             .reduce<string[]>((allTags, action) => {
-                const tags = (action.arguments as {tags: string}).tags?.split(
-                    ','
+                const tags = (action.arguments as { tags: string }).tags?.split(
+                    ',',
                 )
                 if (tags) allTags.push(...tags)
                 return allTags
@@ -67,7 +70,7 @@ export function MacrosSettingsItem({
             .map((tag) => tag.trim())
         if (!!(firstTagFilter && tags)) {
             const indexFirstTag = tags.findIndex(
-                (tag) => tag === firstTagFilter
+                (tag) => tag === firstTagFilter,
             )
             if (indexFirstTag !== -1) {
                 ;[tags[0], tags[indexFirstTag]] = [tags[indexFirstTag], tags[0]]
@@ -83,9 +86,9 @@ export function MacrosSettingsItem({
             setSelectedMacrosIds(
                 isChecked
                     ? selectedMacrosIds.filter((id) => macro.id !== id)
-                    : [...selectedMacrosIds, macro.id!]
+                    : [...selectedMacrosIds, macro.id!],
             ),
-        [isChecked, macro.id, selectedMacrosIds, setSelectedMacrosIds]
+        [isChecked, macro.id, selectedMacrosIds, setSelectedMacrosIds],
     )
 
     return (
@@ -175,7 +178,7 @@ export function MacrosSettingsItem({
                             onConfirm={() => onMacroDelete(macro.id!)}
                             placement="left"
                         >
-                            {({uid, onDisplayConfirmation}) => (
+                            {({ uid, onDisplayConfirmation }) => (
                                 <IconButton
                                     className="mr-1"
                                     id={uid}

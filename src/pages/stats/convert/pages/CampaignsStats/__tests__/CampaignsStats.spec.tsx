@@ -1,23 +1,23 @@
-import {createMemoryHistory} from 'history'
-import {fromJS} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
-import {Provider} from 'react-redux'
-import routerDom, {Route, useParams} from 'react-router-dom'
 
-import {campaign} from 'fixtures/campaign'
-import {convertStatusOk} from 'fixtures/convert'
-import {CampaignPreview} from 'models/convert/campaign/types'
-import {IntegrationType} from 'models/integration/constants'
+import { createMemoryHistory } from 'history'
+import { fromJS } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { Provider } from 'react-redux'
+import routerDom, { Route, useParams } from 'react-router-dom'
+
+import { campaign } from 'fixtures/campaign'
+import { convertStatusOk } from 'fixtures/convert'
+import { CampaignPreview } from 'models/convert/campaign/types'
+import { IntegrationType } from 'models/integration/constants'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
-import {useGetCampaignsForStore} from 'pages/stats/convert/hooks/useGetCampaignsForStore'
-
+import { useGetCampaignsForStore } from 'pages/stats/convert/hooks/useGetCampaignsForStore'
 import ConvertCampaignsStats from 'pages/stats/convert/pages/CampaignsStats/CampaignsStats'
 import CampaignStatsPaywallView from 'pages/stats/convert/pages/CampaignsStats/CampaignStatsPaywallView'
-import {RootState} from 'state/types'
-import {getStateWithHelpdeskPlan} from 'utils/paywallTesting'
-import {assumeMock, mockStore, renderWithRouter} from 'utils/testing'
+import { RootState } from 'state/types'
+import { getStateWithHelpdeskPlan } from 'utils/paywallTesting'
+import { assumeMock, mockStore, renderWithRouter } from 'utils/testing'
 
 jest.mock('react-router-dom', () => ({
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
@@ -80,14 +80,14 @@ describe('CampaignsStats', () => {
                 </Route>
                 <ConvertCampaignsStats {...props} />
             </Provider>,
-            {history}
+            { history },
         )
     const mockedState = getStateWithHelpdeskPlan()
 
     beforeEach(() => {
         jest.spyOn(
             isConvertSubscriberHook,
-            'useIsConvertSubscriber'
+            'useIsConvertSubscriber',
         ).mockImplementation(() => true)
 
         useGetConvertStatusMock.mockReturnValue(convertStatusOk)
@@ -108,16 +108,16 @@ describe('CampaignsStats', () => {
         ;(useParams as jest.Mock).mockReturnValue({})
         jest.spyOn(
             isConvertSubscriberHook,
-            'useIsConvertSubscriber'
+            'useIsConvertSubscriber',
         ).mockImplementation(() => false)
 
-        const {getByText, queryByText} = renderWithStore(mockedState)
+        const { getByText, queryByText } = renderWithStore(mockedState)
 
         expect(queryByText('ConvertStatsContent')).not.toBeInTheDocument()
         expect(getByText('Book Demo')).toBeInTheDocument()
 
         expect(history.location.pathname).toEqual(
-            '/app/stats/convert/campaigns/subscribe'
+            '/app/stats/convert/campaigns/subscribe',
         )
     })
 
@@ -125,25 +125,25 @@ describe('CampaignsStats', () => {
         ;(useParams as jest.Mock).mockReturnValue({})
         jest.spyOn(
             isConvertSubscriberHook,
-            'useIsConvertSubscriber'
+            'useIsConvertSubscriber',
         ).mockImplementation(() => false)
 
-        useParamsMock.mockReturnValue({id: '123'})
+        useParamsMock.mockReturnValue({ id: '123' })
 
-        const {getByText, queryByText} = renderWithStore(mockedState)
+        const { getByText, queryByText } = renderWithStore(mockedState)
 
         expect(queryByText('ConvertStatsContent')).not.toBeInTheDocument()
         expect(getByText('Book Demo')).toBeInTheDocument()
 
         expect(history.location.pathname).toEqual(
-            '/app/convert/123/performance/subscribe'
+            '/app/convert/123/performance/subscribe',
         )
     })
 
     it('should not render and wait for flags', () => {
         useFlagsMock.mockReturnValue({})
 
-        const {queryByText} = renderWithStore(mockedState)
+        const { queryByText } = renderWithStore(mockedState)
 
         expect(queryByText('ConvertStatsContent')).not.toBeInTheDocument()
         expect(queryByText('Book Demo')).not.toBeInTheDocument()
@@ -153,10 +153,10 @@ describe('CampaignsStats', () => {
         ;(useParams as jest.Mock).mockReturnValue({})
         jest.spyOn(
             isConvertSubscriberHook,
-            'useIsConvertSubscriber'
+            'useIsConvertSubscriber',
         ).mockImplementation(() => true)
 
-        const {getByText} = renderWithStore(mockedState)
+        const { getByText } = renderWithStore(mockedState)
 
         expect(getByText('ConvertStatsContent')).toBeInTheDocument()
     })
@@ -168,10 +168,10 @@ describe('CampaignsStats', () => {
 
         jest.spyOn(
             isConvertSubscriberHook,
-            'useIsConvertSubscriber'
+            'useIsConvertSubscriber',
         ).mockImplementation(() => true)
 
-        const {getByText} = renderWithStore(mockedState)
+        const { getByText } = renderWithStore(mockedState)
 
         expect(getByText('ConvertStatsContent')).toBeInTheDocument()
         expect(getByText('RequestABTest')).toBeInTheDocument()
@@ -191,12 +191,12 @@ describe('CampaignsStats', () => {
             }),
         } as unknown as RootState
 
-        const {getByText} = renderWithStore(stateWithoutIntegration)
+        const { getByText } = renderWithStore(stateWithoutIntegration)
 
         expect(
             getByText(
-                'Campaigns dashboard is only available for Shopify stores.'
-            )
+                'Campaigns dashboard is only available for Shopify stores.',
+            ),
         ).toBeInTheDocument()
     })
 })

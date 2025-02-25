@@ -1,11 +1,10 @@
 import memoize from 'memoize-one'
-import OpenAPIClientAxios, {Document} from 'openapi-client-axios'
+import OpenAPIClientAxios, { Document } from 'openapi-client-axios'
 
-import {isProduction, isStaging} from 'utils/environment'
-
+import { isProduction, isStaging } from 'utils/environment'
 import gorgiasAppsAuthInterceptor from 'utils/gorgiasAppsAuth'
 
-import {Client} from './client.generated'
+import { Client } from './client.generated'
 import OpenAPIDoc from './gorgias-chat-protected-api.openapi.json'
 
 function getGorgiasChatApiBaseUrl(): string {
@@ -32,7 +31,7 @@ async function buildGorgiasChatProtectedApiClient() {
 
     const api = new OpenAPIClientAxios({
         definition: OpenAPIDoc as Document,
-        withServer: {url: getGorgiasChatApiBaseUrl()},
+        withServer: { url: getGorgiasChatApiBaseUrl() },
     })
     apiClient = await api.init<Client>()
     apiClient.interceptors.request.use(gorgiasAppsAuthInterceptor)
@@ -41,5 +40,5 @@ async function buildGorgiasChatProtectedApiClient() {
 }
 
 export const getGorgiasChatProtectedApiClient = memoize(
-    buildGorgiasChatProtectedApiClient
+    buildGorgiasChatProtectedApiClient,
 )

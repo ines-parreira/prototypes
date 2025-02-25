@@ -1,5 +1,5 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import React, {ChangeEvent, useEffect, useMemo, useState} from 'react'
+import React, { ChangeEvent, useEffect, useMemo, useState } from 'react'
+
 import {
     DropdownItem,
     DropdownMenu,
@@ -7,8 +7,10 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
 import useAppSelector from 'hooks/useAppSelector'
-import {AILibraryArticleItem, LocaleCode} from 'models/helpCenter/types'
+import { AILibraryArticleItem, LocaleCode } from 'models/helpCenter/types'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import Group from 'pages/common/components/layout/Group'
@@ -18,20 +20,20 @@ import {
     HELP_CENTER_DEFAULT_LOCALE,
     HELP_CENTER_TITLE_MAX_LENGTH,
 } from 'pages/settings/helpCenter/constants'
-import {useAbilityChecker} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
-import {getLocaleSelectOptions} from 'pages/settings/helpCenter/utils/localeSelectOptions'
-import {getCategories} from 'state/entities/helpCenter/categories'
+import { useAbilityChecker } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
+import { getLocaleSelectOptions } from 'pages/settings/helpCenter/utils/localeSelectOptions'
+import { getCategories } from 'state/entities/helpCenter/categories'
 
 import ArticleCategorySelect from '../../../articles/ArticleCategorySelect'
-import {ArticleLanguageSelect} from '../../../articles/ArticleLanguageSelect'
-import {CloseModal} from '../../../articles/CloseModal'
+import { ArticleLanguageSelect } from '../../../articles/ArticleLanguageSelect'
+import { CloseModal } from '../../../articles/CloseModal'
 import HelpCenterEditModal from '../../../articles/HelpCenterEditModal'
 import HelpCenterEditor from '../../../articles/HelpCenterEditor/HelpCenterEditor'
-import {isOneOfParentsUnlisted} from '../../../HelpCenterCategoryEdit/utils'
+import { isOneOfParentsUnlisted } from '../../../HelpCenterCategoryEdit/utils'
 import SelectVisibilityStatus from '../../../SelectVisibilityStatus/SelectVisibilityStatus'
+import { onEditorSaveProps } from '../../hooks/useAILibraryActions'
 
-import {onEditorSaveProps} from '../../hooks/useAILibraryActions'
 import css from './AIArticlesLibraryArticleEditor.less'
 
 type Props = {
@@ -58,15 +60,15 @@ const ArticleEditor: React.FC<Props> = ({
     onEditorClose,
     onEditorSave,
 }) => {
-    const {isPassingRulesCheck} = useAbilityChecker()
-    const canManageArticle = isPassingRulesCheck(({can}) =>
-        can('manage', 'ArticleEntity')
+    const { isPassingRulesCheck } = useAbilityChecker()
+    const canManageArticle = isPassingRulesCheck(({ can }) =>
+        can('manage', 'ArticleEntity'),
     )
     const categories = useAppSelector(getCategories)
     const locales = useSupportedLocales()
 
     const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
-        null
+        null,
     )
     const [visibilityStatus, setVisibilityStatus] = useState<
         'PUBLIC' | 'UNLISTED'
@@ -83,9 +85,9 @@ const ArticleEditor: React.FC<Props> = ({
                         isComplete: false,
                         canBeDeleted: false,
                     }
-                }
+                },
             ),
-        [locales]
+        [locales],
     )
 
     const [title, setTitle] = useState<string>()
@@ -111,7 +113,7 @@ const ArticleEditor: React.FC<Props> = ({
 
     useEffect(() => {
         setIsParentUnlisted(
-            isOneOfParentsUnlisted(categories, selectedCategoryId)
+            isOneOfParentsUnlisted(categories, selectedCategoryId),
         )
     }, [selectedCategoryId, categories])
 
@@ -270,7 +272,7 @@ const ArticleEditor: React.FC<Props> = ({
                                         </DropdownToggle>
                                     )}
                                 </Group>
-                                <DropdownMenu right style={{width: '100%'}}>
+                                <DropdownMenu right style={{ width: '100%' }}>
                                     <DropdownItem
                                         onClick={() =>
                                             onEditorSave({

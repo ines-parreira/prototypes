@@ -1,18 +1,21 @@
 import _get from 'lodash/get'
 import _some from 'lodash/some'
-import {Middleware} from 'redux'
+import { Middleware } from 'redux'
 
-import {FeatureFlagKey} from '../../config/featureFlags'
+import { FeatureFlagKey } from '../../config/featureFlags'
 import {
     GorgiasApiError,
     GorgiasApiResponseDataError,
 } from '../../models/api/types'
-import {notify} from '../../state/notifications/actions'
-import {Notification, NotificationStatus} from '../../state/notifications/types'
-import {RootState, StoreDispatch} from '../../state/types'
-import {errorToChildren, stripErrorMessage} from '../../utils'
-import {getLDClient} from '../../utils/launchDarkly'
-import {waitForDocumentVisible} from '../../utils/waitForDocumentVisible'
+import { notify } from '../../state/notifications/actions'
+import {
+    Notification,
+    NotificationStatus,
+} from '../../state/notifications/types'
+import { RootState, StoreDispatch } from '../../state/types'
+import { errorToChildren, stripErrorMessage } from '../../utils'
+import { getLDClient } from '../../utils/launchDarkly'
+import { waitForDocumentVisible } from '../../utils/waitForDocumentVisible'
 
 const IGNORED_PREFIXES = ['SUBMIT_ACTIVITY_ERROR']
 
@@ -46,7 +49,7 @@ const serverErrorHandler: Middleware<
                 notify({
                     status: NotificationStatus.Error,
                     title: msg,
-                })
+                }),
             )
         }
 
@@ -54,7 +57,7 @@ const serverErrorHandler: Middleware<
             if (
                 getLDClient().variation(
                     FeatureFlagKey.DontTriggerLoginsOnInactiveTabs,
-                    false
+                    false,
                 )
             ) {
                 void waitForDocumentVisible().then(() => {

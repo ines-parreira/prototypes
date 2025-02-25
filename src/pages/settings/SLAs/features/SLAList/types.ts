@@ -1,7 +1,8 @@
-import {SLAPolicy} from '@gorgias/api-queries'
-import {DropTargetMonitor} from 'react-dnd'
+import { DropTargetMonitor } from 'react-dnd'
 
-import {DragItemRequired} from 'pages/common/hooks/useReorderDnD'
+import { SLAPolicy } from '@gorgias/api-queries'
+
+import { DragItemRequired } from 'pages/common/hooks/useReorderDnD'
 
 export type UISLAPolicy = {
     uuid: string
@@ -18,7 +19,7 @@ export enum TableColumn {
     Channels = 'channels',
 }
 
-export type PolicyDragItem = DragItemRequired & {id: SLAPolicy['uuid']}
+export type PolicyDragItem = DragItemRequired & { id: SLAPolicy['uuid'] }
 
 export type OnTogglePolicyFn = (id: string, active: boolean) => void
 
@@ -28,5 +29,5 @@ export type OnPolicyPriorityChangeFn = (id: string, priority: number) => void
 
 export type OnDropPolicyFn = (
     item: PolicyDragItem,
-    monitor: DropTargetMonitor
+    monitor: DropTargetMonitor,
 ) => void

@@ -1,9 +1,9 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import { render } from '@testing-library/react'
 
-import {ABGroupValueFormat} from 'pages/convert/abVariants/components/VariantsList/types'
+import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
+import { ABGroupValueFormat } from 'pages/convert/abVariants/components/VariantsList/types'
 
 import DataCell from '../DataCell'
 
@@ -15,24 +15,24 @@ mockUseGetDateAndTimeFormat.mockReturnValue('MM/DD/YYYY')
 
 describe('<DataCell />', () => {
     it('renders percent', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <DataCell
                 isLoading={false}
                 data={3}
                 format={ABGroupValueFormat.Percentage}
-            />
+            />,
         )
 
         expect(getByText('3%')).toBeInTheDocument()
     })
 
     it('renders number', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <DataCell
                 isLoading={false}
                 data={3}
                 format={ABGroupValueFormat.Number}
-            />
+            />,
         )
 
         expect(getByText('3')).toBeInTheDocument()
@@ -47,13 +47,13 @@ describe('<DataCell />', () => {
             value: undefined,
             expected: '-',
         },
-    ])('renders date', ({value, expected}) => {
-        const {getByText} = render(
+    ])('renders date', ({ value, expected }) => {
+        const { getByText } = render(
             <DataCell
                 isLoading={false}
                 data={value}
                 format={ABGroupValueFormat.Date}
-            />
+            />,
         )
 
         expect(getByText(expected)).toBeInTheDocument()

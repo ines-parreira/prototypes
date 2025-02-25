@@ -1,1 +1,1 @@
-export {default} from './InventoryScopeMissingBanner'
+export { default } from './InventoryScopeMissingBanner'

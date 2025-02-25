@@ -1,7 +1,8 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {assumeMock} from 'utils/testing'
+import { render, screen } from '@testing-library/react'
+
+import { assumeMock } from 'utils/testing'
 
 import useCount from '../../hooks/useCount'
 import Badge from '../Badge'
@@ -15,7 +16,7 @@ describe('Badge', () => {
     })
 
     it('should return nothing if there are no notifications', () => {
-        const {container} = render(<Badge />)
+        const { container } = render(<Badge />)
         expect(container).toBeEmptyDOMElement()
     })
 

@@ -1,18 +1,18 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
+import { useMetricPerDimension } from 'hooks/reporting/useMetricPerDimension'
 import {
     HelpCenterTrackingEventDimensions,
     HelpCenterTrackingEventMeasures,
 } from 'models/reporting/cubes/HelpCenterTrackingEventCube'
-import {searchQueryClicksQueryFactory} from 'models/reporting/queryFactories/help-center/searchResult'
-import {StatsFilters} from 'models/stat/types'
+import { searchQueryClicksQueryFactory } from 'models/reporting/queryFactories/help-center/searchResult'
+import { StatsFilters } from 'models/stat/types'
 
 import {
     HelpCenterTableCell,
     TableCellType,
 } from '../components/HelpCenterStatsTable/HelpCenterStatsTable'
-import {getArticleUrl} from '../utils/helpcenterStats.utils'
+import { getArticleUrl } from '../utils/helpcenterStats.utils'
 
 export const useSearchQueryMetrics = ({
     searchQuery,
@@ -26,7 +26,7 @@ export const useSearchQueryMetrics = ({
     helpCenterDomain: string
 }) => {
     const searchQueryData = useMetricPerDimension(
-        searchQueryClicksQueryFactory(statsFilters, timezone, [searchQuery])
+        searchQueryClicksQueryFactory(statsFilters, timezone, [searchQuery]),
     )
 
     const data: HelpCenterTableCell[][] = useMemo(
@@ -51,7 +51,7 @@ export const useSearchQueryMetrics = ({
                     value[
                         HelpCenterTrackingEventMeasures
                             .SearchArticlesClickedCount
-                    ]
+                    ],
                 )
 
                 return [
@@ -66,7 +66,7 @@ export const useSearchQueryMetrics = ({
                     },
                 ]
             }) ?? [],
-        [helpCenterDomain, searchQueryData.data?.allData]
+        [helpCenterDomain, searchQueryData.data?.allData],
     )
 
     return useMemo(
@@ -74,6 +74,6 @@ export const useSearchQueryMetrics = ({
             data,
             isLoading: searchQueryData.isFetching,
         }),
-        [data, searchQueryData.isFetching]
+        [data, searchQueryData.isFetching],
     )
 }

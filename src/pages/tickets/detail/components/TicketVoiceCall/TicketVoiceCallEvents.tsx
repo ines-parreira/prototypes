@@ -1,18 +1,20 @@
-import {Skeleton} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
 import React from 'react'
 
-import {DateAndTimeFormatting} from 'constants/datetime'
-import {useListVoiceCallEvents} from 'models/voiceCall/queries'
-import {processEvents} from 'models/voiceCall/utils'
+import classNames from 'classnames'
+
+import { Skeleton } from '@gorgias/merchant-ui-kit'
+
+import { DateAndTimeFormatting } from 'constants/datetime'
+import { useListVoiceCallEvents } from 'models/voiceCall/queries'
+import { processEvents } from 'models/voiceCall/utils'
 import VoiceCallAgentLabel from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'
 import VoiceCallCustomerLabel from 'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 
-import css from './TicketVoiceCallContainer.less'
 import Timeline from './Timeline'
-
 import TimelineItem from './TimelineItem'
+
+import css from './TicketVoiceCallContainer.less'
 
 type TicketVoiceCallEventsProps = {
     callId: number
@@ -21,7 +23,7 @@ type TicketVoiceCallEventsProps = {
 export default function TicketVoiceCallEvents({
     callId,
 }: TicketVoiceCallEventsProps) {
-    const {data, isLoading, error} = useListVoiceCallEvents({
+    const { data, isLoading, error } = useListVoiceCallEvents({
         call_id: callId,
     })
 
@@ -47,13 +49,13 @@ export default function TicketVoiceCallEvents({
                         <div
                             className={classNames(
                                 css.row,
-                                css.timelineItemContent
+                                css.timelineItemContent,
                             )}
                         >
                             <div
                                 className={classNames(
                                     css.statusWrapper,
-                                    css.inbound
+                                    css.inbound,
                                 )}
                             >
                                 <div>{event.text}</div>

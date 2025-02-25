@@ -1,6 +1,6 @@
-import {fetchAgentsTableReportData} from 'hooks/reporting/support-performance/agents/useDownloadAgentsPerformanceData'
-import {FilterKey, StaticFilter} from 'models/stat/types'
-import {AUTO_QA_FILTER_KEYS} from 'pages/stats/common/filters/constants'
+import { fetchAgentsTableReportData } from 'hooks/reporting/support-performance/agents/useDownloadAgentsPerformanceData'
+import { FilterKey, StaticFilter } from 'models/stat/types'
+import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
 import {
     ChartType,
     DataExportFormat,
@@ -14,11 +14,11 @@ import {
     AGENT_PERFORMANCE_SECTION_TITLE,
     AgentsTableChart,
 } from 'pages/stats/support-performance/agents/AgentsTableChart'
-import {TopClosedTicketsPerformers} from 'pages/stats/support-performance/agents/TopClosedTicketsPerformers'
-import {TopCsatPerformers} from 'pages/stats/support-performance/agents/TopCsatPerformers'
-import {TopFirstResponseTimePerformers} from 'pages/stats/support-performance/agents/TopFirstResponseTimePerformers'
-import {TopResponseTimePerformers} from 'pages/stats/support-performance/agents/TopResponseTimePerformers'
-import {STATS_ROUTES} from 'routes/constants'
+import { TopClosedTicketsPerformers } from 'pages/stats/support-performance/agents/TopClosedTicketsPerformers'
+import { TopCsatPerformers } from 'pages/stats/support-performance/agents/TopCsatPerformers'
+import { TopFirstResponseTimePerformers } from 'pages/stats/support-performance/agents/TopFirstResponseTimePerformers'
+import { TopResponseTimePerformers } from 'pages/stats/support-performance/agents/TopResponseTimePerformers'
+import { STATS_ROUTES } from 'routes/constants'
 
 export const AGENT_PERSISTENT_FILTERS: StaticFilter[] = [FilterKey.Period]
 

@@ -1,8 +1,9 @@
-import classNames from 'classnames'
 import React from 'react'
 
+import classNames from 'classnames'
+
 import Avatar from 'pages/common/components/Avatar/Avatar'
-import {assetsUrl} from 'utils'
+import { assetsUrl } from 'utils'
 
 import css from './InTicketSuggestionContainer.less'
 

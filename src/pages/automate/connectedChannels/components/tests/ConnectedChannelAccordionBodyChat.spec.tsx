@@ -1,28 +1,29 @@
-import {LegacyChannelSlug} from '@gorgias/api-queries'
-import {render} from '@testing-library/react'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { render } from '@testing-library/react'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { LegacyChannelSlug } from '@gorgias/api-queries'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
-import {SelfServiceChatChannel} from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 
 import {
     MAX_ACTIVE_FLOWS,
     ORDER_MANAGEMENT,
 } from '../../../common/components/constants'
 import WorkflowsFeatureList from '../../../common/components/WorkflowsFeatureList'
-import {useConnectedChannelsViewContext} from '../../ConnectedChannelsViewContext'
+import { useConnectedChannelsViewContext } from '../../ConnectedChannelsViewContext'
 import ConnectedChannelAccordionBodyChat from '../ConnectedChannelAccordionBodyChat'
-
 import ConnectedChannelFeatureToggle from '../ConnectedChannelFeatureToggle'
 
 jest.mock('launchdarkly-react-client-sdk', () => ({
     useFlags: jest.fn(),
 }))
 jest.mock('pages/automate/common/hooks/useApplicationsAutomationSettings', () =>
-    jest.fn()
+    jest.fn(),
 )
 jest.mock('hooks/useAppSelector', () => jest.fn())
 jest.mock('state/billing/selectors', () => ({
@@ -32,18 +33,18 @@ jest.mock('../../ConnectedChannelsViewContext', () => ({
     useConnectedChannelsViewContext: jest.fn(),
 }))
 jest.mock('../../../common/components/WorkflowsFeatureList', () =>
-    jest.fn(() => <div>WorkflowsFeatureList</div>)
+    jest.fn(() => <div>WorkflowsFeatureList</div>),
 )
 jest.mock('../ConnectedChannelFeatureToggle', () =>
-    jest.fn(() => <div>ConnectedChannelFeatureToggle</div>)
+    jest.fn(() => <div>ConnectedChannelFeatureToggle</div>),
 )
 jest.mock('../AutomateSubscriptionAction', () =>
-    jest.fn(() => <div>AutomateSubscriptionAction</div>)
+    jest.fn(() => <div>AutomateSubscriptionAction</div>),
 )
 
 const mockChannel = {
     value: {
-        meta: {app_id: 'app-1'},
+        meta: { app_id: 'app-1' },
         id: 'channel-1',
     },
 } as unknown as SelfServiceChatChannel
@@ -56,9 +57,9 @@ describe('ConnectedChannelAccordionBodyChat', () => {
         ;(useApplicationsAutomationSettings as jest.Mock).mockReturnValue({
             applicationsAutomationSettings: {
                 'app-1': {
-                    articleRecommendation: {enabled: true},
-                    orderManagement: {enabled: true},
-                    workflows: {entrypoints: [{id: 'workflow-1'}]},
+                    articleRecommendation: { enabled: true },
+                    orderManagement: { enabled: true },
+                    workflows: { entrypoints: [{ id: 'workflow-1' }] },
                 },
             },
             handleChatApplicationAutomationSettingsUpdate: jest.fn(),
@@ -83,10 +84,10 @@ describe('ConnectedChannelAccordionBodyChat', () => {
                 channelType: LegacyChannelSlug.Chat,
                 channelId: 'chat-app-1',
                 integrationId: 'channel-1',
-                entrypoints: [{id: 'workflow-1'}],
+                entrypoints: [{ id: 'workflow-1' }],
                 maxActiveWorkflows: MAX_ACTIVE_FLOWS,
             }),
-            expect.anything()
+            expect.anything(),
         )
     })
 
@@ -99,7 +100,7 @@ describe('ConnectedChannelAccordionBodyChat', () => {
                 value: true,
                 disabled: false,
             }),
-            expect.anything()
+            expect.anything(),
         )
     })
 
@@ -114,7 +115,7 @@ describe('ConnectedChannelAccordionBodyChat', () => {
                 value: true,
                 disabled: false,
             }),
-            expect.anything()
+            expect.anything(),
         )
     })
 })

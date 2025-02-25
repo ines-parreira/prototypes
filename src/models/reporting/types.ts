@@ -1,7 +1,6 @@
-import {OrderDirection} from 'models/api/types'
-
-import {Cubes} from 'models/reporting/cubes'
-import {StatsFilters} from 'models/stat/types'
+import { OrderDirection } from 'models/api/types'
+import { Cubes } from 'models/reporting/cubes'
+import { StatsFilters } from 'models/stat/types'
 
 export enum ReportingFilterOperator {
     Equals = 'equals',
@@ -110,7 +109,7 @@ export type ReportingResponse<TData> = {
 export type QueryFactory<T extends Cube> = (
     filters: StatsFilters,
     timezone: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ) => ReportingQuery<T>
 
 export enum EnrichmentFields {

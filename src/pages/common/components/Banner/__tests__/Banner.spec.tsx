@@ -1,9 +1,10 @@
-import {render, fireEvent} from '@testing-library/react'
 import React from 'react'
+
+import { fireEvent, render } from '@testing-library/react'
 
 import standlonePreview from 'assets/img/presentationals/standalone-self-service-portal.png'
 
-import {Banner} from '../Banner'
+import { Banner } from '../Banner'
 
 const minProps = {
     children: (
@@ -20,7 +21,7 @@ const minProps = {
 
 describe('<Banner />', () => {
     it('matches the snapshot', () => {
-        const {container} = render(<Banner {...minProps} />)
+        const { container } = render(<Banner {...minProps} />)
         expect(container).toMatchSnapshot()
     })
 
@@ -29,15 +30,15 @@ describe('<Banner />', () => {
         const onCloseFn = jest.fn()
 
         it('renders the close icon', () => {
-            const {getByAltText} = render(
-                <Banner {...minProps} dismissible onClose={onCloseFn} />
+            const { getByAltText } = render(
+                <Banner {...minProps} dismissible onClose={onCloseFn} />,
             )
             expect(getByAltText('dismiss-icon')).toBeDefined()
         })
 
         it('calls the callback when the icon is pressed', () => {
-            const {getByAltText} = render(
-                <Banner {...minProps} dismissible onClose={onCloseFn} />
+            const { getByAltText } = render(
+                <Banner {...minProps} dismissible onClose={onCloseFn} />,
             )
             fireEvent.click(getByAltText('dismiss-icon'))
             expect(onCloseFn).toHaveBeenCalled()

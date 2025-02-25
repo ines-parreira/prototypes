@@ -1,23 +1,23 @@
-import {Liquid, Output} from 'liquidjs'
-import {PropertyAccessToken, IdentifierToken} from 'liquidjs/dist/src/tokens'
+import React, { ReactNode } from 'react'
+
+import { Liquid, Output } from 'liquidjs'
+import { IdentifierToken, PropertyAccessToken } from 'liquidjs/dist/src/tokens'
 import _flatten from 'lodash/flatten'
 import _get from 'lodash/get'
 import _keyBy from 'lodash/keyBy'
 import _set from 'lodash/set'
 
-import React, {ReactNode} from 'react'
-
 import AppIcon from 'pages/automate/actionsPlatform/components/AppIcon'
-import {App} from 'pages/automate/actionsPlatform/types'
-import {validateJSON} from 'utils'
+import { App } from 'pages/automate/actionsPlatform/types'
+import { validateJSON } from 'utils'
 
 import {
-    WorkflowVariableList,
-    WorkflowVariable,
-    WorkflowVariableGroup,
-    SHIPMONK_APPLICATION_ID,
     AVAILABLE_3PL_INTEGRATIONS,
     AvailableIntegrations,
+    SHIPMONK_APPLICATION_ID,
+    WorkflowVariable,
+    WorkflowVariableGroup,
+    WorkflowVariableList,
 } from './variables.types'
 import {
     isVisualBuilderGraphAppApp,
@@ -25,7 +25,7 @@ import {
     VisualBuilderGraph,
     VisualBuilderNode,
 } from './visualBuilderGraph.types'
-import {WorkflowConfiguration} from './workflowConfiguration.types'
+import { WorkflowConfiguration } from './workflowConfiguration.types'
 
 const templateEngine = new Liquid({
     timezoneOffset: 0,
@@ -65,8 +65,8 @@ export function extractVariablesFromText(text: string): {
 export function findVariable(
     variables: WorkflowVariableList,
     fn: (
-        v: WorkflowVariable | WorkflowVariableGroup
-    ) => WorkflowVariable | undefined
+        v: WorkflowVariable | WorkflowVariableGroup,
+    ) => WorkflowVariable | undefined,
 ): WorkflowVariable | undefined {
     for (const variable of variables) {
         const result = fn(variable)
@@ -85,8 +85,8 @@ export function findVariable(
 export function findManyVariables(
     variables: WorkflowVariableList,
     fn: (
-        v: WorkflowVariable | WorkflowVariableGroup
-    ) => WorkflowVariable | undefined
+        v: WorkflowVariable | WorkflowVariableGroup,
+    ) => WorkflowVariable | undefined,
 ): WorkflowVariable[] {
     const result: WorkflowVariable[] = []
     for (const variable of variables) {
@@ -103,7 +103,7 @@ export function findManyVariables(
 
 export function filterManyVariables(
     variables: WorkflowVariableList,
-    fn: (v: WorkflowVariable) => boolean
+    fn: (v: WorkflowVariable) => boolean,
 ): WorkflowVariableList {
     return variables.reduce<WorkflowVariableList>((acc, variable) => {
         if ('value' in variable) {
@@ -120,13 +120,13 @@ export function filterManyVariables(
             return acc
         }
 
-        return [...acc, {...variable, variables}]
+        return [...acc, { ...variable, variables }]
     }, [])
 }
 
 export function parseWorkflowVariable(
     value: string,
-    availableVariables: WorkflowVariableList
+    availableVariables: WorkflowVariableList,
 ): WorkflowVariable | null {
     const variable = findVariable(availableVariables, (v) => {
         if ('value' in v && v.value === value) {
@@ -141,10 +141,10 @@ export function parseWorkflowVariable(
 
 export function hasInvalidVariables(
     value: string,
-    variables: WorkflowVariableList
+    variables: WorkflowVariableList,
 ): boolean {
     const variablesInUse = extractVariablesFromText(value).map(
-        (variable) => variable.value
+        (variable) => variable.value,
     )
 
     return variablesInUse
@@ -154,7 +154,7 @@ export function hasInvalidVariables(
 
 export const buildWorkflowVariableFromApp = (
     graph: VisualBuilderGraph,
-    apps: App[]
+    apps: App[],
 ):
     | WorkflowVariable
     | WorkflowVariableGroup
@@ -197,14 +197,14 @@ const INTEGRATION_VARIABLE_MAP: Record<
                 type: 'string',
                 icon,
                 options: [
-                    {value: 'invalid', label: 'invalid'},
-                    {value: 'cancelled', label: 'cancelled'},
-                    {value: 'processing', label: 'processing'},
-                    {value: 'submitted', label: 'submitted'},
-                    {value: 'complete', label: 'complete'},
-                    {value: 'onHold', label: 'on hold'},
-                    {value: 'pick_in_progress', label: 'pick in progress'},
-                    {value: 'pending_batching', label: 'pending batching'},
+                    { value: 'invalid', label: 'invalid' },
+                    { value: 'cancelled', label: 'cancelled' },
+                    { value: 'processing', label: 'processing' },
+                    { value: 'submitted', label: 'submitted' },
+                    { value: 'complete', label: 'complete' },
+                    { value: 'onHold', label: 'on hold' },
+                    { value: 'pick_in_progress', label: 'pick in progress' },
+                    { value: 'pending_batching', label: 'pending batching' },
                     {
                         value: 'fulfilled_by_3rd',
                         label: 'fulfilled by 3rd party',
@@ -270,10 +270,10 @@ const INTEGRATION_VARIABLE_MAP: Record<
 
 export const buildWorkflowVariableFromIntegration = (
     availableIntegrations: AvailableIntegrations,
-    apps: App[]
+    apps: App[],
 ): WorkflowVariableList => {
     return (
-        availableIntegrations?.map(({application_id}) => {
+        availableIntegrations?.map(({ application_id }) => {
             const app = apps.find((app) => app.id === application_id)
             const icon = <AppIcon icon={app?.icon} name={app?.name} />
             return INTEGRATION_VARIABLE_MAP[application_id](icon)
@@ -282,7 +282,7 @@ export const buildWorkflowVariableFromIntegration = (
 }
 
 export const buildWorkflowVariableFromTrigger = (
-    graph: VisualBuilderGraph
+    graph: VisualBuilderGraph,
 ):
     | WorkflowVariable
     | WorkflowVariableGroup
@@ -295,7 +295,7 @@ export const buildWorkflowVariableFromTrigger = (
         triggerNode.type === 'reusable_llm_prompt_trigger'
     ) {
         const {
-            data: {inputs},
+            data: { inputs },
         } = triggerNode
 
         const customInputs: WorkflowVariableGroup = {
@@ -358,7 +358,7 @@ export const buildWorkflowVariableFromTrigger = (
                                       type: 'string',
                                   },
                               ],
-                          }
+                          },
                 ),
         }
 
@@ -483,10 +483,10 @@ export const buildWorkflowVariableFromTrigger = (
                         nodeType: 'order_selection',
                         type: 'string',
                         options: [
-                            {value: null, label: 'unfulfilled'},
-                            {value: 'partial', label: 'partially fulfilled'},
-                            {value: 'fulfilled', label: 'fulfilled'},
-                            {value: 'restocked', label: 'restocked'},
+                            { value: null, label: 'unfulfilled' },
+                            { value: 'partial', label: 'partially fulfilled' },
+                            { value: 'fulfilled', label: 'fulfilled' },
+                            { value: 'restocked', label: 'restocked' },
                         ],
                     },
                     {
@@ -501,17 +501,20 @@ export const buildWorkflowVariableFromTrigger = (
                         nodeType: 'order_selection',
                         type: 'string',
                         options: [
-                            {value: 'pending', label: 'pending'},
-                            {value: 'authorized', label: 'authorized'},
-                            {value: 'paid', label: 'paid'},
-                            {value: 'refunded', label: 'refunded'},
+                            { value: 'pending', label: 'pending' },
+                            { value: 'authorized', label: 'authorized' },
+                            { value: 'paid', label: 'paid' },
+                            { value: 'refunded', label: 'refunded' },
                             {
                                 value: 'partially_refunded',
                                 label: 'partially refunded',
                             },
-                            {value: 'voided', label: 'voided'},
-                            {value: 'partially_paid', label: 'partially paid'},
-                            {value: 'unpaid', label: 'unpaid'},
+                            { value: 'voided', label: 'voided' },
+                            {
+                                value: 'partially_paid',
+                                label: 'partially paid',
+                            },
+                            { value: 'unpaid', label: 'unpaid' },
                         ],
                     },
                     {
@@ -520,9 +523,9 @@ export const buildWorkflowVariableFromTrigger = (
                         nodeType: 'order_selection',
                         type: 'string',
                         options: [
-                            {value: 'open', label: 'open'},
-                            {value: 'archived', label: 'archived'},
-                            {value: 'cancelled', label: 'cancelled'},
+                            { value: 'open', label: 'open' },
+                            { value: 'archived', label: 'archived' },
+                            { value: 'cancelled', label: 'cancelled' },
                         ],
                     },
                     {
@@ -645,13 +648,13 @@ export const buildWorkflowVariableFromTrigger = (
                         nodeType: 'order_selection',
                         type: 'string',
                         options: [
-                            {value: 'label_printed', label: 'label printed'},
+                            { value: 'label_printed', label: 'label printed' },
                             {
                                 value: 'label_purchased',
                                 label: 'label purchased',
                             },
-                            {value: 'confirmed', label: 'confirmed'},
-                            {value: 'in_transit', label: 'in transit'},
+                            { value: 'confirmed', label: 'confirmed' },
+                            { value: 'in_transit', label: 'in transit' },
                             {
                                 value: 'attempted_delivery',
                                 label: 'attempted delivery',
@@ -660,8 +663,8 @@ export const buildWorkflowVariableFromTrigger = (
                                 value: 'ready_for_pickup',
                                 label: 'ready for pickup',
                             },
-                            {value: 'delivered', label: 'delivered'},
-                            {value: 'failure', label: 'failure'},
+                            { value: 'delivered', label: 'delivered' },
+                            { value: 'failure', label: 'failure' },
                         ],
                     },
                     {
@@ -741,7 +744,7 @@ export const buildWorkflowVariableFromNode = (
     graph: VisualBuilderGraph,
     node: VisualBuilderNode,
     steps: WorkflowConfiguration[],
-    apps: App[]
+    apps: App[],
 ):
     | WorkflowVariable
     | WorkflowVariableGroup
@@ -755,7 +758,7 @@ export const buildWorkflowVariableFromNode = (
     if (node.type === 'text_reply') {
         const {
             data: {
-                content: {text},
+                content: { text },
             },
         } = node
         return {
@@ -767,7 +770,7 @@ export const buildWorkflowVariableFromNode = (
     } else if (node.type === 'multiple_choices') {
         const {
             data: {
-                content: {text},
+                content: { text },
             },
         } = node
         return {
@@ -779,13 +782,13 @@ export const buildWorkflowVariableFromNode = (
     } else if (node.type === 'order_selection') {
         const {
             data: {
-                content: {text},
+                content: { text },
             },
         } = node
         return {
             nodeType: 'order_selection',
             name: formatVariableName(
-                text.length > 0 ? text : 'Order selection'
+                text.length > 0 ? text : 'Order selection',
             ),
             variables: [
                 {
@@ -845,10 +848,13 @@ export const buildWorkflowVariableFromNode = (
                     type: 'string',
                     options: hasShopifyApp
                         ? [
-                              {value: null, label: 'unfulfilled'},
-                              {value: 'partial', label: 'partially fulfilled'},
-                              {value: 'fulfilled', label: 'fulfilled'},
-                              {value: 'restocked', label: 'restocked'},
+                              { value: null, label: 'unfulfilled' },
+                              {
+                                  value: 'partial',
+                                  label: 'partially fulfilled',
+                              },
+                              { value: 'fulfilled', label: 'fulfilled' },
+                              { value: 'restocked', label: 'restocked' },
                           ]
                         : undefined,
                 },
@@ -866,20 +872,20 @@ export const buildWorkflowVariableFromNode = (
                     type: 'string',
                     options: hasShopifyApp
                         ? [
-                              {value: 'pending', label: 'pending'},
-                              {value: 'authorized', label: 'authorized'},
-                              {value: 'paid', label: 'paid'},
-                              {value: 'refunded', label: 'refunded'},
+                              { value: 'pending', label: 'pending' },
+                              { value: 'authorized', label: 'authorized' },
+                              { value: 'paid', label: 'paid' },
+                              { value: 'refunded', label: 'refunded' },
                               {
                                   value: 'partially_refunded',
                                   label: 'partially refunded',
                               },
-                              {value: 'voided', label: 'voided'},
+                              { value: 'voided', label: 'voided' },
                               {
                                   value: 'partially_paid',
                                   label: 'partially paid',
                               },
-                              {value: 'unpaid', label: 'unpaid'},
+                              { value: 'unpaid', label: 'unpaid' },
                           ]
                         : undefined,
                 },
@@ -890,9 +896,9 @@ export const buildWorkflowVariableFromNode = (
                     type: 'string',
                     options: hasShopifyApp
                         ? [
-                              {value: 'open', label: 'open'},
-                              {value: 'archived', label: 'archived'},
-                              {value: 'cancelled', label: 'cancelled'},
+                              { value: 'open', label: 'open' },
+                              { value: 'archived', label: 'archived' },
+                              { value: 'cancelled', label: 'cancelled' },
                           ]
                         : undefined,
                 },
@@ -1018,13 +1024,16 @@ export const buildWorkflowVariableFromNode = (
                     type: 'string',
                     options: hasShopifyApp
                         ? [
-                              {value: 'label_printed', label: 'label printed'},
+                              {
+                                  value: 'label_printed',
+                                  label: 'label printed',
+                              },
                               {
                                   value: 'label_purchased',
                                   label: 'label purchased',
                               },
-                              {value: 'confirmed', label: 'confirmed'},
-                              {value: 'in_transit', label: 'in transit'},
+                              { value: 'confirmed', label: 'confirmed' },
+                              { value: 'in_transit', label: 'in transit' },
                               {
                                   value: 'attempted_delivery',
                                   label: 'attempted delivery',
@@ -1033,8 +1042,8 @@ export const buildWorkflowVariableFromNode = (
                                   value: 'ready_for_pickup',
                                   label: 'ready for pickup',
                               },
-                              {value: 'delivered', label: 'delivered'},
-                              {value: 'failure', label: 'failure'},
+                              { value: 'delivered', label: 'delivered' },
+                              { value: 'failure', label: 'failure' },
                           ]
                         : undefined,
                 },
@@ -1155,7 +1164,7 @@ export const buildWorkflowVariableFromNode = (
         }
     } else if (node.type === 'http_request') {
         const {
-            data: {name, variables},
+            data: { name, variables },
         } = node
 
         return {
@@ -1192,7 +1201,7 @@ export const buildWorkflowVariableFromNode = (
     } else if (node.type === 'file_upload') {
         const {
             data: {
-                content: {text},
+                content: { text },
             },
         } = node
         return {
@@ -1275,7 +1284,7 @@ export const buildWorkflowVariableFromNode = (
         const configuration = steps.find(
             (step) =>
                 step.internal_id === node.data.configuration_internal_id &&
-                step.id === node.data.configuration_id
+                step.id === node.data.configuration_id,
         )
 
         if (!configuration) {
@@ -1304,11 +1313,11 @@ export const buildWorkflowVariableFromNode = (
         const outputs =
             configuration.triggers?.find(
                 (
-                    trigger
+                    trigger,
                 ): trigger is Extract<
                     NonNullable<WorkflowConfiguration['triggers']>[number],
-                    {kind: 'reusable-llm-prompt'}
-                > => trigger.kind === 'reusable-llm-prompt'
+                    { kind: 'reusable-llm-prompt' }
+                > => trigger.kind === 'reusable-llm-prompt',
             )?.settings?.outputs ?? []
 
         if (outputs.length) {
@@ -1350,9 +1359,9 @@ export function getWorkflowVariableListForNode(
     nodeId: string,
     steps: WorkflowConfiguration[],
     apps: App[],
-    availableIntegrations: AvailableIntegrations = []
+    availableIntegrations: AvailableIntegrations = [],
 ) {
-    const {nodes, edges} = g
+    const { nodes, edges } = g
     const ancestors: VisualBuilderNode[] = []
     let ptrNodeId = nodeId
     let incomingEdges: VisualBuilderEdge[] = []
@@ -1361,7 +1370,7 @@ export function getWorkflowVariableListForNode(
         if (incomingEdges.length > 0) {
             // we assume only one incoming edge per node
             ptrNodeId = incomingEdges[0].source
-            const node = nodes.find(({id}) => id === ptrNodeId)
+            const node = nodes.find(({ id }) => id === ptrNodeId)
             if (!node) continue
             ancestors.push(node)
             incomingEdges = edges.filter((e) => e.target === ptrNodeId)
@@ -1374,7 +1383,7 @@ export function getWorkflowVariableListForNode(
     const appVariable = buildWorkflowVariableFromApp(g, apps)
     const integrationVariable = buildWorkflowVariableFromIntegration(
         availableIntegrations,
-        apps
+        apps,
     )
 
     if (triggerVariable) {
@@ -1411,8 +1420,8 @@ export function getWorkflowVariableListForNode(
 }
 
 export function extractVariablesFromNode(
-    node: UnionPick<VisualBuilderNode, 'type' | 'data'> & {id?: string},
-    edges?: VisualBuilderEdge[]
+    node: UnionPick<VisualBuilderNode, 'type' | 'data'> & { id?: string },
+    edges?: VisualBuilderEdge[],
 ) {
     let variables: string[] = []
 
@@ -1420,14 +1429,14 @@ export function extractVariablesFromNode(
         case 'multiple_choices':
             variables = [
                 ...extractVariablesFromText(node.data.content.text).map(
-                    (variable) => variable.value
+                    (variable) => variable.value,
                 ),
                 ..._flatten(
                     node.data.choices.map((choice) =>
                         extractVariablesFromText(choice.label).map(
-                            (variable) => variable.value
-                        )
-                    )
+                            (variable) => variable.value,
+                        ),
+                    ),
                 ),
             ]
             break
@@ -1436,30 +1445,30 @@ export function extractVariablesFromNode(
         case 'file_upload':
         case 'order_selection':
             variables = extractVariablesFromText(node.data.content.text).map(
-                (variable) => variable.value
+                (variable) => variable.value,
             )
             break
         case 'http_request':
             variables = [
                 ...extractVariablesFromText(node.data.url).map(
-                    (variable) => variable.value
+                    (variable) => variable.value,
                 ),
                 ..._flatten(
                     node.data.headers.map((header) =>
                         extractVariablesFromText(header.value).map(
-                            (variable) => variable.value
-                        )
-                    )
+                            (variable) => variable.value,
+                        ),
+                    ),
                 ),
                 ...extractVariablesFromText(node.data.json ?? '').map(
-                    (variable) => variable.value
+                    (variable) => variable.value,
                 ),
                 ..._flatten(
                     node.data.formUrlencoded?.map((item) =>
                         extractVariablesFromText(item.value).map(
-                            (variable) => variable.value
-                        )
-                    )
+                            (variable) => variable.value,
+                        ),
+                    ),
                 ),
             ]
             break
@@ -1504,130 +1513,130 @@ export function extractVariablesFromNode(
         case 'reship_for_free':
             variables = [
                 ...extractVariablesFromText(node.data.customerId).map(
-                    (variable) => variable.value
+                    (variable) => variable.value,
                 ),
                 ...extractVariablesFromText(node.data.orderExternalId).map(
-                    (variable) => variable.value
+                    (variable) => variable.value,
                 ),
             ]
             break
         case 'update_shipping_address':
             variables = [
                 ...extractVariablesFromText(node.data.customerId).map(
-                    (variable) => variable.value
+                    (variable) => variable.value,
                 ),
                 ...extractVariablesFromText(node.data.orderExternalId).map(
-                    (variable) => variable.value
+                    (variable) => variable.value,
                 ),
                 ...extractVariablesFromText(node.data.name).map(
-                    (variable) => variable.value
+                    (variable) => variable.value,
                 ),
                 ...extractVariablesFromText(node.data.address1).map(
-                    (variable) => variable.value
+                    (variable) => variable.value,
                 ),
                 ...extractVariablesFromText(node.data.address2).map(
-                    (variable) => variable.value
+                    (variable) => variable.value,
                 ),
                 ...extractVariablesFromText(node.data.city).map(
-                    (variable) => variable.value
+                    (variable) => variable.value,
                 ),
                 ...extractVariablesFromText(node.data.zip).map(
-                    (variable) => variable.value
+                    (variable) => variable.value,
                 ),
                 ...extractVariablesFromText(node.data.province).map(
-                    (variable) => variable.value
+                    (variable) => variable.value,
                 ),
                 ...extractVariablesFromText(node.data.country).map(
-                    (variable) => variable.value
+                    (variable) => variable.value,
                 ),
                 ...extractVariablesFromText(node.data.phone).map(
-                    (variable) => variable.value
+                    (variable) => variable.value,
                 ),
                 ...extractVariablesFromText(node.data.lastName).map(
-                    (variable) => variable.value
+                    (variable) => variable.value,
                 ),
                 ...extractVariablesFromText(node.data.firstName).map(
-                    (variable) => variable.value
+                    (variable) => variable.value,
                 ),
             ]
             break
         case 'cancel_subscription':
             variables = [
                 ...extractVariablesFromText(node.data.customerId).map(
-                    (variable) => variable.value
+                    (variable) => variable.value,
                 ),
                 ...extractVariablesFromText(node.data.subscriptionId).map(
-                    (variable) => variable.value
+                    (variable) => variable.value,
                 ),
                 ...extractVariablesFromText(node.data.reason).map(
-                    (variable) => variable.value
+                    (variable) => variable.value,
                 ),
             ]
             break
         case 'skip_charge':
             variables = [
                 ...extractVariablesFromText(node.data.customerId).map(
-                    (variable) => variable.value
+                    (variable) => variable.value,
                 ),
                 ...extractVariablesFromText(node.data.subscriptionId).map(
-                    (variable) => variable.value
+                    (variable) => variable.value,
                 ),
                 ...extractVariablesFromText(node.data.chargeId).map(
-                    (variable) => variable.value
+                    (variable) => variable.value,
                 ),
             ]
             break
         case 'remove_item':
             variables = [
                 ...extractVariablesFromText(node.data.customerId).map(
-                    (variable) => variable.value
+                    (variable) => variable.value,
                 ),
                 ...extractVariablesFromText(node.data.orderExternalId).map(
-                    (variable) => variable.value
+                    (variable) => variable.value,
                 ),
                 ...extractVariablesFromText(node.data.productVariantId).map(
-                    (variable) => variable.value
+                    (variable) => variable.value,
                 ),
                 ...extractVariablesFromText(node.data.quantity).map(
-                    (variable) => variable.value
+                    (variable) => variable.value,
                 ),
             ]
             break
         case 'replace_item':
             variables = [
                 ...extractVariablesFromText(node.data.customerId).map(
-                    (variable) => variable.value
+                    (variable) => variable.value,
                 ),
                 ...extractVariablesFromText(node.data.orderExternalId).map(
-                    (variable) => variable.value
+                    (variable) => variable.value,
                 ),
                 ...extractVariablesFromText(node.data.productVariantId).map(
-                    (variable) => variable.value
+                    (variable) => variable.value,
                 ),
                 ...extractVariablesFromText(node.data.quantity).map(
-                    (variable) => variable.value
+                    (variable) => variable.value,
                 ),
                 ...extractVariablesFromText(
-                    node.data.addedProductVariantId
+                    node.data.addedProductVariantId,
                 ).map((variable) => variable.value),
                 ...extractVariablesFromText(node.data.addedQuantity).map(
-                    (variable) => variable.value
+                    (variable) => variable.value,
                 ),
             ]
             break
         case 'create_discount_code':
             variables = [
                 ...extractVariablesFromText(node.data.customerId).map(
-                    (variable) => variable.value
+                    (variable) => variable.value,
                 ),
                 ...extractVariablesFromText(node.data.amount).map(
-                    (variable) => variable.value
+                    (variable) => variable.value,
                 ),
                 ...extractVariablesFromText(node.data.discountType).map(
-                    (variable) => variable.value
+                    (variable) => variable.value,
                 ),
                 ...extractVariablesFromText(node.data.validFor).map(
-                    (variable) => variable.value
+                    (variable) => variable.value,
                 ),
             ]
             break
@@ -1636,7 +1645,7 @@ export function extractVariablesFromNode(
     return variables
 }
 
-export function toLiquidSyntax(variable: {value: string; filter?: string}) {
+export function toLiquidSyntax(variable: { value: string; filter?: string }) {
     if (variable.filter) {
         return `{{${variable.value} | ${variable.filter}}}`
     }
@@ -1660,14 +1669,14 @@ export function unescapeUrlEncodedVariables(text: string) {
 
 export function validateJSONWithVariables(
     string: string,
-    availableVariables: WorkflowVariableList
+    availableVariables: WorkflowVariableList,
 ) {
     return validateJSON(prerenderVariables(string, availableVariables))
 }
 
 export function prerenderVariables(
     string: string,
-    availableVariables: WorkflowVariableList
+    availableVariables: WorkflowVariableList,
 ) {
     const context: Record<string, unknown> = {}
 
@@ -1689,7 +1698,7 @@ export function prerenderVariables(
                 const value = props.join('.')
                 const variable = parseWorkflowVariable(
                     value,
-                    availableVariables
+                    availableVariables,
                 )
 
                 if (!variable) {
@@ -1710,7 +1719,7 @@ export function prerenderVariables(
                         _set(context, props, true)
                         break
                     case 'array':
-                        _set(context, props, [{test: 'test'}])
+                        _set(context, props, [{ test: 'test' }])
                         break
                     case 'json':
                         _set(context, props, {})

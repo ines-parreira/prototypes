@@ -1,5 +1,3 @@
-import classnames from 'classnames'
-import FocusTrap from 'focus-trap-react'
 import React, {
     createContext,
     ForwardedRef,
@@ -13,10 +11,13 @@ import React, {
     useRef,
     useState,
 } from 'react'
-import {createPortal} from 'react-dom'
-import {CSSTransition} from 'react-transition-group'
 
-import {useAppNode} from 'appNode'
+import classnames from 'classnames'
+import FocusTrap from 'focus-trap-react'
+import { createPortal } from 'react-dom'
+import { CSSTransition } from 'react-transition-group'
+
+import { useAppNode } from 'appNode'
 import useId from 'hooks/useId'
 import useKey from 'hooks/useKey'
 
@@ -64,10 +65,10 @@ const Modal = (
         size,
         forceFocus = false,
     }: Props,
-    forwardedRef: ForwardedRef<HTMLDivElement>
+    forwardedRef: ForwardedRef<HTMLDivElement>,
 ) => {
     const [mouseDownTarget, setMouseDownTarget] = useState<EventTarget | null>(
-        null
+        null,
     )
     const ref = useRef<HTMLDivElement>(null)
     useImperativeHandle(forwardedRef, () => ref.current!)
@@ -75,7 +76,7 @@ const Modal = (
     const appNode = useAppNode()
     const containerNode = useMemo(
         () => container ?? appNode ?? document.body,
-        [appNode, container]
+        [appNode, container],
     )
     const containerNodeRef = useRef(containerNode)
     if (containerNode) {
@@ -96,8 +97,8 @@ const Modal = (
                 onClose()
             }
         },
-        {target: document.body},
-        [isOpen, isClosable, onClose]
+        { target: document.body },
+        [isOpen, isClosable, onClose],
     )
 
     const handleClose = useCallback(
@@ -112,7 +113,7 @@ const Modal = (
             event.stopPropagation()
             onClose()
         },
-        [isClosable, onClose, mouseDownTarget]
+        [isClosable, onClose, mouseDownTarget],
     )
 
     // Make sure we don’t close the modal if the user has "mousedowned"
@@ -131,7 +132,7 @@ const Modal = (
             onClose,
             ref,
         }),
-        [bodyId, id, isScrollable, isClosable, labelId, onClose, ref]
+        [bodyId, id, isScrollable, isClosable, labelId, onClose, ref],
     )
 
     const isFocusTrapActive = forceFocus && isOpen
@@ -170,7 +171,7 @@ const Modal = (
                                             [css.scrollableDialog]:
                                                 isScrollable,
                                         },
-                                        classNameDialog
+                                        classNameDialog,
                                     )}
                                 >
                                     <div
@@ -181,7 +182,7 @@ const Modal = (
                                                 [css.scrollableContent]:
                                                     isScrollable,
                                             },
-                                            classNameContent
+                                            classNameContent,
                                         )}
                                     >
                                         {children}
@@ -190,7 +191,7 @@ const Modal = (
                             </div>
                         </FocusTrap>
                     </ModalContext.Provider>,
-                    containerNodeRef.current
+                    containerNodeRef.current,
                 )}
             </>
         </CSSTransition>

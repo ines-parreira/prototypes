@@ -1,4 +1,4 @@
-import {ReportConfig} from 'pages/stats/custom-reports/types'
+import { ReportConfig } from 'pages/stats/custom-reports/types'
 
 export const SUPPORT_PERFORMANCE_REVENUE_PAGE_TITLE = 'Revenue'
 

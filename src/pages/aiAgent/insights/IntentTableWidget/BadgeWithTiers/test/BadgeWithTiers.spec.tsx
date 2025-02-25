@@ -1,23 +1,24 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import useGetBadgeTiers, {
     BadgeTiers,
 } from 'pages/aiAgent/insights/IntentTableWidget/BadgeWithTiers/hooks/useGetBadgeTiers'
 
-import {BadgeWithTiers} from '../BadgeWithTiers'
+import { BadgeWithTiers } from '../BadgeWithTiers'
 
 jest.mock(
-    'pages/aiAgent/insights/IntentTableWidget/BadgeWithTiers/hooks/useGetBadgeTiers'
+    'pages/aiAgent/insights/IntentTableWidget/BadgeWithTiers/hooks/useGetBadgeTiers',
 )
 
 const mockedUseGetBadgeTiers = jest.mocked(useGetBadgeTiers)
 
 describe('BadgeWithTiers Component', () => {
     const mockTiers: BadgeTiers[] = [
-        {range: [0, 10], background: '#FDF6FF', color: '#800080'},
-        {range: [11, 20], background: '#FFD700', color: '#FFA500'},
-        {range: [21, 30], background: '#90EE90', color: '#008000'},
+        { range: [0, 10], background: '#FDF6FF', color: '#800080' },
+        { range: [11, 20], background: '#FFD700', color: '#FFA500' },
+        { range: [21, 30], background: '#90EE90', color: '#008000' },
     ]
 
     beforeEach(() => {
@@ -31,7 +32,7 @@ describe('BadgeWithTiers Component', () => {
                 value={12}
                 formattedValue="12%"
                 hasValue={true}
-            />
+            />,
         )
 
         const badge = screen.getByText('+12%')
@@ -51,7 +52,7 @@ describe('BadgeWithTiers Component', () => {
                 value={10}
                 formattedValue="10%"
                 hasValue={true}
-            />
+            />,
         )
 
         const badge = screen.getByText('+10%')
@@ -71,7 +72,7 @@ describe('BadgeWithTiers Component', () => {
                 value={50}
                 formattedValue="50%"
                 hasValue={true}
-            />
+            />,
         )
 
         const badge = screen.getByText('+50%')
@@ -91,7 +92,7 @@ describe('BadgeWithTiers Component', () => {
                 value={2}
                 formattedValue="2%"
                 hasValue={true}
-            />
+            />,
         )
 
         expect(useGetBadgeTiers).toHaveBeenCalledWith([1, 2, 3])

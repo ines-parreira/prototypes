@@ -1,5 +1,6 @@
 import React from 'react'
-import {useHistory} from 'react-router-dom'
+
+import { useHistory } from 'react-router-dom'
 
 import Button from 'pages/common/components/button/Button'
 
@@ -19,7 +20,7 @@ export const CustomizeTranslationsButton = ({
             intent="primary"
             onClick={() =>
                 history.push(
-                    `/app/settings/channels/gorgias_chat/${integrationId}/languages`
+                    `/app/settings/channels/gorgias_chat/${integrationId}/languages`,
                 )
             }
         >

@@ -1,22 +1,22 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
-import LD from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
-import {Provider} from 'react-redux'
+import { renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
+import LD from 'launchdarkly-react-client-sdk'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {account, automationSubscriptionProductPrices} from 'fixtures/account'
-import {agents} from 'fixtures/agents'
-import {billingState} from 'fixtures/billing'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { account, automationSubscriptionProductPrices } from 'fixtures/account'
+import { agents } from 'fixtures/agents'
+import { billingState } from 'fixtures/billing'
 import {
     HELPDESK_PRODUCT_ID,
     proMonthlyHelpdeskPlan,
 } from 'fixtures/productPrices'
 import * as useLocalStorageImports from 'hooks/useLocalStorage'
-import {AccountSettingType} from 'state/currentAccount/types'
+import { AccountSettingType } from 'state/currentAccount/types'
 
 import useRuleSuggestionForDemos from '../useRuleSuggestionForDemos'
 
@@ -32,12 +32,12 @@ const store = {
             },
         },
     }),
-    billing: fromJS({...billingState}),
+    billing: fromJS({ ...billingState }),
 }
 
 const useLocalStorageSpy = jest.spyOn(
     useLocalStorageImports,
-    'default'
+    'default',
 ) as jest.Mock
 
 const ticketId = 1
@@ -53,13 +53,13 @@ describe('useRuleSuggestionForDemos', () => {
 
     describe('shouldDisplayDemoSuggestion', () => {
         it('should return true', () => {
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () => useRuleSuggestionForDemos(ticketId, true),
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <Provider store={mockStore(store)}>{children}</Provider>
                     ),
-                }
+                },
             )
 
             expect(result.current.shouldDisplayDemoSuggestion).toBeTruthy()
@@ -78,15 +78,15 @@ describe('useRuleSuggestionForDemos', () => {
                 }),
             }
 
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () => useRuleSuggestionForDemos(ticketId, true),
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <Provider store={mockStore(addonAccountStore)}>
                             {children}
                         </Provider>
                     ),
-                }
+                },
             )
 
             expect(result.current.shouldDisplayDemoSuggestion).toBeTruthy()
@@ -97,13 +97,13 @@ describe('useRuleSuggestionForDemos', () => {
                 [FeatureFlagKey.TicketDemoSuggestion]: 0,
             }))
 
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () => useRuleSuggestionForDemos(ticketId, true),
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <Provider store={mockStore(store)}>{children}</Provider>
                     ),
-                }
+                },
             )
 
             expect(result.current.shouldDisplayDemoSuggestion).toBeFalsy()
@@ -112,18 +112,18 @@ describe('useRuleSuggestionForDemos', () => {
         it('should return false [ACCOUNT TYPE]', () => {
             const basicAccountStore = {
                 ...store,
-                currentAccount: fromJS({...account}),
+                currentAccount: fromJS({ ...account }),
             }
 
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () => useRuleSuggestionForDemos(ticketId, true),
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <Provider store={mockStore(basicAccountStore)}>
                             {children}
                         </Provider>
                     ),
-                }
+                },
             )
 
             expect(result.current.shouldDisplayDemoSuggestion).toBeFalsy()
@@ -134,13 +134,13 @@ describe('useRuleSuggestionForDemos', () => {
             useLocalStorageSpy.mockReturnValueOnce([
                 demoSuggestionDismissedTickets,
             ])
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () => useRuleSuggestionForDemos(ticketId, true),
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <Provider store={mockStore(store)}>{children}</Provider>
                     ),
-                }
+                },
             )
 
             expect(result.current.shouldDisplayDemoSuggestion).toBeFalsy()
@@ -151,13 +151,13 @@ describe('useRuleSuggestionForDemos', () => {
             useLocalStorageSpy.mockReturnValueOnce([
                 demoSuggestionDismissedTickets,
             ])
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () => useRuleSuggestionForDemos(ticketId, true),
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <Provider store={mockStore(store)}>{children}</Provider>
                     ),
-                }
+                },
             )
 
             expect(result.current.shouldDisplayDemoSuggestion).toBeFalsy()
@@ -179,17 +179,17 @@ describe('useRuleSuggestionForDemos', () => {
                 }),
             }
 
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () => useRuleSuggestionForDemos(ticketId, true),
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <Provider
                             store={mockStore(dismissedAccountSettingStore)}
                         >
                             {children}
                         </Provider>
                     ),
-                }
+                },
             )
 
             expect(result.current.shouldDisplayDemoSuggestion).toBeFalsy()
@@ -199,19 +199,21 @@ describe('useRuleSuggestionForDemos', () => {
             const macroPrefillTicketStore = {
                 ...store,
                 ticket: fromJS({
-                    state: {topRankMacroState: {macroId: 8, state: 'pending'}},
+                    state: {
+                        topRankMacroState: { macroId: 8, state: 'pending' },
+                    },
                 }),
             }
 
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () => useRuleSuggestionForDemos(ticketId, true),
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <Provider store={mockStore(macroPrefillTicketStore)}>
                             {children}
                         </Provider>
                     ),
-                }
+                },
             )
 
             expect(result.current.shouldDisplayDemoSuggestion).toBeFalsy()
@@ -225,13 +227,13 @@ describe('useRuleSuggestionForDemos', () => {
             demoSuggestionDismissedTickets,
             setDemoSuggestionDismissedTickets,
         ])
-        const {result} = renderHook(
+        const { result } = renderHook(
             () => useRuleSuggestionForDemos(ticketId, true),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={mockStore(store)}>{children}</Provider>
                 ),
-            }
+            },
         )
 
         result.current.setDemoSuggestionSettingPerUser()

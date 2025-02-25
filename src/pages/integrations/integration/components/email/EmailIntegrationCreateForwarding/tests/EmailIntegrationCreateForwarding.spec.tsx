@@ -1,8 +1,9 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {EmailIntegrationCreateForwarding} from '../EmailIntegrationCreateForwarding'
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+
+import { EmailIntegrationCreateForwarding } from '../EmailIntegrationCreateForwarding'
 
 const commonProps: ComponentProps<typeof EmailIntegrationCreateForwarding> = {
     integration: fromJS({
@@ -19,16 +20,16 @@ const commonProps: ComponentProps<typeof EmailIntegrationCreateForwarding> = {
 
 describe('EmailIntegrationCreateForwarding component', () => {
     it('should render', () => {
-        const {container} = render(
-            <EmailIntegrationCreateForwarding {...commonProps} />
+        const { container } = render(
+            <EmailIntegrationCreateForwarding {...commonProps} />,
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render -copied!- button because the email address has just been copied', () => {
-        const {container} = render(
-            <EmailIntegrationCreateForwarding {...commonProps} />
+        const { container } = render(
+            <EmailIntegrationCreateForwarding {...commonProps} />,
         )
 
         expect(container.firstChild).toMatchSnapshot()

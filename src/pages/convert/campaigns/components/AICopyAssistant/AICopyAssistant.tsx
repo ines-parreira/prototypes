@@ -1,16 +1,16 @@
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
-import {useSuggestCampaignCopy} from 'models/convert/campaign/queries'
-import {CampaignSuggestCopyResponse} from 'models/convert/campaign/types'
+import { useSuggestCampaignCopy } from 'models/convert/campaign/queries'
+import { CampaignSuggestCopyResponse } from 'models/convert/campaign/types'
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
 import Button from 'pages/common/components/button/Button'
-import {VerticalTextCarousel} from 'pages/common/components/VerticalTextCarousel/VerticalTextCarousel'
-import {DEFAULT_CAMPAIGN_NAME} from 'pages/convert/campaigns/constants/labels'
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
-import {CampaignTrigger} from 'pages/convert/campaigns/types/CampaignTrigger'
-import {getCurrentAccountId} from 'state/currentAccount/selectors'
+import { VerticalTextCarousel } from 'pages/common/components/VerticalTextCarousel/VerticalTextCarousel'
+import { DEFAULT_CAMPAIGN_NAME } from 'pages/convert/campaigns/constants/labels'
+import { Campaign } from 'pages/convert/campaigns/types/Campaign'
+import { CampaignTrigger } from 'pages/convert/campaigns/types/CampaignTrigger'
+import { getCurrentAccountId } from 'state/currentAccount/selectors'
 
 import css from './AICopyAssistant.less'
 
@@ -42,7 +42,7 @@ export const AICopyAssistant = ({
     const hasGeneratedInitialSuggestion = useRef(false)
     const currentAccountId = useAppSelector(getCurrentAccountId)
 
-    const {mutateAsync: generateSuggestions} = useSuggestCampaignCopy()
+    const { mutateAsync: generateSuggestions } = useSuggestCampaignCopy()
 
     const context = useMemo(() => {
         const title =
@@ -108,7 +108,7 @@ export const AICopyAssistant = ({
                 suggestion: suggestion,
             })
         },
-        [onApply, context, currentAccountId, shopId, campaign.id]
+        [onApply, context, currentAccountId, shopId, campaign.id],
     )
 
     const generateButtonLabel = useMemo(() => {

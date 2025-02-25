@@ -1,10 +1,11 @@
-import React, {ReactNode, useRef} from 'react'
-import {useDrag, useDrop} from 'react-dnd'
-import {DropdownItem} from 'reactstrap'
+import React, { ReactNode, useRef } from 'react'
+
+import { useDrag, useDrop } from 'react-dnd'
+import { DropdownItem } from 'reactstrap'
 
 import CheckBox from 'pages/common/forms/CheckBox'
 import css from 'pages/stats/common/components/Table/EditColumns.less'
-import {HintTooltip} from 'pages/stats/common/HintTooltip'
+import { HintTooltip } from 'pages/stats/common/HintTooltip'
 
 type Props = {
     title: string
@@ -13,8 +14,8 @@ type Props = {
     onChange: (value: boolean) => void
     tooltip?: ReactNode
     disabled?: boolean
-    option: {id: string}
-    onDrop: (item: {id: string}, monitor: {id: string}) => {id: string}
+    option: { id: string }
+    onDrop: (item: { id: string }, monitor: { id: string }) => { id: string }
 }
 
 export const EditColumnsItem = ({
@@ -31,8 +32,8 @@ export const EditColumnsItem = ({
     const ref = useRef<HTMLDivElement>(null)
 
     const [, drop] = useDrop<
-        {id: string; type: string},
-        {id: string},
+        { id: string; type: string },
+        { id: string },
         {
             isOver: boolean
         }

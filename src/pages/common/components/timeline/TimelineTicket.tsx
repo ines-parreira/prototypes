@@ -1,14 +1,15 @@
-import classnames from 'classnames'
-import {Map} from 'immutable'
-import React, {Component, MouseEvent} from 'react'
-import {Card, CardBody} from 'reactstrap'
+import React, { Component, MouseEvent } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import classnames from 'classnames'
+import { Map } from 'immutable'
+import { Card, CardBody } from 'reactstrap'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-import {AgentLabel, StatusLabel} from 'pages/common/utils/labels'
+import { AgentLabel, StatusLabel } from 'pages/common/utils/labels'
 import history from 'pages/history'
-import {displayHistoryOnNextPage} from 'state/ticket/actions'
-import {stripHTML} from 'utils'
+import { displayHistoryOnNextPage } from 'state/ticket/actions'
+import { stripHTML } from 'utils'
 
 import SourceIcon from '../SourceIcon'
 
@@ -21,7 +22,7 @@ type Props = {
 }
 
 export default class TimelineTicket extends Component<Props> {
-    static defaultProps: Pick<Props, 'isCurrent'> = {isCurrent: false}
+    static defaultProps: Pick<Props, 'isCurrent'> = { isCurrent: false }
 
     _goToTicket = (e: MouseEvent) => {
         e.preventDefault()
@@ -36,7 +37,7 @@ export default class TimelineTicket extends Component<Props> {
     }
 
     render() {
-        const {ticket} = this.props
+        const { ticket } = this.props
 
         if (!ticket) {
             return null
@@ -64,7 +65,7 @@ export default class TimelineTicket extends Component<Props> {
                     className={classnames(
                         css.body,
                         'd-flex',
-                        'align-items-start'
+                        'align-items-start',
                     )}
                 >
                     <div className={css.meta}>
@@ -81,7 +82,7 @@ export default class TimelineTicket extends Component<Props> {
                             <div
                                 className={classnames(
                                     css.assigneeLabel,
-                                    css.unassignedLabel
+                                    css.unassignedLabel,
                                 )}
                             >
                                 <span className="material-icons md-2">
@@ -102,7 +103,7 @@ export default class TimelineTicket extends Component<Props> {
                             css.secondMeta,
                             'd-flex',
                             'align-items-center',
-                            'justify-content-end'
+                            'justify-content-end',
                         )}
                     >
                         <DatetimeLabel
@@ -118,7 +119,7 @@ export default class TimelineTicket extends Component<Props> {
                             className={classnames(
                                 css.sourceIcon,
                                 'uncolored',
-                                'ml-3'
+                                'ml-3',
                             )}
                         />
                     </div>

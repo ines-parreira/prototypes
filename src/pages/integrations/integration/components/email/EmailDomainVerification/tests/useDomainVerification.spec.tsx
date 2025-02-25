@@ -1,17 +1,18 @@
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
 
-import {DomainVerificationContext} from '../DomainVerificationContext'
+import { renderHook } from '@testing-library/react-hooks'
+
+import { DomainVerificationContext } from '../DomainVerificationContext'
 import useDomainVerification from '../useDomainVerification'
 
 describe('useDomainVerification', () => {
     it('should throw an error if it is used outside of the provider', () => {
-        const {result} = renderHook(() => useDomainVerification())
+        const { result } = renderHook(() => useDomainVerification())
 
         expect(result.error).toEqual(
             new Error(
-                'useDomainVerification must be used within a DomainVerificationProvider'
-            )
+                'useDomainVerification must be used within a DomainVerificationProvider',
+            ),
         )
     })
 
@@ -19,11 +20,11 @@ describe('useDomainVerification', () => {
         const domain = {
             domain: 'domain',
             isFetching: false,
-            errors: {createDomain: undefined},
+            errors: { createDomain: undefined },
         }
 
-        const {result} = renderHook(() => useDomainVerification(), {
-            wrapper: ({children}: any) => (
+        const { result } = renderHook(() => useDomainVerification(), {
+            wrapper: ({ children }: any) => (
                 <DomainVerificationContext.Provider value={domain as any}>
                     {children}
                 </DomainVerificationContext.Provider>

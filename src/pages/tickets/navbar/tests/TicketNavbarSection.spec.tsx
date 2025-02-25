@@ -1,23 +1,24 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {DndProvider} from 'react-dnd'
-import {HTML5Backend} from 'react-dnd-html5-backend'
+import React, { ComponentProps } from 'react'
 
-import {section} from 'fixtures/section'
-import {user} from 'fixtures/users'
-import {view} from 'fixtures/views'
-import {TicketNavbarElementType} from 'state/ui/ticketNavbar/types'
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
 
-import {TicketNavbarSectionContainer} from '../TicketNavbarSection'
+import { section } from 'fixtures/section'
+import { user } from 'fixtures/users'
+import { view } from 'fixtures/views'
+import { TicketNavbarElementType } from 'state/ui/ticketNavbar/types'
+
+import { TicketNavbarSectionContainer } from '../TicketNavbarSection'
 import TicketNavbarView from '../TicketNavbarView'
 
 jest.mock(
     '../TicketNavbarView',
     () =>
-        ({view}: ComponentProps<typeof TicketNavbarView>) => {
+        ({ view }: ComponentProps<typeof TicketNavbarView>) => {
             return <div data-testid="TicketNavbarView">{view.name}</div>
-        }
+        },
 )
 
 const minProps = {
@@ -41,13 +42,13 @@ const minProps = {
 
 describe('<TicketNavbarSection/>', () => {
     it.each([
-        ['views expanded', {isExpanded: true}],
-        ['views collapsed', {isExpanded: false}],
+        ['views expanded', { isExpanded: true }],
+        ['views collapsed', { isExpanded: false }],
     ])('should render a section (%s)', (_, props) => {
-        const {container} = render(
+        const { container } = render(
             <DndProvider backend={HTML5Backend}>
                 <TicketNavbarSectionContainer {...minProps} {...props} />
-            </DndProvider>
+            </DndProvider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()

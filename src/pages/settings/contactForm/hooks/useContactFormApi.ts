@@ -1,7 +1,8 @@
+import { useCallback, useEffect, useState } from 'react'
+
 import axios from 'axios'
-import {get} from 'lodash'
-import {useCallback, useState, useEffect} from 'react'
-import {useHistory} from 'react-router-dom'
+import { get } from 'lodash'
+import { useHistory } from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
@@ -10,17 +11,17 @@ import {
     UpdateContactFormDto,
     UpsertContactFormAutomationSettingsDto,
 } from 'models/contactForm/types'
-import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {
-    contactFormsFetched,
     contactFormDeleted,
+    contactFormsFetched,
     contactFormUpdated,
 } from 'state/entities/contactForm/contactForms'
 import {
     contactFormAutomationSettingsFetched,
     contactFormAutomationSettingsUpdated,
 } from 'state/entities/contactForm/contactFormsAutomationSettings'
-import {reportError} from 'utils/errors'
+import { reportError } from 'utils/errors'
 
 import {
     CONTACT_FORM_BASE_PATH,
@@ -30,7 +31,7 @@ import {
 export const useContactFormApi = () => {
     const dispatch = useAppDispatch()
     const [pendingCount, setPendingCount] = useState(0)
-    const {client} = useHelpCenterApi()
+    const { client } = useHelpCenterApi()
     const history = useHistory()
 
     useEffect(() => {
@@ -44,7 +45,7 @@ export const useContactFormApi = () => {
             (error) => {
                 setPendingCount((prev) => Math.max(prev - 1, 0))
                 return Promise.reject(error)
-            }
+            },
         )
 
         const responseInterceptor = client.interceptors.response.use(
@@ -55,7 +56,7 @@ export const useContactFormApi = () => {
             (error) => {
                 setPendingCount((prev) => Math.max(prev - 1, 0))
                 return Promise.reject(error)
-            }
+            },
         )
 
         return () => {
@@ -75,7 +76,7 @@ export const useContactFormApi = () => {
         if (!client) throw new Error('HTTP client not initialized!')
 
         try {
-            const {data} = await client.listContactForms()
+            const { data } = await client.listContactForms()
             const contactForms = get(data, 'data') || []
 
             dispatch(contactFormsFetched(contactForms))
@@ -100,7 +101,7 @@ export const useContactFormApi = () => {
             if (!client) throw new Error('HTTP client not initialized!')
 
             try {
-                const {data: contactForm} = await client.getContactForm({
+                const { data: contactForm } = await client.getContactForm({
                     id: contactFormId,
                 })
 
@@ -121,7 +122,7 @@ export const useContactFormApi = () => {
                 throw error
             }
         },
-        [client, dispatch]
+        [client, dispatch],
     )
 
     const checkContactFormName = useCallback(
@@ -129,7 +130,7 @@ export const useContactFormApi = () => {
             if (!client) throw new Error('HTTP client not initialized!')
 
             try {
-                await client.checkContactFormNameExists({input_name: name})
+                await client.checkContactFormNameExists({ input_name: name })
                 return false
             } catch (error) {
                 if (axios.isAxiosError(error) && error.response?.status === 404)
@@ -141,19 +142,19 @@ export const useContactFormApi = () => {
                 throw error
             }
         },
-        [client]
+        [client],
     )
 
     const createContactForm = useCallback(
         async (
-            createContactFormDto: CreateContactFormDto
+            createContactFormDto: CreateContactFormDto,
         ): Promise<ContactForm> => {
             if (!client) throw new Error('HTTP client not initialized!')
 
             try {
-                const {data: contactForm} = await client.createContactForm(
+                const { data: contactForm } = await client.createContactForm(
                     null,
-                    createContactFormDto
+                    createContactFormDto,
                 )
 
                 dispatch(contactFormUpdated(contactForm))
@@ -166,19 +167,22 @@ export const useContactFormApi = () => {
                 throw error
             }
         },
-        [client, dispatch]
+        [client, dispatch],
     )
 
     const updateContactForm = useCallback(
         async (
             contactFormId: number,
-            payload: Partial<UpdateContactFormDto>
+            payload: Partial<UpdateContactFormDto>,
         ): Promise<ContactForm> => {
             if (!client) throw new Error('HTTP client not initialized!')
 
             try {
-                const {data: updatedContactForm} =
-                    await client.updateContactForm({id: contactFormId}, payload)
+                const { data: updatedContactForm } =
+                    await client.updateContactForm(
+                        { id: contactFormId },
+                        payload,
+                    )
 
                 dispatch(contactFormUpdated(updatedContactForm))
 
@@ -190,7 +194,7 @@ export const useContactFormApi = () => {
                 throw error
             }
         },
-        [client, dispatch]
+        [client, dispatch],
     )
 
     const deleteContactForm = useCallback(
@@ -198,7 +202,7 @@ export const useContactFormApi = () => {
             if (!client) throw new Error('HTTP client not initialized!')
 
             try {
-                await client.deleteContactForm({id: contactFormId})
+                await client.deleteContactForm({ id: contactFormId })
 
                 dispatch(contactFormDeleted(contactFormId))
 
@@ -214,7 +218,7 @@ export const useContactFormApi = () => {
                 throw error
             }
         },
-        [client, dispatch, history]
+        [client, dispatch, history],
     )
 
     const fetchAutomationSettingsByContactFormId = useCallback(
@@ -222,7 +226,7 @@ export const useContactFormApi = () => {
             if (!client) throw new Error('HTTP client not initialized!')
 
             try {
-                const {data: automationSettings} =
+                const { data: automationSettings } =
                     await client.getContactFormAutomationSettings({
                         id: contactFormId,
                     })
@@ -231,7 +235,7 @@ export const useContactFormApi = () => {
                     contactFormAutomationSettingsFetched({
                         contactFormId: contactFormId.toString(),
                         automationSettings,
-                    })
+                    }),
                 )
             } catch (error) {
                 if (
@@ -243,7 +247,7 @@ export const useContactFormApi = () => {
                             contactFormId: contactFormId.toString(),
                             automationSettings:
                                 CONTACT_FORM_DEFAULT_AUTOMATION_SETTINGS,
-                        })
+                        }),
                     )
                 }
 
@@ -253,28 +257,28 @@ export const useContactFormApi = () => {
                 throw error
             }
         },
-        [client, dispatch]
+        [client, dispatch],
     )
 
     const upsertAutomationSettingsByContactFormId = useCallback(
         async (
             contactFormId: number,
-            payload: UpsertContactFormAutomationSettingsDto
+            payload: UpsertContactFormAutomationSettingsDto,
         ) => {
             if (!client) throw new Error('HTTP client not initialized!')
 
             try {
-                const {data: updatedAutomationSettings} =
+                const { data: updatedAutomationSettings } =
                     await client.upsertContactFormAutomationSettings(
-                        {id: contactFormId},
-                        payload
+                        { id: contactFormId },
+                        payload,
                     )
 
                 dispatch(
                     contactFormAutomationSettingsUpdated({
                         contactFormId: contactFormId.toString(),
                         automationSettings: updatedAutomationSettings,
-                    })
+                    }),
                 )
             } catch (error) {
                 if (error instanceof Error) {
@@ -283,7 +287,7 @@ export const useContactFormApi = () => {
                 throw error
             }
         },
-        [client, dispatch]
+        [client, dispatch],
     )
 
     return {

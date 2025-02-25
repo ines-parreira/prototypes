@@ -1,9 +1,10 @@
-import cn from 'classnames'
 import React from 'react'
+
+import cn from 'classnames'
 
 import Button from 'pages/common/components/button/Button'
 
-import {FailedMigrationState} from '../../../../types'
+import { FailedMigrationState } from '../../../../types'
 
 import css from './MigrationFailedActions.less'
 
@@ -11,7 +12,7 @@ type Props = {
     state: FailedMigrationState
 }
 
-const MigrationFailedActions: React.FC<Props> = ({state}) => {
+const MigrationFailedActions: React.FC<Props> = ({ state }) => {
     return (
         <>
             <div className={css.title}>

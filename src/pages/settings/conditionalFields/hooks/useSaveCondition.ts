@@ -1,20 +1,21 @@
+import { useCallback } from 'react'
+
+import { useQueryClient } from '@tanstack/react-query'
+
 import {
-    queryKeys,
-    useCreateCustomFieldCondition,
     CreateCustomFieldCondition,
+    queryKeys,
     UpdateCustomFieldCondition,
+    useCreateCustomFieldCondition,
 } from '@gorgias/api-queries'
-import {useQueryClient} from '@tanstack/react-query'
-import {useCallback} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {isGorgiasApiError} from 'models/api/types'
+import { isGorgiasApiError } from 'models/api/types'
 import history from 'pages/history'
-import {CUSTOM_FIELD_CONDITIONS_ROUTE} from 'routes/constants'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-
-import {errorToChildren} from 'utils'
+import { CUSTOM_FIELD_CONDITIONS_ROUTE } from 'routes/constants'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { errorToChildren } from 'utils'
 
 import useUpdateCustomFieldCondition from './useUpdateCustomFieldCondition'
 
@@ -22,14 +23,14 @@ export default function useSaveCondition(conditionId?: number) {
     const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
 
-    const {mutateAsync: createCondition, isLoading: isCreating} =
+    const { mutateAsync: createCondition, isLoading: isCreating } =
         useCreateCustomFieldCondition()
-    const {mutateAsync: updateCondition, isLoading: isUpdating} =
+    const { mutateAsync: updateCondition, isLoading: isUpdating } =
         useUpdateCustomFieldCondition()
 
     const onSubmit = useCallback(
         async (
-            data: CreateCustomFieldCondition | UpdateCustomFieldCondition
+            data: CreateCustomFieldCondition | UpdateCustomFieldCondition,
         ) => {
             try {
                 !conditionId
@@ -47,7 +48,7 @@ export default function useSaveCondition(conditionId?: number) {
                         message: `Condition ${
                             conditionId ? 'updated' : 'created'
                         } successfully`,
-                    })
+                    }),
                 )
                 void queryClient.invalidateQueries({
                     queryKey:
@@ -57,7 +58,7 @@ export default function useSaveCondition(conditionId?: number) {
                     void queryClient.invalidateQueries({
                         queryKey:
                             queryKeys.customFieldConditions.getCustomFieldCondition(
-                                conditionId
+                                conditionId,
                             ),
                     })
                 }
@@ -73,12 +74,12 @@ export default function useSaveCondition(conditionId?: number) {
                               } condition.`,
                         message: errorToChildren(error) || undefined,
                         allowHTML: true,
-                    })
+                    }),
                 )
             }
         },
-        [createCondition, updateCondition, dispatch, conditionId, queryClient]
+        [createCondition, updateCondition, dispatch, conditionId, queryClient],
     )
 
-    return {onSubmit, isSubmitting: isCreating || isUpdating}
+    return { onSubmit, isSubmitting: isCreating || isUpdating }
 }

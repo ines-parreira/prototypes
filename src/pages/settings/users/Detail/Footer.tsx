@@ -1,13 +1,15 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
-import {User} from 'config/types/user'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { User } from 'config/types/user'
 import Button from 'pages/common/components/button/Button'
 
-import {navigateBackToUserList} from './constants'
-import {DeleteModal} from './DeleteModal'
+import { navigateBackToUserList } from './constants'
+import { DeleteModal } from './DeleteModal'
+import { AgentState } from './types'
+
 import css from './Detail.less'
-import {AgentState} from './types'
 
 type Props = {
     rawData: User | undefined
@@ -21,7 +23,7 @@ type Props = {
 
 export const Footer = ({
     rawData,
-    agentState: {name, email, role},
+    agentState: { name, email, role },
     isEdit,
     agentId,
     isSaving = false,

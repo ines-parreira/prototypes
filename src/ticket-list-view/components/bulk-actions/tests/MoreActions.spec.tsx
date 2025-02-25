@@ -1,15 +1,17 @@
-import {JobType} from '@gorgias/api-queries'
-import {render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {UserRole} from 'config/types/user'
-import {TagDropdownMenu} from 'tags'
-import {assumeMock} from 'utils/testing'
+import { JobType } from '@gorgias/api-queries'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { UserRole } from 'config/types/user'
+import { TagDropdownMenu } from 'tags'
+import { assumeMock } from 'utils/testing'
 
 import ApplyMacro from '../ApplyMacro'
 import MoreActions from '../MoreActions'
@@ -21,34 +23,34 @@ const logEventMock = assumeMock(logEvent)
 jest.mock(
     'tags/TagDropdownMenu',
     () =>
-        ({onClick}: ComponentProps<typeof TagDropdownMenu>) => (
-            <button onClick={() => onClick({name: 'tag'})}>
+        ({ onClick }: ComponentProps<typeof TagDropdownMenu>) => (
+            <button onClick={() => onClick({ name: 'tag' })}>
                 TagDropdownMenuMock
             </button>
-        )
+        ),
 )
 jest.mock(
     '../TeamAssigneeDropdownMenu',
     () =>
-        ({onClick}: ComponentProps<typeof TeamAssigneeDropdownMenu>) => (
-            <button onClick={() => onClick({id: 8})}>
+        ({ onClick }: ComponentProps<typeof TeamAssigneeDropdownMenu>) => (
+            <button onClick={() => onClick({ id: 8 })}>
                 TeamAssigneeDropdownMenuMock
             </button>
-        )
+        ),
 )
 jest.mock(
     '../ApplyMacro',
     () =>
-        ({onApplyMacro}: ComponentProps<typeof ApplyMacro>) => (
+        ({ onApplyMacro }: ComponentProps<typeof ApplyMacro>) => (
             <button onClick={() => onApplyMacro()}>ApplyMacroMock</button>
-        )
+        ),
 )
 
 const mockStore = configureMockStore([thunk])
 
 const defaultStore = {
     currentUser: fromJS({
-        role: {name: UserRole.Agent},
+        role: { name: UserRole.Agent },
     }),
     views: fromJS({}),
 }
@@ -65,12 +67,12 @@ describe('<MoreActions />', () => {
 
     const renderWithStore = (
         props: ComponentProps<typeof MoreActions> = minProps,
-        store = defaultStore
+        store = defaultStore,
     ) =>
         render(
             <Provider store={mockStore(store)}>
                 <MoreActions {...props} />
-            </Provider>
+            </Provider>,
         )
 
     it('should trigger a job for marking as unread tickets', () => {
@@ -83,8 +85,8 @@ describe('<MoreActions />', () => {
                 type: JobType.UpdateTicket,
                 label: 'Mark as unread',
             }),
-            {updates: {is_unread: true}},
-            'mark_as_unread'
+            { updates: { is_unread: true } },
+            'mark_as_unread',
         )
     })
 
@@ -98,8 +100,8 @@ describe('<MoreActions />', () => {
                 type: JobType.UpdateTicket,
                 label: 'Mark as read',
             }),
-            {updates: {is_unread: false}},
-            'mark_as_read'
+            { updates: { is_unread: false } },
+            'mark_as_read',
         )
     })
 
@@ -114,7 +116,7 @@ describe('<MoreActions />', () => {
                 label: 'Export tickets',
             }),
             undefined,
-            'export_tickets'
+            'export_tickets',
         )
     })
 
@@ -129,7 +131,7 @@ describe('<MoreActions />', () => {
                 type: JobType.UpdateTicket,
                 label: 'Delete',
             }),
-            {updates: {trashed_datetime: expect.any(String)}}
+            { updates: { trashed_datetime: expect.any(String) } },
         )
     })
 
@@ -150,8 +152,8 @@ describe('<MoreActions />', () => {
                 type: JobType.UpdateTicket,
                 label: 'Undelete',
             }),
-            {updates: {trashed_datetime: null}},
-            'untrash'
+            { updates: { trashed_datetime: null } },
+            'untrash',
         )
     })
 
@@ -173,7 +175,7 @@ describe('<MoreActions />', () => {
                 type: JobType.DeleteTicket,
                 label: 'Delete forever',
             }),
-            undefined
+            undefined,
         )
     })
 
@@ -198,8 +200,8 @@ describe('<MoreActions />', () => {
                 type: JobType.UpdateTicket,
                 label: 'Add tag',
             }),
-            {updates: {tags: ['tag']}},
-            'tag'
+            { updates: { tags: ['tag'] } },
+            'tag',
         )
         expect(screen.queryByText('TagDropdownMenuMock')).not.toBeInTheDocument
         expect(screen.queryByText('Add tag')).not.toBeInTheDocument
@@ -234,9 +236,9 @@ describe('<MoreActions />', () => {
                 label: 'Assign to team',
             }),
             {
-                updates: {assignee_team_id: 8},
+                updates: { assignee_team_id: 8 },
             },
-            'team'
+            'team',
         )
         expect(screen.queryByText('TagDropdownMenuMock')).not.toBeInTheDocument
         expect(screen.queryByText('Assign to team')).not.toBeInTheDocument
@@ -246,7 +248,7 @@ describe('<MoreActions />', () => {
         renderWithStore(minProps, {
             ...defaultStore,
             currentUser: fromJS({
-                role: {name: UserRole.BasicAgent},
+                role: { name: UserRole.BasicAgent },
             }),
         })
         screen.getByText('more_horiz').click()
@@ -258,7 +260,7 @@ describe('<MoreActions />', () => {
     it('should not display the inaccessible actions on trash-like view for user below agent role', () => {
         renderWithStore(minProps, {
             currentUser: fromJS({
-                role: {name: UserRole.BasicAgent},
+                role: { name: UserRole.BasicAgent },
             }),
             views: fromJS({
                 active: {
@@ -273,12 +275,12 @@ describe('<MoreActions />', () => {
     })
 
     it('should display singular noun', () => {
-        renderWithStore({...minProps, selectionCount: 1})
+        renderWithStore({ ...minProps, selectionCount: 1 })
         screen.getByText('more_horiz').click()
         screen.getByText('Delete').click()
 
         expect(
-            screen.getByText('Are you sure you want to delete 1 ticket?')
+            screen.getByText('Are you sure you want to delete 1 ticket?'),
         ).toBeInTheDocument()
     })
 
@@ -288,7 +290,7 @@ describe('<MoreActions />', () => {
         screen.getByText('Delete').click()
 
         expect(
-            screen.getByText('Are you sure you want to delete tickets?')
+            screen.getByText('Are you sure you want to delete tickets?'),
         ).toBeInTheDocument()
     })
 })

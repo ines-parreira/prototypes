@@ -1,19 +1,18 @@
-import {act, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { act, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { fromJS } from 'immutable'
 
-import {UserRole} from 'config/types/user'
-import {user} from 'fixtures/users'
-import {useCustomReportActions} from 'hooks/reporting/custom-reports/useCustomReportActions'
-import {AddChartToDashboardModal} from 'pages/stats/custom-reports/ChartsActionMenu/AddChartToDashboardModal'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { UserRole } from 'config/types/user'
+import { user } from 'fixtures/users'
+import { useCustomReportActions } from 'hooks/reporting/custom-reports/useCustomReportActions'
+import { AddChartToDashboardModal } from 'pages/stats/custom-reports/ChartsActionMenu/AddChartToDashboardModal'
 import {
     ADD_TO_DASHBOARD,
-    CREATE_NEW_DASHBOARD_LABEL,
     ChartsActionMenu,
+    CREATE_NEW_DASHBOARD_LABEL,
     NO_DASHBOARDS_LABEL,
     REMOVE_FROM_DASHBOARD,
 } from 'pages/stats/custom-reports/ChartsActionMenu/ChartsActionMenu'
@@ -21,13 +20,13 @@ import {
     CustomReportChildType,
     CustomReportSchema,
 } from 'pages/stats/custom-reports/types'
-import {OverviewChart} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
-import {assumeMock, renderWithStore} from 'utils/testing'
+import { OverviewChart } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
+import { assumeMock, renderWithStore } from 'utils/testing'
 
 jest.mock('hooks/reporting/custom-reports/useCustomReportActions')
 const useCustomReportActionsMock = assumeMock(useCustomReportActions)
 jest.mock(
-    'pages/stats/custom-reports/ChartsActionMenu/AddChartToDashboardModal'
+    'pages/stats/custom-reports/ChartsActionMenu/AddChartToDashboardModal',
 )
 const AddChartToDashboardModalMock = assumeMock(AddChartToDashboardModal)
 jest.mock('common/segment')
@@ -47,7 +46,7 @@ describe('<ChartsActionMenu />', () => {
     }
 
     const defaultState = {
-        currentUser: fromJS({...user, role: {name: UserRole.Agent}}),
+        currentUser: fromJS({ ...user, role: { name: UserRole.Agent } }),
     }
 
     const chartId = OverviewChart.MedianResolutionTimeTrendCard
@@ -60,7 +59,7 @@ describe('<ChartsActionMenu />', () => {
             {
                 type: CustomReportChildType.Row,
                 children: [
-                    {type: CustomReportChildType.Chart, config_id: chartId},
+                    { type: CustomReportChildType.Chart, config_id: chartId },
                 ],
             },
         ],
@@ -94,14 +93,14 @@ describe('<ChartsActionMenu />', () => {
         } as any)
 
         AddChartToDashboardModalMock.mockReturnValue(
-            <div>AddChartToDashboardModal</div>
+            <div>AddChartToDashboardModal</div>,
         )
     })
 
     it('should render the chart action menu with all the options and select one', () => {
         renderWithStore(
             <ChartsActionMenu chartId="123" chartName={chartName} />,
-            defaultState
+            defaultState,
         )
 
         const menu = screen.getByText('more_vert')
@@ -129,18 +128,18 @@ describe('<ChartsActionMenu />', () => {
             expect.objectContaining({
                 chartId: '123',
                 dashboard: mockData[0],
-            })
+            }),
         )
         expect(screen.queryByText(mockData[0].name)).not.toBeInTheDocument()
         expect(logEventMock).toHaveBeenCalledWith(
-            SegmentEvent.StatDashboardChartMenuAddToChartClicked
+            SegmentEvent.StatDashboardChartMenuAddToChartClicked,
         )
     })
 
     it('should filter out Dashboards that already contain the Chart', () => {
         renderWithStore(
             <ChartsActionMenu chartId={chartId} chartName={chartName} />,
-            defaultState
+            defaultState,
         )
 
         const menu = screen.getByText('more_vert')
@@ -151,14 +150,14 @@ describe('<ChartsActionMenu />', () => {
         })
 
         expect(
-            screen.queryByText(dashboardWithANestedChart.name)
+            screen.queryByText(dashboardWithANestedChart.name),
         ).not.toBeInTheDocument()
     })
 
     it('should contain filtered dashboards and show the add to dashboard action', () => {
         renderWithStore(
             <ChartsActionMenu chartId={chartId} chartName={chartName} />,
-            defaultState
+            defaultState,
         )
 
         userEvent.click(screen.getByText('more_vert'))
@@ -174,16 +173,16 @@ describe('<ChartsActionMenu />', () => {
 
     it('should disable the add to dashboards action if there are 10 dashboards', () => {
         const mockData = [
-            {id: '1', name: 'Report 1', emoji: '📊', children: []},
-            {id: '2', name: 'Report 2', emoji: 'plus', children: []},
-            {id: '3', name: 'Report 3', emoji: 'plus', children: []},
-            {id: '4', name: 'Report 4', emoji: 'plus', children: []},
-            {id: '5', name: 'Report 5', emoji: 'plus', children: []},
-            {id: '6', name: 'Report 6', emoji: 'plus', children: []},
-            {id: '7', name: 'Report 7', emoji: 'plus', children: []},
-            {id: '8', name: 'Report 8', emoji: 'plus', children: []},
-            {id: '9', name: 'Report 9', emoji: 'plus', children: []},
-            {id: '10', name: 'Report 10', emoji: 'plus', children: []},
+            { id: '1', name: 'Report 1', emoji: '📊', children: [] },
+            { id: '2', name: 'Report 2', emoji: 'plus', children: [] },
+            { id: '3', name: 'Report 3', emoji: 'plus', children: [] },
+            { id: '4', name: 'Report 4', emoji: 'plus', children: [] },
+            { id: '5', name: 'Report 5', emoji: 'plus', children: [] },
+            { id: '6', name: 'Report 6', emoji: 'plus', children: [] },
+            { id: '7', name: 'Report 7', emoji: 'plus', children: [] },
+            { id: '8', name: 'Report 8', emoji: 'plus', children: [] },
+            { id: '9', name: 'Report 9', emoji: 'plus', children: [] },
+            { id: '10', name: 'Report 10', emoji: 'plus', children: [] },
         ]
 
         useCustomReportActionsMock.mockReturnValue({
@@ -192,7 +191,7 @@ describe('<ChartsActionMenu />', () => {
 
         renderWithStore(
             <ChartsActionMenu chartId={chartId} chartName={chartName} />,
-            defaultState
+            defaultState,
         )
 
         userEvent.click(screen.getByText('more_vert'))
@@ -219,7 +218,7 @@ describe('<ChartsActionMenu />', () => {
 
         renderWithStore(
             <ChartsActionMenu chartId={chartId} chartName={chartName} />,
-            defaultState
+            defaultState,
         )
 
         userEvent.click(screen.getByText('more_vert'))
@@ -238,7 +237,7 @@ describe('<ChartsActionMenu />', () => {
                 dashboard={dashboard}
                 chartName={chartName}
             />,
-            defaultState
+            defaultState,
         )
 
         userEvent.click(screen.getByText('more_vert'))
@@ -257,7 +256,7 @@ describe('<ChartsActionMenu />', () => {
     it('should render AddChartToDashboardModal when clicking on add to dashboard', () => {
         renderWithStore(
             <ChartsActionMenu chartId={chartId} chartName={chartName} />,
-            defaultState
+            defaultState,
         )
 
         userEvent.click(screen.getByText('more_vert'))
@@ -276,19 +275,19 @@ describe('<ChartsActionMenu />', () => {
                 chartName: chartName,
                 closeModal: expect.any(Function),
             }),
-            {}
+            {},
         )
     })
 
     it('should not render the chart action menu if the user is not an agent', () => {
-        const {container} = renderWithStore(
+        const { container } = renderWithStore(
             <ChartsActionMenu chartId="123" chartName={chartName} />,
             {
                 currentUser: fromJS({
                     ...user,
-                    role: {name: UserRole.LiteAgent},
+                    role: { name: UserRole.LiteAgent },
                 }),
-            }
+            },
         )
 
         expect(container).toBeEmptyDOMElement()

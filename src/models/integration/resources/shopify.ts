@@ -1,25 +1,25 @@
 import {
-    ShopifyOrderTags,
-    ShopifyCustomerTags,
-    ShopifyTags,
-    ShopifySegmentResponse,
-    ShopifyCustomerSegment,
-    ShopifyCollectionResponse,
     ShopifyCollection,
+    ShopifyCollectionResponse,
+    ShopifyCustomerSegment,
+    ShopifyCustomerTags,
+    ShopifyOrderTags,
+    ShopifySegmentResponse,
+    ShopifyTags,
 } from 'models/integration/types'
 
 import client from '../../api/resources'
 
 export const fetchShopTags = async (
     integrationId: number,
-    tagsType: ShopifyTags
+    tagsType: ShopifyTags,
 ): Promise<string[]> => {
     const url = `/integrations/shopify/shop-tags/${tagsType}/list/`
 
     let tags: Record<string, string>[] = []
 
     const response = await client.get(url, {
-        params: {integration_id: integrationId, tags_type: tagsType},
+        params: { integration_id: integrationId, tags_type: tagsType },
     })
     if (tagsType === ShopifyTags.orders) {
         const responseData: ShopifyOrderTags = response.data
@@ -38,7 +38,7 @@ export const fetchShopTags = async (
 }
 
 export const fetchCustomerSegments = async (
-    integrationId: number
+    integrationId: number,
 ): Promise<ShopifyCustomerSegment[]> => {
     const url = `/integrations/shopify/${integrationId}/segments/`
 
@@ -49,10 +49,10 @@ export const fetchCustomerSegments = async (
 
 export const fetchShopifyCollections = async (
     integrationId: number,
-    params?: Record<string, string>
+    params?: Record<string, string>,
 ): Promise<ShopifyCollection[]> => {
     const url = `/api/integrations/shopify/${integrationId}/collections/`
-    const queryParams = params ? {...params} : {}
+    const queryParams = params ? { ...params } : {}
     const response = await client.get(url, {
         params: queryParams,
     })

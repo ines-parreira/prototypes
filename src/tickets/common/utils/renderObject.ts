@@ -1,10 +1,10 @@
-import {Map} from 'immutable'
+import { Map } from 'immutable'
 
-import {renderTemplate} from 'pages/common/utils/template'
+import { renderTemplate } from 'pages/common/utils/template'
 
 export default function renderObject(
     argument: string | Map<any, any>,
-    context: Record<string, string>
+    context: Record<string, string>,
 ) {
     let ret = argument
 

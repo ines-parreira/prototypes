@@ -3,8 +3,8 @@ import calculateSizes from '../calculateSizes'
 describe('calculateSizes', () => {
     const availableSize = 1000
     const configs = {
-        'global-navigation': {defaultSize: 48, minSize: 48, maxSize: 48},
-        infobar: {defaultSize: 340, minSize: 340, maxSize: 500},
+        'global-navigation': { defaultSize: 48, minSize: 48, maxSize: 48 },
+        infobar: { defaultSize: 340, minSize: 340, maxSize: 500 },
         navigation: {
             defaultSize: 238,
             minSize: 200,
@@ -21,8 +21,8 @@ describe('calculateSizes', () => {
             minSize: 100,
             maxSize: Infinity,
         },
-        'ticket-list': {defaultSize: 300, minSize: 300, maxSize: 450},
-        view: {defaultSize: Infinity, minSize: 300, maxSize: Infinity},
+        'ticket-list': { defaultSize: 300, minSize: 300, maxSize: 450 },
+        view: { defaultSize: Infinity, minSize: 300, maxSize: Infinity },
     }
     const savedSizes = {}
 
@@ -125,7 +125,7 @@ describe('calculateSizes', () => {
                 navigation: 238,
                 view: 714,
             },
-            savedSizes: {navigation: 300},
+            savedSizes: { navigation: 300 },
         })
 
         expect(result).toEqual({

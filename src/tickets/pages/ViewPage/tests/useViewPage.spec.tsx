@@ -1,8 +1,9 @@
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
 
-import {useIsOnboardingHidden} from 'common/onboarding'
-import {MOBILE_BREAKPOINT} from 'hooks/useIsMobileResolution/constants'
+import { renderHook } from '@testing-library/react-hooks'
+
+import { useIsOnboardingHidden } from 'common/onboarding'
+import { MOBILE_BREAKPOINT } from 'hooks/useIsMobileResolution/constants'
 import {
     DEFAULT_INFOBAR_WIDTH,
     DEFAULT_NAVBAR_WIDTH,
@@ -30,7 +31,7 @@ describe('useViewPage', () => {
     it('should return the config for the 3-panel layout', () => {
         global.innerWidth = 1500
 
-        const {result} = renderHook(() => useViewPage())
+        const { result } = renderHook(() => useViewPage())
         expect(result.current).toEqual(
             expect.objectContaining({
                 config: [
@@ -53,7 +54,7 @@ describe('useViewPage', () => {
                 ],
                 fallbackWidth: MOBILE_BREAKPOINT,
                 layoutKey: LayoutKeys.FULL_TICKET,
-            })
+            }),
         )
     })
 
@@ -61,7 +62,7 @@ describe('useViewPage', () => {
         useOnboardingVisibilityMock.mockReturnValue([true, jest.fn()])
         global.innerWidth = 1500
 
-        const {result} = renderHook(() => useViewPage())
+        const { result } = renderHook(() => useViewPage())
         expect(result.current).toEqual(
             expect.objectContaining({
                 config: [
@@ -75,7 +76,7 @@ describe('useViewPage', () => {
                     }),
                 ],
                 layoutKey: LayoutKeys.FULL_TICKET,
-            })
+            }),
         )
     })
 })

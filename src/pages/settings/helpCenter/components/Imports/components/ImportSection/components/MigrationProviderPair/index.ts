@@ -1,1 +1,1 @@
-export {default} from './MigrationProviderPair'
+export { default } from './MigrationProviderPair'

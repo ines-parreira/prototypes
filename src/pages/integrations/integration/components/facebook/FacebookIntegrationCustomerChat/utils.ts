@@ -1,4 +1,4 @@
-import {Map} from 'immutable'
+import { Map } from 'immutable'
 
 export const renderFacebookCodeSnippet = (integration: Map<any, any>) => {
     return `<!-- Gorgias Messenger Widget Start -->

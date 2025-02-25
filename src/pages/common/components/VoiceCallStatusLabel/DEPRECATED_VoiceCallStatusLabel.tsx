@@ -1,11 +1,13 @@
-import {VoiceCallDirection} from '@gorgias/api-queries'
-import classNames from 'classnames'
 import React from 'react'
 
+import classNames from 'classnames'
+
+import { VoiceCallDirection } from '@gorgias/api-queries'
+
 import {
+    DEPRECATED_VoiceCallDisplayStatus,
     getDisplayInboundVoiceCallStatus,
     getDisplayOutboundVoiceCallStatus,
-    DEPRECATED_VoiceCallDisplayStatus,
     VoiceCallStatus,
 } from 'models/voiceCall/types'
 
@@ -34,7 +36,7 @@ const DEPRECATED_VoiceCallStatusLabel = ({
         direction === VoiceCallDirection.Inbound
             ? getDisplayInboundVoiceCallStatus(
                   voiceCallStatus,
-                  lastAnsweredByAgentId
+                  lastAnsweredByAgentId,
               )
             : getDisplayOutboundVoiceCallStatus(voiceCallStatus)
 

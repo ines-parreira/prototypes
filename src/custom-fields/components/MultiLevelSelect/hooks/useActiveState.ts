@@ -1,4 +1,4 @@
-import {useState, useCallback} from 'react'
+import { useCallback, useState } from 'react'
 
 export function useActiveState(setSearch: (nextSearch: string) => void) {
     const [isActive, setActive] = useState(false)
@@ -9,7 +9,7 @@ export function useActiveState(setSearch: (nextSearch: string) => void) {
             }
             setActive(nextIsActive)
         },
-        [setSearch]
+        [setSearch],
     )
     return [isActive, setActiveWithSideEffect] as const
 }

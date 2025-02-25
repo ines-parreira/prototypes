@@ -62,7 +62,7 @@ export default class Diff {
     diff(
         oldStringArg: string,
         newStringArg: string,
-        optionsArg: Options = {}
+        optionsArg: Options = {},
     ): PathComponent[] | undefined {
         const options = optionsArg
 
@@ -80,10 +80,10 @@ export default class Diff {
         const newStringTemp: string = this.castInput(newStringArg)
 
         const oldString: string[] = this.removeEmpty(
-            this.tokenize(oldStringTemp)
+            this.tokenize(oldStringTemp),
         )
         const newString: string[] = this.removeEmpty(
-            this.tokenize(newStringTemp)
+            this.tokenize(newStringTemp),
         )
 
         const newLen = newString.length
@@ -96,14 +96,14 @@ export default class Diff {
         const maxExecutionTime = options.timeout ?? Infinity
         const abortAfterTimestamp = Date.now() + maxExecutionTime
 
-        const bestPath: Path[] = [{oldPos: -1, lastComponent: undefined}]
+        const bestPath: Path[] = [{ oldPos: -1, lastComponent: undefined }]
 
         let newPos = this.extractCommon(
             bestPath[0],
             newString,
             oldString,
             0,
-            options
+            options,
         )
 
         // Seed editLength = 0, i.e. the content starts with the same values
@@ -115,8 +115,8 @@ export default class Diff {
                     bestPath[0].lastComponent,
                     newString,
                     oldString,
-                    self.useLongestToken
-                )
+                    self.useLongestToken,
+                ),
             )
         }
 
@@ -161,7 +161,7 @@ export default class Diff {
                         false,
                         true,
                         1,
-                        options
+                        options,
                     )
                 }
 
@@ -170,7 +170,7 @@ export default class Diff {
                     newString,
                     oldString,
                     diagonalPath,
-                    options
+                    options,
                 )
 
                 if (basePath.oldPos + 1 >= oldLen && newPos + 1 >= newLen) {
@@ -180,21 +180,21 @@ export default class Diff {
                             basePath.lastComponent,
                             newString,
                             oldString,
-                            self.useLongestToken
-                        )
+                            self.useLongestToken,
+                        ),
                     )
                 }
                 bestPath[diagonalPath] = basePath
                 if (basePath.oldPos + 1 >= oldLen) {
                     maxDiagonalToConsider = Math.min(
                         maxDiagonalToConsider,
-                        diagonalPath - 1
+                        diagonalPath - 1,
                     )
                 }
                 if (newPos + 1 >= newLen) {
                     minDiagonalToConsider = Math.max(
                         minDiagonalToConsider,
-                        diagonalPath + 1
+                        diagonalPath + 1,
                     )
                 }
             }
@@ -218,7 +218,7 @@ export default class Diff {
         added: boolean,
         removed: boolean,
         oldPosInc: number,
-        options: Options
+        options: Options,
     ): Path {
         const last = path.lastComponent
         if (
@@ -255,7 +255,7 @@ export default class Diff {
         newString: string[],
         oldString: string[],
         diagonalPath: number,
-        options: Options
+        options: Options,
     ): number {
         const newLen = newString.length
         const oldLen = oldString.length
@@ -338,7 +338,7 @@ function buildValues(
     lastComponentArg: PathComponent | undefined,
     newString: string[],
     oldString: string[],
-    useLongestToken: boolean
+    useLongestToken: boolean,
 ): PathComponent[] {
     const components: PathComponent[] = []
     let nextComponent: PathComponent | undefined
@@ -371,7 +371,7 @@ function buildValues(
                 component.value = diff.join(value)
             } else {
                 component.value = diff.join(
-                    newString.slice(newPos, newPos + component.count)
+                    newString.slice(newPos, newPos + component.count),
                 )
             }
             newPos += component.count
@@ -381,7 +381,7 @@ function buildValues(
             }
         } else {
             component.value = diff.join(
-                oldString.slice(oldPos, oldPos + component.count)
+                oldString.slice(oldPos, oldPos + component.count),
             )
             oldPos += component.count
         }
@@ -393,7 +393,7 @@ function buildValues(
 export function diffChars(
     oldStr: string,
     newStr: string,
-    options?: Options
+    options?: Options,
 ): PathComponent[] | undefined {
     return new Diff().diff(oldStr, newStr, options)
 }

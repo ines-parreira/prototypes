@@ -1,14 +1,15 @@
-import {getGetAnalyticsCustomReportQueryOptions} from '@gorgias/api-queries'
-import {QueryClient, useQueryClient} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
+import { QueryClient, useQueryClient } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {useUpdateDashboardCache} from 'hooks/reporting/custom-reports/useUpdateDashboardCache'
-import {DashboardInput} from 'pages/stats/custom-reports/types'
-import {assumeMock} from 'utils/testing'
+import { getGetAnalyticsCustomReportQueryOptions } from '@gorgias/api-queries'
+
+import { useUpdateDashboardCache } from 'hooks/reporting/custom-reports/useUpdateDashboardCache'
+import { DashboardInput } from 'pages/stats/custom-reports/types'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('@gorgias/api-queries')
 const getGetAnalyticsCustomReportQueryOptionsMock = assumeMock(
-    getGetAnalyticsCustomReportQueryOptions
+    getGetAnalyticsCustomReportQueryOptions,
 )
 
 jest.mock('@tanstack/react-query')
@@ -24,34 +25,34 @@ describe('useUpdateQueryCache(dashboardId)', () => {
     } as unknown as QueryClient
 
     const id = 123
-    const dashboard = {name: 'Text Report', emoji: '🦫'} as DashboardInput
+    const dashboard = { name: 'Text Report', emoji: '🦫' } as DashboardInput
 
     beforeEach(() => {
         getGetAnalyticsCustomReportQueryOptionsMock.mockImplementation(
-            (id: number) => ({queryKey: ['dashboard', id]})
+            (id: number) => ({ queryKey: ['dashboard', id] }),
         )
 
         useQueryClientMock.mockImplementation(() => mockQueryClient)
     })
 
     it('returns a function', () => {
-        const {result} = renderHook(() => useUpdateDashboardCache(id))
+        const { result } = renderHook(() => useUpdateDashboardCache(id))
 
         expect(result.current).toBeInstanceOf(Function)
     })
 
     it('reads the dashboard from the cache', () => {
-        const {result} = renderHook(() => useUpdateDashboardCache(id))
+        const { result } = renderHook(() => useUpdateDashboardCache(id))
 
         result.current(dashboard)
 
         expect(mockQueryClient.getQueryData).toHaveBeenCalledWith(
-            getGetAnalyticsCustomReportQueryOptionsMock(id).queryKey
+            getGetAnalyticsCustomReportQueryOptionsMock(id).queryKey,
         )
     })
 
     it('sets the dashboard in the cache if no cached data', () => {
-        const {result} = renderHook(() => useUpdateDashboardCache(id))
+        const { result } = renderHook(() => useUpdateDashboardCache(id))
 
         result.current(dashboard)
 
@@ -59,15 +60,15 @@ describe('useUpdateQueryCache(dashboardId)', () => {
             getGetAnalyticsCustomReportQueryOptionsMock(id).queryKey,
             expect.objectContaining({
                 data: expect.objectContaining(dashboard),
-            })
+            }),
         )
     })
 
     it('updates the dashboard in the cache if cached data', () => {
-        const cachedData = {cached: true}
+        const cachedData = { cached: true }
         mockGetQueryData.mockReturnValue(cachedData)
 
-        const {result} = renderHook(() => useUpdateDashboardCache(id))
+        const { result } = renderHook(() => useUpdateDashboardCache(id))
 
         result.current(dashboard)
 
@@ -76,7 +77,7 @@ describe('useUpdateQueryCache(dashboardId)', () => {
             expect.objectContaining({
                 ...cachedData,
                 data: expect.objectContaining(dashboard),
-            })
+            }),
         )
     })
 })

@@ -1,10 +1,11 @@
-import {screen} from '@testing-library/dom'
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-import {AutomatedInteractionsMetric} from 'pages/automate/automate-metrics/AutomatedInteractionsMetric'
-import {AUTOMATED_INTERACTIONS_LABEL} from 'pages/automate/automate-metrics/constants'
+import { screen } from '@testing-library/dom'
+import { render } from '@testing-library/react'
+
+import { MetricTrend } from 'hooks/reporting/useMetricTrend'
+import { AutomatedInteractionsMetric } from 'pages/automate/automate-metrics/AutomatedInteractionsMetric'
+import { AUTOMATED_INTERACTIONS_LABEL } from 'pages/automate/automate-metrics/constants'
 
 const trend: MetricTrend = {
     isFetching: false,
@@ -20,7 +21,7 @@ describe('AutomatedInteractionsMetric', () => {
         render(<AutomatedInteractionsMetric trend={trend} />)
 
         expect(
-            screen.getByText(AUTOMATED_INTERACTIONS_LABEL)
+            screen.getByText(AUTOMATED_INTERACTIONS_LABEL),
         ).toBeInTheDocument()
     })
 
@@ -32,7 +33,9 @@ describe('AutomatedInteractionsMetric', () => {
 
     it('should render a loading state', () => {
         render(
-            <AutomatedInteractionsMetric trend={{...trend, isFetching: true}} />
+            <AutomatedInteractionsMetric
+                trend={{ ...trend, isFetching: true }}
+            />,
         )
 
         expect(screen.queryByText('1')).not.toBeInTheDocument()

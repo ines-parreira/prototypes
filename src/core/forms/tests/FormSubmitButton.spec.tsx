@@ -1,10 +1,11 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
-import {useFormState} from 'react-hook-form'
 
-import {assumeMock} from 'utils/testing'
+import { render, screen } from '@testing-library/react'
+import { useFormState } from 'react-hook-form'
 
-import {FormSubmitButton} from '../components/FormSubmitButton'
+import { assumeMock } from 'utils/testing'
+
+import { FormSubmitButton } from '../components/FormSubmitButton'
 
 jest.mock('react-hook-form', () => ({
     useFormState: jest.fn(),
@@ -21,7 +22,7 @@ describe('FormSubmitButton', () => {
 
     it('allows customizing the label text', () => {
         render(<FormSubmitButton>Next Step</FormSubmitButton>)
-        const button = screen.getByRole('button', {name: 'Next Step'})
+        const button = screen.getByRole('button', { name: 'Next Step' })
         expect(button).toBeInTheDocument()
     })
 

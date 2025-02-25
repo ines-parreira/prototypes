@@ -1,22 +1,21 @@
+import React, { useEffect, useState } from 'react'
+
 import classNames from 'classnames'
-import {chain as _chain} from 'lodash'
+import { chain as _chain } from 'lodash'
 import _noop from 'lodash/noop'
 import _sortBy from 'lodash/sortBy'
 
-import React, {useEffect, useState} from 'react'
-
-import {Article} from 'models/helpCenter/types'
+import { Article } from 'models/helpCenter/types'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 
-import {ArticleRowActionTypes} from '../../constants'
-
-import {useAbilityChecker} from '../../hooks/useHelpCenterApi'
+import { ArticleRowActionTypes } from '../../constants'
+import { useAbilityChecker } from '../../hooks/useHelpCenterApi'
+import { ArticleRow } from './components/ArticleRow'
 
 import css from './ArticlesTable.less'
-import {ArticleRow} from './components/ArticleRow'
 
 type Props = {
     isNested?: boolean
@@ -28,7 +27,7 @@ type Props = {
     onClickSettings: (
         name: ArticleRowActionTypes,
         article: Article,
-        isArticleOrAncestorUnlisted: boolean
+        isArticleOrAncestorUnlisted: boolean,
     ) => void
     onReorderFinish?: (categoryId: number | null, articles: Article[]) => void
 }
@@ -44,9 +43,9 @@ export const ArticlesTable = ({
     onReorderFinish,
 }: Props): JSX.Element => {
     const [records, setRecords] = useState(() =>
-        _sortBy(articles, ['position'])
+        _sortBy(articles, ['position']),
     )
-    const {isPassingRulesCheck} = useAbilityChecker()
+    const { isPassingRulesCheck } = useAbilityChecker()
 
     useEffect(() => {
         setRecords(_sortBy(articles, ['position']))
@@ -59,7 +58,7 @@ export const ArticlesTable = ({
         event: React.MouseEvent,
         name: ArticleRowActionTypes,
         article: Article,
-        isArticleOrAncestorUnlisted: boolean
+        isArticleOrAncestorUnlisted: boolean,
     ) => {
         event.stopPropagation()
 
@@ -90,8 +89,8 @@ export const ArticlesTable = ({
         onReorderFinish?.(categoryId, records)
     }
 
-    const canUpdateArticle = isPassingRulesCheck(({can}) =>
-        can('update', 'ArticleEntity')
+    const canUpdateArticle = isPassingRulesCheck(({ can }) =>
+        can('update', 'ArticleEntity'),
     )
 
     return (
@@ -101,11 +100,11 @@ export const ArticlesTable = ({
             })}
         >
             <TableHead className={css['header-tr']}>
-                <HeaderCell style={{width: 25}} />
+                <HeaderCell style={{ width: 25 }} />
                 <HeaderCell />
-                <HeaderCell style={{width: 124}} />
-                <HeaderCell style={{width: 131}} />
-                <HeaderCell style={{width: 160}} />
+                <HeaderCell style={{ width: 124 }} />
+                <HeaderCell style={{ width: 131 }} />
+                <HeaderCell style={{ width: 160 }} />
             </TableHead>
             <TableBody>
                 {records.map((article, index) => (

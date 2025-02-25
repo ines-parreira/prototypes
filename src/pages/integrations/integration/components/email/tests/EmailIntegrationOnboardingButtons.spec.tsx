@@ -1,19 +1,21 @@
-import {EmailIntegration} from '@gorgias/api-queries'
-import {fireEvent, render, screen} from '@testing-library/react'
 import React from 'react'
-import {FormProvider, useForm} from 'react-hook-form'
 
-import {assumeMock} from 'utils/testing'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { FormProvider, useForm } from 'react-hook-form'
+
+import { EmailIntegration } from '@gorgias/api-queries'
+
+import { assumeMock } from 'utils/testing'
 
 import EmailIntegrationOnboardingButtons from '../EmailIntegrationOnboardingButtons'
 import {
     EmailIntegrationOnboardingStep,
-    UseEmailOnboardingHookResult,
     useEmailOnboarding,
+    UseEmailOnboardingHookResult,
 } from '../hooks/useEmailOnboarding'
 
-const FormContext = ({children}: {children: React.ReactNode}) => {
-    const methods = useForm<{test: string}>()
+const FormContext = ({ children }: { children: React.ReactNode }) => {
+    const methods = useForm<{ test: string }>()
     return <FormProvider {...methods}>{children}</FormProvider>
 }
 
@@ -240,7 +242,9 @@ describe('<EmailIntegrationOnboardingButtons />', () => {
                 useEmailOnboardingMock.mockReturnValue({
                     ...defaultHookResult,
                     currentStep: EmailIntegrationOnboardingStep.Verification,
-                    integration: {meta: {verified: true}} as EmailIntegration,
+                    integration: {
+                        meta: { verified: true },
+                    } as EmailIntegration,
                 })
 
                 renderComponent()
@@ -256,7 +260,9 @@ describe('<EmailIntegrationOnboardingButtons />', () => {
                 useEmailOnboardingMock.mockReturnValue({
                     ...defaultHookResult,
                     currentStep: EmailIntegrationOnboardingStep.Verification,
-                    integration: {meta: {verified: false}} as EmailIntegration,
+                    integration: {
+                        meta: { verified: false },
+                    } as EmailIntegration,
                 })
 
                 renderComponent()
@@ -264,7 +270,7 @@ describe('<EmailIntegrationOnboardingButtons />', () => {
                 expect(
                     screen.queryByRole('button', {
                         name: 'Next',
-                    })
+                    }),
                 ).not.toBeInTheDocument()
             })
         })
@@ -273,7 +279,7 @@ describe('<EmailIntegrationOnboardingButtons />', () => {
     it('should show the delete integration button if the integration exists', () => {
         useEmailOnboardingMock.mockReturnValue({
             ...defaultHookResult,
-            integration: {id: 1} as EmailIntegration,
+            integration: { id: 1 } as EmailIntegration,
         })
 
         renderComponent()
@@ -281,7 +287,7 @@ describe('<EmailIntegrationOnboardingButtons />', () => {
         expect(
             screen.getByRole('button', {
                 name: 'Delete integration',
-            })
+            }),
         ).toBeInTheDocument()
     })
 
@@ -289,13 +295,13 @@ describe('<EmailIntegrationOnboardingButtons />', () => {
         useEmailOnboardingMock.mockReturnValue({
             ...defaultHookResult,
             currentStep: EmailIntegrationOnboardingStep.DomainVerification,
-            integration: {id: 1} as EmailIntegration,
+            integration: { id: 1 } as EmailIntegration,
         })
 
         renderComponent()
 
         expect(
-            screen.getByText('OnboardingDomainVerificationButtons')
+            screen.getByText('OnboardingDomainVerificationButtons'),
         ).toBeInTheDocument()
     })
 })

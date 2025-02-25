@@ -1,11 +1,12 @@
-import {screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import {fromJS, Map} from 'immutable'
-import _noop from 'lodash/noop'
 import React from 'react'
 
+import { screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { fromJS, Map } from 'immutable'
+import _noop from 'lodash/noop'
+
 import MergeTicketsContainer from 'pages/common/components/MergeTickets/MergeTicketsContainer'
-import {renderWithStore} from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 jest.mock('@gorgias/realtime', () => ({
     useAgentActivity: () => ({
@@ -33,12 +34,12 @@ describe('MergeTicketsContainer component', () => {
     }
 
     it('should render a closed modal because isOpen==false', () => {
-        const props = {...commonProps}
+        const props = { ...commonProps }
         props.isOpen = false
 
-        const {container} = renderWithStore(
+        const { container } = renderWithStore(
             <MergeTicketsContainer sourceTicket={baseTicket} {...props} />,
-            {}
+            {},
         )
         const modal = document.querySelector('.modal')
 
@@ -52,7 +53,7 @@ describe('MergeTicketsContainer component', () => {
                 sourceTicket={baseTicket}
                 {...commonProps}
             />,
-            {}
+            {},
         )
         const modal = document.querySelector('.modal')
 
@@ -66,7 +67,7 @@ describe('MergeTicketsContainer component', () => {
                 sourceTicket={baseTicket}
                 {...commonProps}
             />,
-            {}
+            {},
         )
 
         userEvent.click(screen.getByText(ticketSubject))

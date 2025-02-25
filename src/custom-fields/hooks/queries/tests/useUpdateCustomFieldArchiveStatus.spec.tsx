@@ -1,22 +1,23 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {OBJECT_TYPES} from 'custom-fields/constants'
+import { OBJECT_TYPES } from 'custom-fields/constants'
 import {
     customFieldDefinitionKeys,
     useUpdatePartialCustomField,
 } from 'custom-fields/hooks/queries/queries'
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
-import {ticketDropdownFieldDefinition} from 'fixtures/customField'
-import {NotificationStatus} from 'state/notifications/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { axiosSuccessResponse } from 'fixtures/axiosResponse'
+import { ticketDropdownFieldDefinition } from 'fixtures/customField'
+import { NotificationStatus } from 'state/notifications/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
-import {useUpdateCustomFieldArchiveStatus} from '../useUpdateCustomFieldArchiveStatus'
+import { useUpdateCustomFieldArchiveStatus } from '../useUpdateCustomFieldArchiveStatus'
 
 const queryClient = mockQueryClient()
 
@@ -45,24 +46,24 @@ describe('useUpdateCustomFieldArchiveStatus', () => {
     })
 
     it('should accept an id param and pass them to the mutation query with proper data structure', () => {
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useUpdateCustomFieldArchiveStatus(
                     ticketDropdownFieldDefinition.id,
-                    ticketDropdownFieldDefinition.object_type
+                    ticketDropdownFieldDefinition.object_type,
                 ),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         <Provider store={mockStore}>{children}</Provider>
                     </QueryClientProvider>
                 ),
-            }
+            },
         )
 
         const expectedData = [
             ticketDropdownFieldDefinition.id,
-            {deactivated_datetime: '1970-01-01T00:00:00.042Z'},
+            { deactivated_datetime: '1970-01-01T00:00:00.042Z' },
         ]
 
         result.current.mutate(true)
@@ -95,10 +96,10 @@ describe('useUpdateCustomFieldArchiveStatus', () => {
         },
     ])(
         'should dispatch success notification on success and invalidate proper query data',
-        ({objectType, deactivatedDatetime, message}) => {
+        ({ objectType, deactivatedDatetime, message }) => {
             const invalidateQueryMock = jest.spyOn(
                 queryClient,
-                'invalidateQueries'
+                'invalidateQueries',
             )
             const fieldDefinition = {
                 ...ticketDropdownFieldDefinition,
@@ -108,24 +109,24 @@ describe('useUpdateCustomFieldArchiveStatus', () => {
                 () =>
                     useUpdateCustomFieldArchiveStatus(
                         fieldDefinition.id,
-                        fieldDefinition.object_type
+                        fieldDefinition.object_type,
                     ),
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
                             <Provider store={mockStore}>{children}</Provider>
                         </QueryClientProvider>
                     ),
-                }
+                },
             )
 
             useUpdatePartialCustomFieldMock.mock.calls[0][0]?.onSuccess!(
                 axiosSuccessResponse(fieldDefinition),
                 [
                     fieldDefinition.id,
-                    {deactivated_datetime: deactivatedDatetime},
+                    { deactivated_datetime: deactivatedDatetime },
                 ],
-                undefined
+                undefined,
             )
             expect(invalidateQueryMock).toHaveBeenLastCalledWith({
                 queryKey: customFieldDefinitionKeys.all(),
@@ -139,7 +140,7 @@ describe('useUpdateCustomFieldArchiveStatus', () => {
                     },
                 },
             ])
-        }
+        },
     )
 
     it('should dispatch failure notification on error', () => {
@@ -147,21 +148,21 @@ describe('useUpdateCustomFieldArchiveStatus', () => {
             () =>
                 useUpdateCustomFieldArchiveStatus(
                     ticketDropdownFieldDefinition.id,
-                    ticketDropdownFieldDefinition.object_type
+                    ticketDropdownFieldDefinition.object_type,
                 ),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         <Provider store={mockStore}>{children}</Provider>
                     </QueryClientProvider>
                 ),
-            }
+            },
         )
 
         useUpdatePartialCustomFieldMock.mock.calls[0][0]?.onError!(
             {},
-            [ticketDropdownFieldDefinition.id, {deactivated_datetime: '42'}],
-            undefined
+            [ticketDropdownFieldDefinition.id, { deactivated_datetime: '42' }],
+            undefined,
         )
 
         expect(mockStore.getActions()).toMatchObject([

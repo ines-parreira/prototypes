@@ -1,16 +1,17 @@
-import {CancelToken} from 'axios'
-import {fromJS, List, Map} from 'immutable'
-import React, {useMemo, useState, useEffect} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
+import React, { useEffect, useMemo, useState } from 'react'
 
-import {ActionTemplateExecution} from 'config'
+import { CancelToken } from 'axios'
+import { fromJS, List, Map } from 'immutable'
+import { connect, ConnectedProps } from 'react-redux'
+
+import { ActionTemplateExecution } from 'config'
 import useCancellableRequest from 'hooks/useCancellableRequest'
-import {useOptions} from 'pages/common/components/ast/widget/hooks'
+import { useOptions } from 'pages/common/components/ast/widget/hooks'
 import Select from 'pages/common/components/ast/widget/ReactSelect'
-import {fetchAllMacros, getMacro} from 'state/macro/actions'
-import {Macro} from 'state/macro/types'
-import {RootState} from 'state/types'
-import {getActionTemplate} from 'utils'
+import { fetchAllMacros, getMacro } from 'state/macro/actions'
+import { Macro } from 'state/macro/types'
+import { RootState } from 'state/types'
+import { getActionTemplate } from 'utils'
 
 type OwnProps = {
     onChange: (value: any) => void
@@ -35,17 +36,17 @@ const MacroSelect = ({
     const macroOptions = useOptions(
         selectedMacro,
         searchResults,
-        (macro) => macro.get('id') as string
+        (macro) => macro.get('id') as string,
     )
     const [handleMacrosSearch] = useCancellableRequest(
         (cancelToken: CancelToken) => async () => {
             setIsLoading(true)
-            const res = await fetchAllMacros({search}, cancelToken)
+            const res = await fetchAllMacros({ search }, cancelToken)
             if (res) {
                 setIsLoading(false)
                 setSearchResults(res)
             }
-        }
+        },
     )
 
     useEffect(() => {
@@ -72,9 +73,9 @@ const MacroSelect = ({
                     .filter(
                         (action: Map<any, any>) =>
                             getActionTemplate(action.get('name'))?.execution ===
-                            ActionTemplateExecution.External
+                            ActionTemplateExecution.External,
                     )
-                    .isEmpty()
+                    .isEmpty(),
             ) as List<any>
         )
             .map(
@@ -82,13 +83,13 @@ const MacroSelect = ({
                     fromJS({
                         value: (macro.get('id') as number).toString(),
                         label: macro.get('name'),
-                    }) as Map<any, any>
+                    }) as Map<any, any>,
             )
             .toList()
             .sortBy((macro: Maybe<Map<any, any>>) =>
                 (
                     ((macro as Map<any, any>).get('label') || '') as string
-                ).toLowerCase()
+                ).toLowerCase(),
             )
     }, [macroOptions, isLoading])
 
@@ -111,7 +112,7 @@ const connector = connect(
     {
         fetchAllMacros,
         getMacro,
-    }
+    },
 )
 
 export default connector(MacroSelect)

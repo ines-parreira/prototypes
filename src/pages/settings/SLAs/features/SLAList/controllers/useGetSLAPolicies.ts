@@ -1,12 +1,12 @@
+import { useCallback } from 'react'
+
 import {
     HttpResponse,
     ListSlaPolicies200,
     useListSlaPolicies,
 } from '@gorgias/api-queries'
-import {useCallback} from 'react'
 
-import {UISLAPolicy} from '../types'
-
+import { UISLAPolicy } from '../types'
 import makeUISLAPolicy from './makeUISLAPolicy'
 
 export const STALE_TIME_MS = 5 * 60 * 1000 // 5 minutes
@@ -18,7 +18,7 @@ export default function useGetSLAPolicies() {
             data?.data?.data
                 .map<UISLAPolicy>(makeUISLAPolicy)
                 .sort((a, b) => a.priority - b.priority),
-        []
+        [],
     )
 
     return useListSlaPolicies(undefined, {

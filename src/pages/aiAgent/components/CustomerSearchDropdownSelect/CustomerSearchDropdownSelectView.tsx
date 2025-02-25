@@ -1,12 +1,12 @@
-import React, {useCallback, useEffect, useState} from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
-import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
-import {useSearchCustomer} from 'models/aiAgent/queries'
-import {Value} from 'pages/common/forms/SelectField/types'
-import {reportError} from 'utils/errors'
+import { AI_AGENT_SENTRY_TEAM } from 'common/const/sentryTeamNames'
+import { useSearchCustomer } from 'models/aiAgent/queries'
+import { Value } from 'pages/common/forms/SelectField/types'
+import { reportError } from 'utils/errors'
 
-import {PlaygroundCustomer} from '../../types'
-import {CustomerSearchDropdownSelectComponent} from './CustomerSearchDropdownSelectComponent'
+import { PlaygroundCustomer } from '../../types'
+import { CustomerSearchDropdownSelectComponent } from './CustomerSearchDropdownSelectComponent'
 
 type Props = {
     onSelect: (customer: PlaygroundCustomer) => void
@@ -39,7 +39,7 @@ export const CustomerSearchDropdownSelectView = ({
         },
         {
             enabled: false,
-        }
+        },
     )
 
     const isDropdownLoading =
@@ -63,7 +63,7 @@ export const CustomerSearchDropdownSelectView = ({
     const handleCustomerSelect = useCallback(
         (value: string) => {
             const customerData = data?.data.data.find(
-                (customer) => customer.address === value
+                (customer) => customer.address === value,
             )
 
             setIsSelected(true)
@@ -77,7 +77,7 @@ export const CustomerSearchDropdownSelectView = ({
             }
             setSearchTerm(value)
         },
-        [data?.data.data, onSelect]
+        [data?.data.data, onSelect],
     )
 
     useEffect(() => {
@@ -97,7 +97,7 @@ export const CustomerSearchDropdownSelectView = ({
     useEffect(() => {
         if (error || isRefetchError) {
             reportError(error || isRefetchError, {
-                tags: {team: AI_AGENT_SENTRY_TEAM},
+                tags: { team: AI_AGENT_SENTRY_TEAM },
             })
         }
     }, [error, isRefetchError])

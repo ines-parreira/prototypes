@@ -1,7 +1,7 @@
-import {ChatIntegrationsStatusDataFixture} from '../../tests/ChatIntegrationsStatusData.fixture'
-import {PageInteractionsDataFixture} from '../../tests/PageInteractionsData.fixture'
-import {UpdateYourChatInstallationTask} from '../UpdateYourChatInstallation.task'
-import {buildRuleEngineData, buildRuleEngineRoutes} from './utils'
+import { ChatIntegrationsStatusDataFixture } from '../../tests/ChatIntegrationsStatusData.fixture'
+import { PageInteractionsDataFixture } from '../../tests/PageInteractionsData.fixture'
+import { UpdateYourChatInstallationTask } from '../UpdateYourChatInstallation.task'
+import { buildRuleEngineData, buildRuleEngineRoutes } from './utils'
 
 describe('UpdateYourChatInstallation', () => {
     it('should display the task if we have page interactions and a chat is installed', () => {
@@ -11,8 +11,8 @@ describe('UpdateYourChatInstallation', () => {
             .build()
 
         const chatIntegrationsStatus = ChatIntegrationsStatusDataFixture.start()
-            .withChatIntegrationStatus({isInstalled: false})
-            .withChatIntegrationStatus({isInstalled: true})
+            .withChatIntegrationStatus({ isInstalled: false })
+            .withChatIntegrationStatus({ isInstalled: true })
             .build()
 
         const task = new UpdateYourChatInstallationTask(
@@ -20,11 +20,11 @@ describe('UpdateYourChatInstallation', () => {
                 pageInteractions,
                 chatIntegrationsStatus,
             }),
-            buildRuleEngineRoutes()
+            buildRuleEngineRoutes(),
         )
         expect(task.display).toBe(true)
         expect(task.featureUrl).toBe(
-            '/app/settings/channels/gorgias_chat/2/installation'
+            '/app/settings/channels/gorgias_chat/2/installation',
         )
     })
 
@@ -43,7 +43,7 @@ describe('UpdateYourChatInstallation', () => {
                 pageInteractions,
                 chatIntegrationsStatus,
             }),
-            buildRuleEngineRoutes()
+            buildRuleEngineRoutes(),
         )
         expect(task.display).toBe(false)
     })
@@ -55,8 +55,8 @@ describe('UpdateYourChatInstallation', () => {
             .build()
 
         const chatIntegrationsStatus = ChatIntegrationsStatusDataFixture.start()
-            .withChatIntegrationStatus({isInstalled: false})
-            .withChatIntegrationStatus({isInstalled: true})
+            .withChatIntegrationStatus({ isInstalled: false })
+            .withChatIntegrationStatus({ isInstalled: true })
             .build()
 
         const task = new UpdateYourChatInstallationTask(
@@ -64,7 +64,7 @@ describe('UpdateYourChatInstallation', () => {
                 pageInteractions,
                 chatIntegrationsStatus,
             }),
-            buildRuleEngineRoutes()
+            buildRuleEngineRoutes(),
         )
         expect(task.display).toBe(false)
     })
@@ -76,8 +76,8 @@ describe('UpdateYourChatInstallation', () => {
             .build()
 
         const chatIntegrationsStatus = ChatIntegrationsStatusDataFixture.start()
-            .withChatIntegrationStatus({isInstalled: false})
-            .withChatIntegrationStatus({isInstalled: true})
+            .withChatIntegrationStatus({ isInstalled: false })
+            .withChatIntegrationStatus({ isInstalled: true })
             .build()
 
         const task = new UpdateYourChatInstallationTask(
@@ -85,7 +85,7 @@ describe('UpdateYourChatInstallation', () => {
                 pageInteractions,
                 chatIntegrationsStatus,
             }),
-            buildRuleEngineRoutes()
+            buildRuleEngineRoutes(),
         )
         expect(task.display).toBe(false)
     })

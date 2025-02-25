@@ -1,16 +1,17 @@
-import {fireEvent, render} from '@testing-library/react'
 import React from 'react'
+
+import { fireEvent, render } from '@testing-library/react'
 
 import ProductAutomations from '../ProductAutomations'
 
 describe('ProductAutomations', () => {
     it('should render the component', () => {
-        const {getByText, queryByText} = render(
+        const { getByText, queryByText } = render(
             <ProductAutomations
                 productAutomationClicked={jest.fn()}
                 onClick={jest.fn()}
                 onBackClicked={jest.fn()}
-            />
+            />,
         )
 
         expect(getByText('Product Recommendation')).toBeInTheDocument()
@@ -19,12 +20,12 @@ describe('ProductAutomations', () => {
 
     it('should call onClick when clicked', () => {
         const onClick = jest.fn()
-        const {getByText} = render(
+        const { getByText } = render(
             <ProductAutomations
                 productAutomationClicked={jest.fn()}
                 onClick={onClick}
                 onBackClicked={jest.fn()}
-            />
+            />,
         )
 
         const productRecommendation = getByText('Product Recommendation')
@@ -36,12 +37,12 @@ describe('ProductAutomations', () => {
 
     it('should call onBackClicked when back button is clicked', () => {
         const onBackClicked = jest.fn()
-        const {getByText} = render(
+        const { getByText } = render(
             <ProductAutomations
                 productAutomationClicked={jest.fn()}
                 onClick={jest.fn()}
                 onBackClicked={onBackClicked}
-            />
+            />,
         )
 
         const productRecommendation = getByText('Product Recommendation')

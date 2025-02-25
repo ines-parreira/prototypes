@@ -1,7 +1,7 @@
-import {categories, notifications} from '../data'
+import { categories, notifications } from '../data'
 import registerCategory from '../registerCategory'
 import registerNotification from '../registerNotification'
-import type {CategoryConfig, NotificationConfig} from '../types'
+import type { CategoryConfig, NotificationConfig } from '../types'
 
 jest.mock('../data', () => ({
     categories: [],
@@ -10,7 +10,7 @@ jest.mock('../data', () => ({
 
 describe('registerNotification', () => {
     it('should register a notification', () => {
-        registerNotification({type: 'notification-1'} as NotificationConfig)
+        registerNotification({ type: 'notification-1' } as NotificationConfig)
         expect(notifications['notification-1']).toEqual({
             type: 'notification-1',
         })
@@ -19,14 +19,14 @@ describe('registerNotification', () => {
     it('should not add the notification to a settings category if it does not exist', () => {
         registerNotification({
             type: 'notification-2',
-            settings: {type: 'category-2'},
+            settings: { type: 'category-2' },
         } as NotificationConfig)
 
         expect(categories.find((c) => c.type === 'category-2')).toBe(undefined)
     })
 
     it('should add the notification to the correct settings category', () => {
-        registerCategory({type: 'category-3'} as CategoryConfig)
+        registerCategory({ type: 'category-3' } as CategoryConfig)
 
         expect(categories.find((c) => c.type === 'category-3')).toEqual({
             type: 'category-3',
@@ -34,7 +34,7 @@ describe('registerNotification', () => {
 
         registerNotification({
             type: 'notification-3',
-            settings: {type: 'category-3'},
+            settings: { type: 'category-3' },
         } as NotificationConfig)
 
         expect(categories.find((c) => c.type === 'category-3')).toEqual({
@@ -43,7 +43,7 @@ describe('registerNotification', () => {
         })
         expect(notifications['notification-3']).toEqual({
             type: 'notification-3',
-            settings: {type: 'category-3'},
+            settings: { type: 'category-3' },
         })
     })
 })

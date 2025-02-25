@@ -1,22 +1,21 @@
 // Promote your sale collection, for returning visitors about to leave
-
-import {ulid} from 'ulidx'
+import { ulid } from 'ulidx'
 
 import {
-    WizardConfiguration,
     BannerType,
     TooltipActionType,
+    WizardConfiguration,
 } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
-import {CampaignStepsKeys} from 'pages/convert/campaigns/types/CampaignSteps'
-import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
-import {CampaignTriggerBusinessHoursValuesEnum} from 'pages/convert/campaigns/types/enums/CampaignTriggerBusinessHoursValues.enum'
-import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
-import {createTriggerRule} from 'pages/convert/campaigns/utils/createTriggerRule'
-import {assetsUrl} from 'utils'
+import { CampaignStepsKeys } from 'pages/convert/campaigns/types/CampaignSteps'
+import { CampaignStatus } from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
+import { CampaignTriggerBusinessHoursValuesEnum } from 'pages/convert/campaigns/types/enums/CampaignTriggerBusinessHoursValues.enum'
+import { CampaignTriggerOperator } from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
+import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import { createTriggerRule } from 'pages/convert/campaigns/utils/createTriggerRule'
+import { assetsUrl } from 'utils'
 
-import {CampaignConfigurationBuilder} from '../constructor'
-import {CampaignConfiguration, CampaignTemplate} from '../types'
+import { CampaignConfigurationBuilder } from '../constructor'
+import { CampaignConfiguration, CampaignTemplate } from '../types'
 
 export const PROMOTE_SALE_COLLECTION: CampaignTemplate = {
     slug: 'promote-sale-collection-for-visitors-about-to-leave',
@@ -93,7 +92,7 @@ export const PROMOTE_SALE_COLLECTION: CampaignTemplate = {
                 meta: {
                     noReply: true,
                 },
-            }
+            },
         )
 
         return Promise.resolve(builder.build())

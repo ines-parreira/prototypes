@@ -1,9 +1,12 @@
 import moment from 'moment'
 
-import {TicketChannel} from 'business/types/ticket'
-import {OrderDirection} from 'models/api/types'
-import {TicketDimension, TicketMember} from 'models/reporting/cubes/TicketCube'
-import {TicketMessagesMember} from 'models/reporting/cubes/TicketMessagesCube'
+import { TicketChannel } from 'business/types/ticket'
+import { OrderDirection } from 'models/api/types'
+import {
+    TicketDimension,
+    TicketMember,
+} from 'models/reporting/cubes/TicketCube'
+import { TicketMessagesMember } from 'models/reporting/cubes/TicketMessagesCube'
 import {
     TicketSatisfactionSurveyDimension,
     TicketSatisfactionSurveyMeasure,
@@ -13,8 +16,8 @@ import {
     customerSatisfactionMetricDrillDownQueryFactory,
     customerSatisfactionMetricPerAgentQueryFactory,
 } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
-import {ReportingFilterOperator} from 'models/reporting/types'
-import {LegacyStatsFilters} from 'models/stat/types'
+import { ReportingFilterOperator } from 'models/reporting/types'
+import { LegacyStatsFilters } from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
@@ -41,8 +44,8 @@ describe('customerSatisfactionMetricPerAgentQueryFactory', () => {
         expect(
             customerSatisfactionMetricPerAgentQueryFactory(
                 statsFilters,
-                timezone
-            )
+                timezone,
+            ),
         ).toEqual({
             dimensions: [TicketDimension.AssigneeUserId],
             filters: [
@@ -84,10 +87,10 @@ describe('customerSatisfactionMetricPerAgentQueryFactory', () => {
 
         expect(
             customerSatisfactionMetricPerAgentQueryFactory(
-                {...statsFilters, agents},
+                { ...statsFilters, agents },
                 timezone,
-                sorting
-            )
+                sorting,
+            ),
         ).toEqual({
             dimensions: [TicketDimension.AssigneeUserId],
             filters: [
@@ -150,25 +153,25 @@ describe('customerSatisfactionMetricDrillDownQueryFactory', () => {
         expect(
             customerSatisfactionMetricDrillDownQueryFactory(
                 statsFilters,
-                timezone
-            )
+                timezone,
+            ),
         ).toEqual({
             ...customerSatisfactionMetricPerAgentQueryFactory(
                 statsFilters,
-                timezone
+                timezone,
             ),
             dimensions: [
                 TicketDimension.TicketId,
                 TicketSatisfactionSurveyDimension.SurveyScore,
                 ...customerSatisfactionMetricPerAgentQueryFactory(
                     statsFilters,
-                    timezone
+                    timezone,
                 ).dimensions,
             ],
             filters: [
                 ...customerSatisfactionMetricPerAgentQueryFactory(
                     statsFilters,
-                    timezone
+                    timezone,
                 ).filters,
                 TicketDrillDownFilter,
             ],
@@ -182,30 +185,30 @@ describe('customerSatisfactionMetricDrillDownQueryFactory', () => {
 
         expect(
             customerSatisfactionMetricDrillDownQueryFactory(
-                {...statsFilters, agents},
+                { ...statsFilters, agents },
                 timezone,
-                sorting
-            )
+                sorting,
+            ),
         ).toEqual({
             ...customerSatisfactionMetricPerAgentQueryFactory(
-                {...statsFilters, agents},
+                { ...statsFilters, agents },
                 timezone,
-                sorting
+                sorting,
             ),
             dimensions: [
                 TicketDimension.TicketId,
                 TicketSatisfactionSurveyDimension.SurveyScore,
                 ...customerSatisfactionMetricPerAgentQueryFactory(
-                    {...statsFilters, agents},
+                    { ...statsFilters, agents },
                     timezone,
-                    sorting
+                    sorting,
                 ).dimensions,
             ],
             filters: [
                 ...customerSatisfactionMetricPerAgentQueryFactory(
-                    {...statsFilters, agents},
+                    { ...statsFilters, agents },
                     timezone,
-                    sorting
+                    sorting,
                 ).filters,
                 TicketDrillDownFilter,
             ],

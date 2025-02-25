@@ -1,29 +1,28 @@
-import {act, fireEvent, render} from '@testing-library/react'
+import React, { ComponentProps, Fragment, ReactElement, ReactNode } from 'react'
 
-import {fromJS} from 'immutable'
-import React, {ComponentProps, Fragment, ReactElement, ReactNode} from 'react'
-import {Provider} from 'react-redux'
-import {MemoryRouter} from 'react-router-dom'
-import {Virtuoso} from 'react-virtuoso'
+import { act, fireEvent, render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import { MemoryRouter } from 'react-router-dom'
+import { Virtuoso } from 'react-virtuoso'
 import configureMockStore from 'redux-mock-store'
 
-import {useDesktopOnlyShowGlobalNavFeatureFlag} from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
-
-import {ticket} from 'fixtures/ticket'
+import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
+import { ticket } from 'fixtures/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {useSplitTicketView} from 'split-ticket-view-toggle'
-import {RootState, StoreDispatch} from 'state/types'
-import {setViewEditMode} from 'state/views/actions'
+import { useSplitTicketView } from 'split-ticket-view-toggle'
+import { RootState, StoreDispatch } from 'state/types'
+import { setViewEditMode } from 'state/views/actions'
 import useSelection from 'ticket-list-view/hooks/useSelection'
 import useTickets from 'ticket-list-view/hooks/useTickets'
-import {TicketPartial} from 'ticket-list-view/types'
-import {assumeMock} from 'utils/testing'
+import { TicketPartial } from 'ticket-list-view/types'
+import { assumeMock } from 'utils/testing'
 
 import useSortOrder from '../../hooks/useSortOrder'
 import Ticket from '../Ticket'
-import TicketListView, {listInfoProps} from '../TicketListView'
+import TicketListView, { listInfoProps } from '../TicketListView'
 
-jest.mock('react-virtuoso', () => ({Virtuoso: jest.fn()}))
+jest.mock('react-virtuoso', () => ({ Virtuoso: jest.fn() }))
 const VirtuosoMock = Virtuoso as jest.Mock
 
 jest.mock('hooks/useAppDispatch')
@@ -94,21 +93,25 @@ describe('<TicketListView />', () => {
                 data,
                 itemContent,
                 scrollerRef,
-                components: {EmptyPlaceholder, List},
+                components: { EmptyPlaceholder, List },
             }: {
                 computeItemKey: (
                     index: number,
-                    ticket: TicketPartial
+                    ticket: TicketPartial,
                 ) => number | string
                 data: TicketPartial[]
                 itemContent: (
                     index: number,
-                    ticket: TicketPartial
+                    ticket: TicketPartial,
                 ) => ReactElement
                 scrollerRef: (ref: HTMLElement | Window | null) => void
                 components: {
                     EmptyPlaceholder: () => ReactElement
-                    List: ({children}: {children: ReactNode}) => ReactElement
+                    List: ({
+                        children,
+                    }: {
+                        children: ReactNode
+                    }) => ReactElement
                 }
             }) => {
                 return (
@@ -126,11 +129,13 @@ describe('<TicketListView />', () => {
                         )}
                     </div>
                 )
-            }
+            },
         )
-        TicketMock.mockImplementation(({ticket}: {ticket: TicketPartial}) => {
-            return <p>{ticket.id}</p>
-        })
+        TicketMock.mockImplementation(
+            ({ ticket }: { ticket: TicketPartial }) => {
+                return <p>{ticket.id}</p>
+            },
+        )
         useTicketsMock.mockReturnValue({
             loadMore,
             pauseUpdates,
@@ -139,7 +144,7 @@ describe('<TicketListView />', () => {
             staleTickets: {},
             tickets: [ticket],
             newTickets: {},
-            ticketIds: {current: [152]},
+            ticketIds: { current: [152] },
             initialLoaded: true,
         })
         mockUseSplitTicketViewMock.mockReturnValue({
@@ -164,7 +169,7 @@ describe('<TicketListView />', () => {
         render(
             <Provider store={store}>
                 <TicketListView viewId={123} />
-            </Provider>
+            </Provider>,
         )
 
         expect(pauseUpdates).toHaveBeenCalledWith()
@@ -181,7 +186,7 @@ describe('<TicketListView />', () => {
         render(
             <Provider store={store}>
                 <TicketListView viewId={123} />
-            </Provider>
+            </Provider>,
         )
         expect(resumeUpdates).toHaveBeenCalledWith()
     })
@@ -196,10 +201,10 @@ describe('<TicketListView />', () => {
             selectedTickets: {},
         })
 
-        const {rerender} = render(
+        const { rerender } = render(
             <Provider store={store}>
                 <TicketListView viewId={123} />
-            </Provider>
+            </Provider>,
         )
 
         useSortOrderMock.mockReturnValue([
@@ -210,7 +215,7 @@ describe('<TicketListView />', () => {
             rerender(
                 <Provider store={store}>
                     <TicketListView viewId={123} />
-                </Provider>
+                </Provider>,
             )
         })
 
@@ -218,10 +223,10 @@ describe('<TicketListView />', () => {
     })
 
     it('should display a list of tickets', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <TicketListView viewId={123} />
-            </Provider>
+            </Provider>,
         )
 
         expect(getByText(ticket.id)).toBeInTheDocument()
@@ -231,7 +236,7 @@ describe('<TicketListView />', () => {
         render(
             <Provider store={store}>
                 <TicketListView viewId={123} />
-            </Provider>
+            </Provider>,
         )
 
         expect(setElement).toHaveBeenCalledWith(expect.any(HTMLElement))
@@ -241,10 +246,10 @@ describe('<TicketListView />', () => {
         render(
             <Provider store={store}>
                 <TicketListView viewId={123} />
-            </Provider>
+            </Provider>,
         )
-        const [[{endReached}]] = VirtuosoMock.mock.calls as [
-            [{endReached: () => void}],
+        const [[{ endReached }]] = VirtuosoMock.mock.calls as [
+            [{ endReached: () => void }],
         ]
 
         endReached()
@@ -254,9 +259,9 @@ describe('<TicketListView />', () => {
 
     it('should mark ticket as new', () => {
         TicketMock.mockImplementation(
-            ({isNewTicket}: ComponentProps<typeof Ticket>) => {
+            ({ isNewTicket }: ComponentProps<typeof Ticket>) => {
                 return <p>{String(isNewTicket)}</p>
-            }
+            },
         )
         useTicketsMock.mockReturnValue({
             loadMore,
@@ -265,38 +270,38 @@ describe('<TicketListView />', () => {
             setElement,
             staleTickets: {},
             tickets: [ticket],
-            newTickets: {[ticket.id]: ticket},
-            ticketIds: {current: [152]},
+            newTickets: { [ticket.id]: ticket },
+            ticketIds: { current: [152] },
         })
 
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <TicketListView viewId={123} />
-            </Provider>
+            </Provider>,
         )
 
         expect(getByText('true')).toBeInTheDocument()
     })
 
     it('should flip exit transition prop for removed ticket', () => {
-        const newTickets = [ticket, {...ticket, id: 456}]
+        const newTickets = [ticket, { ...ticket, id: 456 }]
         TicketMock.mockImplementation(
-            ({exit}: ComponentProps<typeof Ticket>) => {
+            ({ exit }: ComponentProps<typeof Ticket>) => {
                 return <p>{String(exit)}</p>
-            }
+            },
         )
         VirtuosoMock.mockImplementation(
             ({
                 itemContent,
                 scrollerRef,
-                components: {Item},
+                components: { Item },
             }: {
                 itemContent: (
                     index: number,
-                    ticket: ComponentProps<typeof Ticket>['ticket']
+                    ticket: ComponentProps<typeof Ticket>['ticket'],
                 ) => ReactElement
                 scrollerRef: (ref: HTMLElement | Window | null) => void
-                components: {Item: (props: any) => ReactElement}
+                components: { Item: (props: any) => ReactElement }
             }) => {
                 return (
                     <div ref={scrollerRef}>
@@ -305,7 +310,7 @@ describe('<TicketListView />', () => {
                         ))}
                     </div>
                 )
-            }
+            },
         )
         useTicketsMock.mockReturnValue({
             loadMore,
@@ -313,15 +318,15 @@ describe('<TicketListView />', () => {
             resumeUpdates,
             setElement,
             staleTickets: {},
-            tickets: [ticket, {...ticket, id: 456}],
+            tickets: [ticket, { ...ticket, id: 456 }],
             newTickets: {},
-            ticketIds: {current: [152, 456]},
+            ticketIds: { current: [152, 456] },
         })
 
-        const {rerender, getByText} = render(
+        const { rerender, getByText } = render(
             <Provider store={store}>
                 <TicketListView viewId={123} />
-            </Provider>
+            </Provider>,
         )
         useTicketsMock.mockReturnValue({
             loadMore,
@@ -331,17 +336,17 @@ describe('<TicketListView />', () => {
             staleTickets: {},
             tickets: [ticket],
             newTickets: [],
-            ticketIds: {current: [152]},
+            ticketIds: { current: [152] },
         })
         rerender(
             <Provider store={store}>
                 <TicketListView viewId={123} />
-            </Provider>
+            </Provider>,
         )
         rerender(
             <Provider store={store}>
                 <TicketListView viewId={123} />
-            </Provider>
+            </Provider>,
         )
 
         expect(getByText('true')).toBeInTheDocument()
@@ -356,14 +361,14 @@ describe('<TicketListView />', () => {
             staleTickets: {},
             tickets: [],
             newTickets: {},
-            ticketIds: {current: []},
+            ticketIds: { current: [] },
             initialLoaded: true,
         })
 
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <TicketListView viewId={123} />
-            </Provider>
+            </Provider>,
         )
 
         expect(getByText(listInfoProps.DEFAULT.text)).toBeInTheDocument()
@@ -379,7 +384,7 @@ describe('<TicketListView />', () => {
             staleTickets: {},
             tickets: [],
             newTickets: {},
-            ticketIds: {current: []},
+            ticketIds: { current: [] },
             initialLoaded: true,
         })
 
@@ -387,7 +392,7 @@ describe('<TicketListView />', () => {
             ...view,
             deactivated_datetime: '2021-01-01T00:00:00Z',
         }
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider
                 store={mockStore({
                     views: fromJS({
@@ -397,17 +402,17 @@ describe('<TicketListView />', () => {
                 })}
             >
                 <TicketListView viewId={123} />
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            getByText(listInfoProps.INVALID_FILTERS.text)
+            getByText(listInfoProps.INVALID_FILTERS.text),
         ).toBeInTheDocument()
         expect(
             getByText(listInfoProps.INVALID_FILTERS.subText, {
                 trim: false,
                 collapseWhitespace: false,
-            })
+            }),
         ).toBeInTheDocument()
         expect(getByText('Fix filters')).toBeInTheDocument()
     })
@@ -421,11 +426,11 @@ describe('<TicketListView />', () => {
             staleTickets: {},
             tickets: [],
             newTickets: {},
-            ticketIds: {current: []},
+            ticketIds: { current: [] },
             initialLoaded: true,
         })
 
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider
                 store={mockStore({
                     views: fromJS({
@@ -434,17 +439,17 @@ describe('<TicketListView />', () => {
                 })}
             >
                 <TicketListView viewId={123} />
-            </Provider>
+            </Provider>,
         )
 
         expect(getByText(listInfoProps.INACCESSIBLE.text)).toBeInTheDocument()
         expect(
-            getByText(listInfoProps.INACCESSIBLE.subText)
+            getByText(listInfoProps.INACCESSIBLE.subText),
         ).toBeInTheDocument()
     })
 
     it('should redirect to edition view', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider
                 store={mockStore({
                     views: fromJS({
@@ -453,7 +458,7 @@ describe('<TicketListView />', () => {
                 })}
             >
                 <TicketListView viewId={123} />
-            </Provider>
+            </Provider>,
         )
         fireEvent.click(getByText('tune'))
 
@@ -463,17 +468,17 @@ describe('<TicketListView />', () => {
     })
 
     it('should display bulk actions', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <TicketListView viewId={123} />
-            </Provider>
+            </Provider>,
         )
 
         expect(getByText('BulkActions')).toBeInTheDocument()
     })
 
     it('should hide bulk actions for view with count 0', () => {
-        const {queryByText} = render(
+        const { queryByText } = render(
             <Provider
                 store={mockStore({
                     views: fromJS({
@@ -486,7 +491,7 @@ describe('<TicketListView />', () => {
                 })}
             >
                 <TicketListView viewId={123} />
-            </Provider>
+            </Provider>,
         )
 
         expect(queryByText('BulkActions')).not.toBeInTheDocument()
@@ -502,10 +507,10 @@ describe('<TicketListView />', () => {
                 clear: jest.fn(),
             })
 
-            const {getByText} = render(
+            const { getByText } = render(
                 <Provider store={store}>
                     <TicketListView viewId={123} />
-                </Provider>
+                </Provider>,
             )
 
             expect(getByText('Select all')).toBeInTheDocument()
@@ -520,10 +525,10 @@ describe('<TicketListView />', () => {
                 clear: jest.fn(),
             })
 
-            const {getByText} = render(
+            const { getByText } = render(
                 <Provider store={store}>
                     <TicketListView viewId={123} />
-                </Provider>
+                </Provider>,
             )
 
             expect(getByText('? selected')).toBeInTheDocument()
@@ -538,7 +543,7 @@ describe('<TicketListView />', () => {
                 clear: jest.fn(),
             })
 
-            const {getByText} = render(
+            const { getByText } = render(
                 <Provider
                     store={mockStore({
                         views: fromJS({
@@ -551,7 +556,7 @@ describe('<TicketListView />', () => {
                     })}
                 >
                     <TicketListView viewId={123} />
-                </Provider>
+                </Provider>,
             )
 
             expect(getByText('7 selected')).toBeInTheDocument()
@@ -568,10 +573,10 @@ describe('<TicketListView />', () => {
                 clear: jest.fn(),
             })
 
-            const {getByText} = render(
+            const { getByText } = render(
                 <Provider store={store}>
                     <TicketListView viewId={123} />
-                </Provider>
+                </Provider>,
             )
 
             expect(getByText('1 selected')).toBeInTheDocument()
@@ -581,16 +586,16 @@ describe('<TicketListView />', () => {
     describe('title wrapper', () => {
         it('should apply correct className based on global nav feature flag', () => {
             useDesktopOnlyShowGlobalNavFeatureFlagMock.mockReturnValue(true)
-            const {container, rerender} = render(
+            const { container, rerender } = render(
                 <Provider store={store}>
                     <MemoryRouter initialEntries={['/app/views/123']}>
                         <TicketListView viewId={123} />
                     </MemoryRouter>
-                </Provider>
+                </Provider>,
             )
 
             expect(
-                container.querySelector('.globalNavTitleWrapper')
+                container.querySelector('.globalNavTitleWrapper'),
             ).toBeInTheDocument()
 
             useDesktopOnlyShowGlobalNavFeatureFlagMock.mockReturnValue(false)
@@ -599,7 +604,7 @@ describe('<TicketListView />', () => {
                     <MemoryRouter initialEntries={['/app/views/123']}>
                         <TicketListView viewId={123} />
                     </MemoryRouter>
-                </Provider>
+                </Provider>,
             )
 
             expect(container.querySelector('.titleWrapper')).toBeInTheDocument()

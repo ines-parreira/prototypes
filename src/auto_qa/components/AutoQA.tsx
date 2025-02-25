@@ -1,28 +1,31 @@
-import {Tooltip, Badge} from '@gorgias/merchant-ui-kit'
+import React, { useMemo } from 'react'
+
 import cn from 'classnames'
 import moment from 'moment'
-import React, {useMemo} from 'react'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
-import {TicketStatus} from 'business/types/ticket'
+import { Badge, Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { TicketStatus } from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
-import {getTicket} from 'state/ticket/selectors'
+import { getTicket } from 'state/ticket/selectors'
 
-import {dimensionConfig} from '../config'
+import { dimensionConfig } from '../config'
 import useAutoQA from '../hooks/useAutoQA'
-import css from './AutoQA.less'
 import AutoQASkeleton from './AutoQASkeleton'
 import Dimension from './Dimension'
 import SaveBadge from './SaveBadge'
 
+import css from './AutoQA.less'
+
 export default function AutoQA() {
     const ticket = useAppSelector(getTicket)
-    const {changeHandlers, dimensions, isLoading, lastUpdated, saveState} =
+    const { changeHandlers, dimensions, isLoading, lastUpdated, saveState } =
         useAutoQA(ticket.id)
 
     const lastUpdatedString = useMemo(
         () => moment(lastUpdated).calendar(),
-        [lastUpdated]
+        [lastUpdated],
     )
 
     return (

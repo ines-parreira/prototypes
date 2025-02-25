@@ -1,8 +1,8 @@
-import {walkVisualBuilderGraph} from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import {MultipleChoicesNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import {visualBuilderGraphSimpleChoicesFixture} from 'pages/automate/workflows/tests/visualBuilderGraph.fixtures'
+import { walkVisualBuilderGraph } from 'pages/automate/workflows/models/visualBuilderGraph.model'
+import { MultipleChoicesNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { visualBuilderGraphSimpleChoicesFixture } from 'pages/automate/workflows/tests/visualBuilderGraph.fixtures'
 
-import {choicesReducer} from '../choicesReducer'
+import { choicesReducer } from '../choicesReducer'
 
 describe('choicesReducer', () => {
     test('SET_MULTIPLE_CHOICES_CONTENT', () => {
@@ -18,8 +18,8 @@ describe('choicesReducer', () => {
         expect(
             nextG.nodes.find(
                 (n): n is MultipleChoicesNodeType =>
-                    n.type === 'multiple_choices'
-            )?.data.content
+                    n.type === 'multiple_choices',
+            )?.data.content,
         ).toEqual({
             html: 'new html',
             text: 'new text',
@@ -33,9 +33,9 @@ describe('choicesReducer', () => {
             beforeNodeId: 'multiple_choices1',
         })
         // walk the graph depth-first and check the ordered ids
-        const walkedNodes: {id: string; type: string | undefined}[] = []
-        walkVisualBuilderGraph(nextG, nextG.nodes[0].id, ({id, type}) => {
-            walkedNodes.push({id, type})
+        const walkedNodes: { id: string; type: string | undefined }[] = []
+        walkVisualBuilderGraph(nextG, nextG.nodes[0].id, ({ id, type }) => {
+            walkedNodes.push({ id, type })
         })
         expect(walkedNodes).toEqual([
             {
@@ -96,7 +96,7 @@ describe('choicesReducer', () => {
         expect(nextG.nodes.filter((n) => n.type === 'end').length).toEqual(5)
         // and 4 edges starting from the multiple_choices node
         const choicesOutgoingEdges = nextG.edges.filter(
-            (e) => e.source === 'multiple_choices1'
+            (e) => e.source === 'multiple_choices1',
         )
         expect(choicesOutgoingEdges.length).toEqual(4)
         expect(choicesOutgoingEdges).toEqual(
@@ -133,7 +133,7 @@ describe('choicesReducer', () => {
                         },
                     },
                 }),
-            ])
+            ]),
         )
     })
 
@@ -146,7 +146,7 @@ describe('choicesReducer', () => {
         })
         // walk the graph depth-first and check the ordered ids
         const walkedNodesIds: string[] = []
-        walkVisualBuilderGraph(nextG, nextG.nodes[0].id, ({id}) => {
+        walkVisualBuilderGraph(nextG, nextG.nodes[0].id, ({ id }) => {
             walkedNodesIds.push(id)
         })
         expect(walkedNodesIds).toEqual([
@@ -169,7 +169,7 @@ describe('choicesReducer', () => {
         })
         // walk the graph depth-first and check the ordered ids
         const walkedNodesIds: string[] = []
-        walkVisualBuilderGraph(nextG, nextG.nodes[0].id, ({id}) => {
+        walkVisualBuilderGraph(nextG, nextG.nodes[0].id, ({ id }) => {
             walkedNodesIds.push(id)
         })
         expect(walkedNodesIds).toEqual([
@@ -196,8 +196,8 @@ describe('choicesReducer', () => {
         expect(
             nextG.nodes.find(
                 (n): n is MultipleChoicesNodeType =>
-                    n.id === 'multiple_choices1'
-            )?.data.choices
+                    n.id === 'multiple_choices1',
+            )?.data.choices,
         ).toEqual([
             {
                 event_id: 'eventId1',

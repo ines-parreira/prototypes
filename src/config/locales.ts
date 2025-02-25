@@ -1,6 +1,6 @@
-import {LocaleCode} from 'models/helpCenter/types'
+import { LocaleCode } from 'models/helpCenter/types'
 
-import {LanguageTimeFormat} from '../constants/languages'
+import { LanguageTimeFormat } from '../constants/languages'
 
 export const localeTimeFormatConfigs: Record<LocaleCode, LanguageTimeFormat> = {
     'en-US': LanguageTimeFormat.twelveHours,

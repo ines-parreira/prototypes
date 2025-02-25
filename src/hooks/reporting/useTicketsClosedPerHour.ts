@@ -1,4 +1,4 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
 import {
     fetchClosedTicketsMetric,
@@ -11,7 +11,7 @@ import {
     calculateMetricPerHour,
     periodAndAgentOnlyFilters,
 } from 'hooks/reporting/useMessagesSentPerHour'
-import {StatsFilters} from 'models/stat/types'
+import { StatsFilters } from 'models/stat/types'
 
 const formatResult = (closedTickets: Metric, onlineTime: Metric) => {
     let metricValue: number | null = null
@@ -19,7 +19,7 @@ const formatResult = (closedTickets: Metric, onlineTime: Metric) => {
     if (closedTickets.data?.value && onlineTime.data?.value) {
         metricValue = calculateMetricPerHour(
             closedTickets.data.value,
-            onlineTime.data.value
+            onlineTime.data.value,
         )
     }
 
@@ -30,20 +30,20 @@ const formatResult = (closedTickets: Metric, onlineTime: Metric) => {
 
 export const useTicketsClosedPerHour = (
     statsFilters: StatsFilters,
-    timezone: string
+    timezone: string,
 ): Metric => {
     const closedTickets = useClosedTicketsMetric(
         periodAndAgentOnlyFilters(statsFilters),
-        timezone
+        timezone,
     )
     const onlineTime = useOnlineTimeMetric(
         periodAndAgentOnlyFilters(statsFilters),
-        timezone
+        timezone,
     )
 
     const data = useMemo(
         () => formatResult(closedTickets, onlineTime),
-        [closedTickets, onlineTime]
+        [closedTickets, onlineTime],
     )
 
     return {
@@ -55,16 +55,16 @@ export const useTicketsClosedPerHour = (
 
 export const fetchTicketsClosedPerHour = async (
     statsFilters: StatsFilters,
-    timezone: string
+    timezone: string,
 ): Promise<Metric> => {
     return Promise.all([
         fetchClosedTicketsMetric(
             periodAndAgentOnlyFilters(statsFilters),
-            timezone
+            timezone,
         ),
         fetchOnlineTimeMetric(
             periodAndAgentOnlyFilters(statsFilters),
-            timezone
+            timezone,
         ),
     ])
         .then(([closedTickets, onlineTime]) => ({
@@ -72,5 +72,9 @@ export const fetchTicketsClosedPerHour = async (
             isFetching: false,
             isError: false,
         }))
-        .catch(() => ({data: {value: null}, isError: true, isFetching: false}))
+        .catch(() => ({
+            data: { value: null },
+            isError: true,
+            isFetching: false,
+        }))
 }

@@ -1,6 +1,8 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { useEffect } from 'react'
+
 import classNames from 'classnames'
-import React, {useEffect} from 'react'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import navbarCss from 'assets/css/navbar.less'
 import {
@@ -12,20 +14,21 @@ import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
 import useHasPhone from 'hooks/useHasPhone'
 import PhoneDevice from 'pages/integrations/integration/components/phone/PhoneDevice'
 import useMicrophonePermissions from 'pages/integrations/integration/components/voice/useMicrophonePermissions'
-import {isDesktopDevice, isDeviceReady} from 'utils/device'
-import {isMacOs} from 'utils/platform'
+import { isDesktopDevice, isDeviceReady } from 'utils/device'
+import { isMacOs } from 'utils/platform'
 
 import Button from './button/Button'
 import ButtonIconLabel from './button/ButtonIconLabel'
 import DeactivatedViewIcon from './DeactivatedViewIcon'
-import css from './PlaceCallNavbarButton.less'
 import ShortcutIcon from './ShortcutIcon/ShortcutIcon'
+
+import css from './PlaceCallNavbarButton.less'
 
 const BUTTON_ID = 'open-dialer-button'
 
 export default function PlaceCallNavbarButton() {
     const [isDeviceVisible, setIsDeviceVisible] = React.useState(false)
-    const {device} = useVoiceDevice()
+    const { device } = useVoiceDevice()
     const hasPhone = useHasPhone()
 
     const buttonRef = React.useRef<HTMLButtonElement>(null)
@@ -33,7 +36,7 @@ export default function PlaceCallNavbarButton() {
     const shouldDisplayButton = hasPhone && isDesktopDevice()
     const isDeviceActive = isDeviceReady(device)
 
-    const {permissionDenied} = useMicrophonePermissions()
+    const { permissionDenied } = useMicrophonePermissions()
 
     useConditionalShortcuts(
         shouldDisplayButton && isDeviceActive && !permissionDenied,
@@ -45,7 +48,7 @@ export default function PlaceCallNavbarButton() {
                     setIsDeviceVisible(true)
                 },
             },
-        }
+        },
     )
 
     useEffect(() => {

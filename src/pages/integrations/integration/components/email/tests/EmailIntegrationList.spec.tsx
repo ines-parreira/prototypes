@@ -1,19 +1,19 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {render, waitFor, screen, fireEvent} from '@testing-library/react'
-import {List, fromJS} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
-import LD from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
-import {Provider} from 'react-redux'
-import {MemoryRouter} from 'react-router-dom'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fromJS, List } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import LD from 'launchdarkly-react-client-sdk'
+import { Provider } from 'react-redux'
+import { MemoryRouter } from 'react-router-dom'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {IntegrationType, EmailProvider} from 'models/integration/constants'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { EmailProvider, IntegrationType } from 'models/integration/constants'
 import history from 'pages/history'
-import {AccountSettingType} from 'state/currentAccount/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {renderWithRouter, assumeMock, mockStore} from 'utils/testing'
+import { AccountSettingType } from 'state/currentAccount/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock, mockStore, renderWithRouter } from 'utils/testing'
 
 import EmailIntegrationList from '../EmailIntegrationList'
 import EmailIntegrationListVerificationStatus from '../EmailIntegrationListVerificationStatus'
@@ -22,13 +22,13 @@ import {
     isBaseEmailIntegration,
     isOutboundVerifiedSendgrid,
 } from '../helpers'
-import {useEmailOnboardingCompleteCheck} from '../hooks/useEmailOnboarding'
-import {fetchEmailDomains} from '../resources'
+import { useEmailOnboardingCompleteCheck } from '../hooks/useEmailOnboarding'
+import { fetchEmailDomains } from '../resources'
 
 const queryClient = mockQueryClient()
 
 jest.mock(
-    'pages/integrations/integration/components/email/EmailIntegrationListVerificationStatus'
+    'pages/integrations/integration/components/email/EmailIntegrationListVerificationStatus',
 )
 
 jest.mock('../helpers')
@@ -38,15 +38,15 @@ jest.mock('../hooks/useEmailOnboarding')
 
 const fetchEmailDomainsMock = assumeMock(fetchEmailDomains)
 const EmailIntegrationListVerificationStatusMock = assumeMock(
-    EmailIntegrationListVerificationStatus
+    EmailIntegrationListVerificationStatus,
 )
 const isBaseEmailIntegrationMock = assumeMock(isBaseEmailIntegration)
 const canIntegrationDomainBeVerifiedMock = assumeMock(
-    canIntegrationDomainBeVerified
+    canIntegrationDomainBeVerified,
 )
 const isOutboundVerifiedSendgridMock = assumeMock(isOutboundVerifiedSendgrid)
 const useEmailOnboardingCompleteCheckMock = assumeMock(
-    useEmailOnboardingCompleteCheck
+    useEmailOnboardingCompleteCheck,
 )
 
 describe('<EmailIntegrationList/>', () => {
@@ -55,12 +55,12 @@ describe('<EmailIntegrationList/>', () => {
         deactivated = false,
         provider = EmailProvider.Mailgun,
         address = 'email@gorgias-test.com',
-        verified = true
+        verified = true,
     ) {
         return {
             id,
             type: IntegrationType.Email,
-            ...(deactivated && {deactivated_datetime: '2024-01-01T00:00:00'}),
+            ...(deactivated && { deactivated_datetime: '2024-01-01T00:00:00' }),
             name: `My Email Integration ${id}`,
             meta: {
                 verified,
@@ -75,12 +75,12 @@ describe('<EmailIntegrationList/>', () => {
         deactivated = false,
         sendingEnabled: boolean,
         provider = EmailProvider.Mailgun,
-        verified = true
+        verified = true,
     ) {
         return {
             id,
             type: IntegrationType.Gmail,
-            ...(deactivated && {deactivated_datetime: '2024-01-01T00:00:00'}),
+            ...(deactivated && { deactivated_datetime: '2024-01-01T00:00:00' }),
             name: `My GMail Integration ${id}`,
             meta: {
                 address: 'email@gmail.com',
@@ -96,12 +96,12 @@ describe('<EmailIntegrationList/>', () => {
         deactivated = false,
         sendingEnabled: boolean,
         provider = EmailProvider.Mailgun,
-        verified = true
+        verified = true,
     ) {
         return {
             id,
             type: IntegrationType.Outlook,
-            ...(deactivated && {deactivated_datetime: '2024-01-01T00:00:00'}),
+            ...(deactivated && { deactivated_datetime: '2024-01-01T00:00:00' }),
             name: `My Outlook Integration ${id}`,
             meta: {
                 address: 'email@Outlook.com',
@@ -146,17 +146,17 @@ describe('<EmailIntegrationList/>', () => {
                     <Provider store={store}>
                         <EmailIntegrationList {...commonProps} />
                     </Provider>
-                </QueryClientProvider>
+                </QueryClientProvider>,
             )
             await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
 
             expect(
-                EmailIntegrationListVerificationStatusMock
+                EmailIntegrationListVerificationStatusMock,
             ).toHaveBeenCalledWith(
                 expect.objectContaining({
                     isDomainVerificationWarningVisible: true,
                 }),
-                {}
+                {},
             )
         })
 
@@ -194,20 +194,20 @@ describe('<EmailIntegrationList/>', () => {
                                     2,
                                     false,
                                     EmailProvider.Sendgrid,
-                                    'base-email-integration@gorgias.com'
+                                    'base-email-integration@gorgias.com',
                                 ),
                             ])}
                         />
                     </Provider>
-                </QueryClientProvider>
+                </QueryClientProvider>,
             )
             await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
 
             expect(
                 screen.getByText(
                     'In order to verify your domains, click on the emails',
-                    {exact: false}
-                )
+                    { exact: false },
+                ),
             ).toBeVisible()
         })
 
@@ -234,19 +234,19 @@ describe('<EmailIntegrationList/>', () => {
                                     2,
                                     false,
                                     EmailProvider.Sendgrid,
-                                    'base-email-integration@gorgias.com'
+                                    'base-email-integration@gorgias.com',
                                 ),
                             ])}
                         />
                     </Provider>
-                </QueryClientProvider>
+                </QueryClientProvider>,
             )
             await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
             expect(
                 screen.queryByText(
                     'In order to verify your domains, click on the emails',
-                    {exact: false}
-                )
+                    { exact: false },
+                ),
             ).not.toBeInTheDocument()
         })
 
@@ -292,12 +292,12 @@ describe('<EmailIntegrationList/>', () => {
                 </Provider>,
 
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
                             <MemoryRouter>{children}</MemoryRouter>
                         </QueryClientProvider>
                     ),
-                }
+                },
             )
             await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
             expect(screen.getByText('DEFAULT')).toBeInTheDocument()
@@ -318,25 +318,25 @@ describe('<EmailIntegrationList/>', () => {
                                         1,
                                         false,
                                         false,
-                                        emailProvider
+                                        emailProvider,
                                     ),
                                 ])}
                             />
                         </Provider>
-                    </QueryClientProvider>
+                    </QueryClientProvider>,
                 )
                 await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
 
                 expect(
-                    EmailIntegrationListVerificationStatusMock
+                    EmailIntegrationListVerificationStatusMock,
                 ).toHaveBeenCalledWith(
                     expect.objectContaining({
                         isDomainVerificationWarningVisible: true,
                         isForwardEmail: false,
                     }),
-                    {}
+                    {},
                 )
-            }
+            },
         )
 
         it.each([EmailProvider.Mailgun, EmailProvider.Sendgrid])(
@@ -354,25 +354,25 @@ describe('<EmailIntegrationList/>', () => {
                                         1,
                                         false,
                                         false,
-                                        emailProvider
+                                        emailProvider,
                                     ),
                                 ])}
                             />
                         </Provider>
-                    </QueryClientProvider>
+                    </QueryClientProvider>,
                 )
                 await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
 
                 expect(
-                    EmailIntegrationListVerificationStatusMock
+                    EmailIntegrationListVerificationStatusMock,
                 ).toHaveBeenCalledWith(
                     expect.objectContaining({
                         isDomainVerificationWarningVisible: true,
                         isForwardEmail: false,
                     }),
-                    {}
+                    {},
                 )
-            }
+            },
         )
 
         it.each([EmailProvider.Mailgun, EmailProvider.Sendgrid])(
@@ -391,24 +391,24 @@ describe('<EmailIntegrationList/>', () => {
                                         1,
                                         true,
                                         true,
-                                        emailProvider
+                                        emailProvider,
                                     ),
                                 ])}
                             />
                         </Provider>
-                    </QueryClientProvider>
+                    </QueryClientProvider>,
                 )
                 await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
 
                 expect(
-                    EmailIntegrationListVerificationStatusMock
+                    EmailIntegrationListVerificationStatusMock,
                 ).not.toHaveBeenCalledWith(
                     expect.objectContaining({
                         isDomainVerificationWarningGmailOutlookVisible: true,
                     }),
-                    {}
+                    {},
                 )
-            }
+            },
         )
 
         it.each([EmailProvider.Mailgun, EmailProvider.Sendgrid])(
@@ -427,24 +427,24 @@ describe('<EmailIntegrationList/>', () => {
                                         1,
                                         true,
                                         true,
-                                        emailProvider
+                                        emailProvider,
                                     ),
                                 ])}
                             />
                         </Provider>
-                    </QueryClientProvider>
+                    </QueryClientProvider>,
                 )
                 await waitFor(() => expect(get).toHaveBeenCalledTimes(1))
 
                 expect(
-                    EmailIntegrationListVerificationStatusMock
+                    EmailIntegrationListVerificationStatusMock,
                 ).not.toHaveBeenCalledWith(
                     expect.objectContaining({
                         isDomainVerificationWarningGmailOutlookVisible: true,
                     }),
-                    {}
+                    {},
                 )
-            }
+            },
         )
 
         describe('redirect URLs', () => {
@@ -455,7 +455,7 @@ describe('<EmailIntegrationList/>', () => {
                     integration: getEmailIntegration(
                         1,
                         false,
-                        EmailProvider.Mailgun
+                        EmailProvider.Mailgun,
                     ),
                     expected: `/app/settings/channels/email/${1}/dns`,
                 },
@@ -465,7 +465,7 @@ describe('<EmailIntegrationList/>', () => {
                     integration: getEmailIntegration(
                         1,
                         true,
-                        EmailProvider.Mailgun
+                        EmailProvider.Mailgun,
                     ),
                     expected: `/app/settings/channels/email/${1}/dns`,
                 },
@@ -475,7 +475,7 @@ describe('<EmailIntegrationList/>', () => {
                     integration: getEmailIntegration(
                         1,
                         false,
-                        EmailProvider.Sendgrid
+                        EmailProvider.Sendgrid,
                     ),
                     expected: `/app/settings/channels/email/${1}/outbound-verification`,
                 },
@@ -485,7 +485,7 @@ describe('<EmailIntegrationList/>', () => {
                     integration: getEmailIntegration(
                         1,
                         true,
-                        EmailProvider.Sendgrid
+                        EmailProvider.Sendgrid,
                     ),
                     expected: `/app/settings/channels/email/${1}/outbound-verification`,
                 },
@@ -514,7 +514,7 @@ describe('<EmailIntegrationList/>', () => {
                     integration: getEmailIntegration(
                         1,
                         false,
-                        EmailProvider.Mailgun
+                        EmailProvider.Mailgun,
                     ),
                     expected: `/app/settings/channels/email/${1}/onboarding/domain-verification`,
                     onboardingComplete: false,
@@ -525,7 +525,7 @@ describe('<EmailIntegrationList/>', () => {
                     integration: getEmailIntegration(
                         1,
                         false,
-                        EmailProvider.Mailgun
+                        EmailProvider.Mailgun,
                     ),
                     expected: `/app/settings/channels/email/${1}`,
                     onboardingComplete: false,
@@ -537,7 +537,7 @@ describe('<EmailIntegrationList/>', () => {
                     integration: getEmailIntegration(
                         1,
                         false,
-                        EmailProvider.Mailgun
+                        EmailProvider.Mailgun,
                     ),
                     expected: `/app/settings/channels/email/${1}/dns`,
                     onboardingComplete: true,
@@ -561,7 +561,7 @@ describe('<EmailIntegrationList/>', () => {
                     canDomainBeVerified = true,
                 }) => {
                     canIntegrationDomainBeVerifiedMock.mockReturnValue(
-                        canDomainBeVerified
+                        canDomainBeVerified,
                     )
                     mockFlags({
                         [FeatureFlagKey.NewDomainVerification]:
@@ -582,21 +582,21 @@ describe('<EmailIntegrationList/>', () => {
                                     integrations={fromJS([integration])}
                                 />
                             </Provider>
-                        </QueryClientProvider>
+                        </QueryClientProvider>,
                     )
 
                     await component.findByText(integration.meta.address)
 
                     fireEvent.click(
-                        component.getByText(integration.meta.address)
+                        component.getByText(integration.meta.address),
                     )
 
                     expect(history.push).toHaveBeenCalledWith(expected)
 
                     expect(
-                        useEmailOnboardingCompleteCheckMock
+                        useEmailOnboardingCompleteCheckMock,
                     ).toHaveBeenCalledWith(integration)
-                }
+                },
             )
 
             it.each([
@@ -616,16 +616,16 @@ describe('<EmailIntegrationList/>', () => {
                                     integrations={fromJS([integration])}
                                 />
                             </Provider>
-                        </QueryClientProvider>
+                        </QueryClientProvider>,
                     )
                     await component.findByText(integration.meta.address)
                     fireEvent.click(
-                        component.getByText(integration.meta.address)
+                        component.getByText(integration.meta.address),
                     )
                     expect(history.push).toHaveBeenCalledWith(
-                        `/app/settings/channels/email/${1}`
+                        `/app/settings/channels/email/${1}`,
                     )
-                }
+                },
             )
 
             it.each([
@@ -637,7 +637,7 @@ describe('<EmailIntegrationList/>', () => {
                         false,
                         EmailProvider.Sendgrid,
                         'email@gorgias-test.com',
-                        true
+                        true,
                     ),
                     expected: `/app/settings/channels/email/${1}`,
                 },
@@ -649,7 +649,7 @@ describe('<EmailIntegrationList/>', () => {
                         false,
                         EmailProvider.Sendgrid,
                         'email@gorgias-test.com',
-                        false
+                        false,
                     ),
                     expected: `/app/settings/channels/email/${1}/verification`,
                 },
@@ -661,7 +661,7 @@ describe('<EmailIntegrationList/>', () => {
                         false,
                         true,
                         EmailProvider.Sendgrid,
-                        false
+                        false,
                     ),
                     expected: `/app/settings/channels/email/${1}`,
                 },
@@ -673,7 +673,7 @@ describe('<EmailIntegrationList/>', () => {
                         false,
                         true,
                         EmailProvider.Sendgrid,
-                        false
+                        false,
                     ),
                     expected: `/app/settings/channels/email/${1}`,
                 },
@@ -685,7 +685,7 @@ describe('<EmailIntegrationList/>', () => {
                         false,
                         true,
                         EmailProvider.Sendgrid,
-                        true
+                        true,
                     ),
                     expected: `/app/settings/channels/email/${1}`,
                 },
@@ -697,7 +697,7 @@ describe('<EmailIntegrationList/>', () => {
                         false,
                         true,
                         EmailProvider.Sendgrid,
-                        true
+                        true,
                     ),
                     expected: `/app/settings/channels/email/${1}`,
                 },
@@ -706,18 +706,22 @@ describe('<EmailIntegrationList/>', () => {
                     integration: getEmailIntegration(
                         1,
                         false,
-                        EmailProvider.Sendgrid
+                        EmailProvider.Sendgrid,
                     ),
                     canDomainBeVerified: false,
                     expected: `/app/settings/channels/email/${1}`,
                 },
             ])(
                 '(outbound verified) should redirect to the correct page when clicking on the integration - $description',
-                async ({integration, expected, canDomainBeVerified = true}) => {
+                async ({
+                    integration,
+                    expected,
+                    canDomainBeVerified = true,
+                }) => {
                     fetchEmailDomainsMock.mockResolvedValueOnce([])
                     isOutboundVerifiedSendgridMock.mockReturnValue(true)
                     canIntegrationDomainBeVerifiedMock.mockReturnValue(
-                        canDomainBeVerified
+                        canDomainBeVerified,
                     )
 
                     const component = renderWithRouter(
@@ -728,14 +732,14 @@ describe('<EmailIntegrationList/>', () => {
                                     integrations={fromJS([integration])}
                                 />
                             </Provider>
-                        </QueryClientProvider>
+                        </QueryClientProvider>,
                     )
                     await component.findByText(integration.meta.address)
                     fireEvent.click(
-                        component.getByText(integration.meta.address)
+                        component.getByText(integration.meta.address),
                     )
                     expect(history.push).toHaveBeenCalledWith(expected)
-                }
+                },
             )
         })
 
@@ -746,7 +750,7 @@ describe('<EmailIntegrationList/>', () => {
             const integration = getEmailIntegration(
                 1,
                 false,
-                EmailProvider.Sendgrid
+                EmailProvider.Sendgrid,
             )
 
             renderWithRouter(
@@ -757,11 +761,11 @@ describe('<EmailIntegrationList/>', () => {
                             integrations={fromJS([integration])}
                         />
                     </Provider>
-                </QueryClientProvider>
+                </QueryClientProvider>,
             )
 
             expect(
-                screen.queryByText('EmailIntegrationListVerificationStatus')
+                screen.queryByText('EmailIntegrationListVerificationStatus'),
             ).not.toBeInTheDocument()
         })
     })

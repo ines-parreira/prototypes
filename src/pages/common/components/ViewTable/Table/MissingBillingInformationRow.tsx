@@ -1,30 +1,30 @@
-import React, {useMemo, useState} from 'react'
+import React, { useMemo, useState } from 'react'
 
-import {useAppNode} from 'appNode'
-import {UserRole} from 'config/types/user'
+import { useAppNode } from 'appNode'
+import { UserRole } from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
 import useDimensions from 'hooks/useDimensions'
 import useWindowSize from 'hooks/useWindowSize'
-import {useBillingContact} from 'models/billing/queries'
-import {AlertType} from 'pages/common/components/Alert/Alert'
+import { useBillingContact } from 'models/billing/queries'
+import { AlertType } from 'pages/common/components/Alert/Alert'
 import LinkAlert from 'pages/common/components/Alert/LinkAlert'
 import Loader from 'pages/common/components/Loader/Loader'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import {BillingInformationFields} from 'pages/settings/new_billing/components/BillingInformationFields/BillingInformationFields'
-import {BillingInformationSetupForm} from 'pages/settings/new_billing/components/BillingInformationSetupForm/BillingInformationSetupForm'
-import {FormSubmitButton} from 'pages/settings/new_billing/components/FormSubmitButton/FormSubmitButton'
-import {StripeElementsProvider} from 'pages/settings/new_billing/components/StripeElementsProvider/StripeElementsProvider'
-import {getIsMissingBillingtInformation} from 'pages/settings/new_billing/utils/getIsMissingBillingtInformation'
-import {PaymentMethodType} from 'state/billing/types'
+import { BillingInformationFields } from 'pages/settings/new_billing/components/BillingInformationFields/BillingInformationFields'
+import { BillingInformationSetupForm } from 'pages/settings/new_billing/components/BillingInformationSetupForm/BillingInformationSetupForm'
+import { FormSubmitButton } from 'pages/settings/new_billing/components/FormSubmitButton/FormSubmitButton'
+import { StripeElementsProvider } from 'pages/settings/new_billing/components/StripeElementsProvider/StripeElementsProvider'
+import { getIsMissingBillingtInformation } from 'pages/settings/new_billing/utils/getIsMissingBillingtInformation'
+import { PaymentMethodType } from 'state/billing/types'
 import {
-    paymentMethod as getPaymentMethod,
     hasCreditCard as getHasCreditCard,
+    paymentMethod as getPaymentMethod,
 } from 'state/currentAccount/selectors'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {hasRole} from 'utils'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { hasRole } from 'utils'
 
 import css from './MissingBillingInformationRow.less'
 
@@ -35,20 +35,22 @@ export default function MissingBillingInformationRow() {
     const paymentMethod = useAppSelector(getPaymentMethod)
     const isAdmin = useMemo(
         () => hasRole(currentUser, UserRole.Admin),
-        [currentUser]
+        [currentUser],
     )
-    const {width: viewportWidth} = useWindowSize()
+    const { width: viewportWidth } = useWindowSize()
     const [rowRef, rowDimensions] = useDimensions()
     const rowMaxWidth = useMemo(
         () => viewportWidth - (rowDimensions?.x || 0),
-        [viewportWidth, rowDimensions]
+        [viewportWidth, rowDimensions],
     )
     const appNode = useAppNode()
 
-    const billingInformation = useBillingContact({refetchOnWindowFocus: false})
+    const billingInformation = useBillingContact({
+        refetchOnWindowFocus: false,
+    })
 
     const isMissingContactInformation = getIsMissingBillingtInformation(
-        billingInformation.data?.data
+        billingInformation.data?.data,
     )
 
     return (

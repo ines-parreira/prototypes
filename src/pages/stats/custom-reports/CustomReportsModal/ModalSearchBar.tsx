@@ -1,7 +1,8 @@
-import _get from 'lodash/get'
 import React from 'react'
 
-import {SearchBar} from 'pages/common/components/SearchBar/SearchBar'
+import _get from 'lodash/get'
+
+import { SearchBar } from 'pages/common/components/SearchBar/SearchBar'
 import {
     ChartConfig,
     ReportChildrenConfig,
@@ -19,7 +20,7 @@ type Props = {
 
 export const getSearchConfig = (
     config: ReportsModalConfig,
-    value: string
+    value: string,
 ): ReportsModalConfig | null => {
     const searchValue = value.toLowerCase()
 
@@ -32,7 +33,7 @@ export const getSearchConfig = (
             const filteredCharts: Record<string, ChartConfig> = {}
 
             for (const [chartId, chart] of Object.entries(
-                report.config.charts
+                report.config.charts,
             )) {
                 if (String(chart.label).toLowerCase().includes(searchValue)) {
                     filteredCharts[chartId] = chart
@@ -72,7 +73,7 @@ export const ModalSearchBar = ({
             const updatedConfig = getSearchConfig(config, value)
             setConfig(updatedConfig)
             setSelectedReport(
-                _get(updatedConfig, '0.children.0.config') || null
+                _get(updatedConfig, '0.children.0.config') || null,
             )
         } else {
             setSelectedReport(null)

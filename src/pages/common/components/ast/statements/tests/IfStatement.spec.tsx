@@ -1,12 +1,12 @@
-import {render} from '@testing-library/react'
-import {Map, fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { render } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {rule} from 'fixtures/rule'
-
-import {RuleContext} from 'pages/common/hooks/rule/RuleProvider'
+import { rule } from 'fixtures/rule'
+import { RuleContext } from 'pages/common/hooks/rule/RuleProvider'
 
 import Expression from '../../expression/Expression'
 import IfStatement from '../IfStatement'
@@ -32,21 +32,21 @@ describe('IfStatement component', () => {
     }
 
     it('should not render alternate because there is none', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultStore)}>
-                <RuleContext.Provider value={{Expression, Statement}}>
+                <RuleContext.Provider value={{ Expression, Statement }}>
                     <IfStatement {...minProps} />
                 </RuleContext.Provider>
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render alternate because there is one', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultStore)}>
-                <RuleContext.Provider value={{Expression, Statement}}>
+                <RuleContext.Provider value={{ Expression, Statement }}>
                     <IfStatement
                         {...minProps}
                         alternate={{
@@ -54,7 +54,7 @@ describe('IfStatement component', () => {
                         }}
                     />
                 </RuleContext.Provider>
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()

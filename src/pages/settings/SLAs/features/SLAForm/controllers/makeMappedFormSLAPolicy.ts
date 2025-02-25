@@ -1,5 +1,5 @@
-import {SLAPolicy} from '@gorgias/api-queries'
-import {SLAPolicyMetric} from '@gorgias/api-types'
+import { SLAPolicy } from '@gorgias/api-queries'
+import { SLAPolicyMetric } from '@gorgias/api-types'
 
 export type MappedFormSLAPolicy = ReturnType<typeof makeMappedFormSLAPolicy>
 
@@ -25,7 +25,7 @@ export default function makeMappedFormSLAPolicy(policy: SLAPolicy) {
                         unit: SLAPolicyMetric['unit']
                     }
                 >
-            >
+            >,
         ),
     }
 }

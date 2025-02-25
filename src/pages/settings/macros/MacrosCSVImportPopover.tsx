@@ -1,24 +1,25 @@
-import classNames from 'classnames'
-import React, {ChangeEvent, useRef, useState} from 'react'
-import {Link} from 'react-router-dom'
-import {Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
+import React, { ChangeEvent, useRef, useState } from 'react'
 
-import {useAppNode} from 'appNode'
-import {logEvent, SegmentEvent} from 'common/segment'
-import {uploadFiles} from 'common/utils'
+import classNames from 'classnames'
+import { Link } from 'react-router-dom'
+import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
+
+import { useAppNode } from 'appNode'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { uploadFiles } from 'common/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
-import {GorgiasApiError} from 'models/api/types'
-import {createJob} from 'models/job/resources'
-import {JobType} from 'models/job/types'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import { GorgiasApiError } from 'models/api/types'
+import { createJob } from 'models/job/resources'
+import { JobType } from 'models/job/types'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {saveFileAsDownloaded} from 'utils/file'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { saveFileAsDownloaded } from 'utils/file'
 
 import css from './MacrosCSVImportPopover.less'
 
@@ -30,14 +31,14 @@ type Props = {
     onClose: () => void
 }
 
-export const MacrosCSVImportPopover = ({isOpen, onClose}: Props) => {
+export const MacrosCSVImportPopover = ({ isOpen, onClose }: Props) => {
     const [pickedFile, setPickedFile] = useState<File | null>(null)
     const hiddenFileInputRef = useRef<HTMLInputElement>(null)
     const currentAccount = useAppSelector(getCurrentAccountState)
     const dispatch = useAppDispatch()
     const appNode = useAppNode()
 
-    const [{loading: isImporting}, handleImport] = useAsyncFn(async () => {
+    const [{ loading: isImporting }, handleImport] = useAsyncFn(async () => {
         if (!pickedFile) return
 
         logEvent(SegmentEvent.MacrosImportClicked, {
@@ -57,13 +58,13 @@ export const MacrosCSVImportPopover = ({isOpen, onClose}: Props) => {
                             ? 'Failed to upload file because its size is bigger than 10MB. Try splitting it into several smaller files.'
                             : (error.response?.data.error.msg ??
                               'Failed to upload file. Please try again later.'),
-                })
+                }),
             )
             return
         }
         const requestPayload = {
             type: JobType.ImportMacro,
-            params: {url: uploadedFiles[0].url},
+            params: { url: uploadedFiles[0].url },
         }
         try {
             await createJob(requestPayload)
@@ -72,7 +73,7 @@ export const MacrosCSVImportPopover = ({isOpen, onClose}: Props) => {
                     status: NotificationStatus.Success,
                     message:
                         'All the macros will be imported. You will receive a notification via email once the import is done.',
-                })
+                }),
             )
             onClose()
             setPickedFile(null)
@@ -84,7 +85,7 @@ export const MacrosCSVImportPopover = ({isOpen, onClose}: Props) => {
                     message:
                         error.response?.data.error.msg ??
                         'Failed to import macros. Please try again later.',
-                })
+                }),
             )
         }
     }, [pickedFile])
@@ -143,7 +144,7 @@ export const MacrosCSVImportPopover = ({isOpen, onClose}: Props) => {
                                     saveFileAsDownloaded(
                                         'template.csv',
                                         'name,body_text,tags\r\nGreet customer,Hello dear customer...,"tag1, tag2"',
-                                        'text/csv'
+                                        'text/csv',
                                     )
                                 }}
                             >
@@ -171,7 +172,7 @@ export const MacrosCSVImportPopover = ({isOpen, onClose}: Props) => {
                             type="file"
                             accept=".csv"
                             ref={hiddenFileInputRef}
-                            style={{display: 'none'}}
+                            style={{ display: 'none' }}
                             onChange={handleFileChosen}
                         />
                         {pickedFile ? (
@@ -214,7 +215,7 @@ export const MacrosCSVImportPopover = ({isOpen, onClose}: Props) => {
                                     <i
                                         className={classNames(
                                             'material-icons',
-                                            css.modalCloudIcon
+                                            css.modalCloudIcon,
                                         )}
                                     >
                                         cloud_upload

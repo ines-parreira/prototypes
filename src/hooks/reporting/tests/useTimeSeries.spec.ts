@@ -1,5 +1,5 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {AxiosResponse} from 'axios'
+import { renderHook } from '@testing-library/react-hooks'
+import { AxiosResponse } from 'axios'
 
 import {
     fetchTimeSeries,
@@ -12,7 +12,7 @@ import {
     TAG_SEPARATOR,
     VALUE_FIELD,
 } from 'hooks/reporting/withBreakdown'
-import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
+import { HelpdeskMessageCubeWithJoins } from 'models/reporting/cubes/HelpdeskMessageCube'
 import {
     TicketCubeWithJoins,
     TicketDimension,
@@ -21,17 +21,16 @@ import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMember,
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
-import {TicketMessagesMeasure} from 'models/reporting/cubes/TicketMessagesCube'
-import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
-
-import {fetchPostReporting, usePostReporting} from 'models/reporting/queries'
+import { TicketMessagesMeasure } from 'models/reporting/cubes/TicketMessagesCube'
+import { TicketSatisfactionSurveyMeasure } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
+import { fetchPostReporting, usePostReporting } from 'models/reporting/queries'
 import {
-    ReportingResponse,
-    ReportingGranularity,
     ReportingFilterOperator,
+    ReportingGranularity,
+    ReportingResponse,
     TimeSeriesQuery,
 } from 'models/reporting/types'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('models/reporting/queries')
 const usePostReportingMock = assumeMock(usePostReporting)
@@ -147,7 +146,7 @@ describe('useTimeSeries', () => {
             [defaultQuery],
             expect.objectContaining({
                 select,
-            })
+            }),
         )
     })
 
@@ -160,7 +159,7 @@ describe('useTimeSeries', () => {
                 data: defaultResult,
             } as unknown as AxiosResponse<
                 ReportingResponse<typeof defaultData>
-            >)
+            >),
         ).toEqual(expectedTimeSeriesResult)
     })
 
@@ -179,7 +178,7 @@ describe('useTimeSeries', () => {
                         ],
                     },
                 ],
-            })
+            }),
         )
         const select = usePostReportingMock.mock.calls[0][1]?.select
 
@@ -197,7 +196,7 @@ describe('useTimeSeries', () => {
                 },
             } as unknown as AxiosResponse<
                 ReportingResponse<typeof defaultData>
-            >)
+            >),
         ).toEqual([
             [
                 {
@@ -212,7 +211,7 @@ describe('useTimeSeries', () => {
     describe('fetchTimeSeries', () => {
         beforeEach(() => {
             fetchPostReportingMock.mockResolvedValue({
-                data: {data: defaultData},
+                data: { data: defaultData },
             } as any)
         })
         it('should use fetchPostReporting and return formatted data', async () => {
@@ -275,7 +274,7 @@ describe('TimeSeriesPerDimension', () => {
             renderHook(() =>
                 useTimeSeriesPerDimension({
                     ...defaultQuery,
-                })
+                }),
             )
             const select = usePostReportingMock.mock.calls[0][1]?.select
 
@@ -284,7 +283,7 @@ describe('TimeSeriesPerDimension', () => {
                     data: defaultResult,
                 } as unknown as AxiosResponse<
                     ReportingResponse<typeof defaultData>
-                >)
+                >),
             ).toEqual({
                 [`${ticketField}${TAG_SEPARATOR}${ticketFieldL2_1}`]: [
                     [

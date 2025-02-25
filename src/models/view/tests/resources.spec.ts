@@ -1,17 +1,17 @@
 import MockAdapter from 'axios-mock-adapter'
 import _omit from 'lodash/omit'
 
-import {view} from 'fixtures/views'
+import { view } from 'fixtures/views'
 import client from 'models/api/resources'
-import {getLDClient} from 'utils/launchDarkly'
+import { getLDClient } from 'utils/launchDarkly'
 
 import {
     createView,
-    updateView,
     deleteView,
     fetchViewsPaginated,
+    updateView,
 } from '../resources'
-import {ViewDraft} from '../types'
+import { ViewDraft } from '../types'
 
 const mockedServer = new MockAdapter(client)
 const draftView: ViewDraft = {
@@ -42,9 +42,9 @@ describe('view resources', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onGet(/\/api\/views\/.*/)
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(fetchViewsPaginated()).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                new Error('Request failed with status code 503'),
             )
         })
     })
@@ -59,9 +59,9 @@ describe('view resources', () => {
         })
 
         it('should reject an error on fail', () => {
-            mockedServer.onPost('/api/views/').reply(503, {message: 'error'})
+            mockedServer.onPost('/api/views/').reply(503, { message: 'error' })
             return expect(createView(draftView)).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                new Error('Request failed with status code 503'),
             )
         })
     })
@@ -79,8 +79,8 @@ describe('view resources', () => {
                 ...draftView,
                 id: view.id,
                 name: 'foo',
-                shared_with_teams: [{id: 1, decoration: {}, name: 'foo'}],
-                shared_with_users: [{id: 1, meta: {}, name: 'bar'}],
+                shared_with_teams: [{ id: 1, decoration: {}, name: 'foo' }],
+                shared_with_users: [{ id: 1, meta: {}, name: 'bar' }],
             })
             expect(res).toMatchSnapshot()
             expect(mockedServer.history).toMatchSnapshot()
@@ -89,14 +89,14 @@ describe('view resources', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onPut(/\/api\/views\/\d+\//)
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(
                 updateView(view.id, {
                     ...draftView,
                     id: view.id,
-                    shared_with_teams: [{id: 1, decoration: {}, name: 'foo'}],
-                    shared_with_users: [{id: 1, meta: {}, name: 'bar'}],
-                })
+                    shared_with_teams: [{ id: 1, decoration: {}, name: 'foo' }],
+                    shared_with_users: [{ id: 1, meta: {}, name: 'bar' }],
+                }),
             ).rejects.toEqual(new Error('Request failed with status code 503'))
         })
     })
@@ -112,9 +112,9 @@ describe('view resources', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onDelete(/\/api\/views\/\d+\//)
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(deleteView(1)).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                new Error('Request failed with status code 503'),
             )
         })
     })

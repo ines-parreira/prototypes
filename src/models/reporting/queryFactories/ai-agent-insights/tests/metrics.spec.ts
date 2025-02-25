@@ -1,10 +1,10 @@
-import {OrderDirection} from 'models/api/types'
+import { OrderDirection } from 'models/api/types'
 import {
     RecommendedResourcesDimension,
     RecommendedResourcesFilterMember,
     RecommendedResourcesMeasure,
 } from 'models/reporting/cubes/automate_v2/RecommendedResourcesCube'
-import {TicketMember} from 'models/reporting/cubes/TicketCube'
+import { TicketMember } from 'models/reporting/cubes/TicketCube'
 import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMember,
@@ -18,7 +18,7 @@ import {
     customerSatisfactionPerIntentLevelQueryFactory,
     recommendedResourceQueryFactory,
 } from 'models/reporting/queryFactories/ai-agent-insights/metrics'
-import {ReportingFilterOperator} from 'models/reporting/types'
+import { ReportingFilterOperator } from 'models/reporting/types'
 import {
     formatReportingQueryDate,
     NotSpamNorTrashedTicketsFilter,
@@ -35,7 +35,7 @@ describe('AI Agent metrics', () => {
 
     it('customerSatisfactionPerIntentLevelQueryFactory', () => {
         expect(
-            customerSatisfactionPerIntentLevelQueryFactory(filters, timezone)
+            customerSatisfactionPerIntentLevelQueryFactory(filters, timezone),
         ).toEqual({
             dimensions: [
                 TicketCustomFieldsDimension.TicketCustomFieldsValueString,
@@ -75,8 +75,8 @@ describe('AI Agent metrics', () => {
                 OrderDirection.Asc,
                 1,
                 'customFieldValue',
-                '1'
-            )
+                '1',
+            ),
         ).toEqual({
             dimensions: [
                 TicketCustomFieldsDimension.TicketCustomFieldsValueString,
@@ -126,7 +126,7 @@ describe('AI Agent metrics', () => {
 
     it('recommendedResourceQueryFactory', () => {
         expect(
-            recommendedResourceQueryFactory(filters, timezone, ['1', '2'])
+            recommendedResourceQueryFactory(filters, timezone, ['1', '2']),
         ).toEqual({
             dimensions: [
                 RecommendedResourcesDimension.TicketId,

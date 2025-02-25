@@ -1,5 +1,6 @@
-import {Map, List} from 'immutable'
-import React, {ReactElement, FC} from 'react'
+import React, { FC, ReactElement } from 'react'
+
+import { List, Map } from 'immutable'
 
 type DataType = Map<any, any> | List<any> | string | number | boolean | null
 
@@ -16,7 +17,7 @@ type ArrayComponentProps = {
 const switchComponent = (
     data: DataType,
     root = false,
-    last = false
+    last = false,
 ): ReactElement => {
     if (Map.isMap(data)) {
         if (!!(data as Map<any, any>).size) {
@@ -76,7 +77,7 @@ const ObjectComponent = ({
                         const childNode = switchComponent(
                             v,
                             false,
-                            idx >= data.size
+                            idx >= data.size,
                         )
                         const isObject =
                             (childNode.type as FC)?.name === 'ObjectComponent'
@@ -123,7 +124,7 @@ const ArrayComponent = ({
                     const childNode = switchComponent(
                         v,
                         true,
-                        (idx as number) >= data.size - 1
+                        (idx as number) >= data.size - 1,
                     )
                     const isObject =
                         (childNode.type as FC)?.name === 'ObjectComponent'
@@ -149,7 +150,7 @@ const ArrayComponent = ({
     )
 }
 
-export const JSONTree = ({data}: {data: DataType}) => {
+export const JSONTree = ({ data }: { data: DataType }) => {
     return (
         <div className="json-tree">
             {data ? switchComponent(data, true, true) : 'null'}

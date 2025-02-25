@@ -1,5 +1,6 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import WorkflowsEmptyState from '../WorkflowsEmptyState'
 
@@ -16,13 +17,13 @@ describe('WorkflowsEmptyState', () => {
                 goToNewWorkflowFromTemplatePage={
                     mockGoToNewWorkflowFromTemplatePage
                 }
-            />
+            />,
         )
 
         // Check that the create buttons are not rendered
         expect(screen.queryByText('Create Custom Flow')).not.toBeInTheDocument()
         expect(
-            screen.queryByText('Create From Template')
+            screen.queryByText('Create From Template'),
         ).not.toBeInTheDocument()
     })
 })

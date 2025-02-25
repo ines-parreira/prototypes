@@ -1,6 +1,7 @@
-import {render, waitFor} from '@testing-library/react'
-import axios from 'axios'
 import React from 'react'
+
+import { render, waitFor } from '@testing-library/react'
+import axios from 'axios'
 
 import ProductCell from '../ProductCell'
 
@@ -10,18 +11,18 @@ describe('ProductCell', () => {
     })
 
     it('should render a product cell with image url', () => {
-        const {container} = render(
+        const { container } = render(
             <ProductCell
                 name="Sunglasses"
                 imageUrl="https://domain.com/my-image.png"
-            />
+            />,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render a product cell tickets with image placeholder', () => {
-        const {container} = render(
-            <ProductCell name="Sunglasses" imageUrl={null} />
+        const { container } = render(
+            <ProductCell name="Sunglasses" imageUrl={null} />,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -33,11 +34,11 @@ describe('ProductCell', () => {
             },
         })
 
-        const {getByTestId} = render(
+        const { getByTestId } = render(
             <ProductCell
                 name="Sunglasses"
                 imageUrl="https://domain.com/my-image.png"
-            />
+            />,
         )
 
         await waitFor(() => {

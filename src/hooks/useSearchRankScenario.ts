@@ -1,10 +1,10 @@
-import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import useUnmount from 'hooks/useUnmount'
-import {SearchEngine} from 'models/search/types'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import { SearchEngine } from 'models/search/types'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 export enum SearchRankSource {
     CustomerProfile = 'customer_profile',
@@ -57,7 +57,7 @@ export const DATABASE_TYPE: Record<SearchEngine, string> = {
 
 const detailedSource = (
     source: SearchRankSource,
-    type?: 'ticket' | 'customer' | 'call'
+    type?: 'ticket' | 'customer' | 'call',
 ) => {
     if (source === SearchRankSource.SpotlightAll) {
         return type === 'ticket'
@@ -69,7 +69,7 @@ const detailedSource = (
 
 export default function useSearchRankScenario(
     source: SearchRankSource,
-    scenarioTimeout = 60000
+    scenarioTimeout = 60000,
 ): SearchRank {
     const request = useRef<SearchRankRequest | undefined>()
     const response = useRef<SearchRankResponse | undefined>()
@@ -80,15 +80,15 @@ export default function useSearchRankScenario(
 
     const endScenario = useCallback(() => {
         if (request.current && response.current) {
-            const {query, requestTime} = request.current
-            const {responseTime, numberOfResults, searchEngine} =
+            const { query, requestTime } = request.current
+            const { responseTime, numberOfResults, searchEngine } =
                 response.current
             logEvent(SegmentEvent.SearchQueryRanked, {
                 search_query: query,
                 datetime: new Date(requestTime).toISOString(),
                 query_source: detailedSource(
                     source,
-                    selectedItem?.current?.type
+                    selectedItem?.current?.type,
                 ),
                 response_time: responseTime - requestTime,
                 account_domain: currentAccount.get('domain'),
@@ -114,7 +114,7 @@ export default function useSearchRankScenario(
             endScenario()
             request.current = req
         },
-        [endScenario]
+        [endScenario],
     )
 
     const registerResultsResponse = useCallback((res: SearchRankResponse) => {
@@ -123,10 +123,10 @@ export default function useSearchRankScenario(
     }, [])
 
     const registerResultSelection = useCallback(
-        ({index, id, type}: SearchRankSelectedItem) => {
-            selectedItem.current = {index, id, type}
+        ({ index, id, type }: SearchRankSelectedItem) => {
+            selectedItem.current = { index, id, type }
         },
-        []
+        [],
     )
 
     useEffect(() => {

@@ -1,4 +1,4 @@
-import {createContext} from 'react'
+import { createContext } from 'react'
 
 export const NavBarDisplayMode = {
     /**
@@ -28,5 +28,5 @@ export type NavBarContextType = {
 }
 
 export const NavBarContext = createContext<NavBarContextType | undefined>(
-    undefined
+    undefined,
 )

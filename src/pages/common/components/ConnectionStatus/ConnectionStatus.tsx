@@ -1,7 +1,9 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { createRef } from 'react'
+
 import classNames from 'classnames'
 import _capitalize from 'lodash/capitalize'
-import React, {createRef} from 'react'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import css from './ConnectionStatus.less'
 
@@ -37,7 +39,7 @@ export const ConnectionStatus = ({
                                 [css.connected]: status === 'active',
                                 [css.disconnected]: status === 'unknown',
                             },
-                            'material-icons'
+                            'material-icons',
                         )}
                     >
                         {icon}
@@ -50,7 +52,7 @@ export const ConnectionStatus = ({
                     target={$ref}
                     placement="top-start"
                     innerProps={{
-                        style: {maxWidth: 190, textAlign: 'left'},
+                        style: { maxWidth: 190, textAlign: 'left' },
                     }}
                 >
                     {_capitalize(tooltip)}

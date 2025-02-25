@@ -1,16 +1,17 @@
-import {render} from '@testing-library/react'
-import {fromJS, Map} from 'immutable'
 import React from 'react'
 
+import { render } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
+
 import '@testing-library/jest-dom/extend-expect'
-import {Provider} from 'react-redux'
+
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {AttachmentEnum} from 'common/types'
-
-import {account} from 'fixtures/account'
-import {billingState} from 'fixtures/billing'
-import {RootState, StoreDispatch} from 'state/types'
+import { AttachmentEnum } from 'common/types'
+import { account } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
+import { RootState, StoreDispatch } from 'state/types'
 
 import AiAgentChatConversation, {
     ConversationMessage,
@@ -76,10 +77,10 @@ describe('AiAgentChatConversation', () => {
         },
     ]
 
-    const user = Map({name: 'Test User'})
+    const user = Map({ name: 'Test User' })
 
     it('renders agent and customer messages correctly when removeLinksFromMessages is false', () => {
-        const {getByText, getByRole} = render(
+        const { getByText, getByRole } = render(
             <Provider store={mockStore(defaultState)}>
                 <AiAgentChatConversation
                     conversationColor="#000"
@@ -87,15 +88,15 @@ describe('AiAgentChatConversation', () => {
                     user={user}
                     removeLinksFromMessages={false}
                 />
-            </Provider>
+            </Provider>,
         )
         expect(
             getByText(
-                'Hi, I’m after a long dress for everyday wear, something comfortable and cute.'
-            )
+                'Hi, I’m after a long dress for everyday wear, something comfortable and cute.',
+            ),
         ).toBeInTheDocument()
         expect(
-            getByText('Hi! Our sizes are made for all shapes and body types.')
+            getByText('Hi! Our sizes are made for all shapes and body types.'),
         ).toBeInTheDocument()
         expect(getByText('ADIDAS | SUPERSTAR 80S')).toBeInTheDocument()
         expect(getByText('Nice!')).toBeInTheDocument()
@@ -104,7 +105,7 @@ describe('AiAgentChatConversation', () => {
     })
 
     it('renders agent and customer messages correctly when removeLinksFromMessages is true', () => {
-        const {getByText, queryByRole} = render(
+        const { getByText, queryByRole } = render(
             <Provider store={mockStore(defaultState)}>
                 <AiAgentChatConversation
                     conversationColor="#000"
@@ -112,15 +113,15 @@ describe('AiAgentChatConversation', () => {
                     user={user}
                     removeLinksFromMessages
                 />
-            </Provider>
+            </Provider>,
         )
         expect(
             getByText(
-                'Hi, I’m after a long dress for everyday wear, something comfortable and cute.'
-            )
+                'Hi, I’m after a long dress for everyday wear, something comfortable and cute.',
+            ),
         ).toBeInTheDocument()
         expect(
-            getByText('Hi! Our sizes are made for all shapes and body types.')
+            getByText('Hi! Our sizes are made for all shapes and body types.'),
         ).toBeInTheDocument()
         expect(getByText('ADIDAS | SUPERSTAR 80S')).toBeInTheDocument()
         expect(getByText('Nice!')).toBeInTheDocument()

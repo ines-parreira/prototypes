@@ -1,10 +1,10 @@
-import React, {ReactNode, createContext} from 'react'
+import React, { createContext, ReactNode } from 'react'
 
 import {
-    WizardConfiguration,
-    WizardStepConfiguration,
     ToolbarActionConfiguration,
     UtmConfiguration,
+    WizardConfiguration,
+    WizardStepConfiguration,
 } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
 
 export interface CampaignFormConfigurationType {
@@ -53,7 +53,7 @@ export const CampaigFormConfigurationProvider = ({
 
     return (
         <CampaignFormConfigurationContext.Provider
-            value={{...value, getStepConfiguration, getTourConfiguration}}
+            value={{ ...value, getStepConfiguration, getTourConfiguration }}
         >
             {children}
         </CampaignFormConfigurationContext.Provider>

@@ -1,8 +1,8 @@
-import {render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {UncontrolledButtonDropdown} from 'reactstrap'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { UncontrolledButtonDropdown } from 'reactstrap'
 
 import RichDropdownOptions from 'pages/common/components/RichDropdown/RichDropdownOptions'
 
@@ -14,7 +14,7 @@ describe('<RichDropdownOptions/>', () => {
     })
 
     it('should render a dropdown with options', () => {
-        const {container} = render(
+        const { container } = render(
             <UncontrolledButtonDropdown>
                 <RichDropdownOptions
                     onClick={onClick}
@@ -30,7 +30,7 @@ describe('<RichDropdownOptions/>', () => {
                         },
                     ]}
                 />
-            </UncontrolledButtonDropdown>
+            </UncontrolledButtonDropdown>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -53,10 +53,10 @@ describe('<RichDropdownOptions/>', () => {
                         },
                     ]}
                 />
-            </UncontrolledButtonDropdown>
+            </UncontrolledButtonDropdown>,
         )
 
-        userEvent.click(screen.getByRole('menuitem', {name: 'Foo'}))
+        userEvent.click(screen.getByRole('menuitem', { name: 'Foo' }))
 
         expect(onClick.mock.calls.length).toBe(1)
         expect(onClick).toHaveBeenCalledTimes(1)

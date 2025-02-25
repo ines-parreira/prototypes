@@ -1,10 +1,11 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
-import {StaticRouter} from 'react-router-dom'
 
-import {useIsMobileResolution} from 'hooks/useIsMobileResolution'
+import { render, screen } from '@testing-library/react'
+import { StaticRouter } from 'react-router-dom'
+
+import { useIsMobileResolution } from 'hooks/useIsMobileResolution'
 import useWindowSize from 'hooks/useWindowSize'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
 import PanelRoutes from '../PanelRoutes'
 
@@ -46,7 +47,7 @@ jest.mock('../MobileRoutes', () => ({
 describe('PanelRoutes', () => {
     beforeEach(() => {
         useIsMobileResolutionMock.mockReturnValue(false)
-        useWindowSizeMock.mockReturnValue({width: 1000, height: 1000})
+        useWindowSizeMock.mockReturnValue({ width: 1000, height: 1000 })
     })
 
     it('should render the mobile routes for mobile resolutions', () => {
@@ -54,7 +55,7 @@ describe('PanelRoutes', () => {
         render(
             <StaticRouter location="/app">
                 <PanelRoutes />
-            </StaticRouter>
+            </StaticRouter>,
         )
         expect(screen.getByText('MobileRoutes')).toBeInTheDocument()
     })
@@ -63,7 +64,7 @@ describe('PanelRoutes', () => {
         render(
             <StaticRouter location="/app">
                 <PanelRoutes />
-            </StaticRouter>
+            </StaticRouter>,
         )
         expect(screen.getByText('GlobalNavigationPanel')).toBeInTheDocument()
     })
@@ -72,7 +73,7 @@ describe('PanelRoutes', () => {
         render(
             <StaticRouter location="/app">
                 <PanelRoutes />
-            </StaticRouter>
+            </StaticRouter>,
         )
         expect(screen.getByText('TicketsNavbarPanel')).toBeInTheDocument()
     })
@@ -81,7 +82,7 @@ describe('PanelRoutes', () => {
         render(
             <StaticRouter location="/app">
                 <PanelRoutes />
-            </StaticRouter>
+            </StaticRouter>,
         )
         expect(screen.getByText('ViewPanel')).toBeInTheDocument()
         expect(screen.getByText('OnboardingPanel')).toBeInTheDocument()
@@ -91,7 +92,7 @@ describe('PanelRoutes', () => {
         render(
             <StaticRouter location="/app/tickets">
                 <PanelRoutes />
-            </StaticRouter>
+            </StaticRouter>,
         )
         expect(screen.getByText('ViewPanel')).toBeInTheDocument()
         expect(screen.getByText('OnboardingPanel')).toBeInTheDocument()
@@ -101,7 +102,7 @@ describe('PanelRoutes', () => {
         render(
             <StaticRouter location="/app/tickets/new/private">
                 <PanelRoutes />
-            </StaticRouter>
+            </StaticRouter>,
         )
         expect(screen.getByText('ViewPanel')).toBeInTheDocument()
         expect(screen.getByText('OnboardingPanel')).toBeInTheDocument()
@@ -111,7 +112,7 @@ describe('PanelRoutes', () => {
         render(
             <StaticRouter location="/app/tickets/search">
                 <PanelRoutes />
-            </StaticRouter>
+            </StaticRouter>,
         )
         expect(screen.getByText('ViewPanel')).toBeInTheDocument()
         expect(screen.getByText('OnboardingPanel')).toBeInTheDocument()
@@ -121,7 +122,7 @@ describe('PanelRoutes', () => {
         render(
             <StaticRouter location="/app/tickets/123456/boop">
                 <PanelRoutes />
-            </StaticRouter>
+            </StaticRouter>,
         )
         expect(screen.getByText('ViewPanel')).toBeInTheDocument()
         expect(screen.getByText('OnboardingPanel')).toBeInTheDocument()
@@ -131,7 +132,7 @@ describe('PanelRoutes', () => {
         render(
             <StaticRouter location="/app/ticket/123456">
                 <PanelRoutes />
-            </StaticRouter>
+            </StaticRouter>,
         )
         expect(screen.getByText('TicketDetailPanel')).toBeInTheDocument()
         expect(screen.getByText('TicketInfobarPanel')).toBeInTheDocument()
@@ -141,7 +142,7 @@ describe('PanelRoutes', () => {
         render(
             <StaticRouter location="/app/views/123456">
                 <PanelRoutes />
-            </StaticRouter>
+            </StaticRouter>,
         )
         expect(screen.getByText('TicketsListPanel')).toBeInTheDocument()
         expect(screen.getByText('TicketEmptyPanel')).toBeInTheDocument()
@@ -151,7 +152,7 @@ describe('PanelRoutes', () => {
         render(
             <StaticRouter location="/app/views/123456/789987">
                 <PanelRoutes />
-            </StaticRouter>
+            </StaticRouter>,
         )
         expect(screen.getByText('TicketsListPanel')).toBeInTheDocument()
         expect(screen.getByText('TicketDetailPanel')).toBeInTheDocument()

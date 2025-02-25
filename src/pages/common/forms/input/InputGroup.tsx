@@ -1,4 +1,3 @@
-import classnames from 'classnames'
 import React, {
     createContext,
     ReactNode,
@@ -7,7 +6,11 @@ import React, {
     useState,
 } from 'react'
 
-import Group, {GroupPositionContext} from 'pages/common/components/layout/Group'
+import classnames from 'classnames'
+
+import Group, {
+    GroupPositionContext,
+} from 'pages/common/components/layout/Group'
 
 import css from './InputGroup.less'
 
@@ -24,7 +27,7 @@ type InputGroupContextState = {
 }
 
 export const InputGroupContext = createContext<InputGroupContextState | null>(
-    null
+    null,
 )
 
 export default function InputGroup({
@@ -40,7 +43,7 @@ export default function InputGroup({
             isFocused,
             setIsFocused,
         }),
-        [isFocused, setIsFocused]
+        [isFocused, setIsFocused],
     )
 
     return (
@@ -53,7 +56,7 @@ export default function InputGroup({
                     {
                         [css.hasError]: hasError,
                         [css.isFocused]: isFocused,
-                    }
+                    },
                 )}
                 isDisabled={isDisabled}
             >

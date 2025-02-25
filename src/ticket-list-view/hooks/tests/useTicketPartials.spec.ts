@@ -1,8 +1,9 @@
-import {CursorPaginationMeta} from '@gorgias/api-queries'
-import {act, renderHook} from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react-hooks'
+
+import { CursorPaginationMeta } from '@gorgias/api-queries'
 
 import TicketUpdatesManager from '../../TicketUpdatesManager'
-import {TicketPartial} from '../../types'
+import { TicketPartial } from '../../types'
 import useTicketPartials from '../useTicketPartials'
 
 jest.mock('../../TicketUpdatesManager', () => jest.fn())
@@ -10,7 +11,7 @@ const TicketUpdatesManagerMock = TicketUpdatesManager as jest.Mock
 
 type Listener = (
     partials: TicketPartial[],
-    cursor: CursorPaginationMeta['next_cursor']
+    cursor: CursorPaginationMeta['next_cursor'],
 ) => void
 
 describe('useTicketPartials', () => {
@@ -22,7 +23,7 @@ describe('useTicketPartials', () => {
         loadMore = jest.fn()
         unsubscribe = jest.fn()
         subscribe = jest.fn(() => unsubscribe)
-        TicketUpdatesManagerMock.mockReturnValue({loadMore, subscribe})
+        TicketUpdatesManagerMock.mockReturnValue({ loadMore, subscribe })
     })
 
     it('should should subscribe to ticket updates on mount', () => {
@@ -31,16 +32,16 @@ describe('useTicketPartials', () => {
     })
 
     it('should unsubscribe from ticket updates on unmount', () => {
-        const {unmount} = renderHook(() =>
-            useTicketPartials(123, 'created_datetime:asc')
+        const { unmount } = renderHook(() =>
+            useTicketPartials(123, 'created_datetime:asc'),
         )
         unmount()
         expect(unsubscribe).toHaveBeenCalledWith()
     })
 
     it('should not call loadMore on the client if no cursor is available', () => {
-        const {result} = renderHook(() =>
-            useTicketPartials(123, 'created_datetime:asc')
+        const { result } = renderHook(() =>
+            useTicketPartials(123, 'created_datetime:asc'),
         )
         expect(result.current.loadMore).toEqual(expect.any(Function))
 
@@ -49,8 +50,8 @@ describe('useTicketPartials', () => {
     })
 
     it('should call loadMore on the client if a cursor is available', () => {
-        const {result} = renderHook(() =>
-            useTicketPartials(123, 'created_datetime:asc')
+        const { result } = renderHook(() =>
+            useTicketPartials(123, 'created_datetime:asc'),
         )
 
         const [[listener]] = subscribe.mock.calls as [[Listener]]
@@ -64,8 +65,8 @@ describe('useTicketPartials', () => {
     })
 
     it('should update initialLoaded state when partials are received', () => {
-        const {result} = renderHook(() =>
-            useTicketPartials(123, 'created_datetime:asc')
+        const { result } = renderHook(() =>
+            useTicketPartials(123, 'created_datetime:asc'),
         )
         const [[listener]] = subscribe.mock.calls as [[Listener]]
 
@@ -77,9 +78,9 @@ describe('useTicketPartials', () => {
     })
 
     it('should reset initialLoaded state when viewId changes', () => {
-        const {result, rerender} = renderHook(
-            ({viewId}) => useTicketPartials(viewId, 'created_datetime:asc'),
-            {initialProps: {viewId: 123}}
+        const { result, rerender } = renderHook(
+            ({ viewId }) => useTicketPartials(viewId, 'created_datetime:asc'),
+            { initialProps: { viewId: 123 } },
         )
         const [[listener]] = subscribe.mock.calls as [[Listener]]
 
@@ -87,7 +88,7 @@ describe('useTicketPartials', () => {
             listener([], 'random-cursor')
         })
 
-        rerender({viewId: 456})
+        rerender({ viewId: 456 })
 
         expect(result.current.initialLoaded).toEqual(false)
     })

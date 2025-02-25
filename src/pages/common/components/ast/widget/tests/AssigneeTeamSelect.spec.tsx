@@ -1,17 +1,18 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {AssigneeTeamSelectContainer} from '../AssigneeTeamSelect'
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+
+import { AssigneeTeamSelectContainer } from '../AssigneeTeamSelect'
 
 describe('ast', () => {
     describe('widgets', () => {
         describe('<AssigneeTeamSelect/>', () => {
             describe('render()', () => {
                 const teams = {
-                    1: {id: 1, name: 'Team 1'},
-                    2: {id: 2, name: 'Team 2'},
-                    3: {id: 3, name: 'Team 3'},
+                    1: { id: 1, name: 'Team 1' },
+                    2: { id: 2, name: 'Team 2' },
+                    3: { id: 3, name: 'Team 3' },
                 }
                 const commonProps = {
                     teams: fromJS(teams),
@@ -20,29 +21,29 @@ describe('ast', () => {
                 >
 
                 it('should render a dropdown without selected value', () => {
-                    const {container} = render(
-                        <AssigneeTeamSelectContainer {...commonProps} />
+                    const { container } = render(
+                        <AssigneeTeamSelectContainer {...commonProps} />,
                     )
                     expect(container.firstChild).toMatchSnapshot()
                 })
 
                 it('should render a dropdown with selected value', () => {
-                    const {container} = render(
+                    const { container } = render(
                         <AssigneeTeamSelectContainer
                             {...commonProps}
                             value={1}
-                        />
+                        />,
                     )
                     expect(container.firstChild).toMatchSnapshot()
                 })
 
                 it('should render a dropdown without "Unassign" option', () => {
-                    const {container} = render(
+                    const { container } = render(
                         <AssigneeTeamSelectContainer
                             {...commonProps}
                             value={1}
                             allowUnassign={false}
-                        />
+                        />,
                     )
                     expect(container.firstChild).toMatchSnapshot()
                 })

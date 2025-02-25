@@ -1,5 +1,6 @@
-import {Tooltip, Badge} from '@gorgias/merchant-ui-kit'
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
+
+import { Badge, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useId from 'hooks/useId'
 
@@ -32,15 +33,15 @@ const MigrationQuickSummary: React.FC<Props> = ({
     const visibleEntries = useMemo(
         () =>
             entries.filter(
-                ({exported, imported, failed, showAlways}) =>
-                    showAlways || exported || imported || failed
+                ({ exported, imported, failed, showAlways }) =>
+                    showAlways || exported || imported || failed,
             ),
-        [entries]
+        [entries],
     )
 
     const getBadgeId = (
         entryIdx: number,
-        type: 'exported' | 'imported' | 'failed'
+        type: 'exported' | 'imported' | 'failed',
     ) => `quick-summary-tooltip-${uniqueId}-${entryIdx}-${type}`
 
     return (

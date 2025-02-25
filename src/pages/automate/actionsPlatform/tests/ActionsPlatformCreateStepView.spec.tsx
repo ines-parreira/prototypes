@@ -1,26 +1,27 @@
+import React from 'react'
+
 import {
     act,
     fireEvent,
     render,
     screen,
-    within,
     waitFor,
+    within,
 } from '@testing-library/react'
-import {createMemoryHistory} from 'history'
-import React from 'react'
-import {Provider} from 'react-redux'
+import { createMemoryHistory } from 'history'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {IntegrationType} from 'models/integration/constants'
+import { IntegrationType } from 'models/integration/constants'
 import {
     useGetWorkflowConfigurationTemplates,
     useListActionsApps,
 } from 'models/workflows/queries'
-import {RootState, StoreDispatch} from 'state/types'
-import {renderWithRouter} from 'utils/testing'
+import { RootState, StoreDispatch } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
-import {useDisplayAiAgentMovedBanner} from '../../common/hooks/useDisplayAiAgentMovedBanner'
+import { useDisplayAiAgentMovedBanner } from '../../common/hooks/useDisplayAiAgentMovedBanner'
 import ActionsPlatformCreateStepView from '../ActionsPlatformCreateStepView'
 import useApps from '../hooks/useApps'
 import useCreateActionTemplate from '../hooks/useCreateActionTemplate'
@@ -33,7 +34,7 @@ const mockUseListActionsApps = jest.mocked(useListActionsApps)
 const mockUseApps = jest.mocked(useApps)
 const mockUseCreateActionTemplate = jest.mocked(useCreateActionTemplate)
 const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
-    useGetWorkflowConfigurationTemplates
+    useGetWorkflowConfigurationTemplates,
 )
 const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])()
 
@@ -98,11 +99,11 @@ describe('<ActionsPlatformCreateStepView />', () => {
         render(
             <Provider store={mockStore}>
                 <ActionsPlatformCreateStepView />
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            screen.getByPlaceholderText('e.g. Update shipping address')
+            screen.getByPlaceholderText('e.g. Update shipping address'),
         ).toBeInTheDocument()
     })
 
@@ -110,12 +111,12 @@ describe('<ActionsPlatformCreateStepView />', () => {
         render(
             <Provider store={mockStore}>
                 <ActionsPlatformCreateStepView />
-            </Provider>
+            </Provider>,
         )
 
         act(() => {
             fireEvent.focus(
-                within(screen.getByRole('combobox')).getByText('Select App')
+                within(screen.getByRole('combobox')).getByText('Select App'),
             )
         })
 
@@ -133,7 +134,7 @@ describe('<ActionsPlatformCreateStepView />', () => {
     })
 
     it('should redirect on cancel', () => {
-        const history = createMemoryHistory({initialEntries: ['/']})
+        const history = createMemoryHistory({ initialEntries: ['/'] })
 
         const historyPushSpy = jest.spyOn(history, 'push')
 
@@ -143,7 +144,7 @@ describe('<ActionsPlatformCreateStepView />', () => {
             </Provider>,
             {
                 history,
-            }
+            },
         )
 
         act(() => {
@@ -151,7 +152,7 @@ describe('<ActionsPlatformCreateStepView />', () => {
         })
 
         expect(historyPushSpy).toHaveBeenCalledWith(
-            '/app/automation/actions-platform/steps'
+            '/app/automation/actions-platform/steps',
         )
     })
 
@@ -159,12 +160,12 @@ describe('<ActionsPlatformCreateStepView />', () => {
         render(
             <Provider store={mockStore}>
                 <ActionsPlatformCreateStepView />
-            </Provider>
+            </Provider>,
         )
 
         act(() => {
             fireEvent.focus(
-                within(screen.getByRole('combobox')).getByText('Select App')
+                within(screen.getByRole('combobox')).getByText('Select App'),
             )
         })
 
@@ -189,7 +190,7 @@ describe('<ActionsPlatformCreateStepView />', () => {
         render(
             <Provider store={mockStore}>
                 <ActionsPlatformCreateStepView />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('AI Agent Moved Banner')).toBeInTheDocument()
@@ -201,11 +202,11 @@ describe('<ActionsPlatformCreateStepView />', () => {
         render(
             <Provider store={mockStore}>
                 <ActionsPlatformCreateStepView />
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            screen.queryByText('AI Agent Moved Banner')
+            screen.queryByText('AI Agent Moved Banner'),
         ).not.toBeInTheDocument()
     })
 })

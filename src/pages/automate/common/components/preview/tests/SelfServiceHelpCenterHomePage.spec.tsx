@@ -1,10 +1,11 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
+import { QueryClientProvider } from '@tanstack/react-query'
+import { render, screen } from '@testing-library/react'
+
 import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'
-import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import SelfServiceHelpCenterHomePage from '../SelfServiceHelpCenterHomePage'
 
@@ -32,7 +33,7 @@ describe('<SelfServiceHelpCenterHomePage />', () => {
                         helpCenter={getSingleHelpCenterResponseFixture}
                     />
                 </SelfServicePreviewContext.Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
         expect(screen.getByText('Categories')).toBeInTheDocument()
     })

@@ -1,28 +1,28 @@
 import React from 'react'
 
-import {UserRole} from 'config/types/user'
+import { UserRole } from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
-import {useAiAgentItemEnabled} from 'pages/aiAgent/hooks/useAiAgentItemEnabled'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {hasRole} from 'utils'
+import { useAiAgentItemEnabled } from 'pages/aiAgent/hooks/useAiAgentItemEnabled'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { hasRole } from 'utils'
 
 import useActiveItem from '../hooks/useActiveItem'
-import {useNavBar} from '../hooks/useNavBar/useNavBar'
-import {useNavBarMenuIcon} from '../hooks/useNavBarMenuIcon'
-import {useNavBarShortcuts} from '../hooks/useNavBarShortcuts'
-import css from './GlobalNavigation.less'
+import { useNavBar } from '../hooks/useNavBar/useNavBar'
+import { useNavBarMenuIcon } from '../hooks/useNavBarMenuIcon'
+import { useNavBarShortcuts } from '../hooks/useNavBarShortcuts'
 import Item from './GlobalNavigationItem'
-import {GlobalNavigationSpotlight} from './GlobalNavigationSpotlight'
-import {NavBarButtonTooltip} from './NavBarButtonTooltip'
-
+import { GlobalNavigationSpotlight } from './GlobalNavigationSpotlight'
+import { NavBarButtonTooltip } from './NavBarButtonTooltip'
 import NotificationsItem from './NotificationsItem'
 import UserItem from './UserItem'
+
+import css from './GlobalNavigation.less'
 
 export default function GlobalNavigation() {
     const currentUser = useAppSelector(getCurrentUser)
     const activeItem = useActiveItem()
     const navBarMenuIcon = useNavBarMenuIcon()
-    const {onMenuToggle, onNavHover, onNavLeave} = useNavBar()
+    const { onMenuToggle, onNavHover, onNavLeave } = useNavBar()
 
     useNavBarShortcuts()
 

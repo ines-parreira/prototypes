@@ -8,7 +8,7 @@ type Props = {
     isFilled: boolean
 }
 
-const LLMPromptTriggerNodeLabel = ({isFilled}: Props) => {
+const LLMPromptTriggerNodeLabel = ({ isFilled }: Props) => {
     return (
         <div className={css.container}>
             <VisualBuilderActionTag nodeType="llm_prompt_trigger" />

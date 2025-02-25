@@ -1,16 +1,17 @@
-import classnames from 'classnames'
-import {EditorState} from 'draft-js'
-import {fromJS} from 'immutable'
-import React, {useEffect, useRef} from 'react'
+import React, { useEffect, useRef } from 'react'
 
-import {UploadType} from 'common/types'
-import {ResponseMessageContent} from 'models/selfServiceConfiguration/types'
+import classnames from 'classnames'
+import { EditorState } from 'draft-js'
+import { fromJS } from 'immutable'
+
+import { UploadType } from 'common/types'
+import { ResponseMessageContent } from 'models/selfServiceConfiguration/types'
 import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 import RichField from 'pages/common/forms/RichField/RichField'
-import {convertToHTML} from 'utils/editor'
-import {trimHTML} from 'utils/html'
+import { convertToHTML } from 'utils/editor'
+import { trimHTML } from 'utils/html'
 
-import {AUTOMATED_RESPONSE_MESSAGE_TEXT_MAX_LENGTH} from '../../constants'
+import { AUTOMATED_RESPONSE_MESSAGE_TEXT_MAX_LENGTH } from '../../constants'
 import {
     usePropagateError,
     useTrackOrderFlowViewContext,
@@ -36,7 +37,7 @@ export default function TrackOrderUnfulfilledMessage({
 
     usePropagateError('response_message_content', hasError)
 
-    const {storeIntegration} = useTrackOrderFlowViewContext()
+    const { storeIntegration } = useTrackOrderFlowViewContext()
 
     const handleChange = (editorState: EditorState) => {
         const content = editorState.getCurrentContent()

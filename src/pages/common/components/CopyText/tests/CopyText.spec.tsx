@@ -1,8 +1,9 @@
-import {fireEvent, render} from '@testing-library/react'
 import React from 'react'
 
+import { fireEvent, render } from '@testing-library/react'
+
 import CopyText from '../CopyText'
-import {selectText} from '../utils'
+import { selectText } from '../utils'
 
 jest.mock('../utils', () => ({
     selectText: jest.fn(),

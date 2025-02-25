@@ -1,5 +1,6 @@
-import {Meta, StoryObj} from '@storybook/react'
-import {ComponentProps} from 'react'
+import { ComponentProps } from 'react'
+
+import { Meta, StoryObj } from '@storybook/react'
 
 import ProgressBar from './ProgressBar'
 
@@ -83,7 +84,7 @@ const defaultProps: ComponentProps<typeof ProgressBar> = {
 
 /** Default progress bar */
 export const Primary: Story = {
-    args: {...defaultProps, barType: 'primary'},
+    args: { ...defaultProps, barType: 'primary' },
     parameters: {
         ...templateParameters,
     },

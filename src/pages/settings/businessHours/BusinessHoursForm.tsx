@@ -1,21 +1,23 @@
-import classNames from 'classnames'
-import {Map} from 'immutable'
 import React from 'react'
-import {Input} from 'reactstrap'
 
-import {THEME_NAME, useTheme} from 'core/theme'
+import classNames from 'classnames'
+import { Map } from 'immutable'
+import { Input } from 'reactstrap'
+
+import { THEME_NAME, useTheme } from 'core/theme'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {SelectableOption} from 'pages/common/forms/SelectField/types'
+import { SelectableOption } from 'pages/common/forms/SelectField/types'
+
+import { DAYS_OPTIONS } from './constants'
 
 import css from './BusinessHours.less'
-import {DAYS_OPTIONS} from './constants'
 
 type Props = {
     businessHour: Map<any, any>
     onChange: (map: Map<any, any>) => void
 }
 
-const BusinessHoursForm = ({businessHour, onChange}: Props) => {
+const BusinessHoursForm = ({ businessHour, onChange }: Props) => {
     const theme = useTheme()
     const handleOnChange = (newData: Record<string, unknown>) => {
         onChange(businessHour.merge(newData))
@@ -25,7 +27,7 @@ const BusinessHoursForm = ({businessHour, onChange}: Props) => {
         <div className={css.businessHoursInput}>
             <SelectField
                 value={businessHour.get('days')}
-                onChange={(value) => handleOnChange({days: value})}
+                onChange={(value) => handleOnChange({ days: value })}
                 options={DAYS_OPTIONS as SelectableOption[]}
                 fixedWidth
             />
@@ -33,7 +35,7 @@ const BusinessHoursForm = ({businessHour, onChange}: Props) => {
                 className={classNames(css.timeField, {
                     [css.dark]: theme.resolvedName === THEME_NAME.Dark,
                 })}
-                onChange={(e) => handleOnChange({from_time: e.target.value})}
+                onChange={(e) => handleOnChange({ from_time: e.target.value })}
                 value={businessHour.get('from_time')}
                 type="time"
                 pattern="[0-9][0-9]:[0-9][0-9]"
@@ -44,7 +46,7 @@ const BusinessHoursForm = ({businessHour, onChange}: Props) => {
                 className={classNames(css.timeField, {
                     [css.dark]: theme.resolvedName === THEME_NAME.Dark,
                 })}
-                onChange={(e) => handleOnChange({to_time: e.target.value})}
+                onChange={(e) => handleOnChange({ to_time: e.target.value })}
                 value={businessHour.get('to_time')}
                 type="time"
                 pattern="[0-9][0-9]:[0-9][0-9]"

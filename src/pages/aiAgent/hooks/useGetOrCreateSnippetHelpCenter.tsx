@@ -1,10 +1,10 @@
-import {useEffect, useMemo, useState} from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
-import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
-import {useCreateStoreSnippetHelpCenter} from 'models/aiAgent/queries'
-import {useGetHelpCenterList} from 'models/helpCenter/queries'
-import {HelpCenter} from 'models/helpCenter/types'
-import {reportError} from 'utils/errors'
+import { AI_AGENT_SENTRY_TEAM } from 'common/const/sentryTeamNames'
+import { useCreateStoreSnippetHelpCenter } from 'models/aiAgent/queries'
+import { useGetHelpCenterList } from 'models/helpCenter/queries'
+import { HelpCenter } from 'models/helpCenter/types'
+import { reportError } from 'utils/errors'
 
 type Props = {
     accountDomain: string
@@ -14,7 +14,7 @@ type Props = {
 export const useGetOrCreateSnippetHelpCenter = ({
     accountDomain,
     shopName,
-}: Props): {helpCenter: HelpCenter | null; isLoading: boolean} => {
+}: Props): { helpCenter: HelpCenter | null; isLoading: boolean } => {
     const [helpCenter, setHelpCenter] = useState<HelpCenter | null>(null)
 
     const {
@@ -36,7 +36,7 @@ export const useGetOrCreateSnippetHelpCenter = ({
     } = useCreateStoreSnippetHelpCenter({
         onError: (error) => {
             reportError(error, {
-                tags: {team: AI_AGENT_SENTRY_TEAM},
+                tags: { team: AI_AGENT_SENTRY_TEAM },
                 extra: {
                     context: `Failed to fetch or create help center for ${accountDomain} ${shopName}`,
                 },
@@ -84,7 +84,7 @@ export const useGetOrCreateSnippetHelpCenter = ({
             helpCenter,
             isLoading: isLoadingHelpCenter || isCreatingHelpCenter,
         }),
-        [helpCenter, isLoadingHelpCenter, isCreatingHelpCenter]
+        [helpCenter, isLoadingHelpCenter, isCreatingHelpCenter],
     )
 
     return values

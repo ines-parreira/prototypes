@@ -1,4 +1,4 @@
-import {initialState} from 'fixtures/initialState'
+import { initialState } from 'fixtures/initialState'
 
 import toInitialStoreState from '../toInitialStoreState'
 

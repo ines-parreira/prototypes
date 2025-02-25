@@ -1,6 +1,6 @@
-import {CustomFieldValue} from 'custom-fields/types'
+import { CustomFieldValue } from 'custom-fields/types'
 
-import {isOutdatedValue} from '../isOutdatedValue'
+import { isOutdatedValue } from '../isOutdatedValue'
 
 describe('isOutdatedValue', () => {
     const choices: CustomFieldValue[] = ['option 1', 'option 2', 'option']

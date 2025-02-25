@@ -1,6 +1,3 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
-import _escapeRegExp from 'lodash/escapeRegExp'
 import React, {
     ReactNode,
     useContext,
@@ -10,27 +7,32 @@ import React, {
     useState,
 } from 'react'
 
-import {DropdownContext} from 'pages/common/components/dropdown/Dropdown'
+import classnames from 'classnames'
+import _escapeRegExp from 'lodash/escapeRegExp'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { DropdownContext } from 'pages/common/components/dropdown/Dropdown'
 import css from 'pages/stats/common/components/Filter/components/FilterDropdownItemLabel/FilterDropdownItemLabel.less'
-import {LABEL_MAX_WIDTH} from 'pages/stats/common/components/Filter/constants'
-import {highlightString} from 'pages/stats/utils'
+import { LABEL_MAX_WIDTH } from 'pages/stats/common/components/Filter/constants'
+import { highlightString } from 'pages/stats/utils'
 
 type Props = {
     label: string
     icon?: ReactNode
 }
 
-const FilterDropdownItemLabel = ({label, icon}: Props) => {
+const FilterDropdownItemLabel = ({ label, icon }: Props) => {
     const ref = useRef<HTMLDivElement>(null)
     const dropdownContext = useContext(DropdownContext)
 
     if (!dropdownContext) {
         throw new Error(
-            'DropdownSearch must be used within a DropdownContext.Provider'
+            'DropdownSearch must be used within a DropdownContext.Provider',
         )
     }
 
-    const {query} = dropdownContext || {}
+    const { query } = dropdownContext || {}
 
     const highlightedLabel = useMemo(() => {
         if (!query) {

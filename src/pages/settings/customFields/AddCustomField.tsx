@@ -1,13 +1,14 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
-import {OBJECT_TYPE_SETTINGS} from 'custom-fields/constants'
-import {CustomFieldObjectTypes} from 'custom-fields/types'
+import { Link } from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
+
+import { OBJECT_TYPE_SETTINGS } from 'custom-fields/constants'
+import { CustomFieldObjectTypes } from 'custom-fields/types'
 import useTitle from 'hooks/useTitle'
 import PageHeader from 'pages/common/components/PageHeader'
 import css from 'pages/settings/settings.less'
-import {CUSTOM_FIELD_ROUTES} from 'routes/constants'
+import { CUSTOM_FIELD_ROUTES } from 'routes/constants'
 
 import AddFieldForm from './components/AddFieldForm'
 

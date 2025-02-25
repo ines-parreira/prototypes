@@ -1,21 +1,22 @@
-import {act, renderHook} from '@testing-library/react-hooks'
 import React from 'react'
-import {Provider} from 'react-redux'
 
-import {deleteVerification} from 'models/singleSenderVerification/resources'
-import {mockStore} from 'utils/testing'
+import { act, renderHook } from '@testing-library/react-hooks'
+import { Provider } from 'react-redux'
+
+import { deleteVerification } from 'models/singleSenderVerification/resources'
+import { mockStore } from 'utils/testing'
 
 import useDeleteSingleSenderVerification from '../hooks/useDeleteSingleSenderVerification'
 
 jest.mock('models/singleSenderVerification/resources')
 
 describe('useBulkCreateSingleSenderVerification', () => {
-    const wrapper = ({children}: any) => {
+    const wrapper = ({ children }: any) => {
         return <Provider store={mockStore({} as any)}>{children}</Provider>
     }
 
     it('should call deleteVerification', () => {
-        const {result} = renderHook(useDeleteSingleSenderVerification, {
+        const { result } = renderHook(useDeleteSingleSenderVerification, {
             wrapper,
         })
 

@@ -1,4 +1,4 @@
-import {Article, LocaleCode, NonRootCategory} from 'models/helpCenter/types'
+import { Article, LocaleCode, NonRootCategory } from 'models/helpCenter/types'
 
 import {
     AlgoliaHit,
@@ -29,11 +29,11 @@ export type SearchResultArticle = {
 export type SearchResult = SearchResultCategory | SearchResultArticle
 
 export const isSearchResultCategory = (
-    result: SearchResult
+    result: SearchResult,
 ): result is SearchResultCategory => result.type === 'category'
 
 export const isSearchResultArticle = (
-    result: SearchResult
+    result: SearchResult,
 ): result is SearchResultArticle => result.type === 'article'
 
 // contains results returned from Algolia + categories that didn't match but whose child(ren) match

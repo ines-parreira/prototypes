@@ -1,8 +1,10 @@
-import {render, screen, fireEvent} from '@testing-library/react'
 import React from 'react'
 
+import { fireEvent, render, screen } from '@testing-library/react'
+
 import '@testing-library/jest-dom/extend-expect'
-import {DropdownSelector} from '../DropdownSelector'
+
+import { DropdownSelector } from '../DropdownSelector'
 
 type Item = {
     id: number
@@ -10,9 +12,9 @@ type Item = {
 }
 
 const items: Item[] = [
-    {id: 1, label: 'Item 1'},
-    {id: 2, label: 'Item 2'},
-    {id: 3, label: 'Item 3'},
+    { id: 1, label: 'Item 1' },
+    { id: 2, label: 'Item 2' },
+    { id: 3, label: 'Item 3' },
 ]
 
 const getItemKey = (item: Item) => item && item.id
@@ -28,10 +30,10 @@ describe('DropdownSelector', () => {
                 selectedItem={null}
                 getItemKey={getItemKey}
                 getItemLabel={getItemLabel}
-            />
+            />,
         )
         expect(
-            screen.getByText('Select one or more chat items')
+            screen.getByText('Select one or more chat items'),
         ).toBeInTheDocument()
     })
 
@@ -44,7 +46,7 @@ describe('DropdownSelector', () => {
                 selectedItem={null}
                 getItemKey={getItemKey}
                 getItemLabel={getItemLabel}
-            />
+            />,
         )
         fireEvent.click(screen.getByText('Select one or more chat items'))
         expect(screen.getByRole('combobox')).toBeInTheDocument()
@@ -59,7 +61,7 @@ describe('DropdownSelector', () => {
                 selectedItem={null}
                 getItemKey={getItemKey}
                 getItemLabel={getItemLabel}
-            />
+            />,
         )
         fireEvent.click(screen.getByText('Select one or more chat items'))
         items.forEach((item) => {
@@ -77,7 +79,7 @@ describe('DropdownSelector', () => {
                 selectedItem={null}
                 getItemKey={getItemKey}
                 getItemLabel={getItemLabel}
-            />
+            />,
         )
         fireEvent.click(screen.getByText('Select one or more chat items'))
         fireEvent.click(screen.getByText('Item 1'))

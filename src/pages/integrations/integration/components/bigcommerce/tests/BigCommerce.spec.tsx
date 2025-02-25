@@ -1,11 +1,12 @@
-import {screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {renderWithRouter} from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
 import BigCommerce from '../BigCommerce'
 
@@ -20,7 +21,7 @@ describe('<BigCommerce/>', () => {
                 id: '1',
                 type: 'bigcommerce',
                 name: 'myShop1',
-                meta: {store_name: 'myShop1'},
+                meta: { store_name: 'myShop1' },
             },
         ]),
         loading: fromJS({}),
@@ -29,10 +30,10 @@ describe('<BigCommerce/>', () => {
 
     describe('Detail', () => {
         it('should render a detail view', () => {
-            const {container} = renderWithRouter(
+            const { container } = renderWithRouter(
                 <Provider store={store}>
                     <BigCommerce {...minProps} />
-                </Provider>
+                </Provider>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -41,14 +42,14 @@ describe('<BigCommerce/>', () => {
 
     describe('Integration', () => {
         it('should render', () => {
-            const {container} = renderWithRouter(
+            const { container } = renderWithRouter(
                 <Provider store={store}>
                     <BigCommerce {...minProps} />
                 </Provider>,
                 {
                     path: '/:integrationType/:integrationId?',
                     route: `/bigcommerce/1/`,
-                }
+                },
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -57,14 +58,14 @@ describe('<BigCommerce/>', () => {
 
     describe('List', () => {
         it('should render', () => {
-            const {container} = renderWithRouter(
+            const { container } = renderWithRouter(
                 <Provider store={store}>
                     <BigCommerce {...minProps} />
                 </Provider>,
                 {
                     path: '/:integrationType/:integrationId?',
                     route: `/bigcommerce/connections/`,
-                }
+                },
             )
             expect(container.firstChild).toMatchSnapshot()
         })
@@ -76,7 +77,7 @@ describe('<BigCommerce/>', () => {
                 {
                     path: '/:integrationType/:integrationId?',
                     route: `/bigcommerce/connections/`,
-                }
+                },
             )
             expect(screen.getByText(/You have no integration/))
         })
@@ -90,7 +91,7 @@ describe('<BigCommerce/>', () => {
                                 id: '1',
                                 type: 'bigcommerce',
                                 name: 'myShop1',
-                                meta: {shop_id: '1337'},
+                                meta: { shop_id: '1337' },
                                 deactivated_datetime: true,
                             },
                         ])}
@@ -99,9 +100,9 @@ describe('<BigCommerce/>', () => {
                 {
                     path: '/:integrationType/:integrationId?',
                     route: `/bigcommerce/connections/`,
-                }
+                },
             )
-            expect(screen.getByRole('button', {name: 'Reconnect'}))
+            expect(screen.getByRole('button', { name: 'Reconnect' }))
         })
     })
 })

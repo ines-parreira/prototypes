@@ -1,24 +1,27 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useMemo} from 'react'
-import {useParams} from 'react-router-dom'
+import React, { useMemo } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import classnames from 'classnames'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { useParams } from 'react-router-dom'
+
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import {
     AiAgentOnboardingWizardStep,
     StoreConfiguration,
 } from 'models/aiAgent/types'
-import {useAiAgentStoreConfigurationContext} from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
+import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import PageHeader from 'pages/common/components/PageHeader'
 import Wizard from 'pages/common/components/wizard/Wizard'
 import WizardStep from 'pages/common/components/wizard/WizardStep'
 
-import {isAiAgentOnboardingWizardStep} from '../hooks/utils/configurationForm.utils'
-import css from './AiAgentOnboardingWizard.less'
+import { isAiAgentOnboardingWizardStep } from '../hooks/utils/configurationForm.utils'
 import AiAgentOnboardingWizardEducation from './AiAgentOnboardingWizardEducation'
 import AiAgentOnboardingWizardKnowledge from './AiAgentOnboardingWizardKnowledge'
 import AiAgentOnboardingWizardPersonalize from './AiAgentOnboardingWizardPersonalize'
+
+import css from './AiAgentOnboardingWizard.less'
 
 export type AiAgentOnboardingWizardProps = {
     shopType: string
@@ -27,7 +30,7 @@ export type AiAgentOnboardingWizardProps = {
 }
 
 const AiAgentOnboardingWizardComponent = (
-    props: AiAgentOnboardingWizardProps
+    props: AiAgentOnboardingWizardProps,
 ) => {
     const isAiAgentOnboardingWizardEducationalStepEnabled =
         useFlags()[FeatureFlagKey.AiAgentOnboardingWizardEducationalStep]
@@ -40,7 +43,7 @@ const AiAgentOnboardingWizardComponent = (
                 }
                 return true
             }),
-        [isAiAgentOnboardingWizardEducationalStepEnabled]
+        [isAiAgentOnboardingWizardEducationalStepEnabled],
     )
 
     const stepName = props.storeConfiguration?.wizard?.stepName
@@ -83,12 +86,12 @@ const AiAgentOnboardingWizardComponent = (
 }
 
 const AiAgentOnboardingWizard = () => {
-    const {shopType, shopName} = useParams<{
+    const { shopType, shopName } = useParams<{
         shopType: string
         shopName: string
     }>()
 
-    const {storeConfiguration, isLoading} =
+    const { storeConfiguration, isLoading } =
         useAiAgentStoreConfigurationContext()
 
     if (isLoading) {

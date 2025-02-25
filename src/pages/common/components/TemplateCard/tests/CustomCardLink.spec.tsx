@@ -1,5 +1,6 @@
-import {render} from '@testing-library/react'
 import React from 'react'
+
+import { render } from '@testing-library/react'
 
 import CustomCardLink from '../CustomCardLink'
 
@@ -11,11 +12,11 @@ describe('<CustomCardLink />', () => {
     }
 
     it('should display a custom card wrapped in a link', () => {
-        const {getByText} = render(<CustomCardLink {...props} />)
+        const { getByText } = render(<CustomCardLink {...props} />)
 
         expect(getByText(props.title).closest('a')).toHaveAttribute(
             'to',
-            props.to
+            props.to,
         )
         expect(getByText('add_circle')).toBeInTheDocument()
         expect(getByText(props.description)).toBeInTheDocument()

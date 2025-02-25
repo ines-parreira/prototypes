@@ -1,9 +1,9 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {MacrosProperties} from 'models/macro/types'
-import {getMacroParametersOptions} from 'state/macro/selectors'
-import {getTicket} from 'state/ticket/selectors'
+import { MacrosProperties } from 'models/macro/types'
+import { getMacroParametersOptions } from 'state/macro/selectors'
+import { getTicket } from 'state/ticket/selectors'
 
 export default function useInitialMacroFilters() {
     const ticket = useAppSelector(getTicket)
@@ -17,7 +17,7 @@ export default function useInitialMacroFilters() {
         // so macros that don't have any language set at all are also included
         // in the search results. This mimics previous behaviour.
         return options.languages.includes(ticket.language)
-            ? {languages: [ticket.language, '']}
+            ? { languages: [ticket.language, ''] }
             : {}
     }, [macroFilterOptions, ticket.language])
 }

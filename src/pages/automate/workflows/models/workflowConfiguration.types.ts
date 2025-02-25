@@ -1,6 +1,6 @@
-import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
+import { ProductCardAttachment } from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
 
-import {ConditionsSchema} from './conditions.types'
+import { ConditionsSchema } from './conditions.types'
 
 export type MessageContent = {
     html: string
@@ -330,21 +330,21 @@ export type WorkflowTransition = {
 }
 
 export const supportedLanguages = [
-    {code: 'en-US', label: 'English - US'} as const,
-    {code: 'en-GB', label: 'English - GB'} as const,
-    {code: 'fr-FR', label: 'French - FR'} as const,
-    {code: 'de-DE', label: 'German'} as const,
-    {code: 'es-ES', label: 'Spanish'} as const,
-    {code: 'cs-CZ', label: 'Czech'} as const,
-    {code: 'da-DK', label: 'Danish'} as const,
-    {code: 'nl-NL', label: 'Dutch'} as const,
-    {code: 'fi-FI', label: 'Finnish'} as const,
-    {code: 'fr-CA', label: 'French - CA'} as const,
-    {code: 'it-IT', label: 'Italian'} as const,
-    {code: 'ja-JP', label: 'Japanese'} as const,
-    {code: 'no-NO', label: 'Norwegian'} as const,
-    {code: 'pt-BR', label: 'Portuguese - BR'} as const,
-    {code: 'sv-SE', label: 'Swedish'} as const,
+    { code: 'en-US', label: 'English - US' } as const,
+    { code: 'en-GB', label: 'English - GB' } as const,
+    { code: 'fr-FR', label: 'French - FR' } as const,
+    { code: 'de-DE', label: 'German' } as const,
+    { code: 'es-ES', label: 'Spanish' } as const,
+    { code: 'cs-CZ', label: 'Czech' } as const,
+    { code: 'da-DK', label: 'Danish' } as const,
+    { code: 'nl-NL', label: 'Dutch' } as const,
+    { code: 'fi-FI', label: 'Finnish' } as const,
+    { code: 'fr-CA', label: 'French - CA' } as const,
+    { code: 'it-IT', label: 'Italian' } as const,
+    { code: 'ja-JP', label: 'Japanese' } as const,
+    { code: 'no-NO', label: 'Norwegian' } as const,
+    { code: 'pt-BR', label: 'Portuguese - BR' } as const,
+    { code: 'sv-SE', label: 'Swedish' } as const,
 ] as const
 export type LanguageCode = (typeof supportedLanguages)[number]['code']
 
@@ -390,8 +390,8 @@ export type WorkflowConfiguration = {
                             instructions: string
                             id: string
                         }
-                      | {kind: 'order-shipmonk'; integration_id: number}
-                      | {kind: 'order-3pl'; integration_id: number}
+                      | { kind: 'order-shipmonk'; integration_id: number }
+                      | { kind: 'order-3pl'; integration_id: number }
                   )[]
                   conditions?: ConditionsSchema | null
                   outputs: {
@@ -493,14 +493,14 @@ export type WorkflowConfiguration = {
                     name: string
                     description: string
                     data_type: 'string'
-                    options?: {value: string; label: string}[] | null
+                    options?: { value: string; label: string }[] | null
                 }
               | {
                     id: string
                     name: string
                     description: string
                     data_type: 'number'
-                    options?: {value: number; label: string}[] | null
+                    options?: { value: number; label: string }[] | null
                 }
               | {
                     id: string
@@ -545,7 +545,7 @@ export type WorkflowTemplate = {
     label: WorkflowTemplateLabelType
     getConfiguration: (
         id: string,
-        integrationId: number
+        integrationId: number,
     ) => WorkflowConfiguration
 }
 

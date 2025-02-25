@@ -1,17 +1,18 @@
-import {render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import * as ReactRouterDom from 'react-router-dom'
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {Language} from 'constants/languages'
-import {account} from 'fixtures/account'
-import {billingState} from 'fixtures/billing'
-import {entitiesInitialState} from 'fixtures/entities'
-import {integrationsState} from 'fixtures/integrations'
-import {RootState, StoreDispatch} from 'state/types'
+import { Language } from 'constants/languages'
+import { account } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
+import { entitiesInitialState } from 'fixtures/entities'
+import { integrationsState } from 'fixtures/integrations'
+import { RootState, StoreDispatch } from 'state/types'
 
 import GorgiasTranslateText from '../GorgiasTranslateText'
 
@@ -29,7 +30,7 @@ jest.mock(
                 push: mockHistoryPush,
                 replace: mockHistoryReplace,
             }),
-        }) as Record<string, any>
+        }) as Record<string, any>,
 )
 
 const useLocationSpy = jest.spyOn(ReactRouterDom, 'useLocation')
@@ -74,7 +75,7 @@ describe('GorgiasTranslateText', () => {
         render(
             <Provider store={store}>
                 <GorgiasTranslateText integration={integration} />
-            </Provider>
+            </Provider>,
         )
         expect(screen.getByText('Chat')).toBeInTheDocument()
     })

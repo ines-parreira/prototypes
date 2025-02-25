@@ -1,17 +1,16 @@
-import {screen} from '@testing-library/react'
-import {fromJS, Map} from 'immutable'
-import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
-
-import moment from 'moment/moment'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { screen } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
+import { mockFlags, resetLDMocks } from 'jest-launchdarkly-mock'
+import moment from 'moment/moment'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import {
     convertStatusLimitReached,
     convertStatusOkWarning,
     convertStatusOkWarningUpgrade,
 } from 'fixtures/convert'
-
 import useAppSelector from 'hooks/useAppSelector'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
@@ -35,10 +34,9 @@ import {
     getCurrentAccountState,
     getCurrentSubscription,
 } from 'state/currentAccount/selectors'
-import {getCurrentUser} from 'state/currentUser/selectors'
-
-import {renderWithStoreAndQueryClientAndRouter} from 'tests/renderWithStoreAndQueryClientAndRouter'
-import {assumeMock} from 'utils/testing'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
+import { assumeMock } from 'utils/testing'
 
 import BillingStartView from '../BillingStartView'
 
@@ -51,7 +49,7 @@ jest.mock('hooks/useGetDateAndTimeFormat')
 // Mock action creators
 jest.mock('state/billing/actions', () => {
     const actions: Record<string, unknown> = jest.requireActual(
-        'state/billing/actions'
+        'state/billing/actions',
     )
     return {
         ...actions,
@@ -187,11 +185,11 @@ describe('BillingStartView', () => {
                 }
 
                 if (selector === getCurrentAccountState) {
-                    return fromJS({domain: 'test'}) as Map<string, string>
+                    return fromJS({ domain: 'test' }) as Map<string, string>
                 }
 
                 if (selector === getCurrentUser) {
-                    return fromJS({email: 'test@test.com'}) as Map<
+                    return fromJS({ email: 'test@test.com' }) as Map<
                         string,
                         string
                     >
@@ -222,11 +220,11 @@ describe('BillingStartView', () => {
                 }
 
                 if (selector === getCurrentAccountState) {
-                    return fromJS({domain: 'test'}) as Map<string, string>
+                    return fromJS({ domain: 'test' }) as Map<string, string>
                 }
 
                 if (selector === getCurrentUser) {
-                    return fromJS({email: 'test@test.com'}) as Map<
+                    return fromJS({ email: 'test@test.com' }) as Map<
                         string,
                         string
                     >
@@ -239,7 +237,7 @@ describe('BillingStartView', () => {
                 storeWithCanceledSubscription,
                 {
                     route: BILLING_BASE_PATH,
-                }
+                },
             )
 
             expect(mockAddBanner).toHaveBeenCalled()
@@ -249,11 +247,11 @@ describe('BillingStartView', () => {
             expect(screen.getByText(/Payment History/i)).toBeInTheDocument()
 
             expect(
-                screen.queryByText(/Payment Information/i)
+                screen.queryByText(/Payment Information/i),
             ).not.toBeInTheDocument()
 
             expect(
-                screen.queryByText(/Gorgias Internal/i)
+                screen.queryByText(/Gorgias Internal/i),
             ).not.toBeInTheDocument()
         })
 
@@ -265,7 +263,7 @@ describe('BillingStartView', () => {
                 storeWithCanceledSubscription,
                 {
                     route: BILLING_BASE_PATH,
-                }
+                },
             )
             expect(screen.getByText(/Gorgias Internal/i)).toBeInTheDocument()
         })
@@ -278,10 +276,10 @@ describe('BillingStartView', () => {
                 storeWithCanceledSubscription,
                 {
                     route: BILLING_BASE_PATH,
-                }
+                },
             )
             expect(
-                screen.queryByText(/Gorgias Internal/i)
+                screen.queryByText(/Gorgias Internal/i),
             ).not.toBeInTheDocument()
         })
     })
@@ -311,11 +309,11 @@ describe('BillingStartView', () => {
                 }
 
                 if (selector === getCurrentAccountState) {
-                    return fromJS({domain: 'test'}) as Map<string, string>
+                    return fromJS({ domain: 'test' }) as Map<string, string>
                 }
 
                 if (selector === getCurrentUser) {
-                    return fromJS({email: 'test@test.com'}) as Map<
+                    return fromJS({ email: 'test@test.com' }) as Map<
                         string,
                         string
                     >
@@ -335,16 +333,16 @@ describe('BillingStartView', () => {
                 storeWithActiveSubscriptionWithConvert,
                 {
                     route: BILLING_BASE_PATH,
-                }
+                },
             )
             expect(
-                screen.queryByText(limitReachedText, {exact: false})
+                screen.queryByText(limitReachedText, { exact: false }),
             ).toBeInTheDocument()
         })
 
         it('should render a Convert auto-upgrade warning banner', () => {
             useGetConvertStatusMock.mockReturnValue(
-                convertStatusOkWarningUpgrade
+                convertStatusOkWarningUpgrade,
             )
 
             renderWithStoreAndQueryClientAndRouter(
@@ -352,11 +350,11 @@ describe('BillingStartView', () => {
                 storeWithActiveSubscriptionWithConvert,
                 {
                     route: BILLING_BASE_PATH,
-                }
+                },
             )
 
             expect(
-                screen.queryByText(upgradeText, {exact: false})
+                screen.queryByText(upgradeText, { exact: false }),
             ).toBeInTheDocument()
         })
 
@@ -368,11 +366,11 @@ describe('BillingStartView', () => {
                 storeWithActiveSubscriptionWithConvert,
                 {
                     route: BILLING_BASE_PATH,
-                }
+                },
             )
 
             expect(
-                screen.queryByText(warningText, {exact: false})
+                screen.queryByText(warningText, { exact: false }),
             ).toBeInTheDocument()
         })
 
@@ -387,11 +385,11 @@ describe('BillingStartView', () => {
                 storeWithActiveSubscriptionWithConvert,
                 {
                     route: BILLING_BASE_PATH,
-                }
+                },
             )
 
             expect(
-                screen.queryByText(warningText, {exact: false})
+                screen.queryByText(warningText, { exact: false }),
             ).not.toBeInTheDocument()
         })
     })
@@ -419,11 +417,11 @@ describe('BillingStartView', () => {
                 }
 
                 if (selector === getCurrentAccountState) {
-                    return fromJS({domain: 'test'}) as Map<string, string>
+                    return fromJS({ domain: 'test' }) as Map<string, string>
                 }
 
                 if (selector === getCurrentUser) {
-                    return fromJS({email: 'test@test.com'}) as Map<
+                    return fromJS({ email: 'test@test.com' }) as Map<
                         string,
                         string
                     >
@@ -448,7 +446,7 @@ describe('BillingStartView', () => {
             renderWithStoreAndQueryClientAndRouter(
                 <BillingStartView />,
                 storeWithActiveSubscriptionWithPhone,
-                {route: BILLING_PAYMENT_PATH}
+                { route: BILLING_PAYMENT_PATH },
             )
 
             const button = screen.queryByText('Change Frequency', {
@@ -476,11 +474,11 @@ describe('BillingStartView', () => {
                 }
 
                 if (selector === getCurrentAccountState) {
-                    return fromJS({domain: 'test'}) as Map<string, string>
+                    return fromJS({ domain: 'test' }) as Map<string, string>
                 }
 
                 if (selector === getCurrentUser) {
-                    return fromJS({email: 'test@test.com'}) as Map<
+                    return fromJS({ email: 'test@test.com' }) as Map<
                         string,
                         string
                     >
@@ -491,7 +489,7 @@ describe('BillingStartView', () => {
             renderWithStoreAndQueryClientAndRouter(
                 <BillingStartView />,
                 storeWithActiveSubscriptionWithPhone,
-                {route: BILLING_PAYMENT_PATH}
+                { route: BILLING_PAYMENT_PATH },
             )
 
             const button = screen.queryByText('Change Frequency', {
@@ -521,11 +519,11 @@ describe('BillingStartView', () => {
                 }
 
                 if (selector === getCurrentAccountState) {
-                    return fromJS({domain: 'test'}) as Map<string, string>
+                    return fromJS({ domain: 'test' }) as Map<string, string>
                 }
 
                 if (selector === getCurrentUser) {
-                    return fromJS({email: 'test@test.com'}) as Map<
+                    return fromJS({ email: 'test@test.com' }) as Map<
                         string,
                         string
                     >
@@ -547,11 +545,11 @@ describe('BillingStartView', () => {
                 storeWithCanceledSubscription,
                 {
                     route: BILLING_INFORMATION_PATH,
-                }
+                },
             )
 
             expect(
-                screen.getByTestId('billing-address-setup-view')
+                screen.getByTestId('billing-address-setup-view'),
             ).toBeInTheDocument()
         })
 
@@ -561,11 +559,11 @@ describe('BillingStartView', () => {
                 storeWithCanceledSubscription,
                 {
                     route: BILLING_PAYMENT_CARD_PATH,
-                }
+                },
             )
 
             expect(
-                screen.getByTestId('payment-method-setup-view')
+                screen.getByTestId('payment-method-setup-view'),
             ).toBeInTheDocument()
         })
     })
@@ -589,11 +587,11 @@ describe('BillingStartView', () => {
                 }
 
                 if (selector === getCurrentAccountState) {
-                    return fromJS({domain: 'test'}) as Map<string, string>
+                    return fromJS({ domain: 'test' }) as Map<string, string>
                 }
 
                 if (selector === getCurrentUser) {
-                    return fromJS({email: 'test@test.com'}) as Map<
+                    return fromJS({ email: 'test@test.com' }) as Map<
                         string,
                         string
                     >
@@ -612,7 +610,7 @@ describe('BillingStartView', () => {
                 },
                 {
                     route: BILLING_BASE_PATH,
-                }
+                },
             )
 
             expect(mockAddBanner).toHaveBeenCalled()
@@ -624,7 +622,7 @@ describe('BillingStartView', () => {
                 if (selector === getCurrentProductsUsage) {
                     return {
                         sms: {
-                            data: {...currentUsage.sms.data},
+                            data: { ...currentUsage.sms.data },
                             meta: {
                                 subscription_start_datetime:
                                     subscriptionPastEndDatetime,
@@ -647,11 +645,11 @@ describe('BillingStartView', () => {
                 }
 
                 if (selector === getCurrentAccountState) {
-                    return fromJS({domain: 'test'}) as Map<string, string>
+                    return fromJS({ domain: 'test' }) as Map<string, string>
                 }
 
                 if (selector === getCurrentUser) {
-                    return fromJS({email: 'test@test.com'}) as Map<
+                    return fromJS({ email: 'test@test.com' }) as Map<
                         string,
                         string
                     >
@@ -670,7 +668,7 @@ describe('BillingStartView', () => {
                 },
                 {
                     route: BILLING_BASE_PATH,
-                }
+                },
             )
 
             expect(mockAddBanner).not.toHaveBeenCalled()
@@ -696,11 +694,11 @@ describe('BillingStartView', () => {
                 }
 
                 if (selector === getCurrentAccountState) {
-                    return fromJS({domain: 'test'}) as Map<string, string>
+                    return fromJS({ domain: 'test' }) as Map<string, string>
                 }
 
                 if (selector === getCurrentUser) {
-                    return fromJS({email: 'test@test.com'}) as Map<
+                    return fromJS({ email: 'test@test.com' }) as Map<
                         string,
                         string
                     >
@@ -719,7 +717,7 @@ describe('BillingStartView', () => {
                 },
                 {
                     route: BILLING_BASE_PATH,
-                }
+                },
             )
 
             expect(mockAddBanner).toHaveBeenCalled()
@@ -731,7 +729,7 @@ describe('BillingStartView', () => {
                 if (selector === getCurrentProductsUsage) {
                     return {
                         voice: {
-                            data: {...currentUsage.sms.data},
+                            data: { ...currentUsage.sms.data },
                             meta: {
                                 subscription_start_datetime:
                                     subscriptionPastEndDatetime,
@@ -754,11 +752,11 @@ describe('BillingStartView', () => {
                 }
 
                 if (selector === getCurrentAccountState) {
-                    return fromJS({domain: 'test'}) as Map<string, string>
+                    return fromJS({ domain: 'test' }) as Map<string, string>
                 }
 
                 if (selector === getCurrentUser) {
-                    return fromJS({email: 'test@test.com'}) as Map<
+                    return fromJS({ email: 'test@test.com' }) as Map<
                         string,
                         string
                     >
@@ -777,7 +775,7 @@ describe('BillingStartView', () => {
                 },
                 {
                     route: BILLING_BASE_PATH,
-                }
+                },
             )
 
             expect(mockAddBanner).not.toHaveBeenCalled()

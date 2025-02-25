@@ -1,8 +1,7 @@
-import {FeatureFlagKey} from 'config/featureFlags'
-import {getLDClient} from 'utils/launchDarkly'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { getLDClient } from 'utils/launchDarkly'
 
-import {CampaignProduct} from '../../types/CampaignProduct'
-
+import { CampaignProduct } from '../../types/CampaignProduct'
 import {
     attachUtmToCampaignProduct,
     removeRevenueUtmFromUrl,
@@ -56,8 +55,8 @@ describe('attachUtmToCampaignProduct', () => {
                     MOCK_CAMPAIGN_NAME,
                     true,
                     MOCK_UTM_ENABLED,
-                    MOCK_UTM_QUERY_STRING
-                )
+                    MOCK_UTM_QUERY_STRING,
+                ),
             ).toEqual(MOCK_PRODUCT.url)
         })
     })
@@ -76,8 +75,8 @@ describe('attachUtmToCampaignProduct', () => {
                 MOCK_CAMPAIGN_NAME,
                 true,
                 MOCK_UTM_ENABLED,
-                MOCK_UTM_QUERY_STRING
-            )
+                MOCK_UTM_QUERY_STRING,
+            ),
         ).toEqual(expectedFullUrl)
     })
 })
@@ -86,8 +85,8 @@ describe('removeRevenueUtmFromUrl', () => {
     it('removes only the utm params', () => {
         expect(
             removeRevenueUtmFromUrl(
-                'https://jest-store.myshopify.com/?utm_source=Gorgias&utm_medium=ChatCampaign&utm_campaign=JestCampaign&anotherParam=someValue'
-            )
+                'https://jest-store.myshopify.com/?utm_source=Gorgias&utm_medium=ChatCampaign&utm_campaign=JestCampaign&anotherParam=someValue',
+            ),
         ).toEqual('https://jest-store.myshopify.com/?anotherParam=someValue')
     })
 })

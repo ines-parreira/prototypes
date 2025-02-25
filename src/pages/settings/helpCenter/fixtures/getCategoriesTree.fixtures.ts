@@ -1,4 +1,4 @@
-import {Category, CategoryWithLocalTranslation} from 'models/helpCenter/types'
+import { Category, CategoryWithLocalTranslation } from 'models/helpCenter/types'
 
 export const getCategoriesResponseEnglish: CategoryWithLocalTranslation = {
     created_datetime: '2022-03-07T14:46:47.212Z',

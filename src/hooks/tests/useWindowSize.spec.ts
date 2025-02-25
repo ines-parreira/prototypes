@@ -1,6 +1,6 @@
-import {act, renderHook} from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react-hooks'
 
-import {mockRequestAnimationFrame} from 'utils/testing'
+import { mockRequestAnimationFrame } from 'utils/testing'
 
 import useWindowSize from '../useWindowSize'
 
@@ -13,9 +13,9 @@ describe('useWindowSize', () => {
 
     function triggerResize(dimension: 'width' | 'height', value: number) {
         if (dimension === 'width') {
-            Object.defineProperty(window, 'innerWidth', {value})
+            Object.defineProperty(window, 'innerWidth', { value })
         } else if (dimension === 'height') {
-            Object.defineProperty(window, 'innerHeight', {value})
+            Object.defineProperty(window, 'innerHeight', { value })
         }
 
         window.dispatchEvent(new Event('resize'))

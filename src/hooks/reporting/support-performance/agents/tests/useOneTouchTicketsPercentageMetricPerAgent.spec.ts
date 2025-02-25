@@ -1,23 +1,26 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment/moment'
 
-import {TicketChannel} from 'business/types/ticket'
+import { TicketChannel } from 'business/types/ticket'
 import {
     useClosedTicketsMetricPerAgent,
     useOneTouchTicketsMetricPerAgent,
 } from 'hooks/reporting/metricsPerAgent'
-import {useOneTouchTicketsPercentageMetricPerAgent} from 'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricPerAgent'
-import {OrderDirection} from 'models/api/types'
-import {TicketDimension, TicketMeasure} from 'models/reporting/cubes/TicketCube'
-import {LegacyStatsFilters} from 'models/stat/types'
-import {assumeMock} from 'utils/testing'
+import { useOneTouchTicketsPercentageMetricPerAgent } from 'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricPerAgent'
+import { OrderDirection } from 'models/api/types'
+import {
+    TicketDimension,
+    TicketMeasure,
+} from 'models/reporting/cubes/TicketCube'
+import { LegacyStatsFilters } from 'models/stat/types'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/metricsPerAgent')
 const useOneTouchTicketsMetricPerAgentMock = assumeMock(
-    useOneTouchTicketsMetricPerAgent
+    useOneTouchTicketsMetricPerAgent,
 )
 const useClosedTicketsMetricPerAgentMock = assumeMock(
-    useClosedTicketsMetricPerAgent
+    useClosedTicketsMetricPerAgent,
 )
 
 describe('useOneTouchTicketsPercentageMetricPerAgent', () => {
@@ -86,15 +89,15 @@ describe('useOneTouchTicketsPercentageMetricPerAgent', () => {
             isFetching: false,
         })
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useOneTouchTicketsPercentageMetricPerAgent(
                     statsFilters,
                     timezone,
                     sorting,
-                    agentId
+                    agentId,
                 ),
-            {}
+            {},
         )
 
         expect(result.current).toEqual({
@@ -137,15 +140,15 @@ describe('useOneTouchTicketsPercentageMetricPerAgent', () => {
             isFetching: false,
         })
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useOneTouchTicketsPercentageMetricPerAgent(
                     statsFilters,
                     timezone,
                     sorting,
-                    missingAgentId
+                    missingAgentId,
                 ),
-            {}
+            {},
         )
 
         expect(result.current).toEqual({
@@ -186,15 +189,15 @@ describe('useOneTouchTicketsPercentageMetricPerAgent', () => {
             isFetching: false,
         })
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useOneTouchTicketsPercentageMetricPerAgent(
                     statsFilters,
                     timezone,
                     sorting,
-                    missingAgentId
+                    missingAgentId,
                 ),
-            {}
+            {},
         )
 
         expect(result.current).toEqual({

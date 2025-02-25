@@ -1,5 +1,6 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps, useState} from 'react'
+import React, { ComponentProps, useState } from 'react'
+
+import { Meta, Story } from '@storybook/react'
 
 import DashboardSection from './DashboardSection'
 import TipsToggle from './TipsToggle'
@@ -23,7 +24,7 @@ export const Default = Template.bind({})
 Default.args = defaultProps
 
 const WithTitleExtraTemplate: Story<ComponentProps<typeof DashboardSection>> = (
-    props
+    props,
 ) => {
     const [isVisible, setIsVisible] = useState(true)
 

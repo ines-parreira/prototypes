@@ -1,29 +1,33 @@
 import React from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {Progress, Table} from 'reactstrap'
 
-import {DateAndTimeFormatting} from 'constants/datetime'
+import { connect, ConnectedProps } from 'react-redux'
+import { Progress, Table } from 'reactstrap'
+
+import { DateAndTimeFormatting } from 'constants/datetime'
 import {
     IntegrationType,
     ZendeskIntegration,
     ZendeskIntegrationMeta,
 } from 'models/integration/types'
 import history from 'pages/history'
-import {getDateAndTimeFormatter, getTimezone} from 'state/currentUser/selectors'
-import {getIntegrationsByType} from 'state/integrations/selectors'
-import {RootState} from 'state/types'
-import {assetsUrl} from 'utils'
+import {
+    getDateAndTimeFormatter,
+    getTimezone,
+} from 'state/currentUser/selectors'
+import { getIntegrationsByType } from 'state/integrations/selectors'
+import { RootState } from 'state/types'
+import { assetsUrl } from 'utils'
 
-import {ImportStatus} from './types'
-import {getImportCompletionDate} from './utils'
+import { ImportStatus } from './types'
+import { getImportCompletionDate } from './utils'
 
 export const ImportZendeskDataList = (
-    props: ConnectedProps<typeof connector>
+    props: ConnectedProps<typeof connector>,
 ) => {
-    const {zendeskImports, img, timezone, datetimeFormat} = props
+    const { zendeskImports, img, timezone, datetimeFormat } = props
 
     const renderImportStatus = (
-        integrationMeta: ZendeskIntegrationMeta
+        integrationMeta: ZendeskIntegrationMeta,
     ): React.ReactChild => {
         const importStatus = integrationMeta.status
 
@@ -125,7 +129,7 @@ export const ImportZendeskDataList = (
                             key={idx}
                             onClick={() => {
                                 history.push(
-                                    `/app/settings/import-data/zendesk/${integration.id}`
+                                    `/app/settings/import-data/zendesk/${integration.id}`,
                                 )
                             }}
                         >
@@ -147,7 +151,7 @@ export const ImportZendeskDataList = (
                                         {getImportCompletionDate(
                                             integration,
                                             datetimeFormat,
-                                            timezone
+                                            timezone,
                                         )}
                                     </span>
                                 </div>
@@ -166,11 +170,11 @@ export const ImportZendeskDataList = (
 const mapStateToProps = (state: RootState) => ({
     img: assetsUrl('/img/integrations/zendesk.png'),
     zendeskImports: getIntegrationsByType<ZendeskIntegration>(
-        IntegrationType.Zendesk
+        IntegrationType.Zendesk,
     )(state),
     timezone: getTimezone(state),
     datetimeFormat: getDateAndTimeFormatter(state)(
-        DateAndTimeFormatting.CompactDateWithTime
+        DateAndTimeFormatting.CompactDateWithTime,
     ),
 })
 

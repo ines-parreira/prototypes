@@ -1,10 +1,11 @@
-import {render} from '@testing-library/react'
 import React from 'react'
+
+import { render } from '@testing-library/react'
 import ReactStar from 'react-rating-stars-component'
 
-import {assumeMock, getLastMockCall} from 'utils/testing'
+import { assumeMock, getLastMockCall } from 'utils/testing'
 
-import {DEFAULT_SIZE, STAR_COLORS} from '../constants'
+import { DEFAULT_SIZE, STAR_COLORS } from '../constants'
 import StartRating from '../StarRating'
 
 jest.mock('react-rating-stars-component', () => {
@@ -25,7 +26,7 @@ describe('<StarRating/>', () => {
                 value: ratingValue,
                 color: STAR_COLORS.DEFAULT,
                 activeColor: STAR_COLORS.ACTIVE,
-            })
+            }),
         )
     })
 
@@ -43,7 +44,7 @@ describe('<StarRating/>', () => {
                 edit={edit}
                 color={color}
                 activeColor={activeColor}
-            />
+            />,
         )
 
         expect(getLastMockCall(ReactStartMock)[0]).toEqual(
@@ -53,7 +54,7 @@ describe('<StarRating/>', () => {
                 value: ratingValue,
                 color,
                 activeColor,
-            })
+            }),
         )
     })
 })

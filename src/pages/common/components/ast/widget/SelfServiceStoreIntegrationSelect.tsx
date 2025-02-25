@@ -1,10 +1,11 @@
-import {fromJS} from 'immutable'
-import React, {useEffect, useMemo} from 'react'
+import React, { useEffect, useMemo } from 'react'
+
+import { fromJS } from 'immutable'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useShopifyIntegrations from 'pages/automate/common/hooks/useShopifyIntegrations'
-import {RenderLabel} from 'pages/common/utils/labels'
-import {fetchIntegrations} from 'state/integrations/actions'
+import { RenderLabel } from 'pages/common/utils/labels'
+import { fetchIntegrations } from 'state/integrations/actions'
 
 import Select from './ReactSelect'
 
@@ -14,7 +15,7 @@ type OwnProps = {
     value: any
 }
 
-const RENDER_LABEL_FIELD = fromJS({name: 'integrations'})
+const RENDER_LABEL_FIELD = fromJS({ name: 'integrations' })
 
 const SelfServiceStoreIntegrationSelect = ({
     className,
@@ -36,7 +37,7 @@ const SelfServiceStoreIntegrationSelect = ({
                     />
                 ),
             })),
-        [shopifyIntegrations]
+        [shopifyIntegrations],
     )
 
     useEffect(() => {

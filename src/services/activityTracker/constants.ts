@@ -1,4 +1,4 @@
-import {EventTrigger} from '@gorgias/event-tracker-api'
+import { EventTrigger } from '@gorgias/event-tracker-api'
 
 export const AGENT_ACTIVITY_HEALTHCHECK_INTERVAL = 1000 * 60 * 5 // 5 minutes
 

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 
 import css from './CanduActionInfobar.less'
@@ -12,7 +12,7 @@ type Props = {
     onClick?: () => void
 }
 
-const CanduActionInfobar = ({text, btnLabel, canduId, onClick}: Props) => {
+const CanduActionInfobar = ({ text, btnLabel, canduId, onClick }: Props) => {
     return (
         <div data-candu-id={canduId}>
             <Alert

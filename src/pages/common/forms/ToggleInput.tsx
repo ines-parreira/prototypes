@@ -1,5 +1,3 @@
-import {Label, LoadingSpinner} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
 import React, {
     AriaAttributes,
     InputHTMLAttributes,
@@ -8,9 +6,14 @@ import React, {
     useCallback,
 } from 'react'
 
+import classnames from 'classnames'
+
+import { Label, LoadingSpinner } from '@gorgias/merchant-ui-kit'
+
 import useId from 'hooks/useId'
 
 import Caption from './Caption/Caption'
+
 import css from './ToggleInput.less'
 
 type Props = {
@@ -48,7 +51,7 @@ const ToggleInput = ({
         (event: MouseEvent<HTMLLabelElement>) => {
             !isDisabled && !isLoading && onClick?.(!isToggled, event)
         },
-        [isDisabled, isLoading, isToggled, onClick]
+        [isDisabled, isLoading, isToggled, onClick],
     )
 
     return (
@@ -72,7 +75,7 @@ const ToggleInput = ({
                     className={css.input}
                     checked={isToggled}
                     disabled
-                    {...(dataCanduId ? {'data-candu-id': dataCanduId} : {})}
+                    {...(dataCanduId ? { 'data-candu-id': dataCanduId } : {})}
                     {...props}
                 />
                 <div className={css.slider} />

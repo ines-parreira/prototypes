@@ -1,15 +1,12 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
 import Button from 'pages/common/components/button/Button'
-
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-
 import CheckBox from 'pages/common/forms/CheckBox'
-
-import {assetsUrl} from 'utils'
+import { assetsUrl } from 'utils'
 
 import css from './CreateABTestInfoModal.less'
 
@@ -35,7 +32,7 @@ const CreateABTestInfoModal: React.FC<Props> = (props) => {
 
     const onDismissClick = () => {
         setIsDismissedChecked(
-            (prevIsDismissedChecked) => !prevIsDismissedChecked
+            (prevIsDismissedChecked) => !prevIsDismissedChecked,
         )
     }
 

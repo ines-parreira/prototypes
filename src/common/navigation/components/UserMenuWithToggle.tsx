@@ -1,5 +1,6 @@
+import React, { useCallback, useRef, useState } from 'react'
+
 import cn from 'classnames'
-import React, {useCallback, useRef, useState} from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import Avatar from 'pages/common/components/Avatar/Avatar'
@@ -10,6 +11,7 @@ import {
 } from 'state/currentUser/selectors'
 
 import UserMenu from './UserMenu'
+
 import css from './UserMenuWithToggle.less'
 
 export default function UserMenuWithToggle() {
@@ -29,7 +31,7 @@ export default function UserMenuWithToggle() {
                 className={cn(
                     css['dropdown-toggle'],
                     css['dropdown-toggle-dropup'],
-                    {[css.active]: isOpen}
+                    { [css.active]: isOpen },
                 )}
                 onClick={toggleIsOpen}
                 data-candu-id="navbar-user-menu"

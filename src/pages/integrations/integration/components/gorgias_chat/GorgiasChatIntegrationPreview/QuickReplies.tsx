@@ -1,5 +1,6 @@
-import classnames from 'classnames'
 import React from 'react'
+
+import classnames from 'classnames'
 
 import css from './ChatIntegrationPreview.less'
 
@@ -8,7 +9,7 @@ type Props = {
     mainColor?: string
 }
 
-const QuickReplies = ({quickReplies, mainColor}: Props) => (
+const QuickReplies = ({ quickReplies, mainColor }: Props) => (
     <div className={css.quickRepliesContent}>
         <div className={css.quickRepliesWrapper}>
             {quickReplies.map((quickReply, index) => (

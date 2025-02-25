@@ -1,8 +1,9 @@
-import {List, Map} from 'immutable'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {RuleContext} from 'pages/common/hooks/rule/RuleProvider'
-import {RuleItemActions} from 'pages/settings/rules/types'
+import { List, Map } from 'immutable'
+
+import { RuleContext } from 'pages/common/hooks/rule/RuleProvider'
+import { RuleItemActions } from 'pages/settings/rules/types'
 
 import Expression from './expression/Expression'
 import AddActionOrIfStatement from './operations/AddActionOrIfStatement'
@@ -14,9 +15,9 @@ type Props = {
     body: Array<ComponentProps<typeof Statement>>
 }
 
-export default function Program({actions, body, rule}: Props) {
+export default function Program({ actions, body, rule }: Props) {
     return (
-        <RuleContext.Provider value={{Expression, Statement}}>
+        <RuleContext.Provider value={{ Expression, Statement }}>
             <div className="Program-wrapper">
                 <div className="consequent">
                     <AddActionOrIfStatement

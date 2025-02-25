@@ -1,11 +1,11 @@
-import {useCallback} from 'react'
+import { useCallback } from 'react'
 
-import {PhoneCallDirection, TwilioSocketEventType} from 'business/twilio'
-import {connectCall} from 'hooks/integrations/phone/api'
+import { PhoneCallDirection, TwilioSocketEventType } from 'business/twilio'
+import { connectCall } from 'hooks/integrations/phone/api'
 import {
-    sendTwilioSocketEvent,
     gatherCallContext,
     handleCallEvents,
+    sendTwilioSocketEvent,
 } from 'hooks/integrations/phone/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
 
@@ -22,7 +22,7 @@ type Options = {
 
 export function useOutboundCall(): (options: Options) => void {
     const dispatch = useAppDispatch()
-    const {device, actions} = useVoiceDevice()
+    const { device, actions } = useVoiceDevice()
 
     return useCallback(
         async ({
@@ -52,7 +52,7 @@ export function useOutboundCall(): (options: Options) => void {
                 params.original_ticket_id = ticketId.toString()
             }
 
-            const call = await device?.connect({params: params})
+            const call = await device?.connect({ params: params })
             if (!call) {
                 return
             }
@@ -68,6 +68,6 @@ export function useOutboundCall(): (options: Options) => void {
             actions.setCall(call)
             await connectCall()
         },
-        [device, dispatch, actions]
+        [device, dispatch, actions],
     )
 }

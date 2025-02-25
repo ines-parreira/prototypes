@@ -1,5 +1,6 @@
-import {render} from '@testing-library/react'
 import React from 'react'
+
+import { render } from '@testing-library/react'
 
 import {
     GorgiasChatAvatarImageType,
@@ -7,8 +8,7 @@ import {
 } from 'models/integration/types'
 
 import BotMessages from '../BotMessages'
-
-import {ChatIntegrationPreviewContext} from '../ChatIntegrationPreview'
+import { ChatIntegrationPreviewContext } from '../ChatIntegrationPreview'
 
 describe('<BotMessages />', () => {
     const minProps: React.ComponentProps<typeof BotMessages> = {
@@ -19,7 +19,7 @@ describe('<BotMessages />', () => {
 
     it('should display bot icon', () => {
         const {
-            container: {firstChild},
+            container: { firstChild },
         } = render(
             <ChatIntegrationPreviewContext.Provider
                 value={{
@@ -33,7 +33,7 @@ describe('<BotMessages />', () => {
                 <BotMessages {...minProps}>
                     <div>test</div>
                 </BotMessages>
-            </ChatIntegrationPreviewContext.Provider>
+            </ChatIntegrationPreviewContext.Provider>,
         )
 
         expect(firstChild).toMatchSnapshot()
@@ -41,7 +41,7 @@ describe('<BotMessages />', () => {
 
     it('should display company logo', () => {
         const {
-            container: {firstChild},
+            container: { firstChild },
         } = render(
             <ChatIntegrationPreviewContext.Provider
                 value={{
@@ -56,7 +56,7 @@ describe('<BotMessages />', () => {
                 <BotMessages {...minProps}>
                     <div>test</div>
                 </BotMessages>
-            </ChatIntegrationPreviewContext.Provider>
+            </ChatIntegrationPreviewContext.Provider>,
         )
 
         expect(firstChild).toMatchSnapshot()

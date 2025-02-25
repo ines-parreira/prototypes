@@ -1,12 +1,13 @@
+import React, { useEffect, useMemo, useRef } from 'react'
+
 import classNames from 'classnames'
 import _camelCase from 'lodash/camelCase'
-import React, {useEffect, useMemo, useRef} from 'react'
 
 import useKey from 'hooks/useKey'
 import usePrevious from 'hooks/usePrevious'
-import {TranslationsPreviewProvider} from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
-import {VisualBuilderNode} from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import {Drawer} from 'pages/common/components/Drawer'
+import { TranslationsPreviewProvider } from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
+import { VisualBuilderNode } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { Drawer } from 'pages/common/components/Drawer'
 
 import AutomatedMessageEditor from './editors/AutomatedMessageEditor'
 import CancelSubscriptionEditor from './editors/CancelSubscriptionEditor'
@@ -27,17 +28,18 @@ import ShopperAuthenticationEditor from './editors/ShopperAuthenticationEditor/S
 import SkipChargeEditor from './editors/SkipChargeEditor'
 import TextReplyEditor from './editors/TextReplyEditor'
 import UpdateShippingAddressEditor from './editors/UpdateShippingAddressEditor'
-import css from './NodeEditorDrawer.less'
 import NodeEditorDrawerContext, {
     NodeEditorDrawerContextType,
 } from './NodeEditorDrawerContext'
+
+import css from './NodeEditorDrawer.less'
 
 type Props = {
     nodeInEdition?: VisualBuilderNode | null
     onClose: () => void
 }
 
-const NodeEditorDrawer = ({nodeInEdition, onClose}: Props) => {
+const NodeEditorDrawer = ({ nodeInEdition, onClose }: Props) => {
     const memoizedNodeInEditionRef = useRef(nodeInEdition)
     const prevNodeInEdition = usePrevious(nodeInEdition)
 
@@ -59,14 +61,14 @@ const NodeEditorDrawer = ({nodeInEdition, onClose}: Props) => {
             }
         },
         undefined,
-        [nodeInEdition, onClose]
+        [nodeInEdition, onClose],
     )
 
     const memoizedNodeInEdition = memoizedNodeInEditionRef.current
 
     const contextValue = useMemo<NodeEditorDrawerContextType>(
-        () => ({onClose}),
-        [onClose]
+        () => ({ onClose }),
+        [onClose],
     )
 
     return (
@@ -75,7 +77,7 @@ const NodeEditorDrawer = ({nodeInEdition, onClose}: Props) => {
                 css.drawer,
                 memoizedNodeInEdition
                     ? css[_camelCase(memoizedNodeInEdition.type)]
-                    : undefined
+                    : undefined,
             )}
             data-testid="visual-builder-node-edition" // used in e2e tests
             aria-label="Node editor"

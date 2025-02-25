@@ -1,19 +1,19 @@
-import {waitFor} from '@testing-library/react'
-import {renderHook} from '@testing-library/react-hooks'
+import { waitFor } from '@testing-library/react'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {AIArticle, HelpCenter} from 'models/helpCenter/types'
-import {StoreIntegration} from 'models/integration/types'
-import {useGetAIArticles} from 'pages/settings/helpCenter/hooks/useGetAIArticles'
-import {NonEmptyArray} from 'types'
-import {assumeMock} from 'utils/testing'
+import { AIArticle, HelpCenter } from 'models/helpCenter/types'
+import { StoreIntegration } from 'models/integration/types'
+import { useGetAIArticles } from 'pages/settings/helpCenter/hooks/useGetAIArticles'
+import { NonEmptyArray } from 'types'
+import { assumeMock } from 'utils/testing'
 
-import {useFirstStoreAndHelpCenterWithTopQuestions} from '../useFirstStoreAndHelpCenterWithTopQuestions'
-import {useHasEmailToStoreConnection} from '../useHasEmailToStoreConnection'
-import {StoreWithHelpCenters} from '../useTopQuestionsStoresWithHelpCenters'
+import { useFirstStoreAndHelpCenterWithTopQuestions } from '../useFirstStoreAndHelpCenterWithTopQuestions'
+import { useHasEmailToStoreConnection } from '../useHasEmailToStoreConnection'
+import { StoreWithHelpCenters } from '../useTopQuestionsStoresWithHelpCenters'
 
 jest.mock('../useHasEmailToStoreConnection')
 const mockUseHasEmailToStoreConnection = assumeMock(
-    useHasEmailToStoreConnection
+    useHasEmailToStoreConnection,
 )
 
 jest.mock('pages/settings/helpCenter/hooks/useGetAIArticles')
@@ -72,24 +72,24 @@ const mockArticles: AIArticle[] = [
 
 const storesWithHelpCentersFixture: StoreWithHelpCenters[] = [
     {
-        store: {id: 1, name: 'Store 1'} as StoreIntegration,
+        store: { id: 1, name: 'Store 1' } as StoreIntegration,
         helpCenters: [
-            {id: 11, name: 'Help Center 11'},
-            {id: 12, name: 'Help Center 12'},
+            { id: 11, name: 'Help Center 11' },
+            { id: 12, name: 'Help Center 12' },
         ] as unknown as NonEmptyArray<HelpCenter>,
     },
     {
-        store: {id: 2, name: 'Store 2'} as StoreIntegration,
+        store: { id: 2, name: 'Store 2' } as StoreIntegration,
         helpCenters: [
-            {id: 21, name: 'Help Center 21'},
-            {id: 22, name: 'Help Center 22'},
-            {id: 23, name: 'Help Center 23'},
+            { id: 21, name: 'Help Center 21' },
+            { id: 22, name: 'Help Center 22' },
+            { id: 23, name: 'Help Center 23' },
         ] as unknown as NonEmptyArray<HelpCenter>,
     },
     {
-        store: {id: 3, name: 'Store 3'} as StoreIntegration,
+        store: { id: 3, name: 'Store 3' } as StoreIntegration,
         helpCenters: [
-            {id: 31, name: 'Help Center 31'},
+            { id: 31, name: 'Help Center 31' },
         ] as unknown as NonEmptyArray<HelpCenter>,
     },
 ]
@@ -104,26 +104,26 @@ describe('useFirstStoreAndHelpCenterWithTopQuestions', () => {
         })
 
         mockUseConditionalGetAIArticles.mockImplementation(
-            ({helpCenterId, storeIntegrationId, enabled}) => {
+            ({ helpCenterId, storeIntegrationId, enabled }) => {
                 if (enabled === false) {
-                    return {isLoading: false, fetchedArticles: null}
+                    return { isLoading: false, fetchedArticles: null }
                 }
 
                 if (storeIntegrationId === 2 && helpCenterId === 22) {
-                    return {isLoading: false, fetchedArticles: mockArticles}
+                    return { isLoading: false, fetchedArticles: mockArticles }
                 }
 
-                return {isLoading: false, fetchedArticles: []}
-            }
+                return { isLoading: false, fetchedArticles: [] }
+            },
         )
     })
 
     it('finds the first store and help center with top questions', async () => {
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useFirstStoreAndHelpCenterWithTopQuestions(
                 storesWithHelpCentersFixture,
-                true
-            )
+                true,
+            ),
         )
 
         await waitFor(() => {
@@ -185,21 +185,21 @@ describe('useFirstStoreAndHelpCenterWithTopQuestions', () => {
             isLoading: false,
         })
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useFirstStoreAndHelpCenterWithTopQuestions(
                 storesWithHelpCentersFixture,
-                true
-            )
+                true,
+            ),
         )
 
         await waitFor(() => {
             expect(mockUseConditionalGetAIArticles.mock.calls).toEqual([
-                [{helpCenterId: 11, locale: 'en-US', storeIntegrationId: 1}],
-                [{helpCenterId: 12, locale: 'en-US', storeIntegrationId: 1}],
-                [{helpCenterId: 21, locale: 'en-US', storeIntegrationId: 2}],
-                [{helpCenterId: 22, locale: 'en-US', storeIntegrationId: 2}],
-                [{helpCenterId: 23, locale: 'en-US', storeIntegrationId: 2}],
-                [{helpCenterId: 31, locale: 'en-US', storeIntegrationId: 3}],
+                [{ helpCenterId: 11, locale: 'en-US', storeIntegrationId: 1 }],
+                [{ helpCenterId: 12, locale: 'en-US', storeIntegrationId: 1 }],
+                [{ helpCenterId: 21, locale: 'en-US', storeIntegrationId: 2 }],
+                [{ helpCenterId: 22, locale: 'en-US', storeIntegrationId: 2 }],
+                [{ helpCenterId: 23, locale: 'en-US', storeIntegrationId: 2 }],
+                [{ helpCenterId: 31, locale: 'en-US', storeIntegrationId: 3 }],
                 [
                     {
                         enabled: false,
@@ -220,13 +220,13 @@ describe('useFirstStoreAndHelpCenterWithTopQuestions', () => {
     })
 
     it('does nothing if disabled and starts work if enabled later', async () => {
-        const {rerender, result} = renderHook(
-            ({enabled}: {enabled: boolean}) =>
+        const { rerender, result } = renderHook(
+            ({ enabled }: { enabled: boolean }) =>
                 useFirstStoreAndHelpCenterWithTopQuestions(
                     storesWithHelpCentersFixture,
-                    enabled
+                    enabled,
                 ),
-            {initialProps: {enabled: false}}
+            { initialProps: { enabled: false } },
         )
 
         await waitFor(() => {
@@ -251,7 +251,7 @@ describe('useFirstStoreAndHelpCenterWithTopQuestions', () => {
 
         mockUseConditionalGetAIArticles.mockClear()
 
-        rerender({enabled: true})
+        rerender({ enabled: true })
 
         await waitFor(() => {
             expect(mockUseConditionalGetAIArticles.mock.calls).toEqual([
@@ -307,8 +307,8 @@ describe('useFirstStoreAndHelpCenterWithTopQuestions', () => {
     })
 
     it('does nothing if it has no store', async () => {
-        const {result} = renderHook(() =>
-            useFirstStoreAndHelpCenterWithTopQuestions([], true)
+        const { result } = renderHook(() =>
+            useFirstStoreAndHelpCenterWithTopQuestions([], true),
         )
 
         await waitFor(() => {
@@ -338,11 +338,11 @@ describe('useFirstStoreAndHelpCenterWithTopQuestions', () => {
             isLoading: true,
         })
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useFirstStoreAndHelpCenterWithTopQuestions(
                 storesWithHelpCentersFixture,
-                true
-            )
+                true,
+            ),
         )
 
         await waitFor(() => {
@@ -370,11 +370,11 @@ describe('useFirstStoreAndHelpCenterWithTopQuestions', () => {
             isLoading: true,
         })
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useFirstStoreAndHelpCenterWithTopQuestions(
                 storesWithHelpCentersFixture,
-                true
-            )
+                true,
+            ),
         )
 
         await waitFor(() => {
@@ -399,32 +399,32 @@ describe('useFirstStoreAndHelpCenterWithTopQuestions', () => {
         mockUseHasEmailToStoreConnection.mockImplementation(
             (storeIntegrationId) =>
                 storeIntegrationId === 2
-                    ? {isLoading: false, hasEmailToStoreConnection: false}
+                    ? { isLoading: false, hasEmailToStoreConnection: false }
                     : {
                           hasEmailToStoreConnection: true,
                           isLoading: false,
-                      }
+                      },
         )
 
         mockUseConditionalGetAIArticles.mockImplementation(
-            ({helpCenterId, storeIntegrationId, enabled}) => {
+            ({ helpCenterId, storeIntegrationId, enabled }) => {
                 if (enabled === false) {
-                    return {isLoading: false, fetchedArticles: null}
+                    return { isLoading: false, fetchedArticles: null }
                 }
 
                 if (storeIntegrationId === 3 && helpCenterId === 31) {
-                    return {isLoading: false, fetchedArticles: mockArticles}
+                    return { isLoading: false, fetchedArticles: mockArticles }
                 }
 
-                return {isLoading: false, fetchedArticles: []}
-            }
+                return { isLoading: false, fetchedArticles: [] }
+            },
         )
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useFirstStoreAndHelpCenterWithTopQuestions(
                 storesWithHelpCentersFixture,
-                true
-            )
+                true,
+            ),
         )
 
         await waitFor(() => {
@@ -501,32 +501,32 @@ describe('useFirstStoreAndHelpCenterWithTopQuestions', () => {
         mockUseHasEmailToStoreConnection.mockImplementation(
             (storeIntegrationId) =>
                 storeIntegrationId === 1
-                    ? {isLoading: false, hasEmailToStoreConnection: false}
+                    ? { isLoading: false, hasEmailToStoreConnection: false }
                     : {
                           hasEmailToStoreConnection: true,
                           isLoading: false,
-                      }
+                      },
         )
 
         mockUseConditionalGetAIArticles.mockImplementation(
-            ({helpCenterId, storeIntegrationId, enabled}) => {
+            ({ helpCenterId, storeIntegrationId, enabled }) => {
                 if (enabled === false) {
-                    return {isLoading: false, fetchedArticles: null}
+                    return { isLoading: false, fetchedArticles: null }
                 }
 
                 if (storeIntegrationId === 3 && helpCenterId === 31) {
-                    return {isLoading: false, fetchedArticles: mockArticles}
+                    return { isLoading: false, fetchedArticles: mockArticles }
                 }
 
-                return {isLoading: false, fetchedArticles: []}
-            }
+                return { isLoading: false, fetchedArticles: [] }
+            },
         )
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useFirstStoreAndHelpCenterWithTopQuestions(
                 storesWithHelpCentersFixture,
-                true
-            )
+                true,
+            ),
         )
 
         await waitFor(() => {

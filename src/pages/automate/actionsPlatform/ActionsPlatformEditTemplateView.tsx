@@ -1,64 +1,66 @@
-import React, {useCallback, useState} from 'react'
-import {useHistory} from 'react-router-dom'
+import React, { useCallback, useState } from 'react'
 
-import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
+import { useHistory } from 'react-router-dom'
+
+import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
 import AutomateFormView from 'pages/automate/common/components/AutomateFormView'
 import {
     useVisualBuilder,
     VisualBuilderContext,
 } from 'pages/automate/workflows/hooks/useVisualBuilder'
-import {useVisualBuilderGraphReducer} from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
-import {computeNodesPositions} from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer/utils'
-import {transformVisualBuilderGraphIntoWfConfiguration} from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import {LLMPromptTriggerNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import {transformWorkflowConfigurationIntoVisualBuilderGraph} from 'pages/automate/workflows/models/workflowConfiguration.model'
+import { useVisualBuilderGraphReducer } from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
+import { computeNodesPositions } from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer/utils'
+import { transformVisualBuilderGraphIntoWfConfiguration } from 'pages/automate/workflows/models/visualBuilderGraph.model'
+import { LLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { transformWorkflowConfigurationIntoVisualBuilderGraph } from 'pages/automate/workflows/models/workflowConfiguration.model'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
-import css from './ActionsPlatformEditTemplateView.less'
 import ActionsPlatformTemplateFormView from './components/ActionsPlatformTemplateFormView'
 import ActionsPlatformTemplateVisualBuilderView from './components/ActionsPlatformTemplateVisualBuilderView'
 import useEditActionTemplate from './hooks/useEditActionTemplate'
 import useTouchActionTemplateGraph from './hooks/useTouchActionTemplateGraph'
 import useValidateActionTemplateGraph from './hooks/useValidateActionTemplateGraph'
 import useValidateOnVisualBuilderGraphChange from './hooks/useValidateOnVisualBuilderGraphChange'
-import {ActionTemplate} from './types'
+import { ActionTemplate } from './types'
+
+import css from './ActionsPlatformEditTemplateView.less'
 
 type Props = {
     template: ActionTemplate
 }
 
-const ActionsPlatformEditTemplateView = ({template}: Props) => {
-    const {isLoading: isEditActionTemplateLoading, editActionTemplate} =
+const ActionsPlatformEditTemplateView = ({ template }: Props) => {
+    const { isLoading: isEditActionTemplateLoading, editActionTemplate } =
         useEditActionTemplate()
 
     const history = useHistory()
 
-    const {data: steps = []} = useGetWorkflowConfigurationTemplates({
+    const { data: steps = [] } = useGetWorkflowConfigurationTemplates({
         triggers: ['reusable-llm-prompt'],
     })
     const [visualBuilderGraphDirty, dispatch] = useVisualBuilderGraphReducer(
         computeNodesPositions(
             transformWorkflowConfigurationIntoVisualBuilderGraph<LLMPromptTriggerNodeType>(
                 template,
-                true
-            )
-        )
+                true,
+            ),
+        ),
     )
     const [visualBuilderGraph, setVisualBuilderGraph] = useState(
-        visualBuilderGraphDirty
+        visualBuilderGraphDirty,
     )
 
     const visualBuilderContextValue = useVisualBuilder(
         visualBuilderGraphDirty,
         dispatch,
-        false
+        false,
     )
 
-    const {getVariableListForNode} = visualBuilderContextValue
+    const { getVariableListForNode } = visualBuilderContextValue
 
     const handleValidate = useValidateActionTemplateGraph(
-        getVariableListForNode
+        getVariableListForNode,
     )
     const handleTouch = useTouchActionTemplateGraph()
 
@@ -88,7 +90,7 @@ const ActionsPlatformEditTemplateView = ({template}: Props) => {
                 transformVisualBuilderGraphIntoWfConfiguration(
                     visualBuilderGraphDirty,
                     isDraft,
-                    steps
+                    steps,
                 ) as ActionTemplate
 
             await editActionTemplate([
@@ -101,8 +103,8 @@ const ActionsPlatformEditTemplateView = ({template}: Props) => {
             const nextGraph = computeNodesPositions(
                 transformWorkflowConfigurationIntoVisualBuilderGraph<LLMPromptTriggerNodeType>(
                     configurationDirty,
-                    true
-                )
+                    true,
+                ),
             )
 
             dispatch({
@@ -119,7 +121,7 @@ const ActionsPlatformEditTemplateView = ({template}: Props) => {
             handleTouch,
             dispatch,
             steps,
-        ]
+        ],
     )
 
     const [isEditingSteps, setIsEditingSteps] = useState(false)

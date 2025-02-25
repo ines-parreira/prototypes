@@ -1,12 +1,11 @@
-import {useCallback, useMemo, useState} from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import useSearch from 'hooks/useSearch'
-import {OrderDirection, opposite} from 'models/api/types'
-
+import { opposite, OrderDirection } from 'models/api/types'
 import history from 'pages/history'
 
-import {Campaign} from '../types/Campaign'
-import {isActiveStatus} from '../types/enums/CampaignStatus.enum'
+import { Campaign } from '../types/Campaign'
+import { isActiveStatus } from '../types/enums/CampaignStatus.enum'
 
 function sortActiveFirst(campaigns: Campaign[]): Campaign[] {
     const _sortCreation = (a: Campaign, b: Campaign) => {
@@ -134,10 +133,10 @@ export function useSortedCampaigns(campaigns: Campaign[]) {
     }>()
 
     const [sortBy, setSortBy] = useState<SortingKeys>(
-        (params.sortBy ?? undefined) as SortingKeys
+        (params.sortBy ?? undefined) as SortingKeys,
     )
     const [sortDirection, setSortDirection] = useState<OrderDirection>(
-        (params.sortDirection as OrderDirection) ?? OrderDirection.Desc
+        (params.sortDirection as OrderDirection) ?? OrderDirection.Desc,
     )
 
     const changeSorting = useCallback(
@@ -161,7 +160,7 @@ export function useSortedCampaigns(campaigns: Campaign[]) {
                 sortDirection: OrderDirection.Asc,
             })
         },
-        [sortBy, sortDirection]
+        [sortBy, sortDirection],
     )
 
     const sortedCampaigns = useMemo(() => {
@@ -196,7 +195,7 @@ export function useSortedCampaigns(campaigns: Campaign[]) {
             sortedCampaigns,
             changeSorting,
         }),
-        [changeSorting, sortBy, sortDirection, sortedCampaigns]
+        [changeSorting, sortBy, sortDirection, sortedCampaigns],
     )
 
     return api

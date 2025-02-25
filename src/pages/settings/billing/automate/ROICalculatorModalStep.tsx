@@ -1,18 +1,23 @@
-import classNames from 'classnames'
 import React from 'react'
-import {ModalFooter, ModalHeader} from 'reactstrap'
+
+import classNames from 'classnames'
+import { ModalFooter, ModalHeader } from 'reactstrap'
 
 import Button from 'pages/common/components/button/Button'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 
-import css from './AutomateSubscriptionModal.less'
 import ROICalculator from './ROICalculator/ROICalculator'
+
+import css from './AutomateSubscriptionModal.less'
 
 type Props = {
     handleOnClose: () => void
     onSelectPlanClick: () => void
 }
-const ROICalculatorModalStep = ({handleOnClose, onSelectPlanClick}: Props) => (
+const ROICalculatorModalStep = ({
+    handleOnClose,
+    onSelectPlanClick,
+}: Props) => (
     <>
         <ModalHeader toggle={handleOnClose}>
             Calculate Potential ROI

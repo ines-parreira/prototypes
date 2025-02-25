@@ -1,11 +1,12 @@
-// eslint-disable-next-line import/order
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {applications as mockApplications} from 'fixtures/applications'
-import {channels as mockChannels} from 'fixtures/channels'
-import {applicationsQueryKeys as mockApplicationsQueryKeys} from 'models/application/queries'
-import {channelsQueryKeys as mockChannelsQueryKeys} from 'models/channel/queries'
-import {IntegrationType} from 'models/integration/constants'
-import {Integration} from 'models/integration/types'
+// sort-imports-ignore
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+
+import { applications as mockApplications } from 'fixtures/applications'
+import { channels as mockChannels } from 'fixtures/channels'
+import { applicationsQueryKeys as mockApplicationsQueryKeys } from 'models/application/queries'
+import { channelsQueryKeys as mockChannelsQueryKeys } from 'models/channel/queries'
+import { IntegrationType } from 'models/integration/constants'
+import { Integration } from 'models/integration/types'
 import {
     getApplicationById,
     getApplications,
@@ -13,7 +14,7 @@ import {
     getMessagingConfig,
     hasApplicationForChannel,
 } from 'services/applications'
-import {getChannelBySlug} from 'services/channels'
+import { getChannelBySlug } from 'services/channels'
 
 jest.mock('api/queryClient', () => ({
     appQueryClient: mockQueryClient({
@@ -37,7 +38,7 @@ describe('services', () => {
         describe('getApplicationById()', () => {
             it('should return a application if given a valid ID', () => {
                 expect(
-                    getApplicationById('64785607477d0a11fc731bfa')
+                    getApplicationById('64785607477d0a11fc731bfa'),
                 ).toBeDefined()
             })
 
@@ -49,7 +50,7 @@ describe('services', () => {
         describe('getApplicationsByChannel()', () => {
             it('should return an array of applications for that channel', () => {
                 expect(
-                    getApplicationsByChannel('tiktok-shop')?.[0]?.name
+                    getApplicationsByChannel('tiktok-shop')?.[0]?.name,
                 ).toEqual('TikTok Shop')
             })
         })
@@ -58,7 +59,7 @@ describe('services', () => {
             it('should return true if there is an installed application for the given channel', () => {
                 expect(hasApplicationForChannel('tiktok-shop')).toEqual(true)
                 expect(
-                    hasApplicationForChannel(getChannelBySlug('tiktok-shop')!)
+                    hasApplicationForChannel(getChannelBySlug('tiktok-shop')!),
                 ).toEqual(true)
             })
 
@@ -70,13 +71,13 @@ describe('services', () => {
         describe('getMessagingConfig()', () => {
             it('should return the messaging config for a given "app" integration', () => {
                 const expectedConfig = getApplicationById(
-                    '64785607477d0a11fc731bfa'
+                    '64785607477d0a11fc731bfa',
                 )?.messaging_config
                 expect(
                     getMessagingConfig({
                         type: 'app',
                         application_id: '64785607477d0a11fc731bfa',
-                    } as Integration)
+                    } as Integration),
                 ).toEqual(expectedConfig)
             })
 
@@ -84,7 +85,7 @@ describe('services', () => {
                 expect(
                     getMessagingConfig({
                         type: IntegrationType.Facebook,
-                    } as Integration)
+                    } as Integration),
                 ).toBeUndefined()
             })
         })

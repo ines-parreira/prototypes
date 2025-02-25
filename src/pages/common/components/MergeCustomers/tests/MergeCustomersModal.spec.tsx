@@ -1,11 +1,12 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import _noop from 'lodash/noop'
 import React from 'react'
 
-import {TicketChannel} from 'business/types/ticket'
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import _noop from 'lodash/noop'
+
+import { TicketChannel } from 'business/types/ticket'
 import MergeCustomersModal from 'pages/common/components/MergeCustomers/MergeCustomersModal'
-import {mergeCustomers} from 'state/customers/actions'
+import { mergeCustomers } from 'state/customers/actions'
 
 const address1 = 'pierre@gorgias.io'
 const address2 = 'Pierre@gorgias.io'
@@ -51,7 +52,7 @@ const customer2 = fromJS({
 describe('<MergeCustomersModal/>', () => {
     describe('render()', () => {
         it('should render', () => {
-            const {container} = render(
+            const { container } = render(
                 <MergeCustomersModal
                     destinationCustomer={customer1}
                     sourceCustomer={customer2}
@@ -61,7 +62,7 @@ describe('<MergeCustomersModal/>', () => {
                     isOpen={true}
                     isLoading={false}
                     requiredAddresses={fromJS([address1])}
-                />
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()

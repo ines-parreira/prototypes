@@ -1,25 +1,24 @@
-import {AxiosError} from 'axios'
-import {List} from 'immutable'
+import { AxiosError } from 'axios'
+import { List } from 'immutable'
 import _isUndefined from 'lodash/isUndefined'
-import {notify as updateNotification} from 'reapop'
-import {UpsertNotificationAction} from 'reapop/dist/reducers/notifications/actions'
+import { notify as updateNotification } from 'reapop'
+import { UpsertNotificationAction } from 'reapop/dist/reducers/notifications/actions'
 
 import * as viewsConfig from 'config/views'
-
 import client from 'models/api/resources'
-import {ApiListResponseLegacyPagination} from 'models/api/types'
-import {Customer, CustomerDraft} from 'models/customer/types'
-import {Ticket} from 'models/ticket/types'
-import {ViewType} from 'models/view/types'
+import { ApiListResponseLegacyPagination } from 'models/api/types'
+import { Customer, CustomerDraft } from 'models/customer/types'
+import { Ticket } from 'models/ticket/types'
+import { ViewType } from 'models/view/types'
 import history from 'pages/history'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import type {StoreDispatch, RootState} from 'state/types'
-import {onApiError} from 'state/utils'
-import {isCurrentlyOnCustomerPage} from 'utils'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import type { RootState, StoreDispatch } from 'state/types'
+import { onApiError } from 'state/utils'
+import { isCurrentlyOnCustomerPage } from 'utils'
 
 import * as types from './constants'
-import {mergeChannels} from './helpers'
+import { mergeChannels } from './helpers'
 
 export function fetchCustomer(customerId: string | number) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
@@ -48,9 +47,9 @@ export function fetchCustomer(customerId: string | number) {
                 },
                 (
                     error: AxiosError<{
-                        response?: {status: number}
-                        error?: {msg?: string}
-                    }>
+                        response?: { status: number }
+                        error?: { msg?: string }
+                    }>,
                 ) => {
                     const reason = 'Failed to fetch customer'
                     // TODO(customers-migration): remove this condition when the migration is done
@@ -58,7 +57,7 @@ export function fetchCustomer(customerId: string | number) {
                         return dispatch(
                             onApiError(error, reason, {
                                 type: types.FETCH_CUSTOMER_ERROR,
-                            })
+                            }),
                         )
                     }
                     return dispatch({
@@ -66,7 +65,7 @@ export function fetchCustomer(customerId: string | number) {
                         error,
                         reason,
                     }) as unknown as Promise<void>
-                }
+                },
             )
     }
 }
@@ -83,7 +82,7 @@ export function submitCustomer(data: CustomerDraft, customerId?: number) {
         if (isUpdate) {
             promise = client.put<CustomerDraft>(
                 `/api/customers/${customerId}/`,
-                data
+                data,
             )
         } else {
             promise = client.post<CustomerDraft>('/api/customers/', data)
@@ -105,7 +104,7 @@ export function submitCustomer(data: CustomerDraft, customerId?: number) {
                             message: `Customer successfully ${
                                 isUpdate ? 'updated' : 'created'
                             }`,
-                        })
+                        }),
                     )
 
                     return resp
@@ -119,7 +118,7 @@ export function submitCustomer(data: CustomerDraft, customerId?: number) {
                             isUpdate ? 'update' : 'create'
                         } customer`,
                     })
-                }
+                },
             )
     }
 }
@@ -141,7 +140,7 @@ export function deleteCustomer(customerId: number) {
                     notify({
                         status: NotificationStatus.Success,
                         message: 'Customer successfully deleted',
-                    })
+                    }),
                 )
             },
             (error: AxiosError) => {
@@ -150,7 +149,7 @@ export function deleteCustomer(customerId: number) {
                     error,
                     reason: 'Failed to update the customer',
                 })
-            }
+            },
         )
     }
 }
@@ -169,11 +168,13 @@ export function bulkDeleteCustomer(ids: List<any>) {
                 status: NotificationStatus.Info,
                 dismissAfter: 0,
                 message: `Deleting ${viewConfig.get('plural') as string}...`,
-            })
+            }),
         ) as unknown as UpsertNotificationAction
 
         return client
-            .delete(`/api/${viewConfig.get('api') as string}/`, {data: {ids}})
+            .delete(`/api/${viewConfig.get('api') as string}/`, {
+                data: { ids },
+            })
             .then(
                 () => {
                     notification.payload.status = NotificationStatus.Success
@@ -192,16 +193,16 @@ export function bulkDeleteCustomer(ids: List<any>) {
                     notification.payload.message = `Couldn\'t delete selected ${
                         viewConfig.get('plural') as string
                     }`
-                    dispatch({type: types.BULK_DELETE_ERROR})
+                    dispatch({ type: types.BULK_DELETE_ERROR })
                     void dispatch(updateNotification(notification.payload))
-                }
+                },
             )
     }
 }
 
 export function fetchCustomerHistory(
     customerId: number,
-    options: {successCondition?: (T: RootState) => boolean} = {}
+    options: { successCondition?: (T: RootState) => boolean } = {},
 ) {
     return (dispatch: StoreDispatch, getState: () => RootState) => {
         dispatch({
@@ -210,7 +211,7 @@ export function fetchCustomerHistory(
 
         return client
             .get<ApiListResponseLegacyPagination<Ticket>>(
-                `/api/customers/${customerId}/tickets/`
+                `/api/customers/${customerId}/tickets/`,
             )
             .then((json) => json?.data)
             .then(
@@ -233,9 +234,9 @@ export function fetchCustomerHistory(
                 },
                 (
                     error: AxiosError<{
-                        response?: {status: number}
-                        error?: {msg?: string}
-                    }>
+                        response?: { status: number }
+                        error?: { msg?: string }
+                    }>,
                 ) => {
                     const reason =
                         "Couldn't fetch customer's tickets. Please try again in a few minutes."
@@ -244,7 +245,7 @@ export function fetchCustomerHistory(
                         return dispatch(
                             onApiError(error, reason, {
                                 type: types.FETCH_CUSTOMER_HISTORY_ERROR,
-                            })
+                            }),
                         ) as unknown as Promise<void>
                     }
                     return dispatch({
@@ -252,7 +253,7 @@ export function fetchCustomerHistory(
                         error,
                         reason,
                     }) as unknown as Promise<void>
-                }
+                },
             )
     }
 }
@@ -260,7 +261,7 @@ export function fetchCustomerHistory(
 export function mergeCustomers(
     baseCustomerId: number,
     mergeCustomerId: number,
-    data: Customer
+    data: Customer,
 ) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         dispatch({
@@ -272,7 +273,7 @@ export function mergeCustomers(
         return client
             .put<Customer>(
                 `/api/customers/merge?target_id=${baseCustomerId}&source_id=${mergeCustomerId}`,
-                data
+                data,
             )
             .then((json) => json?.data)
             .then(
@@ -286,7 +287,7 @@ export function mergeCustomers(
                         notify({
                             status: NotificationStatus.Success,
                             message: 'Customers successfully merged.',
-                        })
+                        }),
                     )
 
                     return Promise.resolve(resp)
@@ -298,7 +299,7 @@ export function mergeCustomers(
                         verbose: true,
                         reason: "Couldn't merge customers. Please try again in a few minutes.",
                     })
-                }
+                },
             )
     }
 }

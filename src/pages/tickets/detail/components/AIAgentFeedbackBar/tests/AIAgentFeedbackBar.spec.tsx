@@ -1,24 +1,25 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {render, screen} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { render, screen } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {useGetAiAgentFeedback} from 'models/aiAgentFeedback/queries'
-import {TicketMessage} from 'models/ticket/types'
-import {useAIAgentSendFeedback} from 'pages/tickets/detail/hooks/useAIAgentSendFeedback'
-import {RootState, StoreDispatch} from 'state/types'
-import {getSelectedAIMessage} from 'state/ui/ticketAIAgentFeedback'
-import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { useGetAiAgentFeedback } from 'models/aiAgentFeedback/queries'
+import { TicketMessage } from 'models/ticket/types'
+import { useAIAgentSendFeedback } from 'pages/tickets/detail/hooks/useAIAgentSendFeedback'
+import { RootState, StoreDispatch } from 'state/types'
+import { getSelectedAIMessage } from 'state/ui/ticketAIAgentFeedback'
+import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constants'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 import AIAgentFeedbackBar, {
     FEEDBACK_TICKET_SUMMARY_TEST_ID,
     ticketFeedbackSummary,
 } from '../AIAgentFeedbackBar'
-import {TRIAL_MESSAGE_TAG} from '../constants'
-import {messageFeedback} from './fixtures'
+import { TRIAL_MESSAGE_TAG } from '../constants'
+import { messageFeedback } from './fixtures'
 
 jest.mock('../AIAgentMessageFeedback', () => () => (
     <div data-testid="message-feedback"></div>
@@ -79,11 +80,11 @@ describe('AIAgentFeedbackBar', () => {
                 <Provider store={store}>
                     <AIAgentFeedbackBar />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(
-            screen.getByTestId(FEEDBACK_TICKET_SUMMARY_TEST_ID)
+            screen.getByTestId(FEEDBACK_TICKET_SUMMARY_TEST_ID),
         ).toHaveTextContent(ticketFeedbackSummary)
         expect(screen.getByTestId('ticket-feedback')).toBeInTheDocument()
     })
@@ -94,22 +95,22 @@ describe('AIAgentFeedbackBar', () => {
                 <Provider store={store}>
                     <AIAgentFeedbackBar />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(
-            screen.getByTestId(FEEDBACK_TICKET_SUMMARY_TEST_ID)
+            screen.getByTestId(FEEDBACK_TICKET_SUMMARY_TEST_ID),
         ).toHaveTextContent(messageFeedback.summary!)
         expect(screen.getByTestId('message-feedback')).toBeInTheDocument()
     })
 
     it('should not render AutoQA if the feature flag is disabled', () => {
-        const {queryByText} = render(
+        const { queryByText } = render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={store}>
                     <AIAgentFeedbackBar />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(queryByText('AutoQA')).not.toBeInTheDocument()
@@ -120,7 +121,7 @@ describe('AIAgentFeedbackBar', () => {
             data: {
                 data: {
                     messages: [
-                        {...messageFeedback, summary: undefined},
+                        { ...messageFeedback, summary: undefined },
                         mockMessage,
                     ],
                 },
@@ -132,10 +133,10 @@ describe('AIAgentFeedbackBar', () => {
                 <Provider store={store}>
                     <AIAgentFeedbackBar />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
         expect(
-            screen.getByTestId(FEEDBACK_TICKET_SUMMARY_TEST_ID)
+            screen.getByTestId(FEEDBACK_TICKET_SUMMARY_TEST_ID),
         ).toHaveTextContent(ticketFeedbackSummary)
     })
 
@@ -150,12 +151,12 @@ describe('AIAgentFeedbackBar', () => {
                 <Provider store={store}>
                     <AIAgentFeedbackBar />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
         expect(screen.queryByText('Response summary')).not.toBeInTheDocument()
         expect(screen.queryByText('AI Agent overview')).not.toBeInTheDocument()
         expect(
-            screen.queryByTestId(FEEDBACK_TICKET_SUMMARY_TEST_ID)
+            screen.queryByTestId(FEEDBACK_TICKET_SUMMARY_TEST_ID),
         ).not.toBeInTheDocument()
         expect(screen.getByTestId('message-feedback')).toBeInTheDocument()
     })

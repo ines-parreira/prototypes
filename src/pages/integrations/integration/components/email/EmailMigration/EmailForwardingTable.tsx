@@ -1,7 +1,8 @@
-import classNames from 'classnames'
 import React from 'react'
 
-import {EmailMigrationInboundVerification} from 'models/integration/types'
+import classNames from 'classnames'
+
+import { EmailMigrationInboundVerification } from 'models/integration/types'
 import Pagination from 'pages/common/components/Pagination'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
@@ -16,17 +17,17 @@ import EmailVerificationStatusLabel, {
     EmailVerificationStatus,
 } from '../EmailVerificationStatusLabel'
 import EmailForwardingButton from './EmailForwardingButton'
+import EmptyMigrationTableRow from './EmptyMigrationTableRow'
+import { computeMigrationInboundVerificationStatus } from './utils'
 
 import css from './EmailForwardingTable.less'
-import EmptyMigrationTableRow from './EmptyMigrationTableRow'
-import {computeMigrationInboundVerificationStatus} from './utils'
 
 type Props = {
     migrations: EmailMigrationInboundVerification[]
 }
 
-export default function EmailForwardingTable({migrations}: Props) {
-    const {paginatedItems, ...pagination} = useClientSidePagination({
+export default function EmailForwardingTable({ migrations }: Props) {
+    const { paginatedItems, ...pagination } = useClientSidePagination({
         items: migrations,
         itemsPerPage: 5,
     })
@@ -44,7 +45,7 @@ export default function EmailForwardingTable({migrations}: Props) {
                         paginatedItems.map((migration) => {
                             const verificationStatus =
                                 computeMigrationInboundVerificationStatus(
-                                    migration
+                                    migration,
                                 )
 
                             return (
@@ -56,7 +57,7 @@ export default function EmailForwardingTable({migrations}: Props) {
                                                 [css.failed]:
                                                     verificationStatus ===
                                                     EmailVerificationStatus.Failed,
-                                            }
+                                            },
                                         )}
                                         data-testid="email-address-value"
                                     >

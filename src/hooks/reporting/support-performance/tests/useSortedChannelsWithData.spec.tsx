@@ -1,13 +1,13 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {channels as mockChannels} from 'fixtures/channels'
-import {useChannelsReportMetrics} from 'hooks/reporting/support-performance/channels/useChannelsReportMetrics'
-import {useSortedChannelsWithData} from 'hooks/reporting/support-performance/useSortedChannelsWithData'
-import {CHANNEL_DIMENSION} from 'models/reporting/queryFactories/support-performance/constants'
-import {assumeMock} from 'utils/testing'
+import { channels as mockChannels } from 'fixtures/channels'
+import { useChannelsReportMetrics } from 'hooks/reporting/support-performance/channels/useChannelsReportMetrics'
+import { useSortedChannelsWithData } from 'hooks/reporting/support-performance/useSortedChannelsWithData'
+import { CHANNEL_DIMENSION } from 'models/reporting/queryFactories/support-performance/constants'
+import { assumeMock } from 'utils/testing'
 
 jest.mock(
-    'hooks/reporting/support-performance/channels/useChannelsReportMetrics'
+    'hooks/reporting/support-performance/channels/useChannelsReportMetrics',
 )
 const useChannelsReportMetricsMock = assumeMock(useChannelsReportMetrics)
 
@@ -55,7 +55,7 @@ describe('useSortedChannelsWithData', () => {
             isLoading: true,
         } as any)
 
-        const {result} = renderHook(() => useSortedChannelsWithData())
+        const { result } = renderHook(() => useSortedChannelsWithData())
 
         expect(result.current).toEqual({
             channels: mockChannels,
@@ -70,7 +70,7 @@ describe('useSortedChannelsWithData', () => {
             isLoading: false,
         } as any)
 
-        const {result} = renderHook(() => useSortedChannelsWithData())
+        const { result } = renderHook(() => useSortedChannelsWithData())
 
         expect(result.current).toEqual({
             channels: [],
@@ -87,23 +87,23 @@ describe('useSortedChannelsWithData', () => {
                 ...nullReportData,
                 createdTicketsMetricPerChannel: {
                     data: {
-                        allData: [{[CHANNEL_DIMENSION]: emailChannel}],
+                        allData: [{ [CHANNEL_DIMENSION]: emailChannel }],
                     },
                 },
                 percentageOfCreatedTicketsMetricPerChannel: {
                     data: {
-                        allData: [{[CHANNEL_DIMENSION]: airflowChannel}],
+                        allData: [{ [CHANNEL_DIMENSION]: airflowChannel }],
                     },
                 },
             },
             isLoading: false,
         } as any)
 
-        const {result} = renderHook(() => useSortedChannelsWithData())
+        const { result } = renderHook(() => useSortedChannelsWithData())
 
         expect(result.current).toEqual({
             channels: mockChannels.filter((channel) =>
-                [emailChannel, airflowChannel].includes(channel.slug)
+                [emailChannel, airflowChannel].includes(channel.slug),
             ),
             isLoading: false,
         })

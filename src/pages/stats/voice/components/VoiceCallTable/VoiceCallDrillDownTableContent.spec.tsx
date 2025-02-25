@@ -1,12 +1,13 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {useDrillDownData} from 'hooks/reporting/useDrillDownData'
-import {formatVoiceDrillDownRowData} from 'pages/stats/DrillDownFormatters'
-import {VoiceMetric} from 'state/ui/stats/types'
-import {assumeMock} from 'utils/testing'
+import { render } from '@testing-library/react'
 
-import {getVoiceDrillDownColumns} from './utils'
+import { useDrillDownData } from 'hooks/reporting/useDrillDownData'
+import { formatVoiceDrillDownRowData } from 'pages/stats/DrillDownFormatters'
+import { VoiceMetric } from 'state/ui/stats/types'
+import { assumeMock } from 'utils/testing'
+
+import { getVoiceDrillDownColumns } from './utils'
 import VoiceCallDrillDownTableContent from './VoiceCallDrillDownTableContent'
 import VoiceCallTableContent from './VoiceCallTableContent'
 
@@ -23,7 +24,7 @@ describe('VoiceCallDrillDownTableContent', () => {
                 metricData={{
                     metricName: VoiceMetric.AverageTalkTime,
                 }}
-            />
+            />,
         )
     }
 
@@ -48,7 +49,7 @@ describe('VoiceCallDrillDownTableContent', () => {
             {
                 metricName: VoiceMetric.AverageTalkTime,
             },
-            formatVoiceDrillDownRowData
+            formatVoiceDrillDownRowData,
         )
         expect(VoiceCallTableContentMock).toHaveBeenCalledWith(
             {
@@ -59,7 +60,7 @@ describe('VoiceCallDrillDownTableContent', () => {
                 columns: getVoiceDrillDownColumns(VoiceMetric.AverageTalkTime),
                 useMeasuredWidth: false,
             },
-            {}
+            {},
         )
     })
 })

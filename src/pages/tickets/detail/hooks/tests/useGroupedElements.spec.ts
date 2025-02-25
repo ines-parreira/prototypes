@@ -1,14 +1,14 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {Map} from 'immutable'
+import { renderHook } from '@testing-library/react-hooks'
+import { Map } from 'immutable'
 
-import {getActionByName} from 'config/actions'
+import { getActionByName } from 'config/actions'
 import useAppSelector from 'hooks/useAppSelector'
-import {isTicketEvent, isTicketRuleSuggestion} from 'models/ticket/predicates'
+import { isTicketEvent, isTicketRuleSuggestion } from 'models/ticket/predicates'
 import {
     getRuleSuggestionContent,
     isSuggestionEmpty,
 } from 'pages/tickets/detail/components/RuleSuggestion/RuleSuggestion'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
 import useGroupedElements from '../useGroupedElements'
 import useRuleSuggestionForDemos from '../useRuleSuggestionForDemos'
@@ -31,14 +31,14 @@ jest.mock(
     'pages/tickets/detail/components/PrivateReplyEvent/constants',
     () => ({
         PRIVATE_REPLY_ACTIONS: ['private-reply-action'],
-    })
+    }),
 )
 jest.mock(
     'pages/tickets/detail/components/RuleSuggestion/RuleSuggestion',
     () => ({
         getRuleSuggestionContent: jest.fn(),
         isSuggestionEmpty: jest.fn(),
-    })
+    }),
 )
 
 jest.mock('../useRuleSuggestionForDemos', () => jest.fn())
@@ -71,7 +71,7 @@ describe('useGroupedElements', () => {
             .mockReturnValueOnce([]) // bodyElement
             .mockReturnValueOnce(Map()) // ticket
 
-        const {result} = renderHook(() => useGroupedElements())
+        const { result } = renderHook(() => useGroupedElements())
         expect(result.current).toEqual(['header'])
     })
 
@@ -80,89 +80,89 @@ describe('useGroupedElements', () => {
             .mockReturnValueOnce([[]]) // bodyElement
             .mockReturnValueOnce(Map()) // ticket
 
-        const {result} = renderHook(() => useGroupedElements())
+        const { result } = renderHook(() => useGroupedElements())
         expect(result.current).toEqual(['header', []])
     })
 
     it('should not return rule suggestion elements that are empty', () => {
         mockUseAppSelector
-            .mockReturnValueOnce([{foo: 'bar'}]) // bodyElement
+            .mockReturnValueOnce([{ foo: 'bar' }]) // bodyElement
             .mockReturnValueOnce(Map()) // ticket
 
         mockIsTicketRuleSuggestion.mockReturnValue(true)
         mockIsSuggestionEmpty.mockReturnValue(true)
 
-        const {result} = renderHook(() => useGroupedElements())
+        const { result } = renderHook(() => useGroupedElements())
         expect(result.current).toEqual(['header'])
     })
 
     it('should return rule suggestion elements that have content', () => {
         mockUseAppSelector
-            .mockReturnValueOnce([{foo: 'bar'}]) // bodyElement
-            .mockReturnValueOnce(Map({ticket: true})) // ticket
+            .mockReturnValueOnce([{ foo: 'bar' }]) // bodyElement
+            .mockReturnValueOnce(Map({ ticket: true })) // ticket
 
         mockIsTicketRuleSuggestion.mockReturnValue(true)
         mockGetRuleSuggestionContent.mockReturnValue('rule-suggestion-content')
         mockIsSuggestionEmpty.mockReturnValue(false)
 
-        const {result} = renderHook(() => useGroupedElements())
+        const { result } = renderHook(() => useGroupedElements())
 
         expect(mockGetRuleSuggestionContent).toHaveBeenCalledWith({
             ticket: true,
         })
         expect(mockIsSuggestionEmpty).toHaveBeenCalledWith(
-            'rule-suggestion-content'
+            'rule-suggestion-content',
         )
 
-        expect(result.current).toEqual(['header', {foo: 'bar'}])
+        expect(result.current).toEqual(['header', { foo: 'bar' }])
     })
 
     it('should return elements that are not ticket events', () => {
         mockUseAppSelector
-            .mockReturnValueOnce([{foo: 'bar'}]) // bodyElement
+            .mockReturnValueOnce([{ foo: 'bar' }]) // bodyElement
             .mockReturnValueOnce(Map()) // ticket
 
         mockIsTicketEvent.mockReturnValue(false)
 
-        const {result} = renderHook(() => useGroupedElements())
-        expect(result.current).toEqual(['header', {foo: 'bar'}])
+        const { result } = renderHook(() => useGroupedElements())
+        expect(result.current).toEqual(['header', { foo: 'bar' }])
     })
 
     it('should return audit log events that have content', () => {
         mockUseAppSelector
-            .mockReturnValueOnce([{type: 'audit-log-event'}]) // bodyElement
+            .mockReturnValueOnce([{ type: 'audit-log-event' }]) // bodyElement
             .mockReturnValueOnce(Map()) // ticket
 
-        const {result} = renderHook(() => useGroupedElements())
-        expect(result.current).toEqual(['header', {type: 'audit-log-event'}])
+        const { result } = renderHook(() => useGroupedElements())
+        expect(result.current).toEqual(['header', { type: 'audit-log-event' }])
     })
 
     it('should return phone events that have content', () => {
         mockUseAppSelector
-            .mockReturnValueOnce([{type: 'phone-event'}]) // bodyElement
+            .mockReturnValueOnce([{ type: 'phone-event' }]) // bodyElement
             .mockReturnValueOnce(Map()) // ticket
 
-        const {result} = renderHook(() => useGroupedElements())
-        expect(result.current).toEqual(['header', {type: 'phone-event'}])
+        const { result } = renderHook(() => useGroupedElements())
+        expect(result.current).toEqual(['header', { type: 'phone-event' }])
     })
 
     it('should return private reply actions', () => {
         mockUseAppSelector
             .mockReturnValueOnce([
-                {data: {action_name: 'private-reply-action'}},
+                { data: { action_name: 'private-reply-action' } },
             ]) // bodyElement
             .mockReturnValueOnce(Map()) // ticket
 
-        const {result} = renderHook(() => useGroupedElements())
+        const { result } = renderHook(() => useGroupedElements())
         expect(result.current).toEqual([
             'header',
-            {data: {action_name: 'private-reply-action'}},
+            { data: { action_name: 'private-reply-action' } },
         ])
     })
 
     it('should return elements that have an action config', () => {
         mockUseAppSelector
-            .mockReturnValueOnce([{foo: 'bar'}]) // bodyElement
+            .mockReturnValueOnce([{ foo: 'bar' }]) // bodyElement
             .mockReturnValueOnce(Map()) // ticket
 
         mockGetActionByName.mockReturnValue({
@@ -171,7 +171,7 @@ describe('useGroupedElements', () => {
             objectType: 'baz',
         })
 
-        const {result} = renderHook(() => useGroupedElements())
-        expect(result.current).toEqual(['header', {foo: 'bar'}])
+        const { result } = renderHook(() => useGroupedElements())
+        expect(result.current).toEqual(['header', { foo: 'bar' }])
     })
 })

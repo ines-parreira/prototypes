@@ -6,16 +6,16 @@ import {
 } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 
-import {PopoverContainerBody} from '../popover-container/PopoverContainer'
-import {ModifierCheckbox} from './fields/ModifierCheckbox'
-import {ModifierSelect} from './fields/ModifierSelect'
-import {ModifierSwatch} from './fields/ModifierSwatch'
+import { PopoverContainerBody } from '../popover-container/PopoverContainer'
+import { ModifierCheckbox } from './fields/ModifierCheckbox'
+import { ModifierSelect } from './fields/ModifierSelect'
+import { ModifierSwatch } from './fields/ModifierSwatch'
+import { useModifierValues } from './hooks'
+import { ModifierProductComponent } from './ModifierProductComponent'
+import { ModifierErrors, ModifierValues } from './types'
+import { isCheckboxModifier, isSelectModifier, isSwatchModifier } from './utils'
 
-import {useModifierValues} from './hooks'
-import {ModifierProductComponent} from './ModifierProductComponent'
 import css from './ModifiersPopoverComponent.less'
-import {ModifierErrors, ModifierValues} from './types'
-import {isCheckboxModifier, isSelectModifier, isSwatchModifier} from './utils'
 
 export type ModifierPopoverBodyProps = {
     product: BigCommerceProduct
@@ -114,7 +114,7 @@ export const ModifiersPopover = ({
     onApply,
     setReference,
 }: Props) => {
-    const {modifierValues, modifierErrors, handleSetValue, handleValidate} =
+    const { modifierValues, modifierErrors, handleSetValue, handleValidate } =
         useModifierValues({
             modifiers: product.modifiers ?? [],
             lineItem: lineItem,

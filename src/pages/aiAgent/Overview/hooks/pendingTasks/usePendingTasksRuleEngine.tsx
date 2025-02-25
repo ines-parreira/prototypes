@@ -1,20 +1,20 @@
-import {useEffect, useState} from 'react'
+import { useEffect, useState } from 'react'
 
-import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
-import {runRuleEngine} from './ruleEngine'
-import {Task} from './tasks/Task'
-import {useFetchActionsData} from './useFetchActionsData'
-import {useFetchAiAgentPlaygroundExecutionsData} from './useFetchAiAgentPlaygroundExecutionsData'
-import {useFetchAiAgentStoreConfigurationData} from './useFetchAiAgentStoreConfigurationData'
-import {useFetchChatIntegrationsStatusData} from './useFetchChatIntegrationsStatusData'
-import {useFetchEmailIntegrationsData} from './useFetchEmailIntegrationsData'
-import {useFetchFaqHelpCentersData} from './useFetchFaqHelpCentersData'
-import {useFetchFileIngestionData} from './useFetchFileIngestionData'
-import {useFetchGuidancesData} from './useFetchGuidancesData'
-import {useFetchPageInteractionsData} from './useFetchPageInteractionsData'
-import {useShopifyPermissionsData} from './useShopifyPermissionsData'
-import {useTicketViewData} from './useTicketViewData'
+import { runRuleEngine } from './ruleEngine'
+import { Task } from './tasks/Task'
+import { useFetchActionsData } from './useFetchActionsData'
+import { useFetchAiAgentPlaygroundExecutionsData } from './useFetchAiAgentPlaygroundExecutionsData'
+import { useFetchAiAgentStoreConfigurationData } from './useFetchAiAgentStoreConfigurationData'
+import { useFetchChatIntegrationsStatusData } from './useFetchChatIntegrationsStatusData'
+import { useFetchEmailIntegrationsData } from './useFetchEmailIntegrationsData'
+import { useFetchFaqHelpCentersData } from './useFetchFaqHelpCentersData'
+import { useFetchFileIngestionData } from './useFetchFileIngestionData'
+import { useFetchGuidancesData } from './useFetchGuidancesData'
+import { useFetchPageInteractionsData } from './useFetchPageInteractionsData'
+import { useShopifyPermissionsData } from './useShopifyPermissionsData'
+import { useTicketViewData } from './useTicketViewData'
 
 // Until we have the full implementation of usePendingTasksRuleEngine
 // we decided to fake the tasks in storybook to prevent having to mock things
@@ -30,7 +30,7 @@ export const usePendingTasksRuleEngine = ({
     storeName,
     storeType,
 }: Args) => {
-    const {routes} = useAiAgentNavigation({shopName: storeName})
+    const { routes } = useAiAgentNavigation({ shopName: storeName })
 
     const {
         isLoading: aiAgentStoreConfigurationIsLoading,
@@ -41,17 +41,17 @@ export const usePendingTasksRuleEngine = ({
         enabled: !shouldFakeTasks,
     })
 
-    const {isLoading: faqHelpCentersDataIsLoading, data: faqHelpCentersData} =
-        useFetchFaqHelpCentersData({enabled: !shouldFakeTasks})
+    const { isLoading: faqHelpCentersDataIsLoading, data: faqHelpCentersData } =
+        useFetchFaqHelpCentersData({ enabled: !shouldFakeTasks })
 
-    const {isLoading: fileIngestionDataIsLoading, data: fileIngestionData} =
+    const { isLoading: fileIngestionDataIsLoading, data: fileIngestionData } =
         useFetchFileIngestionData(storeName, !shouldFakeTasks)
 
-    const {isLoading: guidancesDataIsLoading, data: guidancesData} =
-        useFetchGuidancesData({storeName, enabled: !shouldFakeTasks})
+    const { isLoading: guidancesDataIsLoading, data: guidancesData } =
+        useFetchGuidancesData({ storeName, enabled: !shouldFakeTasks })
 
-    const {isLoading: actionsDataIsLoading, data: actionsData} =
-        useFetchActionsData({storeName, enabled: !shouldFakeTasks})
+    const { isLoading: actionsDataIsLoading, data: actionsData } =
+        useFetchActionsData({ storeName, enabled: !shouldFakeTasks })
 
     const {
         isLoading: aiAgentPlaygroundExecutionsDataIsLoading,
@@ -62,14 +62,14 @@ export const usePendingTasksRuleEngine = ({
         enabled: !shouldFakeTasks,
     })
 
-    const {isLoading: ticketViewDataIsLoading, data: ticketViewData} =
+    const { isLoading: ticketViewDataIsLoading, data: ticketViewData } =
         useTicketViewData({
             accountDomain,
         })
 
-    const {data: emailIntegrationsData} = useFetchEmailIntegrationsData()
+    const { data: emailIntegrationsData } = useFetchEmailIntegrationsData()
 
-    const {data: shopifyPermissionsData} = useShopifyPermissionsData({
+    const { data: shopifyPermissionsData } = useShopifyPermissionsData({
         storeName,
     })
 
@@ -114,7 +114,7 @@ export const usePendingTasksRuleEngine = ({
         !!pageInteractionsData
 
     // Use memo instead of useEffect
-    const [{completedTasks, pendingTasks}, setTasks] = useState<{
+    const [{ completedTasks, pendingTasks }, setTasks] = useState<{
         completedTasks: Task[]
         pendingTasks: Task[]
     }>({
@@ -143,8 +143,8 @@ export const usePendingTasksRuleEngine = ({
                     },
                     {
                         aiAgentRoutes: routes,
-                    }
-                )
+                    },
+                ),
             )
         }
         /* eslint-disable react-hooks/exhaustive-deps */
@@ -161,7 +161,6 @@ export const usePendingTasksRuleEngine = ({
         ticketViewData,
         pageInteractionsData,
     ]) /* eslint-enable react-hooks/exhaustive-deps */
-    
 
     if (shouldFakeTasks) {
         return {

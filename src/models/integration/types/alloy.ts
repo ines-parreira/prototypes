@@ -1,5 +1,5 @@
-import {IntegrationType} from '../constants'
-import type {IntegrationBase} from './base'
+import { IntegrationType } from '../constants'
+import type { IntegrationBase } from './base'
 
 // Typings for https://cdn.runalloy.com/scripts/embedded.js
 declare global {

@@ -1,38 +1,37 @@
-import {Map} from 'immutable'
-import React, {useMemo} from 'react'
-import {Link} from 'react-router-dom'
+import React, { useMemo } from 'react'
+
+import { Map } from 'immutable'
+import { Link } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {useDismissFlag} from 'hooks/useDismissFlag'
-import {IntegrationType} from 'models/integration/constants'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-
-import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
-
-import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
-import {isAccountDuringBusinessHours} from 'state/integrations/helpers'
+import { useDismissFlag } from 'hooks/useDismissFlag'
+import { IntegrationType } from 'models/integration/constants'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
+import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
+import { isAccountDuringBusinessHours } from 'state/integrations/helpers'
 
 type Props = {
     integration: Map<any, any>
 }
 
-export const CampaignChatHiddenWarning = ({integration}: Props) => {
+export const CampaignChatHiddenWarning = ({ integration }: Props) => {
     const isConvertSubscriber = useIsConvertSubscriber()
     const businessHours = useAppSelector(getBusinessHoursSettings)
-    const {isDismissed, dismiss} = useDismissFlag(
+    const { isDismissed, dismiss } = useDismissFlag(
         'gorgias.chat-hidden-warning',
-        true
+        true,
     )
     const isDuringBusinessHours = isAccountDuringBusinessHours(businessHours)
 
     const isDisplayCampaignsWhenChatIsHiddenEnabled: boolean =
         integration.getIn(
             ['meta', 'preferences', 'display_campaigns_hidden_chat'],
-            false
+            false,
         )
     const isHideOutsideBusinessHoursEnabled: boolean = integration.getIn(
         ['meta', 'preferences', 'hide_outside_business_hours'],
-        false
+        false,
     )
 
     const isOfflineModeEnabled: boolean =

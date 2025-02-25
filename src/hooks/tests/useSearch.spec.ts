@@ -1,5 +1,5 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {useLocation} from 'react-router-dom'
+import { renderHook } from '@testing-library/react-hooks'
+import { useLocation } from 'react-router-dom'
 
 import useSearch from '../useSearch'
 
@@ -13,13 +13,13 @@ jest.mock('react-router')
 
 describe('useSearch hook', () => {
     it('should provide the parsed query', () => {
-        const {result} = renderHook(() => useSearch())
+        const { result } = renderHook(() => useSearch())
 
-        expect(result.current).toEqual({foo: '1', bar: 'baz'})
+        expect(result.current).toEqual({ foo: '1', bar: 'baz' })
     })
 
     it('should provide the updated parsed query when url changed', () => {
-        const {result, rerender} = renderHook(() => useSearch())
+        const { result, rerender } = renderHook(() => useSearch())
         ;(
             useLocation as jest.MockedFunction<typeof useLocation>
         ).mockReturnValueOnce({
@@ -30,6 +30,6 @@ describe('useSearch hook', () => {
         })
         rerender()
 
-        expect(result.current).toEqual({baz: '2'})
+        expect(result.current).toEqual({ baz: '2' })
     })
 })

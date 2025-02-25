@@ -1,37 +1,36 @@
-import {Options as InitialSettings} from 'daterangepicker'
+import React, { ComponentProps, useCallback } from 'react'
+
+import { Options as InitialSettings } from 'daterangepicker'
 import moment from 'moment-timezone'
-import {Moment} from 'moment/moment'
-import React, {ComponentProps, useCallback} from 'react'
+import { Moment } from 'moment/moment'
+import { connect } from 'react-redux'
 
-import {connect} from 'react-redux'
-
-import {logEvent, SegmentEvent} from 'common/segment'
-import {DateAndTimeFormatting} from 'constants/datetime'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { DateAndTimeFormatting } from 'constants/datetime'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useEffectOnce from 'hooks/useEffectOnce'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import {FilterKey, StatsFilters} from 'models/stat/types'
+import { FilterKey, StatsFilters } from 'models/stat/types'
 import FilterName from 'pages/stats/common/components/Filter/components/FilterName/FilterName'
 import FilterValue from 'pages/stats/common/components/Filter/components/FilterValue/FilterValue'
-import {FilterLabels} from 'pages/stats/common/filters/constants'
+import { FilterLabels } from 'pages/stats/common/filters/constants'
 import css from 'pages/stats/common/filters/PeriodFilter.less'
-import {RemovableFilter} from 'pages/stats/common/filters/types'
+import { RemovableFilter } from 'pages/stats/common/filters/types'
 import PeriodPicker from 'pages/stats/common/PeriodPicker'
-import {getDateRangePickerLabel} from 'pages/stats/common/utils'
-import {getNewSetOfRanges} from 'pages/stats/constants'
-import {getPageStatsFilters} from 'state/stats/selectors'
-import {mergeStatsFilters} from 'state/stats/statsSlice'
-
-import {RootState} from 'state/types'
+import { getDateRangePickerLabel } from 'pages/stats/common/utils'
+import { getNewSetOfRanges } from 'pages/stats/constants'
+import { getPageStatsFilters } from 'state/stats/selectors'
+import { mergeStatsFilters } from 'state/stats/statsSlice'
+import { RootState } from 'state/types'
 
 const MAX_SPAN = 90
 
 type Props = {
-    initialSettings?: Omit<InitialSettings, 'maxSpan'> & {maxSpan?: number}
+    initialSettings?: Omit<InitialSettings, 'maxSpan'> & { maxSpan?: number }
     value: StatsFilters[FilterKey.Period]
     tooltipMessageForPreviousPeriod?: string
     initialV2Props?: {
-        dateRanges?: {[label: string]: [Moment, Moment]}
+        dateRanges?: { [label: string]: [Moment, Moment] }
     }
 } & RemovableFilter
 
@@ -43,10 +42,10 @@ export function PeriodFilter({
 }: Props) {
     const dispatch = useAppDispatch()
     const compactDateBasedOnUserPreferences = useGetDateAndTimeFormat(
-        DateAndTimeFormatting.CompactDate
+        DateAndTimeFormatting.CompactDate,
     ) as string
     const shortDateBasedOnUserPreferences = useGetDateAndTimeFormat(
-        DateAndTimeFormatting.ShortDateWithYear
+        DateAndTimeFormatting.ShortDateWithYear,
     )
 
     const pickerV2Props = {
@@ -63,7 +62,7 @@ export function PeriodFilter({
     const initialSettings = {
         maxDate: moment(),
         maxSpan: MAX_SPAN,
-        locale: {format: compactDateBasedOnUserPreferences},
+        locale: { format: compactDateBasedOnUserPreferences },
         showDropdowns: true,
         ...initialSettingsProp,
     }
@@ -83,17 +82,17 @@ export function PeriodFilter({
                             start_datetime: startDatetime,
                             end_datetime: endDatetime,
                         },
-                    })
+                    }),
                 )
             },
-            [dispatch]
+            [dispatch],
         )
 
     useEffectOnce(() => {
         if (
             moment(value.end_datetime).diff(
                 moment(value.start_datetime),
-                'days'
+                'days',
             ) > (initialSettings.maxSpan || MAX_SPAN)
         ) {
             handleFilterChange({
@@ -103,7 +102,7 @@ export function PeriodFilter({
                         initialSettings.maxSpan
                             ? initialSettings.maxSpan
                             : MAX_SPAN,
-                        'days'
+                        'days',
                     )
                     .subtract(1, 'seconds')
                     .format(),
@@ -114,7 +113,7 @@ export function PeriodFilter({
     const filterLabel = getDateRangePickerLabel(
         moment(value.start_datetime),
         moment(value.end_datetime),
-        shortDateBasedOnUserPreferences
+        shortDateBasedOnUserPreferences,
     )
 
     return (
@@ -123,7 +122,7 @@ export function PeriodFilter({
             <PeriodPicker
                 startDatetime={moment(value.start_datetime)}
                 endDatetime={moment(value.end_datetime)}
-                initialSettings={{...initialSettings, opens: 'right'}}
+                initialSettings={{ ...initialSettings, opens: 'right' }}
                 onChange={handleFilterChange}
                 formatMaxSpan={(maxSpan) =>
                     moment.duration({

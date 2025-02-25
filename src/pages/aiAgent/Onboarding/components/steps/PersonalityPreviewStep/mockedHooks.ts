@@ -2,15 +2,14 @@
  * This file is intended to provided mocked hooks while developing the PersonalityPreviewStep component.
  * We will remove these in favor of the real hooks once the component is integrated into the application.
  */
+import { useEffect, useMemo, useState } from 'react'
 
-import {useEffect, useMemo, useState} from 'react'
-
-import {PreviewId} from '../../PersonalityPreviewGroup/constants'
-import {getConversationByPreviewId} from './conversationsExamples'
+import { PreviewId } from '../../PersonalityPreviewGroup/constants'
+import { getConversationByPreviewId } from './conversationsExamples'
 
 export const useFetchPersonalityPreviewChatScenario = (
     previewType?: string,
-    previewId?: PreviewId
+    previewId?: PreviewId,
 ) => {
     const [isLoading, setIsLoading] = useState(true)
 
@@ -35,6 +34,6 @@ export const useFetchPersonalityPreviewChatScenario = (
             },
             isLoading,
         }),
-        [isLoading, previewId]
+        [isLoading, previewId],
     )
 }

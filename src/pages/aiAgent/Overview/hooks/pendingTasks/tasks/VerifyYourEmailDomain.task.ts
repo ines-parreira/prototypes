@@ -1,5 +1,5 @@
-import {RuleEngineData, RuleEngineRoutes} from '../ruleEngine'
-import {Task} from './Task'
+import { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
+import { Task } from './Task'
 
 export class VerifyYourEmailDomainTask extends Task {
     constructor(data: RuleEngineData, routes: RuleEngineRoutes) {
@@ -8,7 +8,7 @@ export class VerifyYourEmailDomainTask extends Task {
             'Make sure your customer receive all your emails',
             'RECOMMENDED',
             data,
-            routes
+            routes,
         )
     }
 
@@ -43,7 +43,7 @@ export class VerifyYourEmailDomainTask extends Task {
             .map((ei) => ei.id)
 
         return data.aiAgentStoreConfiguration.monitoredEmailIntegrations.find(
-            (ei) => notVerifiedEmailIntegrationsIds.includes(ei.id)
+            (ei) => notVerifiedEmailIntegrationsIds.includes(ei.id),
         )
     }
 }

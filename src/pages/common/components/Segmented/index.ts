@@ -1,3 +1,3 @@
-export {default} from './Segmented'
+export { default } from './Segmented'
 
 export * from './types'

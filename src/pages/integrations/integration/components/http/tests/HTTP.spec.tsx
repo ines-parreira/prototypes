@@ -1,7 +1,8 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import * as ReactRouterDom from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -20,24 +21,24 @@ jest.mock('react-router', () => ({
 const useParamsMock = jest.spyOn(ReactRouterDom, 'useParams')
 
 const mockStore = configureMockStore([thunk])
-const store = mockStore({integrations: fromJS({integrations: []})})
+const store = mockStore({ integrations: fromJS({ integrations: [] }) })
 
 jest.mock('pages/common/components/PageHeader', () => () => <div>Header</div>)
 jest.mock(
     'pages/integrations/integration/components/http/SecondaryNavigation',
-    () => () => <div>Nav</div>
+    () => () => <div>Nav</div>,
 )
 jest.mock(
     'pages/integrations/integration/components/http/Overview/Details',
-    () => () => <div>Details</div>
+    () => () => <div>Details</div>,
 )
 jest.mock(
     'pages/integrations/integration/components/http/Overview/List',
-    () => () => <div>List</div>
+    () => () => <div>List</div>,
 )
 jest.mock(
     'pages/integrations/integration/components/http/Integration',
-    () => () => <div>Integration</div>
+    () => () => <div>Integration</div>,
 )
 jest.mock('pages/integrations/integration/components/http/Events', () => () => (
     <div>Events</div>
@@ -49,24 +50,24 @@ jest.mock('pages/integrations/integration/components/http/Event', () => () => (
 describe('HTTP', () => {
     it.each([
         [{}, 'Detail'],
-        [{integrationId: INTEGRATIONS_LIST_PATH}, 'List'],
-        [{integrationId: NEW_INTEGRATION_PATH}, 'Integration'],
-        [{integrationId: '1'}, 'Integration'],
-        [{integrationId: '1', extra: EVENTS_PATH}, 'Events'],
-        [{integrationId: '1', extra: EVENTS_PATH, subId: '1'}, 'Event'],
+        [{ integrationId: INTEGRATIONS_LIST_PATH }, 'List'],
+        [{ integrationId: NEW_INTEGRATION_PATH }, 'Integration'],
+        [{ integrationId: '1' }, 'Integration'],
+        [{ integrationId: '1', extra: EVENTS_PATH }, 'Events'],
+        [{ integrationId: '1', extra: EVENTS_PATH, subId: '1' }, 'Event'],
     ])(
         'should render the correct component',
         (routeParams, expectedComponent) => {
             useParamsMock.mockReturnValue(routeParams)
-            const {queryByText} = render(
+            const { queryByText } = render(
                 <Provider store={store}>
                     <HTTP />
-                </Provider>
+                </Provider>,
             )
 
             expect(queryByText('Header'))
             expect(queryByText('Nav'))
             expect(queryByText(expectedComponent))
-        }
+        },
     )
 })

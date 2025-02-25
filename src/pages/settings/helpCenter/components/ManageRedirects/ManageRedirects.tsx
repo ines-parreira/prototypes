@@ -1,10 +1,11 @@
-import {useQueryClient} from '@tanstack/react-query'
-import React, {Fragment} from 'react'
+import React, { Fragment } from 'react'
+
+import { useQueryClient } from '@tanstack/react-query'
 
 import Button from 'pages/common/components/button/Button'
 import InputField from 'pages/common/forms/input/InputField'
 
-import {isProduction, isStaging} from '../../../../../utils/environment'
+import { isProduction, isStaging } from '../../../../../utils/environment'
 import Loader from '../../../../common/components/Loader/Loader'
 import useCurrentHelpCenter from '../../hooks/useCurrentHelpCenter'
 import {
@@ -28,38 +29,41 @@ export const ManageRedirects = () => {
         retry: false,
     })
 
-    const {mutate: deleteRedirect} = useDeleteHelpCenterRedirect()
-    const {mutate: createRedirect} = useCreateHelpCenterRedirect()
+    const { mutate: deleteRedirect } = useDeleteHelpCenterRedirect()
+    const { mutate: createRedirect } = useCreateHelpCenterRedirect()
 
     const handleCreateRedirect = () => {
         // on success, clear the form
         createRedirect(
-            [undefined, {help_center_id: helpCenter.id}, newRedirect],
+            [undefined, { help_center_id: helpCenter.id }, newRedirect],
             {
                 onError: (error) => {
                     alert(error)
                 },
                 onSuccess: () => {
-                    setNewRedirect({from: '', to: ''})
+                    setNewRedirect({ from: '', to: '' })
                     void queryClient.invalidateQueries({
                         queryKey: helpCenterRedirectsKey.lists(helpCenter.id),
                     })
                 },
-            }
+            },
         )
     }
 
     const handleDeleteRedirect = (from: string) => {
-        deleteRedirect([undefined, {help_center_id: helpCenter.id}, {from}], {
-            onError: (error) => {
-                alert(error)
+        deleteRedirect(
+            [undefined, { help_center_id: helpCenter.id }, { from }],
+            {
+                onError: (error) => {
+                    alert(error)
+                },
+                onSuccess: () => {
+                    void queryClient.invalidateQueries({
+                        queryKey: helpCenterRedirectsKey.lists(helpCenter.id),
+                    })
+                },
             },
-            onSuccess: () => {
-                void queryClient.invalidateQueries({
-                    queryKey: helpCenterRedirectsKey.lists(helpCenter.id),
-                })
-            },
-        })
+        )
     }
 
     if (!getRedirectList.isFetched) {
@@ -80,7 +84,7 @@ export const ManageRedirects = () => {
         )
     }
     return (
-        <section style={{width: '100%'}}>
+        <section style={{ width: '100%' }}>
             <h3>Manage redirections</h3>
 
             <h4>Add new redirect</h4>

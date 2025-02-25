@@ -1,3 +1,5 @@
+import React, { ComponentProps } from 'react'
+
 import {
     fireEvent,
     render,
@@ -5,16 +7,15 @@ import {
     waitFor,
     waitForElementToBeRemoved,
 } from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {useFlag} from 'core/flags'
-import {authenticatorData} from 'fixtures/authenticatorData'
-import {recoveryCodes as recoveryCodesFixture} from 'fixtures/recoveryCodes'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { useFlag } from 'core/flags'
+import { authenticatorData } from 'fixtures/authenticatorData'
+import { recoveryCodes as recoveryCodesFixture } from 'fixtures/recoveryCodes'
 import {
     createRecoveryCodes,
     fetchAuthenticatorData,
@@ -22,7 +23,7 @@ import {
     saveTwoFASecret,
     validateVerificationCode,
 } from 'models/twoFactorAuthentication/resources'
-import {RootState, StoreDispatch} from 'state/types'
+import { RootState, StoreDispatch } from 'state/types'
 
 import TwoFactorAuthenticationModal from '../TwoFactorAuthenticationModal'
 
@@ -51,12 +52,12 @@ const createRecoveryCodesMock = createRecoveryCodes as jest.MockedFunction<
 jest.mock('common/segment')
 const logEventMock = logEvent as jest.Mock
 
-jest.mock('core/flags', () => ({useFlag: jest.fn()}))
+jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
 const useFlagMock = useFlag as jest.Mock
 
 const waitForModal = async (baseElement: HTMLElement) => {
     await waitFor(() =>
-        expect(baseElement.getElementsByClassName('modal show').length).toBe(1)
+        expect(baseElement.getElementsByClassName('modal show').length).toBe(1),
     )
 }
 
@@ -81,9 +82,9 @@ const validateInput = async (baseElement: HTMLElement) => {
 
 const fillVerificationCode = () => {
     const inputField = screen.getByPlaceholderText<HTMLInputElement>(
-        'Enter 6-digit verification code from app or recovery code'
+        'Enter 6-digit verification code from app or recovery code',
     )
-    fireEvent.change(inputField, {target: {value: '123456'}})
+    fireEvent.change(inputField, { target: { value: '123456' } })
 }
 
 const continueToNextStep = async () => {
@@ -97,20 +98,20 @@ const continueToNextStep = async () => {
 
 const handleInputValidationFailed = async (baseElement: HTMLElement) => {
     expect(baseElement).toMatchSnapshot(
-        'error banner and continue button disabled'
+        'error banner and continue button disabled',
     )
 
     const inputField = screen.getByPlaceholderText<HTMLInputElement>(
-        'Enter 6-digit verification code from app or recovery code'
+        'Enter 6-digit verification code from app or recovery code',
     )
-    fireEvent.change(inputField, {target: {value: '123457'}})
+    fireEvent.change(inputField, { target: { value: '123457' } })
 
     await waitFor(() => {
         expect(screen.getByText('Continue').parentElement).toBeAriaEnabled()
     })
 
     expect(baseElement).toMatchSnapshot(
-        'no error banner and continue button enabled'
+        'no error banner and continue button enabled',
     )
 }
 
@@ -129,22 +130,22 @@ describe('<TwoFactorAuthenticationModal />', () => {
 
     describe('render()', () => {
         it('should not render the modal', () => {
-            const {baseElement} = render(
+            const { baseElement } = render(
                 <Provider store={mockStore()}>
                     <TwoFactorAuthenticationModal
                         {...minProps}
                         isOpen={false}
                     />
-                </Provider>
+                </Provider>,
             )
             expect(baseElement).toMatchSnapshot()
         })
 
         it('should render modal with app setup step', async () => {
-            const {baseElement} = render(
+            const { baseElement } = render(
                 <Provider store={mockStore()}>
                     <TwoFactorAuthenticationModal {...minProps} />
-                </Provider>
+                </Provider>,
             )
 
             await waitForModal(baseElement)
@@ -154,10 +155,10 @@ describe('<TwoFactorAuthenticationModal />', () => {
         it('should render modal with QR Code step', async () => {
             fetchAuthenticatorDataMock.mockResolvedValue(authenticatorData)
 
-            const {baseElement} = render(
+            const { baseElement } = render(
                 <Provider store={mockStore()}>
                     <TwoFactorAuthenticationModal {...minProps} />
-                </Provider>
+                </Provider>,
             )
 
             await renderInitialModal(baseElement)
@@ -170,7 +171,7 @@ describe('<TwoFactorAuthenticationModal />', () => {
 
         it('should render modal with QR Code step having renewed secret', async () => {
             fetchAuthenticatorDataRenewedMock.mockResolvedValue(
-                authenticatorData
+                authenticatorData,
             )
             const store = mockStore({
                 currentUser: fromJS({
@@ -178,10 +179,10 @@ describe('<TwoFactorAuthenticationModal />', () => {
                 }),
             })
 
-            const {baseElement} = render(
+            const { baseElement } = render(
                 <Provider store={store}>
                     <TwoFactorAuthenticationModal {...minProps} />
-                </Provider>
+                </Provider>,
             )
 
             await renderInitialModal(baseElement)
@@ -191,24 +192,24 @@ describe('<TwoFactorAuthenticationModal />', () => {
 
             expect(baseElement).toMatchSnapshot()
             expect(logEventMock).toHaveBeenCalledWith(
-                SegmentEvent.TwoFaModalOpened
+                SegmentEvent.TwoFaModalOpened,
             )
         })
 
         it('should render modal with QR Code step having error banner', async () => {
-            fetchAuthenticatorDataMock.mockRejectedValue({foo: 'api error'})
+            fetchAuthenticatorDataMock.mockRejectedValue({ foo: 'api error' })
 
-            const {baseElement} = render(
+            const { baseElement } = render(
                 <Provider store={mockStore()}>
                     <TwoFactorAuthenticationModal {...minProps} />
-                </Provider>
+                </Provider>,
             )
 
             await waitForModal(baseElement)
 
             // Wait for the qrcode library to render the image
             await screen.findByText(
-                'Failed to fetch the QR code. Please try again.'
+                'Failed to fetch the QR code. Please try again.',
             )
 
             expect(baseElement).toMatchSnapshot()
@@ -223,10 +224,10 @@ describe('<TwoFactorAuthenticationModal />', () => {
                 }),
             })
 
-            const {baseElement} = render(
+            const { baseElement } = render(
                 <Provider store={store}>
                     <TwoFactorAuthenticationModal {...minProps} />
-                </Provider>
+                </Provider>,
             )
 
             await renderInitialModal(baseElement)
@@ -256,10 +257,10 @@ describe('<TwoFactorAuthenticationModal />', () => {
                     }),
                 })
 
-                const {baseElement} = render(
+                const { baseElement } = render(
                     <Provider store={store}>
                         <TwoFactorAuthenticationModal {...minProps} />
-                    </Provider>
+                    </Provider>,
                 )
 
                 await validateInput(baseElement)
@@ -271,7 +272,7 @@ describe('<TwoFactorAuthenticationModal />', () => {
                 saveTwoFASecretMock.mockRejectedValue({
                     response: {
                         data: {
-                            error: {msg: 'foo error saveTwoFASecret'},
+                            error: { msg: 'foo error saveTwoFASecret' },
                         },
                     },
                 })
@@ -283,10 +284,10 @@ describe('<TwoFactorAuthenticationModal />', () => {
                     }),
                 })
 
-                const {baseElement} = render(
+                const { baseElement } = render(
                     <Provider store={store}>
                         <TwoFactorAuthenticationModal {...minProps} />
-                    </Provider>
+                    </Provider>,
                 )
 
                 await validateInput(baseElement)
@@ -305,16 +306,16 @@ describe('<TwoFactorAuthenticationModal />', () => {
                     }),
                 })
 
-                const {baseElement} = render(
+                const { baseElement } = render(
                     <Provider store={store}>
                         <TwoFactorAuthenticationModal {...minProps} />
-                    </Provider>
+                    </Provider>,
                 )
 
                 await validateInput(baseElement)
 
                 expect(
-                    screen.getByText("Don't get locked out")
+                    screen.getByText("Don't get locked out"),
                 ).toBeInTheDocument()
                 expect(baseElement).toMatchSnapshot('Recovery codes step')
             })
@@ -332,13 +333,13 @@ describe('<TwoFactorAuthenticationModal />', () => {
                     }),
                 })
 
-                const {baseElement} = render(
+                const { baseElement } = render(
                     <Provider store={store}>
                         <TwoFactorAuthenticationModal
                             {...minProps}
                             onFinish={onFinishMock}
                         />
-                    </Provider>
+                    </Provider>,
                 )
 
                 await validateInput(baseElement)
@@ -350,7 +351,7 @@ describe('<TwoFactorAuthenticationModal />', () => {
                     expect(
                         screen
                             .getByText('I Have Saved My Codes')
-                            .getAttribute('disabled')
+                            .getAttribute('disabled'),
                     ).toBe(null)
                 })
 
@@ -373,13 +374,13 @@ describe('<TwoFactorAuthenticationModal />', () => {
                     }),
                 })
 
-                const {baseElement} = render(
+                const { baseElement } = render(
                     <Provider store={store}>
                         <TwoFactorAuthenticationModal
                             {...minProps}
                             onFinish={onFinish}
                         />
-                    </Provider>
+                    </Provider>,
                 )
 
                 await validateInput(baseElement)
@@ -394,10 +395,10 @@ describe('<TwoFactorAuthenticationModal />', () => {
 
         it('should render modal with app setup step after pressing back button', async () => {
             fetchAuthenticatorDataMock.mockResolvedValue(authenticatorData)
-            const {baseElement} = render(
+            const { baseElement } = render(
                 <Provider store={mockStore()}>
                     <TwoFactorAuthenticationModal {...minProps} />
-                </Provider>
+                </Provider>,
             )
 
             await renderInitialModal(baseElement)
@@ -413,14 +414,14 @@ describe('<TwoFactorAuthenticationModal />', () => {
             fetchAuthenticatorDataMock.mockResolvedValue(authenticatorData)
             const onCancelMock = jest.fn()
 
-            const {baseElement} = render(
+            const { baseElement } = render(
                 <Provider store={mockStore()}>
                     <TwoFactorAuthenticationModal
                         {...minProps}
                         isOpen
                         onCancel={onCancelMock}
                     />
-                </Provider>
+                </Provider>,
             )
 
             await waitForModal(baseElement)
@@ -430,7 +431,7 @@ describe('<TwoFactorAuthenticationModal />', () => {
 
             expect(onCancelMock).toHaveBeenCalled()
             expect(logEventMock).toHaveBeenCalledWith(
-                SegmentEvent.TwoFaModalCancelled
+                SegmentEvent.TwoFaModalCancelled,
             )
         })
 
@@ -452,10 +453,10 @@ describe('<TwoFactorAuthenticationModal />', () => {
                 }),
             })
 
-            const {baseElement} = render(
+            const { baseElement } = render(
                 <Provider store={store}>
                     <TwoFactorAuthenticationModal {...minProps} />
-                </Provider>
+                </Provider>,
             )
 
             await waitForModal(baseElement)
@@ -470,13 +471,13 @@ describe('<TwoFactorAuthenticationModal />', () => {
                     has_password: true,
                 }),
             })
-            const {baseElement} = render(
+            const { baseElement } = render(
                 <Provider store={store}>
                     <TwoFactorAuthenticationModal
                         {...minProps}
                         isUpdate={true}
                     />
-                </Provider>
+                </Provider>,
             )
 
             await screen.findByText('Verify your code')
@@ -494,13 +495,13 @@ describe('<TwoFactorAuthenticationModal />', () => {
                 },
             })
 
-            const {baseElement} = render(
+            const { baseElement } = render(
                 <Provider store={mockStore()}>
                     <TwoFactorAuthenticationModal
                         {...minProps}
                         isUpdate={true}
                     />
-                </Provider>
+                </Provider>,
             )
 
             await waitForModal(baseElement)
@@ -519,13 +520,13 @@ describe('<TwoFactorAuthenticationModal />', () => {
                 }),
             })
 
-            const {baseElement} = render(
+            const { baseElement } = render(
                 <Provider store={store}>
                     <TwoFactorAuthenticationModal
                         {...minProps}
                         isUpdate={true}
                     />
-                </Provider>
+                </Provider>,
             )
 
             await waitForModal(baseElement)

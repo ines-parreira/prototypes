@@ -1,6 +1,7 @@
-import {act, render, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
+
+import { act, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -8,10 +9,10 @@ import {
     PERCENTAGE_LABEL,
     TOTAL_COUNT_LABEL,
 } from 'pages/stats/common/components/Table/TableValueModeSwitch'
-import {TicketInsightsValueModeSwitch} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsValueModeSwitch'
-import {toggleValueMode} from 'state/ui/stats/ticketInsightsSlice'
-import {ValueMode} from 'state/ui/stats/types'
-import {assumeMock} from 'utils/testing'
+import { TicketInsightsValueModeSwitch } from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsValueModeSwitch'
+import { toggleValueMode } from 'state/ui/stats/ticketInsightsSlice'
+import { ValueMode } from 'state/ui/stats/types'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/useAppSelector')
 jest.mock('state/ui/stats/ticketInsightsSlice')
@@ -34,7 +35,7 @@ describe('<TicketInsightsValueModeSwitch />', () => {
         render(<TicketInsightsValueModeSwitch />)
 
         expect(
-            screen.getByRole('radio', {name: TOTAL_COUNT_LABEL})
+            screen.getByRole('radio', { name: TOTAL_COUNT_LABEL }),
         ).toBeChecked()
     })
 
@@ -44,7 +45,7 @@ describe('<TicketInsightsValueModeSwitch />', () => {
         render(<TicketInsightsValueModeSwitch />)
 
         expect(
-            screen.getByRole('radio', {name: PERCENTAGE_LABEL})
+            screen.getByRole('radio', { name: PERCENTAGE_LABEL }),
         ).toBeChecked()
     })
 

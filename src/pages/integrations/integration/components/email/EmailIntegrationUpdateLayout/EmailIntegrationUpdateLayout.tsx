@@ -1,11 +1,12 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
-import {NavLink} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {EmailProvider} from 'models/integration/constants'
-import {Integration} from 'models/integration/types'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { NavLink } from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { EmailProvider } from 'models/integration/constants'
+import { Integration } from 'models/integration/types'
 import PageHeader from 'pages/common/components/PageHeader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 
@@ -19,7 +20,7 @@ type Props = {
     children?: any
 }
 
-const EmailIntegrationUpdateLayout = ({integration, children}: Props) => {
+const EmailIntegrationUpdateLayout = ({ integration, children }: Props) => {
     const integrationId = integration.id
     const isNewDomainVerificationEnabled: boolean =
         useFlags()[FeatureFlagKey.NewDomainVerification] ?? false

@@ -2,8 +2,8 @@ import {
     CustomerState,
     FinancialStatus,
 } from 'constants/integrations/types/shopify'
-import {Customer} from 'models/customer/types'
-import {IntegrationType} from 'models/integration/constants'
+import { Customer } from 'models/customer/types'
+import { IntegrationType } from 'models/integration/constants'
 
 import {
     TicketChannel,
@@ -11,7 +11,7 @@ import {
     TicketStatus,
     TicketVia,
 } from '../business/types/ticket'
-import {Ticket} from '../models/ticket/types'
+import { Ticket } from '../models/ticket/types'
 
 export const ticket: Ticket = {
     channel: TicketChannel.Email,

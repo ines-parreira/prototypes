@@ -1,3 +1,5 @@
+import React, { ComponentProps } from 'react'
+
 import {
     fireEvent,
     render,
@@ -6,29 +8,28 @@ import {
     waitFor,
     within,
 } from '@testing-library/react'
-import {fromJS, List, Map} from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 import _noop from 'lodash/noop'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {UserRole} from 'config/types/user'
-import {ticket} from 'fixtures/ticket'
-import {user} from 'fixtures/users'
-import {Update} from 'jobs'
-import {JobType} from 'models/job/types'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { UserRole } from 'config/types/user'
+import { ticket } from 'fixtures/ticket'
+import { user } from 'fixtures/users'
+import { Update } from 'jobs'
+import { JobType } from 'models/job/types'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
-import {createJob as createJobTicket} from 'state/tickets/actions'
-import {RootState, StoreState} from 'state/types'
+import { createJob as createJobTicket } from 'state/tickets/actions'
+import { RootState, StoreState } from 'state/types'
 import {
     createJob as createJobView,
     updateSelectedItemsIds,
 } from 'state/views/actions'
-import {TagDropdownMenu} from 'tags'
-import {assumeMock, makeExecuteKeyboardAction} from 'utils/testing'
+import { TagDropdownMenu } from 'tags'
+import { assumeMock, makeExecuteKeyboardAction } from 'utils/testing'
 
-import {TicketListActions} from '../TicketListActions'
+import { TicketListActions } from '../TicketListActions'
 
 jest.mock('services/shortcutManager/shortcutManager')
 jest.mock('state/views/actions')
@@ -56,21 +57,21 @@ const mockStore = configureMockStore()
 jest.mock(
     'tags/TagDropdownMenu',
     () =>
-        ({onClick}: ComponentProps<typeof TagDropdownMenu>) => (
-            <div onClick={() => onClick({name: 'tag added'})}>
+        ({ onClick }: ComponentProps<typeof TagDropdownMenu>) => (
+            <div onClick={() => onClick({ name: 'tag added' })}>
                 TagDropdownMenuMock
             </div>
-        )
+        ),
 )
 
 describe('TicketListActions component', () => {
     const state = {
-        agents: fromJS({all: []}),
+        agents: fromJS({ all: [] }),
         currentUser: fromJS(user),
-        teams: fromJS({all: []}),
-        tickets: fromJS({items: []}),
+        teams: fromJS({ all: [] }),
+        tickets: fromJS({ items: [] }),
         views: fromJS({
-            active: {id: 888, filters: ''},
+            active: { id: 888, filters: '' },
         }),
     }
     const store = mockStore(state)
@@ -80,8 +81,8 @@ describe('TicketListActions component', () => {
     }
 
     const expectAllActionsToHaveEnabledState = async (
-        {getAllByRole}: RenderResult,
-        isEnabled: boolean
+        { getAllByRole }: RenderResult,
+        isEnabled: boolean,
     ) => {
         const buttons = getAllByRole('button')
         for (const button of buttons) {
@@ -97,7 +98,7 @@ describe('TicketListActions component', () => {
 
     const hitShortcut = makeExecuteKeyboardAction(
         shortcutManagerMock,
-        shortcutEventMock
+        shortcutEventMock,
     )
 
     beforeEach(() => {
@@ -111,7 +112,7 @@ describe('TicketListActions component', () => {
                     {...props}
                     selectedItemsIds={fromJS([1, 2, 3, 4, 5])}
                 />
-            </Provider>
+            </Provider>,
         )
 
         await expectAllActionsToHaveEnabledState(renderResult, true)
@@ -128,7 +129,7 @@ describe('TicketListActions component', () => {
         ],
         [
             'filters are not valid',
-            {views: fromJS({active: {id: 111, filters: ", '')"}})},
+            { views: fromJS({ active: { id: 111, filters: ", '')" } }) },
             {
                 ...props,
                 selectedItemsIds: fromJS([1, 2, 3, 4, 5]),
@@ -139,23 +140,23 @@ describe('TicketListActions component', () => {
         async (
             testName,
             customState,
-            props: ComponentProps<typeof TicketListActions>
+            props: ComponentProps<typeof TicketListActions>,
         ) => {
             const renderResult = render(
-                <Provider store={mockStore({...state, ...customState})}>
+                <Provider store={mockStore({ ...state, ...customState })}>
                     <TicketListActions {...props} />
-                </Provider>
+                </Provider>,
             )
 
             await expectAllActionsToHaveEnabledState(renderResult, false)
-        }
+        },
     )
 
     it('should render teams in assign team dropdown', () => {
         const teams = [
-            {id: 4, name: 'foo'},
-            {id: 5, name: 'bar'},
-            {id: 6, name: 'baz'},
+            { id: 4, name: 'foo' },
+            { id: 5, name: 'bar' },
+            { id: 6, name: 'baz' },
         ]
         render(
             <Provider
@@ -170,7 +171,7 @@ describe('TicketListActions component', () => {
                     {...props}
                     selectedItemsIds={fromJS([1, 2, 3, 4, 5])}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('Assign to team')).toBeInTheDocument()
@@ -183,9 +184,9 @@ describe('TicketListActions component', () => {
 
     it('should render agents options in assign agent dropdown', () => {
         const agents = [
-            {id: 4, name: 'foo'},
-            {id: 5, name: 'bar'},
-            {id: 6, name: 'baz'},
+            { id: 4, name: 'foo' },
+            { id: 5, name: 'bar' },
+            { id: 6, name: 'baz' },
         ]
         render(
             <Provider
@@ -200,7 +201,7 @@ describe('TicketListActions component', () => {
                     {...props}
                     selectedItemsIds={fromJS([1, 2, 3, 4, 5])}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('Assign to me')).toBeInTheDocument()
@@ -212,33 +213,33 @@ describe('TicketListActions component', () => {
     })
 
     it('should render the delete action for lead and admin agents', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider
                 store={mockStore({
                     ...state,
                     currentUser: fromJS({
                         id: 1,
                         name: 'Peter Parker',
-                        role: {id: 1, name: UserRole.Agent},
+                        role: { id: 1, name: UserRole.Agent },
                     }),
                 })}
             >
                 <TicketListActions {...props} />
-            </Provider>
+            </Provider>,
         )
 
         expect(getByText('Delete')).toBeInTheDocument()
     })
 
     it('should render the special actions for lead and admin agents', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider
                 store={mockStore({
                     ...state,
                     currentUser: fromJS({
                         id: 1,
                         name: 'Peter Parker',
-                        role: {id: 1, name: UserRole.Agent},
+                        role: { id: 1, name: UserRole.Agent },
                     }),
                     views: fromJS({
                         active: {
@@ -249,7 +250,7 @@ describe('TicketListActions component', () => {
                 })}
             >
                 <TicketListActions {...props} />
-            </Provider>
+            </Provider>,
         )
 
         expect(getByText('Export tickets')).toBeInTheDocument()
@@ -258,19 +259,19 @@ describe('TicketListActions component', () => {
     })
 
     it('should not render the delete and export buttons for user below agent role', () => {
-        const {queryByText} = render(
+        const { queryByText } = render(
             <Provider
                 store={mockStore({
                     ...state,
                     currentUser: fromJS({
                         id: 1,
                         name: 'Peter Parker',
-                        role: {id: 1, name: UserRole.LiteAgent},
+                        role: { id: 1, name: UserRole.LiteAgent },
                     }),
                 })}
             >
                 <TicketListActions {...props} />
-            </Provider>
+            </Provider>,
         )
 
         expect(queryByText('Delete')).not.toBeInTheDocument()
@@ -278,19 +279,19 @@ describe('TicketListActions component', () => {
     })
 
     it('should send event to segment on click export tickets button', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider
                 store={mockStore({
                     ...state,
                     currentUser: fromJS({
                         id: 1,
                         name: 'Peter Parker',
-                        role: {id: 1, name: UserRole.Agent},
+                        role: { id: 1, name: UserRole.Agent },
                     }),
                 })}
             >
                 <TicketListActions {...props} selectedItemsIds={fromJS([])} />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(getByText(/Export tickets/))
@@ -299,7 +300,7 @@ describe('TicketListActions component', () => {
             SegmentEvent.TicketExport,
             expect.objectContaining({
                 type: 'bulk-action-export',
-            })
+            }),
         )
     })
 
@@ -307,7 +308,7 @@ describe('TicketListActions component', () => {
         render(
             <Provider store={store}>
                 <TicketListActions {...props} />
-            </Provider>
+            </Provider>,
         )
 
         expect(shortcutManagerMock.bind).toHaveBeenCalled()
@@ -327,21 +328,21 @@ describe('TicketListActions component', () => {
     })
 
     it('should unbind keyboard shortcuts on mount', () => {
-        const {unmount} = render(
+        const { unmount } = render(
             <Provider store={store}>
                 <TicketListActions {...props} />
-            </Provider>
+            </Provider>,
         )
 
         unmount()
 
         expect(shortcutManagerMock.unbind).toHaveBeenLastCalledWith(
-            'TicketListActions'
+            'TicketListActions',
         )
     })
 
     it('should open agents dropdown on open assignee shortcut', () => {
-        const {getByRole} = render(
+        const { getByRole } = render(
             <Provider
                 store={mockStore({
                     ...state,
@@ -356,30 +357,30 @@ describe('TicketListActions component', () => {
                 })}
             >
                 <TicketListActions {...props} selectedItemsIds={fromJS([1])} />
-            </Provider>
+            </Provider>,
         )
 
         hitShortcut('OPEN_ASSIGNEE')
 
-        const expendedMenu = getByRole('menu', {hidden: false})
+        const expendedMenu = getByRole('menu', { hidden: false })
         expect(within(expendedMenu).queryByText('John Doe')).not.toBe(null)
         expect(shortcutEventMock.preventDefault).toHaveBeenLastCalledWith()
     })
 
     it('should not open agents dropdown on open assignee shortcut when no selected items', () => {
-        const {queryByRole} = render(
+        const { queryByRole } = render(
             <Provider store={store}>
                 <TicketListActions {...props} />
-            </Provider>
+            </Provider>,
         )
 
         hitShortcut('OPEN_ASSIGNEE')
 
-        expect(queryByRole('menu', {hidden: false})).toBe(null)
+        expect(queryByRole('menu', { hidden: false })).toBe(null)
     })
 
     it('should close agents dropdown on hide popover shortcut', () => {
-        const {queryByRole} = render(
+        const { queryByRole } = render(
             <Provider
                 store={mockStore({
                     ...state,
@@ -394,20 +395,20 @@ describe('TicketListActions component', () => {
                 })}
             >
                 <TicketListActions {...props} selectedItemsIds={fromJS([1])} />
-            </Provider>
+            </Provider>,
         )
 
         hitShortcut('OPEN_ASSIGNEE')
         hitShortcut('HIDE_POPOVER')
 
-        expect(queryByRole('menu', {hidden: false})).toBe(null)
+        expect(queryByRole('menu', { hidden: false })).toBe(null)
     })
 
     it('should open and close tags dropdown on keyboard shortcut', () => {
         render(
             <Provider store={store}>
                 <TicketListActions {...props} selectedItemsIds={fromJS([1])} />
-            </Provider>
+            </Provider>,
         )
 
         hitShortcut('OPEN_TAGS')
@@ -416,7 +417,7 @@ describe('TicketListActions component', () => {
 
         hitShortcut('HIDE_POPOVER')
         expect(
-            screen.queryByText('TagDropdownMenuMock')
+            screen.queryByText('TagDropdownMenuMock'),
         ).not.toBeInTheDocument()
     })
 
@@ -424,12 +425,12 @@ describe('TicketListActions component', () => {
         render(
             <Provider store={store}>
                 <TicketListActions {...props} />
-            </Provider>
+            </Provider>,
         )
 
         hitShortcut('OPEN_TAGS')
         expect(
-            screen.queryByText('TagDropdownMenuMock')
+            screen.queryByText('TagDropdownMenuMock'),
         ).not.toBeInTheDocument()
     })
 
@@ -437,7 +438,7 @@ describe('TicketListActions component', () => {
         render(
             <Provider store={store}>
                 <TicketListActions {...props} selectedItemsIds={fromJS([1])} />
-            </Provider>
+            </Provider>,
         )
 
         hitShortcut('OPEN_MACRO')
@@ -449,7 +450,7 @@ describe('TicketListActions component', () => {
         render(
             <Provider store={store}>
                 <TicketListActions {...props} />
-            </Provider>
+            </Provider>,
         )
 
         hitShortcut('OPEN_MACRO')
@@ -458,10 +459,10 @@ describe('TicketListActions component', () => {
     })
 
     it('should show delete confirmation on delete ticket shortcut', () => {
-        const {queryByText} = render(
+        const { queryByText } = render(
             <Provider store={store}>
                 <TicketListActions {...props} selectedItemsIds={fromJS([1])} />
-            </Provider>
+            </Provider>,
         )
 
         hitShortcut('DELETE_TICKET')
@@ -470,10 +471,10 @@ describe('TicketListActions component', () => {
     })
 
     it('should not show delete confirmation on delete ticket shortcut when no selected items', () => {
-        const {queryByText} = render(
+        const { queryByText } = render(
             <Provider store={store}>
                 <TicketListActions {...props} />
-            </Provider>
+            </Provider>,
         )
 
         hitShortcut('DELETE_TICKET')
@@ -482,19 +483,19 @@ describe('TicketListActions component', () => {
     })
 
     it("should not show delete confirmation on delete ticket shortcut when the user's role is basic, lite or observer", () => {
-        const {queryByText} = render(
+        const { queryByText } = render(
             <Provider
                 store={mockStore({
                     ...state,
                     currentUser: fromJS({
                         id: 1,
                         name: 'Peter Parker',
-                        role: {id: 1, name: UserRole.LiteAgent},
+                        role: { id: 1, name: UserRole.LiteAgent },
                     }),
                 })}
             >
                 <TicketListActions {...props} selectedItemsIds={fromJS([1])} />
-            </Provider>
+            </Provider>,
         )
 
         hitShortcut('DELETE_TICKET')
@@ -507,10 +508,10 @@ describe('TicketListActions component', () => {
         string,
         (state: StoreState) => StoreState,
         (
-            props: ComponentProps<typeof TicketListActions>
+            props: ComponentProps<typeof TicketListActions>,
         ) => ComponentProps<typeof TicketListActions>,
         (renderResult: RenderResult) => void | Promise<void>,
-        {updates: XOR<Update>},
+        { updates: XOR<Update> },
         string,
     ]
 
@@ -520,10 +521,10 @@ describe('TicketListActions component', () => {
             'close button click',
             (state) => state,
             (props) => props,
-            ({getByText}) => {
+            ({ getByText }) => {
                 fireEvent.click(getByText('Close'))
             },
-            {updates: {status: 'closed'}},
+            { updates: { status: 'closed' } },
             'status',
         ],
         [
@@ -531,10 +532,10 @@ describe('TicketListActions component', () => {
             'open dropdown item click',
             (state) => state,
             (props) => props,
-            ({getByText}) => {
+            ({ getByText }) => {
                 fireEvent.click(getByText('Open'))
             },
-            {updates: {status: 'open'}},
+            { updates: { status: 'open' } },
             'status',
         ],
         [
@@ -548,7 +549,7 @@ describe('TicketListActions component', () => {
                 }),
             }),
             (props) => props,
-            ({getByText}) => {
+            ({ getByText }) => {
                 fireEvent.click(getByText('Assign to me'))
             },
             {
@@ -576,7 +577,7 @@ describe('TicketListActions component', () => {
                 }),
             }),
             (props) => props,
-            ({getByText}) => {
+            ({ getByText }) => {
                 fireEvent.click(getByText('John Doe'))
             },
             {
@@ -594,7 +595,7 @@ describe('TicketListActions component', () => {
             'clear assignee dropdown item click',
             (state) => state,
             (props) => props,
-            ({getAllByText}) => {
+            ({ getAllByText }) => {
                 fireEvent.click(getAllByText('Clear assignee')[0])
             },
             {
@@ -619,7 +620,7 @@ describe('TicketListActions component', () => {
                 }),
             }),
             (props) => props,
-            ({getByText}) => {
+            ({ getByText }) => {
                 fireEvent.click(getByText('Team Sports'))
             },
             {
@@ -634,7 +635,7 @@ describe('TicketListActions component', () => {
             'clear team assignee dropdown item click',
             (state) => state,
             (props) => props,
-            ({getAllByText}) => {
+            ({ getAllByText }) => {
                 fireEvent.click(getAllByText('Clear assignee')[1])
             },
             {
@@ -649,7 +650,7 @@ describe('TicketListActions component', () => {
             'add tag dropdown item click',
             (state) => state,
             (props) => props,
-            ({getByText}) => {
+            ({ getByText }) => {
                 fireEvent.click(getByText('Add tag'))
                 fireEvent.click(getByText('TagDropdownMenuMock'))
             },
@@ -672,7 +673,7 @@ describe('TicketListActions component', () => {
                 }),
             }),
             (props) => props,
-            ({getByText}) => {
+            ({ getByText }) => {
                 fireEvent.click(getByText('Undelete'))
             },
             {
@@ -694,7 +695,7 @@ describe('TicketListActions component', () => {
                 }),
             }),
             (props) => props,
-            ({getByText}) => {
+            ({ getByText }) => {
                 fireEvent.click(getByText('Delete forever'))
                 fireEvent.click(getByText('Confirm'))
             },
@@ -706,7 +707,7 @@ describe('TicketListActions component', () => {
             'delete dropdown item click',
             (state) => state,
             (props) => props,
-            ({getByText}) => {
+            ({ getByText }) => {
                 fireEvent.click(getByText('Delete'))
                 fireEvent.click(getByText('Confirm'))
             },
@@ -726,7 +727,7 @@ describe('TicketListActions component', () => {
                 hitShortcut('OPEN_TICKET')
             },
             {
-                updates: {status: 'open'},
+                updates: { status: 'open' },
             },
             'status',
         ],
@@ -739,7 +740,7 @@ describe('TicketListActions component', () => {
                 hitShortcut('CLOSE_TICKET')
             },
             {
-                updates: {status: 'closed'},
+                updates: { status: 'closed' },
             },
             'status',
         ],
@@ -759,7 +760,7 @@ describe('TicketListActions component', () => {
                 }),
             }),
             (props) => props,
-            ({getByText}) => {
+            ({ getByText }) => {
                 fireEvent.click(getByText('Mark as read'))
             },
             {
@@ -785,7 +786,7 @@ describe('TicketListActions component', () => {
                 }),
             }),
             (props) => props,
-            ({getByText}) => {
+            ({ getByText }) => {
                 fireEvent.click(getByText('Mark as unread'))
             },
             {
@@ -856,7 +857,7 @@ describe('TicketListActions component', () => {
             getTestProps,
             testActions,
             jobParams,
-            eventName
+            eventName,
         ) => {
             const suiteProps = getTestProps({
                 ...props,
@@ -868,7 +869,7 @@ describe('TicketListActions component', () => {
                 const renderResult = render(
                     <Provider store={store}>
                         <TicketListActions {...suiteProps} />
-                    </Provider>
+                    </Provider>,
                 )
 
                 await testActions(renderResult)
@@ -876,7 +877,7 @@ describe('TicketListActions component', () => {
                 expect(mockedCreateJobTicket).toHaveBeenLastCalledWith(
                     suiteProps.selectedItemsIds,
                     jobType,
-                    jobParams
+                    jobParams,
                 )
                 expect(logEventMock).toHaveBeenCalledWith(
                     SegmentEvent.BulkAction,
@@ -884,9 +885,9 @@ describe('TicketListActions component', () => {
                         type: eventName,
                         location: 'full-width-mode',
                         ...('is_unread' === eventName || 'status' === eventName
-                            ? {value: jobParams.updates[eventName]}
+                            ? { value: jobParams.updates[eventName] }
                             : {}),
-                    }
+                    },
                 )
             })
 
@@ -908,7 +909,7 @@ describe('TicketListActions component', () => {
                 const renderResult = render(
                     <Provider store={mockStore(newState)}>
                         <TicketListActions {...suiteProps} />
-                    </Provider>
+                    </Provider>,
                 )
 
                 await testActions(renderResult)
@@ -916,7 +917,7 @@ describe('TicketListActions component', () => {
                 expect(mockedCreateJobView).toHaveBeenLastCalledWith(
                     newState.views.get('active'),
                     jobType,
-                    jobParams
+                    jobParams,
                 )
             })
 
@@ -927,7 +928,7 @@ describe('TicketListActions component', () => {
                 const renderResult = render(
                     <Provider store={store}>
                         <TicketListActions {...suiteProps} />
-                    </Provider>
+                    </Provider>,
                 )
 
                 void testActions(renderResult)
@@ -941,7 +942,7 @@ describe('TicketListActions component', () => {
                 const renderResult = render(
                     <Provider store={store}>
                         <TicketListActions {...suiteProps} />
-                    </Provider>
+                    </Provider>,
                 )
 
                 await testActions(renderResult)
@@ -959,23 +960,23 @@ describe('TicketListActions component', () => {
                 const renderResult = render(
                     <Provider store={store}>
                         <TicketListActions {...suiteProps} />
-                    </Provider>
+                    </Provider>,
                 )
 
                 await testActions(renderResult)
 
                 expect(mockedUpdateSelectedItemsIds).toHaveBeenLastCalledWith(
-                    fromJS([])
+                    fromJS([]),
                 )
             })
-        }
+        },
     )
 
     it('should call openMacroModal on Apply macro dropdown item click', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <TicketListActions {...props} />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(getByText('Apply macro'))
@@ -1003,13 +1004,13 @@ describe('TicketListActions component', () => {
         }
 
         it('should render mark as read and mark as unread dropdown items', () => {
-            const {queryByText} = render(
+            const { queryByText } = render(
                 <Provider store={mockStore(newState)}>
                     <TicketListActions
                         {...props}
                         selectedItemsIds={fromJS([1, 2])}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(queryByText('Mark as read')).not.toBe(null)
@@ -1017,7 +1018,7 @@ describe('TicketListActions component', () => {
         })
 
         it('should render mark as read and mark as unread dropdown items when all view items selected', () => {
-            const {queryByText} = render(
+            const { queryByText } = render(
                 <Provider
                     store={mockStore({
                         ...newState,
@@ -1034,7 +1035,7 @@ describe('TicketListActions component', () => {
                         {...props}
                         selectedItemsIds={fromJS([1, 2])}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(queryByText('Mark as read')).not.toBe(null)
@@ -1048,7 +1049,7 @@ describe('TicketListActions component', () => {
                         {...props}
                         selectedItemsIds={fromJS([1, 2])}
                     />
-                </Provider>
+                </Provider>,
             )
 
             hitShortcut('MARK_TICKET_READ')
@@ -1064,7 +1065,7 @@ describe('TicketListActions component', () => {
                         {...props}
                         selectedItemsIds={fromJS([1, 2])}
                     />
-                </Provider>
+                </Provider>,
             )
 
             hitShortcut('MARK_TICKET_UNREAD')
@@ -1089,13 +1090,13 @@ describe('TicketListActions component', () => {
         }
 
         it('should render mark as read dropdown item', () => {
-            const {queryByText} = render(
+            const { queryByText } = render(
                 <Provider store={mockStore(newState)}>
                     <TicketListActions
                         {...props}
                         selectedItemsIds={fromJS([1])}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(queryByText('Mark as read')).not.toBe(null)
@@ -1103,7 +1104,7 @@ describe('TicketListActions component', () => {
         })
 
         it('should render mark as read and mark as unread dropdown items when all view items selected', () => {
-            const {queryByText} = render(
+            const { queryByText } = render(
                 <Provider
                     store={mockStore({
                         ...newState,
@@ -1120,7 +1121,7 @@ describe('TicketListActions component', () => {
                         {...props}
                         selectedItemsIds={fromJS([1])}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(queryByText('Mark as read')).not.toBe(null)
@@ -1134,7 +1135,7 @@ describe('TicketListActions component', () => {
                         {...props}
                         selectedItemsIds={fromJS([1])}
                     />
-                </Provider>
+                </Provider>,
             )
 
             hitShortcut('MARK_TICKET_READ')
@@ -1150,7 +1151,7 @@ describe('TicketListActions component', () => {
                         {...props}
                         selectedItemsIds={fromJS([1])}
                     />
-                </Provider>
+                </Provider>,
             )
 
             hitShortcut('MARK_TICKET_UNREAD')
@@ -1175,13 +1176,13 @@ describe('TicketListActions component', () => {
         }
 
         it('should render mark as read dropdown item', () => {
-            const {queryByText} = render(
+            const { queryByText } = render(
                 <Provider store={mockStore(newState)}>
                     <TicketListActions
                         {...props}
                         selectedItemsIds={fromJS([1])}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(queryByText('Mark as read')).toBe(null)
@@ -1189,7 +1190,7 @@ describe('TicketListActions component', () => {
         })
 
         it('should render mark as read and mark as unread dropdown items when all view items selected', () => {
-            const {queryByText} = render(
+            const { queryByText } = render(
                 <Provider
                     store={mockStore({
                         ...newState,
@@ -1203,7 +1204,7 @@ describe('TicketListActions component', () => {
                     })}
                 >
                     <TicketListActions {...props} />
-                </Provider>
+                </Provider>,
             )
 
             expect(queryByText('Mark as read')).not.toBe(null)
@@ -1214,7 +1215,7 @@ describe('TicketListActions component', () => {
             render(
                 <Provider store={mockStore(newState)}>
                     <TicketListActions {...props} />
-                </Provider>
+                </Provider>,
             )
 
             hitShortcut('MARK_TICKET_READ')
@@ -1230,7 +1231,7 @@ describe('TicketListActions component', () => {
                         {...props}
                         selectedItemsIds={fromJS([1])}
                     />
-                </Provider>
+                </Provider>,
             )
 
             hitShortcut('MARK_TICKET_UNREAD')
@@ -1241,7 +1242,7 @@ describe('TicketListActions component', () => {
     })
 
     it('should render mark as read dropdown item when only unread tickets are selected', () => {
-        const {queryByText} = render(
+        const { queryByText } = render(
             <Provider
                 store={mockStore({
                     ...state,
@@ -1257,7 +1258,7 @@ describe('TicketListActions component', () => {
                 })}
             >
                 <TicketListActions {...props} selectedItemsIds={fromJS([1])} />
-            </Provider>
+            </Provider>,
         )
 
         expect(queryByText('Mark as read')).not.toBe(null)
@@ -1265,7 +1266,7 @@ describe('TicketListActions component', () => {
     })
 
     it('should render mark as unread dropdown item when only read tickets are selected', () => {
-        const {queryByText} = render(
+        const { queryByText } = render(
             <Provider
                 store={mockStore({
                     ...state,
@@ -1281,7 +1282,7 @@ describe('TicketListActions component', () => {
                 })}
             >
                 <TicketListActions {...props} selectedItemsIds={fromJS([1])} />
-            </Provider>
+            </Provider>,
         )
 
         expect(queryByText('Mark as read')).toBe(null)

@@ -30,5 +30,5 @@ export const PersuasionLevelLabels: Record<
 }
 
 export const PersuasionLevelSteps = Object.entries(PersuasionLevelLabels).map(
-    ([key, {label}]) => ({key, label})
+    ([key, { label }]) => ({ key, label }),
 )

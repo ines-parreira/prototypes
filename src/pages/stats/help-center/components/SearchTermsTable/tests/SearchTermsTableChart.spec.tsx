@@ -1,22 +1,21 @@
-import {render, screen} from '@testing-library/react'
-import noop from 'lodash/noop'
-
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render, screen } from '@testing-library/react'
+import noop from 'lodash/noop'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {SearchTermsTable} from 'pages/stats/help-center/components/SearchTermsTable/SearchTermsTable'
-
-import {SearchTermsTableChart} from 'pages/stats/help-center/components/SearchTermsTable/SearchTermsTableChart'
-import {useSelectedHelpCenter} from 'pages/stats/help-center/hooks/useSelectedHelpCenter'
-import {assumeMock} from 'utils/testing'
+import { SearchTermsTable } from 'pages/stats/help-center/components/SearchTermsTable/SearchTermsTable'
+import { SearchTermsTableChart } from 'pages/stats/help-center/components/SearchTermsTable/SearchTermsTableChart'
+import { useSelectedHelpCenter } from 'pages/stats/help-center/hooks/useSelectedHelpCenter'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('pages/stats/help-center/hooks/useSelectedHelpCenter')
 const useSelectedHelpCenterMock = assumeMock(useSelectedHelpCenter)
 
 jest.mock(
-    'pages/stats/help-center/components/SearchTermsTable/SearchTermsTable'
+    'pages/stats/help-center/components/SearchTermsTable/SearchTermsTable',
 )
 const SearchTermsTableMock = assumeMock(SearchTermsTable)
 
@@ -27,7 +26,7 @@ const renderComponent = () => {
     render(
         <Provider store={store}>
             <SearchTermsTableChart />
-        </Provider>
+        </Provider>,
     )
 }
 
@@ -58,7 +57,7 @@ describe('SearchTermsTableChart', () => {
         renderComponent()
 
         expect(
-            screen.getByText('Search terms with results')
+            screen.getByText('Search terms with results'),
         ).toBeInTheDocument()
     })
 

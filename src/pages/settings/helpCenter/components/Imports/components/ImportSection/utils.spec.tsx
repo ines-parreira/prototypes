@@ -1,29 +1,29 @@
-import {AxiosError, AxiosHeaders, AxiosResponse} from 'axios'
+import { AxiosError, AxiosHeaders, AxiosResponse } from 'axios'
 
-import {axiosSuccessResponse} from '../../../../../../../fixtures/axiosResponse'
+import { axiosSuccessResponse } from '../../../../../../../fixtures/axiosResponse'
 import {
     emptyMigrationStats,
     migrationStatsWithFailures,
     migrationStatsWithoutFailures,
     succeededMigrationStats,
 } from './fixtures/migration-sessions'
-import {DetailMessage, ErrorResponse, UnprocessableContent} from './types'
-import {getErrorMessage, parseSessionStats} from './utils'
+import { DetailMessage, ErrorResponse, UnprocessableContent } from './types'
+import { getErrorMessage, parseSessionStats } from './utils'
 
 describe('utils', () => {
     describe('parseSessionStats', () => {
         test('should match snapshots', () => {
             expect(
-                parseSessionStats({stats: emptyMigrationStats})
+                parseSessionStats({ stats: emptyMigrationStats }),
             ).toMatchSnapshot()
             expect(
-                parseSessionStats({stats: succeededMigrationStats})
+                parseSessionStats({ stats: succeededMigrationStats }),
             ).toMatchSnapshot()
             expect(
-                parseSessionStats({stats: migrationStatsWithFailures})
+                parseSessionStats({ stats: migrationStatsWithFailures }),
             ).toMatchSnapshot()
             expect(
-                parseSessionStats({stats: migrationStatsWithoutFailures})
+                parseSessionStats({ stats: migrationStatsWithoutFailures }),
             ).toMatchSnapshot()
         })
     })
@@ -34,7 +34,7 @@ describe('utils', () => {
         const baseAxiosError: AxiosError = {
             isAxiosError: true,
             response: baseResponse,
-            config: {headers: new AxiosHeaders()},
+            config: { headers: new AxiosHeaders() },
             name: 'someName',
             message: 'someMessage',
             toJSON: jest.fn(),
@@ -42,26 +42,26 @@ describe('utils', () => {
 
         const axiosErrorWithData = (data: ErrorResponse): AxiosError => ({
             ...baseAxiosError,
-            response: {...baseResponse, data},
+            response: { ...baseResponse, data },
         })
 
         it.each([
             new Error('non axios error'),
-            {...baseAxiosError, response: undefined},
+            { ...baseAxiosError, response: undefined },
             axiosErrorWithData({} as ErrorResponse),
         ])('to be undefined', (error) =>
-            expect(getErrorMessage(error)).toBeUndefined()
+            expect(getErrorMessage(error)).toBeUndefined(),
         )
 
         it.each([
             axiosErrorWithData([
-                {msg: 'something bad happened'},
+                { msg: 'something bad happened' },
             ] as UnprocessableContent),
             axiosErrorWithData({
                 message: 'something else bad happened',
             } as DetailMessage),
         ])('should match snapshots', (error) =>
-            expect(getErrorMessage(error)).toMatchSnapshot()
+            expect(getErrorMessage(error)).toMatchSnapshot(),
         )
     })
 })

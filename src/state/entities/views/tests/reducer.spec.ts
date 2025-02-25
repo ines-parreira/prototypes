@@ -1,11 +1,14 @@
-import {view} from '../../../../fixtures/views'
-import {viewsFetched, viewCreated, viewDeleted, viewUpdated} from '../actions'
+import { view } from '../../../../fixtures/views'
+import { viewCreated, viewDeleted, viewsFetched, viewUpdated } from '../actions'
 import reducer from '../reducer'
 
 describe('views reducer', () => {
     describe('viewsFetched action', () => {
         it('should add the views to the state', () => {
-            const newState = reducer({}, viewsFetched([view, {...view, id: 8}]))
+            const newState = reducer(
+                {},
+                viewsFetched([view, { ...view, id: 8 }]),
+            )
             expect(newState).toMatchSnapshot()
         })
     })
@@ -19,7 +22,7 @@ describe('views reducer', () => {
 
     describe('viewDeleted action', () => {
         it('should delete a view from the state', () => {
-            const newState = reducer({'7': view}, viewDeleted(7))
+            const newState = reducer({ '7': view }, viewDeleted(7))
             expect(newState).toMatchSnapshot()
         })
     })
@@ -27,8 +30,8 @@ describe('views reducer', () => {
     describe('viewUpdated action', () => {
         it('should update a macro of the state', () => {
             const newState = reducer(
-                {'7': view},
-                viewUpdated({...view, name: 'foo'})
+                { '7': view },
+                viewUpdated({ ...view, name: 'foo' }),
             )
             expect(newState).toMatchSnapshot()
         })

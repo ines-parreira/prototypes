@@ -1,9 +1,9 @@
 import {
+    AxiosRequestConfig,
     OpenAPIClient,
+    OperationResponse,
     Parameters,
     UnknownParamsObject,
-    OperationResponse,
-    AxiosRequestConfig,
 } from 'openapi-client-axios'
 
 declare namespace Components {
@@ -2830,7 +2830,7 @@ export interface OperationMethods {
     'get_ab_tests'(
         parameters?: Parameters<Paths.GetAbTests.QueryParameters> | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         Paths.GetAbTests.Responses.$200 | Paths.GetAbTests.Responses.$422
     >
@@ -2840,7 +2840,7 @@ export interface OperationMethods {
     'create_ab_test'(
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: Paths.CreateAbTest.RequestBody,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         Paths.CreateAbTest.Responses.$201 | Paths.CreateAbTest.Responses.$422
     >
@@ -2850,7 +2850,7 @@ export interface OperationMethods {
     'get_ab_test'(
         parameters?: Parameters<Paths.GetAbTest.PathParameters> | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         Paths.GetAbTest.Responses.$200 | Paths.GetAbTest.Responses.$422
     >
@@ -2860,7 +2860,7 @@ export interface OperationMethods {
     'patch_ab_test'(
         parameters?: Parameters<Paths.PatchAbTest.PathParameters> | null,
         data?: Paths.PatchAbTest.RequestBody,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         Paths.PatchAbTest.Responses.$200 | Paths.PatchAbTest.Responses.$422
     >
@@ -2870,7 +2870,7 @@ export interface OperationMethods {
     'evaluate_campaign_rules'(
         parameters?: Parameters<Paths.EvaluateCampaignRules.HeaderParameters> | null,
         data?: Paths.EvaluateCampaignRules.RequestBody,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         | Paths.EvaluateCampaignRules.Responses.$200
         | Paths.EvaluateCampaignRules.Responses.$422
@@ -2884,7 +2884,7 @@ export interface OperationMethods {
                 Paths.GetConfigAssistantConfigsRevenue_InstallationId_Get.QueryParameters
         > | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         | Paths.GetConfigAssistantConfigsRevenue_InstallationId_Get.Responses.$200
         | Paths.GetConfigAssistantConfigsRevenue_InstallationId_Get.Responses.$422
@@ -2898,7 +2898,7 @@ export interface OperationMethods {
                 Paths.GetConfigByRevenueId.QueryParameters
         > | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         | Paths.GetConfigByRevenueId.Responses.$200
         | Paths.GetConfigByRevenueId.Responses.$422
@@ -2912,7 +2912,7 @@ export interface OperationMethods {
                 Paths.GetConfigByShopName.QueryParameters
         > | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         | Paths.GetConfigByShopName.Responses.$200
         | Paths.GetConfigByShopName.Responses.$422
@@ -2923,7 +2923,7 @@ export interface OperationMethods {
     'reveal_discount_code'(
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: Paths.RevealDiscountCode.RequestBody,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         | Paths.RevealDiscountCode.Responses.$200
         | Paths.RevealDiscountCode.Responses.$422
@@ -2934,7 +2934,7 @@ export interface OperationMethods {
     'recommendations_product'(
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: Paths.RecommendationsProduct.RequestBody,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         | Paths.RecommendationsProduct.Responses.$200
         | Paths.RecommendationsProduct.Responses.$422
@@ -2945,7 +2945,7 @@ export interface OperationMethods {
     'submit_contact_form'(
         parameters?: Parameters<Paths.SubmitContactForm.PathParameters> | null,
         data?: Paths.SubmitContactForm.RequestBody,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         | Paths.SubmitContactForm.Responses.$202
         | Paths.SubmitContactForm.Responses.$422
@@ -2958,7 +2958,7 @@ export interface OperationMethods {
             Paths.GetSettings.PathParameters & Paths.GetSettings.QueryParameters
         > | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         Paths.GetSettings.Responses.$200 | Paths.GetSettings.Responses.$422
     >
@@ -2968,7 +2968,7 @@ export interface OperationMethods {
     'update_setting'(
         parameters?: Parameters<Paths.UpdateSetting.PathParameters> | null,
         data?: Paths.UpdateSetting.RequestBody,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         Paths.UpdateSetting.Responses.$202 | Paths.UpdateSetting.Responses.$422
     >
@@ -2978,7 +2978,7 @@ export interface OperationMethods {
     'get_discount_offers'(
         parameters?: Parameters<Paths.GetDiscountOffers.QueryParameters> | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         | Paths.GetDiscountOffers.Responses.$200
         | Paths.GetDiscountOffers.Responses.$422
@@ -2989,7 +2989,7 @@ export interface OperationMethods {
     'create_discount_offer'(
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: Paths.CreateDiscountOffer.RequestBody,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         | Paths.CreateDiscountOffer.Responses.$201
         | Paths.CreateDiscountOffer.Responses.$422
@@ -3000,7 +3000,7 @@ export interface OperationMethods {
     'get_discount_offer'(
         parameters?: Parameters<Paths.GetDiscountOffer.PathParameters> | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         | Paths.GetDiscountOffer.Responses.$200
         | Paths.GetDiscountOffer.Responses.$422
@@ -3011,7 +3011,7 @@ export interface OperationMethods {
     'patch_discount_offer'(
         parameters?: Parameters<Paths.PatchDiscountOffer.PathParameters> | null,
         data?: Paths.PatchDiscountOffer.RequestBody,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         | Paths.PatchDiscountOffer.Responses.$200
         | Paths.PatchDiscountOffer.Responses.$422
@@ -3022,7 +3022,7 @@ export interface OperationMethods {
     'delete_discount_offer'(
         parameters?: Parameters<Paths.DeleteDiscountOffer.PathParameters> | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<Paths.DeleteDiscountOffer.Responses.$422>
     /**
      * service_installation_status_update_bundle_installations_manage_put - Service Installation Status Update
@@ -3030,7 +3030,7 @@ export interface OperationMethods {
     'service_installation_status_update_bundle_installations_manage_put'(
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: Paths.ServiceInstallationStatusUpdateBundleInstallationsManagePut.RequestBody,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         | Paths.ServiceInstallationStatusUpdateBundleInstallationsManagePut.Responses.$200
         | Paths.ServiceInstallationStatusUpdateBundleInstallationsManagePut.Responses.$422
@@ -3041,7 +3041,7 @@ export interface OperationMethods {
     'service_installation_get_or_create_bundle_installations_manage_post'(
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: Paths.ServiceInstallationGetOrCreateBundleInstallationsManagePost.RequestBody,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         | Paths.ServiceInstallationGetOrCreateBundleInstallationsManagePost.Responses.$201
         | Paths.ServiceInstallationGetOrCreateBundleInstallationsManagePost.Responses.$422
@@ -3052,7 +3052,7 @@ export interface OperationMethods {
     'service_retrieve_installation_bundle_installations_manage_retrieve_post'(
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: Paths.ServiceRetrieveInstallationBundleInstallationsManageRetrievePost.RequestBody,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         | Paths.ServiceRetrieveInstallationBundleInstallationsManageRetrievePost.Responses.$200
         | Paths.ServiceRetrieveInstallationBundleInstallationsManageRetrievePost.Responses.$422
@@ -3063,7 +3063,7 @@ export interface OperationMethods {
     'list_bundle_installation'(
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ListBundleInstallation.Responses.$200>
     /**
      * get_bundle_installation - Retrieve
@@ -3071,7 +3071,7 @@ export interface OperationMethods {
     'get_bundle_installation'(
         parameters?: Parameters<Paths.GetBundleInstallation.PathParameters> | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         | Paths.GetBundleInstallation.Responses.$200
         | Paths.GetBundleInstallation.Responses.$422
@@ -3082,7 +3082,7 @@ export interface OperationMethods {
     'update_bundle_installation'(
         parameters?: Parameters<Paths.UpdateBundleInstallation.PathParameters> | null,
         data?: Paths.UpdateBundleInstallation.RequestBody,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         | Paths.UpdateBundleInstallation.Responses.$200
         | Paths.UpdateBundleInstallation.Responses.$422
@@ -3093,7 +3093,7 @@ export interface OperationMethods {
     'create_click_tracking_post'(
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: Paths.CreateClickTrackingPost.RequestBody,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         | Paths.CreateClickTrackingPost.Responses.$201
         | Paths.CreateClickTrackingPost.Responses.$422
@@ -3104,7 +3104,7 @@ export interface OperationMethods {
     'create_bulk_click_tracking_bulk_post'(
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: Paths.CreateBulkClickTrackingBulkPost.RequestBody,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         | Paths.CreateBulkClickTrackingBulkPost.Responses.$201
         | Paths.CreateBulkClickTrackingBulkPost.Responses.$422
@@ -3115,7 +3115,7 @@ export interface OperationMethods {
     'shorten_shorten_post'(
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: Paths.ShortenShortenPost.RequestBody,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         | Paths.ShortenShortenPost.Responses.$201
         | Paths.ShortenShortenPost.Responses.$422
@@ -3126,7 +3126,7 @@ export interface OperationMethods {
     'retrieve_urls_by_meta_click_tracking_check_post'(
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: Paths.RetrieveUrlsByMetaClickTrackingCheckPost.RequestBody,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         | Paths.RetrieveUrlsByMetaClickTrackingCheckPost.Responses.$201
         | Paths.RetrieveUrlsByMetaClickTrackingCheckPost.Responses.$422
@@ -3140,7 +3140,7 @@ export interface OperationMethods {
                 Paths.RedirectR_Alias_Get.HeaderParameters
         > | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         | Paths.RedirectR_Alias_Get.Responses.$302
         | Paths.RedirectR_Alias_Get.Responses.$422
@@ -3151,7 +3151,7 @@ export interface OperationMethods {
     'get_custom_domain'(
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<Paths.GetCustomDomain.Responses.$200>
     /**
      * create_custom_domain - Create
@@ -3159,7 +3159,7 @@ export interface OperationMethods {
     'create_custom_domain'(
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: Paths.CreateCustomDomain.RequestBody,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         | Paths.CreateCustomDomain.Responses.$201
         | Paths.CreateCustomDomain.Responses.$422
@@ -3170,7 +3170,7 @@ export interface OperationMethods {
     'delete_custom_domain'(
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<any>
     /**
      * check_custom_domain - Check
@@ -3178,7 +3178,7 @@ export interface OperationMethods {
     'check_custom_domain'(
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<Paths.CheckCustomDomain.Responses.$200>
     /**
      * retrieve_custom_domains_get - Retrieve
@@ -3186,7 +3186,7 @@ export interface OperationMethods {
     'retrieve_custom_domains_get'(
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<Paths.RetrieveCustomDomainsGet.Responses.$200>
     /**
      * create_custom_domains_post - Create
@@ -3194,7 +3194,7 @@ export interface OperationMethods {
     'create_custom_domains_post'(
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: Paths.CreateCustomDomainsPost.RequestBody,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         | Paths.CreateCustomDomainsPost.Responses.$201
         | Paths.CreateCustomDomainsPost.Responses.$422
@@ -3205,7 +3205,7 @@ export interface OperationMethods {
     'delete_custom_domains_delete'(
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<any>
     /**
      * check_custom_domains_check_post - Check
@@ -3213,7 +3213,7 @@ export interface OperationMethods {
     'check_custom_domains_check_post'(
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<Paths.CheckCustomDomainsCheckPost.Responses.$200>
     /**
      * get_campaigns - Get Campaigns
@@ -3221,7 +3221,7 @@ export interface OperationMethods {
     'get_campaigns'(
         parameters?: Parameters<Paths.GetCampaigns.QueryParameters> | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         Paths.GetCampaigns.Responses.$200 | Paths.GetCampaigns.Responses.$422
     >
@@ -3231,7 +3231,7 @@ export interface OperationMethods {
     'create_campaign'(
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: Paths.CreateCampaign.RequestBody,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         | Paths.CreateCampaign.Responses.$201
         | Paths.CreateCampaign.Responses.$422
@@ -3242,7 +3242,7 @@ export interface OperationMethods {
     'get_all_campaigns'(
         parameters?: Parameters<Paths.GetAllCampaigns.HeaderParameters> | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         | Paths.GetAllCampaigns.Responses.$200
         | Paths.GetAllCampaigns.Responses.$422
@@ -3253,7 +3253,7 @@ export interface OperationMethods {
     'get_campaign'(
         parameters?: Parameters<Paths.GetCampaign.PathParameters> | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         Paths.GetCampaign.Responses.$200 | Paths.GetCampaign.Responses.$422
     >
@@ -3263,7 +3263,7 @@ export interface OperationMethods {
     'patch_campaign'(
         parameters?: Parameters<Paths.PatchCampaign.PathParameters> | null,
         data?: Paths.PatchCampaign.RequestBody,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         Paths.PatchCampaign.Responses.$200 | Paths.PatchCampaign.Responses.$422
     >
@@ -3273,7 +3273,7 @@ export interface OperationMethods {
     'delete_campaign'(
         parameters?: Parameters<Paths.DeleteCampaign.PathParameters> | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<Paths.DeleteCampaign.Responses.$422>
     /**
      * create_ab_group - Create Ab Group
@@ -3281,7 +3281,7 @@ export interface OperationMethods {
     'create_ab_group'(
         parameters?: Parameters<Paths.CreateAbGroup.PathParameters> | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         Paths.CreateAbGroup.Responses.$200 | Paths.CreateAbGroup.Responses.$422
     >
@@ -3291,7 +3291,7 @@ export interface OperationMethods {
     'start_ab_group'(
         parameters?: Parameters<Paths.StartAbGroup.PathParameters> | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         Paths.StartAbGroup.Responses.$200 | Paths.StartAbGroup.Responses.$422
     >
@@ -3301,7 +3301,7 @@ export interface OperationMethods {
     'pause_ab_group'(
         parameters?: Parameters<Paths.PauseAbGroup.PathParameters> | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         Paths.PauseAbGroup.Responses.$200 | Paths.PauseAbGroup.Responses.$422
     >
@@ -3311,7 +3311,7 @@ export interface OperationMethods {
     'stop_ab_group'(
         parameters?: Parameters<Paths.StopAbGroup.PathParameters> | null,
         data?: Paths.StopAbGroup.RequestBody,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         Paths.StopAbGroup.Responses.$200 | Paths.StopAbGroup.Responses.$422
     >
@@ -3321,7 +3321,7 @@ export interface OperationMethods {
     'suggest_campaign_copy'(
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: Paths.SuggestCampaignCopy.RequestBody,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         | Paths.SuggestCampaignCopy.Responses.$200
         | Paths.SuggestCampaignCopy.Responses.$422
@@ -3332,7 +3332,7 @@ export interface OperationMethods {
     'get_channel_connections'(
         parameters?: Parameters<Paths.GetChannelConnections.QueryParameters> | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         | Paths.GetChannelConnections.Responses.$200
         | Paths.GetChannelConnections.Responses.$422
@@ -3343,7 +3343,7 @@ export interface OperationMethods {
     'create_channel_connection'(
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: Paths.CreateChannelConnection.RequestBody,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         | Paths.CreateChannelConnection.Responses.$201
         | Paths.CreateChannelConnection.Responses.$422
@@ -3354,7 +3354,7 @@ export interface OperationMethods {
     'get_channel_connection'(
         parameters?: Parameters<Paths.GetChannelConnection.PathParameters> | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         | Paths.GetChannelConnection.Responses.$200
         | Paths.GetChannelConnection.Responses.$422
@@ -3365,7 +3365,7 @@ export interface OperationMethods {
     'patch_channel_connection'(
         parameters?: Parameters<Paths.PatchChannelConnection.PathParameters> | null,
         data?: Paths.PatchChannelConnection.RequestBody,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         | Paths.PatchChannelConnection.Responses.$200
         | Paths.PatchChannelConnection.Responses.$422
@@ -3376,7 +3376,7 @@ export interface OperationMethods {
     'delete_channel_connection'(
         parameters?: Parameters<Paths.DeleteChannelConnection.PathParameters> | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<Paths.DeleteChannelConnection.Responses.$422>
     /**
      * shopper_lookup - Lookup
@@ -3384,7 +3384,7 @@ export interface OperationMethods {
     'shopper_lookup'(
         parameters?: Parameters<Paths.ShopperLookup.QueryParameters> | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         Paths.ShopperLookup.Responses.$200 | Paths.ShopperLookup.Responses.$422
     >
@@ -3394,7 +3394,7 @@ export interface OperationMethods {
     'get_status_and_usage'(
         parameters?: Parameters<Paths.GetStatusAndUsage.QueryParameters> | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         | Paths.GetStatusAndUsage.Responses.$200
         | Paths.GetStatusAndUsage.Responses.$422
@@ -3405,7 +3405,7 @@ export interface OperationMethods {
     'update_auto_upgrade_flag'(
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: Paths.UpdateAutoUpgradeFlag.RequestBody,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<
         | Paths.UpdateAutoUpgradeFlag.Responses.$200
         | Paths.UpdateAutoUpgradeFlag.Responses.$422
@@ -3416,7 +3416,7 @@ export interface OperationMethods {
     'get_subscription_statuses'(
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<Paths.GetSubscriptionStatuses.Responses.$200>
     /**
      * health_check_health_check_get - Health Check
@@ -3424,7 +3424,7 @@ export interface OperationMethods {
     'health_check_health_check_get'(
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<Paths.HealthCheckHealthCheckGet.Responses.$200>
     /**
      * health_check__get - Health Check
@@ -3432,7 +3432,7 @@ export interface OperationMethods {
     'health_check__get'(
         parameters?: Parameters<UnknownParamsObject> | null,
         data?: any,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): OperationResponse<Paths.HealthCheck_Get.Responses.$200>
 }
 
@@ -3444,7 +3444,7 @@ export interface PathsDictionary {
         'post'(
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: Paths.CreateAbTest.RequestBody,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.CreateAbTest.Responses.$201
             | Paths.CreateAbTest.Responses.$422
@@ -3455,7 +3455,7 @@ export interface PathsDictionary {
         'get'(
             parameters?: Parameters<Paths.GetAbTests.QueryParameters> | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             Paths.GetAbTests.Responses.$200 | Paths.GetAbTests.Responses.$422
         >
@@ -3467,7 +3467,7 @@ export interface PathsDictionary {
         'get'(
             parameters?: Parameters<Paths.GetAbTest.PathParameters> | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             Paths.GetAbTest.Responses.$200 | Paths.GetAbTest.Responses.$422
         >
@@ -3477,7 +3477,7 @@ export interface PathsDictionary {
         'patch'(
             parameters?: Parameters<Paths.PatchAbTest.PathParameters> | null,
             data?: Paths.PatchAbTest.RequestBody,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             Paths.PatchAbTest.Responses.$200 | Paths.PatchAbTest.Responses.$422
         >
@@ -3489,7 +3489,7 @@ export interface PathsDictionary {
         'post'(
             parameters?: Parameters<Paths.EvaluateCampaignRules.HeaderParameters> | null,
             data?: Paths.EvaluateCampaignRules.RequestBody,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.EvaluateCampaignRules.Responses.$200
             | Paths.EvaluateCampaignRules.Responses.$422
@@ -3505,7 +3505,7 @@ export interface PathsDictionary {
                     Paths.GetConfigAssistantConfigsRevenue_InstallationId_Get.QueryParameters
             > | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.GetConfigAssistantConfigsRevenue_InstallationId_Get.Responses.$200
             | Paths.GetConfigAssistantConfigsRevenue_InstallationId_Get.Responses.$422
@@ -3521,7 +3521,7 @@ export interface PathsDictionary {
                     Paths.GetConfigByRevenueId.QueryParameters
             > | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.GetConfigByRevenueId.Responses.$200
             | Paths.GetConfigByRevenueId.Responses.$422
@@ -3537,7 +3537,7 @@ export interface PathsDictionary {
                     Paths.GetConfigByShopName.QueryParameters
             > | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.GetConfigByShopName.Responses.$200
             | Paths.GetConfigByShopName.Responses.$422
@@ -3550,7 +3550,7 @@ export interface PathsDictionary {
         'post'(
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: Paths.RevealDiscountCode.RequestBody,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.RevealDiscountCode.Responses.$200
             | Paths.RevealDiscountCode.Responses.$422
@@ -3563,7 +3563,7 @@ export interface PathsDictionary {
         'post'(
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: Paths.RecommendationsProduct.RequestBody,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.RecommendationsProduct.Responses.$200
             | Paths.RecommendationsProduct.Responses.$422
@@ -3576,7 +3576,7 @@ export interface PathsDictionary {
         'post'(
             parameters?: Parameters<Paths.SubmitContactForm.PathParameters> | null,
             data?: Paths.SubmitContactForm.RequestBody,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.SubmitContactForm.Responses.$202
             | Paths.SubmitContactForm.Responses.$422
@@ -3592,7 +3592,7 @@ export interface PathsDictionary {
                     Paths.GetSettings.QueryParameters
             > | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             Paths.GetSettings.Responses.$200 | Paths.GetSettings.Responses.$422
         >
@@ -3602,7 +3602,7 @@ export interface PathsDictionary {
         'put'(
             parameters?: Parameters<Paths.UpdateSetting.PathParameters> | null,
             data?: Paths.UpdateSetting.RequestBody,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.UpdateSetting.Responses.$202
             | Paths.UpdateSetting.Responses.$422
@@ -3615,7 +3615,7 @@ export interface PathsDictionary {
         'post'(
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: Paths.CreateDiscountOffer.RequestBody,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.CreateDiscountOffer.Responses.$201
             | Paths.CreateDiscountOffer.Responses.$422
@@ -3626,7 +3626,7 @@ export interface PathsDictionary {
         'get'(
             parameters?: Parameters<Paths.GetDiscountOffers.QueryParameters> | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.GetDiscountOffers.Responses.$200
             | Paths.GetDiscountOffers.Responses.$422
@@ -3639,7 +3639,7 @@ export interface PathsDictionary {
         'get'(
             parameters?: Parameters<Paths.GetDiscountOffer.PathParameters> | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.GetDiscountOffer.Responses.$200
             | Paths.GetDiscountOffer.Responses.$422
@@ -3650,7 +3650,7 @@ export interface PathsDictionary {
         'patch'(
             parameters?: Parameters<Paths.PatchDiscountOffer.PathParameters> | null,
             data?: Paths.PatchDiscountOffer.RequestBody,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.PatchDiscountOffer.Responses.$200
             | Paths.PatchDiscountOffer.Responses.$422
@@ -3661,7 +3661,7 @@ export interface PathsDictionary {
         'delete'(
             parameters?: Parameters<Paths.DeleteDiscountOffer.PathParameters> | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<Paths.DeleteDiscountOffer.Responses.$422>
     }
     ['/bundle/installations/manage']: {
@@ -3671,7 +3671,7 @@ export interface PathsDictionary {
         'put'(
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: Paths.ServiceInstallationStatusUpdateBundleInstallationsManagePut.RequestBody,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.ServiceInstallationStatusUpdateBundleInstallationsManagePut.Responses.$200
             | Paths.ServiceInstallationStatusUpdateBundleInstallationsManagePut.Responses.$422
@@ -3682,7 +3682,7 @@ export interface PathsDictionary {
         'post'(
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: Paths.ServiceInstallationGetOrCreateBundleInstallationsManagePost.RequestBody,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.ServiceInstallationGetOrCreateBundleInstallationsManagePost.Responses.$201
             | Paths.ServiceInstallationGetOrCreateBundleInstallationsManagePost.Responses.$422
@@ -3695,7 +3695,7 @@ export interface PathsDictionary {
         'post'(
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: Paths.ServiceRetrieveInstallationBundleInstallationsManageRetrievePost.RequestBody,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.ServiceRetrieveInstallationBundleInstallationsManageRetrievePost.Responses.$200
             | Paths.ServiceRetrieveInstallationBundleInstallationsManageRetrievePost.Responses.$422
@@ -3708,7 +3708,7 @@ export interface PathsDictionary {
         'get'(
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<Paths.ListBundleInstallation.Responses.$200>
     }
     ['/bundle/installations/{id}']: {
@@ -3718,7 +3718,7 @@ export interface PathsDictionary {
         'get'(
             parameters?: Parameters<Paths.GetBundleInstallation.PathParameters> | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.GetBundleInstallation.Responses.$200
             | Paths.GetBundleInstallation.Responses.$422
@@ -3729,7 +3729,7 @@ export interface PathsDictionary {
         'patch'(
             parameters?: Parameters<Paths.UpdateBundleInstallation.PathParameters> | null,
             data?: Paths.UpdateBundleInstallation.RequestBody,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.UpdateBundleInstallation.Responses.$200
             | Paths.UpdateBundleInstallation.Responses.$422
@@ -3742,7 +3742,7 @@ export interface PathsDictionary {
         'post'(
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: Paths.CreateClickTrackingPost.RequestBody,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.CreateClickTrackingPost.Responses.$201
             | Paths.CreateClickTrackingPost.Responses.$422
@@ -3755,7 +3755,7 @@ export interface PathsDictionary {
         'post'(
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: Paths.CreateBulkClickTrackingBulkPost.RequestBody,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.CreateBulkClickTrackingBulkPost.Responses.$201
             | Paths.CreateBulkClickTrackingBulkPost.Responses.$422
@@ -3768,7 +3768,7 @@ export interface PathsDictionary {
         'post'(
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: Paths.ShortenShortenPost.RequestBody,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.ShortenShortenPost.Responses.$201
             | Paths.ShortenShortenPost.Responses.$422
@@ -3781,7 +3781,7 @@ export interface PathsDictionary {
         'post'(
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: Paths.RetrieveUrlsByMetaClickTrackingCheckPost.RequestBody,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.RetrieveUrlsByMetaClickTrackingCheckPost.Responses.$201
             | Paths.RetrieveUrlsByMetaClickTrackingCheckPost.Responses.$422
@@ -3797,7 +3797,7 @@ export interface PathsDictionary {
                     Paths.RedirectR_Alias_Get.HeaderParameters
             > | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.RedirectR_Alias_Get.Responses.$302
             | Paths.RedirectR_Alias_Get.Responses.$422
@@ -3810,7 +3810,7 @@ export interface PathsDictionary {
         'get'(
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<Paths.GetCustomDomain.Responses.$200>
         /**
          * create_custom_domain - Create
@@ -3818,7 +3818,7 @@ export interface PathsDictionary {
         'post'(
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: Paths.CreateCustomDomain.RequestBody,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.CreateCustomDomain.Responses.$201
             | Paths.CreateCustomDomain.Responses.$422
@@ -3829,7 +3829,7 @@ export interface PathsDictionary {
         'delete'(
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<any>
     }
     ['/click-tracking/custom-domains/check']: {
@@ -3839,7 +3839,7 @@ export interface PathsDictionary {
         'post'(
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<Paths.CheckCustomDomain.Responses.$200>
     }
     ['/custom-domains']: {
@@ -3849,7 +3849,7 @@ export interface PathsDictionary {
         'get'(
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<Paths.RetrieveCustomDomainsGet.Responses.$200>
         /**
          * create_custom_domains_post - Create
@@ -3857,7 +3857,7 @@ export interface PathsDictionary {
         'post'(
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: Paths.CreateCustomDomainsPost.RequestBody,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.CreateCustomDomainsPost.Responses.$201
             | Paths.CreateCustomDomainsPost.Responses.$422
@@ -3868,7 +3868,7 @@ export interface PathsDictionary {
         'delete'(
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<any>
     }
     ['/custom-domains/check']: {
@@ -3878,7 +3878,7 @@ export interface PathsDictionary {
         'post'(
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<Paths.CheckCustomDomainsCheckPost.Responses.$200>
     }
     ['/campaigns']: {
@@ -3888,7 +3888,7 @@ export interface PathsDictionary {
         'post'(
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: Paths.CreateCampaign.RequestBody,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.CreateCampaign.Responses.$201
             | Paths.CreateCampaign.Responses.$422
@@ -3899,7 +3899,7 @@ export interface PathsDictionary {
         'get'(
             parameters?: Parameters<Paths.GetCampaigns.QueryParameters> | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.GetCampaigns.Responses.$200
             | Paths.GetCampaigns.Responses.$422
@@ -3912,7 +3912,7 @@ export interface PathsDictionary {
         'get'(
             parameters?: Parameters<Paths.GetAllCampaigns.HeaderParameters> | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.GetAllCampaigns.Responses.$200
             | Paths.GetAllCampaigns.Responses.$422
@@ -3925,7 +3925,7 @@ export interface PathsDictionary {
         'get'(
             parameters?: Parameters<Paths.GetCampaign.PathParameters> | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             Paths.GetCampaign.Responses.$200 | Paths.GetCampaign.Responses.$422
         >
@@ -3935,7 +3935,7 @@ export interface PathsDictionary {
         'patch'(
             parameters?: Parameters<Paths.PatchCampaign.PathParameters> | null,
             data?: Paths.PatchCampaign.RequestBody,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.PatchCampaign.Responses.$200
             | Paths.PatchCampaign.Responses.$422
@@ -3946,7 +3946,7 @@ export interface PathsDictionary {
         'delete'(
             parameters?: Parameters<Paths.DeleteCampaign.PathParameters> | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<Paths.DeleteCampaign.Responses.$422>
     }
     ['/campaigns/{campaign_id}/ab-test']: {
@@ -3956,7 +3956,7 @@ export interface PathsDictionary {
         'post'(
             parameters?: Parameters<Paths.CreateAbGroup.PathParameters> | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.CreateAbGroup.Responses.$200
             | Paths.CreateAbGroup.Responses.$422
@@ -3969,7 +3969,7 @@ export interface PathsDictionary {
         'post'(
             parameters?: Parameters<Paths.StartAbGroup.PathParameters> | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.StartAbGroup.Responses.$200
             | Paths.StartAbGroup.Responses.$422
@@ -3982,7 +3982,7 @@ export interface PathsDictionary {
         'post'(
             parameters?: Parameters<Paths.PauseAbGroup.PathParameters> | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.PauseAbGroup.Responses.$200
             | Paths.PauseAbGroup.Responses.$422
@@ -3995,7 +3995,7 @@ export interface PathsDictionary {
         'post'(
             parameters?: Parameters<Paths.StopAbGroup.PathParameters> | null,
             data?: Paths.StopAbGroup.RequestBody,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             Paths.StopAbGroup.Responses.$200 | Paths.StopAbGroup.Responses.$422
         >
@@ -4007,7 +4007,7 @@ export interface PathsDictionary {
         'post'(
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: Paths.SuggestCampaignCopy.RequestBody,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.SuggestCampaignCopy.Responses.$200
             | Paths.SuggestCampaignCopy.Responses.$422
@@ -4020,7 +4020,7 @@ export interface PathsDictionary {
         'post'(
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: Paths.CreateChannelConnection.RequestBody,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.CreateChannelConnection.Responses.$201
             | Paths.CreateChannelConnection.Responses.$422
@@ -4031,7 +4031,7 @@ export interface PathsDictionary {
         'get'(
             parameters?: Parameters<Paths.GetChannelConnections.QueryParameters> | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.GetChannelConnections.Responses.$200
             | Paths.GetChannelConnections.Responses.$422
@@ -4044,7 +4044,7 @@ export interface PathsDictionary {
         'get'(
             parameters?: Parameters<Paths.GetChannelConnection.PathParameters> | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.GetChannelConnection.Responses.$200
             | Paths.GetChannelConnection.Responses.$422
@@ -4055,7 +4055,7 @@ export interface PathsDictionary {
         'patch'(
             parameters?: Parameters<Paths.PatchChannelConnection.PathParameters> | null,
             data?: Paths.PatchChannelConnection.RequestBody,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.PatchChannelConnection.Responses.$200
             | Paths.PatchChannelConnection.Responses.$422
@@ -4066,7 +4066,7 @@ export interface PathsDictionary {
         'delete'(
             parameters?: Parameters<Paths.DeleteChannelConnection.PathParameters> | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<Paths.DeleteChannelConnection.Responses.$422>
     }
     ['/shoppers/lookup']: {
@@ -4076,7 +4076,7 @@ export interface PathsDictionary {
         'get'(
             parameters?: Parameters<Paths.ShopperLookup.QueryParameters> | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.ShopperLookup.Responses.$200
             | Paths.ShopperLookup.Responses.$422
@@ -4089,7 +4089,7 @@ export interface PathsDictionary {
         'get'(
             parameters?: Parameters<Paths.GetStatusAndUsage.QueryParameters> | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.GetStatusAndUsage.Responses.$200
             | Paths.GetStatusAndUsage.Responses.$422
@@ -4102,7 +4102,7 @@ export interface PathsDictionary {
         'put'(
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: Paths.UpdateAutoUpgradeFlag.RequestBody,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<
             | Paths.UpdateAutoUpgradeFlag.Responses.$200
             | Paths.UpdateAutoUpgradeFlag.Responses.$422
@@ -4115,7 +4115,7 @@ export interface PathsDictionary {
         'get'(
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<Paths.GetSubscriptionStatuses.Responses.$200>
     }
     ['/health-check']: {
@@ -4125,7 +4125,7 @@ export interface PathsDictionary {
         'get'(
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<Paths.HealthCheckHealthCheckGet.Responses.$200>
     }
     ['/']: {
@@ -4135,7 +4135,7 @@ export interface PathsDictionary {
         'get'(
             parameters?: Parameters<UnknownParamsObject> | null,
             data?: any,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ): OperationResponse<Paths.HealthCheck_Get.Responses.$200>
     }
 }

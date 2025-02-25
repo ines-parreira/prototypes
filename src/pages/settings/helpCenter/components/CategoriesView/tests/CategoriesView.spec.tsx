@@ -1,24 +1,25 @@
-import {screen} from '@testing-library/react'
 import React from 'react'
-import {DndProvider} from 'react-dnd'
-import {HTML5Backend} from 'react-dnd-html5-backend'
-import {Provider} from 'react-redux'
+
+import { screen } from '@testing-library/react'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {getSingleArticleEnglish} from 'pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
-import {getSingleCategoryEnglish} from 'pages/settings/helpCenter/fixtures/getCategoriesResponse.fixtures'
-import {getInitialRootCategory} from 'pages/settings/helpCenter/fixtures/getCategoriesTree.fixtures'
-import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
+import { getSingleArticleEnglish } from 'pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
+import { getSingleCategoryEnglish } from 'pages/settings/helpCenter/fixtures/getCategoriesResponse.fixtures'
+import { getInitialRootCategory } from 'pages/settings/helpCenter/fixtures/getCategoriesTree.fixtures'
+import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
-import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import {SearchContextProvider} from 'pages/settings/helpCenter/providers/SearchContext'
-import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
-import {RootState, StoreDispatch} from 'state/types'
-import {renderWithRouter} from 'utils/testing'
+import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import { SearchContextProvider } from 'pages/settings/helpCenter/providers/SearchContext'
+import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
+import { RootState, StoreDispatch } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
-import {CategoriesViews} from '../CategoriesView'
+import { CategoriesViews } from '../CategoriesView'
 
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
     thunk,
@@ -32,16 +33,16 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterIdParam', () => {
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
     useHelpCenterApi: jest.fn(),
-    useAbilityChecker: () => ({isPassingRulesCheck: () => true}),
+    useAbilityChecker: () => ({ isPassingRulesCheck: () => true }),
 }))
 
 const useHelpCenterApiMock = useHelpCenterApi as jest.Mock
 
 const mockedListArticles = jest.fn().mockResolvedValue({
-    data: {data: [], meta: {item_count: 0}},
+    data: { data: [], meta: { item_count: 0 } },
 })
 const mockedListCategoryArticles = jest.fn().mockResolvedValue({
-    data: {data: [], meta: {item_count: 0}},
+    data: { data: [], meta: { item_count: 0 } },
 })
 
 useHelpCenterApiMock.mockImplementation(() => ({
@@ -49,7 +50,7 @@ useHelpCenterApiMock.mockImplementation(() => ({
     client: {
         getCategoryTree: jest
             .fn()
-            .mockResolvedValue({data: getInitialRootCategory}),
+            .mockResolvedValue({ data: getInitialRootCategory }),
         listArticles: mockedListArticles,
         listCategoryArticles: mockedListCategoryArticles,
         getUncategorizedArticlesPositions: jest.fn().mockResolvedValue({
@@ -66,7 +67,7 @@ useHelpCenterApiMock.mockImplementation(() => ({
 
 jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
 ;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
-    getSingleHelpCenterResponseFixture
+    getSingleHelpCenterResponseFixture,
 )
 
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
@@ -114,7 +115,7 @@ describe('<CategoriesViews />', () => {
                         onShowTemplates={jest.fn()}
                     />
                 </SearchContextProvider>
-            </Provider>
+            </Provider>,
         )
 
         await screen.findByText('Start your help center here')
@@ -136,7 +137,7 @@ describe('<CategoriesViews />', () => {
                     },
                     categories: {
                         categoriesById: {
-                            '0': {...getInitialRootCategory, articleCount: 1},
+                            '0': { ...getInitialRootCategory, articleCount: 1 },
                             1: getSingleCategoryEnglish,
                         },
                     },
@@ -181,7 +182,7 @@ describe('<CategoriesViews />', () => {
                         />
                     </DndProvider>
                 </SearchContextProvider>
-            </Provider>
+            </Provider>,
         )
 
         await screen.findByText('Uncategorized articles')
@@ -234,7 +235,7 @@ describe('<CategoriesViews />', () => {
                         />
                     </DndProvider>
                 </SearchContextProvider>
-            </Provider>
+            </Provider>,
         )
 
         await screen.findByText('Uncategorized articles')

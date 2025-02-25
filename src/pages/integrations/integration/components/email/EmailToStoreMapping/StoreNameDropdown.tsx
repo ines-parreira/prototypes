@@ -1,9 +1,15 @@
-import {List, Map} from 'immutable'
-import React, {useState} from 'react'
-import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
+import React, { useState } from 'react'
+
+import { List, Map } from 'immutable'
+import {
+    Dropdown,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+} from 'reactstrap'
 
 import warningIcon from 'assets/img/icons/warning.svg'
-import {getIconFromType} from 'state/integrations/helpers'
+import { getIconFromType } from 'state/integrations/helpers'
 
 import css from './StoreNameDropdown.less'
 
@@ -21,7 +27,8 @@ export const StoreNameDropdown = ({
     const [isOpen, setIsOpen] = useState(false)
 
     const storeIntegration = storeIntegrations.find(
-        (storeIntegration) => storeIntegration?.get('id') === storeIntegrationId
+        (storeIntegration) =>
+            storeIntegration?.get('id') === storeIntegrationId,
     )
 
     return (
@@ -36,7 +43,7 @@ export const StoreNameDropdown = ({
                         <span className={css.dropdownValue}>
                             <img
                                 src={getIconFromType(
-                                    storeIntegration.get('type')
+                                    storeIntegration.get('type'),
                                 )}
                                 className={css.dropdownLogo}
                                 alt="logo"
@@ -47,7 +54,7 @@ export const StoreNameDropdown = ({
                         <span className={css.dropdownPlaceholder}>
                             <i
                                 className="material-icons"
-                                style={{marginRight: 8, fontSize: 20}}
+                                style={{ marginRight: 8, fontSize: 20 }}
                             >
                                 store
                             </i>

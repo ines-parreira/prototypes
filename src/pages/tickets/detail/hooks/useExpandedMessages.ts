@@ -1,5 +1,6 @@
+import { useCallback, useState } from 'react'
+
 import _xor from 'lodash/xor'
-import {useCallback, useState} from 'react'
 
 export default function useExpandedMessages() {
     const [messages, setMessages] = useState<number[]>([])

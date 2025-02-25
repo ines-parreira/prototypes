@@ -1,11 +1,12 @@
-import {fireEvent, render} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { fireEvent, render } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {VoiceCallSummary} from 'pages/stats/voice/models/types'
-import {RootState, StoreDispatch} from 'state/types'
+import { VoiceCallSummary } from 'pages/stats/voice/models/types'
+import { RootState, StoreDispatch } from 'state/types'
 
 import VoiceCallRecording from './VoiceCallRecording'
 
@@ -13,12 +14,12 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 describe('VoiceCallRecording', () => {
     const renderComponent = (
-        props: ComponentProps<typeof VoiceCallRecording>
+        props: ComponentProps<typeof VoiceCallRecording>,
     ) => {
         return render(
             <Provider store={mockStore({})}>
                 <VoiceCallRecording {...props} />
-            </Provider>
+            </Provider>,
         )
     }
 
@@ -36,17 +37,17 @@ describe('VoiceCallRecording', () => {
             voicemailAvailable: true,
         } as VoiceCallSummary,
     ])('should render recording buttons', (voiceCall) => {
-        const {getByRole, getByTestId} = renderComponent({voiceCall})
+        const { getByRole, getByTestId } = renderComponent({ voiceCall })
 
-        expect(getByRole('button', {name: 'play_arrow'})).toBeInTheDocument()
-        expect(getByRole('button', {name: 'download'})).toBeInTheDocument()
+        expect(getByRole('button', { name: 'play_arrow' })).toBeInTheDocument()
+        expect(getByRole('button', { name: 'download' })).toBeInTheDocument()
 
-        fireEvent.click(getByRole('button', {name: 'play_arrow'}))
+        fireEvent.click(getByRole('button', { name: 'play_arrow' }))
         expect(getByTestId('audio-player')).toBeInTheDocument()
     })
 
     it('should not render download button when isDownloadable is false', () => {
-        const {queryByRole} = renderComponent({
+        const { queryByRole } = renderComponent({
             voiceCall: {
                 callRecordingUrl: 'https://www.google.com',
                 callRecordingAvailable: true,
@@ -54,7 +55,7 @@ describe('VoiceCallRecording', () => {
             isDownloadable: false,
         })
 
-        expect(queryByRole('button', {name: 'download'})).toBeNull()
+        expect(queryByRole('button', { name: 'download' })).toBeNull()
     })
 
     it.each([
@@ -71,7 +72,7 @@ describe('VoiceCallRecording', () => {
             voicemailAvailable: false,
         } as VoiceCallSummary,
     ])('should render deleted recording', (voiceCall) => {
-        const {getByText} = renderComponent({voiceCall})
+        const { getByText } = renderComponent({ voiceCall })
 
         expect(getByText('-')).toBeInTheDocument()
     })

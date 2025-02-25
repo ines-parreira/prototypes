@@ -1,5 +1,6 @@
-import {render, fireEvent} from '@testing-library/react'
 import React from 'react'
+
+import { fireEvent, render } from '@testing-library/react'
 
 import Button from 'pages/common/components/button/Button'
 
@@ -28,9 +29,9 @@ describe('<ConfirmationPopover />', () => {
     }
 
     it('should render', () => {
-        const {container} = render(
+        const { container } = render(
             <ConfirmationPopover {...defaultProps}>
-                {({uid, onDisplayConfirmation, elementRef}) => (
+                {({ uid, onDisplayConfirmation, elementRef }) => (
                     <Button
                         id={uid}
                         onClick={onDisplayConfirmation}
@@ -39,16 +40,16 @@ describe('<ConfirmationPopover />', () => {
                         Click Me!
                     </Button>
                 )}
-            </ConfirmationPopover>
+            </ConfirmationPopover>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should display the confirmation popup when clicking the button', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <ConfirmationPopover {...defaultProps}>
-                {({uid, onDisplayConfirmation, elementRef}) => (
+                {({ uid, onDisplayConfirmation, elementRef }) => (
                     <Button
                         id={uid}
                         onClick={onDisplayConfirmation}
@@ -57,7 +58,7 @@ describe('<ConfirmationPopover />', () => {
                         Click Me!
                     </Button>
                 )}
-            </ConfirmationPopover>
+            </ConfirmationPopover>,
         )
 
         fireEvent.click(getByText(/Click me!/i))
@@ -65,9 +66,9 @@ describe('<ConfirmationPopover />', () => {
     })
 
     it('should call the click handler after confirming the action', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <ConfirmationPopover {...defaultProps}>
-                {({uid, onDisplayConfirmation, elementRef}) => (
+                {({ uid, onDisplayConfirmation, elementRef }) => (
                     <Button
                         id={uid}
                         onClick={onDisplayConfirmation}
@@ -76,7 +77,7 @@ describe('<ConfirmationPopover />', () => {
                         Click Me!
                     </Button>
                 )}
-            </ConfirmationPopover>
+            </ConfirmationPopover>,
         )
 
         fireEvent.click(getByText(/Click me!/i))
@@ -86,13 +87,13 @@ describe('<ConfirmationPopover />', () => {
 
     it('should trigger a form submit after confirming a form', () => {
         const handleSubmit = jest.fn()
-        const {getByText} = render(
+        const { getByText } = render(
             <form onSubmit={handleSubmit}>
                 <ConfirmationPopover
                     {...defaultProps}
-                    buttonProps={{type: 'submit'}}
+                    buttonProps={{ type: 'submit' }}
                 >
-                    {({uid, onDisplayConfirmation, elementRef}) => (
+                    {({ uid, onDisplayConfirmation, elementRef }) => (
                         <Button
                             id={uid}
                             onClick={onDisplayConfirmation}
@@ -102,7 +103,7 @@ describe('<ConfirmationPopover />', () => {
                         </Button>
                     )}
                 </ConfirmationPopover>
-            </form>
+            </form>,
         )
 
         fireEvent.click(getByText(/Click me!/i))
@@ -112,14 +113,14 @@ describe('<ConfirmationPopover />', () => {
 
     it('should not open the confirmation when the form is wrong', () => {
         const handleSubmit = jest.fn()
-        const {getByRole, queryByText} = render(
+        const { getByRole, queryByText } = render(
             <form onSubmit={handleSubmit}>
                 <input type="text" required value="" />
                 <ConfirmationPopover
                     {...defaultProps}
-                    buttonProps={{type: 'submit'}}
+                    buttonProps={{ type: 'submit' }}
                 >
-                    {({uid, onDisplayConfirmation, elementRef}) => (
+                    {({ uid, onDisplayConfirmation, elementRef }) => (
                         <Button
                             id={uid}
                             onClick={onDisplayConfirmation}
@@ -129,20 +130,20 @@ describe('<ConfirmationPopover />', () => {
                         </Button>
                     )}
                 </ConfirmationPopover>
-            </form>
+            </form>,
         )
 
-        fireEvent.click(getByRole('button', {name: /Click me!/i}))
+        fireEvent.click(getByRole('button', { name: /Click me!/i }))
         expect(queryByText(/I'm a title/i)).toBeFalsy()
     })
 
     it('should prevent the event bubbling from the confirmation popover', () => {
         const mockHandleClick = jest.fn()
 
-        const {getByText} = render(
+        const { getByText } = render(
             <div onClick={mockHandleClick}>
                 <ConfirmationPopover {...defaultProps}>
-                    {({uid, onDisplayConfirmation, elementRef}) => (
+                    {({ uid, onDisplayConfirmation, elementRef }) => (
                         <Button
                             id={uid}
                             onClick={onDisplayConfirmation}
@@ -152,7 +153,7 @@ describe('<ConfirmationPopover />', () => {
                         </Button>
                     )}
                 </ConfirmationPopover>
-            </div>
+            </div>,
         )
 
         fireEvent.click(getByText(/Click me!/i))
@@ -161,11 +162,11 @@ describe('<ConfirmationPopover />', () => {
     })
 
     it('should not apply positioning context to the confirmation button', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Group>
                 <Button>Foo</Button>
                 <ConfirmationPopover {...defaultProps}>
-                    {({uid, onDisplayConfirmation, elementRef}) => (
+                    {({ uid, onDisplayConfirmation, elementRef }) => (
                         <Button
                             id={uid}
                             onClick={onDisplayConfirmation}
@@ -175,7 +176,7 @@ describe('<ConfirmationPopover />', () => {
                         </Button>
                     )}
                 </ConfirmationPopover>
-            </Group>
+            </Group>,
         )
 
         fireEvent.click(getByText(/Click me!/i))

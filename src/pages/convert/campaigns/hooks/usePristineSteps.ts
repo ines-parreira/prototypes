@@ -1,7 +1,8 @@
-import {produce} from 'immer'
-import {useCallback, useMemo, useState} from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
-import {CampaignStepsKeys, isCampaignStepsKeys} from '../types/CampaignSteps'
+import { produce } from 'immer'
+
+import { CampaignStepsKeys, isCampaignStepsKeys } from '../types/CampaignSteps'
 
 export function usePristineSteps(defaultOpenedStep?: CampaignStepsKeys) {
     const [pristine, setPristine] = useState<
@@ -22,11 +23,11 @@ export function usePristineSteps(defaultOpenedStep?: CampaignStepsKeys) {
                 setPristine(
                     produce((draft) => {
                         draft[expandedItem] = false
-                    })
+                    }),
                 )
             }
         },
-        [pristine]
+        [pristine],
     )
 
     const api = useMemo(
@@ -34,7 +35,7 @@ export function usePristineSteps(defaultOpenedStep?: CampaignStepsKeys) {
             pristine,
             onChangePristine,
         }),
-        [onChangePristine, pristine]
+        [onChangePristine, pristine],
     )
 
     return api

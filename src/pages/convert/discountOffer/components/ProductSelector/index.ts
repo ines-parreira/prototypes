@@ -1,1 +1,1 @@
-export {default} from './ProductSelector'
+export { default } from './ProductSelector'

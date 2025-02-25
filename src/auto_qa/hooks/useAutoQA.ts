@@ -1,3 +1,5 @@
+import { useCallback, useMemo, useRef, useState } from 'react'
+
 import {
     TicketQAScoreDimension,
     TicketQAScoreDimensionName,
@@ -5,29 +7,26 @@ import {
     useUpsertTicketQaScoreDimension,
 } from '@gorgias/api-queries'
 
-import {useCallback, useMemo, useRef, useState} from 'react'
-
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
 
 import {
-    SupportedTicketQAScoreDimension,
     dimensionOrderOfManualDimensions,
+    SupportedTicketQAScoreDimension,
 } from '../config'
-import type {DimensionSummary} from '../types'
-
+import type { DimensionSummary } from '../types'
 import useSaveState from './useSaveState'
 
 export default function useAutoQA(ticketId: number) {
-    const {data, isError, isLoading, refetch} =
+    const { data, isError, isLoading, refetch } =
         useListTicketQaScoreDimensions(ticketId)
-    const {isLoading: isSaving, mutateAsync: upsertTicketQaScoreDimension} =
+    const { isLoading: isSaving, mutateAsync: upsertTicketQaScoreDimension } =
         useUpsertTicketQaScoreDimension()
 
     const [values, setValues] = useState<{
         [key in TicketQAScoreDimensionName]?: DimensionSummary
     }>({})
     const [newDimensionValue, setNewDimensionValue] = useState<
-        {name: TicketQAScoreDimensionName} & DimensionSummary
+        { name: TicketQAScoreDimensionName } & DimensionSummary
     >()
     const dirtyRef = useRef(false)
     const saveState = useSaveState(isSaving)
@@ -36,7 +35,7 @@ export default function useAutoQA(ticketId: number) {
         if (!data?.data.data) return null
 
         const timestamps = data.data.data.dimensions.map(
-            (dim) => dim.updated_datetime || dim.created_datetime
+            (dim) => dim.updated_datetime || dim.created_datetime,
         )
         if (!timestamps.length) return null
 
@@ -47,12 +46,12 @@ export default function useAutoQA(ticketId: number) {
         (
             name: string,
             prediction: number,
-            explanation: string | undefined | null
+            explanation: string | undefined | null,
         ) => {
             dirtyRef.current = true
             setValues((dims) => ({
                 ...dims,
-                [name]: {explanation, prediction},
+                [name]: { explanation, prediction },
             }))
             const explanationText =
                 explanation === null || explanation === undefined
@@ -64,7 +63,7 @@ export default function useAutoQA(ticketId: number) {
                 prediction,
             })
         },
-        []
+        [],
     )
 
     const changeHandlers = useMemo(
@@ -74,7 +73,7 @@ export default function useAutoQA(ticketId: number) {
                     ...acc,
                     [name]: (
                         prediction: number,
-                        explanation: string | undefined | null
+                        explanation: string | undefined | null,
                     ) => {
                         handleChange(name, prediction, explanation)
                     },
@@ -83,11 +82,11 @@ export default function useAutoQA(ticketId: number) {
                     TicketQAScoreDimensionName,
                     (
                         prediction: number,
-                        explanation: string | undefined | null
+                        explanation: string | undefined | null,
                     ) => void
-                >
+                >,
             ),
-        [handleChange]
+        [handleChange],
     )
 
     const dimensionsMap = useMemo(() => {
@@ -107,7 +106,7 @@ export default function useAutoQA(ticketId: number) {
                   {} as Record<
                       TicketQAScoreDimensionName,
                       TicketQAScoreDimension
-                  >
+                  >,
               )
         // Ensure all supported dimensions are present in the map
         return baseMap
@@ -119,13 +118,13 @@ export default function useAutoQA(ticketId: number) {
             dimensionOrderOfManualDimensions.map(
                 (name) =>
                     (!dimensionsMap[name]
-                        ? {name, value: null}
+                        ? { name, value: null }
                         : {
                               ...dimensionsMap[name],
                               ...values[name],
-                          }) as SupportedTicketQAScoreDimension
+                          }) as SupportedTicketQAScoreDimension,
             ),
-        [dimensionsMap, values]
+        [dimensionsMap, values],
     )
 
     useDebouncedEffect(
@@ -147,12 +146,12 @@ export default function useAutoQA(ticketId: number) {
                         onSuccess: () => {
                             void refetch()
                         },
-                    }
+                    },
                 )
             })()
         },
         [newDimensionValue, ticketId, upsertTicketQaScoreDimension],
-        1500
+        1500,
     )
 
     return useMemo(
@@ -164,6 +163,13 @@ export default function useAutoQA(ticketId: number) {
             lastUpdated,
             saveState,
         }),
-        [changeHandlers, dimensions, isError, isLoading, lastUpdated, saveState]
+        [
+            changeHandlers,
+            dimensions,
+            isError,
+            isLoading,
+            lastUpdated,
+            saveState,
+        ],
     )
 }

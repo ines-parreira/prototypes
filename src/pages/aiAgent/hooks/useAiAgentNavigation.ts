@@ -1,8 +1,9 @@
-import {LDFlagSet} from 'launchdarkly-js-client-sdk'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { LDFlagSet } from 'launchdarkly-js-client-sdk'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import {
     ACTIONS,
     CHANNELS,
@@ -26,7 +27,7 @@ const getAiAgentBasePath = (shopName: string, flags: LDFlagSet) => {
 /** Retrieve AI Agent routes depending on the conv-ai-standalone-menu feature flag */
 export const getAiAgentNavigationRoutes = (
     shopName: string,
-    flags: LDFlagSet
+    flags: LDFlagSet,
 ) => {
     const basePath = getAiAgentBasePath(shopName, flags)
     const automationBasePath = '/app/automation'
@@ -96,7 +97,7 @@ type NavigationItem = {
 }
 
 const useNavigationItems = (
-    routes: ReturnType<typeof getAiAgentNavigationRoutes>
+    routes: ReturnType<typeof getAiAgentNavigationRoutes>,
 ) => {
     const flags = useFlags()
 
@@ -222,15 +223,15 @@ const useNavigationItems = (
     ])
 }
 
-export const useAiAgentNavigation = ({shopName}: {shopName: string}) => {
+export const useAiAgentNavigation = ({ shopName }: { shopName: string }) => {
     const flags = useFlags()
 
     const routes = useMemo(
         () => getAiAgentNavigationRoutes(shopName, flags),
-        [shopName, flags]
+        [shopName, flags],
     )
 
     const navigationItems = useNavigationItems(routes)
 
-    return {navigationItems, routes}
+    return { navigationItems, routes }
 }

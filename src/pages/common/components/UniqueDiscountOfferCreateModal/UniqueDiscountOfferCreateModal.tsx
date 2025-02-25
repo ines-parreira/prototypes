@@ -1,14 +1,14 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import {AxiosError} from 'axios'
-import {Map} from 'immutable'
-import {isEqual} from 'lodash'
 import React, {
     FormEvent,
     useCallback,
     useEffect,
-    useState,
     useMemo,
+    useState,
 } from 'react'
+
+import { AxiosError } from 'axios'
+import { Map } from 'immutable'
+import { isEqual } from 'lodash'
 import {
     FormGroup,
     InputGroup,
@@ -18,20 +18,22 @@ import {
     Form as ReactStrapForm,
 } from 'reactstrap'
 
-import {useAppNode} from 'appNode'
-import {logEvent, SegmentEvent} from 'common/segment'
+import { Label } from '@gorgias/merchant-ui-kit'
+
+import { useAppNode } from 'appNode'
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
-import {useModalManager} from 'hooks/useModalManager'
+import { useModalManager } from 'hooks/useModalManager'
 import {
     UniqueDiscountOffer,
     UniqueDiscountOfferCreatePayload,
     UniqueDiscountOfferTypeEnum,
 } from 'models/convert/discountOffer/types'
-import {UNIQUE_DISCOUNT_MODAL_NAME} from 'models/discountCodes/constants'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import { UNIQUE_DISCOUNT_MODAL_NAME } from 'models/discountCodes/constants'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import {useToolbarContext} from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
+import { useToolbarContext } from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
 import InputField from 'pages/common/forms/input/InputField'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
@@ -40,13 +42,14 @@ import {
     CollectionFormGroup,
 } from 'pages/convert/discountOffer/components/CollectionFormGroup/CollectionFormGroup'
 import CustomerSegmentSelector from 'pages/convert/discountOffer/components/CustomerSegmentSelector'
-import {useCreateDiscountOffer} from 'pages/convert/discountOffer/hooks/useCreateDiscountOffer'
-import {useUpdateDiscountOffer} from 'pages/convert/discountOffer/hooks/useUpdateDiscountOffer'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {getMoneySymbol} from 'utils/getMoneySymbol'
+import { useCreateDiscountOffer } from 'pages/convert/discountOffer/hooks/useCreateDiscountOffer'
+import { useUpdateDiscountOffer } from 'pages/convert/discountOffer/hooks/useUpdateDiscountOffer'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { getMoneySymbol } from 'utils/getMoneySymbol'
+
+import { transformAxiosError } from './utils'
 
 import css from './UniqueDiscountOfferCreateModal.less'
-import {transformAxiosError} from './utils'
 
 export type UniqueDiscountOfferCreateModalProps = {
     isOpen: boolean
@@ -58,8 +61,8 @@ export type UniqueDiscountOfferCreateModalProps = {
 export const UniqueDiscountOfferCreateModal: React.FC<
     UniqueDiscountOfferCreateModalProps
 > = (props) => {
-    const {isOpen, integration, onClose, onSubmit} = props
-    const {canAddUniqueDiscountOffer} = useToolbarContext()
+    const { isOpen, integration, onClose, onSubmit } = props
+    const { canAddUniqueDiscountOffer } = useToolbarContext()
     const initialDiscountState: UniqueDiscountOfferCreatePayload = useMemo(
         () => ({
             type: 'fixed',
@@ -71,14 +74,14 @@ export const UniqueDiscountOfferCreateModal: React.FC<
             external_product_ids: null,
             store_integration_id: integration.get('id'),
         }),
-        [integration]
+        [integration],
     )
     const [discount, setDiscount] =
         useState<Partial<UniqueDiscountOfferCreatePayload>>(
-            initialDiscountState
+            initialDiscountState,
         )
     const [appliesTo, setAppliesTo] = useState<AppliesTypeEnum>(
-        AppliesTypeEnum.ORDER_AMOUNT
+        AppliesTypeEnum.ORDER_AMOUNT,
     )
     const currentAccount = useAppSelector(getCurrentAccountState)
 
@@ -119,10 +122,14 @@ export const UniqueDiscountOfferCreateModal: React.FC<
         return new Set([...(discount.external_product_ids || [])])
     }, [discount])
 
-    const {mutateAsync: createDiscountOffer, error: createDiscountOfferError} =
-        useCreateDiscountOffer()
-    const {mutateAsync: updateDiscountOffer, error: updateDiscountOfferError} =
-        useUpdateDiscountOffer(editDiscountOfferParams?.prefix || '')
+    const {
+        mutateAsync: createDiscountOffer,
+        error: createDiscountOfferError,
+    } = useCreateDiscountOffer()
+    const {
+        mutateAsync: updateDiscountOffer,
+        error: updateDiscountOfferError,
+    } = useUpdateDiscountOffer(editDiscountOfferParams?.prefix || '')
 
     useEffect(() => {
         // We do this annoying cast because in AxiosError, the `detail` field is a combination
@@ -130,9 +137,9 @@ export const UniqueDiscountOfferCreateModal: React.FC<
         const transformed = transformAxiosError(
             (createDiscountOfferError ||
                 updateDiscountOfferError) as unknown as AxiosError<
-                {detail: Partial<UniqueDiscountOfferCreatePayload>[]},
+                { detail: Partial<UniqueDiscountOfferCreatePayload>[] },
                 unknown
-            >
+            >,
         )
         setErrors(transformed)
     }, [createDiscountOfferError, updateDiscountOfferError])
@@ -140,7 +147,7 @@ export const UniqueDiscountOfferCreateModal: React.FC<
     // In edit mode, the payload comes from the modal params, so make sure to update the state
     useEffect(() => {
         if (editDiscountOfferParams?.id) {
-            const {id: __id, ...restOfDiscount} = editDiscountOfferParams
+            const { id: __id, ...restOfDiscount } = editDiscountOfferParams
             let appliesToType = AppliesTypeEnum.ORDER_AMOUNT
             if (restOfDiscount.external_collection_ids)
                 appliesToType = AppliesTypeEnum.PRODUCT_COLLECTION
@@ -208,7 +215,7 @@ export const UniqueDiscountOfferCreateModal: React.FC<
                 const offer = (
                     await updateDiscountOffer([
                         undefined,
-                        {discount_offer_id: editDiscountOfferParams.id},
+                        { discount_offer_id: editDiscountOfferParams.id },
                         discountPayload,
                     ])
                 )?.data as UniqueDiscountOffer
@@ -233,14 +240,14 @@ export const UniqueDiscountOfferCreateModal: React.FC<
             inEditMode,
             onSubmit,
             updateDiscountOffer,
-        ]
+        ],
     )
 
     const isSaveButtonEnabled = useCallback(() => {
         if (!inEditMode) {
             return true
         }
-        const {id: __id, ...restOfParamsDiscount} = editDiscountOfferParams
+        const { id: __id, ...restOfParamsDiscount } = editDiscountOfferParams
 
         return !isEqual(discount, restOfParamsDiscount)
     }, [discount, editDiscountOfferParams, inEditMode])
@@ -414,7 +421,7 @@ export const UniqueDiscountOfferCreateModal: React.FC<
                                                       integration.getIn([
                                                           'meta',
                                                           'currency',
-                                                      ])
+                                                      ]),
                                                   )
                                                 : '%'
                                         }
@@ -489,7 +496,7 @@ export const UniqueDiscountOfferCreateModal: React.FC<
                                         id="minAmount"
                                         aria-label="Minimum purchase amount value"
                                         value={Number(
-                                            discount.minimum_purchase_amount
+                                            discount.minimum_purchase_amount,
                                         )}
                                         onChange={(value) =>
                                             setDiscount((discount) => ({
@@ -502,7 +509,7 @@ export const UniqueDiscountOfferCreateModal: React.FC<
                                             integration.getIn([
                                                 'meta',
                                                 'currency',
-                                            ])
+                                            ]),
                                         )}
                                     />
                                 )}
@@ -525,7 +532,7 @@ export const UniqueDiscountOfferCreateModal: React.FC<
                                     }
                                     integrationId={
                                         integration.get(
-                                            'id'
+                                            'id',
                                         ) as unknown as number
                                     }
                                     onChange={onCustomerSegmentChange}

@@ -1,15 +1,16 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import React, {useCallback, useEffect} from 'react'
+import React, { useCallback, useEffect } from 'react'
 
-import {SegmentEvent, logEvent} from 'common/segment'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import Label from 'custom-fields/components/Label'
 import MultiLevelSelect from 'custom-fields/components/MultiLevelSelect'
-import {getLabel} from 'custom-fields/components/MultiLevelSelect/helpers/getLabels'
-import {isOutdatedValue} from 'custom-fields/components/MultiLevelSelect/helpers/isOutdatedValue'
-import {MultiLevelSelectProps} from 'custom-fields/components/MultiLevelSelect/MultiLevelSelect'
-import {isCustomFieldValueEmpty} from 'custom-fields/helpers/isCustomFieldValueEmpty'
-import {useUpdateOrDeleteTicketFieldValue} from 'custom-fields/hooks/queries/useUpdateOrDeleteTicketFieldValue'
-import {CustomFieldState, CustomFieldValue} from 'custom-fields/types'
+import { getLabel } from 'custom-fields/components/MultiLevelSelect/helpers/getLabels'
+import { isOutdatedValue } from 'custom-fields/components/MultiLevelSelect/helpers/isOutdatedValue'
+import { MultiLevelSelectProps } from 'custom-fields/components/MultiLevelSelect/MultiLevelSelect'
+import { isCustomFieldValueEmpty } from 'custom-fields/helpers/isCustomFieldValueEmpty'
+import { useUpdateOrDeleteTicketFieldValue } from 'custom-fields/hooks/queries/useUpdateOrDeleteTicketFieldValue'
+import { CustomFieldState, CustomFieldValue } from 'custom-fields/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -17,7 +18,7 @@ import {
     updateCustomFieldState,
     updateCustomFieldValue,
 } from 'state/ticket/actions'
-import {getTicket} from 'state/ticket/selectors'
+import { getTicket } from 'state/ticket/selectors'
 
 import css from './DropdownField.less'
 
@@ -55,15 +56,15 @@ export default function DropdownField(props: Props) {
             updateCustomFieldState({
                 id,
                 hasError: Boolean(
-                    (props.isRequired && isValueEmpty) || hasError
+                    (props.isRequired && isValueEmpty) || hasError,
                 ),
                 value,
-            })
+            }),
         )
     }, [value, isValueEmpty, dispatch, id, props.isRequired, hasError])
-    const {mutate} = useUpdateOrDeleteTicketFieldValue(
-        {onError},
-        {isDisabled: !ticketId}
+    const { mutate } = useUpdateOrDeleteTicketFieldValue(
+        { onError },
+        { isDisabled: !ticketId },
     )
     const handleChange = useCallback(
         (newValue: CustomFieldValue | undefined) => {
@@ -80,7 +81,7 @@ export default function DropdownField(props: Props) {
                 },
             ])
         },
-        [dispatch, id, mutate, ticketId, props.isRequired]
+        [dispatch, id, mutate, ticketId, props.isRequired],
     )
 
     useEffect(() => {

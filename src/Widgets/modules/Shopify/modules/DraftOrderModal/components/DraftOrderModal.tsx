@@ -1,30 +1,31 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
-import {fromJS, List, Map} from 'immutable'
-import React, {useCallback, useContext, useMemo, useRef} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {Link} from 'react-router-dom'
-import {Button} from 'reactstrap'
+import React, { useCallback, useContext, useMemo, useRef } from 'react'
 
-import {DateAndTimeFormatting} from 'constants/datetime'
-import {Product, Variant} from 'constants/integrations/types/shopify'
+import { fromJS, List, Map } from 'immutable'
+import { connect, ConnectedProps } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { Button } from 'reactstrap'
+
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+
+import { DateAndTimeFormatting } from 'constants/datetime'
+import { Product, Variant } from 'constants/integrations/types/shopify'
 import usePrevious from 'hooks/usePrevious'
 import useUpdateEffect from 'hooks/useUpdateEffect'
 import {
-    IntegrationType,
     IntegrationDataItem,
+    IntegrationType,
     ShopifyIntegration,
 } from 'models/integration/types'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import {InfobarModalProps} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { InfobarModalProps } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import {shopifyDataMappers} from 'pages/common/forms/ProductSearchInput/Mappings'
+import { shopifyDataMappers } from 'pages/common/forms/ProductSearchInput/Mappings'
 import ProductSearchInput from 'pages/common/forms/ProductSearchInput/ProductSearchInput'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-import {CustomerContext} from 'providers/infobar/CustomerContext'
-
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import { CustomerContext } from 'providers/infobar/CustomerContext'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
 import {
     addCustomRow,
@@ -36,17 +37,17 @@ import {
     onLineItemChange,
     onReset,
 } from 'state/infobarActions/shopify/createOrder/actions'
-import {getCreateOrderState} from 'state/infobarActions/shopify/createOrder/selectors'
-import {getIntegrationsByType} from 'state/integrations/selectors'
-import {RootState} from 'state/types'
-
+import { getCreateOrderState } from 'state/infobarActions/shopify/createOrder/selectors'
+import { getIntegrationsByType } from 'state/integrations/selectors'
+import { RootState } from 'state/types'
 import AddCustomItemPopover from 'Widgets/modules/Shopify/modules/AddCustomItemPopover'
 import OrderTable from 'Widgets/modules/Shopify/modules/OrderTable'
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
+import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
-import css from './DraftOrderModal.less'
 import EmailInvoicePopover from './EmailInvoicePopover'
 import OrderFooter from './OrderFooter'
+
+import css from './DraftOrderModal.less'
 
 type OwnProps = {
     draftOrder?: Map<any, any>
@@ -63,7 +64,7 @@ export function DraftOrderModalContainer({
     addRow,
     defaultCurrency = 'USD',
     draftOrder = fromJS({}),
-    data = {actionName: null, order: null},
+    data = { actionName: null, order: null },
     integrations,
     isOpen,
     loading,
@@ -85,32 +86,32 @@ export function DraftOrderModalContainer({
 }: Omit<InfobarModalProps, 'data'> &
     OwnProps &
     ConnectedProps<typeof connector>) {
-    const {customerId} = useContext(CustomerContext)
-    const {integrationId} = useContext(IntegrationContext)
+    const { customerId } = useContext(CustomerContext)
+    const { integrationId } = useContext(IntegrationContext)
     const modalRef = useRef<HTMLDivElement>(null)
 
     const currentIntegration = useMemo(
         () =>
             integrations.find(
-                (integration) => integration.id === integrationId
+                (integration) => integration.id === integrationId,
             ),
-        [integrations, integrationId]
+        [integrations, integrationId],
     )
     const hasScope = useMemo(
         () =>
             !!currentIntegration?.meta.oauth.scope?.includes(
-                'write_draft_orders'
+                'write_draft_orders',
             ),
-        [currentIntegration]
+        [currentIntegration],
     )
     const currencyCode = useMemo(
         () => currentIntegration?.meta.currency || defaultCurrency,
-        [currentIntegration, defaultCurrency]
+        [currentIntegration, defaultCurrency],
     )
     const previousIsOpen = usePrevious(isOpen)
     const lineItems = useMemo(
         () => (payload?.get('line_items') || fromJS([])) as List<Map<any, any>>,
-        [payload]
+        [payload],
     )
     const isEmpty = useMemo(() => lineItems.size === 0, [lineItems])
 
@@ -125,7 +126,7 @@ export function DraftOrderModalContainer({
             onClose()
             handleReset()
         },
-        [data.actionName, handleReset, integrationId, onCancel, onClose]
+        [data.actionName, handleReset, integrationId, onCancel, onClose],
     )
 
     const handleInvoiceSubmit = useCallback(
@@ -139,7 +140,7 @@ export function DraftOrderModalContainer({
                     () => {
                         onClose()
                         handleReset()
-                    }
+                    },
                 )
             }
         },
@@ -150,14 +151,14 @@ export function DraftOrderModalContainer({
             data.order,
             onClose,
             handleReset,
-        ]
+        ],
     )
     const handlePaymentSubmit = useCallback(
         (isPending = false) =>
             async () => {
                 const result = await onCreateDraftOrder(
                     integrationId!,
-                    data.order ? data.order.get('id') : null
+                    data.order ? data.order.get('id') : null,
                 )
                 const result_id = result?.get('id')
                 if (result_id) {
@@ -167,12 +168,12 @@ export function DraftOrderModalContainer({
                                 name: 'draft_order_id',
                                 value: result_id,
                             },
-                            {name: 'payment_pending', value: isPending},
+                            { name: 'payment_pending', value: isPending },
                         ],
                         () => {
                             onSubmit()
                             handleReset()
-                        }
+                        },
                     )
                 }
             },
@@ -183,21 +184,21 @@ export function DraftOrderModalContainer({
             onBulkChange,
             onSubmit,
             handleReset,
-        ]
+        ],
     )
 
     const handleLineItemUpdate = useCallback(
         (newLineItem: Map<any, any>, index: number) => {
-            void onLineItemChange(integrationId!, {newLineItem, index})
+            void onLineItemChange(integrationId!, { newLineItem, index })
         },
-        [integrationId, onLineItemChange]
+        [integrationId, onLineItemChange],
     )
 
     const handleLineItemDelete = useCallback(
         (index: number) => {
-            void onLineItemChange(integrationId!, {remove: true, index})
+            void onLineItemChange(integrationId!, { remove: true, index })
         },
-        [integrationId, onLineItemChange]
+        [integrationId, onLineItemChange],
     )
 
     useUpdateEffect(() => {
@@ -211,7 +212,7 @@ export function DraftOrderModalContainer({
                     () => {
                         onClose()
                         handleReset()
-                    }
+                    },
                 )
             }
             shortcutManager.pause()
@@ -269,13 +270,13 @@ export function DraftOrderModalContainer({
                     className={css.searchInput}
                     onVariantClicked={(
                         item: IntegrationDataItem<Product>,
-                        variant: Variant
+                        variant: Variant,
                     ) => {
                         void addRow(
                             data.actionName!,
                             integrationId!,
                             item.data,
-                            variant
+                            variant,
                         )
                     }}
                     searchOnFocus={!data.order && isEmpty}
@@ -414,7 +415,7 @@ export function DraftOrderModalContainer({
 const connector = connect(
     (state: RootState) => ({
         integrations: getIntegrationsByType<ShopifyIntegration>(
-            IntegrationType.Shopify
+            IntegrationType.Shopify,
         )(state),
         loading: getCreateOrderState(state).get('loading'),
         loadingMessage: getCreateOrderState(state).get('loadingMessage'),
@@ -437,7 +438,7 @@ const connector = connect(
         onLineItemChange,
         onCreateDraftOrder,
         onReset,
-    }
+    },
 )
 
 export default connector(DraftOrderModalContainer)

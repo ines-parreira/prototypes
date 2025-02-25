@@ -1,7 +1,8 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {relativeLighten} from 'gorgias-design-system/utils'
+import { render } from '@testing-library/react'
+
+import { relativeLighten } from 'gorgias-design-system/utils'
 
 import TrackerCircle from '../TrackerCircle'
 
@@ -61,7 +62,7 @@ describe('TrackerCircle', () => {
                 color={color}
                 percentage={percentage}
                 strokeWidth={12}
-            />
+            />,
         )
         const circles = document.querySelectorAll('circle')
         expect(circles[1]).toHaveAttribute('stroke-width', '12')

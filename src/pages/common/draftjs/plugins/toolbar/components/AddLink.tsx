@@ -1,11 +1,13 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import {EditorState, Modifier} from 'draft-js'
-import React, {Component, KeyboardEvent, ContextType, useEffect} from 'react'
+import React, { Component, ContextType, KeyboardEvent, useEffect } from 'react'
+
+import { EditorState, Modifier } from 'draft-js'
 import ReactPlayer from 'react-player'
-import {connect, ConnectedProps} from 'react-redux'
+import { connect, ConnectedProps } from 'react-redux'
+
+import { Label } from '@gorgias/merchant-ui-kit'
 
 import TextInputWithVariables from 'pages/automate/workflows/editor/visualBuilder/components/variables/TextInputWithVariables'
-import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
+import { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
 import Button from 'pages/common/components/button/Button'
 import TabNavigator from 'pages/common/components/TabNavigator/TabNavigator'
 import {
@@ -15,46 +17,46 @@ import {
 } from 'pages/common/draftjs/plugins/utils'
 import CheckBox from 'pages/common/forms/CheckBox'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
-import {useCampaignFormContext} from 'pages/convert/campaigns/hooks/useCampaignFormContext'
-import {UtmConfiguration} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
-import {attachUtmToUrl} from 'pages/convert/campaigns/utils/attachUtmParams'
-import {closest} from 'services/shortcutManager/utils'
-
-import {linkEditionEnded, linkEditionStarted} from 'state/ui/editor/actions'
+import { useCampaignFormContext } from 'pages/convert/campaigns/hooks/useCampaignFormContext'
+import { UtmConfiguration } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
+import { attachUtmToUrl } from 'pages/convert/campaigns/utils/attachUtmParams'
+import { closest } from 'services/shortcutManager/utils'
+import { linkEditionEnded, linkEditionStarted } from 'state/ui/editor/actions'
 import {
     focusToTheEndOfContent,
     getEntitySelectionState,
     getSelectedEntityKey,
     getSelectedText,
 } from 'utils/editor'
-import {linkify} from 'utils/linkify'
+import { linkify } from 'utils/linkify'
 
 import {
+    ToolbarContext,
     ToolbarContextType,
     withToolbarContext,
-    ToolbarContext,
 } from '../ToolbarContext'
-import {ActionInjectedProps, ActionName} from '../types'
-import {getTooltipTourConfiguration} from '../utils'
-import css from './AddLink.less'
+import { ActionInjectedProps, ActionName } from '../types'
+import { getTooltipTourConfiguration } from '../utils'
 import AddUtm from './AddUtm'
 import Popover from './ButtonPopover'
 
+import css from './AddLink.less'
+
 const tabs = [
-    {value: 'url', label: 'URL'},
-    {value: 'utm', label: 'UTM'},
+    { value: 'url', label: 'URL' },
+    { value: 'utm', label: 'UTM' },
 ]
 
 const CampaignFormContextInterceptor = (props: {
     appliedUtmUpdatedCallback: (
         appliedUtmQueryString: string,
-        appliedUtmEnabled: boolean
+        appliedUtmEnabled: boolean,
     ) => void
 }) => {
-    const {utmConfiguration} = useCampaignFormContext()
-    const {appliedUtmEnabled, appliedUtmQueryString} =
+    const { utmConfiguration } = useCampaignFormContext()
+    const { appliedUtmEnabled, appliedUtmQueryString } =
         utmConfiguration as UtmConfiguration
-    const {appliedUtmUpdatedCallback} = props
+    const { appliedUtmUpdatedCallback } = props
     useEffect(() => {
         appliedUtmUpdatedCallback(appliedUtmQueryString, appliedUtmEnabled)
     }, [appliedUtmEnabled, appliedUtmQueryString, appliedUtmUpdatedCallback])
@@ -101,7 +103,7 @@ export class AddLinkContainer extends Component<Props> {
     }
 
     componentDidUpdate(prevProps: Props) {
-        const {isOpen, linkEditionEnded, linkEditionStarted} = this.props
+        const { isOpen, linkEditionEnded, linkEditionStarted } = this.props
 
         if (!prevProps.isOpen && isOpen) {
             linkEditionStarted()
@@ -112,7 +114,7 @@ export class AddLinkContainer extends Component<Props> {
 
     _getUtmAppliedState = (
         appliedUtmQueryString: string,
-        appliedUtmEnabled: boolean
+        appliedUtmEnabled: boolean,
     ) => {
         if (
             this.state &&
@@ -128,13 +130,13 @@ export class AddLinkContainer extends Component<Props> {
 
     _updateUrlWithConfiguredUtm = (url: string) => {
         if (!this.context.canAddUtm) return url
-        const {appliedUtmQueryString, appliedUtmEnabled} = this.state
+        const { appliedUtmQueryString, appliedUtmEnabled } = this.state
         return attachUtmToUrl(
             url,
             '',
             this.context.canAddUtm,
             appliedUtmEnabled,
-            appliedUtmQueryString
+            appliedUtmQueryString,
         )
     }
 
@@ -209,7 +211,7 @@ export class AddLinkContainer extends Component<Props> {
     _updateLink = (): EditorState | null => {
         let editorState = this.props.getEditorState()
         let contentState = editorState.getCurrentContent()
-        const {url, text, entityKey} = this.props
+        const { url, text, entityKey } = this.props
 
         if (!entityKey) {
             return null
@@ -224,13 +226,13 @@ export class AddLinkContainer extends Component<Props> {
             url: parsedUrl,
             target: this.props.target,
             ...(doesUrlStartWithTemplate(parsedUrl)
-                ? {templatedUrl: parsedUrl}
+                ? { templatedUrl: parsedUrl }
                 : {}),
         })
         editorState = EditorState.push(
             editorState,
             contentState,
-            'apply-entity'
+            'apply-entity',
         )
 
         // Update text
@@ -241,26 +243,26 @@ export class AddLinkContainer extends Component<Props> {
                 selection,
                 text,
                 undefined,
-                entityKey
+                entityKey,
             )
             editorState = EditorState.push(
                 editorState,
                 contentState,
-                'change-block-data'
+                'change-block-data',
             )
         }
 
         // Force selection workaround to trigger re-render of decorators
         // https://github.com/facebook/draft-js/issues/1047
         this.props.setEditorState(
-            EditorState.forceSelection(editorState, editorState.getSelection())
+            EditorState.forceSelection(editorState, editorState.getSelection()),
         )
 
         return editorState
     }
 
     _insertLink = (): EditorState | null => {
-        const {url, text} = this.props
+        const { url, text } = this.props
         // Use linkify to add protocol to the url
         const preParsedUrl = linkifyWithTemplate(url)
         const parsedUrl = this._updateUrlWithConfiguredUtm(preParsedUrl)
@@ -274,7 +276,7 @@ export class AddLinkContainer extends Component<Props> {
                 url: parsedUrl,
                 target: this.props.target,
                 ...(doesUrlStartWithTemplate(parsedUrl)
-                    ? {templatedUrl: parsedUrl}
+                    ? { templatedUrl: parsedUrl }
                     : {}),
             })
         const entityKey = contentState.getLastCreatedEntityKey()
@@ -284,16 +286,16 @@ export class AddLinkContainer extends Component<Props> {
             selection,
             text,
             undefined,
-            entityKey
+            entityKey,
         )
         editorState = EditorState.push(
             editorState,
             contentState,
-            'apply-entity'
+            'apply-entity',
         )
         editorState = EditorState.forceSelection(
             editorState,
-            editorState.getSelection()
+            editorState.getSelection(),
         ) // Focus the editor
 
         this.props.setEditorState(editorState)
@@ -302,7 +304,7 @@ export class AddLinkContainer extends Component<Props> {
     }
 
     _insertExtraVideoIfApplicable = (editorState: EditorState) => {
-        const {url, onInsertVideoAddedFromInsertLink, setEditorState} =
+        const { url, onInsertVideoAddedFromInsertLink, setEditorState } =
             this.props
 
         if (!this.props.canAddVideoPlayer || !ReactPlayer.canPlay(url)) {
@@ -314,7 +316,7 @@ export class AddLinkContainer extends Component<Props> {
 
         newEditorState = EditorState.forceSelection(
             newEditorState,
-            newEditorState.getSelection()
+            newEditorState.getSelection(),
         )
         setEditorState(newEditorState)
 
@@ -322,7 +324,7 @@ export class AddLinkContainer extends Component<Props> {
     }
 
     _flowVariablesDisablePopoverToggle = (
-        e: React.MouseEvent<any, globalThis.MouseEvent>
+        e: React.MouseEvent<any, globalThis.MouseEvent>,
     ) => {
         if (!this.workflowVariables?.length) return false
         if (
@@ -336,14 +338,14 @@ export class AddLinkContainer extends Component<Props> {
     }
 
     navigateToFirstTab = () => {
-        this.setState({activeTab: tabs[0].value})
+        this.setState({ activeTab: tabs[0].value })
     }
     onAddUtmApply = () => {
         this.navigateToFirstTab()
     }
 
     render() {
-        const {toolbarTour} = this.context
+        const { toolbarTour } = this.context
         const tour = getTooltipTourConfiguration(ActionName.Link, toolbarTour)
 
         return (
@@ -362,7 +364,7 @@ export class AddLinkContainer extends Component<Props> {
                         <TabNavigator
                             activeTab={this.state.activeTab}
                             onTabChange={(value: string) =>
-                                this.setState({activeTab: value})
+                                this.setState({ activeTab: value })
                             }
                             tabs={tabs}
                         />
@@ -400,7 +402,7 @@ export class AddLinkContainer extends Component<Props> {
                                         }
                                         onChange={(nextValue) => {
                                             this.props.onTargetChange(
-                                                nextValue ? '_blank' : '_self'
+                                                nextValue ? '_blank' : '_self',
                                             )
                                         }}
                                     >

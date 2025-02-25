@@ -1,5 +1,6 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import FormSection from './FormSection'
 
@@ -9,7 +10,7 @@ describe('<FormSection />', () => {
             <FormSection>
                 <div>form field 1</div>
                 <div>form field 2</div>
-            </FormSection>
+            </FormSection>,
         )
 
         expect(screen.getByText('form field 1')).toBeInTheDocument()
@@ -20,7 +21,7 @@ describe('<FormSection />', () => {
         render(
             <FormSection title="Form Section Title">
                 <div>form field</div>
-            </FormSection>
+            </FormSection>,
         )
 
         expect(screen.getByText('Form Section Title')).toBeInTheDocument()
@@ -34,7 +35,7 @@ describe('<FormSection />', () => {
                 description="And then some more context"
             >
                 <div>form field</div>
-            </FormSection>
+            </FormSection>,
         )
 
         expect(screen.getByText('Form Section Title')).toBeInTheDocument()
@@ -45,7 +46,7 @@ describe('<FormSection />', () => {
         render(
             <FormSection title="Form Section Title" icon="check">
                 <div>form field</div>
-            </FormSection>
+            </FormSection>,
         )
 
         expect(screen.getByText('check')).toBeInTheDocument()
@@ -57,7 +58,7 @@ describe('<FormSection />', () => {
         render(
             <FormSection title="Form Section Title" icon={<div>the icon</div>}>
                 <div>form field</div>
-            </FormSection>
+            </FormSection>,
         )
 
         expect(screen.getByText('the icon')).toBeInTheDocument()

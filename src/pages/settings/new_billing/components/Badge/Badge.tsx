@@ -1,5 +1,6 @@
-import classNames from 'classnames'
 import React from 'react'
+
+import classNames from 'classnames'
 
 import css from './Badge.less'
 
@@ -15,7 +16,7 @@ export type BadgeProps = {
     text: string
 }
 
-const Badge = ({type, text}: BadgeProps) => {
+const Badge = ({ type, text }: BadgeProps) => {
     return <span className={classNames(css.badge, css[type])}>{text}</span>
 }
 

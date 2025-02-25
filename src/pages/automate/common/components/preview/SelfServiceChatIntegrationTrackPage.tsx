@@ -1,13 +1,14 @@
-import classnames from 'classnames'
 import React from 'react'
+
+import classnames from 'classnames'
 
 import graphicTShirt from 'assets/img/self-service/graphic-t-shirt.png'
 import uspsLogo from 'assets/img/self-service/usps.png'
 import {
-    GORGIAS_CHAT_SSP_TEXTS,
     getPrimaryLanguageFromChatConfig,
+    GORGIAS_CHAT_SSP_TEXTS,
 } from 'config/integrations/gorgias_chat'
-import {GorgiasChatIntegration} from 'models/integration/types'
+import { GorgiasChatIntegration } from 'models/integration/types'
 
 import useOrderDates from './hooks/useOrderDates'
 import useTrackPagePreview from './hooks/useTrackPagePreview'
@@ -18,12 +19,12 @@ type Props = {
     integration: GorgiasChatIntegration
 }
 
-const SelfServiceChatIntegrationTrackPage = ({integration}: Props) => {
+const SelfServiceChatIntegrationTrackPage = ({ integration }: Props) => {
     const language = getPrimaryLanguageFromChatConfig(integration.meta)
     const sspTexts = GORGIAS_CHAT_SSP_TEXTS[language]
 
-    const {ref} = useTrackPagePreview()
-    const {etaDate, inTransitDate} = useOrderDates(language)
+    const { ref } = useTrackPagePreview()
+    const { etaDate, inTransitDate } = useOrderDates(language)
 
     return (
         <div ref={ref} className={css.container}>
@@ -66,7 +67,7 @@ const SelfServiceChatIntegrationTrackPage = ({integration}: Props) => {
                     <div className={css.shippingCarrierTitle}>
                         {sspTexts.trackOrderSentVia?.replace(
                             '{trackingCompany}',
-                            'USPS'
+                            'USPS',
                         )}
                     </div>
                     <div className={css.shippingCarrierSubtitle}>
@@ -89,7 +90,7 @@ const SelfServiceChatIntegrationTrackPage = ({integration}: Props) => {
                             <div
                                 className={classnames(
                                     css.timelineDot,
-                                    css.isCurrent
+                                    css.isCurrent,
                                 )}
                             />
                             <div className={css.timelineLine} />
@@ -99,7 +100,7 @@ const SelfServiceChatIntegrationTrackPage = ({integration}: Props) => {
                                 <div
                                     className={classnames(
                                         css.timelineItemStatus,
-                                        css.isCurrent
+                                        css.isCurrent,
                                     )}
                                 >
                                     {sspTexts.checkpointInTransit}
@@ -122,7 +123,7 @@ const SelfServiceChatIntegrationTrackPage = ({integration}: Props) => {
                             <div
                                 className={classnames(
                                     css.timelineDot,
-                                    css.isUpcoming
+                                    css.isUpcoming,
                                 )}
                             />
                         </div>
@@ -130,7 +131,7 @@ const SelfServiceChatIntegrationTrackPage = ({integration}: Props) => {
                             <div
                                 className={classnames(
                                     css.timelineItemStatus,
-                                    css.isUpcoming
+                                    css.isUpcoming,
                                 )}
                             >
                                 {sspTexts.checkpointOutForDelivery}

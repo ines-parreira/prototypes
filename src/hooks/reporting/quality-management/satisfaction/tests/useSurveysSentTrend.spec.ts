@@ -1,16 +1,18 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment'
 
 import {
     fetchSurveysSentTrend,
     useSurveysSentTrend,
 } from 'hooks/reporting/quality-management/satisfaction/useSurveysSentTrend'
-import useMetricTrend, {fetchMetricTrend} from 'hooks/reporting/useMetricTrend'
-import {surveysSentQueryFactory} from 'models/reporting/queryFactories/satisfaction/surveysSentQueryFactory'
-import {ReportingQuery} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
-import {formatReportingQueryDate, getPreviousPeriod} from 'utils/reporting'
-import {assumeMock} from 'utils/testing'
+import useMetricTrend, {
+    fetchMetricTrend,
+} from 'hooks/reporting/useMetricTrend'
+import { surveysSentQueryFactory } from 'models/reporting/queryFactories/satisfaction/surveysSentQueryFactory'
+import { ReportingQuery } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
+import { formatReportingQueryDate, getPreviousPeriod } from 'utils/reporting'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/useMetricTrend')
 const useMetricTrendMock = assumeMock(useMetricTrend)
@@ -28,7 +30,7 @@ describe('SurveysSentTrend', () => {
     const timezone = 'someTimeZone'
 
     useMetricTrendMock.mockImplementation(
-        ((queryCreator: ReportingQuery) => queryCreator) as any
+        ((queryCreator: ReportingQuery) => queryCreator) as any,
     )
 
     describe('useSurveysSentTrend', () => {
@@ -42,8 +44,8 @@ describe('SurveysSentTrend', () => {
                         ...statsFilters,
                         period: getPreviousPeriod(statsFilters.period),
                     },
-                    timezone
-                )
+                    timezone,
+                ),
             )
         })
     })
@@ -59,8 +61,8 @@ describe('SurveysSentTrend', () => {
                         ...statsFilters,
                         period: getPreviousPeriod(statsFilters.period),
                     },
-                    timezone
-                )
+                    timezone,
+                ),
             )
         })
     })

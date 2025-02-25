@@ -1,6 +1,7 @@
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
-import {useRouteMatch} from 'react-router-dom'
+
+import { renderHook } from '@testing-library/react-hooks'
+import { useRouteMatch } from 'react-router-dom'
 
 import {
     DEFAULT_NAVBAR_WIDTH,
@@ -25,11 +26,11 @@ jest.mock('ticket-page', () => ({
 
 describe('useSplitViewPage', () => {
     beforeEach(() => {
-        useRouteMatchMock.mockReturnValue({params: {viewId: '123456'}})
+        useRouteMatchMock.mockReturnValue({ params: { viewId: '123456' } })
     })
 
     it('should return the config', () => {
-        const {result} = renderHook(() => useSplitViewPage())
+        const { result } = renderHook(() => useSplitViewPage())
         expect(result.current).toEqual({
             config: [
                 expect.objectContaining({

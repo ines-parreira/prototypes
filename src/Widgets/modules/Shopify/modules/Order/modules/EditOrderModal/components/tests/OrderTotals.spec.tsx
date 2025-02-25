@@ -1,7 +1,7 @@
-import {render} from '@testing-library/react'
-
-import {fromJS} from 'immutable'
 import React from 'react'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
 
 import OrderTotals from '../OrderTotals'
 
@@ -13,14 +13,14 @@ const minProps = {
 
 describe('<OrderTotals/>', () => {
     it('should render not loading', () => {
-        const {container} = render(<OrderTotals {...minProps} />)
+        const { container } = render(<OrderTotals {...minProps} />)
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render loading', () => {
         const props = minProps
         props.loading = true
-        const {container} = render(<OrderTotals {...props} />)
+        const { container } = render(<OrderTotals {...props} />)
         expect(container.firstChild).toMatchSnapshot()
     })
 })

@@ -1,10 +1,10 @@
-import React, {ComponentProps, useCallback, useEffect, useState} from 'react'
+import React, { ComponentProps, useCallback, useEffect, useState } from 'react'
 
 import Dropdown from './Dropdown'
 
 type Props = Omit<ComponentProps<typeof Dropdown>, 'isOpen' | 'onToggle'>
 
-export default function UncontrolledDropdown({target, ...other}: Props) {
+export default function UncontrolledDropdown({ target, ...other }: Props) {
     const [isOpen, setIsOpen] = useState(false)
 
     const handleToggle = useCallback(() => setIsOpen(!isOpen), [isOpen])

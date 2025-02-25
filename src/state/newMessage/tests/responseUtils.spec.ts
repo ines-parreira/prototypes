@@ -1,39 +1,44 @@
 import draftJS, {
     ContentState,
     convertToRaw,
-    SelectionState,
     EditorState,
+    SelectionState,
 } from 'draft-js'
 //@ts-ignore
 import generateRandomKey from 'draft-js/lib/generateRandomKey'
-import {fromJS, Map} from 'immutable'
+import { fromJS, Map } from 'immutable'
 
-import {TicketMessageSourceType} from 'business/types/ticket'
-import {ticket} from 'fixtures/ticket'
+import { TicketMessageSourceType } from 'business/types/ticket'
+import { ticket } from 'fixtures/ticket'
 import {
     convertToRawWithoutPredictions,
     createPrediction,
     insertPrediction,
 } from 'pages/common/draftjs/plugins/prediction/utils'
-import {convertToHTML, createDraftJSKeyGeneratorMock} from 'utils/editor'
+import { convertToHTML, createDraftJSKeyGeneratorMock } from 'utils/editor'
 
-import {addEmailExtraContent} from '../emailExtraUtils'
-import {initialState, initialState as newMessageInitialState} from '../reducers'
+import { addEmailExtraContent } from '../emailExtraUtils'
 import {
+    initialState,
+    initialState as newMessageInitialState,
+} from '../reducers'
+import {
+    addCache,
     applyMacro,
     MessageContext,
-    addCache,
-    updateCache,
     toReplyAreaState,
-    updateNewMessageWithContentState,
     transformMessageContext,
+    updateCache,
+    updateNewMessageWithContentState,
 } from '../responseUtils'
-import ticketReplyCache, {RawCachedTicket} from '../ticketReplyCache'
-
-import {getMessageContextSnapshot, getReplyAreaStateSnapshot} from './testUtils'
+import ticketReplyCache, { RawCachedTicket } from '../ticketReplyCache'
+import {
+    getMessageContextSnapshot,
+    getReplyAreaStateSnapshot,
+} from './testUtils'
 
 jest.mock('draft-js/lib/generateRandomKey', () =>
-    jest.fn().mockReturnValue('mock-key')
+    jest.fn().mockReturnValue('mock-key'),
 )
 
 describe('responseUtils', () => {
@@ -81,7 +86,7 @@ describe('responseUtils', () => {
                 ...applyMacroContext,
                 state: newMessageInitialState.setIn(
                     ['newMessage', 'source', 'type'],
-                    TicketMessageSourceType.FacebookMessenger
+                    TicketMessageSourceType.FacebookMessenger,
                 ),
             }
             const newContext = applyMacro(context)
@@ -96,7 +101,7 @@ describe('responseUtils', () => {
                 ...applyMacroContext,
                 state: newMessageInitialState.setIn(
                     ['newMessage', 'source', 'type'],
-                    TicketMessageSourceType.Email
+                    TicketMessageSourceType.Email,
                 ),
             }
             const newContext = applyMacro(context)
@@ -111,7 +116,7 @@ describe('responseUtils', () => {
                 ...applyMacroContext,
                 state: newMessageInitialState.setIn(
                     ['newMessage', 'source', 'type'],
-                    TicketMessageSourceType.Aircall
+                    TicketMessageSourceType.Aircall,
                 ),
             }
             const newContext = applyMacro(context)
@@ -124,14 +129,14 @@ describe('responseUtils', () => {
 
         it('should apply macro and extend existing state', () => {
             const existingState = ContentState.createFromText(
-                'this is existing text'
+                'this is existing text',
             )
             const context: MessageContext = {
                 ...applyMacroContext,
                 contentState: existingState,
                 state: newMessageInitialState.setIn(
                     ['newMessage', 'source', 'type'],
-                    TicketMessageSourceType.Aircall
+                    TicketMessageSourceType.Aircall,
                 ),
             }
             const newContext = applyMacro(context)
@@ -144,14 +149,14 @@ describe('responseUtils', () => {
 
         it('should apply macro and extend existing state', () => {
             const existingState = ContentState.createFromText(
-                'this is existing text'
+                'this is existing text',
             )
             const context: MessageContext = {
                 ...applyMacroContext,
                 contentState: existingState,
                 state: newMessageInitialState.setIn(
                     ['newMessage', 'source', 'type'],
-                    TicketMessageSourceType.Aircall
+                    TicketMessageSourceType.Aircall,
                 ),
             }
             const newContext = applyMacro(context)
@@ -170,7 +175,7 @@ describe('responseUtils', () => {
         const defaultCachedTicket: RawCachedTicket = {
             contentState: convertToRaw(defaultCachedContentState),
             selectionState: SelectionState.createEmpty(
-                defaultCachedContentState.getFirstBlock().getKey()
+                defaultCachedContentState.getFirstBlock().getKey(),
             )
                 .set('anchorOffset', '1')
                 .set('focusOffset', '2') as SelectionState,
@@ -193,7 +198,7 @@ describe('responseUtils', () => {
                 ...defaultMessageContext,
                 state: defaultMessageContext.state.setIn(
                     ['state', 'cacheAdded'],
-                    true
+                    true,
                 ),
             }
             addCache(context)
@@ -213,7 +218,7 @@ describe('responseUtils', () => {
         })
 
         it('should restore message state from cache when cache is not added', () => {
-            const context = {...defaultMessageContext}
+            const context = { ...defaultMessageContext }
             addCache(context)
             expect(getMessageContextSnapshot(context)).toMatchSnapshot()
         })
@@ -225,10 +230,10 @@ describe('responseUtils', () => {
                     ticket,
                     replyThreadMessages: [],
                     isForwarded: false,
-                    signature: fromJS({text: 'Signature'}),
-                }
+                    signature: fromJS({ text: 'Signature' }),
+                },
             )
-            const context = {...defaultMessageContext}
+            const context = { ...defaultMessageContext }
             const cachedTicket: RawCachedTicket = {
                 ...defaultCachedTicket,
                 contentState: convertToRaw(contentState),
@@ -248,16 +253,16 @@ describe('responseUtils', () => {
                     ticket,
                     replyThreadMessages: [],
                     isForwarded: false,
-                    signature: fromJS({text: 'Signature'}),
-                }
+                    signature: fromJS({ text: 'Signature' }),
+                },
             )
-            const context = {...defaultMessageContext}
+            const context = { ...defaultMessageContext }
             const cachedTicket: RawCachedTicket = {
                 ...defaultCachedTicket,
                 contentState: convertToRaw(contentState),
                 emailExtraAdded: true,
                 selectionState: SelectionState.createEmpty(
-                    contentState.getLastBlock().getKey()
+                    contentState.getLastBlock().getKey(),
                 ),
             }
             ticketReplyCacheGetSpy.mockReturnValue(fromJS(cachedTicket))
@@ -303,7 +308,7 @@ describe('responseUtils', () => {
             }
             updateCache(context)
             expect(ticketReplyCacheDeleteSpy).toHaveBeenLastCalledWith(
-                updateCacheContext.action.ticketId
+                updateCacheContext.action.ticketId,
             )
         })
 
@@ -313,12 +318,12 @@ describe('responseUtils', () => {
                 contentState: ContentState.createFromText('\n\n--signature'),
                 action: {
                     ...updateCacheContext.action,
-                    signature: fromJS({text: '--signature'}),
+                    signature: fromJS({ text: '--signature' }),
                 },
             }
             updateCache(context)
             expect(ticketReplyCacheDeleteSpy).toHaveBeenLastCalledWith(
-                updateCacheContext.action.ticketId
+                updateCacheContext.action.ticketId,
             )
         })
 
@@ -327,7 +332,7 @@ describe('responseUtils', () => {
                 contentState,
                 selectionState,
                 sourceType,
-                action: {ticketId},
+                action: { ticketId },
             } = updateCacheContext
             updateCache(updateCacheContext)
             expect(ticketReplyCacheSetSpy).toHaveBeenLastCalledWith(ticketId, {
@@ -342,16 +347,16 @@ describe('responseUtils', () => {
                 contentState,
                 selectionState,
                 sourceType,
-                action: {ticketId},
+                action: { ticketId },
             } = updateCacheContext
             const editorState = EditorState.createWithContent(contentState)
             const predictionKey = createPrediction(
                 'some prediction',
-                editorState
+                editorState,
             )
             const predictionEditorState = insertPrediction(
                 predictionKey,
-                editorState
+                editorState,
             )
             const context = {
                 ...updateCacheContext,
@@ -361,7 +366,7 @@ describe('responseUtils', () => {
 
             expect(ticketReplyCacheSetSpy).toHaveBeenLastCalledWith(ticketId, {
                 contentState: convertToRawWithoutPredictions(
-                    predictionEditorState.getCurrentContent()
+                    predictionEditorState.getCurrentContent(),
                 ),
                 selectionState,
                 sourceType,
@@ -378,7 +383,7 @@ describe('responseUtils', () => {
                 contentState,
                 selectionState,
                 sourceType,
-                action: {ticketId},
+                action: { ticketId },
             } = context
             updateCache(context)
             expect(ticketReplyCacheSetSpy).toHaveBeenLastCalledWith(ticketId, {
@@ -398,7 +403,7 @@ describe('responseUtils', () => {
                 selectionState,
                 sourceType,
                 emailExtraAdded,
-                action: {ticketId},
+                action: { ticketId },
             } = context
             updateCache(context)
             expect(ticketReplyCacheSetSpy).toHaveBeenLastCalledWith(ticketId, {
@@ -410,14 +415,14 @@ describe('responseUtils', () => {
         })
 
         it('should keep top rank macro state in the cache if not empty', () => {
-            const topRankMacroState = {macroId: 10, state: 'pending' as const}
+            const topRankMacroState = { macroId: 10, state: 'pending' as const }
             const context: MessageContext = {
                 ...updateCacheContext,
                 contentState: ContentState.createFromText(''),
                 topRankMacroState,
             }
             const {
-                action: {ticketId},
+                action: { ticketId },
             } = context
             updateCache(context)
             expect(ticketReplyCacheSetSpy).toHaveBeenLastCalledWith(ticketId, {
@@ -430,7 +435,7 @@ describe('responseUtils', () => {
         it('should convert immutable state to object', () => {
             const contentState = ContentState.createFromText('')
             const selectionState = SelectionState.createEmpty(
-                contentState.getFirstBlock().getKey()
+                contentState.getFirstBlock().getKey(),
             )
             const replyAreaState = (
                 fromJS({
@@ -447,7 +452,7 @@ describe('responseUtils', () => {
                 .set('selectionState', selectionState)
             const replyAreaStateJS = toReplyAreaState(replyAreaState)
             expect(
-                getReplyAreaStateSnapshot(replyAreaStateJS)
+                getReplyAreaStateSnapshot(replyAreaStateJS),
             ).toMatchSnapshot()
             expect(replyAreaStateJS.selectionState).toBe(selectionState)
         })
@@ -457,7 +462,7 @@ describe('responseUtils', () => {
         it('should update body_html and body_text', () => {
             const newMessage = updateNewMessageWithContentState(
                 (initialState.get('newMessage') as Map<any, any>).toJS(),
-                ContentState.createFromText('Foo bar baz')
+                ContentState.createFromText('Foo bar baz'),
             )
             expect(newMessage).toMatchSnapshot()
         })
@@ -469,12 +474,12 @@ describe('responseUtils', () => {
                     ticket,
                     replyThreadMessages: [],
                     isForwarded: false,
-                    signature: fromJS({text: 'Signature'}),
-                }
+                    signature: fromJS({ text: 'Signature' }),
+                },
             )
             const newMessage = updateNewMessageWithContentState(
                 (initialState.get('newMessage') as Map<any, any>).toJS(),
-                contentState
+                contentState,
             )
             expect(newMessage).toMatchSnapshot()
         })
@@ -486,16 +491,16 @@ describe('responseUtils', () => {
                     ticket,
                     replyThreadMessages: [],
                     isForwarded: false,
-                    signature: fromJS({text: 'Signature'}),
-                }
+                    signature: fromJS({ text: 'Signature' }),
+                },
             )
             const prevNewMessage = updateNewMessageWithContentState(
                 (initialState.get('newMessage') as Map<any, any>).toJS(),
-                contentStateWithExtras
+                contentStateWithExtras,
             )
             const newMessage = updateNewMessageWithContentState(
                 prevNewMessage,
-                ContentState.createFromText('No extras')
+                ContentState.createFromText('No extras'),
             )
             expect(newMessage).toMatchSnapshot()
         })
@@ -507,7 +512,7 @@ describe('responseUtils', () => {
 
             updateNewMessageWithContentState(
                 prevNewMessage,
-                ContentState.createFromText('Foo bar baz')
+                ContentState.createFromText('Foo bar baz'),
             )
 
             expect(prevNewMessage).toMatchSnapshot()
@@ -521,7 +526,7 @@ describe('responseUtils', () => {
         const rawCachedTicket: RawCachedTicket = {
             contentState: convertToRaw(defaultCachedContentState),
             selectionState: SelectionState.createEmpty(
-                defaultCachedContentState.getFirstBlock().getKey()
+                defaultCachedContentState.getFirstBlock().getKey(),
             )
                 .set('anchorOffset', '1')
                 .set('focusOffset', '2') as SelectionState,

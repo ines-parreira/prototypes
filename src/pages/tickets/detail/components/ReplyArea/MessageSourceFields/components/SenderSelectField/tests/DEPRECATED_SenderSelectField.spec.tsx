@@ -1,7 +1,8 @@
-import {render, fireEvent} from '@testing-library/react'
 import React from 'react'
 
-import {TicketMessageSourceType} from 'business/types/ticket'
+import { fireEvent, render } from '@testing-library/react'
+
+import { TicketMessageSourceType } from 'business/types/ticket'
 import * as useOutboundChannels from 'hooks/useOutboundChannels'
 
 import SenderSelectField from '../DEPRECATED_SenderSelectField'
@@ -32,7 +33,7 @@ const useSendersForSelectedChannel = jest
 
 describe('<SenderSelectField />', () => {
     it('should render a list of senders', () => {
-        const {queryByText} = render(<SenderSelectField />)
+        const { queryByText } = render(<SenderSelectField />)
 
         expect(queryByText('John (john@shop.com)')).toBeInTheDocument()
         expect(queryByText('Mary (mary@shop.com)')).toBeInTheDocument()
@@ -44,7 +45,7 @@ describe('<SenderSelectField />', () => {
         render(<SenderSelectField />)
 
         fireEvent.change(document.getElementsByTagName('select')[0], {
-            target: {value: 'john@shop.com'},
+            target: { value: 'john@shop.com' },
         })
 
         expect(initialState.selectSender).toHaveBeenCalledWith({
@@ -69,7 +70,7 @@ describe('<SenderSelectField />', () => {
             ],
         })
 
-        const {queryByText} = render(<SenderSelectField />)
+        const { queryByText } = render(<SenderSelectField />)
 
         expect(queryByText('John (+1 213 373 4253)')).toBeInTheDocument()
     })
@@ -90,11 +91,11 @@ describe('<SenderSelectField />', () => {
             ],
         })
 
-        const {queryByText} = render(<SenderSelectField />)
+        const { queryByText } = render(<SenderSelectField />)
         expect(queryByText('John (john@shop.com)')).toBeInTheDocument()
         expect(queryByText('Mary (mary@shop.com)')).toBeInTheDocument()
         expect(
-            queryByText('Old John (old-john@shop.com)')
+            queryByText('Old John (old-john@shop.com)'),
         ).not.toBeInTheDocument()
     })
 })

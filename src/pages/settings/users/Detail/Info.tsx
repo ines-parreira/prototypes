@@ -1,13 +1,15 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
-import {useInviteAgent} from 'hooks/agents/useInviteAgent'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { useInviteAgent } from 'hooks/agents/useInviteAgent'
 import useDebouncedValue from 'hooks/useDebouncedValue'
 import Button from 'pages/common/components/button/Button'
 import InputField from 'pages/common/forms/input/InputField'
 
+import { AgentState } from './types'
+
 import css from './Detail.less'
-import {AgentState} from './types'
 
 type Props = {
     name: string
@@ -28,7 +30,7 @@ export const Info = ({
     isAccountOwner,
     setAgentState,
 }: Props) => {
-    const {mutate: inviteAgent, isLoading: isInviting} = useInviteAgent(email)
+    const { mutate: inviteAgent, isLoading: isInviting } = useInviteAgent(email)
     const isDebouncedInviting = useDebouncedValue(isInviting, 500)
     const isDisabled = isEdit && isViewingAccountOwner && !isAccountOwner
 

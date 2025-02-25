@@ -1,11 +1,12 @@
-import {Tag} from '@gorgias/api-queries'
-import {fromJS, Map, List} from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 
-import {LegacyPaginationMeta} from 'models/api/types'
-import {GorgiasAction} from 'state/types'
+import { Tag } from '@gorgias/api-queries'
+
+import { LegacyPaginationMeta } from 'models/api/types'
+import { GorgiasAction } from 'state/types'
 
 import * as constants from './constants'
-import {TagsState} from './types'
+import { TagsState } from './types'
 
 export const initialState: TagsState = fromJS({
     _internal: {},
@@ -15,35 +16,37 @@ export const initialState: TagsState = fromJS({
 
 export default function reducer(
     state: TagsState = initialState,
-    action: GorgiasAction
+    action: GorgiasAction,
 ): TagsState {
     switch (action.type) {
         case constants.FETCH_TAG_LIST_SUCCESS:
             return state
-                .set('items', fromJS((action.resp as {data: Tag[]}).data))
+                .set('items', fromJS((action.resp as { data: Tag[] }).data))
                 .set('meta', fromJS({})) // reset selection and editing state for all tags
                 .setIn(
                     ['_internal', 'pagination'],
-                    fromJS((action.resp as {meta: LegacyPaginationMeta}).meta)
+                    fromJS(
+                        (action.resp as { meta: LegacyPaginationMeta }).meta,
+                    ),
                 )
 
         case constants.ADD_TAGS:
             return state.set(
                 'items',
-                (state.get('items') as List<any>).concat(action.tags)
+                (state.get('items') as List<any>).concat(action.tags),
             )
 
         case constants.SELECT_TAG: {
             const selected = !state.getIn(['meta', action.tag?.id, 'selected'])
             let selectedState = state.setIn(
                 ['meta', action.tag?.id, 'selected'],
-                selected
+                selected,
             )
 
             if (!selected) {
                 selectedState = selectedState.setIn(
                     ['_internal', 'selectAll'],
-                    false
+                    false,
                 )
             }
 
@@ -51,7 +54,7 @@ export default function reducer(
         }
 
         case constants.SELECT_TAG_ALL: {
-            const {tags, value} = action.payload as {
+            const { tags, value } = action.payload as {
                 tags: Tag[]
                 value?: boolean
             }
@@ -65,7 +68,7 @@ export default function reducer(
             tags.forEach((tag) => {
                 newState = newState.setIn(
                     ['meta', tag.id, 'selected'],
-                    newValue
+                    newValue,
                 )
             })
 
@@ -77,7 +80,7 @@ export default function reducer(
                 (state.get('meta', fromJS({})) as Map<any, any>).map(
                     (tag: Map<any, any>) => {
                         return tag.set('edit', false)
-                    }
+                    },
                 ) as Map<any, any>
             ).setIn([action.tag?.id, 'edit'], true)
 
@@ -95,10 +98,10 @@ export default function reducer(
                         (state.get('items') as List<any>).findIndex(
                             (item: Map<any, any>) => {
                                 return item.get('id') === action.tag?.id
-                            }
+                            },
                         ),
                     ],
-                    fromJS(action.tag)
+                    fromJS(action.tag),
                 )
                 .setIn(['meta', action.tag?.id, 'edit'], false)
 
@@ -109,7 +112,7 @@ export default function reducer(
             return state
                 .setIn(['_internal', 'creating'], false)
                 .update('items', (items: List<any>) =>
-                    items.push(fromJS(action.tag))
+                    items.push(fromJS(action.tag)),
                 )
 
         case constants.CREATE_TAG_ERROR:

@@ -1,23 +1,22 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
 import {
     campaign as campaignFixture,
     campaignProductRecommendationAttachment,
 } from 'fixtures/campaign'
+import { Campaign } from 'pages/convert/campaigns/types/Campaign'
+import { CampaignDiscountOffer } from 'pages/convert/campaigns/types/CampaignDiscountOffer'
+import { CampaignProduct } from 'pages/convert/campaigns/types/CampaignProduct'
+import { getLDClient } from 'utils/launchDarkly'
 
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
-import {CampaignDiscountOffer} from 'pages/convert/campaigns/types/CampaignDiscountOffer'
-import {CampaignProduct} from 'pages/convert/campaigns/types/CampaignProduct'
-import {getLDClient} from 'utils/launchDarkly'
-
-import {createCampaignPayload} from '../createCampaignPayload'
+import { createCampaignPayload } from '../createCampaignPayload'
 
 jest.mock('utils/launchDarkly')
 
 const integration = fromJS({
     id: '1',
     meta: {
-        languages: [{language: 'en-US', primary: true}],
+        languages: [{ language: 'en-US', primary: true }],
         shop_type: 'shopify',
     },
 })
@@ -64,7 +63,7 @@ describe('createCampaignPayload', () => {
 
         expect(payload.status).toEqual('inactive')
         expect(payload.trigger_rule).toEqual(
-            '{476ce50d-ac6f-4553-8400-b7ae0aad70c2}'
+            '{476ce50d-ac6f-4553-8400-b7ae0aad70c2}',
         )
     })
 

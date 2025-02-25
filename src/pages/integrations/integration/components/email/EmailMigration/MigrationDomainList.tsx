@@ -1,7 +1,8 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import useLocalStorage from 'hooks/useLocalStorage'
 import {
     EmailMigrationOutboundVerification,
@@ -9,7 +10,7 @@ import {
     EmailMigrationSenderVerificationIntegration,
     OutboundVerificationType,
 } from 'models/integration/types'
-import {SenderInformation} from 'models/singleSenderVerification/types'
+import { SenderInformation } from 'models/singleSenderVerification/types'
 import Accordion from 'pages/common/components/accordion/Accordion'
 
 import useBulkCreateSingleSenderVerification from '../hooks/useBulkCreateSingleSenderVerification'
@@ -34,15 +35,17 @@ export default function MigrationDomainList({
     const [integrationsToBulkSubmit, setIntegrationsToBulkSubmit] =
         useState<EmailMigrationSenderVerificationIntegration[]>()
 
-    const {isLoading: isBulkSubmitLoading, bulkCreateSingleSenderVerification} =
-        useBulkCreateSingleSenderVerification()
+    const {
+        isLoading: isBulkSubmitLoading,
+        bulkCreateSingleSenderVerification,
+    } = useBulkCreateSingleSenderVerification()
 
     const [
         selectedOutboundVerificationType,
         setSelectedOutboundVerificationType,
     ] = useLocalStorage<Record<string, OutboundVerificationType>>(
         MIGRATION_OUTBOUND_VERIFICATION_TYPE_KEY,
-        {}
+        {},
     )
 
     const singleSenderEnabled =
@@ -60,7 +63,7 @@ export default function MigrationDomainList({
     }
 
     const handleBulkSubmitConfirm = async (
-        values: Omit<SenderInformation, 'email'>
+        values: Omit<SenderInformation, 'email'>,
     ) => {
         if (!integrationsToBulkSubmit) {
             return
@@ -68,7 +71,7 @@ export default function MigrationDomainList({
 
         await bulkCreateSingleSenderVerification(
             integrationsToBulkSubmit,
-            values
+            values,
         )
         setIsBulkSubmitFormModalOpen(false)
         refreshMigrationData()
@@ -106,7 +109,7 @@ export default function MigrationDomainList({
                                 handleSwitchSelectedVerificationType
                             }
                             onBulkSubmitClick={(
-                                integrations: EmailMigrationSenderVerificationIntegration[]
+                                integrations: EmailMigrationSenderVerificationIntegration[],
                             ) => {
                                 setIsBulkSubmitFormModalOpen(true)
                                 setIntegrationsToBulkSubmit(integrations)

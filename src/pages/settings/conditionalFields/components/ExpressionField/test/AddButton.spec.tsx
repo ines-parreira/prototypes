@@ -1,11 +1,13 @@
-import {CustomFieldConditionExpression} from '@gorgias/api-queries'
-import {render, screen, fireEvent} from '@testing-library/react'
 import React from 'react'
 
-import {useWatch} from 'core/forms'
-import {assumeMock} from 'utils/testing'
+import { fireEvent, render, screen } from '@testing-library/react'
 
-import {AddButton} from '../AddButton'
+import { CustomFieldConditionExpression } from '@gorgias/api-queries'
+
+import { useWatch } from 'core/forms'
+import { assumeMock } from 'utils/testing'
+
+import { AddButton } from '../AddButton'
 
 jest.mock(
     'core/forms',
@@ -13,7 +15,7 @@ jest.mock(
         ({
             ...jest.requireActual('core/forms'),
             useWatch: jest.fn(),
-        }) as Record<string, unknown>
+        }) as Record<string, unknown>,
 )
 
 const useWatchMock = assumeMock(useWatch)
@@ -30,7 +32,7 @@ describe('AddButton', () => {
     it('should call `watch` with correct params', () => {
         render(<AddButton {...defaultProps} />)
         expect(useWatchMock).toHaveBeenCalledTimes(1)
-        expect(useWatchMock).toHaveBeenCalledWith({name: 'expression'})
+        expect(useWatchMock).toHaveBeenCalledWith({ name: 'expression' })
     })
 
     it('should render button not disabled', () => {
@@ -43,8 +45,8 @@ describe('AddButton', () => {
 
     it('should render button disabled', () => {
         useWatchMock.mockReturnValue([
-            {field: 1},
-            {field: 0},
+            { field: 1 },
+            { field: 0 },
         ] as CustomFieldConditionExpression[])
 
         render(<AddButton {...defaultProps} />)

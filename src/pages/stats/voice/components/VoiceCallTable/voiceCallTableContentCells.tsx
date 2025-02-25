@@ -1,8 +1,9 @@
-import classNames from 'classnames'
-import React, {ComponentProps} from 'react'
-import {Link} from 'react-router-dom'
+import React, { ComponentProps } from 'react'
 
-import {getFormattedDurationEndedCall} from 'models/voiceCall/utils'
+import classNames from 'classnames'
+import { Link } from 'react-router-dom'
+
+import { getFormattedDurationEndedCall } from 'models/voiceCall/utils'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import DEPRECATED_VoiceCallStatusLabel from 'pages/common/components/VoiceCallStatusLabel/DEPRECATED_VoiceCallStatusLabel'
@@ -10,7 +11,7 @@ import VoiceCallStatusLabel from 'pages/common/components/VoiceCallStatusLabel/V
 import VoiceCallTimerBadge from 'pages/common/components/VoiceCallTimerBadge/VoiceCallTimerBadge'
 import VoiceIntegrationBasicLabel from 'pages/common/components/VoiceIntegrationBasicLabel/VoiceIntegrationBasicLabel'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-import {TruncateCellContent} from 'pages/stats/TruncateCellContent'
+import { TruncateCellContent } from 'pages/stats/TruncateCellContent'
 import VoiceCallActivity from 'pages/stats/voice/components/VoiceCallActivity/VoiceCallActivity'
 import VoiceCallRecording from 'pages/stats/voice/components/VoiceCallRecording/VoiceCallRecording'
 import {
@@ -19,9 +20,9 @@ import {
 } from 'pages/stats/voice/models/types'
 
 import LiveVoiceCallStatusLabel from '../LiveVoice/LiveVoiceCallStatusLabel'
-import {VoiceCallTableColumnName} from './constants'
+import { VoiceCallTableColumnName } from './constants'
+import { filterAndOrderCells } from './utils'
 
-import {filterAndOrderCells} from './utils'
 import css from './VoiceCallTable.less'
 
 export const getOrderedHeaderCells = ({
@@ -35,7 +36,7 @@ export const getOrderedHeaderCells = ({
 }) => {
     const headerCells: Record<
         VoiceCallTableColumnName,
-        {props: ComponentProps<typeof HeaderCellProperty>}
+        { props: ComponentProps<typeof HeaderCellProperty> }
     > = {
         [VoiceCallTableColumnName.Activity]: {
             props: {
@@ -151,7 +152,7 @@ export const getOrderedCells = ({
 }) => {
     const cells: Record<
         VoiceCallTableColumnName,
-        {props: ComponentProps<typeof BodyCell>}
+        { props: ComponentProps<typeof BodyCell> }
     > = {
         [VoiceCallTableColumnName.Activity]: {
             props: {

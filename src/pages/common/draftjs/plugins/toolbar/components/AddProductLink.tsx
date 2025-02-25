@@ -1,25 +1,27 @@
+import React, { useCallback, useMemo, useState } from 'react'
+
 import classnames from 'classnames'
-import {EditorState} from 'draft-js'
-import {fromJS, Map} from 'immutable'
-import React, {useCallback, useState, useMemo} from 'react'
-import {ListGroup, ListGroupItem} from 'reactstrap'
+import { EditorState } from 'draft-js'
+import { fromJS, Map } from 'immutable'
+import { ListGroup, ListGroupItem } from 'reactstrap'
 
-import {AttachmentEnum} from 'common/types'
-import {IntegrationType} from 'models/integration/constants'
-import {ProductCardDetails} from 'models/integration/types'
+import { AttachmentEnum } from 'common/types'
+import { IntegrationType } from 'models/integration/constants'
+import { ProductCardDetails } from 'models/integration/types'
 import ShopifyProductLine from 'pages/common/components/ShopifyProductLine/ShopifyProductLine'
-import {getIconFromType} from 'state/integrations/helpers'
-import {insertLink, insertText} from 'utils'
+import { getIconFromType } from 'state/integrations/helpers'
+import { insertLink, insertText } from 'utils'
 
-import {useToolbarContext} from '../ToolbarContext'
-import {ActionInjectedProps, ActionName} from '../types'
+import { useToolbarContext } from '../ToolbarContext'
+import { ActionInjectedProps, ActionName } from '../types'
 import {
     getTooltipTourConfiguration,
     mapIntegrationToPickedShopifyIntegration,
     transformProductCardDetailsToProductCardAttachment,
 } from '../utils'
-import css from './AddProductLink.less'
 import Popover from './ButtonPopover'
+
+import css from './AddProductLink.less'
 
 type Props = ActionInjectedProps
 
@@ -40,7 +42,7 @@ export type ProductCardAttachment = {
     }
 }
 
-const AddProductLink = ({getEditorState, setEditorState}: Props) => {
+const AddProductLink = ({ getEditorState, setEditorState }: Props) => {
     const {
         canAddProductCard,
         canAddProductLink,
@@ -61,18 +63,18 @@ const AddProductLink = ({getEditorState, setEditorState}: Props) => {
         () => {
             if (currentShopifyIntegration) {
                 return mapIntegrationToPickedShopifyIntegration(
-                    fromJS(currentShopifyIntegration)
+                    fromJS(currentShopifyIntegration),
                 )
             }
 
             if (shopifyIntegrations.size === 1) {
                 return mapIntegrationToPickedShopifyIntegration(
-                    shopifyIntegrations.get(0) as Map<any, any>
+                    shopifyIntegrations.get(0) as Map<any, any>,
                 )
             }
 
             return null
-        }
+        },
     )
 
     const handleResetStoreChoice = () => {
@@ -88,14 +90,14 @@ const AddProductLink = ({getEditorState, setEditorState}: Props) => {
     }, [])
     const handlePickIntegration = (integration: Map<any, any>) => {
         setPickedShopifyIntegration(
-            mapIntegrationToPickedShopifyIntegration(integration)
+            mapIntegrationToPickedShopifyIntegration(integration),
         )
     }
 
     const tour = useMemo(() => {
         return getTooltipTourConfiguration(
             ActionName.ProductPicker,
-            toolbarTour
+            toolbarTour,
         )
     }, [toolbarTour])
 
@@ -106,8 +108,8 @@ const AddProductLink = ({getEditorState, setEditorState}: Props) => {
             if (canAddProductCard) {
                 onAddProductCardAttachment(
                     transformProductCardDetailsToProductCardAttachment(
-                        productCardDetails
-                    )
+                        productCardDetails,
+                    ),
                 )
             } else {
                 let newEditorState
@@ -121,18 +123,18 @@ const AddProductLink = ({getEditorState, setEditorState}: Props) => {
                         editorState,
                         [productTitle, productCardDetails.link]
                             .join(': ')
-                            .concat(' ')
+                            .concat(' '),
                     )
                 } else {
                     newEditorState = insertLink(
                         editorState,
                         productCardDetails.link,
-                        productTitle.concat(' ')
+                        productTitle.concat(' '),
                     )
                 }
                 newEditorState = EditorState.forceSelection(
                     newEditorState,
-                    newEditorState.getSelection()
+                    newEditorState.getSelection(),
                 )
                 setEditorState(newEditorState)
             }
@@ -147,7 +149,7 @@ const AddProductLink = ({getEditorState, setEditorState}: Props) => {
             canAddProductLink,
             onInsertProductLinkAdded,
             onAddProductCardAttachment,
-        ]
+        ],
     )
 
     const handleProductAutomationClicked = useCallback(
@@ -155,7 +157,7 @@ const AddProductLink = ({getEditorState, setEditorState}: Props) => {
             onAddProductAutomationAttachment(attachment)
             setOpen(false)
         },
-        [onAddProductAutomationAttachment]
+        [onAddProductAutomationAttachment],
     )
 
     return (
@@ -190,7 +192,7 @@ const AddProductLink = ({getEditorState, setEditorState}: Props) => {
                                                 className={css.shopifyLogo}
                                                 alt="Shopify logo"
                                                 src={getIconFromType(
-                                                    IntegrationType.Shopify
+                                                    IntegrationType.Shopify,
                                                 )}
                                             />
                                             <span>
@@ -200,14 +202,14 @@ const AddProductLink = ({getEditorState, setEditorState}: Props) => {
                                         <i
                                             className={classnames(
                                                 'material-icons',
-                                                css.arrowIcon
+                                                css.arrowIcon,
                                             )}
                                         >
                                             keyboard_arrow_right
                                         </i>
                                     </div>
                                 </ListGroupItem>
-                            )
+                            ),
                         )}
                     </ListGroup>
                 </div>

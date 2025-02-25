@@ -1,15 +1,18 @@
-import {Badge} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
 import React from 'react'
 
-import {useGetHTTPEvent} from 'models/integration/queries/http'
+import classnames from 'classnames'
+
+import { Badge } from '@gorgias/merchant-ui-kit'
+
+import { useGetHTTPEvent } from 'models/integration/queries/http'
 import HTTPStatusLabel from 'pages/common/components/HTTPStatusLabel/HTTPStatusLabel'
 import Loader from 'pages/common/components/Loader/Loader'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 
-import css from './Event.less'
 import HTTPItem from './Item'
 import HTTPParams from './Params'
+
+import css from './Event.less'
 
 const DEFAULT_ERROR_MESSAGE =
     'There was an error while making this request. This can happen for multiple reasons:\n' +
@@ -26,14 +29,14 @@ type Props = {
     eventId: number
 }
 
-export function Event({integrationId, eventId}: Props) {
+export function Event({ integrationId, eventId }: Props) {
     const {
         data: event,
         isLoading,
         isError,
     } = useGetHTTPEvent(
-        {integrationId, eventId},
-        {select: (data) => data.data, refetchOnWindowFocus: true}
+        { integrationId, eventId },
+        { select: (data) => data.data, refetchOnWindowFocus: true },
     )
 
     if (isLoading) {
@@ -73,7 +76,7 @@ export function Event({integrationId, eventId}: Props) {
         // Previously, a similar default message (not exactly the same) was stored in database, along with the error
         if (
             !responseError.startsWith(
-                'There was an error while making this request.'
+                'There was an error while making this request.',
             )
         ) {
             responseError = DEFAULT_ERROR_MESSAGE + responseError
@@ -90,7 +93,7 @@ export function Event({integrationId, eventId}: Props) {
             requestJSONParams = JSON.stringify(
                 JSON.parse(requestParams),
                 undefined,
-                4
+                4,
             )
         } catch {}
     } else {
@@ -105,7 +108,7 @@ export function Event({integrationId, eventId}: Props) {
             requestJSONBody = JSON.stringify(
                 JSON.parse(requestBody),
                 undefined,
-                4
+                4,
             )
         } catch {}
     } else {
@@ -118,7 +121,7 @@ export function Event({integrationId, eventId}: Props) {
             responseBody = JSON.stringify(
                 JSON.parse(responseBody),
                 undefined,
-                4
+                4,
             )
         } catch {}
     }
@@ -148,7 +151,7 @@ export function Event({integrationId, eventId}: Props) {
                                         GET HTTP Method.
                                     </Badge>
                                 )}
-                                <pre style={{maxHeight: '200px'}}>
+                                <pre style={{ maxHeight: '200px' }}>
                                     {requestJSONParams}
                                 </pre>
                             </>

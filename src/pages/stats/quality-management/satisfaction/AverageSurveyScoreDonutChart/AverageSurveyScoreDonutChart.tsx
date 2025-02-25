@@ -1,22 +1,22 @@
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
 import analyticsColorsModern from 'assets/css/new/stats/modern.json'
-import {useSurveyScores} from 'hooks/reporting/quality-management/satisfaction/useSurveyScores'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
+import { useSurveyScores } from 'hooks/reporting/quality-management/satisfaction/useSurveyScores'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { MetricWithDecile } from 'hooks/reporting/useMetricPerDimension'
 import {
     TicketSatisfactionSurveyDimension,
     TicketSatisfactionSurveyMeasure,
 } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import ChartCard from 'pages/stats/ChartCard'
 import DonutChart from 'pages/stats/common/components/charts/DonutChart/DonutChart'
-import {DashboardChartProps} from 'pages/stats/custom-reports/types'
-import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
-import {AverageScoreTrend} from 'pages/stats/quality-management/satisfaction/AverageSurveyScoreDonutChart/AverageScoreTrend'
+import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { NoDataAvailable } from 'pages/stats/NoDataAvailable'
+import { AverageScoreTrend } from 'pages/stats/quality-management/satisfaction/AverageSurveyScoreDonutChart/AverageScoreTrend'
 import css from 'pages/stats/quality-management/satisfaction/AverageSurveyScoreDonutChart/AverageSurveyScoreDonutChart.less'
-import {SatisfactionMetricConfig} from 'pages/stats/quality-management/satisfaction/SatisfactionMetricsConfig'
-import {OneDimensionalDataItem} from 'pages/stats/types'
-import {SatisfactionMetric} from 'state/ui/stats/types'
+import { SatisfactionMetricConfig } from 'pages/stats/quality-management/satisfaction/SatisfactionMetricsConfig'
+import { OneDimensionalDataItem } from 'pages/stats/types'
+import { SatisfactionMetric } from 'state/ui/stats/types'
 
 type ChartData = {
     data: OneDimensionalDataItem[]
@@ -53,7 +53,7 @@ const EMPTY_CHART_DATA = [
 
 export const formatSurveyScores = (
     scores: MetricWithDecile,
-    labelSuffix: string = '★'
+    labelSuffix: string = '★',
 ) => {
     if (!scores.data?.allData) {
         return []
@@ -65,7 +65,7 @@ export const formatSurveyScores = (
             [`${item[TicketSatisfactionSurveyDimension.SurveyScore]}`]:
                 item[TicketSatisfactionSurveyMeasure.ScoredSurveysCount],
         }),
-        {}
+        {},
     )
 
     return EMPTY_CHART_DATA.map((item) => {
@@ -78,9 +78,9 @@ export const formatSurveyScores = (
 }
 
 export default function AverageSurveyScoreDonutChart(
-    props: DashboardChartProps
+    props: DashboardChartProps,
 ) {
-    const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone } = useNewStatsFilters()
 
     const scores = useSurveyScores(cleanStatsFilters, userTimezone)
 
@@ -92,8 +92,8 @@ export default function AverageSurveyScoreDonutChart(
             customColors: [],
         }
 
-        return chartData.reduce((acc, {value, backgroundColor, label}) => {
-            acc.data.push({label, value})
+        return chartData.reduce((acc, { value, backgroundColor, label }) => {
+            acc.data.push({ label, value })
             acc.customColors.push(backgroundColor)
             return acc
         }, initialChartData)

@@ -1,22 +1,22 @@
+import React, { useMemo, useRef } from 'react'
+import type { ReactNode, RefObject } from 'react'
+
 import cn from 'classnames'
-import React, {useMemo, useRef} from 'react'
-import type {ReactNode, RefObject} from 'react'
 
-import {NotificationsButton} from 'common/notifications'
-
+import { NotificationsButton } from 'common/notifications'
 import useAppSelector from 'hooks/useAppSelector'
-
 import HomePageLink from 'pages/common/components/HomePageLink'
 import SpotlightButton from 'pages/common/components/Spotlight/SpotlightButton'
-import {isOpenedPanel as getIsOpenedPanel} from 'state/layout/selectors'
+import { isOpenedPanel as getIsOpenedPanel } from 'state/layout/selectors'
 
-import {NavBarDisplayMode} from '../hooks/useNavBar/context'
-import {useNavBar} from '../hooks/useNavBar/useNavBar'
+import { NavBarDisplayMode } from '../hooks/useNavBar/context'
+import { useNavBar } from '../hooks/useNavBar/useNavBar'
 import useNavbarResize from '../hooks/useNavbarResize'
-import {useDesktopOnlyShowGlobalNavFeatureFlag} from '../hooks/useShowGlobalNavFeatureFlag'
-import MainNavigation, {ActiveContent} from './MainNavigation'
-import css from './Navbar.less'
+import { useDesktopOnlyShowGlobalNavFeatureFlag } from '../hooks/useShowGlobalNavFeatureFlag'
+import MainNavigation, { ActiveContent } from './MainNavigation'
 import UserMenuWithToggle from './UserMenuWithToggle'
+
+import css from './Navbar.less'
 
 type Props = {
     activeContent: ActiveContent
@@ -40,8 +40,8 @@ export default function Navbar({
     const isOpenedPanel = useAppSelector(getIsOpenedPanel('navbar'))
 
     const navbarRef = useRef<HTMLDivElement | null>(null)
-    const {isResizing, width, onStartResize} = useNavbarResize(navbarRef)
-    const {navBarDisplay} = useNavBar()
+    const { isResizing, width, onStartResize } = useNavbarResize(navbarRef)
+    const { navBarDisplay } = useNavBar()
 
     const showGlobalNav = useDesktopOnlyShowGlobalNavFeatureFlag()
 
@@ -62,8 +62,8 @@ export default function Navbar({
     return (
         <div
             ref={navbarRef}
-            className={cn(css.sidebar, {[css.isResizing]: isResizing})}
-            {...(enableResize && {style: {width: `${width}px`}})}
+            className={cn(css.sidebar, { [css.isResizing]: isResizing })}
+            {...(enableResize && { style: { width: `${width}px` } })}
         >
             <div
                 className={cn(css['nav-primary'], {

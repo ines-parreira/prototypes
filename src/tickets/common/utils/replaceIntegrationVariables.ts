@@ -1,8 +1,8 @@
-import {fromJS, List, Map} from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 import _capitalize from 'lodash/capitalize'
 
-import {notify as notifyAction} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { notify as notifyAction } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 import getVariableWithValue from './getVariableWithValue'
 
@@ -12,7 +12,7 @@ export default function replaceIntegrationVariables(
     variable: string,
     newArgument: string,
     currentUser: Map<any, any>,
-    notify?: typeof notifyAction
+    notify?: typeof notifyAction,
 ) {
     let integrations = (
         ticketState.getIn(['customer', 'integrations'], fromJS([])) as List<any>
@@ -31,7 +31,7 @@ export default function replaceIntegrationVariables(
         integrations = integrations
             .sortBy(
                 (integration: Map<any, any>) =>
-                    integration.getIn(['customer', 'updated_at']) as string
+                    integration.getIn(['customer', 'updated_at']) as string,
             )
             .reverse()
     }
@@ -46,7 +46,7 @@ export default function replaceIntegrationVariables(
         notify({
             type: NotificationStatus.Warning,
             title: `This customer does not have any ${_capitalize(
-                integrationType
+                integrationType,
             )} information`,
         })
         return newArgument.replace(variable, '')
@@ -55,14 +55,14 @@ export default function replaceIntegrationVariables(
     const variableConfig = getVariableWithValue(variable)
     let newVariable = variable.replace(
         `integrations.${integrationType}`,
-        `integrations[${integrationId!}]`
+        `integrations[${integrationId!}]`,
     )
 
     if (variableConfig && variableConfig.replace != null) {
         newVariable = variableConfig.replace(
-            fromJS({ticket: ticketState}),
+            fromJS({ ticket: ticketState }),
             integrationId,
-            fromJS(currentUser)
+            fromJS(currentUser),
         )
     }
 

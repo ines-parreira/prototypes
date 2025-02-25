@@ -1,8 +1,9 @@
+import { createContext, useContext, useEffect } from 'react'
+
 import _noop from 'lodash/noop'
-import {createContext, useContext, useEffect} from 'react'
 
 import usePrevious from 'hooks/usePrevious'
-import {StoreIntegration} from 'models/integration/types'
+import { StoreIntegration } from 'models/integration/types'
 
 export type TrackOrderFlowViewContextType = {
     storeIntegration: StoreIntegration | undefined
@@ -18,7 +19,7 @@ export const useTrackOrderFlowViewContext = () =>
     useContext(TrackOrderFlowViewContext)
 
 export const usePropagateError = (path: string, hasError: boolean) => {
-    const {setError} = useTrackOrderFlowViewContext()
+    const { setError } = useTrackOrderFlowViewContext()
     const hadError = usePrevious(hasError)
 
     useEffect(() => {

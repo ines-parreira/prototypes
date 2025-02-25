@@ -1,12 +1,12 @@
-import {fromJS, List, Map, Set} from 'immutable'
-import React, {Component} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
+import React, { Component } from 'react'
 
-import {mergeCustomers} from '../../../../state/customers/actions'
-import {makeIsLoading} from '../../../../state/customers/selectors'
-import {getMessages} from '../../../../state/ticket/selectors'
-import {RootState} from '../../../../state/types'
+import { fromJS, List, Map, Set } from 'immutable'
+import { connect, ConnectedProps } from 'react-redux'
 
+import { mergeCustomers } from '../../../../state/customers/actions'
+import { makeIsLoading } from '../../../../state/customers/selectors'
+import { getMessages } from '../../../../state/ticket/selectors'
+import { RootState } from '../../../../state/types'
 import MergeCustomersModal from './MergeCustomersModal'
 
 type Props = ConnectedProps<typeof connector> & {
@@ -52,19 +52,19 @@ class MergeCustomersContainer extends Component<Props> {
                 requiredAddresses.push(
                     (message as Map<any, any>).getIn(
                         ['source', 'from', 'address'],
-                        null
-                    )
+                        null,
+                    ),
                 )
                 ;(
                     (message as Map<any, any>).getIn(
                         ['source', 'to'],
-                        fromJS([])
+                        fromJS([]),
                     ) as List<Map<any, any>>
                 ).forEach((sourceField) => {
                     requiredAddresses.push(
                         (sourceField as Map<any, any>).get('address', null) as
                             | string
-                            | null
+                            | null,
                     )
                 })
             })
@@ -82,7 +82,7 @@ class MergeCustomersContainer extends Component<Props> {
                     (fromJS(requiredAddresses) as List<string>)
                         .toSet()
                         .filter(
-                            (address: string | undefined) => !!address
+                            (address: string | undefined) => !!address,
                         ) as Set<string>
                 }
                 onSuccess={onSuccess}
@@ -96,7 +96,7 @@ const connector = connect(
         customersIsLoading: makeIsLoading(state),
         ticketMessages: getMessages(state),
     }),
-    {mergeCustomers}
+    { mergeCustomers },
 )
 
 export default connector(MergeCustomersContainer)

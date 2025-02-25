@@ -1,19 +1,20 @@
-import {act, screen, fireEvent, waitFor} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {account} from 'fixtures/account'
-import {billingState} from 'fixtures/billing'
-import {integrationsState} from 'fixtures/integrations'
+import { account } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
+import { integrationsState } from 'fixtures/integrations'
 import history from 'pages/history'
-import {RootState, StoreDispatch} from 'state/types'
-import {renderWithRouter} from 'utils/testing'
+import { RootState, StoreDispatch } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
-import {getLocalesResponseFixture} from '../../fixtures/getLocalesResponse.fixtures'
-import {useSupportedLocales} from '../../providers/SupportedLocales'
+import { getLocalesResponseFixture } from '../../fixtures/getLocalesResponse.fixtures'
+import { useSupportedLocales } from '../../providers/SupportedLocales'
 import HelpCenterNewView from '../HelpCenterNewView'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
@@ -61,7 +62,7 @@ jest.mock('../../hooks/useEnableArticleRecommendation', () => ({
 }))
 
 jest.mock('state/notifications/actions', () => ({
-    notify: () => ({type: 'test'}),
+    notify: () => ({ type: 'test' }),
 }))
 
 describe('<HelpCenterNewView />', () => {
@@ -71,16 +72,16 @@ describe('<HelpCenterNewView />', () => {
         history.push = jest.fn()
         mockFlags({})
         mockCheckHelpCenterWithSubdomainExists.mockResolvedValue(true)
-        mockCreateHelpCenter.mockResolvedValue({data: {}})
+        mockCreateHelpCenter.mockResolvedValue({ data: {} })
         mockIsPassingRuleCheck.mockReturnValue(true)
         mockEnableArticleRecommendation.mockReturnValue({})
     })
 
     it('should render the component', async () => {
-        const {container, findByTestId} = renderWithRouter(
+        const { container, findByTestId } = renderWithRouter(
             <Provider store={store}>
                 <HelpCenterNewView {...props} />
-            </Provider>
+            </Provider>,
         )
         await findByTestId('name')
         expect(container).toMatchSnapshot()
@@ -88,14 +89,14 @@ describe('<HelpCenterNewView />', () => {
 
     describe('Submit form', () => {
         it('should disable the submit button if all the required fields are not filled', async () => {
-            const {findByRole, findByTestId} = renderWithRouter(
+            const { findByRole, findByTestId } = renderWithRouter(
                 <Provider store={store}>
                     <HelpCenterNewView {...props} />
-                </Provider>
+                </Provider>,
             )
             const brandInput = await findByTestId('name')
-            fireEvent.change(brandInput, {target: {value: 'My brand'}})
-            fireEvent.change(brandInput, {target: {value: ''}})
+            fireEvent.change(brandInput, { target: { value: 'My brand' } })
+            fireEvent.change(brandInput, { target: { value: '' } })
             const submitButton = await findByRole('button', {
                 name: /add help center/i,
             })
@@ -103,14 +104,14 @@ describe('<HelpCenterNewView />', () => {
         })
 
         it('should enable the submit button when all the required fields are filled', async () => {
-            const {findByRole, getByRole, findByTestId} = renderWithRouter(
+            const { findByRole, getByRole, findByTestId } = renderWithRouter(
                 <Provider store={store}>
                     <HelpCenterNewView {...props} />
-                </Provider>
+                </Provider>,
             )
 
             const brandInput = await findByTestId('name')
-            fireEvent.change(brandInput, {target: {value: 'My brand'}})
+            fireEvent.change(brandInput, { target: { value: 'My brand' } })
 
             const subdomainInput = getByRole('textbox', {
                 name: /subdomain/i,
@@ -119,9 +120,11 @@ describe('<HelpCenterNewView />', () => {
             expect(subdomainInput.value).toEqual('my-brand')
 
             fireEvent.change(subdomainInput, {
-                target: {value: 'custom-subdomain'},
+                target: { value: 'custom-subdomain' },
             })
-            fireEvent.change(brandInput, {target: {value: 'My custom brand'}})
+            fireEvent.change(brandInput, {
+                target: { value: 'My custom brand' },
+            })
 
             expect(subdomainInput.value).toEqual('custom-subdomain')
 
@@ -132,14 +135,14 @@ describe('<HelpCenterNewView />', () => {
         })
 
         it('should have an error message if brand name is one character long', async () => {
-            const {findByRole, findByTestId} = renderWithRouter(
+            const { findByRole, findByTestId } = renderWithRouter(
                 <Provider store={store}>
                     <HelpCenterNewView {...props} />
-                </Provider>
+                </Provider>,
             )
 
             const brandInput = (await findByTestId('name')) as HTMLInputElement
-            fireEvent.change(brandInput, {target: {value: 'M'}})
+            fireEvent.change(brandInput, { target: { value: 'M' } })
             const submitButton = await findByRole('button', {
                 name: /add help center/i,
             })
@@ -149,22 +152,24 @@ describe('<HelpCenterNewView />', () => {
         })
 
         it('should call helpcenter API on submit a new help center', async () => {
-            const {findByRole, findByTestId, getByRole} = renderWithRouter(
+            const { findByRole, findByTestId, getByRole } = renderWithRouter(
                 <Provider store={store}>
                     <HelpCenterNewView {...props} />
-                </Provider>
+                </Provider>,
             )
             const brandInput = await findByTestId('name')
-            const subdomainInput = getByRole('textbox', {name: 'Subdomain'})
+            const subdomainInput = getByRole('textbox', { name: 'Subdomain' })
             const submitButton = await findByRole('button', {
                 name: /add help center/i,
             })
 
             await act(async () => {
                 await waitFor(() => {
-                    fireEvent.change(brandInput, {target: {value: 'My brand'}})
+                    fireEvent.change(brandInput, {
+                        target: { value: 'My brand' },
+                    })
                     fireEvent.change(subdomainInput, {
-                        target: {value: 'acme'},
+                        target: { value: 'acme' },
                     })
                 })
 
@@ -183,7 +188,7 @@ describe('<HelpCenterNewView />', () => {
                         shop_name: undefined,
                         subdomain: 'acme',
                         theme: 'light',
-                    })
+                    }),
                 )
             })
         })

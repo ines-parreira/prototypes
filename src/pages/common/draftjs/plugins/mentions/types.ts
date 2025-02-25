@@ -1,6 +1,7 @@
-import {EditorState, DraftHandleValue} from 'draft-js'
-import {Map} from 'immutable'
-import {KeyboardEvent} from 'react'
+import { KeyboardEvent } from 'react'
+
+import { DraftHandleValue, EditorState } from 'draft-js'
+import { Map } from 'immutable'
 
 export type EditorCommand = string
 export type CallbackReturnType = EditorCommand | null | undefined | void

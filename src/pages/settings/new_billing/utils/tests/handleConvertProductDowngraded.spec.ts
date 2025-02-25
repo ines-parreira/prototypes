@@ -1,8 +1,8 @@
-import {logEvent, SegmentEvent} from 'common/segment'
-import {convertPlan1, convertPlan2} from 'fixtures/productPrices'
-import {assumeMock} from 'utils/testing'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { convertPlan1, convertPlan2 } from 'fixtures/productPrices'
+import { assumeMock } from 'utils/testing'
 
-import {handleConvertProductDowngraded} from '../handleConvertProductDowngraded'
+import { handleConvertProductDowngraded } from '../handleConvertProductDowngraded'
 
 jest.mock('common/segment')
 const logEventMock = assumeMock(logEvent)
@@ -17,7 +17,7 @@ describe('handleConvertProductDowngraded', () => {
                 account: 'acme-shop',
                 from: convertPlan2.internal_id,
                 to: convertPlan1.internal_id,
-            }
+            },
         )
     })
 })

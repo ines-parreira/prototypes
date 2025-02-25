@@ -1,7 +1,9 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import {Map} from 'immutable'
-import React, {ChangeEvent} from 'react'
-import {Col, Container, FormGroup, FormText, Input, Row} from 'reactstrap'
+import React, { ChangeEvent } from 'react'
+
+import { Map } from 'immutable'
+import { Col, Container, FormGroup, FormText, Input, Row } from 'reactstrap'
+
+import { Label } from '@gorgias/merchant-ui-kit'
 
 import {
     getRefundAmount,
@@ -10,12 +12,12 @@ import {
     getTransactionToRefund,
 } from 'business/shopify/refund'
 import CheckBox from 'pages/common/forms/CheckBox'
-
 import AmountInput from 'Widgets/modules/Shopify/modules/AmountInput'
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
+import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
+
+import OrderTotals from './OrderTotals'
 
 import css from './OrderFooter.less'
-import OrderTotals from './OrderTotals'
 
 type Props = {
     editable: boolean
@@ -58,9 +60,9 @@ const OrderFooter = ({
     }
 
     const _onDiscrepancyReasonChange = (
-        event: ChangeEvent<HTMLInputElement>
+        event: ChangeEvent<HTMLInputElement>,
     ) => {
-        const {value} = event.target
+        const { value } = event.target
         const newPayload = payload.set('discrepancy_reason', value)
 
         setPayload(newPayload)
@@ -125,7 +127,7 @@ const OrderFooter = ({
     return (
         <Container fluid className={css.container}>
             <Row>
-                <Col xs={{size: 12, order: 2}} xl={{size: 7, order: 1}}>
+                <Col xs={{ size: 12, order: 2 }} xl={{ size: 7, order: 1 }}>
                     <Row className="mb-5">
                         <Col xs={12}>
                             <CheckBox
@@ -184,7 +186,7 @@ const OrderFooter = ({
                                         id="discrepancy-reason"
                                         value={payload.get(
                                             'discrepancy_reason',
-                                            'other'
+                                            'other',
                                         )}
                                         className={css.discrepancyReasonInput}
                                         onChange={_onDiscrepancyReasonChange}
@@ -211,8 +213,8 @@ const OrderFooter = ({
                     )}
                 </Col>
                 <Col
-                    xs={{size: 12, order: 1}}
-                    xl={{size: 5, order: 2}}
+                    xs={{ size: 12, order: 1 }}
+                    xl={{ size: 5, order: 2 }}
                     className="mb-sm-4"
                 >
                     <OrderTotals

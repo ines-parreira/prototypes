@@ -20,7 +20,7 @@ function getDHLTrackingUrl(trackingNumber: string): string {
 
 export function getTrackingUrl(
     trackingNumber: string,
-    carrierCode: string
+    carrierCode: string,
 ): string {
     switch (carrierCode) {
         case 'usps':

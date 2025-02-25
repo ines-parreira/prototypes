@@ -1,4 +1,4 @@
-import type {MouseEvent} from 'react'
+import type { MouseEvent } from 'react'
 
 export type Delta = {
     x: number
@@ -7,7 +7,7 @@ export type Delta = {
 
 export type Drag = {
     handle: number
-    position: {x: number; y: number}
+    position: { x: number; y: number }
     sizes: Record<string, number>
 }
 

@@ -1,11 +1,13 @@
-import {fireEvent, render} from '@testing-library/react'
 import React from 'react'
 
+import { fireEvent, render } from '@testing-library/react'
+
 import useId from 'hooks/useId'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
 import useHandle from '../../hooks/useHandle'
 import Handle from '../Handle'
+
 import css from '../Handle.less'
 
 jest.mock('hooks/useId', () => jest.fn())
@@ -23,9 +25,9 @@ describe('Handle', () => {
     it('should call onResizeStart when the handle is pressed', () => {
         const onResizeStart = jest.fn()
         useIdMock.mockReturnValue('123')
-        useHandleMock.mockReturnValue({onResizeStart})
+        useHandleMock.mockReturnValue({ onResizeStart })
 
-        const {container} = render(<Handle />)
+        const { container } = render(<Handle />)
 
         const el = container.firstChild!
         fireEvent.mouseDown(el)
@@ -34,7 +36,7 @@ describe('Handle', () => {
     })
 
     it('should hide the handle when there is no resize handle', () => {
-        const {container} = render(<Handle />)
+        const { container } = render(<Handle />)
         const el = container.firstChild!
         expect(el).toHaveClass(css.isHidden)
     })

@@ -1,14 +1,15 @@
-import {fireEvent, render, screen} from '@testing-library/react'
+import React, { ComponentProps } from 'react'
+
+import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {produce} from 'immer'
-import React, {ComponentProps} from 'react'
+import { produce } from 'immer'
 
 import {
     bigCommerceLineItemFixture,
     bigCommerceProductFixture,
 } from 'fixtures/bigcommerce'
 
-import {ModifiersPopover} from '../ModifiersPopover'
+import { ModifiersPopover } from '../ModifiersPopover'
 
 const defaultProps: ComponentProps<typeof ModifiersPopover> = {
     storeHash: 'Hello',
@@ -21,13 +22,13 @@ const defaultProps: ComponentProps<typeof ModifiersPopover> = {
 }
 describe('<ModifiersPopover/>', () => {
     it('renders as expected', () => {
-        const {container} = render(<ModifiersPopover {...defaultProps} />)
+        const { container } = render(<ModifiersPopover {...defaultProps} />)
 
         expect(container).toMatchSnapshot()
     })
 
     it('prefills values based on initialModifierValues and performs validation', () => {
-        const {container} = render(
+        const { container } = render(
             <ModifiersPopover
                 {...defaultProps}
                 initialModifierValues={{
@@ -37,7 +38,7 @@ describe('<ModifiersPopover/>', () => {
                     167: 295,
                     143: 250,
                 }}
-            />
+            />,
         )
 
         expect(screen.getByText('Please check this box.')).toBeInTheDocument()
@@ -57,10 +58,10 @@ describe('<ModifiersPopover/>', () => {
 
         // Checkbox gets checked
         userEvent.click(
-            screen.getByRole('checkbox', {name: /Include Insurance?/i})
+            screen.getByRole('checkbox', { name: /Include Insurance?/i }),
         )
         expect(
-            screen.getByRole('checkbox', {name: /Include Insurance?/i})
+            screen.getByRole('checkbox', { name: /Include Insurance?/i }),
         ).toBeChecked()
     })
 
@@ -85,12 +86,12 @@ describe('<ModifiersPopover/>', () => {
     it('can submit the form when all required fields are filled out', () => {
         const onApplyMock = jest.fn()
 
-        const {container} = render(
-            <ModifiersPopover {...defaultProps} onApply={onApplyMock} />
+        const { container } = render(
+            <ModifiersPopover {...defaultProps} onApply={onApplyMock} />,
         )
 
         // Does not call `onApply` callback because the form is not completed
-        userEvent.click(screen.getByRole('button', {name: /Apply/i}))
+        userEvent.click(screen.getByRole('button', { name: /Apply/i }))
         expect(onApplyMock).not.toHaveBeenCalled()
 
         // Snap with all the errors
@@ -114,25 +115,25 @@ describe('<ModifiersPopover/>', () => {
 
         // Set "true" value for a checkbox
         userEvent.click(
-            screen.getByRole('checkbox', {name: /Include Insurance?/i})
+            screen.getByRole('checkbox', { name: /Include Insurance?/i }),
         )
 
         // Set "false" value for a checkbox
         userEvent.click(
-            screen.getByRole('checkbox', {name: /Include Insurance?/i})
+            screen.getByRole('checkbox', { name: /Include Insurance?/i }),
         )
 
         // Cannot call onApply because validation is failing due to checkbox with "false" value
-        userEvent.click(screen.getByRole('button', {name: /Apply/i}))
+        userEvent.click(screen.getByRole('button', { name: /Apply/i }))
         expect(onApplyMock).not.toHaveBeenCalled()
 
         // Set "true" value for a checkbox
         userEvent.click(
-            screen.getByRole('checkbox', {name: /Include Insurance?/i})
+            screen.getByRole('checkbox', { name: /Include Insurance?/i }),
         )
 
         // `onApply` is now called after all required fields are completed
-        userEvent.click(screen.getByRole('button', {name: /Apply/i}))
+        userEvent.click(screen.getByRole('button', { name: /Apply/i }))
         expect(onApplyMock).toHaveBeenCalled()
     })
 })

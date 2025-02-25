@@ -1,12 +1,12 @@
 import MockAdapter from 'axios-mock-adapter'
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import client from 'models/api/resources'
-import {RootState, StoreDispatch} from 'state/types'
+import { RootState, StoreDispatch } from 'state/types'
 
 import * as actions from '../actions'
-import {initialState} from '../reducers'
+import { initialState } from '../reducers'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -15,12 +15,14 @@ describe('auths actions', () => {
     const mockServer = new MockAdapter(client)
 
     beforeEach(() => {
-        store = mockStore({auths: initialState})
+        store = mockStore({ auths: initialState })
         mockServer.reset()
     })
 
     it("should successfully fetch user's auths and store the result", () => {
-        mockServer.onGet('/api/users/0/auths/').reply(200, {data: [{id: 1}]})
+        mockServer
+            .onGet('/api/users/0/auths/')
+            .reply(200, { data: [{ id: 1 }] })
 
         return store
             .dispatch(actions.fetchCurrentAuths())
@@ -38,7 +40,7 @@ describe('auths actions', () => {
     it("should successfully reset user's API key and store the result", () => {
         mockServer
             .onGet('/api/users/0/reset_key/')
-            .reply(201, {data: [{id: 1}]})
+            .reply(201, { data: [{ id: 1 }] })
 
         return store
             .dispatch(actions.fetchCurrentAuths())

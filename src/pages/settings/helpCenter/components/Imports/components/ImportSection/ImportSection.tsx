@@ -1,31 +1,31 @@
-import {LoadingSpinner, Tooltip} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
-import {Map} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {ParamType} from 'openapi-client-axios'
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
-import {useHistory} from 'react-router-dom'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import {SegmentEvent, logEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
+import classnames from 'classnames'
+import { Map } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { ParamType } from 'openapi-client-axios'
+import { useHistory } from 'react-router-dom'
+
+import { LoadingSpinner, Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAsyncFn from 'hooks/useAsyncFn'
 import Button from 'pages/common/components/button/Button'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
-import {useMigrationApi} from 'pages/settings/helpCenter/hooks/useMigrationApi'
+import { useMigrationApi } from 'pages/settings/helpCenter/hooks/useMigrationApi'
 import settingsCss from 'pages/settings/settings.less'
+import { getAccessToken } from 'rest_api/auth'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
-import {getAccessToken} from 'rest_api/auth'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-
-import {CSV_MIGRATION_PROVIDER_TYPE} from '../CsvColumnMatching/utils'
+import { CSV_MIGRATION_PROVIDER_TYPE } from '../CsvColumnMatching/utils'
 import ImportArticlesModal from './components/ImportArticlesModal'
 import MigrationCredentialsModal from './components/MigrationCredentialsModal'
 import MigrationStateModal from './components/MigrationStateModal'
 import ProviderSelectModal from './components/ProviderSelectModal'
-import {csvProviderMeta} from './csv-provider-meta'
-import css from './ImportSection.less'
+import { csvProviderMeta } from './csv-provider-meta'
 import {
     AutoOpenSessionLocationState,
     FetchedMigrationSessionState,
@@ -48,6 +48,8 @@ import {
     responseIsSessionsList,
     sessionHasProgressStatus,
 } from './utils'
+
+import css from './ImportSection.less'
 
 type Props = {
     className?: string
@@ -74,12 +76,12 @@ export const ImportSection: React.FC<Props> = ({
     ] as HelpCenterMigrationConfig
     const migrationConfigProviders = useMemo(
         () => _migrationConfig?.providers || [], // in case of invalid value
-        [_migrationConfig]
+        [_migrationConfig],
     )
 
     // Using as state in case no providers from API match the ones from the feature flag
     const [isMigrationAvailable, setIsMigrationAvailable] = useState(
-        !!migrationConfigProviders.length
+        !!migrationConfigProviders.length,
     )
 
     const [importArticlesModalState, setImportArticlesModalState] =
@@ -115,17 +117,17 @@ export const ImportSection: React.FC<Props> = ({
     const isUpdatingActiveMigrationRef = useRef(false)
 
     const isImportInProgress = sessionHasProgressStatus(
-        currentMigrationSession.data
+        currentMigrationSession.data,
     )
 
     const selectedProvider = fetchedProviders.data?.find(
-        (provider) => provider.type === selectedProviderType
+        (provider) => provider.type === selectedProviderType,
     )
 
     const canRenderMigrationStateModal =
         currentMigrationSession.data || migrationStartPayload
 
-    const [{loading: isMigrationConnectionLoading}, handleMigrationConnect] =
+    const [{ loading: isMigrationConnectionLoading }, handleMigrationConnect] =
         useAsyncFn(
             async (data: Map<string, string>) => {
                 if (!migrationClient || !selectedProviderType) return
@@ -133,15 +135,15 @@ export const ImportSection: React.FC<Props> = ({
                 try {
                     await migrationClient.sessionCreate(
                         // Check parameter used to just verify validity of credentials
-                        [{name: 'check', value: 'true', in: ParamType.Query}],
+                        [{ name: 'check', value: 'true', in: ParamType.Query }],
                         getSessionCreateData(
                             currentHelpCenter.id,
                             {
                                 type: selectedProviderType,
                                 ...data.toJS(),
                             },
-                            (await getAccessToken()) || ''
-                        )
+                            (await getAccessToken()) || '',
+                        ),
                     )
 
                     setSelectedProviderType(undefined)
@@ -160,26 +162,26 @@ export const ImportSection: React.FC<Props> = ({
                     if (errorMessage) message += ': ' + errorMessage
 
                     void dispatch(
-                        notify({message, status: NotificationStatus.Error})
+                        notify({ message, status: NotificationStatus.Error }),
                     )
                 }
             },
-            [migrationClient, selectedProviderType]
+            [migrationClient, selectedProviderType],
         )
 
-    const [{loading: isMigrationStartLoading}, handleMigrationStart] =
+    const [{ loading: isMigrationStartLoading }, handleMigrationStart] =
         useAsyncFn(async () => {
             if (!migrationClient || !migrationStartPayload) return
 
             try {
-                const {data: createdSession} =
+                const { data: createdSession } =
                     await migrationClient.sessionCreate(
                         undefined,
                         getSessionCreateData(
                             currentHelpCenter.id,
                             migrationStartPayload,
-                            (await getAccessToken(true)) || ''
-                        )
+                            (await getAccessToken(true)) || '',
+                        ),
                     )
 
                 if (!responseIsSession(createdSession)) return
@@ -197,46 +199,48 @@ export const ImportSection: React.FC<Props> = ({
                 if (errorMessage) message += ': ' + errorMessage
 
                 void dispatch(
-                    notify({message, status: NotificationStatus.Error})
+                    notify({ message, status: NotificationStatus.Error }),
                 )
             }
         }, [migrationClient, migrationStartPayload])
 
-    const [{loading: isRevertLoading}, handleRevert] = useAsyncFn(async () => {
+    const [{ loading: isRevertLoading }, handleRevert] =
+        useAsyncFn(async () => {
+            if (!migrationClient || !currentMigrationSession.data) return
+
+            try {
+                const { data: resultingRevertSession } =
+                    await migrationClient.sessionRollback({
+                        uuid: currentMigrationSession.data.session_id,
+                    })
+
+                if (!responseIsSession(resultingRevertSession)) return
+
+                setMigrationStateModalOpen(true) // In case the user closed the modal while loading
+                setCurrentMigrationSession({
+                    data: resultingRevertSession,
+                    isFirstTimeLoading: false,
+                })
+            } catch (error) {
+                let message = 'Failed to revert migration'
+
+                const errorMessage = getErrorMessage(error)
+                if (errorMessage) message += ': ' + errorMessage
+
+                void dispatch(
+                    notify({ message, status: NotificationStatus.Error }),
+                )
+            }
+        }, [migrationClient, migrationStartPayload, currentMigrationSession])
+
+    const [{ loading: isRetryLoading }, handleRetry] = useAsyncFn(async () => {
         if (!migrationClient || !currentMigrationSession.data) return
 
         try {
-            const {data: resultingRevertSession} =
-                await migrationClient.sessionRollback({
+            const { data: resultingSession } =
+                await migrationClient.sessionRetry({
                     uuid: currentMigrationSession.data.session_id,
                 })
-
-            if (!responseIsSession(resultingRevertSession)) return
-
-            setMigrationStateModalOpen(true) // In case the user closed the modal while loading
-            setCurrentMigrationSession({
-                data: resultingRevertSession,
-                isFirstTimeLoading: false,
-            })
-        } catch (error) {
-            let message = 'Failed to revert migration'
-
-            const errorMessage = getErrorMessage(error)
-            if (errorMessage) message += ': ' + errorMessage
-
-            void dispatch(notify({message, status: NotificationStatus.Error}))
-        }
-    }, [migrationClient, migrationStartPayload, currentMigrationSession])
-
-    const [{loading: isRetryLoading}, handleRetry] = useAsyncFn(async () => {
-        if (!migrationClient || !currentMigrationSession.data) return
-
-        try {
-            const {data: resultingSession} = await migrationClient.sessionRetry(
-                {
-                    uuid: currentMigrationSession.data.session_id,
-                }
-            )
             if (!responseIsSession(resultingSession)) return
 
             setMigrationStateModalOpen(true) // In case the user closed the modal while loading
@@ -250,7 +254,7 @@ export const ImportSection: React.FC<Props> = ({
             const errorMessage = getErrorMessage(error)
             if (errorMessage) message += ': ' + errorMessage
 
-            void dispatch(notify({message, status: NotificationStatus.Error}))
+            void dispatch(notify({ message, status: NotificationStatus.Error }))
         }
     }, [migrationClient, migrationStartPayload, currentMigrationSession])
 
@@ -274,7 +278,7 @@ export const ImportSection: React.FC<Props> = ({
 
         void (async () => {
             try {
-                const {data: sessions} = await migrationClient.sessionList([
+                const { data: sessions } = await migrationClient.sessionList([
                     {
                         name: 'help_center_id',
                         value: currentHelpCenter.id,
@@ -285,7 +289,7 @@ export const ImportSection: React.FC<Props> = ({
                 if (!responseIsSessionsList(sessions)) return
 
                 const activeSession = sessions.find((session) =>
-                    sessionHasProgressStatus(session)
+                    sessionHasProgressStatus(session),
                 )
 
                 if (activeSession) {
@@ -297,7 +301,7 @@ export const ImportSection: React.FC<Props> = ({
                         notify({
                             message:
                                 'There is an ongoing migration in the background, you can start a new one once it is finished',
-                        })
+                        }),
                     )
                 } else {
                     setCurrentMigrationSession({
@@ -321,7 +325,7 @@ export const ImportSection: React.FC<Props> = ({
                         message: message,
                         status: NotificationStatus.Error,
                         ...longNotificationOptions,
-                    })
+                    }),
                 )
             }
         })()
@@ -340,8 +344,8 @@ export const ImportSection: React.FC<Props> = ({
         let migrationFailed = false
 
         try {
-            const {data: session} = await migrationClient.sessionRetrieve(
-                currentMigrationSession.data.session_id
+            const { data: session } = await migrationClient.sessionRetrieve(
+                currentMigrationSession.data.session_id,
             )
             if (!responseIsSession(session)) return
 
@@ -362,7 +366,7 @@ export const ImportSection: React.FC<Props> = ({
                                 'The migration finished successfully, to see the results refresh the page',
                             buttons: [notificationRefreshButton],
                             status: NotificationStatus.Success,
-                        })
+                        }),
                     )
                     setCurrentMigrationSession({
                         data: null,
@@ -390,9 +394,12 @@ export const ImportSection: React.FC<Props> = ({
                     status: NotificationStatus.Error,
                     buttons: [notificationRefreshButton],
                     ...longNotificationOptions,
-                })
+                }),
             )
-            setCurrentMigrationSession({data: null, isFirstTimeLoading: false})
+            setCurrentMigrationSession({
+                data: null,
+                isFirstTimeLoading: false,
+            })
         }
     }, [
         dispatch,
@@ -507,7 +514,7 @@ export const ImportSection: React.FC<Props> = ({
                 notify({
                     message:
                         'The migration has started, you’ll get notified on this page once it is finished',
-                })
+                }),
             )
         }
 
@@ -524,12 +531,12 @@ export const ImportSection: React.FC<Props> = ({
 
         void (async () => {
             try {
-                const {data: allProviders} =
+                const { data: allProviders } =
                     await migrationClient.providerStaticList()
                 if (!(allProviders instanceof Array)) return
 
                 const availableProviders = allProviders.filter((provider) =>
-                    migrationConfigProviders.includes(provider.type)
+                    migrationConfigProviders.includes(provider.type),
                 )
                 if (availableProviders.length) {
                     setFetchedProviders({
@@ -562,7 +569,7 @@ export const ImportSection: React.FC<Props> = ({
                         message: message,
                         status: NotificationStatus.Error,
                         ...longNotificationOptions,
-                    })
+                    }),
                 )
             }
         })()
@@ -578,7 +585,7 @@ export const ImportSection: React.FC<Props> = ({
         // Feed the provider that was selected for the migration start to the MigrationStateModal
         if (migrationStartPayload) {
             return fetchedProviders.data?.find(
-                (provider) => provider.type === migrationStartPayload?.type
+                (provider) => provider.type === migrationStartPayload?.type,
             )
         }
         // When the session is in progress or completed feed the provider from the session to the MigrationStateModal

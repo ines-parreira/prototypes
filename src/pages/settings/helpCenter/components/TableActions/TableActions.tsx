@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {ActionSchema, Action} from './components/Action'
+import { Action, ActionSchema } from './components/Action'
 
 import css from './TableActions.less'
 

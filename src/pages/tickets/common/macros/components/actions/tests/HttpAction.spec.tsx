@@ -1,9 +1,10 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {MacroActionName, MacroActionType} from 'models/macroAction/types'
-import {Action, ActionStatus} from 'models/ticket/types'
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+
+import { MacroActionName, MacroActionType } from 'models/macroAction/types'
+import { Action, ActionStatus } from 'models/ticket/types'
 
 import HttpAction from '../HttpAction'
 
@@ -16,13 +17,13 @@ describe('HTTP action component', () => {
     }
 
     it('should render the HTTP action component', () => {
-        const {container} = render(
+        const { container } = render(
             <HttpAction
                 action={fromJS(action)}
                 index={1}
                 updateActionArgs={jest.fn()}
                 updateActionTitle={jest.fn()}
-            />
+            />,
         )
 
         expect(container.firstChild).toMatchSnapshot()

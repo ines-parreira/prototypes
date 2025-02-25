@@ -6,16 +6,17 @@ import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'
 import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
 
-import css from './PhoneDevice.less'
 import PhoneDeviceDialerBody from './PhoneDeviceDialerBody'
 import PhoneDeviceDialerIntegrationSelect from './PhoneDeviceDialerIntegrationSelect'
 import usePhoneDeviceDialer from './usePhoneDeviceDialer'
+
+import css from './PhoneDevice.less'
 
 type Props = {
     onCallInitiated: () => void
 }
 
-export default function PhoneDeviceDialer({onCallInitiated}: Props) {
+export default function PhoneDeviceDialer({ onCallInitiated }: Props) {
     const {
         inputValue,
         handleChange,
@@ -34,7 +35,7 @@ export default function PhoneDeviceDialer({onCallInitiated}: Props) {
         phoneIntegrations,
         handleSelectCustomer,
         handleInputKeyDown,
-    } = usePhoneDeviceDialer({onCallInitiated})
+    } = usePhoneDeviceDialer({ onCallInitiated })
 
     return (
         <div className={css.dialerWrapper}>

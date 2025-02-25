@@ -1,14 +1,15 @@
-import {fireEvent, render, screen, act} from '@testing-library/react'
 import React from 'react'
 
-import useIsCampaignProritizationEnabled from 'pages/convert/common/hooks/useIsCampaignProritizationEnabled'
-import {assumeMock} from 'utils/testing'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 
-import {CampaignDeviceType} from '../CampaignDeviceType'
+import useIsCampaignProritizationEnabled from 'pages/convert/common/hooks/useIsCampaignProritizationEnabled'
+import { assumeMock } from 'utils/testing'
+
+import { CampaignDeviceType } from '../CampaignDeviceType'
 
 jest.mock('pages/convert/common/hooks/useIsCampaignProritizationEnabled')
 const useIsCampaignProritizationEnabledMock = assumeMock(
-    useIsCampaignProritizationEnabled
+    useIsCampaignProritizationEnabled,
 )
 
 describe('<CampaignDeviceType />', () => {
@@ -19,7 +20,7 @@ describe('<CampaignDeviceType />', () => {
 
         it('renders', () => {
             render(
-                <CampaignDeviceType trigger={undefined} onChange={jest.fn()} />
+                <CampaignDeviceType trigger={undefined} onChange={jest.fn()} />,
             )
 
             expect(screen.getByText('Device type')).toBeInTheDocument()
@@ -35,13 +36,13 @@ describe('<CampaignDeviceType />', () => {
     describe('campaign prioritization disabled', () => {
         beforeEach(() => {
             useIsCampaignProritizationEnabledMock.mockImplementation(
-                () => false
+                () => false,
             )
         })
 
         it('renders', () => {
             render(
-                <CampaignDeviceType trigger={undefined} onChange={jest.fn()} />
+                <CampaignDeviceType trigger={undefined} onChange={jest.fn()} />,
             )
 
             expect(screen.getByText('Device type')).toBeInTheDocument()

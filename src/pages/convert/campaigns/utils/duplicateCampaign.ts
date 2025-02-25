@@ -1,16 +1,16 @@
 import _omit from 'lodash/omit'
-import {ulid} from 'ulidx'
+import { ulid } from 'ulidx'
 
-import {removeLinksFromHtml} from 'utils/html'
+import { removeLinksFromHtml } from 'utils/html'
 
-import {Campaign, CampaignCreatePayload} from '../types/Campaign'
-import {CampaignVariant} from '../types/CampaignVariant'
-import {CampaignStatus} from '../types/enums/CampaignStatus.enum'
-import {createTriggerRule} from './createTriggerRule'
+import { Campaign, CampaignCreatePayload } from '../types/Campaign'
+import { CampaignVariant } from '../types/CampaignVariant'
+import { CampaignStatus } from '../types/enums/CampaignStatus.enum'
+import { createTriggerRule } from './createTriggerRule'
 
 export const duplicateCampaign = (
     campaign: Campaign,
-    channelConnectionId: string | undefined
+    channelConnectionId: string | undefined,
 ): CampaignCreatePayload => {
     if (!channelConnectionId) {
         throw new Error('Channel connection ID is required')
@@ -27,7 +27,7 @@ export const duplicateCampaign = (
             message_text: variant.message_text,
             message_html: removeLinksFromHtml(variant.message_html || ''),
             attachments: variant.attachments,
-        })
+        }),
     )
 
     return {

@@ -1,9 +1,10 @@
-import {screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import {createMemoryHistory} from 'history'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { createMemoryHistory } from 'history'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -11,20 +12,20 @@ import {
     AUTOMATION_PRODUCT_ID,
     basicMonthlyAutomationPlan,
 } from 'fixtures/productPrices'
-import {CurrentContactFormContext} from 'pages/settings/contactForm/contexts/currentContactForm.context'
-import {useContactFormApi} from 'pages/settings/contactForm/hooks/useContactFormApi'
+import { CurrentContactFormContext } from 'pages/settings/contactForm/contexts/currentContactForm.context'
+import { useContactFormApi } from 'pages/settings/contactForm/hooks/useContactFormApi'
 
-import {account} from '../../../../../../fixtures/account'
-import {billingState} from '../../../../../../fixtures/billing'
-import {integrationsStateWithShopify} from '../../../../../../fixtures/integrations'
-import {ContactForm} from '../../../../../../models/contactForm/types'
-import {RootState, StoreDispatch} from '../../../../../../state/types'
-import {renderWithRouter} from '../../../../../../utils/testing'
-import {getLocalesResponseFixture} from '../../../../helpCenter/fixtures/getLocalesResponse.fixtures'
-import {useSupportedLocales} from '../../../../helpCenter/providers/SupportedLocales'
-import {CONTACT_FORM_PREFERENCES_PATH} from '../../../constants'
-import {ContactFormFixture} from '../../../fixtures/contacForm'
-import {insertContactFormIdParam} from '../../../utils/navigation'
+import { account } from '../../../../../../fixtures/account'
+import { billingState } from '../../../../../../fixtures/billing'
+import { integrationsStateWithShopify } from '../../../../../../fixtures/integrations'
+import { ContactForm } from '../../../../../../models/contactForm/types'
+import { RootState, StoreDispatch } from '../../../../../../state/types'
+import { renderWithRouter } from '../../../../../../utils/testing'
+import { getLocalesResponseFixture } from '../../../../helpCenter/fixtures/getLocalesResponse.fixtures'
+import { useSupportedLocales } from '../../../../helpCenter/providers/SupportedLocales'
+import { CONTACT_FORM_PREFERENCES_PATH } from '../../../constants'
+import { ContactFormFixture } from '../../../fixtures/contacForm'
+import { insertContactFormIdParam } from '../../../utils/navigation'
 import ContactFormPreferences from '../ContactFormPreferences'
 
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
@@ -80,7 +81,7 @@ const renderView = ({
     return renderWithRouter(
         <Provider store={mockStore(state)}>
             <CurrentContactFormContext.Provider
-                value={{...ContactFormFixture, ...contactFormState}}
+                value={{ ...ContactFormFixture, ...contactFormState }}
             >
                 <ContactFormPreferences />
             </CurrentContactFormContext.Provider>
@@ -88,14 +89,14 @@ const renderView = ({
         {
             path,
             history,
-        }
+        },
     )
 }
 describe('<ContactFormPreferences />', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         jest.mocked(useSupportedLocales).mockReturnValue(
-            getLocalesResponseFixture
+            getLocalesResponseFixture,
         )
         mockedUseContactFormApi.mockReturnValue({
             isReady: true,
@@ -103,17 +104,17 @@ describe('<ContactFormPreferences />', () => {
     })
 
     it('should render with contact form name', () => {
-        renderView({path: CONTACT_FORM_PREFERENCES_PATH})
+        renderView({ path: CONTACT_FORM_PREFERENCES_PATH })
 
         expect(screen.getByLabelText('Contact form name')).toHaveValue(
-            ContactFormFixture.name
+            ContactFormFixture.name,
         )
     })
 
     describe('when change store', () => {
         const shopName = 'gorgiastest'
         it('should render store selection dropdown when Automate enabled', () => {
-            renderView({path: CONTACT_FORM_PREFERENCES_PATH})
+            renderView({ path: CONTACT_FORM_PREFERENCES_PATH })
 
             expect(screen.getByLabelText('Connect a store')).toBeInTheDocument()
             expect(screen.getByLabelText('Connect a store')).not.toHaveValue()
@@ -121,14 +122,14 @@ describe('<ContactFormPreferences />', () => {
 
         it('should call API with new store', async () => {
             const fakeUpdate = jest.fn(() =>
-                Promise.resolve(ContactFormFixture)
+                Promise.resolve(ContactFormFixture),
             )
 
             mockedUseContactFormApi.mockReturnValue({
                 updateContactForm: fakeUpdate,
             } as unknown as ReturnType<typeof useContactFormApi>) // TODO: Discuss using of jest-mock-extended
 
-            renderView({path: CONTACT_FORM_PREFERENCES_PATH})
+            renderView({ path: CONTACT_FORM_PREFERENCES_PATH })
 
             // Selector should be enabled
             expect(screen.getByLabelText('Connect a store')).toBeEnabled()
@@ -138,7 +139,7 @@ describe('<ContactFormPreferences />', () => {
             userEvent.click(screen.getByText(shopName))
 
             await waitFor(() =>
-                expect(screen.getByText('Save Changes')).toBeEnabled()
+                expect(screen.getByText('Save Changes')).toBeEnabled(),
             )
 
             userEvent.click(screen.getByText('Save Changes'))
@@ -146,7 +147,7 @@ describe('<ContactFormPreferences />', () => {
             await waitFor(() =>
                 expect(fakeUpdate).toHaveBeenCalledWith(FORM_ID, {
                     shop_name: shopName,
-                })
+                }),
             )
         })
     })

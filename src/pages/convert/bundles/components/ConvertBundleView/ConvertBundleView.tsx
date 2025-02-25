@@ -1,7 +1,8 @@
-import {List} from 'immutable'
-import React, {useEffect, useMemo, useState} from 'react'
-import {useParams} from 'react-router-dom'
-import {Container} from 'reactstrap'
+import React, { useEffect, useMemo, useState } from 'react'
+
+import { List } from 'immutable'
+import { useParams } from 'react-router-dom'
+import { Container } from 'reactstrap'
 
 import {
     GORGIAS_CHAT_INTEGRATION_TYPE,
@@ -15,15 +16,15 @@ import {
 import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
-import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
+import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 import ConvertBundleDetail from 'pages/convert/bundles/components/ConvertBundleDetail'
-import {useGetConvertBundle} from 'pages/convert/bundles/hooks/useGetConvertBundle'
-import {useInstallBundle} from 'pages/convert/bundles/hooks/useInstallBundle'
-import {CONVERT_ROUTE_PARAM_NAME} from 'pages/convert/common/constants'
+import { useGetConvertBundle } from 'pages/convert/bundles/hooks/useGetConvertBundle'
+import { useInstallBundle } from 'pages/convert/bundles/hooks/useInstallBundle'
+import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
 import useIsManualInstallationMethodRequired from 'pages/convert/common/hooks/useIsManualInstallationMethodRequired'
-import {ConvertRouteParams} from 'pages/convert/common/types'
+import { ConvertRouteParams } from 'pages/convert/common/types'
 import useThemeAppExtensionInstallation from 'pages/integrations/integration/components/gorgias_chat/hooks/useThemeAppExtensionInstallation'
-import {getIntegrationById} from 'state/integrations/selectors'
+import { getIntegrationById } from 'state/integrations/selectors'
 
 import css from './ConvertBundleView.less'
 
@@ -31,13 +32,13 @@ type Props = {
     renderHeader?: boolean
 }
 
-const ConvertBundleView = ({renderHeader = true}: Props) => {
-    const {[CONVERT_ROUTE_PARAM_NAME]: paramIntegrationId} =
+const ConvertBundleView = ({ renderHeader = true }: Props) => {
+    const { [CONVERT_ROUTE_PARAM_NAME]: paramIntegrationId } =
         useParams<ConvertRouteParams>()
 
     const chatIntegrationId = parseInt(paramIntegrationId || '')
     const chatIntegration = useAppSelector(
-        getIntegrationById(chatIntegrationId)
+        getIntegrationById(chatIntegrationId),
     )
 
     const storeIntegrationId = useMemo(() => {
@@ -57,21 +58,21 @@ const ConvertBundleView = ({renderHeader = true}: Props) => {
     }, [chatIntegration])
 
     const storeIntegration = useAppSelector(
-        getIntegrationById(storeIntegrationId)
+        getIntegrationById(storeIntegrationId),
     )
 
     const isConnectedToShopify = useMemo(
         () =>
             Boolean(
                 storeIntegration &&
-                    storeIntegration.get('type') === SHOPIFY_INTEGRATION_TYPE
+                    storeIntegration.get('type') === SHOPIFY_INTEGRATION_TYPE,
             ),
-        [storeIntegration]
+        [storeIntegration],
     )
 
-    const {shouldUseThemeAppExtensionInstallation} =
+    const { shouldUseThemeAppExtensionInstallation } =
         useThemeAppExtensionInstallation(
-            isConnectedToShopify ? storeIntegration.toJS() : undefined
+            isConnectedToShopify ? storeIntegration.toJS() : undefined,
         )
 
     const integrationId = useMemo(
@@ -79,17 +80,17 @@ const ConvertBundleView = ({renderHeader = true}: Props) => {
             Boolean(storeIntegrationId)
                 ? storeIntegrationId
                 : chatIntegrationId,
-        [storeIntegrationId, chatIntegrationId]
+        [storeIntegrationId, chatIntegrationId],
     )
 
-    const {bundle, isLoading} = useGetConvertBundle(
+    const { bundle, isLoading } = useGetConvertBundle(
         storeIntegrationId,
-        chatIntegrationId
+        chatIntegrationId,
     )
 
     const isInstalled = useMemo(
         () => !!bundle && bundle.status === BundleStatus.Installed,
-        [bundle]
+        [bundle],
     )
 
     // install
@@ -98,7 +99,7 @@ const ConvertBundleView = ({renderHeader = true}: Props) => {
 
     const isManualMethodRequired = useIsManualInstallationMethodRequired(
         chatIntegration.toJS(),
-        storeIntegration.toJS()
+        storeIntegration.toJS(),
     )
 
     const showUpdatePermissionsBanner = useMemo(() => {
@@ -127,13 +128,13 @@ const ConvertBundleView = ({renderHeader = true}: Props) => {
         setInstallationMethod(
             isManualMethodRequired
                 ? BundleInstallationMethod.Manual
-                : BundleInstallationMethod.OneClick
+                : BundleInstallationMethod.OneClick,
         )
     }, [isManualMethodRequired])
 
-    const {isSubmitting, installBundle} = useInstallBundle(
+    const { isSubmitting, installBundle } = useInstallBundle(
         integrationId,
-        installationMethod
+        installationMethod,
     )
 
     return isLoading ? (
@@ -181,7 +182,7 @@ const ConvertBundleView = ({renderHeader = true}: Props) => {
                                             caption="for Shopify stores (except headless)"
                                             onClick={() => {
                                                 setInstallationMethod(
-                                                    BundleInstallationMethod.OneClick
+                                                    BundleInstallationMethod.OneClick,
                                                 )
                                             }}
                                         />
@@ -196,7 +197,7 @@ const ConvertBundleView = ({renderHeader = true}: Props) => {
                                         caption="for Shopify headless stores, Woocommerce, BigCommerce, Magento stores or custom websites"
                                         onClick={() => {
                                             setInstallationMethod(
-                                                BundleInstallationMethod.Manual
+                                                BundleInstallationMethod.Manual,
                                             )
                                         }}
                                     />

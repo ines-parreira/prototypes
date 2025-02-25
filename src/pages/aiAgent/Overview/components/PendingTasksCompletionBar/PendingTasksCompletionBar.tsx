@@ -1,5 +1,6 @@
-import {Skeleton} from '@gorgias/merchant-ui-kit'
 import React from 'react'
+
+import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import css from './PendingTasksCompletionBar.less'
 
@@ -16,7 +17,7 @@ export const PendingTasksCompletionBar: React.FC<Props> = ({
 }: Props) => {
     let ariaProps: Record<string, string | number> = {}
     if (isLoading) {
-        ariaProps = {'aria-busy': 'true', 'aria-live': 'polite'}
+        ariaProps = { 'aria-busy': 'true', 'aria-live': 'polite' }
     } else {
         ariaProps = {
             'aria-value': totalTasksCompleted,
@@ -38,12 +39,12 @@ export const PendingTasksCompletionBar: React.FC<Props> = ({
                         <div className={css.dashLine}></div>
                         <div
                             className={css.gradientLine}
-                            style={{width: `${position}%`}}
+                            style={{ width: `${position}%` }}
                         />
                         <div
                             className={css.plainDot}
                             /** Dot is 16px width, to center it we remove 50% of 16px */
-                            style={{left: `calc(${position}% - 8px)`}}
+                            style={{ left: `calc(${position}% - 8px)` }}
                         >
                             <div className={css.wrapperDot}>
                                 <div className={css.centerDot}></div>

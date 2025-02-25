@@ -1,13 +1,14 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {createMemoryHistory} from 'history'
 import React from 'react'
-import {Provider} from 'react-redux'
-import {Router} from 'react-router-dom'
+
+import { renderHook } from '@testing-library/react-hooks'
+import { createMemoryHistory } from 'history'
+import { Provider } from 'react-redux'
+import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import * as actions from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { NotificationStatus } from 'state/notifications/types'
 
 import useQueryNotify from '../useQueryNotify'
 
@@ -30,7 +31,7 @@ describe('useQueryNotify()', () => {
         const store = mockStore({})
         store.dispatch = jest.fn()
         renderHook(() => useQueryNotify(), {
-            wrapper: ({children}) => (
+            wrapper: ({ children }) => (
                 <Router history={history}>
                     <Provider store={mockStore({})}>{children}</Provider>
                 </Router>
@@ -45,7 +46,7 @@ describe('useQueryNotify()', () => {
         const store = mockStore({})
         store.dispatch = jest.fn()
         renderHook(() => useQueryNotify(), {
-            wrapper: ({children}) => (
+            wrapper: ({ children }) => (
                 <Router history={history}>
                     <Provider store={mockStore({})}>{children}</Provider>
                 </Router>
@@ -69,7 +70,7 @@ describe('useQueryNotify()', () => {
         const store = mockStore({})
         store.dispatch = jest.fn()
         renderHook(() => useQueryNotify(), {
-            wrapper: ({children}) => (
+            wrapper: ({ children }) => (
                 <Router history={history}>
                     <Provider store={mockStore({})}>{children}</Provider>
                 </Router>
@@ -95,7 +96,7 @@ describe('useQueryNotify()', () => {
         const store = mockStore({})
         store.dispatch = jest.fn()
         renderHook(() => useQueryNotify(), {
-            wrapper: ({children}) => (
+            wrapper: ({ children }) => (
                 <Router history={history}>
                     <Provider store={mockStore({})}>{children}</Provider>
                 </Router>
@@ -119,7 +120,7 @@ describe('useQueryNotify()', () => {
             ],
         })
         renderHook(() => useQueryNotify(), {
-            wrapper: ({children}) => (
+            wrapper: ({ children }) => (
                 <Router history={history}>
                     <Provider store={mockStore({})}>{children}</Provider>
                 </Router>

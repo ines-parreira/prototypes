@@ -1,18 +1,19 @@
-import React, {memo, useCallback, useContext, useMemo, useState} from 'react'
-import {Collapse} from 'reactstrap'
+import React, { memo, useCallback, useContext, useMemo, useState } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { Collapse } from 'reactstrap'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {Source} from 'models/widget/types'
+import { Source } from 'models/widget/types'
 import Button from 'pages/common/components/button/Button'
 import {
     Link as LinkType,
     SubmitLink,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
-import {AppContext} from 'providers/infobar/AppContext'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import { AppContext } from 'providers/infobar/AppContext'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import {
     removeEditedWidget,
     startWidgetEdition,
@@ -21,6 +22,7 @@ import {
 
 import Editor from './Editor'
 import Link from './Link'
+
 import css from './Links.less'
 
 const MAX_VISIBLE_LINKS = 3
@@ -34,12 +36,18 @@ type Props = {
 }
 
 export function Links(props: Props) {
-    const {templatePath, absolutePath, source, links, isEditing = false} = props
+    const {
+        templatePath,
+        absolutePath,
+        source,
+        links,
+        isEditing = false,
+    } = props
 
     const dispatch = useAppDispatch()
     const currentAccount = useAppSelector(getCurrentAccountState)
-    const {integrationId} = useContext(IntegrationContext)
-    const {appId} = useContext(AppContext)
+    const { integrationId } = useContext(IntegrationContext)
+    const { appId } = useContext(AppContext)
 
     const [collapseOpen, setCollapseOpen] = useState(false)
     const handleToggle = useCallback(() => {
@@ -51,15 +59,15 @@ export function Links(props: Props) {
             dispatch(
                 removeEditedWidget(
                     `${templatePath}.meta.custom.links`,
-                    absolutePath
-                )
+                    absolutePath,
+                ),
             )
 
             links.splice(index, 1)
 
             if (links.length > 0) {
                 dispatch(
-                    startWidgetEdition(`${templatePath}.meta.custom.links`)
+                    startWidgetEdition(`${templatePath}.meta.custom.links`),
                 )
                 dispatch(updateCustomActions(links))
             }
@@ -78,7 +86,7 @@ export function Links(props: Props) {
             integrationId,
             appId,
             dispatch,
-        ]
+        ],
     )
 
     const handleSubmit = useCallback<SubmitLink>(
@@ -103,7 +111,7 @@ export function Links(props: Props) {
 
             dispatch(updateCustomActions(links))
         },
-        [links, templatePath, currentAccount, integrationId, appId, dispatch]
+        [links, templatePath, currentAccount, integrationId, appId, dispatch],
     )
 
     const targetId = `custom-action-link-${templatePath.replace(/\./g, '')}`
@@ -125,7 +133,7 @@ export function Links(props: Props) {
         // We don’t want the collapse button to be displayed
         // only to hide 1 link, hence the + 1
         () => !isEditing && links.length > MAX_VISIBLE_LINKS + 1,
-        [isEditing, links]
+        [isEditing, links],
     )
 
     return (
@@ -144,7 +152,7 @@ export function Links(props: Props) {
                                 >
                                     {allLinks.slice(
                                         MAX_VISIBLE_LINKS,
-                                        allLinks.length
+                                        allLinks.length,
                                     )}
                                 </Collapse>
                             </>

@@ -1,14 +1,15 @@
-import _debounce from 'lodash/debounce'
 import React, {
     createContext,
-    useContext,
-    useState,
     Dispatch,
     SetStateAction,
+    useContext,
     useEffect,
+    useState,
 } from 'react'
 
-import {HelpCenter} from 'models/helpCenter/types'
+import _debounce from 'lodash/debounce'
+
+import { HelpCenter } from 'models/helpCenter/types'
 import {
     AlgoliaSearchClient,
     initSearchClient,
@@ -103,20 +104,20 @@ export const SearchContextProvider = ({
                     ],
                     tagFilters,
                 })
-                .then(({results, resultsCount, nbPages}) =>
+                .then(({ results, resultsCount, nbPages }) =>
                     setSearchResults({
                         state: 'ready',
                         results,
                         resultsCount,
                         nbPages,
-                    })
+                    }),
                 )
                 .catch((error) => {
                     console.error(
                         'Error fetching search results from Algolia:',
-                        error
+                        error,
                     )
-                    setSearchResults({state: 'error', error})
+                    setSearchResults({ state: 'error', error })
                 })
         }, SEARCH_DEBOUNCE_DELAY_MS)
 
@@ -135,7 +136,7 @@ export const SearchContextProvider = ({
 
     useEffect(() => {
         initSearchClient<EntitiesArticleRecord | EntitiesCategoryRecord>(
-            helpCenter
+            helpCenter,
         )
             .then((indexOrError) => {
                 if (
@@ -143,7 +144,7 @@ export const SearchContextProvider = ({
                     indexOrError === 'no_index'
                 ) {
                     console.error(
-                        `Error during Algolia search client initialization: ${indexOrError}`
+                        `Error during Algolia search client initialization: ${indexOrError}`,
                     )
 
                     setSearchIndex(null)
@@ -174,7 +175,7 @@ export const useSearchContext = () => {
 
     if (!values) {
         throw new Error(
-            `useSearch should be used inside the SearchContextProvider context provider`
+            `useSearch should be used inside the SearchContextProvider context provider`,
         )
     }
 

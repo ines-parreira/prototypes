@@ -1,7 +1,7 @@
-import {actionFixture} from 'fixtures/infobarCustomActions'
-import {ContentType, HttpMethod} from 'models/api/types'
+import { actionFixture } from 'fixtures/infobarCustomActions'
+import { ContentType, HttpMethod } from 'models/api/types'
 
-import {mapActionToActionPayload} from '../mapActionToActionPayload'
+import { mapActionToActionPayload } from '../mapActionToActionPayload'
 
 describe('mapActionToActionPayload', () => {
     const editableParams = [

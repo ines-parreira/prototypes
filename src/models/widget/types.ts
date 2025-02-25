@@ -1,14 +1,14 @@
-import {Map, List} from 'immutable'
+import { List, Map } from 'immutable'
 
-import {ApiPaginationParams} from 'models/api/types'
+import { ApiPaginationParams } from 'models/api/types'
 import {
-    Link,
     Button,
+    Link,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
-import {THIRD_PARTY_APP_NAME_KEY} from 'state/widgets/constants'
-import {isRecord} from 'utils/types'
+import { THIRD_PARTY_APP_NAME_KEY } from 'state/widgets/constants'
+import { isRecord } from 'utils/types'
 
-import {LEAF_TYPES} from './constants'
+import { LEAF_TYPES } from './constants'
 
 export type ImmutableSource =
     | Map<string, unknown>
@@ -29,7 +29,7 @@ export type Source =
     | boolean
 
 export function isSourceRecord(
-    source: Source
+    source: Source,
 ): source is Record<string, Source> {
     return isRecord(source)
 }
@@ -123,7 +123,7 @@ export type FetchWidgetsOptions = ApiPaginationParams & {
 }
 
 export function isWrapperTemplate(
-    template?: Template
+    template?: Template,
 ): template is WrapperTemplate {
     return template?.type === 'wrapper'
 }

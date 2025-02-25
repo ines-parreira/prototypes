@@ -1,14 +1,15 @@
-import {act, fireEvent, render, waitFor} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {assumeMock, getLastMockCall} from 'utils/testing'
+import { act, fireEvent, render, waitFor } from '@testing-library/react'
 
-import WrapperEditActions, {FormData} from '../WrapperEditActions'
+import { assumeMock, getLastMockCall } from 'utils/testing'
+
+import WrapperEditActions, { FormData } from '../WrapperEditActions'
 import WrapperEditForm from '../WrapperEditForm'
 
 const MOCK_EDIT_FORM_ID = 'wrapper-edit-form'
 jest.mock('../WrapperEditForm', () =>
-    jest.fn(() => <div data-testid={MOCK_EDIT_FORM_ID} />)
+    jest.fn(() => <div data-testid={MOCK_EDIT_FORM_ID} />),
 )
 const WrapperEditFormMock = assumeMock(WrapperEditForm)
 
@@ -27,13 +28,13 @@ describe('WrapperEditActions', () => {
     }
 
     it('should render delete button', () => {
-        const {queryByText} = render(<WrapperEditActions {...defaultProps} />)
+        const { queryByText } = render(<WrapperEditActions {...defaultProps} />)
 
         expect(queryByText(defaultProps.deleteButtonText)).toBeInTheDocument()
     })
 
     it('should call onDelete callback on delete button click', () => {
-        const {getByText} = render(<WrapperEditActions {...defaultProps} />)
+        const { getByText } = render(<WrapperEditActions {...defaultProps} />)
 
         fireEvent.click(getByText(defaultProps.deleteButtonText))
 
@@ -41,22 +42,22 @@ describe('WrapperEditActions', () => {
     })
 
     it('should not render the edit button when no initial data is passed', () => {
-        const {queryByText} = render(
-            <WrapperEditActions {...defaultProps} initialData={undefined} />
+        const { queryByText } = render(
+            <WrapperEditActions {...defaultProps} initialData={undefined} />,
         )
 
         expect(queryByText(defaultProps.editButtonText)).not.toBeInTheDocument()
     })
 
     it('should render edit button', () => {
-        const {queryByText} = render(<WrapperEditActions {...defaultProps} />)
+        const { queryByText } = render(<WrapperEditActions {...defaultProps} />)
 
         expect(queryByText(defaultProps.editButtonText)).toBeInTheDocument()
     })
 
     it('should call onEditStart and show edit form on edit button click', () => {
-        const {getByText, queryByTestId} = render(
-            <WrapperEditActions {...defaultProps} />
+        const { getByText, queryByTestId } = render(
+            <WrapperEditActions {...defaultProps} />,
         )
 
         fireEvent.click(getByText(defaultProps.editButtonText))
@@ -66,29 +67,29 @@ describe('WrapperEditActions', () => {
     })
 
     it('should hide edit form edit and call onEditCancel on second button click', async () => {
-        const {getByText, queryByTestId} = render(
-            <WrapperEditActions {...defaultProps} />
+        const { getByText, queryByTestId } = render(
+            <WrapperEditActions {...defaultProps} />,
         )
 
         fireEvent.click(getByText(defaultProps.editButtonText))
         fireEvent.click(getByText(defaultProps.editButtonText))
 
         await waitFor(() =>
-            expect(queryByTestId(MOCK_EDIT_FORM_ID)).not.toBeInTheDocument()
+            expect(queryByTestId(MOCK_EDIT_FORM_ID)).not.toBeInTheDocument(),
         )
         expect(defaultProps.onEditCancel).toHaveBeenLastCalledWith()
     })
 
     it('should hide edit form edit and call onEditCancel on edit form cancel', async () => {
-        const {getByText, queryByTestId} = render(
-            <WrapperEditActions {...defaultProps} />
+        const { getByText, queryByTestId } = render(
+            <WrapperEditActions {...defaultProps} />,
         )
 
         fireEvent.click(getByText(defaultProps.editButtonText))
         act(() => getLastMockCall(WrapperEditFormMock)[0].onCancel())
 
         await waitFor(() =>
-            expect(queryByTestId(MOCK_EDIT_FORM_ID)).not.toBeInTheDocument()
+            expect(queryByTestId(MOCK_EDIT_FORM_ID)).not.toBeInTheDocument(),
         )
         expect(defaultProps.onEditCancel).toHaveBeenLastCalledWith()
     })
@@ -97,17 +98,17 @@ describe('WrapperEditActions', () => {
         const expectedData: FormData = {
             color: '#ff0000',
         }
-        const {getByText, queryByTestId} = render(
-            <WrapperEditActions {...defaultProps} />
+        const { getByText, queryByTestId } = render(
+            <WrapperEditActions {...defaultProps} />,
         )
 
         fireEvent.click(getByText(defaultProps.editButtonText))
         act(() =>
-            getLastMockCall(WrapperEditFormMock)[0].onSubmit(expectedData)
+            getLastMockCall(WrapperEditFormMock)[0].onSubmit(expectedData),
         )
 
         await waitFor(() =>
-            expect(queryByTestId(MOCK_EDIT_FORM_ID)).not.toBeInTheDocument()
+            expect(queryByTestId(MOCK_EDIT_FORM_ID)).not.toBeInTheDocument(),
         )
         expect(defaultProps.onEditSubmit).toHaveBeenLastCalledWith(expectedData)
     })

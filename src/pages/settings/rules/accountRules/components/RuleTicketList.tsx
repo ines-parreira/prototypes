@@ -1,27 +1,29 @@
-import {CursorPaginationMeta} from '@gorgias/api-queries'
+import React, { useEffect, useState } from 'react'
+
 import _truncate from 'lodash/truncate'
 import _uniqueId from 'lodash/uniqueId'
-import React, {useState, useEffect} from 'react'
-import {Link} from 'react-router-dom'
-import {Table} from 'reactstrap'
+import { Link } from 'react-router-dom'
+import { Table } from 'reactstrap'
 
-import {TicketMessageSourceType} from 'business/types/ticket'
-import {logEvent, SegmentEvent} from 'common/segment'
-import {DateAndTimeFormatting} from 'constants/datetime'
+import { CursorPaginationMeta } from '@gorgias/api-queries'
+
+import { TicketMessageSourceType } from 'business/types/ticket'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { DateAndTimeFormatting } from 'constants/datetime'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import {fetchTicketsByRuleId} from 'models/ticket/resources'
-import {Ticket} from 'models/ticket/types'
+import { fetchTicketsByRuleId } from 'models/ticket/resources'
+import { Ticket } from 'models/ticket/types'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import Loader from 'pages/common/components/Loader/Loader'
 import Navigation from 'pages/common/components/Navigation/Navigation'
-import {ChannelLabel} from 'pages/common/utils/labels'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {formatDatetime} from 'utils'
+import { ChannelLabel } from 'pages/common/utils/labels'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { formatDatetime } from 'utils'
 
 import css from './RuleTicketList.less'
 
@@ -30,32 +32,35 @@ type Props = {
     numTickets?: number
 }
 
-export const RuleTicketList = ({ruleId, numTickets = 10}: Props) => {
+export const RuleTicketList = ({ ruleId, numTickets = 10 }: Props) => {
     const dispatch = useAppDispatch()
     const [paginationMeta, setPaginationMeta] =
         useState<CursorPaginationMeta | null>(null)
     const [ticketList, setTicketList] = useState<Ticket[]>([])
     const currentAccount = useAppSelector(getCurrentAccountState)
-    const [{loading}, handleFetchData] = useAsyncFn(async (cursor?: string) => {
-        try {
-            const {data, meta} = await fetchTicketsByRuleId(ruleId, {
-                cursor: cursor,
-                limit: numTickets,
-            })
-            setTicketList(data)
-            setPaginationMeta(meta)
-        } catch {
-            void dispatch(
-                notify({
-                    message: 'Failed to fetch ticket list',
-                    status: NotificationStatus.Error,
+    const [{ loading }, handleFetchData] = useAsyncFn(
+        async (cursor?: string) => {
+            try {
+                const { data, meta } = await fetchTicketsByRuleId(ruleId, {
+                    cursor: cursor,
+                    limit: numTickets,
                 })
-            )
-        }
-    }, [])
+                setTicketList(data)
+                setPaginationMeta(meta)
+            } catch {
+                void dispatch(
+                    notify({
+                        message: 'Failed to fetch ticket list',
+                        status: NotificationStatus.Error,
+                    }),
+                )
+            }
+        },
+        [],
+    )
 
     const datetimeFormat = useGetDateAndTimeFormat(
-        DateAndTimeFormatting.CompactDate
+        DateAndTimeFormatting.CompactDate,
     )
 
     useEffect(() => {
@@ -141,7 +146,7 @@ export const RuleTicketList = ({ruleId, numTickets = 10}: Props) => {
                                 <LinkedCell ticketId={ticket.id}>
                                     {formatDatetime(
                                         ticket.created_datetime,
-                                        datetimeFormat
+                                        datetimeFormat,
                                     )}
                                 </LinkedCell>
                                 <LinkedCell ticketId={ticket.id}>

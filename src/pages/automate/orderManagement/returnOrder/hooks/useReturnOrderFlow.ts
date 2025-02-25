@@ -1,10 +1,10 @@
-import {useCallback, useMemo} from 'react'
+import { useCallback, useMemo } from 'react'
 
-import {IntegrationType} from 'models/integration/constants'
-import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
+import { IntegrationType } from 'models/integration/constants'
+import { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 
-import {DEFAULT_RETURN_ACTION} from '../constants'
+import { DEFAULT_RETURN_ACTION } from '../constants'
 
 const useReturnOrderFlow = (shopName: string) => {
     const {
@@ -23,7 +23,7 @@ const useReturnOrderFlow = (shopName: string) => {
                 draft.returnOrderPolicy.exceptions = returnOrderFlow.exceptions
             })
         },
-        [handleSelfServiceConfigurationUpdate]
+        [handleSelfServiceConfigurationUpdate],
     )
 
     const returnOrderFlow = useMemo(
@@ -34,7 +34,7 @@ const useReturnOrderFlow = (shopName: string) => {
                     selfServiceConfiguration.returnOrderPolicy.action ??
                     DEFAULT_RETURN_ACTION,
             },
-        [selfServiceConfiguration?.returnOrderPolicy]
+        [selfServiceConfiguration?.returnOrderPolicy],
     )
 
     return {

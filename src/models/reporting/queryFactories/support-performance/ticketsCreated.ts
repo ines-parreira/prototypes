@@ -1,5 +1,5 @@
-import {OrderDirection} from 'models/api/types'
-import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
+import { OrderDirection } from 'models/api/types'
+import { HelpdeskMessageCubeWithJoins } from 'models/reporting/cubes/HelpdeskMessageCube'
 import {
     TicketDimension,
     TicketMeasure,
@@ -9,7 +9,7 @@ import {
     TicketMessagesMember,
     TicketMessagesSegment,
 } from 'models/reporting/cubes/TicketMessagesCube'
-import {CHANNEL_DIMENSION} from 'models/reporting/queryFactories/support-performance/constants'
+import { CHANNEL_DIMENSION } from 'models/reporting/queryFactories/support-performance/constants'
 import {
     addOptionalFilter,
     hasFilter,
@@ -21,7 +21,7 @@ import {
     ReportingQuery,
     TimeSeriesQuery,
 } from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import { StatsFilters } from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     getFilterDateRange,
@@ -35,9 +35,9 @@ import {
 export const ticketsCreatedQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
-    const {agents, ...statFiltersWithoutAgents} = filters
+    const { agents, ...statFiltersWithoutAgents } = filters
     let commonFilters: ReportingFilter[] = [
         {
             member: TicketMember.CreatedDatetime,
@@ -71,7 +71,7 @@ export const ticketsCreatedQueryFactory = (
             ...commonFilters,
             ...statsFiltersToReportingFilters(
                 TicketStatsFiltersMembers,
-                statFiltersWithoutAgents
+                statFiltersWithoutAgents,
             ),
         ],
         ...(sorting
@@ -88,9 +88,9 @@ export const ticketsCreatedPerChannelPerChannelQueryFactory =
 export const ticketsCreatedTimeSeriesQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    granularity: ReportingGranularity
+    granularity: ReportingGranularity,
 ): TimeSeriesQuery<HelpdeskMessageCubeWithJoins> => {
-    const {agents, ...statFiltersWithoutAgents} = filters
+    const { agents, ...statFiltersWithoutAgents } = filters
     let commonFilters: ReportingFilter[] = [...NotSpamNorTrashedTicketsFilter]
 
     if (hasFilter(agents)) {
@@ -123,7 +123,7 @@ export const ticketsCreatedTimeSeriesQueryFactory = (
         filters: [
             ...statsFiltersToReportingFilters(
                 TicketStatsFiltersMembers,
-                statFiltersWithoutAgents
+                statFiltersWithoutAgents,
             ),
             ...commonFilters,
         ],
@@ -133,7 +133,7 @@ export const ticketsCreatedTimeSeriesQueryFactory = (
 export const ticketsCreatedPerTicketDrillDownQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
     ...ticketsCreatedQueryFactory(filters, timezone),
     measures: [],

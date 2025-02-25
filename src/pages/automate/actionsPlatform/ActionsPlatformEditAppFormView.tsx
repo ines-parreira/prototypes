@@ -1,9 +1,9 @@
 import React from 'react'
 
-import {Redirect, useHistory, useParams} from 'react-router-dom'
+import { Redirect, useHistory, useParams } from 'react-router-dom'
 
-import {IntegrationType} from 'models/integration/constants'
-import {useGetActionsApp} from 'models/workflows/queries'
+import { IntegrationType } from 'models/integration/constants'
+import { useGetActionsApp } from 'models/workflows/queries'
 import AutomateFormView from 'pages/automate/common/components/AutomateFormView'
 
 import ActionsPlatformAppForm from './components/ActionsPlatformAppForm'
@@ -13,14 +13,16 @@ import useEditActionsApp from './hooks/useEditActionsApp'
 const ActionsPlatformEditAppFormView = () => {
     const history = useHistory()
 
-    const {id} = useParams<{
+    const { id } = useParams<{
         id: string
     }>()
 
-    const {data: actionsApp, isInitialLoading: isGetActionsAppInitialLoading} =
-        useGetActionsApp(id)
-    const {apps, isLoading: isAppsLoading} = useApps([IntegrationType.App])
-    const {editActionsApp, isLoading: isEditActionsAppLoading} =
+    const {
+        data: actionsApp,
+        isInitialLoading: isGetActionsAppInitialLoading,
+    } = useGetActionsApp(id)
+    const { apps, isLoading: isAppsLoading } = useApps([IntegrationType.App])
+    const { editActionsApp, isLoading: isEditActionsAppLoading } =
         useEditActionsApp(id)
 
     const isLoading = isAppsLoading || isGetActionsAppInitialLoading
@@ -60,7 +62,7 @@ const ActionsPlatformEditAppFormView = () => {
                 value={actionsApp}
                 apps={apps}
                 onSubmit={async (value) => {
-                    await editActionsApp([{id: value.id}, value])
+                    await editActionsApp([{ id: value.id }, value])
 
                     history.push('/app/automation/actions-platform/apps')
                 }}

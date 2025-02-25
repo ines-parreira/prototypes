@@ -1,6 +1,6 @@
-import {PayloadActionCreator} from '@reduxjs/toolkit'
+import { PayloadActionCreator } from '@reduxjs/toolkit'
 
-import {LINK_EDITION_STARTED, LINK_EDITION_ENDED} from './constants'
+import { LINK_EDITION_ENDED, LINK_EDITION_STARTED } from './constants'
 
 export type EditorState = {
     isEditingLink: boolean

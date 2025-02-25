@@ -1,5 +1,6 @@
+import React, { ReactNode } from 'react'
+
 import classnames from 'classnames'
-import React, {ReactNode} from 'react'
 
 import css from './PageHeader.less'
 
@@ -9,7 +10,7 @@ type Props = {
     children?: ReactNode
 }
 
-const PageHeader = ({title, children, className}: Props) => {
+const PageHeader = ({ title, children, className }: Props) => {
     return (
         <div className={classnames('page-header', css.pageHeader, className)}>
             {typeof title === 'string' ? (

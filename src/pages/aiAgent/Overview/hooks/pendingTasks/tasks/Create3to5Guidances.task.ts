@@ -1,5 +1,5 @@
-import {RuleEngineData, RuleEngineRoutes} from '../ruleEngine'
-import {Task} from './Task'
+import { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
+import { Task } from './Task'
 
 export class Create3to5GuidancesTask extends Task {
     constructor(data: RuleEngineData, routes: RuleEngineRoutes) {
@@ -8,7 +8,7 @@ export class Create3to5GuidancesTask extends Task {
             'Expand AI Agent’s expertise on key topics or inquiries',
             'RECOMMENDED',
             data,
-            routes
+            routes,
         )
     }
 
@@ -18,7 +18,7 @@ export class Create3to5GuidancesTask extends Task {
     }
 
     protected getFeatureUrl({
-        routes: {aiAgentRoutes},
+        routes: { aiAgentRoutes },
     }: {
         data: RuleEngineData
         routes: RuleEngineRoutes

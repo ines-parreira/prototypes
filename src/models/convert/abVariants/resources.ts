@@ -1,10 +1,10 @@
-import {RevenueAddonClient} from 'rest_api/revenue_addon_api/client'
+import { RevenueAddonClient } from 'rest_api/revenue_addon_api/client'
 
-import {ABVariantParams, ABStopRequestPayload} from './types'
+import { ABStopRequestPayload, ABVariantParams } from './types'
 
 export const createABGroup = async (
     client: RevenueAddonClient | undefined,
-    params: ABVariantParams
+    params: ABVariantParams,
 ) => {
     if (!client) return null
 
@@ -13,7 +13,7 @@ export const createABGroup = async (
 
 export const startABGroup = async (
     client: RevenueAddonClient | undefined,
-    params: ABVariantParams
+    params: ABVariantParams,
 ) => {
     if (!client) return null
 
@@ -23,7 +23,7 @@ export const startABGroup = async (
 export const stopABGroup = async (
     client: RevenueAddonClient | undefined,
     params: ABVariantParams,
-    data: ABStopRequestPayload
+    data: ABStopRequestPayload,
 ) => {
     if (!client) return null
 
@@ -32,7 +32,7 @@ export const stopABGroup = async (
 
 export const pauseABGroup = async (
     client: RevenueAddonClient | undefined,
-    params: ABVariantParams
+    params: ABVariantParams,
 ) => {
     if (!client) return null
 

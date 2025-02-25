@@ -1,15 +1,16 @@
+import React, { useCallback, useRef, useState } from 'react'
+
 import {
-    useKnockFeed,
     FilterStatus,
     NotificationFeedHeaderProps,
+    useKnockFeed,
 } from '@knocklabs/react'
 import cn from 'classnames'
 import _capitalize from 'lodash/capitalize'
-import React, {useCallback, useRef, useState} from 'react'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {NotificationCenterEventTypes} from 'common/segment/types'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { NotificationCenterEventTypes } from 'common/segment/types'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
@@ -35,7 +36,7 @@ export default function FeedHeader({
     setFilterStatus,
     onToggleVisibility,
 }: FeedHeaderProps) {
-    const {feedClient} = useKnockFeed()
+    const { feedClient } = useKnockFeed()
     const count = useCount()
     const [isFilterDropdownOpen, setIsFilterDropdownOpen] = useState(false)
     const filterButtonRef = useRef<HTMLButtonElement>(null)
@@ -49,7 +50,7 @@ export default function FeedHeader({
             setFilterStatus(status)
             setIsFilterDropdownOpen(false)
         },
-        [setFilterStatus]
+        [setFilterStatus],
     )
 
     const markAllAsRead = useCallback(() => {

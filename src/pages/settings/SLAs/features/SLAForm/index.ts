@@ -1,1 +1,1 @@
-export {default as SLAForm} from './controllers/SLAFormController'
+export { default as SLAForm } from './controllers/SLAFormController'

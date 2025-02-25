@@ -1,7 +1,8 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {NumberedPagination} from './NumberedPagination'
+import { Meta, Story } from '@storybook/react'
+
+import { NumberedPagination } from './NumberedPagination'
 
 const storyConfig: Meta = {
     title: 'Navigation/Pagination/NumberedPagination',
@@ -71,7 +72,7 @@ const storyConfig: Meta = {
 }
 
 const DefaultTemplate: Story<ComponentProps<typeof NumberedPagination>> = (
-    props
+    props,
 ) => <NumberedPagination {...props} />
 
 export const Default = DefaultTemplate.bind({})

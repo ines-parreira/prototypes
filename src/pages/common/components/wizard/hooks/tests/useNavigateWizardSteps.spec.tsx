@@ -1,13 +1,13 @@
-import {fireEvent, render} from '@testing-library/react'
 import React from 'react'
+
+import { fireEvent, render } from '@testing-library/react'
 
 import Wizard from '../../Wizard'
 import WizardStep from '../../WizardStep'
-
 import useNavigateWizardSteps from '../useNavigateWizardSteps'
 
 const TestComponent = () => {
-    const {goToPreviousStep, goToNextStep} = useNavigateWizardSteps()
+    const { goToPreviousStep, goToNextStep } = useNavigateWizardSteps()
 
     return (
         <>
@@ -19,13 +19,13 @@ const TestComponent = () => {
 
 describe('useNavigateSteps', () => {
     it('navigates forward and backwards', () => {
-        const {container, getByText} = render(
+        const { container, getByText } = render(
             <Wizard steps={['foo', 'bar', 'baz']} startAt="bar">
                 <WizardStep name="foo">step 1</WizardStep>
                 <WizardStep name="bar">step 2</WizardStep>
                 <WizardStep name="baz">step 3</WizardStep>
                 <TestComponent />
-            </Wizard>
+            </Wizard>,
         )
 
         expect(container).toHaveTextContent('step 2')

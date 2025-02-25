@@ -1,16 +1,17 @@
-import classNames from 'classnames'
 import React from 'react'
 
+import classNames from 'classnames'
+
 import cssNavbar from 'assets/css/navbar.less'
-import {ShopType} from 'models/selfServiceConfiguration/types'
-import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { ShopType } from 'models/selfServiceConfiguration/types'
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import {
     OnboardingState,
     useAiAgentOnboardingState,
 } from 'pages/aiAgent/hooks/useAiAgentOnboardingState'
 import NavbarLink from 'pages/common/components/navbar/NavbarLink'
 import NavbarSectionBlock from 'pages/common/components/navbar/NavbarSectionBlock'
-import {getIconFromType} from 'state/integrations/helpers'
+import { getIconFromType } from 'state/integrations/helpers'
 
 import css from './AiAgentNavbarSectionBlock.less'
 
@@ -26,7 +27,7 @@ export const AiAgentNavbarSectionBlock = ({
     shopName,
     ...props
 }: Props) => {
-    const {navigationItems, routes} = useAiAgentNavigation({shopName})
+    const { navigationItems, routes } = useAiAgentNavigation({ shopName })
 
     const onboardingState = useAiAgentOnboardingState(shopName)
 
@@ -52,7 +53,7 @@ export const AiAgentNavbarSectionBlock = ({
                         key={item.route}
                         className={classNames(
                             cssNavbar['link-wrapper'],
-                            cssNavbar.isNested
+                            cssNavbar.isNested,
                         )}
                         {...(item.dataCanduId && {
                             ['data-candu-id']: item.dataCanduId,
@@ -70,7 +71,7 @@ export const AiAgentNavbarSectionBlock = ({
                     key={routes.main}
                     className={classNames(
                         cssNavbar['link-wrapper'],
-                        cssNavbar.isNested
+                        cssNavbar.isNested,
                     )}
                 >
                     <NavbarLink to={routes.main}>

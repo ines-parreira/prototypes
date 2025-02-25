@@ -1,9 +1,10 @@
-import {screen} from '@testing-library/react'
 import React from 'react'
 
-import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
+import { screen } from '@testing-library/react'
 
-import {AiAgentView} from '../AiAgentView'
+import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
+
+import { AiAgentView } from '../AiAgentView'
 
 // Mock components used within AiAgentView
 jest.mock('pages/common/components/Loader/Loader', () => () => (
@@ -13,7 +14,7 @@ jest.mock('pages/common/components/Loader/Loader', () => () => (
 jest.mock(
     'pages/common/components/SecondaryNavbar/SecondaryNavbar',
     () =>
-        ({children}: {children: React.ReactNode}) => <div>{children}</div>
+        ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
 )
 
 describe('AiAgentView', () => {
@@ -24,22 +25,24 @@ describe('AiAgentView', () => {
                 action={<button>Action</button>}
             >
                 <div>Content</div>
-            </AiAgentView>
+            </AiAgentView>,
         )
 
         expect(screen.getByText('Test Title')).toBeInTheDocument()
-        expect(screen.getByRole('button', {name: 'Action'})).toBeInTheDocument()
+        expect(
+            screen.getByRole('button', { name: 'Action' }),
+        ).toBeInTheDocument()
     })
 
     test('renders with headerNavbarItems', () => {
         const navbarItems = [
-            {route: '/route1', title: 'Route 1'},
-            {route: '/route2', title: 'Route 2', exact: false},
+            { route: '/route1', title: 'Route 1' },
+            { route: '/route2', title: 'Route 2', exact: false },
         ]
         renderWithQueryClientProvider(
             <AiAgentView headerNavbarItems={navbarItems}>
                 <div>Content</div>
-            </AiAgentView>
+            </AiAgentView>,
         )
         expect(screen.getByText('Route 1')).toBeInTheDocument()
         expect(screen.getByText('Route 2')).toBeInTheDocument()
@@ -49,7 +52,7 @@ describe('AiAgentView', () => {
         renderWithQueryClientProvider(
             <AiAgentView isLoading>
                 <div>Content</div>
-            </AiAgentView>
+            </AiAgentView>,
         )
         expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
@@ -58,7 +61,7 @@ describe('AiAgentView', () => {
         renderWithQueryClientProvider(
             <AiAgentView>
                 <div>Content</div>
-            </AiAgentView>
+            </AiAgentView>,
         )
         expect(screen.getByText('Content')).toBeInTheDocument()
     })

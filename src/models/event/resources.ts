@@ -1,14 +1,14 @@
-import {AxiosRequestConfig} from 'axios'
+import { AxiosRequestConfig } from 'axios'
 
 import client from 'models/api/resources'
-import {ApiListResponseCursorPagination} from 'models/api/types'
-import {deepMapKeysToSnakeCase} from 'models/api/utils'
+import { ApiListResponseCursorPagination } from 'models/api/types'
+import { deepMapKeysToSnakeCase } from 'models/api/utils'
 
-import {Event, FetchEventsOptions} from './types'
+import { Event, FetchEventsOptions } from './types'
 
 export const fetchEvents = async (
     options: FetchEventsOptions = {},
-    config: AxiosRequestConfig = {}
+    config: AxiosRequestConfig = {},
 ) => {
     const params = deepMapKeysToSnakeCase(options)
 
@@ -20,7 +20,7 @@ export const fetchEvents = async (
                 indexes: null,
             },
             ...config,
-        }
+        },
     )
     return res
 }

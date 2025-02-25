@@ -1,18 +1,19 @@
-import {render, fireEvent, waitFor} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { fireEvent, render, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {logEvent} from 'common/segment'
-import {account} from 'fixtures/account'
-import {user} from 'fixtures/users'
+import { logEvent } from 'common/segment'
+import { account } from 'fixtures/account'
+import { user } from 'fixtures/users'
 import client from 'models/api/resources'
-import {message} from 'models/ticket/tests/mocks'
-import {TicketMessageIntent} from 'models/ticket/types'
+import { message } from 'models/ticket/tests/mocks'
+import { TicketMessageIntent } from 'models/ticket/types'
 
-import {IntentsFeedback} from '../IntentsFeedback'
+import { IntentsFeedback } from '../IntentsFeedback'
 
 jest.mock('common/segment')
 jest.mock('state/ticket/actions')
@@ -55,56 +56,56 @@ describe('<IntentsFeedback />', () => {
     describe('Single initial intent', () => {
         beforeEach(() => {
             jest.resetAllMocks()
-            postMock.mockResolvedValue({data: {intents: messageIntents}})
+            postMock.mockResolvedValue({ data: { intents: messageIntents } })
             message.intents = messageIntents
         })
 
         it('should render active and available intents', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <IntentsFeedback {...minProps} />
-                </Provider>
+                </Provider>,
             )
             expect(container.firstChild).toMatchSnapshot()
         })
         it('should add an intent on click add', () => {
-            const {getAllByText, container} = render(
+            const { getAllByText, container } = render(
                 <Provider store={store}>
                     <IntentsFeedback {...minProps} />
-                </Provider>
+                </Provider>,
             )
             fireEvent.click(getAllByText('add')[0])
             expect(container).toMatchSnapshot()
         })
         it('should remove an intent on click remove', () => {
-            const {getAllByText, container} = render(
+            const { getAllByText, container } = render(
                 <Provider store={store}>
                     <IntentsFeedback {...minProps} />
-                </Provider>
+                </Provider>,
             )
             fireEvent.click(getAllByText('close')[0])
             expect(container).toMatchSnapshot()
         })
         it('should send the unsaved intents to the backend on dropdown toggle', () => {
-            const {getAllByText, getByRole} = render(
+            const { getAllByText, getByRole } = render(
                 <Provider store={store}>
                     <IntentsFeedback {...minProps} />
-                </Provider>
+                </Provider>,
             )
             fireEvent.click(getAllByText('add')[0])
-            fireEvent.mouseLeave(getByRole('menu', {hidden: true}))
+            fireEvent.mouseLeave(getByRole('menu', { hidden: true }))
             expect(postMock.mock.calls.length).toBe(1)
             expect(postMock.mock.calls).toMatchSnapshot()
         })
         it('should not call the API if no change was made to active intents', () => {
-            const {getAllByText, getByRole} = render(
+            const { getAllByText, getByRole } = render(
                 <Provider store={store}>
                     <IntentsFeedback {...minProps} />
-                </Provider>
+                </Provider>,
             )
             fireEvent.click(getAllByText('add')[0]) // add bar/intent
             fireEvent.click(getAllByText('close')[0]) // remove bar/intent
-            fireEvent.mouseLeave(getByRole('menu', {hidden: true}))
+            fireEvent.mouseLeave(getByRole('menu', { hidden: true }))
             expect(postMock).not.toHaveBeenCalled()
         })
     })
@@ -130,27 +131,27 @@ describe('<IntentsFeedback />', () => {
 
         beforeEach(() => {
             jest.resetAllMocks()
-            postMock.mockResolvedValue({data: {intents: messageIntents}})
+            postMock.mockResolvedValue({ data: { intents: messageIntents } })
             message.intents = messageIntents
         })
 
         it('should not be able to add intent when three are active', () => {
-            const {getAllByText, getByRole} = render(
+            const { getAllByText, getByRole } = render(
                 <Provider store={store}>
                     <IntentsFeedback {...minProps} />
-                </Provider>
+                </Provider>,
             )
             fireEvent.click(getAllByText('add')[0])
-            fireEvent.mouseLeave(getByRole('menu', {hidden: true}))
+            fireEvent.mouseLeave(getByRole('menu', { hidden: true }))
             expect(postMock).not.toHaveBeenCalled()
         })
 
         describe('Segment tracking', () => {
             it('should send event on menu toggle', async () => {
-                const {getByRole} = render(
+                const { getByRole } = render(
                     <Provider store={store}>
                         <IntentsFeedback {...minProps} />
-                    </Provider>
+                    </Provider>,
                 )
                 fireEvent.click(getByRole('button'))
                 await waitFor(() => expect(logEventMock).toHaveBeenCalled())
@@ -158,13 +159,13 @@ describe('<IntentsFeedback />', () => {
             })
 
             it('should send event on curation', async () => {
-                const {getAllByText, getByRole} = render(
+                const { getAllByText, getByRole } = render(
                     <Provider store={store}>
                         <IntentsFeedback {...minProps} />
-                    </Provider>
+                    </Provider>,
                 )
                 fireEvent.click(getAllByText('close')[0])
-                fireEvent.mouseLeave(getByRole('menu', {hidden: true}))
+                fireEvent.mouseLeave(getByRole('menu', { hidden: true }))
                 await waitFor(() => expect(logEventMock).toHaveBeenCalled())
                 expect(logEventMock.mock.calls).toMatchSnapshot()
             })

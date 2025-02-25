@@ -9,18 +9,18 @@ import {
     useTicketAverageHandleTimePerChannel,
     useTicketsRepliedMetricPerChannel,
 } from 'hooks/reporting/support-performance/channels/metricsPerChannel'
-import {usePercentageOfCreatedTicketsMetricPerChannel} from 'hooks/reporting/support-performance/channels/usePercentageOfCreatedTicketsMetricPerChannel'
-import {ticketHandleTimePerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
-import {closedTicketsPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
-import {customerSatisfactionMetricDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
-import {firstResponseTimeMetricPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
-import {resolutionTimeMetricPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
-import {messagesSentMetricPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
-import {ticketsCreatedPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsCreated'
-import {ticketsRepliedMetricPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
-import {isMediumOrSmallScreen} from 'pages/common/utils/mobile'
-import {MetricValueFormat} from 'pages/stats/common/utils'
-import {DrillDownQueryFactory} from 'pages/stats/DrillDownTableConfig'
+import { usePercentageOfCreatedTicketsMetricPerChannel } from 'hooks/reporting/support-performance/channels/usePercentageOfCreatedTicketsMetricPerChannel'
+import { ticketHandleTimePerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
+import { closedTicketsPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/closedTickets'
+import { customerSatisfactionMetricDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
+import { firstResponseTimeMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
+import { resolutionTimeMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
+import { messagesSentMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesSent'
+import { ticketsCreatedPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsCreated'
+import { ticketsRepliedMetricPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsReplied'
+import { isMediumOrSmallScreen } from 'pages/common/utils/mobile'
+import { MetricValueFormat } from 'pages/stats/common/utils'
+import { DrillDownQueryFactory } from 'pages/stats/DrillDownTableConfig'
 import {
     METRIC_COLUMN_WIDTH,
     MOBILE_METRIC_COLUMN_WIDTH,
@@ -29,7 +29,7 @@ import {
     OverviewMetric,
     OverviewMetricConfig,
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
-import {TooltipData} from 'pages/stats/types'
+import { TooltipData } from 'pages/stats/types'
 import {
     CUSTOMER_SATISFACTION_LABEL,
     MEDIAN_FIRST_RESPONSE_TIME_LABEL,

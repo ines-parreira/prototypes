@@ -1,1 +1,1 @@
-export {default as AutoQA} from './components/AutoQA'
+export { default as AutoQA } from './components/AutoQA'

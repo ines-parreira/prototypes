@@ -1,6 +1,7 @@
 import React from 'react'
 
-import {getEmojiFlag} from '../../utils/locale'
+import { getEmojiFlag } from '../../utils/locale'
+
 import css from './LanguageBullet.less'
 
 type Props = {
@@ -9,7 +10,7 @@ type Props = {
     count?: number
 }
 
-export const LanguageBullet = ({id, code, count = 0}: Props) => {
+export const LanguageBullet = ({ id, code, count = 0 }: Props) => {
     if (!code && !count) {
         return null
     }

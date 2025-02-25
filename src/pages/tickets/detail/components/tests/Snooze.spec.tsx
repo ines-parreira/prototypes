@@ -1,10 +1,11 @@
-import {render} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import _noop from 'lodash/noop'
-import {Moment} from 'moment'
 import React from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { render } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import _noop from 'lodash/noop'
+import { Moment } from 'moment'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import useShortcuts from 'hooks/useShortcuts'
 
@@ -37,7 +38,7 @@ jest.mock(
                     </button>
                 </div>
             )
-        }
+        },
 )
 
 const useAppSelectorMock = useAppSelector as jest.Mock
@@ -52,8 +53,8 @@ describe('Snooze', () => {
     })
 
     it('should show a tooltip when hovering the button', async () => {
-        const {findByText, getByText, queryByText} = render(
-            <Snooze onUpdate={_noop} />
+        const { findByText, getByText, queryByText } = render(
+            <Snooze onUpdate={_noop} />,
         )
 
         const tip = queryByText('Snooze ticket')
@@ -78,7 +79,7 @@ describe('Snooze', () => {
     })
 
     it('should show the snooze picker when not currently snoozed', () => {
-        const {getByText} = render(<Snooze onUpdate={_noop} />)
+        const { getByText } = render(<Snooze onUpdate={_noop} />)
 
         const el = getByText('snooze')
         expect(el).toBeInTheDocument()
@@ -87,22 +88,22 @@ describe('Snooze', () => {
         userEvent.click(el)
         expect(logEvent).toHaveBeenCalledWith(
             SegmentEvent.SnoozeButtonClicked,
-            {isSnoozed: false}
+            { isSnoozed: false },
         )
         expect(getByText('TicketSnoozePicker open')).toBeInTheDocument()
     })
 
     it('should update the snooze time', () => {
         const onUpdate = jest.fn()
-        const {getByText} = render(
-            <Snooze until="2024-01-01T00:00:00" onUpdate={onUpdate} />
+        const { getByText } = render(
+            <Snooze until="2024-01-01T00:00:00" onUpdate={onUpdate} />,
         )
 
         const snoozeEl = getByText('snooze')
         userEvent.click(snoozeEl)
         expect(logEvent).toHaveBeenCalledWith(
             SegmentEvent.SnoozeButtonClicked,
-            {isSnoozed: true}
+            { isSnoozed: true },
         )
 
         expect(getByText('Change snooze time')).toBeInTheDocument()
@@ -110,14 +111,14 @@ describe('Snooze', () => {
         expect(onUpdate).toHaveBeenCalled()
         expect(
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            (onUpdate.mock.calls[0][0] as Moment).format('YYYY-MM-DD')
+            (onUpdate.mock.calls[0][0] as Moment).format('YYYY-MM-DD'),
         ).toEqual('2024-01-01')
     })
 
     it('should clear the snooze time', () => {
         const onUpdate = jest.fn()
-        const {getByText} = render(
-            <Snooze until="2024-01-01T00:00:00" onUpdate={onUpdate} />
+        const { getByText } = render(
+            <Snooze until="2024-01-01T00:00:00" onUpdate={onUpdate} />,
         )
 
         const snoozeEl = getByText('snooze')

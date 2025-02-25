@@ -1,12 +1,13 @@
-import React, {memo} from 'react'
-import {NodeProps} from 'reactflow'
+import React, { memo } from 'react'
+
+import { NodeProps } from 'reactflow'
 
 import VisualBuilderActionTag from 'pages/automate/workflows/components/VisualBuilderActionTag'
 import {
     useVisualBuilderNodeProps,
     VisualBuilderNodeProps,
 } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
-import {ConditionsNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { ConditionsNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 import EdgeBlock from '../components/EdgeBlock'
 import NodeDeleteIcon from '../components/NodeDeleteIcon'
@@ -46,7 +47,7 @@ const ConditionsNode = memo(function ConditionsNode({
 })
 
 export default function ConditionsNodeWrapper(
-    node: NodeProps<ConditionsNodeType['data']>
+    node: NodeProps<ConditionsNodeType['data']>,
 ) {
     const commonProps = useVisualBuilderNodeProps(node)
 

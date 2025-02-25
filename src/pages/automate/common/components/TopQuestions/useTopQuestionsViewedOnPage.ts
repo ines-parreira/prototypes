@@ -1,5 +1,6 @@
-import {fromPairs} from 'lodash'
-import {useCallback, useEffect, useMemo, useRef} from 'react'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
+
+import { fromPairs } from 'lodash'
 
 import useEffectOnce from 'hooks/useEffectOnce'
 import useLocalStorage from 'hooks/useLocalStorage'
@@ -11,7 +12,7 @@ export const useTopQuestionsViewedOnPage = (
     storeIntegrationId: number,
     helpCenterId: number,
     page: PagesWithTopQuestions,
-    batchDatetime: Date
+    batchDatetime: Date,
 ): boolean => {
     const previousStoreIntegrationId = usePrevious(storeIntegrationId)
     const previousHelpCenterId = usePrevious(helpCenterId)
@@ -30,7 +31,7 @@ export const useTopQuestionsViewedOnPage = (
                 storeIntegrationId,
                 helpCenterId,
                 batchDatetime,
-                localStorageBatches
+                localStorageBatches,
             ).viewedOnPages.includes(page),
         [
             storeIntegrationId,
@@ -38,7 +39,7 @@ export const useTopQuestionsViewedOnPage = (
             batchDatetime,
             page,
             localStorageBatches,
-        ]
+        ],
     )
 
     const setViewedOnPage = useCallback(
@@ -46,14 +47,14 @@ export const useTopQuestionsViewedOnPage = (
             storeIntegrationId: number,
             helpCenterId: number,
             page: PagesWithTopQuestions,
-            batchDatetime: Date
+            batchDatetime: Date,
         ) => {
             setLocalStorageBatches((previousBatches) => {
                 const currentBatch = getNonExpiredBatchOrNew(
                     storeIntegrationId,
                     helpCenterId,
                     batchDatetime,
-                    previousBatches
+                    previousBatches,
                 )
 
                 return {
@@ -61,13 +62,13 @@ export const useTopQuestionsViewedOnPage = (
                     [makeKey(storeIntegrationId, helpCenterId)]: {
                         ...currentBatch,
                         viewedOnPages: Array.from(
-                            new Set([...currentBatch.viewedOnPages, page])
+                            new Set([...currentBatch.viewedOnPages, page]),
                         ),
                     },
                 }
             })
         },
-        [setLocalStorageBatches]
+        [setLocalStorageBatches],
     )
 
     useEffect(() => {
@@ -83,7 +84,7 @@ export const useTopQuestionsViewedOnPage = (
                 previousStoreIntegrationId,
                 previousHelpCenterId,
                 previousPage,
-                batchDatetime
+                batchDatetime,
             )
         }
     }, [
@@ -103,9 +104,15 @@ export const useTopQuestionsViewedOnPage = (
                 storeIntegrationId,
                 helpCenterId,
                 page,
-                batchDatetime
+                batchDatetime,
             ),
-        [storeIntegrationId, helpCenterId, page, batchDatetime, setViewedOnPage]
+        [
+            storeIntegrationId,
+            helpCenterId,
+            page,
+            batchDatetime,
+            setViewedOnPage,
+        ],
     )
 
     const setViewedOnLatestPageRef = useRef<() => void>(() => {})
@@ -150,9 +157,9 @@ const removeOldValues = (values: LocalStorageTopQuestionsBatches) => {
 
     return fromPairs(
         Object.entries(values).filter(
-            ([__key, {latestBatchDatetime}]) =>
-                new Date(latestBatchDatetime).getTime() > oneYearAgoMs
-        )
+            ([__key, { latestBatchDatetime }]) =>
+                new Date(latestBatchDatetime).getTime() > oneYearAgoMs,
+        ),
     )
 }
 
@@ -160,7 +167,7 @@ const getNonExpiredBatchOrNew = (
     storeIntegrationId: number,
     helpCenterId: number,
     batchDatetime: Date,
-    batches: LocalStorageTopQuestionsBatches | undefined
+    batches: LocalStorageTopQuestionsBatches | undefined,
 ): LocalStorageTopQuestionsBatch => {
     const batchKey = makeKey(storeIntegrationId, helpCenterId)
 

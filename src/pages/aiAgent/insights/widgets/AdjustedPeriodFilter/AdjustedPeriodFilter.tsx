@@ -1,29 +1,31 @@
-import moment, {Moment} from 'moment/moment'
-import React, {useState} from 'react'
+import React, { useState } from 'react'
+
+import moment, { Moment } from 'moment/moment'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
-import {PeriodFilter} from 'pages/stats/common/filters/PeriodFilter'
-
-import {dateInPastFromStartOfToday, endOfToday} from 'pages/stats/common/utils'
-
+import { PeriodFilter } from 'pages/stats/common/filters/PeriodFilter'
+import {
+    dateInPastFromStartOfToday,
+    endOfToday,
+} from 'pages/stats/common/utils'
 import {
     getNewSetOfRanges,
     LAST_MONTH,
     LAST_WEEK_MON,
     LAST_WEEK_SUN,
     MONTH_TO_DATE,
+    PAST_7_DAYS,
     PAST_30_DAYS,
     PAST_60_DAYS,
-    PAST_7_DAYS,
     PAST_90_DAYS,
     PAST_YEAR,
     TODAY,
     YESTERDAY,
 } from 'pages/stats/constants'
-import {getPageStatsFilters} from 'state/stats/selectors'
-import {defaultStatsFilters, setStatsFilters} from 'state/stats/statsSlice'
+import { getPageStatsFilters } from 'state/stats/selectors'
+import { defaultStatsFilters, setStatsFilters } from 'state/stats/statsSlice'
 
 const HOURS_TO_REMOVE = 72
 
@@ -108,14 +110,16 @@ export const AdjustedPeriodFilter = () => {
                     period: {
                         start_datetime: moment(
                             subtractsPeriodWithoutData(
-                                dateInPastFromStartOfToday(DEFAULT_DAYS_TO_SHOW)
-                            )
+                                dateInPastFromStartOfToday(
+                                    DEFAULT_DAYS_TO_SHOW,
+                                ),
+                            ),
                         ).format(),
                         end_datetime: moment(
-                            subtractsPeriodWithoutData(endOfToday())
+                            subtractsPeriodWithoutData(endOfToday()),
                         ).format(),
                     },
-                })
+                }),
             )
         }
 

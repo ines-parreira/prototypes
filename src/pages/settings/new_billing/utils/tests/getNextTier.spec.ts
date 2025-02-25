@@ -7,7 +7,7 @@ import {
     convertProduct,
 } from 'fixtures/productPrices'
 
-import {getNextTier} from '../getNextTier'
+import { getNextTier } from '../getNextTier'
 
 describe('getNextTier', () => {
     it.each([

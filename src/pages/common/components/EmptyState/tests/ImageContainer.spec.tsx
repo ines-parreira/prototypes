@@ -1,5 +1,6 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import ImageContainer from 'pages/common/components/EmptyState/ImageContainer'
 

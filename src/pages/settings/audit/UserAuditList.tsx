@@ -1,10 +1,12 @@
-import {CursorPaginationMeta} from '@gorgias/api-queries'
-import axios, {AxiosError, CancelToken} from 'axios'
+import React, { useEffect, useMemo, useState } from 'react'
+
+import axios, { AxiosError, CancelToken } from 'axios'
 import _isEmpty from 'lodash/isEmpty'
 import _isEqual from 'lodash/isEqual'
 import moment from 'moment-timezone'
-import React, {useEffect, useMemo, useState} from 'react'
-import {Table} from 'reactstrap'
+import { Table } from 'reactstrap'
+
+import { CursorPaginationMeta } from '@gorgias/api-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -13,11 +15,11 @@ import useCancellableRequest from 'hooks/useCancellableRequest'
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import usePrevious from 'hooks/usePrevious'
-import {CursorDirection} from 'models/api/types'
-import {fetchEvents} from 'models/event/resources'
+import { CursorDirection } from 'models/api/types'
+import { fetchEvents } from 'models/event/resources'
 import {
-    EventType,
     EventsDatetimeOperator,
+    EventType,
     FetchEventsOptions,
 } from 'models/event/types'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -25,18 +27,19 @@ import Navigation from 'pages/common/components/Navigation/Navigation'
 import PageHeader from 'pages/common/components/PageHeader'
 import PeriodPicker from 'pages/stats/common/PeriodPicker'
 import SelectFilter from 'pages/stats/common/SelectFilter'
-import {getHumanAgents} from 'state/agents/selectors'
-import {auditLogEventsFetched} from 'state/entities/auditLogEvents/actions'
-import {getAuditLogEvents} from 'state/entities/auditLogEvents/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {humanizeString} from 'utils'
-import {getMoment} from 'utils/date'
+import { getHumanAgents } from 'state/agents/selectors'
+import { auditLogEventsFetched } from 'state/entities/auditLogEvents/actions'
+import { getAuditLogEvents } from 'state/entities/auditLogEvents/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { humanizeString } from 'utils'
+import { getMoment } from 'utils/date'
+
+import { DATETIME_LABEL_FORMAT } from './constants'
+import UserAuditRow from './UserAuditRow'
 
 import settings from '../settings.less'
-import {DATETIME_LABEL_FORMAT} from './constants'
 import css from './style.less'
-import UserAuditRow from './UserAuditRow'
 
 const _startOfToday = () => getMoment().startOf('day')
 const _endOfToday = () => getMoment().endOf('day')
@@ -56,10 +59,10 @@ const UserAuditList = () => {
 
     const [meta, setMeta] = useState<CursorPaginationMeta | null>(null)
     const [startDatetime, setStartDatetime] = useState<string>(
-        _startOfToday().format()
+        _startOfToday().format(),
     )
     const [endDatetime, setEndDatetime] = useState<string>(
-        _endOfToday().format()
+        _endOfToday().format(),
     )
     const [userIds, setUserIds] = useState<Array<number>>([])
     const [types, setTypes] = useState<Array<EventType>>([])
@@ -92,7 +95,7 @@ const UserAuditList = () => {
             }
 
             try {
-                const res = await fetchEvents(params, {cancelToken})
+                const res = await fetchEvents(params, { cancelToken })
                 setMeta(res.data.meta)
                 dispatch(auditLogEventsFetched(res.data.data))
             } catch (error) {
@@ -100,7 +103,7 @@ const UserAuditList = () => {
                     return
                 }
                 const responseError = error as AxiosError<{
-                    error?: {msg: string}
+                    error?: { msg: string }
                 }>
                 await dispatch(
                     notify({
@@ -108,18 +111,18 @@ const UserAuditList = () => {
                             responseError.response?.data.error?.msg ||
                             'Failed to fetch events.',
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
             }
         }
 
     const [cancellableFetchUsersAudit] = useCancellableRequest(
-        createFetchUsersAudit
+        createFetchUsersAudit,
     )
 
-    const [{loading: isLoading}, fetchUsersAudit] = useAsyncFn(
+    const [{ loading: isLoading }, fetchUsersAudit] = useAsyncFn(
         cancellableFetchUsersAudit,
-        [fetchOptions, meta]
+        [fetchOptions, meta],
     )
 
     const onApplyDatePicker = ({
@@ -145,7 +148,7 @@ const UserAuditList = () => {
             }
         },
         [fetchOptions],
-        1000
+        1000,
     )
 
     return (

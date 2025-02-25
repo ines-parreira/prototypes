@@ -1,11 +1,10 @@
-import {createSelector} from 'reselect'
+import { createSelector } from 'reselect'
 
-import {BigCommerceCustomerAddress} from 'models/integration/types'
-import {getActiveCustomerIntegrationDataByIntegrationId} from 'state/customers/selectors'
-import {getIntegrationDataByIntegrationId} from 'state/ticket/selectors'
-import {RootState} from 'state/types'
-
-import {toJS} from 'utils'
+import { BigCommerceCustomerAddress } from 'models/integration/types'
+import { getActiveCustomerIntegrationDataByIntegrationId } from 'state/customers/selectors'
+import { getIntegrationDataByIntegrationId } from 'state/ticket/selectors'
+import { RootState } from 'state/types'
+import { toJS } from 'utils'
 
 export const getCustomerAddresses = (integrationId: Maybe<number>) =>
     createSelector(
@@ -18,22 +17,22 @@ export const getCustomerAddresses = (integrationId: Maybe<number>) =>
             if (!data || !data.size) {
                 data =
                     getActiveCustomerIntegrationDataByIntegrationId(
-                        integrationId
+                        integrationId,
                     )(state)
             }
             if (data && data.size) {
                 const email = data.getIn(['customer', 'email'])
                 let addresses: BigCommerceCustomerAddress[] = toJS(
-                    data.getIn(['customer', 'addresses'], [])
+                    data.getIn(['customer', 'addresses'], []),
                 )
                 addresses.forEach((address: BigCommerceCustomerAddress) => {
                     address.email = email
                 })
                 addresses = addresses.filter(
-                    (addr) => addr.email && addr.country_code
+                    (addr) => addr.email && addr.country_code,
                 )
                 return addresses
             }
             return []
-        }
+        },
     )

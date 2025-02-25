@@ -1,6 +1,7 @@
-import {render, screen, waitFor} from '@testing-library/react'
 import React from 'react'
-import {act} from 'react-dom/test-utils'
+
+import { render, screen, waitFor } from '@testing-library/react'
+import { act } from 'react-dom/test-utils'
 
 import * as logout from '../logoutUser'
 import SessionChangeDetection, {
@@ -19,7 +20,7 @@ describe('<SessionChangeDetection />', () => {
 
             window.postMessage(
                 'check_session_iframe.user_logged_out',
-                window.location.origin
+                window.location.origin,
             )
 
             await waitFor(() => {
@@ -36,7 +37,7 @@ describe('<SessionChangeDetection />', () => {
             window.postMessage('whatever', window.location.origin)
 
             await waitFor(() =>
-                expect(screen.queryByText(LOGOUT_EXPLANATION)).toBeNull()
+                expect(screen.queryByText(LOGOUT_EXPLANATION)).toBeNull(),
             )
         })
 

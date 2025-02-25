@@ -1,8 +1,9 @@
-import classNames from 'classnames'
-import React, {FC} from 'react'
+import React, { FC } from 'react'
 
-import {SegmentEvent} from 'common/segment'
-import {logEventWithSampling} from 'common/segment/segment'
+import classNames from 'classnames'
+
+import { SegmentEvent } from 'common/segment'
+import { logEventWithSampling } from 'common/segment/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -12,21 +13,21 @@ import {
     MessageFeedback,
     SubmitMessageFeedback,
 } from 'models/aiAgentFeedback/types'
-import {TicketMessage} from 'models/ticket/types'
+import { TicketMessage } from 'models/ticket/types'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
-
-import {useAIAgentSendFeedback} from 'pages/tickets/detail/hooks/useAIAgentSendFeedback'
-import {getCurrentAccountId} from 'state/currentAccount/selectors'
+import { useAIAgentSendFeedback } from 'pages/tickets/detail/hooks/useAIAgentSendFeedback'
+import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import {
     changeActiveTab,
     changeTicketMessage,
     getSelectedAIMessage,
 } from 'state/ui/ticketAIAgentFeedback'
-import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants'
+import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constants'
 
-import {useAIAgentResourcesWithFeedback} from '../../hooks/useAIAgentResourcesWithFeedback'
-import {BANNER_TYPE} from '../AIAgentFeedbackBar/constants'
+import { useAIAgentResourcesWithFeedback } from '../../hooks/useAIAgentResourcesWithFeedback'
+import { BANNER_TYPE } from '../AIAgentFeedbackBar/constants'
+
 import css from './AIAgentFeedback.less'
 
 export const CORRECT_RESPONSE = 'Is this correct?'
@@ -82,16 +83,16 @@ const AIAgentFeedback: React.FC<Props> = ({
     const selectedAIMessage = useAppSelector(getSelectedAIMessage)
     const accountId = useAppSelector(getCurrentAccountId)
 
-    const {actions, guidance, knowledge} =
+    const { actions, guidance, knowledge } =
         useAIAgentResourcesWithFeedback(messageFeedback)
 
-    const {aiAgentSendFeedback: submitFeedback} = useAIAgentSendFeedback()
+    const { aiAgentSendFeedback: submitFeedback } = useAIAgentSendFeedback()
 
     // If message is not public, it is an internal note created by AI Agent
     const isMessagePublic = message.public
 
     const feedbackOnMessage = messageFeedback?.feedbackOnMessage.find(
-        ({type}) => type === 'binary'
+        ({ type }) => type === 'binary',
     ) as BinaryFeedbackOnMessage | undefined
 
     const feedbackOnResource = messageFeedback?.feedbackOnResource || []
@@ -104,7 +105,7 @@ const AIAgentFeedback: React.FC<Props> = ({
                     (messageFeedback?.guidance.length || 0) +
                     (messageFeedback?.knowledge.length || 0) &&
             feedbackOnResource.every(
-                (feedback) => feedback.feedback === 'thumbs_up'
+                (feedback) => feedback.feedback === 'thumbs_up',
             ))
     const hasNegativeFeedback = feedbackOnMessage?.feedback === 'thumbs_down'
 
@@ -112,12 +113,12 @@ const AIAgentFeedback: React.FC<Props> = ({
         dispatch(
             changeActiveTab({
                 activeTab: TicketAIAgentFeedbackTab.AIAgent,
-            })
+            }),
         )
         dispatch(
             changeTicketMessage({
                 message,
-            })
+            }),
         )
 
         logEventWithSampling(SegmentEvent.AiAgentFeedbackBannerClicked, {
@@ -158,7 +159,7 @@ const AIAgentFeedback: React.FC<Props> = ({
                             resourceType: action.type,
                             resourceId: action.id,
                             feedback,
-                        }) as FeedbackOnResource
+                        }) as FeedbackOnResource,
                 )
 
             const guidanceFeedbackOnResource = guidance
@@ -170,7 +171,7 @@ const AIAgentFeedback: React.FC<Props> = ({
                             resourceType: 'guidance',
                             resourceId: guide.id,
                             feedback,
-                        }) as FeedbackOnResource
+                        }) as FeedbackOnResource,
                 )
 
             const knowledgeFeedbackOnResource = knowledge
@@ -182,7 +183,7 @@ const AIAgentFeedback: React.FC<Props> = ({
                             resourceType: knowledge.type,
                             resourceId: knowledge.id,
                             feedback,
-                        }) as FeedbackOnResource
+                        }) as FeedbackOnResource,
                 )
 
             if (

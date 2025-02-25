@@ -1,5 +1,6 @@
-import {render} from '@testing-library/react'
 import React from 'react'
+
+import { render } from '@testing-library/react'
 
 import RichDropdown from '../RichDropdown'
 
@@ -31,15 +32,15 @@ describe('<RichDropdown/>', () => {
     it.each([[options], [nestedOptions]])(
         'should render a rich dropdown',
         (currentOptions) => {
-            const {container} = render(
+            const { container } = render(
                 <RichDropdown
                     onClick={jest.fn()}
                     options={currentOptions}
                     value="foo"
-                />
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()
-        }
+        },
     )
 })

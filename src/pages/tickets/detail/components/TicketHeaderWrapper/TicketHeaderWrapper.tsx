@@ -1,18 +1,19 @@
-import classnames from 'classnames'
 import React from 'react'
 
+import classnames from 'classnames'
+
 import useAppSelector from 'hooks/useAppSelector'
-import {AgentLabel} from 'pages/common/utils/labels'
+import { AgentLabel } from 'pages/common/utils/labels'
 import TicketHeader from 'pages/tickets/detail/components/TicketHeader'
-import type {OnToggleUnreadFn} from 'tickets/pages/SplitTicketPage'
+import type { OnToggleUnreadFn } from 'tickets/pages/SplitTicketPage'
 
 import TicketFields from '../TicketFields/TicketFields'
 import useCollisionDetection from './hooks/useCollisionDetection'
 
 import css from './TicketHeaderWrapper.less'
 
-const CollisionDetection = ({ticketId}: {ticketId: number}) => {
-    const {agentsViewing, agentsViewingNotTyping, agentsTyping, hasBoth} =
+const CollisionDetection = ({ ticketId }: { ticketId: number }) => {
+    const { agentsViewing, agentsViewingNotTyping, agentsTyping, hasBoth } =
         useCollisionDetection(ticketId)
 
     return (
@@ -106,7 +107,7 @@ const TicketHeaderWrapper = ({
                 <TicketFields />
                 <CollisionDetection ticketId={ticket.get('id')} />
             </div>
-            {isExistingTicket && <div style={{height: 8}} />}
+            {isExistingTicket && <div style={{ height: 8 }} />}
         </>
     )
 }

@@ -1,13 +1,13 @@
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {campaign} from 'fixtures/campaign'
-import {integrationsState, shopifyIntegration} from 'fixtures/integrations'
+import { fromJS } from 'immutable'
 
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import { campaign } from 'fixtures/campaign'
+import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import useGetCampaignRevenueTimeSeries from 'pages/stats/convert/hooks/stats/useGetCampaignRevenueTimeSeries'
-import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
-import {assumeMock, renderWithStore} from 'utils/testing'
+import { useCampaignStatsFilters } from 'pages/stats/convert/hooks/useCampaignStatsFilters'
+import { assumeMock, renderWithStore } from 'utils/testing'
 
 import CampaignRevenueChart from '../CampaignRevenueChart'
 
@@ -45,7 +45,7 @@ describe('<CampaignRevenueChart />', () => {
     })
 
     it('renders without errors', () => {
-        const {getByText} = renderWithStore(<CampaignRevenueChart />, {
+        const { getByText } = renderWithStore(<CampaignRevenueChart />, {
             integrations: fromJS({
                 integrations: [
                     ...integrationsState.integrations,
@@ -65,7 +65,7 @@ describe('<CampaignRevenueChart />', () => {
             data: undefined,
         })
 
-        const {getByText} = renderWithStore(<CampaignRevenueChart />, {
+        const { getByText } = renderWithStore(<CampaignRevenueChart />, {
             integrations: fromJS({
                 integrations: [
                     ...integrationsState.integrations,

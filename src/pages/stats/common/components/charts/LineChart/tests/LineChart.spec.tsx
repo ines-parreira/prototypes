@@ -1,12 +1,14 @@
-import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
-import {fireEvent, render, waitFor} from '@testing-library/react'
-import * as chartjs from 'chart.js'
 import React from 'react'
 
-import {ThemeProvider} from 'core/theme'
-import {ticketsCreatedDataItem} from 'fixtures/chart'
-import {useCustomTooltip} from 'pages/stats/common/useCustomTooltip'
-import {assumeMock} from 'utils/testing'
+import { fireEvent, render, waitFor } from '@testing-library/react'
+import * as chartjs from 'chart.js'
+
+import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
+
+import { ThemeProvider } from 'core/theme'
+import { ticketsCreatedDataItem } from 'fixtures/chart'
+import { useCustomTooltip } from 'pages/stats/common/useCustomTooltip'
+import { assumeMock } from 'utils/testing'
 
 import LineChart, {
     CHART_TOOLTIP_TARGET,
@@ -19,7 +21,7 @@ jest.mock(
         ({
             ...jest.requireActual('@gorgias/merchant-ui-kit'),
             Skeleton: () => <div data-testid="skeleton" />,
-        }) as typeof import('@gorgias/merchant-ui-kit')
+        }) as typeof import('@gorgias/merchant-ui-kit'),
 )
 jest.mock('pages/stats/common/useCustomTooltip')
 const useCustomTooltipMock = assumeMock(useCustomTooltip)
@@ -28,21 +30,21 @@ const chartSpy = jest.spyOn(chartjs, 'Chart')
 describe('<LineChart />', () => {
     useCustomTooltipMock.mockReturnValue({
         customTooltip: jest.fn(),
-        tooltipData: {dataPoints: []},
+        tooltipData: { dataPoints: [] },
         tooltipStyle: {},
     } as any)
 
     it('should render the line chart', () => {
-        const {container} = render(
-            <LineChart data={[ticketsCreatedDataItem]} />
+        const { container } = render(
+            <LineChart data={[ticketsCreatedDataItem]} />,
         )
 
         expect(container).toMatchSnapshot()
     })
 
     it('should render the loading skeleton', () => {
-        const {getAllByTestId} = render(
-            <LineChart data={[ticketsCreatedDataItem]} isLoading />
+        const { getAllByTestId } = render(
+            <LineChart data={[ticketsCreatedDataItem]} isLoading />,
         )
 
         expect(getAllByTestId('skeleton')).toHaveLength(1)
@@ -55,12 +57,12 @@ describe('<LineChart />', () => {
     })
 
     it('should render the interactive legend', () => {
-        const {getAllByRole, getByLabelText} = render(
+        const { getAllByRole, getByLabelText } = render(
             <LineChart
                 data={[ticketsCreatedDataItem]}
                 displayLegend
                 toggleLegend
-            />
+            />,
         )
 
         expect(getByLabelText(ticketsCreatedDataItem.label)).toBeInTheDocument()
@@ -68,13 +70,13 @@ describe('<LineChart />', () => {
     })
 
     it('should render the interactive legend with default dataset visibility', () => {
-        const {queryByRole} = render(
+        const { queryByRole } = render(
             <LineChart
                 data={[ticketsCreatedDataItem]}
                 displayLegend
                 toggleLegend
-                defaultDatasetVisibility={{0: false}}
-            />
+                defaultDatasetVisibility={{ 0: false }}
+            />,
         )
 
         expect(queryByRole('checkbox')).not.toBeChecked()
@@ -82,12 +84,12 @@ describe('<LineChart />', () => {
 
     // Needs investigation, Linear: https://linear.app/gorgias/issue/PLTDA-2219/test-is-failing-due-to-chart-re-rendering-issue
     it.skip('should change dataset visibility on clicking legend checkbox', () => {
-        const {getByRole} = render(
+        const { getByRole } = render(
             <LineChart
                 data={[ticketsCreatedDataItem]}
                 displayLegend
                 toggleLegend
-            />
+            />,
         )
 
         const checkbox = getByRole('checkbox') as HTMLInputElement
@@ -98,14 +100,14 @@ describe('<LineChart />', () => {
     })
 
     it('should render the line chart tooltip', async () => {
-        const {queryByRole, getByTestId} = render(
+        const { queryByRole, getByTestId } = render(
             <>
                 <span
                     id={CHART_TOOLTIP_TARGET}
                     data-testid={CHART_TOOLTIP_TARGET}
                 />
                 <LineChart data={[ticketsCreatedDataItem]} />
-            </>
+            </>,
         )
 
         fireEvent.mouseOver(getByTestId(CHART_TOOLTIP_TARGET))
@@ -116,8 +118,8 @@ describe('<LineChart />', () => {
     })
 
     it('should not render the line chart tooltip', () => {
-        const {queryByRole} = render(
-            <LineChart data={[ticketsCreatedDataItem]} _displayLegacyTooltip />
+        const { queryByRole } = render(
+            <LineChart data={[ticketsCreatedDataItem]} _displayLegacyTooltip />,
         )
 
         expect(queryByRole('tooltip')).not.toBeInTheDocument()
@@ -128,15 +130,15 @@ describe('<LineChart />', () => {
 
         const lastCall = chartSpy.mock.lastCall?.[1]
         const color = lastCall?.options?.scales?.y?.grid?.color as (
-            ctx: unknown
+            ctx: unknown,
         ) => undefined
 
-        expect(color({tick: {value: 0}})).toEqual(
-            colors['📺 Classic'].Main.Primary.value
+        expect(color({ tick: { value: 0 } })).toEqual(
+            colors['📺 Classic'].Main.Primary.value,
         )
 
-        expect(color({tick: {value: 1}})).toEqual(
-            colors['📺 Classic'].Neutral.Grey_2.value
+        expect(color({ tick: { value: 1 } })).toEqual(
+            colors['📺 Classic'].Neutral.Grey_2.value,
         )
     })
 
@@ -144,20 +146,20 @@ describe('<LineChart />', () => {
         render(
             <ThemeProvider>
                 <LineChartWithoutTheme data={[]} />
-            </ThemeProvider>
+            </ThemeProvider>,
         )
 
         const lastCall = chartSpy.mock.lastCall?.[1]
         const color = lastCall?.options?.scales?.y?.grid?.color as (
-            ctx: unknown
+            ctx: unknown,
         ) => undefined
 
-        expect(color({tick: {value: 0}})).toEqual(
-            colors['📺 Classic'].Main.Primary.value
+        expect(color({ tick: { value: 0 } })).toEqual(
+            colors['📺 Classic'].Main.Primary.value,
         )
 
-        expect(color({tick: {value: 1}})).toEqual(
-            colors['📺 Classic'].Neutral.Grey_2.value
+        expect(color({ tick: { value: 1 } })).toEqual(
+            colors['📺 Classic'].Neutral.Grey_2.value,
         )
     })
 
@@ -189,7 +191,7 @@ describe('<LineChart />', () => {
                     onResizeCallback({} as chartjs.Chart, {
                         width: 200,
                         height: 100,
-                    })
+                    }),
                 ).toBeUndefined()
             }
         })

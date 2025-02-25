@@ -1,8 +1,9 @@
-import {List, Map, fromJS} from 'immutable'
 import React from 'react'
 
+import { fromJS, List, Map } from 'immutable'
+
 import DEPRECATED_InputField from '../../../forms/DEPRECATED_InputField'
-import {SelectableOption as SelectOption} from '../../../forms/SelectField/types'
+import { SelectableOption as SelectOption } from '../../../forms/SelectField/types'
 
 type Props = {
     onChange: () => void
@@ -12,7 +13,7 @@ type Props = {
 
 export default class Select extends React.Component<Props> {
     _getOptions = () => {
-        const {options} = this.props
+        const { options } = this.props
 
         const _options: SelectOption[] = []
 
@@ -26,12 +27,12 @@ export default class Select extends React.Component<Props> {
                 ) {
                     // if options is of format: [{value: v, label: l}, {value: v, label: l}]
                     immutableOptions.map((option: Map<any, any>) =>
-                        _options.push(option.toJS())
+                        _options.push(option.toJS()),
                     )
                 } else {
                     // if options is of format: [value, value, value]
                     immutableOptions.map((option) =>
-                        _options.push({value: option, label: option})
+                        _options.push({ value: option, label: option }),
                     )
                 }
             }
@@ -41,7 +42,7 @@ export default class Select extends React.Component<Props> {
     }
 
     render() {
-        const {onChange, value} = this.props
+        const { onChange, value } = this.props
         const options = this._getOptions()
 
         return (

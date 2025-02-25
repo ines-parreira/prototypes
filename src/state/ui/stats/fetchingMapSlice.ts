@@ -1,4 +1,4 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export type FetchingMapSliceState = Record<string, boolean | undefined>
 
@@ -10,14 +10,14 @@ export const fetchingMapSlice = createSlice({
     reducers: {
         fetchStatEnded(
             state,
-            action: PayloadAction<{statName: string; resourceName: string}>
+            action: PayloadAction<{ statName: string; resourceName: string }>,
         ) {
             state[`${action.payload.statName}/${action.payload.resourceName}`] =
                 false
         },
         fetchStatStarted(
             state,
-            action: PayloadAction<{statName: string; resourceName: string}>
+            action: PayloadAction<{ statName: string; resourceName: string }>,
         ) {
             state[`${action.payload.statName}/${action.payload.resourceName}`] =
                 true
@@ -25,4 +25,4 @@ export const fetchingMapSlice = createSlice({
     },
 })
 
-export const {fetchStatEnded, fetchStatStarted} = fetchingMapSlice.actions
+export const { fetchStatEnded, fetchStatStarted } = fetchingMapSlice.actions

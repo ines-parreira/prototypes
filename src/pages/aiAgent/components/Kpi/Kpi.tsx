@@ -1,7 +1,8 @@
-import {Skeleton} from '@gorgias/merchant-ui-kit'
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {StatType} from 'models/stat/types'
+import { Skeleton } from '@gorgias/merchant-ui-kit'
+
+import { StatType } from 'models/stat/types'
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
 import TrendBadge from 'pages/stats/common/components/TrendBadge'
 import {
@@ -62,7 +63,7 @@ export const Kpi = ({
                 {...{
                     isLoading,
                     className: css.card,
-                    hint: hint ? {title: hint} : undefined,
+                    hint: hint ? { title: hint } : undefined,
                     title: cardTitle,
                 }}
             >

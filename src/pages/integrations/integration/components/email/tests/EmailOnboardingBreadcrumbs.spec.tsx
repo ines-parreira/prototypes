@@ -1,9 +1,11 @@
-import {EmailIntegration} from '@gorgias/api-queries'
-import {render, screen} from '@testing-library/react'
 import React from 'react'
-import {BrowserRouter} from 'react-router-dom'
 
-import {IntegrationType} from 'models/integration/types'
+import { render, screen } from '@testing-library/react'
+import { BrowserRouter } from 'react-router-dom'
+
+import { EmailIntegration } from '@gorgias/api-queries'
+
+import { IntegrationType } from 'models/integration/types'
 import EmailIntegrationOnboardingBreadcrumbs from 'pages/integrations/integration/components/email/EmailIntegrationOnboardingBreadcrumbs'
 
 describe('EmailIntegrationOnboardingBreadcrumbs', () => {
@@ -11,14 +13,14 @@ describe('EmailIntegrationOnboardingBreadcrumbs', () => {
         render(
             <BrowserRouter>
                 <EmailIntegrationOnboardingBreadcrumbs integration={null} />
-            </BrowserRouter>
+            </BrowserRouter>,
         )
 
         // Check for static breadcrumb items
         expect(screen.getByText('Email')).toBeInTheDocument()
         expect(screen.getByText('Add email address')).toBeInTheDocument()
         expect(
-            screen.getByText('Connect other email provider')
+            screen.getByText('Connect other email provider'),
         ).toBeInTheDocument()
     })
 
@@ -35,7 +37,7 @@ describe('EmailIntegrationOnboardingBreadcrumbs', () => {
                 <EmailIntegrationOnboardingBreadcrumbs
                     integration={integration}
                 />
-            </BrowserRouter>
+            </BrowserRouter>,
         )
 
         // Check for static breadcrumb items
@@ -46,7 +48,7 @@ describe('EmailIntegrationOnboardingBreadcrumbs', () => {
         expect(screen.getByText(integration.name)).toBeInTheDocument()
         expect(screen.getByText(integration.meta.address)).toBeInTheDocument()
         expect(screen.getByText(integration.meta.address)).toHaveClass(
-            'emailAddress'
+            'emailAddress',
         )
     })
 })

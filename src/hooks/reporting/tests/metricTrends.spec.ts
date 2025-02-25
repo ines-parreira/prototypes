@@ -1,50 +1,51 @@
-import {renderHook} from '@testing-library/react-hooks'
-
+import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment'
 
 import {
+    fetchClosedTicketsTrend,
+    fetchCustomerSatisfactionTrend,
+    fetchMedianFirstResponseTimeTrend,
+    fetchMedianResolutionTimeTrend,
+    fetchMessagesPerTicketTrend,
+    fetchMessagesSentTrend,
+    fetchOneTouchTicketsTrend,
+    fetchOpenTicketsTrend,
+    fetchTicketHandleTimeTrend,
+    fetchTicketsCreatedTrend,
+    fetchTicketsRepliedTrend,
+    fetchZeroTouchTicketsTrend,
     useClosedTicketsTrend,
     useCustomerSatisfactionTrend,
     useMedianFirstResponseTimeTrend,
+    useMedianResolutionTimeTrend,
     useMessagesPerTicketTrend,
     useMessagesSentTrend,
+    useOneTouchTicketsTrend,
     useOpenTicketsTrend,
-    useMedianResolutionTimeTrend,
+    useTicketHandleTimeTrend,
     useTicketsCreatedTrend,
     useTicketsRepliedTrend,
-    useOneTouchTicketsTrend,
-    useTicketHandleTimeTrend,
-    fetchOpenTicketsTrend,
-    fetchTicketHandleTimeTrend,
-    fetchMessagesPerTicketTrend,
-    fetchCustomerSatisfactionTrend,
-    fetchMedianFirstResponseTimeTrend,
-    fetchClosedTicketsTrend,
-    fetchOneTouchTicketsTrend,
-    fetchMedianResolutionTimeTrend,
-    fetchTicketsCreatedTrend,
-    fetchTicketsRepliedTrend,
-    fetchMessagesSentTrend,
     useZeroTouchTicketsTrend,
-    fetchZeroTouchTicketsTrend,
 } from 'hooks/reporting/metricTrends'
-import useMetricTrend, {fetchMetricTrend} from 'hooks/reporting/useMetricTrend'
-import {ticketAverageHandleTimeQueryFactory} from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
-import {closedTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
-import {customerSatisfactionQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
-import {medianFirstResponseTimeQueryFactory} from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
-import {medianResolutionTimeQueryFactory} from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
-import {messagesPerTicketQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesPerTicket'
-import {messagesSentQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
-import {oneTouchTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
-import {openTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/openTickets'
-import {ticketsCreatedQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsCreated'
-import {ticketsRepliedQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
-import {zeroTouchTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/zeroTouchTickets'
-import {ReportingQuery} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
-import {formatReportingQueryDate, getPreviousPeriod} from 'utils/reporting'
-import {assumeMock} from 'utils/testing'
+import useMetricTrend, {
+    fetchMetricTrend,
+} from 'hooks/reporting/useMetricTrend'
+import { ticketAverageHandleTimeQueryFactory } from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
+import { closedTicketsQueryFactory } from 'models/reporting/queryFactories/support-performance/closedTickets'
+import { customerSatisfactionQueryFactory } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
+import { medianFirstResponseTimeQueryFactory } from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
+import { medianResolutionTimeQueryFactory } from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
+import { messagesPerTicketQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesPerTicket'
+import { messagesSentQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesSent'
+import { oneTouchTicketsQueryFactory } from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
+import { openTicketsQueryFactory } from 'models/reporting/queryFactories/support-performance/openTickets'
+import { ticketsCreatedQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsCreated'
+import { ticketsRepliedQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsReplied'
+import { zeroTouchTicketsQueryFactory } from 'models/reporting/queryFactories/support-performance/zeroTouchTickets'
+import { ReportingQuery } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
+import { formatReportingQueryDate, getPreviousPeriod } from 'utils/reporting'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/useMetricTrend')
 const useMetricTrendMock = assumeMock(useMetricTrend)
@@ -62,7 +63,7 @@ describe('metric trends', () => {
     const timezone = 'someTimeZone'
 
     useMetricTrendMock.mockImplementation(
-        ((queryCreator: ReportingQuery) => queryCreator) as any
+        ((queryCreator: ReportingQuery) => queryCreator) as any,
     )
     describe.each([
         ['useOpenTicketsTrend', useOpenTicketsTrend, openTicketsQueryFactory],
@@ -133,8 +134,8 @@ describe('metric trends', () => {
                         ...statsFilters,
                         period: getPreviousPeriod(statsFilters.period),
                     },
-                    timezone
-                )
+                    timezone,
+                ),
             )
         })
     })
@@ -216,8 +217,8 @@ describe('metric trends', () => {
                         ...statsFilters,
                         period: getPreviousPeriod(statsFilters.period),
                     },
-                    timezone
-                )
+                    timezone,
+                ),
             )
         })
     })

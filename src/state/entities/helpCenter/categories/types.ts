@@ -1,4 +1,4 @@
-import {PayloadActionCreator} from '@reduxjs/toolkit'
+import { PayloadActionCreator } from '@reduxjs/toolkit'
 
 import {
     Category,
@@ -85,7 +85,7 @@ export type HelpCenterCategoriesState = {
 }
 
 export function isNonRootCategory(
-    category: Category
+    category: Category,
 ): category is NonRootCategory {
     return Boolean(category.translation)
 }

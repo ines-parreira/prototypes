@@ -1,6 +1,6 @@
-import {useCallback, useMemo, useRef, useState} from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 
-import {TicketSummary} from '../types'
+import { TicketSummary } from '../types'
 
 export default function useSelection(tickets: TicketSummary[]) {
     const [hasSelectedAll, setHasSelectedAll] = useState(false)
@@ -20,17 +20,17 @@ export default function useSelection(tickets: TicketSummary[]) {
                 if (!selectRange || !previousId.current) {
                     previousId.current = id
                     if (selected) {
-                        return {...s, [id]: true}
+                        return { ...s, [id]: true }
                     }
 
-                    const newState = {...s}
+                    const newState = { ...s }
                     delete newState[id]
                     return newState
                 }
 
                 const ticketIndices = [
                     tickets.findIndex(
-                        (ticket) => ticket.id === previousId.current
+                        (ticket) => ticket.id === previousId.current,
                     ),
                     tickets.findIndex((ticket) => ticket.id === id),
                 ].sort()
@@ -51,18 +51,18 @@ export default function useSelection(tickets: TicketSummary[]) {
                             ...acc,
                             [ticketId]: true,
                         }),
-                        s
+                        s,
                     )
                 }
 
-                const newState = {...s}
+                const newState = { ...s }
                 ticketIds.forEach((ticketId) => {
                     delete newState[ticketId]
                 })
                 return newState
             })
         },
-        [hasSelectedAll, tickets]
+        [hasSelectedAll, tickets],
     )
 
     const clear = useCallback(() => {
@@ -85,6 +85,6 @@ export default function useSelection(tickets: TicketSummary[]) {
             onSelectAll: handleSelectAll,
             clear,
         }),
-        [hasSelectedAll, handleSelect, handleSelectAll, selectedTickets, clear]
+        [hasSelectedAll, handleSelect, handleSelectAll, selectedTickets, clear],
     )
 }

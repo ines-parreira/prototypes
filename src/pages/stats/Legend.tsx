@@ -1,6 +1,8 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
 import React from 'react'
+
+import classNames from 'classnames'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import CheckBox from 'pages/common/forms/CheckBox'
 
@@ -46,7 +48,10 @@ export default function Legend({
         <div className={classNames(css.legend, className)}>
             {toggleLegend
                 ? items.map(
-                      ({label, color, tooltip, isChecked, onChange}, index) => (
+                      (
+                          { label, color, tooltip, isChecked, onChange },
+                          index,
+                      ) => (
                           <CheckBox
                               key={`${label}-${index}`}
                               className={css.legendCheckbox}
@@ -61,9 +66,9 @@ export default function Legend({
                           >
                               {withTooltip(label, tooltip)}
                           </CheckBox>
-                      )
+                      ),
                   )
-                : items.map(({label, color, tooltip}, index) => (
+                : items.map(({ label, color, tooltip }, index) => (
                       <div className={css.legendItem} key={`${label}-${index}`}>
                           <div
                               className={css.legendCaret}

@@ -1,23 +1,23 @@
 import {
-    UseInfiniteQueryOptions,
     useInfiniteQuery,
-    UseQueryOptions,
-    useQuery,
+    UseInfiniteQueryOptions,
     useMutation,
+    useQuery,
+    UseQueryOptions,
 } from '@tanstack/react-query'
 
-import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 
-import {Paths} from '../../../rest_api/help_center_api/client.generated'
-import {MutationOverrides} from '../../../types/query'
+import { Paths } from '../../../rest_api/help_center_api/client.generated'
+import { MutationOverrides } from '../../../types/query'
 import {
     createContactForm,
-    getContactForms,
-    getShopifyPages,
-    getPageEmbedments,
     createPageEmbedment,
-    updatePageEmbedment,
     deletePageEmbedment,
+    getContactForms,
+    getPageEmbedments,
+    getShopifyPages,
+    updatePageEmbedment,
 } from './resources'
 
 /**
@@ -93,14 +93,14 @@ export const useGetContactFormList = <
         Awaited<ReturnType<typeof getContactForms>>,
         unknown,
         TData
-    >
+    >,
 ) => {
-    const {client} = useHelpCenterApi()
+    const { client } = useHelpCenterApi()
 
     return useInfiniteQuery({
         queryKey: contactFormKeys.lists(),
-        queryFn: async ({pageParam = 1}) =>
-            getContactForms(client, {page: pageParam}),
+        queryFn: async ({ pageParam = 1 }) =>
+            getContactForms(client, { page: pageParam }),
         getNextPageParam: (lastPage) => {
             if (!lastPage) return 1
             if (lastPage.meta.page < lastPage.meta.nb_pages) {
@@ -121,9 +121,9 @@ export const useGetShopifyPages = <
         Awaited<ReturnType<typeof getShopifyPages>>,
         unknown,
         TData
-    >
+    >,
 ) => {
-    const {client} = useHelpCenterApi()
+    const { client } = useHelpCenterApi()
 
     return useQuery({
         queryKey: contactFormEmbeddablePageKeys.lists(contactFormId),
@@ -145,9 +145,9 @@ export const useGetPageEmbedments = <
         Awaited<ReturnType<typeof getPageEmbedments>>,
         unknown,
         TData
-    >
+    >,
 ) => {
-    const {client} = useHelpCenterApi()
+    const { client } = useHelpCenterApi()
 
     return useQuery({
         queryKey: contactFormPageEmbedmentsKeys.lists(contactFormId),
@@ -164,9 +164,9 @@ export const useGetPageEmbedments = <
  * Mutations
  */
 export const useCreateContactForm = (
-    overrides?: MutationOverrides<typeof createContactForm>
+    overrides?: MutationOverrides<typeof createContactForm>,
 ) => {
-    const {client} = useHelpCenterApi()
+    const { client } = useHelpCenterApi()
 
     return useMutation({
         mutationFn: ([, newContactForm]) =>
@@ -176,9 +176,9 @@ export const useCreateContactForm = (
 }
 
 export const useCreatePageEmbedment = (
-    overrides?: MutationOverrides<typeof createPageEmbedment>
+    overrides?: MutationOverrides<typeof createPageEmbedment>,
 ) => {
-    const {client} = useHelpCenterApi()
+    const { client } = useHelpCenterApi()
 
     return useMutation({
         mutationFn: ([, pathParameters, newPageEmbedment]) =>
@@ -188,9 +188,9 @@ export const useCreatePageEmbedment = (
 }
 
 export const useUpdatePageEmbedment = (
-    overrides?: MutationOverrides<typeof updatePageEmbedment>
+    overrides?: MutationOverrides<typeof updatePageEmbedment>,
 ) => {
-    const {client} = useHelpCenterApi()
+    const { client } = useHelpCenterApi()
 
     return useMutation({
         mutationFn: ([, pathParameters, newPageEmbedment]) =>
@@ -200,9 +200,9 @@ export const useUpdatePageEmbedment = (
 }
 
 export const useDeletePageEmbedment = (
-    overrides?: MutationOverrides<typeof deletePageEmbedment>
+    overrides?: MutationOverrides<typeof deletePageEmbedment>,
 ) => {
-    const {client} = useHelpCenterApi()
+    const { client } = useHelpCenterApi()
 
     return useMutation({
         mutationFn: ([, pathParameters]) =>

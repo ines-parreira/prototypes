@@ -1,10 +1,10 @@
 import React from 'react'
 
-import {Redirect} from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {ErrorBoundary} from 'pages/ErrorBoundary'
-import {getHasAutomate} from 'state/billing/selectors'
+import { ErrorBoundary } from 'pages/ErrorBoundary'
+import { getHasAutomate } from 'state/billing/selectors'
 
 import ActionsExecutionsView from './ActionEventsView'
 
@@ -16,7 +16,7 @@ export default function ActionEventsViewContainer() {
     }
 
     return (
-        <ErrorBoundary sentryTags={{section: 'actions-executions'}}>
+        <ErrorBoundary sentryTags={{ section: 'actions-executions' }}>
             <ActionsExecutionsView />
         </ErrorBoundary>
     )

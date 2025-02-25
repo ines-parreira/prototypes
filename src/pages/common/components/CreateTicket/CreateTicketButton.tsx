@@ -1,10 +1,11 @@
-import {LocationDescriptor} from 'history'
+import React, { cloneElement, ReactElement, useMemo, useRef } from 'react'
+
+import { LocationDescriptor } from 'history'
 import _noop from 'lodash/noop'
-import React, {cloneElement, ReactElement, useMemo, useRef} from 'react'
-import {Link, useHistory} from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
 import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
-import Button, {type ButtonProps} from 'pages/common/components/button/Button'
+import Button, { type ButtonProps } from 'pages/common/components/button/Button'
 import DropdownButton from 'pages/common/components/button/DropdownButton'
 import useHandleTicketDraft from 'pages/common/components/CreateTicket/useHandleTicketDraft'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
@@ -31,7 +32,7 @@ export default function CreateTicketButton({
     trigger,
 }: CreateTicketButtonProps) {
     const history = useHistory()
-    const {hasDraft, onResumeDraft, onDiscardDraft} = useHandleTicketDraft()
+    const { hasDraft, onResumeDraft, onDiscardDraft } = useHandleTicketDraft()
     const dropdownTargetRef = useRef<HTMLDivElement>(null)
 
     const actions = useMemo(
@@ -43,7 +44,7 @@ export default function CreateTicketButton({
                 },
             },
         }),
-        [history]
+        [history],
     )
 
     useConditionalShortcuts(shouldBindKeys, 'CreateTicketButton', actions)
@@ -59,7 +60,7 @@ export default function CreateTicketButton({
     ) : (
         <>
             {trigger ? (
-                cloneElement(trigger, {ref: dropdownTargetRef})
+                cloneElement(trigger, { ref: dropdownTargetRef })
             ) : (
                 <DropdownButton
                     intent={buttonProps?.intent ?? 'primary'}

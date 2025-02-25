@@ -1,28 +1,28 @@
-import {waitFor} from '@testing-library/react'
-import {renderHook} from '@testing-library/react-hooks'
-import React, {ReactNode} from 'react'
-import {Provider} from 'react-redux'
-import {useParams} from 'react-router-dom'
+import React, { ReactNode } from 'react'
+
+import { waitFor } from '@testing-library/react'
+import { renderHook } from '@testing-library/react-hooks'
+import { Provider } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {TicketChannel} from 'business/types/ticket'
+import { TicketChannel } from 'business/types/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {GorgiasChatIntegration} from 'models/integration/types'
-import {updateRule} from 'models/rule/resources'
+import { GorgiasChatIntegration } from 'models/integration/types'
+import { updateRule } from 'models/rule/resources'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import useSelfServiceChatChannels, {
     SelfServiceChatChannel,
 } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
-import {useRules} from 'state/entities/rules/hooks'
-import {RulesState} from 'state/entities/rules/types'
-import {notify} from 'state/notifications/actions'
+import { useRules } from 'state/entities/rules/hooks'
+import { RulesState } from 'state/entities/rules/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { RuleType } from 'state/rules/types'
+import { assumeMock } from 'utils/testing'
 
-import {NotificationStatus} from 'state/notifications/types'
-import {RuleType} from 'state/rules/types'
-import {assumeMock} from 'utils/testing'
-
-import {useAiAgentEnabled} from '../useAiAgentEnabled'
+import { useAiAgentEnabled } from '../useAiAgentEnabled'
 
 jest.mock('hooks/useAppDispatch')
 jest.mock('react-router-dom', () => ({
@@ -44,7 +44,7 @@ const useParamsMock = assumeMock(useParams)
 const useRulesMock = assumeMock(useRules)
 const useSelfServiceChatChannelsMock = assumeMock(useSelfServiceChatChannels)
 const useApplicationsAutomationSettingsMock = assumeMock(
-    useApplicationsAutomationSettings
+    useApplicationsAutomationSettings,
 )
 
 const defaultAutomationSettings = {
@@ -55,8 +55,8 @@ const defaultAutomationSettings = {
 const defaultChatApplicationAutomationSettings = {
     id: 1,
     applicationId: 1,
-    articleRecommendation: {enabled: false},
-    orderManagement: {enabled: false},
+    articleRecommendation: { enabled: false },
+    orderManagement: { enabled: false },
     workflows: {
         enabled: false,
     },
@@ -69,7 +69,7 @@ const defaultSelfServeChatChannel = [
         type: TicketChannel.Chat,
         value: {
             id: 1,
-            meta: {app_id: 'app1'},
+            meta: { app_id: 'app1' },
         } as GorgiasChatIntegration,
     },
 ] as SelfServiceChatChannel[]
@@ -101,7 +101,7 @@ const DEFAULT_PARAMS: Parameters<typeof useAiAgentEnabled>[0] = {
 describe('useAiAgentEnabled', () => {
     const dispatchMock = jest.fn()
 
-    const wrapper = ({children}: {children?: ReactNode}) => (
+    const wrapper = ({ children }: { children?: ReactNode }) => (
         <Provider store={store}>{children}</Provider>
     )
 
@@ -123,17 +123,17 @@ describe('useAiAgentEnabled', () => {
     })
 
     it('should return updateSettingsAfterAiAgentEnabled function', () => {
-        const {result} = renderHook(() => useAiAgentEnabled(DEFAULT_PARAMS), {
+        const { result } = renderHook(() => useAiAgentEnabled(DEFAULT_PARAMS), {
             wrapper,
         })
 
         expect(result.current.updateSettingsAfterAiAgentEnabled).toBeInstanceOf(
-            Function
+            Function,
         )
     })
 
     it('should not update anything when there are no integrations', () => {
-        const {result} = renderHook(() => useAiAgentEnabled(DEFAULT_PARAMS), {
+        const { result } = renderHook(() => useAiAgentEnabled(DEFAULT_PARAMS), {
             wrapper,
         })
 
@@ -145,27 +145,27 @@ describe('useAiAgentEnabled', () => {
     it('should update chat application settings when chat integrations are present', () => {
         const handleUpdateMock = jest.fn()
         useSelfServiceChatChannelsMock.mockReturnValue(
-            defaultSelfServeChatChannel
+            defaultSelfServeChatChannel,
         )
         useApplicationsAutomationSettingsMock.mockReturnValue({
             ...defaultAutomationSettings,
             applicationsAutomationSettings: {
                 app1: {
                     ...defaultChatApplicationAutomationSettings,
-                    articleRecommendation: {enabled: true},
+                    articleRecommendation: { enabled: true },
                 },
             },
             handleChatApplicationAutomationSettingsUpdate: handleUpdateMock,
         })
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useAiAgentEnabled({
                     ...DEFAULT_PARAMS,
                     monitoredChatIntegrations: [1],
                     isEnablingChatChannel: true,
                 }),
-            {wrapper}
+            { wrapper },
         )
 
         result.current.updateSettingsAfterAiAgentEnabled()
@@ -173,46 +173,46 @@ describe('useAiAgentEnabled', () => {
         expect(handleUpdateMock).toHaveBeenCalledWith(
             expect.objectContaining({
                 ...defaultChatApplicationAutomationSettings,
-                articleRecommendation: {enabled: false},
+                articleRecommendation: { enabled: false },
             }),
             undefined,
-            true
+            true,
         )
     })
 
     it('should deactivate rules for email integrations', () => {
         useRulesMock.mockReturnValue([defaultRules, false])
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useAiAgentEnabled({
                     ...DEFAULT_PARAMS,
                     isEnablingEmailChannel: true,
                     monitoredEmailIntegrations: [
-                        {id: 1, email: 'test@example.com'},
+                        { id: 1, email: 'test@example.com' },
                     ],
                 }),
-            {wrapper}
+            { wrapper },
         )
 
         result.current.updateSettingsAfterAiAgentEnabled()
 
         expect(updateRule).toHaveBeenCalledWith(
-            expect.objectContaining({id: 1})
+            expect.objectContaining({ id: 1 }),
         )
     })
 
     it('should dispatch success notification when chat updates succeed', () => {
         useSelfServiceChatChannelsMock.mockReturnValue(
-            defaultSelfServeChatChannel
+            defaultSelfServeChatChannel,
         )
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useAiAgentEnabled({
                     ...DEFAULT_PARAMS,
                     monitoredChatIntegrations: [1],
                     isEnablingChatChannel: true,
                 }),
-            {wrapper}
+            { wrapper },
         )
 
         result.current.updateSettingsAfterAiAgentEnabled()
@@ -230,16 +230,16 @@ describe('useAiAgentEnabled', () => {
     it('should dispatch success notification when email updates succeed', () => {
         useRulesMock.mockReturnValue([defaultRules, false])
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useAiAgentEnabled({
                     ...DEFAULT_PARAMS,
                     isEnablingEmailChannel: true,
                     monitoredEmailIntegrations: [
-                        {id: 1, email: 'test@example/com'},
+                        { id: 1, email: 'test@example/com' },
                     ],
                 }),
-            {wrapper}
+            { wrapper },
         )
 
         result.current.updateSettingsAfterAiAgentEnabled()
@@ -259,27 +259,27 @@ describe('useAiAgentEnabled', () => {
             .fn()
             .mockRejectedValueOnce(new Error('Error'))
         useSelfServiceChatChannelsMock.mockReturnValue(
-            defaultSelfServeChatChannel
+            defaultSelfServeChatChannel,
         )
         useApplicationsAutomationSettingsMock.mockReturnValue({
             ...defaultAutomationSettings,
             applicationsAutomationSettings: {
                 app1: {
                     ...defaultChatApplicationAutomationSettings,
-                    articleRecommendation: {enabled: true},
+                    articleRecommendation: { enabled: true },
                 },
             },
             handleChatApplicationAutomationSettingsUpdate: handleUpdateMock,
         })
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useAiAgentEnabled({
                     ...DEFAULT_PARAMS,
                     isEnablingChatChannel: true,
                     monitoredChatIntegrations: [1],
                 }),
-            {wrapper}
+            { wrapper },
         )
 
         result.current.updateSettingsAfterAiAgentEnabled()
@@ -296,31 +296,31 @@ describe('useAiAgentEnabled', () => {
     it('should not update anything when email and chat channels disabled', () => {
         const handleUpdateMock = jest.fn()
         useSelfServiceChatChannelsMock.mockReturnValue(
-            defaultSelfServeChatChannel
+            defaultSelfServeChatChannel,
         )
         useApplicationsAutomationSettingsMock.mockReturnValue({
             ...defaultAutomationSettings,
             applicationsAutomationSettings: {
                 app1: {
                     ...defaultChatApplicationAutomationSettings,
-                    articleRecommendation: {enabled: true},
+                    articleRecommendation: { enabled: true },
                 },
             },
             handleChatApplicationAutomationSettingsUpdate: handleUpdateMock,
         })
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useAiAgentEnabled({
                     ...DEFAULT_PARAMS,
                     monitoredEmailIntegrations: [
-                        {id: 1, email: 'test@mail.com'},
+                        { id: 1, email: 'test@mail.com' },
                     ],
                     monitoredChatIntegrations: [1],
                     isEnablingChatChannel: false,
                     isEnablingEmailChannel: false,
                 }),
-            {wrapper}
+            { wrapper },
         )
 
         result.current.updateSettingsAfterAiAgentEnabled()

@@ -1,8 +1,8 @@
-import {renderHook, act} from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react-hooks'
 
 import useLocalStorageWithExpiry from 'hooks/useLocalStorageWithExpiry'
 
-import {useOnboardingIntegrationRedirection} from '../useOnboardingIntegrationRedirection'
+import { useOnboardingIntegrationRedirection } from '../useOnboardingIntegrationRedirection'
 
 describe('useOnboardingIntegrationRedirection', () => {
     const LOCAL_STORAGE_KEY = 'aiagent_onboarding_integration_redirection'
@@ -10,9 +10,11 @@ describe('useOnboardingIntegrationRedirection', () => {
     it('should redirect to onboarding if redirectUrl is in localStorage', () => {
         const redirectUrl = 'http://example.com/onboarding'
         renderHook(() =>
-            useLocalStorageWithExpiry(LOCAL_STORAGE_KEY, 1000, redirectUrl)
+            useLocalStorageWithExpiry(LOCAL_STORAGE_KEY, 1000, redirectUrl),
         )
-        const {result} = renderHook(() => useOnboardingIntegrationRedirection())
+        const { result } = renderHook(() =>
+            useOnboardingIntegrationRedirection(),
+        )
         const windowOpenSpy = jest
             .spyOn(window, 'open')
             .mockImplementation(() => null)
@@ -24,14 +26,16 @@ describe('useOnboardingIntegrationRedirection', () => {
         expect(localStorage.getItem(LOCAL_STORAGE_KEY)).toBeNull()
         expect(windowOpenSpy).toHaveBeenCalledWith(
             `${redirectUrl}?integrationType=type1&integrationId=id1`,
-            '_self'
+            '_self',
         )
 
         windowOpenSpy.mockRestore()
     })
 
     it('should not redirect if redirectUrl is not in localStorage', () => {
-        const {result} = renderHook(() => useOnboardingIntegrationRedirection())
+        const { result } = renderHook(() =>
+            useOnboardingIntegrationRedirection(),
+        )
         const windowOpenSpy = jest
             .spyOn(window, 'open')
             .mockImplementation(() => null)
@@ -46,7 +50,9 @@ describe('useOnboardingIntegrationRedirection', () => {
 
     it('should set localStorage and redirect to integration', () => {
         const integrationUrl = 'http://example.com/integration'
-        const {result} = renderHook(() => useOnboardingIntegrationRedirection())
+        const { result } = renderHook(() =>
+            useOnboardingIntegrationRedirection(),
+        )
         const windowOpenSpy = jest
             .spyOn(window, 'open')
             .mockImplementation(() => null)
@@ -56,7 +62,7 @@ describe('useOnboardingIntegrationRedirection', () => {
         })
 
         expect(localStorage.getItem(LOCAL_STORAGE_KEY)).toContain(
-            window.location.href
+            window.location.href,
         )
         expect(windowOpenSpy).toHaveBeenCalledWith(integrationUrl, '_self')
         windowOpenSpy.mockRestore()

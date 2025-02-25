@@ -1,7 +1,8 @@
-import classNames from 'classnames'
 import React from 'react'
 
-import Button, {type ButtonProps} from 'pages/common/components/button/Button'
+import classNames from 'classnames'
+
+import Button, { type ButtonProps } from 'pages/common/components/button/Button'
 import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 import css from 'pages/settings/helpCenter/components/ConfirmationModal/ConfirmationModal.less'
 

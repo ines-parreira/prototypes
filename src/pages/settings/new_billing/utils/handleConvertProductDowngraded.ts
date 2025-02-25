@@ -1,10 +1,10 @@
-import {logEvent, SegmentEvent} from 'common/segment'
-import {ConvertPlan} from 'models/billing/types'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { ConvertPlan } from 'models/billing/types'
 
 export const handleConvertProductDowngraded = (
     oldProduct: ConvertPlan | undefined,
     newProduct: ConvertPlan | undefined,
-    domain: string | undefined
+    domain: string | undefined,
 ) => {
     const oldTier = oldProduct?.tier || 0
     const newTier = newProduct?.tier || 0

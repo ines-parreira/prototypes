@@ -1,52 +1,51 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
+import React, { ComponentProps } from 'react'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-
-import {fromJS} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
-
-import React, {ComponentProps} from 'react'
-import {act} from 'react-dom/test-utils'
-import {Provider} from 'react-redux'
+import { fromJS } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { act } from 'react-dom/test-utils'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {TicketChannel} from 'business/types/ticket'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {account} from 'fixtures/account'
-import {billingState} from 'fixtures/billing'
-import {useFilteredAutomatedInteractions} from 'hooks/reporting/automate/automationTrends'
-import {AutomateTimeseries} from 'hooks/reporting/automate/types'
+import { TicketChannel } from 'business/types/ticket'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { account } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
+import { useFilteredAutomatedInteractions } from 'hooks/reporting/automate/automationTrends'
+import { AutomateTimeseries } from 'hooks/reporting/automate/types'
 import {
     useAutomateMetricsTimeSeries,
     useAutomateMetricsTrend,
 } from 'hooks/reporting/automate/useAutomationDataset'
-import {useAutomationRateTimeSeriesData} from 'hooks/reporting/automate/useAutomationRateTimeSeriesData'
-import {useAutomationRateTrend} from 'hooks/reporting/automate/useAutomationRateTrend'
-import {useDecreaseInFirstResponseTimeTrend} from 'hooks/reporting/automate/useDecreaseInFirstResponseTimeTrend'
-import {useDecreaseInResolutionTimeTrend} from 'hooks/reporting/automate/useDecreaseInResolutionTimeTrend'
-import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-import {useSearchParam} from 'hooks/useSearchParam'
-import {IntegrationType} from 'models/integration/constants'
-import {AutomationBillingEventMeasure} from 'models/reporting/cubes/automate/AutomationBillingEventCube'
-import {FilterKey, LegacyStatsFilters} from 'models/stat/types'
-import {AUTOMATION_RATE_FIXED_STATS} from 'pages/automate/automate-metrics/constants'
+import { useAutomationRateTimeSeriesData } from 'hooks/reporting/automate/useAutomationRateTimeSeriesData'
+import { useAutomationRateTrend } from 'hooks/reporting/automate/useAutomationRateTrend'
+import { useDecreaseInFirstResponseTimeTrend } from 'hooks/reporting/automate/useDecreaseInFirstResponseTimeTrend'
+import { useDecreaseInResolutionTimeTrend } from 'hooks/reporting/automate/useDecreaseInResolutionTimeTrend'
+import { MetricTrend } from 'hooks/reporting/useMetricTrend'
+import { useSearchParam } from 'hooks/useSearchParam'
+import { IntegrationType } from 'models/integration/constants'
+import { AutomationBillingEventMeasure } from 'models/reporting/cubes/automate/AutomationBillingEventCube'
+import { FilterKey, LegacyStatsFilters } from 'models/stat/types'
+import { AUTOMATION_RATE_FIXED_STATS } from 'pages/automate/automate-metrics/constants'
 import {
-    AutomateOverview,
     AAO_TIPS_VISIBILITY_KEY,
+    AutomateOverview,
 } from 'pages/stats/automate/overview/AutomateOverview'
-import {AutomateOverviewDownloadDataButton} from 'pages/stats/automate/overview/AutomateOverviewDownloadDataButton'
-import {TimeSavedByAgentsKPIChart} from 'pages/stats/automate/overview/charts/TimeSavedByAgentsKPIChart'
+import { AutomateOverviewDownloadDataButton } from 'pages/stats/automate/overview/AutomateOverviewDownloadDataButton'
+import { TimeSavedByAgentsKPIChart } from 'pages/stats/automate/overview/charts/TimeSavedByAgentsKPIChart'
 import TrendBadge from 'pages/stats/common/components/TrendBadge'
-import {ADD_FILTER_BUTTON_LABEL} from 'pages/stats/common/filters/AddFilterButton'
-import {FilterLabels} from 'pages/stats/common/filters/constants'
+import { ADD_FILTER_BUTTON_LABEL } from 'pages/stats/common/filters/AddFilterButton'
+import { FilterLabels } from 'pages/stats/common/filters/constants'
 import DEPRECATED_TagsStatsFilter from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
-import {AccountFeature, AccountSettingType} from 'state/currentAccount/types'
-import {mergeStatsFilters} from 'state/stats/statsSlice'
-import {RootState, StoreDispatch} from 'state/types'
-import {initialState} from 'state/ui/stats/filtersSlice'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { AccountFeature, AccountSettingType } from 'state/currentAccount/types'
+import { mergeStatsFilters } from 'state/stats/statsSlice'
+import { RootState, StoreDispatch } from 'state/types'
+import { initialState } from 'state/ui/stats/filtersSlice'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 const queryClient = mockQueryClient()
 
@@ -62,13 +61,13 @@ jest.mock('react-chartjs-2', () => ({
 jest.mock(
     'pages/stats/common/filters/DEPRECATED_TagsStatsFilter',
     () =>
-        ({value}: ComponentProps<typeof DEPRECATED_TagsStatsFilter>) => (
+        ({ value }: ComponentProps<typeof DEPRECATED_TagsStatsFilter>) => (
             <div>TagsStatsFilterMock, value: {JSON.stringify(value)}</div>
-        )
+        ),
 )
 jest.mock(
     'pages/stats/common/filters/DEPRECATED_ChannelsStatsFilter',
-    () => () => <div>ChannelsStatsFilter</div>
+    () => () => <div>ChannelsStatsFilter</div>,
 )
 
 jest.mock('react-router-dom', () => ({
@@ -84,13 +83,13 @@ jest.mock('react-router-dom', () => ({
 // TimeSeries
 jest.mock('hooks/reporting/automate/useAutomationDataset')
 const useAutomateMetricsTimeSeriesMock = assumeMock(
-    useAutomateMetricsTimeSeries
+    useAutomateMetricsTimeSeries,
 )
 const useAutomateMetricsTrendMock = assumeMock(useAutomateMetricsTrend)
 
 jest.mock('hooks/reporting/automate/automationTrends')
 const useFilteredAutomatedInteractionsMock = assumeMock(
-    useFilteredAutomatedInteractions
+    useFilteredAutomatedInteractions,
 )
 
 jest.mock('pages/stats/common/components/TrendBadge')
@@ -102,7 +101,7 @@ jest.mock('pages/stats/DrillDownModal.tsx', () => ({
 
 jest.mock('pages/stats/automate/overview/AutomateOverviewDownloadDataButton')
 const AutomateOverviewDownloadDataButtonMock = assumeMock(
-    AutomateOverviewDownloadDataButton
+    AutomateOverviewDownloadDataButton,
 )
 
 jest.mock('hooks/useSearchParam', () => ({
@@ -114,15 +113,15 @@ jest.mock('hooks/reporting/automate/useAutomationRateTrend')
 const useAutomationRateTrendMock = assumeMock(useAutomationRateTrend)
 jest.mock('hooks/reporting/automate/useDecreaseInResolutionTimeTrend')
 const useDecreaseInResolutionTimeTrendMock = assumeMock(
-    useDecreaseInResolutionTimeTrend
+    useDecreaseInResolutionTimeTrend,
 )
 jest.mock('hooks/reporting/automate/useDecreaseInFirstResponseTimeTrend')
 const useDecreaseInFirstResponseTimeTrendMock = assumeMock(
-    useDecreaseInFirstResponseTimeTrend
+    useDecreaseInFirstResponseTimeTrend,
 )
 jest.mock('hooks/reporting/automate/useAutomationRateTimeSeriesData')
 const useAutomationRateTimeSeriesDataMock = assumeMock(
-    useAutomationRateTimeSeriesData
+    useAutomationRateTimeSeriesData,
 )
 
 jest.mock('pages/stats/automate/overview/charts/TimeSavedByAgentsKPIChart')
@@ -167,8 +166,8 @@ describe('<AutomateOverview />', () => {
         ],
         features: {
             ...account.features,
-            [AccountFeature.AutomationSelfServiceStatistics]: {enabled: true},
-            [AccountFeature.AutomationAddonOverview]: {enabled: true},
+            [AccountFeature.AutomationSelfServiceStatistics]: { enabled: true },
+            [AccountFeature.AutomationAddonOverview]: { enabled: true },
         },
     }
     const defaultState = {
@@ -184,7 +183,7 @@ describe('<AutomateOverview />', () => {
             ],
         }),
         ui: {
-            stats: {filters: initialState},
+            stats: { filters: initialState },
         },
     } as RootState
 
@@ -258,17 +257,17 @@ describe('<AutomateOverview />', () => {
 
     beforeEach(() => {
         jest.resetAllMocks()
-        mockFlags({[FeatureFlagKey.AutomateOverviewChannelsFilter]: true})
+        mockFlags({ [FeatureFlagKey.AutomateOverviewChannelsFilter]: true })
 
         useFilteredAutomatedInteractionsMock.mockReturnValue(
-            automatedInteractionTrend
+            automatedInteractionTrend,
         )
         useAutomationRateTrendMock.mockReturnValue(automationRateTrend)
         useDecreaseInResolutionTimeTrendMock.mockReturnValue(
-            decreaseInResolutionTimeWithAutomateTrend
+            decreaseInResolutionTimeWithAutomateTrend,
         )
         useDecreaseInFirstResponseTimeTrendMock.mockReturnValue(
-            firstResponseTimeWithAutomationTrend
+            firstResponseTimeWithAutomationTrend,
         )
         useAutomationRateTimeSeriesDataMock.mockReturnValue({
             data: [],
@@ -276,7 +275,7 @@ describe('<AutomateOverview />', () => {
             isFetching: false,
         })
         useAutomateMetricsTimeSeriesMock.mockReturnValue(
-            automateMetricsTimeSeries
+            automateMetricsTimeSeries,
         )
         useAutomateMetricsTrendMock.mockReturnValue({
             automatedInteractionTrend,
@@ -309,27 +308,27 @@ describe('<AutomateOverview />', () => {
                 filters: defaultStatsFilters,
             },
             ui: {
-                stats: {filters: initialState},
+                stats: { filters: initialState },
             },
         } as RootState
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <QueryClientProvider client={queryClient}>
                     <AutomateOverview />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should display AAO', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <QueryClientProvider client={queryClient}>
                     <AutomateOverview />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -347,7 +346,7 @@ describe('<AutomateOverview />', () => {
                     <QueryClientProvider client={queryClient}>
                         <AutomateOverview />
                     </QueryClientProvider>
-                </Provider>
+                </Provider>,
             )
 
             const addFilterButton = screen.getByText(ADD_FILTER_BUTTON_LABEL)
@@ -356,11 +355,11 @@ describe('<AutomateOverview />', () => {
             })
 
             expect(
-                screen.getByText(FilterLabels[FilterKey.Period])
+                screen.getByText(FilterLabels[FilterKey.Period]),
             ).toBeInTheDocument()
             await waitFor(() => {
                 expect(
-                    screen.getByText(FilterLabels[FilterKey.Channels])
+                    screen.getByText(FilterLabels[FilterKey.Channels]),
                 ).toBeInTheDocument()
             })
         })
@@ -376,15 +375,15 @@ describe('<AutomateOverview />', () => {
                     <QueryClientProvider client={queryClient}>
                         <AutomateOverview />
                     </QueryClientProvider>
-                </Provider>
+                </Provider>,
             )
 
             expect(
-                screen.queryByText(ADD_FILTER_BUTTON_LABEL)
+                screen.queryByText(ADD_FILTER_BUTTON_LABEL),
             ).not.toBeInTheDocument()
             await waitFor(() => {
                 expect(
-                    screen.queryByText(FilterLabels[FilterKey.Channels])
+                    screen.queryByText(FilterLabels[FilterKey.Channels]),
                 ).not.toBeInTheDocument()
             })
         })
@@ -398,7 +397,7 @@ describe('<AutomateOverview />', () => {
                 <QueryClientProvider client={queryClient}>
                     <AutomateOverview />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         expect(store.getActions()).toContainEqual(
@@ -407,7 +406,7 @@ describe('<AutomateOverview />', () => {
                     start_datetime: '2022-01-06T00:00:00Z',
                     end_datetime: '2022-02-02T23:59:59Z',
                 },
-            })
+            }),
         )
     })
 
@@ -418,7 +417,7 @@ describe('<AutomateOverview />', () => {
                 <QueryClientProvider client={queryClient}>
                     <AutomateOverview />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         expect(AutomateOverviewDownloadDataButton).toHaveBeenCalled()
@@ -433,16 +432,16 @@ describe('<AutomateOverview />', () => {
                 <QueryClientProvider client={queryClient}>
                     <AutomateOverview />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            screen.getByText(new RegExp(notificationFragment))
+            screen.getByText(new RegExp(notificationFragment)),
         ).toBeInTheDocument()
         userEvent.click(screen.getByAltText('close-icon'))
 
         expect(
-            screen.queryByText(new RegExp(notificationFragment))
+            screen.queryByText(new RegExp(notificationFragment)),
         ).not.toBeInTheDocument()
     })
 
@@ -474,27 +473,27 @@ describe('<AutomateOverview />', () => {
                 <QueryClientProvider client={queryClient}>
                     <AutomateOverview />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            screen.getByText(new RegExp(notificationFragment))
+            screen.getByText(new RegExp(notificationFragment)),
         ).toBeInTheDocument()
         userEvent.click(screen.getByAltText('close-icon'))
 
         expect(
-            screen.queryByText(new RegExp(notificationFragment))
+            screen.queryByText(new RegExp(notificationFragment)),
         ).not.toBeInTheDocument()
     })
 
     describe('Performance Tips', () => {
         it('should show tips by default', () => {
-            const {getByText} = render(
+            const { getByText } = render(
                 <Provider store={mockStore(defaultState)}>
                     <QueryClientProvider client={queryClient}>
                         <AutomateOverview />
                     </QueryClientProvider>
-                </Provider>
+                </Provider>,
             )
 
             expect(getByText(/^Top 5%/)).toBeInTheDocument()
@@ -503,12 +502,12 @@ describe('<AutomateOverview />', () => {
         it('should show tips and save the value to local storage on show tips button click', () => {
             localStorage.setItem(AAO_TIPS_VISIBILITY_KEY, 'false')
 
-            const {getByText} = render(
+            const { getByText } = render(
                 <Provider store={mockStore(defaultState)}>
                     <QueryClientProvider client={queryClient}>
                         <AutomateOverview />
                     </QueryClientProvider>
-                </Provider>
+                </Provider>,
             )
 
             fireEvent.click(getByText(/Show tips/))
@@ -520,12 +519,12 @@ describe('<AutomateOverview />', () => {
         it('should hide tips and save the value to local storage on hide tips button click ', () => {
             localStorage.setItem(AAO_TIPS_VISIBILITY_KEY, 'true')
 
-            const {getByText, queryAllByText} = render(
+            const { getByText, queryAllByText } = render(
                 <Provider store={mockStore(defaultState)}>
                     <QueryClientProvider client={queryClient}>
                         <AutomateOverview />
                     </QueryClientProvider>
-                </Provider>
+                </Provider>,
             )
 
             fireEvent.click(getByText(/Hide tips/))
@@ -566,7 +565,7 @@ describe('<AutomateOverview />', () => {
                         <QueryClientProvider client={queryClient}>
                             <AutomateOverview />
                         </QueryClientProvider>
-                    </Provider>
+                    </Provider>,
                 )
 
                 fireEvent.click(screen.getByText(/Show tips/))
@@ -592,7 +591,7 @@ describe('<AutomateOverview />', () => {
                     <QueryClientProvider client={queryClient}>
                         <AutomateOverview />
                     </QueryClientProvider>
-                </Provider>
+                </Provider>,
             )
             fireEvent.click(screen.getByText(/Show tips/))
 
@@ -616,7 +615,7 @@ describe('<AutomateOverview />', () => {
                     <QueryClientProvider client={queryClient}>
                         <AutomateOverview />
                     </QueryClientProvider>
-                </Provider>
+                </Provider>,
             )
             fireEvent.click(screen.getByText(/Show tips/))
 
@@ -642,7 +641,7 @@ describe('<AutomateOverview />', () => {
                     <QueryClientProvider client={queryClient}>
                         <AutomateOverview />
                     </QueryClientProvider>
-                </Provider>
+                </Provider>,
             )
             fireEvent.click(screen.getByText(/Show tips/))
 
@@ -666,7 +665,7 @@ describe('<AutomateOverview />', () => {
                     <QueryClientProvider client={queryClient}>
                         <AutomateOverview />
                     </QueryClientProvider>
-                </Provider>
+                </Provider>,
             )
             fireEvent.click(screen.getByText(/Show tips/))
 
@@ -706,21 +705,21 @@ describe('<AutomateOverview />', () => {
                 ],
             }
             useAutomateMetricsTimeSeriesMock.mockReturnValue(
-                automateMetricsTimeseries
+                automateMetricsTimeseries,
             )
             const screen = render(
                 <Provider store={mockStore(defaultState)}>
                     <QueryClientProvider client={queryClient}>
                         <AutomateOverview />
                     </QueryClientProvider>
-                </Provider>
+                </Provider>,
             )
 
             expect(
-                screen.getByText('Automated interactions by feature')
+                screen.getByText('Automated interactions by feature'),
             ).toBeInTheDocument()
             expect(
-                screen.getByText('Autoresponders (deprecated)')
+                screen.getByText('Autoresponders (deprecated)'),
             ).toBeInTheDocument()
         })
 
@@ -755,18 +754,18 @@ describe('<AutomateOverview />', () => {
                 ],
             }
             useAutomateMetricsTimeSeriesMock.mockReturnValue(
-                automateMetricsTimeseries
+                automateMetricsTimeseries,
             )
             const screen = render(
                 <Provider store={mockStore(defaultState)}>
                     <QueryClientProvider client={queryClient}>
                         <AutomateOverview />
                     </QueryClientProvider>
-                </Provider>
+                </Provider>,
             )
 
             expect(
-                screen.queryByText('Autoresponders (deprecated)')
+                screen.queryByText('Autoresponders (deprecated)'),
             ).not.toBeInTheDocument()
         })
         it('should return false when hasAutomatedInteractionsByAutoResponders is false and item label matches', () => {
@@ -800,15 +799,15 @@ describe('<AutomateOverview />', () => {
                 ],
             }
             useAutomateMetricsTimeSeriesMock.mockReturnValue(
-                automateMetricsTimeseries
+                automateMetricsTimeseries,
             )
 
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore(defaultState)}>
                     <QueryClientProvider client={queryClient}>
                         <AutomateOverview />
                     </QueryClientProvider>
-                </Provider>
+                </Provider>,
             )
 
             // Add assertions to check the specific behavior
@@ -848,21 +847,21 @@ describe('<AutomateOverview />', () => {
                 ],
             }
             useAutomateMetricsTimeSeriesMock.mockReturnValue(
-                automateMetricsTimeseries
+                automateMetricsTimeseries,
             )
             const screen = render(
                 <Provider store={mockStore(defaultState)}>
                     <QueryClientProvider client={queryClient}>
                         <AutomateOverview />
                     </QueryClientProvider>
-                </Provider>
+                </Provider>,
             )
 
             expect(
-                screen.getByText('Automated interactions by feature')
+                screen.getByText('Automated interactions by feature'),
             ).toBeInTheDocument()
             expect(
-                screen.getByText('Quick Responses (deprecated)')
+                screen.getByText('Quick Responses (deprecated)'),
             ).toBeInTheDocument()
         })
 
@@ -897,18 +896,18 @@ describe('<AutomateOverview />', () => {
                 ],
             }
             useAutomateMetricsTimeSeriesMock.mockReturnValue(
-                automateMetricsTimeseries
+                automateMetricsTimeseries,
             )
             const screen = render(
                 <Provider store={mockStore(defaultState)}>
                     <QueryClientProvider client={queryClient}>
                         <AutomateOverview />
                     </QueryClientProvider>
-                </Provider>
+                </Provider>,
             )
 
             expect(
-                screen.queryByText('Quick Responses (deprecated)')
+                screen.queryByText('Quick Responses (deprecated)'),
             ).not.toBeInTheDocument()
         })
         it('should return false when hasAutomatedInteractionsByQuickResponses is false and item label matches', () => {
@@ -942,15 +941,15 @@ describe('<AutomateOverview />', () => {
                 ],
             }
             useAutomateMetricsTimeSeriesMock.mockReturnValue(
-                automateMetricsTimeseries
+                automateMetricsTimeseries,
             )
 
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore(defaultState)}>
                     <QueryClientProvider client={queryClient}>
                         <AutomateOverview />
                     </QueryClientProvider>
-                </Provider>
+                </Provider>,
             )
 
             // Add assertions to check the specific behavior
@@ -988,15 +987,15 @@ describe('<AutomateOverview />', () => {
                 ],
             }
             useAutomateMetricsTimeSeriesMock.mockReturnValue(
-                automateMetricsTimeseries
+                automateMetricsTimeseries,
             )
 
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore(defaultState)}>
                     <QueryClientProvider client={queryClient}>
                         <AutomateOverview />
                     </QueryClientProvider>
-                </Provider>
+                </Provider>,
             )
 
             // Add assertions to check the specific behavior
@@ -1006,7 +1005,9 @@ describe('<AutomateOverview />', () => {
 
     describe('TimeSavedByAgentsKPI', () => {
         beforeEach(() => {
-            mockFlags({[FeatureFlagKey.ObservabilityTicketTimeToHandle]: true})
+            mockFlags({
+                [FeatureFlagKey.ObservabilityTicketTimeToHandle]: true,
+            })
 
             TimeSavedByAgentsKPIChartMock.mockImplementation(() => <div />)
         })
@@ -1017,7 +1018,7 @@ describe('<AutomateOverview />', () => {
                     <QueryClientProvider client={queryClient}>
                         <AutomateOverview />
                     </QueryClientProvider>
-                </Provider>
+                </Provider>,
             )
 
             expect(TimeSavedByAgentsKPIChartMock).toHaveBeenCalled()

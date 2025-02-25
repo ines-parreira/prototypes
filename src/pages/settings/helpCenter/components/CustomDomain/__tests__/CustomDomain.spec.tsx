@@ -1,22 +1,23 @@
+import React from 'react'
+
 import {
     fireEvent,
     render,
     screen,
     waitForElementToBeRemoved,
 } from '@testing-library/react'
-import React from 'react'
-import {Provider} from 'react-redux'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
-import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
-import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
-import {RootState, StoreDispatch} from 'state/types'
-import {initialState as uiState} from 'state/ui/helpCenter/reducer'
+import { initialState as articlesState } from 'state/entities/helpCenter/articles/reducer'
+import { initialState as categoriesState } from 'state/entities/helpCenter/categories/reducer'
+import { RootState, StoreDispatch } from 'state/types'
+import { initialState as uiState } from 'state/ui/helpCenter/reducer'
 
-import {CustomDomain} from '../CustomDomain'
+import { CustomDomain } from '../CustomDomain'
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterIdParam', () => {
     return {
@@ -96,7 +97,7 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
                             powered_by_deactivated_datetime: null,
                             self_serve_deactivated_datetime: null,
                         },
-                    })
+                    }),
                 ),
             },
         }),
@@ -105,7 +106,7 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
 
 jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
 ;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
-    getSingleHelpCenterResponseFixture
+    getSingleHelpCenterResponseFixture,
 )
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -122,12 +123,12 @@ const defaultState: Partial<RootState> = {
             categories: categoriesState,
         },
     } as any,
-    ui: {helpCenter: {...uiState, currentId: 1}} as any,
+    ui: { helpCenter: { ...uiState, currentId: 1 } } as any,
 }
 
 const store = mockStore(defaultState)
 
-const ReduxProvider = ({children}: {children?: React.ReactNode}) => (
+const ReduxProvider = ({ children }: { children?: React.ReactNode }) => (
     <Provider store={store}>{children}</Provider>
 )
 
@@ -137,16 +138,16 @@ describe('<CustomDomain />', () => {
     })
 
     it('has Add Domain button enabled if custom domain feature is enabled and input has value', () => {
-        render(<CustomDomain />, {wrapper: ReduxProvider})
+        render(<CustomDomain />, { wrapper: ReduxProvider })
 
         const input = screen.queryByPlaceholderText(
-            'help.brand-name.com'
+            'help.brand-name.com',
         ) as HTMLInputElement
 
-        fireEvent.change(input, {target: {value: 'gorgias.help'}})
+        fireEvent.change(input, { target: { value: 'gorgias.help' } })
 
         const addDomainBtn = screen.queryByTestId(
-            'create-domain-btn'
+            'create-domain-btn',
         ) as HTMLButtonElement
 
         expect(input.value).toEqual('gorgias.help')
@@ -154,40 +155,40 @@ describe('<CustomDomain />', () => {
     })
 
     it('adds a new domain', async () => {
-        render(<CustomDomain />, {wrapper: ReduxProvider})
+        render(<CustomDomain />, { wrapper: ReduxProvider })
 
         const input = screen.queryByPlaceholderText(
-            'help.brand-name.com'
+            'help.brand-name.com',
         ) as HTMLInputElement
 
         const addDomainBtn = screen.queryByTestId(
-            'create-domain-btn'
+            'create-domain-btn',
         ) as HTMLButtonElement
 
-        fireEvent.change(input, {target: {value: 'gorgias.help'}})
+        fireEvent.change(input, { target: { value: 'gorgias.help' } })
         fireEvent.click(addDomainBtn)
 
         await screen.findByText('Verification in progress')
     })
 
     it('"Check Status" button updates the status of the connection', async () => {
-        render(<CustomDomain />, {wrapper: ReduxProvider})
+        render(<CustomDomain />, { wrapper: ReduxProvider })
 
         const input = screen.queryByPlaceholderText(
-            'help.brand-name.com'
+            'help.brand-name.com',
         ) as HTMLInputElement
 
         const addDomainBtn = screen.queryByTestId(
-            'create-domain-btn'
+            'create-domain-btn',
         ) as HTMLButtonElement
 
-        fireEvent.change(input, {target: {value: 'gorgias.help'}})
+        fireEvent.change(input, { target: { value: 'gorgias.help' } })
         fireEvent.click(addDomainBtn)
 
         await screen.findByText('Verification in progress')
 
         const checkStatusBtn = screen.queryByText(
-            'Check Status'
+            'Check Status',
         ) as HTMLButtonElement
 
         fireEvent.click(checkStatusBtn)
@@ -196,24 +197,24 @@ describe('<CustomDomain />', () => {
     })
 
     it('removes the connection status when deleting the domain', async () => {
-        render(<CustomDomain />, {wrapper: ReduxProvider})
+        render(<CustomDomain />, { wrapper: ReduxProvider })
 
         const input = screen.queryByPlaceholderText(
-            'help.brand-name.com'
+            'help.brand-name.com',
         ) as HTMLInputElement
 
         const addDomainBtn = screen.queryByTestId(
-            'create-domain-btn'
+            'create-domain-btn',
         ) as HTMLButtonElement
 
-        fireEvent.change(input, {target: {value: 'gorgias.help'}})
+        fireEvent.change(input, { target: { value: 'gorgias.help' } })
         fireEvent.click(addDomainBtn)
 
         await waitForElementToBeRemoved(addDomainBtn)
 
         const connectionStatus = screen.getByText('Verification in progress')
         const deleteDomain = screen.queryByTestId(
-            'delete-domain-btn'
+            'delete-domain-btn',
         ) as HTMLButtonElement
 
         fireEvent.click(deleteDomain)

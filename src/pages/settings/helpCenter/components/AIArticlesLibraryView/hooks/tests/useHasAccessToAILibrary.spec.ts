@@ -1,12 +1,12 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
+import { renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationType} from 'models/integration/constants'
-import {StoreState} from 'state/types'
-import {assumeMock} from 'utils/testing'
+import { IntegrationType } from 'models/integration/constants'
+import { StoreState } from 'state/types'
+import { assumeMock } from 'utils/testing'
 
-import {useHasAccessToAILibrary} from '../useHasAccessToAILibrary'
+import { useHasAccessToAILibrary } from '../useHasAccessToAILibrary'
 
 jest.mock('hooks/useAppSelector')
 
@@ -19,16 +19,16 @@ describe('useHasAccessToAILibrary', () => {
             selector({
                 integrations: fromJS({
                     integrations: [
-                        {id: 1, type: IntegrationType.Shopify},
-                        {id: 2, type: IntegrationType.BigCommerce},
+                        { id: 1, type: IntegrationType.Shopify },
+                        { id: 2, type: IntegrationType.BigCommerce },
                     ],
                 }),
-            } as unknown as StoreState)
+            } as unknown as StoreState),
         )
     })
 
     it('should return true if multi store', () => {
-        const {result} = renderHook(() => useHasAccessToAILibrary())
+        const { result } = renderHook(() => useHasAccessToAILibrary())
         expect(result.current).toBe(true)
     })
 
@@ -36,12 +36,12 @@ describe('useHasAccessToAILibrary', () => {
         mockedUseAppSelector.mockImplementation((selector) =>
             selector({
                 integrations: fromJS({
-                    integrations: [{id: 1, type: IntegrationType.Shopify}],
+                    integrations: [{ id: 1, type: IntegrationType.Shopify }],
                 }),
-            } as unknown as StoreState)
+            } as unknown as StoreState),
         )
 
-        const {result} = renderHook(() => useHasAccessToAILibrary())
+        const { result } = renderHook(() => useHasAccessToAILibrary())
         expect(result.current).toBe(true)
     })
 
@@ -51,10 +51,10 @@ describe('useHasAccessToAILibrary', () => {
                 integrations: fromJS({
                     integrations: [],
                 }),
-            } as unknown as StoreState)
+            } as unknown as StoreState),
         )
 
-        const {result} = renderHook(() => useHasAccessToAILibrary())
+        const { result } = renderHook(() => useHasAccessToAILibrary())
         expect(result.current).toBe(false)
     })
 })

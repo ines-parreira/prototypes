@@ -1,13 +1,12 @@
 import _pick from 'lodash/pick'
 
 import client from '../api/resources'
-import {ApiListResponseLegacyPagination} from '../api/types'
-
-import {Section, SectionDraft} from './types'
+import { ApiListResponseLegacyPagination } from '../api/types'
+import { Section, SectionDraft } from './types'
 
 export const fetchSections = async () => {
     const res = await client.get<ApiListResponseLegacyPagination<Section[]>>(
-        '/api/view-sections/'
+        '/api/view-sections/',
     )
     return res.data
 }
@@ -20,7 +19,7 @@ export const createSection = async (sectionDraft: SectionDraft) => {
 export const updateSection = async (section: Section) => {
     const res = await client.put<Section>(
         `/api/view-sections/${section.id}/`,
-        _pick(section, ['decoration', 'name'])
+        _pick(section, ['decoration', 'name']),
     )
     return res.data
 }

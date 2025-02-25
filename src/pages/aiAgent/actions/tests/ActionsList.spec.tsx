@@ -1,8 +1,9 @@
-import {fireEvent, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
-import {BrowserRouter as Router} from 'react-router-dom'
+
+import { fireEvent, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import { BrowserRouter as Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -14,12 +15,11 @@ import useAddStoreApp from 'pages/aiAgent/actions/hooks/useAddStoreApp'
 import useDeleteAction from 'pages/aiAgent/actions/hooks/useDeleteAction'
 import useUpsertAction from 'pages/aiAgent/actions/hooks/useUpsertAction'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
-import {RootState, StoreDispatch} from 'state/types'
-import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
+import { RootState, StoreDispatch } from 'state/types'
+import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import ActionsList from '../components/ActionsList'
-
-import {StoresWorkflowConfiguration} from '../types'
+import { StoresWorkflowConfiguration } from '../types'
 
 jest.mock('models/workflows/queries')
 jest.mock('pages/aiAgent/actions/hooks/useAddStoreApp')
@@ -33,7 +33,7 @@ const mockUseApps = jest.mocked(useApps)
 const mockUseUpsertAction = jest.mocked(useUpsertAction)
 const mockUseDeleteAction = jest.mocked(useDeleteAction)
 const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
-    useGetWorkflowConfigurationTemplates
+    useGetWorkflowConfigurationTemplates,
 )
 const mockActions: StoresWorkflowConfiguration = [
     {
@@ -85,7 +85,7 @@ const mockActions: StoresWorkflowConfiguration = [
 ]
 
 const defaultState = {
-    integrations: fromJS({integrations: []}),
+    integrations: fromJS({ integrations: [] }),
 } as RootState
 
 const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])
@@ -123,7 +123,7 @@ describe('ActionsList', () => {
                 <Provider store={mockStore(defaultState)}>
                     <ActionsList actions={mockActions} />
                 </Provider>
-            </Router>
+            </Router>,
         )
 
         // Initial order should be descending
@@ -146,7 +146,7 @@ describe('ActionsList', () => {
                 <Provider store={mockStore(defaultState)}>
                     <ActionsList actions={mockActions} />
                 </Provider>
-            </Router>
+            </Router>,
         )
 
         // Click to sort ascending

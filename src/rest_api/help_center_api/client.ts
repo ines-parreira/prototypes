@@ -1,9 +1,9 @@
-import OpenAPIClientAxios, {Document} from 'openapi-client-axios'
+import OpenAPIClientAxios, { Document } from 'openapi-client-axios'
 
-import {AppAbility} from './ability'
-import {Client} from './client.generated'
+import { AppAbility } from './ability'
+import { Client } from './client.generated'
 import OpenAPIDoc from './help-center.openapi.json'
-import {getHelpCenterApiBaseUrl} from './utils'
+import { getHelpCenterApiBaseUrl } from './utils'
 
 export const helpCenterAPI = new OpenAPIClientAxios({
     // We prefer having the OpenAPI doc locally rather
@@ -12,8 +12,8 @@ export const helpCenterAPI = new OpenAPIClientAxios({
     // at runtime.
     definition: OpenAPIDoc as unknown as Document,
     ...(getHelpCenterApiBaseUrl()
-        ? {withServer: {url: getHelpCenterApiBaseUrl()}}
+        ? { withServer: { url: getHelpCenterApiBaseUrl() } }
         : {}),
 })
 
-export type HelpCenterClient = Client & {ability?: AppAbility}
+export type HelpCenterClient = Client & { ability?: AppAbility }

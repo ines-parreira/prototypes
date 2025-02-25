@@ -1,5 +1,5 @@
-import {fireEvent} from '@testing-library/react'
-import {act, renderHook} from '@testing-library/react-hooks'
+import { fireEvent } from '@testing-library/react'
+import { act, renderHook } from '@testing-library/react-hooks'
 
 import useScreenSize from '../useScreenSize'
 
@@ -12,7 +12,7 @@ describe('useScreenSize', () => {
         global.innerWidth = 800
         global.innerHeight = 640
 
-        const {result} = renderHook(() => useScreenSize())
+        const { result } = renderHook(() => useScreenSize())
 
         expect(result.current).toEqual([800, 640])
     })
@@ -21,7 +21,7 @@ describe('useScreenSize', () => {
         global.innerWidth = 800
         global.innerHeight = 640
 
-        const {result} = renderHook(() => useScreenSize())
+        const { result } = renderHook(() => useScreenSize())
 
         global.innerWidth = 900
         global.innerHeight = 700
@@ -34,7 +34,7 @@ describe('useScreenSize', () => {
     })
 
     it('should remove the event listener on unmount', () => {
-        const {unmount} = renderHook(() => useScreenSize())
+        const { unmount } = renderHook(() => useScreenSize())
 
         jest.spyOn(window, 'removeEventListener')
 

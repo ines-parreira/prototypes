@@ -1,10 +1,10 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
-import {TicketMessageSourceType} from '../../../../business/types/ticket'
-import {QuotedTweet, TicketMessage} from '../../../../models/ticket/types'
+import { TicketMessageSourceType } from '../../../../business/types/ticket'
+import { QuotedTweet, TicketMessage } from '../../../../models/ticket/types'
 
 export function mapQuotedTweetTicketMessageToEmbeddedCard(
-    quotedTweetTicketMessage: TicketMessage
+    quotedTweetTicketMessage: TicketMessage,
 ) {
     const quotedTweet =
         quotedTweetTicketMessage.meta?.quoted_tweet || ({} as QuotedTweet)
@@ -14,7 +14,7 @@ export function mapQuotedTweetTicketMessageToEmbeddedCard(
         integrationId: quotedTweetTicketMessage.integration_id,
         messageText: quotedTweet?.text,
         source: {
-            to: [{name: '', address: ''}],
+            to: [{ name: '', address: '' }],
             from: {
                 name: quotedTweet?.user?.username,
                 address: quotedTweet?.user?.id,

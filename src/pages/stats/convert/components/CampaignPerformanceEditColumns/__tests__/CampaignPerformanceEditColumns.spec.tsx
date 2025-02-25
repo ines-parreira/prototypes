@@ -1,21 +1,20 @@
-import {render, screen} from '@testing-library/react'
-import {createDragDropManager} from 'dnd-core'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {DndProvider} from 'react-dnd'
-import {HTML5Backend} from 'react-dnd-html5-backend'
-import {Provider} from 'react-redux'
+import { render, screen } from '@testing-library/react'
+import { createDragDropManager } from 'dnd-core'
+import { fromJS } from 'immutable'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {UserRole} from 'config/types/user'
-import {EditTableColumns} from 'pages/stats/common/components/Table/EditTableColumns'
+import { UserRole } from 'config/types/user'
+import { EditTableColumns } from 'pages/stats/common/components/Table/EditTableColumns'
+import { RootState, StoreDispatch } from 'state/types'
+import { assumeMock } from 'utils/testing'
 
-import {RootState, StoreDispatch} from 'state/types'
-import {assumeMock} from 'utils/testing'
-
-import {CampaignPerformanceEditColumns} from '../CampaignPerformanceEditColumns'
+import { CampaignPerformanceEditColumns } from '../CampaignPerformanceEditColumns'
 
 const manager = createDragDropManager(HTML5Backend, undefined, undefined)
 
@@ -34,14 +33,14 @@ describe('<CampaignPerformanceEditColumns />', () => {
             <Provider
                 store={mockStore({
                     currentUser: fromJS({
-                        role: {name: UserRole.Admin},
+                        role: { name: UserRole.Admin },
                     }),
                 } as unknown as RootState)}
             >
                 <DndProvider manager={manager}>
                     <CampaignPerformanceEditColumns />
                 </DndProvider>
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('Edit Columns')).toBeInTheDocument()
@@ -53,7 +52,7 @@ describe('<CampaignPerformanceEditColumns />', () => {
                 <DndProvider manager={manager}>
                     <CampaignPerformanceEditColumns />
                 </DndProvider>
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.queryByText('Edit Columns')).not.toBeInTheDocument()

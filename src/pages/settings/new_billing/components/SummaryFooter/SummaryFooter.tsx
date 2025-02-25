@@ -1,20 +1,19 @@
-import classNames from 'classnames'
-import React, {useMemo, useState} from 'react'
+import React, { useMemo, useState } from 'react'
 
-import {Link, useHistory} from 'react-router-dom'
+import classNames from 'classnames'
+import { Link, useHistory } from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useSessionStorage from 'hooks/useSessionStorage'
 import Button from 'pages/common/components/button/Button'
-
-import {ShopifyBillingStatus} from 'state/currentAccount/types'
-import {notify} from 'state/notifications/actions'
+import { ShopifyBillingStatus } from 'state/currentAccount/types'
+import { notify } from 'state/notifications/actions'
 import {
     Notification,
     NotificationStatus,
     NotificationStyle,
 } from 'state/notifications/types'
-import {reportError} from 'utils/errors'
+import { reportError } from 'utils/errors'
 
 import {
     ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
@@ -22,7 +21,8 @@ import {
     BILLING_PAYMENT_CARD_PATH,
     SELECTED_PRODUCTS_SESSION_STORAGE_KEY,
 } from '../../constants'
-import {SelectedPlans} from '../../views/BillingProcessView/BillingProcessView'
+import { SelectedPlans } from '../../views/BillingProcessView/BillingProcessView'
+
 import css from './SummaryFooter.less'
 
 export type SummaryFooterProps = {
@@ -76,7 +76,7 @@ const SummaryFooter = ({
 }: SummaryFooterProps) => {
     const [isTermsChecked, setIsTermsChecked] = useState(false)
     const [, setSessionSelectedPlans] = useSessionStorage<SelectedPlans>(
-        SELECTED_PRODUCTS_SESSION_STORAGE_KEY
+        SELECTED_PRODUCTS_SESSION_STORAGE_KEY,
     )
     const history = useHistory()
     const dispatch = useAppDispatch()

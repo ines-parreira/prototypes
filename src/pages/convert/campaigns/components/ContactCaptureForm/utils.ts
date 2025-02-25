@@ -1,19 +1,19 @@
-import {fromJS, List} from 'immutable'
+import { fromJS, List } from 'immutable'
 
-import {AttachmentEnum} from 'common/types'
-import {TransitoryAttachmentData} from 'pages/convert/campaigns/components/ContactCaptureForm/types'
+import { AttachmentEnum } from 'common/types'
+import { TransitoryAttachmentData } from 'pages/convert/campaigns/components/ContactCaptureForm/types'
 import {
     attachmentIsContactCaptureForm,
     AttachmentType,
     CampaignFormExtra,
     ContactFormFieldType,
 } from 'pages/convert/campaigns/types/CampaignAttachment'
-import {addAttachment, deleteAttachment} from 'state/newMessage/actions'
-import {TicketState} from 'state/ticket/types'
-import {StoreDispatch} from 'state/types'
+import { addAttachment, deleteAttachment } from 'state/newMessage/actions'
+import { TicketState } from 'state/ticket/types'
+import { StoreDispatch } from 'state/types'
 
 export const transformTransitoryToAttachment = (
-    transitoryAttachmentData: TransitoryAttachmentData
+    transitoryAttachmentData: TransitoryAttachmentData,
 ): CampaignFormExtra => {
     const output: CampaignFormExtra = {} as CampaignFormExtra
     const emailForm = transitoryAttachmentData.forms.email
@@ -47,7 +47,7 @@ export const transformTransitoryToAttachment = (
 }
 
 export const transformAttachmentToTransitory = (
-    attachment: CampaignFormExtra
+    attachment: CampaignFormExtra,
 ): TransitoryAttachmentData => {
     const output = {
         forms: {},
@@ -85,11 +85,11 @@ export const handleContactFormSubmitted = (
     attachments: List<Map<any, any>>,
     newAttachmentExtra: CampaignFormExtra,
     ticket: TicketState,
-    sortAttachments: boolean
+    sortAttachments: boolean,
 ) => {
     const jsAttachments = attachments.toJS() as AttachmentType[]
     const prevAttachmentIdx = jsAttachments.findIndex(
-        attachmentIsContactCaptureForm
+        attachmentIsContactCaptureForm,
     )
     if (prevAttachmentIdx >= 0) {
         dispatch(deleteAttachment(prevAttachmentIdx))
@@ -102,13 +102,13 @@ export const handleContactFormSubmitted = (
                 name: 'Email Capture Form',
                 extra: newAttachmentExtra,
             }),
-            sortAttachments
-        )
+            sortAttachments,
+        ),
     )
 }
 
 export const findContactCaptureForm = (
-    attachments: List<any>
+    attachments: List<any>,
 ): CampaignFormExtra | undefined => {
     const attachmentsJS: AttachmentType[] = attachments.toJS()
 

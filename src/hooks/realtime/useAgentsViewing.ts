@@ -1,29 +1,29 @@
-import {User} from '@gorgias/api-queries'
-import {useAgentActivity} from '@gorgias/realtime'
+import { useMemo } from 'react'
 
-import {useMemo} from 'react'
+import { User } from '@gorgias/api-queries'
+import { useAgentActivity } from '@gorgias/realtime'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useFlag} from 'core/flags'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
-import {getOtherAgentsOnTicket} from 'state/agents/selectors'
-import {getCurrentUser} from 'state/currentUser/selectors'
+import { getOtherAgentsOnTicket } from 'state/agents/selectors'
+import { getCurrentUser } from 'state/currentUser/selectors'
 
 export default function useAgentsViewing(ticketId: number) {
     const isRealtimeEnabled = useFlag(FeatureFlagKey.PubNubRealtime)
 
     const currentUser = useAppSelector(getCurrentUser)
     const agentsOnTicket = useAppSelector(
-        getOtherAgentsOnTicket(String(ticketId))
+        getOtherAgentsOnTicket(String(ticketId)),
     )
 
-    const {getTicketActivity} = useAgentActivity()
+    const { getTicketActivity } = useAgentActivity()
     const ticketViewingActivity = useMemo(
         () =>
             getTicketActivity(ticketId).viewing.filter(
-                (user) => user.id !== currentUser.get('id')
+                (user) => user.id !== currentUser.get('id'),
             ),
-        [currentUser, getTicketActivity, ticketId]
+        [currentUser, getTicketActivity, ticketId],
     )
 
     return {

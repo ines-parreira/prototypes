@@ -1,14 +1,14 @@
+import React, { createRef, useMemo, useState } from 'react'
+
 import cn from 'classnames'
 import _intersection from 'lodash/intersection'
-import React, {createRef, useState, useMemo} from 'react'
 
 import useUpdateEffect from 'hooks/useUpdateEffect'
-
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import ToggleInput from 'pages/common/forms/ToggleInput'
-import {CONVERT_SHOPIFY_TRIGGERS} from 'pages/convert/campaigns/constants/triggers'
-import {CampaignTriggerMap} from 'pages/convert/campaigns/types/CampaignTriggerMap'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import { CONVERT_SHOPIFY_TRIGGERS } from 'pages/convert/campaigns/constants/triggers'
+import { CampaignTriggerMap } from 'pages/convert/campaigns/types/CampaignTriggerMap'
+import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 
 import css from './CampaignIncognitoVisitorsSwitch.less'
 
@@ -25,12 +25,13 @@ const getIncognitoTriggerId = (triggers: CampaignTriggerMap): string => {
 const getIncognitoVisitorTrigger = (triggers: CampaignTriggerMap) => {
     return Object.entries(triggers).find(
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        ([id, trigger]) => trigger.type === CampaignTriggerType.IncognitoVisitor
+        ([id, trigger]) =>
+            trigger.type === CampaignTriggerType.IncognitoVisitor,
     )
 }
 
 const shouldIncognitoTriggerBeDisabled = (
-    triggers: CampaignTriggerMap
+    triggers: CampaignTriggerMap,
 ): boolean => {
     const evaluation = Object.values(triggers)
         .filter((trigger) => {
@@ -90,7 +91,7 @@ const CampaignIncognitoVisitorsSwitch: React.FC<Props> = ({
             ? hasShopifyTrigger
                 ? !shouldBeDisabled
                 : false
-            : incognitoVisitorTrigger
+            : incognitoVisitorTrigger,
     )
     const [isForcedByUser, setIsForcedByUser] = useState<boolean>(false)
 

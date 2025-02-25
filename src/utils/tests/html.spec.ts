@@ -1,20 +1,20 @@
-import jsdom, {BaseOptions} from 'jsdom'
+import jsdom, { BaseOptions } from 'jsdom'
 
 import {
     focusElement,
     linkifyHtml,
     parseHtml,
+    removeLinksFromHtml,
     sanitizeHtmlDefault,
     sanitizeHtmlForFacebookMessenger,
     textToHTML,
     trimHTML,
     unescapeQuoteEntities,
-    removeLinksFromHtml,
 } from '../html'
 
 describe('html util', () => {
     describe('parseHtml', () => {
-        const {JSDOM} = jsdom
+        const { JSDOM } = jsdom
         const doc = '<!doctype><body></body>'
         const domOptions: BaseOptions = {
             runScripts: 'dangerously',
@@ -41,7 +41,7 @@ describe('html util', () => {
                     expect(dom.window._xss).toBe(true)
                 },
                 100,
-                done
+                done,
             )
         })
 
@@ -53,14 +53,14 @@ describe('html util', () => {
                     expect(dom.window._xss).toBe(undefined)
                 },
                 100,
-                done
+                done,
             )
         })
 
         it('should run script tags', () => {
             const dom = new JSDOM(
                 '<body><script>window._xss=true;</script></body>',
-                domOptions
+                domOptions,
             )
             expect(dom.window._xss).toBe(true)
         })
@@ -175,21 +175,21 @@ describe('html util', () => {
         it('should remove comments from html', () => {
             expect(sanitizeHtmlDefault('<p><!-->hey</p>')).toBe('<p>hey</p>')
             expect(sanitizeHtmlDefault('<p><!--[if IE9]>hey</p>')).toBe(
-                '<p></p>'
+                '<p></p>',
             )
             expect(
-                sanitizeHtmlDefault('<p><!--[if IE9]>hey<![endif]--></p>')
+                sanitizeHtmlDefault('<p><!--[if IE9]>hey<![endif]--></p>'),
             ).toBe('<p></p>')
             expect(sanitizeHtmlDefault('<p><!-- hola senor -->hey</p>')).toBe(
-                '<p>hey</p>'
+                '<p>hey</p>',
             )
             expect(
-                sanitizeHtmlDefault('<p><!-- hola senor -->--> hey</p>')
+                sanitizeHtmlDefault('<p><!-- hola senor -->--> hey</p>'),
             ).toBe('<p>--&gt; hey</p>')
         })
         it('should remove all `o` - outlook tags', () => {
             expect(
-                sanitizeHtmlDefault('<o:PixelsPerInch>96</o:PixelsPerInch>')
+                sanitizeHtmlDefault('<o:PixelsPerInch>96</o:PixelsPerInch>'),
             ).toBe('')
         })
         it("shouldn't remove valid table tags", () => {
@@ -224,22 +224,22 @@ describe('html util', () => {
         it('should remove comments from html', () => {
             expect(sanitizeHtmlDefault('<p><!-->hey</p>')).toBe('<p>hey</p>')
             expect(sanitizeHtmlDefault('<p><!--[if IE9]>hey</p>')).toBe(
-                '<p></p>'
+                '<p></p>',
             )
             expect(
-                sanitizeHtmlDefault('<p><!--[if IE9]>hey<![endif]--></p>')
+                sanitizeHtmlDefault('<p><!--[if IE9]>hey<![endif]--></p>'),
             ).toBe('<p></p>')
             expect(sanitizeHtmlDefault('<p><!-- hola senor -->hey</p>')).toBe(
-                '<p>hey</p>'
+                '<p>hey</p>',
             )
             expect(
-                sanitizeHtmlDefault('<p><!-- hola senor -->--> hey</p>')
+                sanitizeHtmlDefault('<p><!-- hola senor -->--> hey</p>'),
             ).toBe('<p>--&gt; hey</p>')
         })
 
         it('should remove all `o` - outlook tags', () => {
             expect(
-                sanitizeHtmlDefault('<o:PixelsPerInch>96</o:PixelsPerInch>')
+                sanitizeHtmlDefault('<o:PixelsPerInch>96</o:PixelsPerInch>'),
             ).toBe('')
         })
 
@@ -311,7 +311,7 @@ describe('html util', () => {
             ],
         ])('should convert <a> tag', (testCase) => {
             expect(sanitizeHtmlForFacebookMessenger(testCase.input_html)).toBe(
-                testCase.expected_value
+                testCase.expected_value,
             )
         })
     })
@@ -319,7 +319,7 @@ describe('html util', () => {
     describe('focusElement()', () => {
         it('should focus given element', (done) => {
             const focus = jest.fn()
-            focusElement(() => ({focus}) as unknown as HTMLElement)
+            focusElement(() => ({ focus }) as unknown as HTMLElement)
 
             setTimeout(() => {
                 expect(focus).toHaveBeenCalled()

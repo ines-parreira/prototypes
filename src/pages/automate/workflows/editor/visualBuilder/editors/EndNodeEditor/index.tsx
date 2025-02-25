@@ -1,33 +1,40 @@
-import {Label} from '@gorgias/merchant-ui-kit'
+import React, { useMemo } from 'react'
+
 import Immutable from 'immutable'
-import React, {useMemo} from 'react'
+
+import { Label } from '@gorgias/merchant-ui-kit'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
-import {EndNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import {Drawer} from 'pages/common/components/Drawer'
+import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
+import { EndNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { Drawer } from 'pages/common/components/Drawer'
 import Caption from 'pages/common/forms/Caption/Caption'
 import TicketAssignee from 'pages/tickets/detail/components/TicketDetails/TicketAssignee/TicketAssignee'
 import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
-import {getHumanAgents} from 'state/agents/selectors'
-import {getTeams} from 'state/teams/selectors'
+import { getHumanAgents } from 'state/agents/selectors'
+import { getTeams } from 'state/teams/selectors'
 
 import NodeEditorDrawerHeader from '../../NodeEditorDrawerHeader'
-import css from '../NodeEditor.less'
 import EndNodeTypeSelect from './EndNodeTypeSelect'
 import WasThisHelpfulCard from './WasThisHelpfulCard'
+
+import css from '../NodeEditor.less'
 
 type EndNodeEditorProps = {
     nodeInEdition: EndNodeType
 }
 
-export default function EndNodeEditor({nodeInEdition}: EndNodeEditorProps) {
+export default function EndNodeEditor({ nodeInEdition }: EndNodeEditorProps) {
     const users = useAppSelector(getHumanAgents)
     const teams = useAppSelector(getTeams)
-    const {dispatch, visualBuilderGraph} = useVisualBuilderContext()
+    const { dispatch, visualBuilderGraph } = useVisualBuilderContext()
     const handleAddTag = (tag: string) => {
-        const {action, ticketTags, ticketAssigneeUserId, ticketAssigneeTeamId} =
-            nodeInEdition.data
+        const {
+            action,
+            ticketTags,
+            ticketAssigneeUserId,
+            ticketAssigneeTeamId,
+        } = nodeInEdition.data
         dispatch({
             type: 'SET_END_NODE_SETTINGS',
             endNodeId: nodeInEdition.id,
@@ -40,8 +47,12 @@ export default function EndNodeEditor({nodeInEdition}: EndNodeEditorProps) {
         })
     }
     const handleDeleteTag = (tag: string) => {
-        const {action, ticketTags, ticketAssigneeUserId, ticketAssigneeTeamId} =
-            nodeInEdition.data
+        const {
+            action,
+            ticketTags,
+            ticketAssigneeUserId,
+            ticketAssigneeTeamId,
+        } = nodeInEdition.data
         dispatch({
             type: 'SET_END_NODE_SETTINGS',
             endNodeId: nodeInEdition.id,
@@ -55,10 +66,10 @@ export default function EndNodeEditor({nodeInEdition}: EndNodeEditorProps) {
     }
     const ticketAssigneeUser = users.find(
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-        (u) => u.get('id') === nodeInEdition.data.ticketAssigneeUserId
+        (u) => u.get('id') === nodeInEdition.data.ticketAssigneeUserId,
     )
     const ticketAssigneeTeam = teams.find(
-        (t) => t?.get('id') === nodeInEdition.data.ticketAssigneeTeamId
+        (t) => t?.get('id') === nodeInEdition.data.ticketAssigneeTeamId,
     )
 
     const triggerNode = visualBuilderGraph.nodes[0]
@@ -137,7 +148,7 @@ export default function EndNodeEditor({nodeInEdition}: EndNodeEditorProps) {
                                             nodeInEdition.data.ticketTags ?? []
                                         ).map((tag) => ({
                                             name: tag,
-                                        }))
+                                        })),
                                     )}
                                     addTag={handleAddTag}
                                     removeTag={handleDeleteTag}

@@ -1,15 +1,17 @@
+import React, { ReactNode, useState } from 'react'
+
 import cn from 'classnames'
-import React, {ReactNode, useState} from 'react'
+
+import AppNodeContext from './AppNodeContext'
 
 import css from './AppNode.less'
-import AppNodeContext from './AppNodeContext'
 
 type Props = {
     children: ReactNode
     className?: string
 }
 
-export default function AppNode({children, className}: Props) {
+export default function AppNode({ children, className }: Props) {
     const [appNode, setAppNode] = useState<HTMLDivElement | null>(null)
 
     return (

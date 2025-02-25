@@ -1,6 +1,6 @@
 import moment from 'moment/moment'
 
-import {OrderDirection} from 'models/api/types'
+import { OrderDirection } from 'models/api/types'
 import {
     TicketDimension,
     TicketMeasure,
@@ -10,9 +10,9 @@ import {
     openTicketsPerTicketDrillDownQueryFactory,
     openTicketsQueryFactory,
 } from 'models/reporting/queryFactories/support-performance/openTickets'
-import {ReportingFilterOperator} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
-import {subtractDaysFromDate} from 'utils/date'
+import { ReportingFilterOperator } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
+import { subtractDaysFromDate } from 'utils/date'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
@@ -24,7 +24,7 @@ describe('openTicketsTrendQueryFactory', () => {
     const now = moment()
     const periodStart = formatReportingQueryDate(now)
     const hardPeriodStart = formatReportingQueryDate(
-        subtractDaysFromDate(formatReportingQueryDate(now), 180)
+        subtractDaysFromDate(formatReportingQueryDate(now), 180),
     )
     const periodEnd = formatReportingQueryDate(moment())
     const statsFilters: StatsFilters = {
@@ -84,7 +84,7 @@ describe('openTicketsPerTicketQueryFactory', () => {
     it('should build a query', () => {
         const query = openTicketsPerTicketDrillDownQueryFactory(
             statsFilters,
-            timezone
+            timezone,
         )
 
         expect(query).toEqual({
@@ -106,7 +106,7 @@ describe('openTicketsPerTicketQueryFactory', () => {
         const query = openTicketsPerTicketDrillDownQueryFactory(
             statsFilters,
             timezone,
-            sorting
+            sorting,
         )
 
         expect(query).toEqual({

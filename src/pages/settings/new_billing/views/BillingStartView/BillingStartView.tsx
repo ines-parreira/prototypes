@@ -1,14 +1,15 @@
-import moment from 'moment'
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
-import {NavLink, Redirect, Route, Switch} from 'react-router-dom'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
-import {AlertBannerTypes, BannerCategories, useBanners} from 'AlertBanners'
-import {DateAndTimeFormatting} from 'constants/datetime'
+import moment from 'moment'
+import { NavLink, Redirect, Route, Switch } from 'react-router-dom'
+
+import { AlertBannerTypes, BannerCategories, useBanners } from 'AlertBanners'
+import { DateAndTimeFormatting } from 'constants/datetime'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import {isEnterprise} from 'models/billing/utils'
-import {AlertType} from 'pages/common/components/Alert/Alert'
+import { isEnterprise } from 'models/billing/utils'
+import { AlertType } from 'pages/common/components/Alert/Alert'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
@@ -16,8 +17,8 @@ import useGetConvertStatus, {
     BundleOnboardingStatus,
     UsageStatus,
 } from 'pages/convert/common/hooks/useGetConvertStatus'
-import {isExceedingPlanLimit} from 'pages/convert/common/utils/isExceedingPlanLimit'
-import {PaymentMethodSetupView} from 'pages/settings/new_billing/views/PaymentMethodSetupView/PaymentMethodSetupView'
+import { isExceedingPlanLimit } from 'pages/convert/common/utils/isExceedingPlanLimit'
+import { PaymentMethodSetupView } from 'pages/settings/new_billing/views/PaymentMethodSetupView/PaymentMethodSetupView'
 import {
     fetchCurrentProductsUsage,
     fetchPaymentMethod,
@@ -31,22 +32,23 @@ import {
     getCurrentVoicePlan,
     getIsCurrentHelpdeskLegacy,
 } from 'state/billing/selectors'
-import {BillingBanner, TicketPurpose} from 'state/billing/types'
+import { BillingBanner, TicketPurpose } from 'state/billing/types'
 import {
     getCurrentAccountState,
     getCurrentSubscription,
     isTrialing,
     paymentMethod,
 } from 'state/currentAccount/selectors'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {notify} from 'state/notifications/actions'
-import {Notification, NotificationStatus} from 'state/notifications/types'
-import {formatDatetime} from 'utils'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { notify } from 'state/notifications/actions'
+import { Notification, NotificationStatus } from 'state/notifications/types'
+import { formatDatetime } from 'utils'
 
 import ContactSupportModal from '../../components/ContactSupportModal/ContactSupportModal'
 import {
     BILLING_BASE_PATH,
     BILLING_INFORMATION_PATH,
+    BILLING_INTERNAL_PATH,
     BILLING_PAYMENT_CARD_PATH,
     BILLING_PAYMENT_FREQUENCY_PATH,
     BILLING_PAYMENT_PATH,
@@ -55,15 +57,15 @@ import {
     BILLING_SUPPORT_EMAIL,
     DATE_FORMAT,
     ZAPIER_BILLING_HOOK,
-    BILLING_INTERNAL_PATH,
 } from '../../constants'
-import {BillingAddressSetupView} from '../BillingAddressSetupView/BillingAddressSetupView'
+import { BillingAddressSetupView } from '../BillingAddressSetupView/BillingAddressSetupView'
 import BillingFrequencyView from '../BillingFrequencyView'
 import BillingInternalView from '../BillingInternalView'
 import BillingProcessView from '../BillingProcessView'
 import PaymentsHistoryView from '../PaymentHistoryView'
 import PaymentInformationView from '../PaymentInformationView/PaymentInformationView'
 import UsageAndPlansView from '../UsageAndPlansView'
+
 import css from './BillingStartView.less'
 
 const BillingStartView = () => {
@@ -84,7 +86,7 @@ const BillingStartView = () => {
     const isCurrentSubscriptionCanceled = currentSubscription.isEmpty()
 
     const datetimeFormat = useGetDateAndTimeFormat(
-        DateAndTimeFormatting.LongDateWithYear
+        DateAndTimeFormatting.LongDateWithYear,
     )
 
     const convertStatus = useGetConvertStatus()
@@ -94,20 +96,20 @@ const BillingStartView = () => {
 
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [subject, setSubject] = useState(
-        `New Billing support request - ${domain}`
+        `New Billing support request - ${domain}`,
     )
     const [defaultMessage, setDefaultMessage] = useState('')
     const [ticketPurpose, setTicketPurpose] = useState<TicketPurpose>(
-        TicketPurpose.CONTACT_US
+        TicketPurpose.CONTACT_US,
     )
     const [isUsageFetched, setIsUsageFetched] = useState(false)
     const periodEnd = useMemo(
         () =>
             moment(
                 currentUsage?.helpdesk?.meta.subscription_end_datetime ||
-                    new Date()
+                    new Date(),
             ).format(DATE_FORMAT),
-        [currentUsage]
+        [currentUsage],
     )
 
     const [helpdeskBanner, setHelpdeskBanner] = useState<BillingBanner>()
@@ -115,7 +117,7 @@ const BillingStartView = () => {
     const [smsBanner, setSMSBanner] = useState<BillingBanner>()
     const [convertBanner, setConvertBanner] = useState<BillingBanner>()
 
-    const {addBanner, removeBanner} = useBanners()
+    const { addBanner, removeBanner } = useBanners()
 
     const contactBilling = useCallback(
         (ticketPurpose: TicketPurpose) => {
@@ -124,7 +126,7 @@ const BillingStartView = () => {
             setIsModalOpen(true)
             setTicketPurpose(ticketPurpose)
         },
-        [domain]
+        [domain],
     )
 
     const billingErrorNotification: Notification = useMemo(
@@ -142,7 +144,7 @@ const BillingStartView = () => {
             status: NotificationStatus.Error,
             id: 'billing-error-notification',
         }),
-        [contactBilling]
+        [contactBilling],
     )
 
     const dispatchBillingError = useCallback(() => {
@@ -185,7 +187,7 @@ const BillingStartView = () => {
                     ].join('\n')
             }
         },
-        [currentHelpdeskPlan?.name, isTrialingSubscription, ticketPurpose]
+        [currentHelpdeskPlan?.name, isTrialingSubscription, ticketPurpose],
     )
 
     useEffect(() => {
@@ -218,7 +220,7 @@ const BillingStartView = () => {
 
         if (currentUsage?.voice) {
             const subscriptionStartDate = moment(
-                currentUsage.voice.meta.subscription_start_datetime
+                currentUsage.voice.meta.subscription_start_datetime,
             )
             const now = moment()
             const isSubscriptionNew =
@@ -249,7 +251,7 @@ const BillingStartView = () => {
         }
         if (currentUsage?.sms) {
             const subscriptionStartDate = moment(
-                currentUsage.sms.meta.subscription_start_datetime
+                currentUsage.sms.meta.subscription_start_datetime,
             )
             const now = moment()
             const isSubscriptionNew =
@@ -336,7 +338,7 @@ const BillingStartView = () => {
                 })
                 removeBanner(
                     BannerCategories.BILLING,
-                    convertSubscriptionBannerInstanceId
+                    convertSubscriptionBannerInstanceId,
                 )
             } else if (
                 convertStatus.estimated_reach_date &&
@@ -344,7 +346,7 @@ const BillingStartView = () => {
             ) {
                 const estimatedDate = formatDatetime(
                     convertStatus.estimated_reach_date,
-                    datetimeFormat
+                    datetimeFormat,
                 ).toString()
                 if (convertStatus.auto_upgrade_enabled) {
                     setConvertBanner({
@@ -371,14 +373,14 @@ const BillingStartView = () => {
                 }
                 removeBanner(
                     BannerCategories.BILLING,
-                    convertSubscriptionBannerInstanceId
+                    convertSubscriptionBannerInstanceId,
                 )
             } else {
                 // hide banner
                 setConvertBanner(undefined)
                 removeBanner(
                     BannerCategories.BILLING,
-                    convertSubscriptionBannerInstanceId
+                    convertSubscriptionBannerInstanceId,
                 )
             }
         }

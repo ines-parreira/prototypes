@@ -1,10 +1,11 @@
-import {ContentBlock, ContentState} from 'draft-js'
 import React from 'react'
 
+import { ContentBlock, ContentState } from 'draft-js'
+
 import {
+    Decorator,
     DecoratorComponentProps,
     DecoratorStrategyCallback,
-    Decorator,
 } from '../types'
 
 import css from './prediction.less'
@@ -13,7 +14,7 @@ export const prediction: Decorator = {
     strategy: (
         contentBlock: ContentBlock,
         callback: DecoratorStrategyCallback,
-        contentState: ContentState
+        contentState: ContentState,
     ) => {
         contentBlock.findEntityRanges((character) => {
             const entityKey = character.getEntity()
@@ -24,9 +25,9 @@ export const prediction: Decorator = {
         }, callback)
     },
     component: (props: DecoratorComponentProps) => {
-        const {contentState, entityKey} = props
+        const { contentState, entityKey } = props
         const entity = contentState.getEntity(entityKey).getData()
-        const {text} = entity
+        const { text } = entity
 
         return (
             <span className={css.component} contentEditable={false}>

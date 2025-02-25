@@ -1,7 +1,7 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {useGetStoresConfigurationForAccount} from 'models/aiAgent/queries'
-import {StoreConfiguration} from 'models/aiAgent/types'
+import { useGetStoresConfigurationForAccount } from 'models/aiAgent/queries'
+import { StoreConfiguration } from 'models/aiAgent/types'
 
 export const useStoreConfigurationForAccount = ({
     accountDomain,
@@ -23,20 +23,20 @@ export const useStoreConfigurationForAccount = ({
             storesName,
             withWizard,
         },
-        {retry: 1, refetchOnWindowFocus: false, enabled: enabled ?? true}
+        { retry: 1, refetchOnWindowFocus: false, enabled: enabled ?? true },
     )
 
     const storeConfigurations = useMemo(() => {
         return storeConfigurationResponses
             ?.map(
                 (storeConfigurationResponse) =>
-                    storeConfigurationResponse.data?.storeConfiguration
+                    storeConfigurationResponse.data?.storeConfiguration,
             )
             .filter(
                 (
-                    storeConfiguration
+                    storeConfiguration,
                 ): storeConfiguration is StoreConfiguration =>
-                    !!storeConfiguration
+                    !!storeConfiguration,
             )
     }, [storeConfigurationResponses])
 

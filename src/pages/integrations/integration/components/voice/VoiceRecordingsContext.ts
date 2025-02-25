@@ -1,5 +1,6 @@
+import { createContext } from 'react'
+
 import _noop from 'lodash/noop'
-import {createContext} from 'react'
 
 export type VoiceRecordingsContextState = {
     openedRecordings: number[]

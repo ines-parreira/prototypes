@@ -1,5 +1,5 @@
-import {renderHook} from '@testing-library/react-hooks'
-import type {CancelToken, AxiosResponse} from 'axios'
+import { renderHook } from '@testing-library/react-hooks'
+import type { AxiosResponse, CancelToken } from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
 import client from '../../models/api/resources'
@@ -8,7 +8,7 @@ import useCancellableRequest from '../useCancellableRequest'
 describe('useCancellableRequest', () => {
     const mockApi = new MockAdapter(client)
     const mockCall = jest.fn(
-        (cancelToken: CancelToken) => () => client.get('/foo', {cancelToken})
+        (cancelToken: CancelToken) => () => client.get('/foo', { cancelToken }),
     )
 
     beforeEach(() => {
@@ -17,7 +17,7 @@ describe('useCancellableRequest', () => {
     })
 
     it('should make a request when request called', () => {
-        const {result} = renderHook(() => useCancellableRequest(mockCall))
+        const { result } = renderHook(() => useCancellableRequest(mockCall))
 
         return result.current[0]().then((res) => {
             expect(res.data).toBe('success')
@@ -25,7 +25,7 @@ describe('useCancellableRequest', () => {
     })
 
     it('should cancel the request when cancel called', async () => {
-        const {result} = renderHook(() => useCancellableRequest(mockCall))
+        const { result } = renderHook(() => useCancellableRequest(mockCall))
         const res = await (() => {
             const promise = result.current[0]()
             result.current[1]()
@@ -36,23 +36,23 @@ describe('useCancellableRequest', () => {
     })
 
     it('should cancel the previous call when called a second time', () => {
-        const {result} = renderHook(() => useCancellableRequest(mockCall))
+        const { result } = renderHook(() => useCancellableRequest(mockCall))
 
         return Promise.all([result.current[0](), result.current[0]()]).then(
             (values: AxiosResponse<Maybe<string>>[]) => {
                 expect(
                     values.map(
                         (value: AxiosResponse<Maybe<string>>): Maybe<string> =>
-                            value && value.data
-                    )
+                            value && value.data,
+                    ),
                 ).toEqual([undefined, 'success'])
-            }
+            },
         )
     })
 
     it('should cancel the request when unmounting', async () => {
-        const {result, unmount} = renderHook(() =>
-            useCancellableRequest(mockCall)
+        const { result, unmount } = renderHook(() =>
+            useCancellableRequest(mockCall),
         )
         const res = await (() => {
             const promise = result.current[0]()

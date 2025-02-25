@@ -1,16 +1,18 @@
-import {useAgentActivity} from '@gorgias/realtime'
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {TicketMessageSourceType} from 'business/types/ticket'
-import {ACTION_TEMPLATES} from 'config'
-import {MacroActionName} from 'models/macroAction/types'
+import { useAgentActivity } from '@gorgias/realtime'
 
-import {TicketReply} from '../TicketReply'
+import { TicketMessageSourceType } from 'business/types/ticket'
+import { ACTION_TEMPLATES } from 'config'
+import { MacroActionName } from 'models/macroAction/types'
+
+import { TicketReply } from '../TicketReply'
 
 jest.unmock('business/ticket')
 
@@ -39,7 +41,7 @@ describe('<TicketReply />', () => {
         ticket: fromJS({
             id: 1,
             reply_options: {
-                [answerableSourceType]: {answerable: true},
+                [answerableSourceType]: { answerable: true },
                 [nonAnswerableSourceType]: {
                     answerable: false,
                     reason: 'You cannot respond.',
@@ -55,35 +57,35 @@ describe('<TicketReply />', () => {
         mockUseAgentActivity.mockReturnValue({
             startTyping: jest.fn(),
             stopTyping: jest.fn(),
-            getTicketActivity: jest.fn().mockReturnValue({typing: []}),
+            getTicketActivity: jest.fn().mockReturnValue({ typing: [] }),
         })
     })
 
     it('should render the editor', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider
                 store={mockStore({
                     integrations: fromJS({
                         integrations: [],
                     }),
-                    newMessage: fromJS({state: {}}),
+                    newMessage: fromJS({ state: {} }),
                 })}
             >
                 <TicketReply {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render the editor with the applied macro actions', () => {
-        const {queryByText} = render(
+        const { queryByText } = render(
             <Provider
                 store={mockStore({
                     integrations: fromJS({
                         integrations: [],
                     }),
-                    newMessage: fromJS({state: {}}),
+                    newMessage: fromJS({ state: {} }),
                 })}
             >
                 <TicketReply
@@ -93,12 +95,12 @@ describe('<TicketReply />', () => {
                             ACTION_TEMPLATES.find(
                                 (action) =>
                                     action.name ===
-                                    MacroActionName.AddInternalNote
+                                    MacroActionName.AddInternalNote,
                             ),
                         ],
                     })}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(queryByText(/Send internal note/)).toBeInTheDocument()

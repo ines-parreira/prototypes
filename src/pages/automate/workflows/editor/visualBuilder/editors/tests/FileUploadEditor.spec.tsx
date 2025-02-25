@@ -1,14 +1,15 @@
-import {act, fireEvent} from '@testing-library/react'
 import React from 'react'
+
+import { act, fireEvent } from '@testing-library/react'
 
 import {
     createSelfServiceStoreIntegrationContextForPreview,
     StoreIntegrationContext,
 } from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import NodeEditorDrawerContext from 'pages/automate/workflows/editor/visualBuilder/NodeEditorDrawerContext'
-import {TranslationsPreviewContext} from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
-import {VisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
-import {WorkflowChannelSupportContext} from 'pages/automate/workflows/hooks/useWorkflowChannelSupport'
+import { TranslationsPreviewContext } from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
+import { VisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
+import { WorkflowChannelSupportContext } from 'pages/automate/workflows/hooks/useWorkflowChannelSupport'
 import {
     buildEdgeCommonProperties,
     buildNodeCommonProperties,
@@ -17,7 +18,7 @@ import {
     FileUploadNodeType,
     VisualBuilderGraph,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import {renderWithStore} from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 import FileUploadEditor from '../FileUploadEditor'
 
@@ -68,7 +69,7 @@ describe('<FileUploadEditor />', () => {
             isTemplate: false,
         }
 
-        const {container} = renderWithStore(
+        const { container } = renderWithStore(
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph: graph,
@@ -81,7 +82,9 @@ describe('<FileUploadEditor />', () => {
                     isNew: false,
                 }}
             >
-                <NodeEditorDrawerContext.Provider value={{onClose: jest.fn()}}>
+                <NodeEditorDrawerContext.Provider
+                    value={{ onClose: jest.fn() }}
+                >
                     <StoreIntegrationContext.Provider
                         value={createSelfServiceStoreIntegrationContextForPreview()}
                     >
@@ -118,12 +121,12 @@ describe('<FileUploadEditor />', () => {
                     </StoreIntegrationContext.Provider>
                 </NodeEditorDrawerContext.Provider>
             </VisualBuilderContext.Provider>,
-            {}
+            {},
         )
 
         act(() => {
             const editor = container.querySelectorAll(
-                '.public-DraftEditor-content'
+                '.public-DraftEditor-content',
             )[0]
 
             fireEvent.focus(editor)
@@ -139,7 +142,7 @@ describe('<FileUploadEditor />', () => {
         })
 
         expect(mockGetVariableListForNode).toHaveBeenCalledWith(
-            nodeInEdition.id
+            nodeInEdition.id,
         )
     })
 })

@@ -1,14 +1,15 @@
-import {CursorPaginationMeta} from '@gorgias/api-queries'
-import {fromJS, Map, List} from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 import _sortBy from 'lodash/sortBy'
 
-import {Ticket, TicketMessage} from 'models/ticket/types'
-import {ViewType} from 'models/view/types'
+import { CursorPaginationMeta } from '@gorgias/api-queries'
+
+import { Ticket, TicketMessage } from 'models/ticket/types'
+import { ViewType } from 'models/view/types'
 import * as constants from 'state/customers/constants'
-import {CustomersState} from 'state/customers/types'
+import { CustomersState } from 'state/customers/types'
 import * as newMessageConstants from 'state/newMessage/constants'
 import * as ticketConstants from 'state/ticket/constants'
-import {GorgiasAction} from 'state/types'
+import { GorgiasAction } from 'state/types'
 import * as viewsConstants from 'state/views/constants'
 
 export const initialState: CustomersState = fromJS({
@@ -31,7 +32,7 @@ export const initialState: CustomersState = fromJS({
 
 export default function reducer(
     state: CustomersState = initialState,
-    action: GorgiasAction
+    action: GorgiasAction,
 ): CustomersState {
     const items = state.get('items', fromJS([])) as List<any>
 
@@ -73,10 +74,10 @@ export default function reducer(
                     items.set(
                         items.findIndex(
                             (item: Map<any, any>) =>
-                                item.get('id') === customerId
+                                item.get('id') === customerId,
                         ),
-                        customer
-                    )
+                        customer,
+                    ),
                 )
 
                 // if updated customer is the active one, update the active one
@@ -92,7 +93,7 @@ export default function reducer(
             return state.merge({
                 items: (state.get('items') as List<any>).filter(
                     (item: Map<any, any>) =>
-                        item.get('id') !== action.customerId
+                        item.get('id') !== action.customerId,
                 ),
             })
         }
@@ -108,7 +109,7 @@ export default function reducer(
                 // @TODO @UnbearableBear: remove legacy meta once endpoint is migrated
                 meta:
                     | CursorPaginationMeta
-                    | {item_count: number; total_resources: undefined}
+                    | { item_count: number; total_resources: undefined }
                 data: unknown[]
             }
             const totalTickets =
@@ -144,11 +145,11 @@ export default function reducer(
             const ticketIndex = (
                 state.getIn(
                     ['customerHistory', 'tickets'],
-                    fromJS([])
+                    fromJS([]),
                 ) as List<any>
             ).findIndex(
                 (ticket: Map<any, any>) =>
-                    ticket.get('id') === updated.ticket_id
+                    ticket.get('id') === updated.ticket_id,
             )
             if (~ticketIndex) {
                 return state.updateIn(
@@ -157,9 +158,9 @@ export default function reducer(
                         ticket
                             .set(
                                 'messages_count',
-                                (ticket.get('messages_count', 0) as number) + 1
+                                (ticket.get('messages_count', 0) as number) + 1,
                             )
-                            .set('excerpt', updated.body_text)
+                            .set('excerpt', updated.body_text),
                 )
             }
             return state
@@ -170,10 +171,10 @@ export default function reducer(
             const ticketIndex = (
                 state.getIn(
                     ['customerHistory', 'tickets'],
-                    fromJS([])
+                    fromJS([]),
                 ) as List<any>
             ).findIndex(
-                (ticket: Map<any, any>) => ticket.get('id') === updated.id
+                (ticket: Map<any, any>) => ticket.get('id') === updated.id,
             )
             if (~ticketIndex) {
                 return state.updateIn(
@@ -182,7 +183,7 @@ export default function reducer(
                         ticket
                             .set('assignee_user', fromJS(updated.assignee_user))
                             .set('status', updated.status)
-                            .set('subject', updated.subject)
+                            .set('subject', updated.subject),
                 )
             }
             return state
@@ -191,7 +192,7 @@ export default function reducer(
         case constants.FETCH_CUSTOMER_HISTORY_ERROR: {
             let newState = state.setIn(
                 ['_internal', 'loading', 'history'],
-                false
+                false,
             )
 
             if (!action.shouldDisplayHistoryOnNextPage) {
@@ -212,7 +213,7 @@ export default function reducer(
                 state.get('items', fromJS([])) as List<any>
             ).filter(
                 (item: Map<any, any>) =>
-                    !!action.ids && !action.ids.includes(item.get('id'))
+                    !!action.ids && !action.ids.includes(item.get('id')),
             )
 
             return state.set('items', newItems)
@@ -229,7 +230,7 @@ export default function reducer(
             if (
                 action.resp &&
                 state.getIn(['active', 'id']) ===
-                    (action.resp as {id: number}).id
+                    (action.resp as { id: number }).id
             ) {
                 newState = newState.set('active', fromJS(action.resp))
             }

@@ -9,7 +9,7 @@ type Props = {
     onCopy?: () => void
 }
 
-const InstallationCodeSnippet = ({code, onCopy}: Props) => {
+const InstallationCodeSnippet = ({ code, onCopy }: Props) => {
     const [state, copyToClipboard] = useCopyToClipboard()
 
     if (!code) {

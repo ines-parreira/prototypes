@@ -1,14 +1,14 @@
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {useCommentHighlights} from 'hooks/reporting/quality-management/satisfaction/useCommentHighlights'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useCommentHighlights } from 'hooks/reporting/quality-management/satisfaction/useCommentHighlights'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import ChartCard from 'pages/stats/ChartCard'
-import {DashboardChartProps} from 'pages/stats/custom-reports/types'
+import { DashboardChartProps } from 'pages/stats/custom-reports/types'
 import CommentHighlightsCarousel from 'pages/stats/quality-management/satisfaction/CommentHighlightsChart/CommentHighlightsCarousel'
 import CommentHighlightCsatSentimentToggle from 'pages/stats/quality-management/satisfaction/CommentHighlightsChart/CommentHighlightsCsatSentimentToggle'
-import {getCommentHighlightsCsatSentiment} from 'state/ui/stats/qualityManagementSlice'
-import {CsatSentiment} from 'state/ui/stats/types'
+import { getCommentHighlightsCsatSentiment } from 'state/ui/stats/qualityManagementSlice'
+import { CsatSentiment } from 'state/ui/stats/types'
 
 export const COMMENT_HIGHLIGHTS = {
     TITLE: 'Comments Highlight',
@@ -22,19 +22,19 @@ const QUERY_SCORES = {
 }
 
 export default function CommentHighlightsChart(props: DashboardChartProps) {
-    const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone } = useNewStatsFilters()
     const commentHighlightsCsatSentiment = useAppSelector(
-        getCommentHighlightsCsatSentiment
+        getCommentHighlightsCsatSentiment,
     )
     const queryScores = useMemo(
         () => QUERY_SCORES[commentHighlightsCsatSentiment],
-        [commentHighlightsCsatSentiment]
+        [commentHighlightsCsatSentiment],
     )
 
     const data = useCommentHighlights(
         cleanStatsFilters,
         userTimezone,
-        queryScores
+        queryScores,
     )
 
     return (

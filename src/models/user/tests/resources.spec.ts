@@ -1,9 +1,9 @@
 import MockAdapter from 'axios-mock-adapter'
 import _omit from 'lodash/omit'
 
-import {UserSettingType, UserSetting} from '../../../config/types/user'
+import { UserSetting, UserSettingType } from '../../../config/types/user'
 import client from '../../api/resources'
-import {createUserSetting, updateUserSetting} from '../resources'
+import { createUserSetting, updateUserSetting } from '../resources'
 
 const mockedServer = new MockAdapter(client)
 
@@ -32,9 +32,9 @@ describe('user resources', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onPost('/api/users/0/settings/')
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(
-                createUserSetting(_omit(mockedData, 'id'))
+                createUserSetting(_omit(mockedData, 'id')),
             ).rejects.toEqual(new Error('Request failed with status code 503'))
         })
     })
@@ -53,9 +53,9 @@ describe('user resources', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onPut('/api/users/0/settings/2/')
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(updateUserSetting(mockedData)).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                new Error('Request failed with status code 503'),
             )
         })
     })

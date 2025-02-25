@@ -1,9 +1,10 @@
-import {Map} from 'immutable'
-import _debounce from 'lodash/debounce'
-import React, {ChangeEvent} from 'react'
-import {Col, Container, FormText, Row} from 'reactstrap'
+import React, { ChangeEvent } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { Map } from 'immutable'
+import _debounce from 'lodash/debounce'
+import { Col, Container, FormText, Row } from 'reactstrap'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import CheckBox from 'pages/common/forms/CheckBox'
 
 import OrderTotals from './OrderTotals'
@@ -49,7 +50,7 @@ export function EditOrderForm({
     return (
         <Container fluid>
             <Row>
-                <Col xs={{size: 12, order: 2}} lg={{size: 6, order: 1}}>
+                <Col xs={{ size: 12, order: 2 }} lg={{ size: 6, order: 1 }}>
                     <div className="mb-4">
                         <h4>Reason for edit</h4>
                         <textarea
@@ -67,8 +68,8 @@ export function EditOrderForm({
                     </CheckBox>
                 </Col>
                 <Col
-                    xs={{size: 12, order: 1}}
-                    lg={{size: 6, order: 2}}
+                    xs={{ size: 12, order: 1 }}
+                    lg={{ size: 6, order: 2 }}
                     className="mb-xs-4"
                 >
                     <OrderTotals

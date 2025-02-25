@@ -1,5 +1,3 @@
-import {JobType} from '@gorgias/api-queries'
-import cn from 'classnames'
 import React, {
     ComponentProps,
     useCallback,
@@ -8,37 +6,42 @@ import React, {
     useState,
 } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {Item} from 'components/Dropdown'
-import {Popover} from 'components/Popover'
-import {UserRole} from 'config/types/user'
+import cn from 'classnames'
+
+import { JobType } from '@gorgias/api-queries'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { Item } from 'components/Dropdown'
+import { Popover } from 'components/Popover'
+import { UserRole } from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
-import {Update} from 'jobs'
+import { Update } from 'jobs'
 import IconButton from 'pages/common/components/button/IconButton'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import {getCurrentUserState} from 'state/currentUser/selectors'
-import {isActiveViewTrashView as getIsActiveViewTrashView} from 'state/views/selectors'
-import {TagDropdownMenu} from 'tags'
-import {hasRole} from 'utils'
-import {getMoment} from 'utils/date'
+import { getCurrentUserState } from 'state/currentUser/selectors'
+import { isActiveViewTrashView as getIsActiveViewTrashView } from 'state/views/selectors'
+import { TagDropdownMenu } from 'tags'
+import { hasRole } from 'utils'
+import { getMoment } from 'utils/date'
 
 import ApplyMacro from './ApplyMacro'
-import css from './style.less'
 import TeamAssigneeDropdownMenu from './TeamAssigneeDropdownMenu'
-import {Action, Job} from './types'
+import { Action, Job } from './types'
+
+import css from './style.less'
 
 const getActions = (
     hasUserRole: boolean,
-    isActiveViewTrashView: boolean
+    isActiveViewTrashView: boolean,
 ): Record<string, Job> => ({
     tag: {
         label: 'Add tag',
         type: JobType.UpdateTicket,
         params: (tag?: Item | null) => ({
-            updates: {tags: [tag!.name!]},
+            updates: { tags: [tag!.name!] },
         }),
         event: 'tags',
     },
@@ -127,7 +130,7 @@ const getDropdownItems = (actions: ReturnType<typeof getActions>) =>
     }))
 
 function isItemNested(
-    value: Action
+    value: Action,
 ): value is Action.Tag | Action.Team | Action.Macro {
     return [Action.Tag, Action.Team, Action.Macro].includes(value)
 }
@@ -147,7 +150,7 @@ export default function MoreActions({
         params?: {
             updates: XOR<Update>
         },
-        action?: Action
+        action?: Action,
     ) => Promise<void>
     onComplete: () => void
     selectionCount: number | null
@@ -164,7 +167,7 @@ export default function MoreActions({
     const currentUser = useAppSelector(getCurrentUserState)
     const hasAgentRole = useMemo(
         () => hasRole(currentUser, UserRole.Agent),
-        [currentUser]
+        [currentUser],
     )
     const isActiveViewTrashView = useAppSelector(getIsActiveViewTrashView)
     const actions = getActions(hasAgentRole, isActiveViewTrashView)
@@ -186,7 +189,7 @@ export default function MoreActions({
                     void launchJob(action, action.params?.())
                 },
             }),
-            [actions, isActiveViewTrashView, launchJob]
+            [actions, isActiveViewTrashView, launchJob],
         )
 
     const onClick = useCallback(
@@ -210,7 +213,7 @@ export default function MoreActions({
                 toggle(false)
             }
         },
-        [actions, launchJob, level, toggle]
+        [actions, launchJob, level, toggle],
     )
 
     const onApplyMacro = useCallback(() => {

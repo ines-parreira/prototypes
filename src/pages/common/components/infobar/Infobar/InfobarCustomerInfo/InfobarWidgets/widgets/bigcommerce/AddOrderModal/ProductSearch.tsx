@@ -1,6 +1,7 @@
+import React, { useState } from 'react'
+
 import classnames from 'classnames'
-import React, {useState} from 'react'
-import {DropdownItem} from 'reactstrap'
+import { DropdownItem } from 'reactstrap'
 
 import {
     BigCommerceCustomProduct,
@@ -9,11 +10,11 @@ import {
     CreateOrderValidationResult,
     IntegrationDataItem,
 } from 'models/integration/types'
-import {bigcommerceDataMappers} from 'pages/common/forms/ProductSearchInput/Mappings'
+import { bigcommerceDataMappers } from 'pages/common/forms/ProductSearchInput/Mappings'
 import ProductSearchInput from 'pages/common/forms/ProductSearchInput/ProductSearchInput'
 import searchInputCss from 'pages/common/forms/SearchInput/SearchInput.less'
 
-import {AddCustomProductPopover} from './AddCustomProductPopover'
+import { AddCustomProductPopover } from './AddCustomProductPopover'
 
 import css from './OrderModal.less'
 
@@ -27,7 +28,7 @@ export const ProductSearch = ({
     validationStatus: CreateOrderValidationResult
     onVariantClicked: (
         item: IntegrationDataItem<BigCommerceProduct>,
-        variant: BigCommerceProductVariant
+        variant: BigCommerceProductVariant,
     ) => void
     onAddCustomProduct: (customItem: BigCommerceCustomProduct) => void
 }) => {
@@ -42,7 +43,7 @@ export const ProductSearch = ({
                 hasError={!validationStatus.products}
                 dataMappers={bigcommerceDataMappers}
                 searchOnFocus={true}
-                renderResultsAppendix={({onMouseOver, onMouseClick}) => (
+                renderResultsAppendix={({ onMouseOver, onMouseClick }) => (
                     <DropdownItem
                         onMouseOver={onMouseOver}
                         onClick={() => {
@@ -58,10 +59,10 @@ export const ProductSearch = ({
                     </DropdownItem>
                 )}
                 renderResultItemProps={(props) => {
-                    const {disabled, disabledReason} =
+                    const { disabled, disabledReason } =
                         bigcommerceDataMappers.product(props.result)
 
-                    return {disabled, disabledReason}
+                    return { disabled, disabledReason }
                 }}
                 onVariantClicked={onVariantClicked}
             />

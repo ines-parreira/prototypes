@@ -1,5 +1,6 @@
-import React, {FC} from 'react'
-import {FormText} from 'reactstrap'
+import React, { FC } from 'react'
+
+import { FormText } from 'reactstrap'
 
 import css from './SearchEnginePreview.less'
 

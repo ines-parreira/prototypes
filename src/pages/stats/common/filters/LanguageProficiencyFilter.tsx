@@ -1,7 +1,8 @@
-import React, {useCallback} from 'react'
-import {connect} from 'react-redux'
+import React, { useCallback } from 'react'
 
-import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
+import { connect } from 'react-redux'
+
+import { FilterKey, StatsFiltersWithLogicalOperator } from 'models/stat/types'
 import Filter from 'pages/stats/common/components/Filter'
 import {
     LogicalOperatorEnum,
@@ -11,7 +12,10 @@ import {
     FilterLabels,
     languageProficiencyFilterLogicalOperators,
 } from 'pages/stats/common/filters/constants'
-import {emptyFilter, logSegmentEvent} from 'pages/stats/common/filters/helpers'
+import {
+    emptyFilter,
+    logSegmentEvent,
+} from 'pages/stats/common/filters/helpers'
 import {
     OptionalFilterProps,
     RemovableFilter,
@@ -20,14 +24,14 @@ import {
     getScoreLabelByValue,
     getScoreLabelsAndValues,
 } from 'pages/stats/common/filters/utils'
-import {DropdownOption} from 'pages/stats/types'
+import { DropdownOption } from 'pages/stats/types'
 import {
     getPageStatsFiltersWithLogicalOperators,
     getSavedFiltersWithLogicalOperators,
 } from 'state/stats/selectors'
-import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
-import {RootState} from 'state/types'
-import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
+import { mergeStatsFiltersWithLogicalOperator } from 'state/stats/statsSlice'
+import { RootState } from 'state/types'
+import { statFiltersClean, statFiltersDirty } from 'state/ui/stats/actions'
 import {
     removeFilterFromSavedFilterDraft,
     upsertSavedFilterFilter,
@@ -41,7 +45,7 @@ type Props = {
         value: Exclude<
             StatsFiltersWithLogicalOperator[FilterKey.LanguageProficiency],
             undefined
-        >
+        >,
     ) => void
     dispatchRemove: () => void
     dispatchStatFiltersDirty: () => void
@@ -69,7 +73,7 @@ export function LanguageProficiencyFilter({
                 operator: value.operator,
             })
         },
-        [dispatchUpdate, value.operator]
+        [dispatchUpdate, value.operator],
     )
 
     const filterOptions = [
@@ -86,7 +90,7 @@ export function LanguageProficiencyFilter({
     const onOptionChange = (opt: DropdownOption) => {
         if (value.values.includes(opt.value)) {
             handleFilterValuesChange(
-                value.values.filter((score) => score !== opt.value)
+                value.values.filter((score) => score !== opt.value),
             )
         } else {
             handleFilterValuesChange([...value.values, opt.value])
@@ -100,7 +104,7 @@ export function LanguageProficiencyFilter({
                 operator: operator,
             })
         },
-        [dispatchUpdate, value.values]
+        [dispatchUpdate, value.values],
     )
 
     const handleDropdownOpen = () => {
@@ -109,7 +113,7 @@ export function LanguageProficiencyFilter({
     const handleDropdownClosed = () => {
         logSegmentEvent(
             FilterKey.LanguageProficiency,
-            LogicalOperatorLabel[value.operator]
+            LogicalOperatorLabel[value.operator],
         )
         dispatchStatFiltersClean()
     }
@@ -117,7 +121,7 @@ export function LanguageProficiencyFilter({
     return (
         <Filter
             filterName={FilterLabels[FilterKey.LanguageProficiency]}
-            filterErrors={{warningType}}
+            filterErrors={{ warningType }}
             selectedOptions={selectedScoreOption}
             selectedLogicalOperator={value.operator}
             logicalOperators={languageProficiencyFilterLogicalOperators}
@@ -125,7 +129,7 @@ export function LanguageProficiencyFilter({
             onChangeOption={onOptionChange}
             onSelectAll={() => {
                 handleFilterValuesChange(
-                    languageProficiency.map((score) => score.value)
+                    languageProficiency.map((score) => score.value),
                 )
             }}
             onRemoveAll={() => {
@@ -163,7 +167,7 @@ export const LanguageProficiencyFilterWithState = connect(
             }),
         dispatchStatFiltersDirty: statFiltersDirty,
         dispatchStatFiltersClean: statFiltersClean,
-    }
+    },
 )(LanguageProficiencyFilter)
 
 export const LanguageProficiencyFilterWithSavedState = connect(
@@ -185,5 +189,5 @@ export const LanguageProficiencyFilterWithSavedState = connect(
             }),
         dispatchStatFiltersDirty: statFiltersDirty,
         dispatchStatFiltersClean: statFiltersClean,
-    }
+    },
 )(LanguageProficiencyFilter)

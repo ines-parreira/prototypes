@@ -1,7 +1,8 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import Status, {StatusType} from './Status'
+import { render, screen } from '@testing-library/react'
+
+import Status, { StatusType } from './Status'
 
 describe('Status Component', () => {
     it('should render the correct label', () => {

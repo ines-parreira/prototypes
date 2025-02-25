@@ -1,11 +1,12 @@
+import React, { useMemo } from 'react'
+
 import _noop from 'lodash/noop'
-import React, {useMemo} from 'react'
 
 import Search from 'pages/common/components/Search'
 import Filter from 'pages/stats/common/components/Filter'
-import {DropdownOption} from 'pages/stats/types'
+import { DropdownOption } from 'pages/stats/types'
 
-import {App} from '../types'
+import { App } from '../types'
 
 import css from './ActionsPlatformTemplatesFilters.less'
 
@@ -33,11 +34,11 @@ const ActionsPlatformTemplatesFilters = ({
 }: Props) => {
     const appOptions = useMemo<DropdownOption[]>(
         () => apps.map(getDropdownOptionFromApp),
-        [apps]
+        [apps],
     )
     const selectedAppOptions = useMemo<DropdownOption[]>(
         () => (app ? [getDropdownOptionFromApp(app)] : []),
-        [app]
+        [app],
     )
 
     return (
@@ -54,7 +55,7 @@ const ActionsPlatformTemplatesFilters = ({
                     onChangeLogicalOperator={_noop}
                     onChangeOption={(option) => {
                         onAppChange(
-                            apps.find((app) => app.id === option.value) ?? null
+                            apps.find((app) => app.id === option.value) ?? null,
                         )
                     }}
                     onRemove={() => {

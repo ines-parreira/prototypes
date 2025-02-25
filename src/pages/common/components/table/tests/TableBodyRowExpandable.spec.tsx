@@ -1,15 +1,16 @@
-import {act, render, screen, within} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
+
+import { act, render, screen, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import {
-    TableBodyRowExpandable,
-    WithChildren,
     COLUMN_WIDTH,
     MOBILE_COLUMN_WIDTH,
+    TableBodyRowExpandable,
+    WithChildren,
 } from 'pages/common/components/table/TableBodyRowExpandable'
-import {mockRequestAnimationFrame, triggerWidthResize} from 'utils/testing'
+import { mockRequestAnimationFrame, triggerWidthResize } from 'utils/testing'
 
 type Data = {
     label: string
@@ -20,7 +21,7 @@ const rafControl = mockRequestAnimationFrame()
 
 const SampleRowContentComponentMock = jest
     .fn()
-    .mockImplementation(({label, value}: Data) => (
+    .mockImplementation(({ label, value }: Data) => (
         <>
             <BodyCell>{label}</BodyCell>
             <BodyCell>{value}</BodyCell>
@@ -65,7 +66,7 @@ describe('<TableBodyRowExpandable />', () => {
             <TableBodyRowExpandable<WithChildren<Data>>
                 RowContentComponent={SampleRowContentComponentMock}
                 rowContentProps={sampleData}
-            />
+            />,
         )
 
         expect(screen.getByText(level1Label)).toBeInTheDocument()
@@ -78,7 +79,7 @@ describe('<TableBodyRowExpandable />', () => {
                 RowContentComponent={SampleRowContentComponentMock}
                 rowContentProps={sampleData}
                 isDefaultExpanded
-            />
+            />,
         )
 
         expect(screen.getByText(level1Label)).toBeInTheDocument()
@@ -90,11 +91,11 @@ describe('<TableBodyRowExpandable />', () => {
             <TableBodyRowExpandable<WithChildren<Data>>
                 RowContentComponent={SampleRowContentComponentMock}
                 rowContentProps={sampleData}
-            />
+            />,
         )
 
         act(() => {
-            userEvent.click(screen.getByRole('cell', {name: 'arrow_right'}))
+            userEvent.click(screen.getByRole('cell', { name: 'arrow_right' }))
         })
 
         expect(screen.queryByText(level2Label)).toBeInTheDocument()
@@ -106,14 +107,14 @@ describe('<TableBodyRowExpandable />', () => {
             <TableBodyRowExpandable<WithChildren<Data>>
                 RowContentComponent={SampleRowContentComponentMock}
                 rowContentProps={sampleData}
-            />
+            />,
         )
 
         act(() => {
-            userEvent.click(screen.getByRole('cell', {name: 'arrow_right'}))
+            userEvent.click(screen.getByRole('cell', { name: 'arrow_right' }))
         })
         act(() => {
-            userEvent.click(screen.getByRole('cell', {name: 'arrow_right'}))
+            userEvent.click(screen.getByRole('cell', { name: 'arrow_right' }))
         })
 
         expect(screen.queryByText(level2Label)).toBeInTheDocument()
@@ -121,8 +122,8 @@ describe('<TableBodyRowExpandable />', () => {
         expect(SampleRowContentComponentMock).toHaveBeenCalledTimes(7)
         expect(SampleRowContentComponentMock).toHaveBeenNthCalledWith(
             7,
-            expect.objectContaining({otherProp: sampleData.otherProp}),
-            {}
+            expect.objectContaining({ otherProp: sampleData.otherProp }),
+            {},
         )
     })
 
@@ -131,14 +132,14 @@ describe('<TableBodyRowExpandable />', () => {
             <TableBodyRowExpandable<WithChildren<Data>>
                 RowContentComponent={SampleRowContentComponentMock}
                 rowContentProps={sampleData}
-            />
+            />,
         )
 
         act(() => {
-            userEvent.click(screen.getByRole('cell', {name: 'arrow_right'}))
+            userEvent.click(screen.getByRole('cell', { name: 'arrow_right' }))
         })
         act(() => {
-            userEvent.click(screen.getByRole('cell', {name: 'arrow_right'}))
+            userEvent.click(screen.getByRole('cell', { name: 'arrow_right' }))
         })
 
         expect(screen.queryByText(level2Label)).toBeInTheDocument()
@@ -149,7 +150,9 @@ describe('<TableBodyRowExpandable />', () => {
                 name: new RegExp(level1Label),
             })
             userEvent.click(
-                within(topLevelRow).getByRole('cell', {name: 'arrow_drop_down'})
+                within(topLevelRow).getByRole('cell', {
+                    name: 'arrow_drop_down',
+                }),
             )
         })
 
@@ -158,43 +161,43 @@ describe('<TableBodyRowExpandable />', () => {
     })
 
     it('should check if expand cell indent(left) style is applied based on depth level', () => {
-        const {container} = render(
+        const { container } = render(
             <TableBodyRowExpandable<WithChildren<Data>>
                 RowContentComponent={SampleRowContentComponentMock}
                 rowContentProps={sampleData}
-            />
+            />,
         )
         triggerWidthResize(500)
         rafControl.run()
 
         act(() => {
-            userEvent.click(screen.getByRole('cell', {name: 'arrow_right'}))
+            userEvent.click(screen.getByRole('cell', { name: 'arrow_right' }))
         })
         act(() => {
-            userEvent.click(screen.getByRole('cell', {name: 'arrow_right'}))
+            userEvent.click(screen.getByRole('cell', { name: 'arrow_right' }))
         })
 
         const expandCells = Array.from(
-            container.querySelectorAll('.expandCell')
+            container.querySelectorAll('.expandCell'),
         )
         const expandCellLevel0 = 0
         const expandCellLevel1 = 1
 
         expect((expandCells[expandCellLevel0] as HTMLElement).style?.left).toBe(
-            `${MOBILE_COLUMN_WIDTH * expandCellLevel0}px`
+            `${MOBILE_COLUMN_WIDTH * expandCellLevel0}px`,
         )
         expect((expandCells[expandCellLevel1] as HTMLElement).style?.left).toBe(
-            `${MOBILE_COLUMN_WIDTH * expandCellLevel1}px`
+            `${MOBILE_COLUMN_WIDTH * expandCellLevel1}px`,
         )
 
         triggerWidthResize(1000)
         rafControl.run()
 
         expect((expandCells[expandCellLevel0] as HTMLElement).style?.left).toBe(
-            `${COLUMN_WIDTH * expandCellLevel0}px`
+            `${COLUMN_WIDTH * expandCellLevel0}px`,
         )
         expect((expandCells[expandCellLevel1] as HTMLElement).style?.left).toBe(
-            `${COLUMN_WIDTH * expandCellLevel1}px`
+            `${COLUMN_WIDTH * expandCellLevel1}px`,
         )
     })
 })

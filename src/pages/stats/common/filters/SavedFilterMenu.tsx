@@ -1,17 +1,17 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { useCallback, useRef, useState } from 'react'
+
 import cn from 'classnames'
 
-import React, {useCallback, useRef, useState} from 'react'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useAppSelector from 'hooks/useAppSelector'
-
 import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import css from 'pages/tickets/detail/components/TicketActions.less'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {isTeamLead} from 'utils'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { isTeamLead } from 'utils'
 
 export type Action = {
     label: string
@@ -26,7 +26,7 @@ const DISABLED_MENU_TOOLTIP =
     'Only team leads and admin users are able to save, duplicate, or delete saved filters.'
 export const SAVED_FILTER_ACTIONS_MENU_ICON = 'more_vert'
 
-export const SavedFilterMenu = ({actions}: Props) => {
+export const SavedFilterMenu = ({ actions }: Props) => {
     const user = useAppSelector(getCurrentUser)
     const isTeamLeadOrAdmin = isTeamLead(user)
     const [showDropdown, setShowDropdown] = useState(false)
@@ -65,14 +65,14 @@ export const SavedFilterMenu = ({actions}: Props) => {
                 onToggle={handleToggleDropdown}
             >
                 <DropdownBody>
-                    {actions.map(({label, callback}) => {
+                    {actions.map(({ label, callback }) => {
                         return (
                             <DropdownItem
                                 key={label}
                                 onClick={() => {
                                     callback()
                                 }}
-                                option={{label: label, value: ''}}
+                                option={{ label: label, value: '' }}
                                 shouldCloseOnSelect
                             >
                                 {label}

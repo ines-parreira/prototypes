@@ -1,14 +1,15 @@
-import {AxiosError} from 'axios'
+import React, { useEffect, useMemo, useState } from 'react'
+
+import { AxiosError } from 'axios'
 import classnames from 'classnames'
-import React, {useMemo, useEffect, useState} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {Form} from 'reactstrap'
+import { connect, ConnectedProps } from 'react-redux'
+import { Form } from 'reactstrap'
 
 import Button from 'pages/common/components/button/Button'
 import InputField from 'pages/common/forms/input/InputField'
 import settingsCss from 'pages/settings/settings.less'
-import {changePassword} from 'state/currentUser/actions'
-import {RootState} from 'state/types'
+import { changePassword } from 'state/currentUser/actions'
+import { RootState } from 'state/types'
 
 import css from './ChangePassword.less'
 
@@ -66,10 +67,10 @@ export const ChangePasswordContainer = ({
         const result = (await changePassword(
             oldPassword,
             newPassword,
-            twoFACode
+            twoFACode,
         )) as {
             reason?: string
-            error?: AxiosError<{error: {data?: Errors}}>
+            error?: AxiosError<{ error: { data?: Errors } }>
         }
 
         // This is always populated if there's an error
@@ -115,7 +116,7 @@ export const ChangePasswordContainer = ({
             <div
                 className={classnames(
                     'heading-subsection-semibold',
-                    settingsCss.inputField
+                    settingsCss.inputField,
                 )}
             >
                 Update password
@@ -219,7 +220,7 @@ const connector = connect(
     }),
     {
         changePassword,
-    }
+    },
 )
 
 export default connector(ChangePasswordContainer)

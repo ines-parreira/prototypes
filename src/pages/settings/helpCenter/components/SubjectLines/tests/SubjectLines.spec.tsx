@@ -1,22 +1,22 @@
-import {fireEvent, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {FC} from 'react'
-import {DndProvider} from 'react-dnd'
-import {HTML5Backend} from 'react-dnd-html5-backend'
-import {Provider} from 'react-redux'
+import React, { FC } from 'react'
+
+import { fireEvent, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {UpdateSubjectLinesProps} from 'models/contactForm/types'
-import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { UpdateSubjectLinesProps } from 'models/contactForm/types'
+import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
-import {HelpCenterTranslationProvider} from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
-import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
-import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
-import {RootState, StoreDispatch} from 'state/types'
-
-import {initialState as uiState} from 'state/ui/helpCenter/reducer'
-import {renderWithRouter} from 'utils/testing'
+import { HelpCenterTranslationProvider } from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
+import { initialState as articlesState } from 'state/entities/helpCenter/articles/reducer'
+import { initialState as categoriesState } from 'state/entities/helpCenter/categories/reducer'
+import { RootState, StoreDispatch } from 'state/types'
+import { initialState as uiState } from 'state/ui/helpCenter/reducer'
+import { renderWithRouter } from 'utils/testing'
 
 import SubjectLines from '../SubjectLines'
 
@@ -31,7 +31,7 @@ jest.mock('lodash/uniqueId', () => {
 
 jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
 ;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
-    getSingleHelpCenterResponseFixture
+    getSingleHelpCenterResponseFixture,
 )
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([
     thunk,
@@ -65,10 +65,10 @@ const defaultState: Partial<RootState> = {
     integrations: fromJS({
         integrations: [],
     }),
-    ui: {helpCenter: {...uiState, currentId: 1}} as any,
+    ui: { helpCenter: { ...uiState, currentId: 1 } } as any,
 }
 
-const DefaultProviders: FC = ({children}) => (
+const DefaultProviders: FC = ({ children }) => (
     <Provider store={mockedStore(defaultState)}>
         <HelpCenterTranslationProvider
             helpCenter={getSingleHelpCenterResponseFixture}
@@ -89,7 +89,7 @@ const renderComponent = (
     subjectLines: UpdateSubjectLinesProps,
     updateContactForm: React.Dispatch<
         React.SetStateAction<UpdateSubjectLinesProps>
-    >
+    >,
 ) =>
     renderWithRouter(
         <DefaultProviders>
@@ -102,30 +102,30 @@ const renderComponent = (
                     updateSubjectLines={updateContactForm}
                 />
             </DndProvider>
-        </DefaultProviders>
+        </DefaultProviders>,
     )
 
 describe('<SubjectLines />', () => {
     it('should render the component and show the "Other" toggle', () => {
-        const {container} = renderComponent(subjectLines, jest.fn)
+        const { container } = renderComponent(subjectLines, jest.fn)
 
         expect(
-            screen.queryByText('Allow custom input using “Other”')
+            screen.queryByText('Allow custom input using “Other”'),
         ).toBeTruthy()
         expect(container).toMatchSnapshot()
     })
 
     it('should render the component with no subject lines and hide the "Other" toggle', () => {
-        const {container} = renderComponent(
+        const { container } = renderComponent(
             {
                 allow_other: true,
                 options: [],
             },
-            jest.fn
+            jest.fn,
         )
 
         expect(
-            screen.queryByText('Allow custom input using “Other”')
+            screen.queryByText('Allow custom input using “Other”'),
         ).toBeFalsy()
         expect(container).toMatchSnapshot()
     })
@@ -171,7 +171,7 @@ describe('<SubjectLines />', () => {
 
         const firstInput = screen.getAllByRole('textbox')[0]
         firstInput.focus()
-        fireEvent.change(firstInput, {target: {value: 'New subject line'}})
+        fireEvent.change(firstInput, { target: { value: 'New subject line' } })
         firstInput.blur()
 
         expect(updateContactForm).toHaveBeenCalled()
@@ -191,19 +191,19 @@ describe('<SubjectLines />', () => {
             new MouseEvent('mousedown', {
                 bubbles: true,
                 cancelable: true,
-            })
+            }),
         )
         secondDragElement.dispatchEvent(
             new MouseEvent('mousemove', {
                 bubbles: true,
                 cancelable: true,
-            })
+            }),
         )
         secondDragElement.dispatchEvent(
             new MouseEvent('mouseup', {
                 bubbles: true,
                 cancelable: true,
-            })
+            }),
         )
 
         // wait for the reordering animation to finish

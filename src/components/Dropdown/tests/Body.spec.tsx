@@ -1,7 +1,8 @@
-import {fireEvent, render} from '@testing-library/react'
-import React, {ComponentProps, ContextType} from 'react'
+import React, { ComponentProps, ContextType } from 'react'
 
-import {DropdownContext} from 'pages/common/components/dropdown/Dropdown'
+import { fireEvent, render } from '@testing-library/react'
+
+import { DropdownContext } from 'pages/common/components/dropdown/Dropdown'
 
 import Body from '../Body'
 import Context from '../Context'
@@ -25,8 +26,8 @@ const mockDropdownContext: ContextType<typeof DropdownContext> = {
 
 const mockContext = {
     data: [
-        {id: 1, name: 'exchange'},
-        {id: 2, name: 'refund'},
+        { id: 1, name: 'exchange' },
+        { id: 2, name: 'refund' },
     ],
     onClick: jest.fn(),
     search: '',
@@ -38,18 +39,18 @@ const mockContext = {
 describe('<Body />', () => {
     const renderWithContexts = (
         context: ContextType<typeof Context>,
-        props?: ComponentProps<typeof Body>
+        props?: ComponentProps<typeof Body>,
     ) =>
         render(
             <DropdownContext.Provider value={mockDropdownContext}>
                 <Context.Provider value={context}>
                     <Body {...props} />
                 </Context.Provider>
-            </DropdownContext.Provider>
+            </DropdownContext.Provider>,
         )
 
     it('should display loading state', () => {
-        const {getByText} = renderWithContexts({
+        const { getByText } = renderWithContexts({
             ...mockContext,
             isLoading: true,
         })
@@ -58,8 +59,8 @@ describe('<Body />', () => {
     })
 
     it('should handle case for no results', () => {
-        const {getByPlaceholderText, getByText, getAllByRole} =
-            renderWithContexts({...mockContext, data: []})
+        const { getByPlaceholderText, getByText, getAllByRole } =
+            renderWithContexts({ ...mockContext, data: [] })
 
         expect(getAllByRole('listitem').length).toBe(1)
         expect(getAllByRole('listitem')[0]).toBe(getByPlaceholderText('Search'))
@@ -67,7 +68,7 @@ describe('<Body />', () => {
     })
 
     it('should not render any content when data is not available', () => {
-        const {queryByText, queryAllByRole} = renderWithContexts({
+        const { queryByText, queryAllByRole } = renderWithContexts({
             ...mockContext,
             shouldRender: false,
         })
@@ -77,7 +78,7 @@ describe('<Body />', () => {
     })
 
     it('should handle click on item', () => {
-        const {getAllByRole} = renderWithContexts(mockContext)
+        const { getAllByRole } = renderWithContexts(mockContext)
 
         getAllByRole('listitem')[1].click()
 
@@ -88,16 +89,16 @@ describe('<Body />', () => {
     })
 
     it('should set search', () => {
-        const {getByPlaceholderText} = renderWithContexts(mockContext)
+        const { getByPlaceholderText } = renderWithContexts(mockContext)
 
         fireEvent.change(getByPlaceholderText(/Search/), {
-            target: {value: 'Foo'},
+            target: { value: 'Foo' },
         })
         expect(mockContext.setSearch).toHaveBeenCalledWith('Foo')
     })
 
     it('should trigger focusOnNextItem on key down events', () => {
-        const {getByText, getByPlaceholderText} =
+        const { getByText, getByPlaceholderText } =
             renderWithContexts(mockContext)
         fireEvent.keyDown(getByPlaceholderText(/Search/), {
             key: 'ArrowDown',

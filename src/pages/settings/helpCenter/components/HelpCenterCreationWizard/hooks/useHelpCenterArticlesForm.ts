@@ -1,5 +1,6 @@
-import {filter, flatMap, map, mapValues} from 'lodash'
-import {useCallback, useEffect, useState} from 'react'
+import { useCallback, useEffect, useState } from 'react'
+
+import { filter, flatMap, map, mapValues } from 'lodash'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
@@ -8,14 +9,14 @@ import {
     HelpCenterArticleItem,
     LocalArticleTranslation,
 } from 'models/helpCenter/types'
-import {DEFAULT_ARTICLE_GROUP} from 'pages/settings/helpCenter/constants'
-import {useCreateArticleTranslationUsingTemplate} from 'pages/settings/helpCenter/hooks/useCreateArticleTranslationUsingTemplate'
-import {useCreateArticleUsingTemplate} from 'pages/settings/helpCenter/hooks/useCreateArticleUsingTemplate'
-import {useUpdateArticleTranslationUsingTemplate} from 'pages/settings/helpCenter/hooks/useUpdateArticleTranslationUsingTemplate'
-import {useEditionManager} from 'pages/settings/helpCenter/providers/EditionManagerContext'
-import {ArticleOrigin} from 'pages/settings/helpCenter/types/articleOrigin.enum'
+import { DEFAULT_ARTICLE_GROUP } from 'pages/settings/helpCenter/constants'
+import { useCreateArticleTranslationUsingTemplate } from 'pages/settings/helpCenter/hooks/useCreateArticleTranslationUsingTemplate'
+import { useCreateArticleUsingTemplate } from 'pages/settings/helpCenter/hooks/useCreateArticleUsingTemplate'
+import { useUpdateArticleTranslationUsingTemplate } from 'pages/settings/helpCenter/hooks/useUpdateArticleTranslationUsingTemplate'
+import { useEditionManager } from 'pages/settings/helpCenter/providers/EditionManagerContext'
+import { ArticleOrigin } from 'pages/settings/helpCenter/types/articleOrigin.enum'
 
-import {logEvent, SegmentEvent} from '../../../../../../common/segment'
+import { logEvent, SegmentEvent } from '../../../../../../common/segment'
 import {
     findArticleByKey,
     handleOnError,
@@ -41,7 +42,7 @@ type HelpCenterArticlesFormOutput = {
 export const useHelpCenterArticlesForm = (
     helpCenter: HelpCenter,
     articles: Record<string, HelpCenterArticleItem[]>,
-    origin?: ArticleOrigin
+    origin?: ArticleOrigin,
 ): HelpCenterArticlesFormOutput => {
     const [newArticles, setArticles] = useState<
         Record<string, HelpCenterArticleItem[]>
@@ -53,7 +54,7 @@ export const useHelpCenterArticlesForm = (
     const [hoveredArticle, setHoveredArticle] =
         useState<HelpCenterArticleItem | null>(null)
 
-    const {setEditModal} = useEditionManager()
+    const { setEditModal } = useEditionManager()
 
     const dispatch = useAppDispatch()
 
@@ -64,7 +65,7 @@ export const useHelpCenterArticlesForm = (
     const updateArticleItemByKey = (
         key: string,
         article: HelpCenterArticleItem,
-        customPayload?: Partial<HelpCenterArticleItem>
+        customPayload?: Partial<HelpCenterArticleItem>,
     ) => {
         if (article.key !== key) {
             return article
@@ -78,7 +79,7 @@ export const useHelpCenterArticlesForm = (
 
     const createOrUpdateCallback = (
         key: string,
-        translation: LocalArticleTranslation | undefined
+        translation: LocalArticleTranslation | undefined,
     ) => {
         if (!translation) return
 
@@ -94,9 +95,9 @@ export const useHelpCenterArticlesForm = (
         setArticles((prevState) =>
             mapValues(prevState, (articles) =>
                 map(articles, (article) =>
-                    updateArticleItemByKey(key, article, customPayload)
-                )
-            )
+                    updateArticleItemByKey(key, article, customPayload),
+                ),
+            ),
         )
         handleOnSuccess('Article saved.', dispatch)
     }
@@ -107,9 +108,9 @@ export const useHelpCenterArticlesForm = (
                 map(articles, (article) =>
                     updateArticleItemByKey(key, article, {
                         isSelected: !article.isSelected,
-                    })
-                )
-            )
+                    }),
+                ),
+            ),
         )
     }, [])
 
@@ -128,7 +129,7 @@ export const useHelpCenterArticlesForm = (
                 })
             }
         },
-        [newArticles, setEditModal]
+        [newArticles, setEditModal],
     )
 
     const handleEditorClose = useCallback(() => {
@@ -148,7 +149,7 @@ export const useHelpCenterArticlesForm = (
                 })
             }
         },
-        [selectedArticle]
+        [selectedArticle],
     )
 
     const handleArticleHover = useCallback(
@@ -163,22 +164,22 @@ export const useHelpCenterArticlesForm = (
                 setHoveredArticle(article)
             }
         },
-        [newArticles]
+        [newArticles],
     )
 
-    const {isCreateArticleLoading, createArticle} =
+    const { isCreateArticleLoading, createArticle } =
         useCreateArticleUsingTemplate(helpCenter)
 
-    const {isCreateArticleTranslationLoading, createArticleTranslation} =
+    const { isCreateArticleTranslationLoading, createArticleTranslation } =
         useCreateArticleTranslationUsingTemplate(helpCenter)
 
-    const {isUpdateArticleTranslationLoading, updateArticleTranslation} =
+    const { isUpdateArticleTranslationLoading, updateArticleTranslation } =
         useUpdateArticleTranslationUsingTemplate(helpCenter)
 
     const handleEditorSave = async (title: string, content: string) => {
         if (!selectedArticle?.key) return
 
-        const article = {...selectedArticle, title, content, origin}
+        const article = { ...selectedArticle, title, content, origin }
 
         logEvent(SegmentEvent.WizardArticleEdited, {
             type: article.type,
@@ -199,7 +200,7 @@ export const useHelpCenterArticlesForm = (
                     if (response) {
                         createOrUpdateCallback(
                             article.key,
-                            response?.data.translation
+                            response?.data.translation,
                         )
                         handleEditorClose()
                     }
@@ -248,11 +249,11 @@ export const useHelpCenterArticlesForm = (
         trackSelectedItems()
 
         const selectedItemsWithoutId = flatMap(newArticles, (items) =>
-            filter(items, ({isSelected, id}) => isSelected === true && !id)
+            filter(items, ({ isSelected, id }) => isSelected === true && !id),
         )
 
         const itemsWithId = flatMap(newArticles, (items) =>
-            filter(items, ({id}) => id !== undefined)
+            filter(items, ({ id }) => id !== undefined),
         )
 
         const handleArticlesFromTemplate = selectedItemsWithoutId.map(
@@ -261,8 +262,8 @@ export const useHelpCenterArticlesForm = (
                     item.type === ArticleTemplateType.AI
                         ? true
                         : !!item.isTouched
-                return createArticle({...item, origin}, shouldPublish)
-            }
+                return createArticle({ ...item, origin }, shouldPublish)
+            },
         )
 
         const handleArticlesTranslations = itemsWithId.map((item) => {

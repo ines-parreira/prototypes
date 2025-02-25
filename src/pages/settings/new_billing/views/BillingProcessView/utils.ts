@@ -1,11 +1,11 @@
-import {Plan, Cadence} from 'models/billing/types'
+import { Cadence, Plan } from 'models/billing/types'
 import {
     AlertNotification,
     NotificationStatus,
     NotificationStyle,
 } from 'state/notifications/types'
 
-import {PRODUCT_INFO} from '../../constants'
+import { PRODUCT_INFO } from '../../constants'
 
 export type setNotificationProps = {
     oldPlan?: Plan

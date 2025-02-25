@@ -1,26 +1,26 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
-import {chain} from 'lodash'
+import { renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
+import { chain } from 'lodash'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {useGetHelpCenterArticleList} from 'models/helpCenter/queries'
-import {IntegrationType} from 'models/integration/constants'
+import { useGetHelpCenterArticleList } from 'models/helpCenter/queries'
+import { IntegrationType } from 'models/integration/constants'
 import {
     AIArticlesGroupedFixture,
     AIArticlesListFixture,
 } from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
 import {
+    ArticlesListFixture,
     ArticleTemplatesGroupedByCategoryFixture,
     ArticleTemplatesListFixture,
-    ArticlesListFixture,
 } from 'pages/settings/helpCenter/fixtures/articleTemplate.fixture'
-import {useGetAIArticles} from 'pages/settings/helpCenter/hooks/useGetAIArticles'
-import {useGetArticleTemplates} from 'pages/settings/helpCenter/queries'
-import {StoreState} from 'state/types'
-import {assumeMock} from 'utils/testing'
+import { useGetAIArticles } from 'pages/settings/helpCenter/hooks/useGetAIArticles'
+import { useGetArticleTemplates } from 'pages/settings/helpCenter/queries'
+import { StoreState } from 'state/types'
+import { assumeMock } from 'utils/testing'
 
-import {findArticleByKey} from '../../HelpCenterCreationWizardUtils'
-import {useGetHelpCenterArticles} from '../useGetHelpCenterArticles'
+import { findArticleByKey } from '../../HelpCenterCreationWizardUtils'
+import { useGetHelpCenterArticles } from '../useGetHelpCenterArticles'
 
 jest.mock('pages/settings/helpCenter/queries')
 jest.mock('models/helpCenter/queries')
@@ -29,7 +29,7 @@ jest.mock('hooks/useAppSelector')
 
 const mockedUseGetArticleTemplates = assumeMock(useGetArticleTemplates)
 const mockedUseGetHelpCenterArticleList = assumeMock(
-    useGetHelpCenterArticleList
+    useGetHelpCenterArticleList,
 )
 const mockedUseConditionalGetAIArticles = assumeMock(useGetAIArticles)
 const mockedUseAppSelector = assumeMock(useAppSelector)
@@ -45,7 +45,7 @@ describe('useGetHelpCenterArticles', () => {
         })
         mockedUseGetHelpCenterArticleList.mockImplementation(() => {
             return {
-                data: {data: []},
+                data: { data: [] },
                 isLoading: false,
             } as unknown as ReturnType<typeof useGetHelpCenterArticleList>
         })
@@ -53,11 +53,19 @@ describe('useGetHelpCenterArticles', () => {
             selector({
                 integrations: fromJS({
                     integrations: [
-                        {id: 1, type: IntegrationType.Shopify, name: 'My Shop'},
-                        {id: 2, type: IntegrationType.Magento2, name: 'Shop X'},
+                        {
+                            id: 1,
+                            type: IntegrationType.Shopify,
+                            name: 'My Shop',
+                        },
+                        {
+                            id: 2,
+                            type: IntegrationType.Magento2,
+                            name: 'Shop X',
+                        },
                     ],
                 }),
-            } as unknown as StoreState)
+            } as unknown as StoreState),
         )
     })
 
@@ -71,15 +79,15 @@ describe('useGetHelpCenterArticles', () => {
             })
         })
         it('should return template articles grouped by category when no articles created', () => {
-            const {result} = renderHook(() =>
-                useGetHelpCenterArticles(1, 'en-US', 'My Shop')
+            const { result } = renderHook(() =>
+                useGetHelpCenterArticles(1, 'en-US', 'My Shop'),
             )
 
             expect(mockedUseGetArticleTemplates).toHaveBeenCalled()
             expect(mockedUseGetHelpCenterArticleList).toHaveBeenCalled()
 
             expect(result.current.articles).toMatchObject(
-                ArticleTemplatesGroupedByCategoryFixture
+                ArticleTemplatesGroupedByCategoryFixture,
             )
             expect(result.current.isLoading).toBeFalsy()
         })
@@ -97,16 +105,16 @@ describe('useGetHelpCenterArticles', () => {
                     isLoading: false,
                 } as unknown as ReturnType<typeof useGetHelpCenterArticleList>
             })
-            const {result} = renderHook(() =>
-                useGetHelpCenterArticles(1, 'en-US', 'My Shop')
+            const { result } = renderHook(() =>
+                useGetHelpCenterArticles(1, 'en-US', 'My Shop'),
             )
 
             expect(result.current.articles).toMatchObject({})
         })
 
         it('should select the first template article by default when no articles created', () => {
-            const {result} = renderHook(() =>
-                useGetHelpCenterArticles(1, 'en-US', 'My Shop')
+            const { result } = renderHook(() =>
+                useGetHelpCenterArticles(1, 'en-US', 'My Shop'),
             )
             const resultArray = chain(result.current.articles)
                 .values()
@@ -125,12 +133,12 @@ describe('useGetHelpCenterArticles', () => {
                 } as unknown as ReturnType<typeof useGetHelpCenterArticleList>
             })
 
-            const {result} = renderHook(() =>
-                useGetHelpCenterArticles(1, 'en-US', 'My Shop')
+            const { result } = renderHook(() =>
+                useGetHelpCenterArticles(1, 'en-US', 'My Shop'),
             )
             const articleByKey = findArticleByKey(
                 result.current.articles,
-                'shippingPolicy'
+                'shippingPolicy',
             )
             expect(articleByKey).toMatchObject({
                 id: 1,
@@ -170,12 +178,12 @@ describe('useGetHelpCenterArticles', () => {
                 } as unknown as ReturnType<typeof useGetHelpCenterArticleList>
             })
 
-            const {result} = renderHook(() =>
-                useGetHelpCenterArticles(1, 'en-US', 'My Shop')
+            const { result } = renderHook(() =>
+                useGetHelpCenterArticles(1, 'en-US', 'My Shop'),
             )
 
             expect(result.current.articles).toMatchObject(
-                ArticleTemplatesGroupedByCategoryFixture
+                ArticleTemplatesGroupedByCategoryFixture,
             )
             expect(result.current.isLoading).toBeFalsy()
         })
@@ -192,13 +200,13 @@ describe('useGetHelpCenterArticles', () => {
         })
 
         it('should return ai articles', () => {
-            const {result} = renderHook(() =>
-                useGetHelpCenterArticles(1, 'en-US', 'My Shop')
+            const { result } = renderHook(() =>
+                useGetHelpCenterArticles(1, 'en-US', 'My Shop'),
             )
 
             expect(mockedUseConditionalGetAIArticles).toHaveBeenCalled()
             expect(result.current.articles).toMatchObject(
-                AIArticlesGroupedFixture
+                AIArticlesGroupedFixture,
             )
         })
 
@@ -214,17 +222,17 @@ describe('useGetHelpCenterArticles', () => {
                             },
                         ],
                     }),
-                } as unknown as StoreState)
+                } as unknown as StoreState),
             )
 
-            const {result} = renderHook(() =>
-                useGetHelpCenterArticles(1, 'en-US', null)
+            const { result } = renderHook(() =>
+                useGetHelpCenterArticles(1, 'en-US', null),
             )
 
             expect(mockedUseConditionalGetAIArticles).toHaveBeenCalled()
             expect(result.current.hasAiArticles).toBe(true)
             expect(result.current.articles).toMatchObject(
-                AIArticlesGroupedFixture
+                AIArticlesGroupedFixture,
             )
         })
         it('should return empty array of articles when multi-store does not have store connection', () => {
@@ -235,8 +243,8 @@ describe('useGetHelpCenterArticles', () => {
                 } as unknown as ReturnType<typeof useGetAIArticles>
             })
 
-            const {result} = renderHook(() =>
-                useGetHelpCenterArticles(1, 'en-US', null)
+            const { result } = renderHook(() =>
+                useGetHelpCenterArticles(1, 'en-US', null),
             )
 
             expect(mockedUseConditionalGetAIArticles).toHaveBeenCalled()

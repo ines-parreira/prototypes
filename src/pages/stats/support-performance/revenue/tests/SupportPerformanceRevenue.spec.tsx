@@ -1,75 +1,75 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
+import React, { ComponentProps } from 'react'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
 import _noop from 'lodash/noop'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {TicketChannel} from 'business/types/ticket'
+import { TicketChannel } from 'business/types/ticket'
 import {
     REVENUE_OVERVIEW,
     REVENUE_PER_AGENT,
     REVENUE_PER_DAY,
 } from 'config/stats'
-import {account} from 'fixtures/account'
-import {agents} from 'fixtures/agents'
-
-import {billingState} from 'fixtures/billing'
-import {campaign} from 'fixtures/campaign'
-import {channelConnection} from 'fixtures/channelConnection'
-import {convertStatusOk} from 'fixtures/convert'
+import { account } from 'fixtures/account'
+import { agents } from 'fixtures/agents'
+import { billingState } from 'fixtures/billing'
+import { campaign } from 'fixtures/campaign'
+import { channelConnection } from 'fixtures/channelConnection'
+import { convertStatusOk } from 'fixtures/convert'
 import {
     revenueOverview,
     revenuePerAgent,
     revenuePerDay,
     revenuePerTicket,
 } from 'fixtures/stats'
-import {teams} from 'fixtures/teams'
+import { teams } from 'fixtures/teams'
 import useStatResource from 'hooks/reporting/useStatResource'
-import {useListCampaigns} from 'models/convert/campaign/queries'
-import {IntegrationType} from 'models/integration/constants'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {TagFilterInstanceId} from 'models/stat/types'
+import { useListCampaigns } from 'models/convert/campaign/queries'
+import { IntegrationType } from 'models/integration/constants'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { TagFilterInstanceId } from 'models/stat/types'
 import FeaturePaywall from 'pages/common/components/FeaturePaywall/FeaturePaywall'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import DEPRECATED_TagsStatsFilter from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
 import SupportPerformanceRevenue from 'pages/stats/support-performance/revenue/SupportPerformanceRevenue'
-import {AccountFeature} from 'state/currentAccount/types'
-import {RootState, StoreDispatch} from 'state/types'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
-import {assumeMock, renderWithRouter} from 'utils/testing'
+import { AccountFeature } from 'state/currentAccount/types'
+import { RootState, StoreDispatch } from 'state/types'
+import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
+import { assumeMock, renderWithRouter } from 'utils/testing'
 
 jest.mock('hooks/reporting/useStatResource')
-jest.mock('react-chartjs-2', () => ({Bar: () => <canvas />}))
+jest.mock('react-chartjs-2', () => ({ Bar: () => <canvas /> }))
 jest.mock(
     'pages/common/components/FeaturePaywall/FeaturePaywall',
     () =>
-        ({feature}: ComponentProps<typeof FeaturePaywall>) => {
+        ({ feature }: ComponentProps<typeof FeaturePaywall>) => {
             return <div>Paywall for {feature}</div>
-        }
+        },
 )
 jest.mock(
     'pages/stats/common/filters/DEPRECATED_TagsStatsFilter',
     () =>
-        ({value}: ComponentProps<typeof DEPRECATED_TagsStatsFilter>) => (
+        ({ value }: ComponentProps<typeof DEPRECATED_TagsStatsFilter>) => (
             <div>TagsStatsFilterMock, value: {JSON.stringify(value)}</div>
-        )
+        ),
 )
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
 }))
 jest.mock(
     'pages/stats/common/filters/DEPRECATED_ChannelsStatsFilter',
-    () => () => <div>ChannelsStatsFilter</div>
+    () => () => <div>ChannelsStatsFilter</div>,
 )
 
 jest.mock('pages/convert/common/hooks/useGetConvertStatus')
 jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')
 const useGetOrCreateChannelConnectionMock = assumeMock(
-    useGetOrCreateChannelConnection
+    useGetOrCreateChannelConnection,
 )
 
 jest.mock('models/convert/campaign/queries')
@@ -187,7 +187,7 @@ describe('SupportPerformanceRevenue', () => {
     const shopifyIntegration = integrationsState.integrations.find(
         (integration) => {
             return integration.type === IntegrationType.Shopify
-        }
+        },
     )
 
     const defaultState = {
@@ -221,7 +221,7 @@ describe('SupportPerformanceRevenue', () => {
         }),
         billing: fromJS(billingState),
         ui: {
-            stats: {filters: uiStatsInitialState},
+            stats: { filters: uiStatsInitialState },
         },
     } as RootState
 
@@ -247,7 +247,7 @@ describe('SupportPerformanceRevenue', () => {
     })
 
     it('should render the filters and stats when stats filters are defined', () => {
-        useStatResourceMock.mockImplementation(({resourceName}) => {
+        useStatResourceMock.mockImplementation(({ resourceName }) => {
             switch (resourceName) {
                 case REVENUE_OVERVIEW:
                     return [revenueOverview, false, _noop]
@@ -261,20 +261,20 @@ describe('SupportPerformanceRevenue', () => {
         })
         jest.spyOn(
             isConvertSubscriberHook,
-            'useIsConvertSubscriber'
+            'useIsConvertSubscriber',
         ).mockImplementation(() => true)
 
-        const {container} = renderWithRouter(
+        const { container } = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <SupportPerformanceRevenue />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should not render the campaign filters if the flag is deactivated', () => {
-        useStatResourceMock.mockImplementation(({resourceName}) => {
+        useStatResourceMock.mockImplementation(({ resourceName }) => {
             switch (resourceName) {
                 case REVENUE_OVERVIEW:
                     return [revenueOverview, false, _noop]
@@ -288,13 +288,13 @@ describe('SupportPerformanceRevenue', () => {
         })
         jest.spyOn(
             isConvertSubscriberHook,
-            'useIsConvertSubscriber'
+            'useIsConvertSubscriber',
         ).mockImplementation(() => false)
 
-        const {queryByPlaceholderText} = renderWithRouter(
+        const { queryByPlaceholderText } = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <SupportPerformanceRevenue />
-            </Provider>
+            </Provider>,
         )
 
         expect(queryByPlaceholderText('Search campaigns...')).toBe(null)
@@ -305,13 +305,13 @@ describe('SupportPerformanceRevenue', () => {
             ...defaultState,
             currentAccount: defaultState.currentAccount.setIn(
                 ['features', AccountFeature.RevenueStatistics, 'enabled'],
-                false
+                false,
             ),
         })
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <SupportPerformanceRevenue />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -321,10 +321,10 @@ describe('SupportPerformanceRevenue', () => {
             ...defaultState,
             integrations: fromJS([]),
         })
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <SupportPerformanceRevenue />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })

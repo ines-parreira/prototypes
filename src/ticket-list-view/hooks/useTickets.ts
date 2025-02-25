@@ -1,18 +1,18 @@
-import {useEffect, useMemo, useRef, useState} from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 
 import useDebouncedValue from 'hooks/useDebouncedValue'
 import useElementSize from 'hooks/useElementSize'
 import usePrevious from 'hooks/usePrevious'
-import {useSplitTicketView} from 'split-ticket-view-toggle'
+import { useSplitTicketView } from 'split-ticket-view-toggle'
 import useViewTickets from 'ticket-list-view/hooks/useViewTickets'
-import type {OnToggleUnreadFn} from 'tickets/pages/SplitTicketPage'
+import type { OnToggleUnreadFn } from 'tickets/pages/SplitTicketPage'
 
-import {TICKET_HEIGHT} from '../constants'
+import { TICKET_HEIGHT } from '../constants'
 import useTicketIds from '../hooks/useTicketIds'
-import {SortField, TicketPartial} from '../types'
+import { SortField, TicketPartial } from '../types'
 import usePrevNextTicketId from './usePrevNextTicketId'
 import useScrollOffset from './useScrollOffset'
-import {SortOrder} from './useSortOrder'
+import { SortOrder } from './useSortOrder'
 import useStaleTickets from './useStaleTickets'
 import useTicketData from './useTicketData'
 import useTicketPartials from './useTicketPartials'
@@ -21,7 +21,7 @@ export default function useTickets(
     viewId: number,
     sortOrder: SortOrder,
     ticketId?: number,
-    registerToggleUnread?: (toggleUnreadFn: OnToggleUnreadFn) => void
+    registerToggleUnread?: (toggleUnreadFn: OnToggleUnreadFn) => void,
 ) {
     const toggleUnreadRegisteredRef = useRef(false)
     const {
@@ -36,8 +36,8 @@ export default function useTickets(
     const previousPartials = usePrevious(partials)
     const previousPartialsMap = useMemo(() => {
         return previousPartials?.reduce(
-            (acc, p) => ({...acc, [p.id]: p}),
-            {} as Record<string, TicketPartial>
+            (acc, p) => ({ ...acc, [p.id]: p }),
+            {} as Record<string, TicketPartial>,
         )
     }, [previousPartials])
     const newPartials = useMemo(() => {
@@ -47,7 +47,7 @@ export default function useTickets(
 
         return partials.filter((p) => !previousPartialsMap[p.id])
     }, [partials, previousPartialsMap])
-    const {markUpdated, staleTickets} = useStaleTickets(partials)
+    const { markUpdated, staleTickets } = useStaleTickets(partials)
 
     const [element, setElement] = useState<HTMLElement | null>(null)
     const [, height] = useElementSize(element)
@@ -57,24 +57,24 @@ export default function useTickets(
 
     const startIndex = useMemo(
         () => Math.floor(debouncedOffset / TICKET_HEIGHT),
-        [debouncedOffset]
+        [debouncedOffset],
     )
     const endIndex = useMemo(
         () =>
             Math.ceil((debouncedOffset + debouncedHeight) / TICKET_HEIGHT) - 1,
-        [debouncedHeight, debouncedOffset]
+        [debouncedHeight, debouncedOffset],
     )
     const visiblePartials = useMemo(
         () => partials.slice(startIndex, endIndex + 1),
-        [endIndex, partials, startIndex]
+        [endIndex, partials, startIndex],
     )
     const visiblePartialsMap = useMemo(
         () =>
             visiblePartials.reduce(
-                (acc, p) => ({...acc, [p.id]: p}),
-                {} as Record<string, TicketPartial>
+                (acc, p) => ({ ...acc, [p.id]: p }),
+                {} as Record<string, TicketPartial>,
             ),
-        [visiblePartials]
+        [visiblePartials],
     )
     const visibleNewPartialsMap = useMemo(
         () =>
@@ -85,9 +85,9 @@ export default function useTickets(
                     }
                     return acc
                 },
-                {} as Record<string, TicketPartial>
+                {} as Record<string, TicketPartial>,
             ),
-        [newPartials, visiblePartialsMap]
+        [newPartials, visiblePartialsMap],
     )
 
     useViewTickets(visiblePartials, true)
@@ -97,13 +97,13 @@ export default function useTickets(
             visiblePartials
                 .filter((p) => !!staleTickets[p.id])
                 .map((p) => p.id),
-        [staleTickets, visiblePartials]
+        [staleTickets, visiblePartials],
     )
 
-    const {bulkToggleUnread, data, toggleUnread} = useTicketData(
+    const { bulkToggleUnread, data, toggleUnread } = useTicketData(
         visibleStaleTicketIds,
         markUpdated,
-        ticketId
+        ticketId,
     )
 
     useEffect(() => {
@@ -117,7 +117,7 @@ export default function useTickets(
 
     const sortField = useMemo(
         () => sortOrder.split(':')[0] as SortField,
-        [sortOrder]
+        [sortOrder],
     )
 
     const latestDatetime = useMemo(() => {
@@ -138,7 +138,7 @@ export default function useTickets(
     const previousTicketId = usePrevNextTicketId(ticketId, 'prev', partials)
     const nextTicketId = usePrevNextTicketId(ticketId, 'next', partials)
 
-    const {setPrevNextTicketIds} = useSplitTicketView()
+    const { setPrevNextTicketIds } = useSplitTicketView()
 
     useEffect(() => {
         setPrevNextTicketIds({
@@ -173,6 +173,6 @@ export default function useTickets(
             tickets,
             ticketIds,
             visibleNewPartialsMap,
-        ]
+        ],
     )
 }

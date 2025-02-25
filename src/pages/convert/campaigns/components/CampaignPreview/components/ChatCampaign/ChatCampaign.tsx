@@ -1,29 +1,29 @@
+import React, { useEffect, useState } from 'react'
+
 import classNames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useEffect, useState} from 'react'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 import ReactPlayer from 'react-player'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useMeasure from 'hooks/useMeasure'
 import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
     GorgiasChatAvatarSettings,
 } from 'models/integration/types'
-import {CampaignFormExtra} from 'pages/convert/campaigns/types/CampaignAttachment'
-
-import {CampaignDiscountOffer} from 'pages/convert/campaigns/types/CampaignDiscountOffer'
-import {CaptureFormDisclaimerSettings} from 'pages/convert/settings/types'
-import {AgentDisplayName} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/AgentDisplayName'
+import { CampaignFormExtra } from 'pages/convert/campaigns/types/CampaignAttachment'
+import { CampaignDiscountOffer } from 'pages/convert/campaigns/types/CampaignDiscountOffer'
+import { CaptureFormDisclaimerSettings } from 'pages/convert/settings/types'
+import { AgentDisplayName } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/AgentDisplayName'
 import ChatAvatar from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatAvatar'
-import {extractGorgiasVideoDivFromHtmlContent} from 'utils'
+import { extractGorgiasVideoDivFromHtmlContent } from 'utils'
 
-import {CAMPAIGN_MAX_HEIGHT} from '../../../../constants/visuals'
-import {CampaignProduct} from '../../../../types/CampaignProduct'
+import { CAMPAIGN_MAX_HEIGHT } from '../../../../constants/visuals'
+import { CampaignProduct } from '../../../../types/CampaignProduct'
+import { ContactCaptureFormPreview } from '../ContactCaptureFormPreview/ContactCaptureFormPreview'
+import { DiscountOfferPreview } from '../DiscountOfferPreview/DiscountOfferPreview'
+import { ProductCarousel } from '../ProductCarousel'
 
-import {ContactCaptureFormPreview} from '../ContactCaptureFormPreview/ContactCaptureFormPreview'
-import {DiscountOfferPreview} from '../DiscountOfferPreview/DiscountOfferPreview'
-import {ProductCarousel} from '../ProductCarousel'
 import css from './ChatCampaign.less'
 
 type AuthorNameProps = {
@@ -105,14 +105,14 @@ export const ChatCampaign = ({
     emailDisclaimerSettings,
     defaultLanguage,
 }: Props) => {
-    const [measureRef, {height}] = useMeasure<HTMLDivElement>()
+    const [measureRef, { height }] = useMeasure<HTMLDivElement>()
     const isAgentAvatarCustomizationEnabled =
         useFlags()[FeatureFlagKey.ChatAgentAvatarCustomization]
 
     const [newMessage, setNewMessage] = useState<string>()
 
-    const {videoUrls, htmlCleaned} = extractGorgiasVideoDivFromHtmlContent(
-        newMessage || html
+    const { videoUrls, htmlCleaned } = extractGorgiasVideoDivFromHtmlContent(
+        newMessage || html,
     )
 
     const isAuthorSelected = !!authorName

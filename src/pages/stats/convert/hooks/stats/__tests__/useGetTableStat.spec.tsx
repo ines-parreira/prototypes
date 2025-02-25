@@ -1,8 +1,8 @@
-import {UseQueryResult} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
+import { UseQueryResult } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {fetchPostReporting, usePostReporting} from 'models/reporting/queries'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import { fetchPostReporting, usePostReporting } from 'models/reporting/queries'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import {
     CampaignOrderEventsDimension,
     CampaignOrderEventsMeasure,
@@ -12,13 +12,13 @@ import {
     OrderConversionMeasure,
     SharedDimension,
 } from 'pages/stats/convert/clients/constants'
-import {GroupDimension} from 'pages/stats/convert/clients/types'
+import { GroupDimension } from 'pages/stats/convert/clients/types'
 import {
     fetchGetTableStat,
     useGetTableStat,
 } from 'pages/stats/convert/hooks/stats/useGetTableStat'
-import {getDataFromResult} from 'pages/stats/convert/services/CampaignMetricsHelper'
-import {assumeMock} from 'utils/testing'
+import { getDataFromResult } from 'pages/stats/convert/services/CampaignMetricsHelper'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('models/reporting/queries')
 const usePostReportingMock = assumeMock(usePostReporting)
@@ -365,7 +365,7 @@ describe('GetTableStat', () => {
             })
 
             // act
-            const {result} = renderHook(() => useGetTableStat(hookArgs))
+            const { result } = renderHook(() => useGetTableStat(hookArgs))
 
             expect(result.current.isFetching).toBe(true)
         })
@@ -378,7 +378,7 @@ describe('GetTableStat', () => {
             } as UseQueryResult)
 
             // act
-            const {result} = renderHook(() => useGetTableStat(hookArgs))
+            const { result } = renderHook(() => useGetTableStat(hookArgs))
 
             expect(result.current.isError).toBe(true)
         })
@@ -406,7 +406,7 @@ describe('GetTableStat', () => {
             } as UseQueryResult)
 
             // act
-            const {result} = renderHook(() => useGetTableStat(hookArgs))
+            const { result } = renderHook(() => useGetTableStat(hookArgs))
 
             // assert
             expect(usePostReportingMock.mock.calls).toEqual(requestPayload)
@@ -416,7 +416,7 @@ describe('GetTableStat', () => {
                 expect.anything(),
                 expect.objectContaining({
                     select: getDataFromResult,
-                })
+                }),
             )
             expect(result.current).toEqual(preparedDataResponse)
             expect(result.current).toMatchSnapshot()
@@ -431,7 +431,7 @@ describe('GetTableStat', () => {
             } as UseQueryResult)
 
             // act
-            const {result} = renderHook(() => useGetTableStat(hookArgs))
+            const { result } = renderHook(() => useGetTableStat(hookArgs))
 
             // assert
             expect(usePostReportingMock.mock.calls).toEqual(requestPayload)
@@ -448,7 +448,7 @@ describe('GetTableStat', () => {
             }
 
             // act
-            const {result} = renderHook(() => useGetTableStat(args))
+            const { result } = renderHook(() => useGetTableStat(args))
 
             // assert
             usePostReportingMock.mock.calls.map((call) => {

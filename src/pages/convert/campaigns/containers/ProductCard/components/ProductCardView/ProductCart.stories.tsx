@@ -1,9 +1,9 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {FRAME_WIDTH} from '../../../../constants/visuals'
+import { Meta, Story } from '@storybook/react'
 
-import {ProductCardView} from './ProductCardView'
+import { FRAME_WIDTH } from '../../../../constants/visuals'
+import { ProductCardView } from './ProductCardView'
 
 const storyConfig: Meta = {
     title: 'Convert/Chat Campaigns/Product Card',
@@ -25,7 +25,7 @@ const storyConfig: Meta = {
         onClickEdit: () => null,
     },
     decorators: [
-        (storyFn) => <div style={{width: FRAME_WIDTH}}>{storyFn()}</div>,
+        (storyFn) => <div style={{ width: FRAME_WIDTH }}>{storyFn()}</div>,
     ],
 }
 

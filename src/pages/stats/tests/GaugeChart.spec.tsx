@@ -1,7 +1,7 @@
-import {act, render, screen} from '@testing-library/react'
-
-import userEvent from '@testing-library/user-event'
 import React from 'react'
+
+import { act, render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import {
     ChatWorkload,
@@ -14,7 +14,7 @@ import GaugeChart from '../GaugeChart'
 
 describe('<GaugeChart />', () => {
     it('should render the gauge chart', () => {
-        const {container} = render(
+        const { container } = render(
             <GaugeChart
                 data={[
                     ChatWorkload,
@@ -30,7 +30,7 @@ describe('<GaugeChart />', () => {
                         value: 1,
                     },
                 ]}
-            />
+            />,
         )
 
         expect(container).toMatchSnapshot()
@@ -54,7 +54,7 @@ describe('<GaugeChart />', () => {
         render(<GaugeChart data={[]} />)
 
         expect(
-            await screen.findByText(/no data available/i)
+            await screen.findByText(/no data available/i),
         ).toBeInTheDocument()
     })
 })

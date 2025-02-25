@@ -1,13 +1,14 @@
-import {render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import {
     logEvent,
     NotificationCenterEventTypes,
     SegmentEvent,
 } from 'common/segment'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
 import useCount from '../../hooks/useCount'
 import Button from '../Button'
@@ -18,7 +19,7 @@ jest.mock(
         ({
             ...jest.requireActual('common/segment'),
             logEvent: jest.fn(),
-        }) as typeof import('common/segment')
+        }) as typeof import('common/segment'),
 )
 
 jest.mock('../../hooks/useCount', () => jest.fn())

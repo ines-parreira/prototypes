@@ -1,9 +1,10 @@
-import {Map} from 'immutable'
 import React from 'react'
 
+import { Map } from 'immutable'
+
 import Badge from 'gorgias-design-system/Badge/Badge'
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
-import {chatIsShopifyStore} from 'pages/convert/campaigns/utils/chatIsShopifyStore'
+import { Campaign } from 'pages/convert/campaigns/types/Campaign'
+import { chatIsShopifyStore } from 'pages/convert/campaigns/utils/chatIsShopifyStore'
 
 export interface LightCampaignBadgeProps
     extends React.HTMLAttributes<HTMLElement> {

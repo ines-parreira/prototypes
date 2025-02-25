@@ -1,9 +1,10 @@
-import type {Map} from 'immutable'
 import React from 'react'
 
-import {CardCustomization} from 'Widgets/modules/Template/modules/Card'
+import type { Map } from 'immutable'
 
-import {CardHeaderYotpoLoyaltyPoints} from './CardHeaderYotpoLoyaltyPoints'
+import { CardCustomization } from 'Widgets/modules/Template/modules/Card'
+
+import { CardHeaderYotpoLoyaltyPoints } from './CardHeaderYotpoLoyaltyPoints'
 
 type TitleWrapperProps = {
     source: Map<string, any>
@@ -11,7 +12,7 @@ type TitleWrapperProps = {
 
 class TitleWrapper extends React.Component<TitleWrapperProps> {
     render() {
-        const {source} = this.props
+        const { source } = this.props
 
         return (
             <>

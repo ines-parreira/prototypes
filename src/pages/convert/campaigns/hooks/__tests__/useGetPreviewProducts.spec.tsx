@@ -1,30 +1,30 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
+import { renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
 
-import {AttachmentEnum} from 'common/types'
+import { AttachmentEnum } from 'common/types'
 import {
+    ProductStatus,
     InventoryManagement as ShipifyInventoryManagement,
     InventoryPolicy as ShipifyInventoryPolicy,
-    ProductStatus,
 } from 'constants/integrations/types/shopify'
-import {campaignProductAttachment} from 'fixtures/campaign'
-import {shopifyIntegration} from 'fixtures/integrations'
+import { campaignProductAttachment } from 'fixtures/campaign'
+import { shopifyIntegration } from 'fixtures/integrations'
 import {
     shopifyProductFixture,
     shopifyProductResult,
     shopifyVariantFixture,
 } from 'fixtures/shopify'
-import {useListProducts} from 'models/integration/queries'
-import {useGetPreviewProducts} from 'pages/convert/campaigns/hooks/useGetPreviewProducts'
+import { useListProducts } from 'models/integration/queries'
+import { useGetPreviewProducts } from 'pages/convert/campaigns/hooks/useGetPreviewProducts'
 import {
     CampaignProductRecommendation,
     ProductRecommendationScenario,
 } from 'pages/convert/campaigns/types/CampaignAttachment'
-import {CampaignProduct} from 'pages/convert/campaigns/types/CampaignProduct'
-import {pickNRandomShopifyProducts} from 'pages/convert/campaigns/utils/pickNRandomShopifyProducts'
-import {transformAttachmentToProduct} from 'pages/convert/campaigns/utils/transformAttachmentToProduct'
-import {transformCampaignAttachmentsToDetails} from 'pages/convert/campaigns/utils/transformCampaignAttachmentsToDetails'
-import {assumeMock} from 'utils/testing'
+import { CampaignProduct } from 'pages/convert/campaigns/types/CampaignProduct'
+import { pickNRandomShopifyProducts } from 'pages/convert/campaigns/utils/pickNRandomShopifyProducts'
+import { transformAttachmentToProduct } from 'pages/convert/campaigns/utils/transformAttachmentToProduct'
+import { transformCampaignAttachmentsToDetails } from 'pages/convert/campaigns/utils/transformCampaignAttachmentsToDetails'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('models/integration/queries')
 const useListProductsMock = assumeMock(useListProducts)
@@ -38,11 +38,11 @@ describe('useGetPreviewProducts', () => {
     const productCount = 1
     const product = transformAttachmentToProduct(
         fromJS(
-            transformCampaignAttachmentsToDetails([campaignProductAttachment])
+            transformCampaignAttachmentsToDetails([campaignProductAttachment]),
         ),
         {
             currency: 'USD',
-        }
+        },
     ) as unknown as CampaignProduct
 
     beforeEach(() => {
@@ -84,13 +84,13 @@ describe('useGetPreviewProducts', () => {
         const productRecommendations: CampaignProductRecommendation[] = []
         const products: CampaignProduct[] = []
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useGetPreviewProducts(
                 storeIntegration,
                 productRecommendations,
                 products,
-                productCount
-            )
+                productCount,
+            ),
         )
 
         expect(result.current).toEqual([])
@@ -100,13 +100,13 @@ describe('useGetPreviewProducts', () => {
         const productRecommendations: CampaignProductRecommendation[] = []
         const products: CampaignProduct[] = [product]
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useGetPreviewProducts(
                 storeIntegration,
                 productRecommendations,
                 products,
-                productCount
-            )
+                productCount,
+            ),
         )
 
         expect(result.current).toEqual([product])
@@ -125,13 +125,13 @@ describe('useGetPreviewProducts', () => {
         ]
         const products: CampaignProduct[] = [product]
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useGetPreviewProducts(
                 storeIntegration,
                 productRecommendations,
                 products,
-                productCount
-            )
+                productCount,
+            ),
         )
 
         expect(result.current).toEqual([
@@ -197,13 +197,13 @@ describe('useGetPreviewProducts', () => {
             },
         ]
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useGetPreviewProducts(
                 storeIntegration,
                 productRecommendations,
                 [],
-                productCount
-            )
+                productCount,
+            ),
         )
 
         expect(result.current).toEqual([])
@@ -252,13 +252,13 @@ describe('useGetPreviewProducts', () => {
             },
         ]
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useGetPreviewProducts(
                 storeIntegration,
                 productRecommendations,
                 [],
-                productCount
-            )
+                productCount,
+            ),
         )
 
         expect(result.current).toEqual([])

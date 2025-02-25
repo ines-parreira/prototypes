@@ -1,8 +1,9 @@
-import {List as ImmutableList, Map as ImmutableMap} from 'immutable'
-import _debounce from 'lodash/debounce'
-import React, {Dispatch, Fragment, ReactNode} from 'react'
+import React, { Dispatch, Fragment, ReactNode } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { List as ImmutableList, Map as ImmutableMap } from 'immutable'
+import _debounce from 'lodash/debounce'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import {
     getBigCommerceAvailablePaymentOptionsData,
     getBigCommerceOrderRefundData,
@@ -22,10 +23,10 @@ import {
     GiftWrappingItemRefundData,
     ProductItemRefundData,
 } from 'models/integration/types'
-import {executeAction} from 'state/infobar/actions'
-import {ActionDataPayload} from 'state/infobar/utils'
-import {fetchIntegrationProducts} from 'state/integrations/helpers'
-import {StoreDispatch} from 'state/types'
+import { executeAction } from 'state/infobar/actions'
+import { ActionDataPayload } from 'state/infobar/utils'
+import { fetchIntegrationProducts } from 'state/integrations/helpers'
+import { StoreDispatch } from 'state/types'
 
 import {
     BIGCOMMERCE_REFUND_ACTION_TYPE,
@@ -38,11 +39,13 @@ export const onReset = _debounce(
     }: {
         dispatchRefundOrderState: Dispatch<BIGCOMMERCE_REFUND_ACTION_TYPE>
     }) => {
-        dispatchRefundOrderState({type: BigCommerceRefundActionType.ResetState})
+        dispatchRefundOrderState({
+            type: BigCommerceRefundActionType.ResetState,
+        })
 
         logEvent(SegmentEvent.BigCommerceRefundOrderResetModal)
     },
-    250
+    250,
 )
 
 /**
@@ -61,12 +64,12 @@ export const fetchProductImageURLs = async ({
     Object.values(productRefundData).forEach(
         (refundData: ProductItemRefundData) => {
             productsIds.push(refundData.product_data.product_id)
-        }
+        },
     )
 
     const integrationProducts = await fetchIntegrationProducts(
         integrationId,
-        productsIds
+        productsIds,
     )
 
     Object.entries(productRefundData).forEach(
@@ -76,7 +79,7 @@ export const fetchProductImageURLs = async ({
 
             const productWithVariants = integrationProducts.find(
                 (product: ImmutableMap<string, any>) =>
-                    product.get('id') === productId
+                    product.get('id') === productId,
             )
 
             const product =
@@ -91,7 +94,7 @@ export const fetchProductImageURLs = async ({
             productImageURLs[refundedProductId] =
                 product?.get('image_url') ||
                 productWithVariants?.get('image_url')
-        }
+        },
     )
 
     return productImageURLs
@@ -145,7 +148,7 @@ export const calculateOrderRefund = async ({
         setErrorMessage(
             error instanceof BigCommerceGeneralError
                 ? error.message
-                : BigCommerceGeneralErrorMessage.defaultError
+                : BigCommerceGeneralErrorMessage.defaultError,
         )
     } finally {
         setIsLoading(false)
@@ -194,7 +197,7 @@ export const calculateAvailablePaymentOptionsData = async ({
         setErrorMessage(
             error instanceof BigCommerceGeneralError
                 ? error.message
-                : BigCommerceGeneralErrorMessage.defaultError
+                : BigCommerceGeneralErrorMessage.defaultError,
         )
     } finally {
         setIsLoading(false)
@@ -214,7 +217,7 @@ export function bigcommerceRefundOrder(
     refundItemsPayload: BigCommerceRefundItemsPayload,
     selectedPaymentOption: BigCommerceRefundMethod,
     refundReason: Maybe<string>,
-    newOrderStatus: Maybe<string>
+    newOrderStatus: Maybe<string>,
 ) {
     const payload: ActionDataPayload = {
         bigcommerce_order_id: orderId,
@@ -233,7 +236,7 @@ export function bigcommerceRefundOrder(
             integrationId: integration.id,
             customerId: customerId?.toString(),
             payload: payload,
-        })
+        }),
     )
 }
 
@@ -241,7 +244,7 @@ export function bigcommerceRefundOrder(
  * Calculate the total order amount.
  * */
 export function calculateTotalOrderAmount(
-    order: ImmutableMap<any, any>
+    order: ImmutableMap<any, any>,
 ): number {
     return (
         parseFloat(order.get('total_inc_tax')) +
@@ -262,7 +265,7 @@ export function isOrderFullyRefunded(order: ImmutableMap<any, any>): boolean {
 
 export function formatAmount(
     currencyCode: Maybe<string>,
-    availableAmount: number
+    availableAmount: number,
 ): string {
     return new Intl.NumberFormat('en-US', {
         style: 'currency',
@@ -274,7 +277,7 @@ export function formatAmount(
 
 export function buildPaymentOptionLabel(
     paymentOption: BigCommerceRefundMethod,
-    currencyCode: Maybe<string>
+    currencyCode: Maybe<string>,
 ): ReactNode {
     return (
         <div>
@@ -296,7 +299,7 @@ export function buildPaymentOptionLabel(
                                 index !== paymentOption.length - 1 && <br />}
                         </Fragment>
                     )
-                }
+                },
             )}
         </div>
     )
@@ -309,13 +312,13 @@ export function formatPrice(price: string | number): number {
         Math.round(
             ((typeof price === 'string' ? parseFloat(price) : price) +
                 Number.EPSILON) *
-                100
+                100,
         ) / 100
     )
 }
 
 export function calculateProductPrice(
-    product: BigCommerceOrderProduct
+    product: BigCommerceOrderProduct,
 ): number {
     let initialTotalPriceFloat: number = parseFloat(product.base_total)
     product.applied_discounts.map((discount) => {
@@ -325,7 +328,7 @@ export function calculateProductPrice(
 }
 
 export function calculateGiftWrappingPrice(
-    product: BigCommerceOrderProduct
+    product: BigCommerceOrderProduct,
 ): number {
     return parseFloat(product.base_wrapping_cost) / product.quantity
 }
@@ -334,7 +337,7 @@ export function calculateOrderSubtotal(
     refundItemsPayload: Maybe<BigCommerceRefundItemsPayload>,
     productRefundData: Record<string, ProductItemRefundData>,
     giftWrappingRefundData: Record<string, GiftWrappingItemRefundData>,
-    includeShippingHandling = false
+    includeShippingHandling = false,
 ): number {
     if (!refundItemsPayload?.items?.length) {
         return 0
@@ -384,14 +387,14 @@ export function calculateOrderTotal(
     refundItemsPayload: Maybe<BigCommerceRefundItemsPayload>,
     productRefundData: Record<string, ProductItemRefundData>,
     giftWrappingRefundData: Record<string, GiftWrappingItemRefundData>,
-    availablePaymentOptionsData: Maybe<BigCommerceAvailablePaymentOptionsData>
+    availablePaymentOptionsData: Maybe<BigCommerceAvailablePaymentOptionsData>,
 ): number {
     return (
         calculateOrderSubtotal(
             refundItemsPayload,
             productRefundData,
             giftWrappingRefundData,
-            true
+            true,
         ) + (availablePaymentOptionsData?.total_refund_tax_amount || 0)
     )
 }

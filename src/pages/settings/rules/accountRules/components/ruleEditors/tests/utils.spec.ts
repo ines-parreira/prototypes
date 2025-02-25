@@ -1,6 +1,6 @@
-import {RuleDraft} from 'state/rules/types'
+import { RuleDraft } from 'state/rules/types'
 
-import {getRuleActions} from '../utils'
+import { getRuleActions } from '../utils'
 
 describe('getActionTypeFromAST', () => {
     it('should return null for empty draft', () => {
@@ -12,7 +12,7 @@ describe('getActionTypeFromAST', () => {
         const body = [
             {
                 type: 'ExpressionStatement',
-                expression: {type: 'CallExpression', arguments: []},
+                expression: { type: 'CallExpression', arguments: [] },
             },
         ] as any
 
@@ -52,7 +52,7 @@ describe('getActionTypeFromAST', () => {
                         expression: {
                             type: 'CallExpression',
                             arguments: [
-                                {type: 'Literal', value: 'replyToTicket'},
+                                { type: 'Literal', value: 'replyToTicket' },
                             ],
                         },
                     },

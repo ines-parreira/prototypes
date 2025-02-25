@@ -1,18 +1,18 @@
-import {Meta, StoryFn} from '@storybook/react'
+import React, { ComponentProps } from 'react'
 
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import { Meta, StoryFn } from '@storybook/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {withLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {EfficiencyFilter} from 'pages/stats/common/filters//EfficiencyFilter'
+import { withLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { EfficiencyFilter } from 'pages/stats/common/filters//EfficiencyFilter'
 
 const storyConfig: Meta = {
     title: 'Stats/Filters/EfficiencyFilter',
     component: EfficiencyFilter,
     parameters: {
-        chromatic: {disableSnapshot: false},
+        chromatic: { disableSnapshot: false },
     },
 }
 

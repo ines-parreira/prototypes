@@ -1,35 +1,31 @@
-import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
-import {fireEvent, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import {createMemoryHistory} from 'history'
-
-import {fromJS, Map} from 'immutable'
-
 import React from 'react'
 
-import {Provider} from 'react-redux'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { createMemoryHistory } from 'history'
+import { fromJS, Map } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {account} from 'fixtures/account'
-import {billingState} from 'fixtures/billing'
-import {chatIntegrationFixtures} from 'fixtures/chat'
-import {integrationsState, shopifyIntegration} from 'fixtures/integrations'
+import { account } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
+import { chatIntegrationFixtures } from 'fixtures/chat'
+import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
 import {
     getOnboardingData,
     updateOnboardingData,
 } from 'models/aiAgent/resources/configuration'
-import {ChannelsStep} from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/ChannelsStep'
-import {DiscountStrategy} from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
-import {PersuasionLevel} from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
-import {StepProps} from 'pages/aiAgent/Onboarding/components/steps/types'
-
-import {AiAgentScopes, WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
-
-import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {RootState, StoreDispatch} from 'state/types'
-import {renderWithRouter} from 'utils/testing'
+import { ChannelsStep } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/ChannelsStep'
+import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
+import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
+import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
+import { AiAgentScopes, WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
+import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { RootState, StoreDispatch } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 
@@ -98,13 +94,13 @@ const renderWithProvider = (state?: RootState, props = defaultProps) => {
             history,
             path: '/app/ai-agent/:shopType/:shopName/onboarding/:step',
             route: `/app/ai-agent/shopify/${shopifyIntegration.meta.shop_name}/onboarding/channels`,
-        }
+        },
     )
 }
 
 describe('ChannelsStep - Empty state', () => {
     beforeEach(() => {
-        mockUseShopifyIntegrationAndScope.mockReturnValue({integration: true})
+        mockUseShopifyIntegrationAndScope.mockReturnValue({ integration: true })
 
         // ✅ Mock getOnboardingData function
         mockGetOnboardingData.mockResolvedValue(
@@ -117,14 +113,14 @@ describe('ChannelsStep - Empty state', () => {
                     scopes: [AiAgentScopes.SUPPORT, AiAgentScopes.SALES],
                     shopName: shopifyIntegration.meta.shop_name,
                 },
-            ])
+            ]),
         )
 
         // // ✅ Mock updateOnboardingData function
         mockUpdateOnboardingData.mockResolvedValue(
             Promise.resolve({
                 success: true,
-            })
+            }),
         )
     })
 
@@ -143,8 +139,8 @@ describe('ChannelsStep - Empty state', () => {
         await waitFor(() => {
             expect(
                 screen.getByText(
-                    'Enable your AI Agent to respond to customers via email.'
-                )
+                    'Enable your AI Agent to respond to customers via email.',
+                ),
             ).toBeInTheDocument()
         })
     })
@@ -156,13 +152,13 @@ describe('ChannelsStep - Empty state', () => {
 
         expect(
             screen.getByText(
-                'Enable your AI Agent to respond to customers via email.'
-            )
+                'Enable your AI Agent to respond to customers via email.',
+            ),
         ).toBeInTheDocument()
         expect(
             screen.getByText(
-                'Enable your AI Agent to respond to customers via chat.'
-            )
+                'Enable your AI Agent to respond to customers via chat.',
+            ),
         ).toBeInTheDocument()
 
         // Setup email
@@ -171,7 +167,7 @@ describe('ChannelsStep - Empty state', () => {
         expect(emailCheckbox).toBeChecked()
 
         expect(
-            screen.queryByText(/AI agent will respond to the following emails/)
+            screen.queryByText(/AI agent will respond to the following emails/),
         ).toBeInTheDocument()
 
         fireEvent.focus(screen.getByText('Select one or more email addresses'))
@@ -184,12 +180,12 @@ describe('ChannelsStep - Empty state', () => {
 
         expect(
             screen.queryByText(
-                /AI Agent responds to tickets sent to the following Chats/
-            )
+                /AI Agent responds to tickets sent to the following Chats/,
+            ),
         ).toBeInTheDocument()
 
         fireEvent.focus(
-            screen.getByText('Select one or more chat integrations')
+            screen.getByText('Select one or more chat integrations'),
         )
         fireEvent.click(screen.getByText('New chat'))
 
@@ -202,7 +198,7 @@ describe('ChannelsStep - Empty state', () => {
         // Wait for goToStep to be called
         await waitFor(() => {
             expect(defaultProps.goToStep).toHaveBeenCalledWith(
-                WizardStepEnum.PERSONALITY_PREVIEW
+                WizardStepEnum.PERSONALITY_PREVIEW,
             )
         })
     })
@@ -217,13 +213,13 @@ describe('ChannelsStep - Empty state', () => {
 
         expect(
             screen.getByText(
-                'Enable your AI Agent to respond to customers via email.'
-            )
+                'Enable your AI Agent to respond to customers via email.',
+            ),
         ).toBeInTheDocument()
         expect(
             screen.getByText(
-                'Enable your AI Agent to respond to customers via chat.'
-            )
+                'Enable your AI Agent to respond to customers via chat.',
+            ),
         ).toBeInTheDocument()
 
         expect(screen.getByLabelText('Chat')).not.toBeChecked()
@@ -239,8 +235,8 @@ describe('ChannelsStep - Empty state', () => {
         await waitFor(() => {
             expect(
                 screen.getByText(
-                    'Please select at least one option to continue.'
-                )
+                    'Please select at least one option to continue.',
+                ),
             ).toBeInTheDocument()
         })
     })
@@ -255,13 +251,13 @@ describe('ChannelsStep - Empty state', () => {
 
         expect(
             screen.getByText(
-                'Enable your AI Agent to respond to customers via email.'
-            )
+                'Enable your AI Agent to respond to customers via email.',
+            ),
         ).toBeInTheDocument()
         expect(
             screen.getByText(
-                'Enable your AI Agent to respond to customers via chat.'
-            )
+                'Enable your AI Agent to respond to customers via chat.',
+            ),
         ).toBeInTheDocument()
 
         // Setup email
@@ -285,13 +281,13 @@ describe('ChannelsStep - Empty state', () => {
 
         expect(
             screen.getByText(
-                'Enable your AI Agent to respond to customers via email.'
-            )
+                'Enable your AI Agent to respond to customers via email.',
+            ),
         ).toBeInTheDocument()
         expect(
             screen.getByText(
-                'Enable your AI Agent to respond to customers via chat.'
-            )
+                'Enable your AI Agent to respond to customers via chat.',
+            ),
         ).toBeInTheDocument()
 
         // Setup chat
@@ -324,13 +320,13 @@ describe('ChannelsStep - Empty state', () => {
 
         expect(
             screen.getByText(
-                'Enable your AI Agent to respond to customers via email.'
-            )
+                'Enable your AI Agent to respond to customers via email.',
+            ),
         ).toBeInTheDocument()
         expect(
             screen.getByText(
-                'Enable your AI Agent to respond to customers via chat.'
-            )
+                'Enable your AI Agent to respond to customers via chat.',
+            ),
         ).toBeInTheDocument()
 
         // Setup chat
@@ -339,7 +335,7 @@ describe('ChannelsStep - Empty state', () => {
         expect(chatCheckbox).toBeChecked()
 
         expect(
-            screen.queryByText(/Personalize your Chat widget/)
+            screen.queryByText(/Personalize your Chat widget/),
         ).toBeInTheDocument()
 
         // Click on next button
@@ -351,14 +347,14 @@ describe('ChannelsStep - Empty state', () => {
         await waitFor(() => {
             // Wait for goToStep to be called
             expect(defaultProps.goToStep).toHaveBeenCalledWith(
-                WizardStepEnum.PERSONALITY_PREVIEW
+                WizardStepEnum.PERSONALITY_PREVIEW,
             )
         })
     })
 
     it('renders the chat creation error', async () => {
         mockedDispatch.mockImplementationOnce(() =>
-            Promise.reject(new Error('Error message'))
+            Promise.reject(new Error('Error message')),
         )
 
         renderWithProvider({
@@ -378,7 +374,7 @@ describe('ChannelsStep - Empty state', () => {
         expect(chatCheckbox).toBeChecked()
 
         expect(
-            screen.queryByText(/Personalize your Chat widget/)
+            screen.queryByText(/Personalize your Chat widget/),
         ).toBeInTheDocument()
 
         // Click on next button
@@ -392,7 +388,7 @@ describe('ChannelsStep - Empty state', () => {
                 expect.objectContaining({
                     message: 'Could not create chat integration',
                     status: NotificationStatus.Error,
-                })
+                }),
             )
         })
     })
@@ -422,8 +418,8 @@ describe('ChannelsStep - Empty state', () => {
 
         expect(
             screen.getByText(
-                'Hi, I’m after a long dress for everyday wear, something comfortable and cute.'
-            )
+                'Hi, I’m after a long dress for everyday wear, something comfortable and cute.',
+            ),
         ).toBeInTheDocument()
     })
 
@@ -440,8 +436,10 @@ describe('ChannelsStep - Empty state', () => {
     })
 
     it('navigates to the shopify integration step when Back is clicked and there is no integration', async () => {
-        mockUseShopifyIntegrationAndScope.mockReturnValue({integration: false})
-        renderWithProvider(undefined, {...defaultProps, currentStep: 3})
+        mockUseShopifyIntegrationAndScope.mockReturnValue({
+            integration: false,
+        })
+        renderWithProvider(undefined, { ...defaultProps, currentStep: 3 })
 
         jest.runAllTimers()
 
@@ -449,7 +447,7 @@ describe('ChannelsStep - Empty state', () => {
 
         await waitFor(() => {
             expect(goToStep).toHaveBeenCalledWith(
-                WizardStepEnum.SHOPIFY_INTEGRATION
+                WizardStepEnum.SHOPIFY_INTEGRATION,
             )
         })
     })
@@ -457,7 +455,7 @@ describe('ChannelsStep - Empty state', () => {
 
 describe('ChannelsStep - With preloaded data', () => {
     beforeEach(() => {
-        mockUseShopifyIntegrationAndScope.mockReturnValue({integration: true})
+        mockUseShopifyIntegrationAndScope.mockReturnValue({ integration: true })
 
         // ✅ Mock getOnboardingData function
         mockGetOnboardingData.mockResolvedValue(
@@ -472,14 +470,14 @@ describe('ChannelsStep - With preloaded data', () => {
                     emailIntegrationIds: [5],
                     chatIntegrationIds: [3],
                 },
-            ])
+            ]),
         )
 
         // // ✅ Mock updateOnboardingData function
         mockUpdateOnboardingData.mockResolvedValue(
             Promise.resolve({
                 success: true,
-            })
+            }),
         )
     })
 
@@ -497,7 +495,7 @@ describe('ChannelsStep - With preloaded data', () => {
                     emailIntegrationIds: [5],
                     chatIntegrationIds: [3],
                 },
-            ])
+            ]),
         )
 
         const screen = renderWithProvider()
@@ -522,7 +520,7 @@ describe('ChannelsStep - With preloaded data', () => {
         // Wait for goToStep to be called directly
         await waitFor(() => {
             expect(defaultProps.goToStep).toHaveBeenCalledWith(
-                WizardStepEnum.PERSONALITY_PREVIEW
+                WizardStepEnum.PERSONALITY_PREVIEW,
             )
         })
     })

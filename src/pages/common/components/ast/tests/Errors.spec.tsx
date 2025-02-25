@@ -1,19 +1,20 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import Errors, {ErrorsContext, ErrorsCollector} from '../Errors'
+import { render, screen } from '@testing-library/react'
+
+import Errors, { ErrorsCollector, ErrorsContext } from '../Errors'
 
 describe('Errors component', () => {
     it('should return null if there is no errors', () => {
         const {
-            container: {firstChild},
+            container: { firstChild },
         } = render(<Errors />)
         expect(firstChild).toMatchSnapshot()
     })
 
     it('should render inline errors', () => {
         const {
-            container: {firstChild},
+            container: { firstChild },
         } = render(<Errors inline={true}>Foo</Errors>)
 
         expect(firstChild).toMatchSnapshot()
@@ -21,7 +22,7 @@ describe('Errors component', () => {
 
     it('should render block errors', () => {
         const {
-            container: {firstChild},
+            container: { firstChild },
         } = render(<Errors>Foo</Errors>)
 
         expect(firstChild).toMatchSnapshot()
@@ -29,7 +30,7 @@ describe('Errors component', () => {
 
     it('should render block errors with display adjustements to display it below an input', () => {
         const {
-            container: {firstChild},
+            container: { firstChild },
         } = render(<Errors belowInput={true}>Foo</Errors>)
 
         expect(firstChild).toMatchSnapshot()
@@ -37,7 +38,7 @@ describe('Errors component', () => {
 
     it('should render using passed tag', () => {
         const {
-            container: {firstChild},
+            container: { firstChild },
         } = render(<Errors tag="pre">Foo</Errors>)
 
         expect(firstChild).toMatchSnapshot()
@@ -48,13 +49,13 @@ describe('Errors component', () => {
             <ErrorsCollector>
                 <div data-testid="errors">
                     <ErrorsContext.Consumer>
-                        {({errors}) => errors.size}
+                        {({ errors }) => errors.size}
                     </ErrorsContext.Consumer>
                 </div>
                 <Errors>Foo</Errors>
                 <Errors>Bar</Errors>
                 <Errors>Baz</Errors>
-            </ErrorsCollector>
+            </ErrorsCollector>,
         )
 
         expect(screen.getByTestId('errors').innerHTML).toBe('3')

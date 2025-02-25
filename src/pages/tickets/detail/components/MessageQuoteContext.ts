@@ -1,5 +1,6 @@
+import { createContext } from 'react'
+
 import _noop from 'lodash/noop'
-import {createContext} from 'react'
 
 type MessageContextState = {
     expandedQuotes: number[]

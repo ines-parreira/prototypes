@@ -1,40 +1,41 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { KeyboardEvent, useEffect, useMemo, useState } from 'react'
+
 import classnames from 'classnames'
-import {fromJS, Map} from 'immutable'
-import React, {KeyboardEvent, useEffect, useMemo, useState} from 'react'
-import {useLocation} from 'react-router-dom'
+import { fromJS, Map } from 'immutable'
+import { useLocation } from 'react-router-dom'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
-
 import useAppSelector from 'hooks/useAppSelector'
 import usePrevious from 'hooks/usePrevious'
 import useUpdateEffect from 'hooks/useUpdateEffect'
-import {Customer} from 'models/customer/types'
+import { Customer } from 'models/customer/types'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import css from 'pages/common/components/infobar/Infobar.less'
 import InfobarCustomerActions from 'pages/common/components/infobar/Infobar/InfobarCustomerActions'
 import InfobarCustomerInfo from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarCustomerInfo'
-import {ActionButtonContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButton'
-import {InfobarSearchResultsList} from 'pages/common/components/infobar/Infobar/InfobarSearchResultsList'
+import { ActionButtonContext } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButton'
+import { InfobarSearchResultsList } from 'pages/common/components/infobar/Infobar/InfobarSearchResultsList'
 import InfobarWidgetsEditionTools from 'pages/common/components/infobar/Infobar/InfobarWidgetsEditionTools'
-import {useCustomerSearch} from 'pages/common/components/infobar/Infobar/useCustomerSearch'
-import {useSelectedCustomer} from 'pages/common/components/infobar/Infobar/useSelectedCustomer'
+import { useCustomerSearch } from 'pages/common/components/infobar/Infobar/useCustomerSearch'
+import { useSelectedCustomer } from 'pages/common/components/infobar/Infobar/useSelectedCustomer'
 import InfobarLayout from 'pages/common/components/infobar/InfobarLayout'
-import {areSourcesReady} from 'pages/common/components/infobar/utils'
+import { areSourcesReady } from 'pages/common/components/infobar/utils'
 import Loader from 'pages/common/components/Loader/Loader'
 import MergeCustomersContainer from 'pages/common/components/MergeCustomers/MergeCustomersContainer'
 import Search from 'pages/common/components/Search'
 import history from 'pages/history'
-import {getCurrentUser} from 'state/currentUser/selectors'
+import { getCurrentUser } from 'state/currentUser/selectors'
 import * as customersActions from 'state/customers/actions'
 import * as infobarActions from 'state/infobar/actions'
-import {setActiveCustomerAsReceiver} from 'state/newMessage/actions'
-import {setCustomer} from 'state/ticket/actions'
+import { setActiveCustomerAsReceiver } from 'state/newMessage/actions'
+import { setCustomer } from 'state/ticket/actions'
 import * as widgetsActions from 'state/widgets/actions'
-import {WidgetEnvironment} from 'state/widgets/types'
-import {isAdmin} from 'utils'
+import { WidgetEnvironment } from 'state/widgets/types'
+import { isAdmin } from 'utils'
 
 type Props = {
     context: WidgetEnvironment
@@ -64,18 +65,18 @@ export const Infobar = ({
 
     const [showMergeCustomerModal, setShowMergeCustomerModal] = useState(false)
     const [suggestedCustomer, setSuggestedCustomer] = useState<Map<any, any>>(
-        fromJS({})
+        fromJS({}),
     )
     const prevCustomer = usePrevious(customer)
 
     const isWidgetEditing = useMemo(
         () => widgets.getIn(['_internal', 'isEditing']) as boolean,
-        [widgets]
+        [widgets],
     )
     const isEditing = useMemo(
         () => isWidgetEditing && isRouteEditingWidgets,
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [isWidgetEditing]
+        [isWidgetEditing],
     )
     const {
         isSearching,
@@ -138,7 +139,7 @@ export const Infobar = ({
         () =>
             (sources.getIn(['ticket', 'customer', 'id']) ||
                 sources.getIn(['customer', 'id'])) as number,
-        [sources]
+        [sources],
     )
 
     useUpdateEffect(() => {
@@ -169,7 +170,7 @@ export const Infobar = ({
         }
 
         const data = (await dispatch(
-            infobarActions.similarCustomer(customer.get('id'))
+            infobarActions.similarCustomer(customer.get('id')),
         )) as {
             customer: Customer
         }
@@ -177,7 +178,7 @@ export const Infobar = ({
             setSuggestedCustomer(fromJS({}))
             return
         }
-        const {customer: suggestion} = data
+        const { customer: suggestion } = data
         const suggestionImmutable = fromJS(suggestion || {}) as Map<any, any>
 
         setSuggestedCustomer(suggestionImmutable)
@@ -192,7 +193,7 @@ export const Infobar = ({
             history.push(`/app/${context}/${identifier}${location.search}`)
         } else {
             history.push(
-                `/app/${context}/${identifier}/edit-widgets${location.search}`
+                `/app/${context}/${identifier}/edit-widgets${location.search}`,
             )
         }
     }
@@ -214,7 +215,7 @@ export const Infobar = ({
                             askedCustomerId.toString()
                         )
                     },
-                })
+                }),
             )
         }, 1500)
     }
@@ -271,7 +272,7 @@ export const Infobar = ({
                         <>
                             <IconButton
                                 className={classnames(
-                                    'd-none d-md-inline-block ml-2 btn-transparent'
+                                    'd-none d-md-inline-block ml-2 btn-transparent',
                                 )}
                                 id="toggle-widgets-edition-button"
                                 intent="secondary"
@@ -310,10 +311,10 @@ export const Infobar = ({
                                     sources={sources}
                                     selectedCustomer={selectedCustomer}
                                     toggleMergeCustomerModal={(
-                                        showMergeCustomerModal: boolean
+                                        showMergeCustomerModal: boolean,
                                     ) =>
                                         setShowMergeCustomerModal(
-                                            showMergeCustomerModal
+                                            showMergeCustomerModal,
                                         )
                                     }
                                     setCustomer={handleSetCustomer}
@@ -330,7 +331,7 @@ export const Infobar = ({
                                     sources={sources
                                         .setIn(
                                             ['ticket', 'customer'],
-                                            selectedCustomer
+                                            selectedCustomer,
                                         )
                                         .set('customer', selectedCustomer)}
                                     customer={selectedCustomer}
@@ -340,7 +341,7 @@ export const Infobar = ({
                                         !(
                                             sources.get(
                                                 'ticket',
-                                                fromJS({})
+                                                fromJS({}),
                                             ) as Map<any, any>
                                         ).isEmpty()
                                     }
@@ -427,10 +428,10 @@ export const Infobar = ({
                                                                         .id,
                                                                 timestamp:
                                                                     Date.now(),
-                                                            }
+                                                            },
                                                         )
                                                         setShowMergeCustomerModal(
-                                                            true
+                                                            true,
                                                         )
                                                     }}
                                                     leadingIcon="call_merge"
@@ -451,11 +452,11 @@ export const Infobar = ({
                                                 sources={sources
                                                     .setIn(
                                                         ['ticket', 'customer'],
-                                                        suggestedCustomer
+                                                        suggestedCustomer,
                                                     )
                                                     .set(
                                                         'customer',
-                                                        suggestedCustomer
+                                                        suggestedCustomer,
                                                     )}
                                                 customer={suggestedCustomer}
                                                 displayTabs={false}
@@ -465,7 +466,7 @@ export const Infobar = ({
                                                     !(
                                                         sources.get(
                                                             'ticket',
-                                                            fromJS({})
+                                                            fromJS({}),
                                                         ) as Map<any, any>
                                                     ).isEmpty()
                                                 }
@@ -479,7 +480,7 @@ export const Infobar = ({
                                                 }
                                                 onClose={() => {
                                                     setShowMergeCustomerModal(
-                                                        false
+                                                        false,
                                                     )
                                                 }}
                                             />

@@ -1,4 +1,4 @@
-import {useMemo, useRef} from 'react'
+import { useMemo, useRef } from 'react'
 
 import useUnmount from './useUnmount'
 
@@ -35,7 +35,7 @@ export default function useThrottledCallback<
     return useMemo(() => {
         const execute = (
             context: ThisParameterType<Fn>,
-            args: Parameters<Fn>
+            args: Parameters<Fn>,
         ) => {
             lastCall.current = undefined
             callback.apply(context, args)
@@ -57,7 +57,7 @@ export default function useThrottledCallback<
             if (timeout.current) {
                 // If we cant execute callback immediately - save its arguments and
                 // context to execute it when delay is passed
-                lastCall.current = {args, this: this}
+                lastCall.current = { args, this: this }
 
                 return
             }
@@ -66,7 +66,7 @@ export default function useThrottledCallback<
         } as ThrottledFunction<Fn>
 
         Object.defineProperties(wrapped, {
-            length: {value: callback.length},
+            length: { value: callback.length },
             name: {
                 value: `${callback.name || 'anonymous'}__throttled__${delay}`,
             },

@@ -1,18 +1,19 @@
+import React, { useMemo, useRef, useState } from 'react'
+
 import classNames from 'classnames'
-import React, {useMemo, useRef, useState} from 'react'
 
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-
 import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 
-import css from './CallExpression.less'
-import {OperatorType} from './types'
+import { OperatorType } from './types'
 
-type Option = {value: string; name: string}
+import css from './CallExpression.less'
+
+type Option = { value: string; name: string }
 
 type OperatorProps = {
     index: number
@@ -50,7 +51,7 @@ export function Operator({
 
     const selectedOption = useMemo(
         () => options.find((option) => option.value === selected),
-        [options, selected]
+        [options, selected],
     )
 
     return (

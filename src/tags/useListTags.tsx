@@ -1,17 +1,22 @@
-import {queryKeys} from '@gorgias/api-queries'
-import {useInfiniteQuery, UseInfiniteQueryOptions} from '@tanstack/react-query'
-import {useEffect} from 'react'
+import { useEffect } from 'react'
 
-import {handleError} from 'hooks/agents/errorHandler'
+import {
+    useInfiniteQuery,
+    UseInfiniteQueryOptions,
+} from '@tanstack/react-query'
+
+import { queryKeys } from '@gorgias/api-queries'
+
+import { handleError } from 'hooks/agents/errorHandler'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {fetchTags} from 'models/tag/resources'
+import { fetchTags } from 'models/tag/resources'
 
 export default function useListTags(
     params?: Parameters<typeof fetchTags>[0],
     query?: UseInfiniteQueryOptions<
         Awaited<ReturnType<typeof fetchTags>>,
         unknown
-    >
+    >,
 ) {
     const dispatch = useAppDispatch()
     const response = useInfiniteQuery({
@@ -20,9 +25,9 @@ export default function useListTags(
                 ? {
                       search: params.search,
                   }
-                : undefined
+                : undefined,
         ),
-        queryFn: async ({pageParam}) =>
+        queryFn: async ({ pageParam }) =>
             fetchTags({
                 ...params,
                 cursor: pageParam,

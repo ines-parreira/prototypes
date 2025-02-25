@@ -1,5 +1,5 @@
-import {TopElement} from 'pages/aiAgent/Onboarding/components/TopElementsCard/types'
-import {Product} from 'pages/aiAgent/Onboarding/components/TopProductsCard/types'
+import { TopElement } from 'pages/aiAgent/Onboarding/components/TopElementsCard/types'
+import { Product } from 'pages/aiAgent/Onboarding/components/TopProductsCard/types'
 
 export const mockedLocations: TopElement[] = [
     {

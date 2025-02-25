@@ -1,14 +1,16 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { createRef, KeyboardEvent } from 'react'
+
 import classnames from 'classnames'
-import {Map} from 'immutable'
-import {LDFlagSet, withLDConsumer} from 'launchdarkly-react-client-sdk'
-import React, {createRef, KeyboardEvent} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {Link} from 'react-router-dom'
+import { Map } from 'immutable'
+import { LDFlagSet, withLDConsumer } from 'launchdarkly-react-client-sdk'
+import { connect, ConnectedProps } from 'react-redux'
+import { Link } from 'react-router-dom'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import closeIcon from 'assets/img/icons/close.svg'
-import {getConfigByName} from 'config/views'
-import {EntityType, ViewCategory} from 'models/view/types'
+import { getConfigByName } from 'config/views'
+import { EntityType, ViewCategory } from 'models/view/types'
 import IconButton from 'pages/common/components/button/IconButton'
 import EditableTitle from 'pages/common/components/EditableTitle/EditableTitle'
 import Search from 'pages/common/components/Search'
@@ -16,7 +18,7 @@ import ViewName from 'pages/common/components/ViewName/ViewName'
 import EmojiSelect from 'pages/common/components/ViewTable/EmojiSelect/EmojiSelect'
 import css from 'pages/common/components/ViewTable/Header.less'
 import history from 'pages/history'
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
 import {
     fetchViewItems,
     removeFieldFilter,
@@ -24,11 +26,11 @@ import {
     setViewEditMode,
     updateView,
 } from 'state/views/actions'
-import {getActiveView, getLastViewId} from 'state/views/selectors'
-import {slugify} from 'utils'
-import {systemViewIcons} from 'utils/views'
+import { getActiveView, getLastViewId } from 'state/views/selectors'
+import { slugify } from 'utils'
+import { systemViewIcons } from 'utils/views'
 
-import {ViewTableHeaderToggle} from './ViewTableHeaderToggle'
+import { ViewTableHeaderToggle } from './ViewTableHeaderToggle'
 
 type OwnProps = {
     isSearch: boolean
@@ -37,7 +39,7 @@ type OwnProps = {
     viewButtons?: React.ReactNode
 }
 
-type Props = OwnProps & ConnectedProps<typeof connector> & {flags?: LDFlagSet}
+type Props = OwnProps & ConnectedProps<typeof connector> & { flags?: LDFlagSet }
 
 type State = {
     askDeleteConfirmation: boolean
@@ -58,12 +60,12 @@ export class HeaderContainer extends React.Component<Props, State> {
             searchTerm !== prevProps.activeView.get('search') &&
             searchTerm !== this.state.searchTerm
         ) {
-            this.setState({searchTerm})
+            this.setState({ searchTerm })
         }
     }
 
     _goBackUrl = () => {
-        const {config, lastViewId} = this.props
+        const { config, lastViewId } = this.props
 
         let url = `/app/${config.get('routeList') as string}`
 
@@ -75,8 +77,8 @@ export class HeaderContainer extends React.Component<Props, State> {
     }
 
     handleKeyDown = (event: KeyboardEvent) => {
-        const {updateView, activeView, isSearch} = this.props
-        const {searchTerm} = this.state
+        const { updateView, activeView, isSearch } = this.props
+        const { searchTerm } = this.state
 
         if (event.key !== 'Enter') {
             return
@@ -89,13 +91,13 @@ export class HeaderContainer extends React.Component<Props, State> {
                     order_by: undefined,
                     order_dir: undefined,
                 }),
-                false
+                false,
             )
         }
     }
 
     onSearchChange = (searchTerm: string) => {
-        this.setState({searchTerm})
+        this.setState({ searchTerm })
     }
 
     _updateViewName = (name: string) => {
@@ -103,28 +105,28 @@ export class HeaderContainer extends React.Component<Props, State> {
             this.props.activeView.merge({
                 name,
                 slug: slugify(name),
-            })
+            }),
         )
     }
 
     _selectEmoji = (emoji: string) => {
-        const {updateView, activeView} = this.props
+        const { updateView, activeView } = this.props
         updateView(
             activeView.mergeDeep({
-                decoration: {emoji},
-            })
+                decoration: { emoji },
+            }),
         )
     }
 
     _clearEmoji = () => {
-        const {updateView, activeView} = this.props
+        const { updateView, activeView } = this.props
         if (Map.isMap(activeView.get('decoration'))) {
             updateView(activeView.deleteIn(['decoration', 'emoji']))
         }
     }
 
     cancelEdit = () => {
-        const {isUpdate, resetView, fetchViewItems} = this.props
+        const { isUpdate, resetView, fetchViewItems } = this.props
 
         if (isUpdate) {
             resetView()
@@ -135,7 +137,7 @@ export class HeaderContainer extends React.Component<Props, State> {
     }
 
     render() {
-        const {activeView, config, isUpdate, isSearch, viewButtons, type} =
+        const { activeView, config, isUpdate, isSearch, viewButtons, type } =
             this.props
 
         const isEditMode = activeView.get('editMode')
@@ -153,7 +155,7 @@ export class HeaderContainer extends React.Component<Props, State> {
                         <div
                             className={classnames(
                                 'flex-grow mr-2',
-                                css.titleWrapper
+                                css.titleWrapper,
                             )}
                         >
                             <ViewTableHeaderToggle />
@@ -169,11 +171,11 @@ export class HeaderContainer extends React.Component<Props, State> {
                                                     {
                                                         [css.withEmojiPicker]:
                                                             showEmojiPicker,
-                                                    }
+                                                    },
                                                 )}
                                                 title={activeView.get(
                                                     'name',
-                                                    ''
+                                                    '',
                                                 )}
                                                 placeholder="View name"
                                                 disabled={isSearch}
@@ -184,7 +186,7 @@ export class HeaderContainer extends React.Component<Props, State> {
                                                         activeView.get('name')
                                                     ) {
                                                         this._updateViewName(
-                                                            name
+                                                            name,
                                                         )
                                                     }
                                                 }}
@@ -195,7 +197,7 @@ export class HeaderContainer extends React.Component<Props, State> {
                                                 isOpen={
                                                     activeView.get(
                                                         'name',
-                                                        ''
+                                                        '',
                                                     ) === ''
                                                 }
                                                 placement="bottom"
@@ -207,7 +209,7 @@ export class HeaderContainer extends React.Component<Props, State> {
                                             {showEmojiPicker && (
                                                 <EmojiSelect
                                                     className={classnames(
-                                                        css.emojiPicker
+                                                        css.emojiPicker,
                                                     )}
                                                     emoji={
                                                         typeof emoji ===
@@ -254,7 +256,7 @@ export class HeaderContainer extends React.Component<Props, State> {
                                             onClick={() =>
                                                 isEditable
                                                     ? this.props.setViewEditMode(
-                                                          activeView
+                                                          activeView,
                                                       )
                                                     : undefined
                                             }
@@ -289,7 +291,7 @@ export class HeaderContainer extends React.Component<Props, State> {
                                         {
                                             [css.isSearching]: isSearch,
                                             'flex-grow': isSearch,
-                                        }
+                                        },
                                     )}
                                 />
                             )}
@@ -299,7 +301,7 @@ export class HeaderContainer extends React.Component<Props, State> {
                                     <i
                                         className={classnames(
                                             css.closeIcon,
-                                            'material-icons d-none d-md-inline-block'
+                                            'material-icons d-none d-md-inline-block',
                                         )}
                                         id="leave-search-mode"
                                     >
@@ -335,7 +337,7 @@ const connector = connect(
         resetView,
         setViewEditMode,
         updateView,
-    }
+    },
 )
 
 export default connector(withLDConsumer()(HeaderContainer))

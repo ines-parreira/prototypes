@@ -1,10 +1,12 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
 import React from 'react'
 
-import {DateAndTimeFormatting} from 'constants/datetime'
+import classNames from 'classnames'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { DateAndTimeFormatting } from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import {formatDatetime} from 'utils'
+import { formatDatetime } from 'utils'
 
 import css from './SeenIndicator.style.less'
 
@@ -31,7 +33,7 @@ export default function SeenIndicator(props: Props) {
     const elementId = `seen-indicator-id-${iconElementId}`
 
     const datetimeFormat = useGetDateAndTimeFormat(
-        DateAndTimeFormatting.RelativeDateAndTime
+        DateAndTimeFormatting.RelativeDateAndTime,
     )
 
     const getSeenIndicatorTooltipText = ({
@@ -45,7 +47,7 @@ export default function SeenIndicator(props: Props) {
         const datetime = formatDatetime(
             openedDatetime,
             datetimeFormat,
-            timezone
+            timezone,
         )
 
         return typeof datetime === 'string'

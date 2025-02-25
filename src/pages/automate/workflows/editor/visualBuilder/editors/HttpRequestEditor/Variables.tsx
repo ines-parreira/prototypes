@@ -1,13 +1,13 @@
-import classNames from 'classnames'
-import React, {useRef, useState} from 'react'
+import React, { useRef, useState } from 'react'
 
-import {WorkflowVariable} from 'pages/automate/workflows/models/variables.types'
-import {HttpRequestNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import classNames from 'classnames'
+
+import { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
+import { HttpRequestNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import TextInput from 'pages/common/forms/input/TextInput'
-
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 
 import css from '../NodeEditor.less'
@@ -18,7 +18,7 @@ type Props = {
     variablesInChildren?: WorkflowVariable[]
     onChange: (
         index: number,
-        variable: HttpRequestNodeType['data']['variables'][number]
+        variable: HttpRequestNodeType['data']['variables'][number],
     ) => void
     onDelete: (index: number) => void
     onAdd: () => void
@@ -55,7 +55,7 @@ const Variables = ({
                         key={variable.id}
                         className={classNames(
                             css.keyValueRow,
-                            css.variablesKeyValueRow
+                            css.variablesKeyValueRow,
                         )}
                     >
                         <TextInput
@@ -63,7 +63,7 @@ const Variables = ({
                             className={css.textInput}
                             placeholder="Variable name"
                             onChange={(name) => {
-                                onChange(index, {...variable, name})
+                                onChange(index, { ...variable, name })
                             }}
                             hasError={!!errors?.[index]?.name}
                             onBlur={() => {
@@ -75,7 +75,7 @@ const Variables = ({
                             className={css.textInput}
                             placeholder="JSONPath"
                             onChange={(jsonpath) => {
-                                onChange(index, {...variable, jsonpath})
+                                onChange(index, { ...variable, jsonpath })
                             }}
                             hasError={!!errors?.[index]?.jsonpath}
                             onBlur={() => {
@@ -97,11 +97,11 @@ const Variables = ({
                                 })
                             }}
                             options={[
-                                {label: 'String', value: 'string'},
-                                {label: 'Number', value: 'number'},
-                                {label: 'Boolean', value: 'boolean'},
-                                {label: 'Date', value: 'date'},
-                                {label: 'JSON', value: 'json'},
+                                { label: 'String', value: 'string' },
+                                { label: 'Number', value: 'number' },
+                                { label: 'Boolean', value: 'boolean' },
+                                { label: 'Date', value: 'date' },
+                                { label: 'JSON', value: 'json' },
                             ]}
                         />
                         <ConfirmationPopover
@@ -109,7 +109,7 @@ const Variables = ({
                             buttonProps={{
                                 intent: 'destructive',
                             }}
-                            cancelButtonProps={{intent: 'secondary'}}
+                            cancelButtonProps={{ intent: 'secondary' }}
                             showCancelButton={true}
                             title={`Delete "${variables[currentDeleteIndex]?.name}"?`}
                             content="This variable is used in other steps below. Deleting this step will result in unavailable variables and cannot be undone."
@@ -120,7 +120,7 @@ const Variables = ({
                                 setCurrentDeleteIndex(-1)
                             }}
                         >
-                            {({uid, onDisplayConfirmation}) => (
+                            {({ uid, onDisplayConfirmation }) => (
                                 <IconButton
                                     id={uid}
                                     intent="destructive"
@@ -130,9 +130,9 @@ const Variables = ({
                                     onClick={(e) => {
                                         if (
                                             variablesInChildren?.find(
-                                                ({value}) =>
+                                                ({ value }) =>
                                                     value ===
-                                                    `steps_state.${nodeId}.content.${variable.id}`
+                                                    `steps_state.${nodeId}.content.${variable.id}`,
                                             )
                                         ) {
                                             setCurrentDeleteIndex(index)

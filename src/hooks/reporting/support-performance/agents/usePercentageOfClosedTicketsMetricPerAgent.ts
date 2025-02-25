@@ -1,4 +1,4 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
 import {
     fetchClosedTicketsMetric,
@@ -13,22 +13,22 @@ import {
     MetricWithDecile,
     MetricWithDecileFetch,
 } from 'hooks/reporting/useMetricPerDimension'
-import {OrderDirection} from 'models/api/types'
-import {TicketMeasure} from 'models/reporting/cubes/TicketCube'
-import {StatsFilters} from 'models/stat/types'
-import {calculatePercentage} from 'utils/reporting'
+import { OrderDirection } from 'models/api/types'
+import { TicketMeasure } from 'models/reporting/cubes/TicketCube'
+import { StatsFilters } from 'models/stat/types'
+import { calculatePercentage } from 'utils/reporting'
 
 const ticketCountField = TicketMeasure.TicketCount
 
 const formatResult = (
     closedTicketsPerAgent: MetricWithDecile,
-    allClosedTickets: Metric
+    allClosedTickets: Metric,
 ): MetricWithDecile['data'] => {
     let metricValue = null
     if (closedTicketsPerAgent.data?.value && allClosedTickets.data?.value) {
         metricValue = calculatePercentage(
             closedTicketsPerAgent.data.value,
-            allClosedTickets.data?.value
+            allClosedTickets.data?.value,
         )
     }
 
@@ -44,8 +44,8 @@ const formatResult = (
                     ? String(
                           calculatePercentage(
                               Number(item[ticketCountField]),
-                              allClosedTickets.data.value
-                          )
+                              allClosedTickets.data.value,
+                          ),
                       )
                     : item[ticketCountField],
         })),
@@ -56,19 +56,19 @@ export const usePercentageOfClosedTicketsMetricPerAgent = (
     statsFilters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
-    agentAssigneeId?: string
+    agentAssigneeId?: string,
 ): MetricWithDecile => {
     const closedTicketsPerAgent = useClosedTicketsMetricPerAgent(
         statsFilters,
         timezone,
         sorting,
-        agentAssigneeId
+        agentAssigneeId,
     )
     const allClosedTickets = useClosedTicketsMetric(statsFilters, timezone)
 
     const data = useMemo(
         () => formatResult(closedTicketsPerAgent, allClosedTickets),
-        [allClosedTickets, closedTicketsPerAgent]
+        [allClosedTickets, closedTicketsPerAgent],
     )
 
     return {
@@ -84,14 +84,14 @@ export const fetchPercentageOfClosedTicketsMetricPerAgent: MetricWithDecileFetch
         statsFilters: StatsFilters,
         timezone: string,
         sorting?: OrderDirection,
-        agentAssigneeId?: string
+        agentAssigneeId?: string,
     ): Promise<MetricWithDecile> => {
         return Promise.all([
             fetchClosedTicketsMetricPerAgent(
                 statsFilters,
                 timezone,
                 sorting,
-                agentAssigneeId
+                agentAssigneeId,
             ),
             fetchClosedTicketsMetric(statsFilters, timezone),
         ])

@@ -1,8 +1,9 @@
-import {act, fireEvent, render, screen} from '@testing-library/react'
 import React from 'react'
 
+import { act, fireEvent, render, screen } from '@testing-library/react'
+
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import {IntegrationType} from 'models/integration/constants'
+import { IntegrationType } from 'models/integration/constants'
 
 import ActionsPlatformTemplatesTableRow from '../ActionsPlatformTemplatesTableRow'
 
@@ -18,7 +19,7 @@ describe('<ActionsPlatformTemplatesTableRow />', () => {
             <ActionsPlatformTemplatesTableRow
                 template={{
                     name: 'test',
-                    apps: [{type: 'shopify'}],
+                    apps: [{ type: 'shopify' }],
                     updated_datetime: '2024-08-02T08:18:51.611Z',
                     is_draft: false,
                 }}
@@ -30,13 +31,13 @@ describe('<ActionsPlatformTemplatesTableRow />', () => {
                 }}
                 onClick={jest.fn()}
                 onDelete={jest.fn()}
-            />
+            />,
         )
 
         expect(screen.getByText('test')).toBeInTheDocument()
         expect(screen.getByTitle('Shopify')).toHaveAttribute(
             'src',
-            '/assets/img/integrations/shopify.png'
+            '/assets/img/integrations/shopify.png',
         )
         expect(screen.getByText('08/02/2024')).toBeInTheDocument()
     })
@@ -46,7 +47,7 @@ describe('<ActionsPlatformTemplatesTableRow />', () => {
             <ActionsPlatformTemplatesTableRow
                 template={{
                     name: 'test',
-                    apps: [{type: 'shopify'}],
+                    apps: [{ type: 'shopify' }],
                     updated_datetime: '2024-08-02T08:18:51.611Z',
                     is_draft: true,
                 }}
@@ -58,7 +59,7 @@ describe('<ActionsPlatformTemplatesTableRow />', () => {
                 }}
                 onClick={jest.fn()}
                 onDelete={jest.fn()}
-            />
+            />,
         )
 
         expect(screen.getByText('draft')).toBeInTheDocument()
@@ -71,7 +72,7 @@ describe('<ActionsPlatformTemplatesTableRow />', () => {
             <ActionsPlatformTemplatesTableRow
                 template={{
                     name: 'test',
-                    apps: [{type: 'shopify'}],
+                    apps: [{ type: 'shopify' }],
                     updated_datetime: '2024-08-02T08:18:51.611Z',
                     is_draft: true,
                 }}
@@ -83,7 +84,7 @@ describe('<ActionsPlatformTemplatesTableRow />', () => {
                 }}
                 onClick={jest.fn()}
                 onDelete={mockOnDelete}
-            />
+            />,
         )
 
         act(() => {
@@ -102,7 +103,7 @@ describe('<ActionsPlatformTemplatesTableRow />', () => {
             <ActionsPlatformTemplatesTableRow
                 template={{
                     name: 'test',
-                    apps: [{type: 'shopify'}],
+                    apps: [{ type: 'shopify' }],
                     updated_datetime: '2024-08-02T08:18:51.611Z',
                     is_draft: false,
                 }}
@@ -114,7 +115,7 @@ describe('<ActionsPlatformTemplatesTableRow />', () => {
                 }}
                 onClick={jest.fn()}
                 onDelete={jest.fn()}
-            />
+            />,
         )
 
         expect(screen.getByTitle('Delete')).toBeAriaDisabled()

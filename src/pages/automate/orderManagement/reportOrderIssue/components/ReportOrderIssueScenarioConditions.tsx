@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react'
+import React, { useRef, useState } from 'react'
 
 import shopify from 'assets/img/integrations/shopify.png'
 import {
@@ -15,11 +15,12 @@ import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 
-import {SCENARIO_MAX_NUMBER_OF_CONDITIONS_PER_VARIABLE} from '../constants'
+import { SCENARIO_MAX_NUMBER_OF_CONDITIONS_PER_VARIABLE } from '../constants'
 import ReportOrderIssueScenarioConditionOrBlock from './ReportOrderIssueScenarioConditionOrBlock'
 import ReportOrderIssueScenarioConditionRule from './ReportOrderIssueScenarioConditionRule'
+import { usePropagateError } from './ReportOrderIssueScenarioFormContext'
+
 import css from './ReportOrderIssueScenarioConditions.less'
-import {usePropagateError} from './ReportOrderIssueScenarioFormContext'
 
 type Props = {
     value: SelfServiceReportIssueCase['conditions']
@@ -46,14 +47,14 @@ const VARIABLES_OPTIONS = [
 ]
 
 const isOrBlock = (
-    condition: ReportIssueRulesLogic['and'][number]
+    condition: ReportIssueRulesLogic['and'][number],
 ): condition is JsonLogicOrBlock => 'or' in condition
 const isFinancialStatusRule = (
-    condition: ReportIssueRulesLogic['and'][number]
+    condition: ReportIssueRulesLogic['and'][number],
 ): condition is JsonLogicRuleOverVariable<ReportIssueVariable.FINANCIAL_STATUS> =>
     !('or' in condition)
 
-const ReportOrderIssueScenarioConditions = ({value, onChange}: Props) => {
+const ReportOrderIssueScenarioConditions = ({ value, onChange }: Props) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
     const buttonRef = useRef<HTMLButtonElement>(null)
 
@@ -97,11 +98,11 @@ const ReportOrderIssueScenarioConditions = ({value, onChange}: Props) => {
                 nextConditions.splice(index, 1)
             }
 
-            onChange({and: nextConditions})
+            onChange({ and: nextConditions })
         }
     }
     const handleFinancialStatusRuleChange = (
-        nextValue: JsonLogicRuleOverVariable<ReportIssueVariable.FINANCIAL_STATUS>
+        nextValue: JsonLogicRuleOverVariable<ReportIssueVariable.FINANCIAL_STATUS>,
     ) => {
         const index = conditions.findIndex(isFinancialStatusRule)
 
@@ -110,7 +111,7 @@ const ReportOrderIssueScenarioConditions = ({value, onChange}: Props) => {
 
             nextConditions[index] = nextValue
 
-            onChange({and: nextConditions})
+            onChange({ and: nextConditions })
         }
     }
     const handleFinancialStatusRuleDelete = () => {
@@ -121,7 +122,7 @@ const ReportOrderIssueScenarioConditions = ({value, onChange}: Props) => {
 
             nextConditions.splice(index, 1)
 
-            onChange({and: nextConditions})
+            onChange({ and: nextConditions })
         }
     }
     const handleAddCondition = (variable: ReportIssueVariable) => {
@@ -130,13 +131,13 @@ const ReportOrderIssueScenarioConditions = ({value, onChange}: Props) => {
         switch (variable) {
             case ReportIssueVariable.FINANCIAL_STATUS:
                 nextConditions.push({
-                    [JsonLogicOperator.IS_ONE_OF]: [{var: variable}, []],
+                    [JsonLogicOperator.IS_ONE_OF]: [{ var: variable }, []],
                 })
                 break
             default: {
                 const index = conditions.findIndex(isOrBlock)
                 const newRuleOverVariable: JsonLogicRuleOverVariable = {
-                    [JsonLogicOperator.IS_ONE_OF]: [{var: variable}, []],
+                    [JsonLogicOperator.IS_ONE_OF]: [{ var: variable }, []],
                 }
 
                 if (index !== -1) {
@@ -144,12 +145,12 @@ const ReportOrderIssueScenarioConditions = ({value, onChange}: Props) => {
                         or: [...orBlock!.or, newRuleOverVariable],
                     }
                 } else {
-                    nextConditions.push({or: [newRuleOverVariable]})
+                    nextConditions.push({ or: [newRuleOverVariable] })
                 }
             }
         }
 
-        onChange({and: nextConditions})
+        onChange({ and: nextConditions })
     }
 
     return (

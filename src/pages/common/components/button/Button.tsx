@@ -1,25 +1,26 @@
-import classNames from 'classnames'
 import React, {
+    type AnchorHTMLAttributes,
     ForwardedRef,
     forwardRef,
-    useContext,
-    type AnchorHTMLAttributes,
     type MouseEventHandler,
     type RefAttributes,
+    useContext,
 } from 'react'
 
-import {BaseButtonContext} from 'pages/common/components/button/BaseButton'
+import classNames from 'classnames'
+
+import { BaseButtonContext } from 'pages/common/components/button/BaseButton'
 import {
     GroupContext,
     GroupPositionContext,
 } from 'pages/common/components/layout/Group'
+import { InputGroupContext } from 'pages/common/forms/input/InputGroup'
 
-import {InputGroupContext} from 'pages/common/forms/input/InputGroup'
-
-import css from './Button.less'
 import ButtonSpinner from './ButtonSpinner'
 
-export type {ButtonIntent, ButtonSize} from './BaseButton'
+import css from './Button.less'
+
+export type { ButtonIntent, ButtonSize } from './BaseButton'
 
 type CommonProps = {
     children: React.ReactNode
@@ -75,7 +76,7 @@ const Button = (
         trailingIcon,
         ...props
     }: Props,
-    ref: ForwardedRef<HTMLButtonElement | HTMLAnchorElement>
+    ref: ForwardedRef<HTMLButtonElement | HTMLAnchorElement>,
 ) => {
     const context = useContext(GroupContext)
     const appendPosition = useContext(GroupPositionContext) || ''
@@ -93,7 +94,7 @@ const Button = (
         {
             [css.isDisabled]: safeIsDisabled,
             [css.isAuxiliaryButton]: isInsideInputGroup,
-        }
+        },
     )
 
     const content = (
@@ -115,10 +116,10 @@ const Button = (
     }
 
     if (props.as === 'a') {
-        const {rel = 'noopener noreferrer', target = '_blank'} = props
+        const { rel = 'noopener noreferrer', target = '_blank' } = props
 
         return (
-            <BaseButtonContext.Provider value={{size}}>
+            <BaseButtonContext.Provider value={{ size }}>
                 <a
                     {...props}
                     ref={ref as ForwardedRef<HTMLAnchorElement>}
@@ -132,10 +133,10 @@ const Button = (
         )
     }
 
-    const {type = 'button'} = props
+    const { type = 'button' } = props
 
     return (
-        <BaseButtonContext.Provider value={{size}}>
+        <BaseButtonContext.Provider value={{ size }}>
             <button
                 {...props}
                 ref={ref as ForwardedRef<HTMLButtonElement>}
@@ -214,7 +215,7 @@ const Button = (
 export default forwardRef(Button) as (
     props:
         | (ButtonProps & RefAttributes<HTMLButtonElement>)
-        | (AnchorProps & RefAttributes<HTMLAnchorElement>)
+        | (AnchorProps & RefAttributes<HTMLAnchorElement>),
 ) => JSX.Element
 
 const Icon = ({

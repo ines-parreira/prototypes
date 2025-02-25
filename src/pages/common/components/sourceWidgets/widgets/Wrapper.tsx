@@ -1,16 +1,17 @@
+import React, { useContext } from 'react'
+
 import classnames from 'classnames'
-import React, {useContext} from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {isSourceRecord, Source, WrapperTemplate} from 'models/widget/types'
+import { isSourceRecord, Source, WrapperTemplate } from 'models/widget/types'
 import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
-import {getWidgetTitle} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
-import {getIntegrationById} from 'state/integrations/selectors'
+import { getWidgetTitle } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
+import { getIntegrationById } from 'state/integrations/selectors'
 import {
-    WOOCOMMERCE_WIDGET_TYPE,
     STANDALONE_WIDGET_TYPE,
+    WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
-import {WidgetContext} from 'Widgets/contexts/WidgetContext'
+import { WidgetContext } from 'Widgets/contexts/WidgetContext'
 import WidgetPanel from 'Widgets/modules/WidgetPanel/components/WidgetPanel'
 
 import css from './Wrapper.less'
@@ -21,7 +22,7 @@ type Props = {
     children: React.ReactNode
 }
 
-export default function Wrapper({template, source, children}: Props) {
+export default function Wrapper({ template, source, children }: Props) {
     const widget = useContext(WidgetContext)
     const absolutePath = template.absolutePath || []
     const widgetType = widget.type
@@ -44,8 +45,8 @@ export default function Wrapper({template, source, children}: Props) {
         getIntegrationById(
             typeof integrationId === 'number'
                 ? integrationId
-                : parseInt(integrationId || '', 10)
-        )
+                : parseInt(integrationId || '', 10),
+        ),
     )
 
     if (!template.widgets?.length && widgetType !== STANDALONE_WIDGET_TYPE) {

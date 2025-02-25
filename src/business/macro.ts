@@ -1,10 +1,10 @@
-import {Macro} from '@gorgias/api-queries'
+import { Macro } from '@gorgias/api-queries'
 
-import {MacroActionName} from 'models/macroAction/types'
-import {NotificationStatus} from 'state/notifications/types'
+import { MacroActionName } from 'models/macroAction/types'
+import { NotificationStatus } from 'state/notifications/types'
 
-import {Notification} from './types/notification'
-import {TicketMessageSourceType} from './types/ticket'
+import { Notification } from './types/notification'
+import { TicketMessageSourceType } from './types/ticket'
 
 export type MacroClearingResult = {
     macro: Macro
@@ -14,7 +14,7 @@ export type MacroClearingResult = {
 // Public functions
 export function clearMacroBeforeApply(
     messageType: TicketMessageSourceType,
-    macro: Macro
+    macro: Macro,
 ): MacroClearingResult {
     const isChatAndMoreThanOneAttachment =
         messageType === TicketMessageSourceType.Chat &&
@@ -66,7 +66,7 @@ export function clearMacroBeforeApply(
         }
     }
 
-    return {macro}
+    return { macro }
 }
 
 // Private functions
@@ -77,9 +77,9 @@ function getAttachmentsCount(macro: Macro): number {
             .reduce(
                 (total = 0, action) =>
                     total +
-                    (action.arguments as {attachments: string}).attachments
+                    (action.arguments as { attachments: string }).attachments
                         .length,
-                0
+                0,
             ) ?? 0
     )
 }
@@ -88,13 +88,13 @@ function removeAttachmentsFromActions(macro: Macro) {
     return {
         ...macro,
         actions: macro.actions?.filter(
-            (action) => action.name !== MacroActionName.AddAttachments
+            (action) => action.name !== MacroActionName.AddAttachments,
         ),
     }
 }
 
 function hasText(macro: Macro): boolean {
     return !!macro.actions?.filter(
-        (action) => action.name === MacroActionName.SetResponseText
+        (action) => action.name === MacroActionName.SetResponseText,
     ).length
 }

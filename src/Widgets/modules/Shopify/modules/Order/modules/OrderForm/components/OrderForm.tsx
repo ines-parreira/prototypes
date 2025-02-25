@@ -1,7 +1,8 @@
-import {List, Map} from 'immutable'
-import React, {ChangeEvent} from 'react'
+import React, { ChangeEvent } from 'react'
 
-import {aggregateMaximumRefundableByGateway} from 'business/shopify/refund'
+import { List, Map } from 'immutable'
+
+import { aggregateMaximumRefundableByGateway } from 'business/shopify/refund'
 
 import OrderFooter from './OrderFooter'
 import OrderTable from './OrderTable'

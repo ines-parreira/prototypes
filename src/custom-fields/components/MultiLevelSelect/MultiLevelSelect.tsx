@@ -1,13 +1,15 @@
-import {Placement} from '@floating-ui/react'
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { RefObject, useCallback, useMemo, useRef, useState } from 'react'
+
+import { Placement } from '@floating-ui/react'
 import classNames from 'classnames'
 import _xor from 'lodash/xor'
-import React, {RefObject, useCallback, useMemo, useRef, useState} from 'react'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
-import {UserRole} from 'config/types/user'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { UserRole } from 'config/types/user'
 import StealthInput from 'custom-fields/components/StealthInput'
-import {isCustomFieldValueEmpty} from 'custom-fields/helpers/isCustomFieldValueEmpty'
+import { isCustomFieldValueEmpty } from 'custom-fields/helpers/isCustomFieldValueEmpty'
 import {
     CustomFieldPrediction,
     CustomFieldState,
@@ -21,29 +23,30 @@ import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownFooter from 'pages/common/components/dropdown/DropdownFooter'
 import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {hasRole} from 'utils'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { hasRole } from 'utils'
 
 import CheckIcon from './CheckIcon'
-import {CHOICE_VALUES_SYMBOL, PREVIOUS_BUTTON_ID} from './constants'
-import {buildTreeOfChoices} from './helpers/buildTreeOfChoices'
-import {getCurrentPathFromFullValue} from './helpers/getCurrentPathFromFullValue'
-import {getFullValueFromCurrentPath} from './helpers/getFullValueFromCurrentPath'
-import {getLabel, getStealthLabel} from './helpers/getLabels'
+import { CHOICE_VALUES_SYMBOL, PREVIOUS_BUTTON_ID } from './constants'
+import { buildTreeOfChoices } from './helpers/buildTreeOfChoices'
+import { getCurrentPathFromFullValue } from './helpers/getCurrentPathFromFullValue'
+import { getFullValueFromCurrentPath } from './helpers/getFullValueFromCurrentPath'
+import { getLabel, getStealthLabel } from './helpers/getLabels'
 import isMultiValueEmpty from './helpers/isMultiValueEmpty'
-import {isOutdatedValue} from './helpers/isOutdatedValue'
-import {useA11yDropdown} from './hooks/useA11yDropdown'
-import {useActiveState} from './hooks/useActiveState'
-import {usePredictionIconPositionAdjuster} from './hooks/usePredictionIconPositionAdjuster'
-import {useSearch} from './hooks/useSearch'
+import { isOutdatedValue } from './helpers/isOutdatedValue'
+import { useA11yDropdown } from './hooks/useA11yDropdown'
+import { useActiveState } from './hooks/useActiveState'
+import { usePredictionIconPositionAdjuster } from './hooks/usePredictionIconPositionAdjuster'
+import { useSearch } from './hooks/useSearch'
+import { SearchInput } from './search/SearchInput'
+import { SearchResult } from './search/SearchResult'
+import { CustomInputProps } from './types'
+
 import css from './MultiLevelSelect.less'
-import {SearchInput} from './search/SearchInput'
-import {SearchResult} from './search/SearchResult'
-import {CustomInputProps} from './types'
 
 function isMultiValueAllowed<T extends boolean | undefined>(
     allowMultiValues: T,
-    __value: CustomFieldValue | CustomFieldValue[] | undefined
+    __value: CustomFieldValue | CustomFieldValue[] | undefined,
 ): __value is CustomFieldValue[] {
     return allowMultiValues === true
 }
@@ -69,10 +72,10 @@ export type MultiLevelSelectProps<
     value?: InferCustomFieldValueType<AllowMultiValues> | undefined
     prediction?: CustomFieldPrediction
     onChange: (
-        value: InferCustomFieldValueType<AllowMultiValues> | undefined
+        value: InferCustomFieldValueType<AllowMultiValues> | undefined,
     ) => void
     customDisplayValue?: (
-        value: InferCustomFieldValueType<AllowMultiValues> | undefined
+        value: InferCustomFieldValueType<AllowMultiValues> | undefined,
     ) => string
     CustomInput?: React.ComponentType<CustomInputProps>
     placement?: Placement
@@ -120,7 +123,7 @@ export default function MultiLevelSelect<
     const [currentPath, setCurrentPath] = useState<string[]>(
         isMultiValueAllowed(allowMultiValues, value)
             ? []
-            : getCurrentPathFromFullValue(value)
+            : getCurrentPathFromFullValue(value),
     )
 
     const choicesTree = useMemo(() => buildTreeOfChoices(choices), [choices])
@@ -128,7 +131,7 @@ export default function MultiLevelSelect<
     let currentBranch = choicesTree
     currentPath.forEach(
         (nextBranchPath) =>
-            (currentBranch = currentBranch[nextBranchPath] || currentBranch)
+            (currentBranch = currentBranch[nextBranchPath] || currentBranch),
     )
 
     const isSearchDisabled =
@@ -175,14 +178,14 @@ export default function MultiLevelSelect<
                           ? []
                           : _xor(
                                 [newValue],
-                                value
-                            )) as unknown as InferCustomFieldValueType<AllowMultiValues>
+                                value,
+                            )) as unknown as InferCustomFieldValueType<AllowMultiValues>,
                   )
                 : onChange(
-                      newValue as unknown as InferCustomFieldValueType<AllowMultiValues>
+                      newValue as unknown as InferCustomFieldValueType<AllowMultiValues>,
                   )
         },
-        [setActive, allowMultiValues, value, onChange]
+        [setActive, allowMultiValues, value, onChange],
     )
 
     const handleFocus = useCallback(() => {
@@ -211,7 +214,7 @@ export default function MultiLevelSelect<
         ((prediction.confirmed === true && prediction.modified === false) ||
             (prediction.confirmed === false && prediction.modified === false))
 
-    const {iconLeft, hiddenRef} = usePredictionIconPositionAdjuster({
+    const { iconLeft, hiddenRef } = usePredictionIconPositionAdjuster({
         value: isMultiValueAllowed(allowMultiValues, value) ? undefined : value,
         inputDimensions,
         shouldShowIcon: isPredictionCorrect,
@@ -267,7 +270,7 @@ export default function MultiLevelSelect<
                 {isPredictionCorrect && hiddenRef.current && (
                     <i
                         className={`material-icons ${css.predictionIcon}`}
-                        style={{left: `${iconLeft}px`}}
+                        style={{ left: `${iconLeft}px` }}
                     >
                         auto_awesome
                     </i>
@@ -346,7 +349,7 @@ export default function MultiLevelSelect<
                                         key={choice}
                                         tag="button"
                                         onClick={() => goNext(choice)}
-                                        option={{label, value: choice}}
+                                        option={{ label, value: choice }}
                                     >
                                         <span className={css.choiceButton}>
                                             <span className={css.ellipsis}>
@@ -362,12 +365,12 @@ export default function MultiLevelSelect<
                                 )
                             })}
                             {Array.from(
-                                currentBranch[CHOICE_VALUES_SYMBOL]
+                                currentBranch[CHOICE_VALUES_SYMBOL],
                             ).map((choice) => {
                                 const label = getLabel(choice)
                                 const fullValue = getFullValueFromCurrentPath(
                                     currentPath,
-                                    choice
+                                    choice,
                                 )
                                 return (
                                     <DropdownItem
@@ -396,7 +399,7 @@ export default function MultiLevelSelect<
                                         </span>
                                         {(isMultiValueAllowed(
                                             allowMultiValues,
-                                            value
+                                            value,
                                         )
                                             ? value?.includes(fullValue)
                                             : fullValue === value) && (
@@ -430,7 +433,7 @@ type EmptyHelperProps = {
     id: number
 }
 
-export function EmptyHelper({target, id}: EmptyHelperProps) {
+export function EmptyHelper({ target, id }: EmptyHelperProps) {
     const currentUser = useAppSelector(getCurrentUser)
     const isAdmin = hasRole(currentUser, UserRole.Admin)
 
@@ -442,7 +445,7 @@ export function EmptyHelper({target, id}: EmptyHelperProps) {
             arrowClassName={css.emptyHelperArrow}
             innerProps={{
                 modifiers: {
-                    preventOverflow: {boundariesElement: 'viewport'},
+                    preventOverflow: { boundariesElement: 'viewport' },
                 },
             }}
         >

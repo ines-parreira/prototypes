@@ -1,10 +1,10 @@
-import classNames from 'classnames'
+import React, { useMemo, useRef, useState } from 'react'
 
+import classNames from 'classnames'
 import _keyBy from 'lodash/keyBy'
 import _noop from 'lodash/noop'
-import React, {useMemo, useRef, useState} from 'react'
 
-import {HttpRequestNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { HttpRequestNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
@@ -21,11 +21,11 @@ type Props = {
     variables: HttpRequestNodeType['data']['variables']
     onChange: (
         index: number,
-        output: NonNullable<HttpRequestNodeType['data']['outputs']>[number]
+        output: NonNullable<HttpRequestNodeType['data']['outputs']>[number],
     ) => void
     onDelete: (index: number) => void
     onAdd: (
-        variableId: HttpRequestNodeType['data']['variables'][number]['id']
+        variableId: HttpRequestNodeType['data']['variables'][number]['id'],
     ) => void
 }
 
@@ -48,7 +48,7 @@ const Outputs = ({
                 !(
                     `steps_state.${nodeId}.content.${variable.id}` in
                     outputsByPath
-                )
+                ),
         )
     }, [variables, outputs, nodeId])
 
@@ -58,7 +58,7 @@ const Outputs = ({
                 const variable = variables.find(
                     (variable) =>
                         output.path ===
-                        `steps_state.${nodeId}.content.${variable.id}`
+                        `steps_state.${nodeId}.content.${variable.id}`,
                 )
 
                 if (!variable) {
@@ -70,7 +70,7 @@ const Outputs = ({
                         key={output.id}
                         className={classNames(
                             css.keyValueRow,
-                            css.outputsKeyValueRow
+                            css.outputsKeyValueRow,
                         )}
                     >
                         <TextInput
@@ -94,11 +94,11 @@ const Outputs = ({
                             value={variable.data_type}
                             onChange={_noop}
                             options={[
-                                {label: 'String', value: 'string'},
-                                {label: 'Number', value: 'number'},
-                                {label: 'Boolean', value: 'boolean'},
-                                {label: 'Date', value: 'date'},
-                                {label: 'JSON', value: 'json'},
+                                { label: 'String', value: 'string' },
+                                { label: 'Number', value: 'number' },
+                                { label: 'Boolean', value: 'boolean' },
+                                { label: 'Date', value: 'date' },
+                                { label: 'JSON', value: 'json' },
                             ]}
                             disabled
                         />
@@ -133,7 +133,10 @@ const Outputs = ({
                         <DropdownItem
                             key={variable.id}
                             onClick={onAdd}
-                            option={{value: variable.id, label: variable.name}}
+                            option={{
+                                value: variable.id,
+                                label: variable.name,
+                            }}
                             shouldCloseOnSelect
                         />
                     ))}

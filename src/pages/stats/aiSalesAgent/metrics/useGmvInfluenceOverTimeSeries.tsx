@@ -1,21 +1,19 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import {useQuery, UseQueryResult} from '@tanstack/react-query'
+import { useQuery, UseQueryResult } from '@tanstack/react-query'
 
-import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
-
-import {ReportingGranularity} from 'models/reporting/types'
-
-import {StatsFilters} from 'models/stat/types'
-import {getRealisticResponseTime} from 'pages/aiAgent/Overview/getRealisticResponseTime'
+import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
+import { ReportingGranularity } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
+import { getRealisticResponseTime } from 'pages/aiAgent/Overview/getRealisticResponseTime'
 
 const useGmvInfluenceOverTimeSeries = (
     filters: StatsFilters,
     timezone: string,
-    granularity: ReportingGranularity
+    granularity: ReportingGranularity,
 ): UseQueryResult<TimeSeriesDataItem[][]> => {
     const result = useQuery({
         queryKey: ['useGmvInfluenceOverTimeSeries'],
-        queryFn: (): Promise<{data: TimeSeriesDataItem[]}> =>
+        queryFn: (): Promise<{ data: TimeSeriesDataItem[] }> =>
             new Promise((resolve) => {
                 setTimeout(() => {
                     resolve({

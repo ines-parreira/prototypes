@@ -1,4 +1,4 @@
-import {computeTextSimilarityScore} from '../computeTextSimilarityScore'
+import { computeTextSimilarityScore } from '../computeTextSimilarityScore'
 
 describe('computeTextSimilarityScore', () => {
     it('should return 0 for identical strings', () => {
@@ -12,7 +12,7 @@ describe('computeTextSimilarityScore', () => {
     it('should return a value between 0 and 1 for partially matching strings', () => {
         expect(computeTextSimilarityScore('kitten', 'sitting')).toBeCloseTo(
             3 / 7,
-            5
+            5,
         )
     })
 

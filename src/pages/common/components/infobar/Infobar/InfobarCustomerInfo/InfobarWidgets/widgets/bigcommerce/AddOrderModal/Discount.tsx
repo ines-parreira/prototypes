@@ -1,6 +1,8 @@
-import {Label, LoadingSpinner} from '@gorgias/merchant-ui-kit'
+import React, { useRef, useState } from 'react'
+
 import classnames from 'classnames'
-import React, {useRef, useState} from 'react'
+
+import { Label, LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import {
     BigCommerceActionType,
@@ -11,10 +13,9 @@ import {
 import Button from 'pages/common/components/button/Button'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import NumberInput from 'pages/common/forms/input/NumberInput'
+import { getMoneySymbol } from 'utils/getMoneySymbol'
 
-import {getMoneySymbol} from 'utils/getMoneySymbol'
-
-import {PopoverContainer} from './components/popover-container/PopoverContainer'
+import { PopoverContainer } from './components/popover-container/PopoverContainer'
 
 import css from './Discount.less'
 import commonCss from './OrderTotals.less'
@@ -24,7 +25,7 @@ type Props = {
     currencyCode: string | null
     onUpdateDiscountAmount: (
         actionName: BigCommerceActionType,
-        discountAmount: number
+        discountAmount: number,
     ) => Promise<void>
     actionName: BigCommerceActionType
 }
@@ -40,7 +41,7 @@ export function Discount({
     const [isUpdatingDiscount, setIsUpdatingDiscount] = useState(false)
 
     const [discountAmount, setDiscountAmount] = useState<number | undefined>(
-        cart?.discount_amount
+        cart?.discount_amount,
     )
     const [error, setError] = useState<string | null>(null)
 

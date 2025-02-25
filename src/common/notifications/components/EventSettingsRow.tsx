@@ -1,18 +1,21 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import cn from 'classnames'
 import React from 'react'
+
+import cn from 'classnames'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import SourceIcon from 'pages/common/components/SourceIcon'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import CheckBox from 'pages/common/forms/CheckBox'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
-import type {SoundValue} from 'services/NotificationSounds'
+import type { SoundValue } from 'services/NotificationSounds'
 
-import {channels} from '../data'
-import type {NotificationConfig, Setting} from '../types'
-import css from './EventSettingsRow.less'
+import { channels } from '../data'
+import type { NotificationConfig, Setting } from '../types'
 import SoundSelect from './SoundSelect'
+
+import css from './EventSettingsRow.less'
 
 type Props = {
     config: NotificationConfig
@@ -29,7 +32,7 @@ export default function EventSettingsRow({
 }: Props) {
     if (!config.settings) return null
 
-    const {icon, label, tooltip} = config.settings
+    const { icon, label, tooltip } = config.settings
 
     return (
         <TableBodyRow>
@@ -51,7 +54,7 @@ export default function EventSettingsRow({
                     onChange={onChangeSound}
                     disabled={
                         !Object.values(setting?.channels || {}).some(
-                            (value) => !!value
+                            (value) => !!value,
                         )
                     }
                 />

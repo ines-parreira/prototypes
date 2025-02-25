@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react'
+import React, { useRef, useState } from 'react'
 
 import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
@@ -8,7 +8,7 @@ import DropdownSection from 'pages/common/components/dropdown/DropdownSection'
 
 export type OptionGroup = {
     title: string
-    options: {label: string; value: string}[]
+    options: { label: string; value: string }[]
 }
 
 type Props = {
@@ -19,7 +19,11 @@ type Props = {
 
 export const ADD_FILTER_BUTTON_LABEL = 'Add Filter'
 
-export const AddFilterButton = ({onClick, optionGroups, isDisabled}: Props) => {
+export const AddFilterButton = ({
+    onClick,
+    optionGroups,
+    isDisabled,
+}: Props) => {
     const buttonRef = useRef(null)
     const [isOpen, setIsOpen] = useState(false)
 

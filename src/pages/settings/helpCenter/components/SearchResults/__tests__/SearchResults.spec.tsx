@@ -1,17 +1,18 @@
-import {render, screen, waitFor} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render, screen, waitFor } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {getSingleHelpCenterResponseFixture as helpCenter} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
-import {useHelpCenterIdParam} from 'pages/settings/helpCenter/hooks/useHelpCenterIdParam'
-import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
-import {RootState, StoreDispatch} from 'state/types'
+import { getSingleHelpCenterResponseFixture as helpCenter } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
+import { useHelpCenterIdParam } from 'pages/settings/helpCenter/hooks/useHelpCenterIdParam'
+import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
+import { RootState, StoreDispatch } from 'state/types'
 
-import {SearchResults} from '../SearchResults'
-import {searchResultsResponseFixture as results} from '../SearchResults.response.fixture'
+import { SearchResults } from '../SearchResults'
+import { searchResultsResponseFixture as results } from '../SearchResults.response.fixture'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -22,7 +23,7 @@ jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 ;(useSupportedLocales as jest.Mock).mockReturnValue(getLocalesResponseFixture)
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
-    useAbilityChecker: () => ({isPassingRulesCheck: () => true}),
+    useAbilityChecker: () => ({ isPassingRulesCheck: () => true }),
 }))
 
 const mockFetchArticlesByIds = jest.fn().mockResolvedValue(null)
@@ -53,7 +54,7 @@ const defaultState: Partial<RootState> = {
                     '1': helpCenter,
                 },
             },
-            articles: {articlesById: {}},
+            articles: { articlesById: {} },
             categories: {
                 categoriesById: {
                     '0': {
@@ -96,14 +97,14 @@ const defaultState: Partial<RootState> = {
             },
         },
     } as any,
-    ui: {helpCenter: {currentId: 1, currentLanguage: 'en-US'}} as any,
+    ui: { helpCenter: { currentId: 1, currentLanguage: 'en-US' } } as any,
 }
 
 const store = mockStore(defaultState)
 
 describe('SearchResults', () => {
     it('displays article and category search results', async () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <SearchResults
                     helpCenter={helpCenter}
@@ -111,28 +112,28 @@ describe('SearchResults', () => {
                     onArticleClick={jest.fn()}
                     onArticleClickSettings={jest.fn()}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            screen.getByText(results[0].parent_category_1!.title)
+            screen.getByText(results[0].parent_category_1!.title),
         ).toBeInTheDocument()
         expect(screen.getAllByLabelText('open article')).toHaveLength(
-            results.filter((result) => result.type === 'article').length
+            results.filter((result) => result.type === 'article').length,
         )
         const levels: Record<string, number> = {}
 
         // for each mocked item, get their level of nesting
         for (let i = 0; i < results.length; i++) {
             const depth = Object.entries(results[i]).filter(
-                ([key, value]) => key.startsWith('parent_category_') && !!value
+                ([key, value]) => key.startsWith('parent_category_') && !!value,
             ).length
             levels[depth] = (levels[depth] ?? 0) + 1
         }
 
         for (let i = 1; i <= Object.keys(levels).length; i++) {
             expect(
-                container.querySelectorAll(`.nesting-level-${i}`)
+                container.querySelectorAll(`.nesting-level-${i}`),
             ).toHaveLength(levels[i])
         }
 
@@ -140,7 +141,7 @@ describe('SearchResults', () => {
             expect(mockFetchArticlesByIds).toHaveBeenCalledTimes(1)
             expect(mockFetchArticlesByIds).toHaveBeenNthCalledWith(
                 1,
-                [34, 32, 31, 29]
+                [34, 32, 31, 29],
             )
 
             expect(mockFetchCategories).toHaveBeenCalledTimes(8)

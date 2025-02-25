@@ -1,9 +1,9 @@
-import {User, UserDraft} from 'config/types/user'
-import {USER_ROLES} from 'config/user'
-import {FetchAgentsOptions} from 'models/agents/types'
+import { User, UserDraft } from 'config/types/user'
+import { USER_ROLES } from 'config/user'
+import { FetchAgentsOptions } from 'models/agents/types'
 import client from 'models/api/resources'
-import {ApiListResponseCursorPagination} from 'models/api/types'
-import {deepMapKeysToSnakeCase} from 'models/api/utils'
+import { ApiListResponseCursorPagination } from 'models/api/types'
+import { deepMapKeysToSnakeCase } from 'models/api/utils'
 
 export const fetchAgents = async (options: FetchAgentsOptions = {}) => {
     const parameters: Record<string, unknown> = deepMapKeysToSnakeCase(options)
@@ -13,11 +13,11 @@ export const fetchAgents = async (options: FetchAgentsOptions = {}) => {
     return await client.get<ApiListResponseCursorPagination<User[]>>(
         '/api/users/',
         {
-            params: {limit: 30, ...parameters},
+            params: { limit: 30, ...parameters },
             paramsSerializer: {
                 indexes: null,
             },
-        }
+        },
     )
 }
 
@@ -31,7 +31,13 @@ export async function createAgent(agent: UserDraft) {
     return response
 }
 
-export async function updateAgent({id, agent}: {id: number; agent: UserDraft}) {
+export async function updateAgent({
+    id,
+    agent,
+}: {
+    id: number
+    agent: UserDraft
+}) {
     const response = await client.put<User>(`/api/users/${id}`, agent)
     return response
 }

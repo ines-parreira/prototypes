@@ -1,13 +1,14 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import Detail from 'pages/common/components/ProductDetail'
 
-import {dummyProduct, infoCardBannerText} from './fixtures'
+import { dummyProduct, infoCardBannerText } from './fixtures'
 
 describe(`Detail`, () => {
     it('should render', () => {
-        const {container} = render(<Detail {...dummyProduct} />)
+        const { container } = render(<Detail {...dummyProduct} />)
 
         expect(container).toMatchSnapshot()
     })
@@ -22,7 +23,7 @@ describe(`Detail`, () => {
                         isHidden: true,
                     },
                 }}
-            />
+            />,
         )
         expect(screen.getByText(dummyProduct.title))
         expect(screen.queryByText(infoCardBannerText)).toBe(null)

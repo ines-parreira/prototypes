@@ -1,12 +1,13 @@
-import {fireEvent, render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {phoneNumbers} from 'fixtures/newPhoneNumber'
-import {updateOrCreateIntegration} from 'state/integrations/actions'
-import {RootState, StoreDispatch} from 'state/types'
+import { phoneNumbers } from 'fixtures/newPhoneNumber'
+import { updateOrCreateIntegration } from 'state/integrations/actions'
+import { RootState, StoreDispatch } from 'state/types'
 
 import SmsIntegrationCreate from '../SmsIntegrationCreate'
 
@@ -14,8 +15,8 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({
     entities: {
         newPhoneNumbers: phoneNumbers.reduce(
-            (acc, number) => ({...acc, [number.id]: number}),
-            {}
+            (acc, number) => ({ ...acc, [number.id]: number }),
+            {},
         ),
     },
 } as RootState)
@@ -28,20 +29,20 @@ jest.mock('state/integrations/actions', () => ({
 describe('<SmsIntegrationCreate/>', () => {
     describe('render()', () => {
         it('should render', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <SmsIntegrationCreate selectedPhoneNumberId={1} />
-                </Provider>
+                </Provider>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should submit a valid payload with the selected phone_number_id', () => {
-            const {container, getByText, getByLabelText} = render(
+            const { container, getByText, getByLabelText } = render(
                 <Provider store={store}>
                     <SmsIntegrationCreate selectedPhoneNumberId={1} />
-                </Provider>
+                </Provider>,
             )
 
             const payload = fromJS({
@@ -54,7 +55,7 @@ describe('<SmsIntegrationCreate/>', () => {
             })
 
             fireEvent.change(getByLabelText('Integration title'), {
-                target: {value: 'My SMS integration'},
+                target: { value: 'My SMS integration' },
             })
 
             fireEvent.click(getByText('Add SMS'))
@@ -65,10 +66,10 @@ describe('<SmsIntegrationCreate/>', () => {
         })
 
         it("should prefill the title field using the phone number's name", () => {
-            const {container, getByText} = render(
+            const { container, getByText } = render(
                 <Provider store={store}>
                     <SmsIntegrationCreate selectedPhoneNumberId={1} />
-                </Provider>
+                </Provider>,
             )
 
             const payload = fromJS({

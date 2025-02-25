@@ -1,8 +1,8 @@
-import {ExpressionFieldSource} from '@gorgias/api-types'
+import { ExpressionFieldSource } from '@gorgias/api-types'
 
-import {TicketChannel, TicketStatus} from 'business/types/ticket'
-import {ticket} from 'fixtures/ticket'
-import {TicketStateWithoutImmutable} from 'state/ticket/types'
+import { TicketChannel, TicketStatus } from 'business/types/ticket'
+import { ticket } from 'fixtures/ticket'
+import { TicketStateWithoutImmutable } from 'state/ticket/types'
 
 import resolveTicketPropertyValue, {
     SupportedTicketFields,
@@ -12,8 +12,8 @@ describe('resolveTicketPropertyValue', () => {
     const ticketState: TicketStateWithoutImmutable = {
         ...ticket,
         custom_fields: {
-            1: {id: 1, value: 'customValue1'},
-            2: {id: 2, value: 'customValue2'},
+            1: { id: 1, value: 'customValue1' },
+            2: { id: 2, value: 'customValue2' },
         },
         status: TicketStatus.Open,
         channel: TicketChannel.Email,
@@ -24,8 +24,8 @@ describe('resolveTicketPropertyValue', () => {
             resolveTicketPropertyValue(
                 ticketState,
                 ExpressionFieldSource.Ticket,
-                SupportedTicketFields.Channel
-            )
+                SupportedTicketFields.Channel,
+            ),
         ).toBe(TicketChannel.Email)
     })
 
@@ -34,8 +34,8 @@ describe('resolveTicketPropertyValue', () => {
             resolveTicketPropertyValue(
                 ticketState,
                 ExpressionFieldSource.Ticket,
-                SupportedTicketFields.Status
-            )
+                SupportedTicketFields.Status,
+            ),
         ).toBe(TicketStatus.Open)
     })
 
@@ -44,8 +44,8 @@ describe('resolveTicketPropertyValue', () => {
             resolveTicketPropertyValue(
                 ticketState,
                 ExpressionFieldSource.TicketCustomFields,
-                1
-            )
+                1,
+            ),
         ).toBe('customValue1')
     })
 
@@ -54,8 +54,8 @@ describe('resolveTicketPropertyValue', () => {
             resolveTicketPropertyValue(
                 ticketState,
                 ExpressionFieldSource.TicketCustomFields,
-                44
-            )
+                44,
+            ),
         ).toBeNull()
     })
 
@@ -64,10 +64,10 @@ describe('resolveTicketPropertyValue', () => {
             resolveTicketPropertyValue(
                 ticketState,
                 'UnsupportedSource' as any,
-                SupportedTicketFields.Status
+                SupportedTicketFields.Status,
             )
         }).toThrow(
-            'Unsupported source "UnsupportedSource" for given property "status".'
+            'Unsupported source "UnsupportedSource" for given property "status".',
         )
     })
 
@@ -76,10 +76,10 @@ describe('resolveTicketPropertyValue', () => {
             resolveTicketPropertyValue(
                 ticketState,
                 ExpressionFieldSource.TicketCustomFields,
-                SupportedTicketFields.Status
+                SupportedTicketFields.Status,
             )
         }).toThrow(
-            'Unsupported source "TicketCustomFields" for given property "status".'
+            'Unsupported source "TicketCustomFields" for given property "status".',
         )
     })
 })

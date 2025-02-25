@@ -1,29 +1,30 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {DndProvider} from 'react-dnd'
-import {HTML5Backend} from 'react-dnd-html5-backend'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fromJS } from 'immutable'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {billingState} from 'fixtures/billing'
+import { billingState } from 'fixtures/billing'
 import useSelfServiceStoreIntegration from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
-import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
+import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
-import {EditionManagerContextProvider} from 'pages/settings/helpCenter/providers/EditionManagerContext'
-import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
-import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
-import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
-import {RootState, StoreDispatch} from 'state/types'
-import {initialState as uiState} from 'state/ui/helpCenter/reducer'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {renderWithRouter} from 'utils/testing'
+import { EditionManagerContextProvider } from 'pages/settings/helpCenter/providers/EditionManagerContext'
+import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
+import { initialState as articlesState } from 'state/entities/helpCenter/articles/reducer'
+import { initialState as categoriesState } from 'state/entities/helpCenter/categories/reducer'
+import { RootState, StoreDispatch } from 'state/types'
+import { initialState as uiState } from 'state/ui/helpCenter/reducer'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { renderWithRouter } from 'utils/testing'
 
-import {useHelpCenterCategories} from '../../hooks/useHelpCenterCategories'
-import {SearchContextProvider} from '../../providers/SearchContext'
-import {useHasAccessToAILibrary} from '../AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
+import { useHelpCenterCategories } from '../../hooks/useHelpCenterCategories'
+import { SearchContextProvider } from '../../providers/SearchContext'
+import { useHasAccessToAILibrary } from '../AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
 import HelpCenterArticlesView from '../HelpCenterArticlesView'
 
 jest.mock('../AIArticlesLibraryView/hooks/useHasAccessToAILibrary')
@@ -35,10 +36,10 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
             isReady: true,
             client: {
                 listArticles: jest.fn().mockResolvedValue({
-                    data: {data: [], meta: {item_count: 0}},
+                    data: { data: [], meta: { item_count: 0 } },
                 }),
                 listArticleTranslations: jest.fn().mockResolvedValue({
-                    data: {data: [], meta: {item_count: 0}},
+                    data: { data: [], meta: { item_count: 0 } },
                 }),
             },
             agentAbility: [
@@ -48,13 +49,13 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
                 },
             ],
         }),
-        useAbilityChecker: () => ({isPassingRulesCheck: () => true}),
+        useAbilityChecker: () => ({ isPassingRulesCheck: () => true }),
     }
 })
 
 jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
 ;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
-    getSingleHelpCenterResponseFixture
+    getSingleHelpCenterResponseFixture,
 )
 
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
@@ -69,7 +70,7 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterIdParam', () => {
 jest.mock('hooks/useModalManager/useModalManager.tsx', () => {
     return {
         useModalManager: () => ({
-            getParams: jest.fn().mockReturnValue({id: 1}),
+            getParams: jest.fn().mockReturnValue({ id: 1 }),
             isOpen: jest.fn().mockReturnValue(false),
             on: jest.fn(),
         }),
@@ -116,7 +117,7 @@ const defaultState: Partial<RootState> = {
             categories: categoriesState,
         },
     } as any,
-    ui: {helpCenter: {...uiState, currentId: 1}} as any,
+    ui: { helpCenter: { ...uiState, currentId: 1 } } as any,
     billing: fromJS(billingState),
 }
 
@@ -127,7 +128,7 @@ const route = {
 
 describe('<HelpCenterArticlesView />', () => {
     it('should render the component', () => {
-        const {container} = renderWithRouter(
+        const { container } = renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockedStore(defaultState)}>
                     <DndProvider backend={HTML5Backend}>
@@ -141,7 +142,7 @@ describe('<HelpCenterArticlesView />', () => {
                     </DndProvider>
                 </Provider>
             </QueryClientProvider>,
-            route
+            route,
         )
 
         expect(container).toMatchSnapshot()

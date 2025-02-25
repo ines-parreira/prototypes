@@ -15,12 +15,12 @@ describe('getOperatorListByVariable()', () => {
                 nodeType: 'order_selection',
                 type: 'string',
                 options: [
-                    {value: null, label: 'unfulfilled'},
-                    {value: 'partial', label: 'partially fulfilled'},
-                    {value: 'fulfilled', label: 'fulfilled'},
-                    {value: 'restocked', label: 'restocked'},
+                    { value: null, label: 'unfulfilled' },
+                    { value: 'partial', label: 'partially fulfilled' },
+                    { value: 'fulfilled', label: 'fulfilled' },
+                    { value: 'restocked', label: 'restocked' },
                 ],
-            })
+            }),
         ).toEqual([
             {
                 key: 'equals',
@@ -40,7 +40,7 @@ describe('getOperatorListByVariable()', () => {
                 value: '',
                 nodeType: 'order_selection',
                 type: 'string',
-            })
+            }),
         ).toEqual(STRING_CONDITION_OPERATORS)
     })
 
@@ -51,7 +51,7 @@ describe('getOperatorListByVariable()', () => {
                 value: '',
                 nodeType: 'order_selection',
                 type: 'number',
-            })
+            }),
         ).toEqual(NUMBER_CONDITION_OPERATORS)
     })
 
@@ -62,7 +62,7 @@ describe('getOperatorListByVariable()', () => {
                 value: '',
                 nodeType: 'order_selection',
                 type: 'boolean',
-            })
+            }),
         ).toEqual(BOOLEAN_CONDITION_OPERATORS)
     })
 
@@ -73,7 +73,7 @@ describe('getOperatorListByVariable()', () => {
                 value: '',
                 nodeType: 'order_selection',
                 type: 'date',
-            })
+            }),
         ).toEqual(DATE_CONDITION_OPERATORS)
     })
 })

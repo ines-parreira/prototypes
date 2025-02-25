@@ -1,19 +1,19 @@
-import {FilterComponentKey, FilterKey, StaticFilter} from 'models/stat/types'
-import {AUTO_QA_FILTER_KEYS} from 'pages/stats/common/filters/constants'
+import { FilterComponentKey, FilterKey, StaticFilter } from 'models/stat/types'
+import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
 import {
     ChartType,
     DataExportFormat,
     ReportConfig,
 } from 'pages/stats/custom-reports/types'
-import {CustomFieldsTicketCountBreakdownTableChart} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownTableChart'
-import {TicketDistributionChart} from 'pages/stats/ticket-insights/ticket-fields/TicketDistributionTable'
+import { CustomFieldsTicketCountBreakdownTableChart } from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTicketCountBreakdownTableChart'
+import { TicketDistributionChart } from 'pages/stats/ticket-insights/ticket-fields/TicketDistributionTable'
 import {
     TicketInsightsFieldsMetric,
     TicketInsightsFieldsMetricConfig,
 } from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsMetricConfig'
-import {TicketInsightsFieldTrend} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldTrend'
-import {STATS_ROUTES} from 'routes/constants'
-import {fetchCustomFieldsReportData} from 'services/reporting/ticketFieldsReportingService'
+import { TicketInsightsFieldTrend } from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldTrend'
+import { STATS_ROUTES } from 'routes/constants'
+import { fetchCustomFieldsReportData } from 'services/reporting/ticketFieldsReportingService'
 
 export const TICKET_INSIGHTS_PAGE_TITLE = 'Ticket Fields'
 

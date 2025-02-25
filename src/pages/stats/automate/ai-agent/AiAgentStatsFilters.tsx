@@ -1,21 +1,21 @@
-import React, {ReactNode, useEffect, useRef, useState} from 'react'
+import React, { ReactNode, useEffect, useRef, useState } from 'react'
 
-import {useAIAgentUserId} from 'hooks/reporting/automate/useAIAgentUserId'
+import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {FilterKey} from 'models/stat/types'
+import { FilterKey } from 'models/stat/types'
 import AutomatePaywallView from 'pages/automate/common/components/AutomatePaywallView'
-import {AutomateFeatures} from 'pages/automate/common/types'
-import {AiAgentStatsEmptyState} from 'pages/stats/automate/ai-agent/AiAgentStatsEmptyState'
-import {getHasAutomate} from 'state/billing/selectors'
-import {getStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
-import {setStatsFiltersWithLogicalOperators} from 'state/stats/statsSlice'
+import { AutomateFeatures } from 'pages/automate/common/types'
+import { AiAgentStatsEmptyState } from 'pages/stats/automate/ai-agent/AiAgentStatsEmptyState'
+import { getHasAutomate } from 'state/billing/selectors'
+import { getStatsFiltersWithLogicalOperators } from 'state/stats/selectors'
+import { setStatsFiltersWithLogicalOperators } from 'state/stats/statsSlice'
 
 type Props = {
     children?: ReactNode
 }
 
-export default function AiAgentStatsFilters({children}: Props) {
+export default function AiAgentStatsFilters({ children }: Props) {
     const dispatch = useAppDispatch()
     const statsFilters = useAppSelector(getStatsFiltersWithLogicalOperators)
     const hasAutomate = useAppSelector(getHasAutomate)
@@ -44,7 +44,7 @@ export default function AiAgentStatsFilters({children}: Props) {
                 setStatsFiltersWithLogicalOperators({
                     ...initialStatsFilters,
                     period: periodRef.current,
-                })
+                }),
             )
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

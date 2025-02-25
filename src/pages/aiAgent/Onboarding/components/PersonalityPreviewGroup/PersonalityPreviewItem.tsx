@@ -1,10 +1,13 @@
-import {Skeleton} from '@gorgias/merchant-ui-kit'
-import cn from 'classnames'
 import React from 'react'
 
-import {Card, CardContent} from 'pages/aiAgent/Onboarding/components/Card'
+import cn from 'classnames'
 
-import {mixedPreviews} from './constants'
+import { Skeleton } from '@gorgias/merchant-ui-kit'
+
+import { Card, CardContent } from 'pages/aiAgent/Onboarding/components/Card'
+
+import { mixedPreviews } from './constants'
+
 import css from './PersonalityPreviewItem.less'
 
 type Props = {
@@ -35,14 +38,14 @@ export const PersonalityPreviewItem: React.FC<Props> = ({
 }) => {
     let ariaLoadingProps: Record<string, string> = {}
     if (isLoading) {
-        ariaLoadingProps = {'aria-busy': 'true', 'aria-live': 'polite'}
+        ariaLoadingProps = { 'aria-busy': 'true', 'aria-live': 'polite' }
     }
 
     return (
         <Card
             className={cn(
-                {[css.selected]: isSelected, [css.isLoading]: isLoading},
-                css.card
+                { [css.selected]: isSelected, [css.isLoading]: isLoading },
+                css.card,
             )}
             role="radio"
             aria-checked={isSelected}

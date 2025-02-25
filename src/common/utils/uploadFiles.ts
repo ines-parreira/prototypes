@@ -1,4 +1,4 @@
-import {GenericAttachment} from 'common/types'
+import { GenericAttachment } from 'common/types'
 import client from 'models/api/resources'
 
 /**
@@ -6,7 +6,7 @@ import client from 'models/api/resources'
  */
 export default function uploadFiles(
     files: FileList | Array<GenericAttachment> | File[],
-    params: Maybe<Record<string, unknown>> = null
+    params: Maybe<Record<string, unknown>> = null,
 ): Promise<GenericAttachment[]> {
     const formData = new window.FormData()
 

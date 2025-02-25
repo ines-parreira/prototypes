@@ -1,8 +1,9 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {stats as statsConfig, SUPPORT_VOLUME} from 'config/stats'
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+
+import { stats as statsConfig, SUPPORT_VOLUME } from 'config/stats'
 
 import BarStat from '../BarStat'
 
@@ -43,7 +44,7 @@ describe('BarStat', () => {
     it('should render a bar chart', () => {
         const config = statsConfig.find((config, key) => key === SUPPORT_VOLUME)
 
-        const {container} = render(<BarStat {...minProps} config={config} />)
+        const { container } = render(<BarStat {...minProps} config={config} />)
 
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -51,8 +52,8 @@ describe('BarStat', () => {
     it('should render a bar chart with "no data" message', () => {
         const config = statsConfig.find((config, key) => key === SUPPORT_VOLUME)
 
-        const {container} = render(
-            <BarStat {...minPropsNoData} config={config} />
+        const { container } = render(
+            <BarStat {...minPropsNoData} config={config} />,
         )
 
         expect(container.firstChild).toMatchSnapshot()

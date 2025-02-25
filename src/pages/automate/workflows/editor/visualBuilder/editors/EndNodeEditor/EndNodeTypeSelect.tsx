@@ -1,11 +1,12 @@
+import React, { useRef, useState } from 'react'
+
 import classNames from 'classnames'
-import React, {useRef, useState} from 'react'
 
 import {
     endNodeActionIconByAction,
     endNodeActionLabelByAction,
 } from 'pages/automate/workflows/constants'
-import {EndNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { EndNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
@@ -69,7 +70,7 @@ export default function EndNodeTypeSelect({
                                         className={classNames(
                                             'material-icons',
                                             css.icon,
-                                            'mr-2'
+                                            'mr-2',
                                         )}
                                     >
                                         {endNodeActionIconByAction[option]}

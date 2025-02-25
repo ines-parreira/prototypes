@@ -1,11 +1,13 @@
-import {useGetTicketMessage} from '@gorgias/api-queries'
-import {QueryClientProvider} from '@tanstack/react-query'
-import {render} from '@testing-library/react'
 import React from 'react'
 
+import { QueryClientProvider } from '@tanstack/react-query'
+import { render } from '@testing-library/react'
+
+import { useGetTicketMessage } from '@gorgias/api-queries'
+
 import MetaRepliedByLabel from 'pages/tickets/detail/components/TicketMessages/MetaRepliedByLabel'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 const queryClient = mockQueryClient()
 
@@ -24,14 +26,14 @@ describe('MetaRepliedByLabel', () => {
             data: undefined,
         } as ReturnType<typeof useGetTicketMessage>)
 
-        const {getByText} = render(
+        const { getByText } = render(
             <QueryClientProvider client={queryClient}>
                 <MetaRepliedByLabel reply={reply} />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(mockUseGetTicketMessage).toHaveBeenCalledWith(1, 2, {
-            query: {refetchInterval: false, refetchOnWindowFocus: false},
+            query: { refetchInterval: false, refetchOnWindowFocus: false },
         })
 
         expect(getByText('Loading...')).toBeInTheDocument()
@@ -42,15 +44,15 @@ describe('MetaRepliedByLabel', () => {
             isLoading: false,
             data: {
                 data: {
-                    sender: {name: 'John Doe'},
+                    sender: { name: 'John Doe' },
                 },
             },
         } as ReturnType<typeof useGetTicketMessage>)
 
-        const {queryByText} = render(
+        const { queryByText } = render(
             <QueryClientProvider client={queryClient}>
                 <MetaRepliedByLabel reply={reply} />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(queryByText('Loading...')).not.toBeInTheDocument()

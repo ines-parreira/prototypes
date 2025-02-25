@@ -1,16 +1,15 @@
 import client from '../../models/api/resources'
-import {ApiListResponseLegacyPagination} from '../../models/api/types'
-import {StoreDispatch} from '../types'
-
+import { ApiListResponseLegacyPagination } from '../../models/api/types'
+import { StoreDispatch } from '../types'
 import * as constants from './constants'
-import {AuthItem} from './types'
+import { AuthItem } from './types'
 
 export const fetchCurrentAuths =
     () =>
     (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         return client
             .get<ApiListResponseLegacyPagination<AuthItem[]>>(
-                '/api/users/0/auths/'
+                '/api/users/0/auths/',
             )
             .then((json) => json?.data?.data)
             .then(
@@ -26,7 +25,7 @@ export const fetchCurrentAuths =
                         error,
                         reason: 'Unable to get current authentification tokens.',
                     })
-                }
+                },
             )
     }
 
@@ -49,6 +48,6 @@ export const resetApiKey =
                         error,
                         reason: 'Unable to reset the API key.',
                     })
-                }
+                },
             )
     }

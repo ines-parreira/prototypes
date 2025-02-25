@@ -1,15 +1,16 @@
-import {render} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {idTemplate} from 'fixtures/widgets'
-import {LEAF_TYPES} from 'models/widget/constants'
+import { render } from '@testing-library/react'
+
+import { idTemplate } from 'fixtures/widgets'
+import { LEAF_TYPES } from 'models/widget/constants'
 import {
     removeEditedWidget,
     startWidgetEdition,
     stopWidgetEdition,
     updateEditedWidget,
 } from 'state/widgets/actions'
-import {assumeMock, getLastMockCall} from 'utils/testing'
+import { assumeMock, getLastMockCall } from 'utils/testing'
 
 import CopyButton from '../CopyButton'
 import Field from '../Field'
@@ -22,15 +23,15 @@ jest.mock('../CopyButton', () => jest.fn(() => <span>copy button</span>))
 const CopyButtonMock = assumeMock(CopyButton)
 
 jest.mock('../views', () =>
-    jest.fn(({copyButton}: {copyButton: React.ReactNode}) => {
+    jest.fn(({ copyButton }: { copyButton: React.ReactNode }) => {
         return <span>ui field {copyButton}</span>
-    })
+    }),
 )
 const UIFieldMock = assumeMock(UIField)
 
 describe('Field', () => {
     const defaultAbsolutePath = ['foo', 'bar']
-    const defaultTemplate = {...idTemplate, absolutePath: defaultAbsolutePath}
+    const defaultTemplate = { ...idTemplate, absolutePath: defaultAbsolutePath }
 
     const defaultProps: ComponentProps<typeof Field> = {
         value: 'foo value',
@@ -50,7 +51,7 @@ describe('Field', () => {
                     value: expect.any(String),
                     label: expect.any(String),
                 }),
-            ])
+            ]),
         )
     })
 
@@ -65,7 +66,7 @@ describe('Field', () => {
                 isEditionMode: defaultProps.isEditing,
                 valueCanOverflow: defaultProps.valueCanOverflow,
                 editionHiddenFields: defaultProps.editionHiddenFields,
-            })
+            }),
         )
     })
 
@@ -81,7 +82,7 @@ describe('Field', () => {
         getLastMockCall(UIFieldMock)[0].onEditionStart()
         expect(mockedDispatch).toHaveBeenCalledTimes(1)
         expect(mockedDispatch).toHaveBeenLastCalledWith(
-            startWidgetEdition(idTemplate.templatePath!)
+            startWidgetEdition(idTemplate.templatePath!),
         )
 
         getLastMockCall(UIFieldMock)[0].onEditionStop()
@@ -91,14 +92,14 @@ describe('Field', () => {
         getLastMockCall(UIFieldMock)[0].onDelete()
         expect(mockedDispatch).toHaveBeenCalledTimes(3)
         expect(mockedDispatch).toHaveBeenLastCalledWith(
-            removeEditedWidget(idTemplate.templatePath, defaultAbsolutePath)
+            removeEditedWidget(idTemplate.templatePath, defaultAbsolutePath),
         )
 
-        const formData = {title: 'ok', type: LEAF_TYPES.BOOLEAN}
+        const formData = { title: 'ok', type: LEAF_TYPES.BOOLEAN }
         getLastMockCall(UIFieldMock)[0].onSubmit(formData)
         expect(mockedDispatch).toHaveBeenCalledTimes(4)
         expect(mockedDispatch).toHaveBeenLastCalledWith(
-            updateEditedWidget(formData)
+            updateEditedWidget(formData),
         )
     })
 

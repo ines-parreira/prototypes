@@ -1,11 +1,12 @@
-import {render} from '@testing-library/react'
-import LD from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {GorgiasChatAvatarNameType} from 'models/integration/types'
+import { render } from '@testing-library/react'
+import LD from 'launchdarkly-react-client-sdk'
 
-import {AgentDisplayName} from '../AgentDisplayName'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { GorgiasChatAvatarNameType } from 'models/integration/types'
+
+import { AgentDisplayName } from '../AgentDisplayName'
 
 describe('<AgentDisplayName />', () => {
     const name = 'John Doe'
@@ -15,13 +16,13 @@ describe('<AgentDisplayName />', () => {
             [FeatureFlagKey.ChatAgentAvatarCustomization]: false,
         }))
 
-        const {container} = render(
+        const { container } = render(
             <AgentDisplayName
                 className="acme"
                 chatTitle="Acme Support"
                 name={name}
                 type={undefined}
-            />
+            />,
         )
 
         expect(container).toMatchSnapshot()
@@ -32,13 +33,13 @@ describe('<AgentDisplayName />', () => {
             [FeatureFlagKey.ChatAgentAvatarCustomization]: true,
         }))
 
-        const {container} = render(
+        const { container } = render(
             <AgentDisplayName
                 className="acme"
                 chatTitle="Acme Support"
                 name={name}
                 type={GorgiasChatAvatarNameType.AGENT_FIRST_NAME}
-            />
+            />,
         )
 
         expect(container).toMatchSnapshot()
@@ -49,13 +50,13 @@ describe('<AgentDisplayName />', () => {
             [FeatureFlagKey.ChatAgentAvatarCustomization]: true,
         }))
 
-        const {container} = render(
+        const { container } = render(
             <AgentDisplayName
                 className="acme"
                 chatTitle="Acme Support"
                 name={name}
                 type={GorgiasChatAvatarNameType.AGENT_FIRST_LAST_NAME_INITIAL}
-            />
+            />,
         )
 
         expect(container).toMatchSnapshot()
@@ -66,13 +67,13 @@ describe('<AgentDisplayName />', () => {
             [FeatureFlagKey.ChatAgentAvatarCustomization]: true,
         }))
 
-        const {container} = render(
+        const { container } = render(
             <AgentDisplayName
                 className="acme"
                 chatTitle="Acme Support"
                 name="John"
                 type={GorgiasChatAvatarNameType.AGENT_FIRST_LAST_NAME_INITIAL}
-            />
+            />,
         )
 
         expect(container).toMatchSnapshot()
@@ -83,13 +84,13 @@ describe('<AgentDisplayName />', () => {
             [FeatureFlagKey.ChatAgentAvatarCustomization]: true,
         }))
 
-        const {container} = render(
+        const { container } = render(
             <AgentDisplayName
                 className="acme"
                 chatTitle="Acme Support"
                 name={name}
                 type={GorgiasChatAvatarNameType.AGENT_FULLNAME}
-            />
+            />,
         )
 
         expect(container).toMatchSnapshot()
@@ -100,13 +101,13 @@ describe('<AgentDisplayName />', () => {
             [FeatureFlagKey.ChatAgentAvatarCustomization]: true,
         }))
 
-        const {container} = render(
+        const { container } = render(
             <AgentDisplayName
                 className="acme"
                 chatTitle="Acme Support"
                 name={name}
                 type={GorgiasChatAvatarNameType.CHAT_TITLE}
-            />
+            />,
         )
 
         expect(container).toMatchSnapshot()
@@ -117,13 +118,13 @@ describe('<AgentDisplayName />', () => {
             [FeatureFlagKey.ChatAgentAvatarCustomization]: true,
         }))
 
-        const {container} = render(
+        const { container } = render(
             <AgentDisplayName
                 className="acme"
                 chatTitle={undefined}
                 name={name}
                 type={GorgiasChatAvatarNameType.CHAT_TITLE}
-            />
+            />,
         )
 
         expect(container).toMatchSnapshot()

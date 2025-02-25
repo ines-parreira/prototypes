@@ -1,7 +1,7 @@
 // g/integrations/aircall/schemas.py
-import {IntegrationType} from '../constants'
-import type {Integration} from './'
-import type {IntegrationBase} from './base'
+import { IntegrationType } from '../constants'
+import type { Integration } from './'
+import type { IntegrationBase } from './base'
 
 export type AircallIntegration = IntegrationBase & {
     type: IntegrationType.Aircall
@@ -13,6 +13,6 @@ type AircallIntegrationMeta = {
 }
 
 export const isAircallIntegration = (
-    integration: Maybe<Integration>
+    integration: Maybe<Integration>,
 ): integration is AircallIntegration =>
     integration?.type === IntegrationType.Aircall

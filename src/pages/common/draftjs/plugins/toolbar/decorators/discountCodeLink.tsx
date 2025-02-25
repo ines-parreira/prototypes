@@ -1,19 +1,20 @@
-import {ContentBlock, ContentState} from 'draft-js'
 import React from 'react'
 
-import {draftjsGorgiasCustomBlockRenderers} from 'common/editor'
+import { ContentBlock, ContentState } from 'draft-js'
+
+import { draftjsGorgiasCustomBlockRenderers } from 'common/editor'
 
 import {
-    DecoratorStrategyCallback,
-    DecoratorComponentProps,
     Decorator,
+    DecoratorComponentProps,
+    DecoratorStrategyCallback,
 } from '../../types'
 
 const discountCodeLink = (): Decorator => ({
     strategy: (
         contentBlock: ContentBlock,
         callback: DecoratorStrategyCallback,
-        contentState: ContentState
+        contentState: ContentState,
     ) => {
         contentBlock.findEntityRanges((character) => {
             const entityKey = character.getEntity()
@@ -26,8 +27,8 @@ const discountCodeLink = (): Decorator => ({
     },
 
     component: (props: DecoratorComponentProps) => {
-        const {contentState, entityKey, children} = props
-        const {url, code} = contentState.getEntity(entityKey).getData()
+        const { contentState, entityKey, children } = props
+        const { url, code } = contentState.getEntity(entityKey).getData()
         return (
             <a
                 id={entityKey}

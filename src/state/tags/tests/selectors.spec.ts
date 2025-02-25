@@ -1,8 +1,8 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
 
-import {initialState} from '../reducers'
+import { initialState } from '../reducers'
 import * as selectors from '../selectors'
 
 describe('tags selectors', () => {
@@ -41,20 +41,20 @@ describe('tags selectors', () => {
                         selectAll: true,
                     },
                 }) // We need to do that separately, else JS transforms the `int` key into a string
-                .setIn(['meta', selectedTagId], fromJS({selected: true})),
+                .setIn(['meta', selectedTagId], fromJS({ selected: true })),
         } as RootState
     })
 
     it('getTagsState', () => {
         expect(selectors.getTagsState(state)).toEqualImmutable(state.tags)
         expect(selectors.getTagsState({} as RootState)).toEqualImmutable(
-            fromJS({})
+            fromJS({}),
         )
     })
 
     it('getTags', () => {
         expect(selectors.getTags(state)).toEqualImmutable(
-            state.tags.get('items')
+            state.tags.get('items'),
         )
         expect(selectors.getTags({} as RootState)).toEqualImmutable(fromJS([]))
     })
@@ -66,7 +66,7 @@ describe('tags selectors', () => {
 
     it('getSelectAll', () => {
         expect(selectors.getSelectAll(state)).toBe(
-            state.tags.getIn(['_internal', 'selectAll'])
+            state.tags.getIn(['_internal', 'selectAll']),
         )
         expect(selectors.getSelectAll({} as RootState)).toBe(false)
     })
@@ -80,11 +80,11 @@ describe('tags selectors', () => {
                         ...state,
                         tags: state.tags.setIn(
                             ['_internal', 'creating'],
-                            value
+                            value,
                         ),
-                    })
+                    }),
                 ).toBe(!!value)
-            }
+            },
         )
     })
 
@@ -95,10 +95,10 @@ describe('tags selectors', () => {
 
     it('getSelectedTagMeta', () => {
         expect(selectors.getSelectedTagMeta(selectedTagId)(state)).toBe(
-            state.tags.getIn(['meta', selectedTagId])
+            state.tags.getIn(['meta', selectedTagId]),
         )
         expect(
-            selectors.getSelectedTagMeta(selectedTagId)({} as RootState)
+            selectors.getSelectedTagMeta(selectedTagId)({} as RootState),
         ).toBe(fromJS({}))
     })
 })

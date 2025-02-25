@@ -1,5 +1,5 @@
-import {ConditionKey} from 'pages/automate/workflows/models/conditions.types'
-import {WorkflowVariable} from 'pages/automate/workflows/models/variables.types'
+import { ConditionKey } from 'pages/automate/workflows/models/conditions.types'
+import { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
 
 export interface ConditionOperator {
     label: string
@@ -113,7 +113,7 @@ export const DATE_CONDITION_OPERATORS: ConditionOperator[] = [
 ]
 
 export const getOperatorListByVariable = (
-    variable: WorkflowVariable
+    variable: WorkflowVariable,
 ): ConditionOperator[] => {
     switch (variable.type) {
         case 'date':

@@ -1,34 +1,37 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useCallback, useMemo, useState} from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
+import classNames from 'classnames'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
-import {Plan, Cadence, ProductType} from 'models/billing/types'
-import {getProductLabel, isStarterTier} from 'models/billing/utils'
+import { Cadence, Plan, ProductType } from 'models/billing/types'
+import { getProductLabel, isStarterTier } from 'models/billing/utils'
 import Button from 'pages/common/components/button/Button'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {Value} from 'pages/common/forms/SelectField/types'
-import {handleConvertProductRemoved} from 'pages/settings/new_billing/utils/handleConvertProductRemoved'
-import {getCurrentPlansByProduct} from 'state/billing/selectors'
-import {CurrentProductsUsages} from 'state/billing/types'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import { Value } from 'pages/common/forms/SelectField/types'
+import { handleConvertProductRemoved } from 'pages/settings/new_billing/utils/handleConvertProductRemoved'
+import { getCurrentPlansByProduct } from 'state/billing/selectors'
+import { CurrentProductsUsages } from 'state/billing/types'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import {
     ENTERPRISE_PRICE_ID,
-    PRODUCT_INFO,
     PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP,
+    PRODUCT_INFO,
 } from '../../constants'
 import useAutomatedHelpdeskCancellationFlowAvailable from '../../hooks/useAutomatedHelpdeskCancellationFlowAvailable'
-import {formatNumTickets} from '../../utils/formatAmount'
-import {SelectedPlans} from '../../views/BillingProcessView/BillingProcessView'
+import { formatNumTickets } from '../../utils/formatAmount'
+import { SelectedPlans } from '../../views/BillingProcessView/BillingProcessView'
 import AutoUpgradeToggle from '../AutoUpgradeToggle'
-import Badge, {BadgeType} from '../Badge'
+import Badge, { BadgeType } from '../Badge'
 import CancelAAOModal from '../CancelAAOModal/CancelAAOModal'
 import CancelProductModal from '../CancelProductModal/CancelProductModal'
 import CounterText from '../CounterText'
+
 import css from './ProductPlanSelection.less'
 
 export type ProductPlanSelectionProps = {
@@ -87,7 +90,7 @@ const ProductPlanSelection = ({
                 tooltipText: undefined,
             }
         },
-        [cadence]
+        [cadence],
     )
 
     const getLabel = useCallback((plan: Plan) => {
@@ -124,7 +127,7 @@ const ProductPlanSelection = ({
                 value: ENTERPRISE_PRICE_ID,
                 label: `${formatNumTickets(
                     availablePlans[availablePlans.length - 1]
-                        ?.num_quota_tickets ?? 0
+                        ?.num_quota_tickets ?? 0,
                 )}+`,
             },
         ],
@@ -134,7 +137,7 @@ const ProductPlanSelection = ({
             availablePlans,
             currentPlan,
             type,
-        ]
+        ],
     )
 
     const handleClose = useCallback(() => {
@@ -151,7 +154,7 @@ const ProductPlanSelection = ({
         handleClose()
         handleConvertProductRemoved(
             selectedPlan?.internal_id,
-            currentAccount.get('domain')
+            currentAccount.get('domain'),
         )
     }, [handleClose, selectedPlan, currentAccount])
 
@@ -167,7 +170,7 @@ const ProductPlanSelection = ({
         : null
     const isAutomatedHelpdeskCancellationFlowAvailable =
         useAutomatedHelpdeskCancellationFlowAvailable(
-            currentSubscriptionProducts?.helpdesk || null
+            currentSubscriptionProducts?.helpdesk || null,
         ) &&
         editingAvailable &&
         !isTrialing
@@ -263,7 +266,7 @@ const ProductPlanSelection = ({
                     <i
                         className={classNames(
                             'material-icons',
-                            css.closeButton
+                            css.closeButton,
                         )}
                         onClick={handleClose}
                     >

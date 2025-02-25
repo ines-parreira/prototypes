@@ -1,13 +1,13 @@
-import {createAction} from '@reduxjs/toolkit'
+import { createAction } from '@reduxjs/toolkit'
 
-import {LocaleCode} from 'models/helpCenter/types'
+import { LocaleCode } from 'models/helpCenter/types'
 
-import {UiActions} from './types'
+import { UiActions } from './types'
 
 export const changeViewLanguage = createAction<LocaleCode>(
-    UiActions.ChangeLanguage
+    UiActions.ChangeLanguage,
 )
 
 export const changeHelpCenterId = createAction<number | null>(
-    UiActions.ChangeHelpCenterId
+    UiActions.ChangeHelpCenterId,
 )

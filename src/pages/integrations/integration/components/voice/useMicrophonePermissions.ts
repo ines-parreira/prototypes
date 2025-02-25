@@ -1,10 +1,11 @@
-import {useQuery} from '@tanstack/react-query'
-import {useState} from 'react'
+import { useState } from 'react'
+
+import { useQuery } from '@tanstack/react-query'
 
 const DEFAULT_CHECK_INTERVAL = 5000
 
 export default function useMicrophonePermissions(
-    refetchInterval = DEFAULT_CHECK_INTERVAL
+    refetchInterval = DEFAULT_CHECK_INTERVAL,
 ) {
     const [permissionState, setPermissionState] =
         useState<PermissionState | null>()
@@ -30,5 +31,5 @@ export default function useMicrophonePermissions(
         refetchInterval,
     })
 
-    return {permissionDenied: permissionState === 'denied'}
+    return { permissionDenied: permissionState === 'denied' }
 }

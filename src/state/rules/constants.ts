@@ -1,4 +1,4 @@
-import {ManagedRulesSlugs} from './types'
+import { ManagedRulesSlugs } from './types'
 
 export const ADD_RULE_START = 'ADD_RULE_START'
 export const ADD_RULE_END = 'ADD_RULE_END'

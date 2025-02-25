@@ -1,4 +1,4 @@
-import {getDecreaseInFirstResponseTimeTrend} from 'hooks/reporting/automate/automateStatsCalculatedTrends'
+import { getDecreaseInFirstResponseTimeTrend } from 'hooks/reporting/automate/automateStatsCalculatedTrends'
 import {
     fetchBillableTicketsExcludingAIAgent,
     fetchFilteredAutomatedInteractions,
@@ -9,23 +9,23 @@ import {
     useFirstResponseTimeExcludingAIAgent,
     useFirstResponseTimeIncludingAIAgent,
 } from 'hooks/reporting/automate/automationTrends'
-import {useAIAgentUserId} from 'hooks/reporting/automate/useAIAgentUserId'
-import {StatsFilters} from 'models/stat/types'
+import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
+import { StatsFilters } from 'models/stat/types'
 
 export const useDecreaseInFirstResponseTimeTrend = (
     filters: StatsFilters,
-    timezone: string
+    timezone: string,
 ) => {
     const aiAgentUserId = useAIAgentUserId()
     const filteredAutomatedInteractions = useFilteredAutomatedInteractions(
         filters,
-        timezone
+        timezone,
     )
 
     const billableTicketsExcludingAIAgent = useBillableTicketsExcludingAIAgent(
         filters,
         timezone,
-        aiAgentUserId
+        aiAgentUserId,
     )
     const firstResponseTimeExcludingAIAgent =
         useFirstResponseTimeExcludingAIAgent(filters, timezone, aiAgentUserId)
@@ -51,7 +51,7 @@ export const useDecreaseInFirstResponseTimeTrend = (
         filteredAutomatedInteractions.data,
         billableTicketsExcludingAIAgent.data,
         firstResponseTimeExcludingAIAgent.data,
-        firstResponseTimeIncludingAIAgent.data
+        firstResponseTimeIncludingAIAgent.data,
     )
 }
 
@@ -59,7 +59,7 @@ export const fetchDecreaseInFirstResponseTimeTrend = async (
     filters: StatsFilters,
     timezone: string,
     _isAutomateNonFilteredDenominatorInAutomationRate: boolean | undefined,
-    aiAgentUserId: string | undefined
+    aiAgentUserId: string | undefined,
 ) => {
     return Promise.all([
         fetchFilteredAutomatedInteractions(filters, timezone),
@@ -68,7 +68,7 @@ export const fetchDecreaseInFirstResponseTimeTrend = async (
         fetchFirstResponseTimeExcludingAIAgent(
             filters,
             timezone,
-            aiAgentUserId
+            aiAgentUserId,
         ),
 
         fetchFirstResponseTimeIncludingAIAgent(filters, timezone),
@@ -85,7 +85,7 @@ export const fetchDecreaseInFirstResponseTimeTrend = async (
                 filteredAutomatedInteractions.data,
                 billableTicketsExcludingAIAgent.data,
                 firstResponseTimeExcludingAIAgent.data,
-                firstResponseTimeIncludingAIAgent.data
-            )
+                firstResponseTimeIncludingAIAgent.data,
+            ),
     )
 }

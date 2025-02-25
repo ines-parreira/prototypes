@@ -1,13 +1,12 @@
-import {fromJS, Map, List} from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 import _isUndefined from 'lodash/isUndefined'
 
-import {UserSetting, User} from 'config/types/user'
+import { User, UserSetting } from 'config/types/user'
 
 import * as agentConstants from '../agents/constants'
-import {GorgiasAction} from '../types'
-
+import { GorgiasAction } from '../types'
 import * as constants from './constants'
-import {CurrentUserState} from './types'
+import { CurrentUserState } from './types'
 
 export const initialState: CurrentUserState = fromJS({
     settings: [],
@@ -21,7 +20,7 @@ export const initialState: CurrentUserState = fromJS({
 
 export default function reducer(
     state: CurrentUserState = initialState,
-    action: GorgiasAction
+    action: GorgiasAction,
 ): CurrentUserState {
     if (!action) {
         return state
@@ -40,25 +39,25 @@ export default function reducer(
         case constants.CHANGE_PASSWORD_SUCCESS:
             return (fromJS(action.resp) as Map<any, any>).setIn(
                 ['_internal', 'loading', 'currentUser'],
-                false
+                false,
             )
 
         case constants.SUBMIT_SETTING_START:
             return state.setIn(
                 ['_internal', 'loading', 'settings', action.settingType],
-                true
+                true,
             )
 
         case constants.SUBMIT_SETTING_ERROR:
             return state.setIn(
                 ['_internal', 'loading', 'settings', action.settingType],
-                false
+                false,
             )
 
         case constants.SUBMIT_SETTING_SUCCESS: {
             const newState = state.setIn(
                 ['_internal', 'loading', 'settings', action.settingType],
-                false
+                false,
             )
             if (action.isUpdate) {
                 return newState.update('settings', (settings: List<any>) => {
@@ -69,7 +68,7 @@ export default function reducer(
                         ) {
                             return setting.set(
                                 'data',
-                                fromJS((action.resp as UserSetting).data)
+                                fromJS((action.resp as UserSetting).data),
                             )
                         }
                         return setting
@@ -77,13 +76,13 @@ export default function reducer(
                 })
             }
             return newState.update('settings', (settings: List<any>) =>
-                settings.push(fromJS(action.resp))
+                settings.push(fromJS(action.resp)),
             )
         }
 
         case constants.TOGGLE_ACTIVE_STATUS:
             return state.update('is_active', (status) =>
-                _isUndefined(action.status) ? !status : action.status
+                _isUndefined(action.status) ? !status : action.status,
             )
 
         case constants.SET_IS_AVAILABLE:
@@ -92,11 +91,11 @@ export default function reducer(
                     if (setting.get('type') === 'preferences') {
                         return setting.setIn(
                             ['data', 'available'],
-                            action.payload
+                            action.payload,
                         )
                     }
                     return setting
-                })
+                }),
             )
 
         case constants.UPDATE_2FA_STATUS:

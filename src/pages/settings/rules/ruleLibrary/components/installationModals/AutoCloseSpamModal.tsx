@@ -1,14 +1,13 @@
-import classnames from 'classnames'
 import React from 'react'
+
+import classnames from 'classnames'
 
 import FakeTicketComponent from 'pages/settings/rules/components/FakeTicketComponent'
 
-import {ManagedRuleModalProps} from '../InstallRuleModalBody'
-
-import defaultModalCss from '../RuleRecipeModal.less'
-
+import { ManagedRuleModalProps } from '../InstallRuleModalBody'
 import TargetCount from './components/TargetCount'
 
+import defaultModalCss from '../RuleRecipeModal.less'
 import css from './ManagedRuleModal.less'
 
 export const AutoCloseSpamModal = ({

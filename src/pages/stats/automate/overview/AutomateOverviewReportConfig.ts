@@ -1,11 +1,11 @@
-import {fetchFilteredAutomatedInteractions} from 'hooks/reporting/automate/automationTrends'
-import {fetchAutomationCostSavedTrend} from 'hooks/reporting/automate/useAutomationCostSavedTrend'
-import {fetchAutomationRateTrend} from 'hooks/reporting/automate/useAutomationRateTrend'
-import {fetchDecreaseInFirstResponseTimeTrend} from 'hooks/reporting/automate/useDecreaseInFirstResponseTimeTrend'
-import {fetchDecreaseInResolutionTimeTrend} from 'hooks/reporting/automate/useDecreaseInResolutionTimeTrend'
-import {fetchTimeSavedByAgentsTrend} from 'hooks/reporting/automate/useTimeSavedByAgentsTrend'
-import {FilterKey} from 'models/stat/types'
-import {AUTOMATION_RATE_TOOLTIP} from 'pages/automate/automate-metrics/AutomationRateMetric'
+import { fetchFilteredAutomatedInteractions } from 'hooks/reporting/automate/automationTrends'
+import { fetchAutomationCostSavedTrend } from 'hooks/reporting/automate/useAutomationCostSavedTrend'
+import { fetchAutomationRateTrend } from 'hooks/reporting/automate/useAutomationRateTrend'
+import { fetchDecreaseInFirstResponseTimeTrend } from 'hooks/reporting/automate/useDecreaseInFirstResponseTimeTrend'
+import { fetchDecreaseInResolutionTimeTrend } from 'hooks/reporting/automate/useDecreaseInResolutionTimeTrend'
+import { fetchTimeSavedByAgentsTrend } from 'hooks/reporting/automate/useTimeSavedByAgentsTrend'
+import { FilterKey } from 'models/stat/types'
+import { AUTOMATION_RATE_TOOLTIP } from 'pages/automate/automate-metrics/AutomationRateMetric'
 import {
     AUTOMATED_INTERACTION_TOOLTIP,
     AUTOMATED_INTERACTIONS_LABEL,
@@ -15,19 +15,19 @@ import {
     DECREASE_IN_RESOLUTION_TIME,
     TIME_SAVED_BY_AGENTS,
 } from 'pages/automate/automate-metrics/constants'
-import {COST_SAVED_TOOLTIP} from 'pages/automate/automate-metrics/CostSavedMetric'
-import {DECREASE_IN_FIRST_RESPONSE_TOOLTIP} from 'pages/automate/automate-metrics/DecreaseInFirstResponseTimeMetric'
-import {DECREASE_IN_RESOLUTION_TIME_TOOLTIP} from 'pages/automate/automate-metrics/DecreaseInResolutionTimeMetric'
-import {TIME_SAVED_BY_AGENTS_TOOLTIP} from 'pages/automate/automate-metrics/TimeSavedByAgentsMetric'
-import {AutomatedInteractionsGraphChart} from 'pages/stats/automate/overview/charts/AutomatedInteractionsGraphChart'
-import {AutomatedInteractionsKPIChart} from 'pages/stats/automate/overview/charts/AutomatedInteractionsKPIChart'
-import {AutomatedInteractionsPerFeatureGraphChart} from 'pages/stats/automate/overview/charts/AutomatedInteractionsPerFeatureGraphChart'
-import {AutomationCostSavedKPIChart} from 'pages/stats/automate/overview/charts/AutomationCostSavedKPIChart'
-import {AutomationDecreaseInFirstResponseTimeTrendChart} from 'pages/stats/automate/overview/charts/AutomationDecreaseInFirstResponseTimeTrendChart'
-import {AutomationRateGraphChart} from 'pages/stats/automate/overview/charts/AutomationRateGraphChart'
-import {AutomationRateKPIChart} from 'pages/stats/automate/overview/charts/AutomationRateKPIChart'
-import {DecreaseInResolutionTimeKPIChart} from 'pages/stats/automate/overview/charts/DecreaseInResolutionTimeKPIChart'
-import {TimeSavedByAgentsKPIChart} from 'pages/stats/automate/overview/charts/TimeSavedByAgentsKPIChart'
+import { COST_SAVED_TOOLTIP } from 'pages/automate/automate-metrics/CostSavedMetric'
+import { DECREASE_IN_FIRST_RESPONSE_TOOLTIP } from 'pages/automate/automate-metrics/DecreaseInFirstResponseTimeMetric'
+import { DECREASE_IN_RESOLUTION_TIME_TOOLTIP } from 'pages/automate/automate-metrics/DecreaseInResolutionTimeMetric'
+import { TIME_SAVED_BY_AGENTS_TOOLTIP } from 'pages/automate/automate-metrics/TimeSavedByAgentsMetric'
+import { AutomatedInteractionsGraphChart } from 'pages/stats/automate/overview/charts/AutomatedInteractionsGraphChart'
+import { AutomatedInteractionsKPIChart } from 'pages/stats/automate/overview/charts/AutomatedInteractionsKPIChart'
+import { AutomatedInteractionsPerFeatureGraphChart } from 'pages/stats/automate/overview/charts/AutomatedInteractionsPerFeatureGraphChart'
+import { AutomationCostSavedKPIChart } from 'pages/stats/automate/overview/charts/AutomationCostSavedKPIChart'
+import { AutomationDecreaseInFirstResponseTimeTrendChart } from 'pages/stats/automate/overview/charts/AutomationDecreaseInFirstResponseTimeTrendChart'
+import { AutomationRateGraphChart } from 'pages/stats/automate/overview/charts/AutomationRateGraphChart'
+import { AutomationRateKPIChart } from 'pages/stats/automate/overview/charts/AutomationRateKPIChart'
+import { DecreaseInResolutionTimeKPIChart } from 'pages/stats/automate/overview/charts/DecreaseInResolutionTimeKPIChart'
+import { TimeSavedByAgentsKPIChart } from 'pages/stats/automate/overview/charts/TimeSavedByAgentsKPIChart'
 import {
     ChartType,
     DataExportFormat,

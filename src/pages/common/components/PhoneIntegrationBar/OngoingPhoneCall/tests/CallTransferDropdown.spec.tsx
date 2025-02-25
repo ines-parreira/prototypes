@@ -1,9 +1,5 @@
-import {
-    VoiceCallTransferReceiverType,
-    VoiceCallTransferType,
-    useTransferCall,
-    useListUsers,
-} from '@gorgias/api-queries'
+import React, { ComponentProps, createRef } from 'react'
+
 import {
     cleanup,
     fireEvent,
@@ -11,20 +7,32 @@ import {
     screen,
     within,
 } from '@testing-library/react'
-import {Call} from '@twilio/voice-sdk'
-import {fromJS} from 'immutable'
-import React, {ComponentProps, createRef} from 'react'
-import {Provider} from 'react-redux'
+import { Call } from '@twilio/voice-sdk'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+
+import {
+    useListUsers,
+    useTransferCall,
+    VoiceCallTransferReceiverType,
+    VoiceCallTransferType,
+} from '@gorgias/api-queries'
 
 import * as notificationActions from 'state/notifications/actions'
-import {mockIncomingCall} from 'tests/twilioMocks'
-import {mockStore} from 'utils/testing'
+import { mockIncomingCall } from 'tests/twilioMocks'
+import { mockStore } from 'utils/testing'
 
 import CallTransferDropdown from '../CallTransferDropdown'
-import {getAvailabilityBadgeColor, mergeAgentData} from '../utils'
+import { getAvailabilityBadgeColor, mergeAgentData } from '../utils'
 
 jest.mock('pages/common/utils/labels', () => ({
-    AgentLabel: ({name, badgeColor}: {name: string; badgeColor?: string}) => (
+    AgentLabel: ({
+        name,
+        badgeColor,
+    }: {
+        name: string
+        badgeColor?: string
+    }) => (
         <div>
             {name}
             <div data-testid="badge">{badgeColor}</div>
@@ -52,14 +60,14 @@ describe('CallTransferDropdown', () => {
     }
 
     const allAgents = [
-        {id: 1, name: 'Agent 1'},
-        {id: 2, name: 'Agent 2'},
-        {id: 3, name: 'Agent 3'},
-        {id: 4, name: 'Agent 4'},
+        { id: 1, name: 'Agent 1' },
+        { id: 2, name: 'Agent 2' },
+        { id: 3, name: 'Agent 3' },
+        { id: 4, name: 'Agent 4' },
     ]
 
     const renderComponent = (
-        props: ComponentProps<typeof CallTransferDropdown> = baseProps
+        props: ComponentProps<typeof CallTransferDropdown> = baseProps,
     ) =>
         render(
             <Provider
@@ -73,7 +81,7 @@ describe('CallTransferDropdown', () => {
                 } as any)}
             >
                 <CallTransferDropdown {...props} />
-            </Provider>
+            </Provider>,
         )
 
     beforeEach(() => {
@@ -95,7 +103,7 @@ describe('CallTransferDropdown', () => {
 
         expect(mockMergeAgentData).toHaveBeenCalledWith(
             allAgents.filter((agent) => agent.id !== 2),
-            undefined
+            undefined,
         )
     })
 
@@ -117,7 +125,7 @@ describe('CallTransferDropdown', () => {
         })
 
         mockGetAvailabilityBadgeColor.mockImplementation(
-            (status: string) => status
+            (status: string) => status,
         )
         mockMergeAgentData.mockReturnValue([
             {
@@ -135,7 +143,7 @@ describe('CallTransferDropdown', () => {
     })
 
     it('does not render the dropdown body when isOpen is false', () => {
-        renderComponent({...baseProps, isOpen: false})
+        renderComponent({ ...baseProps, isOpen: false })
 
         expect(screen.queryByText('Agents')).not.toBeInTheDocument()
     })
@@ -168,7 +176,7 @@ describe('CallTransferDropdown', () => {
         renderComponent()
 
         expect(
-            screen.getByRole('button', {name: /transfer call/i})
+            screen.getByRole('button', { name: /transfer call/i }),
         ).toBeAriaDisabled()
 
         const agent1 = screen.getByRole('option', {
@@ -176,7 +184,7 @@ describe('CallTransferDropdown', () => {
         })
         fireEvent.click(agent1)
         expect(
-            screen.getByRole('button', {name: /transfer call/i})
+            screen.getByRole('button', { name: /transfer call/i }),
         ).toBeAriaEnabled()
     })
 
@@ -186,7 +194,7 @@ describe('CallTransferDropdown', () => {
             .mock.calls[0][0]?.mutation?.onSuccess!(
             '' as any,
             '' as any,
-            '' as any
+            '' as any,
         )
 
         expect(onTransferInitiated).toHaveBeenCalled()
@@ -209,7 +217,7 @@ describe('CallTransferDropdown', () => {
                 },
             },
             '' as any,
-            '' as any
+            '' as any,
         )
 
         expect(notify).toHaveBeenCalledWith({
@@ -238,7 +246,7 @@ describe('CallTransferDropdown', () => {
                 },
             },
             '' as any,
-            '' as any
+            '' as any,
         )
 
         expect(notify).toHaveBeenCalledWith({
@@ -262,7 +270,7 @@ describe('CallTransferDropdown', () => {
                 },
             },
             '' as any,
-            '' as any
+            '' as any,
         )
 
         expect(notify).toHaveBeenCalledWith({
@@ -283,7 +291,7 @@ describe('CallTransferDropdown', () => {
             name: /agent 1/i,
         })
         fireEvent.click(agent1)
-        fireEvent.click(screen.getByRole('button', {name: /transfer call/i}))
+        fireEvent.click(screen.getByRole('button', { name: /transfer call/i }))
         expect(mockMutate).toHaveBeenCalledWith({
             data: {
                 type: VoiceCallTransferType.Cold,

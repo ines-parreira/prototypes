@@ -1,9 +1,10 @@
-import {act, render} from '@testing-library/react'
 import React from 'react'
 
+import { act, render } from '@testing-library/react'
+
 import useInterval from 'hooks/useInterval'
-import {getFormattedDurationOngoingCall} from 'models/voiceCall/utils'
-import {assumeMock} from 'utils/testing'
+import { getFormattedDurationOngoingCall } from 'models/voiceCall/utils'
+import { assumeMock } from 'utils/testing'
 
 import VoiceCallTimerBadge from './VoiceCallTimerBadge'
 
@@ -11,7 +12,7 @@ jest.mock('models/voiceCall/utils')
 jest.mock('hooks/useInterval')
 
 const getFormattedDurationOngoingCallMock = assumeMock(
-    getFormattedDurationOngoingCall
+    getFormattedDurationOngoingCall,
 )
 const useIntervalMock = assumeMock(useInterval)
 
@@ -26,14 +27,14 @@ describe('VoiceCallTimerBadge', () => {
 
     it('should display the formatted duration of the ongoing call', () => {
         getFormattedDurationOngoingCallMock.mockImplementation(
-            (datetime: string) => datetime + '-formatted'
+            (datetime: string) => datetime + '-formatted',
         )
-        const {getByText} = renderComponent({datetime: 'datetime'})
+        const { getByText } = renderComponent({ datetime: 'datetime' })
         expect(getByText('datetime-formatted')).toBeInTheDocument()
     })
 
     it('should update the displayed duration every second', () => {
-        const {getByText} = renderComponent({datetime: 'datetime'})
+        const { getByText } = renderComponent({ datetime: 'datetime' })
         getFormattedDurationOngoingCallMock.mockReturnValueOnce('formatted1')
 
         act(() => {
@@ -43,7 +44,9 @@ describe('VoiceCallTimerBadge', () => {
     })
 
     it('should update the displayed duration when the datetime prop changes', () => {
-        const {getByText, rerender} = renderComponent({datetime: 'datetime'})
+        const { getByText, rerender } = renderComponent({
+            datetime: 'datetime',
+        })
 
         rerender(<VoiceCallTimerBadge datetime="datetime2" />)
         expect(getByText('datetime2')).toBeInTheDocument()

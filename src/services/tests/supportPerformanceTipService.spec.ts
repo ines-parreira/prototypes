@@ -1,15 +1,15 @@
-import {formatDuration} from 'pages/stats/common/utils'
-import {MetricName} from 'services/reporting/constants'
+import { formatDuration } from 'pages/stats/common/utils'
+import { MetricName } from 'services/reporting/constants'
 import {
-    MetricsBaselinesJSON,
     formatMetricValue,
-    Tip,
     getPerformanceTip,
+    MetricsBaselinesJSON,
+    randomIndexGrade,
+    Tip,
     TipQualifier,
     tips,
-    randomIndexGrade,
 } from 'services/supportPerformanceTipService'
-import {PlanName} from 'utils/paywalls'
+import { PlanName } from 'utils/paywalls'
 
 describe('SupportPerformanceTipService', () => {
     const lowerIsBetterMetric = MetricName.MessagesPerTicket
@@ -21,7 +21,7 @@ describe('SupportPerformanceTipService', () => {
 
     it('should return N/A tips when missing the plan name', () => {
         expect(
-            getPerformanceTip(lowerIsBetterMetric, metricValue, null)
+            getPerformanceTip(lowerIsBetterMetric, metricValue, null),
         ).toEqual(null)
     })
 
@@ -33,7 +33,7 @@ describe('SupportPerformanceTipService', () => {
         metric = lowerIsBetterMetric,
         qualifier: TipQualifier,
         average: number,
-        topTen: number
+        topTen: number,
     ): Tip => ({
         type: qualifier,
         content: randomIndexGrade(tips[metric][qualifier]),
@@ -56,7 +56,7 @@ describe('SupportPerformanceTipService', () => {
                 ],
                 MetricsBaselinesJSON[lowerIsBetterMetric][plan][
                     MetricBaselineP90Index
-                ]
+                ],
             ),
         },
         {
@@ -73,7 +73,7 @@ describe('SupportPerformanceTipService', () => {
                 ],
                 MetricsBaselinesJSON[lowerIsBetterMetric][plan][
                     MetricBaselineP90Index
-                ]
+                ],
             ),
         },
         {
@@ -90,7 +90,7 @@ describe('SupportPerformanceTipService', () => {
                 ],
                 MetricsBaselinesJSON[lowerIsBetterMetric][plan][
                     MetricBaselineP90Index
-                ]
+                ],
             ),
         },
     ]
@@ -110,7 +110,7 @@ describe('SupportPerformanceTipService', () => {
                 ],
                 MetricsBaselinesJSON[higherIsBetterMetric][plan][
                     MetricBaselineP90Index
-                ]
+                ],
             ),
         },
         {
@@ -127,7 +127,7 @@ describe('SupportPerformanceTipService', () => {
                 ],
                 MetricsBaselinesJSON[higherIsBetterMetric][plan][
                     MetricBaselineP90Index
-                ]
+                ],
             ),
         },
         {
@@ -144,7 +144,7 @@ describe('SupportPerformanceTipService', () => {
                 ],
                 MetricsBaselinesJSON[higherIsBetterMetric][plan][
                     MetricBaselineP90Index
-                ]
+                ],
             ),
         },
     ]
@@ -160,7 +160,7 @@ describe('SupportPerformanceTipService', () => {
                 ],
                 MetricsBaselinesJSON[MetricName.MedianFirstResponseTime][plan][
                     MetricBaselineP90Index
-                ]
+                ],
             ),
         },
 
@@ -178,7 +178,7 @@ describe('SupportPerformanceTipService', () => {
                 ],
                 MetricsBaselinesJSON[MetricName.MedianFirstResponseTime][plan][
                     MetricBaselineP90Index
-                ]
+                ],
             ),
         },
         {
@@ -195,14 +195,14 @@ describe('SupportPerformanceTipService', () => {
                 ],
                 MetricsBaselinesJSON[MetricName.MedianResolutionTime][plan][
                     MetricBaselineP90Index
-                ]
+                ],
             ),
         },
     ]
 
     test.each([...lowerIsBetter, ...higherIsBetter, ...otherMetrics])(
         'should return $expectedTip.type for metric($metric) of value($value)',
-        ({metric, value, expectedTip}) => {
+        ({ metric, value, expectedTip }) => {
             const tip = getPerformanceTip(metric, value, plan)
             expect(tip).not.toBeNull()
             if (tip !== null) {
@@ -213,11 +213,11 @@ describe('SupportPerformanceTipService', () => {
                 expect(expectedTip.type).not.toBeNull()
                 if (expectedTip.type !== null) {
                     expect(tips[metric][expectedTip.type]).toContainEqual(
-                        tip.content
+                        tip.content,
                     )
                 }
             }
-        }
+        },
     )
 
     test.each([
@@ -237,15 +237,15 @@ describe('SupportPerformanceTipService', () => {
         },
     ])(
         'should render time related metrics ($metric) in human readable form',
-        ({metric, topTenValue}) => {
+        ({ metric, topTenValue }) => {
             const tip = getPerformanceTip(metric, topTenValue, plan)
 
             expect(tip).not.toBeNull()
             if (tip !== null) {
                 expect(tip.topTen).toMatch(
-                    new RegExp(formatDuration(topTenValue, 2))
+                    new RegExp(formatDuration(topTenValue, 2)),
                 )
             }
-        }
+        },
     )
 })

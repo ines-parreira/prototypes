@@ -1,15 +1,16 @@
-import {Meta, StoryFn} from '@storybook/react'
-import {QueryClientProvider} from '@tanstack/react-query'
-import {fromJS, Map} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { Meta, StoryFn } from '@storybook/react'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fromJS, Map } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {appQueryClient} from 'api/queryClient'
-import {billingState} from 'fixtures/billing'
-import {user} from 'fixtures/users'
+import { appQueryClient } from 'api/queryClient'
+import { billingState } from 'fixtures/billing'
+import { user } from 'fixtures/users'
 
-import {PersonalityPreviewStep} from './PersonalityPreviewStep'
+import { PersonalityPreviewStep } from './PersonalityPreviewStep'
 
 const storyConfig: Meta<typeof PersonalityPreviewStep> = {
     title: 'AI Agent/Onboarding/Steps/PersonalityPreviewStep',
@@ -28,7 +29,7 @@ const defaultProps: ComponentProps<typeof PersonalityPreviewStep> = {
 }
 
 const Template: StoryFn<ComponentProps<typeof PersonalityPreviewStep>> = (
-    props
+    props,
 ) => (
     <Provider store={configureMockStore()(defaultState)}>
         <QueryClientProvider client={appQueryClient}>

@@ -1,10 +1,9 @@
 import MockAdapter from 'axios-mock-adapter'
 
-import {AlertBannerTypes, BannerCategories} from 'AlertBanners'
+import { AlertBannerTypes, BannerCategories } from 'AlertBanners'
 import useAppDispatch from 'hooks/useAppDispatch'
 import client from 'models/api/resources'
-
-import {CreditCard} from 'models/billing/types'
+import { CreditCard } from 'models/billing/types'
 import {
     ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
     BILLING_PAYMENT_CARD_PATH,
@@ -18,9 +17,9 @@ import {
     payWithShopifyButNotActivated,
     trial,
 } from 'pages/settings/new_billing/fixtures'
-import {useIsPaymentEnabled} from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
-import {notify} from 'state/notifications/actions'
-import {renderHookWithStoreAndQueryClientProvider} from 'tests/renderHookWithStoreAndQueryClientProvider'
+import { useIsPaymentEnabled } from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
+import { notify } from 'state/notifications/actions'
+import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
 
 const mockedServer = new MockAdapter(client)
 
@@ -46,7 +45,7 @@ describe('useIsPaymentEnabled', () => {
     it('should render the no-payment-method use-case', async () => {
         mockedServer.onGet('/billing/state').reply(200, trial)
 
-        const {result, waitFor} =
+        const { result, waitFor } =
             renderHookWithStoreAndQueryClientProvider(useIsPaymentEnabled)
 
         await waitFor(() => {
@@ -69,7 +68,7 @@ describe('useIsPaymentEnabled', () => {
     it('should render the credit-card use-case', async () => {
         mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
 
-        const {result: isPaymentEnabled, waitFor} =
+        const { result: isPaymentEnabled, waitFor } =
             renderHookWithStoreAndQueryClientProvider(useIsPaymentEnabled)
 
         await waitFor(() => {
@@ -87,7 +86,7 @@ describe('useIsPaymentEnabled', () => {
         const creditCard = payingWithCreditCard.customer
             .credit_card as CreditCard
 
-        const {result, waitFor} =
+        const { result, waitFor } =
             renderHookWithStoreAndQueryClientProvider(useIsPaymentEnabled)
 
         await waitFor(() => {
@@ -110,7 +109,7 @@ describe('useIsPaymentEnabled', () => {
     it('should render the ach-debit use-case', async () => {
         mockedServer.onGet('/billing/state').reply(200, payingWithAchDebit)
 
-        const {result: isPaymentEnabled, waitFor} =
+        const { result: isPaymentEnabled, waitFor } =
             renderHookWithStoreAndQueryClientProvider(useIsPaymentEnabled)
 
         await waitFor(() => {
@@ -123,7 +122,7 @@ describe('useIsPaymentEnabled', () => {
     it('should render the ach-credit use-case', async () => {
         mockedServer.onGet('/billing/state').reply(200, payingWithAchCredit)
 
-        const {result: isPaymentEnabled, waitFor} =
+        const { result: isPaymentEnabled, waitFor } =
             renderHookWithStoreAndQueryClientProvider(useIsPaymentEnabled)
 
         await waitFor(() => {
@@ -138,7 +137,7 @@ describe('useIsPaymentEnabled', () => {
             .onGet('/billing/state')
             .reply(200, payWithShopifyButNotActivated)
 
-        const {result, waitFor} =
+        const { result, waitFor } =
             renderHookWithStoreAndQueryClientProvider(useIsPaymentEnabled)
 
         await waitFor(() => {
@@ -162,7 +161,7 @@ describe('useIsPaymentEnabled', () => {
     it('should render the activated-shopify-billing use-case', async () => {
         mockedServer.onGet('/billing/state').reply(200, payWithShopify)
 
-        const {result: isPaymentEnabled, waitFor} =
+        const { result: isPaymentEnabled, waitFor } =
             renderHookWithStoreAndQueryClientProvider(useIsPaymentEnabled)
 
         await waitFor(() => {

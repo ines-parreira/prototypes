@@ -1,12 +1,12 @@
-import {OrderDirection} from 'models/api/types'
+import { OrderDirection } from 'models/api/types'
 import {
     RecommendedResourcesCube,
     RecommendedResourcesDimension,
     RecommendedResourcesFilterMember,
     RecommendedResourcesMeasure,
 } from 'models/reporting/cubes/automate_v2/RecommendedResourcesCube'
-import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
-import {TicketMember} from 'models/reporting/cubes/TicketCube'
+import { HelpdeskMessageCubeWithJoins } from 'models/reporting/cubes/HelpdeskMessageCube'
+import { TicketMember } from 'models/reporting/cubes/TicketCube'
 import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMember,
@@ -16,16 +16,15 @@ import {
     TicketSatisfactionSurveyMeasure,
     TicketSatisfactionSurveySegment,
 } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
-import {ReportingFilterOperator, ReportingQuery} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
-
+import { ReportingFilterOperator, ReportingQuery } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
 import {
     NotSpamNorTrashedTicketsFilter,
     statsFiltersToReportingFilters,
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
 
-import {recommendedResourceDatasetDefaultFilters} from '../automate_v2/filters'
+import { recommendedResourceDatasetDefaultFilters } from '../automate_v2/filters'
 
 export const customerSatisfactionPerIntentLevelQueryFactory = (
     statsFilters: StatsFilters,
@@ -33,7 +32,7 @@ export const customerSatisfactionPerIntentLevelQueryFactory = (
     sorting?: OrderDirection,
     customFieldId?: number,
     customFieldValue?: string,
-    assigneeUserId?: string
+    assigneeUserId?: string,
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
     const customFiledFilters = []
     if (customFieldId) {
@@ -74,7 +73,7 @@ export const customerSatisfactionPerIntentLevelQueryFactory = (
             ...NotSpamNorTrashedTicketsFilter,
             ...statsFiltersToReportingFilters(
                 TicketStatsFiltersMembers,
-                statsFilters
+                statsFilters,
             ),
             ...(customFiledFilters ? customFiledFilters : []),
         ],
@@ -92,7 +91,7 @@ export const recommendedResourceQueryFactory = (
     statsFilters: StatsFilters,
     timezone: string,
     ticketIds: string[],
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ): ReportingQuery<RecommendedResourcesCube> => ({
     measures: [RecommendedResourcesMeasure.NumRecommendedResources],
     dimensions: [

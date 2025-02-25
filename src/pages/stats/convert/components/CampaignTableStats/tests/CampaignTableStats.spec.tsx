@@ -1,19 +1,20 @@
-import {fireEvent} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {campaign, campaignVariant} from 'fixtures/campaign'
-import {integrationsState} from 'fixtures/integrations'
-import {CampaignPreview} from 'models/convert/campaign/types'
-import {GorgiasChatIntegration} from 'models/integration/types'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-import {CampaignTableStats} from 'pages/stats/convert/components/CampaignTableStats/CampaignTableStats'
-import {CAMPAIGN_TABLE_COLUMN_TITLES} from 'pages/stats/convert/components/CampaignTableStats/constants'
-import {useCampaignPerformanceTableSetting} from 'pages/stats/convert/hooks/useCampaignPerformanceTableSetting'
-import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
-import {CampaignTableKeys} from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
-import {ConvertMetric, TableView} from 'state/ui/stats/types'
-import {assumeMock, renderWithStore} from 'utils/testing'
+import { fireEvent } from '@testing-library/react'
+import { fromJS } from 'immutable'
+
+import { campaign, campaignVariant } from 'fixtures/campaign'
+import { integrationsState } from 'fixtures/integrations'
+import { CampaignPreview } from 'models/convert/campaign/types'
+import { GorgiasChatIntegration } from 'models/integration/types'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
+import { CampaignTableStats } from 'pages/stats/convert/components/CampaignTableStats/CampaignTableStats'
+import { CAMPAIGN_TABLE_COLUMN_TITLES } from 'pages/stats/convert/components/CampaignTableStats/constants'
+import { useCampaignPerformanceTableSetting } from 'pages/stats/convert/hooks/useCampaignPerformanceTableSetting'
+import { useCampaignStatsFilters } from 'pages/stats/convert/hooks/useCampaignStatsFilters'
+import { CampaignTableKeys } from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
+import { ConvertMetric, TableView } from 'state/ui/stats/types'
+import { assumeMock, renderWithStore } from 'utils/testing'
 
 const chatIntegration = {
     type: 'gorgias_chat',
@@ -25,7 +26,7 @@ const useCampaignStatsFiltersMock = assumeMock(useCampaignStatsFilters)
 
 jest.mock('pages/stats/convert/hooks/useCampaignPerformanceTableSetting')
 const useCampaignPerformanceTableSettingMock = assumeMock(
-    useCampaignPerformanceTableSetting
+    useCampaignPerformanceTableSetting,
 )
 
 describe('CampaignTableStats', () => {
@@ -70,14 +71,14 @@ describe('CampaignTableStats', () => {
             isLoading: false,
             currentView: {} as TableView<CampaignTableKeys>,
             columnsOrder: Object.keys(
-                CAMPAIGN_TABLE_COLUMN_TITLES
+                CAMPAIGN_TABLE_COLUMN_TITLES,
             ) as CampaignTableKeys[],
             submitActiveView: jest.fn(),
         })
     })
 
     it('should render CampaignTableStats with campaigns and variants', () => {
-        const {getByText, getByRole} = renderWithStore(
+        const { getByText, getByRole } = renderWithStore(
             <CampaignTableStats
                 chatIntegrationId={8}
                 isLoading={false}
@@ -88,7 +89,7 @@ describe('CampaignTableStats', () => {
             />,
             {
                 integrations: fromJS(integrationsState),
-            }
+            },
         )
 
         expect(getByText(campaign.name)).toBeInTheDocument()
@@ -102,7 +103,7 @@ describe('CampaignTableStats', () => {
     })
 
     it('should render the sorting arrow indicators properly when clicking header cell', () => {
-        const {getByText} = renderWithStore(
+        const { getByText } = renderWithStore(
             <CampaignTableStats
                 chatIntegrationId={8}
                 isLoading={false}
@@ -111,33 +112,33 @@ describe('CampaignTableStats', () => {
                 onClickNextPage={jest.fn()}
                 onClickPrevPage={jest.fn()}
             />,
-            {}
+            {},
         )
         const engagementSpan = getByText('Engagement')
         const engagementTh = engagementSpan.closest('th')!
         const arrowIcon = engagementTh.querySelector(
-            'i[class*="directionIcon"]'
+            'i[class*="directionIcon"]',
         )!
         expect(arrowIcon).toBeInTheDocument()
 
         fireEvent.click(engagementTh)
 
         expect(arrowIcon.textContent).toBe('arrow_upward')
-        expect(arrowIcon).not.toHaveStyle({display: 'none'})
+        expect(arrowIcon).not.toHaveStyle({ display: 'none' })
 
         fireEvent.click(engagementTh)
 
         expect(arrowIcon.textContent).toBe('arrow_downward')
-        expect(arrowIcon).not.toHaveStyle({display: 'none'})
+        expect(arrowIcon).not.toHaveStyle({ display: 'none' })
 
         fireEvent.click(engagementTh)
 
         expect(arrowIcon.textContent).toBe('arrow_upward')
-        expect(arrowIcon).not.toHaveStyle({display: 'none'})
+        expect(arrowIcon).not.toHaveStyle({ display: 'none' })
     })
 
     it('scroll sets isTableScrolled state correctly', () => {
-        const {container, getByText} = renderWithStore(
+        const { container, getByText } = renderWithStore(
             <CampaignTableStats
                 chatIntegrationId={8}
                 isLoading={false}
@@ -146,12 +147,14 @@ describe('CampaignTableStats', () => {
                 onClickNextPage={jest.fn()}
                 onClickPrevPage={jest.fn()}
             />,
-            {}
+            {},
         )
         const tableDiv = container.querySelector('.container')
 
         // Simulate scroll to the right
-        fireEvent.scroll(tableDiv as HTMLElement, {target: {scrollLeft: 100}})
+        fireEvent.scroll(tableDiv as HTMLElement, {
+            target: { scrollLeft: 100 },
+        })
         expect(getByText('Campaign name')).toBeInTheDocument()
 
         const closestThElement = getByText('Campaign name').closest('th')!

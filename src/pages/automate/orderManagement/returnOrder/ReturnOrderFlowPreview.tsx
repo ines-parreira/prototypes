@@ -1,22 +1,23 @@
-import {createMemoryHistory} from 'history'
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
+
+import { createMemoryHistory } from 'history'
 
 import {
     ReturnAction,
     ReturnActionType,
 } from 'models/selfServiceConfiguration/types'
-import {SELF_SERVICE_PREVIEW_ROUTES} from 'pages/automate/common/components/preview/constants'
+import { SELF_SERVICE_PREVIEW_ROUTES } from 'pages/automate/common/components/preview/constants'
 import SelfServicePreview from 'pages/automate/common/components/preview/SelfServicePreview'
 import SelfServicePreviewContainer from 'pages/automate/common/components/preview/SelfServicePreviewContainer'
 import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'
 
-import {useOrderManagementPreviewContext} from '../OrderManagementPreviewContext'
+import { useOrderManagementPreviewContext } from '../OrderManagementPreviewContext'
 
 type Props = {
     returnAction: ReturnAction
 }
 
-const ReturnOrderFlowPreview = ({returnAction}: Props) => {
+const ReturnOrderFlowPreview = ({ returnAction }: Props) => {
     const history = useMemo(
         () =>
             createMemoryHistory({
@@ -26,9 +27,9 @@ const ReturnOrderFlowPreview = ({returnAction}: Props) => {
                         : SELF_SERVICE_PREVIEW_ROUTES.RETURN_PORTAL,
                 ],
             }),
-        [returnAction.type]
+        [returnAction.type],
     )
-    const {channels, channel, onChannelChange} =
+    const { channels, channel, onChannelChange } =
         useOrderManagementPreviewContext()
 
     return (

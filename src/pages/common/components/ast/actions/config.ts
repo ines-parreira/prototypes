@@ -1,11 +1,11 @@
-import {Map} from 'immutable'
+import { Map } from 'immutable'
 
-import {UploadType} from 'common/types'
-import {isCustomFieldValueEmpty} from 'custom-fields/helpers/isCustomFieldValueEmpty'
-import {ACTION_TYPES, ActionType} from 'models/rule/types'
-import {templateRegex} from 'pages/common/utils/template'
-import {ManagedRulesSlugs} from 'state/rules/types'
-import {isEmailList, findProperty} from 'utils'
+import { UploadType } from 'common/types'
+import { isCustomFieldValueEmpty } from 'custom-fields/helpers/isCustomFieldValueEmpty'
+import { ACTION_TYPES, ActionType } from 'models/rule/types'
+import { templateRegex } from 'pages/common/utils/template'
+import { ManagedRulesSlugs } from 'state/rules/types'
+import { findProperty, isEmailList } from 'utils'
 
 type Email = {
     body_text?: Maybe<string>
@@ -30,7 +30,7 @@ export function validateEmailList(value: string, schemas: Map<any, any>) {
                 }
 
                 return 'bad address'
-            }
+            },
         )
     }
 
@@ -39,7 +39,7 @@ export function validateEmailList(value: string, schemas: Map<any, any>) {
     }
 }
 
-export function validateSubject(values: {subject?: string}) {
+export function validateSubject(values: { subject?: string }) {
     if (!values.subject) {
         return 'Subject must be filled'
     }
@@ -51,7 +51,7 @@ export function validateBody(values: Email) {
     }
 }
 
-export function validateApplyMacro(values: {macro?: string}) {
+export function validateApplyMacro(values: { macro?: string }) {
     if (!values.macro) {
         return 'Macro must be selected'
     }
@@ -69,13 +69,13 @@ export function validateSetCustomFieldValue(values: {
     }
 }
 
-export function validateAssignAgent(values: {assignee_user?: string | null}) {
+export function validateAssignAgent(values: { assignee_user?: string | null }) {
     if (values.assignee_user === '' || values.assignee_user === undefined) {
         return 'Agent must be selected'
     }
 }
 
-export function validateAssignTeam(values: {assignee_team?: string | null}) {
+export function validateAssignTeam(values: { assignee_team?: string | null }) {
     if (values.assignee_team === '' || values.assignee_team === undefined) {
         return 'Team must be selected'
     }
@@ -89,14 +89,14 @@ export function validateSendEmail(values: Email) {
     const numberOfRecipients = [values.bcc, values.cc, values.to].reduce(
         (acc, recipients) =>
             recipients ? recipients.split(',').length + acc : acc,
-        0
+        0,
     )
 
     if (numberOfRecipients > MAX_NUMBER_RECIPIENTS) {
         errors.push(
             `Total number of recipients must be less than ${
                 MAX_NUMBER_RECIPIENTS + 1
-            }`
+            }`,
         )
     }
 
@@ -110,7 +110,7 @@ export function validateSendEmail(values: Email) {
     return errors
 }
 
-export function validateTags(values: {tags?: string | null}): string | void {
+export function validateTags(values: { tags?: string | null }): string | void {
     if (!values.tags) {
         return 'Tags cannot be empty'
     }
@@ -162,12 +162,12 @@ export type ActionConfig = {
 }
 
 export function isValidActionKey(
-    value: string
+    value: string,
 ): value is 'notify' | ActionType {
     return value === 'notify' || ACTION_TYPES.includes(value as ActionType)
 }
 
-export const actionsConfig: {[key in ActionType | 'notify']: ActionConfig} = {
+export const actionsConfig: { [key in ActionType | 'notify']: ActionConfig } = {
     notify: {
         type: 'system',
         compact: false,
@@ -348,7 +348,7 @@ export const actionsConfig: {[key in ActionType | 'notify']: ActionConfig} = {
     },
 }
 
-export const actionsConfigWithManagedRules: {[key: string]: ActionConfig} = {
+export const actionsConfigWithManagedRules: { [key: string]: ActionConfig } = {
     ...actionsConfig,
     [ManagedRulesSlugs.AutoReplyFAQ]: {
         compact: true,

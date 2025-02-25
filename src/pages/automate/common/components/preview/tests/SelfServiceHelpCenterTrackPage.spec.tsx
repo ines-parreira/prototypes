@@ -1,12 +1,12 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {MemoryRouter} from 'react-router-dom'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { render, screen } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
 
 import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'
-import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import SelfServiceHelpCenterTrackPage from '../SelfServiceHelpCenterTrackPage'
 
@@ -36,7 +36,7 @@ describe('<SelfServiceHelpCenterTrackPage />', () => {
                         />
                     </SelfServicePreviewContext.Provider>
                 </MemoryRouter>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
         expect(screen.getByText('Estimated delivery')).toBeInTheDocument()
     })

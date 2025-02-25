@@ -1,14 +1,14 @@
-import {useHistory, useLocation} from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 
-import {BannerCategories, ContextBanner, useBanners} from 'AlertBanners'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useFlag} from 'core/flags'
+import { BannerCategories, ContextBanner, useBanners } from 'AlertBanners'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
-import {EmailMigrationStatus} from 'models/integration/types'
-import {computeEmailMigrationStatusBanner} from 'pages/common/components/EmailMigrationBanner/helpers'
+import { EmailMigrationStatus } from 'models/integration/types'
+import { computeEmailMigrationStatusBanner } from 'pages/common/components/EmailMigrationBanner/helpers'
 import useMigrationBannerStatus from 'pages/common/components/EmailMigrationBanner/hooks/useMigrationBannerStatus'
-import {getEmailMigrationStatus} from 'state/integrations/selectors'
+import { getEmailMigrationStatus } from 'state/integrations/selectors'
 
 const MIGRATION_PAGE_URL = '/app/settings/channels/email/migration'
 const INSTANCE_ID = 'email_migration'
@@ -18,14 +18,14 @@ export const useEmailMigrationBanner = () => {
         FeatureFlagKey.GlobalBannerRefactor,
         {
             emailMigrationBanner: false,
-        }
+        },
     )
 
     const fetchMigrationStatus = useMigrationBannerStatus()
     const migrationStatus = useAppSelector(getEmailMigrationStatus)
     const history = useHistory()
     const location = useLocation()
-    const {addBanner, removeBanner} = useBanners()
+    const { addBanner, removeBanner } = useBanners()
 
     useEffectOnce(() => {
         void fetchMigrationStatus()

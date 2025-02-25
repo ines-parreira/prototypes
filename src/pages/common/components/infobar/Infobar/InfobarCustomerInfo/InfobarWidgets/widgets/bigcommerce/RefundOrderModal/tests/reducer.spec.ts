@@ -15,7 +15,7 @@ import {
     bigcommerceRefundOrderReducer,
     initialBigCommerceRefundOrderState,
 } from '../reducer'
-import {BigCommerceRefundActionType} from '../types'
+import { BigCommerceRefundActionType } from '../types'
 
 const availablePaymentOptions: BigCommerceAvailablePaymentOptionsData = {
     total_refund_amount: 12345678.9,
@@ -76,7 +76,7 @@ describe('bigcommerceRefundOrderReducer', () => {
         it('should reset state to initial BigCommerce refund order state', () => {
             const newState = bigcommerceRefundOrderReducer(
                 initialBigCommerceRefundOrderState,
-                {type: BigCommerceRefundActionType.ResetState}
+                { type: BigCommerceRefundActionType.ResetState },
             )
             expect(newState).toEqual(initialBigCommerceRefundOrderState)
         })
@@ -86,7 +86,7 @@ describe('bigcommerceRefundOrderReducer', () => {
         it('should reset part of the state to initial BigCommerce refund order state', () => {
             const state: BigCommerceRefundOrderState = {
                 ...initialBigCommerceRefundOrderState,
-                refundItemsPayload: {items: []},
+                refundItemsPayload: { items: [] },
                 totalAmountToRefund: 10,
                 availablePaymentOptionsData: availablePaymentOptions,
                 selectedPaymentOption:
@@ -109,7 +109,7 @@ describe('bigcommerceRefundOrderReducer', () => {
         it('should initialize state with refund data', () => {
             const state: BigCommerceRefundOrderState = {
                 ...initialBigCommerceRefundOrderState,
-                refundItemsPayload: {items: []},
+                refundItemsPayload: { items: [] },
                 totalAmountToRefund: 10,
                 availablePaymentOptionsData: availablePaymentOptions,
                 selectedPaymentOption:
@@ -136,7 +136,7 @@ describe('bigcommerceRefundOrderReducer', () => {
                 {
                     type: BigCommerceRefundActionType.SetRefundType,
                     refundType: refundType,
-                }
+                },
             )
             expect(newState).toEqual({
                 ...initialBigCommerceRefundOrderState,
@@ -153,7 +153,7 @@ describe('bigcommerceRefundOrderReducer', () => {
                 {
                     type: BigCommerceRefundActionType.SetTotalAmountToRefund,
                     totalAmountToRefund: totalAmountToRefund,
-                }
+                },
             )
             expect(newState).toEqual({
                 ...initialBigCommerceRefundOrderState,
@@ -169,7 +169,7 @@ describe('bigcommerceRefundOrderReducer', () => {
                 {
                     type: BigCommerceRefundActionType.SetAvailablePaymentOptionsData,
                     availablePaymentOptionsData: availablePaymentOptions,
-                }
+                },
             )
             expect(newState).toEqual({
                 ...initialBigCommerceRefundOrderState,
@@ -186,7 +186,7 @@ describe('bigcommerceRefundOrderReducer', () => {
                     type: BigCommerceRefundActionType.SetSelectedPaymentOption,
                     selectedPaymentOption:
                         availablePaymentOptions.refund_methods[0],
-                }
+                },
             )
             expect(newState).toEqual({
                 ...initialBigCommerceRefundOrderState,
@@ -203,7 +203,7 @@ describe('bigcommerceRefundOrderReducer', () => {
                 {
                     type: BigCommerceRefundActionType.SetRefundReason,
                     refundReason: 'test',
-                }
+                },
             )
             expect(newState).toEqual({
                 ...initialBigCommerceRefundOrderState,
@@ -219,7 +219,7 @@ describe('bigcommerceRefundOrderReducer', () => {
                 {
                     type: BigCommerceRefundActionType.SetNewOrderStatus,
                     newOrderStatus: 'Pending',
-                }
+                },
             )
             expect(newState).toEqual({
                 ...initialBigCommerceRefundOrderState,
@@ -245,11 +245,11 @@ describe('bigcommerceRefundOrderReducer', () => {
                 },
                 {
                     type: BigCommerceRefundActionType.SetRefundItemsPayloadEmptyList,
-                }
+                },
             )
             expect(newState).toEqual({
                 ...initialBigCommerceRefundOrderState,
-                refundItemsPayload: {items: []},
+                refundItemsPayload: { items: [] },
             })
         })
     })
@@ -268,7 +268,7 @@ describe('bigcommerceRefundOrderReducer', () => {
                         item_id: orderId,
                         amount: amountToRefund,
                     },
-                }
+                },
             )
             expect(newState).toEqual({
                 ...initialBigCommerceRefundOrderState,
@@ -292,7 +292,7 @@ describe('bigcommerceRefundOrderReducer', () => {
                 {
                     type: BigCommerceRefundActionType.EntireOrder,
                     refundData,
-                }
+                },
             )
             expect(newState).toEqual({
                 ...initialBigCommerceRefundOrderState,
@@ -331,7 +331,7 @@ describe('bigcommerceRefundOrderReducer', () => {
             const newState = bigcommerceRefundOrderReducer(
                 {
                     ...initialBigCommerceRefundOrderState,
-                    refundItemsPayload: {items: []},
+                    refundItemsPayload: { items: [] },
                 },
                 {
                     type: BigCommerceRefundActionType.EntireOrderAddShipping,
@@ -361,7 +361,7 @@ describe('bigcommerceRefundOrderReducer', () => {
                             shipping_data: bigcommerceOrder.bc_shipping[0],
                         },
                     },
-                }
+                },
             )
             expect(newState).toEqual({
                 ...initialBigCommerceRefundOrderState,
@@ -427,7 +427,7 @@ describe('bigcommerceRefundOrderReducer', () => {
                             shipping_data: bigcommerceOrder.bc_shipping[0],
                         },
                     },
-                }
+                },
             )
             expect(newState).toEqual({
                 ...initialBigCommerceRefundOrderState,
@@ -443,7 +443,7 @@ describe('bigcommerceRefundOrderReducer', () => {
             const newState = bigcommerceRefundOrderReducer(
                 {
                     ...initialBigCommerceRefundOrderState,
-                    refundItemsPayload: {items: []},
+                    refundItemsPayload: { items: [] },
                 },
                 {
                     type: BigCommerceRefundActionType.EntireOrderAddHandling,
@@ -471,7 +471,7 @@ describe('bigcommerceRefundOrderReducer', () => {
                                 ].available_amount,
                         },
                     },
-                }
+                },
             )
             expect(newState).toEqual({
                 ...initialBigCommerceRefundOrderState,
@@ -535,7 +535,7 @@ describe('bigcommerceRefundOrderReducer', () => {
                                 ].available_amount,
                         },
                     },
-                }
+                },
             )
             expect(newState).toEqual({
                 ...initialBigCommerceRefundOrderState,

@@ -1,5 +1,5 @@
-import {act, renderHook} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
+import { act, renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -8,7 +8,10 @@ import {
     useDeleteHelpCenterTranslation,
     useUpdateHelpCenter,
 } from 'models/helpCenter/queries'
-import {HelpCenter, HelpCenterCreationWizardStep} from 'models/helpCenter/types'
+import {
+    HelpCenter,
+    HelpCenterCreationWizardStep,
+} from 'models/helpCenter/types'
 import history from 'pages/history'
 import {
     HELP_CENTER_WIZARD_COMPLETED_QUERY_KEY,
@@ -20,31 +23,31 @@ import {
     HelpCenterApiBasicsFixture,
     HelpCenterUiBasicsFixture,
 } from 'pages/settings/helpCenter/fixtures/wizard.fixture'
-import {HelpCenterLayout} from 'pages/settings/helpCenter/types/layout.enum'
-import {StoreState} from 'state/types'
+import { HelpCenterLayout } from 'pages/settings/helpCenter/types/layout.enum'
+import { StoreState } from 'state/types'
 
-import {useHelpCenterCreationWizard} from '../useHelpCenterCreationWizard'
+import { useHelpCenterCreationWizard } from '../useHelpCenterCreationWizard'
 
 jest.mock(
     'pages/settings/helpCenter/hooks/useEnableArticleRecommendation',
     () => ({
         useEnableArticleRecommendation: () => jest.fn(),
-    })
+    }),
 )
 jest.mock('pages/history')
 jest.mock('hooks/useAppSelector', () => jest.fn())
 jest.mock('hooks/useAppDispatch', () =>
-    jest.fn().mockImplementation(() => jest.fn())
+    jest.fn().mockImplementation(() => jest.fn()),
 )
 jest.mock('models/helpCenter/queries')
 
 const mockedUseCreateHelpCenter = jest.mocked(useCreateHelpCenter)
 const mockedUseUpdateHelpCenter = jest.mocked(useUpdateHelpCenter)
 const mockedUseCreateHelpCenterTranslation = jest.mocked(
-    useCreateHelpCenterTranslation
+    useCreateHelpCenterTranslation,
 )
 const mockedUseDeleteHelpCenterTranslation = jest.mocked(
-    useDeleteHelpCenterTranslation
+    useDeleteHelpCenterTranslation,
 )
 
 const helpCenter = HelpCenterApiBasicsFixture
@@ -55,16 +58,16 @@ describe('useHelpCenterCreationWizard', () => {
     beforeEach(() => {
         mockedUseAppSelector.mockImplementation((selector) =>
             selector({
-                currentAccount: fromJS({domain: 'test'}),
-                integrations: fromJS({integrations: []}),
-            } as unknown as StoreState)
+                currentAccount: fromJS({ domain: 'test' }),
+                integrations: fromJS({ integrations: [] }),
+            } as unknown as StoreState),
         )
         mockedUseCreateHelpCenter.mockReturnValue({
-            mutateAsync: jest.fn().mockReturnValue({data: helpCenter}),
+            mutateAsync: jest.fn().mockReturnValue({ data: helpCenter }),
             isLoading: false,
         } as unknown as ReturnType<typeof useCreateHelpCenter>)
         mockedUseUpdateHelpCenter.mockReturnValue({
-            mutateAsync: jest.fn().mockReturnValue({data: helpCenter}),
+            mutateAsync: jest.fn().mockReturnValue({ data: helpCenter }),
             isLoading: false,
         } as unknown as ReturnType<typeof useUpdateHelpCenter>)
         mockedUseCreateHelpCenterTranslation.mockReturnValue({
@@ -81,16 +84,16 @@ describe('useHelpCenterCreationWizard', () => {
         const accountDomain = 'test-domain'
         mockedUseAppSelector.mockImplementation((selector) =>
             selector({
-                currentAccount: fromJS({domain: accountDomain}),
-                integrations: fromJS({integrations: []}),
-            } as unknown as StoreState)
+                currentAccount: fromJS({ domain: accountDomain }),
+                integrations: fromJS({ integrations: [] }),
+            } as unknown as StoreState),
         )
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useHelpCenterCreationWizard(
                 undefined,
-                HelpCenterCreationWizardStep.Basics
-            )
+                HelpCenterCreationWizardStep.Basics,
+            ),
         )
 
         expect(result.current.helpCenter).toMatchObject({
@@ -101,75 +104,77 @@ describe('useHelpCenterCreationWizard', () => {
     })
 
     it('should map api help center to UI data', () => {
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useHelpCenterCreationWizard(
                 helpCenter,
-                HelpCenterCreationWizardStep.Basics
-            )
+                HelpCenterCreationWizardStep.Basics,
+            ),
         )
 
         expect(result.current.helpCenter).toMatchObject(helpCenterUI)
     })
 
     it('should update help center state', () => {
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useHelpCenterCreationWizard(
                 helpCenter as HelpCenter,
-                HelpCenterCreationWizardStep.Basics
-            )
+                HelpCenterCreationWizardStep.Basics,
+            ),
         )
 
         act(() => {
-            result.current.handleFormUpdate({name: 'Acme updated'})
+            result.current.handleFormUpdate({ name: 'Acme updated' })
         })
 
-        expect(result.current.helpCenter).toMatchObject({name: 'Acme updated'})
+        expect(result.current.helpCenter).toMatchObject({
+            name: 'Acme updated',
+        })
     })
 
     it('should create help center and navigate to next step', async () => {
-        const {result, waitFor} = renderHook(() =>
+        const { result, waitFor } = renderHook(() =>
             useHelpCenterCreationWizard(
                 undefined,
-                HelpCenterCreationWizardStep.Basics
-            )
+                HelpCenterCreationWizardStep.Basics,
+            ),
         )
 
         act(() => {
-            result.current.handleSave({redirectTo: NEXT_ACTION.NEW_WIZARD})
+            result.current.handleSave({ redirectTo: NEXT_ACTION.NEW_WIZARD })
         })
 
         await waitFor(() => {
             expect(history.replace).toHaveBeenCalledWith(
-                `/app/settings/help-center/${helpCenter.id}/new`
+                `/app/settings/help-center/${helpCenter.id}/new`,
             )
         })
     })
 
     it('should update help center and navigate to home', async () => {
-        const {result, waitFor} = renderHook(() =>
+        const { result, waitFor } = renderHook(() =>
             useHelpCenterCreationWizard(
                 helpCenter,
-                HelpCenterCreationWizardStep.Basics
-            )
+                HelpCenterCreationWizardStep.Basics,
+            ),
         )
 
         act(() => {
-            result.current.handleSave({redirectTo: NEXT_ACTION.BACK_HOME})
+            result.current.handleSave({ redirectTo: NEXT_ACTION.BACK_HOME })
         })
 
         await waitFor(() => {
             expect(history.replace).toHaveBeenCalledWith(
-                '/app/settings/help-center'
+                '/app/settings/help-center',
             )
         })
     })
 
     it('should update help center and navigate to new help center with articles', async () => {
-        const {result, waitFor} = renderHook(() =>
+        const { result, waitFor } = renderHook(() =>
             useHelpCenterCreationWizard(
                 helpCenter as HelpCenter,
-                HelpCenterCreationWizardStep.Automate
-            )
+                HelpCenterCreationWizardStep.Automate,
+            ),
         )
 
         act(() => {
@@ -191,11 +196,11 @@ describe('useHelpCenterCreationWizard', () => {
     })
 
     it('should update help center and navigate to new help center without articles', async () => {
-        const {result, waitFor} = renderHook(() =>
+        const { result, waitFor } = renderHook(() =>
             useHelpCenterCreationWizard(
                 helpCenter as HelpCenter,
-                HelpCenterCreationWizardStep.Automate
-            )
+                HelpCenterCreationWizardStep.Automate,
+            ),
         )
 
         act(() => {
@@ -215,11 +220,11 @@ describe('useHelpCenterCreationWizard', () => {
     })
 
     it('should update help center and navigate to new help center without articles and enabled article recom', async () => {
-        const {result, waitFor} = renderHook(() =>
+        const { result, waitFor } = renderHook(() =>
             useHelpCenterCreationWizard(
                 helpCenter as HelpCenter,
-                HelpCenterCreationWizardStep.Automate
-            )
+                HelpCenterCreationWizardStep.Automate,
+            ),
         )
 
         act(() => {

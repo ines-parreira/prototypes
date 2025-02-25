@@ -1,24 +1,25 @@
-import {fireEvent, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
-import {DndProvider} from 'react-dnd'
-import {HTML5Backend} from 'react-dnd-html5-backend'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {useCustomReportActions} from 'hooks/reporting/custom-reports/useCustomReportActions'
-import {LIMIT_REACHED_MESSAGE} from 'pages/stats/custom-reports/constants'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { useCustomReportActions } from 'hooks/reporting/custom-reports/useCustomReportActions'
+import { LIMIT_REACHED_MESSAGE } from 'pages/stats/custom-reports/constants'
 import {
     CREATE_DASHBOARD,
     DASHBOARDS_NAV_TITLE,
     DashboardsNavbarBlock,
     RESTRICTION_MESSAGE,
 } from 'pages/stats/custom-reports/DashboardsNavbarBlock/DashboardsNavbarBlock'
-import {getDashboardPath} from 'pages/stats/custom-reports/utils'
-import {useReportChartRestrictions} from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
-import {BASE_STATS_PATH, STATS_ROUTES} from 'routes/constants'
-import {renderWithQueryClientAndRouter} from 'tests/renderWIthQueryClientAndRouter'
-import {isTeamLead} from 'utils'
-import {assumeMock} from 'utils/testing'
+import { getDashboardPath } from 'pages/stats/custom-reports/utils'
+import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
+import { BASE_STATS_PATH, STATS_ROUTES } from 'routes/constants'
+import { renderWithQueryClientAndRouter } from 'tests/renderWIthQueryClientAndRouter'
+import { isTeamLead } from 'utils'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/custom-reports/useCustomReportActions')
 
@@ -34,7 +35,7 @@ jest.mock(
             useHistory: () => ({
                 push: mockPush,
             }),
-        }) as Record<string, unknown>
+        }) as Record<string, unknown>,
 )
 
 jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
@@ -53,14 +54,14 @@ jest.mock(
     'pages/stats/report-chart-restrictions/useReportChartRestrictions',
     () => ({
         useReportChartRestrictions: jest.fn(),
-    })
+    }),
 )
 const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
 
 describe('DashboardsNavbarBlock', () => {
     const defaultMockData = [
-        {id: '1', name: 'Report 1', emoji: '📊'},
-        {id: '2', name: 'Report 2', emoji: 'plus'},
+        { id: '1', name: 'Report 1', emoji: '📊' },
+        { id: '2', name: 'Report 2', emoji: 'plus' },
     ]
 
     beforeEach(() => {
@@ -85,8 +86,8 @@ describe('DashboardsNavbarBlock', () => {
 
             renderWithQueryClientAndRouter(
                 <DndProvider backend={HTML5Backend}>
-                    <DashboardsNavbarBlock navBarLinkProps={{exact: true}} />
-                </DndProvider>
+                    <DashboardsNavbarBlock navBarLinkProps={{ exact: true }} />
+                </DndProvider>,
             )
 
             expect(screen.getByText(DASHBOARDS_NAV_TITLE)).toBeInTheDocument()
@@ -97,7 +98,7 @@ describe('DashboardsNavbarBlock', () => {
             fireEvent.click(createButton)
 
             expect(mockPush).toHaveBeenCalledWith(
-                [BASE_STATS_PATH, STATS_ROUTES.DASHBOARDS_NEW].join('/')
+                [BASE_STATS_PATH, STATS_ROUTES.DASHBOARDS_NEW].join('/'),
             )
 
             expect(screen.queryByText('Report 1')).not.toBeInTheDocument()
@@ -107,8 +108,8 @@ describe('DashboardsNavbarBlock', () => {
         it('should display the list of custom reports when data is available', () => {
             renderWithQueryClientAndRouter(
                 <DndProvider backend={HTML5Backend}>
-                    <DashboardsNavbarBlock navBarLinkProps={{exact: true}} />
-                </DndProvider>
+                    <DashboardsNavbarBlock navBarLinkProps={{ exact: true }} />
+                </DndProvider>,
             )
 
             expect(screen.getByText('Report 1')).toBeInTheDocument()
@@ -119,7 +120,7 @@ describe('DashboardsNavbarBlock', () => {
         })
 
         it('should correctly navigate to the custom report detail page when a link is clicked', () => {
-            const mockData = [{id: '1', name: 'Report 1', emoji: '📊'}]
+            const mockData = [{ id: '1', name: 'Report 1', emoji: '📊' }]
 
             useCustomReportActionsMock.mockReturnValue({
                 getDashboardsHandler: () => mockData,
@@ -127,30 +128,30 @@ describe('DashboardsNavbarBlock', () => {
 
             renderWithQueryClientAndRouter(
                 <DndProvider backend={HTML5Backend}>
-                    <DashboardsNavbarBlock navBarLinkProps={{exact: true}} />
-                </DndProvider>
+                    <DashboardsNavbarBlock navBarLinkProps={{ exact: true }} />
+                </DndProvider>,
             )
 
             const reportLink = screen.getByText('Report 1')
 
             expect(reportLink.parentElement).toHaveAttribute(
                 'href',
-                getDashboardPath(1)
+                getDashboardPath(1),
             )
         })
 
         it('should show limit reached message when there are 10 dashboards', () => {
             const mockData = [
-                {id: '1', name: 'Report 1', emoji: '📊'},
-                {id: '2', name: 'Report 2', emoji: '📊'},
-                {id: '3', name: 'Report 3', emoji: '📊'},
-                {id: '4', name: 'Report 4', emoji: '📊'},
-                {id: '5', name: 'Report 5', emoji: '📊'},
-                {id: '6', name: 'Report 6', emoji: '📊'},
-                {id: '7', name: 'Report 7', emoji: '📊'},
-                {id: '8', name: 'Report 8', emoji: '📊'},
-                {id: '9', name: 'Report 9', emoji: '📊'},
-                {id: '10', name: 'Report 10', emoji: '📊'},
+                { id: '1', name: 'Report 1', emoji: '📊' },
+                { id: '2', name: 'Report 2', emoji: '📊' },
+                { id: '3', name: 'Report 3', emoji: '📊' },
+                { id: '4', name: 'Report 4', emoji: '📊' },
+                { id: '5', name: 'Report 5', emoji: '📊' },
+                { id: '6', name: 'Report 6', emoji: '📊' },
+                { id: '7', name: 'Report 7', emoji: '📊' },
+                { id: '8', name: 'Report 8', emoji: '📊' },
+                { id: '9', name: 'Report 9', emoji: '📊' },
+                { id: '10', name: 'Report 10', emoji: '📊' },
             ]
 
             useCustomReportActionsMock.mockReturnValue({
@@ -159,8 +160,8 @@ describe('DashboardsNavbarBlock', () => {
 
             renderWithQueryClientAndRouter(
                 <DndProvider backend={HTML5Backend}>
-                    <DashboardsNavbarBlock navBarLinkProps={{exact: true}} />
-                </DndProvider>
+                    <DashboardsNavbarBlock navBarLinkProps={{ exact: true }} />
+                </DndProvider>,
             )
 
             expect(screen.queryByText(CREATE_DASHBOARD)).not.toBeInTheDocument()
@@ -170,8 +171,8 @@ describe('DashboardsNavbarBlock', () => {
         it('should not show the info icon when the user is an Admin', () => {
             renderWithQueryClientAndRouter(
                 <DndProvider backend={HTML5Backend}>
-                    <DashboardsNavbarBlock navBarLinkProps={{exact: true}} />
-                </DndProvider>
+                    <DashboardsNavbarBlock navBarLinkProps={{ exact: true }} />
+                </DndProvider>,
             )
 
             expect(screen.getByText('add')).toBeInTheDocument()
@@ -181,15 +182,15 @@ describe('DashboardsNavbarBlock', () => {
         it('should report clicks on add icon clicked', () => {
             renderWithQueryClientAndRouter(
                 <DndProvider backend={HTML5Backend}>
-                    <DashboardsNavbarBlock navBarLinkProps={{exact: true}} />
-                </DndProvider>
+                    <DashboardsNavbarBlock navBarLinkProps={{ exact: true }} />
+                </DndProvider>,
             )
             const addIcon = screen.getByText('add')
             expect(addIcon).toBeEnabled()
             userEvent.click(addIcon)
 
             expect(logEventMock).toHaveBeenCalledWith(
-                SegmentEvent.StatDashboardNavCreateChartClicked
+                SegmentEvent.StatDashboardNavCreateChartClicked,
             )
         })
     })
@@ -202,8 +203,8 @@ describe('DashboardsNavbarBlock', () => {
         it('should show the info icon when the user is a LiteAgent', async () => {
             renderWithQueryClientAndRouter(
                 <DndProvider backend={HTML5Backend}>
-                    <DashboardsNavbarBlock navBarLinkProps={{exact: true}} />
-                </DndProvider>
+                    <DashboardsNavbarBlock navBarLinkProps={{ exact: true }} />
+                </DndProvider>,
             )
 
             const infoIcon = screen.getByText('info')
@@ -212,7 +213,7 @@ describe('DashboardsNavbarBlock', () => {
             userEvent.hover(infoIcon)
             await waitFor(() => {
                 expect(
-                    screen.getByText(RESTRICTION_MESSAGE)
+                    screen.getByText(RESTRICTION_MESSAGE),
                 ).toBeInTheDocument()
             })
         })

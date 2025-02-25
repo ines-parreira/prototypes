@@ -1,24 +1,24 @@
-import {AlertBannerTypes, ContextBanner} from '../types'
-import {getBannerInsertionIndex} from './helpers/getBannerInsertionIndex'
-import {BannerActions, BannerActionTypes} from './types'
+import { AlertBannerTypes, ContextBanner } from '../types'
+import { getBannerInsertionIndex } from './helpers/getBannerInsertionIndex'
+import { BannerActions, BannerActionTypes } from './types'
 
 function isInState(
     banners: ContextBanner[],
     category: ContextBanner['category'],
-    instanceId?: ContextBanner['instanceId']
+    instanceId?: ContextBanner['instanceId'],
 ) {
     return banners.some(
         (banner) =>
             banner.category === category &&
             (typeof instanceId !== 'undefined'
                 ? banner.instanceId === instanceId
-                : true)
+                : true),
     )
 }
 
 export function bannersReducer(
     banners: ContextBanner[],
-    action: BannerActions
+    action: BannerActions,
 ) {
     switch (action.type) {
         case BannerActionTypes.ADD: {
@@ -26,22 +26,22 @@ export function bannersReducer(
                 isInState(
                     banners,
                     action.payload.category,
-                    action.payload.instanceId
+                    action.payload.instanceId,
                 )
             ) {
                 return banners
             }
             if (banners.length === 0) {
-                return [{...action.payload}]
+                return [{ ...action.payload }]
             }
 
             const insertionIndex = getBannerInsertionIndex(
                 banners,
-                action.payload.type || AlertBannerTypes.Info
+                action.payload.type || AlertBannerTypes.Info,
             )
             return [
                 ...banners.slice(0, insertionIndex),
-                {...action.payload},
+                { ...action.payload },
                 ...banners.slice(insertionIndex),
             ]
         }
@@ -50,7 +50,7 @@ export function bannersReducer(
 
             return [
                 ...banners.filter(
-                    (banner) => banner.category !== action.category
+                    (banner) => banner.category !== action.category,
                 ),
             ]
         }
@@ -62,7 +62,7 @@ export function bannersReducer(
                 ...banners.filter(
                     (banner) =>
                         banner.category !== action.category &&
-                        banner.instanceId !== action.instanceId
+                        banner.instanceId !== action.instanceId,
                 ),
             ]
         }

@@ -1,6 +1,6 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
+import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
 import {
     GorgiasChatInstallationMethod,
     GorgiasChatIntegration,
@@ -8,16 +8,16 @@ import {
 } from 'models/integration/types'
 import useGetChatInstallationStatus from 'pages/convert/common/hooks/useGetChatInstallationStatus'
 import useShopifyThemeAppExtension from 'pages/integrations/integration/components/gorgias_chat/hooks/useShopifyThemeAppExtension'
-import {getGorgiasMainThemeAppExtensionId} from 'pages/integrations/integration/components/gorgias_chat/hooks/useThemeAppExtensionInstallation'
+import { getGorgiasMainThemeAppExtensionId } from 'pages/integrations/integration/components/gorgias_chat/hooks/useThemeAppExtensionInstallation'
 
 const useIsManualInstallationMethodRequired = (
     chatIntegration: GorgiasChatIntegration | undefined,
-    storeIntegration: ShopifyIntegration | undefined
+    storeIntegration: ShopifyIntegration | undefined,
 ) => {
-    const {installed: chatInstalled, method: chatInstallationMethod} =
+    const { installed: chatInstalled, method: chatInstallationMethod } =
         useGetChatInstallationStatus(chatIntegration)
 
-    const {isInstalled} = useShopifyThemeAppExtension({
+    const { isInstalled } = useShopifyThemeAppExtension({
         shopifyIntegration: storeIntegration,
         appUuid: getGorgiasMainThemeAppExtensionId(),
     })
@@ -26,9 +26,9 @@ const useIsManualInstallationMethodRequired = (
         () =>
             Boolean(
                 storeIntegration &&
-                    storeIntegration.type === SHOPIFY_INTEGRATION_TYPE
+                    storeIntegration.type === SHOPIFY_INTEGRATION_TYPE,
             ),
-        [storeIntegration]
+        [storeIntegration],
     )
 
     return (

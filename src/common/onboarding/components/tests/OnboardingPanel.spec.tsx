@@ -1,11 +1,12 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {Panels} from 'core/layout/panels'
-import {assumeMock} from 'utils/testing'
+import { render, screen } from '@testing-library/react'
+
+import { Panels } from 'core/layout/panels'
+import { assumeMock } from 'utils/testing'
 
 import useIsOnboardingHidden from '../../hooks/useIsOnboardingHidden'
-import {OnboardingPanel} from '../OnboardingPanel'
+import { OnboardingPanel } from '../OnboardingPanel'
 
 jest.mock(
     'core/layout/panels',
@@ -13,7 +14,7 @@ jest.mock(
         ({
             ...jest.requireActual('core/layout/panels'),
             Handle: () => <div>Handle</div>,
-        }) as typeof import('core/layout/panels')
+        }) as typeof import('core/layout/panels'),
 )
 
 jest.mock('pages/tickets/list/OnboardingSidePanel', () => () => (
@@ -32,11 +33,11 @@ describe('OnboardingPanel', () => {
         render(
             <Panels size={1000}>
                 <OnboardingPanel />
-            </Panels>
+            </Panels>,
         )
         expect(screen.queryByText('Handle')).not.toBeInTheDocument()
         expect(
-            screen.queryByText('OnboardingSidePanel')
+            screen.queryByText('OnboardingSidePanel'),
         ).not.toBeInTheDocument()
     })
 
@@ -45,7 +46,7 @@ describe('OnboardingPanel', () => {
         render(
             <Panels size={1000}>
                 <OnboardingPanel />
-            </Panels>
+            </Panels>,
         )
         expect(screen.getByText('Handle')).toBeInTheDocument()
         expect(screen.getByText('OnboardingSidePanel')).toBeInTheDocument()

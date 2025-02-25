@@ -1,13 +1,14 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 
-import {orderCustomization, statusColors} from '../Order'
+import { orderCustomization, statusColors } from '../Order'
 
 const mockStore = configureMockStore([thunk])
 
@@ -19,7 +20,7 @@ const TitleWrapper = orderWidgets.TitleWrapper!
 jest.mock(
     'pages/common/utils/DatetimeLabel',
     () =>
-        ({dateTime}: {dateTime: string}) => <div>{dateTime}</div>
+        ({ dateTime }: { dateTime: string }) => <div>{dateTime}</div>,
 )
 
 describe('Order', () => {
@@ -81,7 +82,7 @@ describe('Order', () => {
             it.each(Object.keys(statusColors))(
                 `should render with a label for the %s state and a created at date but no shipments because there are none`,
                 (state) => {
-                    const {container} = render(
+                    const { container } = render(
                         <Provider
                             store={mockStore({
                                 customers: fromJS({
@@ -89,7 +90,7 @@ describe('Order', () => {
                                         id: customerId,
                                         integrations: {
                                             [integrationId]: {
-                                                customer: {id: customerId},
+                                                customer: { id: customerId },
                                                 shipments: [],
                                             },
                                         },
@@ -112,15 +113,15 @@ describe('Order', () => {
                                     })}
                                 />
                             </IntegrationContext.Provider>
-                        </Provider>
+                        </Provider>,
                     )
 
                     expect(container).toMatchSnapshot()
-                }
+                },
             )
 
             it(`should render the state and an empty created at date but no shipments because there are none`, () => {
-                const {container} = render(
+                const { container } = render(
                     <Provider
                         store={mockStore({
                             customers: fromJS({
@@ -128,7 +129,7 @@ describe('Order', () => {
                                     id: customerId,
                                     integrations: {
                                         [integrationId]: {
-                                            customer: {id: customerId},
+                                            customer: { id: customerId },
                                             shipments: [],
                                         },
                                     },
@@ -150,14 +151,14 @@ describe('Order', () => {
                                 })}
                             />
                         </IntegrationContext.Provider>
-                    </Provider>
+                    </Provider>,
                 )
 
                 expect(container).toMatchSnapshot()
             })
 
             it('should display shipments with links because there is an admin url suffix', () => {
-                const {container} = render(
+                const { container } = render(
                     <Provider
                         store={mockStore({
                             customers: fromJS({
@@ -165,7 +166,7 @@ describe('Order', () => {
                                     id: customerId,
                                     integrations: {
                                         [integrationId]: {
-                                            customer: {id: customerId},
+                                            customer: { id: customerId },
                                             shipments,
                                         },
                                     },
@@ -193,14 +194,14 @@ describe('Order', () => {
                                 })}
                             />
                         </IntegrationContext.Provider>
-                    </Provider>
+                    </Provider>,
                 )
 
                 expect(container).toMatchSnapshot()
             })
 
             it('should display shipments without links because there is no admin url suffix', () => {
-                const {container} = render(
+                const { container } = render(
                     <Provider
                         store={mockStore({
                             customers: fromJS({
@@ -208,7 +209,7 @@ describe('Order', () => {
                                     id: customerId,
                                     integrations: {
                                         [integrationId]: {
-                                            customer: {id: customerId},
+                                            customer: { id: customerId },
                                             shipments,
                                         },
                                     },
@@ -236,7 +237,7 @@ describe('Order', () => {
                                 })}
                             />
                         </IntegrationContext.Provider>
-                    </Provider>
+                    </Provider>,
                 )
 
                 expect(container).toMatchSnapshot()
@@ -248,7 +249,7 @@ describe('Order', () => {
         const integrationId = 3
         describe('render()', () => {
             it('should not render link because there is no admin url suffix', () => {
-                const {container} = render(
+                const { container } = render(
                     <IntegrationContext.Provider
                         value={{
                             integrationId,
@@ -260,17 +261,17 @@ describe('Order', () => {
                             }),
                         }}
                     >
-                        <TitleWrapper source={fromJS({entity_id: 1})}>
+                        <TitleWrapper source={fromJS({ entity_id: 1 })}>
                             <div>foo bar</div>
                         </TitleWrapper>
-                    </IntegrationContext.Provider>
+                    </IntegrationContext.Provider>,
                 )
 
                 expect(container).toMatchSnapshot()
             })
 
             it('should render link', () => {
-                const {container} = render(
+                const { container } = render(
                     <IntegrationContext.Provider
                         value={{
                             integrationId,
@@ -282,10 +283,10 @@ describe('Order', () => {
                             }),
                         }}
                     >
-                        <TitleWrapper source={fromJS({entity_id: 1})}>
+                        <TitleWrapper source={fromJS({ entity_id: 1 })}>
                             <div>foo bar</div>
                         </TitleWrapper>{' '}
-                    </IntegrationContext.Provider>
+                    </IntegrationContext.Provider>,
                 )
 
                 expect(container).toMatchSnapshot()
@@ -326,7 +327,7 @@ describe('Order', () => {
 
         describe('render()', () => {
             it('should return null because the order has no shipments nor credit memos', () => {
-                const {container} = render(
+                const { container } = render(
                     <Provider
                         store={mockStore({
                             customers: fromJS({
@@ -334,7 +335,7 @@ describe('Order', () => {
                                     id: customerId,
                                     integrations: {
                                         [integrationId]: {
-                                            customer: {id: customerId},
+                                            customer: { id: customerId },
                                             shipments: [],
                                             credit_memos: [],
                                         },
@@ -356,14 +357,14 @@ describe('Order', () => {
                                 })}
                             />
                         </IntegrationContext.Provider>
-                    </Provider>
+                    </Provider>,
                 )
 
                 expect(container).toMatchSnapshot()
             })
 
             it('should display credit memos with links because there is an admin url suffix', () => {
-                const {container} = render(
+                const { container } = render(
                     <Provider
                         store={mockStore({
                             customers: fromJS({
@@ -371,7 +372,7 @@ describe('Order', () => {
                                     id: customerId,
                                     integrations: {
                                         [integrationId]: {
-                                            customer: {id: customerId},
+                                            customer: { id: customerId },
                                             shipments: [],
                                             credit_memos: creditMemos,
                                         },
@@ -398,14 +399,14 @@ describe('Order', () => {
                                 })}
                             />
                         </IntegrationContext.Provider>
-                    </Provider>
+                    </Provider>,
                 )
 
                 expect(container).toMatchSnapshot()
             })
 
             it('should display credit memos without links because there is no admin url suffix', () => {
-                const {container} = render(
+                const { container } = render(
                     <Provider
                         store={mockStore({
                             customers: fromJS({
@@ -413,7 +414,7 @@ describe('Order', () => {
                                     id: customerId,
                                     integrations: {
                                         [integrationId]: {
-                                            customer: {id: customerId},
+                                            customer: { id: customerId },
                                             shipments: [],
                                             credit_memos: creditMemos,
                                         },
@@ -441,7 +442,7 @@ describe('Order', () => {
                                 })}
                             />
                         </IntegrationContext.Provider>
-                    </Provider>
+                    </Provider>,
                 )
 
                 expect(container).toMatchSnapshot()

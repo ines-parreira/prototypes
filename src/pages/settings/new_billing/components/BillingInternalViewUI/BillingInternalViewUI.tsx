@@ -1,9 +1,10 @@
 import React from 'react'
 
-import {BillingState, SubscriptionStatus} from 'models/billing/types'
+import { BillingState, SubscriptionStatus } from 'models/billing/types'
 
 import ProductCardForCoupon from '../../components/ProductCardForCoupon'
 import UpcomingInvoiceCard from '../../components/UpcomingInvoiceCard'
+
 import css from './BillingInternalViewUI.less'
 
 interface BillingInternalViewUIProps {
@@ -21,7 +22,7 @@ export function BillingInternalViewUI({
     const currentCoupon = billingState.subscription?.coupon
 
     const isHelpdeskAndAutomateCoupon = (currentCoupon?.name || '').includes(
-        '-hd+ao-'
+        '-hd+ao-',
     )
     const isHelpdeskCoupon = (currentCoupon?.name || '').includes('-hd-')
     const isAutomateCoupon = (currentCoupon?.name || '').includes('-ao-')

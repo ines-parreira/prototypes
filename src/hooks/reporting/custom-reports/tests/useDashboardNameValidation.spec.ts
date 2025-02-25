@@ -1,57 +1,58 @@
-import {useListAnalyticsCustomReports} from '@gorgias/api-queries'
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {useDashboardNameValidation} from 'hooks/reporting/custom-reports/useDashboardNameValidation'
-import {assumeMock} from 'utils/testing'
+import { useListAnalyticsCustomReports } from '@gorgias/api-queries'
+
+import { useDashboardNameValidation } from 'hooks/reporting/custom-reports/useDashboardNameValidation'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('@gorgias/api-queries')
 const useListAnalyticsCustomReportsMock = assumeMock(
-    useListAnalyticsCustomReports
+    useListAnalyticsCustomReports,
 )
 
 describe('useValidateDashboardName', () => {
     const mockDashboards = [
-        {name: 'Existing Dashboard', id: '1'},
-        {name: 'Another Dashboard', id: '2'},
+        { name: 'Existing Dashboard', id: '1' },
+        { name: 'Another Dashboard', id: '2' },
     ]
 
     beforeEach(() => {
         useListAnalyticsCustomReportsMock.mockReturnValue({
-            data: {data: {data: mockDashboards}},
+            data: { data: { data: mockDashboards } },
         } as any)
     })
 
     it('should return error for names shorter than 3 characters', () => {
-        const {result} = renderHook(() => useDashboardNameValidation('ab'))
+        const { result } = renderHook(() => useDashboardNameValidation('ab'))
 
         expect(result.current.error).toBe(
-            'Name must be at least 3 characters long'
+            'Name must be at least 3 characters long',
         )
     })
 
     it('should return error for duplicate dashboard names', () => {
-        const {result} = renderHook(() =>
-            useDashboardNameValidation('Existing Dashboard')
+        const { result } = renderHook(() =>
+            useDashboardNameValidation('Existing Dashboard'),
         )
 
         expect(result.current.error).toBe(
-            'Existing Dashboard already exists. Please create a unique name to save.'
+            'Existing Dashboard already exists. Please create a unique name to save.',
         )
     })
 
     it('should return error for duplicate dashboard names with different spacing', () => {
-        const {result} = renderHook(() =>
-            useDashboardNameValidation('  Existing Dashboard  ')
+        const { result } = renderHook(() =>
+            useDashboardNameValidation('  Existing Dashboard  '),
         )
 
         expect(result.current.error).toBe(
-            'Existing Dashboard already exists. Please create a unique name to save.'
+            'Existing Dashboard already exists. Please create a unique name to save.',
         )
     })
 
     it('should return null for valid dashboard names', () => {
-        const {result} = renderHook(() =>
-            useDashboardNameValidation('New Valid Dashboard')
+        const { result } = renderHook(() =>
+            useDashboardNameValidation('New Valid Dashboard'),
         )
 
         expect(result.current.error).toBeUndefined()
@@ -61,11 +62,11 @@ describe('useValidateDashboardName', () => {
 
     it('should handle empty dashboards list', () => {
         useListAnalyticsCustomReportsMock.mockReturnValue({
-            data: {data: {data: []}},
+            data: { data: { data: [] } },
         } as any)
 
-        const {result} = renderHook(() =>
-            useDashboardNameValidation('New Dashboard')
+        const { result } = renderHook(() =>
+            useDashboardNameValidation('New Dashboard'),
         )
 
         expect(result.current.error).toBeUndefined()
@@ -76,19 +77,19 @@ describe('useValidateDashboardName', () => {
             data: null,
         } as any)
 
-        const {result} = renderHook(() =>
-            useDashboardNameValidation('New Dashboard')
+        const { result } = renderHook(() =>
+            useDashboardNameValidation('New Dashboard'),
         )
 
         expect(result.current.error).toBeUndefined()
     })
 
     it('should allow the same name if it matches the initialName', () => {
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useDashboardNameValidation(
                 'Existing Dashboard',
-                'Existing Dashboard'
-            )
+                'Existing Dashboard',
+            ),
         )
 
         expect(result.current.error).toBeUndefined()
@@ -97,11 +98,11 @@ describe('useValidateDashboardName', () => {
     })
 
     it('should allow the same name with different spacing if it matches the initialName', () => {
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useDashboardNameValidation(
                 '  Existing Dashboard  ',
-                'Existing Dashboard'
-            )
+                'Existing Dashboard',
+            ),
         )
 
         expect(result.current.error).toBeUndefined()

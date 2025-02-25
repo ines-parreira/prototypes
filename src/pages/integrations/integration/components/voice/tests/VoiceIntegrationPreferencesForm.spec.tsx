@@ -1,19 +1,20 @@
-import {RenderResult, fireEvent, render, screen} from '@testing-library/react'
 import React from 'react'
-import {useFormContext} from 'react-hook-form'
-import {BrowserRouter} from 'react-router-dom'
 
-import {FormField, FormSubmitButton} from 'core/forms'
-import {integrationsState} from 'fixtures/integrations'
-import {IntegrationType} from 'models/integration/constants'
-import {PhoneIntegration} from 'models/integration/types'
+import { fireEvent, render, RenderResult, screen } from '@testing-library/react'
+import { useFormContext } from 'react-hook-form'
+import { BrowserRouter } from 'react-router-dom'
+
+import { FormField, FormSubmitButton } from 'core/forms'
+import { integrationsState } from 'fixtures/integrations'
+import { IntegrationType } from 'models/integration/constants'
+import { PhoneIntegration } from 'models/integration/types'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
-import {INTEGRATION_REMOVAL_CONFIGURATION_TEXT} from 'pages/integrations/integration/constants'
-import {getNewPhoneNumber} from 'state/entities/phoneNumbers/selectors'
-import {assumeMock} from 'utils/testing'
+import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
+import { getNewPhoneNumber } from 'state/entities/phoneNumbers/selectors'
+import { assumeMock } from 'utils/testing'
 
-import {useDeleteVoiceIntegration} from '../useDeleteVoiceIntegration'
-import {useFormSubmit} from '../useVoicePreferencesForm'
+import { useDeleteVoiceIntegration } from '../useDeleteVoiceIntegration'
+import { useFormSubmit } from '../useVoicePreferencesForm'
 import VoiceIntegrationPreferencesCallRecordings from '../VoiceIntegrationPreferencesCallRecordings'
 import VoiceIntegrationPreferencesForm from '../VoiceIntegrationPreferencesForm'
 import VoiceIntegrationPreferencesInboundCalls from '../VoiceIntegrationPreferencesInboundCalls'
@@ -24,7 +25,7 @@ jest.mock('hooks/useAppDispatch')
 jest.mock('state/notifications/actions')
 
 const phoneIntegration = integrationsState.integrations.find(
-    (integration) => integration.type === IntegrationType.Phone
+    (integration) => integration.type === IntegrationType.Phone,
 ) as unknown as PhoneIntegration
 
 jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
@@ -42,13 +43,13 @@ jest.mock('../VoiceIntegrationPreferencesTranscription')
 jest.mock('../VoiceIntegrationPreferencesCallRecordings')
 
 const VoiceIntegrationPreferencesInboundCallsMock = assumeMock(
-    VoiceIntegrationPreferencesInboundCalls
+    VoiceIntegrationPreferencesInboundCalls,
 )
 const VoiceIntegrationPreferencesTranscriptionMock = assumeMock(
-    VoiceIntegrationPreferencesTranscription
+    VoiceIntegrationPreferencesTranscription,
 )
 const VoiceIntegrationPreferencesCallRecordingsMock = assumeMock(
-    VoiceIntegrationPreferencesCallRecordings
+    VoiceIntegrationPreferencesCallRecordings,
 )
 
 const useFormContextMock = assumeMock(useFormContext)
@@ -96,29 +97,29 @@ describe('<VoiceIntegrationPreferencesForm />', () => {
         render(
             <BrowserRouter>
                 <VoiceIntegrationPreferencesForm {...props} />
-            </BrowserRouter>
+            </BrowserRouter>,
         )
 
     beforeEach(() => {
         getNewPhoneNumberMock.mockReturnValue((() => phoneIntegration) as any)
         useFormContextMock.mockReturnValue(methodsMock)
         useDeleteVoiceIntegrationMock.mockReturnValue(
-            useDeleteVoiceIntegrationReturnValue
+            useDeleteVoiceIntegrationReturnValue,
         )
-        useFormSubmitMock.mockReturnValue({onSubmit})
+        useFormSubmitMock.mockReturnValue({ onSubmit })
         FormFieldMock.mockReturnValue(<div>FormField</div>)
         UnsavedChangesPromptMock.mockReturnValue(
-            <div>UnsavedChangesPrompt</div>
+            <div>UnsavedChangesPrompt</div>,
         )
         FormSubmitButtonMock.mockReturnValue(<div>FormSubmitButton</div>)
         VoiceIntegrationPreferencesInboundCallsMock.mockReturnValue(
-            <div>InboundCallsPreferences</div>
+            <div>InboundCallsPreferences</div>,
         )
         VoiceIntegrationPreferencesTranscriptionMock.mockReturnValue(
-            <div>TranscriptionPreferences</div>
+            <div>TranscriptionPreferences</div>,
         )
         VoiceIntegrationPreferencesCallRecordingsMock.mockReturnValue(
-            <div>CallRecordingPreferences</div>
+            <div>CallRecordingPreferences</div>,
         )
     })
 
@@ -144,7 +145,7 @@ describe('<VoiceIntegrationPreferencesForm />', () => {
                 expect.objectContaining({
                     isDisabled: true,
                 }),
-                {}
+                {},
             )
         })
 
@@ -158,18 +159,18 @@ describe('<VoiceIntegrationPreferencesForm />', () => {
                 expect.objectContaining({
                     isDisabled: false,
                 }),
-                {}
+                {},
             )
         })
     })
 
     it('should display delete warning message and it should not contain text about "saved filters"', () => {
-        const {getByText, getByRole} = renderComponent(props)
+        const { getByText, getByRole } = renderComponent(props)
 
-        fireEvent.click(getByRole('button', {name: /Delete integration/i}))
+        fireEvent.click(getByRole('button', { name: /Delete integration/i }))
 
         expect(
-            getByText(INTEGRATION_REMOVAL_CONFIGURATION_TEXT)
+            getByText(INTEGRATION_REMOVAL_CONFIGURATION_TEXT),
         ).toBeInTheDocument()
     })
 
@@ -187,7 +188,7 @@ describe('<VoiceIntegrationPreferencesForm />', () => {
                 placeholder: 'Ex: Company Support Line',
                 isRequired: true,
             }),
-            {}
+            {},
         )
     })
 
@@ -197,8 +198,8 @@ describe('<VoiceIntegrationPreferencesForm />', () => {
         renderComponent(props)
 
         expect(UnsavedChangesPromptMock).toHaveBeenLastCalledWith(
-            expect.objectContaining({when: false}),
-            {}
+            expect.objectContaining({ when: false }),
+            {},
         )
     })
 
@@ -208,8 +209,8 @@ describe('<VoiceIntegrationPreferencesForm />', () => {
         renderComponent(props)
 
         expect(UnsavedChangesPromptMock).toHaveBeenLastCalledWith(
-            expect.objectContaining({when: true}),
-            {}
+            expect.objectContaining({ when: true }),
+            {},
         )
     })
 })

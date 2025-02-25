@@ -1,7 +1,8 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {PendingTasksCompletionBar} from '../PendingTasksCompletionBar'
+import { render, screen } from '@testing-library/react'
+
+import { PendingTasksCompletionBar } from '../PendingTasksCompletionBar'
 
 describe('PendingTasksCompletionBar', () => {
     it('render component', () => {
@@ -9,16 +10,16 @@ describe('PendingTasksCompletionBar', () => {
             <PendingTasksCompletionBar
                 totalTasks={10}
                 totalTasksCompleted={5}
-            />
+            />,
         )
 
         expect(screen.getByRole('progressbar')).toHaveAttribute(
             'aria-value',
-            '5'
+            '5',
         )
         expect(screen.getByRole('progressbar')).toHaveAttribute(
             'aria-valuemax',
-            '10'
+            '10',
         )
     })
     it('render the loading state', () => {
@@ -26,7 +27,7 @@ describe('PendingTasksCompletionBar', () => {
 
         expect(screen.getByRole('progressbar')).toHaveAttribute(
             'aria-busy',
-            'true'
+            'true',
         )
     })
 })

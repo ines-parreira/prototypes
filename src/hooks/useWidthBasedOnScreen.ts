@@ -1,6 +1,6 @@
-import {useCallback} from 'react'
+import { useCallback } from 'react'
 
-import {SCREEN_SIZE, useScreenSize} from 'hooks/useScreenSize'
+import { SCREEN_SIZE, useScreenSize } from 'hooks/useScreenSize'
 
 export const useWidthBasedOnScreen = () => {
     const screenSize = useScreenSize()
@@ -9,7 +9,7 @@ export const useWidthBasedOnScreen = () => {
         (defaultWidth: number, customWidth: number) => {
             return screenSize === SCREEN_SIZE.SMALL ? customWidth : defaultWidth
         },
-        [screenSize]
+        [screenSize],
     )
 
     return getWidth

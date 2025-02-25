@@ -1,16 +1,18 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {LocaleCode} from 'models/helpCenter/types'
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+
+import { LocaleCode } from 'models/helpCenter/types'
+
+import { AiAgentLayout } from './components/AiAgentLayout/AiAgentLayout'
+import { GuidanceBreadcrumbs } from './components/GuidanceBreadcrumbs/GuidanceBreadcrumbs'
+import { GuidanceForm } from './components/GuidanceForm/GuidanceForm'
+import { useGuidanceArticle } from './hooks/useGuidanceArticle'
+import { useGuidanceArticleMutation } from './hooks/useGuidanceArticleMutation'
+import { GuidanceFormFields } from './types'
+import { mapGuidanceFormFieldsToGuidanceArticle } from './utils/guidance.utils'
 
 import css from './AiAgentGuidanceContainer.less'
-import {AiAgentLayout} from './components/AiAgentLayout/AiAgentLayout'
-import {GuidanceBreadcrumbs} from './components/GuidanceBreadcrumbs/GuidanceBreadcrumbs'
-import {GuidanceForm} from './components/GuidanceForm/GuidanceForm'
-import {useGuidanceArticle} from './hooks/useGuidanceArticle'
-import {useGuidanceArticleMutation} from './hooks/useGuidanceArticleMutation'
-import {GuidanceFormFields} from './types'
-import {mapGuidanceFormFieldsToGuidanceArticle} from './utils/guidance.utils'
 
 type Props = {
     guidanceHelpCenterId: number
@@ -25,7 +27,7 @@ export const AiAgentGuidanceDetailView = ({
     shopName,
     locale,
 }: Props) => {
-    const {guidanceArticle, isGuidanceArticleLoading} = useGuidanceArticle({
+    const { guidanceArticle, isGuidanceArticleLoading } = useGuidanceArticle({
         guidanceHelpCenterId,
         guidanceArticleId,
         locale,
@@ -45,7 +47,7 @@ export const AiAgentGuidanceDetailView = ({
     const onSubmit = async (guidanceFormFields: GuidanceFormFields) => {
         await updateGuidanceArticle(
             mapGuidanceFormFieldsToGuidanceArticle(guidanceFormFields, locale),
-            {articleId: guidanceArticleId, locale}
+            { articleId: guidanceArticleId, locale },
         )
     }
 
@@ -58,7 +60,7 @@ export const AiAgentGuidanceDetailView = ({
                       isVisible: guidanceArticle.visibility === 'PUBLIC',
                   }
                 : undefined,
-        [guidanceArticle]
+        [guidanceArticle],
     )
 
     const sourceType = useMemo(() => {

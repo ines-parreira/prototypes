@@ -1,28 +1,29 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import axios, {AxiosError} from 'axios'
-import {Map} from 'immutable'
+import React, { FormEvent, memo, useCallback, useEffect, useState } from 'react'
+
+import axios, { AxiosError } from 'axios'
+import { Map } from 'immutable'
 import moment from 'moment-timezone'
-import React, {FormEvent, memo, useCallback, useEffect, useState} from 'react'
 import {
-    Form as ReactStrapForm,
     FormGroup,
     Input,
     InputGroup,
     ModalBody,
     ModalHeader,
+    Form as ReactStrapForm,
 } from 'reactstrap'
+
+import { Label } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import client from 'models/api/resources'
 import {
-    DISCOUNT_TYPE,
     DISCOUNT_CHOICES,
-    DISCOUNT_USE_TYPE,
+    DISCOUNT_TYPE,
     DISCOUNT_USE_CHOICES,
+    DISCOUNT_USE_TYPE,
 } from 'models/discountCodes/constants'
-
-import {DiscountCode} from 'models/discountCodes/types'
+import { DiscountCode } from 'models/discountCodes/types'
 import Button from 'pages/common/components/button/Button'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import Errors from 'pages/common/forms/Errors'
@@ -33,10 +34,10 @@ import {
     CollectionFormGroup,
 } from 'pages/convert/discountOffer/components/CollectionFormGroup/CollectionFormGroup'
 import CustomerSegmentSelector from 'pages/convert/discountOffer/components/CustomerSegmentSelector'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {getTicketState} from 'state/ticket/selectors'
-import {getMoneySymbol} from 'utils/getMoneySymbol'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { getTicketState } from 'state/ticket/selectors'
+import { getMoneySymbol } from 'utils/getMoneySymbol'
 
 import css from './DiscountCodeCreateModal.less'
 
@@ -46,24 +47,24 @@ type Props = {
     onClose: () => void
 }
 
-function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
+function DiscountCodeCreateModal({ onSubmit, onClose, integration }: Props) {
     const ticket = useAppSelector(getTicketState)
 
     const [discountType, setDiscountType] = useState(DISCOUNT_TYPE.PERCENTAGE)
     const [discountCode, setDiscountCode] = useState<string>()
     const [discountValue, setDiscountValue] = useState<number>(0)
     const [selectedSegments, setSelectedSegments] = useState<string[] | null>(
-        null
+        null,
     )
     const [selectedCollections, setSelectedCollections] = useState<string[]>([])
     const [selectedProducts, setSelectedProducts] = useState<string[]>([])
     const [appliesTo, setAppliesTo] = useState<AppliesTypeEnum>(
-        AppliesTypeEnum.ORDER_AMOUNT
+        AppliesTypeEnum.ORDER_AMOUNT,
     )
     const [discountUseType, setDiscountUseType] = useState(
         ticket?.get('id')
             ? DISCOUNT_USE_TYPE.ONE_PER_USER
-            : DISCOUNT_USE_TYPE.NO_LIMIT
+            : DISCOUNT_USE_TYPE.NO_LIMIT,
     )
     const [minRequirementsPurchase, setMinRequirementsPurchase] =
         useState(false)
@@ -87,7 +88,7 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
         setSelectedSegments(
             value && selectedSegmentsSet.size > 0
                 ? Array.from(selectedSegmentsSet)
-                : null
+                : null,
         )
     }
 
@@ -100,7 +101,7 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
                     : selectedCollectionsSet.add(value)
             setSelectedCollections(Array.from(selectedCollectionsSet))
         },
-        [selectedCollections]
+        [selectedCollections],
     )
 
     const handleSelectedProductsChange = useCallback(
@@ -112,7 +113,7 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
                     : selectedProductsSet.add(value)
             setSelectedProducts(Array.from(selectedProductsSet))
         },
-        [selectedProducts]
+        [selectedProducts],
     )
 
     // Listen to applies to and clear the selection if it's not going to be used
@@ -161,7 +162,9 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
                 .then(function (response) {
                     onSubmit(response.data)
                 })
-                .catch(function (error: AxiosError<{error?: {data?: any}}>) {
+                .catch(function (
+                    error: AxiosError<{ error?: { data?: any } }>,
+                ) {
                     if (axios.isAxiosError(error)) {
                         setFormErrors(error.response?.data?.error?.data)
                     }
@@ -170,7 +173,7 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
                         notify({
                             status: NotificationStatus.Error,
                             message: "Couldn't add discount code",
-                        })
+                        }),
                     )
                 })
         },
@@ -188,7 +191,7 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
             integration,
             onSubmit,
             dispatch,
-        ]
+        ],
     )
 
     const handleGenerate = () => {
@@ -204,7 +207,7 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
                 Math.random()
                     .toString(36)
                     .slice(2, 10 - prefix.length)
-                    .toUpperCase()
+                    .toUpperCase(),
         )
     }
 
@@ -247,7 +250,7 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
                                             integration.getIn([
                                                 'meta',
                                                 'currency',
-                                            ])
+                                            ]),
                                         )}
                                     />
                                 </div>
@@ -345,7 +348,7 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
                                         value={minRequirementsPurchaseAmount}
                                         onChange={(value) =>
                                             setMinRequirementsPurchaseAmount(
-                                                value ?? 0
+                                                value ?? 0,
                                             )
                                         }
                                         min={0}
@@ -353,7 +356,7 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
                                             integration.getIn([
                                                 'meta',
                                                 'currency',
-                                            ])
+                                            ]),
                                         )}
                                     />
                                 )}
@@ -389,7 +392,7 @@ function DiscountCodeCreateModal({onSubmit, onClose, integration}: Props) {
                                     value={selectedSegments}
                                     integrationId={
                                         integration.get(
-                                            'id'
+                                            'id',
                                         ) as unknown as number
                                     }
                                     onChange={handleSegmentValueChange}

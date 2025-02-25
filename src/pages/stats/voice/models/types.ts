@@ -1,11 +1,11 @@
-import {VoiceCallDirection} from '@gorgias/api-queries'
+import { VoiceCallDirection } from '@gorgias/api-queries'
 
 import {
     VoiceCallDimension,
     VoiceCallMeasure,
     VoiceCallSegment,
 } from 'models/reporting/cubes/VoiceCallCube'
-import {VoiceCallDisplayStatus, VoiceCallStatus} from 'models/voiceCall/types'
+import { VoiceCallDisplayStatus, VoiceCallStatus } from 'models/voiceCall/types'
 
 export type VoiceCallStatListItem = {
     [VoiceCallDimension.AgentId]: string | null
@@ -65,7 +65,7 @@ export const isInboundVoiceCallSummary = (call: VoiceCallSummary) =>
     call.direction === 'inbound'
 
 export const getVoiceSegmentFromFilter = (
-    filter?: VoiceCallFilterOptions
+    filter?: VoiceCallFilterOptions,
 ): VoiceCallSegment | undefined => {
     switch (filter) {
         case VoiceCallFilterOptions.All:

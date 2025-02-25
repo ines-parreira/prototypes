@@ -1,16 +1,17 @@
-import {Meta, StoryFn} from '@storybook/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
-import {MemoryRouter} from 'react-router-dom'
+import React, { ComponentProps } from 'react'
+
+import { Meta, StoryFn } from '@storybook/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import * as ticketFixtures from 'fixtures/ticket'
-import {view as fixtureView} from 'fixtures/views'
-import {EntityType} from 'models/view/types'
-import {ViewTableContainer} from 'pages/common/components/ViewTable/ViewTable'
-import {fetchViewItems, updateView} from 'state/views/actions'
+import { view as fixtureView } from 'fixtures/views'
+import { EntityType } from 'models/view/types'
+import { ViewTableContainer } from 'pages/common/components/ViewTable/ViewTable'
+import { fetchViewItems, updateView } from 'state/views/actions'
 
 const storyConfig: Meta = {
     title: 'Data Display/ViewTable/ViewTable',
@@ -76,13 +77,13 @@ const defaultProps = {
     fetchViewItems,
     updateView,
     navigation: fromJS({}),
-    match: {params: {}},
-    location: {search: '', pathname: ''},
+    match: { params: {} },
+    location: { search: '', pathname: '' },
     flags: {},
 } as unknown as ComponentProps<typeof ViewTableContainer>
 
 const Template: StoryFn<ComponentProps<typeof ViewTableContainer>> = (
-    props
+    props,
 ) => {
     return <ViewTableContainer {...props} />
 }

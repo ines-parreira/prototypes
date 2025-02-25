@@ -1,18 +1,19 @@
-import React, {useState, useEffect} from 'react'
+import React, { useEffect, useState } from 'react'
 
-import {useTheme} from 'core/theme'
+import { useTheme } from 'core/theme'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useMeasure from 'hooks/useMeasure'
-import {MacroAction} from 'models/macroAction/types'
-import {TicketMessage} from 'models/ticket/types'
+import { MacroAction } from 'models/macroAction/types'
+import { TicketMessage } from 'models/ticket/types'
 import Button from 'pages/common/components/button/Button'
-import {setInTicketSuggestionState} from 'state/ticket/actions'
+import { setInTicketSuggestionState } from 'state/ticket/actions'
 
-import css from './InTicketSuggestion.less'
 import InTicketSuggestionContainer from './InTicketSuggestionContainer'
 import SuggestionBody from './SuggestionBody'
 import SuggestionHeader from './SuggestionHeader'
+
+import css from './InTicketSuggestion.less'
 
 type Props = {
     ticketId: number
@@ -46,10 +47,10 @@ export default function InTicketSuggestion({
     const dispatch = useAppDispatch()
     const [suggestionState, setSuggestionState] =
         useState<SuggestionStates>(null)
-    const {isFocused} = useAppSelector((state) => state.ui.editor)
+    const { isFocused } = useAppSelector((state) => state.ui.editor)
     const isPartialUpdating = useAppSelector(
         (state) =>
-            state.ticket.getIn(['_internal', 'isPartialUpdating']) as boolean
+            state.ticket.getIn(['_internal', 'isPartialUpdating']) as boolean,
     )
 
     useEffect(() => {
@@ -60,7 +61,7 @@ export default function InTicketSuggestion({
         }
     }, [suggestionState, dispatch])
 
-    const [headerRef, {height: headerHeight}] = useMeasure<HTMLDivElement>()
+    const [headerRef, { height: headerHeight }] = useMeasure<HTMLDivElement>()
     useEffect(() => {
         if (isFocused || isPartialUpdating) setSuggestionState('collapse')
     }, [isFocused, isPartialUpdating])
@@ -76,7 +77,7 @@ export default function InTicketSuggestion({
             <SuggestionHeader
                 onChevronToggle={() =>
                     setSuggestionState((state) =>
-                        state === 'expand' ? 'collapse' : 'expand'
+                        state === 'expand' ? 'collapse' : 'expand',
                     )
                 }
                 infoContent={infoContent}

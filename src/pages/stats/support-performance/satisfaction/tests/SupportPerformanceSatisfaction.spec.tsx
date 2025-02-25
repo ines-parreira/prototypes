@@ -1,39 +1,38 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
+import React, { ComponentProps } from 'react'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
 import _noop from 'lodash/noop'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {TicketChannel} from 'business/types/ticket'
-import {SATISFACTION_SURVEYS} from 'config/stats'
-import {account} from 'fixtures/account'
-import {agents} from 'fixtures/agents'
-import {integrationsState} from 'fixtures/integrations'
-import {latestSatisfactionSurveys, satisfactionSurveys} from 'fixtures/stats'
-import {teams} from 'fixtures/teams'
+import { TicketChannel } from 'business/types/ticket'
+import { SATISFACTION_SURVEYS } from 'config/stats'
+import { account } from 'fixtures/account'
+import { agents } from 'fixtures/agents'
+import { integrationsState } from 'fixtures/integrations'
+import { latestSatisfactionSurveys, satisfactionSurveys } from 'fixtures/stats'
+import { teams } from 'fixtures/teams'
 import useStatResource from 'hooks/reporting/useStatResource'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {TagFilterInstanceId} from 'models/stat/types'
-
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { TagFilterInstanceId } from 'models/stat/types'
 import FeaturePaywall from 'pages/common/components/FeaturePaywall/FeaturePaywall'
 import DEPRECATED_TagsStatsFilter from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
 import SupportPerformanceSatisfaction from 'pages/stats/support-performance/satisfaction/SupportPerformanceSatisfaction'
-
-import {AccountFeature} from 'state/currentAccount/types'
-import {RootState, StoreDispatch} from 'state/types'
-import {initialState as uiFiltersInitialState} from 'state/ui/stats/filtersSlice'
-import {renderWithRouter} from 'utils/testing'
+import { AccountFeature } from 'state/currentAccount/types'
+import { RootState, StoreDispatch } from 'state/types'
+import { initialState as uiFiltersInitialState } from 'state/ui/stats/filtersSlice'
+import { renderWithRouter } from 'utils/testing'
 
 jest.mock('hooks/reporting/useStatResource')
-jest.mock('react-chartjs-2', () => ({Bar: () => <canvas />}))
+jest.mock('react-chartjs-2', () => ({ Bar: () => <canvas /> }))
 jest.mock(
     'pages/stats/common/filters/DEPRECATED_TagsStatsFilter',
     () =>
-        ({value}: ComponentProps<typeof DEPRECATED_TagsStatsFilter>) => (
+        ({ value }: ComponentProps<typeof DEPRECATED_TagsStatsFilter>) => (
             <div>TagsStatsFilterMock, value: {JSON.stringify(value)}</div>
-        )
+        ),
 )
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
@@ -41,13 +40,13 @@ jest.mock('pages/stats/DrillDownModal.tsx', () => ({
 jest.mock(
     'pages/common/components/FeaturePaywall/FeaturePaywall',
     () =>
-        ({feature}: ComponentProps<typeof FeaturePaywall>) => {
+        ({ feature }: ComponentProps<typeof FeaturePaywall>) => {
             return <div>Paywall for {feature}</div>
-        }
+        },
 )
 jest.mock(
     'pages/stats/common/filters/DEPRECATED_ChannelsStatsFilter',
-    () => () => <div>ChannelsStatsFilter</div>
+    () => () => <div>ChannelsStatsFilter</div>,
 )
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -87,7 +86,7 @@ describe('SupportPerformanceSatisfaction', () => {
             all: teams,
         }),
         ui: {
-            stats: {filters: uiFiltersInitialState},
+            stats: { filters: uiFiltersInitialState },
         },
     } as RootState
 
@@ -105,17 +104,17 @@ describe('SupportPerformanceSatisfaction', () => {
     })
 
     it('should render the filters and stats when stats filters are defined', () => {
-        useStatResourceMock.mockImplementation(({resourceName}) => {
+        useStatResourceMock.mockImplementation(({ resourceName }) => {
             if (resourceName === SATISFACTION_SURVEYS) {
                 return [satisfactionSurveys, false, _noop]
             }
             return [latestSatisfactionSurveys, false, _noop]
         })
 
-        const {container} = renderWithRouter(
+        const { container } = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <SupportPerformanceSatisfaction />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -126,13 +125,13 @@ describe('SupportPerformanceSatisfaction', () => {
             ...defaultState,
             currentAccount: defaultState.currentAccount.setIn(
                 ['features', AccountFeature.SatisfactionSurveys, 'enabled'],
-                false
+                false,
             ),
         })
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <SupportPerformanceSatisfaction />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })

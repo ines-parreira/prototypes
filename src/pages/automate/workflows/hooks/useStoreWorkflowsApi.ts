@@ -1,18 +1,19 @@
-import {useQueryClient} from '@tanstack/react-query'
-import {useCallback, useEffect, useReducer, useState} from 'react'
+import { useCallback, useEffect, useReducer, useState } from 'react'
+
+import { useQueryClient } from '@tanstack/react-query'
 
 import {
-    useGetWorkflowConfigurations,
-    useDuplicateWorkflowConfiguration,
     useDeleteWorkflowConfiguration,
+    useDuplicateWorkflowConfiguration,
+    useGetWorkflowConfigurations,
     workflowsConfigurationDefinitionKeys,
 } from 'models/workflows/queries'
-import {useSelfServiceConfigurationUpdate} from 'pages/automate/common/hooks/useSelfServiceConfigurationUpdate'
-import {NotificationStatus} from 'state/notifications/types'
+import { useSelfServiceConfigurationUpdate } from 'pages/automate/common/hooks/useSelfServiceConfigurationUpdate'
+import { NotificationStatus } from 'state/notifications/types'
 
 import {
-    WorkflowConfigurationShallow,
     WorkflowConfiguration,
+    WorkflowConfigurationShallow,
 } from '../models/workflowConfiguration.types'
 
 type UseStoreWorkflowsState = {
@@ -58,7 +59,7 @@ const reducer = (state: UseStoreWorkflowsState, action: Action) => {
 }
 
 export const useStoreWorkflowsApi = (
-    notifyMerchant: (message: string, kind: 'success' | 'error') => void
+    notifyMerchant: (message: string, kind: 'success' | 'error') => void,
 ) => {
     const queryClient = useQueryClient()
     const [state, dispatch] = useReducer(reducer, initialState)
@@ -89,8 +90,8 @@ export const useStoreWorkflowsApi = (
                     ...acc,
                     [conf.id]: conf,
                 }),
-                {}
-            )
+                {},
+            ),
         )
     }, [configurations])
 
@@ -100,7 +101,7 @@ export const useStoreWorkflowsApi = (
         }
     }, [loadWorkflowsConfigurations, isWorkflowConfigurationsFetched])
 
-    const {handleSelfServiceConfigurationUpdate} =
+    const { handleSelfServiceConfigurationUpdate } =
         useSelfServiceConfigurationUpdate({
             handleNotify: (notify) => {
                 if (
@@ -120,15 +121,15 @@ export const useStoreWorkflowsApi = (
             })
             const duplicatedWorkflow = await duplicateWorkflowConfiguration([
                 workflowId,
-                {integration_id: storeIntegrationId},
+                { integration_id: storeIntegrationId },
             ])
 
             queryClient.setQueriesData<WorkflowConfiguration[]>(
                 workflowsConfigurationDefinitionKeys.lists(),
                 (data) =>
                     data?.concat(
-                        duplicatedWorkflow.data as WorkflowConfiguration
-                    )
+                        duplicatedWorkflow.data as WorkflowConfiguration,
+                    ),
             )
 
             loadWorkflowsConfigurations()
@@ -140,20 +141,20 @@ export const useStoreWorkflowsApi = (
                     })
                 },
                 undefined,
-                storeIntegrationId
+                storeIntegrationId,
             )
             dispatch({
                 type: 'duplicate',
                 isPending: false,
             })
-            return {id: duplicatedWorkflow.data.id}
+            return { id: duplicatedWorkflow.data.id }
         },
         [
             duplicateWorkflowConfiguration,
             handleSelfServiceConfigurationUpdate,
             loadWorkflowsConfigurations,
             queryClient,
-        ]
+        ],
     )
 
     const removeWorkflowFromStore = useCallback(
@@ -166,12 +167,12 @@ export const useStoreWorkflowsApi = (
                 (draft) => {
                     const at =
                         draft.workflowsEntrypoints?.findIndex(
-                            (e) => e.workflow_id === workflowId
+                            (e) => e.workflow_id === workflowId,
                         ) ?? -1
                     if (at >= 0) draft.workflowsEntrypoints?.splice(at, 1)
                 },
                 {},
-                storeIntegrationId
+                storeIntegrationId,
             )
             const internalId =
                 workflowConfigurationById[workflowId]?.internal_id
@@ -179,15 +180,15 @@ export const useStoreWorkflowsApi = (
             await deleteWorkflowConfiguration([internalId])
 
             queryClient.removeQueries(
-                workflowsConfigurationDefinitionKeys.get(workflowId)
+                workflowsConfigurationDefinitionKeys.get(workflowId),
             )
 
             queryClient.setQueriesData<WorkflowConfiguration[]>(
                 workflowsConfigurationDefinitionKeys.lists(),
                 (data) =>
                     data?.filter(
-                        (configuration) => configuration.id !== workflowId
-                    )
+                        (configuration) => configuration.id !== workflowId,
+                    ),
             )
 
             dispatch({
@@ -202,7 +203,7 @@ export const useStoreWorkflowsApi = (
             deleteWorkflowConfiguration,
             queryClient,
             notifyMerchant,
-        ]
+        ],
     )
 
     const appendWorkflowInStore = useCallback(
@@ -212,7 +213,7 @@ export const useStoreWorkflowsApi = (
                     draft.workflowsEntrypoints ??= []
 
                     const alreadyPresent = draft.workflowsEntrypoints.find(
-                        (e) => e.workflow_id === workflowId
+                        (e) => e.workflow_id === workflowId,
                     )
 
                     if (!alreadyPresent) {
@@ -222,13 +223,13 @@ export const useStoreWorkflowsApi = (
                     }
                 },
                 undefined,
-                storeIntegrationId
+                storeIntegrationId,
             )
         },
-        [handleSelfServiceConfigurationUpdate]
+        [handleSelfServiceConfigurationUpdate],
     )
 
-    const {duplicatePending, updatePending, deletePending} = state
+    const { duplicatePending, updatePending, deletePending } = state
 
     const isUpdatePending = duplicatePending || updatePending || deletePending
 

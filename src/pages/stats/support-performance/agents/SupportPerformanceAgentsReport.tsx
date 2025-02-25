@@ -1,23 +1,23 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
-
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useGridSize} from 'hooks/useGridSize'
-import {FilterKey} from 'models/stat/types'
-import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useGridSize } from 'hooks/useGridSize'
+import { FilterKey } from 'models/stat/types'
+import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
-import {CustomReportComponent} from 'pages/stats/custom-reports/CustomReportComponent'
+import { CustomReportComponent } from 'pages/stats/custom-reports/CustomReportComponent'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
 import StatsPage from 'pages/stats/StatsPage'
-import {AGENTS_SHOUT_OUTS_TITLE} from 'pages/stats/support-performance/agents/AgentsShoutOutsConfig'
-import {DownloadAgentsPerformanceDataButton} from 'pages/stats/support-performance/agents/DownloadAgentsPerformanceDataButton'
+import { AGENTS_SHOUT_OUTS_TITLE } from 'pages/stats/support-performance/agents/AgentsShoutOutsConfig'
+import { DownloadAgentsPerformanceDataButton } from 'pages/stats/support-performance/agents/DownloadAgentsPerformanceDataButton'
 import {
     AgentsChart,
     SupportPerformanceAgentsReportConfig,
 } from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReportConfig'
-import {SupportPerformanceFilters} from 'pages/stats/support-performance/SupportPerformanceFilters'
+import { SupportPerformanceFilters } from 'pages/stats/support-performance/SupportPerformanceFilters'
 
 export const AGENTS_PAGE_TITLE = 'Agents'
 

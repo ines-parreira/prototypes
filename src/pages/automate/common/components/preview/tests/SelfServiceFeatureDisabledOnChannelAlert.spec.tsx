@@ -1,5 +1,6 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import SelfServiceFeatureDisabledOnChannelAlert from '../SelfServiceFeatureDisabledOnChannelAlert'
 
@@ -9,10 +10,10 @@ describe('<SelfServiceFeatureDisabledOnChannelAlert />', () => {
             <SelfServiceFeatureDisabledOnChannelAlert
                 shopName="shop-name"
                 shopType="shop-type"
-            />
+            />,
         )
         expect(
-            screen.getByText(/this feature is currently disabled/i)
+            screen.getByText(/this feature is currently disabled/i),
         ).toBeInTheDocument()
     })
 })

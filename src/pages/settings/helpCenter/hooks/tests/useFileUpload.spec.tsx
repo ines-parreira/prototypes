@@ -1,15 +1,16 @@
-import {act} from '@testing-library/react'
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
+
+import { act } from '@testing-library/react'
+import { renderHook } from '@testing-library/react-hooks'
 
 import * as utils from 'common/utils'
 import CurrentHelpCenterContext from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
 
-import {getSingleHelpCenterResponseFixture} from '../../fixtures/getHelpCentersResponse.fixture'
-import {useFileUpload} from '../useFileUpload'
+import { getSingleHelpCenterResponseFixture } from '../../fixtures/getHelpCentersResponse.fixture'
+import { useFileUpload } from '../useFileUpload'
 
 const renderOptions = {
-    wrapper: ({children}: {children: React.ReactNode}) => (
+    wrapper: ({ children }: { children: React.ReactNode }) => (
         <CurrentHelpCenterContext.Provider
             value={getSingleHelpCenterResponseFixture}
         >
@@ -28,13 +29,13 @@ describe('useFileUpload()', () => {
     })
 
     it('is not touched in default state', () => {
-        const {result} = renderHook(useFileUpload, renderOptions)
+        const { result } = renderHook(useFileUpload, renderOptions)
 
         expect(result.current.isTouched).toBeFalsy()
     })
 
     it('becomes touched if the file is changed', () => {
-        const {result} = renderHook(useFileUpload, renderOptions)
+        const { result } = renderHook(useFileUpload, renderOptions)
 
         act(() => {
             result.current.changeFile(dummyFile)
@@ -45,7 +46,7 @@ describe('useFileUpload()', () => {
     })
 
     it('reverts to default state when changes are discarded', () => {
-        const {result} = renderHook(useFileUpload, renderOptions)
+        const { result } = renderHook(useFileUpload, renderOptions)
 
         act(() => {
             result.current.changeFile(dummyFile)
@@ -61,7 +62,7 @@ describe('useFileUpload()', () => {
             .spyOn(utils, 'uploadFiles')
             .mockResolvedValue([])
 
-        const {result} = renderHook(useFileUpload, renderOptions)
+        const { result } = renderHook(useFileUpload, renderOptions)
 
         void act(async () => {
             await result.current.uploadFile()
@@ -89,7 +90,7 @@ describe('useFileUpload()', () => {
                 },
             ])
 
-        const {result} = renderHook(useFileUpload, renderOptions)
+        const { result } = renderHook(useFileUpload, renderOptions)
 
         void act(async () => {
             result.current.changeFile(dummyFile)
@@ -100,7 +101,7 @@ describe('useFileUpload()', () => {
     })
 
     it('serializes file and sets serialized file when file is provided', async () => {
-        const {result, waitFor} = renderHook(useFileUpload, renderOptions)
+        const { result, waitFor } = renderHook(useFileUpload, renderOptions)
 
         void act(() => {
             expect(result.current.serializedFile).toEqual('')
@@ -113,7 +114,7 @@ describe('useFileUpload()', () => {
     })
 
     it('sets serialized file to empty string when no file is provided', async () => {
-        const {result, waitFor} = renderHook(useFileUpload, renderOptions)
+        const { result, waitFor } = renderHook(useFileUpload, renderOptions)
 
         void act(() => {
             expect(result.current.serializedFile).toEqual('')

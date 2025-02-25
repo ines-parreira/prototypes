@@ -1,7 +1,7 @@
 import {
     AIArticle,
-    ARTICLE_TEMPLATES_KEYS,
     Article,
+    ARTICLE_TEMPLATES_KEYS,
     ArticleTemplateKey,
     ArticleTranslationWithRating,
     CreateArticleDto,
@@ -11,18 +11,18 @@ import {
     HelpCenterArticleItem,
     LocaleCode,
 } from 'models/helpCenter/types'
-import {StoreIntegration} from 'models/integration/types'
-import {isDevelopment} from 'utils/environment'
+import { StoreIntegration } from 'models/integration/types'
+import { isDevelopment } from 'utils/environment'
 
 import {
-    HELP_CENTER_DOMAIN,
+    ARTICLE_HASH_PREFIX,
+    CATEGORY_HASH_PREFIX,
     EMOJI_REGEX,
     HELP_CENTER_DEFAULT_LAYOUT,
-    CATEGORY_HASH_PREFIX,
-    ARTICLE_HASH_PREFIX,
+    HELP_CENTER_DOMAIN,
 } from '../constants'
-import {ArticleOrigin} from '../types/articleOrigin.enum'
-import {HelpCenterLayout, isHelpCenterLayout} from '../types/layout.enum'
+import { ArticleOrigin } from '../types/articleOrigin.enum'
+import { HelpCenterLayout, isHelpCenterLayout } from '../types/layout.enum'
 
 export const articleRequiredFields: Partial<
     keyof CreateArticleTranslationDto
@@ -30,7 +30,7 @@ export const articleRequiredFields: Partial<
 
 export const getNewArticleTranslation = (
     locale: LocaleCode,
-    categoryId: number | null
+    categoryId: number | null,
 ): CreateArticleTranslationDto => ({
     locale,
     title: '',
@@ -47,11 +47,11 @@ export const getNewArticleTranslation = (
 })
 
 export const isExistingArticle = (
-    article: CreateArticleDto | Article | null
+    article: CreateArticleDto | Article | null,
 ): article is Article => (article ? 'id' in article : false)
 
 export const isExistingTranslation = (
-    translation: any
+    translation: any,
 ): translation is ArticleTranslationWithRating =>
     translation ? 'created_datetime' in translation : false
 
@@ -63,7 +63,7 @@ export const helpCenterSeoMetaFields: Partial<
 >[] = ['title', 'description']
 
 export const getNewHelpCenterTranslation = (
-    locale: LocaleCode
+    locale: LocaleCode,
 ): CreateHelpCenterTranslationDto => ({
     locale,
     seo_meta: {
@@ -105,7 +105,7 @@ export function slugify(value: string): string {
                 .replace(/&/g, 'and') // for SEO
                 .trim()
                 .replace(/ /g, '-')
-                .toLowerCase()
+                .toLowerCase(),
         )
     }
 
@@ -124,7 +124,7 @@ export const getAbsoluteUrl = (
         path?: string
         queryString?: string
     },
-    trailingSlash = true
+    trailingSlash = true,
 ): string => {
     const hasProtocol = /^((http|https|ftp):\/\/)/
     const protocol = isDevelopment() ? 'http' : 'https'
@@ -169,7 +169,7 @@ export const getCategoryUrl = ({
     unlistedId?: string
     isUnlisted?: boolean
 }): string => {
-    const url = getAbsoluteUrl({domain, locale, path: 'articles'})
+    const url = getAbsoluteUrl({ domain, locale, path: 'articles' })
 
     if (!slug || !categoryId) {
         return url
@@ -197,7 +197,7 @@ export const getArticleUrl = ({
     unlistedId: string
     isUnlisted: boolean
 }): string => {
-    const url = getAbsoluteUrl({domain, locale})
+    const url = getAbsoluteUrl({ domain, locale })
 
     if (!articleId || !slug) {
         return url
@@ -224,7 +224,7 @@ export const getHomePageItemHashUrl = ({
     itemId?: number
     isUnlisted?: boolean
 }): string => {
-    const url = getAbsoluteUrl({domain, locale})
+    const url = getAbsoluteUrl({ domain, locale })
     const isTrailingSlash = url.slice(-1) === '/'
     const sanitizedUrl = isTrailingSlash ? url.slice(0, -1) : url
 
@@ -246,12 +246,12 @@ export const getHomePageItemHashUrl = ({
 export const replaceUploadUrls = (originalStr: string): string => {
     return originalStr.replace(
         /https:\/\/uploads.gorgias.io\//g,
-        'https://attachments.gorgias.help/uploads.gorgias.io/'
+        'https://attachments.gorgias.help/uploads.gorgias.io/',
     )
 }
 
 export const isArticleTemplateKey = (
-    key: unknown
+    key: unknown,
 ): key is ArticleTemplateKey => {
     return ARTICLE_TEMPLATES_KEYS.includes(key as any)
 }
@@ -263,9 +263,9 @@ type HelpCenterArticleParams = {
 }
 
 export const mapHelpCenterArticleItemToArticle = (
-    params: HelpCenterArticleParams
+    params: HelpCenterArticleParams,
 ) => {
-    const {article, locale, shouldPublish} = params
+    const { article, locale, shouldPublish } = params
 
     if (!article.title || !article.content) return null
 
@@ -301,9 +301,9 @@ type AILibraryArticleItemParams = {
 }
 
 export const mapAILibraryArticleItemToArticle = (
-    params: AILibraryArticleItemParams
+    params: AILibraryArticleItemParams,
 ): CreateArticleDto | null => {
-    const {article, locale, categoryId, visibilityStatus, publish, origin} =
+    const { article, locale, categoryId, visibilityStatus, publish, origin } =
         params
 
     if (!article.title || !article.html_content) return null
@@ -333,7 +333,7 @@ export const mapAILibraryArticleItemToArticle = (
 }
 
 export const getHelpCenterLayout = (
-    helpCenter: HelpCenter | undefined
+    helpCenter: HelpCenter | undefined,
 ): HelpCenterLayout =>
     helpCenter?.layout && isHelpCenterLayout(helpCenter.layout)
         ? helpCenter.layout
@@ -341,7 +341,7 @@ export const getHelpCenterLayout = (
 
 export const getValidStoreIntegrationId = (
     allStoreIntegrations: StoreIntegration[],
-    helpCenterShopName: string | null
+    helpCenterShopName: string | null,
 ): number | null => {
     if (!allStoreIntegrations || allStoreIntegrations.length === 0) {
         return null
@@ -350,7 +350,7 @@ export const getValidStoreIntegrationId = (
     const hasMultiStores = allStoreIntegrations.length > 1
 
     const storeIntegration = allStoreIntegrations.find(
-        (storeIntegration) => storeIntegration.name === helpCenterShopName
+        (storeIntegration) => storeIntegration.name === helpCenterShopName,
     )
 
     return !hasMultiStores

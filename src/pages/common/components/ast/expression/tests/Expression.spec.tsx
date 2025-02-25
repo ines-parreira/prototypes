@@ -1,9 +1,10 @@
-import {render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
 
+import { render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+
 import Expression from 'pages/common/components/ast/expression/Expression'
-import {renderWithStore} from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 describe('<Expression />', () => {
     const minProps = {
@@ -28,11 +29,11 @@ describe('<Expression />', () => {
     it('should render the valid Expression component matching the passed type because it is a valid one', () => {
         renderWithStore(
             <Expression {...minProps} type="Literal" parent={fromJS([])} />,
-            {}
+            {},
         )
 
         expect(
-            screen.getByText('This field cannot be empty')
+            screen.getByText('This field cannot be empty'),
         ).toBeInTheDocument()
     })
 })

@@ -1,9 +1,8 @@
-import React, {useMemo, useState} from 'react'
+import React, { useMemo, useState } from 'react'
 
-import {getContrastColor} from 'gorgias-design-system/utils'
+import { getContrastColor } from 'gorgias-design-system/utils'
 import Button from 'pages/common/components/button/Button'
-
-import {CampaignDiscountOffer} from 'pages/convert/campaigns/types/CampaignDiscountOffer'
+import { CampaignDiscountOffer } from 'pages/convert/campaigns/types/CampaignDiscountOffer'
 import CopyButton from 'Widgets/modules/Template/modules/Field/components/CopyButton'
 
 import css from './DiscountOfferPreview.less'
@@ -36,7 +35,7 @@ export const DiscountOfferPreview: React.FC<DiscountOfferPreviewProps> = ({
             offer.prefix +
             '-' +
             Math.random().toString(36).slice(2, 8).toUpperCase(),
-        [offer.prefix]
+        [offer.prefix],
     )
 
     return isRevealed ? (

@@ -1,8 +1,7 @@
-import {renderHook} from '@testing-library/react-hooks'
-
+import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment/moment'
 
-import {TicketChannel} from 'business/types/ticket'
+import { TicketChannel } from 'business/types/ticket'
 import {
     useCustomFieldsTicketCount,
     useCustomTicketFieldWithBreakdown,
@@ -11,18 +10,16 @@ import {
     useMetricPerDimension,
     useMetricPerDimensionWithBreakdown,
 } from 'hooks/reporting/useMetricPerDimension'
-import {OrderDirection} from 'models/api/types'
-import {customFieldsTicketCountQueryFactory} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
-
-import {LegacyStatsFilters} from 'models/stat/types'
-
-import {assumeMock} from 'utils/testing'
+import { OrderDirection } from 'models/api/types'
+import { customFieldsTicketCountQueryFactory } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
+import { LegacyStatsFilters } from 'models/stat/types'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/useMetricPerDimension')
 jest.mock('models/reporting/queryFactories/ticket-insights/tagsTicketCount')
 const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
 const useCustomTicketFieldWithBreakdownMock = assumeMock(
-    useMetricPerDimensionWithBreakdown
+    useMetricPerDimensionWithBreakdown,
 )
 
 describe('metricsPerAgent', () => {
@@ -49,9 +46,9 @@ describe('metricsPerAgent', () => {
                         statsFilters,
                         timezone,
                         customFieldId,
-                        sorting
+                        sorting,
                     ),
-                {}
+                {},
             )
 
             expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
@@ -59,8 +56,8 @@ describe('metricsPerAgent', () => {
                     statsFilters,
                     timezone,
                     customFieldId,
-                    sorting
-                )
+                    sorting,
+                ),
             )
         })
     })
@@ -73,9 +70,9 @@ describe('metricsPerAgent', () => {
                         statsFilters,
                         timezone,
                         customFieldId,
-                        sorting
+                        sorting,
                     ),
-                {}
+                {},
             )
 
             expect(useCustomTicketFieldWithBreakdownMock).toHaveBeenCalledWith(
@@ -83,8 +80,8 @@ describe('metricsPerAgent', () => {
                     statsFilters,
                     timezone,
                     customFieldId,
-                    sorting
-                )
+                    sorting,
+                ),
             )
         })
     })

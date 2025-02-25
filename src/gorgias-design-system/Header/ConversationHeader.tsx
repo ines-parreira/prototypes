@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import styled from '@emotion/styled'
-import React, {HTMLAttributes} from 'react'
+import React, { HTMLAttributes } from 'react'
 
-import {gorgiasColors} from 'gorgias-design-system/styles'
+import styled from '@emotion/styled'
+
+import { gorgiasColors } from 'gorgias-design-system/styles'
 
 export interface ConversationHeaderProps {
     /**
@@ -39,11 +40,11 @@ const StyledConversationHeaderWrapper = styled.div<{
 }>`
     justify-content: center;
     flex-direction: column;
-    color: ${({variant}) =>
+    color: ${({ variant }) =>
         variant === 'light' ? gorgiasColors.white : gorgiasColors.dark};
 
     svg .withFill {
-        fill: ${({variant}) =>
+        fill: ${({ variant }) =>
             variant === 'light' ? gorgiasColors.white : gorgiasColors.dark};
     }
 `
@@ -56,10 +57,10 @@ const SlideWrapper = styled.div`
     padding-top: 8px;
 `
 
-const CursorIcon = styled.div<{variant: ConversationHeaderVariant}>`
+const CursorIcon = styled.div<{ variant: ConversationHeaderVariant }>`
     height: 4px;
     width: 40px;
-    background: ${({variant}) =>
+    background: ${({ variant }) =>
         variant === 'light' ? gorgiasColors.white : gorgiasColors.dark};
     opacity: 0.5;
     border-radius: 10px;
@@ -79,11 +80,11 @@ const StyledHeaderInformation = styled.div`
     gap: 4px;
 `
 
-const StyledTitle = styled.div<{isPlaceholder: boolean}>`
+const StyledTitle = styled.div<{ isPlaceholder: boolean }>`
     font-size: 14px;
     font-weight: 600;
 
-    ${({isPlaceholder}) => isPlaceholder && 'opacity: 0.3;'};
+    ${({ isPlaceholder }) => isPlaceholder && 'opacity: 0.3;'};
 `
 
 const StyledMessage = styled.div`
@@ -111,7 +112,7 @@ const StyledTrailIcons = styled.div`
  */
 const ConversationHeader: React.FC<
     HTMLAttributes<HTMLDivElement> & ConversationHeaderProps
-> = ({children, ...props}) => {
+> = ({ children, ...props }) => {
     const {
         isExpandable,
         leadIcon,

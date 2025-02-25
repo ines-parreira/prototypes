@@ -7,7 +7,7 @@ describe('clamp', () => {
         }
 
         expect(shouldThrow).toThrow(
-            'Maximum value should be larger than the minimum value'
+            'Maximum value should be larger than the minimum value',
         )
     })
 

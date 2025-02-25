@@ -1,1 +1,1 @@
-export {default} from './CancelAAOModal'
+export { default } from './CancelAAOModal'

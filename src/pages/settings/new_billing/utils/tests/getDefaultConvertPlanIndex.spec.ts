@@ -1,7 +1,7 @@
-import {convertAvailablePlans} from 'fixtures/productPrices'
-import {Cadence} from 'models/billing/types'
+import { convertAvailablePlans } from 'fixtures/productPrices'
+import { Cadence } from 'models/billing/types'
 
-import {getDefaultConvertPlanIndex} from '../getDefaultConvertPlanIndex'
+import { getDefaultConvertPlanIndex } from '../getDefaultConvertPlanIndex'
 
 describe('getDefaultConvertPlanIndex', () => {
     it.each([
@@ -23,9 +23,9 @@ describe('getDefaultConvertPlanIndex', () => {
                 getDefaultConvertPlanIndex(
                     cadence,
                     availablePlans,
-                    helpdeskPlanName
-                )
+                    helpdeskPlanName,
+                ),
             ).toBe(expectedValue)
-        }
+        },
     )
 })

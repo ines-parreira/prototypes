@@ -1,18 +1,19 @@
-import {act, render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
-import {useParams} from 'react-router-dom'
+
+import { act, render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
-import {account} from 'fixtures/account'
-import {StoreConfiguration} from 'models/aiAgent/types'
-import {RootState, StoreDispatch} from 'state/types'
-import {assumeMock, createContextConsumer} from 'utils/testing'
+import { account } from 'fixtures/account'
+import { StoreConfiguration } from 'models/aiAgent/types'
+import { RootState, StoreDispatch } from 'state/types'
+import { assumeMock, createContextConsumer } from 'utils/testing'
 
-import {getStoreConfigurationFixture} from '../../fixtures/storeConfiguration.fixtures'
-import {useStoreConfiguration} from '../../hooks/useStoreConfiguration'
-import {useStoreConfigurationMutation} from '../../hooks/useStoreConfigurationMutation'
+import { getStoreConfigurationFixture } from '../../fixtures/storeConfiguration.fixtures'
+import { useStoreConfiguration } from '../../hooks/useStoreConfiguration'
+import { useStoreConfigurationMutation } from '../../hooks/useStoreConfigurationMutation'
 import AiAgentStoreConfigurationContext from '../AiAgentStoreConfigurationContext'
 import AiAgentStoreConfigurationProvider from '../AiAgentStoreConfigurationProvider'
 
@@ -25,7 +26,7 @@ const useParamsMock = assumeMock(useParams)
 
 jest.mock('../../hooks/useStoreConfigurationMutation')
 const useStoreConfigurationMutationMock = assumeMock(
-    useStoreConfigurationMutation
+    useStoreConfigurationMutation,
 )
 
 jest.mock('../../hooks/useStoreConfiguration')
@@ -36,14 +37,14 @@ const defaultState = {
 } as RootState
 
 const AiAgentStoreConfigurationConsumer = createContextConsumer(
-    AiAgentStoreConfigurationContext
+    AiAgentStoreConfigurationContext,
 )
 
 const mockStoreConfiguration = getStoreConfigurationFixture()
 
 describe('AiAgentStoreConfigurationProvider', () => {
     beforeAll(() => {
-        useParamsMock.mockReturnValue({shopName: 'shop-1'})
+        useParamsMock.mockReturnValue({ shopName: 'shop-1' })
 
         useStoreConfigurationMutationMock.mockReturnValue({
             isLoading: false,
@@ -59,12 +60,12 @@ describe('AiAgentStoreConfigurationProvider', () => {
             isLoading: false,
         })
 
-        const {rerender} = render(
+        const { rerender } = render(
             <Provider store={mockStore(defaultState)}>
                 <AiAgentStoreConfigurationProvider>
                     <AiAgentStoreConfigurationConsumer />
                 </AiAgentStoreConfigurationProvider>
-            </Provider>
+            </Provider>,
         )
 
         expect(AiAgentStoreConfigurationConsumer.getLastContextValue()).toEqual(
@@ -74,7 +75,7 @@ describe('AiAgentStoreConfigurationProvider', () => {
                 updateStoreConfiguration: expect.any(Function),
                 isLoading: false,
                 isPendingCreateOrUpdate: false,
-            }
+            },
         )
 
         useStoreConfigurationMock.mockReturnValue({
@@ -87,7 +88,7 @@ describe('AiAgentStoreConfigurationProvider', () => {
                 <AiAgentStoreConfigurationProvider>
                     <AiAgentStoreConfigurationConsumer />
                 </AiAgentStoreConfigurationProvider>
-            </Provider>
+            </Provider>,
         )
 
         expect(AiAgentStoreConfigurationConsumer.getLastContextValue()).toEqual(
@@ -97,7 +98,7 @@ describe('AiAgentStoreConfigurationProvider', () => {
                 updateStoreConfiguration: expect.any(Function),
                 isLoading: true,
                 isPendingCreateOrUpdate: false,
-            }
+            },
         )
     })
 
@@ -118,17 +119,17 @@ describe('AiAgentStoreConfigurationProvider', () => {
             error: null,
         })
 
-        const {rerender} = render(
+        const { rerender } = render(
             <Provider store={mockStore(defaultState)}>
                 <AiAgentStoreConfigurationProvider>
                     <AiAgentStoreConfigurationConsumer />
                 </AiAgentStoreConfigurationProvider>
-            </Provider>
+            </Provider>,
         )
 
         expect(
             AiAgentStoreConfigurationConsumer.getLastContextValue()
-                ?.storeConfiguration
+                ?.storeConfiguration,
         ).toBeUndefined()
 
         const createConfigurationPayload = {
@@ -150,12 +151,12 @@ describe('AiAgentStoreConfigurationProvider', () => {
         await act(
             () =>
                 AiAgentStoreConfigurationConsumer.getLastContextValue()?.createStoreConfiguration(
-                    createConfigurationPayload
-                ) ?? Promise.resolve()
+                    createConfigurationPayload,
+                ) ?? Promise.resolve(),
         )
 
         expect(mockCreateStoreConfiguration).toHaveBeenCalledWith(
-            createConfigurationPayload
+            createConfigurationPayload,
         )
 
         useStoreConfigurationMutationMock.mockReturnValue({
@@ -170,12 +171,12 @@ describe('AiAgentStoreConfigurationProvider', () => {
                 <AiAgentStoreConfigurationProvider>
                     <AiAgentStoreConfigurationConsumer />
                 </AiAgentStoreConfigurationProvider>
-            </Provider>
+            </Provider>,
         )
 
         expect(
             AiAgentStoreConfigurationConsumer.getLastContextValue()
-                ?.isPendingCreateOrUpdate
+                ?.isPendingCreateOrUpdate,
         ).toEqual(true)
 
         useStoreConfigurationMutationMock.mockReturnValue({
@@ -190,12 +191,12 @@ describe('AiAgentStoreConfigurationProvider', () => {
                 <AiAgentStoreConfigurationProvider>
                     <AiAgentStoreConfigurationConsumer />
                 </AiAgentStoreConfigurationProvider>
-            </Provider>
+            </Provider>,
         )
 
         expect(
             AiAgentStoreConfigurationConsumer.getLastContextValue()
-                ?.isPendingCreateOrUpdate
+                ?.isPendingCreateOrUpdate,
         ).toEqual(false)
     })
 
@@ -208,7 +209,7 @@ describe('AiAgentStoreConfigurationProvider', () => {
         const mockUpdateStoreConfiguration = jest
             .fn()
             .mockImplementation(
-                (upsertPayload: StoreConfiguration) => upsertPayload
+                (upsertPayload: StoreConfiguration) => upsertPayload,
             )
 
         useStoreConfigurationMutationMock.mockReturnValue({
@@ -218,17 +219,17 @@ describe('AiAgentStoreConfigurationProvider', () => {
             error: null,
         })
 
-        const {rerender} = render(
+        const { rerender } = render(
             <Provider store={mockStore(defaultState)}>
                 <AiAgentStoreConfigurationProvider>
                     <AiAgentStoreConfigurationConsumer />
                 </AiAgentStoreConfigurationProvider>
-            </Provider>
+            </Provider>,
         )
 
         expect(
             AiAgentStoreConfigurationConsumer.getLastContextValue()
-                ?.storeConfiguration
+                ?.storeConfiguration,
         ).toEqual(mockStoreConfiguration)
 
         const updateConfigurationPayload = {
@@ -239,12 +240,12 @@ describe('AiAgentStoreConfigurationProvider', () => {
         await act(
             () =>
                 AiAgentStoreConfigurationConsumer.getLastContextValue()?.updateStoreConfiguration(
-                    updateConfigurationPayload
-                ) ?? Promise.resolve()
+                    updateConfigurationPayload,
+                ) ?? Promise.resolve(),
         )
 
         expect(mockUpdateStoreConfiguration).toHaveBeenCalledWith(
-            updateConfigurationPayload
+            updateConfigurationPayload,
         )
 
         useStoreConfigurationMutationMock.mockReturnValue({
@@ -259,12 +260,12 @@ describe('AiAgentStoreConfigurationProvider', () => {
                 <AiAgentStoreConfigurationProvider>
                     <AiAgentStoreConfigurationConsumer />
                 </AiAgentStoreConfigurationProvider>
-            </Provider>
+            </Provider>,
         )
 
         expect(
             AiAgentStoreConfigurationConsumer.getLastContextValue()
-                ?.isPendingCreateOrUpdate
+                ?.isPendingCreateOrUpdate,
         ).toEqual(true)
 
         useStoreConfigurationMutationMock.mockReturnValue({
@@ -279,12 +280,12 @@ describe('AiAgentStoreConfigurationProvider', () => {
                 <AiAgentStoreConfigurationProvider>
                     <AiAgentStoreConfigurationConsumer />
                 </AiAgentStoreConfigurationProvider>
-            </Provider>
+            </Provider>,
         )
 
         expect(
             AiAgentStoreConfigurationConsumer.getLastContextValue()
-                ?.isPendingCreateOrUpdate
+                ?.isPendingCreateOrUpdate,
         ).toEqual(false)
     })
 })

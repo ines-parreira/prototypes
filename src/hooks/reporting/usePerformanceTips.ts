@@ -1,14 +1,14 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {MetricName} from 'services/reporting/constants'
-import {getPerformanceTip, Tip} from 'services/supportPerformanceTipService'
-import {getCurrentHelpdeskPlan} from 'state/billing/selectors'
-import {convertLegacyPlanNameToPublicPlanName} from 'utils/paywalls'
+import { MetricName } from 'services/reporting/constants'
+import { getPerformanceTip, Tip } from 'services/supportPerformanceTipService'
+import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
+import { convertLegacyPlanNameToPublicPlanName } from 'utils/paywalls'
 
 export const usePerformanceTips = (
     metric: MetricName,
-    value: number | null
+    value: number | null,
 ): Tip | null => {
     const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
     const currentPlanName = currentHelpdeskPlan
@@ -16,6 +16,6 @@ export const usePerformanceTips = (
         : null
     return useMemo(
         () => getPerformanceTip(metric, value, currentPlanName),
-        [currentPlanName, metric, value]
+        [currentPlanName, metric, value],
     )
 }

@@ -1,11 +1,11 @@
-import {useQueryClient} from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {useCreateCampaign as usePureCreateCampaign} from 'models/convert/campaign/queries'
-import {Campaign} from 'models/convert/campaign/types'
-import {invalidateCacheOnCampaignChange} from 'pages/convert/campaigns/hooks/utils'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { useCreateCampaign as usePureCreateCampaign } from 'models/convert/campaign/queries'
+import { Campaign } from 'models/convert/campaign/types'
+import { invalidateCacheOnCampaignChange } from 'pages/convert/campaigns/hooks/utils'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 export const useCreateCampaign = () => {
     const dispatch = useAppDispatch()
@@ -17,11 +17,11 @@ export const useCreateCampaign = () => {
                 notify({
                     status: NotificationStatus.Success,
                     message: 'Campaign successfully created',
-                })
+                }),
             )
             return invalidateCacheOnCampaignChange(
                 queryClient,
-                (data as unknown as Campaign).id
+                (data as unknown as Campaign).id,
             )
         },
         onError: () =>
@@ -29,7 +29,7 @@ export const useCreateCampaign = () => {
                 notify({
                     status: NotificationStatus.Error,
                     message: 'Failed to create the campaign',
-                })
+                }),
             ),
     })
 }

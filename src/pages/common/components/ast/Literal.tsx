@@ -1,14 +1,14 @@
-import {Map, List} from 'immutable'
 import React from 'react'
 
-import {UNARY_OPERATORS} from '../../../../config'
-import {RuleItemActions} from '../../../settings/rules/types'
+import { List, Map } from 'immutable'
 
+import { UNARY_OPERATORS } from '../../../../config'
+import { RuleItemActions } from '../../../settings/rules/types'
 import Errors from './Errors'
 import Widget from './Widget'
 
 type Props = {
-    callee?: {name?: string}
+    callee?: { name?: string }
     rule: Map<any, any>
     actions: RuleItemActions
     leftsiblings: List<any>

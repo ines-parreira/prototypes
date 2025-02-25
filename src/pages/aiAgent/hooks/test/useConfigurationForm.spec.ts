@@ -1,22 +1,22 @@
-import {renderHook, act} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
+import { act, renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {account} from 'fixtures/account'
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { account } from 'fixtures/account'
+import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import useAppSelector from 'hooks/useAppSelector'
-import {StoreConfiguration} from 'models/aiAgent/types'
-import {useGetHelpCenterList} from 'models/helpCenter/queries'
-import {useConfigurationForm} from 'pages/aiAgent/hooks/useConfigurationForm'
-import {notify} from 'state/notifications/actions'
-import {StoreState} from 'state/types'
-import {assumeMock} from 'utils/testing'
+import { StoreConfiguration } from 'models/aiAgent/types'
+import { useGetHelpCenterList } from 'models/helpCenter/queries'
+import { useConfigurationForm } from 'pages/aiAgent/hooks/useConfigurationForm'
+import { notify } from 'state/notifications/actions'
+import { StoreState } from 'state/types'
+import { assumeMock } from 'utils/testing'
 
-import {ToneOfVoice} from '../../constants'
-import {useAiAgentStoreConfigurationContext} from '../../providers/AiAgentStoreConfigurationContext'
-import {FormValues} from '../../types'
-import {useStoreConfigurationMutation} from '../useStoreConfigurationMutation'
+import { ToneOfVoice } from '../../constants'
+import { useAiAgentStoreConfigurationContext } from '../../providers/AiAgentStoreConfigurationContext'
+import { FormValues } from '../../types'
+import { useStoreConfigurationMutation } from '../useStoreConfigurationMutation'
 
 const INITIAL_FORM_VALUES: FormValues = {
     toneOfVoice: null,
@@ -48,7 +48,7 @@ const mockUseAppSelector = assumeMock(useAppSelector)
 
 jest.mock('../useStoreConfigurationMutation')
 const mockUseStoreConfigurationMutation = assumeMock(
-    useStoreConfigurationMutation
+    useStoreConfigurationMutation,
 )
 
 const mockUseGetHelpCenterList = assumeMock(useGetHelpCenterList)
@@ -59,13 +59,18 @@ jest.mock('../../providers/AiAgentStoreConfigurationContext', () => ({
 jest.mock('hooks/useAppDispatch', () => () => mockDispatch)
 
 const mockUseAiAgentStoreConfigurationContext = assumeMock(
-    useAiAgentStoreConfigurationContext
+    useAiAgentStoreConfigurationContext,
 )
 const mockHelpCenterListData = {
     data: axiosSuccessResponse({
         data: [
-            {id: 1, name: 'help center 1', type: 'faq', shop_name: 'test-shop'},
-            {id: 2, name: 'help center 2', type: 'faq'},
+            {
+                id: 1,
+                name: 'help center 1',
+                type: 'faq',
+                shop_name: 'test-shop',
+            },
+            { id: 2, name: 'help center 2', type: 'faq' },
         ],
     }),
     isLoading: false,
@@ -92,13 +97,13 @@ describe('useConfigurationForm', () => {
     beforeEach(() => {
         mockUseGetHelpCenterList.mockReturnValue(mockHelpCenterListData)
         mockUseAiAgentStoreConfigurationContext.mockReturnValue(
-            defaultStoreConfigurationContextMock
+            defaultStoreConfigurationContextMock,
         )
 
         mockUseAppSelector.mockImplementation((selector) =>
             selector({
                 currentAccount: fromJS(account),
-            } as unknown as StoreState)
+            } as unknown as StoreState),
         )
 
         mockUseStoreConfigurationMutation.mockReturnValue({
@@ -124,16 +129,16 @@ describe('useConfigurationForm', () => {
             ...defaultValues,
         }
         // Act
-        const {result} = renderHook(() =>
-            useConfigurationForm({initValues: defaultValues, shopName})
+        const { result } = renderHook(() =>
+            useConfigurationForm({ initValues: defaultValues, shopName }),
         )
         // Assert
         expect(result.current.formValues).toEqual(expectedValues)
     })
 
     it('should mark form is dirty when values changed', () => {
-        const {result} = renderHook(() =>
-            useConfigurationForm({initValues: INITIAL_FORM_VALUES, shopName})
+        const { result } = renderHook(() =>
+            useConfigurationForm({ initValues: INITIAL_FORM_VALUES, shopName }),
         )
 
         act(() => {
@@ -146,8 +151,8 @@ describe('useConfigurationForm', () => {
     })
 
     it('should return empty array if monitoredChatIntegrations is null', async () => {
-        const {result} = renderHook(() =>
-            useConfigurationForm({initValues: INITIAL_FORM_VALUES, shopName})
+        const { result } = renderHook(() =>
+            useConfigurationForm({ initValues: INITIAL_FORM_VALUES, shopName }),
         )
         await act(async () => {
             await result.current.handleOnSave({
@@ -156,7 +161,7 @@ describe('useConfigurationForm', () => {
         })
 
         expect(result.current.formValues.monitoredChatIntegrations).toEqual(
-            null
+            null,
         )
     })
 
@@ -165,8 +170,8 @@ describe('useConfigurationForm', () => {
             toneOfVoice: ToneOfVoice.Friendly,
             signature: 'test signature',
         }
-        const {result} = renderHook(() =>
-            useConfigurationForm({initValues: defaultValues, shopName})
+        const { result } = renderHook(() =>
+            useConfigurationForm({ initValues: defaultValues, shopName }),
         )
 
         act(() => {
@@ -181,7 +186,7 @@ describe('useConfigurationForm', () => {
         mockFlags({
             [FeatureFlagKey.AiAgentChat]: true,
         })
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useConfigurationForm({
                 initValues: {
                     monitoredChatIntegrations: [],
@@ -190,7 +195,7 @@ describe('useConfigurationForm', () => {
                     signature: 'valid signature',
                 },
                 shopName,
-            })
+            }),
         )
         await act(async () => {
             await result.current.handleOnSave({
@@ -204,13 +209,13 @@ describe('useConfigurationForm', () => {
                 message:
                     'Please select at least 1 chat integration for AI Agent to use or disable AI Agent for chat to proceed.',
                 status: 'error',
-            })
+            }),
         )
     })
 
     it('should call onSuccess callback when provided and execution was without error', async () => {
         const mockOnSuccess = jest.fn()
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useConfigurationForm({
                 shopName,
                 initValues: {
@@ -222,7 +227,7 @@ describe('useConfigurationForm', () => {
                     signature: 'valid signature',
                     helpCenterId: 1,
                 },
-            })
+            }),
         )
 
         await act(async () => {

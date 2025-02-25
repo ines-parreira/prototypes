@@ -1,9 +1,10 @@
-import classnames from 'classnames'
-import React, {ForwardedRef, forwardRef} from 'react'
+import React, { ForwardedRef, forwardRef } from 'react'
 
-import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
-import {IntegrationType} from 'models/integration/types'
-import {ChannelLike, isLegacyChannel, toChannel} from 'services/channels'
+import classnames from 'classnames'
+
+import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
+import { IntegrationType } from 'models/integration/types'
+import { ChannelLike, isLegacyChannel, toChannel } from 'services/channels'
 
 import css from './SourceIcon.less'
 
@@ -137,8 +138,8 @@ const sourceTypeToIcon = (sourceType?: ChannelLike) => {
 }
 
 const SourceIcon = (
-    {type, className, variant, ...otherProps}: Props,
-    ref: ForwardedRef<HTMLImageElement>
+    { type, className, variant, ...otherProps }: Props,
+    ref: ForwardedRef<HTMLImageElement>,
 ) => {
     if (type && !isLegacyChannel(type)) {
         const channel = toChannel(type)
@@ -153,8 +154,8 @@ const SourceIcon = (
                     className={classnames(
                         'icon source-icon d-inline-block',
                         css.newIcon,
-                        {[css.secondary]: variant === 'secondary'},
-                        className
+                        { [css.secondary]: variant === 'secondary' },
+                        className,
                     )}
                     {...otherProps}
                 />
@@ -175,7 +176,7 @@ const SourceIcon = (
                     ['material-icons']: !icon.custom,
                     [css.secondary]: variant === 'secondary',
                 },
-                className
+                className,
             )}
             {...otherProps}
         >

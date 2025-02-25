@@ -1,10 +1,10 @@
-import {fromJS, Map} from 'immutable'
+import { fromJS, Map } from 'immutable'
 
 import * as accountFixtures from 'fixtures/account'
-import {initialState} from 'state/currentAccount/reducers'
+import { initialState } from 'state/currentAccount/reducers'
 import * as selectors from 'state/currentAccount/selectors'
-import {AccountFeature, AccountSettingType} from 'state/currentAccount/types'
-import {RootState} from 'state/types'
+import { AccountFeature, AccountSettingType } from 'state/currentAccount/types'
+import { RootState } from 'state/types'
 
 const DATE_TO_USE = new Date('2019-09-03')
 jest.spyOn(Date, 'now').mockImplementation(() => DATE_TO_USE.getTime())
@@ -12,12 +12,12 @@ jest.spyOn(Date, 'now').mockImplementation(() => DATE_TO_USE.getTime())
 const setStateWith = (
     state: RootState,
     pathInMeta: string[] = [],
-    value: unknown
+    value: unknown,
 ): RootState => {
     return {
         ...state,
         currentAccount: state.currentAccount?.update((currentAccount) =>
-            currentAccount.setIn(pathInMeta, value)
+            currentAccount.setIn(pathInMeta, value),
         ),
     }
 }
@@ -29,34 +29,34 @@ describe('current account selectors', () => {
 
     it('getCurrentAccountState', () => {
         expect(selectors.getCurrentAccountState(defaultState)).toEqualImmutable(
-            defaultState.currentAccount
+            defaultState.currentAccount,
         )
         expect(
-            selectors.getCurrentAccountState({} as RootState)
+            selectors.getCurrentAccountState({} as RootState),
         ).toEqualImmutable(fromJS({}))
     })
 
     it('getAccountOwnerId', () => {
         expect(selectors.getAccountOwnerId(defaultState)).toEqualImmutable(
-            defaultState.currentAccount?.get('user_id')
+            defaultState.currentAccount?.get('user_id'),
         )
     })
 
     it('getCurrentAccountMeta', () => {
         expect(selectors.getCurrentAccountMeta(defaultState)).toEqualImmutable(
-            defaultState.currentAccount?.get('meta')
+            defaultState.currentAccount?.get('meta'),
         )
         expect(
-            selectors.getCurrentAccountMeta({} as RootState)
+            selectors.getCurrentAccountMeta({} as RootState),
         ).toEqualImmutable(fromJS({}))
     })
 
     it('getAccountStatus', () => {
         expect(selectors.getAccountStatus(defaultState)).toEqualImmutable(
-            defaultState.currentAccount?.get('status')
+            defaultState.currentAccount?.get('status'),
         )
         expect(selectors.getAccountStatus({} as RootState)).toEqualImmutable(
-            fromJS({})
+            fromJS({}),
         )
     })
 
@@ -67,23 +67,23 @@ describe('current account selectors', () => {
 
     it('getCurrentSubscription', () => {
         expect(selectors.getCurrentSubscription(defaultState)).toEqualImmutable(
-            defaultState.currentAccount.get('current_subscription')
+            defaultState.currentAccount.get('current_subscription'),
         )
         expect(
-            selectors.getCurrentSubscription({} as RootState)
+            selectors.getCurrentSubscription({} as RootState),
         ).toEqualImmutable(fromJS({}))
     })
 
     it('hasCreditCard', () => {
         expect(
             selectors.hasCreditCard(
-                setStateWith(defaultState, ['meta', 'hasCreditCard'], true)
-            )
+                setStateWith(defaultState, ['meta', 'hasCreditCard'], true),
+            ),
         ).toBe(true)
         expect(
             selectors.hasCreditCard(
-                setStateWith(defaultState, ['meta', 'hasCreditCard'], false)
-            )
+                setStateWith(defaultState, ['meta', 'hasCreditCard'], false),
+            ),
         ).toBe(false)
         expect(selectors.hasCreditCard({} as RootState)).toBe(false)
     })
@@ -94,18 +94,18 @@ describe('current account selectors', () => {
                 setStateWith(
                     defaultState,
                     ['meta', 'should_pay_with_shopify'],
-                    true
-                )
-            )
+                    true,
+                ),
+            ),
         ).toBe(true)
         expect(
             selectors.shouldPayWithShopify(
                 setStateWith(
                     defaultState,
                     ['meta', 'should_pay_with_shopify'],
-                    false
-                )
-            )
+                    false,
+                ),
+            ),
         ).toBe(false)
         expect(selectors.shouldPayWithShopify({} as RootState)).toBe(false)
     })
@@ -116,27 +116,27 @@ describe('current account selectors', () => {
                 setStateWith(
                     defaultState,
                     ['meta', 'shopify_billing', 'active'],
-                    true
-                )
-            )
+                    true,
+                ),
+            ),
         ).toBe('active')
         expect(
             selectors.getShopifyBillingStatus(
                 setStateWith(
                     defaultState,
                     ['meta', 'shopify_billing', 'active'],
-                    false
-                )
-            )
+                    false,
+                ),
+            ),
         ).toBe('inactive')
         expect(selectors.getShopifyBillingStatus({} as RootState)).toBe(
-            'inactive'
+            'inactive',
         )
 
         const newState = setStateWith(
             defaultState,
             ['meta', 'shopify_billing'],
-            fromJS({active: false, charge_id: '123'})
+            fromJS({ active: false, charge_id: '123' }),
         )
         expect(selectors.getShopifyBillingStatus(newState)).toBe('canceled')
     })
@@ -147,18 +147,18 @@ describe('current account selectors', () => {
                 setStateWith(
                     defaultState,
                     ['meta', 'should_pay_with_shopify'],
-                    true
-                )
-            )
+                    true,
+                ),
+            ),
         ).toBe('shopify')
         expect(
             selectors.paymentMethod(
                 setStateWith(
                     defaultState,
                     ['meta', 'should_pay_with_shopify'],
-                    false
-                )
-            )
+                    false,
+                ),
+            ),
         ).toBe('stripe')
         expect(selectors.paymentMethod({} as RootState)).toBe('stripe')
     })
@@ -170,12 +170,12 @@ describe('current account selectors', () => {
                     setStateWith(
                         defaultState,
                         ['meta', 'shopify_billing', 'active'],
-                        true
+                        true,
                     ),
                     ['meta', 'should_pay_with_shopify'],
-                    true
-                )
-            )
+                    true,
+                ),
+            ),
         ).toBe(true)
         expect(
             selectors.paymentIsActive(
@@ -183,21 +183,21 @@ describe('current account selectors', () => {
                     setStateWith(
                         defaultState,
                         ['meta', 'shopify_billing', 'active'],
-                        false
+                        false,
                     ),
                     ['meta', 'should_pay_with_shopify'],
-                    true
-                )
-            )
+                    true,
+                ),
+            ),
         ).toBe(false)
         expect(
             selectors.paymentIsActive(
                 setStateWith(
                     setStateWith(defaultState, ['meta', 'hasCreditCard'], true),
                     ['meta', 'should_pay_with_shopify'],
-                    false
-                )
-            )
+                    false,
+                ),
+            ),
         ).toBe(true)
         expect(
             selectors.paymentIsActive(
@@ -205,12 +205,12 @@ describe('current account selectors', () => {
                     setStateWith(
                         defaultState,
                         ['meta', 'hasCreditCard'],
-                        false
+                        false,
                     ),
                     ['meta', 'should_pay_with_shopify'],
-                    false
-                )
-            )
+                    false,
+                ),
+            ),
         ).toBe(false)
         expect(selectors.paymentIsActive({} as RootState)).toBe(false)
     })
@@ -219,29 +219,29 @@ describe('current account selectors', () => {
         [
             'getSurveySettings',
             selectors.getSurveysSettings,
-            fromJS({type: AccountSettingType.SatisfactionSurveys}),
+            fromJS({ type: AccountSettingType.SatisfactionSurveys }),
         ],
         [
             'DEPRECATED_getBusinessHoursSettings',
             selectors.DEPRECATED_getBusinessHoursSettings,
-            fromJS({type: AccountSettingType.BusinessHours}),
+            fromJS({ type: AccountSettingType.BusinessHours }),
         ],
         [
             'getTicketAssignmentSettings',
             selectors.getTicketAssignmentSettings,
-            fromJS({type: AccountSettingType.TicketAssignment}),
+            fromJS({ type: AccountSettingType.TicketAssignment }),
         ],
         [
             'getViewsOrderingSetting',
             selectors.DEPRECATED_getViewsOrderingSetting,
-            fromJS({type: AccountSettingType.ViewsOrdering}),
+            fromJS({ type: AccountSettingType.ViewsOrdering }),
         ],
     ])('%s', (_testName, selector, expectedResult) => {
         it('should return the setting', () => {
             const state = setStateWith(
                 defaultState,
                 ['settings'],
-                fromJS([expectedResult])
+                fromJS([expectedResult]),
             )
             expect(selector(state)).toEqualImmutable(expectedResult)
         })
@@ -250,7 +250,7 @@ describe('current account selectors', () => {
             const state = setStateWith(
                 defaultState,
                 ['settings'],
-                fromJS([{type: 'unknown'}])
+                fromJS([{ type: 'unknown' }]),
             )
             expect(selector(state)).toEqualImmutable(fromJS({}))
         })
@@ -267,10 +267,12 @@ describe('current account selectors', () => {
                     setStateWith(
                         defaultState,
                         ['settings'],
-                        fromJS([{type: AccountSettingType.SatisfactionSurveys}])
-                    )
-                )
-            ).toEqual({type: AccountSettingType.SatisfactionSurveys})
+                        fromJS([
+                            { type: AccountSettingType.SatisfactionSurveys },
+                        ]),
+                    ),
+                ),
+            ).toEqual({ type: AccountSettingType.SatisfactionSurveys })
         })
 
         it('should return undefined when there is no setting', () => {
@@ -279,9 +281,9 @@ describe('current account selectors', () => {
                     setStateWith(
                         defaultState,
                         ['settings'],
-                        fromJS([{type: 'unknown'}])
-                    )
-                )
+                        fromJS([{ type: 'unknown' }]),
+                    ),
+                ),
             ).toBe(undefined)
         })
     })
@@ -293,10 +295,10 @@ describe('current account selectors', () => {
                     setStateWith(
                         defaultState,
                         ['settings'],
-                        fromJS([{type: AccountSettingType.BusinessHours}])
-                    )
-                )
-            ).toEqual({type: AccountSettingType.BusinessHours})
+                        fromJS([{ type: AccountSettingType.BusinessHours }]),
+                    ),
+                ),
+            ).toEqual({ type: AccountSettingType.BusinessHours })
         })
 
         it('should return undefined when there is no setting', () => {
@@ -305,27 +307,27 @@ describe('current account selectors', () => {
                     setStateWith(
                         defaultState,
                         ['settings'],
-                        fromJS([{type: 'unknown'}])
-                    )
-                )
+                        fromJS([{ type: 'unknown' }]),
+                    ),
+                ),
             ).toBe(undefined)
         })
     })
 
     describe('getViewOrderingSettingJS', () => {
         it('should return the setting', () => {
-            const setting = {type: AccountSettingType.ViewsOrdering}
+            const setting = { type: AccountSettingType.ViewsOrdering }
             const state = setStateWith(
                 defaultState,
                 ['settings'],
-                fromJS([setting])
+                fromJS([setting]),
             )
             expect(selectors.getViewsOrderingSetting(state)).toEqual(setting)
         })
 
         it('should return the empty object when state is empty', () => {
             expect(selectors.getViewsOrderingSetting({} as RootState)).toEqual(
-                {}
+                {},
             )
         })
     })
@@ -337,10 +339,10 @@ describe('current account selectors', () => {
                     setStateWith(
                         defaultState,
                         ['settings'],
-                        fromJS([{type: AccountSettingType.ViewsVisibility}])
-                    )
-                )
-            ).toEqual({type: AccountSettingType.ViewsVisibility})
+                        fromJS([{ type: AccountSettingType.ViewsVisibility }]),
+                    ),
+                ),
+            ).toEqual({ type: AccountSettingType.ViewsVisibility })
         })
 
         it('should return undefined when there is no setting', () => {
@@ -349,9 +351,9 @@ describe('current account selectors', () => {
                     setStateWith(
                         defaultState,
                         ['settings'],
-                        fromJS([{type: 'unknown'}])
-                    )
-                )
+                        fromJS([{ type: 'unknown' }]),
+                    ),
+                ),
             ).toBe(undefined)
         })
     })
@@ -361,9 +363,9 @@ describe('current account selectors', () => {
             'should return true for feature %s',
             (feature) => {
                 expect(
-                    selectors.currentAccountHasFeature(feature)(defaultState)
+                    selectors.currentAccountHasFeature(feature)(defaultState),
                 ).toBe(true)
-            }
+            },
         )
 
         it('should return false', () => {
@@ -373,8 +375,8 @@ describe('current account selectors', () => {
                 selectors.currentAccountHasFeature(feature)(
                     setStateWith(defaultState, ['features', feature], {
                         enabled: false,
-                    })
-                )
+                    }),
+                ),
             ).toBe(false)
         })
     })
@@ -421,9 +423,9 @@ describe('current account selectors', () => {
                                 id: 2,
                                 type: 'business-hours',
                             },
-                        ])
-                    )
-                )
+                        ]),
+                    ),
+                ),
             ).toMatchSnapshot()
         })
     })
@@ -443,9 +445,9 @@ describe('current account selectors', () => {
                                         '2022-03-24T14:17:05',
                                 },
                             }),
-                        ]
-                    )
-                )
+                        ],
+                    ),
+                ),
             ).toBe('2022-03-24T14:17:05')
         })
     })
@@ -470,11 +472,11 @@ describe('current account selectors', () => {
                                             twoFAEnforcedDatetime,
                                     },
                                 }),
-                            ]
-                        )
-                    )
+                            ],
+                        ),
+                    ),
                 ).toBe(expectedValue)
-            }
+            },
         )
     })
 
@@ -492,9 +494,9 @@ describe('current account selectors', () => {
                                     email: 123,
                                 },
                             },
-                        ])
-                    )
-                )
+                        ]),
+                    ),
+                ),
             ).toEqual({
                 type: AccountSettingType.DefaultIntegration,
                 data: {
@@ -509,9 +511,9 @@ describe('current account selectors', () => {
                     setStateWith(
                         defaultState,
                         ['settings'],
-                        fromJS([{type: 'unknown'}])
-                    )
-                )
+                        fromJS([{ type: 'unknown' }]),
+                    ),
+                ),
             ).toBe(undefined)
         })
     })
@@ -519,13 +521,13 @@ describe('current account selectors', () => {
     describe('getIsCurrentSubscriptionCanceled', () => {
         it('should return true when subscription state is empty', () => {
             expect(
-                selectors.getIsCurrentSubscriptionCanceled({} as RootState)
+                selectors.getIsCurrentSubscriptionCanceled({} as RootState),
             ).toEqual(true)
         })
 
         it('should return false when there is a subscription', () => {
             expect(
-                selectors.getIsCurrentSubscriptionCanceled(defaultState)
+                selectors.getIsCurrentSubscriptionCanceled(defaultState),
             ).toEqual(false)
         })
     })
@@ -534,16 +536,16 @@ describe('current account selectors', () => {
         it('should return true when subscription state is empty', () => {
             expect(
                 selectors.getIsCurrentSubscriptionTrialingOrCanceled(
-                    {} as RootState
-                )
+                    {} as RootState,
+                ),
             ).toEqual(true)
         })
 
         it('should return true when there is a trial subscription', () => {
             expect(
                 selectors.getIsCurrentSubscriptionTrialingOrCanceled(
-                    defaultState
-                )
+                    defaultState,
+                ),
             ).toEqual(true)
         })
 
@@ -555,12 +557,12 @@ describe('current account selectors', () => {
                         ...defaultState.currentAccount.toJS(),
                         current_subscription: {
                             ...defaultState.currentAccount.get(
-                                'current_subscription'
+                                'current_subscription',
                             ),
                             status: 'active',
                         },
                     }),
-                })
+                }),
             ).toEqual(false)
         })
     })

@@ -1,14 +1,15 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {render, waitFor, fireEvent, act, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {integrationsState} from 'fixtures/integrations'
-import {useModalManager, useModalManagerApi} from 'hooks/useModalManager'
+import { integrationsState } from 'fixtures/integrations'
+import { useModalManager, useModalManagerApi } from 'hooks/useModalManager'
 import {
     useCreateDiscountOffer,
     useUpdateDiscountOffer,
@@ -18,9 +19,9 @@ import {
     useListShopifyCustomerSegments,
     useProductsFromShopifyIntegration,
 } from 'models/integration/queries'
-import {setupValidModalParameters} from 'pages/common/components/UniqueDiscountOfferCreateModal/utils'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { setupValidModalParameters } from 'pages/common/components/UniqueDiscountOfferCreateModal/utils'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 import {
     UniqueDiscountOfferCreateModal,
@@ -40,13 +41,13 @@ const useCreateDiscountOfferMock = assumeMock(useCreateDiscountOffer)
 const useUpdateDiscountOffersMock = assumeMock(useUpdateDiscountOffer)
 const useModalManagerMock = assumeMock(useModalManager)
 const useCollectionsFromShopifyIntegrationMock = assumeMock(
-    useCollectionsFromShopifyIntegration
+    useCollectionsFromShopifyIntegration,
 )
 const useListShopifyCustomerSegmentsMock = assumeMock(
-    useListShopifyCustomerSegments
+    useListShopifyCustomerSegments,
 )
 const useProductsFromShopifyIntegrationMock = assumeMock(
-    useProductsFromShopifyIntegration
+    useProductsFromShopifyIntegration,
 )
 
 const VALID_SEGMENT_1 = {
@@ -68,9 +69,9 @@ const VALID_PRODUCT_COLLECTION_2 = {
     title: 'Nike',
 }
 const VALID_PRODUCT_1 = {
-    data: {title: 'Product 1', id: '1'},
+    data: { title: 'Product 1', id: '1' },
 }
-const VALID_PRODUCT_2 = {data: {title: 'Product 2', id: '2'}}
+const VALID_PRODUCT_2 = { data: { title: 'Product 2', id: '2' } }
 
 describe('<UniqueDiscountOfferCreateModal />', () => {
     const props: UniqueDiscountOfferCreateModalProps = {
@@ -123,12 +124,12 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
                 <QueryClientProvider client={queryClient}>
                     <UniqueDiscountOfferCreateModal {...props} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         await waitFor(() => {
             expect(
-                screen.getByText(/Create a new discount offer/)
+                screen.getByText(/Create a new discount offer/),
             ).toBeInTheDocument()
             const prefixInput = screen.getByLabelText(/Unique code prefix/)
             expect(prefixInput).toHaveValue('')
@@ -146,12 +147,12 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
                 <QueryClientProvider client={queryClient}>
                     <UniqueDiscountOfferCreateModal {...props} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         await waitFor(() => {
             expect(
-                screen.getByText(/Create a new discount offer/)
+                screen.getByText(/Create a new discount offer/),
             ).toBeInTheDocument()
             const prefixInput = screen.getByLabelText(/Unique code prefix/)
             expect(prefixInput).toHaveValue('')
@@ -173,7 +174,7 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
                 <QueryClientProvider client={queryClient}>
                     <UniqueDiscountOfferCreateModal {...props} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         await waitFor(() => {
@@ -201,7 +202,7 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
                 <QueryClientProvider client={queryClient}>
                     <UniqueDiscountOfferCreateModal {...props} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByLabelText('Applies to')).toBeInTheDocument()
@@ -222,7 +223,7 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
                 <QueryClientProvider client={queryClient}>
                     <UniqueDiscountOfferCreateModal {...props} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         const prefixInput = screen.getByLabelText(/Unique code prefix/)
@@ -242,7 +243,7 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
 
         await waitFor(() => {
             expect(
-                useCreateDiscountOfferMock().mutateAsync
+                useCreateDiscountOfferMock().mutateAsync,
             ).toHaveBeenCalledWith([
                 undefined,
                 expect.objectContaining({
@@ -265,7 +266,7 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
                 <QueryClientProvider client={queryClient}>
                     <UniqueDiscountOfferCreateModal {...props} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
         const expected = {
             type: 'percentage',
@@ -280,17 +281,17 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
         const discountTypeSelect = screen.getByLabelText('Discount')
         const discountValueInput = screen.getByLabelText('Discount value')
         const minRequirementsRadio = screen.getByLabelText(
-            'Minimum purchase amount'
+            'Minimum purchase amount',
         )
         const noMinRequirementsRadio = screen.getByLabelText(
-            'No minimum requirements'
+            'No minimum requirements',
         )
 
         const saveBtn = screen.getByText(/Save/)
 
         userEvent.click(discountTypeSelect)
 
-        userEvent.click(screen.getByRole('menuitem', {name: 'Percentage'}))
+        userEvent.click(screen.getByRole('menuitem', { name: 'Percentage' }))
 
         // set discount value to invalid
         await userEvent.type(discountValueInput, '200')
@@ -299,12 +300,12 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
         userEvent.click(noMinRequirementsRadio)
         userEvent.click(minRequirementsRadio)
         const minPurchaseAmountInput = screen.getByLabelText(
-            'Minimum purchase amount value'
+            'Minimum purchase amount value',
         )
         userEvent.clear(minPurchaseAmountInput)
         await userEvent.type(
             minPurchaseAmountInput,
-            expected.minimum_purchase_amount.toString()
+            expected.minimum_purchase_amount.toString(),
         )
 
         // press save with invalid fields
@@ -312,7 +313,7 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
 
         await waitFor(() => {
             expect(
-                useCreateDiscountOfferMock().mutateAsync
+                useCreateDiscountOfferMock().mutateAsync,
             ).not.toHaveBeenCalled()
         })
 
@@ -323,7 +324,7 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
 
         await waitFor(() => {
             expect(
-                useCreateDiscountOfferMock().mutateAsync
+                useCreateDiscountOfferMock().mutateAsync,
             ).not.toHaveBeenCalled()
         })
 
@@ -335,7 +336,7 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
 
         await waitFor(() => {
             expect(
-                useCreateDiscountOfferMock().mutateAsync
+                useCreateDiscountOfferMock().mutateAsync,
             ).toHaveBeenCalledWith([
                 undefined,
                 expect.objectContaining({
@@ -356,7 +357,7 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
                 <QueryClientProvider client={queryClient}>
                     <UniqueDiscountOfferCreateModal {...props} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         await setupValidModalParameters()
@@ -370,7 +371,7 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
         saveBtn.click()
         await waitFor(() => {
             expect(
-                useCreateDiscountOfferMock().mutateAsync
+                useCreateDiscountOfferMock().mutateAsync,
             ).toHaveBeenCalledWith([
                 undefined,
                 expect.objectContaining({
@@ -391,7 +392,7 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
                 <QueryClientProvider client={queryClient}>
                     <UniqueDiscountOfferCreateModal {...props} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         await setupValidModalParameters()
@@ -421,7 +422,7 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
         saveBtn.click()
         await waitFor(() => {
             expect(
-                useCreateDiscountOfferMock().mutateAsync
+                useCreateDiscountOfferMock().mutateAsync,
             ).toHaveBeenCalledWith([
                 undefined,
                 expect.objectContaining({
@@ -445,7 +446,7 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
                 <QueryClientProvider client={queryClient}>
                     <UniqueDiscountOfferCreateModal {...props} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         await setupValidModalParameters()
@@ -460,7 +461,7 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
         saveBtn.click()
         await waitFor(() => {
             expect(
-                useCreateDiscountOfferMock().mutateAsync
+                useCreateDiscountOfferMock().mutateAsync,
             ).toHaveBeenCalledWith([
                 undefined,
                 expect.objectContaining({
@@ -481,7 +482,7 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
                 <QueryClientProvider client={queryClient}>
                     <UniqueDiscountOfferCreateModal {...props} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         await setupValidModalParameters()
@@ -491,10 +492,10 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
         fireEvent.focus(inputElement)
 
         const validCollectionSample = screen.getByText(
-            VALID_PRODUCT_COLLECTION_1.title
+            VALID_PRODUCT_COLLECTION_1.title,
         )
         const validCollectionSample2 = screen.getByText(
-            VALID_PRODUCT_COLLECTION_2.title
+            VALID_PRODUCT_COLLECTION_2.title,
         )
 
         // Selects the first collection
@@ -520,7 +521,7 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
         saveBtn.click()
         await waitFor(() => {
             expect(
-                useCreateDiscountOfferMock().mutateAsync
+                useCreateDiscountOfferMock().mutateAsync,
             ).toHaveBeenCalledWith([
                 undefined,
                 expect.objectContaining({
@@ -549,7 +550,7 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
                 <QueryClientProvider client={queryClient}>
                     <UniqueDiscountOfferCreateModal {...props} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         const prefixInput = screen.getByLabelText(/Unique code prefix/)
@@ -564,10 +565,10 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
             expect(saveBtn.textContent).toContain('Save Changes')
             expect(saveBtn).toBeAriaEnabled()
             expect(
-                useUpdateDiscountOffersMock().mutateAsync
+                useUpdateDiscountOffersMock().mutateAsync,
             ).toHaveBeenCalledWith([
                 undefined,
-                {discount_offer_id: 'testId'},
+                { discount_offer_id: 'testId' },
                 expect.objectContaining({
                     prefix: 'discount',
                 }),
@@ -592,7 +593,7 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
                 <QueryClientProvider client={queryClient}>
                     <UniqueDiscountOfferCreateModal {...props} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         userEvent.click(screen.getByLabelText('Applies to'))
@@ -606,10 +607,10 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
             expect(saveBtn.textContent).toContain('Save Changes')
             expect(saveBtn).toBeAriaEnabled()
             expect(
-                useUpdateDiscountOffersMock().mutateAsync
+                useUpdateDiscountOffersMock().mutateAsync,
             ).toHaveBeenCalledWith([
                 undefined,
-                {discount_offer_id: 'testId'},
+                { discount_offer_id: 'testId' },
                 expect.objectContaining({
                     external_collection_ids: null,
                 }),
@@ -628,7 +629,7 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
                 <QueryClientProvider client={queryClient}>
                     <UniqueDiscountOfferCreateModal {...props} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         await setupValidModalParameters()
@@ -638,10 +639,10 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
         fireEvent.focus(inputElement)
 
         const validCollectionSample = screen.getByText(
-            VALID_PRODUCT_COLLECTION_1.title
+            VALID_PRODUCT_COLLECTION_1.title,
         )
         const validCollectionSample2 = screen.getByText(
-            VALID_PRODUCT_COLLECTION_2.title
+            VALID_PRODUCT_COLLECTION_2.title,
         )
 
         // Selects the first collection
@@ -657,7 +658,7 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
 
         await waitFor(() => {
             expect(
-                useCreateDiscountOfferMock().mutateAsync
+                useCreateDiscountOfferMock().mutateAsync,
             ).toHaveBeenCalledWith([
                 undefined,
                 expect.objectContaining({
@@ -681,7 +682,7 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
                 <QueryClientProvider client={queryClient}>
                     <UniqueDiscountOfferCreateModal {...props} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         await setupValidModalParameters()
@@ -711,7 +712,7 @@ describe('<UniqueDiscountOfferCreateModal />', () => {
 
         await waitFor(() => {
             expect(
-                useCreateDiscountOfferMock().mutateAsync
+                useCreateDiscountOfferMock().mutateAsync,
             ).toHaveBeenCalledWith([
                 undefined,
                 expect.objectContaining({

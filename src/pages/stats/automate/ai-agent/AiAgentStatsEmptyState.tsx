@@ -1,15 +1,15 @@
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
-import {IntegrationType} from 'models/integration/types'
-import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
+import { IntegrationType } from 'models/integration/types'
+import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import css from 'pages/stats/automate/ai-agent/AiAgentStatsEmptyState.less'
-import {PAGE_TITLE_AI_AGENT} from 'pages/stats/self-service/constants'
-import {assetsUrl} from 'utils'
+import { PAGE_TITLE_AI_AGENT } from 'pages/stats/self-service/constants'
+import { assetsUrl } from 'utils'
 
 export const AiAgentStatsEmptyState = () => {
     const storeIntegrations = useStoreIntegrations()
@@ -17,7 +17,7 @@ export const AiAgentStatsEmptyState = () => {
     const ctaLink = useMemo(() => {
         const firstShopifyIntegration = storeIntegrations.find(
             (storeIntegration) =>
-                storeIntegration.type === IntegrationType.Shopify
+                storeIntegration.type === IntegrationType.Shopify,
         )
 
         if (firstShopifyIntegration === undefined) return '/app/automation/'
@@ -66,7 +66,7 @@ export const AiAgentStatsEmptyState = () => {
                     <img
                         className={css.exampleImg}
                         src={assetsUrl(
-                            '/img/paywalls/screens/ai_agent_stats_empty_state.png'
+                            '/img/paywalls/screens/ai_agent_stats_empty_state.png',
                         )}
                         alt="AI Agent stats example"
                     />

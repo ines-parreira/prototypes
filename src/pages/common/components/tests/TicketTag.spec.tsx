@@ -1,11 +1,12 @@
-import {render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useFlag} from 'core/flags'
-import {THEME_NAME, useTheme} from 'core/theme'
-import {getEnoughContrastedColor} from 'utils/colors'
+import { render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
+import { THEME_NAME, useTheme } from 'core/theme'
+import { getEnoughContrastedColor } from 'utils/colors'
 
 import TicketTag from '../TicketTag'
 
@@ -29,7 +30,7 @@ jest.mock(
         ({
             ...jest.requireActual('utils/colors'),
             getEnoughContrastedColor: jest.fn(),
-        }) as Record<string, any>
+        }) as Record<string, any>,
 )
 
 describe('<TicketTag />', () => {
@@ -37,7 +38,7 @@ describe('<TicketTag />', () => {
         mockUseFlag.mockImplementation(
             (featureFlag: keyof typeof mockFlagSet) => {
                 return mockFlagSet[featureFlag]
-            }
+            },
         )
 
         useThemeMock.mockReturnValue({
@@ -50,8 +51,8 @@ describe('<TicketTag />', () => {
         const text = 'shipping'
         const color = '#123456' // hsl(210, 65%, 20%)
 
-        const {container} = render(
-            <TicketTag text={text} decoration={fromJS({color})} />
+        const { container } = render(
+            <TicketTag text={text} decoration={fromJS({ color })} />,
         )
         const tag = screen.getByText(text)
 
@@ -79,8 +80,8 @@ describe('<TicketTag />', () => {
         const label = 'shipping'
         const color = '#123456'
 
-        const {container} = render(
-            <TicketTag text={label} decoration={fromJS({color})} />
+        const { container } = render(
+            <TicketTag text={label} decoration={fromJS({ color })} />,
         )
 
         expect(screen.getByText(label)).toBeInTheDocument()
@@ -96,8 +97,8 @@ describe('<TicketTag />', () => {
         const label = 'shipping'
         const color = '#'
 
-        const {container} = render(
-            <TicketTag text={label} decoration={fromJS({color})} />
+        const { container } = render(
+            <TicketTag text={label} decoration={fromJS({ color })} />,
         )
 
         expect(container.firstChild).not.toHaveAttribute('style')
@@ -109,8 +110,8 @@ describe('<TicketTag />', () => {
         const text = 'shipping'
         const color = '#123456'
 
-        const {container} = render(
-            <TicketTag text={text} decoration={fromJS({color})} />
+        const { container } = render(
+            <TicketTag text={text} decoration={fromJS({ color })} />,
         )
 
         expect(container.firstChild).not.toHaveAttribute('style')

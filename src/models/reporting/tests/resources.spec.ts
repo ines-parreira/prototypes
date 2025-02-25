@@ -3,11 +3,11 @@ import MockAdapter from 'axios-mock-adapter'
 import client from 'models/api/resources'
 
 import {
-    REPORTING_ENDPOINT,
     postReporting,
     QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS,
+    REPORTING_ENDPOINT,
 } from '../resources'
-import {ReportingResponse, ReportingQuery} from '../types'
+import { ReportingQuery, ReportingResponse } from '../types'
 
 const mockedServer = new MockAdapter(client)
 
@@ -45,7 +45,7 @@ describe('Reporting resources', () => {
             mockedServer.onPost(REPORTING_ENDPOINT).reply(statusCode)
 
             return expect(postReporting<[number]>([query])).rejects.toEqual(
-                new Error(`Request failed with status code ${statusCode}`)
+                new Error(`Request failed with status code ${statusCode}`),
             )
         })
 
@@ -56,8 +56,8 @@ describe('Reporting resources', () => {
 
             return expect(postReporting<[number]>([query])).rejects.toEqual(
                 new Error(
-                    `Request failed with status code ${QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS}`
-                )
+                    `Request failed with status code ${QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS}`,
+                ),
             )
         })
 
@@ -65,13 +65,13 @@ describe('Reporting resources', () => {
             mockedServer
                 .onPost(REPORTING_ENDPOINT)
                 .reply(
-                    String(QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS) as any
+                    String(QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS) as any,
                 )
 
             return expect(postReporting<[number]>([query])).rejects.toEqual(
                 new Error(
-                    `Request failed with status code ${QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS}`
-                )
+                    `Request failed with status code ${QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS}`,
+                ),
             )
         })
     })

@@ -1,5 +1,6 @@
-import React, {ReactNode} from 'react'
-import {Navbar} from 'reactstrap'
+import React, { ReactNode } from 'react'
+
+import { Navbar } from 'reactstrap'
 
 import css from './SecondaryNavbar.less'
 
@@ -7,7 +8,7 @@ type Props = {
     children: ReactNode
 }
 
-const SecondaryNavbar = ({children}: Props): JSX.Element => {
+const SecondaryNavbar = ({ children }: Props): JSX.Element => {
     const linkProps = {
         className: css.link,
         activeClassName: css.active,
@@ -16,7 +17,7 @@ const SecondaryNavbar = ({children}: Props): JSX.Element => {
     const childrenWithProps = React.Children.map(children, (child) =>
         React.isValidElement(child)
             ? React.cloneElement(child, linkProps)
-            : null
+            : null,
     )
 
     return <Navbar className={css.navbar}>{childrenWithProps}</Navbar>

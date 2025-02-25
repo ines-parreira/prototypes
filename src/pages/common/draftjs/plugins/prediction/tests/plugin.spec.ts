@@ -1,17 +1,17 @@
-import {ContentState, EditorState, SelectionState} from 'draft-js'
-import {fromJS, Map} from 'immutable'
+import { ContentState, EditorState, SelectionState } from 'draft-js'
+import { fromJS, Map } from 'immutable'
 
-import {Plugin, PluginMethods} from 'pages/common/draftjs/plugins/types'
+import { Plugin, PluginMethods } from 'pages/common/draftjs/plugins/types'
 import * as DraftTestUtils from 'pages/common/draftjs/tests/draftTestUtils'
-import {getLDClient} from 'utils/launchDarkly'
-import {assumeMock, flushPromises} from 'utils/testing'
+import { getLDClient } from 'utils/launchDarkly'
+import { assumeMock, flushPromises } from 'utils/testing'
 
 import client from '../client'
-import createPredictionPlugin, {clearCache} from '../index'
-import {cachedSelection, predictionKey} from '../state'
+import createPredictionPlugin, { clearCache } from '../index'
+import { cachedSelection, predictionKey } from '../state'
 
 jest.mock('utils/errors')
-jest.mock('utils/launchDarkly', () => ({getLDClient: jest.fn()}))
+jest.mock('utils/launchDarkly', () => ({ getLDClient: jest.fn() }))
 jest.mock('../client')
 
 const defaultContext: Map<any, any> = fromJS({})
@@ -23,7 +23,7 @@ beforeEach(() => {
     jest.resetAllMocks()
     jest.restoreAllMocks()
     jest.useFakeTimers()
-    ;(getLDClient as jest.Mock).mockReturnValue({variation: () => true})
+    ;(getLDClient as jest.Mock).mockReturnValue({ variation: () => true })
 })
 
 describe('prediction plugin', () => {
@@ -44,12 +44,12 @@ describe('prediction plugin', () => {
         text: string,
         predictionText: string,
         plugin: Plugin,
-        pluginMethods: PluginMethods
+        pluginMethods: PluginMethods,
     ): Promise<EditorState> => {
         assumeMock(client.requestPrediction).mockResolvedValue(predictionText)
         const textState = DraftTestUtils.typeText(
             pluginMethods.getEditorState(),
-            text
+            text,
         )
         if (plugin.onChange) {
             const changedState = plugin.onChange(textState, pluginMethods)
@@ -62,7 +62,7 @@ describe('prediction plugin', () => {
     const createPredictionEntity = (text: string) => {
         return {
             type: 'prediction',
-            data: {text},
+            data: { text },
             mutability: 'IMMUTABLE',
         }
     }
@@ -70,7 +70,7 @@ describe('prediction plugin', () => {
     const expectToBeTextWithPrediction = (
         contentState: ContentState,
         text: string,
-        prediction: string
+        prediction: string,
     ) => {
         expect(contentState.getPlainText()).toBe(text + ' ')
         expect(DraftTestUtils.getLastCreatedEntityRange(contentState)).toEqual([
@@ -80,32 +80,32 @@ describe('prediction plugin', () => {
         expect(
             (
                 DraftTestUtils.getLastCreatedEntity(
-                    contentState
+                    contentState,
                 ) as unknown as Map<any, any>
-            ).toJS()
+            ).toJS(),
         ).toMatchObject(createPredictionEntity(prediction))
     }
 
     const expectToBeTextWithoutPrediction = (
         contentState: ContentState,
-        text: string
+        text: string,
     ) => {
         expect(contentState.getPlainText()).toBe(text)
         expect(
-            DraftTestUtils.getLastCreatedEntityRange(contentState)
+            DraftTestUtils.getLastCreatedEntityRange(contentState),
         ).toBeNull()
     }
 
     describe('onChange()', () => {
         it('should not request prediction if text is 1 character long', async () => {
-            const {predictionPlugin, pluginMethods} =
+            const { predictionPlugin, pluginMethods } =
                 createEmptyStatePredictionPlugin()
             await typeAndPredict('H', '', predictionPlugin, pluginMethods)
             expect(client.requestPrediction).not.toHaveBeenCalled()
         })
 
         it('should request prediction', async () => {
-            const {predictionPlugin, pluginMethods} =
+            const { predictionPlugin, pluginMethods } =
                 createEmptyStatePredictionPlugin()
             const text = 'Hi'
 
@@ -113,18 +113,18 @@ describe('prediction plugin', () => {
                 text,
                 ' Marie,',
                 predictionPlugin,
-                pluginMethods
+                pluginMethods,
             )
 
             expect(client.requestPrediction).toHaveBeenCalledTimes(1)
             expect(client.requestPrediction).toHaveBeenCalledWith(
                 text,
-                defaultContext.toJS()
+                defaultContext.toJS(),
             )
         })
 
         it('should throttle request prediction', async () => {
-            const {predictionPlugin, pluginMethods} =
+            const { predictionPlugin, pluginMethods } =
                 createEmptyStatePredictionPlugin()
             const text = 'Hi'
 
@@ -138,7 +138,7 @@ describe('prediction plugin', () => {
         })
 
         it('should display the prediction', async () => {
-            const {predictionPlugin, pluginMethods} =
+            const { predictionPlugin, pluginMethods } =
                 createEmptyStatePredictionPlugin()
             const text = 'Hi'
             const predictedText = ' Marie,'
@@ -146,24 +146,24 @@ describe('prediction plugin', () => {
                 text,
                 predictedText,
                 predictionPlugin,
-                pluginMethods
+                pluginMethods,
             )
             expectToBeTextWithPrediction(
                 state.getCurrentContent(),
                 text,
-                predictedText
+                predictedText,
             )
         })
 
         it('should update the prediction when typing along with the prediction', async () => {
-            const {predictionPlugin, pluginMethods} =
+            const { predictionPlugin, pluginMethods } =
                 createEmptyStatePredictionPlugin()
 
             await typeAndPredict(
                 'Hi',
                 ' Marie,',
                 predictionPlugin,
-                pluginMethods
+                pluginMethods,
             )
             await typeAndPredict(' ', '', predictionPlugin, pluginMethods)
             await typeAndPredict('M', '', predictionPlugin, pluginMethods)
@@ -172,26 +172,26 @@ describe('prediction plugin', () => {
             expectToBeTextWithPrediction(
                 pluginMethods.getEditorState().getCurrentContent(),
                 'Hi M',
-                'arie,'
+                'arie,',
             )
         })
 
         it('should hide the prediction and request a new one when new text does not match the previous prediction', async () => {
-            const {predictionPlugin, pluginMethods} =
+            const { predictionPlugin, pluginMethods } =
                 createEmptyStatePredictionPlugin()
 
             await typeAndPredict(
                 'Hi ',
                 'Marie,',
                 predictionPlugin,
-                pluginMethods
+                pluginMethods,
             )
             await typeAndPredict('P', '', predictionPlugin, pluginMethods)
 
             expect(client.requestPrediction).toHaveBeenCalledTimes(1)
             expectToBeTextWithoutPrediction(
                 pluginMethods.getEditorState().getCurrentContent(),
-                'Hi P'
+                'Hi P',
             )
             expect(client.sendFeedback).toHaveBeenCalledTimes(1)
             expect(client.sendFeedback).toHaveBeenCalledWith({
@@ -206,20 +206,20 @@ describe('prediction plugin', () => {
         })
 
         it('should remove the prediction if it was completed', async () => {
-            const {predictionPlugin, pluginMethods} =
+            const { predictionPlugin, pluginMethods } =
                 createEmptyStatePredictionPlugin()
 
             await typeAndPredict(
                 'Hi Mari',
                 'e',
                 predictionPlugin,
-                pluginMethods
+                pluginMethods,
             )
             await typeAndPredict('e', '', predictionPlugin, pluginMethods)
 
             expectToBeTextWithoutPrediction(
                 pluginMethods.getEditorState().getCurrentContent(),
-                'Hi Marie'
+                'Hi Marie',
             )
             expect(client.sendFeedback).toHaveBeenCalledTimes(1)
             expect(client.sendFeedback).toHaveBeenCalledWith({
@@ -234,7 +234,7 @@ describe('prediction plugin', () => {
         })
 
         it('should remove the prediction on cursor move', async () => {
-            const {predictionPlugin, pluginMethods} =
+            const { predictionPlugin, pluginMethods } =
                 createEmptyStatePredictionPlugin()
 
             await typeAndPredict('Hi', ' Bob', predictionPlugin, pluginMethods)
@@ -251,13 +251,13 @@ describe('prediction plugin', () => {
 
             expect(
                 DraftTestUtils.getLastCreatedEntityRange(
-                    state.getCurrentContent()
-                )
+                    state.getCurrentContent(),
+                ),
             ).toBeNull()
         })
 
         it('should remove the prediction on content remove', async () => {
-            const {predictionPlugin, pluginMethods} =
+            const { predictionPlugin, pluginMethods } =
                 createEmptyStatePredictionPlugin()
 
             await typeAndPredict('Hi', ' Bob', predictionPlugin, pluginMethods)
@@ -270,71 +270,71 @@ describe('prediction plugin', () => {
 
             expect(
                 DraftTestUtils.getLastCreatedEntityRange(
-                    state.getCurrentContent()
-                )
+                    state.getCurrentContent(),
+                ),
             ).toBeNull()
         })
 
         // Regression test for https://github.com/gorgias/gorgias/issues/4553
         it('should hide the prediction on partial input mismatch', async () => {
-            const {predictionPlugin, pluginMethods} =
+            const { predictionPlugin, pluginMethods } =
                 createEmptyStatePredictionPlugin()
 
             await typeAndPredict(
                 "I'm so",
                 ' sorry,',
                 predictionPlugin,
-                pluginMethods
+                pluginMethods,
             )
             await typeAndPredict('r', '', predictionPlugin, pluginMethods)
 
             expectToBeTextWithoutPrediction(
                 pluginMethods.getEditorState().getCurrentContent(),
-                "I'm sor"
+                "I'm sor",
             )
         })
 
         describe('text paste', () => {
             it('should support pasting multi-char text that matches the prediction', async () => {
-                const {predictionPlugin, pluginMethods} =
+                const { predictionPlugin, pluginMethods } =
                     createEmptyStatePredictionPlugin()
 
                 await typeAndPredict(
                     'Hi ',
                     'Marie,',
                     predictionPlugin,
-                    pluginMethods
+                    pluginMethods,
                 )
                 await typeAndPredict('Mar', '', predictionPlugin, pluginMethods)
 
                 expectToBeTextWithPrediction(
                     pluginMethods.getEditorState().getCurrentContent(),
                     'Hi Mar',
-                    'ie,'
+                    'ie,',
                 )
                 expect(client.sendFeedback).toHaveBeenCalledTimes(0)
             })
 
             it('should remove prediction and send not accepted feedback on pasting text matching prediction partially', async () => {
-                const {predictionPlugin, pluginMethods} =
+                const { predictionPlugin, pluginMethods } =
                     createEmptyStatePredictionPlugin()
 
                 await typeAndPredict(
                     'Hi ',
                     'Marie,',
                     predictionPlugin,
-                    pluginMethods
+                    pluginMethods,
                 )
                 await typeAndPredict(
                     'Mario',
                     '',
                     predictionPlugin,
-                    pluginMethods
+                    pluginMethods,
                 )
 
                 expectToBeTextWithoutPrediction(
                     pluginMethods.getEditorState().getCurrentContent(),
-                    'Hi Mario'
+                    'Hi Mario',
                 )
                 expect(client.sendFeedback).toHaveBeenCalledTimes(1)
                 expect(client.sendFeedback).toHaveBeenCalledWith({
@@ -349,25 +349,25 @@ describe('prediction plugin', () => {
             })
 
             it('should remove prediction and send accepted feedback on pasting text that completes the prediction', async () => {
-                const {predictionPlugin, pluginMethods} =
+                const { predictionPlugin, pluginMethods } =
                     createEmptyStatePredictionPlugin()
 
                 await typeAndPredict(
                     'Hi ',
                     'Marie,',
                     predictionPlugin,
-                    pluginMethods
+                    pluginMethods,
                 )
                 await typeAndPredict(
                     'Marie,',
                     '',
                     predictionPlugin,
-                    pluginMethods
+                    pluginMethods,
                 )
 
                 expectToBeTextWithoutPrediction(
                     pluginMethods.getEditorState().getCurrentContent(),
-                    'Hi Marie,'
+                    'Hi Marie,',
                 )
                 expect(client.sendFeedback).toHaveBeenCalledTimes(1)
                 expect(client.sendFeedback).toHaveBeenCalledWith({
@@ -382,25 +382,25 @@ describe('prediction plugin', () => {
             })
 
             it('should remove prediction and send successful feedback on pasting text matching prediction with extra chars at the end', async () => {
-                const {predictionPlugin, pluginMethods} =
+                const { predictionPlugin, pluginMethods } =
                     createEmptyStatePredictionPlugin()
 
                 await typeAndPredict(
                     'Hi ',
                     'Marie,',
                     predictionPlugin,
-                    pluginMethods
+                    pluginMethods,
                 )
                 await typeAndPredict(
                     'Marie,',
                     '',
                     predictionPlugin,
-                    pluginMethods
+                    pluginMethods,
                 )
 
                 expectToBeTextWithoutPrediction(
                     pluginMethods.getEditorState().getCurrentContent(),
-                    'Hi Marie,'
+                    'Hi Marie,',
                 )
                 expect(client.sendFeedback).toHaveBeenCalledTimes(1)
                 expect(client.sendFeedback).toHaveBeenCalledWith({
@@ -418,7 +418,7 @@ describe('prediction plugin', () => {
 
     describe('onTab()', () => {
         it('should complete the prediction', async () => {
-            const {predictionPlugin, pluginMethods} =
+            const { predictionPlugin, pluginMethods } =
                 createEmptyStatePredictionPlugin()
             const text = 'Hi'
             const predictedText = ' Marie,'
@@ -426,18 +426,18 @@ describe('prediction plugin', () => {
                 text,
                 predictedText,
                 predictionPlugin,
-                pluginMethods
+                pluginMethods,
             )
 
             const preventDefault = jest.fn()
             predictionPlugin.onTab &&
-                predictionPlugin.onTab({preventDefault} as any, pluginMethods)
+                predictionPlugin.onTab({ preventDefault } as any, pluginMethods)
             await flushPromises()
 
             expect(preventDefault).toBeCalled()
             expectToBeTextWithoutPrediction(
                 pluginMethods.getEditorState().getCurrentContent(),
-                'Hi Marie,'
+                'Hi Marie,',
             )
             expect(client.sendFeedback).toHaveBeenCalledTimes(1)
             expect(client.sendFeedback).toHaveBeenCalledWith({
@@ -454,14 +454,14 @@ describe('prediction plugin', () => {
 
     describe('onRightArrow()', () => {
         it('should complete the prediction', async () => {
-            const {predictionPlugin, pluginMethods} =
+            const { predictionPlugin, pluginMethods } =
                 createEmptyStatePredictionPlugin()
 
             await typeAndPredict(
                 'Hi',
                 ' Marie,',
                 predictionPlugin,
-                pluginMethods
+                pluginMethods,
             )
             await typeAndPredict(' M', '', predictionPlugin, pluginMethods)
             await typeAndPredict('ar', '', predictionPlugin, pluginMethods)
@@ -469,15 +469,15 @@ describe('prediction plugin', () => {
             const preventDefault = jest.fn()
             predictionPlugin.onRightArrow &&
                 predictionPlugin.onRightArrow(
-                    {preventDefault} as any,
-                    pluginMethods
+                    { preventDefault } as any,
+                    pluginMethods,
                 )
             await flushPromises()
 
             expect(preventDefault).toBeCalled()
             expectToBeTextWithoutPrediction(
                 pluginMethods.getEditorState().getCurrentContent(),
-                'Hi Marie,'
+                'Hi Marie,',
             )
             expect(client.sendFeedback).toHaveBeenCalledTimes(1)
             expect(client.sendFeedback).toHaveBeenCalledWith({

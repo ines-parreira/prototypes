@@ -1,18 +1,20 @@
-import {Map, fromJS} from 'immutable'
+import { fromJS, Map } from 'immutable'
 
-import {AttachmentEnum} from 'common/types'
-import {Product} from 'constants/integrations/types/shopify'
-import {IntegrationDataItem, ProductCardDetails} from 'models/integration/types'
-import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
-import {getIconFromUrl} from 'utils'
+import { AttachmentEnum } from 'common/types'
+import { Product } from 'constants/integrations/types/shopify'
+import {
+    IntegrationDataItem,
+    ProductCardDetails,
+} from 'models/integration/types'
+import { ProductCardAttachment } from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
+import { getIconFromUrl } from 'utils'
+import { findCheapestProductVariant } from 'utils/findCheapestProductVariant'
 
-import {findCheapestProductVariant} from 'utils/findCheapestProductVariant'
-
-import {TooltipTourConfigurationType} from './types'
+import { TooltipTourConfigurationType } from './types'
 
 export const getTooltipTourConfiguration = (
     action: string,
-    configuration: Record<string, TooltipTourConfigurationType> | undefined
+    configuration: Record<string, TooltipTourConfigurationType> | undefined,
 ) => {
     if (!configuration || !(action in configuration)) {
         return undefined
@@ -24,7 +26,7 @@ export const getTooltipTourConfiguration = (
 }
 
 export const mapIntegrationToPickedShopifyIntegration = (
-    integration: Map<any, any>
+    integration: Map<any, any>,
 ) => {
     return fromJS({
         id: integration.get('id'),
@@ -38,7 +40,7 @@ export const transformShopifyProductToProductCardDetails = (
     product: IntegrationDataItem<Product>,
     shopifyIntegration: Map<string, string>,
     shouldSetVariantTitle: boolean = true,
-    placeholderImage: string = 'integrations/shopify-placeholder.png'
+    placeholderImage: string = 'integrations/shopify-placeholder.png',
 ): ProductCardDetails => {
     const cheapestVariant = findCheapestProductVariant(product.data)
 
@@ -58,7 +60,7 @@ export const transformShopifyProductToProductCardDetails = (
 }
 
 export const transformProductCardDetailsToProductCardAttachment = (
-    productDetails: ProductCardDetails
+    productDetails: ProductCardDetails,
 ): ProductCardAttachment => {
     return {
         content_type: AttachmentEnum.Product,

@@ -1,4 +1,4 @@
-import {fromJS, Map} from 'immutable'
+import { fromJS, Map } from 'immutable'
 
 import {
     shopifyCustomerFixture,
@@ -34,7 +34,7 @@ describe('initDraftOrderPayload()', () => {
                         price: '1.00',
                     }),
                 ],
-            })
+            }),
         ) as Map<any, any>
 
         const products = new window.Map([[product.get('id'), product]])

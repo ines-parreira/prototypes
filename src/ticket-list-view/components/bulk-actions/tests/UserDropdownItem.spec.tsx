@@ -1,5 +1,6 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import useAppSelector from 'hooks/useAppSelector'
 
@@ -26,7 +27,7 @@ describe('<UserDropdownItem />', () => {
         render(<UserDropdownItem {...props} />)
 
         expect(screen.getByAltText('avatar').getAttribute('src')).toBe(
-            props.item.meta.profile_picture_url
+            props.item.meta.profile_picture_url,
         )
         expect(screen.getByText(props.item.name)).toBeInTheDocument()
     })
@@ -39,16 +40,16 @@ describe('<UserDropdownItem />', () => {
                 item={{
                     name: 'Homer Simpson',
                 }}
-            />
+            />,
         )
 
         expect(screen.getByAltText('avatar').getAttribute('src')).toBe(
-            props.item.meta.profile_picture_url
+            props.item.meta.profile_picture_url,
         )
     })
 
     it('should render email when name is missing', () => {
-        const item = {email: 'homer@simpson.com'}
+        const item = { email: 'homer@simpson.com' }
 
         render(<UserDropdownItem item={item} />)
 

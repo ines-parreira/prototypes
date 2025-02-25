@@ -1,6 +1,6 @@
-import {useHistory} from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
-import {SegmentEvent, logEvent} from 'common/segment'
+import { logEvent, SegmentEvent } from 'common/segment'
 import useEffectOnce from 'hooks/useEffectOnce'
 
 type HistoryTrackingState = {

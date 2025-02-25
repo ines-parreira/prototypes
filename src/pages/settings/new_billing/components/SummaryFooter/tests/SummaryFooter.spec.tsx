@@ -1,18 +1,19 @@
-import {render, fireEvent, screen, waitFor} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import {
+    basicMonthlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
     products,
-    basicMonthlyHelpdeskPlan,
 } from 'fixtures/productPrices'
-import {BILLING_BASE_PATH} from 'pages/settings/new_billing/constants'
-import {RootState, StoreDispatch} from 'state/types'
+import { BILLING_BASE_PATH } from 'pages/settings/new_billing/constants'
+import { RootState, StoreDispatch } from 'state/types'
 
-import SummaryFooter, {SummaryFooterProps} from '../SummaryFooter'
+import SummaryFooter, { SummaryFooterProps } from '../SummaryFooter'
 
 const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>()
 
@@ -39,7 +40,7 @@ jest.mock(
             useHistory: () => ({
                 push: mockHistoryPush,
             }),
-        }) as Record<string, unknown>
+        }) as Record<string, unknown>,
 )
 
 describe('SummaryFooter', () => {
@@ -57,10 +58,10 @@ describe('SummaryFooter', () => {
     }
 
     it('disables the container when isPaymentEnabled is false', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <SummaryFooter {...props} isPaymentEnabled={false} />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toHaveClass('disabled')
@@ -70,13 +71,13 @@ describe('SummaryFooter', () => {
         render(
             <Provider store={store}>
                 <SummaryFooter {...props} />
-            </Provider>
+            </Provider>,
         )
 
         expect(
             screen.getByText(
-                /You agree to be charged in accordance with the subscription plan/
-            )
+                /You agree to be charged in accordance with the subscription plan/,
+            ),
         ).toBeInTheDocument()
         expect(screen.getByText(/I agree to the/)).toBeInTheDocument()
     })
@@ -85,7 +86,7 @@ describe('SummaryFooter', () => {
         render(
             <Provider store={store}>
                 <SummaryFooter {...props} anyNewProductSelected={false} />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.queryByText(/I agree to the/)).not.toBeInTheDocument()
@@ -95,13 +96,13 @@ describe('SummaryFooter', () => {
         render(
             <Provider store={store}>
                 <SummaryFooter {...props} anyNewProductSelected={false} />
-            </Provider>
+            </Provider>,
         )
 
         expect(
             screen.queryByText(
-                /Changes to your subscription will apply starting/
-            )
+                /Changes to your subscription will apply starting/,
+            ),
         ).toBeInTheDocument()
     })
 
@@ -109,7 +110,7 @@ describe('SummaryFooter', () => {
         render(
             <Provider store={store}>
                 <SummaryFooter {...props} anyNewProductSelected={false} />
-            </Provider>
+            </Provider>,
         )
         const button = screen.getByText('Update Subscription')
         expect(button).toBeEnabled()
@@ -119,7 +120,7 @@ describe('SummaryFooter', () => {
         render(
             <Provider store={store}>
                 <SummaryFooter {...props} anyNewProductSelected={false} />
-            </Provider>
+            </Provider>,
         )
         const button = screen.getByText('Update Subscription')
         fireEvent.click(button)

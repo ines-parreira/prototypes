@@ -1,14 +1,16 @@
+import React, { ComponentType, useEffect, useRef, useState } from 'react'
+
 import Clipboard from 'clipboard'
-import React, {useState, useEffect, useRef, ComponentType} from 'react'
 
 import useId from 'hooks/useId'
 
 import Button from '../../components/button/Button'
+
 import css from './withClipboardButton.less'
 
 export function withClipboardButton(
     Component: ComponentType<any>,
-    idPrefix: string
+    idPrefix: string,
 ) {
     function WithClipboardComponent(props: any) {
         const [isCopied, setIsCopied] = useState(false)

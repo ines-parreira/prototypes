@@ -1,13 +1,16 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { useState } from 'react'
+
 import classnames from 'classnames'
-import React, {useState} from 'react'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useId from 'hooks/useId'
 import Button from 'pages/common/components/button/Button'
 
-import css from './CodeEditor.less'
 import ReactACE from './WithACEEditor/ReactACE'
-import {ACEProps} from './WithACEEditor/types'
+import { ACEProps } from './WithACEEditor/types'
+
+import css from './CodeEditor.less'
 
 /* eslint-disable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call */
 
@@ -17,7 +20,7 @@ type Props = ACEProps & {
     disabled?: boolean
 }
 
-function CodeEditor({title, tooltip, disabled, ...props}: Props) {
+function CodeEditor({ title, tooltip, disabled, ...props }: Props) {
     const id = useId()
     const [editor, setEditor] = useState<any>(null)
     const [isHover, setIsHover] = useState(false)

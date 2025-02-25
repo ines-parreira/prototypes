@@ -1,7 +1,8 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -9,8 +10,8 @@ import {
     useDeleteWorkflowConfigurationTemplate,
     workflowsConfigurationTemplateDefinitionKeys,
 } from 'models/workflows/queries'
-import {NotificationStatus} from 'state/notifications/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { NotificationStatus } from 'state/notifications/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import useDeleteActionTemplate from '../useDeleteActionTemplate'
 
@@ -23,11 +24,11 @@ const mockUseDeleteWorkflowConfigurationTemplate =
     useDeleteWorkflowConfigurationTemplate as jest.Mock
 
 mockUseDeleteWorkflowConfigurationTemplate.mockImplementation(
-    ({onSuccess}: {onSuccess: () => void}) => ({
+    ({ onSuccess }: { onSuccess: () => void }) => ({
         mutateAsync: jest.fn().mockImplementation(() => {
             onSuccess()
         }),
-    })
+    }),
 )
 
 describe('useDeleteActionTemplate()', () => {
@@ -38,15 +39,15 @@ describe('useDeleteActionTemplate()', () => {
     it('should dispatch success notification on success and invalidate proper query data', async () => {
         const invalidateQuerySpy = jest.spyOn(queryClient, 'invalidateQueries')
 
-        const {result} = renderHook(() => useDeleteActionTemplate(), {
-            wrapper: ({children}) => (
+        const { result } = renderHook(() => useDeleteActionTemplate(), {
+            wrapper: ({ children }) => (
                 <QueryClientProvider client={queryClient}>
                     <Provider store={mockStore}>{children}</Provider>
                 </QueryClientProvider>
             ),
         })
 
-        await result.current.deleteActionTemplate([{internal_id: 'someid'}])
+        await result.current.deleteActionTemplate([{ internal_id: 'someid' }])
 
         expect(invalidateQuerySpy).toHaveBeenLastCalledWith({
             queryKey: workflowsConfigurationTemplateDefinitionKeys.all(),

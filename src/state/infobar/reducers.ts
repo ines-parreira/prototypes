@@ -1,9 +1,8 @@
-import {fromJS, Map, List} from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 
-import {GorgiasAction} from '../types'
-
+import { GorgiasAction } from '../types'
 import * as constants from './constants'
-import {InfobarState} from './types'
+import { InfobarState } from './types'
 
 export const initialState: InfobarState = fromJS({
     _internal: {
@@ -18,7 +17,7 @@ export const initialState: InfobarState = fromJS({
 
 export default function reducer(
     state: InfobarState = initialState,
-    action: GorgiasAction
+    action: GorgiasAction,
 ): InfobarState {
     switch (action.type) {
         case constants.EXECUTE_ACTION_START: {
@@ -29,9 +28,9 @@ export default function reducer(
                         fromJS({
                             id: action.id,
                             callback: action.callback,
-                        })
+                        }),
                     )
-                }
+                },
             )
         }
 
@@ -41,7 +40,7 @@ export default function reducer(
                 state.get('pendingActionsCallbacks') as List<any>
             ).findIndex(
                 (pendingAction: Map<any, any>) =>
-                    pendingAction.get('id') === action.id
+                    pendingAction.get('id') === action.id,
             )
 
             if (!~actionIndex) {
@@ -52,7 +51,7 @@ export default function reducer(
                 ['pendingActionsCallbacks'],
                 (list: List<any>) => {
                     const callback = list.getIn([actionIndex, 'callback']) as (
-                        arg: unknown
+                        arg: unknown,
                     ) => void
 
                     if (callback) {
@@ -60,7 +59,7 @@ export default function reducer(
                     }
 
                     return list.remove(actionIndex)
-                }
+                },
             )
         }
 

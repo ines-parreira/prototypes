@@ -1,12 +1,13 @@
-import {SLAPolicyMetricName, SLAPolicyMetricUnit} from '@gorgias/api-types'
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {MappedFormSLAPolicy} from './makeMappedFormSLAPolicy'
+import { SLAPolicyMetricName, SLAPolicyMetricUnit } from '@gorgias/api-types'
+
+import { MappedFormSLAPolicy } from './makeMappedFormSLAPolicy'
 
 export type SLAFormValues = ReturnType<typeof useFormValues>
 
 export default function useFormValues(
-    policy?: Omit<MappedFormSLAPolicy, 'uuid'>
+    policy?: Omit<MappedFormSLAPolicy, 'uuid'>,
 ) {
     return useMemo(
         () =>
@@ -49,6 +50,6 @@ export default function useFormValues(
                       active: true,
                       target_channels: [],
                   },
-        [policy]
+        [policy],
     )
 }

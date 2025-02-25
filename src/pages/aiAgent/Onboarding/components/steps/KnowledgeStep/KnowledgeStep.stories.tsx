@@ -1,14 +1,13 @@
-import {action} from '@storybook/addon-actions'
-import {Meta, StoryFn} from '@storybook/react'
+import React, { ComponentProps } from 'react'
 
-import {QueryClientProvider} from '@tanstack/react-query'
-import React, {ComponentProps} from 'react'
-
-import {Provider} from 'react-redux'
+import { action } from '@storybook/addon-actions'
+import { Meta, StoryFn } from '@storybook/react'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {appQueryClient} from 'api/queryClient'
-import {KnowledgeStep} from 'pages/aiAgent/Onboarding/components/steps/KnowledgeStep/KnowledgeStep'
+import { appQueryClient } from 'api/queryClient'
+import { KnowledgeStep } from 'pages/aiAgent/Onboarding/components/steps/KnowledgeStep/KnowledgeStep'
 
 const storyConfig: Meta<typeof KnowledgeStep> = {
     title: 'AI Agent/Onboarding/Steps/KnowledgeStep',

@@ -1,12 +1,13 @@
-import {Meta, StoryFn} from '@storybook/react'
-import {within} from '@testing-library/react'
+import React, { ComponentProps } from 'react'
+
+import { Meta, StoryFn } from '@storybook/react'
+import { within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import moment from 'moment'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {ThemeProvider} from 'core/theme'
+import { ThemeProvider } from 'core/theme'
 import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
 
 const defaultState = {}
@@ -16,12 +17,12 @@ const storyConfig: Meta = {
     title: 'Stats/PeriodStatsFilter',
     component: PeriodStatsFilter,
     parameters: {
-        chromatic: {disableSnapshot: false},
+        chromatic: { disableSnapshot: false },
     },
 }
 
 const Template: StoryFn<ComponentProps<typeof PeriodStatsFilter>> = (
-    props: ComponentProps<typeof PeriodStatsFilter>
+    props: ComponentProps<typeof PeriodStatsFilter>,
 ) => {
     return (
         <ThemeProvider>
@@ -41,7 +42,7 @@ const defaultProps: ComponentProps<typeof PeriodStatsFilter> = {
 
 export const Default = Template.bind({})
 Default.args = defaultProps
-Default.play = ({canvasElement}) => {
+Default.play = ({ canvasElement }) => {
     const canvas = within(canvasElement)
     userEvent.click(canvas.getByRole('button'))
 }

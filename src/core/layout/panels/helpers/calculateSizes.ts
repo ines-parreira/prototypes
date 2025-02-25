@@ -3,7 +3,7 @@
 // when panels appear and disappear I've chosen to ignore coverage for
 // this file for the time being - tests will follow once we settle on
 // how we'd like this to behave
-import type {PanelConfig, Sizes} from '../types'
+import type { PanelConfig, Sizes } from '../types'
 import sum from './sum'
 
 type Options = {
@@ -26,8 +26,8 @@ export default function calculateSizes({
     savedSizes,
 }: Options) {
     const sizes = order.reduce(
-        (acc, name) => ({...acc, [name]: configs[name].minSize}),
-        {} as Record<string, number>
+        (acc, name) => ({ ...acc, [name]: configs[name].minSize }),
+        {} as Record<string, number>,
     )
 
     let remainingSize = availableSize - sum(Object.values(sizes))
@@ -63,14 +63,14 @@ export default function calculateSizes({
         (name) =>
             !!configs[name].prioritise &&
             !existingPanels.includes(name) &&
-            !!savedSizes[name]
+            !!savedSizes[name],
     )
     if (prioritisedPanels.length) {
         orderedApplyDeltas(
             prioritisedPanels.map<PanelDelta>((name) => [
                 name,
                 savedSizes[name] - sizes[name],
-            ])
+            ]),
         )
     }
 
@@ -82,7 +82,7 @@ export default function calculateSizes({
                     Math.min(previousSizes[name], configs[name].maxSize) -
                         sizes[name],
                 ])
-                .sort((a, b) => a[1] - b[1])
+                .sort((a, b) => a[1] - b[1]),
         )
     }
 
@@ -101,7 +101,7 @@ export default function calculateSizes({
                     name,
                     savedSizes[name] - sizes[name],
                 ])
-                .sort((a, b) => a[1] - b[1])
+                .sort((a, b) => a[1] - b[1]),
         )
 
         if (remainingSize <= 0) return sizes
@@ -114,7 +114,7 @@ export default function calculateSizes({
                     name,
                     configs[name].defaultSize - sizes[name],
                 ])
-                .sort((a, b) => a[1] - b[1])
+                .sort((a, b) => a[1] - b[1]),
         )
 
         if (remainingSize <= 0) return sizes
@@ -127,7 +127,7 @@ export default function calculateSizes({
                     name,
                     configs[name].maxSize - sizes[name],
                 ])
-                .sort((a, b) => a[1] - b[1])
+                .sort((a, b) => a[1] - b[1]),
         )
     }
 
@@ -140,7 +140,7 @@ export default function calculateSizes({
 
     if (removedPanels.length) {
         const panelIndex = Math.max(
-            ...removedPanels.map((name) => previousOrder.indexOf(name))
+            ...removedPanels.map((name) => previousOrder.indexOf(name)),
         )
         orderedApplyDeltas([
             ...order
@@ -168,7 +168,7 @@ export default function calculateSizes({
                 name,
                 configs[name].maxSize - sizes[name],
             ])
-            .sort((a, b) => a[1] - b[1])
+            .sort((a, b) => a[1] - b[1]),
     )
 
     return sizes

@@ -1,20 +1,21 @@
-import {List as ImmutableList, Map} from 'immutable'
 import React from 'react'
-import {Link, useParams, NavLink} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
-import {IntegrationType} from 'models/integration/types'
+import { List as ImmutableList, Map } from 'immutable'
+import { Link, NavLink, useParams } from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
+
+import { IntegrationType } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import Detail from 'pages/common/components/ProductDetail'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import ConnectLink from 'pages/integrations/components/ConnectLink'
-import {mapAppToDetail} from 'pages/integrations/mappers/appToDetail'
-import {getIntegrationConfig} from 'state/integrations/helpers'
+import { mapAppToDetail } from 'pages/integrations/mappers/appToDetail'
+import { getIntegrationConfig } from 'state/integrations/helpers'
 
 import Integration from './Integration'
 import List from './List'
-import {getConnectUrl} from './Utils'
+import { getConnectUrl } from './Utils'
 
 const connectionsPath = 'connections'
 
@@ -25,8 +26,13 @@ type Props = {
     redirectUri: string
 }
 
-function BigCommerce({integration, integrations, loading, redirectUri}: Props) {
-    const {integrationId} = useParams<{integrationId: string}>()
+function BigCommerce({
+    integration,
+    integrations,
+    loading,
+    redirectUri,
+}: Props) {
+    const { integrationId } = useParams<{ integrationId: string }>()
 
     const isIntegration = integrationId && integrationId !== connectionsPath
     const isConnections = integrationId === connectionsPath

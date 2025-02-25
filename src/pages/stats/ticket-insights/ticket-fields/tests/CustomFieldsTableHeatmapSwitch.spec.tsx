@@ -1,15 +1,16 @@
-import {act, render, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { act, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {CustomFieldsTableHeatmapSwitch} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTableHeatmapSwitch'
-import {RootState, StoreDispatch} from 'state/types'
+import { CustomFieldsTableHeatmapSwitch } from 'pages/stats/ticket-insights/ticket-fields/CustomFieldsTableHeatmapSwitch'
+import { RootState, StoreDispatch } from 'state/types'
 import {
-    ticketInsightsSlice,
     initialState,
+    ticketInsightsSlice,
     toggleHeatmapMode,
 } from 'state/ui/stats/ticketInsightsSlice'
 
@@ -30,10 +31,10 @@ describe('<TicketInsightsHeatmapSwitch />', () => {
         render(
             <Provider store={store}>
                 <CustomFieldsTableHeatmapSwitch />
-            </Provider>
+            </Provider>,
         )
 
-        expect(screen.getByRole('radio', {name: 'Table'})).toBeChecked()
+        expect(screen.getByRole('radio', { name: 'Table' })).toBeChecked()
     })
 
     it('should trigger toggle action on click', async () => {
@@ -42,10 +43,10 @@ describe('<TicketInsightsHeatmapSwitch />', () => {
         render(
             <Provider store={store}>
                 <CustomFieldsTableHeatmapSwitch />
-            </Provider>
+            </Provider>,
         )
         act(() => {
-            userEvent.click(screen.getByRole('radio', {name: 'Heatmap'}))
+            userEvent.click(screen.getByRole('radio', { name: 'Heatmap' }))
         })
 
         await waitFor(() => {

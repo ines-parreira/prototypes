@@ -2,14 +2,14 @@ import {
     Dispatch,
     SetStateAction,
     useCallback,
-    useState,
-    useRef,
     useLayoutEffect,
+    useRef,
+    useState,
 } from 'react'
 
 import useEvent from './useEvent'
 
-type CustomLocalStorageEventPayload = {key: string}
+type CustomLocalStorageEventPayload = { key: string }
 type CustomLocalStorageEvent = CustomEvent<CustomLocalStorageEventPayload>
 
 declare global {
@@ -20,7 +20,7 @@ declare global {
 
 const useLocalStorage = <T>(
     key: string,
-    defaultValue: T
+    defaultValue: T,
 ): [T, Dispatch<SetStateAction<T>>, () => void] => {
     const initializer = useRef((key: string): T => {
         try {
@@ -62,15 +62,15 @@ const useLocalStorage = <T>(
                     new CustomEvent<CustomLocalStorageEventPayload>(
                         'local-storage',
                         {
-                            detail: {key},
-                        }
-                    )
+                            detail: { key },
+                        },
+                    ),
                 )
             } catch {
                 // localStorage, JSON.parse and JSON.stringify can throw
             }
         },
-        [key, setState]
+        [key, setState],
     )
 
     const remove = useCallback(() => {
@@ -105,7 +105,7 @@ const useLocalStorage = <T>(
                 // localStorage, JSON.parse and JSON.stringify can throw
             }
         },
-        [key, defaultValue]
+        [key, defaultValue],
     )
 
     // Triggered when changing local storage value in other tabs

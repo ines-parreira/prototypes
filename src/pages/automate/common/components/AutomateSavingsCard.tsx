@@ -1,18 +1,19 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useRef} from 'react'
+import React, { useRef } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import Button from 'pages/common/components/button/Button'
-import {HintTooltip} from 'pages/stats/common/HintTooltip'
-import {formatCurrency, formatMetricValue} from 'pages/stats/common/utils'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {hasAgentPrivileges, isAdmin} from 'utils'
+import { HintTooltip } from 'pages/stats/common/HintTooltip'
+import { formatCurrency, formatMetricValue } from 'pages/stats/common/utils'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { hasAgentPrivileges, isAdmin } from 'utils'
 
 import AutomateExploreDataModal, {
     AutomateExploreDataModalHandle,
 } from './AutomateExploreDataModal'
+
 import css from './AutomateSavingsCard.less'
 
 interface Props {
@@ -63,7 +64,7 @@ export const AutomateSavingsCard = ({
                                     <div className={css.heading}>
                                         {formatCurrency(
                                             Math.round(amountSaved),
-                                            'usd'
+                                            'usd',
                                         )}
                                     </div>
                                     <div className="d-flex align-items-center">
@@ -82,7 +83,7 @@ export const AutomateSavingsCard = ({
                                             {timeSavedByAgents
                                                 ? formatMetricValue(
                                                       timeSavedByAgents,
-                                                      'duration'
+                                                      'duration',
                                                   )
                                                 : '0h 0m'}
                                         </div>
@@ -112,7 +113,7 @@ export const AutomateSavingsCard = ({
                                         {firstResponseTime
                                             ? formatMetricValue(
                                                   firstResponseTime,
-                                                  'duration'
+                                                  'duration',
                                               )
                                             : '0h 0m'}
                                     </div>
@@ -131,7 +132,7 @@ export const AutomateSavingsCard = ({
                                         {resolutionTime
                                             ? formatMetricValue(
                                                   resolutionTime,
-                                                  'duration'
+                                                  'duration',
                                               )
                                             : '0h 0m'}
                                     </div>

@@ -1,12 +1,12 @@
 import _throttle from 'lodash/throttle'
-import {AnyAction} from 'redux'
+import { AnyAction } from 'redux'
 
-import {store as reduxStore} from 'common/store'
-import {toggleActiveStatus} from 'state/currentUser/actions'
-import {RootState} from 'state/types'
+import { store as reduxStore } from 'common/store'
+import { toggleActiveStatus } from 'state/currentUser/actions'
+import { RootState } from 'state/types'
 
 import socketManager from './socketManager/socketManager'
-import {SocketEventType} from './socketManager/types'
+import { SocketEventType } from './socketManager/types'
 
 class UserActivityManager {
     unavailabilityTimeout = 600000 // 10 minutes
@@ -29,7 +29,7 @@ class UserActivityManager {
 
         this.userActivityFn = setTimeout(() => {
             this.store.dispatch(
-                toggleActiveStatus(false) as unknown as AnyAction
+                toggleActiveStatus(false) as unknown as AnyAction,
             )
         }, this.inactivityTimeout)
 
@@ -39,7 +39,7 @@ class UserActivityManager {
 
         if (!currentUser.get('is_active')) {
             this.store.dispatch(
-                toggleActiveStatus(true) as unknown as AnyAction
+                toggleActiveStatus(true) as unknown as AnyAction,
             )
         }
     }, this.watchThrottling)

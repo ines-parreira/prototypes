@@ -1,13 +1,13 @@
-import {renderHook, act} from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react-hooks'
 
-import {OBS_ADOPT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
+import { OBS_ADOPT_SENTRY_TEAM } from 'common/const/sentryTeamNames'
 import useAppSelector from 'hooks/useAppSelector'
 import useLocalStorage from 'hooks/useLocalStorage'
-import {useGenerateCustomToneOfVoicePreview} from 'models/aiAgent/queries'
-import {reportError} from 'utils/errors'
+import { useGenerateCustomToneOfVoicePreview } from 'models/aiAgent/queries'
+import { reportError } from 'utils/errors'
 
-import {customToneOfVoicePreviewFixture} from '../../fixtures/customToneOfVoicePreview.fixture'
-import {createCustomToneOfVoicePreviewBody} from '../../utils/custom-tone-of-voice-preview.utils'
+import { customToneOfVoicePreviewFixture } from '../../fixtures/customToneOfVoicePreview.fixture'
+import { createCustomToneOfVoicePreviewBody } from '../../utils/custom-tone-of-voice-preview.utils'
 import useCustomToneOfVoicePreview from '../useCustomToneOfVoicePreview'
 
 jest.mock('hooks/useAppSelector')
@@ -47,15 +47,15 @@ describe('useCustomToneOfVoicePreview', () => {
             isError: false,
         })
         ;(createCustomToneOfVoicePreviewBody as jest.Mock).mockReturnValue(
-            customToneOfVoicePreviewFixture
+            customToneOfVoicePreviewFixture,
         )
     })
 
     it('should generate custom tone of voice preview successfully', async () => {
-        const {result} = renderHook(() =>
-            useCustomToneOfVoicePreview(mockInput)
+        const { result } = renderHook(() =>
+            useCustomToneOfVoicePreview(mockInput),
         )
-        const {onGenerateCustomToneOfVoicePreview} = result.current
+        const { onGenerateCustomToneOfVoicePreview } = result.current
 
         await act(async () => {
             await onGenerateCustomToneOfVoicePreview()
@@ -77,17 +77,17 @@ describe('useCustomToneOfVoicePreview', () => {
             isError: false,
         })
 
-        const {result} = renderHook(() =>
-            useCustomToneOfVoicePreview(mockInput)
+        const { result } = renderHook(() =>
+            useCustomToneOfVoicePreview(mockInput),
         )
-        const {onGenerateCustomToneOfVoicePreview} = result.current
+        const { onGenerateCustomToneOfVoicePreview } = result.current
 
         await act(async () => {
             await onGenerateCustomToneOfVoicePreview()
         })
 
         expect(reportError).toHaveBeenCalledWith(error, {
-            tags: {team: OBS_ADOPT_SENTRY_TEAM},
+            tags: { team: OBS_ADOPT_SENTRY_TEAM },
             extra: {
                 context:
                     'Error during generation of custom tone of voice preview',
@@ -104,8 +104,8 @@ describe('useCustomToneOfVoicePreview', () => {
             isError: true,
         })
 
-        const {result} = renderHook(() =>
-            useCustomToneOfVoicePreview(mockInput)
+        const { result } = renderHook(() =>
+            useCustomToneOfVoicePreview(mockInput),
         )
 
         expect(result.current.isLoading).toBe(true)

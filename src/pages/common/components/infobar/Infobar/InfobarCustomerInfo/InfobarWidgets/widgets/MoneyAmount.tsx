@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 
 type Props = {
     amount: string
@@ -19,8 +19,13 @@ export default class MoneyAmount extends Component<Props> {
     static _DEFAULT_CURRENCY_DISPLAY = 'symbol'
 
     render() {
-        const {amount, renderIfZero, currencyCode, negative, currencyDisplay} =
-            this.props
+        const {
+            amount,
+            renderIfZero,
+            currencyCode,
+            negative,
+            currencyDisplay,
+        } = this.props
         const parsedAmount = parseFloat(amount)
 
         if ((!parsedAmount && !renderIfZero) || isNaN(parsedAmount)) {
@@ -35,7 +40,7 @@ export default class MoneyAmount extends Component<Props> {
             maximumFractionDigits: 2,
         })
         const formattedAmount = formatter.format(
-            negative ? -parsedAmount : parsedAmount
+            negative ? -parsedAmount : parsedAmount,
         )
 
         return <span>{formattedAmount}</span>

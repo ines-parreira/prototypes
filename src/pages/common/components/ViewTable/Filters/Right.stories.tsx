@@ -1,13 +1,14 @@
-import {Meta, StoryFn} from '@storybook/react'
-import {within} from '@testing-library/react'
+import React, { ComponentProps } from 'react'
+
+import { Meta, StoryFn } from '@storybook/react'
+import { within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {Identifier} from 'estree'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import { Identifier } from 'estree'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {ThemeProvider} from 'core/theme'
+import { ThemeProvider } from 'core/theme'
 import RightContainer from 'pages/common/components/ViewTable/Filters/Right'
 
 const defaultState = {}
@@ -16,12 +17,12 @@ const storyConfig: Meta = {
     title: 'Data Display/ViewTable/RightContainer',
     component: RightContainer,
     parameters: {
-        chromatic: {disableSnapshot: false},
+        chromatic: { disableSnapshot: false },
     },
 }
 
 const Template: StoryFn<ComponentProps<typeof RightContainer>> = (
-    props: ComponentProps<typeof RightContainer>
+    props: ComponentProps<typeof RightContainer>,
 ) => {
     return (
         <ThemeProvider>
@@ -88,7 +89,7 @@ const defaultProps: ComponentProps<typeof RightContainer> = {
 export const Default = Template.bind({})
 Default.args = defaultProps
 
-Default.play = ({canvasElement}) => {
+Default.play = ({ canvasElement }) => {
     const canvas = within(canvasElement)
     userEvent.click(canvas.getByRole('textbox'))
 }

@@ -1,7 +1,8 @@
-import _groupBy from 'lodash/groupBy'
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {ActionTemplate} from '../types'
+import _groupBy from 'lodash/groupBy'
+
+import { ActionTemplate } from '../types'
 import useGetIsActionStepEnabled from './useGetIsActionStepEnabled'
 
 const useEnabledActionStepsByApp = (steps: ActionTemplate[]) => {
@@ -11,7 +12,7 @@ const useEnabledActionStepsByApp = (steps: ActionTemplate[]) => {
         () =>
             _groupBy(
                 steps.filter((step) =>
-                    getIsActionStepEnabled(step.internal_id)
+                    getIsActionStepEnabled(step.internal_id),
                 ),
                 (step) => {
                     switch (step.apps[0].type) {
@@ -21,9 +22,9 @@ const useEnabledActionStepsByApp = (steps: ActionTemplate[]) => {
                         case 'app':
                             return step.apps[0].app_id
                     }
-                }
+                },
             ),
-        [steps, getIsActionStepEnabled]
+        [steps, getIsActionStepEnabled],
     )
 }
 

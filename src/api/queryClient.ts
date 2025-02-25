@@ -1,6 +1,6 @@
 /* istanbul ignore file */
-import {QueryCache, QueryClient} from '@tanstack/react-query'
-import {isAxiosError} from 'axios'
+import { QueryCache, QueryClient } from '@tanstack/react-query'
+import { isAxiosError } from 'axios'
 
 export const queryCache = new QueryCache()
 

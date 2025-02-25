@@ -1,17 +1,17 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render, screen } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import useMacrosSearch from 'pages/common/editor/hooks/useMacrosSearch'
-import {RootState, StoreDispatch} from 'state/types'
+import { RootState, StoreDispatch } from 'state/types'
+import { assumeMock } from 'utils/testing'
 
-import {assumeMock} from 'utils/testing'
-
-import {ModalProps} from '../components/MacroModal'
+import { ModalProps } from '../components/MacroModal'
 import MacroContainer from '../MacroContainer'
-import {getDefaultSelectedMacroId} from '../utils'
+import { getDefaultSelectedMacroId } from '../utils'
 
 jest.mock('../utils')
 const getDefaultSelectedMacroIdMock = assumeMock(getDefaultSelectedMacroId)
@@ -21,17 +21,17 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 jest.mock(
     '../components/MacroModal',
     () =>
-        ({fetchMacros, handleClickItem, onSearch}: ModalProps) => (
+        ({ fetchMacros, handleClickItem, onSearch }: ModalProps) => (
             <div>
                 MacroModal
                 <div onClick={() => fetchMacros()}>fetchMacros</div>
                 <div onClick={() => fetchMacros(true)}>fetchMacrosReset</div>
                 <div onClick={() => handleClickItem(11)}>handleClickItem</div>
-                <div onClick={() => onSearch({search: 'new search'})}>
+                <div onClick={() => onSearch({ search: 'new search' })}>
                     onSearch
                 </div>
             </div>
-        )
+        ),
 )
 
 jest.mock('pages/common/editor/hooks/useMacrosSearch')
@@ -61,7 +61,7 @@ describe('<MacroContainer />', () => {
         render(
             <Provider store={mockStore(defaultStore)}>
                 <MacroContainer {...props} />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('MacroModal'))
@@ -72,7 +72,7 @@ describe('<MacroContainer />', () => {
         render(
             <Provider store={mockStore(defaultStore)}>
                 <MacroContainer {...props} />
-            </Provider>
+            </Provider>,
         )
 
         screen.getByText('fetchMacrosReset').click()
@@ -84,7 +84,7 @@ describe('<MacroContainer />', () => {
         render(
             <Provider store={mockStore(defaultStore)}>
                 <MacroContainer {...props} />
-            </Provider>
+            </Provider>,
         )
 
         screen.getByText('fetchMacros').click()
@@ -96,7 +96,7 @@ describe('<MacroContainer />', () => {
         render(
             <Provider store={mockStore(defaultStore)}>
                 <MacroContainer {...props} />
-            </Provider>
+            </Provider>,
         )
 
         screen.getByText('fetchMacros').click()
@@ -108,8 +108,8 @@ describe('<MacroContainer />', () => {
         getDefaultSelectedMacroIdMock.mockReturnValue(22)
         render(
             <Provider store={mockStore(defaultStore)}>
-                <MacroContainer {...props} selectedMacro={{id: 1}} />
-            </Provider>
+                <MacroContainer {...props} selectedMacro={{ id: 1 }} />
+            </Provider>,
         )
 
         expect(getDefaultSelectedMacroIdMock).toHaveBeenCalledTimes(1)
@@ -119,7 +119,7 @@ describe('<MacroContainer />', () => {
         render(
             <Provider store={mockStore(defaultStore)}>
                 <MacroContainer {...props} />
-            </Provider>
+            </Provider>,
         )
 
         screen.getByText('handleClickItem').click()
@@ -129,13 +129,13 @@ describe('<MacroContainer />', () => {
             1,
             [],
             null,
-            false
+            false,
         )
         expect(getDefaultSelectedMacroIdMock).toHaveBeenNthCalledWith(
             2,
             [],
             11,
-            false
+            false,
         )
     })
 
@@ -143,7 +143,7 @@ describe('<MacroContainer />', () => {
         render(
             <Provider store={mockStore(defaultStore)}>
                 <MacroContainer {...props} />
-            </Provider>
+            </Provider>,
         )
 
         expect(useMacrosSearchMock).toHaveBeenNthCalledWith(1, {

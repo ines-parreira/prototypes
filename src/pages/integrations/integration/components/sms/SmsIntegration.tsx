@@ -1,38 +1,38 @@
 import React from 'react'
-import {useParams, Switch, Route} from 'react-router-dom'
+
+import { Route, Switch, useParams } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import useSearch from 'hooks/useSearch'
-import {IntegrationType, isSmsIntegration} from 'models/integration/types'
+import { IntegrationType, isSmsIntegration } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import ConnectLink from 'pages/integrations/components/ConnectLink'
 import PhoneIntegrationBreadcrumbs from 'pages/integrations/integration/components/phone/PhoneIntegrationBreadcrumbs'
-
 import PhoneIntegrationsList from 'pages/integrations/integration/components/phone/PhoneIntegrationsList'
 import SmsIntegrationCreate from 'pages/integrations/integration/components/sms/SmsIntegrationCreate'
 import SmsIntegrationPreferences from 'pages/integrations/integration/components/sms/SmsIntegrationPreferences'
 import SmsIntegrationSecondaryNavigation from 'pages/integrations/integration/components/sms/SmsIntegrationSecondaryNavigation'
-import {getIntegrationConfig} from 'state/integrations/helpers'
+import { getIntegrationConfig } from 'state/integrations/helpers'
 import {
     getIntegrationById,
     getSmsIntegrations,
 } from 'state/integrations/selectors'
 
-import {getDefaultRoutes} from '../../utils/defaultRoutes'
+import { getDefaultRoutes } from '../../utils/defaultRoutes'
 import SmsIntegrationDetails from './SmsIntegrationDetails'
 
 export default function SmsIntegration() {
     const config = getIntegrationConfig(IntegrationType.Sms)
-    const {integrationId} = useParams<{integrationId: string}>()
-    const {phoneNumberId} = useSearch<{
+    const { integrationId } = useParams<{ integrationId: string }>()
+    const { phoneNumberId } = useSearch<{
         phoneNumberId: string
     }>()
 
     const currentIntegration = useAppSelector((state) => {
         if (integrationId) {
             const integration = getIntegrationById(parseInt(integrationId))(
-                state
+                state,
             )?.toJS()
             if (isSmsIntegration(integration)) {
                 return integration

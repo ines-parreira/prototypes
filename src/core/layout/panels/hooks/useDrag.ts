@@ -1,7 +1,7 @@
-import {useCallback, useEffect, useMemo, useState} from 'react'
-import type {MouseEvent} from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import type { MouseEvent } from 'react'
 
-import type {Drag, Sizes} from '../types'
+import type { Drag, Sizes } from '../types'
 
 export default function useDrag(sizes: Sizes) {
     const [drag, setDrag] = useState<Drag | null>(null)
@@ -23,10 +23,10 @@ export default function useDrag(sizes: Sizes) {
     const createResizer = useCallback(
         (handle: number) => (e: MouseEvent) => {
             e.preventDefault()
-            setDrag({handle, position: {x: e.clientX, y: e.clientY}, sizes})
+            setDrag({ handle, position: { x: e.clientX, y: e.clientY }, sizes })
         },
-        [sizes]
+        [sizes],
     )
 
-    return useMemo(() => ({createResizer, drag}), [createResizer, drag])
+    return useMemo(() => ({ createResizer, drag }), [createResizer, drag])
 }

@@ -1,5 +1,6 @@
-import {Macro} from '@gorgias/api-queries'
-import {PayloadActionCreator} from '@reduxjs/toolkit'
+import { PayloadActionCreator } from '@reduxjs/toolkit'
+
+import { Macro } from '@gorgias/api-queries'
 
 import {
     MACRO_CREATED,

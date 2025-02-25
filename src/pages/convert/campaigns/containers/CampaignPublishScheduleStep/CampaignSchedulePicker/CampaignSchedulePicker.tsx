@@ -1,12 +1,13 @@
-import moment, {Moment} from 'moment-timezone'
-import React, {useState, MouseEvent, useMemo} from 'react'
+import React, { MouseEvent, useMemo, useState } from 'react'
 
-import {DateAndTimeFormatting} from 'constants/datetime'
+import moment, { Moment } from 'moment-timezone'
+
+import { DateAndTimeFormatting } from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import DatePicker, {DatePickerProps} from 'pages/common/forms/DatePicker'
+import DatePicker, { DatePickerProps } from 'pages/common/forms/DatePicker'
 import IconInput from 'pages/common/forms/input/IconInput'
 import InputField from 'pages/common/forms/input/InputField'
-import {formatDatetime} from 'utils'
+import { formatDatetime } from 'utils'
 
 import css from './CampaignSchedulePicker.less'
 
@@ -30,7 +31,7 @@ const CampaignSchedulePicker: React.FC<Props> = ({
     onChange,
 }) => {
     const shortDateBasedOnUserPreferences = useGetDateAndTimeFormat(
-        DateAndTimeFormatting.ShortDateWithYear
+        DateAndTimeFormatting.ShortDateWithYear,
     )
 
     const [isCalendarOpen, setIsCalendarOpen] = useState(false)
@@ -47,7 +48,7 @@ const CampaignSchedulePicker: React.FC<Props> = ({
     const minDate = useMemo(() => {
         const currentDate = moment.utc()
         const startDateAsMinDate = moment(
-            moment.utc(startDate).tz(timezone, false).format('YYYY-MM-DD')
+            moment.utc(startDate).tz(timezone, false).format('YYYY-MM-DD'),
         )
 
         return startDateAsMinDate.isBefore(currentDate)
@@ -99,7 +100,7 @@ const CampaignSchedulePicker: React.FC<Props> = ({
                                 value={formatDatetime(
                                     startDate,
                                     shortDateBasedOnUserPreferences,
-                                    timezone
+                                    timezone,
                                 ).toString()}
                                 prefix={
                                     <IconInput
@@ -124,7 +125,7 @@ const CampaignSchedulePicker: React.FC<Props> = ({
                             ? formatDatetime(
                                   endDate,
                                   shortDateBasedOnUserPreferences,
-                                  timezone
+                                  timezone,
                               ).toString()
                             : 'No end date'
                         ).toString()}

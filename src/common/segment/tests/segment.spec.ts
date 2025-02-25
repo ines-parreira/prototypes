@@ -1,8 +1,8 @@
-import {user} from 'fixtures/users'
-import {mockProductionEnvironment} from 'utils/testing'
+import { user } from 'fixtures/users'
+import { mockProductionEnvironment } from 'utils/testing'
 
-import {identifyUser, logEventWithSampling} from '../segment'
-import {SegmentEvent} from '../types'
+import { identifyUser, logEventWithSampling } from '../segment'
+import { SegmentEvent } from '../types'
 
 describe('segmentTracker', () => {
     const analytics = globalThis.analytics
@@ -31,7 +31,7 @@ describe('segmentTracker', () => {
                     role: user.role.name,
                     created_at: user.created_datetime,
                     notification_permission: 'granted',
-                }
+                },
             )
         })
 
@@ -53,8 +53,8 @@ describe('segmentTracker', () => {
         it('should log event with sampling', () => {
             logEventWithSampling(
                 SegmentEvent.AiAgentCopiedToEditor,
-                {prop: 'value'},
-                1
+                { prop: 'value' },
+                1,
             )
 
             expect(window.analytics.track).toHaveBeenCalledTimes(1)
@@ -63,15 +63,15 @@ describe('segmentTracker', () => {
                 SegmentEvent.AiAgentCopiedToEditor,
                 {
                     prop: 'value',
-                }
+                },
             )
         })
 
         it('should not log event with sampling', () => {
             logEventWithSampling(
                 SegmentEvent.AiAgentCopiedToEditor,
-                {prop: 'value'},
-                0
+                { prop: 'value' },
+                0,
             )
 
             expect(window.analytics.track).not.toHaveBeenCalled()
@@ -85,7 +85,7 @@ describe('segmentTracker', () => {
             expect(window.analytics.track).toHaveBeenNthCalledWith(
                 1,
                 SegmentEvent.AiAgentCopiedToEditor,
-                {}
+                {},
             )
         })
     })

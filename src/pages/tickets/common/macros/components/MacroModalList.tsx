@@ -1,14 +1,17 @@
-import {ListMacrosParams, Macro} from '@gorgias/api-queries'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+
 import classnames from 'classnames'
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
+
+import { ListMacrosParams, Macro } from '@gorgias/api-queries'
 
 import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
 import MacroFilters from 'pages/common/components/MacroFilters/MacroFilters'
 import TextInput from 'pages/common/forms/input/TextInput'
-import {moveIndex, MoveIndexDirection} from 'pages/common/utils/keyboard'
-import {isMacroDisabled} from 'pages/tickets/common/macros/utils'
+import { moveIndex, MoveIndexDirection } from 'pages/common/utils/keyboard'
+import { isMacroDisabled } from 'pages/tickets/common/macros/utils'
 
 import MacroList from './MacroList'
+
 import css from './MacroModalList.less'
 
 type Filters = Pick<
@@ -43,12 +46,12 @@ export default function MacroModalList({
             areExternalActionsDisabled
                 ? !searchResults.every((macro) => isMacroDisabled(macro, true))
                 : !!searchResults.length,
-        [areExternalActionsDisabled, searchResults]
+        [areExternalActionsDisabled, searchResults],
     )
 
     useEffect(() => {
         setMacroCursor(
-            searchResults.findIndex((macro) => macro.id === currentMacro?.id)
+            searchResults.findIndex((macro) => macro.id === currentMacro?.id),
         )
     }, [currentMacro, searchResults])
 
@@ -66,7 +69,7 @@ export default function MacroModalList({
             if (isMacroDisabled(macro, areExternalActionsDisabled)) {
                 moveCursor(
                     direction,
-                    cursor + (direction === MoveIndexDirection.Next ? 1 : -1)
+                    cursor + (direction === MoveIndexDirection.Next ? 1 : -1),
                 )
                 return
             }
@@ -78,7 +81,7 @@ export default function MacroModalList({
             handleClickItem,
             macroCursor,
             searchResults,
-        ]
+        ],
     )
 
     const actions = useMemo(
@@ -96,7 +99,7 @@ export default function MacroModalList({
                 },
             },
         }),
-        [moveCursor]
+        [moveCursor],
     )
 
     useConditionalShortcuts(areKeyboardNavigationEnabled, 'MacroModal', actions)
@@ -105,14 +108,16 @@ export default function MacroModalList({
         <div className={css.component}>
             <TextInput
                 value={searchParams.search ?? undefined}
-                onChange={(value) => onSearch({...searchParams, search: value})}
+                onChange={(value) =>
+                    onSearch({ ...searchParams, search: value })
+                }
                 placeholder="Search macros by name, tags or body..."
                 autoFocus={!!searchResults.length}
                 className={classnames(
                     css.search,
                     'shortcuts-enable',
                     'mt-3',
-                    'mb-3'
+                    'mb-3',
                 )}
             />
             <MacroFilters

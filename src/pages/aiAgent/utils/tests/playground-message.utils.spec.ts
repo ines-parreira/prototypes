@@ -1,15 +1,15 @@
 import {
     AiAgentMessageType,
     CreatePlaygroundMessage,
-    MessageType,
-    PlaygroundPromptType,
-    PlaygroundMessage,
     isApiEligiblePlaygroundMessage,
+    MessageType,
+    PlaygroundMessage,
+    PlaygroundPromptType,
 } from 'models/aiAgentPlayground/types'
 
-import {GREETING_MESSAGE} from '../../components/PlaygroundMessage/PlaygroundMessage'
-import {DEFAULT_PLAYGROUND_CUSTOMER} from '../../constants'
-import {getSubmitPlaygroundTicketResponseFixture} from '../../fixtures/submitPlaygroundTicketResponse.fixture'
+import { GREETING_MESSAGE } from '../../components/PlaygroundMessage/PlaygroundMessage'
+import { DEFAULT_PLAYGROUND_CUSTOMER } from '../../constants'
+import { getSubmitPlaygroundTicketResponseFixture } from '../../fixtures/submitPlaygroundTicketResponse.fixture'
 import {
     getPlaygroundMessageMeta,
     mapPlaygroundFormValuesToMessage,
@@ -85,7 +85,7 @@ describe('playground-message utils', () => {
                 },
             ]
             expect(
-                mapPlaygroundMessagesToServerMessages(messages, 'email')
+                mapPlaygroundMessagesToServerMessages(messages, 'email'),
             ).toEqual(expected)
         })
     })
@@ -103,7 +103,7 @@ describe('playground-message utils', () => {
                 createdDatetime: expect.any(String),
             }
             expect(mapPlaygroundFormValuesToMessage(formValues)).toEqual(
-                expected
+                expected,
             )
         })
     })

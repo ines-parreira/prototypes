@@ -1,5 +1,6 @@
+import React, { useCallback, useEffect, useState } from 'react'
+
 import classnames from 'classnames'
-import React, {useCallback, useEffect, useState} from 'react'
 
 import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'
@@ -12,7 +13,7 @@ type Props = {
     onClear?: () => void
 }
 
-export const CampaignsSearch = ({value, onChange, onClear}: Props) => {
+export const CampaignsSearch = ({ value, onChange, onClear }: Props) => {
     const [inputValue, setInputValue] = useState(value || '')
 
     useEffect(() => {
@@ -24,7 +25,7 @@ export const CampaignsSearch = ({value, onChange, onClear}: Props) => {
             setInputValue(value)
             onChange && onChange(value)
         },
-        [onChange]
+        [onChange],
     )
 
     const handleClear = useCallback(() => {
@@ -47,7 +48,7 @@ export const CampaignsSearch = ({value, onChange, onClear}: Props) => {
                         css.clear,
                         {
                             [css.hidden]: !inputValue,
-                        }
+                        },
                     )}
                     onClick={handleClear}
                 />

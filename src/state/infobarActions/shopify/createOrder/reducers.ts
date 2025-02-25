@@ -1,7 +1,6 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
-import {GorgiasAction} from '../../../types'
-
+import { GorgiasAction } from '../../../types'
 import {
     SET_CALCULATED_DRAFT_ORDER,
     SET_INITIAL_STATE,
@@ -9,7 +8,7 @@ import {
     SET_PAYLOAD,
     SET_PRODUCTS,
 } from './constants'
-import {CreateOrderState} from './types'
+import { CreateOrderState } from './types'
 
 export const initialState: CreateOrderState = fromJS({
     loading: false,
@@ -21,7 +20,7 @@ export const initialState: CreateOrderState = fromJS({
 
 export default function reducer(
     state: CreateOrderState = initialState,
-    action: GorgiasAction
+    action: GorgiasAction,
 ): CreateOrderState {
     switch (action.type) {
         case SET_LOADING:
@@ -33,7 +32,7 @@ export default function reducer(
         case SET_CALCULATED_DRAFT_ORDER:
             return state.set(
                 'calculatedDraftOrder',
-                action.calculatedDraftOrder
+                action.calculatedDraftOrder,
             )
         case SET_PRODUCTS:
             return state.set('products', action.products)

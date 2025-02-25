@@ -1,8 +1,8 @@
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAsyncFn from 'hooks/useAsyncFn'
-import {updateSubscription} from 'state/currentAccount/actions'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { updateSubscription } from 'state/currentAccount/actions'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 export type HandleSubscriptionUpdate = {
     isLoading: boolean
@@ -12,22 +12,22 @@ export type HandleSubscriptionUpdate = {
 export const useUpdateSubscription = (): HandleSubscriptionUpdate => {
     const dispatch = useAppDispatch()
 
-    const [{loading}, handleSubscriptionUpdate] = useAsyncFn(
+    const [{ loading }, handleSubscriptionUpdate] = useAsyncFn(
         async (prices: string[]) => {
             try {
-                await dispatch(updateSubscription({prices}))
+                await dispatch(updateSubscription({ prices }))
                 return Promise.resolve()
             } catch (error) {
                 void dispatch(
                     notify({
                         status: NotificationStatus.Error,
                         message: String(error),
-                    })
+                    }),
                 )
                 return Promise.reject(error)
             }
         },
-        []
+        [],
     )
 
     return {

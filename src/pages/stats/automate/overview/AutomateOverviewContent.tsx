@@ -1,43 +1,40 @@
-import classnames from 'classnames'
+import React, { useMemo, useState } from 'react'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
+import classnames from 'classnames'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 import moment from 'moment'
 
-import React, {useMemo, useState} from 'react'
-
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useFilteredAutomatedInteractions} from 'hooks/reporting/automate/automationTrends'
-import {useNewAutomateFilters} from 'hooks/reporting/automate/useNewAutomateFilters'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFilteredAutomatedInteractions } from 'hooks/reporting/automate/automationTrends'
+import { useNewAutomateFilters } from 'hooks/reporting/automate/useNewAutomateFilters'
 import useLocalStorage from 'hooks/useLocalStorage'
-
-import {FilterKey} from 'models/stat/types'
-
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
+import { FilterKey } from 'models/stat/types'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
 import css from 'pages/stats/automate/overview/AutomateOverview.less'
-import {AutomateOverviewDownloadDataButton} from 'pages/stats/automate/overview/AutomateOverviewDownloadDataButton'
-import {AutomateOverviewFilters} from 'pages/stats/automate/overview/AutomateOverviewFilters'
+import { AutomateOverviewDownloadDataButton } from 'pages/stats/automate/overview/AutomateOverviewDownloadDataButton'
+import { AutomateOverviewFilters } from 'pages/stats/automate/overview/AutomateOverviewFilters'
 import {
     AutomateOverviewChart,
     AutomateOverviewReportConfig,
 } from 'pages/stats/automate/overview/AutomateOverviewReportConfig'
-import {AAO_TIPS_VISIBILITY_KEY} from 'pages/stats/automate/overview/constants'
-import {FiltersPanelWrapper} from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
-import {CustomReportComponent} from 'pages/stats/custom-reports/CustomReportComponent'
+import { AAO_TIPS_VISIBILITY_KEY } from 'pages/stats/automate/overview/constants'
+import { FiltersPanelWrapper } from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
+import { CustomReportComponent } from 'pages/stats/custom-reports/CustomReportComponent'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
-import {PAGE_TITLE_AUTOMATE_PAYWALL} from 'pages/stats/self-service/constants'
+import { PAGE_TITLE_AUTOMATE_PAYWALL } from 'pages/stats/self-service/constants'
 import StatsPage from 'pages/stats/StatsPage'
 import TipsToggle from 'pages/stats/TipsToggle'
 
 const BILLING_PIPE_LINE_DATE = 'June 20, 2023'
 
 export default function AutomateOverviewContent() {
-    const {statsFilters, userTimezone, isAnalyticsNewFiltersAutomate} =
+    const { statsFilters, userTimezone, isAnalyticsNewFiltersAutomate } =
         useNewAutomateFilters()
     const automatedInteractionTrend = useFilteredAutomatedInteractions(
         statsFilters,
-        userTimezone
+        userTimezone,
     )
 
     const [noActivityAlert, setNoActivityAlert] = useState(true)
@@ -49,7 +46,7 @@ export default function AutomateOverviewContent() {
 
     const [areTipsVisible, setAreTipsVisible] = useLocalStorage(
         AAO_TIPS_VISIBILITY_KEY,
-        true
+        true,
     )
 
     const isDurationLast3Days = useMemo(() => {
@@ -101,7 +98,7 @@ export default function AutomateOverviewContent() {
                             >
                                 {moment(BILLING_PIPE_LINE_DATE).isAfter(
                                     moment(statsFilters.period.end_datetime),
-                                    'day'
+                                    'day',
                                 ) ? (
                                     <span>
                                         There is no available data for this

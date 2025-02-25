@@ -1,9 +1,10 @@
-import {act, fireEvent, render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {IntegrationType} from 'models/integration/types'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 
-import {App} from '../../types'
+import { IntegrationType } from 'models/integration/types'
+
+import { App } from '../../types'
 import ActionsPlatformAppSelectBox from '../ActionsPlatformAppSelectBox'
 
 describe('<ActionsPlatformAppSelectBox />', () => {
@@ -18,7 +19,10 @@ describe('<ActionsPlatformAppSelectBox />', () => {
         const mockOnChange = jest.fn()
 
         render(
-            <ActionsPlatformAppSelectBox apps={[app]} onChange={mockOnChange} />
+            <ActionsPlatformAppSelectBox
+                apps={[app]}
+                onChange={mockOnChange}
+            />,
         )
 
         act(() => {
@@ -40,7 +44,7 @@ describe('<ActionsPlatformAppSelectBox />', () => {
                 apps={[app]}
                 value={app.id}
                 onChange={jest.fn()}
-            />
+            />,
         )
 
         expect(screen.getByText('Test App')).toBeInTheDocument()
@@ -52,7 +56,7 @@ describe('<ActionsPlatformAppSelectBox />', () => {
                 apps={[app]}
                 onChange={jest.fn()}
                 isDisabled
-            />
+            />,
         )
 
         act(() => {

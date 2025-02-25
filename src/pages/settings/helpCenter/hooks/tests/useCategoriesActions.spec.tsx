@@ -1,28 +1,29 @@
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
-import {Provider} from 'react-redux'
-import {useParams} from 'react-router-dom'
+
+import { renderHook } from '@testing-library/react-hooks'
+import { Provider } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {getHelpCenterClient} from 'rest_api/help_center_api/index'
-import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
+import { getHelpCenterClient } from 'rest_api/help_center_api/index'
+import { initialState as articlesState } from 'state/entities/helpCenter/articles/reducer'
 import {
     deleteCategory,
     pushCategorySupportedLocales,
     removeLocaleFromCategory,
     saveCategories,
+    savePositions,
     updateCategoriesArticleCount,
     updateCategoryTranslation,
-    savePositions,
 } from 'state/entities/helpCenter/categories'
-import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
-import {RootState, StoreDispatch} from 'state/types'
-import {initialState as uiState} from 'state/ui/helpCenter/reducer'
+import { initialState as categoriesState } from 'state/entities/helpCenter/categories/reducer'
+import { RootState, StoreDispatch } from 'state/types'
+import { initialState as uiState } from 'state/ui/helpCenter/reducer'
 
-import {HELP_CENTER_ROOT_CATEGORY_ID} from '../../constants'
-import {useCategoriesActions} from '../useCategoriesActions'
-import {useHelpCenterApi} from '../useHelpCenterApi'
+import { HELP_CENTER_ROOT_CATEGORY_ID } from '../../constants'
+import { useCategoriesActions } from '../useCategoriesActions'
+import { useHelpCenterApi } from '../useHelpCenterApi'
 
 jest.mock('react-router')
 ;(useParams as jest.MockedFunction<typeof useParams>).mockReturnValue({
@@ -87,7 +88,7 @@ function mockHelpCenterApiClient() {
         }),
         deleteCategoryTranslation: jest.fn().mockResolvedValue({}),
         listArticles: jest.fn().mockResolvedValue({
-            data: {data: []},
+            data: { data: [] },
         }),
         deleteCategory: jest.fn().mockResolvedValue({}),
         deleteCategoryArticles: jest.fn().mockResolvedValue({}),
@@ -195,7 +196,7 @@ const defaultState: Partial<RootState> = {
             categories: categoriesState,
         },
     } as any,
-    ui: {helpCenter: uiState} as any,
+    ui: { helpCenter: uiState } as any,
 }
 
 // TODO: This should be extracted in a tests utils folder
@@ -208,24 +209,24 @@ const dependencyWrapper: React.ComponentType<any> = ({
 describe('useCategoriesActions', () => {
     describe('fetchCategoryArticleCount', () => {
         it('calls the listArticles with correct params', async () => {
-            const {result} = renderHook(useCategoriesActions, {
+            const { result } = renderHook(useCategoriesActions, {
                 wrapper: dependencyWrapper,
             })
 
             await result.current.fetchCategoryArticleCount(
                 HELP_CENTER_ROOT_CATEGORY_ID,
-                'en-US'
+                'en-US',
             )
 
             expect(updateCategoriesArticleCount).toHaveBeenLastCalledWith([
-                {articleCount: 0, categoryId: 0},
+                { articleCount: 0, categoryId: 0 },
             ])
         })
     })
 
     describe('getCategoryTranslation()', () => {
         it('calls the getCategory with correct locale', async () => {
-            const {result} = renderHook(useCategoriesActions, {
+            const { result } = renderHook(useCategoriesActions, {
                 wrapper: dependencyWrapper,
             })
 
@@ -236,14 +237,14 @@ describe('useCategoriesActions', () => {
                     help_center_id: 1,
                     id: 1,
                     locale: 'en-US',
-                }
+                },
             )
         })
     })
 
     describe('createCategory()', () => {
         it('dispatches saveCategories action', async () => {
-            const {result} = renderHook(useCategoriesActions, {
+            const { result } = renderHook(useCategoriesActions, {
                 wrapper: dependencyWrapper,
             })
 
@@ -267,7 +268,7 @@ describe('useCategoriesActions', () => {
 
     describe('updateCategoryTranslation()', () => {
         it('dispatches updateCategoryTranslation action', async () => {
-            const {result} = renderHook(useCategoriesActions, {
+            const { result } = renderHook(useCategoriesActions, {
                 wrapper: dependencyWrapper,
             })
 
@@ -284,7 +285,7 @@ describe('useCategoriesActions', () => {
 
     describe('createCategoryTranslation()', () => {
         it('calls only pushCategorySupportedLocales if locale param is different from view language', async () => {
-            const {result} = renderHook(useCategoriesActions, {
+            const { result } = renderHook(useCategoriesActions, {
                 wrapper: dependencyWrapper,
             })
 
@@ -307,7 +308,7 @@ describe('useCategoriesActions', () => {
         })
 
         it('calls pushCategorySupportedLocales and updateCategoryTranslation if locale param is the same as view language', async () => {
-            const {result} = renderHook(useCategoriesActions, {
+            const { result } = renderHook(useCategoriesActions, {
                 wrapper: dependencyWrapper,
             })
 
@@ -329,7 +330,7 @@ describe('useCategoriesActions', () => {
 
     describe('updateCategoriesPositions()', () => {
         it('dispatches savePositions action', async () => {
-            const {result} = renderHook(useCategoriesActions, {
+            const { result } = renderHook(useCategoriesActions, {
                 wrapper: dependencyWrapper,
             })
 
@@ -345,7 +346,7 @@ describe('useCategoriesActions', () => {
 
     describe('deleteCategoryTranslation()', () => {
         it('dispatches removeLocaleFromCategory', async () => {
-            const {result} = renderHook(useCategoriesActions, {
+            const { result } = renderHook(useCategoriesActions, {
                 wrapper: dependencyWrapper,
             })
 
@@ -360,7 +361,7 @@ describe('useCategoriesActions', () => {
         })
 
         it('dispatches updateCategoryTranslation if locale param is the same as view language', async () => {
-            const {result} = renderHook(useCategoriesActions, {
+            const { result } = renderHook(useCategoriesActions, {
                 wrapper: dependencyWrapper,
             })
 
@@ -370,7 +371,7 @@ describe('useCategoriesActions', () => {
         })
 
         it("doesn't dispatch deleteCategory if locale param is the same as view language", async () => {
-            const {result} = renderHook(useCategoriesActions, {
+            const { result } = renderHook(useCategoriesActions, {
                 wrapper: dependencyWrapper,
             })
 
@@ -382,7 +383,7 @@ describe('useCategoriesActions', () => {
 
     describe('deleteCategory()', () => {
         it('dispatches deleteCategory', async () => {
-            const {result} = renderHook(useCategoriesActions, {
+            const { result } = renderHook(useCategoriesActions, {
                 wrapper: dependencyWrapper,
             })
 
@@ -394,7 +395,7 @@ describe('useCategoriesActions', () => {
 
     describe('fetchCategories()', () => {
         it('saves the categories once they are fetched', async () => {
-            const {result} = renderHook(() => useCategoriesActions(), {
+            const { result } = renderHook(() => useCategoriesActions(), {
                 wrapper: dependencyWrapper,
             })
             await result.current.fetchCategories('en-US', 0, true)

@@ -1,22 +1,23 @@
+import React, { useState } from 'react'
+
 import axios from 'axios'
 import classNames from 'classnames'
-import {get} from 'lodash'
-import React, {useState} from 'react'
+import { get } from 'lodash'
 // eslint-disable-next-line no-restricted-imports
-import {useDispatch} from 'react-redux'
-import {useHistory} from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {
     ContactFormIntegration,
     UpdateContactFormDto,
 } from 'models/contactForm/types'
-import {LocaleCode} from 'models/helpCenter/types'
+import { LocaleCode } from 'models/helpCenter/types'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import {ConnectContactFormToShopSection} from 'pages/settings/contactForm/components/ConnectContactFormToShopSection/ConnectContactFormToShopSection'
+import { ConnectContactFormToShopSection } from 'pages/settings/contactForm/components/ConnectContactFormToShopSection/ConnectContactFormToShopSection'
 import ContactFormNameInputSection from 'pages/settings/contactForm/components/ContactFormNameInputSection'
 import EmailIntegrationInputSection from 'pages/settings/contactForm/components/EmailIntegrationInputSection'
 import LanguageInputSection from 'pages/settings/contactForm/components/LanguageInputSection'
@@ -25,17 +26,17 @@ import {
     EMAIL_SELECTION_INPUT_LABEL,
 } from 'pages/settings/contactForm/constants'
 import contactFormCss from 'pages/settings/contactForm/contactForm.less'
-import {useContactFormApi} from 'pages/settings/contactForm/hooks/useContactFormApi'
-import {useCurrentContactForm} from 'pages/settings/contactForm/hooks/useCurrentContactForm'
-import {useDefaultEmailSelectedBanner} from 'pages/settings/contactForm/hooks/useDefaultEmailSelectedBanner'
-import {useEmailIntegrations} from 'pages/settings/contactForm/hooks/useEmailIntegrations'
-import {catchAsync} from 'pages/settings/contactForm/utils/errorHandling'
+import { useContactFormApi } from 'pages/settings/contactForm/hooks/useContactFormApi'
+import { useCurrentContactForm } from 'pages/settings/contactForm/hooks/useCurrentContactForm'
+import { useDefaultEmailSelectedBanner } from 'pages/settings/contactForm/hooks/useDefaultEmailSelectedBanner'
+import { useEmailIntegrations } from 'pages/settings/contactForm/hooks/useEmailIntegrations'
+import { catchAsync } from 'pages/settings/contactForm/utils/errorHandling'
 import css from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormPreferences/ContactFormPreferences.less'
 import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal'
 import settingsCss from 'pages/settings/settings.less'
-import {getHasAutomate} from 'state/billing/selectors'
-import {notify as notifyAction} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { getHasAutomate } from 'state/billing/selectors'
+import { notify as notifyAction } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 const ContactFormPreferences = (): JSX.Element => {
     const {
@@ -60,7 +61,11 @@ const ContactFormPreferences = (): JSX.Element => {
 
     const hasAutomate = useAppSelector(getHasAutomate)
 
-    const onConnectedShopChange = ({shop_name}: {shop_name: string | null}) => {
+    const onConnectedShopChange = ({
+        shop_name,
+    }: {
+        shop_name: string | null
+    }) => {
         setUpdateContactFormDto((prev) => ({
             ...prev,
             shop_name,
@@ -99,7 +104,7 @@ const ContactFormPreferences = (): JSX.Element => {
 
     const onSave = async () => {
         const [error, result] = await catchAsync(() =>
-            updateContactForm(contactForm.id, updateContactFormDto)
+            updateContactForm(contactForm.id, updateContactFormDto),
         )
 
         const isUpdated = !error && result
@@ -112,7 +117,7 @@ const ContactFormPreferences = (): JSX.Element => {
                 message: isUpdated
                     ? 'Contact form updated successfully'
                     : 'Failed to update the Contact Form',
-            })
+            }),
         )
 
         if (isUpdated) {
@@ -123,7 +128,7 @@ const ContactFormPreferences = (): JSX.Element => {
 
     const onDelete = async () => {
         const [error, result] = await catchAsync(() =>
-            deleteContactForm(contactForm.id)
+            deleteContactForm(contactForm.id),
         )
 
         const isDeleted = !error && result
@@ -143,7 +148,7 @@ const ContactFormPreferences = (): JSX.Element => {
                 message: isDeleted
                     ? 'Contact form deleted successfully'
                     : errorMessage,
-            })
+            }),
         )
 
         if (isDeleted) history.push(CONTACT_FORM_BASE_PATH)
@@ -166,15 +171,15 @@ const ContactFormPreferences = (): JSX.Element => {
         !isLoading &&
         isDirty
 
-    const {defaultIntegration} = useEmailIntegrations()
+    const { defaultIntegration } = useEmailIntegrations()
     const isDefaultIntegrationSelected =
         (
             updateContactFormDto?.email_integration ||
             contactForm.email_integration
         )?.id === defaultIntegration?.id
 
-    const {BannerComponent, resetAcknowledgement} =
-        useDefaultEmailSelectedBanner({isDefaultIntegrationSelected})
+    const { BannerComponent, resetAcknowledgement } =
+        useDefaultEmailSelectedBanner({ isDefaultIntegrationSelected })
 
     return (
         <div className={settingsCss.pageContainer}>
@@ -214,7 +219,7 @@ const ContactFormPreferences = (): JSX.Element => {
                     <h2
                         className={classNames(
                             contactFormCss.sectionTitle,
-                            contactFormCss.mbXxs
+                            contactFormCss.mbXxs,
                         )}
                     >
                         Preferences
@@ -278,7 +283,7 @@ const ContactFormPreferences = (): JSX.Element => {
                 <div
                     className={classNames(
                         contactFormCss.mtXl,
-                        css.bottomButtons
+                        css.bottomButtons,
                     )}
                 >
                     <div>

@@ -1,34 +1,35 @@
-import _capitalize from 'lodash/capitalize'
-import React, {useReducer, useState} from 'react'
+import React, { useReducer, useState } from 'react'
 
-import {SegmentEvent} from 'common/segment'
+import _capitalize from 'lodash/capitalize'
+
+import { SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {ProductType} from 'models/billing/types'
+import { ProductType } from 'models/billing/types'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
-import {trackBillingEvent} from '../../../../../models/billing/resources'
+import { trackBillingEvent } from '../../../../../models/billing/resources'
 import CancellationReasons from './CancellationReasons'
 import CancellationReasonsFooter from './CancellationReasons/CancellationReasonsFooter'
 import CancellationSummary from './CancellationSummary'
 import CancellationSummaryFooter from './CancellationSummary/CancellationSummaryFooter'
-import {SubscriptionProducts} from './CancellationSummary/types'
+import { SubscriptionProducts } from './CancellationSummary/types'
 import ChurnMitigationOffer from './ChurnMitigationOffer'
 import ChurnMitigationOfferFooter from './ChurnMitigationOffer/ChurnMitigationOfferFooter'
-import {CancellationFlowStep} from './constants'
-import {findCancellationScenarioByProductType} from './helpers'
+import { CancellationFlowStep } from './constants'
+import { findCancellationScenarioByProductType } from './helpers'
 import useCancellationFlowStepsStateMachine from './hooks/useCancellationFlowStepsStateMachine'
 import useFindChurnMitigationOfferId from './hooks/useFindChurnMitigationOffer'
 import ProductFeaturesFOMO from './ProductFeaturesFOMO'
 import ProductFeaturesFOMOFooter from './ProductFeaturesFOMO/ProductFeaturesFOMOFooter'
-import {cancellationReasonsReducer, DEFAULT_STATE} from './reducers'
-import {sendAcceptedChurnMitigationOfferToSupport} from './resources'
-import {CancellationReasonsActionType} from './types'
+import { cancellationReasonsReducer, DEFAULT_STATE } from './reducers'
+import { sendAcceptedChurnMitigationOfferToSupport } from './resources'
+import { CancellationReasonsActionType } from './types'
 import Step from './UI/Step'
 
 type CancelProductModelProps = {
@@ -47,7 +48,7 @@ const CancelProductModal = ({
     periodEnd,
 }: CancelProductModelProps) => {
     const dispatch = useAppDispatch()
-    const {cancellationStep, switchToNextStep, resetCancellationFlow} =
+    const { cancellationStep, switchToNextStep, resetCancellationFlow } =
         useCancellationFlowStepsStateMachine()
     const [cancellationReasonsState, dispatchCancellationReasonsAction] =
         useReducer(cancellationReasonsReducer, DEFAULT_STATE)
@@ -80,7 +81,7 @@ const CancelProductModal = ({
     const correspondingChurnMitigationOfferId = useFindChurnMitigationOfferId(
         cancellationReasonsState.primaryReason,
         cancellationReasonsState.secondaryReason,
-        productCancellationScenario.reasonsToCanduContents
+        productCancellationScenario.reasonsToCanduContents,
     )
 
     const handleAcceptOffer = async () => {
@@ -104,7 +105,7 @@ const CancelProductModal = ({
                     message:
                         'We are happy you changed your mind! ' +
                         'Our support team will reach out to you shortly regarding this offer.',
-                })
+                }),
             )
             handleOnClose()
             setIsSubmitting(false)
@@ -117,7 +118,7 @@ const CancelProductModal = ({
                         'If the problem persists, please contact our billing team via chat or ' +
                         'at <a href="mailto:support@gorgias.com">support@gorgias.com</a> to make this change.',
                     allowHTML: true,
-                })
+                }),
             )
             setIsSubmitting(false)
         }
@@ -132,14 +133,14 @@ const CancelProductModal = ({
                 other_reason:
                     cancellationReasonsState.otherReason?.label || null,
                 accepted: true,
-            }
+            },
         )
     }
 
     const handleSubmitCancellation = async () => {
         setIsSubmitting(true)
         const isCancelled = await dispatch(
-            productCancellationScenario.cancelProductAction()
+            productCancellationScenario.cancelProductAction(),
         )
         setIsSubmitting(false)
 
@@ -222,7 +223,7 @@ const CancelProductModal = ({
                                                 cancellationReasonsState
                                                     .otherReason?.label || null,
                                             accepted: false,
-                                        }
+                                        },
                                     )
                                 }}
                                 isLoading={isSubmitting}

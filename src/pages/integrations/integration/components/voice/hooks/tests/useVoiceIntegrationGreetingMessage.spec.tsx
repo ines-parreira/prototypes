@@ -1,39 +1,36 @@
+import React from 'react'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { act, renderHook } from '@testing-library/react-hooks'
+import { Provider } from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+
 import {
     HttpResponse,
     UpdateWaitMusicPreferences,
     updateWaitMusicPreferences,
 } from '@gorgias/api-client'
-import {WaitMusicType} from '@gorgias/api-queries'
-import {QueryClientProvider} from '@tanstack/react-query'
-import {act, renderHook} from '@testing-library/react-hooks'
-
-import React from 'react'
-
-import {Provider} from 'react-redux'
-import configureMockStore from 'redux-mock-store'
+import { WaitMusicType } from '@gorgias/api-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
-    PhoneIntegration,
     IntegrationType,
+    LocalWaitMusicPreferences,
+    PhoneIntegration,
     PhoneRingingBehaviour,
     VoiceMessageType,
-    LocalWaitMusicPreferences,
 } from 'models/integration/types'
-import {PhoneCountry, PhoneFunction} from 'models/phoneNumber/types'
+import { PhoneCountry, PhoneFunction } from 'models/phoneNumber/types'
 import * as api from 'pages/integrations/integration/components/phone/actions'
 import * as actions from 'state/integrations/actions'
+import { UPDATE_INTEGRATION_ERROR } from 'state/integrations/constants'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { RootState } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
-import {UPDATE_INTEGRATION_ERROR} from 'state/integrations/constants'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {RootState} from 'state/types'
-
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-
-import {assumeMock} from 'utils/testing'
-
-import {DEFAULT_WAIT_MUSIC_PREFERENCES} from '../../waitMusicLibraryConstants'
+import { DEFAULT_WAIT_MUSIC_PREFERENCES } from '../../waitMusicLibraryConstants'
 import useVoiceIntegrationGreetingMessage from '../useVoiceIntegrationGreetingMessage'
 
 const standardIntegration: PhoneIntegration = {
@@ -86,7 +83,7 @@ const queryClient = mockQueryClient()
 jest.mock('models/api/resources')
 const updatePhoneGreetingMessageConfigurationMock = jest.spyOn(
     api,
-    'updatePhoneGreetingMessageConfiguration'
+    'updatePhoneGreetingMessageConfiguration',
 )
 
 const fetchIntegratonsMock = jest.spyOn(actions, 'fetchIntegrations')
@@ -98,7 +95,7 @@ assumeMock(useAppDispatch).mockReturnValue(dispatchMock)
 jest.mock('state/notifications/actions')
 const notifyMock = assumeMock(notify)
 
-const wrapper = ({children}: {children?: React.ReactNode}) => (
+const wrapper = ({ children }: { children?: React.ReactNode }) => (
     <Provider store={mockStore}>
         <QueryClientProvider client={queryClient}>
             {children}
@@ -112,9 +109,9 @@ describe('useVoiceIntegrationGreetingMessage', () => {
     })
 
     it('should return default values', () => {
-        const {result} = renderHook(
+        const { result } = renderHook(
             () => useVoiceIntegrationGreetingMessage(standardIntegration),
-            {wrapper}
+            { wrapper },
         )
 
         const {
@@ -134,9 +131,10 @@ describe('useVoiceIntegrationGreetingMessage', () => {
     })
 
     it('should change greeting message preferences when integration updates', () => {
-        const {result, rerender} = renderHook(
-            ({integration}) => useVoiceIntegrationGreetingMessage(integration),
-            {wrapper, initialProps: {integration: standardIntegration}}
+        const { result, rerender } = renderHook(
+            ({ integration }) =>
+                useVoiceIntegrationGreetingMessage(integration),
+            { wrapper, initialProps: { integration: standardIntegration } },
         )
 
         const updatedIntegration = {
@@ -150,7 +148,7 @@ describe('useVoiceIntegrationGreetingMessage', () => {
             },
         }
 
-        rerender({integration: updatedIntegration})
+        rerender({ integration: updatedIntegration })
 
         expect(result.current.greetingMessagePayload).toStrictEqual({
             voice_message_type: VoiceMessageType.TextToSpeech,
@@ -159,9 +157,9 @@ describe('useVoiceIntegrationGreetingMessage', () => {
     })
 
     it('should change greeting message and update it', async () => {
-        const {result} = renderHook(
+        const { result } = renderHook(
             () => useVoiceIntegrationGreetingMessage(standardIntegration),
-            {wrapper}
+            { wrapper },
         )
 
         expect(result.current.greetingMessagePayload).toStrictEqual({
@@ -177,7 +175,7 @@ describe('useVoiceIntegrationGreetingMessage', () => {
             result.current.setGreetingMessagePayload(newGreetingMessagePayload)
         })
         expect(result.current.greetingMessagePayload).toStrictEqual(
-            newGreetingMessagePayload
+            newGreetingMessagePayload,
         )
         expect(result.current.isSubmittable).toBe(true)
 
@@ -187,7 +185,7 @@ describe('useVoiceIntegrationGreetingMessage', () => {
 
         expect(result.current.isGreetingMessageLoading).toBe(false)
         expect(
-            updatePhoneGreetingMessageConfigurationMock
+            updatePhoneGreetingMessageConfigurationMock,
         ).toHaveBeenCalledWith(newGreetingMessagePayload)
         expect(updateWaitMusicPreferencesMock).not.toHaveBeenCalled()
         expect(dispatchMock).toHaveBeenCalled()
@@ -197,9 +195,9 @@ describe('useVoiceIntegrationGreetingMessage', () => {
     it('should handle error when updating greeting message', async () => {
         dispatchMock.mockRejectedValue('An error occurred')
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () => useVoiceIntegrationGreetingMessage(standardIntegration),
-            {wrapper}
+            { wrapper },
         )
 
         const newGreetingMessagePayload = {
@@ -211,7 +209,7 @@ describe('useVoiceIntegrationGreetingMessage', () => {
             result.current.setGreetingMessagePayload(newGreetingMessagePayload)
         })
         expect(result.current.greetingMessagePayload).toStrictEqual(
-            newGreetingMessagePayload
+            newGreetingMessagePayload,
         )
         expect(result.current.isSubmittable).toBe(true)
 
@@ -223,9 +221,10 @@ describe('useVoiceIntegrationGreetingMessage', () => {
     })
 
     it('should change custom wait music preferences when integration updates', () => {
-        const {result, rerender} = renderHook(
-            ({integration}) => useVoiceIntegrationGreetingMessage(integration),
-            {wrapper, initialProps: {integration: standardIntegration}}
+        const { result, rerender } = renderHook(
+            ({ integration }) =>
+                useVoiceIntegrationGreetingMessage(integration),
+            { wrapper, initialProps: { integration: standardIntegration } },
         )
 
         const updatedIntegration = {
@@ -244,7 +243,7 @@ describe('useVoiceIntegrationGreetingMessage', () => {
             },
         }
 
-        rerender({integration: updatedIntegration})
+        rerender({ integration: updatedIntegration })
 
         expect(result.current.waitMusicPayload).toStrictEqual({
             type: WaitMusicType.Library,
@@ -259,16 +258,16 @@ describe('useVoiceIntegrationGreetingMessage', () => {
 
     it('should change custom wait music and update it', async () => {
         updateWaitMusicPreferencesMock.mockReturnValue(
-            Promise.resolve({} as HttpResponse<void>)
+            Promise.resolve({} as HttpResponse<void>),
         )
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () => useVoiceIntegrationGreetingMessage(standardIntegration),
-            {wrapper}
+            { wrapper },
         )
 
         expect(result.current.waitMusicPayload).toStrictEqual(
-            DEFAULT_WAIT_MUSIC_PREFERENCES
+            DEFAULT_WAIT_MUSIC_PREFERENCES,
         )
 
         const newWaitMusicPayload = {
@@ -285,7 +284,7 @@ describe('useVoiceIntegrationGreetingMessage', () => {
             result.current.setWaitMusicPayload(newWaitMusicPayload)
         })
         expect(result.current.waitMusicPayload).toStrictEqual(
-            newWaitMusicPayload
+            newWaitMusicPayload,
         )
         expect(result.current.isSubmittable).toBe(true)
 
@@ -294,12 +293,12 @@ describe('useVoiceIntegrationGreetingMessage', () => {
         })
 
         expect(
-            updatePhoneGreetingMessageConfigurationMock
+            updatePhoneGreetingMessageConfigurationMock,
         ).not.toHaveBeenCalled()
         expect(updateWaitMusicPreferencesMock).toHaveBeenCalledWith(
             1,
             newWaitMusicPayload,
-            undefined
+            undefined,
         )
         expect(dispatchMock).toHaveBeenCalled()
         expect(notifyMock).toHaveBeenCalledWith({
@@ -311,16 +310,16 @@ describe('useVoiceIntegrationGreetingMessage', () => {
 
     it('should handle error when updating wait music', async () => {
         updateWaitMusicPreferencesMock.mockReturnValue(
-            Promise.reject('An error occurred')
+            Promise.reject('An error occurred'),
         )
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () => useVoiceIntegrationGreetingMessage(standardIntegration),
-            {wrapper}
+            { wrapper },
         )
 
         expect(result.current.waitMusicPayload).toStrictEqual(
-            DEFAULT_WAIT_MUSIC_PREFERENCES
+            DEFAULT_WAIT_MUSIC_PREFERENCES,
         )
 
         const newWaitMusicPayload = {
@@ -337,7 +336,7 @@ describe('useVoiceIntegrationGreetingMessage', () => {
             result.current.setWaitMusicPayload(newWaitMusicPayload)
         })
         expect(result.current.waitMusicPayload).toStrictEqual(
-            newWaitMusicPayload
+            newWaitMusicPayload,
         )
         expect(result.current.isSubmittable).toBe(true)
 
@@ -348,7 +347,7 @@ describe('useVoiceIntegrationGreetingMessage', () => {
         expect(updateWaitMusicPreferencesMock).toHaveBeenCalledWith(
             1,
             newWaitMusicPayload,
-            undefined
+            undefined,
         )
         expect(dispatchMock).toHaveBeenCalledWith({
             type: UPDATE_INTEGRATION_ERROR,
@@ -459,7 +458,7 @@ describe('useVoiceIntegrationGreetingMessage', () => {
             expectedWaitMusicUpdatePayload,
         }) => {
             updateWaitMusicPreferencesMock.mockReturnValue(
-                Promise.resolve({} as HttpResponse<void>)
+                Promise.resolve({} as HttpResponse<void>),
             )
 
             const standardIntegrationWithWaitMusicPreferences = {
@@ -470,12 +469,12 @@ describe('useVoiceIntegrationGreetingMessage', () => {
                 },
             }
 
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () =>
                     useVoiceIntegrationGreetingMessage(
-                        standardIntegrationWithWaitMusicPreferences
+                        standardIntegrationWithWaitMusicPreferences,
                     ),
-                {wrapper}
+                { wrapper },
             )
 
             act(() => {
@@ -483,7 +482,7 @@ describe('useVoiceIntegrationGreetingMessage', () => {
             })
 
             expect(result.current.waitMusicPayload).toStrictEqual(
-                newWaitMusicLocalPayload
+                newWaitMusicLocalPayload,
             )
             expect(result.current.isSubmittable).toBe(true)
 
@@ -494,9 +493,9 @@ describe('useVoiceIntegrationGreetingMessage', () => {
             expect(updateWaitMusicPreferencesMock).toHaveBeenCalledWith(
                 1,
                 expectedWaitMusicUpdatePayload,
-                undefined
+                undefined,
             )
-        }
+        },
     )
 
     it.each([
@@ -509,16 +508,16 @@ describe('useVoiceIntegrationGreetingMessage', () => {
     ])(
         'should handle incomplete wait music payload',
         (invalidWaitMusicPayload: LocalWaitMusicPreferences) => {
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () =>
                     useVoiceIntegrationGreetingMessage({
                         ...standardIntegration,
                         meta: {
                             ...standardIntegration.meta,
-                            wait_music: {type: WaitMusicType.Library},
+                            wait_music: { type: WaitMusicType.Library },
                         },
                     }),
-                {wrapper}
+                { wrapper },
             )
 
             expect(result.current.waitMusicPayload).toStrictEqual({
@@ -529,27 +528,27 @@ describe('useVoiceIntegrationGreetingMessage', () => {
                 result.current.setWaitMusicPayload(invalidWaitMusicPayload)
             })
             expect(result.current.waitMusicPayload).toStrictEqual(
-                invalidWaitMusicPayload
+                invalidWaitMusicPayload,
             )
             expect(result.current.isSubmittable).toBe(false)
-        }
+        },
     )
 
     it('should change both greeting message and custom wait music and update them', async () => {
         updateWaitMusicPreferencesMock.mockReturnValue(
-            Promise.resolve({} as HttpResponse<void>)
+            Promise.resolve({} as HttpResponse<void>),
         )
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () => useVoiceIntegrationGreetingMessage(standardIntegration),
-            {wrapper}
+            { wrapper },
         )
 
         expect(result.current.greetingMessagePayload).toStrictEqual({
             voice_message_type: VoiceMessageType.None,
         })
         expect(result.current.waitMusicPayload).toStrictEqual(
-            DEFAULT_WAIT_MUSIC_PREFERENCES
+            DEFAULT_WAIT_MUSIC_PREFERENCES,
         )
 
         const newGreetingMessagePayload = {
@@ -571,10 +570,10 @@ describe('useVoiceIntegrationGreetingMessage', () => {
             result.current.setWaitMusicPayload(newWaitMusicPayload)
         })
         expect(result.current.greetingMessagePayload).toStrictEqual(
-            newGreetingMessagePayload
+            newGreetingMessagePayload,
         )
         expect(result.current.waitMusicPayload).toStrictEqual(
-            newWaitMusicPayload
+            newWaitMusicPayload,
         )
         expect(result.current.isSubmittable).toBe(true)
 
@@ -584,12 +583,12 @@ describe('useVoiceIntegrationGreetingMessage', () => {
 
         expect(result.current.isGreetingMessageLoading).toBe(false)
         expect(
-            updatePhoneGreetingMessageConfigurationMock
+            updatePhoneGreetingMessageConfigurationMock,
         ).toHaveBeenCalledWith(newGreetingMessagePayload)
         expect(updateWaitMusicPreferencesMock).toHaveBeenCalledWith(
             1,
             newWaitMusicPayload,
-            undefined
+            undefined,
         )
         expect(dispatchMock).toHaveBeenCalled()
         expect(notifyMock).toHaveBeenCalledWith({

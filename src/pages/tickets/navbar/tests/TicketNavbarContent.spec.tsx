@@ -1,29 +1,30 @@
-import {render, fireEvent} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {DndProvider} from 'react-dnd'
-import {HTML5Backend} from 'react-dnd-html5-backend'
+import React, { ComponentProps } from 'react'
 
-import {section} from 'fixtures/section'
-import {user} from 'fixtures/users'
-import {view} from 'fixtures/views'
-import {TicketNavbarElementType} from 'state/ui/ticketNavbar/types'
+import { fireEvent, render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+
+import { section } from 'fixtures/section'
+import { user } from 'fixtures/users'
+import { view } from 'fixtures/views'
+import { TicketNavbarElementType } from 'state/ui/ticketNavbar/types'
 
 import {
+    getNextSettings,
     TicketNavbarContentContainer,
     TicketNavbarElement,
-    getNextSettings,
 } from '../TicketNavbarContent'
-import {TicketNavbarDropDirection} from '../TicketNavbarDropTarget'
+import { TicketNavbarDropDirection } from '../TicketNavbarDropTarget'
 import TicketNavbarSection from '../TicketNavbarSection'
 import TicketNavbarView from '../TicketNavbarView'
 
 jest.mock(
     '../TicketNavbarView',
     () =>
-        ({view}: ComponentProps<typeof TicketNavbarView>) => {
+        ({ view }: ComponentProps<typeof TicketNavbarView>) => {
             return <div data-testid="TicketNavbarView">{view.name}</div>
-        }
+        },
 )
 
 jest.mock(
@@ -39,7 +40,7 @@ jest.mock(
                 {JSON.stringify(props)}
             </div>
         )
-    }
+    },
 )
 
 describe('<TicketNavbarContent/>', () => {
@@ -59,7 +60,7 @@ describe('<TicketNavbarContent/>', () => {
         onClickRenameSection: null,
         currentUser: fromJS(user),
         views: {
-            [view.id]: {...view, section_id: 4},
+            [view.id]: { ...view, section_id: 4 },
         },
         notify: jest.fn(),
         viewUpdated: jest.fn(),
@@ -72,7 +73,7 @@ describe('<TicketNavbarContent/>', () => {
     beforeEach(() => {
         global.localStorage.setItem(
             'collapsed-view-sections',
-            JSON.stringify([2])
+            JSON.stringify([2]),
         )
     })
 
@@ -82,20 +83,20 @@ describe('<TicketNavbarContent/>', () => {
 
     describe('rendering', () => {
         it('should render', () => {
-            const {container} = render(
+            const { container } = render(
                 <DndProvider backend={HTML5Backend}>
                     <TicketNavbarContentContainer {...minProps} />
-                </DndProvider>
+                </DndProvider>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should expand/collapse a section', () => {
-            const {container, getByTestId} = render(
+            const { container, getByTestId } = render(
                 <DndProvider backend={HTML5Backend}>
                     <TicketNavbarContentContainer {...minProps} />
-                </DndProvider>
+                </DndProvider>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -106,16 +107,16 @@ describe('<TicketNavbarContent/>', () => {
 
     describe('getNextSettings', () => {
         const views = {
-            1: {...view, id: 1},
-            2: {...view, id: 2},
-            3: {...view, id: 3, section_id: 1},
-            4: {...view, id: 4, section_id: 1},
-            5: {...view, id: 5, section_id: 1},
-            6: {...view, id: 6, section_id: 2},
+            1: { ...view, id: 1 },
+            2: { ...view, id: 2 },
+            3: { ...view, id: 3, section_id: 1 },
+            4: { ...view, id: 4, section_id: 1 },
+            5: { ...view, id: 5, section_id: 1 },
+            6: { ...view, id: 6, section_id: 2 },
         }
         const sections = {
-            1: {...section, id: 1},
-            2: {...section, id: 2},
+            1: { ...section, id: 1 },
+            2: { ...section, id: 2 },
         }
         const orderedElements: TicketNavbarElement[] = [
             {
@@ -140,7 +141,7 @@ describe('<TicketNavbarContent/>', () => {
 
         it('should move a root view to a root view', () => {
             const nextOrderedSettings = getNextSettings(
-                {id: 1, type: TicketNavbarElementType.View},
+                { id: 1, type: TicketNavbarElementType.View },
                 {
                     viewId: 2,
                     direction: TicketNavbarDropDirection.Down,
@@ -148,14 +149,14 @@ describe('<TicketNavbarContent/>', () => {
                 },
                 orderedElements,
                 views,
-                sections
+                sections,
             )
             expect(nextOrderedSettings).toMatchSnapshot()
         })
 
         it('should move a root view to a section view', () => {
             const nextOrderedSettings = getNextSettings(
-                {id: 1, type: TicketNavbarElementType.View},
+                { id: 1, type: TicketNavbarElementType.View },
                 {
                     viewId: 3,
                     direction: TicketNavbarDropDirection.Down,
@@ -163,7 +164,7 @@ describe('<TicketNavbarContent/>', () => {
                 },
                 orderedElements,
                 views,
-                sections
+                sections,
             )
 
             expect(nextOrderedSettings).toMatchSnapshot()
@@ -171,7 +172,7 @@ describe('<TicketNavbarContent/>', () => {
 
         it('should move a section view to a root view', () => {
             const nextOrderedSettings = getNextSettings(
-                {id: 4, type: TicketNavbarElementType.View},
+                { id: 4, type: TicketNavbarElementType.View },
                 {
                     viewId: 2,
                     direction: TicketNavbarDropDirection.Up,
@@ -179,7 +180,7 @@ describe('<TicketNavbarContent/>', () => {
                 },
                 orderedElements,
                 views,
-                sections
+                sections,
             )
 
             expect(nextOrderedSettings).toMatchSnapshot()
@@ -187,7 +188,7 @@ describe('<TicketNavbarContent/>', () => {
 
         it('should move a section view to a section view', () => {
             const nextOrderedSettings = getNextSettings(
-                {id: 3, type: TicketNavbarElementType.View},
+                { id: 3, type: TicketNavbarElementType.View },
                 {
                     viewId: 4,
                     direction: TicketNavbarDropDirection.Down,
@@ -195,7 +196,7 @@ describe('<TicketNavbarContent/>', () => {
                 },
                 orderedElements,
                 views,
-                sections
+                sections,
             )
 
             expect(nextOrderedSettings).toMatchSnapshot()
@@ -203,7 +204,7 @@ describe('<TicketNavbarContent/>', () => {
 
         it('should move a view to content boundary', () => {
             let nextOrderedSettings = getNextSettings(
-                {id: 2, type: TicketNavbarElementType.View},
+                { id: 2, type: TicketNavbarElementType.View },
                 {
                     viewId: null,
                     direction: TicketNavbarDropDirection.Up,
@@ -211,12 +212,12 @@ describe('<TicketNavbarContent/>', () => {
                 },
                 orderedElements,
                 views,
-                sections
+                sections,
             )
 
             expect(nextOrderedSettings).toMatchSnapshot()
             nextOrderedSettings = getNextSettings(
-                {id: 2, type: TicketNavbarElementType.View},
+                { id: 2, type: TicketNavbarElementType.View },
                 {
                     viewId: null,
                     direction: TicketNavbarDropDirection.Down,
@@ -224,7 +225,7 @@ describe('<TicketNavbarContent/>', () => {
                 },
                 orderedElements,
                 views,
-                sections
+                sections,
             )
 
             expect(nextOrderedSettings).toMatchSnapshot()
@@ -232,7 +233,7 @@ describe('<TicketNavbarContent/>', () => {
 
         it('should move a section to a root view', () => {
             const nextOrderedSettings = getNextSettings(
-                {id: 1, type: TicketNavbarElementType.Section},
+                { id: 1, type: TicketNavbarElementType.Section },
                 {
                     viewId: 2,
                     direction: TicketNavbarDropDirection.Up,
@@ -240,7 +241,7 @@ describe('<TicketNavbarContent/>', () => {
                 },
                 orderedElements,
                 views,
-                sections
+                sections,
             )
 
             expect(nextOrderedSettings).toMatchSnapshot()
@@ -248,7 +249,7 @@ describe('<TicketNavbarContent/>', () => {
 
         it('should move a section to a section', () => {
             const nextOrderedSettings = getNextSettings(
-                {id: 2, type: TicketNavbarElementType.Section},
+                { id: 2, type: TicketNavbarElementType.Section },
                 {
                     viewId: null,
                     direction: TicketNavbarDropDirection.Up,
@@ -256,7 +257,7 @@ describe('<TicketNavbarContent/>', () => {
                 },
                 orderedElements,
                 views,
-                sections
+                sections,
             )
 
             expect(nextOrderedSettings).toMatchSnapshot()
@@ -264,7 +265,7 @@ describe('<TicketNavbarContent/>', () => {
 
         it('should move a section to content boundary', () => {
             let nextOrderedSettings = getNextSettings(
-                {id: 1, type: TicketNavbarElementType.Section},
+                { id: 1, type: TicketNavbarElementType.Section },
                 {
                     viewId: null,
                     direction: TicketNavbarDropDirection.Up,
@@ -272,12 +273,12 @@ describe('<TicketNavbarContent/>', () => {
                 },
                 orderedElements,
                 views,
-                sections
+                sections,
             )
 
             expect(nextOrderedSettings).toMatchSnapshot()
             nextOrderedSettings = getNextSettings(
-                {id: 1, type: TicketNavbarElementType.Section},
+                { id: 1, type: TicketNavbarElementType.Section },
                 {
                     viewId: null,
                     direction: TicketNavbarDropDirection.Down,
@@ -285,7 +286,7 @@ describe('<TicketNavbarContent/>', () => {
                 },
                 orderedElements,
                 views,
-                sections
+                sections,
             )
 
             expect(nextOrderedSettings).toMatchSnapshot()
@@ -293,7 +294,7 @@ describe('<TicketNavbarContent/>', () => {
 
         it('should move a view ontop of a section', () => {
             const nextOrderedSettings = getNextSettings(
-                {id: 1, type: TicketNavbarElementType.View},
+                { id: 1, type: TicketNavbarElementType.View },
                 {
                     viewId: null,
                     direction: TicketNavbarDropDirection.Up,
@@ -301,7 +302,7 @@ describe('<TicketNavbarContent/>', () => {
                 },
                 orderedElements,
                 views,
-                sections
+                sections,
             )
 
             expect(nextOrderedSettings).toMatchSnapshot()
@@ -309,7 +310,7 @@ describe('<TicketNavbarContent/>', () => {
 
         it('should move a view down a section', () => {
             const nextOrderedSettings = getNextSettings(
-                {id: 1, type: TicketNavbarElementType.View},
+                { id: 1, type: TicketNavbarElementType.View },
                 {
                     viewId: null,
                     direction: TicketNavbarDropDirection.Down,
@@ -317,7 +318,7 @@ describe('<TicketNavbarContent/>', () => {
                 },
                 orderedElements,
                 views,
-                sections
+                sections,
             )
 
             expect(nextOrderedSettings).toMatchSnapshot()

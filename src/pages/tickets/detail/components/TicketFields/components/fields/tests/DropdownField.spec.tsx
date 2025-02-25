@@ -1,20 +1,21 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {render, screen, waitFor} from '@testing-library/react'
+import React from 'react'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
-import {fromJS} from 'immutable'
-import React from 'react'
-import {Provider} from 'react-redux'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {getLabel} from 'custom-fields/components/MultiLevelSelect/helpers/getLabels'
+import { getLabel } from 'custom-fields/components/MultiLevelSelect/helpers/getLabels'
 import client from 'models/api/resources'
 import {
     updateCustomFieldError,
     updateCustomFieldState,
     updateCustomFieldValue,
 } from 'state/ticket/actions'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import DropdownField from '../DropdownField'
 
@@ -69,7 +70,7 @@ describe('<DropdownField />', () => {
                 <Provider store={store}>
                     <DropdownField {...initialProps} />)
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
         await waitFor(() => {
             userEvent.hover(screen.getByRole('textbox'))
@@ -83,13 +84,13 @@ describe('<DropdownField />', () => {
                 <Provider store={store}>
                     <DropdownField
                         {...initialProps}
-                        fieldState={{...fieldState, value: 's1::ss8::c4'}}
+                        fieldState={{ ...fieldState, value: 's1::ss8::c4' }}
                     />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
         expect(store.dispatch).toHaveBeenCalledWith(
-            updateCustomFieldError(fieldState.id, true)
+            updateCustomFieldError(fieldState.id, true),
         )
         userEvent.click(screen.getByRole('textbox'))
         expect(screen.queryByText('ss8')).toBeNull()
@@ -102,11 +103,11 @@ describe('<DropdownField />', () => {
                     <DropdownField
                         {...{
                             ...initialProps,
-                            fieldState: {id: fieldState.id, value: ''},
+                            fieldState: { id: fieldState.id, value: '' },
                         }}
                     />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         userEvent.click(screen.getByRole('textbox'))
@@ -132,18 +133,18 @@ describe('<DropdownField />', () => {
                 <Provider store={store}>
                     <DropdownField {...initialProps} />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         userEvent.click(screen.getByRole('textbox'))
         userEvent.click(screen.getByText('c1'))
         expect(store.dispatch).toHaveBeenNthCalledWith(
             1,
-            updateCustomFieldError(fieldState.id, false)
+            updateCustomFieldError(fieldState.id, false),
         )
         expect(store.dispatch).toHaveBeenNthCalledWith(
             2,
-            updateCustomFieldValue(fieldState.id, 's1::ss2::c1')
+            updateCustomFieldValue(fieldState.id, 's1::ss2::c1'),
         )
         await waitFor(() => {
             expect(mockedServer.history.put[0].data).toEqual('"s1::ss2::c1"')
@@ -161,13 +162,13 @@ describe('<DropdownField />', () => {
                 <Provider store={store}>
                     <DropdownField {...initialProps} />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
         userEvent.click(screen.getByRole('textbox'))
         userEvent.click(screen.getByText('c1'))
         await waitFor(() => {
             expect(store.dispatch).toHaveBeenLastCalledWith(
-                updateCustomFieldState(fieldState)
+                updateCustomFieldState(fieldState),
             )
         })
     })
@@ -178,7 +179,7 @@ describe('<DropdownField />', () => {
                 <Provider store={store}>
                     <DropdownField {...initialProps} />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         userEvent.click(screen.getByRole('textbox'))
@@ -192,10 +193,10 @@ describe('<DropdownField />', () => {
     it('should not http update value onChange when on a new ticket', async () => {
         render(
             <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore({ticket: fromJS({})})}>
+                <Provider store={mockStore({ ticket: fromJS({}) })}>
                     <DropdownField {...initialProps} />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         userEvent.click(screen.getByRole('textbox'))
@@ -211,7 +212,7 @@ describe('<DropdownField />', () => {
                 <Provider store={store}>
                     <DropdownField {...initialProps} choices={[1024, 2048]} />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
         userEvent.click(screen.getByRole('textbox'))
         expect(screen.queryByPlaceholderText('Search')).toBeNull()
@@ -231,15 +232,15 @@ describe('<DropdownField />', () => {
                 <Provider store={store}>
                     <DropdownField {...props} />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
         userEvent.click(screen.getByRole('textbox'))
         expect(screen.getAllByText('auto_awesome')[0]).toBeInTheDocument()
     })
 
     it.each([
-        {...prediction, predicted: 'not::the::value'},
-        {...prediction, display: false},
+        { ...prediction, predicted: 'not::the::value' },
+        { ...prediction, display: false },
     ])('should not display prediction icon', (wrongPrediction) => {
         const props = {
             ...initialProps,
@@ -253,7 +254,7 @@ describe('<DropdownField />', () => {
                 <Provider store={store}>
                     <DropdownField {...props} />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
         expect(screen.queryByText('auto_awesome')).toBeNull()
     })

@@ -1,6 +1,6 @@
-import {Meta, StoryObj} from '@storybook/react'
+import { Meta, StoryObj } from '@storybook/react'
 
-import {AlertBanner} from './AlertBanner'
+import { AlertBanner } from './AlertBanner'
 
 type Story = StoryObj<typeof AlertBanner>
 

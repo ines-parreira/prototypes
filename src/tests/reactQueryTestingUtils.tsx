@@ -1,12 +1,13 @@
+import React, { FC, ReactElement } from 'react'
+
 import {
     QueryCache,
     QueryClient,
     QueryClientProvider,
     QueryKey,
 } from '@tanstack/react-query'
-import {render} from '@testing-library/react'
-import {renderHook} from '@testing-library/react-hooks'
-import React, {FC, ReactElement} from 'react'
+import { render } from '@testing-library/react'
+import { renderHook } from '@testing-library/react-hooks'
 
 export function mockQueryClient({
     cachedData,
@@ -32,7 +33,7 @@ export function mockQueryClient({
 
     if (cachedData) {
         for (const [key, data] of cachedData) {
-            queryClient.setQueryData(key, {data})
+            queryClient.setQueryData(key, { data })
         }
     }
 
@@ -51,7 +52,7 @@ export const renderWithQueryClientProvider = (ui: ReactElement) => {
     const queryClient = mockQueryClient()
 
     return render(ui, {
-        wrapper: ({children}: any) => (
+        wrapper: ({ children }: any) => (
             <QueryClientProvider client={queryClient}>
                 {children}
             </QueryClientProvider>
@@ -60,12 +61,12 @@ export const renderWithQueryClientProvider = (ui: ReactElement) => {
 }
 
 export const renderHookWithQueryClientProvider = <TProps, TResult>(
-    callback: (props: TProps) => TResult
+    callback: (props: TProps) => TResult,
 ) => {
     const queryClient = mockQueryClient()
 
     return renderHook(callback, {
-        wrapper: ({children}: any) => (
+        wrapper: ({ children }: any) => (
             <QueryClientProvider client={queryClient}>
                 {children}
             </QueryClientProvider>

@@ -22,14 +22,15 @@ import {
     visualBuilderGraphSimpleChoicesFixture,
 } from 'pages/automate/workflows/tests/visualBuilderGraph.fixtures'
 
-import {baseReducer} from '../baseReducer'
+import { baseReducer } from '../baseReducer'
 
 describe('baseReducer', () => {
     describe('SET_CHANNEL_TRIGGER_LABEL', () => {
         test('Invalid graph without trigger node, and does not update anything', () => {
             const g = _cloneDeep(visualBuilderGraphSimpleChoicesFixture)
             const channelTriggerIndex = g.nodes.findIndex(
-                (n): n is ChannelTriggerNodeType => n.type === 'channel_trigger'
+                (n): n is ChannelTriggerNodeType =>
+                    n.type === 'channel_trigger',
             )
             expect(channelTriggerIndex).not.toBe(-1)
             g.nodes.splice(channelTriggerIndex, 1)
@@ -41,8 +42,8 @@ describe('baseReducer', () => {
             expect(
                 nextG.nodes.find(
                     (n): n is ChannelTriggerNodeType =>
-                        n.type === 'channel_trigger'
-                )
+                        n.type === 'channel_trigger',
+                ),
             ).toBeUndefined()
         })
 
@@ -56,8 +57,8 @@ describe('baseReducer', () => {
             expect(
                 nextG.nodes.find(
                     (n): n is ChannelTriggerNodeType =>
-                        n.type === 'channel_trigger'
-                )?.data.label
+                        n.type === 'channel_trigger',
+                )?.data.label,
             ).toEqual('new entrypoint')
             expect(nextG.name).toEqual(g.name)
         })
@@ -75,13 +76,13 @@ describe('baseReducer', () => {
                     type: 'SET_CHANNEL_TRIGGER_LABEL',
                     channelTriggerNodeId: 'trigger_button1',
                     label: 'entrypoint new',
-                }
+                },
             )
             expect(
                 nextG.nodes.find(
                     (n): n is ChannelTriggerNodeType =>
-                        n.type === 'channel_trigger'
-                )?.data.label
+                        n.type === 'channel_trigger',
+                )?.data.label,
             ).toEqual('entrypoint new')
             expect(nextG.name).toEqual('entrypoint new')
         })
@@ -100,13 +101,13 @@ describe('baseReducer', () => {
         expect(
             nextG.nodes.find(
                 (n): n is AutomatedMessageNodeType =>
-                    n.id === 'automated_message1'
-            )?.data.content
+                    n.id === 'automated_message1',
+            )?.data.content,
         ).toEqual(
             expect.objectContaining({
                 html: 'new html',
                 text: 'new text',
-            })
+            }),
         )
     })
 
@@ -122,13 +123,13 @@ describe('baseReducer', () => {
         })
         expect(
             nextG.nodes.find(
-                (n): n is TextReplyNodeType => n.id === 'text_reply1'
-            )?.data.content
+                (n): n is TextReplyNodeType => n.id === 'text_reply1',
+            )?.data.content,
         ).toEqual(
             expect.objectContaining({
                 html: 'new html',
                 text: 'new text',
-            })
+            }),
         )
     })
 
@@ -144,13 +145,13 @@ describe('baseReducer', () => {
         })
         expect(
             nextG.nodes.find(
-                (n): n is FileUploadNodeType => n.id === 'file_upload1'
-            )?.data.content
+                (n): n is FileUploadNodeType => n.id === 'file_upload1',
+            )?.data.content,
         ).toEqual(
             expect.objectContaining({
                 html: 'new html',
                 text: 'new text',
-            })
+            }),
         )
     })
 
@@ -168,12 +169,13 @@ describe('baseReducer', () => {
             nextG.nodes
                 .filter(
                     (n): n is AutomatedMessageNodeType =>
-                        n.type === 'automated_message'
+                        n.type === 'automated_message',
                 )
                 .find(
                     (n) =>
-                        n.data.content.text === '' && n.data.content.html === ''
-                )
+                        n.data.content.text === '' &&
+                        n.data.content.html === '',
+                ),
         ).toBeDefined()
     })
 
@@ -192,8 +194,9 @@ describe('baseReducer', () => {
                 .filter((n): n is TextReplyNodeType => n.type === 'text_reply')
                 .find(
                     (n) =>
-                        n.data.content.text === '' && n.data.content.html === ''
-                )
+                        n.data.content.text === '' &&
+                        n.data.content.html === '',
+                ),
         ).toBeDefined()
     })
 
@@ -210,12 +213,13 @@ describe('baseReducer', () => {
         expect(
             nextG.nodes
                 .filter(
-                    (n): n is FileUploadNodeType => n.type === 'file_upload'
+                    (n): n is FileUploadNodeType => n.type === 'file_upload',
                 )
                 .find(
                     (n) =>
-                        n.data.content.text === '' && n.data.content.html === ''
-                )
+                        n.data.content.text === '' &&
+                        n.data.content.html === '',
+                ),
         ).toBeDefined()
     })
 
@@ -227,7 +231,7 @@ describe('baseReducer', () => {
                 const conditions =
                     e.data?.conditions?.and ?? e.data?.conditions?.or ?? []
                 return Object.keys(conditions).length > 0
-            })
+            }),
         ).toHaveLength(1)
 
         const nextG = baseReducer(g, {
@@ -244,14 +248,14 @@ describe('baseReducer', () => {
         expect(
             nextG.edges
                 .filter((e) => e.source === 'multiple_choices1')
-                .map((e) => e.target)
+                .map((e) => e.target),
         ).toEqual(['end1', 'automated_message2', 'text_reply1'])
         expect(
             nextG.edges.filter((e) => {
                 const conditions =
                     e.data?.conditions?.and ?? e.data?.conditions?.or ?? []
                 return Object.keys(conditions).length > 0
-            })
+            }),
         ).toHaveLength(0)
     })
 
@@ -271,7 +275,7 @@ describe('baseReducer', () => {
         expect(
             nextG.edges
                 .filter((e) => e.source === 'multiple_choices1')
-                .map((e) => e.target)
+                .map((e) => e.target),
         ).toEqual(['end1', 'automated_message2', 'text_reply1'])
 
         nextG = baseReducer(
@@ -280,7 +284,7 @@ describe('baseReducer', () => {
                 type: 'DELETE_BRANCH',
                 nodeId: 'reusable_llm_prompt_call1',
                 steps: [],
-            }
+            },
         )
         expect(nextG.apps).toEqual([])
     })
@@ -294,7 +298,7 @@ describe('baseReducer', () => {
         })
         // all nodes except the trigger button + conditions should be greyed out
         expect(nextG.nodes.slice(0, 2).every((n) => !n.data.isGreyedOut)).toBe(
-            true
+            true,
         )
 
         expect(nextG.nodes.slice(3).every((n) => n.data.isGreyedOut)).toBe(true)
@@ -304,10 +308,10 @@ describe('baseReducer', () => {
         const g = visualBuilderGraphSimpleChoicesFixture
         const nextG = baseReducer(g, {
             type: 'SET_APPS',
-            apps: [{type: 'shopify'}],
+            apps: [{ type: 'shopify' }],
         })
 
-        expect(nextG.apps).toEqual([{type: 'shopify'}])
+        expect(nextG.apps).toEqual([{ type: 'shopify' }])
     })
 
     test('INSERT_REMOVE_ITEM_NODE', () => {
@@ -326,8 +330,8 @@ describe('baseReducer', () => {
             nextG.nodes.find(
                 (n) =>
                     n.type === 'remove_item' &&
-                    n.data.customerId === 'customerId'
-            )
+                    n.data.customerId === 'customerId',
+            ),
         ).toBeDefined()
     })
 
@@ -353,8 +357,8 @@ describe('baseReducer', () => {
                 (n) =>
                     n.type === 'remove_item' &&
                     n.data.productVariantId === 'productVariantId' &&
-                    n.data.quantity === '1'
-            )
+                    n.data.quantity === '1',
+            ),
         ).toBeDefined()
     })
 
@@ -398,8 +402,8 @@ describe('baseReducer', () => {
                 (n) =>
                     n.type === 'create_discount_code' &&
                     n.data.customerId === 'customerId' &&
-                    n.data.integrationId === 'integrationId'
-            )
+                    n.data.integrationId === 'integrationId',
+            ),
         ).toBeDefined()
     })
 
@@ -412,7 +416,7 @@ describe('baseReducer', () => {
         })
 
         const nodeId = g.nodes.find(
-            (n) => n.type === 'create_discount_code'
+            (n) => n.type === 'create_discount_code',
         )!.id
         const nextG = baseReducer(g, {
             type: 'SET_CREATE_DISCOUNT_CODE_NODE_SETTINGS',
@@ -428,8 +432,8 @@ describe('baseReducer', () => {
                     n.type === 'create_discount_code' &&
                     n.data.discountType === 'percentage' &&
                     n.data.amount === '10' &&
-                    n.data.validFor === '1'
-            )
+                    n.data.validFor === '1',
+            ),
         ).toBeDefined()
     })
 
@@ -451,8 +455,8 @@ describe('baseReducer', () => {
                     n.type === 'reship_for_free' &&
                     n.data.customerId === 'customerId' &&
                     n.data.orderExternalId === 'orderExternalId' &&
-                    n.data.integrationId === 'integrationId'
-            )
+                    n.data.integrationId === 'integrationId',
+            ),
         ).toBeDefined()
     })
     test('INSERT_REFUND_SHIPPING_COSTS_NODE', () => {
@@ -473,8 +477,8 @@ describe('baseReducer', () => {
                     n.type === 'refund_shipping_costs' &&
                     n.data.customerId === 'customerId' &&
                     n.data.orderExternalId === 'orderExternalId' &&
-                    n.data.integrationId === 'integrationId'
-            )
+                    n.data.integrationId === 'integrationId',
+            ),
         ).toBeDefined()
     })
     test('INSERT_REPLACE_ITEM_NODE / SET_REPLACE_ITEM_NODE_SETTINGS', () => {
@@ -495,14 +499,14 @@ describe('baseReducer', () => {
                     n.type === 'replace_item' &&
                     n.data.customerId === 'customerId' &&
                     n.data.orderExternalId === 'orderExternalId' &&
-                    n.data.integrationId === 'integrationId'
-            )
+                    n.data.integrationId === 'integrationId',
+            ),
         ).toBeDefined()
 
         nextG = baseReducer(nextG, {
             type: 'SET_REPLACE_ITEM_NODE_SETTINGS',
             replaceItemNodeId: nextG.nodes.find(
-                (n) => n.type === 'replace_item'
+                (n) => n.type === 'replace_item',
             )!.id,
             addedProductVariantId: 'addedProductVariantId',
             addedQuantity: '1',
@@ -517,8 +521,8 @@ describe('baseReducer', () => {
                     n.data.addedProductVariantId === 'addedProductVariantId' &&
                     n.data.addedQuantity === '1' &&
                     n.data.productVariantId === 'productVariantId' &&
-                    n.data.quantity === '1'
-            )
+                    n.data.quantity === '1',
+            ),
         ).toBeDefined()
     })
 
@@ -531,7 +535,7 @@ describe('baseReducer', () => {
             integrationId: 'integrationId',
         })
         const node = nextG.nodes.find(
-            (n): n is SkipChargeNodeType => n.type === 'skip_charge'
+            (n): n is SkipChargeNodeType => n.type === 'skip_charge',
         )
         expect(node).toBeDefined()
         expect(node?.data.customerId).toBe('customerId')
@@ -547,7 +551,7 @@ describe('baseReducer', () => {
             integrationId: 'integrationId',
         })
         let node = nextG.nodes.find(
-            (n): n is SkipChargeNodeType => n.type === 'skip_charge'
+            (n): n is SkipChargeNodeType => n.type === 'skip_charge',
         )
         expect(node).toBeDefined()
         expect(node?.data.subscriptionId).toBe('')
@@ -561,7 +565,7 @@ describe('baseReducer', () => {
         })
 
         node = nextG.nodes.find(
-            (n): n is SkipChargeNodeType => n.type === 'skip_charge'
+            (n): n is SkipChargeNodeType => n.type === 'skip_charge',
         )
         expect(node?.data.subscriptionId).toBe('subscription')
         expect(node?.data.chargeId).toBe('charge')
@@ -640,7 +644,7 @@ describe('baseReducer', () => {
 
         const node = nextG.nodes.find(
             (n): n is UpdateShippingAddressNodeType =>
-                n.type === 'update_shipping_address'
+                n.type === 'update_shipping_address',
         )
         expect(node).toBeDefined()
     })
@@ -657,7 +661,7 @@ describe('baseReducer', () => {
 
         let node = nextG.nodes.find(
             (n): n is UpdateShippingAddressNodeType =>
-                n.type === 'update_shipping_address'
+                n.type === 'update_shipping_address',
         )
         expect(node).toBeDefined()
         expect(node?.data.name).toBe('')
@@ -687,7 +691,7 @@ describe('baseReducer', () => {
         })
         node = nextG.nodes.find(
             (n): n is UpdateShippingAddressNodeType =>
-                n.type === 'update_shipping_address'
+                n.type === 'update_shipping_address',
         )
         expect(node).toBeDefined()
         expect(node?.data.name).toBe('name')
@@ -713,7 +717,7 @@ describe('baseReducer', () => {
 
         const node = nextG.nodes.find(
             (n): n is CancelSubscriptionNodeType =>
-                n.type === 'cancel_subscription'
+                n.type === 'cancel_subscription',
         )
         expect(node).toBeDefined()
         expect(node?.data.customerId).toBe('customerId')
@@ -731,7 +735,7 @@ describe('baseReducer', () => {
 
         let node = nextG.nodes.find(
             (n): n is CancelSubscriptionNodeType =>
-                n.type === 'cancel_subscription'
+                n.type === 'cancel_subscription',
         )
         expect(node).toBeDefined()
         expect(node?.data.reason).toBe('')
@@ -746,7 +750,7 @@ describe('baseReducer', () => {
 
         node = nextG.nodes.find(
             (n): n is CancelSubscriptionNodeType =>
-                n.type === 'cancel_subscription'
+                n.type === 'cancel_subscription',
         )
         expect(node).toBeDefined()
         expect(node?.data.reason).toBe('reason')
@@ -764,7 +768,7 @@ describe('baseReducer', () => {
         })
 
         const node = nextG.nodes.find(
-            (n): n is RefundOrderNodeType => n.type === 'refund_order'
+            (n): n is RefundOrderNodeType => n.type === 'refund_order',
         )
         expect(node).toBeDefined()
     })
@@ -780,7 +784,7 @@ describe('baseReducer', () => {
         })
 
         const node = nextG.nodes.find(
-            (n): n is CancelOrderNodeType => n.type === 'cancel_order'
+            (n): n is CancelOrderNodeType => n.type === 'cancel_order',
         )
         expect(node).toBeDefined()
     })
@@ -795,7 +799,7 @@ describe('baseReducer', () => {
 
         const node = nextG.nodes.find(
             (n): n is ShopperAuthenticationNodeType =>
-                n.type === 'shopper_authentication'
+                n.type === 'shopper_authentication',
         )
         expect(node).toBeDefined()
     })
@@ -809,7 +813,7 @@ describe('baseReducer', () => {
 
         const node = nextG.nodes.find(
             (n): n is OrderLineItemSelectionNodeType =>
-                n.type === 'order_line_item_selection'
+                n.type === 'order_line_item_selection',
         )
         expect(node).toBeDefined()
     })
@@ -823,7 +827,7 @@ describe('baseReducer', () => {
 
         let node = nextG.nodes.find(
             (n): n is OrderLineItemSelectionNodeType =>
-                n.type === 'order_line_item_selection'
+                n.type === 'order_line_item_selection',
         )
         expect(node).toBeDefined()
 
@@ -838,7 +842,7 @@ describe('baseReducer', () => {
 
         node = nextG.nodes.find(
             (n): n is OrderLineItemSelectionNodeType =>
-                n.type === 'order_line_item_selection'
+                n.type === 'order_line_item_selection',
         )
         expect(node).toBeDefined()
         expect(node?.data.content.text).toBe('Hello')
@@ -852,7 +856,7 @@ describe('baseReducer', () => {
         })
 
         const node = nextG.nodes.find(
-            (n): n is OrderSelectionNodeType => n.type === 'order_selection'
+            (n): n is OrderSelectionNodeType => n.type === 'order_selection',
         )
         expect(node).toBeDefined()
     })
@@ -865,7 +869,7 @@ describe('baseReducer', () => {
         })
 
         let node = nextG.nodes.find(
-            (n): n is OrderSelectionNodeType => n.type === 'order_selection'
+            (n): n is OrderSelectionNodeType => n.type === 'order_selection',
         )
         expect(node).toBeDefined()
 
@@ -878,7 +882,7 @@ describe('baseReducer', () => {
             },
         })
         node = nextG.nodes.find(
-            (n): n is OrderSelectionNodeType => n.type === 'order_selection'
+            (n): n is OrderSelectionNodeType => n.type === 'order_selection',
         )
         expect(node).toBeDefined()
         expect(node?.data.content.text).toBe('Hello')
@@ -908,7 +912,7 @@ describe('baseReducer', () => {
                 type: 'SET_APP_API_KEY',
                 appId: '123',
                 apiKey: 'some api key',
-            }
+            },
         )
 
         expect(nextG.apps).toEqual([
@@ -936,16 +940,16 @@ describe('baseReducer', () => {
         })
 
         // Should not modify the apps array when app is not found
-        expect(nextG.apps).toEqual([{type: 'shopify'}])
+        expect(nextG.apps).toEqual([{ type: 'shopify' }])
     })
 
     test('SET_APP_API_KEY with multiple apps sets key on correct app', () => {
         const graph = {
             ...visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture,
             apps: [
-                {type: 'shopify' as const},
-                {type: 'app' as const, app_id: '123', api_key: 'old key'},
-                {type: 'app' as const, app_id: '456', api_key: 'other key'},
+                { type: 'shopify' as const },
+                { type: 'app' as const, app_id: '123', api_key: 'old key' },
+                { type: 'app' as const, app_id: '456', api_key: 'other key' },
             ],
         }
         const nextG = baseReducer(graph, {
@@ -956,9 +960,9 @@ describe('baseReducer', () => {
 
         // Should only modify the API key of the matching app
         expect(nextG.apps).toEqual([
-            {type: 'shopify'},
-            {type: 'app', app_id: '123', api_key: 'new key'},
-            {type: 'app', app_id: '456', api_key: 'other key'},
+            { type: 'shopify' },
+            { type: 'app', app_id: '123', api_key: 'new key' },
+            { type: 'app', app_id: '456', api_key: 'other key' },
         ])
     })
 
@@ -969,7 +973,7 @@ describe('baseReducer', () => {
                 type: 'SET_APP_REFRESH_TOKEN',
                 appId: '123',
                 refreshToken: 'some refresh token',
-            }
+            },
         )
 
         expect(nextG.apps).toEqual([
@@ -991,7 +995,7 @@ describe('baseReducer', () => {
                     instructions: 'error',
                     conditions: 'error',
                 },
-            }
+            },
         )
         nextG = baseReducer(nextG, {
             type: 'SET_ERRORS',
@@ -1007,7 +1011,7 @@ describe('baseReducer', () => {
             },
         })
 
-        expect(nextG.errors).toEqual({name: 'error'})
+        expect(nextG.errors).toEqual({ name: 'error' })
         expect(nextG.nodes[0].data.errors).toEqual({
             instructions: 'error',
             conditions: 'error',
@@ -1026,11 +1030,11 @@ describe('baseReducer', () => {
                 errors: {
                     instructions: 'error',
                 },
-            }
+            },
         )
         // Graph should remain unchanged when node is not found
         expect(nextG).toEqual(
-            visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture
+            visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture,
         )
     })
 
@@ -1060,7 +1064,7 @@ describe('baseReducer', () => {
                     instructions: true,
                     conditions: true,
                 },
-            }
+            },
         )
         nextG = baseReducer(nextG, {
             type: 'SET_TOUCHED',
@@ -1076,7 +1080,7 @@ describe('baseReducer', () => {
             },
         })
 
-        expect(nextG.touched).toEqual({name: true})
+        expect(nextG.touched).toEqual({ name: true })
         expect(nextG.nodes[0].data.touched).toEqual({
             instructions: true,
             conditions: true,
@@ -1125,9 +1129,9 @@ describe('baseReducer', () => {
         const g: VisualBuilderGraph = {
             ...visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture,
             apps: [
-                {type: 'app' as const, app_id: '123'},
-                {type: 'shopify' as const},
-                {type: 'recharge' as const},
+                { type: 'app' as const, app_id: '123' },
+                { type: 'shopify' as const },
+                { type: 'recharge' as const },
             ],
             isTemplate: true,
         }
@@ -1147,9 +1151,9 @@ describe('baseReducer', () => {
         const g: VisualBuilderGraph = {
             ...visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture,
             apps: [
-                {type: 'app' as const, app_id: '123'},
-                {type: 'shopify' as const},
-                {type: 'recharge' as const},
+                { type: 'app' as const, app_id: '123' },
+                { type: 'shopify' as const },
+                { type: 'recharge' as const },
             ],
             isTemplate: false,
         }
@@ -1168,9 +1172,9 @@ describe('baseReducer', () => {
         const g: VisualBuilderGraph = {
             ...visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture,
             apps: [
-                {type: 'app' as const, app_id: '123'},
-                {type: 'shopify' as const},
-                {type: 'recharge' as const},
+                { type: 'app' as const, app_id: '123' },
+                { type: 'shopify' as const },
+                { type: 'recharge' as const },
             ],
             isTemplate: true,
         }

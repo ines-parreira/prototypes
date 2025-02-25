@@ -1,4 +1,4 @@
-import {getCurrentPathFromFullValue} from '../getCurrentPathFromFullValue'
+import { getCurrentPathFromFullValue } from '../getCurrentPathFromFullValue'
 
 describe('getCurrentPathFromFullValue', () => {
     it.each([
@@ -15,9 +15,9 @@ describe('getCurrentPathFromFullValue', () => {
         'should the correct path',
         (
             input: Parameters<typeof getCurrentPathFromFullValue>[0],
-            output: ReturnType<typeof getCurrentPathFromFullValue>
+            output: ReturnType<typeof getCurrentPathFromFullValue>,
         ) => {
             expect(getCurrentPathFromFullValue(input)).toEqual(output)
-        }
+        },
     )
 })

@@ -1,28 +1,26 @@
-import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
-import {fireEvent, act} from '@testing-library/react'
-
-import {createMemoryHistory} from 'history'
-import {fromJS, Map} from 'immutable'
 import React from 'react'
 
-import {Provider} from 'react-redux'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { act, fireEvent } from '@testing-library/react'
+import { createMemoryHistory } from 'history'
+import { fromJS, Map } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {account} from 'fixtures/account'
-import {billingState} from 'fixtures/billing'
-import {chatIntegrationFixtures} from 'fixtures/chat'
-import {shopifyIntegration, integrationsState} from 'fixtures/integrations'
+import { account } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
+import { chatIntegrationFixtures } from 'fixtures/chat'
+import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
 import {
     getOnboardingData,
     updateOnboardingData,
 } from 'models/aiAgent/resources/configuration'
-import {PersonalityPreviewStep} from 'pages/aiAgent/Onboarding/components/steps/PersonalityPreviewStep/PersonalityPreviewStep'
-import {DiscountStrategy} from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
-import {PersuasionLevel} from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
-import {AiAgentScopes, WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
-
-import {RootState, StoreDispatch} from 'state/types'
-import {renderWithRouter} from 'utils/testing'
+import { PersonalityPreviewStep } from 'pages/aiAgent/Onboarding/components/steps/PersonalityPreviewStep/PersonalityPreviewStep'
+import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
+import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
+import { AiAgentScopes, WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
+import { RootState, StoreDispatch } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
 jest.mock('models/aiAgent/resources/configuration', () => ({
     getOnboardingData: jest.fn(),
@@ -67,7 +65,7 @@ const renderComponent = (state?: RootState) => {
             history,
             path: '/app/ai-agent/:shopType/:shopName/onboarding/:step',
             route: `/app/ai-agent/shopify/${shopifyIntegration.meta.shop_name}/onboarding/${WizardStepEnum.PERSONALITY_PREVIEW}`,
-        }
+        },
     )
 }
 
@@ -89,14 +87,14 @@ describe('<PersonalityPreviewStep />', () => {
                         scopes,
                         shopName: shopifyIntegration.meta.shop_name,
                     },
-                ])
+                ]),
             )
 
             // // ✅ Mock updateOnboardingData function
             mockUpdateOnboardingData.mockResolvedValue(
                 Promise.resolve({
                     success: true,
-                })
+                }),
             )
         })
 
@@ -104,7 +102,7 @@ describe('<PersonalityPreviewStep />', () => {
             const screen = renderComponent()
 
             expect(
-                screen.getByText('Now see how your AI Agent will respond to')
+                screen.getByText('Now see how your AI Agent will respond to'),
             ).toBeInTheDocument()
         })
 
@@ -112,16 +110,16 @@ describe('<PersonalityPreviewStep />', () => {
             const screen = renderComponent()
 
             expect(screen.getAllByRole('radio')[0]).not.toHaveAttribute(
-                'aria-busy'
+                'aria-busy',
             )
 
             expect(screen.getAllByRole('radio')[0]).toHaveAttribute(
                 'aria-checked',
-                'true'
+                'true',
             )
             expect(screen.getAllByRole('radio')[1]).toHaveAttribute(
                 'aria-checked',
-                'false'
+                'false',
             )
         })
 
@@ -130,11 +128,11 @@ describe('<PersonalityPreviewStep />', () => {
 
             expect(screen.getAllByRole('radio')[0]).toHaveAttribute(
                 'aria-checked',
-                'true'
+                'true',
             )
             expect(screen.getAllByRole('radio')[1]).toHaveAttribute(
                 'aria-checked',
-                'false'
+                'false',
             )
 
             act(() => {
@@ -143,11 +141,11 @@ describe('<PersonalityPreviewStep />', () => {
 
             expect(screen.getAllByRole('radio')[0]).toHaveAttribute(
                 'aria-checked',
-                'false'
+                'false',
             )
             expect(screen.getAllByRole('radio')[1]).toHaveAttribute(
                 'aria-checked',
-                'true'
+                'true',
             )
         })
 

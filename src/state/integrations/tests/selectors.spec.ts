@@ -1,58 +1,59 @@
-import {fromJS, List} from 'immutable'
-import {size} from 'lodash'
+// sort-imports-ignore
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-// eslint-disable-next-line import/order
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
-import {applications as mockApplications} from 'fixtures/applications'
-import {channels as mockChannels} from 'fixtures/channels'
-import {integrationsState} from 'fixtures/integrations'
-import {applicationsQueryKeys as mockApplicationsQueryKeys} from 'models/application/queries'
-import {channelsQueryKeys as mockChannelsQueryKeys} from 'models/channel/queries'
+import { fromJS, List } from 'immutable'
+import { size } from 'lodash'
+
+import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
+import { applications as mockApplications } from 'fixtures/applications'
+import { channels as mockChannels } from 'fixtures/channels'
+import { integrationsState } from 'fixtures/integrations'
+import { applicationsQueryKeys as mockApplicationsQueryKeys } from 'models/application/queries'
+import { channelsQueryKeys as mockChannelsQueryKeys } from 'models/channel/queries'
 import {
-    Integration,
     EmailIntegration,
-    ShopifyIntegration,
-    PhoneIntegration,
+    Integration,
     IntegrationType,
     isPhoneIntegration,
+    PhoneIntegration,
+    ShopifyIntegration,
 } from 'models/integration/types'
-import {getChannelBySlug} from 'services/channels'
-import {RootState} from 'state/types'
+import { getChannelBySlug } from 'services/channels'
+import { RootState } from 'state/types'
 
 import {
+    DEPRECATED_getIntegrations,
+    DEPRECATED_getIntegrationsState,
+    DEPRECATED_getPhoneIntegrations,
+    getActiveEmailChannels,
+    getActiveIntegrations,
     getBaseEmailIntegration,
     getChannelByTypeAndAddress,
-    getEmailChannels,
-    getActiveEmailChannels,
+    getChannelsForSourceType,
     getChannelSignature,
     getCurrentIntegration,
+    getEmailChannels,
     getEmailIntegrations,
     getFacebookRedirectUri,
     getForwardingEmailAddress,
-    DEPRECATED_getIntegrations,
+    getInactiveEmailChannels,
+    getIntegrationByAddress,
+    getIntegrationByIdAndType,
+    getIntegrationChannel,
     getIntegrations,
-    DEPRECATED_getIntegrationsState,
+    getIntegrationsByAppId,
     getIntegrationsState,
+    getIsChatIntegrationStatusError,
+    getIsChatIntegrationStatusLoading,
     getMagento2IntegrationByStoreUrl,
+    getMessagingAndAppIntegrations,
     getOnboardingIntegrations,
     getOnboardingMeta,
+    getSendersForChannel,
     getShopifyIntegrationByShopName,
     getShopifyIntegrationsWithoutFacebook,
-    getMessagingAndAppIntegrations,
-    DEPRECATED_getPhoneIntegrations,
-    getActiveIntegrations,
-    getChannelsForSourceType,
-    getIsChatIntegrationStatusLoading,
-    getIsChatIntegrationStatusError,
-    getIntegrationByIdAndType,
-    getIntegrationByAddress,
-    getSendersForChannel,
-    getIntegrationChannel,
-    getIntegrationsByAppId,
-    getStandardPhoneIntegrations,
-    getInactiveEmailChannels,
     getShowShopifyCheckoutChatBanner,
+    getStandardPhoneIntegrations,
 } from '../selectors'
 
 jest.mock('api/queryClient', () => ({
@@ -115,7 +116,7 @@ describe('integrations selectors', () => {
                         IntegrationType.Twitter,
                         IntegrationType.GorgiasChat,
                     ].includes(integration.type) ||
-                    integration.type === IntegrationType.App
+                    integration.type === IntegrationType.App,
             )
 
             expect(messagingIntegrations).toEqual(expected)
@@ -131,8 +132,8 @@ describe('integrations selectors', () => {
             const expected = allIntegrations.filter(
                 (integration: Integration) =>
                     [IntegrationType.Email, IntegrationType.Gmail].includes(
-                        integration.type
-                    )
+                        integration.type,
+                    ),
             )
 
             expect(emailIntegrations).toEqual(expected)
@@ -202,7 +203,7 @@ describe('integrations selectors', () => {
             isDeactivated: boolean
         }[]
         const inactiveEmailChannels = emailChannels.filter(
-            (channel: {isDeactivated: boolean}) => channel.isDeactivated
+            (channel: { isDeactivated: boolean }) => channel.isDeactivated,
         )
         expect(inactiveEmailChannels).toHaveLength(1)
     })
@@ -212,20 +213,20 @@ describe('integrations selectors', () => {
             isDeactivated: boolean
         }[]
         const inactiveEmailChannels = activeEmailChannels.filter(
-            (channel: {isDeactivated: boolean}) => channel.isDeactivated
+            (channel: { isDeactivated: boolean }) => channel.isDeactivated,
         )
         expect(inactiveEmailChannels).toHaveLength(0)
     })
 
     it('should get channel by type and address', () => {
         expect(
-            getChannelByTypeAndAddress(IntegrationType.Email, '')(state)
+            getChannelByTypeAndAddress(IntegrationType.Email, '')(state),
         ).toEqual(fromJS({}))
         expect(
             getChannelByTypeAndAddress(
                 IntegrationType.Email,
-                'support@acme.gorgias.io'
-            )(state)
+                'support@acme.gorgias.io',
+            )(state),
         ).toMatchSnapshot()
     })
 
@@ -233,8 +234,8 @@ describe('integrations selectors', () => {
         expect(
             getChannelSignature(
                 IntegrationType.Email,
-                'support@acme.gorgias.io'
-            )(state)
+                'support@acme.gorgias.io',
+            )(state),
         ).toMatchSnapshot()
     })
 
@@ -251,7 +252,7 @@ describe('integrations selectors', () => {
                 }),
             } as RootState
             expect(getIntegrationChannel(1)(state)).toEqual(
-                getChannelBySlug('email')
+                getChannelBySlug('email'),
             )
         })
 
@@ -279,7 +280,7 @@ describe('integrations selectors', () => {
                         id: 1,
                         type: 'email',
                         name: 'John Doe',
-                        meta: {address: 'support@mycompany.com'},
+                        meta: { address: 'support@mycompany.com' },
                     },
                     {
                         id: 2,
@@ -313,7 +314,7 @@ describe('integrations selectors', () => {
                         deactivated_datetime:
                             '2023-07-18T17:20:05.655015+00:00',
                         name: 'Deactivated Integration',
-                        meta: {address: 'deactivated@email.com'},
+                        meta: { address: 'deactivated@email.com' },
                     },
                 ],
             }),
@@ -328,7 +329,7 @@ describe('integrations selectors', () => {
 
         it('should get active email integrations as channels when source type is email', () => {
             expect(
-                getChannelsForSourceType(TicketMessageSourceType.Email)(state)
+                getChannelsForSourceType(TicketMessageSourceType.Email)(state),
             ).toEqual(
                 fromJS([
                     {
@@ -379,13 +380,13 @@ describe('integrations selectors', () => {
                         ]),
                         id: 5,
                     },
-                ])
+                ]),
             )
         })
 
         it('should get phone integrations as channels when source type is phone', () => {
             expect(
-                getChannelsForSourceType(TicketMessageSourceType.Phone)(state)
+                getChannelsForSourceType(TicketMessageSourceType.Phone)(state),
             ).toEqual(
                 fromJS([
                     {
@@ -408,13 +409,13 @@ describe('integrations selectors', () => {
                         isDeactivated: false,
                         channel: 'phone',
                     },
-                ])
+                ]),
             )
         })
 
         it('should get SMS integrations as channels when source type is sms', () => {
             expect(
-                getChannelsForSourceType(TicketMessageSourceType.Sms)(state)
+                getChannelsForSourceType(TicketMessageSourceType.Sms)(state),
             ).toEqual(
                 fromJS([
                     {
@@ -437,15 +438,15 @@ describe('integrations selectors', () => {
                         isDeactivated: false,
                         channel: 'sms',
                     },
-                ])
+                ]),
             )
         })
 
         it('should get WhatsApp integrations as channels when source type is whatsapp-message', () => {
             expect(
                 getChannelsForSourceType(
-                    TicketMessageSourceType.WhatsAppMessage
-                )(state)
+                    TicketMessageSourceType.WhatsAppMessage,
+                )(state),
             ).toEqual(
                 fromJS([
                     {
@@ -474,7 +475,7 @@ describe('integrations selectors', () => {
                         isDeactivated: false,
                         channel: 'whatsapp-message',
                     },
-                ])
+                ]),
             )
         })
     })
@@ -578,7 +579,7 @@ describe('integrations selectors', () => {
         it('should return fromJS({}) because there is no current integration', () => {
             const state = {
                 integrations: fromJS({
-                    integrations: [{id: 1}, {id: 2}],
+                    integrations: [{ id: 1 }, { id: 2 }],
                     integration: null,
                 }),
             } as RootState
@@ -587,16 +588,16 @@ describe('integrations selectors', () => {
         })
 
         it('should return the current integration', () => {
-            const currentIntegration = {id: 3}
+            const currentIntegration = { id: 3 }
             const state = {
                 integrations: fromJS({
-                    integrations: [{id: 1}, {id: 2}],
+                    integrations: [{ id: 1 }, { id: 2 }],
                     integration: currentIntegration,
                 }),
             } as RootState
 
             expect(getCurrentIntegration(state).toJS()).toEqual(
-                currentIntegration
+                currentIntegration,
             )
         })
     })
@@ -605,24 +606,24 @@ describe('integrations selectors', () => {
         ;[IntegrationType.Facebook].forEach((integrationType) => {
             it(`should return an empty list because there is no integrations in the state (${integrationType})`, () => {
                 expect(
-                    getOnboardingIntegrations(integrationType)({} as RootState)
+                    getOnboardingIntegrations(integrationType)({} as RootState),
                 ).toEqual(fromJS([]))
             })
 
             it(`should return the list of onboarding pages from the state (${integrationType})`, () => {
-                const page = {id: 1, name: 'foo'}
+                const page = { id: 1, name: 'foo' }
                 const state = {
                     integrations: fromJS({
                         extra: {
                             [integrationType]: {
-                                onboardingIntegrations: {data: [page]},
+                                onboardingIntegrations: { data: [page] },
                             },
                         },
                     }),
                 } as RootState
 
                 expect(
-                    getOnboardingIntegrations(integrationType)(state).toJS()
+                    getOnboardingIntegrations(integrationType)(state).toJS(),
                 ).toEqual([page])
             })
         })
@@ -633,27 +634,27 @@ describe('integrations selectors', () => {
             (integrationType) => {
                 it(`should return an empty map because there is no meta in the state (${integrationType})`, () => {
                     expect(
-                        getOnboardingMeta(integrationType)({} as RootState)
+                        getOnboardingMeta(integrationType)({} as RootState),
                     ).toEqual(fromJS({}))
                 })
 
                 it('should return the meta of onboarding pages from the state', () => {
-                    const meta = {page: 1}
+                    const meta = { page: 1 }
                     const state = {
                         integrations: fromJS({
                             extra: {
                                 [integrationType]: {
-                                    onboardingIntegrations: {meta},
+                                    onboardingIntegrations: { meta },
                                 },
                             },
                         }),
                     } as RootState
 
                     expect(
-                        getOnboardingMeta(integrationType)(state).toJS()
+                        getOnboardingMeta(integrationType)(state).toJS(),
                     ).toEqual(meta)
                 })
-            }
+            },
         )
     })
 
@@ -737,7 +738,7 @@ describe('integrations selectors', () => {
             } as RootState
 
             expect(getForwardingEmailAddress(state)).toEqual(
-                forwardingEmailAddress
+                forwardingEmailAddress,
             )
         })
     })
@@ -747,11 +748,11 @@ describe('integrations selectors', () => {
 
         const expected = (
             DEPRECATED_getIntegrationsState(state).get(
-                'integrations'
+                'integrations',
             ) as List<any>
         ).filter(
             (integration: Map<any, any>) =>
-                !integration.get('deactivated_datetime')
+                !integration.get('deactivated_datetime'),
         )
 
         expect(integrations).toEqual(expected)
@@ -832,12 +833,12 @@ describe('integrations selectors', () => {
     describe('getIntegrationByIdAndType()', () => {
         it('should return the integration with the given id and type', () => {
             expect(
-                getIntegrationByIdAndType(4, IntegrationType.Http)(state)
+                getIntegrationByIdAndType(4, IntegrationType.Http)(state),
             ).toEqual(
                 expect.objectContaining({
                     id: 4,
                     type: IntegrationType.Http,
-                })
+                }),
             )
         })
     })
@@ -846,16 +847,16 @@ describe('integrations selectors', () => {
         it('should return the same list as getChannelsForSourceType() for legacy channels', () => {
             expect(getSendersForChannel('email')(state)).toEqual(
                 getChannelsForSourceType(TicketMessageSourceType.Email)(
-                    state
-                ).toJS()
+                    state,
+                ).toJS(),
             )
             expect(getSendersForChannel('whatsapp-message')(state)).toEqual(
                 getChannelsForSourceType(
-                    TicketMessageSourceType.WhatsAppMessage
-                )(state).toJS()
+                    TicketMessageSourceType.WhatsAppMessage,
+                )(state).toJS(),
             )
             expect(getSendersForChannel('whatsapp')(state)).toEqual(
-                getChannelsForSourceType(TicketChannel.WhatsApp)(state).toJS()
+                getChannelsForSourceType(TicketChannel.WhatsApp)(state).toJS(),
             )
         })
 
@@ -913,7 +914,7 @@ describe('integrations selectors', () => {
     describe('getIntegrationByAddress()', () => {
         it('should return a matching integration by address', () => {
             const integrationByAddress = getIntegrationByAddress(
-                'billing@acme.gorgias.io'
+                'billing@acme.gorgias.io',
             )(state)
             expect(integrationByAddress).toBeDefined()
             expect(integrationByAddress!.id).toEqual(5)
@@ -953,7 +954,7 @@ describe('integrations selectors', () => {
             }),
         } as RootState
         expect(
-            getIntegrationsByAppId('64785607477d0a11fc731bfa')(state)
+            getIntegrationsByAppId('64785607477d0a11fc731bfa')(state),
         ).toEqual([
             {
                 id: 123,
@@ -994,7 +995,7 @@ describe('integrations selectors', () => {
                 }),
             } as RootState
             expect(
-                getIntegrationsByAppId('64785607477d0a11fc731bfa')(state)
+                getIntegrationsByAppId('64785607477d0a11fc731bfa')(state),
             ).toEqual([
                 {
                     id: 123,
@@ -1061,7 +1062,7 @@ describe('integrations selectors', () => {
             ${true}      | ${true}
         `(
             'should return $expectedValue if the flag is in state is $stateValue',
-            ({stateValue, expectedValue}) => {
+            ({ stateValue, expectedValue }) => {
                 const state = {
                     integrations: fromJS({
                         extra: {
@@ -1072,9 +1073,9 @@ describe('integrations selectors', () => {
                     }),
                 } as RootState
                 expect(getShowShopifyCheckoutChatBanner(state)).toEqual(
-                    expectedValue
+                    expectedValue,
                 )
-            }
+            },
         )
     })
 })

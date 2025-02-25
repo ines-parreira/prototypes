@@ -1,25 +1,26 @@
-import {useEffect} from 'react'
-// eslint-disable-next-line no-restricted-imports
-import {useDispatch} from 'react-redux'
+import { useEffect } from 'react'
 
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
+// eslint-disable-next-line no-restricted-imports
+import { useDispatch } from 'react-redux'
+
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import usePrevious from 'hooks/usePrevious'
-import {opposite, OrderDirection} from 'models/api/types'
-import {StatsFilters} from 'models/stat/types'
-import {IntentTableColumn} from 'pages/aiAgent/insights/IntentTableWidget/types'
+import { opposite, OrderDirection } from 'models/api/types'
+import { StatsFilters } from 'models/stat/types'
+import { IntentTableColumn } from 'pages/aiAgent/insights/IntentTableWidget/types'
 import {
     isExtraLargeScreen,
     isMediumOrSmallScreen,
 } from 'pages/common/utils/mobile'
-import {MetricValueFormat} from 'pages/stats/common/utils'
-import {TooltipData} from 'pages/stats/types'
+import { MetricValueFormat } from 'pages/stats/common/utils'
+import { TooltipData } from 'pages/stats/types'
 import {
     DEFAULT_SORTING_DIRECTION,
-    sortingSet,
     getIntentSorting,
     sortingLoaded,
     sortingLoading,
+    sortingSet,
 } from 'state/ui/stats/insightsSlice'
 
 export const TableColumnsOrder: IntentTableColumn[] = [
@@ -114,7 +115,7 @@ export const getColumnContentAlignment = (column: IntentTableColumn) => {
 }
 
 export const IntentRowConfig: Partial<
-    Record<IntentTableColumn, {hint?: TooltipData | null}>
+    Record<IntentTableColumn, { hint?: TooltipData | null }>
 > = {
     // TODO we are hiding the hint for now, but we will need to add it back when the industry average feature is ready
     [IntentTableColumn.SuccessRate]: {},
@@ -127,25 +128,25 @@ export function useIntentSortingQuery(
         timezone: string,
         sorting?: OrderDirection,
         intentId?: string,
-        intentLevel?: number
+        intentLevel?: number,
     ) => {
         data: any
         isFetching: boolean
     },
     intentId?: string,
-    intentLevel?: number
+    intentLevel?: number,
 ) {
     const dispatch = useDispatch()
     const sorting = useAppSelector(getIntentSorting)
 
-    const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone } = useNewStatsFilters()
 
     const queryData = useQuery(
         cleanStatsFilters,
         userTimezone,
         sorting?.direction,
         intentId,
-        intentLevel
+        intentLevel,
     )
     const isFetching = queryData?.isFetching
     const data = queryData?.data
@@ -154,7 +155,7 @@ export function useIntentSortingQuery(
     const prevIntentLevel = usePrevious(intentLevel)
 
     const prevStartDatetime = usePrevious(
-        cleanStatsFilters?.period?.start_datetime
+        cleanStatsFilters?.period?.start_datetime,
     )
     const prevEndDatetime = usePrevious(cleanStatsFilters?.period?.end_datetime)
 
@@ -208,7 +209,7 @@ export function useIntentSortingQuery(
                         sorting.field === column
                             ? opposite(sorting?.direction)
                             : DEFAULT_SORTING_DIRECTION,
-                })
+                }),
             )
         },
         direction: sorting?.direction,

@@ -1,11 +1,11 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {Location} from 'history'
-import {useLocation} from 'react-router-dom'
+import { renderHook } from '@testing-library/react-hooks'
+import { Location } from 'history'
+import { useLocation } from 'react-router-dom'
 
 import history from 'pages/history'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
-import {useSearchParam} from '../useSearchParam'
+import { useSearchParam } from '../useSearchParam'
 
 jest.mock('react-router-dom', () => ({
     useLocation: jest.fn(),

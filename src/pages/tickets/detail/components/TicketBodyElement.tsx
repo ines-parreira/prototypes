@@ -1,18 +1,19 @@
-import {fromJS, Map} from 'immutable'
-import {Moment} from 'moment'
 import React from 'react'
 
-import {PHONE_EVENTS} from 'constants/event'
+import { fromJS, Map } from 'immutable'
+import { Moment } from 'moment'
+
+import { PHONE_EVENTS } from 'constants/event'
 import useAppSelector from 'hooks/useAppSelector'
 import {
+    isTicketContactReasonSuggestion,
     isTicketEvent,
     isTicketRuleSuggestion,
     isTicketSatisfactionSurvey,
-    isTicketContactReasonSuggestion,
 } from 'models/ticket/predicates'
-import {TicketElement, TicketEvent, TicketMessage} from 'models/ticket/types'
-import {isVoiceCall} from 'models/voiceCall/types'
-import {ErrorBoundary} from 'pages/ErrorBoundary'
+import { TicketElement, TicketEvent, TicketMessage } from 'models/ticket/types'
+import { isVoiceCall } from 'models/voiceCall/types'
+import { ErrorBoundary } from 'pages/ErrorBoundary'
 import AuditLogEvent, {
     contentfulEventTypesValues,
     HighlightedElements,
@@ -29,12 +30,12 @@ import ContactReasonSuggestion from 'pages/tickets/detail/components/RuleSuggest
 import RuleSuggestion from 'pages/tickets/detail/components/RuleSuggestion/RuleSuggestion'
 import SatisfactionSurvey from 'pages/tickets/detail/components/SatisfactionSurvey'
 import TicketMessages from 'pages/tickets/detail/components/TicketMessages/TicketMessages'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {getLastCustomerMessage, getTicketState} from 'state/ticket/selectors'
-import {generateTicketMessagesId} from 'utils'
-import {reportError} from 'utils/errors'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { getLastCustomerMessage, getTicketState } from 'state/ticket/selectors'
+import { generateTicketMessagesId } from 'utils'
+import { reportError } from 'utils/errors'
 
-import {TicketEventPrivateReplyData} from '../../../../models/event/types'
+import { TicketEventPrivateReplyData } from '../../../../models/event/types'
 import TicketVoiceCall from './TicketVoiceCall/TicketVoiceCall'
 
 interface Props {
@@ -139,7 +140,7 @@ const TicketBodyElement = ({
 
     if (!isTicketEvent(element)) {
         reportError(new Error('Null ticket element'), {
-            extra: {element},
+            extra: { element },
         })
 
         return null

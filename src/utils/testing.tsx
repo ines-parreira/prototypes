@@ -1,18 +1,19 @@
-import {act, render, RenderOptions} from '@testing-library/react'
-import {BackendFactory} from 'dnd-core'
-import {createMemoryHistory, History} from 'history'
+import React, { ComponentType, Context, ReactElement, useContext } from 'react'
+
+import { act, render, RenderOptions } from '@testing-library/react'
+import { BackendFactory } from 'dnd-core'
+import { createMemoryHistory, History } from 'history'
 import _findLast from 'lodash/findLast'
 import _last from 'lodash/last'
-import React, {ComponentType, Context, ReactElement, useContext} from 'react'
-import {DndProvider} from 'react-dnd'
-import {HTML5Backend} from 'react-dnd-html5-backend'
-import {Provider} from 'react-redux'
-import {Route, Router} from 'react-router-dom'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+import { Provider } from 'react-redux'
+import { Route, Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import shortcutManager from 'services/shortcutManager/shortcutManager'
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
 
 const middlewares = [thunk]
 
@@ -31,7 +32,7 @@ export type RenderWithRouterParams = {
 
 export const renderWithStore = (
     ui: ReactElement,
-    state: Partial<RootState>
+    state: Partial<RootState>,
 ) => {
     const store = configureMockStore(middlewares)(state)
     const component = render(<Provider store={store}>{ui}</Provider>)
@@ -39,12 +40,12 @@ export const renderWithStore = (
         ...component,
         rerenderComponent: (
             newUi: ReactElement,
-            newState: Partial<RootState>
+            newState: Partial<RootState>,
         ) =>
             component.rerender(
                 <Provider store={configureMockStore(middlewares)(newState)}>
                     {newUi}
-                </Provider>
+                </Provider>,
             ),
         store,
     }
@@ -56,11 +57,11 @@ export const renderWithRouter = (
         options,
         path = '/',
         route = '/',
-        history = createMemoryHistory({initialEntries: [route]}),
-    }: RenderWithRouterParams = {}
+        history = createMemoryHistory({ initialEntries: [route] }),
+    }: RenderWithRouterParams = {},
 ) => {
     const component = render(ui, {
-        wrapper: ({children}: any) => (
+        wrapper: ({ children }: any) => (
             <Router history={history}>
                 <Route path={path}>{children}</Route>
             </Router>
@@ -73,7 +74,7 @@ export const renderWithRouter = (
             component.rerender(
                 <Router history={history}>
                     <Route path={path}>{newUi}</Route>
-                </Router>
+                </Router>,
             ),
     }
 }
@@ -85,10 +86,10 @@ export type RenderWithDnDParams = {
 
 export const renderWithDnD = (
     ui: ReactElement,
-    {options, backend = HTML5Backend}: RenderWithDnDParams = {}
+    { options, backend = HTML5Backend }: RenderWithDnDParams = {},
 ) => {
     return render(ui, {
-        wrapper: ({children}: any) => (
+        wrapper: ({ children }: any) => (
             <DndProvider backend={backend}>{children}</DndProvider>
         ),
         ...options,
@@ -104,12 +105,12 @@ export const renderWithRouterAndDnD = (
         options,
         path = '/',
         route = '/',
-        history = createMemoryHistory({initialEntries: [route]}),
+        history = createMemoryHistory({ initialEntries: [route] }),
         backend = HTML5Backend,
-    }: RenderWithRouterAndDnDParams = {}
+    }: RenderWithRouterAndDnDParams = {},
 ) => {
     return render(ui, {
-        wrapper: ({children}: any) => (
+        wrapper: ({ children }: any) => (
             <DndProvider backend={backend}>
                 <Router history={history}>
                     <Route path={path}>{children}</Route>
@@ -125,7 +126,7 @@ export type ContextConsumerMock<ContextValue> = ComponentType & {
 }
 
 export const createContextConsumer = <ContextValue,>(
-    context: Context<ContextValue>
+    context: Context<ContextValue>,
 ): ContextConsumerMock<ContextValue> => {
     const renderContext = jest
         .fn()
@@ -167,7 +168,7 @@ export const flushPromises = () => new Promise(setImmediate)
 export const makeExecuteKeyboardAction = (
     shortcutManagerMock: jest.Mocked<typeof shortcutManager>,
     shortcutEventMock?: jest.Mocked<Event>,
-    component?: string
+    component?: string,
 ) => {
     const eventMock =
         shortcutEventMock ||
@@ -180,7 +181,7 @@ export const makeExecuteKeyboardAction = (
         const lastCall = component
             ? _findLast(
                   shortcutManagerMock.bind.mock.calls,
-                  ([name]) => component === name
+                  ([name]) => component === name,
               )
             : _last(shortcutManagerMock.bind.mock.calls)
         if (!lastCall) {
@@ -189,14 +190,14 @@ export const makeExecuteKeyboardAction = (
         const [, actions] = lastCall
         act(() => {
             ;(actions![shortcutName].action as (event: Event) => void)(
-                eventMock
+                eventMock,
             )
         })
     }
 }
 
 export const assumeMock = <TFunction extends (...args: any[]) => any>(
-    mock: TFunction
+    mock: TFunction,
 ): jest.MockedFunction<TFunction> => {
     return mock as jest.MockedFunction<TFunction>
 }
@@ -221,11 +222,11 @@ export const mockRequestAnimationFrame = (getFrameId = () => Infinity) => {
 }
 
 export const getLastMockCall = <TFunction extends (...args: any[]) => any>(
-    mockedFunction: jest.MockedFunction<TFunction>
+    mockedFunction: jest.MockedFunction<TFunction>,
 ) => mockedFunction.mock.calls.slice(-1)[0]
 
 export function triggerWidthResize(value: number) {
-    Object.defineProperty(window, 'innerWidth', {value})
+    Object.defineProperty(window, 'innerWidth', { value })
 
     window.dispatchEvent(new Event('resize'))
 }

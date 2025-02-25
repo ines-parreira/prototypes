@@ -1,13 +1,13 @@
-import {stringify} from 'qs'
+import { stringify } from 'qs'
 
 import client from 'models/api/resources'
 
-import {EmailProvider} from '../constants'
+import { EmailProvider } from '../constants'
 import {
-    EmailMigrationInboundVerification,
-    EmailMigrationBannerStatus,
-    EmailMigrationOutboundVerification,
     EmailDomain,
+    EmailMigrationBannerStatus,
+    EmailMigrationInboundVerification,
+    EmailMigrationOutboundVerification,
 } from '../types'
 
 type StartMigrationResponse = {
@@ -22,7 +22,7 @@ export type CreateDomainVerificationPayload = {
 
 export const startEmailMigration = async () => {
     const response = await client.post<StartMigrationResponse>(
-        '/integrations/email/migration'
+        '/integrations/email/migration',
     )
     return response.data
 }
@@ -36,14 +36,14 @@ export const fetchMigrations = async () => {
 
 export const fetchEmailMigrationBannerStatus = async () => {
     const response = await client.get<EmailMigrationBannerStatus>(
-        '/integrations/email/migration'
+        '/integrations/email/migration',
     )
     return response.data
 }
 
 export const verifyMigrationIntegration = async (id: number) => {
     const response = await client.post<EmailMigrationInboundVerification>(
-        `/integrations/email/${id}/migration/verify`
+        `/integrations/email/${id}/migration/verify`,
     )
     return response.data
 }
@@ -56,16 +56,16 @@ export const fetchMigrationDomains = async () => {
 }
 
 export const createDomainVerification = async (
-    payload: CreateDomainVerificationPayload
+    payload: CreateDomainVerificationPayload,
 ) => {
-    const {domainName, dkimKeySize, provider} = payload
+    const { domainName, dkimKeySize, provider } = payload
     const response = await client.put<EmailDomain>(
         `/api/integrations/domains/${domainName}`,
         {
             dkim_key_size: dkimKeySize,
-            params: {provider},
+            params: { provider },
             paramsSerializer: stringify,
-        }
+        },
     )
 
     return response.data

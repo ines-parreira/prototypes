@@ -1,9 +1,10 @@
-import {cleanup, render, screen} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
 
-import {migrationOutboundVerificationUnverifiedSingleSender} from 'fixtures/emailMigration'
-import {mockStore} from 'utils/testing'
+import { cleanup, render, screen } from '@testing-library/react'
+import { Provider } from 'react-redux'
+
+import { migrationOutboundVerificationUnverifiedSingleSender } from 'fixtures/emailMigration'
+import { mockStore } from 'utils/testing'
 
 import SingleSenderVerificationTable from '../EmailMigration/SingleSenderVerificationTable'
 
@@ -12,7 +13,7 @@ const integrations =
 
 jest.mock(
     'pages/integrations/integration/components/email/EmailMigration/SingleSenderVerificationTableRow',
-    () => () => <div>SingleSenderVerificationTableRowMock</div>
+    () => () => <div>SingleSenderVerificationTableRowMock</div>,
 )
 
 describe('SingleSenderVerificationTable', () => {
@@ -24,7 +25,7 @@ describe('SingleSenderVerificationTable', () => {
                     integrations={Array(10).fill(integrations[0])}
                     hasSubmittedBulkVerification={false}
                 />
-            </Provider>
+            </Provider>,
         )
 
     afterEach(cleanup)
@@ -32,7 +33,7 @@ describe('SingleSenderVerificationTable', () => {
     it('should render only first 5 items', () => {
         renderComponent()
         expect(
-            screen.getAllByText('SingleSenderVerificationTableRowMock')
+            screen.getAllByText('SingleSenderVerificationTableRowMock'),
         ).toHaveLength(5)
     })
 })

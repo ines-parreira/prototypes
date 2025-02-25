@@ -1,4 +1,4 @@
-import {VARIABLES} from 'tickets/common/config'
+import { VARIABLES } from 'tickets/common/config'
 
 import getVariableWithValue from '../getVariableWithValue'
 

@@ -1,7 +1,8 @@
-import {act, fireEvent, render, waitFor, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -13,18 +14,18 @@ import {
     LocaleCode,
     UpdateCategoryTranslationDto,
 } from 'models/helpCenter/types'
-import {getSingleCustomDomainResponseFixture as customDomain} from 'pages/settings/helpCenter/fixtures/getCustomDomainsResponse.fixture'
-import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
-import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
-import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
-import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
-import {RootState, StoreDispatch} from 'state/types'
-import {initialState as uiState} from 'state/ui/helpCenter/reducer'
+import { getSingleCustomDomainResponseFixture as customDomain } from 'pages/settings/helpCenter/fixtures/getCustomDomainsResponse.fixture'
+import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
+import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
+import { initialState as articlesState } from 'state/entities/helpCenter/articles/reducer'
+import { initialState as categoriesState } from 'state/entities/helpCenter/categories/reducer'
+import { RootState, StoreDispatch } from 'state/types'
+import { initialState as uiState } from 'state/ui/helpCenter/reducer'
 
 import CurrentHelpCenterContext from '../../../contexts/CurrentHelpCenterContext'
-import {getSingleCategoryEnglish} from '../../../fixtures/getCategoriesResponse.fixtures'
-import {HelpCenterCategoryEdit} from '../HelpCenterCategoryEdit'
+import { getSingleCategoryEnglish } from '../../../fixtures/getCategoriesResponse.fixtures'
+import { HelpCenterCategoryEdit } from '../HelpCenterCategoryEdit'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -48,14 +49,14 @@ jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 jest.mock('rest_api/help_center_api/uploadAttachments', () => {
     return {
         uploadAttachments: jest.fn(
-            (files: FileList) => Promise.resolve([{url: files[0].name}]) // Use this just for testing purposes to see which exact image was "uploaded"
+            (files: FileList) => Promise.resolve([{ url: files[0].name }]), // Use this just for testing purposes to see which exact image was "uploaded"
         ),
     } as unknown
 })
 
 const onLocaleChange = jest.fn()
 
-const wrapper = ({children}: {children?: React.ReactNode}) => (
+const wrapper = ({ children }: { children?: React.ReactNode }) => (
     <CurrentHelpCenterContext.Provider
         value={getSingleHelpCenterResponseFixture}
     >
@@ -70,7 +71,7 @@ type Props = {
     helpCenter?: HelpCenter
     onSave?: (
         translation: UpdateCategoryTranslationDto,
-        locale: LocaleCode
+        locale: LocaleCode,
     ) => void
     onCreate?: (payload: CreateCategoryDto) => void
     category?: Category
@@ -128,11 +129,11 @@ describe('<HelpCenterCategoryEdit />', () => {
                 onLocaleChange={jest.fn()}
                 onDeleteTranslation={jest.fn()}
             />,
-            {wrapper}
+            { wrapper },
         )
 
         expect(screen.getByLabelText('Category edit').className).toEqual(
-            'drawer drawer'
+            'drawer drawer',
         )
     })
 
@@ -140,19 +141,19 @@ describe('<HelpCenterCategoryEdit />', () => {
         render(<Example isOpen />)
 
         expect(screen.getByLabelText('Category edit').className).toEqual(
-            'drawer opened drawer'
+            'drawer opened drawer',
         )
     })
 
     it('focuses the Title input after drawer finish its transition', async () => {
-        const {getByTestId} = render(<Example isOpen />)
+        const { getByTestId } = render(<Example isOpen />)
         const titleInput = getByTestId('title-input')
         await waitFor(() => expect(document.activeElement).toEqual(titleInput))
     })
 
     describe('when the slug input is pristine', () => {
         it('autocomplete the Slug input when Title is changed', () => {
-            const {getByTestId} = render(<Example isOpen />)
+            const { getByTestId } = render(<Example isOpen />)
 
             const slugInput = getByTestId('slug-input') as HTMLInputElement
             expect(slugInput.value).toEqual('')
@@ -169,7 +170,7 @@ describe('<HelpCenterCategoryEdit />', () => {
 
     describe('when the slug was touched', () => {
         it(`doesn't change the Slug input when Title is changed`, () => {
-            const {getByTestId} = render(<Example isOpen />)
+            const { getByTestId } = render(<Example isOpen />)
 
             const slugInput = getByTestId('slug-input') as HTMLInputElement
             fireEvent.change(getByTestId('slug-input'), {
@@ -191,7 +192,7 @@ describe('<HelpCenterCategoryEdit />', () => {
     })
 
     it('changes the language in the slug domain', () => {
-        const {getByTestId} = render(<Example isOpen />)
+        const { getByTestId } = render(<Example isOpen />)
 
         fireEvent.click(getByTestId('dropdown-select-trigger'))
         fireEvent.click(getByTestId('option-fr-FR'))
@@ -200,23 +201,23 @@ describe('<HelpCenterCategoryEdit />', () => {
     })
 
     it("displays the custom domain's hostname in slug", () => {
-        const {getByTestId} = render(
+        const { getByTestId } = render(
             <Example
                 isOpen
                 helpCenter={{
                     ...getSingleHelpCenterResponseFixture,
                     customDomain,
                 }}
-            />
+            />,
         )
 
         expect(getByTestId('slug-prefix').textContent).toEqual(
-            `http://${customDomain.hostname}/en-US/articles/`
+            `http://${customDomain.hostname}/en-US/articles/`,
         )
     })
 
     it('disables the Save button if title or slug are missing', () => {
-        const {getByTestId} = render(<Example isOpen />)
+        const { getByTestId } = render(<Example isOpen />)
         const button = getByTestId('button-save') as HTMLButtonElement
 
         expect(button).toBeAriaDisabled()
@@ -239,7 +240,7 @@ describe('<HelpCenterCategoryEdit />', () => {
     })
 
     it('disables the Save button if canSave is false', () => {
-        const {getByTestId} = render(<Example isOpen canSave={false} />)
+        const { getByTestId } = render(<Example isOpen canSave={false} />)
         const button = getByTestId('button-save') as HTMLButtonElement
 
         expect(button).toBeAriaDisabled()
@@ -254,7 +255,7 @@ describe('<HelpCenterCategoryEdit />', () => {
     })
 
     it('resets the fields when isOpen changes to false', () => {
-        const {getByTestId} = render(<Example isOpen />)
+        const { getByTestId } = render(<Example isOpen />)
         const titleInput = getByTestId('title-input') as HTMLInputElement
 
         act(() => {
@@ -286,7 +287,7 @@ describe('<HelpCenterCategoryEdit />', () => {
         })
 
         it('should create category with image and title', async () => {
-            const file = new File(['hello'], 'hello.png', {type: 'image/png'})
+            const file = new File(['hello'], 'hello.png', { type: 'image/png' })
             const fakeOnCreate = jest.fn()
             render(<Example onCreate={fakeOnCreate} isOpen isCreate />)
 
@@ -294,7 +295,7 @@ describe('<HelpCenterCategoryEdit />', () => {
 
             userEvent.upload(
                 screen.getByLabelText('Drop zone files input'),
-                file
+                file,
             )
 
             userEvent.click(screen.getByTestId('button-save'))
@@ -307,11 +308,11 @@ describe('<HelpCenterCategoryEdit />', () => {
                         image_url: 'hello.png',
                         locale: 'en-US',
                         parent_category_id: undefined,
-                        seo_meta: {description: null, title: null},
+                        seo_meta: { description: null, title: null },
                         slug: 'title',
                         visibility_status: 'PUBLIC',
                     },
-                })
+                }),
             )
         })
 
@@ -332,7 +333,7 @@ describe('<HelpCenterCategoryEdit />', () => {
                     isCreate={false}
                     category={category}
                     translation={translation}
-                />
+                />,
             )
 
             userEvent.click(screen.getByTestId('image-upload-remove'))
@@ -350,8 +351,8 @@ describe('<HelpCenterCategoryEdit />', () => {
                         seo_meta: translation.seo_meta,
                         visibility_status: translation.visibility_status,
                     },
-                    'en-US'
-                )
+                    'en-US',
+                ),
             )
         })
 
@@ -372,7 +373,7 @@ describe('<HelpCenterCategoryEdit />', () => {
                     isCreate={false}
                     category={category}
                     translation={translation}
-                />
+                />,
             )
 
             userEvent.click(screen.getByText('Remove image'))
@@ -390,8 +391,8 @@ describe('<HelpCenterCategoryEdit />', () => {
                         seo_meta: translation.seo_meta,
                         visibility_status: translation.visibility_status,
                     },
-                    'en-US'
-                )
+                    'en-US',
+                ),
             )
         })
     })

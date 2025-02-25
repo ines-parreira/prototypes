@@ -1,10 +1,11 @@
-import {render} from '@testing-library/react'
-import React, {ReactNode} from 'react'
+import React, { ReactNode } from 'react'
 
-import {Panel, Panels} from 'panels'
-import {LayoutKeys} from 'split-ticket-view/constants'
+import { render } from '@testing-library/react'
 
-import PanelLayout, {PanelLayoutConfig} from '../PanelLayout'
+import { Panel, Panels } from 'panels'
+import { LayoutKeys } from 'split-ticket-view/constants'
+
+import PanelLayout, { PanelLayoutConfig } from '../PanelLayout'
 
 jest.mock('panels', () => ({
     Panel: jest.fn(),
@@ -16,12 +17,14 @@ const PanelsMock = Panels as jest.Mock
 describe('PanelLayout', () => {
     beforeEach(() => {
         PanelMock.mockReturnValue(<div>Panel</div>)
-        PanelsMock.mockImplementation(({children}: {children: ReactNode}) => (
-            <div>
-                <p>Panels</p>
-                {children}
-            </div>
-        ))
+        PanelsMock.mockImplementation(
+            ({ children }: { children: ReactNode }) => (
+                <div>
+                    <p>Panels</p>
+                    {children}
+                </div>
+            ),
+        )
     })
 
     it('should convert the given config', () => {
@@ -38,22 +41,22 @@ describe('PanelLayout', () => {
             },
         ]
 
-        const {getByText} = render(
-            <PanelLayout config={config} layoutKey={LayoutKeys.TICKET} />
+        const { getByText } = render(
+            <PanelLayout config={config} layoutKey={LayoutKeys.TICKET} />,
         )
 
         expect(PanelMock).toHaveBeenCalledWith(
             expect.objectContaining({
                 children: <p>Navbar</p>,
             }),
-            expect.anything()
+            expect.anything(),
         )
 
         expect(PanelMock).toHaveBeenCalledWith(
             expect.objectContaining({
                 children: <p>Ticket</p>,
             }),
-            expect.anything()
+            expect.anything(),
         )
         expect(PanelsMock).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -62,7 +65,7 @@ describe('PanelLayout', () => {
                     [Infinity, 400],
                 ],
             }),
-            expect.anything()
+            expect.anything(),
         )
         expect(getByText('Panels')).toBeInTheDocument()
     })

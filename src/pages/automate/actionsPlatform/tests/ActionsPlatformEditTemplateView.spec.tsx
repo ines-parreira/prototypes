@@ -1,28 +1,27 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {act, fireEvent, screen, waitFor} from '@testing-library/react'
-import {produce} from 'immer'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
+import { produce } from 'immer'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {ulid} from 'ulidx'
+import { ulid } from 'ulidx'
 
 import {
     useDownloadWorkflowConfigurationStepLogs,
     useGetWorkflowConfigurationTemplates,
     useListActionsApps,
 } from 'models/workflows/queries'
-import {WorkflowConfigurationBuilder} from 'pages/automate/workflows/models/workflowConfiguration.model'
-import {RootState, StoreDispatch} from 'state/types'
-
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-
-import {renderWithRouter} from 'utils/testing'
+import { WorkflowConfigurationBuilder } from 'pages/automate/workflows/models/workflowConfiguration.model'
+import { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { renderWithRouter } from 'utils/testing'
 
 import ActionsPlatformEditTemplateView from '../ActionsPlatformEditTemplateView'
 import useEditActionTemplate from '../hooks/useEditActionTemplate'
-import {ActionTemplate} from '../types'
+import { ActionTemplate } from '../types'
 
 jest.mock('models/workflows/queries')
 jest.mock('../hooks/useEditActionTemplate')
@@ -30,11 +29,11 @@ jest.mock('../hooks/useEditActionTemplate')
 const queryClient = mockQueryClient()
 const mockUseEditActionTemplate = jest.mocked(useEditActionTemplate)
 const mockUseDownloadWorkflowConfigurationStepLogs = jest.mocked(
-    useDownloadWorkflowConfigurationStepLogs
+    useDownloadWorkflowConfigurationStepLogs,
 )
 const mockUseListActionsApps = jest.mocked(useListActionsApps)
 const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
-    useGetWorkflowConfigurationTemplates
+    useGetWorkflowConfigurationTemplates,
 )
 const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])({
     integrations: fromJS({
@@ -112,7 +111,7 @@ describe('<ActionsPlatformEditTemplateView />', () => {
                 <QueryClientProvider client={queryClient}>
                     <ActionsPlatformEditTemplateView template={template} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
     }
 
@@ -126,7 +125,7 @@ describe('<ActionsPlatformEditTemplateView />', () => {
         renderApp(
             produce(template as ActionTemplate, (draft) => {
                 draft.is_draft = true
-            })
+            }),
         )
 
         expect(screen.getByText('Publish')).toBeInTheDocument()
@@ -136,7 +135,7 @@ describe('<ActionsPlatformEditTemplateView />', () => {
         renderApp(
             produce(template as ActionTemplate, (draft) => {
                 draft.is_draft = true
-            })
+            }),
         )
 
         act(() => {
@@ -160,7 +159,7 @@ describe('<ActionsPlatformEditTemplateView />', () => {
 
         act(() => {
             fireEvent.change(screen.getByDisplayValue(template.name), {
-                target: {value: ''},
+                target: { value: '' },
             })
         })
 

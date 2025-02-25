@@ -1,10 +1,10 @@
-import {useCallback, useMemo} from 'react'
+import { useCallback, useMemo } from 'react'
 
-import {useCustomFieldDefinition} from 'custom-fields/hooks/queries/useCustomFieldDefinition'
-import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import { useCustomFieldDefinition } from 'custom-fields/hooks/queries/useCustomFieldDefinition'
+import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {updateCustomFieldFilterId} from 'state/views/actions'
-import {Schemas} from 'types'
+import { updateCustomFieldFilterId } from 'state/views/actions'
+import { Schemas } from 'types'
 
 import {
     getCustomFieldIdFromObjectPath,
@@ -26,11 +26,11 @@ export default function useCustomFieldsFilters({
 
     const customFieldId = useMemo(
         () => getCustomFieldIdFromObjectPath(objectPath),
-        [objectPath]
+        [objectPath],
     )
 
     // @ts-ignore - customFieldId can be null - but the query is disabled in that case
-    const {data: customField} = useCustomFieldDefinition(customFieldId, {
+    const { data: customField } = useCustomFieldDefinition(customFieldId, {
         enabled: typeof customFieldId === 'number',
     })
 
@@ -42,7 +42,7 @@ export default function useCustomFieldsFilters({
     const activeCustomFields = useMemo(() => {
         return (
             customFields.data?.data.filter(
-                (field) => !field.deactivated_datetime
+                (field) => !field.deactivated_datetime,
             ) || []
         )
     }, [customFields.data?.data])
@@ -50,21 +50,21 @@ export default function useCustomFieldsFilters({
     const onCustomFieldChange = useCallback(
         (customFieldId: number) => {
             const newCustomField = activeCustomFields.find(
-                (field) => field.id === customFieldId
+                (field) => field.id === customFieldId,
             )
             const newDefaultOperator = getDefaultCustomFieldOperator(
                 schemas,
-                newCustomField
+                newCustomField,
             )
             dispatch(
                 updateCustomFieldFilterId(
                     index,
                     customFieldId,
-                    newDefaultOperator
-                )
+                    newDefaultOperator,
+                ),
             )
         },
-        [activeCustomFields, index, schemas, dispatch]
+        [activeCustomFields, index, schemas, dispatch],
     )
 
     return useMemo(
@@ -73,6 +73,6 @@ export default function useCustomFieldsFilters({
             activeCustomFields,
             onCustomFieldChange,
         }),
-        [activeCustomFields, customField, onCustomFieldChange]
+        [activeCustomFields, customField, onCustomFieldChange],
     )
 }

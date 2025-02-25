@@ -1,21 +1,20 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
+import React, { ReactNode } from 'react'
 
-import React, {ReactNode} from 'react'
-import {Provider} from 'react-redux'
+import { renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {account} from 'fixtures/account'
-
-import {mockStore} from 'utils/testing'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { account } from 'fixtures/account'
+import { mockStore } from 'utils/testing'
 
 import {
     OnboardingState,
     useAiAgentOnboardingState,
 } from '../useAiAgentOnboardingState'
-import {useStoreConfiguration} from '../useStoreConfiguration'
-import {useWelcomePageAcknowledged} from '../useWelcomePageAcknowledged'
+import { useStoreConfiguration } from '../useStoreConfiguration'
+import { useWelcomePageAcknowledged } from '../useWelcomePageAcknowledged'
 
 jest.mock('launchdarkly-react-client-sdk')
 jest.mock('../useStoreConfiguration')
@@ -38,16 +37,16 @@ describe('useAiAgentOnboardingState', () => {
         })
         mockUseStoreConfiguration.mockReturnValue({
             isLoading: false,
-            storeConfiguration: {wizard: {completedDatetime: null}},
+            storeConfiguration: { wizard: { completedDatetime: null } },
         })
         mockUseWelcomePageAcknowledged.mockReturnValue({
             isLoading: false,
-            data: {acknowledged: false},
+            data: { acknowledged: false },
         })
     })
 
-    const wrapper = ({children}: {children: ReactNode}) => (
-        <Provider store={mockStore({currentAccount: fromJS(account)})}>
+    const wrapper = ({ children }: { children: ReactNode }) => (
+        <Provider store={mockStore({ currentAccount: fromJS(account) })}>
             {children}
         </Provider>
     )
@@ -58,9 +57,12 @@ describe('useAiAgentOnboardingState', () => {
             storeConfiguration: undefined,
         })
 
-        const {result} = renderHook(() => useAiAgentOnboardingState(shopName), {
-            wrapper,
-        })
+        const { result } = renderHook(
+            () => useAiAgentOnboardingState(shopName),
+            {
+                wrapper,
+            },
+        )
 
         expect(result.current).toEqual(OnboardingState.Loading)
     })
@@ -71,9 +73,12 @@ describe('useAiAgentOnboardingState', () => {
             data: undefined,
         })
 
-        const {result} = renderHook(() => useAiAgentOnboardingState(shopName), {
-            wrapper,
-        })
+        const { result } = renderHook(
+            () => useAiAgentOnboardingState(shopName),
+            {
+                wrapper,
+            },
+        )
 
         expect(result.current).toEqual(OnboardingState.Loading)
     })
@@ -88,9 +93,12 @@ describe('useAiAgentOnboardingState', () => {
             storeConfiguration: undefined,
         })
 
-        const {result} = renderHook(() => useAiAgentOnboardingState(shopName), {
-            wrapper,
-        })
+        const { result } = renderHook(
+            () => useAiAgentOnboardingState(shopName),
+            {
+                wrapper,
+            },
+        )
 
         expect(result.current).toEqual(OnboardingState.WelcomeDynamic)
     })
@@ -106,29 +114,38 @@ describe('useAiAgentOnboardingState', () => {
             storeConfiguration: undefined,
         })
 
-        const {result} = renderHook(() => useAiAgentOnboardingState(shopName), {
-            wrapper,
-        })
+        const { result } = renderHook(
+            () => useAiAgentOnboardingState(shopName),
+            {
+                wrapper,
+            },
+        )
 
         expect(result.current).toEqual(OnboardingState.WelcomeStatic)
     })
 
     test('returns onboardingWizard state when onboarding wizard is enabled and not completed', () => {
-        const {result} = renderHook(() => useAiAgentOnboardingState(shopName), {
-            wrapper,
-        })
+        const { result } = renderHook(
+            () => useAiAgentOnboardingState(shopName),
+            {
+                wrapper,
+            },
+        )
 
         expect(result.current).toEqual(OnboardingState.OnboardingWizard)
     })
 
     test('returns onboarded state when onboarding wizard is completed', () => {
         mockUseStoreConfiguration.mockReturnValueOnce({
-            storeConfiguration: {wizard: {completedDatetime: '2021-01-01'}},
+            storeConfiguration: { wizard: { completedDatetime: '2021-01-01' } },
         })
 
-        const {result} = renderHook(() => useAiAgentOnboardingState(shopName), {
-            wrapper,
-        })
+        const { result } = renderHook(
+            () => useAiAgentOnboardingState(shopName),
+            {
+                wrapper,
+            },
+        )
 
         expect(result.current).toEqual(OnboardingState.Onboarded)
     })
@@ -139,9 +156,12 @@ describe('useAiAgentOnboardingState', () => {
             [FeatureFlagKey.AiAgentOnboardingWizard]: false,
         })
 
-        const {result} = renderHook(() => useAiAgentOnboardingState(shopName), {
-            wrapper,
-        })
+        const { result } = renderHook(
+            () => useAiAgentOnboardingState(shopName),
+            {
+                wrapper,
+            },
+        )
 
         expect(result.current).toEqual(OnboardingState.Onboarded)
     })

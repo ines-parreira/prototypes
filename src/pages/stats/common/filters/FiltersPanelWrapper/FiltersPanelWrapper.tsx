@@ -1,4 +1,4 @@
-import React, {ReactElement} from 'react'
+import React, { ReactElement } from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -6,9 +6,9 @@ import {
     FiltersPanelProps,
 } from 'pages/stats/common/filters/FiltersPanel'
 import css from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper.less'
-import {SavedFiltersActions} from 'pages/stats/common/filters/SavedFiltersActions/SavedFiltersActions'
-import {SavedFiltersPanel} from 'pages/stats/common/filters/SavedFiltersPanel'
-import {getHideFiltersPanelOptionalFilters} from 'state/ui/stats/filtersSlice'
+import { SavedFiltersActions } from 'pages/stats/common/filters/SavedFiltersActions/SavedFiltersActions'
+import { SavedFiltersPanel } from 'pages/stats/common/filters/SavedFiltersPanel'
+import { getHideFiltersPanelOptionalFilters } from 'state/ui/stats/filtersSlice'
 
 type Props = Omit<
     FiltersPanelProps,

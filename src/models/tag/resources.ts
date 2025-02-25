@@ -1,15 +1,16 @@
+import { AxiosRequestConfig } from 'axios'
+
 import {
     ListTagsOrderBy,
     ListTagsParams,
     OrderDirection,
     Tag,
 } from '@gorgias/api-queries'
-import {AxiosRequestConfig} from 'axios'
 
 import client from 'models/api/resources'
-import {ApiListResponseCursorPagination} from 'models/api/types'
+import { ApiListResponseCursorPagination } from 'models/api/types'
 
-import {OrderByOrderDir, TagDraft} from './types'
+import { OrderByOrderDir, TagDraft } from './types'
 
 const USAGE_ORDER_BYS = [
     `${ListTagsOrderBy.Usage}:${OrderDirection.Asc}`,
@@ -25,7 +26,7 @@ export const fetchTags = async (
     params: Omit<ListTagsParams, 'order_by'> & {
         order_by?: OrderByOrderDir | ListTagsParams['order_by']
     } = {},
-    config: AxiosRequestConfig = {}
+    config: AxiosRequestConfig = {},
 ) => {
     return await client.get<ApiListResponseCursorPagination<Tag[]>>(
         '/api/tags/',
@@ -43,7 +44,7 @@ export const fetchTags = async (
                     : {}),
             },
             ...config,
-        }
+        },
     )
 }
 

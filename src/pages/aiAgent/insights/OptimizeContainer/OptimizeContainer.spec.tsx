@@ -1,17 +1,17 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {fromJS} from 'immutable'
-import moment, {Moment} from 'moment/moment'
 import React from 'react'
-import {Provider} from 'react-redux'
 
-import {account} from 'fixtures/account'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fromJS } from 'immutable'
+import moment, { Moment } from 'moment/moment'
+import { Provider } from 'react-redux'
 
-import {PeriodFilter} from 'pages/stats/common/filters/PeriodFilter'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {mockStore, renderWithRouter} from 'utils/testing'
+import { account } from 'fixtures/account'
+import { PeriodFilter } from 'pages/stats/common/filters/PeriodFilter'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { mockStore, renderWithRouter } from 'utils/testing'
 
-import {IntentTableWidget} from '../IntentTableWidget/IntentTableWidget'
-import {Level1IntentsPerformance} from '../widgets/Level1IntentsPerformance/Level1IntentsPerformance'
+import { IntentTableWidget } from '../IntentTableWidget/IntentTableWidget'
+import { Level1IntentsPerformance } from '../widgets/Level1IntentsPerformance/Level1IntentsPerformance'
 import {
     OptimizeContainer,
     subtractsPeriodWithoutData,
@@ -30,7 +30,7 @@ jest.mock(
     '../widgets/Level1IntentsPerformance/Level1IntentsPerformance',
     () => ({
         Level1IntentsPerformance: jest.fn(() => <></>),
-    })
+    }),
 )
 
 jest.mock('pages/aiAgent/hooks/useAiAgentEnabled', () => ({
@@ -84,7 +84,7 @@ const renderComponent = () => {
         {
             path: `/:shopType/:shopName/ai-agent/optimize`,
             route: `/${SHOP_TYPE}/${SHOP_NAME}/ai-agent/optimize`,
-        }
+        },
     )
 }
 
@@ -117,7 +117,7 @@ describe('OptimizeContainer', () => {
                     dateRanges: expect.any(Object),
                 },
             }),
-            {}
+            {},
         )
     })
 

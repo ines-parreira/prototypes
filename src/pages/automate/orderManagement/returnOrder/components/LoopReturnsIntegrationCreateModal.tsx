@@ -1,26 +1,27 @@
-import {fromJS} from 'immutable'
-import React, {useEffect, useState} from 'react'
-import {Link} from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+
+import { fromJS } from 'immutable'
+import { Link } from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
-import {ContentType, HttpMethod} from 'models/api/types'
-import {EventType} from 'models/event/types'
+import { ContentType, HttpMethod } from 'models/api/types'
+import { EventType } from 'models/event/types'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import InputField from 'pages/common/forms/input/InputField'
-import {updateOrCreateIntegration} from 'state/integrations/actions'
-import {getAreIntegrationsLoading} from 'state/integrations/selectors'
+import { updateOrCreateIntegration } from 'state/integrations/actions'
+import { getAreIntegrationsLoading } from 'state/integrations/selectors'
 
 import {
     LOOP_RETURNS_INTEGRATION_HEADER_NAME,
     LOOP_RETURNS_INTEGRATION_URL,
 } from '../constants'
-import {useReturnOrderFlowViewContext} from '../ReturnOrderFlowViewContext'
+import { useReturnOrderFlowViewContext } from '../ReturnOrderFlowViewContext'
 
 import css from './LoopReturnsIntegrationCreateModal.less'
 
@@ -35,7 +36,7 @@ const LoopReturnsIntegrationCreateModal = ({
     onClose,
     onCreate,
 }: Props) => {
-    const {storeIntegration} = useReturnOrderFlowViewContext()
+    const { storeIntegration } = useReturnOrderFlowViewContext()
     const [isSubmitted, setIsSubmitted] = useState(false)
     const [apiKey, setApiKey] = useState('')
 
@@ -51,7 +52,7 @@ const LoopReturnsIntegrationCreateModal = ({
 
     const storeIntegrationName = storeIntegration?.name || ''
 
-    const [{loading: isSubmitting}, handleSubmit] = useAsyncFn(async () => {
+    const [{ loading: isSubmitting }, handleSubmit] = useAsyncFn(async () => {
         const integration = {
             type: 'http',
             name: `${storeIntegrationName} returns`,
@@ -72,7 +73,7 @@ const LoopReturnsIntegrationCreateModal = ({
         }
 
         await dispatch(
-            updateOrCreateIntegration(fromJS(integration), undefined, true)
+            updateOrCreateIntegration(fromJS(integration), undefined, true),
         )
 
         setIsSubmitted(true)

@@ -1,8 +1,7 @@
-import {ExpressionFieldSource} from '@gorgias/api-types'
+import { ExpressionFieldSource } from '@gorgias/api-types'
 
-import {CustomFieldState} from 'custom-fields/types'
-
-import {TicketStateWithoutImmutable} from 'state/ticket/types'
+import { CustomFieldState } from 'custom-fields/types'
+import { TicketStateWithoutImmutable } from 'state/ticket/types'
 
 export const enum SupportedTicketFields {
     Status = 'status',
@@ -12,7 +11,7 @@ export const enum SupportedTicketFields {
 const resolveTicketPropertyValue = (
     ticket: TicketStateWithoutImmutable,
     source: ExpressionFieldSource,
-    property: SupportedTicketFields | number
+    property: SupportedTicketFields | number,
 ): string | number | boolean | null => {
     const isNumber = typeof property === 'number'
 
@@ -27,7 +26,7 @@ const resolveTicketPropertyValue = (
         return ticketFieldState?.value ?? null
     }
     throw new Error(
-        `Unsupported source "${source}" for given property "${property}".`
+        `Unsupported source "${source}" for given property "${property}".`,
     )
 }
 

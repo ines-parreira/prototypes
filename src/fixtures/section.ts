@@ -1,4 +1,4 @@
-import {Section} from '../models/section/types'
+import { Section } from '../models/section/types'
 
 export const section: Section = {
     created_datetime: '2020-10-14T14:26:35.921523+00:00',

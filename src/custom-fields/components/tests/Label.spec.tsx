@@ -1,5 +1,6 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import Label from '../Label'
 
@@ -17,7 +18,7 @@ describe('<Label />', () => {
         render(
             <Label label="My label" isRequired>
                 {content}
-            </Label>
+            </Label>,
         )
         expect(screen.getByText('*'))
     })

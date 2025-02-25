@@ -1,4 +1,4 @@
-import {act, renderHook} from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react-hooks'
 
 import useLocalStorage from 'hooks/useLocalStorage'
 
@@ -13,8 +13,8 @@ describe('useSortOrder', () => {
     })
 
     it('should return the given sort order if it is supported', () => {
-        const {result} = renderHook(() =>
-            useSortOrder(1, 'created_datetime:desc')
+        const { result } = renderHook(() =>
+            useSortOrder(1, 'created_datetime:desc'),
         )
         expect(result.current).toEqual([
             'created_datetime:desc',
@@ -23,8 +23,8 @@ describe('useSortOrder', () => {
     })
 
     it('should return the default sort order if the given order is not supported', () => {
-        const {result} = renderHook(() =>
-            useSortOrder(1, 'snoozed_datetime:desc')
+        const { result } = renderHook(() =>
+            useSortOrder(1, 'snoozed_datetime:desc'),
         )
         expect(result.current).toEqual([
             'last_message_datetime:asc',
@@ -33,9 +33,9 @@ describe('useSortOrder', () => {
     })
 
     it('should update the sort order if a new order is given', () => {
-        const {rerender, result} = renderHook(
+        const { rerender, result } = renderHook(
             (sortOrder: string) => useSortOrder(1, sortOrder),
-            {initialProps: ''}
+            { initialProps: '' },
         )
 
         expect(result.current).toEqual([
@@ -55,11 +55,11 @@ describe('useSortOrder', () => {
 
     it('should return the persisted sort order if one is defined', () => {
         useLocalStorageMock.mockReturnValue([
-            {'1': 'last_received_message_datetime:asc'},
+            { '1': 'last_received_message_datetime:asc' },
             jest.fn(),
         ])
 
-        const {result} = renderHook(() => useSortOrder(1, ''))
+        const { result } = renderHook(() => useSortOrder(1, ''))
         expect(result.current).toEqual([
             'last_received_message_datetime:asc',
             expect.any(Function),
@@ -70,12 +70,12 @@ describe('useSortOrder', () => {
         const persist = jest.fn()
         useLocalStorageMock.mockReturnValue([{}, persist])
 
-        const {result} = renderHook(() => useSortOrder(1, ''))
+        const { result } = renderHook(() => useSortOrder(1, ''))
 
         act(() => {
             result.current[1]('last_message_datetime:asc')
         })
 
-        expect(persist).toHaveBeenCalledWith({1: 'last_message_datetime:asc'})
+        expect(persist).toHaveBeenCalledWith({ 1: 'last_message_datetime:asc' })
     })
 })

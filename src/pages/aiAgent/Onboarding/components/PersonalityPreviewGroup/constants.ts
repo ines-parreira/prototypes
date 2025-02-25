@@ -75,7 +75,7 @@ export const supportPreviews = [
 ]
 
 export const getPreviewsForPreviewType = (
-    previewType: 'mixed' | 'sales' | 'support'
+    previewType: 'mixed' | 'sales' | 'support',
 ) => {
     if (previewType === 'sales') {
         return salesPreviews
@@ -85,7 +85,7 @@ export const getPreviewsForPreviewType = (
     return mixedPreviews
 }
 export const getFirstPreviewForPreviewType = (
-    previewType: 'mixed' | 'sales' | 'support'
+    previewType: 'mixed' | 'sales' | 'support',
 ) => getPreviewsForPreviewType(previewType)[0]
 
 export const getPreviewById = (id: PreviewId) => previews[id]

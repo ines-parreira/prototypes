@@ -1,7 +1,8 @@
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
 
-import {MOBILE_BREAKPOINT} from 'hooks/useIsMobileResolution/constants'
+import { renderHook } from '@testing-library/react-hooks'
+
+import { MOBILE_BREAKPOINT } from 'hooks/useIsMobileResolution/constants'
 import {
     DEFAULT_INFOBAR_WIDTH,
     DEFAULT_NAVBAR_WIDTH,
@@ -22,7 +23,7 @@ describe('useSplitViewPage', () => {
     it('should return the config', () => {
         global.innerWidth = 1500
 
-        const {result} = renderHook(() => useTicketPage())
+        const { result } = renderHook(() => useTicketPage())
         expect(result.current).toEqual(
             expect.objectContaining({
                 config: [
@@ -45,7 +46,7 @@ describe('useSplitViewPage', () => {
                 ],
                 fallbackWidth: MOBILE_BREAKPOINT,
                 layoutKey: LayoutKeys.FULL_TICKET,
-            })
+            }),
         )
     })
 })

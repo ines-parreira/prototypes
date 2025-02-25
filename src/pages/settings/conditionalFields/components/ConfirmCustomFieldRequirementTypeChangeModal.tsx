@@ -1,16 +1,17 @@
-import {RequirementType} from '@gorgias/api-queries'
-import React, {useCallback} from 'react'
-import {Link} from 'react-router-dom'
+import React, { useCallback } from 'react'
 
-import {useUpdateCustomFieldDefinition} from 'custom-fields/hooks/queries/useUpdateCustomFieldDefinition'
-import {CustomField, CustomFieldObjectTypes} from 'custom-fields/types'
+import { Link } from 'react-router-dom'
+
+import { RequirementType } from '@gorgias/api-queries'
+
+import { useUpdateCustomFieldDefinition } from 'custom-fields/hooks/queries/useUpdateCustomFieldDefinition'
+import { CustomField, CustomFieldObjectTypes } from 'custom-fields/types'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-
-import {CUSTOM_FIELD_ROUTES} from 'routes/constants'
+import { CUSTOM_FIELD_ROUTES } from 'routes/constants'
 
 import css from './ConfirmCustomFieldRequirementTypeChangeModal.less'
 
@@ -31,10 +32,10 @@ const ConfirmRequirementTypeChangeModal = ({
             ? 'required'
             : 'always visible'
 
-    const {mutateAsync, isLoading} = useUpdateCustomFieldDefinition()
+    const { mutateAsync, isLoading } = useUpdateCustomFieldDefinition()
 
     const handleConfirm = useCallback(async () => {
-        const {object_type, definition, label, managed_type} = customField
+        const { object_type, definition, label, managed_type } = customField
         await mutateAsync([
             customField.id,
             {

@@ -1,14 +1,15 @@
-import {render, screen} from '@testing-library/react'
+import React, { ComponentProps, ReactNode } from 'react'
+
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import React, {ComponentProps, ReactNode} from 'react'
 
 import Modal from 'pages/common/components/modal/Modal'
 
-import {GorgiasChatIntegrationLanguagesTableRowActions} from '../GorgiasChatIntegrationLanguagesTableRowActions'
-import {LanguageItemRow} from '../types'
+import { GorgiasChatIntegrationLanguagesTableRowActions } from '../GorgiasChatIntegrationLanguagesTableRowActions'
+import { LanguageItemRow } from '../types'
 
 jest.mock('pages/common/components/modal/Modal', () => {
-    return ({children, isOpen, onClose}: ComponentProps<typeof Modal>) => (
+    return ({ children, isOpen, onClose }: ComponentProps<typeof Modal>) => (
         <div>
             {isOpen ? children : null}
             <div onClick={onClose}>Close</div>
@@ -19,25 +20,25 @@ jest.mock('pages/common/components/modal/Modal', () => {
 jest.mock(
     'pages/common/components/modal/ModalBody',
     () =>
-        ({children}: {children: ReactNode}) => {
+        ({ children }: { children: ReactNode }) => {
             return <div>{children}</div>
-        }
+        },
 )
 
 jest.mock(
     'pages/common/components/modal/ModalHeader',
     () =>
-        ({children}: {children: ReactNode}) => {
+        ({ children }: { children: ReactNode }) => {
             return <div>{children}</div>
-        }
+        },
 )
 
 jest.mock(
     'pages/common/components/modal/ModalActionsFooter',
     () =>
-        ({children}: {children: ReactNode}) => {
+        ({ children }: { children: ReactNode }) => {
             return <div>{children}</div>
-        }
+        },
 )
 
 describe('<GorgiasChatIntegrationLanguagesTableRowActions />', () => {
@@ -52,12 +53,12 @@ describe('<GorgiasChatIntegrationLanguagesTableRowActions />', () => {
             showActions: true,
         } as LanguageItemRow
 
-        const {getByText} = render(
+        const { getByText } = render(
             <GorgiasChatIntegrationLanguagesTableRowActions
                 language={language}
                 onClickDelete={onDeleteMock}
                 onClickSetDefault={onSetDefaultMock}
-            />
+            />,
         )
 
         getByText('Customize')
@@ -77,12 +78,12 @@ describe('<GorgiasChatIntegrationLanguagesTableRowActions />', () => {
             showActions: false,
         } as LanguageItemRow
 
-        const {queryByText} = render(
+        const { queryByText } = render(
             <GorgiasChatIntegrationLanguagesTableRowActions
                 language={language}
                 onClickDelete={onDeleteMock}
                 onClickSetDefault={onSetDefaultMock}
-            />
+            />,
         )
 
         queryByText('Customize')
@@ -102,12 +103,12 @@ describe('<GorgiasChatIntegrationLanguagesTableRowActions />', () => {
             showActions: true,
         } as LanguageItemRow
 
-        const {getByText} = render(
+        const { getByText } = render(
             <GorgiasChatIntegrationLanguagesTableRowActions
                 language={language}
                 onClickDelete={onDeleteMock}
                 onClickSetDefault={onSetDefaultMock}
-            />
+            />,
         )
 
         userEvent.click(getByText('more_vert'))
@@ -126,12 +127,12 @@ describe('<GorgiasChatIntegrationLanguagesTableRowActions />', () => {
             showActions: true,
         } as LanguageItemRow
 
-        const {getByText, queryByText} = render(
+        const { getByText, queryByText } = render(
             <GorgiasChatIntegrationLanguagesTableRowActions
                 language={language}
                 onClickDelete={onDeleteMock}
                 onClickSetDefault={onSetDefaultMock}
-            />
+            />,
         )
 
         userEvent.click(getByText('more_vert'))
@@ -158,12 +159,12 @@ describe('<GorgiasChatIntegrationLanguagesTableRowActions />', () => {
             showActions: true,
         } as LanguageItemRow
 
-        const {getByText, queryByText} = render(
+        const { getByText, queryByText } = render(
             <GorgiasChatIntegrationLanguagesTableRowActions
                 language={language}
                 onClickDelete={onDeleteMock}
                 onClickSetDefault={onSetDefaultMock}
-            />
+            />,
         )
 
         userEvent.click(getByText('more_vert'))
@@ -177,7 +178,7 @@ describe('<GorgiasChatIntegrationLanguagesTableRowActions />', () => {
         userEvent.click(
             screen.getByRole('button', {
                 name: /Delete/i,
-            })
+            }),
         )
 
         expect(queryByText(content)).not.toBeInTheDocument()

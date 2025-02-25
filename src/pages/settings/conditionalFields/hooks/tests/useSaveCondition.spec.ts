@@ -1,14 +1,15 @@
-import {useCreateCustomFieldCondition} from '@gorgias/api-queries'
-import {QueryClient, useQueryClient} from '@tanstack/react-query'
-import {renderHook, act} from '@testing-library/react-hooks'
+import { QueryClient, useQueryClient } from '@tanstack/react-query'
+import { act, renderHook } from '@testing-library/react-hooks'
+
+import { useCreateCustomFieldCondition } from '@gorgias/api-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import history from 'pages/history'
-import {CUSTOM_FIELD_CONDITIONS_ROUTE} from 'routes/constants'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {errorToChildren} from 'utils'
-import {assumeMock} from 'utils/testing'
+import { CUSTOM_FIELD_CONDITIONS_ROUTE } from 'routes/constants'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { errorToChildren } from 'utils'
+import { assumeMock } from 'utils/testing'
 
 import useSaveCondition from '../useSaveCondition'
 import useUpdateCustomFieldCondition from '../useUpdateCustomFieldCondition'
@@ -36,10 +37,10 @@ jest.mock('utils')
 const useAppDispatchMock = assumeMock(useAppDispatch)
 const useQueryClientMock = assumeMock(useQueryClient)
 const useCreateCustomFieldConditionMock = assumeMock(
-    useCreateCustomFieldCondition
+    useCreateCustomFieldCondition,
 )
 const useUpdateCustomFieldConditionMock = assumeMock(
-    useUpdateCustomFieldCondition
+    useUpdateCustomFieldCondition,
 )
 const errorToChildrenMock = assumeMock(errorToChildren)
 
@@ -54,7 +55,7 @@ describe('useSaveCondition', () => {
     beforeEach(() => {
         useAppDispatchMock.mockReturnValue(dispatch)
         useQueryClientMock.mockReturnValue(
-            queryClient as unknown as QueryClient
+            queryClient as unknown as QueryClient,
         )
         useCreateCustomFieldConditionMock.mockReturnValue({
             mutateAsync: createCondition,
@@ -67,47 +68,47 @@ describe('useSaveCondition', () => {
     })
 
     it('should create a condition successfully', async () => {
-        const {result} = renderHook(() => useSaveCondition())
+        const { result } = renderHook(() => useSaveCondition())
 
         await act(async () => {
-            await result.current.onSubmit({name: 'New Condition'})
+            await result.current.onSubmit({ name: 'New Condition' })
         })
 
         expect(createCondition).toHaveBeenCalledWith({
-            data: {name: 'New Condition'},
+            data: { name: 'New Condition' },
         })
         expect(dispatch).toHaveBeenCalledWith(
             notify({
                 status: NotificationStatus.Success,
                 message: 'Condition created successfully',
-            })
+            }),
         )
         expect(queryClient.invalidateQueries).toHaveBeenCalledTimes(1)
         expect(history.push).toHaveBeenCalledWith(
-            `/app/settings/${CUSTOM_FIELD_CONDITIONS_ROUTE}`
+            `/app/settings/${CUSTOM_FIELD_CONDITIONS_ROUTE}`,
         )
     })
 
     it('should update a condition successfully', async () => {
-        const {result} = renderHook(() => useSaveCondition(1))
+        const { result } = renderHook(() => useSaveCondition(1))
 
         await act(async () => {
-            await result.current.onSubmit({name: 'Updated Condition'})
+            await result.current.onSubmit({ name: 'Updated Condition' })
         })
 
         expect(updateCondition).toHaveBeenCalledWith({
             id: 1,
-            data: {name: 'Updated Condition'},
+            data: { name: 'Updated Condition' },
         })
         expect(dispatch).toHaveBeenCalledWith(
             notify({
                 status: NotificationStatus.Success,
                 message: 'Condition updated successfully',
-            })
+            }),
         )
         expect(queryClient.invalidateQueries).toHaveBeenCalledTimes(2)
         expect(history.push).toHaveBeenCalledWith(
-            `/app/settings/${CUSTOM_FIELD_CONDITIONS_ROUTE}`
+            `/app/settings/${CUSTOM_FIELD_CONDITIONS_ROUTE}`,
         )
     })
 
@@ -115,10 +116,10 @@ describe('useSaveCondition', () => {
         const error = new Error('Create error')
         createCondition.mockRejectedValueOnce(error)
 
-        const {result} = renderHook(() => useSaveCondition())
+        const { result } = renderHook(() => useSaveCondition())
 
         await act(async () => {
-            await result.current.onSubmit({name: 'New Condition'})
+            await result.current.onSubmit({ name: 'New Condition' })
         })
 
         expect(dispatch).toHaveBeenCalledWith(
@@ -126,7 +127,7 @@ describe('useSaveCondition', () => {
                 status: NotificationStatus.Error,
                 message: 'Create error message',
                 allowHTML: true,
-            })
+            }),
         )
 
         expect(errorToChildrenMock).toHaveBeenCalledWith(error)
@@ -136,10 +137,10 @@ describe('useSaveCondition', () => {
         const error = new Error('Update error')
         updateCondition.mockRejectedValueOnce(error)
 
-        const {result} = renderHook(() => useSaveCondition(1))
+        const { result } = renderHook(() => useSaveCondition(1))
 
         await act(async () => {
-            await result.current.onSubmit({name: 'Updated Condition'})
+            await result.current.onSubmit({ name: 'Updated Condition' })
         })
 
         expect(dispatch).toHaveBeenCalledWith(
@@ -147,7 +148,7 @@ describe('useSaveCondition', () => {
                 status: NotificationStatus.Error,
                 message: 'Update error message',
                 allowHTML: true,
-            })
+            }),
         )
     })
 
@@ -161,7 +162,7 @@ describe('useSaveCondition', () => {
             isLoading: false,
         } as unknown as ReturnType<typeof useUpdateCustomFieldCondition>)
 
-        const {result} = renderHook(() => useSaveCondition())
+        const { result } = renderHook(() => useSaveCondition())
 
         expect(result.current.isSubmitting).toBe(true)
 
@@ -174,13 +175,13 @@ describe('useSaveCondition', () => {
             isLoading: true,
         } as unknown as ReturnType<typeof useUpdateCustomFieldCondition>)
 
-        const {result: result2} = renderHook(() => useSaveCondition())
+        const { result: result2 } = renderHook(() => useSaveCondition())
 
         expect(result2.current.isSubmitting).toBe(true)
     })
 
     it('should return isSubmitting as false when neither creating nor updating', () => {
-        const {result} = renderHook(() => useSaveCondition())
+        const { result } = renderHook(() => useSaveCondition())
 
         expect(result.current.isSubmitting).toBe(false)
     })

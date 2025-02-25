@@ -1,4 +1,3 @@
-import {Label} from '@gorgias/merchant-ui-kit'
 import React, {
     forwardRef,
     useCallback,
@@ -8,7 +7,9 @@ import React, {
     useState,
 } from 'react'
 
-import {Channel} from 'models/channel/types'
+import { Label } from '@gorgias/merchant-ui-kit'
+
+import { Channel } from 'models/channel/types'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
@@ -16,7 +17,7 @@ import Caption from 'pages/common/forms/Caption/Caption'
 import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
-import {getChannels} from 'services/channels'
+import { getChannels } from 'services/channels'
 
 import css from './ChannelSelectBox.less'
 
@@ -27,8 +28,8 @@ type ChannelSelectBoxProps = {
 }
 
 export default forwardRef(function ChannelSelectBox(
-    {value, onChange, error}: ChannelSelectBoxProps,
-    ref
+    { value, onChange, error }: ChannelSelectBoxProps,
+    ref,
 ) {
     const channelSelectId = 'channel-select'
     const floatingRef = useRef<HTMLDivElement>(null)
@@ -49,8 +50,8 @@ export default forwardRef(function ChannelSelectBox(
             },
             {} as Record<
                 Channel['slug'],
-                {label: Channel['name']; value: Channel['slug']}
-            >
+                { label: Channel['name']; value: Channel['slug'] }
+            >,
         )
 
     const channelsLabel = useMemo(() => {
@@ -77,7 +78,7 @@ export default forwardRef(function ChannelSelectBox(
                 onChange([...(value || []), nextValue])
             }
         },
-        [onChange, value]
+        [onChange, value],
     )
 
     return (

@@ -1,11 +1,11 @@
 /**
  * Adapted from https://github.com/draft-js-plugins/draft-js-plugins/tree/master/draft-js-mention-plugin
  */
+import React, { Component, ReactNode } from 'react'
 
-import {EditorState} from 'draft-js'
-import React, {ReactNode, Component} from 'react'
+import { EditorState } from 'draft-js'
 
-import {MentionPluginStore} from '../types'
+import { MentionPluginStore } from '../types'
 
 type Props = {
     offsetKey: string
@@ -44,7 +44,7 @@ export default class MentionSuggestionsPortal extends Component<Props> {
 
     updatePortalClientRect(props: Props) {
         this.props.store.updatePortalClientRect(props.offsetKey, () =>
-            this.searchPortal!.getBoundingClientRect()
+            this.searchPortal!.getBoundingClientRect(),
         )
     }
 

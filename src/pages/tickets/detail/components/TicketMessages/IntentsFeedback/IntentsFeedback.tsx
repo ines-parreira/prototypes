@@ -1,30 +1,31 @@
-import {AxiosError} from 'axios'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
+
+import { AxiosError } from 'axios'
 import _difference from 'lodash/difference'
 import _isEqual from 'lodash/isEqual'
-import React, {useState, useMemo, useEffect, useRef} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
 import client from 'models/api/resources'
-import type {TicketMessage, TicketMessageIntent} from 'models/ticket/types'
+import type { TicketMessage, TicketMessageIntent } from 'models/ticket/types'
 import Loader from 'pages/common/components/Loader/Loader'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {sendIntentFeedbackSuccess} from 'state/ticket/actions'
-import {humanizeString} from 'utils'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { sendIntentFeedbackSuccess } from 'state/ticket/actions'
+import { humanizeString } from 'utils'
 
-import {ActiveIntentItem} from './ActiveIntentItem'
-import {AvailableIntentItem} from './AvailableIntentItem'
-import {Messages} from './constants'
-import {IntentsFeedbackDropdown} from './IntentsFeedbackDropdown'
+import { ActiveIntentItem } from './ActiveIntentItem'
+import { AvailableIntentItem } from './AvailableIntentItem'
+import { Messages } from './constants'
+import { IntentsFeedbackDropdown } from './IntentsFeedbackDropdown'
 import {
+    logDropdownOpenEvent,
+    logUserSubmissionEvent,
     UserSubmissionSubEventProps,
     UserSubmissionSubEventType,
-    logUserSubmissionEvent,
-    logDropdownOpenEvent,
 } from './intentsFeedbackSegmentEvents'
 
 type Props = {
@@ -55,27 +56,27 @@ export const IntentsFeedback = ({
         () => () => {
             isMounted.current = false
         },
-        []
+        [],
     )
 
     const allIntentsNames: string[] = useMemo(
         () => Object.keys(allIntents),
-        [allIntents]
+        [allIntents],
     )
-    const {ticket_id: ticketId = 0, id: messageId = 0} = message
+    const { ticket_id: ticketId = 0, id: messageId = 0 } = message
     const intents = message.intents!
     const getIntentsFromMessage = (intents: TicketMessageIntent[]) =>
         allIntentsNames.filter((name) =>
             intents
                 .filter((intent) => !intent.rejected)
                 .map((intent) => intent.name)
-                .includes(name)
+                .includes(name),
         )
     const messageIntentNames = useMemo(
         () => getIntentsFromMessage(intents),
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [intents]
+        [intents],
     )
 
     const [activeIntentsNames, setActiveIntentsNames] =
@@ -111,13 +112,13 @@ export const IntentsFeedback = ({
         setSegmentSubEvents([])
     }
 
-    const [{loading}, sendFeedback] = useAsyncFn(async () => {
+    const [{ loading }, sendFeedback] = useAsyncFn(async () => {
         try {
-            const resp = await client.post<{intents: TicketMessageIntent[]}>(
+            const resp = await client.post<{ intents: TicketMessageIntent[] }>(
                 intentURI,
-                {active_intents: activeIntentsNames}
+                { active_intents: activeIntentsNames },
             )
-            const {intents} = resp.data
+            const { intents } = resp.data
 
             if (isMounted.current) {
                 const newIntents = getIntentsFromMessage(intents)
@@ -128,29 +129,29 @@ export const IntentsFeedback = ({
                 sendIntentFeedbackSuccess({
                     messageId: message.id as number,
                     intents,
-                })
+                }),
             )
             void dispatch(
                 notify({
                     message: Messages.NOTIFICATION_SUCCESS,
                     status: NotificationStatus.Success,
-                })
+                }),
             )
         } catch (error) {
-            const {response} = error as AxiosError<{error: {msg: string}}>
+            const { response } = error as AxiosError<{ error: { msg: string } }>
             if (response) {
                 void dispatch(
                     notify({
                         message: response.data.error.msg,
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
             } else {
                 void dispatch(
                     notify({
                         message: Messages.NOTIFICATION_UNKNOWN_ERROR,
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
             }
         }
@@ -160,13 +161,13 @@ export const IntentsFeedback = ({
         setActiveIntentsNames(
             activeIntentsNames.includes(name)
                 ? activeIntentsNames
-                : [...activeIntentsNames, name].sort()
+                : [...activeIntentsNames, name].sort(),
         )
     }
 
     const removeIntent = (name: string) => {
         setActiveIntentsNames(
-            activeIntentsNames.filter((intent) => intent !== name)
+            activeIntentsNames.filter((intent) => intent !== name),
         )
         setSegmentSubEvents([
             ...segmentSubEvents,
@@ -212,7 +213,7 @@ export const IntentsFeedback = ({
             activeIntentsNames={activeIntentsNames}
             availableIntentsNames={_difference(
                 allIntentsNames,
-                activeIntentsNames
+                activeIntentsNames,
             )}
             renderActiveIntent={(intentName: string) => {
                 return (

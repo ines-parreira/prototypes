@@ -1,11 +1,13 @@
+import React, { useRef, useState } from 'react'
+
 import classNames from 'classnames'
-import React, {useRef, useState} from 'react'
 
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 
-import {supportedLanguages} from '../models/workflowConfiguration.types'
+import { supportedLanguages } from '../models/workflowConfiguration.types'
+
 import css from './WorkflowLanguageSelect.less'
 
 type Props = {
@@ -31,7 +33,7 @@ export default function ChatChannelSelector({
             >
                 <div className={css.grow}>
                     {
-                        supportedLanguages.find(({code}) => code === selected)
+                        supportedLanguages.find(({ code }) => code === selected)
                             ?.label
                     }
                     <i className={classNames('material-icons', css.arrowDown)}>

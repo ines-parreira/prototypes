@@ -1,11 +1,12 @@
-import {Map} from 'immutable'
 import React from 'react'
 
+import { Map } from 'immutable'
+
 import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationType} from 'models/integration/constants'
+import { IntegrationType } from 'models/integration/constants'
 import FacebookLoginButton from 'pages/integrations/integration/components/facebook/FacebookLoginButton/FacebookLoginButton'
 import IntegrationList from 'pages/integrations/integration/components/IntegrationList'
-import {getFacebookIntegrations} from 'state/integrations/selectors'
+import { getFacebookIntegrations } from 'state/integrations/selectors'
 
 import FacebookPageRow from './FacebookPageRow'
 
@@ -14,7 +15,7 @@ type Props = {
     redirectUri: string
 }
 
-const FacebookIntegrationList = ({loading, redirectUri}: Props) => {
+const FacebookIntegrationList = ({ loading, redirectUri }: Props) => {
     const integrations = useAppSelector(getFacebookIntegrations)
 
     const onLogin = () => {

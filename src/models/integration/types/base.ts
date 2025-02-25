@@ -6,7 +6,7 @@ export type IntegrationBase = {
     description: Maybe<string>
     id: number
     locked_datetime: Maybe<string>
-    mappings?: Maybe<{id: number}[]>
+    mappings?: Maybe<{ id: number }[]>
     name: string
     updated_datetime: string
     uri: string

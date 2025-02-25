@@ -1,19 +1,21 @@
-import {EmailProvider} from '@gorgias/api-queries'
-import {QueryClientProvider} from '@tanstack/react-query'
-import {fromJS} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fromJS } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {IntegrationType} from 'models/integration/types'
-import {RootState, StoreDispatch} from 'state/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {renderWithRouter} from 'utils/testing'
+import { EmailProvider } from '@gorgias/api-queries'
 
-import {IntegrationDetail} from '../Integration'
-import {Tab} from '../types'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { IntegrationType } from 'models/integration/types'
+import { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { renderWithRouter } from 'utils/testing'
+
+import { IntegrationDetail } from '../Integration'
+import { Tab } from '../types'
 
 jest.mock('../components/aircall/AircallIntegrationList.tsx', () => () => (
     <div>AircallIntegrationList</div>
@@ -31,44 +33,44 @@ jest.mock('../components/email/EmailIntegrationList', () => () => (
 ))
 jest.mock(
     '../components/email/EmailDomainVerification/EmailDomainVerification',
-    () => () => <div>EmailDomainVerification</div>
+    () => () => <div>EmailDomainVerification</div>,
 )
 jest.mock(
     '../components/email/EmailOutboundVerification/EmailOutboundVerification',
-    () => () => <div>EmailOutboundVerification</div>
+    () => () => <div>EmailOutboundVerification</div>,
 )
 jest.mock(
     '../components/email/EmailDomainVerification/DEPRECATED_EmailDomainVerificationContainer',
-    () => () => <div>DEPRECATED_EmailDomainVerificationContainer</div>
+    () => () => <div>DEPRECATED_EmailDomainVerificationContainer</div>,
 )
 
 jest.mock(
     '../components/email/EmailIntegrationUpdate/EmailIntegrationUpdate',
-    () => () => <div>EmailIntegrationUpdate</div>
+    () => () => <div>EmailIntegrationUpdate</div>,
 )
 jest.mock(
     '../components/email/EmailIntegrationCreate/EmailIntegrationCreate',
-    () => () => <div>EmailIntegrationCreate</div>
+    () => () => <div>EmailIntegrationCreate</div>,
 )
 jest.mock('../components/email/EmailIntegrationOnboarding', () => () => (
     <div>EmailIntegrationOnboarding</div>
 ))
 jest.mock(
     '../components/email/EmailIntegrationCreateForwarding/EmailIntegrationCreateForwarding',
-    () => () => <div>EmailIntegrationCreateForwarding</div>
+    () => () => <div>EmailIntegrationCreateForwarding</div>,
 )
 jest.mock(
     '../components/email/EmailIntegrationCreateVerification/EmailIntegrationCreateVerification',
-    () => () => <div>EmailIntegrationCreateVerification</div>
+    () => () => <div>EmailIntegrationCreateVerification</div>,
 )
 jest.mock(
     '../components/email/EmailIntegrationUpdateLayout/EmailIntegrationUpdateLayout',
     () =>
-        ({children}: any) => (
+        ({ children }: any) => (
             <div>
                 EmailIntegrationUpdateLayout<div>{children}</div>
             </div>
-        )
+        ),
 )
 
 jest.mock('../components/facebook/FacebookIntegrationDetail', () => () => (
@@ -76,44 +78,44 @@ jest.mock('../components/facebook/FacebookIntegrationDetail', () => () => (
 ))
 jest.mock(
     '../components/facebook/FacebookIntegrationList/FacebookIntegrationList',
-    () => () => <div>FacebookIntegrationList</div>
+    () => () => <div>FacebookIntegrationList</div>,
 )
 jest.mock('../components/facebook/FacebookIntegrationPreferences', () => () => (
     <div>FacebookIntegrationPreferences</div>
 ))
 jest.mock(
     '../components/facebook/FacebookIntegrationSetup/FacebookIntegrationSetup',
-    () => () => <div>FacebookIntegrationSetup</div>
+    () => () => <div>FacebookIntegrationSetup</div>,
 )
 jest.mock(
     '../components/facebook/FacebookIntegrationCustomerChat/FacebookIntegrationCustomerChat',
-    () => () => <div>FacebookIntegrationCustomerChat</div>
+    () => () => <div>FacebookIntegrationCustomerChat</div>,
 )
 
 jest.mock('../components/http/HTTP', () => () => <div>HTTPIntegration</div>)
 
 jest.mock(
     '../components/gorgias_chat/GorgiasChatIntegrationAppearance',
-    () => () => <div>GorgiasChatIntegrationAppearance</div>
+    () => () => <div>GorgiasChatIntegrationAppearance</div>,
 )
 jest.mock(
     '../components/gorgias_chat/GorgiasChatIntegrationCampaigns/GorgiasChatIntegrationCampaigns',
-    () => () => <div>GorgiasChatIntegrationCampaigns</div>
+    () => () => <div>GorgiasChatIntegrationCampaigns</div>,
 )
 jest.mock(
     '../components/gorgias_chat/GorgiasChatIntegrationInstall',
-    () => () => <div>GorgiasChatIntegrationInstall</div>
+    () => () => <div>GorgiasChatIntegrationInstall</div>,
 )
 jest.mock('../components/gorgias_chat/GorgiasChatIntegrationList', () => () => (
     <div>GorgiasChatIntegrationList</div>
 ))
 jest.mock(
     '../components/gorgias_chat/GorgiasChatIntegrationPreferences',
-    () => () => <div>GorgiasChatIntegrationPreferences</div>
+    () => () => <div>GorgiasChatIntegrationPreferences</div>,
 )
 jest.mock(
     '../components/gorgias_chat/GorgiasChatIntegrationQuickReplies',
-    () => () => <div>GorgiasChatIntegrationQuickReplies</div>
+    () => () => <div>GorgiasChatIntegrationQuickReplies</div>,
 )
 
 jest.mock('../components/sms/SmsIntegration', () => () => (
@@ -244,7 +246,7 @@ describe('<IntegrationDetail />', () => {
     ])(
         'should render the list or detail page of integrations for %s',
         (integrationType) => {
-            const {container} = renderWithRouter(
+            const { container } = renderWithRouter(
                 <QueryClientProvider client={queryClient}>
                     <Provider store={store}>
                         <IntegrationDetail {...minProps} />
@@ -253,14 +255,14 @@ describe('<IntegrationDetail />', () => {
                 {
                     path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${integrationType}`,
-                }
+                },
             )
             expect(container.firstChild).toMatchSnapshot()
-        }
+        },
     )
 
     it(`should display not available message if ${IntegrationType.Twitter} integration not included in price`, () => {
-        const {container} = renderWithRouter(
+        const { container } = renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={store}>
                     <IntegrationDetail
@@ -272,7 +274,7 @@ describe('<IntegrationDetail />', () => {
             {
                 path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                 route: `/integrations/${IntegrationType.Twitter}`,
-            }
+            },
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -285,7 +287,7 @@ describe('<IntegrationDetail />', () => {
         [IntegrationType.Phone],
         [IntegrationType.Sms],
     ])('should render the creation page for %s', (integrationType) => {
-        const {container} = renderWithRouter(
+        const { container } = renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={store}>
                     <IntegrationDetail {...minProps} />
@@ -294,7 +296,7 @@ describe('<IntegrationDetail />', () => {
             {
                 path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                 route: `/integrations/${integrationType}/new`,
-            }
+            },
         )
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -302,7 +304,7 @@ describe('<IntegrationDetail />', () => {
     it.each([[IntegrationType.Email], [IntegrationType.Facebook]])(
         'should render the setup page for %s',
         (integrationType) => {
-            const {container} = renderWithRouter(
+            const { container } = renderWithRouter(
                 <QueryClientProvider client={queryClient}>
                     <Provider store={store}>
                         <IntegrationDetail {...minProps} />
@@ -311,10 +313,10 @@ describe('<IntegrationDetail />', () => {
                 {
                     path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${integrationType}/setup`,
-                }
+                },
             )
             expect(container.firstChild).toMatchSnapshot()
-        }
+        },
     )
 
     it.each([
@@ -330,7 +332,7 @@ describe('<IntegrationDetail />', () => {
     ])(
         'should render the page of a specific integration for %s',
         (integrationType) => {
-            const {container} = renderWithRouter(
+            const { container } = renderWithRouter(
                 <QueryClientProvider client={queryClient}>
                     <Provider store={store}>
                         <IntegrationDetail
@@ -346,14 +348,14 @@ describe('<IntegrationDetail />', () => {
                 {
                     path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${integrationType}/1`,
-                }
+                },
             )
             expect(container.firstChild).toMatchSnapshot()
-        }
+        },
     )
 
     it('should render the installation tab of a specific integration for %s', () => {
-        const {container} = renderWithRouter(
+        const { container } = renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <QueryClientProvider client={queryClient}>
                     <Provider store={store}>
@@ -364,7 +366,7 @@ describe('<IntegrationDetail />', () => {
             {
                 path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                 route: `/integrations/${IntegrationType.GorgiasChat}/1/${Tab.Installation}`,
-            }
+            },
         )
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -377,7 +379,7 @@ describe('<IntegrationDetail />', () => {
     ])(
         'should render the preferences tab of a specific integrations for %s',
         (integrationType) => {
-            const {container} = renderWithRouter(
+            const { container } = renderWithRouter(
                 <QueryClientProvider client={queryClient}>
                     <Provider store={store}>
                         <IntegrationDetail {...minProps} />
@@ -386,14 +388,14 @@ describe('<IntegrationDetail />', () => {
                 {
                     path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${integrationType}/1/${Tab.Preferences}`,
-                }
+                },
             )
             expect(container.firstChild).toMatchSnapshot()
-        }
+        },
     )
 
     it('should render the list of campaigns of a specific integration for %s', () => {
-        const {container} = renderWithRouter(
+        const { container } = renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <QueryClientProvider client={queryClient}>
                     <Provider store={store}>
@@ -404,13 +406,13 @@ describe('<IntegrationDetail />', () => {
             {
                 path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                 route: `/integrations/${IntegrationType.GorgiasChat}/1/${Tab.Campaigns}`,
-            }
+            },
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render the campaign tab of a specific integration for %s', () => {
-        const {container} = renderWithRouter(
+        const { container } = renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <QueryClientProvider client={queryClient}>
                     <Provider store={store}>
@@ -421,14 +423,14 @@ describe('<IntegrationDetail />', () => {
             {
                 path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                 route: `/integrations/${IntegrationType.GorgiasChat}/1/${Tab.Campaigns}/1`,
-            }
+            },
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     describe(`${IntegrationType.Email}`, () => {
         it('should render the onboarding page', () => {
-            const {container} = renderWithRouter(
+            const { container } = renderWithRouter(
                 <QueryClientProvider client={queryClient}>
                     <Provider store={store}>
                         <IntegrationDetail {...minProps} />
@@ -437,13 +439,13 @@ describe('<IntegrationDetail />', () => {
                 {
                     path: '/channels/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/channels/${IntegrationType.Email}/new/${Tab.EmailOnboarding}`,
-                }
+                },
             )
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render the forwarding page for a specific integration', () => {
-            const {container} = renderWithRouter(
+            const { container } = renderWithRouter(
                 <QueryClientProvider client={queryClient}>
                     <Provider store={store}>
                         <IntegrationDetail {...minProps} />
@@ -452,13 +454,13 @@ describe('<IntegrationDetail />', () => {
                 {
                     path: '/channels/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/channels/${IntegrationType.Email}/1/${Tab.EmailForwarding}`,
-                }
+                },
             )
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render the verification page for a specific integration', () => {
-            const {container} = renderWithRouter(
+            const { container } = renderWithRouter(
                 <QueryClientProvider client={queryClient}>
                     <Provider store={store}>
                         <IntegrationDetail {...minProps} />
@@ -467,13 +469,13 @@ describe('<IntegrationDetail />', () => {
                 {
                     path: '/channels/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/channels/${IntegrationType.Email}/1/${Tab.EmailVerification}`,
-                }
+                },
             )
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render Domain verification tab when new-domain-verification FF is off and provider is mailgun', () => {
-            const {getByText} = renderWithRouter(
+            const { getByText } = renderWithRouter(
                 <QueryClientProvider client={queryClient}>
                     <Provider store={store}>
                         <IntegrationDetail
@@ -491,11 +493,11 @@ describe('<IntegrationDetail />', () => {
                 {
                     path: '/channels/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/channels/${IntegrationType.Email}/1/${Tab.EmailDomainVerification}`,
-                }
+                },
             )
 
             expect(
-                getByText('DEPRECATED_EmailDomainVerificationContainer')
+                getByText('DEPRECATED_EmailDomainVerificationContainer'),
             ).toBeInTheDocument()
         })
 
@@ -514,7 +516,7 @@ describe('<IntegrationDetail />', () => {
                 }),
             }
 
-            const {getByText} = renderWithRouter(
+            const { getByText } = renderWithRouter(
                 <QueryClientProvider client={queryClient}>
                     <Provider store={store}>
                         <IntegrationDetail {...props} />
@@ -523,21 +525,24 @@ describe('<IntegrationDetail />', () => {
                 {
                     path: '/channels/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/channels/${IntegrationType.Email}/1/${Tab.EmailOutboundVerification}`,
-                }
+                },
             )
 
             expect(getByText('EmailOutboundVerification')).toBeInTheDocument()
         })
 
         it.each([
-            {provider: EmailProvider.Mailgun, tab: Tab.EmailDomainVerification},
+            {
+                provider: EmailProvider.Mailgun,
+                tab: Tab.EmailDomainVerification,
+            },
             {
                 provider: EmailProvider.Sendgrid,
                 tab: Tab.EmailOutboundVerification,
             },
         ])(
             'should render the domain verification tab when new-domain-verification FF is on',
-            ({provider, tab}) => {
+            ({ provider, tab }) => {
                 mockFlags({
                     [FeatureFlagKey.NewDomainVerification]: true,
                 })
@@ -548,12 +553,12 @@ describe('<IntegrationDetail />', () => {
                         integration: {
                             id: 1,
                             type: 'email',
-                            meta: {verified: true, provider},
+                            meta: { verified: true, provider },
                         },
                     }),
                 }
 
-                const {getByText} = renderWithRouter(
+                const { getByText } = renderWithRouter(
                     <QueryClientProvider client={queryClient}>
                         <Provider store={store}>
                             <IntegrationDetail {...props} />
@@ -562,11 +567,11 @@ describe('<IntegrationDetail />', () => {
                     {
                         path: '/channels/:integrationType/:integrationId?/:extra?/:subId?',
                         route: `/channels/${IntegrationType.Email}/1/${tab}`,
-                    }
+                    },
                 )
 
                 expect(getByText('EmailDomainVerification')).toBeInTheDocument()
-            }
+            },
         )
 
         it('should render the onboarding tab when domain verification FF is on and tab is Onboarding', () => {
@@ -580,12 +585,12 @@ describe('<IntegrationDetail />', () => {
                     integration: {
                         id: 1,
                         type: 'email',
-                        meta: {verified: true},
+                        meta: { verified: true },
                     },
                 }),
             }
 
-            const {getByText} = renderWithRouter(
+            const { getByText } = renderWithRouter(
                 <QueryClientProvider client={queryClient}>
                     <Provider store={store}>
                         <IntegrationDetail {...props} />
@@ -594,7 +599,7 @@ describe('<IntegrationDetail />', () => {
                 {
                     path: '/channels/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/channels/${IntegrationType.Email}/1/${Tab.EmailOnboarding}`,
-                }
+                },
             )
 
             expect(getByText('EmailIntegrationOnboarding')).toBeInTheDocument()
@@ -602,7 +607,7 @@ describe('<IntegrationDetail />', () => {
 
         describe('new onboarding', () => {
             it('should render the new onboarding for the onboarding route', () => {
-                const {getByText} = renderWithRouter(
+                const { getByText } = renderWithRouter(
                     <QueryClientProvider client={queryClient}>
                         <Provider store={store}>
                             <IntegrationDetail {...minProps} />
@@ -611,10 +616,10 @@ describe('<IntegrationDetail />', () => {
                     {
                         path: '/channels/:integrationType/:integrationId?/:extra?/:subId?',
                         route: `/channels/${IntegrationType.Email}/new/${Tab.EmailOnboarding}`,
-                    }
+                    },
                 )
                 expect(
-                    getByText('EmailIntegrationOnboarding')
+                    getByText('EmailIntegrationOnboarding'),
                 ).toBeInTheDocument()
             })
 
@@ -625,11 +630,11 @@ describe('<IntegrationDetail />', () => {
                         integration: {
                             id: 1,
                             type: 'email',
-                            meta: {verified: false},
+                            meta: { verified: false },
                         },
                     }),
                 }
-                const {getByText} = renderWithRouter(
+                const { getByText } = renderWithRouter(
                     <QueryClientProvider client={queryClient}>
                         <Provider store={store}>
                             <IntegrationDetail {...props} />
@@ -638,10 +643,10 @@ describe('<IntegrationDetail />', () => {
                     {
                         path: '/channels/:integrationType/:integrationId?/:extra?/:subId?',
                         route: `/channels/${IntegrationType.Email}/1`,
-                    }
+                    },
                 )
                 expect(
-                    getByText('EmailIntegrationOnboarding')
+                    getByText('EmailIntegrationOnboarding'),
                 ).toBeInTheDocument()
             })
         })
@@ -649,7 +654,7 @@ describe('<IntegrationDetail />', () => {
 
     describe(`${IntegrationType.Facebook}`, () => {
         it('should render the customer chat tab for a specific integration', () => {
-            const {container} = renderWithRouter(
+            const { container } = renderWithRouter(
                 <QueryClientProvider client={queryClient}>
                     <Provider store={store}>
                         <IntegrationDetail {...minProps} />
@@ -658,7 +663,7 @@ describe('<IntegrationDetail />', () => {
                 {
                     path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/integrations/${IntegrationType.Facebook}/1/${Tab.FacebookCustomerChat}`,
-                }
+                },
             )
             expect(container.firstChild).toMatchSnapshot()
         })
@@ -666,7 +671,7 @@ describe('<IntegrationDetail />', () => {
 
     describe(`${IntegrationType.Phone}`, () => {
         it('should render the voicemail tab of a specific integration', () => {
-            const {container} = renderWithRouter(
+            const { container } = renderWithRouter(
                 <QueryClientProvider client={queryClient}>
                     <Provider store={store}>
                         <IntegrationDetail {...minProps} />
@@ -675,7 +680,7 @@ describe('<IntegrationDetail />', () => {
                 {
                     path: '/channels/:integrationType/:integrationId?/:extra?/:subId?',
                     route: `/channels/${IntegrationType.Phone}/1/${Tab.PhoneVoicemail}`,
-                }
+                },
             )
             expect(container.firstChild).toMatchSnapshot()
         })

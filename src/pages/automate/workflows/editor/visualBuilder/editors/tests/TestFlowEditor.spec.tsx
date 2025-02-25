@@ -1,21 +1,22 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-import {screen} from '@testing-library/react'
-import {createMemoryHistory} from 'history'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
-import {Router} from 'react-router-dom'
+
+import { screen } from '@testing-library/react'
+import { createMemoryHistory } from 'history'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {billingState} from 'fixtures/billing'
-import {IntegrationType} from 'models/integration/constants'
-import {TestFlowEditor} from 'pages/automate/workflows/editor/visualBuilder/editors/TestFlowEditor'
-import {getIntegration} from 'pages/automate/workflows/hooks/tests/fixtures/utils'
-import {WorkflowEditorContext} from 'pages/automate/workflows/hooks/useWorkflowEditor'
-import {VisualBuilderNode} from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import {RootState} from 'state/types'
-import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
+import { billingState } from 'fixtures/billing'
+import { IntegrationType } from 'models/integration/constants'
+import { TestFlowEditor } from 'pages/automate/workflows/editor/visualBuilder/editors/TestFlowEditor'
+import { getIntegration } from 'pages/automate/workflows/hooks/tests/fixtures/utils'
+import { WorkflowEditorContext } from 'pages/automate/workflows/hooks/useWorkflowEditor'
+import { VisualBuilderNode } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { RootState } from 'state/types'
+import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 const mockStore = configureMockStore([thunk])
 
@@ -34,13 +35,13 @@ const mockedStore = mockStore({
     ...defaultState,
 })
 
-const renderWithRouter = (ui: React.ReactElement, {route = '/'} = {}) => {
-    const history = createMemoryHistory({initialEntries: [route]})
+const renderWithRouter = (ui: React.ReactElement, { route = '/' } = {}) => {
+    const history = createMemoryHistory({ initialEntries: [route] })
     return {
         ...renderWithQueryClientProvider(
             <Provider store={mockedStore}>
                 <Router history={history}>{ui}</Router>
-            </Provider>
+            </Provider>,
         ),
         history,
     }
@@ -53,7 +54,7 @@ const mockVisualBuilderNode: VisualBuilderNode = {
         label: 'Test Label',
         label_tkey: 'Test Label',
     },
-    position: {x: 0, y: 0},
+    position: { x: 0, y: 0 },
 }
 
 describe('TestFlowEditor', () => {
@@ -83,7 +84,7 @@ describe('TestFlowEditor', () => {
                     startFlowNode={mockVisualBuilderNode}
                     isAuthenticationBannerVisible={false}
                 />
-            </WorkflowEditorContext.Provider>
+            </WorkflowEditorContext.Provider>,
         )
 
         expect(screen.getByText('English - GB')).toBeInTheDocument()
@@ -115,7 +116,7 @@ describe('TestFlowEditor', () => {
                     startFlowNode={mockVisualBuilderNode}
                     isAuthenticationBannerVisible={false}
                 />
-            </WorkflowEditorContext.Provider>
+            </WorkflowEditorContext.Provider>,
         )
 
         expect(screen.getByText('English - GB')).toBeInTheDocument()
@@ -147,7 +148,7 @@ describe('TestFlowEditor', () => {
                     startFlowNode={mockVisualBuilderNode}
                     isAuthenticationBannerVisible={false}
                 />
-            </WorkflowEditorContext.Provider>
+            </WorkflowEditorContext.Provider>,
         )
 
         expect(screen.getByText('English - GB')).toBeInTheDocument()
@@ -179,7 +180,7 @@ describe('TestFlowEditor', () => {
                     startFlowNode={mockVisualBuilderNode}
                     isAuthenticationBannerVisible={false}
                 />
-            </WorkflowEditorContext.Provider>
+            </WorkflowEditorContext.Provider>,
         )
 
         expect(screen.getByText('English - US')).toBeInTheDocument()
@@ -211,7 +212,7 @@ describe('TestFlowEditor', () => {
                     startFlowNode={mockVisualBuilderNode}
                     isAuthenticationBannerVisible={false}
                 />
-            </WorkflowEditorContext.Provider>
+            </WorkflowEditorContext.Provider>,
         )
 
         expect(screen.getByText('English - US')).toBeInTheDocument()

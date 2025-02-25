@@ -1,26 +1,29 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useMemo} from 'react'
-import {Link} from 'react-router-dom'
+import React, { useMemo } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { Link } from 'react-router-dom'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     AutomatePlan,
-    HelpdeskPlan,
     Cadence,
+    HelpdeskPlan,
     SMSOrVoicePlan,
 } from 'models/billing/types'
-import {isLegacyAutomate} from 'models/billing/utils'
-import {NewSummaryPaymentSection} from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
-import {BillingInformationSection} from 'pages/settings/new_billing/views/PaymentInformationView/components/BillingInformationSection'
-import {Description} from 'pages/settings/new_billing/views/PaymentInformationView/components/Description'
-import {Section} from 'pages/settings/new_billing/views/PaymentInformationView/components/Section'
-import {getCurrentHelpdeskCadence} from 'state/billing/selectors'
-import {TicketPurpose} from 'state/billing/types'
-import {shouldPayWithShopify as getShouldPayWithShopify} from 'state/currentAccount/selectors'
+import { isLegacyAutomate } from 'models/billing/utils'
+import { NewSummaryPaymentSection } from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
+import { BillingInformationSection } from 'pages/settings/new_billing/views/PaymentInformationView/components/BillingInformationSection'
+import { Description } from 'pages/settings/new_billing/views/PaymentInformationView/components/Description'
+import { Section } from 'pages/settings/new_billing/views/PaymentInformationView/components/Section'
+import { getCurrentHelpdeskCadence } from 'state/billing/selectors'
+import { TicketPurpose } from 'state/billing/types'
+import { shouldPayWithShopify as getShouldPayWithShopify } from 'state/currentAccount/selectors'
 
-import {BILLING_PAYMENT_FREQUENCY_PATH} from '../../constants'
+import { BILLING_PAYMENT_FREQUENCY_PATH } from '../../constants'
+
 import css from './PaymentInformationView.less'
 
 type PaymentInformationViewProps = {

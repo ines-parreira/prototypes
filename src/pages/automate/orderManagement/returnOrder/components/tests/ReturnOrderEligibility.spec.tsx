@@ -1,5 +1,6 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import ReturnOrderEligibility from '../ReturnOrderEligibility'
 
@@ -13,7 +14,7 @@ describe('<ReturnOrderEligibility />', () => {
                     operator: 'operator',
                     value: 'value',
                 }}
-            />
+            />,
         )
 
         expect(screen.getByText('Eligibility window')).toBeInTheDocument()

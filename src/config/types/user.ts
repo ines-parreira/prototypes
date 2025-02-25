@@ -1,5 +1,5 @@
-import {DateFormatType, TimeFormatType} from 'constants/datetime'
-import {SoundValue} from 'services/NotificationSounds'
+import { DateFormatType, TimeFormatType } from 'constants/datetime'
+import { SoundValue } from 'services/NotificationSounds'
 
 export enum UserRole {
     ObserverAgent = 'observer-agent',
@@ -14,11 +14,11 @@ export type UserDraft = {
     id?: Maybe<number>
     email: string
     name: string
-    role?: {name: UserRole}
+    role?: { name: UserRole }
 }
 
 export type User = UserDraft & {
-    role: {name: UserRole}
+    role: { name: UserRole }
     active: boolean
     bio: Maybe<string>
     country: string | null
@@ -39,9 +39,9 @@ export type User = UserDraft & {
             city?: string
             country_code?: string
             country_name?: string
-            currency?: {code?: string}
+            currency?: { code?: string }
             ip?: string
-            languages?: {name?: string}[]
+            languages?: { name?: string }[]
             region?: string
             region_code?: string
             time_zone?: {
@@ -145,8 +145,8 @@ export type UserTicketSettings = {
 }
 
 export type UserViewsOrderingSettingData = {
-    views: Record<string, {display_order: number}>
-    view_sections: Record<string, {display_order: number}>
+    views: Record<string, { display_order: number }>
+    view_sections: Record<string, { display_order: number }>
 }
 
 export type UserNotificationPreferencesData = {

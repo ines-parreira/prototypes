@@ -1,8 +1,9 @@
-import {Skeleton} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
-import {useTagsDistribution} from 'hooks/reporting/support-performance/useTagsDistribution'
-import {useWidthBasedOnScreen} from 'hooks/useWidthBasedOnScreen'
+import { Skeleton } from '@gorgias/merchant-ui-kit'
+
+import { useTagsDistribution } from 'hooks/reporting/support-performance/useTagsDistribution'
+import { useWidthBasedOnScreen } from 'hooks/useWidthBasedOnScreen'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
@@ -12,29 +13,32 @@ import {
     DEFAULT_BADGE_TEXT,
     TREND_BADGE_FORMAT,
 } from 'pages/stats/common/components/TrendBadge'
-import {TrendIcon} from 'pages/stats/common/components/TrendIcon'
+import { TrendIcon } from 'pages/stats/common/components/TrendIcon'
 import {
-    NOT_AVAILABLE_PLACEHOLDER,
     formatMetricTrend,
     formatMetricValue,
+    NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
-import {DashboardChartProps} from 'pages/stats/custom-reports/types'
-import {DistributionCategoryCell} from 'pages/stats/DistributionCategoryCell'
-import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
-import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
+import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { DistributionCategoryCell } from 'pages/stats/DistributionCategoryCell'
+import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
+import { NoDataAvailable } from 'pages/stats/NoDataAvailable'
 import {
     TicketInsightsTagsMetric,
     TicketInsightsTagsMetricConfig,
 } from 'pages/stats/ticket-insights/tags/TagsMetricConfig'
 import css from 'pages/stats/ticket-insights/tags/TopUsedTagsChart.less'
-import {TagsMetric} from 'state/ui/stats/types'
+import { TagsMetric } from 'state/ui/stats/types'
 
-export const TopUsedTagsChart = ({chartId, dashboard}: DashboardChartProps) => {
-    const {isFetching, data} = useTagsDistribution()
+export const TopUsedTagsChart = ({
+    chartId,
+    dashboard,
+}: DashboardChartProps) => {
+    const { isFetching, data } = useTagsDistribution()
 
     const getWidth = useWidthBasedOnScreen()
 
-    const {hint, title} =
+    const { hint, title } =
         TicketInsightsTagsMetricConfig[
             TicketInsightsTagsMetric.TopUsedTagsChart
         ]
@@ -104,11 +108,11 @@ export const TopUsedTagsChart = ({chartId, dashboard}: DashboardChartProps) => {
                             </BodyCell>
                         </TableBodyRow>
                         {data.map((item, index) => {
-                            const {formattedTrend, sign = 0} =
+                            const { formattedTrend, sign = 0 } =
                                 formatMetricTrend(
                                     item.valueInPercentage,
                                     item.previousValueInPercentage,
-                                    TREND_BADGE_FORMAT
+                                    TREND_BADGE_FORMAT,
                                 )
                             return (
                                 <TableBodyRow key={index}>
@@ -118,7 +122,7 @@ export const TopUsedTagsChart = ({chartId, dashboard}: DashboardChartProps) => {
                                         width={getWidth(300, 140)}
                                         category={item.name}
                                         justifyContent="left"
-                                        innerStyle={{paddingLeft: 0}}
+                                        innerStyle={{ paddingLeft: 0 }}
                                         innerClassName={css.bodyCellContent}
                                     />
                                     <BodyCell
@@ -138,7 +142,7 @@ export const TopUsedTagsChart = ({chartId, dashboard}: DashboardChartProps) => {
                                                 {formatMetricValue(
                                                     item.value,
                                                     'decimal',
-                                                    NOT_AVAILABLE_PLACEHOLDER
+                                                    NOT_AVAILABLE_PLACEHOLDER,
                                                 )}
                                             </DrillDownModalTrigger>
                                         )}
@@ -156,7 +160,7 @@ export const TopUsedTagsChart = ({chartId, dashboard}: DashboardChartProps) => {
                     </TableBody>
                 </TableWrapper>
             ) : (
-                <NoDataAvailable style={{minHeight: 300}} />
+                <NoDataAvailable style={{ minHeight: 300 }} />
             )}
         </ChartCard>
     )

@@ -1,4 +1,4 @@
-import {isValidSubdomain} from '../validations'
+import { isValidSubdomain } from '../validations'
 
 describe('isValidSubdomain()', () => {
     it('rejects empty subdomain', () => {
@@ -9,7 +9,7 @@ describe('isValidSubdomain()', () => {
         'rejects invalid subdomain - %s',
         (value) => {
             expect(isValidSubdomain(value)).toEqual(false)
-        }
+        },
     )
 
     it('accepts valid subdomain', () => {

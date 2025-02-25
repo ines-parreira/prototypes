@@ -1,6 +1,6 @@
-import {ComponentType} from 'react'
+import { ComponentType } from 'react'
 
-import {FilterComponentKey, FilterKey} from 'models/stat/types'
+import { FilterComponentKey, FilterKey } from 'models/stat/types'
 import {
     AccuracyFilterWithSavedState,
     AccuracyFilterWithState,
@@ -9,12 +9,12 @@ import {
     AgentsFiltersWithSavedState,
     AgentsFiltersWithState,
 } from 'pages/stats/common/filters/AgentsFilter'
-import {AggregationWindowFilterWithState} from 'pages/stats/common/filters/AggregationWindowFilter'
+import { AggregationWindowFilterWithState } from 'pages/stats/common/filters/AggregationWindowFilter'
 import {
     BrandVoiceFilterWithSavedState,
     BrandVoiceFilterWithState,
 } from 'pages/stats/common/filters/BrandVoiceFilter'
-import {BusiestTimesMetricSelectFilter} from 'pages/stats/common/filters/BusiestTimesMetricSelectFilter'
+import { BusiestTimesMetricSelectFilter } from 'pages/stats/common/filters/BusiestTimesMetricSelectFilter'
 import {
     CampaignsFilterFromContext,
     CampaignsFilterFromSavedContext,
@@ -27,7 +27,7 @@ import {
     CommunicationSkillsFilterWithSavedState,
     CommunicationSkillsFilterWithState,
 } from 'pages/stats/common/filters/CommunicationSkillsFilter'
-import {CustomFieldFilter} from 'pages/stats/common/filters/CustomFieldFilter'
+import { CustomFieldFilter } from 'pages/stats/common/filters/CustomFieldFilter'
 import {
     CustomFieldsFilterWithSavedState,
     CustomFieldsFilterWithState,
@@ -36,8 +36,8 @@ import {
     EfficiencyFilterWithSavedState,
     EfficiencyFilterWithState,
 } from 'pages/stats/common/filters/EfficiencyFilter'
-import {HelpCenterFilterWithState} from 'pages/stats/common/filters/HelpCenterFilter'
-import {HelpCenterLanguageFilterWithState} from 'pages/stats/common/filters/HelpCenterLanguageFilter'
+import { HelpCenterFilterWithState } from 'pages/stats/common/filters/HelpCenterFilter'
+import { HelpCenterLanguageFilterWithState } from 'pages/stats/common/filters/HelpCenterLanguageFilter'
 import {
     IntegrationsFilterWithSavedState,
     IntegrationsFilterWithState,
@@ -51,7 +51,7 @@ import {
     LanguageProficiencyFilterWithSavedState,
     LanguageProficiencyFilterWithState,
 } from 'pages/stats/common/filters/LanguageProficiencyFilter'
-import {PeriodFilterWithState} from 'pages/stats/common/filters/PeriodFilter'
+import { PeriodFilterWithState } from 'pages/stats/common/filters/PeriodFilter'
 import {
     ResolutionCompletenessFilterWithSavedState,
     ResolutionCompletenessFilterWithState,
@@ -60,8 +60,8 @@ import {
     ScoreFiltersWithSavedState,
     ScoreFiltersWithState,
 } from 'pages/stats/common/filters/ScoreFilter'
-import {SLAPolicyFilterWithState} from 'pages/stats/common/filters/SLAPolicyFilter'
-import {StoreFilterFromContext} from 'pages/stats/common/filters/StoreFilter'
+import { SLAPolicyFilterWithState } from 'pages/stats/common/filters/SLAPolicyFilter'
+import { StoreFilterFromContext } from 'pages/stats/common/filters/StoreFilter'
 import {
     TagsFilterWithSavedState,
     TagsFilterWithState,

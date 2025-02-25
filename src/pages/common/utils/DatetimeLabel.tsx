@@ -1,13 +1,18 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
 import React from 'react'
-import {UncontrolledTooltipProps} from 'reactstrap'
 
-import {DateAndTimeFormatting} from 'constants/datetime'
+import classNames from 'classnames'
+import { UncontrolledTooltipProps } from 'reactstrap'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { DateAndTimeFormatting } from 'constants/datetime'
 import useAppSelector from 'hooks/useAppSelector'
 import useId from 'hooks/useId'
-import {getDateAndTimeFormatter, getTimezone} from 'state/currentUser/selectors'
-import {formatDatetime} from 'utils'
+import {
+    getDateAndTimeFormatter,
+    getTimezone,
+} from 'state/currentUser/selectors'
+import { formatDatetime } from 'utils'
 
 import css from './DatetimeLabel.less'
 
@@ -40,15 +45,15 @@ const DatetimeLabel = ({
     const labelDatetime = formatDatetime(
         dateTime,
         dateAndTimeFormatter(
-            labelFormat || DateAndTimeFormatting.RelativeDateAndTime
+            labelFormat || DateAndTimeFormatting.RelativeDateAndTime,
         ),
-        timezone
+        timezone,
     )
 
     const tooltipDatetime = formatDatetime(
         dateTime,
         dateAndTimeFormatter(DateAndTimeFormatting.CompactDateWithTime),
-        timezone
+        timezone,
     )
 
     return (
@@ -65,7 +70,7 @@ const DatetimeLabel = ({
                 <Tooltip
                     placement={placement}
                     target={id}
-                    delay={{show: 200, hide: 0}}
+                    delay={{ show: 200, hide: 0 }}
                     className={classNames(css.datetimeTooltip)}
                 >
                     {tooltipDatetime.toString()}

@@ -1,54 +1,54 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {render, fireEvent} from '@testing-library/react'
-import {fromJS, Map} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
+import React, { ComponentProps } from 'react'
 
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, render } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {account} from 'fixtures/account'
-import {agents} from 'fixtures/agents'
-import {billingState} from 'fixtures/billing'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { account } from 'fixtures/account'
+import { agents } from 'fixtures/agents'
+import { billingState } from 'fixtures/billing'
 import {
     AUTOMATION_PRODUCT_ID,
     basicYearlyAutomationPlan,
     VOICE_PRODUCT_ID,
     voicePlan1,
 } from 'fixtures/productPrices'
-import {tags} from 'fixtures/tag'
-import {user} from 'fixtures/users'
-import {LegacyStatsFilters} from 'models/stat/types'
-import {AUTO_QA_FILTER_KEYS} from 'pages/stats/common/filters/constants'
+import { tags } from 'fixtures/tag'
+import { user } from 'fixtures/users'
+import { LegacyStatsFilters } from 'models/stat/types'
+import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import * as VoiceCallCallerExperienceMetric from 'pages/stats/voice/components/VoiceCallerExperienceMetric/VoiceCallCallerExperienceMetric'
-import {VoiceOverviewDownloadDataButton} from 'pages/stats/voice/components/VoiceOverviewDownloadDataButton/VoiceOverviewDownloadDataButton'
+import { VoiceOverviewDownloadDataButton } from 'pages/stats/voice/components/VoiceOverviewDownloadDataButton/VoiceOverviewDownloadDataButton'
 import {
     ALL_CALLS_FILTER_LABEL,
+    AVERAGE_TALK_TIME_METRIC_TITLE,
+    AVERAGE_WAIT_TIME_METRIC_TITLE,
     CALL_LIST_TITLE,
     CALL_VOLUME_METRICS_TITLE,
-    INBOUND_CALLS_METRIC_TITLE,
+    CALLER_EXPERIENCE_METRICS_TITLE,
     INBOUND_CALLS_FILTER_LABEL,
+    INBOUND_CALLS_METRIC_TITLE,
     MISSED_CALLS_METRIC_TITLE,
     OUTBOUND_CALLS_METRIC_TITLE,
     TOTAL_CALLS_METRIC_TITLE,
     VOICE_OVERVIEW_PAGE_TITLE,
-    CALLER_EXPERIENCE_METRICS_TITLE,
-    AVERAGE_TALK_TIME_METRIC_TITLE,
-    AVERAGE_WAIT_TIME_METRIC_TITLE,
 } from 'pages/stats/voice/constants/voiceOverview'
-import {useVoiceCallAverageTimeTrend} from 'pages/stats/voice/hooks/useVoiceCallAverageTimeTrend'
-import {useVoiceCallCountTrend} from 'pages/stats/voice/hooks/useVoiceCallCountTrend'
+import { useVoiceCallAverageTimeTrend } from 'pages/stats/voice/hooks/useVoiceCallAverageTimeTrend'
+import { useVoiceCallCountTrend } from 'pages/stats/voice/hooks/useVoiceCallCountTrend'
 import VoiceOverview from 'pages/stats/voice/pages/VoiceOverview'
-import {VOICE_OVERVIEW_OPTIONAL_FILTERS} from 'pages/stats/voice/pages/VoiceOverviewReportConfig'
-import {AccountFeature} from 'state/currentAccount/types'
-import {fromLegacyStatsFilters} from 'state/stats/utils'
-import {RootState, StoreDispatch} from 'state/types'
-import {VoiceMetric} from 'state/ui/stats/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { VOICE_OVERVIEW_OPTIONAL_FILTERS } from 'pages/stats/voice/pages/VoiceOverviewReportConfig'
+import { AccountFeature } from 'state/currentAccount/types'
+import { fromLegacyStatsFilters } from 'state/stats/utils'
+import { RootState, StoreDispatch } from 'state/types'
+import { VoiceMetric } from 'state/ui/stats/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
@@ -61,10 +61,10 @@ jest.mock('pages/stats/voice/hooks/useVoiceCallCountTrend')
 jest.mock('pages/stats/voice/hooks/useVoiceCallAverageTimeTrend')
 jest.mock('pages/stats/voice/VoicePaywall', () => () => <div>VoicePaywall</div>)
 jest.mock(
-    'pages/stats/voice/components/VoiceOverviewDownloadDataButton/VoiceOverviewDownloadDataButton'
+    'pages/stats/voice/components/VoiceOverviewDownloadDataButton/VoiceOverviewDownloadDataButton',
 )
 const VoiceOverviewDownloadDataButtonMock = assumeMock(
-    VoiceOverviewDownloadDataButton
+    VoiceOverviewDownloadDataButton,
 )
 jest.mock(
     'pages/stats/common/filters/FiltersPanelWrapper',
@@ -72,22 +72,22 @@ jest.mock(
         return props.optionalFilters?.map((optionalFilter) => (
             <div key={optionalFilter}>{optionalFilter}</div>
         ))
-    }
+    },
 )
 
 assumeMock(useVoiceCallCountTrend).mockReturnValue({
-    data: {prevValue: 10, value: 15},
+    data: { prevValue: 10, value: 15 },
     isFetching: false,
     isError: false,
 })
 assumeMock(useVoiceCallAverageTimeTrend).mockReturnValue({
-    data: {prevValue: 1, value: 2},
+    data: { prevValue: 1, value: 2 },
     isFetching: false,
     isError: false,
 })
 const VoiceCallCallerExperienceMetricSpy = jest.spyOn(
     VoiceCallCallerExperienceMetric,
-    'default'
+    'default',
 )
 
 describe('VoiceOverview', () => {
@@ -131,7 +131,7 @@ describe('VoiceOverview', () => {
             stats: {
                 filters: fromLegacyStatsFilters(statsFilters),
             },
-            integrations: fromJS({integrations: []}),
+            integrations: fromJS({ integrations: [] }),
             ui: {
                 stats: {
                     filters: {
@@ -140,19 +140,19 @@ describe('VoiceOverview', () => {
                     },
                 },
             },
-            entities: {tags: {[tags[0].id]: tags[0]}},
+            entities: { tags: { [tags[0].id]: tags[0] } },
         } as RootState
         return render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore(state)}>
                     <VoiceOverview />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
     }
 
     it('should render page title', () => {
-        const {queryByText, queryAllByText, getByText} = renderVoiceOverview()
+        const { queryByText, queryAllByText, getByText } = renderVoiceOverview()
 
         // header elements
         expect(queryByText(VOICE_OVERVIEW_PAGE_TITLE)).toBeInTheDocument()
@@ -191,13 +191,13 @@ describe('VoiceOverview', () => {
 
         // footer
         expect(
-            queryByText('Analytics are using EST timezone')
+            queryByText('Analytics are using EST timezone'),
         ).toBeInTheDocument()
     })
 
     it('should render with no default filters and with new filters panel when feature flag is enabled', () => {
-        mockFlags({[FeatureFlagKey.AnalyticsNewFiltersVoice]: true})
-        const {queryByText, getByText} = renderVoiceOverview()
+        mockFlags({ [FeatureFlagKey.AnalyticsNewFiltersVoice]: true })
+        const { queryByText, getByText } = renderVoiceOverview()
 
         // filter buttons (default filters)
         expect(queryByText('All integrations')).not.toBeInTheDocument()
@@ -219,7 +219,7 @@ describe('VoiceOverview', () => {
             ...VOICE_OVERVIEW_OPTIONAL_FILTERS,
         ]
 
-        const {getByText} = renderVoiceOverview()
+        const { getByText } = renderVoiceOverview()
 
         extendedVoiceOverviewFilters.forEach((filter) => {
             expect(getByText(filter)).toBeInTheDocument()
@@ -235,7 +235,7 @@ describe('VoiceOverview', () => {
             ...AUTO_QA_FILTER_KEYS,
         ]
 
-        const {getByText} = renderVoiceOverview()
+        const { getByText } = renderVoiceOverview()
 
         extendedVoiceOverviewFilters.forEach((filter) => {
             expect(getByText(filter)).toBeInTheDocument()
@@ -249,7 +249,7 @@ describe('VoiceOverview', () => {
     })
 
     it('should render paywall page', () => {
-        const {getByText} = renderVoiceOverview(false)
+        const { getByText } = renderVoiceOverview(false)
 
         expect(getByText('VoicePaywall')).toBeInTheDocument()
     })
@@ -265,7 +265,7 @@ describe('VoiceOverview', () => {
                     title: AVERAGE_WAIT_TIME_METRIC_TITLE,
                 },
             }),
-            {}
+            {},
         )
         expect(VoiceCallCallerExperienceMetricSpy).toHaveBeenNthCalledWith(
             2,
@@ -275,7 +275,7 @@ describe('VoiceOverview', () => {
                     title: AVERAGE_TALK_TIME_METRIC_TITLE,
                 },
             }),
-            {}
+            {},
         )
     })
 })

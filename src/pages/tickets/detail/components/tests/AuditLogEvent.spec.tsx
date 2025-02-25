@@ -1,25 +1,26 @@
-import {render, fireEvent} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {emptyRuleRecipeFixture as mockEmptyRuleRecipeFixture} from 'fixtures/ruleRecipe'
-import {SYSTEM_RULE_TYPE, TAGS_ADDED_KEY} from 'models/event/constants'
+import { fireEvent, render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+
+import { emptyRuleRecipeFixture as mockEmptyRuleRecipeFixture } from 'fixtures/ruleRecipe'
+import { SYSTEM_RULE_TYPE, TAGS_ADDED_KEY } from 'models/event/constants'
 import {
-    TicketEventType,
-    EventObjectType,
     EventData,
-    TICKET_EVENT_TYPES,
+    EventObjectType,
     SATISFACTION_SURVEY_EVENT_TYPES,
     SatisfactionSurveyEventType,
+    TICKET_EVENT_TYPES,
+    TicketEventType,
 } from 'models/event/types'
-import {RuleEvent} from 'state/rules/types'
+import { RuleEvent } from 'state/rules/types'
 
-import {AuditLogEventContainer} from '../AuditLogEvent'
+import { AuditLogEventContainer } from '../AuditLogEvent'
 
 jest.mock(
     'pages/common/utils/DatetimeLabel',
     () =>
-        ({dateTime}: {dateTime: string}) => <div>{dateTime}</div>
+        ({ dateTime }: { dateTime: string }) => <div>{dateTime}</div>,
 )
 
 jest.mock('state/entities/ruleRecipes/hooks', () => ({
@@ -33,19 +34,19 @@ describe('<AuditLogEvent/>', () => {
 
     const minProps = {
         users: fromJS([
-            {id: 1, name: 'User 1'},
-            {id: 2, name: 'User 2'},
-            {id: 3, name: '', email},
+            { id: 1, name: 'User 1' },
+            { id: 2, name: 'User 2' },
+            { id: 3, name: '', email },
         ]),
         teams: fromJS([
-            {id: 1, name: 'Team 1'},
-            {id: 2, name: 'Team 2'},
-            {id: 3, name: 'Team 3'},
+            { id: 1, name: 'Team 1' },
+            { id: 2, name: 'Team 2' },
+            { id: 3, name: 'Team 3' },
         ]),
         tags: {
-            1: {id: 1, name: 'tag-1'},
-            2: {id: 2, name: 'tag-2'},
-            3: {id: 3, name: 'tag-3'},
+            1: { id: 1, name: 'tag-1' },
+            2: { id: 2, name: 'tag-2' },
+            3: { id: 3, name: 'tag-3' },
         },
         events: fromJS([]),
         setHighlightedElements: jest.fn(),
@@ -54,13 +55,13 @@ describe('<AuditLogEvent/>', () => {
     const getEvent = (
         eventType: TicketEventType | SatisfactionSurveyEventType,
         data: EventData | null = null,
-        options?: Record<string, unknown>
+        options?: Record<string, unknown>,
     ) => ({
         id: 1,
         account_id: 1,
         user_id: 1,
         object_type: Object.values(SATISFACTION_SURVEY_EVENT_TYPES).includes(
-            eventType as any
+            eventType as any,
         )
             ? EventObjectType.SatisfactionSurvey
             : EventObjectType.Ticket,
@@ -80,8 +81,8 @@ describe('<AuditLogEvent/>', () => {
                     EventData | null,
                 ]
             >([
-                [TICKET_EVENT_TYPES.RuleExecuted, {id: 1, name: 'Rule 1'}],
-                [TICKET_EVENT_TYPES.TicketAssigned, {assignee_user_id: 1}],
+                [TICKET_EVENT_TYPES.RuleExecuted, { id: 1, name: 'Rule 1' }],
+                [TICKET_EVENT_TYPES.TicketAssigned, { assignee_user_id: 1 }],
                 [TICKET_EVENT_TYPES.TicketClosed, null],
                 [TICKET_EVENT_TYPES.TicketCreated, null],
                 [
@@ -98,10 +99,16 @@ describe('<AuditLogEvent/>', () => {
                 [TICKET_EVENT_TYPES.TicketMerged, null],
                 [TICKET_EVENT_TYPES.TicketSnoozed, null],
                 [TICKET_EVENT_TYPES.TicketSelfUnsnoozed, null],
-                [TICKET_EVENT_TYPES.TicketSplit, {split_into_ticket: {id: 1}}],
-                [TICKET_EVENT_TYPES.TicketTagsAdded, {tags_added: [1]}],
-                [TICKET_EVENT_TYPES.TicketTagsRemoved, {tags_removed: [1]}],
-                [TICKET_EVENT_TYPES.TicketTeamAssigned, {assignee_team_id: 1}],
+                [
+                    TICKET_EVENT_TYPES.TicketSplit,
+                    { split_into_ticket: { id: 1 } },
+                ],
+                [TICKET_EVENT_TYPES.TicketTagsAdded, { tags_added: [1] }],
+                [TICKET_EVENT_TYPES.TicketTagsRemoved, { tags_removed: [1] }],
+                [
+                    TICKET_EVENT_TYPES.TicketTeamAssigned,
+                    { assignee_team_id: 1 },
+                ],
                 [TICKET_EVENT_TYPES.TicketTeamUnassigned, null],
                 [TICKET_EVENT_TYPES.TicketTrashed, null],
                 [TICKET_EVENT_TYPES.TicketUnassigned, null],
@@ -122,10 +129,10 @@ describe('<AuditLogEvent/>', () => {
                         new_subject: 'bar',
                     },
                 ],
-                [TICKET_EVENT_TYPES.RuleExecuted, {slug: 'rule_suggestion'}],
+                [TICKET_EVENT_TYPES.RuleExecuted, { slug: 'rule_suggestion' }],
                 [
                     TICKET_EVENT_TYPES.RuleSuggestionSuggested,
-                    {slug: 'rule_suggestion'},
+                    { slug: 'rule_suggestion' },
                 ],
                 [TICKET_EVENT_TYPES.TicketExcludedFromCSAT, null],
                 [
@@ -138,49 +145,55 @@ describe('<AuditLogEvent/>', () => {
                 ],
                 [
                     SATISFACTION_SURVEY_EVENT_TYPES.SatisfactionSurveyResponded,
-                    {score: 5, body_text: 'Great service!'},
+                    { score: 5, body_text: 'Great service!' },
                 ],
                 [SATISFACTION_SURVEY_EVENT_TYPES.SatisfactionSurveySent, null],
             ])('with event type %s', (eventType, eventData) => {
                 const event = getEvent(eventType, eventData)
-                const {container} = render(
+                const { container } = render(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
                         isLast={false}
-                    />
+                    />,
                 )
 
                 expect(container.firstChild).toMatchSnapshot()
             })
 
             it.each<[TicketEventType, EventData]>([
-                [TICKET_EVENT_TYPES.TicketTagsAdded, {tags_added: [1, 2]}],
-                [TICKET_EVENT_TYPES.TicketTagsRemoved, {tags_removed: [1, 2]}],
+                [TICKET_EVENT_TYPES.TicketTagsAdded, { tags_added: [1, 2] }],
+                [
+                    TICKET_EVENT_TYPES.TicketTagsRemoved,
+                    { tags_removed: [1, 2] },
+                ],
             ])('with event type %s and several tags', (eventType, data) => {
                 const event = getEvent(eventType, data)
-                const {container} = render(
+                const { container } = render(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
                         isLast={false}
-                    />
+                    />,
                 )
 
                 expect(container.firstChild).toMatchSnapshot()
             })
 
             it.each<[TicketEventType, EventData]>([
-                [TICKET_EVENT_TYPES.TicketAssigned, {assignee_user_id: 9}],
-                [TICKET_EVENT_TYPES.TicketTeamAssigned, {assignee_team_id: 9}],
+                [TICKET_EVENT_TYPES.TicketAssigned, { assignee_user_id: 9 }],
+                [
+                    TICKET_EVENT_TYPES.TicketTeamAssigned,
+                    { assignee_team_id: 9 },
+                ],
             ])('with event type %s and missing assignee', (eventType, data) => {
                 const event = getEvent(eventType, data)
-                const {container} = render(
+                const { container } = render(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
                         isLast={false}
-                    />
+                    />,
                 )
 
                 expect(container.firstChild).toMatchSnapshot()
@@ -193,12 +206,12 @@ describe('<AuditLogEvent/>', () => {
                     triggering_event_type: RuleEvent.TicketCreated,
                 })
 
-                const {container} = render(
+                const { container } = render(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
                         isLast={false}
-                    />
+                    />,
                 )
 
                 expect(container.firstChild).toMatchSnapshot()
@@ -217,12 +230,12 @@ describe('<AuditLogEvent/>', () => {
                     ]),
                 })
 
-                const {getByText} = render(
+                const { getByText } = render(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
                         isLast={false}
-                    />
+                    />,
                 )
 
                 expect(getByText(/failed:/i)).toBeInTheDocument
@@ -234,15 +247,15 @@ describe('<AuditLogEvent/>', () => {
                     null,
                     {
                         user_id: null,
-                    }
+                    },
                 )
 
-                const {container} = render(
+                const { container } = render(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
                         isLast={false}
-                    />
+                    />,
                 )
 
                 expect(container.firstChild).toMatchSnapshot()
@@ -251,22 +264,24 @@ describe('<AuditLogEvent/>', () => {
             it('when the event is the last component to display before the reply area', () => {
                 const event = getEvent(TICKET_EVENT_TYPES.TicketReopened)
 
-                const {container} = render(
+                const { container } = render(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
                         isLast={true}
-                    />
+                    />,
                 )
 
                 expect(
-                    (container.firstChild as Element).classList.contains('last')
+                    (container.firstChild as Element).classList.contains(
+                        'last',
+                    ),
                 ).toBeTruthy()
             })
 
             it('when the event has been added via a rule', () => {
                 const ruleExecutedEvent = getEvent(
-                    TICKET_EVENT_TYPES.RuleExecuted
+                    TICKET_EVENT_TYPES.RuleExecuted,
                 )
 
                 // Event added after `ruleExecutedEvent`, with the same `context`
@@ -276,15 +291,15 @@ describe('<AuditLogEvent/>', () => {
                     {
                         id: 2,
                         created_datetime: '2019-11-15 19:00:00.500000',
-                    }
+                    },
                 )
-                const {getByText} = render(
+                const { getByText } = render(
                     <AuditLogEventContainer
                         {...minProps}
                         events={fromJS([ruleExecutedEvent, event])}
                         event={fromJS(event)}
                         isLast={false}
-                    />
+                    />,
                 )
 
                 expect(getByText(/via rule/i)).toBeInTheDocument()
@@ -297,18 +312,18 @@ describe('<AuditLogEvent/>', () => {
                         assignee_user_id: 9,
                         auto_assigned: true,
                     },
-                    {user_id: null}
+                    { user_id: null },
                 )
-                const {getByText} = render(
+                const { getByText } = render(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
                         isLast={false}
-                    />
+                    />,
                 )
 
                 expect(
-                    getByText('via Team auto-assignment')
+                    getByText('via Team auto-assignment'),
                 ).toBeInTheDocument()
             })
 
@@ -316,12 +331,12 @@ describe('<AuditLogEvent/>', () => {
                 const event = getEvent(TICKET_EVENT_TYPES.TicketMerged, null, {
                     user_id: null,
                 })
-                const {getByText} = render(
+                const { getByText } = render(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
                         isLast={false}
-                    />
+                    />,
                 )
 
                 expect(getByText('by auto-merge service')).toBeInTheDocument()
@@ -331,12 +346,12 @@ describe('<AuditLogEvent/>', () => {
                 const event = getEvent(TICKET_EVENT_TYPES.TicketMerged, null, {
                     user_id: 1234567890,
                 })
-                const {getByText} = render(
+                const { getByText } = render(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
                         isLast={false}
-                    />
+                    />,
                 )
 
                 expect(getByText('by deleted user')).toBeInTheDocument()
@@ -356,15 +371,15 @@ describe('<AuditLogEvent/>', () => {
                             id: 3,
                             name: name2,
                         },
-                    }
+                    },
                 )
 
-                const {getByText} = render(
+                const { getByText } = render(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
                         isLast={false}
-                    />
+                    />,
                 )
 
                 expect(getByText(/customer changed from/i)).toBeInTheDocument()
@@ -384,15 +399,15 @@ describe('<AuditLogEvent/>', () => {
                             id: 3,
                             name: '',
                         },
-                    }
+                    },
                 )
 
-                const {getByText} = render(
+                const { getByText } = render(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
                         isLast={false}
-                    />
+                    />,
                 )
 
                 expect(getByText(/customer changed from/i)).toBeInTheDocument()
@@ -401,12 +416,12 @@ describe('<AuditLogEvent/>', () => {
 
             it('when the ticket subject updated data is null', () => {
                 const event = getEvent(TICKET_EVENT_TYPES.TicketSubjectUpdated)
-                const {getByText} = render(
+                const { getByText } = render(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
                         isLast={false}
-                    />
+                    />,
                 )
                 expect(getByText(/subject updated/i)).toBeInTheDocument()
             })
@@ -416,12 +431,12 @@ describe('<AuditLogEvent/>', () => {
                     ...getEvent(TICKET_EVENT_TYPES.TicketSubjectUpdated),
                     user_id: 3,
                 }
-                const {getByText} = render(
+                const { getByText } = render(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
                         isLast={false}
-                    />
+                    />,
                 )
                 expect(getByText(email)).toBeInTheDocument()
             })
@@ -435,49 +450,49 @@ describe('<AuditLogEvent/>', () => {
                                 'The ticket conversation is shorter than the minimum requirement of 250 characters.',
                                 'The ticket lacks the required minimum interaction: at least one message from the customer and one from an agent.',
                             ],
-                        }
+                        },
                     ),
                     user_id: 3,
                 }
-                const {getByText, getByTitle} = render(
+                const { getByText, getByTitle } = render(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
                         isLast={false}
-                    />
+                    />,
                 )
                 fireEvent.click(getByTitle('More details'))
 
                 expect(getByText(email)).toBeInTheDocument()
                 expect(
                     getByText(
-                        /The ticket conversation is shorter than the minimum requirement of 250 characters./
-                    )
+                        /The ticket conversation is shorter than the minimum requirement of 250 characters./,
+                    ),
                 ).toBeInTheDocument()
                 expect(
                     getByText(
-                        /The ticket lacks the required minimum interaction: at least one message from the customer and one from an agent./
-                    )
+                        /The ticket lacks the required minimum interaction: at least one message from the customer and one from an agent./,
+                    ),
                 ).toBeInTheDocument()
             })
 
-            it.each<EventData | null>([{reasons: []}, {}, null])(
+            it.each<EventData | null>([{ reasons: [] }, {}, null])(
                 'with event type ticket-satisfaction-survey-skipped and data %s',
                 (data) => {
                     const event = getEvent(
                         TICKET_EVENT_TYPES.TicketSatisfactionSurveySkipped,
-                        data
+                        data,
                     )
-                    const {container} = render(
+                    const { container } = render(
                         <AuditLogEventContainer
                             {...minProps}
                             event={fromJS(event)}
                             isLast={false}
-                        />
+                        />,
                     )
 
                     expect(container.firstChild).toMatchSnapshot()
-                }
+                },
             )
         })
 
@@ -485,12 +500,12 @@ describe('<AuditLogEvent/>', () => {
             it('when the content is missing', () => {
                 const event = getEvent('invalid' as any)
 
-                const {container} = render(
+                const { container } = render(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
                         isLast={false}
-                    />
+                    />,
                 )
 
                 expect(container.firstChild).toBeNull()
@@ -501,12 +516,12 @@ describe('<AuditLogEvent/>', () => {
                     type: SYSTEM_RULE_TYPE,
                 })
 
-                const {container} = render(
+                const { container } = render(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
                         isLast={false}
-                    />
+                    />,
                 )
 
                 expect(container.firstChild).toBeNull()
@@ -517,12 +532,12 @@ describe('<AuditLogEvent/>', () => {
                     [TAGS_ADDED_KEY]: [999],
                 })
 
-                const {container} = render(
+                const { container } = render(
                     <AuditLogEventContainer
                         {...minProps}
                         event={fromJS(event)}
                         isLast={false}
-                    />
+                    />,
                 )
 
                 expect(container.firstChild).toBeNull()

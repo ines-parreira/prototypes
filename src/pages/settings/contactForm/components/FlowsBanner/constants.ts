@@ -1,4 +1,4 @@
-import {SegmentEvent} from 'common/segment'
+import { SegmentEvent } from 'common/segment'
 
 export const BANNER_DETAILS = {
     CONNECTED_TO_SHOP_AND_AUTOMATION_ENABLED: {

@@ -1,15 +1,15 @@
 import React from 'react'
 
-import {DateAndTimeFormatting} from 'constants/datetime'
+import { DateAndTimeFormatting } from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import {DraftBadge} from 'pages/automate/workflows/components/DraftBadge'
+import { DraftBadge } from 'pages/automate/workflows/components/DraftBadge'
 import IconButton from 'pages/common/components/button/IconButton'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import {formatDatetime} from 'utils'
+import { formatDatetime } from 'utils'
 
-import {ActionTemplate, App} from '../types'
+import { ActionTemplate, App } from '../types'
 
 import css from './ActionsPlatformTemplatesTableRow.less'
 
@@ -32,7 +32,7 @@ const ActionsPlatformTemplatesTableRow = ({
     isDisabled,
 }: Props) => {
     const datetimeFormat = useGetDateAndTimeFormat(
-        DateAndTimeFormatting.CompactDate
+        DateAndTimeFormatting.CompactDate,
     )
 
     return (
@@ -57,15 +57,15 @@ const ActionsPlatformTemplatesTableRow = ({
                 }}
             >
                 <ConfirmationPopover
-                    buttonProps={{intent: 'destructive'}}
-                    cancelButtonProps={{intent: 'secondary'}}
+                    buttonProps={{ intent: 'destructive' }}
+                    cancelButtonProps={{ intent: 'secondary' }}
                     content="Are you sure you want to delete this template? This action cannot be undone."
                     title={<b>Delete template?</b>}
                     onConfirm={onDelete}
                     confirmLabel="Delete"
                     showCancelButton
                 >
-                    {({uid, onDisplayConfirmation}) => (
+                    {({ uid, onDisplayConfirmation }) => (
                         <IconButton
                             onClick={onDisplayConfirmation}
                             fillStyle="ghost"

@@ -1,39 +1,41 @@
-import {Macro} from '@gorgias/api-queries'
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { Component, ReactNode } from 'react'
+
 import classnames from 'classnames'
-import {ContentState, EditorState} from 'draft-js'
-import {fromJS, Map} from 'immutable'
-import {LDFlagSet} from 'launchdarkly-js-client-sdk'
-import {withLDConsumer} from 'launchdarkly-react-client-sdk'
+import { ContentState, EditorState } from 'draft-js'
+import { fromJS, Map } from 'immutable'
+import { LDFlagSet } from 'launchdarkly-js-client-sdk'
+import { withLDConsumer } from 'launchdarkly-react-client-sdk'
 import _debounce from 'lodash/debounce'
 import _noop from 'lodash/noop'
-import React, {Component, ReactNode} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
+import { connect, ConnectedProps } from 'react-redux'
 
-import {humanize} from 'business/format'
-import {canAddAttachments} from 'business/ticket'
-import {TicketMessageSourceType} from 'business/types/ticket'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {ActionName} from 'pages/common/draftjs/plugins/toolbar/types'
+import { Macro } from '@gorgias/api-queries'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { humanize } from 'business/format'
+import { canAddAttachments } from 'business/ticket'
+import { TicketMessageSourceType } from 'business/types/ticket'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { ActionName } from 'pages/common/draftjs/plugins/toolbar/types'
 import RichField from 'pages/common/forms/RichField/RichField'
 import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
 import withTypingActivity, {
     TypingActivityProps,
 } from 'pages/tickets/detail/components/ReplyArea/withTypingActivity'
-import {isNewChannel} from 'services/channels'
-import {getOtherAgents} from 'state/agents/selectors'
-import {addAttachments, setResponseText} from 'state/newMessage/actions'
+import { isNewChannel } from 'services/channels'
+import { getOtherAgents } from 'state/agents/selectors'
+import { addAttachments, setResponseText } from 'state/newMessage/actions'
 import {
-    getNewMessageType,
     getNewMessageAttachments,
+    getNewMessageType,
     isNewMessagePublic,
 } from 'state/newMessage/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {getContext} from 'state/prediction/selectors'
-import {RootState} from 'state/types'
-import {canLeaveInternalNote, isRichType} from 'tickets/common/utils'
-import {getFileTooLargeError, getMaxAttachmentSize} from 'utils/file'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { getContext } from 'state/prediction/selectors'
+import { RootState } from 'state/types'
+import { canLeaveInternalNote, isRichType } from 'tickets/common/utils'
+import { getFileTooLargeError, getMaxAttachmentSize } from 'utils/file'
 
 import MacrosQuickReply from './MacrosQuickReply/MacrosQuickReply'
 
@@ -58,7 +60,7 @@ export const updateMessageText = _debounce(
             setResponseText,
             handleTypingActivity,
         }: Props & TypingActivityProps,
-        editorState: EditorState
+        editorState: EditorState,
     ) => {
         if (!newMessage.getIn(['state', 'cacheAdded'])) {
             return
@@ -72,10 +74,10 @@ export const updateMessageText = _debounce(
                 selectionState: editorState.getSelection(),
                 forceUpdate: false,
                 forceFocus: false,
-            })
+            }),
         )
     },
-    100
+    100,
 )
 
 type validationRegexType = string | RegExp
@@ -138,14 +140,14 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
             editorState = EditorState.push(
                 editorState,
                 contentState,
-                'insert-characters'
+                'insert-characters',
             )
         } else {
             // empty editor state (triggered after message is sent, textarea needs to be emptied)
             editorState = EditorState.push(
                 editorState,
                 ContentState.createFromText(''),
-                'insert-characters'
+                'insert-characters',
             )
         }
 
@@ -155,12 +157,12 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
     canAddAttachments = (fileList: File[] | FileList) => {
         // FileList does not have map
         const files = Array.from(fileList)
-        const {attachments, newMessage, newMessageType} = this.props
+        const { attachments, newMessage, newMessageType } = this.props
 
         const notification = canAddAttachments(
             newMessageType,
             newMessage.getIn(['newMessage', 'body_text']),
-            attachments.size + files.length
+            attachments.size + files.length,
         )
         if (notification) {
             void this.props.notify({
@@ -174,13 +176,13 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
         if (newMessageType === TicketMessageSourceType.TwitterTweet) {
             // Filter the newly added files to be uploaded
             const gifFiles = files.filter(
-                (file) => file.type && file.type === 'image/gif'
+                (file) => file.type && file.type === 'image/gif',
             )
 
             // Filter the existing, already uploaded files
             const gifAttachments = attachments.filter(
                 (attachment: Map<any, any>) =>
-                    attachment.get('content_type') === 'image/gif'
+                    attachment.get('content_type') === 'image/gif',
             )
 
             if (
@@ -191,7 +193,7 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
                     type: NotificationStatus.Error,
                     status: NotificationStatus.Warning,
                     message: `When answering to ${humanize(
-                        newMessageType
+                        newMessageType,
                     )} messages, you can only attach a single GIF or a maximum of 4 pictures.`,
                 })
                 return false
@@ -202,7 +204,7 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
         const currentSize = this.getFilesSize(files)
         const maxSize = getMaxAttachmentSize(
             this.getEditorState(),
-            attachments.toJS()
+            attachments.toJS(),
         )
         if (currentSize >= maxSize) {
             void this.props.notify({
@@ -217,9 +219,9 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
 
     handleFiles = (
         files: File[] | FileList,
-        validationRegex?: validationRegexType
+        validationRegex?: validationRegexType,
     ) => {
-        const {newMessageType} = this.props
+        const { newMessageType } = this.props
         if (!this.canAddAttachments(files)) {
             return
         }
@@ -233,7 +235,7 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
                     type: NotificationStatus.Error,
                     status: NotificationStatus.Warning,
                     message: `When answering to ${humanize(
-                        newMessageType
+                        newMessageType,
                     )} messages, the only attachments allowed are ${' '}
                     images (except svg).`,
                 })
@@ -280,19 +282,19 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
     getFilesSize = (files: File[] | FileList) => {
         return Array.from(files).reduce(
             (sum, file) => sum + (file.size || 0),
-            0
+            0,
         )
     }
 
     getButtons = () => {
-        const {attachments, newMessage, newMessageType} = this.props
+        const { attachments, newMessage, newMessageType } = this.props
         let attachmentsMask: string
 
         if (
             canAddAttachments(
                 newMessageType,
                 newMessage.getIn(['newMessage', 'body_text']),
-                attachments.size + 1
+                attachments.size + 1,
             ) != null
         ) {
             return []
@@ -344,7 +346,7 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
                         event.target.files &&
                             this.handleFiles(
                                 event.target.files,
-                                attachmentsMask
+                                attachmentsMask,
                             )
                     }}
                     onClick={(event) => {
@@ -514,9 +516,9 @@ const connector = connect(
         addAttachments,
         notify,
         setResponseText,
-    }
+    },
 )
 
 export default connector(
-    withTypingActivity(withLDConsumer()(TicketReplyEditorContainer))
+    withTypingActivity(withLDConsumer()(TicketReplyEditorContainer)),
 )

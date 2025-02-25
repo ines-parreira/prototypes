@@ -1,9 +1,8 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import {opposite, OrderDirection} from 'models/api/types'
-import {RootState} from 'state/types'
-
-import {ValueMode} from 'state/ui/stats/types'
+import { opposite, OrderDirection } from 'models/api/types'
+import { RootState } from 'state/types'
+import { ValueMode } from 'state/ui/stats/types'
 
 export type TagsTableOrder = {
     direction: OrderDirection
@@ -37,7 +36,7 @@ export const tagsReportSlice = createSlice({
         },
         setOrder(
             state,
-            action: PayloadAction<{column: TagsTableOrder['column']}>
+            action: PayloadAction<{ column: TagsTableOrder['column'] }>,
         ) {
             state.order = {
                 column: action.payload.column,
@@ -55,7 +54,7 @@ export const tagsReportSlice = createSlice({
     },
 })
 
-export const {setOrder, toggleValueMode, toggleHeatmapMode} =
+export const { setOrder, toggleValueMode, toggleHeatmapMode } =
     tagsReportSlice.actions
 
 export const getValueMode = (state: RootState) =>

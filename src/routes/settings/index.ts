@@ -1,1 +1,1 @@
-export {SettingRoutes as default} from './Settings'
+export { SettingRoutes as default } from './Settings'

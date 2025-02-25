@@ -1,8 +1,8 @@
-import {fromJS, List} from 'immutable'
+import { fromJS, List } from 'immutable'
 
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
 
-import {initialState} from '../reducers'
+import { initialState } from '../reducers'
 import * as selectors from '../selectors'
 
 describe('teams selectors', () => {
@@ -12,8 +12,8 @@ describe('teams selectors', () => {
         state = {
             teams: initialState.mergeDeep({
                 all: {
-                    1: {id: 1, name: 'Team 1', members: []},
-                    2: {id: 2, name: 'Team 2'},
+                    1: { id: 1, name: 'Team 1', members: [] },
+                    2: { id: 2, name: 'Team 2' },
                 },
             }),
         } as RootState
@@ -26,7 +26,7 @@ describe('teams selectors', () => {
 
     it('getTeams()', () => {
         expect(selectors.getTeams(state)).toEqualImmutable(
-            (state.teams.get('all') as List<any>).valueSeq()
+            (state.teams.get('all') as List<any>).valueSeq(),
         )
         expect(selectors.getTeams({} as RootState)).toEqualImmutable(fromJS([]))
     })
@@ -34,15 +34,15 @@ describe('teams selectors', () => {
     it('getLabelledTeams()', () => {
         expect(selectors.getLabelledTeams(state)).toMatchSnapshot()
         expect(selectors.getLabelledTeams({} as RootState)).toEqualImmutable(
-            fromJS([])
+            fromJS([]),
         )
     })
 
     describe('getLabelledTeamsJS', () => {
         it('should return labelled teams from the state', () => {
             expect(selectors.getLabelledTeamsJS(state)).toEqual([
-                {id: 1, label: 'Team 1', members: []},
-                {id: 2, label: 'Team 2', members: []},
+                { id: 1, label: 'Team 1', members: [] },
+                { id: 2, label: 'Team 2', members: [] },
             ])
         })
 
@@ -58,12 +58,12 @@ describe('teams selectors', () => {
                     1: {
                         id: 1,
                         name: 'Team 1',
-                        decoration: {emoji: {native: '😀'}},
+                        decoration: { emoji: { native: '😀' } },
                     },
                     2: {
                         id: 2,
                         name: 'Team 2',
-                        decoration: {emoji: {native: '😃'}},
+                        decoration: { emoji: { native: '😃' } },
                     },
                 },
             }),
@@ -72,28 +72,28 @@ describe('teams selectors', () => {
         it('should return minimal teams from the state', () => {
             expect(selectors.getTeamsMinimalWithEmoji(state)).toEqualImmutable(
                 fromJS([
-                    {id: 1, name: 'Team 1', nativeEmoji: '😀'},
-                    {id: 2, name: 'Team 2', nativeEmoji: '😃'},
-                ])
+                    { id: 1, name: 'Team 1', nativeEmoji: '😀' },
+                    { id: 2, name: 'Team 2', nativeEmoji: '😃' },
+                ]),
             )
         })
 
         it('should return minimal teams as JS from the state', () => {
             expect(selectors.getTeamsMinimalWithEmojiJS(state)).toEqual([
-                {id: 1, name: 'Team 1', nativeEmoji: '😀'},
-                {id: 2, name: 'Team 2', nativeEmoji: '😃'},
+                { id: 1, name: 'Team 1', nativeEmoji: '😀' },
+                { id: 2, name: 'Team 2', nativeEmoji: '😃' },
             ])
         })
 
         it('should return an empty array when no teams in the state', () => {
             expect(
-                selectors.getTeamsMinimalWithEmoji({} as RootState)
+                selectors.getTeamsMinimalWithEmoji({} as RootState),
             ).toEqualImmutable(fromJS([]))
         })
 
         it('should return an empty array as JS when no teams in the state', () => {
             expect(
-                selectors.getTeamsMinimalWithEmojiJS({} as RootState)
+                selectors.getTeamsMinimalWithEmojiJS({} as RootState),
             ).toEqual([])
         })
     })

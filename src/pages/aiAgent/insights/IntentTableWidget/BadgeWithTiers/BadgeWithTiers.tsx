@@ -18,7 +18,7 @@ export const BadgeWithTiers = ({
     const tiers = useGetBadgeTiers(values)
     const getTier = (val: number) => {
         return tiers.find(
-            (tier) => val >= tier.range[0] && val <= tier.range[1]
+            (tier) => val >= tier.range[0] && val <= tier.range[1],
         )
     }
 

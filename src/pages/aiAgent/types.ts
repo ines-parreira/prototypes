@@ -1,8 +1,8 @@
-import {AiAgentOnboardingWizardStep, Tag} from 'models/aiAgent/types'
-import {CreateArticleDto, LocaleCode} from 'models/helpCenter/types'
-import {Components} from 'rest_api/help_center_api/client.generated'
+import { AiAgentOnboardingWizardStep, Tag } from 'models/aiAgent/types'
+import { CreateArticleDto, LocaleCode } from 'models/helpCenter/types'
+import { Components } from 'rest_api/help_center_api/client.generated'
 
-import {AiAgentChannel, ToneOfVoice} from './constants'
+import { AiAgentChannel, ToneOfVoice } from './constants'
 
 export type NonNullProperties<T> = {
     [P in keyof T]: NonNullable<T[P]>
@@ -28,7 +28,7 @@ export type FormValues = {
     previewModeActivatedDatetime: string | null
     ticketSampleRate: number | null
     silentHandover: boolean | null
-    monitoredEmailIntegrations: {id: number; email: string}[] | null
+    monitoredEmailIntegrations: { id: number; email: string }[] | null
     tags: Tag[] | null
     excludedTopics: string[] | null
     signature: string | null
@@ -42,7 +42,7 @@ export type FormValues = {
 
 export type UpdateValue<FormValues> = <Key extends keyof FormValues>(
     key: Key,
-    value: FormValues[Key]
+    value: FormValues[Key],
 ) => void
 
 export type ValidFormValues = NonNullFields<
@@ -79,7 +79,7 @@ export type GuidanceTemplate = {
     name: string
     content: string
     tag: string
-    style: {color: string; background: string}
+    style: { color: string; background: string }
 }
 
 export type GuidanceFormFields = {

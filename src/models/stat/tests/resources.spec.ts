@@ -1,9 +1,9 @@
 import MockAdapter from 'axios-mock-adapter'
 
-import {FIRST_RESPONSE_TIME} from '../../../config/stats'
-import {firstResponseTime} from '../../../fixtures/stats'
+import { FIRST_RESPONSE_TIME } from '../../../config/stats'
+import { firstResponseTime } from '../../../fixtures/stats'
 import client from '../../api/resources'
-import {fetchStat, downloadStat} from '../resources'
+import { downloadStat, fetchStat } from '../resources'
 
 const mockedServer = new MockAdapter(client)
 
@@ -32,7 +32,7 @@ describe('stat resources', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onPost(`/api/stats/${FIRST_RESPONSE_TIME}/`)
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
 
             return expect(
                 fetchStat(FIRST_RESPONSE_TIME, {
@@ -42,7 +42,7 @@ describe('stat resources', () => {
                             end_datetime: '',
                         },
                     },
-                })
+                }),
             ).rejects.toEqual(new Error('Request failed with status code 503'))
         })
     })
@@ -69,7 +69,7 @@ describe('stat resources', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onPost(`/api/stats/${FIRST_RESPONSE_TIME}/download`)
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
 
             return expect(
                 downloadStat(FIRST_RESPONSE_TIME, {
@@ -79,7 +79,7 @@ describe('stat resources', () => {
                             end_datetime: '',
                         },
                     },
-                })
+                }),
             ).rejects.toEqual(new Error('Request failed with status code 503'))
         })
     })

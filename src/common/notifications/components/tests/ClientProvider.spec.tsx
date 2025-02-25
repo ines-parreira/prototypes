@@ -1,10 +1,10 @@
-import {useKnockFeed} from '@knocklabs/react'
-import {render} from '@testing-library/react'
-import React, {useContext} from 'react'
+import React, { useContext } from 'react'
+
+import { useKnockFeed } from '@knocklabs/react'
+import { render } from '@testing-library/react'
 
 import Client from '../../Client'
 import Context from '../../Context'
-
 import ClientProvider from '../ClientProvider'
 
 jest.mock('@knocklabs/react', () => ({
@@ -16,8 +16,8 @@ jest.mock('../../Client')
 
 describe('ClientProvider', () => {
     beforeEach(() => {
-        const feedClient = {feed: 'client'}
-        useKnockFeedMock.mockReturnValue({feedClient})
+        const feedClient = { feed: 'client' }
+        useKnockFeedMock.mockReturnValue({ feedClient })
     })
 
     it('should provide the context', () => {
@@ -27,18 +27,18 @@ describe('ClientProvider', () => {
             return <>has context? {!!ctx ? 'yes' : 'no'}</>
         }
 
-        const {getByText} = render(
+        const { getByText } = render(
             <ClientProvider>
                 <Test />
-            </ClientProvider>
+            </ClientProvider>,
         )
 
         expect(getByText('has context? yes'))
     })
 
     it('should only create a client once', () => {
-        const {rerender} = render(<ClientProvider>boop</ClientProvider>)
-        expect(Client).toHaveBeenCalledWith({feed: 'client'})
+        const { rerender } = render(<ClientProvider>boop</ClientProvider>)
+        expect(Client).toHaveBeenCalledWith({ feed: 'client' })
 
         rerender(<ClientProvider>boop</ClientProvider>)
         expect(Client).toHaveBeenCalledTimes(1)

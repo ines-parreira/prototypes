@@ -1,18 +1,18 @@
-import {FilterComponentKey, FilterKey, StaticFilter} from 'models/stat/types'
-import {AUTO_QA_FILTER_KEYS} from 'pages/stats/common/filters/constants'
-import {OptionalFilter} from 'pages/stats/common/filters/FiltersPanel'
+import { FilterComponentKey, FilterKey, StaticFilter } from 'models/stat/types'
+import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
+import { OptionalFilter } from 'pages/stats/common/filters/FiltersPanel'
 import {
     ChartType,
     DataExportFormat,
     ReportConfig,
 } from 'pages/stats/custom-reports/types'
-import {VoiceCallCallCallerExperiencAverageTalkTime} from 'pages/stats/voice/charts/VoiceCallCallerExperiencAverageTalkTime'
-import {VoiceCallCallerExperienceAverageWaitTimeChart} from 'pages/stats/voice/charts/VoiceCallCallerExperienceAverageWaitTimeChart'
-import {VoiceCallTableChart} from 'pages/stats/voice/charts/VoiceCallTableChart'
-import {VoiceCallVolumeMetricInboundCallsCountTrend} from 'pages/stats/voice/charts/VoiceCallVolumeMetricInboundCallsCountTrendChart'
-import {VoiceCallVolumeMetricMissedCallsCountTrendChart} from 'pages/stats/voice/charts/VoiceCallVolumeMetricMissedCallsCountTrendChart'
-import {VoiceCallVolumeMetricOutboundCallsCountTrend} from 'pages/stats/voice/charts/VoiceCallVolumeMetricOutboundCallsCountTrend'
-import {VoiceCallVolumeTotalCallCountTrendChart} from 'pages/stats/voice/charts/VoiceCallVolumeTotalCallCountTrendChart'
+import { VoiceCallCallCallerExperiencAverageTalkTime } from 'pages/stats/voice/charts/VoiceCallCallerExperiencAverageTalkTime'
+import { VoiceCallCallerExperienceAverageWaitTimeChart } from 'pages/stats/voice/charts/VoiceCallCallerExperienceAverageWaitTimeChart'
+import { VoiceCallTableChart } from 'pages/stats/voice/charts/VoiceCallTableChart'
+import { VoiceCallVolumeMetricInboundCallsCountTrend } from 'pages/stats/voice/charts/VoiceCallVolumeMetricInboundCallsCountTrendChart'
+import { VoiceCallVolumeMetricMissedCallsCountTrendChart } from 'pages/stats/voice/charts/VoiceCallVolumeMetricMissedCallsCountTrendChart'
+import { VoiceCallVolumeMetricOutboundCallsCountTrend } from 'pages/stats/voice/charts/VoiceCallVolumeMetricOutboundCallsCountTrend'
+import { VoiceCallVolumeTotalCallCountTrendChart } from 'pages/stats/voice/charts/VoiceCallVolumeTotalCallCountTrendChart'
 import {
     AVERAGE_TALK_TIME_METRIC_HINT,
     AVERAGE_TALK_TIME_METRIC_TITLE,
@@ -39,7 +39,7 @@ import {
     fetchVoiceCallCountOutboundTrend,
     fetchVoiceCallCountTrend,
 } from 'pages/stats/voice/hooks/useVoiceCallCountTrend'
-import {STATS_ROUTES} from 'routes/constants'
+import { STATS_ROUTES } from 'routes/constants'
 
 export const VOICE_OVERVIEW_PERSISTENT_FILTERS: StaticFilter[] = [
     FilterKey.Period,

@@ -1,13 +1,14 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {Dispatch} from 'react'
+import { Dispatch } from 'react'
 
-import {BannerActions} from 'AlertBanners/Context/types'
-import {assumeMock} from 'utils/testing'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {BannerActionTypes, useBannersDispatchContext} from '../../Context'
-import {useDismissedStorage} from '../../Storage'
-import {BannerCategories, ContextBanner} from '../../types'
-import {useBanners} from '../useBanners'
+import { BannerActions } from 'AlertBanners/Context/types'
+import { assumeMock } from 'utils/testing'
+
+import { BannerActionTypes, useBannersDispatchContext } from '../../Context'
+import { useDismissedStorage } from '../../Storage'
+import { BannerCategories, ContextBanner } from '../../types'
+import { useBanners } from '../useBanners'
 
 jest.mock('../../Context', () => ({
     ...jest.requireActual<Record<string, unknown>>('../../Context'),
@@ -29,12 +30,12 @@ const data: ContextBanner = {
 }
 
 describe('useBanners', () => {
-    const bannerDispatchMock = jest.fn<unknown, [{payload: ContextBanner}]>()
+    const bannerDispatchMock = jest.fn<unknown, [{ payload: ContextBanner }]>()
     const setDismissedMock = jest.fn()
     const isBannerDismissedMock = jest.fn()
     beforeEach(() => {
         useBannersDispatchContextMock.mockReturnValue(
-            bannerDispatchMock as Dispatch<BannerActions>
+            bannerDispatchMock as Dispatch<BannerActions>,
         )
         isBannerDismissedMock.mockReturnValue(false)
         useDismissedStorageMock.mockReturnValue({
@@ -60,24 +61,24 @@ describe('useBanners', () => {
 
     describe('returned API', () => {
         it('should should dispatch the correct add action with proper params,', () => {
-            const {result} = renderHook(useBanners)
-            const {addBanner, forceAddBanner} = result.current
+            const { result } = renderHook(useBanners)
+            const { addBanner, forceAddBanner } = result.current
 
             addBanner(data)
             expect(bannerDispatchMock).toHaveBeenCalledTimes(1)
             expect(bannerDispatchMock).toHaveBeenCalledWith({
                 type: BannerActionTypes.ADD,
-                payload: {...data, onClose: expect.any(Function)},
+                payload: { ...data, onClose: expect.any(Function) },
             })
 
             forceAddBanner(data)
             expect(bannerDispatchMock).toHaveBeenCalledTimes(2)
             expect(bannerDispatchMock).toHaveBeenCalledWith({
                 type: BannerActionTypes.ADD,
-                payload: {...data, onClose: expect.any(Function)},
+                payload: { ...data, onClose: expect.any(Function) },
             })
 
-            const newData = {...data, preventDismiss: true}
+            const newData = { ...data, preventDismiss: true }
 
             addBanner(newData)
             expect(bannerDispatchMock).toHaveBeenCalledTimes(3)
@@ -95,18 +96,18 @@ describe('useBanners', () => {
         })
 
         it('should call the passed `onClose`, `setDismissed`, and dispatch the correct remove banner action when onClose prop is called', () => {
-            const {result} = renderHook(useBanners)
-            const {addBanner} = result.current
+            const { result } = renderHook(useBanners)
+            const { addBanner } = result.current
 
             const onCloseSpy = jest.fn()
-            addBanner({...data, onClose: onCloseSpy})
+            addBanner({ ...data, onClose: onCloseSpy })
             const onClose = bannerDispatchMock.mock.calls[0][0].payload.onClose
             onClose?.()
 
             expect(setDismissedMock).toHaveBeenCalledTimes(1)
             expect(setDismissedMock).toHaveBeenCalledWith(
                 data.category,
-                data.instanceId
+                data.instanceId,
             )
             expect(bannerDispatchMock).toHaveBeenCalledTimes(2)
             expect(bannerDispatchMock).toHaveBeenCalledWith({
@@ -120,8 +121,8 @@ describe('useBanners', () => {
 
         it('should not dispatch any action if banner is dismissed when using addBanner', () => {
             isBannerDismissedMock.mockReturnValue(true)
-            const {result} = renderHook(useBanners)
-            const {addBanner, forceAddBanner} = result.current
+            const { result } = renderHook(useBanners)
+            const { addBanner, forceAddBanner } = result.current
 
             addBanner(data)
             expect(bannerDispatchMock).not.toHaveBeenCalled()
@@ -131,8 +132,8 @@ describe('useBanners', () => {
         })
 
         it('should dispatch the correct remove category action with proper params', () => {
-            const {result} = renderHook(useBanners)
-            const {removeCategory} = result.current
+            const { result } = renderHook(useBanners)
+            const { removeCategory } = result.current
 
             removeCategory(BannerCategories.IMPERSONATION)
             expect(bannerDispatchMock).toHaveBeenCalledTimes(1)
@@ -143,8 +144,8 @@ describe('useBanners', () => {
         })
 
         it('should dispatch the correct remove banner action with proper params', () => {
-            const {result} = renderHook(useBanners)
-            const {removeBanner, dismissBanner} = result.current
+            const { result } = renderHook(useBanners)
+            const { removeBanner, dismissBanner } = result.current
 
             removeBanner(BannerCategories.IMPERSONATION, '1')
             expect(bannerDispatchMock).toHaveBeenCalledTimes(1)
@@ -164,14 +165,14 @@ describe('useBanners', () => {
         })
 
         it('should call setDismissed when dismissing a banner', () => {
-            const {result} = renderHook(useBanners)
-            const {dismissBanner} = result.current
+            const { result } = renderHook(useBanners)
+            const { dismissBanner } = result.current
 
             dismissBanner(BannerCategories.IMPERSONATION, '1')
             expect(setDismissedMock).toHaveBeenCalledTimes(1)
             expect(setDismissedMock).toHaveBeenCalledWith(
                 BannerCategories.IMPERSONATION,
-                '1'
+                '1',
             )
         })
     })

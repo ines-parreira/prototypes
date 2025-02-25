@@ -1,5 +1,6 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { Meta, Story } from '@storybook/react'
 
 import personAvatarUrl from 'assets/img/avatar-example.png'
 
@@ -17,8 +18,10 @@ const storyConfig: Meta = {
     },
 }
 
-const AllSizesTemplate: Story<ComponentProps<typeof Avatar>> = ({...props}) => (
-    <div style={{display: 'flex', gap: 24, alignItems: 'flex-start'}}>
+const AllSizesTemplate: Story<ComponentProps<typeof Avatar>> = ({
+    ...props
+}) => (
+    <div style={{ display: 'flex', gap: 24, alignItems: 'flex-start' }}>
         {[24, 36, 48, 100].map((size) => (
             <Avatar key={size} {...props} size={size} />
         ))}
@@ -54,7 +57,7 @@ WithInitialsSquared.args = {
 const TwoAvatarsTemplate: Story<ComponentProps<typeof Avatar>> = ({
     ...props
 }) => (
-    <div style={{display: 'flex', gap: 24, alignItems: 'flex-start'}}>
+    <div style={{ display: 'flex', gap: 24, alignItems: 'flex-start' }}>
         <Avatar url={personAvatarUrl} {...props} />
         <Avatar {...props} />
     </div>

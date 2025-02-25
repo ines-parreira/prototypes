@@ -1,11 +1,12 @@
-import {render} from '@testing-library/react'
 import React from 'react'
-import {useHistory} from 'react-router-dom'
+
+import { render } from '@testing-library/react'
+import { useHistory } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
-import {RedirectToAiAgentStore} from '../RedirectToAiAgentStore'
+import { RedirectToAiAgentStore } from '../RedirectToAiAgentStore'
 
 jest.mock('react-router-dom', () => ({
     useHistory: jest.fn(),
@@ -23,8 +24,8 @@ describe('RedirectToAiAgentStore', () => {
     const mockHistoryReplace = jest.fn()
 
     beforeEach(() => {
-        mockUseHistory.mockReturnValue({replace: mockHistoryReplace})
-        mockUseAppSelector.mockReturnValue([{name: 'Test Store'}])
+        mockUseHistory.mockReturnValue({ replace: mockHistoryReplace })
+        mockUseAppSelector.mockReturnValue([{ name: 'Test Store' }])
         mockUseAiAgentNavigation.mockReturnValue({
             routes: {
                 main: '/',
@@ -41,11 +42,11 @@ describe('RedirectToAiAgentStore', () => {
     test('renders the loading spinner if no store is found', () => {
         mockUseAppSelector.mockReturnValueOnce([])
 
-        const {getByText} = render(<RedirectToAiAgentStore />)
+        const { getByText } = render(<RedirectToAiAgentStore />)
 
         expect(mockHistoryReplace).not.toHaveBeenCalled()
         const descriptionElement = getByText(
-            'Connect Shopify, Magento or BigCommerce stores to start using Automate!'
+            'Connect Shopify, Magento or BigCommerce stores to start using Automate!',
         )
         expect(descriptionElement).toBeInTheDocument()
     })

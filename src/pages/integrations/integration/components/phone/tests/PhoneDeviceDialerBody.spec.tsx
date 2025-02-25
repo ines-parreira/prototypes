@@ -1,7 +1,8 @@
-import {screen} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
+import { screen } from '@testing-library/react'
+
+import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import PhoneDeviceDialerBody from '../PhoneDeviceDialerBody'
 
@@ -21,7 +22,7 @@ jest.mock(
                     data-testid="mock-dialpad-digit"
                 />
             </div>
-        )
+        ),
 )
 
 jest.mock('@gorgias/merchant-ui-kit', () => ({

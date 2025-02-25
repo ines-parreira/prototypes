@@ -1,7 +1,8 @@
-import {act, render, screen} from '@testing-library/react'
+import React, { ComponentProps } from 'react'
+
+import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import _noop from 'lodash/noop'
-import React, {ComponentProps} from 'react'
 
 import JsonField from '../JsonField'
 
@@ -12,13 +13,13 @@ describe('JsonField', () => {
     }
 
     it('should render input', () => {
-        const {container} = render(<JsonField {...minProps} />)
+        const { container } = render(<JsonField {...minProps} />)
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('display invalid message', async () => {
-        const {container} = render(<JsonField {...minProps} />)
+        const { container } = render(<JsonField {...minProps} />)
 
         await act(async () => {
             await userEvent.type(screen.getByRole('textbox'), 'some input')

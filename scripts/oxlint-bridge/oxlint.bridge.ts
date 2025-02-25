@@ -1,12 +1,13 @@
-import {execSync} from 'child_process'
+import { execSync } from 'child_process'
+import deepmerge from 'deepmerge'
 import fs from 'fs'
 import path from 'path'
-import deepmerge from 'deepmerge'
 
 // @ts-ignore These configs are not typed
 import gorgiasBaseConfig from '@gorgias/config/eslint-base'
 // @ts-ignore These configs are not typed
 import gorgiasConfigReact from '@gorgias/config/eslint-react'
+
 /**
  * This config is the translation of the current .eslintrc.js config to the oxlint config
  */
@@ -102,7 +103,7 @@ function sortObjectDeep<T extends object>(obj: T): T {
 
 function mergeConfigs(
     configs: LintConfig[],
-    ignoreKeys: string[] = IGNORE_KEYS
+    ignoreKeys: string[] = IGNORE_KEYS,
 ): LintConfig {
     const [baseConfigs, oxlintBaseConfig] = [
         configs.slice(0, -1),
@@ -110,7 +111,7 @@ function mergeConfigs(
     ]
 
     const filteredConfigs = baseConfigs.map((config) => {
-        const filtered = {...config}
+        const filtered = { ...config }
         ignoreKeys.forEach((key) => {
             delete filtered[key]
         })
@@ -141,10 +142,10 @@ fs.writeFileSync(outputPath, JSON.stringify(mergedConfig), 'utf8')
 
 // Format using prettier
 try {
-    execSync(`prettier --write ${outputPath}`, {stdio: 'inherit'})
+    execSync(`prettier --write ${outputPath}`, { stdio: 'inherit' })
     // eslint-disable-next-line no-console
     console.log(
-        'ESLint configurations merged and formatted successfully to .oxlintrc.json!'
+        'ESLint configurations merged and formatted successfully to .oxlintrc.json!',
     )
 } catch (error) {
     // eslint-disable-next-line no-console

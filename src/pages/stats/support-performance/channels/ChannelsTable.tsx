@@ -1,16 +1,17 @@
-import classNames from 'classnames'
-import React, {UIEventHandler, useState} from 'react'
+import React, { UIEventHandler, useState } from 'react'
 
-import {useSortedChannelsWithData} from 'hooks/reporting/support-performance/useSortedChannelsWithData'
-import {useChannelsTableSetting} from 'hooks/reporting/useChannelsTableConfigSetting'
+import classNames from 'classnames'
+
+import { useSortedChannelsWithData } from 'hooks/reporting/support-performance/useSortedChannelsWithData'
+import { useChannelsTableSetting } from 'hooks/reporting/useChannelsTableConfigSetting'
 import useMeasure from 'hooks/useMeasure'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import css from 'pages/stats/AnalyticsTable.less'
-import {ChannelsCellContent} from 'pages/stats/support-performance/channels/ChannelsCellContent'
-import {ChannelsHeaderCellContent} from 'pages/stats/support-performance/channels/ChannelsHeaderCellContent'
+import { ChannelsCellContent } from 'pages/stats/support-performance/channels/ChannelsCellContent'
+import { ChannelsHeaderCellContent } from 'pages/stats/support-performance/channels/ChannelsHeaderCellContent'
 import {
     ChannelColumnConfig,
     getColumnWidth,
@@ -25,15 +26,15 @@ export const ChannelsTable = () => {
             setIsTableScrolled(false)
         }
     }
-    const [ref, {width}] = useMeasure<HTMLDivElement>()
-    const {channels, isLoading} = useSortedChannelsWithData()
-    const {columnsOrder} = useChannelsTableSetting()
+    const [ref, { width }] = useMeasure<HTMLDivElement>()
+    const { channels, isLoading } = useSortedChannelsWithData()
+    const { columnsOrder } = useChannelsTableSetting()
 
     return (
         <div ref={ref} className={css.container} onScroll={handleScroll}>
             <TableWrapper
                 className={classNames(css.table)}
-                style={{width}}
+                style={{ width }}
                 height={'comfortable'}
             >
                 <TableHead>

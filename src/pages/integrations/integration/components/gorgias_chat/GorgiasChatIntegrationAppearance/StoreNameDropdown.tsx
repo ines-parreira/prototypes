@@ -1,10 +1,16 @@
+import React, { useState } from 'react'
+
 import classnames from 'classnames'
-import {List, Map} from 'immutable'
-import React, {useState} from 'react'
-import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
+import { List, Map } from 'immutable'
+import {
+    Dropdown,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+} from 'reactstrap'
 
 import warningIcon from 'assets/img/icons/warning.svg'
-import {getIconFromType} from 'state/integrations/helpers'
+import { getIconFromType } from 'state/integrations/helpers'
 
 import css from './StoreNameDropdown.less'
 
@@ -29,11 +35,11 @@ export const StoreNameDropdown = ({
 }: Props) => {
     const [isOpen, setIsOpen] = useState(false)
 
-    const nrOfChatsInstalled: {[key: number]: number} = {}
+    const nrOfChatsInstalled: { [key: number]: number } = {}
     gorgiasChatIntegrations.forEach((gorgiasChatIntegration) => {
         const shopIntegrationId: number | null = gorgiasChatIntegration?.getIn(
             ['meta', 'shop_integration_id'],
-            null
+            null,
         )
 
         if (shopIntegrationId) {
@@ -46,8 +52,8 @@ export const StoreNameDropdown = ({
     })
 
     const getShopStoreDisplayText = (
-        nrOfChatsInstalled: {[key: string]: number},
-        storeIntegration?: Map<any, any>
+        nrOfChatsInstalled: { [key: string]: number },
+        storeIntegration?: Map<any, any>,
     ) => {
         const id: number = storeIntegration?.get('id')
         const nr: number = nrOfChatsInstalled[id]
@@ -64,7 +70,8 @@ export const StoreNameDropdown = ({
     }
 
     const storeIntegration = storeIntegrations.find(
-        (storeIntegration) => storeIntegration?.get('id') === storeIntegrationId
+        (storeIntegration) =>
+            storeIntegration?.get('id') === storeIntegrationId,
     )
 
     return (
@@ -76,7 +83,7 @@ export const StoreNameDropdown = ({
                 disabled={isDisabled}
             >
                 <DropdownToggle
-                    className={classnames({[css.hasError]: hasError})}
+                    className={classnames({ [css.hasError]: hasError })}
                     caret
                     disabled={isDisabled}
                 >
@@ -85,7 +92,7 @@ export const StoreNameDropdown = ({
                             {getIconFromType(storeIntegration.get('type')) && (
                                 <img
                                     src={getIconFromType(
-                                        storeIntegration.get('type')
+                                        storeIntegration.get('type'),
                                     )}
                                     className={css.dropdownLogo}
                                     alt="logo"
@@ -97,7 +104,7 @@ export const StoreNameDropdown = ({
                         <span className={css.dropdownPlaceholder}>
                             <i
                                 className="material-icons"
-                                style={{marginRight: 8, fontSize: 20}}
+                                style={{ marginRight: 8, fontSize: 20 }}
                             >
                                 store
                             </i>
@@ -127,7 +134,7 @@ export const StoreNameDropdown = ({
                                 {!option?.get('deactivated_datetime') ? (
                                     getShopStoreDisplayText(
                                         nrOfChatsInstalled,
-                                        option
+                                        option,
                                     )
                                 ) : (
                                     <>

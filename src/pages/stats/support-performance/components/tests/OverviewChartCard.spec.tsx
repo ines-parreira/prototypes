@@ -1,34 +1,32 @@
-import {render} from '@testing-library/react'
-
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {TicketChannel} from 'business/types/ticket'
-import {agents} from 'fixtures/agents'
-import {integrationsState} from 'fixtures/integrations'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { TicketChannel } from 'business/types/ticket'
+import { agents } from 'fixtures/agents'
+import { integrationsState } from 'fixtures/integrations'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {
     useMessagesSentTimeSeries,
     useTicketsClosedTimeSeries,
     useTicketsCreatedTimeSeries,
     useTicketsRepliedTimeSeries,
 } from 'hooks/reporting/timeSeries'
-import {useTimeSeries} from 'hooks/reporting/useTimeSeries'
-import {ReportingGranularity} from 'models/reporting/types'
-import {LegacyStatsFilters} from 'models/stat/types'
-import {CHART_TOOLTIP_TARGET as barChartTooltipTarget} from 'pages/stats/common/components/charts/BarChart/BarChart'
-import {CHART_TOOLTIP_TARGET as lineChartTooltipTarget} from 'pages/stats/common/components/charts/LineChart/LineChart'
-import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
-import {OverviewChartCard} from 'pages/stats/support-performance/components/OverviewChartCard'
-import {OverviewChartConfig} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
-
-import {fromLegacyStatsFilters} from 'state/stats/utils'
-import {RootState, StoreDispatch} from 'state/types'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
-
-import {assumeMock} from 'utils/testing'
+import { useTimeSeries } from 'hooks/reporting/useTimeSeries'
+import { ReportingGranularity } from 'models/reporting/types'
+import { LegacyStatsFilters } from 'models/stat/types'
+import { CHART_TOOLTIP_TARGET as barChartTooltipTarget } from 'pages/stats/common/components/charts/BarChart/BarChart'
+import { CHART_TOOLTIP_TARGET as lineChartTooltipTarget } from 'pages/stats/common/components/charts/LineChart/LineChart'
+import { DEFAULT_TIMEZONE } from 'pages/stats/convert/constants/components'
+import { OverviewChartCard } from 'pages/stats/support-performance/components/OverviewChartCard'
+import { OverviewChartConfig } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
+import { fromLegacyStatsFilters } from 'state/stats/utils'
+import { RootState, StoreDispatch } from 'state/types'
+import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/timeSeries')
 const useTicketsCreatedTimeSeriesMock = assumeMock(useTicketsCreatedTimeSeries)
@@ -57,7 +55,7 @@ describe('<OverviewChartCard />', () => {
             filters: fromLegacyStatsFilters(defaultStatsFilters),
         },
         ui: {
-            stats: {filters: uiStatsInitialState},
+            stats: { filters: uiStatsInitialState },
         },
     } as RootState
 
@@ -89,35 +87,35 @@ describe('<OverviewChartCard />', () => {
     it.each(Object.values(OverviewChartConfig))(
         'should fetch TimeSeries data and render with line chart',
         (config) => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore(defaultState)}>
                     <OverviewChartCard {...config} chartType="line" />
-                </Provider>
+                </Provider>,
             )
             expect(container.querySelector('canvas')?.id).toContain(
-                lineChartTooltipTarget
+                lineChartTooltipTarget,
             )
-        }
+        },
     )
 
     it.each(Object.values(OverviewChartConfig))(
         'should fetch TimeSeries data and render with bar chart',
         (config) => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore(defaultState)}>
                     <OverviewChartCard {...config} chartType="bar" />
-                </Provider>
+                </Provider>,
             )
             expect(container.querySelector('canvas')?.id).toContain(
-                barChartTooltipTarget
+                barChartTooltipTarget,
             )
-        }
+        },
     )
 
     describe('statsFilters', () => {
         const config = {
             title: 'some title',
-            hint: {title: 'Some description of the metric'},
+            hint: { title: 'Some description of the metric' },
             chartType: 'bar' as const,
         }
         const userTimezone = DEFAULT_TIMEZONE
@@ -140,13 +138,13 @@ describe('<OverviewChartCard />', () => {
                         {...config}
                         useTimeSeries={useTimeSeriesSpy}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(useTimeSeriesSpy).toHaveBeenCalledWith(
                 fromLegacyStatsFilters(defaultStatsFilters),
                 userTimezone,
-                granularity
+                granularity,
             )
         })
 
@@ -167,13 +165,13 @@ describe('<OverviewChartCard />', () => {
                         {...config}
                         useTimeSeries={useTimeSeriesSpy}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(useTimeSeriesSpy).toHaveBeenCalledWith(
                 fromLegacyStatsFilters(defaultStatsFilters),
                 userTimezone,
-                granularity
+                granularity,
             )
         })
     })

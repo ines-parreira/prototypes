@@ -1,8 +1,9 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useEffect, useMemo, useRef, useState} from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {AiAgentOnboardingWizardStep} from 'models/aiAgent/types'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import WizardFooter, {
@@ -10,10 +11,10 @@ import WizardFooter, {
 } from 'pages/common/components/wizard/WizardFooter'
 import WizardStepSkeleton from 'pages/common/components/wizard/WizardStepSkeleton'
 
-import {ChatSettingsFormComponent} from '../components/StoreConfigForm/FormComponents/ChatSettingsFormComponent'
-import {EmailFormComponent} from '../components/StoreConfigForm/FormComponents/EmailFormComponent'
-import {SignatureFormComponent} from '../components/StoreConfigForm/FormComponents/SignatureFormComponent'
-import {ToneOfVoiceFormComponent} from '../components/StoreConfigForm/FormComponents/ToneOfVoiceFormComponent'
+import { ChatSettingsFormComponent } from '../components/StoreConfigForm/FormComponents/ChatSettingsFormComponent'
+import { EmailFormComponent } from '../components/StoreConfigForm/FormComponents/EmailFormComponent'
+import { SignatureFormComponent } from '../components/StoreConfigForm/FormComponents/SignatureFormComponent'
+import { ToneOfVoiceFormComponent } from '../components/StoreConfigForm/FormComponents/ToneOfVoiceFormComponent'
 import {
     AI_AGENT_STEPS_DESCRIPTIONS,
     AI_AGENT_STEPS_LABELS,
@@ -22,12 +23,13 @@ import {
     WIZARD_BUTTON_ACTIONS,
 } from '../constants'
 import useCustomToneOfVoicePreview from '../hooks/useCustomToneOfVoicePreview'
-import {FormValues} from '../types'
-import {AiAgentOnboardingWizardProps} from './AiAgentOnboardingWizard'
+import { FormValues } from '../types'
+import { AiAgentOnboardingWizardProps } from './AiAgentOnboardingWizard'
+import { HeaderSection } from './HeaderSection'
+import { useAiAgentOnboardingWizard } from './hooks/useAiAgentOnboardingWizard'
+import { TicketPreview } from './TicketPreview'
+
 import css from './AiAgentOnboardingWizardPersonalize.less'
-import {HeaderSection} from './HeaderSection'
-import {useAiAgentOnboardingWizard} from './hooks/useAiAgentOnboardingWizard'
-import {TicketPreview} from './TicketPreview'
 
 type Props = AiAgentOnboardingWizardProps
 
@@ -237,7 +239,7 @@ const AiAgentOnboardingWizardStepPersonalize: React.FC<Props> = ({
                                         !isChannelEnabled(AiAgentChannel.Email)
                                     }
                                     isRequired={isChannelEnabled(
-                                        AiAgentChannel.Email
+                                        AiAgentChannel.Email,
                                     )}
                                     shouldPrefillValue={
                                         formValues.wizard?.enabledChannels
@@ -270,11 +272,11 @@ const AiAgentOnboardingWizardStepPersonalize: React.FC<Props> = ({
                                         initialValue={initialValueForChat}
                                         isDisabled={
                                             !isChannelEnabled(
-                                                AiAgentChannel.Chat
+                                                AiAgentChannel.Chat,
                                             )
                                         }
                                         isRequired={isChannelEnabled(
-                                            AiAgentChannel.Chat
+                                            AiAgentChannel.Chat,
                                         )}
                                         shouldPrefillValue={
                                             formValues.wizard?.enabledChannels

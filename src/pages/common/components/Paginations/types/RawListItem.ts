@@ -1,4 +1,4 @@
-import {PageType} from './PageType'
+import { PageType } from './PageType'
 
 export interface RawListItem {
     type: PageType

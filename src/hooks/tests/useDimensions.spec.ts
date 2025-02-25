@@ -1,9 +1,9 @@
-import {renderHook, act} from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react-hooks'
 
 import useDimensions from '../useDimensions'
 
 jest.spyOn(window, 'requestAnimationFrame').mockImplementation(((
-    cb: () => void
+    cb: () => void,
 ) => {
     cb()
 }) as any)
@@ -11,7 +11,7 @@ jest.spyOn(window, 'requestAnimationFrame').mockImplementation(((
 jest.spyOn(Element.prototype, 'getBoundingClientRect').mockImplementation(
     function () {
         // @ts-ignore ts(2345)
-        const {left, top, width, height} = window.getComputedStyle(this)
+        const { left, top, width, height } = window.getComputedStyle(this)
 
         return {
             x: parseInt(left),
@@ -19,7 +19,7 @@ jest.spyOn(Element.prototype, 'getBoundingClientRect').mockImplementation(
             width: parseInt(width),
             height: parseInt(height),
         } as unknown as DOMRect
-    }
+    },
 )
 
 describe('useDimensions', () => {
@@ -38,7 +38,7 @@ describe('useDimensions', () => {
     })
 
     it('should return the element dimensions', () => {
-        const {result} = renderHook(useDimensions)
+        const { result } = renderHook(useDimensions)
 
         act(() => {
             result.current[0](document.getElementById('foo'))
@@ -53,7 +53,7 @@ describe('useDimensions', () => {
 
     it('should return the updated dimensions on resize', () => {
         const element = document.getElementById('foo')
-        const {result} = renderHook(useDimensions)
+        const { result } = renderHook(useDimensions)
 
         act(() => {
             result.current[0](element)

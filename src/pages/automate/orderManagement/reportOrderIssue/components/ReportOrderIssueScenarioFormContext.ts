@@ -1,8 +1,9 @@
+import { createContext, useContext, useEffect } from 'react'
+
 import _noop from 'lodash/noop'
-import {createContext, useContext, useEffect} from 'react'
 
 import usePrevious from 'hooks/usePrevious'
-import {StoreIntegration} from 'models/integration/types'
+import { StoreIntegration } from 'models/integration/types'
 
 export type ReportOrderIssueScenarioFormContextType = {
     isUpdatePending: boolean
@@ -25,7 +26,7 @@ export const useReportOrderIssueScenarioFormContext = () =>
     useContext(ReportOrderIssueScenarioFormContext)
 
 export const usePropagateError = (path: string, hasError: boolean) => {
-    const {setError} = useReportOrderIssueScenarioFormContext()
+    const { setError } = useReportOrderIssueScenarioFormContext()
     const hadError = usePrevious(hasError)
 
     useEffect(() => {

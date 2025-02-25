@@ -1,6 +1,6 @@
 import client from 'models/api/resources'
 
-import {sendRemoveNotificationZap, Props} from '../sendRemoveNotificationZap'
+import { Props, sendRemoveNotificationZap } from '../sendRemoveNotificationZap'
 
 jest.mock('models/api/resources', () => ({
     get: jest.fn(),
@@ -27,7 +27,7 @@ describe('sendRemoveNotificationZap', () => {
             'https://example.com/zapierHook?message=Test+Message&from=test%40example.com&to=support%40example.com&subject=Test+Subject&helpdeskPlan=pro%0A++++++++&automationPlan=pro-automation&freeTrial=false&account=acme',
             {
                 transformRequest: expect.any(Function),
-            }
+            },
         )
     })
 })

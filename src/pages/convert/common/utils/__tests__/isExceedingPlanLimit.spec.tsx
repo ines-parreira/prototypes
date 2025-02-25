@@ -3,7 +3,7 @@ import {
     convertStatusOkWarning,
 } from 'fixtures/convert'
 
-import {isExceedingPlanLimit} from '../isExceedingPlanLimit'
+import { isExceedingPlanLimit } from '../isExceedingPlanLimit'
 
 describe('isExceedingPlanLimit', () => {
     it.each([
@@ -20,6 +20,6 @@ describe('isExceedingPlanLimit', () => {
         'should determine if the user is exceeding the plan usage',
         (input, expectValue) => {
             expect(isExceedingPlanLimit(input)).toEqual(expectValue)
-        }
+        },
     )
 })

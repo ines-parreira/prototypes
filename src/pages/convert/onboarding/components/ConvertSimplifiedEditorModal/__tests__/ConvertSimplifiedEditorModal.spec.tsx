@@ -1,37 +1,36 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {act, render, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {Provider} from 'react-redux'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { act, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {AttachmentEnum} from 'common/types'
-import {account} from 'fixtures/account'
-import {billingState} from 'fixtures/billing'
+import { AttachmentEnum } from 'common/types'
+import { account } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
 import {
-    campaignProductRecommendationAttachment,
     campaign as campaignFixture,
+    campaignProductRecommendationAttachment,
 } from 'fixtures/campaign'
-import {channelConnection} from 'fixtures/channelConnection'
-import {integrationsStateWithShopify} from 'fixtures/integrations'
+import { channelConnection } from 'fixtures/channelConnection'
+import { integrationsStateWithShopify } from 'fixtures/integrations'
 import {
     useCreateCampaign,
     useSuggestCampaignCopy,
     useUpdateCampaign,
 } from 'models/convert/campaign/queries'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
-import {CART_ABANDONMENT} from 'pages/convert/campaigns/templates/onboarding/cartAbandonment'
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import {getNewMessageAttachments} from 'state/newMessage/selectors'
-import {RootState, StoreDispatch} from 'state/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-
-import {getLDClient} from 'utils/launchDarkly'
-import {assumeMock, flushPromises} from 'utils/testing'
+import { CART_ABANDONMENT } from 'pages/convert/campaigns/templates/onboarding/cartAbandonment'
+import { Campaign } from 'pages/convert/campaigns/types/Campaign'
+import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import { getNewMessageAttachments } from 'state/newMessage/selectors'
+import { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { getLDClient } from 'utils/launchDarkly'
+import { assumeMock, flushPromises } from 'utils/testing'
 
 import ConvertSimplifiedEditorModal from '../ConvertSimplifiedEditorModal'
 
@@ -44,7 +43,7 @@ const useUpdateCampaignMock = assumeMock(useUpdateCampaign)
 
 jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')
 const useGetOrCreateChannelConnectionMock = assumeMock(
-    useGetOrCreateChannelConnection
+    useGetOrCreateChannelConnection,
 )
 
 jest.mock('state/newMessage/selectors')
@@ -66,7 +65,7 @@ const defaultState: Partial<RootState> = {
 const integration = fromJS({
     id: '1',
     meta: {
-        languages: [{language: 'en-US', primary: true}],
+        languages: [{ language: 'en-US', primary: true }],
         shop_type: 'shopify',
         shop_integration_id: 1,
     },
@@ -91,7 +90,7 @@ describe('<ConvertSimplifiedEditorModal />', () => {
 
         jest.spyOn(
             isConvertSubscriberHook,
-            'useIsConvertSubscriber'
+            'useIsConvertSubscriber',
         ).mockImplementation(() => true)
 
         useCreateCampaignMock.mockImplementation(() => {
@@ -113,7 +112,7 @@ describe('<ConvertSimplifiedEditorModal />', () => {
     })
 
     it('renders a template', async () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore(defaultState)}>
                     <ConvertSimplifiedEditorModal
@@ -125,7 +124,7 @@ describe('<ConvertSimplifiedEditorModal />', () => {
                         campaign={undefined}
                     />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         await waitFor(() => {
@@ -135,7 +134,7 @@ describe('<ConvertSimplifiedEditorModal />', () => {
     })
 
     it('renders a existing campaign', async () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore(defaultState)}>
                     <ConvertSimplifiedEditorModal
@@ -147,7 +146,7 @@ describe('<ConvertSimplifiedEditorModal />', () => {
                         campaign={campaign}
                     />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         await waitFor(() => {
@@ -163,10 +162,10 @@ describe('<ConvertSimplifiedEditorModal />', () => {
                     ...campaignProductRecommendationAttachment,
                     content_type: AttachmentEnum.ProductRecommendation,
                 },
-            ])
+            ]),
         )
 
-        const {queryByText} = render(
+        const { queryByText } = render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore(defaultState)}>
                     <ConvertSimplifiedEditorModal
@@ -178,7 +177,7 @@ describe('<ConvertSimplifiedEditorModal />', () => {
                         campaign={campaign}
                     />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         await waitFor(() => {
@@ -187,15 +186,15 @@ describe('<ConvertSimplifiedEditorModal />', () => {
                     'Product recommendations will be personalized for each product page',
                     {
                         exact: false,
-                    }
-                )
+                    },
+                ),
             ).toBeInTheDocument()
         })
     })
 
     it('sends suggestion in campaign meta', async () => {
         mockGenerateSuggestions.mockResolvedValue({
-            data: {suggestions: ['Suggestion 1', 'Suggestion 2']},
+            data: { suggestions: ['Suggestion 1', 'Suggestion 2'] },
         })
 
         render(
@@ -210,7 +209,7 @@ describe('<ConvertSimplifiedEditorModal />', () => {
                         campaign={campaign}
                     />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         await flushPromises()
@@ -231,11 +230,11 @@ describe('<ConvertSimplifiedEditorModal />', () => {
 
         expect(
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            updateCampaignMock.mock.calls[0][0][2].meta
+            updateCampaignMock.mock.calls[0][0][2].meta,
         ).toEqual(
             expect.objectContaining({
                 copySuggestion: 'Suggestion 1',
-            })
+            }),
         )
     })
 })

@@ -1,17 +1,18 @@
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {SegmentEvent} from 'common/segment'
-import {logEventWithSampling} from 'common/segment/segment'
-import {TicketMessage} from 'models/ticket/types'
-import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { fromJS } from 'immutable'
+
+import { SegmentEvent } from 'common/segment'
+import { logEventWithSampling } from 'common/segment/segment'
+import { TicketMessage } from 'models/ticket/types'
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import TicketTag from 'pages/common/components/TicketTag'
 
-import {useAIAgentMessageEvents} from '../../hooks/useAIAgentMessageEvents'
+import { useAIAgentMessageEvents } from '../../hooks/useAIAgentMessageEvents'
+import TicketEvent from './TicketEvent'
+import { TicketEventEnum } from './types'
 
 import css from './AIAgentFeedbackBar.less'
-import TicketEvent from './TicketEvent'
-import {TicketEventEnum} from './types'
 
 type Props = {
     messages: TicketMessage[]
@@ -19,17 +20,17 @@ type Props = {
     shopName: string
 }
 
-const FeedbackEvents: React.FC<Props> = ({messages, shopName}) => {
+const FeedbackEvents: React.FC<Props> = ({ messages, shopName }) => {
     const events = useAIAgentMessageEvents(messages)
 
-    const aiAgentNavigation = useAiAgentNavigation({shopName})
+    const aiAgentNavigation = useAiAgentNavigation({ shopName })
 
     if (!messages.length) {
         return null
     }
 
     const filteredEvents = events.filter(
-        (event) => event.tags.length > 0 || event.action
+        (event) => event.tags.length > 0 || event.action,
     )
 
     const eventCount = filteredEvents.length
@@ -58,7 +59,7 @@ const FeedbackEvents: React.FC<Props> = ({messages, shopName}) => {
                             SegmentEvent.AiAgentFeedbackResourceClicked,
                             {
                                 type: 'ai_agent_configuration_link',
-                            }
+                            },
                         )
                     }}
                 >

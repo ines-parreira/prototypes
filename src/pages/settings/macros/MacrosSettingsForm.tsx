@@ -1,17 +1,19 @@
-import type {Language, Macro} from '@gorgias/api-queries'
-import classnames from 'classnames'
-import {fromJS, List, Map} from 'immutable'
-import _uniqWith from 'lodash/uniqWith'
-import React, {MouseEvent, SyntheticEvent, useEffect, useState} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {Link, useLocation, useParams} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem, Form} from 'reactstrap'
+import React, { MouseEvent, SyntheticEvent, useEffect, useState } from 'react'
 
-import {useAppNode} from 'appNode'
-import {DEFAULT_ACTIONS} from 'config'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useFlag} from 'core/flags'
-import {useBulkArchiveMacros, useBulkUnarchiveMacros} from 'hooks/macros'
+import classnames from 'classnames'
+import { fromJS, List, Map } from 'immutable'
+import _uniqWith from 'lodash/uniqWith'
+import { connect, ConnectedProps } from 'react-redux'
+import { Link, useLocation, useParams } from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem, Form } from 'reactstrap'
+
+import type { Language, Macro } from '@gorgias/api-queries'
+
+import { useAppNode } from 'appNode'
+import { DEFAULT_ACTIONS } from 'config'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
+import { useBulkArchiveMacros, useBulkUnarchiveMacros } from 'hooks/macros'
 import useAsyncFn from 'hooks/useAsyncFn'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import {
@@ -20,8 +22,8 @@ import {
     fetchMacro,
     updateMacro,
 } from 'models/macro/resources'
-import {MacroDraft} from 'models/macro/types'
-import {MacroActionName} from 'models/macroAction/types'
+import { MacroDraft } from 'models/macro/types'
+import { MacroActionName } from 'models/macroAction/types'
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -29,19 +31,19 @@ import PageHeader from 'pages/common/components/PageHeader'
 import history from 'pages/history'
 import settingsCss from 'pages/settings/settings.less'
 import MacroEdit from 'pages/tickets/common/macros/components/MacroEdit'
-import {getHumanAgents} from 'state/agents/selectors'
+import { getHumanAgents } from 'state/agents/selectors'
 import {
     macroCreated,
     macroDeleted,
     macroFetched,
     macroUpdated,
 } from 'state/entities/macros/actions'
-import {MacroApiError} from 'state/macro/types'
-import {getDefaultMacro, getErrorReason} from 'state/macro/utils'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {RootState} from 'state/types'
-import {errorToChildren} from 'utils'
+import { MacroApiError } from 'state/macro/types'
+import { getDefaultMacro, getErrorReason } from 'state/macro/utils'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { RootState } from 'state/types'
+import { errorToChildren } from 'utils'
 
 import css from './MacrosSettingsForm.less'
 
@@ -56,21 +58,21 @@ export function MacrosSettingsFormContainer({
 }: ConnectedProps<typeof connector>) {
     const appNode = useAppNode()
     const hasAgentPrivileges = useHasAgentPrivileges()
-    const {macroId} = useParams<{macroId?: string}>()
+    const { macroId } = useParams<{ macroId?: string }>()
     const isArchivingAvailable = useFlag(FeatureFlagKey.MacroArchives)
     const location = useLocation<{
         isArchived?: boolean
     }>()
-    const {isArchived} = location.state ?? {}
+    const { isArchived } = location.state ?? {}
 
-    const {mutate: bulkArchiveMacros, isLoading: isArchivingPending} =
+    const { mutate: bulkArchiveMacros, isLoading: isArchivingPending } =
         useBulkArchiveMacros()
-    const {mutate: bulkUnarchiveMacros, isLoading: isUnarchivingPending} =
+    const { mutate: bulkUnarchiveMacros, isLoading: isUnarchivingPending } =
         useBulkUnarchiveMacros()
 
     const [macroForm, setMacroForm] = useState<MacroDraft>(getDefaultMacro())
 
-    const [{loading: isFetchPending}, handleMacroFetch] =
+    const [{ loading: isFetchPending }, handleMacroFetch] =
         useAsyncFn(async () => {
             if (!macroId) {
                 return
@@ -89,7 +91,7 @@ export function MacrosSettingsFormContainer({
 
     const handleActionsChange = (actions?: List<any> | null) => {
         const filteredActions = actions?.filter((action: Map<any, any>) =>
-            DEFAULT_ACTIONS.includes(action.get('name'))
+            DEFAULT_ACTIONS.includes(action.get('name')),
         )
 
         setMacroForm({
@@ -105,14 +107,14 @@ export function MacrosSettingsFormContainer({
                     }
 
                     return first.name === second.name
-                }
+                },
             ),
         })
     }
 
-    const [{loading: isSubmitPending}, handleFormSubmit] =
+    const [{ loading: isSubmitPending }, handleFormSubmit] =
         useAsyncFn(async () => {
-            const {actions, language} = macroForm
+            const { actions, language } = macroForm
 
             const macroFormData = {
                 ...macroForm,
@@ -124,7 +126,7 @@ export function MacrosSettingsFormContainer({
                             (action.arguments.custom_field_id === undefined ||
                                 (action.arguments.custom_field_id !==
                                     undefined &&
-                                    action.arguments.value !== ''))
+                                    action.arguments.value !== '')),
                     ) ?? null,
                 language: language || null,
             } as Macro
@@ -158,12 +160,12 @@ export function MacrosSettingsFormContainer({
                 })
             }
         }, [macroId, macroForm])
-    const [{loading: isDuplicatePending}, handleMacroDuplicate] =
+    const [{ loading: isDuplicatePending }, handleMacroDuplicate] =
         useAsyncFn(async () => {
             if (!macroId) {
                 return
             }
-            const {actions, name, language} = macros[macroId]
+            const { actions, name, language } = macros[macroId]
             try {
                 const res = await createMacro({
                     actions,
@@ -185,44 +187,46 @@ export function MacrosSettingsFormContainer({
         }, [macros, macroId])
 
     const handleMacroArchiveOrUnarchive = (
-        e: MouseEvent<HTMLButtonElement>
+        e: MouseEvent<HTMLButtonElement>,
     ) => {
         e.preventDefault()
         e.stopPropagation()
         if (!!macroId) {
             if (isArchived) {
                 bulkUnarchiveMacros({
-                    data: {ids: [parseInt(macroId)]},
+                    data: { ids: [parseInt(macroId)] },
                 })
             } else {
-                bulkArchiveMacros({data: {ids: [parseInt(macroId)]}})
+                bulkArchiveMacros({ data: { ids: [parseInt(macroId)] } })
             }
             history.push(`/app/settings/macros${isArchived ? '/archived' : ''}`)
         }
     }
 
-    const [{loading: isDeletePending}, handleDelete] = useAsyncFn(async () => {
-        if (!macroId) {
-            return
-        }
-        try {
-            const macroIdNumber = parseInt(macroId)
-            await deleteMacro(macroIdNumber)
-            macroDeleted(macroIdNumber)
-            void notify({
-                message: 'Successfully deleted macro',
-                status: NotificationStatus.Success,
-            })
-            history.push('/app/settings/macros')
-        } catch (error) {
-            void notify({
-                title: (error as MacroApiError).response.data.error.msg,
-                message: errorToChildren(error)!,
-                allowHTML: true,
-                status: NotificationStatus.Error,
-            })
-        }
-    })
+    const [{ loading: isDeletePending }, handleDelete] = useAsyncFn(
+        async () => {
+            if (!macroId) {
+                return
+            }
+            try {
+                const macroIdNumber = parseInt(macroId)
+                await deleteMacro(macroIdNumber)
+                macroDeleted(macroIdNumber)
+                void notify({
+                    message: 'Successfully deleted macro',
+                    status: NotificationStatus.Success,
+                })
+                history.push('/app/settings/macros')
+            } catch (error) {
+                void notify({
+                    title: (error as MacroApiError).response.data.error.msg,
+                    message: errorToChildren(error)!,
+                    allowHTML: true,
+                    status: NotificationStatus.Error,
+                })
+            }
+        },
+    )
 
     useEffect(() => {
         if (macroId) {
@@ -233,7 +237,7 @@ export function MacrosSettingsFormContainer({
 
     useEffect(() => {
         if (macroId && macros[macroId]) {
-            const {actions, name, language} = macros[macroId]
+            const { actions, name, language } = macros[macroId]
             setMacroForm({
                 actions,
                 name,
@@ -295,7 +299,7 @@ export function MacrosSettingsFormContainer({
                             }
                             setName={(name: string) =>
                                 !isActionDisabled &&
-                                setMacroForm({...macroForm, name})
+                                setMacroForm({ ...macroForm, name })
                             }
                             setLanguage={(language: string | null) =>
                                 !isActionDisabled &&
@@ -385,7 +389,7 @@ const connector = connect(
         macroFetched,
         macroUpdated,
         notify,
-    }
+    },
 )
 
 export default connector(MacrosSettingsFormContainer)

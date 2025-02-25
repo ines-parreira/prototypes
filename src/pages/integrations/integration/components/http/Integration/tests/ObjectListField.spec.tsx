@@ -1,5 +1,6 @@
-import {render, screen} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import ObjectListField from 'pages/integrations/integration/components/http/Integration/ObjectListField'
 
@@ -21,9 +22,9 @@ describe('ObjectListField component', () => {
         const component = render(
             <ObjectListField
                 {...minProps}
-                fields={[{key: 'bar', value: 'foo'}]}
+                fields={[{ key: 'bar', value: 'foo' }]}
                 validate={() => 'Header name contains invalid characters'}
-            />
+            />,
         )
 
         expect(component).toMatchSnapshot()
@@ -33,11 +34,11 @@ describe('ObjectListField component', () => {
         render(
             <ObjectListField
                 {...minProps}
-                fields={[{key: 'bar', value: 'foo'}]}
-            />
+                fields={[{ key: 'bar', value: 'foo' }]}
+            />,
         )
         expect(
-            screen.getByPlaceholderText('Key').getAttribute('pattern')
+            screen.getByPlaceholderText('Key').getAttribute('pattern'),
         ).toBeNull()
     })
 })

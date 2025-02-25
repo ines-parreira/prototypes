@@ -1,7 +1,8 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {Panels} from 'core/layout/panels'
+import { render, screen } from '@testing-library/react'
+
+import { Panels } from 'core/layout/panels'
 
 import GlobalNavigationPanel from '../GlobalNavigationPanel'
 
@@ -14,7 +15,7 @@ describe('GlobalNavigationPanel', () => {
         render(
             <Panels size={1000}>
                 <GlobalNavigationPanel />
-            </Panels>
+            </Panels>,
         )
         expect(screen.getByText('GlobalNavigation')).toBeInTheDocument()
     })

@@ -1,4 +1,3 @@
-import classnames from 'classnames'
 import React, {
     ForwardedRef,
     forwardRef,
@@ -10,6 +9,8 @@ import React, {
     useRef,
 } from 'react'
 
+import classnames from 'classnames'
+
 import useKey from 'hooks/useKey'
 
 import css from './DropdownHeader.less'
@@ -20,8 +21,8 @@ type Props = {
 } & Omit<HTMLProps<HTMLDivElement>, 'prefix'>
 
 const DropdownHeader = (
-    {children, className, prefix, suffix, ...other}: Props,
-    ref: ForwardedRef<HTMLDivElement>
+    { children, className, prefix, suffix, ...other }: Props,
+    ref: ForwardedRef<HTMLDivElement>,
 ) => {
     const elementRef = useRef<HTMLDivElement>(null)
     useImperativeHandle(ref, () => elementRef.current!)
@@ -31,7 +32,7 @@ const DropdownHeader = (
             other.onClick != null ||
             other.onMouseDown != null ||
             other.onMouseUp != null,
-        [other.onClick, other.onMouseDown, other.onMouseUp]
+        [other.onClick, other.onMouseDown, other.onMouseUp],
     )
 
     const handleKeyPress = useCallback(
@@ -40,7 +41,7 @@ const DropdownHeader = (
                 elementRef.current?.click()
             }
         },
-        [isClickable]
+        [isClickable],
     )
 
     useKey('Enter', handleKeyPress, undefined, [handleKeyPress])

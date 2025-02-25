@@ -1,49 +1,46 @@
-import {renderHook} from '@testing-library/react-hooks'
-
+import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment/moment'
 
-import {TicketChannel} from 'business/types/ticket'
+import { TicketChannel } from 'business/types/ticket'
 import {
-    useClosedTicketsMetricPerChannel,
-    useCustomerSatisfactionMetricPerChannel,
-    useMedianFirstResponseTimeMetricPerChannel,
-    useMessagesSentMetricPerChannel,
-    useMedianResolutionTimeMetricPerChannel,
-    useTicketsRepliedMetricPerChannel,
-    useOneTouchTicketsMetricPerChannel,
-    useZeroTouchTicketsMetricPerChannel,
-    useTicketAverageHandleTimePerChannel,
-    useCreatedTicketsMetricPerChannel,
-    fetchTicketAverageHandleTimePerChannel,
-    fetchZeroTouchTicketsMetricPerChannel,
-    fetchOneTouchTicketsMetricPerChannel,
+    fetchClosedTicketsMetricPerChannel,
+    fetchCreatedTicketsMetricPerChannel,
     fetchCustomerSatisfactionMetricPerChannel,
+    fetchMedianFirstResponseTimeMetricPerChannel,
     fetchMedianResolutionTimeMetricPerChannel,
     fetchMessagesSentMetricPerChannel,
-    fetchCreatedTicketsMetricPerChannel,
-    fetchClosedTicketsMetricPerChannel,
+    fetchOneTouchTicketsMetricPerChannel,
+    fetchTicketAverageHandleTimePerChannel,
     fetchTicketsRepliedMetricPerChannel,
-    fetchMedianFirstResponseTimeMetricPerChannel,
+    fetchZeroTouchTicketsMetricPerChannel,
+    useClosedTicketsMetricPerChannel,
+    useCreatedTicketsMetricPerChannel,
+    useCustomerSatisfactionMetricPerChannel,
+    useMedianFirstResponseTimeMetricPerChannel,
+    useMedianResolutionTimeMetricPerChannel,
+    useMessagesSentMetricPerChannel,
+    useOneTouchTicketsMetricPerChannel,
+    useTicketAverageHandleTimePerChannel,
+    useTicketsRepliedMetricPerChannel,
+    useZeroTouchTicketsMetricPerChannel,
 } from 'hooks/reporting/support-performance/channels/metricsPerChannel'
 import {
     fetchMetricPerDimension,
     useMetricPerDimension,
 } from 'hooks/reporting/useMetricPerDimension'
-import {OrderDirection} from 'models/api/types'
-import {ticketAverageHandleTimePerAgentPerChannelQueryFactory} from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
-import {closedTicketsPerChannelQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
-import {customerSatisfactionMetricPerChannelQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
-import {medianFirstResponseTimeMetricPerChannelQueryFactory} from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
-import {medianResolutionTimeMetricPerChannelQueryFactory} from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
-import {messagesSentMetricPerChannelQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
-import {oneTouchTicketsPerChannelQueryFactory} from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
-
-import {ticketsCreatedPerChannelPerChannelQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsCreated'
-import {ticketsRepliedMetricPerChannelQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
-import {zeroTouchTicketsPerChannelQueryFactory} from 'models/reporting/queryFactories/support-performance/zeroTouchTickets'
-import {LegacyStatsFilters} from 'models/stat/types'
-
-import {assumeMock} from 'utils/testing'
+import { OrderDirection } from 'models/api/types'
+import { ticketAverageHandleTimePerAgentPerChannelQueryFactory } from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
+import { closedTicketsPerChannelQueryFactory } from 'models/reporting/queryFactories/support-performance/closedTickets'
+import { customerSatisfactionMetricPerChannelQueryFactory } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
+import { medianFirstResponseTimeMetricPerChannelQueryFactory } from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
+import { medianResolutionTimeMetricPerChannelQueryFactory } from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
+import { messagesSentMetricPerChannelQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesSent'
+import { oneTouchTicketsPerChannelQueryFactory } from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
+import { ticketsCreatedPerChannelPerChannelQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsCreated'
+import { ticketsRepliedMetricPerChannelQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsReplied'
+import { zeroTouchTicketsPerChannelQueryFactory } from 'models/reporting/queryFactories/support-performance/zeroTouchTickets'
+import { LegacyStatsFilters } from 'models/stat/types'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/useMetricPerDimension')
 const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
@@ -119,12 +116,12 @@ describe('metricsPerChannel', () => {
                 queryFactory:
                     ticketAverageHandleTimePerAgentPerChannelQueryFactory,
             },
-        ])('should pass the query to $name hook', ({hook, queryFactory}) => {
+        ])('should pass the query to $name hook', ({ hook, queryFactory }) => {
             renderHook(() => hook(statsFilters, timezone, sorting, channel), {})
 
             expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
                 queryFactory(statsFilters, timezone, sorting),
-                channel
+                channel,
             )
         })
     })
@@ -185,14 +182,14 @@ describe('metricsPerChannel', () => {
             },
         ])(
             'should pass the query to $name hook',
-            async ({fetch, queryFactory}) => {
+            async ({ fetch, queryFactory }) => {
                 await fetch(statsFilters, timezone, sorting, channel)
 
                 expect(fetchMetricPerDimensionMock).toHaveBeenCalledWith(
                     queryFactory(statsFilters, timezone, sorting),
-                    channel
+                    channel,
                 )
-            }
+            },
         )
     })
 })

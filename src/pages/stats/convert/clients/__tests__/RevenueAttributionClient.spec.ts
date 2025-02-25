@@ -1,9 +1,9 @@
-import {TicketChannel} from 'business/types/ticket'
-import {REVENUE_PER_DAY} from 'config/stats'
-import {fetchStat} from 'models/stat/resources'
-import {getTicketsPerformanceData} from 'pages/stats/convert/clients/RevenueAttributionClient'
-import {formatReportingQueryDate} from 'utils/reporting'
-import {assumeMock} from 'utils/testing'
+import { TicketChannel } from 'business/types/ticket'
+import { REVENUE_PER_DAY } from 'config/stats'
+import { fetchStat } from 'models/stat/resources'
+import { getTicketsPerformanceData } from 'pages/stats/convert/clients/RevenueAttributionClient'
+import { formatReportingQueryDate } from 'utils/reporting'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('models/stat/resources')
 const fetchStatMock = assumeMock(fetchStat)

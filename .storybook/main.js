@@ -72,7 +72,7 @@ module.exports = {
         },
     },
     webpackFinal: async (config) => {
-        const {global, ...alias} = config.resolve.alias
+        const { global, ...alias } = config.resolve.alias
         config.resolve.alias = alias
         config.module.rules.push({
             test: /\.css$/i,
@@ -110,10 +110,10 @@ module.exports = {
                 ...config.resolve.alias,
                 css: `${srcDir}/assets/css/`,
                 'launchdarkly-react-client-sdk': require.resolve(
-                    './launchdarkly-js-client-sdk.tsx'
+                    './launchdarkly-js-client-sdk.tsx',
                 ),
                 'launchdarkly-js-client-sdk': require.resolve(
-                    './launchdarkly-js-client-sdk.tsx'
+                    './launchdarkly-js-client-sdk.tsx',
                 ),
             },
             extensions: ['.ts', '.tsx', '.js'],
@@ -130,12 +130,12 @@ module.exports = {
         config.plugins.push(
             new MiniCssExtractPlugin({
                 filename: styleBundleFile,
-            })
+            }),
         )
         config.plugins.push(
             new webpack.ProvidePlugin({
                 process: require.resolve('process/browser.js'),
-            })
+            }),
         )
 
         return config

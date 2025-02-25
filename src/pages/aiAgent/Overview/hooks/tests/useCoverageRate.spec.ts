@@ -1,11 +1,11 @@
-import {renderHook} from '@testing-library/react-hooks/dom'
+import { renderHook } from '@testing-library/react-hooks/dom'
 
-import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import {ticketFieldDefinitions} from 'fixtures/customField'
-import {useMultipleMetricsTrends} from 'hooks/reporting/useMultipleMetricsTrend'
-import {StatsFilters, StatType} from 'models/stat/types'
-import {useCoverageRate} from 'pages/aiAgent/Overview/hooks/kpis/useCoverageRate'
-import {assumeMock} from 'utils/testing'
+import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import { ticketFieldDefinitions } from 'fixtures/customField'
+import { useMultipleMetricsTrends } from 'hooks/reporting/useMultipleMetricsTrend'
+import { StatsFilters, StatType } from 'models/stat/types'
+import { useCoverageRate } from 'pages/aiAgent/Overview/hooks/kpis/useCoverageRate'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
@@ -24,7 +24,7 @@ const filters: StatsFilters = {
 describe('useCoverageRate', () => {
     beforeEach(() => {
         useCustomFieldDefinitionsMock.mockReturnValue({
-            data: {data: ticketFieldDefinitions},
+            data: { data: ticketFieldDefinitions },
             isLoading: false,
         } as any)
     })
@@ -44,7 +44,7 @@ describe('useCoverageRate', () => {
             isFetching: false,
         } as any)
 
-        const {result} = renderHook(() => useCoverageRate(filters, timezone))
+        const { result } = renderHook(() => useCoverageRate(filters, timezone))
 
         expect(result.current).toEqual({
             title: 'Coverage Rate',
@@ -62,7 +62,7 @@ describe('useCoverageRate', () => {
             isFetching: true,
         } as any)
 
-        const {result} = renderHook(() => useCoverageRate(filters, timezone))
+        const { result } = renderHook(() => useCoverageRate(filters, timezone))
 
         expect(result.current).toEqual({
             title: 'Coverage Rate',

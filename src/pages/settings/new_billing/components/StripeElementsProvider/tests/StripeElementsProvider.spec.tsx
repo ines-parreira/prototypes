@@ -1,17 +1,18 @@
-import {Elements} from '@stripe/react-stripe-js'
-import {loadStripe, Stripe} from '@stripe/stripe-js'
-import {fireEvent, render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {THEME_NAME, themeTokenMap, useTheme} from 'core/theme'
-import {assumeMock} from 'utils/testing'
+import { Elements } from '@stripe/react-stripe-js'
+import { loadStripe, Stripe } from '@stripe/stripe-js'
+import { fireEvent, render, screen } from '@testing-library/react'
 
-import {StripeElementsProvider} from '../StripeElementsProvider'
+import { THEME_NAME, themeTokenMap, useTheme } from 'core/theme'
+import { assumeMock } from 'utils/testing'
+
+import { StripeElementsProvider } from '../StripeElementsProvider'
 
 jest.mock('@stripe/stripe-js')
 jest.mock('@stripe/react-stripe-js')
 
-assumeMock(Elements).mockImplementation(({children}) => (
+assumeMock(Elements).mockImplementation(({ children }) => (
     <div>
         Elements Provider<div>{children}</div>
     </div>
@@ -36,7 +37,7 @@ describe('StripeElementsProvider', () => {
         render(
             <StripeElementsProvider>
                 <div>Stripe Elements</div>
-            </StripeElementsProvider>
+            </StripeElementsProvider>,
         )
 
         expect(screen.getByText('Elements Provider')).toBeVisible()
@@ -51,7 +52,7 @@ describe('StripeElementsProvider', () => {
         render(
             <StripeElementsProvider>
                 <div>Stripe Elements</div>
-            </StripeElementsProvider>
+            </StripeElementsProvider>,
         )
 
         expect(screen.getByText('Elements Provider')).toBeVisible()
@@ -60,7 +61,7 @@ describe('StripeElementsProvider', () => {
 
         assumeMock(loadStripe).mockResolvedValue({} as Stripe)
 
-        fireEvent.click(screen.getByRole('button', {name: 'Retry'}))
+        fireEvent.click(screen.getByRole('button', { name: 'Retry' }))
         expect(await screen.findByText('Stripe Elements')).toBeVisible()
     })
 })

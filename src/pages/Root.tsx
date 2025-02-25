@@ -1,26 +1,28 @@
-import {RealtimeProvider} from '@gorgias/realtime'
-import {QueryClientProvider} from '@tanstack/react-query'
-import {createDragDropManager} from 'dnd-core'
+import React, { useLayoutEffect, useState } from 'react'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { createDragDropManager } from 'dnd-core'
 import Immutable from 'immutable'
 import installDevTools from 'immutable-devtools'
-import {LDClient} from 'launchdarkly-js-client-sdk'
-import {LDProvider} from 'launchdarkly-react-client-sdk'
-import React, {useLayoutEffect, useState} from 'react'
-import {DndProvider} from 'react-dnd'
-import {HTML5Backend} from 'react-dnd-html5-backend'
-import {Provider} from 'react-redux'
-import {Router} from 'react-router-dom'
-import {CompatRouter} from 'react-router-dom-v5-compat'
-import {Store} from 'redux'
+import { LDClient } from 'launchdarkly-js-client-sdk'
+import { LDProvider } from 'launchdarkly-react-client-sdk'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+import { Provider } from 'react-redux'
+import { Router } from 'react-router-dom'
+import { CompatRouter } from 'react-router-dom-v5-compat'
+import { Store } from 'redux'
 
-import {appQueryClient} from 'api/queryClient'
+import { RealtimeProvider } from '@gorgias/realtime'
+
+import { appQueryClient } from 'api/queryClient'
 import useEffectOnce from 'hooks/useEffectOnce'
-import {Main} from 'main/app'
+import { Main } from 'main/app'
 import RoutesWrapper from 'routes'
 import activityTracker from 'services/activityTracker'
-import {RootState} from 'state/types'
-import {envVars, NodeEnv} from 'utils/environment'
-import {getLDClient, LDContext} from 'utils/launchDarkly'
+import { RootState } from 'state/types'
+import { envVars, NodeEnv } from 'utils/environment'
+import { getLDClient, LDContext } from 'utils/launchDarkly'
 
 import history from './history'
 
@@ -34,7 +36,7 @@ if (envVars.NODE_ENV !== NodeEnv.Production) {
 
 const manager = createDragDropManager(HTML5Backend, undefined, undefined)
 
-const Root = ({store}: Props) => {
+const Root = ({ store }: Props) => {
     const [LDClient, setLDClient] = useState<LDClient>()
 
     useEffectOnce(() => {
@@ -47,7 +49,7 @@ const Root = ({store}: Props) => {
 
     useLayoutEffect(() => {
         const unlisten = history.listen((location) => {
-            const {pathname} = location
+            const { pathname } = location
             activityTracker.createUserContext({
                 accountId: window.GORGIAS_STATE.currentAccount.id,
                 userId: window.GORGIAS_STATE.currentUser.id,

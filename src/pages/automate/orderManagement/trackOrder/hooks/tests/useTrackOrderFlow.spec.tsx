@@ -1,6 +1,6 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {selfServiceConfiguration1 as mockSelfServiceConfiguration} from 'fixtures/self_service_configurations'
+import { selfServiceConfiguration1 as mockSelfServiceConfiguration } from 'fixtures/self_service_configurations'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 
 import useTrackOrderFlow from '../useTrackOrderFlow'
@@ -16,10 +16,10 @@ describe('useTrackOrderFlow', () => {
         })
     })
     it('should return self service configuration', () => {
-        const {result} = renderHook(() => useTrackOrderFlow('shop-name'))
+        const { result } = renderHook(() => useTrackOrderFlow('shop-name'))
 
         expect(result.current.selfServiceConfiguration).toMatchObject(
-            mockSelfServiceConfiguration
+            mockSelfServiceConfiguration,
         )
     })
 })

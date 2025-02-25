@@ -64,7 +64,7 @@ const filters = {
 export const renderTemplate = (
     body?: Maybe<string>,
     context?: unknown,
-    keepTemplateWhenEmpty: boolean = false
+    keepTemplateWhenEmpty: boolean = false,
 ): string => {
     if (!body) {
         return ''
@@ -90,7 +90,7 @@ export const renderTemplate = (
                         // @ts-ignore
                         obj = obj.get(_.trimStart(path, '.'))
                         const index = tempVariable.match(
-                            stringStartIndexArrayRegex
+                            stringStartIndexArrayRegex,
                         )
                         if (index) {
                             const key = _trim(index[0], '[]')
@@ -136,6 +136,6 @@ export const renderTemplate = (
                 console.error('Failed to render template', match, variable, e)
                 return ''
             }
-        }
+        },
     )
 }

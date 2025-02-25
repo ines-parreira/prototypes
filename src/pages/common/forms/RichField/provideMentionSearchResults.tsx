@@ -1,7 +1,8 @@
-import {fromJS, List} from 'immutable'
-import React, {Component, ComponentType} from 'react'
+import React, { Component, ComponentType } from 'react'
 
-import {suggestionsFilter} from '../../draftjs/plugins/mentions'
+import { fromJS, List } from 'immutable'
+
+import { suggestionsFilter } from '../../draftjs/plugins/mentions'
 
 type RequiredProps = {
     mentionSuggestions?: List<any>
@@ -13,13 +14,13 @@ type State = {
 
 export type InjectedProps = {
     mentionSearchResults: List<any>
-    onMentionSearchChange: (mentionSearchChangeArgs: {value: string}) => void
+    onMentionSearchChange: (mentionSearchChangeArgs: { value: string }) => void
 }
 
 export default function provideMentionSearchResults<
     Props extends RequiredProps,
 >(
-    WrappedComponent: ComponentType<Props & InjectedProps>
+    WrappedComponent: ComponentType<Props & InjectedProps>,
 ): ComponentType<Props> {
     class Wrapper extends Component<Props, State> {
         constructor(props: Props) {
@@ -29,7 +30,7 @@ export default function provideMentionSearchResults<
             }
         }
 
-        onSearchChange = ({value}: {value: string}) => {
+        onSearchChange = ({ value }: { value: string }) => {
             if (!this.props.mentionSuggestions) {
                 return
             }
@@ -37,7 +38,7 @@ export default function provideMentionSearchResults<
             this.setState({
                 filteredSuggestions: suggestionsFilter(
                     value,
-                    this.props.mentionSuggestions
+                    this.props.mentionSuggestions,
                 ),
             })
         }

@@ -1,15 +1,14 @@
 import {
     CustomFieldCondition,
-    ExpressionFieldType,
     ExpressionFieldSource,
+    ExpressionFieldType,
     ExpressionOperator,
 } from '@gorgias/api-types'
 
-import {OBJECT_TYPES} from 'custom-fields/constants'
-
+import { OBJECT_TYPES } from 'custom-fields/constants'
 import {
-    CustomFieldObjectTypes,
     CustomFieldConditionsEvaluationResults,
+    CustomFieldObjectTypes,
 } from 'custom-fields/types'
 
 import resolveTicketPropertyValue from './resolveTicketPropertyValue'
@@ -17,7 +16,7 @@ import resolveTicketPropertyValue from './resolveTicketPropertyValue'
 type PropertyResolver = (
     _: any,
     source: ExpressionFieldSource,
-    property: any
+    property: any,
 ) => any
 
 const isEmpty = (value: unknown) => {
@@ -34,7 +33,7 @@ const isEmpty = (value: unknown) => {
 const evaluateOperator = (
     operator: ExpressionOperator,
     sourceValue: unknown,
-    values: any[]
+    values: any[],
 ): boolean => {
     switch (operator) {
         case ExpressionOperator.IsEmpty:
@@ -62,7 +61,7 @@ const evaluateOperator = (
 export const evaluateCustomFieldsConditions = (
     conditions: CustomFieldCondition[],
     objectType: CustomFieldObjectTypes,
-    sourceObject: Record<string, unknown>
+    sourceObject: Record<string, unknown>,
 ): CustomFieldConditionsEvaluationResults => {
     let resolveObjectProperty: PropertyResolver
     if (objectType === OBJECT_TYPES.TICKET) {
@@ -81,9 +80,9 @@ export const evaluateCustomFieldsConditions = (
                 resolveObjectProperty(
                     sourceObject,
                     expression.field_source,
-                    expression.field as string
+                    expression.field as string,
                 ),
-                expression.values ?? []
+                expression.values ?? [],
             )
         })
 

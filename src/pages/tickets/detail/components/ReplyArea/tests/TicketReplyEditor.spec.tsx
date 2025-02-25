@@ -1,23 +1,24 @@
-import {createEvent, fireEvent, render} from '@testing-library/react'
-import {ContentState} from 'draft-js'
+import React, { ComponentProps } from 'react'
+
+import { createEvent, fireEvent, render } from '@testing-library/react'
+import { ContentState } from 'draft-js'
 //@ts-ignore
 import generateRandomKey from 'draft-js/lib/generateRandomKey'
-import {fromJS, Map} from 'immutable'
+import { fromJS, Map } from 'immutable'
 import _noop from 'lodash/noop'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
+import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
 import * as channelsService from 'services/channels'
-import {convertToHTML, createDraftJSKeyGeneratorMock} from 'utils/editor'
-import {sanitizeHtmlForFacebookMessenger} from 'utils/html'
+import { convertToHTML, createDraftJSKeyGeneratorMock } from 'utils/editor'
+import { sanitizeHtmlForFacebookMessenger } from 'utils/html'
 
-import {TicketReplyEditorContainer} from '../TicketReplyEditor'
+import { TicketReplyEditorContainer } from '../TicketReplyEditor'
 
 jest.mock('draft-js/lib/generateRandomKey', () =>
-    jest.fn().mockReturnValue('mock-key')
+    jest.fn().mockReturnValue('mock-key'),
 )
 
 const middlewares = [thunk]
@@ -26,7 +27,7 @@ const store = mockStore({
     integrations: fromJS({
         integrations: [],
     }),
-    ui: {editor: {}},
+    ui: { editor: {} },
 })
 
 describe('TicketReplyEditor component', () => {
@@ -56,7 +57,7 @@ describe('TicketReplyEditor component', () => {
     }
 
     it('should render empty ticket', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <TicketReplyEditorContainer
                     {...minProps}
@@ -76,13 +77,13 @@ describe('TicketReplyEditor component', () => {
                     })}
                     newMessageType={TicketMessageSourceType.Email}
                 />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should not allow attachments for instagram comments', () => {
-        const {queryByText} = render(
+        const { queryByText } = render(
             <Provider store={store}>
                 <TicketReplyEditorContainer
                     {...minProps}
@@ -102,13 +103,13 @@ describe('TicketReplyEditor component', () => {
                     })}
                     newMessageType={TicketMessageSourceType.InstagramComment}
                 />
-            </Provider>
+            </Provider>,
         )
         expect(queryByText('attach_file')).not.toBeInTheDocument()
     })
 
     it('should not allow attachments for instagram mention comments', () => {
-        const {queryByText} = render(
+        const { queryByText } = render(
             <Provider store={store}>
                 <TicketReplyEditorContainer
                     {...minProps}
@@ -130,22 +131,22 @@ describe('TicketReplyEditor component', () => {
                         TicketMessageSourceType.InstagramMentionComment
                     }
                 />
-            </Provider>
+            </Provider>,
         )
         expect(queryByText('attach_file')).not.toBeInTheDocument()
     })
 
     it.each([
         // Simulate having an existing GIF and adding a new attachment
-        [fromJS([{content_type: 'image/gif'}]), [{type: 'image/jpg'}]],
+        [fromJS([{ content_type: 'image/gif' }]), [{ type: 'image/jpg' }]],
         // Simulate having an existing attachment and adding a new GIF one
-        [fromJS([{content_type: 'image/jpg'}]), [{type: 'image/gif'}]],
+        [fromJS([{ content_type: 'image/jpg' }]), [{ type: 'image/gif' }]],
     ])(
         'should not allow GIF + other attachments for Twitter tweets',
         (existingAttachments, newAttachments) => {
             const notifyMock = jest.fn()
 
-            const {getByLabelText} = render(
+            const { getByLabelText } = render(
                 <Provider store={store}>
                     <TicketReplyEditorContainer
                         {...minProps}
@@ -168,11 +169,11 @@ describe('TicketReplyEditor component', () => {
                         newMessageType={TicketMessageSourceType.TwitterTweet}
                         notify={notifyMock}
                     />
-                </Provider>
+                </Provider>,
             )
 
             fireEvent.change(getByLabelText('attach_file'), {
-                target: {files: newAttachments},
+                target: { files: newAttachments },
             })
 
             expect(notifyMock).toBeCalledWith({
@@ -181,7 +182,7 @@ describe('TicketReplyEditor component', () => {
                 message:
                     'When answering to Twitter tweet messages, you can only attach a single GIF or a maximum of 4 pictures.',
             })
-        }
+        },
     )
 
     // test for debouncer bug
@@ -218,7 +219,7 @@ describe('TicketReplyEditor component', () => {
         })
         let newMessageText: string
 
-        const {unmount, container} = render(
+        const { unmount, container } = render(
             <Provider store={store}>
                 <TicketReplyEditorContainer
                     {...minProps}
@@ -232,7 +233,7 @@ describe('TicketReplyEditor component', () => {
                     }}
                     shouldDisplayQuickReply={false}
                 />
-            </Provider>
+            </Provider>,
         )
 
         // simulate "onEditorChange" RichField change event
@@ -291,7 +292,7 @@ describe('TicketReplyEditor component', () => {
             },
         })
 
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <TicketReplyEditorContainer
                     {...minProps}
@@ -299,7 +300,7 @@ describe('TicketReplyEditor component', () => {
                     newMessage={newMessage}
                     ticket={ticket}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(getByText('insert_photo')).toBeInTheDocument()
@@ -337,7 +338,7 @@ describe('TicketReplyEditor component', () => {
         })
         let newEditorState: ContentState
 
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <TicketReplyEditorContainer
                     {...minProps}
@@ -348,7 +349,7 @@ describe('TicketReplyEditor component', () => {
                         newEditorState = props!.get('contentState')
                     }}
                 />
-            </Provider>
+            </Provider>,
         )
 
         let htmlString = `<b>this is an</b> inline image: <img alt="abc" src="https://this-is-a-link-of-image/and-this-is-the-image.png">`
@@ -374,7 +375,7 @@ describe('TicketReplyEditor component', () => {
 
     it('should not allow "videos", "shopify products" or "discount codes" for new channels', () => {
         jest.spyOn(channelsService, 'isNewChannel').mockReturnValue(true)
-        const {queryByText} = render(
+        const { queryByText } = render(
             <Provider store={store}>
                 <TicketReplyEditorContainer
                     {...minProps}
@@ -383,12 +384,12 @@ describe('TicketReplyEditor component', () => {
                             contentState: ContentState.createFromText(''),
                         },
                         integrations: {
-                            integrations: [{type: 'shopify'}],
+                            integrations: [{ type: 'shopify' }],
                         },
                     })}
                     newMessageType={'tiktok-shop' as TicketMessageSourceType}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(queryByText(/insert video/i)).not.toBeInTheDocument()
@@ -411,7 +412,7 @@ describe('TicketReplyEditor component', () => {
                     newMessageType={TicketMessageSourceType.Email}
                     handleTypingActivity={mockHandleTypingActivity}
                 />
-            </Provider>
+            </Provider>,
         )
 
         jest.advanceTimersByTime(100)

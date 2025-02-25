@@ -1,28 +1,29 @@
-import {Badge, ColorType} from '@gorgias/merchant-ui-kit'
-import {fromJS, Map} from 'immutable'
-import _groupBy from 'lodash/groupBy'
-import _lowerCase from 'lodash/lowerCase'
 import React, {
     ContextType,
-    ReactNode,
     createContext,
-    useContext,
     FunctionComponent,
+    ReactNode,
+    useContext,
 } from 'react'
-import {connect, ConnectedProps} from 'react-redux'
 
-import {LineItem} from 'constants/integrations/types/shopify'
+import { fromJS, Map } from 'immutable'
+import _groupBy from 'lodash/groupBy'
+import _lowerCase from 'lodash/lowerCase'
+import { connect, ConnectedProps } from 'react-redux'
+
+import { Badge, ColorType } from '@gorgias/merchant-ui-kit'
+
+import { LineItem } from 'constants/integrations/types/shopify'
 import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
-import type {InfobarAction} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
-import {renderTemplate} from 'pages/common/utils/template'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import {getActiveCustomerIntegrationDataByIntegrationId} from 'state/customers/selectors'
-import {getIntegrationDataByIntegrationId} from 'state/ticket/selectors'
-import {RootState} from 'state/types'
-import {devLog, humanizeString, isCurrentlyOnTicket, toJS} from 'utils'
-
-import {CardCustomization} from 'Widgets/modules/Template/modules/Card'
-import {StaticField} from 'Widgets/modules/Template/modules/Field'
+import type { InfobarAction } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
+import { renderTemplate } from 'pages/common/utils/template'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
+import { getActiveCustomerIntegrationDataByIntegrationId } from 'state/customers/selectors'
+import { getIntegrationDataByIntegrationId } from 'state/ticket/selectors'
+import { RootState } from 'state/types'
+import { devLog, humanizeString, isCurrentlyOnTicket, toJS } from 'utils'
+import { CardCustomization } from 'Widgets/modules/Template/modules/Card'
+import { StaticField } from 'Widgets/modules/Template/modules/Field'
 
 const ChargeContext = createContext<{
     charge: Map<string, unknown> | null
@@ -43,8 +44,8 @@ export class AfterTitle extends React.Component<{
     static contextType = IntegrationContext
     context!: ContextType<typeof IntegrationContext>
     render() {
-        const {isEditing = false, source} = this.props
-        const {integrationId} = this.context
+        const { isEditing = false, source } = this.props
+        const { integrationId } = this.context
 
         if (isEditing || !integrationId) {
             return null
@@ -110,8 +111,8 @@ export class SubscriptionAfterTitle extends React.Component<{
     static contextType = ChargeContext
     context!: ContextType<typeof ChargeContext>
     render() {
-        const {isEditing = false, source} = this.props
-        const {integrationId, chargeStatus} = this.context
+        const { isEditing = false, source } = this.props
+        const { integrationId, chargeStatus } = this.context
 
         if (isEditing || !integrationId) {
             return null
@@ -120,7 +121,7 @@ export class SubscriptionAfterTitle extends React.Component<{
         let actions: InfobarAction[] = [
             {
                 key: 'skip',
-                options: [{value: 'rechargeSkipCharge'}],
+                options: [{ value: 'rechargeSkipCharge' }],
                 popover:
                     'Skip the charge for this subscription on Recharge. ' +
                     'No order will be created and no item will be shipped.',
@@ -135,7 +136,7 @@ export class SubscriptionAfterTitle extends React.Component<{
             },
             {
                 key: 'unskip',
-                options: [{value: 'rechargeUnskipCharge'}],
+                options: [{ value: 'rechargeUnskipCharge' }],
                 popover: 'Unskip the charge for this subscription on Recharge.',
                 title: (
                     <div>
@@ -183,7 +184,7 @@ class BeforeContent extends React.Component<{
     source: Map<any, any>
 }> {
     render() {
-        const {source} = this.props
+        const { source } = this.props
 
         const status = ((source.get('status') as string) || '').toLowerCase()
 
@@ -202,12 +203,12 @@ export class AfterContent extends React.Component<{
     source: Map<any, any>
 }> {
     render() {
-        const {source, isEditing} = this.props
+        const { source, isEditing } = this.props
 
         const chargeSubscriptions = _groupBy(
             toJS(source.get('line_items')),
-            (item: Record<string, unknown>) => item.subscription_id
-        ) as {[key: string]: (LineItem & {id: string})[]}
+            (item: Record<string, unknown>) => item.subscription_id,
+        ) as { [key: string]: (LineItem & { id: string })[] }
 
         return Object.keys(chargeSubscriptions).map((k) => {
             return (
@@ -248,12 +249,12 @@ export class TitleWrapperContainer extends React.Component<TitleWrapperProps> {
     static contextType = ChargeContext
     context!: ContextType<typeof ChargeContext>
     render() {
-        const {children, template, source, getIntegrationData} = this.props
-        const {integrationId} = this.context
+        const { children, template, source, getIntegrationData } = this.props
+        const { integrationId } = this.context
 
         const customerHash = getIntegrationData(
             integrationId!,
-            source.get('customer_id')
+            source.get('customer_id'),
         ).getIn(['customer', 'hash'])
 
         let link = undefined
@@ -262,7 +263,7 @@ export class TitleWrapperContainer extends React.Component<TitleWrapperProps> {
         if (customLink && customerHash) {
             link = renderTemplate(
                 customLink,
-                source.set('customerHash', customerHash).toJS()
+                source.set('customerHash', customerHash).toJS(),
             )
         }
 
@@ -280,7 +281,7 @@ const connectorTitleWrapper = connect((state: RootState) => {
             const integrationData = isCurrentlyOnTicket()
                 ? getIntegrationDataByIntegrationId(integrationId)(state)
                 : getActiveCustomerIntegrationDataByIntegrationId(
-                      integrationId
+                      integrationId,
                   )(state)
 
             if (integrationData.getIn(['customer', 'id']) !== customerId) {
@@ -289,7 +290,7 @@ const connectorTitleWrapper = connect((state: RootState) => {
                     {
                         customerId,
                         integrationId,
-                    }
+                    },
                 )
                 return fromJS({}) as Map<any, any>
             }
@@ -301,11 +302,11 @@ const connectorTitleWrapper = connect((state: RootState) => {
 
 export const TitleWrapper = connectorTitleWrapper(TitleWrapperContainer)
 
-const Wrapper: FunctionComponent<{source: Map<string, any>}> = ({
+const Wrapper: FunctionComponent<{ source: Map<string, any> }> = ({
     source: charge = fromJS({}) as Map<string, any>,
     children,
 }) => {
-    const {integrationId} = useContext(IntegrationContext)
+    const { integrationId } = useContext(IntegrationContext)
     return (
         <ChargeContext.Provider
             value={{

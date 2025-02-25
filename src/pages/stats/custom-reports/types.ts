@@ -1,42 +1,42 @@
-import {Tag} from '@gorgias/api-queries'
+import { ReactNode } from 'react'
 
-import {ReactNode} from 'react'
+import { Tag } from '@gorgias/api-queries'
 
-import {User} from 'config/types/user'
-import {MetricPerDimensionFetch} from 'hooks/reporting/distributions'
-import {MetricTrendFetch} from 'hooks/reporting/useMetricTrend'
+import { User } from 'config/types/user'
+import { MetricPerDimensionFetch } from 'hooks/reporting/distributions'
+import { MetricTrendFetch } from 'hooks/reporting/useMetricTrend'
 import {
     TimeSeriesFetch,
     TimeSeriesPerDimensionFetch,
 } from 'hooks/reporting/useTimeSeries'
-import {Channel} from 'models/channel/types'
-import {Integration} from 'models/integration/types'
-import {ReportingGranularity} from 'models/reporting/types'
-import {StaticFilter, StatsFilters} from 'models/stat/types'
-import {AiSalesAgentChart} from 'pages/stats/aiSalesAgent/AiSalesAgentMetricsConfig'
-import {AutomateOverviewChart} from 'pages/stats/automate/overview/AutomateOverviewReportConfig'
-import {OptionalFilter} from 'pages/stats/common/filters/FiltersPanel'
-import {MetricValueFormat} from 'pages/stats/common/utils'
-import {CampaignsLegacyChart} from 'pages/stats/convert/campaigns/CampaignsLegacyReportConfig'
-import {CampaignsChart} from 'pages/stats/convert/campaigns/CampaignsPerformanceReportConfig'
-import {CampaignReportContext} from 'pages/stats/convert/components/DownloadOverviewData/GenerateReportService'
-import {ReportsIDs} from 'pages/stats/custom-reports/constants'
-import {HelpCenterChart} from 'pages/stats/help-center/components/HelpCenterReport/HelpCenterReportConfig'
-import {SatisfactionChart} from 'pages/stats/quality-management/satisfaction/SatisfactionReportConfig'
-import {ServiceLevelAgreementsChart} from 'pages/stats/sla/ServiceLevelAgreementsReportConfig'
-import {AgentsChart} from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReportConfig'
-import {AutoQAChart} from 'pages/stats/support-performance/auto-qa/AutoQAReportConfig'
-import {BusiestTimesChart} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesReportConfig'
-import {BusiestTimeOfDaysMetrics} from 'pages/stats/support-performance/busiest-times-of-days/types'
-import {ChannelsChart} from 'pages/stats/support-performance/channels/ChannelsReportConfig'
-import {OverviewChart} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
-import {TicketInsightsTagsChart} from 'pages/stats/ticket-insights/tags/TagsReportConfig'
-import {TicketFieldsChart} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsReportConfig'
-import {VoiceAgentsChart} from 'pages/stats/voice/pages/VoiceAgentsReportConfig'
-import {VoiceOverviewChart} from 'pages/stats/voice/pages/VoiceOverviewReportConfig'
-import {TagsTableOrder} from 'state/ui/stats/tagsReportSlice'
-import {TicketInsightsOrder} from 'state/ui/stats/ticketInsightsSlice'
-import {AgentsTableColumn, ChannelsTableColumns} from 'state/ui/stats/types'
+import { Channel } from 'models/channel/types'
+import { Integration } from 'models/integration/types'
+import { ReportingGranularity } from 'models/reporting/types'
+import { StaticFilter, StatsFilters } from 'models/stat/types'
+import { AiSalesAgentChart } from 'pages/stats/aiSalesAgent/AiSalesAgentMetricsConfig'
+import { AutomateOverviewChart } from 'pages/stats/automate/overview/AutomateOverviewReportConfig'
+import { OptionalFilter } from 'pages/stats/common/filters/FiltersPanel'
+import { MetricValueFormat } from 'pages/stats/common/utils'
+import { CampaignsLegacyChart } from 'pages/stats/convert/campaigns/CampaignsLegacyReportConfig'
+import { CampaignsChart } from 'pages/stats/convert/campaigns/CampaignsPerformanceReportConfig'
+import { CampaignReportContext } from 'pages/stats/convert/components/DownloadOverviewData/GenerateReportService'
+import { ReportsIDs } from 'pages/stats/custom-reports/constants'
+import { HelpCenterChart } from 'pages/stats/help-center/components/HelpCenterReport/HelpCenterReportConfig'
+import { SatisfactionChart } from 'pages/stats/quality-management/satisfaction/SatisfactionReportConfig'
+import { ServiceLevelAgreementsChart } from 'pages/stats/sla/ServiceLevelAgreementsReportConfig'
+import { AgentsChart } from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReportConfig'
+import { AutoQAChart } from 'pages/stats/support-performance/auto-qa/AutoQAReportConfig'
+import { BusiestTimesChart } from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesReportConfig'
+import { BusiestTimeOfDaysMetrics } from 'pages/stats/support-performance/busiest-times-of-days/types'
+import { ChannelsChart } from 'pages/stats/support-performance/channels/ChannelsReportConfig'
+import { OverviewChart } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
+import { TicketInsightsTagsChart } from 'pages/stats/ticket-insights/tags/TagsReportConfig'
+import { TicketFieldsChart } from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsReportConfig'
+import { VoiceAgentsChart } from 'pages/stats/voice/pages/VoiceAgentsReportConfig'
+import { VoiceOverviewChart } from 'pages/stats/voice/pages/VoiceOverviewReportConfig'
+import { TagsTableOrder } from 'state/ui/stats/tagsReportSlice'
+import { TicketInsightsOrder } from 'state/ui/stats/ticketInsightsSlice'
+import { AgentsTableColumn, ChannelsTableColumns } from 'state/ui/stats/types'
 
 type FilterSettings = {
     optional: OptionalFilter[]
@@ -127,7 +127,7 @@ export type ReportFetch = (
         isAutomateNonFilteredDenominatorInAutomationRate: boolean | undefined
         aiAgentUserId: string | undefined
         campaignsReportContext: CampaignReportContext
-    }
+    },
 ) => Promise<{
     isLoading: boolean
     fileName: string
@@ -141,7 +141,7 @@ export type DataExportFetch =
           metricFormat: MetricValueFormat
           title?: string
       }
-    | {type: DataExportFormat.Table; fetch: ReportFetch}
+    | { type: DataExportFormat.Table; fetch: ReportFetch }
     | {
           type: DataExportFormat.TimeSeries
           fetch: TimeSeriesFetch

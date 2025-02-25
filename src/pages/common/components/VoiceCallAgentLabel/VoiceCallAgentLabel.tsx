@@ -1,12 +1,14 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import axios from 'axios'
-import classNames from 'classnames'
 import React from 'react'
 
+import axios from 'axios'
+import classNames from 'classnames'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
 import useId from 'hooks/useId'
-import {AgentLabel} from 'pages/common/utils/labels'
-import {formatPhoneNumberInternational} from 'pages/phoneNumbers/utils'
-import {useAgentDetails} from 'pages/tickets/detail/components/TicketVoiceCall/hooks'
+import { AgentLabel } from 'pages/common/utils/labels'
+import { formatPhoneNumberInternational } from 'pages/phoneNumbers/utils'
+import { useAgentDetails } from 'pages/tickets/detail/components/TicketVoiceCall/hooks'
 
 import css from './VoiceCallAgentLabel.less'
 
@@ -25,7 +27,7 @@ export default function VoiceCallAgentLabel({
     semibold,
     withTooltip = false,
 }: AgentLabelProps) {
-    const {data: agent, error} = useAgentDetails(agentId)
+    const { data: agent, error } = useAgentDetails(agentId)
     const formattedPhoneNumber = formatPhoneNumberInternational(phoneNumber)
     const generatedId = useId()
     const id = `voice-call-agent-label-${generatedId}`

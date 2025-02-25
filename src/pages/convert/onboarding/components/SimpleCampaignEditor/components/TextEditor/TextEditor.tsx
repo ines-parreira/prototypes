@@ -1,14 +1,14 @@
-import {EditorState} from 'draft-js'
-import {produce} from 'immer'
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
+
+import { EditorState } from 'draft-js'
+import { produce } from 'immer'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-
 import RichField from 'pages/common/forms/RichField/RichField'
-import {CampaignMessage} from 'pages/convert/campaigns/components/CampaignMessage'
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
-import {deleteAttachment} from 'state/newMessage/actions'
-import {convertToHTML, editorStateWithReplacedText} from 'utils/editor'
+import { CampaignMessage } from 'pages/convert/campaigns/components/CampaignMessage'
+import { Campaign } from 'pages/convert/campaigns/types/Campaign'
+import { deleteAttachment } from 'state/newMessage/actions'
+import { convertToHTML, editorStateWithReplacedText } from 'utils/editor'
 
 type Props = {
     campaign: Campaign
@@ -18,7 +18,7 @@ type Props = {
 }
 
 const TextEditor: React.FC<Props> = (props) => {
-    const {campaign, isConvertSubscriber, onCampaignUpdate} = props
+    const { campaign, isConvertSubscriber, onCampaignUpdate } = props
 
     const [richArea, setRichArea] = useState<RichField | null>(null)
 
@@ -36,7 +36,7 @@ const TextEditor: React.FC<Props> = (props) => {
             produce((draft: Campaign) => {
                 draft.message_text = content.getPlainText()
                 draft.message_html = convertToHTML(content)
-            })
+            }),
         )
     }
 
@@ -48,7 +48,7 @@ const TextEditor: React.FC<Props> = (props) => {
         if (richArea) {
             const newEditorState = editorStateWithReplacedText(
                 richArea.state.editorState,
-                suggestion
+                suggestion,
             )
             richArea.setEditorState(newEditorState)
         }

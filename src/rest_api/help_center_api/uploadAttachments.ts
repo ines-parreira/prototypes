@@ -1,8 +1,10 @@
-import {Components} from 'rest_api/help_center_api/client.generated'
-import {GenericAttachment} from 'common/types'
-import {getHelpCenterClient} from './index'
-import {GorgiasUIEnv, getEnvironment} from '../../utils/environment'
-import {v4 as uuidv4} from 'uuid'
+import { v4 as uuidv4 } from 'uuid'
+
+import { GenericAttachment } from 'common/types'
+import { Components } from 'rest_api/help_center_api/client.generated'
+
+import { getEnvironment, GorgiasUIEnv } from '../../utils/environment'
+import { getHelpCenterClient } from './index'
 
 type ChannelInfo = Components.Schemas.UploadAttachmentDto['channel']
 
@@ -84,12 +86,14 @@ const getFileExtensionByFileMimeType = (mimeType: string): string => {
 
 export const uploadAttachments = async (
     files: File[],
-    channelInfo: ChannelInfo
-): Promise<Array<GenericAttachment & {google_storage_key: string}>> => {
+    channelInfo: ChannelInfo,
+): Promise<Array<GenericAttachment & { google_storage_key: string }>> => {
     // 1. generate signed url
     const client = await getHelpCenterClient()
 
-    const uploadAttachment = async (file: File): Promise<GenericAttachment & {google_storage_key: string}> => {
+    const uploadAttachment = async (
+        file: File,
+    ): Promise<GenericAttachment & { google_storage_key: string }> => {
         const fileType = file.type ?? getFileTypeForFirefox(file.name)
         const res = await client.getAttachmentUploadPolicy(
             {},
@@ -100,13 +104,13 @@ export const uploadAttachments = async (
                     name:
                         file.name ||
                         `${uuidv4()}${getFileExtensionByFileMimeType(
-                            fileType
+                            fileType,
                         )}`,
                     mimetype: fileType,
                 },
-            }
+            },
         )
-        const {url, fields} = res.data
+        const { url, fields } = res.data
         // 2. upload file to google
         const inferredFields = fields as Record<string, string>
         const attachmentUrl = buildAttachmentUrl(url, inferredFields.key)

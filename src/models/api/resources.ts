@@ -1,10 +1,10 @@
-import axios, {AxiosResponse} from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import rateLimit from 'axios-rate-limit'
-import {Store} from 'redux'
+import { Store } from 'redux'
 
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {StoreDispatch} from 'state/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { StoreDispatch } from 'state/types'
 
 const client = createClient()
 
@@ -26,7 +26,7 @@ export function createClient() {
         {
             maxRequests: 10,
             perMilliseconds: 1000,
-        }
+        },
     )
 }
 
@@ -37,9 +37,9 @@ export function handleNewRelease(store: Store) {
     const dispatch = store.dispatch as StoreDispatch
 
     return (response: AxiosResponse) => {
-        const newRelease = (response.headers as {'x-gorgias-release': string})[
-            'x-gorgias-release'
-        ]
+        const newRelease = (
+            response.headers as { 'x-gorgias-release': string }
+        )['x-gorgias-release']
 
         if (
             newRelease &&
@@ -64,7 +64,7 @@ export function handleNewRelease(store: Store) {
                                 },
                             },
                         ],
-                    })
+                    }),
                 )
 
                 setTimeout(() => {

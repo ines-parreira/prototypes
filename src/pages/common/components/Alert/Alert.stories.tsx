@@ -1,6 +1,7 @@
-import {Meta, StoryFn} from '@storybook/react'
-import React, {ComponentProps} from 'react'
-import {Button} from 'reactstrap'
+import React, { ComponentProps } from 'react'
+
+import { Meta, StoryFn } from '@storybook/react'
+import { Button } from 'reactstrap'
 
 import gorgiasLogo from 'assets/img/gorgias-light-icon-48.png'
 
@@ -16,7 +17,7 @@ const storyConfig: Meta = {
                     'Alert component for displaying contextual feedback.',
             },
         },
-        backgrounds: {default: 'grey'},
+        backgrounds: { default: 'grey' },
     },
     argTypes: {
         type: {
@@ -52,11 +53,11 @@ const defaultProps: ComponentProps<typeof Alert> = {
     children: 'This is an alert !',
 }
 export const Info = Template.bind({})
-Info.args = {...defaultProps}
+Info.args = { ...defaultProps }
 Info.parameters = parameters
 
 export const WithIcon = Template.bind({})
-WithIcon.args = {...defaultProps, icon: true}
+WithIcon.args = { ...defaultProps, icon: true }
 
 export const WithCustomIcon = Template.bind({})
 WithCustomIcon.args = {
@@ -65,7 +66,7 @@ WithCustomIcon.args = {
 }
 
 export const Closable = Template.bind({})
-Closable.args = {...defaultProps}
+Closable.args = { ...defaultProps }
 Closable.argTypes = {
     onClose: {
         action: 'Closed !',

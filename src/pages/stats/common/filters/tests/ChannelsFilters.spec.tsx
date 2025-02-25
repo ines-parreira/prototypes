@@ -1,15 +1,16 @@
-import {screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {TicketMessageSourceType} from 'business/types/ticket'
-import {SegmentEvent, logEvent} from 'common/segment'
-import {channels} from 'fixtures/channels'
+import { screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { TicketMessageSourceType } from 'business/types/ticket'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { channels } from 'fixtures/channels'
 import {
     withDefaultLogicalOperator,
     withLogicalOperator,
 } from 'models/reporting/queryFactories/utils'
-import {FilterKey} from 'models/stat/types'
+import { FilterKey } from 'models/stat/types'
 import {
     FILTER_DESELECT_ALL_LABEL,
     FILTER_SELECT_ALL_LABEL,
@@ -22,13 +23,13 @@ import {
     ChannelsFilterWithSavedState,
     ChannelsFilterWithState,
 } from 'pages/stats/common/filters/ChannelsFilter'
-import {FilterLabels} from 'pages/stats/common/filters/constants'
-import {getChannels, toChannel} from 'services/channels'
+import { FilterLabels } from 'pages/stats/common/filters/constants'
+import { getChannels, toChannel } from 'services/channels'
 import * as statsSlice from 'state/stats/statsSlice'
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
 import * as filtersSlice from 'state/ui/stats/filtersSlice'
 import getChannelFromSourceType from 'tickets/common/utils/getChannelFromSourceType'
-import {assumeMock, renderWithStore} from 'utils/testing'
+import { assumeMock, renderWithStore } from 'utils/testing'
 
 const mockedChannels = channels
 const clearFilterIcon = 'close'
@@ -44,7 +45,7 @@ jest.mock('config/views.tsx', () => <div />)
 
 jest.mock('common/segment', () => ({
     logEvent: jest.fn(),
-    SegmentEvent: {StatFilterSelected: 'stat-filter-selected'},
+    SegmentEvent: { StatFilterSelected: 'stat-filter-selected' },
 }))
 
 describe('ChannelsFilter', () => {
@@ -54,7 +55,7 @@ describe('ChannelsFilter', () => {
     const dispatchStatFiltersClean = jest.fn()
     const isOneOfRegex = new RegExp(
         `${LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF]}`,
-        'i'
+        'i',
     )
 
     const defaultState = {
@@ -69,7 +70,7 @@ describe('ChannelsFilter', () => {
     beforeEach(() => {
         mockedGetChannels.mockImplementation(() => mockedChannels)
         mockedToChannels.mockImplementation((arg) =>
-            mockedChannels.find((channel) => channel.slug === arg)
+            mockedChannels.find((channel) => channel.slug === arg),
         )
     })
 
@@ -82,10 +83,10 @@ describe('ChannelsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState
+            defaultState,
         )
         expect(
-            screen.getByText(FilterLabels[FilterKey.Channels])
+            screen.getByText(FilterLabels[FilterKey.Channels]),
         ).toBeInTheDocument()
     })
 
@@ -98,10 +99,10 @@ describe('ChannelsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState
+            defaultState,
         )
         expect(
-            screen.getByText(FilterLabels[FilterKey.Channels])
+            screen.getByText(FilterLabels[FilterKey.Channels]),
         ).toBeInTheDocument()
     })
 
@@ -114,7 +115,7 @@ describe('ChannelsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState
+            defaultState,
         )
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
@@ -131,23 +132,23 @@ describe('ChannelsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState
+            defaultState,
         )
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         userEvent.click(screen.getByText(mockedChannels[0].name))
         userEvent.click(screen.getByText(mockedChannels[1].name))
 
         expect(dispatchUpdate).toHaveBeenCalledWith(
-            withDefaultLogicalOperator([mockedChannels[0].slug])
+            withDefaultLogicalOperator([mockedChannels[0].slug]),
         )
 
         expect(dispatchUpdate).toHaveBeenCalledWith(
-            withDefaultLogicalOperator([mockedChannels[1].slug])
+            withDefaultLogicalOperator([mockedChannels[1].slug]),
         )
     })
 
     it('should dispatch mergeStatsFiltersWithLogicalOperator action on selecting all channels and deselecting all channels', () => {
-        const {rerender} = renderWithStore(
+        const { rerender } = renderWithStore(
             <ChannelsFilter
                 value={withDefaultLogicalOperator([])}
                 dispatchUpdate={dispatchUpdate}
@@ -155,13 +156,13 @@ describe('ChannelsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState
+            defaultState,
         )
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
 
         const allAvailableChannelsSlugs = mockedChannels.map(
-            (channel) => channel.slug
+            (channel) => channel.slug,
         )
 
         expect(dispatchUpdate).toHaveBeenCalledWith({
@@ -176,7 +177,7 @@ describe('ChannelsFilter', () => {
                 dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
-            />
+            />,
         )
 
         userEvent.click(screen.getByText(isOneOfRegex))
@@ -189,7 +190,7 @@ describe('ChannelsFilter', () => {
     })
 
     it('should dispatch mergeStatsFiltersWithLogicalOperator action on deselecting one of the channels', () => {
-        const {rerender} = renderWithStore(
+        const { rerender } = renderWithStore(
             <ChannelsFilter
                 value={withDefaultLogicalOperator([])}
                 dispatchUpdate={dispatchUpdate}
@@ -197,14 +198,14 @@ describe('ChannelsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState
+            defaultState,
         )
 
         const allAvailableChannelsSlugs = mockedChannels.map((channel) =>
             getChannelFromSourceType(
                 channel.slug as TicketMessageSourceType,
-                []
-            )
+                [],
+            ),
         )
 
         rerender(
@@ -214,7 +215,7 @@ describe('ChannelsFilter', () => {
                 dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
-            />
+            />,
         )
 
         userEvent.click(screen.getByText(isOneOfRegex))
@@ -223,13 +224,13 @@ describe('ChannelsFilter', () => {
         expect(dispatchUpdate).toHaveBeenCalledWith({
             operator: LogicalOperatorEnum.ONE_OF,
             values: allAvailableChannelsSlugs.filter(
-                (channel) => channel !== mockedChannels[0].slug
+                (channel) => channel !== mockedChannels[0].slug,
             ),
         })
     })
 
     it('should dispatch mergeStatsFiltersWithLogicalOperator action on deselecting all channels when filters dropdown is closed', () => {
-        const {rerender} = renderWithStore(
+        const { rerender } = renderWithStore(
             <ChannelsFilter
                 value={withDefaultLogicalOperator([])}
                 dispatchUpdate={dispatchUpdate}
@@ -237,14 +238,14 @@ describe('ChannelsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState
+            defaultState,
         )
 
         const allAvailableChannelsSlugs = mockedChannels.map((channel) =>
             getChannelFromSourceType(
                 channel.slug as TicketMessageSourceType,
-                []
-            )
+                [],
+            ),
         )
 
         rerender(
@@ -254,7 +255,7 @@ describe('ChannelsFilter', () => {
                 dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
-            />
+            />,
         )
 
         userEvent.click(screen.getByText(new RegExp(clearFilterIcon, 'i')))
@@ -271,18 +272,18 @@ describe('ChannelsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState
+            defaultState,
         )
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
         const isOneOfRadioLabel = screen.getByLabelText(
-            new RegExp(LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF], 'i')
+            new RegExp(LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF], 'i'),
         )
         const isNotOneOfRadioLabel = screen.getByLabelText(
             new RegExp(
                 LogicalOperatorLabel[LogicalOperatorEnum.NOT_ONE_OF],
-                'i'
-            )
+                'i',
+            ),
         )
 
         userEvent.click(isNotOneOfRadioLabel)
@@ -301,7 +302,7 @@ describe('ChannelsFilter', () => {
     })
 
     it('should dispatch cleanFilters action and call segment analytics log event on filter dropdown close', () => {
-        const {rerenderComponent} = renderWithStore(
+        const { rerenderComponent } = renderWithStore(
             <ChannelsFilter
                 value={withDefaultLogicalOperator([])}
                 dispatchUpdate={dispatchUpdate}
@@ -309,7 +310,7 @@ describe('ChannelsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState
+            defaultState,
         )
 
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
@@ -324,7 +325,7 @@ describe('ChannelsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState
+            defaultState,
         )
 
         expect(dispatchStatFiltersClean).toHaveBeenCalled()
@@ -341,7 +342,7 @@ describe('ChannelsFilter', () => {
         it('should render ChannelsFilterWithState component', () => {
             const spy = jest.spyOn(
                 statsSlice,
-                'mergeStatsFiltersWithLogicalOperator'
+                'mergeStatsFiltersWithLogicalOperator',
             )
 
             renderWithStore(<ChannelsFilterWithState />, defaultState)
@@ -349,7 +350,7 @@ describe('ChannelsFilter', () => {
             userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
 
             expect(
-                screen.getByText(FilterLabels[FilterKey.Channels])
+                screen.getByText(FilterLabels[FilterKey.Channels]),
             ).toBeInTheDocument()
             expect(spy).toHaveBeenCalled()
 
@@ -365,7 +366,7 @@ describe('ChannelsFilter', () => {
             const spy = jest.spyOn(filtersSlice, 'upsertSavedFilterFilter')
             const removeSpy = jest.spyOn(
                 filtersSlice,
-                'removeFilterFromSavedFilterDraft'
+                'removeFilterFromSavedFilterDraft',
             )
 
             renderWithStore(<ChannelsFilterWithSavedState />, defaultState)
@@ -373,7 +374,7 @@ describe('ChannelsFilter', () => {
             userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
 
             expect(
-                screen.getByText(FilterLabels[FilterKey.Channels])
+                screen.getByText(FilterLabels[FilterKey.Channels]),
             ).toBeInTheDocument()
             expect(spy).toHaveBeenCalled()
 

@@ -1,19 +1,20 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {fireEvent, render, waitFor} from '@testing-library/react'
-import MockAdapter from 'axios-mock-adapter'
 import React from 'react'
-import {DndProvider} from 'react-dnd'
-import {HTML5Backend} from 'react-dnd-html5-backend'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, render, waitFor } from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {OBJECT_TYPES} from 'custom-fields/constants'
-import {ticketInputFieldDefinition} from 'fixtures/customField'
+import { OBJECT_TYPES } from 'custom-fields/constants'
+import { ticketInputFieldDefinition } from 'fixtures/customField'
 import client from 'models/api/resources'
 import history from 'pages/history'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {renderWithRouter} from 'utils/testing'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { renderWithRouter } from 'utils/testing'
 
 import AddFieldForm from '../AddFieldForm'
 
@@ -33,14 +34,14 @@ describe('<AddFieldForm/>', () => {
     })
 
     it('should render correctly', () => {
-        const {container} = render(
+        const { container } = render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore}>
                     <DndProvider backend={HTML5Backend}>
                         <AddFieldForm objectType={OBJECT_TYPES.TICKET} />
                     </DndProvider>
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -50,18 +51,18 @@ describe('<AddFieldForm/>', () => {
             .onPost('/api/custom-fields')
             .reply(200, ticketInputFieldDefinition)
 
-        const {findByText, findByLabelText} = renderWithRouter(
+        const { findByText, findByLabelText } = renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore}>
                     <DndProvider backend={HTML5Backend}>
                         <AddFieldForm objectType={OBJECT_TYPES.TICKET} />
                     </DndProvider>
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         const nameInput = await findByLabelText(/Name/)
-        fireEvent.change(nameInput, {target: {value: 'Test name'}})
+        fireEvent.change(nameInput, { target: { value: 'Test name' } })
 
         const saveButton = await findByText(/Create field/)
         saveButton.click()
@@ -73,19 +74,19 @@ describe('<AddFieldForm/>', () => {
 
         expect(history.push).toHaveBeenNthCalledWith(
             1,
-            '/app/settings/ticket-fields'
+            '/app/settings/ticket-fields',
         )
     })
 
     it('should go back to listing if the cancel button is clicked', async () => {
-        const {findByText} = render(
+        const { findByText } = render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockStore}>
                     <DndProvider backend={HTML5Backend}>
                         <AddFieldForm objectType={OBJECT_TYPES.TICKET} />
                     </DndProvider>
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         const cancelButton = await findByText(/Cancel/)
@@ -93,7 +94,7 @@ describe('<AddFieldForm/>', () => {
 
         expect(history.push).toHaveBeenNthCalledWith(
             1,
-            '/app/settings/ticket-fields'
+            '/app/settings/ticket-fields',
         )
     })
 })

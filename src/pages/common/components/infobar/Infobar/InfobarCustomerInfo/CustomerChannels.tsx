@@ -1,26 +1,29 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
-import {fromJS, List, Map} from 'immutable'
-import React, {ReactNode} from 'react'
+import React, { ReactNode } from 'react'
 
-import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
-import {logEvent, SegmentEvent} from 'common/segment'
-import {DateAndTimeFormatting} from 'constants/datetime'
-import {OBJECT_TYPES} from 'custom-fields/constants'
-import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import classnames from 'classnames'
+import { fromJS, List, Map } from 'immutable'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { DateAndTimeFormatting } from 'constants/datetime'
+import { OBJECT_TYPES } from 'custom-fields/constants'
+import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import useAppSelector from 'hooks/useAppSelector'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import ClickablePhoneNumber from 'pages/common/components/ClickablePhoneNumber/ClickablePhoneNumber'
 import SourceIcon from 'pages/common/components/SourceIcon'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
-import {CUSTOM_FIELD_ROUTES} from 'routes/constants'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {isAdmin} from 'utils'
+import { CUSTOM_FIELD_ROUTES } from 'routes/constants'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { isAdmin } from 'utils'
 
-import css from '../../Infobar.less'
-import {getLocalTime} from '../../utils'
+import { getLocalTime } from '../../utils'
 import CustomerInfoWrapper from './CustomerInfoWrapper'
 import NewPhoneNumber from './NewPhoneNumber'
+
+import css from '../../Infobar.less'
 
 type OwnProps = {
     channels: List<any>
@@ -39,7 +42,7 @@ export const CustomerChannels = ({
     children,
 }: OwnProps) => {
     const datetimeFormat = useGetDateAndTimeFormat(
-        DateAndTimeFormatting.TimeDoubleDigitHour
+        DateAndTimeFormatting.TimeDoubleDigitHour,
     )
 
     const currentUser = useAppSelector(getCurrentUser)
@@ -62,7 +65,7 @@ export const CustomerChannels = ({
             ].includes(channel.get('type'))
         })
         .sortBy((channel: Map<any, any>) =>
-            (channel.get('address', '') as string).toLowerCase()
+            (channel.get('address', '') as string).toLowerCase(),
         ) // order addresses alphabetically
         .sortBy((channel: Map<any, any>) => -channel.get('preferred')) // put preferred addresses on top: ;
         .sortBy((channel: Map<any, any>) => channel.get('type') as string) // group by channel type
@@ -113,7 +116,7 @@ export const CustomerChannels = ({
                 <span
                     className={classnames(
                         css.copyAddress,
-                        'ml-2 js-clipboard-copy'
+                        'ml-2 js-clipboard-copy',
                     )}
                     data-clipboard-target={`#${componentId}`}
                 >
@@ -152,7 +155,7 @@ export const CustomerChannels = ({
                             className={classnames(
                                 'icon d-inline-block',
                                 'material-icons',
-                                'uncolored mr-2'
+                                'uncolored mr-2',
                             )}
                         >
                             language
@@ -170,14 +173,14 @@ export const CustomerChannels = ({
                             className={classnames(
                                 'icon d-inline-block',
                                 'material-icons',
-                                'uncolored mr-2'
+                                'uncolored mr-2',
                             )}
                         >
                             access_time
                         </i>
                         {`Local time: ${getLocalTime(
                             timezoneOffset,
-                            datetimeFormat
+                            datetimeFormat,
                         )}`}
                     </p>
                 )}
@@ -188,7 +191,7 @@ export const CustomerChannels = ({
                             className={classnames(
                                 'icon d-inline-block',
                                 'material-icons',
-                                'uncolored mr-2'
+                                'uncolored mr-2',
                             )}
                         >
                             person

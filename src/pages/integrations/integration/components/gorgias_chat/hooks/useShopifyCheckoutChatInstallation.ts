@@ -1,18 +1,18 @@
-import {Map} from 'immutable'
+import { Map } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {useStoreIntegration} from 'pages/integrations/integration/hooks/useStoreIntegration'
-import {getChatInstallationStatus} from 'state/entities/chatInstallationStatus/selectors'
+import { useStoreIntegration } from 'pages/integrations/integration/hooks/useStoreIntegration'
+import { getChatInstallationStatus } from 'state/entities/chatInstallationStatus/selectors'
 
 /**
  * @param integration - Integration instance
  * @returns Boolean indicating whether the chat integration is installed on Shopify Checkout and the URL to manage the Checkout page settings.
  */
 const useShopifyCheckoutChatInstallation = (integration: Map<any, any>) => {
-    const {storeIntegration, isConnectedToShopify} =
+    const { storeIntegration, isConnectedToShopify } =
         useStoreIntegration(integration)
-    const {installedOnShopifyCheckout} = useAppSelector(
-        getChatInstallationStatus
+    const { installedOnShopifyCheckout } = useAppSelector(
+        getChatInstallationStatus,
     )
 
     if (!storeIntegration || !isConnectedToShopify) {

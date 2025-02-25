@@ -1,10 +1,10 @@
-import {renderHook, act} from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react-hooks'
 
 import useAutoMerge from 'pages/settings/autoMerge/hooks/useAutoMerge'
 
 describe('useAutoMerge', () => {
     it('should return a default auto-merge setting when none is provided', () => {
-        const {result} = renderHook(() => useAutoMerge())
+        const { result } = renderHook(() => useAutoMerge())
 
         expect(result.current).toEqual({
             enabled: false,
@@ -15,11 +15,11 @@ describe('useAutoMerge', () => {
     })
 
     it('should return the given auto-merge setting when provided', () => {
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useAutoMerge({
                 enabled: true,
                 merging_window_days: 7,
-            })
+            }),
         )
 
         expect(result.current).toEqual({
@@ -31,7 +31,7 @@ describe('useAutoMerge', () => {
     })
 
     it('should change enabled when the callback is invoked', () => {
-        const {result} = renderHook(() => useAutoMerge())
+        const { result } = renderHook(() => useAutoMerge())
 
         act(() => {
             result.current.onChangeEnabled(true)
@@ -41,7 +41,7 @@ describe('useAutoMerge', () => {
     })
 
     it('should change merging_window_days when callback is invoked', () => {
-        const {result} = renderHook(() => useAutoMerge())
+        const { result } = renderHook(() => useAutoMerge())
 
         act(() => {
             result.current.onChangeMergingWindowDays(13)

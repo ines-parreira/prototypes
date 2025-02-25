@@ -9,7 +9,7 @@ export default class IncrementalBackoff {
     private backoffAttempt = 1
     private timeout: NodeJS.Timeout | null = null
 
-    constructor({initialDelay, maxDelay}: IncrementalBackoffOptions) {
+    constructor({ initialDelay, maxDelay }: IncrementalBackoffOptions) {
         this.initialDelay = initialDelay
         this.maxDelay = maxDelay
     }
@@ -20,7 +20,7 @@ export default class IncrementalBackoff {
         }
         const backoff = Math.min(
             this.initialDelay * Math.pow(2, this.backoffAttempt - 1),
-            this.maxDelay
+            this.maxDelay,
         )
         this.timeout = setTimeout(() => {
             this.clearTimeout()

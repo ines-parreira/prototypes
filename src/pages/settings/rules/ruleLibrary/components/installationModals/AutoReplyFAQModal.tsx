@@ -1,19 +1,18 @@
+import React, { useEffect } from 'react'
+
 import classnames from 'classnames'
-import React, {useEffect} from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import Avatar from 'pages/common/components/Avatar/Avatar'
-import {FakeFAQArticlePreview} from 'pages/settings/rules/components/FakeFAQArticlePreview'
-import {getActiveHelpCenterFAQList} from 'state/entities/helpCenter/helpCenters'
-import {assetsUrl} from 'utils'
+import { FakeFAQArticlePreview } from 'pages/settings/rules/components/FakeFAQArticlePreview'
+import { getActiveHelpCenterFAQList } from 'state/entities/helpCenter/helpCenters'
+import { assetsUrl } from 'utils'
 
-import {InstallationError} from '../../constants'
-import type {ManagedRuleModalProps} from '../InstallRuleModalBody'
-
-import defaultModalCss from '../RuleRecipeModal.less'
-
+import { InstallationError } from '../../constants'
+import type { ManagedRuleModalProps } from '../InstallRuleModalBody'
 import TargetCount from './components/TargetCount'
 
+import defaultModalCss from '../RuleRecipeModal.less'
 import css from './ManagedRuleModal.less'
 
 export const AutoReplyFAQModal = ({
@@ -29,7 +28,7 @@ export const AutoReplyFAQModal = ({
         if (!helpCenters.length) {
             handleInstallationError(InstallationError.NoHelpCenter)
         } else {
-            handleDefaultSettings({help_center_id: helpCenters[0].id})
+            handleDefaultSettings({ help_center_id: helpCenters[0].id })
         }
     }, [helpCenters, handleDefaultSettings, handleInstallationError])
 
@@ -60,7 +59,7 @@ export const AutoReplyFAQModal = ({
                     <div
                         className={classnames(
                             css.exampleContainer,
-                            css.bordered
+                            css.bordered,
                         )}
                     >
                         <div className={css.fakeMessage}>
@@ -89,7 +88,7 @@ export const AutoReplyFAQModal = ({
                                 <div
                                     className={classnames(
                                         css.name,
-                                        css.autoResponder
+                                        css.autoResponder,
                                     )}
                                 >
                                     Autoresponder

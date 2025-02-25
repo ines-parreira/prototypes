@@ -1,7 +1,8 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {EditingStateEnum} from 'pages/settings/helpCenter/constants'
+import { render } from '@testing-library/react'
+
+import { EditingStateEnum } from 'pages/settings/helpCenter/constants'
 
 import EditingState from '../EditingState'
 
@@ -13,7 +14,7 @@ describe('<EditingState />', () => {
             EditingStateEnum.SAVED,
         ]
         stateArray.forEach((state) => {
-            const {container} = render(<EditingState state={state} />)
+            const { container } = render(<EditingState state={state} />)
 
             expect(container).toMatchSnapshot()
         })

@@ -151,9 +151,7 @@
                         "application/json": {
                             "schema": {
                                 "type": "object",
-                                "required": [
-                                    "data"
-                                ],
+                                "required": ["data"],
                                 "properties": {
                                     "data": {
                                         "type": "object",
@@ -254,10 +252,7 @@
                     },
                     "progress": {
                         "type": "object",
-                        "required": [
-                            "value",
-                            "maxValue"
-                        ],
+                        "required": ["value", "maxValue"],
                         "properties": {
                             "value": {
                                 "type": "number",

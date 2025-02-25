@@ -1,12 +1,13 @@
-import classnames from 'classnames'
-import React, {memo, useCallback, useEffect, useRef} from 'react'
+import React, { memo, useCallback, useEffect, useRef } from 'react'
 
-import {OBJECT_TYPE_SETTINGS} from 'custom-fields/constants'
-import {CustomField, CustomFieldInput} from 'custom-fields/types'
+import classnames from 'classnames'
+
+import { OBJECT_TYPE_SETTINGS } from 'custom-fields/constants'
+import { CustomField, CustomFieldInput } from 'custom-fields/types'
 import IconButton from 'pages/common/components/button/IconButton'
 import Caption from 'pages/common/forms/Caption/Caption'
 import TextInput from 'pages/common/forms/input/TextInput'
-import {useReorderDnD} from 'pages/common/hooks/useReorderDnD'
+import { useReorderDnD } from 'pages/common/hooks/useReorderDnD'
 
 import css from './DropdownInputRow.less'
 
@@ -41,14 +42,14 @@ export function DropdownInputRow({
 }: DropdownInputRowProps) {
     const objectTypeSettings = OBJECT_TYPE_SETTINGS[field.object_type]
     const nextInputRef = useRef<HTMLInputElement | null>(null)
-    const {dragRef, dropRef, handlerId, isDragging} = useReorderDnD(
+    const { dragRef, dropRef, handlerId, isDragging } = useReorderDnD(
         {
             position,
             id: id,
             type: 'dropdown-choice',
         },
         ['dropdown-choice'],
-        {onHover, onDrop}
+        { onHover, onDrop },
     )
 
     // Set HTML5 validation status
@@ -63,7 +64,7 @@ export function DropdownInputRow({
             return
         }
         nextInputRef.current = document.getElementById(
-            nextId
+            nextId,
         ) as HTMLInputElement | null
     }, [nextId])
 
@@ -75,7 +76,7 @@ export function DropdownInputRow({
                 }
             }
         },
-        [isLast, nextInputRef]
+        [isLast, nextInputRef],
     )
 
     return (
@@ -85,7 +86,7 @@ export function DropdownInputRow({
             }
             data-handler-id={handlerId}
             className={isLast && !isDisabled ? css.lastInput : css.input}
-            style={{opacity: isDragging ? 0.3 : 1}}
+            style={{ opacity: isDragging ? 0.3 : 1 }}
         >
             <div className={css.inputContainer}>
                 {!isDisabled && (
@@ -96,7 +97,7 @@ export function DropdownInputRow({
                                 className={classnames(
                                     'material-icons',
                                     css.dragIndicator,
-                                    css.dragIndicatorActive
+                                    css.dragIndicatorActive,
                                 )}
                                 data-testid={`${id}-handle`}
                             >
@@ -107,7 +108,7 @@ export function DropdownInputRow({
                                 className={classnames(
                                     'material-icons',
                                     css.dragIndicator,
-                                    css.dragIndicatorDisabled
+                                    css.dragIndicatorDisabled,
                                 )}
                             >
                                 drag_indicator

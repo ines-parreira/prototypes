@@ -1,13 +1,13 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
+import { renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
 
-import {shopifyIntegration} from 'fixtures/integrations'
+import { shopifyIntegration } from 'fixtures/integrations'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     KnowledgeStatus,
     TemporaryKnowledgeData,
 } from 'pages/aiAgent/Onboarding/components/steps/types'
-import {useGetKnowledgeStatusByShopName} from 'pages/aiAgent/Onboarding/hooks/useGetKnowledgeStatusByShopName'
+import { useGetKnowledgeStatusByShopName } from 'pages/aiAgent/Onboarding/hooks/useGetKnowledgeStatusByShopName'
 
 jest.mock('hooks/useAppSelector')
 const mockUseAppSelector = useAppSelector as jest.Mock
@@ -16,8 +16,8 @@ describe('useGetKnowledgeStatusByShopName', () => {
     it('should return IN_PROGRESS when shopify integration is not found', () => {
         mockUseAppSelector.mockReturnValue(fromJS({}))
 
-        const {result} = renderHook(() =>
-            useGetKnowledgeStatusByShopName('test-shop', [])
+        const { result } = renderHook(() =>
+            useGetKnowledgeStatusByShopName('test-shop', []),
         )
 
         expect(result.current).toBe(KnowledgeStatus.IN_PROGRESS)
@@ -33,11 +33,11 @@ describe('useGetKnowledgeStatusByShopName', () => {
             },
         ] as TemporaryKnowledgeData[]
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useGetKnowledgeStatusByShopName(
                 shopifyIntegration.meta.shop_name,
-                knowledgeData
-            )
+                knowledgeData,
+            ),
         )
 
         expect(result.current).toBe(KnowledgeStatus.IN_PROGRESS)
@@ -55,8 +55,8 @@ describe('useGetKnowledgeStatusByShopName', () => {
             },
         ]
 
-        const {result} = renderHook(() =>
-            useGetKnowledgeStatusByShopName(shopDomain || '', knowledgeData)
+        const { result } = renderHook(() =>
+            useGetKnowledgeStatusByShopName(shopDomain || '', knowledgeData),
         )
 
         expect(result.current).toBe(KnowledgeStatus.DONE)

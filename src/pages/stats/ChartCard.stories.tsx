@@ -1,7 +1,8 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {ticketsCreatedDataItem} from 'fixtures/chart'
+import { Meta, Story } from '@storybook/react'
+
+import { ticketsCreatedDataItem } from 'fixtures/chart'
 
 import ChartCard from './ChartCard'
 import LineChart from './common/components/charts/LineChart/LineChart'
@@ -23,7 +24,7 @@ const Template: Story<ComponentProps<typeof ChartCard>> = (props) => (
 const defaultProps: ComponentProps<typeof ChartCard> = {
     children: <div>Chart</div>,
     title: 'Tickets created',
-    hint: {title: 'This is a hint'},
+    hint: { title: 'This is a hint' },
 }
 
 export const Default = Template.bind({})
@@ -33,7 +34,7 @@ export const WithSingleLineChart = Template.bind({})
 WithSingleLineChart.args = {
     children: <LineChart data={[ticketsCreatedDataItem]} hasBackground />,
     title: 'Tickets created',
-    hint: {title: 'This is a hint'},
+    hint: { title: 'This is a hint' },
 }
 
 export default storyConfig

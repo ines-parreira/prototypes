@@ -7,7 +7,7 @@ export type ProductFeatureProps = {
     description: string
     icon: string
 }
-const Feature = ({title, description, icon}: ProductFeatureProps) => {
+const Feature = ({ title, description, icon }: ProductFeatureProps) => {
     return (
         <div className={css.feature}>
             <div className={css.icon}>

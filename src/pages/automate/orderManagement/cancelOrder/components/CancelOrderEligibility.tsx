@@ -1,7 +1,8 @@
-import _isEqual from 'lodash/isEqual'
-import React, {useRef, useState} from 'react'
+import React, { useRef, useState } from 'react'
 
-import {CancellationsDropdownOptionsList} from 'models/selfServiceConfiguration/constants'
+import _isEqual from 'lodash/isEqual'
+
+import { CancellationsDropdownOptionsList } from 'models/selfServiceConfiguration/constants'
 import {
     FilterKeyEnum,
     FilterOperatorEnum,
@@ -22,7 +23,7 @@ type Props = {
     onChange: (eligibility?: SelfServiceConfigurationFilter) => void
 }
 
-const CancelOrderEligibility = ({eligibility, onChange}: Props) => {
+const CancelOrderEligibility = ({ eligibility, onChange }: Props) => {
     const [isConditionSelectOpen, setIsConditionSelectOpen] = useState(false)
     const targetRef = useRef<HTMLDivElement>(null)
     const floatingRef = useRef<HTMLDivElement>(null)
@@ -39,7 +40,7 @@ const CancelOrderEligibility = ({eligibility, onChange}: Props) => {
     }
 
     const option = CancellationsDropdownOptionsList.find((option) =>
-        _isEqual(option.statuses, eligibility?.value)
+        _isEqual(option.statuses, eligibility?.value),
     )
 
     return (
@@ -79,12 +80,12 @@ const CancelOrderEligibility = ({eligibility, onChange}: Props) => {
                                                 }}
                                                 onClick={() => {
                                                     handleValueChange(
-                                                        option.statuses
+                                                        option.statuses,
                                                     )
                                                 }}
                                                 shouldCloseOnSelect
                                             />
-                                        )
+                                        ),
                                     )}
                                 </DropdownBody>
                             </Dropdown>

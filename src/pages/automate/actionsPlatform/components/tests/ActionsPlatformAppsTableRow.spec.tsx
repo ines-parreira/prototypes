@@ -1,5 +1,6 @@
-import {render, screen, act, fireEvent} from '@testing-library/react'
 import React from 'react'
+
+import { act, fireEvent, render, screen } from '@testing-library/react'
 
 import ActionsPlatformAppsTableRow from '../ActionsPlatformAppsTableRow'
 
@@ -16,13 +17,13 @@ describe('<ActionsPlatformAppsTableRow />', () => {
                     auth_type: 'api-key',
                 }}
                 onClick={jest.fn()}
-            />
+            />,
         )
 
         expect(screen.getByText('App 1')).toBeInTheDocument()
         expect(screen.getByTitle('App 1')).toHaveAttribute(
             'src',
-            '/assets/img/integrations/app.png'
+            '/assets/img/integrations/app.png',
         )
         expect(screen.getByText('API key')).toBeInTheDocument()
     })
@@ -36,7 +37,7 @@ describe('<ActionsPlatformAppsTableRow />', () => {
                     auth_type: 'api-key',
                 }}
                 onClick={jest.fn()}
-            />
+            />,
         )
 
         expect(screen.queryByText('App 1')).not.toBeInTheDocument()
@@ -58,7 +59,7 @@ describe('<ActionsPlatformAppsTableRow />', () => {
                     auth_type: 'api-key',
                 }}
                 onClick={mockOnClick}
-            />
+            />,
         )
 
         act(() => {

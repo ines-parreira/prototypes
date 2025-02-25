@@ -1,21 +1,23 @@
-import {Tooltip, Badge} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
-import React, {useState} from 'react'
-import {Link} from 'react-router-dom'
-import {ulid} from 'ulidx'
+import React, { useState } from 'react'
 
-import {SegmentEvent, logEvent} from 'common/segment'
-import {DateAndTimeFormatting} from 'constants/datetime'
-import {useUpdateCustomFieldArchiveStatus} from 'custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus'
-import {CustomField, isCustomFieldAIManagedType} from 'custom-fields/types'
+import classnames from 'classnames'
+import { Link } from 'react-router-dom'
+import { ulid } from 'ulidx'
+
+import { Badge, Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { DateAndTimeFormatting } from 'constants/datetime'
+import { useUpdateCustomFieldArchiveStatus } from 'custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus'
+import { CustomField, isCustomFieldAIManagedType } from 'custom-fields/types'
 import IconButton from 'pages/common/components/button/IconButton'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import BodyCellContent from 'pages/common/components/table/cells/BodyCellContent'
-import {TableBodyRowDraggable} from 'pages/common/components/table/TableBodyRowDraggable'
-import {Callbacks} from 'pages/common/hooks/useReorderDnD'
+import { TableBodyRowDraggable } from 'pages/common/components/table/TableBodyRowDraggable'
+import { Callbacks } from 'pages/common/hooks/useReorderDnD'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import ArchiveConfirmationModal from 'pages/settings/customFields/components/ArchiveConfirmationModal'
-import {CUSTOM_FIELD_ROUTES} from 'routes/constants'
+import { CUSTOM_FIELD_ROUTES } from 'routes/constants'
 
 import css from './Row.less'
 
@@ -33,9 +35,9 @@ export default function Row({
     onMoveEntity,
     onDropEntity,
 }: Props) {
-    const {mutate, isLoading} = useUpdateCustomFieldArchiveStatus(
+    const { mutate, isLoading } = useUpdateCustomFieldArchiveStatus(
         customField.id,
-        customField.object_type
+        customField.object_type,
     )
 
     const link = `/app/settings/${
@@ -50,7 +52,7 @@ export default function Row({
             className={classnames(
                 'draggable',
                 css.row,
-                canReorder && css.canReorder
+                canReorder && css.canReorder,
             )}
             dragItem={{
                 id: customField.id,
@@ -76,7 +78,7 @@ export default function Row({
                                             'material-icons-outlined',
                                             'ml-1',
                                             'md-2',
-                                            css.infoIcon
+                                            css.infoIcon,
                                         )}
                                     >
                                         info
@@ -99,7 +101,7 @@ export default function Row({
                         <span
                             className={classnames(
                                 'text-faded',
-                                css.description
+                                css.description,
                             )}
                         >
                             {customField.description}
@@ -131,7 +133,7 @@ export default function Row({
                             intent="secondary"
                             isLoading={isLoading}
                             isDisabled={isCustomFieldAIManagedType(
-                                customField.managed_type
+                                customField.managed_type,
                             )}
                             title="Archive"
                             id={`archive-custom-field-${customField.id}`}
@@ -149,7 +151,7 @@ export default function Row({
                                     SegmentEvent.CustomFieldArchivedFieldClicked,
                                     {
                                         objectType: customField.object_type,
-                                    }
+                                    },
                                 )
                             }}
                             onClose={() => setArchiveModalVisible(false)}
@@ -167,7 +169,7 @@ export default function Row({
                         fillStyle="ghost"
                         intent="secondary"
                         isDisabled={isCustomFieldAIManagedType(
-                            customField.managed_type
+                            customField.managed_type,
                         )}
                         isLoading={isLoading}
                         title="Unarchive"

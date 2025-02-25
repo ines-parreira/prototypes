@@ -1,4 +1,4 @@
-import {fromJS, Map} from 'immutable'
+import { fromJS, Map } from 'immutable'
 
 export const emailTicket = fromJS({
     messages: [
@@ -557,7 +557,10 @@ export const standaloneContactFormViaSengrid = fromJS({
         {
             source: {
                 to: [
-                    {name: '', address: 'selected-email-integration@email.com'},
+                    {
+                        name: '',
+                        address: 'selected-email-integration@email.com',
+                    },
                 ],
                 from: {
                     name: 'Visitor Name',
@@ -580,7 +583,10 @@ export const helpCenterContactFormViaApi = fromJS({
         {
             source: {
                 to: [
-                    {name: '', address: 'selected-email-integration@email.com'},
+                    {
+                        name: '',
+                        address: 'selected-email-integration@email.com',
+                    },
                 ],
                 from: {
                     name: 'Visitor Name',
@@ -603,7 +609,10 @@ export const standaloneContactFormViaApi = fromJS({
         {
             source: {
                 to: [
-                    {name: '', address: 'selected-email-integration@email.com'},
+                    {
+                        name: '',
+                        address: 'selected-email-integration@email.com',
+                    },
                 ],
                 from: {
                     name: 'Visitor Name',

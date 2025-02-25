@@ -1,6 +1,6 @@
-import {useCallback, useEffect, useMemo, useState} from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import {TicketPartial} from '../types'
+import { TicketPartial } from '../types'
 
 type TicketTimestamps = Record<number, number>
 
@@ -15,7 +15,7 @@ export default function useStaleTickets(partials: TicketPartial[]) {
 
     useEffect(() => {
         setState((s) => {
-            const {pending, updated} = s
+            const { pending, updated } = s
 
             // determine if a ticket has been updated based on these rules:
             // - if the ticket has not been marked as `updated`
@@ -26,7 +26,7 @@ export default function useStaleTickets(partials: TicketPartial[]) {
                 (p) =>
                     !updated[p.id] ||
                     (p.updated_datetime > updated[p.id] &&
-                        p.updated_datetime > (pending[p.id] || 0))
+                        p.updated_datetime > (pending[p.id] || 0)),
             )
 
             if (!updates.length) return s
@@ -34,8 +34,8 @@ export default function useStaleTickets(partials: TicketPartial[]) {
             return {
                 ...s,
                 pending: updates.reduce(
-                    (acc, p) => ({...acc, [p.id]: p.updated_datetime}),
-                    pending
+                    (acc, p) => ({ ...acc, [p.id]: p.updated_datetime }),
+                    pending,
                 ),
             }
         })
@@ -45,26 +45,26 @@ export default function useStaleTickets(partials: TicketPartial[]) {
         setState((s) => {
             if (!ticketIds.length) return s
 
-            const newPending = {...s.pending}
-            const newUpdated = {...s.updated}
+            const newPending = { ...s.pending }
+            const newUpdated = { ...s.updated }
 
             ticketIds.forEach((ticketId) => {
                 newUpdated[ticketId] = newPending[ticketId]
                 delete newPending[ticketId]
             })
 
-            return {...s, pending: newPending, updated: newUpdated}
+            return { ...s, pending: newPending, updated: newUpdated }
         })
     }, [])
 
     const staleTickets = useMemo(
         () =>
             Object.keys(state.pending).reduce(
-                (acc, ticketId) => ({...acc, [ticketId]: true}),
-                {} as Record<number, boolean>
+                (acc, ticketId) => ({ ...acc, [ticketId]: true }),
+                {} as Record<number, boolean>,
             ),
-        [state]
+        [state],
     )
 
-    return {markUpdated, staleTickets}
+    return { markUpdated, staleTickets }
 }

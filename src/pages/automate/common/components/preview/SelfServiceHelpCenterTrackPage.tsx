@@ -1,11 +1,12 @@
-import classnames from 'classnames'
 import React from 'react'
 
-import uspsLogo from 'assets/img/self-service/usps.png'
-import {HELP_CENTER_TEXTS} from 'config/helpCenter'
-import {HelpCenter} from 'models/helpCenter/types'
+import classnames from 'classnames'
 
-import {LINE_ITEMS} from './constants'
+import uspsLogo from 'assets/img/self-service/usps.png'
+import { HELP_CENTER_TEXTS } from 'config/helpCenter'
+import { HelpCenter } from 'models/helpCenter/types'
+
+import { LINE_ITEMS } from './constants'
 import useOrderDates from './hooks/useOrderDates'
 import useTrackPagePreview from './hooks/useTrackPagePreview'
 
@@ -15,12 +16,12 @@ type Props = {
     helpCenter: HelpCenter
 }
 
-const SelfServiceHelpCenterTrackPage = ({helpCenter}: Props) => {
+const SelfServiceHelpCenterTrackPage = ({ helpCenter }: Props) => {
     const helpCenterTexts = HELP_CENTER_TEXTS[helpCenter.default_locale]
 
-    const {ref} = useTrackPagePreview()
-    const {etaDate, orderPlacedDate, inTransitDate} = useOrderDates(
-        helpCenter.default_locale
+    const { ref } = useTrackPagePreview()
+    const { etaDate, orderPlacedDate, inTransitDate } = useOrderDates(
+        helpCenter.default_locale,
     )
 
     return (
@@ -29,7 +30,7 @@ const SelfServiceHelpCenterTrackPage = ({helpCenter}: Props) => {
                 <div className={css.orderNumber}>
                     {helpCenterTexts.orderNumber.replace(
                         '{{orderNumber}}',
-                        '#3089'
+                        '#3089',
                     )}
                 </div>
                 <div className={css.orderDate}>
@@ -56,7 +57,7 @@ const SelfServiceHelpCenterTrackPage = ({helpCenter}: Props) => {
                             <div className={css.shippingCarrierTitle}>
                                 {helpCenterTexts.trackOrderSentVia?.replace(
                                     '{{trackingCompany}}',
-                                    'USPS'
+                                    'USPS',
                                 )}
                             </div>
                             <div className={css.shippingCarrierSubtitle}>
@@ -86,7 +87,7 @@ const SelfServiceHelpCenterTrackPage = ({helpCenter}: Props) => {
                                 <div
                                     className={classnames(
                                         css.timelineDot,
-                                        css.isCurrent
+                                        css.isCurrent,
                                     )}
                                 />
                                 <div className={css.timelineLine} />
@@ -96,7 +97,7 @@ const SelfServiceHelpCenterTrackPage = ({helpCenter}: Props) => {
                                     <div
                                         className={classnames(
                                             css.timelineItemStatus,
-                                            css.isCurrent
+                                            css.isCurrent,
                                         )}
                                     >
                                         {helpCenterTexts.checkpointInTransit}
@@ -117,7 +118,7 @@ const SelfServiceHelpCenterTrackPage = ({helpCenter}: Props) => {
                                 <div
                                     className={classnames(
                                         css.timelineDot,
-                                        css.isUpcoming
+                                        css.isUpcoming,
                                     )}
                                 />
                             </div>
@@ -125,7 +126,7 @@ const SelfServiceHelpCenterTrackPage = ({helpCenter}: Props) => {
                                 <div
                                     className={classnames(
                                         css.timelineItemStatus,
-                                        css.isUpcoming
+                                        css.isUpcoming,
                                     )}
                                 >
                                     {helpCenterTexts.checkpointOutForDelivery}

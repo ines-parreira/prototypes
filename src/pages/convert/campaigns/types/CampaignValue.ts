@@ -6,7 +6,7 @@ export type PurchasedProductValue = {
 }
 
 export function isPurchasedProductValue(
-    value: PurchasedProductValue
+    value: PurchasedProductValue,
 ): value is PurchasedProductValue {
     return _isEqual(Object.keys(value), ['productId', 'productTitle'])
 }

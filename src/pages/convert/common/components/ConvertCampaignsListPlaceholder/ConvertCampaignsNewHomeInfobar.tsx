@@ -1,8 +1,8 @@
-import React, {useEffect, useMemo, useState} from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
 import closeIcon from 'assets/img/icons/close.svg'
 import useLocalStorage from 'hooks/useLocalStorage'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 
 import css from './ConvertCampaignsNewHomeInfobar.less'
 
@@ -12,17 +12,17 @@ type Props = {
 
 const STORAGE_KEY_PREFIX = 'gorgias:hideCampaignsNewHome'
 
-const ConvertCampaignsNewHomeInfobar = ({integrationId}: Props) => {
+const ConvertCampaignsNewHomeInfobar = ({ integrationId }: Props) => {
     const storageKey = useMemo(
         () => `${STORAGE_KEY_PREFIX}:${integrationId}`,
-        [integrationId]
+        [integrationId],
     )
 
     const [visible, setVisible] = useState(false)
 
     const [isHiddenPermanently, setIsHiddenPermanently] = useLocalStorage(
         storageKey,
-        false
+        false,
     )
 
     useEffect(() => {

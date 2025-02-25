@@ -1,6 +1,6 @@
-import {ContentType, HttpMethod} from 'models/api/types'
+import { ContentType, HttpMethod } from 'models/api/types'
 
-import {useTemplateContext} from './hooks/useTemplateContext'
+import { useTemplateContext } from './hooks/useTemplateContext'
 
 export type TemplateContext = ReturnType<typeof useTemplateContext>
 
@@ -8,7 +8,7 @@ export type JSONValue =
     | string
     | number
     | boolean
-    | {[x: string]: JSONValue}
+    | { [x: string]: JSONValue }
     | Array<JSONValue>
     | null
 

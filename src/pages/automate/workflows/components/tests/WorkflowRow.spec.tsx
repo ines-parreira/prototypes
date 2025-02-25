@@ -1,16 +1,16 @@
-import {fireEvent, screen, waitFor} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {IntegrationType} from 'models/integration/constants'
-import {StoreIntegration} from 'models/integration/types'
+import { IntegrationType } from 'models/integration/constants'
+import { StoreIntegration } from 'models/integration/types'
+import { WorkflowConfigurationShallow } from 'pages/automate/workflows/models/workflowConfiguration.types'
+import { RootState, StoreDispatch } from 'state/types'
+import { renderWithRouterAndDnD } from 'utils/testing'
 
-import {WorkflowConfigurationShallow} from 'pages/automate/workflows/models/workflowConfiguration.types'
-import {RootState, StoreDispatch} from 'state/types'
-import {renderWithRouterAndDnD} from 'utils/testing'
-
-import WorkflowRow, {getLink} from '../WorkflowRow'
+import WorkflowRow, { getLink } from '../WorkflowRow'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
@@ -25,13 +25,13 @@ describe('<WorkflowsRow />', () => {
         {
             id: 1,
             name: shop1,
-            meta: {shop_name: shop1},
+            meta: { shop_name: shop1 },
             type: IntegrationType.Shopify,
         },
         {
             id: 2,
             name: shop2,
-            meta: {shop_name: shop2},
+            meta: { shop_name: shop2 },
             type: IntegrationType.Shopify,
         },
     ] as unknown as StoreIntegration[]
@@ -63,7 +63,7 @@ describe('<WorkflowsRow />', () => {
         await screen.findByText('Workflow 1')
     })
     it('Click on duplicate render dropdown', async () => {
-        const {getByTitle} = renderWithRouterAndDnD(comp)
+        const { getByTitle } = renderWithRouterAndDnD(comp)
 
         fireEvent.click(getByTitle('Duplicate flow'))
         await screen.findByText('DUPLICATE TO')
@@ -92,13 +92,13 @@ describe('<WorkflowsRow />', () => {
                     storeIntegrations={sortedIntegrations}
                     storeIntegrationId={1}
                 />
-            </Provider>
+            </Provider>,
         )
         await screen.findByText('draft')
     })
 
     it('Create duplicate for current store', async () => {
-        const {getByText, getByTitle} = renderWithRouterAndDnD(comp)
+        const { getByText, getByTitle } = renderWithRouterAndDnD(comp)
 
         fireEvent.click(getByTitle('Duplicate flow'))
         fireEvent.click(getByText(`${shop1} (current store)`))
@@ -108,11 +108,11 @@ describe('<WorkflowsRow />', () => {
 
         expect(notifyMerchant).toHaveBeenCalledWith(
             'Successfully duplicated',
-            'success'
+            'success',
         )
     })
     it('Create duplicate for different store', async () => {
-        const {getByText, getByTitle} = renderWithRouterAndDnD(comp)
+        const { getByText, getByTitle } = renderWithRouterAndDnD(comp)
 
         fireEvent.click(getByTitle('Duplicate flow'))
         fireEvent.click(getByText(shop2))
@@ -121,7 +121,7 @@ describe('<WorkflowsRow />', () => {
         })
         expect(notifyMerchant).toHaveBeenCalledWith(
             getLink(sortedIntegrations[1]),
-            'success'
+            'success',
         )
     })
 })

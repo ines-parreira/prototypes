@@ -1,4 +1,4 @@
-import {getDecreaseInResolutionTimeTrend} from 'hooks/reporting/automate/automateStatsCalculatedTrends'
+import { getDecreaseInResolutionTimeTrend } from 'hooks/reporting/automate/automateStatsCalculatedTrends'
 import {
     fetchBillableTicketsExcludingAIAgent,
     fetchFilteredAutomatedInteractions,
@@ -9,34 +9,34 @@ import {
     useResolutionTimeExcludingAIAgent,
     useResolutionTimeResolvedByAIAgent,
 } from 'hooks/reporting/automate/automationTrends'
-import {useAIAgentUserId} from 'hooks/reporting/automate/useAIAgentUserId'
-import {StatsFilters} from 'models/stat/types'
+import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
+import { StatsFilters } from 'models/stat/types'
 
 export const useDecreaseInResolutionTimeTrend = (
     filters: StatsFilters,
-    timezone: string
+    timezone: string,
 ) => {
     const aiAgentUserId = useAIAgentUserId()
     const filteredAutomatedInteractions = useFilteredAutomatedInteractions(
         filters,
-        timezone
+        timezone,
     )
 
     const billableTicketsExcludingAIAgent = useBillableTicketsExcludingAIAgent(
         filters,
         timezone,
-        aiAgentUserId
+        aiAgentUserId,
     )
 
     const resolutionTimeExcludingAIAgent = useResolutionTimeExcludingAIAgent(
         filters,
         timezone,
-        aiAgentUserId
+        aiAgentUserId,
     )
 
     const resolutionTimeResolvedByAIAgent = useResolutionTimeResolvedByAIAgent(
         filters,
-        timezone
+        timezone,
     )
 
     const isFetching =
@@ -57,7 +57,7 @@ export const useDecreaseInResolutionTimeTrend = (
         filteredAutomatedInteractions.data,
         billableTicketsExcludingAIAgent.data,
         resolutionTimeExcludingAIAgent.data,
-        resolutionTimeResolvedByAIAgent.data
+        resolutionTimeResolvedByAIAgent.data,
     )
 }
 
@@ -65,7 +65,7 @@ export const fetchDecreaseInResolutionTimeTrend = async (
     filters: StatsFilters,
     timezone: string,
     _isAutomateNonFilteredDenominatorInAutomationRate: boolean | undefined,
-    aiAgentUserId: string | undefined
+    aiAgentUserId: string | undefined,
 ) => {
     return Promise.all([
         fetchFilteredAutomatedInteractions(filters, timezone),
@@ -85,7 +85,7 @@ export const fetchDecreaseInResolutionTimeTrend = async (
                 filteredAutomatedInteractions.data,
                 billableTicketsExcludingAIAgent.data,
                 resolutionTimeExcludingAIAgent.data,
-                resolutionTimeResolvedByAIAgent.data
-            )
+                resolutionTimeResolvedByAIAgent.data,
+            ),
     )
 }

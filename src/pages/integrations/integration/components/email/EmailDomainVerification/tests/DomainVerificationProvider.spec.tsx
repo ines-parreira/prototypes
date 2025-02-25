@@ -1,26 +1,28 @@
+import React from 'react'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { waitFor } from '@testing-library/react'
+import { renderHook } from '@testing-library/react-hooks'
+import { Provider } from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+
 import {
-    HttpResponse,
     EmailDomain,
     getEmailIntegrationDomain,
+    HttpResponse,
     updateEmailIntegrationDomain,
     verifyEmailIntegrationDomain,
 } from '@gorgias/api-client'
-import {QueryClientProvider} from '@tanstack/react-query'
-import {waitFor} from '@testing-library/react'
-import {renderHook} from '@testing-library/react-hooks'
-import React from 'react'
-import {Provider} from 'react-redux'
-import configureMockStore from 'redux-mock-store'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 import {
-    populateCurrentValuesForDNSRecords,
     parseRecordsCurrentValues,
+    populateCurrentValuesForDNSRecords,
 } from '../../helpers'
 import DomainVerificationProvider from '../DomainVerificationProvider'
 import useDomainVerification from '../useDomainVerification'
@@ -38,18 +40,18 @@ const useAppDispatchMock = assumeMock(useAppDispatch)
 const getDomainMock = assumeMock(getEmailIntegrationDomain)
 const verifyDomainMock = assumeMock(verifyEmailIntegrationDomain)
 const updateEmailIntegrationDomainMock = assumeMock(
-    updateEmailIntegrationDomain
+    updateEmailIntegrationDomain,
 )
 
 const populateCurrentValuesForDNSRecordsMock = assumeMock(
-    populateCurrentValuesForDNSRecords
+    populateCurrentValuesForDNSRecords,
 )
 populateCurrentValuesForDNSRecordsMock.mockImplementation((records) =>
-    Promise.resolve(records)
+    Promise.resolve(records),
 )
 const parseRecordsCurrentValuesMock = assumeMock(parseRecordsCurrentValues)
 
-const getEmailDomain = ({verified} = {verified: false}): EmailDomain => ({
+const getEmailDomain = ({ verified } = { verified: false }): EmailDomain => ({
     name: 'gorgias.com',
     provider: 'sendgrid',
     verified,
@@ -70,7 +72,7 @@ const getEmailDomain = ({verified} = {verified: false}): EmailDomain => ({
 
 const render = () => {
     return renderHook(() => useDomainVerification(), {
-        wrapper: ({children}) => (
+        wrapper: ({ children }) => (
             <QueryClientProvider client={queryClient}>
                 <DomainVerificationProvider domainName="gorgias.com">
                     <Provider store={mockStore}>{children}</Provider>
@@ -90,7 +92,7 @@ describe('DomainVerificationProvider', () => {
     it('should have an initial state', async () => {
         getDomainMock.mockReturnValue(Promise.reject())
 
-        const {result, waitForValueToChange} = render()
+        const { result, waitForValueToChange } = render()
         expect(result.current.isFetching).toEqual(true)
         await waitForValueToChange(() => result.current.isFetching)
 
@@ -106,10 +108,10 @@ describe('DomainVerificationProvider', () => {
         it('should return the domain if it was fetched successfully', async () => {
             const domain = getEmailDomain()
             getDomainMock.mockReturnValue(
-                Promise.resolve({data: domain} as HttpResponse<EmailDomain>)
+                Promise.resolve({ data: domain } as HttpResponse<EmailDomain>),
             )
 
-            const {result, waitForValueToChange} = render()
+            const { result, waitForValueToChange } = render()
 
             await waitForValueToChange(() => result.current.domain)
             expect(result.current.domain).toEqual(domain)
@@ -118,7 +120,7 @@ describe('DomainVerificationProvider', () => {
         it('should return undefined if it does not exist', () => {
             getDomainMock.mockReturnValue(Promise.reject())
 
-            const {result} = render()
+            const { result } = render()
 
             expect(result.current.domain).toEqual(undefined)
         })
@@ -126,7 +128,7 @@ describe('DomainVerificationProvider', () => {
         it('should return isFetching when it is being fetched', async () => {
             getDomainMock.mockReturnValue(Promise.reject())
 
-            const {result, waitForValueToChange} = render()
+            const { result, waitForValueToChange } = render()
 
             expect(result.current.isFetching).toEqual(true)
             await waitForValueToChange(() => result.current.isFetching)
@@ -137,23 +139,23 @@ describe('DomainVerificationProvider', () => {
         it('should populate current values with results from querying DNS', async () => {
             const domain = getEmailDomain()
             getDomainMock.mockReturnValue(
-                Promise.resolve({data: domain} as HttpResponse<EmailDomain>)
+                Promise.resolve({ data: domain } as HttpResponse<EmailDomain>),
             )
             parseRecordsCurrentValuesMock.mockImplementation((records) =>
                 records.map((record) => ({
                     ...record,
                     current_values: ['parsed'],
-                }))
+                })),
             )
 
-            const {result, waitForValueToChange} = render()
+            const { result, waitForValueToChange } = render()
 
             await waitForValueToChange(() => result.current.domain)
             expect(populateCurrentValuesForDNSRecords).toHaveBeenCalledWith(
-                domain.data.sending_dns_records
+                domain.data.sending_dns_records,
             )
             expect(parseRecordsCurrentValues).toHaveBeenCalledWith(
-                domain.data.sending_dns_records
+                domain.data.sending_dns_records,
             )
             const parsedRecords =
                 parseRecordsCurrentValuesMock.mock.results.slice(-1)[0].value
@@ -170,16 +172,16 @@ describe('DomainVerificationProvider', () => {
         it('should call populate with an empty array if records are undefined', async () => {
             const domain = {
                 ...getEmailDomain(),
-                data: {sending_dns_records: undefined},
+                data: { sending_dns_records: undefined },
             } as unknown as EmailDomain
 
             getDomainMock.mockReturnValue(
                 Promise.resolve({
                     data: domain,
-                } as HttpResponse<EmailDomain>)
+                } as HttpResponse<EmailDomain>),
             )
 
-            const {result, waitForValueToChange} = render()
+            const { result, waitForValueToChange } = render()
 
             await waitForValueToChange(() => result.current.domain)
             expect(populateCurrentValuesForDNSRecords).toHaveBeenCalledWith([])
@@ -188,13 +190,13 @@ describe('DomainVerificationProvider', () => {
 
     describe('request state', () => {
         it('should have an initial state of not requested', () => {
-            const {result} = render()
+            const { result } = render()
             expect(result.current.isRequested).toEqual(false)
             expect(result.current.isPending).toEqual(false)
         })
 
         it('should change requested and pending flags after triggering verify', async () => {
-            const {result, waitForValueToChange} = render()
+            const { result, waitForValueToChange } = render()
 
             expect(result.current.isRequested).toEqual(false)
             expect(result.current.isPending).toEqual(false)
@@ -210,7 +212,7 @@ describe('DomainVerificationProvider', () => {
         it('should should change pending back to false after the timeout expires', async () => {
             jest.useFakeTimers()
 
-            const {result, waitForValueToChange} = render()
+            const { result, waitForValueToChange } = render()
 
             expect(result.current.isRequested).toEqual(false)
             expect(result.current.isPending).toEqual(false)
@@ -231,12 +233,12 @@ describe('DomainVerificationProvider', () => {
         })
 
         it('should not be pending if the domain has been verified', async () => {
-            const domain = getEmailDomain({verified: true})
+            const domain = getEmailDomain({ verified: true })
             getDomainMock.mockReturnValue(
-                Promise.resolve({data: domain} as HttpResponse<EmailDomain>)
+                Promise.resolve({ data: domain } as HttpResponse<EmailDomain>),
             )
 
-            const {result, waitForValueToChange} = render()
+            const { result, waitForValueToChange } = render()
 
             expect(result.current.isRequested).toEqual(false)
             expect(result.current.isPending).toEqual(false)
@@ -253,12 +255,14 @@ describe('DomainVerificationProvider', () => {
     describe('actions', () => {
         describe('verifyDomain', () => {
             it('should return trigger the verify mutation when calling verifyDomain', async () => {
-                const domain = getEmailDomain({verified: false})
+                const domain = getEmailDomain({ verified: false })
                 getDomainMock.mockReturnValue(
-                    Promise.resolve({data: domain} as HttpResponse<EmailDomain>)
+                    Promise.resolve({
+                        data: domain,
+                    } as HttpResponse<EmailDomain>),
                 )
 
-                const {result} = render()
+                const { result } = render()
                 expect(result.current.isVerifying).toEqual(false)
 
                 result.current.verifyDomain()
@@ -266,7 +270,7 @@ describe('DomainVerificationProvider', () => {
                 await waitFor(() => {
                     expect(verifyEmailIntegrationDomain).toHaveBeenCalledWith(
                         'gorgias.com',
-                        undefined
+                        undefined,
                     )
                 })
                 expect(result.current.isVerifying).toEqual(false)
@@ -278,10 +282,10 @@ describe('DomainVerificationProvider', () => {
                 const dispatchMock = jest.fn()
                 useAppDispatchMock.mockReturnValue(dispatchMock)
                 verifyDomainMock.mockReturnValue(
-                    Promise.resolve({} as HttpResponse<void>)
+                    Promise.resolve({} as HttpResponse<void>),
                 )
 
-                const {result} = render()
+                const { result } = render()
                 result.current.verifyDomain()
 
                 await waitFor(() => {
@@ -299,7 +303,7 @@ describe('DomainVerificationProvider', () => {
                 useAppDispatchMock.mockReturnValue(dispatchMock)
                 verifyDomainMock.mockReturnValue(Promise.reject())
 
-                const {result} = render()
+                const { result } = render()
                 result.current.verifyDomain()
 
                 await waitFor(() => {
@@ -319,10 +323,10 @@ describe('DomainVerificationProvider', () => {
             getDomainMock.mockResolvedValue(
                 Promise.reject({
                     status: 404,
-                })
+                }),
             )
 
-            const {result, waitForValueToChange} = render()
+            const { result, waitForValueToChange } = render()
 
             await waitForValueToChange(() => result.current.isFetching)
 
@@ -338,10 +342,10 @@ describe('DomainVerificationProvider', () => {
             getDomainMock.mockReturnValue(
                 Promise.reject({
                     status: 404,
-                })
+                }),
             )
 
-            const {result, rerender, waitForValueToChange} = render()
+            const { result, rerender, waitForValueToChange } = render()
 
             await waitForValueToChange(() => result.current.isFetching)
 

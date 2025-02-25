@@ -1,10 +1,10 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {doNotRetry40XErrorsHandler} from 'api/utils'
-import {LocaleCode} from 'models/helpCenter/types'
+import { doNotRetry40XErrorsHandler } from 'api/utils'
+import { LocaleCode } from 'models/helpCenter/types'
 
-import {useGetAIArticlesByHelpCenterAndStore} from '../queries'
-import {getAIGeneratedArticlesByHelpCenterAndStore} from '../resources'
+import { useGetAIArticlesByHelpCenterAndStore } from '../queries'
+import { getAIGeneratedArticlesByHelpCenterAndStore } from '../resources'
 
 type AIArticlesByHelpCenterAndStore = Awaited<
     ReturnType<typeof getAIGeneratedArticlesByHelpCenterAndStore>
@@ -25,15 +25,15 @@ export const useGetAIArticles = ({
     locale,
     enabled,
 }: Props) => {
-    const {data, isInitialLoading} = useGetAIArticlesByHelpCenterAndStore(
+    const { data, isInitialLoading } = useGetAIArticlesByHelpCenterAndStore(
         helpCenterId,
         storeIntegrationId,
         locale,
         {
             refetchOnWindowFocus: false,
             retry: doNotRetry40XErrorsHandler,
-            ...(enabled !== undefined ? {enabled} : {}),
-        }
+            ...(enabled !== undefined ? { enabled } : {}),
+        },
     )
 
     const fetchedArticles: FetchedArticles = useMemo(() => {
@@ -48,5 +48,5 @@ export const useGetAIArticles = ({
         return null
     }, [isInitialLoading, data, enabled])
 
-    return {fetchedArticles, isLoading: isInitialLoading}
+    return { fetchedArticles, isLoading: isInitialLoading }
 }

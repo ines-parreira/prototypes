@@ -1,10 +1,11 @@
-import {screen, render} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render, screen } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {ShopifyIntegration} from 'models/integration/types'
+import { ShopifyIntegration } from 'models/integration/types'
 
 import TrackOrderFlowViewContext from '../../TrackOrderFlowViewContext'
 import TrackOrderUnfulfilledMessage from '../TrackOrderUnfulfilledMessage'
@@ -17,7 +18,7 @@ describe('<TrackOrderUnfulfilledMessage />', () => {
             <Provider store={mockStore}>
                 <TrackOrderFlowViewContext.Provider
                     value={{
-                        storeIntegration: {id: 1} as ShopifyIntegration,
+                        storeIntegration: { id: 1 } as ShopifyIntegration,
                         setError: jest.fn(),
                     }}
                 >
@@ -30,7 +31,7 @@ describe('<TrackOrderUnfulfilledMessage />', () => {
                         setIsFocused={jest.fn()}
                     />
                 </TrackOrderFlowViewContext.Provider>
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('response content')).toBeInTheDocument()

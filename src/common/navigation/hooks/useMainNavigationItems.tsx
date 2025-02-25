@@ -1,11 +1,12 @@
-import {Badge} from '@gorgias/merchant-ui-kit'
-import {Map} from 'immutable'
-import React, {ReactNode, useMemo} from 'react'
+import React, { ReactNode, useMemo } from 'react'
 
-import {UserRole} from 'config/types/user'
-import {useAiAgentItemEnabled} from 'pages/aiAgent/hooks/useAiAgentItemEnabled'
+import { Map } from 'immutable'
 
-import {hasRole} from 'utils'
+import { Badge } from '@gorgias/merchant-ui-kit'
+
+import { UserRole } from 'config/types/user'
+import { useAiAgentItemEnabled } from 'pages/aiAgent/hooks/useAiAgentItemEnabled'
+import { hasRole } from 'utils'
 
 import mainNavigationCSS from '../components/MainNavigation.less'
 
@@ -26,30 +27,30 @@ export type MenuItem = {
     className?: string
     icon: string
     addon?: ReactNode
-    segmentProp: {link: string}
+    segmentProp: { link: string }
     requiredRole?: UserRole
 }
 
 export const useMainNavigationItems = (
-    currentUser: Map<any, any>
+    currentUser: Map<any, any>,
 ): MenuItem[] => {
     const isAiAgentItemEnabled = useAiAgentItemEnabled()
 
     return useMemo(() => {
-        const menuItems: Array<MenuItem & {onlyIf?: boolean}> = [
+        const menuItems: Array<MenuItem & { onlyIf?: boolean }> = [
             {
                 url: '/app/tickets',
                 label: 'Tickets',
                 name: MenuItemName.Tickets,
                 icon: 'question_answer',
-                segmentProp: {link: 'tickets'},
+                segmentProp: { link: 'tickets' },
             },
             {
                 url: '/app/automation',
                 label: 'Automate',
                 icon: 'bolt',
                 name: MenuItemName.Automate,
-                segmentProp: {link: 'automation'},
+                segmentProp: { link: 'automation' },
                 requiredRole: UserRole.Agent,
             },
             {
@@ -62,7 +63,7 @@ export const useMainNavigationItems = (
                         NEW
                     </Badge>
                 ),
-                segmentProp: {link: 'ai-agent'},
+                segmentProp: { link: 'ai-agent' },
                 requiredRole: UserRole.Agent,
                 onlyIf: isAiAgentItemEnabled,
             },
@@ -71,7 +72,7 @@ export const useMainNavigationItems = (
                 label: 'Convert',
                 icon: 'monetization_on',
                 name: MenuItemName.Convert,
-                segmentProp: {link: 'convert'},
+                segmentProp: { link: 'convert' },
                 requiredRole: UserRole.Admin,
             },
             {
@@ -79,7 +80,7 @@ export const useMainNavigationItems = (
                 label: 'Customers',
                 icon: 'people',
                 name: MenuItemName.Customers,
-                segmentProp: {link: 'customers'},
+                segmentProp: { link: 'customers' },
             },
             {
                 url: '/app/stats',
@@ -87,14 +88,14 @@ export const useMainNavigationItems = (
                 className: 'd-none d-md-block',
                 icon: 'bar_chart',
                 name: MenuItemName.Statistics,
-                segmentProp: {link: 'statistics'},
+                segmentProp: { link: 'statistics' },
             },
             {
                 url: '/app/settings',
                 label: 'Settings',
                 icon: 'settings',
                 name: MenuItemName.Settings,
-                segmentProp: {link: 'settings'},
+                segmentProp: { link: 'settings' },
             },
         ]
 
@@ -102,7 +103,7 @@ export const useMainNavigationItems = (
             .filter(
                 (item) =>
                     !item.requiredRole ||
-                    hasRole(currentUser, item.requiredRole)
+                    hasRole(currentUser, item.requiredRole),
             )
             .filter((item) => item.onlyIf !== false)
     }, [currentUser, isAiAgentItemEnabled])

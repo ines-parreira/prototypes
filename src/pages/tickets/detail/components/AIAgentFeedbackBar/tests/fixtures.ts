@@ -1,5 +1,5 @@
-import {ReportIssueOption} from 'models/aiAgentFeedback/constants'
-import {MessageFeedback} from 'models/aiAgentFeedback/types'
+import { ReportIssueOption } from 'models/aiAgentFeedback/constants'
+import { MessageFeedback } from 'models/aiAgentFeedback/types'
 
 export const messageFeedback: MessageFeedback = {
     accountId: 1234,
@@ -12,17 +12,17 @@ export const messageFeedback: MessageFeedback = {
     executionId: '923665aa-5081-49b3-9cca-2ad6e1823175',
     summary:
         'AI Agent sent a response and left the ticket open pending further information from the customer.',
-    orders: [{id: 3324, url: 'https://gorgias.com', name: '#3324'}],
+    orders: [{ id: 3324, url: 'https://gorgias.com', name: '#3324' }],
     actions: [
-        {type: 'soft_action', id: 1, name: 'Get loyalty points'},
-        {type: 'soft_action', id: 2, name: 'Get shipping address'},
-        {type: 'hard_action', id: 3, name: 'Change shipping address'},
-        {type: 'hard_action', id: 4, name: 'Refund order'},
+        { type: 'soft_action', id: 1, name: 'Get loyalty points' },
+        { type: 'soft_action', id: 2, name: 'Get shipping address' },
+        { type: 'hard_action', id: 3, name: 'Change shipping address' },
+        { type: 'hard_action', id: 4, name: 'Refund order' },
     ],
     guidance: [
-        {id: 1, name: 'Cancelling an order'},
-        {id: 2, name: 'Refund'},
-        {id: 3, name: 'Shipping'},
+        { id: 1, name: 'Cancelling an order' },
+        { id: 2, name: 'Refund' },
+        { id: 3, name: 'Shipping' },
     ],
     knowledge: [
         {
@@ -36,7 +36,7 @@ export const messageFeedback: MessageFeedback = {
             name: 'Shipping times',
             url: 'https://artemis.gorgias.help/en-US#article-13609',
         },
-        {type: 'macro', id: 236, name: 'Damaged items'},
+        { type: 'macro', id: 236, name: 'Damaged items' },
     ],
     allowsFeedback: false,
     feedbackOnResource: [
@@ -102,11 +102,11 @@ export const messageFeedback: MessageFeedback = {
         },
     ],
     feedbackOnMessage: [
-        {type: 'binary', feedback: 'thumbs_up'},
-        {type: 'issue', feedback: ReportIssueOption.IncorrectLanguageUsed},
-        {type: 'issue', feedback: ReportIssueOption.TooVerbose},
-        {type: 'issue', feedback: ReportIssueOption.OverPromising},
-        {type: 'resource', resourceType: 'article', resourceId: 234},
+        { type: 'binary', feedback: 'thumbs_up' },
+        { type: 'issue', feedback: ReportIssueOption.IncorrectLanguageUsed },
+        { type: 'issue', feedback: ReportIssueOption.TooVerbose },
+        { type: 'issue', feedback: ReportIssueOption.OverPromising },
+        { type: 'resource', resourceType: 'article', resourceId: 234 },
     ],
     draftMessage: {
         content: 'test content',

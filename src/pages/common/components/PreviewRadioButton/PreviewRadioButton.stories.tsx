@@ -1,10 +1,11 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps, useState} from 'react'
+import React, { ComponentProps, useState } from 'react'
+
+import { Meta, Story } from '@storybook/react'
 
 import previewDark from 'assets/img/help-center/preview-dark.svg'
 import previewLight from 'assets/img/help-center/preview-light.svg'
 
-import {PreviewRadioButton} from './PreviewRadioButton'
+import { PreviewRadioButton } from './PreviewRadioButton'
 
 const storyConfig: Meta = {
     title: 'Data entry/PreviewRadioButton',
@@ -27,7 +28,7 @@ const storyConfig: Meta = {
 }
 
 const DefaultTemplate: Story<ComponentProps<typeof PreviewRadioButton>> = (
-    props
+    props,
 ) => <PreviewRadioButton {...props} />
 
 const Template: Story<ComponentProps<typeof PreviewRadioButton>> = (props) => {
@@ -36,7 +37,7 @@ const Template: Story<ComponentProps<typeof PreviewRadioButton>> = (props) => {
     const update = (value?: string) => setSelectedValue(value!)
 
     return (
-        <div style={{display: 'flex', gap: '20px'}}>
+        <div style={{ display: 'flex', gap: '20px' }}>
             <PreviewRadioButton
                 {...props}
                 isSelected={selectedValue === 'light'}
@@ -65,7 +66,7 @@ const TemplateWithoutPreview: Story<
     const update = (value?: string) => setSelectedValue(value!)
 
     return (
-        <div style={{display: 'flex', gap: '20px'}}>
+        <div style={{ display: 'flex', gap: '20px' }}>
             <PreviewRadioButton
                 {...props}
                 isSelected={selectedValue === 'light'}

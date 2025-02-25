@@ -1,4 +1,4 @@
-import {Template} from 'models/widget/types'
+import { Template } from 'models/widget/types'
 
 type Params = {
     isEditing: boolean

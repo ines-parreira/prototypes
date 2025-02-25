@@ -1,14 +1,14 @@
-import {render, screen} from '@testing-library/react'
-import {mockFlags} from 'jest-launchdarkly-mock'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {getStoreConfigurationFixture} from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
+import { render, screen } from '@testing-library/react'
+import { mockFlags } from 'jest-launchdarkly-mock'
 
-import {useFileIngestion} from 'pages/aiAgent/hooks/useFileIngestion'
-import {usePublicResources} from 'pages/aiAgent/hooks/usePublicResources'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
+import { useFileIngestion } from 'pages/aiAgent/hooks/useFileIngestion'
+import { usePublicResources } from 'pages/aiAgent/hooks/usePublicResources'
 
-import {CheckPlaygroundPrerequisites} from '../PlaygroundPrerequisites'
+import { CheckPlaygroundPrerequisites } from '../PlaygroundPrerequisites'
 
 jest.mock('pages/aiAgent/hooks/useFileIngestion', () => ({
     useFileIngestion: jest.fn(),
@@ -23,12 +23,12 @@ const mockUseFileIngestion = useFileIngestion as jest.Mock
 const mockUsePublicResources = jest.mocked(usePublicResources)
 
 const renderComponent = (
-    props?: Partial<ComponentProps<typeof CheckPlaygroundPrerequisites>>
+    props?: Partial<ComponentProps<typeof CheckPlaygroundPrerequisites>>,
 ) => {
     return render(
         <CheckPlaygroundPrerequisites shopName="it-shop" {...props}>
             <div>Child Component</div>
-        </CheckPlaygroundPrerequisites>
+        </CheckPlaygroundPrerequisites>,
     )
 }
 
@@ -49,12 +49,12 @@ describe('CheckPlaygroundPrerequisites', () => {
         renderComponent()
 
         expect(screen.getByRole('alert')).toHaveTextContent(
-            'Test AI Agent as a customerAt least one knowledge source is required to use test mode'
+            'Test AI Agent as a customerAt least one knowledge source is required to use test mode',
         )
 
         expect(screen.getByText('Add Knowledge')).toHaveAttribute(
             'to',
-            '/app/automation/shopify/it-shop/ai-agent/settings?section=knowledge'
+            '/app/automation/shopify/it-shop/ai-agent/settings?section=knowledge',
         )
     })
 
@@ -67,7 +67,7 @@ describe('CheckPlaygroundPrerequisites', () => {
 
         expect(screen.getByText('Add Knowledge')).toHaveAttribute(
             'to',
-            '/app/automation/shopify/it-shop/ai-agent/knowledge'
+            '/app/automation/shopify/it-shop/ai-agent/knowledge',
         )
     })
 
@@ -77,7 +77,7 @@ describe('CheckPlaygroundPrerequisites', () => {
         })
 
         expect(screen.getByRole('alert')).toHaveTextContent(
-            'Test AI Agent as a customerAt least one knowledge source is required to use test mode'
+            'Test AI Agent as a customerAt least one knowledge source is required to use test mode',
         )
     })
 
@@ -96,7 +96,7 @@ describe('CheckPlaygroundPrerequisites', () => {
             sourceItems: [],
             isSourceItemsListLoading: true,
         })
-        renderComponent({snippetHelpCenterId: 123})
+        renderComponent({ snippetHelpCenterId: 123 })
 
         expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
@@ -107,46 +107,46 @@ describe('CheckPlaygroundPrerequisites', () => {
             isLoading: true,
         })
 
-        renderComponent({snippetHelpCenterId: 123})
+        renderComponent({ snippetHelpCenterId: 123 })
 
         expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
 
     it('renders missing knowledge base alert when no source items and external files are present', () => {
         mockUsePublicResources.mockReturnValue({
-            sourceItems: [{status: 'loading', id: 0}],
+            sourceItems: [{ status: 'loading', id: 0 }],
             isSourceItemsListLoading: false,
         })
 
         mockUseFileIngestion.mockReturnValue({
-            ingestedFiles: [{status: 'FAILED'}],
+            ingestedFiles: [{ status: 'FAILED' }],
             isLoading: false,
         })
 
-        renderComponent({snippetHelpCenterId: 123})
+        renderComponent({ snippetHelpCenterId: 123 })
 
         expect(screen.getByRole('alert')).toHaveTextContent(
-            'Test AI Agent as a customerAt least one knowledge source is required to use test mode'
+            'Test AI Agent as a customerAt least one knowledge source is required to use test mode',
         )
     })
 
     it('renders children when at least one source item is done', () => {
         mockUsePublicResources.mockReturnValue({
-            sourceItems: [{status: 'done', id: 0}],
+            sourceItems: [{ status: 'done', id: 0 }],
             isSourceItemsListLoading: false,
         })
-        renderComponent({snippetHelpCenterId: 123})
+        renderComponent({ snippetHelpCenterId: 123 })
 
         expect(screen.getByText('Child Component')).toBeInTheDocument()
     })
 
     it('renders children when at least one external file is present', () => {
         mockUseFileIngestion.mockReturnValue({
-            ingestedFiles: [{status: 'SUCCESSFUL'}],
+            ingestedFiles: [{ status: 'SUCCESSFUL' }],
             isLoading: false,
         })
 
-        renderComponent({snippetHelpCenterId: 123})
+        renderComponent({ snippetHelpCenterId: 123 })
 
         expect(screen.getByText('Child Component')).toBeInTheDocument()
     })

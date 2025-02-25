@@ -1,9 +1,9 @@
 import React from 'react'
 
-import {useCustomFieldDefinition} from 'custom-fields/hooks/queries/useCustomFieldDefinition'
+import { useCustomFieldDefinition } from 'custom-fields/hooks/queries/useCustomFieldDefinition'
 import Loader from 'pages/common/components/Loader/Loader'
 
-import CustomFieldInput, {CustomFieldInputProps} from '../CustomFieldInput'
+import CustomFieldInput, { CustomFieldInputProps } from '../CustomFieldInput'
 
 export type CustomFieldByIdInputProps = Omit<
     CustomFieldInputProps,

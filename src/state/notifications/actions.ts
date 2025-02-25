@@ -6,21 +6,20 @@ import _words from 'lodash/words'
 import {
     notify as addNotification,
     dismissNotification,
-    Notification as ReapopNotification,
     POSITIONS,
+    Notification as ReapopNotification,
 } from 'reapop'
 
-import {AlertBannerTypes} from 'AlertBanners'
+import { AlertBannerTypes } from 'AlertBanners'
 
-import {StoreDispatch, RootState} from '../types'
-
+import { RootState, StoreDispatch } from '../types'
 import {
-    Notification,
     HandleUsageBanner,
+    isAlertNotification,
+    isBannerNotification,
+    Notification,
     NotificationStatus,
     NotificationStyle,
-    isBannerNotification,
-    isAlertNotification,
 } from './types'
 
 export const INITIAL_MESSAGE = {
@@ -38,7 +37,7 @@ const cleanNotification = (n: Notification) =>
 // detect duplicate notifications
 const isDuplicate = (
     notification: Notification,
-    oldNotification: Notification
+    oldNotification: Notification,
 ): boolean => {
     if (
         isAlertNotification(notification) &&
@@ -52,7 +51,7 @@ const isDuplicate = (
 
     return _isEqual(
         cleanNotification(notification),
-        cleanNotification(oldNotification)
+        cleanNotification(oldNotification),
     )
 }
 
@@ -67,7 +66,7 @@ export const notify =
     (message?: Notification) =>
     (
         dispatch: StoreDispatch,
-        getState: () => RootState
+        getState: () => RootState,
     ): Promise<ReturnType<StoreDispatch>> => {
         // don't add empty notifications
         if (!message) {
@@ -78,7 +77,7 @@ export const notify =
 
         if (isAlertNotification(message)) {
             const status = Object.values(NotificationStatus).includes(
-                message.status as NotificationStatus
+                message.status as NotificationStatus,
             )
                 ? message.status
                 : NotificationStatus.Info
@@ -116,7 +115,7 @@ export const notify =
             }
         } else if (isBannerNotification(message)) {
             const type = Object.values(AlertBannerTypes).includes(
-                message.type as AlertBannerTypes
+                message.type as AlertBannerTypes,
             )
                 ? message.type
                 : AlertBannerTypes.Info
@@ -149,7 +148,7 @@ export const notify =
         }
 
         return dispatch(
-            addNotification(finalMessage as ReapopNotification)
+            addNotification(finalMessage as ReapopNotification),
         ) as unknown as Promise<ReturnType<StoreDispatch>>
     }
 
@@ -182,7 +181,7 @@ export const handleUsageBanner =
                         text: 'Go to billing page',
                         to: '/app/settings/billing',
                     },
-                })
+                }),
             )
         }
     }

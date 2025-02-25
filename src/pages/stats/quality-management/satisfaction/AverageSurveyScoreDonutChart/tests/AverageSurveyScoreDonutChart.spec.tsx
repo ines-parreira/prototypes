@@ -1,22 +1,20 @@
-import {render, screen} from '@testing-library/react'
-
-import moment from 'moment'
-
 import React from 'react'
 
-import {useSurveyScores} from 'hooks/reporting/quality-management/satisfaction/useSurveyScores'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { render, screen } from '@testing-library/react'
+import moment from 'moment'
+
+import { useSurveyScores } from 'hooks/reporting/quality-management/satisfaction/useSurveyScores'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {
     TicketSatisfactionSurveyDimension,
     TicketSatisfactionSurveyMeasure,
 } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
-import {ReportingGranularity} from 'models/reporting/types'
-
-import {LegacyStatsFilters} from 'models/stat/types'
+import { ReportingGranularity } from 'models/reporting/types'
+import { LegacyStatsFilters } from 'models/stat/types'
 import DonutChart from 'pages/stats/common/components/charts/DonutChart/DonutChart'
 import AverageSurveyScoreDonutChart from 'pages/stats/quality-management/satisfaction/AverageSurveyScoreDonutChart/AverageSurveyScoreDonutChart'
-import {formatReportingQueryDate} from 'utils/reporting'
-import {assumeMock} from 'utils/testing'
+import { formatReportingQueryDate } from 'utils/reporting'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/quality-management/satisfaction/useSurveyScores')
 const mockUseSurveyScores = assumeMock(useSurveyScores)
@@ -118,7 +116,7 @@ describe('<AverageSurveyScoreDonutChart/>', () => {
                     },
                 ],
             }),
-            {}
+            {},
         )
     })
 
@@ -126,14 +124,14 @@ describe('<AverageSurveyScoreDonutChart/>', () => {
         mockUseSurveyScores.mockReturnValue({
             isFetching: false,
             isError: false,
-            data: {value: null, decile: null, allData: []},
+            data: { value: null, decile: null, allData: [] },
         })
 
         renderComponent()
 
         expect(screen.getByText('No data available')).toBeInTheDocument()
         expect(
-            screen.getByText('Try adjusting filters to get results.')
+            screen.getByText('Try adjusting filters to get results.'),
         ).toBeInTheDocument()
     })
 
@@ -152,7 +150,7 @@ describe('<AverageSurveyScoreDonutChart/>', () => {
                 data: [],
                 customColors: [],
             }),
-            {}
+            {},
         )
     })
 })

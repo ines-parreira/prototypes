@@ -1,10 +1,10 @@
-import {List, Map} from 'immutable'
 import React from 'react'
+
+import { List, Map } from 'immutable'
 
 import StarRating from 'pages/common/components/StarRating'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-
-import {CardCustomization} from 'Widgets/modules/Template/modules/Card'
+import { CardCustomization } from 'Widgets/modules/Template/modules/Card'
 import StaticField from 'Widgets/modules/Template/modules/Field/components/StaticField'
 
 import css from './Reviews.less'
@@ -16,7 +16,7 @@ type ReviewSearchURL = {
 
 function makeReviewSearchURL(searchTerm: string): ReviewSearchURL {
     if (!searchTerm) {
-        return {url: '#', target: '_self'}
+        return { url: '#', target: '_self' }
     }
     return {
         url: `https://reviews.yotpo.com/#/moderation/reviews?query=${searchTerm}&sort_by=review_creation_date`,
@@ -30,7 +30,7 @@ type TitleWrapperProps = {
 
 class TitleWrapper extends React.Component<TitleWrapperProps> {
     render() {
-        const {source} = this.props
+        const { source } = this.props
         const reviewSearchURL = makeReviewSearchURL(source.get('title'))
         return (
             <a
@@ -52,7 +52,7 @@ type AfterTitleProps = {
 }
 class AfterTitle extends React.Component<AfterTitleProps> {
     render() {
-        const {source} = this.props
+        const { source } = this.props
         return (
             <div className={css.afterTitle}>
                 <StaticField label="Created">
@@ -74,10 +74,10 @@ type BeforeContentReviewsProps = {
 }
 class BeforeContent extends React.Component<BeforeContentReviewsProps> {
     render() {
-        const {source} = this.props
+        const { source } = this.props
         const imagesData: List<Map<string, string>> = source.get(
             'images_data',
-            []
+            [],
         )
         return (
             <>
@@ -96,7 +96,7 @@ class BeforeContent extends React.Component<BeforeContentReviewsProps> {
                                         src={img.get('thumb_url')}
                                         className={css.reviewImage}
                                     />
-                                )
+                                ),
                         )}
                     </StaticField>
                 )}

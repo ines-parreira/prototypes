@@ -1,5 +1,6 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import Avatar from 'pages/common/components/Avatar/Avatar'
 
@@ -17,7 +18,7 @@ describe('AgentCard', () => {
         description: 'Lorem ipsum dolor sit amet',
     }
 
-    const renderComponent = (props = {defaultProps}) =>
+    const renderComponent = (props = { defaultProps }) =>
         render(<AgentCard {...defaultProps} {...props} />)
 
     it('should render the agent name and description', () => {
@@ -36,7 +37,7 @@ describe('AgentCard', () => {
                 size: 36,
                 badgeColor: defaultProps.badgeColor,
             }),
-            {}
+            {},
         )
     })
 })

@@ -1,4 +1,4 @@
-import {List} from 'immutable'
+import { List } from 'immutable'
 
 import {
     attachmentIsProductRecommendation,
@@ -7,7 +7,7 @@ import {
 } from 'pages/convert/campaigns/types/CampaignAttachment'
 
 export const transformAttachmentsToProductRecommendations = (
-    attachments: List<any>
+    attachments: List<any>,
 ): CampaignProductRecommendation[] => {
     const attachmentsJS: AttachmentType[] = attachments.toJS()
 

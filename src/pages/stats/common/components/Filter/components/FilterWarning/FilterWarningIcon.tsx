@@ -1,9 +1,11 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { ComponentProps, useRef } from 'react'
+
 import classnames from 'classnames'
-import React, {ComponentProps, useRef} from 'react'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import css from 'pages/stats/common/components/Filter/components/FilterWarning/FilterWarningIcon.less'
-import {FILTER_WARNING_ICON} from 'pages/stats/common/components/Filter/constants'
+import { FILTER_WARNING_ICON } from 'pages/stats/common/components/Filter/constants'
 
 type Props = {
     warningType: 'non-existent' | 'not-applicable'
@@ -26,7 +28,7 @@ export const FilterWarningIcon = ({
                 className={classnames(
                     'icon material-icons',
                     css.icon,
-                    css[iconColorClass]
+                    css[iconColorClass],
                 )}
                 ref={ref}
             >

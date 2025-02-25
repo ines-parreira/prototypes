@@ -1,12 +1,12 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {defaultAutoMergeSettings} from 'pages/settings/autoMerge/constants'
+import { defaultAutoMergeSettings } from 'pages/settings/autoMerge/constants'
 import useAutoMergeSettings from 'pages/settings/autoMerge/hooks/useAutoMergeSettings'
-import {submitSetting} from 'state/currentAccount/actions'
-import {AccountSettingType} from 'state/currentAccount/types'
+import { submitSetting } from 'state/currentAccount/actions'
+import { AccountSettingType } from 'state/currentAccount/types'
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())
 jest.mock('hooks/useAppSelector', () => jest.fn())
@@ -35,12 +35,12 @@ describe('useAutoMergeSettings', () => {
         useAppSelectorMock.mockReturnValue({
             id: 4,
             type: AccountSettingType.AutoMerge,
-            data: {tickets: defaultAutoMergeSettings},
+            data: { tickets: defaultAutoMergeSettings },
         })
     })
 
     it('should return default state', () => {
-        const {result} = renderHook(() => useAutoMergeSettings())
+        const { result } = renderHook(() => useAutoMergeSettings())
 
         expect(result.current).toEqual({
             initialAutoMergeSettings: {
@@ -52,7 +52,7 @@ describe('useAutoMergeSettings', () => {
     })
 
     it('should dispatch an action and log an event when saving', async () => {
-        const {result} = renderHook(() => useAutoMergeSettings())
+        const { result } = renderHook(() => useAutoMergeSettings())
 
         await result.current.saveAutoMergeSettings({
             enabled: true,
@@ -74,7 +74,7 @@ describe('useAutoMergeSettings', () => {
 
         expect(logEventMock).toHaveBeenCalledWith(
             SegmentEvent.AutoMergeSettingsUpdated,
-            payload
+            payload,
         )
     })
 })

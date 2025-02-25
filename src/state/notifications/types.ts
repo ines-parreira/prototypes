@@ -1,6 +1,6 @@
-import {Position, Status} from 'reapop'
+import { Position, Status } from 'reapop'
 
-import {AlertBannerProps, AlertBannerTypes} from 'AlertBanners'
+import { AlertBannerProps, AlertBannerTypes } from 'AlertBanners'
 
 export enum NotificationStatus {
     Success = 'success',
@@ -50,13 +50,13 @@ export type BannerNotification = Omit<AlertBannerProps, 'borderless'> & {
 }
 
 export const isAlertNotification = (
-    notification: Notification
+    notification: Notification,
 ): notification is AlertNotification =>
     notification.style === NotificationStyle.Alert ||
     notification.style === undefined
 
 export const isBannerNotification = (
-    notification: Notification
+    notification: Notification,
 ): notification is BannerNotification =>
     notification.style === NotificationStyle.Banner
 

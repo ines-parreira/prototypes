@@ -1,5 +1,6 @@
+import React, { ChangeEvent, useRef } from 'react'
+
 import classNames from 'classnames'
-import React, {ChangeEvent, useRef} from 'react'
 
 import FileSelectedArea from 'pages/settings/helpCenter/components/Imports/components/ImportSection/components/ImportArticlesModal/components/FileSelectedArea'
 
@@ -10,7 +11,7 @@ type Props = {
     setFile: (file: File | null) => void
 }
 
-export const DropdownCSVImportDropZone = ({file, setFile}: Props) => {
+export const DropdownCSVImportDropZone = ({ file, setFile }: Props) => {
     const hiddenFileInputRef = useRef<HTMLInputElement>(null)
 
     const openFileDialog = () => hiddenFileInputRef.current?.click()
@@ -33,7 +34,7 @@ export const DropdownCSVImportDropZone = ({file, setFile}: Props) => {
                 type="file"
                 accept=".csv"
                 ref={hiddenFileInputRef}
-                style={{display: 'none'}}
+                style={{ display: 'none' }}
                 onChange={handleFileChosen}
             />
             {file ? (
@@ -51,7 +52,7 @@ export const DropdownCSVImportDropZone = ({file, setFile}: Props) => {
                     <i
                         className={classNames(
                             'material-icons',
-                            css.modalCloudIcon
+                            css.modalCloudIcon,
                         )}
                     >
                         cloud_upload

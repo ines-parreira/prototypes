@@ -1,18 +1,20 @@
-import {fireEvent, render} from '@testing-library/react'
+// sort-imports-ignore
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-// eslint-disable-next-line import/order
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {TicketChannel} from 'business/types/ticket'
-import {channels as mockChannels} from 'fixtures/channels'
-import {channelsQueryKeys as mockChannelsQueryKeys} from 'models/channel/queries'
+import { TicketChannel } from 'business/types/ticket'
+import { channels as mockChannels } from 'fixtures/channels'
+import { channelsQueryKeys as mockChannelsQueryKeys } from 'models/channel/queries'
 import DEPRECATED_ChannelsStatsFilter from 'pages/stats/common/filters/DEPRECATED_ChannelsStatsFilter'
-import {Channel} from 'services/channels'
-import {initialState, mergeStatsFilters} from 'state/stats/statsSlice'
-import {RootState} from 'state/types'
+import { Channel } from 'services/channels'
+import { initialState, mergeStatsFilters } from 'state/stats/statsSlice'
+import { RootState } from 'state/types'
 
 jest.mock('api/queryClient', () => ({
     appQueryClient: mockQueryClient({
@@ -30,20 +32,20 @@ describe('DEPRECATED_ChannelsStatsFilter', () => {
     const defaultStore = mockStore(defaultState)
 
     it('should render channels stats filter', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={defaultStore}>
                 <DEPRECATED_ChannelsStatsFilter value={[]} />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render all available chanels by default', () => {
-        const {queryByText} = render(
+        const { queryByText } = render(
             <Provider store={defaultStore}>
                 <DEPRECATED_ChannelsStatsFilter value={[]} />
-            </Provider>
+            </Provider>,
         )
 
         expect(queryByText('All channels')).toBeInTheDocument()
@@ -57,33 +59,33 @@ describe('DEPRECATED_ChannelsStatsFilter', () => {
 
     describe('restricting the list of displayed channels', () => {
         it('should allow restricting the channels that get displayed', () => {
-            const {queryByText} = render(
+            const { queryByText } = render(
                 <Provider store={defaultStore}>
                     <DEPRECATED_ChannelsStatsFilter
                         value={[]}
                         channelsFilter={[TicketChannel.Email]}
                     />
-                </Provider>
+                </Provider>,
             )
             expect(queryByText('Email')).toBeInTheDocument()
             expect(queryByText('SMS')).not.toBeInTheDocument()
         })
 
         it('should not display a passed value that is not included in the filter', () => {
-            const {queryByText} = render(
+            const { queryByText } = render(
                 <Provider store={defaultStore}>
                     <DEPRECATED_ChannelsStatsFilter
                         value={[TicketChannel.Sms]}
                         channelsFilter={[TicketChannel.Email]}
                     />
-                </Provider>
+                </Provider>,
             )
             expect(queryByText('Email')).toBeInTheDocument()
             expect(queryByText('SMS')).not.toBeInTheDocument()
         })
 
         it('should allow passing a predicate function to filter channels', () => {
-            const {queryByText} = render(
+            const { queryByText } = render(
                 <Provider store={defaultStore}>
                     <DEPRECATED_ChannelsStatsFilter
                         value={[]}
@@ -91,7 +93,7 @@ describe('DEPRECATED_ChannelsStatsFilter', () => {
                             channel.logo_url?.endsWith('email.svg') ?? false
                         }
                     />
-                </Provider>
+                </Provider>,
             )
             expect(queryByText('Email')).toBeInTheDocument()
             expect(queryByText('SMS')).not.toBeInTheDocument()
@@ -101,28 +103,28 @@ describe('DEPRECATED_ChannelsStatsFilter', () => {
     describe('selecting channels', () => {
         it('should handle channel selection, updating filters', () => {
             const store = mockStore(defaultState)
-            const {getByLabelText} = render(
+            const { getByLabelText } = render(
                 <Provider store={store}>
                     <DEPRECATED_ChannelsStatsFilter value={undefined} />
-                </Provider>
+                </Provider>,
             )
 
             fireEvent.click(getByLabelText('Email'))
             fireEvent.click(getByLabelText('TikTok Shop'))
 
             expect(store.getActions()).toEqual([
-                mergeStatsFilters({channels: [TicketChannel.Email]}),
-                mergeStatsFilters({channels: ['tiktok-shop']}),
+                mergeStatsFilters({ channels: [TicketChannel.Email] }),
+                mergeStatsFilters({ channels: ['tiktok-shop'] }),
             ])
         })
 
         it('should show which channels are selected (1 selected)', () => {
-            const {queryByText} = render(
+            const { queryByText } = render(
                 <Provider store={defaultStore}>
                     <DEPRECATED_ChannelsStatsFilter
                         value={[TicketChannel.Email]}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(queryByText('All channels')).not.toBeInTheDocument()
@@ -131,12 +133,12 @@ describe('DEPRECATED_ChannelsStatsFilter', () => {
         })
 
         it('should show which channels are selected (2 selected)', () => {
-            const {queryByText} = render(
+            const { queryByText } = render(
                 <Provider store={defaultStore}>
                     <DEPRECATED_ChannelsStatsFilter
                         value={[TicketChannel.Email, TicketChannel.Sms]}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(queryByText('All channels')).not.toBeInTheDocument()

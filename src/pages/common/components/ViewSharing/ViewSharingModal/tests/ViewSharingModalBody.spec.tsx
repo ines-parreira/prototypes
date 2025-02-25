@@ -1,10 +1,11 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {ViewVisibility} from 'models/view/types'
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
 
-import {ViewSharingModalBodyContainer} from '../ViewSharingModalBody'
+import { ViewVisibility } from 'models/view/types'
+
+import { ViewSharingModalBodyContainer } from '../ViewSharingModalBody'
 
 describe('<ViewSharingModalBody/>', () => {
     const minProps = {
@@ -22,7 +23,7 @@ describe('<ViewSharingModalBody/>', () => {
 
     describe('render()', () => {
         it('should render as a spinner', () => {
-            const {container} = render(
+            const { container } = render(
                 <ViewSharingModalBodyContainer
                     {...minProps}
                     visibility={ViewVisibility.Public}
@@ -31,14 +32,14 @@ describe('<ViewSharingModalBody/>', () => {
                     initialUsers={fromJS([])}
                     selectedTeams={fromJS([])}
                     selectedUsers={fromJS([])}
-                />
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render an error', () => {
-            const {container} = render(
+            const { container } = render(
                 <ViewSharingModalBodyContainer
                     {...minProps}
                     visibility={ViewVisibility.Public}
@@ -47,14 +48,14 @@ describe('<ViewSharingModalBody/>', () => {
                     initialUsers={fromJS([])}
                     selectedTeams={fromJS([])}
                     selectedUsers={fromJS([])}
-                />
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render public body', () => {
-            const {container} = render(
+            const { container } = render(
                 <ViewSharingModalBodyContainer
                     {...minProps}
                     visibility={ViewVisibility.Public}
@@ -62,14 +63,14 @@ describe('<ViewSharingModalBody/>', () => {
                     initialUsers={fromJS([])}
                     selectedTeams={fromJS([])}
                     selectedUsers={fromJS([])}
-                />
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render shared body', () => {
-            const {container} = render(
+            const { container } = render(
                 <ViewSharingModalBodyContainer
                     {...minProps}
                     visibility={ViewVisibility.Shared}
@@ -77,14 +78,14 @@ describe('<ViewSharingModalBody/>', () => {
                     initialUsers={fromJS([])}
                     selectedTeams={fromJS([])}
                     selectedUsers={fromJS([])}
-                />
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render private body', () => {
-            const {container} = render(
+            const { container } = render(
                 <ViewSharingModalBodyContainer
                     {...minProps}
                     visibility={ViewVisibility.Private}
@@ -92,7 +93,7 @@ describe('<ViewSharingModalBody/>', () => {
                     initialUsers={fromJS([])}
                     selectedTeams={fromJS([])}
                     selectedUsers={fromJS([])}
-                />
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()

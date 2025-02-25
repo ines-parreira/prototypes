@@ -1,14 +1,17 @@
-import {Badge} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
 import React from 'react'
 
-import {assetsUrl} from 'utils'
+import classNames from 'classnames'
+
+import { Badge } from '@gorgias/merchant-ui-kit'
+
+import { assetsUrl } from 'utils'
+
+import { ProductDetail } from './types'
 
 import css from './Detail.less'
-import {ProductDetail} from './types'
 
 export default function Header(props: ProductDetail) {
-    const {image, icon, title, description, categories = [], company} = props
+    const { image, icon, title, description, categories = [], company } = props
 
     return (
         <header className={css.hero}>
@@ -23,7 +26,7 @@ export default function Header(props: ProductDetail) {
                     <i
                         className={classNames(
                             css.heroIcon,
-                            'material-icons-outlined'
+                            'material-icons-outlined',
                         )}
                     >
                         {props.icon}

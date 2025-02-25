@@ -1,13 +1,14 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {UserRole} from 'config/types/user'
-import {useFlag} from 'core/flags'
-import {getHasAutomate} from 'state/billing/selectors'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {assumeMock} from 'utils/testing'
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { UserRole } from 'config/types/user'
+import { useFlag } from 'core/flags'
+import { getHasAutomate } from 'state/billing/selectors'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { assumeMock } from 'utils/testing'
 
 import useActiveItem from '../../hooks/useActiveItem'
 import {
@@ -17,12 +18,12 @@ import {
 } from '../../hooks/useNavBar/context'
 import GlobalNavigation from '../GlobalNavigation'
 
-jest.mock('state/currentUser/selectors', () => ({getCurrentUser: jest.fn()}))
+jest.mock('state/currentUser/selectors', () => ({ getCurrentUser: jest.fn() }))
 const getCurrentUserMock = assumeMock(getCurrentUser)
 
 jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
 
-jest.mock('state/billing/selectors', () => ({getHasAutomate: jest.fn()}))
+jest.mock('state/billing/selectors', () => ({ getHasAutomate: jest.fn() }))
 const getHasAutomateMock = assumeMock(getHasAutomate)
 
 jest.mock('../../hooks/useActiveItem', () => jest.fn())
@@ -53,121 +54,121 @@ describe('GlobalNavigation', () => {
         render(
             <NavBarContext.Provider value={mockNavBarContextValues}>
                 <GlobalNavigation />
-            </NavBarContext.Provider>
+            </NavBarContext.Provider>,
         )
 
     beforeEach(() => {
         getCurrentUserMock.mockReturnValue(
-            fromJS({role: {name: UserRole.BasicAgent}})
+            fromJS({ role: { name: UserRole.BasicAgent } }),
         )
         useActiveItemMock.mockReturnValue('tickets')
     })
 
     it('should render the menu icon when the nav is pinned', () => {
-        const {getByText} = renderWithContext()
+        const { getByText } = renderWithContext()
         expect(getByText('menu')).toBeInTheDocument()
     })
 
     it('should render the home icon', () => {
-        const {getByText} = renderWithContext()
+        const { getByText } = renderWithContext()
         expect(getByText('home')).toBeInTheDocument()
     })
 
     it('should render the search icon', () => {
-        const {getByText} = renderWithContext()
+        const { getByText } = renderWithContext()
         expect(getByText('GlobalNavigationSpotlight')).toBeInTheDocument()
     })
 
     it('should render the notifications icon', () => {
-        const {getByText} = renderWithContext()
+        const { getByText } = renderWithContext()
         expect(getByText('NotificationsItem')).toBeInTheDocument()
     })
 
     it('should render the tickets icon', () => {
-        const {getByText} = renderWithContext()
+        const { getByText } = renderWithContext()
         expect(getByText('question_answer')).toBeInTheDocument()
     })
 
     it('should not render the automation icon if the user is not a lead agent', () => {
-        const {queryByText} = renderWithContext()
+        const { queryByText } = renderWithContext()
         expect(queryByText('bolt')).not.toBeInTheDocument()
     })
 
     it('should render the automation icon if the user is a lead agent', () => {
         getCurrentUserMock.mockReturnValue(
-            fromJS({role: {name: UserRole.Agent}})
+            fromJS({ role: { name: UserRole.Agent } }),
         )
-        const {getByText} = renderWithContext()
+        const { getByText } = renderWithContext()
         expect(getByText('bolt')).toBeInTheDocument()
     })
 
     it('should not render the convert icon if the user is not an admin', () => {
-        const {queryByText} = renderWithContext()
+        const { queryByText } = renderWithContext()
         expect(queryByText('monetization_on')).not.toBeInTheDocument()
     })
 
     it('should render the convert icon if the user is an admin', () => {
         getCurrentUserMock.mockReturnValue(
-            fromJS({role: {name: UserRole.Admin}})
+            fromJS({ role: { name: UserRole.Admin } }),
         )
-        const {getByText} = renderWithContext()
+        const { getByText } = renderWithContext()
         expect(getByText('monetization_on')).toBeInTheDocument()
     })
 
     it('should render the customers icon', () => {
-        const {getByText} = renderWithContext()
+        const { getByText } = renderWithContext()
         expect(getByText('people')).toBeInTheDocument()
     })
 
     it('should render the stats icon', () => {
-        const {getByText} = renderWithContext()
+        const { getByText } = renderWithContext()
         expect(getByText('bar_chart')).toBeInTheDocument()
     })
 
     it('should render the settings icon', () => {
-        const {getByText} = renderWithContext()
+        const { getByText } = renderWithContext()
         expect(getByText('settings')).toBeInTheDocument()
     })
 
     it('should render the user item', () => {
-        const {getByText} = renderWithContext()
+        const { getByText } = renderWithContext()
         expect(getByText('UserItem')).toBeInTheDocument()
     })
 
     it('should not render the ai agent icon if user is not a lead agent', () => {
-        const {queryByText} = renderWithContext()
+        const { queryByText } = renderWithContext()
         expect(queryByText('auto_awesome')).not.toBeInTheDocument()
     })
 
     it('should not render the ai agent icon if the feature flag is not enabled', () => {
         getCurrentUserMock.mockReturnValue(
-            fromJS({role: {name: UserRole.Agent}})
+            fromJS({ role: { name: UserRole.Agent } }),
         )
-        const {queryByText} = renderWithContext()
+        const { queryByText } = renderWithContext()
         expect(queryByText('auto_awesome')).not.toBeInTheDocument()
     })
 
     it('should not render the ai agent icon if the feature flag is enabled but user does not have access to automate', () => {
         getCurrentUserMock.mockReturnValue(
-            fromJS({role: {name: UserRole.Agent}})
+            fromJS({ role: { name: UserRole.Agent } }),
         )
         mockUseFlag.mockImplementation((flag) =>
-            flag === FeatureFlagKey.ConvAiStandaloneMenu ? true : false
+            flag === FeatureFlagKey.ConvAiStandaloneMenu ? true : false,
         )
         getHasAutomateMock.mockReturnValue(false)
-        const {queryByText} = renderWithContext()
+        const { queryByText } = renderWithContext()
         expect(queryByText('auto_awesome')).not.toBeInTheDocument()
     })
 
     it('should render the ai agent icon if the feature flag is enabled and user has access to automate', () => {
         getCurrentUserMock.mockReturnValue(
-            fromJS({role: {name: UserRole.Agent}})
+            fromJS({ role: { name: UserRole.Agent } }),
         )
         mockUseFlag.mockImplementation((flag) =>
-            flag === FeatureFlagKey.ConvAiStandaloneMenu ? true : false
+            flag === FeatureFlagKey.ConvAiStandaloneMenu ? true : false,
         )
         getHasAutomateMock.mockReturnValue(true)
-        const {queryByText} = renderWithContext()
+        const { queryByText } = renderWithContext()
         expect(queryByText('auto_awesome')).toBeInTheDocument()
     })
 })

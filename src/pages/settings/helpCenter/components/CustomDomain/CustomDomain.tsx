@@ -1,26 +1,25 @@
+import React, { useEffect, useState } from 'react'
+
 import classNames from 'classnames'
-import React, {useEffect, useState} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAsyncFn from 'hooks/useAsyncFn'
-import {CustomDomain as CustomDomainEntity} from 'models/helpCenter/types'
+import { CustomDomain as CustomDomainEntity } from 'models/helpCenter/types'
 import Button from 'pages/common/components/button/Button'
-import {ConnectionStatus} from 'pages/common/components/ConnectionStatus'
+import { ConnectionStatus } from 'pages/common/components/ConnectionStatus'
 import Loader from 'pages/common/components/Loader/Loader'
-import {StatusCheck} from 'pages/common/components/StatusCheck'
+import { StatusCheck } from 'pages/common/components/StatusCheck'
 import InputField from 'pages/common/forms/input/InputField'
-
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
-import {useHelpCenterActions} from 'pages/settings/helpCenter/hooks/useHelpCenterActions'
-import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import {useHelpCenterIdParam} from 'pages/settings/helpCenter/hooks/useHelpCenterIdParam'
+import { useHelpCenterActions } from 'pages/settings/helpCenter/hooks/useHelpCenterActions'
+import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import { useHelpCenterIdParam } from 'pages/settings/helpCenter/hooks/useHelpCenterIdParam'
 import settingsCss from 'pages/settings/settings.less'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { reportError } from 'utils/errors'
 
-import {reportError} from 'utils/errors'
-
-import {HelpText} from './components/HelpText'
+import { HelpText } from './components/HelpText'
 
 import css from './CustomDomain.less'
 
@@ -42,12 +41,12 @@ export type CustomDomainProps = {
     className?: string
 }
 
-export const CustomDomain = ({className}: CustomDomainProps) => {
+export const CustomDomain = ({ className }: CustomDomainProps) => {
     const dispatch = useAppDispatch()
-    const {client} = useHelpCenterApi()
+    const { client } = useHelpCenterApi()
     const helpCenterId = useHelpCenterIdParam()
     const helpCenter = useCurrentHelpCenter()
-    const {getHelpCenterCustomDomain} = useHelpCenterActions()
+    const { getHelpCenterCustomDomain } = useHelpCenterActions()
 
     const [domainValue, setDomainValue] = useState('')
     const [currentDomain, setCurrentDomain] = useState<CustomDomainEntity>()
@@ -69,7 +68,7 @@ export const CustomDomain = ({className}: CustomDomainProps) => {
                     notify({
                         status: NotificationStatus.Success,
                         message: 'Domain removed with success',
-                    })
+                    }),
                 )
 
                 return null
@@ -79,7 +78,7 @@ export const CustomDomain = ({className}: CustomDomainProps) => {
                     notify({
                         status: NotificationStatus.Error,
                         message: 'Failed to delete the domain',
-                    })
+                    }),
                 )
             }
         }
@@ -94,7 +93,7 @@ export const CustomDomain = ({className}: CustomDomainProps) => {
                     },
                     {
                         hostname: domainValue,
-                    }
+                    },
                 )
 
                 if (response.data.hostname) {
@@ -106,7 +105,7 @@ export const CustomDomain = ({className}: CustomDomainProps) => {
                     notify({
                         status: NotificationStatus.Success,
                         message: 'Domain created with success',
-                    })
+                    }),
                 )
 
                 return response.data
@@ -117,7 +116,7 @@ export const CustomDomain = ({className}: CustomDomainProps) => {
                         status: NotificationStatus.Error,
                         message:
                             'Could not add the domain. Please try again or contact support.',
-                    })
+                    }),
                 )
             }
         }
@@ -137,7 +136,7 @@ export const CustomDomain = ({className}: CustomDomainProps) => {
                     notify({
                         status: NotificationStatus.Success,
                         message: 'Domain status updated with success',
-                    })
+                    }),
                 )
 
                 return response.data
@@ -147,7 +146,7 @@ export const CustomDomain = ({className}: CustomDomainProps) => {
                     notify({
                         status: NotificationStatus.Error,
                         message: 'Could not check domain status',
-                    })
+                    }),
                 )
             }
         }

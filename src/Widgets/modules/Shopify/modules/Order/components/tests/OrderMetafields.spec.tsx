@@ -1,11 +1,13 @@
-import {useListShopifyOrderMetafields} from '@gorgias/api-queries'
-import {render, screen} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render, screen } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {OrderMetafields} from '../OrderMetafields'
+import { useListShopifyOrderMetafields } from '@gorgias/api-queries'
+
+import { OrderMetafields } from '../OrderMetafields'
 
 jest.mock('@gorgias/api-queries')
 
@@ -21,8 +23,8 @@ describe('<OrderMetafields/>', () => {
             data: null,
         })
 
-        const {container} = render(
-            <OrderMetafields integrationId={1} orderId={1} />
+        const { container } = render(
+            <OrderMetafields integrationId={1} orderId={1} />,
         )
 
         const elementsByClassName = container.getElementsByClassName('loader')
@@ -41,7 +43,7 @@ describe('<OrderMetafields/>', () => {
 
         expect(mockUseListShopifyOrderMetafields).toHaveBeenCalled()
         expect(
-            screen.getByText('Temporarily unavailable, try again later.')
+            screen.getByText('Temporarily unavailable, try again later.'),
         ).toBeInTheDocument()
     })
 
@@ -58,7 +60,7 @@ describe('<OrderMetafields/>', () => {
 
         expect(mockUseListShopifyOrderMetafields).toHaveBeenCalled()
         expect(
-            screen.getByText('Order has no metafields populated.')
+            screen.getByText('Order has no metafields populated.'),
         ).toBeInTheDocument()
     })
 
@@ -81,7 +83,7 @@ describe('<OrderMetafields/>', () => {
         render(
             <Provider store={mockStore}>
                 <OrderMetafields integrationId={1} orderId={1} />
-            </Provider>
+            </Provider>,
         )
 
         expect(mockUseListShopifyOrderMetafields).toHaveBeenCalled()

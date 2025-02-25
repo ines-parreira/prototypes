@@ -1,16 +1,17 @@
-import {render} from '@testing-library/react'
-import {fromJS, Map} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 
-import {AfterTitle} from '../Shipping'
+import { AfterTitle } from '../Shipping'
 
 const mockStore = configureMockStore([thunk])
-const integrationContextData = {integration: fromJS({}), integrationId: 1}
+const integrationContextData = { integration: fromJS({}), integrationId: 1 }
 
 describe('Shipping', () => {
     describe('<AfterTitle/>', () => {
@@ -21,25 +22,25 @@ describe('Shipping', () => {
         }
 
         it('should not render because widgets are being edited', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore({})}>
                     <IntegrationContext.Provider value={integrationContextData}>
                         <AfterTitle {...minProps} isEditing />
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(container).toMatchSnapshot()
         })
 
         it('should match snapshot - fedex tracking link', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore({})}>
                     <IntegrationContext.Provider
                         value={{
                             integrationId: 1,
                             integration: fromJS({
-                                meta: {store_hash: 'pk360c6roo'},
+                                meta: { store_hash: 'pk360c6roo' },
                             }),
                         }}
                     >
@@ -51,20 +52,20 @@ describe('Shipping', () => {
                             })}
                         />
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(container).toMatchSnapshot()
         })
 
         it('should match snapshot - no tracking link', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore({})}>
                     <IntegrationContext.Provider
                         value={{
                             integrationId: 1,
                             integration: fromJS({
-                                meta: {store_hash: 'pk360c6roo'},
+                                meta: { store_hash: 'pk360c6roo' },
                             }),
                         }}
                     >
@@ -76,7 +77,7 @@ describe('Shipping', () => {
                             })}
                         />
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(container).toMatchSnapshot()

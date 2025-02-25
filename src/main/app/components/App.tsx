@@ -1,15 +1,14 @@
-import React, {ReactNode} from 'react'
+import React, { ReactNode } from 'react'
 
 import AlertBanners from 'AlertBanners'
-import {AppNode} from 'appNode'
-
-import {useDesktopOnlyShowGlobalNavFeatureFlag} from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
-import {NotificationsOverlay, NotificationsToasts} from 'common/notifications'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useFlag} from 'core/flags'
-import {useApplyTheme} from 'core/theme'
+import { AppNode } from 'appNode'
+import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
+import { NotificationsOverlay, NotificationsToasts } from 'common/notifications'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
+import { useApplyTheme } from 'core/theme'
 import useHasPhone from 'hooks/useHasPhone'
-import {AlertNotifications} from 'notifications'
+import { AlertNotifications } from 'notifications'
 import EmailDisconnectedBanner from 'pages/common/components/EmailDisconnectedBanner'
 import EmailDomainVerificationBanner from 'pages/common/components/EmailDomainVerificationBanner/EmailDomainVerificationBanner'
 import EmailMigrationBanner from 'pages/common/components/EmailMigrationBanner/EmailMigrationBanner'
@@ -24,16 +23,17 @@ import OutOfRecoveryCodesModal from 'pages/settings/yourProfile/twoFactorAuthent
 import useActivityTracker from '../hooks/useActivityTracker'
 import useAppShortcuts from '../hooks/useAppShortcuts'
 import usePollingManager from '../hooks/usePollingManager'
-import {useSetBanners} from '../hooks/useSetBanners'
+import { useSetBanners } from '../hooks/useSetBanners'
 import useSharedLogic from '../hooks/useSharedLogic'
-import css from './App.less'
 import UIKitRootNodeProvider from './UIKitRootNodeProvider'
+
+import css from './App.less'
 
 type Props = {
     children: ReactNode
 }
 
-export default function App({children}: Props) {
+export default function App({ children }: Props) {
     const hasGlobalNav = useDesktopOnlyShowGlobalNavFeatureFlag()
     const hasPhone = useHasPhone()
     const bannerList: Record<string, boolean> = useFlag(
@@ -43,7 +43,7 @@ export default function App({children}: Props) {
             emailDomainVerificationBanner: false,
             emailDisconnectedBanner: false,
             emailMigrationBanner: false,
-        }
+        },
     )
 
     useApplyTheme()

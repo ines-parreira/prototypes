@@ -1,20 +1,19 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 import moment from 'moment'
 
-import {fromAST} from 'common/utils'
-import {ViewType} from 'models/view/types'
-
-import {CollectionOperator, EqualityOperator} from 'state/rules/types'
+import { fromAST } from 'common/utils'
+import { ViewType } from 'models/view/types'
+import { CollectionOperator, EqualityOperator } from 'state/rules/types'
 import * as utils from 'state/views/utils'
-import {updateCustomFieldFilter} from 'state/views/utils'
-import {getAST} from 'utils'
+import { updateCustomFieldFilter } from 'state/views/utils'
+import { getAST } from 'utils'
 
 describe('utils', () => {
     describe('RecentViewStorage', () => {
         describe('get()', () => {
             it('should return undefined(invalid data stored)', () => {
                 expect(utils.recentViewsStorage.get()).toBe(undefined)
-                localStorage.setItem('recentViews', JSON.stringify({1: {}}))
+                localStorage.setItem('recentViews', JSON.stringify({ 1: {} }))
                 expect(utils.recentViewsStorage.get()).toBe(undefined)
                 localStorage.setItem('recentViews', JSON.stringify(1))
                 expect(utils.recentViewsStorage.get()).toBe(undefined)
@@ -46,14 +45,14 @@ describe('utils', () => {
                     expect(
                         moment(view.updated_datetime).isBetween(
                             beforeGetDt,
-                            now
-                        )
+                            now,
+                        ),
                     ).toBe(true)
                     expect(
                         moment(view.inserted_datetime).isBetween(
                             beforeGetDt,
-                            now
-                        )
+                            now,
+                        ),
                     ).toBe(true)
                 })
             })
@@ -71,7 +70,7 @@ describe('utils', () => {
             it('should set recent views', () => {
                 utils.recentViewsStorage.set([1, 2])
                 expect(
-                    JSON.parse(localStorage.getItem('recentViews') as string)
+                    JSON.parse(localStorage.getItem('recentViews') as string),
                 ).toEqual([1, 2])
             })
         })
@@ -80,11 +79,11 @@ describe('utils', () => {
     describe('updateFilterOperator', () => {
         it('should remove the right part of the expression if the operator is an empty operator', () => {
             const ast = getAST(
-                "gt(ticket.created_datetime, '2018-04-02T18:57:04.669744')"
+                "gt(ticket.created_datetime, '2018-04-02T18:57:04.669744')",
             )
             const res = utils.updateFilterOperator(fromAST(ast), 0, 'isEmpty')
             expect(res.toJS()).toEqual(
-                getAST('isEmpty(ticket.created_datetime)')
+                getAST('isEmpty(ticket.created_datetime)'),
             )
         })
 
@@ -92,7 +91,7 @@ describe('utils', () => {
             const ast = getAST('isEmpty(ticket.created_datetime)')
             const res = utils.updateFilterOperator(fromAST(ast), 0, 'gte')
             expect(res.toJS()).toEqual(
-                getAST("gte(ticket.created_datetime, '')")
+                getAST("gte(ticket.created_datetime, '')"),
             )
         })
 
@@ -101,17 +100,17 @@ describe('utils', () => {
                 'an absolute to a relative datetime operator',
             () => {
                 const ast = getAST(
-                    "gte(ticket.created_datetime, '2018-04-02T18:57:04.669744')"
+                    "gte(ticket.created_datetime, '2018-04-02T18:57:04.669744')",
                 )
                 const res = utils.updateFilterOperator(
                     fromAST(ast),
                     0,
-                    'gteTimedelta'
+                    'gteTimedelta',
                 )
                 expect(res.toJS()).toEqual(
-                    getAST("gteTimedelta(ticket.created_datetime, '1d')")
+                    getAST("gteTimedelta(ticket.created_datetime, '1d')"),
                 )
-            }
+            },
         )
 
         it(
@@ -119,20 +118,20 @@ describe('utils', () => {
                 'an absolute to a relative datetime operator',
             () => {
                 const ast = getAST(
-                    "gteTimedelta(ticket.created_datetime, '1d')"
+                    "gteTimedelta(ticket.created_datetime, '1d')",
                 )
                 const res = utils.updateFilterOperator(fromAST(ast), 0, 'gte')
                 expect(res.toJS()).toEqual(
-                    getAST("gte(ticket.created_datetime, '')")
+                    getAST("gte(ticket.created_datetime, '')"),
                 )
-            }
+            },
         )
 
         it('should conserve the right part if we are switching between operators of the same kind', () => {
             const ast = getAST("gte(ticket.created_datetime, '1')")
             const res = utils.updateFilterOperator(fromAST(ast), 0, 'lte')
             expect(res.toJS()).toEqual(
-                getAST("lte(ticket.created_datetime, '1')")
+                getAST("lte(ticket.created_datetime, '1')"),
             )
         })
     })
@@ -142,7 +141,7 @@ describe('utils', () => {
             const ast = getAST('gte(ticket.created_datetime, 1)')
             const res = utils.updateFilterValue(fromAST(ast), 0, 2)
             expect(res.toJS()).toEqual(
-                getAST('gte(ticket.created_datetime, 2)')
+                getAST('gte(ticket.created_datetime, 2)'),
             )
         })
 
@@ -150,7 +149,7 @@ describe('utils', () => {
             const ast = getAST("gte(ticket.created_datetime, '1')")
             const res = utils.updateFilterValue(fromAST(ast), 0, '2')
             expect(res.toJS()).toEqual(
-                getAST("gte(ticket.created_datetime, '2')")
+                getAST("gte(ticket.created_datetime, '2')"),
             )
         })
 
@@ -158,7 +157,7 @@ describe('utils', () => {
             const ast = getAST("gte(ticket.created_datetime, '1')")
             const res = utils.updateFilterValue(fromAST(ast), 0, [1])
             expect(res.toJS()).toEqual(
-                getAST('gte(ticket.created_datetime, [1])')
+                getAST('gte(ticket.created_datetime, [1])'),
             )
         })
 
@@ -166,7 +165,7 @@ describe('utils', () => {
             const ast = getAST("gte(ticket.created_datetime, '1')")
             const res = utils.updateFilterValue(fromAST(ast), 0, null)
             expect(res.toJS()).toEqual(
-                getAST("gte(ticket.created_datetime, '')")
+                getAST("gte(ticket.created_datetime, '')"),
             )
         })
     })
@@ -178,22 +177,22 @@ describe('utils', () => {
                 fromAST(ast),
                 0,
                 10,
-                'containsAny'
+                'containsAny',
             )
 
             expect(res.toJS()).toEqual(
-                getAST('containsAny(ticket.custom_fields[10].value, [])')
+                getAST('containsAny(ticket.custom_fields[10].value, [])'),
             )
         })
 
         it('should update existing formatted AST', () => {
             const ast = getAST(
-                'containsAny(ticket.custom_fields[10].value, [])'
+                'containsAny(ticket.custom_fields[10].value, [])',
             )
             const res = updateCustomFieldFilter(fromAST(ast), 0, 11, 'eq')
 
             expect(res.toJS()).toEqual(
-                getAST("eq(ticket.custom_fields[11].value, '')")
+                getAST("eq(ticket.custom_fields[11].value, '')"),
             )
         })
     })
@@ -202,8 +201,8 @@ describe('utils', () => {
         it('should return index url with no active view', () => {
             const url = utils.activeViewUrl(
                 fromJS({}),
-                {pathname: '/app/ticket/1', search: ''},
-                fromJS({})
+                { pathname: '/app/ticket/1', search: '' },
+                fromJS({}),
             )
             expect(url).toBe('/app')
         })
@@ -218,7 +217,7 @@ describe('utils', () => {
                     pathname: '/app/ticket/1',
                     search: '',
                 },
-                fromJS({})
+                fromJS({}),
             )
             expect(url).toBe('/app/tickets/1')
         })
@@ -233,7 +232,7 @@ describe('utils', () => {
                     pathname: '/app/customer/2',
                     search: '',
                 },
-                fromJS({})
+                fromJS({}),
             )
             expect(url).toBe('/app/customers/2')
         })
@@ -248,7 +247,7 @@ describe('utils', () => {
                     pathname: '/app/ticket/1',
                     search: '',
                 },
-                fromJS({})
+                fromJS({}),
             )
             expect(url).toBe('/app/ticket/1')
         })
@@ -263,7 +262,7 @@ describe('utils', () => {
                     pathname: '/app/pizza-pepperoni',
                     search: '',
                 },
-                fromJS({})
+                fromJS({}),
             )
             expect(url).toBe('/app/pizza-pepperoni')
         })
@@ -278,7 +277,7 @@ describe('utils', () => {
                     pathname: '/app/pizza-pepperoni',
                     search: '?pizza=pepperoni',
                 },
-                fromJS({})
+                fromJS({}),
             )
             expect(url).toBe('/app/pizza-pepperoni?pizza=pepperoni')
         })
@@ -295,7 +294,7 @@ describe('utils', () => {
                     pathname: '/app/ticket/1',
                     search: '',
                 },
-                fromJS({current_cursor: cursor})
+                fromJS({ current_cursor: cursor }),
             )
             expect(url).toBe(`/app/tickets/search?q=pizza&cursor=${cursor}`)
         })
@@ -311,7 +310,7 @@ describe('utils', () => {
                     pathname: '/app/ticket/1',
                     search: '',
                 },
-                fromJS({current_cursor: cursor})
+                fromJS({ current_cursor: cursor }),
             )
             expect(url).toBe(`/app/tickets/1?cursor=${cursor}`)
         })
@@ -333,7 +332,7 @@ describe('utils', () => {
             expect(utils.rawify("aaa'b'bb")).toEqual("'aaa\\'b\\'bb'")
             expect(utils.rawify("aaa\\'bbb")).toEqual("'aaa\\\\\\'bbb'")
             expect(utils.rawify("aaa\\'b\\'bb")).toEqual(
-                "'aaa\\\\\\'b\\\\\\'bb'"
+                "'aaa\\\\\\'b\\\\\\'bb'",
             )
             expect(utils.rawify("aaa\\\\'bbb")).toEqual("'aaa\\\\\\\\\\'bbb'")
         })
@@ -379,7 +378,7 @@ describe('utils', () => {
 
         it('should return filter arguments when filter value is expressed as an ArrayExpression', () => {
             const ast = getAST(
-                "containsAny(ticket.channel, ['email', 'phone'])"
+                "containsAny(ticket.channel, ['email', 'phone'])",
             )
             expect(utils.getViewFilters(ast)).toEqual([
                 {

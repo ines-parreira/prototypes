@@ -1,33 +1,34 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { Component } from 'react'
+
 import classnames from 'classnames'
-import {Map, List} from 'immutable'
+import { List, Map } from 'immutable'
 import _debounce from 'lodash/debounce'
-import React, {Component} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {Link} from 'react-router-dom'
+import { connect, ConnectedProps } from 'react-redux'
+import { Link } from 'react-router-dom'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import navbarCss from 'assets/css/navbar.less'
-
-import {UserSettingType} from 'config/types/user'
-import {MAX_TICKET_COUNT_PER_VIEW} from 'config/views'
-import {ViewType} from 'models/view/types'
+import { UserSettingType } from 'config/types/user'
+import { MAX_TICKET_COUNT_PER_VIEW } from 'config/views'
+import { ViewType } from 'models/view/types'
 import ViewCount from 'pages/common/components/ViewCount/ViewCount'
 import ViewName from 'pages/common/components/ViewName/ViewName'
 import css from 'pages/common/components/ViewNavbarView/ViewNavbarView.less'
 import ViewNavbarViewEditor from 'pages/common/components/ViewNavbarView/ViewNavbarViewEditor'
-import {moveIndex, MoveIndexDirection} from 'pages/common/utils/keyboard'
+import { moveIndex, MoveIndexDirection } from 'pages/common/utils/keyboard'
 import history from 'pages/history'
 import shortcutManager from 'services/shortcutManager/index'
-import {makeGetSettingsByType} from 'state/currentUser/selectors'
-import {closePanels} from 'state/layout/actions'
-import {RootState} from 'state/types'
+import { makeGetSettingsByType } from 'state/currentUser/selectors'
+import { closePanels } from 'state/layout/actions'
+import { RootState } from 'state/types'
 import {
     getActiveView,
     makeGetView,
     makeGetViewCount,
     makeGetViewsByType,
 } from 'state/views/selectors'
-import {getPluralObjectName} from 'utils'
+import { getPluralObjectName } from 'utils'
 
 const popupEnterMessage = 'Create, re-order & hide views'
 const popupLeaveMessage = 'Leave edit mode'
@@ -64,7 +65,7 @@ class ViewNavbarView extends Component<Props, State> {
         this.setState({
             viewCursor: this._getViewCursor(
                 nextProps.activeView,
-                nextProps.views
+                nextProps.views,
             ),
         })
     }
@@ -84,7 +85,7 @@ class ViewNavbarView extends Component<Props, State> {
         // hide hidden views if we are not in edit mode
         if (!this.state.hasEditMode) {
             return this.props.views.filter(
-                (view: Map<any, any>) => !view.get('hide', false)
+                (view: Map<any, any>) => !view.get('hide', false),
             ) as List<any>
         }
 
@@ -93,7 +94,7 @@ class ViewNavbarView extends Component<Props, State> {
 
     _getViewCursor(activeView: Map<any, any>, views: List<any>) {
         return views.findIndex(
-            (v: Map<any, any>) => v.get('id') === activeView.get('id')
+            (v: Map<any, any>) => v.get('id') === activeView.get('id'),
         )
     }
 
@@ -109,21 +110,21 @@ class ViewNavbarView extends Component<Props, State> {
             {
                 direction,
                 rotate: true,
-            }
+            },
         )
-        this.setState({viewCursor})
+        this.setState({ viewCursor })
 
         const objectName = getPluralObjectName(this.props.viewType)
         const viewUrl = this._getViewUrl(
             objectName,
-            displayedViews.get(viewCursor)
+            displayedViews.get(viewCursor),
         )
         this._updateViewUrl(viewUrl)
     }
 
     _toggleHasEditMode = () => {
-        const {hasEditMode} = this.state
-        this.setState({hasEditMode: !hasEditMode})
+        const { hasEditMode } = this.state
+        this.setState({ hasEditMode: !hasEditMode })
     }
 
     _getViewUrl = (objectName: string, view: Map<any, any>) => {
@@ -133,9 +134,9 @@ class ViewNavbarView extends Component<Props, State> {
     }
 
     render() {
-        const {activeView, viewType, settings, isLoading, closePanels} =
+        const { activeView, viewType, settings, isLoading, closePanels } =
             this.props
-        const {hasEditMode} = this.state
+        const { hasEditMode } = this.state
         // we use this to build urls
         const objectName = getPluralObjectName(viewType)
 
@@ -152,7 +153,7 @@ class ViewNavbarView extends Component<Props, State> {
                         <i
                             className={classnames(
                                 'material-icons',
-                                navbarCss.icon
+                                navbarCss.icon,
                             )}
                         >
                             view_list
@@ -208,7 +209,7 @@ class ViewNavbarView extends Component<Props, State> {
                                 })
 
                                 const viewCount = this.props.getViewCount(
-                                    view.get('id')
+                                    view.get('id'),
                                 )
                                 let count = ''
                                 let isMoreThanMaxCount = false
@@ -230,13 +231,13 @@ class ViewNavbarView extends Component<Props, State> {
                                         key={key}
                                         className={classnames(
                                             navbarCss['link-wrapper'],
-                                            navbarCss.isNested
+                                            navbarCss.isNested,
                                         )}
                                     >
                                         <Link
                                             to={this._getViewUrl(
                                                 objectName,
-                                                view
+                                                view,
                                             )}
                                             className={classes}
                                             title={`${
@@ -293,7 +294,7 @@ const connector = connect(
             settings: getSettingsByType(state, props.settingType),
         }
     },
-    {closePanels}
+    { closePanels },
 )
 
 export default connector(ViewNavbarView)

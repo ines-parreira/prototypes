@@ -1,15 +1,14 @@
-import {render, screen} from '@testing-library/react'
-
 import React from 'react'
 
+import { render, screen } from '@testing-library/react'
+
 import {
-    NavBarContextType,
     NavBarContext,
+    NavBarContextType,
     NavBarDisplayMode,
 } from 'common/navigation/hooks/useNavBar/context'
-import {useNavBar} from 'common/navigation/hooks/useNavBar/useNavBar'
-
-import {Panels} from 'core/layout/panels'
+import { useNavBar } from 'common/navigation/hooks/useNavBar/useNavBar'
+import { Panels } from 'core/layout/panels'
 
 import NavbarPanel from '../NavbarPanel'
 
@@ -37,7 +36,7 @@ describe('NavbarPanel', () => {
                 <Panels size={100}>
                     <NavbarPanel {...defaultProps} />
                 </Panels>
-            </NavBarContext.Provider>
+            </NavBarContext.Provider>,
         )
 
     it('renders Panel component when display mode is Open', () => {
@@ -46,10 +45,10 @@ describe('NavbarPanel', () => {
             navBarDisplay: NavBarDisplayMode.Open,
         })
 
-        const {container} = renderWithContext()
+        const { container } = renderWithContext()
 
         expect(
-            container.querySelector('[data-panel-name="navigation"]')
+            container.querySelector('[data-panel-name="navigation"]'),
         ).toBeInTheDocument()
         expect(screen.getByText('Test Content')).toBeInTheDocument()
     })
@@ -61,12 +60,12 @@ describe('NavbarPanel', () => {
             isNavHovered: true,
         })
 
-        const {container} = renderWithContext()
+        const { container } = renderWithContext()
 
         expect(
             container.querySelector(
-                '[data-name="navbar-collapsible-container"]'
-            )
+                '[data-name="navbar-collapsible-container"]',
+            ),
         ).toBeInTheDocument()
         expect(screen.getByText('Test Content')).toBeInTheDocument()
     })

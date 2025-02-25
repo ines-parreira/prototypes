@@ -1,6 +1,8 @@
-import {Badge, ColorType} from '@gorgias/merchant-ui-kit'
-import HTTPStatus from 'httpstatus'
 import React from 'react'
+
+import HTTPStatus from 'httpstatus'
+
+import { Badge, ColorType } from '@gorgias/merchant-ui-kit'
 
 type Props = {
     hasNoRequest?: boolean

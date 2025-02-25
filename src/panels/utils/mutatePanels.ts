@@ -1,5 +1,4 @@
-import {Config} from '../types'
-
+import { Config } from '../types'
 import clamp from './clamp'
 
 type Options = {
@@ -79,7 +78,7 @@ export default function mutatePanels({
                 newWidths[i] = clamp(
                     curWidth + -remainingDelta,
                     minWidth,
-                    maxWidth
+                    maxWidth,
                 )
 
                 // we also constrain the remainingDelta here to figure
@@ -94,7 +93,7 @@ export default function mutatePanels({
                 newWidths[i] = clamp(
                     curWidth + remainingDelta,
                     minWidth,
-                    maxWidth
+                    maxWidth,
                 )
 
                 // we adjust the remaining delta by substracting the

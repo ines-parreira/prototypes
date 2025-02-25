@@ -1,15 +1,16 @@
-import {act, fireEvent, screen} from '@testing-library/react'
 import React from 'react'
 
+import { act, fireEvent, screen } from '@testing-library/react'
+
 import NodeEditorDrawerContext from 'pages/automate/workflows/editor/visualBuilder/NodeEditorDrawerContext'
-import {TranslationsPreviewContext} from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
-import {VisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
-import {buildNodeCommonProperties} from 'pages/automate/workflows/models/visualBuilderGraph.model'
+import { TranslationsPreviewContext } from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
+import { VisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
+import { buildNodeCommonProperties } from 'pages/automate/workflows/models/visualBuilderGraph.model'
 import {
     ChannelTriggerNodeType,
     VisualBuilderGraph,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import {renderWithStore} from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 import ChannelTriggerEditor from '../ChannelTriggerEditor'
 
@@ -53,7 +54,9 @@ describe('<ChannelTriggerEditor />', () => {
                     isNew: false,
                 }}
             >
-                <NodeEditorDrawerContext.Provider value={{onClose: jest.fn()}}>
+                <NodeEditorDrawerContext.Provider
+                    value={{ onClose: jest.fn() }}
+                >
                     <TranslationsPreviewContext.Provider
                         value={{
                             previewLanguageList: [],
@@ -66,7 +69,7 @@ describe('<ChannelTriggerEditor />', () => {
                     </TranslationsPreviewContext.Provider>
                 </NodeEditorDrawerContext.Provider>
             </VisualBuilderContext.Provider>,
-            {}
+            {},
         )
 
         act(() => {

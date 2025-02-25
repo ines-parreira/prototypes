@@ -6,7 +6,7 @@
  *
  * See https://en.wikipedia.org/wiki/Levenshtein_distance for more information.
  */
-import {distance} from 'fastest-levenshtein'
+import { distance } from 'fastest-levenshtein'
 
 export const computeTextSimilarityScore = (a: string, b: string): number => {
     const an = !!a ? a.length : 0

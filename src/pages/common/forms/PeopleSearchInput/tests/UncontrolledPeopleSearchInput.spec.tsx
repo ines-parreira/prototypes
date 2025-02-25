@@ -1,20 +1,21 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
 
 import UncontrolledPeopleSearchInput from '../UncontrolledPeopleSearchInput'
 
 const teams: Map<any, any> = fromJS({
     all: [
-        {id: 1, name: 'Team 1', decoration: {}},
-        {id: 2, name: 'Team 2', decoration: {}},
+        { id: 1, name: 'Team 1', decoration: {} },
+        { id: 2, name: 'Team 2', decoration: {} },
     ],
 })
 
 const users: Map<any, any> = fromJS({
     all: [
-        {id: 1, name: 'User 1', email: 'email1@foo.com', meta: {}},
-        {id: 2, name: 'User 2', email: 'email2@foo.com', meta: {}},
+        { id: 1, name: 'User 1', email: 'email1@foo.com', meta: {} },
+        { id: 2, name: 'User 2', email: 'email2@foo.com', meta: {} },
     ],
 })
 
@@ -29,13 +30,13 @@ describe('<UncontrolledPeopleSearchInput/>', () => {
 
     describe('render()', () => {
         it('should render', () => {
-            const {container} = render(
+            const { container } = render(
                 <UncontrolledPeopleSearchInput
                     teams={teams.get('all')}
                     users={users.get('all')}
                     onTeamClick={onTeamClick}
                     onUserClick={onUserClick}
-                />
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()

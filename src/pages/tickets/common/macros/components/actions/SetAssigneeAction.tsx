@@ -1,6 +1,7 @@
-import {fromJS, Map} from 'immutable'
-import React, {Component, ComponentProps} from 'react'
-import {DropdownMenu} from 'reactstrap'
+import React, { Component, ComponentProps } from 'react'
+
+import { fromJS, Map } from 'immutable'
+import { DropdownMenu } from 'reactstrap'
 
 import TicketAssignee from 'pages/tickets/detail/components/TicketDetails/TicketAssignee/TicketAssignee'
 
@@ -23,20 +24,25 @@ export default class SetAssigneeAction extends Component<Props> {
     setUserAssignee(user: Maybe<Record<string, unknown>>) {
         this.props.updateActionArgs(
             this.props.index,
-            fromJS({assignee_user: user})
+            fromJS({ assignee_user: user }),
         )
     }
 
     setTeamAssignee(team: Maybe<Record<string, unknown>>) {
         this.props.updateActionArgs(
             this.props.index,
-            fromJS({assignee_team: team})
+            fromJS({ assignee_team: team }),
         )
     }
 
     render() {
-        const {action, handleTeams, handleUsers, dropdownContainer, disabled} =
-            this.props
+        const {
+            action,
+            handleTeams,
+            handleUsers,
+            dropdownContainer,
+            disabled,
+        } = this.props
         return (
             <TicketAssignee
                 currentAssigneeUser={action.getIn([

@@ -1,6 +1,6 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import {AnalyticsCustomReport} from 'models/stat/types'
+import { AnalyticsCustomReport } from 'models/stat/types'
 
 export type CustomReportsSliceState = {
     customReports: AnalyticsCustomReport | null
@@ -16,7 +16,7 @@ export const customReportsSlice = createSlice({
     reducers: {
         createCustomReport: (
             state,
-            action: PayloadAction<AnalyticsCustomReport>
+            action: PayloadAction<AnalyticsCustomReport>,
         ) => {
             state.customReports = action.payload
         },
@@ -25,9 +25,9 @@ export const customReportsSlice = createSlice({
             action: PayloadAction<{
                 id: number
                 updatedReport: Partial<AnalyticsCustomReport>
-            }>
+            }>,
         ) => {
-            const {id, updatedReport} = action.payload
+            const { id, updatedReport } = action.payload
             if (state.customReports?.id === id) {
                 state.customReports = {
                     ...state.customReports,

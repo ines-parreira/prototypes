@@ -5,9 +5,9 @@ export const DISCOUNT_TYPE = {
 }
 
 export const DISCOUNT_CHOICES = [
-    {value: DISCOUNT_TYPE.PERCENTAGE, label: 'Percentage'},
-    {value: DISCOUNT_TYPE.FIXED, label: 'Fixed amount'},
-    {value: DISCOUNT_TYPE.FREE_SHIPPING, label: 'Free shipping'},
+    { value: DISCOUNT_TYPE.PERCENTAGE, label: 'Percentage' },
+    { value: DISCOUNT_TYPE.FIXED, label: 'Fixed amount' },
+    { value: DISCOUNT_TYPE.FREE_SHIPPING, label: 'Free shipping' },
 ]
 
 export const DISCOUNT_USE_TYPE = {
@@ -17,9 +17,12 @@ export const DISCOUNT_USE_TYPE = {
 }
 
 export const DISCOUNT_USE_CHOICES = [
-    {value: DISCOUNT_USE_TYPE.NO_LIMIT, label: 'No limit'},
-    {value: DISCOUNT_USE_TYPE.ONE_PER_USER, label: 'One use per customer '},
-    {value: DISCOUNT_USE_TYPE.ONE_USE, label: 'One use, for only one customer'},
+    { value: DISCOUNT_USE_TYPE.NO_LIMIT, label: 'No limit' },
+    { value: DISCOUNT_USE_TYPE.ONE_PER_USER, label: 'One use per customer ' },
+    {
+        value: DISCOUNT_USE_TYPE.ONE_USE,
+        label: 'One use, for only one customer',
+    },
 ]
 
 export const DISCOUNT_MODAL_NAME = 'ADD_DISCOUNT'

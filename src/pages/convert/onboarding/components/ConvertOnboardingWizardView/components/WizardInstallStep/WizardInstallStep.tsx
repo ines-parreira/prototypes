@@ -1,12 +1,13 @@
-import {Map} from 'immutable'
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
+import { Map } from 'immutable'
+
+import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
 import useAppSelector from 'hooks/useAppSelector'
-import {BundleInstallationMethod} from 'models/convert/bundle/types'
-import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
+import { BundleInstallationMethod } from 'models/convert/bundle/types'
+import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 import useThemeAppExtensionInstallation from 'pages/integrations/integration/components/gorgias_chat/hooks/useThemeAppExtensionInstallation'
-import {getIntegrationById} from 'state/integrations/selectors'
+import { getIntegrationById } from 'state/integrations/selectors'
 
 import css from './WizardInstallStep.less'
 
@@ -35,21 +36,21 @@ const WizardInstallStep = ({
     }, [integration])
 
     const storeIntegration = useAppSelector(
-        getIntegrationById(storeIntegrationId)
+        getIntegrationById(storeIntegrationId),
     )
 
     const isConnectedToShopify = useMemo(
         () =>
             Boolean(
                 storeIntegration &&
-                    storeIntegration.get('type') === SHOPIFY_INTEGRATION_TYPE
+                    storeIntegration.get('type') === SHOPIFY_INTEGRATION_TYPE,
             ),
-        [storeIntegration]
+        [storeIntegration],
     )
 
-    const {shouldUseThemeAppExtensionInstallation} =
+    const { shouldUseThemeAppExtensionInstallation } =
         useThemeAppExtensionInstallation(
-            isConnectedToShopify ? storeIntegration.toJS() : undefined
+            isConnectedToShopify ? storeIntegration.toJS() : undefined,
         )
 
     const manualInstallationLabel = useMemo(() => {

@@ -1,7 +1,7 @@
-import {flextree} from 'd3-flextree'
-import {produce} from 'immer'
+import { flextree } from 'd3-flextree'
+import { produce } from 'immer'
 import _keyBy from 'lodash/keyBy'
-import {ulid} from 'ulidx'
+import { ulid } from 'ulidx'
 
 import {
     buildNodeCommonProperties,
@@ -34,14 +34,14 @@ import {
     VisualBuilderNode,
     VisualBuilderTriggerNode,
 } from '../../models/visualBuilderGraph.types'
-import {WorkflowTransition} from '../../models/workflowConfiguration.types'
+import { WorkflowTransition } from '../../models/workflowConfiguration.types'
 
 export function greyOutBranch(
     graph: VisualBuilderGraph,
     nodeId: string,
-    isGreyedOut: boolean
+    isGreyedOut: boolean,
 ): VisualBuilderGraph {
-    const {nodes} = graph
+    const { nodes } = graph
     const childrenIds: Set<string> = new Set()
     walkVisualBuilderGraph(graph, nodeId, (node) => {
         childrenIds.add(node.id)
@@ -53,7 +53,7 @@ export function greyOutBranch(
                 ? produce(n, (draft) => {
                       draft.data.isGreyedOut = isGreyedOut
                   })
-                : n
+                : n,
         ) as VisualBuilderGraph['nodes'],
     }
 }
@@ -61,16 +61,16 @@ export function greyOutBranch(
 export function deleteBranch(
     graph: VisualBuilderGraph,
     nodeId: string,
-    {keepIncomingEdge}: {keepIncomingEdge?: boolean} = {}
+    { keepIncomingEdge }: { keepIncomingEdge?: boolean } = {},
 ): VisualBuilderGraph {
-    const {nodes, edges} = graph
+    const { nodes, edges } = graph
     const nodeIdsToDelete: Set<string> = new Set()
     const edgeIdsToDelete: Set<string> = new Set()
     let nodeToDeleteIncomingEdge: VisualBuilderEdge | undefined
     walkVisualBuilderGraph(
         graph,
         nodeId,
-        (node, {incomingEdge, outgoingEdges}) => {
+        (node, { incomingEdge, outgoingEdges }) => {
             nodeIdsToDelete.add(node.id)
             if (incomingEdge && !nodeToDeleteIncomingEdge) {
                 nodeToDeleteIncomingEdge = incomingEdge
@@ -82,14 +82,14 @@ export function deleteBranch(
             )
                 edgeIdsToDelete.add(incomingEdge.id)
             outgoingEdges.forEach((edge) => edgeIdsToDelete.add(edge.id))
-        }
+        },
     )
     if (!nodeToDeleteIncomingEdge) return graph
 
     return {
         ...graph,
         nodes: nodes.filter(
-            (n) => !nodeIdsToDelete.has(n.id)
+            (n) => !nodeIdsToDelete.has(n.id),
         ) as VisualBuilderGraph['nodes'],
         edges: edges.filter((e) => !edgeIdsToDelete.has(e.id)),
     }
@@ -188,7 +188,7 @@ export const buildConditionsNode = (): ConditionsNodeType => {
 }
 
 export const buildEndNode = (
-    action: EndNodeType['data']['action']
+    action: EndNodeType['data']['action'],
 ): EndNodeType => {
     const id = ulid()
     return {
@@ -238,7 +238,7 @@ export const buildHttpRequestNode = (): HttpRequestNodeType => {
 }
 
 export const buildShopperAuthenticationNode = (
-    storeIntegrationId: number
+    storeIntegrationId: number,
 ): ShopperAuthenticationNodeType => {
     const id = ulid()
     return {
@@ -556,7 +556,7 @@ export function computeNodesPositions<
         const x = flextreeNodesById[node.id]?.x ?? node.position.x
         const y = flextreeNodesById[node.id]?.y ?? node.position.y
 
-        return {...node, position: {x, y}}
+        return { ...node, position: { x, y } }
     }) as [T, ...VisualBuilderNode[]]
 
     return {
@@ -566,7 +566,7 @@ export function computeNodesPositions<
 }
 
 export function getFallibleNodeSuccessConditions(
-    nodeId: string
+    nodeId: string,
 ): WorkflowTransition['conditions'] {
     return {
         and: [

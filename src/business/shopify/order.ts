@@ -1,7 +1,11 @@
-import {fromJS, List, Map} from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 
-import {formatPrice} from './number'
-import {getRefundAmount, getRestockType, getTransactionToRefund} from './refund'
+import { formatPrice } from './number'
+import {
+    getRefundAmount,
+    getRestockType,
+    getTransactionToRefund,
+} from './refund'
 
 export function initCancelOrderPayload(order: Map<any, any>): Map<any, any> {
     return fromJS({
@@ -13,7 +17,7 @@ export function initCancelOrderPayload(order: Map<any, any>): Map<any, any> {
 
 export function initRefundOrderPayload(
     order: Map<any, any>,
-    notify = true
+    notify = true,
 ): Map<any, any> {
     const currency = order.getIn([
         'total_price_set',
@@ -32,7 +36,7 @@ export function initRefundOrderPayload(
                     fulfillment_status: lineItem.get('fulfillment_status'),
                     restock_type: getRestockType(lineItem),
                     quantity: getLineItemQuantity(order, lineItem),
-                }) as Map<any, any>
+                }) as Map<any, any>,
         ),
         shipping: {
             amount: '0.00',
@@ -54,13 +58,13 @@ export function initRefundOrderLineItems(order: Map<any, any>): List<any> {
                 variant_title: lineItem.get('variant_title'),
                 sku: lineItem.get('sku'),
                 total_discount_set: lineItem.get('total_discount_set'),
-            }) as Map<any, any>
+            }) as Map<any, any>,
     ) as List<any>
 }
 
 export function getLineItemQuantity(
     order: Map<any, any>,
-    lineItem: Map<any, any>
+    lineItem: Map<any, any>,
 ): number {
     let quantity = lineItem.get('quantity') as number
 
@@ -70,12 +74,12 @@ export function getLineItemQuantity(
                 .filter(
                     (refundLineItem: Map<any, any>) =>
                         refundLineItem.get('line_item_id') ===
-                        lineItem.get('id')
+                        lineItem.get('id'),
                 )
                 .forEach((refundLineItem: Map<any, any>) => {
                     quantity -= refundLineItem.get('quantity')
                 })
-        }
+        },
     )
 
     return quantity
@@ -83,13 +87,13 @@ export function getLineItemQuantity(
 
 export function getFinalCancelOrderPayload(
     payload: Map<any, any>,
-    refund: Map<any, any>
+    refund: Map<any, any>,
 ): Map<any, any> {
     const refundPayload = payload.get('refund')
 
     return payload.set(
         'refund',
-        getFinalRefundOrderPayload(refundPayload, refund)
+        getFinalRefundOrderPayload(refundPayload, refund),
     )
 }
 
@@ -102,7 +106,7 @@ export const getFormattedRefundAmount = (payload: Map<any, any>) => {
 
 export function getFinalRefundOrderPayload(
     payload: Map<any, any>,
-    refund: Map<any, any>
+    refund: Map<any, any>,
 ): Map<any, any> {
     let finalPayload = payload
 
@@ -124,12 +128,12 @@ export function getFinalRefundOrderPayload(
             refundLineItems
                 .filter(
                     (refundLineItem: Map<any, any>) =>
-                        !!refundLineItem.get('quantity')
+                        !!refundLineItem.get('quantity'),
                 )
                 .map((refundLineItem: Map<any, any>) => {
                     let newLineItem = refundLineItem.set(
                         'restock_type',
-                        getRestockType(refundLineItem, restock)
+                        getRestockType(refundLineItem, restock),
                     )
 
                     const suggestedRefundLineItem = (
@@ -137,7 +141,7 @@ export function getFinalRefundOrderPayload(
                     ).find(
                         (suggestedLineItem: Map<any, any>) =>
                             suggestedLineItem.get('line_item_id') ===
-                            refundLineItem.get('line_item_id')
+                            refundLineItem.get('line_item_id'),
                     ) as Maybe<Map<any, any>>
 
                     if (suggestedRefundLineItem) {
@@ -148,13 +152,13 @@ export function getFinalRefundOrderPayload(
                         if (!locationId) {
                             newLineItem = newLineItem.set(
                                 'restock_type',
-                                'no_restock'
+                                'no_restock',
                             )
                         }
                     }
 
                     return newLineItem.remove('fulfillment_status')
-                })
+                }),
         )
 
     const transactions = getTransactionToRefund(refund, amount)
@@ -163,8 +167,8 @@ export function getFinalRefundOrderPayload(
     finalPayload = finalPayload.set(
         'transactions',
         transactions.map((transaction: Map<any, any>) =>
-            transaction.set('kind', 'refund')
-        )
+            transaction.set('kind', 'refund'),
+        ),
     )
 
     return finalPayload

@@ -1,8 +1,8 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {IntegrationType} from 'models/integration/constants'
+import { IntegrationType } from 'models/integration/constants'
 
-import {App} from '../../types'
+import { App } from '../../types'
 import useGetAppFromTemplateApp from '../useGetAppFromTemplateApp'
 
 describe('useGetAppFromTemplateApp()', () => {
@@ -32,26 +32,30 @@ describe('useGetAppFromTemplateApp()', () => {
     })
 
     it('should get Shopify app from template', () => {
-        const {result} = renderHook(() => useGetAppFromTemplateApp({apps}))
+        const { result } = renderHook(() => useGetAppFromTemplateApp({ apps }))
 
-        expect(result.current({type: 'shopify'})).toEqual(shopifyApp)
+        expect(result.current({ type: 'shopify' })).toEqual(shopifyApp)
     })
 
     it('should get Recharge app from template', () => {
-        const {result} = renderHook(() => useGetAppFromTemplateApp({apps}))
+        const { result } = renderHook(() => useGetAppFromTemplateApp({ apps }))
 
-        expect(result.current({type: 'recharge'})).toEqual(rechargeApp)
+        expect(result.current({ type: 'recharge' })).toEqual(rechargeApp)
     })
 
     it('should get existing non native app from template', () => {
-        const {result} = renderHook(() => useGetAppFromTemplateApp({apps}))
+        const { result } = renderHook(() => useGetAppFromTemplateApp({ apps }))
 
-        expect(result.current({type: 'app', app_id: 'someid'})).toEqual(testApp)
+        expect(result.current({ type: 'app', app_id: 'someid' })).toEqual(
+            testApp,
+        )
     })
 
     it('should return undefined is app does not exist', () => {
-        const {result} = renderHook(() => useGetAppFromTemplateApp({apps}))
+        const { result } = renderHook(() => useGetAppFromTemplateApp({ apps }))
 
-        expect(result.current({type: 'app', app_id: 'someid2'})).toBeUndefined()
+        expect(
+            result.current({ type: 'app', app_id: 'someid2' }),
+        ).toBeUndefined()
     })
 })

@@ -1,7 +1,8 @@
 import React from 'react'
+
 import ReactStars from 'react-rating-stars-component'
 
-import {STAR_COLORS, DEFAULT_SIZE} from './constants'
+import { DEFAULT_SIZE, STAR_COLORS } from './constants'
 
 type Props = {
     value: number

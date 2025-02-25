@@ -1,22 +1,21 @@
-import {fireEvent, render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {Provider} from 'react-redux'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {fetchShopTags} from 'models/integration/resources/shopify'
-import {ShopifyTags} from 'models/integration/types'
-import {LeafTemplate} from 'models/widget/types'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-
-import {ShopifyContext} from 'Widgets/modules/Shopify/contexts/ShopifyContext'
-import {FALLBACK_VALUE} from 'Widgets/modules/Template/modules/Field'
+import { fetchShopTags } from 'models/integration/resources/shopify'
+import { ShopifyTags } from 'models/integration/types'
+import { LeafTemplate } from 'models/widget/types'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
+import { ShopifyContext } from 'Widgets/modules/Shopify/contexts/ShopifyContext'
+import { FALLBACK_VALUE } from 'Widgets/modules/Template/modules/Field'
 
 import {
-    EditableListField,
     editableListCustomization,
+    EditableListField,
 } from '../EditableListField'
 
 jest.mock('models/integration/resources/shopify', () => {
@@ -42,7 +41,7 @@ const widgetContextValue = {
         customer_id: null,
     },
 }
-const integrationContextValue = {integration: fromJS({}), integrationId: 1}
+const integrationContextValue = { integration: fromJS({}), integrationId: 1 }
 
 describe('<EditableListField/>', () => {
     const mockStore = configureMockStore([thunk])
@@ -50,22 +49,22 @@ describe('<EditableListField/>', () => {
         infobarActions: {
             shopify: {
                 cancelOrder: {},
-                createOrder: fromJS({payload: {}, loading: false}),
+                createOrder: fromJS({ payload: {}, loading: false }),
                 refundOrder: {},
                 editOrder: {},
                 editShippingAddress: {},
             },
         },
     }
-    const integrationContextData = {integration: fromJS({}), integrationId: 1}
+    const integrationContextData = { integration: fromJS({}), integrationId: 1 }
 
     it('should render an empty list because no options has been given', () => {
-        const {container} = render(
+        const { container } = render(
             <ShopifyContext.Provider value={widgetContextValue}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <EditableListField {...minProps} />
                 </IntegrationContext.Provider>
-            </ShopifyContext.Provider>
+            </ShopifyContext.Provider>,
         )
 
         expect(container).toMatchSnapshot()
@@ -73,12 +72,12 @@ describe('<EditableListField/>', () => {
 
     it('should render a list with some tags in it', () => {
         minProps.selectedOptions = 'cool, super'
-        const {container} = render(
+        const { container } = render(
             <ShopifyContext.Provider value={widgetContextValue}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <EditableListField {...minProps} />
                 </IntegrationContext.Provider>
-            </ShopifyContext.Provider>
+            </ShopifyContext.Provider>,
         )
 
         expect(container).toMatchSnapshot()
@@ -119,7 +118,7 @@ describe('<EditableListField/>', () => {
                             />
                         </IntegrationContext.Provider>
                     </ShopifyContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             const input = screen.getAllByPlaceholderText('Add tags...')[0]
@@ -129,7 +128,7 @@ describe('<EditableListField/>', () => {
             expect(fetchShopTags).toHaveBeenCalledTimes(1)
             expect(fetchShopTags).toHaveBeenCalledWith(
                 integrationContextData.integrationId,
-                tagsType
+                tagsType,
             )
         })
     })
@@ -148,21 +147,21 @@ describe('editableListCustomization', () => {
         'has a dataMatcher that matches or not the given path',
         (match, output) => {
             expect(editableListCustomization.dataMatcher?.test(match)).toBe(
-                output
+                output,
             )
-        }
+        },
     )
 
     it('should return a getValueString function returning null', () => {
         expect(
-            editableListCustomization.getValueString({}, {} as LeafTemplate)
+            editableListCustomization.getValueString({}, {} as LeafTemplate),
         ).toBeNull()
     })
 
     it('should return a getValue function whose return is the ConnectedEditableListField', () => {
         const value = editableListCustomization.getValue(
             'something',
-            {} as LeafTemplate
+            {} as LeafTemplate,
         ) as React.ReactElement<React.ComponentProps<typeof EditableListField>>
 
         expect(value.props.selectedOptions).toBe('something')
@@ -170,7 +169,7 @@ describe('editableListCustomization', () => {
 
     it('should return a getValue function whose return is the fallback value if source is not a string', () => {
         expect(editableListCustomization.getValue({}, {} as LeafTemplate)).toBe(
-            FALLBACK_VALUE
+            FALLBACK_VALUE,
         )
     })
 })

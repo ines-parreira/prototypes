@@ -1,7 +1,7 @@
-import {UseQueryOptions, useQuery} from '@tanstack/react-query'
-import {AxiosError} from 'axios'
+import { useQuery, UseQueryOptions } from '@tanstack/react-query'
+import { AxiosError } from 'axios'
 
-import {getCustomer} from 'models/customer/resources'
+import { getCustomer } from 'models/customer/resources'
 
 export const customersKeys = {
     all: () => ['customers'] as const,
@@ -16,7 +16,7 @@ export const useGetCustomer = <TData = Awaited<ReturnType<typeof getCustomer>>>(
         Awaited<ReturnType<typeof getCustomer>>,
         AxiosError,
         TData
-    >
+    >,
 ) => {
     return useQuery({
         queryKey: customersKeys.detail(id),

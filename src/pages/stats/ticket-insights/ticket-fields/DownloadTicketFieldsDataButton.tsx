@@ -1,13 +1,12 @@
 import React from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
-import {DownloadDataButton} from 'pages/stats/support-performance/components/DownloadDataButton'
-
-import {useCustomFieldsReportData} from 'services/reporting/ticketFieldsReportingService'
-import {getCustomFieldsOrder} from 'state/ui/stats/ticketInsightsSlice'
-import {saveZippedFiles} from 'utils/file'
+import { DownloadDataButton } from 'pages/stats/support-performance/components/DownloadDataButton'
+import { useCustomFieldsReportData } from 'services/reporting/ticketFieldsReportingService'
+import { getCustomFieldsOrder } from 'state/ui/stats/ticketInsightsSlice'
+import { saveZippedFiles } from 'utils/file'
 
 const TICKET_FIELDS_DOWNLOAD_TITLE = 'Download Ticket Field data'
 
@@ -16,15 +15,16 @@ export const DownloadTicketFieldsDataButton = ({
 }: {
     selectedCustomFieldId: number
 }) => {
-    const {cleanStatsFilters, userTimezone, granularity} = useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone, granularity } =
+        useNewStatsFilters()
     const order = useAppSelector(getCustomFieldsOrder)
 
-    const {files, fileName, isLoading} = useCustomFieldsReportData(
+    const { files, fileName, isLoading } = useCustomFieldsReportData(
         cleanStatsFilters,
         userTimezone,
         granularity,
         order,
-        String(selectedCustomFieldId)
+        String(selectedCustomFieldId),
     )
 
     return (

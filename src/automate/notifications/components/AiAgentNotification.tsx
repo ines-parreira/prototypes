@@ -1,15 +1,13 @@
-import React, {useEffect} from 'react'
+import React, { useEffect } from 'react'
 
-import {Content, Subtitle} from 'common/notifications'
-import type {ContentProps, Notification} from 'common/notifications'
+import { Content, Subtitle } from 'common/notifications'
+import type { ContentProps, Notification } from 'common/notifications'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { useAccountStoreConfiguration } from 'pages/aiAgent/hooks/useAccountStoreConfiguration'
+import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
+import { AI_AGENT_ICON } from 'pages/common/components/SourceIcon'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {useAccountStoreConfiguration} from 'pages/aiAgent/hooks/useAccountStoreConfiguration'
-
-import {useAiAgentOnboardingNotification} from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
-import {AI_AGENT_ICON} from 'pages/common/components/SourceIcon'
-
-import {AiAgentNotificationPayload} from '../types'
+import { AiAgentNotificationPayload } from '../types'
 import {
     getNotificationParams,
     getNotificationReceivedDatetimePayload,
@@ -20,13 +18,13 @@ type Props = {
     notification: Notification<AiAgentNotificationPayload>
 } & ContentProps
 
-export default function AiAgentNotification({notification, ...props}: Props) {
+export default function AiAgentNotification({ notification, ...props }: Props) {
     const payload = notification.payload
-    const {aiAgentTicketViewId} = useAccountStoreConfiguration({
+    const { aiAgentTicketViewId } = useAccountStoreConfiguration({
         storeNames: [payload.shop_name],
     })
 
-    const {isLoading, onboardingNotificationState, handleOnSave} =
+    const { isLoading, onboardingNotificationState, handleOnSave } =
         useAiAgentOnboardingNotification({
             shopName: payload.shop_name,
         })
@@ -43,13 +41,13 @@ export default function AiAgentNotification({notification, ...props}: Props) {
 
         const isAlreadyReceived = isNotificationAlreadyReceived(
             payload.ai_agent_notification_type,
-            onboardingNotificationState
+            onboardingNotificationState,
         )
 
         if (!isAlreadyReceived) {
             const notificationReceivedDatetimePayload =
                 getNotificationReceivedDatetimePayload(
-                    payload.ai_agent_notification_type
+                    payload.ai_agent_notification_type,
                 )
             void handleOnSave(notificationReceivedDatetimePayload)
 
@@ -61,7 +59,7 @@ export default function AiAgentNotification({notification, ...props}: Props) {
 
     const notificationParams = getNotificationParams(
         payload,
-        aiAgentTicketViewId
+        aiAgentTicketViewId,
     )
 
     if (!notificationParams) {
@@ -81,7 +79,7 @@ export default function AiAgentNotification({notification, ...props}: Props) {
     return (
         <Content
             {...props}
-            icon={{type: AI_AGENT_ICON}}
+            icon={{ type: AI_AGENT_ICON }}
             title={notificationParams.title}
             url={notificationParams.redirectTo}
             onClick={handleOnClick}

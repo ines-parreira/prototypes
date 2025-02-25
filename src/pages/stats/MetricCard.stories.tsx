@@ -1,5 +1,6 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { Meta, Story } from '@storybook/react'
 
 import MetricCard from './MetricCard'
 import PerformanceTip from './PerformanceTip'
@@ -16,7 +17,7 @@ const Template: Story<ComponentProps<typeof MetricCard>> = (props) => (
 const defaultProps: ComponentProps<typeof MetricCard> = {
     className: '',
     children: 'Value',
-    hint: {title: "I'm a hint"},
+    hint: { title: "I'm a hint" },
     title: 'First response time',
     tip: (
         <PerformanceTip avgMerchant={4.62} topTen={4.99}>

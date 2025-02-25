@@ -1,15 +1,16 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {ProtectedRoute} from 'pages/stats/report-chart-restrictions/ProtectedRoute'
-import {useReportChartRestrictions} from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
-import {assumeMock} from 'utils/testing'
+import { render, screen } from '@testing-library/react'
+
+import { ProtectedRoute } from 'pages/stats/report-chart-restrictions/ProtectedRoute'
+import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
+import { assumeMock } from 'utils/testing'
 
 jest.mock(
     'pages/stats/report-chart-restrictions/useReportChartRestrictions',
     () => ({
         useReportChartRestrictions: jest.fn(),
-    })
+    }),
 )
 const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
 
@@ -22,7 +23,7 @@ describe('ProtectedRoute', () => {
         render(
             <ProtectedRoute path="/any/path">
                 <div>children</div>
-            </ProtectedRoute>
+            </ProtectedRoute>,
         )
 
         expect(screen.getByText('children')).toBeInTheDocument()
@@ -36,7 +37,7 @@ describe('ProtectedRoute', () => {
         render(
             <ProtectedRoute path="/any/path">
                 <div>children</div>
-            </ProtectedRoute>
+            </ProtectedRoute>,
         )
 
         expect(screen.queryByText('children')).not.toBeInTheDocument()

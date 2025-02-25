@@ -1,10 +1,13 @@
-import {useMutation, useQuery, UseQueryOptions} from '@tanstack/react-query'
-import {isAxiosError} from 'axios'
+import { useMutation, useQuery, UseQueryOptions } from '@tanstack/react-query'
+import { isAxiosError } from 'axios'
 import _mapValues from 'lodash/mapValues'
 
-import {getGorgiasWfApiClient} from 'rest_api/workflows_api/client'
-import {OperationMethods, Paths} from 'rest_api/workflows_api/client.generated'
-import {MutationOverrides} from 'types/query'
+import { getGorgiasWfApiClient } from 'rest_api/workflows_api/client'
+import {
+    OperationMethods,
+    Paths,
+} from 'rest_api/workflows_api/client.generated'
+import { MutationOverrides } from 'types/query'
 
 export const STALE_TIME_MS = 10 * 60 * 1000 // 10 minutes
 export const CACHE_TIME_MS = 20 * 60 * 1000 // 20 minutes
@@ -27,7 +30,7 @@ const EXECUTION_LOGS_QUERY_KEY = 'execution-logs-query-key'
 
 export const storeWorkflowsConfigurationDefinitionKeys = {
     all: () => [STORE_WORKFLOWS_CONFIGURATION_QUERY_KEY] as const,
-    list: (params: {storeName: string; storeType: string}) => [
+    list: (params: { storeName: string; storeType: string }) => [
         ...storeWorkflowsConfigurationDefinitionKeys.all(),
         params,
     ],
@@ -50,7 +53,7 @@ export const workflowsConfigurationTemplateDefinitionKeys = {
             'list',
         ] as const,
     list: (
-        params: Paths.WfConfigurationTemplateControllerList.QueryParameters
+        params: Paths.WfConfigurationTemplateControllerList.QueryParameters,
     ) =>
         [
             ...workflowsConfigurationTemplateDefinitionKeys.lists(),
@@ -62,7 +65,7 @@ export const workflowsConfigurationTemplateDefinitionKeys = {
 
 export const storeWorkflowsAppDefinitionKeys = {
     all: () => [STORE_WORKFLOWS_APP_QUERY_KEY] as const,
-    list: (params: {storeName: string; storeType: string}) => [
+    list: (params: { storeName: string; storeType: string }) => [
         ...storeWorkflowsAppDefinitionKeys.all(),
         params,
     ],
@@ -70,7 +73,7 @@ export const storeWorkflowsAppDefinitionKeys = {
 
 export const storeWorkflowsEntrypointsDefinitionKeys = {
     all: () => [WORKFLOWS_ENTRYPOINTS_QUERY_KEY] as const,
-    list: (params: {ids: string[]; language: string}) => [
+    list: (params: { ids: string[]; language: string }) => [
         ...storeWorkflowsEntrypointsDefinitionKeys.all(),
         params,
     ],
@@ -98,13 +101,13 @@ export const executionsDefinitionKeys = {
 
 export const executionDefinitionKeys = {
     all: () => [EXECUTION_QUERY_KEY] as const,
-    get: (params: {configurationInternalId: string; executionId: string}) =>
+    get: (params: { configurationInternalId: string; executionId: string }) =>
         [...executionDefinitionKeys.all(), params] as const,
 }
 
 export const executionLogsDefinitionKeys = {
     all: () => [EXECUTION_LOGS_QUERY_KEY] as const,
-    get: (params: {configurationInternalId: string; executionId: string}) =>
+    get: (params: { configurationInternalId: string; executionId: string }) =>
         [...executionLogsDefinitionKeys.all(), params] as const,
 }
 
@@ -112,7 +115,7 @@ export const useGetWorkflowConfigurationTemplates = (
     params: Paths.WfConfigurationTemplateControllerList.QueryParameters,
     overrides?: UseQueryOptions<
         Awaited<Paths.WfConfigurationTemplateControllerList.Responses.$200>
-    >
+    >,
 ) => {
     return useQuery({
         queryKey: workflowsConfigurationTemplateDefinitionKeys.list(params),
@@ -126,7 +129,7 @@ export const useGetWorkflowConfigurationTemplates = (
                         paramsSerializer: {
                             indexes: false,
                         },
-                    }
+                    },
                 )
             return response.data
         },
@@ -140,7 +143,7 @@ export const useGetWorkflowConfigurationTemplate = (
     id: string,
     overrides?: UseQueryOptions<
         Awaited<Paths.WfConfigurationTemplateControllerGet.Responses.$200>
-    >
+    >,
 ) => {
     return useQuery({
         queryKey: workflowsConfigurationTemplateDefinitionKeys.get(id),
@@ -155,7 +158,7 @@ export const useGetWorkflowConfigurationTemplate = (
                     paramsSerializer: {
                         indexes: false,
                     },
-                }
+                },
             )
             return response.data
         },
@@ -168,13 +171,13 @@ export const useGetWorkflowConfigurationTemplate = (
 export const useUpsertWorkflowConfigurationTemplate = (
     overrides?: MutationOverrides<
         OperationMethods['WfConfigurationTemplateController_upsert']
-    >
+    >,
 ) => {
     return useMutation({
         mutationFn: async (params) => {
             const client = await getGorgiasWfApiClient()
             return await client.WfConfigurationTemplateController_upsert(
-                ...params
+                ...params,
             )
         },
         ...overrides,
@@ -184,13 +187,13 @@ export const useUpsertWorkflowConfigurationTemplate = (
 export const useDeleteWorkflowConfigurationTemplate = (
     overrides?: MutationOverrides<
         OperationMethods['WfConfigurationTemplateController_delete']
-    >
+    >,
 ) => {
     return useMutation({
         mutationFn: async (params) => {
             const client = await getGorgiasWfApiClient()
             return await client.WfConfigurationTemplateController_delete(
-                ...params
+                ...params,
             )
         },
         ...overrides,
@@ -201,7 +204,7 @@ export const useGetWorkflowConfiguration = (
     id: string,
     overrides?: UseQueryOptions<
         Awaited<Paths.WfConfigurationControllerGet.Responses.$200>
-    >
+    >,
 ) => {
     return useQuery({
         queryKey: workflowsConfigurationDefinitionKeys.get(id),
@@ -223,7 +226,7 @@ export const useUpsertWorkflowConfiguration = <TContext = unknown>(
         OperationMethods['WfConfigurationController_upsert'],
         false,
         TContext
-    >
+    >,
 ) => {
     return useMutation({
         mutationFn: async (params) => {
@@ -237,7 +240,7 @@ export const useUpsertWorkflowConfiguration = <TContext = unknown>(
 export const useDeleteWorkflowConfiguration = (
     overrides?: MutationOverrides<
         OperationMethods['WfConfigurationController_delete']
-    >
+    >,
 ) => {
     return useMutation({
         mutationFn: async (params) => {
@@ -251,7 +254,7 @@ export const useDeleteWorkflowConfiguration = (
 export const useDuplicateWorkflowConfiguration = (
     overrides?: MutationOverrides<
         OperationMethods['WfConfigurationController_duplicate']
-    >
+    >,
 ) => {
     return useMutation({
         mutationFn: async (params) => {
@@ -265,13 +268,13 @@ export const useDuplicateWorkflowConfiguration = (
 export const useFetchWorkflowConfigurationTranslations = (
     overrides?: MutationOverrides<
         OperationMethods['WfConfigurationTranslationsController_get']
-    >
+    >,
 ) => {
     return useMutation({
         mutationFn: async (params) => {
             const client = await getGorgiasWfApiClient()
             return await client.WfConfigurationTranslationsController_get(
-                ...params
+                ...params,
             )
         },
         ...overrides,
@@ -281,13 +284,13 @@ export const useFetchWorkflowConfigurationTranslations = (
 export const useUpsertWorkflowConfigurationTranslations = (
     overrides?: MutationOverrides<
         OperationMethods['WfConfigurationTranslationsController_upsert']
-    >
+    >,
 ) => {
     return useMutation({
         mutationFn: async (params) => {
             const client = await getGorgiasWfApiClient()
             return await client.WfConfigurationTranslationsController_upsert(
-                ...params
+                ...params,
             )
         },
         ...overrides,
@@ -297,13 +300,13 @@ export const useUpsertWorkflowConfigurationTranslations = (
 export const useDeleteWorkflowConfigurationTranslations = (
     overrides?: MutationOverrides<
         OperationMethods['WfConfigurationTranslationsController_delete']
-    >
+    >,
 ) => {
     return useMutation({
         mutationFn: async (params) => {
             const client = await getGorgiasWfApiClient()
             return await client.WfConfigurationTranslationsController_delete(
-                ...params
+                ...params,
             )
         },
         ...overrides,
@@ -314,9 +317,11 @@ export const useGetWorkflowConfigurations = (
     includeDrafts: boolean = false,
     overrides?: UseQueryOptions<
         Awaited<Paths.WfConfigurationControllerList.Responses.$200>
-    >
+    >,
 ) => {
-    const params = includeDrafts ? {is_draft: ['0', '1'] as ('0' | '1')[]} : {}
+    const params = includeDrafts
+        ? { is_draft: ['0', '1'] as ('0' | '1')[] }
+        : {}
     return useQuery({
         queryKey: workflowsConfigurationDefinitionKeys.list(params),
         queryFn: async () => {
@@ -342,7 +347,7 @@ export const useGetStoreWorkflowsConfigurations = (
     },
     overrides: UseQueryOptions<
         Awaited<Paths.StoreWfConfigurationControllerList.Responses.$200>
-    > = {}
+    > = {},
 ) => {
     return useQuery({
         queryKey: storeWorkflowsConfigurationDefinitionKeys.list({
@@ -365,7 +370,7 @@ export const useGetStoreWorkflowsConfigurations = (
                     paramsSerializer: {
                         indexes: false,
                     },
-                }
+                },
             )
             return response.data
         },
@@ -382,7 +387,7 @@ export const useUpsertStoreWorkflowsConfiguration = <TContext = unknown>(
         OperationMethods['StoreWfConfigurationController_upsert'],
         false,
         TContext
-    >
+    >,
 ) => {
     return useMutation({
         mutationFn: async (params) => {
@@ -398,7 +403,7 @@ export const useDeleteWorkflowsConfiguration = <TContext = unknown>(
         OperationMethods['WfConfigurationController_delete'],
         false,
         TContext
-    >
+    >,
 ) => {
     return useMutation({
         mutationFn: async (params) => {
@@ -410,7 +415,9 @@ export const useDeleteWorkflowsConfiguration = <TContext = unknown>(
 }
 
 export const useUpsertStoreApps = (
-    overrides?: MutationOverrides<OperationMethods['StoreAppController_upsert']>
+    overrides?: MutationOverrides<
+        OperationMethods['StoreAppController_upsert']
+    >,
 ) => {
     return useMutation({
         mutationFn: async (params) => {
@@ -464,7 +471,7 @@ export const useGetActionsApp = (id?: string) => {
                     paramsSerializer: {
                         indexes: false,
                     },
-                }
+                },
             )
             return response.data
         },
@@ -485,7 +492,7 @@ export const useListActionsApps = () => {
                     paramsSerializer: {
                         indexes: false,
                     },
-                }
+                },
             )
             return response.data
         },
@@ -495,7 +502,7 @@ export const useListActionsApps = () => {
 }
 
 export const useUpsertActionsApp = (
-    overrides?: MutationOverrides<OperationMethods['AppController_upsert']>
+    overrides?: MutationOverrides<OperationMethods['AppController_upsert']>,
 ) => {
     return useMutation({
         mutationFn: async (params) => {
@@ -530,7 +537,7 @@ export const useListWorkflowEntryPoints = ({
                     paramsSerializer: {
                         indexes: false,
                     },
-                }
+                },
             )
             return response.data
         },
@@ -544,13 +551,13 @@ export const useListWorkflowEntryPoints = ({
 export const useDownloadWorkflowConfigurationStepLogs = (
     overrides?: MutationOverrides<
         OperationMethods['WfConfigurationController_exportStepLogs']
-    >
+    >,
 ) => {
     return useMutation({
         mutationFn: async (params) => {
             const client = await getGorgiasWfApiClient()
             return await client.WfConfigurationController_exportStepLogs(
-                ...params
+                ...params,
             )
         },
         ...overrides,
@@ -577,7 +584,7 @@ export const useGetConfigurationExecutions = (
     },
     overrides?: UseQueryOptions<
         Awaited<Paths.WfConfigurationControllerGetExecutions.Responses.$200>
-    >
+    >,
 ) => {
     return useQuery({
         queryKey: executionsDefinitionKeys.get({
@@ -613,7 +620,7 @@ export const useGetConfigurationExecutions = (
                         paramsSerializer: {
                             indexes: false,
                         },
-                    }
+                    },
                 )
             return response.data
         },
@@ -628,7 +635,7 @@ export const useGetConfigurationExecution = (
     executionId: string,
     overrides?: UseQueryOptions<
         Awaited<Paths.WfConfigurationControllerGetExecution.Responses.$200>
-    >
+    >,
 ) => {
     return useQuery({
         queryKey: executionDefinitionKeys.get({
@@ -655,7 +662,7 @@ export const useGetConfigurationExecutionLogs = (
     executionId: string,
     overrides?: UseQueryOptions<
         Awaited<Paths.WfConfigurationControllerExportExecutionLogs.Responses.$200>
-    >
+    >,
 ) => {
     return useQuery({
         queryKey: executionLogsDefinitionKeys.get({

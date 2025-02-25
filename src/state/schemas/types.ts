@@ -1,3 +1,3 @@
-import {Map} from 'immutable'
+import { Map } from 'immutable'
 
 export type SchemasState = Map<any, any>

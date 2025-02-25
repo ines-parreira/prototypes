@@ -1,5 +1,6 @@
-import {Meta, Story} from '@storybook/react'
 import React from 'react'
+
+import { Meta, Story } from '@storybook/react'
 
 import {
     VerticalTextCarousel,
@@ -10,10 +11,10 @@ const meta: Meta = {
     title: 'Data Display/VerticalTextCarousel',
     component: VerticalTextCarousel,
     argTypes: {
-        texts: {control: 'array'},
-        cta: {control: 'text'},
-        ctaSuccessMessage: {control: 'text'},
-        onCtaClick: {action: 'CTA clicked'},
+        texts: { control: 'array' },
+        cta: { control: 'text' },
+        ctaSuccessMessage: { control: 'text' },
+        onCtaClick: { action: 'CTA clicked' },
     },
 } as Meta
 

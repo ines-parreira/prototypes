@@ -1,14 +1,13 @@
-import {Map, fromJS} from 'immutable'
-import React, {useState, useRef, useMemo} from 'react'
+import React, { useMemo, useRef, useState } from 'react'
 
-import {SegmentEvent} from 'common/segment'
+import { fromJS, Map } from 'immutable'
 
+import { SegmentEvent } from 'common/segment'
 import {
-    GORGIAS_CHAT_WIDGET_TEXTS,
     GORGIAS_CHAT_DEFAULT_COLOR,
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
+    GORGIAS_CHAT_WIDGET_TEXTS,
 } from 'config/integrations/gorgias_chat'
-
 import Launcher from 'gorgias-design-system/Launcher/Launcher'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
@@ -16,20 +15,17 @@ import {
     GorgiasChatLauncherType,
     IntegrationType,
 } from 'models/integration/types'
-
 import Button from 'pages/common/components/button/Button'
-import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
+import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 import ColorField from 'pages/common/forms/ColorField'
 import InputField from 'pages/common/forms/input/InputField'
-
-import {useOnClickOutside} from 'pages/common/hooks/useOnClickOutside'
+import { useOnClickOutside } from 'pages/common/hooks/useOnClickOutside'
 import history from 'pages/history'
-import {updateOrCreateIntegration} from 'state/integrations/actions'
+import { updateOrCreateIntegration } from 'state/integrations/actions'
 
 import useLogWizardEvent from '../../hooks/useLogWizardEvent'
-
 import GorgiasChatCreationWizardPreview from '../GorgiasChatCreationWizardPreview'
 import GorgiasChatCreationWizardStep from '../GorgiasChatCreationWizardStep'
 
@@ -62,7 +58,7 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
         setIsChatOpenInPreview(true)
     })
 
-    const {goToNextStep, goToPreviousStep} = useNavigateWizardSteps()
+    const { goToNextStep, goToPreviousStep } = useNavigateWizardSteps()
 
     const [hasSubmitted, setHasSubmitted] = useState(false)
 
@@ -78,14 +74,14 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
         currentMainColor ||
         (integration.getIn(
             ['decoration', 'main_color'],
-            GORGIAS_CHAT_DEFAULT_COLOR
+            GORGIAS_CHAT_DEFAULT_COLOR,
         ) as string)
 
     const conversationColor =
         currentConversationColor ||
         (integration.getIn(
             ['decoration', 'conversation_color'],
-            GORGIAS_CHAT_DEFAULT_COLOR
+            GORGIAS_CHAT_DEFAULT_COLOR,
         ) as string)
 
     const language = integration.getIn(['meta', 'language']) as string
@@ -94,14 +90,14 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
         currentLauncherLabel ??
         integration.getIn(
             ['decoration', 'launcher', 'label'],
-            GORGIAS_CHAT_WIDGET_TEXTS[language]?.chatWithUs
+            GORGIAS_CHAT_WIDGET_TEXTS[language]?.chatWithUs,
         )
 
     const launcherType =
         currentLauncherType ||
         (integration.getIn(
             ['decoration', 'launcher', 'type'],
-            GorgiasChatLauncherType.ICON
+            GorgiasChatLauncherType.ICON,
         ) as GorgiasChatLauncherType)
 
     const isPristine =
@@ -123,7 +119,7 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
                     ['wizard', 'step'],
                     shouldGoToNextStep
                         ? GorgiasChatCreationWizardSteps.Automate
-                        : GorgiasChatCreationWizardSteps.Branding
+                        : GorgiasChatCreationWizardSteps.Branding,
                 )
                 .toJS(),
         }
@@ -151,15 +147,15 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
                             : SegmentEvent.ChatWidgetWizardStepCompleted,
                         {
                             launcher_type: launcherType,
-                        }
+                        },
                     )
 
                     setHasSubmitted(true)
                     shouldGoToNextStep && goToNextStep()
                 },
                 shouldGoToNextStep,
-                'Changes saved'
-            )
+                'Changes saved',
+            ),
         )
     }
 
@@ -168,7 +164,7 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
             type: launcherType,
             label: launcherLabel,
         }),
-        [launcherLabel, launcherType]
+        [launcherLabel, launcherType],
     )
 
     return (
@@ -196,7 +192,7 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
                             onClick={() =>
                                 onSave(false, true).then(() => {
                                     history.push(
-                                        '/app/settings/channels/gorgias_chat'
+                                        '/app/settings/channels/gorgias_chat',
                                     )
                                 })
                             }
@@ -266,7 +262,7 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
                                 value={GorgiasChatLauncherType.ICON}
                                 onClick={() => {
                                     setCurrentLauncherType(
-                                        GorgiasChatLauncherType.ICON
+                                        GorgiasChatLauncherType.ICON,
                                     )
                                     setIsChatOpenInPreview(false)
                                 }}
@@ -296,7 +292,7 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
                                 value={GorgiasChatLauncherType.ICON_AND_LABEL}
                                 onClick={() => {
                                     setCurrentLauncherType(
-                                        GorgiasChatLauncherType.ICON_AND_LABEL
+                                        GorgiasChatLauncherType.ICON_AND_LABEL,
                                     )
                                     setIsChatOpenInPreview(false)
                                 }}

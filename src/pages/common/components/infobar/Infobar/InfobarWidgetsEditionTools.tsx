@@ -1,11 +1,12 @@
-import {fromJS, List, Map} from 'immutable'
 import React from 'react'
-import {connect, ConnectedProps} from 'react-redux'
+
+import { fromJS, List, Map } from 'immutable'
+import { connect, ConnectedProps } from 'react-redux'
 
 import Button from 'pages/common/components/button/Button'
-import {StoreDispatch} from 'state/types'
-import {startEditionMode, submitWidgets} from 'state/widgets/actions'
-import {WidgetEnvironment} from 'state/widgets/types'
+import { StoreDispatch } from 'state/types'
+import { startEditionMode, submitWidgets } from 'state/widgets/actions'
+import { WidgetEnvironment } from 'state/widgets/types'
 
 import css from '../Infobar.less'
 
@@ -16,8 +17,8 @@ type Props = {
 
 export class InfobarWidgetsEditionTools extends React.Component<Props> {
     _saveWidgets = () => {
-        const {dispatch} = this.props
-        const {widgets} = this.props
+        const { dispatch } = this.props
+        const { widgets } = this.props
         const editedItems = (
             widgets.getIn(['_internal', 'editedItems'], fromJS([])) as List<any>
         ).toJS()
@@ -25,12 +26,12 @@ export class InfobarWidgetsEditionTools extends React.Component<Props> {
     }
 
     _cancelWidgetsUpdates = () => {
-        const {context} = this.props
+        const { context } = this.props
         this.props.dispatch(startEditionMode(context))
     }
 
     render() {
-        const {widgets} = this.props
+        const { widgets } = this.props
 
         const isDirty = widgets.getIn(['_internal', 'isDirty'])
         const isSavingWidgets = widgets.getIn([

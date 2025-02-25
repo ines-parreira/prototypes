@@ -1,5 +1,6 @@
-import {render} from '@testing-library/react'
-import React, {useRef} from 'react'
+import React, { useRef } from 'react'
+
+import { render } from '@testing-library/react'
 
 import SynchronizedScrollTopContainer from '../SynchronizedScrollTopContainer'
 import SynchronizedScrollTopContext, {
@@ -8,8 +9,8 @@ import SynchronizedScrollTopContext, {
 
 const useRefMock = useRef as jest.MockedFunction<typeof useRef>
 const containerRefMock: {
-    current: {scrollHeight?: number; scrollTop?: number} | null
-} = {current: null}
+    current: { scrollHeight?: number; scrollTop?: number } | null
+} = { current: null }
 
 jest.mock('react', () => {
     const originReact = jest.requireActual('react')
@@ -38,20 +39,20 @@ describe('<SynchronizedScrollTopContainer />', () => {
     })
 
     it('should render the component with default synchronized scroll top values', () => {
-        const {container} = render(
+        const { container } = render(
             <SynchronizedScrollTopContext.Provider
                 value={defaultSynchronizedScrollTopValue}
             >
                 <SynchronizedScrollTopContainer height={300}>
                     <div>Foo</div>
                 </SynchronizedScrollTopContainer>
-            </SynchronizedScrollTopContext.Provider>
+            </SynchronizedScrollTopContext.Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render the component with scrollHeight and container height set', () => {
-        const {container} = render(
+        const { container } = render(
             <SynchronizedScrollTopContext.Provider
                 value={{
                     ...defaultSynchronizedScrollTopValue,
@@ -61,13 +62,13 @@ describe('<SynchronizedScrollTopContainer />', () => {
                 <SynchronizedScrollTopContainer height={300}>
                     <div>Foo</div>
                 </SynchronizedScrollTopContainer>
-            </SynchronizedScrollTopContext.Provider>
+            </SynchronizedScrollTopContext.Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render the component with scrollTop set', () => {
-        const {rerender} = render(
+        const { rerender } = render(
             <SynchronizedScrollTopContext.Provider
                 value={{
                     ...defaultSynchronizedScrollTopValue,
@@ -77,7 +78,7 @@ describe('<SynchronizedScrollTopContainer />', () => {
                 <SynchronizedScrollTopContainer height={300}>
                     <div>Foo</div>
                 </SynchronizedScrollTopContainer>
-            </SynchronizedScrollTopContext.Provider>
+            </SynchronizedScrollTopContext.Provider>,
         )
         rerender(
             <SynchronizedScrollTopContext.Provider
@@ -89,14 +90,14 @@ describe('<SynchronizedScrollTopContainer />', () => {
                 <SynchronizedScrollTopContainer height={300}>
                     <div>Foo</div>
                 </SynchronizedScrollTopContainer>
-            </SynchronizedScrollTopContext.Provider>
+            </SynchronizedScrollTopContext.Provider>,
         )
 
         expect(containerRefMock.current?.scrollTop).toBe(20)
     })
 
     it('should render the component with no scroll bar', () => {
-        const {container} = render(
+        const { container } = render(
             <SynchronizedScrollTopContext.Provider
                 value={{
                     ...defaultSynchronizedScrollTopValue,
@@ -107,7 +108,7 @@ describe('<SynchronizedScrollTopContainer />', () => {
                 <SynchronizedScrollTopContainer height={300} hideScrollbar>
                     <div>Foo</div>
                 </SynchronizedScrollTopContainer>
-            </SynchronizedScrollTopContext.Provider>
+            </SynchronizedScrollTopContext.Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -115,12 +116,15 @@ describe('<SynchronizedScrollTopContainer />', () => {
     it('should not call setScrollHeight on mount when scrollHeight is a positive number', () => {
         render(
             <SynchronizedScrollTopContext.Provider
-                value={{...defaultSynchronizedScrollTopValue, scrollHeight: 30}}
+                value={{
+                    ...defaultSynchronizedScrollTopValue,
+                    scrollHeight: 30,
+                }}
             >
                 <SynchronizedScrollTopContainer height={300}>
                     <div>Foo</div>
                 </SynchronizedScrollTopContainer>
-            </SynchronizedScrollTopContext.Provider>
+            </SynchronizedScrollTopContext.Provider>,
         )
         expect(setScrollHeightMock).not.toHaveBeenCalled()
     })
@@ -128,18 +132,21 @@ describe('<SynchronizedScrollTopContainer />', () => {
     it('should call setScrollHeight with a container scrollHeight on mount when container scrollHeight is higher than the provider scrollHeight', () => {
         render(
             <SynchronizedScrollTopContext.Provider
-                value={{...defaultSynchronizedScrollTopValue, scrollHeight: 0}}
+                value={{
+                    ...defaultSynchronizedScrollTopValue,
+                    scrollHeight: 0,
+                }}
             >
                 <SynchronizedScrollTopContainer height={300}>
                     <div>Foo</div>
                 </SynchronizedScrollTopContainer>
-            </SynchronizedScrollTopContext.Provider>
+            </SynchronizedScrollTopContext.Provider>,
         )
         expect(setScrollHeightMock).toHaveBeenCalled()
 
-        containerRefMock.current = {scrollHeight: 200}
+        containerRefMock.current = { scrollHeight: 200 }
         const lastCall = setScrollHeightMock.mock.calls.slice(-1, 1)[0][0] as (
-            scrollHeight: number
+            scrollHeight: number,
         ) => number
         expect(lastCall(100)).toBe(200)
     })
@@ -147,18 +154,21 @@ describe('<SynchronizedScrollTopContainer />', () => {
     it('should call setScrollHeight with a provider scrollHeight on mount when container scrollHeight is lower than the provider scrollHeight', () => {
         render(
             <SynchronizedScrollTopContext.Provider
-                value={{...defaultSynchronizedScrollTopValue, scrollHeight: 0}}
+                value={{
+                    ...defaultSynchronizedScrollTopValue,
+                    scrollHeight: 0,
+                }}
             >
                 <SynchronizedScrollTopContainer height={300}>
                     <div>Foo</div>
                 </SynchronizedScrollTopContainer>
-            </SynchronizedScrollTopContext.Provider>
+            </SynchronizedScrollTopContext.Provider>,
         )
         expect(setScrollHeightMock).toHaveBeenCalled()
 
-        containerRefMock.current = {scrollHeight: 100}
+        containerRefMock.current = { scrollHeight: 100 }
         const lastCall = setScrollHeightMock.mock.calls.slice(-1, 1)[0][0] as (
-            scrollHeight: number
+            scrollHeight: number,
         ) => number
         expect(lastCall(200)).toBe(200)
     })

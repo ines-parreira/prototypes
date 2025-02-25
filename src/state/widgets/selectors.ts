@@ -1,29 +1,29 @@
-import {fromJS, Map, List} from 'immutable'
-import {createSelector} from 'reselect'
+import { fromJS, List, Map } from 'immutable'
+import { createSelector } from 'reselect'
 
-import {DEPRECATED_getActiveCustomer} from 'state/customers/selectors'
-import {getTicketState} from 'state/ticket/selectors'
-import {RootState} from 'state/types'
+import { DEPRECATED_getActiveCustomer } from 'state/customers/selectors'
+import { getTicketState } from 'state/ticket/selectors'
+import { RootState } from 'state/types'
 
-import {WidgetEnvironment, WidgetsState} from './types'
-import {itemsWithContext} from './utils'
+import { WidgetEnvironment, WidgetsState } from './types'
+import { itemsWithContext } from './utils'
 
 export const getWidgetsState = (state: RootState): WidgetsState =>
     state.widgets || fromJS({})
 
 export const getContext = createSelector(
     getWidgetsState,
-    (state) => (state.get('currentContext') as WidgetEnvironment) || ''
+    (state) => (state.get('currentContext') as WidgetEnvironment) || '',
 )
 
 export const getWidgets = createSelector(
     getWidgetsState,
-    (state) => (state.get('items') || fromJS([])) as List<any>
+    (state) => (state.get('items') || fromJS([])) as List<any>,
 )
 
 export const hasWidgets = createSelector(
     getWidgets,
-    (widgets) => !widgets.isEmpty()
+    (widgets) => !widgets.isEmpty(),
 )
 
 export const getWidgetsWithContext = (context?: WidgetEnvironment) =>
@@ -32,13 +32,13 @@ export const getWidgetsWithContext = (context?: WidgetEnvironment) =>
         getContext,
         // take current context by default
         (widgets, currentContext) =>
-            itemsWithContext(widgets, context || currentContext)
+            itemsWithContext(widgets, context || currentContext),
     )
 
 export const hasWidgetsWithContext = (context?: WidgetEnvironment) =>
     createSelector(
         getWidgetsWithContext(context),
-        (widgets) => !widgets.isEmpty()
+        (widgets) => !widgets.isEmpty(),
     )
 
 export const getSources = createSelector(
@@ -49,7 +49,7 @@ export const getSources = createSelector(
             ticket,
             customer,
         }) as Map<any, any>
-    }
+    },
 )
 
 export const getSourcesWithCustomer = createSelector(getSources, (sources) => {
@@ -66,5 +66,5 @@ export const getSourcesWithCustomer = createSelector(getSources, (sources) => {
 
 export const isEditing = createSelector(
     getWidgetsState,
-    (state) => (state.getIn(['_internal', 'isEditing']) as boolean) || false
+    (state) => (state.getIn(['_internal', 'isEditing']) as boolean) || false,
 )

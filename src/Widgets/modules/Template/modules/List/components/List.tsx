@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
 import {
     isCardTemplate,
@@ -43,7 +43,7 @@ function List({
                       direction: orderByString[0] === '-' ? 'DESC' : 'ASC',
                   } as const)
                 : undefined,
-        [orderByString]
+        [orderByString],
     )
 
     // If the header of the children template is hidden
@@ -57,7 +57,7 @@ function List({
             // here so that the index is relative to original data order
             // https://linear.app/gorgias/issue/CRM-2568/erroneous-value-in-listindex-variable-in-custom-action-buttons
             <WidgetListContext.Provider
-                value={{currentListIndex: index}}
+                value={{ currentListIndex: index }}
                 key={index}
             >
                 {children(childSource, index)}

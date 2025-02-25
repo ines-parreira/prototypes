@@ -1,7 +1,7 @@
 import moment from 'moment/moment'
 
-import {RuleEngineData, RuleEngineRoutes} from '../ruleEngine'
-import {Task} from './Task'
+import { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
+import { Task } from './Task'
 
 export class GiveFeedbackAIAgentTask extends Task {
     constructor(data: RuleEngineData, routes: RuleEngineRoutes) {
@@ -10,7 +10,7 @@ export class GiveFeedbackAIAgentTask extends Task {
             'Coach AI Agent to improve its performance',
             'RECOMMENDED',
             data,
-            routes
+            routes,
         )
     }
 
@@ -24,7 +24,7 @@ export class GiveFeedbackAIAgentTask extends Task {
     }
 
     protected getFeatureUrl({
-        data: {ticketView: ticketViewData},
+        data: { ticketView: ticketViewData },
     }: {
         data: RuleEngineData
         routes: RuleEngineRoutes

@@ -1,23 +1,22 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useState, useEffect} from 'react'
-import {useLocation} from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { useLocation } from 'react-router-dom'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import useLocalStorage from 'hooks/useLocalStorage'
-import {IntegrationType} from 'models/integration/constants'
-
+import { IntegrationType } from 'models/integration/constants'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import history from 'pages/history'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {makeGetRedirectUri} from 'state/integrations/selectors'
-import {isAdmin} from 'utils'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { makeGetRedirectUri } from 'state/integrations/selectors'
+import { isAdmin } from 'utils'
 
 import ModalActionsFooter from '../modal/ModalActionsFooter'
-
 import useStoresRequiringScriptTagMigration from '../ScriptTagMigrationBanner/hooks/useStoresRequiringScriptTagMigration'
 
 /**
@@ -26,13 +25,13 @@ import useStoresRequiringScriptTagMigration from '../ScriptTagMigrationBanner/ho
  * The period is defined through the "chat-scope-update-modal" feature flag.
  */
 const ScriptTagMigrationModal = () => {
-    const {pathname} = useLocation()
+    const { pathname } = useLocation()
 
     const migrationDueDate: string | undefined =
         useFlags()[FeatureFlagKey.ChatScopeUpdateDueDate]
 
     const showMigrationModalInMilliseconds = Number(
-        useFlags()[FeatureFlagKey.ChatScopeUpdateModal]
+        useFlags()[FeatureFlagKey.ChatScopeUpdateModal],
     )
 
     const storesRequiringScriptTagMigration =
@@ -87,7 +86,8 @@ const ScriptTagMigrationModal = () => {
 
     const storesRequiringPermissionUpdates =
         storesRequiringScriptTagMigration.filter(
-            ({storeRequiresPermissionUpdates}) => storeRequiresPermissionUpdates
+            ({ storeRequiresPermissionUpdates }) =>
+                storeRequiresPermissionUpdates,
         )
 
     const firstShopName = storesRequiringPermissionUpdates.length

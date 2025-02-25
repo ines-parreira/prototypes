@@ -1,5 +1,6 @@
 import React from 'react'
-import {Container} from 'reactstrap'
+
+import { Container } from 'reactstrap'
 
 import Loader from 'pages/common/components/Loader/Loader'
 import css from 'pages/settings/settings.less'

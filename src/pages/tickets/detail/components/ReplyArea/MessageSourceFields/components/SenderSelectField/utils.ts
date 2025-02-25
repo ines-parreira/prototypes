@@ -1,5 +1,5 @@
-import {TicketMessageSourceType} from 'business/types/ticket'
-import {ChannelIdentifier} from 'services/channels'
+import { TicketMessageSourceType } from 'business/types/ticket'
+import { ChannelIdentifier } from 'services/channels'
 
 export const getReconnectUrl = (channel: Maybe<ChannelIdentifier>): string => {
     switch (channel) {

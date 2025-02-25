@@ -1,5 +1,6 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { Meta, Story } from '@storybook/react'
 
 import ProvinceInput from './ProvinceInput'
 
@@ -12,7 +13,7 @@ const Template: Story<ComponentProps<typeof ProvinceInput>> = ({
     ...other
 }: ComponentProps<typeof ProvinceInput>) => {
     return (
-        <div style={{width: '300px'}}>
+        <div style={{ width: '300px' }}>
             <ProvinceInput {...other} />
         </div>
     )

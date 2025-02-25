@@ -1,13 +1,15 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import {render, screen} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {MacrosSettingsItemTag} from '../MacrosSettingsItemTag'
+import { render, screen } from '@testing-library/react'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { MacrosSettingsItemTag } from '../MacrosSettingsItemTag'
 
 jest.mock('@gorgias/merchant-ui-kit', () => {
     return {
         ...jest.requireActual('@gorgias/merchant-ui-kit'),
-        Tooltip: ({children}: ComponentProps<typeof Tooltip>) => (
+        Tooltip: ({ children }: ComponentProps<typeof Tooltip>) => (
             <div>{children}</div>
         ),
     } as Record<string, unknown>
@@ -19,14 +21,14 @@ describe('<MacrosSettingsItemTag />', () => {
     }
 
     it('should display fallback when there are no tags', () => {
-        const {container} = render(<MacrosSettingsItemTag {...props} />)
+        const { container } = render(<MacrosSettingsItemTag {...props} />)
 
         expect(container.innerHTML).toBe('-')
     })
 
     it('should display fallback when tags are empty', () => {
-        const {container} = render(
-            <MacrosSettingsItemTag {...props} tags={[]} />
+        const { container } = render(
+            <MacrosSettingsItemTag {...props} tags={[]} />,
         )
 
         expect(container.innerHTML).toBe('-')

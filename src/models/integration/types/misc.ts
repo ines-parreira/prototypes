@@ -1,5 +1,5 @@
-import {IntegrationType} from '../constants'
-import {Integration} from './index'
+import { IntegrationType } from '../constants'
+import { Integration } from './index'
 
 type AuthenticationStatus = 'pending' | 'success' | 'error' | ''
 
@@ -76,7 +76,7 @@ export type ProductCardDetails = {
 
 export type IntegrationFromType<T extends Integration['type']> = Extract<
     Integration,
-    {type: T}
+    { type: T }
 >
 
 export type StoreIntegration = IntegrationFromType<

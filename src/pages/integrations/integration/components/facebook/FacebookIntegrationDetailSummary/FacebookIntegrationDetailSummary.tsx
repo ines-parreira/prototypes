@@ -1,6 +1,7 @@
-import classNames from 'classnames'
-import {truncate} from 'lodash'
 import React from 'react'
+
+import classNames from 'classnames'
+import { truncate } from 'lodash'
 
 import FacebookIntegrationLoginButton from '../FacebookLoginButton/FacebookIntegrationLoginButton'
 
@@ -13,7 +14,7 @@ type Props = {
 }
 
 export default function FacebookIntegrationDetailSummary(props: Props) {
-    const {icon, name, description} = props
+    const { icon, name, description } = props
 
     return (
         <div className="d-flex align-items-center mb-3">
@@ -33,7 +34,7 @@ export default function FacebookIntegrationDetailSummary(props: Props) {
                                 'mb-0',
                                 'pr-3',
                                 'text-info',
-                                'text-truncate'
+                                'text-truncate',
                             )}
                         >
                             {truncate(name, {

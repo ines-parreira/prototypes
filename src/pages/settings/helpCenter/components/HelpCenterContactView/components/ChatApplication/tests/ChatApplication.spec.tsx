@@ -1,18 +1,18 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {fireEvent, waitFor} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {useApplications} from 'models/integration/queries'
-import {contactInfoFixture} from 'pages/settings/helpCenter/fixtures/contactInfo.fixture'
-import {useHelpCenterTranslation} from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
-
-import {RootState, StoreDispatch} from 'state/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {renderWithRouter} from 'utils/testing'
+import { useApplications } from 'models/integration/queries'
+import { contactInfoFixture } from 'pages/settings/helpCenter/fixtures/contactInfo.fixture'
+import { useHelpCenterTranslation } from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
+import { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { renderWithRouter } from 'utils/testing'
 
 import ChatApplication from '../ChatApplication'
 
@@ -228,32 +228,32 @@ describe('<ChatApplication />', () => {
     })
 
     it('allows to enable chat widget and selects the first chat by default', async () => {
-        const {container, getByLabelText} = renderWithRouter(
+        const { container, getByLabelText } = renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider store={mockedStore(defaultState)}>
                     <ChatApplication />
                 </Provider>
             </QueryClientProvider>,
-            route
+            route,
         )
 
         expect(container).toMatchSnapshot()
 
         await waitFor(() => {
             fireEvent.click(
-                getByLabelText('Enable chat widget', {exact: false})
+                getByLabelText('Enable chat widget', { exact: false }),
             )
         })
 
         expect(mockedUpdateTranslation).toHaveBeenLastCalledWith(
             expect.objectContaining({
                 chatAppKey: 'app-key',
-            })
+            }),
         )
     })
 
     it('is disabled if there are no chat integrations', () => {
-        const {container} = renderWithRouter(
+        const { container } = renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <Provider
                     store={mockedStore({
@@ -266,7 +266,7 @@ describe('<ChatApplication />', () => {
                     <ChatApplication />
                 </Provider>
             </QueryClientProvider>,
-            route
+            route,
         )
 
         expect(container).toMatchSnapshot()

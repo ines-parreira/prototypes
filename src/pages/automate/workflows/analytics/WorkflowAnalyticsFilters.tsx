@@ -1,11 +1,11 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {useSearchParam} from 'hooks/useSearchParam'
-import {withSelfServiceStoreIntegrationContext} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
-import {getWorkflowAnalyticsDateRange} from 'pages/automate/workflows/analytics/visualBuilder/utils'
-import {Notification} from 'state/notifications/types'
-import {mergeStatsFilters} from 'state/stats/statsSlice'
+import { useSearchParam } from 'hooks/useSearchParam'
+import { withSelfServiceStoreIntegrationContext } from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
+import { getWorkflowAnalyticsDateRange } from 'pages/automate/workflows/analytics/visualBuilder/utils'
+import { Notification } from 'state/notifications/types'
+import { mergeStatsFilters } from 'state/stats/statsSlice'
 
 import {
     useWorkflowEditorContext,
@@ -44,7 +44,7 @@ function WorkflowAnalyticsFiltersWrapped({
             flowUpdateDatetime:
                 workflowEditorContext.configuration.updated_datetime,
         })
-        dispatch(mergeStatsFilters({period: dateFromQueryParams}))
+        dispatch(mergeStatsFilters({ period: dateFromQueryParams }))
         setHasCheckedInitialDateRange(true)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dispatch, workflowEditorContext.configuration])
@@ -53,5 +53,5 @@ function WorkflowAnalyticsFiltersWrapped({
 }
 
 export default withSelfServiceStoreIntegrationContext(
-    withWorkflowEditorContext(WorkflowAnalyticsFiltersWrapped)
+    withWorkflowEditorContext(WorkflowAnalyticsFiltersWrapped),
 )

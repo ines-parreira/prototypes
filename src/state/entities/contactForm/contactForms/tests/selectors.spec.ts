@@ -1,19 +1,18 @@
 import _keyBy from 'lodash/keyBy'
 
-import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
-import {initialState as contactFormInitialState} from 'state/entities/contactForm/reducer'
-import {StoreState} from 'state/types'
+import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
+import { initialState as contactFormInitialState } from 'state/entities/contactForm/reducer'
+import { StoreState } from 'state/types'
+import { initialState as uiState } from 'state/ui/contactForm/reducer'
 
-import {initialState as uiState} from 'state/ui/contactForm/reducer'
-
-import {getCurrentContactForm, getContactFormById} from '../selectors'
+import { getContactFormById, getCurrentContactForm } from '../selectors'
 
 describe('Entities/Contact Form', () => {
     describe('getCurrentContactForm', () => {
         it('returns null if the currentId is not defined', () => {
             const store: Partial<StoreState> = {
-                entities: {contactForm: contactFormInitialState} as any,
-                ui: {contactForm: uiState} as any,
+                entities: { contactForm: contactFormInitialState } as any,
+                ui: { contactForm: uiState } as any,
             }
             expect(getCurrentContactForm(store as StoreState)).toEqual(null)
         })
@@ -36,7 +35,7 @@ describe('Entities/Contact Form', () => {
             }
 
             expect(getCurrentContactForm(dataStore as StoreState)).toEqual(
-                ContactFormFixture
+                ContactFormFixture,
             )
         })
     })
@@ -46,11 +45,11 @@ describe('Entities/Contact Form', () => {
 
         it('returns null if the contact form with the given id does not exist', () => {
             const store: Partial<StoreState> = {
-                entities: {contactForm: contactFormInitialState} as any,
-                ui: {contactForm: uiState} as any,
+                entities: { contactForm: contactFormInitialState } as any,
+                ui: { contactForm: uiState } as any,
             }
             expect(
-                getContactFormById(CONTACT_FORM_ID)(store as StoreState)
+                getContactFormById(CONTACT_FORM_ID)(store as StoreState),
             ).toEqual(null)
         })
 
@@ -65,11 +64,11 @@ describe('Entities/Contact Form', () => {
                         },
                     },
                 } as any,
-                ui: {contactForm: uiState} as any,
+                ui: { contactForm: uiState } as any,
             }
 
             expect(
-                getContactFormById(CONTACT_FORM_ID)(dataStore as StoreState)
+                getContactFormById(CONTACT_FORM_ID)(dataStore as StoreState),
             ).toEqual(ContactFormFixture)
         })
     })

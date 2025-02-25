@@ -1,12 +1,14 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
-import React, {ReactNode} from 'react'
+import React, { ReactNode } from 'react'
 
-import {StoreConfiguration} from 'models/aiAgent/types'
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
-import {useFileIngestion} from '../../hooks/useFileIngestion'
-import {usePublicResources} from '../../hooks/usePublicResources'
+import { StoreConfiguration } from 'models/aiAgent/types'
+
+import { useFileIngestion } from '../../hooks/useFileIngestion'
+import { usePublicResources } from '../../hooks/usePublicResources'
+import { MissingKnowledgeSourceAlert } from './PlaygroundPrerequisitesAlerts'
+
 import css from './PlaygroundPrerequisites.less'
-import {MissingKnowledgeSourceAlert} from './PlaygroundPrerequisitesAlerts'
 
 export const CheckPlaygroundPrerequisites = ({
     children,
@@ -46,15 +48,14 @@ const CheckExternalKnowledgeSources = ({
     snippetHelpCenterId: number
     shopName: string
 }) => {
-    const {sourceItems, isSourceItemsListLoading} = usePublicResources({
+    const { sourceItems, isSourceItemsListLoading } = usePublicResources({
         helpCenterId: snippetHelpCenterId,
     })
 
-    const {ingestedFiles, isLoading: isExternalFilesLoading} = useFileIngestion(
-        {
+    const { ingestedFiles, isLoading: isExternalFilesLoading } =
+        useFileIngestion({
             helpCenterId: snippetHelpCenterId,
-        }
-    )
+        })
 
     if (isSourceItemsListLoading || isExternalFilesLoading) {
         return (
@@ -65,12 +66,12 @@ const CheckExternalKnowledgeSources = ({
     }
 
     const hasPublicUrlSources =
-        sourceItems && sourceItems.some(({status}) => status === 'done')
+        sourceItems && sourceItems.some(({ status }) => status === 'done')
 
     const hasExternalFiles =
         ingestedFiles &&
         ingestedFiles.some(
-            (ingestedFile) => ingestedFile.status === 'SUCCESSFUL'
+            (ingestedFile) => ingestedFile.status === 'SUCCESSFUL',
         )
 
     if (!hasPublicUrlSources && !hasExternalFiles) {

@@ -1,7 +1,8 @@
-import classNames from 'classnames'
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 
-import {CustomField} from 'custom-fields/types'
+import classNames from 'classnames'
+
+import { CustomField } from 'custom-fields/types'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableHead from 'pages/common/components/table/TableHead'
@@ -14,11 +15,11 @@ export type Props = {
     customFields: CustomField[]
     canReorder: boolean
     onReorder: (
-        updatedPriorities: [Pick<CustomField, 'id' | 'priority'>[]]
+        updatedPriorities: [Pick<CustomField, 'id' | 'priority'>[]],
     ) => void
 }
 
-export default function List({customFields, canReorder, onReorder}: Props) {
+export default function List({ customFields, canReorder, onReorder }: Props) {
     const [draggedFields, setDraggedFields] = useState<CustomField[]>([])
 
     useEffect(() => {

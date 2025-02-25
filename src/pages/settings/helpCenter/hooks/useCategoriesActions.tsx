@@ -1,4 +1,4 @@
-import {useCallback, useState, useMemo} from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -8,7 +8,7 @@ import {
     LocaleCode,
     UpdateCategoryTranslationDto,
 } from 'models/helpCenter/types'
-import {flattenCategories} from 'models/helpCenter/utils'
+import { flattenCategories } from 'models/helpCenter/utils'
 import * as articleActions from 'state/entities/helpCenter/articles/actions'
 import {
     deleteCategory as deleteCategoryAction,
@@ -20,22 +20,21 @@ import {
     updateCategoriesArticleCount,
     updateCategoryTranslation as updateCategoryTranslationAction,
 } from 'state/entities/helpCenter/categories'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {getViewLanguage} from 'state/ui/helpCenter'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { getViewLanguage } from 'state/ui/helpCenter'
+import { reportError } from 'utils/errors'
 
-import {reportError} from 'utils/errors'
-
-import {CategoriesPositionsType} from '../components/CategoriesTable'
-import {HELP_CENTER_ROOT_CATEGORY_ID} from '../constants'
-import {getCategoriesToUpdate} from '../utils/getCategoriesToUpdate'
-import {useHelpCenterApi} from './useHelpCenterApi'
-import {useHelpCenterIdParam} from './useHelpCenterIdParam'
+import { CategoriesPositionsType } from '../components/CategoriesTable'
+import { HELP_CENTER_ROOT_CATEGORY_ID } from '../constants'
+import { getCategoriesToUpdate } from '../utils/getCategoriesToUpdate'
+import { useHelpCenterApi } from './useHelpCenterApi'
+import { useHelpCenterIdParam } from './useHelpCenterIdParam'
 
 export const useCategoriesActions = () => {
     const helpCenterId = useHelpCenterIdParam()
     const dispatch = useAppDispatch()
-    const {client} = useHelpCenterApi()
+    const { client } = useHelpCenterApi()
     const viewLanguage = useAppSelector(getViewLanguage)
     const [isLoading, setIsLoading] = useState(false)
     const categoriesById = useAppSelector(getCategoriesById)
@@ -47,7 +46,7 @@ export const useCategoriesActions = () => {
             try {
                 setIsLoading(true)
 
-                const {data} = await client.getCategory({
+                const { data } = await client.getCategory({
                     help_center_id: helpCenterId,
                     id: categoryId,
                     locale,
@@ -62,7 +61,7 @@ export const useCategoriesActions = () => {
                 throw error
             }
         },
-        [client, helpCenterId]
+        [client, helpCenterId],
     )
 
     /**
@@ -75,7 +74,7 @@ export const useCategoriesActions = () => {
             try {
                 // Get just one level so that we can calculate the number of articles in child categories
                 setIsLoading(true)
-                const {data} = await client.getCategoryTree({
+                const { data } = await client.getCategoryTree({
                     help_center_id: helpCenterId,
                     parent_category_id:
                         parentCategoryId ?? HELP_CENTER_ROOT_CATEGORY_ID,
@@ -93,7 +92,7 @@ export const useCategoriesActions = () => {
                     (category) => ({
                         categoryId: category.id,
                         articleCount: category.articles?.length ?? 0,
-                    })
+                    }),
                 )
                 dispatch(updateCategoriesArticleCount(categoryArticleCountList))
             } catch (err) {
@@ -102,20 +101,20 @@ export const useCategoriesActions = () => {
                 setIsLoading(false)
             }
         },
-        [client, dispatch, helpCenterId]
+        [client, dispatch, helpCenterId],
     )
 
     const fetchCategories = useCallback(
         async (
             locale: LocaleCode,
             parentCategoryId: number,
-            shouldReset: boolean
+            shouldReset: boolean,
         ) => {
             if (!client) throw new Error('HTTP client not initialized!')
 
             try {
                 setIsLoading(true)
-                const {data} = await client.getCategoryTree({
+                const { data } = await client.getCategoryTree({
                     help_center_id: helpCenterId,
                     parent_category_id: parentCategoryId,
                     depth: -1,
@@ -129,7 +128,7 @@ export const useCategoriesActions = () => {
                     saveCategories({
                         categories: flatCategories,
                         shouldReset,
-                    })
+                    }),
                 )
                 await fetchCategoryArticleCount(parentCategoryId, locale)
             } catch (err) {
@@ -138,7 +137,7 @@ export const useCategoriesActions = () => {
                 setIsLoading(false)
             }
         },
-        [client, dispatch, fetchCategoryArticleCount, helpCenterId]
+        [client, dispatch, fetchCategoryArticleCount, helpCenterId],
     )
 
     const createCategory = useCallback(
@@ -153,7 +152,7 @@ export const useCategoriesActions = () => {
                         {
                             help_center_id: helpCenterId,
                         },
-                        payload
+                        payload,
                     )
                     .then((response) => response.data)
                 const parentCategoryId =
@@ -166,7 +165,7 @@ export const useCategoriesActions = () => {
                 dispatch(
                     saveCategories({
                         categories: [
-                            {...newCategory, children: [], articleCount: 0},
+                            { ...newCategory, children: [], articleCount: 0 },
                             {
                                 ...parentCategory,
                                 children: [
@@ -176,7 +175,7 @@ export const useCategoriesActions = () => {
                             },
                         ],
                         shouldReset: false,
-                    })
+                    }),
                 )
 
                 setIsLoading(false)
@@ -186,14 +185,14 @@ export const useCategoriesActions = () => {
                 throw error
             }
         },
-        [categoriesById, client, dispatch, helpCenterId]
+        [categoriesById, client, dispatch, helpCenterId],
     )
 
     const updateCategoryTranslation = useCallback(
         async (
             categoryId: number,
             locale: LocaleCode,
-            payload: UpdateCategoryTranslationDto
+            payload: UpdateCategoryTranslationDto,
         ) => {
             if (!client) throw new Error('HTTP client not initialized!')
 
@@ -207,7 +206,7 @@ export const useCategoriesActions = () => {
                             category_id: categoryId,
                             locale,
                         },
-                        payload
+                        payload,
                     )
                     .then((response) => response.data)
 
@@ -236,7 +235,7 @@ export const useCategoriesActions = () => {
                         saveCategories({
                             categories: categoriesToUpdate,
                             shouldReset: false,
-                        })
+                        }),
                     )
                 }
 
@@ -249,7 +248,7 @@ export const useCategoriesActions = () => {
                 throw error
             }
         },
-        [categoriesById, client, dispatch, helpCenterId]
+        [categoriesById, client, dispatch, helpCenterId],
     )
 
     const createCategoryTranslation = useCallback(
@@ -264,7 +263,7 @@ export const useCategoriesActions = () => {
                         help_center_id: helpCenterId,
                         category_id: categoryId,
                     },
-                    payload
+                    payload,
                 )
 
                 if (payload.locale === viewLanguage) {
@@ -288,7 +287,7 @@ export const useCategoriesActions = () => {
                             saveCategories({
                                 categories: categoriesToUpdate,
                                 shouldReset: false,
-                            })
+                            }),
                         )
                     }
                 }
@@ -297,7 +296,7 @@ export const useCategoriesActions = () => {
                     pushCategorySupportedLocales({
                         categoryId,
                         supportedLocales: [payload.locale],
-                    })
+                    }),
                 )
 
                 setIsLoading(false)
@@ -309,7 +308,7 @@ export const useCategoriesActions = () => {
                 throw error
             }
         },
-        [categoriesById, client, dispatch, helpCenterId, viewLanguage]
+        [categoriesById, client, dispatch, helpCenterId, viewLanguage],
     )
 
     const updateCategoriesPositions = useCallback(
@@ -328,13 +327,13 @@ export const useCategoriesActions = () => {
                         help_center_id: helpCenterId,
                         parent_category_id: categoryId,
                     },
-                    categories
+                    categories,
                 )
                 dispatch(
                     savePositions({
                         children: categories,
                         categoryId,
-                    })
+                    }),
                 )
 
                 setIsLoading(false)
@@ -342,7 +341,7 @@ export const useCategoriesActions = () => {
                     notify({
                         message: 'Categories reordered with success',
                         status: NotificationStatus.Success,
-                    })
+                    }),
                 )
 
                 return positions
@@ -351,20 +350,20 @@ export const useCategoriesActions = () => {
                     savePositions({
                         children: defaultSiblingsPositions,
                         categoryId,
-                    })
+                    }),
                 )
                 setIsLoading(false)
                 void dispatch(
                     notify({
                         message: 'Failed to reorder categories',
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
 
                 throw error
             }
         },
-        [client, dispatch, helpCenterId]
+        [client, dispatch, helpCenterId],
     )
 
     const deleteCategoryTranslation = useCallback(
@@ -380,25 +379,25 @@ export const useCategoriesActions = () => {
                     locale,
                 })
 
-                dispatch(removeLocaleFromCategory({categoryId, locale}))
+                dispatch(removeLocaleFromCategory({ categoryId, locale }))
 
                 if (locale === viewLanguage) {
                     const category = categoriesById[categoryId]
                     const availableLocales = category.available_locales.filter(
-                        (availableLocale) => availableLocale !== locale
+                        (availableLocale) => availableLocale !== locale,
                     )
                     if (!availableLocales.length) {
                         dispatch(deleteCategoryAction(categoryId))
                     } else {
                         const newLocale = availableLocales[0]
-                        const {data} = await client.getCategory({
+                        const { data } = await client.getCategory({
                             help_center_id: helpCenterId,
                             id: categoryId,
                             locale: newLocale,
                         })
 
                         dispatch(
-                            updateCategoryTranslationAction(data.translation)
+                            updateCategoryTranslationAction(data.translation),
                         )
                     }
                 }
@@ -409,7 +408,7 @@ export const useCategoriesActions = () => {
                     articleActions.cleanArticlesWithNoTranslation({
                         categoryId,
                         localeDeleted: locale,
-                    })
+                    }),
                 )
                 // When deleting a category locale, the API also removes the locale from children articles,
                 // to avoid logic duplication and state drifts we just trigger a refetch of the articles
@@ -423,7 +422,7 @@ export const useCategoriesActions = () => {
                 throw error
             }
         },
-        [categoriesById, client, dispatch, helpCenterId, viewLanguage]
+        [categoriesById, client, dispatch, helpCenterId, viewLanguage],
     )
 
     const deleteCategory = useCallback(
@@ -454,7 +453,7 @@ export const useCategoriesActions = () => {
                 throw error
             }
         },
-        [client, dispatch, helpCenterId]
+        [client, dispatch, helpCenterId],
     )
 
     return useMemo(
@@ -481,6 +480,6 @@ export const useCategoriesActions = () => {
             updateCategoriesPositions,
             updateCategoryTranslation,
             fetchCategoryArticleCount,
-        ]
+        ],
     )
 }

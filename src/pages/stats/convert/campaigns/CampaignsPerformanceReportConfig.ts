@@ -2,28 +2,28 @@ import {
     CAMPAIGNS_REPORT_OPTIONAL_FILTERS,
     CAMPAIGNS_REPORT_PERSISTENT_FILTERS,
 } from 'pages/stats/convert/campaigns/CampaignsLegacyReportConfig'
-import {PerformanceCampaignSalesGraphChart} from 'pages/stats/convert/charts/PerformanceCampaignSalesGraphChart'
-import {PerformanceCampaignSalesKpiChart} from 'pages/stats/convert/charts/PerformanceCampaignSalesKpiChart'
-import {PerformanceEngagementKpiChart} from 'pages/stats/convert/charts/PerformanceEngagementKpiChart'
-import {PerformanceImpressionsGraphChart} from 'pages/stats/convert/charts/PerformanceImpressionsGraphChart'
-import {PerformanceImpressionsKpiChart} from 'pages/stats/convert/charts/PerformanceImpressionsKpiChart'
-import {PerformanceInfluencedRevenueShareKpiChart} from 'pages/stats/convert/charts/PerformanceInlfluencedRevenueShareKpiChart'
-import {RevenueKpiChart} from 'pages/stats/convert/charts/RevenueKpiChart'
+import { PerformanceCampaignSalesGraphChart } from 'pages/stats/convert/charts/PerformanceCampaignSalesGraphChart'
+import { PerformanceCampaignSalesKpiChart } from 'pages/stats/convert/charts/PerformanceCampaignSalesKpiChart'
+import { PerformanceEngagementKpiChart } from 'pages/stats/convert/charts/PerformanceEngagementKpiChart'
+import { PerformanceImpressionsGraphChart } from 'pages/stats/convert/charts/PerformanceImpressionsGraphChart'
+import { PerformanceImpressionsKpiChart } from 'pages/stats/convert/charts/PerformanceImpressionsKpiChart'
+import { PerformanceInfluencedRevenueShareKpiChart } from 'pages/stats/convert/charts/PerformanceInlfluencedRevenueShareKpiChart'
+import { RevenueKpiChart } from 'pages/stats/convert/charts/RevenueKpiChart'
 import CampaignRevenueChart from 'pages/stats/convert/components/CampaignRevenueChart'
-import {fetchCampaignReportData} from 'pages/stats/convert/components/DownloadOverviewData/GenerateReportService'
-import {OverviewMetricConfig} from 'pages/stats/convert/constants/ConvertPerformanceOverviewConfig'
+import { fetchCampaignReportData } from 'pages/stats/convert/components/DownloadOverviewData/GenerateReportService'
+import { OverviewMetricConfig } from 'pages/stats/convert/constants/ConvertPerformanceOverviewConfig'
 import {
     CampaignPerformanceTable,
     CAMPAIGNS_PERFORMANCE_TABLE_TITLE,
 } from 'pages/stats/convert/containers/CampaignPerformanceTable'
-import {CAMPAIGNS_REPORT_TITLE} from 'pages/stats/convert/pages/CampaignsStats/CampaignsStats'
-import {CampaignsTotalsMetricNames} from 'pages/stats/convert/services/constants'
+import { CAMPAIGNS_REPORT_TITLE } from 'pages/stats/convert/pages/CampaignsStats/CampaignsStats'
+import { CampaignsTotalsMetricNames } from 'pages/stats/convert/services/constants'
 import {
     ChartType,
     DataExportFormat,
     ReportConfig,
 } from 'pages/stats/custom-reports/types'
-import {STATS_ROUTES} from 'routes/constants'
+import { STATS_ROUTES } from 'routes/constants'
 
 export enum CampaignsChart {
     RevenueKpiChart = 'RevenueKpiChart',

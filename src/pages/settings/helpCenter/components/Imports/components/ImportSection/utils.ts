@@ -1,9 +1,12 @@
 import axios from 'axios'
 
-import {AlertNotification, NotificationButton} from 'state/notifications/types'
+import {
+    AlertNotification,
+    NotificationButton,
+} from 'state/notifications/types'
 
-import {MigrationFailuresSection} from './components/MigrationStateModal/components/MigrationFailuresDetails/MigrationFailuresDetails'
-import {QuickSummaryEntry} from './components/MigrationStateModal/components/MigrationQuickSummary/MigrationQuickSummary'
+import { MigrationFailuresSection } from './components/MigrationStateModal/components/MigrationFailuresDetails/MigrationFailuresDetails'
+import { QuickSummaryEntry } from './components/MigrationStateModal/components/MigrationQuickSummary/MigrationQuickSummary'
 import {
     DetailMessage,
     ErrorResponse,
@@ -24,7 +27,7 @@ const sessionKeys: (keyof MigrationSession)[] = [
  * We type guard the response for this reason
  */
 export const responseIsSession = (
-    responseData: any
+    responseData: any,
 ): responseData is MigrationSession =>
     sessionKeys.every((key) => key in responseData)
 /**
@@ -33,11 +36,11 @@ export const responseIsSession = (
  * We type guard the response for this reason
  */
 export const responseIsSessionsList = (
-    responsesData: any[]
+    responsesData: any[],
 ): responsesData is MigrationSession[] => responsesData.every(responseIsSession)
 
 export const sessionHasProgressStatus = (
-    session: Pick<MigrationSession, 'status'> | null
+    session: Pick<MigrationSession, 'status'> | null,
 ) => {
     return (
         [
@@ -52,7 +55,7 @@ export const sessionHasProgressStatus = (
 export const getSessionCreateData = (
     helpCenterId: number,
     providerPayload: Record<string, any>,
-    accessToken: string
+    accessToken: string,
 ): MigrationSessionCreate => ({
     migration: {
         provider: {
@@ -89,23 +92,23 @@ export interface ParsedSessionStats {
 }
 
 export const parseSessionStats = (
-    session: Pick<MigrationSession, 'stats'> | null
+    session: Pick<MigrationSession, 'stats'> | null,
 ): ParsedSessionStats => {
-    const {articles, categories} = session?.stats || {}
+    const { articles, categories } = session?.stats || {}
 
     const processes = [articles, categories]
     return {
         totalExported: processes.reduce(
             (acc, process) => acc + (process?.export_count || 0),
-            0
+            0,
         ),
         totalImported: processes.reduce(
             (acc, process) => acc + (process?.import_count || 0),
-            0
+            0,
         ),
         totalFailed: processes.reduce(
             (acc, process) => acc + (process?.errors_count || 0),
-            0
+            0,
         ),
         quickSummaryEntries: [
             {

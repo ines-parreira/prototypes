@@ -1,20 +1,20 @@
-import {useQueryClient} from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
-    useDeleteWorkflowsConfiguration,
     storeWorkflowsConfigurationDefinitionKeys,
+    useDeleteWorkflowsConfiguration,
 } from 'models/workflows/queries'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
-import {StoresWorkflowConfiguration} from '../types'
-import {handleError} from './errorHandler'
+import { StoresWorkflowConfiguration } from '../types'
+import { handleError } from './errorHandler'
 
 export default function useDeleteAction(
     name: string,
     storeName: string,
-    storeType: string
+    storeType: string,
 ) {
     const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
@@ -37,7 +37,7 @@ export default function useDeleteAction(
 
                 const previousActionsConfiguration =
                     queryClient.getQueryData<StoresWorkflowConfiguration>(
-                        queryKey
+                        queryKey,
                     )
 
                 // Optimistically update the cache
@@ -45,9 +45,9 @@ export default function useDeleteAction(
                     queryKey,
                     previousActionsConfiguration?.filter
                         ? previousActionsConfiguration.filter(
-                              (action) => action.internal_id !== internalId
+                              (action) => action.internal_id !== internalId,
                           )
-                        : []
+                        : [],
                 )
 
                 return {
@@ -60,7 +60,7 @@ export default function useDeleteAction(
                 notify({
                     status: NotificationStatus.Success,
                     message: `Successfully deleted Action ${name}`,
-                })
+                }),
             )
         },
         onSettled: () =>
@@ -71,7 +71,7 @@ export default function useDeleteAction(
             handleError(error, `Failed to delete Action ${name}`, dispatch)
             queryClient.setQueryData(
                 queryKey,
-                context?.previousActionsConfiguration
+                context?.previousActionsConfiguration,
             )
         },
     })

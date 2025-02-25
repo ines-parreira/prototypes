@@ -1,19 +1,19 @@
 import moment from 'moment'
 
-import {TicketStatus} from 'business/types/ticket'
-import {OrderDirection} from 'models/api/types'
+import { TicketStatus } from 'business/types/ticket'
+import { OrderDirection } from 'models/api/types'
 import {
     TicketQAScoreDimension,
     TicketQAScoreDimensionName,
     TicketQAScoreMeasure,
 } from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
-import {TicketDimension} from 'models/reporting/cubes/TicketCube'
+import { TicketDimension } from 'models/reporting/cubes/TicketCube'
 import {
     languageProficiencyDrillDownQueryFactory,
     languageProficiencyQueryFactory,
 } from 'models/reporting/queryFactories/auto-qa/languageProficiencyQueryFactory'
-import {ReportingFilterOperator} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import { ReportingFilterOperator } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     statsFiltersToReportingFilters,
@@ -42,7 +42,7 @@ describe('languageProficiencyQueryFactory', () => {
             filters: [
                 ...statsFiltersToReportingFilters(
                     TicketStatsFiltersMembers,
-                    statsFilters
+                    statsFilters,
                 ),
                 {
                     member: TicketDimension.Status,
@@ -63,7 +63,7 @@ describe('languageProficiencyQueryFactory', () => {
         const query = languageProficiencyQueryFactory(
             statsFilters,
             timezone,
-            sorting
+            sorting,
         )
 
         expect(query).toEqual({
@@ -73,7 +73,7 @@ describe('languageProficiencyQueryFactory', () => {
             filters: [
                 ...statsFiltersToReportingFilters(
                     TicketStatsFiltersMembers,
-                    statsFilters
+                    statsFilters,
                 ),
                 {
                     member: TicketDimension.Status,
@@ -107,7 +107,7 @@ describe('languageProficiencyDrillDownQueryFactory', () => {
     it('should produce the query', () => {
         const query = languageProficiencyDrillDownQueryFactory(
             statsFilters,
-            timezone
+            timezone,
         )
 
         expect(query).toEqual({
@@ -121,7 +121,7 @@ describe('languageProficiencyDrillDownQueryFactory', () => {
             filters: [
                 ...statsFiltersToReportingFilters(
                     TicketStatsFiltersMembers,
-                    statsFilters
+                    statsFilters,
                 ),
                 {
                     member: TicketDimension.Status,
@@ -142,7 +142,7 @@ describe('languageProficiencyDrillDownQueryFactory', () => {
         const query = languageProficiencyDrillDownQueryFactory(
             statsFilters,
             timezone,
-            sorting
+            sorting,
         )
 
         expect(query).toEqual({
@@ -156,7 +156,7 @@ describe('languageProficiencyDrillDownQueryFactory', () => {
             filters: [
                 ...statsFiltersToReportingFilters(
                     TicketStatsFiltersMembers,
-                    statsFilters
+                    statsFilters,
                 ),
                 {
                     member: TicketDimension.Status,

@@ -1,20 +1,21 @@
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {renderWithRouter} from '../../../../utils/testing'
+import { fromJS } from 'immutable'
+
+import { renderWithRouter } from '../../../../utils/testing'
 import SourceWrapper from '../../../common/components/sourceWidgets/SourceWrapper'
-import {TicketSourceContainer} from '../TicketSourceContainer'
+import { TicketSourceContainer } from '../TicketSourceContainer'
 
 jest.mock(
     '../../../common/components/sourceWidgets/SourceWrapper',
     () =>
-        ({context, identifier}: ComponentProps<typeof SourceWrapper>) => (
+        ({ context, identifier }: ComponentProps<typeof SourceWrapper>) => (
             <div>
                 SourceWrapper
                 <div>context: {JSON.stringify(context)}</div>
                 <div>identifier: {JSON.stringify(identifier)}</div>
             </div>
-        )
+        ),
 )
 
 describe('<TicketSourceContainer />', () => {
@@ -53,12 +54,12 @@ describe('<TicketSourceContainer />', () => {
     }
 
     it('should render', () => {
-        const {container} = renderWithRouter(
+        const { container } = renderWithRouter(
             <TicketSourceContainer {...minProps} />,
             {
                 path: '/foo/:ticketId?',
                 route: '/foo/32',
-            }
+            },
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -83,7 +84,7 @@ describe('<TicketSourceContainer />', () => {
         })
 
         expect(minProps.actions.fetchCustomer).toHaveBeenCalledWith(
-            customerId.toString()
+            customerId.toString(),
         )
     })
 })

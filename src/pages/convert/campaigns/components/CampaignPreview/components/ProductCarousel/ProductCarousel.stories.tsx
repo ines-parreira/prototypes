@@ -1,7 +1,8 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {ProductCarousel} from './ProductCarousel'
+import { Meta, Story } from '@storybook/react'
+
+import { ProductCarousel } from './ProductCarousel'
 
 const storyConfig: Meta = {
     title: 'Convert/Chat Campaigns/Product Carousel',

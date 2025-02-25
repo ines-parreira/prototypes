@@ -1,11 +1,10 @@
-import {macros} from 'fixtures/macro'
-
-import {getDefaultMacro} from 'state/macro/utils'
+import { macros } from 'fixtures/macro'
+import { getDefaultMacro } from 'state/macro/utils'
 
 import {
-    isMacroDisabled,
-    getDefaultSelectedMacroId,
     getCurrentMacro,
+    getDefaultSelectedMacroId,
+    isMacroDisabled,
 } from '../utils'
 
 describe('isMacroDisabled', () => {
@@ -31,13 +30,13 @@ describe('getDefaultSelectedMacroId', () => {
 
     it('should return id of current macro', () => {
         expect(getDefaultSelectedMacroId(macros, 2, false)).toEqual(
-            macros[1].id
+            macros[1].id,
         )
     })
 
     it('should fallback to id of first macro', () => {
         expect(getDefaultSelectedMacroId(macros, 77, false)).toEqual(
-            macros[0].id
+            macros[0].id,
         )
     })
 })

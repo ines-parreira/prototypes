@@ -1,21 +1,21 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
 
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {campaign, campaignId} from 'fixtures/campaign'
-import {channelConnectionId} from 'fixtures/channelConnection'
+import { axiosSuccessResponse } from 'fixtures/axiosResponse'
+import { campaign, campaignId } from 'fixtures/campaign'
+import { channelConnectionId } from 'fixtures/channelConnection'
 import {
     campaignKeys,
     useUpdateCampaign as usePureUpdateCampaign,
 } from 'models/convert/campaign/queries'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
-import {useUpdateCampaign} from '../useUpdateCampaign'
+import { useUpdateCampaign } from '../useUpdateCampaign'
 
 const queryClient = mockQueryClient()
 
@@ -34,7 +34,7 @@ describe('useUpdateCampaign', () => {
     it('should dispatch success notification on success and invalidate list and detail queries', () => {
         const invalidateQueryMock = jest.spyOn(queryClient, 'invalidateQueries')
         renderHook(() => useUpdateCampaign(), {
-            wrapper: ({children}) => (
+            wrapper: ({ children }) => (
                 <QueryClientProvider client={queryClient}>
                     {children}
                 </QueryClientProvider>
@@ -42,8 +42,8 @@ describe('useUpdateCampaign', () => {
         })
         usePureUpdateCampaignMock.mock.calls[0][0]?.onSuccess!(
             axiosSuccessResponse(campaign as any),
-            [undefined, {campaign_id: campaignId}, campaign as any],
-            undefined
+            [undefined, { campaign_id: campaignId }, campaign as any],
+            undefined,
         )
 
         expect(invalidateQueryMock).toHaveBeenCalledWith({
@@ -60,7 +60,7 @@ describe('useUpdateCampaign', () => {
 
     it('should call handleError on error', () => {
         renderHook(() => useUpdateCampaign(), {
-            wrapper: ({children}) => (
+            wrapper: ({ children }) => (
                 <QueryClientProvider client={queryClient}>
                     {children}
                 </QueryClientProvider>
@@ -69,8 +69,8 @@ describe('useUpdateCampaign', () => {
         const myError = {}
         usePureUpdateCampaignMock.mock.calls[0][0]?.onError!(
             myError,
-            [undefined, {campaign_id: campaignId}, campaign as any],
-            undefined
+            [undefined, { campaign_id: campaignId }, campaign as any],
+            undefined,
         )
 
         expect(notify).toHaveBeenCalledWith({

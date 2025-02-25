@@ -1,6 +1,6 @@
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {Input} from 'reactstrap'
+import { Input } from 'reactstrap'
 
 import css from './InputRange.less'
 

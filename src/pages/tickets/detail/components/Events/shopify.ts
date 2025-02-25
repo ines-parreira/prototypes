@@ -1,8 +1,8 @@
-import {fromJS, List} from 'immutable'
+import { fromJS, List } from 'immutable'
 
-import {shopifyAdminBaseUrl} from 'config/integrations/shopify'
+import { shopifyAdminBaseUrl } from 'config/integrations/shopify'
 
-import {eventMaker} from './types'
+import { eventMaker } from './types'
 
 const shopifyEvent = ({
     integration,
@@ -13,7 +13,7 @@ const shopifyEvent = ({
     const _getOrder = (orderId: number) => {
         return (((data.get('orders') || fromJS([])) as List<any>).find(
             (order: Map<any, any>) =>
-                (order.get('id') as number).toString() === orderId.toString()
+                (order.get('id') as number).toString() === orderId.toString(),
         ) || fromJS({})) as Map<any, any>
     }
 
@@ -21,7 +21,7 @@ const shopifyEvent = ({
         const order = _getOrder(orderId)
         return (((order.get('line_items') || fromJS([])) as List<any>).find(
             (item: Map<any, any>) =>
-                (item.get('id') as number).toString() === itemId.toString()
+                (item.get('id') as number).toString() === itemId.toString(),
         ) || fromJS({})) as Map<any, any>
     }
 
@@ -47,7 +47,7 @@ const shopifyEvent = ({
         } else if (actionConfig.objectType === 'item') {
             const item = _getItem(
                 payload.get('order_id'),
-                payload.get('item_id')
+                payload.get('item_id'),
             )
             return {
                 objectLabel: `${payload.get('quantity') as number} × ${

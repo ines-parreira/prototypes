@@ -1,4 +1,4 @@
-import {RecoveryCode} from '../models/twoFactorAuthentication/types'
+import { RecoveryCode } from '../models/twoFactorAuthentication/types'
 
 export const recoveryCode: RecoveryCode = {
     id: 1,

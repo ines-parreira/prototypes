@@ -1,15 +1,16 @@
-import {fireEvent, render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {IntegrationType} from 'models/integration/constants'
-import {EditionContext} from 'providers/infobar/EditionContext'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { IntegrationType } from 'models/integration/constants'
+import { EditionContext } from 'providers/infobar/EditionContext'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 
-import {draftOrderCustomization} from '../DraftOrder'
+import { draftOrderCustomization } from '../DraftOrder'
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
@@ -46,7 +47,7 @@ describe('<TitleWrapper/>', () => {
                 integrations: [integration],
             }),
         })
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <IntegrationContext.Provider
                     value={{
@@ -68,7 +69,7 @@ describe('<TitleWrapper/>', () => {
                         <div>foo bar</div>
                     </TitleWrapper>
                 </IntegrationContext.Provider>
-            </Provider>
+            </Provider>,
         )
         expect(screen.getByRole('button')).toBeVisible()
 
@@ -81,7 +82,7 @@ describe('<TitleWrapper/>', () => {
                 integrations: [integration],
             }),
         })
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <IntegrationContext.Provider
                     value={{
@@ -102,7 +103,7 @@ describe('<TitleWrapper/>', () => {
                         <div>foo bar</div>
                     </TitleWrapper>
                 </IntegrationContext.Provider>
-            </Provider>
+            </Provider>,
         )
         expect(screen.getByRole('button')).toBeVisible()
 
@@ -140,7 +141,7 @@ describe('<TitleWrapper/>', () => {
                         <div>foo bar</div>
                     </TitleWrapper>
                 </IntegrationContext.Provider>
-            </Provider>
+            </Provider>,
         )
         expect(screen.getByRole('button')).toBeVisible()
 
@@ -151,7 +152,7 @@ describe('<TitleWrapper/>', () => {
             SegmentEvent.ShopifyDraftOrderClicked,
             expect.objectContaining({
                 account_domain: 'test',
-            })
+            }),
         )
     })
 
@@ -161,9 +162,9 @@ describe('<TitleWrapper/>', () => {
                 integrations: [integration],
             }),
         })
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
-                <EditionContext.Provider value={{isEditing: true}}>
+                <EditionContext.Provider value={{ isEditing: true }}>
                     <IntegrationContext.Provider
                         value={{
                             integration: fromJS(integration),
@@ -183,7 +184,7 @@ describe('<TitleWrapper/>', () => {
                         </TitleWrapper>
                     </IntegrationContext.Provider>
                 </EditionContext.Provider>
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.queryByRole('button')).toBeNull()
@@ -218,7 +219,7 @@ describe('<AfterTitle/>', () => {
                 integrations: [integration],
             }),
         })
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <IntegrationContext.Provider
                     value={{
@@ -241,7 +242,7 @@ describe('<AfterTitle/>', () => {
                         })}
                     />
                 </IntegrationContext.Provider>
-            </Provider>
+            </Provider>,
         )
         const [created, total] = container.children
         expect(created).toHaveTextContent('Created: 02/08/2021')
@@ -254,7 +255,7 @@ describe('<AfterTitle/>', () => {
                 integrations: [integration],
             }),
         })
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <IntegrationContext.Provider
                     value={{
@@ -274,7 +275,7 @@ describe('<AfterTitle/>', () => {
                         })}
                     />
                 </IntegrationContext.Provider>
-            </Provider>
+            </Provider>,
         )
         expect(container).toMatchSnapshot()
     })
@@ -285,9 +286,9 @@ describe('<AfterTitle/>', () => {
                 integrations: [integration],
             }),
         })
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
-                <EditionContext.Provider value={{isEditing: true}}>
+                <EditionContext.Provider value={{ isEditing: true }}>
                     <IntegrationContext.Provider
                         value={{
                             integration: fromJS(integration),
@@ -307,7 +308,7 @@ describe('<AfterTitle/>', () => {
                         />
                     </IntegrationContext.Provider>
                 </EditionContext.Provider>
-            </Provider>
+            </Provider>,
         )
         expect(container).toMatchSnapshot()
     })

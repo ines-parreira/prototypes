@@ -1,7 +1,8 @@
-import {Meta, StoryObj} from '@storybook/react'
 import React from 'react'
 
-import {TicketOutcome} from 'models/aiAgentPlayground/types'
+import { Meta, StoryObj } from '@storybook/react'
+
+import { TicketOutcome } from 'models/aiAgentPlayground/types'
 
 import TicketEvent from './TicketEvent'
 

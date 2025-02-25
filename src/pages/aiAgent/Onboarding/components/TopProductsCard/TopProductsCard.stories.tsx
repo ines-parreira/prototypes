@@ -1,6 +1,7 @@
-import type {Meta, StoryObj} from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 
 import TopProductsCard from './TopProductsCard'
+
 import './TopProductsCard.less'
 
 const meta = {
@@ -27,9 +28,9 @@ export const Default: Story = {
     args: {
         title: 'Top products',
         products: [
-            {id: '1', ...defaultProduct},
-            {id: '2', ...defaultProduct},
-            {id: '3', ...defaultProduct},
+            { id: '1', ...defaultProduct },
+            { id: '2', ...defaultProduct },
+            { id: '3', ...defaultProduct },
         ],
     },
 }
@@ -38,9 +39,9 @@ export const DifferentCurrency: Story = {
     args: {
         title: 'Top products',
         products: [
-            {id: '4', currency: 'JPY', ...defaultProduct},
-            {id: '5', currency: 'JPY', ...defaultProduct},
-            {id: '6', currency: 'JPY', ...defaultProduct},
+            { id: '4', currency: 'JPY', ...defaultProduct },
+            { id: '5', currency: 'JPY', ...defaultProduct },
+            { id: '6', currency: 'JPY', ...defaultProduct },
         ],
     },
 }
@@ -54,8 +55,8 @@ export const LongName: Story = {
                 ...defaultProduct,
                 title: 'Maybelline Color Sensational Color Elixir Lip Lacquer Lipgloss',
             },
-            {id: '5', ...defaultProduct},
-            {id: '6', ...defaultProduct},
+            { id: '5', ...defaultProduct },
+            { id: '6', ...defaultProduct },
         ],
     },
 }

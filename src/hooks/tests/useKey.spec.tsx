@@ -1,35 +1,36 @@
-import {render, act, fireEvent} from '@testing-library/react'
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
+
+import { act, fireEvent, render } from '@testing-library/react'
+import { renderHook } from '@testing-library/react-hooks'
 
 import useKey from '../useKey'
 
 describe('useKey', () => {
     it('should call the provided handler when the specified key is pressed on the target element', () => {
         const mockHandler = jest.fn()
-        const {getByTestId} = render(<div data-testid="test-div" />)
+        const { getByTestId } = render(<div data-testid="test-div" />)
         const targetDiv = getByTestId('test-div')
 
-        renderHook(() => useKey('Enter', mockHandler, {target: targetDiv}))
+        renderHook(() => useKey('Enter', mockHandler, { target: targetDiv }))
 
         act(() => {
-            fireEvent.keyDown(targetDiv, {key: 'Enter'})
+            fireEvent.keyDown(targetDiv, { key: 'Enter' })
         })
 
         expect(mockHandler).toHaveBeenCalledWith(
-            expect.objectContaining({key: 'Enter'})
+            expect.objectContaining({ key: 'Enter' }),
         )
     })
 
     it('should not react to the event if the key is pressed outside the target element', () => {
         const mockHandler = jest.fn()
-        const {getByTestId} = render(<div data-testid="test-div" />)
+        const { getByTestId } = render(<div data-testid="test-div" />)
         const targetDiv = getByTestId('test-div')
 
-        renderHook(() => useKey('Enter', mockHandler, {target: targetDiv}))
+        renderHook(() => useKey('Enter', mockHandler, { target: targetDiv }))
 
         act(() => {
-            fireEvent.keyDown(document, {key: 'Enter'})
+            fireEvent.keyDown(document, { key: 'Enter' })
         })
 
         expect(mockHandler).not.toHaveBeenCalled()
@@ -42,7 +43,7 @@ describe('useKey', () => {
         renderHook(() => useKey('Enter', mockHandler))
 
         act(() => {
-            fireEvent.keyDown(document, {key: 'Escape'})
+            fireEvent.keyDown(document, { key: 'Escape' })
         })
 
         expect(mockHandler).not.toHaveBeenCalled()
@@ -57,13 +58,13 @@ describe('useKey', () => {
         renderHook(() => useKey(keyFilter, mockHandler))
 
         act(() => {
-            fireEvent.keyDown(document, {key: 'A'})
-            fireEvent.keyDown(document, {key: 'B'})
+            fireEvent.keyDown(document, { key: 'A' })
+            fireEvent.keyDown(document, { key: 'B' })
         })
 
         expect(mockHandler.mock.calls).toEqual([
-            [expect.objectContaining({key: 'A'})],
-            [expect.objectContaining({key: 'B'})],
+            [expect.objectContaining({ key: 'A' })],
+            [expect.objectContaining({ key: 'B' })],
         ])
     })
 
@@ -71,29 +72,32 @@ describe('useKey', () => {
         const mockHandler = jest.fn()
         render(<div />)
 
-        const {rerender} = renderHook(({keys}) => useKey(keys, mockHandler), {
-            initialProps: {keys: 'Enter'},
-        })
-
-        act(() => {
-            fireEvent.keyDown(document, {key: 'Enter'})
-        })
-
-        expect(mockHandler).toHaveBeenCalledWith(
-            expect.objectContaining({key: 'Enter'})
+        const { rerender } = renderHook(
+            ({ keys }) => useKey(keys, mockHandler),
+            {
+                initialProps: { keys: 'Enter' },
+            },
         )
 
         act(() => {
-            rerender({keys: 'Escape'})
+            fireEvent.keyDown(document, { key: 'Enter' })
+        })
+
+        expect(mockHandler).toHaveBeenCalledWith(
+            expect.objectContaining({ key: 'Enter' }),
+        )
+
+        act(() => {
+            rerender({ keys: 'Escape' })
         })
 
         act(() => {
-            fireEvent.keyDown(document, {key: 'Escape'})
+            fireEvent.keyDown(document, { key: 'Escape' })
         })
 
         expect(mockHandler.mock.calls).toEqual([
-            [expect.objectContaining({key: 'Enter'})],
-            [expect.objectContaining({key: 'Escape'})],
+            [expect.objectContaining({ key: 'Enter' })],
+            [expect.objectContaining({ key: 'Escape' })],
         ])
     })
 })

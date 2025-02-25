@@ -1,8 +1,8 @@
 import _flatMap from 'lodash/flatMap'
 
-import {CustomFieldValue} from 'custom-fields/types'
-import {HelpdeskMessageMember} from 'models/reporting/cubes/HelpdeskMessageCube'
-import {TicketMember} from 'models/reporting/cubes/TicketCube'
+import { CustomFieldValue } from 'custom-fields/types'
+import { HelpdeskMessageMember } from 'models/reporting/cubes/HelpdeskMessageCube'
+import { TicketMember } from 'models/reporting/cubes/TicketCube'
 import {
     ReportingFilter,
     ReportingFilterOperator,
@@ -15,7 +15,7 @@ import {
     TagFilter,
     WithLogicalOperator,
 } from 'models/stat/types'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 
 export type OptionalFilter =
     | string[]
@@ -35,7 +35,7 @@ export const isAggregationWindowFilter = (filter: any) =>
     ].includes(filter)
 
 export const isFilterWithLogicalOperator = (
-    filter: OptionalFilter
+    filter: OptionalFilter,
 ): filter is WithLogicalOperator<string> | WithLogicalOperator<number> =>
     !Array.isArray(filter) &&
     filter !== undefined &&
@@ -48,7 +48,7 @@ export const isPeriodFilter = (filter: OptionalFilter): boolean =>
     'end_datetime' in filter
 
 export const isCustomFieldFilter = (
-    filter: OptionalFilter
+    filter: OptionalFilter,
 ): filter is CustomFieldFilter[] =>
     Array.isArray(filter) &&
     filter.some(
@@ -56,7 +56,7 @@ export const isCustomFieldFilter = (
             typeof subFilter === 'object' &&
             'operator' in subFilter &&
             'customFieldId' in subFilter &&
-            'values' in subFilter
+            'values' in subFilter,
     )
 
 export const isTagFilter = (filter: OptionalFilter): filter is TagFilter[] =>
@@ -66,7 +66,7 @@ export const isTagFilter = (filter: OptionalFilter): filter is TagFilter[] =>
         (subFilter) =>
             typeof subFilter === 'object' &&
             'operator' in subFilter &&
-            'filterInstanceId' in subFilter
+            'filterInstanceId' in subFilter,
     )
 
 export const hasFilter = (filter: OptionalFilter) => {
@@ -99,7 +99,7 @@ const NotEqualsMap = {
 
 export const deduplicateCustomFields = (
     acc: ReportingFilter[],
-    filter: ReportingFilter
+    filter: ReportingFilter,
 ): ReportingFilter[] => {
     if (
         filter.member === TicketMember.CustomField ||
@@ -129,7 +129,7 @@ export const addOptionalFilter = (
     filterDefaults: {
         member: ReportingFilter['member']
         operator: ReportingFilterOperator
-    }
+    },
 ) => {
     if (filter === undefined) {
         return commonFilters
@@ -179,10 +179,10 @@ export const addOptionalFilter = (
                     .filter(
                         (filter) =>
                             filter.operator === LogicalOperatorEnum.ONE_OF &&
-                            filter.values.length > 0
+                            filter.values.length > 0,
                     )
-                    .map((filter) => filter.customFieldId)
-            )
+                    .map((filter) => filter.customFieldId),
+            ),
         )
         if (uniqueCustomFieldIds.length > 1) {
             reportingFilters.push({
@@ -273,7 +273,7 @@ export const addOptionalFilter = (
 
 export function withDefaultLogicalOperator<T extends number | string>(
     values?: T[],
-    operator?: LogicalOperatorEnum
+    operator?: LogicalOperatorEnum,
 ): WithLogicalOperator<T> {
     return {
         operator: operator ?? LogicalOperatorEnum.ONE_OF,
@@ -283,7 +283,7 @@ export function withDefaultLogicalOperator<T extends number | string>(
 
 export function withLogicalOperator<T extends number | string>(
     values: T[],
-    operator = LogicalOperatorEnum.ONE_OF
+    operator = LogicalOperatorEnum.ONE_OF,
 ): WithLogicalOperator<T> {
     return {
         operator,
@@ -310,7 +310,7 @@ export function withDefaultCustomFieldAndLogicalOperator({
 export const TICKET_CUSTOM_FIELDS_API_SEPARATOR = '::'
 
 const isStringArray = (
-    customFieldsArray: string[] | CustomFieldFilter[] | undefined
+    customFieldsArray: string[] | CustomFieldFilter[] | undefined,
 ): customFieldsArray is string[] =>
     Array.isArray(customFieldsArray) &&
     customFieldsArray.length > 0 &&
@@ -329,7 +329,7 @@ const removeDuplicateFilterInstances =
             return {
                 ...filter,
                 values: filter.values.filter(
-                    removeDuplicateInstances(customFieldId)
+                    removeDuplicateInstances(customFieldId),
                 ),
             }
         }
@@ -339,12 +339,12 @@ const removeDuplicateFilterInstances =
 export const injectDrillDownCustomFieldId = (
     statsFilters: StatsFilters,
     customFieldId: number,
-    customFieldsValueStrings: string[] | null
+    customFieldsValueStrings: string[] | null,
 ): StatsFilters => {
     if (customFieldsValueStrings === null) {
         return statsFilters
     }
-    const {customFields} = statsFilters
+    const { customFields } = statsFilters
     const filters: StatsFilters = {
         ...statsFilters,
     }
@@ -353,7 +353,7 @@ export const injectDrillDownCustomFieldId = (
         customFieldId,
         operator: LogicalOperatorEnum.ONE_OF,
         values: customFieldsValueStrings.map(
-            getCustomFieldValueSerializer(Number(customFieldId))
+            getCustomFieldValueSerializer(Number(customFieldId)),
         ),
     }
 
@@ -367,7 +367,7 @@ export const injectDrillDownCustomFieldId = (
         } else if (currentValue !== undefined) {
             filters[FilterKey.CustomFields] = [
                 ...currentValue.map(
-                    removeDuplicateFilterInstances(customFieldId)
+                    removeDuplicateFilterInstances(customFieldId),
                 ),
                 customFieldFilterWithPrefixedId,
             ]

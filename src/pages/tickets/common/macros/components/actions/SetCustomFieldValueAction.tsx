@@ -1,5 +1,6 @@
-import {fromJS, List, Map} from 'immutable'
-import React, {useCallback, useMemo} from 'react'
+import React, { useCallback, useMemo } from 'react'
+
+import { fromJS, List, Map } from 'immutable'
 
 import CustomFieldIdInput from 'pages/common/components/ast/widget/CustomFieldIdInput'
 import CustomFieldSelect from 'pages/common/components/ast/widget/CustomFieldSelect'
@@ -28,7 +29,7 @@ const SetCustomFieldValueAction = ({
             ?.map((action?: Map<any, any>) => {
                 return Number.parseInt(
                     action?.getIn(['arguments', 'custom_field_id'], '') || '',
-                    10
+                    10,
                 )
             })
             .filter((id) => !Number.isNaN(id))
@@ -39,15 +40,15 @@ const SetCustomFieldValueAction = ({
         (newValue) =>
             updateActionArgs(
                 index,
-                fromJS({...args, custom_field_id: newValue})
+                fromJS({ ...args, custom_field_id: newValue }),
             ),
-        [updateActionArgs, index, args]
+        [updateActionArgs, index, args],
     )
 
     const handleFieldValueChange = useCallback(
         (newValue) =>
-            updateActionArgs(index, fromJS({...args, value: newValue})),
-        [updateActionArgs, index, args]
+            updateActionArgs(index, fromJS({ ...args, value: newValue })),
+        [updateActionArgs, index, args],
     )
 
     return (

@@ -1,7 +1,7 @@
-import {Map} from 'immutable'
+import { Map } from 'immutable'
 
-import {Product, ProductType} from 'models/billing/types'
-import {AlertType} from 'pages/common/components/Alert/Alert'
+import { Product, ProductType } from 'models/billing/types'
+import { AlertType } from 'pages/common/components/Alert/Alert'
 
 export type CurrentUsage = {
     cost: number

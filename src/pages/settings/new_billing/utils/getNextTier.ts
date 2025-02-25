@@ -1,8 +1,8 @@
-import {ConvertPlan, Plan} from 'models/billing/types'
+import { ConvertPlan, Plan } from 'models/billing/types'
 
 export const getNextTier = (
     availablePlans?: Plan[],
-    plan?: Plan
+    plan?: Plan,
 ): Plan | undefined => {
     if (!plan || !availablePlans) {
         return undefined

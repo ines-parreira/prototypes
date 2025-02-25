@@ -1,5 +1,5 @@
-import {CsvSourceSoftware} from '../types'
-import {guessCsvSourceSoftware} from '../utils/guess-csv-source-software'
+import { CsvSourceSoftware } from '../types'
+import { guessCsvSourceSoftware } from '../utils/guess-csv-source-software'
 
 describe('guess-csv-source-software', () => {
     const helpdocsCsvColumns = [
@@ -34,7 +34,7 @@ describe('guess-csv-source-software', () => {
 
     it('guesses that CSV is from Helpdocs if all columns match', () => {
         expect(guessCsvSourceSoftware(helpdocsCsvColumns)).toEqual(
-            CsvSourceSoftware.Helpdocs
+            CsvSourceSoftware.Helpdocs,
         )
     })
 
@@ -50,7 +50,7 @@ describe('guess-csv-source-software', () => {
         ]
 
         expect(guessCsvSourceSoftware(csvColumns)).toEqual(
-            CsvSourceSoftware.Helpdocs
+            CsvSourceSoftware.Helpdocs,
         )
     })
 
@@ -73,7 +73,7 @@ describe('guess-csv-source-software', () => {
         ]
 
         expect(guessCsvSourceSoftware(csvColumns)).toEqual(
-            CsvSourceSoftware.GorgiasTemplate
+            CsvSourceSoftware.GorgiasTemplate,
         )
     })
 
@@ -98,7 +98,7 @@ describe('guess-csv-source-software', () => {
         ]
 
         expect(guessCsvSourceSoftware(csvColumns)).toEqual(
-            CsvSourceSoftware.ExportedCSV
+            CsvSourceSoftware.ExportedCSV,
         )
     })
 
@@ -106,7 +106,7 @@ describe('guess-csv-source-software', () => {
         const csvColumns = ['faq_id', 'faq_content', 'faq_title', 'url']
 
         expect(guessCsvSourceSoftware(csvColumns)).toEqual(
-            CsvSourceSoftware.Unknown
+            CsvSourceSoftware.Unknown,
         )
     })
 })

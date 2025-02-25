@@ -1,12 +1,12 @@
 import React from 'react'
 
-import {useDeleteAgent} from 'hooks/agents/useDeleteAgent'
+import { useDeleteAgent } from 'hooks/agents/useDeleteAgent'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import {navigateBackToUserList} from 'pages/settings/users/Detail/constants'
+import { navigateBackToUserList } from 'pages/settings/users/Detail/constants'
 
 export const REMOVE_MESSAGE_ABOUT_SAVED_FILTERS =
     'The user will have to be removed from Saved Filters manually.'
@@ -24,7 +24,7 @@ export const DeleteModal = ({
     isModalOpen,
     setModalOpen,
 }: Props) => {
-    const {mutateAsync: deleteAgent, isLoading: isDeleting} =
+    const { mutateAsync: deleteAgent, isLoading: isDeleting } =
         useDeleteAgent(name)
 
     return (

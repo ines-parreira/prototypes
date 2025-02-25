@@ -1,14 +1,13 @@
-import {fromJS, List} from 'immutable'
 import React from 'react'
 
-import {SELECTABLE_REASONS_DROPDOWN_OPTIONS} from 'models/selfServiceConfiguration/constants'
+import { fromJS, List } from 'immutable'
 
-import {useGetSelfServiceConfigurations} from 'models/selfServiceConfiguration/queries'
+import { SELECTABLE_REASONS_DROPDOWN_OPTIONS } from 'models/selfServiceConfiguration/constants'
+import { useGetSelfServiceConfigurations } from 'models/selfServiceConfiguration/queries'
 
 import useAppDispatch from '../../../../../hooks/useAppDispatch'
-
-import {notify} from '../../../../../state/notifications/actions'
-import {NotificationStatus} from '../../../../../state/notifications/types'
+import { notify } from '../../../../../state/notifications/actions'
+import { NotificationStatus } from '../../../../../state/notifications/types'
 import Select from './ReactSelect'
 
 type OwnProps = {
@@ -30,7 +29,7 @@ export function SelfServiceFlowSelect({
 }: OwnProps) {
     const dispatch = useAppDispatch()
 
-    const {data: selfServiceConfigurations = []} =
+    const { data: selfServiceConfigurations = [] } =
         useGetSelfServiceConfigurations({
             onError: () => {
                 void dispatch(
@@ -38,7 +37,7 @@ export function SelfServiceFlowSelect({
                         status: NotificationStatus.Error,
                         message:
                             'Could not fetch Self-service configurations, please try again later.',
-                    })
+                    }),
                 )
             },
         })
@@ -73,7 +72,7 @@ export function SelfServiceFlowSelect({
                             availableFlows.add(reason.reasonKey)
                             const reasonSpecs =
                                 SELECTABLE_REASONS_DROPDOWN_OPTIONS.find(
-                                    (opt) => opt.value === reason.reasonKey
+                                    (opt) => opt.value === reason.reasonKey,
                                 )
 
                             if (reasonSpecs) {
@@ -102,14 +101,14 @@ export function SelfServiceFlowSelect({
         (option1: OptionWithLabel, option2: OptionWithLabel) => {
             return (
                 (option1['label'].startsWith(
-                    'Report issue'
+                    'Report issue',
                 ) as unknown as number) -
                     (option2['label'].startsWith(
-                        'Report issue'
+                        'Report issue',
                     ) as unknown as number) ||
                 (option1['label'] > option2['label'] ? 1 : -1)
             )
-        }
+        },
     ) as List<any>
 
     return (

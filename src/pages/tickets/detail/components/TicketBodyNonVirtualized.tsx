@@ -1,21 +1,21 @@
 // TODO: remove component entirely after Virtualization is tested out
+import React from 'react'
 
 import cn from 'classnames'
-import {List, Map} from 'immutable'
+import { List, Map } from 'immutable'
 import _debounce from 'lodash/debounce'
-
 import _xor from 'lodash/xor'
-import moment, {Moment} from 'moment'
-import React from 'react'
-import {connect, ConnectedProps} from 'react-redux'
+import moment, { Moment } from 'moment'
+import { connect, ConnectedProps } from 'react-redux'
 
-import {moveIndex, MoveIndexDirection} from 'pages/common/utils/keyboard'
+import { moveIndex, MoveIndexDirection } from 'pages/common/utils/keyboard'
 import TicketBodyElement from 'pages/tickets/detail/components/TicketBodyElement'
 import shortcutManager from 'services/shortcutManager/index'
 import * as ticketSelectors from 'state/ticket/selectors'
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
 
 import MessageQuoteContext from './MessageQuoteContext'
+
 import css from './TicketBody.less'
 
 // $TSFixMe replace with importing HighlightedElements from AuditLogEvent.tsx on migration
@@ -49,7 +49,9 @@ export class TicketBodyNonVirtualized extends React.Component<Props, State> {
         this.lastMessageDatetimeAfterMount = null
         if (!props.elements.isEmpty()) {
             this.lastMessageDatetimeAfterMount = moment(
-                (props.elements.last() as Map<any, any>).get('created_datetime')
+                (props.elements.last() as Map<any, any>).get(
+                    'created_datetime',
+                ),
             )
         }
 
@@ -62,9 +64,9 @@ export class TicketBodyNonVirtualized extends React.Component<Props, State> {
     }
 
     setHighlightedElements = (value: HighlightedElements) => {
-        this.setState({highlightedElements: value})
+        this.setState({ highlightedElements: value })
         setTimeout(() => {
-            this.setState({highlightedElements: null})
+            this.setState({ highlightedElements: null })
         }, 1000)
     }
 
@@ -86,7 +88,7 @@ export class TicketBodyNonVirtualized extends React.Component<Props, State> {
         const newCursorPosition = moveIndex(
             this._messageCursor,
             this.props.elements.size,
-            {direction}
+            { direction },
         )
         if (this._messageCursor !== newCursorPosition) {
             this._messageCursor = newCursorPosition
@@ -110,14 +112,15 @@ export class TicketBodyNonVirtualized extends React.Component<Props, State> {
             this.setState({
                 expandedMessages: _xor(
                     [...this.state.expandedMessages],
-                    [messageId]
+                    [messageId],
                 ),
             })
         }
     }
 
     render() {
-        const {elements, groupedElements, isPrintLayout, setStatus} = this.props
+        const { elements, groupedElements, isPrintLayout, setStatus } =
+            this.props
 
         if (elements.size === 0) {
             return null
@@ -131,7 +134,9 @@ export class TicketBodyNonVirtualized extends React.Component<Props, State> {
                 }}
             >
                 <div
-                    className={cn(css.wrapper, {[css.print]: !!isPrintLayout})}
+                    className={cn(css.wrapper, {
+                        [css.print]: !!isPrintLayout,
+                    })}
                 >
                     {groupedElements.map((element, index: number) => (
                         <TicketBodyElement

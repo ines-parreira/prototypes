@@ -1,5 +1,6 @@
-import classNames from 'classnames'
 import React from 'react'
+
+import classNames from 'classnames'
 
 import css from './EmailVerificationStatusLabel.less'
 
@@ -42,7 +43,7 @@ export default function EmailVerificationStatusLabel({
                 className={classNames(
                     'material-icons',
                     css.icon,
-                    css[status.toLocaleLowerCase()]
+                    css[status.toLocaleLowerCase()],
                 )}
             >
                 {statusIcon[status]}

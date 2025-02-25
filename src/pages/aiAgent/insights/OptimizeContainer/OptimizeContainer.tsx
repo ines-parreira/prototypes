@@ -1,19 +1,18 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import moment, {Moment} from 'moment'
 import React from 'react'
-import {useParams} from 'react-router-dom'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import moment, { Moment } from 'moment'
+import { useParams } from 'react-router-dom'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useEffectOnce from 'hooks/useEffectOnce'
-import {AiAgentLayout} from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
-import {AI_AGENT, OPTIMIZE} from 'pages/aiAgent/constants'
-import {IntentTableWidget} from 'pages/aiAgent/insights/IntentTableWidget/IntentTableWidget'
-
-import {AdjustedPeriodFilter} from 'pages/aiAgent/insights/widgets/AdjustedPeriodFilter/AdjustedPeriodFilter'
-import {Level1IntentsPerformance} from 'pages/aiAgent/insights/widgets/Level1IntentsPerformance/Level1IntentsPerformance'
-
-import {DrillDownModal} from 'pages/stats/DrillDownModal'
+import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
+import { AI_AGENT, OPTIMIZE } from 'pages/aiAgent/constants'
+import { IntentTableWidget } from 'pages/aiAgent/insights/IntentTableWidget/IntentTableWidget'
+import { AdjustedPeriodFilter } from 'pages/aiAgent/insights/widgets/AdjustedPeriodFilter/AdjustedPeriodFilter'
+import { Level1IntentsPerformance } from 'pages/aiAgent/insights/widgets/Level1IntentsPerformance/Level1IntentsPerformance'
+import { DrillDownModal } from 'pages/stats/DrillDownModal'
 
 import css from './OptimizeContainer.less'
 
@@ -33,7 +32,7 @@ export const subtractsPeriodWithoutDataIfNeeded = (momentDate: Moment) => {
 }
 
 export const OptimizeContainer = () => {
-    const {shopName} = useParams<{
+    const { shopName } = useParams<{
         shopName: string
     }>()
 

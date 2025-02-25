@@ -1,8 +1,9 @@
-import {render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {AddCustomProductPopover} from '../AddCustomProductPopover'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { AddCustomProductPopover } from '../AddCustomProductPopover'
 
 describe('AddCustomProductPopover', () => {
     it('does not add invalid custom product when clicking the `Add Item` button', () => {
@@ -16,13 +17,13 @@ describe('AddCustomProductPopover', () => {
                 isOpen={true}
                 onOpen={jest.fn()}
                 onClose={jest.fn()}
-            />
+            />,
         )
 
-        userEvent.click(screen.getByRole('button', {name: 'Add Item'}))
+        userEvent.click(screen.getByRole('button', { name: 'Add Item' }))
         expect(onAddCustomProductMock).toHaveBeenCalledTimes(0)
         expect(
-            screen.getByRole('button', {name: 'Add Item'})
+            screen.getByRole('button', { name: 'Add Item' }),
         ).toBeAriaDisabled()
     })
 
@@ -43,27 +44,29 @@ describe('AddCustomProductPopover', () => {
                 isOpen={true}
                 onOpen={jest.fn()}
                 onClose={jest.fn()}
-            />
+            />,
         )
 
         await userEvent.type(
-            screen.getByRole('textbox', {name: 'Custom product name required'}),
-            testProduct.name
+            screen.getByRole('textbox', {
+                name: 'Custom product name required',
+            }),
+            testProduct.name,
         )
         await userEvent.type(
-            screen.getByRole('textbox', {name: 'SKU'}),
-            testProduct.sku
+            screen.getByRole('textbox', { name: 'SKU' }),
+            testProduct.sku,
         )
         await userEvent.type(
-            screen.getByRole('textbox', {name: 'Price per item required'}),
-            String(testProduct.list_price)
+            screen.getByRole('textbox', { name: 'Price per item required' }),
+            String(testProduct.list_price),
         )
         await userEvent.type(
-            screen.getByRole('textbox', {name: 'Quantity required'}),
-            String(testProduct.quantity)
+            screen.getByRole('textbox', { name: 'Quantity required' }),
+            String(testProduct.quantity),
         )
 
-        userEvent.click(screen.getByRole('button', {name: 'Add Item'}))
+        userEvent.click(screen.getByRole('button', { name: 'Add Item' }))
         expect(onAddCustomProductMock).toHaveBeenCalledTimes(1)
         expect(onAddCustomProductMock).toHaveBeenCalledWith(testProduct)
     })

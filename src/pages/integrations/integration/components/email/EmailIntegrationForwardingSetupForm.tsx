@@ -1,25 +1,27 @@
-import {EmailIntegration} from '@gorgias/api-queries'
-import {Label} from '@gorgias/merchant-ui-kit'
-import React, {useCallback} from 'react'
+import React, { useCallback } from 'react'
 
-import {Form, FormField} from 'core/forms'
+import { EmailIntegration } from '@gorgias/api-queries'
+import { Label } from '@gorgias/merchant-ui-kit'
+
+import { Form, FormField } from 'core/forms'
 import CheckBoxField from 'pages/common/forms/CheckBoxField'
 import FormRow from 'pages/common/forms/FormRow'
 import FormSection from 'pages/settings/SLAs/features/SLAForm/views/FormSection'
 
 import BaseEmailIntegrationInputField from './BaseEmailIntegrationInputField'
-import css from './EmailIntegrationForwardingSetupForm.less'
 import EmailIntegrationOnboardingButtons from './EmailIntegrationOnboardingButtons'
-import {useEmailOnboarding} from './hooks/useEmailOnboarding'
+import { useEmailOnboarding } from './hooks/useEmailOnboarding'
 
-type Values = Partial<{checked: boolean}>
+import css from './EmailIntegrationForwardingSetupForm.less'
+
+type Values = Partial<{ checked: boolean }>
 
 type Props = {
     integration?: EmailIntegration | undefined
 }
 
 export default function EmailIntegrationForwardingSetupForm(props: Props) {
-    const {integration, sendVerification, isRequested, goToNext} =
+    const { integration, sendVerification, isRequested, goToNext } =
         useEmailOnboarding(props)
 
     const address = integration?.meta.address ?? ''

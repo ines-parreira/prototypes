@@ -2,18 +2,18 @@ import {
     MetricPerDimensionTrend,
     useMetricPerDimension,
 } from 'hooks/reporting/useMetricPerDimension'
-import {OrderDirection} from 'models/api/types'
-import {tagsTicketCountQueryFactory} from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
-import {StatsFilters} from 'models/stat/types'
-import {getPreviousPeriod} from 'utils/reporting'
+import { OrderDirection } from 'models/api/types'
+import { tagsTicketCountQueryFactory } from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
+import { StatsFilters } from 'models/stat/types'
+import { getPreviousPeriod } from 'utils/reporting'
 
 export const useTagsTicketCount = (
     statsFilters: StatsFilters,
     timezone: string,
-    sorting: OrderDirection
+    sorting: OrderDirection,
 ): MetricPerDimensionTrend => {
     const currentPeriod = useMetricPerDimension(
-        tagsTicketCountQueryFactory(statsFilters, timezone, sorting)
+        tagsTicketCountQueryFactory(statsFilters, timezone, sorting),
     )
 
     const previousPeriod = useMetricPerDimension(
@@ -23,8 +23,8 @@ export const useTagsTicketCount = (
                 period: getPreviousPeriod(statsFilters.period),
             },
             timezone,
-            sorting
-        )
+            sorting,
+        ),
     )
 
     return {

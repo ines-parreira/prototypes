@@ -1,14 +1,14 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
-import {SegmentEvent, logEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useEffectOnce from 'hooks/useEffectOnce'
 import Button from 'pages/common/components/button/Button'
 import LinkButton from 'pages/common/components/button/LinkButton'
 import HeroImageCarousel from 'pages/common/components/HeroImageCarousel/HeroImageCarousel'
 import PageHeader from 'pages/common/components/PageHeader'
-
 import PaywallView from 'pages/common/components/PaywallView/PaywallView'
 import PaywallViewActionButtons from 'pages/common/components/PaywallView/PaywallViewActionButtons'
 import PaywallViewChecklist from 'pages/common/components/PaywallView/PaywallViewChecklist'
@@ -18,8 +18,9 @@ import PaywallViewLeftContainer from 'pages/common/components/PaywallView/Paywal
 import PaywallViewRightContainer from 'pages/common/components/PaywallView/PaywallViewRightContainer'
 import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 
-import {usePaywallConfig} from '../hooks/usePaywallConfig'
-import {AutomateFeatures} from '../types'
+import { usePaywallConfig } from '../hooks/usePaywallConfig'
+import { AutomateFeatures } from '../types'
+
 import css from './AutomatePaywallView.less'
 
 const AutomatePaywallView = ({
@@ -107,7 +108,7 @@ const AutomatePaywallView = ({
                                     intent="secondary"
                                     onClick={() =>
                                         logEvent(
-                                            SegmentEvent.AutomatePaywallLearnMore
+                                            SegmentEvent.AutomatePaywallLearnMore,
                                         )
                                     }
                                     href="https://link.gorgias.com/bij"

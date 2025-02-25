@@ -1,4 +1,10 @@
-import React, {forwardRef, ForwardedRef, ComponentType, ReactNode} from 'react'
+import React, {
+    ComponentType,
+    ForwardedRef,
+    forwardRef,
+    ReactNode,
+} from 'react'
+
 import {
     GroupContent,
     GroupedVirtuoso,
@@ -13,9 +19,7 @@ import {
     PickedTicketWithHighlights,
     PicketVoiceCallWithHighlights,
 } from 'models/search/types'
-
 import SkeletonLoader from 'pages/common/components/SkeletonLoader'
-
 import css from 'pages/common/components/Spotlight/SpotlightScrollArea.less'
 
 const HEADER_HEIGHT = 32
@@ -53,7 +57,7 @@ type GroupedProps = Omit<Props, 'itemContent' | 'data' | 'loadMore'> & {
         data:
             | PickedTicketWithHighlights
             | PickedCustomerWithHighlights
-            | PicketVoiceCallWithHighlights
+            | PicketVoiceCallWithHighlights,
     ) => ReactNode
     groupCounts: number[]
     groupContent?: GroupContent
@@ -69,7 +73,7 @@ const SpotlightScrollArea = (
         itemContent,
         header: Header,
     }: Props,
-    ref: ForwardedRef<VirtuosoHandle>
+    ref: ForwardedRef<VirtuosoHandle>,
 ) => {
     return (
         <Virtuoso<
@@ -87,7 +91,7 @@ const SpotlightScrollArea = (
                 // it's needed for the initial render
                 height: Math.min(
                     ITEM_HEIGHT * data.length + (Header ? HEADER_HEIGHT : 0),
-                    MAX_HEIGHT
+                    MAX_HEIGHT,
                 ),
             }}
             endReached={() => {
@@ -96,8 +100,8 @@ const SpotlightScrollArea = (
                 }
             }}
             itemContent={itemContent}
-            context={{isLoading}}
-            components={{Footer, Header}}
+            context={{ isLoading }}
+            components={{ Footer, Header }}
         />
     )
 }
@@ -111,7 +115,7 @@ export const GroupedSpotlightScrollAreaComponent = (
         groupCounts,
         groupContent,
     }: GroupedProps,
-    ref: ForwardedRef<GroupedVirtuosoHandle>
+    ref: ForwardedRef<GroupedVirtuosoHandle>,
 ) => {
     return (
         <GroupedVirtuoso<
@@ -128,23 +132,23 @@ export const GroupedSpotlightScrollAreaComponent = (
                     ITEM_HEIGHT *
                         groupCounts.reduce<number>(
                             (acc, item) => item + acc,
-                            0
+                            0,
                         ) +
                         (Header ? HEADER_HEIGHT : 0),
-                    MAX_HEIGHT
+                    MAX_HEIGHT,
                 ),
             }}
             groupCounts={groupCounts}
             groupContent={groupContent}
             itemContent={itemContent}
-            context={{isLoading}}
-            components={{Footer, Header}}
+            context={{ isLoading }}
+            components={{ Footer, Header }}
         />
     )
 }
 
-const Footer = ({context}: {context?: VirtuosoContext}) => {
-    const {isLoading} = context!
+const Footer = ({ context }: { context?: VirtuosoContext }) => {
+    const { isLoading } = context!
 
     if (!isLoading) {
         return null

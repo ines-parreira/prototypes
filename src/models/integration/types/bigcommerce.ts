@@ -1,6 +1,6 @@
-import {IntegrationType} from '../constants'
-import type {IntegrationBase} from './base'
-import type {OAuth2} from './misc'
+import { IntegrationType } from '../constants'
+import type { IntegrationBase } from './base'
+import type { OAuth2 } from './misc'
 
 export type BigCommerceIntegration = IntegrationBase & {
     type: IntegrationType.BigCommerce
@@ -50,7 +50,7 @@ export type BigCommerceCart = {
     customer_id: number
     channel_id: number
     email: string
-    currency: {code: string}
+    currency: { code: string }
     tax_included: boolean
     // Sum of cart line-item amounts before cart-level discounts, coupons, or taxes are applied.
     base_amount: number
@@ -70,7 +70,7 @@ export type BigCommerceCart = {
     locale: string
 }
 
-export type BigCommerceDiscount = {id: string; discounted_amount: number}
+export type BigCommerceDiscount = { id: string; discounted_amount: number }
 
 export type BigCommerceCoupon = {
     id: number
@@ -96,9 +96,9 @@ export type BigCommerceCartLineItem = {
     coupon_amount: number
     original_price: number
     options: (
-        | {name: string; nameId: number; value: string; valueId: number}
+        | { name: string; nameId: number; value: string; valueId: number }
         // Sometimes BC just feels like returning snake_case
-        | {name: string; name_id: number; value: string; value_id: number}
+        | { name: string; name_id: number; value: string; value_id: number }
     )[]
     list_price: number
     sale_price: number
@@ -268,17 +268,17 @@ export interface BigCommerceProductModifiersBase<
 export const bigCommerceProductCheckboxModifierTypes = ['checkbox'] as const
 
 export interface BigCommerceProductCheckboxModifier
-    extends BigCommerceProductModifiersBase<{checked_value: boolean}> {
+    extends BigCommerceProductModifiersBase<{ checked_value: boolean }> {
     type: (typeof bigCommerceProductCheckboxModifierTypes)[number]
-    config: {checked_by_default: boolean; checkbox_label: string}
+    config: { checked_by_default: boolean; checkbox_label: string }
 }
 
 export const bigCommerceProductSwatchModifierTypes = ['swatch'] as const
 
 export interface BigCommerceProductSwatchModifier
     extends BigCommerceProductModifiersBase<
-        | {colors: [string] | [string, string] | [string, string, string]}
-        | {image_url: string}
+        | { colors: [string] | [string, string] | [string, string, string] }
+        | { image_url: string }
     > {
     type: (typeof bigCommerceProductSwatchModifierTypes)[number]
     config: []
@@ -389,7 +389,7 @@ export type BigCommerceCreateConsignmentPayload = {
 
 export type BigCommerceUpsertConsignmentPayload =
     | BigCommerceCreateConsignmentPayload
-    | {shipping_option_id: string}
+    | { shipping_option_id: string }
 
 export enum BigCommerceActionType {
     CreateOrder = 'bigcommerceCreateOrder',
@@ -677,7 +677,7 @@ export type CalculateOrderRefundDataErrorResponse = {
 }
 
 export type CalculateOrderRefundDataNestedResponse =
-    | {data?: CalculateOrderRefundDataResponse}
+    | { data?: CalculateOrderRefundDataResponse }
     | CalculateOrderRefundDataErrorResponse
 
 export type BigCommerceRefundItemsPayloadComponent = {

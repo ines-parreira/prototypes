@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-restricted-imports
-import {useDispatch} from 'react-redux'
+import { useDispatch } from 'react-redux'
 
-import {StoreDispatch} from '../state/types'
+import { StoreDispatch } from '../state/types'
 
 const useAppDispatch = () => useDispatch<StoreDispatch>()
 

@@ -1,12 +1,14 @@
-import {useQuery} from '@tanstack/react-query'
+import { useMemo } from 'react'
 
-import {useMemo} from 'react'
+import { useQuery } from '@tanstack/react-query'
 
 import useAppSelector from 'hooks/useAppSelector'
-
-import {IntegrationType, GorgiasChatIntegration} from 'models/integration/types'
-import {getInstallationStatus} from 'state/integrations/actions'
-import {getIntegrationsByType} from 'state/integrations/selectors'
+import {
+    GorgiasChatIntegration,
+    IntegrationType,
+} from 'models/integration/types'
+import { getInstallationStatus } from 'state/integrations/actions'
+import { getIntegrationsByType } from 'state/integrations/selectors'
 
 type Args = {
     chatIds: number[]
@@ -19,13 +21,13 @@ export const useFetchChatIntegrationsStatusData = ({
     const getChatIntegrations = useMemo(
         () =>
             getIntegrationsByType<GorgiasChatIntegration>(
-                IntegrationType.GorgiasChat
+                IntegrationType.GorgiasChat,
             ),
-        []
+        [],
     )
     const chatIntegrations = useAppSelector(getChatIntegrations)
 
-    const {isLoading, data} = useQuery(['aiAgentChatInstallationStatus'], {
+    const { isLoading, data } = useQuery(['aiAgentChatInstallationStatus'], {
         queryFn: () => {
             const mappedChats = chatIds
                 .map((chatId) => {
@@ -51,19 +53,19 @@ export const useFetchChatIntegrationsStatusData = ({
                 })
                 .filter(
                     (
-                        chat
+                        chat,
                     ): chat is {
                         chatId: number
                         appId: string
                         updatedAt: string
-                    } => !!chat.appId
+                    } => !!chat.appId,
                 )
 
-            const promises = mappedChats.map(({chatId, appId}) =>
+            const promises = mappedChats.map(({ chatId, appId }) =>
                 getInstallationStatus(appId).then((status) => ({
                     ...status,
                     chatId,
-                }))
+                })),
             )
             return Promise.all(promises)
         },

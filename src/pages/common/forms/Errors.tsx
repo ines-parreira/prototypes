@@ -1,5 +1,6 @@
-import React, {ComponentProps, FC} from 'react'
-import {FormFeedback} from 'reactstrap'
+import React, { ComponentProps, FC } from 'react'
+
+import { FormFeedback } from 'reactstrap'
 
 const Errors: FC<ComponentProps<typeof FormFeedback>> = ({
     children,

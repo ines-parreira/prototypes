@@ -1,5 +1,6 @@
-import {fireEvent, screen, render} from '@testing-library/react'
 import React from 'react'
+
+import { fireEvent, render, screen } from '@testing-library/react'
 
 import ColorPicker from '../ColorPicker'
 
@@ -18,33 +19,33 @@ describe('<ColorPicker />', () => {
     })
 
     it('should render with minimal props', () => {
-        const {container} = render(<ColorPicker {...minProps} />)
+        const { container } = render(<ColorPicker {...minProps} />)
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render with background color matching value', () => {
-        const {container} = render(
-            <ColorPicker value="#fff" defaultValue="#000" {...minProps} />
+        const { container } = render(
+            <ColorPicker value="#fff" defaultValue="#000" {...minProps} />,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render with background color matching defaultValue', () => {
-        const {container} = render(
-            <ColorPicker defaultValue="#000" {...minProps} />
+        const { container } = render(
+            <ColorPicker defaultValue="#000" {...minProps} />,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should display popup on button click with default colors, inside container', async () => {
-        const {container} = render(
+        const { container } = render(
             <div id="container">
                 <ColorPicker
                     {...minProps}
                     popupContainer="container"
                     value="#fff"
                 />
-            </div>
+            </div>,
         )
         fireEvent.click(screen.getByRole('button'))
         await screen.findByRole('textbox')
@@ -63,7 +64,7 @@ describe('<ColorPicker />', () => {
         fireEvent.click(screen.getByRole('button'))
         await screen.findByRole('textbox')
         fireEvent.click(
-            screen.getByRole('button', {name: `color ${buttonColor}`})
+            screen.getByRole('button', { name: `color ${buttonColor}` }),
         )
         expect(minProps.onChange).toHaveBeenCalledWith(buttonColor)
     })

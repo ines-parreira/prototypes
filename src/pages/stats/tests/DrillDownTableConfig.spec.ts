@@ -1,10 +1,10 @@
 import moment from 'moment/moment'
 
-import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
-import {customerSatisfactionMetricDrillDownQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
-import {customFieldsTicketCountPerTicketDrillDownQueryFactory} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
-import {tagsTicketCountDrillDownQueryFactory} from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
+import { VoiceCallSegment } from 'models/reporting/cubes/VoiceCallCube'
+import { customerSatisfactionMetricDrillDownQueryFactory } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
+import { customFieldsTicketCountPerTicketDrillDownQueryFactory } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
+import { tagsTicketCountDrillDownQueryFactory } from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
 import {
     connectedCallsListQueryFactory,
     liveDashBoardVoiceCallListQueryFactory,
@@ -15,11 +15,11 @@ import {
     LegacyStatsFilters,
     StatsFiltersWithLogicalOperator,
 } from 'models/stat/types'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-import {campaignSalesDrillDownQueryFactory} from 'pages/stats/convert/clients/queryFactories/campaignSalesDrillDownQueryFactory'
-import {getDrillDownQuery} from 'pages/stats/DrillDownTableConfig'
-import {AutoQAAgentsTableColumn} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
-import {OverviewMetric} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
+import { campaignSalesDrillDownQueryFactory } from 'pages/stats/convert/clients/queryFactories/campaignSalesDrillDownQueryFactory'
+import { getDrillDownQuery } from 'pages/stats/DrillDownTableConfig'
+import { AutoQAAgentsTableColumn } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
+import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import {
     AgentsMetrics,
     ChannelsMetrics,
@@ -42,45 +42,45 @@ import {
     VoiceAgentsMetric,
     VoiceMetric,
 } from 'state/ui/stats/types'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
 jest.mock(
-    'models/reporting/queryFactories/support-performance/customerSatisfaction'
+    'models/reporting/queryFactories/support-performance/customerSatisfaction',
 )
 jest.mock('models/reporting/queryFactories/voice/voiceCall')
 jest.mock(
-    'pages/stats/convert/clients/queryFactories/campaignSalesDrillDownQueryFactory'
+    'pages/stats/convert/clients/queryFactories/campaignSalesDrillDownQueryFactory',
 )
 jest.mock(
-    'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
+    'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount',
 )
 jest.mock('models/reporting/queryFactories/ticket-insights/tagsTicketCount')
 
 const customerSatisfactionQueryFactoryMock = assumeMock(
-    customerSatisfactionMetricDrillDownQueryFactory
+    customerSatisfactionMetricDrillDownQueryFactory,
 )
 jest.mock('models/reporting/queryFactories/ticket-insights/tagsTicketCount')
 const tagsTicketCountDrillDownQueryFactoryMock = assumeMock(
-    tagsTicketCountDrillDownQueryFactory
+    tagsTicketCountDrillDownQueryFactory,
 )
 const connectedCallsListQueryFactoryMock = assumeMock(
-    connectedCallsListQueryFactory
+    connectedCallsListQueryFactory,
 )
 const waitingTimeCallsListQueryFactoryMock = assumeMock(
-    waitingTimeCallsListQueryFactory
+    waitingTimeCallsListQueryFactory,
 )
 const voiceCallListQueryFactoryMock = assumeMock(voiceCallListQueryFactory)
 const liveDashboardVoiceCallListQueryFactoryMock = assumeMock(
-    liveDashBoardVoiceCallListQueryFactory
+    liveDashBoardVoiceCallListQueryFactory,
 )
 const campaignSalesDrillDownQueryFactoryMock = assumeMock(
-    campaignSalesDrillDownQueryFactory
+    campaignSalesDrillDownQueryFactory,
 )
 const tagsTicketCountPerTicketDrillDownQueryFactoryMock = assumeMock(
-    tagsTicketCountDrillDownQueryFactory
+    tagsTicketCountDrillDownQueryFactory,
 )
 const customFieldsTicketCountPerTicketDrillDownQueryFactoryMock = assumeMock(
-    customFieldsTicketCountPerTicketDrillDownQueryFactory
+    customFieldsTicketCountPerTicketDrillDownQueryFactory,
 )
 
 const periodStart = moment()
@@ -94,21 +94,21 @@ const statsFilters = {
 
 describe('getDrillDownQuery', () => {
     const agentsMetrics: AgentsMetrics[] = [
-        {metricName: AgentsTableColumn.CustomerSatisfaction, perAgentId: 123},
+        { metricName: AgentsTableColumn.CustomerSatisfaction, perAgentId: 123 },
         {
             metricName: AgentsTableColumn.MedianFirstResponseTime,
             perAgentId: 123,
         },
-        {metricName: AgentsTableColumn.MedianResolutionTime, perAgentId: 123},
-        {metricName: AgentsTableColumn.MessagesSent, perAgentId: 123},
+        { metricName: AgentsTableColumn.MedianResolutionTime, perAgentId: 123 },
+        { metricName: AgentsTableColumn.MessagesSent, perAgentId: 123 },
         {
             metricName: AgentsTableColumn.PercentageOfClosedTickets,
             perAgentId: 123,
         },
-        {metricName: AgentsTableColumn.ClosedTickets, perAgentId: 123},
-        {metricName: AgentsTableColumn.RepliedTickets, perAgentId: 123},
-        {metricName: AgentsTableColumn.OneTouchTickets, perAgentId: 123},
-        {metricName: AgentsTableColumn.TicketHandleTime, perAgentId: 123},
+        { metricName: AgentsTableColumn.ClosedTickets, perAgentId: 123 },
+        { metricName: AgentsTableColumn.RepliedTickets, perAgentId: 123 },
+        { metricName: AgentsTableColumn.OneTouchTickets, perAgentId: 123 },
+        { metricName: AgentsTableColumn.TicketHandleTime, perAgentId: 123 },
     ]
     const autoQAMetrics: DrillDownMetric[] = [
         {
@@ -181,13 +181,16 @@ describe('getDrillDownQuery', () => {
             metricName: ChannelsTableColumns.MedianResolutionTime,
             perChannel: 'email',
         },
-        {metricName: ChannelsTableColumns.MessagesSent, perChannel: 'email'},
+        { metricName: ChannelsTableColumns.MessagesSent, perChannel: 'email' },
         {
             metricName: ChannelsTableColumns.CreatedTicketsPercentage,
             perChannel: 'email',
         },
-        {metricName: ChannelsTableColumns.ClosedTickets, perChannel: 'email'},
-        {metricName: ChannelsTableColumns.TicketsReplied, perChannel: 'email'},
+        { metricName: ChannelsTableColumns.ClosedTickets, perChannel: 'email' },
+        {
+            metricName: ChannelsTableColumns.TicketsReplied,
+            perChannel: 'email',
+        },
         {
             metricName: ChannelsTableColumns.TicketHandleTime,
             perChannel: 'email',
@@ -199,35 +202,35 @@ describe('getDrillDownQuery', () => {
             customFieldId: 123,
             customFieldValue: ['some::customField'],
         },
-        {metricName: OverviewMetric.OpenTickets},
-        {metricName: OverviewMetric.TicketsClosed},
-        {metricName: OverviewMetric.TicketsCreated},
-        {metricName: OverviewMetric.TicketsReplied},
-        {metricName: OverviewMetric.MessagesSent},
-        {metricName: OverviewMetric.MessagesPerTicket},
-        {metricName: OverviewMetric.MedianResolutionTime},
-        {metricName: OverviewMetric.MedianFirstResponseTime},
-        {metricName: OverviewMetric.CustomerSatisfaction},
-        {metricName: OverviewMetric.OneTouchTickets},
-        {metricName: OverviewMetric.TicketHandleTime},
-        {metricName: OverviewMetric.TicketHandleTime},
-        {metricName: TagsMetric.TicketCount, tagId: 'TAG_ID'},
+        { metricName: OverviewMetric.OpenTickets },
+        { metricName: OverviewMetric.TicketsClosed },
+        { metricName: OverviewMetric.TicketsCreated },
+        { metricName: OverviewMetric.TicketsReplied },
+        { metricName: OverviewMetric.MessagesSent },
+        { metricName: OverviewMetric.MessagesPerTicket },
+        { metricName: OverviewMetric.MedianResolutionTime },
+        { metricName: OverviewMetric.MedianFirstResponseTime },
+        { metricName: OverviewMetric.CustomerSatisfaction },
+        { metricName: OverviewMetric.OneTouchTickets },
+        { metricName: OverviewMetric.TicketHandleTime },
+        { metricName: OverviewMetric.TicketHandleTime },
+        { metricName: TagsMetric.TicketCount, tagId: 'TAG_ID' },
     ]
     const slaMetrics: SlaMetrics[] = [
         {
             metricName: SlaMetric.AchievementRate,
         },
-        {metricName: SlaMetric.BreachedTicketsRate},
+        { metricName: SlaMetric.BreachedTicketsRate },
     ]
     const satisfactionMetrics: SatisfactionMetrics[] = [
         {
             metricName: SatisfactionMetric.SatisfactionScore,
         },
-        {metricName: SatisfactionMetric.ResponseRate},
-        {metricName: SatisfactionMetric.SurveysSent},
-        {metricName: SatisfactionMetric.AverageCSATPerAssignee},
-        {metricName: SatisfactionMetric.AverageCSATPerChannel},
-        {metricName: SatisfactionMetric.AverageCSATPerIntegration},
+        { metricName: SatisfactionMetric.ResponseRate },
+        { metricName: SatisfactionMetric.SurveysSent },
+        { metricName: SatisfactionMetric.AverageCSATPerAssignee },
+        { metricName: SatisfactionMetric.AverageCSATPerChannel },
+        { metricName: SatisfactionMetric.AverageCSATPerIntegration },
     ]
     const tagsMetrics: TagsFieldsMetrics[] = [
         {
@@ -333,7 +336,7 @@ describe('getDrillDownQuery', () => {
         'should return a query for every DrillDown metric: $metricName',
         (metricName: DrillDownMetric) => {
             expect(getDrillDownQuery(metricName)).toEqual(expect.any(Function))
-        }
+        },
     )
 
     it('should be populated with agentId filter', () => {
@@ -360,7 +363,7 @@ describe('getDrillDownQuery', () => {
                 ]),
             }),
             timezone,
-            undefined
+            undefined,
         )
     })
 
@@ -388,7 +391,7 @@ describe('getDrillDownQuery', () => {
                 ]),
             }),
             timezone,
-            undefined
+            undefined,
         )
     })
 
@@ -414,7 +417,7 @@ describe('getDrillDownQuery', () => {
             timezone,
             drillDownMetric.tagId,
             statsFilters.period,
-            undefined
+            undefined,
         )
     })
 
@@ -445,7 +448,7 @@ describe('getDrillDownQuery', () => {
             timezone,
             drillDownMetric.tagId,
             dateRange,
-            undefined
+            undefined,
         )
     })
 
@@ -474,7 +477,7 @@ describe('getDrillDownQuery', () => {
                 ]),
             }),
             timezone,
-            undefined
+            undefined,
         )
     })
 
@@ -503,7 +506,7 @@ describe('getDrillDownQuery', () => {
                 ]),
             }),
             timezone,
-            undefined
+            undefined,
         )
     })
 
@@ -534,7 +537,7 @@ describe('getDrillDownQuery', () => {
         expect(waitingTimeCallsListQueryFactoryMock).toHaveBeenCalledWith(
             statsFilters,
             timezone,
-            VoiceCallSegment.inboundCalls
+            VoiceCallSegment.inboundCalls,
         )
     })
 
@@ -555,7 +558,7 @@ describe('getDrillDownQuery', () => {
             getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
 
             expect(voiceCallListQueryFactoryMock).toHaveBeenCalled()
-        }
+        },
     )
 
     it.each([
@@ -573,13 +576,13 @@ describe('getDrillDownQuery', () => {
         },
     ])(
         'should call liveDashboardVoiceCallListQueryFactory for (%d)',
-        ({metricName, segment}) => {
-            getDrillDownQuery({metricName})(statsFilters, segment)
+        ({ metricName, segment }) => {
+            getDrillDownQuery({ metricName })(statsFilters, segment)
 
             expect(
-                liveDashboardVoiceCallListQueryFactoryMock
+                liveDashboardVoiceCallListQueryFactoryMock,
             ).toHaveBeenCalledWith(statsFilters, segment)
-        }
+        },
     )
 
     it('should be populated with shopName and selectedCampaignIds filter', () => {
@@ -603,7 +606,7 @@ describe('getDrillDownQuery', () => {
             statsFilters,
             timezone,
             undefined,
-            'someAbVariant'
+            'someAbVariant',
         )
     })
 
@@ -627,13 +630,13 @@ describe('getDrillDownQuery', () => {
         })(statsFilters, timezone)
 
         expect(
-            tagsTicketCountPerTicketDrillDownQueryFactoryMock
+            tagsTicketCountPerTicketDrillDownQueryFactoryMock,
         ).toHaveBeenCalledWith(
             statsFilters,
             timezone,
             tagsMetric.tagId,
             statsFilters.period,
-            undefined
+            undefined,
         )
     })
 
@@ -657,14 +660,14 @@ describe('getDrillDownQuery', () => {
         getDrillDownQuery(customFieldMetric)(statsFilters, timezone)
 
         expect(
-            customFieldsTicketCountPerTicketDrillDownQueryFactoryMock
+            customFieldsTicketCountPerTicketDrillDownQueryFactoryMock,
         ).toHaveBeenCalledWith(
             statsFilters,
             timezone,
             customFieldMetric.customFieldId.toString(),
             customFieldMetric.customFieldValue,
             statsFilters.period,
-            undefined
+            undefined,
         )
     })
 })

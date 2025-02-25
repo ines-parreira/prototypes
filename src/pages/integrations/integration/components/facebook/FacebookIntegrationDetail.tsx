@@ -1,32 +1,33 @@
+import React, { Component, SyntheticEvent } from 'react'
+
 import classNames from 'classnames'
-import {fromJS, Map} from 'immutable'
+import { fromJS, Map } from 'immutable'
 import isEmpty from 'lodash/isEmpty'
 import isEqual from 'lodash/isEqual'
 import merge from 'lodash/merge'
-import React, {Component, SyntheticEvent} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {Link} from 'react-router-dom'
+import { connect, ConnectedProps } from 'react-redux'
+import { Link } from 'react-router-dom'
 import {
-    FormGroup,
     Breadcrumb,
     BreadcrumbItem,
-    Container,
-    Row,
     Col,
+    Container,
+    FormGroup,
+    Row,
 } from 'reactstrap'
 
 import warningIcon from 'assets/img/icons/warning2.svg'
 import pageIconDefault from 'assets/img/integrations/facebook-page.png'
 import {
-    FACEBOOK_LANGUAGE_OPTIONS,
     FACEBOOK_LANGUAGE_DEFAULT,
+    FACEBOOK_LANGUAGE_OPTIONS,
 } from 'config/integrations/facebook'
 import {
     FacebookIntegration,
     FacebookIntegrationSettings,
     isFacebookIntegration,
 } from 'models/integration/types'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -46,15 +47,15 @@ import {
     hasFacebookRole,
     InstagramDMSettingStatus,
 } from 'pages/integrations/integration/components/facebook/utils'
-import {INTEGRATION_REMOVAL_CONFIGURATION_TEXT} from 'pages/integrations/integration/constants'
+import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 import css from 'pages/settings/settings.less'
 import * as billingSelectors from 'state/billing/selectors'
-import {AccountFeature} from 'state/currentAccount/types'
+import { AccountFeature } from 'state/currentAccount/types'
 import {
     deleteIntegration,
     updateOrCreateIntegration,
 } from 'state/integrations/actions'
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
 
 type Props = {
     integration: FacebookIntegration
@@ -136,10 +137,10 @@ export class FacebookIntegrationDetail extends Component<Props, State> {
 
     _handleSubmit = (event: SyntheticEvent) => {
         event.preventDefault()
-        const {integration, updateOrCreateIntegration} = this.props
-        const {settings, language} = this.state
+        const { integration, updateOrCreateIntegration } = this.props
+        const { settings, language } = this.state
         const updated = merge(integration, {
-            meta: {language, settings},
+            meta: { language, settings },
         })
         void updateOrCreateIntegration(fromJS(updated))
     }
@@ -203,7 +204,7 @@ export class FacebookIntegrationDetail extends Component<Props, State> {
             canModerate &&
             canEnableMetaSetting(
                 userPermissions,
-                'instagram_direct_message_enabled'
+                'instagram_direct_message_enabled',
             )
 
         const displayPermissionAlert =
@@ -219,7 +220,7 @@ export class FacebookIntegrationDetail extends Component<Props, State> {
         //Todo(@Mehdi): change this when the feature is available for all accounts
         const instagramDMSettingStatus = getInstagramDMSettingStatus(
             canEnableInstagramDirectMessage,
-            fromJS(integration)
+            fromJS(integration),
         )
 
         const isAllowedToInstagramDM =
@@ -230,7 +231,7 @@ export class FacebookIntegrationDetail extends Component<Props, State> {
             getInstagramDMSettingsInlineComponent(
                 instagramDMSettingStatus,
                 currentAccount,
-                currentHelpdeskProduct
+                currentHelpdeskProduct,
             )
 
         const isSubmitting = !!loading.get('updateIntegration')
@@ -302,7 +303,7 @@ export class FacebookIntegrationDetail extends Component<Props, State> {
                     onChange: (value: boolean) =>
                         this._onSettingChange(
                             value,
-                            'instagram_comments_enabled'
+                            'instagram_comments_enabled',
                         ),
                     isDisabled:
                         !canEnableInstagramComments || instagramIsDisabled,
@@ -314,7 +315,7 @@ export class FacebookIntegrationDetail extends Component<Props, State> {
                     onChange: (value: boolean) =>
                         this._onSettingChange(
                             value,
-                            'instagram_mentions_enabled'
+                            'instagram_mentions_enabled',
                         ),
                     isDisabled:
                         !canEnableInstagramMentions || instagramIsDisabled,
@@ -327,7 +328,7 @@ export class FacebookIntegrationDetail extends Component<Props, State> {
                     onChange: (value: boolean) =>
                         this._onSettingChange(
                             value,
-                            'instagram_direct_message_enabled'
+                            'instagram_direct_message_enabled',
                         ),
                     isDisabled:
                         !canEnableInstagramDirectMessage ||
@@ -426,7 +427,7 @@ export class FacebookIntegrationDetail extends Component<Props, State> {
                                     className={classNames(
                                         'd-flex',
                                         'align-items-center',
-                                        css.mt16
+                                        css.mt16,
                                     )}
                                     icon
                                 >
@@ -445,7 +446,7 @@ export class FacebookIntegrationDetail extends Component<Props, State> {
                                     className={classNames(
                                         'align-items-center',
                                         css.mt16,
-                                        css.mb16
+                                        css.mb16,
                                     )}
                                     icon
                                 >
@@ -526,7 +527,7 @@ export class FacebookIntegrationDetail extends Component<Props, State> {
                                 value={this.state.language}
                                 options={FACEBOOK_LANGUAGE_OPTIONS.toJS()}
                                 onChange={(language) =>
-                                    this.setState({language})
+                                    this.setState({ language })
                                 }
                                 label="Language"
                                 className="mt-4"
@@ -539,7 +540,7 @@ export class FacebookIntegrationDetail extends Component<Props, State> {
                                         >
                                             {option.get('label')}
                                         </option>
-                                    )
+                                    ),
                                 )}
                             </DEPRECATED_InputField>
 
@@ -583,13 +584,13 @@ const connector = connect(
         currentAccount: state.currentAccount,
         currentHelpdeskProduct: billingSelectors.getCurrentHelpdeskPlan(state),
         hasInstagramDMFeature: billingSelectors.makeHasFeature(state)(
-            AccountFeature.InstagramDirectMessage
+            AccountFeature.InstagramDirectMessage,
         ),
     }),
     {
         updateOrCreateIntegration,
         deleteIntegration,
-    }
+    },
 )
 
 export default connector(FacebookIntegrationDetail)

@@ -1,23 +1,22 @@
-import {UseQueryResult} from '@tanstack/react-query'
-import {render, screen} from '@testing-library/react'
-import {TooltipItem} from 'chart.js'
-
-import moment from 'moment/moment'
 import React from 'react'
 
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
-import {ReportingGranularity} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import { UseQueryResult } from '@tanstack/react-query'
+import { render, screen } from '@testing-library/react'
+import { TooltipItem } from 'chart.js'
+import moment from 'moment/moment'
+
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
+import { ReportingGranularity } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
 import useGmvInfluenceOverTimeSeries from 'pages/stats/aiSalesAgent/metrics/useGmvInfluenceOverTimeSeries'
 import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
-
-import {formatReportingQueryDate} from 'utils/reporting'
-import {assumeMock} from 'utils/testing'
+import { formatReportingQueryDate } from 'utils/reporting'
+import { assumeMock } from 'utils/testing'
 
 import GmvInfluencedOverTimeChart, {
-    renderTooltipLabel,
     percentLabel,
+    renderTooltipLabel,
 } from '../GmvInfluencedOverTimeChart'
 
 jest.mock('hooks/reporting/timeSeries')
@@ -30,14 +29,14 @@ const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
 
 jest.mock('pages/stats/aiSalesAgent/metrics/useGmvInfluenceOverTimeSeries')
 const useGmvInfluenceOverTimeSeriesMock = assumeMock(
-    useGmvInfluenceOverTimeSeries
+    useGmvInfluenceOverTimeSeries,
 )
 
 describe('renderTooltipLabel', () => {
     test('renders tooltip label without percentage', () => {
         const tooltipItem = {
             raw: 10,
-            dataset: {label: 'Dataset Label'},
+            dataset: { label: 'Dataset Label' },
         } as TooltipItem<'line'>
         const expectedLabel = 'Dataset Label:  10'
 
@@ -49,7 +48,7 @@ describe('renderTooltipLabel', () => {
     test('renders tooltip label with percentage', () => {
         const tooltipItem = {
             raw: 0.1,
-            dataset: {label: 'Dataset Label'},
+            dataset: { label: 'Dataset Label' },
         } as TooltipItem<'line'>
         const expectedLabel = 'Dataset Label:  10%'
 
@@ -61,7 +60,7 @@ describe('renderTooltipLabel', () => {
     test('renders tooltip label with no dataset label', () => {
         const tooltipItem = {
             raw: 0.1,
-            dataset: {label: undefined},
+            dataset: { label: undefined },
         } as TooltipItem<'line'>
         const expectedLabel = ':  10%'
 

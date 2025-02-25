@@ -1,20 +1,20 @@
-import {screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-
-import {account} from 'fixtures/account'
-import {StoreConfiguration} from 'models/aiAgent/types'
-import {IntegrationType} from 'models/integration/constants'
-import {getStoreConfigurationFixture} from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
-import {useStoreConfiguration} from 'pages/aiAgent/hooks/useStoreConfiguration'
-import {getHasAutomate} from 'state/billing/selectors'
-import {assumeMock, renderWithRouter} from 'utils/testing'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { account } from 'fixtures/account'
+import { StoreConfiguration } from 'models/aiAgent/types'
+import { IntegrationType } from 'models/integration/constants'
+import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
+import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
+import { getHasAutomate } from 'state/billing/selectors'
+import { assumeMock, renderWithRouter } from 'utils/testing'
 
 import AutomateNavbarSectionBlock from '../AutomateNavbarSectionBlock'
 
@@ -50,8 +50,8 @@ const defaultState = {
         helpCenter: {
             helpCenters: {
                 helpCentersById: {
-                    '1': {id: 1, name: 'help center 1', type: 'faq'},
-                    '2': {id: 2, name: 'help center 2', type: 'faq'},
+                    '1': { id: 1, name: 'help center 1', type: 'faq' },
+                    '2': { id: 2, name: 'help center 2', type: 'faq' },
                 },
             },
         },
@@ -60,7 +60,7 @@ const defaultState = {
 
 const renderComponent = (children: any) =>
     renderWithRouter(
-        <Provider store={mockStore(defaultState)}>{children}</Provider>
+        <Provider store={mockStore(defaultState)}>{children}</Provider>,
     )
 
 describe('AutomateNavbarSectionBlock', () => {
@@ -112,7 +112,7 @@ describe('AutomateNavbarSectionBlock', () => {
                     name={name}
                     isExpanded={isExpanded}
                     shouldRenderCanduIds={shouldRenderCanduIds}
-                />
+                />,
             )
 
             expect(screen.getByText('PREVIEW')).toBeInTheDocument()
@@ -137,7 +137,7 @@ describe('AutomateNavbarSectionBlock', () => {
                     name={name}
                     isExpanded={isExpanded}
                     shouldRenderCanduIds={shouldRenderCanduIds}
-                />
+                />,
             )
 
             expect(screen.getByText('LIVE')).toBeInTheDocument()
@@ -162,7 +162,7 @@ describe('AutomateNavbarSectionBlock', () => {
                     name={name}
                     isExpanded={isExpanded}
                     shouldRenderCanduIds={shouldRenderCanduIds}
-                />
+                />,
             )
 
             expect(screen.getByText('LIVE')).toBeInTheDocument()
@@ -187,7 +187,7 @@ describe('AutomateNavbarSectionBlock', () => {
                     name={name}
                     isExpanded={isExpanded}
                     shouldRenderCanduIds={shouldRenderCanduIds}
-                />
+                />,
             )
 
             expect(screen.getByText('LIVE')).toBeInTheDocument()
@@ -212,7 +212,7 @@ describe('AutomateNavbarSectionBlock', () => {
                     name={name}
                     isExpanded={isExpanded}
                     shouldRenderCanduIds={shouldRenderCanduIds}
-                />
+                />,
             )
 
             expect(screen.queryByText('LIVE')).not.toBeInTheDocument()
@@ -234,7 +234,7 @@ describe('AutomateNavbarSectionBlock', () => {
                     name={name}
                     isExpanded={isExpanded}
                     shouldRenderCanduIds={shouldRenderCanduIds}
-                />
+                />,
             )
 
             expect(screen.getByText('AI Agent')).toBeInTheDocument()
@@ -249,7 +249,7 @@ describe('AutomateNavbarSectionBlock', () => {
                     name={name}
                     isExpanded={isExpanded}
                     shouldRenderCanduIds={shouldRenderCanduIds}
-                />
+                />,
             )
 
             expect(screen.getByText('AI Agent')).toBeInTheDocument()
@@ -279,7 +279,7 @@ describe('AutomateNavbarSectionBlock', () => {
                     name={name}
                     isExpanded={isExpanded}
                     shouldRenderCanduIds={shouldRenderCanduIds}
-                />
+                />,
             )
 
             expect(screen.getByText('PREVIEW')).toBeInTheDocument()
@@ -294,7 +294,7 @@ describe('AutomateNavbarSectionBlock', () => {
                     name={name}
                     isExpanded={isExpanded}
                     shouldRenderCanduIds={shouldRenderCanduIds}
-                />
+                />,
             )
 
             expect(screen.queryByText('Flows')).not.toBeInTheDocument()

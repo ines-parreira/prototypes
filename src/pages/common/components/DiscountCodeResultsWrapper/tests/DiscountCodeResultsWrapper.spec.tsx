@@ -1,12 +1,12 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {Provider} from 'react-redux'
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {integrationsState} from 'fixtures/integrations'
+import { integrationsState } from 'fixtures/integrations'
 import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 
 import {
@@ -35,7 +35,7 @@ describe('<DiscountCodeResultsWrapper />', () => {
     }
 
     it('only renders Generic DiscountCodes component if feature flag is disabled', () => {
-        const {queryByText} = render(
+        const { queryByText } = render(
             <Provider store={store}>
                 <ToolbarProvider
                     canAddProductCard={true}
@@ -47,13 +47,13 @@ describe('<DiscountCodeResultsWrapper />', () => {
                 >
                     <DiscountCodeResultsWrapper {...props} />
                 </ToolbarProvider>
-            </Provider>
+            </Provider>,
         )
         const uniqueCodesOfferTab = queryByText('Unique Codes Offer')
         expect(uniqueCodesOfferTab).not.toBeInTheDocument()
     })
     it('renders both code components if feature flag is enabled', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <ToolbarProvider
                     canAddProductCard={true}
@@ -65,7 +65,7 @@ describe('<DiscountCodeResultsWrapper />', () => {
                 >
                     <DiscountCodeResultsWrapper {...props} />
                 </ToolbarProvider>
-            </Provider>
+            </Provider>,
         )
         const uniqueCodesOfferTab = getByText('Unique Codes Offer')
         expect(uniqueCodesOfferTab).toBeInTheDocument()

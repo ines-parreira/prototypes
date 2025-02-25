@@ -1,14 +1,16 @@
-import {Tooltip, Badge} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
 import React from 'react'
 
-import {SegmentEvent, logEvent} from 'common/segment'
-import {OBJECT_TYPES} from 'custom-fields/constants'
+import classnames from 'classnames'
+
+import { Badge, Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { OBJECT_TYPES } from 'custom-fields/constants'
 import useAppSelector from 'hooks/useAppSelector'
 import useId from 'hooks/useId'
-import {CUSTOM_FIELD_ROUTES} from 'routes/constants'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {isAdmin} from 'utils'
+import { CUSTOM_FIELD_ROUTES } from 'routes/constants'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { isAdmin } from 'utils'
 
 import css from './Heading.less'
 
@@ -49,7 +51,7 @@ export function Heading() {
                             id={tooltipId}
                             className={classnames(
                                 'material-icons-outlined',
-                                css.icon
+                                css.icon,
                             )}
                         >
                             info

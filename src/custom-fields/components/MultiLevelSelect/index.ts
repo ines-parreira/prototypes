@@ -1,1 +1,1 @@
-export {default} from './MultiLevelSelect'
+export { default } from './MultiLevelSelect'

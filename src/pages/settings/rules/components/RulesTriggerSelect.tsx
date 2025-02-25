@@ -1,5 +1,6 @@
-import React, {ComponentProps, useMemo} from 'react'
-import {DropdownMenu} from 'reactstrap'
+import React, { ComponentProps, useMemo } from 'react'
+
+import { DropdownMenu } from 'reactstrap'
 
 import {
     eventNameToLabel,
@@ -7,40 +8,40 @@ import {
     eventsDependencies,
 } from '../../../../config/rules'
 import {
-    eventTypes as getEventTypes,
     getArraysIntersection,
+    eventTypes as getEventTypes,
 } from '../../../../state/rules/helpers'
-import {RuleDraft} from '../../../../state/rules/types'
+import { RuleDraft } from '../../../../state/rules/types'
 import Errors from '../../../common/components/ast/Errors'
 import SelectField from '../../../common/forms/MultiSelectField'
 
 import css from './RulesTriggerSelect.less'
 
 const RuleTriggerDropdownMenu = (
-    props: ComponentProps<typeof DropdownMenu>
-) => <DropdownMenu {...props} style={{width: '220px'}} />
+    props: ComponentProps<typeof DropdownMenu>,
+) => <DropdownMenu {...props} style={{ width: '220px' }} />
 
 export type Props = {
     rule: RuleDraft
     setEventTypes: (events: string) => void
 }
 
-export function RulesTriggerSelect({rule, setEventTypes}: Props) {
+export function RulesTriggerSelect({ rule, setEventTypes }: Props) {
     const eventTypes = useMemo(() => getEventTypes(rule), [rule])
 
     const dependentEvents = useMemo(
         () =>
             getArraysIntersection(
                 eventsDependencies['ticket-updated'],
-                eventTypes
+                eventTypes,
             ).map((event) => eventNameToLabel[event]),
-        [eventTypes]
+        [eventTypes],
     )
 
     const containsDependentEvents = useMemo(
         () =>
             eventTypes.includes('ticket-updated') && dependentEvents.length > 0,
-        [eventTypes, dependentEvents]
+        [eventTypes, dependentEvents],
     )
 
     const handleEventTypes = (events: string[]) => {

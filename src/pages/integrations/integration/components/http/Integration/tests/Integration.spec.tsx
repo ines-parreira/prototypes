@@ -1,13 +1,13 @@
-import {fireEvent, render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {baseHttp, httpIntegration} from 'fixtures/integrations'
-import {ContentType, HttpMethod} from 'models/api/types'
-import {HTTPForm, IntegrationType} from 'models/integration/types'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
 
-import {Integration} from 'pages/integrations/integration/components/http/Integration/Integration'
-import {INTEGRATION_REMOVAL_CONFIGURATION_TEXT} from 'pages/integrations/integration/constants'
+import { baseHttp, httpIntegration } from 'fixtures/integrations'
+import { ContentType, HttpMethod } from 'models/api/types'
+import { HTTPForm, IntegrationType } from 'models/integration/types'
+import { Integration } from 'pages/integrations/integration/components/http/Integration/Integration'
+import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 
 describe('HTTP Integration', () => {
     const minProps = {
@@ -73,11 +73,11 @@ describe('HTTP Integration', () => {
                 {...minProps}
                 integration={mockIntegration}
                 isUpdate={true}
-            />
+            />,
         )
 
         expect(screen.getByLabelText('Integration name')).toHaveValue(
-            'Test Integration'
+            'Test Integration',
         )
     })
 
@@ -87,14 +87,14 @@ describe('HTTP Integration', () => {
             <Integration
                 {...minProps}
                 updateOrCreateIntegration={mockUpdateOrCreate}
-            />
+            />,
         )
 
         fireEvent.change(screen.getByLabelText('Integration name'), {
-            target: {value: 'Test Integration'},
+            target: { value: 'Test Integration' },
         })
         fireEvent.change(screen.getByLabelText('URL'), {
-            target: {value: 'https://test.com/webhook'},
+            target: { value: 'https://test.com/webhook' },
         })
 
         fireEvent.click(screen.getByText('Add integration'))
@@ -130,10 +130,10 @@ describe('HTTP Integration', () => {
         fireEvent.click(addHeaderButton)
 
         const headerInput = screen.getByPlaceholderText('Key')
-        fireEvent.change(headerInput, {target: {value: 'Invalid Header!'}})
+        fireEvent.change(headerInput, { target: { value: 'Invalid Header!' } })
 
         expect(
-            screen.getByText('Header name contains invalid characters')
+            screen.getByText('Header name contains invalid characters'),
         ).toBeInTheDocument()
     })
 
@@ -153,7 +153,7 @@ describe('HTTP Integration', () => {
             expect(setStateSpy).toHaveBeenCalledWith(
                 expect.objectContaining({
                     ticketMessageCreated: false,
-                })
+                }),
             )
         }
     })
@@ -174,7 +174,7 @@ describe('HTTP Integration', () => {
             expect(setStateSpy).toHaveBeenCalledWith(
                 expect.objectContaining({
                     ticketMessageFailed: false,
-                })
+                }),
             )
         }
     })
@@ -195,7 +195,7 @@ describe('HTTP Integration', () => {
             expect(setStateSpy).toHaveBeenCalledWith(
                 expect.objectContaining({
                     ticketSelfUnsnoozed: false,
-                })
+                }),
             )
         }
     })
@@ -216,7 +216,7 @@ describe('HTTP Integration', () => {
             expect(setStateSpy).toHaveBeenCalledWith(
                 expect.objectContaining({
                     ticketUpdated: false,
-                })
+                }),
             )
         }
     })
@@ -237,7 +237,7 @@ describe('HTTP Integration', () => {
             expect(setStateSpy).toHaveBeenCalledWith(
                 expect.objectContaining({
                     ticketCreated: false,
-                })
+                }),
             )
         }
     })
@@ -254,14 +254,16 @@ describe('HTTP Integration', () => {
                     },
                 }}
                 isUpdate={true}
-            />
+            />,
         )
 
         const contentTypeSelect = screen.getByLabelText('Request content type')
-        fireEvent.change(contentTypeSelect, {target: {value: ContentType.Json}})
+        fireEvent.change(contentTypeSelect, {
+            target: { value: ContentType.Json },
+        })
 
         expect(screen.getByLabelText('Request content type')).toHaveValue(
-            ContentType.Json
+            ContentType.Json,
         )
     })
 
@@ -274,7 +276,7 @@ describe('HTTP Integration', () => {
                     integration={httpIntegration}
                     isUpdate={true}
                     deactivateIntegration={mockDeactivate}
-                />
+                />,
             )
 
             fireEvent.click(screen.getByText('Deactivate HTTP integration'))
@@ -287,12 +289,12 @@ describe('HTTP Integration', () => {
                     {...minProps}
                     integration={httpIntegration}
                     isUpdate={true}
-                />
+                />,
             )
 
             fireEvent.click(screen.getByText('Delete HTTP integration'))
             expect(
-                screen.getByText(INTEGRATION_REMOVAL_CONFIGURATION_TEXT)
+                screen.getByText(INTEGRATION_REMOVAL_CONFIGURATION_TEXT),
             ).toBeInTheDocument()
         })
     })
@@ -302,11 +304,13 @@ describe('HTTP Integration', () => {
             render(<Integration {...minProps} />)
 
             const methodSelect = screen.getByLabelText('HTTP Method')
-            fireEvent.change(methodSelect, {target: {value: HttpMethod.Post}})
+            fireEvent.change(methodSelect, {
+                target: { value: HttpMethod.Post },
+            })
 
             // Request content type should appear
             expect(
-                screen.getByLabelText('Request content type')
+                screen.getByLabelText('Request content type'),
             ).toBeInTheDocument()
         })
 
@@ -314,10 +318,12 @@ describe('HTTP Integration', () => {
             render(<Integration {...minProps} />)
 
             const methodSelect = screen.getByLabelText('HTTP Method')
-            fireEvent.change(methodSelect, {target: {value: HttpMethod.Get}})
+            fireEvent.change(methodSelect, {
+                target: { value: HttpMethod.Get },
+            })
 
             expect(
-                screen.queryByLabelText('Request content type')
+                screen.queryByLabelText('Request content type'),
             ).not.toBeInTheDocument()
         })
     })
@@ -329,11 +335,11 @@ describe('HTTP Integration', () => {
                     {...minProps}
                     isUpdate={true}
                     integration={undefined}
-                />
+                />,
             )
 
             const loaderIcon = document.querySelector(
-                '.icon-circle-o-notch.md-spin'
+                '.icon-circle-o-notch.md-spin',
             )
             expect(loaderIcon).toBeInTheDocument()
         })
@@ -380,9 +386,9 @@ describe('HTTP Integration', () => {
             render(
                 <Integration
                     {...minProps}
-                    loading={{updateIntegration: 1}}
+                    loading={{ updateIntegration: 1 }}
                     integration={mockIntegration}
-                />
+                />,
             )
 
             const submitButton = screen.getByRole('button', {
@@ -407,11 +413,11 @@ describe('HTTP Integration', () => {
                     integration={deactivatedIntegration}
                     isUpdate={true}
                     activateIntegration={mockActivate}
-                />
+                />,
             )
 
             const reactivateButton = screen.getByText(
-                'Re-activate HTTP integration'
+                'Re-activate HTTP integration',
             )
             fireEvent.click(reactivateButton)
             expect(mockActivate).toHaveBeenCalledWith(deactivatedIntegration.id)
@@ -432,7 +438,7 @@ describe('HTTP Integration', () => {
             render(<Integration {...minProps} />)
 
             const urlInput = screen.getByLabelText('URL')
-            fireEvent.change(urlInput, {target: {value: 'invalid-url'}})
+            fireEvent.change(urlInput, { target: { value: 'invalid-url' } })
 
             expect(urlInput).toBeInvalid()
         })

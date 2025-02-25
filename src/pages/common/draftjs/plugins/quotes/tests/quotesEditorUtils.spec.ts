@@ -1,10 +1,10 @@
-import {ContentState} from 'draft-js'
+import { ContentState } from 'draft-js'
 
 import {
     getContentStateBlocksSnapshot,
     selectWholeContentState,
 } from '../../../../../../utils/editor'
-import {getQuoteDepth, setQuoteDepth} from '../quotesEditorUtils'
+import { getQuoteDepth, setQuoteDepth } from '../quotesEditorUtils'
 
 describe('quotesEditorUtils', () => {
     describe('setQuoteDepth', () => {
@@ -13,10 +13,10 @@ describe('quotesEditorUtils', () => {
             contentState = setQuoteDepth(
                 contentState,
                 selectWholeContentState(contentState),
-                -1
+                -1,
             )
             expect(
-                getContentStateBlocksSnapshot(contentState)
+                getContentStateBlocksSnapshot(contentState),
             ).toMatchSnapshot()
         })
 
@@ -25,10 +25,10 @@ describe('quotesEditorUtils', () => {
             contentState = setQuoteDepth(
                 contentState,
                 selectWholeContentState(contentState),
-                0
+                0,
             )
             expect(
-                getContentStateBlocksSnapshot(contentState)
+                getContentStateBlocksSnapshot(contentState),
             ).toMatchSnapshot()
         })
 
@@ -37,10 +37,10 @@ describe('quotesEditorUtils', () => {
             contentState = setQuoteDepth(
                 contentState,
                 selectWholeContentState(contentState),
-                2
+                2,
             )
             expect(
-                getContentStateBlocksSnapshot(contentState)
+                getContentStateBlocksSnapshot(contentState),
             ).toMatchSnapshot()
         })
     })
@@ -56,7 +56,7 @@ describe('quotesEditorUtils', () => {
             contentState = setQuoteDepth(
                 contentState,
                 selectWholeContentState(contentState),
-                2
+                2,
             )
             expect(getQuoteDepth(contentState.getFirstBlock())).toBe(2)
         })

@@ -1,20 +1,20 @@
+import React, { useMemo } from 'react'
+
 import classnames from 'classnames'
-import {fromJS, Map} from 'immutable'
-import React, {useMemo} from 'react'
-import {Link} from 'react-router-dom'
+import { fromJS, Map } from 'immutable'
+import { Link } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
-import {MacroActionName} from 'models/macroAction/types'
-import {useGetSelfServiceConfigurations} from 'models/selfServiceConfiguration/queries'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-
+import { IntegrationType, ShopifyIntegration } from 'models/integration/types'
+import { MacroActionName } from 'models/macroAction/types'
+import { useGetSelfServiceConfigurations } from 'models/selfServiceConfiguration/queries'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import MultiSelectField from 'pages/common/forms/MultiSelectField'
 import ResponseAction from 'pages/tickets/common/macros/components/actions/ResponseAction'
-import {getIntegrationsByType} from 'state/integrations/selectors'
-import {AutoReplyWismoSettings} from 'state/rules/types'
+import { getIntegrationsByType } from 'state/integrations/selectors'
+import { AutoReplyWismoSettings } from 'state/rules/types'
 
-import {ManagedRuleDetailProps} from './ManagedRuleEditor'
+import { ManagedRuleDetailProps } from './ManagedRuleEditor'
 
 import css from './ManagedRuleEditor.less'
 
@@ -23,10 +23,11 @@ export const AutoReplyWismoEditor = ({
     onChange,
 }: ManagedRuleDetailProps<AutoReplyWismoSettings>) => {
     const integrations = useAppSelector(
-        getIntegrationsByType<ShopifyIntegration>(IntegrationType.Shopify)
+        getIntegrationsByType<ShopifyIntegration>(IntegrationType.Shopify),
     )
 
-    const {data: selfServiceConfigurations} = useGetSelfServiceConfigurations()
+    const { data: selfServiceConfigurations } =
+        useGetSelfServiceConfigurations()
 
     const configurationWithoutUnfulffiledMessage = useMemo(
         () =>
@@ -34,13 +35,13 @@ export const AutoReplyWismoEditor = ({
                 (configuration) =>
                     !configuration.deletedDatetime &&
                     configuration.trackOrderPolicy.enabled &&
-                    !configuration.trackOrderPolicy.unfulfilledMessage?.text
+                    !configuration.trackOrderPolicy.unfulfilledMessage?.text,
             ),
-        [selfServiceConfigurations]
+        [selfServiceConfigurations],
     )
 
     const handleBlocklist = (block_list: string[]) => {
-        void onChange()?.({...settings, block_list: block_list})
+        void onChange()?.({ ...settings, block_list: block_list })
     }
 
     const handleBodyChange = (index: number, args: Map<string, any>) => {
@@ -79,7 +80,7 @@ export const AutoReplyWismoEditor = ({
                         <Link
                             to={{
                                 pathname: `/app/automation/shopify/${configurationWithoutUnfulffiledMessage.shopName}/order-management/track`,
-                                state: {from: 'rules-auto-reply-wismo'},
+                                state: { from: 'rules-auto-reply-wismo' },
                             }}
                         >
                             here

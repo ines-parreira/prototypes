@@ -1,14 +1,16 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import React, {useRef, useState} from 'react'
+import React, { useRef, useState } from 'react'
 
-import {PhoneIntegration} from 'models/integration/types'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { PhoneIntegration } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 
-import css from './PhoneDevice.less'
 import usePhoneNumbers from './usePhoneNumbers'
+
+import css from './PhoneDevice.less'
 
 type Props = {
     value: PhoneIntegration
@@ -23,7 +25,7 @@ export default function PhoneDeviceDialerIntegrationSelect({
 }: Props) {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
-    const {getPhoneNumberById} = usePhoneNumbers()
+    const { getPhoneNumberById } = usePhoneNumbers()
 
     const targetRef = useRef<HTMLButtonElement>(null)
     const floatingRef = useRef<HTMLDivElement>(null)
@@ -59,7 +61,7 @@ export default function PhoneDeviceDialerIntegrationSelect({
                 <DropdownBody>
                     {options?.map((option) => {
                         const friendlyAddress = getPhoneNumberById(
-                            option.meta.phone_number_id
+                            option.meta.phone_number_id,
                         )?.phone_number_friendly
                         return (
                             <DropdownItem

@@ -1,22 +1,22 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
-import {UserRole} from 'config/types/user'
+import { UserRole } from 'config/types/user'
 import * as currentUserConstants from 'state/currentUser/constants'
-import {StoreAction} from 'state/types'
+import { StoreAction } from 'state/types'
 
 import * as constants from '../constants'
-import reducer, {initialState} from '../reducers'
+import reducer, { initialState } from '../reducers'
 
 describe('agents reducers', () => {
     it('initial state', () => {
         expect(reducer(undefined, {} as StoreAction)).toEqualImmutable(
-            initialState
+            initialState,
         )
     })
 
     it('fetch users (agents)', () => {
         const resp = {
-            data: [{id: 1}, {id: 2}],
+            data: [{ id: 1 }, { id: 2 }],
         }
 
         // do nothing
@@ -25,7 +25,7 @@ describe('agents reducers', () => {
                 type: constants.FETCH_USER_LIST_SUCCESS,
                 roles: [],
                 resp,
-            })
+            }),
         ).toMatchSnapshot()
 
         // do nothing
@@ -34,7 +34,7 @@ describe('agents reducers', () => {
                 type: constants.FETCH_USER_LIST_SUCCESS,
                 roles: [UserRole.Agent],
                 resp,
-            })
+            }),
         ).toMatchSnapshot()
 
         expect(
@@ -42,7 +42,7 @@ describe('agents reducers', () => {
                 type: constants.FETCH_USER_LIST_SUCCESS,
                 roles: Object.values(UserRole),
                 resp,
-            })
+            }),
         ).toMatchSnapshot()
     })
 
@@ -51,10 +51,10 @@ describe('agents reducers', () => {
             reducer(initialState, {
                 type: constants.SET_AGENTS_LOCATIONS,
                 data: [
-                    {customers: ['1', '2'], ticket: '1'},
-                    {customers: ['1'], ticket: '2'},
+                    { customers: ['1', '2'], ticket: '1' },
+                    { customers: ['1'], ticket: '2' },
                 ],
-            }).toJS()
+            }).toJS(),
         ).toMatchSnapshot()
     })
 
@@ -63,10 +63,10 @@ describe('agents reducers', () => {
             reducer(initialState, {
                 type: constants.SET_AGENTS_TYPING_STATUSES,
                 data: [
-                    {users: ['1', '2'], ticket: '1'},
-                    {users: ['1'], ticket: '2'},
+                    { users: ['1', '2'], ticket: '1' },
+                    { users: ['1'], ticket: '2' },
                 ],
-            }).toJS()
+            }).toJS(),
         ).toMatchSnapshot()
     })
 
@@ -75,8 +75,8 @@ describe('agents reducers', () => {
         expect(
             reducer(initialState, {
                 type: constants.CREATE_AGENT_SUCCESS,
-                resp: {id: 1, name: 'Romain'},
-            }).toJS()
+                resp: { id: 1, name: 'Romain' },
+            }).toJS(),
         ).toMatchSnapshot()
     })
 
@@ -86,15 +86,15 @@ describe('agents reducers', () => {
             reducer(
                 initialState.mergeDeep({
                     all: [
-                        {id: 1, name: 'Romain'},
-                        {id: 2, name: 'John'},
+                        { id: 1, name: 'Romain' },
+                        { id: 2, name: 'John' },
                     ],
                 }),
                 {
                     type: constants.UPDATE_AGENT_SUCCESS,
-                    resp: fromJS({id: 1, name: 'Alex'}),
-                }
-            ).toJS()
+                    resp: fromJS({ id: 1, name: 'Alex' }),
+                },
+            ).toJS(),
         ).toMatchSnapshot()
 
         // success but no effect because non existent agent in list
@@ -102,15 +102,15 @@ describe('agents reducers', () => {
             reducer(
                 initialState.mergeDeep({
                     all: [
-                        {id: 1, name: 'Romain'},
-                        {id: 2, name: 'John'},
+                        { id: 1, name: 'Romain' },
+                        { id: 2, name: 'John' },
                     ],
                 }),
                 {
                     type: constants.UPDATE_AGENT_SUCCESS,
-                    resp: fromJS({id: 10, name: 'Julien'}),
-                }
-            ).toJS()
+                    resp: fromJS({ id: 10, name: 'Julien' }),
+                },
+            ).toJS(),
         ).toMatchSnapshot()
     })
 
@@ -120,15 +120,15 @@ describe('agents reducers', () => {
             reducer(
                 initialState.mergeDeep({
                     agents: [
-                        {id: 1, name: 'Romain'},
-                        {id: 2, name: 'John'},
+                        { id: 1, name: 'Romain' },
+                        { id: 2, name: 'John' },
                     ],
                 }),
                 {
                     type: constants.DELETE_AGENT_SUCCESS,
                     id: 2,
-                }
-            ).toJS()
+                },
+            ).toJS(),
         ).toMatchSnapshot()
     })
 
@@ -138,15 +138,15 @@ describe('agents reducers', () => {
             reducer(
                 initialState.mergeDeep({
                     all: [
-                        {id: 1, name: 'Romain'},
-                        {id: 2, name: 'John'},
+                        { id: 1, name: 'Romain' },
+                        { id: 2, name: 'John' },
                     ],
                 }),
                 {
                     type: currentUserConstants.SUBMIT_CURRENT_USER_SUCCESS,
-                    resp: {id: 1, name: 'Alex'},
-                }
-            ).toJS()
+                    resp: { id: 1, name: 'Alex' },
+                },
+            ).toJS(),
         ).toMatchSnapshot()
 
         // success but no effect because non existent agent in list
@@ -154,15 +154,15 @@ describe('agents reducers', () => {
             reducer(
                 initialState.mergeDeep({
                     all: [
-                        {id: 1, name: 'Romain'},
-                        {id: 2, name: 'John'},
+                        { id: 1, name: 'Romain' },
+                        { id: 2, name: 'John' },
                     ],
                 }),
                 {
                     type: currentUserConstants.SUBMIT_CURRENT_USER_SUCCESS,
-                    resp: {id: 10, name: 'Julien'},
-                }
-            ).toJS()
+                    resp: { id: 10, name: 'Julien' },
+                },
+            ).toJS(),
         ).toMatchSnapshot()
     })
 })

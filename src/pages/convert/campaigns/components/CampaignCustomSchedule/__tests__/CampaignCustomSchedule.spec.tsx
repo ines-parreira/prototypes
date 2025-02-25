@@ -1,15 +1,15 @@
-import {fireEvent, render} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {act} from 'react-dom/test-utils'
+import { fireEvent, render } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { act } from 'react-dom/test-utils'
 
 import CampaignCustomSchedule from '../CampaignCustomSchedule'
 
 describe('<CampaignCustomSchedule />', () => {
     it('should render', () => {
-        const {getByText} = render(
-            <CampaignCustomSchedule customSchedule={[]} onChange={jest.fn()} />
+        const { getByText } = render(
+            <CampaignCustomSchedule customSchedule={[]} onChange={jest.fn()} />,
         )
 
         expect(getByText('Add Date-Specific Hours')).toBeInTheDocument()
@@ -17,11 +17,11 @@ describe('<CampaignCustomSchedule />', () => {
 
     it('user is able to add a new custom schedule', () => {
         const onChangeSpy = jest.fn()
-        const {getByText} = render(
+        const { getByText } = render(
             <CampaignCustomSchedule
                 customSchedule={[]}
                 onChange={onChangeSpy}
-            />
+            />,
         )
 
         act(() => {
@@ -29,43 +29,43 @@ describe('<CampaignCustomSchedule />', () => {
         })
 
         expect(onChangeSpy).toBeCalledWith([
-            {days: '1', from_time: '09:00', to_time: '17:00'},
+            { days: '1', from_time: '09:00', to_time: '17:00' },
         ])
     })
 
     it('user is able to remove added custom schedule', () => {
         const onChangeSpy = jest.fn()
-        const {getAllByRole, container} = render(
+        const { getAllByRole, container } = render(
             <CampaignCustomSchedule
                 customSchedule={[
-                    {days: '1', from_time: '09:00', to_time: '05:00'},
-                    {days: '2', from_time: '09:00', to_time: '05:00'},
+                    { days: '1', from_time: '09:00', to_time: '05:00' },
+                    { days: '2', from_time: '09:00', to_time: '05:00' },
                 ]}
                 onChange={onChangeSpy}
-            />
+            />,
         )
 
         expect(container.querySelectorAll(`.formLine`)).toHaveLength(2)
 
         // Remove the entry line
         act(() => {
-            userEvent.click(getAllByRole('button', {name: /clear/i})[0])
+            userEvent.click(getAllByRole('button', { name: /clear/i })[0])
         })
 
         expect(onChangeSpy).toBeCalledWith([
-            {days: '2', from_time: '09:00', to_time: '05:00'},
+            { days: '2', from_time: '09:00', to_time: '05:00' },
         ])
     })
 
     it('user is able to update custom schedule', () => {
         const onChangeSpy = jest.fn()
-        const {getByText} = render(
+        const { getByText } = render(
             <CampaignCustomSchedule
                 customSchedule={[
-                    {days: '2', from_time: '09:00', to_time: '05:00'},
+                    { days: '2', from_time: '09:00', to_time: '05:00' },
                 ]}
                 onChange={onChangeSpy}
-            />
+            />,
         )
 
         act(() => {
@@ -74,7 +74,7 @@ describe('<CampaignCustomSchedule />', () => {
         })
 
         expect(onChangeSpy).toBeCalledWith([
-            {days: '1', from_time: '09:00', to_time: '05:00'},
+            { days: '1', from_time: '09:00', to_time: '05:00' },
         ])
     })
 
@@ -90,11 +90,11 @@ describe('<CampaignCustomSchedule />', () => {
             })
         }
 
-        const {getByText, container} = render(
+        const { getByText, container } = render(
             <CampaignCustomSchedule
                 customSchedule={customSchedule}
                 onChange={onChangeSpy}
-            />
+            />,
         )
 
         act(() => {

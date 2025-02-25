@@ -1,10 +1,11 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {useTicketsFieldTrend} from 'hooks/reporting/useTicketsFieldTrend'
-import {ReportingGranularity} from 'models/reporting/types'
-import {TicketInsightsFieldTrend} from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldTrend'
-import {assumeMock} from 'utils/testing'
+import { render, screen } from '@testing-library/react'
+
+import { useTicketsFieldTrend } from 'hooks/reporting/useTicketsFieldTrend'
+import { ReportingGranularity } from 'models/reporting/types'
+import { TicketInsightsFieldTrend } from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldTrend'
+import { assumeMock } from 'utils/testing'
 
 jest.mock(
     '@gorgias/merchant-ui-kit',
@@ -13,7 +14,7 @@ jest.mock(
             ...jest.requireActual('@gorgias/merchant-ui-kit'),
 
             Skeleton: () => <div data-testid="skeleton" />,
-        }) as typeof import('@gorgias/merchant-ui-kit')
+        }) as typeof import('@gorgias/merchant-ui-kit'),
 )
 
 jest.mock('hooks/reporting/useTicketsFieldTrend')
@@ -22,12 +23,12 @@ const useTicketsFieldTrendMock = assumeMock(useTicketsFieldTrend)
 describe('<TicketInsightsFieldTrend>', () => {
     const data = [
         [
-            {dateTime: '2023-02-27T00:00:00.000', value: 6},
-            {dateTime: '2023-03-06T00:00:00.000', value: 21},
+            { dateTime: '2023-02-27T00:00:00.000', value: 6 },
+            { dateTime: '2023-03-06T00:00:00.000', value: 21 },
         ],
         [
-            {dateTime: '2023-03-24T00:00:00.000', value: 10},
-            {dateTime: '2023-04-05T00:00:00.000', value: 5},
+            { dateTime: '2023-03-24T00:00:00.000', value: 10 },
+            { dateTime: '2023-04-05T00:00:00.000', value: 5 },
         ],
     ]
 
@@ -37,7 +38,7 @@ describe('<TicketInsightsFieldTrend>', () => {
         data: data,
         granularity: ReportingGranularity.Month,
         isFetching: false,
-        legendDatasetVisibility: {0: true},
+        legendDatasetVisibility: { 0: true },
         legendInfo: {
             labels: ['Level1', 'Level2'],
             tooltips: ['Level1 > Level2'],
@@ -72,7 +73,7 @@ describe('<TicketInsightsFieldTrend>', () => {
     it('should render with legend visibility', () => {
         useTicketsFieldTrendMock.mockReturnValue({
             ...useTicketsFieldTrendReturnValue,
-            legendDatasetVisibility: {0: false},
+            legendDatasetVisibility: { 0: false },
         })
 
         render(<TicketInsightsFieldTrend />)

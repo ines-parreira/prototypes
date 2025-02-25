@@ -1,15 +1,16 @@
-import {Scale} from 'chart.js'
-import moment from 'moment/moment'
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {useArticleViewTimeSeries} from 'hooks/reporting/help-center/useArticleViewTimeSeries'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
-import {ReportingGranularity} from 'models/reporting/types'
+import { Scale } from 'chart.js'
+import moment from 'moment/moment'
+
+import { useArticleViewTimeSeries } from 'hooks/reporting/help-center/useArticleViewTimeSeries'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
+import { ReportingGranularity } from 'models/reporting/types'
 import ChartCard from 'pages/stats/ChartCard'
 import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
-import {formatTimeSeriesData, SHORT_FORMAT} from 'pages/stats/common/utils'
-import {DashboardChartProps} from 'pages/stats/custom-reports/types'
+import { formatTimeSeriesData, SHORT_FORMAT } from 'pages/stats/common/utils'
+import { DashboardChartProps } from 'pages/stats/custom-reports/types'
 import {
     HelpCenterMetric,
     HelpCenterMetricConfig,
@@ -23,12 +24,12 @@ type ArticleViewsGraphComponentProps = {
 export const renderXTickLabel = function (
     this: Scale,
     _: string | number,
-    index: number
+    index: number,
 ) {
     const labelDate = moment(this.getLabelForValue(index), SHORT_FORMAT)
     if (labelDate.isValid()) {
         return moment(this.getLabelForValue(index), SHORT_FORMAT).format(
-            'MMM D'
+            'MMM D',
         )
     }
     return this.getLabelForValue(index)
@@ -45,9 +46,9 @@ export const ArticleViewsGraphComponent = ({
             formatTimeSeriesData(
                 data,
                 'Articles viewed',
-                ReportingGranularity.Day
+                ReportingGranularity.Day,
             ),
-        [data]
+        [data],
     )
 
     return (
@@ -66,12 +67,12 @@ export const ArticleViewsGraphComponent = ({
     )
 }
 
-const ArticleViewsGraph = ({chartId, dashboard}: DashboardChartProps) => {
-    const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
+const ArticleViewsGraph = ({ chartId, dashboard }: DashboardChartProps) => {
+    const { cleanStatsFilters, userTimezone } = useNewStatsFilters()
     const articleViewTimeSeries = useArticleViewTimeSeries(
         cleanStatsFilters,
         userTimezone,
-        ReportingGranularity.Day
+        ReportingGranularity.Day,
     )
 
     return (

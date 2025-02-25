@@ -1,49 +1,48 @@
+import { useEffect } from 'react'
+
 import {
+    useInfiniteQuery,
+    useQueries,
     useQuery,
     UseQueryOptions,
-    useQueries,
-    useInfiniteQuery,
 } from '@tanstack/react-query'
 
-import {useEffect} from 'react'
-
-import {INTEGRATION_DATA_ITEM_TYPE_PRODUCT} from 'constants/integration'
-
-import {Product} from 'constants/integrations/types/shopify'
-import {handleError} from 'hooks/agents/errorHandler'
+import { INTEGRATION_DATA_ITEM_TYPE_PRODUCT } from 'constants/integration'
+import { Product } from 'constants/integrations/types/shopify'
+import { handleError } from 'hooks/agents/errorHandler'
 import useAppDispatch from 'hooks/useAppDispatch'
 import client from 'models/api/resources'
-import {ApiListResponse} from 'models/api/types'
-import {fetchIntegrationProducts} from 'models/integration/resources'
+import { ApiListResponse } from 'models/api/types'
+import { fetchIntegrationProducts } from 'models/integration/resources'
 import GorgiasApi from 'services/gorgiasApi'
 import {
     getApplications,
     getInstallationSnippet,
 } from 'state/integrations/actions/gorgias-chat.actions'
-import {reportError} from 'utils/errors'
+import { reportError } from 'utils/errors'
 
 import {
-    fetchShopTags,
     fetchCustomerSegments,
     fetchShopifyCollections,
+    fetchShopTags,
 } from './resources/shopify'
 import {
     GetInstallationSnippetParams,
     IntegrationDataItem,
     ShopifyTags,
 } from './types'
-import {AppData, AppListData} from './types/app'
+import { AppData, AppListData } from './types/app'
 
 export const STALE_TIME_MS = 10 * 60 * 1000 // 10 minutes
 export const CACHE_TIME_MS = 20 * 60 * 1000 // 20 minutes
 
 export const getInstallationSnippetQueryKey = (
-    params: GetInstallationSnippetParams
+    params: GetInstallationSnippetParams,
 ) => ['integration', 'gorgias-chat', 'getInstallationSnippet', params]
 
 export const useGetInstallationSnippet = (
     params: GetInstallationSnippetParams,
-    overrides?: {enabled: boolean}
+    overrides?: { enabled: boolean },
 ) =>
     useQuery({
         queryKey: getInstallationSnippetQueryKey(params),
@@ -53,7 +52,7 @@ export const useGetInstallationSnippet = (
                 new Error('Failed to fetch chat installation snippet'),
                 {
                     extra: params,
-                }
+                },
             )
         },
         ...overrides,
@@ -71,7 +70,7 @@ export const useApplications = () =>
 export const useProductsFromShopifyIntegration = (
     integrationId: number,
     filter = '',
-    enabled = true
+    enabled = true,
 ) => {
     return useQuery({
         queryKey: ['integration', 'shopify', integrationId, 'products', filter],
@@ -79,7 +78,7 @@ export const useProductsFromShopifyIntegration = (
             const gorgiasApi = new GorgiasApi()
             const results = await gorgiasApi.search(
                 `/api/integrations/${integrationId}/${INTEGRATION_DATA_ITEM_TYPE_PRODUCT}/`,
-                filter ?? ''
+                filter ?? '',
             )
             return results as IntegrationDataItem<Product>[]
         },
@@ -87,8 +86,8 @@ export const useProductsFromShopifyIntegration = (
         onError: () => {
             reportError(
                 new Error(
-                    `Failed to fetch products for Shopify integration ${integrationId}`
-                )
+                    `Failed to fetch products for Shopify integration ${integrationId}`,
+                ),
             )
         },
         enabled,
@@ -99,7 +98,7 @@ export const useListProducts = (integrationId: number, enabled = true) => {
     const dispatch = useAppDispatch()
     const response = useInfiniteQuery({
         queryKey: ['integration', 'shopify', integrationId, 'products', 'list'],
-        queryFn: async ({pageParam}) =>
+        queryFn: async ({ pageParam }) =>
             fetchIntegrationProducts(integrationId, {
                 cursor: pageParam,
             }),
@@ -120,7 +119,7 @@ export const useListProducts = (integrationId: number, enabled = true) => {
 
 export const useShopifyTags = (
     integrationId: number,
-    tagsType: ShopifyTags
+    tagsType: ShopifyTags,
 ) => {
     return useQuery({
         queryKey: ['integration', 'shopify', integrationId, 'tags', tagsType],
@@ -131,8 +130,8 @@ export const useShopifyTags = (
         onError: () => {
             reportError(
                 new Error(
-                    `Failed to fetch ${tagsType} tags for Shopify integration ${integrationId}`
-                )
+                    `Failed to fetch ${tagsType} tags for Shopify integration ${integrationId}`,
+                ),
             )
         },
     })
@@ -140,7 +139,7 @@ export const useShopifyTags = (
 
 export const useListShopifyCustomerSegments = (
     integrationId: number,
-    overrides?: {enabled: boolean}
+    overrides?: { enabled: boolean },
 ) => {
     return useQuery({
         queryKey: [
@@ -157,8 +156,8 @@ export const useListShopifyCustomerSegments = (
         onError: () => {
             reportError(
                 new Error(
-                    `Failed to fetch customer segments for Shopify integration ${integrationId}`
-                )
+                    `Failed to fetch customer segments for Shopify integration ${integrationId}`,
+                ),
             )
         },
         ...overrides,
@@ -167,7 +166,7 @@ export const useListShopifyCustomerSegments = (
 
 export const useCollectionsFromShopifyIntegration = (
     integrationId: number,
-    filter?: Record<string, string>
+    filter?: Record<string, string>,
 ) => {
     return useQuery({
         queryKey: [
@@ -184,22 +183,22 @@ export const useCollectionsFromShopifyIntegration = (
         onError: () => {
             reportError(
                 new Error(
-                    `Failed to fetch collections for Shopify integration ${integrationId}`
-                )
+                    `Failed to fetch collections for Shopify integration ${integrationId}`,
+                ),
             )
         },
     })
 }
 
 export const useGetApps = (
-    overrides?: UseQueryOptions<Awaited<AppListData[]>>
+    overrides?: UseQueryOptions<Awaited<AppListData[]>>,
 ) => {
     return useQuery({
         queryKey: ['apps', 'list'],
         queryFn: async () => {
             const response =
                 await client.get<ApiListResponse<AppListData[], never>>(
-                    '/api/apps/'
+                    '/api/apps/',
                 )
             return response.data.data
         },

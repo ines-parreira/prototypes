@@ -1,1 +1,1 @@
-export {default} from './StartABTestModal'
+export { default } from './StartABTestModal'

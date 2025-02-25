@@ -1,11 +1,12 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
 
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import { Link } from 'react-router-dom'
+
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 
 import css from './TrainMyAiAlerts.less'
 
-export const RecommendationDisabled = ({link}: {link: string}) => (
+export const RecommendationDisabled = ({ link }: { link: string }) => (
     <Alert
         icon
         className={css.alert}

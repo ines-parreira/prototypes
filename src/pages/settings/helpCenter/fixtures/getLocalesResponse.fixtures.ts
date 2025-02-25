@@ -1,4 +1,4 @@
-import {Locale} from '../../../../models/helpCenter/types'
+import { Locale } from '../../../../models/helpCenter/types'
 
 export const getLocalesResponseFixture: Locale[] = [
     {

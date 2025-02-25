@@ -1,12 +1,11 @@
-import {Map} from 'immutable'
-import {useEffect, useRef} from 'react'
+import { useEffect, useRef } from 'react'
 
-import {useHistory} from 'react-router-dom'
+import { Map } from 'immutable'
+import { useHistory } from 'react-router-dom'
 
-import {PENDING_AUTHENTICATION_STATUS} from 'constants/integration'
+import { PENDING_AUTHENTICATION_STATUS } from 'constants/integration'
 import useAppDispatch from 'hooks/useAppDispatch'
-
-import {IntegrationType} from 'models/integration/constants'
+import { IntegrationType } from 'models/integration/constants'
 import {
     fetchIntegration,
     triggerCreateSuccess,
@@ -16,7 +15,7 @@ const REFRESH_DELAY = 3000
 
 // Ping the integration until the authentication process is done
 export default function useAuthenticationPolling(
-    integration: Map<string, unknown>
+    integration: Map<string, unknown>,
 ) {
     const isAuthenticationPending =
         integration.getIn(['meta', 'oauth', 'status']) ===
@@ -39,8 +38,8 @@ export default function useAuthenticationPolling(
                     fetchIntegration(
                         integration.get('id') as string,
                         integration.get('type') as IntegrationType,
-                        true
-                    )
+                        true,
+                    ),
                 )
             }, REFRESH_DELAY)
         } else {

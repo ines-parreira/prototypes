@@ -1,22 +1,21 @@
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
-import {fromJS, Map} from 'immutable'
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+import { fromJS, Map } from 'immutable'
+import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import client from 'models/api/resources'
-import {searchCustomers} from 'models/customer/resources'
-import {Customer} from 'models/customer/types'
-
+import { searchCustomers } from 'models/customer/resources'
+import { Customer } from 'models/customer/types'
 import * as actions from 'state/infobar/actions'
 import {
     SEARCH_CUSTOMERS_ERROR,
     SEARCH_CUSTOMERS_START,
     SEARCH_CUSTOMERS_SUCCESS,
 } from 'state/infobar/constants'
-import {initialState} from 'state/infobar/reducers'
-import {StoreDispatch} from 'state/types'
-import {assumeMock} from 'utils/testing'
+import { initialState } from 'state/infobar/reducers'
+import { StoreDispatch } from 'state/types'
+import { assumeMock } from 'utils/testing'
 
 type MockedRootState = {
     infobar: Map<any, any>
@@ -25,7 +24,7 @@ type MockedRootState = {
 
 const middlewares = [thunk]
 const mockStore = configureMockStore<MockedRootState, StoreDispatch>(
-    middlewares
+    middlewares,
 )
 
 jest.mock('models/customer/resources')
@@ -56,7 +55,7 @@ describe('infobar actions', () => {
     beforeEach(() => {
         store = mockStore({
             infobar: initialState,
-            ticket: fromJS({id: 1}),
+            ticket: fromJS({ id: 1 }),
         })
         mockServer = new MockAdapter(client)
     })
@@ -67,7 +66,7 @@ describe('infobar actions', () => {
                 data: {
                     data: [
                         {
-                            entity: {id: 1, name: 'alex'} as Customer,
+                            entity: { id: 1, name: 'alex' } as Customer,
                             highlights: {},
                         },
                     ],
@@ -86,7 +85,7 @@ describe('infobar actions', () => {
                             resp: payload,
                             type: SEARCH_CUSTOMERS_SUCCESS,
                         },
-                    ])
+                    ]),
                 )
         })
 
@@ -101,13 +100,13 @@ describe('infobar actions', () => {
                         {
                             type: SEARCH_CUSTOMERS_START,
                         },
-                    ])
+                    ]),
                 )
         })
 
         it('should dispatch an error', () => {
             searchCustomersMock.mockRejectedValue(
-                new axios.AxiosError('some error message')
+                new axios.AxiosError('some error message'),
             )
 
             return store
@@ -125,7 +124,7 @@ describe('infobar actions', () => {
                             reason: 'Failed to do the search. Please try again...',
                             type: SEARCH_CUSTOMERS_ERROR,
                         },
-                    ])
+                    ]),
                 )
         })
     })
@@ -134,7 +133,7 @@ describe('infobar actions', () => {
         it('should resolve with a similar customer', () => {
             mockServer
                 .onGet('/api/customers/1/similar/')
-                .reply(200, {id: 1, name: 'alex'})
+                .reply(200, { id: 1, name: 'alex' })
 
             return store
                 .dispatch(actions.similarCustomer('1'))
@@ -163,7 +162,7 @@ describe('infobar actions', () => {
         const integrationId = 5
         const appId = 'foo'
         const customerId = '34'
-        const payload = {order_id: 4194477515}
+        const payload = { order_id: 4194477515 }
         const callback = jest.fn()
 
         it('success', () => {
@@ -177,7 +176,7 @@ describe('infobar actions', () => {
                     customerId,
                     payload,
                     callback,
-                })
+                }),
             )
             expect(store.getActions()).toMatchSnapshot()
         })
@@ -193,7 +192,7 @@ describe('infobar actions', () => {
                     customerId,
                     payload,
                     callback,
-                })
+                }),
             )
             process.nextTick(() => {
                 expect(store.getActions()).toMatchSnapshot()

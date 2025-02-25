@@ -1,12 +1,12 @@
-import {renderHook, act} from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react-hooks'
 
-import {BannerCategories, ContextBanner} from 'AlertBanners'
-import {BannerNotification} from 'state/notifications/types'
+import { BannerCategories, ContextBanner } from 'AlertBanners'
+import { BannerNotification } from 'state/notifications/types'
 
-import {useBannerCarousel} from '../useBannerCarousel'
+import { useBannerCarousel } from '../useBannerCarousel'
 
 describe('useBannerCarousel', () => {
-    const legacyBanner = {id: 'legacy-1', message: 'Legacy Banner'}
+    const legacyBanner = { id: 'legacy-1', message: 'Legacy Banner' }
     const contextBanner: ContextBanner = {
         instanceId: '2',
         message: 'Context Banner',
@@ -24,7 +24,7 @@ describe('useBannerCarousel', () => {
     }
 
     it('should merge legacy and context banners', () => {
-        const {result} = renderHook(
+        const { result } = renderHook(
             ({
                 legacyBanners,
                 banners,
@@ -41,7 +41,7 @@ describe('useBannerCarousel', () => {
                     legacyBanners: [legacyBanner],
                     banners: [contextBanner],
                 },
-            }
+            },
         )
 
         expect(result.current.mergedBannersList).toHaveLength(2)
@@ -50,8 +50,8 @@ describe('useBannerCarousel', () => {
     })
 
     it('should set impersonationBanner', () => {
-        const {result} = renderHook(
-            ({legacyBanners, banners}) =>
+        const { result } = renderHook(
+            ({ legacyBanners, banners }) =>
                 useBannerCarousel({
                     legacyBanners: legacyBanners as BannerNotification[],
                     banners: banners as ContextBanner[],
@@ -61,7 +61,7 @@ describe('useBannerCarousel', () => {
                     legacyBanners: [legacyBanner],
                     banners: [contextBanner, impersonationBanner],
                 },
-            }
+            },
         )
 
         expect(result.current.mergedBannersList).toHaveLength(2)
@@ -71,8 +71,8 @@ describe('useBannerCarousel', () => {
     })
 
     it('should handle empty legacyBanners', () => {
-        const {result} = renderHook(
-            ({legacyBanners, banners}) =>
+        const { result } = renderHook(
+            ({ legacyBanners, banners }) =>
                 useBannerCarousel({
                     legacyBanners: legacyBanners as BannerNotification[],
                     banners: banners as ContextBanner[],
@@ -82,7 +82,7 @@ describe('useBannerCarousel', () => {
                     legacyBanners: [],
                     banners: [contextBanner, impersonationBanner],
                 },
-            }
+            },
         )
 
         expect(result.current.mergedBannersList).toHaveLength(1)
@@ -91,8 +91,8 @@ describe('useBannerCarousel', () => {
     })
 
     it('should handle empty banners', () => {
-        const {result} = renderHook(
-            ({legacyBanners, banners}) =>
+        const { result } = renderHook(
+            ({ legacyBanners, banners }) =>
                 useBannerCarousel({
                     legacyBanners: legacyBanners as BannerNotification[],
                     banners: banners as ContextBanner[],
@@ -102,7 +102,7 @@ describe('useBannerCarousel', () => {
                     legacyBanners: [legacyBanner],
                     banners: [],
                 },
-            }
+            },
         )
 
         expect(result.current.mergedBannersList).toHaveLength(1)
@@ -111,8 +111,8 @@ describe('useBannerCarousel', () => {
     })
 
     it('should cycle to last banner when onPrevious called from first position', () => {
-        const {result} = renderHook(
-            ({legacyBanners, banners}) =>
+        const { result } = renderHook(
+            ({ legacyBanners, banners }) =>
                 useBannerCarousel({
                     legacyBanners: legacyBanners as BannerNotification[],
                     banners: banners,
@@ -122,7 +122,7 @@ describe('useBannerCarousel', () => {
                     legacyBanners: [legacyBanner],
                     banners: [contextBanner],
                 },
-            }
+            },
         )
 
         expect(result.current.currentBannerPosition).toBe(0)
@@ -136,8 +136,8 @@ describe('useBannerCarousel', () => {
     })
 
     it('should move to previous banner when onPrevious called from last position', () => {
-        const {result} = renderHook(
-            ({legacyBanners, banners}) =>
+        const { result } = renderHook(
+            ({ legacyBanners, banners }) =>
                 useBannerCarousel({
                     legacyBanners: legacyBanners as BannerNotification[],
                     banners: banners,
@@ -147,7 +147,7 @@ describe('useBannerCarousel', () => {
                     legacyBanners: [legacyBanner],
                     banners: [contextBanner],
                 },
-            }
+            },
         )
 
         act(() => {
@@ -165,8 +165,8 @@ describe('useBannerCarousel', () => {
     })
 
     it('should reset position to 0 when banner list length becomes 1', () => {
-        const {result, rerender} = renderHook(
-            ({legacyBanners, banners}) =>
+        const { result, rerender } = renderHook(
+            ({ legacyBanners, banners }) =>
                 useBannerCarousel({
                     legacyBanners: legacyBanners as BannerNotification[],
                     banners: banners,
@@ -176,7 +176,7 @@ describe('useBannerCarousel', () => {
                     legacyBanners: [legacyBanner],
                     banners: [contextBanner],
                 },
-            }
+            },
         )
 
         act(() => {
@@ -184,14 +184,14 @@ describe('useBannerCarousel', () => {
         })
         expect(result.current.currentBannerPosition).toBe(1)
 
-        rerender({legacyBanners: [], banners: [contextBanner]})
+        rerender({ legacyBanners: [], banners: [contextBanner] })
         expect(result.current.currentBannerPosition).toBe(0)
         expect(result.current.selectedBanner).toBe(contextBanner)
     })
 
     it('should reset position to 0 when currentBannerPosition is long as banners list +1', () => {
-        const {result} = renderHook(
-            ({legacyBanners, banners}) =>
+        const { result } = renderHook(
+            ({ legacyBanners, banners }) =>
                 useBannerCarousel({
                     legacyBanners: legacyBanners as BannerNotification[],
                     banners: banners,
@@ -201,7 +201,7 @@ describe('useBannerCarousel', () => {
                     legacyBanners: [legacyBanner],
                     banners: [contextBanner],
                 },
-            }
+            },
         )
 
         act(() => {
@@ -217,8 +217,8 @@ describe('useBannerCarousel', () => {
     })
 
     it('should reset position to list length currentBannerPosition is long as banners list -1', () => {
-        const {result} = renderHook(
-            ({legacyBanners, banners}) =>
+        const { result } = renderHook(
+            ({ legacyBanners, banners }) =>
                 useBannerCarousel({
                     legacyBanners: legacyBanners as BannerNotification[],
                     banners: banners,
@@ -228,7 +228,7 @@ describe('useBannerCarousel', () => {
                     legacyBanners: [legacyBanner],
                     banners: [contextBanner],
                 },
-            }
+            },
         )
 
         act(() => {

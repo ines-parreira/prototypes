@@ -1,34 +1,34 @@
-import {screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-
 import React from 'react'
 
-import {SegmentEvent, logEvent} from 'common/segment'
-import {HelpCenter} from 'models/helpCenter/types'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {FilterKey} from 'models/stat/types'
-import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { HelpCenter } from 'models/helpCenter/types'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { FilterKey } from 'models/stat/types'
+import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {
     FILTER_DROPDOWN_ICON,
     FILTER_VALUE_PLACEHOLDER,
     LogicalOperatorEnum,
     LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'
-import {FilterLabels} from 'pages/stats/common/filters/constants'
+import { FilterLabels } from 'pages/stats/common/filters/constants'
 import HelpCenterLanguageFilter, {
     HelpCenterLanguageFilterWithState,
 } from 'pages/stats/common/filters/HelpCenterLanguageFilter'
-import {emptyFilter} from 'pages/stats/common/filters/helpers'
+import { emptyFilter } from 'pages/stats/common/filters/helpers'
 import * as statsSlice from 'state/stats/statsSlice'
-import {RootState} from 'state/types'
-import {renderWithStore} from 'utils/testing'
+import { RootState } from 'state/types'
+import { renderWithStore } from 'utils/testing'
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 
 jest.mock('common/segment', () => ({
     logEvent: jest.fn(),
-    SegmentEvent: {StatFilterSelected: 'stat-filter-selected'},
+    SegmentEvent: { StatFilterSelected: 'stat-filter-selected' },
 }))
 
 const defaultState = {
@@ -46,7 +46,7 @@ const defaultState = {
                         acc[hCenter.id] = hCenter
                         return acc
                     },
-                    {}
+                    {},
                 ),
             },
         },
@@ -54,10 +54,10 @@ const defaultState = {
 } as RootState
 
 const mockedLocales = [
-    {name: 'English', code: 'en-US'},
-    {name: 'Spanish', code: 'es-ES'},
-    {name: 'French', code: 'fr-FR'},
-    {name: 'German', code: 'de-DE'},
+    { name: 'English', code: 'en-US' },
+    { name: 'Spanish', code: 'es-ES' },
+    { name: 'French', code: 'fr-FR' },
+    { name: 'German', code: 'de-DE' },
 ]
 
 const HELP_CENTER_LANG_FILTER_NAME = FilterLabels[FilterKey.LocaleCodes]
@@ -74,7 +74,7 @@ const renderComponent = () =>
             value={emptyFilter}
             dispatchUpdate={dispatchUpdate}
         />,
-        defaultState
+        defaultState,
     )
 
 describe('HelpCenterLanguageFilter', () => {
@@ -85,14 +85,14 @@ describe('HelpCenterLanguageFilter', () => {
         }
     const isOneOfRegex = new RegExp(
         `${LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF]}`,
-        'i'
+        'i',
     )
 
     it('should render HelpCenterLanguageFilter component', () => {
         renderComponent()
 
         expect(
-            screen.getByText(HELP_CENTER_LANG_FILTER_NAME)
+            screen.getByText(HELP_CENTER_LANG_FILTER_NAME),
         ).toBeInTheDocument()
     })
 
@@ -102,11 +102,11 @@ describe('HelpCenterLanguageFilter', () => {
                 value={undefined}
                 dispatchUpdate={dispatchUpdate}
             />,
-            defaultState
+            defaultState,
         )
 
         expect(
-            screen.getByText(HELP_CENTER_LANG_FILTER_NAME)
+            screen.getByText(HELP_CENTER_LANG_FILTER_NAME),
         ).toBeInTheDocument()
     })
 
@@ -125,11 +125,11 @@ describe('HelpCenterLanguageFilter', () => {
                 value={undefined}
                 dispatchUpdate={dispatchUpdate}
             />,
-            state
+            state,
         )
 
         expect(
-            screen.getByText(HELP_CENTER_LANG_FILTER_NAME)
+            screen.getByText(HELP_CENTER_LANG_FILTER_NAME),
         ).toBeInTheDocument()
     })
 
@@ -138,10 +138,10 @@ describe('HelpCenterLanguageFilter', () => {
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
         expect(
-            screen.getByText(getLocaleByName('English').name)
+            screen.getByText(getLocaleByName('English').name),
         ).toBeInTheDocument()
         expect(
-            screen.getByText(getLocaleByName('German').name)
+            screen.getByText(getLocaleByName('German').name),
         ).toBeInTheDocument()
     })
 
@@ -153,11 +153,11 @@ describe('HelpCenterLanguageFilter', () => {
         userEvent.click(screen.getByText(getLocaleByName('German').name))
 
         expect(dispatchUpdate).toHaveBeenCalledWith(
-            withDefaultLogicalOperator([getLocaleByName('English').code])
+            withDefaultLogicalOperator([getLocaleByName('English').code]),
         )
 
         expect(dispatchUpdate).toHaveBeenCalledWith(
-            withDefaultLogicalOperator([getLocaleByName('German').code])
+            withDefaultLogicalOperator([getLocaleByName('German').code]),
         )
     })
 
@@ -170,16 +170,18 @@ describe('HelpCenterLanguageFilter', () => {
                 ])}
                 dispatchUpdate={dispatchUpdate}
             />,
-            defaultState
+            defaultState,
         )
 
         userEvent.click(screen.getByText(isOneOfRegex))
         userEvent.click(
-            screen.getByRole('option', {name: getLocaleByName('English').name})
+            screen.getByRole('option', {
+                name: getLocaleByName('English').name,
+            }),
         )
 
         expect(dispatchUpdate).toHaveBeenCalledWith(
-            withDefaultLogicalOperator([getLocaleByName('German').code])
+            withDefaultLogicalOperator([getLocaleByName('German').code]),
         )
     })
 
@@ -191,12 +193,14 @@ describe('HelpCenterLanguageFilter', () => {
                 ])}
                 dispatchUpdate={dispatchUpdate}
             />,
-            defaultState
+            defaultState,
         )
 
         userEvent.click(screen.getByText(isOneOfRegex))
         userEvent.click(
-            screen.getByRole('option', {name: getLocaleByName('English').name})
+            screen.getByRole('option', {
+                name: getLocaleByName('English').name,
+            }),
         )
 
         expect(dispatchUpdate).not.toHaveBeenCalled()
@@ -208,13 +212,13 @@ describe('HelpCenterLanguageFilter', () => {
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
         const isOneOfRadioLabel = screen.getByLabelText(
-            new RegExp(LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF], 'i')
+            new RegExp(LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF], 'i'),
         )
         const isNotOneOfRadioLabel = screen.getByLabelText(
             new RegExp(
                 LogicalOperatorLabel[LogicalOperatorEnum.NOT_ONE_OF],
-                'i'
-            )
+                'i',
+            ),
         )
 
         userEvent.click(isNotOneOfRadioLabel)
@@ -248,18 +252,18 @@ describe('HelpCenterLanguageFilter', () => {
         }
         renderWithStore(
             <HelpCenterLanguageFilterWithState />,
-            stateWithHelpCenterLanguageValues
+            stateWithHelpCenterLanguageValues,
         )
 
         expect(
-            screen.getByText(HELP_CENTER_LANG_FILTER_NAME)
+            screen.getByText(HELP_CENTER_LANG_FILTER_NAME),
         ).toBeInTheDocument()
 
         expect(
-            screen.getByText(getLocaleByName('English').name)
+            screen.getByText(getLocaleByName('English').name),
         ).toBeInTheDocument()
         expect(
-            screen.queryByText(getLocaleByName('German').name)
+            screen.queryByText(getLocaleByName('German').name),
         ).not.toBeInTheDocument()
     })
 
@@ -271,7 +275,7 @@ describe('HelpCenterLanguageFilter', () => {
                 ])}
                 dispatchUpdate={dispatchUpdate}
             />,
-            defaultState
+            defaultState,
         )
 
         userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
@@ -290,7 +294,7 @@ describe('HelpCenterLanguageFilter', () => {
         it('should render HelpCenterFilterWithState component', () => {
             const spy = jest.spyOn(
                 statsSlice,
-                'mergeStatsFiltersWithLogicalOperator'
+                'mergeStatsFiltersWithLogicalOperator',
             )
 
             renderWithStore(<HelpCenterLanguageFilterWithState />, defaultState)
@@ -298,11 +302,11 @@ describe('HelpCenterLanguageFilter', () => {
             userEvent.click(
                 screen.getByRole('option', {
                     name: getLocaleByName('English').name,
-                })
+                }),
             )
 
             expect(
-                screen.getByText(FilterLabels[FilterKey.LocaleCodes])
+                screen.getByText(FilterLabels[FilterKey.LocaleCodes]),
             ).toBeInTheDocument()
             expect(spy).toHaveBeenCalled()
         })

@@ -1,8 +1,9 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {MutableRefObject} from 'react'
-import {VirtuosoHandle} from 'react-virtuoso'
+import { MutableRefObject } from 'react'
 
-import {TicketSummary} from 'ticket-list-view/types'
+import { renderHook } from '@testing-library/react-hooks'
+import { VirtuosoHandle } from 'react-virtuoso'
+
+import { TicketSummary } from 'ticket-list-view/types'
 
 import useScrollActiveTicketIntoView from '../useScrollActiveTicketIntoView'
 
@@ -19,7 +20,7 @@ describe('useScrollActiveTicketIntoView', () => {
             id: mockTicketId,
         },
     ] as TicketSummary[]
-    const mockTicketIds = {current: [mockTicketId]}
+    const mockTicketIds = { current: [mockTicketId] }
     const mockScrollIntoView = jest.fn()
     const mockVirtuosoRef = {
         current: {
@@ -28,13 +29,13 @@ describe('useScrollActiveTicketIntoView', () => {
     }
 
     it('should pre-scroll the active ticket into view', async () => {
-        const {rerender, waitFor} = renderHook<HookParams, void>(
-            ({ticketId, tickets, ticketIds, virtuosoRef}) =>
+        const { rerender, waitFor } = renderHook<HookParams, void>(
+            ({ ticketId, tickets, ticketIds, virtuosoRef }) =>
                 useScrollActiveTicketIntoView(
                     ticketId,
                     tickets,
                     ticketIds,
-                    virtuosoRef
+                    virtuosoRef,
                 ),
             {
                 initialProps: {
@@ -43,7 +44,7 @@ describe('useScrollActiveTicketIntoView', () => {
                     ticketIds: mockTicketIds,
                     virtuosoRef: mockVirtuosoRef,
                 },
-            }
+            },
         )
         rerender({
             ticketId: mockTicketId,
@@ -61,13 +62,13 @@ describe('useScrollActiveTicketIntoView', () => {
     })
 
     it('should scroll the new active ticket into view', () => {
-        const {rerender} = renderHook<HookParams, void>(
-            ({ticketId, tickets, ticketIds, virtuosoRef}) =>
+        const { rerender } = renderHook<HookParams, void>(
+            ({ ticketId, tickets, ticketIds, virtuosoRef }) =>
                 useScrollActiveTicketIntoView(
                     ticketId,
                     tickets,
                     ticketIds,
-                    virtuosoRef
+                    virtuosoRef,
                 ),
             {
                 initialProps: {
@@ -76,7 +77,7 @@ describe('useScrollActiveTicketIntoView', () => {
                     ticketIds: mockTicketIds,
                     virtuosoRef: mockVirtuosoRef,
                 },
-            }
+            },
         )
 
         rerender({

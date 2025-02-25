@@ -1,6 +1,6 @@
-import {renderHook, act} from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react-hooks'
 
-import {HttpRequestNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { HttpRequestNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 import useSendTestRequest from '../useSendTestRequest'
 
@@ -17,11 +17,11 @@ describe('useSendTestRequest', () => {
         url: 'https://api.example.com/test',
         method: 'POST',
         headers: [
-            {name: 'Authorization', value: 'Bearer {{access_token}}'},
-            {name: 'Custom-Header', value: 'custom-value'},
+            { name: 'Authorization', value: 'Bearer {{access_token}}' },
+            { name: 'Custom-Header', value: 'custom-value' },
         ],
         json: '{"key": "{{value}}"}',
-        formUrlencoded: [{key: 'formKey', value: '{{formValue}}'}],
+        formUrlencoded: [{ key: 'formKey', value: '{{formValue}}' }],
         bodyContentType: 'application/json',
     }
 
@@ -36,12 +36,12 @@ describe('useSendTestRequest', () => {
         fetchMock.mockResolvedValueOnce({
             ok: true,
             status: 200,
-            json: () => ({success: true}),
-            text: () => JSON.stringify({success: true}),
+            json: () => ({ success: true }),
+            text: () => JSON.stringify({ success: true }),
         })
 
-        const {result} = renderHook(() =>
-            useSendTestRequest(mockConfig, mockOnResponse)
+        const { result } = renderHook(() =>
+            useSendTestRequest(mockConfig, mockOnResponse),
         )
 
         const variables = {
@@ -65,7 +65,7 @@ describe('useSendTestRequest', () => {
                         '8e6f1be6-hvcl-6975-iuhu-f45d4c8e8b86',
                 },
                 body: '{"key": "mockValue"}',
-            })
+            }),
         )
 
         expect(mockOnResponse).toHaveBeenCalledWith({
@@ -76,8 +76,8 @@ describe('useSendTestRequest', () => {
     it('should handle a failed request', async () => {
         fetchMock.mockRejectedValueOnce(new Error('Request failed'))
 
-        const {result} = renderHook(() =>
-            useSendTestRequest(mockConfig, mockOnResponse)
+        const { result } = renderHook(() =>
+            useSendTestRequest(mockConfig, mockOnResponse),
         )
 
         await act(async () => {
@@ -98,17 +98,17 @@ describe('useSendTestRequest', () => {
             .mockResolvedValueOnce({
                 ok: true,
                 status: 200,
-                json: () => ({access_token: 'mockAccessToken'}),
+                json: () => ({ access_token: 'mockAccessToken' }),
             })
             .mockResolvedValueOnce({
                 ok: true,
                 status: 200,
-                json: () => ({success: true}),
-                text: () => JSON.stringify({success: true}),
+                json: () => ({ success: true }),
+                text: () => JSON.stringify({ success: true }),
             })
 
-        const {result} = renderHook(() =>
-            useSendTestRequest(mockConfig, mockOnResponse)
+        const { result } = renderHook(() =>
+            useSendTestRequest(mockConfig, mockOnResponse),
         )
 
         const variables = {
@@ -119,7 +119,7 @@ describe('useSendTestRequest', () => {
             await result.current.sendTestRequest(
                 variables,
                 refreshToken,
-                refreshTokenUrl
+                refreshTokenUrl,
             )
         })
 
@@ -138,7 +138,7 @@ describe('useSendTestRequest', () => {
                     refresh_token: refreshToken,
                     grant_type: 'refresh_token',
                 }),
-            })
+            }),
         )
 
         // Verify that the main request was called with the correct Authorization header
@@ -155,7 +155,7 @@ describe('useSendTestRequest', () => {
                         '8e6f1be6-hvcl-6975-iuhu-f45d4c8e8b86',
                 },
                 body: '{"key": "mockValue"}',
-            })
+            }),
         )
 
         expect(mockOnResponse).toHaveBeenCalledWith({
@@ -169,18 +169,18 @@ describe('useSendTestRequest', () => {
 
         // Mocking the failed access token request
         fetchMock.mockRejectedValueOnce(
-            new Error('Failed to fetch access token')
+            new Error('Failed to fetch access token'),
         )
 
-        const {result} = renderHook(() =>
-            useSendTestRequest(mockConfig, mockOnResponse)
+        const { result } = renderHook(() =>
+            useSendTestRequest(mockConfig, mockOnResponse),
         )
 
         await act(async () => {
             await result.current.sendTestRequest(
                 {},
                 refreshToken,
-                refreshTokenUrl
+                refreshTokenUrl,
             )
         })
 

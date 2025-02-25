@@ -1,29 +1,30 @@
-import {ListMacrosParams, Macro} from '@gorgias/api-queries'
-import axios, {AxiosError, CancelToken} from 'axios'
-import {fromJS, Map, List} from 'immutable'
+import axios, { AxiosError, CancelToken } from 'axios'
+import { fromJS, List, Map } from 'immutable'
+
+import { ListMacrosParams, Macro } from '@gorgias/api-queries'
 
 import client from 'models/api/resources'
-import {fetchMacros as fetchMacrosRequest} from 'models/macro/resources'
+import { fetchMacros as fetchMacrosRequest } from 'models/macro/resources'
 import GorgiasApi from 'services/gorgiasApi'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {StoreDispatch} from 'state/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { StoreDispatch } from 'state/types'
 
 import * as constants from './constants'
-import {MacroApiError} from './types'
-import {getErrorReason} from './utils'
+import { MacroApiError } from './types'
+import { getErrorReason } from './utils'
 
 export function fetchMacros(
     options: ListMacrosParams,
-    cancelToken: CancelToken
+    cancelToken: CancelToken,
 ) {
     return async (dispatch: StoreDispatch) => {
         try {
-            const {data} = await fetchMacrosRequest(options, {cancelToken})
+            const { data } = await fetchMacrosRequest(options, { cancelToken })
 
             return {
                 data: data.data.sort(
-                    (a, b) => a.relevance_rank! - b.relevance_rank!
+                    (a, b) => a.relevance_rank! - b.relevance_rank!,
                 ),
                 meta: data.meta,
             }
@@ -35,7 +36,7 @@ export function fetchMacros(
                 notify({
                     status: NotificationStatus.Error,
                     message: 'Failed to fetch macros',
-                })
+                }),
             )
         }
     }
@@ -43,7 +44,7 @@ export function fetchMacros(
 
 export function fetchAllMacros(
     options: ListMacrosParams,
-    cancelToken: CancelToken
+    cancelToken: CancelToken,
 ) {
     return async (dispatch: StoreDispatch) => {
         const client = new GorgiasApi()
@@ -66,7 +67,7 @@ export function fetchAllMacros(
 
             return macros.sort(
                 (a: Map<any, any>, b: Map<any, any>) =>
-                    a.get('relevance_rank') - b.get('relevance_rank')
+                    a.get('relevance_rank') - b.get('relevance_rank'),
             ) as List<any>
         } catch (error) {
             if (axios.isCancel(error)) {
@@ -76,7 +77,7 @@ export function fetchAllMacros(
                 notify({
                     status: NotificationStatus.Error,
                     message: 'Failed to fetch macros',
-                })
+                }),
             )
         }
     }
@@ -87,9 +88,9 @@ export const getMacro =
     async (dispatch: StoreDispatch) => {
         if (!id) return
         try {
-            const {data} = await client.get<Macro>(
+            const { data } = await client.get<Macro>(
                 `/api/macros/${id}`,
-                cancelToken && {cancelToken}
+                cancelToken && { cancelToken },
             )
             const macro = fromJS(data) as Map<any, any>
             dispatch({
@@ -103,7 +104,7 @@ export const getMacro =
                     notify({
                         status: NotificationStatus.Error,
                         message: 'Failed to fetch macro',
-                    })
+                    }),
                 )
             }
         }
@@ -121,7 +122,7 @@ export const createMacro =
                         notify({
                             status: NotificationStatus.Success,
                             message: 'Macro created',
-                        })
+                        }),
                     )
 
                     dispatch({
@@ -139,9 +140,9 @@ export const createMacro =
                         notify({
                             message: `${message} ${reason}`,
                             status: NotificationStatus.Error,
-                        })
+                        }),
                     )
-                }
+                },
             ) as Promise<Macro>
     }
 
@@ -151,7 +152,7 @@ export const updateMacro =
         return client
             .put<Macro>(
                 `/api/macros/${macro.get('id') as number}/`,
-                macro.toJS()
+                macro.toJS(),
             )
             .then((json) => json?.data)
             .then(
@@ -160,7 +161,7 @@ export const updateMacro =
                         notify({
                             status: NotificationStatus.Success,
                             message: 'Macro updated',
-                        })
+                        }),
                     )
 
                     dispatch({
@@ -178,9 +179,9 @@ export const updateMacro =
                         notify({
                             message: `${message} ${reason}`,
                             status: NotificationStatus.Error,
-                        })
+                        }),
                     )
-                }
+                },
             ) as Promise<Macro>
     }
 
@@ -193,7 +194,7 @@ export const deleteMacro =
                     notify({
                         status: NotificationStatus.Success,
                         message: 'Macro deleted',
-                    })
+                    }),
                 )
 
                 dispatch({
@@ -210,6 +211,6 @@ export const deleteMacro =
                     verbose: true,
                     error,
                 })
-            }
+            },
         )
     }

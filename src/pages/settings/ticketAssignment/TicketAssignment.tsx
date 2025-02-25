@@ -1,12 +1,14 @@
-import {Label, Tooltip} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
-import {List} from 'immutable'
-import _isEqual from 'lodash/isEqual'
-import React, {Component, SyntheticEvent} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {Col, Form, FormGroup, Row} from 'reactstrap'
+import React, { Component, SyntheticEvent } from 'react'
 
-import {TicketChannel} from 'business/types/ticket'
+import classNames from 'classnames'
+import { List } from 'immutable'
+import _isEqual from 'lodash/isEqual'
+import { connect, ConnectedProps } from 'react-redux'
+import { Col, Form, FormGroup, Row } from 'reactstrap'
+
+import { Label, Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { TicketChannel } from 'business/types/ticket'
 import Alert from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import HeaderTitle from 'pages/common/components/HeaderTitle'
@@ -14,17 +16,17 @@ import PageHeader from 'pages/common/components/PageHeader'
 import CheckBox from 'pages/common/forms/CheckBox'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
-import {Option} from 'pages/common/forms/MultiSelectOptionsField/types'
+import { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
 import settingsCss from 'pages/settings/settings.less'
 import TeamCreationModal from 'pages/settings/teams/TeamCreationModal'
-import {fetchChats} from 'state/chats/actions'
-import {submitSetting} from 'state/currentAccount/actions'
-import {getTicketAssignmentSettings} from 'state/currentAccount/selectors'
-import {AccountSettingType} from 'state/currentAccount/types'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {getTeams} from 'state/teams/selectors'
-import {RootState} from 'state/types'
-import {isAdmin} from 'utils'
+import { fetchChats } from 'state/chats/actions'
+import { submitSetting } from 'state/currentAccount/actions'
+import { getTicketAssignmentSettings } from 'state/currentAccount/selectors'
+import { AccountSettingType } from 'state/currentAccount/types'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { getTeams } from 'state/teams/selectors'
+import { RootState } from 'state/types'
+import { isAdmin } from 'utils'
 
 import css from './TicketAssignment.less'
 
@@ -50,7 +52,7 @@ export class TicketAssignmentContainer extends Component<Props, State> {
 
     constructor(props: Props) {
         super(props)
-        const {ticketAssignmentSettings} = this.props
+        const { ticketAssignmentSettings } = this.props
         const assignmentChannels = ticketAssignmentSettings.getIn([
             'data',
             'assignment_channels',
@@ -60,22 +62,22 @@ export class TicketAssignmentContainer extends Component<Props, State> {
             isTeamCreationModalOpen: false,
             unassignOnReply: ticketAssignmentSettings.getIn(
                 ['data', 'unassign_on_reply'],
-                true
+                true,
             ),
             autoAssignToTeams: ticketAssignmentSettings.getIn(
                 ['data', 'auto_assign_to_teams'],
-                false
+                false,
             ),
             assignmentChannels: assignmentChannels
                 ? assignmentChannels.toJS()
                 : [TicketChannel.Chat, TicketChannel.FacebookMessenger],
             chatTicketsLimit: ticketAssignmentSettings.getIn(
                 ['data', 'max_user_chat_ticket'],
-                3
+                3,
             ),
             nonChatTicketsLimit: ticketAssignmentSettings.getIn(
                 ['data', 'max_user_non_chat_ticket'],
-                4
+                4,
             ),
         }
     }
@@ -83,7 +85,7 @@ export class TicketAssignmentContainer extends Component<Props, State> {
     private _isStateValid(): this is {
         state: Required<State>
     } {
-        const {chatTicketsLimit, nonChatTicketsLimit} = this.state
+        const { chatTicketsLimit, nonChatTicketsLimit } = this.state
         return chatTicketsLimit != null && nonChatTicketsLimit != null
     }
 
@@ -93,9 +95,10 @@ export class TicketAssignmentContainer extends Component<Props, State> {
             return
         }
 
-        this.setState({isLoading: true})
+        this.setState({ isLoading: true })
 
-        const {ticketAssignmentSettings, submitSetting, fetchChats} = this.props
+        const { ticketAssignmentSettings, submitSetting, fetchChats } =
+            this.props
         const {
             unassignOnReply,
             autoAssignToTeams,
@@ -118,7 +121,7 @@ export class TicketAssignmentContainer extends Component<Props, State> {
                         'data',
                         'assignment_channels',
                     ]) as List<any>
-                ).toJS()
+                ).toJS(),
             )
 
             shouldFetchChats =
@@ -142,19 +145,19 @@ export class TicketAssignmentContainer extends Component<Props, State> {
             void fetchChats()
         }
 
-        this.setState({isLoading: false})
+        this.setState({ isLoading: false })
     }
 
     _onChannelsChange = (options: Option[]) => {
         this.setState({
             assignmentChannels: options.map(
-                (option) => option.value as TicketChannel
+                (option) => option.value as TicketChannel,
             ),
         })
     }
 
     render() {
-        const {teams, currentUser} = this.props
+        const { teams, currentUser } = this.props
         const {
             unassignOnReply,
             assignmentChannels,
@@ -185,7 +188,7 @@ export class TicketAssignmentContainer extends Component<Props, State> {
                                 <h3
                                     className={classNames(
                                         'heading-section-semibold',
-                                        settingsCss.mb8
+                                        settingsCss.mb8,
                                     )}
                                 >
                                     Team auto-assignment settings
@@ -247,7 +250,7 @@ export class TicketAssignmentContainer extends Component<Props, State> {
                                             <Label
                                                 className={classNames(
                                                     'body-semibold',
-                                                    css.limitsHeader
+                                                    css.limitsHeader,
                                                 )}
                                             >
                                                 Auto-assignment limits
@@ -255,7 +258,7 @@ export class TicketAssignmentContainer extends Component<Props, State> {
                                                     id="limits-info"
                                                     className={classNames(
                                                         'material-icons',
-                                                        css.infoIcon
+                                                        css.infoIcon,
                                                     )}
                                                 >
                                                     info_outline
@@ -291,7 +294,7 @@ export class TicketAssignmentContainer extends Component<Props, State> {
                                                                 chatTicketsLimit
                                                             }
                                                             onChange={(
-                                                                chatTicketsLimit
+                                                                chatTicketsLimit,
                                                             ) => {
                                                                 this.setState({
                                                                     chatTicketsLimit,
@@ -336,7 +339,7 @@ export class TicketAssignmentContainer extends Component<Props, State> {
                                                                 nonChatTicketsLimit
                                                             }
                                                             onChange={(
-                                                                nonChatTicketsLimit
+                                                                nonChatTicketsLimit,
                                                             ) => {
                                                                 this.setState({
                                                                     nonChatTicketsLimit,
@@ -384,7 +387,7 @@ export class TicketAssignmentContainer extends Component<Props, State> {
                                             id="unassign-info"
                                             className={classNames(
                                                 'material-icons',
-                                                css.infoIcon
+                                                css.infoIcon,
                                             )}
                                         >
                                             info_outline
@@ -402,7 +405,7 @@ export class TicketAssignmentContainer extends Component<Props, State> {
                                     <h3
                                         className={classNames(
                                             'heading-section-semibold',
-                                            settingsCss.mb8
+                                            settingsCss.mb8,
                                         )}
                                     >
                                         Channels
@@ -411,7 +414,7 @@ export class TicketAssignmentContainer extends Component<Props, State> {
                                         className={classNames(
                                             'body-regular',
                                             css.description,
-                                            settingsCss.mb8
+                                            settingsCss.mb8,
                                         )}
                                     >
                                         Apply ticket assignment settings to the
@@ -422,11 +425,11 @@ export class TicketAssignmentContainer extends Component<Props, State> {
                                             Object.values(TicketChannel).filter(
                                                 (channel) =>
                                                     channel !==
-                                                    TicketChannel.Phone
-                                            )
+                                                    TicketChannel.Phone,
+                                            ),
                                         )}
                                         selectedOptions={TicketAssignmentContainer.channelsToOptions(
-                                            assignmentChannels
+                                            assignmentChannels,
                                         )}
                                         plural="channels"
                                         singular="channel"
@@ -450,7 +453,7 @@ export class TicketAssignmentContainer extends Component<Props, State> {
                     <TeamCreationModal
                         isOpen={isTeamCreationModalOpen}
                         onClose={() =>
-                            this.setState({isTeamCreationModalOpen: false})
+                            this.setState({ isTeamCreationModalOpen: false })
                         }
                     />
                 </div>
@@ -468,7 +471,7 @@ const connector = connect(
     {
         submitSetting,
         fetchChats,
-    }
+    },
 )
 
 export default connector(TicketAssignmentContainer)

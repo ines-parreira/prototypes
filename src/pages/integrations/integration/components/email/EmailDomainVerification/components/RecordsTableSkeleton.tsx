@@ -1,5 +1,6 @@
-import {Skeleton} from '@gorgias/merchant-ui-kit'
 import React from 'react'
+
+import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'

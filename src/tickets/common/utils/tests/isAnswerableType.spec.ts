@@ -1,4 +1,4 @@
-import {USABLE_SOURCE_TYPES} from 'tickets/common/config'
+import { USABLE_SOURCE_TYPES } from 'tickets/common/config'
 
 import isAnswerableType from '../isAnswerableType'
 

@@ -1,25 +1,21 @@
-import {renderHook} from '@testing-library/react-hooks'
-
-import {fromJS} from 'immutable'
-
-import moment from 'moment'
-
 import React from 'react'
 
-import {Provider} from 'react-redux'
-
+import { renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
+import moment from 'moment'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {User, UserRole, UserSettingType} from 'config/types/user'
-import {agents} from 'fixtures/agents'
-import {fetchTableReportData} from 'hooks/reporting/common/useTableReportData'
-import {Metric} from 'hooks/reporting/metrics'
-import {getCsvFileNameWithDates} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
+import { User, UserRole, UserSettingType } from 'config/types/user'
+import { agents } from 'fixtures/agents'
+import { fetchTableReportData } from 'hooks/reporting/common/useTableReportData'
+import { Metric } from 'hooks/reporting/metrics'
+import { getCsvFileNameWithDates } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
 import {
     MetricWithDecile,
     QueryReturnType,
 } from 'hooks/reporting/useMetricPerDimension'
-import {OrderDirection} from 'models/api/types'
+import { OrderDirection } from 'models/api/types'
 import {
     VoiceCallCube,
     VoiceCallDimension,
@@ -30,25 +26,23 @@ import {
     VoiceEventsByAgentDimension,
     VoiceEventsByAgentMeasure,
 } from 'models/reporting/cubes/VoiceEventsByAgent'
-import {ReportingGranularity} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
-import {BusiestTimeOfDaysMetrics} from 'pages/stats/support-performance/busiest-times-of-days/types'
-
-import {VOICE_AGENTS_CALL_ACTIVITY_FILE_NAME} from 'pages/stats/voice/constants/voiceAgents'
-import {useNewVoiceStatsFilters} from 'pages/stats/voice/hooks/useNewVoiceStatsFilters'
-import {useVoiceAgentsMetrics} from 'pages/stats/voice/hooks/useVoiceAgentsMetrics'
-import {useVoiceAgentsSummaryMetrics} from 'pages/stats/voice/hooks/useVoiceAgentsSummaryMetrics'
-
+import { ReportingGranularity } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
+import { BusiestTimeOfDaysMetrics } from 'pages/stats/support-performance/busiest-times-of-days/types'
+import { VOICE_AGENTS_CALL_ACTIVITY_FILE_NAME } from 'pages/stats/voice/constants/voiceAgents'
+import { useNewVoiceStatsFilters } from 'pages/stats/voice/hooks/useNewVoiceStatsFilters'
+import { useVoiceAgentsMetrics } from 'pages/stats/voice/hooks/useVoiceAgentsMetrics'
+import { useVoiceAgentsSummaryMetrics } from 'pages/stats/voice/hooks/useVoiceAgentsSummaryMetrics'
 import {
     createReport,
     fetchVoiceAgentsReportData,
     useVoiceAgentsReportData,
 } from 'services/reporting/voiceAgentsReportingService'
-import {RootState} from 'state/types'
-import {getSortedAgents} from 'state/ui/stats/agentPerformanceSlice'
-import {createCsv} from 'utils/file'
-import {formatReportingQueryDate} from 'utils/reporting'
-import {assumeMock} from 'utils/testing'
+import { RootState } from 'state/types'
+import { getSortedAgents } from 'state/ui/stats/agentPerformanceSlice'
+import { createCsv } from 'utils/file'
+import { formatReportingQueryDate } from 'utils/reporting'
+import { assumeMock } from 'utils/testing'
 
 const mockStore = configureMockStore()
 jest.mock('hooks/reporting/common/useTableReportData')
@@ -61,7 +55,7 @@ jest.mock('pages/stats/voice/hooks/useVoiceAgentsMetrics')
 const useVoiceAgentsMetricsMock = assumeMock(useVoiceAgentsMetrics)
 jest.mock('pages/stats/voice/hooks/useVoiceAgentsSummaryMetrics')
 const useVoiceAgentsSummaryMetricsMock = assumeMock(
-    useVoiceAgentsSummaryMetrics
+    useVoiceAgentsSummaryMetrics,
 )
 
 describe('voiceAgentsPerformanceReportingService', () => {
@@ -82,7 +76,7 @@ describe('voiceAgentsPerformanceReportingService', () => {
     }
 
     const buildMetric = (
-        allData: QueryReturnType<VoiceCallCube | VoiceEventsByAgentCube>
+        allData: QueryReturnType<VoiceCallCube | VoiceEventsByAgentCube>,
     ): MetricWithDecile<VoiceCallCube | VoiceEventsByAgentCube> => ({
         data: {
             value: null,
@@ -115,7 +109,7 @@ describe('voiceAgentsPerformanceReportingService', () => {
         firstname: 'Adam',
         lastname: 'White',
         email: 'adam.white@example.com',
-        role: {name: UserRole.Admin},
+        role: { name: UserRole.Admin },
         active: true,
         bio: null,
         country: null,
@@ -129,7 +123,7 @@ describe('voiceAgentsPerformanceReportingService', () => {
             {
                 id: 1,
                 type: UserSettingType.Preferences,
-                data: {available: false, show_macros: false},
+                data: { available: false, show_macros: false },
             },
         ],
         timezone: null,
@@ -142,7 +136,7 @@ describe('voiceAgentsPerformanceReportingService', () => {
         firstname: 'Even',
         lastname: 'Green',
         email: 'even.green@example.com',
-        role: {name: UserRole.Agent},
+        role: { name: UserRole.Agent },
         active: true,
         bio: null,
         country: null,
@@ -156,7 +150,7 @@ describe('voiceAgentsPerformanceReportingService', () => {
             {
                 id: 1,
                 type: UserSettingType.Preferences,
-                data: {available: false, show_macros: false},
+                data: { available: false, show_macros: false },
             },
         ],
         timezone: null,
@@ -289,10 +283,10 @@ describe('voiceAgentsPerformanceReportingService', () => {
     describe('createReport', () => {
         it.each(testCaseData)(
             'should call saveReport with $testName',
-            ({agents, period, data, summaryData, expectedOutputData}) => {
+            ({ agents, period, data, summaryData, expectedOutputData }) => {
                 const fileName = getCsvFileNameWithDates(
                     period,
-                    VOICE_AGENTS_CALL_ACTIVITY_FILE_NAME
+                    VOICE_AGENTS_CALL_ACTIVITY_FILE_NAME,
                 )
 
                 const report = createReport(agents, data, summaryData, fileName)
@@ -303,10 +297,10 @@ describe('voiceAgentsPerformanceReportingService', () => {
                     },
                     fileName: getCsvFileNameWithDates(
                         period,
-                        VOICE_AGENTS_CALL_ACTIVITY_FILE_NAME
+                        VOICE_AGENTS_CALL_ACTIVITY_FILE_NAME,
                     ),
                 })
-            }
+            },
         )
     })
 
@@ -318,13 +312,13 @@ describe('voiceAgentsPerformanceReportingService', () => {
         } as RootState
         const fileName = getCsvFileNameWithDates(
             period,
-            VOICE_AGENTS_CALL_ACTIVITY_FILE_NAME
+            VOICE_AGENTS_CALL_ACTIVITY_FILE_NAME,
         )
 
         beforeEach(() => {
             getSortedAgentsMock.mockReturnValue([])
             useNewVoiceStatsFiltersMock.mockReturnValue({
-                cleanStatsFilters: {period},
+                cleanStatsFilters: { period },
                 userTimezone: 'UTC',
                 isAnalyticsNewFilters: true,
                 granularity: ReportingGranularity.Day,
@@ -342,8 +336,8 @@ describe('voiceAgentsPerformanceReportingService', () => {
         })
 
         it('should ', () => {
-            const {result} = renderHook(() => useVoiceAgentsReportData(), {
-                wrapper: ({children}) => (
+            const { result } = renderHook(() => useVoiceAgentsReportData(), {
+                wrapper: ({ children }) => (
                     <Provider store={mockStore(state)}> {children}</Provider>
                 ),
             })
@@ -370,12 +364,12 @@ describe('voiceAgentsPerformanceReportingService', () => {
 
         const fileName = getCsvFileNameWithDates(
             statsFilters.period,
-            VOICE_AGENTS_CALL_ACTIVITY_FILE_NAME
+            VOICE_AGENTS_CALL_ACTIVITY_FILE_NAME,
         )
 
         it.each(testCaseData)(
             'should fetch and format Voice Agents report',
-            async ({agents, data, summaryData, expectedOutputData}) => {
+            async ({ agents, data, summaryData, expectedOutputData }) => {
                 fetchTableReportDataMock.mockResolvedValueOnce({
                     data,
                 } as unknown as ReturnType<typeof fetchTableReportData>)
@@ -407,15 +401,15 @@ describe('voiceAgentsPerformanceReportingService', () => {
                     statsFilters,
                     userTimezone,
                     granularity,
-                    context
+                    context,
                 )
 
                 expect(report).toEqual({
-                    files: {[fileName]: createCsv(expectedOutputData)},
+                    files: { [fileName]: createCsv(expectedOutputData) },
                     fileName,
                     isLoading: false,
                 })
-            }
+            },
         )
 
         it('should return empty on no data', async () => {
@@ -450,7 +444,7 @@ describe('voiceAgentsPerformanceReportingService', () => {
                 statsFilters,
                 userTimezone,
                 granularity,
-                context
+                context,
             )
 
             expect(report).toEqual({
@@ -487,7 +481,7 @@ describe('voiceAgentsPerformanceReportingService', () => {
                 statsFilters,
                 userTimezone,
                 granularity,
-                context
+                context,
             )
 
             expect(report).toEqual({

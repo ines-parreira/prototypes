@@ -1,7 +1,8 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { Link } from 'react-router-dom'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import Button from 'pages/common/components/button/Button'
 
 export default function AddAppSuggestion() {

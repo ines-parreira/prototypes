@@ -1,18 +1,18 @@
-import {screen, fireEvent, render} from '@testing-library/react'
-import {fromJS, Map} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { fireEvent, render, screen } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {shopifyDraftOrderPayloadFixture} from 'fixtures/shopify'
-import {fetchShopTags} from 'models/integration/resources/shopify'
-import {ShopifyTags} from 'models/integration/types'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import { shopifyDraftOrderPayloadFixture } from 'fixtures/shopify'
+import { fetchShopTags } from 'models/integration/resources/shopify'
+import { ShopifyTags } from 'models/integration/types'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
+import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
-
-import {OrderFooterComponent} from '../OrderFooter'
+import { OrderFooterComponent } from '../OrderFooter'
 
 jest.useFakeTimers()
 
@@ -30,14 +30,14 @@ describe('<OrderFooterComponent/>', () => {
         infobarActions: {
             shopify: {
                 cancelOrder: {},
-                createOrder: fromJS({payload: {}, loading: false}),
+                createOrder: fromJS({ payload: {}, loading: false }),
                 refundOrder: {},
                 editOrder: {},
                 editShippingAddress: {},
             },
         },
     }
-    const integrationContextData = {integration: fromJS({}), integrationId: 1}
+    const integrationContextData = { integration: fromJS({}), integrationId: 1 }
     let onPayloadChange: jest.MockedFunction<
         ComponentProps<typeof OrderFooterComponent>['onPayloadChange']
     >
@@ -48,7 +48,7 @@ describe('<OrderFooterComponent/>', () => {
 
     describe('render()', () => {
         it('should render', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore(storeData)}>
                     <IntegrationContext.Provider value={integrationContextData}>
                         <OrderFooterComponent
@@ -59,7 +59,7 @@ describe('<OrderFooterComponent/>', () => {
                             onPayloadChange={onPayloadChange}
                         />
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(container).toMatchSnapshot()
@@ -69,7 +69,7 @@ describe('<OrderFooterComponent/>', () => {
             const payload = shopifyDraftOrderPayloadFixture()
             payload.tags = 'tag1,tag2,tag3'
 
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore(storeData)}>
                     <IntegrationContext.Provider value={integrationContextData}>
                         <OrderFooterComponent
@@ -80,7 +80,7 @@ describe('<OrderFooterComponent/>', () => {
                             onPayloadChange={onPayloadChange}
                         />
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(container).toMatchSnapshot()
@@ -95,7 +95,7 @@ describe('<OrderFooterComponent/>', () => {
             'should call onPayloadChange() with updated payload',
             (actionName) => {
                 const payload = fromJS(
-                    shopifyDraftOrderPayloadFixture()
+                    shopifyDraftOrderPayloadFixture(),
                 ) as Map<any, any>
 
                 render(
@@ -111,7 +111,7 @@ describe('<OrderFooterComponent/>', () => {
                                 onPayloadChange={onPayloadChange}
                             />
                         </IntegrationContext.Provider>
-                    </Provider>
+                    </Provider>,
                 )
 
                 fireEvent.change(screen.getAllByRole('textbox')[0], {
@@ -121,7 +121,7 @@ describe('<OrderFooterComponent/>', () => {
                 })
 
                 expect(onPayloadChange).toHaveBeenCalled()
-            }
+            },
         )
     })
 
@@ -133,7 +133,7 @@ describe('<OrderFooterComponent/>', () => {
             'should call onPayloadChange() with updated payload',
             (actionName) => {
                 const payload = fromJS(
-                    shopifyDraftOrderPayloadFixture()
+                    shopifyDraftOrderPayloadFixture(),
                 ) as Map<any, any>
 
                 render(
@@ -149,7 +149,7 @@ describe('<OrderFooterComponent/>', () => {
                                 onPayloadChange={onPayloadChange}
                             />
                         </IntegrationContext.Provider>
-                    </Provider>
+                    </Provider>,
                 )
 
                 fireEvent.change(screen.getAllByRole('textbox')[1], {
@@ -164,7 +164,7 @@ describe('<OrderFooterComponent/>', () => {
                 })
 
                 expect(onPayloadChange).toHaveBeenCalled()
-            }
+            },
         )
     })
 
@@ -189,7 +189,7 @@ describe('<OrderFooterComponent/>', () => {
                             onPayloadChange={onPayloadChange}
                         />
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             const input = screen.getByPlaceholderText('Add tags...')
@@ -199,7 +199,7 @@ describe('<OrderFooterComponent/>', () => {
             expect(fetchShopTags).toHaveBeenCalledTimes(1)
             expect(fetchShopTags).toHaveBeenCalledWith(
                 integrationContextData.integrationId,
-                ShopifyTags.orders
+                ShopifyTags.orders,
             )
         })
     })

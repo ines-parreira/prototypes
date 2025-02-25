@@ -1,7 +1,8 @@
-import {Meta, StoryFn} from '@storybook/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {PendingTasksCompletionBar} from './PendingTasksCompletionBar'
+import { Meta, StoryFn } from '@storybook/react'
+
+import { PendingTasksCompletionBar } from './PendingTasksCompletionBar'
 
 const storyConfig: Meta<typeof PendingTasksCompletionBar> = {
     title: 'AI Agent/Overview/PendingTasksCompletionBar',
@@ -9,21 +10,21 @@ const storyConfig: Meta<typeof PendingTasksCompletionBar> = {
 }
 
 const Template: StoryFn<ComponentProps<typeof PendingTasksCompletionBar>> = (
-    args
+    args,
 ) => {
     return <PendingTasksCompletionBar {...args} />
 }
 
 export const Default = Template.bind({})
-Default.args = {totalTasks: 10, totalTasksCompleted: 5}
+Default.args = { totalTasks: 10, totalTasksCompleted: 5 }
 
 export const Loading = Template.bind({})
-Loading.args = {isLoading: true}
+Loading.args = { isLoading: true }
 
 export const _100Percent = Template.bind({})
-_100Percent.args = {totalTasks: 10, totalTasksCompleted: 10}
+_100Percent.args = { totalTasks: 10, totalTasksCompleted: 10 }
 
 export const _25Percent = Template.bind({})
-_25Percent.args = {totalTasks: 20, totalTasksCompleted: 5}
+_25Percent.args = { totalTasks: 20, totalTasksCompleted: 5 }
 
 export default storyConfig

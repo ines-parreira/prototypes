@@ -1,5 +1,6 @@
-import {render, fireEvent} from '@testing-library/react'
 import React from 'react'
+
+import { fireEvent, render } from '@testing-library/react'
 
 import AutoPopulateInput from '../AutoPopulateInput'
 
@@ -12,26 +13,26 @@ describe('<AutoPopulateInput />', () => {
 
     describe('render()', () => {
         it('should render checked', () => {
-            const {container} = render(
+            const { container } = render(
                 <AutoPopulateInput
                     value={null}
                     populateLabel="Use the same as Title"
                     populateValue="I am a title"
                     onChange={onChange}
-                />
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render unchecked', () => {
-            const {container} = render(
+            const { container } = render(
                 <AutoPopulateInput
                     value="Custom title"
                     populateLabel="Use the same as Title"
                     populateValue="I am a title"
                     onChange={onChange}
-                />
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -45,8 +46,8 @@ describe('<AutoPopulateInput />', () => {
             onChange: onChange,
         }
 
-        const {getByRole, rerender} = render(
-            <AutoPopulateInput {...props} value={null} />
+        const { getByRole, rerender } = render(
+            <AutoPopulateInput {...props} value={null} />,
         )
 
         const input = getByRole('textbox') as HTMLInputElement

@@ -1,10 +1,10 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
-import {Team} from 'models/team/types'
-import {GorgiasAction} from 'state/types'
+import { Team } from 'models/team/types'
+import { GorgiasAction } from 'state/types'
 
 import * as constants from './constants'
-import {TeamsState} from './types'
+import { TeamsState } from './types'
 
 export const initialState: TeamsState = fromJS({
     all: {},
@@ -12,7 +12,7 @@ export const initialState: TeamsState = fromJS({
 
 export default function reducer(
     state: TeamsState = initialState,
-    action: GorgiasAction
+    action: GorgiasAction,
 ): TeamsState {
     switch (action.type) {
         case constants.CREATE_TEAM_SUCCESS:
@@ -20,7 +20,7 @@ export default function reducer(
         case constants.FETCH_TEAM_SUCCESS:
             return state.setIn(
                 ['all', (action.payload as Team).id.toString()],
-                fromJS(action.payload)
+                fromJS(action.payload),
             )
         case constants.DELETE_TEAM_SUCCESS:
             return state.deleteIn([
@@ -33,14 +33,14 @@ export default function reducer(
                     ...teams,
                     [team.id]: team,
                 }),
-                {}
+                {},
             )
             return state.mergeIn(['all'], fromJS(teams))
         }
         case constants.FETCH_TEAM_MEMBERS_SUCCESS: {
             return state.setIn(
                 ['all', (action.payload as Team).id.toString(), 'members'],
-                fromJS((action.payload as Team).members)
+                fromJS((action.payload as Team).members),
             )
         }
         default:

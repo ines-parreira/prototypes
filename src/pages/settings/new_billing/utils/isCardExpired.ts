@@ -1,4 +1,4 @@
-import type {CreditCard} from 'models/billing/types'
+import type { CreditCard } from 'models/billing/types'
 
 export function isCardExpired(creditCard: CreditCard): boolean {
     const today = new Date()

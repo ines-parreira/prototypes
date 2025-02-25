@@ -1,6 +1,7 @@
-import {render} from '@testing-library/react'
-import {Map, fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { render } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
 
 import {
     GorgiasChatInstallationVisibility,
@@ -47,15 +48,15 @@ describe('<GorgiasChatIntegrationVisibilityControls />', () => {
             },
         }) as Map<any, any>
 
-        const {queryByText} = render(
+        const { queryByText } = render(
             <GorgiasChatIntegrationVisibilityControls
                 {...baseProps}
                 integration={integration}
-            />
+            />,
         )
 
         expect(
-            queryByText(/conditions are incompatible/)
+            queryByText(/conditions are incompatible/),
         ).not.toBeInTheDocument()
     })
 
@@ -95,14 +96,14 @@ describe('<GorgiasChatIntegrationVisibilityControls />', () => {
                 },
             }) as Map<any, any>
 
-            const {getByText} = render(
+            const { getByText } = render(
                 <GorgiasChatIntegrationVisibilityControls
                     {...baseProps}
                     integration={integration}
-                />
+                />,
             )
 
             expect(getByText(/conditions are incompatible/)).toBeInTheDocument()
-        }
+        },
     )
 })

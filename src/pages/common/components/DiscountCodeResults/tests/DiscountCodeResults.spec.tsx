@@ -1,14 +1,14 @@
-import {render, waitFor} from '@testing-library/react'
-import MockAdapter from 'axios-mock-adapter'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {Provider} from 'react-redux'
+import { render, waitFor } from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {discountCodeResult} from 'fixtures/discountCodes'
-import {integrationsState} from 'fixtures/integrations'
+import { discountCodeResult } from 'fixtures/discountCodes'
+import { integrationsState } from 'fixtures/integrations'
 import client from 'models/api/resources'
 
 import DiscountCodeResults from '../DiscountCodeResults'
@@ -39,10 +39,10 @@ describe('<DiscountCodeResults />', () => {
     })
 
     it('should render the component', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <DiscountCodeResults {...minProps} />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -52,10 +52,10 @@ describe('<DiscountCodeResults />', () => {
             .onGet('/api/discount-codes/5/')
             .reply(200, discountCodeResult())
 
-        const {container, getByText} = render(
+        const { container, getByText } = render(
             <Provider store={store}>
                 <DiscountCodeResults {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
         await waitFor(() => {
@@ -65,12 +65,12 @@ describe('<DiscountCodeResults />', () => {
     })
 
     it('should render no results', async () => {
-        mockServer.onGet('/api/discount-codes/5/').reply(200, {data: []})
+        mockServer.onGet('/api/discount-codes/5/').reply(200, { data: [] })
 
-        const {container, getByText} = render(
+        const { container, getByText } = render(
             <Provider store={store}>
                 <DiscountCodeResults {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
         await waitFor(() => {

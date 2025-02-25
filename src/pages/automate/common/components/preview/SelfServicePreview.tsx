@@ -1,10 +1,11 @@
-import {History} from 'history'
-import _uniqueId from 'lodash/uniqueId'
-import React, {useMemo} from 'react'
-import {Router, Switch} from 'react-router-dom'
+import React, { useMemo } from 'react'
 
-import {TicketChannel} from 'business/types/ticket'
-import {SelfServiceChannel} from 'pages/automate/common/hooks/useSelfServiceChannels'
+import { History } from 'history'
+import _uniqueId from 'lodash/uniqueId'
+import { Router, Switch } from 'react-router-dom'
+
+import { TicketChannel } from 'business/types/ticket'
+import { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
 
 import SelfServiceChatIntegrationPreview from './SelfServiceChatIntegrationPreview'
 import SelfServiceHelpCenterPreview from './SelfServiceHelpCenterPreview'
@@ -15,7 +16,7 @@ type Props = {
     history: History
 }
 
-const SelfServicePreview = ({channel, history}: Props) => {
+const SelfServicePreview = ({ channel, history }: Props) => {
     // Router `history` prop cannot be updated, so we need to change key to force rerender if `history` is different.
     //
     // https://github.com/remix-run/react-router/blob/v5.3.4/packages/react-router/modules/Router.js#L95

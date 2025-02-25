@@ -1,14 +1,15 @@
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import * as SegmentTracker from 'common/segment'
-import {IntegrationType} from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import Wizard from 'pages/common/components/wizard/Wizard'
 import WizardStep from 'pages/common/components/wizard/WizardStep'
-import {renderWithRouter} from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
 import useLogWizardEvent from '../useLogWizardEvent'
 
@@ -55,7 +56,7 @@ describe('useLogWizardEvent()', () => {
             {
                 path: '/:integrationId',
                 route: '/1',
-            }
+            },
         )
 
         expect(spy).toHaveBeenCalledWith(
@@ -65,7 +66,7 @@ describe('useLogWizardEvent()', () => {
                 account_domain: 'test-domain',
                 shop_type: 'shopify',
                 foo: 'bar',
-            }
+            },
         )
     })
 })

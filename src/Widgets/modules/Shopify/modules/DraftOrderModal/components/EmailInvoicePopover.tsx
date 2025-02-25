@@ -1,14 +1,15 @@
-import classnames from 'classnames'
-import {fromJS, Map} from 'immutable'
 import React, {
-    ReactNode,
-    Component,
     ChangeEvent,
-    FormEvent,
+    Component,
     ComponentProps,
+    FormEvent,
     KeyboardEvent,
+    ReactNode,
     RefObject,
 } from 'react'
+
+import classnames from 'classnames'
+import { fromJS, Map } from 'immutable'
 import {
     Button,
     Form,
@@ -19,11 +20,10 @@ import {
     PopoverBody,
 } from 'reactstrap'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {DraftOrderInvoice} from 'constants/integrations/types/shopify'
-import {focusElement} from 'utils/html'
-
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { DraftOrderInvoice } from 'constants/integrations/types/shopify'
+import { focusElement } from 'utils/html'
+import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import css from './EmailInvoicePopover.less'
 
@@ -60,9 +60,9 @@ export default class EmailInvoicePopover extends Component<Props, State> {
     }
 
     componentDidUpdate(prevProps: Props, prevState: State) {
-        const {actionName} = this.props
-        const {isOpen} = this.state
-        const {isOpen: wasOpen} = prevState
+        const { actionName } = this.props
+        const { isOpen } = this.state
+        const { isOpen: wasOpen } = prevState
 
         const onOpen = !wasOpen && isOpen
         const onClose = wasOpen && !isOpen
@@ -72,7 +72,7 @@ export default class EmailInvoicePopover extends Component<Props, State> {
             logEvent(
                 actionName === ShopifyActionType.CreateOrder
                     ? SegmentEvent.ShopifyCreateOrderEmailInvoicePopoverOpen
-                    : SegmentEvent.ShopifyDuplicateOrderEmailInvoicePopoverOpen
+                    : SegmentEvent.ShopifyDuplicateOrderEmailInvoicePopoverOpen,
             )
         } else if (onClose) {
             focusElement(() => this._buttonElement as HTMLButtonElement)
@@ -86,7 +86,7 @@ export default class EmailInvoicePopover extends Component<Props, State> {
     }
 
     _toggle = () => {
-        const {isOpen} = this.state
+        const { isOpen } = this.state
 
         this.setState({
             isOpen: !isOpen,
@@ -103,17 +103,17 @@ export default class EmailInvoicePopover extends Component<Props, State> {
 
     _onToChange = (event: ChangeEvent<HTMLInputElement>) => {
         const to = event.target.value
-        this.setState({to})
+        this.setState({ to })
     }
 
     _onCustomMessageChange = (event: ChangeEvent<HTMLInputElement>) => {
         const customMessage = event.target.value
-        this.setState({customMessage})
+        this.setState({ customMessage })
     }
 
     _onSubmit = (event: FormEvent) => {
-        const {actionName, onSubmit} = this.props
-        const {to, customMessage} = this.state
+        const { actionName, onSubmit } = this.props
+        const { to, customMessage } = this.state
 
         event.preventDefault()
         this._toggle()
@@ -128,25 +128,26 @@ export default class EmailInvoicePopover extends Component<Props, State> {
         logEvent(
             actionName === ShopifyActionType.CreateOrder
                 ? SegmentEvent.ShopifyCreateOrderEmailInvoicePopoverSend
-                : SegmentEvent.ShopifyDuplicateOrderEmailInvoicePopoverSend
+                : SegmentEvent.ShopifyDuplicateOrderEmailInvoicePopoverSend,
         )
     }
 
     _onCancel = () => {
-        const {actionName} = this.props
+        const { actionName } = this.props
 
         this._toggle()
 
         logEvent(
             actionName === ShopifyActionType.CreateOrder
                 ? SegmentEvent.ShopifyCreateOrderEmailInvoicePopoverCancel
-                : SegmentEvent.ShopifyDuplicateOrderEmailInvoicePopoverCancel
+                : SegmentEvent.ShopifyDuplicateOrderEmailInvoicePopoverCancel,
         )
     }
 
     render() {
-        const {id, children, placement, color, disabled, container} = this.props
-        const {isOpen, to, customMessage} = this.state
+        const { id, children, placement, color, disabled, container } =
+            this.props
+        const { isOpen, to, customMessage } = this.state
 
         return (
             <div>

@@ -6,11 +6,11 @@ import {
     getDetailedFormattedDate,
     getFormattedDate,
     getMomentTimezoneNames,
-    subtractDaysFromDate,
     shortenRelativeDurationLabel,
+    subtractDaysFromDate,
 } from '../date'
 
-const {getMomentTimezoneNames: getMomentTimezoneNamesActual} =
+const { getMomentTimezoneNames: getMomentTimezoneNamesActual } =
     jest.requireActual('../date')
 
 let dateNowSpy: jest.SpiedFunction<typeof Date.now>
@@ -31,7 +31,7 @@ describe('date utils', () => {
             expect(
                 (
                     getMomentTimezoneNamesActual as typeof getMomentTimezoneNames
-                )()
+                )(),
             ).toMatchSnapshot()
         })
     })
@@ -59,7 +59,7 @@ describe('date utils', () => {
         it('should throw an error if the date is invalid', () => {
             const invalidDate = 'invalid date'
             expect(() => getFormattedDate(invalidDate)).toThrowError(
-                'Invalid date'
+                'Invalid date',
             )
         })
     })
@@ -93,7 +93,7 @@ describe('date utils', () => {
             const date = '2022-12-16T00:00:00Z'
             const expectedResult = new Intl.DateTimeFormat(
                 'en-US',
-                DETAILED_FORMATTED_DATE_OPTIONS
+                DETAILED_FORMATTED_DATE_OPTIONS,
             ).format(new Date(date))
 
             const result = getDetailedFormattedDate(date)
@@ -106,7 +106,7 @@ describe('date utils', () => {
             const locale = 'de-DE'
             const expectedResult = new Intl.DateTimeFormat(
                 locale,
-                DETAILED_FORMATTED_DATE_OPTIONS
+                DETAILED_FORMATTED_DATE_OPTIONS,
             ).format(new Date(date))
 
             const result = getDetailedFormattedDate(date, locale)
@@ -117,7 +117,7 @@ describe('date utils', () => {
         it('should throw an error if the date is invalid', () => {
             const invalidDate = 'invalid date'
             expect(() => getFormattedDate(invalidDate)).toThrowError(
-                'Invalid date'
+                'Invalid date',
             )
         })
     })
@@ -126,21 +126,21 @@ describe('date utils', () => {
         it('should return abbreviated label for one unit', () => {
             const date = '2024-02-07T00:00:00Z'
             expect(
-                shortenRelativeDurationLabel(moment(date).fromNow())
+                shortenRelativeDurationLabel(moment(date).fromNow()),
             ).toEqual('1d ago')
         })
 
         it('should return abbreviated label for multiple unit', () => {
             const date = '2024-02-05T00:00:00Z'
             expect(
-                shortenRelativeDurationLabel(moment(date).fromNow())
+                shortenRelativeDurationLabel(moment(date).fromNow()),
             ).toEqual('3d ago')
         })
 
         it("should return 'now' for duration in seconds", () => {
             const date = '2024-02-07T23:00:10Z'
             expect(
-                shortenRelativeDurationLabel(moment(date).fromNow())
+                shortenRelativeDurationLabel(moment(date).fromNow()),
             ).toEqual('now')
         })
 
@@ -152,7 +152,7 @@ describe('date utils', () => {
             const date = '2024-02-07T23:59:10Z'
 
             expect(shortenRelativeDurationLabel(moment(date).fromNow())).toBe(
-                'in 1h'
+                'in 1h',
             )
         })
     })

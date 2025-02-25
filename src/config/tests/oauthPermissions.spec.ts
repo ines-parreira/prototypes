@@ -1,4 +1,4 @@
-import {scopesToPermissions} from '../oauthPermissions'
+import { scopesToPermissions } from '../oauthPermissions'
 
 describe('Config: oauthPermissions', () => {
     describe('scopesToPermissions', () => {

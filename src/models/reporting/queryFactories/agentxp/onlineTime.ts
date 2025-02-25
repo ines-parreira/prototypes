@@ -1,11 +1,11 @@
-import {OrderDirection} from 'models/api/types'
+import { OrderDirection } from 'models/api/types'
 import {
     AgentTimeTrackingCube,
     AgentTimeTrackingDimension,
     AgentTimeTrackingMeasure,
 } from 'models/reporting/cubes/agentxp/AgentTimeTrackingCube'
-import {ReportingQuery} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import { ReportingQuery } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
 import {
     AgentTimeTrackingStatsFiltersMembers,
     perDimensionQueryFactory,
@@ -15,7 +15,7 @@ import {
 export const onlineTimeQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ): ReportingQuery<AgentTimeTrackingCube> => ({
     measures: [AgentTimeTrackingMeasure.OnlineTime],
     dimensions: [],
@@ -23,7 +23,7 @@ export const onlineTimeQueryFactory = (
     filters: [
         ...statsFiltersToReportingFilters(
             AgentTimeTrackingStatsFiltersMembers,
-            filters
+            filters,
         ),
     ],
     ...(sorting
@@ -35,5 +35,5 @@ export const onlineTimeQueryFactory = (
 
 export const onlineTimePerAgentQueryFactory = perDimensionQueryFactory(
     onlineTimeQueryFactory,
-    AgentTimeTrackingDimension.UserId
+    AgentTimeTrackingDimension.UserId,
 )

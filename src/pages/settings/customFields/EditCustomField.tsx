@@ -1,23 +1,24 @@
 import React from 'react'
-import {Link, useParams} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
+
+import { Link, useParams } from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
 import {
+    MANAGED_TYPES,
     OBJECT_TYPE_SETTINGS,
     OBJECT_TYPES,
-    MANAGED_TYPES,
 } from 'custom-fields/constants'
-import {useCustomFieldDefinition} from 'custom-fields/hooks/queries/useCustomFieldDefinition'
+import { useCustomFieldDefinition } from 'custom-fields/hooks/queries/useCustomFieldDefinition'
 import {
     CustomFieldObjectTypes,
     isCustomFieldAIManagedType,
 } from 'custom-fields/types'
 import useTitle from 'hooks/useTitle'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import css from 'pages/settings/settings.less'
-import {CUSTOM_FIELD_ROUTES} from 'routes/constants'
+import { CUSTOM_FIELD_ROUTES } from 'routes/constants'
 
 import EditFieldForm from './components/EditFieldForm'
 
@@ -27,10 +28,10 @@ export default function EditCustomField({
     objectType: CustomFieldObjectTypes
 }) {
     const customFieldTitleLabel = OBJECT_TYPE_SETTINGS[objectType].TITLE_LABEL
-    const params = useParams<{id: string}>()
+    const params = useParams<{ id: string }>()
     const id = parseInt(params.id, 10)
 
-    const {data: field, isLoading} = useCustomFieldDefinition(id)
+    const { data: field, isLoading } = useCustomFieldDefinition(id)
     const helpArticleLink =
         objectType === OBJECT_TYPES.CUSTOMER
             ? 'https://link.gorgias.com/tjj'

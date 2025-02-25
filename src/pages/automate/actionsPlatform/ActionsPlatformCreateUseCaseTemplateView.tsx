@@ -1,17 +1,18 @@
-import React, {useCallback, useMemo} from 'react'
-import {useHistory} from 'react-router-dom'
-import {ulid} from 'ulidx'
+import React, { useCallback, useMemo } from 'react'
 
-import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
+import { useHistory } from 'react-router-dom'
+import { ulid } from 'ulidx'
+
+import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
 import AutomateFormView from 'pages/automate/common/components/AutomateFormView'
 import {
     useVisualBuilder,
     VisualBuilderContext,
 } from 'pages/automate/workflows/hooks/useVisualBuilder'
-import {useVisualBuilderGraphReducer} from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
-import {computeNodesPositions} from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer/utils'
-import {transformVisualBuilderGraphIntoWfConfiguration} from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import {LLMPromptTriggerNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { useVisualBuilderGraphReducer } from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
+import { computeNodesPositions } from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer/utils'
+import { transformVisualBuilderGraphIntoWfConfiguration } from 'pages/automate/workflows/models/visualBuilderGraph.model'
+import { LLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import {
     transformWorkflowConfigurationIntoVisualBuilderGraph,
     WorkflowConfigurationBuilder,
@@ -19,13 +20,14 @@ import {
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 
-import css from './ActionsPlatformEditTemplateView.less'
 import ActionsPlatformUseCaseTemplateFormView from './components/ActionsPlatformUseCaseTemplateFormView'
 import useCreateActionTemplate from './hooks/useCreateActionTemplate'
 import useTouchActionUseCaseTemplateGraph from './hooks/useTouchActionUseCaseTemplateGraph'
 import useValidateActionUseCaseTemplateGraph from './hooks/useValidateActionUseCaseTemplateGraph'
 import useValidateOnVisualBuilderGraphChange from './hooks/useValidateOnVisualBuilderGraphChange'
-import {ActionTemplate} from './types'
+import { ActionTemplate } from './types'
+
+import css from './ActionsPlatformEditTemplateView.less'
 
 const getInitialTemplate = () => {
     const b = new WorkflowConfigurationBuilder({
@@ -69,13 +71,13 @@ const getInitialTemplate = () => {
 }
 
 const ActionsPlatformCreateUseCaseTemplateView = () => {
-    const {isLoading: isCreateActionTemplateLoading, createActionTemplate} =
+    const { isLoading: isCreateActionTemplateLoading, createActionTemplate } =
         useCreateActionTemplate()
 
     const history = useHistory()
     const template = useMemo(() => getInitialTemplate(), [])
 
-    const {data: steps = []} = useGetWorkflowConfigurationTemplates({
+    const { data: steps = [] } = useGetWorkflowConfigurationTemplates({
         triggers: ['reusable-llm-prompt'],
     })
 
@@ -83,21 +85,21 @@ const ActionsPlatformCreateUseCaseTemplateView = () => {
         computeNodesPositions(
             transformWorkflowConfigurationIntoVisualBuilderGraph<LLMPromptTriggerNodeType>(
                 template,
-                true
-            )
-        )
+                true,
+            ),
+        ),
     )
 
     const visualBuilderContextValue = useVisualBuilder(
         visualBuilderGraphDirty,
         dispatch,
-        true
+        true,
     )
 
-    const {getVariableListForNode} = visualBuilderContextValue
+    const { getVariableListForNode } = visualBuilderContextValue
 
     const handleValidate = useValidateActionUseCaseTemplateGraph(
-        getVariableListForNode
+        getVariableListForNode,
     )
     const handleTouch = useTouchActionUseCaseTemplateGraph()
 
@@ -129,7 +131,7 @@ const ActionsPlatformCreateUseCaseTemplateView = () => {
             transformVisualBuilderGraphIntoWfConfiguration(
                 visualBuilderGraphDirty,
                 false,
-                steps
+                steps,
             ) as ActionTemplate,
         ])
 
@@ -200,7 +202,7 @@ const ActionsPlatformCreateUseCaseTemplateView = () => {
                     intent="secondary"
                     onClick={() => {
                         history.push(
-                            '/app/automation/actions-platform/use-cases'
+                            '/app/automation/actions-platform/use-cases',
                         )
                     }}
                 >

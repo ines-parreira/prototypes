@@ -1,7 +1,8 @@
-import classnames from 'classnames'
-import React, {ReactNode} from 'react'
+import React, { ReactNode } from 'react'
 
-import type {Option} from '../../../../../common/components/RichDropdown/types'
+import classnames from 'classnames'
+
+import type { Option } from '../../../../../common/components/RichDropdown/types'
 
 import css from './DropdownOptionItem.less'
 
@@ -20,7 +21,7 @@ export const DropdownOptionItem = ({
     onClick = () => null,
     renderAction = () => null,
 }: Props) => {
-    const {label, key, description} = option
+    const { label, key, description } = option
     return (
         <div
             key={key}

@@ -1,12 +1,13 @@
-import {render, waitFor, act} from '@testing-library/react'
 import React from 'react'
+
+import { act, render, waitFor } from '@testing-library/react'
 
 import MacroEditLanguage from '../MacroEditLanguage'
 
 // To avoid snapshoting all languages
 jest.mock('constants/languages', () => {
     const module: Record<string, unknown> = jest.requireActual(
-        'constants/languages'
+        'constants/languages',
     )
     return {
         ...module,
@@ -24,12 +25,12 @@ jest.mock('models/language/resources', () => ({
 
 describe('<MacroEditLanguage />', () => {
     it('should render MacroEditLanguage', () => {
-        const {container} = render(
+        const { container } = render(
             <MacroEditLanguage
                 language={'aa'}
                 setLanguage={jest.fn()}
                 text={'hello world'}
-            />
+            />,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -42,7 +43,7 @@ describe('<MacroEditLanguage />', () => {
                 language={''}
                 setLanguage={setLanguage}
                 text={'hello world'}
-            />
+            />,
         )
         act(() => jest.runAllTimers())
         await waitFor(() => expect(setLanguage).toHaveBeenCalledWith('af'))

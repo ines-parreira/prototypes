@@ -1,27 +1,28 @@
-import classNames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
+import classNames from 'classnames'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
 import cssNavbar from 'assets/css/navbar.less'
-import {FeatureFlagKey} from 'config/featureFlags'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import AutomateNavbarPaywallNavbarLink from 'pages/automate/common/components/AutomateNavbarPaywallNavbarLink'
 import NavbarLink, {
     NavbarLinkProps,
 } from 'pages/common/components/navbar/NavbarLink'
 import {
-    ROUTE_AI_SALES_AGENT_OVERVIEW,
     LINK_AI_SALES_AGENT_TEXT,
+    ROUTE_AI_SALES_AGENT_OVERVIEW,
 } from 'pages/stats/aiSalesAgent/constants'
-import {getHasAutomate} from 'state/billing/selectors'
+import { getHasAutomate } from 'state/billing/selectors'
 
 import {
-    ROUTE_AUTOMATE_OVERVIEW,
+    PAGE_TITLE_AI_AGENT,
     PAGE_TITLE_OVERVIEW,
     PAGE_TITLE_PERFORMANCE_BY_FEATURES,
-    ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES,
     ROUTE_AUTOMATE_AI_AGENT,
-    PAGE_TITLE_AI_AGENT,
+    ROUTE_AUTOMATE_OVERVIEW,
+    ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES,
 } from './constants'
 
 type Props = {
@@ -33,7 +34,7 @@ const AI_AGENT_PATH = `/app/stats/${ROUTE_AUTOMATE_AI_AGENT}`
 const PERFORMANCE_BY_FEATURE_PATH = `/app/stats/${ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES}`
 const AI_SALES_AGENT_PATH = `/app/stats/${ROUTE_AI_SALES_AGENT_OVERVIEW}`
 
-export default function AutomateStatsNavbar({commonNavLinkProps}: Props) {
+export default function AutomateStatsNavbar({ commonNavLinkProps }: Props) {
     const hasAutomate = useAppSelector(getHasAutomate)
 
     const isAiAgentStatsPageEnabled: boolean | undefined =
@@ -53,7 +54,7 @@ export default function AutomateStatsNavbar({commonNavLinkProps}: Props) {
                     <div
                         className={classNames(
                             cssNavbar['link-wrapper'],
-                            cssNavbar.isNested
+                            cssNavbar.isNested,
                         )}
                         data-candu-id="statistics-automate-link-overview"
                     >
@@ -66,7 +67,7 @@ export default function AutomateStatsNavbar({commonNavLinkProps}: Props) {
                         <div
                             className={classNames(
                                 cssNavbar['link-wrapper'],
-                                cssNavbar.isNested
+                                cssNavbar.isNested,
                             )}
                             data-candu-id="statistics-automate-ai-agent"
                         >
@@ -83,7 +84,7 @@ export default function AutomateStatsNavbar({commonNavLinkProps}: Props) {
                         <div
                             className={classNames(
                                 cssNavbar['link-wrapper'],
-                                cssNavbar.isNested
+                                cssNavbar.isNested,
                             )}
                             data-candu-id="statistics-ai-sales-agent"
                         >
@@ -99,7 +100,7 @@ export default function AutomateStatsNavbar({commonNavLinkProps}: Props) {
                     <div
                         className={classNames(
                             cssNavbar['link-wrapper'],
-                            cssNavbar.isNested
+                            cssNavbar.isNested,
                         )}
                         data-candu-id="statistics-automate-performance-by-feature"
                     >

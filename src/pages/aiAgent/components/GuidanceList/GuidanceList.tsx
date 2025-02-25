@@ -1,8 +1,8 @@
-import React, {useMemo, useState} from 'react'
+import React, { useMemo, useState } from 'react'
 
-import {DateAndTimeFormatting} from 'constants/datetime'
+import { DateAndTimeFormatting } from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import {OrderDirection} from 'models/api/types'
+import { OrderDirection } from 'models/api/types'
 import IconButton from 'pages/common/components/button/IconButton'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
@@ -13,9 +13,10 @@ import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import ToggleInput from 'pages/common/forms/ToggleInput'
-import {formatDatetime} from 'utils'
+import { formatDatetime } from 'utils'
 
-import {GuidanceArticle} from '../../types'
+import { GuidanceArticle } from '../../types'
+
 import css from './GuidanceList.less'
 
 type SortState = {
@@ -50,7 +51,7 @@ export const GuidanceList = ({
     const [sortState, setSortState] = useState<SortState>(initialSortState)
 
     const datetimeFormat = useGetDateAndTimeFormat(
-        DateAndTimeFormatting.CompactDate
+        DateAndTimeFormatting.CompactDate,
     )
 
     const onSortClick = (column: SortState['column']) => {
@@ -84,13 +85,13 @@ export const GuidanceList = ({
                     return compareDates(
                         a.lastUpdated,
                         b.lastUpdated,
-                        sortState.direction
+                        sortState.direction,
                     )
                 }
 
                 return 0
             }),
-        [guidanceArticles, sortState.column, sortState.direction]
+        [guidanceArticles, sortState.column, sortState.direction],
     )
 
     return (
@@ -132,7 +133,7 @@ export const GuidanceList = ({
                         <BodyCell>
                             {formatDatetime(
                                 article.lastUpdated,
-                                datetimeFormat
+                                datetimeFormat,
                             )}
                         </BodyCell>
                         <BodyCell>
@@ -153,7 +154,11 @@ export const GuidanceList = ({
                                     onDelete(article.id)
                                 }}
                             >
-                                {({uid, elementRef, onDisplayConfirmation}) => (
+                                {({
+                                    uid,
+                                    elementRef,
+                                    onDisplayConfirmation,
+                                }) => (
                                     <IconButton
                                         onClick={onDisplayConfirmation}
                                         id={uid}

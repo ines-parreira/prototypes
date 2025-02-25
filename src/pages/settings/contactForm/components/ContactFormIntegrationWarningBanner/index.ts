@@ -1,2 +1,2 @@
-export {default} from './ContactFormIntegrationWarningBanner'
+export { default } from './ContactFormIntegrationWarningBanner'
 export * from './ContactFormIntegrationWarningBanner'

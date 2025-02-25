@@ -1,15 +1,16 @@
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {useRef} from 'react'
-import {Provider} from 'react-redux'
+import React, { useRef } from 'react'
+
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {logEvent} from 'common/segment'
-import {UserSettingType, UserSetting} from 'config/types/user'
-import {ticket} from 'fixtures/ticket'
-import {user} from 'fixtures/users'
-import {RootState} from 'state/types'
+import { logEvent } from 'common/segment'
+import { UserSetting, UserSettingType } from 'config/types/user'
+import { ticket } from 'fixtures/ticket'
+import { user } from 'fixtures/users'
+import { RootState } from 'state/types'
 
 import OnbordingMacroPopover from '../OnbordingMacroPopover'
 
@@ -55,7 +56,7 @@ describe('<OnbordingMacroPopover />', () => {
         const ref = useRef<any>()
         return (
             <Provider store={mockStore(defaultState)}>
-                <div style={{width: 800}} ref={ref} data-testid="parent">
+                <div style={{ width: 800 }} ref={ref} data-testid="parent">
                     <OnbordingMacroPopover
                         macrosVisible={props?.macrosVisible ?? true}
                         onClearMacro={props?.onClearMacro || jest.fn()}
@@ -85,8 +86,8 @@ describe('<OnbordingMacroPopover />', () => {
             currentUser: fromJS(user),
             ticket: fromJS(ticket),
         }
-        const {baseElement} = render(
-            <OnbordingMacroPopoverTestComp defaultState={defaultState} />
+        const { baseElement } = render(
+            <OnbordingMacroPopoverTestComp defaultState={defaultState} />,
         )
 
         expect(baseElement).toMatchSnapshot()
@@ -211,9 +212,9 @@ describe('<OnbordingMacroPopover />', () => {
 
         render(
             <OnbordingMacroPopoverTestComp
-                props={{onClearMacro}}
+                props={{ onClearMacro }}
                 defaultState={defaultState}
-            />
+            />,
         )
 
         fireEvent.click(await screen.findByText('Got it'))
@@ -246,9 +247,9 @@ describe('<OnbordingMacroPopover />', () => {
         const onClearMacro = jest.fn()
         render(
             <OnbordingMacroPopoverTestComp
-                props={{onClearMacro}}
+                props={{ onClearMacro }}
                 defaultState={defaultState}
-            />
+            />,
         )
 
         fireEvent.click(await screen.findByText('Got it'))
@@ -309,20 +310,20 @@ describe('<OnbordingMacroPopover />', () => {
 
         const onClearMacro = jest.fn()
 
-        const {rerender} = render(
+        const { rerender } = render(
             <OnbordingMacroPopoverTestComp
-                props={{onClearMacro, macrosVisible: false}}
+                props={{ onClearMacro, macrosVisible: false }}
                 defaultState={defaultState}
-            />
+            />,
         )
 
         expect(screen.queryByText('Got it')).toBeFalsy()
 
         rerender(
             <OnbordingMacroPopoverTestComp
-                props={{onClearMacro, macrosVisible: true}}
+                props={{ onClearMacro, macrosVisible: true }}
                 defaultState={defaultState}
-            />
+            />,
         )
 
         expect(screen.queryByText('Got it')).toBeTruthy()

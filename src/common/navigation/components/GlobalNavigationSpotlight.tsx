@@ -1,9 +1,9 @@
-import React, {useContext, useEffect, useState} from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { logEvent, SegmentEvent } from 'common/segment'
 import ShortcutIcon from 'pages/common/components/ShortcutIcon/ShortcutIcon'
-import {SpotlightContext} from 'providers/ui/SpotlightContext'
-import {isMacOs} from 'utils/platform'
+import { SpotlightContext } from 'providers/ui/SpotlightContext'
+import { isMacOs } from 'utils/platform'
 
 import GlobalNavigationItem, {
     type GlobalNavigationItemTooltipTrigger,
@@ -15,9 +15,9 @@ const defaultTooltipTriggers: GlobalNavigationItemTooltipTrigger = [
 ]
 
 export function GlobalNavigationSpotlight() {
-    const {isOpen, setIsOpen} = useContext(SpotlightContext)
+    const { isOpen, setIsOpen } = useContext(SpotlightContext)
     const [tooltipTriggers, setTooltipTriggers] = useState(
-        defaultTooltipTriggers
+        defaultTooltipTriggers,
     )
 
     useEffect(() => {

@@ -1,12 +1,12 @@
-import {PayloadActionCreator} from '@reduxjs/toolkit'
+import { PayloadActionCreator } from '@reduxjs/toolkit'
 
-import {HelpCenter} from 'models/helpCenter/types'
+import { HelpCenter } from 'models/helpCenter/types'
 
 import {
-    HELPCENTER_UPDATED,
-    HELPCENTER_FETCHED,
-    HELPCENTER_DELETED,
     HELPCENTER_CREATED,
+    HELPCENTER_DELETED,
+    HELPCENTER_FETCHED,
+    HELPCENTER_UPDATED,
     HELPCENTERS_FETCHED,
 } from './constants'
 

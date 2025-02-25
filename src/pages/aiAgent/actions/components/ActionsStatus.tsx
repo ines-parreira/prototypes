@@ -1,7 +1,8 @@
-import {Badge} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
-import {LlmTriggeredExecution} from '../types'
+import { Badge } from '@gorgias/merchant-ui-kit'
+
+import { LlmTriggeredExecution } from '../types'
 
 const success = <Badge type={'light-success'}>SUCCESS</Badge>
 const error = <Badge type={'light-error'}>ERROR</Badge>

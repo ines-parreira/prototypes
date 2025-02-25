@@ -1,7 +1,8 @@
-import {Meta, StoryObj} from '@storybook/react'
 import React from 'react'
 
-import {PlaygroundSegmentControl} from './PlaygroundSegmentControl'
+import { Meta, StoryObj } from '@storybook/react'
+
+import { PlaygroundSegmentControl } from './PlaygroundSegmentControl'
 
 const meta: Meta<typeof PlaygroundSegmentControl> = {
     title: 'AI Agent/Playground/SegmentControl',

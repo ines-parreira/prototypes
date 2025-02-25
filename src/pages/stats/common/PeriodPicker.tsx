@@ -1,32 +1,33 @@
-import moment, {Moment} from 'moment-timezone'
-import React, {useEffect, useCallback, useMemo, useRef, useState} from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+
+import moment, { Moment } from 'moment-timezone'
 import DateRangePicker, {
-    EventHandler,
     Props as DateRangeProps,
+    EventHandler,
 } from 'react-bootstrap-daterangepicker'
-import {connect} from 'react-redux'
-import {Tooltip} from 'reactstrap'
+import { connect } from 'react-redux'
+import { Tooltip } from 'reactstrap'
 
 import {
-    DateTimeFormatType,
     DateTimeFormatMapper,
+    DateTimeFormatType,
     DateTimeResultFormatType,
 } from 'constants/datetime'
-import {useTheme} from 'core/theme'
-import Button, {type ButtonProps} from 'pages/common/components/button/Button'
+import { useTheme } from 'core/theme'
+import Button, { type ButtonProps } from 'pages/common/components/button/Button'
 import css from 'pages/stats/common/PeriodPicker.less'
 import {
-    periodPickerMaxSpanDays,
     getDateRangePickerLabel,
+    periodPickerMaxSpanDays,
 } from 'pages/stats/common/utils'
-import {getDefaultSetOfRanges} from 'pages/stats/constants'
-import {getTimezone} from 'state/currentUser/selectors'
-import {RootState} from 'state/types'
+import { getDefaultSetOfRanges } from 'pages/stats/constants'
+import { getTimezone } from 'state/currentUser/selectors'
+import { RootState } from 'state/types'
 
 export type Props = {
     endDatetime: Moment
     formatMaxSpan?: (
-        maxSpan?: moment.MomentInput | moment.Duration
+        maxSpan?: moment.MomentInput | moment.Duration,
     ) => moment.Duration
     isDisabled?: boolean
     labelDateFormat?: DateTimeResultFormatType
@@ -41,7 +42,7 @@ export type Props = {
     userTimezone?: string | null
     onOpen?: () => void
     toggleProps?: Partial<ButtonProps>
-    dateRanges?: {[label: string]: [Moment, Moment]}
+    dateRanges?: { [label: string]: [Moment, Moment] }
     pickerV2Styles?: boolean
     rangesOnLeft?: boolean
     showRangesLabel?: boolean
@@ -98,9 +99,9 @@ export const PeriodPickerContainer = ({
         () =>
             periodPickerMaxSpanDays(
                 initialSettings?.maxSpan,
-                initialSettings?.minDate
+                initialSettings?.minDate,
             ),
-        [initialSettings?.maxSpan, initialSettings?.minDate]
+        [initialSettings?.maxSpan, initialSettings?.minDate],
     )
 
     const showDatePicker = () => {
@@ -114,7 +115,7 @@ export const PeriodPickerContainer = ({
         datePickerRef.current?.$picker?.trigger('click')
     }
 
-    const ranges: {[label: string]: [Moment, Moment]} | undefined =
+    const ranges: { [label: string]: [Moment, Moment] } | undefined =
         useMemo(() => {
             if (dateRanges !== undefined) {
                 return dateRanges
@@ -124,7 +125,7 @@ export const PeriodPickerContainer = ({
 
     const label = useMemo(
         () => getDateRangePickerLabel(startDate, endDate, labelDateFormat),
-        [endDate, labelDateFormat, startDate]
+        [endDate, labelDateFormat, startDate],
     )
 
     useEffect(() => {
@@ -155,7 +156,7 @@ export const PeriodPickerContainer = ({
                 setTooltipTarget(event.target as HTMLElement)
             }
         },
-        [setIsTooltipOpen, setTooltipTarget]
+        [setIsTooltipOpen, setTooltipTarget],
     )
 
     const hideTooltip = useCallback(
@@ -165,7 +166,7 @@ export const PeriodPickerContainer = ({
                 setIsTooltipOpen(false)
             }
         },
-        [setIsTooltipOpen, setTooltipTarget]
+        [setIsTooltipOpen, setTooltipTarget],
     )
 
     const startHandlingTooltipHover = () => {
@@ -250,7 +251,7 @@ export const PeriodPickerContainer = ({
                                     ...(initialSettings &&
                                     initialSettings.maxSpan
                                         ? [initialSettings.maxSpan]
-                                        : [])
+                                        : []),
                                 ),
                             }),
                             showDropdowns: shouldShowMonthAndYearDropdowns,
@@ -262,39 +263,39 @@ export const PeriodPickerContainer = ({
 
                             dateRangerPickerElement.current.classList.add(
                                 theme.resolvedName,
-                                'displayed'
+                                'displayed',
                             )
 
                             if (pickerV2Styles) {
                                 dateRangerPickerElement.current.classList.add(
                                     'picker-v2',
-                                    'apply-v2-styles'
+                                    'apply-v2-styles',
                                 )
                             }
 
                             if (rangesOnLeft) {
                                 dateRangerPickerElement.current.classList.add(
                                     'picker-v2',
-                                    'ranges-on-left'
+                                    'ranges-on-left',
                                 )
                             }
 
                             if (actionButtonsOnTheBottom) {
                                 dateRangerPickerElement.current.classList.add(
                                     'picker-v2',
-                                    'action-buttons-on-the-bottom'
+                                    'action-buttons-on-the-bottom',
                                 )
 
                                 if (rangeDatesInFooter) {
                                     dateRangerPickerElement.current.classList.add(
-                                        'range-dates-in-footer'
+                                        'range-dates-in-footer',
                                     )
                                 }
                             }
 
                             if (isV2Filter) {
                                 dateRangerPickerElement.current.classList.add(
-                                    'v2-filter'
+                                    'v2-filter',
                                 )
                             }
 
@@ -310,7 +311,7 @@ export const PeriodPickerContainer = ({
                             // so event listeners to display the tooltip on days hover are put back
                             // each time user navigates to the previous or next month
                             const observer = new MutationObserver(
-                                startHandlingTooltipHover
+                                startHandlingTooltipHover,
                             )
                             observer.observe(dateRangerPickerElement.current, {
                                 childList: true,
@@ -319,7 +320,7 @@ export const PeriodPickerContainer = ({
 
                             const ranges =
                                 dateRangerPickerElement.current?.querySelector(
-                                    '.ranges ul'
+                                    '.ranges ul',
                                 )
                             if (ranges) {
                                 if (showRangesLabel) {
@@ -332,7 +333,7 @@ export const PeriodPickerContainer = ({
                             endHandlingTooltipHover()
                             dateRangerPickerElement.current?.classList.remove(
                                 theme.resolvedName,
-                                'displayed'
+                                'displayed',
                             )
                         }}
                     >

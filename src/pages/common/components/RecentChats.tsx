@@ -1,28 +1,30 @@
+import React, { useCallback, useEffect, useState } from 'react'
+
 import classnames from 'classnames'
-import {Map, fromJS, List} from 'immutable'
-import React, {useCallback, useEffect, useState} from 'react'
-import {Link, useLocation} from 'react-router-dom'
+import { fromJS, List, Map } from 'immutable'
+import { Link, useLocation } from 'react-router-dom'
 
 import navbarCss from 'assets/css/navbar.less'
-import {logEvent, SegmentEvent} from 'common/segment'
-import {MAX_RECENT_CHATS} from 'config/recentChats'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { MAX_RECENT_CHATS } from 'config/recentChats'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import usePrevious from 'hooks/usePrevious'
-import {closePanels} from 'state/layout/actions'
-import {activeViewIdSet} from 'state/ui/views/actions'
-import {setViewActive} from 'state/views/actions'
-import {isCurrentlyOnTicket} from 'utils'
+import { closePanels } from 'state/layout/actions'
+import { activeViewIdSet } from 'state/ui/views/actions'
+import { setViewActive } from 'state/views/actions'
+import { isCurrentlyOnTicket } from 'utils'
+
+import SourceIcon from './SourceIcon'
 
 import css from './RecentChats.less'
-import SourceIcon from './SourceIcon'
 
 type ItemProps = {
     recentTicket: Map<any, any>
     position: number
 }
 
-const RecentChatsItem = ({recentTicket, position}: ItemProps) => {
+const RecentChatsItem = ({ recentTicket, position }: ItemProps) => {
     const dispatch = useAppDispatch()
     const channel = recentTicket.get('channel')
     const customer: Map<any, any> = recentTicket.get('customer') || fromJS({})

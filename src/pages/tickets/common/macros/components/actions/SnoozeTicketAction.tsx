@@ -1,5 +1,6 @@
-import {Map, fromJS} from 'immutable'
-import React, {useState} from 'react'
+import React, { useState } from 'react'
+
+import { fromJS, Map } from 'immutable'
 
 import TimedeltaPicker from 'pages/common/forms/TimedeltaPicker'
 
@@ -13,20 +14,20 @@ type Props = {
 
 export default function SnoozeTicketAction(props: Props) {
     const units = [
-        {label: 'minute(s)', value: 'm'},
-        {label: 'hour(s)', value: 'h'},
-        {label: 'day(s)', value: 'd'},
+        { label: 'minute(s)', value: 'm' },
+        { label: 'hour(s)', value: 'h' },
+        { label: 'day(s)', value: 'd' },
     ]
-    const {index, action, updateActionArgs} = props
+    const { index, action, updateActionArgs } = props
     const defaultDuration = action.getIn(
         ['arguments', 'snooze_timedelta'],
-        '1d'
+        '1d',
     )
     const [duration, setDuration] = useState(defaultDuration)
 
     const onChange = (value: string) => {
         setDuration(value)
-        updateActionArgs(index, fromJS({snooze_timedelta: value}))
+        updateActionArgs(index, fromJS({ snooze_timedelta: value }))
         return null
     }
 

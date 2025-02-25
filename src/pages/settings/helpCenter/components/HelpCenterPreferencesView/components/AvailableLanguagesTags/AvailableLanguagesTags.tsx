@@ -1,19 +1,21 @@
-import {Label} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
-import {Locale} from 'models/helpCenter/types'
+import { Label } from '@gorgias/merchant-ui-kit'
 
-import {useHelpCenterPreferencesSettings} from '../../../../providers/HelpCenterPreferencesSettings'
+import { Locale } from 'models/helpCenter/types'
+
+import { useHelpCenterPreferencesSettings } from '../../../../providers/HelpCenterPreferencesSettings'
+import { LanguageBadgeTags } from './LanguageBadgeTags'
 
 import css from './AvailableLanguagesTags.less'
-import {LanguageBadgeTags} from './LanguageBadgeTags'
 
 type Props = {
     availableLocales: Locale[]
 }
 
-export const AvailableLanguagesTags = ({availableLocales}: Props) => {
-    const {preferences, updatePreferences} = useHelpCenterPreferencesSettings()
+export const AvailableLanguagesTags = ({ availableLocales }: Props) => {
+    const { preferences, updatePreferences } =
+        useHelpCenterPreferencesSettings()
 
     return (
         <div className={css.container}>
@@ -25,7 +27,7 @@ export const AvailableLanguagesTags = ({availableLocales}: Props) => {
                 availableLocales={availableLocales}
                 defaultLanguage={preferences.defaultLanguage}
                 updateAvailableLanguages={(availableLanguages) =>
-                    updatePreferences({availableLanguages})
+                    updatePreferences({ availableLanguages })
                 }
                 showModalQuestion
             />

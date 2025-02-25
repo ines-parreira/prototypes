@@ -1,22 +1,23 @@
-import {fireEvent, render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {SegmentEvent, logEvent} from 'common/segment'
+import { logEvent, SegmentEvent } from 'common/segment'
 import useMeasure from 'hooks/useMeasure'
-import {useGetAiAgentFeedback} from 'models/aiAgentFeedback/queries'
-import {message} from 'models/ticket/tests/mocks'
-import {useAIAgentSendFeedback} from 'pages/tickets/detail/hooks/useAIAgentSendFeedback'
-import {getCurrentAccountId} from 'state/currentAccount/selectors'
-import {RootState} from 'state/types'
-import {getSelectedAIMessage} from 'state/ui/ticketAIAgentFeedback'
-import {assumeMock} from 'utils/testing'
+import { useGetAiAgentFeedback } from 'models/aiAgentFeedback/queries'
+import { message } from 'models/ticket/tests/mocks'
+import { useAIAgentSendFeedback } from 'pages/tickets/detail/hooks/useAIAgentSendFeedback'
+import { getCurrentAccountId } from 'state/currentAccount/selectors'
+import { RootState } from 'state/types'
+import { getSelectedAIMessage } from 'state/ui/ticketAIAgentFeedback'
+import { assumeMock } from 'utils/testing'
 
-import {messageFeedback} from '../../AIAgentFeedbackBar/tests/fixtures'
-import {PREVIEW_HEIGHT} from '../../RuleSuggestion/SuggestionBody'
+import { messageFeedback } from '../../AIAgentFeedbackBar/tests/fixtures'
+import { PREVIEW_HEIGHT } from '../../RuleSuggestion/SuggestionBody'
 import AIAgentDraftMessage from '../AIAgentDraftMessage'
 
 jest.mock('state/currentAccount/selectors')
@@ -83,8 +84,8 @@ describe('AIAgentDraftMessage', () => {
             isLoading: false,
         } as unknown as ReturnType<typeof useGetAiAgentFeedback>)
         store = mockStore({
-            ui: {editor: {isFocused: false}},
-            ticket: fromJS({_internal: {isPartialUpdating: false}}),
+            ui: { editor: { isFocused: false } },
+            ticket: fromJS({ _internal: { isPartialUpdating: false } }),
         })
         useMeasureMock.mockReturnValue([
             jest.fn(),
@@ -105,7 +106,7 @@ describe('AIAgentDraftMessage', () => {
         render(
             <Provider store={store}>
                 <AIAgentDraftMessage {...defaultProps} />
-            </Provider>
+            </Provider>,
         )
 
         expect(getCurrentAccountIdMock).toHaveBeenCalled()
@@ -115,7 +116,7 @@ describe('AIAgentDraftMessage', () => {
         render(
             <Provider store={store}>
                 <AIAgentDraftMessage {...defaultProps} />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('Copy to Editor')).toBeInTheDocument()
@@ -127,7 +128,7 @@ describe('AIAgentDraftMessage', () => {
             {
                 accountId: 1,
                 banner: 'qa_failed',
-            }
+            },
         )
     })
 
@@ -140,7 +141,7 @@ describe('AIAgentDraftMessage', () => {
         render(
             <Provider store={store}>
                 <AIAgentDraftMessage {...props} />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('Copy to Editor')).toBeInTheDocument()
@@ -152,7 +153,7 @@ describe('AIAgentDraftMessage', () => {
             {
                 accountId: 1,
                 banner: 'trial',
-            }
+            },
         )
     })
 
@@ -161,7 +162,7 @@ describe('AIAgentDraftMessage', () => {
             data: {
                 data: {
                     messages: [
-                        {...messageFeedback, summary: undefined},
+                        { ...messageFeedback, summary: undefined },
                         mockMessage,
                     ],
                 },
@@ -172,7 +173,7 @@ describe('AIAgentDraftMessage', () => {
         render(
             <Provider store={store}>
                 <AIAgentDraftMessage {...defaultProps} />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.queryByText('Copy to Editor')).toBeInTheDocument()
@@ -187,7 +188,7 @@ describe('AIAgentDraftMessage', () => {
         render(
             <Provider store={store}>
                 <AIAgentDraftMessage {...props} />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('Copy to Editor')).toBeInTheDocument()
@@ -204,7 +205,7 @@ describe('AIAgentDraftMessage', () => {
         render(
             <Provider store={store}>
                 <AIAgentDraftMessage {...props} />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('Copy to Editor')).toBeInTheDocument()

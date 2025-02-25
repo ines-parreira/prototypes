@@ -1,17 +1,17 @@
-import {QueryClientProvider, UseQueryResult} from '@tanstack/react-query'
-import {render, screen} from '@testing-library/react'
 import React from 'react'
+
+import { QueryClientProvider, UseQueryResult } from '@tanstack/react-query'
+import { render, screen } from '@testing-library/react'
 
 import {
     apiListCursorPaginationResponse,
     axiosSuccessResponse,
 } from 'fixtures/axiosResponse'
-import {HttpMethod} from 'models/api/types'
-import {useGetHTTPEvents} from 'models/integration/queries/http'
-import {HTTPIntegrationEvent} from 'models/integration/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-
-import {assumeMock} from 'utils/testing'
+import { HttpMethod } from 'models/api/types'
+import { useGetHTTPEvents } from 'models/integration/queries/http'
+import { HTTPIntegrationEvent } from 'models/integration/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 import Events from '../Events'
 
@@ -69,7 +69,7 @@ describe('Events', () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <Events integrationId={INTEGRATION_ID.toString()} />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         const objectWithDataKey = [
@@ -77,8 +77,8 @@ describe('Events', () => {
         ] as unknown as HTTPIntegrationEvent[]
         const selectReturn = mockUseGetHTTPEvents.mock.calls[0][1]?.select!(
             axiosSuccessResponse(
-                apiListCursorPaginationResponse(objectWithDataKey)
-            )
+                apiListCursorPaginationResponse(objectWithDataKey),
+            ),
         )
 
         expect(selectReturn).toBe(objectWithDataKey)
@@ -94,12 +94,12 @@ describe('Events', () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <Events integrationId={INTEGRATION_ID.toString()} />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(mockUseGetHTTPEvents).toHaveBeenCalledWith(
             INTEGRATION_ID,
-            expect.any(Object)
+            expect.any(Object),
         )
 
         expect(screen.getAllByText('https://example.com'))
@@ -117,7 +117,7 @@ describe('Events', () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <Events integrationId={INTEGRATION_ID.toString()} />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(screen.getByTestId('loader'))
@@ -133,7 +133,7 @@ describe('Events', () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <Events integrationId={INTEGRATION_ID.toString()} />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(screen.getByText(/An error occurred/))
@@ -149,7 +149,7 @@ describe('Events', () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <Events integrationId={INTEGRATION_ID.toString()} />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(screen.getByText(/no logs/))

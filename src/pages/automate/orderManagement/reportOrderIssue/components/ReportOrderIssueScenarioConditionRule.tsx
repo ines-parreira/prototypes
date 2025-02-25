@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react'
+import React, { useRef, useState } from 'react'
 
 import shopify from 'assets/img/integrations/shopify.png'
 import {
@@ -21,7 +21,7 @@ import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
-import {Option} from 'pages/common/forms/MultiSelectOptionsField/types'
+import { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
 
 import css from './ReportOrderIssueScenarioConditionRule.less'
 
@@ -82,20 +82,20 @@ const ReportOrderIssueScenarioConditionRule = <
 
     const operatorValue = Object.keys(value)[0] as JsonLogicOperator
     const operatorLabel = operatorsOptions.find(
-        (option) => option.value === operatorValue
+        (option) => option.value === operatorValue,
     )?.label
 
     const statusesSelectedOptions =
         operatorValue === JsonLogicOperator.IS_ONE_OF
             ? statusesOptions.filter((statusOption) =>
-                  rule[1]!.includes(statusOption.value)
+                  rule[1]!.includes(statusOption.value),
               )
             : []
 
     const handleStatusesChange = (nextOptions: Option[]) => {
         onChange({
             [JsonLogicOperator.IS_ONE_OF]: [
-                {var: variable},
+                { var: variable },
                 nextOptions.map((option) => option.value as string),
             ],
         })
@@ -108,12 +108,12 @@ const ReportOrderIssueScenarioConditionRule = <
         switch (nextOperator) {
             case JsonLogicOperator.EQUALS:
                 onChange({
-                    [JsonLogicOperator.EQUALS]: [{var: variable}, null],
+                    [JsonLogicOperator.EQUALS]: [{ var: variable }, null],
                 })
                 break
             case JsonLogicOperator.IS_ONE_OF:
                 onChange({
-                    [JsonLogicOperator.IS_ONE_OF]: [{var: variable}, []],
+                    [JsonLogicOperator.IS_ONE_OF]: [{ var: variable }, []],
                 })
                 break
         }

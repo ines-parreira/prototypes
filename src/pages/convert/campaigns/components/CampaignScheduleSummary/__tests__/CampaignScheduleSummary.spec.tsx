@@ -1,18 +1,17 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {Provider} from 'react-redux'
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {CampaignScheduleRuleValueEnum} from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
-
-import {SETTING_TYPE_BUSINESS_HOURS} from 'state/currentAccount/constants'
-import {RootState, StoreDispatch} from 'state/types'
+import { CampaignScheduleRuleValueEnum } from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
+import { SETTING_TYPE_BUSINESS_HOURS } from 'state/currentAccount/constants'
+import { RootState, StoreDispatch } from 'state/types'
 
 import CampaignScheduleSummary from '../CampaignScheduleSummary'
-import {SCHEDULE_RULE_LABELS} from '../constants'
+import { SCHEDULE_RULE_LABELS } from '../constants'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])
 
@@ -47,7 +46,7 @@ const renderComponent = (props?: any) => {
     return render(
         <Provider store={defaultStore}>
             <CampaignScheduleSummary {...props} />
-        </Provider>
+        </Provider>,
     )
 }
 
@@ -97,7 +96,7 @@ describe('<CampaignScheduleSummary />', () => {
             end_datetime: mockedEndDate,
         },
     ])('renders $schedule_type, $startDate - $endDate', (configuration) => {
-        const {getByText} = renderComponent({
+        const { getByText } = renderComponent({
             scheduleConfiguration: configuration,
         })
 
@@ -106,7 +105,7 @@ describe('<CampaignScheduleSummary />', () => {
 
         if (configuration.schedule_rule in SCHEDULE_RULE_LABELS) {
             expect(
-                getByText(SCHEDULE_RULE_LABELS[configuration.schedule_rule])
+                getByText(SCHEDULE_RULE_LABELS[configuration.schedule_rule]),
             ).toBeInTheDocument()
         }
 

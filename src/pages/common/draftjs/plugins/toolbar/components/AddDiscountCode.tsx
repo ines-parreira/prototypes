@@ -1,13 +1,14 @@
-import classnames from 'classnames'
-import {EditorState} from 'draft-js'
-import {fromJS, Map} from 'immutable'
-import _isEmpty from 'lodash/isEmpty'
-import React, {useCallback, useEffect, useState, useMemo} from 'react'
-import {ListGroup, ListGroupItem} from 'reactstrap'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
-import {AttachmentEnum} from 'common/types'
-import {useModalManager} from 'hooks/useModalManager'
-import {UniqueDiscountOffer} from 'models/convert/discountOffer/types'
+import classnames from 'classnames'
+import { EditorState } from 'draft-js'
+import { fromJS, Map } from 'immutable'
+import _isEmpty from 'lodash/isEmpty'
+import { ListGroup, ListGroupItem } from 'reactstrap'
+
+import { AttachmentEnum } from 'common/types'
+import { useModalManager } from 'hooks/useModalManager'
+import { UniqueDiscountOffer } from 'models/convert/discountOffer/types'
 import {
     DELETE_DISCOUNT_MODAL_NAME,
     DISCOUNT_MODAL_NAME,
@@ -18,22 +19,23 @@ import {
     discountCodeIsGeneric,
     discountCodeIsUnique,
 } from 'models/discountCodes/types'
-import {DiscountCodeResultsWrapper} from 'pages/common/components/DiscountCodeResultsWrapper/DiscountCodeResultsWrapper'
-import {DiscountOfferAttachment} from 'pages/convert/campaigns/types/CampaignAttachment'
+import { DiscountCodeResultsWrapper } from 'pages/common/components/DiscountCodeResultsWrapper/DiscountCodeResultsWrapper'
+import { DiscountOfferAttachment } from 'pages/convert/campaigns/types/CampaignAttachment'
 import shortcutManager from 'services/shortcutManager'
-import {getIconFromType} from 'state/integrations/helpers'
-import {insertText} from 'utils'
+import { getIconFromType } from 'state/integrations/helpers'
+import { insertText } from 'utils'
 
-import {addDiscountCodeLink} from '../../utils'
-import {useToolbarContext} from '../ToolbarContext'
-import {ActionInjectedProps, ActionName} from '../types'
-import {getTooltipTourConfiguration} from '../utils'
-import css from './AddDiscountCode.less'
+import { addDiscountCodeLink } from '../../utils'
+import { useToolbarContext } from '../ToolbarContext'
+import { ActionInjectedProps, ActionName } from '../types'
+import { getTooltipTourConfiguration } from '../utils'
 import Popover from './ButtonPopover'
+
+import css from './AddDiscountCode.less'
 
 type Props = ActionInjectedProps
 
-const AddDiscountCode = ({getEditorState, setEditorState}: Props) => {
+const AddDiscountCode = ({ getEditorState, setEditorState }: Props) => {
     const {
         canAddDiscountCodeLink,
         onInsertDiscountCodeOpen,
@@ -95,14 +97,14 @@ const AddDiscountCode = ({getEditorState, setEditorState}: Props) => {
                 newEditorState = addDiscountCodeLink(
                     editorState,
                     discount.shareable_url,
-                    discount.code
+                    discount.code,
                 )
             } else {
                 newEditorState = insertText(editorState, discount.code)
             }
             newEditorState = EditorState.forceSelection(
                 newEditorState,
-                newEditorState.getSelection()
+                newEditorState.getSelection(),
             )
             setEditorState(newEditorState)
 
@@ -113,7 +115,7 @@ const AddDiscountCode = ({getEditorState, setEditorState}: Props) => {
             getEditorState,
             onInsertDiscountCodeAdded,
             setEditorState,
-        ]
+        ],
     )
 
     const handleAddUniqueDiscountOffer = useCallback(
@@ -128,7 +130,7 @@ const AddDiscountCode = ({getEditorState, setEditorState}: Props) => {
             }
             onAddUniqueDiscountOfferAttachment(offerAttachment)
         },
-        [onAddUniqueDiscountOfferAttachment]
+        [onAddUniqueDiscountOfferAttachment],
     )
 
     const handleAddDiscountCode = useCallback(
@@ -140,13 +142,13 @@ const AddDiscountCode = ({getEditorState, setEditorState}: Props) => {
             }
             setOpen(false)
         },
-        [handleAddGenericDiscountCode, handleAddUniqueDiscountOffer]
+        [handleAddGenericDiscountCode, handleAddUniqueDiscountOffer],
     )
 
     const tour = useMemo(() => {
         return getTooltipTourConfiguration(
             ActionName.DiscountCodePicker,
-            toolbarTour
+            toolbarTour,
         )
     }, [toolbarTour])
 
@@ -194,7 +196,7 @@ const AddDiscountCode = ({getEditorState, setEditorState}: Props) => {
                                                 className={css.shopifyLogo}
                                                 alt="Logo"
                                                 src={getIconFromType(
-                                                    integration.get('type')
+                                                    integration.get('type'),
                                                 )}
                                             />
                                             <span>
@@ -204,14 +206,14 @@ const AddDiscountCode = ({getEditorState, setEditorState}: Props) => {
                                         <i
                                             className={classnames(
                                                 'material-icons',
-                                                css.arrowIcon
+                                                css.arrowIcon,
                                             )}
                                         >
                                             keyboard_arrow_right
                                         </i>
                                     </div>
                                 </ListGroupItem>
-                            )
+                            ),
                         )}
                     </ListGroup>
                 </div>

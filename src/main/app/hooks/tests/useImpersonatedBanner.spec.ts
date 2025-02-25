@@ -1,11 +1,11 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
+import { renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
 
-import {AlertBannerTypes, BannerCategories} from 'AlertBanners'
+import { AlertBannerTypes, BannerCategories } from 'AlertBanners'
 import useAppSelector from 'hooks/useAppSelector'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
-import {useImpersonatedBanner} from '../useImpersonatedBanner'
+import { useImpersonatedBanner } from '../useImpersonatedBanner'
 
 const mockedAddBanner = jest.fn()
 jest.mock(
@@ -14,9 +14,9 @@ jest.mock(
         ({
             ...jest.requireActual('AlertBanners'),
             useBanners: () => {
-                return {addBanner: mockedAddBanner}
+                return { addBanner: mockedAddBanner }
             },
-        }) as Record<string, unknown>
+        }) as Record<string, unknown>,
 )
 jest.mock('hooks/useAppSelector', () => jest.fn())
 
@@ -40,7 +40,7 @@ describe('useImpersonatedBanner', () => {
             fromJS({
                 id: '1',
                 email: 'heya',
-            })
+            }),
         )
 
         renderHook(useImpersonatedBanner)

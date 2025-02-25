@@ -1,7 +1,7 @@
-import {List} from 'immutable'
-
 import React from 'react'
-import {useHistory, useLocation} from 'react-router-dom'
+
+import { List } from 'immutable'
+import { useHistory, useLocation } from 'react-router-dom'
 
 import {
     AlertBannerTypes,
@@ -9,24 +9,23 @@ import {
     ContextBanner,
     useBanners,
 } from 'AlertBanners'
-
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useFlag} from 'core/flags'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
-import {getInactiveEmailChannels} from 'state/integrations/selectors'
+import { getInactiveEmailChannels } from 'state/integrations/selectors'
 
 export const useEmailDisconnectedBanner = () => {
-    const {addBanner, removeBanner} = useBanners()
+    const { addBanner, removeBanner } = useBanners()
 
     const bannerList: Record<string, boolean> = useFlag(
         FeatureFlagKey.GlobalBannerRefactor,
         {
             emailDisconnectedBanner: false,
-        }
+        },
     )
 
     const state: List<Map<string, any>> = useAppSelector(
-        getInactiveEmailChannels
+        getInactiveEmailChannels,
     )
     const history = useHistory()
     const location = useLocation()
@@ -41,7 +40,7 @@ export const useEmailDisconnectedBanner = () => {
     if (shouldHideBanner) {
         removeBanner(
             BannerCategories.EMAIL_DISCONNECTED,
-            'email-disconnected-banner'
+            'email-disconnected-banner',
         )
         return null
     }

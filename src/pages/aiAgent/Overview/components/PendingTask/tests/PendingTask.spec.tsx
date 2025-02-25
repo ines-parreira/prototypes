@@ -1,10 +1,11 @@
-import {render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
-import {PendingTask} from '../PendingTask'
+import { logEvent, SegmentEvent } from 'common/segment'
+
+import { PendingTask } from '../PendingTask'
 
 jest.mock('common/segment', () => ({
     logEvent: jest.fn(),
@@ -24,7 +25,7 @@ describe('PendingTask', () => {
                     ctaUrl="/"
                     title="title_text"
                     type={type}
-                />
+                />,
             )
 
             const titleElement = screen.getByText('title_text')
@@ -33,14 +34,14 @@ describe('PendingTask', () => {
             expect(captionElement).toBeInTheDocument()
             const typeElement = screen.getByText(type)
             expect(typeElement).toBeInTheDocument()
-        }
+        },
     )
     it('render the loading state', () => {
         render(<PendingTask isLoading={true} />)
 
         expect(screen.getAllByRole('link')[0]).toHaveAttribute(
             'aria-busy',
-            'true'
+            'true',
         )
     })
 
@@ -53,7 +54,7 @@ describe('PendingTask', () => {
                     ctaUrl="/"
                     title="title_text"
                     type={type}
-                />
+                />,
             )
 
             userEvent.click(screen.getByRole('link'))
@@ -63,8 +64,8 @@ describe('PendingTask', () => {
                 {
                     title: 'title_text',
                     task_type: type,
-                }
+                },
             )
-        }
+        },
     )
 })

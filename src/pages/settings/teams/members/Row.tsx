@@ -1,13 +1,15 @@
-import {Badge} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
-import React, {Component, SyntheticEvent} from 'react'
-import {Link} from 'react-router-dom'
+import React, { Component, SyntheticEvent } from 'react'
 
-import {Member} from 'models/team/types'
+import classnames from 'classnames'
+import { Link } from 'react-router-dom'
+
+import { Badge } from '@gorgias/merchant-ui-kit'
+
+import { Member } from 'models/team/types'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import IconButton from 'pages/common/components/button/IconButton'
 import CheckBox from 'pages/common/forms/CheckBox'
-import {RoleLabel} from 'pages/common/utils/labels'
+import { RoleLabel } from 'pages/common/utils/labels'
 
 import css from './Row.less'
 
@@ -30,14 +32,14 @@ export default class Row extends Component<Props, State> {
 
     _deleteTeamMember = (event: SyntheticEvent) => {
         event.preventDefault()
-        this.setState({isDeleting: true})
+        this.setState({ isDeleting: true })
         return this.props.deleteTeamMember().catch(() => {
-            this.setState({isDeleting: false})
+            this.setState({ isDeleting: false })
         })
     }
 
     render() {
-        const {member, isAccountOwner, select, isSelected} = this.props
+        const { member, isAccountOwner, select, isSelected } = this.props
         const isDeleting = this.state.isDeleting
         const editLink = `/app/settings/users/${member.id}`
         return (

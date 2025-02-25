@@ -1,11 +1,12 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import React, {useCallback, useState} from 'react'
+import React, { useCallback, useState } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import Label from 'custom-fields/components/Label'
 import StealthInput from 'custom-fields/components/StealthInput'
-import {useUpdateOrDeleteTicketFieldValue} from 'custom-fields/hooks/queries/useUpdateOrDeleteTicketFieldValue'
-import {CustomFieldState} from 'custom-fields/types'
+import { useUpdateOrDeleteTicketFieldValue } from 'custom-fields/hooks/queries/useUpdateOrDeleteTicketFieldValue'
+import { CustomFieldState } from 'custom-fields/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -13,7 +14,7 @@ import {
     updateCustomFieldState,
     updateCustomFieldValue,
 } from 'state/ticket/actions'
-import {getTicket} from 'state/ticket/selectors'
+import { getTicket } from 'state/ticket/selectors'
 
 import css from './Field.less'
 
@@ -50,7 +51,7 @@ export default function TextField({
             }
             setCurrentValue(newValue)
         },
-        [dispatch, id, hasError]
+        [dispatch, id, hasError],
     )
 
     // Update the value when the state value changes
@@ -67,13 +68,13 @@ export default function TextField({
                 id,
                 hasError: Boolean(isRequired && !stateValue),
                 value: stateValue,
-            })
+            }),
         )
     }, [stateValue, dispatch, id, isRequired])
     // Only on blur
-    const {mutate} = useUpdateOrDeleteTicketFieldValue(
-        {onError},
-        {isDisabled: !ticketId}
+    const { mutate } = useUpdateOrDeleteTicketFieldValue(
+        { onError },
+        { isDisabled: !ticketId },
     )
 
     const inputId = `ticket-${ticketId}-custom-field-value-input-${id}`
@@ -103,7 +104,7 @@ export default function TextField({
                                 ticketId,
                                 id,
                                 label,
-                            }
+                            },
                         )
                     }}
                     onBlur={() => {
@@ -111,7 +112,7 @@ export default function TextField({
                         const trimmedCurrentValue = currentValue.trim()
                         setCurrentValue(trimmedCurrentValue)
                         dispatch(
-                            updateCustomFieldValue(id, trimmedCurrentValue)
+                            updateCustomFieldValue(id, trimmedCurrentValue),
                         )
                         if (trimmedCurrentValue !== stateValue) {
                             mutate([

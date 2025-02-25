@@ -1,17 +1,18 @@
-import moment from 'moment'
-import React, {ComponentProps, useMemo} from 'react'
+import React, { ComponentProps, useMemo } from 'react'
 
-import {TicketStatus} from 'business/types/ticket'
-import {DateAndTimeFormatting} from 'constants/datetime'
+import moment from 'moment'
+
+import { TicketStatus } from 'business/types/ticket'
+import { DateAndTimeFormatting } from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import {EntityType} from 'hooks/useSearchRankScenario'
-import {PicketVoiceCallWithHighlights} from 'models/search/types'
-import {callHighlightsTransform} from 'pages/common/components/Spotlight/helpers'
+import { EntityType } from 'hooks/useSearchRankScenario'
+import { PicketVoiceCallWithHighlights } from 'models/search/types'
+import { callHighlightsTransform } from 'pages/common/components/Spotlight/helpers'
 import SpotlightRow from 'pages/common/components/Spotlight/SpotlightRow'
 import TicketIcon from 'pages/common/components/TicketIcon'
 import VoiceCallCustomerLabel from 'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel'
 import DEPRECATED_VoiceCallStatusLabel from 'pages/common/components/VoiceCallStatusLabel/DEPRECATED_VoiceCallStatusLabel'
-import {formatDatetime} from 'utils'
+import { formatDatetime } from 'utils'
 
 import css from './SpotlightCallRow.less'
 
@@ -36,7 +37,7 @@ const SpotlightCallRow = ({
 }: SpotlightCallRowProps) => {
     const itemWithHighlights = useMemo(
         () => callHighlightsTransform(item),
-        [item]
+        [item],
     )
 
     return (
@@ -63,27 +64,29 @@ const SpotlightCallInfo = ({
     voiceCall: PicketVoiceCallWithHighlights
 }) => {
     const datetimeFormatShort = useGetDateAndTimeFormat(
-        DateAndTimeFormatting.ShortDateWithOrdinalSuffixDay
+        DateAndTimeFormatting.ShortDateWithOrdinalSuffixDay,
     )
     const datetimeFormatShortWithYear = useGetDateAndTimeFormat(
-        DateAndTimeFormatting.ShortDateWithYearAndOrdinalSuffixDay
+        DateAndTimeFormatting.ShortDateWithYearAndOrdinalSuffixDay,
     )
 
     const formattedDate = useMemo(() => {
         const isToday = moment(voiceCall.created_datetime).isSame(
             moment(),
-            'day'
+            'day',
         )
         const isThisYear = moment(voiceCall.created_datetime).isSame(
             moment(),
-            'year'
+            'year',
         )
 
         return isToday
             ? 'Today'
             : formatDatetime(
                   voiceCall.created_datetime,
-                  isThisYear ? datetimeFormatShort : datetimeFormatShortWithYear
+                  isThisYear
+                      ? datetimeFormatShort
+                      : datetimeFormatShortWithYear,
               )
     }, [voiceCall, datetimeFormatShort, datetimeFormatShortWithYear])
 

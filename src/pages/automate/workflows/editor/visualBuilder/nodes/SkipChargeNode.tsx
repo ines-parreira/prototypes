@@ -1,16 +1,17 @@
-import React, {memo} from 'react'
-import {NodeProps} from 'reactflow'
+import React, { memo } from 'react'
+
+import { NodeProps } from 'reactflow'
 
 import VisualBuilderActionTag from 'pages/automate/workflows/components/VisualBuilderActionTag'
 import {
     useVisualBuilderNodeProps,
     VisualBuilderNodeProps,
 } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
-import {SkipChargeNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { SkipChargeNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 import EdgeBlock from '../components/EdgeBlock'
 import NodeDeleteIcon from '../components/NodeDeleteIcon'
-import {defaultNodeNames} from './constants'
+import { defaultNodeNames } from './constants'
 import VisualBuilderNode from './VisualBuilderNode'
 import VisualBuilderNodeContent from './VisualBuilderNodeContent'
 
@@ -45,7 +46,7 @@ const SkipChargeNode = memo(function SkipChargeNode({
 })
 
 export default function SkipChargeNodeWrapper(
-    node: NodeProps<SkipChargeNodeType['data']>
+    node: NodeProps<SkipChargeNodeType['data']>,
 ) {
     const commonProps = useVisualBuilderNodeProps(node)
 

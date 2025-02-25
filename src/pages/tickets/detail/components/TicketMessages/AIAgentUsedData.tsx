@@ -1,38 +1,40 @@
+import React, { useMemo } from 'react'
+
 import classNames from 'classnames'
-import React, {useMemo} from 'react'
 
 import shopifyLogo from 'assets/img/ai-agent/ai-agent-shopify.svg'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
-import {useGetAiAgentFeedback} from 'models/aiAgentFeedback/queries'
+import { useGetAiAgentFeedback } from 'models/aiAgentFeedback/queries'
 
 import {
     getActionUrl,
     getGuidanceUrl,
     getKnowledgeUrl,
 } from '../AIAgentFeedbackBar/utils'
+
 import css from './AIAgentUsedData.less'
 
 type Props = {
     messageId: number
 }
 
-const AIAgentUsedData = ({messageId}: Props) => {
+const AIAgentUsedData = ({ messageId }: Props) => {
     const hasAgentPrivileges = useHasAgentPrivileges()
-    const {data} = useGetAiAgentFeedback({
+    const { data } = useGetAiAgentFeedback({
         refetchOnWindowFocus: false,
     })
 
-    const {orders, actions, knowledge, guidance, shopName, shopType} =
+    const { orders, actions, knowledge, guidance, shopName, shopType } =
         useMemo(() => {
             const messageFeedback = data?.data.messages.find(
-                (message) => message.messageId === messageId
+                (message) => message.messageId === messageId,
             )
 
             if (!messageFeedback) {
                 return {}
             }
 
-            const {orders, actions, knowledge, guidance, shopName, shopType} =
+            const { orders, actions, knowledge, guidance, shopName, shopType } =
                 messageFeedback
 
             return {
@@ -75,7 +77,7 @@ const AIAgentUsedData = ({messageId}: Props) => {
                         <i
                             className={classNames(
                                 'material-icons',
-                                css.openIcon
+                                css.openIcon,
                             )}
                         >
                             open_in_new
@@ -97,7 +99,7 @@ const AIAgentUsedData = ({messageId}: Props) => {
                         <i
                             className={classNames(
                                 'material-icons',
-                                css.resourceIcon
+                                css.resourceIcon,
                             )}
                         >
                             play_circle_filled
@@ -106,7 +108,7 @@ const AIAgentUsedData = ({messageId}: Props) => {
                         <i
                             className={classNames(
                                 'material-icons',
-                                css.openIcon
+                                css.openIcon,
                             )}
                         >
                             open_in_new
@@ -128,7 +130,7 @@ const AIAgentUsedData = ({messageId}: Props) => {
                         <i
                             className={classNames(
                                 'material-icons',
-                                css.resourceIcon
+                                css.resourceIcon,
                             )}
                         >
                             map
@@ -137,7 +139,7 @@ const AIAgentUsedData = ({messageId}: Props) => {
                         <i
                             className={classNames(
                                 'material-icons',
-                                css.openIcon
+                                css.openIcon,
                             )}
                         >
                             open_in_new
@@ -159,7 +161,7 @@ const AIAgentUsedData = ({messageId}: Props) => {
                         <i
                             className={classNames(
                                 'material-icons',
-                                css.resourceIcon
+                                css.resourceIcon,
                             )}
                         >
                             article
@@ -168,7 +170,7 @@ const AIAgentUsedData = ({messageId}: Props) => {
                         <i
                             className={classNames(
                                 'material-icons',
-                                css.openIcon
+                                css.openIcon,
                             )}
                         >
                             open_in_new

@@ -1,15 +1,17 @@
-import {fromJS} from 'immutable'
-import React, {useEffect, CSSProperties, useMemo} from 'react'
-import {Collapse} from 'reactstrap'
+import React, { CSSProperties, useEffect, useMemo } from 'react'
+
+import { fromJS } from 'immutable'
+import { Collapse } from 'reactstrap'
 
 import useMeasure from 'hooks/useMeasure'
-import {MacroAction} from 'models/macroAction/types'
-import {TicketMessage} from 'models/ticket/types'
+import { MacroAction } from 'models/macroAction/types'
+import { TicketMessage } from 'models/ticket/types'
 import TicketReplyAction from 'pages/tickets/detail/components/ReplyArea/TicketReplyAction'
 import AIAgentUsedData from 'pages/tickets/detail/components/TicketMessages/AIAgentUsedData'
 
 import AIAgentBanner from '../TicketMessages/AIAgentBanner'
-import {SuggestionStates} from './InTicketSuggestion'
+import { SuggestionStates } from './InTicketSuggestion'
+
 import css from './SuggestionBody.less'
 
 type Props = {
@@ -37,7 +39,7 @@ export default function SuggestionBody({
     messages,
     isTrialMessage,
 }: Props) {
-    const [innerRef, {height}] = useMeasure<HTMLDivElement>()
+    const [innerRef, { height }] = useMeasure<HTMLDivElement>()
 
     useEffect(() => {
         if (isTrialMessage && state === 'preview') {
@@ -73,7 +75,7 @@ export default function SuggestionBody({
         }
 
         if (typeof text === 'string')
-            return <div dangerouslySetInnerHTML={{__html: text}} />
+            return <div dangerouslySetInnerHTML={{ __html: text }} />
 
         return text
     }, [text])

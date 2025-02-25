@@ -3,23 +3,22 @@ import * as reapop from 'reapop'
 
 import * as segment from 'common/segment'
 import * as actions from 'state/notifications/actions'
-
-import {BannerNotification} from 'state/notifications/types'
+import { BannerNotification } from 'state/notifications/types'
 
 import {
     RELOAD_TAB_DELAY,
     SCOPED_BROADCAST_CHANNEL_NAME,
     SHARED_WORKER_NAME,
 } from '../constants'
-import {SocketManager} from '../socketManager'
+import { SocketManager } from '../socketManager'
 import {
     BroadcastChannelEvent,
-    MessagePortEvent,
     JoinEventType,
+    MessagePortEvent,
     ReceivedEvent,
-    SocketEventType,
     SendEvent,
     ServerMessage,
+    SocketEventType,
 } from '../types'
 
 const logEventSpy = jest.spyOn(segment, 'logEvent')
@@ -56,10 +55,10 @@ describe('SocketManager', () => {
                     socketManager.worker as SharedWorker & {
                         constructorSpy: jest.Mock
                     }
-                ).constructorSpy
+                ).constructorSpy,
             ).toHaveBeenCalledWith(
                 window.SHARED_WORKER_BUILD_URL,
-                SHARED_WORKER_NAME
+                SHARED_WORKER_NAME,
             )
 
             expect(socketManager.worker).toBeInstanceOf(window.SharedWorker)
@@ -71,17 +70,17 @@ describe('SocketManager', () => {
             })
 
             expect(socketManager.scopedBroadcastChannel).toBeInstanceOf(
-                window.BroadcastChannel
+                window.BroadcastChannel,
             )
             expect(
                 (
                     socketManager.scopedBroadcastChannel as BroadcastChannel & {
                         constructorSpy: jest.Mock
                     }
-                ).constructorSpy
+                ).constructorSpy,
             ).toHaveBeenCalledWith(SCOPED_BROADCAST_CHANNEL_NAME)
             expect(
-                socketManager.scopedBroadcastChannel.addEventListener
+                socketManager.scopedBroadcastChannel.addEventListener,
             ).toHaveBeenCalledTimes(1)
         })
     })
@@ -123,7 +122,7 @@ describe('SocketManager', () => {
         it('should call `onServerMessage` when receiving a `SERVER_MESSAGE` event', () => {
             const message = {
                 type: BroadcastChannelEvent.ServerMessage,
-                json: {foo: 'bar'},
+                json: { foo: 'bar' },
             }
 
             socketManager.onMessage(message)
@@ -137,13 +136,13 @@ describe('SocketManager', () => {
     })
 
     describe('onServerMessage()', () => {
-        it.each([null, {}, {foo: 'bar'}, {event: {foo: 'bar'}}])(
+        it.each([null, {}, { foo: 'bar' }, { event: { foo: 'bar' } }])(
             'should not do anything and not throw an error when passed message is missing some fields',
             (serverMessage) => {
                 socketManager.onServerMessage(
-                    serverMessage as Maybe<ServerMessage>
+                    serverMessage as Maybe<ServerMessage>,
                 )
-            }
+            },
         )
 
         it('should call `onReceive` of matching configuration', () => {
@@ -155,7 +154,7 @@ describe('SocketManager', () => {
             socketManager.registerReceivedEvents([event])
 
             const eventType = 'customer-updated'
-            const serverMessage = {event: {type: eventType}}
+            const serverMessage = { event: { type: eventType } }
 
             event.onReceive.call = jest.fn()
 
@@ -163,7 +162,7 @@ describe('SocketManager', () => {
 
             expect(event.onReceive.call).toHaveBeenCalledWith(
                 socketManager,
-                serverMessage
+                serverMessage,
             )
         })
     })
@@ -229,7 +228,7 @@ describe('SocketManager', () => {
                 onLeave: function (id) {
                     return (this as unknown as SocketManager).send(
                         SocketEventType.AgentTypingStopped,
-                        id
+                        id,
                     )
                 },
             }
@@ -256,7 +255,7 @@ describe('SocketManager', () => {
                 onLeave: function (id) {
                     return (this as unknown as SocketManager).send(
                         SocketEventType.AgentTypingStopped,
-                        id
+                        id,
                     )
                 },
             }
@@ -283,7 +282,7 @@ describe('SocketManager', () => {
             jest.advanceTimersByTime(RELOAD_TAB_DELAY * 1000)
             expect(onReloadSpy).toHaveBeenCalledTimes(1)
             expect(
-                socketManager.scopedBroadcastChannel.postMessage
+                socketManager.scopedBroadcastChannel.postMessage,
             ).toHaveBeenNthCalledWith(1, {
                 type: BroadcastChannelEvent.ReloadAllTabs,
             })

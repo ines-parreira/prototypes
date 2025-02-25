@@ -1,23 +1,26 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment/moment'
 
-import {TicketChannel} from 'business/types/ticket'
+import { TicketChannel } from 'business/types/ticket'
 import {
     useClosedTicketsMetricPerAgent,
     useZeroTouchTicketsMetricPerAgent,
 } from 'hooks/reporting/metricsPerAgent'
-import {useZeroTouchTicketsPercentageMetricPerAgent} from 'hooks/reporting/support-performance/agents/useZeroTouchTicketsPercentageMetricPerAgent'
-import {OrderDirection} from 'models/api/types'
-import {TicketDimension, TicketMeasure} from 'models/reporting/cubes/TicketCube'
-import {LegacyStatsFilters} from 'models/stat/types'
-import {assumeMock} from 'utils/testing'
+import { useZeroTouchTicketsPercentageMetricPerAgent } from 'hooks/reporting/support-performance/agents/useZeroTouchTicketsPercentageMetricPerAgent'
+import { OrderDirection } from 'models/api/types'
+import {
+    TicketDimension,
+    TicketMeasure,
+} from 'models/reporting/cubes/TicketCube'
+import { LegacyStatsFilters } from 'models/stat/types'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/metricsPerAgent')
 const useZeroTouchTicketsMetricPerAgentMock = assumeMock(
-    useZeroTouchTicketsMetricPerAgent
+    useZeroTouchTicketsMetricPerAgent,
 )
 const useClosedTicketsMetricPerAgentMock = assumeMock(
-    useClosedTicketsMetricPerAgent
+    useClosedTicketsMetricPerAgent,
 )
 
 describe('useZeroTouchTicketsPercentageMetricPerAgent', () => {
@@ -86,15 +89,15 @@ describe('useZeroTouchTicketsPercentageMetricPerAgent', () => {
             isFetching: false,
         })
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useZeroTouchTicketsPercentageMetricPerAgent(
                     statsFilters,
                     timezone,
                     sorting,
-                    agentId
+                    agentId,
                 ),
-            {}
+            {},
         )
 
         expect(result.current).toEqual({
@@ -137,15 +140,15 @@ describe('useZeroTouchTicketsPercentageMetricPerAgent', () => {
             isFetching: false,
         })
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useZeroTouchTicketsPercentageMetricPerAgent(
                     statsFilters,
                     timezone,
                     sorting,
-                    missingAgentId
+                    missingAgentId,
                 ),
-            {}
+            {},
         )
 
         expect(result.current).toEqual({
@@ -186,15 +189,15 @@ describe('useZeroTouchTicketsPercentageMetricPerAgent', () => {
             isFetching: false,
         })
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useZeroTouchTicketsPercentageMetricPerAgent(
                     statsFilters,
                     timezone,
                     sorting,
-                    missingAgentId
+                    missingAgentId,
                 ),
-            {}
+            {},
         )
 
         expect(result.current).toEqual({

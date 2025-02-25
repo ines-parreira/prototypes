@@ -1,22 +1,23 @@
-import {render, fireEvent, waitFor} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {logEvent} from 'common/segment'
-import {account} from 'fixtures/account'
+import { logEvent } from 'common/segment'
+import { account } from 'fixtures/account'
 import {
-    setTextAction,
-    shopifyAction,
     addTagsAction,
     httpAction,
     macroFixture,
+    setTextAction,
+    shopifyAction,
 } from 'fixtures/macro'
-import {ticket} from 'fixtures/ticket'
-import {user} from 'fixtures/users'
-import {RootState, StoreDispatch} from 'state/types'
+import { ticket } from 'fixtures/ticket'
+import { user } from 'fixtures/users'
+import { RootState, StoreDispatch } from 'state/types'
 
 import MacrosQuickReply from '../MacrosQuickReply'
 
@@ -54,50 +55,52 @@ describe('<MacrosQuickReply />', () => {
     const store = mockStore(state)
 
     it('should render the macros quick reply area', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <MacrosQuickReply {...minProps} />{' '}
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should show the tooltip when hovering on the icon', async () => {
-        const {getByText, findByText} = render(
+        const { getByText, findByText } = render(
             <Provider store={store}>
                 <MacrosQuickReply {...minProps} />
-            </Provider>
+            </Provider>,
         )
         fireEvent.mouseOver(getByText('info_outline'))
-        const tooltip = await findByText('Macros are suggested', {exact: false})
+        const tooltip = await findByText('Macros are suggested', {
+            exact: false,
+        })
         expect(tooltip).toMatchSnapshot()
     })
 
     it('should send an event to segment when applying a macro', async () => {
-        const {getAllByRole} = render(
+        const { getAllByRole } = render(
             <Provider store={store}>
                 <MacrosQuickReply {...minProps} />
-            </Provider>
+            </Provider>,
         )
         getAllByRole('button').map((button) => fireEvent.click(button))
         await waitFor(() => expect(logEventMock.mock.calls).toMatchSnapshot())
     })
 
     it('should send an event to segment when hovering the info icon', async () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <MacrosQuickReply {...minProps} />
-            </Provider>
+            </Provider>,
         )
         fireEvent.mouseOver(getByText('info_outline'))
         await waitFor(() => expect(logEventMock.mock.calls).toMatchSnapshot())
     })
 
     it('should send an event to segment when hovering over a macro', async () => {
-        const {getAllByRole} = render(
+        const { getAllByRole } = render(
             <Provider store={store}>
                 <MacrosQuickReply {...minProps} />
-            </Provider>
+            </Provider>,
         )
         fireEvent.mouseOver(getAllByRole('button')[0])
         await waitFor(() => expect(logEventMock.mock.calls).toMatchSnapshot())

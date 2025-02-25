@@ -1,3 +1,5 @@
+import React, { useState } from 'react'
+
 import {
     FloatingFocusManager,
     FloatingOverlay,
@@ -5,16 +7,16 @@ import {
     useInteractions,
     useRole,
 } from '@floating-ui/react'
-import React, {useState} from 'react'
 
 import {
     BigCommerceCartLineItem,
     BigCommerceProduct,
 } from 'models/integration/types'
 
-import {ModifiersPopover} from './ModifiersPopover'
+import { ModifiersPopover } from './ModifiersPopover'
+import { ModifierValues } from './types'
+
 import css from './ModifiersPopover.less'
-import {ModifierValues} from './types'
 
 type EditModifiersPopoverState = {
     product: BigCommerceProduct
@@ -26,14 +28,14 @@ export default function useEditModifiersPopover(
     onApply: (props: {
         product: BigCommerceProduct
         modifierValues: ModifierValues
-    }) => void
+    }) => void,
 ) {
     const [props, setProps] = useState<EditModifiersPopoverState | null>(null)
 
-    const {refs, context} = useFloating({open: Boolean(props)})
+    const { refs, context } = useFloating({ open: Boolean(props) })
     const role = useRole(context)
 
-    const {getReferenceProps} = useInteractions([role])
+    const { getReferenceProps } = useInteractions([role])
 
     const onClose = () => setProps(null)
 

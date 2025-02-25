@@ -1,15 +1,17 @@
-import {EmailIntegration} from '@gorgias/api-queries'
-import {screen, render} from '@testing-library/react'
 import React from 'react'
 
+import { render, screen } from '@testing-library/react'
+
+import { EmailIntegration } from '@gorgias/api-queries'
+
 import PromptModal from 'pages/common/components/PromptModal'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
 import EmailDomainVerificationContent from '../EmailDomainVerification/EmailDomainVerificationContent'
 import useDomainVerification from '../EmailDomainVerification/useDomainVerification'
 import EmailIntegrationOnboardingButtons from '../EmailIntegrationOnboardingButtons'
 import EmailIntegrationOnboardingDomainVerification from '../EmailIntegrationOnboardingDomainVerification'
-import {useEmailOnboardingCompleteCheck} from '../hooks/useEmailOnboarding'
+import { useEmailOnboardingCompleteCheck } from '../hooks/useEmailOnboarding'
 
 jest.mock('pages/common/components/PromptModal')
 jest.mock('../EmailDomainVerification/EmailDomainVerificationContent')
@@ -18,15 +20,15 @@ jest.mock('../EmailIntegrationOnboardingButtons')
 jest.mock('../hooks/useEmailOnboarding')
 
 const EmailDomainVerificationContentMock = assumeMock(
-    EmailDomainVerificationContent
+    EmailDomainVerificationContent,
 )
 const useDomainVerificationMock = assumeMock(useDomainVerification)
 const PromptModalMock = assumeMock(PromptModal)
 const EmailIntegrationOnboardingButtonsMock = assumeMock(
-    EmailIntegrationOnboardingButtons
+    EmailIntegrationOnboardingButtons,
 )
 const useEmailOnboardingCompleteCheckMock = assumeMock(
-    useEmailOnboardingCompleteCheck
+    useEmailOnboardingCompleteCheck,
 )
 
 const integration = {
@@ -41,21 +43,21 @@ describe('EmailIntegrationOnboardingDomainVerification', () => {
         render(
             <EmailIntegrationOnboardingDomainVerification
                 integration={integration}
-            />
+            />,
         )
 
     const completeOnboarding = jest.fn()
 
     beforeEach(() => {
         EmailDomainVerificationContentMock.mockReturnValue(
-            <div>EmailDomainVerificationContent</div>
+            <div>EmailDomainVerificationContent</div>,
         )
         useDomainVerificationMock.mockReturnValue({
             domain: {},
         } as ReturnType<typeof useDomainVerification>)
         PromptModalMock.mockReturnValue(<div>PromptModal</div>)
         EmailIntegrationOnboardingButtonsMock.mockReturnValue(
-            <div>EmailIntegrationOnboardingButtons</div>
+            <div>EmailIntegrationOnboardingButtons</div>,
         )
         useEmailOnboardingCompleteCheckMock.mockReturnValue({
             completeOnboarding,
@@ -67,22 +69,22 @@ describe('EmailIntegrationOnboardingDomainVerification', () => {
         renderComponent()
 
         expect(
-            screen.getByText('EmailDomainVerificationContent')
+            screen.getByText('EmailDomainVerificationContent'),
         ).toBeInTheDocument()
         expect(
-            screen.getByText('EmailIntegrationOnboardingButtons')
+            screen.getByText('EmailIntegrationOnboardingButtons'),
         ).toBeInTheDocument()
         expect(EmailDomainVerificationContentMock).toHaveBeenCalledWith(
             {
                 integration,
             },
-            {}
+            {},
         )
         expect(EmailIntegrationOnboardingButtonsMock).toHaveBeenCalledWith(
             {
                 integration,
             },
-            {}
+            {},
         )
     })
 

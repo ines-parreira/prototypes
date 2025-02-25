@@ -1,23 +1,22 @@
 // Highlight free shipping benefit for customers near the threshold & offer accessories
-
-import {Map} from 'immutable'
-import {ulid} from 'ulidx'
+import { Map } from 'immutable'
+import { ulid } from 'ulidx'
 
 import {
-    WizardConfiguration,
     BannerType,
     TooltipActionType,
+    WizardConfiguration,
 } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
-import {CampaignStepsKeys} from 'pages/convert/campaigns/types/CampaignSteps'
-import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
-import {CampaignTriggerBusinessHoursValuesEnum} from 'pages/convert/campaigns/types/enums/CampaignTriggerBusinessHoursValues.enum'
-import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
-import {createTriggerRule} from 'pages/convert/campaigns/utils/createTriggerRule'
-import {assetsUrl} from 'utils'
+import { CampaignStepsKeys } from 'pages/convert/campaigns/types/CampaignSteps'
+import { CampaignStatus } from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
+import { CampaignTriggerBusinessHoursValuesEnum } from 'pages/convert/campaigns/types/enums/CampaignTriggerBusinessHoursValues.enum'
+import { CampaignTriggerOperator } from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
+import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import { createTriggerRule } from 'pages/convert/campaigns/utils/createTriggerRule'
+import { assetsUrl } from 'utils'
 
-import {CampaignConfigurationBuilder} from '../constructor'
-import {CampaignConfiguration, CampaignTemplate} from '../types'
+import { CampaignConfigurationBuilder } from '../constructor'
+import { CampaignConfiguration, CampaignTemplate } from '../types'
 
 export const FREE_SHIPPING_BENEFITS: CampaignTemplate = {
     slug: 'free-shipping-benefits-for-customers-near-threshold',
@@ -53,7 +52,7 @@ export const FREE_SHIPPING_BENEFITS: CampaignTemplate = {
         }
     },
     getConfiguration: async (
-        storeIntegration: Map<string, any>
+        storeIntegration: Map<string, any>,
     ): Promise<CampaignConfiguration> => {
         const triggers = [
             {
@@ -92,7 +91,7 @@ export const FREE_SHIPPING_BENEFITS: CampaignTemplate = {
                     delay: 15000,
                     noReply: true,
                 },
-            }
+            },
         )
 
         await builder.attachProductCards(storeIntegration, 3)

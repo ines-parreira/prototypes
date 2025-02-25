@@ -1,4 +1,4 @@
-import {formatPercentage} from '../numbers'
+import { formatPercentage } from '../numbers'
 
 describe('formatPercentage', () => {
     it('should format a number as a percentage', () => {
@@ -8,8 +8,8 @@ describe('formatPercentage', () => {
     })
 
     it('should format a number as a percentage with a custom maximumFractionDigits', () => {
-        expect(formatPercentage(50, {maximumFractionDigits: 0})).toBe('50%')
-        expect(formatPercentage(0.251, {maximumFractionDigits: 0})).toBe('0%')
-        expect(formatPercentage(75.2, {maximumFractionDigits: 0})).toBe('75%')
+        expect(formatPercentage(50, { maximumFractionDigits: 0 })).toBe('50%')
+        expect(formatPercentage(0.251, { maximumFractionDigits: 0 })).toBe('0%')
+        expect(formatPercentage(75.2, { maximumFractionDigits: 0 })).toBe('75%')
     })
 })

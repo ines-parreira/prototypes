@@ -1,8 +1,8 @@
-import {WorkflowConfigurationShallow} from '../pages/automate/workflows/models/workflowConfiguration.types'
+import { WorkflowConfigurationShallow } from '../pages/automate/workflows/models/workflowConfiguration.types'
 
 export const createWorkflowConfigurationShallow = (
     id: string,
-    props?: Partial<WorkflowConfigurationShallow>
+    props?: Partial<WorkflowConfigurationShallow>,
 ): WorkflowConfigurationShallow => ({
     id,
     available_languages: ['en-US'],

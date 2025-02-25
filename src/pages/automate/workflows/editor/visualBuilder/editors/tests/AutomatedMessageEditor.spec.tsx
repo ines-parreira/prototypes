@@ -1,13 +1,14 @@
-import {act, fireEvent} from '@testing-library/react'
 import React from 'react'
+
+import { act, fireEvent } from '@testing-library/react'
 
 import {
     createSelfServiceStoreIntegrationContextForPreview,
     StoreIntegrationContext,
 } from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import NodeEditorDrawerContext from 'pages/automate/workflows/editor/visualBuilder/NodeEditorDrawerContext'
-import {TranslationsPreviewContext} from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
-import {VisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
+import { TranslationsPreviewContext } from 'pages/automate/workflows/hooks/useTranslationsPreviewContext'
+import { VisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {
     buildEdgeCommonProperties,
     buildNodeCommonProperties,
@@ -16,7 +17,7 @@ import {
     AutomatedMessageNodeType,
     VisualBuilderGraph,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import {renderWithStore} from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 import AutomatedMessageEditor from '../AutomatedMessageEditor'
 
@@ -67,7 +68,7 @@ describe('<AutomatedMessageEditor />', () => {
             isTemplate: false,
         }
 
-        const {container} = renderWithStore(
+        const { container } = renderWithStore(
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph: graph,
@@ -80,7 +81,9 @@ describe('<AutomatedMessageEditor />', () => {
                     isNew: false,
                 }}
             >
-                <NodeEditorDrawerContext.Provider value={{onClose: jest.fn()}}>
+                <NodeEditorDrawerContext.Provider
+                    value={{ onClose: jest.fn() }}
+                >
                     <StoreIntegrationContext.Provider
                         value={createSelfServiceStoreIntegrationContextForPreview()}
                     >
@@ -99,12 +102,12 @@ describe('<AutomatedMessageEditor />', () => {
                     </StoreIntegrationContext.Provider>
                 </NodeEditorDrawerContext.Provider>
             </VisualBuilderContext.Provider>,
-            {}
+            {},
         )
 
         act(() => {
             const editor = container.querySelectorAll(
-                '.public-DraftEditor-content'
+                '.public-DraftEditor-content',
             )[0]
 
             fireEvent.focus(editor)
@@ -120,7 +123,7 @@ describe('<AutomatedMessageEditor />', () => {
         })
 
         expect(mockGetVariableListForNode).toHaveBeenCalledWith(
-            nodeInEdition.id
+            nodeInEdition.id,
         )
     })
 })

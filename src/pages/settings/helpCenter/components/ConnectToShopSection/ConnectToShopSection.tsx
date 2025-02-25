@@ -1,26 +1,24 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { useEffect, useRef, useState } from 'react'
 
 import classNames from 'classnames'
-import React, {useEffect, useRef, useState} from 'react'
-import {Popover, PopoverBody, PopoverHeader} from 'reactstrap'
+import { Popover, PopoverBody, PopoverHeader } from 'reactstrap'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import store from 'assets/img/icons/store.svg'
-
-import {useTheme} from 'core/theme'
+import { useTheme } from 'core/theme'
 import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationType} from 'models/integration/types'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import { IntegrationType } from 'models/integration/types'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-
 import settingsCss from 'pages/settings/settings.less'
+import { getHasAutomate } from 'state/billing/selectors'
+import { getIconFromType } from 'state/integrations/helpers'
 
-import {getHasAutomate} from 'state/billing/selectors'
-import {getIconFromType} from 'state/integrations/helpers'
-
-import {useStoreWithChatConnectionsOptions} from '../../hooks/useStoreWithChatConnectionsOptions'
+import { useStoreWithChatConnectionsOptions } from '../../hooks/useStoreWithChatConnectionsOptions'
 
 import css from './ConnectToShopSection.less'
 
@@ -93,7 +91,7 @@ export const ConnectToShopSection = ({
                             intent="destructive"
                             onConfirm={() => {
                                 setDisconnectModalOpen(false)
-                                onUpdate({shop_name: null})
+                                onUpdate({ shop_name: null })
                             }}
                             placement="top"
                             showCancelButton
@@ -137,7 +135,7 @@ export const ConnectToShopSection = ({
                                 intent="destructive"
                                 onClick={() => {
                                     setDisconnectModalOpen(false)
-                                    onUpdate({shop_name: null})
+                                    onUpdate({ shop_name: null })
                                 }}
                             >
                                 Disconnect
@@ -158,7 +156,7 @@ export const ConnectToShopSection = ({
                 isOpen={connectModalOpen}
                 className={classNames(
                     css['modal-centered'],
-                    theme.resolvedName
+                    theme.resolvedName,
                 )}
                 header={shopName ? 'Change store' : 'Connect store'}
                 onClose={() => setConnectModalOpen(false)}

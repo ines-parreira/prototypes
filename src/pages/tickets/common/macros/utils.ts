@@ -1,31 +1,31 @@
-import {Macro} from '@gorgias/api-queries'
+import { Macro } from '@gorgias/api-queries'
 
-import {ActionTemplateExecution} from 'config'
-import {getDefaultMacro} from 'state/macro/utils'
-import {getActionTemplate} from 'utils'
+import { ActionTemplateExecution } from 'config'
+import { getDefaultMacro } from 'state/macro/utils'
+import { getActionTemplate } from 'utils'
 
 export const isMacroDisabled = (
     macro: Macro,
-    areExternalActionsDisabled?: boolean
+    areExternalActionsDisabled?: boolean,
 ) => {
     if (!areExternalActionsDisabled) return false
 
     return macro.actions?.some(
         (action) =>
             getActionTemplate(action.name)?.execution ===
-            ActionTemplateExecution.External
+            ActionTemplateExecution.External,
     )
 }
 
 export const getDefaultSelectedMacroId = (
     macros: Macro[],
     selectedMacroId: number | null,
-    isCreatingMacro?: boolean
+    isCreatingMacro?: boolean,
 ) => {
     const currentMacro = getCurrentMacro(
         macros,
         selectedMacroId,
-        isCreatingMacro
+        isCreatingMacro,
     )
     if (!macros.length) {
         return null
@@ -40,7 +40,7 @@ export const getDefaultSelectedMacroId = (
 export const getCurrentMacro = (
     macros: Macro[],
     selectedMacroId: Maybe<number>,
-    isCreatingMacro?: boolean
+    isCreatingMacro?: boolean,
 ) => {
     if (isCreatingMacro) {
         return getDefaultMacro()

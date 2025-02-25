@@ -1,9 +1,10 @@
-import cn from 'classnames'
-import React, {useCallback} from 'react'
+import React, { useCallback } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {THEME_CONFIGS, useSetTheme, useTheme} from 'core/theme'
-import type {HelpdeskThemeName} from 'core/theme'
+import cn from 'classnames'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { THEME_CONFIGS, useSetTheme, useTheme } from 'core/theme'
+import type { HelpdeskThemeName } from 'core/theme'
 
 import css from './UserMenu.less'
 
@@ -18,12 +19,12 @@ export default function ThemeMenu() {
                 theme: name,
             })
         },
-        [setTheme]
+        [setTheme],
     )
 
     return (
         <>
-            {THEME_CONFIGS.map(({label, name}) => (
+            {THEME_CONFIGS.map(({ label, name }) => (
                 <button
                     key={name}
                     className={cn(css['dropdown-item-user-menu'], css.justify)}

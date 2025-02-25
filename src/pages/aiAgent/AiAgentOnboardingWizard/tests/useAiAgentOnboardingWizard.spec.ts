@@ -1,33 +1,33 @@
-import {waitFor} from '@testing-library/react'
-import {renderHook, act} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
-import {useParams} from 'react-router-dom'
+import { waitFor } from '@testing-library/react'
+import { act, renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { useParams } from 'react-router-dom'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {account} from 'fixtures/account'
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { account } from 'fixtures/account'
+import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import useAppSelector from 'hooks/useAppSelector'
-import {useSearchParam} from 'hooks/useSearchParam'
+import { useSearchParam } from 'hooks/useSearchParam'
 import {
     AiAgentOnboardingWizardStep,
     AiAgentOnboardingWizardType,
 } from 'models/aiAgent/types'
-import {useGetHelpCenterList} from 'models/helpCenter/queries'
-import {useGetOrCreateSnippetHelpCenter} from 'pages/aiAgent/hooks/useGetOrCreateSnippetHelpCenter'
-import {useStoreConfigurationMutation} from 'pages/aiAgent/hooks/useStoreConfigurationMutation'
-import {useAiAgentStoreConfigurationContext} from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
+import { useGetHelpCenterList } from 'models/helpCenter/queries'
+import { useGetOrCreateSnippetHelpCenter } from 'pages/aiAgent/hooks/useGetOrCreateSnippetHelpCenter'
+import { useStoreConfigurationMutation } from 'pages/aiAgent/hooks/useStoreConfigurationMutation'
+import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 import history from 'pages/history'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {StoreState} from 'state/types'
-import {assumeMock} from 'utils/testing'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { StoreState } from 'state/types'
+import { assumeMock } from 'utils/testing'
 
-import {WIZARD_BUTTON_ACTIONS} from '../../constants'
-import {getStoreConfigurationFixture} from '../../fixtures/storeConfiguration.fixtures'
-import {useAiAgentOnboardingWizard} from '../hooks/useAiAgentOnboardingWizard'
+import { WIZARD_BUTTON_ACTIONS } from '../../constants'
+import { getStoreConfigurationFixture } from '../../fixtures/storeConfiguration.fixtures'
+import { useAiAgentOnboardingWizard } from '../hooks/useAiAgentOnboardingWizard'
 
 jest.mock('pages/history')
 jest.mock('state/notifications/actions')
@@ -47,19 +47,19 @@ jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext', () => ({
     useAiAgentStoreConfigurationContext: jest.fn(),
 }))
 const mockUseAiAgentStoreConfigurationContext = assumeMock(
-    useAiAgentStoreConfigurationContext
+    useAiAgentStoreConfigurationContext,
 )
 jest.mock('hooks/useAppSelector')
 const mockUseAppSelector = assumeMock(useAppSelector)
 
 jest.mock('pages/aiAgent/hooks/useGetOrCreateSnippetHelpCenter')
 const mockUseGetOrCreateSnippetHelpCenter = assumeMock(
-    useGetOrCreateSnippetHelpCenter
+    useGetOrCreateSnippetHelpCenter,
 )
 
 jest.mock('pages/aiAgent/hooks/useStoreConfigurationMutation')
 const mockUseStoreConfigurationMutation = assumeMock(
-    useStoreConfigurationMutation
+    useStoreConfigurationMutation,
 )
 
 jest.mock('common/segment', () => ({
@@ -92,8 +92,13 @@ const mockNavigateWizardSteps = {
 const mockHelpCenterListData = {
     data: axiosSuccessResponse({
         data: [
-            {id: 1, name: 'help center 1', type: 'faq', shop_name: 'test-shop'},
-            {id: 2, name: 'help center 2', type: 'faq'},
+            {
+                id: 1,
+                name: 'help center 1',
+                type: 'faq',
+                shop_name: 'test-shop',
+            },
+            { id: 2, name: 'help center 2', type: 'faq' },
         ],
     }),
     isLoading: false,
@@ -125,13 +130,13 @@ describe('useAiAgentOnboardingWizard', () => {
         mockUseSearchParam.mockImplementation(() => [null, mockSetSearchParam])
         mockUseGetHelpCenterList.mockReturnValue(mockHelpCenterListData)
         mockUseAiAgentStoreConfigurationContext.mockReturnValue(
-            storeConfigurationContextMock
+            storeConfigurationContextMock,
         )
         mockUseNavigateWizardSteps.mockReturnValue(mockNavigateWizardSteps)
         mockUseAppSelector.mockImplementation((selector) =>
             selector({
                 currentAccount: fromJS(account),
-            } as unknown as StoreState)
+            } as unknown as StoreState),
         )
         mockUseGetOrCreateSnippetHelpCenter.mockReturnValue({
             helpCenter: null,
@@ -142,44 +147,49 @@ describe('useAiAgentOnboardingWizard', () => {
         })
 
         mockUseStoreConfigurationMutation.mockReturnValue(
-            defaultStoreConfigurationMutation
+            defaultStoreConfigurationMutation,
         )
     })
 
     it('should initialize store configuration with default value', () => {
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useAiAgentOnboardingWizard({
                 step: AiAgentOnboardingWizardStep.Education,
-            })
+            }),
         )
 
         expect(result.current.storeFormValues).toBeDefined()
         expect(result.current.faqHelpCenters).toEqual([
-            {id: 1, name: 'help center 1', type: 'faq', shop_name: 'test-shop'},
+            {
+                id: 1,
+                name: 'help center 1',
+                type: 'faq',
+                shop_name: 'test-shop',
+            },
         ])
         expect(result.current.snippetHelpCenter).toBe(null)
         expect(result.current.isLoading).toBe(false)
     })
 
     it('should handle form updates correctly', () => {
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useAiAgentOnboardingWizard({
                 step: AiAgentOnboardingWizardStep.Education,
-            })
+            }),
         )
 
         act(() => {
-            result.current.handleFormUpdate({helpCenterId: 2})
+            result.current.handleFormUpdate({ helpCenterId: 2 })
         })
 
         expect(result.current.storeFormValues.helpCenterId).toBe(2)
     })
 
     it('should handle action and navigate to previous or next step', () => {
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useAiAgentOnboardingWizard({
                 step: AiAgentOnboardingWizardStep.Education,
-            })
+            }),
         )
 
         act(() => {
@@ -195,10 +205,10 @@ describe('useAiAgentOnboardingWizard', () => {
     })
 
     it('should handle action and navigate to the welcome page', () => {
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useAiAgentOnboardingWizard({
                 step: AiAgentOnboardingWizardStep.Education,
-            })
+            }),
         )
 
         act(() => {
@@ -206,7 +216,7 @@ describe('useAiAgentOnboardingWizard', () => {
         })
 
         expect(history.replace).toHaveBeenCalledWith(
-            '/app/automation/shopify/test-shop/ai-agent'
+            '/app/automation/shopify/test-shop/ai-agent',
         )
     })
 
@@ -214,10 +224,10 @@ describe('useAiAgentOnboardingWizard', () => {
         mockUseParams.mockReturnValue({
             shopName: 'test-shop',
         })
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useAiAgentOnboardingWizard({
                 step: AiAgentOnboardingWizardStep.Education,
-            })
+            }),
         )
 
         act(() => {
@@ -227,7 +237,7 @@ describe('useAiAgentOnboardingWizard', () => {
 
         act(() => {
             result.current.handleAction(
-                WIZARD_BUTTON_ACTIONS.FINISH_TO_KNOWLEDGE
+                WIZARD_BUTTON_ACTIONS.FINISH_TO_KNOWLEDGE,
             )
         })
         expect(history.replace).not.toHaveBeenCalled()
@@ -239,17 +249,17 @@ describe('useAiAgentOnboardingWizard', () => {
 
         act(() => {
             result.current.handleAction(
-                WIZARD_BUTTON_ACTIONS.FINISH_TO_GUIDANCE
+                WIZARD_BUTTON_ACTIONS.FINISH_TO_GUIDANCE,
             )
         })
         expect(history.replace).not.toHaveBeenCalled()
     })
 
     it('should perform nothing if handlAction is called with an unknown action', () => {
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useAiAgentOnboardingWizard({
                 step: AiAgentOnboardingWizardStep.Education,
-            })
+            }),
         )
 
         act(() => {
@@ -262,10 +272,10 @@ describe('useAiAgentOnboardingWizard', () => {
     })
 
     it('should handle save and navigate to the test tab', async () => {
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useAiAgentOnboardingWizard({
                 step: AiAgentOnboardingWizardStep.Knowledge,
-            })
+            }),
         )
 
         act(() => {
@@ -283,10 +293,10 @@ describe('useAiAgentOnboardingWizard', () => {
     })
 
     it('should handle save and navigate to the guidance tab', async () => {
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useAiAgentOnboardingWizard({
                 step: AiAgentOnboardingWizardStep.Knowledge,
-            })
+            }),
         )
 
         act(() => {
@@ -309,10 +319,10 @@ describe('useAiAgentOnboardingWizard', () => {
             storeConfiguration: undefined,
         })
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useAiAgentOnboardingWizard({
                 step: AiAgentOnboardingWizardStep.Education,
-            })
+            }),
         )
 
         act(() => {
@@ -325,7 +335,7 @@ describe('useAiAgentOnboardingWizard', () => {
         await waitFor(() => {
             expect(mockCreateStoreConfiguration).toHaveBeenCalled()
             expect(mockCreateStoreConfiguration).toHaveReturnedWith(
-                Promise.resolve(mockedStoreConfiguration)
+                Promise.resolve(mockedStoreConfiguration),
             )
         })
     })
@@ -334,7 +344,7 @@ describe('useAiAgentOnboardingWizard', () => {
         const mockErrorCreateStoreConfiguration = jest
             .fn()
             .mockRejectedValue(
-                new Error('Failed to create AI Agent Configuration')
+                new Error('Failed to create AI Agent Configuration'),
             )
         mockUseStoreConfigurationMutation.mockReturnValue({
             ...defaultStoreConfigurationMutation,
@@ -346,10 +356,10 @@ describe('useAiAgentOnboardingWizard', () => {
             storeConfiguration: undefined,
         })
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useAiAgentOnboardingWizard({
                 step: AiAgentOnboardingWizardStep.Education,
-            })
+            }),
         )
 
         act(() => {
@@ -370,10 +380,10 @@ describe('useAiAgentOnboardingWizard', () => {
     })
 
     it('should call update store configuration on save when updating', async () => {
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useAiAgentOnboardingWizard({
                 step: AiAgentOnboardingWizardStep.Education,
-            })
+            }),
         )
 
         act(() => {
@@ -386,7 +396,7 @@ describe('useAiAgentOnboardingWizard', () => {
         await waitFor(() => {
             expect(mockUpdateStoreConfiguration).toHaveBeenCalled()
             expect(mockUpdateStoreConfiguration).toHaveReturnedWith(
-                Promise.resolve(mockedStoreConfiguration)
+                Promise.resolve(mockedStoreConfiguration),
             )
         })
     })
@@ -397,10 +407,10 @@ describe('useAiAgentOnboardingWizard', () => {
             storeConfiguration: undefined,
         })
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useAiAgentOnboardingWizard({
                 step: AiAgentOnboardingWizardStep.Education,
-            })
+            }),
         )
 
         act(() => {
@@ -419,17 +429,17 @@ describe('useAiAgentOnboardingWizard', () => {
         const mockErrorUpdateStoreConfiguration = jest
             .fn()
             .mockRejectedValue(
-                new Error('Failed to save AI Agent configuration')
+                new Error('Failed to save AI Agent configuration'),
             )
         mockUseStoreConfigurationMutation.mockReturnValue({
             ...defaultStoreConfigurationMutation,
             upsertStoreConfiguration: mockErrorUpdateStoreConfiguration,
         })
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useAiAgentOnboardingWizard({
                 step: AiAgentOnboardingWizardStep.Education,
-            })
+            }),
         )
 
         act(() => {
@@ -450,10 +460,10 @@ describe('useAiAgentOnboardingWizard', () => {
     })
 
     it('should log connected help center event', async () => {
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useAiAgentOnboardingWizard({
                 step: AiAgentOnboardingWizardStep.Knowledge,
-            })
+            }),
         )
 
         act(() => {
@@ -470,16 +480,16 @@ describe('useAiAgentOnboardingWizard', () => {
                     step: AiAgentOnboardingWizardStep.Knowledge,
                     version: AiAgentOnboardingWizardType.TwoSteps,
                     helpCenterId: 1,
-                }
+                },
             )
         })
     })
 
     it('should not log connected help center event', async () => {
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useAiAgentOnboardingWizard({
                 step: AiAgentOnboardingWizardStep.Personalize,
-            })
+            }),
         )
 
         act(() => {
@@ -496,7 +506,7 @@ describe('useAiAgentOnboardingWizard', () => {
                     step: AiAgentOnboardingWizardStep.Knowledge,
                     version: AiAgentOnboardingWizardType.TwoSteps,
                     helpCenterId: 1,
-                }
+                },
             )
         })
     })
@@ -521,10 +531,10 @@ describe('useAiAgentOnboardingWizard', () => {
             storeConfiguration: getStoreConfigurationFixture(mockedWizardValue),
         })
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useAiAgentOnboardingWizard({
                 step: AiAgentOnboardingWizardStep.Personalize,
-            })
+            }),
         )
 
         act(() => {

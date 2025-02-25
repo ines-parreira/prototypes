@@ -1,12 +1,12 @@
-import {TicketChannel} from 'business/types/ticket'
-import {TicketMessage} from 'models/ticket/types'
+import { TicketChannel } from 'business/types/ticket'
+import { TicketMessage } from 'models/ticket/types'
 import * as dateUtils from 'utils/date'
 
 import {
-    normalizeLocale,
     countDistinctVariables,
     isWhatsAppMessageValid,
     isWhatsAppWindowOpen,
+    normalizeLocale,
 } from '../utils'
 
 describe('whatsAppUtils', () => {
@@ -86,7 +86,7 @@ describe('whatsAppUtils', () => {
 
     describe('isWhatsAppWindowOpen', () => {
         jest.spyOn(dateUtils, 'getMoment').mockImplementation((): any =>
-            dateUtils.stringToDatetime('2023-01-10T00:00')
+            dateUtils.stringToDatetime('2023-01-10T00:00'),
         )
 
         it('should return false when there is no message sent by customer in ticket', () => {

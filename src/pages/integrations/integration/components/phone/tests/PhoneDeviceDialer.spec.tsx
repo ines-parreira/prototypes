@@ -1,11 +1,12 @@
-import {screen, fireEvent} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
 
-import {PhoneIntegration} from 'models/integration/types'
-import {PhoneNumberInputHandle} from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
-import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
-import {assumeMock, mockStore} from 'utils/testing'
+import { fireEvent, screen } from '@testing-library/react'
+import { Provider } from 'react-redux'
+
+import { PhoneIntegration } from 'models/integration/types'
+import { PhoneNumberInputHandle } from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
+import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
+import { assumeMock, mockStore } from 'utils/testing'
 
 import PhoneDeviceDialer from '../PhoneDeviceDialer'
 import * as PhoneDeviceDialerBody from '../PhoneDeviceDialerBody'
@@ -13,7 +14,7 @@ import PhoneDeviceDialerIntegrationSelect from '../PhoneDeviceDialerIntegrationS
 import usePhoneDeviceDialer from '../usePhoneDeviceDialer'
 
 jest.mock(
-    'pages/integrations/integration/components/phone/usePhoneDeviceDialer'
+    'pages/integrations/integration/components/phone/usePhoneDeviceDialer',
 )
 
 jest.mock(
@@ -36,11 +37,11 @@ jest.mock(
                 />
                 {suffix}
             </>
-        )
+        ),
 )
 
 jest.mock('pages/common/forms/PhoneNumberInput/PhoneNumberInput', () => {
-    const {forwardRef} = jest.requireActual('react')
+    const { forwardRef } = jest.requireActual('react')
     return {
         __esModule: true,
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
@@ -62,7 +63,7 @@ jest.mock('pages/common/forms/PhoneNumberInput/PhoneNumberInput', () => {
                     />
                     <div data-testid="mock-phone-input-error">{error}</div>
                 </>
-            )
+            ),
         ),
     }
 })
@@ -72,11 +73,11 @@ const PhoneDeviceDialerBodySpy = jest
     .mockImplementation(() => <div data-testid="mock-dialer-body" />)
 
 jest.mock(
-    'pages/integrations/integration/components/phone/PhoneDeviceDialerIntegrationSelect'
+    'pages/integrations/integration/components/phone/PhoneDeviceDialerIntegrationSelect',
 )
 
 const PhoneDeviceDialerIntegrationSelectMock = assumeMock(
-    PhoneDeviceDialerIntegrationSelect
+    PhoneDeviceDialerIntegrationSelect,
 )
 PhoneDeviceDialerIntegrationSelectMock.mockImplementation(() => (
     <>PhoneDeviceDialerIntegrationSelect</>
@@ -124,12 +125,12 @@ describe('PhoneDeviceDialer', () => {
         renderWithQueryClientProvider(
             <Provider store={mockStore({} as any)}>
                 <PhoneDeviceDialer onCallInitiated={onCallInitiated} />
-            </Provider>
+            </Provider>,
         )
 
     beforeEach(() => {
         usePhoneDeviceDialerMock.mockReturnValue(
-            mockPhoneDeviceDialerHookResult
+            mockPhoneDeviceDialerHookResult,
         )
     })
 
@@ -139,7 +140,7 @@ describe('PhoneDeviceDialer', () => {
         expect(screen.getByTestId('mock-phone-input')).toBeInTheDocument()
         expect(screen.getByTestId('mock-dialer-body')).toBeInTheDocument()
         expect(
-            screen.getByText('PhoneDeviceDialerIntegrationSelect')
+            screen.getByText('PhoneDeviceDialerIntegrationSelect'),
         ).toBeInTheDocument()
         expect(PhoneDeviceDialerIntegrationSelectMock).toHaveBeenCalledWith(
             {
@@ -147,9 +148,9 @@ describe('PhoneDeviceDialer', () => {
                 onChange: expect.any(Function),
                 options: mockPhoneDeviceDialerHookResult.phoneIntegrations,
             },
-            {}
+            {},
         )
-        expect(screen.getByRole('button', {name: 'Call'})).toBeInTheDocument()
+        expect(screen.getByRole('button', { name: 'Call' })).toBeInTheDocument()
     })
 
     it('calls handleChange when value changes', () => {
@@ -158,9 +159,9 @@ describe('PhoneDeviceDialer', () => {
         const inputElement: HTMLInputElement =
             screen.getByTestId('mock-phone-input')
 
-        fireEvent.change(inputElement, {target: {value: '1234567890'}})
+        fireEvent.change(inputElement, { target: { value: '1234567890' } })
         expect(
-            mockPhoneDeviceDialerHookResult.handleChange
+            mockPhoneDeviceDialerHookResult.handleChange,
         ).toHaveBeenCalledWith('1234567890')
     })
 
@@ -207,7 +208,7 @@ describe('PhoneDeviceDialer', () => {
         })
         renderComponent()
 
-        expect(screen.getByRole('button', {name: 'Call'})).toBeAriaEnabled()
+        expect(screen.getByRole('button', { name: 'Call' })).toBeAriaEnabled()
     })
 
     it('displays Call button as disabled when isCallButtonDisabled is true', () => {
@@ -217,7 +218,7 @@ describe('PhoneDeviceDialer', () => {
         })
         renderComponent()
 
-        expect(screen.getByRole('button', {name: 'Call'})).toBeAriaDisabled()
+        expect(screen.getByRole('button', { name: 'Call' })).toBeAriaDisabled()
     })
 
     it('displays error when phone number is not valid', () => {
@@ -234,10 +235,10 @@ describe('PhoneDeviceDialer', () => {
     it('triggers handleCallClick when Call button is clicked', () => {
         renderComponent()
 
-        fireEvent.click(screen.getByRole('button', {name: 'Call'}))
+        fireEvent.click(screen.getByRole('button', { name: 'Call' }))
 
         expect(
-            mockPhoneDeviceDialerHookResult.handleCallClick
+            mockPhoneDeviceDialerHookResult.handleCallClick,
         ).toHaveBeenCalled()
     })
 
@@ -254,7 +255,7 @@ describe('PhoneDeviceDialer', () => {
             expect.objectContaining({
                 isLoading: true,
             }),
-            {}
+            {},
         )
     })
 
@@ -270,7 +271,7 @@ describe('PhoneDeviceDialer', () => {
             expect.objectContaining({
                 highlightedResultIndex: 1,
             }),
-            {}
+            {},
         )
     })
 })

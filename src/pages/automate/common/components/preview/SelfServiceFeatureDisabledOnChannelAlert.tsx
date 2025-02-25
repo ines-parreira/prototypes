@@ -1,7 +1,8 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
 
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import { Link } from 'react-router-dom'
+
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 
 import css from './SelfServiceFeatureDisabledOnChannelAlert.less'
 
@@ -20,7 +21,7 @@ const SelfServiceFeatureDisabledOnChannelAlert = ({
         <Link
             to={{
                 pathname: `/app/automation/${shopType}/${shopName}/connected-channels`,
-                state: {from: 'self-service-preview-alert'},
+                state: { from: 'self-service-preview-alert' },
             }}
         >
             channels

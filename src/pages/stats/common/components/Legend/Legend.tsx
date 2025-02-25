@@ -1,5 +1,6 @@
-import _isArray from 'lodash/isArray'
 import React from 'react'
+
+import _isArray from 'lodash/isArray'
 
 import css from './Legend.less'
 
@@ -14,7 +15,7 @@ type Props = {
     labels: Array<Label>
 }
 
-export default function Legend({labels}: Props) {
+export default function Legend({ labels }: Props) {
     if (!_isArray(labels) || !labels.length) {
         return null
     }
@@ -28,7 +29,7 @@ export default function Legend({labels}: Props) {
                     )}
                     <span
                         className={`${css[label.shape || 'circle']} mr-2`}
-                        style={{background: label.background}}
+                        style={{ background: label.background }}
                     />
                     {label.name}
                 </span>

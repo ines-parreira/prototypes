@@ -1,8 +1,11 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { ReactNode } from 'react'
+
 import classnames from 'classnames'
-import React, {ReactNode} from 'react'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import StatsHelpIcon from '../../StatsHelpIcon'
+
 import css from './KeyMetricCellWrapper.less'
 
 type Props = {
@@ -12,7 +15,12 @@ type Props = {
     tooltip?: string | ReactNode
 }
 
-const KeyMetricCellWrapper = ({children, label, tooltipId, tooltip}: Props) => {
+const KeyMetricCellWrapper = ({
+    children,
+    label,
+    tooltipId,
+    tooltip,
+}: Props) => {
     return (
         <div className={css.metric}>
             <div className={classnames(css.label)}>

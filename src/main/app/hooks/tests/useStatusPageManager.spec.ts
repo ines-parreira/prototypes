@@ -1,8 +1,8 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
 import statusPageManager from 'services/statusPageManager/statusPageManager'
 
-import {useStatusPageManager} from '../useStatusPageManager'
+import { useStatusPageManager } from '../useStatusPageManager'
 
 jest.mock('services/statusPageManager/statusPageManager', () => ({
     startPolling: jest.fn(),
@@ -21,7 +21,7 @@ describe('useStatusPageManager', () => {
     })
 
     it('should stop polling on unmount', () => {
-        const {unmount} = renderHook(() => useStatusPageManager())
+        const { unmount } = renderHook(() => useStatusPageManager())
 
         unmount()
         expect(statusPageManager.stopPolling).toHaveBeenCalledWith()

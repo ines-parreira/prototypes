@@ -1,6 +1,6 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
-import {defaultSuggestionsFilter, getTypeByTrigger, getWordAt} from '../utils'
+import { defaultSuggestionsFilter, getTypeByTrigger, getWordAt } from '../utils'
 
 describe('getWordAt', () => {
     it('finds a word in between sentences', () => {
@@ -47,18 +47,18 @@ describe('getTypeByTrigger', () => {
 
 describe('defaultSuggestionsFilter()', () => {
     const suggestions = fromJS([
-        {name: 'Severine Smith'},
-        {name: 'Séverine Dupont'},
-        {name: 'Jean Bon'},
-        {name: 'Πόπη Κουρούπη'},
+        { name: 'Severine Smith' },
+        { name: 'Séverine Dupont' },
+        { name: 'Jean Bon' },
+        { name: 'Πόπη Κουρούπη' },
     ])
 
     const expectedResults = fromJS([
-        {name: 'Severine Smith'},
-        {name: 'Séverine Dupont'},
+        { name: 'Severine Smith' },
+        { name: 'Séverine Dupont' },
     ])
 
-    const greekResults = fromJS([{name: 'Πόπη Κουρούπη'}])
+    const greekResults = fromJS([{ name: 'Πόπη Κουρούπη' }])
 
     describe('should return matching suggestions', () => {
         it('when the search value contains diacritics', () => {
@@ -78,10 +78,10 @@ describe('defaultSuggestionsFilter()', () => {
 
         it("when some suggestion doesn't have a name", () => {
             const suggestions = fromJS([
-                {name: 'Severine Smith'},
-                {name: 'Séverine Dupont'},
+                { name: 'Severine Smith' },
+                { name: 'Séverine Dupont' },
                 {},
-                {name: 'Jean Bon'},
+                { name: 'Jean Bon' },
             ])
 
             const results = defaultSuggestionsFilter('severine', suggestions)

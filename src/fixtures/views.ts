@@ -1,5 +1,5 @@
-import {OrderDirection} from '../models/api/types'
-import {View, ViewField, ViewType, ViewVisibility} from '../models/view/types'
+import { OrderDirection } from '../models/api/types'
+import { View, ViewField, ViewType, ViewVisibility } from '../models/view/types'
 
 export const view: View = {
     category: null,

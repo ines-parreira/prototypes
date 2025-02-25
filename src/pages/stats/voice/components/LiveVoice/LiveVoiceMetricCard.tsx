@@ -6,9 +6,9 @@ import {
     MetricValueFormat,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
-import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
+import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
 import MetricCard from 'pages/stats/MetricCard'
-import {VoiceMetric} from 'state/ui/stats/types'
+import { VoiceMetric } from 'state/ui/stats/types'
 
 type Props = {
     title: string
@@ -30,7 +30,7 @@ export default function LiveVoiceMetricCard({
     const metricValue = formatMetricValue(
         value,
         metricValueFormat,
-        NOT_AVAILABLE_PLACEHOLDER
+        NOT_AVAILABLE_PLACEHOLDER,
     )
 
     return (

@@ -1,10 +1,11 @@
-import React, {memo} from 'react'
-import {Route, useLocation} from 'react-router-dom'
+import React, { memo } from 'react'
 
-import {HelpCenter} from 'models/helpCenter/types'
+import { Route, useLocation } from 'react-router-dom'
+
+import { HelpCenter } from 'models/helpCenter/types'
 import HelpCenterPreview from 'pages/settings/helpCenter/components/HelpCenterPreview/HelpCenterPreview'
 
-import {SELF_SERVICE_PREVIEW_ROUTES} from './constants'
+import { SELF_SERVICE_PREVIEW_ROUTES } from './constants'
 import SelfServiceHelpCenterHomePage from './SelfServiceHelpCenterHomePage'
 import SelfServiceHelpCenterOrdersPage from './SelfServiceHelpCenterOrdersPage'
 import SelfServiceHelpCenterReportIssuePage from './SelfServiceHelpCenterReportIssuePage'

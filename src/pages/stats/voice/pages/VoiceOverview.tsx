@@ -1,22 +1,23 @@
-import moment from 'moment/moment'
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
+import moment from 'moment/moment'
+
+import { useCleanStatsFiltersWithLogicalOperators } from 'hooks/reporting/useCleanStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
-import {ProductType} from 'models/billing/types'
-import {FilterKey} from 'models/stat/types'
+import { ProductType } from 'models/billing/types'
+import { FilterKey } from 'models/stat/types'
 import withProductEnabledPaywall from 'pages/common/utils/withProductEnabledPaywall'
-import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
+import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
 import DEPRECATED_AgentsStatsFilter from 'pages/stats/common/filters/DEPRECATED_AgentsStatsFilter'
 import DEPRECATED_IntegrationsStatsFilter from 'pages/stats/common/filters/DEPRECATED_IntegrationsStatsFilter'
 import DEPRECATED_PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
 import DEPRECATED_TagsStatsFilter from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
-import {CustomReportComponent} from 'pages/stats/custom-reports/CustomReportComponent'
+import { CustomReportComponent } from 'pages/stats/custom-reports/CustomReportComponent'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
 import StatsPage from 'pages/stats/StatsPage'
-import {VoiceOverviewDownloadDataButton} from 'pages/stats/voice/components/VoiceOverviewDownloadDataButton/VoiceOverviewDownloadDataButton'
+import { VoiceOverviewDownloadDataButton } from 'pages/stats/voice/components/VoiceOverviewDownloadDataButton/VoiceOverviewDownloadDataButton'
 import {
     CALL_ACTIVITY_TITLE,
     CALL_VOLUME_METRICS_TITLE,
@@ -24,28 +25,28 @@ import {
     MIN_DATE_FOR_VOICE_STATS,
     VOICE_OVERVIEW_PAGE_TITLE,
 } from 'pages/stats/voice/constants/voiceOverview'
-import {useNewVoiceStatsFilters} from 'pages/stats/voice/hooks/useNewVoiceStatsFilters'
+import { useNewVoiceStatsFilters } from 'pages/stats/voice/hooks/useNewVoiceStatsFilters'
 import {
     VoiceOverviewChart,
     VoiceOverviewReportConfig,
 } from 'pages/stats/voice/pages/VoiceOverviewReportConfig'
 import VoicePaywall from 'pages/stats/voice/VoicePaywall'
-import {AccountFeature} from 'state/currentAccount/types'
-import {getPhoneIntegrations} from 'state/integrations/selectors'
-import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
+import { AccountFeature } from 'state/currentAccount/types'
+import { getPhoneIntegrations } from 'state/integrations/selectors'
+import { getPageStatsFiltersWithLogicalOperators } from 'state/stats/selectors'
+import { getCleanStatsFiltersWithTimezone } from 'state/ui/stats/selectors'
 
 function VoiceOverview() {
-    const {isAnalyticsNewFilters} = useNewVoiceStatsFilters()
+    const { isAnalyticsNewFilters } = useNewVoiceStatsFilters()
 
-    const {cleanStatsFilters: legacyStatsFilters} = useAppSelector(
-        getCleanStatsFiltersWithTimezone
+    const { cleanStatsFilters: legacyStatsFilters } = useAppSelector(
+        getCleanStatsFiltersWithTimezone,
     )
 
     const phoneIntegrations = useAppSelector(getPhoneIntegrations)
 
     const pageStatsFilters = useAppSelector(
-        getPageStatsFiltersWithLogicalOperators
+        getPageStatsFiltersWithLogicalOperators,
     )
     useCleanStatsFiltersWithLogicalOperators(pageStatsFilters)
 
@@ -71,7 +72,7 @@ function VoiceOverview() {
                         initialSettings={{
                             minDate: moment(
                                 MIN_DATE_FOR_VOICE_STATS,
-                                'YYYY-MM-DD'
+                                'YYYY-MM-DD',
                             ).toDate(),
                             maxSpan: 365,
                         }}
@@ -87,7 +88,7 @@ function VoiceOverview() {
             pageStatsFilters.integrations?.values,
             pageStatsFilters.period,
             phoneIntegrations,
-        ]
+        ],
     )
 
     return (
@@ -191,5 +192,5 @@ function VoiceOverview() {
 export default withProductEnabledPaywall(
     ProductType.Voice,
     AccountFeature.PhoneNumber,
-    VoicePaywall
+    VoicePaywall,
 )(VoiceOverview)

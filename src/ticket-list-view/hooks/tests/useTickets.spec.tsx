@@ -1,17 +1,17 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {useFlag} from 'core/flags'
+import { useFlag } from 'core/flags'
 import useElementSize from 'hooks/useElementSize'
 import useSplitTicketView from 'split-ticket-view-toggle/hooks/useSplitTicketView'
 
-import type {TicketPartial} from '../../types'
+import type { TicketPartial } from '../../types'
 import useScrollOffset from '../useScrollOffset'
 import useTicketData from '../useTicketData'
 import useTicketPartials from '../useTicketPartials'
 import useTickets from '../useTickets'
 import useViewTickets from '../useViewTickets'
 
-jest.mock('core/flags', () => ({useFlag: jest.fn()}))
+jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
 const useFlagMock = useFlag as jest.Mock
 
 jest.mock('../useTicketData', () => jest.fn())
@@ -45,7 +45,7 @@ describe('useTickets', () => {
             },
         ]
         useFlagMock.mockReturnValue(false)
-        useTicketDataMock.mockReturnValue({data: {}})
+        useTicketDataMock.mockReturnValue({ data: {} })
         useTicketPartialsMock.mockReturnValue({
             hasMore: false,
             initialLoaded: false,
@@ -61,27 +61,27 @@ describe('useTickets', () => {
     })
 
     it('should return tickets', () => {
-        const {result} = renderHook(() =>
-            useTickets(123, 'created_datetime:asc')
+        const { result } = renderHook(() =>
+            useTickets(123, 'created_datetime:asc'),
         )
         expect(result.current).toEqual({
             hasMore: false,
             initialLoaded: false,
             loadMore: expect.any(Function),
             setElement: expect.any(Function),
-            staleTickets: {123: true},
+            staleTickets: { 123: true },
             tickets: partials,
             newTickets: {},
-            ticketIds: {current: [123]},
+            ticketIds: { current: [123] },
         })
     })
 
     it('should return new tickets', async () => {
-        const {result, waitFor} = renderHook(() =>
-            useTickets(123, 'created_datetime:asc')
+        const { result, waitFor } = renderHook(() =>
+            useTickets(123, 'created_datetime:asc'),
         )
 
-        const newTicket = {id: 456, updated_datetime: Date.now()}
+        const newTicket = { id: 456, updated_datetime: Date.now() }
         const newPartials = [...partials, newTicket]
 
         useTicketPartialsMock.mockReturnValue({
@@ -98,10 +98,10 @@ describe('useTickets', () => {
                 initialLoaded: true,
                 loadMore: expect.any(Function),
                 setElement: expect.any(Function),
-                staleTickets: {123: true},
+                staleTickets: { 123: true },
                 tickets: newPartials,
-                newTickets: {456: newTicket},
-                ticketIds: {current: [123]},
+                newTickets: { 456: newTicket },
+                ticketIds: { current: [123] },
             })
         })
     })
@@ -109,8 +109,8 @@ describe('useTickets', () => {
     it('should set prev and next ticket IDs', () => {
         const mockPartials = [
             ...partials,
-            {id: 456, updated_datetime: Date.now()},
-            {id: 789, updated_datetime: Date.now()},
+            { id: 456, updated_datetime: Date.now() },
+            { id: 789, updated_datetime: Date.now() },
         ]
         useTicketPartialsMock.mockReturnValue({
             hasMore: false,
@@ -135,7 +135,12 @@ describe('useTickets', () => {
             toggleUnread: mockToggleUnread,
         })
         renderHook(() =>
-            useTickets(1, 'created_datetime:asc', 456, mockRegisterToggleUnread)
+            useTickets(
+                1,
+                'created_datetime:asc',
+                456,
+                mockRegisterToggleUnread,
+            ),
         )
         expect(mockRegisterToggleUnread).toHaveBeenCalledWith(mockToggleUnread)
     })

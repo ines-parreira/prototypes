@@ -1,12 +1,12 @@
-import {PayloadActionCreator} from '@reduxjs/toolkit'
+import { PayloadActionCreator } from '@reduxjs/toolkit'
 
-import {View} from 'models/view/types'
+import { View } from 'models/view/types'
 
 import {
-    VIEWS_FETCHED,
-    VIEW_UPDATED,
-    VIEW_DELETED,
     VIEW_CREATED,
+    VIEW_DELETED,
+    VIEW_UPDATED,
+    VIEWS_FETCHED,
 } from './constants'
 
 export type ViewsState = {

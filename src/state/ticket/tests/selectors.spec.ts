@@ -1,18 +1,17 @@
-import {fromJS, Map, List} from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 
-import {TicketVia} from 'business/types/ticket'
-import {ACTION_TEMPLATES} from 'config'
-import {EventType} from 'models/event/types'
-import {MacroActionName} from 'models/macroAction/types'
-import {shouldMessagesBeGrouped} from 'models/ticket/predicates'
+import { TicketVia } from 'business/types/ticket'
+import { ACTION_TEMPLATES } from 'config'
+import { EventType } from 'models/event/types'
+import { MacroActionName } from 'models/macroAction/types'
+import { shouldMessagesBeGrouped } from 'models/ticket/predicates'
+import { AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS } from 'state/agents/constants'
+import { TopRankMacroState } from 'state/newMessage/ticketReplyCache'
+import { RootState } from 'state/types'
+import { CUSTOMER_EXTERNAL_DATA_KEY } from 'state/widgets/constants'
+import { assumeMock } from 'utils/testing'
 
-import {AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS} from 'state/agents/constants'
-import {TopRankMacroState} from 'state/newMessage/ticketReplyCache'
-import {RootState} from 'state/types'
-import {CUSTOMER_EXTERNAL_DATA_KEY} from 'state/widgets/constants'
-import {assumeMock} from 'utils/testing'
-
-import {initialState} from '../reducers'
+import { initialState } from '../reducers'
 import * as selectors from '../selectors'
 
 jest.mock('models/ticket/predicates', () => {
@@ -29,7 +28,7 @@ jest.mock(
         ({
             ...jest.requireActual('state/queries/selectors'),
             getQueryData: jest.fn(() => jest.fn()),
-        }) as Record<string, unknown>
+        }) as Record<string, unknown>,
 )
 
 const mockShouldMessagesBeGrouped = assumeMock(shouldMessagesBeGrouped)
@@ -41,10 +40,10 @@ describe('ticket selectors', () => {
         state = {
             ticket: initialState.mergeDeep({
                 customer: {
-                    data: {id: 1},
+                    data: { id: 1 },
                     integrations: {
-                        1: {name: 'integration 1'},
-                        2: {name: 'integration 2'},
+                        1: { name: 'integration 1' },
+                        2: { name: 'integration 2' },
                     },
                     external_data: {
                         foo: {
@@ -123,16 +122,16 @@ describe('ticket selectors', () => {
     it('getTicketState', () => {
         expect(selectors.getTicketState(state)).toEqualImmutable(state.ticket)
         expect(selectors.getTicketState({} as RootState)).toEqualImmutable(
-            fromJS({})
+            fromJS({}),
         )
     })
 
     it('getLoading', () => {
         expect(selectors.getLoading(state)).toEqualImmutable(
-            state.ticket.getIn(['_internal', 'loading'])
+            state.ticket.getIn(['_internal', 'loading']),
         )
         expect(selectors.getLoading({} as RootState)).toEqualImmutable(
-            fromJS({})
+            fromJS({}),
         )
     })
 
@@ -146,7 +145,7 @@ describe('ticket selectors', () => {
         const properties = state.ticket.keySeq()
         properties.forEach((property) => {
             expect(selectors.getProperty(property)(state)).toEqualImmutable(
-                state.ticket.get(property)
+                state.ticket.get(property),
             )
         })
         expect(selectors.getProperty('unknown')(state)).toEqual(undefined)
@@ -162,16 +161,16 @@ describe('ticket selectors', () => {
         const expected = state.ticket.delete('_internal').delete('state')
         expect(selectors.DEPRECATED_getTicket(state)).toEqualImmutable(expected)
         expect(
-            selectors.DEPRECATED_getTicket({} as RootState)
+            selectors.DEPRECATED_getTicket({} as RootState),
         ).toEqualImmutable(fromJS({}))
     })
 
     it('getIntegrationsData', () => {
         expect(selectors.getIntegrationsData(state)).toEqualImmutable(
-            state.ticket.getIn(['customer', 'integrations'])
+            state.ticket.getIn(['customer', 'integrations']),
         )
         expect(selectors.getIntegrationsData({} as RootState)).toEqualImmutable(
-            fromJS({})
+            fromJS({}),
         )
     })
 
@@ -183,24 +182,24 @@ describe('ticket selectors', () => {
                     CUSTOMER_EXTERNAL_DATA_KEY,
                     'foo',
                 ]) as Map<any, any>
-            ).toJS()
+            ).toJS(),
         )
     })
 
     it('getIntegrationDataByIntegrationId', () => {
         expect(
-            selectors.getIntegrationDataByIntegrationId(1)(state)
+            selectors.getIntegrationDataByIntegrationId(1)(state),
         ).toEqualImmutable(
-            state.ticket.getIn(['customer', 'integrations', '1'])
+            state.ticket.getIn(['customer', 'integrations', '1']),
         )
     })
 
     it('getMessages', () => {
         expect(selectors.getMessages(state)).toEqualImmutable(
-            state.ticket.get('messages')
+            state.ticket.get('messages'),
         )
         expect(selectors.getMessages({} as RootState)).toEqualImmutable(
-            fromJS([])
+            fromJS([]),
         )
 
         // Should not return hidden message
@@ -212,9 +211,9 @@ describe('ticket selectors', () => {
                     opened_datetime: '2017-07-25T22:00:00',
                     sent_datetime: '2017-07-25T21:01:00',
                     created_datetime: '2017-07-24T21:00:00',
-                    meta: {hidden: true},
+                    meta: { hidden: true },
                 },
-            ])
+            ]),
         )
         expect(selectors.getMessages(state)).toEqualImmutable(fromJS([]))
     })
@@ -229,7 +228,7 @@ describe('ticket selectors', () => {
             opened_datetime: '2017-07-25T22:00:00',
             sent_datetime: '2017-07-25T21:01:00',
             created_datetime: '2017-07-24T21:00:00',
-            meta: {hidden: false},
+            meta: { hidden: false },
         }
 
         state.ticket = state.ticket.set('messages', fromJS([aiMessage]))
@@ -239,22 +238,22 @@ describe('ticket selectors', () => {
 
     it('getVia', () => {
         expect(selectors.getVia(state)).toEqualImmutable(
-            state.ticket.get('via')
+            state.ticket.get('via'),
         )
     })
 
     it('getPendingMessages', () => {
         expect(selectors.getPendingMessages(state)).toEqualImmutable(
-            state.ticket.getIn(['_internal', 'pendingMessages'])
+            state.ticket.getIn(['_internal', 'pendingMessages']),
         )
         expect(selectors.getPendingMessages({} as RootState)).toEqualImmutable(
-            fromJS([])
+            fromJS([]),
         )
     })
 
     it('getLastMessage', () => {
         expect(selectors.getLastMessage({} as RootState)).toEqualImmutable(
-            fromJS({})
+            fromJS({}),
         )
 
         const lastMessage = selectors.getLastMessage(state)
@@ -267,7 +266,7 @@ describe('ticket selectors', () => {
         const expected = (state.ticket.get('messages') as List<any>).delete(1)
         expect(selectors.getReadMessages(state)).toEqualImmutable(expected)
         expect(selectors.getReadMessages({} as RootState)).toEqualImmutable(
-            fromJS([])
+            fromJS([]),
         )
     })
 
@@ -275,7 +274,7 @@ describe('ticket selectors', () => {
         const expected = (state.ticket.get('messages') as List<any>).first()
         expect(selectors.getLastReadMessage(state)).toEqualImmutable(expected)
         expect(selectors.getLastReadMessage({} as RootState)).toEqualImmutable(
-            fromJS({})
+            fromJS({}),
         )
     })
 
@@ -283,20 +282,20 @@ describe('ticket selectors', () => {
         const expected = state.ticket.get('events')
         expect(selectors.getEvents(state)).toEqualImmutable(expected)
         expect(selectors.getEvents({} as RootState)).toEqualImmutable(
-            fromJS([])
+            fromJS([]),
         )
     })
 
     it('getRuleSuggestion', () => {
         expect(selectors.getRuleSuggestion(state)).toEqualImmutable(
-            state.ticket.getIn(['meta', 'rule_suggestion'])
+            state.ticket.getIn(['meta', 'rule_suggestion']),
         )
     })
 
     describe('getBody', () => {
         it('should get body', () => {
             expect(selectors.getBody({} as RootState)).toEqualImmutable(
-                fromJS([])
+                fromJS([]),
             )
 
             const body = selectors.getBody(state)
@@ -314,7 +313,7 @@ describe('ticket selectors', () => {
             expect((body.get(6) as Map<any, any>).get('isPending')).toBe(false)
             expect((body.get(7) as Map<any, any>).get('isPending')).toBe(true)
             expect((body.get(8) as Map<any, any>).get('isRuleSuggestion')).toBe(
-                true
+                true,
             )
             expect(body).toMatchSnapshot()
         })
@@ -385,7 +384,7 @@ describe('ticket selectors', () => {
                         sent_datetime: '2017-07-31T21:01:00',
                         created_datetime: '2017-07-31T21:00:00',
                         from_agent: false,
-                        meta: {rule_suggestion_slug: 'rule_suggestion_slug'},
+                        meta: { rule_suggestion_slug: 'rule_suggestion_slug' },
                     },
                 ],
                 -1,
@@ -452,10 +451,10 @@ describe('ticket selectors', () => {
                 const body = selectors.getBody(newState)
                 const ruleSuggestionIndex = body.findIndex(
                     (element: Map<any, any>) =>
-                        element.get('isRuleSuggestion') as boolean
+                        element.get('isRuleSuggestion') as boolean,
                 )
                 expect(ruleSuggestionIndex).toBe(expectedIndex)
-            }
+            },
         )
 
         it('should handle satisfaction survey events and display flags correctly', () => {
@@ -490,8 +489,10 @@ describe('ticket selectors', () => {
                 body.filter(
                     (item) =>
                         !(item as Map<any, string>).get('type') &&
-                        !!(item as Map<any, string>).get('isSatisfactionSurvey')
-                ).size
+                        !!(item as Map<any, string>).get(
+                            'isSatisfactionSurvey',
+                        ),
+                ).size,
             ).toBe(0)
         })
 
@@ -519,12 +520,12 @@ describe('ticket selectors', () => {
 
     it('getAppliedMacro', () => {
         expect(selectors.getAppliedMacro({} as RootState)).toEqualImmutable(
-            fromJS({})
+            fromJS({}),
         )
     })
 
     it.each([
-        [{state: {}}, null],
+        [{ state: {} }, null],
         [
             {
                 state: {
@@ -534,7 +535,7 @@ describe('ticket selectors', () => {
                     } as TopRankMacroState,
                 },
             },
-            {macroId: 10, state: 'pending'} as TopRankMacroState,
+            { macroId: 10, state: 'pending' } as TopRankMacroState,
         ],
     ])('getTopRankMacroState', (ticketState, expected) => {
         state.ticket = fromJS(ticketState)
@@ -560,15 +561,15 @@ describe('ticket selectors', () => {
                     fromJS({
                         actions: [
                             ACTION_TEMPLATES.find(
-                                (action) => action.name === actionName
+                                (action) => action.name === actionName,
                             ),
                         ],
-                    })
+                    }),
                 )
-                expect(selectors.hasContentlessAction({...state, ticket})).toBe(
-                    false
-                )
-            }
+                expect(
+                    selectors.hasContentlessAction({ ...state, ticket }),
+                ).toBe(false)
+            },
         )
 
         it('should return true when contentless action is applied', () => {
@@ -578,16 +579,16 @@ describe('ticket selectors', () => {
                     actions: [
                         ACTION_TEMPLATES.find(
                             (action) =>
-                                action.name === MacroActionName.SetResponseText
+                                action.name === MacroActionName.SetResponseText,
                         ),
                         ACTION_TEMPLATES.find(
-                            (action) => action.name === MacroActionName.AddTags
+                            (action) => action.name === MacroActionName.AddTags,
                         ),
                     ],
-                })
+                }),
             )
-            expect(selectors.hasContentlessAction({...state, ticket})).toBe(
-                true
+            expect(selectors.hasContentlessAction({ ...state, ticket })).toBe(
+                true,
             )
         })
     })
@@ -610,7 +611,11 @@ describe('ticket selectors', () => {
             } as RootState
 
             expect(selectors.getTicketBodyElements(state)).toEqual([
-                {id: 1, isEvent: true, created_datetime: '2023-02-01T12:00:00'},
+                {
+                    id: 1,
+                    isEvent: true,
+                    created_datetime: '2023-02-01T12:00:00',
+                },
             ])
         })
 
@@ -656,7 +661,11 @@ describe('ticket selectors', () => {
             } as RootState
 
             expect(selectors.getTicketBodyElements(state)).toEqual([
-                {id: 1, isEvent: true, created_datetime: '2023-02-02T11:00:00'},
+                {
+                    id: 1,
+                    isEvent: true,
+                    created_datetime: '2023-02-02T11:00:00',
+                },
                 [
                     {
                         id: 1,
@@ -740,7 +749,7 @@ describe('ticket selectors', () => {
             state = {
                 ticket: initialState.mergeDeep({
                     custom_fields: {
-                        42: {id: 42, value: 'test', hasError: false},
+                        42: { id: 42, value: 'test', hasError: false },
                     },
                 }),
             } as RootState
@@ -751,7 +760,7 @@ describe('ticket selectors', () => {
                         unknown,
                         Map<unknown, unknown>
                     >
-                ).toJS()
+                ).toJS(),
             )
         })
     })

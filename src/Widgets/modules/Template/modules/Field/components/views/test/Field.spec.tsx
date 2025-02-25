@@ -1,19 +1,20 @@
-import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {LEAF_TYPES} from 'models/widget/constants'
-import {assumeMock, getLastMockCall} from 'utils/testing'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 
-import {FieldEditFormData} from '../../../types'
+import { LEAF_TYPES } from 'models/widget/constants'
+import { assumeMock, getLastMockCall } from 'utils/testing'
+
+import { FieldEditFormData } from '../../../types'
 import CopyButton from '../../CopyButton'
-import Field, {DELETE_BUTTON_TEXT, EDIT_BUTTON_TEXT} from '../Field'
+import Field, { DELETE_BUTTON_TEXT, EDIT_BUTTON_TEXT } from '../Field'
 import FieldEditForm from '../FieldEditForm'
 
 const COPY_BUTTON_TEST_ID = 'copy-button'
 jest.mock('../../CopyButton', () =>
     jest.fn(() => {
         return <span data-testid={COPY_BUTTON_TEST_ID}>copy button</span>
-    })
+    }),
 )
 
 const FIELD_EDIT_FORM_TEST_ID = 'field-edit-form'
@@ -22,7 +23,7 @@ jest.mock('../FieldEditForm', () =>
         return (
             <span data-testid={FIELD_EDIT_FORM_TEST_ID}>field edit form</span>
         )
-    })
+    }),
 )
 const FieldEditFormMock = assumeMock(FieldEditForm)
 
@@ -32,8 +33,8 @@ describe('Field', () => {
         value: '20-1_RPZ_MAGLE',
         type: LEAF_TYPES.TEXT,
         availableTypes: [
-            {value: LEAF_TYPES.TEXT, label: 'Text'},
-            {value: LEAF_TYPES.BOOLEAN, label: 'Boolean'},
+            { value: LEAF_TYPES.TEXT, label: 'Text' },
+            { value: LEAF_TYPES.BOOLEAN, label: 'Boolean' },
         ],
         copyButton: <CopyButton value="" onCopyMessage="" />,
         isEditionMode: true,
@@ -54,7 +55,7 @@ describe('Field', () => {
         render(<Field {...defaultProps} />)
 
         expect(
-            screen.getByText(defaultProps.value as string).classList
+            screen.getByText(defaultProps.value as string).classList,
         ).not.toContain('overflow')
     })
 
@@ -62,7 +63,7 @@ describe('Field', () => {
         render(<Field {...defaultProps} valueCanOverflow />)
 
         expect(
-            screen.getByText(defaultProps.value as string).classList
+            screen.getByText(defaultProps.value as string).classList,
         ).toContain('overflow')
     })
 
@@ -89,15 +90,15 @@ describe('Field', () => {
 
         await waitFor(() =>
             expect(
-                screen.queryByTestId(FIELD_EDIT_FORM_TEST_ID)
-            ).toBeInTheDocument()
+                screen.queryByTestId(FIELD_EDIT_FORM_TEST_ID),
+            ).toBeInTheDocument(),
         )
 
         expect(defaultProps.onEditionStart).toHaveBeenCalledTimes(1)
     })
 
     it('should call `onDelete` on delete button click', () => {
-        const {getByText} = render(<Field {...defaultProps} />)
+        const { getByText } = render(<Field {...defaultProps} />)
 
         fireEvent.click(getByText(DELETE_BUTTON_TEXT))
 
@@ -110,8 +111,8 @@ describe('Field', () => {
             type: defaultProps.type,
         }
 
-        const {getByText} = render(
-            <Field {...defaultProps} editionHiddenFields={['title']} />
+        const { getByText } = render(
+            <Field {...defaultProps} editionHiddenFields={['title']} />,
         )
 
         fireEvent.click(getByText(EDIT_BUTTON_TEXT))
@@ -122,7 +123,7 @@ describe('Field', () => {
                 availableTypes: defaultProps.availableTypes,
                 hiddenFields: ['title'],
             }),
-            expect.anything()
+            expect.anything(),
         )
     })
 
@@ -135,29 +136,29 @@ describe('Field', () => {
 
         await waitFor(() =>
             expect(
-                screen.queryByTestId(FIELD_EDIT_FORM_TEST_ID)
-            ).not.toBeInTheDocument()
+                screen.queryByTestId(FIELD_EDIT_FORM_TEST_ID),
+            ).not.toBeInTheDocument(),
         )
         expect(defaultProps.onEditionStop).toHaveBeenCalledTimes(1)
     })
 
     it('should hide edit form and call `onEditionStop` when clicking outside of the popover', async () => {
-        const {container} = render(<Field {...defaultProps} />)
+        const { container } = render(<Field {...defaultProps} />)
 
         fireEvent.click(screen.getByText(EDIT_BUTTON_TEXT))
 
         await waitFor(() =>
             expect(
-                screen.queryByTestId(FIELD_EDIT_FORM_TEST_ID)
-            ).toBeInTheDocument()
+                screen.queryByTestId(FIELD_EDIT_FORM_TEST_ID),
+            ).toBeInTheDocument(),
         )
 
         fireEvent.click(container)
 
         await waitFor(() =>
             expect(
-                screen.queryByTestId(FIELD_EDIT_FORM_TEST_ID)
-            ).not.toBeInTheDocument()
+                screen.queryByTestId(FIELD_EDIT_FORM_TEST_ID),
+            ).not.toBeInTheDocument(),
         )
         expect(defaultProps.onEditionStop).toHaveBeenCalledTimes(1)
     })
@@ -176,17 +177,17 @@ describe('Field', () => {
 
         await waitFor(() =>
             expect(
-                screen.queryByTestId(FIELD_EDIT_FORM_TEST_ID)
-            ).not.toBeInTheDocument()
+                screen.queryByTestId(FIELD_EDIT_FORM_TEST_ID),
+            ).not.toBeInTheDocument(),
         )
 
         expect(defaultProps.onSubmit).toHaveBeenNthCalledWith(1, someFormData)
         expect(defaultProps.onEditionStop).toHaveBeenCalledTimes(1)
         expect(
-            (defaultProps.onSubmit as jest.Mock).mock.invocationCallOrder[0]
+            (defaultProps.onSubmit as jest.Mock).mock.invocationCallOrder[0],
         ).toBeLessThan(
             (defaultProps.onEditionStop as jest.Mock).mock
-                .invocationCallOrder[0]
+                .invocationCallOrder[0],
         )
     })
 })

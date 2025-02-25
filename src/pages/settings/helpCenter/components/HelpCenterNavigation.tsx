@@ -1,20 +1,21 @@
+import React, { useState } from 'react'
+
 import classNames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useState} from 'react'
-import {NavLink, useHistory} from 'react-router-dom'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { NavLink, useHistory } from 'react-router-dom'
 
 import dotError from 'assets/img/icons/dot-error.svg'
-import {TicketChannel} from 'business/types/ticket'
-import {SegmentEvent, logEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
+import { TicketChannel } from 'business/types/ticket'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
-
 import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
 import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
-import {getHasAutomate} from 'state/billing/selectors'
+import { getHasAutomate } from 'state/billing/selectors'
 
-import {useHasAccessToAILibrary} from './AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
+import { useHasAccessToAILibrary } from './AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
+
 import css from './HelpCenterNavigation.less'
 
 type Props = {
@@ -70,7 +71,7 @@ export const HelpCenterNavigation: React.FC<Props> = ({
                     <i
                         className={classNames(
                             'material-icons',
-                            css.autoAwesome
+                            css.autoAwesome,
                         )}
                     >
                         auto_awesome

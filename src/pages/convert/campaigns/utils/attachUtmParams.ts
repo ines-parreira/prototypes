@@ -1,17 +1,17 @@
-import {parse} from 'qs'
+import { parse } from 'qs'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {getLDClient} from 'utils/launchDarkly'
-import {attachSearchParamsToUrl} from 'utils/url'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { getLDClient } from 'utils/launchDarkly'
+import { attachSearchParamsToUrl } from 'utils/url'
 
-import {CampaignProduct} from '../types/CampaignProduct'
+import { CampaignProduct } from '../types/CampaignProduct'
 
 export function shouldAppendUtmParam(
     isConvertSubscriber: boolean,
-    utmEnabled: boolean = true
+    utmEnabled: boolean = true,
 ): boolean {
     const shouldDisableUtmParams = Boolean(
-        getLDClient().allFlags()[FeatureFlagKey.RevenueDisableUtmParams]
+        getLDClient().allFlags()[FeatureFlagKey.RevenueDisableUtmParams],
     )
 
     return isConvertSubscriber && !shouldDisableUtmParams && utmEnabled
@@ -34,17 +34,17 @@ export function attachUtmToUrl(
     campaignName: string,
     isConvertSubscriber: boolean,
     utmEnabled: boolean = true,
-    utmQueryString: string = ''
+    utmQueryString: string = '',
 ): string {
     if (shouldAppendUtmParam(isConvertSubscriber, utmEnabled)) {
         if (utmQueryString.length > 0) {
             const cleanUrl = removeRevenueUtmFromUrl(url)
-            const {...parameters} = parse(utmQueryString, {
+            const { ...parameters } = parse(utmQueryString, {
                 ignoreQueryPrefix: true,
             })
             return attachSearchParamsToUrl(
                 cleanUrl,
-                parameters as Record<string, string>
+                parameters as Record<string, string>,
             )
         }
         return attachSearchParamsToUrl(url, {
@@ -62,13 +62,13 @@ export function attachUtmToCampaignProduct(
     campaignName: string,
     isConvertSubscriber: boolean,
     utmEnabled: boolean,
-    utmQueryString: string
+    utmQueryString: string,
 ): string {
     return attachUtmToUrl(
         product.url,
         campaignName,
         isConvertSubscriber,
         utmEnabled,
-        utmQueryString
+        utmQueryString,
     )
 }

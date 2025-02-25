@@ -1,6 +1,13 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
+import React, {
+    ForwardedRef,
+    forwardRef,
+    HTMLAttributes,
+    ReactNode,
+} from 'react'
+
 import classnames from 'classnames'
-import React, {forwardRef, ForwardedRef, HTMLAttributes, ReactNode} from 'react'
+
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import css from './DropdownBody.less'
 
@@ -11,8 +18,8 @@ type Props = {
 } & HTMLAttributes<HTMLDivElement>
 
 function DropdownBody(
-    {children, className, isLoading, ...other}: Props,
-    ref: ForwardedRef<HTMLDivElement>
+    { children, className, isLoading, ...other }: Props,
+    ref: ForwardedRef<HTMLDivElement>,
 ) {
     return (
         <div

@@ -1,5 +1,6 @@
+import React, { ComponentProps } from 'react'
+
 import classnames from 'classnames'
-import React, {ComponentProps} from 'react'
 
 import SelectFilter from 'pages/stats/common/SelectFilter'
 

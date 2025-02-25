@@ -1,25 +1,26 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
-import {useGridSize} from 'hooks/useGridSize'
-import {FilterKey} from 'models/stat/types'
-import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
+import { useGridSize } from 'hooks/useGridSize'
+import { FilterKey } from 'models/stat/types'
+import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
-import {CustomReportComponent} from 'pages/stats/custom-reports/CustomReportComponent'
+import { CustomReportComponent } from 'pages/stats/custom-reports/CustomReportComponent'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
 import StatsPage from 'pages/stats/StatsPage'
-import {SupportPerformanceFilters} from 'pages/stats/support-performance/SupportPerformanceFilters'
-import {CustomFieldSelect} from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
-import {DownloadTicketFieldsDataButton} from 'pages/stats/ticket-insights/ticket-fields/DownloadTicketFieldsDataButton'
-import {TicketFieldsBlankState} from 'pages/stats/ticket-insights/ticket-fields/TicketFieldsBlankState'
+import { SupportPerformanceFilters } from 'pages/stats/support-performance/SupportPerformanceFilters'
+import { CustomFieldSelect } from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
+import { DownloadTicketFieldsDataButton } from 'pages/stats/ticket-insights/ticket-fields/DownloadTicketFieldsDataButton'
+import { TicketFieldsBlankState } from 'pages/stats/ticket-insights/ticket-fields/TicketFieldsBlankState'
 import {
     TicketFieldsChart,
     TicketFieldsReportConfig,
 } from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsReportConfig'
-import {getSelectedCustomField} from 'state/ui/stats/ticketInsightsSlice'
+import { getSelectedCustomField } from 'state/ui/stats/ticketInsightsSlice'
 
 export function SupportPerformanceTicketInsights() {
     const isAnalyticsNewFilters =

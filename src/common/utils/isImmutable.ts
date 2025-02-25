@@ -1,7 +1,7 @@
-import {Iterable} from 'immutable'
+import { Iterable } from 'immutable'
 
 export default function isImmutable(
-    value: any
+    value: any,
 ): value is Iterable<unknown, unknown> {
     return Iterable.isIterable(value)
 }

@@ -1,19 +1,20 @@
-import classnames from 'classnames'
-import _noop from 'lodash/noop'
 import React from 'react'
 
-import {THEME_NAME} from 'core/theme'
+import classnames from 'classnames'
+import _noop from 'lodash/noop'
+
+import { THEME_NAME } from 'core/theme'
 import Button from 'pages/common/components/button/Button'
 import RichField from 'pages/common/forms/RichField/RichField'
-import {AutoReplyReturnSettings} from 'state/rules/types'
+import { AutoReplyReturnSettings } from 'state/rules/types'
 
-import {ManagedRuleDetailProps} from './ManagedRuleEditor'
+import { ManagedRuleDetailProps } from './ManagedRuleEditor'
 
 import css from './ManagedRuleEditor.less'
 
 type Props = Pick<ManagedRuleDetailProps<AutoReplyReturnSettings>, 'settings'>
 
-export const AutoReplyReturnDemo = ({settings}: Props) => (
+export const AutoReplyReturnDemo = ({ settings }: Props) => (
     <div className={classnames(css.demo, css.autoReplyReturn)}>
         <div className={css.topbar}>
             <div className={css.circle} />

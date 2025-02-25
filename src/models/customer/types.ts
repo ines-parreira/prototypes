@@ -1,9 +1,9 @@
-import {Order} from 'constants/integrations/types/shopify'
-import {CustomerChannel} from 'models/customerChannel/types'
-import {CustomerEcommerceData} from 'models/customerEcommerceData/types'
-import {CustomerExternalData} from 'models/customerExternalData/types'
-import {IntegrationType} from 'models/integration/types'
-import {Subscription} from 'state/billing/types'
+import { Order } from 'constants/integrations/types/shopify'
+import { CustomerChannel } from 'models/customerChannel/types'
+import { CustomerEcommerceData } from 'models/customerEcommerceData/types'
+import { CustomerExternalData } from 'models/customerExternalData/types'
+import { IntegrationType } from 'models/integration/types'
+import { Subscription } from 'state/billing/types'
 
 type CustomerInformation = {
     city: string
@@ -15,7 +15,7 @@ type CustomerInformation = {
     orderCount: number
     orders: Order[]
     points: number
-    _shopify?: {customer: {id: number}}
+    _shopify?: { customer: { id: number } }
 }
 
 export type CustomerDraft = {

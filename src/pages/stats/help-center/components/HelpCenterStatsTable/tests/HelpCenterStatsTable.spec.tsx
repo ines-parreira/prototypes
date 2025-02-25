@@ -1,18 +1,19 @@
-import {act, fireEvent, render, screen} from '@testing-library/react'
+import React, { ComponentProps } from 'react'
+
+import { act, fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import noop from 'lodash/noop'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import HelpCenterStatsTable, {TableCellType} from '../HelpCenterStatsTable'
+import HelpCenterStatsTable, { TableCellType } from '../HelpCenterStatsTable'
 
 const mockStore = configureMockStore([thunk])
 const store = mockStore({})
 
 const renderComponent = (
-    props: Partial<ComponentProps<typeof HelpCenterStatsTable>>
+    props: Partial<ComponentProps<typeof HelpCenterStatsTable>>,
 ) => {
     render(
         <Provider store={store}>
@@ -24,7 +25,7 @@ const renderComponent = (
                 onPageChange={noop}
                 {...props}
             />
-        </Provider>
+        </Provider>,
     )
 }
 
@@ -33,22 +34,24 @@ describe('HelpCenterStatsTable', () => {
         renderComponent({})
 
         expect(
-            screen.getByTestId('help-center-stats-table')
+            screen.getByTestId('help-center-stats-table'),
         ).toBeInTheDocument()
     })
 
     it('should show loading state', () => {
         renderComponent({
             isLoading: true,
-            columns: [{name: 'Article', type: TableCellType.String}],
+            columns: [{ name: 'Article', type: TableCellType.String }],
         })
         expect(document.querySelector('.loader')).toBeInTheDocument()
     })
 
     it('should render columns with rows', () => {
         renderComponent({
-            columns: [{name: 'Article', type: TableCellType.String}],
-            data: [[{type: TableCellType.String, value: 'Orders & Shipping'}]],
+            columns: [{ name: 'Article', type: TableCellType.String }],
+            data: [
+                [{ type: TableCellType.String, value: 'Orders & Shipping' }],
+            ],
         })
 
         expect(screen.getByText('Article')).toBeInTheDocument()
@@ -57,7 +60,7 @@ describe('HelpCenterStatsTable', () => {
 
     it('should render link when row have link props', () => {
         renderComponent({
-            columns: [{name: 'Article', type: TableCellType.String}],
+            columns: [{ name: 'Article', type: TableCellType.String }],
             data: [
                 [
                     {
@@ -78,7 +81,7 @@ describe('HelpCenterStatsTable', () => {
                 {
                     name: 'Article',
                     type: TableCellType.String,
-                    tooltip: {title: 'Tooltip'},
+                    tooltip: { title: 'Tooltip' },
                 },
             ],
         })
@@ -109,7 +112,7 @@ describe('HelpCenterStatsTable', () => {
 
         act(() => {
             fireEvent.scroll(screen.getByTestId('help-center-stats-table'), {
-                target: {scrollLeft: 500},
+                target: { scrollLeft: 500 },
             })
         })
 
@@ -158,7 +161,7 @@ describe('HelpCenterStatsTable', () => {
         })
 
         expect(
-            screen.getByTestId('help-center-table-pagination')
+            screen.getByTestId('help-center-table-pagination'),
         ).toBeInTheDocument()
     })
 
@@ -182,7 +185,7 @@ describe('HelpCenterStatsTable', () => {
         })
 
         expect(
-            screen.queryByTestId('help-center-table-pagination')
+            screen.queryByTestId('help-center-table-pagination'),
         ).not.toBeInTheDocument()
     })
 

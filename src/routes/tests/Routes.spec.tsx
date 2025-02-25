@@ -1,27 +1,28 @@
-import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
-import {act, render, screen, waitFor} from '@testing-library/react'
-import {createBrowserHistory} from 'history'
-import {fromJS} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
-import React, {ComponentType, PropsWithChildren, ReactNode} from 'react'
-import {Provider} from 'react-redux'
-import {MemoryRouter, Router} from 'react-router-dom'
+import React, { ComponentType, PropsWithChildren, ReactNode } from 'react'
+
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { act, render, screen, waitFor } from '@testing-library/react'
+import { createBrowserHistory } from 'history'
+import { fromJS } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
+import { MemoryRouter, Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
-import {logPageChange} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useFlag} from 'core/flags'
-import {account} from 'fixtures/account'
+import { logPageChange } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
+import { account } from 'fixtures/account'
 import * as billingFixtures from 'fixtures/billing'
-import {billingState} from 'fixtures/billing'
-import {user} from 'fixtures/users'
-import {useAiAgentItemEnabled} from 'pages/aiAgent/hooks/useAiAgentItemEnabled'
+import { billingState } from 'fixtures/billing'
+import { user } from 'fixtures/users'
+import { useAiAgentItemEnabled } from 'pages/aiAgent/hooks/useAiAgentItemEnabled'
 import Routes from 'routes/Routes'
-import {StatsRoutes} from 'routes/StatsRoutes'
-import {initialState} from 'state/billing/reducers'
-import {RootState} from 'state/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock, renderWithRouter} from 'utils/testing'
+import { StatsRoutes } from 'routes/StatsRoutes'
+import { initialState } from 'state/billing/reducers'
+import { RootState } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock, renderWithRouter } from 'utils/testing'
 
 jest.mock('routes/settings', () => () => <div>SettingsRoutes</div>)
 jest.mock('common/segment')
@@ -41,7 +42,7 @@ jest.mock(
             content?: ComponentType<any>
             children?: ReactNode
         }) =>
-            Content ? <Content /> : children
+            Content ? <Content /> : children,
 )
 jest.mock('pages/PanelLayout', () => () => <div>PanelLayout</div>)
 jest.mock('pages/settings/yourProfile/YourProfileContainer', () => () => (
@@ -49,31 +50,31 @@ jest.mock('pages/settings/yourProfile/YourProfileContainer', () => () => (
 ))
 jest.mock(
     'pages/automate/actionsPlatform/ActionsPlatformAppsView',
-    () => () => <div>ActionsPlatformAppsView</div>
+    () => () => <div>ActionsPlatformAppsView</div>,
 )
 jest.mock(
     'pages/automate/actionsPlatform/ActionsPlatformTemplatesView',
-    () => () => <div>ActionsPlatformTemplatesView</div>
+    () => () => <div>ActionsPlatformTemplatesView</div>,
 )
 jest.mock(
     'pages/automate/common/components/AutomateLandingPageContainer',
-    () => () => <div>AutomateLandingPageContainer</div>
+    () => () => <div>AutomateLandingPageContainer</div>,
 )
 jest.mock(
     'pages/convert/onboarding/components/ConvertOnboardingView',
-    () => () => <div>ConvertOnboardingView</div>
+    () => () => <div>ConvertOnboardingView</div>,
 )
 jest.mock(
     'pages/convert/common/components/ConvertNavbar/ConvertNavbar',
-    () => () => <div>ConvertNavbar</div>
+    () => () => <div>ConvertNavbar</div>,
 )
 jest.mock(
     'pages/automate/actionsPlatform/ActionsPlatformCreateAppFormView',
-    () => () => <div>ActionsPlatformCreateAppFormView</div>
+    () => () => <div>ActionsPlatformCreateAppFormView</div>,
 )
 jest.mock(
     'pages/automate/actionsPlatform/ActionsPlatformEditAppFormView',
-    () => () => <div>ActionsPlatformEditAppFormView</div>
+    () => () => <div>ActionsPlatformEditAppFormView</div>,
 )
 jest.mock(
     'pages/aiAgent/providers/AiAgentAccountConfigurationProvider',
@@ -86,17 +87,17 @@ jest.mock(
                 <>{children}</>
             </>
         ),
-    })
+    }),
 )
 jest.mock(
     'pages/aiAgent/providers/AiAgentStoreConfigurationProvider',
     () =>
-        ({children}: PropsWithChildren<any>) => (
+        ({ children }: PropsWithChildren<any>) => (
             <>
                 <div>AiAgentStoreConfigurationProvider</div>
                 <>{children}</>
             </>
-        )
+        ),
 )
 jest.mock('pages/aiAgent/AiAgentKnowledgeContainer', () => ({
     AiAgentKnowledgeContainer: () => <div>AiAgentKnowledgeContainer</div>,
@@ -143,7 +144,7 @@ describe('<Routes/>', () => {
             <Provider store={mockStore({})}>
                 <Routes />
             </Provider>,
-            {history: mockHistory}
+            { history: mockHistory },
         )
         expect(logPageMock).not.toHaveBeenCalled()
     })
@@ -155,7 +156,7 @@ describe('<Routes/>', () => {
             </Provider>,
             {
                 history: mockHistory,
-            }
+            },
         )
 
         act(() => mockHistory.push('/app/settings/profile'))
@@ -172,7 +173,7 @@ describe('<Routes/>', () => {
             </Provider>,
             {
                 history: mockHistory,
-            }
+            },
         )
 
         act(() => mockHistory.push('/app/settings/profile'))
@@ -189,11 +190,11 @@ describe('<Routes/>', () => {
             </Provider>,
             {
                 history: mockHistory,
-            }
+            },
         )
 
         act(() =>
-            mockHistory.push('app/automation/shopify/dummystore/ai-agent')
+            mockHistory.push('app/automation/shopify/dummystore/ai-agent'),
         )
 
         expect(window.loadGorgiasChat).toHaveBeenCalledWith(true)
@@ -208,14 +209,14 @@ describe('<Routes/>', () => {
             </Provider>,
             {
                 history: mockHistory,
-            }
+            },
         )
 
         act(() => mockHistory.push('/app/settings/profile'))
         expect(window.loadGorgiasChat).not.toHaveBeenCalled()
 
         act(() =>
-            mockHistory.push('app/automation/shopify/dummystore/ai-agent')
+            mockHistory.push('app/automation/shopify/dummystore/ai-agent'),
         )
         expect(window.loadGorgiasChat).not.toHaveBeenCalled()
     })
@@ -227,7 +228,7 @@ describe('<Routes/>', () => {
             </Provider>,
             {
                 history: mockHistory,
-            }
+            },
         )
 
         act(() => mockHistory.push('/app/convert/setup'))
@@ -240,17 +241,17 @@ describe('<Routes/>', () => {
             route: 'credit-shopify-billing-integration',
             title: 'Credit Shopify billing integration',
         },
-        {route: 'create-shopify-charge', title: 'Create Shopify charge'},
-        {route: 'remove-shopify-billing', title: 'Remove Shopify Billing'},
-    ])('The route $route', ({route, title}) => {
+        { route: 'create-shopify-charge', title: 'Create Shopify charge' },
+        { route: 'remove-shopify-billing', title: 'Remove Shopify Billing' },
+    ])('The route $route', ({ route, title }) => {
         const renderRoute = () => {
             renderWithRouter(
-                <Provider store={mockStore({currentUser: fromJS(user)})}>
+                <Provider store={mockStore({ currentUser: fromJS(user) })}>
                     <Routes />
                 </Provider>,
                 {
                     history: mockHistory,
-                }
+                },
             )
 
             act(() => mockHistory.push(`/app/admin/tasks/${route}`))
@@ -259,14 +260,14 @@ describe('<Routes/>', () => {
         it('should be available for impersonated admin users', () => {
             window.USER_IMPERSONATED = true
             renderRoute()
-            expect(screen.getByRole('heading', {name: title})).toBeVisible()
+            expect(screen.getByRole('heading', { name: title })).toBeVisible()
         })
 
         it('should not be available for non-impersonated users', () => {
             window.USER_IMPERSONATED = null
             renderRoute()
             expect(
-                screen.queryByRole('heading', {name: title})
+                screen.queryByRole('heading', { name: title }),
             ).not.toBeInTheDocument()
         })
     })
@@ -281,7 +282,7 @@ describe('<Routes/>', () => {
                 </Provider>,
                 {
                     history: mockHistory,
-                }
+                },
             )
 
             act(() => {
@@ -289,7 +290,7 @@ describe('<Routes/>', () => {
             })
 
             expect(
-                screen.getByText('ActionsPlatformTemplatesView')
+                screen.getByText('ActionsPlatformTemplatesView'),
             ).toBeInTheDocument()
         })
 
@@ -302,7 +303,7 @@ describe('<Routes/>', () => {
                 </Provider>,
                 {
                     history: mockHistory,
-                }
+                },
             )
 
             act(() => {
@@ -310,7 +311,7 @@ describe('<Routes/>', () => {
             })
 
             expect(
-                screen.getByText('ActionsPlatformAppsView')
+                screen.getByText('ActionsPlatformAppsView'),
             ).toBeInTheDocument()
         })
 
@@ -323,7 +324,7 @@ describe('<Routes/>', () => {
                 </Provider>,
                 {
                     history: mockHistory,
-                }
+                },
             )
 
             act(() => {
@@ -331,7 +332,7 @@ describe('<Routes/>', () => {
             })
 
             expect(
-                screen.queryByText('ActionsPlatformTemplatesView')
+                screen.queryByText('ActionsPlatformTemplatesView'),
             ).not.toBeInTheDocument()
         })
 
@@ -344,7 +345,7 @@ describe('<Routes/>', () => {
                 </Provider>,
                 {
                     history: mockHistory,
-                }
+                },
             )
 
             act(() => {
@@ -352,7 +353,7 @@ describe('<Routes/>', () => {
             })
 
             expect(
-                screen.getByText('ActionsPlatformCreateAppFormView')
+                screen.getByText('ActionsPlatformCreateAppFormView'),
             ).toBeInTheDocument()
         })
 
@@ -365,7 +366,7 @@ describe('<Routes/>', () => {
                 </Provider>,
                 {
                     history: mockHistory,
-                }
+                },
             )
 
             act(() => {
@@ -373,7 +374,7 @@ describe('<Routes/>', () => {
             })
 
             expect(
-                screen.queryByText('ActionsPlatformCreateAppFormView')
+                screen.queryByText('ActionsPlatformCreateAppFormView'),
             ).not.toBeInTheDocument()
         })
 
@@ -386,7 +387,7 @@ describe('<Routes/>', () => {
                 </Provider>,
                 {
                     history: mockHistory,
-                }
+                },
             )
 
             act(() => {
@@ -394,7 +395,7 @@ describe('<Routes/>', () => {
             })
 
             expect(
-                screen.getByText('ActionsPlatformEditAppFormView')
+                screen.getByText('ActionsPlatformEditAppFormView'),
             ).toBeInTheDocument()
         })
 
@@ -407,7 +408,7 @@ describe('<Routes/>', () => {
                 </Provider>,
                 {
                     history: mockHistory,
-                }
+                },
             )
 
             act(() => {
@@ -415,7 +416,7 @@ describe('<Routes/>', () => {
             })
 
             expect(
-                screen.queryByText('ActionsPlatformEditAppFormView')
+                screen.queryByText('ActionsPlatformEditAppFormView'),
             ).not.toBeInTheDocument()
         })
     })
@@ -444,11 +445,11 @@ describe('<Routes/>', () => {
                     >
                         <Routes />
                     </MemoryRouter>
-                </Provider>
+                </Provider>,
             )
 
             expect(
-                screen.getByText('AiAgentKnowledgeContainer')
+                screen.getByText('AiAgentKnowledgeContainer'),
             ).toBeInTheDocument()
         })
 
@@ -466,11 +467,11 @@ describe('<Routes/>', () => {
                     >
                         <Routes />
                     </MemoryRouter>
-                </Provider>
+                </Provider>,
             )
 
             expect(
-                screen.getByText('AiAgentKnowledgeContainer')
+                screen.getByText('AiAgentKnowledgeContainer'),
             ).toBeInTheDocument()
         })
 
@@ -492,23 +493,26 @@ describe('<Routes/>', () => {
                     from: '/app/automation/shopify/test-shop/ai-agent/preview-mode',
                     to: '/app/ai-agent/shopify/test-shop/settings/preview',
                 },
-            ])('should redirect to $to when accessing $from', ({from, to}) => {
-                mockFlags({[FeatureFlagKey.ConvAiStandaloneMenu]: true})
+            ])(
+                'should redirect to $to when accessing $from',
+                ({ from, to }) => {
+                    mockFlags({ [FeatureFlagKey.ConvAiStandaloneMenu]: true })
 
-                render(
-                    <QueryClientProvider client={mockQueryClient()}>
-                        <Provider store={mockStore(defaultState)}>
-                            <Router history={mockHistory}>
-                                <Routes />
-                            </Router>
-                        </Provider>
-                    </QueryClientProvider>
-                )
+                    render(
+                        <QueryClientProvider client={mockQueryClient()}>
+                            <Provider store={mockStore(defaultState)}>
+                                <Router history={mockHistory}>
+                                    <Routes />
+                                </Router>
+                            </Provider>
+                        </QueryClientProvider>,
+                    )
 
-                act(() => mockHistory.push(from))
+                    act(() => mockHistory.push(from))
 
-                expect(mockHistory.location.pathname).toBe(to)
-            })
+                    expect(mockHistory.location.pathname).toBe(to)
+                },
+            )
         })
 
         it('should render sales page when flag standalone-ai-agent-sales-page is enabled', () => {
@@ -525,7 +529,7 @@ describe('<Routes/>', () => {
                     >
                         <Routes />
                     </MemoryRouter>
-                </Provider>
+                </Provider>,
             )
 
             expect(screen.getByText('AiAgentSales')).toBeInTheDocument()
@@ -537,7 +541,7 @@ describe('<Routes/>', () => {
             'pages/aiAgent/Onboarding/hooks/useGetOnboardingData',
             () => ({
                 useGetOnboardingData: jest.fn(),
-            })
+            }),
         )
 
         const defaultState: Partial<RootState> = {
@@ -561,12 +565,12 @@ describe('<Routes/>', () => {
                             <Routes />
                         </MemoryRouter>
                     </Provider>
-                </QueryClientProvider>
+                </QueryClientProvider>,
             )
 
             await waitFor(() => {
                 expect(
-                    screen.getByText('Welcome to Conversational AI!')
+                    screen.getByText('Welcome to Conversational AI!'),
                 ).toBeInTheDocument()
             })
         })
@@ -583,7 +587,7 @@ describe('<Routes/>', () => {
                             <Routes />
                         </MemoryRouter>
                     </Provider>
-                </QueryClientProvider>
+                </QueryClientProvider>,
             )
 
             expect(screen.getByText('Handover step')).toBeInTheDocument()

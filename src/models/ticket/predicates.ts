@@ -1,13 +1,12 @@
-import {isObject} from 'lodash'
+import { isObject } from 'lodash'
 import _get from 'lodash/get'
 import memoizeOne from 'memoize-one'
 import moment from 'moment'
 
-import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
-
+import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
 import {
-    MessageMetadataType,
     type GorgiasContactFormTicketMeta,
+    MessageMetadataType,
     type Source,
     type SourceAddress,
     type TicketEvent,
@@ -15,11 +14,11 @@ import {
 } from 'models/ticket/types'
 
 export const isTicketMessage = (
-    obj: Record<string, unknown>
+    obj: Record<string, unknown>,
 ): obj is TicketMessage => obj.isMessage as boolean
 
 export const isTicketEvent = (
-    obj: Record<string, unknown>
+    obj: Record<string, unknown>,
 ): obj is TicketEvent => obj.isEvent as boolean
 
 export function isSource(input: unknown): input is Source {
@@ -28,10 +27,10 @@ export function isSource(input: unknown): input is Source {
 }
 
 export function isTicketMessageSourceType(
-    input: unknown
+    input: unknown,
 ): input is TicketMessageSourceType {
     return Object.values<string>(TicketMessageSourceType).includes(
-        input as string
+        input as string,
     )
 }
 
@@ -81,13 +80,13 @@ export const isFailed = (message: TicketMessage): boolean => {
 }
 
 export const isGorgiasContactFormTicketMeta = (
-    ticketMetaObj: unknown
-): ticketMetaObj is {gorgias_contact_form: GorgiasContactFormTicketMeta} => {
+    ticketMetaObj: unknown,
+): ticketMetaObj is { gorgias_contact_form: GorgiasContactFormTicketMeta } => {
     return (
         typeof _get(
             ticketMetaObj,
             ['gorgias_contact_form', 'contact_form_id'],
-            null
+            null,
         ) === 'number'
     )
 }
@@ -129,7 +128,7 @@ export const isTicketMessageDeleted = (message: TicketMessage): boolean => {
 
 export const shouldMessagesBeGrouped = (
     msg1: TicketMessage,
-    msg2: TicketMessage
+    msg2: TicketMessage,
 ): boolean => {
     if (!isTicketMessage(msg1) || !isTicketMessage(msg2)) {
         return false

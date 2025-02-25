@@ -1,17 +1,16 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
+import { renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
+import { useLocation } from 'react-router-dom'
 
-import {useLocation} from 'react-router-dom'
-
-import {FeatureFlagKey} from 'config/featureFlags'
-import {UserRole} from 'config/types/user'
-import {useFlag} from 'core/flags'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { UserRole } from 'config/types/user'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {getInactiveEmailChannels} from 'state/integrations/selectors'
-import {assumeMock} from 'utils/testing'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { getInactiveEmailChannels } from 'state/integrations/selectors'
+import { assumeMock } from 'utils/testing'
 
-import {useEmailDisconnectedBanner} from '../useEmailDisconnectedBanner'
+import { useEmailDisconnectedBanner } from '../useEmailDisconnectedBanner'
 
 jest.mock('core/flags')
 const mockUseFlag = useFlag as jest.Mock
@@ -28,7 +27,7 @@ jest.mock(
                 push: mockHistoryPush,
             }),
             useLocation: jest.fn(),
-        }) as Record<string, unknown>
+        }) as Record<string, unknown>,
 )
 const mockUseLocation = assumeMock(useLocation)
 
@@ -58,7 +57,7 @@ jest.mock(
                 addBanner: mockedAddBanner,
                 removeBanner: mockedRemoveBanner,
             }),
-        }) as Record<string, unknown>
+        }) as Record<string, unknown>,
 )
 
 jest.mock('hooks/useAppSelector', () => jest.fn())
@@ -84,7 +83,7 @@ describe('useEmailDomainVerificationBanner', () => {
         mockUseFlag.mockReset()
         useAppSelectorMock.mockReset()
         getCurrentUserMock.mockReturnValue(
-            fromJS({role: {name: UserRole.Admin}})
+            fromJS({ role: { name: UserRole.Admin } }),
         )
     })
 
@@ -144,7 +143,7 @@ describe('useEmailDomainVerificationBanner', () => {
         bannerCTA.onClick()
 
         expect(mockHistoryPush).toHaveBeenCalledWith(
-            '/app/settings/channels/email'
+            '/app/settings/channels/email',
         )
     })
 

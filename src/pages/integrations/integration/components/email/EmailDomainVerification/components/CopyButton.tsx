@@ -1,10 +1,11 @@
-import Clipboard from 'clipboard'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {store} from 'common/store'
+import Clipboard from 'clipboard'
+
+import { store } from 'common/store'
 import IconButton from 'pages/common/components/button/IconButton'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 import css from '../EmailDomainVerification.less'
 
@@ -24,12 +25,12 @@ const clipboardCopy = (button: HTMLButtonElement) => {
             notify({
                 status: NotificationStatus.Info,
                 message: 'Copied to clipboard!',
-            }) as any
+            }) as any,
         )
     })
 }
 
-const CopyButton = ({clipboardTarget, fillStyle}: Props) => {
+const CopyButton = ({ clipboardTarget, fillStyle }: Props) => {
     return (
         <IconButton
             iconClassName="material-icons-outlined"

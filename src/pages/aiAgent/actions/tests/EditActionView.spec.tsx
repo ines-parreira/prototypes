@@ -1,15 +1,16 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {act, fireEvent, screen} from '@testing-library/react'
-import {createMemoryHistory} from 'history'
-import {produce} from 'immer'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { act, fireEvent, screen } from '@testing-library/react'
+import { createMemoryHistory } from 'history'
+import { produce } from 'immer'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {ulid} from 'ulidx'
+import { ulid } from 'ulidx'
 
-import {useFlag} from 'core/flags'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     useGetStoreApps,
@@ -21,14 +22,14 @@ import use3plIntegrations from 'pages/aiAgent/actions/hooks/use3plIntegrations'
 import useAddStoreApp from 'pages/aiAgent/actions/hooks/useAddStoreApp'
 import useDeleteAction from 'pages/aiAgent/actions/hooks/useDeleteAction'
 import useUpsertAction from 'pages/aiAgent/actions/hooks/useUpsertAction'
-import {useAiAgentEnabled} from 'pages/aiAgent/hooks/useAiAgentEnabled'
+import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
-import {WorkflowConfigurationBuilder} from 'pages/automate/workflows/models/workflowConfiguration.model'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {RootState, StoreDispatch} from 'state/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {renderWithRouter} from 'utils/testing'
+import { WorkflowConfigurationBuilder } from 'pages/automate/workflows/models/workflowConfiguration.model'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { renderWithRouter } from 'utils/testing'
 
 import EditActionView from '../EditActionView'
 
@@ -44,7 +45,7 @@ jest.mock('pages/aiAgent/actions/hooks/use3plIntegrations')
 jest.mock('core/flags')
 
 const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
-    useGetWorkflowConfigurationTemplates
+    useGetWorkflowConfigurationTemplates,
 )
 const mockUseUpsertAction = jest.mocked(useUpsertAction)
 const mockUseDeleteAction = jest.mocked(useDeleteAction)
@@ -56,7 +57,7 @@ const mockuse3plIntegrations = jest.mocked(use3plIntegrations)
 const mockUseAddStoreApp = jest.mocked(useAddStoreApp)
 const mockUseFlag = jest.mocked(useFlag)
 const mockUseGetStoreWorkflowsConfigurations = jest.mocked(
-    useGetStoreWorkflowsConfigurations
+    useGetStoreWorkflowsConfigurations,
 )
 const mockUseListActionsApps = jest.mocked(useListActionsApps)
 
@@ -64,16 +65,24 @@ const mockUseListActionsApps = jest.mocked(useListActionsApps)
 jest.mock('state/integrations/selectors', () => ({
     ...jest.requireActual('state/integrations/selectors'),
     getIntegrationsList: () => [
-        {type: 'shopify', count: 1},
-        {type: 'recharge', count: 0},
+        { type: 'shopify', count: 1 },
+        { type: 'recharge', count: 0 },
     ],
 }))
 
 const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])({
     integrations: fromJS({
         integrations: [
-            {type: 'shopify', count: 1, meta: {store_name: 'shopify-store'}},
-            {type: 'recharge', count: 0, meta: {store_name: 'recharge-store'}},
+            {
+                type: 'shopify',
+                count: 1,
+                meta: { store_name: 'shopify-store' },
+            },
+            {
+                type: 'recharge',
+                count: 0,
+                meta: { store_name: 'recharge-store' },
+            },
         ],
     }),
 } as RootState)
@@ -120,9 +129,9 @@ const b = new WorkflowConfigurationBuilder({
     apps: [],
     available_languages: [],
 })
-b.insertHttpRequestConditionAndEndStepAndSelect('success', {success: true})
+b.insertHttpRequestConditionAndEndStepAndSelect('success', { success: true })
 b.selectParentStep()
-b.insertHttpRequestConditionAndEndStepAndSelect('error', {success: false})
+b.insertHttpRequestConditionAndEndStepAndSelect('error', { success: false })
 
 const configuration = b.build()
 
@@ -171,7 +180,7 @@ describe('<EditActionView />', () => {
                 <QueryClientProvider client={queryClient}>
                     <EditActionView configuration={configuration} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('Save changes')).toBeInTheDocument()
@@ -195,7 +204,7 @@ describe('<EditActionView />', () => {
                 history,
                 path: '/app/automation/:shopType/:shopName/ai-agent/actions/edit/:id',
                 route: `/app/automation/shopify/shopify-store/ai-agent/actions/edit/${configuration.id}`,
-            }
+            },
         )
 
         act(() => {
@@ -203,7 +212,7 @@ describe('<EditActionView />', () => {
         })
 
         expect(historyPushSpy).toHaveBeenCalledWith(
-            '/app/automation/shopify/shopify-store/ai-agent/actions'
+            '/app/automation/shopify/shopify-store/ai-agent/actions',
         )
     })
 
@@ -225,7 +234,7 @@ describe('<EditActionView />', () => {
                 history,
                 path: '/app/automation/:shopType/:shopName/ai-agent/actions/edit/:id',
                 route: `/app/automation/shopify/shopify-store/ai-agent/actions/edit/${configuration.id}`,
-            }
+            },
         )
 
         act(() => {
@@ -233,7 +242,7 @@ describe('<EditActionView />', () => {
         })
 
         expect(historyPushSpy).toHaveBeenCalledWith(
-            `/app/automation/shopify/shopify-store/ai-agent/actions/events/${configuration.id}`
+            `/app/automation/shopify/shopify-store/ai-agent/actions/events/${configuration.id}`,
         )
     })
 
@@ -255,7 +264,7 @@ describe('<EditActionView />', () => {
                 history,
                 path: '/app/automation/:shopType/:shopName/ai-agent/actions/edit/:id',
                 route: `/app/automation/shopify/shopify-store/ai-agent/actions/edit/${configuration.id}`,
-            }
+            },
         )
 
         act(() => {
@@ -263,7 +272,7 @@ describe('<EditActionView />', () => {
         })
 
         expect(historyPushSpy).toHaveBeenCalledWith(
-            `/app/automation/shopify/shopify-store/ai-agent/actions`
+            `/app/automation/shopify/shopify-store/ai-agent/actions`,
         )
     })
 
@@ -291,11 +300,11 @@ describe('<EditActionView />', () => {
                 history,
                 path: '/app/automation/:shopType/:shopName/ai-agent/actions/edit/:id',
                 route: `/app/automation/shopify/shopify-store/ai-agent/actions/edit/${configuration.id}`,
-            }
+            },
         )
 
         expect(historyPushSpy).toHaveBeenCalledWith(
-            `/app/automation/shopify/shopify-store/ai-agent/actions`
+            `/app/automation/shopify/shopify-store/ai-agent/actions`,
         )
     })
 
@@ -307,7 +316,7 @@ describe('<EditActionView />', () => {
         })
         const historyPushSpy = jest.spyOn(history, 'push')
 
-        const {rerender} = renderWithRouter(
+        const { rerender } = renderWithRouter(
             <Provider store={mockStore}>
                 <QueryClientProvider client={queryClient}>
                     <EditActionView configuration={configuration} />
@@ -317,7 +326,7 @@ describe('<EditActionView />', () => {
                 history,
                 path: '/app/automation/:shopType/:shopName/ai-agent/actions/edit/:id',
                 route: `/app/automation/shopify/shopify-store/ai-agent/actions/edit/${configuration.id}`,
-            }
+            },
         )
 
         act(() => {
@@ -335,11 +344,11 @@ describe('<EditActionView />', () => {
                 <QueryClientProvider client={queryClient}>
                     <EditActionView configuration={configuration} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         expect(historyPushSpy).toHaveBeenCalledWith(
-            `/app/automation/shopify/shopify-store/ai-agent/test`
+            `/app/automation/shopify/shopify-store/ai-agent/test`,
         )
     })
 
@@ -367,11 +376,11 @@ describe('<EditActionView />', () => {
                 history,
                 path: '/app/automation/:shopType/:shopName/ai-agent/actions/edit/:id',
                 route: `/app/automation/shopify/shopify-store/ai-agent/actions/edit/${configuration.id}`,
-            }
+            },
         )
 
         expect(historyPushSpy).toHaveBeenCalledWith(
-            `/app/automation/shopify/shopify-store/ai-agent/actions`
+            `/app/automation/shopify/shopify-store/ai-agent/actions`,
         )
     })
 
@@ -388,11 +397,11 @@ describe('<EditActionView />', () => {
                         })}
                     />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            screen.getByRole('button', {name: 'Save and test'})
+            screen.getByRole('button', { name: 'Save and test' }),
         ).toBeAriaDisabled()
     })
 
@@ -408,14 +417,14 @@ describe('<EditActionView />', () => {
                 <QueryClientProvider client={queryClient}>
                     <EditActionView configuration={configuration} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            screen.getByRole('button', {name: /Save changes/})
+            screen.getByRole('button', { name: /Save changes/ }),
         ).toBeAriaDisabled()
         expect(
-            screen.getByRole('button', {name: /Save and test/})
+            screen.getByRole('button', { name: /Save and test/ }),
         ).toBeAriaDisabled()
     })
 
@@ -433,12 +442,12 @@ describe('<EditActionView />', () => {
                 <QueryClientProvider client={queryClient}>
                     <EditActionView configuration={configuration} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         act(() => {
             fireEvent.change(screen.getByDisplayValue('Action name'), {
-                target: {value: ''},
+                target: { value: '' },
             })
         })
 
@@ -474,7 +483,7 @@ describe('<EditActionView />', () => {
             {
                 path: '/app/automation/:shopType/:shopName/ai-agent/actions/edit/:id',
                 route: `/app/automation/shopify/shopify-store/ai-agent/actions/edit/${configuration.id}`,
-            }
+            },
         )
 
         act(() => {
@@ -502,7 +511,7 @@ describe('<EditActionView />', () => {
                 <QueryClientProvider client={queryClient}>
                     <EditActionView configuration={configuration} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         // Switch to advanced view
@@ -520,8 +529,8 @@ describe('<EditActionView />', () => {
 
         expect(
             screen.getByText(
-                'Add at least one step with a 3rd party app or an HTTP request to perform the Action.'
-            )
+                'Add at least one step with a 3rd party app or an HTTP request to perform the Action.',
+            ),
         ).toBeInTheDocument()
         expect(screen.queryByText('Save changes')).not.toBeInTheDocument()
 
@@ -531,8 +540,8 @@ describe('<EditActionView />', () => {
 
         expect(
             screen.queryByText(
-                'Add at least one step with a 3rd party app or an HTTP request to perform the Action.'
-            )
+                'Add at least one step with a 3rd party app or an HTTP request to perform the Action.',
+            ),
         ).not.toBeInTheDocument()
         expect(screen.getByText('Save changes')).toBeInTheDocument()
     })

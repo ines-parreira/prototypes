@@ -1,4 +1,4 @@
-import {CampaignScheduleRuleValueEnum} from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
+import { CampaignScheduleRuleValueEnum } from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
 
 export const SCHEDULE_RULE_LABELS: Record<string, string> = {
     [CampaignScheduleRuleValueEnum.AllDay]: 'all day',

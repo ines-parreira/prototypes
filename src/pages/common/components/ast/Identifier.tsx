@@ -1,8 +1,8 @@
-import {Map, List} from 'immutable'
 import React from 'react'
 
-import {RuleItemActions} from '../../../settings/rules/types'
+import { List, Map } from 'immutable'
 
+import { RuleItemActions } from '../../../settings/rules/types'
 import Widget from './Widget'
 
 type Props = {

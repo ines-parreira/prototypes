@@ -1,16 +1,17 @@
-import {render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
-import {Provider} from 'react-redux'
 
-import {mockStore} from 'utils/testing'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { Provider } from 'react-redux'
+
+import { mockStore } from 'utils/testing'
 
 import TicketVoiceCallSource from '../TicketVoiceCallSource'
 
 jest.mock(
     'pages/common/utils/DatetimeLabel',
     () =>
-        ({dateTime}: {dateTime: string}) => <div>{dateTime}</div>
+        ({ dateTime }: { dateTime: string }) => <div>{dateTime}</div>,
 )
 
 describe('TicketVoiceCallSource', () => {
@@ -26,7 +27,7 @@ describe('TicketVoiceCallSource', () => {
         return render(
             <Provider store={mockStore({} as any)}>
                 <TicketVoiceCallSource {...props} />
-            </Provider>
+            </Provider>,
         )
     }
 
@@ -58,7 +59,7 @@ describe('TicketVoiceCallSource', () => {
                 value: props.date,
             },
         ]
-        tooltipContent.forEach(({label, value}) => {
+        tooltipContent.forEach(({ label, value }) => {
             expect(screen.getByText(label)).toBeInTheDocument()
             expect(screen.getByText(value)).toBeInTheDocument()
         })

@@ -1,22 +1,22 @@
-import {Options as InitialSettings} from 'daterangepicker'
-import moment from 'moment-timezone'
-import React, {ComponentProps, useCallback} from 'react'
+import React, { ComponentProps, useCallback } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {DateAndTimeFormatting} from 'constants/datetime'
+import { Options as InitialSettings } from 'daterangepicker'
+import moment from 'moment-timezone'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { DateAndTimeFormatting } from 'constants/datetime'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useEffectOnce from 'hooks/useEffectOnce'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import {LegacyStatsFilters} from 'models/stat/types'
-
+import { LegacyStatsFilters } from 'models/stat/types'
 import PeriodPicker from 'pages/stats/common/PeriodPicker'
-import {getNewSetOfRanges} from 'pages/stats/constants'
-import {mergeStatsFilters} from 'state/stats/statsSlice'
+import { getNewSetOfRanges } from 'pages/stats/constants'
+import { mergeStatsFilters } from 'state/stats/statsSlice'
 
 const MAX_SPAN = 90
 
 type Props = {
-    initialSettings?: Omit<InitialSettings, 'maxSpan'> & {maxSpan?: number}
+    initialSettings?: Omit<InitialSettings, 'maxSpan'> & { maxSpan?: number }
     value: LegacyStatsFilters['period']
     variant?: 'fill' | 'ghost'
     tooltipMessageForPreviousPeriod?: string
@@ -35,16 +35,16 @@ export default function DEPRECATED_PeriodStatsFilter({
 }: Props) {
     const dispatch = useAppDispatch()
     const compactDateBasedOnUserPreferences = useGetDateAndTimeFormat(
-        DateAndTimeFormatting.CompactDate
+        DateAndTimeFormatting.CompactDate,
     ) as string
     const shortDateBasedOnUserPreferences = useGetDateAndTimeFormat(
-        DateAndTimeFormatting.ShortDateWithYear
+        DateAndTimeFormatting.ShortDateWithYear,
     )
 
     const initialSettings = {
         maxDate: moment(),
         maxSpan: MAX_SPAN,
-        locale: {format: compactDateBasedOnUserPreferences},
+        locale: { format: compactDateBasedOnUserPreferences },
         showDropdowns: true,
         ...initialSettingsProp,
     }
@@ -64,17 +64,17 @@ export default function DEPRECATED_PeriodStatsFilter({
                             start_datetime: startDatetime,
                             end_datetime: endDatetime,
                         },
-                    })
+                    }),
                 )
             },
-            [dispatch]
+            [dispatch],
         )
 
     useEffectOnce(() => {
         if (
             moment(value.end_datetime).diff(
                 moment(value.start_datetime),
-                'days'
+                'days',
             ) > (initialSettings.maxSpan || MAX_SPAN)
         ) {
             handleFilterChange({
@@ -84,7 +84,7 @@ export default function DEPRECATED_PeriodStatsFilter({
                         initialSettings.maxSpan
                             ? initialSettings.maxSpan
                             : MAX_SPAN,
-                        'days'
+                        'days',
                     )
                     .subtract(1, 'seconds')
                     .format(),

@@ -1,6 +1,6 @@
-import {fromJS, Map} from 'immutable'
+import { fromJS, Map } from 'immutable'
 
-import {ContentType, HttpMethod} from 'models/api/types'
+import { ContentType, HttpMethod } from 'models/api/types'
 import {
     HttpIntegration,
     HttpIntegrationMeta,
@@ -8,7 +8,7 @@ import {
     IntegrationType,
     ShopifyIntegration,
 } from 'models/integration/types'
-import {IntegrationBase} from 'models/integration/types/base'
+import { IntegrationBase } from 'models/integration/types/base'
 
 export const integrationBase: IntegrationBase = {
     id: 5,
@@ -28,7 +28,7 @@ export const integrationBase: IntegrationBase = {
 }
 
 export const shopifyIntegration: ShopifyIntegration = {
-    user: {id: 0},
+    user: { id: 0 },
     deleted_datetime: null,
     meta: {
         sync_customer_notes: true,
@@ -72,7 +72,7 @@ export const shopifyIntegration: ShopifyIntegration = {
 }
 
 export const bigCommerceIntegration: Integration = {
-    user: {id: 0},
+    user: { id: 0 },
     deleted_datetime: null,
     meta: {
         sync_customer_notes: true,

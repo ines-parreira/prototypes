@@ -1,10 +1,10 @@
-import {act, fireEvent, render, screen, within} from '@testing-library/react'
 import React from 'react'
 
-import {IntegrationType} from 'models/integration/constants'
+import { act, fireEvent, render, screen, within } from '@testing-library/react'
 
-import {App} from '../../types'
+import { IntegrationType } from 'models/integration/constants'
 
+import { App } from '../../types'
 import ActionsPlatformTemplateAppsSelectBox from '../ActionsPlatformTemplateAppsSelectBox'
 
 describe('<ActionsPlatformTemplateAppsSelectBox />', () => {
@@ -37,7 +37,7 @@ describe('<ActionsPlatformTemplateAppsSelectBox />', () => {
                 apps={apps}
                 value={[]}
                 onChange={mockOnChange}
-            />
+            />,
         )
 
         act(() => {
@@ -61,12 +61,12 @@ describe('<ActionsPlatformTemplateAppsSelectBox />', () => {
     it('should allow to select Shopify app and non-Shopify app', () => {
         const mockOnChange = jest.fn()
 
-        const {rerender} = render(
+        const { rerender } = render(
             <ActionsPlatformTemplateAppsSelectBox
                 apps={apps}
                 value={[]}
                 onChange={mockOnChange}
-            />
+            />,
         )
 
         act(() => {
@@ -96,7 +96,7 @@ describe('<ActionsPlatformTemplateAppsSelectBox />', () => {
                     },
                 ]}
                 onChange={mockOnChange}
-            />
+            />,
         )
 
         act(() => {
@@ -127,7 +127,7 @@ describe('<ActionsPlatformTemplateAppsSelectBox />', () => {
                     },
                 ]}
                 onChange={mockOnChange}
-            />
+            />,
         )
 
         act(() => {
@@ -148,7 +148,7 @@ describe('<ActionsPlatformTemplateAppsSelectBox />', () => {
                 value={[]}
                 onChange={jest.fn()}
                 isDisabled
-            />
+            />,
         )
 
         act(() => {
@@ -171,7 +171,7 @@ describe('<ActionsPlatformTemplateAppsSelectBox />', () => {
                     },
                 ]}
                 onChange={mockOnChange}
-            />
+            />,
         )
 
         act(() => {
@@ -181,8 +181,8 @@ describe('<ActionsPlatformTemplateAppsSelectBox />', () => {
         act(() => {
             fireEvent.click(
                 within(screen.getByTestId('floating-overlay')).getByText(
-                    'Test App'
-                )
+                    'Test App',
+                ),
             )
         })
 
@@ -201,7 +201,7 @@ describe('<ActionsPlatformTemplateAppsSelectBox />', () => {
                     },
                 ]}
                 onChange={mockOnChange}
-            />
+            />,
         )
 
         act(() => {
@@ -211,8 +211,8 @@ describe('<ActionsPlatformTemplateAppsSelectBox />', () => {
         act(() => {
             fireEvent.click(
                 within(screen.getByTestId('floating-overlay')).getByText(
-                    'Shopify'
-                )
+                    'Shopify',
+                ),
             )
         })
 
@@ -222,12 +222,12 @@ describe('<ActionsPlatformTemplateAppsSelectBox />', () => {
     it('should allow to select & deselect native app', () => {
         const mockOnChange = jest.fn()
 
-        const {rerender} = render(
+        const { rerender } = render(
             <ActionsPlatformTemplateAppsSelectBox
                 apps={apps}
                 value={[]}
                 onChange={mockOnChange}
-            />
+            />,
         )
 
         act(() => {
@@ -247,16 +247,16 @@ describe('<ActionsPlatformTemplateAppsSelectBox />', () => {
         rerender(
             <ActionsPlatformTemplateAppsSelectBox
                 apps={apps}
-                value={[{type: 'recharge'}]}
+                value={[{ type: 'recharge' }]}
                 onChange={mockOnChange}
-            />
+            />,
         )
 
         act(() => {
             fireEvent.click(
                 within(screen.getByTestId('floating-overlay')).getByText(
-                    'Recharge'
-                )
+                    'Recharge',
+                ),
             )
         })
 

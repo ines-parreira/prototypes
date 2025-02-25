@@ -1,10 +1,11 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {useTagsTimeSeries} from 'hooks/reporting/ticket-insights/useTagsTimeSeries'
-import {ReportingGranularity} from 'models/reporting/types'
-import {TagsTrendChart} from 'pages/stats/ticket-insights/tags/TagsTrendChart'
-import {assumeMock} from 'utils/testing'
+import { render, screen } from '@testing-library/react'
+
+import { useTagsTimeSeries } from 'hooks/reporting/ticket-insights/useTagsTimeSeries'
+import { ReportingGranularity } from 'models/reporting/types'
+import { TagsTrendChart } from 'pages/stats/ticket-insights/tags/TagsTrendChart'
+import { assumeMock } from 'utils/testing'
 
 jest.mock(
     '@gorgias/merchant-ui-kit',
@@ -12,7 +13,7 @@ jest.mock(
         ({
             ...jest.requireActual('@gorgias/merchant-ui-kit'),
             Skeleton: () => <div data-testid="skeleton" />,
-        }) as typeof import('@gorgias/merchant-ui-kit')
+        }) as typeof import('@gorgias/merchant-ui-kit'),
 )
 
 jest.mock('hooks/reporting/ticket-insights/useTagsTimeSeries')
@@ -21,12 +22,12 @@ const useTagsTrendMock = assumeMock(useTagsTimeSeries)
 describe('<TagsTrendChart>', () => {
     const data = [
         [
-            {dateTime: '2023-02-27T00:00:00.000', value: 6},
-            {dateTime: '2023-03-06T00:00:00.000', value: 21},
+            { dateTime: '2023-02-27T00:00:00.000', value: 6 },
+            { dateTime: '2023-03-06T00:00:00.000', value: 21 },
         ],
         [
-            {dateTime: '2023-03-24T00:00:00.000', value: 10},
-            {dateTime: '2023-04-05T00:00:00.000', value: 5},
+            { dateTime: '2023-03-24T00:00:00.000', value: 10 },
+            { dateTime: '2023-04-05T00:00:00.000', value: 5 },
         ],
     ]
 
@@ -34,7 +35,7 @@ describe('<TagsTrendChart>', () => {
         data: data,
         granularity: ReportingGranularity.Month,
         isFetching: false,
-        legendDatasetVisibility: {0: true},
+        legendDatasetVisibility: { 0: true },
         legendInfo: {
             labels: ['tagName1', 'tagName2'],
             tooltips: ['tagName1', 'tagName2'],
@@ -69,7 +70,7 @@ describe('<TagsTrendChart>', () => {
     it('should render with legend visibility', () => {
         useTagsTrendMock.mockReturnValue({
             ...useTagsTrendReturnValue,
-            legendDatasetVisibility: {0: false},
+            legendDatasetVisibility: { 0: false },
         })
 
         render(<TagsTrendChart />)

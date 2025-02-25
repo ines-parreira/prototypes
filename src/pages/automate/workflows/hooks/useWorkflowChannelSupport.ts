@@ -1,12 +1,13 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {createContext, useCallback, useContext, useMemo} from 'react'
+import { createContext, useCallback, useContext, useMemo } from 'react'
 
-import {TicketChannel} from 'business/types/ticket'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {SelfServiceChannelType} from 'pages/automate/common/hooks/useSelfServiceChannels'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import {VisualBuilderNode} from '../models/visualBuilderGraph.types'
-import {WfConfigurationResponseDto} from '../types'
+import { TicketChannel } from 'business/types/ticket'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { SelfServiceChannelType } from 'pages/automate/common/hooks/useSelfServiceChannels'
+
+import { VisualBuilderNode } from '../models/visualBuilderGraph.types'
+import { WfConfigurationResponseDto } from '../types'
 import {
     useWorkflowsIdsEnabledInChat,
     useWorkflowsIdsEnabledInContactForm,
@@ -38,21 +39,21 @@ type Workflow = {
 }
 type WorkflowChannelSupportContext = {
     isStepUnsupportedInAllChannels: (
-        nodeType: NonNullable<VisualBuilderNode['type']>
+        nodeType: NonNullable<VisualBuilderNode['type']>,
     ) => boolean
     getUnsupportedConnectedChannels: (
         workflowId: string,
-        nodeType: NonNullable<VisualBuilderNode['type']>
+        nodeType: NonNullable<VisualBuilderNode['type']>,
     ) => SelfServiceChannelType[]
     getSupportedChannels: (
-        type: VisualBuilderNode['type']
+        type: VisualBuilderNode['type'],
     ) => (
         | TicketChannel.Chat
         | TicketChannel.ContactForm
         | TicketChannel.HelpCenter
     )[]
     getUnsupportedChannels: (
-        type: VisualBuilderNode['type']
+        type: VisualBuilderNode['type'],
     ) => (
         | TicketChannel.Chat
         | TicketChannel.ContactForm
@@ -60,7 +61,7 @@ type WorkflowChannelSupportContext = {
     )[]
     getUnsupportedNodeTypes: (
         channelType: SelfServiceChannelType,
-        workflow: Workflow
+        workflow: Workflow,
     ) => Array<NonNullable<VisualBuilderNode['type']>>
 }
 
@@ -72,7 +73,7 @@ export function useWorkflowChannelSupportContext(): WorkflowChannelSupportContex
     const context = useContext(WorkflowChannelSupportContext)
     if (!context) {
         throw new Error(
-            'useWorkflowChannelSupportContext must be used within a WorkflowChannelSupportContext.Provider'
+            'useWorkflowChannelSupportContext must be used within a WorkflowChannelSupportContext.Provider',
         )
     }
     return context
@@ -83,7 +84,7 @@ function useSupportedChannelsFromFeatureFlag(
         | FeatureFlagKey.FlowsStepsShopperInput
         | FeatureFlagKey.FlowsStepsOrderSelection
         | FeatureFlagKey.FlowsStepsShopperAuthentication
-        | FeatureFlagKey.FlowsStepsOrderLineItemSelection
+        | FeatureFlagKey.FlowsStepsOrderLineItemSelection,
 ): Set<SelfServiceChannelType> {
     const supportedChannelsRaw: string = useFlags()[featureFlag] ?? ''
 
@@ -98,47 +99,47 @@ function useSupportedChannelsFromFeatureFlag(
                     if (channel === 'contact-form')
                         return TicketChannel.ContactForm
                 })
-                .filter((c): c is SelfServiceChannelType => Boolean(c))
+                .filter((c): c is SelfServiceChannelType => Boolean(c)),
         )
     }, [supportedChannelsRaw])
 }
 
 function useShopperInputSupportedChannels(): Set<SelfServiceChannelType> {
     return useSupportedChannelsFromFeatureFlag(
-        FeatureFlagKey.FlowsStepsShopperInput
+        FeatureFlagKey.FlowsStepsShopperInput,
     )
 }
 
 function useOrderSelectionSupportedChannels(): Set<SelfServiceChannelType> {
     return useSupportedChannelsFromFeatureFlag(
-        FeatureFlagKey.FlowsStepsOrderSelection
+        FeatureFlagKey.FlowsStepsOrderSelection,
     )
 }
 
 function useShopperAuthenticationSupportedChannels(): Set<SelfServiceChannelType> {
     return useSupportedChannelsFromFeatureFlag(
-        FeatureFlagKey.FlowsStepsShopperAuthentication
+        FeatureFlagKey.FlowsStepsShopperAuthentication,
     )
 }
 
 function useOrderLineItemSelectionSupportedChannels(): Set<SelfServiceChannelType> {
     return useSupportedChannelsFromFeatureFlag(
-        FeatureFlagKey.FlowsStepsOrderLineItemSelection
+        FeatureFlagKey.FlowsStepsOrderLineItemSelection,
     )
 }
 
 function useGetChannelTypesWhereWorkflowIsEnabled(
     shopType: string,
-    shopName: string
+    shopName: string,
 ) {
     const workflowsIdsEnabledInChat = useWorkflowsIdsEnabledInChat(
         shopType,
-        shopName
+        shopName,
     )
 
     const workflowsIdsEnabledInHelpCenter = useWorkflowsIdsEnabledInHelpCenter(
         shopType,
-        shopName
+        shopName,
     )
 
     const workflowsIdsEnabledInContactForm =
@@ -162,13 +163,13 @@ function useGetChannelTypesWhereWorkflowIsEnabled(
             workflowsIdsEnabledInChat,
             workflowsIdsEnabledInHelpCenter,
             workflowsIdsEnabledInContactForm,
-        ]
+        ],
     )
 }
 
 export default function useWorkflowChannelSupport(
     shopType: string,
-    shopName: string
+    shopName: string,
 ): WorkflowChannelSupportContext {
     const shopperInputSupportedChannels = useShopperInputSupportedChannels()
     const orderSelectionSupportedChannels = useOrderSelectionSupportedChannels()
@@ -182,7 +183,7 @@ export default function useWorkflowChannelSupport(
 
     const getUnsupportedConnectedChannels: (
         workflowId: string,
-        nodeType: NonNullable<VisualBuilderNode['type']>
+        nodeType: NonNullable<VisualBuilderNode['type']>,
     ) => SelfServiceChannelType[] = useCallback(
         (workflowId, nodeType) => {
             if (!optionalNodeTypes.includes(nodeType)) return []
@@ -190,24 +191,24 @@ export default function useWorkflowChannelSupport(
                 getChannelTypesWhereWorkflowIsEnabled(workflowId)
             if (nodeType === 'text_reply' || nodeType === 'file_upload') {
                 return embeddingChannels.filter(
-                    (c) => !shopperInputSupportedChannels.has(c)
+                    (c) => !shopperInputSupportedChannels.has(c),
                 )
             }
             if (nodeType === 'order_selection') {
                 return embeddingChannels.filter(
-                    (c) => !orderSelectionSupportedChannels.has(c)
+                    (c) => !orderSelectionSupportedChannels.has(c),
                 )
             }
 
             if (nodeType === 'shopper_authentication') {
                 return embeddingChannels.filter(
-                    (c) => !shopperAuthenticationSupportedChannels.has(c)
+                    (c) => !shopperAuthenticationSupportedChannels.has(c),
                 )
             }
 
             if (nodeType === 'order_line_item_selection') {
                 return embeddingChannels.filter(
-                    (c) => !orderLineItemSelectionSupportedChannels.has(c)
+                    (c) => !orderLineItemSelectionSupportedChannels.has(c),
                 )
             }
 
@@ -219,31 +220,31 @@ export default function useWorkflowChannelSupport(
             orderSelectionSupportedChannels,
             shopperAuthenticationSupportedChannels,
             orderLineItemSelectionSupportedChannels,
-        ]
+        ],
     )
 
     const getSupportedChannels = useCallback(
         (nodeType: VisualBuilderNode['type']) => {
             if (nodeType === 'text_reply' || nodeType === 'file_upload') {
                 return allChannels.filter((c) =>
-                    shopperInputSupportedChannels.has(c)
+                    shopperInputSupportedChannels.has(c),
                 )
             }
             if (nodeType === 'order_selection') {
                 return allChannels.filter((c) =>
-                    orderSelectionSupportedChannels.has(c)
+                    orderSelectionSupportedChannels.has(c),
                 )
             }
 
             if (nodeType === 'shopper_authentication') {
                 return allChannels.filter((c) =>
-                    shopperAuthenticationSupportedChannels.has(c)
+                    shopperAuthenticationSupportedChannels.has(c),
                 )
             }
 
             if (nodeType === 'order_line_item_selection') {
                 return allChannels.filter((c) =>
-                    orderLineItemSelectionSupportedChannels.has(c)
+                    orderLineItemSelectionSupportedChannels.has(c),
                 )
             }
 
@@ -254,29 +255,29 @@ export default function useWorkflowChannelSupport(
             orderSelectionSupportedChannels,
             shopperAuthenticationSupportedChannels,
             orderLineItemSelectionSupportedChannels,
-        ]
+        ],
     )
 
     const getUnsupportedChannels = useCallback(
         (nodeType: VisualBuilderNode['type']) => {
             if (nodeType === 'text_reply' || nodeType === 'file_upload') {
                 return allChannels.filter(
-                    (c) => !shopperInputSupportedChannels.has(c)
+                    (c) => !shopperInputSupportedChannels.has(c),
                 )
             }
             if (nodeType === 'order_selection') {
                 return allChannels.filter(
-                    (c) => !orderSelectionSupportedChannels.has(c)
+                    (c) => !orderSelectionSupportedChannels.has(c),
                 )
             }
             if (nodeType === 'shopper_authentication') {
                 return allChannels.filter(
-                    (c) => !shopperAuthenticationSupportedChannels.has(c)
+                    (c) => !shopperAuthenticationSupportedChannels.has(c),
                 )
             }
             if (nodeType === 'order_line_item_selection') {
                 return allChannels.filter(
-                    (c) => !orderLineItemSelectionSupportedChannels.has(c)
+                    (c) => !orderLineItemSelectionSupportedChannels.has(c),
                 )
             }
 
@@ -287,19 +288,19 @@ export default function useWorkflowChannelSupport(
             orderSelectionSupportedChannels,
             shopperAuthenticationSupportedChannels,
             orderLineItemSelectionSupportedChannels,
-        ]
+        ],
     )
 
     const getUnsupportedNodeTypes = useCallback(
         (
             channelType: SelfServiceChannelType,
-            workflow: Workflow
+            workflow: Workflow,
         ): Array<NonNullable<VisualBuilderNode['type']>> => {
             if (
                 workflow.steps.find(
                     (s) =>
                         s.kind === 'text-input' ||
-                        s.kind === 'attachments-input'
+                        s.kind === 'attachments-input',
                 )
             ) {
                 if (!shopperInputSupportedChannels.has(channelType)) {
@@ -323,7 +324,7 @@ export default function useWorkflowChannelSupport(
 
             if (
                 workflow.steps.find(
-                    (s) => s.kind === 'order-line-item-selection'
+                    (s) => s.kind === 'order-line-item-selection',
                 )
             ) {
                 if (!orderLineItemSelectionSupportedChannels.has(channelType)) {
@@ -338,7 +339,7 @@ export default function useWorkflowChannelSupport(
             orderSelectionSupportedChannels,
             shopperAuthenticationSupportedChannels,
             orderLineItemSelectionSupportedChannels,
-        ]
+        ],
     )
 
     const isStepUnsupportedInAllChannels = useCallback(
@@ -355,7 +356,7 @@ export default function useWorkflowChannelSupport(
             }
             return false
         },
-        [getUnsupportedChannels]
+        [getUnsupportedChannels],
     )
 
     return useMemo(
@@ -372,7 +373,7 @@ export default function useWorkflowChannelSupport(
             getSupportedChannels,
             getUnsupportedChannels,
             getUnsupportedNodeTypes,
-        ]
+        ],
     )
 }
 

@@ -1,14 +1,16 @@
 /* eslint-disable import/order */
 import React from 'react'
-import {renderHook} from '@testing-library/react-hooks'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
+import { mockFlags, resetLDMocks } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-import {fromJS} from 'immutable'
-import {QueryClientProvider} from '@tanstack/react-query'
-import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
-import client from 'models/api/resources'
-import {RootState, StoreDispatch} from 'state/types'
-import {account} from 'fixtures/account'
+import thunk from 'redux-thunk'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { account } from 'fixtures/account'
 import {
     basicMonthlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
@@ -19,11 +21,12 @@ import {
     VOICE_PRODUCT_ID,
     voicePlan0,
 } from 'fixtures/productPrices'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useBillingPlans} from '../useBillingPlan'
-import {ProductType} from 'models/billing/types'
-import thunk from 'redux-thunk'
+import client from 'models/api/resources'
+import { ProductType } from 'models/billing/types'
+import { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+
+import { useBillingPlans } from '../useBillingPlan'
 
 const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>([
     thunk,
@@ -86,18 +89,18 @@ describe('useBillingPlans', () => {
         const dispatchBillingError = jest.fn()
         const queryClient = mockQueryClient()
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useBillingPlans({
                     dispatchBillingError,
                 }),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         <Provider store={store}>{children}</Provider>
                     </QueryClientProvider>
                 ),
-            }
+            },
         )
 
         result.current.setSelectedPlans((prev) => ({
@@ -115,7 +118,7 @@ describe('useBillingPlans', () => {
             'https://hooks.zapier.com/hooks/catch/9639651/3hsj6pb/?message=New%20SMS%20Add-on%20Request%20by%20acme%0AProduct(s)%3A%20SMS%20Add-on%20Plan%20selection%20-%20acme%0ASMS%20plan%20request%3A%20SMS%20Addon%20150%20Monthly&from=undefined&to=billing%40gorgias.com&subject=SMS%20Add-on%20Plan%20selection%20-%20acme&helpdeskPlan=Basic&freeTrial=true&account=acme',
             {
                 transformRequest: expect.any(Function),
-            }
+            },
         )
     })
 
@@ -138,18 +141,18 @@ describe('useBillingPlans', () => {
             }),
         })
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useBillingPlans({
                     dispatchBillingError,
                 }),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         <Provider store={alteredStore}>{children}</Provider>
                     </QueryClientProvider>
                 ),
-            }
+            },
         )
 
         result.current.setSelectedPlans((prev) => ({

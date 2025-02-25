@@ -1,6 +1,8 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { ForwardedRef, forwardRef, MouseEvent } from 'react'
+
 import classnames from 'classnames'
-import React, {ForwardedRef, forwardRef, MouseEvent} from 'react'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useId from 'hooks/useId'
 import IconButton from 'pages/common/components/button/IconButton'

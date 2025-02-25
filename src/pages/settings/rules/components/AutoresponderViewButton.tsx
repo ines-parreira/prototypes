@@ -1,22 +1,22 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
-import {createTag, fetchTags} from 'models/tag/resources'
-import {TagDraft} from 'models/tag/types'
+import { createTag, fetchTags } from 'models/tag/resources'
+import { TagDraft } from 'models/tag/types'
 import Button from 'pages/common/components/button/Button'
 import history from 'pages/history'
-import {useRuleRecipes} from 'state/entities/ruleRecipes/hooks'
-import {tagCreated} from 'state/entities/tags/actions'
-import {getTicketViews} from 'state/entities/views/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { useRuleRecipes } from 'state/entities/ruleRecipes/hooks'
+import { tagCreated } from 'state/entities/tags/actions'
+import { getTicketViews } from 'state/entities/views/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 type Props = {
     recipeSlug: string
 }
-export const AutoresponderViewButton = ({recipeSlug}: Props) => {
+export const AutoresponderViewButton = ({ recipeSlug }: Props) => {
     const allViews = useAppSelector(getTicketViews)
     const dispatch = useAppDispatch()
     const recipes = useRuleRecipes()
@@ -26,7 +26,7 @@ export const AutoresponderViewButton = ({recipeSlug}: Props) => {
 
     const checkMissingTags = (tag: TagDraft): Promise<TagDraft | null> =>
         new Promise((resolve, reject) => {
-            fetchTags({search: tag.name})
+            fetchTags({ search: tag.name })
                 .then((resp) => {
                     if (!resp.data.data.length) {
                         resolve(tag)
@@ -36,13 +36,13 @@ export const AutoresponderViewButton = ({recipeSlug}: Props) => {
                 .catch(() => reject())
         })
 
-    const [{loading: isFetchingTags, value: missingTags}, handleFetchTags] =
+    const [{ loading: isFetchingTags, value: missingTags }, handleFetchTags] =
         useAsyncFn(async () => {
             if (!recipe) return
             try {
                 const tags = (
                     await Promise.all(
-                        recipe.tags.map((tag) => checkMissingTags(tag))
+                        recipe.tags.map((tag) => checkMissingTags(tag)),
                     )
                 ).filter((tag) => !!tag)
                 return tags as TagDraft[]
@@ -51,7 +51,7 @@ export const AutoresponderViewButton = ({recipeSlug}: Props) => {
                     notify({
                         message: 'Could not fetch tags',
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
                 setHasErrors(true)
             }
@@ -79,7 +79,7 @@ export const AutoresponderViewButton = ({recipeSlug}: Props) => {
         const existingView = allViews.filter(
             (view) =>
                 view.slug === recipeView.slug ||
-                view.filters === recipeView.filters
+                view.filters === recipeView.filters,
         )
         const linkTo = {
             pathname: '',
@@ -98,13 +98,13 @@ export const AutoresponderViewButton = ({recipeSlug}: Props) => {
 
         if (missingTags && missingTags.length) {
             await Promise.all(
-                missingTags.map((tag) => handleCreateTag(tag))
+                missingTags.map((tag) => handleCreateTag(tag)),
             ).catch(() => {
                 void dispatch(
                     notify({
                         message: 'Could not create all tags',
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
                 setHasErrors(true)
             })

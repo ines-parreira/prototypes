@@ -1,5 +1,6 @@
-import {fireEvent, render} from '@testing-library/react'
 import React from 'react'
+
+import { fireEvent, render } from '@testing-library/react'
 
 import ModalContinueButton from '../ModalContinueButton'
 
@@ -11,14 +12,14 @@ describe('<ModalContinueButton />', () => {
         it.each([1, 2, 3, 999999])(
             'should render the appropriate Continue button based on current step',
             (currentStep) => {
-                const {container, queryByText} = render(
+                const { container, queryByText } = render(
                     <ModalContinueButton
                         currentStep={currentStep}
                         isLoading={false}
                         hasError={false}
                         onContinue={handleContinue}
                         onFinish={handleFinish}
-                    />
+                    />,
                 )
                 expect(container.firstChild).toMatchSnapshot()
 
@@ -36,37 +37,37 @@ describe('<ModalContinueButton />', () => {
                 if (currentStep === 3) {
                     expect(handleFinish).toHaveBeenCalled()
                 }
-            }
+            },
         )
         it.each([1, 2, 3])(
             'should render the Continue button disabled because of error',
             (currentStep) => {
-                const {container} = render(
+                const { container } = render(
                     <ModalContinueButton
                         currentStep={currentStep}
                         isLoading={false}
                         hasError={true}
                         onContinue={handleContinue}
                         onFinish={handleFinish}
-                    />
+                    />,
                 )
                 expect(container.firstChild).toMatchSnapshot()
-            }
+            },
         )
         it.each([1, 2, 3])(
             'should render the Continue button as loading',
             (currentStep) => {
-                const {container} = render(
+                const { container } = render(
                     <ModalContinueButton
                         currentStep={currentStep}
                         isLoading={true}
                         hasError={false}
                         onContinue={handleContinue}
                         onFinish={handleFinish}
-                    />
+                    />,
                 )
                 expect(container.firstChild).toMatchSnapshot()
-            }
+            },
         )
     })
 })

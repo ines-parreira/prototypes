@@ -1,5 +1,3 @@
-import classNames from 'classnames'
-import flatMap from 'lodash/flatMap'
 import React, {
     PropsWithChildren,
     useCallback,
@@ -7,6 +5,9 @@ import React, {
     useRef,
     useState,
 } from 'react'
+
+import classNames from 'classnames'
+import flatMap from 'lodash/flatMap'
 
 import useEffectOnce from 'hooks/useEffectOnce'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
@@ -27,11 +28,11 @@ import {
 } from 'pages/stats/common/components/Filter/constants'
 import css from 'pages/stats/common/components/Filter/Filter.less'
 import {
+    FilterOptionWithOptionalLabel,
     filterValidOptions,
     getFilterError,
-    FilterOptionWithOptionalLabel,
 } from 'pages/stats/common/filters/utils'
-import {DropdownOption, FilterOptionGroup} from 'pages/stats/types'
+import { DropdownOption, FilterOptionGroup } from 'pages/stats/types'
 
 type Props = {
     className?: string
@@ -136,23 +137,23 @@ const Filter = ({
 
     const allValues = useMemo(() => {
         return flatMap(filterOptionGroups, (option) =>
-            option.options.map((option) => option.label)
+            option.options.map((option) => option.label),
         )
     }, [filterOptionGroups])
 
     const selectedOptions = filterValidOptions(selectedPartialOptions)
 
-    const {selectedValues, selectedLabels} = useMemo(() => {
+    const { selectedValues, selectedLabels } = useMemo(() => {
         const values: string[] = []
         const labels: string[] = []
         selectedOptions.forEach((option) => {
             values.push(option.value)
             labels.push(option.label)
         })
-        return {selectedValues: values, selectedLabels: labels}
+        return { selectedValues: values, selectedLabels: labels }
     }, [selectedOptions])
 
-    const {warningType, warningMessage} =
+    const { warningType, warningMessage } =
         filterErrors ||
         getFilterError({
             options: filterOptionGroups,

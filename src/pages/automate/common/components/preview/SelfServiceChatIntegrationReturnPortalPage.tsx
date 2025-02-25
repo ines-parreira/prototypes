@@ -1,14 +1,13 @@
 import React from 'react'
 
 import {
-    GORGIAS_CHAT_SSP_TEXTS,
     getPrimaryLanguageFromChatConfig,
+    GORGIAS_CHAT_SSP_TEXTS,
 } from 'config/integrations/gorgias_chat'
 import Badge from 'gorgias-design-system/Badge/Badge'
 import Button from 'gorgias-design-system/Buttons/Button'
-import {GorgiasChatIntegration} from 'models/integration/types'
-
-import {LinkIcon} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/icon-utils'
+import { GorgiasChatIntegration } from 'models/integration/types'
+import { LinkIcon } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/icon-utils'
 
 import useOrderDates from './hooks/useOrderDates'
 
@@ -18,11 +17,11 @@ type Props = {
     integration: GorgiasChatIntegration
 }
 
-const SelfServiceChatIntegrationReturnPortalPage = ({integration}: Props) => {
+const SelfServiceChatIntegrationReturnPortalPage = ({ integration }: Props) => {
     const language = getPrimaryLanguageFromChatConfig(integration.meta)
     const sspTexts = GORGIAS_CHAT_SSP_TEXTS[language]
 
-    const {orderPlacedDate} = useOrderDates(language)
+    const { orderPlacedDate } = useOrderDates(language)
 
     return (
         <div className={css.container}>

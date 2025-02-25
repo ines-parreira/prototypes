@@ -1,18 +1,18 @@
-import {FilterComponentKey, FilterKey, StaticFilter} from 'models/stat/types'
-import {CampaignRevenueKPIChart} from 'pages/stats/convert/charts/CampaignRevenueKPIChart'
-import {CampaignsSalesCountKPIChart} from 'pages/stats/convert/charts/CampaignsSalesCountKPIChart'
-import {EngagementKPIChart} from 'pages/stats/convert/charts/EngagementKPIChart'
-import {ImpressionsKPIChart} from 'pages/stats/convert/charts/ImpressionsKPIChart'
-import {InfluencedRevenueShareKPIChart} from 'pages/stats/convert/charts/InfluencedRevenueShareKPIChart'
+import { FilterComponentKey, FilterKey, StaticFilter } from 'models/stat/types'
+import { CampaignRevenueKPIChart } from 'pages/stats/convert/charts/CampaignRevenueKPIChart'
+import { CampaignsSalesCountKPIChart } from 'pages/stats/convert/charts/CampaignsSalesCountKPIChart'
+import { EngagementKPIChart } from 'pages/stats/convert/charts/EngagementKPIChart'
+import { ImpressionsKPIChart } from 'pages/stats/convert/charts/ImpressionsKPIChart'
+import { InfluencedRevenueShareKPIChart } from 'pages/stats/convert/charts/InfluencedRevenueShareKPIChart'
 import {
     CampaignRevenueShareStat,
     hint,
     title,
 } from 'pages/stats/convert/components/CampaignRevenueShareStat'
-import {METRICS} from 'pages/stats/convert/constants/ConvertPerformanceOverviewConfig'
-import {CAMPAIGNS_REPORT_TITLE} from 'pages/stats/convert/pages/CampaignsStats/CampaignsStats'
-import {ChartType, ReportConfig} from 'pages/stats/custom-reports/types'
-import {STATS_ROUTES} from 'routes/constants'
+import { METRICS } from 'pages/stats/convert/constants/ConvertPerformanceOverviewConfig'
+import { CAMPAIGNS_REPORT_TITLE } from 'pages/stats/convert/pages/CampaignsStats/CampaignsStats'
+import { ChartType, ReportConfig } from 'pages/stats/custom-reports/types'
+import { STATS_ROUTES } from 'routes/constants'
 
 export enum CampaignsLegacyChart {
     CampaignRevenueKPIChart = 'CampaignRevenueKPIChart',

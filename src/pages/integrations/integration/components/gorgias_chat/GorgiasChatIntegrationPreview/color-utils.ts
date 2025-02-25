@@ -1,4 +1,4 @@
-import {getContrast} from 'color2k'
+import { getContrast } from 'color2k'
 
 export enum CONSTRAST_COLORS {
     LIGHT = '#FFFFFF',
@@ -8,7 +8,7 @@ const DEFAULT_CONTRAST_LEVEL = 2.8
 
 export function getTextColorBasedOnBackground(
     mainColor?: string,
-    contrastLevel = DEFAULT_CONTRAST_LEVEL
+    contrastLevel = DEFAULT_CONTRAST_LEVEL,
 ): CONSTRAST_COLORS {
     if (!mainColor) {
         return CONSTRAST_COLORS.LIGHT
@@ -17,7 +17,7 @@ export function getTextColorBasedOnBackground(
     try {
         const lightTextContrast = getContrast(
             mainColor.trim(),
-            CONSTRAST_COLORS.LIGHT
+            CONSTRAST_COLORS.LIGHT,
         )
 
         return lightTextContrast >= contrastLevel
@@ -30,12 +30,12 @@ export function getTextColorBasedOnBackground(
 
 export function getThemeBasedOnContrast(
     mainColor: string,
-    contrastLevel = DEFAULT_CONTRAST_LEVEL
+    contrastLevel = DEFAULT_CONTRAST_LEVEL,
 ): string {
     try {
         const lightTextContrast = getContrast(
             mainColor.trim(),
-            CONSTRAST_COLORS.LIGHT
+            CONSTRAST_COLORS.LIGHT,
         )
 
         return lightTextContrast >= contrastLevel ? 'light' : 'dark'

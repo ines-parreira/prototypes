@@ -1,6 +1,8 @@
-import {Skeleton} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
 import React from 'react'
+
+import classnames from 'classnames'
+
+import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import css from './SkeletonLoader.less'
 
@@ -22,9 +24,9 @@ type Props = {
     length?: number
 }
 
-const SkeletonLoader = ({className, length = 3}: Props) => (
+const SkeletonLoader = ({ className, length = 3 }: Props) => (
     <div className={className}>
-        {Array.from({length}).map((_, index) => (
+        {Array.from({ length }).map((_, index) => (
             <Row key={index} />
         ))}
     </div>

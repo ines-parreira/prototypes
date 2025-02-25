@@ -1,7 +1,8 @@
-import {UseQueryResult} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { UseQueryResult } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -13,21 +14,21 @@ import {
     useAverageCSATPerChannelTimeseries,
     useAverageCSATPerIntegrationTimeseries,
 } from 'hooks/reporting/quality-management/satisfaction/useAverageScorePerDimensionTimeSeries'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {
-    useTimeSeriesPerDimension,
     fetchTimeSeriesPerDimension,
+    useTimeSeriesPerDimension,
 } from 'hooks/reporting/useTimeSeries'
-import {OrderDirection} from 'models/api/types'
-import {TicketDimension} from 'models/reporting/cubes/TicketCube'
-import {TicketMessagesDimension} from 'models/reporting/cubes/TicketMessagesCube'
-import {averageCSATScorePerDimensionTimeSeriesFactory} from 'models/reporting/queryFactories/satisfaction/averageCSATScorePerDimensionQueryFactory'
-import {ReportingGranularity} from 'models/reporting/types'
-import {createTimeSeriesPerDimensionReport} from 'services/reporting/SLAsReportingService'
-import {initialState} from 'state/stats/statsSlice'
-import {RootState} from 'state/types'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
-import {ticketInsightsSlice} from 'state/ui/stats/ticketInsightsSlice'
+import { OrderDirection } from 'models/api/types'
+import { TicketDimension } from 'models/reporting/cubes/TicketCube'
+import { TicketMessagesDimension } from 'models/reporting/cubes/TicketMessagesCube'
+import { averageCSATScorePerDimensionTimeSeriesFactory } from 'models/reporting/queryFactories/satisfaction/averageCSATScorePerDimensionQueryFactory'
+import { ReportingGranularity } from 'models/reporting/types'
+import { createTimeSeriesPerDimensionReport } from 'services/reporting/SLAsReportingService'
+import { initialState } from 'state/stats/statsSlice'
+import { RootState } from 'state/types'
+import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
+import { ticketInsightsSlice } from 'state/ui/stats/ticketInsightsSlice'
 
 const mockStore = configureMockStore([thunk])
 
@@ -45,7 +46,7 @@ const useNewStatsFiltersMock = jest.mocked(useNewStatsFilters)
 
 describe('useAverageScorePerDimensionTimeSeries', () => {
     const mockFilters = {
-        period: {start_datetime: '2023-04-07', end_datetime: '2023-04-09'},
+        period: { start_datetime: '2023-04-07', end_datetime: '2023-04-09' },
     }
     const mockTimezone = 'UTC'
 
@@ -54,7 +55,7 @@ describe('useAverageScorePerDimensionTimeSeries', () => {
         ui: {
             stats: {
                 [ticketInsightsSlice.name]: {
-                    selectedCustomField: {id: 2},
+                    selectedCustomField: { id: 2 },
                 },
                 filters: uiStatsInitialState,
             },
@@ -64,27 +65,27 @@ describe('useAverageScorePerDimensionTimeSeries', () => {
 
     const mockChannelData = {
         data: [
-            {dateTime: '2023-04-07T00:00:00.000', value: 3.1},
-            {dateTime: '2023-04-08T00:00:00.000', value: 3.2},
-            {dateTime: '2023-04-09T00:00:00.000', value: 3.3},
+            { dateTime: '2023-04-07T00:00:00.000', value: 3.1 },
+            { dateTime: '2023-04-08T00:00:00.000', value: 3.2 },
+            { dateTime: '2023-04-09T00:00:00.000', value: 3.3 },
         ],
         isFetching: false,
     }
 
     const mockAssigneeData = {
         data: [
-            {dateTime: '2023-04-07T00:00:00.000', value: 4.1},
-            {dateTime: '2023-04-08T00:00:00.000', value: 4.2},
-            {dateTime: '2023-04-09T00:00:00.000', value: 4.3},
+            { dateTime: '2023-04-07T00:00:00.000', value: 4.1 },
+            { dateTime: '2023-04-08T00:00:00.000', value: 4.2 },
+            { dateTime: '2023-04-09T00:00:00.000', value: 4.3 },
         ],
         isFetching: false,
     }
 
     const mockIntegrationData = {
         data: [
-            {dateTime: '2023-04-07T00:00:00.000', value: 2.1},
-            {dateTime: '2023-04-08T00:00:00.000', value: 2.2},
-            {dateTime: '2023-04-09T00:00:00.000', value: 2.3},
+            { dateTime: '2023-04-07T00:00:00.000', value: 2.1 },
+            { dateTime: '2023-04-08T00:00:00.000', value: 2.2 },
+            { dateTime: '2023-04-09T00:00:00.000', value: 2.3 },
         ],
         isFetching: false,
     }
@@ -98,20 +99,20 @@ describe('useAverageScorePerDimensionTimeSeries', () => {
         })
 
         useTimeSeriesPerDimensionMock.mockImplementation(
-            (queryConfig: {dimensions: string[]}) => {
+            (queryConfig: { dimensions: string[] }) => {
                 if (queryConfig.dimensions?.includes(TicketDimension.Channel)) {
                     return mockChannelData as UseQueryResult<any>
                 }
                 if (
                     queryConfig.dimensions?.includes(
-                        TicketDimension.AssigneeUserId
+                        TicketDimension.AssigneeUserId,
                     )
                 ) {
                     return mockAssigneeData as UseQueryResult<any>
                 }
                 if (
                     queryConfig.dimensions?.includes(
-                        TicketMessagesDimension.Integration
+                        TicketMessagesDimension.Integration,
                     )
                 ) {
                     return mockIntegrationData as UseQueryResult<any>
@@ -120,20 +121,20 @@ describe('useAverageScorePerDimensionTimeSeries', () => {
                     data: undefined,
                     isFetching: false,
                 } as UseQueryResult<any>
-            }
+            },
         )
     })
 
     it('should return average csat score per channel trend', () => {
-        const {result} = renderHook(
+        const { result } = renderHook(
             () => useAverageCSATPerChannelTimeseries(mockFilters, mockTimezone),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
                 ),
-            }
+            },
         )
 
         expect(useTimeSeriesPerDimensionMock).toHaveBeenCalledTimes(1)
@@ -144,23 +145,23 @@ describe('useAverageScorePerDimensionTimeSeries', () => {
                 mockFilters,
                 mockTimezone,
                 ReportingGranularity.Hour,
-                OrderDirection.Desc
-            )
+                OrderDirection.Desc,
+            ),
         )
         expect(result.current).toEqual(mockChannelData)
     })
 
     it('should return average csat score per assignee trend', () => {
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useAverageCSATPerAssigneeTimeseries(mockFilters, mockTimezone),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
                 ),
-            }
+            },
         )
 
         expect(useTimeSeriesPerDimensionMock).toHaveBeenCalledTimes(1)
@@ -171,26 +172,26 @@ describe('useAverageScorePerDimensionTimeSeries', () => {
                 mockFilters,
                 mockTimezone,
                 ReportingGranularity.Hour,
-                OrderDirection.Desc
-            )
+                OrderDirection.Desc,
+            ),
         )
         expect(result.current).toEqual(mockAssigneeData)
     })
 
     it('should return average csat score per integration trend', () => {
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useAverageCSATPerIntegrationTimeseries(
                     mockFilters,
-                    mockTimezone
+                    mockTimezone,
                 ),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
                 ),
-            }
+            },
         )
 
         expect(useTimeSeriesPerDimensionMock).toHaveBeenCalledTimes(1)
@@ -201,8 +202,8 @@ describe('useAverageScorePerDimensionTimeSeries', () => {
                 mockFilters,
                 mockTimezone,
                 ReportingGranularity.Hour,
-                OrderDirection.Desc
-            )
+                OrderDirection.Desc,
+            ),
         )
         expect(result.current).toEqual(mockIntegrationData)
     })
@@ -215,15 +216,15 @@ describe('useAverageScorePerDimensionTimeSeries', () => {
             error: new Error('Failed to fetch'),
         } as UseQueryResult<any>)
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () => useAverageCSATPerChannelTimeseries(mockFilters, mockTimezone),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
                 ),
-            }
+            },
         )
 
         expect(result.current.isError).toBe(true)
@@ -236,15 +237,15 @@ describe('useAverageScorePerDimensionTimeSeries', () => {
             isFetching: true,
         } as UseQueryResult<any>)
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () => useAverageCSATPerChannelTimeseries(mockFilters, mockTimezone),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
                 ),
-            }
+            },
         )
 
         expect(result.current.isFetching).toBe(true)
@@ -253,13 +254,13 @@ describe('useAverageScorePerDimensionTimeSeries', () => {
 
 describe('fetch download methods', () => {
     const mockFilters = {
-        period: {start_datetime: '2023-04-07', end_datetime: '2023-04-09'},
+        period: { start_datetime: '2023-04-07', end_datetime: '2023-04-09' },
     }
     const mockTimezone = 'UTC'
     const mockGranularity = ReportingGranularity.Day
     const mockContext = {
-        getAgentDetails: (id: number) => ({id, name: `Agent ${id}`}),
-        integrations: [{id: 1, name: 'Integration 1'}],
+        getAgentDetails: (id: number) => ({ id, name: `Agent ${id}` }),
+        integrations: [{ id: 1, name: 'Integration 1' }],
     } as any
 
     const mockTimeSeriesData = {
@@ -325,10 +326,10 @@ describe('fetch download methods', () => {
 
     beforeEach(() => {
         jest.mocked(fetchTimeSeriesPerDimension).mockResolvedValue(
-            mockTimeSeriesData
+            mockTimeSeriesData,
         )
         jest.mocked(createTimeSeriesPerDimensionReport).mockReturnValue(
-            mockReportFiles
+            mockReportFiles,
         )
     })
 
@@ -338,13 +339,13 @@ describe('fetch download methods', () => {
                 mockFilters,
                 mockTimezone,
                 mockGranularity,
-                mockContext
+                mockContext,
             )
 
             expect(fetchTimeSeriesPerDimension).toHaveBeenCalledWith(
                 expect.objectContaining({
                     dimensions: [TicketDimension.AssigneeUserId],
-                })
+                }),
             )
             expect(createTimeSeriesPerDimensionReport).toHaveBeenCalled()
             expect(result).toEqual({
@@ -356,7 +357,7 @@ describe('fetch download methods', () => {
 
         it('should handle errors gracefully', async () => {
             jest.mocked(fetchTimeSeriesPerDimension).mockRejectedValue(
-                new Error('API Error')
+                new Error('API Error'),
             )
 
             await expect(
@@ -364,8 +365,8 @@ describe('fetch download methods', () => {
                     mockFilters,
                     mockTimezone,
                     mockGranularity,
-                    mockContext
-                )
+                    mockContext,
+                ),
             ).rejects.toThrow('API Error')
         })
     })
@@ -376,13 +377,13 @@ describe('fetch download methods', () => {
                 mockFilters,
                 mockTimezone,
                 mockGranularity,
-                mockContext
+                mockContext,
             )
 
             expect(fetchTimeSeriesPerDimension).toHaveBeenCalledWith(
                 expect.objectContaining({
                     dimensions: [TicketDimension.Channel],
-                })
+                }),
             )
             expect(createTimeSeriesPerDimensionReport).toHaveBeenCalled()
             expect(result).toEqual({
@@ -399,7 +400,7 @@ describe('fetch download methods', () => {
                 mockFilters,
                 mockTimezone,
                 mockGranularity,
-                mockContext
+                mockContext,
             )
 
             expect(result.files).toBeDefined()
@@ -410,7 +411,7 @@ describe('fetch download methods', () => {
                         label: 'satisfaction_average_csat_per_channel-over-time',
                     }),
                 ]),
-                mockFilters.period
+                mockFilters.period,
             )
         })
     })
@@ -421,13 +422,13 @@ describe('fetch download methods', () => {
                 mockFilters,
                 mockTimezone,
                 mockGranularity,
-                mockContext
+                mockContext,
             )
 
             expect(fetchTimeSeriesPerDimension).toHaveBeenCalledWith(
                 expect.objectContaining({
                     dimensions: [TicketMessagesDimension.Integration],
-                })
+                }),
             )
             expect(createTimeSeriesPerDimensionReport).toHaveBeenCalled()
             expect(result).toEqual({
@@ -449,13 +450,13 @@ describe('fetch download methods', () => {
                 mockFilters,
                 mockTimezone,
                 mockGranularity,
-                contextWithoutIntegrations
+                contextWithoutIntegrations,
             )
 
             expect(result).toBeDefined()
             expect(result.isLoading).toBe(false)
             expect(result.fileName).toBe(
-                'satisfaction_average_csat_per_integration-over-time'
+                'satisfaction_average_csat_per_integration-over-time',
             )
         })
     })

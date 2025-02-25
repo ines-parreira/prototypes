@@ -1,16 +1,16 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
+import { renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {UserRole} from 'config/types/user'
-import {useFlag} from 'core/flags'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { UserRole } from 'config/types/user'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {getEmailIntegrations} from 'state/integrations/selectors'
-import {isAdmin} from 'utils'
-import {assumeMock} from 'utils/testing'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { getEmailIntegrations } from 'state/integrations/selectors'
+import { isAdmin } from 'utils'
+import { assumeMock } from 'utils/testing'
 
-import {useEmailDomainVerificationBanner} from '../useEmailDomainVerificationBanner'
+import { useEmailDomainVerificationBanner } from '../useEmailDomainVerificationBanner'
 
 jest.mock('core/flags')
 const mockUseFlag = useFlag as jest.Mock
@@ -43,7 +43,7 @@ jest.mock(
                 addBanner: mockedAddBanner,
                 removeBanner: mockedRemoveBanner,
             }),
-        }) as Record<string, unknown>
+        }) as Record<string, unknown>,
 )
 
 jest.mock('hooks/useAppSelector', () => jest.fn())
@@ -131,7 +131,7 @@ describe('useEmailDomainVerificationBanner', () => {
         mockUseFlag.mockReset()
         useAppSelectorMock.mockReset()
         getCurrentUserMock.mockReturnValue(
-            fromJS({role: {name: UserRole.Admin}})
+            fromJS({ role: { name: UserRole.Admin } }),
         )
     })
 

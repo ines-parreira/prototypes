@@ -1,5 +1,5 @@
-import {AttachmentEnum} from 'common/types'
-import {campaignWithABGroup} from 'fixtures/abGroup'
+import { AttachmentEnum } from 'common/types'
+import { campaignWithABGroup } from 'fixtures/abGroup'
 import {
     campaign,
     campaignProductRecommendationAttachment,
@@ -10,20 +10,19 @@ import {
     CONTAINS_PRODUCT_CARDS,
     TRIGGERED_ON_EXIT_INTENT,
 } from '../../constants/filters'
-import {Campaign} from '../../types/Campaign'
-
-import {ABGroupStatus} from '../../types/enums/ABGroupStatus.enum'
-import {CampaignStatus} from '../../types/enums/CampaignStatus.enum'
-import {CampaignTriggerBusinessHoursValuesEnum} from '../../types/enums/CampaignTriggerBusinessHoursValues.enum'
-import {CampaignTriggerOperator} from '../../types/enums/CampaignTriggerOperator.enum'
-import {CampaignTriggerType} from '../../types/enums/CampaignTriggerType.enum'
-import {createTrigger} from '../createTrigger'
+import { Campaign } from '../../types/Campaign'
+import { ABGroupStatus } from '../../types/enums/ABGroupStatus.enum'
+import { CampaignStatus } from '../../types/enums/CampaignStatus.enum'
+import { CampaignTriggerBusinessHoursValuesEnum } from '../../types/enums/CampaignTriggerBusinessHoursValues.enum'
+import { CampaignTriggerOperator } from '../../types/enums/CampaignTriggerOperator.enum'
+import { CampaignTriggerType } from '../../types/enums/CampaignTriggerType.enum'
+import { createTrigger } from '../createTrigger'
 import {
-    filterWithProductCards,
+    filterWithABTests,
     filterWithDiscountCodes,
     filterWithExitIntent,
     filterWithOutsideBusinessHours,
-    filterWithABTests,
+    filterWithProductCards,
     quickFiltersInvoke,
 } from '../filters'
 
@@ -152,7 +151,7 @@ describe('filterWithProductCards()', () => {
                 campaignTwo,
                 campaignThree,
                 campaignFive,
-            ])
+            ]),
         ).toEqual([campaignOne, campaignThree, campaignFive])
     })
 
@@ -169,7 +168,7 @@ describe('filterWithDiscountCodes()', () => {
                 campaignTwo,
                 campaignFour,
                 campaignFive,
-            ])
+            ]),
         ).toEqual([campaignOne, campaignFour, campaignFive])
     })
 
@@ -197,7 +196,7 @@ describe('filterWithOutsideBusinessHours()', () => {
                 campaignOne,
                 campaignTwo,
                 campaignThree,
-            ])
+            ]),
         ).toEqual([campaignOne, campaignTwo])
     })
 
@@ -223,15 +222,15 @@ describe('quickFiltersInvoke()', () => {
         expect(
             quickFiltersInvoke(
                 [campaignOne, campaignTwo],
-                [CONTAINS_PRODUCT_CARDS.id, CONTAINS_DISCOUNT_CODES.id]
-            )
+                [CONTAINS_PRODUCT_CARDS.id, CONTAINS_DISCOUNT_CODES.id],
+            ),
         ).toEqual([campaignOne])
 
         expect(
             quickFiltersInvoke(
                 [campaignOne, campaignTwo],
-                [TRIGGERED_ON_EXIT_INTENT.id]
-            )
+                [TRIGGERED_ON_EXIT_INTENT.id],
+            ),
         ).toEqual([campaignOne])
     })
 

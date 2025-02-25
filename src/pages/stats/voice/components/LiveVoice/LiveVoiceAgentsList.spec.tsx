@@ -1,15 +1,16 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {assumeMock} from 'utils/testing'
+import { render, screen } from '@testing-library/react'
+
+import { assumeMock } from 'utils/testing'
 
 import LiveVoiceAgentsList from './LiveVoiceAgentsList'
-import {AgentStatusCategory, groupAgentsByStatus} from './utils'
+import { AgentStatusCategory, groupAgentsByStatus } from './utils'
 
 jest.mock('pages/stats/voice/components/LiveVoice/utils')
 jest.mock(
     'pages/stats/voice/components/LiveVoice/LiveVoiceAgentRow',
-    () => () => <div>LiveVoiceAgentRow</div>
+    () => () => <div>LiveVoiceAgentRow</div>,
 )
 
 const groupAgentsByStatusMock = assumeMock(groupAgentsByStatus)
@@ -33,11 +34,11 @@ describe('LiveVoiceAgentsList', () => {
     it('should render the title and category labels correctly when there are agents in category', () => {
         groupAgentsByStatusMock.mockReturnValue({
             [AgentStatusCategory.Busy]: [
-                {id: 1, name: 'Agent 1'},
-                {id: 4, name: 'Agent 4'},
+                { id: 1, name: 'Agent 1' },
+                { id: 4, name: 'Agent 4' },
             ],
-            [AgentStatusCategory.Available]: [{id: 2, name: 'Agent 2'}],
-            [AgentStatusCategory.Unavailable]: [{id: 3, name: 'Agent 3'}],
+            [AgentStatusCategory.Available]: [{ id: 2, name: 'Agent 2' }],
+            [AgentStatusCategory.Unavailable]: [{ id: 3, name: 'Agent 3' }],
         })
         renderComponent()
 

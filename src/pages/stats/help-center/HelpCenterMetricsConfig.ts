@@ -1,7 +1,7 @@
-import {MetricTrendHook} from 'hooks/reporting/useMetricTrend'
-import {MetricTrendFormat} from 'pages/stats/common/utils'
-import {useArticleViewsTrend} from 'pages/stats/help-center/hooks/useArticleViewsTrend'
-import {useSearchRequestedTrend} from 'pages/stats/help-center/hooks/useSearchRequestedTrend'
+import { MetricTrendHook } from 'hooks/reporting/useMetricTrend'
+import { MetricTrendFormat } from 'pages/stats/common/utils'
+import { useArticleViewsTrend } from 'pages/stats/help-center/hooks/useArticleViewsTrend'
+import { useSearchRequestedTrend } from 'pages/stats/help-center/hooks/useSearchRequestedTrend'
 
 export const SEARCH_RESULTS_DONUT_TITLE = 'Search results'
 export const SEARCH_RESULTS_DONUT_TOOLTIP = {

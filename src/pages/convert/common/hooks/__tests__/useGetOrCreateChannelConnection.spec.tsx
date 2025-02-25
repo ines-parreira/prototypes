@@ -1,19 +1,20 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {act} from '@testing-library/react'
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
 
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
-import {channelConnection} from 'fixtures/channelConnection'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { act } from '@testing-library/react'
+import { renderHook } from '@testing-library/react-hooks'
+
+import { axiosSuccessResponse } from 'fixtures/axiosResponse'
+import { channelConnection } from 'fixtures/channelConnection'
 import {
     useCreateChannelConnection,
     useListChannelConnections,
 } from 'models/convert/channelConnection/queries'
-import {IntegrationType} from 'models/integration/constants'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { IntegrationType } from 'models/integration/constants'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
-import {useGetOrCreateChannelConnection} from '../useGetOrCreateChannelConnection'
+import { useGetOrCreateChannelConnection } from '../useGetOrCreateChannelConnection'
 
 jest.mock('models/convert/channelConnection/queries')
 const useListChannelConnectionsSpy = assumeMock(useListChannelConnections)
@@ -21,7 +22,7 @@ const useCreateChannelConnectionSpy = assumeMock(useCreateChannelConnection)
 
 const queryClient = mockQueryClient()
 
-const wrapper = ({children}: any) => (
+const wrapper = ({ children }: any) => (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 )
 
@@ -41,7 +42,7 @@ describe('useGetOrCreateChannelConnection', () => {
             isError: false,
         } as any)
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useGetOrCreateChannelConnection({
                     meta: {
@@ -51,7 +52,7 @@ describe('useGetOrCreateChannelConnection', () => {
                             channelConnection.store_integration_id,
                     },
                 } as any),
-            {wrapper}
+            { wrapper },
         )
 
         expect(useListChannelConnectionsSpy).toHaveBeenCalled()
@@ -80,7 +81,7 @@ describe('useGetOrCreateChannelConnection', () => {
             isError: false,
         } as any)
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useGetOrCreateChannelConnection({
                     meta: {
@@ -90,7 +91,7 @@ describe('useGetOrCreateChannelConnection', () => {
                             channelConnection.store_integration_id,
                     },
                 } as any),
-            {wrapper}
+            { wrapper },
         )
 
         act(() => {
@@ -98,7 +99,7 @@ describe('useGetOrCreateChannelConnection', () => {
             useCreateChannelConnectionSpy.mock.calls[0][0]?.onSuccess!(
                 {} as any,
                 undefined as any,
-                {}
+                {},
             )
         })
 

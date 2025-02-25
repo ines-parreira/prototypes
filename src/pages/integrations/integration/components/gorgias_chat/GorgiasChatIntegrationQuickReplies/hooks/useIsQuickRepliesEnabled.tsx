@@ -1,9 +1,8 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
-
-import {getCurrentAccountCreatedDatetime} from 'state/currentAccount/selectors'
+import { getCurrentAccountCreatedDatetime } from 'state/currentAccount/selectors'
 
 const useIsQuickRepliesEnabled = () => {
     const quickRepliesSunsetTime =
@@ -14,7 +13,7 @@ const useIsQuickRepliesEnabled = () => {
         : null
 
     const currentAccountCreatedDate = new Date(
-        useAppSelector(getCurrentAccountCreatedDatetime)
+        useAppSelector(getCurrentAccountCreatedDatetime),
     )
 
     return (

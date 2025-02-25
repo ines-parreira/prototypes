@@ -1,18 +1,18 @@
-import {Meta, StoryFn} from '@storybook/react'
+import React, { ComponentProps } from 'react'
 
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import { Meta, StoryFn } from '@storybook/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {withLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {LanguageProficiencyFilter} from 'pages/stats/common/filters/LanguageProficiencyFilter'
+import { withLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { LanguageProficiencyFilter } from 'pages/stats/common/filters/LanguageProficiencyFilter'
 
 const storyConfig: Meta = {
     title: 'Stats/Filters/LanguageProficiencyFilter',
     component: LanguageProficiencyFilter,
     parameters: {
-        chromatic: {disableSnapshot: false},
+        chromatic: { disableSnapshot: false },
     },
 }
 
@@ -21,7 +21,7 @@ const defaultState = {}
 const store = configureMockStore([thunk])(defaultState)
 
 const Template: StoryFn<ComponentProps<typeof LanguageProficiencyFilter>> = (
-    props
+    props,
 ) => {
     return (
         <Provider store={store}>

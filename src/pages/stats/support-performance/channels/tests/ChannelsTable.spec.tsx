@@ -1,16 +1,17 @@
-import {act, fireEvent, waitFor} from '@testing-library/react'
 import React from 'react'
 
-import {channels as mockChannels} from 'fixtures/channels'
-import {useSortedChannelsWithData} from 'hooks/reporting/support-performance/useSortedChannelsWithData'
-import {ChannelsCellContent} from 'pages/stats/support-performance/channels/ChannelsCellContent'
-import {ChannelsHeaderCellContent} from 'pages/stats/support-performance/channels/ChannelsHeaderCellContent'
-import {ChannelsTable} from 'pages/stats/support-performance/channels/ChannelsTable'
+import { act, fireEvent, waitFor } from '@testing-library/react'
+
+import { channels as mockChannels } from 'fixtures/channels'
+import { useSortedChannelsWithData } from 'hooks/reporting/support-performance/useSortedChannelsWithData'
+import { ChannelsCellContent } from 'pages/stats/support-performance/channels/ChannelsCellContent'
+import { ChannelsHeaderCellContent } from 'pages/stats/support-performance/channels/ChannelsHeaderCellContent'
+import { ChannelsTable } from 'pages/stats/support-performance/channels/ChannelsTable'
 import {
     columnsOrder,
     MOBILE_CHANNEL_COLUMN_WIDTH,
 } from 'pages/stats/support-performance/channels/ChannelsTableConfig'
-import {assumeMock, renderWithStore, triggerWidthResize} from 'utils/testing'
+import { assumeMock, renderWithStore, triggerWidthResize } from 'utils/testing'
 
 jest.mock('hooks/reporting/support-performance/useSortedChannelsWithData')
 const useSortedChannelsWithDataMock = assumeMock(useSortedChannelsWithData)
@@ -41,7 +42,7 @@ describe('<ChannelsTable />', () => {
                         channel,
                         column,
                     }),
-                    {}
+                    {},
                 )
             })
         })
@@ -55,7 +56,7 @@ describe('<ChannelsTable />', () => {
             expect.objectContaining({
                 width: MOBILE_CHANNEL_COLUMN_WIDTH,
             }),
-            {}
+            {},
         )
     })
 
@@ -64,7 +65,7 @@ describe('<ChannelsTable />', () => {
 
         act(() => {
             const tableRow = document.getElementsByClassName('container')[0]
-            fireEvent.scroll(tableRow, {target: {scrollLeft: 50}})
+            fireEvent.scroll(tableRow, { target: { scrollLeft: 50 } })
         })
 
         await waitFor(() => {
@@ -72,7 +73,7 @@ describe('<ChannelsTable />', () => {
                 expect.objectContaining({
                     className: expect.stringMatching('withShadow'),
                 }),
-                {}
+                {},
             )
         })
     })
@@ -81,7 +82,7 @@ describe('<ChannelsTable />', () => {
         renderWithStore(<ChannelsTable />, {})
         act(() => {
             const tableRow = document.getElementsByClassName('container')[0]
-            fireEvent.scroll(tableRow, {target: {scrollLeft: 0}})
+            fireEvent.scroll(tableRow, { target: { scrollLeft: 0 } })
         })
 
         await waitFor(() => {
@@ -89,7 +90,7 @@ describe('<ChannelsTable />', () => {
                 expect.objectContaining({
                     className: expect.not.stringMatching('withShadow'),
                 }),
-                {}
+                {},
             )
         })
     })

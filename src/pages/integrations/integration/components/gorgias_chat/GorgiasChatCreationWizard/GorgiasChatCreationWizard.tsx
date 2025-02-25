@@ -1,18 +1,16 @@
-import {Map} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useEffect, useState} from 'react'
-import {Link, Redirect} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
+import React, { useEffect, useState } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { Map } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { Link, Redirect } from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
-import {IntegrationType} from 'models/integration/types'
-
+import { FeatureFlagKey } from 'config/featureFlags'
+import { IntegrationType } from 'models/integration/types'
 import {
     GorgiasChatCreationWizardStatus,
     GorgiasChatCreationWizardSteps,
 } from 'models/integration/types/gorgiasChat'
-
 import PageHeader from 'pages/common/components/PageHeader'
 import Wizard from 'pages/common/components/wizard/Wizard'
 import WizardStep from 'pages/common/components/wizard/WizardStep'
@@ -45,20 +43,20 @@ const GorgiasChatCreationWizard: React.FC<Props> = ({
             }
 
             return true
-        }
+        },
     )
 
     const integrationId = integration.get('id')
 
     const [hasIntegrationLoaded, setHasIntegrationLoaded] = useState(
-        !isUpdate || integrationId
+        !isUpdate || integrationId,
     )
 
     const wizardStatus = integration.getIn(['meta', 'wizard', 'status'])
 
     const wizardStep = integration.getIn(
         ['meta', 'wizard', 'step'],
-        GorgiasChatCreationWizardSteps.Basics
+        GorgiasChatCreationWizardSteps.Basics,
     )
 
     const initialStep =

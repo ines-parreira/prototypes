@@ -1,12 +1,14 @@
-import classNames from 'classnames'
 import React from 'react'
 
+import classNames from 'classnames'
+
 import navbarCss from 'assets/css/navbar.less'
-import {ActiveContent, Navbar} from 'common/navigation'
+import { ActiveContent, Navbar } from 'common/navigation'
 import NavbarLink from 'pages/common/components/navbar/NavbarLink'
 
-import css from './ConvertNavbar.less'
 import ConvertNavbarView from './ConvertNavbarView'
+
+import css from './ConvertNavbar.less'
 
 const ConvertNavbar = () => (
     <Navbar activeContent={ActiveContent.Convert} title="Convert">

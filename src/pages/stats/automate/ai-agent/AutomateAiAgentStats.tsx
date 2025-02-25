@@ -1,37 +1,37 @@
-import React, {useEffect, useMemo, useState} from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
-import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import {useAIAgentUserId} from 'hooks/reporting/automate/useAIAgentUserId'
-import {useAutomateMetricsTrend} from 'hooks/reporting/automate/useAutomationDataset'
-import {useNewAutomateFilters} from 'hooks/reporting/automate/useNewAutomateFilters'
+import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
+import { useAutomateMetricsTrend } from 'hooks/reporting/automate/useAutomationDataset'
+import { useNewAutomateFilters } from 'hooks/reporting/automate/useNewAutomateFilters'
 import useAppSelector from 'hooks/useAppSelector'
-import {useGridSize} from 'hooks/useGridSize'
-import {FilterKey} from 'models/stat/types'
-import {isAiAgentCustomField} from 'pages/aiAgent/util'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
-import {AiAgentStatsDownloadButton} from 'pages/stats/automate/ai-agent/AiAgentStatsDownloadButton'
+import { useGridSize } from 'hooks/useGridSize'
+import { FilterKey } from 'models/stat/types'
+import { isAiAgentCustomField } from 'pages/aiAgent/util'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
+import { AiAgentStatsDownloadButton } from 'pages/stats/automate/ai-agent/AiAgentStatsDownloadButton'
 import {
-    AutomateAiAgentsReportConfig,
     AutomateAiAgentsChart,
+    AutomateAiAgentsReportConfig,
 } from 'pages/stats/automate/ai-agent/AutomateAiAgentsReportConfig'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
-import {CustomReportComponent} from 'pages/stats/custom-reports/CustomReportComponent'
+import { CustomReportComponent } from 'pages/stats/custom-reports/CustomReportComponent'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
-import {PAGE_TITLE_AI_AGENT} from 'pages/stats/self-service/constants'
+import { PAGE_TITLE_AI_AGENT } from 'pages/stats/self-service/constants'
 import StatsPage from 'pages/stats/StatsPage'
 import {
     activeParams,
     CustomFieldSelect,
 } from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
-import {getStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
-import {getSelectedCustomField} from 'state/ui/stats/ticketInsightsSlice'
+import { getStatsFiltersWithLogicalOperators } from 'state/stats/selectors'
+import { getSelectedCustomField } from 'state/ui/stats/ticketInsightsSlice'
 
 export default function AutomateAiAgentStats() {
     const statsFilters = useAppSelector(getStatsFiltersWithLogicalOperators)
-    const {userTimezone} = useNewAutomateFilters()
+    const { userTimezone } = useNewAutomateFilters()
     const [isNoActivityAlertDismissed, setIsNoActivityAlertDismissed] =
         useState(false)
 
@@ -45,26 +45,29 @@ export default function AutomateAiAgentStats() {
                 values: [Number(aiAgentUserId)],
             },
         }),
-        [aiAgentUserId, statsFilters]
+        [aiAgentUserId, statsFilters],
     )
 
-    const {automatedInteractionTrend} = useAutomateMetricsTrend(
+    const { automatedInteractionTrend } = useAutomateMetricsTrend(
         {
             ...statsFiltersWithAiAgent,
-            channels: {values: ['email'], operator: LogicalOperatorEnum.ONE_OF},
+            channels: {
+                values: ['email'],
+                operator: LogicalOperatorEnum.ONE_OF,
+            },
         },
-        userTimezone
+        userTimezone,
     )
 
     const selectedCustomField = useAppSelector(getSelectedCustomField)
     const getGridCellSize = useGridSize()
 
-    const {data: {data: activeFields = []} = {}} =
+    const { data: { data: activeFields = [] } = {} } =
         useCustomFieldDefinitions(activeParams)
 
     const hasAiAgentCustomField = useMemo(
         () => activeFields.some(isAiAgentCustomField),
-        [activeFields]
+        [activeFields],
     )
 
     const showNoActivityAlert =
@@ -81,7 +84,7 @@ export default function AutomateAiAgentStats() {
             titleExtra={<AiAgentStatsDownloadButton />}
         >
             {showNoActivityAlert && !isNoActivityAlertDismissed && (
-                <div style={{padding: '24px'}}>
+                <div style={{ padding: '24px' }}>
                     <Alert
                         type={AlertType.Info}
                         icon

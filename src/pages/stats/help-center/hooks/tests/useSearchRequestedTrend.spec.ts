@@ -1,10 +1,10 @@
 import moment from 'moment/moment'
 
 import useMetricTrend from 'hooks/reporting/useMetricTrend'
-import {HelpCenterTrackingEventMeasures} from 'models/reporting/cubes/HelpCenterTrackingEventCube'
-import {LegacyStatsFilters} from 'models/stat/types'
-import {useSearchRequestedTrend} from 'pages/stats/help-center/hooks/useSearchRequestedTrend'
-import {formatReportingQueryDate} from 'utils/reporting'
+import { HelpCenterTrackingEventMeasures } from 'models/reporting/cubes/HelpCenterTrackingEventCube'
+import { LegacyStatsFilters } from 'models/stat/types'
+import { useSearchRequestedTrend } from 'pages/stats/help-center/hooks/useSearchRequestedTrend'
+import { formatReportingQueryDate } from 'utils/reporting'
 
 jest.mock('hooks/reporting/useMetricTrend', () => jest.fn())
 
@@ -71,7 +71,7 @@ describe('useSearchRequestedTrend', () => {
                     HelpCenterTrackingEventMeasures.SearchRequestedCount,
                 ],
                 timezone: timezone,
-            }
+            },
         )
     })
 })

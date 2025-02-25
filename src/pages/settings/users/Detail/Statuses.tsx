@@ -1,12 +1,14 @@
-import {Badge} from '@gorgias/merchant-ui-kit'
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
-import {User} from 'config/types/user'
+import { Badge } from '@gorgias/merchant-ui-kit'
+
+import { User } from 'config/types/user'
 import Button from 'pages/common/components/button/Button'
 import TwoFactorAuthenticationDisableModal from 'pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationDisableModal'
 
+import { OwnershipModal } from './OwnershipModal'
+
 import css from './Detail.less'
-import {OwnershipModal} from './OwnershipModal'
 
 type props = {
     agentId: number

@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 const CONTENT_ATTRIBUTE_NAME = 'data-candu-content-id'
 const CONTENT_SELECTOR = `[${CONTENT_ATTRIBUTE_NAME}]`
@@ -6,7 +6,7 @@ const CONTENT_SELECTOR = `[${CONTENT_ATTRIBUTE_NAME}]`
 const useHasCanduContent = <T extends HTMLElement>(canduId: string) => {
     const [hasCanduContent, setHasCanduContent] = useState(() => {
         const contentMap:
-            | Map<HTMLElement, {root: HTMLElement; shadowChild: ShadowRoot}>
+            | Map<HTMLElement, { root: HTMLElement; shadowChild: ShadowRoot }>
             | undefined = window.Candu?.elementCanduRootMap
 
         if (!contentMap) {
@@ -14,7 +14,7 @@ const useHasCanduContent = <T extends HTMLElement>(canduId: string) => {
         }
 
         const keyElement = Array.from(contentMap.keys()).find(
-            (element) => element.dataset.canduId === canduId
+            (element) => element.dataset.canduId === canduId,
         )
 
         if (!keyElement) {
@@ -52,7 +52,9 @@ const useHasCanduContent = <T extends HTMLElement>(canduId: string) => {
                     if (element.shadowRoot.querySelector(CONTENT_SELECTOR)) {
                         setHasCanduContent(true)
                     } else {
-                        observer.observe(element.shadowRoot, {childList: true})
+                        observer.observe(element.shadowRoot, {
+                            childList: true,
+                        })
                     }
                 }
             })
@@ -68,7 +70,7 @@ const useHasCanduContent = <T extends HTMLElement>(canduId: string) => {
         }
     }, [hasCanduContent])
 
-    return {hasCanduContent, ref}
+    return { hasCanduContent, ref }
 }
 
 export default useHasCanduContent

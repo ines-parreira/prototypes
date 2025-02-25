@@ -1,6 +1,6 @@
-import {EditorState, EditorChangeType} from 'draft-js'
+import { EditorChangeType, EditorState } from 'draft-js'
 
-export type ConnectedLinksEntityData = {url?: string; connected?: boolean}
+export type ConnectedLinksEntityData = { url?: string; connected?: boolean }
 
 const hasProtocol = (url: string): boolean => {
     return url.indexOf('//') === 0 || url.includes('://')
@@ -72,7 +72,7 @@ export const setConnectedLinks = (editorState: EditorState): EditorState => {
                 const value = plainText.substring(start, end)
                 const entityKey = block!.getEntityAt(start)
                 const entity = newContentState.getEntity(entityKey)
-                const {url, connected} =
+                const { url, connected } =
                     entity.getData() as ConnectedLinksEntityData
                 const newEntityData: ConnectedLinksEntityData = {}
 
@@ -87,9 +87,9 @@ export const setConnectedLinks = (editorState: EditorState): EditorState => {
 
                 newContentState = newContentState.mergeEntityData(
                     entityKey,
-                    newEntityData
+                    newEntityData,
                 )
-            }
+            },
         )
     })
 
@@ -97,7 +97,7 @@ export const setConnectedLinks = (editorState: EditorState): EditorState => {
         return EditorState.push(
             editorState,
             newContentState,
-            'set-connected-links' as EditorChangeType
+            'set-connected-links' as EditorChangeType,
         )
     }
 

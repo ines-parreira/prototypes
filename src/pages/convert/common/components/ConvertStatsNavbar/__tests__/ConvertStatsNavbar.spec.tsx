@@ -1,25 +1,26 @@
-import {screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import _cloneDeep from 'lodash/cloneDeep'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import _cloneDeep from 'lodash/cloneDeep'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {account} from 'fixtures/account'
-import {billingState} from 'fixtures/billing'
+import { account } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
 import {
     basicMonthlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
     products,
     proMonthlyHelpdeskPlan,
 } from 'fixtures/productPrices'
-import {HelpdeskPlan} from 'models/billing/types'
-import {NavbarLinkProps} from 'pages/common/components/navbar/NavbarLink'
+import { HelpdeskPlan } from 'models/billing/types'
+import { NavbarLinkProps } from 'pages/common/components/navbar/NavbarLink'
 import * as convertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
-import {AccountFeature} from 'state/currentAccount/types'
-import {RootState, StoreDispatch} from 'state/types'
-import {renderWithRouter} from 'utils/testing'
+import { AccountFeature } from 'state/currentAccount/types'
+import { RootState, StoreDispatch } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
 import ConvertStatsNavbar from '../ConvertStatsNavbar'
 
@@ -36,7 +37,7 @@ describe('ConvertStatsNavbar', () => {
         productsWithStarter[0].prices.push(price)
 
         return {
-            billing: fromJS({...billingState, products: productsWithStarter}),
+            billing: fromJS({ ...billingState, products: productsWithStarter }),
             currentAccount: fromJS({
                 ...account,
                 current_subscription: {
@@ -63,7 +64,7 @@ describe('ConvertStatsNavbar', () => {
     beforeEach(() => {
         jest.spyOn(
             convertSubscriberHook,
-            'useIsConvertSubscriber'
+            'useIsConvertSubscriber',
         ).mockImplementation(() => false)
     })
 
@@ -72,15 +73,15 @@ describe('ConvertStatsNavbar', () => {
 
         jest.spyOn(
             convertSubscriberHook,
-            'useIsConvertSubscriber'
+            'useIsConvertSubscriber',
         ).mockImplementation(() => true)
 
-        const {queryByTestId} = renderWithRouter(
+        const { queryByTestId } = renderWithRouter(
             <Provider store={mockStore(mockedState)}>
                 <ConvertStatsNavbar
                     commonNavLinkProps={COMMON_NAV_LINK_PROPS}
                 />
-            </Provider>
+            </Provider>,
         )
 
         const iconElement = screen.queryByText('arrow_circle_up')
@@ -94,12 +95,12 @@ describe('ConvertStatsNavbar', () => {
     })
 
     it('should render links with subscription upgrade icon and modal', () => {
-        const {getByTestId} = renderWithRouter(
+        const { getByTestId } = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <ConvertStatsNavbar
                     commonNavLinkProps={COMMON_NAV_LINK_PROPS}
                 />
-            </Provider>
+            </Provider>,
         )
 
         const iconElement = screen.queryByText('arrow_circle_up')

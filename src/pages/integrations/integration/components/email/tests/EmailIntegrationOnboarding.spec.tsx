@@ -1,38 +1,40 @@
-import {EmailIntegration} from '@gorgias/api-queries'
-import {QueryClientProvider} from '@tanstack/react-query'
-import {render, screen} from '@testing-library/react'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
-import {Provider} from 'react-redux'
-import {MemoryRouter} from 'react-router-dom'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { render, screen } from '@testing-library/react'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
+import { MemoryRouter } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {RootState, StoreDispatch} from 'state/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { EmailIntegration } from '@gorgias/api-queries'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 import DomainVerificationProvider from '../EmailDomainVerification/DomainVerificationProvider'
 import EmailDomainVerificationSupportContentSidebar from '../EmailDomainVerification/EmailDomainVerificationSupportContentSidebar'
 import EmailIntegrationOnboarding from '../EmailIntegrationOnboarding'
 import EmailIntegrationOnboardingDomainVerification from '../EmailIntegrationOnboardingDomainVerification'
-import {getDomainFromEmailAddress} from '../helpers'
+import { getDomainFromEmailAddress } from '../helpers'
 import {
     EmailIntegrationOnboardingStep,
-    UseEmailOnboardingHookResult,
     useEmailOnboarding,
+    UseEmailOnboardingHookResult,
 } from '../hooks/useEmailOnboarding'
 
 jest.mock('../EmailDomainVerification/DomainVerificationProvider')
 jest.mock('../hooks/useEmailOnboarding')
 jest.mock(
     '../BaseEmailIntegrationInputField',
-    () => () => '<BaseEmailIntegrationInputField />'
+    () => () => '<BaseEmailIntegrationInputField />',
 )
 jest.mock('../helpers')
 jest.mock(
-    '../EmailDomainVerification/EmailDomainVerificationSupportContentSidebar'
+    '../EmailDomainVerification/EmailDomainVerificationSupportContentSidebar',
 )
 jest.mock('../EmailIntegrationOnboardingDomainVerification')
 
@@ -43,10 +45,10 @@ const useEmailOnboardingMock = assumeMock(useEmailOnboarding)
 const DomainVerificationProviderMock = assumeMock(DomainVerificationProvider)
 const getDomainFromEmailAddressMock = assumeMock(getDomainFromEmailAddress)
 const SupportContentSidebarMock = assumeMock(
-    EmailDomainVerificationSupportContentSidebar
+    EmailDomainVerificationSupportContentSidebar,
 )
 const EmailIntegrationOnboardingDomainVerificationMock = assumeMock(
-    EmailIntegrationOnboardingDomainVerification
+    EmailIntegrationOnboardingDomainVerification,
 )
 
 const store = mockStore({})
@@ -68,22 +70,24 @@ const renderComponent = () =>
                     />
                 </QueryClientProvider>
             </Provider>
-        </MemoryRouter>
+        </MemoryRouter>,
     )
 
 describe('<EmailIntegrationOnboarding />', () => {
     beforeEach(() => {
-        DomainVerificationProviderMock.mockImplementation(({children}: any) => (
-            <div>
-                <div>DomainVerificationProvider</div>
-                {children}
-            </div>
-        ))
+        DomainVerificationProviderMock.mockImplementation(
+            ({ children }: any) => (
+                <div>
+                    <div>DomainVerificationProvider</div>
+                    {children}
+                </div>
+            ),
+        )
         SupportContentSidebarMock.mockReturnValue(
-            <div>DomainVerificationSidebar</div>
+            <div>DomainVerificationSidebar</div>,
         )
         EmailIntegrationOnboardingDomainVerificationMock.mockReturnValue(
-            <div>DomainVerificationOnboarding</div>
+            <div>DomainVerificationOnboarding</div>,
         )
         getDomainFromEmailAddressMock.mockReturnValue('gorgias.com')
         mockFlags({
@@ -112,7 +116,7 @@ describe('<EmailIntegrationOnboarding />', () => {
         renderComponent()
 
         expect(
-            screen.getByText('Connect your support email')
+            screen.getByText('Connect your support email'),
         ).toBeInTheDocument()
     })
 
@@ -124,7 +128,7 @@ describe('<EmailIntegrationOnboarding />', () => {
         renderComponent()
 
         expect(
-            screen.getByText('Forward your support emails to Gorgias')
+            screen.getByText('Forward your support emails to Gorgias'),
         ).toBeInTheDocument()
     })
 
@@ -146,19 +150,19 @@ describe('<EmailIntegrationOnboarding />', () => {
         renderComponent()
 
         expect(
-            screen.getByText('DomainVerificationProvider')
+            screen.getByText('DomainVerificationProvider'),
         ).toBeInTheDocument()
         expect(
-            screen.getByText('DomainVerificationOnboarding')
+            screen.getByText('DomainVerificationOnboarding'),
         ).toBeInTheDocument()
         expect(
-            screen.getByText('DomainVerificationSidebar')
+            screen.getByText('DomainVerificationSidebar'),
         ).toBeInTheDocument()
         expect(DomainVerificationProviderMock).toHaveBeenLastCalledWith(
             expect.objectContaining({
                 domainName: 'gorgias.com',
             }),
-            {}
+            {},
         )
     })
 

@@ -1,26 +1,26 @@
-import _isEqual from 'lodash/isEqual'
-import React, {useMemo, useRef, useState} from 'react'
-import {Link, useParams} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
+import React, { useMemo, useRef, useState } from 'react'
 
-import {ReportIssueCaseReason} from 'models/selfServiceConfiguration/types'
+import _isEqual from 'lodash/isEqual'
+import { Link, useParams } from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
+
+import { ReportIssueCaseReason } from 'models/selfServiceConfiguration/types'
 import AutomateView from 'pages/automate/common/components/AutomateView'
 import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
-
-import {ORDER_MANAGEMENT} from 'pages/automate/common/components/constants'
+import { ORDER_MANAGEMENT } from 'pages/automate/common/components/constants'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 
 import ReportOrderIssueScenarioForm from './components/ReportOrderIssueScenarioForm'
 import ReportOrderIssueScenarioFormContext, {
     ReportOrderIssueScenarioFormContextType,
 } from './components/ReportOrderIssueScenarioFormContext'
-
-import css from './EditReportOrderIssueFlowScenarioView.less'
 import useReportOrderIssueFlowScenario from './hooks/useReportOrderIssueFlowScenario'
 import ReportOrderIssueFlowScenarioPreview from './ReportOrderIssueFlowScenarioPreview'
 
+import css from './EditReportOrderIssueFlowScenarioView.less'
+
 const EditReportOrderIssueFlowScenarioView = () => {
-    const {shopName, scenarioIndex} = useParams<{
+    const { shopName, scenarioIndex } = useParams<{
         shopName: string
         scenarioIndex: string
     }>()
@@ -59,7 +59,7 @@ const EditReportOrderIssueFlowScenarioView = () => {
                 hasError,
                 setError: (path, hasError) => {
                     setErrors((prevErrors) => {
-                        const nextErrors = {...prevErrors}
+                        const nextErrors = { ...prevErrors }
 
                         if (hasError) {
                             nextErrors[path] = true
@@ -74,7 +74,7 @@ const EditReportOrderIssueFlowScenarioView = () => {
                 },
                 storeIntegration,
             }),
-            [isUpdatePending, errors, hasError, storeIntegration]
+            [isUpdatePending, errors, hasError, storeIntegration],
         )
 
     const handleSubmit = () => {

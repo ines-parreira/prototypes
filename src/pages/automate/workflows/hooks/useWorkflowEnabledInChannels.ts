@@ -1,4 +1,4 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import useContactFormsAutomationSettings from 'pages/automate/common/hooks/useContactFormsAutomationSettings'
@@ -6,17 +6,17 @@ import useHelpCentersAutomationSettings from 'pages/automate/common/hooks/useHel
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import useSelfServiceHelpCenterChannels from 'pages/automate/common/hooks/useSelfServiceHelpCenterChannels'
 import useSelfServiceStandaloneContactFormChannels from 'pages/automate/common/hooks/useSelfServiceStandaloneContactFormChannels'
-import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 
 export const useWorkflowsIdsEnabledInChat = (
     shopType: string,
-    shopName: string
+    shopName: string,
 ) => {
     const channels = useSelfServiceChatChannels(shopType, shopName)
     const appIds = useMemo(() => {
         return channels.map((channel) => channel.value.meta.app_id!)
     }, [channels])
-    const {applicationsAutomationSettings} =
+    const { applicationsAutomationSettings } =
         useApplicationsAutomationSettings(appIds)
 
     return useMemo(() => {
@@ -37,14 +37,14 @@ export const useWorkflowsIdsEnabledInChat = (
 }
 export const useWorkflowsIdsEnabledInHelpCenter = (
     shopType: string,
-    shopName: string
+    shopName: string,
 ) => {
     const channels = useSelfServiceHelpCenterChannels(shopType, shopName)
-    const {client: helpCenterClient} = useHelpCenterApi()
+    const { client: helpCenterClient } = useHelpCenterApi()
     const helpCenterIds = useMemo(() => {
         return channels.map((channel) => channel.value.id)
     }, [channels])
-    const {helpCentersAutomationSettings} =
+    const { helpCentersAutomationSettings } =
         useHelpCentersAutomationSettings(helpCenterIds)
 
     return useMemo(() => {
@@ -70,16 +70,16 @@ export const useWorkflowsIdsEnabledInHelpCenter = (
 
 export const useWorkflowsIdsEnabledInContactForm = (
     shopType: string,
-    shopName: string
+    shopName: string,
 ) => {
     const channels = useSelfServiceStandaloneContactFormChannels(
         shopType,
-        shopName
+        shopName,
     )
     const contactFormIds = useMemo(() => {
         return channels.map((channel) => channel.value.id)
     }, [channels])
-    const {contactFormsAutomationSettings} =
+    const { contactFormsAutomationSettings } =
         useContactFormsAutomationSettings(contactFormIds)
     return useMemo(() => {
         const workflowIdsEnabled = new Set<string>()

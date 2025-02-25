@@ -1,8 +1,8 @@
-import {useCallback, useMemo} from 'react'
+import { useCallback, useMemo } from 'react'
 
-import {useReportRestrictions} from 'hooks/reporting/custom-reports/useReportRestrictions'
+import { useReportRestrictions } from 'hooks/reporting/custom-reports/useReportRestrictions'
 import useAppSelector from 'hooks/useAppSelector'
-import {STATS_ROUTE_PREFIX} from 'pages/stats/common/components/constants'
+import { STATS_ROUTE_PREFIX } from 'pages/stats/common/components/constants'
 import {
     getComponentConfig,
     getReportConfig,
@@ -13,9 +13,9 @@ import {
     ReportRestriction,
     RestrictedComponentType,
 } from 'pages/stats/report-chart-restrictions/config'
-import {getCurrentAccountId} from 'state/currentAccount/selectors'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {hasRole} from 'utils'
+import { getCurrentAccountId } from 'state/currentAccount/selectors'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { hasRole } from 'utils'
 
 export const getAccountRestrictions = (currentAccountId: number) => {
     const currentConfigurations = RBAC_RESTRICTIONS[currentAccountId]
@@ -24,44 +24,44 @@ export const getAccountRestrictions = (currentAccountId: number) => {
 
 export const getUserReportsRestrictions = (
     currentUser: Immutable.Map<any, any>,
-    accountRestrictions: (ChartRestriction | ReportRestriction)[]
+    accountRestrictions: (ChartRestriction | ReportRestriction)[],
 ) => {
     return accountRestrictions.filter(
         (configuration) =>
             !hasRole(currentUser, configuration.role) &&
-            configuration.type === RestrictedComponentType.Report
+            configuration.type === RestrictedComponentType.Report,
     )
 }
 
 export const getUserChartsRestrictions = (
     currentUser: Immutable.Map<any, any>,
-    accountRestrictions: (ChartRestriction | ReportRestriction)[]
+    accountRestrictions: (ChartRestriction | ReportRestriction)[],
 ) => {
     return accountRestrictions.filter(
         (configuration) =>
             !hasRole(currentUser, configuration.role) &&
-            configuration.type === RestrictedComponentType.Chart
+            configuration.type === RestrictedComponentType.Chart,
     )
 }
 
 export const useReportChartRestrictions = () => {
     const currentAccountId = useAppSelector(getCurrentAccountId)
     const currentUser = useAppSelector(getCurrentUser)
-    const {restrictionsMap} = useReportRestrictions()
+    const { restrictionsMap } = useReportRestrictions()
 
     const accountRestrictions = useMemo(
         () => getAccountRestrictions(currentAccountId),
-        [currentAccountId]
+        [currentAccountId],
     )
 
     const userReportRestrictions = useMemo(
         () => getUserReportsRestrictions(currentUser, accountRestrictions),
-        [accountRestrictions, currentUser]
+        [accountRestrictions, currentUser],
     )
 
     const userChartRestrictions = useMemo(
         () => getUserChartsRestrictions(currentUser, accountRestrictions),
-        [accountRestrictions, currentUser]
+        [accountRestrictions, currentUser],
     )
 
     const isRouteRestrictedToCurrentUser = useCallback(
@@ -79,10 +79,10 @@ export const useReportChartRestrictions = () => {
                         : url === `${STATS_ROUTE_PREFIX}${path}`
 
                     return isPathRestricted || isReportRestrictedToCurrentUser
-                })
+                }),
             )
         },
-        [restrictionsMap, userReportRestrictions]
+        [restrictionsMap, userReportRestrictions],
     )
 
     const isChartRestrictedToCurrentUser = useCallback(
@@ -90,10 +90,10 @@ export const useReportChartRestrictions = () => {
             const isChartStrictlyRestricted = !!userChartRestrictions.find(
                 (restriction) =>
                     restriction.type === RestrictedComponentType.Chart &&
-                    restriction.ids.includes(chartId)
+                    restriction.ids.includes(chartId),
             )
 
-            const {reportConfig} = getComponentConfig(chartId, true)
+            const { reportConfig } = getComponentConfig(chartId, true)
             if (!reportConfig) {
                 return false
             }
@@ -107,7 +107,11 @@ export const useReportChartRestrictions = () => {
                 isPathRestricted
             )
         },
-        [isRouteRestrictedToCurrentUser, restrictionsMap, userChartRestrictions]
+        [
+            isRouteRestrictedToCurrentUser,
+            restrictionsMap,
+            userChartRestrictions,
+        ],
     )
 
     return {

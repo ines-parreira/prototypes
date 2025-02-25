@@ -1,21 +1,22 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 
-import {StatsFilters} from 'models/stat/types'
+import { StatsFilters } from 'models/stat/types'
 import Pagination from 'pages/common/components/Pagination'
 import {
     CALL_LIST_PAGE_SIZE,
     MAX_VOICE_CALLS_PAGE_NUMBER,
 } from 'pages/stats/voice/constants/voiceOverview'
-import {useVoiceCallCount} from 'pages/stats/voice/hooks/useVoiceCallCount'
-import {useVoiceCallList} from 'pages/stats/voice/hooks/useVoiceCallList'
+import { useVoiceCallCount } from 'pages/stats/voice/hooks/useVoiceCallCount'
+import { useVoiceCallList } from 'pages/stats/voice/hooks/useVoiceCallList'
 import {
     getVoiceSegmentFromFilter,
     VoiceCallFilterOptions,
 } from 'pages/stats/voice/models/types'
 
 import useVoiceCallTableOrdering from './useVoiceCallTableOrdering'
-import css from './VoiceCallTable.less'
 import VoiceCallTableContent from './VoiceCallTableContent'
+
+import css from './VoiceCallTable.less'
 
 type VoiceCallTableProps = {
     statsFilters: StatsFilters
@@ -30,22 +31,26 @@ export const VoiceCallTable = ({
 }: VoiceCallTableProps) => {
     const [currentPage, setCurrentPage] = useState(1)
 
-    const {onOrderChange, orderByColumnName, orderByDimension, orderDirection} =
-        useVoiceCallTableOrdering()
+    const {
+        onOrderChange,
+        orderByColumnName,
+        orderByDimension,
+        orderDirection,
+    } = useVoiceCallTableOrdering()
 
-    const {data, isFetching} = useVoiceCallList(
+    const { data, isFetching } = useVoiceCallList(
         statsFilters,
         userTimezone,
         currentPage,
         CALL_LIST_PAGE_SIZE,
         getVoiceSegmentFromFilter(filterOption),
         orderByDimension,
-        orderDirection
+        orderDirection,
     )
-    const {totalPages} = useVoiceCallCount(
+    const { totalPages } = useVoiceCallCount(
         statsFilters,
         userTimezone,
-        getVoiceSegmentFromFilter(filterOption)
+        getVoiceSegmentFromFilter(filterOption),
     )
 
     const handlePageChange = (nextPage: number) => {

@@ -1,23 +1,24 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import {resetLDMocks} from 'jest-launchdarkly-mock'
+import React, { ComponentProps } from 'react'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { resetLDMocks } from 'jest-launchdarkly-mock'
 import _cloneDeep from 'lodash/cloneDeep'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {PaywallConfig} from 'config/paywalls'
-import {account} from 'fixtures/account'
-import {billingState} from 'fixtures/billing'
+import { PaywallConfig } from 'config/paywalls'
+import { account } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
 import {
     customHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
     legacyBasicHelpdeskPlan,
     products,
 } from 'fixtures/productPrices'
-import {AccountFeature} from 'state/currentAccount/types'
-import {RootState, StoreDispatch} from 'state/types'
+import { AccountFeature } from 'state/currentAccount/types'
+import { RootState, StoreDispatch } from 'state/types'
 
 import FeaturePaywall from '../FeaturePaywall'
 
@@ -94,29 +95,29 @@ describe('<FeaturePaywall />', () => {
     >([
         [
             'paywall config is undefined',
-            {...minProps, feature: AccountFeature.SatisfactionSurveys},
+            { ...minProps, feature: AccountFeature.SatisfactionSurveys },
             defaultState,
         ],
         [
             'required price name was not found',
-            {...minProps, feature: AccountFeature.Api1stPartyRateLimit},
+            { ...minProps, feature: AccountFeature.Api1stPartyRateLimit },
             defaultState,
         ],
     ])('should render empty page when %s', (testName, props, state) => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(state)}>
                 <FeaturePaywall {...props} />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render paywall for the feature', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <FeaturePaywall {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -126,7 +127,7 @@ describe('<FeaturePaywall />', () => {
         const availablePlansWithLegacyPlans = _cloneDeep(products)
         availablePlansWithLegacyPlans[0].prices.push(legacyBasicHelpdeskPlan)
 
-        const {container} = render(
+        const { container } = render(
             <Provider
                 store={mockStore({
                     ...defaultState,
@@ -151,7 +152,7 @@ describe('<FeaturePaywall />', () => {
                         [AccountFeature.AutoAssignment]: defaultPaywallConfig,
                     }}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -161,7 +162,7 @@ describe('<FeaturePaywall />', () => {
         const availablePlanWithCustomPlan = _cloneDeep(products)
         availablePlanWithCustomPlan[0].prices.push(customHelpdeskPlan)
 
-        const {container} = render(
+        const { container } = render(
             <Provider
                 store={mockStore({
                     ...defaultState,
@@ -187,7 +188,7 @@ describe('<FeaturePaywall />', () => {
                             defaultPaywallConfig,
                     }}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()

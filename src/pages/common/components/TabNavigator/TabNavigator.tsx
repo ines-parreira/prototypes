@@ -1,12 +1,13 @@
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+
 import classnames from 'classnames'
 import _isEmpty from 'lodash/isEmpty'
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 
 import useUpdateEffect from 'hooks/useUpdateEffect'
 
 import css from './TabNavigator.less'
 
-type TabData = {value: string; label: string}
+type TabData = { value: string; label: string }
 
 type TabNavigatorProps = {
     tabs: TabData[]
@@ -33,7 +34,7 @@ const TabNavigator = ({
     }, [activeTab, tabs])
 
     const [tabDimensions, setTabDimensions] = useState<TabDimension[] | null>(
-        null
+        null,
     )
 
     const setupTabs = useCallback(async () => {
@@ -41,7 +42,7 @@ const TabNavigator = ({
         const tabCollection = tabNavigatorRef?.current?.children
         const tabs = Array.from(tabCollection || []) as HTMLElement[]
         const tabDimensions = tabs.map((tab) => {
-            const {offsetLeft, offsetWidth} = tab
+            const { offsetLeft, offsetWidth } = tab
             const tabStyle = getComputedStyle(tab)
             return {
                 x: offsetLeft + parseFloat(tabStyle.paddingLeft) || 0,
@@ -62,7 +63,7 @@ const TabNavigator = ({
         const tabCollection = tabNavigatorRef?.current?.children
         tabCollection
             ?.item(activeTabIndex)
-            ?.scrollIntoView({behavior: 'smooth'})
+            ?.scrollIntoView({ behavior: 'smooth' })
     }, [activeTabIndex])
 
     return (

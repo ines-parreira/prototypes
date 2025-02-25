@@ -1,31 +1,28 @@
-import {Skeleton} from '@gorgias/merchant-ui-kit'
-import Fuse from 'fuse.js'
-import {Map} from 'immutable'
-import React, {MouseEvent, useEffect, useMemo} from 'react'
+import React, { MouseEvent, useEffect, useMemo } from 'react'
 
-import {Container} from 'reactstrap'
+import Fuse from 'fuse.js'
+import { Map } from 'immutable'
+import { Container } from 'reactstrap'
+
+import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import Segmented from 'pages/common/components/Segmented'
-
 import SkeletonLoader from 'pages/common/components/SkeletonLoader'
-import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
+import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
 import ConvertSetupBanner from 'pages/convert/campaigns/components/ConvertSetupBanner'
 import InventoryScopeMissingBanner from 'pages/convert/campaigns/components/InventoryScopeMissingBanner'
-import {isActiveStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
+import { isActiveStatus } from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
 
-import {CampaignChatHiddenWarning} from '../../components/CampaignChatHiddenWarning'
-import {CampaignsSearch} from '../../components/CampaignsSearch'
-import {CampaignsTable} from '../../components/CampaignsTable'
-import {ConvertLimitBanner} from '../../components/ConvertLimitBanner/ConvertLimitBanner'
+import { CampaignChatHiddenWarning } from '../../components/CampaignChatHiddenWarning'
+import { CampaignsSearch } from '../../components/CampaignsSearch'
+import { CampaignsTable } from '../../components/CampaignsTable'
+import { ConvertLimitBanner } from '../../components/ConvertLimitBanner/ConvertLimitBanner'
+import { QUICK_FILTERS } from '../../constants/filters'
+import { useCampaignListOptions } from '../../hooks/useCampaignListOptions'
+import { Campaign } from '../../types/Campaign'
+import { quickFiltersInvoke } from '../../utils/filters'
+import { QuickFilters } from '../QuickFilters'
 
-import {QUICK_FILTERS} from '../../constants/filters'
-
-import {useCampaignListOptions} from '../../hooks/useCampaignListOptions'
-
-import {Campaign} from '../../types/Campaign'
-
-import {quickFiltersInvoke} from '../../utils/filters'
-import {QuickFilters} from '../QuickFilters'
 import css from './CampaignsList.less'
 
 type Props = {
@@ -52,9 +49,9 @@ const CampaignsList = ({
     onUpdateCampaign,
 }: Props) => {
     const isConvertSubscriber = useIsConvertSubscriber()
-    const {getParams, onChangeParams} = useCampaignListOptions()
+    const { getParams, onChangeParams } = useCampaignListOptions()
 
-    const {page, search, state, filters} = getParams()
+    const { page, search, state, filters } = getParams()
 
     const statusFilterOptions = useMemo(() => {
         return [
@@ -66,14 +63,14 @@ const CampaignsList = ({
                 label: 'Active',
                 value: 'active',
                 disabled: !campaigns.some((campaign) =>
-                    isActiveStatus(campaign.status)
+                    isActiveStatus(campaign.status),
                 ),
             },
             {
                 label: 'Inactive',
                 value: 'inactive',
                 disabled: !campaigns.some(
-                    (campaign) => !isActiveStatus(campaign.status)
+                    (campaign) => !isActiveStatus(campaign.status),
                 ),
             },
         ]
@@ -84,13 +81,13 @@ const CampaignsList = ({
 
         if (state === 'active') {
             campaignsByStatus = campaigns.filter((campaign) =>
-                isActiveStatus(campaign.status)
+                isActiveStatus(campaign.status),
             )
         }
 
         if (state === 'inactive') {
             campaignsByStatus = campaigns.filter(
-                (campaign) => !isActiveStatus(campaign.status)
+                (campaign) => !isActiveStatus(campaign.status),
             )
         }
 
@@ -112,23 +109,23 @@ const CampaignsList = ({
     }, [campaigns, filters, isConvertSubscriber, search, state])
 
     const handleChangeSearch = (value: string) => {
-        onChangeParams({search: value, page: 1})
+        onChangeParams({ search: value, page: 1 })
     }
 
     const handleClearSearch = () => {
-        onChangeParams({search: '', page: 1})
+        onChangeParams({ search: '', page: 1 })
     }
 
     const handleUpdateStateFilter = (_: any, value: string) => {
-        onChangeParams({state: value, page: 1})
+        onChangeParams({ state: value, page: 1 })
     }
 
     const handleChangePage = (page: number) => {
-        onChangeParams({page})
+        onChangeParams({ page })
     }
 
     const handleChangeFilters = (filters: string[]) => {
-        onChangeParams({filters: filters.join(','), page: 1})
+        onChangeParams({ filters: filters.join(','), page: 1 })
     }
 
     // Check if page is out of range or the state filter is invalid or disabled and default to default values
@@ -138,17 +135,17 @@ const CampaignsList = ({
                 page < 0 ||
                 page > Math.ceil(filteredCampaigns.length / PER_PAGE)
             ) {
-                onChangeParams({page: 1})
+                onChangeParams({ page: 1 })
             }
         }
 
         if (state) {
             if (
                 !statusFilterOptions.some(
-                    (option) => option.value === state && !option.disabled
+                    (option) => option.value === state && !option.disabled,
                 )
             ) {
-                onChangeParams({state: 'all'})
+                onChangeParams({ state: 'all' })
             }
         }
     }, [

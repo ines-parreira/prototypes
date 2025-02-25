@@ -1,9 +1,10 @@
-import {screen} from '@testing-library/react'
 import React from 'react'
 
-import {renderWithRouter} from 'utils/testing'
+import { screen } from '@testing-library/react'
 
-import {useDisplayAiAgentMovedBanner} from '../../hooks/useDisplayAiAgentMovedBanner'
+import { renderWithRouter } from 'utils/testing'
+
+import { useDisplayAiAgentMovedBanner } from '../../hooks/useDisplayAiAgentMovedBanner'
 import AutomateFormView from '../AutomateFormView'
 
 jest.mock('../../hooks/useDisplayAiAgentMovedBanner', () => ({
@@ -37,7 +38,7 @@ describe('<AutomateFormView />', () => {
                 ]}
             >
                 AutomateFormView
-            </AutomateFormView>
+            </AutomateFormView>,
         )
 
         expect(screen.getByText('Title')).toBeInTheDocument()
@@ -65,7 +66,7 @@ describe('<AutomateFormView />', () => {
                 isLoading
             >
                 AutomateFormView
-            </AutomateFormView>
+            </AutomateFormView>,
         )
 
         expect(screen.getByText('Title')).toBeInTheDocument()
@@ -93,16 +94,16 @@ describe('<AutomateFormView />', () => {
                 ]}
             >
                 AutomateFormView
-            </AutomateFormView>
+            </AutomateFormView>,
         )
 
         expect(screen.getByText('Test 1')).toHaveAttribute(
             'data-candu-id',
-            'test1'
+            'test1',
         )
         expect(screen.getByText('Test 2')).toHaveAttribute(
             'data-candu-id',
-            'test2'
+            'test2',
         )
     })
 
@@ -110,7 +111,7 @@ describe('<AutomateFormView />', () => {
         ;(useDisplayAiAgentMovedBanner as jest.Mock).mockReturnValue(true)
 
         renderWithRouter(
-            <AutomateFormView title="Title">AutomateFormView</AutomateFormView>
+            <AutomateFormView title="Title">AutomateFormView</AutomateFormView>,
         )
 
         expect(screen.getByText('AI Agent Moved Banner')).toBeInTheDocument()
@@ -120,11 +121,11 @@ describe('<AutomateFormView />', () => {
         ;(useDisplayAiAgentMovedBanner as jest.Mock).mockReturnValue(false)
 
         renderWithRouter(
-            <AutomateFormView title="Title">AutomateFormView</AutomateFormView>
+            <AutomateFormView title="Title">AutomateFormView</AutomateFormView>,
         )
 
         expect(
-            screen.queryByText('AI Agent Moved Banner')
+            screen.queryByText('AI Agent Moved Banner'),
         ).not.toBeInTheDocument()
     })
 })

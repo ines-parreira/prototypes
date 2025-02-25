@@ -1,8 +1,9 @@
+import React, { Component, FormEvent } from 'react'
+
 import classNames from 'classnames'
-import {Map} from 'immutable'
-import React, {Component, FormEvent} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {Link} from 'react-router-dom'
+import { Map } from 'immutable'
+import { connect, ConnectedProps } from 'react-redux'
+import { Link } from 'react-router-dom'
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -11,7 +12,7 @@ import {
     Button as ReactstrapButton,
 } from 'reactstrap'
 
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -21,22 +22,22 @@ import {
     isBaseEmailAddress,
     isSendgridEmailIntegration,
 } from 'pages/integrations/integration/components/email/helpers'
-import {INTEGRATION_REMOVAL_CONFIGURATION_TEXT} from 'pages/integrations/integration/constants'
+import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 import css from 'pages/settings/settings.less'
 import socketManager from 'services/socketManager/socketManager'
-import {JoinEventType} from 'services/socketManager/types'
-import {resendVerificationEmail} from 'state/currentAccount/actions'
+import { JoinEventType } from 'services/socketManager/types'
+import { resendVerificationEmail } from 'state/currentAccount/actions'
 import {
+    deleteIntegration,
     sendVerificationEmail,
     verifyEmailIntegrationManually,
-    deleteIntegration,
 } from 'state/integrations/actions'
 import {
-    getForwardingEmailAddress,
     getEmailForwardingActivated,
+    getForwardingEmailAddress,
 } from 'state/integrations/selectors'
-import {notify} from 'state/notifications/actions'
-import {RootState} from 'state/types'
+import { notify } from 'state/notifications/actions'
+import { RootState } from 'state/types'
 
 type OwnProps = {
     integration: Map<any, any>
@@ -63,7 +64,7 @@ export class EmailIntegrationCreateVerification extends Component<
     }
 
     UNSAFE_componentWillMount() {
-        const {integration} = this.props
+        const { integration } = this.props
 
         if (integration.get('id')) {
             socketManager.join(JoinEventType.Integration, integration.get('id'))
@@ -77,7 +78,7 @@ export class EmailIntegrationCreateVerification extends Component<
         ) {
             socketManager.join(
                 JoinEventType.Integration,
-                nextProps.integration.get('id')
+                nextProps.integration.get('id'),
             )
         }
 
@@ -92,31 +93,34 @@ export class EmailIntegrationCreateVerification extends Component<
                     isSendgridEmailIntegration(nextProps.integration.toJS())
                         ? '/outbound-verification'
                         : ''
-                }`
+                }`,
             )
         }
     }
 
     componentWillUnmount() {
-        const {integration} = this.props
+        const { integration } = this.props
         socketManager.leave(JoinEventType.Integration, integration.get('id'))
     }
 
     _sendVerificationEmail = () => {
-        this.setState({loading: true, isDisabled: true})
+        this.setState({ loading: true, isDisabled: true })
 
         void this.props.sendVerificationEmail().then(() => {
-            this.setState({loading: false, isDisabled: false})
+            this.setState({ loading: false, isDisabled: false })
         })
     }
 
     _verifyEmailIntegrationManually = (e: FormEvent) => {
         e.preventDefault()
-        this.setState({isVerificationLoading: true, isDisabled: true})
+        this.setState({ isVerificationLoading: true, isDisabled: true })
         void this.props
             .verifyEmailIntegrationManually(this.state.token)
             .then(() => {
-                this.setState({isVerificationLoading: false, isDisabled: false})
+                this.setState({
+                    isVerificationLoading: false,
+                    isDisabled: false,
+                })
             })
     }
 
@@ -132,7 +136,7 @@ export class EmailIntegrationCreateVerification extends Component<
             emailForwardingActivated ||
             this.props.integration.getIn(
                 ['meta', 'email_forwarding_activated'],
-                false
+                false,
             )
 
         return (
@@ -160,7 +164,7 @@ export class EmailIntegrationCreateVerification extends Component<
                                 label="Input verification code manually"
                                 placeholder="f69a26"
                                 onChange={(code) =>
-                                    this.setState({token: code})
+                                    this.setState({ token: code })
                                 }
                             />
                             <Button
@@ -217,7 +221,7 @@ export class EmailIntegrationCreateVerification extends Component<
     }
 
     _renderBaseIntegrationInstructions = () => {
-        const {resendAccountVerificationEmail} = this.props
+        const { resendAccountVerificationEmail } = this.props
 
         return (
             <div>
@@ -229,7 +233,7 @@ export class EmailIntegrationCreateVerification extends Component<
                     <ReactstrapButton
                         color="link"
                         className="p-0"
-                        style={{verticalAlign: 'initial'}}
+                        style={{ verticalAlign: 'initial' }}
                         onClick={resendAccountVerificationEmail}
                     >
                         clicking here
@@ -241,7 +245,7 @@ export class EmailIntegrationCreateVerification extends Component<
     }
 
     render() {
-        const {integration} = this.props
+        const { integration } = this.props
 
         const address: string = integration.getIn(['meta', 'address'], '')
         const isBaseEmailIntegration = isBaseEmailAddress(address)
@@ -285,7 +289,7 @@ const connector = connect(
     (state: RootState, props: OwnProps) => ({
         forwardingEmailAddress: getForwardingEmailAddress(state),
         emailForwardingActivated: getEmailForwardingActivated(
-            props.integration.get('id')
+            props.integration.get('id'),
         )(state),
     }),
     {
@@ -294,7 +298,7 @@ const connector = connect(
         notify,
         deleteIntegration,
         resendAccountVerificationEmail: resendVerificationEmail,
-    }
+    },
 )
 
 export default connector(EmailIntegrationCreateVerification)

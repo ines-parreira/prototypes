@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import styled from '@emotion/styled'
-
 import React from 'react'
+
+import styled from '@emotion/styled'
 
 import IconButton from 'gorgias-design-system/Buttons/IconButton'
 
@@ -45,7 +45,7 @@ export interface ChatMessageInputProps
      * Function to be triggered when the trail icon is clicked.
      */
     onTrailIconClick?: (
-        event: React.MouseEvent<HTMLElement, MouseEvent>
+        event: React.MouseEvent<HTMLElement, MouseEvent>,
     ) => void
 }
 

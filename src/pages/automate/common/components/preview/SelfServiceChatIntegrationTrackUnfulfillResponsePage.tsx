@@ -1,17 +1,18 @@
-import classnames from 'classnames'
 import React from 'react'
+
+import classnames from 'classnames'
 
 import graphicTShirt from 'assets/img/self-service/graphic-t-shirt.png'
 import {
-    GORGIAS_CHAT_SSP_TEXTS,
     getPrimaryLanguageFromChatConfig,
+    GORGIAS_CHAT_SSP_TEXTS,
 } from 'config/integrations/gorgias_chat'
-import {GorgiasChatIntegration} from 'models/integration/types'
+import { GorgiasChatIntegration } from 'models/integration/types'
 
 import useOrderDates from './hooks/useOrderDates'
+import { useSelfServicePreviewContext } from './SelfServicePreviewContext'
 
 import css from './SelfServiceChatIntegrationTrackUnfulfillResponsePage.less'
-import {useSelfServicePreviewContext} from './SelfServicePreviewContext'
 
 type Props = {
     integration: GorgiasChatIntegration
@@ -23,9 +24,9 @@ const SelfServiceChatIntegrationTrackUnfilFillResponsePage = ({
     const language = getPrimaryLanguageFromChatConfig(integration.meta)
     const sspTexts = GORGIAS_CHAT_SSP_TEXTS[language]
 
-    const {automatedResponseMessageContent} = useSelfServicePreviewContext()
+    const { automatedResponseMessageContent } = useSelfServicePreviewContext()
 
-    const {etaDate, inTransitDate} = useOrderDates(language)
+    const { etaDate, inTransitDate } = useOrderDates(language)
 
     return (
         <div className={css.container}>
@@ -55,7 +56,7 @@ const SelfServiceChatIntegrationTrackUnfilFillResponsePage = ({
                             <div
                                 className={classnames(
                                     css.timelineDot,
-                                    css.isCurrent
+                                    css.isCurrent,
                                 )}
                             />
                             <div className={css.timelineLine} />
@@ -65,7 +66,7 @@ const SelfServiceChatIntegrationTrackUnfilFillResponsePage = ({
                                 <div
                                     className={classnames(
                                         css.timelineItemStatus,
-                                        css.isCurrent
+                                        css.isCurrent,
                                     )}
                                 >
                                     {sspTexts.checkpointOrderPlaced}
@@ -89,7 +90,7 @@ const SelfServiceChatIntegrationTrackUnfilFillResponsePage = ({
                             <div
                                 className={classnames(
                                     css.timelineDot,
-                                    css.isUpcoming
+                                    css.isUpcoming,
                                 )}
                             />
                         </div>
@@ -97,7 +98,7 @@ const SelfServiceChatIntegrationTrackUnfilFillResponsePage = ({
                             <div
                                 className={classnames(
                                     css.timelineItemStatus,
-                                    css.isUpcoming
+                                    css.isUpcoming,
                                 )}
                             >
                                 {sspTexts.confirmed}

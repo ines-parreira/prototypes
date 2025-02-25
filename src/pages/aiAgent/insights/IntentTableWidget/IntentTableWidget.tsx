@@ -1,6 +1,7 @@
 import React from 'react'
 
-import {IntentTableWithDefaultState} from './IntentTable'
+import { IntentTableWithDefaultState } from './IntentTable'
+
 import css from './IntentTableWidget.less'
 
 type IntentWidget = {

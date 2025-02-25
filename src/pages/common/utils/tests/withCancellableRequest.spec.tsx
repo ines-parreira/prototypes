@@ -1,14 +1,15 @@
-import {render, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import {CancelToken} from 'axios'
-import MockAdapter from 'axios-mock-adapter'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { CancelToken } from 'axios'
+import MockAdapter from 'axios-mock-adapter'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import client from '../../../../models/api/resources'
-import {StoreDispatch} from '../../../../state/types'
+import { StoreDispatch } from '../../../../state/types'
 import withCancellableRequest, {
     CancellableRequestInjectedProps,
 } from '../withCancellableRequest'
@@ -16,11 +17,11 @@ import withCancellableRequest, {
 const mockStore = configureMockStore([thunk])
 const mockApi = new MockAdapter(client)
 const request = (cancelToken?: CancelToken) => (dispatch: StoreDispatch) => {
-    return client.get('/foo', {cancelToken}).then((res) =>
+    return client.get('/foo', { cancelToken }).then((res) =>
         dispatch({
             type: 'foo',
             data: res.data,
-        })
+        }),
     )
 }
 const mockCall = jest.fn(request)
@@ -44,7 +45,7 @@ const MockComponent = ({
 )
 const WrappedComponent = withCancellableRequest(
     'mockFetch',
-    mockCall
+    mockCall,
 )(MockComponent)
 
 describe('withCancellableRequest', () => {
@@ -57,10 +58,10 @@ describe('withCancellableRequest', () => {
     })
 
     it('should make a request when request called', async () => {
-        const {getByTestId} = render(
+        const { getByTestId } = render(
             <Provider store={store}>
                 <WrappedComponent />
-            </Provider>
+            </Provider>,
         )
 
         userEvent.click(getByTestId('fetch'))
@@ -69,10 +70,10 @@ describe('withCancellableRequest', () => {
     })
 
     it('should cancel the request when cancel called', async () => {
-        const {getByTestId} = render(
+        const { getByTestId } = render(
             <Provider store={store}>
                 <WrappedComponent />
-            </Provider>
+            </Provider>,
         )
 
         userEvent.click(getByTestId('fetch'))
@@ -82,10 +83,10 @@ describe('withCancellableRequest', () => {
     })
 
     it('should cancel the previous call when called a second time', async () => {
-        const {getByTestId} = render(
+        const { getByTestId } = render(
             <Provider store={store}>
                 <WrappedComponent />
-            </Provider>
+            </Provider>,
         )
 
         userEvent.click(getByTestId('fetch'))
@@ -95,10 +96,10 @@ describe('withCancellableRequest', () => {
     })
 
     it('should cancel the request when unmounting', () => {
-        const {getByTestId, unmount} = render(
+        const { getByTestId, unmount } = render(
             <Provider store={store}>
                 <WrappedComponent />
-            </Provider>
+            </Provider>,
         )
 
         userEvent.click(getByTestId('fetch'))

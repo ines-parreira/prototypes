@@ -1,14 +1,14 @@
-import {render, screen} from '@testing-library/react'
-import {ContentState, EditorState} from 'draft-js'
 import React from 'react'
 
-import {convertFromHTML} from '../../../../utils/editor'
-import createToolbarPlugin from '../plugins/toolbar/index'
-import {Config} from '../plugins/toolbar/types'
-import {Plugin} from '../plugins/types'
-import {variable as variableDecorator} from '../plugins/variables/decorators'
-import {attachEntitiesToVariables} from '../plugins/variables/utils'
+import { render, screen } from '@testing-library/react'
+import { ContentState, EditorState } from 'draft-js'
 
+import { convertFromHTML } from '../../../../utils/editor'
+import createToolbarPlugin from '../plugins/toolbar/index'
+import { Config } from '../plugins/toolbar/types'
+import { Plugin } from '../plugins/types'
+import { variable as variableDecorator } from '../plugins/variables/decorators'
+import { attachEntitiesToVariables } from '../plugins/variables/utils'
 import {
     createCompositeDecorator,
     createEditorStateFromHtml,
@@ -41,8 +41,8 @@ describe('DraftJS display entities', () => {
         let editorState = createEditorStateFromHtml(text)
         editorState = attachEntitiesToVariables(editorState)
         const positions = [
-            {start: 9, length: 21},
-            {start: 35, length: 25},
+            { start: 9, length: 21 },
+            { start: 35, length: 25 },
         ]
 
         const contentState = editorState.getCurrentContent()
@@ -55,21 +55,21 @@ describe('DraftJS display entities', () => {
         expect(content.getText()).toEqual(text)
 
         positions.forEach((position, index) => {
-            const {start, length} = position
+            const { start, length } = position
             const end = start + length - 1
             const begin =
                 index > 0
                     ? positions[index - 1].start + positions[index - 1].length
                     : 0
             expect(utils.isEntirelyNull(decorations.slice(begin, start))).toBe(
-                true
+                true,
             )
             expect(utils.isOccupied(decorations.slice(start, length))).toBe(
-                true
+                true,
             )
             expect(decorations[start]).toEqual(decorations[end])
             expect(composite.getComponentForKey(decorations[start])).toBe(
-                variableDecorator.component
+                variableDecorator.component,
             )
         })
     })
@@ -83,7 +83,7 @@ describe('DraftJS Plugins', () => {
                 html={html}
                 editorState={undefined as unknown as EditorState}
                 plugins={[] as Plugin[]}
-            />
+            />,
         )
 
         expect(screen.getByText(html))
@@ -96,7 +96,7 @@ describe('DraftJS Plugins', () => {
                 html={html}
                 editorState={undefined as unknown as EditorState}
                 plugins={[] as Plugin[]}
-            />
+            />,
         )
 
         expect(screen.getByText('bold'))
@@ -117,7 +117,7 @@ describe('DraftJS Plugins', () => {
                 html={html}
                 editorState={editorState}
                 plugins={plugins}
-            />
+            />,
         )
 
         expect(screen.getByText('link'))

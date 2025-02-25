@@ -1,11 +1,11 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {Provider} from 'react-redux'
-import {createStore} from 'redux'
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import { createStore } from 'redux'
 
-import {billingState} from 'fixtures/billing'
+import { billingState } from 'fixtures/billing'
 import {
     convertStatusLimitReached,
     convertStatusLimitReachedNotInstalled,
@@ -13,13 +13,13 @@ import {
     convertStatusOkWarning,
     convertStatusOkWarningUpgrade,
 } from 'fixtures/convert'
-import {user} from 'fixtures/users'
+import { user } from 'fixtures/users'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
-import {RootState} from 'state/types'
-import {assumeMock} from 'utils/testing'
+import { RootState } from 'state/types'
+import { assumeMock } from 'utils/testing'
 
-import {ConvertLimitBanner} from '../ConvertLimitBanner'
+import { ConvertLimitBanner } from '../ConvertLimitBanner'
 
 const defaultState = {
     currentUser: fromJS(user),
@@ -44,7 +44,7 @@ describe('ConvertLimitBanner', () => {
     beforeEach(() => {
         jest.spyOn(
             isConvertSubscriberHook,
-            'useIsConvertSubscriber'
+            'useIsConvertSubscriber',
         ).mockImplementation(() => true)
     })
 
@@ -55,30 +55,30 @@ describe('ConvertLimitBanner', () => {
     it('should render correctly limit reached', () => {
         useGetConvertStatusMock.mockReturnValue(convertStatusLimitReached)
 
-        const {queryByText} = render(
+        const { queryByText } = render(
             <Provider store={store}>
                 <ConvertLimitBanner />
-            </Provider>
+            </Provider>,
         )
         expect(
-            queryByText(blockedMessageText, {exact: false})
+            queryByText(blockedMessageText, { exact: false }),
         ).toBeInTheDocument()
         expect(queryByText(blockedButtonText)).toBeInTheDocument()
     })
 
     it('should not render because the bundle is not installed even the usage is limit-reached', () => {
         useGetConvertStatusMock.mockReturnValue(
-            convertStatusLimitReachedNotInstalled
+            convertStatusLimitReachedNotInstalled,
         )
 
-        const {queryByText} = render(
+        const { queryByText } = render(
             <Provider store={store}>
                 <ConvertLimitBanner />
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            queryByText(blockedMessageText, {exact: false})
+            queryByText(blockedMessageText, { exact: false }),
         ).not.toBeInTheDocument()
         expect(queryByText(blockedButtonText)).not.toBeInTheDocument()
     })
@@ -86,30 +86,30 @@ describe('ConvertLimitBanner', () => {
     it('should not render because usage is ok', () => {
         useGetConvertStatusMock.mockReturnValue(convertStatusOk)
 
-        const {queryByText} = render(
+        const { queryByText } = render(
             <Provider store={store}>
                 <ConvertLimitBanner />
-            </Provider>
+            </Provider>,
         )
 
         expect(queryByText(blockedButtonText)).not.toBeInTheDocument()
         expect(queryByText(warningButtonText)).not.toBeInTheDocument()
         expect(
-            queryByText(warningAutoUpgradeButtonText)
+            queryByText(warningAutoUpgradeButtonText),
         ).not.toBeInTheDocument()
     })
 
     it('should render warning', () => {
         useGetConvertStatusMock.mockReturnValue(convertStatusOkWarning)
 
-        const {queryByText} = render(
+        const { queryByText } = render(
             <Provider store={store}>
                 <ConvertLimitBanner />
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            queryByText(warningMessageText, {exact: false})
+            queryByText(warningMessageText, { exact: false }),
         ).toBeInTheDocument()
         expect(queryByText(warningButtonText)).toBeInTheDocument()
     })
@@ -117,14 +117,14 @@ describe('ConvertLimitBanner', () => {
     it('should render warning', () => {
         useGetConvertStatusMock.mockReturnValue(convertStatusOkWarning)
 
-        const {queryByText} = render(
+        const { queryByText } = render(
             <Provider store={store}>
                 <ConvertLimitBanner />
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            queryByText(warningMessageText, {exact: false})
+            queryByText(warningMessageText, { exact: false }),
         ).toBeInTheDocument()
         expect(queryByText(warningButtonText)).toBeInTheDocument()
     })
@@ -132,14 +132,14 @@ describe('ConvertLimitBanner', () => {
     it('should render warning for upgrade', () => {
         useGetConvertStatusMock.mockReturnValue(convertStatusOkWarningUpgrade)
 
-        const {queryByText} = render(
+        const { queryByText } = render(
             <Provider store={store}>
                 <ConvertLimitBanner />
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            queryByText(warningAutoUpgradeMessageText, {exact: false})
+            queryByText(warningAutoUpgradeMessageText, { exact: false }),
         ).toBeInTheDocument()
         expect(queryByText(warningAutoUpgradeButtonText)).toBeInTheDocument()
     })
@@ -150,17 +150,17 @@ describe('ConvertLimitBanner', () => {
             estimated_reach_date: '2023-04-01T00:00:00.000Z',
         })
 
-        const {queryByText} = render(
+        const { queryByText } = render(
             <Provider store={store}>
                 <ConvertLimitBanner />
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            queryByText(warningAutoUpgradeMessageText)
+            queryByText(warningAutoUpgradeMessageText),
         ).not.toBeInTheDocument()
         expect(
-            queryByText(warningAutoUpgradeButtonText)
+            queryByText(warningAutoUpgradeButtonText),
         ).not.toBeInTheDocument()
     })
 })

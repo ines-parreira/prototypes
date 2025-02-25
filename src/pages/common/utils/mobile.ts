@@ -17,7 +17,7 @@ const screens = {
 }
 
 function screenUnder(
-    size: 'small' | 'medium' | 'large' | 'xlarge' = 'small'
+    size: 'small' | 'medium' | 'large' | 'xlarge' = 'small',
 ): boolean {
     return window.innerWidth <= screens[size]
 }

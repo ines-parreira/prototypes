@@ -1,15 +1,16 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {CardContentYotpoReviewTopics} from '../CardContentYotpoReviewTopics'
+import { render } from '@testing-library/react'
+
+import { CardContentYotpoReviewTopics } from '../CardContentYotpoReviewTopics'
 
 describe('<CardContentYotpoReviewTopics/>', () => {
     describe('render()', () => {
         it('should render children as a list of pills', () => {
-            const {container} = render(
+            const { container } = render(
                 <CardContentYotpoReviewTopics>
-                    {{bread: 'bread', test: 'test'}}
-                </CardContentYotpoReviewTopics>
+                    {{ bread: 'bread', test: 'test' }}
+                </CardContentYotpoReviewTopics>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -17,14 +18,14 @@ describe('<CardContentYotpoReviewTopics/>', () => {
         it.each([null, undefined, {}])(
             'should render correctly if children is empty/null',
             (topics) => {
-                const {container} = render(
+                const { container } = render(
                     <CardContentYotpoReviewTopics>
                         {topics}
-                    </CardContentYotpoReviewTopics>
+                    </CardContentYotpoReviewTopics>,
                 )
 
                 expect(container.firstChild).toMatchSnapshot()
-            }
+            },
         )
     })
 })

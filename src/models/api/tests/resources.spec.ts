@@ -1,12 +1,16 @@
-import {AxiosHeaders} from 'axios'
+import { AxiosHeaders } from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
+import { axiosSuccessResponse } from 'fixtures/axiosResponse'
+
+import { notify } from '../../../state/notifications/actions'
+import client, {
+    createClient,
+    handleNewRelease,
+    timeoutTime,
+} from '../resources'
+
 jest.unmock('../resources')
-
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
-
-import {notify} from '../../../state/notifications/actions'
-import client, {handleNewRelease, createClient, timeoutTime} from '../resources'
 
 const mockedServer = new MockAdapter(client)
 
@@ -26,7 +30,7 @@ describe('client resources', () => {
                         foo_bar: 1,
                     },
                 },
-                {'x-gorgias-release': '1'}
+                { 'x-gorgias-release': '1' },
             )
             const res = await client.get('/api')
 
@@ -36,7 +40,7 @@ describe('client resources', () => {
         it('should send a request with data', async () => {
             mockedServer
                 .onPost('/api')
-                .reply(200, undefined, {'x-gorgias-release': '1'})
+                .reply(200, undefined, { 'x-gorgias-release': '1' })
             await client.post('/api', {
                 foo_bar: 'foo',
                 foo: [
@@ -58,7 +62,7 @@ describe('client resources', () => {
                 'x-gorgias-release': releaseHeader,
             }),
         })
-        const mockedStore = {dispatch: jest.fn()} as any
+        const mockedStore = { dispatch: jest.fn() } as any
 
         beforeEach(() => {
             jest.useFakeTimers()
@@ -73,13 +77,13 @@ describe('client resources', () => {
         it('should notify and reload on new release', () => {
             const {
                 handleNewRelease: mockedHandler,
-            }: {handleNewRelease: typeof handleNewRelease} =
+            }: { handleNewRelease: typeof handleNewRelease } =
                 jest.requireActual('../resources')
 
             mockedHandler(mockedStore)(mockNewResponseHeaders('2'))
             jest.runAllTimers()
             expect(
-                (notify as jest.MockedFunction<typeof notify>).mock.calls
+                (notify as jest.MockedFunction<typeof notify>).mock.calls,
             ).toMatchSnapshot()
             expect(window.location.reload).toHaveBeenCalled()
         })
@@ -87,7 +91,7 @@ describe('client resources', () => {
         it('should set reload timeout only once', () => {
             const {
                 handleNewRelease: mockedHandler,
-            }: {handleNewRelease: typeof handleNewRelease} =
+            }: { handleNewRelease: typeof handleNewRelease } =
                 jest.requireActual('../resources')
             mockedHandler(mockedStore)(mockNewResponseHeaders('2'))
             mockedHandler(mockedStore)(mockNewResponseHeaders('3'))

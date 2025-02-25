@@ -1,10 +1,11 @@
+import { useQueryClient } from '@tanstack/react-query'
+import { produce } from 'immer'
+
 import {
+    ListCustomFieldConditionsQueryResult,
     queryKeys,
     useUpdateCustomFieldCondition as useUpdate,
-    ListCustomFieldConditionsQueryResult,
 } from '@gorgias/api-queries'
-import {useQueryClient} from '@tanstack/react-query'
-import {produce} from 'immer'
 
 /**
  * Wrapper for the SDK's useUpdateCustomFieldCondition method with:
@@ -16,7 +17,7 @@ export default function useUpdateCustomFieldCondition() {
 
     return useUpdate({
         mutation: {
-            onSuccess: (_response, {id, data}) => {
+            onSuccess: (_response, { id, data }) => {
                 const queryKey =
                     queryKeys.customFieldConditions.listCustomFieldConditions()
                 queryClient.setQueryData<ListCustomFieldConditionsQueryResult>(
@@ -29,9 +30,9 @@ export default function useUpdateCustomFieldCondition() {
                                 Object.assign(row, data)
                             }
                         })
-                    }
+                    },
                 )
-                void queryClient.invalidateQueries({queryKey})
+                void queryClient.invalidateQueries({ queryKey })
             },
         },
     })

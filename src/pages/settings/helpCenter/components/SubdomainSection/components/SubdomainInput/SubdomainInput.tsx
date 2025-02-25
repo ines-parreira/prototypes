@@ -1,10 +1,12 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { useMemo } from 'react'
+
 import classNames from 'classnames'
-import React, {useMemo} from 'react'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
-import {HELP_CENTER_DOMAIN} from 'pages/settings/helpCenter/constants'
-import {isValidSubdomain} from 'pages/settings/helpCenter/utils/validations'
+import { HELP_CENTER_DOMAIN } from 'pages/settings/helpCenter/constants'
+import { isValidSubdomain } from 'pages/settings/helpCenter/utils/validations'
 
 import css from './SubdomainInput.less'
 
@@ -46,7 +48,7 @@ export const SubdomainInput: React.FC<SubdomainInputProps> = ({
                         {error}
                     </span>
                     <Tooltip target="error-policy" placement="bottom-start">
-                        <div style={{textAlign: 'left'}}>
+                        <div style={{ textAlign: 'left' }}>
                             <span>Valid subdomain criterias:</span>
                             <ul
                                 data-testid="error-policy"
@@ -79,7 +81,7 @@ export const SubdomainInput: React.FC<SubdomainInputProps> = ({
                 {
                     [css.error]: !!error,
                 },
-                className
+                className,
             )}
             type="text"
             label={label}

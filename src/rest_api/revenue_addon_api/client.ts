@@ -1,12 +1,10 @@
 import memoize from 'memoize-one'
-import OpenAPIClientAxios, {Document} from 'openapi-client-axios'
+import OpenAPIClientAxios, { Document } from 'openapi-client-axios'
 
-import {isProduction, isStaging} from 'utils/environment'
-
+import { isProduction, isStaging } from 'utils/environment'
 import gorgiasAppsAuthInterceptor from 'utils/gorgiasAppsAuth'
 
-import {Client} from './client.generated'
-
+import { Client } from './client.generated'
 import OpenAPIDoc from './revenue-addon.openapi.json'
 
 function getGorgiasRevenueAddonApiBaseUrl(): string {
@@ -32,7 +30,7 @@ async function buildGorgiasRevenueAddonApiClient() {
 
     const api = new OpenAPIClientAxios({
         definition: OpenAPIDoc as Document,
-        withServer: {url: baseUrl},
+        withServer: { url: baseUrl },
     })
     apiClient = await api.init<Client>()
     apiClient.interceptors.request.use(gorgiasAppsAuthInterceptor)
@@ -41,7 +39,7 @@ async function buildGorgiasRevenueAddonApiClient() {
 }
 
 export const getRevenueAddonApiClient = memoize(
-    buildGorgiasRevenueAddonApiClient
+    buildGorgiasRevenueAddonApiClient,
 )
 
 export type RevenueAddonClient = Client

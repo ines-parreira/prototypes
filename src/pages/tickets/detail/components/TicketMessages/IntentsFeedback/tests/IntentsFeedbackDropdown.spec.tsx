@@ -1,8 +1,9 @@
-import {fireEvent, render} from '@testing-library/react'
-import _noop from 'lodash/noop'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {IntentsFeedbackDropdown} from '../IntentsFeedbackDropdown'
+import { fireEvent, render } from '@testing-library/react'
+import _noop from 'lodash/noop'
+
+import { IntentsFeedbackDropdown } from '../IntentsFeedbackDropdown'
 
 const minProps: ComponentProps<typeof IntentsFeedbackDropdown> = {
     label: 'no intent detected',
@@ -24,26 +25,26 @@ describe('<IntentsFeedbackDropdown/>', () => {
     })
 
     it('should display all the intents available without active intents', () => {
-        const {container} = render(<IntentsFeedbackDropdown {...minProps} />)
+        const { container } = render(<IntentsFeedbackDropdown {...minProps} />)
         expect(container.firstChild).toMatchSnapshot()
     })
     it('should display all the intents available with active intents', () => {
         minProps.activeIntentsNames = ['foo/baz']
-        const {container} = render(<IntentsFeedbackDropdown {...minProps} />)
+        const { container } = render(<IntentsFeedbackDropdown {...minProps} />)
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should hide the dropdown on mouse leave', async () => {
-        const {getByRole, findByRole} = render(
+        const { getByRole, findByRole } = render(
             <IntentsFeedbackDropdown
                 {...minProps}
                 activeIntentsNames={['foo/baz']}
-            />
+            />,
         )
 
         fireEvent.click(getByRole('button'))
         fireEvent.mouseLeave(getByRole('button'))
 
-        expect(await findByRole('menu', {hidden: true})).not.toBe(null)
+        expect(await findByRole('menu', { hidden: true })).not.toBe(null)
     })
 })

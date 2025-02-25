@@ -1,28 +1,27 @@
-import {useQueryClient} from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAsyncFn from 'hooks/useAsyncFn'
-
 import client from 'models/api/resources'
-import {bundleKeys} from 'models/convert/bundle/queries'
+import { bundleKeys } from 'models/convert/bundle/queries'
 import {
     BundleActionResponse,
     BundleInstallationMethod,
 } from 'models/convert/bundle/types'
-import {convertStatusKeys} from 'pages/convert/common/hooks/useGetConvertStatus'
-import {transformBundleError} from 'pages/convert/common/utils/transformBundleError'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { convertStatusKeys } from 'pages/convert/common/hooks/useGetConvertStatus'
+import { transformBundleError } from 'pages/convert/common/utils/transformBundleError'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 export const useInstallBundle = (
     integrationId: number | null,
     installationMethod: BundleInstallationMethod,
-    onSubmit?: (data: BundleActionResponse) => void
+    onSubmit?: (data: BundleActionResponse) => void,
 ) => {
     const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
 
-    const [{loading: isSubmitting}, installBundle] = useAsyncFn(async () => {
+    const [{ loading: isSubmitting }, installBundle] = useAsyncFn(async () => {
         if (!integrationId) {
             return
         }
@@ -35,18 +34,18 @@ export const useInstallBundle = (
         }
 
         try {
-            const {data} = await client.post<BundleActionResponse>(
+            const { data } = await client.post<BundleActionResponse>(
                 `/api/revenue-addon-bundle/${action}/`,
                 {
                     integration_id: integrationId,
-                }
+                },
             )
 
             void dispatch(
                 notify({
                     status: NotificationStatus.Success,
                     message: message,
-                })
+                }),
             )
 
             await queryClient.invalidateQueries({
@@ -68,12 +67,12 @@ export const useInstallBundle = (
                     transformBundleError(
                         e,
                         "We couldn't install the bundle. Please try again.",
-                        integrationId
-                    )
-                )
+                        integrationId,
+                    ),
+                ),
             )
         }
     }, [integrationId, installationMethod, onSubmit, dispatch])
 
-    return {isSubmitting, installBundle}
+    return { isSubmitting, installBundle }
 }

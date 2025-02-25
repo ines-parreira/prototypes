@@ -9,7 +9,7 @@ type Props = {
     language?: string
 }
 
-const OptionalEmailCapture: React.FC<Props> = ({chatTitle, language}) => {
+const OptionalEmailCapture: React.FC<Props> = ({ chatTitle, language }) => {
     return (
         <BotMessages chatTitle={chatTitle} language={language}>
             <EmailCaptureMessage language={language} required={false} />

@@ -1,8 +1,9 @@
-import {produce} from 'immer'
-import _set from 'lodash/set'
-import {useCallback} from 'react'
+import { useCallback } from 'react'
 
-import {VisualBuilderContextType} from 'pages/automate/workflows/hooks/useVisualBuilder'
+import { produce } from 'immer'
+import _set from 'lodash/set'
+
+import { VisualBuilderContextType } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {
     getCancelSubscriptionNodeErrors,
     getConditionsNodeErrors,
@@ -13,10 +14,10 @@ import {
     getSkipChargeNodeErrors,
     getUpdateShippingAddressNodeErrors,
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import {VisualBuilderGraph} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { VisualBuilderGraph } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 const useValidateActionStepGraph = (
-    getVariableListForNode: VisualBuilderContextType['getVariableListForNode']
+    getVariableListForNode: VisualBuilderContextType['getVariableListForNode'],
 ) => {
     return useCallback(
         (graph: VisualBuilderGraph) => {
@@ -32,7 +33,7 @@ const useValidateActionStepGraph = (
                         _set(
                             draft.errors,
                             'name',
-                            'Name must be less than 100 characters'
+                            'Name must be less than 100 characters',
                         )
                     }
                 }
@@ -50,20 +51,20 @@ const useValidateActionStepGraph = (
                             node.data.errors =
                                 getReusableLLMPromptTriggerNodeErrors(
                                     node,
-                                    getVariableListForNode(node.id)
+                                    getVariableListForNode(node.id),
                                 )
                             break
                         case 'http_request':
                             node.data.errors = getHTTPRequestNodeErrors(
                                 node,
-                                getVariableListForNode(node.id)
+                                getVariableListForNode(node.id),
                             )
                             break
                         case 'conditions':
                             node.data.errors = getConditionsNodeErrors(
                                 graph.edges,
                                 node,
-                                getVariableListForNode(node.id)
+                                getVariableListForNode(node.id),
                             )
                             break
                         case 'end':
@@ -75,13 +76,13 @@ const useValidateActionStepGraph = (
                         case 'skip_charge':
                             node.data.errors = getSkipChargeNodeErrors(
                                 node,
-                                getVariableListForNode(node.id)
+                                getVariableListForNode(node.id),
                             )
                             break
                         case 'cancel_subscription':
                             node.data.errors = getCancelSubscriptionNodeErrors(
                                 node,
-                                getVariableListForNode(node.id)
+                                getVariableListForNode(node.id),
                             )
                             break
                         case 'create_discount_code':
@@ -89,27 +90,27 @@ const useValidateActionStepGraph = (
                         case 'replace_item':
                             node.data.errors = getReplaceItemNodeErrors(
                                 node,
-                                getVariableListForNode(node.id)
+                                getVariableListForNode(node.id),
                             )
                             break
                         case 'remove_item':
                             node.data.errors = getRemoveItemNodeErrors(
                                 node,
-                                getVariableListForNode(node.id)
+                                getVariableListForNode(node.id),
                             )
                             break
                         case 'update_shipping_address':
                             node.data.errors =
                                 getUpdateShippingAddressNodeErrors(
                                     node,
-                                    getVariableListForNode(node.id)
+                                    getVariableListForNode(node.id),
                                 )
                             break
                     }
                 })
             })
         },
-        [getVariableListForNode]
+        [getVariableListForNode],
     )
 }
 

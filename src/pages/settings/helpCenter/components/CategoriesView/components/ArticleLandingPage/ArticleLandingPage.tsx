@@ -1,33 +1,35 @@
-import {Skeleton} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
-import React, {useMemo} from 'react'
-import {Container} from 'reactstrap'
+import React, { useMemo } from 'react'
 
-import {SegmentEvent, logEvent} from 'common/segment'
+import classNames from 'classnames'
+import { Container } from 'reactstrap'
+
+import { Skeleton } from '@gorgias/merchant-ui-kit'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
-import {ArticleTemplate} from 'models/helpCenter/types'
-import {validLocaleCode} from 'models/helpCenter/utils'
+import { ArticleTemplate } from 'models/helpCenter/types'
+import { validLocaleCode } from 'models/helpCenter/utils'
 import Button from 'pages/common/components/button/Button'
-import {ErrorBoundary} from 'pages/ErrorBoundary'
-import {HELP_CENTER_DEFAULT_LOCALE} from 'pages/settings/helpCenter/constants'
+import { ErrorBoundary } from 'pages/ErrorBoundary'
+import { HELP_CENTER_DEFAULT_LOCALE } from 'pages/settings/helpCenter/constants'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
-import {useGetAIArticles} from 'pages/settings/helpCenter/hooks/useGetAIArticles'
-import {useEditionManager} from 'pages/settings/helpCenter/providers/EditionManagerContext'
-import {useGetArticleTemplates} from 'pages/settings/helpCenter/queries'
-import {getValidStoreIntegrationId} from 'pages/settings/helpCenter/utils/helpCenter.utils'
-import {getStoreIntegrations} from 'state/integrations/selectors'
-import {changeViewLanguage, getViewLanguage} from 'state/ui/helpCenter'
+import { useGetAIArticles } from 'pages/settings/helpCenter/hooks/useGetAIArticles'
+import { useEditionManager } from 'pages/settings/helpCenter/providers/EditionManagerContext'
+import { useGetArticleTemplates } from 'pages/settings/helpCenter/queries'
+import { getValidStoreIntegrationId } from 'pages/settings/helpCenter/utils/helpCenter.utils'
+import { getStoreIntegrations } from 'state/integrations/selectors'
+import { changeViewLanguage, getViewLanguage } from 'state/ui/helpCenter'
 
-import {useHasAccessToAILibrary} from '../../../AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
-import {ImportSection} from '../../../Imports/components/ImportSection'
-import {LanguageSelect} from '../../../LanguageSelect'
+import { useHasAccessToAILibrary } from '../../../AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
+import { ImportSection } from '../../../Imports/components/ImportSection'
+import { LanguageSelect } from '../../../LanguageSelect'
 import AddArticleCard from '../AddArticleCard'
 import AILibraryBanner from '../AILibraryBanner'
 import ArticleTemplateCard from '../ArticleTemplateCard'
 import ArticleTemplateCardSkeleton from '../ArticleTemplateCard/ArticleTemplateCardSkeleton'
-import {MINIMUM_AI_ARTICLES} from '../ArticleTemplateCard/constants'
+import { MINIMUM_AI_ARTICLES } from '../ArticleTemplateCard/constants'
 import ArticleTemplatesBanner from '../ArticleTemplatesBanner'
 
 import css from './ArticleLandingPage.less'
@@ -55,9 +57,9 @@ const ArticleLandingPageComponent = ({
     const allStoreIntegrations = useAppSelector(getStoreIntegrations)
     const storeIntegrationId = getValidStoreIntegrationId(
         allStoreIntegrations,
-        helpCenter.shop_name
+        helpCenter.shop_name,
     )
-    const {fetchedArticles: aiArticles, isLoading: isAIArticlesLoading} =
+    const { fetchedArticles: aiArticles, isLoading: isAIArticlesLoading } =
         useGetAIArticles({
             helpCenterId: helpCenter.id,
             storeIntegrationId,
@@ -78,7 +80,7 @@ const ArticleLandingPageComponent = ({
         (aiArticles?.length ?? 0) >= MINIMUM_AI_ARTICLES &&
         hasAIArticlesNotReviewed
 
-    const {setSelectedArticleLanguage} = useEditionManager()
+    const { setSelectedArticleLanguage } = useEditionManager()
 
     const dispatch = useAppDispatch()
 
@@ -91,7 +93,7 @@ const ArticleLandingPageComponent = ({
         setSelectedArticleLanguage(validLocaleCode(value))
     }
 
-    const {data, isLoading: isArticleTemplatesLoading} =
+    const { data, isLoading: isArticleTemplatesLoading } =
         useGetArticleTemplates(viewLanguage)
     const articleTemplates = data || []
 

@@ -1,8 +1,9 @@
-import {fireEvent, Matcher, render, waitFor} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {ChangePasswordContainer} from '../ChangePassword'
+import { fireEvent, Matcher, render, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
+
+import { ChangePasswordContainer } from '../ChangePassword'
 
 jest.mock('lodash/uniqueId', () => (id: string) => `${id}42`)
 
@@ -37,17 +38,17 @@ const fillInForm = ({
     twoFaCode = DEFAULT_TWO_FA_CODE,
 }: fillInFormTypes) => {
     fireEvent.change(getAllByLabelText(/Current password/i)[0], {
-        target: {value: currentPwd},
+        target: { value: currentPwd },
     })
     fireEvent.change(getAllByLabelText(/New password/i)[0], {
-        target: {value: newPwd},
+        target: { value: newPwd },
     })
     fireEvent.change(getAllByLabelText(/Confirm new password/i)[0], {
-        target: {value: confirmNewPwd},
+        target: { value: confirmNewPwd },
     })
     if (twoFaCode !== DEFAULT_TWO_FA_CODE) {
         fireEvent.change(getAllByLabelText(/2FA Code/i)[0], {
-            target: {value: twoFaCode},
+            target: { value: twoFaCode },
         })
     }
 }
@@ -55,8 +56,8 @@ const fillInForm = ({
 describe('<ChangePassword />', () => {
     describe('render', () => {
         it('should render the password form', () => {
-            const {container} = render(
-                <ChangePasswordContainer {...defaultProps} />
+            const { container } = render(
+                <ChangePasswordContainer {...defaultProps} />,
             )
             expect(container).toMatchSnapshot()
         })
@@ -64,8 +65,8 @@ describe('<ChangePassword />', () => {
 
     describe('Update fields', () => {
         it('should not display error message when having two identical password', () => {
-            const {getAllByLabelText, queryByText} = render(
-                <ChangePasswordContainer {...defaultProps} />
+            const { getAllByLabelText, queryByText } = render(
+                <ChangePasswordContainer {...defaultProps} />,
             )
 
             fillInForm({
@@ -78,8 +79,8 @@ describe('<ChangePassword />', () => {
         })
 
         it('should display the error message when having two different passwords', () => {
-            const {getByText, getAllByLabelText} = render(
-                <ChangePasswordContainer {...defaultProps} />
+            const { getByText, getAllByLabelText } = render(
+                <ChangePasswordContainer {...defaultProps} />,
             )
             fillInForm({
                 getAllByLabelText,
@@ -90,8 +91,8 @@ describe('<ChangePassword />', () => {
         })
 
         it('should display the error message when the new password does not meet the requirements', () => {
-            const {getByText, getAllByLabelText} = render(
-                <ChangePasswordContainer {...defaultProps} />
+            const { getByText, getAllByLabelText } = render(
+                <ChangePasswordContainer {...defaultProps} />,
             )
             fillInForm({
                 getAllByLabelText,
@@ -100,8 +101,8 @@ describe('<ChangePassword />', () => {
             })
             expect(
                 getByText(
-                    /A password must contain a minimum of 14 characters, 1 lower case, 1 upper case and 1 number./i
-                )
+                    /A password must contain a minimum of 14 characters, 1 lower case, 1 upper case and 1 number./i,
+                ),
             ).toBeTruthy()
         })
 
@@ -109,11 +110,11 @@ describe('<ChangePassword />', () => {
             const currentUser = fromJS({
                 has_2fa_enabled: false,
             })
-            const {queryByLabelText} = render(
+            const { queryByLabelText } = render(
                 <ChangePasswordContainer
                     {...defaultProps}
                     currentUser={currentUser}
-                />
+                />,
             )
             expect(queryByLabelText(/2FA Code/i)).toBeNull()
         })
@@ -122,11 +123,11 @@ describe('<ChangePassword />', () => {
             const currentUser = fromJS({
                 has_2fa_enabled: true,
             })
-            const {getAllByLabelText} = render(
+            const { getAllByLabelText } = render(
                 <ChangePasswordContainer
                     {...defaultProps}
                     currentUser={currentUser}
-                />
+                />,
             )
             fillInForm({
                 getAllByLabelText,
@@ -154,20 +155,20 @@ describe('<ChangePassword />', () => {
                 },
             })
 
-            const {getAllByText, getAllByLabelText} = render(
+            const { getAllByText, getAllByLabelText } = render(
                 <ChangePasswordContainer
                     {...defaultProps}
                     changePassword={mockChangePassword}
-                />
+                />,
             )
 
-            fillInForm({getAllByLabelText})
+            fillInForm({ getAllByLabelText })
             fireEvent.click(getAllByText(/Update Password/i)[1])
             await waitFor(() => {
                 expect(mockChangePassword).toHaveBeenLastCalledWith(
                     DEFAULT_CURRENT_PWD,
                     DEFAULT_NEW_PWD,
-                    DEFAULT_TWO_FA_CODE
+                    DEFAULT_TWO_FA_CODE,
                 )
                 getAllByText(errorMessage)[0]
             })
@@ -181,21 +182,21 @@ describe('<ChangePassword />', () => {
                 },
             })
 
-            const {getAllByText, getAllByLabelText} = render(
+            const { getAllByText, getAllByLabelText } = render(
                 <ChangePasswordContainer
                     {...defaultProps}
                     changePassword={mockChangePassword}
-                />
+                />,
             )
 
-            fillInForm({getAllByLabelText})
+            fillInForm({ getAllByLabelText })
             const button = getAllByText(/Update Password/i)[1]
             fireEvent.click(button)
             await waitFor(() => {
                 expect(mockChangePassword).toHaveBeenLastCalledWith(
                     DEFAULT_CURRENT_PWD,
                     DEFAULT_NEW_PWD,
-                    DEFAULT_TWO_FA_CODE
+                    DEFAULT_TWO_FA_CODE,
                 )
                 expect(button).toMatchSnapshot()
             })
@@ -204,11 +205,11 @@ describe('<ChangePassword />', () => {
         it('should disable button because some fields are empty', async () => {
             const mockChangePassword = jest.fn().mockResolvedValue({})
 
-            const {getAllByText, getAllByLabelText, getByRole} = render(
+            const { getAllByText, getAllByLabelText, getByRole } = render(
                 <ChangePasswordContainer
                     {...defaultProps}
                     changePassword={mockChangePassword}
-                />
+                />,
             )
 
             fillInForm({
@@ -217,12 +218,12 @@ describe('<ChangePassword />', () => {
                 newPwd: '',
                 confirmNewPwd: '',
             })
-            const button = getByRole('button', {name: /Update Password/i})
+            const button = getByRole('button', { name: /Update Password/i })
             fireEvent.click(button)
             await waitFor(() => {
                 expect(mockChangePassword).toHaveBeenCalledTimes(0)
                 expect(getAllByText('Please fill out this field.').length).toBe(
-                    3
+                    3,
                 )
                 expect(button).toBeAriaDisabled()
             })
@@ -232,14 +233,14 @@ describe('<ChangePassword />', () => {
             const currentUser = fromJS({
                 has_2fa_enabled: true,
             })
-            const {getAllByText, getAllByLabelText} = render(
+            const { getAllByText, getAllByLabelText } = render(
                 <ChangePasswordContainer
                     {...defaultProps}
                     currentUser={currentUser}
-                />
+                />,
             )
             const twoFaCode = '123456'
-            fillInForm({getAllByLabelText, twoFaCode: twoFaCode})
+            fillInForm({ getAllByLabelText, twoFaCode: twoFaCode })
             const button = getAllByText(/Update Password/i)[1]
             fireEvent.click(button)
 
@@ -247,29 +248,29 @@ describe('<ChangePassword />', () => {
                 expect(mockChangePassword).toHaveBeenLastCalledWith(
                     DEFAULT_CURRENT_PWD,
                     DEFAULT_NEW_PWD,
-                    twoFaCode
+                    twoFaCode,
                 )
                 expect(
                     (
                         getAllByLabelText(
-                            /Current password/i
+                            /Current password/i,
                         )[0] as HTMLInputElement
-                    ).value
+                    ).value,
                 ).toBe('')
                 expect(
                     (getAllByLabelText(/New password/i)[0] as HTMLInputElement)
-                        .value
+                        .value,
                 ).toBe('')
                 expect(
                     (
                         getAllByLabelText(
-                            /Confirm new password/i
+                            /Confirm new password/i,
                         )[0] as HTMLInputElement
-                    ).value
+                    ).value,
                 ).toBe('')
                 expect(
                     (getAllByLabelText(/2FA Code/i)[0] as HTMLInputElement)
-                        .value
+                        .value,
                 ).toBe('')
             })
         })

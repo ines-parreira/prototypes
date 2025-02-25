@@ -1,18 +1,20 @@
-import {Map} from 'immutable'
-import React, {useCallback, useMemo} from 'react'
-import {Container} from 'reactstrap'
+import React, { useCallback, useMemo } from 'react'
 
-import {useListCampaigns} from 'models/convert/campaign/queries'
-import {CampaignListOptions as CampaignListOptionsParams} from 'models/convert/campaign/types'
+import { Map } from 'immutable'
+import { Container } from 'reactstrap'
+
+import { useListCampaigns } from 'models/convert/campaign/queries'
+import { CampaignListOptions as CampaignListOptionsParams } from 'models/convert/campaign/types'
 import Button from 'pages/common/components/button/Button'
 import history from 'pages/history'
-import {toJS} from 'utils'
+import { toJS } from 'utils'
 
-import {Campaign} from '../../../campaigns/types/Campaign'
-import {useGetOrCreateChannelConnection} from '../../hooks/useGetOrCreateChannelConnection'
-import css from './ConvertCampaignsListPlaceholder.less'
+import { Campaign } from '../../../campaigns/types/Campaign'
+import { useGetOrCreateChannelConnection } from '../../hooks/useGetOrCreateChannelConnection'
 import ConvertCampaignsNewHomeInfobar from './ConvertCampaignsNewHomeInfobar'
 import ConvertCampaignsTablePlaceholder from './ConvertCampaignsTablePlaceholder'
+
+import css from './ConvertCampaignsListPlaceholder.less'
 
 const PER_PAGE = 25
 const BUTTON_TITLE = 'Edit in Convert Settings'
@@ -21,8 +23,8 @@ type Props = {
     integration: Map<any, any>
 }
 
-const ConvertCampaignsListPlaceholder = ({integration}: Props) => {
-    const {channelConnection, isLoading: isChannelConnectionLoading} =
+const ConvertCampaignsListPlaceholder = ({ integration }: Props) => {
+    const { channelConnection, isLoading: isChannelConnectionLoading } =
         useGetOrCreateChannelConnection(toJS(integration))
 
     const campaignListOptions = useMemo(() => {
@@ -36,12 +38,10 @@ const ConvertCampaignsListPlaceholder = ({integration}: Props) => {
         ) as CampaignListOptionsParams
     }, [channelConnection])
 
-    const {data: campaigns, isLoading: areCampaignsLoading} = useListCampaigns(
-        campaignListOptions,
-        {
+    const { data: campaigns, isLoading: areCampaignsLoading } =
+        useListCampaigns(campaignListOptions, {
             enabled: !!channelConnection && !!campaignListOptions,
-        }
-    )
+        })
 
     const allCampaigns = useMemo(() => {
         return (campaigns || []) as Campaign[]
@@ -58,7 +58,7 @@ const ConvertCampaignsListPlaceholder = ({integration}: Props) => {
 
     const isLoading = useMemo(
         () => isChannelConnectionLoading || areCampaignsLoading,
-        [isChannelConnectionLoading, areCampaignsLoading]
+        [isChannelConnectionLoading, areCampaignsLoading],
     )
 
     return (

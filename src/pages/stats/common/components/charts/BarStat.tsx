@@ -1,9 +1,10 @@
-import {Map, List} from 'immutable'
-import _isEqual from 'lodash/isEqual'
 import React from 'react'
-import {Bar} from 'react-chartjs-2'
 
-import {colors as colorsConfig, chartMaxHeight} from 'config/stats'
+import { List, Map } from 'immutable'
+import _isEqual from 'lodash/isEqual'
+import { Bar } from 'react-chartjs-2'
+
+import { chartMaxHeight, colors as colorsConfig } from 'config/stats'
 
 import Legend from '../Legend/Legend'
 
@@ -13,7 +14,7 @@ type Props = {
     legend?: Map<any, any>
 }
 
-export function BarStat({config, data, legend}: Props) {
+export function BarStat({ config, data, legend }: Props) {
     const datasets = (data.get('lines') as List<any>)
         .map((line: Map<any, any>, index) => {
             const lineName = line.get('name')
@@ -52,7 +53,7 @@ export function BarStat({config, data, legend}: Props) {
                     }}
                     options={(
                         config.get('options') as (
-                            legend: Map<any, any>
+                            legend: Map<any, any>,
                         ) => Record<string, unknown>
                     )(legend!)}
                 />

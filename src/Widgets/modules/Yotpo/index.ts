@@ -1,1 +1,1 @@
-export {default} from './components/Yotpo'
+export { default } from './components/Yotpo'

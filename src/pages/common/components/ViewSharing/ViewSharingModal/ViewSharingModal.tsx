@@ -1,6 +1,7 @@
-import {AxiosError} from 'axios'
-import {fromJS, Map, List} from 'immutable'
-import React, {useCallback, useEffect, useRef, useState} from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+
+import { AxiosError } from 'axios'
+import { fromJS, List, Map } from 'immutable'
 import {
     Modal,
     ModalBody,
@@ -9,18 +10,19 @@ import {
     UncontrolledTooltip,
 } from 'reactstrap'
 
-import {useAppNode} from 'appNode'
+import { useAppNode } from 'appNode'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {ViewVisibility, View} from 'models/view/types'
+import { View, ViewVisibility } from 'models/view/types'
 import Button from 'pages/common/components/button/Button'
 import GorgiasApi from 'services/gorgiasApi'
-import {viewUpdated} from 'state/entities/views/actions'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { viewUpdated } from 'state/entities/views/actions'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+
+import ViewSharingModalBody from './ViewSharingModalBody'
 
 import css from './ViewSharingModal.less'
-import ViewSharingModalBody from './ViewSharingModalBody'
 
 type Props = {
     view: Map<any, any>
@@ -28,7 +30,7 @@ type Props = {
     toggle: () => void
 }
 
-function ViewSharingModal({view, isOpen, toggle}: Props) {
+function ViewSharingModal({ view, isOpen, toggle }: Props) {
     const currentUser = useAppSelector((state) => state.currentUser)
     const {
         isSaving,
@@ -59,7 +61,7 @@ function ViewSharingModal({view, isOpen, toggle}: Props) {
             notify({
                 status: NotificationStatus.Success,
                 message: "View's sharing options saved",
-            })
+            }),
         )
         dispatch(viewUpdated(data))
 
@@ -121,7 +123,7 @@ function useViewSharing(view: Map<any, any>, currentUser: Map<any, any>) {
     const [isSaving, setSaving] = useState<boolean>(false)
     const [isLoading, setLoading] = useState<boolean>(true)
     const [visibility, setVisibility] = useState<ViewVisibility>(
-        view.get('visibility')
+        view.get('visibility'),
     )
     const [initialTeams, setInitialTeams] = useState<List<any>>(fromJS([]))
     const [initialUsers, setInitialUsers] = useState<List<any>>(fromJS([]))
@@ -150,12 +152,12 @@ function useViewSharing(view: Map<any, any>, currentUser: Map<any, any>) {
 
     const onTeamClick = useCallback(
         (team: Map<any, any>) => setSelectedTeams(selectedTeams.push(team)),
-        [selectedTeams, setSelectedTeams]
+        [selectedTeams, setSelectedTeams],
     )
 
     const onUserClick = useCallback(
         (user: Map<any, any>) => setSelectedUsers(selectedUsers.push(user)),
-        [selectedUsers, setSelectedUsers]
+        [selectedUsers, setSelectedUsers],
     )
 
     const onRemoveTeam = useCallback(
@@ -163,10 +165,10 @@ function useViewSharing(view: Map<any, any>, currentUser: Map<any, any>) {
             setSelectedTeams(
                 selectedTeams.filter(
                     (selectedTeam: Map<any, any>) =>
-                        selectedTeam.get('id') !== team.get('id')
-                ) as List<any>
+                        selectedTeam.get('id') !== team.get('id'),
+                ) as List<any>,
             ),
-        [selectedTeams, setSelectedTeams]
+        [selectedTeams, setSelectedTeams],
     )
 
     const onRemoveUser = useCallback(
@@ -174,10 +176,10 @@ function useViewSharing(view: Map<any, any>, currentUser: Map<any, any>) {
             setSelectedUsers(
                 selectedUsers.filter(
                     (selectedUser: Map<any, any>) =>
-                        selectedUser.get('id') !== user.get('id')
-                ) as List<any>
+                        selectedUser.get('id') !== user.get('id'),
+                ) as List<any>,
             ),
-        [selectedUsers, setSelectedUsers]
+        [selectedUsers, setSelectedUsers],
     )
 
     const save = useCallback(
@@ -213,7 +215,7 @@ function useViewSharing(view: Map<any, any>, currentUser: Map<any, any>) {
                 })
                 .finally(() => setSaving(false))
         },
-        [visibility, selectedTeams, selectedUsers, currentUser]
+        [visibility, selectedTeams, selectedUsers, currentUser],
     )
 
     return {

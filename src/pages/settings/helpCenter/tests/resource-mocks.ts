@@ -1,27 +1,26 @@
 import MockAdapter from 'axios-mock-adapter'
 
 import {
-    AIArticlesListFixture,
     AIArticlesEmptyListFixture,
     AIArticlesGeneric500ErrorFixture,
+    AIArticlesListFixture,
 } from '../fixtures/aiArticles.fixture'
 import {
-    ArticleTemplatesListFixture,
     ArticleTemplatesEmptyListFixture,
     ArticleTemplatesGeneric500ErrorFixture,
+    ArticleTemplatesListFixture,
 } from '../fixtures/articleTemplate.fixture'
 import {
-    PageEmbedmentsListFixture,
+    PageEmbedmentFixture,
     PageEmbedmentsEmptyListFixture,
     PageEmbedmentsGeneric500ErrorFixture,
-    PageEmbedmentFixture,
+    PageEmbedmentsListFixture,
 } from '../fixtures/pageEmbedment'
 import {
     ShopifyPagesEmptyListFixture,
     ShopifyPagesGeneric500ErrorFixture,
     ShopifyPagesListFixture,
 } from '../fixtures/shopifyPage'
-
 import * as helpCenterResourceMethods from '../resources'
 
 export type MockOptions = 'success' | 'error' | 'success-empty'
@@ -31,7 +30,7 @@ export const mockResourceServerReplies = (
         [K in keyof typeof helpCenterResourceMethods]?: MockOptions
     } = {
         getShopifyPages: 'success',
-    }
+    },
 ) => {
     if (options.getShopifyPages === 'success') {
         mockedServer

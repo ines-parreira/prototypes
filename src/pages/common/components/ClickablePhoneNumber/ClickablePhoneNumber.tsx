@@ -1,18 +1,26 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import React, {useEffect, useMemo, useState} from 'react'
-import {DropdownItem, DropdownMenu, DropdownToggle, Dropdown} from 'reactstrap'
+import React, { useEffect, useMemo, useState } from 'react'
 
-import {useAppNode} from 'appNode'
+import {
+    Dropdown,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+} from 'reactstrap'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { useAppNode } from 'appNode'
 import useAppSelector from 'hooks/useAppSelector'
-import {formatPhoneNumberInternational} from 'pages/phoneNumbers/utils'
+import { formatPhoneNumberInternational } from 'pages/phoneNumbers/utils'
 import {
     getPhoneIntegrations,
     getSmsIntegrations,
 } from 'state/integrations/selectors'
 
-import css from './ClickablePhoneNumber.less'
 import PhoneIntegrationsDropdownList from './PhoneIntegrationsDropdownList'
 import SmsIntegrationsDropdownList from './SmsIntegrationsDropdownList'
+
+import css from './ClickablePhoneNumber.less'
 
 type Props = {
     id: string
@@ -77,10 +85,10 @@ const ClickablePhoneNumber = ({
                 toggle={() => {
                     setIsDropdownOpen(!isDropdownOpen)
                     setShowPhoneIntegrations(
-                        hasPhoneIntegrations && !hasSmsIntegrations
+                        hasPhoneIntegrations && !hasSmsIntegrations,
                     )
                     setShowSmsIntegrations(
-                        !hasPhoneIntegrations && hasSmsIntegrations
+                        !hasPhoneIntegrations && hasSmsIntegrations,
                     )
                 }}
             >

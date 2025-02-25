@@ -1,11 +1,12 @@
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
 import CurrentHelpCenterContext from '../../../../../contexts/CurrentHelpCenterContext'
-import {getSingleHelpCenterResponseFixture} from '../../../../../fixtures/getHelpCentersResponse.fixture'
-import {useFileUpload} from '../../../../../hooks/useFileUpload'
-import {CategoryImageEdit, CategoryImageEditProps} from '../CategoryImageEdit'
+import { getSingleHelpCenterResponseFixture } from '../../../../../fixtures/getHelpCentersResponse.fixture'
+import { useFileUpload } from '../../../../../hooks/useFileUpload'
+import { CategoryImageEdit, CategoryImageEditProps } from '../CategoryImageEdit'
 
 window.URL.createObjectURL = jest.fn((file: File) => file.name) // avoid upload image error
 
@@ -24,14 +25,14 @@ const renderComponent = (props: Partial<CategoryImageEditTestProps>) => {
             {...props}
         />,
         {
-            wrapper: ({children}: {children: React.ReactNode}) => (
+            wrapper: ({ children }: { children: React.ReactNode }) => (
                 <CurrentHelpCenterContext.Provider
                     value={getSingleHelpCenterResponseFixture}
                 >
                     {children}
                 </CurrentHelpCenterContext.Provider>
             ),
-        }
+        },
     )
 }
 
@@ -47,13 +48,13 @@ const uploadImage = async (dummyFile: File) => {
                 items: [dummyFile],
                 files: [dummyFile],
             },
-        })
+        }),
     )
 }
 
 describe('<CategoryImageEdit />', () => {
     it('should render component with default state', () => {
-        const {container} = renderComponent({})
+        const { container } = renderComponent({})
 
         expect(container).toMatchSnapshot()
     })
@@ -66,7 +67,7 @@ describe('<CategoryImageEdit />', () => {
 
         expect(screen.getByTestId('image-upload-preview')).toHaveAttribute(
             'src',
-            testImgUrl
+            testImgUrl,
         )
     })
 
@@ -80,13 +81,13 @@ describe('<CategoryImageEdit />', () => {
 
         await waitFor(() =>
             expect(
-                screen.getByTestId('image-upload-locale-image')
-            ).toBeInTheDocument()
+                screen.getByTestId('image-upload-locale-image'),
+            ).toBeInTheDocument(),
         )
 
         expect(screen.getByTestId('image-upload-locale-image')).toHaveAttribute(
             'src',
-            dummyFile.name
+            dummyFile.name,
         )
     })
 
@@ -100,17 +101,17 @@ describe('<CategoryImageEdit />', () => {
 
         expect(screen.getByTestId('image-upload-locale-image')).toHaveAttribute(
             'src',
-            dummyFile.name
+            dummyFile.name,
         )
 
         userEvent.click(screen.getByText('Remove image'))
 
         expect(screen.getByText('Upload image')).toBeInTheDocument()
         expect(
-            screen.queryByTestId('image-upload-locale-image')
+            screen.queryByTestId('image-upload-locale-image'),
         ).not.toBeInTheDocument()
         expect(
-            screen.queryByTestId('image-upload-preview-image')
+            screen.queryByTestId('image-upload-preview-image'),
         ).not.toBeInTheDocument()
     })
 })

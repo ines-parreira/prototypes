@@ -1,21 +1,22 @@
-import {Map} from 'immutable'
+import React, { ComponentType, useMemo } from 'react'
+
+import { Map } from 'immutable'
 import {
     compressToEncodedURIComponent,
     decompressFromEncodedURIComponent,
 } from 'lz-string'
-import {stringify} from 'qs'
-import React, {ComponentType, useMemo} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {useLocation} from 'react-router-dom'
+import { stringify } from 'qs'
+import { connect, ConnectedProps } from 'react-redux'
+import { useLocation } from 'react-router-dom'
 
-import {getConfigByName} from 'config/views'
+import { getConfigByName } from 'config/views'
 import useSearch from 'hooks/useSearch'
 import useUpdateEffect from 'hooks/useUpdateEffect'
-import {EntityType} from 'models/view/types'
+import { EntityType } from 'models/view/types'
 import history from 'pages/history'
-import {RootState} from 'state/types'
-import {updateView} from 'state/views/actions'
-import {areFiltersValid, getActiveView} from 'state/views/selectors'
+import { RootState } from 'state/types'
+import { updateView } from 'state/views/actions'
+import { areFiltersValid, getActiveView } from 'state/views/selectors'
 
 type InjectedProps = {
     urlSearchView: Map<any, any>
@@ -30,15 +31,15 @@ type Props = {
 }
 
 export function withViewSearchUrlSyncContainer<P extends Props>(
-    WrappedComponent: ComponentType<P & ViewSearchUrlSyncInjectedProps>
+    WrappedComponent: ComponentType<P & ViewSearchUrlSyncInjectedProps>,
 ) {
     return (
-        props: P & Omit<ViewSearchUrlSyncInjectedProps, keyof InjectedProps>
+        props: P & Omit<ViewSearchUrlSyncInjectedProps, keyof InjectedProps>,
     ) => {
-        const {config, updateView, activeView, isSearch, areFiltersValid} =
+        const { config, updateView, activeView, isSearch, areFiltersValid } =
             props
         const location = useLocation()
-        const {q: urlQuery = '', filters = ''} = useSearch<{
+        const { q: urlQuery = '', filters = '' } = useSearch<{
             q?: string
             filters?: string
         }>()
@@ -52,7 +53,7 @@ export function withViewSearchUrlSyncContainer<P extends Props>(
             return (
                 config.get('searchView') as (
                     query: string,
-                    filters: string
+                    filters: string,
                 ) => Map<any, any>
             )(urlQuery, urlFilters)
             // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -72,7 +73,7 @@ export function withViewSearchUrlSyncContainer<P extends Props>(
                 history.push({
                     ...location,
                     search: stringify({
-                        ...(filters ? {filters} : {}),
+                        ...(filters ? { filters } : {}),
                         q: viewQuery,
                     }),
                 })
@@ -84,7 +85,7 @@ export function withViewSearchUrlSyncContainer<P extends Props>(
                 history.push({
                     ...location,
                     search: stringify({
-                        ...(urlQuery ? {q: urlQuery} : {}),
+                        ...(urlQuery ? { q: urlQuery } : {}),
                         filters: viewFilters
                             ? compressToEncodedURIComponent(viewFilters)
                             : undefined,
@@ -108,13 +109,13 @@ const connector = connect(
     },
     {
         updateView,
-    }
+    },
 )
 
 export default function withViewSearchUrlSync<P extends Props>(
-    WrappedComponent: ComponentType<P & ViewSearchUrlSyncInjectedProps>
+    WrappedComponent: ComponentType<P & ViewSearchUrlSyncInjectedProps>,
 ): ComponentType<P> {
     return connector(
-        withViewSearchUrlSyncContainer<P>(WrappedComponent) as any
+        withViewSearchUrlSyncContainer<P>(WrappedComponent) as any,
     ) as ComponentType<P>
 }

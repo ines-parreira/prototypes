@@ -1,17 +1,18 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {act, fireEvent, screen} from '@testing-library/react'
-import {produce} from 'immer'
 import React from 'react'
 
+import { QueryClientProvider } from '@tanstack/react-query'
+import { act, fireEvent, screen } from '@testing-library/react'
+import { produce } from 'immer'
+
 import useAppDispatch from 'hooks/useAppDispatch'
-import {VisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
-import {areGraphsEqual} from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import {VisualBuilderGraph} from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import {visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture} from 'pages/automate/workflows/tests/visualBuilderGraph.fixtures'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {renderWithRouter} from 'utils/testing'
+import { VisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
+import { areGraphsEqual } from 'pages/automate/workflows/models/visualBuilderGraph.model'
+import { VisualBuilderGraph } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture } from 'pages/automate/workflows/tests/visualBuilderGraph.fixtures'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { renderWithRouter } from 'utils/testing'
 
 import ActionsPlatformTemplateVisualBuilderView from '../ActionsPlatformTemplateVisualBuilderView'
 
@@ -22,10 +23,10 @@ jest.mock(
     () =>
         ({
             ...jest.requireActual(
-                'pages/automate/workflows/models/visualBuilderGraph.model'
+                'pages/automate/workflows/models/visualBuilderGraph.model',
             ),
             areGraphsEqual: jest.fn(),
-        }) as Record<string, unknown>
+        }) as Record<string, unknown>,
 )
 
 const mockUseAppDispatch = jest.mocked(useAppDispatch)
@@ -46,7 +47,7 @@ describe('<ActionsPlatformTemplateVisualBuilderView />', () => {
                             visualBuilderGraphLLMPromptTriggerWithReusableLLMPromptCallFixture,
                             (draft) => {
                                 draft.name = ''
-                            }
+                            },
                         ),
                         checkNodeHasVariablesUsedInChildren: jest.fn(),
                         dispatch: jest.fn(),
@@ -68,7 +69,7 @@ describe('<ActionsPlatformTemplateVisualBuilderView />', () => {
                         onSave={jest.fn()}
                     />
                 </VisualBuilderContext.Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(screen.getByDisplayValue('Untitled Action')).toBeInTheDocument()
@@ -83,7 +84,7 @@ describe('<ActionsPlatformTemplateVisualBuilderView />', () => {
                 produce(graph, (draft) => {
                     draft.errors ??= {}
                     draft.errors.nodes = 'Error'
-                })
+                }),
             )
 
         const mockDispatch = jest.fn()
@@ -113,13 +114,13 @@ describe('<ActionsPlatformTemplateVisualBuilderView />', () => {
                         handleTouch={jest
                             .fn()
                             .mockImplementation(
-                                (graph: VisualBuilderGraph) => graph
+                                (graph: VisualBuilderGraph) => graph,
                             )}
                         onExit={jest.fn()}
                         onSave={mockOnSave}
                     />
                 </VisualBuilderContext.Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         act(() => {
@@ -129,7 +130,7 @@ describe('<ActionsPlatformTemplateVisualBuilderView />', () => {
         expect(mockDispatch).toHaveBeenCalledWith(
             expect.objectContaining({
                 type: 'RESET_GRAPH',
-            })
+            }),
         )
         expect(notify).toHaveBeenCalledWith({
             message: 'Complete or delete incomplete steps in order to save',
@@ -166,18 +167,18 @@ describe('<ActionsPlatformTemplateVisualBuilderView />', () => {
                         handleValidate={jest
                             .fn()
                             .mockImplementation(
-                                (graph: VisualBuilderGraph) => graph
+                                (graph: VisualBuilderGraph) => graph,
                             )}
                         handleTouch={jest
                             .fn()
                             .mockImplementation(
-                                (graph: VisualBuilderGraph) => graph
+                                (graph: VisualBuilderGraph) => graph,
                             )}
                         onExit={jest.fn()}
                         onSave={mockOnSave}
                     />
                 </VisualBuilderContext.Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         act(() => {
@@ -217,18 +218,18 @@ describe('<ActionsPlatformTemplateVisualBuilderView />', () => {
                         handleValidate={jest
                             .fn()
                             .mockImplementation(
-                                (graph: VisualBuilderGraph) => graph
+                                (graph: VisualBuilderGraph) => graph,
                             )}
                         handleTouch={jest
                             .fn()
                             .mockImplementation(
-                                (graph: VisualBuilderGraph) => graph
+                                (graph: VisualBuilderGraph) => graph,
                             )}
                         onExit={jest.fn()}
                         onSave={mockOnSave}
                     />
                 </VisualBuilderContext.Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         act(() => {
@@ -237,8 +238,8 @@ describe('<ActionsPlatformTemplateVisualBuilderView />', () => {
 
         expect(
             screen.getByText(
-                'Your changes to this page will be lost if you don’t save them.'
-            )
+                'Your changes to this page will be lost if you don’t save them.',
+            ),
         ).toBeInTheDocument()
 
         act(() => {
@@ -281,18 +282,18 @@ describe('<ActionsPlatformTemplateVisualBuilderView />', () => {
                         handleValidate={jest
                             .fn()
                             .mockImplementation(
-                                (graph: VisualBuilderGraph) => graph
+                                (graph: VisualBuilderGraph) => graph,
                             )}
                         handleTouch={jest
                             .fn()
                             .mockImplementation(
-                                (graph: VisualBuilderGraph) => graph
+                                (graph: VisualBuilderGraph) => graph,
                             )}
                         onExit={mockOnExit}
                         onSave={jest.fn()}
                     />
                 </VisualBuilderContext.Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         act(() => {
@@ -331,18 +332,18 @@ describe('<ActionsPlatformTemplateVisualBuilderView />', () => {
                         handleValidate={jest
                             .fn()
                             .mockImplementation(
-                                (graph: VisualBuilderGraph) => graph
+                                (graph: VisualBuilderGraph) => graph,
                             )}
                         handleTouch={jest
                             .fn()
                             .mockImplementation(
-                                (graph: VisualBuilderGraph) => graph
+                                (graph: VisualBuilderGraph) => graph,
                             )}
                         onExit={mockOnExit}
                         onSave={jest.fn()}
                     />
                 </VisualBuilderContext.Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         act(() => {
@@ -351,8 +352,8 @@ describe('<ActionsPlatformTemplateVisualBuilderView />', () => {
 
         expect(
             screen.getByText(
-                'Your changes to this page will be lost if you don’t save them.'
-            )
+                'Your changes to this page will be lost if you don’t save them.',
+            ),
         ).toBeInTheDocument()
 
         act(() => {
@@ -362,7 +363,7 @@ describe('<ActionsPlatformTemplateVisualBuilderView />', () => {
         expect(mockDispatch).toHaveBeenCalledWith(
             expect.objectContaining({
                 type: 'RESET_GRAPH',
-            })
+            }),
         )
         expect(mockOnExit).toHaveBeenCalled()
     })
@@ -376,7 +377,7 @@ describe('<ActionsPlatformTemplateVisualBuilderView />', () => {
                 produce(graph, (draft) => {
                     draft.errors ??= {}
                     draft.errors.nodes = 'Error'
-                })
+                }),
             )
 
         const mockDispatch = jest.fn()
@@ -406,13 +407,13 @@ describe('<ActionsPlatformTemplateVisualBuilderView />', () => {
                         handleTouch={jest
                             .fn()
                             .mockImplementation(
-                                (graph: VisualBuilderGraph) => graph
+                                (graph: VisualBuilderGraph) => graph,
                             )}
                         onExit={jest.fn()}
                         onSave={mockOnSave}
                     />
                 </VisualBuilderContext.Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         act(() => {
@@ -421,8 +422,8 @@ describe('<ActionsPlatformTemplateVisualBuilderView />', () => {
 
         expect(
             screen.getByText(
-                'Your changes to this page will be lost if you don’t save them.'
-            )
+                'Your changes to this page will be lost if you don’t save them.',
+            ),
         ).toBeInTheDocument()
 
         act(() => {
@@ -432,7 +433,7 @@ describe('<ActionsPlatformTemplateVisualBuilderView />', () => {
         expect(mockDispatch).toHaveBeenCalledWith(
             expect.objectContaining({
                 type: 'RESET_GRAPH',
-            })
+            }),
         )
         expect(notify).toHaveBeenCalledWith({
             message: 'Complete or delete incomplete steps in order to save',

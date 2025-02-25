@@ -1,41 +1,43 @@
-import {useQueryClient} from '@tanstack/react-query'
-import classnames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useState, useCallback} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {Link, useHistory} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
+import React, { useCallback, useState } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {CreateContactFormDto} from 'models/contactForm/types'
-import {LocaleCode} from 'models/helpCenter/types'
+import { useQueryClient } from '@tanstack/react-query'
+import classnames from 'classnames'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { connect, ConnectedProps } from 'react-redux'
+import { Link, useHistory } from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { CreateContactFormDto } from 'models/contactForm/types'
+import { LocaleCode } from 'models/helpCenter/types'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import ContactFormNameInputSection from 'pages/settings/contactForm/components/ContactFormNameInputSection'
 import LanguageInputSection from 'pages/settings/contactForm/components/LanguageInputSection'
 import {
-    CONTACT_FORM_CUSTOMIZATION_PATH,
     CONTACT_FORM_BASE_PATH,
-    CONTACT_FORM_DEFAULT_LOCALE,
+    CONTACT_FORM_CUSTOMIZATION_PATH,
     CONTACT_FORM_DEFAULT_FORM_DISPLAY_MODE,
+    CONTACT_FORM_DEFAULT_LOCALE,
 } from 'pages/settings/contactForm/constants'
-import {useContactFormApi} from 'pages/settings/contactForm/hooks/useContactFormApi'
-import {useEmailIntegrations} from 'pages/settings/contactForm/hooks/useEmailIntegrations'
-import {insertContactFormIdParam} from 'pages/settings/contactForm/utils/navigation'
+import { useContactFormApi } from 'pages/settings/contactForm/hooks/useContactFormApi'
+import { useEmailIntegrations } from 'pages/settings/contactForm/hooks/useEmailIntegrations'
+import { insertContactFormIdParam } from 'pages/settings/contactForm/utils/navigation'
 import settingsCss from 'pages/settings/settings.less'
-import {notify as notifyAction} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { notify as notifyAction } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
-import {ConnectContactFormToShopSection} from '../../components/ConnectContactFormToShopSection/ConnectContactFormToShopSection'
+import { ConnectContactFormToShopSection } from '../../components/ConnectContactFormToShopSection/ConnectContactFormToShopSection'
+import { contactFormKeys, useCreateContactForm } from '../../queries'
+
 import contactFormCss from '../../contactForm.less'
-import {contactFormKeys, useCreateContactForm} from '../../queries'
 
 const ContactFormCreateView = ({
     notify,
 }: ConnectedProps<typeof connector>): JSX.Element => {
     const history = useHistory()
-    const {defaultIntegration, emailIntegrations} = useEmailIntegrations()
-    const {checkContactFormName, isReady} = useContactFormApi()
+    const { defaultIntegration, emailIntegrations } = useEmailIntegrations()
+    const { checkContactFormName, isReady } = useContactFormApi()
     const [isNameInvalid, setIsNameInvalid] = useState(false)
     const isContactFormNewEntrypointViewEnabled =
         useFlags()[FeatureFlagKey.ContactFormNewEntrypointView] || false
@@ -82,7 +84,7 @@ const ContactFormCreateView = ({
 
     const navigateToStartView = useCallback(
         () => history.push(CONTACT_FORM_BASE_PATH),
-        [history]
+        [history],
     )
 
     const navigateToContactFormCustomization = useCallback(
@@ -90,11 +92,11 @@ const ContactFormCreateView = ({
             return history.push(
                 insertContactFormIdParam(
                     CONTACT_FORM_CUSTOMIZATION_PATH,
-                    contactFormId
-                )
+                    contactFormId,
+                ),
             )
         },
-        [history]
+        [history],
     )
 
     const onChangeName = (name: string) => {
@@ -104,7 +106,7 @@ const ContactFormCreateView = ({
         }))
     }
 
-    const onChangeShopName = ({shop_name}: {shop_name: string | null}) => {
+    const onChangeShopName = ({ shop_name }: { shop_name: string | null }) => {
         setCreateContactFormDto((prev) => ({
             ...prev,
             shop_name,
@@ -147,7 +149,7 @@ const ContactFormCreateView = ({
                 <div
                     className={classnames(
                         contactFormCss.sectionContainer,
-                        settingsCss.contentWrapper
+                        settingsCss.contentWrapper,
                     )}
                 >
                     <section className={contactFormCss.mbS}>

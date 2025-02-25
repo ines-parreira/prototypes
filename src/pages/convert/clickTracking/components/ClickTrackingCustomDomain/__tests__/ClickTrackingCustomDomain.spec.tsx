@@ -1,24 +1,25 @@
+import React from 'react'
+
 import {
     fireEvent,
     render,
-    waitForElementToBeRemoved,
-    waitFor,
     screen,
+    waitFor,
+    waitForElementToBeRemoved,
 } from '@testing-library/react'
-import React from 'react'
-import {Provider} from 'react-redux'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {RootState, StoreDispatch} from 'state/types'
+import { RootState, StoreDispatch } from 'state/types'
 
-import {ClickTrackingCustomDomain} from '../ClickTrackingCustomDomain'
+import { ClickTrackingCustomDomain } from '../ClickTrackingCustomDomain'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 const store = mockStore({})
 
-const ReduxProvider = ({children}: {children?: React.ReactNode}) => (
+const ReduxProvider = ({ children }: { children?: React.ReactNode }) => (
     <Provider store={store}>{children}</Provider>
 )
 
@@ -78,51 +79,51 @@ describe('<ClickTrackingCustomDomain />', () => {
 
         const addDomainBtn: HTMLInputElement = screen.getByText('Add Domain')
 
-        fireEvent.change(input, {target: {value: 'example.com'}})
+        fireEvent.change(input, { target: { value: 'example.com' } })
 
         expect(input.value).toEqual('example.com')
         expect(addDomainBtn.disabled).toBeFalsy()
     })
 
     it('adds a new domain', async () => {
-        render(<ClickTrackingCustomDomain />, {wrapper: ReduxProvider})
+        render(<ClickTrackingCustomDomain />, { wrapper: ReduxProvider })
 
         await waitFor(() => {
             expect(screen.getByPlaceholderText(inputText)).toBeInTheDocument()
         })
 
         const input = screen.queryByPlaceholderText(
-            inputText
+            inputText,
         ) as HTMLInputElement
 
         const addDomainBtn = screen.getByText('Add Domain')
 
-        fireEvent.change(input, {target: {value: 'example.com'}})
+        fireEvent.change(input, { target: { value: 'example.com' } })
         fireEvent.click(addDomainBtn)
 
         await screen.findByText('Verification in progress')
     })
 
     it('"Check Status" button updates the status of the connection', async () => {
-        render(<ClickTrackingCustomDomain />, {wrapper: ReduxProvider})
+        render(<ClickTrackingCustomDomain />, { wrapper: ReduxProvider })
 
         await waitFor(() => {
             expect(screen.getByPlaceholderText(inputText)).toBeInTheDocument()
         })
 
         const input = screen.queryByPlaceholderText(
-            inputText
+            inputText,
         ) as HTMLInputElement
 
         const addDomainBtn = screen.getByText('Add Domain')
 
-        fireEvent.change(input, {target: {value: 'example.com'}})
+        fireEvent.change(input, { target: { value: 'example.com' } })
         fireEvent.click(addDomainBtn)
 
         await screen.findByText('Verification in progress')
 
         const checkStatusBtn = screen.queryByText(
-            'Check Status'
+            'Check Status',
         ) as HTMLButtonElement
 
         fireEvent.click(checkStatusBtn)
@@ -131,7 +132,7 @@ describe('<ClickTrackingCustomDomain />', () => {
     })
 
     it('removes the connection status when deleting the domain', async () => {
-        render(<ClickTrackingCustomDomain />, {wrapper: ReduxProvider})
+        render(<ClickTrackingCustomDomain />, { wrapper: ReduxProvider })
 
         await waitFor(() => {
             expect(screen.getByPlaceholderText(inputText)).toBeInTheDocument()
@@ -140,11 +141,11 @@ describe('<ClickTrackingCustomDomain />', () => {
         const input = screen.getByPlaceholderText(inputText)
         const addDomainBtn = screen.getByText('Add Domain')
 
-        fireEvent.change(input, {target: {value: 'example.com'}})
+        fireEvent.change(input, { target: { value: 'example.com' } })
         fireEvent.click(addDomainBtn)
 
         await waitForElementToBeRemoved(() =>
-            screen.getByText('Creating domain')
+            screen.getByText('Creating domain'),
         )
 
         const deleteDomain = screen.getByLabelText('Delete custom domain')
@@ -158,7 +159,7 @@ describe('<ClickTrackingCustomDomain />', () => {
         fireEvent.click(confirm_button)
 
         await waitForElementToBeRemoved(() =>
-            screen.getByText('Verification in progress')
+            screen.getByText('Verification in progress'),
         )
     })
 })

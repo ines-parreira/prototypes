@@ -1,7 +1,8 @@
-import {screen, render, fireEvent} from '@testing-library/react'
 import React from 'react'
 
-import {CTA} from '../CTA'
+import { fireEvent, render, screen } from '@testing-library/react'
+
+import { CTA } from '../CTA'
 
 describe('<CTA/>', () => {
     const onClick = jest.fn()

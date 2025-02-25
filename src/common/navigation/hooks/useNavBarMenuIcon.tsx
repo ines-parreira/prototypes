@@ -1,5 +1,5 @@
-import {NavBarDisplayMode} from './useNavBar/context'
-import {useNavBar} from './useNavBar/useNavBar'
+import { NavBarDisplayMode } from './useNavBar/context'
+import { useNavBar } from './useNavBar/useNavBar'
 
 export const NavBarMenuIcons = {
     DoubleLeft: 'keyboard_double_arrow_left',
@@ -8,7 +8,7 @@ export const NavBarMenuIcons = {
 } as const
 
 export function useNavBarMenuIcon() {
-    const {isNavHovered, navBarDisplay} = useNavBar()
+    const { isNavHovered, navBarDisplay } = useNavBar()
 
     switch (navBarDisplay) {
         case NavBarDisplayMode.Open:

@@ -1,8 +1,8 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import {OrderDirection} from 'models/api/types'
-import {RootState} from 'state/types'
-import {ValueMode} from 'state/ui/stats/types'
+import { OrderDirection } from 'models/api/types'
+import { RootState } from 'state/types'
+import { ValueMode } from 'state/ui/stats/types'
 
 export type TicketInsightsOrder = {
     direction: OrderDirection
@@ -21,7 +21,7 @@ export type TicketInsightsState = {
 }
 
 export const initialState: TicketInsightsState = {
-    selectedCustomField: {id: null, label: '', isLoading: true},
+    selectedCustomField: { id: null, label: '', isLoading: true },
     order: {
         direction: OrderDirection.Asc,
         column: 'label',
@@ -36,7 +36,7 @@ export const ticketInsightsSlice = createSlice({
     reducers: {
         setSelectedCustomField(
             state,
-            action: PayloadAction<TicketInsightsState['selectedCustomField']>
+            action: PayloadAction<TicketInsightsState['selectedCustomField']>,
         ) {
             state.selectedCustomField = action.payload
         },
@@ -48,7 +48,7 @@ export const ticketInsightsSlice = createSlice({
         },
         setOrder(
             state,
-            action: PayloadAction<{column: TicketInsightsOrder['column']}>
+            action: PayloadAction<{ column: TicketInsightsOrder['column'] }>,
         ) {
             state.order = {
                 column: action.payload.column,

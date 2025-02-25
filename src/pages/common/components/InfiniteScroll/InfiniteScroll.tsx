@@ -1,5 +1,3 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
 import React, {
     HTMLProps,
     ReactNode,
@@ -9,6 +7,10 @@ import React, {
     useRef,
     useState,
 } from 'react'
+
+import classnames from 'classnames'
+
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import css from 'pages/common/components/InfiniteScroll/InfiniteScroll.less'
 
@@ -36,17 +38,17 @@ const InfiniteScroll = ({
     const ref = useRef<HTMLDivElement>(null)
     const isLoadingState = useMemo(
         () => isLoading ?? internalIsLoading,
-        [internalIsLoading, isLoading]
+        [internalIsLoading, isLoading],
     )
 
     const handleLoad = useCallback(async () => {
-        const {current} = ref
+        const { current } = ref
 
         if (!shouldLoadMore || isLoadingState || !current) {
             return
         }
 
-        const {clientHeight, scrollHeight, scrollTop} = current
+        const { clientHeight, scrollHeight, scrollTop } = current
         const containerScroll = scrollTop + clientHeight
 
         if (

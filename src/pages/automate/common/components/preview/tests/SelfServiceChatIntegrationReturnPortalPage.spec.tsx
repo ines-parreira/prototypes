@@ -1,20 +1,20 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {render, screen} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
-import {MemoryRouter} from 'react-router-dom'
 
-import {IntegrationType} from 'models/integration/constants'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { render, screen } from '@testing-library/react'
+import { Provider } from 'react-redux'
+import { MemoryRouter } from 'react-router-dom'
+
+import { IntegrationType } from 'models/integration/constants'
 import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
     GorgiasChatIntegration,
 } from 'models/integration/types'
-import {GorgiasChatPositionAlignmentEnum} from 'models/integration/types/gorgiasChat'
-
+import { GorgiasChatPositionAlignmentEnum } from 'models/integration/types/gorgiasChat'
 import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {mockStore} from 'utils/testing'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { mockStore } from 'utils/testing'
 
 import SelfServiceChatIntegrationReturnPortalPage from '../SelfServiceChatIntegrationReturnPortalPage'
 
@@ -88,10 +88,10 @@ describe('<SelfServiceChatIntegrationReturnPortalPage />', () => {
                         </SelfServicePreviewContext.Provider>
                     </QueryClientProvider>
                 </MemoryRouter>
-            </Provider>
+            </Provider>,
         )
         expect(
-            screen.getByText(/complete your return in our return portal/i)
+            screen.getByText(/complete your return in our return portal/i),
         ).toBeInTheDocument()
     })
 })

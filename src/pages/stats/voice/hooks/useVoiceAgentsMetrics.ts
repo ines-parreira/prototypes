@@ -1,7 +1,6 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {StatsFilters} from 'models/stat/types'
-
+import { StatsFilters } from 'models/stat/types'
 import {
     useAnsweredCallsMetricPerAgent,
     useAverageTalkTimeMetricPerAgent,
@@ -13,35 +12,35 @@ import {
 
 export function useVoiceAgentsMetrics(
     cleanStatsFilters: StatsFilters,
-    userTimezone: string
+    userTimezone: string,
 ) {
     const totalCallsMetric = useTotalCallsMetricPerAgent(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
     const answeredCallsMetric = useAnsweredCallsMetricPerAgent(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
 
     const missedCallsMetric = useMissedCallsMetricPerAgent(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
 
     const declinedCallsMetric = useDeclinedCallsMetricPerAgent(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
 
     const outboundCallsMetric = useOutboundCallsMetricPerAgent(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
 
     const averageTalkTimeMetric = useAverageTalkTimeMetricPerAgent(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
 
     const loading = useMemo(() => {

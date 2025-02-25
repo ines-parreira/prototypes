@@ -1,17 +1,17 @@
 import client from 'models/api/resources'
 import {
     BillingState,
-    CouponForSales,
     ChurnMitigationOfferDecisionEvent,
-    SubscriptionCycle,
+    CouponForSales,
     ICard,
+    SubscriptionCycle,
 } from 'models/billing/types'
 import {
     BillingContactDetailResponse,
     BillingContactUpdatePayload,
 } from 'state/billing/types'
 
-import {ApiListResponseCursorPagination} from '../api/types'
+import { ApiListResponseCursorPagination } from '../api/types'
 
 export const fetchSubscription = async () => {
     const res = await client.get<SubscriptionCycle>('/api/billing/subscription')
@@ -20,7 +20,7 @@ export const fetchSubscription = async () => {
 
 export const trackBillingEvent = async (
     eventName: string,
-    event: ChurnMitigationOfferDecisionEvent
+    event: ChurnMitigationOfferDecisionEvent,
 ) =>
     await client.post('/billing/events-tracking', {
         name: eventName,
@@ -72,11 +72,11 @@ export const getBillingContact = () =>
     client.get<BillingContactDetailResponse>('/api/billing/contact/')
 
 export const updateBillingContact = (
-    billingContact: BillingContactUpdatePayload
+    billingContact: BillingContactUpdatePayload,
 ) =>
     client.put<BillingContactUpdatePayload>(
         '/api/billing/contact/',
-        billingContact
+        billingContact,
     )
 
 export const getCreditCard = () =>

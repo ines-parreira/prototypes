@@ -1,14 +1,15 @@
-import {render, screen, fireEvent} from '@testing-library/react'
 import React from 'react'
-import {BrowserRouter as Router} from 'react-router-dom'
 
-import {WORKFLOW_TEMPLATES_LIST} from '../workflowTemplates'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { BrowserRouter as Router } from 'react-router-dom'
+
+import { WORKFLOW_TEMPLATES_LIST } from '../workflowTemplates'
 import WorkflowTemplatesView from '../WorkflowTemplatesView'
 
 jest.mock('launchdarkly-react-client-sdk')
 jest.mock(
     'assets/img/icons/arrow-backward.svg',
-    () => 'arrow-backward-icon-mock'
+    () => 'arrow-backward-icon-mock',
 )
 
 const defaultProps = {
@@ -22,14 +23,14 @@ describe('WorkflowTemplatesView', () => {
         render(
             <Router>
                 <WorkflowTemplatesView {...defaultProps} />
-            </Router>
+            </Router>,
         )
 
         expect(screen.getByText('Flow Templates')).toBeInTheDocument()
         expect(
             screen.getByText(
-                'Choose a template and customize it to fit your needs'
-            )
+                'Choose a template and customize it to fit your needs',
+            ),
         ).toBeInTheDocument()
         expect(screen.getByText('Create Custom Flow')).toBeInTheDocument()
         for (const wotemplate of WORKFLOW_TEMPLATES_LIST) {
@@ -45,10 +46,10 @@ describe('WorkflowTemplatesView', () => {
         render(
             <Router>
                 <WorkflowTemplatesView {...defaultProps} />
-            </Router>
+            </Router>,
         )
 
         expect(screen.getByText('Back To Flows')).toBeInTheDocument()
-        expect(screen.getByRole('img', {name: /back/i})).toBeInTheDocument()
+        expect(screen.getByRole('img', { name: /back/i })).toBeInTheDocument()
     })
 })

@@ -1,5 +1,5 @@
-import {Campaign, InferredCampaignStatus} from 'models/convert/campaign/types'
-import {getCampaignStatus} from 'pages/stats/convert/utils/getCampaignStatus'
+import { Campaign, InferredCampaignStatus } from 'models/convert/campaign/types'
+import { getCampaignStatus } from 'pages/stats/convert/utils/getCampaignStatus'
 
 describe('getCampaignStatus', () => {
     const TIMEZONE = 'UTC'
@@ -15,7 +15,7 @@ describe('getCampaignStatus', () => {
             const result = getCampaignStatus(campaign as Campaign, TIMEZONE)
 
             expect(result).toBe(InferredCampaignStatus.Deleted)
-        }
+        },
     )
 
     it('should return Active status if campaign has status active', () => {

@@ -1,14 +1,14 @@
-import React, {useEffect} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {useParams} from 'react-router-dom'
-import {bindActionCreators} from 'redux'
+import React, { useEffect } from 'react'
+
+import { connect, ConnectedProps } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import { bindActionCreators } from 'redux'
 
 import * as customersActions from '../../../state/customers/actions'
-import {getActiveCustomerId} from '../../../state/customers/selectors'
-import {RootState, StoreDispatch} from '../../../state/types'
+import { getActiveCustomerId } from '../../../state/customers/selectors'
+import { RootState, StoreDispatch } from '../../../state/types'
 import * as widgetsActions from '../../../state/widgets/actions'
-
-import {getSources} from '../../../state/widgets/selectors'
+import { getSources } from '../../../state/widgets/selectors'
 import SourceWrapper from '../../common/components/sourceWidgets/SourceWrapper'
 
 export const CustomerSourceContainer = ({
@@ -17,7 +17,7 @@ export const CustomerSourceContainer = ({
     sources,
     widgets,
 }: ConnectedProps<typeof connector>) => {
-    const params = useParams<{customerId: string}>()
+    const params = useParams<{ customerId: string }>()
 
     useEffect(() => {
         actions.customers.fetchCustomer(params.customerId)
@@ -50,7 +50,7 @@ const connector = connect(
             customers: bindActionCreators(customersActions, dispatch),
             widgets: bindActionCreators(widgetsActions, dispatch),
         },
-    })
+    }),
 )
 
 export default connector(CustomerSourceContainer)

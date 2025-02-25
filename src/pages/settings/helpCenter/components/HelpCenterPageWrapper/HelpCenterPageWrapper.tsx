@@ -1,33 +1,37 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {ReactNode, useMemo, useState} from 'react'
-import {Link, useHistory} from 'react-router-dom'
+import React, { ReactNode, useMemo, useState } from 'react'
 
-import {TicketChannel} from 'business/types/ticket'
-import {FeatureFlagKey} from 'config/featureFlags'
+import classNames from 'classnames'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { Link, useHistory } from 'react-router-dom'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { TicketChannel } from 'business/types/ticket'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {HelpCenter} from 'models/helpCenter/types'
-import {validLocaleCode} from 'models/helpCenter/utils'
+import { HelpCenter } from 'models/helpCenter/types'
+import { validLocaleCode } from 'models/helpCenter/utils'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import PageHeader from 'pages/common/components/PageHeader'
-
 import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
 import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 import settingsCss from 'pages/settings/settings.less'
-import {getHasAutomate} from 'state/billing/selectors'
-import {getViewLanguage, changeViewLanguage} from 'state/ui/helpCenter'
+import { getHasAutomate } from 'state/billing/selectors'
+import { changeViewLanguage, getViewLanguage } from 'state/ui/helpCenter'
 
-import {HELP_CENTER_DEFAULT_LOCALE} from '../../constants'
-import {useAbilityChecker} from '../../hooks/useHelpCenterApi'
-import {getAbsoluteUrl, getHelpCenterDomain} from '../../utils/helpCenter.utils'
-import {HelpCenterDetailsBreadcrumb} from '../HelpCenterDetailsBreadcrumb'
-import {HelpCenterNavigation} from '../HelpCenterNavigation'
-
-import {LanguageSelect} from '../LanguageSelect/LanguageSelect'
+import { HELP_CENTER_DEFAULT_LOCALE } from '../../constants'
+import { useAbilityChecker } from '../../hooks/useHelpCenterApi'
+import {
+    getAbsoluteUrl,
+    getHelpCenterDomain,
+} from '../../utils/helpCenter.utils'
+import { HelpCenterDetailsBreadcrumb } from '../HelpCenterDetailsBreadcrumb'
+import { HelpCenterNavigation } from '../HelpCenterNavigation'
+import { LanguageSelect } from '../LanguageSelect/LanguageSelect'
 import PendingChangesModal from '../PendingChangesModal'
+
 import css from './HelpCenterPageWrapper.less'
 
 const TOOLTIP_TARGET_ID = 'preview-help-center'
@@ -69,7 +73,7 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
     const helpCenterUrl = useMemo(() => {
         const domain = getHelpCenterDomain(helpCenter)
 
-        return getAbsoluteUrl({domain, locale: viewLanguage})
+        return getAbsoluteUrl({ domain, locale: viewLanguage })
     }, [helpCenter, viewLanguage])
 
     const handleOnChangeLocale = (value: React.ReactText) => {
@@ -103,15 +107,15 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
         setShowCloseModal(false)
     }
 
-    const {isPassingRulesCheck} = useAbilityChecker()
-    const cannotUpdateHelpCenter = !isPassingRulesCheck(({can}) =>
-        can('update', 'HelpCenterEntity')
+    const { isPassingRulesCheck } = useAbilityChecker()
+    const cannotUpdateHelpCenter = !isPassingRulesCheck(({ can }) =>
+        can('update', 'HelpCenterEntity'),
     )
 
     return (
         <div
             className={classNames('full-width', pageWrapperClassName)}
-            style={{position: 'relative'}}
+            style={{ position: 'relative' }}
         >
             <PageHeader
                 className={css.pageHeader}
@@ -135,7 +139,7 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
                                             }/connected-channels?type=${
                                                 TicketChannel.HelpCenter
                                             }&id=${helpCenter.id}`,
-                                            {from: 'help-center-settings'}
+                                            { from: 'help-center-settings' },
                                         )
                                     }}
                                     leadingIcon="bolt"
@@ -149,7 +153,7 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
                                     onClick={() => {
                                         if (isConnectStoreLinkEnabled) {
                                             history.push(
-                                                `/app/settings/help-center/${helpCenter.id}/publish-track`
+                                                `/app/settings/help-center/${helpCenter.id}/publish-track`,
                                             )
                                         }
                                     }}
@@ -212,7 +216,7 @@ export const HelpCenterPageWrapper: React.FC<Props> = ({
                         onClick={() => {
                             const windowRef = window.open(
                                 helpCenterUrl,
-                                '_blank'
+                                '_blank',
                             )
                             windowRef?.focus()
                         }}

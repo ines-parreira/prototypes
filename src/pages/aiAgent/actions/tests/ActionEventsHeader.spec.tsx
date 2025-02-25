@@ -1,17 +1,18 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {fireEvent, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import moment from 'moment-timezone'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import moment from 'moment-timezone'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {billingState} from 'fixtures/billing'
-import {fromLegacyStatsFilters} from 'state/stats/utils'
-import {RootState, StoreDispatch} from 'state/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {renderWithRouter} from 'utils/testing'
+import { billingState } from 'fixtures/billing'
+import { fromLegacyStatsFilters } from 'state/stats/utils'
+import { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { renderWithRouter } from 'utils/testing'
 
 import ActionEventsHeader from '../components/ActionEventsHeader'
 
@@ -27,7 +28,7 @@ const statsFilters = {
 
 const defaultStore = mockStore({
     billing: fromJS(billingState),
-    stats: {filters: fromLegacyStatsFilters(statsFilters)},
+    stats: { filters: fromLegacyStatsFilters(statsFilters) },
 })
 
 describe('ActionEventsHeader', () => {
@@ -45,13 +46,13 @@ describe('ActionEventsHeader', () => {
             {
                 path: '/:shopType/:shopName/ai-agent/actions/events/:id',
                 route: '/shopify/my-shop/ai-agent/actions/events/01J0KCFRTMPCESV2KYRG29GQ9H',
-            }
+            },
         )
 
         expect(
             screen.getByText(
-                /View all events when this Action has been performed, and select an event to view/
-            )
+                /View all events when this Action has been performed, and select an event to view/,
+            ),
         ).toBeInTheDocument()
     })
 
@@ -70,7 +71,7 @@ describe('ActionEventsHeader', () => {
             {
                 path: '/:shopType/:shopName/ai-agent/actions/events/:id',
                 route: '/shopify/my-shop/ai-agent/actions/events/01J0KCFRTMPCESV2KYRG29GQ9H',
-            }
+            },
         )
 
         expect(onChangeSpy.mock.lastCall).toMatchObject([
@@ -128,7 +129,7 @@ describe('ActionEventsHeader', () => {
             {
                 path: '/:shopType/:shopName/ai-agent/actions/events/:id',
                 route: '/shopify/my-shop/ai-agent/actions/events/01J0KCFRTMPCESV2KYRG29GQ9H',
-            }
+            },
         )
 
         const options = {
@@ -141,22 +142,22 @@ describe('ActionEventsHeader', () => {
             screen.getByText(
                 new RegExp(
                     new Date(
-                        statsFilters.period.start_datetime
+                        statsFilters.period.start_datetime,
                     ).toLocaleDateString('en-US', options),
-                    'i'
-                )
-            )
+                    'i',
+                ),
+            ),
         ).toBeInTheDocument()
 
         expect(
             screen.getByText(
                 new RegExp(
                     new Date(
-                        statsFilters.period.start_datetime
+                        statsFilters.period.start_datetime,
                     ).toLocaleDateString('en-US', options),
-                    'i'
-                )
-            )
+                    'i',
+                ),
+            ),
         ).toBeInTheDocument()
 
         expect(onChangeSpy.mock.lastCall).toMatchObject([
@@ -171,14 +172,14 @@ describe('ActionEventsHeader', () => {
             screen.getByText(
                 new RegExp(
                     new Date(
-                        statsFilters.period.start_datetime
+                        statsFilters.period.start_datetime,
                     ).toLocaleDateString('en-US', options),
-                    'i'
-                )
-            )
+                    'i',
+                ),
+            ),
         )
 
-        fireEvent.click(screen.getByText('Today', {selector: 'li'}))
+        fireEvent.click(screen.getByText('Today', { selector: 'li' }))
 
         expect(onChangeSpy.mock.lastCall).toMatchObject([
             {

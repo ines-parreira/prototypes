@@ -1,11 +1,11 @@
-import {validateCreateCustomerBody} from '@gorgias/api-validators'
+import { validateCreateCustomerBody } from '@gorgias/api-validators'
 
-import {GorgiasApiResponseDataError} from 'models/api/types'
+import { GorgiasApiResponseDataError } from 'models/api/types'
 
 import {
-    FormValidator,
     createFormValidator,
     createResolver,
+    FormValidator,
     toFieldErrors,
     toFormErrors,
 } from '../utils/validation'
@@ -16,7 +16,7 @@ describe('toFieldErrors()', () => {
         expect(
             toFieldErrors({
                 name: 'Is required',
-            })
+            }),
         ).toEqual({
             name: {
                 type: 'string',
@@ -32,8 +32,8 @@ describe('toFieldErrors()', () => {
                 address: {
                     street: 'Is required',
                 },
-                items: [{name: 'Is required'}, {name: 'Is taken'}],
-            })
+                items: [{ name: 'Is required' }, { name: 'Is taken' }],
+            }),
         ).toEqual({
             name: {
                 type: 'string',
@@ -46,19 +46,19 @@ describe('toFieldErrors()', () => {
                 },
             },
             items: [
-                {name: {type: 'string', message: 'Is required'}},
-                {name: {type: 'string', message: 'Is taken'}},
+                { name: { type: 'string', message: 'Is required' } },
+                { name: { type: 'string', message: 'Is taken' } },
             ],
         })
     })
 
     it('correctly transforms a server error response (GorgiasApiError) to field errors', () => {
         const serverError: GorgiasApiResponseDataError<{
-            meta: {address: string[]}
+            meta: { address: string[] }
         }> = {
             msg: 'Failed to create integration.',
             data: {
-                meta: {address: ['This email address is already connected.']},
+                meta: { address: ['This email address is already connected.'] },
             },
         }
 
@@ -74,7 +74,7 @@ describe('toFieldErrors()', () => {
 
     it('picks the first error if multiple are returned for a single field in a server error response', () => {
         const serverError: GorgiasApiResponseDataError<{
-            meta: {address: string[]}
+            meta: { address: string[] }
         }> = {
             msg: 'Failed to create integration.',
             data: {
@@ -103,7 +103,7 @@ describe('toFieldErrors()', () => {
                 name: 'Is required',
                 address: null,
                 username: 0,
-            })
+            }),
         ).toEqual({
             name: {
                 type: 'string',
@@ -122,7 +122,7 @@ describe('toFormErrors()', () => {
                     name: 'name',
                 },
                 errors: [],
-            })
+            }),
         ).toEqual({})
 
         expect(
@@ -130,7 +130,7 @@ describe('toFormErrors()', () => {
                 isValid: false,
                 data: undefined,
                 errors: [],
-            })
+            }),
         ).toEqual({})
 
         expect(
@@ -141,10 +141,10 @@ describe('toFormErrors()', () => {
                     {
                         message: 'Not valid',
                         path: '{base}.name',
-                        context: {errorType: 'not'},
+                        context: { errorType: 'not' },
                     },
                 ],
-            })
+            }),
         ).toEqual({
             name: 'Not valid',
         })
@@ -153,7 +153,7 @@ describe('toFormErrors()', () => {
 
 describe('createResolver()', () => {
     it('creates a RHF resolver from a FormValidator', () => {
-        const validator: FormValidator<{name: string}> = (values) => {
+        const validator: FormValidator<{ name: string }> = (values) => {
             if (!values.name) {
                 return {
                     name: 'is required!',
@@ -164,7 +164,7 @@ describe('createResolver()', () => {
         const resolver = createResolver(validator)
 
         expect(typeof resolver).toBe('function')
-        expect(resolver({name: ''})).toEqual({
+        expect(resolver({ name: '' })).toEqual({
             errors: {
                 name: {
                     message: 'is required!',
@@ -181,7 +181,7 @@ describe('createResolver()', () => {
 describe('createFormValidator()', () => {
     it('creates a FormValidator from an AJV (SDK) validator', () => {
         const validator = createFormValidator(validateCreateCustomerBody)
-        expect(validator({email: 'x', channels: []})).toEqual({
+        expect(validator({ email: 'x', channels: [] })).toEqual({
             email: "Property 'email' must match format 'email'",
         })
     })

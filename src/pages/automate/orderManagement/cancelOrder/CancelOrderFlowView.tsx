@@ -1,7 +1,8 @@
+import React, { useEffect, useMemo, useState } from 'react'
+
 import _isEqual from 'lodash/isEqual'
-import React, {useEffect, useMemo, useState} from 'react'
-import {Link, useParams} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
+import { Link, useParams } from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -11,9 +12,8 @@ import {
 } from 'models/selfServiceConfiguration/types'
 import AutomateView from 'pages/automate/common/components/AutomateView'
 import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
-
-import {ORDER_MANAGEMENT} from 'pages/automate/common/components/constants'
-import {getHasAutomate} from 'state/billing/selectors'
+import { ORDER_MANAGEMENT } from 'pages/automate/common/components/constants'
+import { getHasAutomate } from 'state/billing/selectors'
 
 import CancelOrderFlowPreview from './CancelOrderFlowPreview'
 import CancelOrderFlowViewContext, {
@@ -21,11 +21,11 @@ import CancelOrderFlowViewContext, {
 } from './CancelOrderFlowViewContext'
 import CancelOrderEligibility from './components/CancelOrderEligibility'
 import CancelOrderResponseMessageContent from './components/CancelOrderResponseMessageContent'
-import {DEFAULT_RESPONSE_MESSAGE_CONTENT} from './constants'
+import { DEFAULT_RESPONSE_MESSAGE_CONTENT } from './constants'
 import useCancelOrderFlow from './hooks/useCancelOrderFlow'
 
 const CancelOrderFlowView = () => {
-    const {shopName} = useParams<{shopName: string}>()
+    const { shopName } = useParams<{ shopName: string }>()
     const {
         isUpdatePending,
         storeIntegration,
@@ -49,7 +49,7 @@ const CancelOrderFlowView = () => {
             storeIntegration,
             setError: (path, hasError) => {
                 setErrors((prevErrors) => {
-                    const nextErrors = {...prevErrors}
+                    const nextErrors = { ...prevErrors }
 
                     if (hasError) {
                         nextErrors[path] = true
@@ -63,11 +63,11 @@ const CancelOrderFlowView = () => {
                 })
             },
         }),
-        [storeIntegration]
+        [storeIntegration],
     )
 
     const handleEligibilityChange = (
-        eligibility?: SelfServiceConfigurationFilter
+        eligibility?: SelfServiceConfigurationFilter,
     ) => {
         if (!dirtyCancelOrderFlow) {
             return
@@ -79,7 +79,7 @@ const CancelOrderFlowView = () => {
         })
     }
     const handleResponseMessageContentChange = (
-        responseMessageContent: ResponseMessageContent
+        responseMessageContent: ResponseMessageContent,
     ) => {
         if (!dirtyCancelOrderFlow) {
             return
@@ -106,7 +106,7 @@ const CancelOrderFlowView = () => {
 
     const isCancelOrderFlowDirty = !_isEqual(
         dirtyCancelOrderFlow,
-        cancelOrderFlow
+        cancelOrderFlow,
     )
     const isLoading = !selfServiceConfiguration || !dirtyCancelOrderFlow
 

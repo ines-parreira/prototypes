@@ -1,16 +1,17 @@
-import {IntegrationType} from '@gorgias/api-queries'
-import {useContext, useMemo} from 'react'
+import { useContext, useMemo } from 'react'
+
+import { IntegrationType } from '@gorgias/api-queries'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {CustomerIntegration} from 'models/customer/types'
-import {Source, isSourceRecord} from 'models/widget/types'
-import {CURRENT_USER_TEMPLATE_FIELDS} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/constants'
+import { CustomerIntegration } from 'models/customer/types'
+import { isSourceRecord, Source } from 'models/widget/types'
+import { CURRENT_USER_TEMPLATE_FIELDS } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/constants'
 import WidgetListContext from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/WidgetListContext'
-import {AppContext} from 'providers/infobar/AppContext'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import {getCurrentUserState} from 'state/currentUser/selectors'
-import {getActiveCustomer} from 'state/customers/selectors'
-import {getTicket} from 'state/ticket/selectors'
+import { AppContext } from 'providers/infobar/AppContext'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
+import { getCurrentUserState } from 'state/currentUser/selectors'
+import { getActiveCustomer } from 'state/customers/selectors'
+import { getTicket } from 'state/ticket/selectors'
 
 // Matches `USABLE_IN_RULES` backend declarations which is used in templating to
 // allow doing `customer.integrations.shopify.whatever` and similar.
@@ -43,7 +44,7 @@ export function useTemplateContext(source?: Source) {
         } = {}
         for (const type of MAPPED_INTEGRATIONS) {
             const integrationData = Object.values(
-                integrationsData || {}
+                integrationsData || {},
             ).filter((integration) => integration.__integration_type__ === type)
             // Do nothing if there are multiple integrations of the same type
             if (integrationData.length === 1) {
@@ -54,9 +55,9 @@ export function useTemplateContext(source?: Source) {
     }, [integrationsData])
 
     const currentUser = useAppSelector(getCurrentUserState)
-    const {integrationId} = useContext(IntegrationContext)
-    const {appId} = useContext(AppContext)
-    const {currentListIndex} = useContext(WidgetListContext)
+    const { integrationId } = useContext(IntegrationContext)
+    const { appId } = useContext(AppContext)
+    const { currentListIndex } = useContext(WidgetListContext)
 
     const templateContext = useMemo(() => {
         const fullCurrentUserData = currentUser.toJS() as Record<

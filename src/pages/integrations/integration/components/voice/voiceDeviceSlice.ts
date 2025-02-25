@@ -1,7 +1,7 @@
-import {PayloadAction, createSlice} from '@reduxjs/toolkit'
-import {Call, Device} from '@twilio/voice-sdk'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { Call, Device } from '@twilio/voice-sdk'
 
-import {initialState} from 'state/twilio/voiceDevice'
+import { initialState } from 'state/twilio/voiceDevice'
 
 const slice = createSlice({
     name: 'voiceDevice',
@@ -21,7 +21,7 @@ const slice = createSlice({
         },
         setIsConnecting: (
             state,
-            action: PayloadAction<boolean | undefined>
+            action: PayloadAction<boolean | undefined>,
         ) => {
             state.isConnecting = action.payload
         },

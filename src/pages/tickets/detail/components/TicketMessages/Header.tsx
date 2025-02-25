@@ -1,16 +1,18 @@
-import classnames from 'classnames'
-import classNamesBind from 'classnames/bind'
-import {fromJS, Map} from 'immutable'
 import React from 'react'
 
-import {TicketMessage} from 'models/ticket/types'
-import {AgentLabel, CustomerLabel} from 'pages/common/utils/labels'
-import {isForwardedMessage} from 'tickets/common/utils'
+import classnames from 'classnames'
+import classNamesBind from 'classnames/bind'
+import { fromJS, Map } from 'immutable'
 
-import css from './Header.less'
+import { TicketMessage } from 'models/ticket/types'
+import { AgentLabel, CustomerLabel } from 'pages/common/utils/labels'
+import { isForwardedMessage } from 'tickets/common/utils'
+
 import Meta from './Meta'
 import Source from './Source'
 import SourceDetailsHeader from './SourceDetailsHeader'
+
+import css from './Header.less'
 
 const classNames = classNamesBind.bind(css)
 

@@ -1,13 +1,14 @@
+import React from 'react'
+
 import {
     QueryClient,
     QueryClientProvider,
     UseQueryResult,
 } from '@tanstack/react-query'
-import {render, screen} from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {fromJS} from 'immutable'
-import React from 'react'
-import {Provider} from 'react-redux'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -16,15 +17,14 @@ import {
     useAverageCSATPerChannelTimeseries,
     useAverageCSATPerIntegrationTimeseries,
 } from 'hooks/reporting/quality-management/satisfaction/useAverageScorePerDimensionTimeSeries'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
-import {ReportingGranularity} from 'models/reporting/types'
-
-import {AverageScorePerDimensionTrendChart} from 'pages/stats/quality-management/satisfaction/AverageScorePerDimensionTrendChart/AverageScorePerDimensionTrendChart'
-import {assumeMock} from 'utils/testing'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { TicketSatisfactionSurveyMeasure } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
+import { ReportingGranularity } from 'models/reporting/types'
+import { AverageScorePerDimensionTrendChart } from 'pages/stats/quality-management/satisfaction/AverageScorePerDimensionTrendChart/AverageScorePerDimensionTrendChart'
+import { assumeMock } from 'utils/testing'
 
 jest.mock(
-    'hooks/reporting/quality-management/satisfaction/useAverageScorePerDimensionTimeSeries'
+    'hooks/reporting/quality-management/satisfaction/useAverageScorePerDimensionTimeSeries',
 )
 jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
 jest.mock('@gorgias/merchant-ui-kit', () => {
@@ -42,7 +42,7 @@ jest.mock('pages/stats/common/components/charts/LineChart/LineChart', () => ({
         renderYTickLabel,
     }: {
         isLoading: boolean
-        data: Array<{label: string}>
+        data: Array<{ label: string }>
         renderYTickLabel?: (value: number) => string
     }) => {
         if (isLoading) {
@@ -51,7 +51,7 @@ jest.mock('pages/stats/common/components/charts/LineChart/LineChart', () => ({
 
         return (
             <div data-testid="chart">
-                {data?.map((dataset: {label: string}, index: number) => (
+                {data?.map((dataset: { label: string }, index: number) => (
                     <div key={index} data-testid="dataset">
                         {dataset.label}
                     </div>
@@ -82,13 +82,13 @@ const queryClient = new QueryClient({
 })
 
 const useAverageCSATPerChannelTimeseriesMock = assumeMock(
-    useAverageCSATPerChannelTimeseries
+    useAverageCSATPerChannelTimeseries,
 )
 const useAverageCSATPerAssigneeTimeseriesMock = assumeMock(
-    useAverageCSATPerAssigneeTimeseries
+    useAverageCSATPerAssigneeTimeseries,
 )
 const useAverageCSATPerIntegrationTimeseriesMock = assumeMock(
-    useAverageCSATPerIntegrationTimeseries
+    useAverageCSATPerIntegrationTimeseries,
 )
 const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
 
@@ -98,7 +98,7 @@ const renderComponent = (state: any) => {
             <Provider store={mockStore(state)}>
                 <AverageScorePerDimensionTrendChart />
             </Provider>
-        </QueryClientProvider>
+        </QueryClientProvider>,
     )
 }
 
@@ -122,7 +122,7 @@ const getErrorResponse = (error: Error) =>
 
 describe('<AverageScorePerDimensionTrendChart>', () => {
     const defaultFilters = {
-        period: {start_datetime: '2023-04-07', end_datetime: '2023-04-09'},
+        period: { start_datetime: '2023-04-07', end_datetime: '2023-04-09' },
     }
 
     const mockStoreState = {
@@ -217,22 +217,22 @@ describe('<AverageScorePerDimensionTrendChart>', () => {
     const mockAssigneeData = {
         agent1: [
             [
-                {dateTime: '2023-04-07T00:00:00.000', value: 4.2},
-                {dateTime: '2023-04-08T00:00:00.000', value: 4.3},
+                { dateTime: '2023-04-07T00:00:00.000', value: 4.2 },
+                { dateTime: '2023-04-08T00:00:00.000', value: 4.3 },
             ],
             [
-                {dateTime: '2023-04-07T00:00:00.000', value: 8},
-                {dateTime: '2023-04-08T00:00:00.000', value: 12},
+                { dateTime: '2023-04-07T00:00:00.000', value: 8 },
+                { dateTime: '2023-04-08T00:00:00.000', value: 12 },
             ],
         ],
         agent2: [
             [
-                {dateTime: '2023-04-07T00:00:00.000', value: 3.8},
-                {dateTime: '2023-04-08T00:00:00.000', value: 3.9},
+                { dateTime: '2023-04-07T00:00:00.000', value: 3.8 },
+                { dateTime: '2023-04-08T00:00:00.000', value: 3.9 },
             ],
             [
-                {dateTime: '2023-04-07T00:00:00.000', value: 6},
-                {dateTime: '2023-04-08T00:00:00.000', value: 9},
+                { dateTime: '2023-04-07T00:00:00.000', value: 6 },
+                { dateTime: '2023-04-08T00:00:00.000', value: 9 },
             ],
         ],
     }
@@ -240,22 +240,22 @@ describe('<AverageScorePerDimensionTrendChart>', () => {
     const mockIntegrationData = {
         email: [
             [
-                {dateTime: '2023-04-07T00:00:00.000', value: 4.1},
-                {dateTime: '2023-04-08T00:00:00.000', value: 4.2},
+                { dateTime: '2023-04-07T00:00:00.000', value: 4.1 },
+                { dateTime: '2023-04-08T00:00:00.000', value: 4.2 },
             ],
             [
-                {dateTime: '2023-04-07T00:00:00.000', value: 7},
-                {dateTime: '2023-04-08T00:00:00.000', value: 11},
+                { dateTime: '2023-04-07T00:00:00.000', value: 7 },
+                { dateTime: '2023-04-08T00:00:00.000', value: 11 },
             ],
         ],
         gmail: [
             [
-                {dateTime: '2023-04-07T00:00:00.000', value: 3.5},
-                {dateTime: '2023-04-08T00:00:00.000', value: 3.6},
+                { dateTime: '2023-04-07T00:00:00.000', value: 3.5 },
+                { dateTime: '2023-04-08T00:00:00.000', value: 3.6 },
             ],
             [
-                {dateTime: '2023-04-07T00:00:00.000', value: 4},
-                {dateTime: '2023-04-08T00:00:00.000', value: 7},
+                { dateTime: '2023-04-07T00:00:00.000', value: 4 },
+                { dateTime: '2023-04-08T00:00:00.000', value: 7 },
             ],
         ],
     }
@@ -269,13 +269,13 @@ describe('<AverageScorePerDimensionTrendChart>', () => {
         })
 
         useAverageCSATPerChannelTimeseriesMock.mockReturnValue(
-            getSuccessResponse(mockTimeseriesData)
+            getSuccessResponse(mockTimeseriesData),
         )
         useAverageCSATPerAssigneeTimeseriesMock.mockReturnValue(
-            getSuccessResponse(mockAssigneeData)
+            getSuccessResponse(mockAssigneeData),
         )
         useAverageCSATPerIntegrationTimeseriesMock.mockReturnValue(
-            getSuccessResponse(mockIntegrationData)
+            getSuccessResponse(mockIntegrationData),
         )
     })
 
@@ -335,13 +335,13 @@ describe('<AverageScorePerDimensionTrendChart>', () => {
 
     it('should show error state for assignee metric', () => {
         useAverageCSATPerAssigneeTimeseriesMock.mockReturnValue(
-            getErrorResponse(new Error('Failed to load data'))
+            getErrorResponse(new Error('Failed to load data')),
         )
         useAverageCSATPerChannelTimeseriesMock.mockReturnValue(
-            getSuccessResponse(mockTimeseriesData)
+            getSuccessResponse(mockTimeseriesData),
         )
         useAverageCSATPerIntegrationTimeseriesMock.mockReturnValue(
-            getSuccessResponse(mockIntegrationData)
+            getSuccessResponse(mockIntegrationData),
         )
 
         renderComponent(mockStoreState)
@@ -355,13 +355,13 @@ describe('<AverageScorePerDimensionTrendChart>', () => {
 
     it('should show error state for integration metric', () => {
         useAverageCSATPerIntegrationTimeseriesMock.mockReturnValue(
-            getErrorResponse(new Error('Failed to load data'))
+            getErrorResponse(new Error('Failed to load data')),
         )
         useAverageCSATPerChannelTimeseriesMock.mockReturnValue(
-            getSuccessResponse(mockTimeseriesData)
+            getSuccessResponse(mockTimeseriesData),
         )
         useAverageCSATPerAssigneeTimeseriesMock.mockReturnValue(
-            getSuccessResponse(mockAssigneeData)
+            getSuccessResponse(mockAssigneeData),
         )
 
         renderComponent(mockStoreState)
@@ -449,7 +449,7 @@ describe('<AverageScorePerDimensionTrendChart>', () => {
         }
 
         useAverageCSATPerChannelTimeseriesMock.mockReturnValue(
-            getSuccessResponse(invalidTimeseriesData)
+            getSuccessResponse(invalidTimeseriesData),
         )
 
         renderComponent(mockStoreState)

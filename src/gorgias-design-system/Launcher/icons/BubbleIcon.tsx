@@ -4,7 +4,7 @@ type BubbleIconProps = {
     color: string
 }
 
-const BubbleIcon = ({color}: BubbleIconProps) => (
+const BubbleIcon = ({ color }: BubbleIconProps) => (
     <svg
         width="28"
         height="28"

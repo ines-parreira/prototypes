@@ -1,32 +1,30 @@
-import {render, screen} from '@testing-library/react'
-
-import {fromJS} from 'immutable'
-
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {TicketChannel} from 'business/types/ticket'
-import {account} from 'fixtures/account'
-import {agents} from 'fixtures/agents'
-import {integrationsState} from 'fixtures/integrations'
-import {tags} from 'fixtures/tag'
-import {teams} from 'fixtures/teams'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { TicketChannel } from 'business/types/ticket'
+import { account } from 'fixtures/account'
+import { agents } from 'fixtures/agents'
+import { integrationsState } from 'fixtures/integrations'
+import { tags } from 'fixtures/tag'
+import { teams } from 'fixtures/teams'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
 import * as PerformanceTipHook from 'hooks/reporting/usePerformanceTips'
-import {ReportingGranularity} from 'models/reporting/types'
-import {LegacyStatsFilters} from 'models/stat/types'
-import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
-import {SupportPerformanceTip} from 'pages/stats/SupportPerformanceTip'
-import {MetricName} from 'services/reporting/constants'
-import {TipQualifier} from 'services/supportPerformanceTipService'
-import {AccountSettingType} from 'state/currentAccount/types'
-
-import {fromLegacyStatsFilters} from 'state/stats/utils'
-import {RootState, StoreDispatch} from 'state/types'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
-import {assumeMock} from 'utils/testing'
+import { ReportingGranularity } from 'models/reporting/types'
+import { LegacyStatsFilters } from 'models/stat/types'
+import { DEFAULT_TIMEZONE } from 'pages/stats/convert/constants/components'
+import { SupportPerformanceTip } from 'pages/stats/SupportPerformanceTip'
+import { MetricName } from 'services/reporting/constants'
+import { TipQualifier } from 'services/supportPerformanceTipService'
+import { AccountSettingType } from 'state/currentAccount/types'
+import { fromLegacyStatsFilters } from 'state/stats/utils'
+import { RootState, StoreDispatch } from 'state/types'
+import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/usePerformanceTips')
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -82,7 +80,7 @@ describe('SupportPerformanceTip', () => {
             },
         },
         ui: {
-            stats: {filters: uiStatsInitialState},
+            stats: { filters: uiStatsInitialState },
         },
     } as RootState
 
@@ -120,12 +118,12 @@ describe('SupportPerformanceTip', () => {
                         isError: false,
                     })}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText(average)).toBeInTheDocument()
         expect(screen.getByText(topTen)).toBeInTheDocument()
-        expect(screen.getByText(content, {exact: false})).toBeInTheDocument()
+        expect(screen.getByText(content, { exact: false })).toBeInTheDocument()
     })
 
     it('should pass null to the provider when value is missing', () => {
@@ -148,7 +146,7 @@ describe('SupportPerformanceTip', () => {
                         isFetching: true,
                     })}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(providerMock).toHaveBeenCalledWith(metric, null)
@@ -166,12 +164,12 @@ describe('SupportPerformanceTip', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <SupportPerformanceTip metric={metric} useTrend={useTrendSpy} />
-            </Provider>
+            </Provider>,
         )
 
         expect(useTrendSpy).toHaveBeenCalledWith(
             defaultStatsFilters,
-            DEFAULT_TIMEZONE
+            DEFAULT_TIMEZONE,
         )
     })
 
@@ -181,12 +179,12 @@ describe('SupportPerformanceTip', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <SupportPerformanceTip metric={metric} useTrend={useTrendSpy} />
-            </Provider>
+            </Provider>,
         )
 
         expect(useTrendSpy).toHaveBeenCalledWith(
             fromLegacyStatsFilters(defaultStatsFilters),
-            DEFAULT_TIMEZONE
+            DEFAULT_TIMEZONE,
         )
     })
 })

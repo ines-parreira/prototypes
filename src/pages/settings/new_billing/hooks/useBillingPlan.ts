@@ -1,20 +1,21 @@
-import {useQueryClient} from '@tanstack/react-query'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import moment from 'moment'
-import {useCallback, useMemo, useState} from 'react'
-import {useHistory} from 'react-router-dom'
+import { useCallback, useMemo, useState } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { useQueryClient } from '@tanstack/react-query'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import moment from 'moment'
+import { useHistory } from 'react-router-dom'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {isGorgiasApiError} from 'models/api/types'
-import {Cadence, ProductType} from 'models/billing/types'
-import {useConvertApi} from 'pages/convert/common/hooks/useConvertApi'
+import { isGorgiasApiError } from 'models/api/types'
+import { Cadence, ProductType } from 'models/billing/types'
+import { useConvertApi } from 'pages/convert/common/hooks/useConvertApi'
 import useGetConvertStatus, {
     convertStatusKeys,
 } from 'pages/convert/common/hooks/useGetConvertStatus'
-import {getDefaultConvertPlanIndex} from 'pages/settings/new_billing/utils/getDefaultConvertPlanIndex'
-import {handleConvertProductDowngraded} from 'pages/settings/new_billing/utils/handleConvertProductDowngraded'
+import { getDefaultConvertPlanIndex } from 'pages/settings/new_billing/utils/getDefaultConvertPlanIndex'
+import { handleConvertProductDowngraded } from 'pages/settings/new_billing/utils/handleConvertProductDowngraded'
 import GorgiasApi from 'services/gorgiasApi'
 import {
     getAvailableAutomatePlans,
@@ -31,7 +32,7 @@ import {
     getCurrentVoicePlan,
     getIsVettedForPhone,
 } from 'state/billing/selectors'
-import {ProductData} from 'state/billing/types'
+import { ProductData } from 'state/billing/types'
 import {
     setCurrentSubscription,
     updateSubscriptionsForPlans,
@@ -41,14 +42,14 @@ import {
     getCurrentSubscription,
     isTrialing,
 } from 'state/currentAccount/selectors'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {notify} from 'state/notifications/actions'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { notify } from 'state/notifications/actions'
 import {
     Notification,
     NotificationStatus,
     NotificationStyle,
 } from 'state/notifications/types'
-import {objKeys} from 'utils'
+import { objKeys } from 'utils'
 
 import {
     BILLING_SUPPORT_EMAIL,
@@ -57,8 +58,8 @@ import {
     PRODUCT_INFO,
     ZAPIER_BILLING_HOOK,
 } from '../constants'
-import {sendSupportTicket} from '../utils/sendSupportTicket'
-import {SelectedPlans} from '../views/BillingProcessView/BillingProcessView'
+import { sendSupportTicket } from '../utils/sendSupportTicket'
+import { SelectedPlans } from '../views/BillingProcessView/BillingProcessView'
 import {
     setAutomationNotification,
     setConvertNotification,
@@ -92,9 +93,9 @@ export const useBillingPlans = ({
     const periodEnd = useMemo(
         () =>
             moment(
-                currentUsage.helpdesk?.meta.subscription_end_datetime
+                currentUsage.helpdesk?.meta.subscription_end_datetime,
             ).format(DATE_FORMAT),
-        [currentUsage]
+        [currentUsage],
     )
 
     const cadence = useAppSelector(getCurrentHelpdeskCadence) ?? Cadence.Month
@@ -102,28 +103,28 @@ export const useBillingPlans = ({
     // Helpdesk
     const currentHelpdeskPlan = useAppSelector(getCurrentHelpdeskPlan)
     const helpdeskAvailablePlans = useAppSelector(
-        getAvailableHelpdeskPlans
+        getAvailableHelpdeskPlans,
     ).filter(
         (plan) =>
             plan.num_quota_tickets &&
-            (filterByCadence ? plan.cadence === cadence : true)
+            (filterByCadence ? plan.cadence === cadence : true),
     )
     const helpdeskAvailablePlansPriceIds = useMemo(
         () => helpdeskAvailablePlans.map((plan) => plan.price_id),
-        [helpdeskAvailablePlans]
+        [helpdeskAvailablePlans],
     )
     const helpdeskCurrentPlanIndex = useMemo(
         () =>
             helpdeskAvailablePlansPriceIds.indexOf(
-                currentHelpdeskPlan?.price_id ?? ''
+                currentHelpdeskPlan?.price_id ?? '',
             ),
-        [helpdeskAvailablePlansPriceIds, currentHelpdeskPlan]
+        [helpdeskAvailablePlansPriceIds, currentHelpdeskPlan],
     )
 
     // Automate
     const currentAutomatePlan = useAppSelector(getCurrentAutomatePlan)
     const automateAvailablePlans = useAppSelector(
-        getAvailableAutomatePlans
+        getAvailableAutomatePlans,
     ).filter((plan) => {
         const isCurrentPlanLegacy =
             currentAutomatePlan && !currentAutomatePlan.num_quota_tickets
@@ -135,17 +136,17 @@ export const useBillingPlans = ({
     })
     const isAutomateLegacyPlan = useMemo(
         () => automateAvailablePlans?.some((plan) => !plan.num_quota_tickets),
-        [automateAvailablePlans]
+        [automateAvailablePlans],
     )
     const automationInitialIndex = Math.min(
         5,
-        helpdeskCurrentPlanIndex - (isAutomateLegacyPlan ? 0 : 1)
+        helpdeskCurrentPlanIndex - (isAutomateLegacyPlan ? 0 : 1),
     )
 
     // Voice
     const currentVoicePlan = useAppSelector(getCurrentVoicePlan)
     const voiceAvailablePlans = useAppSelector(getAvailableVoicePlans).filter(
-        (plan) => (filterByCadence ? plan.cadence === cadence : true)
+        (plan) => (filterByCadence ? plan.cadence === cadence : true),
     )
 
     const voiceInitialIndex =
@@ -154,7 +155,7 @@ export const useBillingPlans = ({
     // SMS
     const currentSmsPlan = useAppSelector(getCurrentSmsPlan)
     const smsAvailablePlans = useAppSelector(getAvailableSmsPlans).filter(
-        (plan) => (filterByCadence ? plan.cadence === cadence : true)
+        (plan) => (filterByCadence ? plan.cadence === cadence : true),
     )
     const isPhoneSelfServeEnabled =
         useFlags()[FeatureFlagKey.BillingVoiceSmsSelfServe]
@@ -166,15 +167,15 @@ export const useBillingPlans = ({
     // Convert
     const currentConvertPlan = useAppSelector(getCurrentConvertPlan)
     const convertAvailablePlans = useAppSelector(
-        getAvailableConvertPlans
+        getAvailableConvertPlans,
     ).filter((plan) => (filterByCadence ? plan.cadence === cadence : true))
     const convertInitialIndex = getDefaultConvertPlanIndex(
         cadence,
         convertAvailablePlans,
-        currentHelpdeskPlan?.name
+        currentHelpdeskPlan?.name,
     )
 
-    const {client: convertClient} = useConvertApi()
+    const { client: convertClient } = useConvertApi()
     const convertStatus = useGetConvertStatus()
     const convertAutoUpgrade = useMemo(() => {
         return (convertStatus && convertStatus.auto_upgrade_enabled) ?? false
@@ -276,7 +277,7 @@ export const useBillingPlans = ({
             currentSmsPlan,
             currentConvertPlan,
             selectedPlans,
-        ]
+        ],
     )
 
     const anyDowngradedPlanSelected = useMemo(
@@ -304,7 +305,7 @@ export const useBillingPlans = ({
             currentVoicePlan,
             currentSmsPlan,
             currentConvertPlan,
-        ]
+        ],
     )
 
     const anyNewProductSelected = useMemo(
@@ -325,7 +326,7 @@ export const useBillingPlans = ({
             currentVoicePlan,
             currentSmsPlan,
             currentConvertPlan,
-        ]
+        ],
     )
 
     const isEnterpriseHelpdeskPlanSelected = useMemo(
@@ -333,14 +334,14 @@ export const useBillingPlans = ({
             Object.values(selectedPlans).some(
                 (plan) =>
                     plan.plan?.price_id === ENTERPRISE_PRICE_ID &&
-                    plan.isSelected
+                    plan.isSelected,
             ),
-        [selectedPlans]
+        [selectedPlans],
     )
 
     const isPlanCadenceChanged = useMemo(
         () => cadence !== selectedPlans[ProductType.Helpdesk].plan?.cadence,
-        [cadence, selectedPlans]
+        [cadence, selectedPlans],
     )
 
     const handleAutoUpgradeChange = useCallback(async () => {
@@ -354,9 +355,9 @@ export const useBillingPlans = ({
                 {},
                 {
                     enabled: Boolean(
-                        selectedPlans[ProductType.Convert].autoUpgrade
+                        selectedPlans[ProductType.Convert].autoUpgrade,
                     ),
-                }
+                },
             )
 
             await queryClient.invalidateQueries({
@@ -403,10 +404,10 @@ export const useBillingPlans = ({
                 (product) =>
                     `${PRODUCT_INFO[product].title} plan request: ${
                         selectedPlans[product].plan?.name ?? ''
-                    }`
+                    }`,
             )
             const message = `New ${productsNames} Add-on Request by ${domain}\nProduct(s): ${subject}\n${newPlans.join(
-                '\n'
+                '\n',
             )}`
 
             try {
@@ -431,7 +432,7 @@ export const useBillingPlans = ({
                         showDismissButton: true,
                         noAutoDismiss: true,
                         id: 'billing-voice-sms-request',
-                    })
+                    }),
                 )
             } catch (error) {
                 dispatchBillingError()
@@ -574,7 +575,7 @@ export const useBillingPlans = ({
                 handleConvertProductDowngraded(
                     currentConvertPlan,
                     selectedPlans[ProductType.Convert].plan,
-                    domain
+                    domain,
                 )
             }
 
@@ -608,8 +609,8 @@ export const useBillingPlans = ({
                     await dispatch(
                         updateSubscriptionsForPlans(
                             plansToBeUpdated,
-                            notifications
-                        )
+                            notifications,
+                        ),
                     )
                 }
             } catch (error) {
@@ -669,7 +670,7 @@ export const useBillingPlans = ({
                             'You will be redirected in a few seconds to a secure page.',
                         dismissAfter: 5000,
                         dismissible: false,
-                    })
+                    }),
                 )
 
                 setTimeout(() => {
@@ -687,7 +688,7 @@ export const useBillingPlans = ({
                     notify({
                         status: NotificationStatus.Success,
                         message: 'Your subscription has started!',
-                    })
+                    }),
                 )
             }
         } catch (exception) {
@@ -699,7 +700,7 @@ export const useBillingPlans = ({
                 notify({
                     status: NotificationStatus.Error,
                     title: errorMsg,
-                })
+                }),
             )
         }
     }, [dispatch, history, isFreeTrial, isSubscriptionCanceled])

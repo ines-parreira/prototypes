@@ -1,13 +1,13 @@
-import {useState, useEffect, useCallback} from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
-import {useHelpCenterApi} from './useHelpCenterApi'
+import { useHelpCenterApi } from './useHelpCenterApi'
 
 const useHelpCenterCustomDomainHostnames = (helpCenterId?: number) => {
-    const {client} = useHelpCenterApi()
+    const { client } = useHelpCenterApi()
     const [customDomainHostnames, setCustomDomainHostnames] = useState<
         string[]
     >([])
@@ -23,22 +23,22 @@ const useHelpCenterCustomDomainHostnames = (helpCenterId?: number) => {
         setIsLoading(true)
         try {
             const {
-                data: {data: customDomains},
+                data: { data: customDomains },
             } = await client.listCustomDomains({
                 help_center_id: helpCenterId,
             })
             const activeCustomDomains = customDomains.filter(
-                (domain) => domain.status === 'active'
+                (domain) => domain.status === 'active',
             )
             setCustomDomainHostnames(
-                activeCustomDomains.map((domain) => domain.hostname)
+                activeCustomDomains.map((domain) => domain.hostname),
             )
         } catch {
             void dispatch(
                 notify({
                     message: "Failed to fetch Help Center's custom domains",
                     status: NotificationStatus.Error,
-                })
+                }),
             )
         } finally {
             setIsLoading(false)
@@ -49,7 +49,7 @@ const useHelpCenterCustomDomainHostnames = (helpCenterId?: number) => {
         void fetchCustomDomains()
     }, [fetchCustomDomains])
 
-    return {customDomainHostnames, isLoading}
+    return { customDomainHostnames, isLoading }
 }
 
 export default useHelpCenterCustomDomainHostnames

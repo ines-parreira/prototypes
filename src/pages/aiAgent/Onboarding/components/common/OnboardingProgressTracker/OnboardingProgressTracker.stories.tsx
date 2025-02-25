@@ -1,5 +1,6 @@
-import {Meta, StoryObj} from '@storybook/react'
-import {ComponentProps} from 'react'
+import { ComponentProps } from 'react'
+
+import { Meta, StoryObj } from '@storybook/react'
 
 import OnboardingProgressTracker from './OnboardingProgressTracker'
 
@@ -19,8 +20,8 @@ const storyConfig: Meta<typeof OnboardingProgressTracker> = {
                 min: 1,
             },
         },
-        onBackClick: {action: 'back clicked'},
-        onNextClick: {action: 'next clicked'},
+        onBackClick: { action: 'back clicked' },
+        onNextClick: { action: 'next clicked' },
     },
 }
 
@@ -44,7 +45,7 @@ const defaultProps: ComponentProps<typeof OnboardingProgressTracker> = {
 
 /** Default onboarding progress tracker */
 export const DefaultOnboardingTracker: Story = {
-    args: {...defaultProps},
+    args: { ...defaultProps },
     parameters: {
         ...templateParameters,
     },

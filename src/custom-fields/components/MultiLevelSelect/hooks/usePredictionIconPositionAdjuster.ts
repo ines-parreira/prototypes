@@ -1,8 +1,8 @@
-import {useState, useRef, useEffect} from 'react'
+import { useEffect, useRef, useState } from 'react'
 
-import {CustomFieldValue} from 'custom-fields/types'
+import { CustomFieldValue } from 'custom-fields/types'
 
-import {getStealthLabel} from '../helpers/getLabels'
+import { getStealthLabel } from '../helpers/getLabels'
 
 const ICON_WIDTH = 17
 const SPACE = 6

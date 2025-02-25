@@ -1,32 +1,30 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {fireEvent, render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {DndProvider} from 'react-dnd'
-import {HTML5Backend} from 'react-dnd-html5-backend'
-import {Provider} from 'react-redux'
-import {MemoryRouter} from 'react-router-dom'
 
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+import { Provider } from 'react-redux'
+import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {entitiesInitialState} from 'fixtures/entities'
-import {integrationsStateWithShopify} from 'fixtures/integrations'
-
+import { entitiesInitialState } from 'fixtures/entities'
+import { integrationsStateWithShopify } from 'fixtures/integrations'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {GorgiasChatCreationWizardSteps} from 'models/integration/types'
-import {useGetSelfServiceConfiguration} from 'models/selfServiceConfiguration/queries'
+import { GorgiasChatCreationWizardSteps } from 'models/integration/types'
+import { useGetSelfServiceConfiguration } from 'models/selfServiceConfiguration/queries'
 import Wizard from 'pages/common/components/wizard/Wizard'
-
-import {updateOrCreateIntegration} from 'state/integrations/actions'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { updateOrCreateIntegration } from 'state/integrations/actions'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import useHelpCenterOfShop from '../../../../hooks/useHelpCenterOfShop'
 import GorgiasChatCreationWizardStepAutomate from '../GorgiasChatCreationWizardStepAutomate'
 
 jest.mock(
     'pages/common/hooks/useIsIntersectingWithBrowserViewport',
-    () => () => false
+    () => () => false,
 )
 
 jest.mock('hooks/useAppDispatch')
@@ -41,7 +39,7 @@ const store = mockStore({
         },
     },
     integrations: integrationsStateWithShopify,
-    billing: fromJS({products: []}),
+    billing: fromJS({ products: [] }),
 })
 store.dispatch = jest.fn()
 jest.mock('state/integrations/actions', () => ({
@@ -88,7 +86,7 @@ const mockUseGetSelfServiceConfiguration =
     >
 describe('<GorgiasChatCreationWizardStepAutomate.spec />', () => {
     it('renders wizard without store selected', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <DndProvider backend={HTML5Backend}>
                 <QueryClientProvider client={queryClient}>
                     <MemoryRouter>
@@ -105,7 +103,7 @@ describe('<GorgiasChatCreationWizardStepAutomate.spec />', () => {
                         </Provider>
                     </MemoryRouter>
                 </QueryClientProvider>
-            </DndProvider>
+            </DndProvider>,
         )
 
         expect(getByText('Connect a store')).toBeInTheDocument()
@@ -117,7 +115,7 @@ describe('<GorgiasChatCreationWizardStepAutomate.spec />', () => {
         ;(useAppDispatch as jest.Mock).mockReturnValue(mockDispatch)
 
         // Render the component with selfServiceConfiguration as undefined
-        const {getAllByRole} = render(
+        const { getAllByRole } = render(
             <DndProvider backend={HTML5Backend}>
                 <QueryClientProvider client={queryClient}>
                     <MemoryRouter>
@@ -136,7 +134,7 @@ describe('<GorgiasChatCreationWizardStepAutomate.spec />', () => {
                         </Provider>
                     </MemoryRouter>
                 </QueryClientProvider>
-            </DndProvider>
+            </DndProvider>,
         )
 
         const labelElements = getAllByRole('switch')
@@ -152,7 +150,7 @@ describe('<GorgiasChatCreationWizardStepAutomate.spec />', () => {
             isLoading: true,
         } as any)
 
-        const {getAllByRole} = render(
+        const { getAllByRole } = render(
             <DndProvider backend={HTML5Backend}>
                 <QueryClientProvider client={queryClient}>
                     <MemoryRouter>
@@ -174,7 +172,7 @@ describe('<GorgiasChatCreationWizardStepAutomate.spec />', () => {
                         </Provider>
                     </MemoryRouter>
                 </QueryClientProvider>
-            </DndProvider>
+            </DndProvider>,
         )
 
         const labelElements = getAllByRole('switch')
@@ -198,7 +196,7 @@ describe('<GorgiasChatCreationWizardStepAutomate.spec />', () => {
             isLoadingHelpCenters: true,
         } as any)
 
-        const {getAllByRole} = render(
+        const { getAllByRole } = render(
             <DndProvider backend={HTML5Backend}>
                 <QueryClientProvider client={queryClient}>
                     <MemoryRouter>
@@ -220,7 +218,7 @@ describe('<GorgiasChatCreationWizardStepAutomate.spec />', () => {
                         </Provider>
                     </MemoryRouter>
                 </QueryClientProvider>
-            </DndProvider>
+            </DndProvider>,
         )
 
         const labelElements = getAllByRole('switch')
@@ -244,7 +242,7 @@ describe('<GorgiasChatCreationWizardStepAutomate.spec />', () => {
             isLoadingHelpCenters: true,
         } as any)
 
-        const {getByText} = render(
+        const { getByText } = render(
             <DndProvider backend={HTML5Backend}>
                 <QueryClientProvider client={queryClient}>
                     <MemoryRouter>
@@ -266,7 +264,7 @@ describe('<GorgiasChatCreationWizardStepAutomate.spec />', () => {
                         </Provider>
                     </MemoryRouter>
                 </QueryClientProvider>
-            </DndProvider>
+            </DndProvider>,
         )
 
         const saveChanges = getByText('Next')

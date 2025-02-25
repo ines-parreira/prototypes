@@ -1,7 +1,7 @@
-import React, {useRef, useState} from 'react'
+import React, { useRef, useState } from 'react'
 
-import {SUPPORTED_UI_DATA_TYPE_VALUES} from 'custom-fields/constants'
-import {ExhaustiveUIDataType, SupportedUIDataType} from 'custom-fields/types'
+import { SUPPORTED_UI_DATA_TYPE_VALUES } from 'custom-fields/constants'
+import { ExhaustiveUIDataType, SupportedUIDataType } from 'custom-fields/types'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
@@ -46,7 +46,7 @@ export default function TypeSelectInput(props: TypeSelectInputProps) {
                     >
                         <DropdownBody>
                             {Object.entries(SUPPORTED_UI_DATA_TYPE_VALUES).map(
-                                ([value, {icon, name, description}]) => (
+                                ([value, { icon, name, description }]) => (
                                     <DropdownItem
                                         key={value}
                                         option={{
@@ -73,7 +73,7 @@ export default function TypeSelectInput(props: TypeSelectInputProps) {
                                             </div>
                                         </div>
                                     </DropdownItem>
-                                )
+                                ),
                             )}
                         </DropdownBody>
                     </Dropdown>

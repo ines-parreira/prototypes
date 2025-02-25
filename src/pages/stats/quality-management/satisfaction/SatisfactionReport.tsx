@@ -1,21 +1,22 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useGridSize} from 'hooks/useGridSize'
-import {FilterKey} from 'models/stat/types'
-import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useGridSize } from 'hooks/useGridSize'
+import { FilterKey } from 'models/stat/types'
+import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
-import {CustomReportComponent} from 'pages/stats/custom-reports/CustomReportComponent'
+import { CustomReportComponent } from 'pages/stats/custom-reports/CustomReportComponent'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
-import {SatisfactionDownloadDataButton} from 'pages/stats/quality-management/satisfaction/SatisfactionDownloadDataButton'
+import { SatisfactionDownloadDataButton } from 'pages/stats/quality-management/satisfaction/SatisfactionDownloadDataButton'
 import {
     SatisfactionChart,
     SatisfactionReportConfig,
 } from 'pages/stats/quality-management/satisfaction/SatisfactionReportConfig'
 import StatsPage from 'pages/stats/StatsPage'
-import {SupportPerformanceFilters} from 'pages/stats/support-performance/SupportPerformanceFilters'
+import { SupportPerformanceFilters } from 'pages/stats/support-performance/SupportPerformanceFilters'
 
 export default function SatisfactionReport() {
     const getGridCellSize = useGridSize()

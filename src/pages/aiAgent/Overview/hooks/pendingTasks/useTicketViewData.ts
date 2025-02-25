@@ -1,14 +1,13 @@
-import {useEffect, useMemo, useState} from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
-import {useGetAccountConfiguration} from 'models/aiAgent/queries'
-
-import {useGetViewTicketUpdates} from 'models/view/queries'
+import { useGetAccountConfiguration } from 'models/aiAgent/queries'
+import { useGetViewTicketUpdates } from 'models/view/queries'
 
 export const useTicketViewData = ({
     accountDomain,
 }: {
     accountDomain: string
-}): {isLoading: boolean; data?: TicketViewData} => {
+}): { isLoading: boolean; data?: TicketViewData } => {
     const [viewId, setViewId] = useState<number | undefined>(undefined)
     const [ticketId, setTicketId] = useState<number | undefined>(undefined)
 
@@ -24,22 +23,22 @@ export const useTicketViewData = ({
 
         setViewId(
             accountConfigurationData.data.accountConfiguration.views?.['Close']
-                ?.id
+                ?.id,
         )
     }, [
         accountConfigurationDataStatus,
         accountConfigurationData?.data.accountConfiguration,
     ])
 
-    const {data: getViewTicketUpdateData, status: getViewTicketUpdateStatus} =
+    const { data: getViewTicketUpdateData, status: getViewTicketUpdateStatus } =
         useGetViewTicketUpdates(
             {
                 viewId: viewId!,
-                params: {limit: 1, order_by: 'created_datetime:desc'},
+                params: { limit: 1, order_by: 'created_datetime:desc' },
             },
             {
                 enabled: !!viewId,
-            }
+            },
         )
 
     useEffect(() => {

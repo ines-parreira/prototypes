@@ -1,11 +1,11 @@
-import {findLast} from 'lodash'
-import slackMessageParser, {Node, NodeType} from 'slack-message-parser'
+import { findLast } from 'lodash'
+import slackMessageParser, { Node, NodeType } from 'slack-message-parser'
 
-import {TicketChannel} from 'business/types/ticket'
-import {MacroActionName} from 'models/macroAction/types'
-import {TicketMessage} from 'models/ticket/types'
-import {WhatsAppMessageTemplate} from 'models/whatsAppMessageTemplates/types'
-import {getMoment, stringToDatetime} from 'utils/date'
+import { TicketChannel } from 'business/types/ticket'
+import { MacroActionName } from 'models/macroAction/types'
+import { TicketMessage } from 'models/ticket/types'
+import { WhatsAppMessageTemplate } from 'models/whatsAppMessageTemplates/types'
+import { getMoment, stringToDatetime } from 'utils/date'
 
 export const WHATSAPP_VARIABLE_REGEX = /(\{\{\d\}\})/
 
@@ -29,7 +29,7 @@ export const countDistinctVariables = (message: string): number => {
 /* checks that every variable is filled */
 export const isWhatsAppMessageValid = (
     message: string,
-    values: string[]
+    values: string[],
 ): boolean => {
     const numberOfVariables = countDistinctVariables(message)
     const filledValues = values.filter(Boolean)
@@ -62,7 +62,7 @@ export const normalizeLocale = (locale: string): string => {
 }
 
 export const createApplyExternalTemplateAction = (
-    template: WhatsAppMessageTemplate
+    template: WhatsAppMessageTemplate,
 ) => ({
     name: MacroActionName.ApplyExternalTemplate,
     type: 'system',
@@ -72,32 +72,32 @@ export const createApplyExternalTemplateAction = (
         template_id: template.id,
         template: template,
         body: Array(
-            countDistinctVariables(template.components.body.value)
-        ).fill({type: 'text', value: ''}),
+            countDistinctVariables(template.components.body.value),
+        ).fill({ type: 'text', value: '' }),
         ...(template.components.header?.type === 'text' &&
             template.components.header?.value && {
                 header: Array(
                     countDistinctVariables(
-                        template.components.header.value ?? ''
-                    )
-                ).fill({type: 'text', value: ''}),
+                        template.components.header.value ?? '',
+                    ),
+                ).fill({ type: 'text', value: '' }),
             }),
     },
 })
 
 export const isWhatsAppWindowOpen = (
-    customerMessages: TicketMessage[]
+    customerMessages: TicketMessage[],
 ): boolean => {
     const lastCustomerWhatsAppMessage = findLast(
         customerMessages,
-        ((message) => message.channel === TicketChannel.WhatsApp) ?? null
+        ((message) => message.channel === TicketChannel.WhatsApp) ?? null,
     )
 
     if (!lastCustomerWhatsAppMessage) return false
 
     const now = getMoment()
     const lastMessageSentAt = stringToDatetime(
-        lastCustomerWhatsAppMessage.created_datetime
+        lastCustomerWhatsAppMessage.created_datetime,
     )
 
     return lastMessageSentAt

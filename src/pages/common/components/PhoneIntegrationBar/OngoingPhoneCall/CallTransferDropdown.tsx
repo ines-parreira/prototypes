@@ -1,15 +1,17 @@
+import React, { ComponentProps, useState } from 'react'
+
+import { Call } from '@twilio/voice-sdk'
+import { get } from 'lodash'
+
 import {
     ListUsersRelationshipsItem,
-    VoiceCallTransferReceiverType,
-    VoiceCallTransferType,
     useListUsers,
     useTransferCall,
+    VoiceCallTransferReceiverType,
+    VoiceCallTransferType,
 } from '@gorgias/api-queries'
-import {Call} from '@twilio/voice-sdk'
-import {get} from 'lodash'
-import React, {ComponentProps, useState} from 'react'
 
-import {getCallSid} from 'hooks/integrations/phone/utils'
+import { getCallSid } from 'hooks/integrations/phone/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import Button from 'pages/common/components/button/Button'
@@ -17,16 +19,16 @@ import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
-import {AgentLabel} from 'pages/common/utils/labels'
-import {getHumanAgentsJS} from 'state/agents/selectors'
-import {getCurrentUserId} from 'state/currentUser/selectors'
-
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { AgentLabel } from 'pages/common/utils/labels'
+import { getHumanAgentsJS } from 'state/agents/selectors'
+import { getCurrentUserId } from 'state/currentUser/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 import DropdownSection from '../../dropdown/DropdownSection'
+import { getAvailabilityBadgeColor, mergeAgentData } from './utils'
+
 import css from './CallTransferDropdown.less'
-import {getAvailabilityBadgeColor, mergeAgentData} from './utils'
 
 type Props = Pick<
     ComponentProps<typeof Dropdown>,
@@ -48,7 +50,7 @@ export default function CallTransferDropdown({
     const [selectedAgent, setSelectedAgent] = useState<number | null>(null)
     const dispatch = useAppDispatch()
 
-    const {data: agentsDataWithStatus} = useListUsers(
+    const { data: agentsDataWithStatus } = useListUsers(
         {
             limit: 100,
             relationships: [ListUsersRelationshipsItem.AvailabilityStatus],
@@ -62,10 +64,10 @@ export default function CallTransferDropdown({
             query: {
                 enabled: !!isOpen,
             },
-        }
+        },
     )
 
-    const {mutate: transferCall, isLoading: isRequestingTransfer} =
+    const { mutate: transferCall, isLoading: isRequestingTransfer } =
         useTransferCall({
             mutation: {
                 onSuccess: () => {
@@ -84,7 +86,7 @@ export default function CallTransferDropdown({
                                     ? NotificationStatus.Info
                                     : NotificationStatus.Error,
                             message,
-                        })
+                        }),
                     )
                 },
             },
@@ -96,7 +98,7 @@ export default function CallTransferDropdown({
     const filteredAgents = agents.filter((agent) => agent.id !== currentAgentId)
     const mergedAgentData = mergeAgentData(
         filteredAgents,
-        agentsDataWithStatus?.data?.data
+        agentsDataWithStatus?.data?.data,
     )
 
     const handleTransferCallClick = () => {
@@ -140,7 +142,7 @@ export default function CallTransferDropdown({
                                     option.meta?.profile_picture_url
                                 }
                                 badgeColor={getAvailabilityBadgeColor(
-                                    option.status
+                                    option.status,
                                 )}
                             />
                         </DropdownItem>

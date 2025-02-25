@@ -1,21 +1,22 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {render} from '@testing-library/react'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { render } from '@testing-library/react'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {agents} from 'fixtures/agents'
-import {LegacyStatsFilters} from 'models/stat/types'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { agents } from 'fixtures/agents'
+import { LegacyStatsFilters } from 'models/stat/types'
 import TeamAverageCallsCountCell from 'pages/stats/voice/components/VoiceAgentsTable/TeamAverageCallsCountCell'
-import {useTotalCallsMetric} from 'pages/stats/voice/hooks/agentMetrics'
-import {fromLegacyStatsFilters} from 'state/stats/utils'
-import {RootState, StoreDispatch} from 'state/types'
-import {initialState as agentPerformanceInitialState} from 'state/ui/stats/agentPerformanceSlice'
-import {AGENT_PERFORMANCE_SLICE_NAME} from 'state/ui/stats/constants'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { useTotalCallsMetric } from 'pages/stats/voice/hooks/agentMetrics'
+import { fromLegacyStatsFilters } from 'state/stats/utils'
+import { RootState, StoreDispatch } from 'state/types'
+import { initialState as agentPerformanceInitialState } from 'state/ui/stats/agentPerformanceSlice'
+import { AGENT_PERFORMANCE_SLICE_NAME } from 'state/ui/stats/constants'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 const queryClient = mockQueryClient()
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -55,7 +56,7 @@ const renderComponent = (mockUseMetric: typeof useTotalCallsMetric) => {
                     useMetric={mockUseMetric}
                 />
             </Provider>
-        </QueryClientProvider>
+        </QueryClientProvider>,
     )
 }
 
@@ -64,10 +65,10 @@ describe('TeamAverageCallsCountCell', () => {
         const useMetricMock = jest.fn().mockReturnValue({
             isFetching: false,
             isError: false,
-            data: {value: null, decile: null, allData: []},
+            data: { value: null, decile: null, allData: [] },
         })
 
-        const {getByText} = renderComponent(useMetricMock)
+        const { getByText } = renderComponent(useMetricMock)
         expect(getByText('-')).toBeInTheDocument()
     })
 
@@ -75,10 +76,10 @@ describe('TeamAverageCallsCountCell', () => {
         const useMetricMock = jest.fn().mockReturnValue({
             isFetching: false,
             isError: false,
-            data: {value: 12, decile: null, allData: []},
+            data: { value: 12, decile: null, allData: [] },
         })
 
-        const {getByText} = renderComponent(useMetricMock)
+        const { getByText } = renderComponent(useMetricMock)
         expect(getByText('1.2')).toBeInTheDocument()
     })
 
@@ -86,12 +87,12 @@ describe('TeamAverageCallsCountCell', () => {
         const useMetricMock = jest.fn().mockReturnValue({
             isFetching: true,
             isError: false,
-            data: {value: 125, decile: null, allData: []},
+            data: { value: 125, decile: null, allData: [] },
         })
 
-        const {container} = renderComponent(useMetricMock)
+        const { container } = renderComponent(useMetricMock)
         expect(
-            container.getElementsByClassName('react-loading-skeleton')
+            container.getElementsByClassName('react-loading-skeleton'),
         ).toHaveLength(1)
     })
 })
@@ -107,10 +108,10 @@ describe('TeamAverageCallsCountCell with the new filters', () => {
         const useMetricMock = jest.fn().mockReturnValue({
             isFetching: false,
             isError: false,
-            data: {value: 12, decile: null, allData: []},
+            data: { value: 12, decile: null, allData: [] },
         })
 
-        const {getByText} = renderComponent(useMetricMock)
+        const { getByText } = renderComponent(useMetricMock)
         expect(getByText('1.2')).toBeInTheDocument()
     })
 })

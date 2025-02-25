@@ -1,8 +1,10 @@
-import {EmailIntegration} from '@gorgias/api-queries'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { EmailIntegration } from '@gorgias/api-queries'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import PageHeader from 'pages/common/components/PageHeader'
 import Wizard from 'pages/common/components/wizard/Wizard'
 import WizardProgressHeader from 'pages/common/components/wizard/WizardProgressHeader'
@@ -15,22 +17,22 @@ import DomainVerificationProvider from './EmailDomainVerification/DomainVerifica
 import EmailDomainVerificationSupportContentSidebar from './EmailDomainVerification/EmailDomainVerificationSupportContentSidebar'
 import EmailIntegrationConnectForm from './EmailIntegrationConnectForm'
 import EmailIntegrationForwardingSetupForm from './EmailIntegrationForwardingSetupForm'
-
-import css from './EmailIntegrationOnboarding.less'
 import EmailIntegrationOnboardingDomainVerification from './EmailIntegrationOnboardingDomainVerification'
 import EmailIntegrationVerificationForm from './EmailIntegrationVerificationForm'
-import {getDomainFromEmailAddress} from './helpers'
+import { getDomainFromEmailAddress } from './helpers'
 import {
     EmailIntegrationOnboardingStep,
     useEmailOnboarding,
 } from './hooks/useEmailOnboarding'
 
+import css from './EmailIntegrationOnboarding.less'
+
 type Props = {
     integration?: EmailIntegration | undefined
 }
 
-export default function EmailIntegrationOnboarding({integration}: Props) {
-    const {currentStep} = useEmailOnboarding({integration})
+export default function EmailIntegrationOnboarding({ integration }: Props) {
+    const { currentStep } = useEmailOnboarding({ integration })
     const isNewDomainVerificationEnabled =
         useFlags()[FeatureFlagKey.NewDomainVerification] ?? false
 
@@ -52,14 +54,14 @@ export default function EmailIntegrationOnboarding({integration}: Props) {
                             steps={
                                 isNewDomainVerificationEnabled
                                     ? Object.values(
-                                          EmailIntegrationOnboardingStep
+                                          EmailIntegrationOnboardingStep,
                                       )
                                     : Object.values(
-                                          EmailIntegrationOnboardingStep
+                                          EmailIntegrationOnboardingStep,
                                       ).filter(
                                           (step) =>
                                               step !==
-                                              EmailIntegrationOnboardingStep.DomainVerification
+                                              EmailIntegrationOnboardingStep.DomainVerification,
                                       )
                             }
                         >
@@ -126,7 +128,7 @@ export default function EmailIntegrationOnboarding({integration}: Props) {
                                 integration && (
                                     <DomainVerificationProvider
                                         domainName={getDomainFromEmailAddress(
-                                            integration.meta?.address ?? ''
+                                            integration.meta?.address ?? '',
                                         )}
                                     >
                                         <EmailIntegrationOnboardingDomainVerification

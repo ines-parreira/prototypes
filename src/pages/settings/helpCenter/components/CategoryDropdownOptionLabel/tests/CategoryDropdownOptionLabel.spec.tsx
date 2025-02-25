@@ -1,16 +1,17 @@
-import {render} from '@testing-library/react'
-import {keyBy as _keyBy} from 'lodash'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render } from '@testing-library/react'
+import { keyBy as _keyBy } from 'lodash'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {getCategoriesFlatSorted} from 'pages/settings/helpCenter/fixtures/getCategoriesTreeFlatSorted.fixtures'
-import {initialState as helpCenterState} from 'state/entities/helpCenter/reducer'
-import {RootState, StoreDispatch} from 'state/types'
-import {initialState as uiState} from 'state/ui/helpCenter/reducer'
+import { getCategoriesFlatSorted } from 'pages/settings/helpCenter/fixtures/getCategoriesTreeFlatSorted.fixtures'
+import { initialState as helpCenterState } from 'state/entities/helpCenter/reducer'
+import { RootState, StoreDispatch } from 'state/types'
+import { initialState as uiState } from 'state/ui/helpCenter/reducer'
 
-import {CategoryDropdownOptionLabel} from '../CategoryDropdownOptionLabel'
+import { CategoryDropdownOptionLabel } from '../CategoryDropdownOptionLabel'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -33,13 +34,13 @@ const store = mockStore(defaultState)
 describe('<CategoryDropdownOptionLabel />', () => {
     it('matches snapshot', () => {
         const category = getCategoriesFlatSorted[1]
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <CategoryDropdownOptionLabel
                     category={category}
                     fullText={true}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(container).toMatchSnapshot()

@@ -1,14 +1,14 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {Provider} from 'react-redux'
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {billingState} from 'fixtures/billing'
+import { billingState } from 'fixtures/billing'
 import useContactFormAutomationSettings from 'pages/automate/common/hooks/useContactFormAutomationSettings'
-import {CONTACT_FORM_DEFAULT_AUTOMATION_SETTINGS} from 'pages/settings/contactForm/constants'
-import {RootState} from 'state/types'
+import { CONTACT_FORM_DEFAULT_AUTOMATION_SETTINGS } from 'pages/settings/contactForm/constants'
+import { RootState } from 'state/types'
 
 import ContactFormFlowsBanner from '../ContactFormFlowsBanner'
 
@@ -38,10 +38,10 @@ describe('<ContactFormFlowsBanner />', () => {
             isFetchPending: false,
         })
 
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <ContactFormFlowsBanner {...mockProps} />
-            </Provider>
+            </Provider>,
         )
 
         expect(container).not.toBeEmptyDOMElement()
@@ -51,15 +51,15 @@ describe('<ContactFormFlowsBanner />', () => {
         mockUseContactFormAutomationSettings.mockReturnValue({
             automationSettings: {
                 ...CONTACT_FORM_DEFAULT_AUTOMATION_SETTINGS,
-                workflows: [{id: '123', enabled: true}],
+                workflows: [{ id: '123', enabled: true }],
             },
             isFetchPending: false,
         })
 
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <ContactFormFlowsBanner {...mockProps} />
-            </Provider>
+            </Provider>,
         )
 
         expect(container).toBeEmptyDOMElement()
@@ -71,10 +71,10 @@ describe('<ContactFormFlowsBanner />', () => {
             isFetchPending: true,
         })
 
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <ContactFormFlowsBanner {...mockProps} />
-            </Provider>
+            </Provider>,
         )
 
         expect(container).toBeEmptyDOMElement()

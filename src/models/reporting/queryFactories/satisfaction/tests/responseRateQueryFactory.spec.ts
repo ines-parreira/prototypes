@@ -1,15 +1,14 @@
 import moment from 'moment'
 
-import {OrderDirection} from 'models/api/types'
-import {TicketDimension} from 'models/reporting/cubes/TicketCube'
-
-import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
+import { OrderDirection } from 'models/api/types'
+import { TicketDimension } from 'models/reporting/cubes/TicketCube'
+import { TicketSatisfactionSurveyMeasure } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
 import {
-    responseRateQueryFactory,
     responseRateDrillDownQueryFactory,
+    responseRateQueryFactory,
 } from 'models/reporting/queryFactories/satisfaction/responseRateQueryFactory'
-import {ReportingFilterOperator} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import { ReportingFilterOperator } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     statsFiltersToReportingFilters,
@@ -38,7 +37,7 @@ describe('responseRateQueryFactory', () => {
             filters: [
                 ...statsFiltersToReportingFilters(
                     TicketStatsFiltersMembers,
-                    statsFilters
+                    statsFilters,
                 ),
             ],
             timezone,
@@ -55,7 +54,7 @@ describe('responseRateQueryFactory', () => {
             filters: [
                 ...statsFiltersToReportingFilters(
                     TicketStatsFiltersMembers,
-                    statsFilters
+                    statsFilters,
                 ),
             ],
             timezone,
@@ -87,7 +86,7 @@ describe('responseRateDrillDownQueryFactory', () => {
             filters: [
                 ...statsFiltersToReportingFilters(
                     TicketStatsFiltersMembers,
-                    statsFilters
+                    statsFilters,
                 ),
                 {
                     member: TicketSatisfactionSurveyMeasure.SentSurveysCount,
@@ -103,7 +102,7 @@ describe('responseRateDrillDownQueryFactory', () => {
         const query = responseRateDrillDownQueryFactory(
             statsFilters,
             timezone,
-            sorting
+            sorting,
         )
 
         expect(query).toEqual({
@@ -114,7 +113,7 @@ describe('responseRateDrillDownQueryFactory', () => {
             filters: [
                 ...statsFiltersToReportingFilters(
                     TicketStatsFiltersMembers,
-                    statsFilters
+                    statsFilters,
                 ),
                 {
                     member: TicketSatisfactionSurveyMeasure.SentSurveysCount,

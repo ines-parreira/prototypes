@@ -1,10 +1,12 @@
-import {fromJS, List, Map as ImmutableMap} from 'immutable'
-import React, {RefObject, memo} from 'react'
-import {Table} from 'reactstrap'
+import React, { memo, RefObject } from 'react'
 
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
+import { fromJS, Map as ImmutableMap, List } from 'immutable'
+import { Table } from 'reactstrap'
+
+import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import OrderLineItemRow from './OrderLineItemRow'
+
 import css from './OrderTable.less'
 
 type Props = {
@@ -65,7 +67,7 @@ function OrderTable({
                             isShownInEditOrder={isShownInEditOrder}
                             lineItem={lineItem}
                             product={products.get(
-                                lineItem.get('product_id') as number
+                                lineItem.get('product_id') as number,
                             )}
                             shopName={shopName}
                             currencyCode={currencyCode}

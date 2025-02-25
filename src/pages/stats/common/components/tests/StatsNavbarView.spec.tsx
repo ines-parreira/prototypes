@@ -1,31 +1,32 @@
-import {screen} from '@testing-library/react'
-import {fromJS, Map} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { screen } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {UserRole} from 'config/types/user'
-import {account} from 'fixtures/account'
-import {billingState} from 'fixtures/billing'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { UserRole } from 'config/types/user'
+import { account } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
 import {
     AUTOMATION_PRODUCT_ID,
     basicMonthlyAutomationPlan,
 } from 'fixtures/productPrices'
-import {useCustomReportActions} from 'hooks/reporting/custom-reports/useCustomReportActions'
-import {IntegrationType} from 'models/integration/constants'
-import {STATS_ROUTE_PREFIX} from 'pages/stats/common/components/constants'
+import { useCustomReportActions } from 'hooks/reporting/custom-reports/useCustomReportActions'
+import { IntegrationType } from 'models/integration/constants'
+import { STATS_ROUTE_PREFIX } from 'pages/stats/common/components/constants'
 import StatsNavbarView, {
     BUSIEST_TIMES_OF_DAYS_NAV_LABEL,
 } from 'pages/stats/common/components/StatsNavbarView'
-import {getDashboardPath} from 'pages/stats/custom-reports/utils'
-import {SERVICE_LEVEL_AGREEMENT_PAGE_TITLE} from 'pages/stats/sla/ServiceLevelAgreementsReportConfig'
-import {AUTO_QA_PAGE_TITLE} from 'pages/stats/support-performance/auto-qa/AutoQAReportConfig'
-import {STATS_ROUTES} from 'routes/constants'
-import {RootState, StoreDispatch} from 'state/types'
-import {assumeMock, renderWithRouterAndDnD} from 'utils/testing'
+import { getDashboardPath } from 'pages/stats/custom-reports/utils'
+import { SERVICE_LEVEL_AGREEMENT_PAGE_TITLE } from 'pages/stats/sla/ServiceLevelAgreementsReportConfig'
+import { AUTO_QA_PAGE_TITLE } from 'pages/stats/support-performance/auto-qa/AutoQAReportConfig'
+import { STATS_ROUTES } from 'routes/constants'
+import { RootState, StoreDispatch } from 'state/types'
+import { assumeMock, renderWithRouterAndDnD } from 'utils/testing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -64,10 +65,10 @@ describe('StatsNavbarView', () => {
     }
 
     it('should render', () => {
-        const {container} = renderWithRouterAndDnD(
+        const { container } = renderWithRouterAndDnD(
             <Provider store={mockStore(defaultState)}>
                 <StatsNavbarView />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -76,11 +77,11 @@ describe('StatsNavbarView', () => {
         renderWithRouterAndDnD(
             <Provider store={mockStore(defaultState)}>
                 <StatsNavbarView />
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            screen.getByText(BUSIEST_TIMES_OF_DAYS_NAV_LABEL)
+            screen.getByText(BUSIEST_TIMES_OF_DAYS_NAV_LABEL),
         ).toBeInTheDocument()
     })
 
@@ -89,15 +90,15 @@ describe('StatsNavbarView', () => {
             renderWithRouterAndDnD(
                 <Provider store={mockStore(defaultState)}>
                     <StatsNavbarView />
-                </Provider>
+                </Provider>,
             )
 
             const agentsPerformanceLink = screen
-                .getAllByRole('link', {name: new RegExp('Agents')})
+                .getAllByRole('link', { name: new RegExp('Agents') })
                 .find(
                     (el) =>
                         el.getAttribute('href') ===
-                        `${STATS_ROUTE_PREFIX}${STATS_ROUTES.SUPPORT_PERFORMANCE_AGENTS}`
+                        `${STATS_ROUTE_PREFIX}${STATS_ROUTES.SUPPORT_PERFORMANCE_AGENTS}`,
                 )
 
             expect(agentsPerformanceLink).toBeInTheDocument()
@@ -108,7 +109,7 @@ describe('StatsNavbarView', () => {
         renderWithRouterAndDnD(
             <Provider store={mockStore(defaultState)}>
                 <StatsNavbarView />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('Campaigns')).toBeInTheDocument()
@@ -121,7 +122,7 @@ describe('StatsNavbarView', () => {
         renderWithRouterAndDnD(
             <Provider store={mockStore(defaultState)}>
                 <StatsNavbarView />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('Help Center')).toBeInTheDocument()
@@ -131,7 +132,7 @@ describe('StatsNavbarView', () => {
         renderWithRouterAndDnD(
             <Provider store={mockStore(defaultState)}>
                 <StatsNavbarView />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getAllByText('Voice')).toHaveLength(2)
@@ -142,11 +143,11 @@ describe('StatsNavbarView', () => {
         renderWithRouterAndDnD(
             <Provider store={mockStore(defaultState)}>
                 <StatsNavbarView />
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            screen.getByText(SERVICE_LEVEL_AGREEMENT_PAGE_TITLE)
+            screen.getByText(SERVICE_LEVEL_AGREEMENT_PAGE_TITLE),
         ).toBeInTheDocument()
     })
 
@@ -156,7 +157,7 @@ describe('StatsNavbarView', () => {
             const state = {
                 ...defaultState,
                 currentUser: fromJS({
-                    role: {name: role},
+                    role: { name: role },
                 }) as Map<any, any>,
                 currentAccount: fromJS({
                     current_subscription: {
@@ -171,35 +172,35 @@ describe('StatsNavbarView', () => {
             renderWithRouterAndDnD(
                 <Provider store={mockStore(state)}>
                     <StatsNavbarView />
-                </Provider>
+                </Provider>,
             )
 
             expect(screen.getByText(AUTO_QA_PAGE_TITLE)).toBeInTheDocument()
-        }
+        },
     )
 
     it('should render the link to the New Tags Report page', () => {
-        const {container} = renderWithRouterAndDnD(
+        const { container } = renderWithRouterAndDnD(
             <Provider store={mockStore(defaultState)}>
                 <StatsNavbarView />
-            </Provider>
+            </Provider>,
         )
 
         const TagsReportLink = container.querySelector(
-            'a[href="/app/stats/tags"]'
+            'a[href="/app/stats/tags"]',
         )
 
         expect(TagsReportLink).toBeInTheDocument()
     })
 
     it('should render the link to the New Channels Reports', () => {
-        const {container} = renderWithRouterAndDnD(
+        const { container } = renderWithRouterAndDnD(
             <Provider store={mockStore(defaultState)}>
                 <StatsNavbarView />
-            </Provider>
+            </Provider>,
         )
         const newChannelsReportLink = container.querySelector(
-            'a[href="/app/stats/channels"]'
+            'a[href="/app/stats/channels"]',
         )
         expect(newChannelsReportLink).toBeInTheDocument()
     })
@@ -209,13 +210,13 @@ describe('StatsNavbarView', () => {
             [FeatureFlagKey.NewSatisfactionReport]: true,
         })
 
-        const {container} = renderWithRouterAndDnD(
+        const { container } = renderWithRouterAndDnD(
             <Provider store={mockStore(defaultState)}>
                 <StatsNavbarView />
-            </Provider>
+            </Provider>,
         )
         const newSatisfactionReportLink = container.querySelector(
-            'a[href="/app/stats/quality-management-satisfaction"]'
+            'a[href="/app/stats/quality-management-satisfaction"]',
         )
         const newBadgeText = newSatisfactionReportLink?.children?.[0]?.innerHTML
 
@@ -224,14 +225,14 @@ describe('StatsNavbarView', () => {
     })
 
     it('should render the link to the Live Voice', () => {
-        const {container} = renderWithRouterAndDnD(
+        const { container } = renderWithRouterAndDnD(
             <Provider store={mockStore(defaultState)}>
                 <StatsNavbarView />
-            </Provider>
+            </Provider>,
         )
 
         const liveVoiceLink = container.querySelector(
-            'a[href="/app/stats/live-voice"]'
+            'a[href="/app/stats/live-voice"]',
         )
         expect(liveVoiceLink).toBeInTheDocument()
     })
@@ -242,25 +243,25 @@ describe('StatsNavbarView', () => {
         })
 
         const mockData = [
-            {id: '1', name: 'Report 1', emoji: '📊'},
-            {id: '2', name: 'Report 2', emoji: 'plus'},
+            { id: '1', name: 'Report 1', emoji: '📊' },
+            { id: '2', name: 'Report 2', emoji: 'plus' },
         ]
 
         useCustomReportActionsMock.mockReturnValue({
             getDashboardsHandler: () => mockData,
         } as any)
 
-        const {container} = renderWithRouterAndDnD(
+        const { container } = renderWithRouterAndDnD(
             <Provider store={mockStore(defaultState)}>
                 <StatsNavbarView />
-            </Provider>
+            </Provider>,
         )
 
         const FirstCustomReportLink = container.querySelector(
-            `a[href="${getDashboardPath(1)}"]`
+            `a[href="${getDashboardPath(1)}"]`,
         )
         const SecondCustomReportLink = container.querySelector(
-            `a[href="${getDashboardPath(2)}"]`
+            `a[href="${getDashboardPath(2)}"]`,
         )
 
         expect(FirstCustomReportLink).toBeInTheDocument()
@@ -271,7 +272,7 @@ describe('StatsNavbarView', () => {
         const state = {
             ...defaultState,
             currentUser: fromJS({
-                role: {name: UserRole.Admin},
+                role: { name: UserRole.Admin },
             }) as Map<any, any>,
             currentAccount: fromJS({
                 current_subscription: {
@@ -287,17 +288,17 @@ describe('StatsNavbarView', () => {
             [FeatureFlagKey.NewSatisfactionReport]: true,
         })
 
-        const {container} = renderWithRouterAndDnD(
+        const { container } = renderWithRouterAndDnD(
             <Provider store={mockStore(state)}>
                 <StatsNavbarView />
-            </Provider>
+            </Provider>,
         )
         const qualityManagementNavBarBlock = container.querySelector(
-            'div[data-candu-id="navbar-block-quality-management"]'
+            'div[data-candu-id="navbar-block-quality-management"]',
         )?.parentElement?.parentElement
 
         const autoQANavbarLinks = screen
-            .getAllByRole('link', {name: new RegExp('Auto QA')})
+            .getAllByRole('link', { name: new RegExp('Auto QA') })
             .filter((el) => el.getAttribute('href') === '/app/stats/auto-qa')
 
         expect(qualityManagementNavBarBlock).toBeInTheDocument()
@@ -311,7 +312,7 @@ describe('StatsNavbarView', () => {
         const state = {
             ...defaultState,
             currentUser: fromJS({
-                role: {name: UserRole.Admin},
+                role: { name: UserRole.Admin },
             }) as Map<any, any>,
             currentAccount: fromJS({
                 current_subscription: {
@@ -327,17 +328,17 @@ describe('StatsNavbarView', () => {
             [FeatureFlagKey.NewSatisfactionReport]: false,
         })
 
-        const {container} = renderWithRouterAndDnD(
+        const { container } = renderWithRouterAndDnD(
             <Provider store={mockStore(state)}>
                 <StatsNavbarView />
-            </Provider>
+            </Provider>,
         )
         const supportPerformanceNavBarBlock = container.querySelector(
-            'div[data-candu-id="navbar-block-support-performance"]'
+            'div[data-candu-id="navbar-block-support-performance"]',
         )?.parentElement?.parentElement
 
         const autoQANavbarLinks = screen
-            .getAllByRole('link', {name: new RegExp('Auto QA')})
+            .getAllByRole('link', { name: new RegExp('Auto QA') })
             .filter((el) => el.getAttribute('href') === '/app/stats/auto-qa')
 
         expect(supportPerformanceNavBarBlock).toBeInTheDocument()

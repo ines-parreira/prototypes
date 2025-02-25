@@ -1,15 +1,15 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
-import {GorgiasAction} from 'state/types'
+import { GorgiasAction } from 'state/types'
 
 import * as types from '../constants'
-import reducer, {initialState} from '../reducers'
+import reducer, { initialState } from '../reducers'
 
 describe('reducers', () => {
     describe('chats', () => {
         it('initial state', () => {
             expect(reducer(undefined, {} as GorgiasAction)).toEqualImmutable(
-                initialState
+                initialState,
             )
         })
 
@@ -21,7 +21,7 @@ describe('reducers', () => {
                         id: 1,
                         is_unread: true,
                     },
-                ])
+                ]),
             )
             const action = {
                 type: types.SET_CHATS,
@@ -39,7 +39,7 @@ describe('reducers', () => {
                 ],
             }
             expect(
-                reducer(state, action as unknown as GorgiasAction).toJS()
+                reducer(state, action as unknown as GorgiasAction).toJS(),
             ).toMatchSnapshot()
         })
 
@@ -51,7 +51,7 @@ describe('reducers', () => {
                         id: 1,
                         is_unread: true,
                     },
-                ])
+                ]),
             )
             const action = {
                 type: types.ADD_CHAT,
@@ -63,7 +63,7 @@ describe('reducers', () => {
             }
 
             expect(
-                reducer(state, action as unknown as GorgiasAction).toJS()
+                reducer(state, action as unknown as GorgiasAction).toJS(),
             ).toMatchSnapshot()
         })
 
@@ -81,7 +81,7 @@ describe('reducers', () => {
                     {
                         id: 2,
                     },
-                ])
+                ]),
             )
             expect(reducer(state, action).toJS()).toMatchSnapshot()
         })
@@ -98,7 +98,7 @@ describe('reducers', () => {
                         id: 1,
                         is_unread: true,
                     },
-                ])
+                ]),
             )
             expect(reducer(state, action).toJS()).toMatchSnapshot()
         })
@@ -115,7 +115,7 @@ describe('reducers', () => {
                         id: 1,
                         is_unread: false,
                     },
-                ])
+                ]),
             )
             expect(reducer(state, action).toJS()).toMatchSnapshot()
         })

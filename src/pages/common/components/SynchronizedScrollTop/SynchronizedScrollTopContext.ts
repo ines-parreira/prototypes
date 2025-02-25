@@ -1,5 +1,6 @@
+import { createContext, Dispatch, SetStateAction } from 'react'
+
 import _noop from 'lodash/noop'
-import {createContext, Dispatch, SetStateAction} from 'react'
 
 export type SynchronizedScrollTopValue = {
     scrollTop: number
@@ -16,5 +17,5 @@ export const defaultSynchronizedScrollTopValue: SynchronizedScrollTopValue = {
 }
 
 export default createContext<SynchronizedScrollTopValue>(
-    defaultSynchronizedScrollTopValue
+    defaultSynchronizedScrollTopValue,
 )

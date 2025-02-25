@@ -1,13 +1,13 @@
-import {Map} from 'immutable'
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {IntegrationProvider} from 'pages/convert/campaigns/containers/IntegrationProvider'
+import { Map } from 'immutable'
+
+import { IntegrationProvider } from 'pages/convert/campaigns/containers/IntegrationProvider'
 import {
     CampaigFormConfigurationProvider,
     CampaignFormConfigurationType,
 } from 'pages/convert/campaigns/providers/CampaignDetailsForm/configurationContext'
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
-
+import { Campaign } from 'pages/convert/campaigns/types/Campaign'
 import {
     UtmConfiguration,
     WizardConfiguration,
@@ -45,7 +45,7 @@ export const SimpleCampaignEditor: React.FC<Props> = (props) => {
                 configuration: wizardConfiguration,
                 utmConfiguration: utmConfiguration,
             }) as CampaignFormConfigurationType,
-        [wizardConfiguration, utmConfiguration]
+        [wizardConfiguration, utmConfiguration],
     )
 
     return (

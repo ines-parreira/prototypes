@@ -2,7 +2,7 @@ import React from 'react'
 
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
 import TrendBadge from 'pages/stats/common/components/TrendBadge'
-import {formatMetricValue} from 'pages/stats/common/utils'
+import { formatMetricValue } from 'pages/stats/common/utils'
 import MetricCard from 'pages/stats/MetricCard'
 import PerformanceTip from 'pages/stats/PerformanceTip'
 
@@ -10,8 +10,8 @@ import {
     AUTOMATED_INTERACTION_TOOLTIP,
     AUTOMATED_INTERACTIONS_LABEL,
 } from './constants'
-import {AutomateMetricProps} from './types'
-import {getTrendProps} from './utils'
+import { AutomateMetricProps } from './types'
+import { getTrendProps } from './utils'
 
 export const AutomatedInteractionsMetric = ({
     trend: automatedInteractionsTrend,

@@ -1,4 +1,4 @@
-import {TicketChannel} from '@gorgias/api-queries'
+import { TicketChannel } from '@gorgias/api-queries'
 
 export type Metric = {
     name: string

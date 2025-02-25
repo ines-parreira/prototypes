@@ -1,9 +1,9 @@
 import {
-    UserRole,
-    User,
     AvailabilityStatusChannel,
-    AvailabilityStatusTag,
     AvailabilityStatusDetailCode,
+    AvailabilityStatusTag,
+    User,
+    UserRole,
 } from '../config/types/user'
 
 export const agents: User[] = [
@@ -17,7 +17,7 @@ export const agents: User[] = [
         id: 1,
         firstname: 'Acme',
         email: 'support@acme.gorgias.io',
-        role: {name: UserRole.Agent},
+        role: { name: UserRole.Agent },
         updated_datetime: '2017-07-31T21:43:05.502541+00:00',
         settings: [],
         bio: null,
@@ -44,7 +44,7 @@ export const agents: User[] = [
         id: 2,
         firstname: 'Bob',
         email: 'agent-smith@gorgias.io',
-        role: {name: UserRole.Admin},
+        role: { name: UserRole.Admin },
         updated_datetime: '2017-07-31T21:43:08.033390+00:00',
         bio: null,
         meta: {

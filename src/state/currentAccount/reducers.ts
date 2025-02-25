@@ -1,9 +1,8 @@
-import {fromJS, Map, List} from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 
-import {GorgiasAction} from '../types'
-
+import { GorgiasAction } from '../types'
 import * as constants from './constants'
-import {CurrentAccountState} from './types'
+import { CurrentAccountState } from './types'
 
 export const initialState: CurrentAccountState = fromJS({
     settings: [],
@@ -14,7 +13,7 @@ export const initialState: CurrentAccountState = fromJS({
 
 export default function reducer(
     state: CurrentAccountState = initialState,
-    action: GorgiasAction
+    action: GorgiasAction,
 ): CurrentAccountState {
     switch (action.type) {
         case constants.UPDATE_ACCOUNT_START:
@@ -31,7 +30,7 @@ export default function reducer(
                     // in case it has been canceled and it's empty
                     .set(
                         'current_subscription',
-                        account.get('current_subscription')
+                        account.get('current_subscription'),
                     )
             )
         }
@@ -47,13 +46,13 @@ export default function reducer(
                         return subscription.merge(fromJS(action.subscription))
                     }
                     return fromJS(action.subscription) as Map<any, any>
-                }
+                },
             )
 
         case constants.SET_CURRENT_SUBSCRIPTION:
             return state.set(
                 'current_subscription',
-                fromJS(action.subscription)
+                fromJS(action.subscription),
             )
 
         case constants.UPDATE_SUBSCRIPTION_PRODUCTS:
@@ -63,7 +62,7 @@ export default function reducer(
 
             return state.setIn(
                 ['current_subscription', 'products'],
-                fromJS(action.products)
+                fromJS(action.products),
             )
 
         case constants.UPDATE_ACCOUNT_SETTING: {
@@ -76,7 +75,7 @@ export default function reducer(
                 if (
                     (state.get('settings') as List<any>).findIndex(
                         (setting: Map<any, any>) =>
-                            setting.get('type') === new_setting.type
+                            setting.get('type') === new_setting.type,
                     ) !== -1
                 ) {
                     return state.mergeDeep({
@@ -85,7 +84,7 @@ export default function reducer(
                 }
 
                 return state.update('settings', (settings: List<any>) =>
-                    settings.push(fromJS(new_setting) as Map<any, any>)
+                    settings.push(fromJS(new_setting) as Map<any, any>),
                 )
             }
 
@@ -95,7 +94,7 @@ export default function reducer(
                         return fromJS(new_setting) as Map<any, any>
                     }
                     return setting
-                })
+                }),
             )
         }
 

@@ -1,12 +1,12 @@
-import {countries, Country} from 'config/countries'
+import { countries, Country } from 'config/countries'
 
 export const getCountrySelectOptions = (
     supportedCountryCodes: Country[],
-    allowedCountryCodes?: string[]
+    allowedCountryCodes?: string[],
 ): Country[] => {
     if (allowedCountryCodes) {
         return supportedCountryCodes.filter((country) =>
-            allowedCountryCodes.includes(country.value)
+            allowedCountryCodes.includes(country.value),
         )
     }
     return countries

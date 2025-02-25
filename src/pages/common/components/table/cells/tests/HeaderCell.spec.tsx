@@ -1,5 +1,6 @@
-import {fireEvent, render, screen} from '@testing-library/react'
 import React from 'react'
+
+import { fireEvent, render, screen } from '@testing-library/react'
 
 import HeaderCell from '../HeaderCell'
 
@@ -7,26 +8,28 @@ describe('<HeaderCell/>', () => {
     const mockOnClick = jest.fn()
 
     it('should render', () => {
-        const {container} = render(<HeaderCell className="foo">Foo</HeaderCell>)
+        const { container } = render(
+            <HeaderCell className="foo">Foo</HeaderCell>,
+        )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render in small size', () => {
-        const {container} = render(
+        const { container } = render(
             <HeaderCell className="foo" size="small">
                 Foo
-            </HeaderCell>
+            </HeaderCell>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render in smallest size', () => {
-        const {container} = render(
+        const { container } = render(
             <HeaderCell className="foo" size="smallest">
                 Foo
-            </HeaderCell>
+            </HeaderCell>,
         )
 
         expect(container.firstChild).toMatchSnapshot()

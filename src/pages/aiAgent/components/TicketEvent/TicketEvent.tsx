@@ -1,10 +1,11 @@
-import classnames from 'classnames'
 import React from 'react'
+
+import classnames from 'classnames'
 
 import check from 'assets/img/icons/check.svg'
 import person_add from 'assets/img/icons/person_add.svg'
 import timer from 'assets/img/icons/timer_empty.svg'
-import {TicketOutcome} from 'models/aiAgentPlayground/types'
+import { TicketOutcome } from 'models/aiAgentPlayground/types'
 
 import css from './TicketEvent.less'
 
@@ -12,19 +13,19 @@ type Props = {
     type: TicketOutcome
 }
 
-const ticketOutcomeToIcon: {[key in TicketOutcome]: string} = {
+const ticketOutcomeToIcon: { [key in TicketOutcome]: string } = {
     [TicketOutcome.CLOSE]: check,
     [TicketOutcome.HANDOVER]: person_add,
     [TicketOutcome.WAIT]: timer,
 }
 
-const ticketOutcomeToLabel: {[key in TicketOutcome]: string} = {
+const ticketOutcomeToLabel: { [key in TicketOutcome]: string } = {
     [TicketOutcome.CLOSE]: 'Closed',
     [TicketOutcome.HANDOVER]: 'Handed over',
     [TicketOutcome.WAIT]: 'Snoozed',
 }
 
-const TicketEvent = ({type}: Props) => {
+const TicketEvent = ({ type }: Props) => {
     return (
         <div className={css.ticketEventContainer}>
             <div className={css.ticketEventBadge}>
@@ -34,7 +35,7 @@ const TicketEvent = ({type}: Props) => {
                         css.badgeIconContainer,
                         type === TicketOutcome.CLOSE
                             ? css.badgeIconContainerGreen
-                            : css.badgeIconContainerBlack
+                            : css.badgeIconContainerBlack,
                     )}
                 >
                     <img alt="timer" src={ticketOutcomeToIcon[type]} />

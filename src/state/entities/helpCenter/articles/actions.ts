@@ -1,30 +1,30 @@
-import {createAction, ThunkAction} from '@reduxjs/toolkit'
-import {AnyAction} from 'redux'
+import { createAction, ThunkAction } from '@reduxjs/toolkit'
+import { AnyAction } from 'redux'
 
-import {Article, LocaleCode} from 'models/helpCenter/types'
-import {createArticleFromDto} from 'models/helpCenter/utils'
-import {getHelpCenterClient} from 'rest_api/help_center_api'
-import {StoreDispatch, StoreState} from 'state/types'
+import { Article, LocaleCode } from 'models/helpCenter/types'
+import { createArticleFromDto } from 'models/helpCenter/utils'
+import { getHelpCenterClient } from 'rest_api/help_center_api'
+import { StoreDispatch, StoreState } from 'state/types'
 
 import * as articleSelectors from './selectors'
-import {ArticleActions} from './types'
+import { ArticleActions } from './types'
 
 /**
  * Articles actions
  */
 
 export const saveArticles = createAction<Article[]>(
-    ArticleActions.SAVE_ARTICLES
+    ArticleActions.SAVE_ARTICLES,
 )
 
 export const updateArticle = createAction<Article>(
-    ArticleActions.UPDATE_ARTICLE
+    ArticleActions.UPDATE_ARTICLE,
 )
 
 export const deleteArticle = createAction<number>(ArticleActions.DELETE_ARTICLE)
 
 export const updateArticlesOrder = createAction<number[]>(
-    ArticleActions.UPDATE_ARTICLES_ORDER
+    ArticleActions.UPDATE_ARTICLES_ORDER,
 )
 
 export const pushArticleSupportedLocales = createAction<{
@@ -45,7 +45,7 @@ export const cleanArticlesWithNoTranslation = createAction<{
 }>(ArticleActions.CLEAN_ARTICLES_WITH_NO_TRANSLATION)
 
 export function reloadArticles(
-    helpCenterId: number
+    helpCenterId: number,
 ): ThunkAction<
     Promise<ReturnType<StoreDispatch>>,
     StoreState,
@@ -56,7 +56,7 @@ export function reloadArticles(
         const client = await getHelpCenterClient()
         const ids = articleSelectors.getArticles(getState()).map((a) => a.id)
         const {
-            data: {data: articles},
+            data: { data: articles },
         } = await client.listArticles({
             help_center_id: helpCenterId,
             order_by: 'position',
@@ -66,7 +66,7 @@ export function reloadArticles(
             page: 1,
         })
         const payload = articles.map((article, index) =>
-            createArticleFromDto(article, index)
+            createArticleFromDto(article, index),
         )
         return dispatch(saveArticles(payload))
     }

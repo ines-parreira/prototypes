@@ -1,6 +1,7 @@
-import {render, fireEvent} from '@testing-library/react'
-import React, {ComponentProps, ReactNode} from 'react'
-import {Router} from 'react-router-dom'
+import React, { ComponentProps, ReactNode } from 'react'
+
+import { fireEvent, render } from '@testing-library/react'
+import { Router } from 'react-router-dom'
 
 import Modal from 'pages/common/components/modal/Modal'
 import history from 'pages/history'
@@ -8,21 +9,20 @@ import history from 'pages/history'
 import NavigatedSuccessModal, {
     NavigatedSuccessModalName,
 } from '../NavigatedSuccessModal'
-
-import {SuccessModalIcon} from '../SuccessModal'
+import { SuccessModalIcon } from '../SuccessModal'
 
 jest.mock('pages/common/components/modal/Modal', () => {
-    return ({children, isOpen, onClose}: ComponentProps<typeof Modal>) => (
+    return ({ children, isOpen, onClose }: ComponentProps<typeof Modal>) => (
         <div onClick={onClose}>{isOpen ? children : null}</div>
     )
 })
 
 jest.mock('pages/common/components/modal/ModalHeader', () => {
-    return ({title}: {title: ReactNode}) => <div>{title}</div>
+    return ({ title }: { title: ReactNode }) => <div>{title}</div>
 })
 
 jest.mock('pages/common/components/modal/ModalBody', () => {
-    return ({children}: {children: ReactNode}) => <div>{children}</div>
+    return ({ children }: { children: ReactNode }) => <div>{children}</div>
 })
 
 describe('<NavigatedSuccessModal />', () => {
@@ -35,19 +35,19 @@ describe('<NavigatedSuccessModal />', () => {
     }
 
     it('does not open modal if not specified in location state', () => {
-        const {queryByText} = render(
+        const { queryByText } = render(
             <Router history={history}>
                 <NavigatedSuccessModal {...props}>
                     {content}
                 </NavigatedSuccessModal>
-            </Router>
+            </Router>,
         )
 
         expect(queryByText(content)).not.toBeInTheDocument()
     })
 
     it('opens modal if specified in location state', () => {
-        const {queryByText} = render(
+        const { queryByText } = render(
             <Router
                 history={{
                     ...history,
@@ -63,14 +63,14 @@ describe('<NavigatedSuccessModal />', () => {
                 <NavigatedSuccessModal {...props}>
                     {content}
                 </NavigatedSuccessModal>
-            </Router>
+            </Router>,
         )
 
         expect(queryByText(content)).toBeInTheDocument()
     })
 
     it('closing modal updates location state', () => {
-        const {getByText, queryByText} = render(
+        const { getByText, queryByText } = render(
             <Router
                 history={{
                     ...history,
@@ -86,7 +86,7 @@ describe('<NavigatedSuccessModal />', () => {
                 <NavigatedSuccessModal {...props}>
                     {content}
                 </NavigatedSuccessModal>
-            </Router>
+            </Router>,
         )
 
         expect(queryByText(content)).toBeInTheDocument()

@@ -1,5 +1,6 @@
-import {capitalize} from 'lodash'
-import React, {useRef, useState} from 'react'
+import React, { useRef, useState } from 'react'
+
+import { capitalize } from 'lodash'
 
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
@@ -48,7 +49,7 @@ export const Condition = ({
     const floatingSelectRef = useRef<HTMLDivElement>(null)
 
     const selectedOperatorLabel = operators.find(
-        (operator) => operator.key === selectedOperatorValue
+        (operator) => operator.key === selectedOperatorValue,
     )?.label
 
     return (

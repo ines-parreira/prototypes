@@ -1,27 +1,26 @@
 import React from 'react'
 
-import {useParams} from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
-import {useInsightPerformanceMetrics} from 'hooks/reporting/automate/useAIAgentInsightsL2Dataset'
-import {useNewAutomateFilters} from 'hooks/reporting/automate/useNewAutomateFilters'
-import {transformIntentName} from 'hooks/reporting/automate/utils'
+import { useInsightPerformanceMetrics } from 'hooks/reporting/automate/useAIAgentInsightsL2Dataset'
+import { useNewAutomateFilters } from 'hooks/reporting/automate/useNewAutomateFilters'
+import { transformIntentName } from 'hooks/reporting/automate/utils'
 import useAppSelector from 'hooks/useAppSelector'
-import {useGetCustomTicketsFieldsDefinitionData} from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
-import {IntentsPerformance} from 'pages/aiAgent/insights/widgets/IntentsPerformance/IntentsPerformance'
-import {getPageStatsFilters} from 'state/stats/selectors'
-
-import {AIInsightsMetric} from 'state/ui/stats/types'
+import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
+import { IntentsPerformance } from 'pages/aiAgent/insights/widgets/IntentsPerformance/IntentsPerformance'
+import { getPageStatsFilters } from 'state/stats/selectors'
+import { AIInsightsMetric } from 'state/ui/stats/types'
 
 const INTENT_LEVEL = 1
 export const Level2IntentsPerformance = () => {
     const pageStatsFilters = useAppSelector(getPageStatsFilters)
 
-    const {intentId} = useParams<{
+    const { intentId } = useParams<{
         shopName: string
         intentId: string
     }>()
 
-    const {userTimezone} = useNewAutomateFilters()
+    const { userTimezone } = useNewAutomateFilters()
     const aiAgentMetrics = useInsightPerformanceMetrics({
         filters: pageStatsFilters,
         timezone: userTimezone,
@@ -29,7 +28,7 @@ export const Level2IntentsPerformance = () => {
         intentLevel: INTENT_LEVEL,
     })
 
-    const {intentCustomFieldId} = useGetCustomTicketsFieldsDefinitionData()
+    const { intentCustomFieldId } = useGetCustomTicketsFieldsDefinitionData()
 
     return (
         <IntentsPerformance

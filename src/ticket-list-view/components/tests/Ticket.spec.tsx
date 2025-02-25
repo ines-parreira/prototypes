@@ -1,10 +1,11 @@
-import {render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {Customer} from 'models/customer/types'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { Customer } from 'models/customer/types'
 import useIsTicketViewed from 'ticket-list-view/hooks/useIsTicketViewed'
-import {TicketSummary} from 'ticket-list-view/types'
+import { TicketSummary } from 'ticket-list-view/types'
 
 import Ticket from '../Ticket'
 
@@ -46,14 +47,14 @@ describe('Ticket', () => {
     it('should render a default ticket', () => {
         render(<Ticket {...defaultProps} />)
         expect(
-            screen.getByText(defaultProps.ticket.customer!.name)
+            screen.getByText(defaultProps.ticket.customer!.name),
         ).toBeInTheDocument()
         expect(screen.getByText('email')).toBeInTheDocument()
         expect(
-            screen.getByText(defaultProps.ticket.subject)
+            screen.getByText(defaultProps.ticket.subject),
         ).toBeInTheDocument()
         expect(
-            screen.getByText(defaultProps.ticket.excerpt!)
+            screen.getByText(defaultProps.ticket.excerpt!),
         ).toBeInTheDocument()
     })
 
@@ -63,12 +64,15 @@ describe('Ticket', () => {
                 {...defaultProps}
                 ticket={{
                     ...defaultTicket,
-                    customer: {...defaultTicket.customer, name: ''} as Customer,
+                    customer: {
+                        ...defaultTicket.customer,
+                        name: '',
+                    } as Customer,
                 }}
-            />
+            />,
         )
         expect(
-            screen.getByText(defaultProps.ticket.customer!.email!)
+            screen.getByText(defaultProps.ticket.customer!.email!),
         ).toBeInTheDocument()
     })
 
@@ -84,10 +88,10 @@ describe('Ticket', () => {
                         email: '',
                     } as Customer,
                 }}
-            />
+            />,
         )
         expect(
-            screen.getByText(`Customer #${defaultProps.ticket.customer!.id}`)
+            screen.getByText(`Customer #${defaultProps.ticket.customer!.id}`),
         ).toBeInTheDocument()
     })
 
@@ -99,10 +103,10 @@ describe('Ticket', () => {
                     ...defaultTicket,
                     customer: null,
                 }}
-            />
+            />,
         )
         expect(
-            document.getElementsByClassName('customer')[0]
+            document.getElementsByClassName('customer')[0],
         ).toHaveTextContent('')
     })
 

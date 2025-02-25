@@ -1,1 +1,1 @@
-export {default} from './CampaignDetailsFactory'
+export { default } from './CampaignDetailsFactory'

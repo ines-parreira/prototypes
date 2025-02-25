@@ -1,10 +1,11 @@
-import classNames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useEffect, useState} from 'react'
-// eslint-disable-next-line no-restricted-imports
-import {useDispatch} from 'react-redux'
+import React, { useEffect, useState } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import classNames from 'classnames'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+// eslint-disable-next-line no-restricted-imports
+import { useDispatch } from 'react-redux'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import {
     ContactForm,
     UpdateContactFormDto,
@@ -14,21 +15,22 @@ import Button from 'pages/common/components/button/Button'
 import ContactFormDisplayModeToggle from 'pages/settings/contactForm/components/ContactFormDisplayModeToggle'
 import ContactFormEntrypointPreview from 'pages/settings/contactForm/components/ContactFormEntrypointPreview'
 import contactFormCss from 'pages/settings/contactForm/contactForm.less'
-import {useContactFormApi} from 'pages/settings/contactForm/hooks/useContactFormApi'
-import {useCurrentContactForm} from 'pages/settings/contactForm/hooks/useCurrentContactForm'
-import {ContactFormDisplayMode} from 'pages/settings/contactForm/types/formDisplayMode.enum'
-import {catchAsync} from 'pages/settings/contactForm/utils/errorHandling'
+import { useContactFormApi } from 'pages/settings/contactForm/hooks/useContactFormApi'
+import { useCurrentContactForm } from 'pages/settings/contactForm/hooks/useCurrentContactForm'
+import { ContactFormDisplayMode } from 'pages/settings/contactForm/types/formDisplayMode.enum'
+import { catchAsync } from 'pages/settings/contactForm/utils/errorHandling'
 import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal'
 import SubjectLines from 'pages/settings/helpCenter/components/SubjectLines/SubjectLines'
-import {notify as notifyAction} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { notify as notifyAction } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+
+import ContactFormFlowsBanner from './ContactFormFlowsBanner'
 
 import css from './ContactFormCustomization.less'
-import ContactFormFlowsBanner from './ContactFormFlowsBanner'
 
 const initUpdateDto = (
     subject_lines: ContactForm['subject_lines'],
-    form_display_mode: ContactForm['form_display_mode']
+    form_display_mode: ContactForm['form_display_mode'],
 ): Pick<UpdateContactFormDto, 'subject_lines' | 'form_display_mode'> => {
     return {
         subject_lines: {
@@ -41,18 +43,18 @@ const initUpdateDto = (
 
 const ContactFormCustomization = (): JSX.Element => {
     const dispatch = useDispatch()
-    const {updateContactForm, isLoading} = useContactFormApi()
+    const { updateContactForm, isLoading } = useContactFormApi()
     const contactForm = useCurrentContactForm()
     const [isChangesModalShown, setIsChangesModalShown] = useState(false)
     const [isDirty, setIsDirty] = useState(false)
     const [updateContactFormDto, setUpdateContactFormDto] = useState<
         Pick<UpdateContactFormDto, 'subject_lines' | 'form_display_mode'>
     >(() =>
-        initUpdateDto(contactForm.subject_lines, contactForm.form_display_mode)
+        initUpdateDto(contactForm.subject_lines, contactForm.form_display_mode),
     )
     const [isFormHidden, setIsFormHidden] = useState(
         contactForm.form_display_mode ===
-            ContactFormDisplayMode.SHOW_AFTER_BUTTON_CLICK
+            ContactFormDisplayMode.SHOW_AFTER_BUTTON_CLICK,
     )
     const isContactFormNewEntrypointViewEnabled =
         useFlags()[FeatureFlagKey.ContactFormNewEntrypointView] || false
@@ -69,13 +71,13 @@ const ContactFormCustomization = (): JSX.Element => {
     const discardChanges = () => {
         setIsFormHidden(
             contactForm.form_display_mode ===
-                ContactFormDisplayMode.SHOW_AFTER_BUTTON_CLICK
+                ContactFormDisplayMode.SHOW_AFTER_BUTTON_CLICK,
         )
         setUpdateContactFormDto(
             initUpdateDto(
                 contactForm.subject_lines,
-                contactForm.form_display_mode
-            )
+                contactForm.form_display_mode,
+            ),
         )
         setIsChangesModalShown(false)
         setIsDirty(false)
@@ -94,7 +96,7 @@ const ContactFormCustomization = (): JSX.Element => {
             return
 
         const [error, result] = await catchAsync(() =>
-            updateContactForm(contactForm.id, updateContactFormDto)
+            updateContactForm(contactForm.id, updateContactFormDto),
         )
         const isUpdated = !error && result
 
@@ -106,7 +108,7 @@ const ContactFormCustomization = (): JSX.Element => {
                 message: isUpdated
                     ? 'Contact form updated successfully'
                     : 'Failed to update the Contact Form',
-            })
+            }),
         )
 
         if (isUpdated) {
@@ -116,7 +118,7 @@ const ContactFormCustomization = (): JSX.Element => {
     }
 
     const isValid = (updateContactFormDto.subject_lines?.options || []).every(
-        (option) => option.trim().length > 1
+        (option) => option.trim().length > 1,
     )
 
     const isSaveChangesEnabled = isValid && isDirty && !isLoading
@@ -144,7 +146,7 @@ const ContactFormCustomization = (): JSX.Element => {
                             updateContactFormDto.subject_lines || null
                         }
                         updateSubjectLines={(
-                            payload: UpdateSubjectLinesProps
+                            payload: UpdateSubjectLinesProps,
                         ) => {
                             setUpdateContactFormDto((prevState) => ({
                                 ...prevState,

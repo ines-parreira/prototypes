@@ -1,5 +1,6 @@
-import {Badge} from '@gorgias/merchant-ui-kit'
 import React from 'react'
+
+import { Badge } from '@gorgias/merchant-ui-kit'
 
 import css from './CardHeaderYotpoLoyaltyPoints.less'
 
@@ -8,7 +9,7 @@ type Props = {
     label?: string
 }
 
-export function CardHeaderYotpoLoyaltyPoints({value}: Props) {
+export function CardHeaderYotpoLoyaltyPoints({ value }: Props) {
     return (
         <span className={css.container}>
             <span className={`material-icons ${css.star}`}>stars</span>

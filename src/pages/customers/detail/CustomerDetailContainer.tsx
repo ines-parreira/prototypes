@@ -1,24 +1,24 @@
-import {fromJS, List} from 'immutable'
-import _pick from 'lodash/pick'
-import React, {useEffect, useMemo, useState} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {useParams} from 'react-router-dom'
+import React, { useEffect, useMemo, useState } from 'react'
 
-import {TicketChannel} from 'business/types/ticket'
+import { fromJS, List } from 'immutable'
+import _pick from 'lodash/pick'
+import { connect, ConnectedProps } from 'react-redux'
+import { useParams } from 'react-router-dom'
+
+import { TicketChannel } from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
-import {RecentItems} from 'hooks/useRecentItems/constants'
+import { RecentItems } from 'hooks/useRecentItems/constants'
 import useRecentItems from 'hooks/useRecentItems/useRecentItems'
-import {Customer} from 'models/customer/types'
-import {PickedCustomer, pickedCustomerFields} from 'models/search/types'
+import { Customer } from 'models/customer/types'
+import { PickedCustomer, pickedCustomerFields } from 'models/search/types'
 import Button from 'pages/common/components/button/Button'
 import CreateTicketButton from 'pages/common/components/CreateTicket/CreateTicketButton'
 import Loader from 'pages/common/components/Loader/Loader'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-
 import Timeline from 'pages/common/components/timeline/Timeline'
 import CustomerForm from 'pages/customers/common/components/CustomerForm'
-import {fetchCustomer, fetchCustomerHistory} from 'state/customers/actions'
+import { fetchCustomer, fetchCustomerHistory } from 'state/customers/actions'
 import * as customersHelpers from 'state/customers/helpers'
 import {
     DEPRECATED_getActiveCustomer,
@@ -26,7 +26,7 @@ import {
     makeGetActiveCustomerChannelsByType,
     makeIsLoading,
 } from 'state/customers/selectors'
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
 
 import css from './CustomerDetailContainer.less'
 
@@ -46,12 +46,12 @@ export const CustomerDetailContainer = ({
     const [isCustomerFormOpen, setIsCustomerFormOpen] = useState(false)
     const historyLength = useMemo(
         () => (customerHistory.get('tickets', fromJS([])) as List<any>).size,
-        [customerHistory]
+        [customerHistory],
     )
-    const params = useParams<{customerId?: string}>()
+    const params = useParams<{ customerId?: string }>()
     const customerId = useMemo(() => params.customerId || '', [params])
-    const {setRecentItem} = useRecentItems<PickedCustomer>(
-        RecentItems.Customers
+    const { setRecentItem } = useRecentItems<PickedCustomer>(
+        RecentItems.Customers,
     )
 
     useEffect(() => {
@@ -91,7 +91,7 @@ export const CustomerDetailContainer = ({
                 },
             },
         }),
-        [activeCustomer, filteredChannels]
+        [activeCustomer, filteredChannels],
     )
 
     return shouldDisplayLoader ? (
@@ -102,7 +102,7 @@ export const CustomerDetailContainer = ({
                 <h1>{customersHelpers.getDisplayName(activeCustomer)}</h1>
                 <div className={css.buttons}>
                     <CreateTicketButton
-                        buttonProps={{intent: 'secondary'}}
+                        buttonProps={{ intent: 'secondary' }}
                         to={createTicketOptions}
                     />
                     <Button onClick={() => setIsCustomerFormOpen(true)}>
@@ -152,7 +152,7 @@ const connector = connect(
     {
         fetchCustomer,
         fetchCustomerHistory,
-    }
+    },
 )
 
 export default connector(CustomerDetailContainer)

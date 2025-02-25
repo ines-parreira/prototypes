@@ -1,7 +1,3 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import axios, {AxiosError, CancelToken} from 'axios'
-import classnames from 'classnames'
-import {fromJS, Map} from 'immutable'
 import React, {
     HTMLAttributes,
     ReactNode,
@@ -9,23 +5,34 @@ import React, {
     useEffect,
     useMemo,
 } from 'react'
-import {Button} from 'reactstrap'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import axios, { AxiosError, CancelToken } from 'axios'
+import classnames from 'classnames'
+import { fromJS, Map } from 'immutable'
+import { Button } from 'reactstrap'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
 import useCancellableRequest from 'hooks/useCancellableRequest'
-import {downloadStat} from 'models/stat/resources'
-import {Stat, LegacyStatsFilters, TwoDimensionalChart} from 'models/stat/types'
+import { downloadStat } from 'models/stat/resources'
+import {
+    LegacyStatsFilters,
+    Stat,
+    TwoDimensionalChart,
+} from 'models/stat/types'
 import Loader from 'pages/common/components/Loader/Loader'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {saveFileAsDownloaded} from 'utils/file'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { saveFileAsDownloaded } from 'utils/file'
 
 import StatsHelpIcon from './common/components/StatsHelpIcon'
+
 import css from './StatWrapper.less'
 
 type Props = {
@@ -67,7 +74,7 @@ export default function StatWrapper({
     const currentUser = useAppSelector(getCurrentUser)
     const account = useAppSelector(getCurrentAccountState)
 
-    const [{loading: isDownloading}, handleDownloadStat] = useAsyncFn(
+    const [{ loading: isDownloading }, handleDownloadStat] = useAsyncFn(
         async (cancelToken: CancelToken) => {
             logEvent(SegmentEvent.StatDownloadClicked, {
                 name: resourceName,
@@ -82,7 +89,7 @@ export default function StatWrapper({
                     },
                     {
                         cancelToken,
-                    }
+                    },
                 )
                 if (refineDownload) {
                     file.data = refineDownload(file.data)
@@ -97,19 +104,19 @@ export default function StatWrapper({
                     notify({
                         status: NotificationStatus.Error,
                         title:
-                            (error as AxiosError<{error?: {msg: string}}>)
+                            (error as AxiosError<{ error?: { msg: string } }>)
                                 .response?.data?.error?.msg ||
                             'Failed to download statistic. Please retry in a few seconds.',
-                    })
+                    }),
                 )
             }
         },
-        [statsFilters, resourceName, statsFilters, currentUser, account]
+        [statsFilters, resourceName, statsFilters, currentUser, account],
     )
 
     const createDownloadStat = useCallback(
         (cancelToken: CancelToken) => () => handleDownloadStat(cancelToken),
-        [handleDownloadStat]
+        [handleDownloadStat],
     )
 
     const [handleCancellableDownloadStat, cancelDownloadStat] =
@@ -163,14 +170,14 @@ export default function StatWrapper({
                                         minHeight="14px"
                                         className={classnames(
                                             css.csvLoader,
-                                            'mr-1'
+                                            'mr-1',
                                         )}
                                     />
                                 ) : (
                                     <i
                                         className={classnames(
                                             'material-icons mr-1',
-                                            css.csvButtonIcon
+                                            css.csvButtonIcon,
                                         )}
                                     >
                                         file_download

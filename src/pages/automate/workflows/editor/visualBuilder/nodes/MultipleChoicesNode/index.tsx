@@ -1,13 +1,14 @@
-import React, {memo} from 'react'
-import {NodeProps} from 'reactflow'
+import React, { memo } from 'react'
+
+import { NodeProps } from 'reactflow'
 
 import VisualBuilderActionTag from 'pages/automate/workflows/components/VisualBuilderActionTag'
 import {
     useVisualBuilderNodeProps,
     VisualBuilderNodeProps,
 } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
-import {workflowVariableRegex} from 'pages/automate/workflows/models/variables.model'
-import {MultipleChoicesNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { workflowVariableRegex } from 'pages/automate/workflows/models/variables.model'
+import { MultipleChoicesNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 import EdgeBlock from '../../components/EdgeBlock'
 import NodeDeleteIcon from '../../components/NodeDeleteIcon'
@@ -47,7 +48,7 @@ const MultipleChoicesNode = memo(function MultipleChoicesNode({
 })
 
 export default function MultipleChoicesNodeWrapper(
-    node: NodeProps<MultipleChoicesNodeType['data']>
+    node: NodeProps<MultipleChoicesNodeType['data']>,
 ) {
     const commonProps = useVisualBuilderNodeProps(node)
 

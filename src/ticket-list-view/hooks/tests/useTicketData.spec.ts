@@ -1,7 +1,7 @@
 import * as ReactQuery from '@tanstack/react-query'
-import {act, renderHook} from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react-hooks'
 
-import {flushPromises} from 'utils/testing'
+import { flushPromises } from 'utils/testing'
 
 import useTicketData from '../useTicketData'
 
@@ -16,15 +16,15 @@ describe('useTicketData', () => {
     })
 
     it('should mark given tickets as read', async () => {
-        fetchQuery.mockResolvedValue([{id: 1}, {id: 2}, {id: 3}])
-        const {result} = renderHook(() => useTicketData([1, 2, 3], jest.fn()))
+        fetchQuery.mockResolvedValue([{ id: 1 }, { id: 2 }, { id: 3 }])
+        const { result } = renderHook(() => useTicketData([1, 2, 3], jest.fn()))
 
         await flushPromises()
 
         expect(result.current.data).toEqual({
-            1: {id: 1},
-            2: {id: 2},
-            3: {id: 3},
+            1: { id: 1 },
+            2: { id: 2 },
+            3: { id: 3 },
         })
 
         act(() => {
@@ -32,22 +32,22 @@ describe('useTicketData', () => {
         })
 
         expect(result.current.data).toEqual({
-            1: {id: 1, is_unread: true},
-            2: {id: 2},
-            3: {id: 3, is_unread: true},
+            1: { id: 1, is_unread: true },
+            2: { id: 2 },
+            3: { id: 3, is_unread: true },
         })
     })
 
     it('should mark given tickets as unread', async () => {
-        fetchQuery.mockResolvedValue([{id: 1}, {id: 2}, {id: 3}])
-        const {result} = renderHook(() => useTicketData([1, 2, 3], jest.fn()))
+        fetchQuery.mockResolvedValue([{ id: 1 }, { id: 2 }, { id: 3 }])
+        const { result } = renderHook(() => useTicketData([1, 2, 3], jest.fn()))
 
         await flushPromises()
 
         expect(result.current.data).toEqual({
-            1: {id: 1},
-            2: {id: 2},
-            3: {id: 3},
+            1: { id: 1 },
+            2: { id: 2 },
+            3: { id: 3 },
         })
 
         act(() => {
@@ -55,22 +55,22 @@ describe('useTicketData', () => {
         })
 
         expect(result.current.data).toEqual({
-            1: {id: 1},
-            2: {id: 2, is_unread: false},
-            3: {id: 3, is_unread: false},
+            1: { id: 1 },
+            2: { id: 2, is_unread: false },
+            3: { id: 3, is_unread: false },
         })
     })
 
     it('should not modify the state if the tickets being marked have no data', async () => {
-        fetchQuery.mockResolvedValue([{id: 1}, {id: 2}, {id: 3}])
-        const {result} = renderHook(() => useTicketData([1, 2, 3], jest.fn()))
+        fetchQuery.mockResolvedValue([{ id: 1 }, { id: 2 }, { id: 3 }])
+        const { result } = renderHook(() => useTicketData([1, 2, 3], jest.fn()))
 
         await flushPromises()
 
         expect(result.current.data).toEqual({
-            1: {id: 1},
-            2: {id: 2},
-            3: {id: 3},
+            1: { id: 1 },
+            2: { id: 2 },
+            3: { id: 3 },
         })
 
         act(() => {
@@ -78,9 +78,9 @@ describe('useTicketData', () => {
         })
 
         expect(result.current.data).toEqual({
-            1: {id: 1},
-            2: {id: 2},
-            3: {id: 3},
+            1: { id: 1 },
+            2: { id: 2 },
+            3: { id: 3 },
         })
     })
 })

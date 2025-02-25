@@ -1,7 +1,8 @@
-import {Label} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
-import {FROALA_KEY} from 'config'
+import { Label } from '@gorgias/merchant-ui-kit'
+
+import { FROALA_KEY } from 'config'
 import FroalaEditorComponent from 'pages/settings/helpCenter/components/articles/HelpCenterEditor/FroalaEditorComponent.js'
 
 import css from './GuidanceEditor.less'

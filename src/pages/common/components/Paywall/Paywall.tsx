@@ -1,14 +1,17 @@
-import {Badge} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
-import React, {isValidElement, ReactNode, useState} from 'react'
-import Lightbox from 'react-images'
-import {Col, Row} from 'reactstrap'
+import React, { isValidElement, ReactNode, useState } from 'react'
 
-import {PaywallConfig} from 'config/paywalls'
-import {PLAN_NAME_TO_BADGE_COLOR} from 'models/billing/utils'
+import classnames from 'classnames'
+import Lightbox from 'react-images'
+import { Col, Row } from 'reactstrap'
+
+import { Badge } from '@gorgias/merchant-ui-kit'
+
+import { PaywallConfig } from 'config/paywalls'
+import { PLAN_NAME_TO_BADGE_COLOR } from 'models/billing/utils'
 
 import PageHeader from '../PageHeader'
 import UpgradeButton from '../UpgradeButton'
+
 import css from './Paywall.less'
 
 export enum PaywallTheme {
@@ -74,7 +77,7 @@ const Paywall = ({
                 <div
                     className={classnames(
                         css.svg,
-                        css[paywallTheme?.toLowerCase()]
+                        css[paywallTheme?.toLowerCase()],
                     )}
                 />
             )}
@@ -93,13 +96,13 @@ const Paywall = ({
                                 'pl-lg-4',
                                 'pt-5',
                                 'pt-lg-0',
-                                css.preview
+                                css.preview,
                             )}
                         >
                             {previewImage && (
                                 <div
                                     className={classnames(
-                                        renderFilterShadow && css.filterShadow
+                                        renderFilterShadow && css.filterShadow,
                                     )}
                                 >
                                     <img
@@ -125,7 +128,7 @@ const Paywall = ({
                                             <i
                                                 className={classnames(
                                                     'material-icons',
-                                                    css.upgradeChevron
+                                                    css.upgradeChevron,
                                                 )}
                                             >
                                                 chevron_right
@@ -158,14 +161,14 @@ const Paywall = ({
                                             className={classnames(
                                                 'd-flex',
                                                 'align-items-center',
-                                                css.author
+                                                css.author,
                                             )}
                                         >
                                             <img
                                                 src={testimonial.author.avatar}
                                                 className={classnames(
                                                     'mr-3',
-                                                    css.avatar
+                                                    css.avatar,
                                                 )}
                                                 alt="avatar"
                                             />
@@ -173,7 +176,7 @@ const Paywall = ({
                                                 <p
                                                     className={classnames(
                                                         css.authorName,
-                                                        'mb-1'
+                                                        'mb-1',
                                                     )}
                                                 >
                                                     <strong>
@@ -235,7 +238,7 @@ const Paywall = ({
                 </div>
                 {previewImage && (
                     <Lightbox
-                        images={[{src: previewImage}]}
+                        images={[{ src: previewImage }]}
                         isOpen={isLightboxOpen}
                         onClose={() => setIsLightboxOpen(false)}
                         onClickImage={() => setIsLightboxOpen(false)}

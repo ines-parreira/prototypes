@@ -1,5 +1,6 @@
-import {render, fireEvent} from '@testing-library/react'
 import React from 'react'
+
+import { fireEvent, render } from '@testing-library/react'
 
 import Segmented from '../Segmented'
 
@@ -16,12 +17,12 @@ const options = [
 
 describe('<Segmented />', () => {
     it('should match snapshot', () => {
-        const {container} = render(
+        const { container } = render(
             <Segmented
                 options={options}
                 value="self-service"
                 onChange={jest.fn()}
-            />
+            />,
         )
 
         expect(container).toMatchSnapshot()
@@ -29,24 +30,24 @@ describe('<Segmented />', () => {
 
     it('changes the checked option internally and calls the onChange callback', () => {
         const onChangeFn = jest.fn()
-        const {getByLabelText} = render(
+        const { getByLabelText } = render(
             <Segmented
                 options={options}
                 value="self-service"
                 onChange={onChangeFn}
-            />
+            />,
         )
 
         fireEvent.click(getByLabelText('Article Recommendation'))
         expect(onChangeFn).toHaveBeenCalledWith(
             expect.anything(),
-            'article-recommendation'
+            'article-recommendation',
         )
     })
 
     it('does not call the change callback for a disabled option', () => {
         const onChangeFn = jest.fn()
-        const {getByLabelText} = render(
+        const { getByLabelText } = render(
             <Segmented
                 options={[
                     ...options,
@@ -58,7 +59,7 @@ describe('<Segmented />', () => {
                 ]}
                 value="self-service"
                 onChange={onChangeFn}
-            />
+            />,
         )
 
         fireEvent.click(getByLabelText('Disabled option'))

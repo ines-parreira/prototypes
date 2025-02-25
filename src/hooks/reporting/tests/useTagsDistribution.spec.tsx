@@ -1,14 +1,14 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {useTagsTicketCount} from 'hooks/reporting/metricsPerPeriod'
-import {useTagsDistribution} from 'hooks/reporting/support-performance/useTagsDistribution'
+import { useTagsTicketCount } from 'hooks/reporting/metricsPerPeriod'
+import { useTagsDistribution } from 'hooks/reporting/support-performance/useTagsDistribution'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     TicketTagsEnrichedDimension,
     TicketTagsEnrichedMeasure,
 } from 'models/reporting/cubes/TicketTagsEnrichedCube'
-import {initialState} from 'state/stats/statsSlice'
-import {assumeMock} from 'utils/testing'
+import { initialState } from 'state/stats/statsSlice'
+import { assumeMock } from 'utils/testing'
 
 const firstTagID = '255148'
 const secondTagID = '487270'
@@ -62,14 +62,14 @@ describe('useTagsDistribution useAppSelectorMock', () => {
             userTimezone: '',
         })
         useAppSelectorMock.mockReturnValue({
-            [firstTagID]: {name: 'TAG1'},
-            [secondTagID]: {name: 'TAG2'},
+            [firstTagID]: { name: 'TAG1' },
+            [secondTagID]: { name: 'TAG2' },
         })
         useTagsTicketCountMock.mockReturnValue(mockValue)
     })
 
     it('should return calculated data', () => {
-        const {result} = renderHook(() => useTagsDistribution(2))
+        const { result } = renderHook(() => useTagsDistribution(2))
 
         expect(useTagsTicketCountMock).toHaveBeenCalled()
 
@@ -105,7 +105,7 @@ describe('useTagsDistribution useAppSelectorMock', () => {
             },
         })
 
-        const {result} = renderHook(() => useTagsDistribution())
+        const { result } = renderHook(() => useTagsDistribution())
 
         expect(result.current).toStrictEqual({
             isFetching: false,
@@ -142,7 +142,7 @@ describe('useTagsDistribution useAppSelectorMock', () => {
             },
         })
 
-        const {result} = renderHook(() => useTagsDistribution())
+        const { result } = renderHook(() => useTagsDistribution())
 
         expect(result.current).toStrictEqual({
             isFetching: false,
@@ -168,7 +168,7 @@ describe('useTagsDistribution useAppSelectorMock', () => {
             },
         })
 
-        const {result} = renderHook(() => useTagsDistribution())
+        const { result } = renderHook(() => useTagsDistribution())
 
         expect(result.current).toStrictEqual({
             isFetching: false,
@@ -194,7 +194,7 @@ describe('useTagsDistribution useAppSelectorMock', () => {
             },
         })
 
-        const {result} = renderHook(() => useTagsDistribution())
+        const { result } = renderHook(() => useTagsDistribution())
 
         expect(result.current).toStrictEqual({
             isFetching: false,

@@ -1,9 +1,9 @@
 import React from 'react'
 
-import {Content, Excerpt, Subject, Subtitle} from 'common/notifications'
-import type {ContentProps, Notification} from 'common/notifications'
+import { Content, Excerpt, Subject, Subtitle } from 'common/notifications'
+import type { ContentProps, Notification } from 'common/notifications'
 
-import type {TicketPayload} from '../types'
+import type { TicketPayload } from '../types'
 
 type Props = {
     notification: Notification<TicketPayload>
@@ -13,13 +13,13 @@ export default function UserMentionedNotification({
     notification,
     ...props
 }: Props) {
-    const {sender, ticket} = notification.payload
+    const { sender, ticket } = notification.payload
 
     return (
         <Content
             {...props}
-            icon={{type: ticket.channel}}
-            subIcon={{color: '--feedback-warning-3', name: 'alternate_email'}}
+            icon={{ type: ticket.channel }}
+            subIcon={{ color: '--feedback-warning-3', name: 'alternate_email' }}
             title="New mention"
             url={`/app/ticket/${ticket.id}`}
         >

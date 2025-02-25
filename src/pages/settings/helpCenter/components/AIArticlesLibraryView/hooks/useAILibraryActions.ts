@@ -1,5 +1,6 @@
-import {useQueryClient} from '@tanstack/react-query'
-import {useRef} from 'react'
+import { useRef } from 'react'
+
+import { useQueryClient } from '@tanstack/react-query'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
@@ -8,17 +9,17 @@ import {
     ArticleTemplateReviewAction,
     HelpCenter,
 } from 'models/helpCenter/types'
-import {useCreateAIArticle} from 'pages/settings/helpCenter/hooks/useCreateAIArticle'
-import {useEditionManager} from 'pages/settings/helpCenter/providers/EditionManagerContext'
+import { useCreateAIArticle } from 'pages/settings/helpCenter/hooks/useCreateAIArticle'
+import { useEditionManager } from 'pages/settings/helpCenter/providers/EditionManagerContext'
 import {
     aiArticleKeys,
     useUpsertArticleTemplateReview,
 } from 'pages/settings/helpCenter/queries'
-import {ArticleOrigin} from 'pages/settings/helpCenter/types/articleOrigin.enum'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { ArticleOrigin } from 'pages/settings/helpCenter/types/articleOrigin.enum'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
-import {AIArticleArchiveModalHandle} from '../components/AIArticleArchiveModal/AIArticleArchiveModal'
+import { AIArticleArchiveModalHandle } from '../components/AIArticleArchiveModal/AIArticleArchiveModal'
 
 export type onEditorSaveProps = {
     article?: AILibraryArticleItem
@@ -38,12 +39,12 @@ const useAILibraryActions = (
             | 'publish'
             | 'archive'
             | 'saveAsDraft'
-            | 'dismissFromTopQuestions'
-    ) => void
+            | 'dismissFromTopQuestions',
+    ) => void,
 ) => {
-    const {createArticle} = useCreateAIArticle(
+    const { createArticle } = useCreateAIArticle(
         helpCenter.id,
-        helpCenter.default_locale
+        helpCenter.default_locale,
     )
     const queryClient = useQueryClient()
     const appDispatch = useAppDispatch()
@@ -73,11 +74,11 @@ const useAILibraryActions = (
                 notify({
                     message: successMessages[body.action],
                     status: NotificationStatus.Success,
-                })
+                }),
             )
 
             await queryClient.invalidateQueries(
-                aiArticleKeys.list(helpCenter.id)
+                aiArticleKeys.list(helpCenter.id),
             )
 
             markArticleAsReviewed(body.template_key, body.action)
@@ -87,7 +88,7 @@ const useAILibraryActions = (
             }
 
             const article = articles.find(
-                (article) => article.key === body.template_key
+                (article) => article.key === body.template_key,
             )
 
             if (!article) return
@@ -125,12 +126,12 @@ const useAILibraryActions = (
                         errorActions[body.action]
                     }.`,
                     status: NotificationStatus.Error,
-                })
+                }),
             )
         },
     })
 
-    const {setEditModal, editModal} = useEditionManager()
+    const { setEditModal, editModal } = useEditionManager()
 
     const onEdit = () => {
         setEditModal({
@@ -157,7 +158,7 @@ const useAILibraryActions = (
     const onArchive = (article: AIArticle, reason: string | undefined) => {
         return reviewArticle.mutate([
             undefined,
-            {help_center_id: helpCenter.id},
+            { help_center_id: helpCenter.id },
             {
                 action: 'archive',
                 template_key: article.key,
@@ -177,8 +178,8 @@ const useAILibraryActions = (
 
         return reviewArticle.mutate([
             undefined,
-            {help_center_id: helpCenter.id},
-            {action: 'publish', template_key: article.key},
+            { help_center_id: helpCenter.id },
+            { action: 'publish', template_key: article.key },
         ])
     }
 
@@ -202,7 +203,7 @@ const useAILibraryActions = (
 
         return reviewArticle.mutate([
             undefined,
-            {help_center_id: helpCenter.id},
+            { help_center_id: helpCenter.id },
             {
                 action: saveAsDraft ? 'saveAsDraft' : 'publish',
                 template_key: article!.key,

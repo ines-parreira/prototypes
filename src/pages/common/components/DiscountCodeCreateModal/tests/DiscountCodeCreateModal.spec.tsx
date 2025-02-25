@@ -1,37 +1,37 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
+import React from 'react'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
-import {fromJS} from 'immutable'
-import React from 'react'
-import {Provider} from 'react-redux'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {integrationsState} from 'fixtures/integrations'
-
+import { integrationsState } from 'fixtures/integrations'
 import client from 'models/api/resources'
 import {
     useCollectionsFromShopifyIntegration,
     useListShopifyCustomerSegments,
     useProductsFromShopifyIntegration,
 } from 'models/integration/queries'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 import DiscountCodeCreateModal from '../DiscountCodeCreateModal'
-import {setupValidModalParameters} from '../utils'
+import { setupValidModalParameters } from '../utils'
 
 jest.mock('models/integration/queries')
 
 const useListShopifyCustomerSegmentsMock = assumeMock(
-    useListShopifyCustomerSegments
+    useListShopifyCustomerSegments,
 )
 const useCollectionsFromShopifyIntegrationMock = assumeMock(
-    useCollectionsFromShopifyIntegration
+    useCollectionsFromShopifyIntegration,
 )
 const useProductsFromShopifyIntegrationMock = assumeMock(
-    useProductsFromShopifyIntegration
+    useProductsFromShopifyIntegration,
 )
 
 const VALID_SEGMENT_1 = {
@@ -53,9 +53,9 @@ const VALID_PRODUCT_COLLECTION_2 = {
     title: 'Nike',
 }
 const VALID_PRODUCT_1 = {
-    data: {title: 'Product 1', id: '1'},
+    data: { title: 'Product 1', id: '1' },
 }
-const VALID_PRODUCT_2 = {data: {title: 'Product 2', id: '2'}}
+const VALID_PRODUCT_2 = { data: { title: 'Product 2', id: '2' } }
 
 const minProps = {
     integration: fromJS(integrationsState.integration),
@@ -107,7 +107,7 @@ describe('<DiscountCodeCreateModal />', () => {
                 <QueryClientProvider client={queryClient}>
                     <DiscountCodeCreateModal {...minProps} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         await setupValidModalParameters()
@@ -119,7 +119,7 @@ describe('<DiscountCodeCreateModal />', () => {
         })
 
         expect(mockedServer.history.post[0].data).toEqual(
-            '{"starts_at":"2024-01-01T00:00:00.000Z","discount_type":"percentage","title":null,"code":"MYCODE","discount_value":0.2,"once_per_customer":false,"usage_limit":null,"minimum_purchase_amount":199,"segment_ids":null,"product_ids":null,"collection_ids":null}'
+            '{"starts_at":"2024-01-01T00:00:00.000Z","discount_type":"percentage","title":null,"code":"MYCODE","discount_value":0.2,"once_per_customer":false,"usage_limit":null,"minimum_purchase_amount":199,"segment_ids":null,"product_ids":null,"collection_ids":null}',
         )
     })
 
@@ -129,7 +129,7 @@ describe('<DiscountCodeCreateModal />', () => {
                 <QueryClientProvider client={queryClient}>
                     <DiscountCodeCreateModal {...minProps} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         await setupValidModalParameters()
@@ -160,7 +160,7 @@ describe('<DiscountCodeCreateModal />', () => {
         })
 
         expect(mockedServer.history.post[0].data).toContain(
-            `"segment_ids":["${VALID_SEGMENT_2.id}","${VALID_SEGMENT_1.id}"]`
+            `"segment_ids":["${VALID_SEGMENT_2.id}","${VALID_SEGMENT_1.id}"]`,
         )
     })
 
@@ -170,7 +170,7 @@ describe('<DiscountCodeCreateModal />', () => {
                 <QueryClientProvider client={queryClient}>
                     <DiscountCodeCreateModal {...minProps} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         await setupValidModalParameters()
@@ -180,10 +180,10 @@ describe('<DiscountCodeCreateModal />', () => {
         fireEvent.focus(inputElement)
 
         const validCollectionSample = screen.getByText(
-            VALID_PRODUCT_COLLECTION_1.title
+            VALID_PRODUCT_COLLECTION_1.title,
         )
         const validCollectionSample2 = screen.getByText(
-            VALID_PRODUCT_COLLECTION_2.title
+            VALID_PRODUCT_COLLECTION_2.title,
         )
 
         // Selects the first segment
@@ -206,7 +206,7 @@ describe('<DiscountCodeCreateModal />', () => {
         })
 
         expect(mockedServer.history.post[0].data).toContain(
-            `"collection_ids":["${VALID_PRODUCT_COLLECTION_2.id}","${VALID_PRODUCT_COLLECTION_1.id}"]`
+            `"collection_ids":["${VALID_PRODUCT_COLLECTION_2.id}","${VALID_PRODUCT_COLLECTION_1.id}"]`,
         )
     })
 
@@ -216,7 +216,7 @@ describe('<DiscountCodeCreateModal />', () => {
                 <QueryClientProvider client={queryClient}>
                     <DiscountCodeCreateModal {...minProps} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         await setupValidModalParameters()
@@ -226,10 +226,10 @@ describe('<DiscountCodeCreateModal />', () => {
         fireEvent.focus(inputElement)
 
         const validCollectionSample = screen.getByText(
-            VALID_PRODUCT_COLLECTION_1.title
+            VALID_PRODUCT_COLLECTION_1.title,
         )
         const validCollectionSample2 = screen.getByText(
-            VALID_PRODUCT_COLLECTION_2.title
+            VALID_PRODUCT_COLLECTION_2.title,
         )
 
         // Selects the first segment
@@ -250,7 +250,7 @@ describe('<DiscountCodeCreateModal />', () => {
         })
 
         expect(mockedServer.history.post[0].data).toContain(
-            `"collection_ids":null`
+            `"collection_ids":null`,
         )
     })
 
@@ -260,7 +260,7 @@ describe('<DiscountCodeCreateModal />', () => {
                 <QueryClientProvider client={queryClient}>
                     <DiscountCodeCreateModal {...minProps} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         await setupValidModalParameters()
@@ -271,10 +271,10 @@ describe('<DiscountCodeCreateModal />', () => {
 
         // Select 2 collections
         const validCollectionSample = screen.getByText(
-            VALID_PRODUCT_COLLECTION_1.title
+            VALID_PRODUCT_COLLECTION_1.title,
         )
         const validCollectionSample2 = screen.getByText(
-            VALID_PRODUCT_COLLECTION_2.title
+            VALID_PRODUCT_COLLECTION_2.title,
         )
         userEvent.click(validCollectionSample)
         userEvent.click(validCollectionSample2)
@@ -291,7 +291,7 @@ describe('<DiscountCodeCreateModal />', () => {
         })
 
         expect(mockedServer.history.post[0].data).toContain(
-            `"collection_ids":null`
+            `"collection_ids":null`,
         )
     })
 
@@ -301,7 +301,7 @@ describe('<DiscountCodeCreateModal />', () => {
                 <QueryClientProvider client={queryClient}>
                     <DiscountCodeCreateModal {...minProps} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         await setupValidModalParameters()
@@ -333,7 +333,7 @@ describe('<DiscountCodeCreateModal />', () => {
         })
 
         expect(mockedServer.history.post[0].data).toContain(
-            `"product_ids":["${VALID_PRODUCT_2.data.id}","${VALID_PRODUCT_1.data.id}"]`
+            `"product_ids":["${VALID_PRODUCT_2.data.id}","${VALID_PRODUCT_1.data.id}"]`,
         )
     })
 
@@ -343,7 +343,7 @@ describe('<DiscountCodeCreateModal />', () => {
                 <QueryClientProvider client={queryClient}>
                     <DiscountCodeCreateModal {...minProps} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         await setupValidModalParameters()
@@ -373,7 +373,7 @@ describe('<DiscountCodeCreateModal />', () => {
         })
 
         expect(mockedServer.history.post[0].data).toContain(
-            `"product_ids":null`
+            `"product_ids":null`,
         )
     })
 
@@ -383,7 +383,7 @@ describe('<DiscountCodeCreateModal />', () => {
                 <QueryClientProvider client={queryClient}>
                     <DiscountCodeCreateModal {...minProps} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         await setupValidModalParameters()
@@ -409,7 +409,7 @@ describe('<DiscountCodeCreateModal />', () => {
         })
 
         expect(mockedServer.history.post[0].data).toContain(
-            `"product_ids":null`
+            `"product_ids":null`,
         )
     })
 })

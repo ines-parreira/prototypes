@@ -1,1 +1,1 @@
-export type OperatorType = {label: string; widget?: string}
+export type OperatorType = { label: string; widget?: string }

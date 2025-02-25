@@ -1,4 +1,4 @@
-import {OptionSelection} from 'models/integration/resources/bigcommerce'
+import { OptionSelection } from 'models/integration/resources/bigcommerce'
 import {
     BigCommerceProductCheckboxModifier,
     bigCommerceProductCheckboxModifierTypes,
@@ -9,25 +9,25 @@ import {
     bigCommerceProductSwatchModifierTypes,
 } from 'models/integration/types'
 
-import {ModifierValues} from './types'
+import { ModifierValues } from './types'
 
 export const isSelectModifier = (
-    modifier: BigCommerceProductModifiers
+    modifier: BigCommerceProductModifiers,
 ): modifier is BigCommerceProductSelectModifier =>
     bigCommerceProductSelectModifierTypes.includes(modifier.type as any)
 
 export const isSwatchModifier = (
-    modifier: BigCommerceProductModifiers
+    modifier: BigCommerceProductModifiers,
 ): modifier is BigCommerceProductSwatchModifier =>
     bigCommerceProductSwatchModifierTypes.includes(modifier.type as any)
 
 export const isCheckboxModifier = (
-    modifier: BigCommerceProductModifiers
+    modifier: BigCommerceProductModifiers,
 ): modifier is BigCommerceProductCheckboxModifier =>
     bigCommerceProductCheckboxModifierTypes.includes(modifier.type as any)
 
 export const modifierValuesToOptionSelections = (
-    modifierValues: ModifierValues
+    modifierValues: ModifierValues,
 ): OptionSelection[] =>
     Object.entries(modifierValues)
         .filter(([, option_value]) => Boolean(option_value))

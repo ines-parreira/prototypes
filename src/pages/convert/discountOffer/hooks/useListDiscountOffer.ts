@@ -1,8 +1,8 @@
 import useAppDispatch from 'hooks/useAppDispatch'
-import {useListDiscountOffers as usePureListDiscountOffers} from 'models/convert/discountOffer/queries'
-import {UniqueDiscountListParams} from 'models/convert/discountOffer/types'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { useListDiscountOffers as usePureListDiscountOffers } from 'models/convert/discountOffer/queries'
+import { UniqueDiscountListParams } from 'models/convert/discountOffer/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 export const useListDiscountOffers = (params: UniqueDiscountListParams) => {
     const dispatch = useAppDispatch()
@@ -13,7 +13,7 @@ export const useListDiscountOffers = (params: UniqueDiscountListParams) => {
                 notify({
                     status: NotificationStatus.Error,
                     message: "Couldn't fetch discount offers.",
-                })
+                }),
             )
         },
     })

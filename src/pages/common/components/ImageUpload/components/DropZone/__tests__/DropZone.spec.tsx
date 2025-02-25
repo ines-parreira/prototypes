@@ -1,9 +1,9 @@
-import {createEvent, fireEvent, render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {DropText} from '../../DropText'
+import { createEvent, fireEvent, render, screen } from '@testing-library/react'
 
-import {DropZone} from '../DropZone'
+import { DropText } from '../../DropText'
+import { DropZone } from '../DropZone'
 
 describe('<DropZone>', () => {
     const onDragInFn = jest.fn()
@@ -23,10 +23,10 @@ describe('<DropZone>', () => {
     })
 
     it('matches snapshot', () => {
-        const {container} = render(
+        const { container } = render(
             <DropZone id="dropZone">
                 <DropText />
-            </DropZone>
+            </DropZone>,
         )
 
         expect(container).toMatchSnapshot()
@@ -41,7 +41,7 @@ describe('<DropZone>', () => {
                 onDragOut={onDragOutFn}
             >
                 <DropText />
-            </DropZone>
+            </DropZone>,
         )
         const dropZone = screen.getByLabelText('Drop zone files')
         const mockedDragEnterEvent = createEvent.dragEnter(dropZone)
@@ -60,10 +60,10 @@ describe('<DropZone>', () => {
     })
 
     it('calls the onDrop handler if file is accepted', () => {
-        const {rerender} = render(
+        const { rerender } = render(
             <DropZone accept="image/png" id="dropZone" onDrop={onDropFn}>
                 <DropText />
-            </DropZone>
+            </DropZone>,
         )
         const dropZone = screen.getByLabelText('Drop zone files')
 
@@ -88,7 +88,7 @@ describe('<DropZone>', () => {
         rerender(
             <DropZone id="dropZone" onDrop={onDropFn}>
                 <DropText />
-            </DropZone>
+            </DropZone>,
         )
         expect(onDropFn).not.toHaveBeenCalled()
 

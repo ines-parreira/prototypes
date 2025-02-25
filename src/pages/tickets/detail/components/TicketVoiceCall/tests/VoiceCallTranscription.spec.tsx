@@ -1,6 +1,7 @@
-import {fireEvent, render} from '@testing-library/react'
-import _noop from 'lodash/noop'
 import React from 'react'
+
+import { fireEvent, render } from '@testing-library/react'
+import _noop from 'lodash/noop'
 
 import {
     VoiceCallRecording,
@@ -8,9 +9,9 @@ import {
     VoiceCallRecordingTranscriptionStatus,
     VoiceCallRecordingType,
 } from 'models/voiceCall/types'
-import {useVoiceRecordingsContext} from 'pages/common/hooks/useVoiceRecordingsContext'
-import {VoiceRecordingsContextState} from 'pages/integrations/integration/components/voice/VoiceRecordingsContext'
-import {assumeMock} from 'utils/testing'
+import { useVoiceRecordingsContext } from 'pages/common/hooks/useVoiceRecordingsContext'
+import { VoiceRecordingsContextState } from 'pages/integrations/integration/components/voice/VoiceRecordingsContext'
+import { assumeMock } from 'utils/testing'
 
 import VoiceCallTranscription from '../VoiceCallTranscription'
 
@@ -35,7 +36,7 @@ describe('VoiceCallTranscription', () => {
     const renderComponent = (
         transcriptionStatus: VoiceCallRecordingTranscriptionStatus | null,
         recordingType: VoiceCallRecordingType,
-        extraAudioData: null | Partial<VoiceCallRecording> = null
+        extraAudioData: null | Partial<VoiceCallRecording> = null,
     ) => {
         const audio = {
             type: recordingType,
@@ -47,32 +48,32 @@ describe('VoiceCallTranscription', () => {
             ...(extraAudioData || {}),
         } as VoiceCallRecording
         return render(
-            <VoiceCallTranscription audio={audio} type={recordingType} />
+            <VoiceCallTranscription audio={audio} type={recordingType} />,
         )
     }
 
     it('should not render anything if the transcription was not requested', () => {
-        const {container} = renderComponent(
+        const { container } = renderComponent(
             null,
-            VoiceCallRecordingType.Recording
+            VoiceCallRecordingType.Recording,
         )
         expect(container).toBeEmptyDOMElement()
     })
 
     it('should not render anything if the recording was deleted', () => {
-        const {container} = renderComponent(
+        const { container } = renderComponent(
             VoiceCallRecordingTranscriptionStatus.Completed,
             VoiceCallRecordingType.Recording,
-            {deleted_datetime: '2021-01-01T00:00:00Z'}
+            { deleted_datetime: '2021-01-01T00:00:00Z' },
         )
         expect(container).toBeEmptyDOMElement()
     })
 
     it('should not render anything if the recording is private', () => {
-        const {container} = renderComponent(
+        const { container } = renderComponent(
             VoiceCallRecordingTranscriptionStatus.Completed,
             VoiceCallRecordingType.Recording,
-            {error_code: VoiceCallRecordingErrorCode.RECORDING_IS_PRIVATE}
+            { error_code: VoiceCallRecordingErrorCode.RECORDING_IS_PRIVATE },
         )
         expect(container).toBeEmptyDOMElement()
     })
@@ -86,14 +87,14 @@ describe('VoiceCallTranscription', () => {
         VoiceCallRecordingType.Recording,
         VoiceCallRecordingType.Voicemail,
     ])('should render loading status for %s', (recordingType) => {
-        const {getByText} = renderComponent(
+        const { getByText } = renderComponent(
             VoiceCallRecordingTranscriptionStatus.Requested,
-            recordingType
+            recordingType,
         )
         expect(
             getByText(
-                `We're currently processing the audio to create an accurate transcription of the ${entityMapping[recordingType]}. This may take a few moments.`
-            )
+                `We're currently processing the audio to create an accurate transcription of the ${entityMapping[recordingType]}. This may take a few moments.`,
+            ),
         ).toBeInTheDocument()
     })
 
@@ -101,14 +102,14 @@ describe('VoiceCallTranscription', () => {
         VoiceCallRecordingType.Recording,
         VoiceCallRecordingType.Voicemail,
     ])('should render failed status for %s', (recordingType) => {
-        const {getByText} = renderComponent(
+        const { getByText } = renderComponent(
             VoiceCallRecordingTranscriptionStatus.Failed,
-            recordingType
+            recordingType,
         )
         expect(
             getByText(
-                `Unable to process ${entityMapping[recordingType]} transcription.`
-            )
+                `Unable to process ${entityMapping[recordingType]} transcription.`,
+            ),
         ).toBeInTheDocument()
     })
 
@@ -116,14 +117,14 @@ describe('VoiceCallTranscription', () => {
         VoiceCallRecordingType.Recording,
         VoiceCallRecordingType.Voicemail,
     ])('should render recording too long status for %s', (recordingType) => {
-        const {getByText} = renderComponent(
+        const { getByText } = renderComponent(
             VoiceCallRecordingTranscriptionStatus.RecordingTooLong,
-            recordingType
+            recordingType,
         )
         expect(
             getByText(
-                `We only support ${entityMapping[recordingType]}s up to 45 minutes in length. This ${entityMapping[recordingType]} exceeds that duration, so we are unable to transcribe.`
-            )
+                `We only support ${entityMapping[recordingType]}s up to 45 minutes in length. This ${entityMapping[recordingType]} exceeds that duration, so we are unable to transcribe.`,
+            ),
         ).toBeInTheDocument()
     })
 
@@ -131,14 +132,14 @@ describe('VoiceCallTranscription', () => {
         VoiceCallRecordingType.Recording,
         VoiceCallRecordingType.Voicemail,
     ])('should render recording too short status for %s', (recordingType) => {
-        const {getByText} = renderComponent(
+        const { getByText } = renderComponent(
             VoiceCallRecordingTranscriptionStatus.RecordingTooShort,
-            recordingType
+            recordingType,
         )
         expect(
             getByText(
-                `We do not support ${entityMapping[recordingType]}s shorter than 20 seconds. This ${entityMapping[recordingType]} falls below our minimum supported duration, so we are unable to transcribe.`
-            )
+                `We do not support ${entityMapping[recordingType]}s shorter than 20 seconds. This ${entityMapping[recordingType]} falls below our minimum supported duration, so we are unable to transcribe.`,
+            ),
         ).toBeInTheDocument()
     })
 
@@ -146,14 +147,14 @@ describe('VoiceCallTranscription', () => {
         VoiceCallRecordingType.Recording,
         VoiceCallRecordingType.Voicemail,
     ])('should render low quality status for %s', (recordingType) => {
-        const {getByText} = renderComponent(
+        const { getByText } = renderComponent(
             VoiceCallRecordingTranscriptionStatus.LowQualityTranscription,
-            recordingType
+            recordingType,
         )
         expect(
             getByText(
-                `Audio quality of this ${entityMapping[recordingType]} was too poor to generate an accurate transcription. Please check your microphone and internet quality to ensure clear audio.`
-            )
+                `Audio quality of this ${entityMapping[recordingType]} was too poor to generate an accurate transcription. Please check your microphone and internet quality to ensure clear audio.`,
+            ),
         ).toBeInTheDocument()
     })
 
@@ -161,9 +162,9 @@ describe('VoiceCallTranscription', () => {
         VoiceCallRecordingType.Recording,
         VoiceCallRecordingType.Voicemail,
     ])('should render completed status for %s', (recordingType) => {
-        const {getByText} = renderComponent(
+        const { getByText } = renderComponent(
             VoiceCallRecordingTranscriptionStatus.Completed,
-            recordingType
+            recordingType,
         )
 
         expect(getByText('completed transcription')).toBeInTheDocument()

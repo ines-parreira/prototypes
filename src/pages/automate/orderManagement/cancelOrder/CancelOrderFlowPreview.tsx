@@ -1,27 +1,28 @@
-import {createMemoryHistory} from 'history'
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {ResponseMessageContent} from 'models/selfServiceConfiguration/types'
-import {SELF_SERVICE_PREVIEW_ROUTES} from 'pages/automate/common/components/preview/constants'
+import { createMemoryHistory } from 'history'
+
+import { ResponseMessageContent } from 'models/selfServiceConfiguration/types'
+import { SELF_SERVICE_PREVIEW_ROUTES } from 'pages/automate/common/components/preview/constants'
 import SelfServicePreview from 'pages/automate/common/components/preview/SelfServicePreview'
 import SelfServicePreviewContainer from 'pages/automate/common/components/preview/SelfServicePreviewContainer'
 import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'
 
-import {useOrderManagementPreviewContext} from '../OrderManagementPreviewContext'
+import { useOrderManagementPreviewContext } from '../OrderManagementPreviewContext'
 
 type Props = {
     responseMessageContent?: ResponseMessageContent
 }
 
-const CancelOrderFlowPreview = ({responseMessageContent}: Props) => {
+const CancelOrderFlowPreview = ({ responseMessageContent }: Props) => {
     const history = useMemo(
         () =>
             createMemoryHistory({
                 initialEntries: [SELF_SERVICE_PREVIEW_ROUTES.CANCEL],
             }),
-        []
+        [],
     )
-    const {channels, channel, onChannelChange} =
+    const { channels, channel, onChannelChange } =
         useOrderManagementPreviewContext()
 
     return (

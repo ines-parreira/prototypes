@@ -1,4 +1,4 @@
-import type {CategoryConfig, Channel, NotificationConfig} from './types'
+import type { CategoryConfig, Channel, NotificationConfig } from './types'
 
 export const channels: Channel[] = [
     {

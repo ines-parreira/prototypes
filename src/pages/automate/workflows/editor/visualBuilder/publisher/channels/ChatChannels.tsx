@@ -1,11 +1,11 @@
-import React, {useCallback, useMemo} from 'react'
+import React, { useCallback, useMemo } from 'react'
 
-import {TicketChannel} from 'business/types/ticket'
-import {ChatApplicationAutomationSettings} from 'models/chatApplicationAutomationSettings/types'
+import { TicketChannel } from 'business/types/ticket'
+import { ChatApplicationAutomationSettings } from 'models/chatApplicationAutomationSettings/types'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
-import {SelfServiceChannelType} from 'pages/automate/common/hooks/useSelfServiceChannels'
-import {SelfServiceChatChannel} from 'pages/automate/common/hooks/useSelfServiceChatChannels'
-import {WorkflowConfiguration} from 'pages/automate/workflows/models/workflowConfiguration.types'
+import { SelfServiceChannelType } from 'pages/automate/common/hooks/useSelfServiceChannels'
+import { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
 
 import ChannelBlock from '../helper/ChannelBlock'
 import useOnlySupportedChannels from '../helper/useOnlySupportedChannels'
@@ -26,10 +26,10 @@ const ChannelItem = ({
     isLoading: boolean
     applicationAutomationSettings: ChatApplicationAutomationSettings
     handleChatApplicationAutomationSettingsUpdate: (
-        chatApplicationAutomationSettings: ChatApplicationAutomationSettings
+        chatApplicationAutomationSettings: ChatApplicationAutomationSettings,
     ) => Promise<void>
 }) => {
-    const {entrypoints} = useMemo(() => {
+    const { entrypoints } = useMemo(() => {
         if (!applicationAutomationSettings) {
             return {
                 entrypoints: [],
@@ -54,7 +54,7 @@ const ChannelItem = ({
         [
             applicationAutomationSettings,
             handleChatApplicationAutomationSettingsUpdate,
-        ]
+        ],
     )
 
     return (
@@ -78,7 +78,7 @@ const ChatChannels = ({
 }) => {
     const onlySupportedChannels = useOnlySupportedChannels(
         configuration,
-        TicketChannel.Chat
+        TicketChannel.Chat,
     )
     const appIds = useMemo(() => {
         return chatChannels.map((channel) => channel.value.meta.app_id!)
@@ -94,10 +94,10 @@ const ChatChannels = ({
             {chatChannels
                 .filter(
                     (
-                        chat
+                        chat,
                     ): chat is SelfServiceChatChannel & {
-                        value: {meta: {app_id: string}}
-                    } => Boolean(chat.value.meta.app_id)
+                        value: { meta: { app_id: string } }
+                    } => Boolean(chat.value.meta.app_id),
                 )
                 .map((channel) => (
                     <ChannelItem

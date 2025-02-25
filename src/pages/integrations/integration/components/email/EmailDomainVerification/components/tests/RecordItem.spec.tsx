@@ -1,7 +1,8 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {assumeMock} from 'utils/testing'
+import { render } from '@testing-library/react'
+
+import { assumeMock } from 'utils/testing'
 
 import RecordDiffStatus from '../RecordDiffStatus'
 import RecordItem from '../RecordItem'
@@ -24,7 +25,7 @@ describe('RecordItem component', () => {
             current_values: ['mx.sendgrid.net-current'],
         }
 
-        const {getByText} = render(<RecordItem record={record} />)
+        const { getByText } = render(<RecordItem record={record} />)
 
         expect(getByText('MX')).toBeInTheDocument()
         expect(getByText('gorgias.com')).toBeInTheDocument()
@@ -42,6 +43,6 @@ describe('RecordItem component', () => {
 
         render(<RecordItem record={record} />)
 
-        expect(RecordDiffStatusMock).toHaveBeenCalledWith({record}, {})
+        expect(RecordDiffStatusMock).toHaveBeenCalledWith({ record }, {})
     })
 })

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {relativeLighten} from 'gorgias-design-system/utils'
+import { relativeLighten } from 'gorgias-design-system/utils'
 
 import css from './ProgressTracker.less'
 

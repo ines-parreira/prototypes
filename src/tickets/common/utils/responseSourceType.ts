@@ -1,10 +1,10 @@
-import {appQueryClient} from 'api/queryClient'
-import {TicketMessageSourceType, TicketVia} from 'business/types/ticket'
-import {TicketMessage} from 'models/ticket/types'
-import {UseListVoiceCalls, voiceCallsKeys} from 'models/voiceCall/queries'
-import {isMissedInboundVoiceCall} from 'models/voiceCall/utils'
-import {DEFAULT_SOURCE_TYPE} from 'tickets/common/config'
-import {isLastItemInTicketAVoiceCall} from 'utils'
+import { appQueryClient } from 'api/queryClient'
+import { TicketMessageSourceType, TicketVia } from 'business/types/ticket'
+import { TicketMessage } from 'models/ticket/types'
+import { UseListVoiceCalls, voiceCallsKeys } from 'models/voiceCall/queries'
+import { isMissedInboundVoiceCall } from 'models/voiceCall/utils'
+import { DEFAULT_SOURCE_TYPE } from 'tickets/common/config'
+import { isLastItemInTicketAVoiceCall } from 'utils'
 
 import isAnswerableType from './isAnswerableType'
 import lastNonSystemTypeMessage from './lastNonSystemTypeMessage'
@@ -15,13 +15,13 @@ import lastNonSystemTypeMessage from './lastNonSystemTypeMessage'
 export default function responseSourceType(
     messages: Array<TicketMessage>,
     via: TicketVia,
-    ticketId: number
+    ticketId: number,
 ): TicketMessageSourceType {
     const lastMessage = lastNonSystemTypeMessage(messages)
     const voiceCallsData = appQueryClient.getQueryData<UseListVoiceCalls>(
         voiceCallsKeys.list({
             ticket_id: ticketId,
-        })
+        }),
     )?.data
     const lastVoiceCall = voiceCallsData?.[0]
 

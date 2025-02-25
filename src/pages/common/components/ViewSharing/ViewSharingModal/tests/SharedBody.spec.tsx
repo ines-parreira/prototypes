@@ -1,6 +1,7 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
 
 import SharedBody from '../SharedBody'
 
@@ -10,8 +11,8 @@ describe('<SharedBody/>', () => {
     let onRemoveTeam: jest.MockedFunction<any>
     let onRemoveUser: jest.MockedFunction<any>
 
-    const getTeam = (id: number) => ({id, name: `Team ${id}`})
-    const getUser = (id: number) => ({id, name: `User ${id}`})
+    const getTeam = (id: number) => ({ id, name: `Team ${id}` })
+    const getUser = (id: number) => ({ id, name: `User ${id}` })
 
     beforeEach(() => {
         onTeamClick = jest.fn()
@@ -22,7 +23,7 @@ describe('<SharedBody/>', () => {
 
     describe('render()', () => {
         it('should render', () => {
-            const {container} = render(
+            const { container } = render(
                 <SharedBody
                     availableTeams={fromJS([getTeam(1)])}
                     availableUsers={fromJS([getUser(1)])}
@@ -32,7 +33,7 @@ describe('<SharedBody/>', () => {
                     onUserClick={onUserClick}
                     onRemoveTeam={onRemoveTeam}
                     onRemoveUser={onRemoveUser}
-                />
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()

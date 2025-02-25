@@ -1,12 +1,12 @@
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+
 import moment from 'moment'
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {HelpCenter} from 'models/helpCenter/types'
-import {StoreIntegration} from 'models/integration/types'
-import {ArticleOrigin} from 'pages/settings/helpCenter/types/articleOrigin.enum'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { HelpCenter } from 'models/helpCenter/types'
+import { StoreIntegration } from 'models/integration/types'
+import { ArticleOrigin } from 'pages/settings/helpCenter/types/articleOrigin.enum'
 
-import css from './AutomateLandingPageTopQuestions.less'
 import {
     TopQuestionsSection,
     TopQuestionsSectionAllReviewed,
@@ -15,11 +15,13 @@ import {
     TopQuestionsSectionNoRecommendations,
     TopQuestionsSectionProps,
 } from './TopQuestionsSection'
-import {useHasEmailToStoreConnection} from './useHasEmailToStoreConnection'
-import {useTopQuestionsArticles} from './useTopQuestionsArticles'
-import {useTopQuestionsFilters} from './useTopQuestionsFilters'
-import {useTopQuestionsViewedOnPage} from './useTopQuestionsViewedOnPage'
-import {filteredSortedTopQuestionsFromFetchedArticles} from './utils'
+import { useHasEmailToStoreConnection } from './useHasEmailToStoreConnection'
+import { useTopQuestionsArticles } from './useTopQuestionsArticles'
+import { useTopQuestionsFilters } from './useTopQuestionsFilters'
+import { useTopQuestionsViewedOnPage } from './useTopQuestionsViewedOnPage'
+import { filteredSortedTopQuestionsFromFetchedArticles } from './utils'
+
+import css from './AutomateLandingPageTopQuestions.less'
 
 type TopQuestionsSectionWithFiltersProps = {
     selectedStore: StoreIntegration
@@ -34,11 +36,11 @@ const TopQuestionsSectionWithFilters = ({
     storeFilter,
     helpCenterFilter,
 }: TopQuestionsSectionWithFiltersProps) => {
-    const {articles, isLoading, dismissArticle, createArticle} =
+    const { articles, isLoading, dismissArticle, createArticle } =
         useTopQuestionsArticles(
             selectedStore.id,
             selectedHelpCenter.id,
-            selectedHelpCenter.default_locale || 'en-US'
+            selectedHelpCenter.default_locale || 'en-US',
         )
 
     const batchDatetime = useMemo(
@@ -46,14 +48,14 @@ const TopQuestionsSectionWithFilters = ({
             !isLoading && articles.length > 0
                 ? moment(articles[0].batch_datetime).toDate()
                 : new Date(),
-        [articles, isLoading]
+        [articles, isLoading],
     )
 
     const viewedOnPage = useTopQuestionsViewedOnPage(
         selectedStore.id,
         selectedHelpCenter.id,
         'automate-overview',
-        batchDatetime
+        batchDatetime,
     )
 
     const [topQuestions, setTopQuestions] = useState<
@@ -63,7 +65,7 @@ const TopQuestionsSectionWithFilters = ({
     useEffect(() => {
         if (!isLoading && articles) {
             setTopQuestions(
-                filteredSortedTopQuestionsFromFetchedArticles(articles)
+                filteredSortedTopQuestionsFromFetchedArticles(articles),
             )
         }
     }, [isLoading, articles])
@@ -80,7 +82,7 @@ const TopQuestionsSectionWithFilters = ({
             try {
                 await createArticle(
                     templateKey,
-                    ArticleOrigin.TOP_QUESTIONS_SECTION
+                    ArticleOrigin.TOP_QUESTIONS_SECTION,
                 )
                 logEvent(SegmentEvent.AutomateTopQuestionsSectionCreateArticle)
             } catch (error) {
@@ -89,7 +91,7 @@ const TopQuestionsSectionWithFilters = ({
                 setWasJustReviewed(true)
             }
         },
-        [createArticle]
+        [createArticle],
     )
 
     const onDismiss = useCallback(
@@ -102,7 +104,7 @@ const TopQuestionsSectionWithFilters = ({
                 console.error(error)
             }
         },
-        [dismissArticle]
+        [dismissArticle],
     )
 
     if (isSingleStore) {
@@ -201,7 +203,7 @@ export const AutomateLandingPageTopQuestions = () => {
         storeFilter,
         selectedHelpCenter,
         helpCenterFilter,
-    } = useTopQuestionsFilters({searchFirstMatchingStoreAndHelpCenter: true})
+    } = useTopQuestionsFilters({ searchFirstMatchingStoreAndHelpCenter: true })
 
     const {
         hasEmailToStoreConnection,

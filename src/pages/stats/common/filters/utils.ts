@@ -1,6 +1,7 @@
-import {AnalyticsFilter} from '@gorgias/api-queries'
 import _isEqual from 'lodash/isEqual'
 import times from 'lodash/times'
+
+import { AnalyticsFilter } from '@gorgias/api-queries'
 
 import {
     FilterComponentKey,
@@ -9,14 +10,14 @@ import {
     SavedFilterDraft,
 } from 'models/stat/types'
 import {
-    OptionalProperty,
     DropdownOption,
     FilterOptionGroup,
+    OptionalProperty,
 } from 'pages/stats/types'
 
 export const getScoreLabelsAndValues = (
     maxScoreNumber: number,
-    isDescending: boolean
+    isDescending: boolean,
 ) => {
     const labelsAndValues = times(maxScoreNumber, (index) => {
         const idx = index + 1
@@ -35,7 +36,7 @@ export const getScoreLabelsAndValues = (
 
 export const getScoreLabelByValue = (
     scoreValue: number,
-    maxScoreNumber: number
+    maxScoreNumber: number,
 ) => {
     return (
         Array(scoreValue).fill('★').join('') +
@@ -54,7 +55,7 @@ export const getFilterError = ({
 }: {
     selectedOptions?: FilterOptionWithOptionalLabel[]
     options: FilterOptionGroup[]
-}): {warningType?: 'non-existent'; warningMessage?: string} => {
+}): { warningType?: 'non-existent'; warningMessage?: string } => {
     const nonExistentValues =
         (options.length &&
             selectedOptions
@@ -65,9 +66,9 @@ export const getFilterError = ({
                                 !group.options.length ||
                                 group.options.some(
                                     (option) =>
-                                        option.value === selectedOption.value
-                                )
-                        )
+                                        option.value === selectedOption.value,
+                                ),
+                        ),
                 )
                 .map((selectedOption) => selectedOption.label)) ||
         []
@@ -79,7 +80,7 @@ export const getFilterError = ({
         }
     }
 
-    return {warningMessage: undefined, warningType: undefined}
+    return { warningMessage: undefined, warningType: undefined }
 }
 
 export const getValidMemberName = (member: string): string => {
@@ -106,7 +107,7 @@ export const isFilterApplicable = ({
         !applicableFilters.find(
             (applicableFilter) =>
                 getValidMemberName(applicableFilter) ===
-                getValidMemberName(filterKey)
+                getValidMemberName(filterKey),
         )
     ) {
         return 'not-applicable'
@@ -127,8 +128,8 @@ export const areFiltersApplicable = ({
                 !applicableFilters.find(
                     (applicableFilter) =>
                         getValidMemberName(applicableFilter) ===
-                        getValidMemberName(filter.member)
-                )
+                        getValidMemberName(filter.member),
+                ),
         )
         if (notApplicable) {
             return 'not-applicable'
@@ -157,7 +158,7 @@ type MergedFiltersFormat =
     | undefined
 
 export const getFormattedFilter = (
-    filters: AnalyticsFilter | SavedFilterDraft | null | undefined
+    filters: AnalyticsFilter | SavedFilterDraft | null | undefined,
 ): MergedFiltersFormat =>
     filters
         ? {
@@ -183,7 +184,7 @@ export const getFormattedFilter = (
 
 export const areFiltersEqual = (
     savedFilters: AnalyticsFilter | null | undefined,
-    filtersDraft: SavedFilterDraft | null | undefined
+    filtersDraft: SavedFilterDraft | null | undefined,
 ) =>
     _isEqual(getFormattedFilter(savedFilters), getFormattedFilter(filtersDraft))
 
@@ -192,11 +193,11 @@ export type FilterOptionWithOptionalLabel = OptionalProperty<
     'label'
 >
 
-type EntityLike = {[key: string]: unknown; name: string}
+type EntityLike = { [key: string]: unknown; name: string }
 
 export const createFilterOptions = (
     entityIds: number[],
-    entityMapping: Record<string, EntityLike>
+    entityMapping: Record<string, EntityLike>,
 ): FilterOptionWithOptionalLabel[] => {
     return entityIds.map((id) => {
         const idAsAString = String(id)
@@ -208,7 +209,7 @@ export const createFilterOptions = (
 }
 
 export const filterValidOptions = (
-    options: FilterOptionWithOptionalLabel[]
+    options: FilterOptionWithOptionalLabel[],
 ): DropdownOption[] => {
     return options.filter((option): option is DropdownOption => {
         return option.label !== undefined

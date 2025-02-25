@@ -1,5 +1,6 @@
-import {act, render, screen, fireEvent} from '@testing-library/react'
 import React from 'react'
+
+import { act, fireEvent, render, screen } from '@testing-library/react'
 
 import ActionsPlatformAuthTypeSelectBox from '../ActionsPlatformAuthTypeSelectBox'
 
@@ -9,7 +10,7 @@ describe('<ActionsPlatformAuthTypeSelectBox />', () => {
             <ActionsPlatformAuthTypeSelectBox
                 value="api-key"
                 onChange={jest.fn()}
-            />
+            />,
         )
 
         act(() => {
@@ -25,7 +26,7 @@ describe('<ActionsPlatformAuthTypeSelectBox />', () => {
                 value="api-key"
                 onChange={jest.fn()}
                 isDisabled
-            />
+            />,
         )
 
         act(() => {

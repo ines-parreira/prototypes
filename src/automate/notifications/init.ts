@@ -1,9 +1,7 @@
-import {registerCategory, registerNotification} from 'common/notifications'
-
-import {FeatureFlagKey} from 'config/featureFlags'
-
-import {AUTOMATE_ICON} from 'pages/common/components/SourceIcon'
-import {getLDClient} from 'utils/launchDarkly'
+import { registerCategory, registerNotification } from 'common/notifications'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { AUTOMATE_ICON } from 'pages/common/components/SourceIcon'
+import { getLDClient } from 'utils/launchDarkly'
 
 import AiAgentNotification from './components/AiAgentNotification'
 import {
@@ -14,7 +12,7 @@ import {
 const getIsAiAgentOnboardingNotificationEnabled = () => {
     const launchDarklyClient = getLDClient()
     return !!launchDarklyClient?.variation(
-        FeatureFlagKey.AiAgentOnboardingNotification
+        FeatureFlagKey.AiAgentOnboardingNotification,
     )
 }
 

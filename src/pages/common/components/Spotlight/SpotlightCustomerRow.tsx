@@ -1,12 +1,11 @@
-import React, {ComponentProps, useMemo} from 'react'
+import React, { ComponentProps, useMemo } from 'react'
 
-import {EntityType} from 'hooks/useSearchRankScenario'
-import {PickedCustomerWithHighlights} from 'models/search/types'
-import {customerHighlightsTransform} from 'pages/common/components/Spotlight/helpers'
+import { EntityType } from 'hooks/useSearchRankScenario'
+import { PickedCustomerWithHighlights } from 'models/search/types'
+import { customerHighlightsTransform } from 'pages/common/components/Spotlight/helpers'
 import css from 'pages/common/components/Spotlight/SpotlightCustomerRow.less'
 import SpotlightRow from 'pages/common/components/Spotlight/SpotlightRow'
-
-import {sanitizeHtmlDefault} from 'utils/html'
+import { sanitizeHtmlDefault } from 'utils/html'
 
 type SpotlightCustomerRowProps = {
     item: PickedCustomerWithHighlights
@@ -28,7 +27,7 @@ const SpotlightCustomerRow = ({
 }: SpotlightCustomerRowProps) => {
     const itemWithHighlights = useMemo(
         () => customerHighlightsTransform(item),
-        [item]
+        [item],
     )
 
     return (

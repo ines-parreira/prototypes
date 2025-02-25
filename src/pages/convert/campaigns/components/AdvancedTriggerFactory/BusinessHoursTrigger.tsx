@@ -1,19 +1,18 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
 import Button from 'pages/common/components/button/Button'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {Value} from 'pages/common/forms/SelectField/types'
-
+import { Value } from 'pages/common/forms/SelectField/types'
 import {
     CampaignTriggerBusinessHoursValuesEnum,
     isBusinessHoursValue,
 } from 'pages/convert/campaigns/types/enums/CampaignTriggerBusinessHoursValues.enum'
 
-import {TRIGGERS_CONFIG} from '../../constants/triggers'
-import {BUSINESS_HOURS_VALUES} from '../../constants/triggerValueLabels'
-import {AdvancedTriggerBaseProps} from '../../types/AdvancedTriggerBaseProps'
+import { TRIGGERS_CONFIG } from '../../constants/triggers'
+import { BUSINESS_HOURS_VALUES } from '../../constants/triggerValueLabels'
+import { AdvancedTriggerBaseProps } from '../../types/AdvancedTriggerBaseProps'
+import { CampaignTriggerType } from '../../types/enums/CampaignTriggerType.enum'
 
-import {CampaignTriggerType} from '../../types/enums/CampaignTriggerType.enum'
 import css from './style.less'
 
 type Props = AdvancedTriggerBaseProps

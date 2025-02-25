@@ -1,4 +1,4 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
 import useLocalStorage from 'hooks/useLocalStorage'
 import useLocalStorageWithExpiry from 'hooks/useLocalStorageWithExpiry'
@@ -28,16 +28,16 @@ describe('useLocalStorageWithExpiry', () => {
             jest.fn(),
         ])
 
-        const {result} = renderHook(() =>
-            useLocalStorageWithExpiry('key', EXPIRY_TIME, 'default value')
+        const { result } = renderHook(() =>
+            useLocalStorageWithExpiry('key', EXPIRY_TIME, 'default value'),
         )
 
         expect(result.current.state).toBe('default value')
     })
 
     it('should set the value passed and update the timestamp', () => {
-        const {result} = renderHook(() =>
-            useLocalStorageWithExpiry('key', EXPIRY_TIME, '')
+        const { result } = renderHook(() =>
+            useLocalStorageWithExpiry('key', EXPIRY_TIME, ''),
         )
 
         result.current.setState('new value')
@@ -56,7 +56,7 @@ describe('useLocalStorageWithExpiry', () => {
             ])
 
         renderHook(() =>
-            useLocalStorageWithExpiry('key', EXPIRY_TIME, 'default value')
+            useLocalStorageWithExpiry('key', EXPIRY_TIME, 'default value'),
         )
 
         expect(mockSetter).toHaveBeenCalledTimes(2)
@@ -65,8 +65,8 @@ describe('useLocalStorageWithExpiry', () => {
     })
 
     it('should remove the key / value pair as well as the writing datetime', () => {
-        const {result} = renderHook(() =>
-            useLocalStorageWithExpiry('key', EXPIRY_TIME, '')
+        const { result } = renderHook(() =>
+            useLocalStorageWithExpiry('key', EXPIRY_TIME, ''),
         )
 
         result.current.remove()

@@ -1,9 +1,10 @@
-import {type Map} from 'immutable'
-import {useMemo} from 'react'
+import { useMemo } from 'react'
+
+import { type Map } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {type EmailIntegration} from 'models/integration/types'
-import {getEmailIntegrations} from 'state/integrations/selectors'
+import { type EmailIntegration } from 'models/integration/types'
+import { getEmailIntegrations } from 'state/integrations/selectors'
 
 export const useFetchEmailIntegrationsData = () => {
     const rawEmails = useAppSelector(getEmailIntegrations)

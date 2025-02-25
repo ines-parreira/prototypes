@@ -1,6 +1,6 @@
-import {ulid} from 'ulidx'
+import { ulid } from 'ulidx'
 
-import {WorkflowConfigurationBuilder} from '../models/workflowConfiguration.model'
+import { WorkflowConfigurationBuilder } from '../models/workflowConfiguration.model'
 import {
     WorkflowConfiguration,
     WorkflowTemplate,
@@ -14,7 +14,7 @@ export const SHOW_LOYALTY_LION_POINT_BALANCE: WorkflowTemplate = {
     label: WorkflowTemplateLabelType.ThirdPartyActions,
     getConfiguration: (
         id: string,
-        integrationId: number
+        integrationId: number,
     ): WorkflowConfiguration => {
         const b = new WorkflowConfigurationBuilder({
             id,

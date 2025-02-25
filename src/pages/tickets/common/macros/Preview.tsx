@@ -1,38 +1,40 @@
-import {File, MacroAction} from '@gorgias/api-queries'
-import classnames from 'classnames'
-import {LDFlagSet} from 'launchdarkly-js-client-sdk'
-import {withLDConsumer} from 'launchdarkly-react-client-sdk'
 import React, {
     Component,
     ComponentClass,
     ComponentProps,
     ReactNode,
 } from 'react'
-import {Badge} from 'reactstrap'
 
-import {TicketMessageSourceType} from 'business/types/ticket'
-import {ActionTemplateExecution} from 'config'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useCustomFieldDefinition} from 'custom-fields/hooks/queries/useCustomFieldDefinition'
-import {CustomField} from 'custom-fields/types'
-import {getIconFromActionType} from 'models/macroAction/helpers'
-import {actionTypeToName, MacroActionName} from 'models/macroAction/types'
+import classnames from 'classnames'
+import { LDFlagSet } from 'launchdarkly-js-client-sdk'
+import { withLDConsumer } from 'launchdarkly-react-client-sdk'
+import { Badge } from 'reactstrap'
+
+import { File, MacroAction } from '@gorgias/api-queries'
+
+import { TicketMessageSourceType } from 'business/types/ticket'
+import { ActionTemplateExecution } from 'config'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useCustomFieldDefinition } from 'custom-fields/hooks/queries/useCustomFieldDefinition'
+import { CustomField } from 'custom-fields/types'
+import { getIconFromActionType } from 'models/macroAction/helpers'
+import { actionTypeToName, MacroActionName } from 'models/macroAction/types'
 import TicketTag from 'pages/common/components/TicketTag'
 import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
 import {
     AgentLabel,
-    StatusLabel,
-    TimedeltaLabel,
-    TeamLabel,
     RecipientsLabel,
+    StatusLabel,
+    TeamLabel,
+    TimedeltaLabel,
 } from 'pages/common/utils/labels'
 import {
     fileIconFromContentType,
     getSortedIntegrationActions,
 } from 'pages/tickets/common/utils'
-import {isRichType} from 'tickets/common/utils'
-import {getActionTemplate} from 'utils'
-import {sanitizeHtmlForFacebookMessenger} from 'utils/html'
+import { isRichType } from 'tickets/common/utils'
+import { getActionTemplate } from 'utils'
+import { sanitizeHtmlForFacebookMessenger } from 'utils/html'
 
 import css from './Preview.less'
 
@@ -52,7 +54,7 @@ class Preview extends Component<Props> {
             <div className="mb-3">
                 <strong className="text-muted mr-2">Attach files:</strong>
                 {(
-                    attachmentAction.arguments as {attachments: File[]}
+                    attachmentAction.arguments as { attachments: File[] }
                 ).attachments.map((file, index: number) => (
                     <Badge key={index} color="secondary" className="mr-1 mb-1">
                         <i className="material-icons mr-2">
@@ -68,7 +70,7 @@ class Preview extends Component<Props> {
     renderResponseText(responseTextAction?: MacroAction) {
         if (!responseTextAction) return null
 
-        const {body_html, body_text, cc, bcc} =
+        const { body_html, body_text, cc, bcc } =
             responseTextAction.arguments as {
                 body_html?: string
                 body_text?: string
@@ -116,7 +118,7 @@ class Preview extends Component<Props> {
                             <div
                                 className={classnames(
                                     css.macroData,
-                                    css.recipientsWrapper
+                                    css.recipientsWrapper,
                                 )}
                             >
                                 <strong className="text-muted mr-2">
@@ -129,7 +131,7 @@ class Preview extends Component<Props> {
                             <div
                                 className={classnames(
                                     css.macroData,
-                                    css.recipientsWrapper
+                                    css.recipientsWrapper,
                                 )}
                             >
                                 <strong className="text-muted mr-2">
@@ -207,7 +209,7 @@ class Preview extends Component<Props> {
                         name={
                             (
                                 setAssigneeAction.arguments as {
-                                    assignee_user: {name: string} | null
+                                    assignee_user: { name: string } | null
                                 }
                             ).assignee_user?.name
                         }
@@ -231,7 +233,7 @@ class Preview extends Component<Props> {
                         name={
                             (
                                 setTeamAssigneeAction.arguments as {
-                                    assignee_team: {name: string}
+                                    assignee_team: { name: string }
                                 }
                             ).assignee_team?.name
                         }
@@ -265,7 +267,7 @@ class Preview extends Component<Props> {
                     className={classnames(
                         'material-icons mr-2',
                         css.icon,
-                        css.internalNoteIcon
+                        css.internalNoteIcon,
                     )}
                 >
                     note
@@ -277,7 +279,7 @@ class Preview extends Component<Props> {
 
     renderForwardByEmail(
         isMacroForwardByEmailEnabled: boolean,
-        action?: MacroAction
+        action?: MacroAction,
     ) {
         if (!action || !isMacroForwardByEmailEnabled) return null
 
@@ -298,7 +300,7 @@ class Preview extends Component<Props> {
 
     renderSetCustomFieldValues() {
         const SCFActions = this.props.actions?.filter(
-            (action) => action.name === MacroActionName.SetCustomFieldValue
+            (action) => action.name === MacroActionName.SetCustomFieldValue,
         )
 
         if (!SCFActions?.length) return null
@@ -346,7 +348,7 @@ class Preview extends Component<Props> {
                             />
                             {action.title}
                         </div>
-                    )
+                    ),
                 )}
             </div>
         )
@@ -358,16 +360,16 @@ class Preview extends Component<Props> {
                 actions.filter(
                     (action) =>
                         getActionTemplate(action.name)?.execution ===
-                        ActionTemplateExecution.External
-                )
+                        ActionTemplateExecution.External,
+                ),
             ) as {
                 [key: string]: MacroAction[]
-            }
+            },
         ).map(([k, v]) => this.renderActions(k, v))
     }
 
     render() {
-        const {actions, className, flags} = this.props
+        const { actions, className, flags } = this.props
         if (!actions?.length) return null
 
         const isMacroForwardByEmailEnabled =
@@ -380,29 +382,29 @@ class Preview extends Component<Props> {
             <div className={classnames(css.component, className)}>
                 {this.renderSetStatus(findAction(MacroActionName.SetStatus))}
                 {this.renderSnoozeTicket(
-                    findAction(MacroActionName.SnoozeTicket)
+                    findAction(MacroActionName.SnoozeTicket),
                 )}
                 {this.renderAddTags(findAction(MacroActionName.AddTags))}
                 {this.renderSetAssignee(
-                    findAction(MacroActionName.SetAssignee)
+                    findAction(MacroActionName.SetAssignee),
                 )}
                 {this.renderSetTeamAssignee(
-                    findAction(MacroActionName.SetTeamAssignee)
+                    findAction(MacroActionName.SetTeamAssignee),
                 )}
                 {this.renderSetSubject(findAction(MacroActionName.SetSubject))}
                 {this.renderInternalNote(
-                    findAction(MacroActionName.AddInternalNote)
+                    findAction(MacroActionName.AddInternalNote),
                 )}
                 {this.renderForwardByEmail(
                     isMacroForwardByEmailEnabled,
-                    findAction(MacroActionName.ForwardByEmail)
+                    findAction(MacroActionName.ForwardByEmail),
                 )}
                 {this.renderIntegrations(actions)}
                 {this.renderAddAttachments(
-                    findAction(MacroActionName.AddAttachments)
+                    findAction(MacroActionName.AddAttachments),
                 )}
                 {this.renderResponseText(
-                    findAction(MacroActionName.SetResponseText)
+                    findAction(MacroActionName.SetResponseText),
                 )}
                 {this.renderSetCustomFieldValues()}
             </div>
@@ -411,7 +413,7 @@ class Preview extends Component<Props> {
 }
 
 export default withLDConsumer()(
-    Preview as any as ComponentClass<Omit<Props, 'flags'>>
+    Preview as any as ComponentClass<Omit<Props, 'flags'>>,
 )
 
 export function CustomFieldName({
@@ -419,7 +421,7 @@ export function CustomFieldName({
 }: {
     customFieldId: CustomField['id']
 }) {
-    const {data, isLoading} = useCustomFieldDefinition(customFieldId)
+    const { data, isLoading } = useCustomFieldDefinition(customFieldId)
     if (isLoading) return null
 
     return (

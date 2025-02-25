@@ -1,6 +1,6 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {useGetHelpCenterArticleList} from 'models/helpCenter/queries'
+import { useGetHelpCenterArticleList } from 'models/helpCenter/queries'
 import {
     ArticleWithLocalTranslationAndRating,
     HelpCenter,
@@ -22,13 +22,13 @@ type AIArticlePublishedPreviewResult = {
 
 export const useAIArticlePublishedPreviewUrl = (
     helpCenter: HelpCenter | undefined,
-    articleKey: string
+    articleKey: string,
 ): AIArticlePublishedPreviewResult => {
     if (!helpCenter) {
         throw new Error(`Selected Help center does not exist`)
     }
 
-    const {data: helpCenterArticlesData} = useGetHelpCenterArticleList(
+    const { data: helpCenterArticlesData } = useGetHelpCenterArticleList(
         helpCenter.id,
         {
             version_status: 'latest_draft',
@@ -36,13 +36,13 @@ export const useAIArticlePublishedPreviewUrl = (
         },
         {
             refetchOnWindowFocus: false,
-        }
+        },
     )
     const helpCenterArticles = helpCenterArticlesData?.data
 
     const selectedArticle = useMemo(() => {
         return helpCenterArticles?.find(
-            (article) => article.template_key === articleKey
+            (article) => article.template_key === articleKey,
         )
     }, [articleKey, helpCenterArticles])
 
@@ -77,5 +77,5 @@ export const useAIArticlePublishedPreviewUrl = (
               })
     }, [helpCenter, selectedArticle])
 
-    return {url, article: selectedArticle}
+    return { url, article: selectedArticle }
 }

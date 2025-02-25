@@ -1,13 +1,14 @@
-import {render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {CampaignDiscountOffer} from 'pages/convert/campaigns/types/CampaignDiscountOffer'
+import { CampaignDiscountOffer } from 'pages/convert/campaigns/types/CampaignDiscountOffer'
 
-import {DiscountOfferPreview} from '../DiscountOfferPreview'
+import { DiscountOfferPreview } from '../DiscountOfferPreview'
 
 const mockStore = configureMockStore([thunk])()
 
@@ -21,7 +22,7 @@ describe('<DiscountOfferPreview />', () => {
         render(
             <Provider store={mockStore}>
                 <DiscountOfferPreview offer={offer} />
-            </Provider>
+            </Provider>,
         )
 
         const revealBtn = screen.getByText('Reveal Your Unique Code')
@@ -31,7 +32,7 @@ describe('<DiscountOfferPreview />', () => {
         userEvent.click(revealBtn)
 
         expect(
-            screen.getByLabelText('Copy discount code').textContent
+            screen.getByLabelText('Copy discount code').textContent,
         ).toContain(offer.prefix)
     })
 })

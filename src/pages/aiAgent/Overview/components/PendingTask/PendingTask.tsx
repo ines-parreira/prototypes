@@ -1,10 +1,11 @@
-import {Skeleton} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
 import React from 'react'
 
-import {NavLink} from 'react-router-dom'
+import classNames from 'classnames'
+import { NavLink } from 'react-router-dom'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { Skeleton } from '@gorgias/merchant-ui-kit'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import {
     Card,
     CardFooter,
@@ -18,7 +19,7 @@ import css from './PendingTask.less'
 const Div = React.forwardRef<
     HTMLDivElement,
     React.HTMLAttributes<HTMLDivElement>
->(({...props}, ref) => <div ref={ref} {...props} />)
+>(({ ...props }, ref) => <div ref={ref} {...props} />)
 
 type Props = {
     title?: string
@@ -46,7 +47,7 @@ export const PendingTask: React.FC<Props> = ({
 }: Props) => {
     let ariaLoadingProps: Record<string, string> = {}
     if (isLoading) {
-        ariaLoadingProps = {'aria-busy': 'true', 'aria-live': 'polite'}
+        ariaLoadingProps = { 'aria-busy': 'true', 'aria-live': 'polite' }
     }
 
     const onTaskClick = () => {
@@ -61,7 +62,7 @@ export const PendingTask: React.FC<Props> = ({
     return (
         <Wrapper
             to={ctaUrl ?? ''}
-            className={classNames(css.wrapperA, {[css.isLoading]: isLoading})}
+            className={classNames(css.wrapperA, { [css.isLoading]: isLoading })}
             aria-label={title}
             tabIndex={0}
             role="link"

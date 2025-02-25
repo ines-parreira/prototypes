@@ -1,13 +1,14 @@
-import {Location} from 'history'
-import _noop from 'lodash/noop'
 import React, {
-    useState,
-    useRef,
+    createContext,
     useCallback,
     useEffect,
-    createContext,
+    useRef,
+    useState,
 } from 'react'
-import {Prompt} from 'react-router-dom'
+
+import { Location } from 'history'
+import _noop from 'lodash/noop'
+import { Prompt } from 'react-router-dom'
 
 import Modal from 'pages/common/components/modal/Modal'
 import history from 'pages/history'
@@ -27,7 +28,7 @@ type Props = {
     when: boolean | undefined
 }
 
-const PromptModal: React.FC<Props> = ({when, children}) => {
+const PromptModal: React.FC<Props> = ({ when, children }) => {
     const isDiscarding = useRef(false)
     const [show, setShow] = useState(false)
     const [location, setLocation] = useState<Location>()
@@ -40,7 +41,7 @@ const PromptModal: React.FC<Props> = ({when, children}) => {
             }
             return
         },
-        [when]
+        [when],
     )
 
     useEffect(() => {
@@ -63,7 +64,7 @@ const PromptModal: React.FC<Props> = ({when, children}) => {
 
     return (
         <PromptModalContext.Provider
-            value={{redirectToOriginalLocation, hideModal, location}}
+            value={{ redirectToOriginalLocation, hideModal, location }}
         >
             <Prompt
                 when={when}

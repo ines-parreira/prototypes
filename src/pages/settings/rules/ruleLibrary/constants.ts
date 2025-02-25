@@ -1,4 +1,4 @@
-import {RuleRecipeTag} from 'models/ruleRecipe/types'
+import { RuleRecipeTag } from 'models/ruleRecipe/types'
 
 export enum InstallationError {
     MaxRulesReached = 'max-rule-reached',
@@ -13,11 +13,17 @@ export const InstallationErrorMessage = {
 }
 
 export const tagColors: {
-    [key: string]: {color: string; backgroundColor: string}
+    [key: string]: { color: string; backgroundColor: string }
 } = {
-    [RuleRecipeTag.AUTO_TAG]: {color: '#00796B', backgroundColor: '#EAFFEF'},
-    [RuleRecipeTag.AUTO_CLOSE]: {color: '#9411B5', backgroundColor: '#EDEAFF'},
-    [RuleRecipeTag.AUTO_REPLY]: {color: '#3373DB', backgroundColor: '#F6F9FF'},
+    [RuleRecipeTag.AUTO_TAG]: { color: '#00796B', backgroundColor: '#EAFFEF' },
+    [RuleRecipeTag.AUTO_CLOSE]: {
+        color: '#9411B5',
+        backgroundColor: '#EDEAFF',
+    },
+    [RuleRecipeTag.AUTO_REPLY]: {
+        color: '#3373DB',
+        backgroundColor: '#F6F9FF',
+    },
 }
 
 export enum RuleTemplateRecipeSlugs {

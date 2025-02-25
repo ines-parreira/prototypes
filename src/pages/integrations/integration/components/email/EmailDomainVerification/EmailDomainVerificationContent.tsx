@@ -1,12 +1,12 @@
-import {EmailIntegration, GmailIntegration} from '@gorgias/api-queries'
 import React from 'react'
 
+import { EmailIntegration, GmailIntegration } from '@gorgias/api-queries'
+
 import useAppSelector from 'hooks/useAppSelector'
-import {OutlookIntegration} from 'models/integration/types'
+import { OutlookIntegration } from 'models/integration/types'
 import Alert from 'pages/common/components/Alert/Alert'
 import FormSection from 'pages/settings/SLAs/features/SLAForm/views/FormSection'
-
-import {getIntegrationsLoading} from 'state/integrations/selectors'
+import { getIntegrationsLoading } from 'state/integrations/selectors'
 
 import {
     getDomainFromEmailAddress,
@@ -20,7 +20,7 @@ type Props = {
     integration: EmailIntegration | GmailIntegration | OutlookIntegration
 }
 
-export default function EmailDomainVerificationContent({integration}: Props) {
+export default function EmailDomainVerificationContent({ integration }: Props) {
     const isLoadingIntegration =
         useAppSelector(getIntegrationsLoading)?.integration ?? false
 
@@ -29,7 +29,7 @@ export default function EmailDomainVerificationContent({integration}: Props) {
     const isCommonDomainAddress = isCommonDomainEmail(address)
     const domainName = getDomainFromEmailAddress(address)
 
-    const {domain, isCreatingDomain, errors, isFetching} =
+    const { domain, isCreatingDomain, errors, isFetching } =
         useDomainVerification()
 
     const shouldDisplayLoadingState =

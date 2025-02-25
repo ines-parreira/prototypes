@@ -1,26 +1,27 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
 
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
+
+import { axiosSuccessResponse } from 'fixtures/axiosResponse'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import {
-    useListVoiceCalls,
     useListRecordings,
     useListVoiceCallEvents,
+    useListVoiceCalls,
 } from '../queries'
 import * as resources from '../resources'
 
 const listVoiceCallsSpy = jest.spyOn(resources, 'listVoiceCalls')
 const listVoiceCallRecordingsSpy = jest.spyOn(
     resources,
-    'listVoiceCallRecordings'
+    'listVoiceCallRecordings',
 )
 const listVoiceCallEventsSpy = jest.spyOn(resources, 'listVoiceCallEvents')
 
 const queryClient = mockQueryClient()
-const wrapper = ({children}: any) => (
+const wrapper = ({ children }: any) => (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 )
 
@@ -34,13 +35,13 @@ describe('voiceCall queries', () => {
 
         it('should return correct data on success', async () => {
             listVoiceCallsSpy.mockResolvedValueOnce(
-                axiosSuccessResponse(voiceCalls) as any
+                axiosSuccessResponse(voiceCalls) as any,
             )
-            const {result, waitFor} = renderHook(
-                () => useListVoiceCalls({ticket_id: 1}),
+            const { result, waitFor } = renderHook(
+                () => useListVoiceCalls({ ticket_id: 1 }),
                 {
                     wrapper,
-                }
+                },
             )
             await waitFor(() => expect(result.current.isSuccess).toBe(true))
             expect(result.current.data?.data).toStrictEqual(voiceCalls)
@@ -48,11 +49,11 @@ describe('voiceCall queries', () => {
 
         it('should return expected error on failure', async () => {
             listVoiceCallsSpy.mockRejectedValueOnce(Error('test error'))
-            const {result, waitFor} = renderHook(
-                () => useListVoiceCalls({ticket_id: 1}),
+            const { result, waitFor } = renderHook(
+                () => useListVoiceCalls({ ticket_id: 1 }),
                 {
                     wrapper,
-                }
+                },
             )
             await waitFor(() => expect(result.current.isError).toBe(true))
             expect(result.current.error).toStrictEqual(Error('test error'))
@@ -62,14 +63,14 @@ describe('voiceCall queries', () => {
     describe('useListRecordings', () => {
         it('should return correct data on success', async () => {
             listVoiceCallRecordingsSpy.mockResolvedValueOnce(
-                axiosSuccessResponse(['testRecording']) as any
+                axiosSuccessResponse(['testRecording']) as any,
             )
             const recordings = ['testRecording']
-            const {result, waitFor} = renderHook(
-                () => useListRecordings({call_id: 1}),
+            const { result, waitFor } = renderHook(
+                () => useListRecordings({ call_id: 1 }),
                 {
                     wrapper,
-                }
+                },
             )
             await waitFor(() => expect(result.current.isSuccess).toBe(true))
             expect(result.current.data?.data).toStrictEqual(recordings)
@@ -77,13 +78,13 @@ describe('voiceCall queries', () => {
 
         it('should return expected error on failure', async () => {
             listVoiceCallRecordingsSpy.mockRejectedValueOnce(
-                Error('test error')
+                Error('test error'),
             )
-            const {result, waitFor} = renderHook(
-                () => useListRecordings({call_id: 1}),
+            const { result, waitFor } = renderHook(
+                () => useListRecordings({ call_id: 1 }),
                 {
                     wrapper,
-                }
+                },
             )
             await waitFor(() => expect(result.current.isError).toBe(true))
             expect(result.current.error).toStrictEqual(Error('test error'))
@@ -93,14 +94,14 @@ describe('voiceCall queries', () => {
     describe('useListVoiceCallEvents', () => {
         it('should return correct data on success', async () => {
             listVoiceCallEventsSpy.mockResolvedValueOnce(
-                axiosSuccessResponse(['testEvent']) as any
+                axiosSuccessResponse(['testEvent']) as any,
             )
             const events = ['testEvent']
-            const {result, waitFor} = renderHook(
-                () => useListVoiceCallEvents({call_id: 1}),
+            const { result, waitFor } = renderHook(
+                () => useListVoiceCallEvents({ call_id: 1 }),
                 {
                     wrapper,
-                }
+                },
             )
             await waitFor(() => expect(result.current.isSuccess).toBe(true))
             expect(result.current.data?.data).toStrictEqual(events)
@@ -108,11 +109,11 @@ describe('voiceCall queries', () => {
 
         it('should return expected error on failure', async () => {
             listVoiceCallEventsSpy.mockRejectedValueOnce(Error('test error'))
-            const {result, waitFor} = renderHook(
-                () => useListVoiceCallEvents({call_id: 1}),
+            const { result, waitFor } = renderHook(
+                () => useListVoiceCallEvents({ call_id: 1 }),
                 {
                     wrapper,
-                }
+                },
             )
             await waitFor(() => expect(result.current.isError).toBe(true))
             expect(result.current.error).toStrictEqual(Error('test error'))

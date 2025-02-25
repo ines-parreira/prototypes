@@ -1,9 +1,10 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { Link } from 'react-router-dom'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 export enum Source {
     CreateRuleButton = 'create-rule-button',
@@ -15,7 +16,7 @@ type Props = {
     from: Source
 }
 
-const TrackedRuleLibraryLink: React.FC<Props> = ({from, children}) => {
+const TrackedRuleLibraryLink: React.FC<Props> = ({ from, children }) => {
     const currentAccount = useAppSelector(getCurrentAccountState)
     return (
         <Link

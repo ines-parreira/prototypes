@@ -1,12 +1,13 @@
+import React, { useMemo } from 'react'
+
 import classNames from 'classnames'
-import React, {useMemo} from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import InputField from 'pages/common/forms/input/InputField'
-import {FilterWarningIcon} from 'pages/stats/common/components/Filter/components/FilterWarning/FilterWarningIcon'
+import { FilterWarningIcon } from 'pages/stats/common/components/Filter/components/FilterWarning/FilterWarningIcon'
 import css from 'pages/stats/common/filters/FiltersEditableTitle/FiltersEditableTitle.less'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {isTeamLead} from 'utils'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { isTeamLead } from 'utils'
 
 type Props = {
     isEditMode: boolean
@@ -28,7 +29,7 @@ export const NOT_EXISTENT_ADMIN_ERROR =
 
 export const getTooltipContent = (
     canEdit: boolean,
-    errorType?: 'not-applicable' | 'non-existent'
+    errorType?: 'not-applicable' | 'non-existent',
 ): string => {
     if (errorType === 'non-existent') {
         if (canEdit) {
@@ -44,7 +45,7 @@ const getPrefixIcon = (value: string) => (
         className={classNames(
             'material-icons',
             css.icon,
-            !value.trim().length && css.disableTuneIcon
+            !value.trim().length && css.disableTuneIcon,
         )}
     >
         tune
@@ -67,7 +68,7 @@ export const FiltersEditableTitle = ({
 
     const tooltipContent = useMemo(
         () => getTooltipContent(isCurrentUserTeamLead, errorType),
-        [errorType, isCurrentUserTeamLead]
+        [errorType, isCurrentUserTeamLead],
     )
 
     return isEditMode ? (

@@ -1,4 +1,4 @@
-import {getMoneySymbol} from '../getMoneySymbol'
+import { getMoneySymbol } from '../getMoneySymbol'
 
 describe('getMoneySymbol()', () => {
     it('should return symbol', () => {

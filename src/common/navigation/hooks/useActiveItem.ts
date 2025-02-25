@@ -1,5 +1,6 @@
-import {useMemo} from 'react'
-import {useLocation} from 'react-router-dom'
+import { useMemo } from 'react'
+
+import { useLocation } from 'react-router-dom'
 
 const pathItemMap: Record<string, string> = {
     '/app/automation': 'automate',
@@ -16,7 +17,7 @@ const pathItemMap: Record<string, string> = {
 }
 
 export default function useActiveItem() {
-    const {pathname: path} = useLocation()
+    const { pathname: path } = useLocation()
 
     return useMemo(() => {
         const m = path.match(/^\/app\/[^\/]+/)

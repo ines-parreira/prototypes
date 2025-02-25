@@ -1,6 +1,6 @@
 import _debounce from 'lodash/debounce'
 
-import {tryLocalStorage} from 'services/common/utils'
+import { tryLocalStorage } from 'services/common/utils'
 import {
     LayoutKeys,
     PANELS_STORAGE_DEBOUNCE_TIME,
@@ -12,19 +12,19 @@ const storePanelWidths = _debounce(
             tryLocalStorage(() => {
                 window.localStorage.setItem(
                     'navbar-width',
-                    widths[0].toString()
+                    widths[0].toString(),
                 )
 
                 if ([LayoutKeys.TICKET, LayoutKeys.VIEW].includes(layoutKey)) {
                     window.localStorage.setItem(
                         'ticket-list-width',
-                        `v2;${widths[1]}`
+                        `v2;${widths[1]}`,
                     )
                 }
 
                 window.localStorage.setItem(
                     layoutKey,
-                    `v2;${widths.toString()}`
+                    `v2;${widths.toString()}`,
                 )
             })
         }
@@ -33,7 +33,7 @@ const storePanelWidths = _debounce(
             tryLocalStorage(() => {
                 window.localStorage.setItem(
                     'infobar-width',
-                    widths[3].toString()
+                    widths[3].toString(),
                 )
             })
         }
@@ -42,12 +42,12 @@ const storePanelWidths = _debounce(
             tryLocalStorage(() => {
                 window.localStorage.setItem(
                     'infobar-width',
-                    widths[2].toString()
+                    widths[2].toString(),
                 )
             })
         }
     },
-    PANELS_STORAGE_DEBOUNCE_TIME
+    PANELS_STORAGE_DEBOUNCE_TIME,
 )
 
 export default storePanelWidths

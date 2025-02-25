@@ -1,10 +1,11 @@
-import {render, screen, fireEvent} from '@testing-library/react'
 import React from 'react'
 
-import {useSearchParam} from 'hooks/useSearchParam'
-import {assumeMock} from 'utils/testing'
+import { fireEvent, render, screen } from '@testing-library/react'
 
-import {WIZARD_POST_COMPLETION_STATE} from '../../constants'
+import { useSearchParam } from 'hooks/useSearchParam'
+import { assumeMock } from 'utils/testing'
+
+import { WIZARD_POST_COMPLETION_STATE } from '../../constants'
 import PostCompletionWizardModal from '../PostCompletionWizardModal'
 
 jest.mock('hooks/useSearchParam')
@@ -29,8 +30,8 @@ describe('<PostCompletionWizardModal />', () => {
         expect(screen.getByText('Great work!')).toBeInTheDocument()
         expect(
             screen.getByText(
-                'We’ll let you know when your knowledge finishes syncing.'
-            )
+                'We’ll let you know when your knowledge finishes syncing.',
+            ),
         ).toBeInTheDocument()
         expect(screen.getByText('Explore AI Agent')).toBeInTheDocument()
     })
@@ -46,8 +47,8 @@ describe('<PostCompletionWizardModal />', () => {
         expect(screen.getByText('Great work!')).toBeInTheDocument()
         expect(
             screen.getByText(
-                'Put AI Agent’s knowledge to the test in the playground before setting it live'
-            )
+                'Put AI Agent’s knowledge to the test in the playground before setting it live',
+            ),
         ).toBeInTheDocument()
         expect(screen.getByText('Try Test mode')).toBeInTheDocument()
     })
@@ -62,13 +63,13 @@ describe('<PostCompletionWizardModal />', () => {
 
         expect(
             screen.getByText(
-                'Great work! Before setting it live, you can power AI Agent with more knowledge using Guidance'
-            )
+                'Great work! Before setting it live, you can power AI Agent with more knowledge using Guidance',
+            ),
         ).toBeInTheDocument()
         expect(
             screen.getByAltText(
-                'Write text-based instructions that explains your policies and processes so it can perform like a real agent.'
-            )
+                'Write text-based instructions that explains your policies and processes so it can perform like a real agent.',
+            ),
         ).toBeInTheDocument()
         expect(screen.getByText('Next')).toBeInTheDocument()
     })
@@ -81,7 +82,9 @@ describe('<PostCompletionWizardModal />', () => {
 
         render(<PostCompletionWizardModal />)
 
-        const closeButton = screen.getByRole('button', {name: /Try Test mode/i})
+        const closeButton = screen.getByRole('button', {
+            name: /Try Test mode/i,
+        })
         fireEvent.click(closeButton)
 
         expect(mockSetSearchParam).toHaveBeenCalledWith(null)
@@ -102,8 +105,8 @@ describe('<PostCompletionWizardModal />', () => {
 
         expect(
             screen.getByText(
-                'Before setting it live, you can power AI Agent with more knowledge using Guidance'
-            )
+                'Before setting it live, you can power AI Agent with more knowledge using Guidance',
+            ),
         ).toBeInTheDocument()
 
         expect(screen.getByText('Next')).toBeInTheDocument()
@@ -119,8 +122,8 @@ describe('<PostCompletionWizardModal />', () => {
 
         expect(
             screen.getByText(
-                'Before setting it live, you can power AI Agent with more knowledge using Guidance'
-            )
+                'Before setting it live, you can power AI Agent with more knowledge using Guidance',
+            ),
         ).toBeInTheDocument()
 
         const closeIcon = screen.getByText('close')
@@ -128,7 +131,7 @@ describe('<PostCompletionWizardModal />', () => {
         fireEvent.click(closeIcon)
 
         expect(mockSetSearchParam).toHaveBeenCalledWith(
-            WIZARD_POST_COMPLETION_STATE.knowledge
+            WIZARD_POST_COMPLETION_STATE.knowledge,
         )
     })
 })

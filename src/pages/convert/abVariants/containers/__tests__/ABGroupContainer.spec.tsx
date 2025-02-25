@@ -1,20 +1,21 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {act, render, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import {createMemoryHistory} from 'history'
 import React from 'react'
-import {Provider} from 'react-redux'
-import {Router, useLocation} from 'react-router-dom'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { act, render, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { createMemoryHistory } from 'history'
+import { Provider } from 'react-redux'
+import { Router, useLocation } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {campaignWithABGroup, abGroup} from 'fixtures/abGroup'
+import { abGroup, campaignWithABGroup } from 'fixtures/abGroup'
 import * as useDismissFlag from 'hooks/useDismissFlag'
-import {useStartABGroup} from 'pages/convert/abVariants/hooks/useStartABGroup'
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
-import {RootState, StoreDispatch} from 'state/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { useStartABGroup } from 'pages/convert/abVariants/hooks/useStartABGroup'
+import { Campaign } from 'pages/convert/campaigns/types/Campaign'
+import { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 import ABGroupContainer from '../ABGroupContainer'
 
@@ -42,7 +43,7 @@ const renderComponent = (props: any) =>
                     <ABGroupContainer {...props} />
                 </QueryClientProvider>
             </Provider>
-        </Router>
+        </Router>,
     )
 
 describe('ABGroupContainer', () => {
@@ -76,13 +77,15 @@ describe('ABGroupContainer', () => {
             variants: [],
         } as Campaign
 
-        const {getByRole} = renderComponent({campaign: abGrpupWithOutVariants})
+        const { getByRole } = renderComponent({
+            campaign: abGrpupWithOutVariants,
+        })
 
-        const addVariantBtn = getByRole('button', {name: 'Add Variant'})
+        const addVariantBtn = getByRole('button', { name: 'Add Variant' })
         expect(addVariantBtn).toBeInTheDocument()
         expect(addVariantBtn).toBeAriaEnabled()
 
-        const startBtn = getByRole('button', {name: /Start/})
+        const startBtn = getByRole('button', { name: /Start/ })
         expect(startBtn).toBeInTheDocument()
         expect(startBtn).toBeAriaDisabled()
     })
@@ -92,13 +95,15 @@ describe('ABGroupContainer', () => {
             ...campaignWithABGroup,
         } as Campaign
 
-        const {getByRole} = renderComponent({campaign: abGrpupWithOutVariants})
+        const { getByRole } = renderComponent({
+            campaign: abGrpupWithOutVariants,
+        })
 
-        const addVariantBtn = getByRole('button', {name: 'Add Variant'})
+        const addVariantBtn = getByRole('button', { name: 'Add Variant' })
         expect(addVariantBtn).toBeInTheDocument()
         expect(addVariantBtn).toBeAriaDisabled()
 
-        const startBtn = getByRole('button', {name: /Start/})
+        const startBtn = getByRole('button', { name: /Start/ })
         expect(startBtn).toBeInTheDocument()
         expect(startBtn).toBeAriaEnabled()
     })
@@ -108,11 +113,11 @@ describe('ABGroupContainer', () => {
             ...campaignWithABGroup,
         } as Campaign
 
-        const {getByText, getByRole} = renderComponent({
+        const { getByText, getByRole } = renderComponent({
             campaign: abGrpupWithOutVariants,
         })
 
-        const startBtn = getByRole('button', {name: /Start/})
+        const startBtn = getByRole('button', { name: /Start/ })
         expect(startBtn).toBeInTheDocument()
 
         act(() => {
@@ -121,7 +126,7 @@ describe('ABGroupContainer', () => {
 
         await waitFor(() => {
             expect(
-                getByText('You’re about to start your test')
+                getByText('You’re about to start your test'),
             ).toBeInTheDocument()
         })
     })
@@ -136,11 +141,11 @@ describe('ABGroupContainer', () => {
             ...campaignWithABGroup,
         } as Campaign
 
-        const {getByRole, queryByText} = renderComponent({
+        const { getByRole, queryByText } = renderComponent({
             campaign: abGrpupWithOutVariants,
         })
 
-        const startBtn = getByRole('button', {name: /Start/})
+        const startBtn = getByRole('button', { name: /Start/ })
         expect(startBtn).toBeInTheDocument()
 
         act(() => {
@@ -149,7 +154,7 @@ describe('ABGroupContainer', () => {
 
         await waitFor(() => {
             expect(
-                queryByText('You’re about to start your test')
+                queryByText('You’re about to start your test'),
             ).not.toBeInTheDocument()
 
             expect(useStartABGroupMutation).toBeCalled()
@@ -165,22 +170,22 @@ describe('ABGroupContainer', () => {
             },
         } as Campaign
 
-        const {getByRole, queryByRole} = renderComponent({
+        const { getByRole, queryByRole } = renderComponent({
             campaign: abGrpupWithOutVariants,
         })
 
-        const addVariantBtn = getByRole('button', {name: 'Add Variant'})
+        const addVariantBtn = getByRole('button', { name: 'Add Variant' })
         expect(addVariantBtn).toBeInTheDocument()
         expect(addVariantBtn).toBeAriaDisabled()
 
-        const startBtn = queryByRole('button', {name: /Start/})
+        const startBtn = queryByRole('button', { name: /Start/ })
         expect(startBtn).not.toBeInTheDocument()
 
-        const pauseBtn = getByRole('button', {name: /Pause Test/})
+        const pauseBtn = getByRole('button', { name: /Pause Test/ })
         expect(pauseBtn).toBeInTheDocument()
         expect(pauseBtn).toBeAriaEnabled()
 
-        const stopBtn = getByRole('button', {name: /Stop Test/})
+        const stopBtn = getByRole('button', { name: /Stop Test/ })
         expect(stopBtn).toBeInTheDocument()
         expect(stopBtn).toBeAriaEnabled()
     })
@@ -194,15 +199,15 @@ describe('ABGroupContainer', () => {
             },
         } as Campaign
 
-        const {getByRole, queryByRole} = renderComponent({
+        const { getByRole, queryByRole } = renderComponent({
             campaign: abGrpupWithOutVariants,
         })
 
-        const addVariantBtn = getByRole('button', {name: 'Add Variant'})
+        const addVariantBtn = getByRole('button', { name: 'Add Variant' })
         expect(addVariantBtn).toBeInTheDocument()
         expect(addVariantBtn).toBeAriaDisabled()
 
-        const resumeBtn = queryByRole('button', {name: /Resume Test/})
+        const resumeBtn = queryByRole('button', { name: /Resume Test/ })
         expect(resumeBtn).toBeInTheDocument()
         expect(resumeBtn).toBeAriaEnabled()
     })
@@ -216,15 +221,15 @@ describe('ABGroupContainer', () => {
             },
         } as Campaign
 
-        const {getByRole, queryByRole} = renderComponent({
+        const { getByRole, queryByRole } = renderComponent({
             campaign: abGrpupWithOutVariants,
         })
 
-        const addVariantBtn = getByRole('button', {name: 'Add Variant'})
+        const addVariantBtn = getByRole('button', { name: 'Add Variant' })
         expect(addVariantBtn).toBeInTheDocument()
         expect(addVariantBtn).toBeAriaDisabled()
 
-        const startBtn = queryByRole('button', {name: /Start/})
+        const startBtn = queryByRole('button', { name: /Start/ })
         expect(startBtn).toBeInTheDocument()
         expect(startBtn).toBeAriaDisabled()
     })

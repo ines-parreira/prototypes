@@ -1,4 +1,4 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
 import {
     buildEdgeCommonProperties,
@@ -9,7 +9,9 @@ import useValidateActionGraph from '../useValidateActionGraph'
 
 describe('useValidateActionGraph()', () => {
     it('should validate action graph', () => {
-        const {result} = renderHook(() => useValidateActionGraph(() => [], []))
+        const { result } = renderHook(() =>
+            useValidateActionGraph(() => [], []),
+        )
 
         expect(
             result.current({
@@ -135,7 +137,7 @@ describe('useValidateActionGraph()', () => {
                         source: 'conditions1',
                         target: 'end1',
                         data: {
-                            conditions: {and: []},
+                            conditions: { and: [] },
                         },
                     },
                 ],
@@ -156,7 +158,7 @@ describe('useValidateActionGraph()', () => {
                         },
                     },
                 ],
-            })
+            }),
         ).toEqual(
             expect.objectContaining({
                 nodes: [
@@ -229,13 +231,13 @@ describe('useValidateActionGraph()', () => {
                 errors: {
                     name: 'Action name is required',
                 },
-            })
+            }),
         )
     })
 
     it('should validate unique Action graph name', () => {
-        const {result} = renderHook(() =>
-            useValidateActionGraph(() => [], [{id: 'someid', name: 'test'}])
+        const { result } = renderHook(() =>
+            useValidateActionGraph(() => [], [{ id: 'someid', name: 'test' }]),
         )
 
         expect(
@@ -282,13 +284,13 @@ describe('useValidateActionGraph()', () => {
                     name: true,
                 },
                 apps: [],
-            })
+            }),
         ).toEqual(
             expect.objectContaining({
                 errors: {
                     name: 'An Action already exists with this name. Choose a unique name.',
                 },
-            })
+            }),
         )
     })
 })

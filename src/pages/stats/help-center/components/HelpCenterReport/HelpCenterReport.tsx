@@ -1,19 +1,20 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import moment from 'moment/moment'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useGridSize} from 'hooks/useGridSize'
-import {FilterKey} from 'models/stat/types'
-import {useHasAccessToAILibrary} from 'pages/settings/helpCenter/components/AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
-import {useHelpCenterAIArticlesLibrary} from 'pages/settings/helpCenter/components/AIArticlesLibraryView/hooks/useHelpCenterAIArticlesLibrary'
-import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import moment from 'moment/moment'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useGridSize } from 'hooks/useGridSize'
+import { FilterKey } from 'models/stat/types'
+import { useHasAccessToAILibrary } from 'pages/settings/helpCenter/components/AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
+import { useHelpCenterAIArticlesLibrary } from 'pages/settings/helpCenter/components/AIArticlesLibraryView/hooks/useHelpCenterAIArticlesLibrary'
+import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
 import DEPRECATED_HelpCenterFilter from 'pages/stats/common/filters/DEPRECATED_HelpCenterFilter/DEPRECATED_HelpCenterFilter'
 import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import DEPRECATED_HelpCenterStatsLanguageFilter from 'pages/stats/common/filters/HelpCenterStatsLanguageFilter/DEPRECATED_HelpCenterStatsLanguageFilter'
-import {DEFAULT_LOCALE} from 'pages/stats/common/utils'
-import {CustomReportComponent} from 'pages/stats/custom-reports/CustomReportComponent'
+import { DEFAULT_LOCALE } from 'pages/stats/common/utils'
+import { CustomReportComponent } from 'pages/stats/custom-reports/CustomReportComponent'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
 import AIBanner from 'pages/stats/help-center/components/AIBanner'
@@ -24,7 +25,7 @@ import {
 } from 'pages/stats/help-center/components/HelpCenterReport/HelpCenterReportConfig'
 import PartialDataAlert from 'pages/stats/help-center/components/PartialDataAlert/PartialDataAlert'
 import UnpublishedHelpCenterAlert from 'pages/stats/help-center/components/UnpublishedHelpCenterAlert/UnpublishedHelpCenterAlert'
-import {useSelectedHelpCenter} from 'pages/stats/help-center/hooks/useSelectedHelpCenter'
+import { useSelectedHelpCenter } from 'pages/stats/help-center/hooks/useSelectedHelpCenter'
 import StatsPage from 'pages/stats/StatsPage'
 
 const DATE_WHEN_START_COLLECTION_EVENTS = '2023-11-16'
@@ -33,21 +34,21 @@ export const HelpCenterReport = () => {
     const isAnalyticsNewFilters =
         !!useFlags()[FeatureFlagKey.AnalyticsNewFiltersHelpCenter]
 
-    const {selectedHelpCenter, statsFilters, setStatsFilters, helpCenters} =
+    const { selectedHelpCenter, statsFilters, setStatsFilters, helpCenters } =
         useSelectedHelpCenter()
 
     const onLanguageFilterChange = (localeCodes: string[]) => {
-        setStatsFilters({localeCodes})
+        setStatsFilters({ localeCodes })
     }
 
     const isEndDateBeforeStartCollectionEvents = moment(
-        statsFilters.period.start_datetime
+        statsFilters.period.start_datetime,
     ).isBefore(DATE_WHEN_START_COLLECTION_EVENTS)
 
-    const {hasNewArticles: showAIBanner} = useHelpCenterAIArticlesLibrary(
+    const { hasNewArticles: showAIBanner } = useHelpCenterAIArticlesLibrary(
         selectedHelpCenter.id,
         DEFAULT_LOCALE,
-        selectedHelpCenter.shop_name
+        selectedHelpCenter.shop_name,
     )
 
     const hasAccessToAILibrary = useHasAccessToAILibrary()

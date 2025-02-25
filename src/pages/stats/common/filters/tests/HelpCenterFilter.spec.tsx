@@ -1,32 +1,32 @@
-import {screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-
 import React from 'react'
 
-import {SegmentEvent, logEvent} from 'common/segment'
-import {HelpCenter} from 'models/helpCenter/types'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {FilterKey} from 'models/stat/types'
-import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { HelpCenter } from 'models/helpCenter/types'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { FilterKey } from 'models/stat/types'
+import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {
     FILTER_DROPDOWN_ICON,
     FILTER_VALUE_PLACEHOLDER,
 } from 'pages/stats/common/components/Filter/constants'
-import {FilterLabels} from 'pages/stats/common/filters/constants'
+import { FilterLabels } from 'pages/stats/common/filters/constants'
 import HelpCenterFilter, {
     HelpCenterFilterWithState,
 } from 'pages/stats/common/filters/HelpCenterFilter'
 import * as statsSlice from 'state/stats/statsSlice'
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
 import * as filtersSlice from 'state/ui/stats/filtersSlice'
-import {renderWithStore} from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 const mockedHelpCenterData = getHelpCentersResponseFixture.data
 const HELP_CENTER_FILTER_NAME = FilterLabels[FilterKey.HelpCenters]
 
 jest.mock('common/segment', () => ({
     logEvent: jest.fn(),
-    SegmentEvent: {StatFilterSelected: 'stat-filter-selected'},
+    SegmentEvent: { StatFilterSelected: 'stat-filter-selected' },
 }))
 
 describe('HelpCenterFilter', () => {
@@ -40,7 +40,7 @@ describe('HelpCenterFilter', () => {
                             acc[hCenter.id] = hCenter
                             return acc
                         },
-                        {}
+                        {},
                     ),
                 },
             },
@@ -59,7 +59,7 @@ describe('HelpCenterFilter', () => {
                 value={withDefaultLogicalOperator([])}
                 dispatchUpdate={dispatchUpdate}
             />,
-            defaultState
+            defaultState,
         )
         expect(screen.getByText(HELP_CENTER_FILTER_NAME)).toBeInTheDocument()
     })
@@ -70,7 +70,7 @@ describe('HelpCenterFilter', () => {
                 value={undefined}
                 dispatchUpdate={dispatchUpdate}
             />,
-            defaultState
+            defaultState,
         )
         expect(screen.getByText(HELP_CENTER_FILTER_NAME)).toBeInTheDocument()
     })
@@ -81,12 +81,12 @@ describe('HelpCenterFilter', () => {
                 value={withDefaultLogicalOperator([mockedHelpCenterData[0].id])}
                 dispatchUpdate={dispatchUpdate}
             />,
-            defaultState
+            defaultState,
         )
 
         expect(screen.getByText(HELP_CENTER_FILTER_NAME)).toBeInTheDocument()
         expect(
-            screen.getByText(mockedHelpCenterData[0].name)
+            screen.getByText(mockedHelpCenterData[0].name),
         ).toBeInTheDocument()
     })
 
@@ -96,21 +96,21 @@ describe('HelpCenterFilter', () => {
                 value={withDefaultLogicalOperator([mockedHelpCenterData[0].id])}
                 dispatchUpdate={dispatchUpdate}
             />,
-            defaultState
+            defaultState,
         )
 
         userEvent.click(
-            screen.getByText(getHelpCentersResponseFixture.data[0].name)
+            screen.getByText(getHelpCentersResponseFixture.data[0].name),
         )
 
         userEvent.click(
-            screen.getByText(getHelpCentersResponseFixture.data[1].name)
+            screen.getByText(getHelpCentersResponseFixture.data[1].name),
         )
 
         expect(dispatchUpdate).toHaveBeenCalledWith(
             withDefaultLogicalOperator([
                 getHelpCentersResponseFixture.data[1].id,
-            ])
+            ]),
         )
     })
 
@@ -129,11 +129,11 @@ describe('HelpCenterFilter', () => {
 
         renderWithStore(
             <HelpCenterFilterWithState />,
-            mockedStoreWithHelpCenterFilters
+            mockedStoreWithHelpCenterFilters,
         )
 
         expect(
-            screen.getByText(getHelpCentersResponseFixture.data[0].name)
+            screen.getByText(getHelpCentersResponseFixture.data[0].name),
         ).toBeInTheDocument()
     })
 
@@ -143,7 +143,7 @@ describe('HelpCenterFilter', () => {
                 value={withDefaultLogicalOperator([mockedHelpCenterData[0].id])}
                 dispatchUpdate={dispatchUpdate}
             />,
-            defaultState
+            defaultState,
         )
 
         userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
@@ -159,7 +159,7 @@ describe('HelpCenterFilter', () => {
         it('should render HelpCenterFilterWithState component', () => {
             const spy = jest.spyOn(
                 statsSlice,
-                'mergeStatsFiltersWithLogicalOperator'
+                'mergeStatsFiltersWithLogicalOperator',
             )
 
             renderWithStore(<HelpCenterFilterWithState />, defaultState)
@@ -167,7 +167,7 @@ describe('HelpCenterFilter', () => {
             userEvent.click(screen.getByText(mockedHelpCenterData[0].name))
 
             expect(
-                screen.getByText(FilterLabels[FilterKey.HelpCenters])
+                screen.getByText(FilterLabels[FilterKey.HelpCenters]),
             ).toBeInTheDocument()
             expect(spy).toHaveBeenCalled()
         })

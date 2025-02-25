@@ -1,9 +1,10 @@
-import {act, render, screen, fireEvent, waitFor} from '@testing-library/react'
 import React from 'react'
 
-import {IntegrationType} from 'models/integration/constants'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 
-import {App} from '../../types'
+import { IntegrationType } from 'models/integration/constants'
+
+import { App } from '../../types'
 import ActionsPlatformTemplatesFilters from '../ActionsPlatformTemplatesFilters'
 
 describe('<ActionsPlatformTemplatesFilters />', () => {
@@ -24,7 +25,7 @@ describe('<ActionsPlatformTemplatesFilters />', () => {
                 onAppChange={mockOnAppChange}
                 name={''}
                 onNameChange={jest.fn()}
-            />
+            />,
         )
 
         act(() => {
@@ -54,7 +55,7 @@ describe('<ActionsPlatformTemplatesFilters />', () => {
                 onAppChange={jest.fn()}
                 name={''}
                 onNameChange={mockOnNameChange}
-            />
+            />,
         )
 
         act(() => {

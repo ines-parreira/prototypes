@@ -1,49 +1,50 @@
+// sort-imports-ignore
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
-import {ContentState} from 'draft-js'
-import {fromJS, Map} from 'immutable'
-import {omit} from 'lodash'
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+import { ContentState } from 'draft-js'
+import { fromJS, Map } from 'immutable'
+import { omit } from 'lodash'
+import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-// eslint-disable-next-line import/order
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
 import {
     TicketChannel,
-    TicketVia,
     TicketMessageSourceType,
     TicketStatus,
+    TicketVia,
 } from 'business/types/ticket'
 import * as segmentTracker from 'common/segment'
-import {SegmentEvent} from 'common/segment'
-import {AttachmentEnum} from 'common/types'
+import { SegmentEvent } from 'common/segment'
+import { AttachmentEnum } from 'common/types'
 import * as commonUtils from 'common/utils'
-import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
-import {channels as mockChannels} from 'fixtures/channels'
-import {integrationsState} from 'fixtures/integrations'
+import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
+import { channels as mockChannels } from 'fixtures/channels'
+import { integrationsState } from 'fixtures/integrations'
 import {
     addInternalNoteAction,
     setClosedStatusAction,
     setOpenStatusAction,
     setSubjectAction,
 } from 'fixtures/macro'
-import {phoneNumbers} from 'fixtures/newPhoneNumber'
-import {ticket} from 'fixtures/ticket'
+import { phoneNumbers } from 'fixtures/newPhoneNumber'
+import { ticket } from 'fixtures/ticket'
 import client from 'models/api/resources'
-import {channelsQueryKeys as mockChannelsQueryKeys} from 'models/channel/queries'
+import { channelsQueryKeys as mockChannelsQueryKeys } from 'models/channel/queries'
 import {
-    MacroActionType,
-    MacroActionName,
     MacroAction,
+    MacroActionName,
+    MacroActionType,
 } from 'models/macroAction/types'
-import {PhoneNumber} from 'models/phoneNumber/types'
-import {SEARCH_ENDPOINT} from 'models/search/resources'
-import {SearchType} from 'models/search/types'
-import {ProductRecommendationScenario} from 'pages/convert/campaigns/types/CampaignAttachment'
+import { PhoneNumber } from 'models/phoneNumber/types'
+import { SEARCH_ENDPOINT } from 'models/search/resources'
+import { SearchType } from 'models/search/types'
+import { ProductRecommendationScenario } from 'pages/convert/campaigns/types/CampaignAttachment'
 import * as activityTracker from 'services/activityTracker'
-import {ActivityEvents} from 'services/activityTracker'
+import { ActivityEvents } from 'services/activityTracker'
 import socketManager from 'services/socketManager/socketManager'
-import {AccountSettingType} from 'state/currentAccount/types'
+import { AccountSettingType } from 'state/currentAccount/types'
 import * as integrationSelectors from 'state/integrations/selectors'
 import * as actions from 'state/newMessage/actions'
 import * as types from 'state/newMessage/constants'
@@ -57,22 +58,20 @@ import {
     TicketMessageActionValidationError,
     TicketMessageInvalidSendDataError,
 } from 'state/newMessage/errors'
-import {initialState, makeNewMessage} from 'state/newMessage/reducers'
-import {ReplyAreaState} from 'state/newMessage/types'
-import {initialState as ticketInitialState} from 'state/ticket/reducers'
+import { initialState, makeNewMessage } from 'state/newMessage/reducers'
+import { ReplyAreaState } from 'state/newMessage/types'
+import { initialState as ticketInitialState } from 'state/ticket/reducers'
 import {
     chatTicket,
     emailTicket,
     instagramMedia,
 } from 'state/ticket/tests/fixtures'
-import {getLastSenderChannel, getPreferredChannel} from 'state/ticket/utils'
-import {RootState, StoreDispatch} from 'state/types'
-
+import { getLastSenderChannel, getPreferredChannel } from 'state/ticket/utils'
+import { RootState, StoreDispatch } from 'state/types'
 import * as utils from 'utils'
+import { convertFromHTML } from 'utils/editor'
 
-import {convertFromHTML} from 'utils/editor'
-
-import {getReplyAreaStateSnapshot} from './testUtils'
+import { getReplyAreaStateSnapshot } from './testUtils'
 
 type MockedRootState = {
     agents?: Map<any, any>
@@ -88,7 +87,7 @@ type MockedRootState = {
 
 const middlewares = [thunk]
 const mockStore = configureMockStore<MockedRootState, StoreDispatch>(
-    middlewares
+    middlewares,
 )
 const mockedUploadFiles = jest.spyOn(commonUtils, 'uploadFiles')
 
@@ -107,7 +106,7 @@ jest.mock(
         ({
             ...jest.requireActual('state/queries/selectors'),
             getQueryTimestamp: jest.fn(() => jest.fn()),
-        }) as Record<string, unknown>
+        }) as Record<string, unknown>,
 )
 
 jest.mock('services/socketManager/socketManager', () => {
@@ -161,7 +160,7 @@ describe('actions', () => {
                     ticket: chatTicket,
                     newMessage: initialState.setIn(
                         ['newMessage', 'source', 'type'],
-                        'chat'
+                        'chat',
                     ),
                 })
                 store.dispatch(actions.setSender())
@@ -192,7 +191,7 @@ describe('actions', () => {
                     ticket: _chatTicket,
                     newMessage: initialState.setIn(
                         ['newMessage', 'source', 'type'],
-                        'chat'
+                        'chat',
                     ),
                 })
                 store.dispatch(actions.setSender())
@@ -210,7 +209,7 @@ describe('actions', () => {
                 const _emailTicket = emailTicket.set('messages', fromJS([]))
                 const preferred = getPreferredChannel(
                     TicketMessageSourceType.Email,
-                    channels
+                    channels,
                 )
                 const expectedSender = fromJS({
                     name: preferred.get('name'),
@@ -221,7 +220,7 @@ describe('actions', () => {
                     ticket: _emailTicket,
                     newMessage: initialState.setIn(
                         ['newMessage', 'source', 'type'],
-                        'email'
+                        'email',
                     ),
                 })
                 store.dispatch(actions.setSender())
@@ -250,7 +249,7 @@ describe('actions', () => {
                     ticket: emailTicket,
                     newMessage: initialState.setIn(
                         ['newMessage', 'source', 'type'],
-                        'email'
+                        'email',
                     ),
                 })
                 store.dispatch(actions.setSender())
@@ -282,7 +281,7 @@ describe('actions', () => {
                     ticket: _emailTicket,
                     newMessage: initialState.setIn(
                         ['newMessage', 'source', 'type'],
-                        'email'
+                        'email',
                     ),
                 })
                 store.dispatch(actions.setSender())
@@ -306,7 +305,7 @@ describe('actions', () => {
                             return source
                                 .set('cc', source.get('to'))
                                 .set('to', fromJS([]))
-                        }
+                        },
                     )
                 const from = _emailTicket.getIn([
                     'messages',
@@ -324,7 +323,7 @@ describe('actions', () => {
                     ticket: _emailTicket,
                     newMessage: initialState.setIn(
                         ['newMessage', 'source', 'type'],
-                        'email'
+                        'email',
                     ),
                 })
                 store.dispatch(actions.setSender())
@@ -342,7 +341,7 @@ describe('actions', () => {
                 const _emailTicket = emailTicket.deleteIn(['messages', 1])
                 const from = getPreferredChannel(
                     TicketMessageSourceType.Email,
-                    channels
+                    channels,
                 )
                 const expectedSender = fromJS({
                     name: from.get('name'),
@@ -353,7 +352,7 @@ describe('actions', () => {
                     ticket: _emailTicket,
                     newMessage: initialState.setIn(
                         ['newMessage', 'source', 'type'],
-                        'email'
+                        'email',
                     ),
                 })
                 store.dispatch(actions.setSender())
@@ -372,7 +371,7 @@ describe('actions', () => {
                     ticket: emailTicket,
                     newMessage: initialState.setIn(
                         ['newMessage', 'source', 'type'],
-                        'internal-note'
+                        'internal-note',
                     ),
                 })
                 store.dispatch(actions.setSender())
@@ -390,7 +389,7 @@ describe('actions', () => {
 
             it('should reject any channel which is not verified and replace it with any verified channel', () => {
                 const unverifiedChannel = integrationsState.integrations.find(
-                    (integration) => integration.meta.verified === false
+                    (integration) => integration.meta.verified === false,
                 )
 
                 const _emailTicket = emailTicket
@@ -404,7 +403,7 @@ describe('actions', () => {
                                     address: unknown
                                 }
                             ).address,
-                        })
+                        }),
                     )
 
                 store = mockStore({
@@ -412,7 +411,7 @@ describe('actions', () => {
                     ticket: _emailTicket,
                     newMessage: initialState.setIn(
                         ['newMessage', 'source', 'type'],
-                        'email'
+                        'email',
                     ),
                 })
                 store.dispatch(actions.setSender())
@@ -428,12 +427,13 @@ describe('actions', () => {
                 const sender = setSenderAction.sender as Map<any, any>
                 const senderChannel = integrationsState.integrations.find(
                     (integration) =>
-                        integration.meta.address === sender.get('address')
+                        integration.meta.address === sender.get('address'),
                 )
 
                 expect(senderChannel?.meta.verified).toBe(true)
                 expect(senderChannel?.meta.address).not.toEqual(
-                    (unverifiedChannel as unknown as {address: unknown}).address
+                    (unverifiedChannel as unknown as { address: unknown })
+                        .address,
                 )
             })
 
@@ -450,14 +450,14 @@ describe('actions', () => {
                                 name: unexistingChannel.name,
                                 address: unexistingChannel.address,
                             },
-                        ])
+                        ]),
                     )
                     .setIn(
                         ['messages', 1, 'source', 'from'],
                         fromJS({
                             name: unexistingChannel.name,
                             address: unexistingChannel.address,
-                        })
+                        }),
                     )
 
                 store = mockStore({
@@ -465,7 +465,7 @@ describe('actions', () => {
                     ticket: _emailTicket,
                     newMessage: initialState.setIn(
                         ['newMessage', 'source', 'type'],
-                        'email'
+                        'email',
                     ),
                 })
                 store.dispatch(actions.setSender())
@@ -481,12 +481,12 @@ describe('actions', () => {
                 const sender = setSenderAction.sender as Map<any, any>
                 const senderChannel = integrationsState.integrations.find(
                     (integration) =>
-                        integration.meta.address === sender.get('address')
+                        integration.meta.address === sender.get('address'),
                 )
 
                 expect(senderChannel?.meta.verified).toBe(true)
                 expect(senderChannel?.meta.address).not.toEqual(
-                    unexistingChannel.address
+                    unexistingChannel.address,
                 )
             })
 
@@ -504,7 +504,7 @@ describe('actions', () => {
 
                 const from = getPreferredChannel(
                     TicketMessageSourceType.Email,
-                    channels
+                    channels,
                 )
                 const expectedChannel = fromJS({
                     name: from.get('name'),
@@ -518,14 +518,14 @@ describe('actions', () => {
             it('should handle phone channel', () => {
                 store = mockStore({
                     integrations: fromJS(integrationsState),
-                    entities: {newPhoneNumbers: phoneNumbers},
-                    ticket: fromJS({messages: []}),
+                    entities: { newPhoneNumbers: phoneNumbers },
+                    ticket: fromJS({ messages: [] }),
                     newMessage: initialState.set(
                         'newMessage',
                         makeNewMessage(
                             TicketChannel.Phone,
-                            TicketMessageSourceType.Phone
-                        )
+                            TicketMessageSourceType.Phone,
+                        ),
                     ),
                 })
                 store.dispatch(actions.setSender())
@@ -552,8 +552,8 @@ describe('actions', () => {
                         'newMessage',
                         makeNewMessage(
                             TicketChannel.Email,
-                            TicketMessageSourceType.Email
-                        )
+                            TicketMessageSourceType.Email,
+                        ),
                     ),
                 })
                 store.dispatch(actions.setSender())
@@ -580,8 +580,8 @@ describe('actions', () => {
                         'newMessage',
                         makeNewMessage(
                             TicketChannel.Email,
-                            TicketMessageSourceType.Email
-                        )
+                            TicketMessageSourceType.Email,
+                        ),
                     ),
                 })
                 store.dispatch(actions.setSender())
@@ -627,50 +627,53 @@ describe('actions', () => {
                         integrations: fromJS(integrationsState),
                     })
                     store.dispatch(
-                        actions.prepare(TicketMessageSourceType.EmailForward)
+                        actions.prepare(TicketMessageSourceType.EmailForward),
                     )
 
                     expect(store.getActions()).toMatchSnapshot()
                 })
 
                 it('should set all attachments of the ticket as attachment of the newMessage', () => {
-                    const attachments = fromJS([{url: 'foo'}, {url: 'bar'}])
-                    const attachments2 = fromJS([{url: 'baz'}, {url: 'far'}])
+                    const attachments = fromJS([{ url: 'foo' }, { url: 'bar' }])
+                    const attachments2 = fromJS([
+                        { url: 'baz' },
+                        { url: 'far' },
+                    ])
 
                     store = mockStore({
                         ticket: emailTicket
                             .setIn(['messages', 0, 'attachments'], attachments)
                             .setIn(
                                 ['messages', 1, 'attachments'],
-                                attachments2
+                                attachments2,
                             ),
                         newMessage: initialState,
                         integrations: fromJS(integrationsState),
                     })
                     store.dispatch(
-                        actions.prepare(TicketMessageSourceType.EmailForward)
+                        actions.prepare(TicketMessageSourceType.EmailForward),
                     )
 
                     expect(store.getActions()).toMatchSnapshot()
                 })
 
                 it('should not set an attachment in the newMessage if it is already there', () => {
-                    const attachments = fromJS([{url: 'foo'}, {url: 'bar'}])
-                    const newMessageAttachments = fromJS([{url: 'foo'}])
+                    const attachments = fromJS([{ url: 'foo' }, { url: 'bar' }])
+                    const newMessageAttachments = fromJS([{ url: 'foo' }])
 
                     store = mockStore({
                         ticket: emailTicket.setIn(
                             ['messages', 0, 'attachments'],
-                            attachments
+                            attachments,
                         ),
                         newMessage: initialState.setIn(
                             ['newMessage', 'attachments'],
-                            newMessageAttachments
+                            newMessageAttachments,
                         ),
                         integrations: fromJS(integrationsState),
                     })
                     store.dispatch(
-                        actions.prepare(TicketMessageSourceType.EmailForward)
+                        actions.prepare(TicketMessageSourceType.EmailForward),
                     )
 
                     expect(store.getActions()).toMatchSnapshot()
@@ -693,15 +696,15 @@ describe('actions', () => {
                     const castGorgiasVideosForUnsupportedSourcesSpy =
                         jest.spyOn(
                             utils,
-                            'castGorgiasVideosForUnsupportedSources'
+                            'castGorgiasVideosForUnsupportedSources',
                         )
 
                     store.dispatch(
-                        actions.prepare(TicketMessageSourceType.Email)
+                        actions.prepare(TicketMessageSourceType.Email),
                     )
 
                     expect(
-                        castGorgiasVideosForUnsupportedSourcesSpy
+                        castGorgiasVideosForUnsupportedSourcesSpy,
                     ).toHaveBeenCalledWith({
                         html: '<div>Hello, world!</div>',
                         hyperlinksSupported: true,
@@ -710,7 +713,7 @@ describe('actions', () => {
                     store.dispatch(actions.prepare(TicketMessageSourceType.Sms))
 
                     expect(
-                        castGorgiasVideosForUnsupportedSourcesSpy
+                        castGorgiasVideosForUnsupportedSourcesSpy,
                     ).toHaveBeenCalledWith({
                         html: '<div>Hello, world!</div>',
                         hyperlinksSupported: false,
@@ -726,13 +729,13 @@ describe('actions', () => {
                         ticket: instagramMedia,
                         newMessage: initialState.setIn(
                             ['newMessage', 'source', 'type'],
-                            'instagram-comment'
+                            'instagram-comment',
                         ),
                     })
                     store.dispatch(
                         actions.prepare(
-                            TicketMessageSourceType.InstagramComment
-                        )
+                            TicketMessageSourceType.InstagramComment,
+                        ),
                     )
 
                     expect(store.getActions()).toMatchSnapshot()
@@ -743,15 +746,15 @@ describe('actions', () => {
                     newMessage = newMessage
                         .setIn(
                             ['newMessage', 'source', 'type'],
-                            'instagram-comment'
+                            'instagram-comment',
                         )
                         .setIn(
                             ['newMessage', 'source', 'to'],
-                            fromJS([{address: 'as6d5as', name: 'instauser'}])
+                            fromJS([{ address: 'as6d5as', name: 'instauser' }]),
                         )
                         .setIn(
                             ['state', 'contentState'],
-                            ContentState.createFromText('foo')
+                            ContentState.createFromText('foo'),
                         )
 
                     store = mockStore({
@@ -760,8 +763,8 @@ describe('actions', () => {
                     })
                     store.dispatch(
                         actions.prepare(
-                            TicketMessageSourceType.InstagramComment
-                        )
+                            TicketMessageSourceType.InstagramComment,
+                        ),
                     )
 
                     expect(store.getActions()).toMatchSnapshot()
@@ -772,11 +775,11 @@ describe('actions', () => {
                     newMessage = newMessage
                         .setIn(
                             ['newMessage', 'source', 'type'],
-                            'instagram-comment'
+                            'instagram-comment',
                         )
                         .setIn(
                             ['newMessage', 'source', 'to'],
-                            fromJS([{address: 'as6d5as', name: 'instauser'}])
+                            fromJS([{ address: 'as6d5as', name: 'instauser' }]),
                         )
 
                     store = mockStore({
@@ -785,8 +788,8 @@ describe('actions', () => {
                     })
                     store.dispatch(
                         actions.prepare(
-                            TicketMessageSourceType.InstagramComment
-                        )
+                            TicketMessageSourceType.InstagramComment,
+                        ),
                     )
 
                     expect(store.getActions()).toMatchSnapshot()
@@ -821,7 +824,7 @@ describe('actions', () => {
                 beforeEach(() => {
                     deleteEmailExtraContentSpy = jest.spyOn(
                         emailExtraUtils,
-                        'deleteEmailExtraContent'
+                        'deleteEmailExtraContent',
                     )
                 })
 
@@ -839,17 +842,17 @@ describe('actions', () => {
                     })
                     const storeTicket = emailTicket.set(
                         'messages',
-                        fromJS([ticket.messages[0]])
+                        fromJS([ticket.messages[0]]),
                     )
                     deleteEmailExtraContentSpy.mockImplementation(
-                        () => userInputContentState
+                        () => userInputContentState,
                     )
                     store = mockStore({
                         ticket: storeTicket,
                         newMessage: initialState
                             .setIn(
                                 ['state', 'contentState'],
-                                contentStateWithEmailExtra
+                                contentStateWithEmailExtra,
                             )
                             .setIn(
                                 ['newMessage', 'source', 'from'],
@@ -857,41 +860,41 @@ describe('actions', () => {
                                     address:
                                         integrationsState.integrations[1].meta
                                             .address,
-                                })
+                                }),
                             )
                             .setIn(
                                 ['newMessage', 'source', 'extra', 'forward'],
-                                true
+                                true,
                             ),
                         integrations: (
                             fromJS(integrationsState) as Map<any, any>
                         ).setIn(
                             ['integrations', '1', 'meta', 'signature'],
-                            signature
+                            signature,
                         ),
                     })
 
                     store.dispatch(
-                        actions.prepare(TicketMessageSourceType.InternalNote)
+                        actions.prepare(TicketMessageSourceType.InternalNote),
                     )
 
                     expect(deleteEmailExtraContentSpy).toHaveBeenLastCalledWith(
-                        contentStateWithEmailExtra
+                        contentStateWithEmailExtra,
                     )
 
                     const setResponseTextAction = store
                         .getActions()
                         .find(
-                            (action: {type: string}) =>
-                                action.type === types.SET_RESPONSE_TEXT
-                        ) as {args: Map<any, any>}
+                            (action: { type: string }) =>
+                                action.type === types.SET_RESPONSE_TEXT,
+                        ) as { args: Map<any, any> }
                     expect(setResponseTextAction.args).toEqual(
                         fromJS({
                             contentState: userInputContentState,
                             emailExtraAdded: false,
                             forceFocus: true,
                             forceUpdate: true,
-                        })
+                        }),
                     )
                 })
 
@@ -899,33 +902,33 @@ describe('actions', () => {
                     const contentState =
                         ContentState.createFromText('Foo\nBar\nBaz')
                     deleteEmailExtraContentSpy.mockImplementation(
-                        () => contentState
+                        () => contentState,
                     )
                     store = mockStore({
                         ticket: emailTicket,
                         newMessage: initialState.setIn(
                             ['state', 'contentState'],
-                            contentState
+                            contentState,
                         ),
                         integrations: fromJS(integrationsState),
                     })
 
                     store.dispatch(
-                        actions.prepare(TicketMessageSourceType.InternalNote)
+                        actions.prepare(TicketMessageSourceType.InternalNote),
                     )
 
                     const setResponseTextAction = store
                         .getActions()
                         .find(
-                            (action: {type: string}) =>
-                                action.type === types.SET_RESPONSE_TEXT
-                        ) as {args: Map<any, any>}
+                            (action: { type: string }) =>
+                                action.type === types.SET_RESPONSE_TEXT,
+                        ) as { args: Map<any, any> }
                     expect(setResponseTextAction.args).toEqual(
                         fromJS({
                             contentState: contentState,
                             forceFocus: true,
                             forceUpdate: true,
-                        })
+                        }),
                     )
                 })
             })
@@ -945,7 +948,9 @@ describe('actions', () => {
                 })
 
                 const contentState = ContentState.createFromText('foo')
-                store.dispatch(actions.setResponseText(fromJS({contentState})))
+                store.dispatch(
+                    actions.setResponseText(fromJS({ contentState })),
+                )
 
                 expect(store.getActions()).toMatchSnapshot()
             })
@@ -954,9 +959,9 @@ describe('actions', () => {
                 store = mockStore({
                     newMessage: initialState.setIn(
                         ['newMessage', 'source', 'type'],
-                        TicketMessageSourceType.Chat
+                        TicketMessageSourceType.Chat,
                     ),
-                    ticket: fromJS({id: 1}),
+                    ticket: fromJS({ id: 1 }),
                     agents: fromJS({
                         all: [
                             {
@@ -970,13 +975,13 @@ describe('actions', () => {
                     actions.setResponseText(
                         fromJS({
                             contentState: ContentState.createFromText('foo'),
-                        })
-                    )
+                        }),
+                    ),
                 )
 
                 expect(store.getActions()).toMatchSnapshot()
                 expect(
-                    (socketManager.send as jest.Mock).mock.calls.length
+                    (socketManager.send as jest.Mock).mock.calls.length,
                 ).toBe(1)
             })
 
@@ -984,29 +989,29 @@ describe('actions', () => {
                 store = mockStore({
                     newMessage: initialState.setIn(
                         ['newMessage', 'source', 'type'],
-                        TicketMessageSourceType.InternalNote
+                        TicketMessageSourceType.InternalNote,
                     ),
-                    ticket: fromJS({id: 1}),
+                    ticket: fromJS({ id: 1 }),
                 })
 
                 store.dispatch(
                     actions.setResponseText(
                         fromJS({
                             contentState: ContentState.createFromText('foo'),
-                        })
-                    )
+                        }),
+                    ),
                 )
 
                 expect(store.getActions()).toMatchSnapshot()
                 expect(
-                    (socketManager.send as jest.Mock).mock.calls.length
+                    (socketManager.send as jest.Mock).mock.calls.length,
                 ).toBe(0)
             })
 
             it('should not send a typing event when the reply area only contains a signature', () => {
                 store = mockStore({
                     newMessage: initialState,
-                    ticket: fromJS({id: 1}),
+                    ticket: fromJS({ id: 1 }),
                     agents: fromJS({
                         all: [
                             {
@@ -1021,20 +1026,20 @@ describe('actions', () => {
                         fromJS({
                             contentState:
                                 ContentState.createFromText('\n\nsignature'),
-                        })
-                    )
+                        }),
+                    ),
                 )
 
                 expect(store.getActions()).toMatchSnapshot()
                 expect(
-                    (socketManager.send as jest.Mock).mock.calls.length
+                    (socketManager.send as jest.Mock).mock.calls.length,
                 ).toBe(0)
             })
 
             it('should send an end typing event on ticket when the user is not typing but is in the room', () => {
                 store = mockStore({
                     newMessage: initialState,
-                    ticket: fromJS({id: 1}),
+                    ticket: fromJS({ id: 1 }),
                     agents: fromJS({
                         typingStatuses: {
                             '1': {
@@ -1056,23 +1061,23 @@ describe('actions', () => {
                     actions.setResponseText(
                         fromJS({
                             contentState: ContentState.createFromText(''),
-                        })
-                    )
+                        }),
+                    ),
                 )
 
                 expect(store.getActions()).toMatchSnapshot()
                 expect(
-                    (socketManager.join as jest.Mock).mock.calls.length
+                    (socketManager.join as jest.Mock).mock.calls.length,
                 ).toBe(0)
                 expect(
-                    (socketManager.send as jest.Mock).mock.calls.length
+                    (socketManager.send as jest.Mock).mock.calls.length,
                 ).toBe(1)
             })
 
             it('should not send an end typing event when the user is not typing and not in ticket', () => {
                 store = mockStore({
                     newMessage: initialState,
-                    ticket: fromJS({id: 1}),
+                    ticket: fromJS({ id: 1 }),
                     agents: fromJS({
                         typingStatuses: {},
                         all: [
@@ -1090,13 +1095,13 @@ describe('actions', () => {
                     actions.setResponseText(
                         fromJS({
                             contentState: ContentState.createFromText(''),
-                        })
-                    )
+                        }),
+                    ),
                 )
 
                 expect(store.getActions()).toMatchSnapshot()
                 expect(
-                    (socketManager.send as jest.Mock).mock.calls.length
+                    (socketManager.send as jest.Mock).mock.calls.length,
                 ).toBe(0)
             })
         })
@@ -1117,7 +1122,7 @@ describe('actions', () => {
             const storeState: Partial<RootState> = {
                 integrations: fromJS(integrationsState),
                 newMessage: fromJS({
-                    state: {contentState: ContentState.createFromText('Hi ')},
+                    state: { contentState: ContentState.createFromText('Hi ') },
                     newMessage: {
                         source: {
                             type: TicketMessageSourceType.Email,
@@ -1135,7 +1140,7 @@ describe('actions', () => {
                 }),
             }
             const emailExtraContentState = convertFromHTML(
-                '<div>Extra <strong>content</strong></div>'
+                '<div>Extra <strong>content</strong></div>',
             )
             const discount_code_1 = {
                 id: 3,
@@ -1165,8 +1170,8 @@ describe('actions', () => {
             })
 
             it('should add email extra to the message when source type is email', () => {
-                const {dispatch, getState} = mockStore(storeState)
-                const {ticket, newMessage} = getState() as RootState
+                const { dispatch, getState } = mockStore(storeState)
+                const { ticket, newMessage } = getState() as RootState
                 data = actions.prepareTicketDataToSend(
                     dispatch,
                     getState as () => RootState,
@@ -1174,19 +1179,19 @@ describe('actions', () => {
                     newMessage,
                     '',
                     fromJS([]),
-                    currentUser
+                    currentUser,
                 )
                 expect(addEmailExtraContentSpy.mock.calls).toMatchSnapshot()
                 expect(data?.newMessage).toMatchSnapshot()
                 expect(
                     getReplyAreaStateSnapshot(
-                        data?.replyAreaState as ReplyAreaState
-                    )
+                        data?.replyAreaState as ReplyAreaState,
+                    ),
                 ).toMatchSnapshot()
             })
 
             it('should not add email extra to the message when source type is not email', () => {
-                const {dispatch, getState} = mockStore({
+                const { dispatch, getState } = mockStore({
                     ...storeState,
                     newMessage: storeState.newMessage?.mergeIn(['newMessage'], {
                         ...(
@@ -1202,7 +1207,7 @@ describe('actions', () => {
                         },
                     }),
                 })
-                const {ticket, newMessage} = getState() as RootState
+                const { ticket, newMessage } = getState() as RootState
                 data = actions.prepareTicketDataToSend(
                     dispatch,
                     getState as () => RootState,
@@ -1210,28 +1215,28 @@ describe('actions', () => {
                     newMessage,
                     '',
                     fromJS([]),
-                    currentUser
+                    currentUser,
                 )
                 expect(addEmailExtraContentSpy).not.toHaveBeenCalled()
                 expect(data?.newMessage).toMatchSnapshot()
                 expect(
                     getReplyAreaStateSnapshot(
-                        data?.replyAreaState as ReplyAreaState
-                    )
+                        data?.replyAreaState as ReplyAreaState,
+                    ),
                 ).toMatchSnapshot()
             })
 
             it('should transform empty message with macro to internal note', () => {
-                const {dispatch, getState} = mockStore({
+                const { dispatch, getState } = mockStore({
                     ...storeState,
                     newMessage: storeState.newMessage?.set('body_text', ''),
                     ticket: storeState.ticket?.setIn(
                         ['state', 'appliedMacro'],
-                        {name: 'Macro 1'}
+                        { name: 'Macro 1' },
                     ),
                 })
 
-                const {ticket, newMessage} = getState() as RootState
+                const { ticket, newMessage } = getState() as RootState
                 data = actions.prepareTicketDataToSend(
                     dispatch,
                     getState as () => RootState,
@@ -1239,22 +1244,22 @@ describe('actions', () => {
                     newMessage,
                     '',
                     fromJS([]),
-                    currentUser
+                    currentUser,
                 )
                 expect(data?.newMessage).toMatchSnapshot()
             })
 
             it('should replace empty message with intenal note text from internal note action', () => {
-                const {dispatch, getState} = mockStore({
+                const { dispatch, getState } = mockStore({
                     ...storeState,
                     newMessage: storeState.newMessage?.set('body_text', ''),
                     ticket: storeState.ticket?.setIn(
                         ['state', 'appliedMacro'],
-                        {name: 'Macro 1'}
+                        { name: 'Macro 1' },
                     ),
                 })
 
-                const {ticket, newMessage} = getState() as RootState
+                const { ticket, newMessage } = getState() as RootState
                 data = actions.prepareTicketDataToSend(
                     dispatch,
                     getState as () => RootState,
@@ -1262,22 +1267,22 @@ describe('actions', () => {
                     newMessage,
                     '',
                     fromJS([addInternalNoteAction]),
-                    currentUser
+                    currentUser,
                 )
                 expect(data?.newMessage).toMatchSnapshot()
             })
 
             it('should add discount codes to meta', () => {
-                const {dispatch, getState} = mockStore({
+                const { dispatch, getState } = mockStore({
                     ...storeState,
                     newMessage: storeState.newMessage
                         ?.setIn(
                             ['newMessage', 'body_text'],
-                            'Your discount code is DISCO'
+                            'Your discount code is DISCO',
                         )
                         .setIn(
                             ['state', 'inserted_discounts'],
-                            fromJS([discount_code_1])
+                            fromJS([discount_code_1]),
                         )
                         .setIn(['state', 'emailExtraAdded'], true),
                     ticket: storeState.ticket?.set(
@@ -1286,25 +1291,25 @@ describe('actions', () => {
                             id: 12,
                             integrations: {
                                 123: {
-                                    customer: {id: 34},
+                                    customer: { id: 34 },
                                     __integration_type__:
                                         SHOPIFY_INTEGRATION_TYPE,
                                 },
                                 456: {
-                                    customer: {id: 56},
+                                    customer: { id: 56 },
                                     __integration_type__: 'whatever',
                                 },
                                 789: {
-                                    customer: {id: 78},
+                                    customer: { id: 78 },
                                     __integration_type__:
                                         SHOPIFY_INTEGRATION_TYPE,
                                 },
                             },
-                        })
+                        }),
                     ),
                 })
 
-                const {ticket, newMessage} = getState() as RootState
+                const { ticket, newMessage } = getState() as RootState
                 data = actions.prepareTicketDataToSend(
                     dispatch,
                     getState as () => RootState,
@@ -1312,7 +1317,7 @@ describe('actions', () => {
                     newMessage,
                     '',
                     fromJS([]),
-                    currentUser
+                    currentUser,
                 )
                 expect(data?.newMessage).toMatchSnapshot()
                 expect(logEventSpy).toHaveBeenCalledWith(
@@ -1321,8 +1326,8 @@ describe('actions', () => {
                         customer: {
                             gorgias_id: 12,
                             integrations: [
-                                {customer_id: 34, id: '123'},
-                                {customer_id: 78, id: '789'},
+                                { customer_id: 34, id: '123' },
+                                { customer_id: 78, id: '789' },
                             ],
                         },
                         discount: {
@@ -1330,28 +1335,28 @@ describe('actions', () => {
                             code: 'DISCO',
                             title: 'Completely Irrelevant',
                         },
-                    })
+                    }),
                 )
             })
 
             it('should add discount codes to meta only if in message body', () => {
                 const discountCodes = [discount_code_1, discount_code_2]
 
-                const {dispatch, getState} = mockStore({
+                const { dispatch, getState } = mockStore({
                     ...storeState,
                     newMessage: storeState.newMessage
                         ?.setIn(
                             ['newMessage', 'body_text'],
-                            'Only FREEBIE in body text'
+                            'Only FREEBIE in body text',
                         )
                         .setIn(
                             ['state', 'inserted_discounts'],
-                            fromJS(discountCodes)
+                            fromJS(discountCodes),
                         )
                         .setIn(['state', 'emailExtraAdded'], true),
                 })
 
-                const {ticket, newMessage} = getState() as RootState
+                const { ticket, newMessage } = getState() as RootState
                 data = actions.prepareTicketDataToSend(
                     dispatch,
                     getState as () => RootState,
@@ -1359,7 +1364,7 @@ describe('actions', () => {
                     newMessage,
                     '',
                     fromJS([]),
-                    currentUser
+                    currentUser,
                 )
                 expect(data?.newMessage).toMatchSnapshot()
                 expect(logEventSpy).toHaveBeenCalledWith(
@@ -1370,38 +1375,38 @@ describe('actions', () => {
                             code: 'FREEBIE',
                             title: 'Freebie title',
                         },
-                    })
+                    }),
                 )
             })
 
             it('should not add discount codes to meta if discount in old messages', () => {
                 const discountCodes = [discount_code_1]
 
-                const {dispatch, getState} = mockStore({
+                const { dispatch, getState } = mockStore({
                     ...storeState,
                     newMessage: storeState.newMessage
                         ?.setIn(
                             ['newMessage', 'body_text'],
                             // only the old message matches the discount code
-                            'Current message ends here. On Thu, Feb 16, 2023, at 02:43 PM, Acme Support <somemail> wrote: old FREEBIE discount'
+                            'Current message ends here. On Thu, Feb 16, 2023, at 02:43 PM, Acme Support <somemail> wrote: old FREEBIE discount',
                         )
                         .setIn(
                             ['newMessage', 'stripped_text'],
 
-                            'Current message ends here.'
+                            'Current message ends here.',
                         )
                         .setIn(
                             ['state', 'inserted_discounts'],
-                            fromJS(discountCodes)
+                            fromJS(discountCodes),
                         )
                         .setIn(['state', 'emailExtraAdded'], true),
                     ticket: storeState.ticket?.setIn(
                         ['channel'],
-                        TicketChannel.Email
+                        TicketChannel.Email,
                     ),
                 })
 
-                const {ticket, newMessage} = getState() as RootState
+                const { ticket, newMessage } = getState() as RootState
                 data = actions.prepareTicketDataToSend(
                     dispatch,
                     getState as () => RootState,
@@ -1409,7 +1414,7 @@ describe('actions', () => {
                     newMessage,
                     '',
                     fromJS([]),
-                    currentUser
+                    currentUser,
                 )
                 expect(data?.newMessage).toMatchSnapshot()
                 expect(logEventSpy).not.toBeCalled()
@@ -1418,29 +1423,29 @@ describe('actions', () => {
             it('should not add discount codes to meta if discount in old messages and agent expands mail', () => {
                 const discountCodes = [discount_code_1]
 
-                const {dispatch, getState} = mockStore({
+                const { dispatch, getState } = mockStore({
                     ...storeState,
                     newMessage: storeState.newMessage
                         ?.setIn(
                             ['newMessage', 'body_text'],
-                            'Current message ends here. On Thu, Feb 16, 2023, at 02:43 PM, Acme Support <somemail> wrote: old FREEBIE discount'
+                            'Current message ends here. On Thu, Feb 16, 2023, at 02:43 PM, Acme Support <somemail> wrote: old FREEBIE discount',
                         )
                         .setIn(
                             ['newMessage', 'body_html'],
-                            'Current message ends here. On Thu, Feb 16, 2023, at 02:43 PM, Acme Support <a>somemail</a>&gt; wrote: old FREEBIE discount'
+                            'Current message ends here. On Thu, Feb 16, 2023, at 02:43 PM, Acme Support <a>somemail</a>&gt; wrote: old FREEBIE discount',
                         )
                         .setIn(
                             ['state', 'inserted_discounts'],
-                            fromJS(discountCodes)
+                            fromJS(discountCodes),
                         )
                         .setIn(['state', 'emailExtraAdded'], true),
                     ticket: storeState.ticket?.setIn(
                         ['channel'],
-                        TicketChannel.Email
+                        TicketChannel.Email,
                     ),
                 })
 
-                const {ticket, newMessage} = getState() as RootState
+                const { ticket, newMessage } = getState() as RootState
                 data = actions.prepareTicketDataToSend(
                     dispatch,
                     getState as () => RootState,
@@ -1448,7 +1453,7 @@ describe('actions', () => {
                     newMessage,
                     '',
                     fromJS([]),
-                    currentUser
+                    currentUser,
                 )
                 expect(data?.newMessage).toMatchSnapshot()
                 expect(logEventSpy).not.toBeCalled()
@@ -1474,7 +1479,7 @@ describe('actions', () => {
                             replyThreadMessages: [],
                             isForwarded: true,
                         },
-                    })
+                    }),
                 )
 
                 expect(store.getActions()).toMatchSnapshot()
@@ -1487,11 +1492,11 @@ describe('actions', () => {
                 newMessage: initialState
                     .setIn(
                         ['newMessage', 'channel'],
-                        TicketMessageSourceType.Facebook
+                        TicketMessageSourceType.Facebook,
                     )
                     .setIn(
                         ['newMessage', 'source', 'type'],
-                        TicketMessageSourceType.FacebookComment
+                        TicketMessageSourceType.FacebookComment,
                     )
                     .setIn(['newMessage', 'body_text'], 'text'),
                 currentUser: fromJS({
@@ -1514,7 +1519,7 @@ describe('actions', () => {
                                     name: 'messagereceiver',
                                 },
                             ],
-                        })
+                        }),
                     ),
                 })
 
@@ -1522,10 +1527,10 @@ describe('actions', () => {
                     store
                         //@ts-ignore
                         .dispatch(actions.prepareTicketMessage())
-                        .then(({messageToSend, replyAreaState}) => {
+                        .then(({ messageToSend, replyAreaState }) => {
                             expect(messageToSend).toMatchSnapshot()
                             expect(
-                                getReplyAreaStateSnapshot(replyAreaState)
+                                getReplyAreaStateSnapshot(replyAreaState),
                             ).toMatchSnapshot()
                         })
                 )
@@ -1550,8 +1555,8 @@ describe('actions', () => {
                     store.dispatch(
                         actions.prepareTicketMessage({
                             macroActions: fromJS([macroAction]),
-                        })
-                    )
+                        }),
+                    ),
                 ).rejects.toBeInstanceOf(TicketMessageActionValidationError)
             })
 
@@ -1564,17 +1569,17 @@ describe('actions', () => {
                 })
 
                 await expect(
-                    store.dispatch(actions.prepareTicketMessage())
+                    store.dispatch(actions.prepareTicketMessage()),
                 ).rejects.toBeInstanceOf(TicketMessageInvalidSendDataError)
             })
 
             it('should create actions with setStatus=close action when status is closed and no macro actions', async () => {
                 store = mockStore(defaultState)
 
-                const {messageToSend} = await store.dispatch(
+                const { messageToSend } = await store.dispatch(
                     actions.prepareTicketMessage({
                         status: TicketStatus.Closed,
-                    })
+                    }),
                 )
                 const actionsToSend = messageToSend.actions?.toJS()
 
@@ -1584,10 +1589,10 @@ describe('actions', () => {
                             fromJS(setClosedStatusAction),
                             fromJS(
                                 utils.getActionTemplate(
-                                    setClosedStatusAction.name
-                                )
+                                    setClosedStatusAction.name,
+                                ),
                             ),
-                            {}
+                            {},
                         )
                         .toJS(),
                 ])
@@ -1596,11 +1601,11 @@ describe('actions', () => {
             it('should push setStatus=close action to the macro actions when status is closed', async () => {
                 store = mockStore(defaultState)
 
-                const {messageToSend} = await store.dispatch(
+                const { messageToSend } = await store.dispatch(
                     actions.prepareTicketMessage({
                         status: TicketStatus.Closed,
                         macroActions: fromJS([setSubjectAction]),
-                    })
+                    }),
                 )
                 const actionsToSend = messageToSend.actions?.toJS()
 
@@ -1609,9 +1614,9 @@ describe('actions', () => {
                         .formatAction(
                             fromJS(setSubjectAction),
                             fromJS(
-                                utils.getActionTemplate(setSubjectAction.name)
+                                utils.getActionTemplate(setSubjectAction.name),
                             ),
-                            {}
+                            {},
                         )
                         .toJS(),
                     actions
@@ -1619,10 +1624,10 @@ describe('actions', () => {
                             fromJS(setClosedStatusAction),
                             fromJS(
                                 utils.getActionTemplate(
-                                    setClosedStatusAction.name
-                                )
+                                    setClosedStatusAction.name,
+                                ),
                             ),
-                            {}
+                            {},
                         )
                         .toJS(),
                 ])
@@ -1631,11 +1636,11 @@ describe('actions', () => {
             it('should replace setStatus action in the macro actions with close when status is closed', async () => {
                 store = mockStore(defaultState)
 
-                const {messageToSend} = await store.dispatch(
+                const { messageToSend } = await store.dispatch(
                     actions.prepareTicketMessage({
                         status: TicketStatus.Closed,
                         macroActions: fromJS([setOpenStatusAction]),
-                    })
+                    }),
                 )
                 const actionsToSend = messageToSend.actions?.toJS()
 
@@ -1645,10 +1650,10 @@ describe('actions', () => {
                             fromJS(setClosedStatusAction),
                             fromJS(
                                 utils.getActionTemplate(
-                                    setClosedStatusAction.name
-                                )
+                                    setClosedStatusAction.name,
+                                ),
                             ),
-                            {}
+                            {},
                         )
                         .toJS(),
                 ])
@@ -1677,12 +1682,12 @@ describe('actions', () => {
                             fromJS({
                                 channel: 'tiktok-shop',
                                 source,
-                            })
+                            }),
                         ),
                     })
 
-                    const {messageToSend} = await store.dispatch(
-                        actions.prepareTicketMessage()
+                    const { messageToSend } = await store.dispatch(
+                        actions.prepareTicketMessage(),
                     )
 
                     expect(messageToSend.source.type).toBeUndefined()
@@ -1711,7 +1716,7 @@ describe('actions', () => {
                             fromJS({
                                 channel: 'tiktok-shop',
                                 source,
-                            })
+                            }),
                         ),
                         integrations: fromJS({
                             integrations: [
@@ -1726,8 +1731,8 @@ describe('actions', () => {
                         }),
                     })
 
-                    const {messageToSend} = await store.dispatch(
-                        actions.prepareTicketMessage()
+                    const { messageToSend } = await store.dispatch(
+                        actions.prepareTicketMessage(),
                     )
 
                     expect(messageToSend.integration_id).toEqual(123)
@@ -1739,7 +1744,7 @@ describe('actions', () => {
             it('should submit new message', () => {
                 mockServer
                     .onPost('/api/tickets/12/messages/')
-                    .reply(201, {ticket_id: 12, messages: []})
+                    .reply(201, { ticket_id: 12, messages: [] })
                 store = mockStore({
                     ticket: ticketInitialState.set('id', 12),
                     newMessage: initialState,
@@ -1754,9 +1759,9 @@ describe('actions', () => {
                     store
                         //@ts-ignore
                         .dispatch(actions.prepareTicketMessage())
-                        .then(({messageId, messageToSend}) =>
+                        .then(({ messageId, messageToSend }) =>
                             //@ts-ignore
-                            actions.sendTicketMessage(messageId, messageToSend)
+                            actions.sendTicketMessage(messageId, messageToSend),
                         )
                         .then(() => {
                             expect(store.getActions()).toMatchSnapshot()
@@ -1773,7 +1778,7 @@ describe('actions', () => {
                 store.dispatch(
                     actions.newMessageResetFromMessage({
                         body_text: 'foo',
-                    } as any)
+                    } as any),
                 )
                 expect(store.getActions()).toMatchSnapshot()
             })
@@ -1803,8 +1808,8 @@ describe('actions', () => {
                 store.dispatch(
                     actions.addAttachments(
                         ticketInitialState.set('id', 1),
-                        fileList
-                    )
+                        fileList,
+                    ),
                 )
 
                 expect(mockedUploadFiles).toHaveBeenNthCalledWith(1, fileList)
@@ -1823,8 +1828,8 @@ describe('actions', () => {
                 store.dispatch(
                     actions.addAttachments(
                         ticketInitialState.set('id', 1),
-                        fileList
-                    )
+                        fileList,
+                    ),
                 )
 
                 expect(mockedUploadFiles).toHaveBeenNthCalledWith(1, fileList)
@@ -1838,7 +1843,7 @@ describe('actions', () => {
                 mockedUploadFiles.mockReturnValue(
                     Promise.reject({
                         response: {},
-                    })
+                    }),
                 )
                 store = mockStore({
                     newMessage: initialState,
@@ -1847,8 +1852,8 @@ describe('actions', () => {
                 store.dispatch(
                     actions.addAttachments(
                         ticketInitialState.set('id', 1),
-                        fileList
-                    )
+                        fileList,
+                    ),
                 )
 
                 expect(mockedUploadFiles).toHaveBeenNthCalledWith(1, fileList)
@@ -1864,7 +1869,7 @@ describe('actions', () => {
                         response: {
                             status: 413,
                         },
-                    })
+                    }),
                 )
                 store = mockStore({
                     newMessage: initialState,
@@ -1873,8 +1878,8 @@ describe('actions', () => {
                 store.dispatch(
                     actions.addAttachments(
                         ticketInitialState.set('id', 1),
-                        fileList
-                    )
+                        fileList,
+                    ),
                 )
 
                 expect(mockedUploadFiles).toHaveBeenNthCalledWith(1, fileList)
@@ -1890,14 +1895,14 @@ describe('actions', () => {
                 store = mockStore({
                     newMessage: initialState.setIn(
                         ['newMessage', 'source', 'type'],
-                        TicketMessageSourceType.FacebookComment
+                        TicketMessageSourceType.FacebookComment,
                     ),
                     ticket: ticketInitialState.set('id', 1),
                 })
                 store.dispatch(
                     actions.addAttachments(ticketInitialState.set('id', 1), {
                         0: fileBaz,
-                    } as unknown as FileList)
+                    } as unknown as FileList),
                 )
 
                 expect(mockedUploadFiles).not.toHaveBeenCalled()
@@ -1912,7 +1917,7 @@ describe('actions', () => {
                 store = mockStore({
                     newMessage: initialState.setIn(
                         ['newMessage', 'source', 'type'],
-                        TicketMessageSourceType.FacebookComment
+                        TicketMessageSourceType.FacebookComment,
                     ),
                     ticket: ticketInitialState.set('id', 1),
                 })
@@ -1920,7 +1925,7 @@ describe('actions', () => {
                     actions.addAttachments(ticketInitialState.set('id', 1), {
                         0: fileFoo,
                         1: fileBar,
-                    } as unknown as FileList)
+                    } as unknown as FileList),
                 )
 
                 expect(mockedUploadFiles).not.toHaveBeenCalled()
@@ -1949,7 +1954,7 @@ describe('actions', () => {
                         source: fromJS({
                             type: TicketMessageSourceType.Email,
                         }),
-                    })
+                    }),
                 )
                 expect(store.getActions()).toMatchSnapshot()
             })
@@ -1984,8 +1989,8 @@ describe('actions', () => {
             store.dispatch(
                 actions.addAttachment(
                     ticketInitialState.set('id', 1),
-                    attachment
-                )
+                    attachment,
+                ),
             )
 
             setImmediate(() => {
@@ -2002,8 +2007,8 @@ describe('actions', () => {
             store.dispatch(
                 actions.addAttachment(
                     ticketInitialState.set('id', 1),
-                    attachment
-                )
+                    attachment,
+                ),
             )
 
             setImmediate(() => {
@@ -2052,15 +2057,15 @@ describe('actions', () => {
                         productAttachment,
                         discountAttachment,
                         productAttachment,
-                    ])
+                    ]),
                 ),
                 ticket: ticketInitialState.set('id', 1),
             })
             store.dispatch(
                 actions.addAttachment(
                     ticketInitialState.set('id', 1),
-                    productRecommendationAttachment
-                )
+                    productRecommendationAttachment,
+                ),
             )
 
             setImmediate(() => {
@@ -2091,8 +2096,8 @@ describe('actions', () => {
                         id: 11,
                         address: 'marie@gorgias.io',
                         type: 'email',
-                        user: {id: 4, name: 'Marie Curie'},
-                        customer: {id: 4, name: 'Marie Curie'},
+                        user: { id: 4, name: 'Marie Curie' },
+                        customer: { id: 4, name: 'Marie Curie' },
                     },
                 ],
                 object: 'list',
@@ -2113,8 +2118,8 @@ describe('actions', () => {
                         id: 11,
                         address: 'marie@gorgias.io',
                         type: 'email',
-                        user: {id: 4, name: 'Marie Curie'},
-                        customer: {id: 4, name: 'Marie Curie'},
+                        user: { id: 4, name: 'Marie Curie' },
+                        customer: { id: 4, name: 'Marie Curie' },
                     },
                 ],
                 object: 'list',
@@ -2130,8 +2135,8 @@ describe('actions', () => {
                     actions.updatePotentialCustomers(
                         'foo',
                         SearchType.UserChannelEmail,
-                        source.token
-                    )
+                        source.token,
+                    ),
                 )
                 .then((res) => expect(res).toMatchSnapshot())
         })
@@ -2147,7 +2152,7 @@ describe('actions', () => {
                             address: 'marc.wall@gmail.com',
                             type: 'email',
                         },
-                    ])
+                    ]),
                 ),
                 newMessage: initialState,
             })
@@ -2180,7 +2185,7 @@ describe('actions', () => {
 
     describe('submitTicket()', () => {
         it('should format custom fields correctly', async () => {
-            mockServer.onPost('/api/tickets/').reply(200, {data: {id: 1}})
+            mockServer.onPost('/api/tickets/').reply(200, { data: { id: 1 } })
 
             const customFields = {
                 1: {
@@ -2214,8 +2219,8 @@ describe('actions', () => {
                     TicketStatus.Open,
                     undefined,
                     fromJS({}),
-                    true
-                )
+                    true,
+                ),
             )
 
             expect(
@@ -2223,8 +2228,8 @@ describe('actions', () => {
                     JSON.parse(mockServer.history.post[0].data) as {
                         custom_fields: unknown
                     }
-                ).custom_fields
-            ).toEqual([{id: 1, value: 'hello'}])
+                ).custom_fields,
+            ).toEqual([{ id: 1, value: 'hello' }])
         })
 
         it('should log an activity event when submitting a ticket', async () => {
@@ -2235,10 +2240,10 @@ describe('actions', () => {
                 newMessage: initialState,
             })
 
-            mockServer.onPost('/api/tickets/').reply(200, {id: 1})
+            mockServer.onPost('/api/tickets/').reply(200, { id: 1 })
             const logActivityEventSpy = jest.spyOn(
                 activityTracker,
-                'logActivityEvent'
+                'logActivityEvent',
             )
 
             await store.dispatch(
@@ -2248,8 +2253,8 @@ describe('actions', () => {
                     undefined,
                     fromJS({}),
                     true,
-                    '123'
-                )
+                    '123',
+                ),
             )
 
             expect(logActivityEventSpy).toHaveBeenCalledWith(
@@ -2258,7 +2263,7 @@ describe('actions', () => {
                     entityType: 'ticket',
                     entityId: 1,
                     temporaryId: '123',
-                }
+                },
             )
         })
 
@@ -2271,12 +2276,12 @@ describe('actions', () => {
                     TicketStatus.Open,
                     undefined,
                     fromJS({}),
-                    true
-                )
+                    true,
+                ),
             )
 
-            expect((store.getActions().pop() as {type: string}).type).toBe(
-                NEW_MESSAGE_SUBMIT_TICKET_ERROR
+            expect((store.getActions().pop() as { type: string }).type).toBe(
+                NEW_MESSAGE_SUBMIT_TICKET_ERROR,
             )
         })
     })

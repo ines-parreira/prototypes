@@ -1,29 +1,29 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-
-import {waitFor} from '@testing-library/react'
-import {act, renderHook} from '@testing-library/react-hooks'
-import axios from 'axios'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { waitFor } from '@testing-library/react'
+import { act, renderHook } from '@testing-library/react-hooks'
+import axios from 'axios'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
-import {AIArticle, LocalArticleTranslation} from 'models/helpCenter/types'
-import {useCreateAIArticle} from 'pages/settings/helpCenter/hooks/useCreateAIArticle'
-import {useGetAIArticles} from 'pages/settings/helpCenter/hooks/useGetAIArticles'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { axiosSuccessResponse } from 'fixtures/axiosResponse'
+import { AIArticle, LocalArticleTranslation } from 'models/helpCenter/types'
+import { useCreateAIArticle } from 'pages/settings/helpCenter/hooks/useCreateAIArticle'
+import { useGetAIArticles } from 'pages/settings/helpCenter/hooks/useGetAIArticles'
 import {
     aiArticleKeys,
     useUpsertArticleTemplateReview,
 } from 'pages/settings/helpCenter/queries'
-import {ArticleOrigin} from 'pages/settings/helpCenter/types/articleOrigin.enum'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { ArticleOrigin } from 'pages/settings/helpCenter/types/articleOrigin.enum'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
-import {useTopQuestionsArticles} from '../useTopQuestionsArticles'
+import { useTopQuestionsArticles } from '../useTopQuestionsArticles'
 
 jest.mock('common/segment')
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
@@ -78,7 +78,7 @@ const mockUseCreateAIArticle = assumeMock(useCreateAIArticle)
 
 jest.mock('pages/settings/helpCenter/queries')
 const mockUseUpsertArticleTemplateReview = assumeMock(
-    useUpsertArticleTemplateReview
+    useUpsertArticleTemplateReview,
 )
 const mockUpsertArticleTemplateReviewMutateAsync = jest.fn()
 
@@ -120,20 +120,20 @@ describe('useTopQuestionsArticles', () => {
             isLoading: false,
         })
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useTopQuestionsArticles(
                     storeIntegrationId,
                     helpCenterId,
-                    locale
+                    locale,
                 ),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         <Provider store={mockStore}>{children}</Provider>
                     </QueryClientProvider>
                 ),
-            }
+            },
         )
 
         expect(result.current.articles).toEqual(mockArticles)
@@ -146,20 +146,20 @@ describe('useTopQuestionsArticles', () => {
             isLoading: true,
         })
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useTopQuestionsArticles(
                     storeIntegrationId,
                     helpCenterId,
-                    locale
+                    locale,
                 ),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         <Provider store={mockStore}>{children}</Provider>
                     </QueryClientProvider>
                 ),
-            }
+            },
         )
 
         expect(result.current.articles).toEqual([])
@@ -172,20 +172,20 @@ describe('useTopQuestionsArticles', () => {
             isLoading: false,
         })
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useTopQuestionsArticles(
                     storeIntegrationId,
                     helpCenterId,
-                    locale
+                    locale,
                 ),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         <Provider store={mockStore}>{children}</Provider>
                     </QueryClientProvider>
                 ),
-            }
+            },
         )
 
         await act(() => result.current.dismissArticle('ai_article_1'))
@@ -193,42 +193,42 @@ describe('useTopQuestionsArticles', () => {
         expect(mockUpsertArticleTemplateReviewMutateAsync).toHaveBeenCalledWith(
             [
                 undefined,
-                {help_center_id: helpCenterId},
+                { help_center_id: helpCenterId },
                 {
                     action: 'dismissFromTopQuestions',
                     template_key: 'ai_article_1',
                 },
-            ]
+            ],
         )
 
         expect(result.current.articles[0].review_action).toEqual(
-            'dismissFromTopQuestions'
+            'dismissFromTopQuestions',
         )
 
         await mockUseUpsertArticleTemplateReview.mock.calls[0][0]?.onSuccess!(
             null,
             [
                 undefined,
-                {help_center_id: helpCenterId},
+                { help_center_id: helpCenterId },
                 {
                     action: 'dismissFromTopQuestions',
                     template_key: 'ai_article_1',
                 },
             ],
-            undefined
+            undefined,
         )
 
         await waitFor(() => {
             expect(invalidateQueryMock).toHaveBeenCalledWith(
-                aiArticleKeys.list(helpCenterId)
+                aiArticleKeys.list(helpCenterId),
             )
             expect(invalidateQueryMock).toHaveBeenCalledWith(
-                aiArticleKeys.listWithStore(helpCenterId, storeIntegrationId)
+                aiArticleKeys.listWithStore(helpCenterId, storeIntegrationId),
             )
         })
 
         expect(logEventMock).toHaveBeenCalledWith(
-            SegmentEvent.AutomateTopQuestionsSectionDismissArticle
+            SegmentEvent.AutomateTopQuestionsSectionDismissArticle,
         )
     })
 
@@ -251,7 +251,7 @@ describe('useTopQuestionsArticles', () => {
                     translation: {} as unknown as LocalArticleTranslation,
                 }),
                 status: 204,
-            })
+            }),
         )
 
         mockUseCreateAIArticle.mockReturnValue({
@@ -259,27 +259,27 @@ describe('useTopQuestionsArticles', () => {
             isCreateArticleLoading: false,
         })
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useTopQuestionsArticles(
                     storeIntegrationId,
                     helpCenterId,
-                    locale
+                    locale,
                 ),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         <Provider store={mockStore}>{children}</Provider>
                     </QueryClientProvider>
                 ),
-            }
+            },
         )
 
         await act(() =>
             result.current.createArticle(
                 'ai_article_1',
-                ArticleOrigin.TOP_QUESTIONS_SECTION
-            )
+                ArticleOrigin.TOP_QUESTIONS_SECTION,
+            ),
         )
 
         expect(mockCreateArticle).toHaveBeenCalledWith({
@@ -304,12 +304,12 @@ describe('useTopQuestionsArticles', () => {
         expect(mockUpsertArticleTemplateReviewMutateAsync).toHaveBeenCalledWith(
             [
                 undefined,
-                {help_center_id: helpCenterId},
+                { help_center_id: helpCenterId },
                 {
                     action: 'saveAsDraft',
                     template_key: 'ai_article_1',
                 },
-            ]
+            ],
         )
 
         expect(result.current.articles[0].review_action).toEqual('saveAsDraft')
@@ -318,28 +318,28 @@ describe('useTopQuestionsArticles', () => {
             null,
             [
                 undefined,
-                {help_center_id: helpCenterId},
+                { help_center_id: helpCenterId },
                 {
                     action: 'saveAsDraft',
                     template_key: 'ai_article_1',
                 },
             ],
-            undefined
+            undefined,
         )
 
         await waitFor(() => {
             expect(invalidateQueryMock).toHaveBeenCalledWith(
-                aiArticleKeys.list(helpCenterId)
+                aiArticleKeys.list(helpCenterId),
             )
             expect(invalidateQueryMock).toHaveBeenCalledWith(
-                aiArticleKeys.listWithStore(helpCenterId, storeIntegrationId)
+                aiArticleKeys.listWithStore(helpCenterId, storeIntegrationId),
             )
         })
 
         expect(window.open).toHaveBeenCalledWith(
             `/app/settings/help-center/${helpCenterId}/articles?article_id=10`,
             '_blank',
-            'noopener'
+            'noopener',
         )
     })
 
@@ -354,31 +354,31 @@ describe('useTopQuestionsArticles', () => {
             isCreateArticleLoading: false,
         })
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useTopQuestionsArticles(
                     storeIntegrationId,
                     helpCenterId,
-                    locale
+                    locale,
                 ),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         <Provider store={mockStore}>{children}</Provider>
                     </QueryClientProvider>
                 ),
-            }
+            },
         )
 
         await act(() =>
             result.current.createArticle(
                 'i_do_not_exist',
-                ArticleOrigin.TOP_QUESTIONS_SECTION
-            )
+                ArticleOrigin.TOP_QUESTIONS_SECTION,
+            ),
         )
 
         expect(
-            mockUpsertArticleTemplateReviewMutateAsync
+            mockUpsertArticleTemplateReviewMutateAsync,
         ).toHaveBeenCalledTimes(0)
     })
 
@@ -391,7 +391,7 @@ describe('useTopQuestionsArticles', () => {
         const mockCreateArticle = jest
             .fn()
             .mockReturnValue(
-                Promise.reject(new axios.AxiosError('some error message'))
+                Promise.reject(new axios.AxiosError('some error message')),
             )
 
         mockUseCreateAIArticle.mockReturnValue({
@@ -399,27 +399,27 @@ describe('useTopQuestionsArticles', () => {
             isCreateArticleLoading: false,
         })
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useTopQuestionsArticles(
                     storeIntegrationId,
                     helpCenterId,
-                    locale
+                    locale,
                 ),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         <Provider store={mockStore}>{children}</Provider>
                     </QueryClientProvider>
                 ),
-            }
+            },
         )
 
         await act(() =>
             result.current.createArticle(
                 'ai_article_1',
-                ArticleOrigin.TOP_QUESTIONS_SECTION
-            )
+                ArticleOrigin.TOP_QUESTIONS_SECTION,
+            ),
         )
 
         expect(mockCreateArticle).toHaveBeenCalledTimes(1)

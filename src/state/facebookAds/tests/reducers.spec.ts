@@ -1,10 +1,10 @@
 import * as types from '../constants'
-import reducer, {initialState} from '../reducers'
+import reducer, { initialState } from '../reducers'
 
 describe('facebookAds reducer', () => {
     it('should return initial state', () => {
-        expect(reducer(undefined, {type: 'FOO_ACTION'})).toEqualImmutable(
-            initialState
+        expect(reducer(undefined, { type: 'FOO_ACTION' })).toEqualImmutable(
+            initialState,
         )
     })
 

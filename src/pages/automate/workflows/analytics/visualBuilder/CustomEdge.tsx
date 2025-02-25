@@ -1,8 +1,9 @@
 import React from 'react'
-import {BaseEdge, EdgeProps, getSmoothStepPath} from 'reactflow'
+
+import { BaseEdge, EdgeProps, getSmoothStepPath } from 'reactflow'
 
 export default function CustomEdge(props: EdgeProps) {
-    const {sourceX, sourceY, targetX, targetY} = props
+    const { sourceX, sourceY, targetX, targetY } = props
     const [centerX, centerY] = getEdgeCenter({
         sourceX,
         sourceY,

@@ -1,22 +1,24 @@
-import {SearchBody} from '@gorgias/api-queries'
-import {useQuery, UseQueryOptions} from '@tanstack/react-query'
-import {useEffect} from 'react'
+import { useEffect } from 'react'
 
-import {handleError} from 'hooks/agents/errorHandler'
+import { useQuery, UseQueryOptions } from '@tanstack/react-query'
+
+import { SearchBody } from '@gorgias/api-queries'
+
+import { handleError } from 'hooks/agents/errorHandler'
 import useAppDispatch from 'hooks/useAppDispatch'
 import client from 'models/api/resources'
-import {ApiListResponseCursorPagination} from 'models/api/types'
+import { ApiListResponseCursorPagination } from 'models/api/types'
 
 async function postSearch<T>(params: SearchBody) {
     return await client.post<ApiListResponseCursorPagination<T>>(
         '/api/search/',
-        params
+        params,
     )
 }
 
 export default function useSearch<T>(
     body: SearchBody,
-    overrides?: UseQueryOptions<Awaited<ReturnType<typeof postSearch>>>
+    overrides?: UseQueryOptions<Awaited<ReturnType<typeof postSearch>>>,
 ) {
     const dispatch = useAppDispatch()
 
@@ -31,7 +33,7 @@ export default function useSearch<T>(
             handleError(
                 response.error,
                 `Failed to fetch ${body.type || 'item'}s`,
-                dispatch
+                dispatch,
             )
         }
     }, [body, dispatch, response])

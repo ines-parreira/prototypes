@@ -1,19 +1,20 @@
-import {Tag} from '@gorgias/api-queries'
-import {List, Map} from 'immutable'
-import {AnyAction} from 'redux'
-import {ThunkDispatch} from 'redux-thunk'
+import { List, Map } from 'immutable'
+import { AnyAction } from 'redux'
+import { ThunkDispatch } from 'redux-thunk'
 
-import {TicketMessageSourceType, TicketVia} from 'business/types/ticket'
-import {OrderDirection, LegacyPaginationMeta} from 'models/api/types'
-import {Customer} from 'models/customer/types'
+import { Tag } from '@gorgias/api-queries'
+
+import { TicketMessageSourceType, TicketVia } from 'business/types/ticket'
+import { LegacyPaginationMeta, OrderDirection } from 'models/api/types'
+import { Customer } from 'models/customer/types'
 import {
     EcommerceStore,
     Shopper,
     ShopperAddress,
     ShopperOrder,
 } from 'models/customerEcommerceData/types'
-import {CustomerExternalData} from 'models/customerExternalData/types'
-import {DiscountCode} from 'models/discountCodes/types'
+import { CustomerExternalData } from 'models/customerExternalData/types'
+import { DiscountCode } from 'models/discountCodes/types'
 import {
     EmailDomain,
     EmailMigrationBannerStatus,
@@ -23,25 +24,25 @@ import {
     Integration,
     IntegrationType,
 } from 'models/integration/types'
-import {TicketEvent} from 'models/ticket/types'
-import {EntityType, ViewType} from 'models/view/types'
-import {InTicketSuggestionState} from 'state/entities/rules/types'
-import {TopRankMacroState} from 'state/newMessage/ticketReplyCache'
-import {StatsState} from 'state/stats/statsSlice'
+import { TicketEvent } from 'models/ticket/types'
+import { EntityType, ViewType } from 'models/view/types'
+import { InTicketSuggestionState } from 'state/entities/rules/types'
+import { TopRankMacroState } from 'state/newMessage/ticketReplyCache'
+import { StatsState } from 'state/stats/statsSlice'
 
-import {BillingContact} from './billing/types'
-import {AccountSetting} from './currentAccount/types'
-import {AuditLogEventsAction} from './entities/auditLogEvents/types'
-import {MacrosAction} from './entities/macros/types'
-import {EntitiesState} from './entities/reducers'
-import {InfobarActionsState} from './infobarActions/types'
-import {Message} from './newMessage/types'
-import {Notification} from './notifications/types'
-import {QueriesState} from './queries/types'
+import { BillingContact } from './billing/types'
+import { AccountSetting } from './currentAccount/types'
+import { AuditLogEventsAction } from './entities/auditLogEvents/types'
+import { MacrosAction } from './entities/macros/types'
+import { EntitiesState } from './entities/reducers'
+import { InfobarActionsState } from './infobarActions/types'
+import { Message } from './newMessage/types'
+import { Notification } from './notifications/types'
+import { QueriesState } from './queries/types'
 import rootReducer from './reducers'
-import {Rule, RuleOperation, RulePriority} from './rules/types'
-import {UIState} from './ui/reducers'
-import {Widget, WidgetEnvironment, WidgetType} from './widgets/types'
+import { Rule, RuleOperation, RulePriority } from './rules/types'
+import { UIState } from './ui/reducers'
+import { Widget, WidgetEnvironment, WidgetType } from './widgets/types'
 
 export type StoreState = {
     agents: Map<any, any>
@@ -79,7 +80,7 @@ export type GorgiasAction = {
     resp?: unknown
     roles?: unknown
     id?: string | number
-    fetched?: {data: unknown[]; meta?: Record<string, unknown>}
+    fetched?: { data: unknown[]; meta?: Record<string, unknown> }
     data?: unknown
     invoice?: Map<any, any>
     creditCard?: Map<any, any>

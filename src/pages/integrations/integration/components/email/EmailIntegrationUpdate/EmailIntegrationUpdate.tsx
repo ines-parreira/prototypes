@@ -1,14 +1,14 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { Component, FormEvent, ReactNode } from 'react'
+
 import classNames from 'classnames'
 import copy from 'copy-to-clipboard'
-import {EditorState} from 'draft-js'
-import {fromJS, Map} from 'immutable'
-import {LDFlagSet, withLDConsumer} from 'launchdarkly-react-client-sdk'
-import {isEqual} from 'lodash'
+import { EditorState } from 'draft-js'
+import { fromJS, Map } from 'immutable'
+import { LDFlagSet, withLDConsumer } from 'launchdarkly-react-client-sdk'
+import { isEqual } from 'lodash'
 import _capitalize from 'lodash/capitalize'
-import React, {Component, FormEvent, ReactNode} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {Link} from 'react-router-dom'
+import { connect, ConnectedProps } from 'react-redux'
+import { Link } from 'react-router-dom'
 import {
     Col,
     Container,
@@ -19,16 +19,18 @@ import {
     InputGroupAddon,
 } from 'reactstrap'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {UploadType} from 'common/types'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { UploadType } from 'common/types'
 import {
     GMAIL_IMPORTED_EMAILS_FOR_YEARS,
     OUTLOOK_IMPORTED_EMAILS_FOR_YEARS,
 } from 'config'
-import {EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS} from 'constants/integration'
-import {EmailIntegrationDefaultProviderSetting} from 'models/integration/constants'
-import {IntegrationType} from 'models/integration/types'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import { EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS } from 'constants/integration'
+import { EmailIntegrationDefaultProviderSetting } from 'models/integration/constants'
+import { IntegrationType } from 'models/integration/types'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -43,7 +45,7 @@ import {
     getOutboundEmailProviderSettingKey,
     isBaseEmailAddress,
 } from 'pages/integrations/integration/components/email/helpers'
-import {INTEGRATION_REMOVAL_CONFIGURATION_TEXT} from 'pages/integrations/integration/constants'
+import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 import settingsCss from 'pages/settings/settings.less'
 import {
     deleteIntegration,
@@ -54,9 +56,9 @@ import {
     getForwardingEmailAddress,
     getRedirectUri,
 } from 'state/integrations/selectors'
-import {RootState} from 'state/types'
-import {displayRestrictedSymbols} from 'utils'
-import {convertToHTML} from 'utils/editor'
+import { RootState } from 'state/types'
+import { displayRestrictedSymbols } from 'utils'
+import { convertToHTML } from 'utils/editor'
 
 type Props = {
     integration: Map<any, any>
@@ -67,7 +69,7 @@ type Props = {
 type State = {
     isCopied: boolean
     dirty: boolean
-    errors: {name?: string | null}
+    errors: { name?: string | null }
     name: string
     use_gmail_categories: boolean
     enable_gmail_sending: boolean
@@ -103,7 +105,7 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
     }
 
     UNSAFE_componentWillUpdate(nextProps: Props) {
-        const {integration, loading} = nextProps
+        const { integration, loading } = nextProps
 
         // populating the form when updating an integration
         if (!this.isInitialized && !loading.get('integration')) {
@@ -113,15 +115,15 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
     }
 
     componentDidUpdate() {
-        const {integration} = this.props
+        const { integration } = this.props
         const integrationHasSignature = integration.getIn(['meta', 'signature'])
         const currentFormValues = this._getFormValues(!integrationHasSignature)
-        const {dirty: dirtyState} = this.state
+        const { dirty: dirtyState } = this.state
 
         const dirty = !isEqual(integration.toJS(), currentFormValues.toJS())
 
         if (dirty !== dirtyState) {
-            this.setState({dirty})
+            this.setState({ dirty })
         }
     }
 
@@ -135,7 +137,7 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
                         'meta',
                         EmailIntegrationDefaultProviderSetting.SendViaOutlook,
                     ],
-                    true
+                    true,
                 ),
             enable_gmail_sending:
                 integration.get('type') === IntegrationType.Gmail
@@ -145,7 +147,7 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
                 integration.get('type') === IntegrationType.Gmail
                     ? integration.getIn(
                           ['meta', 'enable_gmail_threading'],
-                          true
+                          true,
                       )
                     : true,
             use_gmail_categories:
@@ -157,7 +159,7 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
     }
 
     _getFormValues = (removeSignatureWhenEmpty?: boolean): Map<any, any> => {
-        const {integration} = this.props
+        const { integration } = this.props
         let form
 
         form = integration
@@ -182,20 +184,20 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
             form = form
                 .setIn(
                     ['meta', 'use_gmail_categories'],
-                    this.state.use_gmail_categories
+                    this.state.use_gmail_categories,
                 )
                 .setIn(
                     ['meta', 'enable_gmail_sending'],
-                    this.state.enable_gmail_sending
+                    this.state.enable_gmail_sending,
                 )
                 .setIn(
                     ['meta', 'enable_gmail_threading'],
-                    this.state.enable_gmail_threading
+                    this.state.enable_gmail_threading,
                 )
         } else if (integration.get('type') === IntegrationType.Outlook) {
             form = form.setIn(
                 ['meta', EmailIntegrationDefaultProviderSetting.SendViaOutlook],
-                this.state.enable_outlook_sending
+                this.state.enable_outlook_sending,
             )
         }
 
@@ -204,25 +206,25 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
 
     _clipboardCopy = (text: string) => {
         copy(text)
-        this.setState({isCopied: true})
+        this.setState({ isCopied: true })
         setTimeout(() => {
-            this.setState({isCopied: false})
+            this.setState({ isCopied: false })
         }, 1500)
     }
 
     _handleSubmit = (e: FormEvent) => {
         e.preventDefault()
-        const {updateOrCreateIntegration} = this.props
+        const { updateOrCreateIntegration } = this.props
 
         return (
             updateOrCreateIntegration(this._getFormValues()) as Promise<void>
         ).then(() => {
-            this.setState({dirty: false})
+            this.setState({ dirty: false })
         })
     }
 
     _gmailImportEmails = () => {
-        const {integration, importEmails} = this.props
+        const { integration, importEmails } = this.props
 
         return importEmails(
             fromJS({
@@ -230,21 +232,21 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
                 meta: {
                     import_activated: true,
                 },
-            })
+            }),
         )
     }
 
     _outlookImportEmails = () => {
-        const {integration, importEmails} = this.props
+        const { integration, importEmails } = this.props
 
         return importEmails(
             fromJS({
                 id: integration.get('id'),
                 meta: (integration.get('meta') as Map<any, any>).setIn(
                     ['import_state', 'enabled'],
-                    true
+                    true,
                 ),
-            })
+            }),
         )
     }
 
@@ -253,9 +255,9 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
         status: string,
         mailsImported: boolean,
         importDescription: ReactNode,
-        importMethod: () => Promise<unknown>
+        importMethod: () => Promise<unknown>,
     ) => {
-        const {integration, loading} = this.props
+        const { integration, loading } = this.props
         const email = integration.getIn(['meta', 'address'], '')
 
         const isLoading = loading.get('import') === integration.get('id')
@@ -306,18 +308,18 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
     }
 
     _gmailRenderImport = () => {
-        const {integration} = this.props
+        const { integration } = this.props
         const importActivated = integration.getIn(
             ['meta', 'import_activated'],
-            false
+            false,
         )
         const status = integration.getIn(
             ['meta', 'importation', 'status'],
-            false
+            false,
         )
         const mailsImported = integration.getIn(
             ['meta', 'importation', 'count'],
-            0
+            0,
         )
         const importDescription = (
             <span>
@@ -330,23 +332,23 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
             status,
             mailsImported,
             importDescription,
-            this._gmailImportEmails
+            this._gmailImportEmails,
         )
     }
 
     _outlookRenderImport = () => {
-        const {integration} = this.props
+        const { integration } = this.props
         const importActivated = integration.getIn(
             ['meta', 'import_state', 'enabled'],
-            false
+            false,
         )
         const status = integration.getIn(
             ['meta', 'import_state', 'is_over'],
-            false
+            false,
         )
         const mailsImported = integration.getIn(
             ['meta', 'import_state', 'count'],
-            0
+            0,
         )
         const importDescription = (
             <span>
@@ -359,12 +361,12 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
             status,
             mailsImported,
             importDescription,
-            this._outlookImportEmails
+            this._outlookImportEmails,
         )
     }
 
     _renderInstructions = () => {
-        const {forwardingEmailAddress, integration} = this.props
+        const { forwardingEmailAddress, integration } = this.props
         const address: string = integration.getIn(['meta', 'address'], '')
 
         if (isBaseEmailAddress(address)) {
@@ -436,16 +438,16 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
     }
 
     _setName = (name: string) => {
-        const {errors} = this.state
+        const { errors } = this.state
         const invalidNameRegexp = new RegExp(
-            `[${EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS.join('')}]`
+            `[${EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS.join('')}]`,
         )
 
         if (name && invalidNameRegexp.test(name)) {
             errors.name =
                 'The name of your Email integration cannot contain these characters: ' +
                 displayRestrictedSymbols(
-                    EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS as string[]
+                    EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS as string[],
                 )
         } else {
             errors.name = null
@@ -480,13 +482,13 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
         const isDeleting = loading.get('delete') === integration.get('id')
         const isGmail = integration.get('type') === IntegrationType.Gmail
         const isOutlook = integration.get('type') === IntegrationType.Outlook
-        const {errors, name, use_gmail_categories, enable_gmail_threading} =
+        const { errors, name, use_gmail_categories, enable_gmail_threading } =
             this.state
 
         const hasErrors = Object.values(errors).some((val) => val != null)
 
         const nameHelp = `The display name appears on outgoing emails. It cannot contain the following characters: ${displayRestrictedSymbols(
-            EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS as string[]
+            EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS as string[],
         )}`
         const outlookDisplayNameLimitationTooltip = (
             <>
@@ -603,7 +605,7 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
                                     this.setState({
                                         ...this.state,
                                         [getOutboundEmailProviderSettingKey(
-                                            integration.get('type')
+                                            integration.get('type'),
                                         )]: newValue,
                                     })
                                 }
@@ -661,7 +663,7 @@ export class EmailIntegrationUpdateContainer extends Component<Props, State> {
     }
 
     render() {
-        const {integration, loading} = this.props
+        const { integration, loading } = this.props
 
         if (loading.get('integration')) {
             return <Loader />
@@ -696,7 +698,7 @@ const connector = connect(
         importEmails,
         updateOrCreateIntegration,
         deleteIntegration,
-    }
+    },
 )
 
 export default connector(withLDConsumer()(EmailIntegrationUpdateContainer))

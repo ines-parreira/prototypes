@@ -1,4 +1,4 @@
-import {useCallback, useState} from 'react'
+import { useCallback, useState } from 'react'
 
 interface Options {
     initial?: number
@@ -7,7 +7,7 @@ interface Options {
 
 export default function useSelectedIndex(
     max: number,
-    {initial = -1, loop = false}: Options = {}
+    { initial = -1, loop = false }: Options = {},
 ) {
     const [index, setIndex] = useState<number>(initial)
 
@@ -31,5 +31,5 @@ export default function useSelectedIndex(
         setIndex(-1)
     }, [])
 
-    return {index, next, previous, reset, setIndex}
+    return { index, next, previous, reset, setIndex }
 }

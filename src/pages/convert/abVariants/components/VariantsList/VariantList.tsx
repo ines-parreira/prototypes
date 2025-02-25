@@ -1,43 +1,39 @@
-import {Badge} from '@gorgias/merchant-ui-kit'
+import React, { useMemo } from 'react'
+
 import _get from 'lodash/get'
 import moment from 'moment'
-import React, {useMemo} from 'react'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
-import {ABGroup} from 'models/convert/campaign/types'
+import { Badge } from '@gorgias/merchant-ui-kit'
 
+import { ABGroup } from 'models/convert/campaign/types'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-
 import VariantActions from 'pages/convert/abVariants/components/VariantActions'
 import {
-    TableColumn,
     ABGroupValueFormat,
+    TableColumn,
 } from 'pages/convert/abVariants/components/VariantsList/types'
-
-import {getDataFromTableCell} from 'pages/convert/abVariants/components/VariantsList/utils'
-import {VARIANT_LIMIT} from 'pages/convert/abVariants/contants'
-
-import {VariantTableEntry} from 'pages/convert/abVariants/types/VariantTableEntry'
-
+import { getDataFromTableCell } from 'pages/convert/abVariants/components/VariantsList/utils'
+import { VARIANT_LIMIT } from 'pages/convert/abVariants/contants'
+import { VariantTableEntry } from 'pages/convert/abVariants/types/VariantTableEntry'
 import {
     abVariantControlVariantUrl,
     abVariantEditorUrl,
 } from 'pages/convert/abVariants/urls'
-import {generateVariantName} from 'pages/convert/abVariants/utils/generateVariantName'
-
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
-import {ABGroupStatus} from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
-import {isActiveStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
-import {SharedDimension} from 'pages/stats/convert/clients/constants'
-import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
-import {useGetTableStat} from 'pages/stats/convert/hooks/stats/useGetTableStat'
-import {useGetNamespacedShopNameForStore} from 'pages/stats/convert/hooks/useGetNamespacedShopNameForStore'
-import {CampaignTableKeys} from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
+import { generateVariantName } from 'pages/convert/abVariants/utils/generateVariantName'
+import { Campaign } from 'pages/convert/campaigns/types/Campaign'
+import { ABGroupStatus } from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
+import { isActiveStatus } from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
+import { SharedDimension } from 'pages/stats/convert/clients/constants'
+import { DEFAULT_TIMEZONE } from 'pages/stats/convert/constants/components'
+import { useGetTableStat } from 'pages/stats/convert/hooks/stats/useGetTableStat'
+import { useGetNamespacedShopNameForStore } from 'pages/stats/convert/hooks/useGetNamespacedShopNameForStore'
+import { CampaignTableKeys } from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
 
 import DataCell from './components/DataCell'
 
@@ -107,18 +103,20 @@ const VariantsList: React.FC<Props> = ({
         integrationId as unknown as number,
     ])
 
-    const {isFetching: isVariantFetching, data: variantData} = useGetTableStat({
-        groupDimension: SharedDimension.abVariant,
-        namespacedShopName,
-        campaignIds: [campaign.id],
-        startDate:
-            campaign.ab_group?.started_datetime ?? campaign.created_datetime,
-        endDate:
-            campaign.ab_group?.stopped_datetime ??
-            moment().endOf('day').format(),
-        timezone: DEFAULT_TIMEZONE,
-        enabled: true,
-    })
+    const { isFetching: isVariantFetching, data: variantData } =
+        useGetTableStat({
+            groupDimension: SharedDimension.abVariant,
+            namespacedShopName,
+            campaignIds: [campaign.id],
+            startDate:
+                campaign.ab_group?.started_datetime ??
+                campaign.created_datetime,
+            endDate:
+                campaign.ab_group?.stopped_datetime ??
+                moment().endOf('day').format(),
+            timezone: DEFAULT_TIMEZONE,
+            enabled: true,
+        })
 
     const variants = useMemo<VariantTableEntry[]>(() => {
         const splitBetweenLength = (campaign.variants?.length || 0) + 1 // include control version
@@ -133,7 +131,7 @@ const VariantsList: React.FC<Props> = ({
                 variantName: 'Control Variant',
                 link: abVariantControlVariantUrl(
                     integrationId.toString(),
-                    campaign.id
+                    campaign.id,
                 ),
                 trafficAllocation: !isStarted
                     ? isCompleted || !isActiveStatus(campaign.status)
@@ -153,7 +151,7 @@ const VariantsList: React.FC<Props> = ({
                 link: abVariantEditorUrl(
                     integrationId.toString(),
                     campaign.id,
-                    variant.id
+                    variant.id,
                 ),
                 isWinner: winnerId === variant.id,
                 trafficAllocation: !isStarted
@@ -205,7 +203,7 @@ const VariantsList: React.FC<Props> = ({
                     <HeaderCellProperty
                         titleClassName={css.headerCellTitle}
                         title=""
-                        style={{width: 110}}
+                        style={{ width: 110 }}
                     />
                 </TableHead>
                 <TableBody>
@@ -253,7 +251,7 @@ const VariantsList: React.FC<Props> = ({
                                         format={ABGroupValueFormat.Number}
                                         data={getDataFromTableCell(
                                             variant,
-                                            CampaignTableKeys.Impressions
+                                            CampaignTableKeys.Impressions,
                                         )}
                                     />
                                 </BodyCell>
@@ -263,7 +261,7 @@ const VariantsList: React.FC<Props> = ({
                                         format={ABGroupValueFormat.Percentage}
                                         data={getDataFromTableCell(
                                             variant,
-                                            CampaignTableKeys.ClickThroughRate
+                                            CampaignTableKeys.ClickThroughRate,
                                         )}
                                     />
                                 </BodyCell>
@@ -273,7 +271,7 @@ const VariantsList: React.FC<Props> = ({
                                         format={ABGroupValueFormat.Number}
                                         data={getDataFromTableCell(
                                             variant,
-                                            CampaignTableKeys.Conversions
+                                            CampaignTableKeys.Conversions,
                                         )}
                                     />
                                 </BodyCell>
@@ -283,11 +281,11 @@ const VariantsList: React.FC<Props> = ({
                                         format={ABGroupValueFormat.Percentage}
                                         data={getDataFromTableCell(
                                             variant,
-                                            CampaignTableKeys.TotalConversionRate
+                                            CampaignTableKeys.TotalConversionRate,
                                         )}
                                     />
                                 </BodyCell>
-                                <BodyCell style={{width: 110}}>
+                                <BodyCell style={{ width: 110 }}>
                                     <VariantActions
                                         data={variant}
                                         variantName={variant.variantName}

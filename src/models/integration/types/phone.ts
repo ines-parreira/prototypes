@@ -1,15 +1,15 @@
 // g/integrations/phone/schemas.py
-import {UpdateWaitMusicLibrary, WaitMusicType} from '@gorgias/api-queries'
+import { UpdateWaitMusicLibrary, WaitMusicType } from '@gorgias/api-queries'
 
-import {PhoneFunction} from 'business/twilio'
+import { PhoneFunction } from 'business/twilio'
 
 import {
     IntegrationType,
     IvrMenuActionType,
     VoiceMessageType,
 } from '../constants'
-import type {Integration} from './'
-import type {IntegrationBase} from './base'
+import type { Integration } from './'
+import type { IntegrationBase } from './base'
 
 export type PhoneIntegration = IntegrationBase & {
     type: IntegrationType.Phone
@@ -132,12 +132,12 @@ export type IvrSmsDeflection = {
 }
 
 export const isPhoneIntegration = (
-    integration: Maybe<Integration>
+    integration: Maybe<Integration>,
 ): integration is PhoneIntegration =>
     integration?.type === IntegrationType.Phone
 
 export const isStandardPhoneIntegration = (
-    integration: Maybe<Integration>
+    integration: Maybe<Integration>,
 ): integration is PhoneIntegration =>
     integration?.type === IntegrationType.Phone &&
     integration?.meta.function === 'standard'

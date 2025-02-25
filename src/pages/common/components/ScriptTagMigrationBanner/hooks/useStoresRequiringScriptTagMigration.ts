@@ -1,18 +1,14 @@
-import {List, Map, fromJS} from 'immutable'
+import { fromJS, List, Map } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
-
-import {FeatureFlagKey} from 'config/featureFlags'
-import {getHasShopifyScriptTagScopes} from 'config/integrations/gorgias_chat'
-
+import { FeatureFlagKey } from 'config/featureFlags'
+import { getHasShopifyScriptTagScopes } from 'config/integrations/gorgias_chat'
 import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationType} from 'models/integration/constants'
-
+import { IntegrationType } from 'models/integration/constants'
 import {
     GorgiasChatInstallationMethod,
     ShopifyIntegration,
 } from 'models/integration/types'
-
 import {
     DEPRECATED_getIntegrationsByTypes,
     getStoreIntegrations,
@@ -53,7 +49,7 @@ const useStoresRequiringScriptTagMigration = () => {
     const storeIntegrations = useAppSelector(getStoreIntegrations)
 
     const gorgiasChatIntegrations = useAppSelector(
-        DEPRECATED_getIntegrationsByTypes([IntegrationType.GorgiasChat])
+        DEPRECATED_getIntegrationsByTypes([IntegrationType.GorgiasChat]),
     ) as List<Map<any, any>>
 
     if (!hasScriptTagFeatureFlagOn) {
@@ -90,13 +86,13 @@ const useStoresRequiringScriptTagMigration = () => {
                     const shopifyIntegrationIds: List<number> | undefined =
                         integration?.getIn(
                             ['meta', 'shopify_integration_ids'],
-                            fromJS([])
+                            fromJS([]),
                         )
                     const isOneClickInstallation =
                         shopifyIntegrationIds?.includes(shopIntegrationId)
 
                     return !!isOneClickInstallation
-                }
+                },
             )
 
             if (!gorgiasChatIntegration) {

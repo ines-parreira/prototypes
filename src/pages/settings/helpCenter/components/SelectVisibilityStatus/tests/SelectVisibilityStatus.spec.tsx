@@ -1,5 +1,6 @@
-import {fireEvent, render} from '@testing-library/react'
 import React from 'react'
+
+import { fireEvent, render } from '@testing-library/react'
 
 import SelectVisibilityStatus from '../SelectVisibilityStatus'
 
@@ -8,7 +9,7 @@ const setShowNotification = jest.fn()
 
 describe('<SelectVisibilityStatus />', () => {
     it('should show selected option', () => {
-        const {container, getByText, getAllByText} = render(
+        const { container, getByText, getAllByText } = render(
             <SelectVisibilityStatus
                 status="PUBLIC"
                 onChange={onChange}
@@ -16,7 +17,7 @@ describe('<SelectVisibilityStatus />', () => {
                 setShowNotification={setShowNotification}
                 type="article"
                 showNotification={false}
-            />
+            />,
         )
 
         expect(container).toMatchSnapshot()
@@ -29,7 +30,7 @@ describe('<SelectVisibilityStatus />', () => {
     })
 
     it('should show the notification popup', async () => {
-        const {findByText, getByText} = render(
+        const { findByText, getByText } = render(
             <SelectVisibilityStatus
                 status="PUBLIC"
                 onChange={onChange}
@@ -37,7 +38,7 @@ describe('<SelectVisibilityStatus />', () => {
                 setShowNotification={setShowNotification}
                 type="article"
                 showNotification={true}
-            />
+            />,
         )
 
         expect(await findByText(/Got it/)).toBeTruthy()

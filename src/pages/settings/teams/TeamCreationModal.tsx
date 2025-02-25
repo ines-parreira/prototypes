@@ -1,6 +1,3 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import {EmojiData, BaseEmoji, emojiIndex} from 'emoji-mart'
-import {Map} from 'immutable'
 import React, {
     FormEvent,
     useCallback,
@@ -11,13 +8,18 @@ import React, {
     useState,
 } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { BaseEmoji, EmojiData, emojiIndex } from 'emoji-mart'
+import { Map } from 'immutable'
+
+import { Label } from '@gorgias/merchant-ui-kit'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
 import usePrevious from 'hooks/usePrevious'
-import {createTeam} from 'models/team/resources'
-import {Team} from 'models/team/types'
+import { createTeam } from 'models/team/resources'
+import { Team } from 'models/team/types'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import Button from 'pages/common/components/button/Button'
 import Dropdown, {
@@ -43,12 +45,13 @@ import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 import TextInput from 'pages/common/forms/input/TextInput'
-import {getHumanAgents} from 'state/agents/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {FETCH_TEAM_SUCCESS} from 'state/teams/constants'
+import { getHumanAgents } from 'state/agents/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { FETCH_TEAM_SUCCESS } from 'state/teams/constants'
 
 import RuleCreationModalContent from './RuleCreationModalContent'
+
 import css from './TeamCreationModal.less'
 
 type Props = {
@@ -87,7 +90,7 @@ export default function TeamCreationModal({
         return memberIds
             .reduce((acc: string[], id) => {
                 const agent: Map<any, any> = agents.find(
-                    (item: Map<any, any>) => item.get('id') === id
+                    (item: Map<any, any>) => item.get('id') === id,
                 )
                 if (agent) {
                     acc.push(agent.get('name'))
@@ -99,7 +102,7 @@ export default function TeamCreationModal({
 
     const isValidForm = useMemo(
         () => !!name && memberIds.length > 0,
-        [memberIds, name]
+        [memberIds, name],
     )
 
     const resetForm = useCallback(() => {
@@ -119,16 +122,16 @@ export default function TeamCreationModal({
         (nextValue: number) => {
             if (memberIds.includes(nextValue)) {
                 setMemberIds((prev) =>
-                    prev.filter((value) => value !== nextValue)
+                    prev.filter((value) => value !== nextValue),
                 )
             } else {
                 setMemberIds((prev) => [...prev, nextValue])
             }
         },
-        [memberIds]
+        [memberIds],
     )
 
-    const [{loading: isSubmitting}, submitTeam] = useAsyncFn(
+    const [{ loading: isSubmitting }, submitTeam] = useAsyncFn(
         async (event: FormEvent, setActiveStep: (nextStep: string) => void) => {
             event.preventDefault()
 
@@ -137,9 +140,9 @@ export default function TeamCreationModal({
                     name,
                     description,
                     decoration: {
-                        ...(!!emoji ? {emoji} : {}),
+                        ...(!!emoji ? { emoji } : {}),
                     },
-                    members: memberIds.map((memberId) => ({id: memberId})),
+                    members: memberIds.map((memberId) => ({ id: memberId })),
                 })
 
                 dispatch({
@@ -151,7 +154,7 @@ export default function TeamCreationModal({
                     notify({
                         status: NotificationStatus.Success,
                         message: 'Team created',
-                    })
+                    }),
                 )
 
                 setTeam(res)
@@ -164,11 +167,11 @@ export default function TeamCreationModal({
                         message:
                             'Failed to create team. Please refresh the page and try again.',
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
             }
         },
-        [description, emoji, memberIds, name, resetForm]
+        [description, emoji, memberIds, name, resetForm],
     )
 
     const handleTeamCreationSubmit = useCallback(
@@ -179,7 +182,7 @@ export default function TeamCreationModal({
                     await submitTeam(event, setActiveStep)
                 }
             },
-        [isValidForm, submitTeam]
+        [isValidForm, submitTeam],
     )
 
     const values = useMemo(
@@ -187,7 +190,7 @@ export default function TeamCreationModal({
             agents
                 .map((agent: Map<any, any>) => agent.get('id') as number)
                 .toJS() as number[],
-        [agents]
+        [agents],
     )
 
     const handleOnClose = useCallback(
@@ -195,7 +198,7 @@ export default function TeamCreationModal({
             onClose()
             setActiveStep('teamCreation')
         },
-        [onClose]
+        [onClose],
     )
 
     return (
@@ -211,7 +214,7 @@ export default function TeamCreationModal({
                                 <WizardStep name="teamCreation">
                                     <form
                                         onSubmit={handleTeamCreationSubmit(
-                                            context.setActiveStep
+                                            context.setActiveStep,
                                         )}
                                     >
                                         <ModalHeader title="Create team" />
@@ -235,17 +238,17 @@ export default function TeamCreationModal({
                                                     onEmojiSelect={(emoji) => {
                                                         setEmoji(
                                                             Object.values(
-                                                                emojiIndex.emojis
+                                                                emojiIndex.emojis,
                                                             ).find(
                                                                 (value) =>
                                                                     (
                                                                         value as BaseEmoji
                                                                     )
                                                                         ?.native ===
-                                                                    emoji
+                                                                    emoji,
                                                             ) as
                                                                 | EmojiData
-                                                                | undefined
+                                                                | undefined,
                                                         )
                                                     }}
                                                     onEmojiClear={() =>
@@ -306,12 +309,12 @@ export default function TeamCreationModal({
                                                                 }
                                                                 onRemoveAll={() =>
                                                                     setMemberIds(
-                                                                        []
+                                                                        [],
                                                                     )
                                                                 }
                                                                 onSelectAll={() =>
                                                                     setMemberIds(
-                                                                        values
+                                                                        values,
                                                                     )
                                                                 }
                                                                 values={values}
@@ -322,20 +325,20 @@ export default function TeamCreationModal({
                                                                         agent: Map<
                                                                             any,
                                                                             any
-                                                                        >
+                                                                        >,
                                                                     ) => (
                                                                         <UserDropdownItem
                                                                             agent={
                                                                                 agent
                                                                             }
                                                                             key={agent.get(
-                                                                                'id'
+                                                                                'id',
                                                                             )}
                                                                             onMemberChange={
                                                                                 handleMemberChange
                                                                             }
                                                                         />
-                                                                    )
+                                                                    ),
                                                                 )}
                                                             </DropdownBody>
                                                         </Dropdown>
@@ -365,7 +368,7 @@ export default function TeamCreationModal({
                                         <RuleCreationModalContent
                                             team={team}
                                             onClose={handleOnClose(
-                                                context.setActiveStep
+                                                context.setActiveStep,
                                             )}
                                         />
                                     )}
@@ -384,19 +387,19 @@ type UserDropdownItemProps = {
     onMemberChange: (nextValue: number) => void
 }
 
-function UserDropdownItem({agent, onMemberChange}: UserDropdownItemProps) {
+function UserDropdownItem({ agent, onMemberChange }: UserDropdownItemProps) {
     const dropdownContext = useContext(DropdownContext)
 
     if (!dropdownContext) {
         throw new Error(
-            'UserDropdownItem must be used within a DropdownContext.Provider'
+            'UserDropdownItem must be used within a DropdownContext.Provider',
         )
     }
-    const {getHighlightedLabel} = dropdownContext
+    const { getHighlightedLabel } = dropdownContext
 
     const label = useMemo(
         () => getHighlightedLabel(agent.get('name') || agent.get('email')),
-        [getHighlightedLabel, agent]
+        [getHighlightedLabel, agent],
     )
 
     return (

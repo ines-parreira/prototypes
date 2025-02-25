@@ -1,8 +1,9 @@
-import {Meta, Story} from '@storybook/react'
-import _noop from 'lodash/noop'
-import React, {ComponentProps, ContextType} from 'react'
+import React, { ComponentProps, ContextType } from 'react'
 
-import {DropdownContext} from './Dropdown'
+import { Meta, Story } from '@storybook/react'
+import _noop from 'lodash/noop'
+
+import { DropdownContext } from './Dropdown'
 import DropdownQuickSelect from './DropdownQuickSelect'
 
 const mockContext: ContextType<typeof DropdownContext> = {
@@ -20,7 +21,7 @@ const storyConfig: Meta = {
 }
 
 const DefaultTemplate: (
-    context?: ContextType<typeof DropdownContext>
+    context?: ContextType<typeof DropdownContext>,
 ) => Story<ComponentProps<typeof DropdownQuickSelect>> =
     (context = mockContext) =>
     (props) => (

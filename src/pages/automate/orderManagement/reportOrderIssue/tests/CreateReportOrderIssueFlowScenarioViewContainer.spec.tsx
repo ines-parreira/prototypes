@@ -1,17 +1,15 @@
-import {screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {Provider} from 'react-redux'
-
+import { screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-
 import thunk from 'redux-thunk'
 
-import {selfServiceConfiguration1} from 'fixtures/self_service_configurations'
+import { selfServiceConfiguration1 } from 'fixtures/self_service_configurations'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import {RootState, StoreDispatch} from 'state/types'
-import {renderWithRouter} from 'utils/testing'
+import { RootState, StoreDispatch } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
 import CreateReportOrderIssueFlowScenarioView from '../CreateReportOrderIssueFlowScenarioView'
 
@@ -45,7 +43,7 @@ describe('<CreateReportOrderIssueFlowScenarioView />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <CreateReportOrderIssueFlowScenarioView />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('Create scenario')).toBeInTheDocument()

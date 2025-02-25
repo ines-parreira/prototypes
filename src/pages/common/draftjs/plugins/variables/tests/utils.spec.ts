@@ -1,6 +1,6 @@
-import {EditorState, ContentState} from 'draft-js'
+import { ContentState, EditorState } from 'draft-js'
 
-import {setVariableEditable, attachEntitiesToVariables} from '../utils'
+import { attachEntitiesToVariables, setVariableEditable } from '../utils'
 
 // mock random key generation so they match from a snapshot to the other
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
@@ -9,10 +9,10 @@ describe('Variables plugin utils', () => {
     describe('attachEntitiesToVariables', () => {
         it('should contain editable variable', () => {
             const contentState = ContentState.createFromText(
-                '{{current_user.name}}'
+                '{{current_user.name}}',
             )
             const editorState = attachEntitiesToVariables(
-                EditorState.createWithContent(contentState)
+                EditorState.createWithContent(contentState),
             )
 
             const newContentState = editorState.getCurrentContent()
@@ -26,11 +26,11 @@ describe('Variables plugin utils', () => {
 
         it('should contain immutable variable', () => {
             const contentState = ContentState.createFromText(
-                '{{current_user.name}}'
+                '{{current_user.name}}',
             )
             const editorState = attachEntitiesToVariables(
                 EditorState.createWithContent(contentState),
-                true
+                true,
             )
 
             const newContentState = editorState.getCurrentContent()
@@ -45,11 +45,11 @@ describe('Variables plugin utils', () => {
     describe('setVariableEditable', () => {
         it('should turn immutable variable to editable', () => {
             const contentState = ContentState.createFromText(
-                '{{current_user.name}}'
+                '{{current_user.name}}',
             )
             let editorState = attachEntitiesToVariables(
                 EditorState.createWithContent(contentState),
-                true
+                true,
             )
             const decoratedText = ''
             let newEditorState: EditorState

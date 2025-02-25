@@ -1,5 +1,5 @@
-import {Category} from '../../../../../../models/helpCenter/types'
-import {eligibleParentCategories} from '../utils'
+import { Category } from '../../../../../../models/helpCenter/types'
+import { eligibleParentCategories } from '../utils'
 
 const rootCategory: Category = {
     created_datetime: '2022-03-14T13:11:08.813Z',
@@ -144,13 +144,13 @@ const categories: Category[] = [
 describe('eligibleParentCategories()', () => {
     it('should return an empty array if the category is undefined', () => {
         expect(
-            eligibleParentCategories(categories, 'fr-FR', undefined)
+            eligibleParentCategories(categories, 'fr-FR', undefined),
         ).toMatchSnapshot('return non-root categories in the targeted locale')
     })
 
     it('should return the categories without the children of the provided category', () => {
         expect(
-            eligibleParentCategories(categories, 'en-US', topLevelCategory)
+            eligibleParentCategories(categories, 'en-US', topLevelCategory),
         ).toMatchSnapshot('only top level category returned')
     })
 
@@ -159,14 +159,14 @@ describe('eligibleParentCategories()', () => {
             eligibleParentCategories(
                 categories,
                 'en-US',
-                level1CategoryWithChildren
-            )
+                level1CategoryWithChildren,
+            ),
         ).toMatchSnapshot('top level and level 1 nodes returned')
     })
 
     it('should return the categories including the level 2 node because it is not a children of the provided category', () => {
         expect(
-            eligibleParentCategories(categories, 'en-US', level1Category)
+            eligibleParentCategories(categories, 'en-US', level1Category),
         ).toMatchSnapshot('top level and level 1 & level 2 nodes returned')
     })
 })

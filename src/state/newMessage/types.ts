@@ -1,12 +1,13 @@
-import {Macro} from '@gorgias/api-queries'
-import {ContentState, SelectionState} from 'draft-js'
-import {List, Map} from 'immutable'
+import { ContentState, SelectionState } from 'draft-js'
+import { List, Map } from 'immutable'
 
-import {TicketMessageSourceType} from 'business/types/ticket'
-import {GenericAttachment} from 'common/types'
-import {DiscountCode} from 'models/discountCodes/types'
-import {MacroAction} from 'models/macroAction/types'
-import {Source, SourceAddress} from 'models/ticket/types'
+import { Macro } from '@gorgias/api-queries'
+
+import { TicketMessageSourceType } from 'business/types/ticket'
+import { GenericAttachment } from 'common/types'
+import { DiscountCode } from 'models/discountCodes/types'
+import { MacroAction } from 'models/macroAction/types'
+import { Source, SourceAddress } from 'models/ticket/types'
 
 export enum ReceiverProperty {
     To = 'to',
@@ -25,12 +26,12 @@ type Address = {
     name: string
 }
 
-type Recipient = SourceAddress & {id?: number}
+type Recipient = SourceAddress & { id?: number }
 
 export type NewMessage = {
     id?: string
     ticket_id?: string
-    source: Omit<Source, 'to'> & {to?: Recipient[]}
+    source: Omit<Source, 'to'> & { to?: Recipient[] }
     channel: string
     sender: User
     body_text: string
@@ -40,7 +41,7 @@ export type NewMessage = {
     attachments: GenericAttachment[]
     actions?: List<Map<any, any>>
     public?: boolean
-    macros: {id: number}[]
+    macros: { id: number }[]
     meta?: Record<string, unknown>
     integration_id?: number
 }

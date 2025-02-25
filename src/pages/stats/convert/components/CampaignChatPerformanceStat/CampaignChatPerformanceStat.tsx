@@ -1,19 +1,21 @@
-import {Skeleton} from '@gorgias/merchant-ui-kit'
-import {TooltipItem} from 'chart.js'
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
+
+import { TooltipItem } from 'chart.js'
+
+import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {formatPercentage} from 'pages/common/utils/numbers'
+import { formatPercentage } from 'pages/common/utils/numbers'
 import ChartCard from 'pages/stats/ChartCard'
 import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
-import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
-import {useGetCampaignsAndChatChart} from 'pages/stats/convert/hooks/stats/useGetCampaignsAndChatChart'
-import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
-import {useGetFirstValidIntegration} from 'pages/stats/convert/hooks/useGetFirstValidIntegration'
-import {useGetNamespacedShopNameForStore} from 'pages/stats/convert/hooks/useGetNamespacedShopNameForStore'
+import { DEFAULT_TIMEZONE } from 'pages/stats/convert/constants/components'
+import { useGetCampaignsAndChatChart } from 'pages/stats/convert/hooks/stats/useGetCampaignsAndChatChart'
+import { useCampaignStatsFilters } from 'pages/stats/convert/hooks/useCampaignStatsFilters'
+import { useGetFirstValidIntegration } from 'pages/stats/convert/hooks/useGetFirstValidIntegration'
+import { useGetNamespacedShopNameForStore } from 'pages/stats/convert/hooks/useGetNamespacedShopNameForStore'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
-import {renderTickLabelAsPercentage} from 'pages/stats/utils'
-import {getTimezone} from 'state/currentUser/selectors'
+import { renderTickLabelAsPercentage } from 'pages/stats/utils'
+import { getTimezone } from 'state/currentUser/selectors'
 
 const title = 'Campaign versus chat performance'
 const hint = `Compare the conversion rates of your chat tickets in general versus campaign conversion,
@@ -44,17 +46,17 @@ export const CampaignChatPerformanceStat = () => {
     const namespacedShopName =
         useGetNamespacedShopNameForStore(selectedIntegrations)
     const userTimezone = useAppSelector(
-        (state) => getTimezone(state) || DEFAULT_TIMEZONE
+        (state) => getTimezone(state) || DEFAULT_TIMEZONE,
     )
 
-    const {isFetching, isError, data} = useGetCampaignsAndChatChart(
+    const { isFetching, isError, data } = useGetCampaignsAndChatChart(
         namespacedShopName,
         selectedCampaigns,
         selectedCampaignsOperator,
         selectedPeriod.start_datetime,
         selectedPeriod.end_datetime,
         selectedIntegration?.id || null,
-        userTimezone
+        userTimezone,
     )
 
     const graphData = useMemo(
@@ -72,7 +74,7 @@ export const CampaignChatPerformanceStat = () => {
                 values: data?.chatConversionRate || [],
             },
         ],
-        [data]
+        [data],
     )
 
     const statsVisible = !isFetching && !isError
@@ -80,7 +82,7 @@ export const CampaignChatPerformanceStat = () => {
     return (
         <DashboardGridCell size={12}>
             {statsVisible && (
-                <ChartCard title={title} hint={{title: hint}}>
+                <ChartCard title={title} hint={{ title: hint }}>
                     <LineChart
                         data={graphData}
                         hasBackground={false}

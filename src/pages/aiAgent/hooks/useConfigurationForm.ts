@@ -1,26 +1,27 @@
-import {isAxiosError} from 'axios'
-import {useFlags} from 'launchdarkly-react-client-sdk'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+
+import { isAxiosError } from 'axios'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 import _get from 'lodash/get'
 import _isEqual from 'lodash/isEqual'
-import {useCallback, useEffect, useMemo, useState} from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {AiAgentOnboardingWizardStep} from 'models/aiAgent/types'
-import {useAiAgentStoreConfigurationContext} from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
+import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
-import {getStoreConfigurationFromFormValues} from '../components/StoreConfigForm/StoreConfigForm.utils'
-import {DEFAULT_FORM_VALUES} from '../constants'
-import {FormValues, UpdateValue, ValidFormValues} from '../types'
-import {getValidStoreConfigurationFormValues} from '../utils/store-configuration-validation.utils'
-import {useAiAgentNavigation} from './useAiAgentNavigation'
-import {useStoreConfigurationMutation} from './useStoreConfigurationMutation'
-import {getFormValuesFromStoreConfiguration} from './utils/configurationForm.utils'
+import { getStoreConfigurationFromFormValues } from '../components/StoreConfigForm/StoreConfigForm.utils'
+import { DEFAULT_FORM_VALUES } from '../constants'
+import { FormValues, UpdateValue, ValidFormValues } from '../types'
+import { getValidStoreConfigurationFormValues } from '../utils/store-configuration-validation.utils'
+import { useAiAgentNavigation } from './useAiAgentNavigation'
+import { useStoreConfigurationMutation } from './useStoreConfigurationMutation'
+import { getFormValuesFromStoreConfiguration } from './utils/configurationForm.utils'
 
 export const useConfigurationForm = ({
     initValues,
@@ -32,11 +33,11 @@ export const useConfigurationForm = ({
     const dispatch = useAppDispatch()
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
-    const {isLoading, createStoreConfiguration, upsertStoreConfiguration} =
-        useStoreConfigurationMutation({shopName, accountDomain})
-    const {routes} = useAiAgentNavigation({shopName})
+    const { isLoading, createStoreConfiguration, upsertStoreConfiguration } =
+        useStoreConfigurationMutation({ shopName, accountDomain })
+    const { routes } = useAiAgentNavigation({ shopName })
     const isOnboardingWizardPage = window.location.pathname.includes(
-        routes.onboardingWizard
+        routes.onboardingWizard,
     )
     const isAiAgentChatEnabled: boolean | undefined =
         useFlags()[FeatureFlagKey.AiAgentChat]
@@ -46,18 +47,18 @@ export const useConfigurationForm = ({
             ...DEFAULT_FORM_VALUES,
             ...initValues,
         }),
-        [initValues]
+        [initValues],
     )
 
     // could have used a useReducer instead, but keeping it simple for now
     const [formValues, setFormValues] = useState<FormValues>(defaultValues)
 
-    const {storeConfiguration} = useAiAgentStoreConfigurationContext()
+    const { storeConfiguration } = useAiAgentStoreConfigurationContext()
 
     useEffect(() => {
         if (storeConfiguration) {
             setFormValues(
-                getFormValuesFromStoreConfiguration(storeConfiguration)
+                getFormValuesFromStoreConfiguration(storeConfiguration),
             )
         } else {
             setFormValues(defaultValues)
@@ -73,7 +74,7 @@ export const useConfigurationForm = ({
         (key: keyof FormValues) => {
             return !_isEqual(formValues[key], DEFAULT_FORM_VALUES[key])
         },
-        [formValues]
+        [formValues],
     )
 
     const updateValue: UpdateValue<FormValues> = useCallback((key, value) => {
@@ -121,7 +122,7 @@ export const useConfigurationForm = ({
                 {
                     isAiAgentChatEnabled,
                     isOnboardingWizardPage,
-                }
+                },
             )
         } catch (error) {
             if (error instanceof Error) {
@@ -129,7 +130,7 @@ export const useConfigurationForm = ({
                     notify({
                         message: error.message,
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
             } else {
                 throw error
@@ -140,7 +141,7 @@ export const useConfigurationForm = ({
 
         const configurationToSubmit = getStoreConfigurationFromFormValues(
             shopName,
-            validFormValues
+            validFormValues,
         )
 
         let res
@@ -196,7 +197,7 @@ export const useConfigurationForm = ({
                 notify({
                     message: 'AI Agent configuration saved!',
                     status: NotificationStatus.Success,
-                })
+                }),
             )
 
             return res
@@ -211,14 +212,14 @@ export const useConfigurationForm = ({
                         message:
                             'Email address already used by AI Agent on a different store.',
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
             } else {
                 void dispatch(
                     notify({
                         message: 'Failed to save AI Agent configuration',
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
             }
         }

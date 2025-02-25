@@ -1,8 +1,9 @@
+import React, { useMemo, useState } from 'react'
+
 import _isEqual from 'lodash/isEqual'
 import _uniqueId from 'lodash/uniqueId'
-import React, {useMemo, useState} from 'react'
 
-import {SelfServiceReportIssueCase} from 'models/selfServiceConfiguration/types'
+import { SelfServiceReportIssueCase } from 'models/selfServiceConfiguration/types'
 
 import ReportOrderIssueScenarioItem from './ReportOrderIssueScenarioItem'
 
@@ -18,8 +19,8 @@ const ReportOrderIssueScenarioList = ({
     onReorder,
 }: Props) => {
     const itemsWithId = useMemo(
-        () => items.map((item) => ({...item, id: _uniqueId()})),
-        [items]
+        () => items.map((item) => ({ ...item, id: _uniqueId() })),
+        [items],
     )
 
     const [dirtyItemsWithId, setDirtyItemsWithId] = useState(itemsWithId)
@@ -41,7 +42,7 @@ const ReportOrderIssueScenarioList = ({
         if (!_isEqual(dirtyItemsWithId, itemsWithId)) {
             onReorder(
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                dirtyItemsWithId.map(({id, ...dirtyItem}) => dirtyItem)
+                dirtyItemsWithId.map(({ id, ...dirtyItem }) => dirtyItem),
             )
         }
     }
@@ -58,7 +59,7 @@ const ReportOrderIssueScenarioList = ({
     return (
         <table>
             <tbody>
-                {dirtyItemsWithId.map(({id, ...item}, index) => (
+                {dirtyItemsWithId.map(({ id, ...item }, index) => (
                     <ReportOrderIssueScenarioItem
                         key={id}
                         id={id}

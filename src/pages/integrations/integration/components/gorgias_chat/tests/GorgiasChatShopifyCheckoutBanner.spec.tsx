@@ -1,11 +1,12 @@
-import {render, screen, fireEvent} from '@testing-library/react'
-import {Map} from 'immutable'
 import React from 'react'
 
+import { fireEvent, render, screen } from '@testing-library/react'
+import { Map } from 'immutable'
+
 import useAppDispatch from 'hooks/useAppDispatch'
-import {IntegrationType} from 'models/integration/types'
-import {Tab} from 'pages/integrations/integration/types'
-import {hideShopifyCheckoutChatBanner} from 'state/integrations/actions'
+import { IntegrationType } from 'models/integration/types'
+import { Tab } from 'pages/integrations/integration/types'
+import { hideShopifyCheckoutChatBanner } from 'state/integrations/actions'
 import * as actionTypes from 'state/integrations/constants'
 
 import GorgiasChatShopifyCheckoutChatBanner from '../GorgiasChatShopifyCheckoutChatBanner'
@@ -38,20 +39,20 @@ describe('<GorgiasChatShopifyCheckoutBanner />', () => {
         render(
             <GorgiasChatShopifyCheckoutChatBanner
                 integration={integrationMock}
-            />
+            />,
         )
 
         // Then
         expect(
             screen.getByText(
-                'Chat is available on Shopify Checkout and Thank you pages!'
-            )
+                'Chat is available on Shopify Checkout and Thank you pages!',
+            ),
         ).toBeInTheDocument()
         const ctaLink = screen.getByText('Add To Checkout')
         expect(ctaLink).toBeInTheDocument()
         expect(ctaLink).toHaveAttribute(
             'to',
-            `/app/settings/channels/${IntegrationType.GorgiasChat}/1/${Tab.Installation}`
+            `/app/settings/channels/${IntegrationType.GorgiasChat}/1/${Tab.Installation}`,
         )
     })
 
@@ -60,15 +61,15 @@ describe('<GorgiasChatShopifyCheckoutBanner />', () => {
         render(
             <GorgiasChatShopifyCheckoutChatBanner
                 integration={integrationMock}
-            />
+            />,
         )
 
-        const closeButton = screen.getByRole('button', {name: /close/i})
+        const closeButton = screen.getByRole('button', { name: /close/i })
         fireEvent.click(closeButton)
 
         // Then
         expect(mockDispatch).toHaveBeenCalledWith(
-            hideShopifyCheckoutChatBanner()
+            hideShopifyCheckoutChatBanner(),
         )
     })
 
@@ -80,14 +81,14 @@ describe('<GorgiasChatShopifyCheckoutBanner />', () => {
         render(
             <GorgiasChatShopifyCheckoutChatBanner
                 integration={integrationMock}
-            />
+            />,
         )
 
         // Then
         expect(
             screen.queryByText(
-                'Chat is available on Shopify Checkout and Thank you pages!'
-            )
+                'Chat is available on Shopify Checkout and Thank you pages!',
+            ),
         ).not.toBeInTheDocument()
     })
 })

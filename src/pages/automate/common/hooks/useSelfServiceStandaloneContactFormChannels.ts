@@ -1,10 +1,10 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {TicketChannel} from 'business/types/ticket'
+import { TicketChannel } from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
-import {ContactForm} from 'models/contactForm/types'
-import {IntegrationType} from 'models/integration/constants'
-import {getContactFormsList} from 'state/entities/contactForm/contactForms'
+import { ContactForm } from 'models/contactForm/types'
+import { IntegrationType } from 'models/integration/constants'
+import { getContactFormsList } from 'state/entities/contactForm/contactForms'
 
 export type SelfServiceStandaloneContactFormChannel = {
     type: TicketChannel.ContactForm
@@ -13,7 +13,7 @@ export type SelfServiceStandaloneContactFormChannel = {
 
 const useSelfServiceStandaloneContactFormChannels = (
     shopType: string,
-    shopName: string
+    shopName: string,
 ) => {
     const contactForms = useAppSelector(getContactFormsList)
 
@@ -26,7 +26,7 @@ const useSelfServiceStandaloneContactFormChannels = (
             .filter(
                 (contactForm) =>
                     contactForm.help_center_id === null &&
-                    contactForm.shop_name === shopName
+                    contactForm.shop_name === shopName,
             )
             .map((contactForm) => ({
                 type: TicketChannel.ContactForm,

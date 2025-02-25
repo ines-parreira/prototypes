@@ -1,11 +1,11 @@
-import {fireEvent, render, RenderResult} from '@testing-library/react'
+import React, { ComponentProps, ReactNode } from 'react'
 
-import {resetLDMocks} from 'jest-launchdarkly-mock'
-import React, {ComponentProps, ReactNode} from 'react'
+import { fireEvent, render, RenderResult } from '@testing-library/react'
+import { resetLDMocks } from 'jest-launchdarkly-mock'
 
-import {testimonial as testimonialFixture} from 'fixtures/paywall'
+import { testimonial as testimonialFixture } from 'fixtures/paywall'
 
-import Paywall, {PaywallTheme, UpgradeType} from '../Paywall'
+import Paywall, { PaywallTheme, UpgradeType } from '../Paywall'
 
 jest.mock('react-images', () => {
     return ({
@@ -50,7 +50,7 @@ describe('<Paywall />', () => {
     })
 
     it('should render with minimal props', () => {
-        const {container} = render(<Paywall {...minProps} />)
+        const { container } = render(<Paywall {...minProps} />)
         expect(container.firstChild).toMatchSnapshot()
     })
 
@@ -59,8 +59,8 @@ describe('<Paywall />', () => {
         // eslint-disable-next-line react/jsx-key
         ['custom header element', <div>Custom page header</div>],
     ])('should render a page header with %s', (testName, pageHeader) => {
-        const {container} = render(
-            <Paywall {...minProps} pageHeader={pageHeader} />
+        const { container } = render(
+            <Paywall {...minProps} pageHeader={pageHeader} />,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -68,16 +68,16 @@ describe('<Paywall />', () => {
     it.each<PaywallTheme>(Object.values(PaywallTheme))(
         'should render a paywall theme with badge for %s paywall type',
         (paywallTheme) => {
-            const {container} = render(
-                <Paywall {...minProps} paywallTheme={paywallTheme} />
+            const { container } = render(
+                <Paywall {...minProps} paywallTheme={paywallTheme} />,
             )
             expect(container.firstChild).toMatchSnapshot()
-        }
+        },
     )
 
     it('should open the lightbox on preview click', () => {
-        const {getByAltText, queryAllByTestId} = render(
-            <Paywall {...minProps} />
+        const { getByAltText, queryAllByTestId } = render(
+            <Paywall {...minProps} />,
         )
 
         fireEvent.click(getByAltText('Feature preview'))
@@ -88,13 +88,13 @@ describe('<Paywall />', () => {
     it.each<[string, (result: RenderResult) => void]>([
         [
             'close click',
-            ({getByTestId}) => {
+            ({ getByTestId }) => {
                 fireEvent.click(getByTestId('close-button'))
             },
         ],
         [
             'image click',
-            ({getByTestId}) => {
+            ({ getByTestId }) => {
                 fireEvent.click(getByTestId('click-image-button'))
             },
         ],
@@ -108,58 +108,58 @@ describe('<Paywall />', () => {
     })
 
     it('should render with filter shadow', () => {
-        const {getByAltText} = render(
-            <Paywall {...minProps} renderFilterShadow />
+        const { getByAltText } = render(
+            <Paywall {...minProps} renderFilterShadow />,
         )
         expect(getByAltText('Feature preview').parentElement).toMatchSnapshot()
     })
 
     it('should render with a legacy badge', () => {
-        const {container} = render(<Paywall {...minProps} shouldKeepPrice />)
+        const { container } = render(<Paywall {...minProps} shouldKeepPrice />)
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render with an add-on update type', () => {
-        const {container} = render(
-            <Paywall {...minProps} upgradeType={UpgradeType.AddOn} />
+        const { container } = render(
+            <Paywall {...minProps} upgradeType={UpgradeType.AddOn} />,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render with a testimonial', () => {
-        const {container} = render(
-            <Paywall {...minProps} testimonial={testimonialFixture} />
+        const { container } = render(
+            <Paywall {...minProps} testimonial={testimonialFixture} />,
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render the default upgrade CTA', () => {
-        const {container} = render(<Paywall {...minProps} showUpgradeCta />)
+        const { container } = render(<Paywall {...minProps} showUpgradeCta />)
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render a custom upgrade CTA', () => {
-        const {container} = render(
-            <Paywall {...minProps} customCta={<button>Upgrade me!</button>} />
+        const { container } = render(
+            <Paywall {...minProps} customCta={<button>Upgrade me!</button>} />,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should not render the default upgrade CTA if a custom upgrade CTA is passed', () => {
-        const {container} = render(
+        const { container } = render(
             <Paywall
                 {...minProps}
                 showUpgradeCta
                 customCta={<button>Upgrade me!</button>}
-            />
+            />,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render with modal', () => {
-        const {container} = render(
-            <Paywall {...minProps} modal={<div>Modal content</div>} />
+        const { container } = render(
+            <Paywall {...minProps} modal={<div>Modal content</div>} />,
         )
         expect(container.firstChild).toMatchSnapshot()
     })

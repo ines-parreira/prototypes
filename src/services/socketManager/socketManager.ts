@@ -1,14 +1,14 @@
 import _find from 'lodash/find'
 import _noop from 'lodash/noop'
 import _throttle from 'lodash/throttle'
-import {dismissNotification} from 'reapop'
+import { dismissNotification } from 'reapop'
 
-import {AlertBannerTypes} from 'AlertBanners'
-import {store} from 'common/store'
-import {notify} from 'state/notifications/actions'
-import {NotificationStyle} from 'state/notifications/types'
-import {StoreDispatch} from 'state/types'
-import {devLog} from 'utils'
+import { AlertBannerTypes } from 'AlertBanners'
+import { store } from 'common/store'
+import { notify } from 'state/notifications/actions'
+import { NotificationStyle } from 'state/notifications/types'
+import { StoreDispatch } from 'state/types'
+import { devLog } from 'utils'
 
 import {
     RELOAD_TAB_DELAY,
@@ -54,7 +54,7 @@ export class SocketManager {
     worker = currentBrowserSupportsSharedWorker
         ? new window.SharedWorker(
               window.SHARED_WORKER_BUILD_URL,
-              SHARED_WORKER_NAME
+              SHARED_WORKER_NAME,
           )
         : fallbackWorkerAdapter
 
@@ -76,7 +76,7 @@ export class SocketManager {
             'message',
             (event: MessageEvent) => {
                 this.onMessage(event.data)
-            }
+            },
         )
 
         this.worker.port.postMessage({
@@ -101,7 +101,7 @@ export class SocketManager {
     unregisterReceivedEvents(events: ReceivedEvent[]) {
         events.forEach((event) => {
             this.receivedEvents = this.receivedEvents.filter(
-                (receivedEvent) => receivedEvent.name !== event.name
+                (receivedEvent) => receivedEvent.name !== event.name,
             )
         })
     }
@@ -165,7 +165,7 @@ export class SocketManager {
                     text: 'Refresh',
                     onClick: this.resetWorker,
                 },
-            })
+            }),
         )
     }
 
@@ -174,7 +174,7 @@ export class SocketManager {
         this.isConnected = true
 
         this.dispatchReduxAction(
-            dismissNotification(this.disconnectedNotificationId)
+            dismissNotification(this.disconnectedNotificationId),
         )
 
         // join rooms that were active before being disconnected
@@ -190,7 +190,7 @@ export class SocketManager {
      * socketManagerInstance.send('ticket-viewed', 12
      */
     send = (configName: SocketEventType, ...args: Array<any>) => {
-        const config = _find(this.sendEvents, {name: configName})
+        const config = _find(this.sendEvents, { name: configName })
 
         if (!config) {
             return
@@ -207,7 +207,7 @@ export class SocketManager {
      * socketManagerInstance.join('ticket', 12
      */
     join = (configName: JoinEventType, ...args: Array<any>) => {
-        const config = _find(this.joinEvents, {name: configName})
+        const config = _find(this.joinEvents, { name: configName })
 
         if (!config) {
             return
@@ -222,7 +222,7 @@ export class SocketManager {
      * socketManagerInstance.leave('ticket', 12)
      */
     leave = (configName: JoinEventType, ...args: Array<any>) => {
-        const config = _find(this.joinEvents, {name: configName})
+        const config = _find(this.joinEvents, { name: configName })
 
         if (!config) {
             return
@@ -340,7 +340,7 @@ export class SocketManager {
         // remove all rooms of same dataType as passed data
         this.rooms = this.rooms.filter(
             (roomData: Record<string, unknown>): boolean =>
-                roomData.dataType !== data.dataType
+                roomData.dataType !== data.dataType,
         )
     }
 

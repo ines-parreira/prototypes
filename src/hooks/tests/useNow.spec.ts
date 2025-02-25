@@ -1,6 +1,6 @@
-import {act, renderHook} from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react-hooks'
 
-import {useNow} from '../useNow'
+import { useNow } from '../useNow'
 
 describe('useNow', () => {
     beforeEach(() => {
@@ -13,12 +13,12 @@ describe('useNow', () => {
     })
 
     it('should return now initially', () => {
-        const {result} = renderHook(() => useNow())
+        const { result } = renderHook(() => useNow())
         expect(result.current).toBe(1708689346000)
     })
 
     it('should return a new value every second by default', () => {
-        const {result} = renderHook(() => useNow())
+        const { result } = renderHook(() => useNow())
 
         act(() => {
             jest.advanceTimersByTime(999)
@@ -32,7 +32,7 @@ describe('useNow', () => {
     })
 
     it('should return a new value every given interval', () => {
-        const {result} = renderHook(() => useNow(5000))
+        const { result } = renderHook(() => useNow(5000))
 
         act(() => {
             jest.advanceTimersByTime(4999)

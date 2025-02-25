@@ -1,21 +1,22 @@
-import {Program} from 'estree'
-import {Map} from 'immutable'
-import {useEffect, useRef} from 'react'
+import { useEffect, useRef } from 'react'
+
+import { Program } from 'estree'
+import { Map } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
 import pollingManager from 'services/pollingManager'
-import {CollectionOperator, EqualityOperator} from 'state/rules/types'
+import { CollectionOperator, EqualityOperator } from 'state/rules/types'
 import {
     getActiveView,
     shouldFetchActiveViewTickets as getShouldFetchActiveViewTickets,
 } from 'state/views/selectors'
-import {getViewFilters} from 'state/views/utils'
+import { getViewFilters } from 'state/views/utils'
 
 export default function usePollingManager() {
     const currentUser = useAppSelector((state) => state.currentUser)
     const activeView = useAppSelector(getActiveView)
     const shouldFetchActiveViewTickets = useAppSelector(
-        getShouldFetchActiveViewTickets
+        getShouldFetchActiveViewTickets,
     )
 
     const isCurrentUserActive = currentUser.get('is_active')
@@ -37,8 +38,8 @@ export default function usePollingManager() {
                             (filter.operator === EqualityOperator.Eq ||
                                 CollectionOperator.ContainsAny) &&
                             (filter.right as string | undefined)?.includes(
-                                'chat'
-                            )
+                                'chat',
+                            ),
                     )
 
                     if (isChatView) {

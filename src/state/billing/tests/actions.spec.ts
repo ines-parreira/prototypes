@@ -1,12 +1,12 @@
 import MockAdapter from 'axios-mock-adapter'
-import {fromJS} from 'immutable'
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+import { fromJS } from 'immutable'
+import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import client from '../../../models/api/resources'
-import {RootState, StoreDispatch} from '../../types'
+import { RootState, StoreDispatch } from '../../types'
 import * as actions from '../actions'
-import {initialState} from '../reducers'
+import { initialState } from '../reducers'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -15,7 +15,7 @@ jest.mock('../../notifications/actions.ts', () => {
         notify: jest.fn(
             () =>
                 <T>(args: T): T =>
-                    args
+                    args,
         ),
     }
 })
@@ -27,8 +27,8 @@ describe('billing actions', () => {
     beforeEach(() => {
         store = mockStore({
             billing: initialState,
-            currentUser: fromJS({id: 1}),
-            currentAccount: fromJS({id: 1}),
+            currentUser: fromJS({ id: 1 }),
+            currentAccount: fromJS({ id: 1 }),
         })
         mockServer.reset()
     })
@@ -62,7 +62,9 @@ describe('billing actions', () => {
             },
         ]
 
-        mockServer.onGet('/api/billing/invoices/').reply(200, {data: invoices})
+        mockServer
+            .onGet('/api/billing/invoices/')
+            .reply(200, { data: invoices })
 
         return store
             .dispatch(actions.fetchInvoices())
@@ -91,7 +93,7 @@ describe('billing actions', () => {
                 paid: false,
             }
             expect(
-                actions.updateInvoiceInList(fromJS(invoice))
+                actions.updateInvoiceInList(fromJS(invoice)),
             ).toMatchSnapshot()
         })
     })

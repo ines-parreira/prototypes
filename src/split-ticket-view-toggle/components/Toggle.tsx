@@ -1,21 +1,23 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import cn from 'classnames'
-import React, {useCallback} from 'react'
+import React, { useCallback } from 'react'
 
-import {useDesktopOnlyShowGlobalNavFeatureFlag} from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
-import {logEvent, SegmentEvent} from 'common/segment'
-import {TooltipDelay} from 'core/ui/tooltip.utils'
+import cn from 'classnames'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { TooltipDelay } from 'core/ui/tooltip.utils'
 import useId from 'hooks/useId'
 
 import useSplitTicketView from '../hooks/useSplitTicketView'
+import useIsToggleEnabled from './useIsToggleEnabled'
 
 import css from './Toggle.less'
-import useIsToggleEnabled from './useIsToggleEnabled'
 
 /* istanbul ignore next */
 export default function Toggle() {
-    const {isEnabled, setIsEnabled} = useSplitTicketView()
-    const {isEnabled: isToggleEnabled} = useIsToggleEnabled()
+    const { isEnabled, setIsEnabled } = useSplitTicketView()
+    const { isEnabled: isToggleEnabled } = useIsToggleEnabled()
     const showGlobalNav = useDesktopOnlyShowGlobalNavFeatureFlag()
 
     const id = useId()
@@ -38,7 +40,7 @@ export default function Toggle() {
                     {
                         [css.active]: isEnabled,
                         [css.disabled]: !isToggleEnabled,
-                    }
+                    },
                 )}
                 type="button"
                 onClick={handleClick}
@@ -50,7 +52,9 @@ export default function Toggle() {
                 })}
             >
                 {showGlobalNav ? (
-                    <div className={cn(css.mask, {[css.active]: isEnabled})} />
+                    <div
+                        className={cn(css.mask, { [css.active]: isEnabled })}
+                    />
                 ) : (
                     <span>{isEnabled ? 'Expand' : 'Collapse'}</span>
                 )}

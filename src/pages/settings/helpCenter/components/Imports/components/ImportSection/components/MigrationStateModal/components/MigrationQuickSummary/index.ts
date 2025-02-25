@@ -1,1 +1,1 @@
-export {default} from './MigrationQuickSummary'
+export { default } from './MigrationQuickSummary'

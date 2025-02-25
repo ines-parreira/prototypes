@@ -1,11 +1,12 @@
+import React, { useContext, useMemo } from 'react'
+
 import classNames from 'classnames'
-import React, {useContext, useMemo} from 'react'
 import ReactPlayer from 'react-player'
 
-import {TicketMessage} from 'models/ticket/types'
+import { TicketMessage } from 'models/ticket/types'
 import Ellipsis from 'pages/common/components/Ellipsis'
 import MessageQuoteContext from 'pages/tickets/detail/components/MessageQuoteContext'
-import {extractGorgiasVideoDivFromHtmlContent, parseMedia} from 'utils'
+import { extractGorgiasVideoDivFromHtmlContent, parseMedia } from 'utils'
 import {
     linkifyHtml,
     linkifyString,
@@ -32,11 +33,11 @@ const Content = ({
     strippedHtml,
     strippedText,
 }: Props) => {
-    const {toggleQuote, expandedQuotes} = useContext(MessageQuoteContext)
+    const { toggleQuote, expandedQuotes } = useContext(MessageQuoteContext)
 
     const isMessageExpanded = useMemo(
         () => !!messageId && expandedQuotes.includes(messageId),
-        [messageId, expandedQuotes]
+        [messageId, expandedQuotes],
     )
 
     const trimmedHtml = html?.trim() || ''
@@ -57,7 +58,7 @@ const Content = ({
         () =>
             !!strippedContent &&
             strippedContent.replace(/\s+/g, '') !== content.replace(/\s+/g, ''),
-        [content, strippedContent]
+        [content, strippedContent],
     )
 
     const contentToRender =
@@ -75,7 +76,7 @@ const Content = ({
 
     const videosData = useMemo(
         () => extractGorgiasVideoDivFromHtmlContent(sanitizedHtml),
-        [sanitizedHtml]
+        [sanitizedHtml],
     )
 
     const displayedContent =
@@ -92,7 +93,7 @@ const Content = ({
             isHtml &&
             parseHtml(contentToRender).querySelectorAll('[style*="color"]')
                 .length,
-        [contentToRender, isHtml]
+        [contentToRender, isHtml],
     )
 
     if (!displayedContent && !isStripped) {
@@ -115,7 +116,7 @@ const Content = ({
                     [css['white-space']]: !isHtml,
                     light: forceDefaultTheme,
                 })}
-                dangerouslySetInnerHTML={{__html: displayedContent}}
+                dangerouslySetInnerHTML={{ __html: displayedContent }}
             />
             {isTruncated && (
                 <span className={css['disclaimer-truncated-message']}>

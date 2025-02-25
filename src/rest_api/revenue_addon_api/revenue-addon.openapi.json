@@ -11,7 +11,7 @@
                 "tags": ["ab-tests"],
                 "summary": "Create Ab Test",
                 "operationId": "create_ab_test",
-                "security": [{"HTTPBearer": []}],
+                "security": [{ "HTTPBearer": [] }],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -49,14 +49,14 @@
                 "tags": ["ab-tests"],
                 "summary": "Get Ab Tests",
                 "operationId": "get_ab_tests",
-                "security": [{"HTTPBearer": []}],
+                "security": [{ "HTTPBearer": [] }],
                 "parameters": [
                     {
                         "name": "channel_connection_id",
                         "in": "query",
                         "required": false,
                         "schema": {
-                            "anyOf": [{"type": "string"}, {"type": "null"}],
+                            "anyOf": [{ "type": "string" }, { "type": "null" }],
                             "description": "Channel connection ID to which AB tests belong",
                             "title": "Channel Connection Id"
                         },
@@ -68,8 +68,8 @@
                         "required": false,
                         "schema": {
                             "anyOf": [
-                                {"$ref": "#/components/schemas/ABTestState"},
-                                {"type": "null"}
+                                { "$ref": "#/components/schemas/ABTestState" },
+                                { "type": "null" }
                             ],
                             "description": "State of A/B test",
                             "title": "State"
@@ -110,13 +110,13 @@
                 "tags": ["ab-tests"],
                 "summary": "Get Ab Test",
                 "operationId": "get_ab_test",
-                "security": [{"HTTPBearer": []}],
+                "security": [{ "HTTPBearer": [] }],
                 "parameters": [
                     {
                         "name": "ab_test_id",
                         "in": "path",
                         "required": true,
-                        "schema": {"type": "string", "title": "Ab Test Id"}
+                        "schema": { "type": "string", "title": "Ab Test Id" }
                     }
                 ],
                 "responses": {
@@ -146,13 +146,13 @@
                 "tags": ["ab-tests"],
                 "summary": "Patch Ab Test",
                 "operationId": "patch_ab_test",
-                "security": [{"HTTPBearer": []}],
+                "security": [{ "HTTPBearer": [] }],
                 "parameters": [
                     {
                         "name": "ab_test_id",
                         "in": "path",
                         "required": true,
-                        "schema": {"type": "string", "title": "Ab Test Id"}
+                        "schema": { "type": "string", "title": "Ab Test Id" }
                     }
                 ],
                 "requestBody": {
@@ -200,7 +200,7 @@
                         "in": "header",
                         "required": false,
                         "schema": {
-                            "anyOf": [{"type": "string"}, {"type": "null"}],
+                            "anyOf": [{ "type": "string" }, { "type": "null" }],
                             "title": "Cf-Ipcountry"
                         }
                     }
@@ -250,14 +250,17 @@
                         "name": "installation_id",
                         "in": "path",
                         "required": true,
-                        "schema": {"type": "string", "title": "Installation Id"}
+                        "schema": {
+                            "type": "string",
+                            "title": "Installation Id"
+                        }
                     },
                     {
                         "name": "widget-app-id",
                         "in": "query",
                         "required": false,
                         "schema": {
-                            "anyOf": [{"type": "string"}, {"type": "null"}],
+                            "anyOf": [{ "type": "string" }, { "type": "null" }],
                             "title": "Widget-App-Id"
                         }
                     }
@@ -296,14 +299,17 @@
                         "name": "installation_id",
                         "in": "path",
                         "required": true,
-                        "schema": {"type": "string", "title": "Installation Id"}
+                        "schema": {
+                            "type": "string",
+                            "title": "Installation Id"
+                        }
                     },
                     {
                         "name": "widget-app-id",
                         "in": "query",
                         "required": false,
                         "schema": {
-                            "anyOf": [{"type": "string"}, {"type": "null"}],
+                            "anyOf": [{ "type": "string" }, { "type": "null" }],
                             "title": "Widget-App-Id"
                         }
                     }
@@ -342,14 +348,14 @@
                         "name": "shop_name",
                         "in": "path",
                         "required": true,
-                        "schema": {"type": "string", "title": "Shop Name"}
+                        "schema": { "type": "string", "title": "Shop Name" }
                     },
                     {
                         "name": "widget-app-id",
                         "in": "query",
                         "required": false,
                         "schema": {
-                            "anyOf": [{"type": "string"}, {"type": "null"}],
+                            "anyOf": [{ "type": "string" }, { "type": "null" }],
                             "title": "Widget-App-Id"
                         }
                     }
@@ -466,7 +472,7 @@
                         "name": "revenue_id",
                         "in": "path",
                         "required": true,
-                        "schema": {"type": "string", "title": "Revenue Id"}
+                        "schema": { "type": "string", "title": "Revenue Id" }
                     }
                 ],
                 "requestBody": {
@@ -509,7 +515,7 @@
                 "tags": ["settings"],
                 "summary": "Get Settings For Channel Connection",
                 "operationId": "get_settings",
-                "security": [{"HTTPBearer": []}],
+                "security": [{ "HTTPBearer": [] }],
                 "parameters": [
                     {
                         "name": "channel_connection_id",
@@ -525,7 +531,7 @@
                         "in": "query",
                         "required": false,
                         "schema": {
-                            "anyOf": [{"type": "string"}, {"type": "null"}],
+                            "anyOf": [{ "type": "string" }, { "type": "null" }],
                             "description": "Get settings by type",
                             "title": "Setting Type"
                         },
@@ -563,7 +569,7 @@
                 "tags": ["settings"],
                 "summary": "Update Setting For Channel Connection",
                 "operationId": "update_setting",
-                "security": [{"HTTPBearer": []}],
+                "security": [{ "HTTPBearer": [] }],
                 "parameters": [
                     {
                         "name": "channel_connection_id",
@@ -636,7 +642,7 @@
                 "tags": ["discount-offers"],
                 "summary": "Create Discount Offer",
                 "operationId": "create_discount_offer",
-                "security": [{"HTTPBearer": []}],
+                "security": [{ "HTTPBearer": [] }],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -674,14 +680,14 @@
                 "tags": ["discount-offers"],
                 "summary": "Get Discount Offers",
                 "operationId": "get_discount_offers",
-                "security": [{"HTTPBearer": []}],
+                "security": [{ "HTTPBearer": [] }],
                 "parameters": [
                     {
                         "name": "search",
                         "in": "query",
                         "required": false,
                         "schema": {
-                            "anyOf": [{"type": "string"}, {"type": "null"}],
+                            "anyOf": [{ "type": "string" }, { "type": "null" }],
                             "description": "Search by prefix",
                             "title": "Search"
                         },
@@ -732,7 +738,7 @@
                 "tags": ["discount-offers"],
                 "summary": "Get Discount Offer",
                 "operationId": "get_discount_offer",
-                "security": [{"HTTPBearer": []}],
+                "security": [{ "HTTPBearer": [] }],
                 "parameters": [
                     {
                         "name": "discount_offer_id",
@@ -771,7 +777,7 @@
                 "tags": ["discount-offers"],
                 "summary": "Patch Discount Offer",
                 "operationId": "patch_discount_offer",
-                "security": [{"HTTPBearer": []}],
+                "security": [{ "HTTPBearer": [] }],
                 "parameters": [
                     {
                         "name": "discount_offer_id",
@@ -820,7 +826,7 @@
                 "tags": ["discount-offers"],
                 "summary": "Delete Discount Offer",
                 "operationId": "delete_discount_offer",
-                "security": [{"HTTPBearer": []}],
+                "security": [{ "HTTPBearer": [] }],
                 "parameters": [
                     {
                         "name": "discount_offer_id",
@@ -833,7 +839,7 @@
                     }
                 ],
                 "responses": {
-                    "204": {"description": "Successful Response"},
+                    "204": { "description": "Successful Response" },
                     "422": {
                         "description": "Validation Error",
                         "content": {
@@ -983,7 +989,7 @@
                         }
                     }
                 },
-                "security": [{"HTTPBearer": []}]
+                "security": [{ "HTTPBearer": [] }]
             }
         },
         "/bundle/installations/{id}": {
@@ -991,13 +997,13 @@
                 "tags": ["installations"],
                 "summary": "Retrieve",
                 "operationId": "get_bundle_installation",
-                "security": [{"HTTPBearer": []}],
+                "security": [{ "HTTPBearer": [] }],
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
                         "required": true,
-                        "schema": {"type": "string", "title": "Id"}
+                        "schema": { "type": "string", "title": "Id" }
                     }
                 ],
                 "responses": {
@@ -1027,13 +1033,13 @@
                 "tags": ["installations"],
                 "summary": "Update",
                 "operationId": "update_bundle_installation",
-                "security": [{"HTTPBearer": []}],
+                "security": [{ "HTTPBearer": [] }],
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
                         "required": true,
-                        "schema": {"type": "string", "title": "Id"}
+                        "schema": { "type": "string", "title": "Id" }
                     }
                 ],
                 "requestBody": {
@@ -1240,14 +1246,14 @@
                         "name": "alias",
                         "in": "path",
                         "required": true,
-                        "schema": {"type": "string", "title": "Alias"}
+                        "schema": { "type": "string", "title": "Alias" }
                     },
                     {
                         "name": "referrer",
                         "in": "header",
                         "required": false,
                         "schema": {
-                            "anyOf": [{"type": "string"}, {"type": "null"}],
+                            "anyOf": [{ "type": "string" }, { "type": "null" }],
                             "title": "Referrer"
                         }
                     },
@@ -1265,7 +1271,7 @@
                 "responses": {
                     "302": {
                         "description": "Successful Response",
-                        "content": {"application/json": {"schema": {}}}
+                        "content": { "application/json": { "schema": {} } }
                     },
                     "422": {
                         "description": "Validation Error",
@@ -1297,7 +1303,7 @@
                         }
                     }
                 },
-                "security": [{"HTTPBearer": []}]
+                "security": [{ "HTTPBearer": [] }]
             },
             "post": {
                 "tags": ["custom_domains"],
@@ -1335,14 +1341,16 @@
                         }
                     }
                 },
-                "security": [{"HTTPBearer": []}]
+                "security": [{ "HTTPBearer": [] }]
             },
             "delete": {
                 "tags": ["custom_domains"],
                 "summary": "Delete",
                 "operationId": "delete_custom_domain",
-                "responses": {"204": {"description": "Successful Response"}},
-                "security": [{"HTTPBearer": []}]
+                "responses": {
+                    "204": { "description": "Successful Response" }
+                },
+                "security": [{ "HTTPBearer": [] }]
             }
         },
         "/click-tracking/custom-domains/check": {
@@ -1362,7 +1370,7 @@
                         }
                     }
                 },
-                "security": [{"HTTPBearer": []}]
+                "security": [{ "HTTPBearer": [] }]
             }
         },
         "/custom-domains": {
@@ -1382,7 +1390,7 @@
                         }
                     }
                 },
-                "security": [{"HTTPBearer": []}]
+                "security": [{ "HTTPBearer": [] }]
             },
             "post": {
                 "tags": ["custom_domains"],
@@ -1420,14 +1428,16 @@
                         }
                     }
                 },
-                "security": [{"HTTPBearer": []}]
+                "security": [{ "HTTPBearer": [] }]
             },
             "delete": {
                 "tags": ["custom_domains"],
                 "summary": "Delete",
                 "operationId": "delete_custom_domains_delete",
-                "responses": {"204": {"description": "Successful Response"}},
-                "security": [{"HTTPBearer": []}]
+                "responses": {
+                    "204": { "description": "Successful Response" }
+                },
+                "security": [{ "HTTPBearer": [] }]
             }
         },
         "/custom-domains/check": {
@@ -1447,7 +1457,7 @@
                         }
                     }
                 },
-                "security": [{"HTTPBearer": []}]
+                "security": [{ "HTTPBearer": [] }]
             }
         },
         "/campaigns": {
@@ -1455,7 +1465,7 @@
                 "tags": ["campaigns"],
                 "summary": "Create Campaign",
                 "operationId": "create_campaign",
-                "security": [{"HTTPBearer": []}],
+                "security": [{ "HTTPBearer": [] }],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -1493,14 +1503,14 @@
                 "tags": ["campaigns"],
                 "summary": "Get Campaigns",
                 "operationId": "get_campaigns",
-                "security": [{"HTTPBearer": []}],
+                "security": [{ "HTTPBearer": [] }],
                 "parameters": [
                     {
                         "name": "channel_connection_id",
                         "in": "query",
                         "required": false,
                         "schema": {
-                            "anyOf": [{"type": "string"}, {"type": "null"}],
+                            "anyOf": [{ "type": "string" }, { "type": "null" }],
                             "description": "Channel connection ID to which campaigns belong",
                             "title": "Channel Connection Id"
                         },
@@ -1512,8 +1522,11 @@
                         "required": false,
                         "schema": {
                             "anyOf": [
-                                {"type": "array", "items": {"type": "string"}},
-                                {"type": "null"}
+                                {
+                                    "type": "array",
+                                    "items": { "type": "string" }
+                                },
+                                { "type": "null" }
                             ],
                             "description": "Channel connection external ID",
                             "title": "Channel Connection External Ids"
@@ -1572,7 +1585,7 @@
                         "in": "header",
                         "required": false,
                         "schema": {
-                            "anyOf": [{"type": "string"}, {"type": "null"}],
+                            "anyOf": [{ "type": "string" }, { "type": "null" }],
                             "title": "Data-Token"
                         }
                     }
@@ -1610,13 +1623,13 @@
                 "tags": ["campaigns"],
                 "summary": "Get Campaign",
                 "operationId": "get_campaign",
-                "security": [{"HTTPBearer": []}],
+                "security": [{ "HTTPBearer": [] }],
                 "parameters": [
                     {
                         "name": "campaign_id",
                         "in": "path",
                         "required": true,
-                        "schema": {"type": "string", "title": "Campaign Id"}
+                        "schema": { "type": "string", "title": "Campaign Id" }
                     }
                 ],
                 "responses": {
@@ -1646,13 +1659,13 @@
                 "tags": ["campaigns"],
                 "summary": "Patch Campaign",
                 "operationId": "patch_campaign",
-                "security": [{"HTTPBearer": []}],
+                "security": [{ "HTTPBearer": [] }],
                 "parameters": [
                     {
                         "name": "campaign_id",
                         "in": "path",
                         "required": true,
-                        "schema": {"type": "string", "title": "Campaign Id"}
+                        "schema": { "type": "string", "title": "Campaign Id" }
                     }
                 ],
                 "requestBody": {
@@ -1692,17 +1705,17 @@
                 "tags": ["campaigns"],
                 "summary": "Delete Campaign",
                 "operationId": "delete_campaign",
-                "security": [{"HTTPBearer": []}],
+                "security": [{ "HTTPBearer": [] }],
                 "parameters": [
                     {
                         "name": "campaign_id",
                         "in": "path",
                         "required": true,
-                        "schema": {"type": "string", "title": "Campaign Id"}
+                        "schema": { "type": "string", "title": "Campaign Id" }
                     }
                 ],
                 "responses": {
-                    "204": {"description": "Successful Response"},
+                    "204": { "description": "Successful Response" },
                     "422": {
                         "description": "Validation Error",
                         "content": {
@@ -1721,13 +1734,13 @@
                 "tags": ["campaigns"],
                 "summary": "Create Ab Group",
                 "operationId": "create_ab_group",
-                "security": [{"HTTPBearer": []}],
+                "security": [{ "HTTPBearer": [] }],
                 "parameters": [
                     {
                         "name": "campaign_id",
                         "in": "path",
                         "required": true,
-                        "schema": {"type": "string", "title": "Campaign Id"}
+                        "schema": { "type": "string", "title": "Campaign Id" }
                     }
                 ],
                 "responses": {
@@ -1759,13 +1772,13 @@
                 "tags": ["campaigns"],
                 "summary": "Start Ab Group",
                 "operationId": "start_ab_group",
-                "security": [{"HTTPBearer": []}],
+                "security": [{ "HTTPBearer": [] }],
                 "parameters": [
                     {
                         "name": "campaign_id",
                         "in": "path",
                         "required": true,
-                        "schema": {"type": "string", "title": "Campaign Id"}
+                        "schema": { "type": "string", "title": "Campaign Id" }
                     }
                 ],
                 "responses": {
@@ -1797,13 +1810,13 @@
                 "tags": ["campaigns"],
                 "summary": "Pause Ab Group",
                 "operationId": "pause_ab_group",
-                "security": [{"HTTPBearer": []}],
+                "security": [{ "HTTPBearer": [] }],
                 "parameters": [
                     {
                         "name": "campaign_id",
                         "in": "path",
                         "required": true,
-                        "schema": {"type": "string", "title": "Campaign Id"}
+                        "schema": { "type": "string", "title": "Campaign Id" }
                     }
                 ],
                 "responses": {
@@ -1835,13 +1848,13 @@
                 "tags": ["campaigns"],
                 "summary": "Stop Ab Group",
                 "operationId": "stop_ab_group",
-                "security": [{"HTTPBearer": []}],
+                "security": [{ "HTTPBearer": [] }],
                 "parameters": [
                     {
                         "name": "campaign_id",
                         "in": "path",
                         "required": true,
-                        "schema": {"type": "string", "title": "Campaign Id"}
+                        "schema": { "type": "string", "title": "Campaign Id" }
                     }
                 ],
                 "requestBody": {
@@ -1915,7 +1928,7 @@
                         }
                     }
                 },
-                "security": [{"HTTPBearer": []}]
+                "security": [{ "HTTPBearer": [] }]
             }
         },
         "/channel-connections": {
@@ -1923,7 +1936,7 @@
                 "tags": ["channel-connections"],
                 "summary": "Create Channel Connection",
                 "operationId": "create_channel_connection",
-                "security": [{"HTTPBearer": []}],
+                "security": [{ "HTTPBearer": [] }],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -1961,14 +1974,17 @@
                 "tags": ["channel-connections"],
                 "summary": "Get Channel Connections",
                 "operationId": "get_channel_connections",
-                "security": [{"HTTPBearer": []}],
+                "security": [{ "HTTPBearer": [] }],
                 "parameters": [
                     {
                         "name": "store_integration_id",
                         "in": "query",
                         "required": false,
                         "schema": {
-                            "anyOf": [{"type": "integer"}, {"type": "null"}],
+                            "anyOf": [
+                                { "type": "integer" },
+                                { "type": "null" }
+                            ],
                             "description": "Gorgias integration ID for the store",
                             "title": "Store Integration Id"
                         },
@@ -1979,7 +1995,7 @@
                         "in": "query",
                         "required": false,
                         "schema": {
-                            "anyOf": [{"type": "string"}, {"type": "null"}],
+                            "anyOf": [{ "type": "string" }, { "type": "null" }],
                             "description": "External ID connected to the Channel connection, usually dependent on the channel type",
                             "title": "External Id"
                         },
@@ -1991,8 +2007,8 @@
                         "required": false,
                         "schema": {
                             "anyOf": [
-                                {"$ref": "#/components/schemas/ChannelType"},
-                                {"type": "null"}
+                                { "$ref": "#/components/schemas/ChannelType" },
+                                { "type": "null" }
                             ],
                             "description": "Channel type, e.g. widget",
                             "title": "Channel"
@@ -2033,7 +2049,7 @@
                 "tags": ["channel-connections"],
                 "summary": "Get Channel Connection",
                 "operationId": "get_channel_connection",
-                "security": [{"HTTPBearer": []}],
+                "security": [{ "HTTPBearer": [] }],
                 "parameters": [
                     {
                         "name": "channel_connection_id",
@@ -2072,7 +2088,7 @@
                 "tags": ["channel-connections"],
                 "summary": "Patch Channel Connection",
                 "operationId": "patch_channel_connection",
-                "security": [{"HTTPBearer": []}],
+                "security": [{ "HTTPBearer": [] }],
                 "parameters": [
                     {
                         "name": "channel_connection_id",
@@ -2121,7 +2137,7 @@
                 "tags": ["channel-connections"],
                 "summary": "Delete Channel Connection",
                 "operationId": "delete_channel_connection",
-                "security": [{"HTTPBearer": []}],
+                "security": [{ "HTTPBearer": [] }],
                 "parameters": [
                     {
                         "name": "channel_connection_id",
@@ -2134,7 +2150,7 @@
                     }
                 ],
                 "responses": {
-                    "204": {"description": "Successful Response"},
+                    "204": { "description": "Successful Response" },
                     "422": {
                         "description": "Validation Error",
                         "content": {
@@ -2153,7 +2169,7 @@
                 "tags": ["shoppers"],
                 "summary": "Lookup",
                 "operationId": "shopper_lookup",
-                "security": [{"HTTPBearer": []}],
+                "security": [{ "HTTPBearer": [] }],
                 "parameters": [
                     {
                         "name": "store_integration_id",
@@ -2207,14 +2223,17 @@
                 "tags": ["subscriptions"],
                 "summary": "Get Status And Usage",
                 "operationId": "get_status_and_usage",
-                "security": [{"HTTPBearer": []}],
+                "security": [{ "HTTPBearer": [] }],
                 "parameters": [
                     {
                         "name": "shop_integration_id",
                         "in": "query",
                         "required": false,
                         "schema": {
-                            "anyOf": [{"type": "integer"}, {"type": "null"}],
+                            "anyOf": [
+                                { "type": "integer" },
+                                { "type": "null" }
+                            ],
                             "title": "Shop Integration Id"
                         }
                     }
@@ -2280,7 +2299,7 @@
                         }
                     }
                 },
-                "security": [{"HTTPBearer": []}]
+                "security": [{ "HTTPBearer": [] }]
             }
         },
         "/billing/subscriptions/account-status/all": {
@@ -2294,7 +2313,9 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "additionalProperties": {"type": "string"},
+                                    "additionalProperties": {
+                                        "type": "string"
+                                    },
                                     "type": "object",
                                     "title": "Response Get Subscription Statuses"
                                 }
@@ -2302,7 +2323,7 @@
                         }
                     }
                 },
-                "security": [{"APIKeyHeader": []}]
+                "security": [{ "APIKeyHeader": [] }]
             }
         },
         "/health-check": {
@@ -2316,7 +2337,9 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "additionalProperties": {"type": "string"},
+                                    "additionalProperties": {
+                                        "type": "string"
+                                    },
                                     "type": "object",
                                     "title": "Response Health Check Health Check Get"
                                 }
@@ -2337,7 +2360,9 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "additionalProperties": {"type": "string"},
+                                    "additionalProperties": {
+                                        "type": "string"
+                                    },
                                     "type": "object",
                                     "title": "Response Health Check  Get"
                                 }
@@ -2354,37 +2379,37 @@
                 "properties": {
                     "winner_variant_id": {
                         "anyOf": [
-                            {"type": "string", "maxLength": 36},
-                            {"type": "null"}
+                            { "type": "string", "maxLength": 36 },
+                            { "type": "null" }
                         ],
                         "title": "Winner Variant Id"
                     },
-                    "status": {"$ref": "#/components/schemas/ABGroupStatus"},
+                    "status": { "$ref": "#/components/schemas/ABGroupStatus" },
                     "started_datetime": {
                         "anyOf": [
-                            {"type": "string", "format": "date-time"},
-                            {"type": "null"}
+                            { "type": "string", "format": "date-time" },
+                            { "type": "null" }
                         ],
                         "title": "Started Datetime"
                     },
                     "stopped_datetime": {
                         "anyOf": [
-                            {"type": "string", "format": "date-time"},
-                            {"type": "null"}
+                            { "type": "string", "format": "date-time" },
+                            { "type": "null" }
                         ],
                         "title": "Stopped Datetime"
                     },
                     "campaign_id": {
                         "anyOf": [
-                            {"type": "string", "maxLength": 36},
-                            {"type": "null"}
+                            { "type": "string", "maxLength": 36 },
+                            { "type": "null" }
                         ],
                         "title": "Campaign Id"
                     },
                     "generated_campaign_id": {
                         "anyOf": [
-                            {"type": "string", "maxLength": 36},
-                            {"type": "null"}
+                            { "type": "string", "maxLength": 36 },
+                            { "type": "null" }
                         ],
                         "title": "Generated Campaign Id"
                     }
@@ -2402,8 +2427,8 @@
                 "properties": {
                     "winner_variant_id": {
                         "anyOf": [
-                            {"type": "string", "maxLength": 36},
-                            {"type": "null"}
+                            { "type": "string", "maxLength": 36 },
+                            { "type": "null" }
                         ],
                         "title": "Winner Variant Id"
                     }
@@ -2423,7 +2448,7 @@
                             {
                                 "$ref": "#/components/schemas/ABTestConfigurationSchema"
                             },
-                            {"type": "null"}
+                            { "type": "null" }
                         ]
                     }
                 },
@@ -2433,9 +2458,9 @@
             },
             "ABTestConfigurationSchema": {
                 "properties": {
-                    "ratio": {"type": "number", "title": "Ratio"},
+                    "ratio": { "type": "number", "title": "Ratio" },
                     "campaigns": {
-                        "items": {"type": "string"},
+                        "items": { "type": "string" },
                         "type": "array",
                         "title": "Campaigns"
                     }
@@ -2451,7 +2476,7 @@
                         "title": "Channel Connection Id"
                     },
                     "store_integration_id": {
-                        "anyOf": [{"type": "integer"}, {"type": "null"}],
+                        "anyOf": [{ "type": "integer" }, { "type": "null" }],
                         "title": "Store Integration Id"
                     },
                     "ratio": {
@@ -2478,7 +2503,7 @@
                                 "enum": ["inactive"],
                                 "const": "inactive"
                             },
-                            {"type": "null"}
+                            { "type": "null" }
                         ],
                         "title": "State"
                     },
@@ -2490,7 +2515,7 @@
                                 "minLength": 1,
                                 "format": "uri"
                             },
-                            {"type": "null"}
+                            { "type": "null" }
                         ],
                         "title": "Report Link"
                     }
@@ -2500,9 +2525,9 @@
             },
             "ABTestResponseSchema": {
                 "properties": {
-                    "id": {"type": "string", "title": "Id"},
-                    "ratio": {"type": "number", "title": "Ratio"},
-                    "state": {"$ref": "#/components/schemas/ABTestState"},
+                    "id": { "type": "string", "title": "Id" },
+                    "ratio": { "type": "number", "title": "Ratio" },
+                    "state": { "$ref": "#/components/schemas/ABTestState" },
                     "start_datetime": {
                         "type": "string",
                         "format": "date-time",
@@ -2510,19 +2535,19 @@
                     },
                     "end_datetime": {
                         "anyOf": [
-                            {"type": "string", "format": "date-time"},
-                            {"type": "null"}
+                            { "type": "string", "format": "date-time" },
+                            { "type": "null" }
                         ],
                         "title": "End Datetime"
                     },
                     "report_link": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
                         "title": "Report Link"
                     },
                     "campaigns": {
                         "anyOf": [
-                            {"items": {"type": "string"}, "type": "array"},
-                            {"type": "null"}
+                            { "items": { "type": "string" }, "type": "array" },
+                            { "type": "null" }
                         ],
                         "title": "Campaigns"
                     }
@@ -2553,11 +2578,11 @@
                     },
                     "value": {
                         "anyOf": [
-                            {"type": "integer"},
-                            {"type": "boolean"},
-                            {"type": "string"},
-                            {"items": {}, "type": "array"},
-                            {"type": "object"}
+                            { "type": "integer" },
+                            { "type": "boolean" },
+                            { "type": "string" },
+                            { "items": {}, "type": "array" },
+                            { "type": "object" }
                         ],
                         "title": "Value"
                     }
@@ -2590,9 +2615,9 @@
                         "const": "application/discountOffer",
                         "title": "Contenttype"
                     },
-                    "name": {"type": "string", "title": "Name"},
+                    "name": { "type": "string", "title": "Name" },
                     "url": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
                         "title": "Url"
                     },
                     "extra": {
@@ -2600,7 +2625,7 @@
                             {
                                 "$ref": "#/components/schemas/CampaignAttachmentDiscountOfferExtraSchema"
                             },
-                            {"type": "null"}
+                            { "type": "null" }
                         ]
                     }
                 },
@@ -2610,25 +2635,25 @@
             },
             "CampaignAttachmentProductExtraSchema": {
                 "properties": {
-                    "product_id": {"type": "integer", "title": "Product Id"},
+                    "product_id": { "type": "integer", "title": "Product Id" },
                     "price": {
-                        "anyOf": [{"type": "number"}, {"type": "null"}],
+                        "anyOf": [{ "type": "number" }, { "type": "null" }],
                         "title": "Price"
                     },
                     "compare_at_price": {
-                        "anyOf": [{"type": "number"}, {"type": "null"}],
+                        "anyOf": [{ "type": "number" }, { "type": "null" }],
                         "title": "Compare At Price"
                     },
                     "currency": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
                         "title": "Currency"
                     },
                     "product_link": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
                         "title": "Product Link"
                     },
                     "variant_name": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
                         "title": "Variant Name"
                     },
                     "position": {
@@ -2636,7 +2661,7 @@
                             {
                                 "$ref": "#/components/schemas/CampaignAttachmentProductPositionSchema"
                             },
-                            {"type": "null"}
+                            { "type": "null" }
                         ]
                     }
                 },
@@ -2646,11 +2671,11 @@
             },
             "CampaignAttachmentProductPositionSchema": {
                 "properties": {
-                    "x": {"type": "number", "title": "X"},
-                    "y": {"type": "number", "title": "Y"},
-                    "offsetX": {"type": "number", "title": "Offsetx"},
-                    "offsetY": {"type": "number", "title": "Offsety"},
-                    "size": {"type": "number", "title": "Size"}
+                    "x": { "type": "number", "title": "X" },
+                    "y": { "type": "number", "title": "Y" },
+                    "offsetX": { "type": "number", "title": "Offsetx" },
+                    "offsetY": { "type": "number", "title": "Offsety" },
+                    "size": { "type": "number", "title": "Size" }
                 },
                 "type": "object",
                 "required": ["x", "y", "offsetX", "offsetY", "size"],
@@ -2658,7 +2683,7 @@
             },
             "CampaignAttachmentProductRecommendationExtraSchema": {
                 "properties": {
-                    "id": {"type": "string", "title": "Id"},
+                    "id": { "type": "string", "title": "Id" },
                     "scenario": {
                         "$ref": "#/components/schemas/ProductRecommendationScenarioType"
                     }
@@ -2675,7 +2700,7 @@
                         "const": "application/productRecommendation",
                         "title": "Contenttype"
                     },
-                    "name": {"type": "string", "title": "Name"},
+                    "name": { "type": "string", "title": "Name" },
                     "extra": {
                         "$ref": "#/components/schemas/CampaignAttachmentProductRecommendationExtraSchema"
                     }
@@ -2692,13 +2717,13 @@
                         "const": "application/productCard",
                         "title": "Contenttype"
                     },
-                    "name": {"type": "string", "title": "Name"},
+                    "name": { "type": "string", "title": "Name" },
                     "url": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
                         "title": "Url"
                     },
                     "size": {
-                        "anyOf": [{"type": "integer"}, {"type": "null"}],
+                        "anyOf": [{ "type": "integer" }, { "type": "null" }],
                         "title": "Size"
                     },
                     "extra": {
@@ -2706,7 +2731,7 @@
                             {
                                 "$ref": "#/components/schemas/CampaignAttachmentProductExtraSchema"
                             },
-                            {"type": "null"}
+                            { "type": "null" }
                         ]
                     }
                 },
@@ -2728,7 +2753,7 @@
                             {
                                 "$ref": "#/components/schemas/VisitorFormOnSuccessContentSchema"
                             },
-                            {"type": "null"}
+                            { "type": "null" }
                         ]
                     },
                     "targets": {
@@ -2751,13 +2776,13 @@
                         "const": "application/visitorForm",
                         "title": "Contenttype"
                     },
-                    "name": {"type": "string", "title": "Name"},
+                    "name": { "type": "string", "title": "Name" },
                     "extra": {
                         "anyOf": [
                             {
                                 "$ref": "#/components/schemas/CampaignAttachmentVisitorFormExtraSchema"
                             },
-                            {"type": "null"}
+                            { "type": "null" }
                         ]
                     }
                 },
@@ -2774,8 +2799,8 @@
                     },
                     "title": {
                         "anyOf": [
-                            {"type": "string", "maxLength": 256},
-                            {"type": "null"}
+                            { "type": "string", "maxLength": 256 },
+                            { "type": "null" }
                         ],
                         "title": "Title"
                     },
@@ -2786,8 +2811,8 @@
                     },
                     "message": {
                         "anyOf": [
-                            {"type": "string", "maxLength": 512},
-                            {"type": "null"}
+                            { "type": "string", "maxLength": 512 },
+                            { "type": "null" }
                         ],
                         "title": "Message"
                     },
@@ -2799,7 +2824,7 @@
                                 },
                                 "type": "array"
                             },
-                            {"type": "null"}
+                            { "type": "null" }
                         ],
                         "title": "Triggers"
                     }
@@ -2811,7 +2836,7 @@
             "CampaignCopySuggestionResponseSchema": {
                 "properties": {
                     "suggestions": {
-                        "items": {"type": "string"},
+                        "items": { "type": "string" },
                         "type": "array",
                         "title": "Suggestions"
                     }
@@ -2829,8 +2854,8 @@
                     },
                     "description": {
                         "anyOf": [
-                            {"type": "string", "maxLength": 1024},
-                            {"type": "null"}
+                            { "type": "string", "maxLength": 1024 },
+                            { "type": "null" }
                         ],
                         "title": "Description"
                     },
@@ -2841,16 +2866,16 @@
                     },
                     "message_html": {
                         "anyOf": [
-                            {"type": "string", "maxLength": 4096},
-                            {"type": "null"}
+                            { "type": "string", "maxLength": 4096 },
+                            { "type": "null" }
                         ],
                         "title": "Message Html"
                     },
                     "language": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
                         "title": "Language"
                     },
-                    "status": {"$ref": "#/components/schemas/CampaignStatus"},
+                    "status": { "$ref": "#/components/schemas/CampaignStatus" },
                     "trigger_rule": {
                         "type": "string",
                         "maxLength": 4096,
@@ -2887,14 +2912,16 @@
                                 },
                                 "type": "array"
                             },
-                            {"type": "null"}
+                            { "type": "null" }
                         ],
                         "title": "Attachments"
                     },
                     "meta": {
                         "anyOf": [
-                            {"$ref": "#/components/schemas/CampaignMetaSchema"},
-                            {"type": "null"}
+                            {
+                                "$ref": "#/components/schemas/CampaignMetaSchema"
+                            },
+                            { "type": "null" }
                         ]
                     },
                     "triggers": {
@@ -2913,17 +2940,17 @@
                             {
                                 "$ref": "#/components/schemas/CampaignPublishType"
                             },
-                            {"type": "null"}
+                            { "type": "null" }
                         ]
                     },
                     "external_tag_id": {
-                        "anyOf": [{"type": "integer"}, {"type": "null"}],
+                        "anyOf": [{ "type": "integer" }, { "type": "null" }],
                         "title": "External Tag Id"
                     },
                     "template_id": {
                         "anyOf": [
-                            {"type": "string", "maxLength": 256},
-                            {"type": "null"}
+                            { "type": "string", "maxLength": 256 },
+                            { "type": "null" }
                         ],
                         "title": "Template Id"
                     },
@@ -2932,7 +2959,7 @@
                             {
                                 "$ref": "#/components/schemas/ScheduleRequestSchema"
                             },
-                            {"type": "null"}
+                            { "type": "null" }
                         ]
                     },
                     "variants": {
@@ -2958,23 +2985,23 @@
             "CampaignMetaSchema": {
                 "properties": {
                     "noReply": {
-                        "anyOf": [{"type": "boolean"}, {"type": "null"}],
+                        "anyOf": [{ "type": "boolean" }, { "type": "null" }],
                         "title": "Noreply"
                     },
                     "delay": {
-                        "anyOf": [{"type": "integer"}, {"type": "null"}],
+                        "anyOf": [{ "type": "integer" }, { "type": "null" }],
                         "title": "Delay"
                     },
                     "agentEmail": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
                         "title": "Agentemail"
                     },
                     "agentName": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
                         "title": "Agentname"
                     },
                     "agentAvatarUrl": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
                         "title": "Agentavatarurl"
                     },
                     "minimumTimeBetweenCampaigns": {
@@ -2982,7 +3009,7 @@
                             {
                                 "$ref": "#/components/schemas/MinimumTimeBetweenCampaigns"
                             },
-                            {"type": "null"}
+                            { "type": "null" }
                         ]
                     },
                     "maxCampaignDisplaysInSession": {
@@ -2990,11 +3017,11 @@
                             {
                                 "$ref": "#/components/schemas/MaxCampaignDisplaysInSession"
                             },
-                            {"type": "null"}
+                            { "type": "null" }
                         ]
                     },
                     "copySuggestion": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
                         "title": "Copysuggestion"
                     }
                 },
@@ -3005,40 +3032,40 @@
                 "properties": {
                     "name": {
                         "anyOf": [
-                            {"type": "string", "maxLength": 255},
-                            {"type": "null"}
+                            { "type": "string", "maxLength": 255 },
+                            { "type": "null" }
                         ],
                         "title": "Name"
                     },
                     "description": {
                         "anyOf": [
-                            {"type": "string", "maxLength": 1024},
-                            {"type": "null"}
+                            { "type": "string", "maxLength": 1024 },
+                            { "type": "null" }
                         ],
                         "title": "Description"
                     },
                     "message_text": {
                         "anyOf": [
-                            {"type": "string", "maxLength": 2048},
-                            {"type": "null"}
+                            { "type": "string", "maxLength": 2048 },
+                            { "type": "null" }
                         ],
                         "title": "Message Text"
                     },
                     "message_html": {
                         "anyOf": [
-                            {"type": "string", "maxLength": 4096},
-                            {"type": "null"}
+                            { "type": "string", "maxLength": 4096 },
+                            { "type": "null" }
                         ],
                         "title": "Message Html"
                     },
                     "language": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
                         "title": "Language"
                     },
                     "status": {
                         "anyOf": [
-                            {"$ref": "#/components/schemas/CampaignStatus"},
-                            {"type": "null"}
+                            { "$ref": "#/components/schemas/CampaignStatus" },
+                            { "type": "null" }
                         ]
                     },
                     "trigger_rule": {
@@ -3048,7 +3075,7 @@
                                 "maxLength": 4096,
                                 "minLength": 1
                             },
-                            {"type": "null"}
+                            { "type": "null" }
                         ],
                         "title": "Trigger Rule"
                     },
@@ -3082,14 +3109,16 @@
                                 },
                                 "type": "array"
                             },
-                            {"type": "null"}
+                            { "type": "null" }
                         ],
                         "title": "Attachments"
                     },
                     "meta": {
                         "anyOf": [
-                            {"$ref": "#/components/schemas/CampaignMetaSchema"},
-                            {"type": "null"}
+                            {
+                                "$ref": "#/components/schemas/CampaignMetaSchema"
+                            },
+                            { "type": "null" }
                         ]
                     },
                     "publish_mode": {
@@ -3097,7 +3126,7 @@
                             {
                                 "$ref": "#/components/schemas/CampaignPublishType"
                             },
-                            {"type": "null"}
+                            { "type": "null" }
                         ]
                     },
                     "triggers": {
@@ -3108,7 +3137,7 @@
                                 },
                                 "type": "array"
                             },
-                            {"type": "null"}
+                            { "type": "null" }
                         ],
                         "title": "Triggers"
                     },
@@ -3117,7 +3146,7 @@
                             {
                                 "$ref": "#/components/schemas/ScheduleRequestSchema"
                             },
-                            {"type": "null"}
+                            { "type": "null" }
                         ]
                     },
                     "variants": {
@@ -3129,18 +3158,18 @@
                                 "type": "array",
                                 "maxItems": 2
                             },
-                            {"type": "null"}
+                            { "type": "null" }
                         ],
                         "title": "Variants"
                     },
                     "external_tag_id": {
-                        "anyOf": [{"type": "integer"}, {"type": "null"}],
+                        "anyOf": [{ "type": "integer" }, { "type": "null" }],
                         "title": "External Tag Id"
                     },
                     "template_id": {
                         "anyOf": [
-                            {"type": "string", "maxLength": 256},
-                            {"type": "null"}
+                            { "type": "string", "maxLength": 256 },
+                            { "type": "null" }
                         ],
                         "title": "Template Id"
                     }
@@ -3163,8 +3192,8 @@
                     },
                     "description": {
                         "anyOf": [
-                            {"type": "string", "maxLength": 1024},
-                            {"type": "null"}
+                            { "type": "string", "maxLength": 1024 },
+                            { "type": "null" }
                         ],
                         "title": "Description"
                     },
@@ -3175,16 +3204,16 @@
                     },
                     "message_html": {
                         "anyOf": [
-                            {"type": "string", "maxLength": 4096},
-                            {"type": "null"}
+                            { "type": "string", "maxLength": 4096 },
+                            { "type": "null" }
                         ],
                         "title": "Message Html"
                     },
                     "language": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
                         "title": "Language"
                     },
-                    "status": {"$ref": "#/components/schemas/CampaignStatus"},
+                    "status": { "$ref": "#/components/schemas/CampaignStatus" },
                     "trigger_rule": {
                         "type": "string",
                         "maxLength": 4096,
@@ -3221,15 +3250,15 @@
                                 },
                                 "type": "array"
                             },
-                            {"type": "null"}
+                            { "type": "null" }
                         ],
                         "title": "Attachments"
                     },
                     "meta": {
-                        "anyOf": [{"type": "object"}, {"type": "null"}],
+                        "anyOf": [{ "type": "object" }, { "type": "null" }],
                         "title": "Meta"
                     },
-                    "id": {"type": "string", "title": "Id"},
+                    "id": { "type": "string", "title": "Id" },
                     "triggers": {
                         "items": {
                             "$ref": "#/components/schemas/CampaignTriggerSchema"
@@ -3242,7 +3271,7 @@
                             {
                                 "$ref": "#/components/schemas/ABGroupResponseSchema"
                             },
-                            {"type": "null"}
+                            { "type": "null" }
                         ]
                     },
                     "variants": {
@@ -3257,10 +3286,10 @@
                             {
                                 "$ref": "#/components/schemas/ScheduleResponseSchema"
                             },
-                            {"type": "null"}
+                            { "type": "null" }
                         ]
                     },
-                    "is_light": {"type": "boolean", "title": "Is Light"},
+                    "is_light": { "type": "boolean", "title": "Is Light" },
                     "created_datetime": {
                         "type": "string",
                         "format": "date-time",
@@ -3273,15 +3302,15 @@
                     },
                     "deleted_datetime": {
                         "anyOf": [
-                            {"type": "string", "format": "date-time"},
-                            {"type": "null"}
+                            { "type": "string", "format": "date-time" },
+                            { "type": "null" }
                         ],
                         "title": "Deleted Datetime"
                     },
                     "template_id": {
                         "anyOf": [
-                            {"type": "string", "maxLength": 256},
-                            {"type": "null"}
+                            { "type": "string", "maxLength": 256 },
+                            { "type": "null" }
                         ],
                         "title": "Template Id"
                     }
@@ -3303,9 +3332,9 @@
             },
             "CampaignSchema": {
                 "properties": {
-                    "id": {"type": "string", "title": "Id"},
+                    "id": { "type": "string", "title": "Id" },
                     "rules": {
-                        "items": {"$ref": "#/components/schemas/RuleSchema"},
+                        "items": { "$ref": "#/components/schemas/RuleSchema" },
                         "type": "array",
                         "title": "Rules"
                     }
@@ -3349,15 +3378,15 @@
                     },
                     "value": {
                         "anyOf": [
-                            {"type": "integer"},
-                            {"type": "boolean"},
-                            {"type": "string"},
-                            {"items": {}, "type": "array"},
-                            {"type": "object"}
+                            { "type": "integer" },
+                            { "type": "boolean" },
+                            { "type": "string" },
+                            { "items": {}, "type": "array" },
+                            { "type": "object" }
                         ],
                         "title": "Value"
                     },
-                    "id": {"type": "string", "title": "Id"}
+                    "id": { "type": "string", "title": "Id" }
                 },
                 "type": "object",
                 "required": ["type", "operator", "value", "id"],
@@ -3396,8 +3425,8 @@
                     },
                     "message_html": {
                         "anyOf": [
-                            {"type": "string", "maxLength": 4096},
-                            {"type": "null"}
+                            { "type": "string", "maxLength": 4096 },
+                            { "type": "null" }
                         ],
                         "title": "Message Html"
                     },
@@ -3431,11 +3460,11 @@
                                 },
                                 "type": "array"
                             },
-                            {"type": "null"}
+                            { "type": "null" }
                         ],
                         "title": "Attachments"
                     },
-                    "id": {"type": "string", "title": "Id"}
+                    "id": { "type": "string", "title": "Id" }
                 },
                 "type": "object",
                 "required": ["message_text", "id"],
@@ -3450,8 +3479,8 @@
                     },
                     "message_html": {
                         "anyOf": [
-                            {"type": "string", "maxLength": 4096},
-                            {"type": "null"}
+                            { "type": "string", "maxLength": 4096 },
+                            { "type": "null" }
                         ],
                         "title": "Message Html"
                     },
@@ -3485,22 +3514,22 @@
                                 },
                                 "type": "array"
                             },
-                            {"type": "null"}
+                            { "type": "null" }
                         ],
                         "title": "Attachments"
                     },
-                    "id": {"type": "string", "title": "Id"},
+                    "id": { "type": "string", "title": "Id" },
                     "started_datetime": {
                         "anyOf": [
-                            {"type": "string", "format": "date-time"},
-                            {"type": "null"}
+                            { "type": "string", "format": "date-time" },
+                            { "type": "null" }
                         ],
                         "title": "Started Datetime"
                     },
                     "stopped_datetime": {
                         "anyOf": [
-                            {"type": "string", "format": "date-time"},
-                            {"type": "null"}
+                            { "type": "string", "format": "date-time" },
+                            { "type": "null" }
                         ],
                         "title": "Stopped Datetime"
                     }
@@ -3514,13 +3543,13 @@
                     "product": {
                         "$ref": "#/components/schemas/InteractedProductSchema"
                     },
-                    "quantity": {"type": "integer", "title": "Quantity"},
+                    "quantity": { "type": "integer", "title": "Quantity" },
                     "total": {
-                        "anyOf": [{"type": "number"}, {"type": "integer"}],
+                        "anyOf": [{ "type": "number" }, { "type": "integer" }],
                         "title": "Total"
                     },
                     "original_total": {
-                        "anyOf": [{"type": "number"}, {"type": "null"}],
+                        "anyOf": [{ "type": "number" }, { "type": "null" }],
                         "title": "Original Total"
                     }
                 },
@@ -3538,7 +3567,7 @@
                         "title": "Items"
                     },
                     "currency": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
                         "title": "Currency"
                     },
                     "last_updated_timestamp": {
@@ -3554,15 +3583,15 @@
             "ChannelConnectionCreateRequestSchema": {
                 "properties": {
                     "store_integration_id": {
-                        "anyOf": [{"type": "integer"}, {"type": "null"}],
+                        "anyOf": [{ "type": "integer" }, { "type": "null" }],
                         "title": "Store Integration Id"
                     },
                     "external_id": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
                         "title": "External Id"
                     },
                     "external_installation_status": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
                         "title": "External Installation Status"
                     },
                     "is_setup": {
@@ -3585,7 +3614,7 @@
                         "title": "Utm Enabled",
                         "default": true
                     },
-                    "channel": {"$ref": "#/components/schemas/ChannelType"}
+                    "channel": { "$ref": "#/components/schemas/ChannelType" }
                 },
                 "type": "object",
                 "required": ["channel"],
@@ -3594,15 +3623,15 @@
             "ChannelConnectionResponseSchema": {
                 "properties": {
                     "store_integration_id": {
-                        "anyOf": [{"type": "integer"}, {"type": "null"}],
+                        "anyOf": [{ "type": "integer" }, { "type": "null" }],
                         "title": "Store Integration Id"
                     },
                     "external_id": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
                         "title": "External Id"
                     },
                     "external_installation_status": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
                         "title": "External Installation Status"
                     },
                     "is_setup": {
@@ -3625,9 +3654,9 @@
                         "title": "Utm Enabled",
                         "default": true
                     },
-                    "channel": {"$ref": "#/components/schemas/ChannelType"},
-                    "account_id": {"type": "integer", "title": "Account Id"},
-                    "id": {"type": "string", "title": "Id"}
+                    "channel": { "$ref": "#/components/schemas/ChannelType" },
+                    "account_id": { "type": "integer", "title": "Account Id" },
+                    "id": { "type": "string", "title": "Id" }
                 },
                 "type": "object",
                 "required": ["channel", "account_id", "id"],
@@ -3636,15 +3665,15 @@
             "ChannelPatchRequestSchema": {
                 "properties": {
                     "store_integration_id": {
-                        "anyOf": [{"type": "integer"}, {"type": "null"}],
+                        "anyOf": [{ "type": "integer" }, { "type": "null" }],
                         "title": "Store Integration Id"
                     },
                     "external_id": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
                         "title": "External Id"
                     },
                     "external_installation_status": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
                         "title": "External Installation Status"
                     },
                     "is_setup": {
@@ -3695,15 +3724,15 @@
                             {
                                 "$ref": "#/components/schemas/ABTestConfigurationResponseSchema"
                             },
-                            {"type": "null"}
+                            { "type": "null" }
                         ]
                     },
                     "settings": {
-                        "additionalProperties": {"type": "object"},
+                        "additionalProperties": { "type": "object" },
                         "type": "object",
                         "title": "Settings"
                     },
-                    "id": {"type": "string", "title": "Id"}
+                    "id": { "type": "string", "title": "Id" }
                 },
                 "type": "object",
                 "required": ["subscription", "campaigns", "id"],
@@ -3711,11 +3740,11 @@
             },
             "CustomDomainOperationSchema": {
                 "properties": {
-                    "hostname": {"type": "string", "title": "Hostname"},
+                    "hostname": { "type": "string", "title": "Hostname" },
                     "zone": {
                         "anyOf": [
-                            {"$ref": "#/components/schemas/CustomDomainZone"},
-                            {"type": "null"}
+                            { "$ref": "#/components/schemas/CustomDomainZone" },
+                            { "type": "null" }
                         ]
                     }
                 },
@@ -3725,8 +3754,8 @@
             },
             "CustomDomainSchema": {
                 "properties": {
-                    "hostname": {"type": "string", "title": "Hostname"},
-                    "status": {"type": "string", "title": "Status"}
+                    "hostname": { "type": "string", "title": "Hostname" },
+                    "status": { "type": "string", "title": "Status" }
                 },
                 "type": "object",
                 "required": ["hostname", "status"],
@@ -3739,9 +3768,9 @@
             },
             "CustomScheduleSchema": {
                 "properties": {
-                    "days": {"type": "string", "title": "Days"},
-                    "from_time": {"type": "string", "title": "From Time"},
-                    "to_time": {"type": "string", "title": "To Time"}
+                    "days": { "type": "string", "title": "Days" },
+                    "from_time": { "type": "string", "title": "From Time" },
+                    "to_time": { "type": "string", "title": "To Time" }
                 },
                 "type": "object",
                 "required": ["days", "from_time", "to_time"],
@@ -3760,38 +3789,38 @@
                     },
                     "value": {
                         "anyOf": [
-                            {"type": "number", "minimum": 0.0},
-                            {"type": "string"},
-                            {"type": "null"}
+                            { "type": "number", "minimum": 0.0 },
+                            { "type": "string" },
+                            { "type": "null" }
                         ],
                         "title": "Value"
                     },
                     "minimum_purchase_amount": {
                         "anyOf": [
-                            {"type": "number", "minimum": 0.0},
-                            {"type": "string"},
-                            {"type": "null"}
+                            { "type": "number", "minimum": 0.0 },
+                            { "type": "string" },
+                            { "type": "null" }
                         ],
                         "title": "Minimum Purchase Amount"
                     },
                     "external_customer_segment_ids": {
                         "anyOf": [
-                            {"items": {"type": "string"}, "type": "array"},
-                            {"type": "null"}
+                            { "items": { "type": "string" }, "type": "array" },
+                            { "type": "null" }
                         ],
                         "title": "External Customer Segment Ids"
                     },
                     "external_collection_ids": {
                         "anyOf": [
-                            {"items": {"type": "string"}, "type": "array"},
-                            {"type": "null"}
+                            { "items": { "type": "string" }, "type": "array" },
+                            { "type": "null" }
                         ],
                         "title": "External Collection Ids"
                     },
                     "external_product_ids": {
                         "anyOf": [
-                            {"items": {"type": "string"}, "type": "array"},
-                            {"type": "null"}
+                            { "items": { "type": "string" }, "type": "array" },
+                            { "type": "null" }
                         ],
                         "title": "External Product Ids"
                     },
@@ -3811,50 +3840,54 @@
                             {
                                 "$ref": "#/components/schemas/DiscountOfferTypeEnum"
                             },
-                            {"type": "null"}
+                            { "type": "null" }
                         ]
                     },
                     "prefix": {
                         "anyOf": [
-                            {"type": "string", "maxLength": 10, "minLength": 1},
-                            {"type": "null"}
+                            {
+                                "type": "string",
+                                "maxLength": 10,
+                                "minLength": 1
+                            },
+                            { "type": "null" }
                         ],
                         "title": "Prefix"
                     },
                     "value": {
                         "anyOf": [
-                            {"type": "number", "minimum": 0.0},
-                            {"type": "string"},
-                            {"type": "null"}
+                            { "type": "number", "minimum": 0.0 },
+                            { "type": "string" },
+                            { "type": "null" }
                         ],
                         "title": "Value"
                     },
                     "minimum_purchase_amount": {
                         "anyOf": [
-                            {"type": "number", "minimum": 0.0},
-                            {"type": "string"},
-                            {"type": "null"}
+                            { "type": "number", "minimum": 0.0 },
+                            { "type": "string" },
+                            { "type": "null" }
                         ],
                         "title": "Minimum Purchase Amount"
                     },
                     "external_customer_segment_ids": {
                         "anyOf": [
-                            {"items": {"type": "string"}, "type": "array"},
-                            {"type": "null"}
+                            { "items": { "type": "string" }, "type": "array" },
+                            { "type": "null" }
                         ],
                         "title": "External Customer Segment Ids"
                     },
                     "external_collection_ids": {
                         "anyOf": [
-                            {"items": {"type": "string"}, "type": "array"},
-                            {"type": "null"}
+                            { "items": { "type": "string" }, "type": "array" },
+                            { "type": "null" }
                         ],
                         "title": "External Collection Ids"
                     },
                     "external_product_ids": {
                         "anyOf": [
-                            {"items": {"type": "string"}, "type": "array"},
-                            {"type": "null"}
+                            { "items": { "type": "string" }, "type": "array" },
+                            { "type": "null" }
                         ],
                         "title": "External Product Ids"
                     }
@@ -3875,42 +3908,42 @@
                     },
                     "value": {
                         "anyOf": [
-                            {"type": "number", "minimum": 0.0},
-                            {"type": "string"},
-                            {"type": "null"}
+                            { "type": "number", "minimum": 0.0 },
+                            { "type": "string" },
+                            { "type": "null" }
                         ],
                         "title": "Value"
                     },
                     "minimum_purchase_amount": {
                         "anyOf": [
-                            {"type": "number", "minimum": 0.0},
-                            {"type": "string"},
-                            {"type": "null"}
+                            { "type": "number", "minimum": 0.0 },
+                            { "type": "string" },
+                            { "type": "null" }
                         ],
                         "title": "Minimum Purchase Amount"
                     },
                     "external_customer_segment_ids": {
                         "anyOf": [
-                            {"items": {"type": "string"}, "type": "array"},
-                            {"type": "null"}
+                            { "items": { "type": "string" }, "type": "array" },
+                            { "type": "null" }
                         ],
                         "title": "External Customer Segment Ids"
                     },
                     "external_collection_ids": {
                         "anyOf": [
-                            {"items": {"type": "string"}, "type": "array"},
-                            {"type": "null"}
+                            { "items": { "type": "string" }, "type": "array" },
+                            { "type": "null" }
                         ],
                         "title": "External Collection Ids"
                     },
                     "external_product_ids": {
                         "anyOf": [
-                            {"items": {"type": "string"}, "type": "array"},
-                            {"type": "null"}
+                            { "items": { "type": "string" }, "type": "array" },
+                            { "type": "null" }
                         ],
                         "title": "External Product Ids"
                     },
-                    "id": {"type": "string", "title": "Id"},
+                    "id": { "type": "string", "title": "Id" },
                     "store_integration_id": {
                         "type": "string",
                         "title": "Store Integration Id"
@@ -3927,7 +3960,7 @@
             },
             "EvaluatedCampaignSchema": {
                 "properties": {
-                    "id": {"type": "string", "title": "Id"},
+                    "id": { "type": "string", "title": "Id" },
                     "rules": {
                         "items": {
                             "$ref": "#/components/schemas/EvaluatedRuleSchema"
@@ -3942,10 +3975,10 @@
             },
             "EvaluatedRuleSchema": {
                 "properties": {
-                    "key": {"$ref": "#/components/schemas/RuleType"},
-                    "operator": {"$ref": "#/components/schemas/RuleOperator"},
-                    "value": {"type": "string", "title": "Value"},
-                    "matches": {"type": "boolean", "title": "Matches"}
+                    "key": { "$ref": "#/components/schemas/RuleType" },
+                    "operator": { "$ref": "#/components/schemas/RuleOperator" },
+                    "value": { "type": "string", "title": "Value" },
+                    "matches": { "type": "boolean", "title": "Matches" }
                 },
                 "type": "object",
                 "required": ["key", "operator", "value", "matches"],
@@ -3953,12 +3986,12 @@
             },
             "EvaluationRequestSchema": {
                 "properties": {
-                    "guest_id": {"type": "string", "title": "Guest Id"},
+                    "guest_id": { "type": "string", "title": "Guest Id" },
                     "customer_id": {
-                        "anyOf": [{"type": "integer"}, {"type": "null"}],
+                        "anyOf": [{ "type": "integer" }, { "type": "null" }],
                         "title": "Customer Id"
                     },
-                    "account_id": {"type": "integer", "title": "Account Id"},
+                    "account_id": { "type": "integer", "title": "Account Id" },
                     "campaigns": {
                         "items": {
                             "$ref": "#/components/schemas/CampaignSchema"
@@ -4004,23 +4037,23 @@
             },
             "InstallationSchema": {
                 "properties": {
-                    "id": {"type": "string", "title": "Id"},
-                    "account_id": {"type": "integer", "title": "Account Id"},
+                    "id": { "type": "string", "title": "Id" },
+                    "account_id": { "type": "integer", "title": "Account Id" },
                     "shop_integration_id": {
                         "type": "integer",
                         "title": "Shop Integration Id"
                     },
                     "shop_name": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
                         "title": "Shop Name"
                     },
                     "script_tag_id": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
                         "title": "Script Tag Id"
                     },
-                    "status": {"$ref": "#/components/schemas/StatusEnum"},
-                    "method": {"$ref": "#/components/schemas/MethodEnum"},
-                    "config": {"type": "object", "title": "Config"},
+                    "status": { "$ref": "#/components/schemas/StatusEnum" },
+                    "method": { "$ref": "#/components/schemas/MethodEnum" },
+                    "config": { "type": "object", "title": "Config" },
                     "created_datetime": {
                         "type": "string",
                         "format": "date-time",
@@ -4028,8 +4061,8 @@
                     },
                     "deactivated_datetime": {
                         "anyOf": [
-                            {"type": "string", "format": "date-time"},
-                            {"type": "null"}
+                            { "type": "string", "format": "date-time" },
+                            { "type": "null" }
                         ],
                         "title": "Deactivated Datetime"
                     },
@@ -4052,33 +4085,39 @@
                 "title": "InstallationSchema"
             },
             "InstallationUpdateConfigSchema": {
-                "properties": {"config": {"type": "object", "title": "Config"}},
+                "properties": {
+                    "config": { "type": "object", "title": "Config" }
+                },
                 "type": "object",
                 "required": ["config"],
                 "title": "InstallationUpdateConfigSchema"
             },
             "InteractedProductSchema": {
                 "properties": {
-                    "id": {"type": "integer", "title": "Id"},
+                    "id": { "type": "integer", "title": "Id" },
                     "variant_id": {
-                        "anyOf": [{"type": "integer"}, {"type": "null"}],
+                        "anyOf": [{ "type": "integer" }, { "type": "null" }],
                         "title": "Variant Id"
                     },
-                    "title": {"type": "string", "title": "Title"},
-                    "handle": {"type": "string", "title": "Handle"}
+                    "title": { "type": "string", "title": "Title" },
+                    "handle": { "type": "string", "title": "Handle" }
                 },
                 "type": "object",
                 "required": ["id", "title", "handle"],
                 "title": "InteractedProductSchema"
             },
             "JWTTokenSchema": {
-                "properties": {"token": {"type": "string", "title": "Token"}},
+                "properties": {
+                    "token": { "type": "string", "title": "Token" }
+                },
                 "type": "object",
                 "required": ["token"],
                 "title": "JWTTokenSchema"
             },
             "MaxCampaignDisplaysInSession": {
-                "properties": {"value": {"type": "integer", "title": "Value"}},
+                "properties": {
+                    "value": { "type": "integer", "title": "Value" }
+                },
                 "type": "object",
                 "required": ["value"],
                 "title": "MaxCampaignDisplaysInSession"
@@ -4090,8 +4129,8 @@
             },
             "MinimumTimeBetweenCampaigns": {
                 "properties": {
-                    "value": {"type": "integer", "title": "Value"},
-                    "unit": {"$ref": "#/components/schemas/TimeUnit"}
+                    "value": { "type": "integer", "title": "Value" },
+                    "unit": { "$ref": "#/components/schemas/TimeUnit" }
                 },
                 "type": "object",
                 "required": ["value", "unit"],
@@ -4100,7 +4139,7 @@
             "PageViewSchema": {
                 "properties": {
                     "url": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
                         "title": "Url"
                     },
                     "product": {
@@ -4108,18 +4147,21 @@
                             {
                                 "$ref": "#/components/schemas/InteractedProductSchema"
                             },
-                            {"type": "null"}
+                            { "type": "null" }
                         ]
                     },
                     "page_title": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
                         "title": "Page Title"
                     },
                     "search_query": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
                         "title": "Search Query"
                     },
-                    "visit_count": {"type": "integer", "title": "Visit Count"},
+                    "visit_count": {
+                        "type": "integer",
+                        "title": "Visit Count"
+                    },
                     "last_visit_timestamp": {
                         "type": "string",
                         "format": "date-time",
@@ -4132,8 +4174,8 @@
             },
             "ProductInfoSchema": {
                 "properties": {
-                    "id": {"type": "integer", "title": "Id"},
-                    "title": {"type": "string", "title": "Title"}
+                    "id": { "type": "integer", "title": "Id" },
+                    "title": { "type": "string", "title": "Title" }
                 },
                 "type": "object",
                 "required": ["id", "title"],
@@ -4141,10 +4183,10 @@
             },
             "ProductOption": {
                 "properties": {
-                    "id": {"type": "integer", "title": "Id"},
-                    "name": {"type": "string", "title": "Name"},
+                    "id": { "type": "integer", "title": "Id" },
+                    "name": { "type": "string", "title": "Name" },
                     "values": {
-                        "items": {"type": "string"},
+                        "items": { "type": "string" },
                         "type": "array",
                         "title": "Values"
                     }
@@ -4156,30 +4198,32 @@
             "ProductRecommendationRequestSchema": {
                 "properties": {
                     "shop_name": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
                         "title": "Shop Name"
                     },
                     "installation_id": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
                         "title": "Installation Id"
                     },
                     "widget_app_id": {
                         "type": "string",
                         "title": "Widget App Id"
                     },
-                    "campaign_id": {"type": "string", "title": "Campaign Id"},
+                    "campaign_id": { "type": "string", "title": "Campaign Id" },
                     "scenario": {
                         "$ref": "#/components/schemas/ProductRecommendationScenarioType"
                     },
-                    "guest_id": {"type": "string", "title": "Guest Id"},
+                    "guest_id": { "type": "string", "title": "Guest Id" },
                     "customer_id": {
-                        "anyOf": [{"type": "integer"}, {"type": "null"}],
+                        "anyOf": [{ "type": "integer" }, { "type": "null" }],
                         "title": "Customer Id"
                     },
                     "current_product": {
                         "anyOf": [
-                            {"$ref": "#/components/schemas/ProductInfoSchema"},
-                            {"type": "null"}
+                            {
+                                "$ref": "#/components/schemas/ProductInfoSchema"
+                            },
+                            { "type": "null" }
                         ]
                     },
                     "visited_products": {
@@ -4211,7 +4255,9 @@
             "ProductRecommendationResponseSchema": {
                 "properties": {
                     "products": {
-                        "items": {"$ref": "#/components/schemas/ProductSchema"},
+                        "items": {
+                            "$ref": "#/components/schemas/ProductSchema"
+                        },
                         "type": "array",
                         "title": "Products"
                     }
@@ -4233,9 +4279,9 @@
             },
             "ProductSchema": {
                 "properties": {
-                    "id": {"type": "integer", "title": "Id"},
-                    "title": {"type": "string", "title": "Title"},
-                    "handle": {"type": "string", "title": "Handle"},
+                    "id": { "type": "integer", "title": "Id" },
+                    "title": { "type": "string", "title": "Title" },
+                    "handle": { "type": "string", "title": "Handle" },
                     "variants": {
                         "items": {
                             "$ref": "#/components/schemas/ProductVariant"
@@ -4244,12 +4290,14 @@
                         "title": "Variants"
                     },
                     "options": {
-                        "items": {"$ref": "#/components/schemas/ProductOption"},
+                        "items": {
+                            "$ref": "#/components/schemas/ProductOption"
+                        },
                         "type": "array",
                         "title": "Options"
                     },
                     "image_url": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
                         "title": "Image Url"
                     }
                 },
@@ -4266,14 +4314,14 @@
             },
             "ProductVariant": {
                 "properties": {
-                    "id": {"type": "integer", "title": "Id"},
-                    "title": {"type": "string", "title": "Title"},
+                    "id": { "type": "integer", "title": "Id" },
+                    "title": { "type": "string", "title": "Title" },
                     "price": {
-                        "anyOf": [{"type": "number"}, {"type": "string"}],
+                        "anyOf": [{ "type": "number" }, { "type": "string" }],
                         "title": "Price"
                     },
                     "options": {
-                        "items": {"type": "string"},
+                        "items": { "type": "string" },
                         "type": "array",
                         "title": "Options"
                     }
@@ -4284,7 +4332,7 @@
             },
             "PublicABGroupResponseSchema": {
                 "properties": {
-                    "status": {"$ref": "#/components/schemas/ABGroupStatus"}
+                    "status": { "$ref": "#/components/schemas/ABGroupStatus" }
                 },
                 "type": "object",
                 "required": ["status"],
@@ -4299,8 +4347,8 @@
                     },
                     "description": {
                         "anyOf": [
-                            {"type": "string", "maxLength": 1024},
-                            {"type": "null"}
+                            { "type": "string", "maxLength": 1024 },
+                            { "type": "null" }
                         ],
                         "title": "Description"
                     },
@@ -4311,16 +4359,16 @@
                     },
                     "message_html": {
                         "anyOf": [
-                            {"type": "string", "maxLength": 4096},
-                            {"type": "null"}
+                            { "type": "string", "maxLength": 4096 },
+                            { "type": "null" }
                         ],
                         "title": "Message Html"
                     },
                     "language": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
                         "title": "Language"
                     },
-                    "status": {"$ref": "#/components/schemas/CampaignStatus"},
+                    "status": { "$ref": "#/components/schemas/CampaignStatus" },
                     "trigger_rule": {
                         "type": "string",
                         "maxLength": 4096,
@@ -4357,12 +4405,12 @@
                                 },
                                 "type": "array"
                             },
-                            {"type": "null"}
+                            { "type": "null" }
                         ],
                         "title": "Attachments"
                     },
                     "meta": {
-                        "anyOf": [{"type": "object"}, {"type": "null"}],
+                        "anyOf": [{ "type": "object" }, { "type": "null" }],
                         "title": "Meta"
                     },
                     "triggers": {
@@ -4372,8 +4420,8 @@
                         "type": "array",
                         "title": "Triggers"
                     },
-                    "id": {"type": "string", "title": "Id"},
-                    "is_light": {"type": "boolean", "title": "Is Light"},
+                    "id": { "type": "string", "title": "Id" },
+                    "is_light": { "type": "boolean", "title": "Is Light" },
                     "created_datetime": {
                         "type": "string",
                         "format": "date-time",
@@ -4386,8 +4434,8 @@
                     },
                     "deleted_datetime": {
                         "anyOf": [
-                            {"type": "string", "format": "date-time"},
-                            {"type": "null"}
+                            { "type": "string", "format": "date-time" },
+                            { "type": "null" }
                         ],
                         "title": "Deleted Datetime"
                     },
@@ -4403,7 +4451,7 @@
                             {
                                 "$ref": "#/components/schemas/PublicABGroupResponseSchema"
                             },
-                            {"type": "null"}
+                            { "type": "null" }
                         ]
                     },
                     "schedule": {
@@ -4411,7 +4459,7 @@
                             {
                                 "$ref": "#/components/schemas/ScheduleResponseSchema"
                             },
-                            {"type": "null"}
+                            { "type": "null" }
                         ]
                     }
                 },
@@ -4440,8 +4488,8 @@
                     },
                     "message_html": {
                         "anyOf": [
-                            {"type": "string", "maxLength": 4096},
-                            {"type": "null"}
+                            { "type": "string", "maxLength": 4096 },
+                            { "type": "null" }
                         ],
                         "title": "Message Html"
                     },
@@ -4475,11 +4523,11 @@
                                 },
                                 "type": "array"
                             },
-                            {"type": "null"}
+                            { "type": "null" }
                         ],
                         "title": "Attachments"
                     },
-                    "id": {"type": "string", "title": "Id"}
+                    "id": { "type": "string", "title": "Id" }
                 },
                 "type": "object",
                 "required": ["message_text", "id"],
@@ -4495,11 +4543,11 @@
                         "title": "Products"
                     },
                     "total_amount_spent": {
-                        "anyOf": [{"type": "number"}, {"type": "null"}],
+                        "anyOf": [{ "type": "number" }, { "type": "null" }],
                         "title": "Total Amount Spent"
                     },
                     "total_orders_count": {
-                        "anyOf": [{"type": "integer"}, {"type": "null"}],
+                        "anyOf": [{ "type": "integer" }, { "type": "null" }],
                         "title": "Total Orders Count"
                     }
                 },
@@ -4509,8 +4557,8 @@
             },
             "RequestSettingSchema": {
                 "properties": {
-                    "data": {"type": "object", "title": "Data"},
-                    "type": {"$ref": "#/components/schemas/SettingType"}
+                    "data": { "type": "object", "title": "Data" },
+                    "type": { "$ref": "#/components/schemas/SettingType" }
                 },
                 "type": "object",
                 "required": ["data", "type"],
@@ -4518,8 +4566,8 @@
             },
             "RevealDiscountCodeRequestSchema": {
                 "properties": {
-                    "account_id": {"type": "integer", "title": "Account Id"},
-                    "campaign_id": {"type": "string", "title": "Campaign Id"}
+                    "account_id": { "type": "integer", "title": "Account Id" },
+                    "campaign_id": { "type": "string", "title": "Campaign Id" }
                 },
                 "type": "object",
                 "required": ["account_id", "campaign_id"],
@@ -4527,11 +4575,11 @@
             },
             "RevealDiscountCodeResponseSchema": {
                 "properties": {
-                    "code": {"type": "string", "title": "Code"},
+                    "code": { "type": "string", "title": "Code" },
                     "type": {
                         "$ref": "#/components/schemas/DiscountOfferTypeEnum"
                     },
-                    "value": {"type": "number", "title": "Value"}
+                    "value": { "type": "number", "title": "Value" }
                 },
                 "type": "object",
                 "required": ["code", "type", "value"],
@@ -4557,9 +4605,9 @@
             },
             "RuleSchema": {
                 "properties": {
-                    "key": {"$ref": "#/components/schemas/RuleType"},
-                    "operator": {"$ref": "#/components/schemas/RuleOperator"},
-                    "value": {"type": "string", "title": "Value"}
+                    "key": { "$ref": "#/components/schemas/RuleType" },
+                    "operator": { "$ref": "#/components/schemas/RuleOperator" },
+                    "value": { "type": "string", "title": "Value" }
                 },
                 "type": "object",
                 "required": ["key", "operator", "value"],
@@ -4585,8 +4633,8 @@
                     },
                     "end_datetime": {
                         "anyOf": [
-                            {"type": "string", "format": "date-time"},
-                            {"type": "null"}
+                            { "type": "string", "format": "date-time" },
+                            { "type": "null" }
                         ],
                         "title": "End Datetime"
                     },
@@ -4601,7 +4649,7 @@
                                 },
                                 "type": "array"
                             },
-                            {"type": "null"}
+                            { "type": "null" }
                         ],
                         "title": "Custom Schedule"
                     }
@@ -4623,8 +4671,8 @@
                     },
                     "end_datetime": {
                         "anyOf": [
-                            {"type": "string", "format": "date-time"},
-                            {"type": "null"}
+                            { "type": "string", "format": "date-time" },
+                            { "type": "null" }
                         ],
                         "title": "End Datetime"
                     },
@@ -4639,7 +4687,7 @@
                                 },
                                 "type": "array"
                             },
-                            {"type": "null"}
+                            { "type": "null" }
                         ],
                         "title": "Custom Schedule"
                     }
@@ -4659,8 +4707,8 @@
             },
             "SettingResponseSchema": {
                 "properties": {
-                    "type": {"$ref": "#/components/schemas/SettingType"},
-                    "data": {"type": "object", "title": "Data"}
+                    "type": { "$ref": "#/components/schemas/SettingType" },
+                    "data": { "type": "object", "title": "Data" }
                 },
                 "type": "object",
                 "required": ["type", "data"],
@@ -4686,14 +4734,14 @@
                     },
                     "cart": {
                         "anyOf": [
-                            {"$ref": "#/components/schemas/CartSchema"},
-                            {"type": "null"}
+                            { "$ref": "#/components/schemas/CartSchema" },
+                            { "type": "null" }
                         ]
                     },
                     "purchases": {
                         "anyOf": [
-                            {"$ref": "#/components/schemas/PurchasesSchema"},
-                            {"type": "null"}
+                            { "$ref": "#/components/schemas/PurchasesSchema" },
+                            { "type": "null" }
                         ]
                     }
                 },
@@ -4733,11 +4781,11 @@
                         "$ref": "#/components/schemas/SubscriptionUsageStatus"
                     },
                     "usage": {
-                        "anyOf": [{"type": "integer"}, {"type": "null"}],
+                        "anyOf": [{ "type": "integer" }, { "type": "null" }],
                         "title": "Usage"
                     },
                     "limit": {
-                        "anyOf": [{"type": "integer"}, {"type": "null"}],
+                        "anyOf": [{ "type": "integer" }, { "type": "null" }],
                         "title": "Limit"
                     },
                     "auto_upgrade_enabled": {
@@ -4747,54 +4795,54 @@
                     },
                     "last_auto_upgrade_at": {
                         "anyOf": [
-                            {"type": "string", "format": "date-time"},
-                            {"type": "null"}
+                            { "type": "string", "format": "date-time" },
+                            { "type": "null" }
                         ],
                         "title": "Last Auto Upgrade At"
                     },
                     "last_warning_90_at": {
                         "anyOf": [
-                            {"type": "string", "format": "date-time"},
-                            {"type": "null"}
+                            { "type": "string", "format": "date-time" },
+                            { "type": "null" }
                         ],
                         "title": "Last Warning 90 At"
                     },
                     "last_warning_100_at": {
                         "anyOf": [
-                            {"type": "string", "format": "date-time"},
-                            {"type": "null"}
+                            { "type": "string", "format": "date-time" },
+                            { "type": "null" }
                         ],
                         "title": "Last Warning 100 At"
                     },
                     "last_block_at": {
                         "anyOf": [
-                            {"type": "string", "format": "date-time"},
-                            {"type": "null"}
+                            { "type": "string", "format": "date-time" },
+                            { "type": "null" }
                         ],
                         "title": "Last Block At"
                     },
                     "estimated_usage_percentage": {
-                        "anyOf": [{"type": "integer"}, {"type": "null"}],
+                        "anyOf": [{ "type": "integer" }, { "type": "null" }],
                         "title": "Estimated Usage Percentage"
                     },
                     "estimated_reach_date": {
                         "anyOf": [
-                            {"type": "string", "format": "date-time"},
-                            {"type": "null"}
+                            { "type": "string", "format": "date-time" },
+                            { "type": "null" }
                         ],
                         "title": "Estimated Reach Date"
                     },
                     "cycle_start": {
                         "anyOf": [
-                            {"type": "string", "format": "date-time"},
-                            {"type": "null"}
+                            { "type": "string", "format": "date-time" },
+                            { "type": "null" }
                         ],
                         "title": "Cycle Start"
                     },
                     "cycle_end": {
                         "anyOf": [
-                            {"type": "string", "format": "date-time"},
-                            {"type": "null"}
+                            { "type": "string", "format": "date-time" },
+                            { "type": "null" }
                         ],
                         "title": "Cycle End"
                     },
@@ -4819,7 +4867,7 @@
             "URLBulkSchema": {
                 "properties": {
                     "urls": {
-                        "items": {"$ref": "#/components/schemas/URLSchema"},
+                        "items": { "$ref": "#/components/schemas/URLSchema" },
                         "type": "array",
                         "title": "Urls"
                     }
@@ -4831,15 +4879,15 @@
             "URLClickSchema": {
                 "properties": {
                     "client_ip": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
                         "title": "Client Ip"
                     },
                     "client_agent": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
                         "title": "Client Agent"
                     },
                     "client_referrer": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
                         "title": "Client Referrer"
                     },
                     "created_datetime": {
@@ -4874,9 +4922,9 @@
                         "title": "Is Shortened",
                         "default": false
                     },
-                    "account_id": {"type": "integer", "title": "Account Id"},
+                    "account_id": { "type": "integer", "title": "Account Id" },
                     "channel": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
                         "title": "Channel"
                     },
                     "url": {
@@ -4885,8 +4933,8 @@
                         "format": "uri",
                         "title": "Url"
                     },
-                    "meta": {"type": "object", "title": "Meta"},
-                    "alias": {"type": "string", "title": "Alias"}
+                    "meta": { "type": "object", "title": "Meta" },
+                    "alias": { "type": "string", "title": "Alias" }
                 },
                 "type": "object",
                 "required": ["account_id", "url", "alias"],
@@ -4894,8 +4942,8 @@
             },
             "URLSchema": {
                 "properties": {
-                    "id": {"type": "integer", "title": "Id"},
-                    "account_id": {"type": "integer", "title": "Account Id"},
+                    "id": { "type": "integer", "title": "Id" },
+                    "account_id": { "type": "integer", "title": "Account Id" },
                     "url": {
                         "type": "string",
                         "minLength": 1,
@@ -4911,19 +4959,21 @@
                         "type": "boolean",
                         "title": "Is Shortened"
                     },
-                    "alias": {"type": "string", "title": "Alias"},
+                    "alias": { "type": "string", "title": "Alias" },
                     "short_url": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
                         "title": "Short Url"
                     },
                     "channel": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
                         "title": "Channel"
                     },
                     "custom_domain": {
                         "anyOf": [
-                            {"$ref": "#/components/schemas/CustomDomainSchema"},
-                            {"type": "null"}
+                            {
+                                "$ref": "#/components/schemas/CustomDomainSchema"
+                            },
+                            { "type": "null" }
                         ]
                     }
                 },
@@ -4940,8 +4990,8 @@
             },
             "URLWithClicksSchema": {
                 "properties": {
-                    "id": {"type": "integer", "title": "Id"},
-                    "account_id": {"type": "integer", "title": "Account Id"},
+                    "id": { "type": "integer", "title": "Id" },
+                    "account_id": { "type": "integer", "title": "Account Id" },
                     "url": {
                         "type": "string",
                         "minLength": 1,
@@ -4957,19 +5007,21 @@
                         "type": "boolean",
                         "title": "Is Shortened"
                     },
-                    "alias": {"type": "string", "title": "Alias"},
+                    "alias": { "type": "string", "title": "Alias" },
                     "short_url": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
                         "title": "Short Url"
                     },
                     "channel": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
                         "title": "Channel"
                     },
                     "custom_domain": {
                         "anyOf": [
-                            {"$ref": "#/components/schemas/CustomDomainSchema"},
-                            {"type": "null"}
+                            {
+                                "$ref": "#/components/schemas/CustomDomainSchema"
+                            },
+                            { "type": "null" }
                         ]
                     },
                     "clicks": {
@@ -4994,7 +5046,7 @@
             },
             "UpdateAutoUpgradeSchema": {
                 "properties": {
-                    "enabled": {"type": "boolean", "title": "Enabled"}
+                    "enabled": { "type": "boolean", "title": "Enabled" }
                 },
                 "type": "object",
                 "required": ["enabled"],
@@ -5004,13 +5056,16 @@
                 "properties": {
                     "loc": {
                         "items": {
-                            "anyOf": [{"type": "string"}, {"type": "integer"}]
+                            "anyOf": [
+                                { "type": "string" },
+                                { "type": "integer" }
+                            ]
                         },
                         "type": "array",
                         "title": "Location"
                     },
-                    "msg": {"type": "string", "title": "Message"},
-                    "type": {"type": "string", "title": "Error Type"}
+                    "msg": { "type": "string", "title": "Message" },
+                    "type": { "type": "string", "title": "Error Type" }
                 },
                 "type": "object",
                 "required": ["loc", "msg", "type"],
@@ -5032,13 +5087,13 @@
                         "$ref": "#/components/schemas/VisitorFormFieldName"
                     },
                     "label": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
                         "title": "Label"
                     },
                     "type": {
                         "$ref": "#/components/schemas/VisitorFormFieldType"
                     },
-                    "required": {"type": "boolean", "title": "Required"}
+                    "required": { "type": "boolean", "title": "Required" }
                 },
                 "type": "object",
                 "required": ["name", "type", "required"],
@@ -5047,7 +5102,7 @@
             "VisitorFormOnSuccessContentSchema": {
                 "properties": {
                     "message": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
                         "title": "Message"
                     }
                 },
@@ -5057,7 +5112,7 @@
             "VisitorFormStepSchema": {
                 "properties": {
                     "cta": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
                         "title": "Cta"
                     },
                     "fields": {
@@ -5075,11 +5130,11 @@
             "VisitorFormSubmissionSchema": {
                 "properties": {
                     "first_name": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
                         "title": "First Name"
                     },
                     "last_name": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
                         "title": "Last Name"
                     },
                     "phone": {
@@ -5090,29 +5145,29 @@
                                 "minLength": 7,
                                 "format": "phone"
                             },
-                            {"type": "null"}
+                            { "type": "null" }
                         ],
                         "title": "Phone"
                     },
                     "email": {
                         "anyOf": [
-                            {"type": "string", "format": "email"},
-                            {"type": "null"}
+                            { "type": "string", "format": "email" },
+                            { "type": "null" }
                         ],
                         "title": "Email"
                     },
-                    "campaign_id": {"type": "string", "title": "Campaign Id"},
-                    "shop_name": {"type": "string", "title": "Shop Name"},
+                    "campaign_id": { "type": "string", "title": "Campaign Id" },
+                    "shop_name": { "type": "string", "title": "Shop Name" },
                     "guest_id": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
                         "title": "Guest Id"
                     },
                     "session_id": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
                         "title": "Session Id"
                     },
                     "ab_variant": {
-                        "anyOf": [{"type": "string"}, {"type": "null"}],
+                        "anyOf": [{ "type": "string" }, { "type": "null" }],
                         "title": "Ab Variant"
                     }
                 },
@@ -5144,8 +5199,8 @@
                     },
                     "tags": {
                         "anyOf": [
-                            {"items": {"type": "string"}, "type": "array"},
-                            {"type": "null"}
+                            { "items": { "type": "string" }, "type": "array" },
+                            { "type": "null" }
                         ],
                         "title": "Tags"
                     }
@@ -5156,7 +5211,7 @@
             }
         },
         "securitySchemes": {
-            "HTTPBearer": {"type": "http", "scheme": "bearer"},
+            "HTTPBearer": { "type": "http", "scheme": "bearer" },
             "APIKeyHeader": {
                 "type": "apiKey",
                 "in": "header",

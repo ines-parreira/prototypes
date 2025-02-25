@@ -1,1 +1,1 @@
-export {default} from './CampaignIncognitoVisitorsSwitch'
+export { default } from './CampaignIncognitoVisitorsSwitch'

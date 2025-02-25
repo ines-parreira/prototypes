@@ -2,17 +2,17 @@ import React from 'react'
 
 import BackLink from 'pages/common/components/BackLink'
 
-import {GuidanceTemplatesList} from './components/GuidanceTemplatesList/GuidanceTemplatesList'
-import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
-import {useGuidanceTemplates} from './hooks/useGuidanceTemplates'
+import { GuidanceTemplatesList } from './components/GuidanceTemplatesList/GuidanceTemplatesList'
+import { useAiAgentNavigation } from './hooks/useAiAgentNavigation'
+import { useGuidanceTemplates } from './hooks/useGuidanceTemplates'
 
 type Props = {
     shopName: string
 }
 
-export const AiAgentGuidanceTemplatesView = ({shopName}: Props) => {
-    const {guidanceTemplates} = useGuidanceTemplates()
-    const {routes} = useAiAgentNavigation({shopName})
+export const AiAgentGuidanceTemplatesView = ({ shopName }: Props) => {
+    const { guidanceTemplates } = useGuidanceTemplates()
+    const { routes } = useAiAgentNavigation({ shopName })
 
     return (
         <>

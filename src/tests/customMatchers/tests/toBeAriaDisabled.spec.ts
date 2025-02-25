@@ -1,4 +1,4 @@
-import {MatcherContext} from '@jest/expect'
+import { MatcherContext } from '@jest/expect'
 
 import toBeAriaDisabled from '../toBeAriaDisabled'
 

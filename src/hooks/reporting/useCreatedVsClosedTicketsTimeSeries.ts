@@ -1,37 +1,38 @@
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
 import {
     useTicketsClosedTimeSeries,
     useTicketsCreatedTimeSeries,
 } from 'hooks/reporting/timeSeries'
-import {formatTimeSeriesData} from 'pages/stats/common/utils'
+import { formatTimeSeriesData } from 'pages/stats/common/utils'
 import {
     TICKETS_CLOSED_LABEL,
     TICKETS_CREATED_LABEL,
 } from 'services/reporting/constants'
 
 export const useCreatedVsClosedTicketsTimeSeries = () => {
-    const {cleanStatsFilters, userTimezone, granularity} = useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone, granularity } =
+        useNewStatsFilters()
 
     const closedTicketsTimeSeries = useTicketsClosedTimeSeries(
         cleanStatsFilters,
         userTimezone,
-        granularity
+        granularity,
     )
     const createdTicketsTimeSeries = useTicketsCreatedTimeSeries(
         cleanStatsFilters,
         userTimezone,
-        granularity
+        granularity,
     )
     const closedTickets = formatTimeSeriesData(
         closedTicketsTimeSeries.data,
         TICKETS_CLOSED_LABEL,
-        granularity
+        granularity,
     )
 
     const createdTickets = formatTimeSeriesData(
         createdTicketsTimeSeries.data,
         TICKETS_CREATED_LABEL,
-        granularity
+        granularity,
     )
 
     return {

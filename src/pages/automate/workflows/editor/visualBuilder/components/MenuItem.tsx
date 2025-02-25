@@ -1,5 +1,6 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import React, {ReactNode, useState} from 'react'
+import React, { ReactNode, useState } from 'react'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import DropdownItemLabel from 'pages/common/components/dropdown/DropdownItemLabel'

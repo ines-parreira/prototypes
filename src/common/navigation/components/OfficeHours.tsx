@@ -1,12 +1,13 @@
-import cn from 'classnames'
 import React from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useFlag} from 'core/flags'
+import cn from 'classnames'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
-import {getCurrentHelpdeskPlan} from 'state/billing/selectors'
-import {isTrialing as getIsTrialing} from 'state/currentAccount/selectors'
+import { getCurrentHelpdeskPlan } from 'state/billing/selectors'
+import { isTrialing as getIsTrialing } from 'state/currentAccount/selectors'
 
 import css from './UserMenu.less'
 
@@ -14,7 +15,7 @@ type Props = {
     onToggleDropdown: () => void
 }
 
-export default function OfficeHours({onToggleDropdown}: Props) {
+export default function OfficeHours({ onToggleDropdown }: Props) {
     const hasOfficeHours = useFlag(FeatureFlagKey.OfficeHours)
     const product = useAppSelector(getCurrentHelpdeskPlan)
     const isTrialing = useAppSelector(getIsTrialing)

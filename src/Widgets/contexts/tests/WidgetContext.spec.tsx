@@ -1,8 +1,9 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {memo, useContext} from 'react'
+import React, { memo, useContext } from 'react'
 
-import {WidgetContextProvider, WidgetContext} from '../WidgetContext'
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+
+import { WidgetContext, WidgetContextProvider } from '../WidgetContext'
 
 describe('WidgetContextProvider', () => {
     it('should stabilize the widget object in context to reduce child renders if possible', () => {
@@ -16,16 +17,16 @@ describe('WidgetContextProvider', () => {
             id: 0,
         }
         const immutableWidget = fromJS(widget)
-        const {rerender} = render(
+        const { rerender } = render(
             <WidgetContextProvider value={immutableWidget}>
                 <Spy />
-            </WidgetContextProvider>
+            </WidgetContextProvider>,
         )
 
         rerender(
             <WidgetContextProvider value={immutableWidget}>
                 <Spy />
-            </WidgetContextProvider>
+            </WidgetContextProvider>,
         )
 
         expect(spy).toHaveBeenCalledTimes(1)

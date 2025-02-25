@@ -1,15 +1,15 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment'
 
-import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
+import { useMetricPerDimension } from 'hooks/reporting/useMetricPerDimension'
 import {
     HelpCenterTrackingEventDimensions,
     HelpCenterTrackingEventMeasures,
 } from 'models/reporting/cubes/HelpCenterTrackingEventCube'
-import {LegacyStatsFilters} from 'models/stat/types'
-import {formatReportingQueryDate} from 'utils/reporting'
+import { LegacyStatsFilters } from 'models/stat/types'
+import { formatReportingQueryDate } from 'utils/reporting'
 
-import {useSearchResultRange} from '../useSearchResultRange'
+import { useSearchResultRange } from '../useSearchResultRange'
 
 jest.mock('hooks/reporting/useMetricPerDimension', () => ({
     useMetricPerDimension: jest.fn(),
@@ -35,11 +35,11 @@ describe('useSearchResultRange', () => {
             data: null,
         })
 
-        const {result} = renderHook(() =>
-            useSearchResultRange(statsFilters, timezone)
+        const { result } = renderHook(() =>
+            useSearchResultRange(statsFilters, timezone),
         )
 
-        expect(result.current).toEqual({isLoading: false, data: []})
+        expect(result.current).toEqual({ isLoading: false, data: [] })
     })
 
     it('should return formatted data when cube.js return the data', () => {
@@ -66,15 +66,15 @@ describe('useSearchResultRange', () => {
             },
         })
 
-        const {result} = renderHook(() =>
-            useSearchResultRange(statsFilters, timezone)
+        const { result } = renderHook(() =>
+            useSearchResultRange(statsFilters, timezone),
         )
 
         expect(result.current).toEqual({
             isLoading: false,
             data: [
-                {label: 'Articles shown', value: 10},
-                {label: 'No articles shown', value: 5},
+                { label: 'Articles shown', value: 10 },
+                { label: 'No articles shown', value: 5 },
             ],
         })
     })
@@ -103,13 +103,13 @@ describe('useSearchResultRange', () => {
             },
         })
 
-        const {result} = renderHook(() =>
-            useSearchResultRange(statsFilters, timezone)
+        const { result } = renderHook(() =>
+            useSearchResultRange(statsFilters, timezone),
         )
 
         expect(result.current).toEqual({
             isLoading: false,
-            data: [{label: 'Article shown', value: 10}],
+            data: [{ label: 'Article shown', value: 10 }],
         })
     })
 })

@@ -1,68 +1,68 @@
 {
-  "analytics": {
-    "data": {
-      "blue": {
-        "value": "#4f97eb"
-      },
-      "yellow": {
-        "value": "#d89238"
-      },
-      "magenta": {
-        "value": "#9411b5"
-      },
-      "brown": {
-        "value": "#8a6800"
-      },
-      "dark-blue": {
-        "value": "#3d718f"
-      },
-      "dark-brown": {
-        "value": "#ca6d16"
-      },
-      "grey": {
-        "value": "#6a6a6a"
-      },
-      "turquoise": {
-        "value": "#1a9970"
-      },
-      "indigo": {
-        "value": "#6370e3"
-      },
-      "pink": {
-        "value": "#f58d86"
-      }
-    },
-    "heatmap": {
-      "heatmap-0": {
-        "value": "#303336"
-      },
-      "heatmap-1": {
-        "value": "#394d60"
-      },
-      "heatmap-2": {
-        "value": "#2e557a"
-      },
-      "heatmap-3": {
-        "value": "#2c5595"
-      },
-      "heatmap-4": {
-        "value": "#3b71c7"
-      },
-      "heatmap-5": {
-        "value": "#4a8df9"
-      },
-      "heatmap-6": {
-        "value": "#6ea4fa"
-      },
-      "heatmap-7": {
-        "value": "#92bbfb"
-      },
-      "heatmap-8": {
-        "value": "#b7d1fd"
-      },
-      "heatmap-9": {
-        "value": "#c9ddfd"
-      }
+    "analytics": {
+        "data": {
+            "blue": {
+                "value": "#4f97eb"
+            },
+            "yellow": {
+                "value": "#d89238"
+            },
+            "magenta": {
+                "value": "#9411b5"
+            },
+            "brown": {
+                "value": "#8a6800"
+            },
+            "dark-blue": {
+                "value": "#3d718f"
+            },
+            "dark-brown": {
+                "value": "#ca6d16"
+            },
+            "grey": {
+                "value": "#6a6a6a"
+            },
+            "turquoise": {
+                "value": "#1a9970"
+            },
+            "indigo": {
+                "value": "#6370e3"
+            },
+            "pink": {
+                "value": "#f58d86"
+            }
+        },
+        "heatmap": {
+            "heatmap-0": {
+                "value": "#303336"
+            },
+            "heatmap-1": {
+                "value": "#394d60"
+            },
+            "heatmap-2": {
+                "value": "#2e557a"
+            },
+            "heatmap-3": {
+                "value": "#2c5595"
+            },
+            "heatmap-4": {
+                "value": "#3b71c7"
+            },
+            "heatmap-5": {
+                "value": "#4a8df9"
+            },
+            "heatmap-6": {
+                "value": "#6ea4fa"
+            },
+            "heatmap-7": {
+                "value": "#92bbfb"
+            },
+            "heatmap-8": {
+                "value": "#b7d1fd"
+            },
+            "heatmap-9": {
+                "value": "#c9ddfd"
+            }
+        }
     }
-  }
 }

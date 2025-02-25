@@ -1,5 +1,5 @@
-import {RuleObject, IdentifierCategoryKey} from '../types'
-import {getAstPath, getCategoryFromPath} from '../utils'
+import { IdentifierCategoryKey, RuleObject } from '../types'
+import { getAstPath, getCategoryFromPath } from '../utils'
 
 describe('rule utils', () => {
     describe('getAstPath', () => {
@@ -51,8 +51,8 @@ describe('rule utils', () => {
                         name: 'created_at',
                         type: 'Identifier',
                     },
-                    ruleObject
-                )
+                    ruleObject,
+                ),
             ).toEqual([
                 'ticket',
                 'customer',

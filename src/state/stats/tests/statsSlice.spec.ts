@@ -1,17 +1,16 @@
-import {AnyAction} from 'redux'
+import { AnyAction } from 'redux'
 
 import {
     withDefaultCustomFieldAndLogicalOperator,
     withDefaultLogicalOperator,
 } from 'models/reporting/queryFactories/utils'
-import {ReportingGranularity} from 'models/reporting/types'
+import { ReportingGranularity } from 'models/reporting/types'
 import {
     FilterKey,
     StatsFiltersWithLogicalOperator,
     TagFilterInstanceId,
 } from 'models/stat/types'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import {
     initialState,
     mergeCustomFieldsFilter,
@@ -30,10 +29,10 @@ import {
 
 describe('stats reducer', () => {
     it('should return initial state', () => {
-        const anyAction: AnyAction = {type: 'anyAction'}
+        const anyAction: AnyAction = { type: 'anyAction' }
 
         expect(statsSlice.reducer(initialState, anyAction)).toEqual(
-            initialState
+            initialState,
         )
     })
 
@@ -41,10 +40,10 @@ describe('stats reducer', () => {
         it('should reset stats filters ', () => {
             const action = resetStatsFilters()
 
-            const activeFilters = {agents: [1, 2]}
+            const activeFilters = { agents: [1, 2] }
             const state = {
                 ...initialState,
-                filters: {...initialState.filters, activeFilters},
+                filters: { ...initialState.filters, activeFilters },
             }
 
             expect(statsSlice.reducer(state, action)).toEqual({
@@ -287,9 +286,9 @@ describe('stats reducer', () => {
                 expect(
                     statsSlice.reducer(state, action).filters[
                         FilterKey.AggregationWindow
-                    ]
+                    ],
                 ).toEqual(getAllowedAggregationWindows(newPeriod)[0])
-            }
+            },
         )
     })
 })

@@ -35,7 +35,7 @@ export interface ModalInstanceInterface {
     openModal: (
         name: string,
         closeOthers: boolean,
-        params?: ModalParams
+        params?: ModalParams,
     ) => void
     closeModal: (name: string) => void
     isOpen: (name: string) => boolean
@@ -51,7 +51,7 @@ export type OpenModalsList = OpenModal[]
 
 export type CallbackFunction = (
     name: string,
-    params: ModalParams | null
+    params: ModalParams | null,
 ) => unknown
 
 export type Callbacks = {
@@ -66,7 +66,7 @@ export type useModalManagerApi = {
     openModal: (
         name?: string,
         closeOthers?: boolean,
-        params?: ModalParams
+        params?: ModalParams,
     ) => void
     closeModal: (name?: string) => void
     isOpen: (name?: string) => boolean

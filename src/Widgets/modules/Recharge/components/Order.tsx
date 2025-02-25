@@ -1,31 +1,33 @@
-import {Badge, ColorType} from '@gorgias/merchant-ui-kit'
-import {fromJS, Map, List} from 'immutable'
 import React, {
     ContextType,
-    ReactNode,
     createContext,
-    useContext,
     FunctionComponent,
+    ReactNode,
+    useContext,
 } from 'react'
-import {connect, ConnectedProps} from 'react-redux'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { fromJS, List, Map } from 'immutable'
+import { connect, ConnectedProps } from 'react-redux'
+
+import { Badge, ColorType } from '@gorgias/merchant-ui-kit'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
-import type {InfobarAction} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
+import type { InfobarAction } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-import {renderTemplate} from 'pages/common/utils/template'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {getActiveCustomerIntegrationDataByIntegrationId} from 'state/customers/selectors'
-import {getIntegrationDataByIntegrationId} from 'state/ticket/selectors'
-import {RootState} from 'state/types'
-import {devLog, humanizeString, isCurrentlyOnTicket} from 'utils'
+import { renderTemplate } from 'pages/common/utils/template'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { getActiveCustomerIntegrationDataByIntegrationId } from 'state/customers/selectors'
+import { getIntegrationDataByIntegrationId } from 'state/ticket/selectors'
+import { RootState } from 'state/types'
+import { devLog, humanizeString, isCurrentlyOnTicket } from 'utils'
+import { CardCustomization } from 'Widgets/modules/Template/modules/Card'
+import { StaticField } from 'Widgets/modules/Template/modules/Field'
 
-import {CardCustomization} from 'Widgets/modules/Template/modules/Card'
-import {StaticField} from 'Widgets/modules/Template/modules/Field'
+import { formatRechargeDateTime } from '../helpers/formatRechargeDateTime'
 
-import {formatRechargeDateTime} from '../helpers/formatRechargeDateTime'
 import css from './Order.less'
 
 const OrderContext = createContext<{
@@ -52,7 +54,7 @@ const makeGetIntegrationData = (state: RootState) => {
             const integrationData = isCurrentlyOnTicket()
                 ? getIntegrationDataByIntegrationId(integrationId)(state)
                 : getActiveCustomerIntegrationDataByIntegrationId(
-                      integrationId
+                      integrationId,
                   )(state)
 
             if (integrationData.getIn(['customer', 'id']) !== customerId) {
@@ -61,7 +63,7 @@ const makeGetIntegrationData = (state: RootState) => {
                     {
                         customerId,
                         integrationId,
-                    }
+                    },
                 )
                 return fromJS({}) as Map<any, any>
             }
@@ -81,7 +83,7 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
     context!: ContextType<typeof OrderContext>
 
     _getActions = () => {
-        const {source, getIntegrationData} = this.props
+        const { source, getIntegrationData } = this.props
         const {
             integrationId,
             isOrderCancelled,
@@ -90,17 +92,17 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
         } = this.context
 
         const orderTotalPrice: number = parseFloat(
-            source.get('total_price') || '0'
+            source.get('total_price') || '0',
         )
 
         const charges = getIntegrationData(
             integrationId as any,
-            source.get('customer_id')
+            source.get('customer_id'),
         ).get('charges') as List<any>
         const associatedCharge = charges
             ? (charges.find(
                   (charge: Map<any, any>) =>
-                      charge.get('id') === source.get('charge_id')
+                      charge.get('id') === source.get('charge_id'),
               ) as Map<any, any>)
             : null
         const chargeTotalRefunds: number = associatedCharge
@@ -120,7 +122,7 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
                                 defaultValue: parseFloat(
                                     (
                                         orderTotalPrice - chargeTotalRefunds
-                                    ).toFixed(2)
+                                    ).toFixed(2),
                                 ),
                                 label: 'Amount',
                                 placeholder: 'Amount',
@@ -130,7 +132,7 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
                                 max: parseFloat(
                                     (
                                         orderTotalPrice - chargeTotalRefunds
-                                    ).toFixed(2)
+                                    ).toFixed(2),
                                 ),
                             },
                         ],
@@ -158,8 +160,8 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
     }
 
     render() {
-        const {isEditing, source} = this.props
-        const {integrationId} = this.context
+        const { isEditing, source } = this.props
+        const { integrationId } = this.context
 
         if (isEditing || !integrationId) {
             return null
@@ -178,7 +180,7 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
                 <StaticField label="Created">
                     <DatetimeLabel
                         dateTime={formatRechargeDateTime(
-                            source.get('created_at')
+                            source.get('created_at'),
                         )}
                     />
                 </StaticField>
@@ -208,17 +210,17 @@ export class BeforeContent extends React.Component<BeforeContentProps> {
     static contextType = OrderContext
     context!: ContextType<typeof OrderContext>
     render() {
-        const {source, getIntegrationData} = this.props
-        const {integrationId} = this.context
+        const { source, getIntegrationData } = this.props
+        const { integrationId } = this.context
 
         const charges = getIntegrationData(
             integrationId!,
-            source.get('customer_id')
+            source.get('customer_id'),
         ).get('charges') as List<any>
         const associatedCharge = charges
             ? (charges.find(
                   (charge: Map<any, any>) =>
-                      charge.get('id') === source.get('charge_id')
+                      charge.get('id') === source.get('charge_id'),
               ) as Map<any, any>)
             : null
         const chargeTotalRefunds = associatedCharge
@@ -250,12 +252,12 @@ export function TitleWrapper({
     template,
 }: TitleWrapperProps) {
     const currentAccount = useAppSelector(getCurrentAccountState)
-    const {integration, integrationId} = useContext(IntegrationContext)
+    const { integration, integrationId } = useContext(IntegrationContext)
     const storeName = integration.getIn(['meta', 'store_name']) as string
 
     const customerHash = getIntegrationData(
         integrationId!,
-        source.get('customer_id')
+        source.get('customer_id'),
     ).getIn(['customer', 'hash']) as string
     const orderId = source.get('id') as string
 
@@ -268,7 +270,7 @@ export function TitleWrapper({
         if (customLink) {
             link = renderTemplate(
                 customLink,
-                source.set('customerHash', customerHash).toJS()
+                source.set('customerHash', customerHash).toJS(),
             )
         }
     }
@@ -309,17 +311,17 @@ const connectorTitleWrapper = connect(makeGetIntegrationData)
 
 const ConnectedTitleWrapper = connectorTitleWrapper(TitleWrapper)
 
-export const Wrapper: FunctionComponent<{source: Map<string, any>}> = ({
+export const Wrapper: FunctionComponent<{ source: Map<string, any> }> = ({
     source: order = fromJS({}) as Map<string, any>,
     children,
 }) => {
-    const {integrationId, integration} = useContext(IntegrationContext)
+    const { integrationId, integration } = useContext(IntegrationContext)
 
     const isOrderRefunded = order.get('status') === 'refunded'
     const isOrderCancelled = order.get('status') === 'cancelled'
 
     const isChargeRefundable = ['success', 'partially_refunded'].includes(
-        ((order.get('charge_status') as string) || '').toLowerCase()
+        ((order.get('charge_status') as string) || '').toLowerCase(),
     )
     return (
         <OrderContext.Provider

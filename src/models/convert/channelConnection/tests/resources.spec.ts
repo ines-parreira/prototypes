@@ -2,7 +2,7 @@ import {
     channelConnection,
     channelConnectionId,
 } from 'fixtures/channelConnection'
-import {RevenueAddonClient} from 'rest_api/revenue_addon_api/client'
+import { RevenueAddonClient } from 'rest_api/revenue_addon_api/client'
 
 import * as resources from '../resources'
 
@@ -77,9 +77,12 @@ describe('Channel Connection resources', () => {
                 },
                 {
                     external_id: externalId,
-                }
+                },
             )
-            expect(res).toEqual({...channelConnection, external_id: externalId})
+            expect(res).toEqual({
+                ...channelConnection,
+                external_id: externalId,
+            })
         })
     })
 

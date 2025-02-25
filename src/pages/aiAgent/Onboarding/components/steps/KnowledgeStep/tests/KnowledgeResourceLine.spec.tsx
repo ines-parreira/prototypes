@@ -1,9 +1,9 @@
-import {render, screen} from '@testing-library/react'
-
 import React from 'react'
 
-import {KnowledgeResourceLine} from 'pages/aiAgent/Onboarding/components/steps/KnowledgeStep/KnowledgeResourceLine'
-import {KnowledgeSourceType} from 'pages/aiAgent/Onboarding/components/steps/types'
+import { render, screen } from '@testing-library/react'
+
+import { KnowledgeResourceLine } from 'pages/aiAgent/Onboarding/components/steps/KnowledgeStep/KnowledgeResourceLine'
+import { KnowledgeSourceType } from 'pages/aiAgent/Onboarding/components/steps/types'
 
 describe('KnowledgeResourceLine', () => {
     it('renders Shopify resource with ready status', () => {
@@ -12,13 +12,13 @@ describe('KnowledgeResourceLine', () => {
                 name="My Shopify Store"
                 type={KnowledgeSourceType.SHOPIFY}
                 isReady={true}
-            />
+            />,
         )
 
         expect(screen.getByText('My Shopify Store')).toBeInTheDocument()
         expect(screen.getByText('Ready')).toBeInTheDocument()
         expect(
-            screen.getByText('', {selector: '#store-icon'})
+            screen.getByText('', { selector: '#store-icon' }),
         ).toBeInTheDocument()
     })
 
@@ -28,13 +28,13 @@ describe('KnowledgeResourceLine', () => {
                 name="Help Center Articles"
                 type={KnowledgeSourceType.HELP_CENTER}
                 isReady={false}
-            />
+            />,
         )
 
         expect(screen.getByText('Help Center Articles')).toBeInTheDocument()
         expect(screen.getByText('In Process')).toBeInTheDocument()
         expect(
-            screen.getByText('', {selector: '#chat-icon'})
+            screen.getByText('', { selector: '#chat-icon' }),
         ).toBeInTheDocument()
     })
 
@@ -44,13 +44,13 @@ describe('KnowledgeResourceLine', () => {
                 name="https://example.com"
                 type={KnowledgeSourceType.OTHER}
                 isReady={true}
-            />
+            />,
         )
 
         expect(screen.getByText('https://example.com')).toBeInTheDocument()
         expect(screen.getByText('Ready')).toBeInTheDocument()
         expect(
-            screen.getByText('', {selector: '#link-icon'})
+            screen.getByText('', { selector: '#link-icon' }),
         ).toBeInTheDocument()
     })
 
@@ -60,7 +60,7 @@ describe('KnowledgeResourceLine', () => {
                 name="Resource Name"
                 type={KnowledgeSourceType.OTHER}
                 isReady={false}
-            />
+            />,
         )
 
         expect(screen.getByTestId('loading-spinner')).toBeInTheDocument()

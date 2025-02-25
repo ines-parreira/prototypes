@@ -1,10 +1,10 @@
 import {
-    basicMonthlyHelpdeskPlan,
     basicMonthlyAutomationPlan,
-    smsProduct,
-    starterHelpdeskPlan,
+    basicMonthlyHelpdeskPlan,
     basicYearlyHelpdeskPlan,
     convertPlan0,
+    smsProduct,
+    starterHelpdeskPlan,
     voicePlan0,
 } from 'fixtures/productPrices'
 
@@ -28,7 +28,7 @@ describe('isHelpdesk', () => {
         'should validate if the price is of helpdesk price',
         (price, expectedResult) => {
             expect(isHelpdesk(price)).toBe(expectedResult)
-        }
+        },
     )
 })
 
@@ -40,7 +40,7 @@ describe('isAutomate', () => {
         'should validate if the price is of Automate price',
         (plan, expectedResult) => {
             expect(isAutomate(plan)).toBe(expectedResult)
-        }
+        },
     )
 })
 
@@ -53,7 +53,7 @@ describe('isStarterTierPrice', () => {
         'should validate if the price is of Starter tier',
         (price, expectedResult) => {
             expect(isStarterTier(price)).toBe(expectedResult)
-        }
+        },
     )
 })
 
@@ -66,7 +66,7 @@ describe('getFormattedAmount', () => {
 describe('getCheapestPrice', () => {
     it('returns cheapest non-null amount amongst prices', () => {
         expect(
-            getCheapestPrice(smsProduct.prices, smsProduct.prices[0].cadence)
+            getCheapestPrice(smsProduct.prices, smsProduct.prices[0].cadence),
         ).toEqual(smsProduct.prices[0])
     })
 })
@@ -80,7 +80,7 @@ describe('getProductLabel', () => {
         'should return the product label for the given price and type',
         (plan, expectedResult) => {
             expect(getProductLabel(plan)).toBe(expectedResult)
-        }
+        },
     )
 })
 
@@ -98,7 +98,7 @@ describe('getPlanPriceFormatted', () => {
 describe('getOverageUnitPriceFormatted', () => {
     it('returns the overage unit price formatted', () => {
         expect(getOverageUnitPriceFormatted(basicMonthlyHelpdeskPlan)).toEqual(
-            '$0.40'
+            '$0.40',
         )
     })
 
@@ -111,7 +111,7 @@ describe('getOverageUnitPriceFormatted', () => {
 describe('getPlanUnitsPerCadence', () => {
     it('returns the correct string', () => {
         expect(getPlanUnitsPerCadence(basicMonthlyHelpdeskPlan)).toEqual(
-            '300 tickets/month'
+            '300 tickets/month',
         )
     })
 })

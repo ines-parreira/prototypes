@@ -1,15 +1,17 @@
-import {useGetAnalyticsCustomReport} from '@gorgias/api-queries'
 import React from 'react'
-import {DndProvider} from 'react-dnd'
-import {HTML5Backend} from 'react-dnd-html5-backend'
+
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+
+import { useGetAnalyticsCustomReport } from '@gorgias/api-queries'
 
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import {
     CustomReport,
     findChartIndex,
 } from 'pages/stats/custom-reports/CustomReport'
-import {CustomReportChart} from 'pages/stats/custom-reports/CustomReportChart'
-import {CustomReportSection} from 'pages/stats/custom-reports/CustomReportSection'
+import { CustomReportChart } from 'pages/stats/custom-reports/CustomReportChart'
+import { CustomReportSection } from 'pages/stats/custom-reports/CustomReportSection'
 import {
     CustomReportChartSchema,
     CustomReportChildType,
@@ -17,12 +19,12 @@ import {
     CustomReportSchema,
     CustomReportSectionSchema,
 } from 'pages/stats/custom-reports/types'
-import {useFiltersFromDashboard} from 'pages/stats/custom-reports/useFiltersFromDashboard'
-import {updateChartPosition} from 'pages/stats/custom-reports/utils'
-import {OverviewMetric} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
-import {RootState} from 'state/types'
-import {initialState} from 'state/ui/stats/filtersSlice'
-import {assumeMock, renderWithStore} from 'utils/testing'
+import { useFiltersFromDashboard } from 'pages/stats/custom-reports/useFiltersFromDashboard'
+import { updateChartPosition } from 'pages/stats/custom-reports/utils'
+import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
+import { RootState } from 'state/types'
+import { initialState } from 'state/ui/stats/filtersSlice'
+import { assumeMock, renderWithStore } from 'utils/testing'
 
 jest.mock('react-router-dom', () => ({
     useParams: jest.fn(),
@@ -87,7 +89,7 @@ describe('CustomReport', () => {
     const renderComponent = (ui: React.ReactElement) => {
         return renderWithStore(
             <DndProvider backend={HTML5Backend}>{ui}</DndProvider>,
-            state
+            state,
         )
     }
 
@@ -114,7 +116,7 @@ describe('CustomReport', () => {
                 onChartMove={jest.fn()}
                 onChartMoveEnd={jest.fn()}
                 customReport={customReport}
-            />
+            />,
         )
 
         expect(CustomReportChartMock).toHaveBeenCalled()
@@ -130,7 +132,7 @@ describe('CustomReport', () => {
                 onChartMove={onChartMove}
                 onChartMoveEnd={jest.fn()}
                 customReport={customReport}
-            />
+            />,
         )
 
         const chartProps = CustomReportChartMock.mock.calls[0][0]
@@ -142,12 +144,12 @@ describe('CustomReport', () => {
             chartProps.onMove as (
                 srcId: string,
                 targetId: string,
-                position: 'after' | 'before'
+                position: 'after' | 'before',
             ) => void
         )(srcId, targetId, 'after')
 
         expect(onChartMove).toHaveBeenCalledWith(
-            updateChartPosition(customReport, srcId, targetId, 'after')
+            updateChartPosition(customReport, srcId, targetId, 'after'),
         )
     })
 
@@ -159,7 +161,7 @@ describe('CustomReport', () => {
                 onChartMove={jest.fn()}
                 onChartMoveEnd={onChartMoveEnd}
                 customReport={customReport}
-            />
+            />,
         )
 
         const chartProps = CustomReportChartMock.mock.calls[0][0]
@@ -175,7 +177,7 @@ describe('CustomReport', () => {
                 onChartMove={jest.fn()}
                 onChartMoveEnd={jest.fn()}
                 customReport={customReport}
-            />
+            />,
         )
 
         const chartProps = CustomReportChartMock.mock.calls[0][0]

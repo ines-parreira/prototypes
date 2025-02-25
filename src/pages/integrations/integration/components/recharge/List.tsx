@@ -1,11 +1,13 @@
-import {List as ImmutableList, Map} from 'immutable'
 import React from 'react'
-import {Link} from 'react-router-dom'
+
+import { List as ImmutableList, Map } from 'immutable'
+import { Link } from 'react-router-dom'
 
 import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 
 import NoIntegration from '../NoIntegration'
+
 import css from './List.less'
 
 type Props = {
@@ -14,7 +16,7 @@ type Props = {
     redirectUri: string
 }
 
-function List({integrations, loading, redirectUri}: Props) {
+function List({ integrations, loading, redirectUri }: Props) {
     if (loading.get('integrations', false)) {
         return <Loader />
     }
@@ -34,7 +36,7 @@ function List({integrations, loading, redirectUri}: Props) {
                             .concat('?store_name=')
                             .concat(shopifyShopName)
                         const isDisabled = integration?.get(
-                            'deactivated_datetime'
+                            'deactivated_datetime',
                         )
                         const isSubmitting = loading.get('updateIntegration')
                         return (

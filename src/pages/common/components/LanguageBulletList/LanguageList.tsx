@@ -1,12 +1,11 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
-import {Locale} from '../../../../models/helpCenter/types'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
-import {moveLocaleToBack, moveLocaleToFront} from '../../utils/locale'
-
-import {FlagLanguageItem} from './FlagLanguageItem'
-import {LanguageBullet} from './LanguageBullet'
+import { Locale } from '../../../../models/helpCenter/types'
+import { moveLocaleToBack, moveLocaleToFront } from '../../utils/locale'
+import { FlagLanguageItem } from './FlagLanguageItem'
+import { LanguageBullet } from './LanguageBullet'
 
 import css from './LanguageList.less'
 
@@ -53,7 +52,7 @@ export const LanguageList: React.FC<Props> = ({
     // Add the bullets that should be shown
     restOfLocales.forEach((language) => {
         middleContent.push(
-            <LanguageBullet key={language.code} code={language.code} />
+            <LanguageBullet key={language.code} code={language.code} />,
         )
     })
 
@@ -70,7 +69,7 @@ export const LanguageList: React.FC<Props> = ({
                         <div className={css['language-tooltip']}>
                             {moveLocaleToFront(
                                 languageList,
-                                defaultLanguage
+                                defaultLanguage,
                             ).map((lang) => (
                                 <FlagLanguageItem
                                     key={lang.code}

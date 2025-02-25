@@ -1,14 +1,14 @@
-import classNames from 'classnames'
-
 import React from 'react'
-import {useFormContext} from 'react-hook-form'
-import {Link} from 'react-router-dom'
-import {Label} from 'reactstrap'
 
-import {PhoneFunction} from 'business/twilio'
-import {FormField, FormSubmitButton} from 'core/forms'
+import classNames from 'classnames'
+import { useFormContext } from 'react-hook-form'
+import { Link } from 'react-router-dom'
+import { Label } from 'reactstrap'
+
+import { PhoneFunction } from 'business/twilio'
+import { FormField, FormSubmitButton } from 'core/forms'
 import useAppSelector from 'hooks/useAppSelector'
-import {PhoneIntegration} from 'models/integration/types'
+import { PhoneIntegration } from 'models/integration/types'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
@@ -16,12 +16,12 @@ import css from 'pages/integrations/integration/components/voice/VoiceIntegratio
 import VoiceIntegrationPreferencesCallRecordings from 'pages/integrations/integration/components/voice/VoiceIntegrationPreferencesCallRecordings'
 import VoiceIntegrationPreferencesInboundCalls from 'pages/integrations/integration/components/voice/VoiceIntegrationPreferencesInboundCalls'
 import VoiceIntegrationPreferencesTranscription from 'pages/integrations/integration/components/voice/VoiceIntegrationPreferencesTranscription'
-import {INTEGRATION_REMOVAL_CONFIGURATION_TEXT} from 'pages/integrations/integration/constants'
+import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 import PhoneNumberTitle from 'pages/phoneNumbers/PhoneNumberTitle'
 import settingsCss from 'pages/settings/settings.less'
-import {getNewPhoneNumber} from 'state/entities/phoneNumbers/selectors'
+import { getNewPhoneNumber } from 'state/entities/phoneNumbers/selectors'
 
-import {useDeleteVoiceIntegration} from './useDeleteVoiceIntegration'
+import { useDeleteVoiceIntegration } from './useDeleteVoiceIntegration'
 import useVoicePreferencesForm, {
     FormValues,
     useFormSubmit,
@@ -35,14 +35,14 @@ export default function VoiceIntegrationPreferencesForm({
     integration,
 }: Props): JSX.Element {
     useVoicePreferencesForm(integration)
-    const {onSubmit} = useFormSubmit(integration)
-    const {isDeleting, handleDelete} = useDeleteVoiceIntegration(integration)
+    const { onSubmit } = useFormSubmit(integration)
+    const { isDeleting, handleDelete } = useDeleteVoiceIntegration(integration)
 
     const methods = useFormContext<FormValues>()
     const {
         setValue,
         watch,
-        formState: {isValid, isDirty, isSubmitting},
+        formState: { isValid, isDirty, isSubmitting },
         handleSubmit,
     } = methods
 
@@ -76,7 +76,7 @@ export default function VoiceIntegrationPreferencesForm({
                 <h2
                     className={classNames(
                         settingsCss.headingSection,
-                        css.sectionHeader
+                        css.sectionHeader,
                     )}
                 >
                     Phone number

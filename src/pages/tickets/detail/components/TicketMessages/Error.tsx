@@ -1,19 +1,21 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { Component } from 'react'
+
 import classnames from 'classnames'
-import {Map} from 'immutable'
-import React, {Component} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {bindActionCreators} from 'redux'
+import { Map } from 'immutable'
+import { connect, ConnectedProps } from 'react-redux'
+import { bindActionCreators } from 'redux'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import Button from 'pages/common/components/button/Button'
 
-import {Action} from '../../../../../models/ticket/types'
+import { Action } from '../../../../../models/ticket/types'
 import * as NewMessageActions from '../../../../../state/newMessage/actions'
 import * as TicketActions from '../../../../../state/ticket/actions'
-import {RootState} from '../../../../../state/types'
-import {getActionTemplate, stripErrorMessage} from '../../../../../utils'
-import {sanitizeHtmlDefault} from '../../../../../utils/html'
-import Alert, {AlertType} from '../../../../common/components/Alert/Alert'
+import { RootState } from '../../../../../state/types'
+import { getActionTemplate, stripErrorMessage } from '../../../../../utils'
+import { sanitizeHtmlDefault } from '../../../../../utils/html'
+import Alert, { AlertType } from '../../../../common/components/Alert/Alert'
 
 import css from './Error.less'
 
@@ -62,34 +64,34 @@ class Error extends Component<Props, State> {
     }
 
     componentDidUpdate() {
-        const {newMessage} = this.props
-        const {loading} = this.state
+        const { newMessage } = this.props
+        const { loading } = this.state
         if (
             !newMessage.getIn(['_internal', 'loading', 'submitNewMessage']) &&
             loading
         ) {
-            this.setState({loading: ''})
+            this.setState({ loading: '' })
         }
     }
 
     retry = () => {
-        const {message, actions, ticketId, messageId, setStatus} = this.props
+        const { message, actions, ticketId, messageId, setStatus } = this.props
 
-        this.setState({loading: RETRY})
+        this.setState({ loading: RETRY })
 
         if (messageId) {
             return actions.ticket.updateTicketMessage(
                 ticketId,
                 messageId,
                 {},
-                RETRY
+                RETRY,
             )
         }
 
         const status = message.getIn(['_internal', 'status']) as string
         return (
             actions.newMessage.retrySubmitTicketMessage(
-                message
+                message,
             ) as unknown as Promise<any>
         ).then(() => {
             if (status && setStatus) {
@@ -100,9 +102,9 @@ class Error extends Component<Props, State> {
     }
 
     cancel = () => {
-        const {message, actions, ticketId, messageId} = this.props
+        const { message, actions, ticketId, messageId } = this.props
 
-        this.setState({loading: CANCEL})
+        this.setState({ loading: CANCEL })
 
         if (messageId) {
             return actions.ticket.deleteMessage(ticketId, messageId)
@@ -112,18 +114,18 @@ class Error extends Component<Props, State> {
     }
 
     force = () => {
-        const {actions, ticketId, messageId} = this.props
-        this.setState({loading: FORCE})
+        const { actions, ticketId, messageId } = this.props
+        this.setState({ loading: FORCE })
         return actions.ticket.updateTicketMessage(
             ticketId,
             messageId,
             {},
-            FORCE
+            FORCE,
         )
     }
 
     _toggleActions = () => {
-        this.setState({showActions: !this.state.showActions})
+        this.setState({ showActions: !this.state.showActions })
     }
 
     render() {
@@ -250,7 +252,7 @@ class Error extends Component<Props, State> {
                             if (hasErrorResponse(action)) {
                                 const template = getActionTemplate(action.name)
                                 const transformedMsg = stripErrorMessage(
-                                    action.response!.msg
+                                    action.response!.msg,
                                 )
 
                                 return (
@@ -280,7 +282,7 @@ const connector = connect(
             ticket: bindActionCreators(TicketActions, dispatch),
             newMessage: bindActionCreators(NewMessageActions, dispatch),
         },
-    })
+    }),
 )
 
 export default connector(Error)

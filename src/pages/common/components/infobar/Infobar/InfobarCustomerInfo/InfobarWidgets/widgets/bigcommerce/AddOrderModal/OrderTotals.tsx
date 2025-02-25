@@ -1,20 +1,22 @@
-import classnames from 'classnames'
 import React from 'react'
 
+import classnames from 'classnames'
+
 import {
-    BigCommerceConsignment,
+    BigCommerceActionType,
     BigCommerceCart,
     BigCommerceCheckout,
-    BigCommerceActionType,
+    BigCommerceConsignment,
 } from 'models/integration/types'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import Loader from 'pages/common/components/Loader/Loader'
 
-import {Coupon} from './Coupon'
-import {Discount} from './Discount'
+import { Coupon } from './Coupon'
+import { Discount } from './Discount'
+import { ShippingMethod } from './ShippingMethod'
+import { buildTaxExtraInfo } from './utils'
+
 import css from './OrderTotals.less'
-import {ShippingMethod} from './ShippingMethod'
-import {buildTaxExtraInfo} from './utils'
 
 type Props = {
     cart: Maybe<BigCommerceCart>
@@ -22,11 +24,11 @@ type Props = {
     consignment: Maybe<BigCommerceConsignment>
     hasShippingAddress: boolean
     onUpdateConsignmentShippingMethod: (
-        selectedShippingMethodId: Maybe<string>
+        selectedShippingMethodId: Maybe<string>,
     ) => Promise<void>
     onUpdateDiscountAmount: (
         actionName: BigCommerceActionType,
-        discountAmount: number
+        discountAmount: number,
     ) => Promise<void>
     onUpdateCoupon: (coupon: string) => Promise<void>
     onRemoveCoupon: () => Promise<void>
@@ -91,7 +93,7 @@ export default function OrderTotals({
     onUpdateDiscountAmount,
     onUpdateCoupon,
     onRemoveCoupon,
-    totals: {subTotal, shipping, taxes, total},
+    totals: { subTotal, shipping, taxes, total },
     hasError = false,
     isTotalPriceLoading,
     currencyCode,
@@ -136,7 +138,7 @@ export default function OrderTotals({
                 value={taxes}
                 currencyCode={currencyCode}
                 hasExtraInfo
-                extraInfo={buildTaxExtraInfo({taxes: checkout?.taxes})}
+                extraInfo={buildTaxExtraInfo({ taxes: checkout?.taxes })}
             />
 
             <div className={css.totalLineContainer}>

@@ -1,8 +1,9 @@
 // Helper function to render component with required props
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {ZendeskIntegrationMeta} from 'models/integration/types'
+import { render } from '@testing-library/react'
+
+import { ZendeskIntegrationMeta } from 'models/integration/types'
 import ImportStatusAlert from 'pages/settings/importData/zendesk/ImportStatusAlert'
 import {
     failedImport,
@@ -17,43 +18,43 @@ const renderComponent = (integrationMeta: ZendeskIntegrationMeta) => {
 
 describe('ImportStatusAlert', () => {
     it('displays a loading spinner when the importStatus is Pending', () => {
-        const {getByText} = renderComponent(pendingImport.meta)
+        const { getByText } = renderComponent(pendingImport.meta)
         expect(getByText('Importing your Zendesk data')).toBeDefined()
         expect(getByText('refresh')).toHaveClass('md-spin')
     })
 
     it('displays a loading spinner when the importStatus is RateLimitExceededBackoff', () => {
-        const {getByText} = renderComponent(rateLimitedImport.meta)
+        const { getByText } = renderComponent(rateLimitedImport.meta)
         expect(getByText('Importing your Zendesk data')).toBeDefined()
         expect(getByText('refresh')).toHaveClass('md-spin')
     })
 
     it('displays success message with active synchronization when continuous import is enabled', () => {
-        const {getByText} = renderComponent({
+        const { getByText } = renderComponent({
             ...successImport.meta,
             continuous_import_enabled: true,
         })
         expect(
             getByText(
-                'Initial import successful, continuous synchronization active.'
-            )
+                'Initial import successful, continuous synchronization active.',
+            ),
         ).toBeDefined()
     })
 
     it('displays success message with paused synchronization when continuous import is disabled', () => {
-        const {getByText} = renderComponent({
+        const { getByText } = renderComponent({
             ...successImport.meta,
             continuous_import_enabled: false,
         })
         expect(
             getByText(
-                'Initial import successful, continuous synchronization paused.'
-            )
+                'Initial import successful, continuous synchronization paused.',
+            ),
         ).toBeDefined()
     })
 
     it('displays error message when importStatus is any error state', () => {
-        const {getByText} = renderComponent({
+        const { getByText } = renderComponent({
             ...failedImport.meta,
             continuous_import_enabled: false,
             error: 'Something went wrong.',
@@ -63,14 +64,14 @@ describe('ImportStatusAlert', () => {
     })
 
     it('displays default error message when no error is provided', () => {
-        const {getByText} = renderComponent({
+        const { getByText } = renderComponent({
             ...failedImport.meta,
             continuous_import_enabled: false,
             error: '',
         })
 
         expect(
-            getByText('Import failed. Please contact our support.')
+            getByText('Import failed. Please contact our support.'),
         ).toBeDefined()
     })
 })

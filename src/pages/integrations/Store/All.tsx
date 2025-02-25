@@ -1,11 +1,11 @@
-import React, {ReactNode, useEffect, useState} from 'react'
+import React, { ReactNode, useEffect, useState } from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useSearch from 'hooks/useSearch'
 import useTitle from 'hooks/useTitle'
-import {AutomatePlan, HelpdeskPlan} from 'models/billing/types'
-import {fetchApps} from 'models/integration/resources'
+import { AutomatePlan, HelpdeskPlan } from 'models/billing/types'
+import { fetchApps } from 'models/integration/resources'
 import {
     AppListItem,
     Integration,
@@ -25,34 +25,35 @@ import {
     AccountFeature,
     AccountFeatureMetadata,
 } from 'state/currentAccount/types'
-import {fetchIntegrations} from 'state/integrations/actions'
+import { fetchIntegrations } from 'state/integrations/actions'
 import {
     getIntegrations,
     getIntegrationsByTypes,
     getIntegrationsList,
 } from 'state/integrations/selectors'
-import {IntegrationListItem} from 'state/integrations/types'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {getCheapestPriceNameForFeature} from 'utils/paywalls'
+import { IntegrationListItem } from 'state/integrations/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { getCheapestPriceNameForFeature } from 'utils/paywalls'
 
-import css from './All.less'
 import Card from './Card'
 import CardsWrapper from './CardsWrapper'
 import Category from './Category'
 import CategoryFilter from './CategoryFilter'
 import {
-    ORDERED_CATEGORIES,
-    MAX_CARDS_DISPLAYED,
-    SEARCH_URL_PARAM,
-    CATEGORY_URL_PARAM,
     CATEGORY_DATA,
+    CATEGORY_URL_PARAM,
+    MAX_CARDS_DISPLAYED,
+    ORDERED_CATEGORIES,
+    SEARCH_URL_PARAM,
 } from './constants'
-import {filterOutDeprecatedIntegrations} from './filters'
+import { filterOutDeprecatedIntegrations } from './filters'
 import LimitWarning from './LimitWarning'
 import Loader from './Loader'
 import RequestApp from './RequestApp'
 import Search from './Search'
+
+import css from './All.less'
 
 type Item = IntegrationListItem
 
@@ -60,7 +61,7 @@ export function addRequiredPlanToIntegrations(
     integrationsListItems: IntegrationListItem[],
     integrations: Integration[],
     features: Partial<Record<AccountFeature, AccountFeatureMetadata>>,
-    prices: (HelpdeskPlan | AutomatePlan)[]
+    prices: (HelpdeskPlan | AutomatePlan)[],
 ) {
     return integrationsListItems.map((integration) => {
         const requiredFeature = integration.requiredFeature
@@ -70,7 +71,7 @@ export function addRequiredPlanToIntegrations(
 
         const requiredPriceName = getCheapestPriceNameForFeature(
             requiredFeature,
-            prices
+            prices,
         )
         return {
             ...integration,
@@ -106,7 +107,10 @@ export default function All() {
     const [apps, setApps] = useState<AppListItem[]>([])
 
     const appIntegrations = useAppSelector(
-        getIntegrationsByTypes([IntegrationType.App, IntegrationType.Ecommerce])
+        getIntegrationsByTypes([
+            IntegrationType.App,
+            IntegrationType.Ecommerce,
+        ]),
     )
 
     useEffect(() => {
@@ -119,7 +123,7 @@ export default function All() {
                     notify({
                         status: NotificationStatus.Error,
                         message: `Something went wrong while trying to fetch additional apps.`,
-                    })
+                    }),
                 )
             } finally {
                 setLoading(false)
@@ -134,12 +138,12 @@ export default function All() {
 
     const filteredIntegrationsList = filterOutDeprecatedIntegrations(
         integrationsList,
-        integrations
+        integrations,
     )
 
     const integrationApps: IntegrationListItem[] = apps.map((app) => {
         const count = appIntegrations.filter(
-            (integration) => integration.application_id === app.appId
+            (integration) => integration.application_id === app.appId,
         ).length
         return {
             ...app,
@@ -152,7 +156,7 @@ export default function All() {
             filteredIntegrationsList,
             integrations,
             features,
-            availablePlans
+            availablePlans,
         ),
         ...integrationApps,
     ]
@@ -164,10 +168,10 @@ export default function All() {
     if (hasFilter) {
         items.forEach((item) => {
             const matchSearch = Boolean(
-                activeSearch && item.title.toLowerCase().includes(activeSearch)
+                activeSearch && item.title.toLowerCase().includes(activeSearch),
             )
             const matchCategory = Boolean(
-                activeCategory && item.categories.includes(activeCategory)
+                activeCategory && item.categories.includes(activeCategory),
             )
             if (
                 (!activeCategory && matchSearch) ||
@@ -182,7 +186,7 @@ export default function All() {
                             item.categories.includes(CategoryType.FEATURED) &&
                             activeCategory !== CategoryType.FEATURED
                         }
-                    />
+                    />,
                 )
             }
         })
@@ -197,8 +201,8 @@ export default function All() {
                         buildCardWithDisplayClasses(
                             item,
                             cardsByCategory[category].length,
-                            category
-                        )
+                            category,
+                        ),
                     )
                 }
             })
@@ -247,7 +251,7 @@ export default function All() {
 
                     {!hasFilter &&
                         ORDERED_CATEGORIES.filter(
-                            (category) => category in cardsByCategory
+                            (category) => category in cardsByCategory,
                         ).map((category) => {
                             let cards = cardsByCategory[category]
                             if (isLoading) cards = fillGap(cards)
@@ -284,7 +288,7 @@ function fillGap(cards: ReactNode[]) {
 function buildCardWithDisplayClasses(
     item: Item | null,
     index: number,
-    category?: CategoryType
+    category?: CategoryType,
 ) {
     let additionalClasses = ''
     if (index > 0) additionalClasses += css.showDesktop + ' '

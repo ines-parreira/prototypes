@@ -1,20 +1,21 @@
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { renderHook } from '@testing-library/react-hooks'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {OBJECT_TYPES} from 'custom-fields/constants'
-import {useGetCustomFieldValues} from 'custom-fields/hooks/queries/queries'
+import { OBJECT_TYPES } from 'custom-fields/constants'
+import { useGetCustomFieldValues } from 'custom-fields/hooks/queries/queries'
 import {
     apiListCursorPaginationResponse,
     axiosSuccessResponse,
 } from 'fixtures/axiosResponse'
-import {ticketDropdownFieldDefinition} from 'fixtures/customField'
-import {NotificationStatus} from 'state/notifications/types'
-import {assumeMock} from 'utils/testing'
+import { ticketDropdownFieldDefinition } from 'fixtures/customField'
+import { NotificationStatus } from 'state/notifications/types'
+import { assumeMock } from 'utils/testing'
 
-import {STALE_TIME_MS, useCustomFieldValues} from '../useCustomFieldValues'
+import { STALE_TIME_MS, useCustomFieldValues } from '../useCustomFieldValues'
 
 jest.mock('custom-fields/hooks/queries/queries')
 const useGetCustomFieldValuesMock = assumeMock(useGetCustomFieldValues)
@@ -34,7 +35,7 @@ describe('useCustomFieldValues', () => {
 
     it('should call useGetCustomFieldValues with proper id', () => {
         renderHook(() => useCustomFieldValues(params), {
-            wrapper: ({children}) => (
+            wrapper: ({ children }) => (
                 <Provider store={mockStore}>{children}</Provider>
             ),
         })
@@ -44,19 +45,19 @@ describe('useCustomFieldValues', () => {
 
     it('should provide a stale time param', () => {
         renderHook(() => useCustomFieldValues(params), {
-            wrapper: ({children}) => (
+            wrapper: ({ children }) => (
                 <Provider store={mockStore}>{children}</Provider>
             ),
         })
 
         expect(useGetCustomFieldValuesMock.mock.calls[0][1]?.staleTime).toBe(
-            STALE_TIME_MS
+            STALE_TIME_MS,
         )
     })
 
     it('should provide a select param that picks the correct subset of data', () => {
         renderHook(() => useCustomFieldValues(params), {
-            wrapper: ({children}) => (
+            wrapper: ({ children }) => (
                 <Provider store={mockStore}>{children}</Provider>
             ),
         })
@@ -70,14 +71,14 @@ describe('useCustomFieldValues', () => {
 
         expect(
             useGetCustomFieldValuesMock.mock.calls[0][1]?.select!(
-                axiosSuccessResponse(apiListCursorPaginationResponse(data))
-            )
+                axiosSuccessResponse(apiListCursorPaginationResponse(data)),
+            ),
         ).toStrictEqual(apiListCursorPaginationResponse(data))
     })
 
     it('should provide a onError param that calls the notify action', () => {
         renderHook(() => useCustomFieldValues(params), {
-            wrapper: ({children}) => (
+            wrapper: ({ children }) => (
                 <Provider store={mockStore}>{children}</Provider>
             ),
         })

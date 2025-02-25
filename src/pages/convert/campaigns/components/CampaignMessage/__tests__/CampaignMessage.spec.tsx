@@ -1,29 +1,28 @@
-import {render, act, fireEvent, screen} from '@testing-library/react'
-import {fromJS, Map} from 'immutable'
 import React from 'react'
 
-import {Provider} from 'react-redux'
+import { act, fireEvent, render, screen } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import {
     InventoryManagement as ShipifyInventoryManagement,
     InventoryPolicy as ShipifyInventoryPolicy,
 } from 'constants/integrations/types/shopify'
-import {campaign} from 'fixtures/campaign'
-import {shopifyProductFixture, shopifyVariantFixture} from 'fixtures/shopify'
-import {useSuggestCampaignCopy} from 'models/convert/campaign/queries'
-import {ShopifyIntegration} from 'models/integration/types'
-
+import { campaign } from 'fixtures/campaign'
+import { shopifyProductFixture, shopifyVariantFixture } from 'fixtures/shopify'
+import { useSuggestCampaignCopy } from 'models/convert/campaign/queries'
+import { ShopifyIntegration } from 'models/integration/types'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
 import * as integrationHook from 'pages/convert/campaigns/containers/IntegrationProvider'
-import {CampaignDetailsFormContext} from 'pages/convert/campaigns/providers/CampaignDetailsForm/context'
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
+import { CampaignDetailsFormContext } from 'pages/convert/campaigns/providers/CampaignDetailsForm/context'
+import { Campaign } from 'pages/convert/campaigns/types/Campaign'
 import * as integrationHelpers from 'state/integrations/helpers'
-import {RootState, StoreDispatch} from 'state/types'
-import {flushPromises} from 'utils/testing'
+import { RootState, StoreDispatch } from 'state/types'
+import { flushPromises } from 'utils/testing'
 
-import {AddContactCaptureFormProps} from '../../ContactCaptureForm/AddContactCaptureForm'
-import {CampaignMessage} from '../CampaignMessage'
+import { AddContactCaptureFormProps } from '../../ContactCaptureForm/AddContactCaptureForm'
+import { CampaignMessage } from '../CampaignMessage'
 
 jest.mock('models/convert/campaign/queries')
 jest.mock('pages/common/forms/RichField/RichFieldEditor')
@@ -34,10 +33,10 @@ jest.mock(
     'pages/convert/campaigns/components/ContactCaptureForm/AddContactCaptureForm',
     () => ({
         __esModule: true,
-        default: ({onSubmit}: AddContactCaptureFormProps) => {
+        default: ({ onSubmit }: AddContactCaptureFormProps) => {
             const data = {
                 steps: [],
-                on_success_content: {message: 'test'},
+                on_success_content: { message: 'test' },
                 targets: [],
                 disclaimer: 'test',
                 disclaimer_default_accepted: true,
@@ -53,12 +52,12 @@ jest.mock(
                 </>
             )
         },
-    })
+    }),
 )
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 const defaultState = {
-    integrations: fromJS({integrations: []}),
+    integrations: fromJS({ integrations: [] }),
 } as RootState
 
 const attachments = [
@@ -88,10 +87,10 @@ describe('<CampaignMessage>', () => {
 
     const renderCampaignMessage = (
         storeState: Partial<RootState>,
-        isConvertSubscriber: boolean
+        isConvertSubscriber: boolean,
     ) => {
         return render(
-            <Provider store={mockStore({...defaultState, ...storeState})}>
+            <Provider store={mockStore({ ...defaultState, ...storeState })}>
                 <CampaignDetailsFormContext.Provider
                     value={{
                         campaign: campaign as Campaign,
@@ -118,7 +117,7 @@ describe('<CampaignMessage>', () => {
                         onDeleteAttachment={jest.fn()}
                     />
                 </CampaignDetailsFormContext.Provider>
-            </Provider>
+            </Provider>,
         )
     }
 
@@ -132,33 +131,33 @@ describe('<CampaignMessage>', () => {
         beforeEach(() => {
             jest.spyOn(
                 isConvertSubscriberHook,
-                'useIsConvertSubscriber'
+                'useIsConvertSubscriber',
             ).mockImplementation(() => false)
         })
 
         it('renders the warning if the content is too big and merchant is a revenue subscriber', () => {
-            const {getByText} = renderCampaignMessage({}, true)
+            const { getByText } = renderCampaignMessage({}, true)
 
             expect(
                 getByText(
-                    'Your campaign might be too large for mobile devices or small screens. We advise limiting the content to maximum 170 characters and maximum 5 lines of text.'
-                )
+                    'Your campaign might be too large for mobile devices or small screens. We advise limiting the content to maximum 170 characters and maximum 5 lines of text.',
+                ),
             ).toBeInTheDocument()
         })
 
         it('does not render the warning if the content is too big and merchant is not a revenue subscriber', () => {
-            const {queryByText} = renderCampaignMessage({}, false)
+            const { queryByText } = renderCampaignMessage({}, false)
 
             expect(
                 queryByText(
-                    'Your campaign might be too large for mobile devices or small screens. We advise limiting the content to maximum 170 characters and maximum 5 lines of text.'
-                )
+                    'Your campaign might be too large for mobile devices or small screens. We advise limiting the content to maximum 170 characters and maximum 5 lines of text.',
+                ),
             ).toBeNull()
         })
 
         it('it does not display AI copy assistant banner', async () => {
             mockGenerateSuggestions.mockResolvedValue({
-                data: {suggestions: ['Suggestion 1', 'Suggestion 2']},
+                data: { suggestions: ['Suggestion 1', 'Suggestion 2'] },
             })
             renderCampaignMessage(
                 {
@@ -168,7 +167,7 @@ describe('<CampaignMessage>', () => {
                         },
                     }),
                 },
-                false
+                false,
             )
 
             await act(flushPromises)
@@ -181,16 +180,16 @@ describe('<CampaignMessage>', () => {
         beforeEach(() => {
             jest.spyOn(
                 isConvertSubscriberHook,
-                'useIsConvertSubscriber'
+                'useIsConvertSubscriber',
             ).mockImplementation(() => true)
 
             jest.spyOn(
                 integrationHook,
-                'useIntegrationContext'
+                'useIntegrationContext',
             ).mockImplementation(() => ({
                 shopifyIntegration: {
                     id: 1,
-                    meta: {shop_domain: 'shop-domain.com'},
+                    meta: { shop_domain: 'shop-domain.com' },
                 } as any as ShopifyIntegration,
             }))
         })
@@ -201,14 +200,14 @@ describe('<CampaignMessage>', () => {
                 inventoryManagement: ShipifyInventoryManagement.Shopify,
                 inventoryPolicy: ShipifyInventoryPolicy.Deny,
             })
-            const product = shopifyProductFixture({variants: [variant]})
+            const product = shopifyProductFixture({ variants: [variant] })
 
             jest.spyOn(
                 integrationHelpers,
-                'fetchIntegrationProducts'
+                'fetchIntegrationProducts',
             ).mockReturnValue(new Promise((resolve) => resolve([Map(product)])))
 
-            const {queryByText} = renderCampaignMessage(
+            const { queryByText } = renderCampaignMessage(
                 {
                     newMessage: fromJS({
                         newMessage: {
@@ -216,15 +215,15 @@ describe('<CampaignMessage>', () => {
                         },
                     }),
                 },
-                true
+                true,
             )
 
             await act(flushPromises)
 
             expect(
                 queryByText(
-                    'Your campaign is currently not displayed because there is no product stock for your first product card. Remove the first product card to see have your campaign displayed.'
-                )
+                    'Your campaign is currently not displayed because there is no product stock for your first product card. Remove the first product card to see have your campaign displayed.',
+                ),
             ).toBeInTheDocument()
         })
 
@@ -234,14 +233,14 @@ describe('<CampaignMessage>', () => {
                 inventoryManagement: ShipifyInventoryManagement.Shopify,
                 inventoryPolicy: ShipifyInventoryPolicy.Continue,
             })
-            const product = shopifyProductFixture({variants: [variant]})
+            const product = shopifyProductFixture({ variants: [variant] })
 
             jest.spyOn(
                 integrationHelpers,
-                'fetchIntegrationProducts'
+                'fetchIntegrationProducts',
             ).mockReturnValue(new Promise((resolve) => resolve([Map(product)])))
 
-            const {queryByText} = renderCampaignMessage(
+            const { queryByText } = renderCampaignMessage(
                 {
                     newMessage: fromJS({
                         newMessage: {
@@ -249,20 +248,20 @@ describe('<CampaignMessage>', () => {
                         },
                     }),
                 },
-                true
+                true,
             )
 
             await act(flushPromises)
 
             expect(
                 queryByText(
-                    'Your campaign is currently not displayed because there is no product stock for your first product card. Remove the first product card to see have your campaign displayed.'
-                )
+                    'Your campaign is currently not displayed because there is no product stock for your first product card. Remove the first product card to see have your campaign displayed.',
+                ),
             ).toBeNull()
         })
 
         it('it sets noReply on adding a form', async () => {
-            const {getByText} = renderCampaignMessage({}, true)
+            const { getByText } = renderCampaignMessage({}, true)
 
             await act(flushPromises)
 
@@ -276,7 +275,7 @@ describe('<CampaignMessage>', () => {
         })
 
         it('it does not set noReply on updating a form', async () => {
-            const {getByText} = renderCampaignMessage({}, true)
+            const { getByText } = renderCampaignMessage({}, true)
 
             await act(flushPromises)
 
@@ -290,7 +289,7 @@ describe('<CampaignMessage>', () => {
 
         it('it displays AI copy assistant banner', async () => {
             mockGenerateSuggestions.mockResolvedValue({
-                data: {suggestions: ['Suggestion 1', 'Suggestion 2']},
+                data: { suggestions: ['Suggestion 1', 'Suggestion 2'] },
             })
             renderCampaignMessage(
                 {
@@ -300,7 +299,7 @@ describe('<CampaignMessage>', () => {
                         },
                     }),
                 },
-                true
+                true,
             )
 
             await act(flushPromises)
@@ -310,7 +309,7 @@ describe('<CampaignMessage>', () => {
 
         it('it calls onSuggestionApply on Apply click', async () => {
             mockGenerateSuggestions.mockResolvedValue({
-                data: {suggestions: ['Suggestion 1', 'Suggestion 2']},
+                data: { suggestions: ['Suggestion 1', 'Suggestion 2'] },
             })
             renderCampaignMessage(
                 {
@@ -320,7 +319,7 @@ describe('<CampaignMessage>', () => {
                         },
                     }),
                 },
-                true
+                true,
             )
 
             await act(flushPromises)

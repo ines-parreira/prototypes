@@ -1,6 +1,7 @@
+import React, { useCallback, useMemo } from 'react'
+
 import _noop from 'lodash/noop'
-import React, {useCallback, useMemo} from 'react'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 
 import {
     AggregationWindow,
@@ -12,19 +13,19 @@ import {
     FilterLabels,
     ReportingGranularityLabels,
 } from 'pages/stats/common/filters/constants'
-import {logSegmentEvent} from 'pages/stats/common/filters/helpers'
-import {DropdownOption} from 'pages/stats/types'
-import {getStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
-import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
-import {getAllowedAggregationWindows} from 'state/stats/utils'
-import {RootState} from 'state/types'
-import {getCleanStatsFiltersWithLogicalOperatorsWithTimezone} from 'state/ui/stats/selectors'
+import { logSegmentEvent } from 'pages/stats/common/filters/helpers'
+import { DropdownOption } from 'pages/stats/types'
+import { getStatsFiltersWithLogicalOperators } from 'state/stats/selectors'
+import { mergeStatsFiltersWithLogicalOperator } from 'state/stats/statsSlice'
+import { getAllowedAggregationWindows } from 'state/stats/utils'
+import { RootState } from 'state/types'
+import { getCleanStatsFiltersWithLogicalOperatorsWithTimezone } from 'state/ui/stats/selectors'
 
 type Props = {
     value?: StatsFiltersWithLogicalOperator[FilterKey.AggregationWindow]
     period: StatsFiltersWithLogicalOperator[FilterKey.Period]
     dispatchUpdate: (
-        value: StatsFiltersWithLogicalOperator[FilterKey.AggregationWindow]
+        value: StatsFiltersWithLogicalOperator[FilterKey.AggregationWindow],
     ) => void
 }
 
@@ -39,7 +40,7 @@ export const AggregationWindowFilter = ({
                 value: `${granularity}`,
                 label: ReportingGranularityLabels[granularity],
             })),
-        [period]
+        [period],
     )
 
     const filterOptions = [
@@ -51,16 +52,16 @@ export const AggregationWindowFilter = ({
     const selectedOptions: DropdownOption[] = useMemo(
         () =>
             allowedAggregationWindows.filter(
-                (option) => option.value === value
+                (option) => option.value === value,
             ),
-        [allowedAggregationWindows, value]
+        [allowedAggregationWindows, value],
     )
 
     const handleFilterValuesChange = useCallback(
         (value: DropdownOption | undefined) => {
             dispatchUpdate(value?.value as AggregationWindow)
         },
-        [dispatchUpdate]
+        [dispatchUpdate],
     )
 
     const handleDropdownClosed = () => {
@@ -94,10 +95,10 @@ export const AggregationWindowFilterWithState = connect(
     }),
     {
         dispatchUpdate: (
-            filter: StatsFiltersWithLogicalOperator[FilterKey.AggregationWindow]
+            filter: StatsFiltersWithLogicalOperator[FilterKey.AggregationWindow],
         ) =>
             mergeStatsFiltersWithLogicalOperator({
                 aggregationWindow: filter,
             }),
-    }
+    },
 )(AggregationWindowFilter)

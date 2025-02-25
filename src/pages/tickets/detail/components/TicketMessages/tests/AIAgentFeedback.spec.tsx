@@ -1,30 +1,31 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {SegmentEvent} from 'common/segment'
-import {logEventWithSampling} from 'common/segment/segment'
-import {MessageFeedback} from 'models/aiAgentFeedback/types'
-import {TicketMessage} from 'models/ticket/types'
-import {useAIAgentSendFeedback} from 'pages/tickets/detail/hooks/useAIAgentSendFeedback'
-import {getCurrentAccountId} from 'state/currentAccount/selectors'
-import {RootState, StoreDispatch} from 'state/types'
+import { SegmentEvent } from 'common/segment'
+import { logEventWithSampling } from 'common/segment/segment'
+import { MessageFeedback } from 'models/aiAgentFeedback/types'
+import { TicketMessage } from 'models/ticket/types'
+import { useAIAgentSendFeedback } from 'pages/tickets/detail/hooks/useAIAgentSendFeedback'
+import { getCurrentAccountId } from 'state/currentAccount/selectors'
+import { RootState, StoreDispatch } from 'state/types'
 import {
     changeActiveTab,
     changeTicketMessage,
     getSelectedAIMessage,
 } from 'state/ui/ticketAIAgentFeedback'
-import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constants'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
-import {BANNER_TYPE} from '../../AIAgentFeedbackBar/constants'
+import { BANNER_TYPE } from '../../AIAgentFeedbackBar/constants'
 import AIAgentFeedback, {
-    CORRECT_RESPONSE,
     ACCURATE_RESPONSE,
+    CORRECT_RESPONSE,
     REVIEW_RESPONSE,
 } from '../AIAgentFeedback'
 
@@ -70,10 +71,10 @@ describe('AIAgentFeedback', () => {
             <QueryClientProvider client={queryClient}>
                 <Provider store={store}>
                     <AIAgentFeedback
-                        message={{...mockMessage, public: false}}
+                        message={{ ...mockMessage, public: false }}
                     />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
         expect(screen.getByText(ACCURATE_RESPONSE)).toBeInTheDocument()
     })
@@ -84,7 +85,7 @@ describe('AIAgentFeedback', () => {
                 <Provider store={store}>
                     <AIAgentFeedback message={mockMessage} />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
         expect(screen.getByText(CORRECT_RESPONSE)).toBeInTheDocument()
     })
@@ -95,7 +96,7 @@ describe('AIAgentFeedback', () => {
                 <Provider store={store}>
                     <AIAgentFeedback message={mockMessage} />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
         userEvent.click(screen.getByText(REVIEW_RESPONSE))
 
@@ -114,10 +115,10 @@ describe('AIAgentFeedback', () => {
                 <Provider store={store}>
                     <AIAgentFeedback message={mockMessage} />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
         expect(
-            screen.getByRole('button', {name: REVIEW_RESPONSE})
+            screen.getByRole('button', { name: REVIEW_RESPONSE }),
         ).toBeAriaDisabled()
     })
 
@@ -130,9 +131,9 @@ describe('AIAgentFeedback', () => {
                         messageFeedback={
                             {
                                 messageId: mockMessage.id,
-                                actions: [{feedback: 'thumbs_up'}],
-                                guidance: [{feedback: 'thumbs_up'}],
-                                knowledge: [{feedback: 'thumbs_up'}],
+                                actions: [{ feedback: 'thumbs_up' }],
+                                guidance: [{ feedback: 'thumbs_up' }],
+                                knowledge: [{ feedback: 'thumbs_up' }],
                                 allowsFeedback: true,
                                 feedbackOnMessage: [
                                     {
@@ -145,10 +146,10 @@ describe('AIAgentFeedback', () => {
                         }
                     />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
         expect(
-            screen.getByRole('button', {name: 'Thumbs up button'})
+            screen.getByRole('button', { name: 'Thumbs up button' }),
         ).toHaveClass('withFeedback')
     })
 
@@ -157,13 +158,13 @@ describe('AIAgentFeedback', () => {
             <QueryClientProvider client={queryClient}>
                 <Provider store={store}>
                     <AIAgentFeedback
-                        message={{...mockMessage, public: false}}
+                        message={{ ...mockMessage, public: false }}
                         messageFeedback={
                             {
                                 messageId: mockMessage.id,
-                                actions: [{feedback: 'thumbs_up'}],
-                                guidance: [{feedback: 'thumbs_up'}],
-                                knowledge: [{feedback: 'thumbs_down'}],
+                                actions: [{ feedback: 'thumbs_up' }],
+                                guidance: [{ feedback: 'thumbs_up' }],
+                                knowledge: [{ feedback: 'thumbs_down' }],
                                 allowsFeedback: true,
                                 feedbackOnMessage: [
                                     {
@@ -176,10 +177,10 @@ describe('AIAgentFeedback', () => {
                         }
                     />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
         expect(
-            screen.getByRole('button', {name: 'Thumbs down button'})
+            screen.getByRole('button', { name: 'Thumbs down button' }),
         ).toHaveClass('withFeedback')
     })
 
@@ -192,9 +193,9 @@ describe('AIAgentFeedback', () => {
                         messageFeedback={
                             {
                                 messageId: mockMessage.id,
-                                actions: [{feedback: 'thumbs_up'}],
-                                guidance: [{feedback: null}],
-                                knowledge: [{feedback: 'thumbs_up'}],
+                                actions: [{ feedback: 'thumbs_up' }],
+                                guidance: [{ feedback: null }],
+                                knowledge: [{ feedback: 'thumbs_up' }],
                                 allowsFeedback: true,
                                 feedbackOnMessage: [],
                                 feedbackOnResource: [],
@@ -202,10 +203,10 @@ describe('AIAgentFeedback', () => {
                         }
                     />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
         expect(screen.getByText('thumb_up').parentElement).not.toHaveClass(
-            'withFeedback'
+            'withFeedback',
         )
     })
 
@@ -218,9 +219,9 @@ describe('AIAgentFeedback', () => {
                         messageFeedback={
                             {
                                 messageId: mockMessage.id,
-                                actions: [{feedback: 'thumbs_up'}],
-                                guidance: [{feedback: 'thumbs_up'}],
-                                knowledge: [{feedback: 'thumbs_up'}],
+                                actions: [{ feedback: 'thumbs_up' }],
+                                guidance: [{ feedback: 'thumbs_up' }],
+                                knowledge: [{ feedback: 'thumbs_up' }],
                                 allowsFeedback: true,
                                 feedbackOnMessage: [],
                                 feedbackOnResource: [],
@@ -228,7 +229,7 @@ describe('AIAgentFeedback', () => {
                         }
                     />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         userEvent.click(screen.getByLabelText('Thumbs up button'))
@@ -238,7 +239,7 @@ describe('AIAgentFeedback', () => {
                 accountId: mockAccountId,
                 outcome: 'thumbs_up',
                 banner: BANNER_TYPE.THUMBS_UP_IMPROVE_RESPONSE,
-            })
+            }),
         )
     })
 
@@ -247,13 +248,13 @@ describe('AIAgentFeedback', () => {
             <QueryClientProvider client={queryClient}>
                 <Provider store={store}>
                     <AIAgentFeedback
-                        message={{...mockMessage, public: false}}
+                        message={{ ...mockMessage, public: false }}
                         messageFeedback={
                             {
                                 messageId: mockMessage.id,
-                                actions: [{feedback: 'thumbs_down'}],
-                                guidance: [{feedback: 'thumbs_down'}],
-                                knowledge: [{feedback: 'thumbs_down'}],
+                                actions: [{ feedback: 'thumbs_down' }],
+                                guidance: [{ feedback: 'thumbs_down' }],
+                                knowledge: [{ feedback: 'thumbs_down' }],
                                 allowsFeedback: true,
                                 feedbackOnMessage: [],
                                 feedbackOnResource: [],
@@ -261,7 +262,7 @@ describe('AIAgentFeedback', () => {
                         }
                     />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         userEvent.click(screen.getByLabelText('Thumbs down button'))
@@ -271,7 +272,7 @@ describe('AIAgentFeedback', () => {
                 accountId: mockAccountId,
                 banner: BANNER_TYPE.THUMBS_UP_AND_DOWN,
                 outcome: 'thumbs_down',
-            })
+            }),
         )
     })
 
@@ -300,7 +301,7 @@ describe('AIAgentFeedback', () => {
                         }
                     />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         userEvent.click(screen.getByLabelText('Thumbs up button'))
@@ -336,7 +337,7 @@ describe('AIAgentFeedback', () => {
                         }
                     />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         userEvent.click(screen.getByLabelText('Thumbs up button'))
@@ -360,19 +361,19 @@ describe('AIAgentFeedback', () => {
                         messageFeedback={
                             {
                                 messageId: mockMessage.id,
-                                actions: [{feedback: 'thumbs_up'}],
-                                guidance: [{feedback: 'thumbs_up'}],
-                                knowledge: [{feedback: 'thumbs_up'}],
+                                actions: [{ feedback: 'thumbs_up' }],
+                                guidance: [{ feedback: 'thumbs_up' }],
+                                knowledge: [{ feedback: 'thumbs_up' }],
                                 allowsFeedback: true,
                                 feedbackOnMessage: [
-                                    {feedback: 'thumbs_up', type: 'binary'},
+                                    { feedback: 'thumbs_up', type: 'binary' },
                                 ],
                                 feedbackOnResource: [],
                             } as unknown as MessageFeedback
                         }
                     />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         userEvent.click(screen.getByLabelText('Thumbs up button'))
@@ -389,9 +390,9 @@ describe('AIAgentFeedback', () => {
                         messageFeedback={
                             {
                                 messageId: mockMessage.id,
-                                actions: [{feedback: 'thumbs_up'}],
-                                guidance: [{feedback: 'thumbs_up'}],
-                                knowledge: [{feedback: 'thumbs_up'}],
+                                actions: [{ feedback: 'thumbs_up' }],
+                                guidance: [{ feedback: 'thumbs_up' }],
+                                knowledge: [{ feedback: 'thumbs_up' }],
                                 allowsFeedback: true,
                                 feedbackOnMessage: [],
                                 feedbackOnResource: [
@@ -418,7 +419,7 @@ describe('AIAgentFeedback', () => {
                         }
                     />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         userEvent.click(screen.getByLabelText('Thumbs up button'))
@@ -435,19 +436,19 @@ describe('AIAgentFeedback', () => {
                         messageFeedback={
                             {
                                 messageId: mockMessage.id,
-                                actions: [{feedback: 'thumbs_down'}],
-                                guidance: [{feedback: 'thumbs_down'}],
-                                knowledge: [{feedback: 'thumbs_down'}],
+                                actions: [{ feedback: 'thumbs_down' }],
+                                guidance: [{ feedback: 'thumbs_down' }],
+                                knowledge: [{ feedback: 'thumbs_down' }],
                                 allowsFeedback: true,
                                 feedbackOnMessage: [
-                                    {feedback: 'thumbs_down', type: 'binary'},
+                                    { feedback: 'thumbs_down', type: 'binary' },
                                 ],
                                 feedbackOnResource: [],
                             } as unknown as MessageFeedback
                         }
                     />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         userEvent.click(screen.getByLabelText('Thumbs down button'))

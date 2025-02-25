@@ -1,15 +1,14 @@
-import {useQueryClient} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
+import { useQueryClient } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
 
 import {
     useCreateOnboardingNotificationState,
     useUpsertOnboardingNotificationState,
 } from 'models/aiAgent/queries'
+import { AiAgentOnboardingState } from 'models/aiAgent/types'
 
-import {AiAgentOnboardingState} from 'models/aiAgent/types'
-
-import {getOnboardingNotificationStateFixture} from '../../fixtures/onboardingNotificationState.fixture'
-import {useOnboardingNotificationStateMutation} from '../useOnboardingNotificationStateMutation'
+import { getOnboardingNotificationStateFixture } from '../../fixtures/onboardingNotificationState.fixture'
+import { useOnboardingNotificationStateMutation } from '../useOnboardingNotificationStateMutation'
 
 jest.mock('@tanstack/react-query', () => ({
     useQueryClient: jest.fn(),
@@ -26,7 +25,7 @@ const shopName = 'test-store'
 const mockedOnboardingNotificationState = getOnboardingNotificationStateFixture(
     {
         shopName,
-    }
+    },
 )
 
 describe('useOnboardingNotificationStateMutation', () => {
@@ -58,16 +57,16 @@ describe('useOnboardingNotificationStateMutation', () => {
     })
 
     it('should return isLoading, createOnboardingNotificationState and upsertOnboardingNotificationState', async () => {
-        const {result} = renderHook(() =>
-            useOnboardingNotificationStateMutation({accountDomain, shopName})
+        const { result } = renderHook(() =>
+            useOnboardingNotificationStateMutation({ accountDomain, shopName }),
         )
 
         expect(result.current.isLoading).toBe(false)
         expect(result.current.createOnboardingNotificationState).toBeInstanceOf(
-            Function
+            Function,
         )
         expect(result.current.upsertOnboardingNotificationState).toBeInstanceOf(
-            Function
+            Function,
         )
         const createRes =
             await result.current.createOnboardingNotificationState({
@@ -78,7 +77,7 @@ describe('useOnboardingNotificationStateMutation', () => {
 
         const upsertRes =
             await result.current.upsertOnboardingNotificationState(
-                mockedOnboardingNotificationState
+                mockedOnboardingNotificationState,
             )
         expect(upsertRes).toBe(mockedOnboardingNotificationState)
     })
@@ -93,8 +92,8 @@ describe('useOnboardingNotificationStateMutation', () => {
             mutateAsync: jest.fn(),
         })
 
-        const {result} = renderHook(() =>
-            useOnboardingNotificationStateMutation({accountDomain, shopName})
+        const { result } = renderHook(() =>
+            useOnboardingNotificationStateMutation({ accountDomain, shopName }),
         )
 
         expect(result.current.isLoading).toBe(true)

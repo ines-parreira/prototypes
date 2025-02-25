@@ -1,18 +1,19 @@
-import {render, screen, fireEvent} from '@testing-library/react'
-import React, {ReactNode} from 'react'
+import React, { ReactNode } from 'react'
 
-import {SegmentEvent, logEvent} from 'common/segment'
+import { fireEvent, render, screen } from '@testing-library/react'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import Spotlight from 'pages/common/components/Spotlight/Spotlight'
 import {
     SpotlightContext,
     SpotlightContextType,
 } from 'providers/ui/SpotlightContext'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('pages/common/components/Spotlight/SpotlightModal.tsx', () => ({
     __esModule: true,
-    default: ({onCloseModal}: {onCloseModal: () => void}) => (
+    default: ({ onCloseModal }: { onCloseModal: () => void }) => (
         <div data-testid="spotlight-modal">
             <button name="close" onClick={onCloseModal}>
                 Close
@@ -31,12 +32,12 @@ const logEventMock = assumeMock(logEvent)
 
 const renderWithSpotlightContext = (
     ui: ReactNode,
-    {providerProps}: {providerProps: SpotlightContextType}
+    { providerProps }: { providerProps: SpotlightContextType },
 ) => {
     return render(
         <SpotlightContext.Provider value={providerProps}>
             {ui}
-        </SpotlightContext.Provider>
+        </SpotlightContext.Provider>,
     )
 }
 
@@ -48,7 +49,7 @@ describe('Spotlight', () => {
             setIsOpen,
         }
 
-        renderWithSpotlightContext(<Spotlight />, {providerProps})
+        renderWithSpotlightContext(<Spotlight />, { providerProps })
 
         // Simulate the shortcut action
         const toggleAction =
@@ -58,7 +59,7 @@ describe('Spotlight', () => {
 
         expect(setIsOpen).toHaveBeenCalledWith(true)
         expect(logEventMock).toHaveBeenCalledWith(
-            SegmentEvent.GlobalSearchOpenShortcut
+            SegmentEvent.GlobalSearchOpenShortcut,
         )
     })
 
@@ -69,9 +70,9 @@ describe('Spotlight', () => {
             setIsOpen,
         }
 
-        renderWithSpotlightContext(<Spotlight />, {providerProps})
+        renderWithSpotlightContext(<Spotlight />, { providerProps })
 
-        fireEvent.click(screen.getByRole('button', {name: /close/i}))
+        fireEvent.click(screen.getByRole('button', { name: /close/i }))
 
         expect(setIsOpen).toHaveBeenCalledWith(false)
     })
@@ -83,7 +84,7 @@ describe('Spotlight', () => {
             setIsOpen,
         }
 
-        const {container} = renderWithSpotlightContext(<Spotlight />, {
+        const { container } = renderWithSpotlightContext(<Spotlight />, {
             providerProps,
         })
 

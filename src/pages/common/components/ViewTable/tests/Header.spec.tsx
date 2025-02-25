@@ -1,18 +1,17 @@
-import {screen} from '@testing-library/dom'
-import {fireEvent, render, waitFor} from '@testing-library/react'
-import {fromJS, Map} from 'immutable'
 import React from 'react'
 
-import {MemoryRouter} from 'react-router-dom'
+import { screen } from '@testing-library/dom'
+import { fireEvent, render, waitFor } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
+import { MemoryRouter } from 'react-router-dom'
 
-import {getConfigByName} from 'config/views'
-import {view as viewsFixture} from 'fixtures/views'
-import {newViews} from 'models/view/mocks'
-import {EntityType} from 'models/view/types'
-import {HeaderContainer} from 'pages/common/components/ViewTable/Header'
-import {fetchViewItems} from 'state/views/actions'
-
-import {systemViewIcons} from 'utils/views'
+import { getConfigByName } from 'config/views'
+import { view as viewsFixture } from 'fixtures/views'
+import { newViews } from 'models/view/mocks'
+import { EntityType } from 'models/view/types'
+import { HeaderContainer } from 'pages/common/components/ViewTable/Header'
+import { fetchViewItems } from 'state/views/actions'
+import { systemViewIcons } from 'utils/views'
 
 jest.mock('lodash/uniqueId', () => () => '42')
 
@@ -51,23 +50,23 @@ describe('ViewTable::Header', () => {
         return render(
             <MemoryRouter initialEntries={['/app/tickets/123']}>
                 {children}
-            </MemoryRouter>
+            </MemoryRouter>,
         )
     }
 
     it('should display an empty view', () => {
-        const {container} = renderWithRouter(
+        const { container } = renderWithRouter(
             <HeaderContainer
                 {...minProps}
                 activeView={fromJS({})}
                 isUpdate={false}
-            />
+            />,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should display view on search mode', () => {
-        const {getByPlaceholderText} = renderWithRouter(
+        const { getByPlaceholderText } = renderWithRouter(
             <HeaderContainer
                 {...minProps}
                 isSearch
@@ -75,7 +74,7 @@ describe('ViewTable::Header', () => {
                     ...viewsFixture,
                     search: 'term1',
                 })}
-            />
+            />,
         )
 
         expect(getByPlaceholderText(/Search tickets/)).toBeInTheDocument()
@@ -84,7 +83,7 @@ describe('ViewTable::Header', () => {
     it('should display input filled with the search term', () => {
         const searchTerm = 'lost order'
 
-        const {getByDisplayValue} = renderWithRouter(
+        const { getByDisplayValue } = renderWithRouter(
             <HeaderContainer
                 {...minProps}
                 isSearch
@@ -92,21 +91,21 @@ describe('ViewTable::Header', () => {
                     ...viewsFixture,
                     search: searchTerm,
                 })}
-            />
+            />,
         )
         expect(getByDisplayValue(searchTerm)).toBeInTheDocument()
     })
 
     it('should display view on edit mode', () => {
-        const {getByDisplayValue} = renderWithRouter(
-            <HeaderContainer {...minProps} activeView={editModeActiveView} />
+        const { getByDisplayValue } = renderWithRouter(
+            <HeaderContainer {...minProps} activeView={editModeActiveView} />,
         )
         expect(getByDisplayValue(viewsFixture.name)).toHaveClass('edit-mode')
     })
 
     it('should reset view and fetch tickets when clicking on the close flow icon in edit mode', () => {
         renderWithRouter(
-            <HeaderContainer {...minProps} activeView={editModeActiveView} />
+            <HeaderContainer {...minProps} activeView={editModeActiveView} />,
         )
         const closeIcon = screen.getByAltText('close-icon')
         fireEvent.click(closeIcon)
@@ -117,13 +116,15 @@ describe('ViewTable::Header', () => {
     it('should not update view on search submit when not in search mode', () => {
         renderWithRouter(<HeaderContainer {...minProps} isSearch />)
         const searchInput = screen.getByPlaceholderText(/Search/i)
-        fireEvent.change(searchInput, {target: {value: 'foo search'}})
+        fireEvent.change(searchInput, { target: { value: 'foo search' } })
 
         expect(minProps.updateView).not.toHaveBeenCalled()
     })
 
     it('display the view name', () => {
-        const {getByText} = renderWithRouter(<HeaderContainer {...minProps} />)
+        const { getByText } = renderWithRouter(
+            <HeaderContainer {...minProps} />,
+        )
         expect(getByText(viewsFixture.name)).toBeInTheDocument()
     })
 
@@ -131,11 +132,11 @@ describe('ViewTable::Header', () => {
         renderWithRouter(<HeaderContainer {...minProps} isSearch />)
         const searchTerm = 'term1'
         const searchInput = screen.getByPlaceholderText(/Search/i)
-        fireEvent.change(searchInput, {target: {value: searchTerm}})
+        fireEvent.change(searchInput, { target: { value: searchTerm } })
 
         await waitFor(() => {
             expect(screen.getByDisplayValue(searchTerm)).toBeInTheDocument()
-            fireEvent.keyDown(searchInput, {key: 'Enter'})
+            fireEvent.keyDown(searchInput, { key: 'Enter' })
             expect(minProps.updateView).toHaveBeenLastCalledWith(
                 (
                     fromJS({
@@ -144,7 +145,7 @@ describe('ViewTable::Header', () => {
                         order_dir: undefined,
                     }) as Map<any, any>
                 ).set('search', searchTerm),
-                false
+                false,
             )
         })
 
@@ -153,13 +154,13 @@ describe('ViewTable::Header', () => {
 
     it('update view name', () => {
         renderWithRouter(
-            <HeaderContainer {...minProps} activeView={editModeActiveView} />
+            <HeaderContainer {...minProps} activeView={editModeActiveView} />,
         )
         const viewNameInput = screen.getByDisplayValue(
-            (minProps.activeView as Map<any, any>).get('name')
+            (minProps.activeView as Map<any, any>).get('name'),
         )
-        fireEvent.change(viewNameInput, {target: {value: 'new name'}})
-        fireEvent.keyUp(viewNameInput, {key: 'Enter'})
+        fireEvent.change(viewNameInput, { target: { value: 'new name' } })
+        fireEvent.keyUp(viewNameInput, { key: 'Enter' })
         fireEvent.blur(viewNameInput)
 
         expect(minProps.updateView).toHaveBeenCalled()
@@ -172,10 +173,10 @@ describe('ViewTable::Header', () => {
             it('should render emoji if decoration.emoji is a string', () => {
                 const emoji = 'foo'
                 const activeView = editModeActiveView.merge({
-                    decoration: {emoji},
+                    decoration: { emoji },
                 })
-                const {getByText} = renderWithRouter(
-                    <HeaderContainer {...minProps} activeView={activeView} />
+                const { getByText } = renderWithRouter(
+                    <HeaderContainer {...minProps} activeView={activeView} />,
                 )
                 expect(getByText(emoji)).toBeInTheDocument()
             })
@@ -184,8 +185,8 @@ describe('ViewTable::Header', () => {
                 const activeView = editModeActiveView.merge({
                     decoration: 'foo',
                 })
-                const {getByText} = renderWithRouter(
-                    <HeaderContainer {...minProps} activeView={activeView} />
+                const { getByText } = renderWithRouter(
+                    <HeaderContainer {...minProps} activeView={activeView} />,
                 )
                 expect(getByText('insert_emoticon')).toBeInTheDocument()
             })
@@ -196,8 +197,8 @@ describe('ViewTable::Header', () => {
                         emoji: {},
                     },
                 })
-                const {getByText} = renderWithRouter(
-                    <HeaderContainer {...minProps} activeView={activeView} />
+                const { getByText } = renderWithRouter(
+                    <HeaderContainer {...minProps} activeView={activeView} />,
                 )
                 expect(getByText('insert_emoticon')).toBeInTheDocument()
             })
@@ -208,8 +209,8 @@ describe('ViewTable::Header', () => {
                 const activeView = editModeActiveView.merge({
                     decoration: null,
                 })
-                const {baseElement} = renderWithRouter(
-                    <HeaderContainer {...minProps} activeView={activeView} />
+                const { baseElement } = renderWithRouter(
+                    <HeaderContainer {...minProps} activeView={activeView} />,
                 )
                 const emojiSelect = screen.getByText('insert_emoticon')
                 fireEvent.click(emojiSelect)
@@ -223,15 +224,15 @@ describe('ViewTable::Header', () => {
                     any
                 >[]
                 expect(updateView[0].getIn(['decoration', 'emoji'])).toEqual(
-                    emojiSelection.textContent
+                    emojiSelection.textContent,
                 )
             })
 
             it('should not override existing decoration object properties', () => {
-                const decoration = {foo: 'bar'}
-                const activeView = editModeActiveView.merge({decoration})
-                const {baseElement} = renderWithRouter(
-                    <HeaderContainer {...minProps} activeView={activeView} />
+                const decoration = { foo: 'bar' }
+                const activeView = editModeActiveView.merge({ decoration })
+                const { baseElement } = renderWithRouter(
+                    <HeaderContainer {...minProps} activeView={activeView} />,
                 )
                 const emojiSelect = screen.getByText('insert_emoticon')
                 fireEvent.click(emojiSelect)
@@ -245,7 +246,7 @@ describe('ViewTable::Header', () => {
                     any
                 >[]
                 expect(updateView[0].getIn(['decoration', 'foo'])).toEqual(
-                    decoration.foo
+                    decoration.foo,
                 )
             })
         })
@@ -253,10 +254,10 @@ describe('ViewTable::Header', () => {
         describe('emoji clear', () => {
             it('should unset decoration.emoji view on emoji clear', () => {
                 const activeView = editModeActiveView.merge({
-                    decoration: {emoji},
+                    decoration: { emoji },
                 })
-                const {baseElement} = renderWithRouter(
-                    <HeaderContainer {...minProps} activeView={activeView} />
+                const { baseElement } = renderWithRouter(
+                    <HeaderContainer {...minProps} activeView={activeView} />,
                 )
 
                 const emojiSelect = screen.getByText(emoji)
@@ -273,18 +274,18 @@ describe('ViewTable::Header', () => {
                     decoration: {},
                 })
                 expect(minProps.updateView).toHaveBeenLastCalledWith(
-                    expectedActiveView
+                    expectedActiveView,
                 )
             })
         })
 
         describe('tooltip for missing view name', () => {
             it('should display a tooltip when the name of the active view is empty', () => {
-                const {rerender} = renderWithRouter(
+                const { rerender } = renderWithRouter(
                     <HeaderContainer
                         {...minProps}
                         activeView={editModeActiveView}
-                    />
+                    />,
                 )
 
                 rerender(
@@ -295,11 +296,11 @@ describe('ViewTable::Header', () => {
                                 name: '',
                             })}
                         />
-                    </MemoryRouter>
+                    </MemoryRouter>,
                 )
 
                 expect(
-                    screen.getByText(/Please add a name to your view/i)
+                    screen.getByText(/Please add a name to your view/i),
                 ).toBeInTheDocument()
             })
 
@@ -307,22 +308,22 @@ describe('ViewTable::Header', () => {
                 renderWithRouter(<HeaderContainer {...minProps} />)
 
                 expect(
-                    screen.queryByText(/Please add a name to your view/i)
+                    screen.queryByText(/Please add a name to your view/i),
                 ).not.toBeInTheDocument()
             })
         })
     })
 
     it('should display material icon next to the view name for a view system', () => {
-        const {getByText} = renderWithRouter(
-            <HeaderContainer {...minProps} activeView={fromJS(newViews[0])} />
+        const { getByText } = renderWithRouter(
+            <HeaderContainer {...minProps} activeView={fromJS(newViews[0])} />,
         )
         expect(
             getByText(
                 systemViewIcons[
                     newViews[0].slug as keyof typeof systemViewIcons
-                ]
-            )
+                ],
+            ),
         ).toBeInTheDocument()
     })
 })

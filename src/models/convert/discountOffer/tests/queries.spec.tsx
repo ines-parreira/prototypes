@@ -1,12 +1,13 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {act} from '@testing-library/react'
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
 
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
-import {uniqueDiscountOffers} from 'fixtures/uniqueDiscountOffers'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { act } from '@testing-library/react'
+import { renderHook } from '@testing-library/react-hooks'
+
+import { axiosSuccessResponse } from 'fixtures/axiosResponse'
+import { uniqueDiscountOffers } from 'fixtures/uniqueDiscountOffers'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 import * as queries from '../queries'
 import * as resources from '../resources'
@@ -27,7 +28,7 @@ jest.mock('../resources', () => ({
 
 const queryClient = mockQueryClient()
 
-const wrapper = ({children}: any) => (
+const wrapper = ({ children }: any) => (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 )
 
@@ -58,13 +59,13 @@ describe('Discount Offer queries', () => {
             }
 
             mockResources.mockGetDiscountOffers.mockResolvedValueOnce(
-                axiosSuccessResponse([uniqueDiscountOffers]) as any
+                axiosSuccessResponse([uniqueDiscountOffers]) as any,
             )
-            const {result, waitFor} = renderHook(
+            const { result, waitFor } = renderHook(
                 () => queries.useListDiscountOffers(mockParams, testOverrides),
                 {
                     wrapper,
-                }
+                },
             )
             await waitFor(() => {
                 expect(result.current.isSuccess).toBe(true)
@@ -80,13 +81,13 @@ describe('Discount Offer queries', () => {
             }
 
             mockResources.mockGetDiscountOffers.mockRejectedValue(
-                Error('test error')
+                Error('test error'),
             )
-            const {result, waitFor} = renderHook(
+            const { result, waitFor } = renderHook(
                 () => queries.useListDiscountOffers(mockParams, testOverrides),
                 {
                     wrapper,
-                }
+                },
             )
 
             await waitFor(() => expect(result.current.isError).toBe(true))
@@ -100,13 +101,13 @@ describe('Discount Offer queries', () => {
             }
 
             mockResources.mockGetDiscountOffer.mockResolvedValueOnce(
-                axiosSuccessResponse([uniqueDiscountOffers[0]]) as any
+                axiosSuccessResponse([uniqueDiscountOffers[0]]) as any,
             )
-            const {result, waitFor} = renderHook(
+            const { result, waitFor } = renderHook(
                 () => queries.useGetDiscountOffer(mockParams, testOverrides),
                 {
                     wrapper,
-                }
+                },
             )
             await waitFor(() => {
                 expect(result.current.isSuccess).toBe(true)
@@ -121,13 +122,13 @@ describe('Discount Offer queries', () => {
             }
 
             mockResources.mockGetDiscountOffer.mockRejectedValue(
-                Error('test error')
+                Error('test error'),
             )
-            const {result, waitFor} = renderHook(
+            const { result, waitFor } = renderHook(
                 () => queries.useGetDiscountOffer(mockParams, testOverrides),
                 {
                     wrapper,
-                }
+                },
             )
 
             await waitFor(() => expect(result.current.isError).toBe(true))
@@ -138,17 +139,17 @@ describe('Discount Offer queries', () => {
     describe('deleteDiscountOffer', () => {
         it('should successfully delete', async () => {
             mockResources.mockDeleteDiscountOffer.mockResolvedValueOnce(
-                axiosSuccessResponse(undefined) as any
+                axiosSuccessResponse(undefined) as any,
             )
-            const {result, waitFor} = renderHook(
+            const { result, waitFor } = renderHook(
                 () => queries.useDeleteDiscountOffer(testOverrides),
                 {
                     wrapper,
-                }
+                },
             )
 
             act(() => {
-                result.current.mutate([undefined, {discount_offer_id: '3'}])
+                result.current.mutate([undefined, { discount_offer_id: '3' }])
             })
 
             await waitFor(() => {
@@ -158,17 +159,17 @@ describe('Discount Offer queries', () => {
         })
         it('should throw error if delete fails', async () => {
             mockResources.mockDeleteDiscountOffer.mockRejectedValueOnce(
-                Error('test')
+                Error('test'),
             )
-            const {result, waitFor} = renderHook(
+            const { result, waitFor } = renderHook(
                 () => queries.useDeleteDiscountOffer(testOverrides),
                 {
                     wrapper,
-                }
+                },
             )
 
             act(() => {
-                result.current.mutate([undefined, {discount_offer_id: '3'}])
+                result.current.mutate([undefined, { discount_offer_id: '3' }])
             })
 
             await waitFor(() => {

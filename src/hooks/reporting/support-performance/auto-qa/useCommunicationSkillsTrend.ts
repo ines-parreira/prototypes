@@ -1,11 +1,13 @@
-import useMetricTrend, {fetchMetricTrend} from 'hooks/reporting/useMetricTrend'
-import {communicationSkillsQueryFactory} from 'models/reporting/queryFactories/auto-qa/communicationSkillsQueryFactory'
-import {StatsFilters} from 'models/stat/types'
-import {getPreviousPeriod} from 'utils/reporting'
+import useMetricTrend, {
+    fetchMetricTrend,
+} from 'hooks/reporting/useMetricTrend'
+import { communicationSkillsQueryFactory } from 'models/reporting/queryFactories/auto-qa/communicationSkillsQueryFactory'
+import { StatsFilters } from 'models/stat/types'
+import { getPreviousPeriod } from 'utils/reporting'
 
 export const useCommunicationSkillsTrend = (
     filters: StatsFilters,
-    timezone: string
+    timezone: string,
 ) =>
     useMetricTrend(
         communicationSkillsQueryFactory(filters, timezone),
@@ -14,13 +16,13 @@ export const useCommunicationSkillsTrend = (
                 ...filters,
                 period: getPreviousPeriod(filters.period),
             },
-            timezone
-        )
+            timezone,
+        ),
     )
 
 export const fetchCommunicationSkillsTrend = (
     filters: StatsFilters,
-    timezone: string
+    timezone: string,
 ) =>
     fetchMetricTrend(
         communicationSkillsQueryFactory(filters, timezone),
@@ -29,6 +31,6 @@ export const fetchCommunicationSkillsTrend = (
                 ...filters,
                 period: getPreviousPeriod(filters.period),
             },
-            timezone
-        )
+            timezone,
+        ),
     )

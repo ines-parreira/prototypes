@@ -1,12 +1,13 @@
-import {ContentBlock, ContentState, Modifier} from 'draft-js'
-import {fromJS, Map} from 'immutable'
+import { ContentBlock, ContentState, Modifier } from 'draft-js'
+import { fromJS, Map } from 'immutable'
 import moment from 'moment'
 
-import {TicketChannel} from '../../business/types/ticket'
-import {isTicketMessage} from '../../models/ticket/predicates'
-import {Ticket, TicketElement, TicketMessage} from '../../models/ticket/types'
-import {setQuoteDepth} from '../../pages/common/draftjs/plugins/quotes/quotesEditorUtils'
+import { TicketChannel } from '../../business/types/ticket'
+import { isTicketMessage } from '../../models/ticket/predicates'
+import { Ticket, TicketElement, TicketMessage } from '../../models/ticket/types'
+import { setQuoteDepth } from '../../pages/common/draftjs/plugins/quotes/quotesEditorUtils'
 import {
+    ContentStateCounter,
     contentStateFromTextOrHTML,
     convertFromHTML,
     insertNewBlockAtTheBeginning,
@@ -14,7 +15,6 @@ import {
     selectWholeContentState,
     truncateContentStateBlocks,
     truncateContentStateWords,
-    ContentStateCounter,
 } from '../../utils/editor'
 
 export type Signature = Map<'text' | 'html', string | undefined>
@@ -49,7 +49,7 @@ const DEFAULT_REPLY_WORDS_COUNT_LIMIT = 1200
 const LIMITED_REPLY_THREAD_INDICATOR = ContentState.createFromText('(...)')
 
 export const getReplyThreadMessages = (
-    messages: TicketElement[]
+    messages: TicketElement[],
 ): ReplyThreadMessage[] => {
     return messages
         .filter((message): message is ReplyThreadMessage => {
@@ -66,7 +66,7 @@ export const getReplyThreadMessages = (
 
 export const isSignatureTextAdded = (
     contentState: ContentState,
-    signature: Signature
+    signature: Signature,
 ): boolean => {
     if (!signature.get('text')) {
         return false
@@ -79,7 +79,7 @@ export const isSignatureTextAdded = (
 
 export const hasOnlySignatureText = (
     contentState: ContentState,
-    signature: Signature
+    signature: Signature,
 ): boolean => {
     if (!signature.get('text')) {
         return false
@@ -88,7 +88,7 @@ export const hasOnlySignatureText = (
         contentState.getPlainText() ===
         mergeContentStates(
             ContentState.createFromText(''),
-            generateSignature(signature)
+            generateSignature(signature),
         ).getPlainText()
     )
 }
@@ -107,16 +107,16 @@ const generateSignature = (signature: Signature): ContentState => {
     return Modifier.mergeBlockData(
         signatureContentState,
         selectWholeContentState(signatureContentState),
-        fromJS({[BlockDataKey.Signature]: true})
+        fromJS({ [BlockDataKey.Signature]: true }),
     )
 }
 
 const generateReplyThreadMessageHeader = (
-    message: ReplyThreadMessage
+    message: ReplyThreadMessage,
 ): ContentState => {
-    const {source, sent_datetime, sender, channel} = message
+    const { source, sent_datetime, sender, channel } = message
     const name = source?.from?.name || sender.name || ''
-    const {address} = source?.from || {}
+    const { address } = source?.from || {}
     const sentDate = moment
         .parseZone(sent_datetime)
         .format('ddd, MMM DD, YYYY, [at] hh:mm A')
@@ -132,18 +132,18 @@ const generateReplyThreadMessageHeader = (
 
 const generateForwardedReplyThreadMessageHeader = (
     message: ReplyThreadMessage,
-    ticket: Ticket
+    ticket: Ticket,
 ) => {
-    const {source, sent_datetime, sender, channel} = message
+    const { source, sent_datetime, sender, channel } = message
     const name = source?.from?.name || sender.name || ''
-    const {address} = source?.from || {}
+    const { address } = source?.from || {}
     const sentDate = moment
         .parseZone(sent_datetime)
         .format('ddd, MMM DD, YYYY, [at] hh:mm A')
     const recipients =
         channel === TicketChannel.Email
             ? message.source?.to?.map(
-                  ({address}) => `<a href="${address}">${address}</a>`
+                  ({ address }) => `<a href="${address}">${address}</a>`,
               ) || []
             : [message.receiver?.name]
 
@@ -164,27 +164,27 @@ const generateForwardedReplyThreadMessageHeader = (
 }
 
 const generateReplyThreadMessageBody = (
-    message: ReplyThreadMessage
+    message: ReplyThreadMessage,
 ): ContentState => {
-    const {stripped_html, stripped_text, body_html, body_text} = message
+    const { stripped_html, stripped_text, body_html, body_text } = message
     return convertFromHTML(
-        stripped_html || body_html || stripped_text || body_text || ''
+        stripped_html || body_html || stripped_text || body_text || '',
     )
 }
 
 const truncateReplyThreadMessageBody = (
     bodyContentState: ContentState,
     blocks: number,
-    words: number
+    words: number,
 ): ContentState => {
     return blocks <= 0 || words <= 0
         ? truncateContentStateWords(
               truncateContentStateBlocks(bodyContentState, 1),
-              3
+              3,
           )
         : truncateContentStateWords(
               truncateContentStateBlocks(bodyContentState, blocks),
-              words
+              words,
           )
 }
 
@@ -197,7 +197,7 @@ const generateReplyThread = (
         messagesCountLimit = DEFAULT_REPLY_THREAD_MESSAGES_COUNT_LIMIT,
         replyBlocksCountLimit = DEFAULT_REPLY_BLOCKS_COUNT_LIMIT,
         replyWordsCountLimit = DEFAULT_REPLY_WORDS_COUNT_LIMIT,
-    }: ReplyThreadArgs
+    }: ReplyThreadArgs,
 ): ContentState => {
     if (!replyThreadMessages.length) {
         return ContentState.createFromText('')
@@ -207,7 +207,7 @@ const generateReplyThread = (
     let isLimited = replyThreadMessages.length !== messagesToRender.length
     let replyThread = ContentState.createFromText('')
     const replyCounts = new ContentStateCounter(
-        mergeContentStates(contentState, replyThread)
+        mergeContentStates(contentState, replyThread),
     )
 
     const appendToReplyThread = (contentState: ContentState) => {
@@ -230,7 +230,7 @@ const generateReplyThread = (
         header = setQuoteDepth(
             header,
             selectWholeContentState(header),
-            quoteLevel
+            quoteLevel,
         )
         appendToReplyThread(header)
 
@@ -238,12 +238,12 @@ const generateReplyThread = (
         body = setQuoteDepth(
             body,
             selectWholeContentState(body),
-            isPreviousMessageForwarded ? quoteLevel : quoteLevel + 1
+            isPreviousMessageForwarded ? quoteLevel : quoteLevel + 1,
         )
         const truncatedBody = truncateReplyThreadMessageBody(
             body,
             replyBlocksCountLimit - replyCounts.blocks,
-            replyWordsCountLimit - replyCounts.words
+            replyWordsCountLimit - replyCounts.words,
         )
         appendToReplyThread(truncatedBody)
 
@@ -264,13 +264,13 @@ const generateReplyThread = (
     return Modifier.mergeBlockData(
         replyThread,
         selectWholeContentState(replyThread),
-        fromJS({[BlockDataKey.ReplyThread]: true})
+        fromJS({ [BlockDataKey.ReplyThread]: true }),
     )
 }
 
 const generateEmailExtra = (
     contentState: ContentState,
-    {signature, ...replyThreadArgs}: EmailExtraArgs
+    { signature, ...replyThreadArgs }: EmailExtraArgs,
 ): ContentState => {
     const signatureContentState = generateSignature(signature)
     let newContentState: ContentState | null = null
@@ -286,7 +286,7 @@ const generateEmailExtra = (
         newContentState
             ? mergeContentStates(contentState, newContentState)
             : contentState,
-        replyThreadArgs
+        replyThreadArgs,
     )
 
     if (replyThreadContentState.hasText()) {
@@ -299,18 +299,18 @@ const generateEmailExtra = (
         ? Modifier.mergeBlockData(
               newContentState,
               selectWholeContentState(newContentState),
-              fromJS({[BlockDataKey.EmailExtra]: true})
+              fromJS({ [BlockDataKey.EmailExtra]: true }),
           )
         : ContentState.createFromText('')
 }
 
 export const addEmailExtraContent = (
     contentState: ContentState,
-    emailExtraArgs: EmailExtraArgs
+    emailExtraArgs: EmailExtraArgs,
 ): ContentState => {
     const emailExtraContentState = generateEmailExtra(
         contentState,
-        emailExtraArgs
+        emailExtraArgs,
     )
 
     if (emailExtraContentState.hasText()) {
@@ -325,7 +325,7 @@ const isEmailExtraContentBlock = (block: ContentBlock): boolean => {
 }
 
 export const deleteEmailExtraContent = (
-    contentState: ContentState
+    contentState: ContentState,
 ): ContentState => {
     const newBlocks = contentState
         .getBlocksAsArray()
@@ -346,13 +346,13 @@ export const hasEmailExtraContent = (contentState: ContentState): boolean => {
 
 const getEmailExtraContent = (contentState: ContentState): ContentState => {
     return ContentState.createFromBlockArray(
-        contentState.getBlocksAsArray().filter(isEmailExtraContentBlock)
+        contentState.getBlocksAsArray().filter(isEmailExtraContentBlock),
     )
 }
 
 const clearEmailExtraData = (
     contentState: ContentState,
-    iteratee?: (block: ContentBlock, emailExtraBlockIndex: number) => boolean
+    iteratee?: (block: ContentBlock, emailExtraBlockIndex: number) => boolean,
 ): ContentState => {
     let modified = false
     let emailExtraBlockIndex = 0
@@ -370,25 +370,25 @@ const clearEmailExtraData = (
                         (data, key) => {
                             return data.delete(key)
                         },
-                        data
+                        data,
                     )
                     return block.set('data', newData)
                 }
             }
             return block
-        }) as ContentBlock[]
+        }) as ContentBlock[],
     )
         .set('selectionAfter', contentState.getSelectionAfter())
         .set(
             'selectionBefore',
-            contentState.getSelectionBefore()
+            contentState.getSelectionBefore(),
         ) as ContentState
     return modified ? cleanContentState : contentState
 }
 
 export const updateEmailExtraOnUserInput = (
     prevContentState: ContentState,
-    contentState: ContentState
+    contentState: ContentState,
 ): ContentState => {
     const prevEmailExtraContent = getEmailExtraContent(prevContentState)
     const emailExtraContent = getEmailExtraContent(contentState)
@@ -402,10 +402,10 @@ export const updateEmailExtraOnUserInput = (
 
     if (!emailExtraContent.equals(prevEmailExtraContent)) {
         const prevEmailExtraTail = ContentState.createFromBlockArray(
-            prevEmailExtraContent.getBlocksAsArray().slice(1)
+            prevEmailExtraContent.getBlocksAsArray().slice(1),
         )
         const emailExtraTail = ContentState.createFromBlockArray(
-            emailExtraContent.getBlocksAsArray().slice(1)
+            emailExtraContent.getBlocksAsArray().slice(1),
         )
         if (
             !prevEmailExtraContent.getFirstBlock()?.getLength() &&
@@ -415,7 +415,7 @@ export const updateEmailExtraOnUserInput = (
         ) {
             return clearEmailExtraData(
                 contentState,
-                (block, emailExtraBlockIndex) => !emailExtraBlockIndex
+                (block, emailExtraBlockIndex) => !emailExtraBlockIndex,
             )
         }
         return clearEmailExtraData(contentState)

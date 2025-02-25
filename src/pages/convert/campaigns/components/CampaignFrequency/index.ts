@@ -1,1 +1,1 @@
-export {default} from './CampaignFrequency'
+export { default } from './CampaignFrequency'

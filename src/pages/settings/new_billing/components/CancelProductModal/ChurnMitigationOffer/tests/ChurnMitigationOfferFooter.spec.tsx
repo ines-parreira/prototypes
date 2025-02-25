@@ -1,5 +1,6 @@
-import {fireEvent, render, waitFor} from '@testing-library/react'
 import React from 'react'
+
+import { fireEvent, render, waitFor } from '@testing-library/react'
 
 import ChurnMitigationOfferFooter from '../ChurnMitigationOfferFooter'
 
@@ -14,12 +15,12 @@ describe('ChurnMitigationOfferFooter', () => {
     })
 
     it('renders correctly', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <ChurnMitigationOfferFooter
                 onAccept={onAcceptMock}
                 onContinue={onContinueMock}
                 isLoading={isLoading}
-            />
+            />,
         )
 
         expect(getByText('Accept offer')).toBeInTheDocument()
@@ -27,12 +28,12 @@ describe('ChurnMitigationOfferFooter', () => {
     })
 
     it('calls onAccept when "Accept offer" button is clicked', async () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <ChurnMitigationOfferFooter
                 onAccept={onAcceptMock}
                 onContinue={onContinueMock}
                 isLoading={isLoading}
-            />
+            />,
         )
 
         fireEvent.click(getByText('Accept offer'))
@@ -42,12 +43,12 @@ describe('ChurnMitigationOfferFooter', () => {
     })
 
     it('calls onContinue when "Continue cancelling" button is clicked', async () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <ChurnMitigationOfferFooter
                 onAccept={onAcceptMock}
                 onContinue={onContinueMock}
                 isLoading={isLoading}
-            />
+            />,
         )
 
         fireEvent.click(getByText('Continue cancelling'))
@@ -57,12 +58,12 @@ describe('ChurnMitigationOfferFooter', () => {
     })
 
     it('disables buttons when isLoading is true', () => {
-        const {getByRole} = render(
+        const { getByRole } = render(
             <ChurnMitigationOfferFooter
                 onAccept={onAcceptMock}
                 onContinue={onContinueMock}
                 isLoading={true}
-            />
+            />,
         )
 
         const acceptButton = getByRole('button', {

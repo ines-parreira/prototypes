@@ -1,5 +1,4 @@
-import {renderHook} from '@testing-library/react-hooks'
-
+import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment'
 
 import {
@@ -10,11 +9,10 @@ import {
     fetchMetricPerDimension,
     useMetricPerDimension,
 } from 'hooks/reporting/useMetricPerDimension'
-import {brandVoicePerAgentQueryFactory} from 'models/reporting/queryFactories/auto-qa/brandVoiceQueryFactory'
-
-import {StatsFilters} from 'models/stat/types'
-import {formatReportingQueryDate} from 'utils/reporting'
-import {assumeMock} from 'utils/testing'
+import { brandVoicePerAgentQueryFactory } from 'models/reporting/queryFactories/auto-qa/brandVoiceQueryFactory'
+import { StatsFilters } from 'models/stat/types'
+import { formatReportingQueryDate } from 'utils/reporting'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/useMetricPerDimension')
 const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
@@ -38,17 +36,17 @@ describe('BrandVoicePerAgent', () => {
                     statsFilters,
                     timezone,
                     undefined,
-                    agentId
-                )
+                    agentId,
+                ),
             )
 
             expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
                 brandVoicePerAgentQueryFactory(
                     statsFilters,
                     timezone,
-                    undefined
+                    undefined,
                 ),
-                agentId
+                agentId,
             )
         })
     })
@@ -59,16 +57,16 @@ describe('BrandVoicePerAgent', () => {
                 statsFilters,
                 timezone,
                 undefined,
-                agentId
+                agentId,
             )
 
             expect(fetchMetricPerDimensionMock).toHaveBeenCalledWith(
                 brandVoicePerAgentQueryFactory(
                     statsFilters,
                     timezone,
-                    undefined
+                    undefined,
                 ),
-                agentId
+                agentId,
             )
         })
     })

@@ -2,7 +2,7 @@ import React from 'react'
 
 import Button from 'pages/common/components/button/Button'
 
-import {PartiallySucceededMigrationState} from '../../../../types'
+import { PartiallySucceededMigrationState } from '../../../../types'
 
 import css from './MigrationPartiallySucceededActions.less'
 
@@ -10,7 +10,7 @@ type Props = {
     state: PartiallySucceededMigrationState
 }
 
-const MigrationPartiallySucceededActions: React.FC<Props> = ({state}) => {
+const MigrationPartiallySucceededActions: React.FC<Props> = ({ state }) => {
     const areButtonsDisabled = state.isRetryLoading || state.isRevertLoading
 
     return (

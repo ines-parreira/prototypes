@@ -1,14 +1,13 @@
-import React, {useCallback, useEffect, useState} from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
-import {useHistory} from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
-import {Cadence, ProductType} from 'models/billing/types'
+import { Cadence, ProductType } from 'models/billing/types'
 import Alert from 'pages/common/components/Alert/Alert'
-
-import {NewSummaryPaymentSection} from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
-import {useIsPaymentEnabled} from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
-import {getCorrespondingPlanAtCadence} from 'pages/settings/new_billing/utils/getCorrespondingPlanAtCadence'
-import {TicketPurpose} from 'state/billing/types'
+import { NewSummaryPaymentSection } from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
+import { useIsPaymentEnabled } from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
+import { getCorrespondingPlanAtCadence } from 'pages/settings/new_billing/utils/getCorrespondingPlanAtCadence'
+import { TicketPurpose } from 'state/billing/types'
 
 import BackLink from '../../components/BackLink/BackLink'
 import BillingFrequency from '../../components/BillingFrequency/BillingFrequency'
@@ -16,8 +15,9 @@ import Card from '../../components/Card/Card'
 import SummaryFooter from '../../components/SummaryFooter/SummaryFooter'
 import SummaryItem from '../../components/SummaryItem/SummaryItem'
 import SummaryTotal from '../../components/SummaryTotal/SummaryTotal'
-import {BILLING_PAYMENT_PATH, PRICING_DETAILS_URL} from '../../constants'
-import {useBillingPlans} from '../../hooks/useBillingPlan'
+import { BILLING_PAYMENT_PATH, PRICING_DETAILS_URL } from '../../constants'
+import { useBillingPlans } from '../../hooks/useBillingPlan'
+
 import css from './BillingFrequencyView.less'
 
 type BillingFrequencyViewProps = {
@@ -125,7 +125,7 @@ const BillingFrequencyView = ({
             currentConvertPlan,
             voiceAvailablePlans,
             currentVoicePlan,
-        ]
+        ],
     )
 
     // redirect to the main page if yearly frequency is selected or subscription is canceled

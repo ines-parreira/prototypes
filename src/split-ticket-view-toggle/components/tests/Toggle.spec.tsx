@@ -1,11 +1,11 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {Provider} from 'react-redux'
-import {MemoryRouter} from 'react-router-dom'
+import { render, screen } from '@testing-library/react'
+import { Provider } from 'react-redux'
+import { MemoryRouter } from 'react-router-dom'
 
-import {store} from 'common/store'
-import {SplitTicketViewProvider} from 'split-ticket-view-toggle'
+import { store } from 'common/store'
+import { SplitTicketViewProvider } from 'split-ticket-view-toggle'
 
 import Toggle from '../Toggle'
 
@@ -24,7 +24,7 @@ describe('Toggle', () => {
                         {component}
                     </SplitTicketViewProvider>
                 </Provider>
-            </MemoryRouter>
+            </MemoryRouter>,
         )
     }
 

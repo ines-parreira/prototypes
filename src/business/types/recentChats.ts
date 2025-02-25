@@ -1,4 +1,4 @@
-import {TicketChannel, TicketStatus} from './ticket'
+import { TicketChannel, TicketStatus } from './ticket'
 
 export type RecentChatTicket = {
     id: number

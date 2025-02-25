@@ -1,10 +1,9 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
+import { AxiosResponse } from 'axios'
 
-import {AxiosResponse} from 'axios'
+import { ApiListResponseCursorPagination } from 'models/api/types'
 
-import {ApiListResponseCursorPagination} from 'models/api/types'
-
-import {useResponseCursor} from '../useResponseCursor'
+import { useResponseCursor } from '../useResponseCursor'
 
 describe('useSearchParams hook', () => {
     it('should return previous and next cursor', () => {
@@ -23,7 +22,7 @@ describe('useSearchParams hook', () => {
                     ApiListResponseCursorPagination<unknown>
                 >,
                 error: undefined,
-            })
+            }),
         )
 
         expect(hook.result.current.previousCursor).toBe(previousCursor)
@@ -48,7 +47,7 @@ describe('useSearchParams hook', () => {
                         },
                     },
                 },
-            })
+            }),
         )
 
         expect(hook.result.current.nextCursor).toBe('')
@@ -70,7 +69,7 @@ describe('useSearchParams hook', () => {
                         },
                     },
                 },
-            })
+            }),
         )
 
         expect(hook.result.current.nextCursor).toBe('')

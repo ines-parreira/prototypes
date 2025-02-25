@@ -1,22 +1,23 @@
-import {Label, Badge} from '@gorgias/merchant-ui-kit'
-import {JSONPath} from 'jsonpath-plus'
+import React, { useMemo, useRef, useState } from 'react'
+
+import { JSONPath } from 'jsonpath-plus'
 import _isString from 'lodash/isString'
 import _noop from 'lodash/noop'
-import React, {useMemo, useRef, useState} from 'react'
 
-import {WorkflowVariable} from 'pages/automate/workflows/models/variables.types'
-import {HttpRequestNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { Badge, Label } from '@gorgias/merchant-ui-kit'
+
+import { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
+import { HttpRequestNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import TextInput from 'pages/common/forms/input/TextInput'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import TextArea from 'pages/common/forms/TextArea'
-import {validateJSON} from 'utils'
+import { validateJSON } from 'utils'
 
 import css from './TestRequestResult.less'
 
@@ -30,7 +31,7 @@ type Props = {
     onClose: () => void
     onChangeVariable: (
         index: number,
-        variable: HttpRequestNodeType['data']['variables'][number]
+        variable: HttpRequestNodeType['data']['variables'][number],
     ) => void
     onDeleteVariable: (index: number) => void
     onAddVariable: () => void
@@ -136,7 +137,7 @@ const TestRequestResult = ({
 
     const prettifiedJSON = useMemo(
         () => (json ? JSON.stringify(json, null, 2) : null),
-        [json]
+        [json],
     )
 
     return (
@@ -231,14 +232,14 @@ const TestRequestResult = ({
                                         })
                                     }}
                                     options={[
-                                        {label: 'String', value: 'string'},
-                                        {label: 'Number', value: 'number'},
+                                        { label: 'String', value: 'string' },
+                                        { label: 'Number', value: 'number' },
                                         {
                                             label: 'Boolean',
                                             value: 'boolean',
                                         },
-                                        {label: 'Date', value: 'date'},
-                                        {label: 'JSON', value: 'json'},
+                                        { label: 'Date', value: 'date' },
+                                        { label: 'JSON', value: 'json' },
                                     ]}
                                 />
                                 <ConfirmationPopover
@@ -259,7 +260,7 @@ const TestRequestResult = ({
                                         setCurrentDeleteIndex(-1)
                                     }}
                                 >
-                                    {({uid, onDisplayConfirmation}) => (
+                                    {({ uid, onDisplayConfirmation }) => (
                                         <IconButton
                                             id={uid}
                                             intent="destructive"
@@ -269,9 +270,9 @@ const TestRequestResult = ({
                                             onClick={(e) => {
                                                 if (
                                                     variablesInChildren?.find(
-                                                        ({value}) =>
+                                                        ({ value }) =>
                                                             value ===
-                                                            `steps_state.${nodeId}.content.${variable.id}`
+                                                            `steps_state.${nodeId}.content.${variable.id}`,
                                                     )
                                                 ) {
                                                     setCurrentDeleteIndex(index)

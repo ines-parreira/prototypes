@@ -1,9 +1,9 @@
-import type {PanelConfig} from '../types'
+import type { PanelConfig } from '../types'
 
 export default function shouldCreateResizer(
     index: number,
     configs: Record<string, PanelConfig>,
-    order: string[]
+    order: string[],
 ) {
     if (index === 0) return false
 

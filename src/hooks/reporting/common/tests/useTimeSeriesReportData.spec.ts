@@ -1,26 +1,26 @@
-import {waitFor} from '@testing-library/react'
-import {renderHook} from '@testing-library/react-hooks'
+import { waitFor } from '@testing-library/react'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {TicketChannel} from 'business/types/ticket'
-import {agents} from 'fixtures/agents'
-import {integrationsState} from 'fixtures/integrations'
+import { TicketChannel } from 'business/types/ticket'
+import { agents } from 'fixtures/agents'
+import { integrationsState } from 'fixtures/integrations'
 import {
     useTimeSeriesPerDimensionReportData,
     useTimeSeriesReportData,
 } from 'hooks/reporting/common/useTimeSeriesReportData'
-import {slaTrendSource} from 'hooks/reporting/sla/useDownloadSLAsData'
-import {fetchSatisfiedOrBreachedTicketsTimeSeries} from 'hooks/reporting/sla/useSatisfiedOrBreachedTicketsTimeSeries'
-import {timeSeriesReportSource} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
+import { slaTrendSource } from 'hooks/reporting/sla/useDownloadSLAsData'
+import { fetchSatisfiedOrBreachedTicketsTimeSeries } from 'hooks/reporting/sla/useSatisfiedOrBreachedTicketsTimeSeries'
+import { timeSeriesReportSource } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
 import {
     fetchMessagesSentTimeSeries,
     fetchTicketsClosedTimeSeries,
     fetchTicketsCreatedTimeSeries,
     fetchTicketsRepliedTimeSeries,
 } from 'hooks/reporting/timeSeries'
-import {TicketSLAStatus} from 'models/reporting/cubes/sla/TicketSLACube'
-import {TicketMeasure} from 'models/reporting/cubes/TicketCube'
-import {ReportingGranularity} from 'models/reporting/types'
-import {LegacyStatsFilters} from 'models/stat/types'
+import { TicketSLAStatus } from 'models/reporting/cubes/sla/TicketSLACube'
+import { TicketMeasure } from 'models/reporting/cubes/TicketCube'
+import { ReportingGranularity } from 'models/reporting/types'
+import { LegacyStatsFilters } from 'models/stat/types'
 import {
     ACHIEVED_SLA_LABEL,
     BREACHED_SLA_LABEL,
@@ -31,22 +31,22 @@ import {
     TICKETS_CREATED_LABEL,
     TICKETS_REPLIED_LABEL,
 } from 'services/reporting/constants'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/timeSeries')
 const fetchTicketsCreatedTimeSeriesMock = assumeMock(
-    fetchTicketsCreatedTimeSeries
+    fetchTicketsCreatedTimeSeries,
 )
 const fetchTicketsClosedTimeSeriesMock = assumeMock(
-    fetchTicketsClosedTimeSeries
+    fetchTicketsClosedTimeSeries,
 )
 const fetchTicketsRepliedTimeSeriesMock = assumeMock(
-    fetchTicketsRepliedTimeSeries
+    fetchTicketsRepliedTimeSeries,
 )
 const fetchMessagesSentTimeSeriesMock = assumeMock(fetchMessagesSentTimeSeries)
 jest.mock('hooks/reporting/sla/useSatisfiedOrBreachedTicketsTimeSeries')
 const fetchSatisfiedOrBreachedTicketsTimeSeriesMock = assumeMock(
-    fetchSatisfiedOrBreachedTicketsTimeSeries
+    fetchSatisfiedOrBreachedTicketsTimeSeries,
 )
 
 describe('timeSeriesReportData', () => {
@@ -76,27 +76,27 @@ describe('timeSeriesReportData', () => {
     describe('useTimeSeriesReportData', () => {
         beforeEach(() => {
             fetchTicketsCreatedTimeSeriesMock.mockResolvedValue(
-                defaultTimeSeries.data
+                defaultTimeSeries.data,
             )
             fetchTicketsClosedTimeSeriesMock.mockResolvedValue(
-                defaultTimeSeries.data
+                defaultTimeSeries.data,
             )
             fetchTicketsRepliedTimeSeriesMock.mockResolvedValue(
-                defaultTimeSeries.data
+                defaultTimeSeries.data,
             )
             fetchMessagesSentTimeSeriesMock.mockResolvedValue(
-                defaultTimeSeries.data
+                defaultTimeSeries.data,
             )
         })
 
         it('should return the labeled data', async () => {
-            const {result} = renderHook(() =>
+            const { result } = renderHook(() =>
                 useTimeSeriesReportData(
                     defaultStatsFilters,
                     'UTC',
                     ReportingGranularity.Day,
-                    timeSeriesReportSource
-                )
+                    timeSeriesReportSource,
+                ),
             )
 
             await waitFor(() => {
@@ -127,13 +127,13 @@ describe('timeSeriesReportData', () => {
         it('should return empty data on failed fetch', async () => {
             fetchTicketsCreatedTimeSeriesMock.mockRejectedValue({})
 
-            const {result} = renderHook(() =>
+            const { result } = renderHook(() =>
                 useTimeSeriesReportData(
                     defaultStatsFilters,
                     'UTC',
                     ReportingGranularity.Day,
-                    timeSeriesReportSource
-                )
+                    timeSeriesReportSource,
+                ),
             )
 
             await waitFor(() => {
@@ -169,16 +169,16 @@ describe('timeSeriesReportData', () => {
             }
 
             fetchSatisfiedOrBreachedTicketsTimeSeriesMock.mockResolvedValue(
-                timeSeriesPerDimension
+                timeSeriesPerDimension,
             )
 
-            const {result} = renderHook(() =>
+            const { result } = renderHook(() =>
                 useTimeSeriesPerDimensionReportData(
                     defaultStatsFilters,
                     'UTC',
                     ReportingGranularity.Day,
-                    slaTrendSource
-                )
+                    slaTrendSource,
+                ),
             )
 
             await waitFor(() => {
@@ -224,16 +224,16 @@ describe('timeSeriesReportData', () => {
             }
 
             fetchSatisfiedOrBreachedTicketsTimeSeriesMock.mockResolvedValue(
-                timeSeriesPerDimension
+                timeSeriesPerDimension,
             )
 
-            const {result} = renderHook(() =>
+            const { result } = renderHook(() =>
                 useTimeSeriesPerDimensionReportData(
                     defaultStatsFilters,
                     'UTC',
                     ReportingGranularity.Day,
-                    slaTrendSource
-                )
+                    slaTrendSource,
+                ),
             )
 
             await waitFor(() => {
@@ -283,16 +283,16 @@ describe('timeSeriesReportData', () => {
             }
 
             fetchSatisfiedOrBreachedTicketsTimeSeriesMock.mockRejectedValue(
-                timeSeriesPerDimension
+                timeSeriesPerDimension,
             )
 
-            const {result} = renderHook(() =>
+            const { result } = renderHook(() =>
                 useTimeSeriesPerDimensionReportData(
                     defaultStatsFilters,
                     'UTC',
                     ReportingGranularity.Day,
-                    slaTrendSource
-                )
+                    slaTrendSource,
+                ),
             )
 
             await waitFor(() => {

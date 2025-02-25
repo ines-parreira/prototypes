@@ -1,9 +1,9 @@
-import {createContext} from 'react'
+import { createContext } from 'react'
 
-import {State} from 'state/twilio/voiceDevice'
+import { State } from 'state/twilio/voiceDevice'
 
-import {VoiceDeviceActions} from './types'
+import { VoiceDeviceActions } from './types'
 
-export type VoiceDeviceContextState = State & {actions: VoiceDeviceActions}
+export type VoiceDeviceContextState = State & { actions: VoiceDeviceActions }
 
 export const Context = createContext<VoiceDeviceContextState | null>(null)

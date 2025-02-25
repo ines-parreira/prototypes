@@ -1,4 +1,4 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
 import useBeforeUnload from '../useBeforeUnload'
 
@@ -7,18 +7,18 @@ describe('useBeforeUnload', () => {
         const addEventListenerSpy = jest.spyOn(window, 'addEventListener')
         const removeEventListenerSpy = jest.spyOn(window, 'removeEventListener')
 
-        const {unmount} = renderHook(() => useBeforeUnload(true))
+        const { unmount } = renderHook(() => useBeforeUnload(true))
 
         expect(addEventListenerSpy).toHaveBeenCalledWith(
             'beforeunload',
-            expect.any(Function)
+            expect.any(Function),
         )
 
         unmount()
 
         expect(removeEventListenerSpy).toHaveBeenCalledWith(
             'beforeunload',
-            expect.any(Function)
+            expect.any(Function),
         )
     })
 
@@ -29,7 +29,7 @@ describe('useBeforeUnload', () => {
 
         expect(addEventListenerSpy).not.toHaveBeenCalledWith(
             'beforeunload',
-            expect.any(Function)
+            expect.any(Function),
         )
     })
 

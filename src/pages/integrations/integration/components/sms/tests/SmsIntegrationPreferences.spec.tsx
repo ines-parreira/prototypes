@@ -1,22 +1,23 @@
-import {fireEvent, render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {phoneNumbers} from 'fixtures/phoneNumber'
-import {SmsIntegration, IntegrationType} from 'models/integration/types'
+import { phoneNumbers } from 'fixtures/phoneNumber'
+import { IntegrationType, SmsIntegration } from 'models/integration/types'
 import SmsIntegrationPreferences from 'pages/integrations/integration/components/sms/SmsIntegrationPreferences'
-import {INTEGRATION_REMOVAL_CONFIGURATION_TEXT} from 'pages/integrations/integration/constants'
-import {updateOrCreateIntegration} from 'state/integrations/actions'
-import {RootState, StoreDispatch} from 'state/types'
+import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
+import { updateOrCreateIntegration } from 'state/integrations/actions'
+import { RootState, StoreDispatch } from 'state/types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({
     entities: {
         newPhoneNumbers: phoneNumbers.reduce(
-            (acc, number) => ({...acc, [number.id]: number}),
-            {}
+            (acc, number) => ({ ...acc, [number.id]: number }),
+            {},
         ),
     },
 } as RootState)
@@ -39,20 +40,20 @@ jest.mock('state/integrations/actions', () => ({
 describe('<SmsIntegrationPreferences/>', () => {
     describe('render()', () => {
         it('should render', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <SmsIntegrationPreferences integration={integration} />
-                </Provider>
+                </Provider>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should submit a valid payload with the selected phone_number_id', () => {
-            const {container, getByText, getByLabelText} = render(
+            const { container, getByText, getByLabelText } = render(
                 <Provider store={store}>
                     <SmsIntegrationPreferences integration={integration} />
-                </Provider>
+                </Provider>,
             )
 
             const payload = fromJS({
@@ -65,7 +66,7 @@ describe('<SmsIntegrationPreferences/>', () => {
             })
 
             fireEvent.change(getByLabelText('Integration title'), {
-                target: {value: 'My updated SMS integration'},
+                target: { value: 'My updated SMS integration' },
             })
 
             fireEvent.click(getByText('Save changes'))
@@ -76,20 +77,20 @@ describe('<SmsIntegrationPreferences/>', () => {
         })
 
         it('should display delete warning message and it should contain text about "saved filters"', () => {
-            const {getByRole, getByText} = render(
+            const { getByRole, getByText } = render(
                 <Provider store={store}>
                     <SmsIntegrationPreferences integration={integration} />
-                </Provider>
+                </Provider>,
             )
 
             fireEvent.click(
                 getByRole('button', {
                     name: /Delete integration/i,
-                })
+                }),
             )
 
             expect(
-                getByText(INTEGRATION_REMOVAL_CONFIGURATION_TEXT)
+                getByText(INTEGRATION_REMOVAL_CONFIGURATION_TEXT),
             ).toBeInTheDocument()
         })
     })

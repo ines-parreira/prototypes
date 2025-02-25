@@ -1,6 +1,6 @@
-import React, {useRef, useState} from 'react'
+import React, { useRef, useState } from 'react'
 
-import {HttpRequestNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { HttpRequestNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
@@ -19,11 +19,11 @@ type Props = {
     value: NonNullable<HttpRequestNodeType['data']['bodyContentType']>
     isDisabled?: boolean
     onChange: (
-        value: NonNullable<HttpRequestNodeType['data']['bodyContentType']>
+        value: NonNullable<HttpRequestNodeType['data']['bodyContentType']>,
     ) => void
 }
 
-const BodyContentTypeSelect = ({value, onChange, isDisabled}: Props) => {
+const BodyContentTypeSelect = ({ value, onChange, isDisabled }: Props) => {
     const [isOpen, setIsOpen] = useState(false)
     const targetRef = useRef<HTMLDivElement>(null)
     const floatingRef = useRef<HTMLDivElement>(null)

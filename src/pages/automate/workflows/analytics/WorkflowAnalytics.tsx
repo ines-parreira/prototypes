@@ -1,39 +1,38 @@
-import {isEqual} from 'lodash'
-import moment from 'moment'
-import React, {useEffect, useMemo, useRef} from 'react'
-import {Container} from 'reactstrap'
+import React, { useEffect, useMemo, useRef } from 'react'
 
-import {DateAndTimeFormatting} from 'constants/datetime'
-import {useWorkflowDataset} from 'hooks/reporting/automate/useWorkflowDataset'
-import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
+import { isEqual } from 'lodash'
+import moment from 'moment'
+import { Container } from 'reactstrap'
+
+import { DateAndTimeFormatting } from 'constants/datetime'
+import { useWorkflowDataset } from 'hooks/reporting/automate/useWorkflowDataset'
+import { useCleanStatsFiltersWithLogicalOperators } from 'hooks/reporting/useCleanStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import {WorkflowStatsFilters} from 'models/stat/types'
+import { WorkflowStatsFilters } from 'models/stat/types'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import PageHeader from 'pages/common/components/PageHeader'
 import * as ToggleButton from 'pages/common/components/ToggleButton'
 import TextInput from 'pages/common/forms/input/TextInput'
-
 import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
-import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
-import {getTimezone} from 'state/currentUser/selectors'
-import {Notification, NotificationStatus} from 'state/notifications/types'
-
-import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
-import {formatDatetime} from 'utils'
+import { DEFAULT_TIMEZONE } from 'pages/stats/convert/constants/components'
+import { getTimezone } from 'state/currentUser/selectors'
+import { Notification, NotificationStatus } from 'state/notifications/types'
+import { getPageStatsFiltersWithLogicalOperators } from 'state/stats/selectors'
+import { formatDatetime } from 'utils'
 
 import useWorkflowChannelSupport, {
     WorkflowChannelSupportContext,
 } from '../hooks/useWorkflowChannelSupport'
-import {useWorkflowEditorContext} from '../hooks/useWorkflowEditor'
-
-import {WorkflowToggle} from '../models/workflowConfiguration.types'
-import {getWorkflowAnalyticsDateRange} from './visualBuilder/utils'
+import { useWorkflowEditorContext } from '../hooks/useWorkflowEditor'
+import { WorkflowToggle } from '../models/workflowConfiguration.types'
+import { getWorkflowAnalyticsDateRange } from './visualBuilder/utils'
 import WorkflowVisualBuilder from './visualBuilder/WorkflowVisualBuilder'
-import css from './WorkflowAnalytics.less'
-import {WorkflowAnalyticsActionButtons} from './WorkflowAnalyticsActionButtons'
+import { WorkflowAnalyticsActionButtons } from './WorkflowAnalyticsActionButtons'
 import WorkflowAnalyticsBanner from './WorkflowAnalyticsBanner'
-import {WorkflowOverviewMetrics} from './WorkflowOverviewMetrics'
+import { WorkflowOverviewMetrics } from './WorkflowOverviewMetrics'
+
+import css from './WorkflowAnalytics.less'
 
 type WorkflowAnalyticsProps = {
     shopType: string
@@ -53,14 +52,14 @@ export default function WorkflowAnalytics({
     const workflowEditorContext = useWorkflowEditorContext()
     const chatChannels = useSelfServiceChatChannels(shopType, shopName)
     const userTimezone = useAppSelector(
-        (state) => getTimezone(state) || DEFAULT_TIMEZONE
+        (state) => getTimezone(state) || DEFAULT_TIMEZONE,
     )
     const datetimeFormat = useGetDateAndTimeFormat(
-        DateAndTimeFormatting.ShortMonthDayWithTime
+        DateAndTimeFormatting.ShortMonthDayWithTime,
     )
     const workflowChannelSupportContext = useWorkflowChannelSupport(
         shopType,
-        shopName
+        shopName,
     )
 
     const statsFilters = useAppSelector(getPageStatsFiltersWithLogicalOperators)
@@ -114,10 +113,10 @@ export default function WorkflowAnalytics({
     const data = useWorkflowDataset(
         filters,
         userTimezone,
-        workflowEditorContext.configuration.steps
+        workflowEditorContext.configuration.steps,
     )
 
-    const {isFetching, workflowMetrics, workflowStepMetrics, previousPeriod} =
+    const { isFetching, workflowMetrics, workflowStepMetrics, previousPeriod } =
         data
 
     const prevWorkflowStepMetricsRef = useRef()
@@ -127,7 +126,7 @@ export default function WorkflowAnalytics({
             prevWorkflowStepMetricsRef.current = workflowStepMetrics as any
             if (workflowEditorContext.setWorkflowStepMetrics) {
                 workflowEditorContext.setWorkflowStepMetrics(
-                    workflowStepMetrics
+                    workflowStepMetrics,
                 )
             }
         }
@@ -165,7 +164,7 @@ export default function WorkflowAnalytics({
                                     chatChannels.filter(
                                         (chat) =>
                                             !chat.value.deactivated_datetime &&
-                                            !chat.value.deleted_datetime
+                                            !chat.value.deleted_datetime,
                                     ).length === 0
                                 }
                                 isDirty={isDirty}
@@ -181,7 +180,7 @@ export default function WorkflowAnalytics({
                                         workflowEditorContext.configuration
                                             .updated_datetime,
                                         datetimeFormat,
-                                        userTimezone
+                                        userTimezone,
                                     )}
                                 </div>
                             )}
@@ -190,7 +189,7 @@ export default function WorkflowAnalytics({
                                     ranges: undefined,
                                     minDate: moment(
                                         workflowEditorContext.configuration
-                                            .updated_datetime
+                                            .updated_datetime,
                                     ),
                                 }}
                                 value={statsFilters.period}

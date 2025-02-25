@@ -1,30 +1,32 @@
-import {
-    HttpResponse,
-    EmailDomain,
-    getEmailIntegrationDomain,
-    deleteEmailIntegrationDomain,
-    verifyEmailIntegrationDomain,
-} from '@gorgias/api-client'
-import {QueryClientProvider} from '@tanstack/react-query'
-import {waitFor} from '@testing-library/react'
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { waitFor } from '@testing-library/react'
+import { renderHook } from '@testing-library/react-hooks'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
+import {
+    deleteEmailIntegrationDomain,
+    EmailDomain,
+    getEmailIntegrationDomain,
+    HttpResponse,
+    verifyEmailIntegrationDomain,
+} from '@gorgias/api-client'
+
 import useAppDispatch from 'hooks/useAppDispatch'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 import {
-    populateCurrentValuesForDNSRecords,
     parseRecordsCurrentValues,
+    populateCurrentValuesForDNSRecords,
 } from '../../helpers'
 import {
-    UseDomainVerificationRequestHookOptions,
     DEPRECATED_useDomainVerification,
+    UseDomainVerificationRequestHookOptions,
 } from '../DEPRECATED_useDomainVerification'
 
 jest.mock('hooks/useAppDispatch')
@@ -41,14 +43,14 @@ const getDomainMock = assumeMock(getEmailIntegrationDomain)
 const verifyDomainMock = assumeMock(verifyEmailIntegrationDomain)
 
 const populateCurrentValuesForDNSRecordsMock = assumeMock(
-    populateCurrentValuesForDNSRecords
+    populateCurrentValuesForDNSRecords,
 )
 populateCurrentValuesForDNSRecordsMock.mockImplementation((records) =>
-    Promise.resolve(records)
+    Promise.resolve(records),
 )
 const parseRecordsCurrentValuesMock = assumeMock(parseRecordsCurrentValues)
 
-const getEmailDomain = ({verified} = {verified: false}): EmailDomain => ({
+const getEmailDomain = ({ verified } = { verified: false }): EmailDomain => ({
     name: 'gorgias.com',
     provider: 'sendgrid',
     verified,
@@ -71,12 +73,12 @@ const render = (options?: UseDomainVerificationRequestHookOptions) => {
     return renderHook(
         () => DEPRECATED_useDomainVerification('gorgias.com', options),
         {
-            wrapper: ({children}) => (
+            wrapper: ({ children }) => (
                 <QueryClientProvider client={queryClient}>
                     <Provider store={mockStore}>{children}</Provider>
                 </QueryClientProvider>
             ),
-        }
+        },
     )
 }
 
@@ -90,7 +92,7 @@ describe('DEPRECATED_useDomainVerification()', () => {
     it('should have an initial state', async () => {
         getDomainMock.mockReturnValue(Promise.reject())
 
-        const {result, waitForValueToChange} = render()
+        const { result, waitForValueToChange } = render()
         expect(result.current.isFetching).toEqual(true)
         await waitForValueToChange(() => result.current.isFetching)
 
@@ -108,10 +110,10 @@ describe('DEPRECATED_useDomainVerification()', () => {
         it('should return the domain if it was fetched successfully', async () => {
             const domain = getEmailDomain()
             getDomainMock.mockReturnValue(
-                Promise.resolve({data: domain} as HttpResponse<EmailDomain>)
+                Promise.resolve({ data: domain } as HttpResponse<EmailDomain>),
             )
 
-            const {result, waitForValueToChange} = render()
+            const { result, waitForValueToChange } = render()
 
             await waitForValueToChange(() => result.current.domain)
             expect(result.current.domain).toEqual(domain)
@@ -120,7 +122,7 @@ describe('DEPRECATED_useDomainVerification()', () => {
         it('should return undefined if it does not exist', () => {
             getDomainMock.mockReturnValue(Promise.reject())
 
-            const {result} = render()
+            const { result } = render()
 
             expect(result.current.domain).toEqual(undefined)
         })
@@ -128,7 +130,7 @@ describe('DEPRECATED_useDomainVerification()', () => {
         it('should return isFetching when it is being fetched', async () => {
             getDomainMock.mockReturnValue(Promise.reject())
 
-            const {result, waitForValueToChange} = render()
+            const { result, waitForValueToChange } = render()
 
             expect(result.current.isFetching).toEqual(true)
             await waitForValueToChange(() => result.current.isFetching)
@@ -139,23 +141,23 @@ describe('DEPRECATED_useDomainVerification()', () => {
         it('should populate current values with results from querying DNS', async () => {
             const domain = getEmailDomain()
             getDomainMock.mockReturnValue(
-                Promise.resolve({data: domain} as HttpResponse<EmailDomain>)
+                Promise.resolve({ data: domain } as HttpResponse<EmailDomain>),
             )
             parseRecordsCurrentValuesMock.mockImplementation((records) =>
                 records.map((record) => ({
                     ...record,
                     current_values: ['parsed'],
-                }))
+                })),
             )
 
-            const {result, waitForValueToChange} = render()
+            const { result, waitForValueToChange } = render()
 
             await waitForValueToChange(() => result.current.domain)
             expect(populateCurrentValuesForDNSRecords).toHaveBeenCalledWith(
-                domain.data.sending_dns_records
+                domain.data.sending_dns_records,
             )
             expect(parseRecordsCurrentValues).toHaveBeenCalledWith(
-                domain.data.sending_dns_records
+                domain.data.sending_dns_records,
             )
             const parsedRecords =
                 parseRecordsCurrentValuesMock.mock.results.slice(-1)[0].value
@@ -172,16 +174,16 @@ describe('DEPRECATED_useDomainVerification()', () => {
         it('should call populate with an empty array if records are undefined', async () => {
             const domain = {
                 ...getEmailDomain(),
-                data: {sending_dns_records: undefined},
+                data: { sending_dns_records: undefined },
             } as unknown as EmailDomain
 
             getDomainMock.mockReturnValue(
                 Promise.resolve({
                     data: domain,
-                } as HttpResponse<EmailDomain>)
+                } as HttpResponse<EmailDomain>),
             )
 
-            const {result, waitForValueToChange} = render()
+            const { result, waitForValueToChange } = render()
 
             await waitForValueToChange(() => result.current.domain)
             expect(populateCurrentValuesForDNSRecords).toHaveBeenCalledWith([])
@@ -190,13 +192,13 @@ describe('DEPRECATED_useDomainVerification()', () => {
 
     describe('request state', () => {
         it('should have an initial state of not requested', () => {
-            const {result} = render()
+            const { result } = render()
             expect(result.current.isRequested).toEqual(false)
             expect(result.current.isPending).toEqual(false)
         })
 
         it('should change requested and pending flags after triggering verify', async () => {
-            const {result, waitForValueToChange} = render()
+            const { result, waitForValueToChange } = render()
 
             expect(result.current.isRequested).toEqual(false)
             expect(result.current.isPending).toEqual(false)
@@ -212,7 +214,7 @@ describe('DEPRECATED_useDomainVerification()', () => {
         it('should should change pending back to false after the timeout expires', async () => {
             jest.useFakeTimers()
 
-            const {result, waitForValueToChange} = render()
+            const { result, waitForValueToChange } = render()
 
             expect(result.current.isRequested).toEqual(false)
             expect(result.current.isPending).toEqual(false)
@@ -233,12 +235,12 @@ describe('DEPRECATED_useDomainVerification()', () => {
         })
 
         it('should not be pending if the domain has been verified', async () => {
-            const domain = getEmailDomain({verified: true})
+            const domain = getEmailDomain({ verified: true })
             getDomainMock.mockReturnValue(
-                Promise.resolve({data: domain} as HttpResponse<EmailDomain>)
+                Promise.resolve({ data: domain } as HttpResponse<EmailDomain>),
             )
 
-            const {result, waitForValueToChange} = render()
+            const { result, waitForValueToChange } = render()
 
             expect(result.current.isRequested).toEqual(false)
             expect(result.current.isPending).toEqual(false)
@@ -255,12 +257,14 @@ describe('DEPRECATED_useDomainVerification()', () => {
     describe('actions', () => {
         describe('verifyDomain', () => {
             it('should return trigger the verify mutation when calling verifyDomain', async () => {
-                const domain = getEmailDomain({verified: false})
+                const domain = getEmailDomain({ verified: false })
                 getDomainMock.mockReturnValue(
-                    Promise.resolve({data: domain} as HttpResponse<EmailDomain>)
+                    Promise.resolve({
+                        data: domain,
+                    } as HttpResponse<EmailDomain>),
                 )
 
-                const {result} = render()
+                const { result } = render()
                 expect(result.current.isVerifying).toEqual(false)
 
                 result.current.verifyDomain()
@@ -268,7 +272,7 @@ describe('DEPRECATED_useDomainVerification()', () => {
                 await waitFor(() => {
                     expect(verifyEmailIntegrationDomain).toHaveBeenCalledWith(
                         'gorgias.com',
-                        undefined
+                        undefined,
                     )
                 })
                 expect(result.current.isVerifying).toEqual(false)
@@ -278,7 +282,7 @@ describe('DEPRECATED_useDomainVerification()', () => {
 
             it('should return trigger the onVerify callback', async () => {
                 const onVerify = jest.fn()
-                const {result} = render({onVerify})
+                const { result } = render({ onVerify })
                 result.current.verifyDomain()
                 await waitFor(() => {
                     expect(onVerify).toHaveBeenCalled()
@@ -289,10 +293,10 @@ describe('DEPRECATED_useDomainVerification()', () => {
                 const dispatchMock = jest.fn()
                 useAppDispatchMock.mockReturnValue(dispatchMock)
                 verifyDomainMock.mockReturnValue(
-                    Promise.resolve({} as HttpResponse<void>)
+                    Promise.resolve({} as HttpResponse<void>),
                 )
 
-                const {result} = render()
+                const { result } = render()
                 result.current.verifyDomain()
 
                 await waitFor(() => {
@@ -310,7 +314,7 @@ describe('DEPRECATED_useDomainVerification()', () => {
                 useAppDispatchMock.mockReturnValue(dispatchMock)
                 verifyDomainMock.mockReturnValue(Promise.reject())
 
-                const {result} = render()
+                const { result } = render()
                 result.current.verifyDomain()
 
                 await waitFor(() => {
@@ -326,7 +330,7 @@ describe('DEPRECATED_useDomainVerification()', () => {
 
         describe('deleteDomain', () => {
             it('should return trigger the delete mutation when calling deleteDomain', async () => {
-                const {result} = render()
+                const { result } = render()
                 expect(result.current.isDeleting).toEqual(false)
 
                 result.current.deleteDomain()
@@ -334,7 +338,7 @@ describe('DEPRECATED_useDomainVerification()', () => {
                 await waitFor(() => {
                     expect(deleteEmailIntegrationDomain).toHaveBeenCalledWith(
                         'gorgias.com',
-                        undefined
+                        undefined,
                     )
                 })
 
@@ -344,7 +348,7 @@ describe('DEPRECATED_useDomainVerification()', () => {
 
             it('should return trigger the onDelete callback', async () => {
                 const onDelete = jest.fn()
-                const {result} = render({onDelete})
+                const { result } = render({ onDelete })
                 result.current.deleteDomain()
                 await waitFor(() => {
                     expect(onDelete).toHaveBeenCalled()

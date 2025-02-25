@@ -1,8 +1,9 @@
-import {produce} from 'immer'
-import {useCallback} from 'react'
+import { useCallback } from 'react'
 
-import {getLLMPromptTriggerNodeTouched} from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import {VisualBuilderGraph} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { produce } from 'immer'
+
+import { getLLMPromptTriggerNodeTouched } from 'pages/automate/workflows/models/visualBuilderGraph.model'
+import { VisualBuilderGraph } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 const useTouchActionUseCaseTemplateGraph = () => {
     return useCallback((graph: VisualBuilderGraph) => {

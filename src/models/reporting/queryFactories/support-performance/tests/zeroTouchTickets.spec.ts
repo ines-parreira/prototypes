@@ -1,7 +1,7 @@
 import moment from 'moment'
 
-import {TicketChannel} from 'business/types/ticket'
-import {OrderDirection} from 'models/api/types'
+import { TicketChannel } from 'business/types/ticket'
+import { OrderDirection } from 'models/api/types'
 import {
     TicketDimension,
     TicketMeasure,
@@ -17,9 +17,9 @@ import {
     zeroTouchTicketsPerTicketQueryFactory,
     zeroTouchTicketsQueryFactory,
 } from 'models/reporting/queryFactories/support-performance/zeroTouchTickets'
-import {ReportingFilterOperator} from 'models/reporting/types'
-import {LegacyStatsFilters} from 'models/stat/types'
-import {subtractDaysFromDate} from 'utils/date'
+import { ReportingFilterOperator } from 'models/reporting/types'
+import { LegacyStatsFilters } from 'models/stat/types'
+import { subtractDaysFromDate } from 'utils/date'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
@@ -44,7 +44,7 @@ describe('zeroTouchTicketsPerAgentQueryFactory', () => {
 
     it('should build a query', () => {
         expect(
-            zeroTouchTicketsPerAgentQueryFactory(statsFilters, timezone)
+            zeroTouchTicketsPerAgentQueryFactory(statsFilters, timezone),
         ).toEqual({
             dimensions: [TicketDimension.AssigneeUserId],
             filters: [
@@ -81,8 +81,8 @@ describe('zeroTouchTicketsPerAgentQueryFactory', () => {
                         formatReportingQueryDate(
                             subtractDaysFromDate(
                                 statsFilters.period.start_datetime,
-                                180
-                            )
+                                180,
+                            ),
                         ),
                     ],
                 },
@@ -93,8 +93,8 @@ describe('zeroTouchTicketsPerAgentQueryFactory', () => {
                         formatReportingQueryDate(
                             subtractDaysFromDate(
                                 statsFilters.period.start_datetime,
-                                180
-                            )
+                                180,
+                            ),
                         ),
                     ],
                 },
@@ -114,10 +114,10 @@ describe('zeroTouchTicketsPerAgentQueryFactory', () => {
 
         expect(
             zeroTouchTicketsPerAgentQueryFactory(
-                {...statsFilters, agents},
+                { ...statsFilters, agents },
                 timezone,
-                sorting
-            )
+                sorting,
+            ),
         ).toEqual({
             dimensions: [TicketDimension.AssigneeUserId],
             filters: [
@@ -159,8 +159,8 @@ describe('zeroTouchTicketsPerAgentQueryFactory', () => {
                         formatReportingQueryDate(
                             subtractDaysFromDate(
                                 statsFilters.period.start_datetime,
-                                180
-                            )
+                                180,
+                            ),
                         ),
                     ],
                 },
@@ -171,8 +171,8 @@ describe('zeroTouchTicketsPerAgentQueryFactory', () => {
                         formatReportingQueryDate(
                             subtractDaysFromDate(
                                 statsFilters.period.start_datetime,
-                                180
-                            )
+                                180,
+                            ),
                         ),
                     ],
                 },
@@ -206,7 +206,7 @@ describe('zeroTouchTicketsPerTicketQueryFactory', () => {
 
     it('should build a query', () => {
         expect(
-            zeroTouchTicketsPerTicketQueryFactory(statsFilters, timezone)
+            zeroTouchTicketsPerTicketQueryFactory(statsFilters, timezone),
         ).toEqual({
             ...zeroTouchTicketsQueryFactory(statsFilters, timezone),
             measures: [],
@@ -224,10 +224,10 @@ describe('zeroTouchTicketsPerTicketQueryFactory', () => {
 
     it('should build a query with agents filter and sorting', () => {
         const agents = [2]
-        const filters = {...statsFilters, agents}
+        const filters = { ...statsFilters, agents }
 
         expect(
-            zeroTouchTicketsPerTicketQueryFactory(filters, timezone, sorting)
+            zeroTouchTicketsPerTicketQueryFactory(filters, timezone, sorting),
         ).toEqual({
             ...zeroTouchTicketsQueryFactory(filters, timezone, sorting),
             measures: [],

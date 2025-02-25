@@ -1,8 +1,9 @@
+import React, { useEffect, useMemo, useState } from 'react'
+
 import classNames from 'classnames'
 import _capitalize from 'lodash/capitalize'
 import _isEqual from 'lodash/isEqual'
 import uniq from 'lodash/uniq'
-import React, {useEffect, useMemo, useState} from 'react'
 import ReactList from 'react-list'
 
 import Button from 'pages/common/components/button/Button'
@@ -10,8 +11,9 @@ import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 import Search from 'pages/common/components/Search'
 import SelectFilter from 'pages/stats/common/SelectFilter'
 
-import {AGENT_ADDED_FONTS} from '../../constants'
-import {useGoogleFonts} from '../../hooks'
+import { AGENT_ADDED_FONTS } from '../../constants'
+import { useGoogleFonts } from '../../hooks'
+
 import css from './FontCatalogueModal.less'
 
 type Props = {
@@ -30,7 +32,7 @@ export const getMultipleFontLink = (fonts: string[]) => {
     const fontOptions = '&display=swap'
     const formattedFonts = fonts.reduce(
         (acc, font) => (acc === '' ? `${font}` : `${acc}&family=${font}`),
-        ''
+        '',
     )
 
     return `https://fonts.googleapis.com/css2?family=${formattedFonts}${fontOptions}`
@@ -42,7 +44,7 @@ export const getFontsAfterSearch = ({
     categories,
 }: {
     search: string
-    fonts: {family: string; category: string}[]
+    fonts: { family: string; category: string }[]
     categories: string[]
 }) => {
     const filteredFontsByCategory =
@@ -51,10 +53,10 @@ export const getFontsAfterSearch = ({
             : fonts.filter((font) => categories.includes(font.category))
 
     const fontsStartingWith = filteredFontsByCategory.filter((font) =>
-        font.family.toLowerCase().startsWith(search.toLowerCase())
+        font.family.toLowerCase().startsWith(search.toLowerCase()),
     )
     const fontsIncluding = filteredFontsByCategory.filter((font) =>
-        font.family.toLowerCase().includes(search.toLowerCase())
+        font.family.toLowerCase().includes(search.toLowerCase()),
     )
 
     return uniq([...fontsStartingWith, ...fontsIncluding])
@@ -67,7 +69,7 @@ export const FontCatalogueModal = ({
     setIsModalOpen,
     currentPrimaryFont,
 }: Props) => {
-    const {googleFonts} = useGoogleFonts()
+    const { googleFonts } = useGoogleFonts()
     const categories = uniq(googleFonts.map((font) => font.category))
     const [selectedCategories, setSelectedCategories] = useState<string[]>([])
     const [selectedFonts, setSelectedFonts] =
@@ -107,7 +109,7 @@ export const FontCatalogueModal = ({
                 search,
                 fonts: googleFonts,
                 categories: selectedCategories,
-            })
+            }),
         )
         // We can use googleFonts.length since it is fetched only once
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -123,7 +125,7 @@ export const FontCatalogueModal = ({
         if (
             !_isEqual(
                 recentlyAddedFonts.sort((a, b) => (a > b ? 1 : -1)),
-                selectedFonts
+                selectedFonts,
             )
         ) {
             return true
@@ -216,15 +218,15 @@ export const FontCatalogueModal = ({
                                                 }
                                                 if (
                                                     selectedFonts.includes(
-                                                        font.family
+                                                        font.family,
                                                     )
                                                 ) {
                                                     setSelectedFonts(
                                                         selectedFonts.filter(
                                                             (selectedFont) =>
                                                                 selectedFont !==
-                                                                font.family
-                                                        )
+                                                                font.family,
+                                                        ),
                                                     )
                                                 } else {
                                                     setSelectedFonts(
@@ -232,8 +234,8 @@ export const FontCatalogueModal = ({
                                                             ...selectedFonts,
                                                             font.family,
                                                         ].sort((a, b) =>
-                                                            a > b ? 1 : -1
-                                                        )
+                                                            a > b ? 1 : -1,
+                                                        ),
                                                     )
                                                 }
                                             }}
@@ -243,7 +245,7 @@ export const FontCatalogueModal = ({
                                                     [css.currentFont]:
                                                         font.family ===
                                                         currentPrimaryFont,
-                                                }
+                                                },
                                             )}
                                         >
                                             <span
@@ -254,7 +256,7 @@ export const FontCatalogueModal = ({
                                                 {font.family}
                                             </span>
                                             {selectedFonts.includes(
-                                                font.family
+                                                font.family,
                                             ) && (
                                                 <i
                                                     className="material-icons mr-2"
@@ -304,7 +306,7 @@ export const FontCatalogueModal = ({
                                         : ''
                                 }
                             >
-                                <span style={{fontFamily: font}}>{font}</span>
+                                <span style={{ fontFamily: font }}>{font}</span>
                                 {font === currentPrimaryFont ? (
                                     <span>Primary font</span>
                                 ) : (
@@ -318,8 +320,8 @@ export const FontCatalogueModal = ({
                                             setSelectedFonts(
                                                 selectedFonts.filter(
                                                     (selectedFont) =>
-                                                        selectedFont !== font
-                                                )
+                                                        selectedFont !== font,
+                                                ),
                                             )
                                         }}
                                     >

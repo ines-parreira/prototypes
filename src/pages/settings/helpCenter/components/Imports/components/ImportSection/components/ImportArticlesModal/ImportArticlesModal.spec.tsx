@@ -1,22 +1,22 @@
-import {fireEvent, render, screen} from '@testing-library/react'
-import {noop} from 'lodash'
 import React from 'react'
-import {Provider as ReduxProvider} from 'react-redux'
+
+import { fireEvent, render, screen } from '@testing-library/react'
+import { noop } from 'lodash'
+import { Provider as ReduxProvider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
-import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
-import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
-import {RootState, StoreDispatch} from 'state/types'
-import {initialState as uiState} from 'state/ui/helpCenter/reducer'
+import { initialState as articlesState } from 'state/entities/helpCenter/articles/reducer'
+import { initialState as categoriesState } from 'state/entities/helpCenter/categories/reducer'
+import { RootState, StoreDispatch } from 'state/types'
+import { initialState as uiState } from 'state/ui/helpCenter/reducer'
 
-import {migrationProviders} from '../../fixtures/migration-providers'
-import {FetchedProvidersState} from '../../types'
-
+import { migrationProviders } from '../../fixtures/migration-providers'
+import { FetchedProvidersState } from '../../types'
 import ImportArticlesModal from './ImportArticlesModal'
-import {buildCsvColumnMatchingUrl, fileIsTooBig} from './utils'
+import { buildCsvColumnMatchingUrl, fileIsTooBig } from './utils'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -34,7 +34,7 @@ const defaultState: Partial<RootState> = {
         },
     } as any,
     ui: {
-        helpCenter: {...uiState, currentId: 1},
+        helpCenter: { ...uiState, currentId: 1 },
     } as any,
 }
 
@@ -51,7 +51,7 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
 
 jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
 ;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
-    getSingleHelpCenterResponseFixture
+    getSingleHelpCenterResponseFixture,
 )
 
 const fetchedProvidersStateSuccess: FetchedProvidersState = {
@@ -64,7 +64,7 @@ const getFile = () => new File([], 'Imported Articles.csv')
 
 const renderWithStore = (element: React.ReactElement) =>
     render(element, {
-        wrapper: ({children}: any) => (
+        wrapper: ({ children }: any) => (
             <ReduxProvider store={mockStore(defaultState)}>
                 {children}
             </ReduxProvider>
@@ -74,7 +74,7 @@ const renderWithStore = (element: React.ReactElement) =>
 describe('<ImportArticlesModal />', () => {
     describe('snapshots', () => {
         test('migration feature disabled', () => {
-            const {baseElement} = renderWithStore(
+            const { baseElement } = renderWithStore(
                 <ImportArticlesModal
                     isOpen
                     onClose={noop}
@@ -91,12 +91,12 @@ describe('<ImportArticlesModal />', () => {
                     onImportStart={noop}
                     isMigrationAvailable={false}
                     onMigrationDropAreaClick={noop}
-                />
+                />,
             )
             expect(baseElement).toMatchSnapshot()
         })
         test('no file selected', () => {
-            const {baseElement} = renderWithStore(
+            const { baseElement } = renderWithStore(
                 <ImportArticlesModal
                     isOpen
                     onClose={noop}
@@ -109,12 +109,12 @@ describe('<ImportArticlesModal />', () => {
                     onImportStart={noop}
                     isMigrationAvailable
                     onMigrationDropAreaClick={noop}
-                />
+                />,
             )
             expect(baseElement).toMatchSnapshot()
         })
         test('file selected', () => {
-            const {baseElement} = renderWithStore(
+            const { baseElement } = renderWithStore(
                 <ImportArticlesModal
                     isOpen
                     onClose={noop}
@@ -128,12 +128,12 @@ describe('<ImportArticlesModal />', () => {
                     onImportStart={noop}
                     isMigrationAvailable
                     onMigrationDropAreaClick={noop}
-                />
+                />,
             )
             expect(baseElement).toMatchSnapshot()
         })
         test('import in progress', () => {
-            const {baseElement} = renderWithStore(
+            const { baseElement } = renderWithStore(
                 <ImportArticlesModal
                     isOpen
                     onClose={noop}
@@ -146,12 +146,12 @@ describe('<ImportArticlesModal />', () => {
                     onImportStart={noop}
                     isMigrationAvailable
                     onMigrationDropAreaClick={noop}
-                />
+                />,
             )
             expect(baseElement).toMatchSnapshot()
         })
         test('loading providers', () => {
-            const {baseElement} = renderWithStore(
+            const { baseElement } = renderWithStore(
                 <ImportArticlesModal
                     isOpen
                     onClose={noop}
@@ -168,12 +168,12 @@ describe('<ImportArticlesModal />', () => {
                     onImportStart={noop}
                     isMigrationAvailable
                     onMigrationDropAreaClick={noop}
-                />
+                />,
             )
             expect(baseElement).toMatchSnapshot()
         })
         test('providers fetching error', () => {
-            const {baseElement} = renderWithStore(
+            const { baseElement } = renderWithStore(
                 <ImportArticlesModal
                     isOpen
                     onClose={noop}
@@ -190,7 +190,7 @@ describe('<ImportArticlesModal />', () => {
                     onImportStart={noop}
                     isMigrationAvailable
                     onMigrationDropAreaClick={noop}
-                />
+                />,
             )
             expect(baseElement).toMatchSnapshot()
         })
@@ -212,14 +212,14 @@ describe('<ImportArticlesModal />', () => {
                     onImportStart={noop}
                     isMigrationAvailable
                     onMigrationDropAreaClick={noop}
-                />
+                />,
             )
 
             const uploadInput = screen.getByTestId(
-                'import-articles-modal-file-upload'
+                'import-articles-modal-file-upload',
             )
             const dropArea = screen.getByTestId(
-                'import-articles-modal-file-drop-area'
+                'import-articles-modal-file-drop-area',
             )
             const file = getFile()
 
@@ -263,7 +263,7 @@ describe('<ImportArticlesModal />', () => {
                     onImportStart={noop}
                     isMigrationAvailable
                     onMigrationDropAreaClick={dropAreaClickHandler}
-                />
+                />,
             )
 
             fireEvent.click(screen.getByText('Import from another provider'))
@@ -287,7 +287,7 @@ describe('<ImportArticlesModal />', () => {
                     onImportStart={importStartHandler}
                     isMigrationAvailable
                     onMigrationDropAreaClick={noop}
-                />
+                />,
             )
 
             fireEvent.click(screen.getByText('Import File'))
@@ -298,14 +298,14 @@ describe('<ImportArticlesModal />', () => {
 
     describe('utils are working properly', () => {
         test.each([
-            [{size: 900000}, false],
-            [{size: 1000000}, true],
-            [{size: 1100000}, true],
+            [{ size: 900000 }, false],
+            [{ size: 1000000 }, true],
+            [{ size: 1100000 }, true],
         ])(
             'fileIsTooBig returns true for files >= than 10MB',
             (file, expectedIsTooBig) => {
                 expect(fileIsTooBig(file)).toEqual(expectedIsTooBig)
-            }
+            },
         )
 
         test('buildCsvColumnMatchingUrl generated link from help center id and file url', () => {

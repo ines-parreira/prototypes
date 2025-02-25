@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction, useMemo, useRef} from 'react'
+import React, { Dispatch, SetStateAction, useMemo, useRef } from 'react'
 
 import useEffectOnce from 'hooks/useEffectOnce'
 import useKey from 'hooks/useKey'
@@ -6,14 +6,14 @@ import {
     AIArticleToggleOptionValue,
     AILibraryArticleItem,
 } from 'models/helpCenter/types'
-
 import Button from 'pages/common/components/button/Button'
 
-import {AI_ARTICLES_TOGGLE_OPTIONS} from '../../constants'
+import { AI_ARTICLES_TOGGLE_OPTIONS } from '../../constants'
 import AIArticleLibraryRedirect from './AIArticleLibraryRedirect'
 import AIArticleList from './AIArticleList'
-import css from './AIArticlesLibraryList.less'
 import AIArticlesLibraryListReviewedState from './AIArticlesLibraryListReviewedState'
+
+import css from './AIArticlesLibraryList.less'
 
 type AIArticlesLibraryListProps = {
     helpCenterId: number
@@ -51,11 +51,11 @@ const AIArticlesLibraryList = ({
         () =>
             (!counters || counters[AIArticleToggleOptionValue.All] > 0) &&
             !showLinkToArticleTemplates,
-        [counters, showLinkToArticleTemplates]
+        [counters, showLinkToArticleTemplates],
     )
 
     const toggleOptions = AI_ARTICLES_TOGGLE_OPTIONS.map((option) => {
-        const {value} = option
+        const { value } = option
         const count = counters?.[value] || 0
 
         return {
@@ -66,7 +66,7 @@ const AIArticlesLibraryList = ({
 
     const [previousArticle, nextArticle] = useMemo(() => {
         const currentIndex = articles?.findIndex(
-            (article) => article.key === selectedArticle?.key
+            (article) => article.key === selectedArticle?.key,
         )
         if (currentIndex !== undefined && currentIndex !== null && articles) {
             const prevIndex =
@@ -85,8 +85,8 @@ const AIArticlesLibraryList = ({
             e.preventDefault()
             setSelectedArticle(nextArticle)
         },
-        {target: containerRef.current},
-        [nextArticle, setSelectedArticle]
+        { target: containerRef.current },
+        [nextArticle, setSelectedArticle],
     )
 
     useKey(
@@ -95,8 +95,8 @@ const AIArticlesLibraryList = ({
             e.preventDefault()
             setSelectedArticle(previousArticle)
         },
-        {target: containerRef.current},
-        [previousArticle, setSelectedArticle]
+        { target: containerRef.current },
+        [previousArticle, setSelectedArticle],
     )
 
     useEffectOnce(() => {

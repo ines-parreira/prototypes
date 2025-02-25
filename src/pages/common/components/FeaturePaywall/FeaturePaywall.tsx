@@ -1,21 +1,21 @@
 import React from 'react'
 
-import {paywallConfigs as defaultPaywallConfigs} from 'config/paywalls'
+import { paywallConfigs as defaultPaywallConfigs } from 'config/paywalls'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     getAvailableAutomatePlans,
     getAvailableHelpdeskPlans,
-    getIsCurrentHelpdeskLegacy,
-    getIsCurrentHelpdeskCustom,
     getCurrentHelpdeskPlanName,
+    getIsCurrentHelpdeskCustom,
+    getIsCurrentHelpdeskLegacy,
 } from 'state/billing/selectors'
 import {
     AccountFeature,
     AccountFeatureMetadata,
 } from 'state/currentAccount/types'
-import {getCheapestPriceNameForFeature} from 'utils/paywalls'
+import { getCheapestPriceNameForFeature } from 'utils/paywalls'
 
-import Paywall, {PaywallTheme, UpgradeType} from '../Paywall/Paywall'
+import Paywall, { PaywallTheme, UpgradeType } from '../Paywall/Paywall'
 
 type Props = {
     feature: AccountFeature
@@ -49,7 +49,7 @@ const FeaturePaywall = ({
                             AccountFeature,
                             AccountFeatureMetadata
                         >
-                    )[feature]?.enabled
+                    )[feature]?.enabled,
             ))
     const requiredPlanName = isCustomPlan
         ? 'Enterprise'

@@ -1,14 +1,12 @@
-import {createSelector, createSlice, PayloadAction} from '@reduxjs/toolkit'
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import {OrderDirection} from 'models/api/types'
+import { OrderDirection } from 'models/api/types'
 import {
     Intent,
     IntentTableColumn,
 } from 'pages/aiAgent/insights/IntentTableWidget/types'
-
-import {RootState} from 'state/types'
-
-import {INTENT_SLICE_NAME} from 'state/ui/stats/constants'
+import { RootState } from 'state/types'
+import { INTENT_SLICE_NAME } from 'state/ui/stats/constants'
 
 export type IntentSorting<T> = {
     field: T
@@ -49,7 +47,7 @@ export const intentSlice = createSlice({
     reducers: {
         sortingSet(
             state,
-            action: PayloadAction<IntentSorting<IntentTableColumn>>
+            action: PayloadAction<IntentSorting<IntentTableColumn>>,
         ) {
             state.sorting.field = action.payload.field
             state.sorting.direction = action.payload.direction
@@ -62,7 +60,7 @@ export const intentSlice = createSlice({
         },
         sortingLoaded(
             state,
-            action: PayloadAction<Intent[] | null | undefined>
+            action: PayloadAction<Intent[] | null | undefined>,
         ) {
             state.sorting.isLoading = false
             state.pagination.currentPage = 1
@@ -78,7 +76,7 @@ export const intentSlice = createSlice({
     },
 })
 
-export const {sortingSet, sortingLoading, sortingLoaded, pageSet} =
+export const { sortingSet, sortingLoading, sortingLoaded, pageSet } =
     intentSlice.actions
 
 const getSliceState = (state: RootState) => {
@@ -87,22 +85,22 @@ const getSliceState = (state: RootState) => {
 
 export const getIntentSorting = createSelector(
     getSliceState,
-    (state) => state.sorting
+    (state) => state.sorting,
 )
 
 export const isSortingMetricLoading = createSelector(
     getSliceState,
-    (state) => state.sorting.isLoading
+    (state) => state.sorting.isLoading,
 )
 
 export const getIntentPagination = createSelector(
     getSliceState,
-    (state) => state.pagination
+    (state) => state.pagination,
 )
 
 export const getIntentIntents = createSelector(
     getSliceState,
-    (state) => state.intents
+    (state) => state.intents,
 )
 
 const getIntents = createSelector(getSliceState, (state) => state.intents)
@@ -110,7 +108,7 @@ const getIntents = createSelector(getSliceState, (state) => state.intents)
 export const getSortedIntents = createSelector(
     getIntents,
     getIntentSorting,
-    (intentsList, {field, direction}) => {
+    (intentsList, { field, direction }) => {
         const intents = intentsList ? [...intentsList] : []
         const sortedIntents = intents.sort((a, b) => {
             const parseValue = (value: string | number) => {
@@ -139,7 +137,7 @@ export const getSortedIntents = createSelector(
         })
 
         return sortedIntents
-    }
+    },
 )
 
 export const getPaginatedIntents = createSelector(
@@ -147,7 +145,7 @@ export const getPaginatedIntents = createSelector(
     getIntentPagination,
     (
         intents,
-        {currentPage, perPage}
+        { currentPage, perPage },
     ): {
         intents: Intent[]
         allIntents: Intent[]
@@ -162,5 +160,5 @@ export const getPaginatedIntents = createSelector(
             currentPage,
             perPage,
         }
-    }
+    },
 )

@@ -1,21 +1,21 @@
 import React from 'react'
 
-import {DrillDownDataHook} from 'hooks/reporting/useDrillDownData'
+import { DrillDownDataHook } from 'hooks/reporting/useDrillDownData'
 import Loader from 'pages/common/components/Loader/Loader'
-import {DrillDownDownloadButton} from 'pages/stats/DrillDownDownloadButton'
+import { DrillDownDownloadButton } from 'pages/stats/DrillDownDownloadButton'
 import {
     ConvertDrillDownRowData,
     TicketDrillDownRowData,
     VoiceCallDrillDownRowData,
 } from 'pages/stats/DrillDownFormatters'
 import css from 'pages/stats/DrillDownInfobar.less'
-import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
+import { DrillDownMetric } from 'state/ui/stats/drillDownSlice'
 import {
     ConvertMetric,
     VoiceAgentsMetric,
     VoiceMetric,
 } from 'state/ui/stats/types'
-import {DRILLDOWN_QUERY_LIMIT} from 'utils/reporting'
+import { DRILLDOWN_QUERY_LIMIT } from 'utils/reporting'
 
 const getObjectType = (metricData: DrillDownMetric) => {
     switch (metricData.metricName) {
@@ -86,7 +86,7 @@ export const DrillDownInfoBar = ({
         | VoiceCallDrillDownRowData
     >
 }) => {
-    const {isFetching, totalResults} = useDataHook(metricData)
+    const { isFetching, totalResults } = useDataHook(metricData)
     const objectType = getObjectType(metricData)
     const resultsPlaceholder = `Fetching ${objectType}...`
     const shouldDisplayDownloadButton = isMetricDataDownloadable(metricData)

@@ -1,12 +1,13 @@
-import {fireEvent, render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {user} from 'fixtures/users'
-import {RootState} from 'state/types'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { user } from 'fixtures/users'
+import { RootState } from 'state/types'
 
 import OnboardingSidePanel from '../OnboardingSidePanel'
 
@@ -31,37 +32,37 @@ describe('OnboardingSidePanel', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <OnboardingSidePanel isHidden={false} onHide={jest.fn()} />
-            </Provider>
+            </Provider>,
         )
 
-        const title = screen.getByRole('heading', {level: 1})
+        const title = screen.getByRole('heading', { level: 1 })
 
         expect(title.textContent).toBe('WelcomeAlex!')
     })
 
     it.each([
-        {linkText: 'Connect store', eventName: 'Connect a store'},
-        {linkText: 'Connect email', eventName: 'Connect an email address'},
-        {linkText: 'Enable 2FA', eventName: 'Enable 2FA'},
-        {linkText: 'Connect social media', eventName: 'Connect social media'},
-        {linkText: 'Add chat widget', eventName: 'Connect chat'},
-        {linkText: 'Invite team members', eventName: 'Add team members'},
+        { linkText: 'Connect store', eventName: 'Connect a store' },
+        { linkText: 'Connect email', eventName: 'Connect an email address' },
+        { linkText: 'Enable 2FA', eventName: 'Enable 2FA' },
+        { linkText: 'Connect social media', eventName: 'Connect social media' },
+        { linkText: 'Add chat widget', eventName: 'Connect chat' },
+        { linkText: 'Invite team members', eventName: 'Add team members' },
     ])(
         'should log onboarding-widget-clicked:$eventName event on $linkText link click',
-        ({linkText, eventName}) => {
+        ({ linkText, eventName }) => {
             render(
                 <Provider store={mockStore(defaultState)}>
                     <OnboardingSidePanel isHidden={false} onHide={jest.fn()} />
-                </Provider>
+                </Provider>,
             )
 
             fireEvent.click(screen.getByText(linkText))
 
             expect(logEventMock).toHaveBeenLastCalledWith(
                 SegmentEvent.OnboardingWidgetClicked,
-                {name: eventName}
+                { name: eventName },
             )
-        }
+        },
     )
 
     it.each([
@@ -69,8 +70,8 @@ describe('OnboardingSidePanel', () => {
             id: 'connect-store',
             path: '/app/settings/integrations?category=Ecommerce',
         },
-        {id: 'connect-email', path: '/app/settings/channels/email'},
-        {id: 'enable-2FA', path: '/app/settings/access'},
+        { id: 'connect-email', path: '/app/settings/channels/email' },
+        { id: 'enable-2FA', path: '/app/settings/access' },
         {
             id: 'connect-social',
             path: '/app/settings/integrations/facebook',
@@ -79,12 +80,12 @@ describe('OnboardingSidePanel', () => {
             id: 'connect-chat',
             path: '/app/settings/channels/gorgias_chat',
         },
-        {id: 'add-team-members', path: '/app/settings/users/'},
-    ])('$id should send the user to $path', ({id, path}) => {
+        { id: 'add-team-members', path: '/app/settings/users/' },
+    ])('$id should send the user to $path', ({ id, path }) => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <OnboardingSidePanel isHidden={false} onHide={jest.fn()} />
-            </Provider>
+            </Provider>,
         )
 
         const link = screen.getByTestId(id)
@@ -97,7 +98,7 @@ describe('OnboardingSidePanel', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <OnboardingSidePanel isHidden={false} onHide={onHide} />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(screen.getByText('Skip'))

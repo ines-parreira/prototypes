@@ -1,9 +1,10 @@
-import {fromJS, List, Map} from 'immutable'
-import React, {ComponentType, useState, useCallback, useMemo} from 'react'
-import {Dropdown, DropdownMenu, DropdownToggle} from 'reactstrap'
+import React, { ComponentType, useCallback, useMemo, useState } from 'react'
+
+import { fromJS, List, Map } from 'immutable'
+import { Dropdown, DropdownMenu, DropdownToggle } from 'reactstrap'
 
 import FilterDropdownSearch from 'pages/common/components/ViewTable/FilterDropdownSearch'
-import {fieldPath, resolveLiteral} from 'utils'
+import { fieldPath, resolveLiteral } from 'utils'
 
 import FilterDropdownItems from './FilterDropdownItems'
 
@@ -24,7 +25,7 @@ export default function FilterDropdown({
 }: Props) {
     const [isLoading, setIsLoading] = useState(false)
     const [items, setItems] = useState<Maybe<List<any>>>(
-        field.getIn(['filter', 'enum'], fromJS([]))
+        field.getIn(['filter', 'enum'], fromJS([])),
     )
 
     const left = useMemo(() => {
@@ -39,12 +40,12 @@ export default function FilterDropdown({
             const right = resolveLiteral(newValue, left) || newValue.id
             updateFieldFilter(right as string)
         },
-        [left, updateFieldFilter]
+        [left, updateFieldFilter],
     )
 
     const handleMeItemClick = useCallback(
         () => updateFieldFilter('{{current_user.id}}'),
-        [updateFieldFilter]
+        [updateFieldFilter],
     )
 
     const handleSearchStart = useCallback(() => {
@@ -73,7 +74,7 @@ export default function FilterDropdown({
     }
 
     if (field.get('name') === 'language') {
-        Object.assign(style, {height: '230px', overflow: 'scroll'})
+        Object.assign(style, { height: '230px', overflow: 'scroll' })
     }
 
     return (

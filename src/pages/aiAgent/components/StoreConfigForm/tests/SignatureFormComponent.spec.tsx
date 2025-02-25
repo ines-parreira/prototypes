@@ -1,9 +1,11 @@
-import {render, screen, fireEvent} from '@testing-library/react'
 import React from 'react'
 
+import { fireEvent, render, screen } from '@testing-library/react'
+
 import '@testing-library/jest-dom'
-import {INITIAL_FORM_VALUES} from '../../../constants'
-import {SignatureFormComponent} from '../FormComponents/SignatureFormComponent'
+
+import { INITIAL_FORM_VALUES } from '../../../constants'
+import { SignatureFormComponent } from '../FormComponents/SignatureFormComponent'
 
 describe('SignatureFormComponent', () => {
     const mockUpdateValue = jest.fn()
@@ -14,7 +16,7 @@ describe('SignatureFormComponent', () => {
                 isRequired={isRequired}
                 signature={signature}
                 updateValue={mockUpdateValue}
-            />
+            />,
         )
     }
 
@@ -25,8 +27,8 @@ describe('SignatureFormComponent', () => {
         expect(screen.getByText('Signature')).toBeInTheDocument()
         expect(
             screen.getByText(
-                /At the end of emails you can disclose that the message was created by AI/i
-            )
+                /At the end of emails you can disclose that the message was created by AI/i,
+            ),
         ).toBeInTheDocument()
 
         // Check if the textarea is rendered with correct placeholder
@@ -48,12 +50,12 @@ describe('SignatureFormComponent', () => {
         const textArea = screen.getByPlaceholderText('AI Agent email signature')
 
         // Simulate typing
-        fireEvent.change(textArea, {target: {value: 'New signature'}})
+        fireEvent.change(textArea, { target: { value: 'New signature' } })
         fireEvent.blur(textArea)
 
         expect(mockUpdateValue).toHaveBeenCalledWith(
             'signature',
-            'New signature'
+            'New signature',
         )
     })
 
@@ -66,7 +68,7 @@ describe('SignatureFormComponent', () => {
         fireEvent.blur(textArea)
 
         expect(
-            screen.getByText('Email signature is required.')
+            screen.getByText('Email signature is required.'),
         ).toBeInTheDocument()
     })
 
@@ -93,8 +95,8 @@ describe('SignatureFormComponent', () => {
         // Check if the info message is displayed
         expect(
             screen.getByText(
-                /At the end of emails you can disclose that the message was created by AI/i
-            )
+                /At the end of emails you can disclose that the message was created by AI/i,
+            ),
         ).toBeInTheDocument()
     })
 
@@ -108,11 +110,11 @@ describe('SignatureFormComponent', () => {
 
         // Error message should be present
         expect(
-            screen.getByText('Email signature is required.')
+            screen.getByText('Email signature is required.'),
         ).toBeInTheDocument()
 
         // Now type something to fix the error
-        fireEvent.change(textArea, {target: {value: 'Corrected signature'}})
+        fireEvent.change(textArea, { target: { value: 'Corrected signature' } })
 
         // Error message should disappear
         expect(screen.queryByText('Email signature is required.')).toBeNull()
@@ -122,7 +124,7 @@ describe('SignatureFormComponent', () => {
         renderComponent('', false)
 
         expect(
-            screen.queryByText('Email signature is required.')
+            screen.queryByText('Email signature is required.'),
         ).not.toBeInTheDocument()
     })
 })

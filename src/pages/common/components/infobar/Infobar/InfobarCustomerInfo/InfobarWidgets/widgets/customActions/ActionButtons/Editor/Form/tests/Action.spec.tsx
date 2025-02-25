@@ -1,8 +1,9 @@
-import {render, fireEvent, screen} from '@testing-library/react'
 import React from 'react'
 
-import {actionFixture} from 'fixtures/infobarCustomActions'
-import {HttpMethod} from 'models/api/types'
+import { fireEvent, render, screen } from '@testing-library/react'
+
+import { actionFixture } from 'fixtures/infobarCustomActions'
+import { HttpMethod } from 'models/api/types'
 
 import Action from '../Action'
 
@@ -25,23 +26,23 @@ describe('<Action/>', () => {
                     ...props,
                     action,
                 }}
-            />
+            />,
         )
         expect(screen.queryByText('Body')).toBeInTheDocument()
     })
 
     it('should call onChange when changing action method', () => {
         render(<Action {...props} />)
-        fireEvent.click(screen.getByRole('textbox', {name: /Method/}))
-        fireEvent.click(screen.getByRole('menuitem', {name: HttpMethod.Post}))
+        fireEvent.click(screen.getByRole('textbox', { name: /Method/ }))
+        fireEvent.click(screen.getByRole('menuitem', { name: HttpMethod.Post }))
         expect(props.onChange).toHaveBeenCalledWith('method', HttpMethod.Post)
     })
 
     it('should call onChange when changing action url', () => {
         render(<Action {...props} />)
         const newValue = 'newValue'
-        fireEvent.change(screen.getByRole('textbox', {name: /URL/}), {
-            target: {value: newValue},
+        fireEvent.change(screen.getByRole('textbox', { name: /URL/ }), {
+            target: { value: newValue },
         })
         expect(props.onChange).toHaveBeenCalledWith('url', newValue)
     })
@@ -52,7 +53,7 @@ describe('<Action/>', () => {
         fireEvent.click(
             screen.getAllByRole('button', {
                 name: /Add Header/,
-            })[0]
+            })[0],
         )
         expect(props.onChange).toHaveBeenCalled()
     })
@@ -63,7 +64,7 @@ describe('<Action/>', () => {
         fireEvent.click(
             screen.getAllByRole('button', {
                 name: /Add Parameter/,
-            })[0]
+            })[0],
         )
         expect(props.onChange).toHaveBeenCalled()
     })

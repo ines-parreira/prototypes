@@ -1,5 +1,5 @@
-import {IntegrationType} from 'models/integration/constants'
-import {Widget, WidgetEnvironment} from 'state/widgets/types'
+import { IntegrationType } from 'models/integration/constants'
+import { Widget, WidgetEnvironment } from 'state/widgets/types'
 
 export const shopifyWidgetFixture: Widget = {
     integration_id: 7,

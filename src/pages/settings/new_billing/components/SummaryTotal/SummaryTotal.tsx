@@ -1,17 +1,17 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {CouponSummary, Plan, Cadence} from 'models/billing/types'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import {useBillingStateWithSideEffects} from 'pages/settings/new_billing/hooks/useBillingStateWithSideEffects'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { Cadence, CouponSummary, Plan } from 'models/billing/types'
+import { useBillingStateWithSideEffects } from 'pages/settings/new_billing/hooks/useBillingStateWithSideEffects'
 
-import {formatAmount} from '../../utils/formatAmount'
-import {getTotalWithDiscounts} from '../../utils/getTotalWithDiscounts'
-import {SelectedPlans} from '../../views/BillingProcessView/BillingProcessView'
+import { formatAmount } from '../../utils/formatAmount'
+import { getTotalWithDiscounts } from '../../utils/getTotalWithDiscounts'
+import { SelectedPlans } from '../../views/BillingProcessView/BillingProcessView'
+import SummaryTotalWithDiscounts from './SummaryTotalWithDiscounts'
 
 import css from './SummaryTotal.less'
-import SummaryTotalWithDiscounts from './SummaryTotalWithDiscounts'
 
 export type SummaryTotalProps = {
     selectedPlans: SelectedPlans
@@ -91,16 +91,17 @@ function usePriceSummary(selectedPlans: SelectedPlans) {
     const billingSummaryTotalWithCouponsEnabled =
         !!useFlags()[FeatureFlagKey.BillingSummaryTotalWithCoupons]
 
-    const {data: billingState} = useBillingStateWithSideEffects()
+    const { data: billingState } = useBillingStateWithSideEffects()
     const coupon: CouponSummary | null =
         billingState?.subscription?.coupon ||
         billingState?.customer?.coupon ||
         null
 
-    const {totalWithDiscounts, totalWithoutDiscounts, discountAmount} = useMemo(
-        () => getTotalWithDiscounts(selectedPlans, coupon),
-        [coupon, selectedPlans]
-    )
+    const { totalWithDiscounts, totalWithoutDiscounts, discountAmount } =
+        useMemo(
+            () => getTotalWithDiscounts(selectedPlans, coupon),
+            [coupon, selectedPlans],
+        )
     const showDiscountedPrice =
         billingSummaryTotalWithCouponsEnabled && discountAmount > 0
 

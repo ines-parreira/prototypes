@@ -1,7 +1,8 @@
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import React from 'react'
 
-import {recoveryCodes as recoveryCodesFixture} from '../../../../../../../../fixtures/recoveryCodes'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+
+import { recoveryCodes as recoveryCodesFixture } from '../../../../../../../../fixtures/recoveryCodes'
 import RecoveryCodesStep from '../RecoveryCodesStep'
 
 describe('<RecoveryCodesStep />', () => {
@@ -13,11 +14,11 @@ describe('<RecoveryCodesStep />', () => {
 
     describe('render()', () => {
         it('should render the component with the recovery codes', async () => {
-            const {container} = render(
+            const { container } = render(
                 <RecoveryCodesStep
                     recoveryCodes={recoveryCodesFixture}
                     setIsRecoveryCodesSaved={jest.fn()}
-                />
+                />,
             )
 
             await waitForLoadingSpinnersToDisappear()
@@ -34,7 +35,7 @@ describe('<RecoveryCodesStep />', () => {
                 <RecoveryCodesStep
                     recoveryCodes={recoveryCodesFixture}
                     setIsRecoveryCodesSaved={jest.fn()}
-                />
+                />,
             )
 
             await waitForLoadingSpinnersToDisappear()
@@ -62,7 +63,7 @@ describe('<RecoveryCodesStep />', () => {
                 .mockReturnValueOnce(anchorMocked)
             global.document.body.appendChild = jest.fn()
 
-            return {anchorMocked, anchorElementSpy}
+            return { anchorMocked, anchorElementSpy }
         }
 
         it('should trigger download of recovery codes', async () => {
@@ -70,19 +71,19 @@ describe('<RecoveryCodesStep />', () => {
                 <RecoveryCodesStep
                     recoveryCodes={recoveryCodesFixture}
                     setIsRecoveryCodesSaved={jest.fn()}
-                />
+                />,
             )
 
             await waitForLoadingSpinnersToDisappear()
 
-            const {anchorMocked, anchorElementSpy} = mockAnchor()
+            const { anchorMocked, anchorElementSpy } = mockAnchor()
 
             const downloadButton = screen.getByText(/Download/)
             fireEvent.click(downloadButton)
 
             expect(anchorElementSpy).toBeCalledWith('a')
             expect(global.document.body.appendChild).toBeCalledWith(
-                anchorMocked
+                anchorMocked,
             )
 
             expect(anchorMocked.setAttribute).toBeCalledTimes(2)

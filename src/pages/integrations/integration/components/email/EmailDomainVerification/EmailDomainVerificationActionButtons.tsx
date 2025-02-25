@@ -1,18 +1,19 @@
-import {EmailIntegration, GmailIntegration} from '@gorgias/api-queries'
 import React from 'react'
 
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
-import {OutlookIntegration} from 'models/integration/types'
+import { EmailIntegration, GmailIntegration } from '@gorgias/api-queries'
+
+import { OutlookIntegration } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-
 import LinkButton from 'pages/common/components/button/LinkButton'
 
 import useDeleteEmailIntegration from '../useDeleteEmailIntegration'
-import {SUPPORT_EMAIL} from './constants'
-import css from './EmailDomainVerification.less'
+import { SUPPORT_EMAIL } from './constants'
 import useDomainVerification from './useDomainVerification'
+
+import css from './EmailDomainVerification.less'
 
 type Props = {
     integration: EmailIntegration | GmailIntegration | OutlookIntegration
@@ -31,7 +32,7 @@ export default function EmailDomainVerificationActionButtons({
         isPending,
     } = useDomainVerification()
 
-    const {deleteIntegration, isDeleting} =
+    const { deleteIntegration, isDeleting } =
         useDeleteEmailIntegration(integration)
 
     const isDisabled = !domain || isCreatingDomain || isFetching

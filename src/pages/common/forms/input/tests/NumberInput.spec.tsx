@@ -1,5 +1,6 @@
-import {render, fireEvent} from '@testing-library/react'
-import React, {ComponentProps, useState} from 'react'
+import React, { ComponentProps, useState } from 'react'
+
+import { fireEvent, render } from '@testing-library/react'
 
 import NumberInput from '../NumberInput'
 
@@ -10,14 +11,14 @@ describe('<NumberInput />', () => {
     }
 
     it('should render a number input', () => {
-        const {container} = render(<NumberInput {...defaultProps} />)
+        const { container } = render(<NumberInput {...defaultProps} />)
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should increase value with proper step when clicking arrow', () => {
-        const {getByText} = render(
-            <NumberInput {...defaultProps} step={0.01} />
+        const { getByText } = render(
+            <NumberInput {...defaultProps} step={0.01} />,
         )
 
         fireEvent.click(getByText('arrow_drop_up'))
@@ -25,7 +26,9 @@ describe('<NumberInput />', () => {
     })
 
     it('should not increase value when input is disabled', () => {
-        const {getByText} = render(<NumberInput {...defaultProps} isDisabled />)
+        const { getByText } = render(
+            <NumberInput {...defaultProps} isDisabled />,
+        )
 
         fireEvent.click(getByText('arrow_drop_up'))
         expect(defaultProps.onChange).not.toHaveBeenCalled()
@@ -43,11 +46,11 @@ describe('<NumberInput />', () => {
                 />
             )
         }
-        const {getByPlaceholderText} = render(<ControlledNumberInput />)
+        const { getByPlaceholderText } = render(<ControlledNumberInput />)
         const input = getByPlaceholderText(/foo/) as HTMLInputElement
 
         expect(input.value).toBe('6')
-        fireEvent.change(input, {target: {value: ''}})
+        fireEvent.change(input, { target: { value: '' } })
         expect(input.value).toBe('')
     })
 
@@ -59,7 +62,7 @@ describe('<NumberInput />', () => {
                 value={1.234567}
                 step={0.01}
                 data-testid={id}
-            />
+            />,
         )
 
         const input = screen.getByTestId(id) as HTMLInputElement
@@ -74,7 +77,7 @@ describe('<NumberInput />', () => {
                 value={13}
                 step={0.01}
                 data-testid={id}
-            />
+            />,
         )
 
         const input = screen.getByTestId(id) as HTMLInputElement

@@ -1,9 +1,10 @@
 import React from 'react'
-import type {ReactNode} from 'react'
-import {Link} from 'react-router-dom'
+import type { ReactNode } from 'react'
 
-import {TicketStatus} from 'business/types/ticket'
-import type {ChannelLike} from 'models/channel/types'
+import { Link } from 'react-router-dom'
+
+import { TicketStatus } from 'business/types/ticket'
+import type { ChannelLike } from 'models/channel/types'
 import TicketIcon from 'pages/common/components/TicketIcon'
 
 import css from './NotificationContent.less'
@@ -51,7 +52,7 @@ export default function NotificationContent({
                         className={css.subIcon}
                         style={
                             subIcon.color
-                                ? {backgroundColor: `var(${subIcon.color})`}
+                                ? { backgroundColor: `var(${subIcon.color})` }
                                 : undefined
                         }
                     >

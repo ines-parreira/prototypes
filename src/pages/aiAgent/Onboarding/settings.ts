@@ -1,10 +1,9 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
-import {GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT} from 'config/integrations/gorgias_chat'
-
-import {User, UserSettingType} from 'config/types/user'
-import {ADMIN_ROLE} from 'config/user'
-import {DateFormatType, TimeFormatType} from 'constants/datetime'
+import { GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT } from 'config/integrations/gorgias_chat'
+import { User, UserSettingType } from 'config/types/user'
+import { ADMIN_ROLE } from 'config/user'
+import { DateFormatType, TimeFormatType } from 'constants/datetime'
 import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
@@ -43,7 +42,7 @@ export const chatUserConfiguration: User = {
     id: 2,
     firstname: 'Alex',
     email: 'alex@gorgias.io',
-    role: {name: ADMIN_ROLE},
+    role: { name: ADMIN_ROLE },
     updated_datetime: '2016-12-22T19:36:12.489432+00:00',
     has_2fa_enabled: false,
 }

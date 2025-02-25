@@ -1,12 +1,12 @@
 /**
  * Adapted from https://github.com/draft-js-plugins/draft-js-plugins/tree/master/draft-js-mention-plugin
  */
+import React, { PropsWithChildren } from 'react'
 
-import {ContentState} from 'draft-js'
-import {fromJS} from 'immutable'
-import React, {PropsWithChildren} from 'react'
+import { ContentState } from 'draft-js'
+import { fromJS } from 'immutable'
 
-import {MentionPluginTheme, MentionData} from '../types'
+import { MentionData, MentionPluginTheme } from '../types'
 
 type Props = {
     className?: string
@@ -19,7 +19,9 @@ type Props = {
 const MentionText = ({
     children,
     className,
-}: PropsWithChildren<Omit<Props, 'contentState'> & {mention: MentionData}>) => {
+}: PropsWithChildren<
+    Omit<Props, 'contentState'> & { mention: MentionData }
+>) => {
     return (
         <span className={className} spellCheck={false}>
             {children}
@@ -39,7 +41,7 @@ export default function Mention({
             contentState.getEntity(entityKey).getData() as {
                 mention: MentionData
             }
-        ).mention
+        ).mention,
     )
 
     return (

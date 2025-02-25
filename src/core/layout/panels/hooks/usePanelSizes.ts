@@ -1,14 +1,14 @@
-import {useEffect, useRef, useState} from 'react'
-import type {MutableRefObject} from 'react'
+import { useEffect, useRef, useState } from 'react'
+import type { MutableRefObject } from 'react'
 
 import calculateSizes from '../helpers/calculateSizes'
-import type {PanelConfig, Sizes} from '../types'
+import type { PanelConfig, Sizes } from '../types'
 
 export default function usePanelSizes(
     availableSize: number,
     configs: Record<string, PanelConfig>,
     savedSizes: MutableRefObject<Sizes>,
-    order: string[]
+    order: string[],
 ) {
     const previousOrder = useRef<string[]>([])
     const state = useState<Sizes>({})

@@ -1,42 +1,43 @@
-import {fireEvent, screen, waitFor} from '@testing-library/react'
+import React, { ComponentProps } from 'react'
+
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {fromJS} from 'immutable'
-import {clone} from 'lodash'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import { fromJS } from 'immutable'
+import { clone } from 'lodash'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import * as segmentTracker from 'common/segment'
-import {UserRole, UserSettingType} from 'config/types/user'
-import {DateFormatType, TimeFormatType} from 'constants/datetime'
+import { UserRole, UserSettingType } from 'config/types/user'
+import { DateFormatType, TimeFormatType } from 'constants/datetime'
 import {
     EMAIL_CUSTOMER_CHANNEL_TYPE,
     PHONE_CUSTOMER_CHANNEL_TYPE,
 } from 'constants/user'
-import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import {customerFieldDefinitions} from 'fixtures/customField'
-import {CustomerChannel} from 'models/customerChannel/types'
-import {initialState} from 'state/twilio/voiceDevice'
-import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
+import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import { customerFieldDefinitions } from 'fixtures/customField'
+import { CustomerChannel } from 'models/customerChannel/types'
+import { initialState } from 'state/twilio/voiceDevice'
+import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
-import {assumeMock} from '../../../../../../../utils/testing'
-import {CustomerChannels} from '../CustomerChannels'
+import { assumeMock } from '../../../../../../../utils/testing'
+import { CustomerChannels } from '../CustomerChannels'
 
 jest.mock(
     'pages/common/components/ClickablePhoneNumber/ClickablePhoneNumber',
     () =>
-        ({address}: {address: string}) => <div>{address}</div>
+        ({ address }: { address: string }) => <div>{address}</div>,
 )
 jest.mock(
     'pages/common/components/infobar/Infobar/InfobarCustomerInfo/NewPhoneNumber',
-    () => () => <div>Add phone number</div>
+    () => () => <div>Add phone number</div>,
 )
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 
 const mockedUseCustomFieldDefinitions = assumeMock(useCustomFieldDefinitions)
 const logEventSpy = jest.spyOn(segmentTracker, 'logEvent')
-const {SegmentEvent} = segmentTracker
+const { SegmentEvent } = segmentTracker
 
 const mockStore = configureMockStore([thunk])
 
@@ -51,7 +52,7 @@ const minProps: ComponentProps<typeof CustomerChannels> = {
 const defaultUser = {
     id: 1,
     email: 'steve@acme.gorgias.io',
-    role: {name: UserRole.Agent},
+    role: { name: UserRole.Agent },
     settings: [
         {
             data: {
@@ -72,7 +73,7 @@ describe('CustomerChannels component', () => {
         const mockDate = new Date('2019-01-26T12:34:56.000Z')
         global.Date.now = jest.fn(() => mockDate) as unknown as typeof Date.now
         mockedUseCustomFieldDefinitions.mockReturnValue({
-            data: {data: customerFieldDefinitions},
+            data: { data: customerFieldDefinitions },
         } as any)
     })
 
@@ -94,7 +95,7 @@ describe('CustomerChannels component', () => {
                         customerLocationInfo={fromJS({
                             city: 'Paris',
                             country_name: 'France',
-                            time_zone: {offset: '+0100'},
+                            time_zone: { offset: '+0100' },
                         })}
                         channels={fromJS([
                             {
@@ -129,18 +130,18 @@ describe('CustomerChannels component', () => {
                             },
                         ])}
                     />
-                </Provider>
+                </Provider>,
             )
 
             userEvent.click(screen.getByText(/Show more/))
-        }
+        },
     )
 
     it(
         'should display all passed channels and not display the button "show more" because there is only 1 passed ' +
             'channel + add phone number button',
         () => {
-            const {queryByText} = renderWithQueryClientProvider(
+            const { queryByText } = renderWithQueryClientProvider(
                 <Provider store={mockStore(defaultState)}>
                     <CustomerChannels
                         {...minProps}
@@ -152,11 +153,11 @@ describe('CustomerChannels component', () => {
                             },
                         ])}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(queryByText(/Show more/)).toBeNull()
-        }
+        },
     )
 
     it('should not display the button "show more" because all channels are invalid', () => {
@@ -180,7 +181,7 @@ describe('CustomerChannels component', () => {
                         },
                     ])}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.queryByText(/Show more/)).toBeNull()
@@ -204,7 +205,7 @@ describe('CustomerChannels component', () => {
                         },
                     ])}
                 />
-            </Provider>
+            </Provider>,
         )
 
         userEvent.click(screen.getByText(/Show more/))
@@ -217,7 +218,7 @@ describe('CustomerChannels component', () => {
         `should display all passed channels and not display the button "show more" because there is only 2 passed ` +
             `location channel and and add phone number button`,
         () => {
-            const {getByText, queryByText} = renderWithQueryClientProvider(
+            const { getByText, queryByText } = renderWithQueryClientProvider(
                 <Provider store={mockStore(defaultState)}>
                     <CustomerChannels
                         {...minProps}
@@ -226,22 +227,22 @@ describe('CustomerChannels component', () => {
                             country_name: 'France',
                         })}
                     />
-                </Provider>
+                </Provider>,
             )
             ;(minProps.channels.toJS() as CustomerChannel[]).forEach(
                 (channel) => {
                     expect(getByText(channel.address)).toBeInTheDocument()
-                }
+                },
             )
             expect(queryByText(/Show more/)).toBeNull()
-        }
+        },
     )
 
     it(
         'should display all passed channels and not display the button "show more" because there is only 2 passed ' +
             'location channel and add phone number button',
         () => {
-            const {getByText, queryByText} = renderWithQueryClientProvider(
+            const { getByText, queryByText } = renderWithQueryClientProvider(
                 <Provider store={mockStore(defaultState)}>
                     <CustomerChannels
                         {...minProps}
@@ -249,16 +250,16 @@ describe('CustomerChannels component', () => {
                             city: 'Paris',
                         })}
                     />
-                </Provider>
+                </Provider>,
             )
 
             ;(minProps.channels.toJS() as CustomerChannel[]).forEach(
                 (channel) => {
                     expect(getByText(channel.address)).toBeInTheDocument()
-                }
+                },
             )
             expect(queryByText(/Show more/)).toBeNull()
-        }
+        },
     )
 
     it(
@@ -273,18 +274,18 @@ describe('CustomerChannels component', () => {
                 },
             ]
 
-            const {getByText} = renderWithQueryClientProvider(
+            const { getByText } = renderWithQueryClientProvider(
                 <Provider store={mockStore(defaultState)}>
                     <CustomerChannels
                         {...minProps}
                         customerLocationInfo={fromJS({
                             city: 'Paris',
                             country_name: 'France',
-                            time_zone: {offset: '+0100'},
+                            time_zone: { offset: '+0100' },
                         })}
                         channels={fromJS(channels)}
                     />
-                </Provider>
+                </Provider>,
             )
 
             userEvent.click(getByText(/Show more/))
@@ -293,7 +294,7 @@ describe('CustomerChannels component', () => {
             })
             expect(getByText(/Location: Paris, France/)).toBeInTheDocument()
             expect(getByText(/Local time:/)).toBeInTheDocument()
-        }
+        },
     )
 
     it(
@@ -308,17 +309,17 @@ describe('CustomerChannels component', () => {
                 },
             ]
 
-            const {getByText} = renderWithQueryClientProvider(
+            const { getByText } = renderWithQueryClientProvider(
                 <Provider store={mockStore(defaultState)}>
                     <CustomerChannels
                         {...minProps}
                         customerLocationInfo={fromJS({
                             country_name: 'France',
-                            time_zone: {offset: '+0100'},
+                            time_zone: { offset: '+0100' },
                         })}
                         channels={fromJS(channels)}
                     />
-                </Provider>
+                </Provider>,
             )
 
             userEvent.click(getByText(/Show more/))
@@ -327,7 +328,7 @@ describe('CustomerChannels component', () => {
             })
             expect(getByText(/Location: France/)).toBeInTheDocument()
             expect(getByText(/Local time:/)).toBeInTheDocument()
-        }
+        },
     )
 
     it('should display all passed channels (including last seen on chat 36 minutes ago) because the user clicked on "show more"', () => {
@@ -381,7 +382,7 @@ describe('CustomerChannels component', () => {
             },
         ]
 
-        const {getByText} = renderWithQueryClientProvider(
+        const { getByText } = renderWithQueryClientProvider(
             <Provider store={store}>
                 <CustomerChannels
                     {...minProps}
@@ -389,11 +390,11 @@ describe('CustomerChannels component', () => {
                     customerLocationInfo={fromJS({
                         city: 'Paris',
                         country_name: 'France',
-                        time_zone: {offset: '+0100'},
+                        time_zone: { offset: '+0100' },
                     })}
                     channels={fromJS(channels)}
                 />
-            </Provider>
+            </Provider>,
         )
 
         userEvent.click(getByText(/Show more/))
@@ -405,7 +406,7 @@ describe('CustomerChannels component', () => {
     })
 
     it('should display "Add phone number button', async () => {
-        const {getByText} = renderWithQueryClientProvider(
+        const { getByText } = renderWithQueryClientProvider(
             <Provider store={mockStore(defaultState)}>
                 <CustomerChannels
                     {...minProps}
@@ -418,7 +419,7 @@ describe('CustomerChannels component', () => {
                         },
                     ])}
                 />
-            </Provider>
+            </Provider>,
         )
         await waitFor(() => expect(getByText(/Add phone number/)).toBeVisible())
     })
@@ -427,17 +428,17 @@ describe('CustomerChannels component', () => {
         beforeEach(() => {
             const mockDate = new Date('2019-01-26T12:34:56.000Z')
             global.Date.now = jest.fn(
-                () => mockDate
+                () => mockDate,
             ) as unknown as typeof Date.now
             mockedUseCustomFieldDefinitions.mockReturnValue({
-                data: {data: []},
+                data: { data: [] },
             } as any)
         })
         it('should show an empty custom fields indicator at the bottom of the channels list', () => {
             renderWithQueryClientProvider(
                 <Provider store={mockStore(defaultState)}>
                     <CustomerChannels {...minProps} />
-                </Provider>
+                </Provider>,
             )
 
             expect(screen.getByText('Customer Fields')).toBeInTheDocument()
@@ -446,19 +447,19 @@ describe('CustomerChannels component', () => {
         it('should show a link to admins at the bottom of the channels list', () => {
             const adminUser = clone(defaultUser)
             adminUser.role.name = UserRole.Admin
-            const adminState = {currentUser: fromJS(adminUser)}
+            const adminState = { currentUser: fromJS(adminUser) }
 
             renderWithQueryClientProvider(
                 <Provider store={mockStore(adminState)}>
                     <CustomerChannels {...minProps} />
-                </Provider>
+                </Provider>,
             )
 
             expect(screen.getByText('Add Customer Fields')).toBeInTheDocument()
 
             fireEvent.click(screen.getByText('Add Customer Fields'))
             expect(logEventSpy).toHaveBeenCalledWith(
-                SegmentEvent.CustomFieldCustomerAddFieldsClicked
+                SegmentEvent.CustomFieldCustomerAddFieldsClicked,
             )
         })
     })

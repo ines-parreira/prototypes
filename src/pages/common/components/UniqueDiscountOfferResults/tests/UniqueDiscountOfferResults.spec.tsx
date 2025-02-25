@@ -1,28 +1,28 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {render, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {Provider} from 'react-redux'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {integrationsState} from 'fixtures/integrations'
-import {uniqueDiscountOffers} from 'fixtures/uniqueDiscountOffers'
-import {useModalManager} from 'hooks/useModalManager'
+import { integrationsState } from 'fixtures/integrations'
+import { uniqueDiscountOffers } from 'fixtures/uniqueDiscountOffers'
+import { useModalManager } from 'hooks/useModalManager'
 import {
     useCreateDiscountOffer,
+    useDeleteDiscountOffer,
     useListDiscountOffers,
     useUpdateDiscountOffer,
-    useDeleteDiscountOffer,
 } from 'models/convert/discountOffer/queries'
 import {
     DELETE_DISCOUNT_MODAL_NAME,
     UNIQUE_DISCOUNT_MODAL_NAME,
 } from 'models/discountCodes/constants'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 import UniqueDiscountCodeResults from '../UniqueDiscountOfferResults'
 
@@ -90,12 +90,12 @@ describe('<DiscountCodeResults />', () => {
             refetch: jest.fn(),
         } as any)
 
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
                     <UniqueDiscountCodeResults {...minProps} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         await waitFor(() => {
@@ -111,12 +111,12 @@ describe('<DiscountCodeResults />', () => {
             refetch: jest.fn(),
         } as any)
 
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
                     <UniqueDiscountCodeResults {...minProps} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         await waitFor(() => {
@@ -137,7 +137,7 @@ describe('<DiscountCodeResults />', () => {
                 <QueryClientProvider client={queryClient}>
                     <UniqueDiscountCodeResults {...minProps} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         const deleteIntentBtn = screen.getByLabelText('Delete discount offer')
@@ -148,7 +148,7 @@ describe('<DiscountCodeResults />', () => {
             expect(useModalManagerMock().openModal).toHaveBeenCalledWith(
                 DELETE_DISCOUNT_MODAL_NAME,
                 undefined,
-                expect.objectContaining({...uniqueDiscountOffers[0]})
+                expect.objectContaining({ ...uniqueDiscountOffers[0] }),
             )
         })
     })
@@ -165,7 +165,7 @@ describe('<DiscountCodeResults />', () => {
                 <QueryClientProvider client={queryClient}>
                     <UniqueDiscountCodeResults {...minProps} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         const editBtn = screen.getByLabelText('Edit discount offer')
@@ -176,7 +176,7 @@ describe('<DiscountCodeResults />', () => {
             expect(useModalManagerMock().openModal).toHaveBeenCalledWith(
                 UNIQUE_DISCOUNT_MODAL_NAME,
                 undefined,
-                expect.objectContaining({...uniqueDiscountOffers[0]})
+                expect.objectContaining({ ...uniqueDiscountOffers[0] }),
             )
         })
     })
@@ -193,7 +193,7 @@ describe('<DiscountCodeResults />', () => {
                 <QueryClientProvider client={queryClient}>
                     <UniqueDiscountCodeResults {...minProps} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         const discount = screen.getByText(uniqueDiscountOffers[0].prefix)
@@ -201,7 +201,7 @@ describe('<DiscountCodeResults />', () => {
 
         await waitFor(() => {
             expect(minProps.onDiscountSelected).toHaveBeenCalledWith(
-                uniqueDiscountOffers[0]
+                uniqueDiscountOffers[0],
             )
         })
     })
@@ -221,7 +221,7 @@ describe('<DiscountCodeResults />', () => {
                         canAddUniqueDiscountOffer={false}
                     />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         const discount = screen.getByText(uniqueDiscountOffers[0].prefix)

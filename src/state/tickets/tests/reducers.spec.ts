@@ -1,17 +1,16 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
-import {ViewType} from 'models/view/types'
-
+import { ViewType } from 'models/view/types'
 import * as ticketTypes from 'state/ticket/constants'
 import * as types from 'state/tickets/constants'
-import reducer, {initialState} from 'state/tickets/reducers'
-import {GorgiasAction} from 'state/types'
+import reducer, { initialState } from 'state/tickets/reducers'
+import { GorgiasAction } from 'state/types'
 import * as viewTypes from 'state/views/constants'
 
 describe('tickets reducers', () => {
     it('initial state', () => {
         expect(reducer(undefined, {} as GorgiasAction)).toEqualImmutable(
-            initialState
+            initialState,
         )
     })
 
@@ -34,7 +33,7 @@ describe('tickets reducers', () => {
                 type: viewTypes.FETCH_LIST_VIEW_SUCCESS,
                 viewType: ViewType.TicketList,
                 fetched: resp,
-            })
+            }),
         ).toEqualImmutable(initialState.set('items', fromJS(resp.data)))
     })
 
@@ -45,7 +44,7 @@ describe('tickets reducers', () => {
                 viewType: ViewType.CustomerList,
                 data: {},
                 withHighlight: true,
-            })
+            }),
         ).toEqualImmutable(initialState)
     })
 
@@ -70,7 +69,7 @@ describe('tickets reducers', () => {
                 type: viewTypes.BULK_DELETE_SUCCESS,
                 viewType: ViewType.TicketList,
                 ids: [1, 2],
-            })
+            }),
         ).toEqualImmutable(initialState.set('items', fromJS([tickets[2]])))
     })
 
@@ -96,7 +95,7 @@ describe('tickets reducers', () => {
                 type: viewTypes.BULK_DELETE_SUCCESS,
                 viewType: ViewType.CustomerList,
                 ids: [1, 2],
-            })
+            }),
         ).toEqualImmutable(state)
     })
 
@@ -117,12 +116,12 @@ describe('tickets reducers', () => {
             reducer(state, {
                 type: ticketTypes.FETCH_TICKET_SUCCESS,
                 ticketId: 2,
-            })
+            }),
         ).toEqualImmutable(
             initialState.set(
                 'items',
-                fromJS([tickets[0], {...tickets[1], is_unread: false}])
-            )
+                fromJS([tickets[0], { ...tickets[1], is_unread: false }]),
+            ),
         )
 
         // non existent ticket
@@ -130,7 +129,7 @@ describe('tickets reducers', () => {
             reducer(state, {
                 type: ticketTypes.FETCH_TICKET_SUCCESS,
                 ticketId: 14,
-            })
+            }),
         ).toEqualImmutable(state)
     })
 
@@ -140,7 +139,7 @@ describe('tickets reducers', () => {
             cursor: 'new',
         }
         expect(reducer(initialState, action)).toEqualImmutable(
-            initialState.set('cursor', action.cursor)
+            initialState.set('cursor', action.cursor),
         )
     })
 })

@@ -1,5 +1,6 @@
-import {render, screen, fireEvent} from '@testing-library/react'
 import React from 'react'
+
+import { fireEvent, render, screen } from '@testing-library/react'
 
 import BackLink from '../BackLink'
 
@@ -13,7 +14,7 @@ jest.mock(
             useHistory: () => ({
                 push: mockHistoryPush,
             }),
-        }) as Record<string, unknown>
+        }) as Record<string, unknown>,
 )
 
 describe('BackLink Component', () => {

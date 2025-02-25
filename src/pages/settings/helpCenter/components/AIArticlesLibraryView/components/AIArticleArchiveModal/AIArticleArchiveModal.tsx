@@ -1,7 +1,8 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import React, {forwardRef, useImperativeHandle, useRef, useState} from 'react'
+import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react'
 
-import {AIArticle} from 'models/helpCenter/types'
+import { Label } from '@gorgias/merchant-ui-kit'
+
+import { AIArticle } from 'models/helpCenter/types'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
@@ -34,7 +35,7 @@ type Props = {
 }
 
 const AIArticleArchiveModal = forwardRef<AIArticleArchiveModalHandle, Props>(
-    ({onArchive: onArchiveProp}, ref) => {
+    ({ onArchive: onArchiveProp }, ref) => {
         const [articleToArchive, setArticleToArchive] = useState<AIArticle>()
         const [reason, setReason] = useState<ArchiveReason>()
         const [reasonComment, setReasonComment] = useState<string>()
@@ -49,7 +50,7 @@ const AIArticleArchiveModal = forwardRef<AIArticleArchiveModalHandle, Props>(
                     setReasonComment(undefined)
                 },
             }),
-            []
+            [],
         )
 
         const onReasonChange = (reason: ArchiveReason) => {
@@ -110,7 +111,7 @@ const AIArticleArchiveModal = forwardRef<AIArticleArchiveModalHandle, Props>(
                                 value={reasonComment}
                                 onChange={(value) =>
                                     setReasonComment(
-                                        value.slice(0, archiveReasonMaxLength)
+                                        value.slice(0, archiveReasonMaxLength),
                                     )
                                 }
                                 caption={`${
@@ -133,7 +134,7 @@ const AIArticleArchiveModal = forwardRef<AIArticleArchiveModalHandle, Props>(
                 </ModalActionsFooter>
             </Modal>
         )
-    }
+    },
 )
 
 export default AIArticleArchiveModal

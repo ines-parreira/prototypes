@@ -1,7 +1,8 @@
-import {render, screen} from '@testing-library/react'
-import {ContentState, EditorState, SelectionState} from 'draft-js'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { render, screen } from '@testing-library/react'
+import { ContentState, EditorState, SelectionState } from 'draft-js'
+import { fromJS } from 'immutable'
 
 import MentionSuggestions from 'pages/common/draftjs/plugins/mentions/MentionSuggestions'
 
@@ -77,14 +78,14 @@ describe('MentionSuggestions Component', () => {
     const anchorKey = initialEditorState.getSelection().getAnchorKey()
     const editorStateWithSelection = EditorState.acceptSelection(
         initialEditorState,
-        sel as SelectionState
+        sel as SelectionState,
     )
     const editorState = EditorState.moveFocusToEnd(editorStateWithSelection)
 
     it('Should not render the suggestions when "canAddMention" is false', () => {
-        const callbacks = {onChange: jest.fn(), handleKeyCommand: undefined}
+        const callbacks = { onChange: jest.fn(), handleKeyCommand: undefined }
 
-        const {container} = render(
+        const { container } = render(
             <MentionSuggestions
                 {...{
                     ...minProps,
@@ -98,14 +99,14 @@ describe('MentionSuggestions Component', () => {
                     },
                 }}
                 callbacks={callbacks}
-            />
+            />,
         )
 
         expect(container.firstChild).toBeNull()
     })
 
     it('Should render suggestions', () => {
-        const callbacks = {onChange: jest.fn(), handleKeyCommand: undefined}
+        const callbacks = { onChange: jest.fn(), handleKeyCommand: undefined }
 
         render(
             <MentionSuggestions
@@ -119,7 +120,7 @@ describe('MentionSuggestions Component', () => {
                     },
                 }}
                 callbacks={callbacks}
-            />
+            />,
         )
 
         callbacks.onChange(editorState)
@@ -127,7 +128,7 @@ describe('MentionSuggestions Component', () => {
         expect(
             screen.getByRole('option', {
                 name: new RegExp(mentionablePerson.name),
-            })
+            }),
         ).toBeInTheDocument()
     })
 })

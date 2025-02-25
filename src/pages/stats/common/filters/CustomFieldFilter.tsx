@@ -1,19 +1,20 @@
-import _noop from 'lodash/noop'
-import React, {useEffect, useMemo} from 'react'
+import React, { useEffect, useMemo } from 'react'
 
-import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import _noop from 'lodash/noop'
+
+import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {FilterComponentKey} from 'models/stat/types'
+import { FilterComponentKey } from 'models/stat/types'
 import Filter from 'pages/stats/common/components/Filter'
-import {FilterLabels} from 'pages/stats/common/filters/constants'
-import {logSegmentEvent} from 'pages/stats/common/filters/helpers'
-import {OptionalFilterProps} from 'pages/stats/common/filters/types'
+import { FilterLabels } from 'pages/stats/common/filters/constants'
+import { logSegmentEvent } from 'pages/stats/common/filters/helpers'
+import { OptionalFilterProps } from 'pages/stats/common/filters/types'
 import {
     activeParams,
     selectDropdownTextFields,
 } from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect'
-import {DropdownOption} from 'pages/stats/types'
+import { DropdownOption } from 'pages/stats/types'
 import {
     getSelectedCustomField,
     setSelectedCustomField,
@@ -22,11 +23,11 @@ import {
 export const CUSTOM_FIELD_FILTER_NAME =
     FilterLabels[FilterComponentKey.CustomField]
 
-export const CustomFieldFilter = ({warningType}: OptionalFilterProps) => {
+export const CustomFieldFilter = ({ warningType }: OptionalFilterProps) => {
     const selectedCustomField = useAppSelector(getSelectedCustomField)
     const dispatch = useAppDispatch()
 
-    const {data: {data: activeFields = []} = {}, isLoading} =
+    const { data: { data: activeFields = [] } = {}, isLoading } =
         useCustomFieldDefinitions(activeParams)
     const activeDropdownFields = activeFields.filter(selectDropdownTextFields)
     const options = useMemo(
@@ -35,10 +36,10 @@ export const CustomFieldFilter = ({warningType}: OptionalFilterProps) => {
                 value: String(field.id),
                 label: field.label,
             })),
-        [activeDropdownFields]
+        [activeDropdownFields],
     )
     const selectedField = activeDropdownFields.find(
-        (field) => field.id === selectedCustomField.id
+        (field) => field.id === selectedCustomField.id,
     )
     const selectedOptions = useMemo(() => {
         return (selectedField ? [selectedField] : []).map((field) => ({
@@ -54,7 +55,7 @@ export const CustomFieldFilter = ({warningType}: OptionalFilterProps) => {
                     id: activeDropdownFields[0].id,
                     label: activeDropdownFields[0].label,
                     isLoading,
-                })
+                }),
             )
         }
     }, [activeDropdownFields, isLoading, dispatch, selectedField])
@@ -65,7 +66,7 @@ export const CustomFieldFilter = ({warningType}: OptionalFilterProps) => {
                 id: Number(opt.value),
                 label: opt.label,
                 isLoading,
-            })
+            }),
         )
     }
 
@@ -76,12 +77,12 @@ export const CustomFieldFilter = ({warningType}: OptionalFilterProps) => {
     return (
         <Filter
             filterName={CUSTOM_FIELD_FILTER_NAME}
-            filterErrors={{warningType}}
+            filterErrors={{ warningType }}
             isPersistent={true}
             isMultiple={false}
             showSearch={false}
             showQuickSelect={false}
-            filterOptionGroups={[{options}]}
+            filterOptionGroups={[{ options }]}
             selectedOptions={selectedOptions}
             logicalOperators={[]}
             selectedLogicalOperator={null}

@@ -1,13 +1,14 @@
+import React, { forwardRef } from 'react'
+
 import {
     CustomFieldConditionExpressionField,
     ExpressionOperator,
 } from '@gorgias/api-queries'
-import {SelectField} from '@gorgias/merchant-ui-kit'
-import React, {forwardRef} from 'react'
+import { SelectField } from '@gorgias/merchant-ui-kit'
 
-import {useFormContext} from 'core/forms'
-import {getUIDataType} from 'custom-fields/helpers/getUIDataType'
-import {CustomField, SupportedUIDataType} from 'custom-fields/types'
+import { useFormContext } from 'core/forms'
+import { getUIDataType } from 'custom-fields/helpers/getUIDataType'
+import { CustomField, SupportedUIDataType } from 'custom-fields/types'
 
 import {
     EXPRESSION_OPERATORS_BY_UI_DATA_TYPE,
@@ -22,14 +23,14 @@ type OperatorFieldProps = {
 }
 
 export const OperatorField = forwardRef(function OperatorField(
-    {pickedDefinition, onChange, value, index}: OperatorFieldProps,
-    __ref
+    { pickedDefinition, onChange, value, index }: OperatorFieldProps,
+    __ref,
 ) {
-    const {setValue} = useFormContext()
+    const { setValue } = useFormContext()
     const UIDataType = pickedDefinition
         ? (getUIDataType(
               pickedDefinition.definition.data_type,
-              pickedDefinition.definition.input_settings.input_type
+              pickedDefinition.definition.input_settings.input_type,
           ) as SupportedUIDataType)
         : undefined
 

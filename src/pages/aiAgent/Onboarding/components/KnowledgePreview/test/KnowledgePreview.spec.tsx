@@ -1,9 +1,9 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {render, screen} from '@testing-library/react'
-
 import React from 'react'
 
-import {appQueryClient} from 'api/queryClient'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { render, screen } from '@testing-library/react'
+
+import { appQueryClient } from 'api/queryClient'
 
 import KnowledgePreview from '../KnowledgePreview'
 
@@ -14,7 +14,7 @@ describe('KnowledgePreview', () => {
         render(
             <QueryClientProvider client={appQueryClient}>
                 <KnowledgePreview />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(screen.getAllByText('Average order per day').length).toBe(2)

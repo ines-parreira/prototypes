@@ -1,13 +1,14 @@
-import {act, fireEvent, render, waitFor} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { act, fireEvent, render, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {SegmentEvent} from 'common/segment'
-import {account} from 'fixtures/account'
-import {billingState} from 'fixtures/billing'
+import { SegmentEvent } from 'common/segment'
+import { account } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
 import {
     basicMonthlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
@@ -15,25 +16,25 @@ import {
     proMonthlyHelpdeskPlan,
     voicePlan0,
 } from 'fixtures/productPrices'
-import {user} from 'fixtures/users'
-import {trackBillingEvent} from 'models/billing/resources'
-import {ProductType} from 'models/billing/types'
-import {cancelHelpdeskAutoRenewal} from 'state/currentAccount/actions'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {assumeMock, getLastMockCall} from 'utils/testing'
+import { user } from 'fixtures/users'
+import { trackBillingEvent } from 'models/billing/resources'
+import { ProductType } from 'models/billing/types'
+import { cancelHelpdeskAutoRenewal } from 'state/currentAccount/actions'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { assumeMock, getLastMockCall } from 'utils/testing'
 
 import CancellationReasons from '../CancellationReasons'
 import CancellationSummary from '../CancellationSummary'
 import CancelProductModal from '../CancelProductModal'
 import ChurnMitigationOffer from '../ChurnMitigationOffer'
-import {CancellationFlowStep} from '../constants'
+import { CancellationFlowStep } from '../constants'
 import useCancellationFlowStepsStateMachine from '../hooks/useCancellationFlowStepsStateMachine'
 import useFindChurnMitigationOffer from '../hooks/useFindChurnMitigationOffer'
 import ProductFeaturesFOMO from '../ProductFeaturesFOMO'
-import {cancellationReasonsReducer, DEFAULT_STATE} from '../reducers'
-import {sendAcceptedChurnMitigationOfferToSupport} from '../resources'
-import {HELPDESK_CANCELLATION_SCENARIO} from '../scenarios'
+import { cancellationReasonsReducer, DEFAULT_STATE } from '../reducers'
+import { sendAcceptedChurnMitigationOfferToSupport } from '../resources'
+import { HELPDESK_CANCELLATION_SCENARIO } from '../scenarios'
 import Disclaimer from '../UI/Disclaimer'
 
 // components mocks
@@ -52,34 +53,34 @@ const store = mockStore({
 })
 
 jest.mock('../ProductFeaturesFOMO/ProductFeaturesFOMO', () =>
-    jest.fn(() => <div data-testid="product-features-fomo"></div>)
+    jest.fn(() => <div data-testid="product-features-fomo"></div>),
 )
 const MockProductFeaturesFOMO = assumeMock(ProductFeaturesFOMO)
 
 jest.mock('../CancellationReasons/CancellationReasons', () =>
-    jest.fn(() => <div data-testid="cancellation-reasons"></div>)
+    jest.fn(() => <div data-testid="cancellation-reasons"></div>),
 )
 const CancellationReasonsMock = assumeMock(CancellationReasons)
 
 jest.mock('../ChurnMitigationOffer/ChurnMitigationOffer', () =>
-    jest.fn(() => <div data-testid="churn-mitigation-offer"></div>)
+    jest.fn(() => <div data-testid="churn-mitigation-offer"></div>),
 )
 const ChurnMitigationOfferMock = assumeMock(ChurnMitigationOffer)
 
 jest.mock('../CancellationSummary/CancellationSummary', () =>
-    jest.fn(() => <div data-testid="cancellation-summary"></div>)
+    jest.fn(() => <div data-testid="cancellation-summary"></div>),
 )
 const CancellationSummaryMock = assumeMock(CancellationSummary)
 
 jest.mock('../UI/Disclaimer', () =>
-    jest.fn(() => <div data-testid="disclaimer" />)
+    jest.fn(() => <div data-testid="disclaimer" />),
 )
 const DisclaimerMock = assumeMock(Disclaimer)
 
 // business logic mocks
 jest.mock('../hooks/useCancellationFlowStepsStateMachine')
 const useCancellationFlowStepsStateMachineMock = assumeMock(
-    useCancellationFlowStepsStateMachine
+    useCancellationFlowStepsStateMachine,
 )
 jest.mock('../hooks/useFindChurnMitigationOffer')
 const useFindChurnMitigationOfferMock = assumeMock(useFindChurnMitigationOffer)
@@ -92,7 +93,7 @@ const cancelHelpdeskAutoRenewalMock = assumeMock(cancelHelpdeskAutoRenewal)
 
 jest.mock('../resources')
 const sendAcceptedChurnMitigationOfferToSupportMock = assumeMock(
-    sendAcceptedChurnMitigationOfferToSupport
+    sendAcceptedChurnMitigationOfferToSupport,
 )
 
 jest.mock('state/notifications/actions')
@@ -122,7 +123,7 @@ beforeEach(() => {
 
     // Set the default churn mitigation offer id
     useFindChurnMitigationOfferMock.mockImplementation(
-        () => '5f5e3e3e4f3e4e001f3e4e4f'
+        () => '5f5e3e3e4f3e4e001f3e4e4f',
     )
 
     // Mock notify
@@ -157,7 +158,7 @@ describe('CancelProductModal: step 1', () => {
     })
 
     it('should render the product fomo features with corresponding footer', () => {
-        const {getByRole, getByTestId} = render(
+        const { getByRole, getByTestId } = render(
             <Provider store={store}>
                 <CancelProductModal
                     onClose={jest.fn()}
@@ -166,7 +167,7 @@ describe('CancelProductModal: step 1', () => {
                     subscriptionProducts={subscriptionProducts}
                     periodEnd={periodEnd}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(getByTestId('product-features-fomo')).toBeInTheDocument()
@@ -175,7 +176,7 @@ describe('CancelProductModal: step 1', () => {
                 periodEnd: periodEnd,
                 features: HELPDESK_CANCELLATION_SCENARIO.features,
             },
-            {}
+            {},
         )
 
         const keepUsingHelpdeskButtonElement = getByRole('button', {
@@ -193,7 +194,7 @@ describe('CancelProductModal: step 1', () => {
     it('should close the modal when the "Keep using helpdesk" button is clicked', () => {
         const mockHandleOnClose = jest.fn()
 
-        const {getByRole} = render(
+        const { getByRole } = render(
             <Provider store={store}>
                 <CancelProductModal
                     onClose={mockHandleOnClose}
@@ -202,7 +203,7 @@ describe('CancelProductModal: step 1', () => {
                     subscriptionProducts={subscriptionProducts}
                     periodEnd={periodEnd}
                 />
-            </Provider>
+            </Provider>,
         )
         const keepUsingHelpdeskButtonElement = getByRole('button', {
             name: 'Keep using helpdesk',
@@ -212,7 +213,7 @@ describe('CancelProductModal: step 1', () => {
     })
 
     it('should go to the next step when continue cancelling is clicked', () => {
-        const {getByRole} = render(
+        const { getByRole } = render(
             <Provider store={store}>
                 <CancelProductModal
                     onClose={jest.fn()}
@@ -221,7 +222,7 @@ describe('CancelProductModal: step 1', () => {
                     subscriptionProducts={subscriptionProducts}
                     periodEnd={periodEnd}
                 />
-            </Provider>
+            </Provider>,
         )
         const continueCancellingButtonElement = getByRole('button', {
             name: 'Continue cancelling',
@@ -240,7 +241,7 @@ describe('CancelProductModal: step 2', () => {
     })
 
     it('should render the cancellation reasons with a corresponding footer and unavailable next step', () => {
-        const {getByRole, getByTestId} = render(
+        const { getByRole, getByTestId } = render(
             <Provider store={store}>
                 <CancelProductModal
                     onClose={jest.fn()}
@@ -249,7 +250,7 @@ describe('CancelProductModal: step 2', () => {
                     subscriptionProducts={subscriptionProducts}
                     periodEnd={periodEnd}
                 />
-            </Provider>
+            </Provider>,
         )
         expect(getByTestId('cancellation-reasons')).toBeInTheDocument()
         expect(CancellationReasonsMock).toHaveBeenCalledWith(
@@ -258,7 +259,7 @@ describe('CancelProductModal: step 2', () => {
                 dispatchCancellationReasonsAction: expect.any(Function),
                 reasonsState: DEFAULT_STATE,
             },
-            {}
+            {},
         )
 
         const keepUsingHelpdeskButtonElement = getByRole('button', {
@@ -274,7 +275,7 @@ describe('CancelProductModal: step 2', () => {
     })
 
     it('should render the cancellation reasons step with next step unavailable', () => {
-        const {getByRole} = render(
+        const { getByRole } = render(
             <Provider store={store}>
                 <CancelProductModal
                     onClose={jest.fn()}
@@ -283,7 +284,7 @@ describe('CancelProductModal: step 2', () => {
                     subscriptionProducts={subscriptionProducts}
                     periodEnd={periodEnd}
                 />
-            </Provider>
+            </Provider>,
         )
         expect(CancellationReasonsMock).toHaveBeenCalledWith(
             {
@@ -291,7 +292,7 @@ describe('CancelProductModal: step 2', () => {
                 dispatchCancellationReasonsAction: expect.any(Function),
                 reasonsState: DEFAULT_STATE,
             },
-            {}
+            {},
         )
 
         const keepUsingHelpdeskButtonElement = getByRole('button', {
@@ -309,7 +310,7 @@ describe('CancelProductModal: step 2', () => {
     it('should close the modal when the "Keep using helpdesk" button is clicked', () => {
         const mockHandleOnClose = jest.fn()
 
-        const {getByRole} = render(
+        const { getByRole } = render(
             <Provider store={store}>
                 <CancelProductModal
                     onClose={mockHandleOnClose}
@@ -318,7 +319,7 @@ describe('CancelProductModal: step 2', () => {
                     subscriptionProducts={subscriptionProducts}
                     periodEnd={periodEnd}
                 />
-            </Provider>
+            </Provider>,
         )
         const keepUsingHelpdeskButtonElement = getByRole('button', {
             name: 'Keep using helpdesk',
@@ -330,13 +331,13 @@ describe('CancelProductModal: step 2', () => {
     it('should go to the next step when continue cancelling is clicked', () => {
         const mockState = {
             ...DEFAULT_STATE,
-            primaryReason: {label: 'some primary reason'},
-            secondaryReason: {label: 'some secondary reason'},
+            primaryReason: { label: 'some primary reason' },
+            secondaryReason: { label: 'some secondary reason' },
             completed: true,
         }
         cancellationReasonsReducerMock.mockImplementation(() => mockState)
 
-        const {getByRole} = render(
+        const { getByRole } = render(
             <Provider store={store}>
                 <CancelProductModal
                     onClose={jest.fn()}
@@ -345,7 +346,7 @@ describe('CancelProductModal: step 2', () => {
                     subscriptionProducts={subscriptionProducts}
                     periodEnd={periodEnd}
                 />
-            </Provider>
+            </Provider>,
         )
         const continueCancellingButtonElement = getByRole('button', {
             name: 'Continue cancelling',
@@ -359,8 +360,8 @@ describe('CancelProductModal: step 2', () => {
 describe('CancelProductModal: step 3', () => {
     const mockState = {
         ...DEFAULT_STATE,
-        primaryReason: {label: 'some primary reason'},
-        secondaryReason: {label: 'some secondary reason'},
+        primaryReason: { label: 'some primary reason' },
+        secondaryReason: { label: 'some secondary reason' },
         completed: true,
     }
 
@@ -374,7 +375,7 @@ describe('CancelProductModal: step 3', () => {
     })
 
     it('should render the churn mitigation offer with a corresponding footer', () => {
-        const {getByRole, getByTestId} = render(
+        const { getByRole, getByTestId } = render(
             <Provider store={store}>
                 <CancelProductModal
                     onClose={jest.fn()}
@@ -383,33 +384,35 @@ describe('CancelProductModal: step 3', () => {
                     subscriptionProducts={subscriptionProducts}
                     periodEnd={periodEnd}
                 />
-            </Provider>
+            </Provider>,
         )
         expect(ChurnMitigationOfferMock).toHaveBeenCalledWith(
-            {canduContentId: '5f5e3e3e4f3e4e001f3e4e4f'},
-            {}
+            { canduContentId: '5f5e3e3e4f3e4e001f3e4e4f' },
+            {},
         )
         expect(useFindChurnMitigationOfferMock).toHaveBeenNthCalledWith(
             1,
             null,
             null,
-            []
+            [],
         )
         expect(useFindChurnMitigationOfferMock).toHaveBeenNthCalledWith(
             2,
             mockState.primaryReason,
             mockState.secondaryReason,
-            HELPDESK_CANCELLATION_SCENARIO.reasonsToCanduContents
+            HELPDESK_CANCELLATION_SCENARIO.reasonsToCanduContents,
         )
         expect(getByTestId('churn-mitigation-offer')).toBeInTheDocument()
-        expect(getByRole('button', {name: 'Accept offer'})).toBeInTheDocument()
         expect(
-            getByRole('button', {name: 'Continue cancelling'})
+            getByRole('button', { name: 'Accept offer' }),
+        ).toBeInTheDocument()
+        expect(
+            getByRole('button', { name: 'Continue cancelling' }),
         ).toBeInTheDocument()
     })
 
     it('should go to the next step when continue cancelling is clicked', () => {
-        const {getByRole} = render(
+        const { getByRole } = render(
             <Provider store={store}>
                 <CancelProductModal
                     onClose={jest.fn()}
@@ -418,7 +421,7 @@ describe('CancelProductModal: step 3', () => {
                     subscriptionProducts={subscriptionProducts}
                     periodEnd={periodEnd}
                 />
-            </Provider>
+            </Provider>,
         )
         const continueCancellingButtonElement = getByRole('button', {
             name: 'Continue cancelling',
@@ -434,14 +437,14 @@ describe('CancelProductModal: step 3', () => {
                 secondary_reason: mockState.secondaryReason.label,
                 other_reason: mockState.otherReason,
                 accepted: false,
-            }
+            },
         )
     })
 
     it('should close the modal when churn mitigation offer was successfully submitted', async () => {
         sendAcceptedChurnMitigationOfferToSupportMock.mockResolvedValue(true)
         const mockHandleOnClose = jest.fn()
-        const {getByRole} = render(
+        const { getByRole } = render(
             <Provider store={store}>
                 <CancelProductModal
                     onClose={mockHandleOnClose}
@@ -450,7 +453,7 @@ describe('CancelProductModal: step 3', () => {
                     subscriptionProducts={subscriptionProducts}
                     periodEnd={periodEnd}
                 />
-            </Provider>
+            </Provider>,
         )
         const acceptOfferButtonElement = getByRole('button', {
             name: 'Accept offer',
@@ -458,7 +461,7 @@ describe('CancelProductModal: step 3', () => {
         fireEvent.click(acceptOfferButtonElement)
         await waitFor(() => {
             expect(
-                sendAcceptedChurnMitigationOfferToSupportMock
+                sendAcceptedChurnMitigationOfferToSupportMock,
             ).toHaveBeenCalledWith({
                 productType: productType,
                 primaryReason: mockState.primaryReason.label,
@@ -489,14 +492,14 @@ describe('CancelProductModal: step 3', () => {
                 secondary_reason: mockState.secondaryReason.label,
                 other_reason: mockState.otherReason,
                 accepted: true,
-            }
+            },
         )
     })
 
     it('should not close the modal when churn mitigation offer submission failed', async () => {
         sendAcceptedChurnMitigationOfferToSupportMock.mockResolvedValue(false)
         const mockHandleOnClose = jest.fn()
-        const {getByRole} = render(
+        const { getByRole } = render(
             <Provider store={store}>
                 <CancelProductModal
                     onClose={mockHandleOnClose}
@@ -505,7 +508,7 @@ describe('CancelProductModal: step 3', () => {
                     subscriptionProducts={subscriptionProducts}
                     periodEnd={periodEnd}
                 />
-            </Provider>
+            </Provider>,
         )
         const acceptOfferButtonElement = getByRole('button', {
             name: 'Accept offer',
@@ -513,7 +516,7 @@ describe('CancelProductModal: step 3', () => {
         fireEvent.click(acceptOfferButtonElement)
         await waitFor(() => {
             expect(
-                sendAcceptedChurnMitigationOfferToSupportMock
+                sendAcceptedChurnMitigationOfferToSupportMock,
             ).toHaveBeenCalled()
         })
         expect(mockHandleOnClose).toHaveBeenCalledTimes(0)
@@ -542,7 +545,7 @@ describe('CancelProductModal: step 4', () => {
     })
 
     it('should render the cancellation summary with a corresponding footer and disabled button', () => {
-        const {getByRole, getByTestId} = render(
+        const { getByRole, getByTestId } = render(
             <Provider store={store}>
                 <CancelProductModal
                     onClose={jest.fn()}
@@ -551,7 +554,7 @@ describe('CancelProductModal: step 4', () => {
                     subscriptionProducts={subscriptionProducts}
                     periodEnd={periodEnd}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(CancellationSummaryMock).toHaveBeenCalledWith(
@@ -561,7 +564,7 @@ describe('CancelProductModal: step 4', () => {
                 subscriptionProducts: subscriptionProducts,
                 periodEnd: periodEnd,
             },
-            {}
+            {},
         )
 
         const confirmButtonElement = getByRole('button', {
@@ -577,16 +580,16 @@ describe('CancelProductModal: step 4', () => {
                 agreementChecked: false,
                 onChange: expect.any(Function),
             },
-            {}
+            {},
         )
     })
 
     it('should close when the product cancellation was successful', async () => {
         const mockHandleOnClose = jest.fn()
         cancelHelpdeskAutoRenewalMock.mockReturnValueOnce(() =>
-            Promise.resolve(true)
+            Promise.resolve(true),
         )
-        const {getByRole} = render(
+        const { getByRole } = render(
             <Provider store={store}>
                 <CancelProductModal
                     onClose={mockHandleOnClose}
@@ -595,7 +598,7 @@ describe('CancelProductModal: step 4', () => {
                     subscriptionProducts={subscriptionProducts}
                     periodEnd={periodEnd}
                 />
-            </Provider>
+            </Provider>,
         )
 
         const confirmButtonElement = getByRole('button', {
@@ -616,9 +619,9 @@ describe('CancelProductModal: step 4', () => {
     it('should not close when the product cancellation failed', async () => {
         const mockHandleOnClose = jest.fn()
         cancelHelpdeskAutoRenewalMock.mockReturnValueOnce(() =>
-            Promise.resolve(false)
+            Promise.resolve(false),
         )
-        const {getByRole} = render(
+        const { getByRole } = render(
             <Provider store={store}>
                 <CancelProductModal
                     onClose={mockHandleOnClose}
@@ -627,7 +630,7 @@ describe('CancelProductModal: step 4', () => {
                     subscriptionProducts={subscriptionProducts}
                     periodEnd={periodEnd}
                 />
-            </Provider>
+            </Provider>,
         )
 
         const confirmButtonElement = getByRole('button', {

@@ -1,6 +1,6 @@
-import {fromJS, List, Map} from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 import _isEmpty from 'lodash/isEmpty'
-import {createSelector} from 'reselect'
+import { createSelector } from 'reselect'
 
 import {
     AutomatePlan,
@@ -13,16 +13,15 @@ import {
     ProductType,
     SMSOrVoicePlan,
 } from 'models/billing/types'
-import {getCheapestPrice} from 'models/billing/utils'
-import {getCurrentSubscription} from 'state/currentAccount/selectors'
+import { getCheapestPrice } from 'models/billing/utils'
+import { getCurrentSubscription } from 'state/currentAccount/selectors'
 import {
     AccountFeature,
     AccountFeatureMetadata,
     CurrentAccountState,
 } from 'state/currentAccount/types'
 
-import {RootState} from '../types'
-
+import { RootState } from '../types'
 import {
     BillingImmutableState,
     CurrentProductsUsages,
@@ -35,21 +34,21 @@ import {
  * @type feature-helper-fn
  */
 export const DEPRECATED_getBillingState = (
-    state: RootState
+    state: RootState,
 ): BillingImmutableState => state.billing || fromJS({})
 
 export const getBillingState = createSelector(
     DEPRECATED_getBillingState,
     (billingState) => {
         return billingState.toJS() as ReduxBillingState
-    }
+    },
 )
 
 export const getAvailablePlansByProduct = createSelector(
     getBillingState,
     (billingState) => {
         return billingState.products
-    }
+    },
 )
 
 export const getAvailableHelpdeskPlans = createSelector(
@@ -57,13 +56,13 @@ export const getAvailableHelpdeskPlans = createSelector(
     (products) => {
         const helpdeskProduct = products.find(
             (product): product is Product<ProductType.Helpdesk> =>
-                product.type === ProductType.Helpdesk
+                product.type === ProductType.Helpdesk,
         )
         if (!helpdeskProduct) {
             return []
         }
         return helpdeskProduct.prices.sort((a, b) => a.amount - b.amount)
-    }
+    },
 )
 
 export const getAvailableAutomatePlans = createSelector(
@@ -71,13 +70,13 @@ export const getAvailableAutomatePlans = createSelector(
     (products) => {
         const autProduct = products.find(
             (product): product is Product<ProductType.Automation> =>
-                product.type === ProductType.Automation
+                product.type === ProductType.Automation,
         )
         if (!autProduct) {
             return []
         }
         return autProduct.prices.sort((a, b) => a.amount - b.amount)
-    }
+    },
 )
 
 export const getAvailableVoicePlans = createSelector(
@@ -85,13 +84,13 @@ export const getAvailableVoicePlans = createSelector(
     (products) => {
         const voiceProduct = products.find(
             (product): product is Product<ProductType.Voice> =>
-                product.type === ProductType.Voice
+                product.type === ProductType.Voice,
         )
         if (!voiceProduct) {
             return []
         }
         return voiceProduct.prices.sort((a, b) => a.amount - b.amount)
-    }
+    },
 )
 
 export const getAvailableSmsPlans = createSelector(
@@ -99,13 +98,13 @@ export const getAvailableSmsPlans = createSelector(
     (products) => {
         const smsProduct = products.find(
             (product): product is Product<ProductType.SMS> =>
-                product.type === ProductType.SMS
+                product.type === ProductType.SMS,
         )
         if (!smsProduct) {
             return []
         }
         return smsProduct.prices.sort((a, b) => a.amount - b.amount)
-    }
+    },
 )
 
 export const getAvailableConvertPlans = createSelector(
@@ -113,13 +112,13 @@ export const getAvailableConvertPlans = createSelector(
     (products) => {
         const convertProduct = products.find(
             (product): product is Product<ProductType.Convert> =>
-                product.type === ProductType.Convert
+                product.type === ProductType.Convert,
         )
         if (!convertProduct) {
             return []
         }
         return convertProduct.prices.sort((a, b) => a.amount - b.amount)
-    }
+    },
 )
 
 export const getCurrentPlansByProduct = createSelector(
@@ -135,7 +134,7 @@ export const getCurrentPlansByProduct = createSelector(
         automateAvailablePlans,
         voiceAvailablePlans,
         smsAvailablePlans,
-        convertAvailablePlans
+        convertAvailablePlans,
     ) => {
         const currentPlansPriceIdByProduct: Record<ProductId, PriceId> = (
             (currentSubscription.get('products') || fromJS({})) as Map<any, any>
@@ -152,7 +151,7 @@ export const getCurrentPlansByProduct = createSelector(
 
         Object.values(currentPlansPriceIdByProduct).forEach((priceId) => {
             const helpdeskPlan = helpdeskAvailablePlans.find(
-                (plan) => plan.price_id === priceId
+                (plan) => plan.price_id === priceId,
             )
 
             if (!!helpdeskPlan) {
@@ -161,7 +160,7 @@ export const getCurrentPlansByProduct = createSelector(
             }
 
             const autPlan = automateAvailablePlans.find(
-                (plan) => plan.price_id === priceId
+                (plan) => plan.price_id === priceId,
             )
 
             if (!!autPlan) {
@@ -170,7 +169,7 @@ export const getCurrentPlansByProduct = createSelector(
             }
 
             const voicePlan = voiceAvailablePlans.find(
-                (plan) => plan.price_id === priceId
+                (plan) => plan.price_id === priceId,
             )
 
             if (!!voicePlan) {
@@ -179,7 +178,7 @@ export const getCurrentPlansByProduct = createSelector(
             }
 
             const smsPlan = smsAvailablePlans.find(
-                (plan) => plan.price_id === priceId
+                (plan) => plan.price_id === priceId,
             )
 
             if (!!smsPlan) {
@@ -188,7 +187,7 @@ export const getCurrentPlansByProduct = createSelector(
             }
 
             const convertPlan = convertAvailablePlans.find(
-                (plan) => plan.price_id === priceId
+                (plan) => plan.price_id === priceId,
             )
 
             if (!!convertPlan) {
@@ -199,63 +198,63 @@ export const getCurrentPlansByProduct = createSelector(
         return !_isEmpty(currentPlansByProduct)
             ? currentPlansByProduct
             : undefined
-    }
+    },
 )
 
 export const getCurrentHelpdeskPlan = createSelector(
     getCurrentPlansByProduct,
-    (currentPlans) => currentPlans?.helpdesk
+    (currentPlans) => currentPlans?.helpdesk,
 )
 
 export const getCurrentAutomatePlan = createSelector(
     getCurrentPlansByProduct,
-    (currentPlans) => currentPlans?.automation
+    (currentPlans) => currentPlans?.automation,
 )
 
 export const getCurrentVoicePlan = createSelector(
     getCurrentPlansByProduct,
-    (currentPlans) => currentPlans?.voice
+    (currentPlans) => currentPlans?.voice,
 )
 
 export const getCurrentSmsPlan = createSelector(
     getCurrentPlansByProduct,
-    (currentPlans) => currentPlans?.sms
+    (currentPlans) => currentPlans?.sms,
 )
 
 export const getCurrentConvertPlan = createSelector(
     getCurrentPlansByProduct,
-    (currentPlans) => currentPlans?.convert
+    (currentPlans) => currentPlans?.convert,
 )
 
 export const currentAccountHasProduct = (product: ProductType) =>
     createSelector(
         getCurrentPlansByProduct,
-        (currentProducts) => !!currentProducts?.[product]
+        (currentProducts) => !!currentProducts?.[product],
     )
 
 export const getCurrentHelpdeskPlanName = createSelector(
     getCurrentHelpdeskPlan,
-    (currentHelpdeskPlan) => currentHelpdeskPlan?.name
+    (currentHelpdeskPlan) => currentHelpdeskPlan?.name,
 )
 
 export const getCurrentHelpdeskCadence = createSelector(
     getCurrentHelpdeskPlan,
-    (currentHelpdeskPlan) => currentHelpdeskPlan?.cadence
+    (currentHelpdeskPlan) => currentHelpdeskPlan?.cadence,
 )
 
 export const getIsCurrentHelpdeskLegacy = createSelector(
     getCurrentHelpdeskPlan,
-    (currentHelpdeskPlan) => !!currentHelpdeskPlan?.is_legacy
+    (currentHelpdeskPlan) => !!currentHelpdeskPlan?.is_legacy,
 )
 
 export const getIsCurrentHelpdeskCustom = createSelector(
     getCurrentHelpdeskPlan,
-    (currentHelpdeskPlan) => !!currentHelpdeskPlan?.custom
+    (currentHelpdeskPlan) => !!currentHelpdeskPlan?.custom,
 )
 
 export const getCurrentHelpdeskMaxIntegrations = createSelector(
     getCurrentHelpdeskPlan,
-    (currentHelpdeskPlan) => currentHelpdeskPlan?.integrations || 0
+    (currentHelpdeskPlan) => currentHelpdeskPlan?.integrations || 0,
 )
 
 export const getCurrentProductsFeatures = createSelector(
@@ -268,13 +267,13 @@ export const getCurrentProductsFeatures = createSelector(
                 'features' in product
                     ? Object.assign(acc, product.features)
                     : acc,
-            {}
-        )
+            {},
+        ),
 )
 
 export const makeHasFeature = createSelector(
     getCurrentProductsFeatures,
-    (features) => (feature: AccountFeature) => !!features[feature]?.enabled
+    (features) => (feature: AccountFeature) => !!features[feature]?.enabled,
 )
 
 export const getAvailablePlans = createSelector(
@@ -284,7 +283,7 @@ export const getAvailablePlans = createSelector(
             .reduce<
                 Array<Plan>
             >((acc, product) => acc.concat(product.prices), [])
-            .sort((a, b) => a.amount - b.amount)
+            .sort((a, b) => a.amount - b.amount),
 )
 
 export const getAvailablePlansMap = createSelector(
@@ -295,7 +294,7 @@ export const getAvailablePlansMap = createSelector(
                 acc[plan.price_id] = plan
             })
             return acc
-        }, {})
+        }, {}),
 )
 
 export const getAvailableAutomatePlansMap = createSelector(
@@ -304,12 +303,12 @@ export const getAvailableAutomatePlansMap = createSelector(
         plans.reduce<Record<string, AutomatePlan>>((acc, plan) => {
             acc[plan.price_id] = plan
             return acc
-        }, {})
+        }, {}),
 )
 
 export const getHasAutomate = createSelector(
     getCurrentAutomatePlan,
-    (plan) => !!plan
+    (plan) => !!plan,
 )
 
 export const invoices = createSelector(
@@ -317,46 +316,46 @@ export const invoices = createSelector(
     (billing) =>
         (billing.get('invoices', fromJS([])) as List<any>).filter(
             (invoice: Map<any, any>) =>
-                !!invoice.get('attempted') && invoice.get('amount_due') > 0
-        ) as List<any>
+                !!invoice.get('attempted') && invoice.get('amount_due') > 0,
+        ) as List<any>,
 )
 
 export const creditCard = createSelector(
     DEPRECATED_getBillingState,
-    (billing) => (billing.get('creditCard') as Map<any, any>) || fromJS({})
+    (billing) => (billing.get('creditCard') as Map<any, any>) || fromJS({}),
 )
 
 export const paymentMethod = createSelector(
     DEPRECATED_getBillingState,
-    (billing) => (billing.get('paymentMethod') as string) || ''
+    (billing) => (billing.get('paymentMethod') as string) || '',
 )
 
 export const getCurrentUsage = createSelector(
     DEPRECATED_getBillingState,
-    (billing) => (billing.get('currentUsage') as Map<any, any>) || fromJS({})
+    (billing) => (billing.get('currentUsage') as Map<any, any>) || fromJS({}),
 )
 
 export const getCurrentProductsUsage = createSelector(
     DEPRECATED_getBillingState,
-    (billing) => billing.get('currentProductsUsage') as CurrentProductsUsages
+    (billing) => billing.get('currentProductsUsage') as CurrentProductsUsages,
 )
 
 export const getCheapestSMSPrice = createSelector(
     getAvailableSmsPlans,
     getCurrentHelpdeskCadence,
-    (smsPlans, cadence) => getCheapestPrice(smsPlans, cadence)
+    (smsPlans, cadence) => getCheapestPrice(smsPlans, cadence),
 )
 
 export const getCheapestVoicePrice = createSelector(
     getAvailableVoicePlans,
     getCurrentHelpdeskCadence,
-    (voicePlans, cadence) => getCheapestPrice(voicePlans, cadence)
+    (voicePlans, cadence) => getCheapestPrice(voicePlans, cadence),
 )
 
 export const getCheapestConvertPrice = createSelector(
     getAvailableConvertPlans,
     getCurrentHelpdeskCadence,
-    (convertPlans, cadence) => getCheapestPrice(convertPlans, cadence)
+    (convertPlans, cadence) => getCheapestPrice(convertPlans, cadence),
 )
 
 export const getCheapestProductPrices = createSelector(
@@ -372,7 +371,7 @@ export const getCheapestProductPrices = createSelector(
         voicePlans,
         smsPlans,
         convertPlans,
-        cadence
+        cadence,
     ) => {
         return {
             helpdesk: getCheapestPrice(helpDeskPlans, cadence),
@@ -381,13 +380,13 @@ export const getCheapestProductPrices = createSelector(
             sms: getCheapestPrice(smsPlans, cadence),
             convert: getCheapestPrice(convertPlans, cadence),
         }
-    }
+    },
 )
 
 export const getIsVettedForPhone = createSelector(
     getCurrentVoicePlan,
     getCurrentSmsPlan,
-    (voicePlan, smsPlan) => !!(voicePlan?.price_id || smsPlan?.price_id)
+    (voicePlan, smsPlan) => !!(voicePlan?.price_id || smsPlan?.price_id),
 )
 
 export const getVoiceOrSmsPlanChanged = ({
@@ -405,5 +404,5 @@ export const getVoiceOrSmsPlanChanged = ({
                 voicePlan?.price_id !== selectedVoicePlan?.price_id ||
                 smsPlan?.price_id !== selectedSmsPlan?.price_id
             )
-        }
+        },
     )

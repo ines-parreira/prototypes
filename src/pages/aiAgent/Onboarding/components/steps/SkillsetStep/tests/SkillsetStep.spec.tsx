@@ -1,34 +1,31 @@
-import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
-import {screen, fireEvent, act} from '@testing-library/react'
-import AxiosMock from 'axios-mock-adapter'
-
-import {fromJS, Map} from 'immutable'
 import React from 'react'
 
-import {Provider} from 'react-redux'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { act, fireEvent, screen } from '@testing-library/react'
+import AxiosMock from 'axios-mock-adapter'
+import { fromJS, Map } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {account} from 'fixtures/account'
-import {billingState} from 'fixtures/billing'
-import {chatIntegrationFixtures} from 'fixtures/chat'
-import {shopifyIntegration, integrationsState} from 'fixtures/integrations'
-
+import { account } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
+import { chatIntegrationFixtures } from 'fixtures/chat'
+import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
 import axiosClient from 'models/api/resources'
-import {SkillsetStep} from 'pages/aiAgent/Onboarding/components/steps/SkillsetStep/SkillsetStep'
-import {useCreateOnboarding} from 'pages/aiAgent/Onboarding/hooks/useCreateOnboarding'
+import { SkillsetStep } from 'pages/aiAgent/Onboarding/components/steps/SkillsetStep/SkillsetStep'
+import { useCreateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useCreateOnboarding'
 import {
     defaultOnboardingData,
     useGetOnboardingData,
 } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
-import {useUpdateOnboarding} from 'pages/aiAgent/Onboarding/hooks/useUpdateOnboarding'
-import {WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
+import { useUpdateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useUpdateOnboarding'
+import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
+import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
+import { useEmailIntegrations } from 'pages/settings/contactForm/hooks/useEmailIntegrations'
+import { RootState, StoreDispatch } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
-import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
-import {useEmailIntegrations} from 'pages/settings/contactForm/hooks/useEmailIntegrations'
-import {RootState, StoreDispatch} from 'state/types'
-import {renderWithRouter} from 'utils/testing'
-
-type MutationOptions = {onSuccess: () => void}
+type MutationOptions = { onSuccess: () => void }
 
 // Mock the hooks
 jest.mock('pages/aiAgent/Onboarding/hooks/useGetOnboardingData', () => ({
@@ -51,10 +48,10 @@ jest.mock(
     'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview',
     () => ({
         __esModule: true,
-        default: ({children}: {children: React.ReactNode}) => (
+        default: ({ children }: { children: React.ReactNode }) => (
             <div>{children}</div>
         ),
-    })
+    }),
 )
 
 jest.mock(
@@ -62,7 +59,7 @@ jest.mock(
     () => ({
         __esModule: true,
         default: () => <div>AI Agent Preview</div>,
-    })
+    }),
 )
 
 const mockUseShopifyIntegrationAndScope =
@@ -98,7 +95,7 @@ const renderComponent = () => {
                     goToStep={goToStep}
                 />
             </Provider>
-        </QueryClientProvider>
+        </QueryClientProvider>,
     )
 }
 
@@ -142,7 +139,7 @@ describe('<SkillsetStep />', () => {
         jest.runAllTimers()
 
         expect(
-            screen.getByText('Welcome to Conversational AI!')
+            screen.getByText('Welcome to Conversational AI!'),
         ).toBeInTheDocument()
     })
 
@@ -160,8 +157,8 @@ describe('<SkillsetStep />', () => {
         fireEvent.click(screen.getByText(/Next/i))
 
         expect(mockCreateOnboarding).toHaveBeenCalledWith(
-            expect.objectContaining({scopes: ['support']}),
-            expect.objectContaining({onSuccess: expect.any(Function)})
+            expect.objectContaining({ scopes: ['support'] }),
+            expect.objectContaining({ onSuccess: expect.any(Function) }),
         )
 
         /* eslint-disable @typescript-eslint/no-unsafe-member-access */
@@ -195,8 +192,8 @@ describe('<SkillsetStep />', () => {
         fireEvent.click(screen.getByText(/Next/i))
 
         expect(mockCreateOnboarding).toHaveBeenCalledWith(
-            expect.objectContaining({scopes: ['support']}),
-            expect.objectContaining({onSuccess: expect.any(Function)})
+            expect.objectContaining({ scopes: ['support'] }),
+            expect.objectContaining({ onSuccess: expect.any(Function) }),
         )
 
         const onSuccessCallback = (
@@ -209,7 +206,7 @@ describe('<SkillsetStep />', () => {
         })
 
         expect(goToStep).toHaveBeenCalledWith(
-            WizardStepEnum.SHOPIFY_INTEGRATION
+            WizardStepEnum.SHOPIFY_INTEGRATION,
         )
     })
 
@@ -232,8 +229,8 @@ describe('<SkillsetStep />', () => {
         fireEvent.click(screen.getByText(/Next/i))
 
         expect(mockCreateOnboarding).toHaveBeenCalledWith(
-            expect.objectContaining({scopes: ['support']}),
-            expect.objectContaining({onSuccess: expect.any(Function)})
+            expect.objectContaining({ scopes: ['support'] }),
+            expect.objectContaining({ onSuccess: expect.any(Function) }),
         )
 
         const onSuccessCallback = (

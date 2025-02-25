@@ -1,10 +1,10 @@
-import {QueryClient} from '@tanstack/react-query'
+import { QueryClient } from '@tanstack/react-query'
 
-import {campaignKeys} from 'models/convert/campaign/queries'
+import { campaignKeys } from 'models/convert/campaign/queries'
 
 export const invalidateCacheOnCampaignChange = (
     queryClient: QueryClient,
-    campaignId: string
+    campaignId: string,
 ) => {
     return Promise.all([
         queryClient.invalidateQueries({

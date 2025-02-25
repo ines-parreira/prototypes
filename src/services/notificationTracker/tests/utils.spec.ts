@@ -1,6 +1,6 @@
-import {getLDClient} from 'utils/launchDarkly'
+import { getLDClient } from 'utils/launchDarkly'
 
-import {checkIfAiAgentOnboardingNotificationIsEnabled} from '../utils'
+import { checkIfAiAgentOnboardingNotificationIsEnabled } from '../utils'
 
 jest.mock('utils/launchDarkly')
 const variationMock = getLDClient().variation as jest.Mock

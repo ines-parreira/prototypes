@@ -1,22 +1,24 @@
-import {Tag, useListSlaPolicies} from '@gorgias/api-queries'
-import {within} from '@testing-library/dom'
-import {act, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import {fromJS} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
-import {Provider} from 'react-redux'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useGetCustomFieldDefinitions} from 'custom-fields/hooks/queries/queries'
-import {apiListCursorPaginationResponse} from 'fixtures/axiosResponse'
-import {billingState} from 'fixtures/billing'
-import {customFieldsMockResponse} from 'fixtures/customField'
-import {tags} from 'fixtures/tag'
-import {useTagSearch} from 'hooks/reporting/common/useTagSearch'
-import {HelpCenter} from 'models/helpCenter/types'
-import {IntegrationType} from 'models/integration/constants'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
+import { within } from '@testing-library/dom'
+import { act, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { fromJS } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
+
+import { Tag, useListSlaPolicies } from '@gorgias/api-queries'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useGetCustomFieldDefinitions } from 'custom-fields/hooks/queries/queries'
+import { apiListCursorPaginationResponse } from 'fixtures/axiosResponse'
+import { billingState } from 'fixtures/billing'
+import { customFieldsMockResponse } from 'fixtures/customField'
+import { tags } from 'fixtures/tag'
+import { useTagSearch } from 'hooks/reporting/common/useTagSearch'
+import { HelpCenter } from 'models/helpCenter/types'
+import { IntegrationType } from 'models/integration/constants'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
 import {
     CleanFilterComponentKeys,
     FilterComponentKey,
@@ -25,13 +27,13 @@ import {
     StaticFilter,
     TagFilterInstanceId,
 } from 'models/stat/types'
-import {getIntegration} from 'pages/automate/workflows/hooks/tests/fixtures/utils'
-import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { getIntegration } from 'pages/automate/workflows/hooks/tests/fixtures/utils'
+import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import {
     FILTER_SELECT_ALL_LABEL,
     LogicalOperatorEnum,
 } from 'pages/stats/common/components/Filter/constants'
-import {ADD_FILTER_BUTTON_LABEL} from 'pages/stats/common/filters/AddFilterButton'
+import { ADD_FILTER_BUTTON_LABEL } from 'pages/stats/common/filters/AddFilterButton'
 import {
     AUTO_QA_FILTER_KEYS,
     FilterLabels,
@@ -49,26 +51,26 @@ import {
     filterKeyToStateKeyMapper,
     getFilteredFilterComponentKeys,
 } from 'pages/stats/common/filters/helpers'
-import {getHasAutomate} from 'state/billing/selectors'
-import {initialState, statsSlice} from 'state/stats/statsSlice'
-import {fromLegacyStatsFilters} from 'state/stats/utils'
-import {RootState} from 'state/types'
+import { getHasAutomate } from 'state/billing/selectors'
+import { initialState, statsSlice } from 'state/stats/statsSlice'
+import { fromLegacyStatsFilters } from 'state/stats/utils'
+import { RootState } from 'state/types'
 import {
-    busiestTimesSlice,
     initialState as busiestTimesInitialState,
+    busiestTimesSlice,
 } from 'state/ui/stats/busiestTimesSlice'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
+import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
 import {
-    initialState as ticketInsightsSliceStatsInitialState,
     ticketInsightsSlice,
+    initialState as ticketInsightsSliceStatsInitialState,
 } from 'state/ui/stats/ticketInsightsSlice'
-import {assumeMock, renderWithStore} from 'utils/testing'
+import { assumeMock, renderWithStore } from 'utils/testing'
 
 const mockedLocales = [
-    {name: 'English', code: 'en-US'},
-    {name: 'Spanish', code: 'es-ES'},
-    {name: 'French', code: 'fr-FR'},
-    {name: 'German', code: 'de-DE'},
+    { name: 'English', code: 'en-US' },
+    { name: 'Spanish', code: 'es-ES' },
+    { name: 'French', code: 'fr-FR' },
+    { name: 'German', code: 'de-DE' },
 ]
 
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales', () => ({
@@ -78,12 +80,12 @@ jest.mock('@gorgias/api-queries')
 const useListSlaPoliciesMock = assumeMock(useListSlaPolicies)
 jest.mock('custom-fields/hooks/queries/queries')
 const useGetCustomFieldDefinitionsMock = assumeMock(
-    useGetCustomFieldDefinitions
+    useGetCustomFieldDefinitions,
 )
 jest.mock('hooks/reporting/common/useTagSearch')
 const useTagSearchMock = assumeMock(useTagSearch)
 
-jest.mock('state/billing/selectors', () => ({getHasAutomate: jest.fn()}))
+jest.mock('state/billing/selectors', () => ({ getHasAutomate: jest.fn() }))
 const getHasAutomateMock = assumeMock(getHasAutomate)
 
 jest.mock(
@@ -91,7 +93,7 @@ jest.mock(
     () =>
         ({
             ...jest.requireActual('pages/stats/common/filters/PeriodFilter'),
-        }) as Record<string, unknown>
+        }) as Record<string, unknown>,
 )
 
 const defaultState = {
@@ -127,7 +129,7 @@ const defaultState = {
                         acc[hCenter.id] = hCenter
                         return acc
                     },
-                    {}
+                    {},
                 ),
             },
         },
@@ -145,19 +147,19 @@ const defaultState = {
 describe('FiltersPanel without data', () => {
     beforeEach(() => {
         useGetCustomFieldDefinitionsMock.mockReturnValue(
-            apiListCursorPaginationResponse([]) as any
+            apiListCursorPaginationResponse([]) as any,
         )
         useListSlaPoliciesMock.mockReturnValue({
-            data: {data: {data: []}},
+            data: { data: { data: [] } },
             isError: false,
             isLoading: false,
         } as any)
     })
     it('should render the panel without filters', () => {
-        const {container} = renderWithStore(<FiltersPanel />, defaultState)
+        const { container } = renderWithStore(<FiltersPanel />, defaultState)
 
         expect(container.firstChild).toContainHTML(
-            '<div class="wrapper"></div>'
+            '<div class="wrapper"></div>',
         )
     })
 })
@@ -207,7 +209,7 @@ describe('FiltersPanel', () => {
 
     beforeEach(() => {
         useGetCustomFieldDefinitionsMock.mockReturnValue(
-            apiListCursorPaginationResponse(customFieldsMockResponse) as any
+            apiListCursorPaginationResponse(customFieldsMockResponse) as any,
         )
         mockFlags({
             [FeatureFlagKey.AnalyticsCustomFieldsFilter]: true,
@@ -231,13 +233,13 @@ describe('FiltersPanel', () => {
                     persistentFilters={[filter]}
                     optionalFilters={[]}
                 />,
-                defaultState
+                defaultState,
             )
 
             expect(screen.getByTestId('filter-name')).toHaveTextContent(
-                new RegExp(FilterLabels[filter])
+                new RegExp(FilterLabels[filter]),
             )
-        }
+        },
     )
 
     it.each(unSupportedSaveFilters)(
@@ -250,20 +252,20 @@ describe('FiltersPanel', () => {
                     filterComponentMap={SavedFilterComponentMap}
                     cleanStatsFilters={initialState.filters}
                 />,
-                defaultState
+                defaultState,
             )
 
             expect(screen.queryByTestId('filter-name')).not.toBeInTheDocument()
-        }
+        },
     )
 
     it('should render only persistentFilters without a divider if there arent any optional filters', () => {
-        const {baseElement} = renderWithStore(
+        const { baseElement } = renderWithStore(
             <FiltersPanel
                 persistentFilters={persistentFilters}
                 optionalFilters={[]}
             />,
-            defaultState
+            defaultState,
         )
 
         persistentFilters.forEach((filter) => {
@@ -274,12 +276,12 @@ describe('FiltersPanel', () => {
     })
 
     it('should render persistentFilters and a divider if there are optional filters', () => {
-        const {baseElement} = renderWithStore(
+        const { baseElement } = renderWithStore(
             <FiltersPanel
                 persistentFilters={persistentFilters}
                 optionalFilters={optionalFilters}
             />,
-            defaultState
+            defaultState,
         )
 
         persistentFilters.forEach((filter) => {
@@ -291,11 +293,11 @@ describe('FiltersPanel', () => {
         userEvent.click(
             screen.getByRole('button', {
                 name: new RegExp(ADD_FILTER_BUTTON_LABEL),
-            })
+            }),
         )
 
         userEvent.click(
-            screen.getByRole('option', {name: FilterLabels[optionalFilter]})
+            screen.getByRole('option', { name: FilterLabels[optionalFilter] }),
         )
 
         expect(baseElement.getElementsByClassName('divider').length).toBe(1)
@@ -307,26 +309,26 @@ describe('FiltersPanel', () => {
                 persistentFilters={persistentFilters}
                 optionalFilters={optionalFilters}
             />,
-            defaultState
+            defaultState,
         )
 
         userEvent.click(
             screen.getByRole('button', {
                 name: new RegExp(ADD_FILTER_BUTTON_LABEL),
-            })
+            }),
         )
 
         userEvent.click(
-            screen.getByRole('option', {name: FilterLabels[optionalFilter]})
+            screen.getByRole('option', { name: FilterLabels[optionalFilter] }),
         )
 
         expect(
-            screen.queryByText(new RegExp(FilterLabels[optionalFilter]))
+            screen.queryByText(new RegExp(FilterLabels[optionalFilter])),
         ).toBeInTheDocument()
         expect(
             screen.getByRole('option', {
                 name: new RegExp(FILTER_SELECT_ALL_LABEL),
-            })
+            }),
         ).toBeInTheDocument()
     })
 
@@ -342,40 +344,40 @@ describe('FiltersPanel', () => {
                 persistentFilters={persistentFilters}
                 optionalFilters={unsortedFilters}
             />,
-            defaultState
+            defaultState,
         )
         userEvent.click(
             screen.getByRole('button', {
                 name: new RegExp(ADD_FILTER_BUTTON_LABEL),
-            })
+            }),
         )
         const filtersOnDropDown = screen.queryAllByRole('option')
 
         expect(filtersOnDropDown).toHaveLength(5)
         expect(filtersOnDropDown[0]?.textContent).toBe(
-            FilterLabels[FilterKey.Agents]
+            FilterLabels[FilterKey.Agents],
         )
         expect(filtersOnDropDown[1]?.textContent).toBe(
-            FilterLabels[FilterKey.Channels]
+            FilterLabels[FilterKey.Channels],
         )
         expect(filtersOnDropDown[2]?.textContent).toBe(
-            FilterLabels[FilterKey.Tags]
+            FilterLabels[FilterKey.Tags],
         )
         expect(filtersOnDropDown[3]?.textContent).toBe(
-            customFieldsMockResponse.data[1].label
+            customFieldsMockResponse.data[1].label,
         )
         expect(filtersOnDropDown[4]?.textContent).toBe(
-            customFieldsMockResponse.data[0].label
+            customFieldsMockResponse.data[0].label,
         )
     })
 
     it('should add optional filters in order you click on them', () => {
         const expectElementsToBeInOrderYouSelectedThemFromTheList = (
-            elements: HTMLElement[]
+            elements: HTMLElement[],
         ) => {
             for (let i = 1; i < elements.length; i++) {
                 expect(
-                    elements[i - 1].compareDocumentPosition(elements[i])
+                    elements[i - 1].compareDocumentPosition(elements[i]),
                 ).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
             }
         }
@@ -395,13 +397,13 @@ describe('FiltersPanel', () => {
         ]
         const filtersInRandomOrderToBeAddedToThePanelAsLabels =
             filtersInRandomOrderToBeAddedToThePanel.map(
-                (filter) => FilterLabels[filter]
+                (filter) => FilterLabels[filter],
             )
         const state = {
             ...defaultState,
             [statsSlice.name]: {
                 ...defaultState[statsSlice.name],
-                filters: {...initialState.filters},
+                filters: { ...initialState.filters },
             },
         }
 
@@ -410,19 +412,19 @@ describe('FiltersPanel', () => {
                 persistentFilters={persistentFilters}
                 optionalFilters={filtersInAlphabeticalOrder}
             />,
-            state
+            state,
         )
 
         filtersInRandomOrderToBeAddedToThePanelAsLabels.forEach((label) => {
             userEvent.click(
                 screen.getByRole('button', {
                     name: new RegExp(ADD_FILTER_BUTTON_LABEL),
-                })
+                }),
             )
             userEvent.click(
                 screen.getByRole('option', {
                     name: label,
-                })
+                }),
             )
         })
 
@@ -432,39 +434,39 @@ describe('FiltersPanel', () => {
 
         const filtersThatWereAddedAsTextFromHTML =
             filtersInRandomOrderToBeAddedToThePanelAsLabels.map(
-                (label) => screen.getByText(new RegExp(label)).innerHTML
+                (label) => screen.getByText(new RegExp(label)).innerHTML,
             )
 
         expectElementsToBeInOrderYouSelectedThemFromTheList(
             filtersInRandomOrderToBeAddedToThePanelAsLabels.map((label) =>
-                screen.getByText(new RegExp(label))
-            )
+                screen.getByText(new RegExp(label)),
+            ),
         )
 
         expect(filtersInRandomOrderToBeAddedToThePanelAsLabels).toEqual(
-            filtersThatWereAddedAsTextFromHTML
+            filtersThatWereAddedAsTextFromHTML,
         )
     })
 
     it('should allow adding optional Filters after initial render', async () => {
         const initialFilters = [FilterKey.Tags, FilterKey.Agents]
         const newFilter = FilterKey.Channels
-        const {rerender, store} = renderWithStore(
+        const { rerender, store } = renderWithStore(
             <FiltersPanel
                 persistentFilters={persistentFilters}
                 optionalFilters={initialFilters}
             />,
-            defaultState
+            defaultState,
         )
 
         userEvent.click(
             screen.getByRole('button', {
                 name: new RegExp(ADD_FILTER_BUTTON_LABEL),
-            })
+            }),
         )
         initialFilters.forEach((filterKey) => {
             expect(
-                screen.getByText(FilterLabels[filterKey])
+                screen.getByText(FilterLabels[filterKey]),
             ).toBeInTheDocument()
         })
 
@@ -475,18 +477,18 @@ describe('FiltersPanel', () => {
                         persistentFilters={persistentFilters}
                         optionalFilters={[...initialFilters, newFilter]}
                     />
-                </Provider>
+                </Provider>,
             )
         })
 
         initialFilters.forEach((filterKey) => {
             expect(
-                screen.getByText(FilterLabels[filterKey])
+                screen.getByText(FilterLabels[filterKey]),
             ).toBeInTheDocument()
         })
         await waitFor(() => {
             expect(
-                screen.getByText(FilterLabels[newFilter])
+                screen.getByText(FilterLabels[newFilter]),
             ).toBeInTheDocument()
         })
     })
@@ -507,17 +509,17 @@ describe('FiltersPanel', () => {
                 },
             },
         }
-        const {rerenderComponent} = renderWithStore(
+        const { rerenderComponent } = renderWithStore(
             <FiltersPanel
                 persistentFilters={persistentFilters}
                 optionalFilters={initialFilters}
             />,
-            defaultState
+            defaultState,
         )
 
         initialFilters.forEach((filterKey) => {
             expect(
-                screen.queryByText(FilterLabels[filterKey])
+                screen.queryByText(FilterLabels[filterKey]),
             ).not.toBeInTheDocument()
         })
 
@@ -526,37 +528,37 @@ describe('FiltersPanel', () => {
                 persistentFilters={persistentFilters}
                 optionalFilters={initialFilters}
             />,
-            newState
+            newState,
         )
 
         expect(
-            screen.getByText(FilterLabels[FilterKey.Agents])
+            screen.getByText(FilterLabels[FilterKey.Agents]),
         ).toBeInTheDocument()
     })
 
     it('should allow removal of optional Filters', () => {
         renderWithStore(
             <FiltersPanel optionalFilters={optionalFilters} />,
-            defaultState
+            defaultState,
         )
 
         userEvent.click(
             screen.getByRole('button', {
                 name: new RegExp(ADD_FILTER_BUTTON_LABEL),
-            })
+            }),
         )
         userEvent.click(
-            screen.getByRole('option', {name: FilterLabels[optionalFilter]})
+            screen.getByRole('option', { name: FilterLabels[optionalFilter] }),
         )
 
         expect(
-            screen.queryByText(new RegExp(FilterLabels[optionalFilter]))
+            screen.queryByText(new RegExp(FilterLabels[optionalFilter])),
         ).toBeInTheDocument()
 
         userEvent.click(screen.getByText('close'))
 
         expect(
-            screen.queryByText(new RegExp(FilterLabels[optionalFilter]))
+            screen.queryByText(new RegExp(FilterLabels[optionalFilter])),
         ).not.toBeInTheDocument()
     })
 
@@ -576,11 +578,11 @@ describe('FiltersPanel', () => {
                 persistentFilters={persistentFilters}
                 optionalFilters={optionalFilters}
             />,
-            state
+            state,
         )
 
         expect(
-            screen.getByText(new RegExp(FilterLabels[optionalFilter]))
+            screen.getByText(new RegExp(FilterLabels[optionalFilter])),
         ).toBeInTheDocument()
     })
 
@@ -594,25 +596,25 @@ describe('FiltersPanel', () => {
             },
         } as RootState
 
-        const {rerenderComponent} = renderWithStore(
+        const { rerenderComponent } = renderWithStore(
             <FiltersPanel
                 persistentFilters={persistentFilters}
                 optionalFilters={optionalFilters}
             />,
-            state
+            state,
         )
 
         userEvent.click(
             screen.getByRole('button', {
                 name: new RegExp(ADD_FILTER_BUTTON_LABEL),
-            })
+            }),
         )
         userEvent.click(
-            screen.getByRole('option', {name: FilterLabels[optionalFilter]})
+            screen.getByRole('option', { name: FilterLabels[optionalFilter] }),
         )
 
         expect(
-            screen.getByText(new RegExp(FilterLabels[optionalFilter]))
+            screen.getByText(new RegExp(FilterLabels[optionalFilter])),
         ).toBeInTheDocument()
 
         rerenderComponent(
@@ -628,11 +630,11 @@ describe('FiltersPanel', () => {
                         [optionalFilter]: ['1', '2'],
                     }),
                 },
-            }
+            },
         )
 
         expect(
-            screen.getByText(new RegExp(FilterLabels[optionalFilter]))
+            screen.getByText(new RegExp(FilterLabels[optionalFilter])),
         ).toBeInTheDocument()
 
         rerenderComponent(
@@ -647,11 +649,11 @@ describe('FiltersPanel', () => {
                         period: initialState.filters.period,
                     }),
                 },
-            }
+            },
         )
 
         expect(
-            screen.getByText(new RegExp(FilterLabels[optionalFilter]))
+            screen.getByText(new RegExp(FilterLabels[optionalFilter])),
         ).toBeInTheDocument()
     })
 
@@ -666,16 +668,16 @@ describe('FiltersPanel', () => {
             },
         } as RootState
 
-        const {rerenderComponent} = renderWithStore(
+        const { rerenderComponent } = renderWithStore(
             <FiltersPanel
                 persistentFilters={persistentFilters}
                 optionalFilters={optionalFilters}
             />,
-            state
+            state,
         )
 
         expect(
-            screen.getByText(new RegExp(FilterLabels[optionalFilter]))
+            screen.getByText(new RegExp(FilterLabels[optionalFilter])),
         ).toBeInTheDocument()
 
         rerenderComponent(
@@ -690,11 +692,11 @@ describe('FiltersPanel', () => {
                         period: initialState.filters.period,
                     }),
                 },
-            }
+            },
         )
 
         expect(
-            screen.queryByText(new RegExp(FilterLabels[optionalFilter]))
+            screen.queryByText(new RegExp(FilterLabels[optionalFilter])),
         ).not.toBeInTheDocument()
     })
 
@@ -717,12 +719,12 @@ describe('FiltersPanel', () => {
                 persistentFilters={persistentFilters}
                 optionalFilters={customFieldsFilters}
             />,
-            state
+            state,
         )
         userEvent.click(
             screen.getByRole('button', {
                 name: new RegExp(ADD_FILTER_BUTTON_LABEL),
-            })
+            }),
         )
 
         expect(screen.getByText(customFieldLabel)).toBeInTheDocument()
@@ -731,7 +733,7 @@ describe('FiltersPanel', () => {
             userEvent.click(
                 screen.getByRole('option', {
                     name: new RegExp(customFieldLabel),
-                })
+                }),
             )
         })
 
@@ -742,9 +744,9 @@ describe('FiltersPanel', () => {
                     .find(
                         (filterContainer) =>
                             !!within(filterContainer).queryByText(
-                                customFieldLabel
-                            )
-                    )
+                                customFieldLabel,
+                            ),
+                    ),
             ).toBeInTheDocument()
         })
     })
@@ -770,11 +772,11 @@ describe('FiltersPanel', () => {
                 persistentFilters={persistentFilters}
                 optionalFilters={customFieldsFilters}
             />,
-            state
+            state,
         )
 
         expect(
-            screen.queryByText(customFieldsMockResponse.data[0].label)
+            screen.queryByText(customFieldsMockResponse.data[0].label),
         ).not.toBeInTheDocument()
     })
 
@@ -793,22 +795,22 @@ describe('FiltersPanel', () => {
             },
         } as RootState
 
-        const {rerenderComponent} = renderWithStore(
+        const { rerenderComponent } = renderWithStore(
             <FiltersPanel
                 persistentFilters={persistentFilters}
                 optionalFilters={optionalFilters}
             />,
-            state
+            state,
         )
         userEvent.click(
             screen.getByRole('button', {
                 name: new RegExp(ADD_FILTER_BUTTON_LABEL),
-            })
+            }),
         )
         userEvent.click(screen.getByText(FilterLabels[FilterKey.Channels]))
 
         expect(
-            screen.getByText(FilterLabels[FilterKey.Channels])
+            screen.getByText(FilterLabels[FilterKey.Channels]),
         ).toBeInTheDocument()
 
         rerenderComponent(
@@ -817,12 +819,12 @@ describe('FiltersPanel', () => {
                 optionalFilters={optionalFilters}
                 shouldHideFilters
             />,
-            state
+            state,
         )
 
         await waitFor(() => {
             expect(
-                screen.queryByText(FilterLabels[FilterKey.Channels])
+                screen.queryByText(FilterLabels[FilterKey.Channels]),
             ).not.toBeInTheDocument()
         })
 
@@ -831,12 +833,12 @@ describe('FiltersPanel', () => {
                 persistentFilters={persistentFilters}
                 optionalFilters={optionalFilters}
             />,
-            state
+            state,
         )
 
         await waitFor(() => {
             expect(
-                screen.getByText(FilterLabels[FilterKey.Channels])
+                screen.getByText(FilterLabels[FilterKey.Channels]),
             ).toBeInTheDocument()
         })
     })
@@ -871,13 +873,13 @@ describe('FiltersPanel', () => {
                         persistentFilters={persistentFilters}
                         optionalFilters={optionalFilters}
                     />,
-                    state
+                    state,
                 )
             })
 
             expect(
                 screen.getAllByText(new RegExp(FilterLabels[FilterKey.Tags]))
-                    .length
+                    .length,
             ).toEqual(2)
         })
     })
@@ -909,14 +911,14 @@ describe('FiltersPanel', () => {
                     },
                 }}
             />,
-            defaultState
+            defaultState,
         )
 
         expect(spy).toHaveBeenCalledWith(
             expect.objectContaining({
                 initialSettings: periodFilterInitialSettings,
             }),
-            {}
+            {},
         )
     })
 
@@ -935,17 +937,17 @@ describe('FiltersPanel', () => {
                     persistentFilters={[]}
                     optionalFilters={[...autoQAFilters, ...nonAutoQAFilters]}
                 />,
-                defaultState
+                defaultState,
             )
 
             userEvent.click(
                 screen.getByRole('button', {
                     name: new RegExp(ADD_FILTER_BUTTON_LABEL),
-                })
+                }),
             )
             ;[...autoQAFilters, ...nonAutoQAFilters].forEach((filter) => {
                 expect(
-                    screen.getByRole('option', {name: FilterLabels[filter]})
+                    screen.getByRole('option', { name: FilterLabels[filter] }),
                 ).toBeInTheDocument()
             })
         })
@@ -957,24 +959,26 @@ describe('FiltersPanel', () => {
                     persistentFilters={[]}
                     optionalFilters={[...autoQAFilters, ...nonAutoQAFilters]}
                 />,
-                defaultState
+                defaultState,
             )
 
             userEvent.click(
                 screen.getByRole('button', {
                     name: new RegExp(ADD_FILTER_BUTTON_LABEL),
-                })
+                }),
             )
 
             autoQAFilters.forEach((filter) => {
                 expect(
-                    screen.queryByRole('option', {name: FilterLabels[filter]})
+                    screen.queryByRole('option', {
+                        name: FilterLabels[filter],
+                    }),
                 ).not.toBeInTheDocument()
             })
 
             nonAutoQAFilters.forEach((filter) => {
                 expect(
-                    screen.getByRole('option', {name: FilterLabels[filter]})
+                    screen.getByRole('option', { name: FilterLabels[filter] }),
                 ).toBeInTheDocument()
             })
         })
@@ -993,12 +997,12 @@ describe('FiltersPanel', () => {
                     persistentFilters={autoQAFilters}
                     optionalFilters={nonAutoQAFilters}
                 />,
-                state
+                state,
             )
 
             autoQAFilters.forEach((filter) => {
                 expect(
-                    screen.getByText(new RegExp(FilterLabels[filter]))
+                    screen.getByText(new RegExp(FilterLabels[filter])),
                 ).toBeInTheDocument()
             })
         })

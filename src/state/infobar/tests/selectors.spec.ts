@@ -1,8 +1,8 @@
-import {fromJS, List} from 'immutable'
+import { fromJS, List } from 'immutable'
 
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
 
-import {initialState} from '../reducers'
+import { initialState } from '../reducers'
 import * as selectors from '../selectors'
 
 describe('infobar selectors', () => {
@@ -29,7 +29,7 @@ describe('infobar selectors', () => {
                             id: 'shopifyRefundShippingCostOfOrder-35-5-4194477515',
                         },
                     ],
-                })
+                }),
             ),
         } as RootState
     })
@@ -37,32 +37,32 @@ describe('infobar selectors', () => {
     it('getInfobarState', () => {
         expect(selectors.getInfobarState(state)).toEqualImmutable(state.infobar)
         expect(selectors.getInfobarState({} as RootState)).toEqualImmutable(
-            fromJS({})
+            fromJS({}),
         )
     })
 
     it('getPendingActionsCallbacks', () => {
         expect(selectors.getPendingActionsCallbacks(state)).toEqualImmutable(
-            state.infobar.get('pendingActionsCallbacks')
+            state.infobar.get('pendingActionsCallbacks'),
         )
         expect(
-            selectors.getPendingActionsCallbacks({} as RootState)
+            selectors.getPendingActionsCallbacks({} as RootState),
         ).toEqualImmutable(fromJS([]))
     })
 
     it('getPendingActionCallbacks', () => {
         expect(
             selectors.getPendingActionCallbacks(state)(
-                'shopifyRefundShippingCostOfOrder-34-5-4194477515'
-            )
+                'shopifyRefundShippingCostOfOrder-34-5-4194477515',
+            ),
         ).toEqualImmutable(
-            (state.infobar.get('pendingActionsCallbacks') as List<any>).first()
+            (state.infobar.get('pendingActionsCallbacks') as List<any>).first(),
         )
         expect(selectors.getPendingActionCallbacks(state)('unknown')).toBe(
-            undefined
+            undefined,
         )
         expect(
-            selectors.getPendingActionCallbacks({} as RootState)('unknown')
+            selectors.getPendingActionCallbacks({} as RootState)('unknown'),
         ).toBe(undefined)
     })
 })

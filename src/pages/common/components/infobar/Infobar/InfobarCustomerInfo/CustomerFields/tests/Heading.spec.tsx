@@ -1,14 +1,15 @@
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import * as segmentTracker from 'common/segment'
-import {UserRole} from 'config/types/user'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {assumeMock} from 'utils/testing'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { fromJS } from 'immutable'
 
-import {Heading} from '../Heading'
+import * as segmentTracker from 'common/segment'
+import { UserRole } from 'config/types/user'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { assumeMock } from 'utils/testing'
+
+import { Heading } from '../Heading'
 
 jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
 jest.mock('state/currentUser/selectors', () => ({
@@ -17,7 +18,7 @@ jest.mock('state/currentUser/selectors', () => ({
 const mockedGetCurrentUser = assumeMock(getCurrentUser)
 
 const logEventSpy = jest.spyOn(segmentTracker, 'logEvent')
-const {SegmentEvent} = segmentTracker
+const { SegmentEvent } = segmentTracker
 
 describe('Heading', () => {
     beforeEach(() => {
@@ -26,7 +27,7 @@ describe('Heading', () => {
                 role: {
                     name: UserRole.Admin,
                 },
-            })
+            }),
         )
     })
 
@@ -40,7 +41,7 @@ describe('Heading', () => {
         expect(screen.getByText('open_in_new')).toBeInTheDocument()
         fireEvent.click(screen.getByText('Customer Fields'))
         expect(logEventSpy).toHaveBeenCalledWith(
-            SegmentEvent.CustomFieldCustomerAddFieldsClicked
+            SegmentEvent.CustomFieldCustomerAddFieldsClicked,
         )
     })
 
@@ -50,7 +51,7 @@ describe('Heading', () => {
                 role: {
                     name: UserRole.Agent,
                 },
-            })
+            }),
         )
         render(<Heading />)
         expect(screen.getByText('Customer Fields')).toBeInTheDocument()

@@ -1,18 +1,16 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
 
-import {fromJS} from 'immutable'
-
-import {FeatureFlagKey} from 'config/featureFlags'
-
-import {UserRole} from 'config/types/user'
-import {useFlag} from 'core/flags'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { UserRole } from 'config/types/user'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import useStoresRequiringScriptTagMigration from 'pages/common/components/ScriptTagMigrationBanner/hooks/useStoresRequiringScriptTagMigration'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {makeGetRedirectUri} from 'state/integrations/selectors'
-import {assumeMock} from 'utils/testing'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { makeGetRedirectUri } from 'state/integrations/selectors'
+import { assumeMock } from 'utils/testing'
 
-import {useScriptTagMigrationBanner} from '../useScriptTagMigrationBanner'
+import { useScriptTagMigrationBanner } from '../useScriptTagMigrationBanner'
 
 jest.mock('core/flags')
 const mockUseFlag = useFlag as jest.Mock
@@ -27,7 +25,7 @@ jest.mock('state/integrations/selectors', () => ({
 const getCurrentUserMock = assumeMock(getCurrentUser)
 
 jest.mock(
-    'pages/common/components/ScriptTagMigrationBanner/hooks/useStoresRequiringScriptTagMigration'
+    'pages/common/components/ScriptTagMigrationBanner/hooks/useStoresRequiringScriptTagMigration',
 )
 jest.mock('utils', () => ({
     isAdmin: () => true,
@@ -45,7 +43,7 @@ jest.mock(
                 addBanner: mockedAddBanner,
                 removeBanner: mockedRemoveBanner,
             }),
-        }) as Record<string, unknown>
+        }) as Record<string, unknown>,
 )
 
 jest.mock('hooks/useAppSelector', () => jest.fn())
@@ -58,7 +56,7 @@ describe('useScriptTagMigrationBanner', () => {
         mockedRemoveBanner.mockReset()
         mockUseFlag.mockReset()
         getCurrentUserMock.mockReturnValue(
-            fromJS({role: {name: UserRole.Admin}})
+            fromJS({ role: { name: UserRole.Admin } }),
         )
     })
 
@@ -113,12 +111,12 @@ describe('useScriptTagMigrationBanner', () => {
         ;(useStoresRequiringScriptTagMigration as jest.Mock).mockImplementation(
             () => [
                 {
-                    storeIntegration: {meta: {shop_name: 'test-shop-name'}},
+                    storeIntegration: { meta: { shop_name: 'test-shop-name' } },
                     storeRequiresPermissionUpdates: false,
-                    gorgiasChatIntegration: fromJS({id: 'test-chat-id'}),
+                    gorgiasChatIntegration: fromJS({ id: 'test-chat-id' }),
                     gorgiasChatRequiresReinstall: true,
                 },
-            ]
+            ],
         )
 
         useAppSelectorMock.mockImplementation((selector) => {
@@ -126,7 +124,7 @@ describe('useScriptTagMigrationBanner', () => {
                 return () => '/redirect-uri/{shop_name}'
             }
             if (selector === getCurrentUser) {
-                return {isAdmin: true}
+                return { isAdmin: true }
             }
             return null
         })
@@ -150,12 +148,12 @@ describe('useScriptTagMigrationBanner', () => {
         ;(useStoresRequiringScriptTagMigration as jest.Mock).mockImplementation(
             () => [
                 {
-                    storeIntegration: {meta: {shop_name: 'test-shop-name'}},
+                    storeIntegration: { meta: { shop_name: 'test-shop-name' } },
                     storeRequiresPermissionUpdates: false,
-                    gorgiasChatIntegration: fromJS({id: 'test-chat-id'}),
+                    gorgiasChatIntegration: fromJS({ id: 'test-chat-id' }),
                     gorgiasChatRequiresReinstall: true,
                 },
-            ]
+            ],
         )
 
         useAppSelectorMock.mockImplementation((selector) => {
@@ -163,7 +161,7 @@ describe('useScriptTagMigrationBanner', () => {
                 return () => '/redirect-uri/{shop_name}'
             }
             if (selector === getCurrentUser) {
-                return {isAdmin: true}
+                return { isAdmin: true }
             }
             return null
         })
@@ -195,18 +193,20 @@ describe('useScriptTagMigrationBanner', () => {
         ;(useStoresRequiringScriptTagMigration as jest.Mock).mockImplementation(
             () => [
                 {
-                    storeIntegration: {meta: {shop_name: 'test-shop-name'}},
+                    storeIntegration: { meta: { shop_name: 'test-shop-name' } },
                     storeRequiresPermissionUpdates: false,
-                    gorgiasChatIntegration: fromJS({id: 'test-chat-id'}),
+                    gorgiasChatIntegration: fromJS({ id: 'test-chat-id' }),
                     gorgiasChatRequiresReinstall: true,
                 },
                 {
-                    storeIntegration: {meta: {shop_name: 'test-shop-name-2'}},
+                    storeIntegration: {
+                        meta: { shop_name: 'test-shop-name-2' },
+                    },
                     storeRequiresPermissionUpdates: false,
-                    gorgiasChatIntegration: fromJS({id: 'test-chat-id-2'}),
+                    gorgiasChatIntegration: fromJS({ id: 'test-chat-id-2' }),
                     gorgiasChatRequiresReinstall: true,
                 },
-            ]
+            ],
         )
 
         useAppSelectorMock.mockImplementation((selector) => {
@@ -214,7 +214,7 @@ describe('useScriptTagMigrationBanner', () => {
                 return () => '/redirect-uri/{shop_name}'
             }
             if (selector === getCurrentUser) {
-                return {isAdmin: true}
+                return { isAdmin: true }
             }
             return null
         })
@@ -224,17 +224,17 @@ describe('useScriptTagMigrationBanner', () => {
         expect(mockedAddBanner).toHaveBeenCalledWith(
             expect.objectContaining({
                 message: expect.stringContaining(
-                    '/app/settings/channels/gorgias_chat'
+                    '/app/settings/channels/gorgias_chat',
                 ),
-            })
+            }),
         )
     })
 
     it('should show onclick handler when single store needs permission updates', () => {
-        mockUseFlag.mockReturnValue({scriptTagMigrationBanner: true})
+        mockUseFlag.mockReturnValue({ scriptTagMigrationBanner: true })
         ;(useStoresRequiringScriptTagMigration as jest.Mock).mockReturnValue([
             {
-                storeIntegration: {meta: {shop_name: 'store-1'}},
+                storeIntegration: { meta: { shop_name: 'store-1' } },
                 storeRequiresPermissionUpdates: true,
             },
         ])
@@ -244,7 +244,7 @@ describe('useScriptTagMigrationBanner', () => {
         expect(mockedAddBanner).toHaveBeenCalledWith(
             expect.objectContaining({
                 message: expect.stringContaining('onclick='),
-            })
+            }),
         )
     })
 })

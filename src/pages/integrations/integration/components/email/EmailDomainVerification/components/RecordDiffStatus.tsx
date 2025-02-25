@@ -1,8 +1,10 @@
-import {EmailDNSRecord} from '@gorgias/api-queries'
-import {Tooltip, Badge} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
+import { EmailDNSRecord } from '@gorgias/api-queries'
+import { Badge, Tooltip } from '@gorgias/merchant-ui-kit'
+
 import CharDiff from './CharDiff'
+
 import css from './EmailDomainVerificationDiffStatus.less'
 
 const MISMATCH_TOOLTIP_SINGLE_VALUE =
@@ -15,7 +17,7 @@ type Props = {
     record: EmailDNSRecord
 }
 
-export default function RecordDiffStatus({record}: Props) {
+export default function RecordDiffStatus({ record }: Props) {
     const {
         verified,
         current_values: currentValues,

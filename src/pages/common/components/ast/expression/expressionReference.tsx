@@ -1,7 +1,8 @@
-import {List, Map} from 'immutable'
-import React, {ComponentType} from 'react'
+import React, { ComponentType } from 'react'
 
-import {RuleItemActions} from 'pages/settings/rules/types'
+import { List, Map } from 'immutable'
+
+import { RuleItemActions } from 'pages/settings/rules/types'
 
 export type ExpressionProps = {
     actions: RuleItemActions
@@ -18,4 +19,4 @@ export type ExpressionProps = {
 // this is to a circular dependency while doing recursion
 export const expressionReference: {
     Expression: ComponentType<ExpressionProps>
-} = {Expression: () => <></>}
+} = { Expression: () => <></> }

@@ -1,21 +1,22 @@
-import {AddressElement, useElements} from '@stripe/react-stripe-js'
-import {StripeAddressElementChangeEvent} from '@stripe/stripe-js'
-import {act, fireEvent, screen, waitFor} from '@testing-library/react'
-import MockAdapter from 'axios-mock-adapter'
 import React from 'react'
 
+import { AddressElement, useElements } from '@stripe/react-stripe-js'
+import { StripeAddressElementChangeEvent } from '@stripe/stripe-js'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
+
 import client from 'models/api/resources'
-import {BILLING_PAYMENT_PATH} from 'pages/settings/new_billing/constants'
-import {FormContainer} from 'pages/settings/new_billing/views/BillingAddressSetupView/components/FormContainer'
-import {renderWithStoreAndQueryClientAndRouter} from 'tests/renderWithStoreAndQueryClientAndRouter'
-import {assumeMock} from 'utils/testing'
+import { BILLING_PAYMENT_PATH } from 'pages/settings/new_billing/constants'
+import { FormContainer } from 'pages/settings/new_billing/views/BillingAddressSetupView/components/FormContainer'
+import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('@stripe/stripe-js')
 jest.mock('@stripe/react-stripe-js')
 
 let handleAddressChange: (event: StripeAddressElementChangeEvent) => any
 
-assumeMock(AddressElement).mockImplementation(({onChange}) => {
+assumeMock(AddressElement).mockImplementation(({ onChange }) => {
     handleAddressChange = onChange ?? (() => {})
 
     return <div data-testid="address-element" />
@@ -52,21 +53,21 @@ describe('FormContainer', () => {
     it('should submit valid billing address', async () => {
         mockedServer.onPut('/api/billing/contact/').reply(200, {})
 
-        const {history} = renderWithStoreAndQueryClientAndRouter(
+        const { history } = renderWithStoreAndQueryClientAndRouter(
             <FormContainer
                 billingInformation={{
                     email: 'example@gorgias.com',
                     shipping,
                 }}
-            />
+            />,
         )
 
-        mockAddressValue({complete: true, value: shipping})
+        mockAddressValue({ complete: true, value: shipping })
 
         expect(history.location.pathname).toBe('/')
 
         fireEvent.click(
-            screen.getByRole('button', {name: 'Save Billing Information'})
+            screen.getByRole('button', { name: 'Save Billing Information' }),
         )
 
         await waitFor(() => {

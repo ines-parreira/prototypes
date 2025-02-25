@@ -1,8 +1,9 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import React, {ChangeEvent, useEffect, useState} from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {HelpCenterArticleItem, LocaleCode} from 'models/helpCenter/types'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { HelpCenterArticleItem, LocaleCode } from 'models/helpCenter/types'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import {
@@ -11,10 +12,10 @@ import {
     HELP_CENTER_TITLE_MAX_LENGTH,
 } from 'pages/settings/helpCenter/constants'
 
-import {CloseModal} from '../../../articles/CloseModal'
+import { CloseModal } from '../../../articles/CloseModal'
 import HelpCenterEditModal from '../../../articles/HelpCenterEditModal'
-
 import HelpCenterEditor from '../../../articles/HelpCenterEditor/HelpCenterEditor'
+
 import css from './HelpCenterWizardArticleEditor.less'
 
 type Props = {

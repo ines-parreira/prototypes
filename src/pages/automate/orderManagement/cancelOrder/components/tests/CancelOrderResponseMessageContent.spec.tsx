@@ -1,10 +1,11 @@
-import {screen, render} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render, screen } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {ShopifyIntegration} from 'models/integration/types'
-import {RootState, StoreDispatch} from 'state/types'
+import { ShopifyIntegration } from 'models/integration/types'
+import { RootState, StoreDispatch } from 'state/types'
 
 import CancelOrderFlowViewContext from '../../CancelOrderFlowViewContext'
 import CancelOrderResponseMessageContent from '../CancelOrderResponseMessageContent'
@@ -31,11 +32,11 @@ describe('<CancelOrderResponseMessageContent  />', () => {
                         }}
                     />
                 </CancelOrderFlowViewContext.Provider>
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            screen.getByText(/after customers request a cancellation/i)
+            screen.getByText(/after customers request a cancellation/i),
         ).toBeInTheDocument()
     })
 })

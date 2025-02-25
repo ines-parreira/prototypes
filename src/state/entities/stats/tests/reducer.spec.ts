@@ -1,5 +1,5 @@
-import {firstResponseTime} from '../../../../fixtures/stats'
-import {statFetched} from '../actions'
+import { firstResponseTime } from '../../../../fixtures/stats'
+import { statFetched } from '../actions'
 import reducer from '../reducer'
 
 describe('stats reducer', () => {
@@ -11,7 +11,7 @@ describe('stats reducer', () => {
                     statName: 'overview',
                     resourceName: 'total-tickets-replied',
                     value: firstResponseTime,
-                })
+                }),
             )
 
             expect(newState).toMatchSnapshot()

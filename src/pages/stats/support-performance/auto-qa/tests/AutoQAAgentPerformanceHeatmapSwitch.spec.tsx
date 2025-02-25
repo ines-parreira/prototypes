@@ -1,18 +1,19 @@
-import {act, render, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { act, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {AutoQAAgentPerformanceHeatmapSwitch} from 'pages/stats/support-performance/auto-qa/AutoQAAgentPerformanceHeatmapSwitch'
-import {RootState, StoreDispatch} from 'state/types'
+import { AutoQAAgentPerformanceHeatmapSwitch } from 'pages/stats/support-performance/auto-qa/AutoQAAgentPerformanceHeatmapSwitch'
+import { RootState, StoreDispatch } from 'state/types'
 import {
     initialState as autoQAInitialState,
     toggleHeatmapMode,
 } from 'state/ui/stats/autoQAAgentPerformanceSlice'
-import {AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME} from 'state/ui/stats/constants'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
+import { AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME } from 'state/ui/stats/constants'
+import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -34,10 +35,10 @@ describe('<AutoQAAgentPerformanceHeatmapSwitch />', () => {
         render(
             <Provider store={store}>
                 <AutoQAAgentPerformanceHeatmapSwitch />
-            </Provider>
+            </Provider>,
         )
 
-        expect(screen.getByRole('radio', {name: 'Table'})).toBeChecked()
+        expect(screen.getByRole('radio', { name: 'Table' })).toBeChecked()
     })
 
     it('should trigger toggle action on click', async () => {
@@ -46,10 +47,10 @@ describe('<AutoQAAgentPerformanceHeatmapSwitch />', () => {
         render(
             <Provider store={store}>
                 <AutoQAAgentPerformanceHeatmapSwitch />
-            </Provider>
+            </Provider>,
         )
         act(() => {
-            userEvent.click(screen.getByRole('radio', {name: 'Heatmap'}))
+            userEvent.click(screen.getByRole('radio', { name: 'Heatmap' }))
         })
 
         await waitFor(() => {

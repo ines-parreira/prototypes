@@ -1,4 +1,4 @@
-import {Call, Device} from '@twilio/voice-sdk'
+import { Call, Device } from '@twilio/voice-sdk'
 
 export const mockDevice = (): Partial<Device> => ({})
 
@@ -11,7 +11,7 @@ const mockCall = (): Partial<Call> => ({
 
 export const mockIncomingCall = (
     integrationId = 1,
-    ticketId = 2
+    ticketId = 2,
 ): Partial<Call> => ({
     ...mockCall(),
     direction: Call.CallDirection.Incoming,
@@ -23,7 +23,7 @@ export const mockIncomingCall = (
         ['customer_name', 'Bob'],
         ['customer_phone_number', '+25111111111'],
     ]),
-    parameters: {From: '+14158880101'},
+    parameters: { From: '+14158880101' },
     accept: jest.fn(),
     ignore: jest.fn(),
     reject: jest.fn(),
@@ -39,5 +39,5 @@ export const mockOutgoingCall = (integrationId = 1): Partial<Call> => ({
         ['customer_name', 'Bob'],
         ['To', '+14158880101'],
     ]),
-    parameters: {From: '+25111111111'},
+    parameters: { From: '+25111111111' },
 })

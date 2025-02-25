@@ -1,16 +1,16 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
-import {GorgiasAction} from 'state/types'
+import { GorgiasAction } from 'state/types'
 
 import * as constants from '../constants'
-import reducer, {initialState} from '../reducers'
+import reducer, { initialState } from '../reducers'
 
 describe('teams reducers', () => {
-    const team = {id: 1, name: 'Team 1'}
+    const team = { id: 1, name: 'Team 1' }
 
     it('initial state', () => {
         expect(reducer(undefined, {} as GorgiasAction)).toEqualImmutable(
-            initialState
+            initialState,
         )
     })
 
@@ -19,7 +19,7 @@ describe('teams reducers', () => {
             reducer(initialState, {
                 type: constants.CREATE_TEAM_SUCCESS,
                 payload: team,
-            })
+            }),
         ).toMatchSnapshot()
     })
 
@@ -28,7 +28,7 @@ describe('teams reducers', () => {
             reducer(initialState, {
                 type: constants.UPDATE_TEAM_SUCCESS,
                 payload: team,
-            })
+            }),
         ).toMatchSnapshot()
     })
 
@@ -37,21 +37,21 @@ describe('teams reducers', () => {
             reducer(initialState, {
                 type: constants.FETCH_TEAM_SUCCESS,
                 payload: team,
-            })
+            }),
         ).toMatchSnapshot()
     })
 
     it('should delete the deleted team when action type is DELETE_TEAM_SUCCESS', () => {
         const state = initialState.setIn(
             ['all', team.id.toString()],
-            fromJS(team)
+            fromJS(team),
         )
 
         expect(
             reducer(state, {
                 type: constants.DELETE_TEAM_SUCCESS,
                 payload: team.id,
-            })
+            }),
         ).toMatchSnapshot()
     })
 
@@ -60,17 +60,17 @@ describe('teams reducers', () => {
             reducer(initialState, {
                 type: constants.FETCH_TEAMS_SUCCESS,
                 payload: [
-                    {id: 1, name: 'Team 1'},
-                    {id: 2, name: 'Team 2'},
+                    { id: 1, name: 'Team 1' },
+                    { id: 2, name: 'Team 2' },
                 ],
-            })
+            }),
         ).toEqual(
             fromJS({
                 all: {
-                    '1': {id: 1, name: 'Team 1'},
-                    '2': {id: 2, name: 'Team 2'},
+                    '1': { id: 1, name: 'Team 1' },
+                    '2': { id: 2, name: 'Team 2' },
                 },
-            })
+            }),
         )
     })
 })

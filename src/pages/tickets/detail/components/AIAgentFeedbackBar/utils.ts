@@ -1,16 +1,14 @@
-import {Action, Guidance, Knowledge} from 'models/aiAgentFeedback/types'
-import {TicketMessage} from 'models/ticket/types'
+import { Action, Guidance, Knowledge } from 'models/aiAgentFeedback/types'
+import { TicketMessage } from 'models/ticket/types'
+import { getAiAgentNavigationRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { getLDClient } from 'utils/launchDarkly'
 
-import {getAiAgentNavigationRoutes} from 'pages/aiAgent/hooks/useAiAgentNavigation'
-
-import {getLDClient} from 'utils/launchDarkly'
-
-import {TRIAL_MESSAGE_TAG} from './constants'
+import { TRIAL_MESSAGE_TAG } from './constants'
 
 export const getKnowledgeUrl = (
     knowledge: Knowledge,
     shopType: string,
-    shopName: string
+    shopName: string,
 ) => {
     switch (knowledge.type) {
         case 'article':
@@ -31,7 +29,7 @@ export const getKnowledgeUrl = (
 export const getGuidanceUrl = (
     guidance: Guidance,
     shopType: string,
-    shopName: string
+    shopName: string,
 ) => {
     const flags = getLDClient().allFlags()
     const aiAgentRoutes = getAiAgentNavigationRoutes(shopName, flags)
@@ -41,7 +39,7 @@ export const getGuidanceUrl = (
 export const getActionUrl = (
     action: Action,
     shopType: string,
-    shopName: string
+    shopName: string,
 ) => {
     const flags = getLDClient().allFlags()
     const aiAgentRoutes = getAiAgentNavigationRoutes(shopName, flags)

@@ -1,9 +1,8 @@
-import {createStore, applyMiddleware} from 'redux'
+import { applyMiddleware, createStore } from 'redux'
 import thunk from 'redux-thunk'
 
 import rootReducer from '../state/reducers'
-import {InitialRootState} from '../types'
-
+import { InitialRootState } from '../types'
 import sentryCrashReporter from './middlewares/sentryCrashReporter'
 import serverErrorHandler from './middlewares/serverErrorHandler'
 
@@ -13,6 +12,6 @@ export default function configureStore(initialState: InitialRootState) {
     return createStore(
         rootReducer,
         initialState,
-        applyMiddleware(...middlewares)
+        applyMiddleware(...middlewares),
     )
 }

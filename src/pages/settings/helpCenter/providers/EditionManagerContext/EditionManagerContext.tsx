@@ -1,10 +1,10 @@
 import React, {
     createContext,
-    useContext,
-    useState,
     Dispatch,
     SetStateAction,
+    useContext,
     useEffect,
+    useState,
 } from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -15,12 +15,12 @@ import {
     LocaleCode,
     VisibilityStatus,
 } from 'models/helpCenter/types'
-import {HelpCenterArticleModalState} from 'pages/settings/helpCenter/components/articles/HelpCenterEditArticleModalContent/types'
-import {changeViewLanguage} from 'state/ui/helpCenter'
-import {getViewLanguage} from 'state/ui/helpCenter/selectors'
+import { HelpCenterArticleModalState } from 'pages/settings/helpCenter/components/articles/HelpCenterEditArticleModalContent/types'
+import { changeViewLanguage } from 'state/ui/helpCenter'
+import { getViewLanguage } from 'state/ui/helpCenter/selectors'
 
 import useCurrentHelpCenter from '../../hooks/useCurrentHelpCenter'
-import {ArticleTemplateKey} from '../../types/articleTemplates'
+import { ArticleTemplateKey } from '../../types/articleTemplates'
 
 // TODO: move to redux (as UI states?)
 type EditionManagerContextValues = {
@@ -52,7 +52,7 @@ type EditionManagerContextValues = {
 }
 
 const EditionManagerContext = createContext<null | EditionManagerContextValues>(
-    null
+    null,
 )
 
 export const EditionManagerContextProvider = (props: {
@@ -64,7 +64,7 @@ export const EditionManagerContextProvider = (props: {
 
     // article & category states
     const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
-        null
+        null,
     )
     const [selectedVisibility, setSelectedVisibility] =
         useState<VisibilityStatus>('PUBLIC')
@@ -147,7 +147,7 @@ export const useEditionManager = () => {
 
     if (!values) {
         throw new Error(
-            `useEditionManager should be used inside the EditionManagerContextProvider context provider`
+            `useEditionManager should be used inside the EditionManagerContextProvider context provider`,
         )
     }
 

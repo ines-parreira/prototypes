@@ -1,8 +1,8 @@
-import React, {useEffect, useMemo, useState} from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
-import {scopesToPermissions} from 'config/oauthPermissions'
-import {fetchAppErrorLogs} from 'models/integration/resources'
-import {AppDetail, AppErrorLog} from 'models/integration/types/app'
+import { scopesToPermissions } from 'config/oauthPermissions'
+import { fetchAppErrorLogs } from 'models/integration/resources'
+import { AppDetail, AppErrorLog } from 'models/integration/types/app'
 import Loader from 'pages/common/components/Loader/Loader'
 
 import AppErrorRow from './AppErrorRow'
@@ -14,7 +14,7 @@ export default function AppAdvanced(props: AppDetail) {
 
     const permissions = useMemo(
         () => scopesToPermissions(props.grantedScopes || []),
-        [props.grantedScopes]
+        [props.grantedScopes],
     )
 
     // Load error logs

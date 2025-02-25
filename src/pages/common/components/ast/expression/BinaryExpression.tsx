@@ -1,15 +1,15 @@
-import {List, Map} from 'immutable'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { List, Map } from 'immutable'
 
 import {
     getSyntaxTreeLeaves,
     SyntaxTree,
 } from 'pages/common/components/ast/utils'
 import Widget from 'pages/common/components/ast/Widget'
-
-import {ExpressionProps} from 'pages/common/hooks/rule/RuleProvider'
-import {useRuleContext} from 'pages/common/hooks/useRuleContext'
-import {RuleItemActions} from 'pages/settings/rules/types'
+import { ExpressionProps } from 'pages/common/hooks/rule/RuleProvider'
+import { useRuleContext } from 'pages/common/hooks/useRuleContext'
+import { RuleItemActions } from 'pages/settings/rules/types'
 
 type Props = {
     operator: string
@@ -32,7 +32,7 @@ const BinaryExpression = ({
     parent,
     leftsiblings,
 }: Props) => {
-    const {Expression} = useRuleContext()
+    const { Expression } = useRuleContext()
     const parentLeft = parent.push('left')
     const parentRight = parent.push('right')
     const parentOperator = parent.push('operator')
@@ -42,7 +42,7 @@ const BinaryExpression = ({
 
     if (leftsiblings) {
         leftsiblings2 = leftsiblings.concat(
-            getSyntaxTreeLeaves(left)
+            getSyntaxTreeLeaves(left),
         ) as List<any>
         leftsiblings3 = leftsiblings2.push('operators')
     }

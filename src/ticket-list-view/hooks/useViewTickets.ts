@@ -1,17 +1,19 @@
-import {useAgentActivity} from '@gorgias/realtime'
+import { useCallback, useEffect, useState } from 'react'
+
 import _debounce from 'lodash/debounce'
-import {useCallback, useEffect, useState} from 'react'
+
+import { useAgentActivity } from '@gorgias/realtime'
 
 import useDeepEffect from 'hooks/useDeepEffect'
-import {TicketPartial} from 'ticket-list-view/types'
+import { TicketPartial } from 'ticket-list-view/types'
 
 export const DEBOUNCED_VIEW_TICKETS_DELAY = 1000
 
 export default function useViewTickets(
     partials: TicketPartial[],
-    shouldDebounce = false
+    shouldDebounce = false,
 ) {
-    const {viewTickets} = useAgentActivity()
+    const { viewTickets } = useAgentActivity()
     const [ticketIds, setTicketIds] = useState<number[]>([])
 
     useEffect(() => {
@@ -22,9 +24,9 @@ export default function useViewTickets(
     const debouncedViewTickets = useCallback(
         _debounce(
             viewTickets,
-            shouldDebounce ? DEBOUNCED_VIEW_TICKETS_DELAY : 0
+            shouldDebounce ? DEBOUNCED_VIEW_TICKETS_DELAY : 0,
         ),
-        [viewTickets]
+        [viewTickets],
     )
 
     useDeepEffect(() => {

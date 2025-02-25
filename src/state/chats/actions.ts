@@ -1,18 +1,19 @@
 import _throttle from 'lodash/throttle'
 
-import {RecentChatTicket} from '../../business/types/recentChats'
+import { RecentChatTicket } from '../../business/types/recentChats'
 import client from '../../models/api/resources'
-import {Ticket} from '../../models/ticket/types'
+import { Ticket } from '../../models/ticket/types'
 import browserNotification from '../../services/browserNotification'
-import {StoreDispatch} from '../types'
-
+import { StoreDispatch } from '../types'
 import * as constants from './constants'
 
 export const fetchChats =
     () =>
     (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         return client
-            .get<{tickets: Ticket[]}>('/api/activity/chats/', {timeout: 10000})
+            .get<{ tickets: Ticket[] }>('/api/activity/chats/', {
+                timeout: 10000,
+            })
             .then((json) => json?.data)
             .then(
                 (resp) => {
@@ -23,7 +24,7 @@ export const fetchChats =
                         type: constants.FETCH_CHATS_ERROR,
                         error,
                     })
-                }
+                },
             )
     }
 

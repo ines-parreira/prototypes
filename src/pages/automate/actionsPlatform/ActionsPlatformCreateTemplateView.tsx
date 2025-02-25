@@ -1,19 +1,20 @@
+import React, { useCallback, useMemo, useState } from 'react'
+
 import _keyBy from 'lodash/keyBy'
 import _noop from 'lodash/noop'
-import React, {useCallback, useMemo, useState} from 'react'
-import {useHistory} from 'react-router-dom'
-import {ulid} from 'ulidx'
+import { useHistory } from 'react-router-dom'
+import { ulid } from 'ulidx'
 
-import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
+import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
 import AutomateFormView from 'pages/automate/common/components/AutomateFormView'
 import {
     useVisualBuilder,
     VisualBuilderContext,
 } from 'pages/automate/workflows/hooks/useVisualBuilder'
-import {useVisualBuilderGraphReducer} from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
-import {computeNodesPositions} from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer/utils'
-import {transformVisualBuilderGraphIntoWfConfiguration} from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import {LLMPromptTriggerNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { useVisualBuilderGraphReducer } from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
+import { computeNodesPositions } from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer/utils'
+import { transformVisualBuilderGraphIntoWfConfiguration } from 'pages/automate/workflows/models/visualBuilderGraph.model'
+import { LLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import {
     transformWorkflowConfigurationIntoVisualBuilderGraph,
     WorkflowConfigurationBuilder,
@@ -25,7 +26,6 @@ import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 
-import css from './ActionsPlatformEditTemplateView.less'
 import ActionsPlatformTemplateAppsSelectBox from './components/ActionsPlatformTemplateAppsSelectBox'
 import ActionsPlatformTemplateFormView from './components/ActionsPlatformTemplateFormView'
 import ActionsPlatformTemplateVisualBuilderView from './components/ActionsPlatformTemplateVisualBuilderView'
@@ -34,7 +34,9 @@ import useCreateActionTemplate from './hooks/useCreateActionTemplate'
 import useTouchActionTemplateGraph from './hooks/useTouchActionTemplateGraph'
 import useValidateActionTemplateGraph from './hooks/useValidateActionTemplateGraph'
 import useValidateOnVisualBuilderGraphChange from './hooks/useValidateOnVisualBuilderGraphChange'
-import {ActionTemplate, ActionTemplateApp} from './types'
+import { ActionTemplate, ActionTemplateApp } from './types'
+
+import css from './ActionsPlatformEditTemplateView.less'
 
 const getInitialTemplate = () => {
     const b = new WorkflowConfigurationBuilder({
@@ -78,15 +80,15 @@ const getInitialTemplate = () => {
 }
 
 const ActionsPlatformCreateTemplateView = () => {
-    const {isLoading: isCreateActionTemplateLoading, createActionTemplate} =
+    const { isLoading: isCreateActionTemplateLoading, createActionTemplate } =
         useCreateActionTemplate()
-    const {apps = [], isLoading: isAppsLoading, actionsApps} = useApps()
+    const { apps = [], isLoading: isAppsLoading, actionsApps } = useApps()
 
     const history = useHistory()
     const template = useMemo(() => getInitialTemplate(), [])
     const [templateApps, setTemplateApps] = useState<ActionTemplateApp[]>([])
 
-    const {data: steps = []} = useGetWorkflowConfigurationTemplates({
+    const { data: steps = [] } = useGetWorkflowConfigurationTemplates({
         triggers: ['reusable-llm-prompt'],
     })
 
@@ -94,24 +96,24 @@ const ActionsPlatformCreateTemplateView = () => {
         computeNodesPositions(
             transformWorkflowConfigurationIntoVisualBuilderGraph<LLMPromptTriggerNodeType>(
                 template,
-                true
-            )
-        )
+                true,
+            ),
+        ),
     )
     const [visualBuilderGraph, setVisualBuilderGraph] = useState(
-        visualBuilderGraphDirty
+        visualBuilderGraphDirty,
     )
 
     const visualBuilderContextValue = useVisualBuilder(
         visualBuilderGraphDirty,
         dispatch,
-        true
+        true,
     )
 
-    const {getVariableListForNode} = visualBuilderContextValue
+    const { getVariableListForNode } = visualBuilderContextValue
 
     const handleValidate = useValidateActionTemplateGraph(
-        getVariableListForNode
+        getVariableListForNode,
     )
     const handleTouch = useTouchActionTemplateGraph()
 
@@ -144,7 +146,7 @@ const ActionsPlatformCreateTemplateView = () => {
                 transformVisualBuilderGraphIntoWfConfiguration(
                     visualBuilderGraphDirty,
                     isDraft,
-                    steps
+                    steps,
                 ) as ActionTemplate,
             ])
 
@@ -158,7 +160,7 @@ const ActionsPlatformCreateTemplateView = () => {
             history,
             steps,
             dispatch,
-        ]
+        ],
     )
 
     const [isEditingSteps, setIsEditingSteps] = useState(false)
@@ -167,7 +169,7 @@ const ActionsPlatformCreateTemplateView = () => {
         const actionsAppsByAppId = _keyBy(actionsApps, 'id')
 
         return apps.filter(
-            (app) => app.type !== 'app' || app.id in actionsAppsByAppId
+            (app) => app.type !== 'app' || app.id in actionsAppsByAppId,
         )
     }, [actionsApps, apps])
 

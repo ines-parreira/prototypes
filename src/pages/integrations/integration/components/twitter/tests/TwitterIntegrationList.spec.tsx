@@ -1,14 +1,14 @@
-import {render} from '@testing-library/react'
-import {fromJS, List, Map} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
-import {BrowserRouter} from 'react-router-dom'
+
+import { render } from '@testing-library/react'
+import { fromJS, List, Map } from 'immutable'
+import { Provider } from 'react-redux'
+import { BrowserRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {IntegrationType} from '../../../../../../models/integration/types'
-import {AccountFeature} from '../../../../../../state/currentAccount/types'
-
+import { IntegrationType } from '../../../../../../models/integration/types'
+import { AccountFeature } from '../../../../../../state/currentAccount/types'
 import TwitterIntegrationList from '../TwitterIntegrationList'
 
 describe('<TwitterIntegrationList/>', () => {
@@ -41,7 +41,7 @@ describe('<TwitterIntegrationList/>', () => {
         it('should render', () => {
             const store = mockStore(getState(3))
 
-            const {container} = render(
+            const { container } = render(
                 <TwitterIntegrationList
                     integrations={integrations}
                     loading={fromJS({})}
@@ -53,7 +53,7 @@ describe('<TwitterIntegrationList/>', () => {
                             <BrowserRouter>{props?.children}</BrowserRouter>
                         </Provider>
                     ),
-                }
+                },
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -62,7 +62,7 @@ describe('<TwitterIntegrationList/>', () => {
         it('should render with a warning message', () => {
             const store = mockStore(getState(2))
 
-            const {container} = render(
+            const { container } = render(
                 <TwitterIntegrationList
                     integrations={integrations}
                     loading={fromJS({})}
@@ -74,7 +74,7 @@ describe('<TwitterIntegrationList/>', () => {
                             <BrowserRouter>{props?.children}</BrowserRouter>
                         </Provider>
                     ),
-                }
+                },
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -83,7 +83,7 @@ describe('<TwitterIntegrationList/>', () => {
         it('should render with an error message and without creation button', () => {
             const store = mockStore(getState(1))
 
-            const {container} = render(
+            const { container } = render(
                 <TwitterIntegrationList
                     integrations={integrations}
                     loading={fromJS({})}
@@ -95,7 +95,7 @@ describe('<TwitterIntegrationList/>', () => {
                             <BrowserRouter>{props?.children}</BrowserRouter>
                         </Provider>
                     ),
-                }
+                },
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -105,7 +105,7 @@ describe('<TwitterIntegrationList/>', () => {
             integrations = fromJS([])
             const store = mockStore(getState(99))
 
-            const {container} = render(
+            const { container } = render(
                 <TwitterIntegrationList
                     integrations={integrations}
                     loading={fromJS({})}
@@ -117,7 +117,7 @@ describe('<TwitterIntegrationList/>', () => {
                             <BrowserRouter>{props?.children}</BrowserRouter>
                         </Provider>
                     ),
-                }
+                },
             )
 
             expect(container.firstChild).toMatchSnapshot()

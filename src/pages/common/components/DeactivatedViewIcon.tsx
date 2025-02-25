@@ -1,6 +1,7 @@
-import classNames from 'classnames'
 import React from 'react'
-import {UncontrolledTooltip} from 'reactstrap'
+
+import classNames from 'classnames'
+import { UncontrolledTooltip } from 'reactstrap'
 
 import css from './DeactivatedViewIcon.less'
 
@@ -9,14 +10,14 @@ type Props = {
     tooltipText?: string
 }
 
-export default function DeactivatedViewIcon({id, tooltipText}: Props) {
+export default function DeactivatedViewIcon({ id, tooltipText }: Props) {
     return (
         <>
             <span id={id}>
                 <i
                     className={classNames(
                         'material-icons text-danger',
-                        css.deactivated
+                        css.deactivated,
                     )}
                 >
                     error

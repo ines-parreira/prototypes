@@ -1,13 +1,13 @@
-import {SLA_TREND_FILENAME} from 'hooks/reporting/sla/useDownloadSLAsData'
-import {fetchSatisfiedOrBreachedTicketsTimeSeries} from 'hooks/reporting/sla/useSatisfiedOrBreachedTicketsTimeSeries'
+import { SLA_TREND_FILENAME } from 'hooks/reporting/sla/useDownloadSLAsData'
+import { fetchSatisfiedOrBreachedTicketsTimeSeries } from 'hooks/reporting/sla/useSatisfiedOrBreachedTicketsTimeSeries'
 import {
     fetchBreachedSlaTicketsTrend,
     fetchSatisfiedSlaTicketsTrend,
 } from 'hooks/reporting/sla/useSLAsTicketsTrends'
-import {fetchTicketSlaAchievementRateTrend} from 'hooks/reporting/sla/useTicketSlaAchievementRate'
-import {TicketSLAStatus} from 'models/reporting/cubes/sla/TicketSLACube'
-import {FilterKey, StaticFilter} from 'models/stat/types'
-import {AUTO_QA_FILTER_KEYS} from 'pages/stats/common/filters/constants'
+import { fetchTicketSlaAchievementRateTrend } from 'hooks/reporting/sla/useTicketSlaAchievementRate'
+import { TicketSLAStatus } from 'models/reporting/cubes/sla/TicketSLACube'
+import { FilterKey, StaticFilter } from 'models/stat/types'
+import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
 import {
     ChartType,
     DataExportFormat,
@@ -18,10 +18,10 @@ import {
     CHART_TITLE,
     HINT,
 } from 'pages/stats/sla/components/AchievedAndBreachedTicketsChart'
-import {AchievementRateTrendCard} from 'pages/stats/sla/components/AchievementRateTrendCard'
-import {BreachedTicketsRateTrendCard} from 'pages/stats/sla/components/BreachedTicketsRateTrendCard'
-import {SlaMetricConfig} from 'pages/stats/sla/SlaConfig'
-import {STATS_ROUTES} from 'routes/constants'
+import { AchievementRateTrendCard } from 'pages/stats/sla/components/AchievementRateTrendCard'
+import { BreachedTicketsRateTrendCard } from 'pages/stats/sla/components/BreachedTicketsRateTrendCard'
+import { SlaMetricConfig } from 'pages/stats/sla/SlaConfig'
+import { STATS_ROUTES } from 'routes/constants'
 import {
     ACHIEVED_SLA_LABEL,
     ACHIEVEMENT_RATE_LABEL,
@@ -29,7 +29,7 @@ import {
     DATES_WITHIN_PERIOD_LABEL,
     TICKETS_WITH_BREACHED_SLAS_LABEL,
 } from 'services/reporting/constants'
-import {SlaMetric} from 'state/ui/stats/types'
+import { SlaMetric } from 'state/ui/stats/types'
 
 export const SERVICE_LEVEL_AGREEMENT_PAGE_TITLE = 'SLAs'
 

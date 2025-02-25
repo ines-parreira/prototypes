@@ -1,4 +1,4 @@
-import {WorkflowStepMetricsMap} from './utils'
+import { WorkflowStepMetricsMap } from './utils'
 
 const infinityNanToZero = (value: number) => {
     return isNaN(value) || value === Infinity ? 0 : value
@@ -34,14 +34,14 @@ export const automationRateUnfilteredDenominator = ({
         filteredAutomatedInteractions /
             (allAutomatedInteractions +
                 billableTicketsCount -
-                allAutomatedInteractionsByAutoResponders)
+                allAutomatedInteractionsByAutoResponders),
     )
 }
 
 export const automationRate = (
     automatedInteractions: number | null,
     billableTicketCount: number | null,
-    automatedInteractionsByAutoResponders: number | null
+    automatedInteractionsByAutoResponders: number | null,
 ): number => {
     if (
         automatedInteractions != null &&
@@ -54,7 +54,7 @@ export const automationRate = (
             automatedInteractions /
                 (automatedInteractions +
                     billableTicketCount -
-                    automatedInteractionsByAutoResponders)
+                    automatedInteractionsByAutoResponders),
         )
     }
 
@@ -63,28 +63,28 @@ export const automationRate = (
 
 const averageFirstResponseTimeWithoutAutomation = (
     billableTicketCount: number,
-    totalFirstResponseTimeExcludingAIAgent: number
+    totalFirstResponseTimeExcludingAIAgent: number,
 ): number =>
     infinityNanToZero(
-        totalFirstResponseTimeExcludingAIAgent / billableTicketCount
+        totalFirstResponseTimeExcludingAIAgent / billableTicketCount,
     )
 
 const averageFirstResponseTimeWithAutomation = (
     billableTicketExcludingAIAgentCount: number,
     totalFirstResponseTimeIncludingAIAgent: number,
-    automatedInteractions: number
+    automatedInteractions: number,
 ): number =>
     infinityNanToZero(
         // AI Agent is not included in billable ticket count but is included in automatedInteractions
         totalFirstResponseTimeIncludingAIAgent /
-            (billableTicketExcludingAIAgentCount + automatedInteractions)
+            (billableTicketExcludingAIAgentCount + automatedInteractions),
     )
 
 export const decreaseInFirstResponseTime = (
     automatedInteractions: number | null,
     billableTicketExcludingAIAgentCount: number | null,
     totalFirstResponseTimeExcludingAIAgent: number | null,
-    totalFirstResponseTimeIncludingAIAgent: number | null
+    totalFirstResponseTimeIncludingAIAgent: number | null,
 ): number => {
     if (
         automatedInteractions != null &&
@@ -95,17 +95,17 @@ export const decreaseInFirstResponseTime = (
         const averageFRTWithoutAutomation =
             averageFirstResponseTimeWithoutAutomation(
                 billableTicketExcludingAIAgentCount,
-                totalFirstResponseTimeExcludingAIAgent
+                totalFirstResponseTimeExcludingAIAgent,
             )
 
         const averageFRTWithAutomation = averageFirstResponseTimeWithAutomation(
             billableTicketExcludingAIAgentCount,
             totalFirstResponseTimeIncludingAIAgent,
-            automatedInteractions
+            automatedInteractions,
         )
 
         return nonNegative(
-            averageFRTWithoutAutomation - averageFRTWithAutomation
+            averageFRTWithoutAutomation - averageFRTWithAutomation,
         )
     }
     return 0
@@ -115,19 +115,19 @@ export const averageResolutionTimeWithAutomation = (
     totalResolutionTimeExcludingAIAgent: number,
     billableTicketCountExcludingAIAgent: number,
     automatedInteractions: number,
-    totalResolutionTimeResolvedByAIAgent: number
+    totalResolutionTimeResolvedByAIAgent: number,
 ): number =>
     infinityNanToZero(
         (totalResolutionTimeExcludingAIAgent +
             totalResolutionTimeResolvedByAIAgent) /
-            (billableTicketCountExcludingAIAgent + automatedInteractions)
+            (billableTicketCountExcludingAIAgent + automatedInteractions),
     )
 
 export const decreaseInResolutionTime = (
     automatedInteractions: number | null,
     billableTicketCountExcludingAIAgent: number | null,
     totalResolutionTimeExcludingAIAgent: number | null,
-    totalResolutionTimeResolvedByAIAgent: number | null
+    totalResolutionTimeResolvedByAIAgent: number | null,
 ): number => {
     if (
         automatedInteractions != null &&
@@ -136,14 +136,14 @@ export const decreaseInResolutionTime = (
     ) {
         const averageRTWithoutAutomation = infinityNanToZero(
             totalResolutionTimeExcludingAIAgent /
-                billableTicketCountExcludingAIAgent
+                billableTicketCountExcludingAIAgent,
         )
 
         const averageRTWithAutomation = averageResolutionTimeWithAutomation(
             totalResolutionTimeExcludingAIAgent,
             billableTicketCountExcludingAIAgent,
             automatedInteractions,
-            totalResolutionTimeResolvedByAIAgent ?? 0
+            totalResolutionTimeResolvedByAIAgent ?? 0,
         )
 
         return nonNegative(averageRTWithoutAutomation - averageRTWithAutomation)
@@ -154,7 +154,7 @@ export const decreaseInResolutionTime = (
 export const workflowEndStepDropoff = (
     dropoff: number | null,
     workflowStepPromptNotHelpful: number | null,
-    workflowStepTicketsCreated: number | null
+    workflowStepTicketsCreated: number | null,
 ): number => {
     if (
         dropoff == null ||
@@ -164,13 +164,13 @@ export const workflowEndStepDropoff = (
         return 0
 
     return nonNegative(
-        dropoff + workflowStepPromptNotHelpful - workflowStepTicketsCreated
+        dropoff + workflowStepPromptNotHelpful - workflowStepTicketsCreated,
     )
 }
 
 export const workflowEndStepAutomatedInteractions = (
     workflowEndStepEnded: number | null,
-    workflowStepPromptNotHelpful: number | null
+    workflowStepPromptNotHelpful: number | null,
 ): number => {
     if (workflowEndStepEnded == null || workflowStepPromptNotHelpful == null)
         return 0
@@ -180,7 +180,7 @@ export const workflowEndStepAutomatedInteractions = (
 
 export const calculateRate = (
     numerator: number | null,
-    denominator: number | null
+    denominator: number | null,
 ): number => {
     if (numerator == null || denominator == null) return 0
 
@@ -197,7 +197,7 @@ export const calculateSumOfDropoff = (data: WorkflowStepMetricsMap) => {
 }
 
 export const calculateSumOfAutomatedInteractions = (
-    data: WorkflowStepMetricsMap
+    data: WorkflowStepMetricsMap,
 ) => {
     return Object.values(data).reduce((sum, item) => {
         const automatedInteractions = item.automatedInteractions

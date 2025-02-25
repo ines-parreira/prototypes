@@ -1,16 +1,17 @@
-import {render, fireEvent} from '@testing-library/react'
 import React from 'react'
+
+import { fireEvent, render } from '@testing-library/react'
 
 import PrimaryReasons from '../PrimaryReasons'
 
 describe('PrimaryReasons', () => {
     it('renders with no selected reason', () => {
-        const {container, getByText} = render(
+        const { container, getByText } = render(
             <PrimaryReasons
                 reasons={['primary1', 'primary2']}
                 currentReason={null}
                 handlePrimaryReasonSelection={jest.fn() as any}
-            />
+            />,
         )
 
         const selectorElement = getByText('Select reason...')
@@ -23,12 +24,12 @@ describe('PrimaryReasons', () => {
     })
 
     it('renders with selected reason being checked', () => {
-        const {container} = render(
+        const { container } = render(
             <PrimaryReasons
                 reasons={['primary1', 'primary2']}
                 currentReason={'primary2'}
                 handlePrimaryReasonSelection={jest.fn() as any}
-            />
+            />,
         )
 
         container.querySelectorAll('fieldset input').forEach((input) => {
@@ -43,12 +44,12 @@ describe('PrimaryReasons', () => {
 
     it('handles the change of selected reason', () => {
         const mockHandlePrimaryReasonSelection = jest.fn() as any
-        const {getByText} = render(
+        const { getByText } = render(
             <PrimaryReasons
                 reasons={['primary1', 'primary2']}
                 currentReason={'primary1'}
                 handlePrimaryReasonSelection={mockHandlePrimaryReasonSelection}
-            />
+            />,
         )
 
         const selectorElement = getByText('primary1')
@@ -56,7 +57,7 @@ describe('PrimaryReasons', () => {
         fireEvent.focus(selectorElement as Element)
         fireEvent.click(getByText('primary2'))
         expect(mockHandlePrimaryReasonSelection).toHaveBeenCalledWith(
-            'primary2'
+            'primary2',
         )
     })
 })

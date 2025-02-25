@@ -1,9 +1,10 @@
-import {render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {BANNER_DETAILS} from '../constants'
-import FlowsBanner, {FlowsBannerProps} from '../FlowsBanner'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { BANNER_DETAILS } from '../constants'
+import FlowsBanner, { FlowsBannerProps } from '../FlowsBanner'
 
 const mockHistoryPush = jest.fn()
 jest.mock('react-router-dom', () => ({
@@ -24,7 +25,7 @@ describe('FlowsBanner', () => {
         render(<FlowsBanner {...mockProps} />)
 
         const titleElement = screen.getByText(
-            BANNER_DETAILS.CONNECTED_TO_SHOP_AND_AUTOMATION_ENABLED.TITLE
+            BANNER_DETAILS.CONNECTED_TO_SHOP_AND_AUTOMATION_ENABLED.TITLE,
         )
 
         expect(titleElement).toBeInTheDocument()
@@ -39,10 +40,11 @@ describe('FlowsBanner', () => {
         render(<FlowsBanner {...props} />)
 
         const titleElement = screen.getByText(
-            BANNER_DETAILS.CONNECTED_TO_SHOP_AND_AUTOMATION_DISABLED.TITLE
+            BANNER_DETAILS.CONNECTED_TO_SHOP_AND_AUTOMATION_DISABLED.TITLE,
         )
         const descriptionElement = screen.getByText(
-            BANNER_DETAILS.CONNECTED_TO_SHOP_AND_AUTOMATION_DISABLED.DESCRIPTION
+            BANNER_DETAILS.CONNECTED_TO_SHOP_AND_AUTOMATION_DISABLED
+                .DESCRIPTION,
         )
 
         expect(titleElement).toBeInTheDocument()
@@ -58,10 +60,10 @@ describe('FlowsBanner', () => {
         render(<FlowsBanner {...props} />)
 
         const titleElement = screen.getByText(
-            BANNER_DETAILS.NOT_CONNECTED_TO_SHOP.TITLE
+            BANNER_DETAILS.NOT_CONNECTED_TO_SHOP.TITLE,
         )
         const descriptionElement = screen.getByText(
-            BANNER_DETAILS.NOT_CONNECTED_TO_SHOP.DESCRIPTION
+            BANNER_DETAILS.NOT_CONNECTED_TO_SHOP.DESCRIPTION,
         )
 
         expect(titleElement).toBeInTheDocument()
@@ -72,12 +74,12 @@ describe('FlowsBanner', () => {
         render(<FlowsBanner {...mockProps} />)
 
         const buttonElement = screen.getByText(
-            BANNER_DETAILS.CONNECTED_TO_SHOP_AND_AUTOMATION_ENABLED.BUTTON_TEXT
+            BANNER_DETAILS.CONNECTED_TO_SHOP_AND_AUTOMATION_ENABLED.BUTTON_TEXT,
         )
         userEvent.click(buttonElement)
 
         expect(mockHistoryPush).toHaveBeenCalledWith(
-            '/app/automation/shopify/example-shop/flows'
+            '/app/automation/shopify/example-shop/flows',
         )
     })
 })

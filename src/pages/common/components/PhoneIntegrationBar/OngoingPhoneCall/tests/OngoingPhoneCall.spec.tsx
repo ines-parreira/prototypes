@@ -1,26 +1,27 @@
-import {usePutCallParticipantOnHold} from '@gorgias/api-queries'
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-import {Call} from '@twilio/voice-sdk'
-import MockAdapter from 'axios-mock-adapter'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { Call } from '@twilio/voice-sdk'
+import MockAdapter from 'axios-mock-adapter'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {TwilioSocketEventType} from 'business/twilio'
-import * as utils from 'hooks/integrations/phone/utils'
+import { usePutCallParticipantOnHold } from '@gorgias/api-queries'
 
+import { TwilioSocketEventType } from 'business/twilio'
+import * as utils from 'hooks/integrations/phone/utils'
 import client from 'models/api/resources'
 import socketManager from 'services/socketManager'
 import {
     SocketEventType,
     VoiceCallTransferFailedEvent,
 } from 'services/socketManager/types'
-import {RootState, StoreDispatch} from 'state/types'
-import {mockIncomingCall} from 'tests/twilioMocks'
+import { RootState, StoreDispatch } from 'state/types'
+import { mockIncomingCall } from 'tests/twilioMocks'
 
-import {CallRecordingStatus, TWILIO_CURRENT_ITEM} from '../../constants'
+import { CallRecordingStatus, TWILIO_CURRENT_ITEM } from '../../constants'
 import OngoingPhoneCall from '../OngoingPhoneCall'
 
 jest.mock('@twilio/voice-sdk')
@@ -55,7 +56,7 @@ jest.mock('../CallTransferDropdown', () => ({
 
 jest.mock(
     'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel',
-    () => () => <div>Agent Label</div>
+    () => () => <div>Agent Label</div>,
 )
 
 const mockUsePutCallParticipantOnHold = usePutCallParticipantOnHold as jest.Mock
@@ -102,7 +103,7 @@ describe('<OngoingPhoneCall/>', () => {
         render(
             <Provider store={store}>
                 <OngoingPhoneCall call={call} />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(screen.getByLabelText('Mute phone call'))
@@ -135,7 +136,7 @@ describe('<OngoingPhoneCall/>', () => {
         render(
             <Provider store={store}>
                 <OngoingPhoneCall call={call} />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(screen.getByLabelText('End phone call'))
@@ -154,14 +155,14 @@ describe('<OngoingPhoneCall/>', () => {
         render(
             <Provider store={store}>
                 <OngoingPhoneCall call={call} />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(screen.getByLabelText('Start recording phone call'))
 
         await waitFor(() => {
             expect(mockedServer.history).toMatchObject({
-                put: [{url}],
+                put: [{ url }],
             })
             expect(sendTwilioSocketEvent).toHaveBeenCalledWith({
                 type: TwilioSocketEventType.CallRecordingStarted,
@@ -193,7 +194,7 @@ describe('<OngoingPhoneCall/>', () => {
                         } as any
                     }
                 />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(screen.getByLabelText('Hold phone call'))
@@ -225,7 +226,7 @@ describe('<OngoingPhoneCall/>', () => {
                         } as any
                     }
                 />
-            </Provider>
+            </Provider>,
         )
         ;(
             mockUsePutCallParticipantOnHold as jest.MockedFunction<
@@ -233,8 +234,8 @@ describe('<OngoingPhoneCall/>', () => {
             >
         ).mock.calls[0][0]?.mutation?.onSuccess!(
             '' as any,
-            {data: {hold_state: true}} as any,
-            '' as any
+            { data: { hold_state: true } } as any,
+            '' as any,
         )
         await waitFor(() => {
             expect(screen.getByText('pause_circle_outline')).toBeInTheDocument()
@@ -253,8 +254,8 @@ describe('<OngoingPhoneCall/>', () => {
             >
         ).mock.calls[0][0]?.mutation?.onSuccess!(
             '' as any,
-            {data: {hold_state: false}} as any,
-            '' as any
+            { data: { hold_state: false } } as any,
+            '' as any,
         )
         await waitFor(() => {
             expect(screen.getByText('pause')).toBeInTheDocument()
@@ -281,7 +282,7 @@ describe('<OngoingPhoneCall/>', () => {
                         } as any
                     }
                 />
-            </Provider>
+            </Provider>,
         )
         ;(
             mockUsePutCallParticipantOnHold as jest.MockedFunction<
@@ -291,10 +292,10 @@ describe('<OngoingPhoneCall/>', () => {
 
         const actions = store.getActions() as {
             type: string
-            payload: {message: any}
+            payload: { message: any }
         }[]
         expect(actions[actions.length - 1].payload.message).toBe(
-            'Call hold could not be completed. Please try again. '
+            'Call hold could not be completed. Please try again. ',
         )
     })
 
@@ -307,7 +308,7 @@ describe('<OngoingPhoneCall/>', () => {
         render(
             <Provider store={store}>
                 <OngoingPhoneCall call={call} />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByTestId('transfer-dropdown')).toHaveClass('is-hidden')
@@ -323,14 +324,14 @@ describe('<OngoingPhoneCall/>', () => {
         render(
             <Provider store={store}>
                 <OngoingPhoneCall call={call} />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(screen.getByTestId('confirm-transfer-button'))
 
         expect(screen.getByText('Transferring...')).toBeVisible()
         expect(
-            screen.getByLabelText('Take off hold on phone call')
+            screen.getByLabelText('Take off hold on phone call'),
         ).toBeAriaDisabled()
         expect(screen.getByLabelText('Transfer phone call')).toBeAriaDisabled()
         expect(screen.getByText(/Transferring call to/)).toBeInTheDocument()
@@ -364,7 +365,7 @@ describe('<OngoingPhoneCall/>', () => {
         },
     ])(
         'should display recording correctly on transfer',
-        ({direction, recordOutbound, recordInbound, expectedIcon}) => {
+        ({ direction, recordOutbound, recordInbound, expectedIcon }) => {
             const mockMutate = jest.fn()
             mockUsePutCallParticipantOnHold.mockReturnValue({
                 mutate: mockMutate,
@@ -391,11 +392,11 @@ describe('<OngoingPhoneCall/>', () => {
             render(
                 <Provider store={testStore}>
                     <OngoingPhoneCall call={call} />
-                </Provider>
+                </Provider>,
             )
 
             expect(screen.getByText(expectedIcon)).toBeInTheDocument()
-        }
+        },
     )
 
     it('should display notification and resume transfer buttons on transfer failure', () => {
@@ -407,7 +408,7 @@ describe('<OngoingPhoneCall/>', () => {
         render(
             <Provider store={store}>
                 <OngoingPhoneCall call={call} />
-            </Provider>
+            </Provider>,
         )
 
         // start the transfer
@@ -415,7 +416,7 @@ describe('<OngoingPhoneCall/>', () => {
 
         expect(screen.getByText('Transferring...')).toBeVisible()
         expect(
-            screen.getByLabelText('Take off hold on phone call')
+            screen.getByLabelText('Take off hold on phone call'),
         ).toBeAriaDisabled()
         expect(screen.getByLabelText('Transfer phone call')).toBeAriaDisabled()
 
@@ -433,10 +434,10 @@ describe('<OngoingPhoneCall/>', () => {
 
         const actions = store.getActions() as {
             type: string
-            payload: {message: any}
+            payload: { message: any }
         }[]
         expect(actions[actions.length - 1].payload.message).toBe(
-            'The customer is still on the line.'
+            'The customer is still on the line.',
         )
 
         // the buttons should be enabled again

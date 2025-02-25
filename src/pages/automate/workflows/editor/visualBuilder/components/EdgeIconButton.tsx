@@ -1,7 +1,8 @@
-import classnames from 'classnames'
-import React, {ForwardedRef, forwardRef} from 'react'
+import React, { ForwardedRef, forwardRef } from 'react'
 
-import BaseEdgeButton, {BaseEdgeButtonProps} from './BaseEdgeButton'
+import classnames from 'classnames'
+
+import BaseEdgeButton, { BaseEdgeButtonProps } from './BaseEdgeButton'
 
 import css from './EdgeIconButton.less'
 
@@ -10,8 +11,8 @@ type Props = {
 } & Omit<BaseEdgeButtonProps, 'children'>
 
 const EdgeIconButton = (
-    {icon, ...props}: Props,
-    ref: ForwardedRef<HTMLDivElement>
+    { icon, ...props }: Props,
+    ref: ForwardedRef<HTMLDivElement>,
 ) => {
     return (
         <BaseEdgeButton ref={ref} {...props}>

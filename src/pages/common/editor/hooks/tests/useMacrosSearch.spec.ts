@@ -1,14 +1,14 @@
-import {InfiniteQueryObserverSuccessResult} from '@tanstack/react-query'
+import { InfiniteQueryObserverSuccessResult } from '@tanstack/react-query'
 import * as reactQuery from '@tanstack/react-query'
-import {waitFor} from '@testing-library/react'
-import {act, renderHook} from '@testing-library/react-hooks'
+import { waitFor } from '@testing-library/react'
+import { act, renderHook } from '@testing-library/react-hooks'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {ticket as defaultTicket} from 'fixtures/ticket'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { ticket as defaultTicket } from 'fixtures/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
-import useMacrosSearch, {SEARCH_DEBOUNCE_DELAY} from '../useMacrosSearch'
+import useMacrosSearch, { SEARCH_DEBOUNCE_DELAY } from '../useMacrosSearch'
 
 jest.mock('models/macro/resources', () => ({
     fetchMacros: jest.fn(),
@@ -24,12 +24,12 @@ const logEventMock = logEvent as jest.Mock
 jest.mock('@tanstack/react-query')
 const useInfiniteQuerySpy = jest.spyOn(reactQuery, 'useInfiniteQuery')
 
-const mockMacrosData = [{id: 1}, {id: 2}]
-const mockMeta = {next_cursor: 'beepboop'}
+const mockMacrosData = [{ id: 1 }, { id: 2 }]
+const mockMeta = { next_cursor: 'beepboop' }
 
 describe('useMacrosSearch', () => {
     const defaultOptions = {
-        params: {search: ''},
+        params: { search: '' },
         ticket: defaultTicket,
     }
     let dispatch: jest.Mock
@@ -42,7 +42,7 @@ describe('useMacrosSearch', () => {
                     {
                         data: {
                             data: [],
-                            meta: {next_cursor: undefined},
+                            meta: { next_cursor: undefined },
                         },
                     },
                 ],
@@ -59,7 +59,7 @@ describe('useMacrosSearch', () => {
     })
 
     it('should return the default state', () => {
-        const {result} = renderHook(() => useMacrosSearch(defaultOptions))
+        const { result } = renderHook(() => useMacrosSearch(defaultOptions))
 
         expect(result.current).toEqual({
             data: [],
@@ -81,7 +81,7 @@ describe('useMacrosSearch', () => {
                 pageParams: [],
             },
         } as unknown as InfiniteQueryObserverSuccessResult<unknown, unknown>)
-        const {result} = renderHook(() => useMacrosSearch(defaultOptions))
+        const { result } = renderHook(() => useMacrosSearch(defaultOptions))
 
         expect(result.current).toEqual({
             data: mockMacrosData,
@@ -90,12 +90,12 @@ describe('useMacrosSearch', () => {
     })
 
     it('should log an event if a search is executed due to changing parameters', async () => {
-        const {rerender} = renderHook((options) => useMacrosSearch(options), {
+        const { rerender } = renderHook((options) => useMacrosSearch(options), {
             initialProps: defaultOptions,
         })
         rerender({
             ...defaultOptions,
-            params: {...defaultOptions.params, search: 'beep'},
+            params: { ...defaultOptions.params, search: 'beep' },
         })
 
         act(() => {
@@ -108,14 +108,14 @@ describe('useMacrosSearch', () => {
                 {
                     changed: ['search'],
                     search: 'beep',
-                }
-            )
+                },
+            ),
         )
     })
 
     it('should update received macros data', () => {
-        const mockNewMacrosData = [{id: 3}, {id: 4}]
-        const mockNewMeta = {next_cursor: 'boopbeep'}
+        const mockNewMacrosData = [{ id: 3 }, { id: 4 }]
+        const mockNewMeta = { next_cursor: 'boopbeep' }
         useInfiniteQuerySpy
             .mockReturnValueOnce({
                 data: {
@@ -149,12 +149,12 @@ describe('useMacrosSearch', () => {
                 unknown,
                 unknown
             >)
-        const {rerender, result} = renderHook(() =>
-            useMacrosSearch(defaultOptions)
+        const { rerender, result } = renderHook(() =>
+            useMacrosSearch(defaultOptions),
         )
         rerender({
             ...defaultOptions,
-            params: {...defaultOptions.params, search: 'beep'},
+            params: { ...defaultOptions.params, search: 'beep' },
         })
 
         expect(result.current).toEqual({

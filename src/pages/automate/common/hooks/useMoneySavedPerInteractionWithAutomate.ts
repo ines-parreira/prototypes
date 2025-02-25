@@ -1,14 +1,14 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
-import {getAgentCostsSettings} from 'state/currentAccount/selectors'
+import { getAgentCostsSettings } from 'state/currentAccount/selectors'
 
-import {useGetCostPerAutomatedInteraction} from './useGetCostPerAutomatedInteraction'
-import {useGetCostPerBillableTicket} from './useGetCostPerBillableTicket'
+import { useGetCostPerAutomatedInteraction } from './useGetCostPerAutomatedInteraction'
+import { useGetCostPerBillableTicket } from './useGetCostPerBillableTicket'
 
 export const useMoneySavedPerInteractionWithAutomate = (
-    defaultAgentCostPerTicket: number
+    defaultAgentCostPerTicket: number,
 ) => {
     const hasAccessToROICalculator =
         useFlags()[FeatureFlagKey.ObservabilityROICalculator]

@@ -1,12 +1,13 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {RootState, StoreDispatch} from 'state/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import useUpdateArticleRecommendationPrediction from '../useUpdateArticleRecommendationPrediction'
 
@@ -15,7 +16,7 @@ const mockStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>([
 ])
 
 const queryClient = mockQueryClient()
-const wrapper = ({children}: any) => (
+const wrapper = ({ children }: any) => (
     <Provider store={mockStore({})}>
         <QueryClientProvider client={queryClient}>
             {children}
@@ -25,7 +26,7 @@ const wrapper = ({children}: any) => (
 
 describe('useUpdateArticleRecommendationPrediction', () => {
     it('should return hook without errors', () => {
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useUpdateArticleRecommendationPrediction({
                     page: 1,
@@ -35,7 +36,7 @@ describe('useUpdateArticleRecommendationPrediction', () => {
                 }),
             {
                 wrapper,
-            }
+            },
         )
 
         expect(result.current).toMatchObject({})

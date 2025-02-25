@@ -1,21 +1,21 @@
-import {fireEvent, render, screen, waitFor, act} from '@testing-library/react'
-import {EditorState} from 'draft-js'
+import React, { ComponentProps, MouseEvent } from 'react'
+
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { EditorState } from 'draft-js'
 import _noop from 'lodash/noop'
-import React, {ComponentProps, MouseEvent} from 'react'
 
 import * as flagUtils from 'core/flags'
-import {utmConfiguration} from 'fixtures/utmConfiguration'
+import { utmConfiguration } from 'fixtures/utmConfiguration'
 import ButtonPopover from 'pages/common/draftjs/plugins/toolbar/components/ButtonPopover'
 import * as draftjsPluginsUtils from 'pages/common/draftjs/plugins/utils'
-
-import {useCampaignFormContext} from 'pages/convert/campaigns/hooks/useCampaignFormContext'
-import {CampaignFormConfigurationType} from 'pages/convert/campaigns/providers/CampaignDetailsForm/configurationContext'
-import {attachUtmToUrl} from 'pages/convert/campaigns/utils/attachUtmParams'
+import { useCampaignFormContext } from 'pages/convert/campaigns/hooks/useCampaignFormContext'
+import { CampaignFormConfigurationType } from 'pages/convert/campaigns/providers/CampaignDetailsForm/configurationContext'
+import { attachUtmToUrl } from 'pages/convert/campaigns/utils/attachUtmParams'
 import * as editorUtils from 'utils/editor'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
 import ToolbarProvider from '../../ToolbarProvider'
-import {AddLinkContainer} from '../AddLink'
+import { AddLinkContainer } from '../AddLink'
 
 jest.mock('pages/convert/campaigns/utils/attachUtmParams')
 jest.mock('pages/convert/campaigns/hooks/useCampaignFormContext')
@@ -26,7 +26,7 @@ const attachUtmtoUrlMock = assumeMock(attachUtmToUrl)
 
 const mockOnClose = jest.fn()
 function AddLinkWithIsOpenState(
-    props: ComponentProps<typeof AddLinkContainer>
+    props: ComponentProps<typeof AddLinkContainer>,
 ) {
     const [isOpen, setIsOpen] = React.useState(false)
     return (
@@ -49,7 +49,7 @@ const mockToggle = jest.fn()
 const setupMockPopover = () => {
     const mockDiv = document.createElement('div')
     MockButtonPopover.mockImplementation(
-        ({toggleGuard}: ComponentProps<typeof ButtonPopover>) => {
+        ({ toggleGuard }: ComponentProps<typeof ButtonPopover>) => {
             return (
                 <div
                     onClick={() => {
@@ -62,7 +62,7 @@ const setupMockPopover = () => {
                     Toggle
                 </div>
             )
-        }
+        },
     )
 }
 
@@ -74,8 +74,8 @@ describe('<AddLink />', () => {
         attachUtmtoUrlMock.mockReturnValue('')
         MockButtonPopover.mockImplementation(
             jest.requireActual<Record<string, any>>(
-                'pages/common/draftjs/plugins/toolbar/components/ButtonPopover'
-            ).default
+                'pages/common/draftjs/plugins/toolbar/components/ButtonPopover',
+            ).default,
         )
     })
 
@@ -100,12 +100,12 @@ describe('<AddLink />', () => {
     } as unknown as ComponentProps<typeof AddLinkContainer>
 
     it('should allow to submit a valid url', () => {
-        const {getByText, getByRole} = render(
+        const { getByText, getByRole } = render(
             <AddLinkWithIsOpenState
                 {...defaultProps}
                 text="foo"
                 url="http://gorgias.io"
-            />
+            />,
         )
 
         act(() => {
@@ -119,12 +119,12 @@ describe('<AddLink />', () => {
     })
 
     it('should allow to submit a url without the protocol', () => {
-        const {getByText, getByRole} = render(
+        const { getByText, getByRole } = render(
             <AddLinkWithIsOpenState
                 {...defaultProps}
                 text="foo"
                 url="gorgias.io"
-            />
+            />,
         )
 
         act(() => {
@@ -138,12 +138,12 @@ describe('<AddLink />', () => {
     })
 
     it('should NOT allow to submit an invalid url', () => {
-        const {getByText, getByRole} = render(
+        const { getByText, getByRole } = render(
             <AddLinkWithIsOpenState
                 {...defaultProps}
                 text="foo"
                 url="bar{{ticket.url_something}}"
-            />
+            />,
         )
         act(() => {
             fireEvent.click(getByText(/link/))
@@ -156,12 +156,12 @@ describe('<AddLink />', () => {
     })
 
     it('should allow to submit templated url', () => {
-        const {getByText, getByRole} = render(
+        const { getByText, getByRole } = render(
             <AddLinkWithIsOpenState
                 {...defaultProps}
                 text="foo"
                 url="{{ticket.url_something}}"
-            />
+            />,
         )
 
         act(() => {
@@ -181,20 +181,20 @@ describe('<AddLink />', () => {
         const contentStateWithEntity = contentState.createEntity(
             'link', // Entity type
             'MUTABLE', // Mutability
-            {url: dummyUrl} // Data
+            { url: dummyUrl }, // Data
         )
         const entityKey = contentStateWithEntity.getLastCreatedEntityKey()
         jest.spyOn(editorUtils, 'getSelectedEntityKey').mockReturnValue(
-            entityKey
+            entityKey,
         )
         const mockRemoveLink = jest.spyOn(draftjsPluginsUtils, 'removeLink')
 
-        const {getByText} = render(
+        const { getByText } = render(
             <AddLinkWithIsOpenState
                 {...defaultProps}
                 url={dummyUrl}
                 text="foo"
-            />
+            />,
         )
         getByText(/link/).click()
 
@@ -207,17 +207,17 @@ describe('<AddLink />', () => {
         const contentStateWithEntity = contentState.createEntity(
             'link', // Entity type
             'MUTABLE', // Mutability
-            {url: 'https://foo.bar'} // Data
+            { url: 'https://foo.bar' }, // Data
         )
         const entityKey = contentStateWithEntity.getLastCreatedEntityKey()
 
-        const {getByText} = render(
+        const { getByText } = render(
             <AddLinkWithIsOpenState
                 {...defaultProps}
                 entityKey={entityKey}
                 url="https://new.url.com"
                 text="New URL"
-            />
+            />,
         )
         getByText('link').click()
         getByText('Update Link').click()
@@ -241,23 +241,23 @@ describe('<AddLink />', () => {
                     />
                 )
             }
-            const {getByLabelText} = render(<Wrapped />)
+            const { getByLabelText } = render(<Wrapped />)
 
             act(() => {
                 fireEvent.click(screen.getByText(/link/))
             })
-            fireEvent.keyDown(getByLabelText('Link text'), {key: inputKey})
+            fireEvent.keyDown(getByLabelText('Link text'), { key: inputKey })
 
             expect(mockOnClose).toBeCalled()
-        }
+        },
     )
 
     it('should be able to navigate between URL and UTM tabs', () => {
         jest.spyOn(flagUtils, 'useFlag').mockReturnValue(true)
-        const {getByText, getAllByRole} = render(
+        const { getByText, getAllByRole } = render(
             <ToolbarProvider canAddUtm>
                 <AddLinkWithIsOpenState {...defaultProps} />
-            </ToolbarProvider>
+            </ToolbarProvider>,
         )
         fireEvent.click(getByText(/link/))
 
@@ -273,10 +273,10 @@ describe('<AddLink />', () => {
 
     it('should navigate to url tab when utm apply is clicked', async () => {
         jest.spyOn(flagUtils, 'useFlag').mockReturnValue(true)
-        const {getByText, getAllByRole} = render(
+        const { getByText, getAllByRole } = render(
             <ToolbarProvider canAddUtm>
                 <AddLinkWithIsOpenState {...defaultProps} />
-            </ToolbarProvider>
+            </ToolbarProvider>,
         )
         fireEvent.click(getByText(/link/))
 
@@ -298,14 +298,14 @@ describe('<AddLink />', () => {
                 appliedUtmQueryString: baseUtmQueryString,
             },
         })
-        const {getByText} = render(
+        const { getByText } = render(
             <ToolbarProvider canAddUtm>
                 <AddLinkWithIsOpenState
                     {...defaultProps}
                     text="Foo"
                     url={baseUrl}
                 />
-            </ToolbarProvider>
+            </ToolbarProvider>,
         )
         act(() => {
             fireEvent.click(getByText(/link/))
@@ -319,7 +319,7 @@ describe('<AddLink />', () => {
             '',
             true,
             true,
-            baseUtmQueryString
+            baseUtmQueryString,
         )
     })
 
@@ -332,14 +332,14 @@ describe('<AddLink />', () => {
                 utmQueryString: baseUtmQueryString,
             },
         })
-        const {getByText} = render(
+        const { getByText } = render(
             <ToolbarProvider canAddUtm={false}>
                 <AddLinkWithIsOpenState
                     {...defaultProps}
                     text="Foo"
                     url={baseUrl}
                 />
-            </ToolbarProvider>
+            </ToolbarProvider>,
         )
         act(() => {
             fireEvent.click(getByText(/link/))
@@ -352,12 +352,12 @@ describe('<AddLink />', () => {
     })
 
     it('should allow to submit an url with a variable', () => {
-        const {getByText, getByRole} = render(
+        const { getByText, getByRole } = render(
             <AddLinkWithIsOpenState
                 {...defaultProps}
                 text="foo"
                 url="http://google.com/?email={{message.customer.email}}"
-            />
+            />,
         )
         act(() => {
             fireEvent.click(getByText(/link/))
@@ -374,7 +374,7 @@ describe('<AddLink />', () => {
             .spyOn(draftjsPluginsUtils, 'addVideo')
             .mockImplementation((editorState) => editorState)
 
-        const {getByText} = render(
+        const { getByText } = render(
             <AddLinkWithIsOpenState
                 {...defaultProps}
                 canAddVideoPlayer
@@ -383,7 +383,7 @@ describe('<AddLink />', () => {
             />,
             {
                 container: document.body,
-            }
+            },
         )
         fireEvent.click(screen.getByText(/link/))
         fireEvent.click(getByText(/Insert Link/))
@@ -397,7 +397,7 @@ describe('<AddLink />', () => {
             .mockImplementation(jest.fn())
 
         jest.spyOn(draftjsPluginsUtils, 'addVideo').mockImplementation(
-            jest.fn()
+            jest.fn(),
         )
 
         render(
@@ -406,7 +406,7 @@ describe('<AddLink />', () => {
                 canAddVideoPlayer={false}
                 text="foo"
                 url="https://www.youtube.com/watch?v=4sLFpe-xbhk"
-            />
+            />,
         )
         fireEvent.click(screen.getByText(/link/))
         fireEvent.click(screen.getByText(/Insert Link/))
@@ -428,17 +428,17 @@ describe('<AddLink />', () => {
                         value: 'value',
                     },
                 ]}
-            />
+            />,
         )
         fireEvent.click(screen.getByText(/link/))
 
         await act(async () => {
             await waitFor(() => {
                 expect(
-                    screen.getByText('https://help.domain.com')
+                    screen.getByText('https://help.domain.com'),
                 ).toBeInTheDocument()
                 expect(
-                    screen.queryByText('https://help.domain.com/article')
+                    screen.queryByText('https://help.domain.com/article'),
                 ).not.toBeInTheDocument()
                 expect(screen.getByText(`{+}`)).toBeInTheDocument()
             })
@@ -462,7 +462,7 @@ describe('<AddLink />', () => {
                         value: 'value',
                     },
                 ]}
-            />
+            />,
         )
         fireEvent.click(screen.getByText(/link/))
 
@@ -470,7 +470,7 @@ describe('<AddLink />', () => {
             await waitFor(() => {
                 fireEvent.click(screen.getByText('{+}'))
                 expect(
-                    screen.getByText(/Insert variable from previous steps/i)
+                    screen.getByText(/Insert variable from previous steps/i),
                 ).toBeInTheDocument()
                 expect(onOpenMock).not.toHaveBeenCalled()
             })
@@ -480,7 +480,7 @@ describe('<AddLink />', () => {
     it('should return true when workflowVariables are provided and target matches', () => {
         setupMockPopover()
 
-        const {getByText} = render(
+        const { getByText } = render(
             <AddLinkContainer
                 {...defaultProps}
                 getWorkflowVariables={() => [
@@ -491,7 +491,7 @@ describe('<AddLink />', () => {
                         value: 'value',
                     },
                 ]}
-            />
+            />,
         )
 
         fireEvent.click(getByText('Toggle'))
@@ -502,7 +502,7 @@ describe('<AddLink />', () => {
     it('should return false when workflowVariables are not provided', () => {
         setupMockPopover()
 
-        const {getByText} = render(<AddLinkContainer {...defaultProps} />)
+        const { getByText } = render(<AddLinkContainer {...defaultProps} />)
 
         fireEvent.click(getByText('Toggle'))
 
@@ -512,11 +512,11 @@ describe('<AddLink />', () => {
     it('should return false when workflowVariables is an empty array', () => {
         setupMockPopover()
 
-        const {getByText} = render(
+        const { getByText } = render(
             <AddLinkContainer
                 {...defaultProps}
                 getWorkflowVariables={() => []}
-            />
+            />,
         )
 
         fireEvent.click(getByText('Toggle'))
@@ -527,7 +527,7 @@ describe('<AddLink />', () => {
     it('should render "open in a new tab" checkbox', () => {
         const mockOnTargetChange = jest.fn()
 
-        const {rerender} = render(
+        const { rerender } = render(
             <AddLinkWithIsOpenState
                 {...defaultProps}
                 text="foo"
@@ -535,7 +535,7 @@ describe('<AddLink />', () => {
                 target="_blank"
                 onTargetChange={mockOnTargetChange}
                 getWorkflowVariables={() => []}
-            />
+            />,
         )
 
         act(() => {
@@ -556,7 +556,7 @@ describe('<AddLink />', () => {
                 target="_self"
                 onTargetChange={mockOnTargetChange}
                 getWorkflowVariables={() => []}
-            />
+            />,
         )
 
         act(() => {
@@ -581,7 +581,7 @@ describe('<AddLink />', () => {
                 onTargetChange={jest.fn()}
                 getWorkflowVariables={() => []}
                 getEditorState={() => editorState}
-            />
+            />,
         )
 
         act(() => {
@@ -606,13 +606,13 @@ describe('<AddLink />', () => {
         const contentStateWithEntity = contentState.createEntity(
             'link',
             'MUTABLE',
-            {url: '{{ticket.url}}'}
+            { url: '{{ticket.url}}' },
         )
         const entityKey = contentStateWithEntity.getLastCreatedEntityKey()
 
         const replaceEntityDataSpy = jest.spyOn(
             contentState,
-            'replaceEntityData'
+            'replaceEntityData',
         )
 
         render(
@@ -625,7 +625,7 @@ describe('<AddLink />', () => {
                 getWorkflowVariables={() => []}
                 getEditorState={() => editorState}
                 entityKey={entityKey}
-            />
+            />,
         )
 
         act(() => {

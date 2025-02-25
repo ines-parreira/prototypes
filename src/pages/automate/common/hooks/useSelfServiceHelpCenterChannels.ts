@@ -1,8 +1,8 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {TicketChannel} from 'business/types/ticket'
-import {useGetHelpCenterList} from 'models/helpCenter/queries'
-import {HelpCenter} from 'models/helpCenter/types'
+import { TicketChannel } from 'business/types/ticket'
+import { useGetHelpCenterList } from 'models/helpCenter/queries'
+import { HelpCenter } from 'models/helpCenter/types'
 
 import useSelfServiceStoreIntegration from './useSelfServiceStoreIntegration'
 
@@ -13,17 +13,17 @@ export type SelfServiceHelpCenterChannel = {
 
 const useSelfServiceHelpCenterChannels = (
     shopType: string,
-    shopName: string
+    shopName: string,
 ) => {
     const storeIntegration = useSelfServiceStoreIntegration(shopType, shopName)
-    const {data: helpCenters} = useGetHelpCenterList(
+    const { data: helpCenters } = useGetHelpCenterList(
         {
             shop_name: storeIntegration?.name,
             type: 'faq',
         },
         {
             enabled: !!storeIntegration,
-        }
+        },
     )
 
     return useMemo<SelfServiceHelpCenterChannel[]>(() => {
@@ -35,7 +35,7 @@ const useSelfServiceHelpCenterChannels = (
             helpCenters?.data.data
                 .filter(
                     (helpCenter) =>
-                        helpCenter.shop_name === storeIntegration.name
+                        helpCenter.shop_name === storeIntegration.name,
                 )
                 .map((helpCenter) => ({
                     type: TicketChannel.HelpCenter,

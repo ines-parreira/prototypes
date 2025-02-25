@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-
 import FroalaEditor from 'froala-editor/js/froala_editor.min.js'
 
 // Froala Editor plugins
@@ -26,8 +25,8 @@ import 'froala-editor/js/plugins/url.min.js'
 import 'froala-editor/js/plugins/video.min.js'
 import 'froala-editor/js/plugins/word_paste.min.js'
 
-import {FROALA_KEY, FROALA_VIDEO_PROVIDERS} from '../../../../../../config'
-import {EDITOR_MODAL_CONTAINER_ID, MAX_IMAGE_SIZE} from '../../../constants'
+import { FROALA_KEY, FROALA_VIDEO_PROVIDERS } from '../../../../../../config'
+import { EDITOR_MODAL_CONTAINER_ID, MAX_IMAGE_SIZE } from '../../../constants'
 
 import css from './HelpCenterEditor.less'
 
@@ -39,7 +38,7 @@ const materialIconTemplate = 'material_design'
 
 FroalaEditor.DefineIconTemplate(
     materialIconTemplate,
-    '<i class="material-icons-round">[NAME]</i>'
+    '<i class="material-icons-round">[NAME]</i>',
 )
 
 // Define toolbar buttons
@@ -57,7 +56,7 @@ type HorizontalSeparator = '|'
 type VerticalSeparator = '-'
 
 const isSeparator = (
-    button: Button | HorizontalSeparator | VerticalSeparator
+    button: Button | HorizontalSeparator | VerticalSeparator,
 ): button is HorizontalSeparator | VerticalSeparator =>
     button === '|' || button === '-'
 
@@ -241,7 +240,7 @@ const config = {
         // Put all buttons into moreText (moreText, moreRich & moreMisc will have the same effects)
         moreText: {
             buttons: toolbarButtons.map((button) =>
-                isSeparator(button) ? button : button.command
+                isSeparator(button) ? button : button.command,
             ),
             // Show all. We use verticalSeparator to split the buttons into two rows.
             buttonsVisible: toolbarButtons.length,
@@ -330,4 +329,4 @@ const config = {
     pasteAllowedStyleProps: ['text-decoration'],
 }
 
-export {FroalaEditor, config}
+export { FroalaEditor, config }

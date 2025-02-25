@@ -1,4 +1,4 @@
-import {getStealthLabel, getLabel} from '../getLabels'
+import { getLabel, getStealthLabel } from '../getLabels'
 
 describe('getStealthLabel', () => {
     it.each([
@@ -14,10 +14,10 @@ describe('getStealthLabel', () => {
         'should the correct path',
         (
             input: Parameters<typeof getStealthLabel>[0],
-            output: ReturnType<typeof getStealthLabel>
+            output: ReturnType<typeof getStealthLabel>,
         ) => {
             expect(getStealthLabel(input)).toEqual(output)
-        }
+        },
     )
 })
 
@@ -35,9 +35,9 @@ describe('getLabel', () => {
         'should the correct path',
         (
             input: Parameters<typeof getLabel>[0],
-            output: ReturnType<typeof getLabel>
+            output: ReturnType<typeof getLabel>,
         ) => {
             expect(getLabel(input)).toEqual(output)
-        }
+        },
     )
 })

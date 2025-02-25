@@ -1,9 +1,9 @@
-import {useEffect, useState} from 'react'
+import { useEffect, useState } from 'react'
 
 const useSessionStorage = <T>(
     key: string,
     initialValue?: T,
-    raw?: boolean
+    raw?: boolean,
 ): [T, (value: T) => void] => {
     const [state, setState] = useState(() => {
         try {
@@ -11,7 +11,7 @@ const useSessionStorage = <T>(
             if (typeof sessionStorageValue !== 'string') {
                 sessionStorage.setItem(
                     key,
-                    raw ? String(initialValue) : JSON.stringify(initialValue)
+                    raw ? String(initialValue) : JSON.stringify(initialValue),
                 )
                 return initialValue
             }

@@ -1,20 +1,19 @@
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {TicketChannel} from 'business/types/ticket'
-
-import {logEvent, SegmentEvent} from 'common/segment'
-import {ContactFormAutomationSettings} from 'models/contactForm/types'
+import { TicketChannel } from 'business/types/ticket'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { ContactFormAutomationSettings } from 'models/contactForm/types'
 import useContactFormAutomationSettings from 'pages/automate/common/hooks/useContactFormAutomationSettings'
-import {SelfServiceStandaloneContactFormChannel} from 'pages/automate/common/hooks/useSelfServiceStandaloneContactFormChannels'
+import { SelfServiceStandaloneContactFormChannel } from 'pages/automate/common/hooks/useSelfServiceStandaloneContactFormChannels'
 
 import useAppSelector from '../../../../hooks/useAppSelector'
-import {getHasAutomate} from '../../../../state/billing/selectors'
+import { getHasAutomate } from '../../../../state/billing/selectors'
 import {
     MAX_ACTIVE_FLOWS,
     ORDER_MANAGEMENT,
 } from '../../common/components/constants'
 import WorkflowsFeatureList from '../../common/components/WorkflowsFeatureList'
-import {useConnectedChannelsViewContext} from '../ConnectedChannelsViewContext'
+import { useConnectedChannelsViewContext } from '../ConnectedChannelsViewContext'
 import AutomateSubscriptionAction from './AutomateSubscriptionAction'
 import ConnectedChannelFeatureToggle from './ConnectedChannelFeatureToggle'
 
@@ -25,7 +24,7 @@ type Props = {
 const ConnectedChannelAccordionBodyStandaloneContactForm = ({
     channel,
 }: Props) => {
-    const {automationSettings, handleContactFormAutomationSettingsUpdate} =
+    const { automationSettings, handleContactFormAutomationSettingsUpdate } =
         useContactFormAutomationSettings(channel.value.id)
 
     const hasAutomate = useAppSelector(getHasAutomate)
@@ -39,18 +38,18 @@ const ConnectedChannelAccordionBodyStandaloneContactForm = ({
         const existingWorkflows: ContactFormAutomationSettings['workflows'] =
             automationSettings?.workflows ?? []
 
-        const existingWorkflowsIds = existingWorkflows.map(({id}) => id)
+        const existingWorkflowsIds = existingWorkflows.map(({ id }) => id)
 
         const newWorkflows = availableWorkflowsEntrypoints.filter(
-            ({workflow_id}) => !existingWorkflowsIds.includes(workflow_id)
+            ({ workflow_id }) => !existingWorkflowsIds.includes(workflow_id),
         )
 
         return [
-            ...existingWorkflows.map(({id, enabled}) => ({
+            ...existingWorkflows.map(({ id, enabled }) => ({
                 workflow_id: id,
                 enabled,
             })),
-            ...newWorkflows.map(({workflow_id}) => ({
+            ...newWorkflows.map(({ workflow_id }) => ({
                 workflow_id,
                 enabled: false,
             })),
@@ -75,10 +74,10 @@ const ConnectedChannelAccordionBodyStandaloneContactForm = ({
                     })
                     void handleContactFormAutomationSettingsUpdate({
                         workflows: nextEntrypoints.map(
-                            ({workflow_id, enabled}) => ({
+                            ({ workflow_id, enabled }) => ({
                                 id: workflow_id,
                                 enabled,
-                            })
+                            }),
                         ),
                     })
                 }}
@@ -89,7 +88,7 @@ const ConnectedChannelAccordionBodyStandaloneContactForm = ({
                 disabled={!hasAutomate}
                 onChange={(enabled) => {
                     void handleContactFormAutomationSettingsUpdate({
-                        order_management: {enabled},
+                        order_management: { enabled },
                     })
                 }}
                 action={!hasAutomate && <AutomateSubscriptionAction />}

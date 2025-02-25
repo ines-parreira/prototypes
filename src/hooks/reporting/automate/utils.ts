@@ -1,6 +1,4 @@
-import {OrderDirection} from '@gorgias/api-queries'
-import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
-import {Scale, TooltipItem} from 'chart.js'
+import { Scale, TooltipItem } from 'chart.js'
 import difference from 'lodash/difference'
 import flatMap from 'lodash/flatMap'
 import groupBy from 'lodash/groupBy'
@@ -8,15 +6,17 @@ import keyBy from 'lodash/keyBy'
 import map from 'lodash/map'
 import mapValues from 'lodash/mapValues'
 import orderBy from 'lodash/orderBy'
+import moment, { Moment } from 'moment'
 
-import moment, {Moment} from 'moment'
+import { OrderDirection } from '@gorgias/api-queries'
+import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
 
 import {
     calculateRate,
     workflowEndStepAutomatedInteractions,
     workflowEndStepDropoff,
 } from 'hooks/reporting/automate/automateStatsFormulae'
-import {DisplayEventType} from 'hooks/reporting/automate/automateStatsMeasureLabelMap'
+import { DisplayEventType } from 'hooks/reporting/automate/automateStatsMeasureLabelMap'
 import {
     BREAKDOWN_FIELD,
     CUSTOM_FIELD_COUNT,
@@ -37,9 +37,9 @@ import {
     MetricWithDecile,
     QueryReturnType,
 } from 'hooks/reporting/useMetricPerDimension'
-import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
-import {Cubes} from 'models/reporting/cubes'
+import { MetricTrend } from 'hooks/reporting/useMetricTrend'
+import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
+import { Cubes } from 'models/reporting/cubes'
 import {
     AutomationBillingEventCubeWithJoins,
     AutomationBillingEventMeasure,
@@ -52,18 +52,18 @@ import {
     WorkflowDatasetDimension,
     WorkflowDatasetMeasure,
 } from 'models/reporting/cubes/automate_v2/WorkflowDatasetCube'
-import {TicketDimension} from 'models/reporting/cubes/TicketCube'
+import { TicketDimension } from 'models/reporting/cubes/TicketCube'
 import {
     TicketCustomFieldsCube,
-    TicketCustomFieldsMeasure,
     TicketCustomFieldsDimension,
+    TicketCustomFieldsMeasure,
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
-import {ReportingGranularity} from 'models/reporting/types'
-import {Period, StatsFilters} from 'models/stat/types'
-import {IntentTableColumn} from 'pages/aiAgent/insights/IntentTableWidget/types'
-import {INTENT_LEVEL} from 'pages/aiAgent/insights/OptimizeContainer/OptimizeContainer'
-import {WorkflowStep} from 'pages/automate/workflows/models/workflowConfiguration.types'
-import {SHORT_FORMAT} from 'pages/stats/common/utils'
+import { ReportingGranularity } from 'models/reporting/types'
+import { Period, StatsFilters } from 'models/stat/types'
+import { IntentTableColumn } from 'pages/aiAgent/insights/IntentTableWidget/types'
+import { INTENT_LEVEL } from 'pages/aiAgent/insights/OptimizeContainer/OptimizeContainer'
+import { WorkflowStep } from 'pages/automate/workflows/models/workflowConfiguration.types'
+import { SHORT_FORMAT } from 'pages/stats/common/utils'
 import {
     AutomatedInteractionByFeatures,
     TwoDimensionalDataItem,
@@ -115,7 +115,7 @@ export const AutomateEventType = {
 }
 
 function getAutomateStatsEventTypeMap(
-    eventType: string
+    eventType: string,
 ): AutomationBillingEventCubeWithJoins['measures'] | 'Others' {
     switch (eventType) {
         case AutomateEventType.TRACK_ORDER:
@@ -166,7 +166,7 @@ export function getAutomateColorsForEventType(eventType: string): string {
 
 export function mergeAutomateDataByEventType(
     interactionsDataByEventType: Record<string, TimeSeriesDataItem[][]>,
-    eventTypesToMerge: string[]
+    eventTypesToMerge: string[],
 ) {
     let toEventType = ''
     const mergedData: Record<string, TimeSeriesDataItem[][]> = {}
@@ -182,12 +182,12 @@ export function mergeAutomateDataByEventType(
         })
         delete interactionsDataByEventType[eventType]
     }
-    return {...interactionsDataByEventType, ...mergedData}
+    return { ...interactionsDataByEventType, ...mergedData }
 }
 
 function getPeriodDateTimesByGranularity(
     dateRange: string[],
-    granularity: ReportingGranularity
+    granularity: ReportingGranularity,
 ): string[] {
     const momentGranularity =
         granularity === ReportingGranularity.Week ? 'isoWeek' : granularity
@@ -198,7 +198,7 @@ function getPeriodDateTimesByGranularity(
         dates.push(
             currentDate
                 .startOf(momentGranularity)
-                .format('YYYY-MM-DDTHH:mm:ss.SSS')
+                .format('YYYY-MM-DDTHH:mm:ss.SSS'),
         )
         currentDate = currentDate.add(1, granularity)
     }
@@ -209,11 +209,11 @@ export function addNonExistingEventTypesForGraph(
     interactionsDataByEventType: Record<string, TimeSeriesDataItem[][]>,
     filter: StatsFilters,
     granularity: ReportingGranularity,
-    skipList?: (typeof AutomateEventType)[keyof typeof AutomateEventType][]
+    skipList?: (typeof AutomateEventType)[keyof typeof AutomateEventType][],
 ) {
     const dateTimes = getPeriodDateTimesByGranularity(
         [filter.period.start_datetime, filter.period.end_datetime],
-        granularity
+        granularity,
     )
 
     for (const eventType of Object.values(AutomateEventType)) {
@@ -237,21 +237,21 @@ export function addNonExistingEventTypesForGraph(
 
 export const getAutomateStatsByMeasure = (
     measure: string,
-    dataItems?: TimeSeriesDataItem[][]
+    dataItems?: TimeSeriesDataItem[][],
 ): TimeSeriesDataItem[] =>
     dataItems?.find((arr) => arr.some((item) => item.label === measure)) || []
 
 export function automateInteractionsByEventTypeToTimeSeries(
     filter: StatsFilters,
     granularity: ReportingGranularity,
-    interactionsDataByEventType?: Record<string, TimeSeriesDataItem[][]>
+    interactionsDataByEventType?: Record<string, TimeSeriesDataItem[][]>,
 ): TimeSeriesDataItem[][] {
     if (!interactionsDataByEventType) return []
 
     const allEventTypesData = addNonExistingEventTypesForGraph(
         interactionsDataByEventType,
         filter,
-        granularity
+        granularity,
     )
 
     const mergedData = mergeAutomateDataByEventType(allEventTypesData, [
@@ -267,15 +267,15 @@ export function automateInteractionsByEventTypeToTimeSeries(
                     ...item,
                     label: getAutomateStatsEventTypeMap(key),
                 }
-            })
-        )
+            }),
+        ),
     )
 }
 
 export function sortByAutomateFeatureLabels(
-    automateStatsLabelMap: Record<AutomatedInteractionByFeatures, string>
+    automateStatsLabelMap: Record<AutomatedInteractionByFeatures, string>,
 ) {
-    return (a: {label: string}, b: {label: string}) => {
+    return (a: { label: string }, b: { label: string }) => {
         const eventTypeChartLabels = Object.values(automateStatsLabelMap)
         return (
             eventTypeChartLabels.indexOf(a.label) -
@@ -300,7 +300,7 @@ const getGreyAreaDates = (showGreyArea: GreyArea) => {
 
 export function addZeroValueTimeSeriesForGreyArea(
     showGreyArea: GreyArea | null,
-    timeSeries: TwoDimensionalDataItem[]
+    timeSeries: TwoDimensionalDataItem[],
 ) {
     if (!showGreyArea) return timeSeries
 
@@ -318,7 +318,7 @@ export function addZeroValueTimeSeriesForGreyArea(
                 const v = series.values[i]
                 if (
                     moment(v.x, SHORT_FORMAT).isBefore(
-                        moment(timeSeriesData.x, SHORT_FORMAT)
+                        moment(timeSeriesData.x, SHORT_FORMAT),
                     )
                 ) {
                     series.values.splice(i + 1, 0, timeSeriesData)
@@ -335,12 +335,12 @@ export function addZeroValueTimeSeriesForGreyArea(
 export function renderAutomateXTickLabel(
     this: Scale,
     value: string | number,
-    index: number
+    index: number,
 ) {
     const labelDate = moment(this.getLabelForValue(index), SHORT_FORMAT)
     if (labelDate.isValid())
         return moment(this.getLabelForValue(index), SHORT_FORMAT).format(
-            'MMM D'
+            'MMM D',
         )
     return this.getLabelForValue(index)
 }
@@ -352,7 +352,7 @@ export function automatePercentLabel(value: number | string) {
 }
 
 export function renderAutomateTooltipLabel(isPercentage = false) {
-    return ({raw, dataset}: TooltipItem<'line'>) => {
+    return ({ raw, dataset }: TooltipItem<'line'>) => {
         return `${dataset?.label || ''}:  ${
             isPercentage ? automatePercentLabel(raw as number) : (raw as number)
         }`
@@ -361,7 +361,7 @@ export function renderAutomateTooltipLabel(isPercentage = false) {
 
 export function calculateGreyArea(
     filtersStartDatetime: Moment,
-    filtersEndDatetime: Moment
+    filtersEndDatetime: Moment,
 ): GreyArea | null {
     const endDateTime = filtersEndDatetime.clone()
     const startDateTime = filtersStartDatetime.clone()
@@ -369,10 +369,10 @@ export function calculateGreyArea(
 
     if (endDateTime.isAfter(threeDaysAgo, 'date')) {
         if (startDateTime.isAfter(threeDaysAgo)) {
-            return {from: startDateTime, to: endDateTime}
+            return { from: startDateTime, to: endDateTime }
         }
 
-        return {from: threeDaysAgo, to: endDateTime}
+        return { from: threeDaysAgo, to: endDateTime }
     }
 
     return null
@@ -381,7 +381,7 @@ export function calculateGreyArea(
 export const getGreyAreaAndChartParam = (period: Period) => {
     const greyArea = calculateGreyArea(
         moment(period.start_datetime),
-        moment(period.end_datetime)
+        moment(period.end_datetime),
     )
     return {
         greyArea,
@@ -396,11 +396,11 @@ export const getGreyAreaAndChartParam = (period: Period) => {
 
 export function getCountEventsByEventType(
     data: QueryReturnType<Cubes> | undefined,
-    eventType: string
+    eventType: string,
 ): number {
     if (!data) return 0
     const count = data?.find(
-        (item) => item[WorkflowDatasetDimension.EventType] === eventType
+        (item) => item[WorkflowDatasetDimension.EventType] === eventType,
     )?.[WorkflowDatasetMeasure.CountEvents]
     return Number(count) || 0
 }
@@ -408,11 +408,11 @@ export function getCountEventsByEventType(
 export function computeWorkflowMetrics(
     data: QueryReturnType<Cubes> | undefined,
     dropoff: number,
-    automatedInteractions: number
+    automatedInteractions: number,
 ): WorkflowMetrics {
     const workflowTicketsCreated = getCountEventsByEventType(
         data,
-        FLOW_HANDOVER_TICKET_CREATED
+        FLOW_HANDOVER_TICKET_CREATED,
     )
     const workflowStarted =
         automatedInteractions + dropoff + workflowTicketsCreated
@@ -431,11 +431,11 @@ export function computeWorkflowMetrics(
 export function computeWorkflowStepsMetrics(
     eventsData: QueryReturnType<Cubes> | undefined,
     dropoffData: QueryReturnType<Cubes> | undefined,
-    steps: WorkflowStep[]
+    steps: WorkflowStep[],
 ): WorkflowStepMetricsMap {
     const eventsGrouped = groupBy(
         eventsData,
-        WorkflowDatasetDimension.FlowStepId
+        WorkflowDatasetDimension.FlowStepId,
     )
     const dropoffMap = keyBy(dropoffData, WorkflowDatasetDimension.FlowStepId)
     const stepsMap = keyBy(steps, 'id')
@@ -444,27 +444,27 @@ export function computeWorkflowStepsMetrics(
     const groupedDataByWorkflowsStep = mapValues(
         eventsGrouped,
         (events, flowStepId) => {
-            const workflowAnalyticsData = {...DEFAULT_WORKFLOW_ANALYTICS_DATA}
+            const workflowAnalyticsData = { ...DEFAULT_WORKFLOW_ANALYTICS_DATA }
 
             const workflowStepStarted = getCountEventsByEventType(
                 events,
-                FLOW_STEP_STARTED
+                FLOW_STEP_STARTED,
             )
             const workflowStepEnded = getCountEventsByEventType(
                 events,
-                FLOW_STEP_ENDED
+                FLOW_STEP_ENDED,
             )
             const workflowStepPromptNotHelpful = getCountEventsByEventType(
                 events,
-                FLOW_PROMPT_NOT_HELPFUL
+                FLOW_PROMPT_NOT_HELPFUL,
             )
             const workflowStepTicktesCreated = getCountEventsByEventType(
                 events,
-                FLOW_HANDOVER_TICKET_CREATED
+                FLOW_HANDOVER_TICKET_CREATED,
             )
             const workflowStepWithTicketHandover = getCountEventsByEventType(
                 events,
-                FLOW_ENDED_WITH_TICKET_HANDOVER
+                FLOW_ENDED_WITH_TICKET_HANDOVER,
             )
 
             switch (stepsMap[flowStepId]?.kind) {
@@ -483,17 +483,17 @@ export function computeWorkflowStepsMetrics(
                     const dropoff = Number(
                         dropoffMap[flowStepId]?.[
                             WorkflowDatasetMeasure.FlowStepDropoff
-                        ]
+                        ],
                     )
                     workflowAnalyticsData.dropoff = workflowEndStepDropoff(
                         dropoff,
                         workflowStepPromptNotHelpful,
-                        workflowStepTicktesCreated
+                        workflowStepTicktesCreated,
                     )
                     workflowAnalyticsData.automatedInteractions =
                         workflowEndStepAutomatedInteractions(
                             workflowStepEnded,
-                            workflowStepPromptNotHelpful
+                            workflowStepPromptNotHelpful,
                         )
                     break
                 }
@@ -501,7 +501,7 @@ export function computeWorkflowStepsMetrics(
                     workflowAnalyticsData.dropoff = Number(
                         dropoffMap[flowStepId]?.[
                             WorkflowDatasetMeasure.FlowStepDropoff
-                        ]
+                        ],
                     )
                     break
             }
@@ -509,27 +509,27 @@ export function computeWorkflowStepsMetrics(
             workflowAnalyticsData.views = workflowStepStarted
             workflowAnalyticsData.viewRate = calculateRate(
                 workflowStepStarted,
-                workflowStarted
+                workflowStarted,
             )
 
             workflowAnalyticsData.dropoffRate = calculateRate(
                 workflowAnalyticsData.dropoff,
-                workflowStepStarted
+                workflowStepStarted,
             )
 
             workflowAnalyticsData.automatedInteractionsRate = calculateRate(
                 workflowAnalyticsData.automatedInteractions,
-                workflowStepStarted
+                workflowStepStarted,
             )
 
             workflowAnalyticsData.ticketsCreated = workflowStepTicktesCreated
             workflowAnalyticsData.ticketsCreatedRate = calculateRate(
                 workflowStepTicktesCreated,
-                workflowStepStarted
+                workflowStepStarted,
             )
 
             return workflowAnalyticsData
-        }
+        },
     )
 
     return groupedDataByWorkflowsStep
@@ -542,7 +542,7 @@ export const sortAllData = <
 >(
     allData: T[],
     sortingField: keyof T,
-    sorting: OrderDirection
+    sorting: OrderDirection,
 ): T[] => {
     const nonNullValues = allData.filter((item) => item[sortingField] !== null)
 
@@ -557,7 +557,7 @@ export const enrichWithAutomationOpportunity = (
     metric: MetricWithDecile<TicketCustomFieldsCube>,
     totalTicketCount: string,
     valueField: TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
-    sorting: OrderDirection = OrderDirection.Desc
+    sorting: OrderDirection = OrderDirection.Desc,
 ): EnrichedTicketCustomFieldsWithAutomationOpportunity[] => {
     const allData = metric?.data?.allData
 
@@ -572,7 +572,7 @@ export const enrichWithAutomationOpportunity = (
             [CUSTOM_FIELD_COUNT]: item[valueField],
             automationOpportunity: calculateRate(
                 Number(item[valueField]),
-                Number(totalTicketCount)
+                Number(totalTicketCount),
             ),
         }))
 
@@ -583,7 +583,7 @@ export const enrichWithSuccessRate = (
     filteredMetric: MetricWithDecile<TicketCustomFieldsCube>,
     totalMetrics: MetricWithDecile<TicketCustomFieldsCube>,
     valueField: TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
-    sorting: OrderDirection = OrderDirection.Asc
+    sorting: OrderDirection = OrderDirection.Asc,
 ): EnrichedTicketCustomFieldsWithSuccessRate[] => {
     const filteredData = filteredMetric?.data?.allData
     const allData = totalMetrics?.data?.allData
@@ -594,7 +594,7 @@ export const enrichWithSuccessRate = (
 
     const filteredMetricsMap = keyBy(
         filteredData,
-        TicketCustomFieldsDimension.TicketCustomFieldsValueString
+        TicketCustomFieldsDimension.TicketCustomFieldsValueString,
     )
 
     const enrichedData = allData.map((item) => {
@@ -637,15 +637,18 @@ export const transformIntentName = (name: string, intentLevel?: number) =>
  */
 export const calculateAiAgentKnowledgeResourcePerIntent = (
     aiAgentTicketsWithIntentData: QueryReturnType<Cubes>,
-    resourcePerTicketIdData: QueryReturnType<Cubes>
-): {'TicketCustomFieldsEnriched.valueString': string; resources: number}[] => {
+    resourcePerTicketIdData: QueryReturnType<Cubes>,
+): {
+    'TicketCustomFieldsEnriched.valueString': string
+    resources: number
+}[] => {
     const aiAgentKnowledgeResourcePerIntent: Record<string, number> = {}
     const aiAgentCountedResourcesPerIntent: Record<string, Set<string>> = {}
 
     // Get the intent and all ticket ids with that intent
     const ticketIdsPerIntent = groupBy(
         aiAgentTicketsWithIntentData,
-        TicketCustomFieldsDimension.TicketCustomFieldsValueString
+        TicketCustomFieldsDimension.TicketCustomFieldsValueString,
     )
 
     if (!ticketIdsPerIntent || ticketIdsPerIntent['null']) {
@@ -654,12 +657,12 @@ export const calculateAiAgentKnowledgeResourcePerIntent = (
     // Loop through each intent and get the resources used in each ticket
     Object.entries(ticketIdsPerIntent).forEach(([intent, tickets]) => {
         const ticketIds = tickets.map(
-            (ticket) => ticket[TicketDimension.TicketId]
+            (ticket) => ticket[TicketDimension.TicketId],
         )
 
         // Get all resources used in the tickets
         const resources = resourcePerTicketIdData.filter((item) =>
-            ticketIds.includes(item[RecommendedResourcesDimension.TicketId])
+            ticketIds.includes(item[RecommendedResourcesDimension.TicketId]),
         )
 
         if (!intent) {
@@ -686,18 +689,18 @@ export const calculateAiAgentKnowledgeResourcePerIntent = (
                     !aiAgentCountedResourcesPerIntent[intent].has(
                         resource[
                             RecommendedResourcesDimension.RecommendedResourceId
-                        ]
+                        ],
                     )
                 ) {
                     aiAgentCountedResourcesPerIntent[intent].add(
                         resource[
                             RecommendedResourcesDimension.RecommendedResourceId
-                        ]
+                        ],
                     )
                     aiAgentKnowledgeResourcePerIntent[intent] += Number(
                         resource[
                             RecommendedResourcesMeasure.NumRecommendedResources
-                        ]
+                        ],
                     )
                 }
             })
@@ -708,7 +711,7 @@ export const calculateAiAgentKnowledgeResourcePerIntent = (
         ([intent, resources]) => ({
             'TicketCustomFieldsEnriched.valueString': intent,
             resources,
-        })
+        }),
     )
 }
 
@@ -746,7 +749,7 @@ export const filterMetricDataByIntentLevel = ({
     resultKey: string
     metricFor: IntentTableColumn
 }) => {
-    const adjustedData: Record<string, {sum: number; length: number}> = {}
+    const adjustedData: Record<string, { sum: number; length: number }> = {}
     metricData.forEach((item) => {
         const intent = getIntentByLevel(item[intentKey], level)
         if (!adjustedData[intent]) {
@@ -804,6 +807,6 @@ export const filterMetricDataByIntentLevel = ({
         })
         .filter(
             (item): item is Record<string, string | number | null> =>
-                item !== undefined
+                item !== undefined,
         )
 }

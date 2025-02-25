@@ -1,17 +1,18 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import React, {useContext} from 'react'
+import React, { useContext } from 'react'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import navbarCss from 'assets/css/navbar.less'
-import {logEvent, SegmentEvent} from 'common/segment'
+import { logEvent, SegmentEvent } from 'common/segment'
 import useId from 'hooks/useId'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import ShortcutIcon from 'pages/common/components/ShortcutIcon/ShortcutIcon'
-import {SpotlightContext} from 'providers/ui/SpotlightContext'
-import {isMacOs} from 'utils/platform'
+import { SpotlightContext } from 'providers/ui/SpotlightContext'
+import { isMacOs } from 'utils/platform'
 
 const SpotlightButton = () => {
-    const {isOpen, setIsOpen} = useContext(SpotlightContext)
+    const { isOpen, setIsOpen } = useContext(SpotlightContext)
     const id = useId()
     const buttonId = 'spotlight-button-' + id
 

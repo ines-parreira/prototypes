@@ -1,14 +1,15 @@
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import React from 'react'
 
-import {TicketChannel} from '../../../../../business/types/ticket'
-import {SelfServiceChannel} from '../../../../automate/common/hooks/useSelfServiceChannels'
-import {getHelpCentersResponseFixture} from '../../../helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {PreviewChannelButton} from '../PreviewChannelButton'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+
+import { TicketChannel } from '../../../../../business/types/ticket'
+import { SelfServiceChannel } from '../../../../automate/common/hooks/useSelfServiceChannels'
+import { getHelpCentersResponseFixture } from '../../../helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { PreviewChannelButton } from '../PreviewChannelButton'
 
 const helpCenter = getHelpCentersResponseFixture.data[0]
 
-const renderComponent = ({channel}: {channel?: SelfServiceChannel}) => {
+const renderComponent = ({ channel }: { channel?: SelfServiceChannel }) => {
     return render(<PreviewChannelButton url="/test" channel={channel} />)
 }
 
@@ -23,19 +24,19 @@ describe('<PreviewChannelButton />', () => {
         renderComponent({
             channel: {
                 type: TicketChannel.HelpCenter,
-                value: {...helpCenter, deactivated_datetime: 'random_time'},
+                value: { ...helpCenter, deactivated_datetime: 'random_time' },
             },
         })
 
-        const button = screen.getByRole('button', {name: /Test/})
+        const button = screen.getByRole('button', { name: /Test/ })
         expect(button).toBeAriaDisabled()
 
         fireEvent.mouseOver(button)
 
         await waitFor(() =>
             expect(document.querySelector('.tooltip')).toHaveTextContent(
-                'Your Help Center must be published to view it.'
-            )
+                'Your Help Center must be published to view it.',
+            ),
         )
     })
 })

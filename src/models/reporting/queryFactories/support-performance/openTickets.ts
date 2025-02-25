@@ -1,13 +1,13 @@
-import {OrderDirection} from 'models/api/types'
-import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
+import { OrderDirection } from 'models/api/types'
+import { HelpdeskMessageCubeWithJoins } from 'models/reporting/cubes/HelpdeskMessageCube'
 import {
     TicketDimension,
     TicketMeasure,
     TicketMember,
 } from 'models/reporting/cubes/TicketCube'
-import {ReportingFilterOperator, ReportingQuery} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
-import {subtractDaysFromDate} from 'utils/date'
+import { ReportingFilterOperator, ReportingQuery } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
+import { subtractDaysFromDate } from 'utils/date'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
@@ -21,13 +21,13 @@ export const OPEN_TICKETS_MAX_DAYS_INTO_THE_PAST = 180
 
 export const openTicketsQueryFactory = (
     filters: StatsFilters,
-    timezone: string
+    timezone: string,
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
     const hardPeriodStart = formatReportingQueryDate(
         subtractDaysFromDate(
             filters.period.start_datetime,
-            OPEN_TICKETS_MAX_DAYS_INTO_THE_PAST
-        )
+            OPEN_TICKETS_MAX_DAYS_INTO_THE_PAST,
+        ),
     )
     return {
         measures: [TicketMeasure.TicketCount],
@@ -42,7 +42,7 @@ export const openTicketsQueryFactory = (
             },
             ...statsFiltersToReportingFilters(
                 TicketStatsFiltersMembers,
-                filters
+                filters,
             ).map((filter) => {
                 if (filter.member === TicketStatsFiltersMembers.periodStart)
                     return {
@@ -64,7 +64,7 @@ export const openTicketsQueryFactory = (
 export const openTicketsPerTicketDrillDownQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
     ...openTicketsQueryFactory(filters, timezone),
     measures: [],

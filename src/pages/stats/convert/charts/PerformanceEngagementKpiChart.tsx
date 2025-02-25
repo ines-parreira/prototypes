@@ -1,17 +1,17 @@
 import React from 'react'
 
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
-import {OverviewMetricConfig} from 'pages/stats/convert/constants/ConvertPerformanceOverviewConfig'
-import {usePerformanceTotalStats} from 'pages/stats/convert/hooks/usePerformanceTotalStats'
-import {CampaignsTotalsMetricNames} from 'pages/stats/convert/services/constants'
-import {DashboardChartProps} from 'pages/stats/custom-reports/types'
+import { OverviewMetricConfig } from 'pages/stats/convert/constants/ConvertPerformanceOverviewConfig'
+import { usePerformanceTotalStats } from 'pages/stats/convert/hooks/usePerformanceTotalStats'
+import { CampaignsTotalsMetricNames } from 'pages/stats/convert/services/constants'
+import { DashboardChartProps } from 'pages/stats/custom-reports/types'
 import MetricCard from 'pages/stats/MetricCard'
 
 export const PerformanceEngagementKpiChart = ({
     chartId,
     dashboard,
 }: DashboardChartProps) => {
-    const {isLoading, totalStatsData} = usePerformanceTotalStats()
+    const { isLoading, totalStatsData } = usePerformanceTotalStats()
 
     return (
         <MetricCard

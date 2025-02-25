@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react'
+import React, { ReactNode } from 'react'
 
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import DropdownItemLabel from 'pages/common/components/dropdown/DropdownItemLabel'
@@ -9,7 +9,7 @@ type Props = {
     onClick: () => void
 }
 
-const MenuCategoryItem = ({label, onClick, icon}: Props) => {
+const MenuCategoryItem = ({ label, onClick, icon }: Props) => {
     return (
         <DropdownItem
             option={{

@@ -1,14 +1,14 @@
-import {uniq} from 'lodash'
-import {useCallback} from 'react'
+import { useCallback } from 'react'
 
-import {TicketMessageSourceType} from 'business/types/ticket'
+import { uniq } from 'lodash'
+
+import { TicketMessageSourceType } from 'business/types/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-
-import {Integration, IntegrationType} from 'models/integration/types'
-import {isSource, isTicketMessageSourceType} from 'models/ticket/predicates'
-import {Source, SourceAddress, Ticket} from 'models/ticket/types'
-import {Application, getApplications} from 'services/applications'
+import { Integration, IntegrationType } from 'models/integration/types'
+import { isSource, isTicketMessageSourceType } from 'models/ticket/predicates'
+import { Source, SourceAddress, Ticket } from 'models/ticket/types'
+import { Application, getApplications } from 'services/applications'
 import {
     Channel,
     ChannelIdentifier,
@@ -22,15 +22,14 @@ import {
     getIntegrations,
     getSendersForChannel,
 } from 'state/integrations/selectors'
-import {prepare, setSender} from 'state/newMessage/actions'
+import { prepare, setSender } from 'state/newMessage/actions'
 import {
     getNewMessageSource,
     getNewMessageSourceProperty,
 } from 'state/newMessage/selectors'
-import {getTicket} from 'state/ticket/selectors'
-
-import {humanizeAddress} from 'state/ticket/utils'
-import {DEFAULT_SOURCE_TYPE} from 'tickets/common/config'
+import { getTicket } from 'state/ticket/selectors'
+import { humanizeAddress } from 'state/ticket/utils'
+import { DEFAULT_SOURCE_TYPE } from 'tickets/common/config'
 
 export type Sender = SourceAddress & {
     displayName: string
@@ -116,7 +115,7 @@ export default function useOutboundChannels(): {
                 dispatch(prepare(channel.slug as TicketMessageSourceType))
             }
         },
-        [dispatch]
+        [dispatch],
     )
 
     const channels = [...legacyChannels, ...newChannels]
@@ -129,7 +128,7 @@ export default function useOutboundChannels(): {
 }
 
 function getSelectedChannel(
-    source: Maybe<Source>
+    source: Maybe<Source>,
 ): Maybe<Channel | TicketMessageSourceType> {
     if (!isSource(source)) {
         return DEFAULT_SOURCE_TYPE
@@ -151,7 +150,7 @@ function getSelectedChannel(
 
 function getReplyChannelsForTicket(
     ticket: Partial<Ticket>,
-    applications: Application[]
+    applications: Application[],
 ): Channel[] {
     const isNewTicket = !ticket?.id
     const replyOptions = ticket?.reply_options || {}
@@ -160,12 +159,12 @@ function getReplyChannelsForTicket(
         .filter(isNewChannel)
         .reduce<Channel[]>((acc, channel: Channel) => {
             const applicationsForChannel = applications.filter(
-                (app) => app.channel_id === channel.id
+                (app) => app.channel_id === channel.id,
             )
 
             if (isNewTicket) {
                 const hasApplication = applicationsForChannel.some(
-                    (app) => app.messaging_config.supports_ticket_initiation
+                    (app) => app.messaging_config.supports_ticket_initiation,
                 )
 
                 if (hasApplication) {
@@ -173,7 +172,7 @@ function getReplyChannelsForTicket(
                 }
             } else {
                 const hasApplication = applicationsForChannel.some(
-                    (app) => app.messaging_config.supports_replies
+                    (app) => app.messaging_config.supports_replies,
                 )
 
                 if (hasApplication && replyOptions[channel.slug]) {
@@ -192,21 +191,21 @@ export function useSendersForSelectedChannel(): {
     selectSender: (sender: Sender) => void
 } {
     const dispatch = useAppDispatch()
-    const {selectedChannel} = useOutboundChannels()
+    const { selectedChannel } = useOutboundChannels()
     const senders = useAppSelector((state) =>
         selectedChannel
             ? getSendersForChannel(selectedChannel)(state).map(
                   (sourceAddress) =>
-                      sourceAddressToSender(sourceAddress, selectedChannel)
+                      sourceAddressToSender(sourceAddress, selectedChannel),
               )
-            : []
+            : [],
     )
     const from: SourceAddress = useAppSelector(
-        getNewMessageSourceProperty('from')
+        getNewMessageSourceProperty('from'),
     )?.toJS()
 
     const selectedSender = senders.find(
-        (sender) => sender.address === from?.address
+        (sender) => sender.address === from?.address,
     )
 
     const selectSender = (sender: Sender) => {
@@ -223,17 +222,17 @@ export function useSendersForSelectedChannel(): {
 
 function getLegacyReplySourcesForTicket(
     ticket: Partial<Ticket>,
-    integrations: Integration[]
+    integrations: Integration[],
 ): TicketMessageSourceType[] {
     const isNewTicket = !ticket?.id
     const replyOptions = ticket?.reply_options || {}
 
     const sources = Object.entries(
-        LEGACY_OUTBOUND_SOURCES_BY_INTEGRATION
+        LEGACY_OUTBOUND_SOURCES_BY_INTEGRATION,
     ).reduce<TicketMessageSourceType[]>(
         (acc, [integrationType, sourceTypes]) => {
             const hasIntegration = integrations.some(
-                (integration) => integration.type === integrationType
+                (integration) => integration.type === integrationType,
             )
 
             if (!hasIntegration) {
@@ -283,7 +282,7 @@ function getLegacyReplySourcesForTicket(
                     ...acc,
                     ...validSources.filter(
                         (source) =>
-                            source !== TicketMessageSourceType.YotpoReview
+                            source !== TicketMessageSourceType.YotpoReview,
                     ),
                     TicketMessageSourceType.YotpoReviewPublicComment,
                     TicketMessageSourceType.YotpoReviewPrivateComment,
@@ -292,7 +291,7 @@ function getLegacyReplySourcesForTicket(
 
             return [...acc, ...validSources]
         },
-        []
+        [],
     )
 
     if (!!replyOptions[TicketMessageSourceType.InternalNote]) {
@@ -304,9 +303,9 @@ function getLegacyReplySourcesForTicket(
 
 function sourceAddressToSender(
     sourceAddress: SourceAddress,
-    channel: Maybe<ChannelLike>
+    channel: Maybe<ChannelLike>,
 ): Sender {
-    const {name, address} = sourceAddress
+    const { name, address } = sourceAddress
     return {
         ...sourceAddress,
         displayName: `${name} (${humanizeAddress(address, channel)})`,

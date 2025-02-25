@@ -1,12 +1,13 @@
-import {render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {fetchIntegrations} from 'state/integrations/actions'
-import {RootState} from 'state/types'
-import {assumeMock, mockStore} from 'utils/testing'
+import { fetchIntegrations } from 'state/integrations/actions'
+import { RootState } from 'state/types'
+import { assumeMock, mockStore } from 'utils/testing'
 
 import ImportData from '../ImportData'
 
@@ -27,7 +28,7 @@ describe('<ImportData />', () => {
         render(
             <Provider store={mockStore(state)}>
                 <ImportData />
-            </Provider>
+            </Provider>,
         )
 
     it('should load', () => {
@@ -53,7 +54,7 @@ describe('<ImportData />', () => {
             }),
         } as RootState)
         expect(
-            screen.getByText("You don't have any imports at the moment")
+            screen.getByText("You don't have any imports at the moment"),
         ).toBeInTheDocument()
     })
 
@@ -72,7 +73,7 @@ describe('<ImportData />', () => {
             }),
         } as RootState)
         expect(
-            screen.getByText('Completed on 09/02/2024 12:00 AM')
+            screen.getByText('Completed on 09/02/2024 12:00 AM'),
         ).toBeInTheDocument()
     })
 })

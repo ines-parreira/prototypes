@@ -1,10 +1,11 @@
-import {fireEvent, render} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {LEAF_TYPES} from 'models/widget/constants'
-import {LeafType} from 'models/widget/types'
+import { fireEvent, render } from '@testing-library/react'
 
-import {FieldEditFormData, HiddenFields} from '../../../types'
+import { LEAF_TYPES } from 'models/widget/constants'
+import { LeafType } from 'models/widget/types'
+
+import { FieldEditFormData, HiddenFields } from '../../../types'
 import FieldEditForm, {
     CANCEL_BUTTON_TEXT,
     SUBMIT_BUTTON_TEXT,
@@ -36,25 +37,25 @@ describe('FieldEditForm', () => {
     }
 
     it('should display initial data title', () => {
-        const {getByLabelText} = render(<FieldEditForm {...defaultProps} />)
+        const { getByLabelText } = render(<FieldEditForm {...defaultProps} />)
 
         expect(getByLabelText(TITLE_FIELD_LABEL)).toHaveValue(
-            defaultInitialData.title
+            defaultInitialData.title,
         )
     })
 
     it('should display initial data type', () => {
-        const {getByLabelText} = render(<FieldEditForm {...defaultProps} />)
+        const { getByLabelText } = render(<FieldEditForm {...defaultProps} />)
 
         expect(getByLabelText(TYPE_FIELD_LABEL)).toHaveValue(
-            defaultInitialData.type
+            defaultInitialData.type,
         )
     })
 
     it('should display available types', () => {
-        const {queryByText} = render(<FieldEditForm {...defaultProps} />)
+        const { queryByText } = render(<FieldEditForm {...defaultProps} />)
 
-        for (const {label, value} of defaultAvailableTypes) {
+        for (const { label, value } of defaultAvailableTypes) {
             const option = queryByText(label)
             expect(option).toBeInTheDocument()
             expect(option).toHaveAttribute('value', value)
@@ -63,8 +64,8 @@ describe('FieldEditForm', () => {
 
     it('should not display hidden fields', () => {
         const hiddenFields: HiddenFields = ['title', 'type']
-        const {queryByLabelText} = render(
-            <FieldEditForm {...defaultProps} hiddenFields={hiddenFields} />
+        const { queryByLabelText } = render(
+            <FieldEditForm {...defaultProps} hiddenFields={hiddenFields} />,
         )
 
         expect(queryByLabelText(TITLE_FIELD_LABEL)).not.toBeInTheDocument()
@@ -72,7 +73,7 @@ describe('FieldEditForm', () => {
     })
 
     it('should call onCancel and not call onSubmit on cancel button click', () => {
-        const {getByText} = render(<FieldEditForm {...defaultProps} />)
+        const { getByText } = render(<FieldEditForm {...defaultProps} />)
 
         fireEvent.click(getByText(CANCEL_BUTTON_TEXT))
 
@@ -83,35 +84,35 @@ describe('FieldEditForm', () => {
     it('should call onSubmit and not call onCancel on submit button click', () => {
         const title = 'foo'
         const type = LEAF_TYPES.DATE
-        const {getByText, getByLabelText} = render(
-            <FieldEditForm {...defaultProps} />
+        const { getByText, getByLabelText } = render(
+            <FieldEditForm {...defaultProps} />,
         )
 
         fireEvent.change(getByLabelText(TITLE_FIELD_LABEL), {
-            target: {value: title},
+            target: { value: title },
         })
         fireEvent.change(getByLabelText(TYPE_FIELD_LABEL), {
-            target: {value: type},
+            target: { value: type },
         })
         fireEvent.click(getByText(SUBMIT_BUTTON_TEXT))
 
         expect(defaultProps.onCancel).not.toHaveBeenCalledWith()
-        expect(defaultProps.onSubmit).toHaveBeenCalledWith({title, type})
+        expect(defaultProps.onSubmit).toHaveBeenCalledWith({ title, type })
     })
 
     it.each(['title', 'type'])(
         'should not call onSubmit on submit button click if %s field is empty',
         (field) => {
-            const {getByText} = render(
+            const { getByText } = render(
                 <FieldEditForm
                     {...defaultProps}
-                    initialData={{...defaultInitialData, [field]: undefined}}
-                />
+                    initialData={{ ...defaultInitialData, [field]: undefined }}
+                />,
             )
 
             fireEvent.click(getByText(SUBMIT_BUTTON_TEXT))
 
             expect(defaultProps.onSubmit).not.toHaveBeenCalled()
-        }
+        },
     )
 })

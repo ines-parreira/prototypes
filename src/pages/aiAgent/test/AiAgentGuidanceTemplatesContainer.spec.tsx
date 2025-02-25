@@ -1,14 +1,15 @@
-import {screen} from '@testing-library/react'
 import React from 'react'
 
-import {useAiAgentEnabled} from 'pages/aiAgent/hooks/useAiAgentEnabled'
-import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {renderWithRouter} from 'utils/testing'
+import { screen } from '@testing-library/react'
 
-import {AiAgentGuidanceTemplatesContainer} from '../AiAgentGuidanceTemplatesContainer'
-import {getGuidanceTemplateFixture} from '../fixtures/guidanceTemplate.fixture'
-import {useAiAgentHelpCenter} from '../hooks/useAiAgentHelpCenter'
-import {useGuidanceTemplates} from '../hooks/useGuidanceTemplates'
+import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
+import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { renderWithRouter } from 'utils/testing'
+
+import { AiAgentGuidanceTemplatesContainer } from '../AiAgentGuidanceTemplatesContainer'
+import { getGuidanceTemplateFixture } from '../fixtures/guidanceTemplate.fixture'
+import { useAiAgentHelpCenter } from '../hooks/useAiAgentHelpCenter'
+import { useGuidanceTemplates } from '../hooks/useGuidanceTemplates'
 
 jest.mock('../hooks/useAiAgentHelpCenter', () => ({
     useAiAgentHelpCenter: jest.fn(),
@@ -42,7 +43,7 @@ const renderComponent = () => {
 describe('<AiAgentGuidanceTemplatesContainer />', () => {
     beforeEach(() => {
         mockedUseAiAgentHelpCenter.mockReturnValue(helpCenter)
-        mockedUseGuidanceTemplates.mockReturnValue({guidanceTemplates: []})
+        mockedUseGuidanceTemplates.mockReturnValue({ guidanceTemplates: [] })
         mockUseEnableAiAgent.mockReturnValue({
             updateSettingsAfterAiAgentEnabled: jest.fn(),
         })

@@ -1,10 +1,10 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
 import useHumanReadableOrderConditions from '../useHumanReadableOrderConditions'
 
 describe('useHumanReadableOrderConditions()', () => {
     it('should handle string variable options', () => {
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useHumanReadableOrderConditions({
                 variables: [
                     {
@@ -13,10 +13,10 @@ describe('useHumanReadableOrderConditions()', () => {
                         nodeType: 'order_selection',
                         type: 'string',
                         options: [
-                            {value: null, label: 'unfulfilled'},
-                            {value: 'partial', label: 'partially fulfilled'},
-                            {value: 'fulfilled', label: 'fulfilled'},
-                            {value: 'restocked', label: 'restocked'},
+                            { value: null, label: 'unfulfilled' },
+                            { value: 'partial', label: 'partially fulfilled' },
+                            { value: 'fulfilled', label: 'fulfilled' },
+                            { value: 'restocked', label: 'restocked' },
                         ],
                     },
                 ],
@@ -30,7 +30,7 @@ describe('useHumanReadableOrderConditions()', () => {
                         ],
                     },
                 ],
-            })
+            }),
         )
 
         expect(result.current).toEqual(['Fulfillment status is unfulfilled'])

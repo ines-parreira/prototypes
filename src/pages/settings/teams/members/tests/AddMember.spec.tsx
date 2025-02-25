@@ -1,8 +1,9 @@
-import {render, fireEvent} from '@testing-library/react'
-import {fromJS, List} from 'immutable'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {AddMemberContainer} from '../AddMember'
+import { fireEvent, render } from '@testing-library/react'
+import { fromJS, List } from 'immutable'
+
+import { AddMemberContainer } from '../AddMember'
 
 const minProps = {
     team: {
@@ -72,14 +73,14 @@ const minProps = {
 
 describe('<AddMember />', () => {
     it('should render', () => {
-        const {container} = render(<AddMemberContainer {...minProps} />)
+        const { container } = render(<AddMemberContainer {...minProps} />)
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render the dropdown on click', async () => {
-        const {findByText, getByText} = render(
-            <AddMemberContainer {...minProps} />
+        const { findByText, getByText } = render(
+            <AddMemberContainer {...minProps} />,
         )
 
         fireEvent.click(getByText(/Add team member/i))
@@ -88,11 +89,11 @@ describe('<AddMember />', () => {
     })
 
     it('should render user with empty name', async () => {
-        const {findByText, getByText} = render(
+        const { findByText, getByText } = render(
             <AddMemberContainer
                 {...minProps}
                 users={minProps.users.setIn([1, 'name'], null)}
-            />
+            />,
         )
 
         fireEvent.click(getByText(/Add team member/i))

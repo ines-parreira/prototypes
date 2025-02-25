@@ -1,8 +1,8 @@
-import {useMutation, useQuery, UseQueryOptions} from '@tanstack/react-query'
+import { useMutation, useQuery, UseQueryOptions } from '@tanstack/react-query'
 
-import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import {Paths} from 'rest_api/help_center_api/client.generated'
-import {MutationOverrides} from 'types/query'
+import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import { Paths } from 'rest_api/help_center_api/client.generated'
+import { MutationOverrides } from 'types/query'
 
 import {
     getMailtoReplacementConfig,
@@ -25,9 +25,9 @@ export const useGetContactFormMailtoReplacementConfig = <
         Awaited<ReturnType<typeof getMailtoReplacementConfig>>,
         unknown,
         TData
-    >
+    >,
 ) => {
-    const {client} = useHelpCenterApi()
+    const { client } = useHelpCenterApi()
 
     return useQuery({
         queryKey: contactFormMailtoReplacementConfigKeys.get(contactFormId),
@@ -46,9 +46,9 @@ export const useUpsertContactFormMailtoReplacementConfig = <TContext = unknown>(
         typeof upsertMailtoReplacementConfig,
         false,
         TContext
-    >
+    >,
 ) => {
-    const {client} = useHelpCenterApi()
+    const { client } = useHelpCenterApi()
 
     return useMutation({
         mutationFn: async ([, pathParams, body]) => {

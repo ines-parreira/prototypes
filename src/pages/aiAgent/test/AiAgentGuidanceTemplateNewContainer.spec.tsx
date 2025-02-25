@@ -1,20 +1,21 @@
-import {screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {useAiAgentEnabled} from 'pages/aiAgent/hooks/useAiAgentEnabled'
-import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {renderWithRouter} from 'utils/testing'
+import { screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
-import {AiAgentGuidanceTemplateNewContainer} from '../AiAgentGuidanceTemplateNewContainer'
-import {getAIGuidanceFixture} from '../fixtures/aiGuidance.fixture'
-import {getGuidanceArticleFixture} from '../fixtures/guidanceArticle.fixture'
-import {getGuidanceTemplateFixture} from '../fixtures/guidanceTemplate.fixture'
-import {useAiAgentHelpCenter} from '../hooks/useAiAgentHelpCenter'
-import {useAiAgentOnboardingNotification} from '../hooks/useAiAgentOnboardingNotification'
-import {useGuidanceAiSuggestions} from '../hooks/useGuidanceAiSuggestions'
-import {useGuidanceArticleMutation} from '../hooks/useGuidanceArticleMutation'
-import {useGuidanceTemplate} from '../hooks/useGuidanceTemplate'
+import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
+import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { renderWithRouter } from 'utils/testing'
+
+import { AiAgentGuidanceTemplateNewContainer } from '../AiAgentGuidanceTemplateNewContainer'
+import { getAIGuidanceFixture } from '../fixtures/aiGuidance.fixture'
+import { getGuidanceArticleFixture } from '../fixtures/guidanceArticle.fixture'
+import { getGuidanceTemplateFixture } from '../fixtures/guidanceTemplate.fixture'
+import { useAiAgentHelpCenter } from '../hooks/useAiAgentHelpCenter'
+import { useAiAgentOnboardingNotification } from '../hooks/useAiAgentOnboardingNotification'
+import { useGuidanceAiSuggestions } from '../hooks/useGuidanceAiSuggestions'
+import { useGuidanceArticleMutation } from '../hooks/useGuidanceArticleMutation'
+import { useGuidanceTemplate } from '../hooks/useGuidanceTemplate'
 
 jest.mock('../hooks/useAiAgentHelpCenter', () => ({
     useAiAgentHelpCenter: jest.fn(),
@@ -37,7 +38,7 @@ jest.mock(
     () => {
         const ComponentToMock = () => <div />
         return ComponentToMock
-    }
+    },
 )
 jest.mock('pages/aiAgent/hooks/useAiAgentEnabled')
 
@@ -53,7 +54,7 @@ const mockedUseGuidanceTemplate = jest.mocked(useGuidanceTemplate)
 const mockUseEnableAiAgent = jest.mocked(useAiAgentEnabled)
 const mockedUseGuidanceAiSuggestions = jest.mocked(useGuidanceAiSuggestions)
 const mockUseAiAgentOnboardingNotification = jest.mocked(
-    useAiAgentOnboardingNotification
+    useAiAgentOnboardingNotification,
 )
 
 const helpCenter = getHelpCentersResponseFixture.data[0]
@@ -110,18 +111,18 @@ describe('<AiAgentGuidanceTemplateNewContainer />', () => {
     beforeEach(() => {
         mockedUseAiAgentHelpCenter.mockReturnValue(helpCenter)
         mockedUseGuidanceArticleMutation.mockReturnValue(
-            defaultGuidanceArticleMutationProps
+            defaultGuidanceArticleMutationProps,
         )
-        mockedUseGuidanceTemplate.mockReturnValue({guidanceTemplate})
+        mockedUseGuidanceTemplate.mockReturnValue({ guidanceTemplate })
 
         mockUseEnableAiAgent.mockReturnValue({
             updateSettingsAfterAiAgentEnabled: jest.fn(),
         })
         mockedUseGuidanceAiSuggestions.mockReturnValue(
-            defaultUseGuidanceAiSuggestions
+            defaultUseGuidanceAiSuggestions,
         )
         mockUseAiAgentOnboardingNotification.mockReturnValue(
-            defaultUseAiAgentOnboardingNotification
+            defaultUseAiAgentOnboardingNotification,
         )
     })
 
@@ -137,7 +138,7 @@ describe('<AiAgentGuidanceTemplateNewContainer />', () => {
         renderComponent()
 
         expect(screen.getByLabelText(/Guidance name/)).toHaveValue(
-            guidanceTemplate.name
+            guidanceTemplate.name,
         )
     })
 
@@ -158,7 +159,7 @@ describe('<AiAgentGuidanceTemplateNewContainer />', () => {
             expect.objectContaining({
                 title: guidanceTemplate.name,
                 content: guidanceTemplate.content,
-            })
+            }),
         )
     })
 
@@ -171,7 +172,7 @@ describe('<AiAgentGuidanceTemplateNewContainer />', () => {
 
         await waitFor(() => {
             expect(
-                defaultUseAiAgentOnboardingNotification.handleOnTriggerActivateAiAgentNotification
+                defaultUseAiAgentOnboardingNotification.handleOnTriggerActivateAiAgentNotification,
             ).toHaveBeenCalled()
         })
     })
@@ -185,7 +186,7 @@ describe('<AiAgentGuidanceTemplateNewContainer />', () => {
 
         await waitFor(() => {
             expect(
-                defaultUseAiAgentOnboardingNotification.handleOnTriggerActivateAiAgentNotification
+                defaultUseAiAgentOnboardingNotification.handleOnTriggerActivateAiAgentNotification,
             ).toHaveBeenCalled()
         })
     })
@@ -204,7 +205,7 @@ describe('<AiAgentGuidanceTemplateNewContainer />', () => {
 
         await waitFor(() => {
             expect(
-                defaultUseAiAgentOnboardingNotification.handleOnTriggerActivateAiAgentNotification
+                defaultUseAiAgentOnboardingNotification.handleOnTriggerActivateAiAgentNotification,
             ).not.toHaveBeenCalled()
         })
     })

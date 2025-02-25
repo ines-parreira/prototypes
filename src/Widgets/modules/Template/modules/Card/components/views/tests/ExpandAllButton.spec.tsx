@@ -1,5 +1,6 @@
-import {fireEvent, render, screen} from '@testing-library/react'
 import React from 'react'
+
+import { fireEvent, render, screen } from '@testing-library/react'
 
 import {
     EXPAND_CONTAINER_MARKER,
@@ -7,15 +8,15 @@ import {
     TARGET_CLOSED_MARKER,
 } from 'Widgets/modules/Template/config/template'
 
-import ExpandAllButton, {FOLD_TITLE, EXPAND_TITLE} from '../ExpandAllButton'
+import ExpandAllButton, { EXPAND_TITLE, FOLD_TITLE } from '../ExpandAllButton'
 
 const onClickMock = jest.fn()
 
-const ContainerMock = ({children}: {children: React.ReactNode}) => (
-    <div {...{[EXPAND_CONTAINER_MARKER]: true}}>{children}</div>
+const ContainerMock = ({ children }: { children: React.ReactNode }) => (
+    <div {...{ [EXPAND_CONTAINER_MARKER]: true }}>{children}</div>
 )
 
-const TargetMock = ({isClosed}: {isClosed: boolean}) => (
+const TargetMock = ({ isClosed }: { isClosed: boolean }) => (
     <div
         {...{
             [EXPAND_TARGET_MARKER]: true,
@@ -32,7 +33,7 @@ describe('<ExpandAllButton/>', () => {
                 <ExpandAllButton />
                 <TargetMock isClosed={false} />
                 <TargetMock isClosed={true} />
-            </>
+            </>,
         )
 
         fireEvent.click(screen.getByTitle(FOLD_TITLE))
@@ -47,7 +48,7 @@ describe('<ExpandAllButton/>', () => {
                 <TargetMock isClosed={false} />
                 <TargetMock isClosed={true} />
                 <TargetMock isClosed={true} />
-            </ContainerMock>
+            </ContainerMock>,
         )
 
         fireEvent.click(screen.getByTitle(FOLD_TITLE))
@@ -62,7 +63,7 @@ describe('<ExpandAllButton/>', () => {
                 <TargetMock isClosed={false} />
                 <TargetMock isClosed={false} />
                 <TargetMock isClosed={true} />
-            </ContainerMock>
+            </ContainerMock>,
         )
 
         fireEvent.click(screen.getByTitle(FOLD_TITLE))
@@ -77,7 +78,7 @@ describe('<ExpandAllButton/>', () => {
                 <TargetMock isClosed={false} />
                 <TargetMock isClosed={false} />
                 <TargetMock isClosed={true} />
-            </ContainerMock>
+            </ContainerMock>,
         )
 
         fireEvent.click(screen.getByTitle(FOLD_TITLE))

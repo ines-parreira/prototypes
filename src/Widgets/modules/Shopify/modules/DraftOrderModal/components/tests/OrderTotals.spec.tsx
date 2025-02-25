@@ -1,7 +1,8 @@
-import {screen, fireEvent, render} from '@testing-library/react'
-import {fromJS, Map} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { fireEvent, render, screen } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -9,11 +10,10 @@ import {
     shopifyCalculatedDraftOrderFixture,
     shopifyDraftOrderPayloadFixture,
 } from 'fixtures/shopify'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
+import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
-
-import {OrderTotalsComponent} from '../OrderTotals'
+import { OrderTotalsComponent } from '../OrderTotals'
 
 describe('<OrderTotalsComponent/>', () => {
     const mockStore = configureMockStore([thunk])
@@ -21,17 +21,17 @@ describe('<OrderTotalsComponent/>', () => {
         infobarActions: {
             shopify: {
                 cancelOrder: {},
-                createOrder: fromJS({payload: {}, loading: false}),
+                createOrder: fromJS({ payload: {}, loading: false }),
                 refundOrder: {},
                 editOrder: {},
                 editShippingAddress: {},
             },
         },
     }
-    const integrationContextData = {integration: fromJS({}), integrationId: 1}
+    const integrationContextData = { integration: fromJS({}), integrationId: 1 }
     const payload = fromJS(shopifyDraftOrderPayloadFixture()) as Map<any, any>
     const calculatedDraftOrder = fromJS(
-        shopifyCalculatedDraftOrderFixture()
+        shopifyCalculatedDraftOrderFixture(),
     ) as Map<any, any>
     let onPayloadChange: jest.MockedFunction<
         ComponentProps<typeof OrderTotalsComponent>['onPayloadChange']
@@ -43,7 +43,7 @@ describe('<OrderTotalsComponent/>', () => {
 
     describe('render()', () => {
         it('should render', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore(storeData)}>
                     <IntegrationContext.Provider value={integrationContextData}>
                         <OrderTotalsComponent
@@ -56,14 +56,14 @@ describe('<OrderTotalsComponent/>', () => {
                             onPayloadChange={onPayloadChange}
                         />
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(container).toMatchSnapshot()
         })
 
         it('should render as loading', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore(storeData)}>
                     <IntegrationContext.Provider value={integrationContextData}>
                         <OrderTotalsComponent
@@ -76,21 +76,21 @@ describe('<OrderTotalsComponent/>', () => {
                             onPayloadChange={onPayloadChange}
                         />
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(container.getElementsByClassName('text-muted').length).toBe(
-                2
+                2,
             )
         })
 
         it('should render with taxes included', () => {
             const taxesIncludedDraftOrder = calculatedDraftOrder.set(
                 'totalPrice',
-                '9.99'
+                '9.99',
             )
 
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore(storeData)}>
                     <IntegrationContext.Provider value={integrationContextData}>
                         <OrderTotalsComponent
@@ -103,7 +103,7 @@ describe('<OrderTotalsComponent/>', () => {
                             onPayloadChange={onPayloadChange}
                         />
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(container).toMatchSnapshot()
@@ -125,12 +125,12 @@ describe('<OrderTotalsComponent/>', () => {
                             onPayloadChange={onPayloadChange}
                         />
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             fireEvent.click(screen.getByText('Add discount'))
             fireEvent.change(screen.getByRole('spinbutton'), {
-                target: {value: 0.1},
+                target: { value: 0.1 },
             })
             fireEvent.click(screen.getByText('Apply'))
             const newPayload = payload.set(
@@ -141,11 +141,11 @@ describe('<OrderTotalsComponent/>', () => {
                     value_type: 'percentage',
                     amount: '0.00',
                     currency_code: 'USD',
-                })
+                }),
             )
             expect(onPayloadChange).toHaveBeenCalledWith(
                 integrationContextData.integrationId,
-                newPayload
+                newPayload,
             )
         })
     })
@@ -165,7 +165,7 @@ describe('<OrderTotalsComponent/>', () => {
                             onPayloadChange={onPayloadChange}
                         />
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             fireEvent.click(screen.getByText('Add shipping'))
@@ -174,7 +174,7 @@ describe('<OrderTotalsComponent/>', () => {
 
             expect(onPayloadChange.mock.calls[0][0]).toMatchSnapshot()
             expect(
-                onPayloadChange.mock.calls[0][1].get('shipping_line')
+                onPayloadChange.mock.calls[0][1].get('shipping_line'),
             ).toMatchSnapshot()
         })
     })
@@ -194,7 +194,7 @@ describe('<OrderTotalsComponent/>', () => {
                             onPayloadChange={onPayloadChange}
                         />
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             fireEvent.click(screen.getByText('Taxes'))
@@ -204,7 +204,7 @@ describe('<OrderTotalsComponent/>', () => {
             const newPayload = payload.set('tax_exempt', true)
             expect(onPayloadChange).toHaveBeenCalledWith(
                 integrationContextData.integrationId,
-                newPayload
+                newPayload,
             )
         })
     })

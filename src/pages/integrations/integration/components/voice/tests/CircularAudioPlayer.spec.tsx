@@ -1,5 +1,6 @@
-import {createEvent, fireEvent, render, waitFor} from '@testing-library/react'
 import React from 'react'
+
+import { createEvent, fireEvent, render, waitFor } from '@testing-library/react'
 
 import CircularAudioPlayer from '../CircularAudioPlayer'
 
@@ -8,7 +9,7 @@ const audioPauseMock = jest.fn()
 HTMLMediaElement.prototype.play = audioPlayMock
 HTMLMediaElement.prototype.pause = audioPauseMock
 
-jest.mock('../CircularProgressBar', () => (props: {progress: number}) => (
+jest.mock('../CircularProgressBar', () => (props: { progress: number }) => (
     <div data-testid="circular-progress-bar">{props.progress}</div>
 ))
 
@@ -16,8 +17,8 @@ describe('CircularAudioPlayer', () => {
     const AUDIO_SRC = 'https://assets.gorgias.io/phone/ClockworkWaltz.mp3'
 
     it('should render correctly', () => {
-        const {container, getByText, getByTestId} = render(
-            <CircularAudioPlayer src={AUDIO_SRC} />
+        const { container, getByText, getByTestId } = render(
+            <CircularAudioPlayer src={AUDIO_SRC} />,
         )
 
         expect(container.querySelector('audio')).toBeInTheDocument()
@@ -28,12 +29,12 @@ describe('CircularAudioPlayer', () => {
     it('should play the audio', async () => {
         const onPlayMock = jest.fn()
 
-        const {getByText} = render(
+        const { getByText } = render(
             <CircularAudioPlayer
                 src={AUDIO_SRC}
                 isActive={true}
                 onPlay={onPlayMock}
-            />
+            />,
         )
 
         expect(getByText('play_arrow')).toBeInTheDocument()
@@ -46,12 +47,12 @@ describe('CircularAudioPlayer', () => {
     })
 
     it('should stop the audio', async () => {
-        const {getByText, container} = render(
-            <CircularAudioPlayer src={AUDIO_SRC} isActive={true} />
+        const { getByText, container } = render(
+            <CircularAudioPlayer src={AUDIO_SRC} isActive={true} />,
         )
 
         const audioElement = container.querySelector(
-            'audio'
+            'audio',
         ) as HTMLAudioElement
         fireEvent.play(audioElement)
         jest.spyOn(audioElement, 'paused', 'get').mockReturnValue(false)
@@ -67,29 +68,29 @@ describe('CircularAudioPlayer', () => {
     it('should stop the audio if becomes active', async () => {
         const onPlayMock = jest.fn()
 
-        const {rerender, container} = render(
+        const { rerender, container } = render(
             <CircularAudioPlayer
                 src={AUDIO_SRC}
                 isActive={true}
                 onPlay={onPlayMock}
-            />
+            />,
         )
 
         const audioElement = container.querySelector(
-            'audio'
+            'audio',
         ) as HTMLAudioElement
         fireEvent.play(audioElement)
         jest.spyOn(audioElement, 'paused', 'get').mockReturnValue(false)
         jest.spyOn(audioElement, 'duration', 'get').mockReturnValue(100)
 
-        fireEvent.timeUpdate(audioElement, {target: {currentTime: 10}})
+        fireEvent.timeUpdate(audioElement, { target: { currentTime: 10 } })
 
         rerender(
             <CircularAudioPlayer
                 src={AUDIO_SRC}
                 isActive={false}
                 onPlay={onPlayMock}
-            />
+            />,
         )
 
         await waitFor(() => {
@@ -99,45 +100,45 @@ describe('CircularAudioPlayer', () => {
     })
 
     it.each([
-        {currentTime: 10, audioDuration: 100, progressBarContent: '0.1'},
-        {currentTime: 20, audioDuration: 80, progressBarContent: '0.25'},
+        { currentTime: 10, audioDuration: 100, progressBarContent: '0.1' },
+        { currentTime: 20, audioDuration: 80, progressBarContent: '0.25' },
     ])(
         'should update the progress of the audio',
-        ({currentTime, audioDuration, progressBarContent}) => {
+        ({ currentTime, audioDuration, progressBarContent }) => {
             const onPlayMock = jest.fn()
 
-            const {container, getByTestId} = render(
+            const { container, getByTestId } = render(
                 <CircularAudioPlayer
                     src={AUDIO_SRC}
                     isActive={true}
                     onPlay={onPlayMock}
-                />
+                />,
             )
 
             const audioElement = container.querySelector(
-                'audio'
+                'audio',
             ) as HTMLAudioElement
             fireEvent.play(audioElement)
             jest.spyOn(audioElement, 'duration', 'get').mockReturnValue(
-                audioDuration
+                audioDuration,
             )
 
             fireEvent.timeUpdate(audioElement, {
-                target: {currentTime},
+                target: { currentTime },
             })
 
             const progressBar = getByTestId('circular-progress-bar')
             expect(progressBar).toHaveTextContent(progressBarContent)
-        }
+        },
     )
 
     it('should prevent other actions when mouse down', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <CircularAudioPlayer
                 src={AUDIO_SRC}
                 isActive={true}
                 onPlay={jest.fn()}
-            />
+            />,
         )
 
         expect(getByText('play_arrow')).toBeInTheDocument()

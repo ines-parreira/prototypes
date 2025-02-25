@@ -1,7 +1,7 @@
-import React, {useCallback} from 'react'
+import React, { useCallback } from 'react'
 
 import defaultImage from 'assets/img/presentationals/shopify-product-default-image.png'
-import {BigCommerceProduct} from 'models/integration/types'
+import { BigCommerceProduct } from 'models/integration/types'
 
 import css from './ModifierProductComponent.less'
 
@@ -11,7 +11,11 @@ type Props = {
     storeHash: string
 }
 
-export const ModifierProductComponent = ({product, sku, storeHash}: Props) => {
+export const ModifierProductComponent = ({
+    product,
+    sku,
+    storeHash,
+}: Props) => {
     const renderTitle = useCallback(() => {
         const productId = product.id
 

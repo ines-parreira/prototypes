@@ -1,6 +1,6 @@
 import bytes from 'bytes'
 
-import {Editor} from './types'
+import { Editor } from './types'
 
 export const HELP_CENTER_EDITOR_ATTACHMENT_LIMIT_CONSTANTS = {
     maxNumberOfAttachments: 100,
@@ -62,7 +62,7 @@ export const createOnCloseEventHandler =
             !(
                 attachmentWrapper instanceof HTMLDivElement &&
                 attachmentWrapper.className.includes(
-                    HELP_CENTER_EDITOR_CSS_ATTACHMENT_CONSTANTS.wrapper
+                    HELP_CENTER_EDITOR_CSS_ATTACHMENT_CONSTANTS.wrapper,
                 )
             )
         )
@@ -80,7 +80,7 @@ export const createOnCloseEventHandler =
  */
 export function validateFileAttachments(
     nrAttachmentsInEditor: number,
-    files: File[]
+    files: File[],
 ): string | null {
     if (
         files.length + nrAttachmentsInEditor >
@@ -92,12 +92,12 @@ export function validateFileAttachments(
     const invalidFiles = files.filter(
         (file) =>
             file.size >
-            HELP_CENTER_EDITOR_ATTACHMENT_LIMIT_CONSTANTS.maxFileSizeBytes
+            HELP_CENTER_EDITOR_ATTACHMENT_LIMIT_CONSTANTS.maxFileSizeBytes,
     )
 
     if (invalidFiles.length > 0) {
         return `The following files are larger than ${bytes(
-            HELP_CENTER_EDITOR_ATTACHMENT_LIMIT_CONSTANTS.maxFileSizeBytes
+            HELP_CENTER_EDITOR_ATTACHMENT_LIMIT_CONSTANTS.maxFileSizeBytes,
         )}: ${invalidFiles.map((file) => file.name).join(', ')}`
     }
 

@@ -1,14 +1,14 @@
-import {render, fireEvent} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {Components} from 'rest_api/help_center_api/client.generated'
+import { Components } from 'rest_api/help_center_api/client.generated'
+import { RootState, StoreDispatch } from 'state/types'
 
-import {RootState, StoreDispatch} from 'state/types'
-
-import {UpdateToggle} from '../UpdateToggle'
+import { UpdateToggle } from '../UpdateToggle'
 
 const mockedUpdateHelpCenter = jest.fn()
 
@@ -54,26 +54,26 @@ describe('<UpdateToggle />', () => {
     })
 
     it('should display the update toggle', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockedStore({})}>
                 <UpdateToggle {...props} />
-            </Provider>
+            </Provider>,
         )
 
         expect(container).toMatchSnapshot()
     })
 
     it('should trigger the update callback when clicking on the checkbox', async () => {
-        const {findByRole} = render(
+        const { findByRole } = render(
             <Provider store={mockedStore({})}>
                 <UpdateToggle {...props} />
-            </Provider>
+            </Provider>,
         )
         const toggle = await findByRole('checkbox')
         fireEvent.click(toggle)
         expect(mockedUpdateHelpCenter).toHaveBeenLastCalledWith(
-            {help_center_id: 1},
-            {search_deactivated: true}
+            { help_center_id: 1 },
+            { search_deactivated: true },
         )
     })
 })

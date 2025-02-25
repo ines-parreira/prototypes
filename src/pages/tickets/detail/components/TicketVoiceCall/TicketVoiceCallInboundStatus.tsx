@@ -1,26 +1,28 @@
-import classNames from 'classnames'
 import React from 'react'
 
+import classNames from 'classnames'
+
 import {
+    DEPRECATED_VoiceCallDisplayStatus,
     getDisplayInboundVoiceCallStatus,
     VoiceCall,
-    DEPRECATED_VoiceCallDisplayStatus,
 } from 'models/voiceCall/types'
 import VoiceCallAgentLabel from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'
 
 import CollapsibleDetails from './CollapsibleDetails'
-import css from './TicketVoiceCallContainer.less'
 import TicketVoiceCallEvents from './TicketVoiceCallEvents'
+
+import css from './TicketVoiceCallContainer.less'
 
 type Props = {
     voiceCall: VoiceCall
 }
 
-export const TicketVoiceCallInboundStatus = ({voiceCall}: Props) => {
+export const TicketVoiceCallInboundStatus = ({ voiceCall }: Props) => {
     switch (
         getDisplayInboundVoiceCallStatus(
             voiceCall.status,
-            voiceCall.last_answered_by_agent_id
+            voiceCall.last_answered_by_agent_id,
         )
     ) {
         case DEPRECATED_VoiceCallDisplayStatus.Ringing:
@@ -34,13 +36,13 @@ export const TicketVoiceCallInboundStatus = ({voiceCall}: Props) => {
                         <div
                             className={classNames(
                                 css.errorStatus,
-                                css.missedCallStatus
+                                css.missedCallStatus,
                             )}
                         >
                             <i
                                 className={classNames(
                                     'material-icons',
-                                    css.missedCallIcon
+                                    css.missedCallIcon,
                                 )}
                             >
                                 call_missed
@@ -60,7 +62,7 @@ export const TicketVoiceCallInboundStatus = ({voiceCall}: Props) => {
                         <div
                             className={classNames(
                                 css.statusWrapper,
-                                css.inbound
+                                css.inbound,
                             )}
                         >
                             <div>Answered by</div>

@@ -1,17 +1,18 @@
-import {SLAPolicy, useListSlaPolicies} from '@gorgias/api-queries'
-import {render, screen, waitFor, within} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render, screen, waitFor, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {TicketChannel} from 'business/types/ticket'
-import {agents} from 'fixtures/agents'
-import {integrationsState} from 'fixtures/integrations'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {TagFilterInstanceId} from 'models/stat/types'
+import { SLAPolicy, useListSlaPolicies } from '@gorgias/api-queries'
 
+import { TicketChannel } from 'business/types/ticket'
+import { agents } from 'fixtures/agents'
+import { integrationsState } from 'fixtures/integrations'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { TagFilterInstanceId } from 'models/stat/types'
 import {
     DESELECT_ALL_LABEL,
     SELECT_ALL_LABEL,
@@ -20,11 +21,11 @@ import {
     POLICIES_SEARCH_INPUT_PLACEHOLDER,
     SLAPolicySelect,
 } from 'pages/stats/sla/components/SLAPolicySelect'
-import {mergeStatsFilters} from 'state/stats/statsSlice'
-import {RootState, StoreDispatch} from 'state/types'
-import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
-import {assumeMock} from 'utils/testing'
+import { mergeStatsFilters } from 'state/stats/statsSlice'
+import { RootState, StoreDispatch } from 'state/types'
+import { statFiltersClean, statFiltersDirty } from 'state/ui/stats/actions'
+import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
+import { assumeMock } from 'utils/testing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -83,13 +84,13 @@ describe('<SLAPolicySelect />', () => {
             },
         },
         ui: {
-            stats: {filters: uiStatsInitialState},
+            stats: { filters: uiStatsInitialState },
         },
     } as RootState
 
     beforeEach(() => {
         useListSlaPoliciesMock.mockReturnValue({
-            data: {data: {data: policies}},
+            data: { data: { data: policies } },
             isError: false,
             isLoading: false,
         } as any)
@@ -105,12 +106,12 @@ describe('<SLAPolicySelect />', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <SLAPolicySelect />
-            </Provider>
+            </Provider>,
         )
 
         await waitFor(() => {
             expect(
-                document.querySelector('.react-loading-skeleton')
+                document.querySelector('.react-loading-skeleton'),
             ).toBeInTheDocument()
         })
     })
@@ -119,7 +120,7 @@ describe('<SLAPolicySelect />', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <SLAPolicySelect />
-            </Provider>
+            </Provider>,
         )
         userEvent.click(screen.getByRole('button'))
 
@@ -135,21 +136,21 @@ describe('<SLAPolicySelect />', () => {
         render(
             <Provider store={store}>
                 <SLAPolicySelect />
-            </Provider>
+            </Provider>,
         )
 
         userEvent.click(screen.getByRole('button'))
         expect(
-            within(screen.getByRole('option', {name: aPolicy.name})).getByRole(
-                'checkbox'
-            )
+            within(
+                screen.getByRole('option', { name: aPolicy.name }),
+            ).getByRole('checkbox'),
         ).not.toBeChecked()
-        userEvent.click(screen.getByRole('option', {name: aPolicy.name}))
+        userEvent.click(screen.getByRole('option', { name: aPolicy.name }))
 
         expect(store.getActions()).toContainEqual(
             mergeStatsFilters({
                 slaPolicies: [aPolicy.uuid],
-            })
+            }),
         )
     })
 
@@ -170,15 +171,15 @@ describe('<SLAPolicySelect />', () => {
         render(
             <Provider store={store}>
                 <SLAPolicySelect />
-            </Provider>
+            </Provider>,
         )
         userEvent.click(screen.getByRole('button'))
-        userEvent.click(screen.getByRole('option', {name: aPolicy.name}))
+        userEvent.click(screen.getByRole('option', { name: aPolicy.name }))
 
         expect(store.getActions()).toContainEqual(
             mergeStatsFilters({
                 slaPolicies: [],
-            })
+            }),
         )
     })
 
@@ -199,21 +200,23 @@ describe('<SLAPolicySelect />', () => {
         render(
             <Provider store={store}>
                 <SLAPolicySelect />
-            </Provider>
+            </Provider>,
         )
 
         userEvent.click(screen.getByRole('button'))
         expect(
             within(
-                screen.getByRole('option', {name: anotherPolicy.name})
-            ).getByRole('checkbox')
+                screen.getByRole('option', { name: anotherPolicy.name }),
+            ).getByRole('checkbox'),
         ).not.toBeChecked()
-        userEvent.click(screen.getByRole('option', {name: anotherPolicy.name}))
+        userEvent.click(
+            screen.getByRole('option', { name: anotherPolicy.name }),
+        )
 
         expect(store.getActions()).toContainEqual(
             mergeStatsFilters({
                 slaPolicies: [aPolicy.uuid, anotherPolicy.uuid],
-            })
+            }),
         )
     })
 
@@ -234,20 +237,20 @@ describe('<SLAPolicySelect />', () => {
         render(
             <Provider store={store}>
                 <SLAPolicySelect />
-            </Provider>
+            </Provider>,
         )
 
         userEvent.click(screen.getByRole('button'))
         userEvent.click(
             screen.getByRole('option', {
                 name: new RegExp(SELECT_ALL_LABEL),
-            })
+            }),
         )
 
         expect(store.getActions()).toContainEqual(
             mergeStatsFilters({
                 slaPolicies: policies.map((policy) => policy.uuid),
-            })
+            }),
         )
     })
 
@@ -261,7 +264,7 @@ describe('<SLAPolicySelect />', () => {
                         end_datetime: '2021-02-03T23:59:59.999Z',
                     },
                     slaPolicies: withDefaultLogicalOperator(
-                        policies.map((policy) => policy.uuid)
+                        policies.map((policy) => policy.uuid),
                     ),
                 },
             },
@@ -270,7 +273,7 @@ describe('<SLAPolicySelect />', () => {
         render(
             <Provider store={store}>
                 <SLAPolicySelect />
-            </Provider>
+            </Provider>,
         )
 
         userEvent.click(screen.getByRole('button'))
@@ -279,8 +282,8 @@ describe('<SLAPolicySelect />', () => {
             policies.forEach((policy) => {
                 expect(
                     within(
-                        screen.getByRole('option', {name: policy.name})
-                    ).getByRole('checkbox')
+                        screen.getByRole('option', { name: policy.name }),
+                    ).getByRole('checkbox'),
                 ).toBeChecked()
             })
         })
@@ -288,13 +291,13 @@ describe('<SLAPolicySelect />', () => {
         userEvent.click(
             screen.getByRole('option', {
                 name: new RegExp(DESELECT_ALL_LABEL),
-            })
+            }),
         )
 
         expect(store.getActions()).toContainEqual(
             mergeStatsFilters({
                 slaPolicies: [],
-            })
+            }),
         )
     })
 
@@ -308,7 +311,7 @@ describe('<SLAPolicySelect />', () => {
                         end_datetime: '2021-02-03T23:59:59.999Z',
                     },
                     slaPolicies: withDefaultLogicalOperator(
-                        policies.map((policy) => policy.uuid)
+                        policies.map((policy) => policy.uuid),
                     ),
                 },
             },
@@ -317,7 +320,7 @@ describe('<SLAPolicySelect />', () => {
         render(
             <Provider store={store}>
                 <SLAPolicySelect />
-            </Provider>
+            </Provider>,
         )
 
         userEvent.click(screen.getByRole('button'))
@@ -347,12 +350,12 @@ describe('<SLAPolicySelect />', () => {
         render(
             <Provider store={store}>
                 <SLAPolicySelect />
-            </Provider>
+            </Provider>,
         )
         userEvent.click(screen.getByRole('button'))
         expect(screen.queryByText(anotherPolicy.name)).toBeInTheDocument()
         const searchInput = screen.getByPlaceholderText(
-            POLICIES_SEARCH_INPUT_PLACEHOLDER
+            POLICIES_SEARCH_INPUT_PLACEHOLDER,
         )
         userEvent.paste(searchInput, aPolicy.name)
 

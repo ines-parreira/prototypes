@@ -3,7 +3,7 @@ import React from 'react'
 import BodyCell, {
     Props as BodyCellProps,
 } from 'pages/common/components/table/cells/BodyCell'
-import {NOT_AVAILABLE_PLACEHOLDER} from 'pages/stats/common/utils'
+import { NOT_AVAILABLE_PLACEHOLDER } from 'pages/stats/common/utils'
 
 export type Props = Omit<BodyCellProps, 'children' | 'ref'> & {
     assignee: string | null

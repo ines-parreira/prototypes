@@ -1,37 +1,34 @@
-import {screen, render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+
+import { render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {billingState} from 'fixtures/billing'
-import {campaign} from 'fixtures/campaign'
-import {channelConnection} from 'fixtures/channelConnection'
+import { billingState } from 'fixtures/billing'
+import { campaign } from 'fixtures/campaign'
+import { channelConnection } from 'fixtures/channelConnection'
 import {
     convertStatusLimitReached,
     convertStatusNotInstalled,
 } from 'fixtures/convert'
-import {entitiesInitialState} from 'fixtures/entities'
-import {integrationsState} from 'fixtures/integrations'
-import {user} from 'fixtures/users'
+import { entitiesInitialState } from 'fixtures/entities'
+import { integrationsState } from 'fixtures/integrations'
+import { user } from 'fixtures/users'
 import useSearch from 'hooks/useSearch'
-
 import * as revenueBetaHook from 'pages/common/hooks/useIsConvertSubscriber'
-
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import {RootState, StoreDispatch} from 'state/types'
-import {assumeMock} from 'utils/testing'
+import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import { RootState, StoreDispatch } from 'state/types'
+import { assumeMock } from 'utils/testing'
 
-import {useCampaignListOptions} from '../../../hooks/useCampaignListOptions'
-import {CampaignListOptions} from '../../../providers/CampaignListOptions'
-import {Campaign} from '../../../types/Campaign'
-import {CampaignStatus} from '../../../types/enums/CampaignStatus.enum'
-
-import {CampaignTriggerType} from '../../../types/enums/CampaignTriggerType.enum'
-import {createTrigger} from '../../../utils/createTrigger'
-
+import { useCampaignListOptions } from '../../../hooks/useCampaignListOptions'
+import { CampaignListOptions } from '../../../providers/CampaignListOptions'
+import { Campaign } from '../../../types/Campaign'
+import { CampaignStatus } from '../../../types/enums/CampaignStatus.enum'
+import { CampaignTriggerType } from '../../../types/enums/CampaignTriggerType.enum'
+import { createTrigger } from '../../../utils/createTrigger'
 import CampaignsList from '../CampaignsList'
 
 jest.mock('hooks/useSearch')
@@ -42,12 +39,12 @@ const useGetConvertStatusMock = assumeMock(useGetConvertStatus)
 
 jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')
 const useGetOrCreateChannelConnectionMock = assumeMock(
-    useGetOrCreateChannelConnection
+    useGetOrCreateChannelConnection,
 )
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-const campaignsList = Array.from({length: 19}, (_, i) => ({
+const campaignsList = Array.from({ length: 19 }, (_, i) => ({
     ...campaign,
     id: i,
     name: `campaign ${i}`,
@@ -81,7 +78,7 @@ describe('<CampaignsList />', () => {
     beforeAll(() => {
         jest.spyOn(
             revenueBetaHook,
-            'useIsConvertSubscriber'
+            'useIsConvertSubscriber',
         ).mockImplementation(() => true)
     })
 
@@ -117,18 +114,18 @@ describe('<CampaignsList />', () => {
 
     describe('Campaigns intro Candu links', () => {
         it('should display', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <CampaignListOptions>
                         <CampaignsList {...props} />
                     </CampaignListOptions>
-                </Provider>
+                </Provider>,
             )
 
             expect(
                 container.querySelector(
-                    '[data-candu-id="convert-links-campaign-list"]'
-                )
+                    '[data-candu-id="convert-links-campaign-list"]',
+                ),
             ).toBeInTheDocument()
         })
     })
@@ -171,7 +168,7 @@ describe('<CampaignsList />', () => {
                             ]}
                         />
                     </CampaignListOptions>
-                </Provider>
+                </Provider>,
             )
 
             screen.getByText('Awesome campaign')
@@ -188,10 +185,10 @@ describe('<CampaignsList />', () => {
                 }
             })
 
-            const {getByText} = render(
+            const { getByText } = render(
                 <Provider store={store}>
                     <CampaignsList {...props} />
-                </Provider>
+                </Provider>,
             )
 
             getByText('No campaigns match your search and filters.')
@@ -200,10 +197,10 @@ describe('<CampaignsList />', () => {
 
     describe('Campaign filter when A/B test LD is enabled', () => {
         it('should display A/B Test filter', () => {
-            const {getByText} = render(
+            const { getByText } = render(
                 <Provider store={store}>
                     <CampaignsList {...props} />
-                </Provider>
+                </Provider>,
             )
 
             getByText('All')
@@ -234,10 +231,10 @@ describe('<CampaignsList />', () => {
         ] as unknown[] as Campaign[]
 
         it('should display the status filter', () => {
-            const {getByText} = render(
+            const { getByText } = render(
                 <Provider store={store}>
                     <CampaignsList {...props} />
-                </Provider>
+                </Provider>,
             )
 
             getByText('All')
@@ -246,10 +243,10 @@ describe('<CampaignsList />', () => {
         })
 
         it('should not display the status filter if there are no campaigns', () => {
-            const {getByText} = render(
+            const { getByText } = render(
                 <Provider store={store}>
                     <CampaignsList {...props} campaigns={[]} />
-                </Provider>
+                </Provider>,
             )
 
             expect(() => getByText('All')).toThrow()
@@ -258,10 +255,10 @@ describe('<CampaignsList />', () => {
         })
 
         it('should display all campaigns by default', () => {
-            const {getByText} = render(
+            const { getByText } = render(
                 <Provider store={store}>
                     <CampaignsList {...props} campaigns={campaignsForFilters} />
-                </Provider>
+                </Provider>,
             )
 
             getByText('Super campaign')
@@ -278,10 +275,10 @@ describe('<CampaignsList />', () => {
                 }
             })
 
-            const {getByText} = render(
+            const { getByText } = render(
                 <Provider store={store}>
                     <CampaignsList {...props} campaigns={campaignsForFilters} />
-                </Provider>
+                </Provider>,
             )
 
             getByText('Super campaign')
@@ -298,10 +295,10 @@ describe('<CampaignsList />', () => {
                 }
             })
 
-            const {getByText} = render(
+            const { getByText } = render(
                 <Provider store={store}>
                     <CampaignsList {...props} campaigns={campaignsForFilters} />
-                </Provider>
+                </Provider>,
             )
 
             expect(() => getByText('Super campaign')).toThrow()
@@ -315,13 +312,15 @@ describe('<CampaignsList />', () => {
 
         it('should render setup infobar', () => {
             useGetConvertStatusMock.mockReturnValue(convertStatusNotInstalled)
-            const {queryByText} = render(
+            const { queryByText } = render(
                 <Provider store={store}>
                     <CampaignsList {...props} campaigns={campaignsList} />
-                </Provider>
+                </Provider>,
             )
 
-            expect(queryByText(messageText, {exact: false})).toBeInTheDocument()
+            expect(
+                queryByText(messageText, { exact: false }),
+            ).toBeInTheDocument()
             expect(queryByText(buttonText)).toBeInTheDocument()
         })
     })
@@ -332,13 +331,15 @@ describe('<CampaignsList />', () => {
 
         it('should render limit reached banner', () => {
             useGetConvertStatusMock.mockReturnValue(convertStatusLimitReached)
-            const {queryByText} = render(
+            const { queryByText } = render(
                 <Provider store={store}>
                     <CampaignsList {...props} campaigns={campaignsList} />
-                </Provider>
+                </Provider>,
             )
 
-            expect(queryByText(messageText, {exact: false})).toBeInTheDocument()
+            expect(
+                queryByText(messageText, { exact: false }),
+            ).toBeInTheDocument()
             expect(queryByText(buttonText)).toBeInTheDocument()
         })
     })

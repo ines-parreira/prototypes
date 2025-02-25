@@ -1,11 +1,11 @@
-import {screen, fireEvent, render, waitFor} from '@testing-library/react'
 import React from 'react'
 
-import {CampaignTriggerOperator} from '../../../types/enums/CampaignTriggerOperator.enum'
-import {CampaignTriggerType} from '../../../types/enums/CampaignTriggerType.enum'
-import {createTrigger} from '../../../utils/createTrigger'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
-import {CampaignPreviewPopover} from '../CampaignPreviewPopover'
+import { CampaignTriggerOperator } from '../../../types/enums/CampaignTriggerOperator.enum'
+import { CampaignTriggerType } from '../../../types/enums/CampaignTriggerType.enum'
+import { createTrigger } from '../../../utils/createTrigger'
+import { CampaignPreviewPopover } from '../CampaignPreviewPopover'
 
 const message =
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc in arcu nisl. Donec ligula lacus, mattis nec purus vel, imperdiet varius ex. Praesent in malesuada purus. Morbi sollicitudin risus urna, non scelerisque eros maximus at. Proin accumsan, velit sit amet pellentesque bibendum, est tortor dictum odio, vitae pulvinar quam dolor at tortor.'
@@ -21,7 +21,7 @@ describe('<CampaignPreviewPopover />', () => {
         render(
             <CampaignPreviewPopover message={message} triggers={triggers}>
                 <div>Campaign name preview</div>
-            </CampaignPreviewPopover>
+            </CampaignPreviewPopover>,
         )
 
         fireEvent.mouseOver(screen.getByText('Campaign name preview'))
@@ -35,7 +35,7 @@ describe('<CampaignPreviewPopover />', () => {
         render(
             <CampaignPreviewPopover message={message} triggers={triggers}>
                 <div>Campaign name preview</div>
-            </CampaignPreviewPopover>
+            </CampaignPreviewPopover>,
         )
 
         fireEvent.mouseOver(screen.getByText('Campaign name preview'))
@@ -44,7 +44,7 @@ describe('<CampaignPreviewPopover />', () => {
             expect(screen.getByText('Total spent')).toBeInTheDocument()
             expect(screen.getByText('Amount added to cart')).toBeInTheDocument()
             expect(
-                screen.getByText('Currently visited product')
+                screen.getByText('Currently visited product'),
             ).toBeInTheDocument()
             expect(screen.getByText('Business hours')).toBeInTheDocument()
         })
@@ -69,7 +69,7 @@ describe('<CampaignPreviewPopover />', () => {
         render(
             <CampaignPreviewPopover message={message} triggers={triggers}>
                 <div>Campaign name preview</div>
-            </CampaignPreviewPopover>
+            </CampaignPreviewPopover>,
         )
 
         fireEvent.mouseOver(screen.getByText('Campaign name preview'))

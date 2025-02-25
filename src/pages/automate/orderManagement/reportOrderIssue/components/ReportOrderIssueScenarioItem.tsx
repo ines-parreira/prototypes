@@ -1,11 +1,16 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { RefObject } from 'react'
+
 import classnames from 'classnames'
-import React, {RefObject} from 'react'
-import {useHistory, useLocation} from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useId from 'hooks/useId'
-import {SelfServiceReportIssueCase} from 'models/selfServiceConfiguration/types'
-import {DragItemRequired, useReorderDnD} from 'pages/common/hooks/useReorderDnD'
+import { SelfServiceReportIssueCase } from 'models/selfServiceConfiguration/types'
+import {
+    DragItemRequired,
+    useReorderDnD,
+} from 'pages/common/hooks/useReorderDnD'
 
 import css from './ReportOrderIssueScenarioItem.less'
 
@@ -21,7 +26,7 @@ type Props = {
     item: SelfServiceReportIssueCase
 }
 
-type DragItem = {id: string} & DragItemRequired
+type DragItem = { id: string } & DragItemRequired
 
 const TARGET_TYPE = 'report-order-issue-scenario'
 
@@ -37,13 +42,13 @@ const ReportOrderIssueScenarioItem = ({
     item,
 }: Props) => {
     const history = useHistory()
-    const {pathname} = useLocation()
+    const { pathname } = useLocation()
     const orderIssueIconId = 'order-issue-icon' + useId()
-    const {dragRef, dropRef, handlerId, isDragging} = useReorderDnD<DragItem>(
-        {id, type: TARGET_TYPE, position},
+    const { dragRef, dropRef, handlerId, isDragging } = useReorderDnD<DragItem>(
+        { id, type: TARGET_TYPE, position },
         [TARGET_TYPE],
-        {onHover: onMove, onDrop, onCancel},
-        isDraggable
+        { onHover: onMove, onDrop, onCancel },
+        isDraggable,
     )
 
     const handleClick = () => {
@@ -52,7 +57,7 @@ const ReportOrderIssueScenarioItem = ({
     const isResponseNotConfiguredForAny = item.newReasons.some(
         (reason) =>
             !reason.action?.responseMessageContent.html &&
-            !reason.action?.responseMessageContent.text
+            !reason.action?.responseMessageContent.text,
     )
     return (
         <tr
@@ -63,7 +68,7 @@ const ReportOrderIssueScenarioItem = ({
             {...(isDraggable
                 ? {
                       ref: dropRef as RefObject<HTMLTableRowElement>,
-                      style: {opacity: isDragging ? 0 : 1},
+                      style: { opacity: isDragging ? 0 : 1 },
                       'data-handler-id': handlerId,
                   }
                 : {})}

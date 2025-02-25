@@ -1,7 +1,7 @@
-import {getAIGuidanceFixture} from 'pages/aiAgent/fixtures/aiGuidance.fixture'
-import {HelpCenterClient} from 'rest_api/help_center_api/client'
+import { getAIGuidanceFixture } from 'pages/aiAgent/fixtures/aiGuidance.fixture'
+import { HelpCenterClient } from 'rest_api/help_center_api/client'
 
-import {getAIGeneratedGuidances} from '../resources/guidances'
+import { getAIGeneratedGuidances } from '../resources/guidances'
 
 const help_center_id = 1
 const store_integration_id = 1
@@ -22,12 +22,12 @@ describe('resources', () => {
         it('should return correct params from API', async () => {
             const listAIGuidancesByHelpCenterAndStore = jest
                 .fn()
-                .mockReturnValue(Promise.resolve({data: mockedAIGuidances}))
+                .mockReturnValue(Promise.resolve({ data: mockedAIGuidances }))
             const result = await getAIGeneratedGuidances(
                 {
                     listAIGuidancesByHelpCenterAndStore,
                 } as unknown as HelpCenterClient,
-                {help_center_id, store_integration_id}
+                { help_center_id, store_integration_id },
             )
 
             expect(result).toEqual(mockedAIGuidances)

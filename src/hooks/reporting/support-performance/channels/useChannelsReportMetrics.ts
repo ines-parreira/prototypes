@@ -3,7 +3,6 @@ import {
     TableDataSources,
     useTableReportData,
 } from 'hooks/reporting/common/useTableReportData'
-
 import {
     fetchClosedTicketsMetricPerChannel,
     fetchCreatedTicketsMetricPerChannel,
@@ -14,17 +13,17 @@ import {
     fetchTicketAverageHandleTimePerChannel,
     fetchTicketsRepliedMetricPerChannel,
 } from 'hooks/reporting/support-performance/channels/metricsPerChannel'
-import {fetchPercentageOfCreatedTicketsMetricPerChannel} from 'hooks/reporting/support-performance/channels/usePercentageOfCreatedTicketsMetricPerChannel'
-import {getCsvFileNameWithDates} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-import {useSortedChannels} from 'hooks/reporting/support-performance/useSortedChannels'
-import {useChannelsTableSetting} from 'hooks/reporting/useChannelsTableConfigSetting'
-import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
-import {Channel} from 'models/channel/types'
-import {ReportingGranularity} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
-import {saveReport} from 'services/reporting/channelsReportingService'
-import {ChannelsTableColumns} from 'state/ui/stats/types'
+import { fetchPercentageOfCreatedTicketsMetricPerChannel } from 'hooks/reporting/support-performance/channels/usePercentageOfCreatedTicketsMetricPerChannel'
+import { getCsvFileNameWithDates } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useSortedChannels } from 'hooks/reporting/support-performance/useSortedChannels'
+import { useChannelsTableSetting } from 'hooks/reporting/useChannelsTableConfigSetting'
+import { MetricWithDecile } from 'hooks/reporting/useMetricPerDimension'
+import { Channel } from 'models/channel/types'
+import { ReportingGranularity } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
+import { saveReport } from 'services/reporting/channelsReportingService'
+import { ChannelsTableColumns } from 'state/ui/stats/types'
 
 export const CHANNELS_REPORT_FILE_NAME = 'channels-metrics'
 
@@ -84,21 +83,21 @@ export const ChannelsMetricsDataSources: TableDataSources<ChannelsReportData> =
     ]
 
 export const useChannelsReportMetrics = () => {
-    const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
-    const {columnsOrder} = useChannelsTableSetting()
-    const {sortedChannels: channels, isLoading} = useSortedChannels()
+    const { cleanStatsFilters, userTimezone } = useNewStatsFilters()
+    const { columnsOrder } = useChannelsTableSetting()
+    const { sortedChannels: channels, isLoading } = useSortedChannels()
 
-    const {data: reportData, isFetching} = useTableReportData<
+    const { data: reportData, isFetching } = useTableReportData<
         keyof ChannelsReportData,
         MetricWithDecile
     >(cleanStatsFilters, userTimezone, ChannelsMetricsDataSources)
 
     const fileName = getCsvFileNameWithDates(
         cleanStatsFilters.period,
-        CHANNELS_REPORT_FILE_NAME
+        CHANNELS_REPORT_FILE_NAME,
     )
 
-    const {files} = saveReport(channels, reportData, columnsOrder, fileName)
+    const { files } = saveReport(channels, reportData, columnsOrder, fileName)
 
     return {
         files,
@@ -116,12 +115,12 @@ export const fetchChannelsTableReportData = async (
     context: {
         channels: Channel[]
         channelColumnsOrder: ChannelsTableColumns[]
-    }
+    },
 ) => {
     const metricConfig = ChannelsMetricsDataSources
     const fileName = getCsvFileNameWithDates(
         cleanStatsFilters.period,
-        CHANNELS_REPORT_FILE_NAME
+        CHANNELS_REPORT_FILE_NAME,
     )
     return Promise.all([
         fetchTableReportData(cleanStatsFilters, userTimezone, metricConfig),
@@ -134,10 +133,10 @@ export const fetchChannelsTableReportData = async (
                     context.channels,
                     metrics.data,
                     context.channelColumnsOrder,
-                    fileName
+                    fileName,
                 ),
                 fileName,
             }
         })
-        .catch(() => ({isLoading: false, isError: true, files: {}, fileName}))
+        .catch(() => ({ isLoading: false, isError: true, files: {}, fileName }))
 }

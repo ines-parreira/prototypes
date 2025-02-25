@@ -1,10 +1,11 @@
-import {fireEvent, render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {advancedMonthlyHelpdeskPlan} from 'fixtures/productPrices'
-import {CouponSummary, ProductType} from 'models/billing/types'
-import {getPlanDescription} from 'models/billing/utils'
-import {assumeMock} from 'utils/testing'
+import { fireEvent, render, screen } from '@testing-library/react'
+
+import { advancedMonthlyHelpdeskPlan } from 'fixtures/productPrices'
+import { CouponSummary, ProductType } from 'models/billing/types'
+import { getPlanDescription } from 'models/billing/utils'
+import { assumeMock } from 'utils/testing'
 
 import AddSalesCouponModal from '../../AddSalesCouponModal'
 import ProductCardForCoupon from '../ProductCardForCoupon'
@@ -12,7 +13,7 @@ import ProductCardForCoupon from '../ProductCardForCoupon'
 const endOfTrialDatetime = '2024-06-25T09:27:00+00:00'
 const availableCoupons = ['sales-hd-year-05%-once', 'sales-hd-year-10%-once']
 jest.mock('../../AddSalesCouponModal/AddSalesCouponModal', () =>
-    jest.fn(() => <div data-testid="add-sales-coupon-modal"></div>)
+    jest.fn(() => <div data-testid="add-sales-coupon-modal"></div>),
 )
 const AddSalesCouponModalMock = assumeMock(AddSalesCouponModal)
 
@@ -27,10 +28,10 @@ describe('ProductCardForCoupon', () => {
                 plan={advancedMonthlyHelpdeskPlan}
                 canApplyProductCoupon={false}
                 availableCoupons={availableCoupons}
-            />
+            />,
         )
         expect(
-            screen.getByText(getPlanDescription(advancedMonthlyHelpdeskPlan))
+            screen.getByText(getPlanDescription(advancedMonthlyHelpdeskPlan)),
         ).toBeInTheDocument()
     })
 
@@ -44,7 +45,7 @@ describe('ProductCardForCoupon', () => {
                 plan={advancedMonthlyHelpdeskPlan}
                 canApplyProductCoupon={false}
                 availableCoupons={availableCoupons}
-            />
+            />,
         )
         expect(screen.getByText('Free trial ends on')).toBeInTheDocument()
         expect(screen.getByText('June 25, 2024')).toBeInTheDocument()
@@ -60,10 +61,10 @@ describe('ProductCardForCoupon', () => {
                 plan={advancedMonthlyHelpdeskPlan}
                 canApplyProductCoupon={true}
                 availableCoupons={availableCoupons}
-            />
+            />,
         )
         expect(
-            screen.getByRole('button', {name: /Apply Helpdesk coupon/i})
+            screen.getByRole('button', { name: /Apply Helpdesk coupon/i }),
         ).toBeInTheDocument()
     })
 
@@ -77,10 +78,10 @@ describe('ProductCardForCoupon', () => {
                 plan={advancedMonthlyHelpdeskPlan}
                 canApplyProductCoupon={true}
                 availableCoupons={availableCoupons}
-            />
+            />,
         )
         fireEvent.click(
-            screen.getByRole('button', {name: /Apply Helpdesk coupon/i})
+            screen.getByRole('button', { name: /Apply Helpdesk coupon/i }),
         )
 
         expect(AddSalesCouponModalMock).toHaveBeenLastCalledWith(
@@ -91,7 +92,7 @@ describe('ProductCardForCoupon', () => {
                 onCloseModal: expect.any(Function),
                 title: 'Apply Helpdesk coupon',
             },
-            {}
+            {},
         )
     })
 
@@ -105,10 +106,10 @@ describe('ProductCardForCoupon', () => {
                 plan={advancedMonthlyHelpdeskPlan}
                 canApplyProductCoupon={false}
                 availableCoupons={availableCoupons}
-            />
+            />,
         )
         expect(
-            screen.queryByRole('button', {name: /Apply Helpdesk coupon/i})
+            screen.queryByRole('button', { name: /Apply Helpdesk coupon/i }),
         ).not.toBeInTheDocument()
     })
 
@@ -131,7 +132,7 @@ describe('ProductCardForCoupon', () => {
                 plan={advancedMonthlyHelpdeskPlan}
                 canApplyProductCoupon={false}
                 availableCoupons={availableCoupons}
-            />
+            />,
         )
         expect(screen.getByText(coupon.name)).toBeInTheDocument()
 
@@ -150,7 +151,7 @@ describe('ProductCardForCoupon', () => {
                 onCloseModal: expect.any(Function),
                 title: 'Apply Helpdesk coupon',
             },
-            {}
+            {},
         )
     })
 })

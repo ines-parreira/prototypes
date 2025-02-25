@@ -1,15 +1,17 @@
-import {ExpressionOperator} from '@gorgias/api-queries'
 import React from 'react'
 
-import {FormField, useWatch} from 'core/forms'
-import {CustomField} from 'custom-fields/types'
+import { ExpressionOperator } from '@gorgias/api-queries'
+
+import { FormField, useWatch } from 'core/forms'
+import { CustomField } from 'custom-fields/types'
 import IconButton from 'pages/common/components/button/IconButton'
 
+import { FieldField } from './FieldField'
+import { OperatorField } from './OperatorField'
+import { Pill } from './Pill'
+import { ValueField } from './ValueField'
+
 import css from './ExpressionRow.less'
-import {FieldField} from './FieldField'
-import {OperatorField} from './OperatorField'
-import {Pill} from './Pill'
-import {ValueField} from './ValueField'
 
 type ExpressionRowProps = {
     index: number
@@ -27,7 +29,7 @@ export const ExpressionRow = function ExpressionRow({
     })
 
     const pickedDefinition = customFieldDefinitions?.find(
-        ({id}) => id === field
+        ({ id }) => id === field,
     )
 
     return (

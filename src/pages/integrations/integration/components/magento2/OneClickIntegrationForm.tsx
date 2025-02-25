@@ -1,7 +1,9 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import {fromJS, Map} from 'immutable'
-import React, {FormEvent, useState} from 'react'
-import {Form} from 'reactstrap'
+import React, { FormEvent, useState } from 'react'
+
+import { fromJS, Map } from 'immutable'
+import { Form } from 'reactstrap'
+
+import { Label } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -9,15 +11,15 @@ import Caption from 'pages/common/forms/Caption/Caption'
 import GroupAddon from 'pages/common/forms/input/GroupAddon'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import TextInput from 'pages/common/forms/input/TextInput'
-import {updateOrCreateIntegrationRequest} from 'state/integrations/actions'
-import {getMagento2IntegrationByStoreUrl} from 'state/integrations/selectors'
+import { updateOrCreateIntegrationRequest } from 'state/integrations/actions'
+import { getMagento2IntegrationByStoreUrl } from 'state/integrations/selectors'
 
 import IntegrationActionButtons from './IntegrationActionButtons'
 import {
-    StoreAdminNewUrlInput,
     STORE_ADMIN_URL_INPUT_ID,
+    StoreAdminNewUrlInput,
 } from './StoreAdminNewUrlInput'
-import {split_url} from './utils'
+import { split_url } from './utils'
 
 type Props = {
     integration: Map<string, any>
@@ -41,10 +43,10 @@ const OneClickIntegrationForm = ({
     }
     const [values, setValues] = useState(metaValues)
 
-    const {storeURL} = values
+    const { storeURL } = values
 
     const existingMagento2Integration = useAppSelector(
-        getMagento2IntegrationByStoreUrl(storeURL)
+        getMagento2IntegrationByStoreUrl(storeURL),
     )
 
     const error =
@@ -68,15 +70,15 @@ const OneClickIntegrationForm = ({
                         is_manual: false,
                         auth: null,
                     }),
-                })
-            )
+                }),
+            ),
         )
     }
 
     const handleCreate = () => {
         const [url, suffix] = split_url(storeURL)
         window.location.href = redirectUri.concat(
-            `?store_url=${url}&admin_url_suffix=${suffix}`
+            `?store_url=${url}&admin_url_suffix=${suffix}`,
         )
     }
 

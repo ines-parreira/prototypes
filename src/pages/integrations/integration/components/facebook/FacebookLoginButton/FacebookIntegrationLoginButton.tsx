@@ -1,8 +1,8 @@
-import React, {FC, ReactNode, SyntheticEvent} from 'react'
+import React, { FC, ReactNode, SyntheticEvent } from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {ButtonIntent} from 'pages/common/components/button/Button'
-import {getFacebookRedirectUri} from 'state/integrations/selectors'
+import { ButtonIntent } from 'pages/common/components/button/Button'
+import { getFacebookRedirectUri } from 'state/integrations/selectors'
 
 import FacebookLoginButton from './FacebookLoginButton'
 

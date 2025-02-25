@@ -1,8 +1,10 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
+import React, { ReactNode } from 'react'
+
 import classnames from 'classnames'
-import React, {ReactNode} from 'react'
-import {NavLink} from 'react-router-dom'
-import {Container} from 'reactstrap'
+import { NavLink } from 'react-router-dom'
+import { Container } from 'reactstrap'
+
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import PageHeader from 'pages/common/components/PageHeader'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
@@ -46,18 +48,18 @@ export const AiAgentView = ({
                 {headerNavbarItems && (
                     <SecondaryNavbar>
                         {headerNavbarItems.map(
-                            ({route, title, exact, dataCanduId}) => (
+                            ({ route, title, exact, dataCanduId }) => (
                                 <NavLink
                                     key={route}
                                     to={route}
                                     exact={exact}
                                     {...(dataCanduId
-                                        ? {'data-candu-id': dataCanduId}
+                                        ? { 'data-candu-id': dataCanduId }
                                         : {})}
                                 >
                                     {title}
                                 </NavLink>
-                            )
+                            ),
                         )}
                     </SecondaryNavbar>
                 )}

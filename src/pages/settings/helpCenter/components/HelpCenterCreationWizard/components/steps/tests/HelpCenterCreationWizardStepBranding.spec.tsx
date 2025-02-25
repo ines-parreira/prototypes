@@ -1,23 +1,27 @@
 import 'tests/__mocks__/intersectionObserverMock'
 
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {HelpCenter, HelpCenterCreationWizardStep} from 'models/helpCenter/types'
+import { FeatureFlagKey } from 'config/featureFlags'
+import {
+    HelpCenter,
+    HelpCenterCreationWizardStep,
+} from 'models/helpCenter/types'
 import Wizard from 'pages/common/components/wizard/Wizard'
 import CurrentHelpCenterContext from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
 import {
     HelpCenterApiBrandingFixture,
     HelpCenterUiBrandingFixture,
 } from 'pages/settings/helpCenter/fixtures/wizard.fixture'
-import {HelpCenterLayout} from 'pages/settings/helpCenter/types/layout.enum'
+import { HelpCenterLayout } from 'pages/settings/helpCenter/types/layout.enum'
 
-import {useHelpCenterCreationWizard} from '../../../hooks/useHelpCenterCreationWizard'
+import { useHelpCenterCreationWizard } from '../../../hooks/useHelpCenterCreationWizard'
 import HelpCenterCreationWizardStepBranding from '../HelpCenterCreationWizardStepBranding'
 
 jest.mock('../../../hooks/useHelpCenterCreationWizard', () => ({
@@ -35,8 +39,8 @@ const mockedHook = {
 
 const store = configureMockStore([thunk])()
 
-const renderComponent = (fixtures?: {helpCenter?: HelpCenter}) => {
-    const {helpCenter = HelpCenterApiBrandingFixture} = fixtures ?? {}
+const renderComponent = (fixtures?: { helpCenter?: HelpCenter }) => {
+    const { helpCenter = HelpCenterApiBrandingFixture } = fixtures ?? {}
 
     render(
         <Provider store={store}>
@@ -47,7 +51,7 @@ const renderComponent = (fixtures?: {helpCenter?: HelpCenter}) => {
                     />
                 </Wizard>
             </CurrentHelpCenterContext.Provider>
-        </Provider>
+        </Provider>,
     )
 }
 
@@ -96,7 +100,7 @@ describe('<HelpCenterCreationWizardStepBranding />', () => {
         renderComponent()
         expect(screen.queryByTestId('image-upload-preview')).toHaveAttribute(
             'src',
-            'https://test.com/test.png'
+            'https://test.com/test.png',
         )
     })
 
@@ -104,7 +108,7 @@ describe('<HelpCenterCreationWizardStepBranding />', () => {
         renderComponent()
 
         const colorPickerInput = screen.getByTestId('color-picker-input')
-        fireEvent.change(colorPickerInput, {target: {value: '#000000'}})
+        fireEvent.change(colorPickerInput, { target: { value: '#000000' } })
 
         expect(mockedHook.handleFormUpdate).toHaveBeenCalledWith({
             primaryColor: '#000000',
@@ -115,7 +119,7 @@ describe('<HelpCenterCreationWizardStepBranding />', () => {
         renderComponent()
 
         await waitFor(() =>
-            expect(screen.getByText('Verdana')).toBeInTheDocument()
+            expect(screen.getByText('Verdana')).toBeInTheDocument(),
         )
 
         fireEvent.click(screen.getByText('Verdana'))

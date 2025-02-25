@@ -1,11 +1,12 @@
-import {screen} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {AI_AGENT} from 'pages/aiAgent/constants'
+import { screen } from '@testing-library/react'
+
+import { AI_AGENT } from 'pages/aiAgent/constants'
 import history from 'pages/history'
-import {renderWithRouter} from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
-import {AiAgentLayout} from '../AiAgentLayout'
+import { AiAgentLayout } from '../AiAgentLayout'
 
 jest.mock('../../../providers/AiAgentStoreConfigurationContext', () => ({
     useAiAgentStoreConfigurationContext: () => ({
@@ -29,12 +30,12 @@ jest.mock('../../../hooks/useAiAgentEnabled', () => ({
 }))
 
 const renderComponent = (
-    props: Partial<ComponentProps<typeof AiAgentLayout>>
+    props: Partial<ComponentProps<typeof AiAgentLayout>>,
 ) => {
     renderWithRouter(
         <AiAgentLayout shopName="test-shop" title={AI_AGENT} {...props}>
             Test Content
-        </AiAgentLayout>
+        </AiAgentLayout>,
     )
 }
 describe('<AiAgentLayout />', () => {

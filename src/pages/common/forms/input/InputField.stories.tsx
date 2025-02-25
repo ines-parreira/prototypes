@@ -1,5 +1,6 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps, CSSProperties, useState} from 'react'
+import React, { ComponentProps, CSSProperties, useState } from 'react'
+
+import { Meta, Story } from '@storybook/react'
 
 import IconInput from './IconInput'
 import InputField from './InputField'
@@ -55,7 +56,7 @@ const storyConfig: Meta = {
 }
 
 const SimpleInputTemplate: Story<ComponentProps<typeof InputField>> = (
-    props: ComponentProps<typeof InputField>
+    props: ComponentProps<typeof InputField>,
 ) => {
     const [value, setValue] = useState('')
 
@@ -70,7 +71,7 @@ const iconStyle = {
 }
 
 const InputWithIconsTemplate: Story<ComponentProps<typeof InputField>> = (
-    props: ComponentProps<typeof InputField>
+    props: ComponentProps<typeof InputField>,
 ) => {
     const [value, setValue] = useState('')
 

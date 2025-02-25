@@ -1,12 +1,14 @@
-import classNames from 'classnames'
-import React, {useState} from 'react'
-import {CardHeader, Card, Collapse, CardBody} from 'reactstrap'
+import React, { useState } from 'react'
 
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import classNames from 'classnames'
+import { Card, CardBody, CardHeader, Collapse } from 'reactstrap'
+
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import InstallationCodeSnippet from 'pages/common/components/InstallationCodeSnippet/InstallationCodeSnippet'
 
+import { InstructionTab } from './types'
+
 import css from './InstructionsCard.less'
-import {InstructionTab} from './types'
 
 function InstructionsCardHeader(props: {
     title: string
@@ -14,7 +16,7 @@ function InstructionsCardHeader(props: {
     toggleIsOpen: () => void
     isOpen: boolean
 }) {
-    const {title, description, toggleIsOpen, isOpen} = props
+    const { title, description, toggleIsOpen, isOpen } = props
     return (
         <CardHeader className={css.instructionsCardHeader}>
             <div>
@@ -33,8 +35,8 @@ function InstructionsCardHeader(props: {
     )
 }
 
-function Instructions(props: {instructions: string[]}) {
-    const {instructions} = props
+function Instructions(props: { instructions: string[] }) {
+    const { instructions } = props
 
     if (instructions.length === 0) {
         return null
@@ -50,7 +52,9 @@ function Instructions(props: {instructions: string[]}) {
                                 {index + 1}
                             </div>
                         </div>
-                        <div dangerouslySetInnerHTML={{__html: instruction}} />
+                        <div
+                            dangerouslySetInnerHTML={{ __html: instruction }}
+                        />
                     </div>
                 )
             })}
@@ -58,8 +62,8 @@ function Instructions(props: {instructions: string[]}) {
     )
 }
 
-function InstructionAlert(props: {alert?: string}) {
-    const {alert} = props
+function InstructionAlert(props: { alert?: string }) {
+    const { alert } = props
 
     if (!alert) {
         return null
@@ -67,7 +71,7 @@ function InstructionAlert(props: {alert?: string}) {
 
     return (
         <Alert type={AlertType.Warning} className={css.mbM}>
-            <span dangerouslySetInnerHTML={{__html: alert}} />
+            <span dangerouslySetInnerHTML={{ __html: alert }} />
         </Alert>
     )
 }
@@ -77,7 +81,7 @@ function TabNavigation(props: {
     activeTabId: string
     setActiveTabId: React.Dispatch<React.SetStateAction<string>>
 }) {
-    const {tabs, activeTabId, setActiveTabId} = props
+    const { tabs, activeTabId, setActiveTabId } = props
 
     // we don't display the tab navigation if there is only one tab
     if (tabs.length <= 1) {
@@ -106,10 +110,10 @@ function TabContent(props: {
     activeTabId: string
     onCopyClick?: () => void
 }) {
-    const {tabs, activeTabId, onCopyClick} = props
+    const { tabs, activeTabId, onCopyClick } = props
     const activeTab = tabs.find((tab) => tab.id === activeTabId)
     if (!activeTab) return null
-    const {instructions, instructionAlert, code} = activeTab
+    const { instructions, instructionAlert, code } = activeTab
 
     return (
         <>

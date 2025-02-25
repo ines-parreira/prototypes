@@ -1,29 +1,30 @@
+import React, { useCallback, useEffect, useState } from 'react'
+
 import cn from 'classnames'
-import React, {useCallback, useEffect, useState} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {SettingRequest} from 'models/convert/settings/types'
+import { SettingRequest } from 'models/convert/settings/types'
 import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
-import {useChatIntegration} from 'pages/convert/campaigns/hooks/useChatIntegration'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import { useChatIntegration } from 'pages/convert/campaigns/hooks/useChatIntegration'
+import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import useIsCampaignProritizationEnabled from 'pages/convert/common/hooks/useIsCampaignProritizationEnabled'
 import {
     CampaignFrequencySetting,
     defaultValidationValues,
 } from 'pages/convert/settings/components/CampaignFrequencySetting'
-import {TermsAndConditionsSetting} from 'pages/convert/settings/components/TermsAndConditionsSetting'
-import {useUpdateSetting} from 'pages/convert/settings/hooks/useUpdateSetting'
+import { TermsAndConditionsSetting } from 'pages/convert/settings/components/TermsAndConditionsSetting'
+import { useUpdateSetting } from 'pages/convert/settings/hooks/useUpdateSetting'
 import {
-    DisclaimerSettings,
     CampaignFrequencySettings,
+    DisclaimerSettings,
 } from 'pages/convert/settings/types'
 import settingsCss from 'pages/settings/settings.less'
-import {CampaignSettingType} from 'pages/stats/convert/components/CampaignTableStats/constants'
-import {useConvertGeneralSettings} from 'pages/stats/convert/hooks/useConvertGeneralSettings'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {toJS} from 'utils'
+import { CampaignSettingType } from 'pages/stats/convert/components/CampaignTableStats/constants'
+import { useConvertGeneralSettings } from 'pages/stats/convert/hooks/useConvertGeneralSettings'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { toJS } from 'utils'
 
 import css from './GeneralSettingsView.less'
 
@@ -46,11 +47,11 @@ export const GeneralSettingsView = () => {
             },
         })
 
-    const {mutateAsync: updateSetting, isLoading: isSubmitLoading} =
+    const { mutateAsync: updateSetting, isLoading: isSubmitLoading } =
         useUpdateSetting()
     const integration = useChatIntegration()
-    const {channelConnection} = useGetOrCreateChannelConnection(
-        toJS(integration)
+    const { channelConnection } = useGetOrCreateChannelConnection(
+        toJS(integration),
     )
 
     const dispatch = useAppDispatch()
@@ -117,7 +118,7 @@ export const GeneralSettingsView = () => {
                 notify({
                     status: NotificationStatus.Error,
                     message: 'An unexpected error happened.',
-                })
+                }),
             )
             return Promise.resolve(false)
         }
@@ -126,7 +127,7 @@ export const GeneralSettingsView = () => {
             notify({
                 status: NotificationStatus.Success,
                 message: 'Settings updated.',
-            })
+            }),
         )
 
         return Promise.resolve(true)
@@ -142,7 +143,7 @@ export const GeneralSettingsView = () => {
         (isValid: boolean) => {
             setIsValid(isValid)
         },
-        [setIsValid]
+        [setIsValid],
     )
 
     return (
@@ -150,7 +151,7 @@ export const GeneralSettingsView = () => {
             className={cn(
                 settingsCss.contentWrapper,
                 settingsCss.pageContainer,
-                css.container
+                css.container,
             )}
         >
             {isLoading ? (

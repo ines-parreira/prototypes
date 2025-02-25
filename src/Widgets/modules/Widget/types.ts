@@ -1,4 +1,4 @@
-import {Source, Template} from 'models/widget/types'
+import { Source, Template } from 'models/widget/types'
 
 export type WidgetProps = {
     template: Template | null

@@ -1,10 +1,11 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import React, {useState} from 'react'
+import React, { useState } from 'react'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useAppSelector from 'hooks/useAppSelector'
 import useOrderBy from 'hooks/useOrderBy'
-import {useListWhatsAppMessageTemplates} from 'models/whatsAppMessageTemplates/queries'
-import {WhatsAppMessageTemplate} from 'models/whatsAppMessageTemplates/types'
+import { useListWhatsAppMessageTemplates } from 'models/whatsAppMessageTemplates/queries'
+import { WhatsAppMessageTemplate } from 'models/whatsAppMessageTemplates/types'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
@@ -12,33 +13,34 @@ import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import CountryFlag from 'pages/phoneNumbers/CountryFlag'
-import {getNewPhoneNumber} from 'state/entities/phoneNumbers/selectors'
-import {getLanguageDisplayName} from 'utils'
+import { getNewPhoneNumber } from 'state/entities/phoneNumbers/selectors'
+import { getLanguageDisplayName } from 'utils'
 
-import {whatsAppFlagCodes} from './constants'
-import {normalizeLocale} from './utils'
+import { whatsAppFlagCodes } from './constants'
+import { normalizeLocale } from './utils'
 import WhatsAppMessageTemplateCategoryLabel from './WhatsAppMessageTemplateCategoryLabel'
 import WhatsAppMessageTemplateDetailsDrawer from './WhatsAppMessageTemplateDetailsDrawer'
-import css from './WhatsAppMessageTemplatesList.less'
 import WhatsAppMessageTemplateStatusLabel from './WhatsAppMessageTemplateStatusLabel'
+
+import css from './WhatsAppMessageTemplatesList.less'
 
 type Props = {
     phoneNumberId: number
 }
 
-export default function WhatsAppMessageTemplatesList({phoneNumberId}: Props) {
+export default function WhatsAppMessageTemplatesList({ phoneNumberId }: Props) {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false)
     const [currentTemplate, setCurrentTemplate] =
         useState<WhatsAppMessageTemplate>()
     const phoneNumber = useAppSelector(getNewPhoneNumber(phoneNumberId))
 
-    const {orderDirection, orderBy, orderParam, toggleOrderBy} = useOrderBy<
+    const { orderDirection, orderBy, orderParam, toggleOrderBy } = useOrderBy<
         'name' | 'language' | 'status' | 'category'
     >('status')
 
     const request = useListWhatsAppMessageTemplates({
         waba_id: phoneNumber?.whatsapp_phone_number?.waba_id,
-        ...(orderParam && {order_by: orderParam}),
+        ...(orderParam && { order_by: orderParam }),
     })
 
     return (
@@ -117,7 +119,7 @@ export default function WhatsAppMessageTemplatesList({phoneNumberId}: Props) {
                                     placement="top"
                                 >
                                     {getLanguageDisplayName(
-                                        normalizeLocale(template.language)
+                                        normalizeLocale(template.language),
                                     )}
                                 </Tooltip>
                             </BodyCell>

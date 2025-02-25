@@ -1,27 +1,27 @@
-import {AxiosError} from 'axios'
+import { AxiosError } from 'axios'
 
 import client from '../../../../../models/api/resources'
 import {
     IntegrationType,
-    VoiceMessage,
     PhoneIntegrationIvrSettings,
     PhoneIntegrationVoicemailSettings,
+    VoiceMessage,
 } from '../../../../../models/integration/types'
-import {fetchIntegration} from '../../../../../state/integrations/actions'
+import { fetchIntegration } from '../../../../../state/integrations/actions'
 import * as constants from '../../../../../state/integrations/constants'
 import * as integrationSelectors from '../../../../../state/integrations/selectors'
-import {notify} from '../../../../../state/notifications/actions'
-import {NotificationStatus} from '../../../../../state/notifications/types'
-import {RootState, StoreDispatch} from '../../../../../state/types'
+import { notify } from '../../../../../state/notifications/actions'
+import { NotificationStatus } from '../../../../../state/notifications/types'
+import { RootState, StoreDispatch } from '../../../../../state/types'
 
 export const updatePhoneVoicemailConfiguration =
     (
         payload: Partial<PhoneIntegrationVoicemailSettings>,
-        successMessage = 'Voicemail configuration successfully updated.'
+        successMessage = 'Voicemail configuration successfully updated.',
     ) =>
     (
         dispatch: StoreDispatch,
-        getState: () => RootState
+        getState: () => RootState,
     ): Promise<ReturnType<StoreDispatch>> => {
         const state = getState()
         const integrationId = integrationSelectors
@@ -31,19 +31,19 @@ export const updatePhoneVoicemailConfiguration =
         return client
             .put(
                 `/integrations/phone/${integrationId}/voicemail-preferences/`,
-                payload
+                payload,
             )
             .then(
                 () => {
                     void fetchIntegration(
                         integrationId.toString(),
-                        IntegrationType.Phone
+                        IntegrationType.Phone,
                     )(dispatch)
                     return dispatch(
                         notify({
                             status: NotificationStatus.Success,
                             message: successMessage,
-                        })
+                        }),
                     )
                 },
                 (error: AxiosError) => {
@@ -52,7 +52,7 @@ export const updatePhoneVoicemailConfiguration =
                         error,
                         verbose: true,
                     })
-                }
+                },
             )
     }
 
@@ -60,7 +60,7 @@ export const updatePhoneGreetingMessageConfiguration =
     (payload: Partial<VoiceMessage>) =>
     (
         dispatch: StoreDispatch,
-        getState: () => RootState
+        getState: () => RootState,
     ): Promise<ReturnType<StoreDispatch>> => {
         const state = getState()
         const integrationId = integrationSelectors
@@ -70,7 +70,7 @@ export const updatePhoneGreetingMessageConfiguration =
         return client
             .put(
                 `/integrations/phone/${integrationId}/greeting-message/`,
-                payload
+                payload,
             )
             .then(
                 () => {
@@ -78,7 +78,7 @@ export const updatePhoneGreetingMessageConfiguration =
                         notify({
                             status: NotificationStatus.Success,
                             message: 'Greeting message successfully updated.',
-                        })
+                        }),
                     )
                 },
                 (error: AxiosError) => {
@@ -87,7 +87,7 @@ export const updatePhoneGreetingMessageConfiguration =
                         error,
                         verbose: true,
                     })
-                }
+                },
             )
     }
 
@@ -95,7 +95,7 @@ export const updatePhoneIvrConfiguration =
     (payload: Partial<PhoneIntegrationIvrSettings>) =>
     (
         dispatch: StoreDispatch,
-        getState: () => RootState
+        getState: () => RootState,
     ): Promise<ReturnType<StoreDispatch>> => {
         const state = getState()
         const integrationId = integrationSelectors
@@ -108,13 +108,13 @@ export const updatePhoneIvrConfiguration =
                 () => {
                     void fetchIntegration(
                         integrationId.toString(),
-                        IntegrationType.Phone
+                        IntegrationType.Phone,
                     )(dispatch)
                     return dispatch(
                         notify({
                             status: NotificationStatus.Success,
                             message: 'IVR configuration successfully updated.',
-                        })
+                        }),
                     )
                 },
                 (error: AxiosError) => {
@@ -123,6 +123,6 @@ export const updatePhoneIvrConfiguration =
                         error,
                         verbose: true,
                     })
-                }
+                },
             )
     }

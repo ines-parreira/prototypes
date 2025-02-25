@@ -1,14 +1,15 @@
+import React, { ChangeEvent, memo, useCallback, useState } from 'react'
+
 import classnames from 'classnames'
-import {Map} from 'immutable'
-import React, {ChangeEvent, memo, useCallback, useState} from 'react'
-import {Input, InputGroup, InputGroupAddon} from 'reactstrap'
+import { Map } from 'immutable'
+import { Input, InputGroup, InputGroupAddon } from 'reactstrap'
 
 import {
     getOrderLineItemDiscountedPrice,
     getOrderLineItemPrice,
 } from 'business/shopify/lineItem'
-import {formatPrice} from 'business/shopify/number'
-import {shopifyAdminBaseUrl} from 'config/integrations/shopify'
+import { formatPrice } from 'business/shopify/number'
+import { shopifyAdminBaseUrl } from 'config/integrations/shopify'
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import Button from 'pages/common/components/button/Button'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
@@ -37,7 +38,7 @@ function OrderLineItemRow({
     hasMultipleGateways,
 }: Props) {
     const [quantity, setQuantity] = useState<number>(
-        keepLineItemQuantityAsDefault ? lineItem.get('quantity') : 0
+        keepLineItemQuantityAsDefault ? lineItem.get('quantity') : 0,
     )
     const [maxQuantity] = useState<number>(lineItem.get('quantity'))
 
@@ -54,7 +55,7 @@ function OrderLineItemRow({
 
             setQuantity(newQuantity)
         },
-        [maxQuantity]
+        [maxQuantity],
     )
 
     const onQuantityUp = useCallback(() => {
@@ -72,7 +73,7 @@ function OrderLineItemRow({
             }
         },
         [quantity, lineItem, onChange, index],
-        250
+        250,
     )
 
     const renderTitle = useCallback(() => {
@@ -139,11 +140,11 @@ function OrderLineItemRow({
         const discountedPrice = getOrderLineItemDiscountedPrice(
             lineItem,
             currencyCode,
-            maxQuantity
+            maxQuantity,
         )
         const formattedDiscountedPrice = formatPrice(
             discountedPrice,
-            currencyCode
+            currencyCode,
         )
         const hasDiscount = price !== formattedDiscountedPrice
 
@@ -201,7 +202,7 @@ function OrderLineItemRow({
                             className={classnames(
                                 css.focusable,
                                 css.quantityBtn,
-                                css.quantityBtnUp
+                                css.quantityBtnUp,
                             )}
                             intent="secondary"
                             isDisabled={
@@ -216,7 +217,7 @@ function OrderLineItemRow({
                             className={classnames(
                                 css.focusable,
                                 css.quantityBtn,
-                                css.quantityBtnDown
+                                css.quantityBtnDown,
                             )}
                             intent="secondary"
                             isDisabled={quantity === 0 || hasMultipleGateways}
@@ -241,7 +242,7 @@ function OrderLineItemRow({
         const discountedPrice = getOrderLineItemDiscountedPrice(
             lineItem,
             currencyCode,
-            maxQuantity
+            maxQuantity,
         )
         const total = discountedPrice * quantity
 

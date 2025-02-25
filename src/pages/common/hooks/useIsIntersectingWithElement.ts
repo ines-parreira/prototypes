@@ -1,10 +1,10 @@
-import {useState, RefObject, useEffect} from 'react'
+import { RefObject, useEffect, useState } from 'react'
 
 import useIntersectionObserver from './useIntersectionObserver'
 
 const useIsIntersectingWithElement = (
     ref: RefObject<Element>,
-    element?: Element | null
+    element?: Element | null,
 ) => {
     const [isIntersecting, setIsIntersecting] = useState<boolean>()
 
@@ -13,7 +13,7 @@ const useIsIntersectingWithElement = (
         threshold: 1,
     })
 
-    const {isIntersecting: currentIsIntersecting} = observerEntry || {}
+    const { isIntersecting: currentIsIntersecting } = observerEntry || {}
 
     useEffect(() => {
         setIsIntersecting(currentIsIntersecting)

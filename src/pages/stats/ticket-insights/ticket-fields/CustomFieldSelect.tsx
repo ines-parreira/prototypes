@@ -1,15 +1,16 @@
-import {Skeleton} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
-import React, {useEffect, useRef, useState} from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
-import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import {CustomField, ListParams} from 'custom-fields/types'
+import classnames from 'classnames'
+
+import { Skeleton } from '@gorgias/merchant-ui-kit'
+
+import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import { CustomField, ListParams } from 'custom-fields/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
-
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import css from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect.less'
@@ -42,14 +43,14 @@ export const CustomFieldSelect = ({
     const [isOpen, setIsOpen] = useState(false)
     const buttonRef = useRef(null)
 
-    const {data: {data: activeFields = []} = {}, isLoading} =
+    const { data: { data: activeFields = [] } = {}, isLoading } =
         useCustomFieldDefinitions(activeParams)
     const activeDropdownFields = activeFields
         .filter(selectDropdownTextFields)
         .filter((customField) => (filter ? filter(customField) : true))
 
     const selectedField = activeDropdownFields.find(
-        (field) => field.id === selectedCustomField.id
+        (field) => field.id === selectedCustomField.id,
     )
 
     useEffect(() => {
@@ -59,7 +60,7 @@ export const CustomFieldSelect = ({
                     id: activeDropdownFields[0].id,
                     label: activeDropdownFields[0].label,
                     isLoading,
-                })
+                }),
             )
         }
     }, [activeDropdownFields, isLoading, dispatch, selectedField])
@@ -97,11 +98,11 @@ export const CustomFieldSelect = ({
                                         id: field.id,
                                         label: field.label,
                                         isLoading,
-                                    })
+                                    }),
                                 )
                                 setIsOpen(false)
                             }}
-                            option={{value: field.id, label: field.label}}
+                            option={{ value: field.id, label: field.label }}
                         >
                             <span className={css.dropdownItemContent}>
                                 {field.label}

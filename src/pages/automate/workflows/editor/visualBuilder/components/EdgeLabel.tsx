@@ -1,5 +1,6 @@
+import React, { MouseEvent, ReactNode } from 'react'
+
 import classnames from 'classnames'
-import React, {MouseEvent, ReactNode} from 'react'
 
 import css from './EdgeLabel.less'
 
@@ -24,7 +25,7 @@ type Props = {
         | 'reusable_llm_prompt_call'
 }
 
-const EdgeLabel = ({children, onClick, isSelected, type}: Props) => {
+const EdgeLabel = ({ children, onClick, isSelected, type }: Props) => {
     return (
         <div
             className={classnames(css[type], {

@@ -1,15 +1,16 @@
-import {createEvent, fireEvent, render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { createEvent, fireEvent, render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {FORM_CONTENT_TYPE} from 'config'
-import {integrationsState} from 'fixtures/integrations'
-import {MacroActionName} from 'models/macroAction/types'
+import { FORM_CONTENT_TYPE } from 'config'
+import { integrationsState } from 'fixtures/integrations'
+import { MacroActionName } from 'models/macroAction/types'
 
-import {TicketReplyActionContainer} from '../TicketReplyAction'
+import { TicketReplyActionContainer } from '../TicketReplyAction'
 
 jest.mock('lodash/debounce', () => (fn: (...args: any[]) => void) => fn)
 
@@ -28,12 +29,12 @@ describe('<TicketReplyAction />', () => {
     }
 
     it('should call updateActionArgsOnApplied when the internal note is updated', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider
-                store={mockStore({integrations: fromJS(integrationsState)})}
+                store={mockStore({ integrations: fromJS(integrationsState) })}
             >
                 <TicketReplyActionContainer {...minProps} />
-            </Provider>
+            </Provider>,
         )
         const editor = container.querySelector('.public-DraftEditor-content')!
         const event = createEvent.paste(editor, {
@@ -50,9 +51,9 @@ describe('<TicketReplyAction />', () => {
     })
 
     it('should call updateActionArgsOnApplied when the dict argument is updated', () => {
-        const {getByDisplayValue} = render(
+        const { getByDisplayValue } = render(
             <Provider
-                store={mockStore({integrations: fromJS(integrationsState)})}
+                store={mockStore({ integrations: fromJS(integrationsState) })}
             >
                 <TicketReplyActionContainer
                     {...minProps}
@@ -70,10 +71,10 @@ describe('<TicketReplyAction />', () => {
                         },
                     })}
                 />
-            </Provider>
+            </Provider>,
         )
 
-        fireEvent.change(getByDisplayValue(/bar/), {target: {value: 'baz'}})
+        fireEvent.change(getByDisplayValue(/bar/), { target: { value: 'baz' } })
 
         expect(minProps.updateActionArgsOnApplied).toHaveBeenNthCalledWith(
             1,
@@ -88,14 +89,14 @@ describe('<TicketReplyAction />', () => {
                     },
                 ],
             }),
-            1
+            1,
         )
     })
 
     it('should call updateActionArgsOnApplied when the argument is updated', () => {
-        const {queryAllByRole} = render(
+        const { queryAllByRole } = render(
             <Provider
-                store={mockStore({integrations: fromJS(integrationsState)})}
+                store={mockStore({ integrations: fromJS(integrationsState) })}
             >
                 <TicketReplyActionContainer
                     {...minProps}
@@ -107,7 +108,7 @@ describe('<TicketReplyAction />', () => {
                         },
                     })}
                 />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(queryAllByRole('checkbox')[0])
@@ -119,7 +120,7 @@ describe('<TicketReplyAction />', () => {
                 restock: false,
                 refund: true,
             }),
-            1
+            1,
         )
     })
 })

@@ -1,4 +1,4 @@
-import {createContext, useContext} from 'react'
+import { createContext, useContext } from 'react'
 
 import {
     CreateStoreConfigurationPayload,
@@ -9,10 +9,10 @@ export type AiAgentStoreConfigurationContextType = {
     storeConfiguration: StoreConfiguration | undefined
     isLoading: boolean
     updateStoreConfiguration: (
-        configurationToSubmit: StoreConfiguration
+        configurationToSubmit: StoreConfiguration,
     ) => Promise<void>
     createStoreConfiguration: (
-        configurationToSubmit: CreateStoreConfigurationPayload
+        configurationToSubmit: CreateStoreConfigurationPayload,
     ) => Promise<void>
     isPendingCreateOrUpdate: boolean
 }

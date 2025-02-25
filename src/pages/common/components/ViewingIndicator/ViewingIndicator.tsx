@@ -1,5 +1,6 @@
-import classnames from 'classnames'
 import React from 'react'
+
+import classnames from 'classnames'
 
 import css from './ViewingIndicator.less'
 
@@ -21,7 +22,7 @@ export default function ViewingIndicator({
                 {
                     [css.right]: position === 'right',
                 },
-                className
+                className,
             )}
             title={title}
         >

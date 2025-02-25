@@ -1,29 +1,31 @@
+import React, { useCallback, useMemo } from 'react'
+
 import cn from 'classnames'
-import {Map} from 'immutable'
+import { Map } from 'immutable'
 import _startCase from 'lodash/startCase'
-import React, {useCallback, useMemo} from 'react'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {Event} from 'models/event/types'
+import { Event } from 'models/event/types'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-import {getHumanAgents} from 'state/agents/selectors'
-import {humanizeString} from 'utils'
+import { getHumanAgents } from 'state/agents/selectors'
+import { humanizeString } from 'utils'
 
-import {DATETIME_LABEL_FORMAT} from './constants'
+import { DATETIME_LABEL_FORMAT } from './constants'
+
 import css from './style.less'
 
 type Props = {
     eventItem: Event
 }
 
-const UserAuditRow = ({eventItem}: Props) => {
+const UserAuditRow = ({ eventItem }: Props) => {
     const agents = useAppSelector(getHumanAgents)
 
     const renderUser = useCallback(() => {
         const user: Map<any, any> | undefined = agents.find(
-            (u: Map<any, any>) => u.get('id') === eventItem.user_id
+            (u: Map<any, any>) => u.get('id') === eventItem.user_id,
         )
         if (!user) {
             return <span className={css.emptyUser}>No user</span>

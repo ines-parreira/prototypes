@@ -1,4 +1,4 @@
-import {LayoutKeys} from '../../constants'
+import { LayoutKeys } from '../../constants'
 import storePanelWidths from '../storePanelWidths'
 
 describe('storePanelWidths', () => {
@@ -17,11 +17,11 @@ describe('storePanelWidths', () => {
         expect(localStorageSpy).toHaveBeenCalledWith('navbar-width', '1')
         expect(localStorageSpy).toHaveBeenCalledWith(
             'ticket-list-width',
-            'v2;2'
+            'v2;2',
         )
         expect(localStorageSpy).toHaveBeenCalledWith(
             LayoutKeys.TICKET,
-            'v2;1,2,3,4'
+            'v2;1,2,3,4',
         )
         expect(localStorageSpy).toHaveBeenCalledWith('infobar-width', '4')
     })
@@ -37,11 +37,11 @@ describe('storePanelWidths', () => {
         expect(localStorageSpy).toHaveBeenCalledWith('navbar-width', '1')
         expect(localStorageSpy).not.toHaveBeenCalledWith(
             'ticket-list-width',
-            'v2;2'
+            'v2;2',
         )
         expect(localStorageSpy).toHaveBeenCalledWith(
             LayoutKeys.FULL_TICKET,
-            'v2;1,2,3'
+            'v2;1,2,3',
         )
         expect(localStorageSpy).toHaveBeenCalledWith('infobar-width', '3')
     })

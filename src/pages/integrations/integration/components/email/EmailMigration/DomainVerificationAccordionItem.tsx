@@ -1,10 +1,12 @@
-import {Card} from '@gorgias/analytics-ui-kit'
-import {EmailDomain} from '@gorgias/api-queries'
-import classNames from 'classnames'
-import {isEmpty} from 'lodash'
 import React from 'react'
 
-import {EmailProvider} from 'models/integration/constants'
+import classNames from 'classnames'
+import { isEmpty } from 'lodash'
+
+import { Card } from '@gorgias/analytics-ui-kit'
+import { EmailDomain } from '@gorgias/api-queries'
+
+import { EmailProvider } from 'models/integration/constants'
 import {
     EmailMigrationOutboundVerification,
     EmailMigrationOutboundVerificationStatus,
@@ -17,8 +19,9 @@ import Button from 'pages/common/components/button/Button'
 import RecordsTable from '../EmailDomainVerification/components/RecordsTable'
 import EmailVerificationStatusLabel from '../EmailVerificationStatusLabel'
 import useCreateDomainVerification from '../hooks/useCreateDomainVerification'
+import { computeDomainVerificationStatus } from './utils'
+
 import css from './MigrationDomainList.less'
-import {computeDomainVerificationStatus} from './utils'
 
 type Props = {
     verification: EmailMigrationOutboundVerification
@@ -33,8 +36,9 @@ export default function DomainVerificationAccordionItem({
     refreshMigrationData,
     isSingleSenderEnabled,
 }: Props) {
-    const {name} = verification
-    const {isLoading, createDomainVerification} = useCreateDomainVerification()
+    const { name } = verification
+    const { isLoading, createDomainVerification } =
+        useCreateDomainVerification()
 
     const handleSwitchMethod = (event: React.MouseEvent) => {
         event.preventDefault()

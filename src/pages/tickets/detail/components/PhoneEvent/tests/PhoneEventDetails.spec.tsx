@@ -1,14 +1,15 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
-import {user} from 'fixtures/users'
-import {Account} from 'state/currentAccount/types'
-import {RootState, StoreDispatch} from 'state/types'
+import { PhoneIntegrationEvent } from 'constants/integrations/types/event'
+import { user } from 'fixtures/users'
+import { Account } from 'state/currentAccount/types'
+import { RootState, StoreDispatch } from 'state/types'
 
 import PhoneEventDetails from '../PhoneEventDetails'
 
@@ -20,7 +21,7 @@ describe('<PhoneEventDetails/>', () => {
 
     const realDateNow = Date.now
     beforeEach(() => {
-        store = mockStore({currentUser: fromJS(user)})
+        store = mockStore({ currentUser: fromJS(user) })
         Date.now = jest.fn(() => 42)
         window.GORGIAS_STATE.currentAccount = {
             domain: 'acme',
@@ -44,10 +45,10 @@ describe('<PhoneEventDetails/>', () => {
                     },
                 },
             })
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <PhoneEventDetails event={event} />
-                </Provider>
+                </Provider>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -66,10 +67,10 @@ describe('<PhoneEventDetails/>', () => {
                     },
                 },
             })
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <PhoneEventDetails event={event} />
-                </Provider>
+                </Provider>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -90,10 +91,10 @@ describe('<PhoneEventDetails/>', () => {
                     },
                 },
             })
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <PhoneEventDetails event={event} />
-                </Provider>
+                </Provider>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -114,10 +115,10 @@ describe('<PhoneEventDetails/>', () => {
                     },
                 },
             })
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <PhoneEventDetails event={event} />
-                </Provider>
+                </Provider>,
             )
 
             expect(container.firstChild).toMatchSnapshot()

@@ -1,12 +1,14 @@
-import {RequirementType} from '@gorgias/api-queries'
+import React, { forwardRef, useCallback, useMemo, useState } from 'react'
+
+import { produce } from 'immer'
+
+import { RequirementType } from '@gorgias/api-queries'
 import {
     CustomFieldConditionField,
     ExpressionFieldType,
 } from '@gorgias/api-types'
-import {produce} from 'immer'
-import React, {forwardRef, useCallback, useMemo, useState} from 'react'
 
-import {CustomField} from 'custom-fields/types'
+import { CustomField } from 'custom-fields/types'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableHead from 'pages/common/components/table/TableHead'
@@ -16,8 +18,9 @@ import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 
 import ConfirmCustomFieldRequirementTypeChangeModal from './ConfirmCustomFieldRequirementTypeChangeModal'
 import CustomFieldSelectButton from './CustomFieldSelectButton'
-import css from './ThenField.less'
 import ThenFieldRow from './ThenFieldRow'
+
+import css from './ThenField.less'
 
 type ThenFieldProps = {
     value: CustomFieldConditionField[]
@@ -26,8 +29,8 @@ type ThenFieldProps = {
 }
 
 export default forwardRef(function ThenField(
-    {value: requirements, onChange, error}: ThenFieldProps,
-    __ref
+    { value: requirements, onChange, error }: ThenFieldProps,
+    __ref,
 ) {
     const [
         nonConditionalFieldRequestedForAddition,
@@ -36,7 +39,7 @@ export default forwardRef(function ThenField(
 
     const fieldIds = useMemo(
         () => requirements.map((field) => field.field_id),
-        [requirements]
+        [requirements],
     )
 
     const handleAddField = useCallback(
@@ -47,10 +50,10 @@ export default forwardRef(function ThenField(
                         field_id: customField.id,
                         type: 'visible',
                     })
-                })
+                }),
             )
         },
-        [requirements, onChange]
+        [requirements, onChange],
     )
 
     const handleOnChange = useCallback(
@@ -58,10 +61,10 @@ export default forwardRef(function ThenField(
             onChange(
                 produce(requirements, (draft) => {
                     draft[idx].type = value
-                })
+                }),
             )
         },
-        [requirements, onChange]
+        [requirements, onChange],
     )
 
     const handleOnDelete = useCallback(
@@ -69,10 +72,10 @@ export default forwardRef(function ThenField(
             onChange(
                 produce(requirements, (draft) => {
                     draft.splice(idx, 1)
-                })
+                }),
             )
         },
-        [requirements, onChange]
+        [requirements, onChange],
     )
 
     return (
@@ -125,7 +128,7 @@ export default forwardRef(function ThenField(
                             RequirementType.Conditional
                         ) {
                             setNonConditionalFieldRequestedForAddition(
-                                customField
+                                customField,
                             )
                         } else {
                             handleAddField(customField)

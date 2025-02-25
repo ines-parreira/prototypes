@@ -1,9 +1,11 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
-import React, {ReactNode, useCallback, useEffect, useRef} from 'react'
+import React, { ReactNode, useCallback, useEffect, useRef } from 'react'
 
-import {useSearchParam} from 'hooks/useSearchParam'
-import {PlaygroundPromptType} from 'models/aiAgentPlayground/types'
+import classnames from 'classnames'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { useSearchParam } from 'hooks/useSearchParam'
+import { PlaygroundPromptType } from 'models/aiAgentPlayground/types'
 import Button from 'pages/common/components/button/Button'
 import TextInput from 'pages/common/forms/input/TextInput'
 
@@ -12,22 +14,23 @@ import {
     WIZARD_POST_COMPLETION_QUERY_KEY,
     WIZARD_POST_COMPLETION_STATE,
 } from '../../constants'
-import {PlaygroundCustomer} from '../../types'
-import {PlaygroundAction} from '../PlaygroundActions/types'
+import { PlaygroundCustomer } from '../../types'
+import { PlaygroundAction } from '../PlaygroundActions/types'
 import {
     PlaygroundChannels,
     PlaygroundFormValues,
 } from '../PlaygroundChat/PlaygroundChat.types'
-import {PlaygroundCustomerSelection} from '../PlaygroundCustomerSelection/PlaygroundCustomerSelection'
-import {PlaygroundEditor} from '../PlaygroundEditor/PlaygroundEditor'
-import {PlaygroundSegmentControl} from '../PlaygroundSegmentControl/PlaygroundSegmentControl'
+import { PlaygroundCustomerSelection } from '../PlaygroundCustomerSelection/PlaygroundCustomerSelection'
+import { PlaygroundEditor } from '../PlaygroundEditor/PlaygroundEditor'
+import { PlaygroundSegmentControl } from '../PlaygroundSegmentControl/PlaygroundSegmentControl'
+
 import css from './PlaygroundInputSection.less'
 
 type Props = {
     formValues: PlaygroundFormValues
     onFormValuesChange: <Key extends keyof PlaygroundFormValues>(
         key: Key,
-        value: PlaygroundFormValues[Key]
+        value: PlaygroundFormValues[Key],
     ) => void
     isDisabled?: boolean
     isInitialMessage: boolean
@@ -61,7 +64,7 @@ export const PlaygroundInputSection = ({
     }
 
     const [wizardQueryParam, setWizardQueryParam] = useSearchParam(
-        WIZARD_POST_COMPLETION_QUERY_KEY
+        WIZARD_POST_COMPLETION_QUERY_KEY,
     )
     const subjectInputRef = useRef<HTMLInputElement | null>(null)
 
@@ -97,7 +100,7 @@ export const PlaygroundInputSection = ({
                   ],
                   onClick: () => {
                       onPromptMessage(
-                          PlaygroundPromptType.NOT_RELEVANT_RESPONSE
+                          PlaygroundPromptType.NOT_RELEVANT_RESPONSE,
                       )
                   },
               },
@@ -108,7 +111,7 @@ export const PlaygroundInputSection = ({
         (customer: PlaygroundCustomer) => {
             onFormValuesChange('customer', customer)
         },
-        [onFormValuesChange]
+        [onFormValuesChange],
     )
 
     return (

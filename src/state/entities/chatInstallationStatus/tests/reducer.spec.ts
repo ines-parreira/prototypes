@@ -1,4 +1,4 @@
-import {GorgiasChatMinimumSnippetVersion} from 'models/integration/types'
+import { GorgiasChatMinimumSnippetVersion } from 'models/integration/types'
 
 import {
     chatInstallationStatusFetched,
@@ -23,7 +23,7 @@ describe('chatInstallationStatus reducer', () => {
     ])('chatInstallationStatusFetched', (state) => {
         const newState = reducer(
             chatInstallationStatusInitialState,
-            chatInstallationStatusFetched(state)
+            chatInstallationStatusFetched(state),
         )
         expect(newState).toEqual(state)
     })
@@ -36,7 +36,7 @@ describe('chatInstallationStatus reducer', () => {
                     !chatInstallationStatusInitialState.installedOnShopifyCheckout,
                 minimumSnippetVersion: null,
             },
-            resetChatInstallationStatus()
+            resetChatInstallationStatus(),
         )
         expect(newState).toEqual({
             installed: chatInstallationStatusInitialState.installed,

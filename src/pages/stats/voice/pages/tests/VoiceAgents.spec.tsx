@@ -1,42 +1,43 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {fireEvent, render} from '@testing-library/react'
-import {fromJS, Map} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, render } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {account} from 'fixtures/account'
-import {agents} from 'fixtures/agents'
-import {billingState} from 'fixtures/billing'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { account } from 'fixtures/account'
+import { agents } from 'fixtures/agents'
+import { billingState } from 'fixtures/billing'
 import {
     AUTOMATION_PRODUCT_ID,
     basicYearlyAutomationPlan,
     VOICE_PRODUCT_ID,
     voicePlan1,
 } from 'fixtures/productPrices'
-import {tags} from 'fixtures/tag'
-import {user} from 'fixtures/users'
+import { tags } from 'fixtures/tag'
+import { user } from 'fixtures/users'
 import {
     FilterComponentKey,
     FilterKey,
     LegacyStatsFilters,
 } from 'models/stat/types'
-import {ADD_FILTER_BUTTON_LABEL} from 'pages/stats/common/filters/AddFilterButton'
-import {FilterLabels} from 'pages/stats/common/filters/constants'
+import { ADD_FILTER_BUTTON_LABEL } from 'pages/stats/common/filters/AddFilterButton'
+import { FilterLabels } from 'pages/stats/common/filters/constants'
 import {
     VOICE_AGENTS_PAGE_TITLE,
     VOICE_CALL_ACTIVITY_TITLE,
 } from 'pages/stats/voice/constants/voiceAgents'
 import VoiceAgents from 'pages/stats/voice/pages/VoiceAgents'
-import {AccountFeature} from 'state/currentAccount/types'
-import {fromLegacyStatsFilters} from 'state/stats/utils'
-import {RootState, StoreDispatch} from 'state/types'
-import {initialState as agentPerformanceInitialState} from 'state/ui/stats/agentPerformanceSlice'
-import {AGENT_PERFORMANCE_SLICE_NAME} from 'state/ui/stats/constants'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { AccountFeature } from 'state/currentAccount/types'
+import { fromLegacyStatsFilters } from 'state/stats/utils'
+import { RootState, StoreDispatch } from 'state/types'
+import { initialState as agentPerformanceInitialState } from 'state/ui/stats/agentPerformanceSlice'
+import { AGENT_PERFORMANCE_SLICE_NAME } from 'state/ui/stats/constants'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
@@ -84,7 +85,7 @@ const getState = (featureEnabled: boolean) =>
         stats: {
             filters: fromLegacyStatsFilters(statsFilters),
         },
-        integrations: fromJS({integrations: []}),
+        integrations: fromJS({ integrations: [] }),
         ui: {
             stats: {
                 filters: {
@@ -100,7 +101,7 @@ const getState = (featureEnabled: boolean) =>
                 },
             },
         },
-        entities: {tags: {[tags[0].id]: tags[0]}},
+        entities: { tags: { [tags[0].id]: tags[0] } },
     }) as RootState
 
 const renderVoiceAgents = (featureEnabled = true) => {
@@ -109,7 +110,7 @@ const renderVoiceAgents = (featureEnabled = true) => {
             <Provider store={mockStore(getState(featureEnabled))}>
                 <VoiceAgents />
             </Provider>
-        </QueryClientProvider>
+        </QueryClientProvider>,
     )
 }
 
@@ -121,19 +122,19 @@ describe('VoiceAgents with the new filters', () => {
     })
 
     it('should render page when AnalyticsNewFiltersVoice is true', () => {
-        const {getByText, getAllByText} = renderVoiceAgents()
+        const { getByText, getAllByText } = renderVoiceAgents()
         expect(getByText(VOICE_AGENTS_PAGE_TITLE)).toBeInTheDocument()
 
         fireEvent.click(getByText(ADD_FILTER_BUTTON_LABEL))
 
         expect(
-            getByText(FilterLabels[FilterComponentKey.PhoneIntegrations])
+            getByText(FilterLabels[FilterComponentKey.PhoneIntegrations]),
         ).toBeInTheDocument()
         expect(
-            getAllByText(FilterLabels[FilterKey.Tags])[0]
+            getAllByText(FilterLabels[FilterKey.Tags])[0],
         ).toBeInTheDocument()
         expect(
-            getAllByText(FilterLabels[FilterKey.Agents])[0]
+            getAllByText(FilterLabels[FilterKey.Agents])[0],
         ).toBeInTheDocument()
     })
 
@@ -142,22 +143,22 @@ describe('VoiceAgents with the new filters', () => {
             [FeatureFlagKey.AnalyticsNewFiltersVoice]: true,
         })
 
-        const {getByText, getAllByText} = renderVoiceAgents()
+        const { getByText, getAllByText } = renderVoiceAgents()
         expect(getByText(VOICE_AGENTS_PAGE_TITLE)).toBeInTheDocument()
 
         fireEvent.click(getByText(ADD_FILTER_BUTTON_LABEL))
 
         expect(
-            getByText(FilterLabels[FilterComponentKey.PhoneIntegrations])
+            getByText(FilterLabels[FilterComponentKey.PhoneIntegrations]),
         ).toBeInTheDocument()
         expect(
-            getAllByText(FilterLabels[FilterKey.Tags])[0]
+            getAllByText(FilterLabels[FilterKey.Tags])[0],
         ).toBeInTheDocument()
         expect(
-            getAllByText(FilterLabels[FilterKey.Agents])[0]
+            getAllByText(FilterLabels[FilterKey.Agents])[0],
         ).toBeInTheDocument()
         expect(
-            getAllByText(FilterLabels[FilterKey.Score])[0]
+            getAllByText(FilterLabels[FilterKey.Score])[0],
         ).toBeInTheDocument()
     })
 
@@ -166,25 +167,25 @@ describe('VoiceAgents with the new filters', () => {
             [FeatureFlagKey.AnalyticsNewFiltersVoice]: true,
         })
 
-        const {getByText, getAllByText} = renderVoiceAgents()
+        const { getByText, getAllByText } = renderVoiceAgents()
         expect(getByText(VOICE_AGENTS_PAGE_TITLE)).toBeInTheDocument()
 
         fireEvent.click(getByText(ADD_FILTER_BUTTON_LABEL))
 
         expect(
-            getByText(FilterLabels[FilterKey.Integrations])
+            getByText(FilterLabels[FilterKey.Integrations]),
         ).toBeInTheDocument()
         expect(
-            getAllByText(FilterLabels[FilterKey.Tags])[0]
+            getAllByText(FilterLabels[FilterKey.Tags])[0],
         ).toBeInTheDocument()
         expect(
-            getAllByText(FilterLabels[FilterKey.Agents])[0]
+            getAllByText(FilterLabels[FilterKey.Agents])[0],
         ).toBeInTheDocument()
         expect(
-            getAllByText(FilterLabels[FilterKey.ResolutionCompleteness])[0]
+            getAllByText(FilterLabels[FilterKey.ResolutionCompleteness])[0],
         ).toBeInTheDocument()
         expect(
-            getAllByText(FilterLabels[FilterKey.CommunicationSkills])[0]
+            getAllByText(FilterLabels[FilterKey.CommunicationSkills])[0],
         ).toBeInTheDocument()
     })
 })
@@ -197,7 +198,7 @@ describe('VoiceAgents', () => {
     })
 
     it('should render page', () => {
-        const {queryByText} = renderVoiceAgents()
+        const { queryByText } = renderVoiceAgents()
 
         // title
         expect(queryByText(VOICE_AGENTS_PAGE_TITLE)).toBeInTheDocument()
@@ -214,12 +215,12 @@ describe('VoiceAgents', () => {
 
         // footer
         expect(
-            queryByText('Analytics are using EST timezone')
+            queryByText('Analytics are using EST timezone'),
         ).toBeInTheDocument()
     })
 
     it('should render paywall page', () => {
-        const {getByText} = renderVoiceAgents(false)
+        const { getByText } = renderVoiceAgents(false)
 
         expect(getByText('VoicePaywall')).toBeInTheDocument()
     })

@@ -1,12 +1,13 @@
-import {render, screen} from '@testing-library/react'
-import React, {ComponentType} from 'react'
+import React, { ComponentType } from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import {
     ExpressionProps,
-    StatementProps,
     RuleContext,
+    StatementProps,
 } from '../rule/RuleProvider'
-import {useRuleContext} from '../useRuleContext'
+import { useRuleContext } from '../useRuleContext'
 
 const MockExpression: ComponentType = () => <div>Mock Expression</div>
 const MockStatement: ComponentType = () => <div>Mock Statement</div>
@@ -14,7 +15,7 @@ const MockStatement: ComponentType = () => <div>Mock Statement</div>
 describe('RuleContext', () => {
     it('provides and consumes context values correctly', () => {
         const ContextConsumer = () => {
-            const {Expression, Statement} = useRuleContext()
+            const { Expression, Statement } = useRuleContext()
 
             return (
                 <div>
@@ -28,10 +29,10 @@ describe('RuleContext', () => {
 
         render(
             <RuleContext.Provider
-                value={{Expression: MockExpression, Statement: MockStatement}}
+                value={{ Expression: MockExpression, Statement: MockStatement }}
             >
                 <ContextConsumer />
-            </RuleContext.Provider>
+            </RuleContext.Provider>,
         )
 
         expect(screen.getByText('Using Expression:')).toBeInTheDocument()
@@ -56,8 +57,8 @@ describe('RuleContext', () => {
 
         expect(
             screen.getByText(
-                'useRuleContext must be used within a RuleContext.Provider'
-            )
+                'useRuleContext must be used within a RuleContext.Provider',
+            ),
         ).toBeInTheDocument()
     })
 })

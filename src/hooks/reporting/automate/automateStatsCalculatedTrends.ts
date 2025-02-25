@@ -1,11 +1,11 @@
 import {
     automationRate,
-    decreaseInFirstResponseTime,
-    decreaseInResolutionTime,
     automationRateUnfilteredDenominator,
     calculateRate,
+    decreaseInFirstResponseTime,
+    decreaseInResolutionTime,
 } from './automateStatsFormulae'
-import {TrendData} from './types'
+import { TrendData } from './types'
 
 export const getAutomationRateUnfilteredDenominatorTrend = ({
     isFetching,
@@ -51,7 +51,7 @@ export const getAutomationRateTrend = (
     isError: boolean,
     automatedInteractions: TrendData,
     billableTickets: TrendData,
-    automatedInteractionsByAutoResponders: TrendData
+    automatedInteractionsByAutoResponders: TrendData,
 ) => {
     return {
         isFetching,
@@ -60,12 +60,12 @@ export const getAutomationRateTrend = (
             value: automationRate(
                 automatedInteractions?.value,
                 billableTickets?.value,
-                automatedInteractionsByAutoResponders?.value
+                automatedInteractionsByAutoResponders?.value,
             ),
             prevValue: automationRate(
                 automatedInteractions?.prevValue,
                 billableTickets?.prevValue,
-                automatedInteractionsByAutoResponders?.prevValue
+                automatedInteractionsByAutoResponders?.prevValue,
             ),
         },
     }
@@ -77,7 +77,7 @@ export const getDecreaseInFirstResponseTimeTrend = (
     automatedInteractions: TrendData,
     billableTicketsExcludingAIAgent: TrendData,
     totalFirstResponseTimeExcludingAIAgent: TrendData,
-    totalFirstResponseTimeIncludingAIAgent: TrendData
+    totalFirstResponseTimeIncludingAIAgent: TrendData,
 ) => {
     return {
         isFetching,
@@ -87,13 +87,13 @@ export const getDecreaseInFirstResponseTimeTrend = (
                 automatedInteractions?.value,
                 billableTicketsExcludingAIAgent?.value,
                 totalFirstResponseTimeExcludingAIAgent?.value,
-                totalFirstResponseTimeIncludingAIAgent?.value
+                totalFirstResponseTimeIncludingAIAgent?.value,
             ),
             prevValue: decreaseInFirstResponseTime(
                 automatedInteractions?.prevValue,
                 billableTicketsExcludingAIAgent?.prevValue,
                 totalFirstResponseTimeExcludingAIAgent?.prevValue,
-                totalFirstResponseTimeIncludingAIAgent?.prevValue
+                totalFirstResponseTimeIncludingAIAgent?.prevValue,
             ),
         },
     }
@@ -105,7 +105,7 @@ export const getDecreaseInResolutionTimeTrend = (
     automatedInteractions: TrendData,
     billableTicketsExcludingAIAgent: TrendData,
     totalResolutionTimeExcludingAIAgent: TrendData,
-    totalResolutionTimeResolvedByAIAgent: TrendData
+    totalResolutionTimeResolvedByAIAgent: TrendData,
 ) => {
     return {
         isFetching,
@@ -115,13 +115,13 @@ export const getDecreaseInResolutionTimeTrend = (
                 automatedInteractions?.value,
                 billableTicketsExcludingAIAgent?.value,
                 totalResolutionTimeExcludingAIAgent?.value,
-                totalResolutionTimeResolvedByAIAgent?.value
+                totalResolutionTimeResolvedByAIAgent?.value,
             ),
             prevValue: decreaseInResolutionTime(
                 automatedInteractions?.prevValue,
                 billableTicketsExcludingAIAgent?.prevValue,
                 totalResolutionTimeExcludingAIAgent?.prevValue,
-                totalResolutionTimeResolvedByAIAgent?.prevValue
+                totalResolutionTimeResolvedByAIAgent?.prevValue,
             ),
         },
     }
@@ -144,11 +144,11 @@ export const getAiAgentSuccessRate = ({
         data: {
             value: calculateRate(
                 aiAgentAutomatedInteractions?.value,
-                aiAgentTickets?.value
+                aiAgentTickets?.value,
             ),
             prevValue: calculateRate(
                 aiAgentAutomatedInteractions?.prevValue,
-                aiAgentTickets?.prevValue
+                aiAgentTickets?.prevValue,
             ),
         },
     }
@@ -172,7 +172,7 @@ export const getAiAgentCoverageRate = ({
             value: calculateRate(aiAgentTickets?.value, allTickets?.value),
             prevValue: calculateRate(
                 aiAgentTickets?.prevValue,
-                allTickets?.prevValue
+                allTickets?.prevValue,
             ),
         },
     }

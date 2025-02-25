@@ -1,7 +1,8 @@
-import {fireEvent, render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -31,10 +32,10 @@ describe('<Create/>', () => {
         window.location = realLocation
     })
     it('should render a create view', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <Create redirectUri="" />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -44,11 +45,11 @@ describe('<Create/>', () => {
         render(
             <Provider store={store}>
                 <Create redirectUri="" />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.change(screen.getByLabelText('Store name'), {
-            target: {value: SHOP_NAME},
+            target: { value: SHOP_NAME },
         })
 
         expect(screen.queryByText(/already an integration/)).toBeTruthy()
@@ -65,11 +66,11 @@ describe('<Create/>', () => {
         render(
             <Provider store={store}>
                 <Create redirectUri="something/{shop_name}/" />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.change(screen.getByLabelText('Store name'), {
-            target: {value: 'bis'},
+            target: { value: 'bis' },
         })
 
         fireEvent.click(screen.getByRole('button'))

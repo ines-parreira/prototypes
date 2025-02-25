@@ -1,5 +1,6 @@
-import {render} from '@testing-library/react'
 import React from 'react'
+
+import { render } from '@testing-library/react'
 
 import InputField from '../InputField'
 
@@ -12,24 +13,24 @@ describe('<InputField />', () => {
     }
 
     it('should render an input field', () => {
-        const {container} = render(
-            <InputField className="inputFieldClassName" {...defaultProps} />
+        const { container } = render(
+            <InputField className="inputFieldClassName" {...defaultProps} />,
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should display a label', () => {
-        const {container} = render(
-            <InputField {...defaultProps} label="Label" />
+        const { container } = render(
+            <InputField {...defaultProps} label="Label" />,
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should display a caption', () => {
-        const {container} = render(
-            <InputField {...defaultProps} caption="Caption" />
+        const { container } = render(
+            <InputField {...defaultProps} caption="Caption" />,
         )
 
         expect(container.firstChild).toMatchSnapshot()

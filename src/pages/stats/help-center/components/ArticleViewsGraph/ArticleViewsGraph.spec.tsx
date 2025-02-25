@@ -1,21 +1,18 @@
-import {UseQueryResult} from '@tanstack/react-query'
-import {render, screen} from '@testing-library/react'
-import {CoreScaleOptions, Scale} from 'chart.js'
-
-import moment from 'moment'
-
 import React from 'react'
 
-import {useArticleViewTimeSeries} from 'hooks/reporting/help-center/useArticleViewTimeSeries'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { UseQueryResult } from '@tanstack/react-query'
+import { render, screen } from '@testing-library/react'
+import { CoreScaleOptions, Scale } from 'chart.js'
+import moment from 'moment'
 
-import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
-import {ReportingGranularity} from 'models/reporting/types'
-
+import { useArticleViewTimeSeries } from 'hooks/reporting/help-center/useArticleViewTimeSeries'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
+import { ReportingGranularity } from 'models/reporting/types'
 import ArticleViewsGraph, {
     renderXTickLabel,
 } from 'pages/stats/help-center/components/ArticleViewsGraph/ArticleViewsGraph'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/help-center/useArticleViewTimeSeries', () => ({
     useArticleViewTimeSeries: jest.fn(),
@@ -50,7 +47,7 @@ describe('<ArticleViewsGraphComponent />', () => {
         })
         mockUseArticleViewTimeSeries.mockClear()
         mockUseArticleViewTimeSeries.mockReturnValue(
-            defaultArticleViewTimeSeriesResponse
+            defaultArticleViewTimeSeriesResponse,
         )
     })
     it('should render', () => {
@@ -68,7 +65,7 @@ describe('<ArticleViewsGraphComponent />', () => {
         renderComponent()
 
         expect(
-            document.querySelector('.react-loading-skeleton')
+            document.querySelector('.react-loading-skeleton'),
         ).toBeInTheDocument()
     })
 
@@ -80,8 +77,8 @@ describe('<ArticleViewsGraphComponent />', () => {
                         getLabelForValue: () => moment('2023-10-06'),
                     } as unknown as Scale<CoreScaleOptions>,
                     '',
-                    0
-                )
+                    0,
+                ),
             ).toEqual('Oct 6')
         })
 
@@ -92,8 +89,8 @@ describe('<ArticleViewsGraphComponent />', () => {
                         getLabelForValue: () => 'invalid date',
                     } as unknown as Scale<CoreScaleOptions>,
                     '',
-                    0
-                )
+                    0,
+                ),
             ).toEqual('invalid date')
         })
     })

@@ -1,20 +1,20 @@
-import type {Map} from 'immutable'
-import React, {ContextType} from 'react'
+import React, { ContextType } from 'react'
+
+import type { Map } from 'immutable'
 
 import logo from 'assets/img/infobar/yotpo.svg'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import {
     CardCustomization,
     ExpandAllButton,
 } from 'Widgets/modules/Template/modules/Card'
-import {CardHeaderIcon} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderIcon'
-import {CardHeaderTitle} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderTitle'
-import {StaticField} from 'Widgets/modules/Template/modules/Field'
+import { CardHeaderIcon } from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderIcon'
+import { CardHeaderTitle } from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderTitle'
+import { StaticField } from 'Widgets/modules/Template/modules/Field'
 
-import {CardHeaderStatusLabel} from './CardHeaderStatusLabel'
-import {CardHeaderYotpoBadge} from './CardHeaderYotpoBadge'
-import {CardHeaderYotpoRatingThumbs} from './CardHeaderYotpoRatingThumbs'
+import { CardHeaderStatusLabel } from './CardHeaderStatusLabel'
+import { CardHeaderYotpoBadge } from './CardHeaderYotpoBadge'
+import { CardHeaderYotpoRatingThumbs } from './CardHeaderYotpoRatingThumbs'
 
 type AfterTitleProps = {
     source: Map<string, any>
@@ -22,7 +22,7 @@ type AfterTitleProps = {
 
 class AfterTitle extends React.Component<AfterTitleProps> {
     render() {
-        const {source} = this.props
+        const { source } = this.props
 
         return (
             <>
@@ -38,7 +38,7 @@ class AfterTitle extends React.Component<AfterTitleProps> {
                 <StaticField label="Reviews">
                     {source.getIn(
                         ['reviews_statistics', 'total_reviews'],
-                        'N/A'
+                        'N/A',
                     )}
                 </StaticField>
             </>
@@ -55,7 +55,7 @@ class TitleWrapper extends React.Component<TitleWrapperProps> {
     static contextType = IntegrationContext
     context!: ContextType<typeof IntegrationContext>
     render() {
-        const {source, isEditing} = this.props
+        const { source, isEditing } = this.props
         const pointBalance = source.getIn([
             'loyalty_statistics',
             'point_balance',
@@ -87,7 +87,7 @@ type BeforeContentProps = {
 }
 class BeforeContent extends React.Component<BeforeContentProps> {
     render() {
-        const {source} = this.props
+        const { source } = this.props
         if (source.size < 2) {
             return (
                 <StaticField isNotBold>

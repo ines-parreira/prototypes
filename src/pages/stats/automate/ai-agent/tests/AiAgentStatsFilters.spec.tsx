@@ -1,13 +1,14 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {useAIAgentUserId} from 'hooks/reporting/automate/useAIAgentUserId'
+import { render, screen } from '@testing-library/react'
+
+import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {StatsFiltersWithLogicalOperator} from 'models/stat/types'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-import {getHasAutomate} from 'state/billing/selectors'
-import {getStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
-import {setStatsFiltersWithLogicalOperators} from 'state/stats/statsSlice'
+import { StatsFiltersWithLogicalOperator } from 'models/stat/types'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
+import { getHasAutomate } from 'state/billing/selectors'
+import { getStatsFiltersWithLogicalOperators } from 'state/stats/selectors'
+import { setStatsFiltersWithLogicalOperators } from 'state/stats/statsSlice'
 
 import AiAgentStatsFilters from '../AiAgentStatsFilters'
 
@@ -18,7 +19,7 @@ jest.mock(
     'hooks/useAppSelector',
     () =>
         (fn: () => any): any =>
-            fn()
+            fn(),
 )
 
 jest.mock('state/stats/selectors')
@@ -63,7 +64,7 @@ describe('AiAgentStatsFilters', () => {
     } = {}) => {
         useAppDispatchMock.mockReturnValue(dispatch)
         useAIAgentUserIdMock.mockReturnValue(
-            aiAgentUserId === null ? undefined : aiAgentUserId
+            aiAgentUserId === null ? undefined : aiAgentUserId,
         )
         getHasAutomateMock.mockReturnValue(hasAutomate)
         getStatsFiltersWithLogicalOperatorsMock.mockReturnValue(statsFilters)
@@ -76,15 +77,15 @@ describe('AiAgentStatsFilters', () => {
     })
 
     it('should render AutomatePaywallView if hasAutomate is false', () => {
-        renderComponent({hasAutomate: false})
+        renderComponent({ hasAutomate: false })
         expect(screen.queryByText('automate-paywall-view')).toBeInTheDocument()
     })
 
     it('should render AiAgentStatsEmptyState if hasAutomate is true and aiAgentUserId is undefined ', () => {
-        renderComponent({aiAgentUserId: null})
+        renderComponent({ aiAgentUserId: null })
 
         expect(
-            screen.queryByText('ai-agent-stats-empty-state')
+            screen.queryByText('ai-agent-stats-empty-state'),
         ).toBeInTheDocument()
     })
 
@@ -105,7 +106,7 @@ describe('AiAgentStatsFilters', () => {
         }
 
         // Mount
-        const {unmount} = renderComponent({
+        const { unmount } = renderComponent({
             statsFilters: initialStatsFilters,
         })
 
@@ -116,14 +117,14 @@ describe('AiAgentStatsFilters', () => {
                     operator: LogicalOperatorEnum.ONE_OF,
                     values: [5],
                 },
-            })
+            }),
         )
 
         // Unmount
         unmount()
 
         expect(dispatch).toHaveBeenCalledWith(
-            setStatsFiltersWithLogicalOperators(initialStatsFilters)
+            setStatsFiltersWithLogicalOperators(initialStatsFilters),
         )
     })
 })

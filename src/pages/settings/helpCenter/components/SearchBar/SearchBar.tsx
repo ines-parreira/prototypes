@@ -1,12 +1,12 @@
-import React, {FC} from 'react'
+import React, { FC } from 'react'
 
 import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'
 import css from 'pages/settings/helpCenter/components/SearchBar/SearchBar.less'
-import {useSearchContext} from 'pages/settings/helpCenter/providers/SearchContext'
+import { useSearchContext } from 'pages/settings/helpCenter/providers/SearchContext'
 
 export const SearchBar: FC = () => {
-    const {searchInput, setSearchInput, searchReady} = useSearchContext()
+    const { searchInput, setSearchInput, searchReady } = useSearchContext()
 
     return (
         <TextInput

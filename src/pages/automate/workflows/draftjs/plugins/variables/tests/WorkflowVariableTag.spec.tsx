@@ -1,5 +1,6 @@
-import {screen, act, fireEvent, render, waitFor} from '@testing-library/react'
-import React, {useState} from 'react'
+import React, { useState } from 'react'
+
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import WorkflowVariableTag from '../WorkflowVariableTag'
 
@@ -13,7 +14,7 @@ describe('<WorkflowVariableTag />', () => {
     beforeEach(() => {
         ;(useState as jest.Mock).mockImplementation(
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            jest.requireActual('react').useState
+            jest.requireActual('react').useState,
         )
     })
     it('should trigger callback on click', () => {
@@ -22,7 +23,7 @@ describe('<WorkflowVariableTag />', () => {
         render(
             <WorkflowVariableTag value="test" onClick={mockOnClick}>
                 <div />
-            </WorkflowVariableTag>
+            </WorkflowVariableTag>,
         )
 
         act(() => {
@@ -42,15 +43,15 @@ describe('<WorkflowVariableTag />', () => {
         render(
             <WorkflowVariableTag value="test" onClick={jest.fn()}>
                 ipsum dolor sit amet, consectetur adipiscing elit.
-            </WorkflowVariableTag>
+            </WorkflowVariableTag>,
         )
 
         expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
 
         fireEvent.mouseOver(
             screen.getByText(
-                'ipsum dolor sit amet, consectetur adipiscing elit.'
-            )
+                'ipsum dolor sit amet, consectetur adipiscing elit.',
+            ),
         )
 
         await waitFor(() => {

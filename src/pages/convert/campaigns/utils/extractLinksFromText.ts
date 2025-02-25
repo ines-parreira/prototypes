@@ -36,6 +36,6 @@ export function getAllMatches(text: string, regex: RegExp): string[] {
  */
 export function extractLinksFromText(html: string): string[] {
     return getAllMatches(html, /href="([^"]*)/g).map(
-        (result) => result.split('="')[1]
+        (result) => result.split('="')[1],
     )
 }

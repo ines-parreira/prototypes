@@ -1,11 +1,11 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
-import {Integration, IntegrationType} from 'models/integration/types'
-import {initialState as initialStatsFiltersState} from 'state/stats/statsSlice'
-import {RootState} from 'state/types'
-import {initialState} from 'state/ui/stats/filtersSlice'
+import { Integration, IntegrationType } from 'models/integration/types'
+import { initialState as initialStatsFiltersState } from 'state/stats/statsSlice'
+import { RootState } from 'state/types'
+import { initialState } from 'state/ui/stats/filtersSlice'
 
-import {IntegrationFixture} from './Integration.fixture'
+import { IntegrationFixture } from './Integration.fixture'
 
 type AllKeys = keyof AiAgentOverviewRootStateFixture
 type ConfiguredAiAgentOverviewRootStateFixture<
@@ -41,7 +41,7 @@ export class AiAgentOverviewRootStateFixture {
             currentAccount: fromJS({
                 domain: 'storybookaccountdomain',
             }),
-            integrations: fromJS({integrations: []}),
+            integrations: fromJS({ integrations: [] }),
             entities: {
                 selfServiceConfigurations: fromJS({
                     data: {
@@ -50,7 +50,7 @@ export class AiAgentOverviewRootStateFixture {
                 }),
             },
             ui: {
-                stats: {filters: initialState},
+                stats: { filters: initialState },
             },
             stats: initialStatsFiltersState,
         } as Partial<RootState> as RootState
@@ -74,7 +74,7 @@ export class AiAgentOverviewRootStateFixture {
                     name: `Super Store`,
                     storeIntegrationId: this.internalData.storeIntegrationId,
                 })
-                .build()
+                .build(),
         )
         this.integrations.push(
             IntegrationFixture.start()
@@ -84,7 +84,7 @@ export class AiAgentOverviewRootStateFixture {
                     name: `Awesome Store`,
                     storeIntegrationId: this.internalData.storeIntegrationId,
                 })
-                .build()
+                .build(),
         )
 
         return this as ConfiguredAiAgentOverviewRootStateFixture<
@@ -106,7 +106,7 @@ export class AiAgentOverviewRootStateFixture {
                     name: `Email ${id}`,
                     storeIntegrationId: this.internalData.storeIntegrationId,
                 })
-                .build()
+                .build(),
         )
         return this as ConfiguredAiAgentOverviewRootStateFixture<
             | 'with2ShopifyIntegrations'
@@ -122,7 +122,7 @@ export class AiAgentOverviewRootStateFixture {
     }: ChatIntegrationArgs = {}) {
         const id = this.internalData.integrationId++
         const _updatedAt = new Date(
-            updatedAt ?? this.internalData.chatUpdatedAt
+            updatedAt ?? this.internalData.chatUpdatedAt,
         )
         if (updatedAt) {
             _updatedAt.setSeconds(_updatedAt.getSeconds() + 1)
@@ -130,14 +130,14 @@ export class AiAgentOverviewRootStateFixture {
 
         this.integrations.push(
             IntegrationFixture.start()
-                .asChat({updatedAt: _updatedAt.toISOString()})
+                .asChat({ updatedAt: _updatedAt.toISOString() })
                 .withDetails({
                     id,
                     name: `Chat ${id}`,
                     isDraft,
                     storeIntegrationId: this.internalData.storeIntegrationId,
                 })
-                .build()
+                .build(),
         )
         return this as ConfiguredAiAgentOverviewRootStateFixture<
             | 'with2ShopifyIntegrations'

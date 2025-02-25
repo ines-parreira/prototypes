@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {SELECTABLE_REASONS_DROPDOWN_OPTIONS} from 'models/selfServiceConfiguration/constants'
+import { SELECTABLE_REASONS_DROPDOWN_OPTIONS } from 'models/selfServiceConfiguration/constants'
 import {
     ReportIssueCaseReason,
     ReportIssueCaseReasonAction,
@@ -10,9 +10,10 @@ import AccordionBody from 'pages/common/components/accordion/AccordionBody'
 import SortableAccordionHeader from 'pages/common/components/accordion/SortableAccordionHeader'
 import Button from 'pages/common/components/button/Button'
 
-import {SCENARIO_REASON_DEFAULT_ACTION} from '../constants'
-import css from './ReportOrderIssueScenarioReason.less'
+import { SCENARIO_REASON_DEFAULT_ACTION } from '../constants'
 import ReportOrderIssueScenarioReasonAction from './ReportOrderIssueScenarioReasonAction'
+
+import css from './ReportOrderIssueScenarioReason.less'
 
 type Props = {
     value: ReportIssueCaseReason
@@ -36,7 +37,7 @@ const ReportOrderIssueScenarioReason = ({
     }
 
     const reasonLabel = SELECTABLE_REASONS_DROPDOWN_OPTIONS.find(
-        (option) => option.value === value.reasonKey
+        (option) => option.value === value.reasonKey,
     )?.label
     const isEmpty =
         !value.action?.responseMessageContent.text &&

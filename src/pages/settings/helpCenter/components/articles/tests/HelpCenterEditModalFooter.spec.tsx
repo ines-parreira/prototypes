@@ -1,10 +1,11 @@
-import {render, fireEvent, waitFor, within} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { fireEvent, render, waitFor, within } from '@testing-library/react'
 
 import HelpCenterEditModalFooter from '../HelpCenterEditModalFooter'
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
-    useAbilityChecker: () => ({isPassingRulesCheck: () => true}),
+    useAbilityChecker: () => ({ isPassingRulesCheck: () => true }),
 }))
 
 const mockedOnSave = jest.fn()
@@ -20,7 +21,7 @@ describe('<HelpCenterEditModalFooter />', () => {
         canSave: true,
         requiredFields: [],
         onDiscard: mockedOnDiscard,
-        counters: {charCount: 1752},
+        counters: { charCount: 1752 },
         articleMode: {
             mode: 'modified',
             onSave: mockedOnSave,
@@ -33,17 +34,17 @@ describe('<HelpCenterEditModalFooter />', () => {
     })
 
     it('should display the component correctly', () => {
-        const {container} = render(<HelpCenterEditModalFooter {...props} />)
+        const { container } = render(<HelpCenterEditModalFooter {...props} />)
 
         expect(container).toMatchSnapshot()
     })
 
     it('allows to save and publish an existing modified article', () => {
-        const {getByRole} = render(
-            <HelpCenterEditModalFooter {...props} canSave={true} />
+        const { getByRole } = render(
+            <HelpCenterEditModalFooter {...props} canSave={true} />,
         )
 
-        const saveAndPublish = getByRole('button', {name: /Save & Publish/i})
+        const saveAndPublish = getByRole('button', { name: /Save & Publish/i })
         fireEvent.click(saveAndPublish)
 
         expect(mockedOnSave).toHaveBeenCalledTimes(1)
@@ -53,7 +54,7 @@ describe('<HelpCenterEditModalFooter />', () => {
     it('allows to publish an unchanged and unpublished article', () => {
         const mockedOnPublish = jest.fn()
 
-        const {getByRole} = render(
+        const { getByRole } = render(
             <HelpCenterEditModalFooter
                 {...{
                     ...props,
@@ -64,10 +65,10 @@ describe('<HelpCenterEditModalFooter />', () => {
                     },
                 }}
                 canSave={true}
-            />
+            />,
         )
 
-        const publish = getByRole('button', {name: /Publish/i})
+        const publish = getByRole('button', { name: /Publish/i })
         fireEvent.click(publish)
 
         expect(mockedOnPublish).toHaveBeenCalledTimes(1)
@@ -77,7 +78,7 @@ describe('<HelpCenterEditModalFooter />', () => {
     it('allows to create and publish a new article', () => {
         const mockedOnCreate = jest.fn()
 
-        const {getByRole} = render(
+        const { getByRole } = render(
             <HelpCenterEditModalFooter
                 {...{
                     ...props,
@@ -87,7 +88,7 @@ describe('<HelpCenterEditModalFooter />', () => {
                     },
                 }}
                 canSave={true}
-            />
+            />,
         )
 
         const createAndPublish = getByRole('button', {
@@ -99,7 +100,7 @@ describe('<HelpCenterEditModalFooter />', () => {
     })
 
     it('only displays disabled published button if article is published and unchanged', () => {
-        const {getByRole} = render(
+        const { getByRole } = render(
             <HelpCenterEditModalFooter
                 {...{
                     ...props,
@@ -109,7 +110,7 @@ describe('<HelpCenterEditModalFooter />', () => {
                     },
                 }}
                 canSave={false}
-            />
+            />,
         )
 
         getByRole('button', {
@@ -118,15 +119,15 @@ describe('<HelpCenterEditModalFooter />', () => {
     })
 
     it('should trigger onDelete when confirming the delete action', () => {
-        const {getByRole, getByText} = render(
-            <HelpCenterEditModalFooter {...props} />
+        const { getByRole, getByText } = render(
+            <HelpCenterEditModalFooter {...props} />,
         )
 
-        const deleteBtn = getByRole('button', {name: /Delete Article/i})
+        const deleteBtn = getByRole('button', { name: /Delete Article/i })
         fireEvent.click(deleteBtn)
 
         void waitFor(() =>
-            getByText('Are you sure you want to delete this article?')
+            getByText('Are you sure you want to delete this article?'),
         )
 
         const dialogModal = getByRole('dialog')
@@ -138,9 +139,9 @@ describe('<HelpCenterEditModalFooter />', () => {
     })
 
     it('should trigger onDiscard when clicking on discard button', () => {
-        const {getByRole} = render(<HelpCenterEditModalFooter {...props} />)
+        const { getByRole } = render(<HelpCenterEditModalFooter {...props} />)
 
-        const discardBtn = getByRole('button', {name: /Discard changes/i})
+        const discardBtn = getByRole('button', { name: /Discard changes/i })
         fireEvent.click(discardBtn)
 
         expect(mockedOnDiscard).toHaveBeenCalledTimes(1)

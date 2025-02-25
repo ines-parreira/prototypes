@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react'
+import React, { ReactNode } from 'react'
 
 import css from './BaseProductCard.less'
 
@@ -7,7 +7,7 @@ type Props = {
     children: ReactNode | ReactNode[]
 }
 
-export const BaseProductCard = ({renderFeaturedImage, children}: Props) => {
+export const BaseProductCard = ({ renderFeaturedImage, children }: Props) => {
     return (
         <div className={css.wrapper}>
             {renderFeaturedImage()}

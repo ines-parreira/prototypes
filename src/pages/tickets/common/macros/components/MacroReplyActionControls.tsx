@@ -1,11 +1,11 @@
+import React, { useCallback, useRef, useState } from 'react'
+
 import _upperFirst from 'lodash/upperFirst'
-import React, {useCallback, useState, useRef} from 'react'
+import { UncontrolledTooltip } from 'reactstrap'
 
-import {UncontrolledTooltip} from 'reactstrap'
-
-import {TicketMessageSourceType} from 'business/types/ticket'
+import { TicketMessageSourceType } from 'business/types/ticket'
 import ReceiversSelectField from 'pages/tickets/detail/components/ReplyArea/MessageSourceFields/components/ReceiversSelectField'
-import type {Receiver} from 'state/ticket/utils'
+import type { Receiver } from 'state/ticket/utils'
 
 import css from './MacroReplyActionControls.less'
 
@@ -45,35 +45,35 @@ const MacroReplyActionRecipient: React.FC<MacroReplyActionRecipientProps> = ({
     onChange,
 }) => {
     const [receiverNames, setReceiverNames] = useState<Record<string, string>>(
-        {}
+        {},
     )
 
     const receivers: Receiver[] = value
         .split(',')
         .filter((address) => address)
-        .map((address) => ({address, name: receiverNames[address]}))
+        .map((address) => ({ address, name: receiverNames[address] }))
 
     const onReceiversChange = useCallback(
         (receivers: Receiver[]) => {
             const receiversWithName = receivers.filter(
-                (receiver): receiver is Receiver & {name: string} =>
-                    !!receiver.name
+                (receiver): receiver is Receiver & { name: string } =>
+                    !!receiver.name,
             )
             const receiverNames = receiversWithName.reduce<
                 Record<string, string>
             >(
-                (previous, {address, name}) => ({
+                (previous, { address, name }) => ({
                     ...previous,
                     [address]: name,
                 }),
-                {}
+                {},
             )
 
             setReceiverNames(receiverNames)
 
-            onChange(field, receivers.map(({address}) => address).join(','))
+            onChange(field, receivers.map(({ address }) => address).join(','))
         },
-        [field, onChange]
+        [field, onChange],
     )
 
     return (
@@ -105,7 +105,7 @@ type MacroReplyActionControlsProps = {
 
 const MacroReplyActionControls: React.FC<MacroReplyActionControlsProps> = ({
     tabIndex,
-    fields: {to, cc, bcc},
+    fields: { to, cc, bcc },
     onShowCcBcc,
     onChange,
     showCcBccTooltip,

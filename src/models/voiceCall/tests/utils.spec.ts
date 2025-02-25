@@ -1,7 +1,7 @@
-import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
+import { PhoneIntegrationEvent } from 'constants/integrations/types/event'
 import * as momentUtils from 'utils/date'
 
-import {VoiceCall, VoiceCallEvent, VoiceCallStatus} from '../types'
+import { VoiceCall, VoiceCallEvent, VoiceCallStatus } from '../types'
 import {
     getFormattedDurationEndedCall,
     getFormattedDurationOngoingCall,
@@ -28,13 +28,13 @@ describe('voice call utils', () => {
         it('should return false for non-final voice call statuses', () => {
             expect(isFinalVoiceCallStatus(VoiceCallStatus.Answered)).toBe(false)
             expect(isFinalVoiceCallStatus(VoiceCallStatus.Connected)).toBe(
-                false
+                false,
             )
             expect(isFinalVoiceCallStatus(VoiceCallStatus.InProgress)).toBe(
-                false
+                false,
             )
             expect(isFinalVoiceCallStatus(VoiceCallStatus.Initiated)).toBe(
-                false
+                false,
             )
             expect(isFinalVoiceCallStatus(VoiceCallStatus.Queued)).toBe(false)
             expect(isFinalVoiceCallStatus(VoiceCallStatus.Ringing)).toBe(false)
@@ -53,22 +53,22 @@ describe('voice call utils', () => {
     describe('getFormattedDurationOngoingCall', () => {
         it('should return formatted duration for ongoing calls', () => {
             getMomentSpy.mockReturnValue(
-                momentUtils.stringToDatetime('2023-01-01 10:10:10') as any
+                momentUtils.stringToDatetime('2023-01-01 10:10:10') as any,
             )
             expect(getFormattedDurationOngoingCall('2023-01-01 10:10:10')).toBe(
-                '00:00'
+                '00:00',
             )
             expect(getFormattedDurationOngoingCall('2023-01-01 10:10:09')).toBe(
-                '00:01'
+                '00:01',
             )
             expect(getFormattedDurationOngoingCall('2023-01-01 10:09:10')).toBe(
-                '01:00'
+                '01:00',
             )
             expect(getFormattedDurationOngoingCall('2023-01-01 09:10:10')).toBe(
-                '01:00:00'
+                '01:00:00',
             )
             expect(getFormattedDurationOngoingCall('2023-01-01 09:09:09')).toBe(
-                '01:01:01'
+                '01:01:01',
             )
         })
     })
@@ -135,10 +135,10 @@ describe('voice call utils', () => {
             ] as VoiceCallEvent[]
             const result = processEvents(events)
             expect(result).toEqual([
-                {text: 'Declined by', userId: 2, datetime: '10:03 AM'},
-                {text: 'Missed by', userId: 3, datetime: '10:04 AM'},
-                {text: 'Missed by', userId: 4, datetime: '10:05 AM'},
-                {text: 'Answered by', userId: 5, datetime: '03:04 PM'},
+                { text: 'Declined by', userId: 2, datetime: '10:03 AM' },
+                { text: 'Missed by', userId: 3, datetime: '10:04 AM' },
+                { text: 'Missed by', userId: 4, datetime: '10:05 AM' },
+                { text: 'Answered by', userId: 5, datetime: '03:04 PM' },
                 {
                     text: 'Answered by',
                     userId: null,
@@ -150,32 +150,35 @@ describe('voice call utils', () => {
                     userId: 8,
                     datetime: '03:06 PM',
                 },
-                {text: 'Transfer failed to', userId: 9, datetime: '03:07 PM'},
+                { text: 'Transfer failed to', userId: 9, datetime: '03:07 PM' },
             ])
         })
 
         it('should not include events that are not PhoneCallAnswered, DeclinedPhoneCall, PhoneCallRinging, or ChildCallNotAnswered', () => {
             const events: VoiceCallEvent[] = [
-                {type: PhoneIntegrationEvent.PhoneCallAnswered, user_id: 1},
-                {type: PhoneIntegrationEvent.DeclinedPhoneCall, user_id: 2},
-                {type: PhoneIntegrationEvent.PhoneCallRinging, user_id: 3},
-                {type: 'some other event', user_id: 4},
+                { type: PhoneIntegrationEvent.PhoneCallAnswered, user_id: 1 },
+                { type: PhoneIntegrationEvent.DeclinedPhoneCall, user_id: 2 },
+                { type: PhoneIntegrationEvent.PhoneCallRinging, user_id: 3 },
+                { type: 'some other event', user_id: 4 },
             ] as VoiceCallEvent[]
             const result = processEvents(events)
             expect(result).toEqual([
-                {text: 'Answered by', userId: 1},
-                {text: 'Declined by', userId: 2},
-                {text: 'Missed by', userId: 3},
+                { text: 'Answered by', userId: 1 },
+                { text: 'Declined by', userId: 2 },
+                { text: 'Missed by', userId: 3 },
             ])
         })
 
         it('should handle cases where there is a ChildCallNotAnswered event for missed call', () => {
             const events: VoiceCallEvent[] = [
-                {type: PhoneIntegrationEvent.PhoneCallRinging, user_id: 1},
-                {type: PhoneIntegrationEvent.ChildCallNotAnswered, user_id: 1},
+                { type: PhoneIntegrationEvent.PhoneCallRinging, user_id: 1 },
+                {
+                    type: PhoneIntegrationEvent.ChildCallNotAnswered,
+                    user_id: 1,
+                },
             ] as VoiceCallEvent[]
             const result = processEvents(events)
-            expect(result).toEqual([{text: 'Missed by', userId: 1}])
+            expect(result).toEqual([{ text: 'Missed by', userId: 1 }])
         })
 
         it('should handle transfers', () => {
@@ -248,14 +251,14 @@ describe('voice call utils', () => {
             ] as VoiceCallEvent[]
             const result = processEvents(events)
             expect(result).toEqual([
-                {text: 'Missed by', userId: 2, datetime: '10:00 AM'},
-                {text: 'Answered by', userId: 1, datetime: '10:01 AM'},
+                { text: 'Missed by', userId: 2, datetime: '10:00 AM' },
+                { text: 'Answered by', userId: 1, datetime: '10:01 AM' },
                 {
                     text: 'Transfer initiated by',
                     userId: 1,
                     datetime: '10:02 AM',
                 },
-                {text: 'Transfer failed to', userId: 1, datetime: '10:03 AM'},
+                { text: 'Transfer failed to', userId: 1, datetime: '10:03 AM' },
                 {
                     datetime: '10:04 AM',
                     text: 'Transfer initiated by',
@@ -271,13 +274,17 @@ describe('voice call utils', () => {
                     text: 'Transfer initiated by',
                     userId: 2,
                 },
-                {text: 'Transfer missed by', userId: 3, datetime: '10:06 AM'},
+                { text: 'Transfer missed by', userId: 3, datetime: '10:06 AM' },
                 {
                     datetime: '10:07 AM',
                     text: 'Transfer initiated by',
                     userId: 2,
                 },
-                {text: 'Transfer declined by', userId: 3, datetime: '10:09 AM'},
+                {
+                    text: 'Transfer declined by',
+                    userId: 3,
+                    datetime: '10:09 AM',
+                },
             ])
         })
 
@@ -306,8 +313,8 @@ describe('voice call utils', () => {
             ] as VoiceCallEvent[]
             const result = processEvents(events)
             expect(result).toEqual([
-                {text: 'Missed by', userId: 2, datetime: '10:00 AM'},
-                {text: 'Answered by', userId: 1, datetime: '10:01 AM'},
+                { text: 'Missed by', userId: 2, datetime: '10:00 AM' },
+                { text: 'Answered by', userId: 1, datetime: '10:01 AM' },
                 {
                     text: 'Transfer initiated by',
                     userId: 1,
@@ -346,8 +353,8 @@ describe('voice call utils', () => {
             ] as VoiceCallEvent[]
             const result = processEvents(events)
             expect(result).toEqual([
-                {text: 'Missed by', userId: 2, datetime: '10:00 AM'},
-                {text: 'Answered by', userId: 1, datetime: '10:01 AM'},
+                { text: 'Missed by', userId: 2, datetime: '10:00 AM' },
+                { text: 'Answered by', userId: 1, datetime: '10:01 AM' },
                 {
                     text: 'Transfer initiated by',
                     userId: 1,
@@ -367,13 +374,13 @@ describe('voice call utils', () => {
                     isMissedInboundVoiceCall({
                         direction: 'inbound',
                         status: VoiceCallStatus.Completed,
-                    } as VoiceCall)
+                    } as VoiceCall),
                 ).toBe(true)
                 expect(
                     isMissedInboundVoiceCall({
                         direction: 'inbound',
                         status: VoiceCallStatus.Ending,
-                    } as VoiceCall)
+                    } as VoiceCall),
                 ).toBe(true)
             })
 
@@ -390,9 +397,9 @@ describe('voice call utils', () => {
                         isMissedInboundVoiceCall({
                             direction: 'inbound',
                             status,
-                        } as VoiceCall)
+                        } as VoiceCall),
                     ).toBe(false)
-                }
+                },
             )
 
             it.each([VoiceCallStatus.Completed, VoiceCallStatus.Ending])(
@@ -402,9 +409,9 @@ describe('voice call utils', () => {
                         isMissedInboundVoiceCall({
                             direction: 'outbound',
                             status,
-                        } as VoiceCall)
+                        } as VoiceCall),
                     ).toBe(false)
-                }
+                },
             )
         })
     })

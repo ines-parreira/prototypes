@@ -1,12 +1,13 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {RootState, StoreDispatch} from 'state/types'
+import { RootState, StoreDispatch } from 'state/types'
 
-import {useShopifyIntegrationAndScope} from '../useShopifyIntegrationAndScope'
+import { useShopifyIntegrationAndScope } from '../useShopifyIntegrationAndScope'
 
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
@@ -16,15 +17,15 @@ const defaultState: Partial<RootState> = {
 
 describe('useShopifyIntegrationAndScope', () => {
     it('returns integrationId null and needScopeUpdate false if no integration is found for the shop', () => {
-        const {result} = renderHook(
+        const { result } = renderHook(
             () => useShopifyIntegrationAndScope('shopName'),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={mockedStore(defaultState)}>
                         {children}
                     </Provider>
                 ),
-            }
+            },
         )
 
         expect(result.current).toEqual({
@@ -65,13 +66,13 @@ describe('useShopifyIntegrationAndScope', () => {
             }),
         }
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () => useShopifyIntegrationAndScope('bar'),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={mockedStore(store)}>{children}</Provider>
                 ),
-            }
+            },
         )
 
         expect(result.current).toEqual({
@@ -86,13 +87,13 @@ describe('useShopifyIntegrationAndScope', () => {
             needScopeUpdate: false,
         })
 
-        const {result: resultWithScopeUpdate} = renderHook(
+        const { result: resultWithScopeUpdate } = renderHook(
             () => useShopifyIntegrationAndScope('shopWithScopeUpdate'),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={mockedStore(store)}>{children}</Provider>
                 ),
-            }
+            },
         )
 
         expect(resultWithScopeUpdate.current).toEqual({

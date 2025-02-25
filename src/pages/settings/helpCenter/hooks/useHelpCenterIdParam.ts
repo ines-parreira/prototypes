@@ -1,7 +1,7 @@
-import {useParams} from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
 export const useHelpCenterIdParam = (): number => {
-    const {helpCenterId} = useParams<{helpCenterId: string}>()
+    const { helpCenterId } = useParams<{ helpCenterId: string }>()
 
     const parsedId = parseInt(helpCenterId, 10)
 

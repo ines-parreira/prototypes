@@ -1,16 +1,16 @@
-import React, {ReactNode, useCallback, useEffect} from 'react'
+import React, { ReactNode, useCallback, useEffect } from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {useContactFormApi} from 'pages/settings/contactForm/hooks/useContactFormApi'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { useContactFormApi } from 'pages/settings/contactForm/hooks/useContactFormApi'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 type Props = {
     children?: ReactNode
 }
 
-const SelfServiceContactFormsProvider = ({children}: Props) => {
-    const {isReady, fetchPaginatedContactForms} = useContactFormApi()
+const SelfServiceContactFormsProvider = ({ children }: Props) => {
+    const { isReady, fetchPaginatedContactForms } = useContactFormApi()
     const dispatch = useAppDispatch()
 
     const handleFetchContactForms = useCallback(async () => {
@@ -22,7 +22,7 @@ const SelfServiceContactFormsProvider = ({children}: Props) => {
                 notify({
                     message: 'Failed to fetch Contact Forms',
                     status: NotificationStatus.Error,
-                })
+                }),
             )
         }
     }, [fetchPaginatedContactForms, dispatch])

@@ -1,7 +1,7 @@
-import {UseQueryOptions, useQuery} from '@tanstack/react-query'
+import { useQuery, UseQueryOptions } from '@tanstack/react-query'
 
-import {fetchTeams} from './resources'
-import {FetchTeamsOptions} from './types'
+import { fetchTeams } from './resources'
+import { FetchTeamsOptions } from './types'
 
 const teamQueryKeys = {
     all: () => ['teams'] as const,
@@ -11,7 +11,7 @@ const teamQueryKeys = {
 
 export const useListTeams = (
     params?: FetchTeamsOptions,
-    overrides?: UseQueryOptions<Awaited<ReturnType<typeof fetchTeams>>>
+    overrides?: UseQueryOptions<Awaited<ReturnType<typeof fetchTeams>>>,
 ) => {
     return useQuery({
         queryKey: teamQueryKeys.list(params),

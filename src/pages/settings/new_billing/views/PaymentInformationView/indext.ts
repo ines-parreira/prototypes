@@ -1,1 +1,1 @@
-export {default} from './PaymentInformationView'
+export { default } from './PaymentInformationView'

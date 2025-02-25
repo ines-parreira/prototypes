@@ -1,6 +1,7 @@
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
-import {useRouteMatch} from 'react-router-dom'
+
+import { renderHook } from '@testing-library/react-hooks'
+import { useRouteMatch } from 'react-router-dom'
 
 import {
     DEFAULT_INFOBAR_WIDTH,
@@ -30,14 +31,14 @@ jest.mock('split-ticket-view/components/TicketWrapper', () => () => (
 describe('useSplitViewPage', () => {
     beforeEach(() => {
         useRouteMatchMock.mockReturnValue({
-            params: {ticketId: '654321', viewId: '123456'},
+            params: { ticketId: '654321', viewId: '123456' },
         })
     })
 
     it('should return the config', () => {
         global.innerWidth = 1500
 
-        const {result} = renderHook(() => useSplitTicketPage())
+        const { result } = renderHook(() => useSplitTicketPage())
         expect(result.current).toEqual({
             config: [
                 expect.objectContaining({

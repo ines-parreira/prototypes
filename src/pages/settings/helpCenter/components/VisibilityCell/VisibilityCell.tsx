@@ -1,8 +1,10 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
-import React, {useRef} from 'react'
+import React, { useRef } from 'react'
 
-import {VisibilityStatus} from 'models/helpCenter/types'
+import classnames from 'classnames'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { VisibilityStatus } from 'models/helpCenter/types'
 
 import css from './VisibilityCell.less'
 
@@ -15,7 +17,7 @@ export type VisibilityCellProps = {
 
 export const optionsSharingStatus: Record<
     VisibilityStatus,
-    {title: string; icon: string}
+    { title: string; icon: string }
 > = {
     PUBLIC: {
         title: 'Public',

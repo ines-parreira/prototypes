@@ -1,10 +1,11 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
 import React from 'react'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 
-import {ConfirmationButton} from './ConfirmationButton'
+import { ConfirmationButton } from './ConfirmationButton'
 
 interface Props {
     isNewWorkflow: boolean

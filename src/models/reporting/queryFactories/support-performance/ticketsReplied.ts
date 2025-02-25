@@ -1,20 +1,23 @@
-import {TicketMessageSourceType} from 'business/types/ticket'
-import {OrderDirection} from 'models/api/types'
+import { TicketMessageSourceType } from 'business/types/ticket'
+import { OrderDirection } from 'models/api/types'
 import {
     HelpdeskMessageCubeWithJoins,
     HelpdeskMessageDimension,
     HelpdeskMessageMeasure,
     HelpdeskMessageMember,
 } from 'models/reporting/cubes/HelpdeskMessageCube'
-import {TicketDimension, TicketMember} from 'models/reporting/cubes/TicketCube'
-import {CHANNEL_DIMENSION} from 'models/reporting/queryFactories/support-performance/constants'
+import {
+    TicketDimension,
+    TicketMember,
+} from 'models/reporting/cubes/TicketCube'
+import { CHANNEL_DIMENSION } from 'models/reporting/queryFactories/support-performance/constants'
 import {
     ReportingFilterOperator,
     ReportingGranularity,
     ReportingQuery,
     TimeSeriesQuery,
 } from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import { StatsFilters } from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
@@ -30,7 +33,7 @@ import {
 export const ticketsRepliedQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
     measures: [HelpdeskMessageMeasure.TicketCount],
     dimensions: [],
@@ -60,7 +63,7 @@ export const ticketsRepliedQueryFactory = (
         ...PublicAndMessageViaFilter,
         ...statsFiltersToReportingFilters(
             HelpdeskTicketsRepliedStatsFiltersMembers,
-            filters
+            filters,
         ),
     ],
     ...(sorting
@@ -74,7 +77,7 @@ export const ticketsRepliedTimeSeriesQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ): TimeSeriesQuery<HelpdeskMessageCubeWithJoins> => ({
     ...ticketsRepliedQueryFactory(filters, timezone, sorting),
     timeDimensions: [
@@ -89,7 +92,7 @@ export const ticketsRepliedTimeSeriesQueryFactory = (
 export const ticketsRepliedMetricPerAgentQueryFactory =
     perDimensionQueryFactory(
         ticketsRepliedQueryFactory,
-        TicketDimension.MessageSenderId
+        TicketDimension.MessageSenderId,
     )
 
 export const ticketsRepliedMetricPerChannelQueryFactory =
@@ -98,7 +101,7 @@ export const ticketsRepliedMetricPerChannelQueryFactory =
 export const ticketsRepliedMetricPerTicketDrillDownQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
     const baseQuery = ticketsRepliedQueryFactory(filters, timezone, sorting)
     return {

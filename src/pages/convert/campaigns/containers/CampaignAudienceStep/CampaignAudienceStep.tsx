@@ -1,35 +1,35 @@
-import {Map} from 'immutable'
-import React, {useCallback, useMemo} from 'react'
-import {ulid} from 'ulidx'
+import React, { useCallback, useMemo } from 'react'
+
+import { Map } from 'immutable'
+import { ulid } from 'ulidx'
 
 import Accordion from 'pages/common/components/accordion/Accordion'
 import AccordionBody from 'pages/common/components/accordion/AccordionBody'
 import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
 import AccordionItem from 'pages/common/components/accordion/AccordionItem'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-
-import {AdvancedTriggersForm} from 'pages/convert/campaigns/components/AdvancedTriggersForm'
-import {AdvancedTriggersSelect} from 'pages/convert/campaigns/components/AdvancedTriggersSelect'
-import {CampaignDisplaySettings} from 'pages/convert/campaigns/components/CampaignDisplaySettings'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { AdvancedTriggersForm } from 'pages/convert/campaigns/components/AdvancedTriggersForm'
+import { AdvancedTriggersSelect } from 'pages/convert/campaigns/components/AdvancedTriggersSelect'
+import { CampaignDisplaySettings } from 'pages/convert/campaigns/components/CampaignDisplaySettings'
 import CampaignFrequency from 'pages/convert/campaigns/components/CampaignFrequency'
 import ConvertInfoBanner from 'pages/convert/campaigns/components/ConvertInfoBanner'
 import ConvertSetupBanner from 'pages/convert/campaigns/components/ConvertSetupBanner'
-import {StatefulAccordion} from 'pages/convert/campaigns/components/StatefulAccordion'
-import {Conditions} from 'pages/convert/campaigns/containers/CampaignAudienceStep/Conditions'
-import {TriggersProvider} from 'pages/convert/campaigns/containers/TriggersProvider'
-import {useCampaignDetailsContext} from 'pages/convert/campaigns/hooks/useCampaignDetailsContext'
-import {useCampaignFormContext} from 'pages/convert/campaigns/hooks/useCampaignFormContext'
-import {useStepState} from 'pages/convert/campaigns/hooks/useStepState'
+import { StatefulAccordion } from 'pages/convert/campaigns/components/StatefulAccordion'
+import { Conditions } from 'pages/convert/campaigns/containers/CampaignAudienceStep/Conditions'
+import { TriggersProvider } from 'pages/convert/campaigns/containers/TriggersProvider'
+import { useCampaignDetailsContext } from 'pages/convert/campaigns/hooks/useCampaignDetailsContext'
+import { useCampaignFormContext } from 'pages/convert/campaigns/hooks/useCampaignFormContext'
+import { useStepState } from 'pages/convert/campaigns/hooks/useStepState'
 import {
     CampaignDisplaysInSession,
     MinimumTimeBetweenCampaigns,
 } from 'pages/convert/campaigns/types/CampaignMeta'
-import {CampaignStepsKeys} from 'pages/convert/campaigns/types/CampaignSteps'
-import {isDeviceTypeValue} from 'pages/convert/campaigns/types/enums/CampaignTriggerDeviceTypeValue.enum'
-import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
-import {createTrigger} from 'pages/convert/campaigns/utils/createTrigger'
-import {isAllowedToUpdateTrigger} from 'pages/convert/campaigns/utils/isAllowedToUpdateTrigger'
+import { CampaignStepsKeys } from 'pages/convert/campaigns/types/CampaignSteps'
+import { isDeviceTypeValue } from 'pages/convert/campaigns/types/enums/CampaignTriggerDeviceTypeValue.enum'
+import { CampaignTriggerOperator } from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
+import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import { createTrigger } from 'pages/convert/campaigns/utils/createTrigger'
+import { isAllowedToUpdateTrigger } from 'pages/convert/campaigns/utils/isAllowedToUpdateTrigger'
 import useIsCampaignProritizationEnabled from 'pages/convert/common/hooks/useIsCampaignProritizationEnabled'
 
 import css from './CampaignAudienceStep.less'
@@ -66,7 +66,7 @@ export const CampaignAudienceStep = ({
         updateTrigger,
         deleteTrigger,
     } = useCampaignDetailsContext()
-    const {isEditMode, getStepConfiguration} = useCampaignFormContext()
+    const { isEditMode, getStepConfiguration } = useCampaignFormContext()
     const isCampaignProritizationEnabled = useIsCampaignProritizationEnabled()
 
     const campaignWithNoReply = campaign.meta?.noReply ?? false
@@ -88,7 +88,7 @@ export const CampaignAudienceStep = ({
     }, [getStepConfiguration])
 
     const shouldShowContactCsm = Object.values(triggers).some(
-        (trigger) => !isAllowedToUpdateTrigger(trigger, isConvertSubscriber)
+        (trigger) => !isAllowedToUpdateTrigger(trigger, isConvertSubscriber),
     )
 
     const handleUpdateDelay = (value: number) => updateCampaign('delay', value)
@@ -97,13 +97,13 @@ export const CampaignAudienceStep = ({
         updateCampaign('noReply', value)
 
     const handleUpdateMaxDisplaysInSession = (
-        value: CampaignDisplaysInSession | null
+        value: CampaignDisplaysInSession | null,
     ) => {
         updateCampaign('maxCampaignDisplaysInSession', value)
     }
 
     const handleUpdateMinTimeBetweenCampaigns = (
-        value: MinimumTimeBetweenCampaigns | null
+        value: MinimumTimeBetweenCampaigns | null,
     ) => {
         updateCampaign('minimumTimeBetweenCampaigns', value)
     }
@@ -128,7 +128,7 @@ export const CampaignAudienceStep = ({
                 }
             }
         },
-        [addTrigger, updateTrigger]
+        [addTrigger, updateTrigger],
     )
 
     const isConsideredLightCampaign = isLightCampaign && isShopifyStore
@@ -137,11 +137,11 @@ export const CampaignAudienceStep = ({
         (triggerId: string, value: boolean | undefined) => {
             if (!triggerId && value) {
                 const incognitoVisitorTrigger = createTrigger(
-                    CampaignTriggerType.IncognitoVisitor
+                    CampaignTriggerType.IncognitoVisitor,
                 )
                 addTrigger(
                     CampaignTriggerType.IncognitoVisitor,
-                    incognitoVisitorTrigger
+                    incognitoVisitorTrigger,
                 )
             } else if (triggerId) {
                 if (value === undefined) {
@@ -156,7 +156,7 @@ export const CampaignAudienceStep = ({
                 }
             }
         },
-        [addTrigger, updateTrigger, deleteTrigger]
+        [addTrigger, updateTrigger, deleteTrigger],
     )
 
     if (isCampaignProritizationEnabled) {

@@ -1,7 +1,8 @@
-import {screen, render} from '@testing-library/react'
 import React from 'react'
 
-import {assumeMock} from 'utils/testing'
+import { render, screen } from '@testing-library/react'
+
+import { assumeMock } from 'utils/testing'
 
 import useHelpCenterArticleTree from '../../hooks/useHelpCenterArticleTree'
 import ArticleSelectPreview from '../ArticleSelectPreview'
@@ -49,7 +50,7 @@ describe('<ArticleSelectPreview />', () => {
                 helpCenterId={1}
                 onChange={jest.fn()}
                 onSelect={jest.fn()}
-            />
+            />,
         )
 
         expect(screen.getByText(/select an article/i)).toBeInTheDocument()

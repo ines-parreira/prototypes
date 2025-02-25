@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import {parseToHsla, lighten, darken, getContrast} from 'color2k'
+import { darken, getContrast, lighten, parseToHsla } from 'color2k'
 
-import {gorgiasColors} from './styles'
+import { gorgiasColors } from './styles'
 
 /**
  * Set the lightness of a color.
@@ -58,7 +58,7 @@ export const relativeDarken = (color = '#000000', amount = 0.2) => {
  */
 export const getContrastColor = (
     color: string,
-    fallbackColor = gorgiasColors.white
+    fallbackColor = gorgiasColors.white,
 ) => {
     const contrastRatioThreshold = 2.8
 

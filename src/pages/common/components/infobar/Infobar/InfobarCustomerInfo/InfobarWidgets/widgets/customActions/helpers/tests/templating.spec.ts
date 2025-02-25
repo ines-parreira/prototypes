@@ -1,4 +1,4 @@
-import {TemplateContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
+import { TemplateContext } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 
 import {
     applyCustomActionTemplate,
@@ -22,10 +22,10 @@ describe('applyCustomActionTemplate', () => {
         } as TemplateContext
 
         expect(applyCustomActionTemplate(template, templateContext)).toBe(
-            'something super duper templated 1337 '
+            'something super duper templated 1337 ',
         )
         expect(applyCustomActionTemplate(template, templateContext, true)).toBe(
-            'something super duper templated 1337 {{expect_me}}'
+            'something super duper templated 1337 {{expect_me}}',
         )
     })
 })
@@ -42,8 +42,8 @@ describe('applyCustomActionVariables', () => {
         expect(
             applyCustomActionVariables(
                 'something $listIndex templated $integrationId',
-                templateValues
-            )
+                templateValues,
+            ),
         ).toEqual(`something ${listIndexValue} templated ${integrationIdValue}`)
     })
 })

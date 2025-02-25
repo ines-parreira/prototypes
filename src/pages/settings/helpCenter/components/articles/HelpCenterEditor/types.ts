@@ -78,7 +78,7 @@ export type Editor = {
             sanitize: boolean | null,
             data: Record<string, any> | null,
             $existing_image: JQuery,
-            response: Record<string, any>
+            response: Record<string, any>,
         ) => void
     }
 
@@ -104,7 +104,7 @@ export type Editor = {
             sanitize: boolean | null,
             data: Record<string, any> | null,
             $existing_image: JQuery,
-            response: Record<string, any>
+            response: Record<string, any>,
         ) => void
     }
 

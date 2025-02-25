@@ -1,7 +1,8 @@
-import classNames from 'classnames'
 import React from 'react'
 
-import {WhatsAppMessageTemplate} from 'models/whatsAppMessageTemplates/types'
+import classNames from 'classnames'
+
+import { WhatsAppMessageTemplate } from 'models/whatsAppMessageTemplates/types'
 
 import WhatsAppMessageTemplateLine from './WhatsAppMessageTemplateLine'
 
@@ -24,7 +25,7 @@ export default function WhatsAppMessageTemplateHeader({
 
     if (!header) return null
 
-    const {type, value: headerText} = header
+    const { type, value: headerText } = header
 
     if (!isPreview && type !== 'text') return null
 

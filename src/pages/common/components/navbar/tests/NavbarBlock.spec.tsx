@@ -1,9 +1,10 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
-import {DndProvider} from 'react-dnd'
-import {HTML5Backend} from 'react-dnd-html5-backend'
 
-import {ViewCategoryNavbar, ViewVisibility} from 'models/view/types'
+import { render, screen } from '@testing-library/react'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+
+import { ViewCategoryNavbar, ViewVisibility } from 'models/view/types'
 
 import NavbarBlock from '../NavbarBlock'
 
@@ -20,10 +21,10 @@ describe('<NavbarBlock/>', () => {
     }
 
     it('should render', () => {
-        const {container} = render(
+        const { container } = render(
             <DndProvider backend={HTML5Backend}>
                 <NavbarBlock {...minProps}>foobar</NavbarBlock>
-            </DndProvider>
+            </DndProvider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -33,13 +34,13 @@ describe('<NavbarBlock/>', () => {
         render(
             <DndProvider backend={HTML5Backend}>
                 <NavbarBlock {...minProps}>foobar</NavbarBlock>
-            </DndProvider>
+            </DndProvider>,
         )
 
         screen.getByRole('button').click()
 
         expect(screen.getByRole('menu').getAttribute('aria-hidden')).toBe(
-            'false'
+            'false',
         )
     })
 
@@ -49,7 +50,7 @@ describe('<NavbarBlock/>', () => {
                 <NavbarBlock icon="adjust" {...minProps}>
                     foobar
                 </NavbarBlock>
-            </DndProvider>
+            </DndProvider>,
         )
 
         expect(screen.getByText('adjust'))

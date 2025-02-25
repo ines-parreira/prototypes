@@ -1,17 +1,17 @@
 import MockAdapter from 'axios-mock-adapter'
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
-import {shopifyIntegration} from 'fixtures/integrations'
+import { shopifyIntegration } from 'fixtures/integrations'
 import {
     integrationDataItemProductFixture,
     shopifyProductFixture,
     shopifyVariantFixture,
 } from 'fixtures/shopify'
 import client from 'models/api/resources'
-import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
+import { CampaignStatus } from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
 
-import {CampaignConfigurationBuilder} from '../constructor'
-import {CART_ABANDONMENT} from '../onboarding/cartAbandonment'
+import { CampaignConfigurationBuilder } from '../constructor'
+import { CART_ABANDONMENT } from '../onboarding/cartAbandonment'
 
 const configuration = {
     name: CART_ABANDONMENT.name,
@@ -52,7 +52,7 @@ describe('CampaignConfigurationBuilder', () => {
 
         const b = new CampaignConfigurationBuilder(
             CART_ABANDONMENT,
-            configuration
+            configuration,
         )
 
         await b.attachProductCards(fromJS(shopifyIntegration), 3)
@@ -68,16 +68,16 @@ describe('CampaignConfigurationBuilder', () => {
 
         mockServer
             .onGet(`/api/discount-codes/${shopifyIntegration.id}/`)
-            .reply(200, {data: []})
+            .reply(200, { data: [] })
         mockServer
             .onPost(`/api/discount-codes/${shopifyIntegration.id}/`)
-            .reply(201, {code: existingCode})
+            .reply(201, { code: existingCode })
 
         const code = await CampaignConfigurationBuilder.getOrCreateDiscountCode(
             fromJS(shopifyIntegration),
             'percentage',
             'TESTCODE',
-            0.1
+            0.1,
         )
 
         expect(code).toBe(existingCode)
@@ -88,36 +88,36 @@ describe('CampaignConfigurationBuilder', () => {
     it('backend returned 500 error ', async () => {
         mockServer
             .onGet(`/api/discount-codes/${shopifyIntegration.id}/`)
-            .reply(200, {data: []})
+            .reply(200, { data: [] })
         mockServer
             .onPost(`/api/discount-codes/${shopifyIntegration.id}/`)
-            .reply(500, {data: {}})
+            .reply(500, { data: {} })
 
         await expect(
             CampaignConfigurationBuilder.getOrCreateDiscountCode(
                 fromJS(shopifyIntegration),
                 'percentage',
                 'TESTCODE',
-                0.1
-            )
+                0.1,
+            ),
         ).rejects.toThrow('Cannot create discount code')
     })
 
     it('backend returned different response than 201', async () => {
         mockServer
             .onGet(`/api/discount-codes/${shopifyIntegration.id}/`)
-            .reply(200, {data: []})
+            .reply(200, { data: [] })
         mockServer
             .onPost(`/api/discount-codes/${shopifyIntegration.id}/`)
-            .reply(200, {data: {}})
+            .reply(200, { data: {} })
 
         await expect(
             CampaignConfigurationBuilder.getOrCreateDiscountCode(
                 fromJS(shopifyIntegration),
                 'percentage',
                 'TESTCODE',
-                0.1
-            )
+                0.1,
+            ),
         ).rejects.toThrow('Cannot create discount code')
     })
 })

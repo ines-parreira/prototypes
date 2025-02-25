@@ -1,12 +1,13 @@
-import _isEqual from 'lodash/isEqual'
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
-import {SegmentEvent, logEvent} from 'common/segment'
+import _isEqual from 'lodash/isEqual'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useEffectOnce from 'hooks/useEffectOnce'
-import {useAiAgentOnboardingNotification} from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
-import {useGuidanceAiSuggestions} from 'pages/aiAgent/hooks/useGuidanceAiSuggestions'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
+import { useGuidanceAiSuggestions } from 'pages/aiAgent/hooks/useGuidanceAiSuggestions'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import BackLink from 'pages/common/components/BackLink'
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
@@ -14,12 +15,13 @@ import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import InputField from 'pages/common/forms/input/InputField'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import history from 'pages/history'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
-import {useAiAgentNavigation} from '../../hooks/useAiAgentNavigation'
-import {GuidanceFormFields} from '../../types'
-import {GuidanceEditor} from '../GuidanceEditor/GuidanceEditor'
+import { useAiAgentNavigation } from '../../hooks/useAiAgentNavigation'
+import { GuidanceFormFields } from '../../types'
+import { GuidanceEditor } from '../GuidanceEditor/GuidanceEditor'
+
 import css from './GuidanceForm.less'
 
 const FORM_INITIAL_STATE = {
@@ -50,20 +52,20 @@ export const GuidanceForm = ({
     helpCenterId,
 }: Props) => {
     const dispatch = useAppDispatch()
-    const {routes} = useAiAgentNavigation({shopName})
+    const { routes } = useAiAgentNavigation({ shopName })
     const initialFormState = initialFields ?? FORM_INITIAL_STATE
     const [formState, setFormState] =
         useState<GuidanceFormFields>(initialFormState)
     const onNameChange = (value: string) => {
-        setFormState((prevState) => ({...prevState, name: value}))
+        setFormState((prevState) => ({ ...prevState, name: value }))
     }
 
     const onContentChange = (value: string) => {
-        setFormState((prevState) => ({...prevState, content: value}))
+        setFormState((prevState) => ({ ...prevState, content: value }))
     }
 
     const onChangeVisibility = (isVisible: boolean) => {
-        setFormState((prevState) => ({...prevState, isVisible}))
+        setFormState((prevState) => ({ ...prevState, isVisible }))
     }
 
     useEffectOnce(() => {
@@ -85,7 +87,7 @@ export const GuidanceForm = ({
     const {
         isLoading: isLoadingOnboardingNotificationState,
         handleOnTriggerActivateAiAgentNotification,
-    } = useAiAgentOnboardingNotification({shopName})
+    } = useAiAgentOnboardingNotification({ shopName })
 
     const isFormDirty = !_isEqual(initialFormState, formState)
 
@@ -106,7 +108,7 @@ export const GuidanceForm = ({
                 notify({
                     status: NotificationStatus.Success,
                     message: 'Guidance successfully deleted',
-                })
+                }),
             )
             history.push(routes.guidance)
         } catch {
@@ -114,7 +116,7 @@ export const GuidanceForm = ({
                 notify({
                     status: NotificationStatus.Error,
                     message: 'Error during guidance article deletion.',
-                })
+                }),
             )
         }
     }
@@ -127,7 +129,7 @@ export const GuidanceForm = ({
         setFormState(initialFormState)
     }
 
-    const handleSubmit = async ({redirectTo}: {redirectTo: string}) => {
+    const handleSubmit = async ({ redirectTo }: { redirectTo: string }) => {
         try {
             await onSubmit(formState)
             const notificationMessage =
@@ -138,7 +140,7 @@ export const GuidanceForm = ({
                 notify({
                     status: NotificationStatus.Success,
                     message: notificationMessage,
-                })
+                }),
             )
             logEvents()
 
@@ -151,17 +153,17 @@ export const GuidanceForm = ({
                 notify({
                     status: NotificationStatus.Error,
                     message: `Error during guidance article ${actionType}.`,
-                })
+                }),
             )
         }
     }
 
     const onSave = async () => {
-        await handleSubmit({redirectTo: routes.guidance})
+        await handleSubmit({ redirectTo: routes.guidance })
     }
 
     const onSaveAndTest = async () => {
-        await handleSubmit({redirectTo: routes.test})
+        await handleSubmit({ redirectTo: routes.test })
     }
 
     const logEvents = () => {

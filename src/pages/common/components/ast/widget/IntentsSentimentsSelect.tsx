@@ -1,7 +1,7 @@
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
 import MultiSelectField from '../../../forms/MultiSelectField'
-import type {Option} from '../../../forms/MultiSelectOptionsField/types'
+import type { Option } from '../../../forms/MultiSelectOptionsField/types'
 
 type OwnProps = {
     options: string[]
@@ -38,7 +38,7 @@ export const IntentsSentimentsSelect = ({
                     isDeprecated: deprecatedOptions.includes(option),
                 })),
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [deprecatedOptions, options]
+        [deprecatedOptions, options],
     )
 
     return (

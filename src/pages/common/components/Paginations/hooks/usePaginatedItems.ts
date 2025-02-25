@@ -1,7 +1,7 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {PageType} from '../types/PageType'
-import {RawListItem} from '../types/RawListItem'
+import { PageType } from '../types/PageType'
+import { RawListItem } from '../types/RawListItem'
 
 /**
  * @description
@@ -9,7 +9,7 @@ import {RawListItem} from '../types/RawListItem'
  */
 const _range = (start: number, end: number): number[] => {
     const length = end - start + 1
-    return Array.from({length}, (_, i) => start + i)
+    return Array.from({ length }, (_, i) => start + i)
 }
 
 /**
@@ -42,15 +42,15 @@ export function usePaginatedItems({
 }: HookProps): RawListItem[] {
     const startPages = useMemo(
         () => _range(1, Math.min(boundaryCount, count)),
-        [boundaryCount, count]
+        [boundaryCount, count],
     )
     const endPages = useMemo(
         () =>
             _range(
                 Math.max(count - boundaryCount + 1, boundaryCount + 1),
-                count
+                count,
             ),
-        [boundaryCount, count]
+        [boundaryCount, count],
     )
 
     const siblingsStart = Math.max(
@@ -58,10 +58,10 @@ export function usePaginatedItems({
             // Natural start
             page - siblingCount,
             // Lower boundary when page is high
-            count - boundaryCount - siblingCount * 2 - 1
+            count - boundaryCount - siblingCount * 2 - 1,
         ),
         // Greater than startPages
-        boundaryCount + 2
+        boundaryCount + 2,
     )
 
     const siblingsEnd = Math.min(
@@ -69,10 +69,10 @@ export function usePaginatedItems({
             // Natural end
             page + siblingCount,
             // Upper boundary when page is low
-            boundaryCount + siblingCount * 2 + 2
+            boundaryCount + siblingCount * 2 + 2,
         ),
         // Less than endPages
-        endPages.length > 0 ? endPages[0] - 2 : count - 1
+        endPages.length > 0 ? endPages[0] - 2 : count - 1,
     )
 
     const itemList = useMemo(() => {
@@ -119,7 +119,7 @@ export function usePaginatedItems({
                     type: item as PageType,
                 }
             }),
-        [itemList, page]
+        [itemList, page],
     )
 
     return items

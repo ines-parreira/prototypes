@@ -1,20 +1,21 @@
-import {fireEvent, render} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import _keyBy from 'lodash/keyBy'
 import React from 'react'
-import {Provider} from 'react-redux'
-import {LinkProps} from 'react-router-dom'
+
+import { fireEvent, render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import _keyBy from 'lodash/keyBy'
+import { Provider } from 'react-redux'
+import { LinkProps } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {TicketChannel} from 'business/types/ticket'
-import {logEvent} from 'common/segment'
-import {integrationsState} from 'fixtures/integrations'
-import {tags} from 'fixtures/tag'
-import {LegacyStatsFilters} from 'models/stat/types'
+import { TicketChannel } from 'business/types/ticket'
+import { logEvent } from 'common/segment'
+import { integrationsState } from 'fixtures/integrations'
+import { tags } from 'fixtures/tag'
+import { LegacyStatsFilters } from 'models/stat/types'
 import TicketsCreatedPerTagViewLink from 'pages/stats/common/TicketsCreatedPerTagViewLink'
 import StatsFiltersContext from 'pages/stats/StatsFiltersContext'
-import {RootState, StoreDispatch} from 'state/types'
+import { RootState, StoreDispatch } from 'state/types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -46,20 +47,20 @@ describe('TicketsCreatedPerTagViewLink', () => {
     } as RootState
 
     it('should render a tag link', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <StatsFiltersContext.Provider value={defaultStatsFilters}>
                     <TicketsCreatedPerTagViewLink tagName="fooTag">
                         click me!
                     </TicketsCreatedPerTagViewLink>
                 </StatsFiltersContext.Provider>
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render the "untagged" link', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <StatsFiltersContext.Provider value={defaultStatsFilters}>
                     <TicketsCreatedPerTagViewLink
@@ -69,14 +70,14 @@ describe('TicketsCreatedPerTagViewLink', () => {
                         click me!
                     </TicketsCreatedPerTagViewLink>
                 </StatsFiltersContext.Provider>
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render a tag link with tag stats filter values', () => {
-        const {tags} = defaultState.entities
-        const {container} = render(
+        const { tags } = defaultState.entities
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <StatsFiltersContext.Provider
                     value={{
@@ -88,14 +89,14 @@ describe('TicketsCreatedPerTagViewLink', () => {
                         click me!
                     </TicketsCreatedPerTagViewLink>
                 </StatsFiltersContext.Provider>
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render a tag link without tag stats filter value if it is the same value as the tag name', () => {
-        const {tags} = defaultState.entities
-        const {container} = render(
+        const { tags } = defaultState.entities
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <StatsFiltersContext.Provider
                     value={{
@@ -107,20 +108,20 @@ describe('TicketsCreatedPerTagViewLink', () => {
                         click me!
                     </TicketsCreatedPerTagViewLink>
                 </StatsFiltersContext.Provider>
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should log the event on click', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <StatsFiltersContext.Provider value={defaultStatsFilters}>
                     <TicketsCreatedPerTagViewLink tagName="fooTag">
                         click me!
                     </TicketsCreatedPerTagViewLink>
                 </StatsFiltersContext.Provider>
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(container.firstChild!)

@@ -1,20 +1,22 @@
 import React from 'react'
-import {Controller, useForm} from 'react-hook-form'
-import {useHistory} from 'react-router-dom'
 
-import {IntegrationType} from 'models/integration/constants'
+import { Controller, useForm } from 'react-hook-form'
+import { useHistory } from 'react-router-dom'
+
+import { IntegrationType } from 'models/integration/constants'
 import Button from 'pages/common/components/button/Button'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import InputField from 'pages/common/forms/input/InputField'
-import {validateWebhookURL} from 'utils'
+import { validateWebhookURL } from 'utils'
 
-import {ActionsApp, App} from '../types'
-import css from './ActionsPlatformAppForm.less'
+import { ActionsApp, App } from '../types'
 import ActionsPlatformAppSelectBox from './ActionsPlatformAppSelectBox'
 import ActionsPlatformAuthTypeSelectBox from './ActionsPlatformAuthTypeSelectBox'
 import ActionsPlatformTrackstarIntegrationSelectBox from './ActionsPlatformTrackstarIntegrationSelectBox'
 
-type AppWithUrl = Exclude<ActionsApp, {auth_type: 'trackstar'}>
+import css from './ActionsPlatformAppForm.less'
+
+type AppWithUrl = Exclude<ActionsApp, { auth_type: 'trackstar' }>
 
 const INSTRUCTIONS_URL_CAPTION_BY_AUTH_TYPE: Record<
     AppWithUrl['auth_type'],
@@ -31,7 +33,7 @@ const LABEL_BY_AUTH_TYPE: Record<AppWithUrl['auth_type'], string> = {
 
 type Props = {
     value?: ActionsApp
-    apps: Extract<App, {type: IntegrationType.App}>[]
+    apps: Extract<App, { type: IntegrationType.App }>[]
     onSubmit: (value: ActionsApp) => void
     isSubmitting?: boolean
 }
@@ -44,10 +46,12 @@ const ActionsPlatformAppForm = ({
 }: Props) => {
     const history = useHistory()
 
-    const {control, reset, getValues, formState, watch} = useForm<ActionsApp>({
-        defaultValues: {auth_type: 'api-key'},
-        values: value,
-    })
+    const { control, reset, getValues, formState, watch } = useForm<ActionsApp>(
+        {
+            defaultValues: { auth_type: 'api-key' },
+            values: value,
+        },
+    )
     const authType = watch('auth_type')
 
     const isNewActionsApp = !value
@@ -72,7 +76,7 @@ const ActionsPlatformAppForm = ({
                     rules={{
                         required: true,
                     }}
-                    render={({field: {value, onChange}}) => (
+                    render={({ field: { value, onChange } }) => (
                         <ActionsPlatformAppSelectBox
                             value={value}
                             onChange={onChange}
@@ -87,7 +91,7 @@ const ActionsPlatformAppForm = ({
                     rules={{
                         required: true,
                     }}
-                    render={({field: {value, onChange}}) => (
+                    render={({ field: { value, onChange } }) => (
                         <ActionsPlatformAuthTypeSelectBox
                             value={value}
                             onChange={onChange}
@@ -102,7 +106,7 @@ const ActionsPlatformAppForm = ({
                         rules={{
                             required: true,
                         }}
-                        render={({field: {value, onChange}}) => (
+                        render={({ field: { value, onChange } }) => (
                             <ActionsPlatformTrackstarIntegrationSelectBox
                                 value={value}
                                 onChange={onChange}
@@ -119,7 +123,7 @@ const ActionsPlatformAppForm = ({
                             validate: (value) =>
                                 validateWebhookURL(value ?? '') || undefined,
                         }}
-                        render={({field: {value, onChange}}) => (
+                        render={({ field: { value, onChange } }) => (
                             <InputField
                                 isRequired
                                 label="Instructions URL"
@@ -146,7 +150,7 @@ const ActionsPlatformAppForm = ({
                             validate: (value) =>
                                 validateWebhookURL(value ?? '') || undefined,
                         }}
-                        render={({field: {value, onChange}}) => (
+                        render={({ field: { value, onChange } }) => (
                             <InputField
                                 isRequired
                                 label="Refresh token endpoint URL"
@@ -161,7 +165,7 @@ const ActionsPlatformAppForm = ({
                         control={control}
                         name="auth_settings.input_label"
                         shouldUnregister
-                        render={({field: {value, onChange}}) => (
+                        render={({ field: { value, onChange } }) => (
                             <InputField
                                 label="Input label"
                                 value={value ?? ''}
@@ -175,7 +179,7 @@ const ActionsPlatformAppForm = ({
                     <Controller
                         control={control}
                         name="auth_settings.instruction_url_text"
-                        render={({field: {value, onChange}}) => (
+                        render={({ field: { value, onChange } }) => (
                             <InputField
                                 label="Instructions URL text"
                                 value={value ?? ''}

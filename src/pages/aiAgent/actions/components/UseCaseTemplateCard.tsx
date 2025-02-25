@@ -1,10 +1,11 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
-import {ActionTemplate} from 'pages/automate/actionsPlatform/types'
-import {TemplateCard} from 'pages/common/components/TemplateCard'
+import { ActionTemplate } from 'pages/automate/actionsPlatform/types'
+import { TemplateCard } from 'pages/common/components/TemplateCard'
+
+import UseCaseTemplateModal from './UseCaseTemplateModal'
 
 import css from './UseCaseTemplateCard.less'
-import UseCaseTemplateModal from './UseCaseTemplateModal'
 
 type Props = {
     template: ActionTemplate
@@ -30,8 +31,8 @@ const categoryTagStyleMap: {
     },
 }
 
-export default function UseCaseTemplateCard({template}: Props) {
-    const {category, name} = template
+export default function UseCaseTemplateCard({ template }: Props) {
+    const { category, name } = template
     const [isModalOpen, setIsModalOpen] = useState(false)
 
     const tagStyle = category ? categoryTagStyleMap[category] : {}

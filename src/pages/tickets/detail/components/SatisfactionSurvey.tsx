@@ -1,7 +1,8 @@
+import React, { Component } from 'react'
+
 import classnames from 'classnames'
-import {Map} from 'immutable'
+import { Map } from 'immutable'
 import pluralize from 'pluralize'
-import React, {Component} from 'react'
 
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 
@@ -15,15 +16,15 @@ type Props = {
 
 export default class SatisfactionSurvey extends Component<Props> {
     _renderDatetime() {
-        const {satisfactionSurvey} = this.props
+        const { satisfactionSurvey } = this.props
         let scoredDatetime = satisfactionSurvey.get('scored_datetime')
         const sentDatetime = satisfactionSurvey.get('sent_datetime')
         const shouldSendDatetime = satisfactionSurvey.get(
-            'should_send_datetime'
+            'should_send_datetime',
         )
         if (satisfactionSurvey.get('isEvent')) {
             scoredDatetime = satisfactionSurvey.get(
-                'created_datetime'
+                'created_datetime',
             ) as string
         }
 
@@ -49,7 +50,7 @@ export default class SatisfactionSurvey extends Component<Props> {
     }
 
     render() {
-        const {satisfactionSurvey, isLast, customer} = this.props
+        const { satisfactionSurvey, isLast, customer } = this.props
         let score = satisfactionSurvey.get('score') as number
         let scoredDate = satisfactionSurvey.get('scored_datetime') as string
         let bodyText = satisfactionSurvey.get('body_text') as string
@@ -91,7 +92,7 @@ export default class SatisfactionSurvey extends Component<Props> {
                         <span
                             className={classnames(
                                 css.date,
-                                'text-faded float-right'
+                                'text-faded float-right',
                             )}
                         >
                             {this._renderDatetime()}

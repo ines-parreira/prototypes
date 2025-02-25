@@ -1,10 +1,11 @@
+import React, { ReactNode } from 'react'
+
 import classnames from 'classnames'
-import React, {ReactNode} from 'react'
 import {
-    UncontrolledButtonDropdown,
-    DropdownToggle,
-    DropdownMenu,
     DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+    UncontrolledButtonDropdown,
 } from 'reactstrap'
 
 import css from './RuleSelect.less'
@@ -30,7 +31,7 @@ export default function RuleSelect({
                 <DropdownToggle
                     className={classnames(
                         css.select,
-                        'ControlStructureButton dropdown-toggle'
+                        'ControlStructureButton dropdown-toggle',
                     )}
                     type="button"
                 >

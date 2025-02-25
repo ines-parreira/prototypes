@@ -1,1 +1,1 @@
-export {ProductStockQuantity} from './ProductStockQuantity'
+export { ProductStockQuantity } from './ProductStockQuantity'

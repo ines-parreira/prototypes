@@ -1,4 +1,4 @@
-import React, {Ref} from 'react'
+import React, { Ref } from 'react'
 
 import css from './ContactFormPreview.less'
 
@@ -39,7 +39,7 @@ type ContactFormPreviewProps = {
     formRef?: Ref<HTMLDivElement>
 }
 
-const ContactFormPreview = ({formRef}: ContactFormPreviewProps) => {
+const ContactFormPreview = ({ formRef }: ContactFormPreviewProps) => {
     return (
         <div ref={formRef} className={css.container}>
             <div className={css.headerTitle}>Contact us</div>

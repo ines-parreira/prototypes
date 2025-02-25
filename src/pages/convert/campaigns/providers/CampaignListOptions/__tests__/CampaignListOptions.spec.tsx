@@ -1,18 +1,19 @@
-import {render} from '@testing-library/react'
-import React, {useContext} from 'react'
+import React, { useContext } from 'react'
+
+import { render } from '@testing-library/react'
 
 import useSearch from 'hooks/useSearch'
 
-import {CampaignListOptions} from '../CampaignListOptions'
-import {CampaignListOptionsContext} from '../context'
+import { CampaignListOptions } from '../CampaignListOptions'
+import { CampaignListOptionsContext } from '../context'
 import * as utils from '../utils'
 
 jest.mock('hooks/useSearch')
 jest.mock('../utils')
 
 const TestingComponent = () => {
-    const {getParams, onChangeParams} = useContext(CampaignListOptionsContext)
-    const {page, search, state} = getParams()
+    const { getParams, onChangeParams } = useContext(CampaignListOptionsContext)
+    const { page, search, state } = getParams()
 
     return (
         <>
@@ -53,10 +54,10 @@ describe('<CampaignListOptions />', () => {
     })
 
     it('provides the default context', () => {
-        const {getByTestId} = render(
+        const { getByTestId } = render(
             <CampaignListOptions>
                 <TestingComponent />
-            </CampaignListOptions>
+            </CampaignListOptions>,
         )
 
         expect(getByTestId('page')).toHaveTextContent('1')
@@ -70,7 +71,7 @@ describe('<CampaignListOptions />', () => {
         render(
             <CampaignListOptions>
                 <TestingComponent />
-            </CampaignListOptions>
+            </CampaignListOptions>,
         )
 
         expect(updateUrlSpy).toHaveBeenCalledWith({
@@ -82,10 +83,10 @@ describe('<CampaignListOptions />', () => {
     })
 
     it('updates the URL when the options change', () => {
-        const {getByTestId} = render(
+        const { getByTestId } = render(
             <CampaignListOptions>
                 <TestingComponent />
-            </CampaignListOptions>
+            </CampaignListOptions>,
         )
 
         getByTestId('update').click()

@@ -1,6 +1,6 @@
-import {ulid} from 'ulidx'
+import { ulid } from 'ulidx'
 
-import {WorkflowConfigurationBuilder} from '../models/workflowConfiguration.model'
+import { WorkflowConfigurationBuilder } from '../models/workflowConfiguration.model'
 import {
     WorkflowConfiguration,
     WorkflowTemplate,

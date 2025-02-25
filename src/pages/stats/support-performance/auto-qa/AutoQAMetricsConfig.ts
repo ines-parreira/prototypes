@@ -30,10 +30,13 @@ import {
     fetchReviewedClosedTicketsTrend,
     useReviewedClosedTicketsTrend,
 } from 'hooks/reporting/support-performance/auto-qa/useReviewedClosedTicketsTrend'
-import {MetricTrendFetch, MetricTrendHook} from 'hooks/reporting/useMetricTrend'
-import {MetricTrendFormat} from 'pages/stats/common/utils'
-import {TooltipData} from 'pages/stats/types'
-import {AutoQAMetric} from 'state/ui/stats/types'
+import {
+    MetricTrendFetch,
+    MetricTrendHook,
+} from 'hooks/reporting/useMetricTrend'
+import { MetricTrendFormat } from 'pages/stats/common/utils'
+import { TooltipData } from 'pages/stats/types'
+import { AutoQAMetric } from 'state/ui/stats/types'
 
 export const REVIEWED_CLOSED_TICKETS_LABEL = 'Reviewed tickets'
 export const RESOLUTION_COMPLETENESS_LABEL = 'Resolution completeness rate'

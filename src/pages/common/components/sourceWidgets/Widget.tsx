@@ -7,7 +7,7 @@ import {
     Source,
     Template,
 } from 'models/widget/types'
-import {seekNextValues} from 'Widgets/modules/Template/helpers/iterator'
+import { seekNextValues } from 'Widgets/modules/Template/helpers/iterator'
 
 import Card from './widgets/Card'
 import Field from './widgets/Field'
@@ -21,7 +21,7 @@ export type Props = {
     isRoot?: boolean
 }
 
-export default function Widget({parentTemplate, template, source}: Props) {
+export default function Widget({ parentTemplate, template, source }: Props) {
     const isParentList = isListTemplate(parentTemplate)
     if (template === null) return null
 

@@ -1,13 +1,14 @@
-import {Meta, StoryFn} from '@storybook/react'
-import {within} from '@testing-library/react'
+import React, { ComponentProps } from 'react'
+
+import { Meta, StoryFn } from '@storybook/react'
+import { within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import moment from 'moment'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {ThemeProvider} from 'core/theme'
-import {PeriodFilter} from 'pages/stats/common/filters/PeriodFilter'
+import { ThemeProvider } from 'core/theme'
+import { PeriodFilter } from 'pages/stats/common/filters/PeriodFilter'
 
 const defaultState = {}
 
@@ -20,12 +21,12 @@ const storyConfig: Meta = {
     title: 'Stats/Filters/PeriodFilter',
     component: PeriodFilter,
     parameters: {
-        chromatic: {disableSnapshot: false},
+        chromatic: { disableSnapshot: false },
     },
 }
 
 const Template: StoryFn<ComponentProps<typeof PeriodFilter>> = (
-    props: ComponentProps<typeof PeriodFilter>
+    props: ComponentProps<typeof PeriodFilter>,
 ) => {
     return (
         <ThemeProvider>
@@ -45,7 +46,7 @@ const defaultProps: ComponentProps<typeof PeriodFilter> = {
 
 export const Default = Template.bind({})
 Default.args = defaultProps
-Default.play = ({canvasElement}) => {
+Default.play = ({ canvasElement }) => {
     Object.defineProperty(HTMLElement.prototype, 'offsetWidth', {
         configurable: true,
         value: 186,

@@ -1,17 +1,15 @@
-import {useEffect, useState} from 'react'
+import { useEffect, useState } from 'react'
 
-import {AiAgentNotificationType} from 'automate/notifications/types'
-import {useGetOrCreateAccountConfiguration} from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'
+import { AiAgentNotificationType } from 'automate/notifications/types'
+import { useGetOrCreateAccountConfiguration } from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'
 import useAppSelector from 'hooks/useAppSelector'
-import {ShopifyIntegration} from 'models/integration/types'
-
+import { ShopifyIntegration } from 'models/integration/types'
 import useShopifyIntegrations from 'pages/automate/common/hooks/useShopifyIntegrations'
-import {getHasAutomate} from 'state/billing/selectors'
+import { getHasAutomate } from 'state/billing/selectors'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-
-import {useAiAgentOnboardingNotification} from './useAiAgentOnboardingNotification'
-import {useStoreConfiguration} from './useStoreConfiguration'
+import { useAiAgentOnboardingNotification } from './useAiAgentOnboardingNotification'
+import { useStoreConfiguration } from './useStoreConfiguration'
 
 const useMeetAiAgentNotifications = () => {
     const hasAutomateSubscription = useAppSelector(getHasAutomate)
@@ -21,7 +19,7 @@ const useMeetAiAgentNotifications = () => {
     const shopifyStoreIntegrations: ShopifyIntegration[] =
         useShopifyIntegrations()
     const storeNames = shopifyStoreIntegrations.map(
-        (integration) => integration.meta.shop_name
+        (integration) => integration.meta.shop_name,
     )
     const [storeIndex, setStoreIndex] = useState(0)
     const shopName: string | undefined =
@@ -31,8 +29,8 @@ const useMeetAiAgentNotifications = () => {
         status: accountConfigRetrievalStatus,
         isLoading: isLoadingAccountConfiguration,
     } = useGetOrCreateAccountConfiguration(
-        {accountId, accountDomain, storeNames},
-        {refetchOnWindowFocus: false, enabled: hasAutomateSubscription}
+        { accountId, accountDomain, storeNames },
+        { refetchOnWindowFocus: false, enabled: hasAutomateSubscription },
     )
 
     const {
@@ -46,7 +44,7 @@ const useMeetAiAgentNotifications = () => {
         hasAutomateSubscription,
     })
 
-    const {isLoading: isLoadingStoreConfiguration, storeConfiguration} =
+    const { isLoading: isLoadingStoreConfiguration, storeConfiguration } =
         useStoreConfiguration({
             shopName,
             accountDomain,

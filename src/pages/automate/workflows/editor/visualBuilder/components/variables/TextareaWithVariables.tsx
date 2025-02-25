@@ -1,10 +1,11 @@
 import 'draft-js/dist/Draft.css'
 
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+
 import classnames from 'classnames'
-import {ContentState, EditorState, Modifier} from 'draft-js'
+import { ContentState, EditorState, Modifier } from 'draft-js'
 import Editor from 'draft-js-plugins-editor'
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
-import {Popover} from 'reactstrap'
+import { Popover } from 'reactstrap'
 
 import createWorkflowVariablesPlugin from 'pages/automate/workflows/draftjs/plugins/variables'
 import {
@@ -20,7 +21,7 @@ import {
 import WorkflowVariablePicker from 'pages/common/draftjs/plugins/toolbar/components/WorkflowVariablePicker'
 import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 import TextInput from 'pages/common/forms/input/TextInput'
-import {insertText} from 'utils'
+import { insertText } from 'utils'
 import {
     contentStateFromTextOrHTML,
     EditorHandledNotHandled,
@@ -68,7 +69,7 @@ const TextareaWithVariables = ({
     const [entityKey, setEntityKey] = useState<string | null>(null)
 
     const [editorState, setEditorState] = useState(() =>
-        EditorState.createWithContent(contentStateFromTextOrHTML(value))
+        EditorState.createWithContent(contentStateFromTextOrHTML(value)),
     )
 
     const handleVariableTagClick = useCallback(
@@ -77,7 +78,7 @@ const TextareaWithVariables = ({
             setEntityKey(entityKey)
             setIsPopoverOpen(true)
         },
-        []
+        [],
     )
 
     const variable = useMemo(() => {
@@ -98,7 +99,7 @@ const TextareaWithVariables = ({
 
         const variable = parseWorkflowVariable(
             rawVariable.value,
-            variables || []
+            variables || [],
         )
 
         if (!variable) {
@@ -117,7 +118,7 @@ const TextareaWithVariables = ({
                 onClick: allowFilters ? handleVariableTagClick : undefined,
             }),
         ],
-        [handleVariableTagClick, allowFilters]
+        [handleVariableTagClick, allowFilters],
     )
 
     const handleChange = useCallback(
@@ -128,7 +129,7 @@ const TextareaWithVariables = ({
                 if (plugin.onChange && editorRef.current) {
                     newEditorState = plugin.onChange(
                         newEditorState,
-                        editorRef.current.getPluginMethods()
+                        editorRef.current.getPluginMethods(),
                     )
                 }
             })
@@ -137,7 +138,7 @@ const TextareaWithVariables = ({
 
             onChange(newEditorState.getCurrentContent().getPlainText())
         },
-        [onChange]
+        [onChange],
     )
     const handleVariableSelect = (variable: WorkflowVariable) => {
         const newEditorState = insertText(
@@ -154,33 +155,33 @@ const TextareaWithVariables = ({
                             : variable.type === 'json'
                               ? 'json'
                               : undefined,
-            })
+            }),
         )
         handleChange(
             EditorState.forceSelection(
                 newEditorState,
-                newEditorState.getSelection()
-            )
+                newEditorState.getSelection(),
+            ),
         )
     }
     const handlePastedText = useCallback(
         (
             text: string,
             _html: string | undefined,
-            editorState: EditorState
+            editorState: EditorState,
         ): EditorHandledNotHandled => {
             const contentState = Modifier.replaceWithFragment(
                 editorState.getCurrentContent(),
                 editorState.getSelection(),
                 contentStateFromTextOrHTML(
-                    text.replace(/\r\n|\r|\n{{/g, '{{')
-                ).getBlockMap()
+                    text.replace(/\r\n|\r|\n{{/g, '{{'),
+                ).getBlockMap(),
             )
 
             const newEditorState = (
                 EditorState.push as (
                     editorState: EditorState,
-                    contentState: ContentState
+                    contentState: ContentState,
                 ) => EditorState
             )(editorState, contentState)
 
@@ -188,7 +189,7 @@ const TextareaWithVariables = ({
 
             return EditorHandledNotHandled.Handled
         },
-        [handleChange]
+        [handleChange],
     )
 
     useEffect(() => {
@@ -202,7 +203,7 @@ const TextareaWithVariables = ({
             return (
                 EditorState.push as (
                     editorState: EditorState,
-                    contentState: ContentState
+                    contentState: ContentState,
                 ) => EditorState
             )(editorState, contentStateFromTextOrHTML(value))
         })
@@ -259,19 +260,19 @@ const TextareaWithVariables = ({
                                                 entityKey,
                                                 {
                                                     value: nextValue,
-                                                }
+                                                },
                                             )
 
                                         let newEditorState = EditorState.push(
                                             editorState,
                                             newContentState,
-                                            'apply-entity'
+                                            'apply-entity',
                                         )
 
                                         const selection =
                                             getEntitySelectionState(
                                                 newContentState,
-                                                entityKey
+                                                entityKey,
                                             )
 
                                         if (selection) {
@@ -281,13 +282,13 @@ const TextareaWithVariables = ({
                                                     selection,
                                                     nextValue,
                                                     undefined,
-                                                    entityKey
+                                                    entityKey,
                                                 )
 
                                             newEditorState = EditorState.push(
                                                 newEditorState,
                                                 newContentState,
-                                                'change-block-data'
+                                                'change-block-data',
                                             )
                                         }
 

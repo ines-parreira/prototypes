@@ -1,12 +1,11 @@
 import React from 'react'
 
-import {OutboundVoiceCall} from 'models/voiceCall/types'
-import {isFinalVoiceCallStatus} from 'models/voiceCall/utils'
+import { OutboundVoiceCall } from 'models/voiceCall/types'
+import { isFinalVoiceCallStatus } from 'models/voiceCall/utils'
 import VoiceCallAgentLabel from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'
+import { formatPhoneNumberInternational } from 'pages/phoneNumbers/utils'
 
-import {formatPhoneNumberInternational} from 'pages/phoneNumbers/utils'
-
-import {useAgentDetails, useCustomerDetails} from './hooks'
+import { useAgentDetails, useCustomerDetails } from './hooks'
 import TicketVoiceCallContainer from './TicketVoiceCallContainer'
 import TicketVoiceCallOutboundStatus from './TicketVoiceCallOutboundStatus'
 
@@ -14,9 +13,11 @@ type Props = {
     voiceCall: OutboundVoiceCall
 }
 
-export default function TicketVoiceCallOutbound({voiceCall}: Props) {
-    const {data: agent} = useAgentDetails(voiceCall.initiated_by_agent_id)
-    const {customer} = useCustomerDetails({customerId: voiceCall.customer_id})
+export default function TicketVoiceCallOutbound({ voiceCall }: Props) {
+    const { data: agent } = useAgentDetails(voiceCall.initiated_by_agent_id)
+    const { customer } = useCustomerDetails({
+        customerId: voiceCall.customer_id,
+    })
 
     return (
         <TicketVoiceCallContainer
@@ -38,12 +39,12 @@ export default function TicketVoiceCallOutbound({voiceCall}: Props) {
             voiceCall={voiceCall}
             source={{
                 from: formatPhoneNumberInternational(
-                    voiceCall.phone_number_source
+                    voiceCall.phone_number_source,
                 ),
                 to: `${customer?.firstname ?? ''} ${
                     customer?.lastname ?? ''
                 } (${formatPhoneNumberInternational(
-                    voiceCall.phone_number_destination
+                    voiceCall.phone_number_destination,
                 )})`,
             }}
         />

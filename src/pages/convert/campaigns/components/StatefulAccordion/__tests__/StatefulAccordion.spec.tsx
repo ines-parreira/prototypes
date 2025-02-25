@@ -1,18 +1,19 @@
-import {screen, render} from '@testing-library/react'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import Accordion from 'pages/common/components/accordion/Accordion'
 
-import {StatefulAccordion} from '../StatefulAccordion'
+import { StatefulAccordion } from '../StatefulAccordion'
 
 describe('<StatefulAccordion />', () => {
     it('should render the default accordion', () => {
-        const {getByText, getByAltText} = render(
+        const { getByText, getByAltText } = render(
             <Accordion>
                 <StatefulAccordion title="Set up the basics">
                     Lorem ipsum dolor
                 </StatefulAccordion>
-            </Accordion>
+            </Accordion>,
         )
 
         getByText('Set up the basics')
@@ -21,62 +22,62 @@ describe('<StatefulAccordion />', () => {
     })
 
     it('renders the count', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Accordion>
                 <StatefulAccordion count={2} title="Set up the basics">
                     Lorem ipsum dolor
                 </StatefulAccordion>
-            </Accordion>
+            </Accordion>,
         )
 
         getByText('2')
     })
 
     it('renders the valid state', () => {
-        const {getByAltText} = render(
+        const { getByAltText } = render(
             <Accordion>
                 <StatefulAccordion isValid title="Set up the basics">
                     Lorem ipsum dolor
                 </StatefulAccordion>
-            </Accordion>
+            </Accordion>,
         )
 
         getByAltText('check icon state')
     })
 
     it('renders the invalid state', () => {
-        const {getByAltText} = render(
+        const { getByAltText } = render(
             <Accordion>
                 <StatefulAccordion isInvalid title="Set up the basics">
                     Lorem ipsum dolor
                 </StatefulAccordion>
-            </Accordion>
+            </Accordion>,
         )
 
         getByAltText('warning icon state')
     })
 
     it('renders the disabled state', () => {
-        const {container} = render(
+        const { container } = render(
             <Accordion>
                 <StatefulAccordion isDisabled title="Set up the basics">
                     Lorem ipsum dolor
                 </StatefulAccordion>
-            </Accordion>
+            </Accordion>,
         )
 
         expect(
-            container.getElementsByClassName('toggleContainer')[0].className
+            container.getElementsByClassName('toggleContainer')[0].className,
         ).toContain('isDisabled')
     })
 
     it('renders only the last state', () => {
-        const {rerender} = render(
+        const { rerender } = render(
             <Accordion>
                 <StatefulAccordion count={2} isValid title="Set up the basics">
                     Lorem ipsum dolor
                 </StatefulAccordion>
-            </Accordion>
+            </Accordion>,
         )
 
         expect(() => screen.getByText('2')).toThrow()
@@ -93,7 +94,7 @@ describe('<StatefulAccordion />', () => {
                 >
                     Lorem ipsum dolor
                 </StatefulAccordion>
-            </Accordion>
+            </Accordion>,
         )
 
         expect(() => screen.getByText('2')).toThrow()

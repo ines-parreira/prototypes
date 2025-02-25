@@ -1,17 +1,17 @@
-import {render, fireEvent, screen} from '@testing-library/react'
-import {fromJS, Map} from 'immutable'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {SegmentEvent, logEvent} from 'common/segment'
-import {InventoryManagement} from 'constants/integrations/types/shopify'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { InventoryManagement } from 'constants/integrations/types/shopify'
 import {
     shopifyAppliedDiscountFixture,
     shopifyDraftOrderPayloadFixture,
     shopifyProductFixture,
     shopifyVariantFixture,
 } from 'fixtures/shopify'
-
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
+import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import OrderLineItemRow from '../OrderLineItemRow'
 
@@ -20,7 +20,7 @@ jest.mock(
     () =>
         (fn: (...args: any[]) => void, delay: number) =>
         (...args: any[]) =>
-            setTimeout(() => fn(...args), delay)
+            setTimeout(() => fn(...args), delay),
 )
 
 jest.mock('common/segment')
@@ -59,12 +59,12 @@ describe('<OrderLineItemRow/>', () => {
             >
             const lineItem = payload.getIn(['line_items', 0])
 
-            const {container} = render(
+            const { container } = render(
                 <OrderLineItemRow
                     {...props}
                     lineItem={lineItem}
                     product={null}
-                />
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -79,12 +79,12 @@ describe('<OrderLineItemRow/>', () => {
             const product = shopifyProductFixture()
             product.images[0].variant_ids = []
 
-            const {container} = render(
+            const { container } = render(
                 <OrderLineItemRow
                     {...props}
                     lineItem={lineItem}
                     product={fromJS(product)}
-                />
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -102,7 +102,7 @@ describe('<OrderLineItemRow/>', () => {
                     {...props}
                     lineItem={lineItem}
                     product={fromJS(shopifyProductFixture())}
-                />
+                />,
             )
 
             const img = screen.getByAltText('Alt')
@@ -115,18 +115,21 @@ describe('<OrderLineItemRow/>', () => {
                 any
             >
             const appliedDiscount = fromJS(
-                shopifyAppliedDiscountFixture({value: '50.0', amount: '0.50'})
+                shopifyAppliedDiscountFixture({
+                    value: '50.0',
+                    amount: '0.50',
+                }),
             )
             const lineItem = (
                 payload.getIn(['line_items', 0]) as Map<any, any>
             ).set('applied_discount', appliedDiscount)
 
-            const {container} = render(
+            const { container } = render(
                 <OrderLineItemRow
                     {...props}
                     lineItem={lineItem}
                     product={fromJS(shopifyProductFixture())}
-                />
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -141,13 +144,13 @@ describe('<OrderLineItemRow/>', () => {
                 payload.getIn(['line_items', 0]) as Map<any, any>
             ).set('quantity', 0)
 
-            const {container} = render(
+            const { container } = render(
                 <OrderLineItemRow
                     {...props}
                     lineItem={lineItem}
                     product={fromJS(shopifyProductFixture())}
                     removable={false}
-                />
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -167,17 +170,19 @@ describe('<OrderLineItemRow/>', () => {
                     id: variantId,
                     inventoryManagement: InventoryManagement.Shopify as any,
                     inventoryQuantity: 99,
-                })
+                }),
             )
-            const product = fromJS(shopifyProductFixture({variants: [variant]}))
+            const product = fromJS(
+                shopifyProductFixture({ variants: [variant] }),
+            )
 
-            const {container} = render(
+            const { container } = render(
                 <OrderLineItemRow
                     {...props}
                     lineItem={lineItem}
                     product={product}
                     removable={false}
-                />
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -197,17 +202,19 @@ describe('<OrderLineItemRow/>', () => {
                     id: variantId,
                     inventoryManagement: null, // inventory is not tracked
                     inventoryQuantity: 0,
-                })
+                }),
             )
-            const product = fromJS(shopifyProductFixture({variants: [variant]}))
+            const product = fromJS(
+                shopifyProductFixture({ variants: [variant] }),
+            )
 
-            const {container} = render(
+            const { container } = render(
                 <OrderLineItemRow
                     {...props}
                     lineItem={lineItem}
                     product={product}
                     removable={false}
-                />
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -228,7 +235,7 @@ describe('<OrderLineItemRow/>', () => {
             'should call onChange() with updated line item',
             (actionName, event) => {
                 const payload = fromJS(
-                    shopifyDraftOrderPayloadFixture()
+                    shopifyDraftOrderPayloadFixture(),
                 ) as Map<any, any>
                 const lineItem = payload.getIn(['line_items', 0]) as Map<
                     any,
@@ -240,20 +247,20 @@ describe('<OrderLineItemRow/>', () => {
                         actionName={actionName}
                         lineItem={lineItem}
                         product={fromJS(shopifyProductFixture())}
-                    />
+                    />,
                 )
 
                 fireEvent.change(screen.getByRole('spinbutton'), {
-                    target: {value: 5},
+                    target: { value: 5 },
                 })
 
                 jest.advanceTimersByTime(1000)
                 expect(onChange).toHaveBeenCalledWith(
                     lineItem.set('quantity', 5),
-                    0
+                    0,
                 )
                 expect(logEventMock).toHaveBeenCalledWith(event)
-            }
+            },
         )
         it('should disable removing the line during the debounce duration', () => {
             const payload = fromJS(shopifyDraftOrderPayloadFixture()) as Map<
@@ -267,18 +274,18 @@ describe('<OrderLineItemRow/>', () => {
                     actionName={ShopifyActionType.CreateOrder}
                     lineItem={lineItem}
                     product={fromJS(shopifyProductFixture())}
-                />
+                />,
             )
 
             fireEvent.change(screen.getByRole('spinbutton'), {
-                target: {value: 5},
+                target: { value: 5 },
             })
             expect(
-                screen.getByRole('button', {name: 'close'})
+                screen.getByRole('button', { name: 'close' }),
             ).toBeAriaDisabled()
             jest.advanceTimersByTime(1001)
             expect(
-                screen.getByRole('button', {name: 'close'})
+                screen.getByRole('button', { name: 'close' }),
             ).toBeAriaEnabled()
         })
     })
@@ -295,7 +302,7 @@ describe('<OrderLineItemRow/>', () => {
                     {...props}
                     lineItem={lineItem}
                     product={fromJS(shopifyProductFixture())}
-                />
+                />,
             )
             fireEvent.click(screen.getByText('close'))
 

@@ -2,7 +2,7 @@ import MockAdapter from 'axios-mock-adapter'
 
 import client from 'models/api/resources'
 
-import {getToken} from '../api'
+import { getToken } from '../api'
 
 jest.mock('utils/errors')
 jest.mock('@twilio/voice-sdk')
@@ -25,9 +25,9 @@ describe('getToken', () => {
     it('should throw an error on fail', () => {
         mockedServer
             .onGet('/integrations/phone/token')
-            .reply(503, {message: 'error'})
+            .reply(503, { message: 'error' })
         return expect(getToken()).rejects.toEqual(
-            new Error('Request failed with status code 503')
+            new Error('Request failed with status code 503'),
         )
     })
 })

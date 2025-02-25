@@ -1,49 +1,50 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
-import {fromJS, Map, List} from 'immutable'
 import React, {
+    FormEvent,
     MouseEvent,
     useCallback,
     useContext,
     useMemo,
     useState,
-    FormEvent,
 } from 'react'
-import {connect, ConnectedProps} from 'react-redux'
+
+import classnames from 'classnames'
+import { fromJS, List, Map } from 'immutable'
+import { connect, ConnectedProps } from 'react-redux'
 import {
     Button,
-    Form,
     ButtonDropdown,
-    DropdownToggle,
     DropdownItem,
     DropdownMenu,
+    DropdownToggle,
+    Form,
     FormGroup,
     Label,
 } from 'reactstrap'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {states} from 'fixtures/states'
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { states } from 'fixtures/states'
 import usePrevious from 'hooks/usePrevious'
 import useUpdateEffect from 'hooks/useUpdateEffect'
-import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
-import {InfobarModalProps} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
+import { IntegrationType, ShopifyIntegration } from 'models/integration/types'
+import { InfobarModalProps } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import {
     onInit,
     onReset,
 } from 'state/infobarActions/shopify/editShippingAddress/action'
-import {getShippingAddressState} from 'state/infobarActions/shopify/editShippingAddress/selectors'
-import {getIntegrationsByType} from 'state/integrations/selectors'
-import {RootState} from 'state/types'
-
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
+import { getShippingAddressState } from 'state/infobarActions/shopify/editShippingAddress/selectors'
+import { getIntegrationsByType } from 'state/integrations/selectors'
+import { RootState } from 'state/types'
+import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import css from './EditOrderShippingAddressModal.less'
 
@@ -97,16 +98,16 @@ export function EditOrderShippingAddressModal({
         if (stateObj && stateObj.provinces) return stateObj.provinces
         return []
     }
-    const {integrationId} = useContext(IntegrationContext)
+    const { integrationId } = useContext(IntegrationContext)
 
     const [dropdownOpen, setOpen] = useState(false)
 
     const [currentAddress, setCurrentAddress] = useState(
-        data.current_shipping_address || defaultCurrentAddressState
+        data.current_shipping_address || defaultCurrentAddressState,
     )
 
     const [provinces, setProvinces] = useState(
-        _getStatesList(currentAddress.get('country'))
+        _getStatesList(currentAddress.get('country')),
     )
 
     const _cureCurrentAddress = (currentAddress: Map<any, any>) => {
@@ -127,7 +128,7 @@ export function EditOrderShippingAddressModal({
         event.preventDefault()
         onBulkChange(
             [
-                {name: 'order_id', value: data.order_id || ''},
+                { name: 'order_id', value: data.order_id || '' },
                 {
                     name: 'payload',
                     value: _cureCurrentAddress(currentAddress),
@@ -142,7 +143,7 @@ export function EditOrderShippingAddressModal({
                     country: currentAddress.get('country'),
                     zip: currentAddress.get('zip'),
                 })
-            }
+            },
         )
     }
 
@@ -153,16 +154,16 @@ export function EditOrderShippingAddressModal({
                 order_id: data.order_id,
             })
             setCurrentAddress(
-                data.current_shipping_address || defaultCurrentAddressState
+                data.current_shipping_address || defaultCurrentAddressState,
             )
             setProvinces(
-                _getStatesList(data.current_shipping_address.get('country'))
+                _getStatesList(data.current_shipping_address.get('country')),
             )
             onClose()
             handleReset()
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [data, integrationId, onClose, data]
+        [data, integrationId, onClose, data],
     )
 
     const previousIsOpen = usePrevious(isOpen)
@@ -176,15 +177,15 @@ export function EditOrderShippingAddressModal({
     const currentIntegration = useMemo(
         () =>
             integrations.find(
-                (integration) => integration.id === integrationId
+                (integration) => integration.id === integrationId,
             ),
-        [integrations, integrationId]
+        [integrations, integrationId],
     )
 
     const hasScope = useMemo(
         () =>
             currentIntegration?.meta.oauth.scope?.includes('write_order_edits'),
-        [currentIntegration]
+        [currentIntegration],
     )
 
     const _updateField = (key: string, value: string) => {
@@ -226,7 +227,7 @@ export function EditOrderShippingAddressModal({
 
     const onDropDownClick = (event: MouseEvent) => {
         const selectedAddress = shippingAddresses.find(function (
-            address: Map<any, any> | undefined
+            address: Map<any, any> | undefined,
         ) {
             if (!address) return false
             const id = address.get('id') as string
@@ -299,11 +300,11 @@ export function EditOrderShippingAddressModal({
                                                     {address.get('address1')}
                                                     <br />
                                                     {address.get(
-                                                        'address2'
+                                                        'address2',
                                                     ) && (
                                                         <>
                                                             {address.get(
-                                                                'address2'
+                                                                'address2',
                                                             )}
                                                             <br />
                                                         </>
@@ -311,7 +312,7 @@ export function EditOrderShippingAddressModal({
                                                     {address.get('phone') && (
                                                         <>
                                                             {address.get(
-                                                                'phone'
+                                                                'phone',
                                                             )}
                                                             <br />
                                                         </>
@@ -428,7 +429,7 @@ export function EditOrderShippingAddressModal({
                                         htmlFor="country"
                                         className={classnames(
                                             'control-label',
-                                            css.required
+                                            css.required,
                                         )}
                                     >
                                         Country
@@ -454,7 +455,7 @@ export function EditOrderShippingAddressModal({
                                         htmlFor="province"
                                         className={classnames(
                                             'control-label',
-                                            css.required
+                                            css.required,
                                         )}
                                     >
                                         Province
@@ -484,7 +485,7 @@ export function EditOrderShippingAddressModal({
                                         htmlFor="country"
                                         className={classnames(
                                             'control-label',
-                                            css.required
+                                            css.required,
                                         )}
                                     >
                                         Country
@@ -565,10 +566,10 @@ const connector = connect(
     (state: RootState) => ({
         currentAccount: getCurrentAccountState(state),
         integrations: getIntegrationsByType<ShopifyIntegration>(
-            IntegrationType.Shopify
+            IntegrationType.Shopify,
         )(state),
         shippingAddresses: getShippingAddressState(state).get(
-            'addresses'
+            'addresses',
         ) as List<Map<any, any>>,
         loading: getShippingAddressState(state).get('loading'),
         loadingMessage: getShippingAddressState(state).get('loadingMessage'),
@@ -576,7 +577,7 @@ const connector = connect(
     {
         onInit,
         onReset,
-    }
+    },
 )
 
 export default connector(EditOrderShippingAddressModal)

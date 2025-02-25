@@ -1,5 +1,6 @@
+import React, { MouseEvent } from 'react'
+
 import classNames from 'classnames'
-import React, {MouseEvent} from 'react'
 
 import checkIcon from 'assets/img/icons/check-icon.svg'
 

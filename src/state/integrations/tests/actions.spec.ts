@@ -1,12 +1,12 @@
 import MockAdapter from 'axios-mock-adapter'
-import {fromJS} from 'immutable'
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+import { fromJS } from 'immutable'
+import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
-import {getGorgiasChatProtectedApiClient} from 'rest_api/gorgias_chat_protected_api/client'
-import type {Client} from 'rest_api/gorgias_chat_protected_api/client.generated'
-import {InstallationStatus} from 'rest_api/gorgias_chat_protected_api/types'
+import { axiosSuccessResponse } from 'fixtures/axiosResponse'
+import { getGorgiasChatProtectedApiClient } from 'rest_api/gorgias_chat_protected_api/client'
+import type { Client } from 'rest_api/gorgias_chat_protected_api/client.generated'
+import { InstallationStatus } from 'rest_api/gorgias_chat_protected_api/types'
 import * as constants from 'state/integrations/constants'
 
 import client from '../../../models/api/resources'
@@ -16,11 +16,11 @@ import {
     IntegrationType,
 } from '../../../models/integration/types'
 import history from '../../../pages/history'
-import {StoreDispatch} from '../../types'
+import { StoreDispatch } from '../../types'
 import * as actions from '../actions'
 import * as gorgiasChatActions from '../actions/gorgias-chat.actions'
 import * as helpers from '../helpers'
-import {initialState} from '../reducers'
+import { initialState } from '../reducers'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -49,14 +49,14 @@ describe('integrations actions', () => {
     let mockServer: MockAdapter
 
     beforeEach(() => {
-        store = mockStore({integrations: initialState})
+        store = mockStore({ integrations: initialState })
         mockServer = new MockAdapter(client)
     })
 
     it('fetch integrations', () => {
         mockServer
             .onGet('/api/integrations')
-            .reply(200, {data: [{id: 1, name: 'http'}], meta: {}})
+            .reply(200, { data: [{ id: 1, name: 'http' }], meta: {} })
 
         return store
             .dispatch(actions.fetchIntegrations())
@@ -95,7 +95,7 @@ describe('integrations actions', () => {
         actions.onCreateSuccess(store.dispatch, integration)
         expect(store.getActions()).toMatchSnapshot()
         expect(logUrl).toMatchInlineSnapshot(
-            `"/app/settings/channels/gorgias_chat/1/installation"`
+            `"/app/settings/channels/gorgias_chat/1/installation"`,
         )
 
         history.push = p
@@ -115,7 +115,7 @@ describe('integrations actions', () => {
         it('success', () => {
             mockServer
                 .onGet('/api/integrations/1/')
-                .reply(200, {id: 1, name: 'http'})
+                .reply(200, { id: 1, name: 'http' })
 
             return store
                 .dispatch(actions.fetchIntegration('1', IntegrationType.Http))
@@ -125,11 +125,11 @@ describe('integrations actions', () => {
         it('success waiting for authentication', () => {
             mockServer
                 .onGet('/api/integrations/1/')
-                .reply(200, {id: 1, name: 'http'})
+                .reply(200, { id: 1, name: 'http' })
 
             return store
                 .dispatch(
-                    actions.fetchIntegration('1', IntegrationType.Http, true)
+                    actions.fetchIntegration('1', IntegrationType.Http, true),
                 )
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
@@ -151,7 +151,7 @@ describe('integrations actions', () => {
         mockServer
             .onGet('/api/account/settings/?type=default-integration')
             .reply(200, {
-                data: [{type: 'default-integration', data: {email: 1}}],
+                data: [{ type: 'default-integration', data: { email: 1 } }],
             })
         mockServer.onDelete('/api/integrations/1/').reply(200)
         return store
@@ -179,7 +179,9 @@ describe('integrations actions', () => {
 
     describe('verifyEmailIntegration action', () => {
         it('should dispatch an EMAIL_INTEGRATION_VERIFIED action on success', () => {
-            store = mockStore({integrations: fromJS({integration: {id: 1}})})
+            store = mockStore({
+                integrations: fromJS({ integration: { id: 1 } }),
+            })
             mockServer.onPost('/api/integrations/1/verify/').reply(201)
 
             return store
@@ -188,7 +190,9 @@ describe('integrations actions', () => {
         })
 
         it('should dispatch an EMAIL_INTEGRATION_VERIFIED action on error', () => {
-            store = mockStore({integrations: fromJS({integration: {id: 1}})})
+            store = mockStore({
+                integrations: fromJS({ integration: { id: 1 } }),
+            })
             mockServer.onPost('/api/integrations/1/verify/').reply(400)
 
             return store
@@ -221,7 +225,7 @@ describe('integrations actions', () => {
             await store.dispatch(actions.createGorgiasChatIntegration(data))
 
             expect(history.push).toHaveBeenCalledWith(
-                '/app/settings/channels/gorgias_chat/123/preferences'
+                '/app/settings/channels/gorgias_chat/123/preferences',
             )
         })
 
@@ -239,13 +243,13 @@ describe('integrations actions', () => {
                 },
             })
             mockServer.onPut('/api/integrations/123').reply(400, {
-                error: {msg: 'Something went wrong'},
+                error: { msg: 'Something went wrong' },
             })
 
             await store.dispatch(actions.createGorgiasChatIntegration(data))
 
             expect(history.push).toHaveBeenCalledWith(
-                '/app/settings/channels/gorgias_chat/123/installation'
+                '/app/settings/channels/gorgias_chat/123/installation',
             )
         })
 
@@ -262,7 +266,7 @@ describe('integrations actions', () => {
             await store.dispatch(actions.createGorgiasChatIntegration(data))
 
             expect(history.push).toHaveBeenCalledWith(
-                '/app/settings/channels/gorgias_chat/123/installation'
+                '/app/settings/channels/gorgias_chat/123/installation',
             )
         })
     })
@@ -386,7 +390,7 @@ describe('integrations actions', () => {
                     expect.objectContaining({
                         type: constants.FETCH_CHAT_STATUS_ERROR,
                     }),
-                ])
+                ]),
             )
             expect(store.getActions()).toMatchSnapshot()
         })
@@ -397,7 +401,7 @@ describe('integrations actions', () => {
 
             jest.spyOn(
                 helpers,
-                'isWellKnownEcomIntegrationIdMisMatch'
+                'isWellKnownEcomIntegrationIdMisMatch',
             ).mockReturnValue(true)
             jest.spyOn(history, 'replace').mockImplementation(() => {})
 
@@ -406,12 +410,12 @@ describe('integrations actions', () => {
                 .reply(200, response)
 
             await store.dispatch(
-                actions.fetchIntegration(integrationId, integrationType)
+                actions.fetchIntegration(integrationId, integrationType),
             )
 
             const actionsDispatched = store.getActions()
             expect(history.replace).toHaveBeenCalledWith(
-                `/app/settings/integrations/${integrationType}`
+                `/app/settings/integrations/${integrationType}`,
             )
             expect(actionsDispatched).toEqual(
                 expect.arrayContaining([
@@ -420,7 +424,7 @@ describe('integrations actions', () => {
                         error: 'integration type mismatch',
                         reason: `Integration with ID ${integrationId} is not a valid ${integrationType} integration`,
                     }),
-                ])
+                ]),
             )
         })
         it('on type match, dispatches integration fetch success', async () => {
@@ -430,7 +434,7 @@ describe('integrations actions', () => {
 
             jest.spyOn(
                 helpers,
-                'isWellKnownEcomIntegrationIdMisMatch'
+                'isWellKnownEcomIntegrationIdMisMatch',
             ).mockReturnValue(false)
 
             mockServer
@@ -438,7 +442,7 @@ describe('integrations actions', () => {
                 .reply(200, response)
 
             await store.dispatch(
-                actions.fetchIntegration(integrationId, integrationType)
+                actions.fetchIntegration(integrationId, integrationType),
             )
 
             const actionsDispatched = store.getActions()
@@ -449,7 +453,7 @@ describe('integrations actions', () => {
                         type: constants.FETCH_INTEGRATION_SUCCESS,
                         integration: response,
                     }),
-                ])
+                ]),
             )
         })
     })

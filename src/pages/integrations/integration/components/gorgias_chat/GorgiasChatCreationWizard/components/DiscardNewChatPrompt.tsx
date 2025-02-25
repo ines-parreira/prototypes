@@ -14,10 +14,10 @@ type Props = {
     when: boolean
 }
 
-const DiscardNewChatPrompt: React.FC<Props> = ({when}) => (
+const DiscardNewChatPrompt: React.FC<Props> = ({ when }) => (
     <PromptModal when={when}>
         <PromptModalContext.Consumer>
-            {({hideModal, redirectToOriginalLocation}) => (
+            {({ hideModal, redirectToOriginalLocation }) => (
                 <>
                     <ModalHeader title="Discard new chat?" />
                     <ModalBody className={css.body}>

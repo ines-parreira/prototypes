@@ -1,7 +1,6 @@
-import {PayloadActionCreator} from '@reduxjs/toolkit'
+import { PayloadActionCreator } from '@reduxjs/toolkit'
 
-import {Rule} from '../../../models/rule/types'
-
+import { Rule } from '../../../models/rule/types'
 import {
     RULE_CREATED,
     RULE_DELETED,

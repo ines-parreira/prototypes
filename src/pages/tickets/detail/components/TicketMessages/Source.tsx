@@ -1,17 +1,19 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
-import _isArray from 'lodash/isArray'
 import React from 'react'
 
-import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
-import {DateAndTimeFormatting} from 'constants/datetime'
-import {isTicketMessageSourceType} from 'models/ticket/predicates'
-import {Source as SourceType, SourceAddress} from 'models/ticket/types'
+import classnames from 'classnames'
+import _isArray from 'lodash/isArray'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
+import { DateAndTimeFormatting } from 'constants/datetime'
+import { isTicketMessageSourceType } from 'models/ticket/predicates'
+import { SourceAddress, Source as SourceType } from 'models/ticket/types'
 import SourceIcon from 'pages/common/components/SourceIcon'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-import {getPersonLabelFromSource} from 'pages/tickets/common/utils'
-import {toChannel} from 'services/channels'
-import {humanizeChannel} from 'state/ticket/utils'
+import { getPersonLabelFromSource } from 'pages/tickets/common/utils'
+import { toChannel } from 'services/channels'
+import { humanizeChannel } from 'state/ticket/utils'
 
 import css from './Source.less'
 
@@ -121,7 +123,7 @@ function SourceAddressElement({
             <strong>
                 {fieldSource
                     .map((person) =>
-                        getPersonLabelFromSource(person, source.type)
+                        getPersonLabelFromSource(person, source.type),
                     )
                     .join(', ')}
             </strong>

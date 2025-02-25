@@ -1,5 +1,6 @@
+import React, { ComponentProps, MouseEvent, ReactChild } from 'react'
+
 import classNames from 'classnames'
-import React, {ComponentProps, ReactChild, MouseEvent} from 'react'
 
 import RadioButton from '../RadioButton'
 
@@ -27,7 +28,7 @@ export const PreviewRadioButton = ({
                 [css.selected]: isSelected,
                 [css.disabled]: isDisabled,
             },
-            className
+            className,
         )}
         role="radio"
         aria-checked={isSelected}

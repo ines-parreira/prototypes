@@ -1,17 +1,17 @@
-import {produce} from 'immer'
-import {ulid} from 'ulidx'
+import { produce } from 'immer'
+import { ulid } from 'ulidx'
 
-import {buildConditionSchemaByVariableType} from '../../editor/visualBuilder/editors/ConditionsNodeEditor/utils'
-import {ConditionSchema} from '../../models/conditions.types'
+import { buildConditionSchemaByVariableType } from '../../editor/visualBuilder/editors/ConditionsNodeEditor/utils'
+import { ConditionSchema } from '../../models/conditions.types'
 import {
     extractVariablesFromText,
     getWorkflowVariableListForNode,
     toLiquidSyntax,
 } from '../../models/variables.model'
 import {
+    buildEdgeCommonProperties,
     cleanConditionsFromEmptyVariables,
     walkVisualBuilderGraph,
-    buildEdgeCommonProperties,
 } from '../../models/visualBuilderGraph.model'
 import {
     HttpRequestNodeType,
@@ -19,10 +19,10 @@ import {
     VisualBuilderGraph,
 } from '../../models/visualBuilderGraph.types'
 import {
-    computeNodesPositions,
-    buildHttpRequestNode,
-    getFallibleNodeSuccessConditions,
     buildEndNode,
+    buildHttpRequestNode,
+    computeNodesPositions,
+    getFallibleNodeSuccessConditions,
 } from './utils'
 
 export type VisualBuilderHttpRequestAction =
@@ -167,25 +167,25 @@ export function isVisualBuilderHttpRequestAction(action: {
     type: string
 }): action is VisualBuilderHttpRequestAction {
     return Object.keys(visualBuilderHttpRequestActionTypes).includes(
-        action.type
+        action.type,
     )
 }
 
 export function httpRequestReducer(
     graph: VisualBuilderGraph,
-    action: VisualBuilderHttpRequestAction
+    action: VisualBuilderHttpRequestAction,
 ): VisualBuilderGraph {
     switch (action.type) {
         case 'INSERT_HTTP_REQUEST_NODE':
             return computeNodesPositions(
-                insertHttpRequest(graph, action.beforeNodeId)
+                insertHttpRequest(graph, action.beforeNodeId),
             )
         case 'SET_HTTP_REQUEST_NAME':
             return produce(graph, (draft) => {
                 const node = draft.nodes.find(
                     (n): n is HttpRequestNodeType =>
                         n.id === action.httpRequestNodeId &&
-                        n.type === 'http_request'
+                        n.type === 'http_request',
                 )
                 if (node) {
                     node.data.name = action.name
@@ -196,7 +196,7 @@ export function httpRequestReducer(
                 const node = draft.nodes.find(
                     (n): n is HttpRequestNodeType =>
                         n.id === action.httpRequestNodeId &&
-                        n.type === 'http_request'
+                        n.type === 'http_request',
                 )
                 if (node) {
                     node.data.url = action.url
@@ -207,7 +207,7 @@ export function httpRequestReducer(
                 const node = draft.nodes.find(
                     (n): n is HttpRequestNodeType =>
                         n.id === action.httpRequestNodeId &&
-                        n.type === 'http_request'
+                        n.type === 'http_request',
                 )
                 if (node) {
                     node.data.method = action.method
@@ -229,7 +229,7 @@ export function httpRequestReducer(
                 const node = draft.nodes.find(
                     (n): n is HttpRequestNodeType =>
                         n.id === action.httpRequestNodeId &&
-                        n.type === 'http_request'
+                        n.type === 'http_request',
                 )
                 if (node && node.data.headers[action.index]) {
                     node.data.headers[action.index] = action.header
@@ -240,10 +240,10 @@ export function httpRequestReducer(
                 const node = draft.nodes.find(
                     (n): n is HttpRequestNodeType =>
                         n.id === action.httpRequestNodeId &&
-                        n.type === 'http_request'
+                        n.type === 'http_request',
                 )
                 if (node) {
-                    node.data.headers.push({name: '', value: ''})
+                    node.data.headers.push({ name: '', value: '' })
                 }
             })
         case 'DELETE_HTTP_REQUEST_HEADER':
@@ -251,7 +251,7 @@ export function httpRequestReducer(
                 const node = draft.nodes.find(
                     (n): n is HttpRequestNodeType =>
                         n.id === action.httpRequestNodeId &&
-                        n.type === 'http_request'
+                        n.type === 'http_request',
                 )
                 if (node && node.data.headers[action.index]) {
                     node.data.headers.splice(action.index, 1)
@@ -262,7 +262,7 @@ export function httpRequestReducer(
                 const node = draft.nodes.find(
                     (n): n is HttpRequestNodeType =>
                         n.id === action.httpRequestNodeId &&
-                        n.type === 'http_request'
+                        n.type === 'http_request',
                 )
                 if (node) {
                     if (
@@ -283,7 +283,7 @@ export function httpRequestReducer(
                 const node = draft.nodes.find(
                     (n): n is HttpRequestNodeType =>
                         n.id === action.httpRequestNodeId &&
-                        n.type === 'http_request'
+                        n.type === 'http_request',
                 )
                 if (node) {
                     node.data.bodyContentType = action.bodyContentType
@@ -305,7 +305,7 @@ export function httpRequestReducer(
                 const node = draft.nodes.find(
                     (n): n is HttpRequestNodeType =>
                         n.id === action.httpRequestNodeId &&
-                        n.type === 'http_request'
+                        n.type === 'http_request',
                 )
                 if (node) {
                     node.data.json = action.json
@@ -316,7 +316,7 @@ export function httpRequestReducer(
                 const node = draft.nodes.find(
                     (n): n is HttpRequestNodeType =>
                         n.id === action.httpRequestNodeId &&
-                        n.type === 'http_request'
+                        n.type === 'http_request',
                 )
                 if (node && node.data.formUrlencoded?.[action.index]) {
                     node.data.formUrlencoded[action.index] = action.item
@@ -327,11 +327,11 @@ export function httpRequestReducer(
                 const node = draft.nodes.find(
                     (n): n is HttpRequestNodeType =>
                         n.id === action.httpRequestNodeId &&
-                        n.type === 'http_request'
+                        n.type === 'http_request',
                 )
                 if (node) {
                     node.data.formUrlencoded ??= []
-                    node.data.formUrlencoded.push({key: '', value: ''})
+                    node.data.formUrlencoded.push({ key: '', value: '' })
                 }
             })
         case 'DELETE_HTTP_REQUEST_FORM_URLENCODED_ITEM':
@@ -339,7 +339,7 @@ export function httpRequestReducer(
                 const node = draft.nodes.find(
                     (n): n is HttpRequestNodeType =>
                         n.id === action.httpRequestNodeId &&
-                        n.type === 'http_request'
+                        n.type === 'http_request',
                 )
                 if (node && node.data.formUrlencoded?.[action.index]) {
                     node.data.formUrlencoded.splice(action.index, 1)
@@ -350,14 +350,14 @@ export function httpRequestReducer(
                 const node = draft.nodes.find(
                     (n): n is HttpRequestNodeType =>
                         n.id === action.httpRequestNodeId &&
-                        n.type === 'http_request'
+                        n.type === 'http_request',
                 )
                 if (node && node.data.variables[action.index]) {
                     node.data.variables[action.index] = action.variable
                     rebuildGraphForVariableChange(
                         draft,
                         node.id,
-                        action.variable
+                        action.variable,
                     )
                 }
             })
@@ -366,7 +366,7 @@ export function httpRequestReducer(
                 const node = draft.nodes.find(
                     (n): n is HttpRequestNodeType =>
                         n.id === action.httpRequestNodeId &&
-                        n.type === 'http_request'
+                        n.type === 'http_request',
                 )
                 if (node) {
                     node.data.variables.push({
@@ -382,7 +382,7 @@ export function httpRequestReducer(
                 const node = draft.nodes.find(
                     (n): n is HttpRequestNodeType =>
                         n.id === action.httpRequestNodeId &&
-                        n.type === 'http_request'
+                        n.type === 'http_request',
                 )
                 if (node && node.data.variables[action.index]) {
                     const variable = node.data.variables[action.index]
@@ -398,8 +398,8 @@ export function httpRequestReducer(
                                         draft,
                                         edge.target,
                                         [],
-                                        []
-                                    )
+                                        [],
+                                    ),
                                 )
                         }
                     })
@@ -408,7 +408,7 @@ export function httpRequestReducer(
                         const index = node.data.outputs.findIndex(
                             (output) =>
                                 output.path ===
-                                `steps_state.${node.id}.content.${variable.id}`
+                                `steps_state.${node.id}.content.${variable.id}`,
                         )
 
                         if (index !== -1) {
@@ -422,7 +422,7 @@ export function httpRequestReducer(
                 const node = draft.nodes.find(
                     (n): n is HttpRequestNodeType =>
                         n.id === action.httpRequestNodeId &&
-                        n.type === 'http_request'
+                        n.type === 'http_request',
                 )
                 if (node) {
                     node.data.testRequestResult = action.result
@@ -433,7 +433,7 @@ export function httpRequestReducer(
                 const node = draft.nodes.find(
                     (n): n is HttpRequestNodeType =>
                         n.id === action.httpRequestNodeId &&
-                        n.type === 'http_request'
+                        n.type === 'http_request',
                 )
                 if (node) {
                     delete node.data.testRequestResult
@@ -444,7 +444,7 @@ export function httpRequestReducer(
                 const node = draft.nodes.find(
                     (n): n is HttpRequestNodeType =>
                         n.id === action.httpRequestNodeId &&
-                        n.type === 'http_request'
+                        n.type === 'http_request',
                 )
 
                 if (node) {
@@ -461,7 +461,7 @@ export function httpRequestReducer(
                 const node = draft.nodes.find(
                     (n): n is HttpRequestNodeType =>
                         n.id === action.httpRequestNodeId &&
-                        n.type === 'http_request'
+                        n.type === 'http_request',
                 )
 
                 if (node && node.data.outputs?.[action.index]) {
@@ -473,7 +473,7 @@ export function httpRequestReducer(
                 const node = draft.nodes.find(
                     (n): n is HttpRequestNodeType =>
                         n.id === action.httpRequestNodeId &&
-                        n.type === 'http_request'
+                        n.type === 'http_request',
                 )
 
                 if (node) {
@@ -485,7 +485,7 @@ export function httpRequestReducer(
 
 function rebuildCondition(
     edge: VisualBuilderEdge,
-    variable: HttpRequestNodeType['data']['variables'][number]
+    variable: HttpRequestNodeType['data']['variables'][number],
 ) {
     if (!edge.data?.conditions) return []
 
@@ -498,7 +498,7 @@ function rebuildCondition(
             const varSchema = schema[0]
             const conditionSchema = buildConditionSchemaByVariableType(
                 variable.data_type,
-                varSchema.var
+                varSchema.var,
             )
 
             return conditionSchema
@@ -516,13 +516,13 @@ function replaceVariablesInHttpRequestHeaders(
     currentNodeId: string,
     newLiquidSyntax: string,
     node: HttpRequestNodeType,
-    variable: HttpRequestNodeType['data']['variables'][number]
+    variable: HttpRequestNodeType['data']['variables'][number],
 ) {
     node.data.headers.forEach((header) => {
         const variablesInHeader = extractVariablesFromText(header.value)
         const oldVariable = variablesInHeader.find(
-            ({value}) =>
-                `steps_state.${currentNodeId}.content.${variable.id}` === value
+            ({ value }) =>
+                `steps_state.${currentNodeId}.content.${variable.id}` === value,
         )
         if (!oldVariable) return
         const oldLiquidSyntax = toLiquidSyntax({
@@ -537,12 +537,12 @@ function replaceVariablesInHttpRequestUrl(
     currentNodeId: string,
     newLiquidSyntax: string,
     node: HttpRequestNodeType,
-    variable: HttpRequestNodeType['data']['variables'][number]
+    variable: HttpRequestNodeType['data']['variables'][number],
 ) {
     const variablesInUrlText = extractVariablesFromText(node.data.url)
     const oldVariable = variablesInUrlText.find(
-        ({value}) =>
-            `steps_state.${currentNodeId}.content.${variable.id}` === value
+        ({ value }) =>
+            `steps_state.${currentNodeId}.content.${variable.id}` === value,
     )
     if (!oldVariable) return
     const oldLiquidSyntax = toLiquidSyntax({
@@ -556,12 +556,12 @@ function requestVaraiblesInHttpRequestUrlEncoded(
     currentNodeId: string,
     newLiquidSyntax: string,
     node: HttpRequestNodeType,
-    variable: HttpRequestNodeType['data']['variables'][number]
+    variable: HttpRequestNodeType['data']['variables'][number],
 ) {
     node.data.formUrlencoded?.forEach((item) => {
         const oldVariable = extractVariablesFromText(item.value).find(
-            ({value}) =>
-                `steps_state.${currentNodeId}.content.${variable.id}` === value
+            ({ value }) =>
+                `steps_state.${currentNodeId}.content.${variable.id}` === value,
         )
 
         if (!oldVariable) return
@@ -578,13 +578,13 @@ function replaceVariablesInHttpRequestJson(
     currentNodeId: string,
     newLiquidSyntax: string,
     node: HttpRequestNodeType,
-    variable: HttpRequestNodeType['data']['variables'][number]
+    variable: HttpRequestNodeType['data']['variables'][number],
 ) {
     if (!node.data.json) return
     const variablesInJson = extractVariablesFromText(node.data.json ?? '')
     const oldVariableInJson = variablesInJson.find(
-        ({value}) =>
-            `steps_state.${currentNodeId}.content.${variable.id}` === value
+        ({ value }) =>
+            `steps_state.${currentNodeId}.content.${variable.id}` === value,
     )
     if (oldVariableInJson) {
         const oldLiquidSyntax = toLiquidSyntax({
@@ -593,7 +593,7 @@ function replaceVariablesInHttpRequestJson(
         })
         node.data.json = node.data.json.replace(
             oldLiquidSyntax,
-            newLiquidSyntax
+            newLiquidSyntax,
         )
     }
 }
@@ -602,38 +602,38 @@ function replaceVariablesInHttpNode(
     currentNodeId: string,
     newLiquidSyntax: string,
     node: HttpRequestNodeType,
-    variable: HttpRequestNodeType['data']['variables'][number]
+    variable: HttpRequestNodeType['data']['variables'][number],
 ) {
     replaceVariablesInHttpRequestHeaders(
         currentNodeId,
         newLiquidSyntax,
         node,
-        variable
+        variable,
     )
     replaceVariablesInHttpRequestUrl(
         currentNodeId,
         newLiquidSyntax,
         node,
-        variable
+        variable,
     )
     replaceVariablesInHttpRequestJson(
         currentNodeId,
         newLiquidSyntax,
         node,
-        variable
+        variable,
     )
     requestVaraiblesInHttpRequestUrlEncoded(
         currentNodeId,
         newLiquidSyntax,
         node,
-        variable
+        variable,
     )
 }
 
 function rebuildGraphForVariableChange(
     g: VisualBuilderGraph,
     currentNodeId: string,
-    variable: HttpRequestNodeType['data']['variables'][number]
+    variable: HttpRequestNodeType['data']['variables'][number],
 ) {
     g.edges = g.edges.map((edge) => {
         const nextConditions = rebuildCondition(edge, variable)
@@ -663,9 +663,9 @@ function rebuildGraphForVariableChange(
 
             const variables = extractVariablesFromText(node.data.content.text)
             const oldVariable = variables.find(
-                ({value}) =>
+                ({ value }) =>
                     `steps_state.${currentNodeId}.content.${variable.id}` ===
-                    value
+                    value,
             )
 
             if (!oldVariable) return
@@ -677,12 +677,12 @@ function rebuildGraphForVariableChange(
 
             node.data.content.html = node.data.content.html.replace(
                 oldLiquidSyntax,
-                liquidSyntax
+                liquidSyntax,
             )
 
             node.data.content.text = node.data.content.text.replace(
                 oldLiquidSyntax,
-                liquidSyntax
+                liquidSyntax,
             )
         } else if (node.type === 'http_request') {
             const newLiquidSyntax = toLiquidSyntax({
@@ -694,7 +694,7 @@ function rebuildGraphForVariableChange(
                 currentNodeId,
                 newLiquidSyntax,
                 node,
-                variable
+                variable,
             )
         }
     })
@@ -710,7 +710,7 @@ function insertHttpRequest(graph: VisualBuilderGraph, beforeNodeId: string) {
         const endNode = buildEndNode(
             triggerNode.type === 'channel_trigger'
                 ? 'ask-for-feedback'
-                : 'end-failure'
+                : 'end-failure',
         )
 
         const targetNode = draft.nodes.find((node) => node.id === beforeNodeId)
@@ -732,7 +732,7 @@ function insertHttpRequest(graph: VisualBuilderGraph, beforeNodeId: string) {
                 data: {
                     name: 'Success',
                     conditions: getFallibleNodeSuccessConditions(
-                        httpRequestNode.id
+                        httpRequestNode.id,
                     ),
                 },
             },
@@ -743,7 +743,7 @@ function insertHttpRequest(graph: VisualBuilderGraph, beforeNodeId: string) {
                 data: {
                     name: 'Error',
                 },
-            }
+            },
         )
         draft.nodeEditingId = httpRequestNode.id
         draft.choiceEventIdEditing = null

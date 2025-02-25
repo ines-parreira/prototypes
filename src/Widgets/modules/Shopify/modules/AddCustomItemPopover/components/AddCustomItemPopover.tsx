@@ -1,13 +1,14 @@
-import classnames from 'classnames'
-import {fromJS, Map} from 'immutable'
 import React, {
     ChangeEvent,
-    FormEvent,
     ComponentProps,
-    PureComponent,
+    FormEvent,
     KeyboardEvent,
+    PureComponent,
     RefObject,
 } from 'react'
+
+import classnames from 'classnames'
+import { fromJS, Map } from 'immutable'
 import {
     Button,
     Form,
@@ -17,16 +18,15 @@ import {
     Popover,
     PopoverBody,
 } from 'reactstrap'
-import {ulid} from 'ulidx'
+import { ulid } from 'ulidx'
 
-import {formatPrice} from 'business/shopify/number'
-import {logEvent, SegmentEvent} from 'common/segment'
+import { formatPrice } from 'business/shopify/number'
+import { logEvent, SegmentEvent } from 'common/segment'
 import CheckBox from 'pages/common/forms/CheckBox'
 import NumberInput from 'pages/common/forms/input/NumberInput'
-import {focusElement} from 'utils/html'
-
+import { focusElement } from 'utils/html'
 import AmountInput from 'Widgets/modules/Shopify/modules/AmountInput'
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
+import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import css from './AddCustomItemPopover.less'
 
@@ -68,9 +68,9 @@ export default class AddCustomItemPopover extends PureComponent<Props, State> {
     }
 
     componentDidUpdate(prevProps: Props, prevState: State) {
-        const {actionName} = this.props
-        const {isOpen} = this.state
-        const {isOpen: wasOpen} = prevState
+        const { actionName } = this.props
+        const { isOpen } = this.state
+        const { isOpen: wasOpen } = prevState
 
         const onOpen = !wasOpen && isOpen
         const onClose = wasOpen && !isOpen
@@ -80,7 +80,7 @@ export default class AddCustomItemPopover extends PureComponent<Props, State> {
             logEvent(
                 actionName === ShopifyActionType.CreateOrder
                     ? SegmentEvent.ShopifyCreateOrderCustomItemPopoverOpen
-                    : SegmentEvent.ShopifyDuplicateOrderCustomItemPopoverOpen
+                    : SegmentEvent.ShopifyDuplicateOrderCustomItemPopoverOpen,
             )
         } else if (onClose) {
             focusElement(() => this._buttonElement as HTMLInputElement)
@@ -94,7 +94,7 @@ export default class AddCustomItemPopover extends PureComponent<Props, State> {
     }
 
     _toggle = () => {
-        const {isOpen} = this.state
+        const { isOpen } = this.state
 
         this.setState({
             isOpen: !isOpen,
@@ -111,29 +111,29 @@ export default class AddCustomItemPopover extends PureComponent<Props, State> {
 
     _onTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
         const title = event.target.value
-        this.setState({title})
+        this.setState({ title })
     }
 
     _onPriceChange = (price: number) => {
-        this.setState({price})
+        this.setState({ price })
     }
 
     _onQuantityChange = (value?: number) => {
         const quantity = value || 1
-        this.setState({quantity})
+        this.setState({ quantity })
     }
 
     _onTaxableChange = (newValue: boolean) => {
-        this.setState({taxable: newValue})
+        this.setState({ taxable: newValue })
     }
 
     _onShippingChange = (newValue: boolean) => {
-        this.setState({requiresShipping: newValue})
+        this.setState({ requiresShipping: newValue })
     }
 
     _onSubmit = (event: FormEvent) => {
-        const {currencyCode, actionName, onSubmit} = this.props
-        const {title, price, quantity, taxable, requiresShipping} = this.state
+        const { currencyCode, actionName, onSubmit } = this.props
+        const { title, price, quantity, taxable, requiresShipping } = this.state
 
         event.preventDefault()
         this._toggle()
@@ -149,18 +149,18 @@ export default class AddCustomItemPopover extends PureComponent<Props, State> {
                 product_exists: false,
                 newly_added: true,
                 localId: ulid(),
-            })
+            }),
         )
 
         logEvent(
             actionName === ShopifyActionType.CreateOrder
                 ? SegmentEvent.ShopifyCreateOrderCustomItemPopoverSave
-                : SegmentEvent.ShopifyDuplicateOrderCustomItemPopoverSave
+                : SegmentEvent.ShopifyDuplicateOrderCustomItemPopoverSave,
         )
     }
 
     _onCancel = () => {
-        const {actionName} = this.props
+        const { actionName } = this.props
 
         this._toggle()
         this._resetValues()
@@ -168,7 +168,7 @@ export default class AddCustomItemPopover extends PureComponent<Props, State> {
         logEvent(
             actionName === ShopifyActionType.CreateOrder
                 ? SegmentEvent.ShopifyCreateOrderCustomItemPopoverCancel
-                : SegmentEvent.ShopifyDuplicateOrderCustomItemPopoverCancel
+                : SegmentEvent.ShopifyDuplicateOrderCustomItemPopoverCancel,
         )
     }
 
@@ -181,8 +181,8 @@ export default class AddCustomItemPopover extends PureComponent<Props, State> {
     }
 
     render() {
-        const {id, placement, className, currencyCode, container} = this.props
-        const {isOpen, title, price, quantity, taxable, requiresShipping} =
+        const { id, placement, className, currencyCode, container } = this.props
+        const { isOpen, title, price, quantity, taxable, requiresShipping } =
             this.state
 
         return (

@@ -1,65 +1,67 @@
-import {Label, Tooltip} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
-import {fromJS, List, Map} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useEffect, useMemo, useState} from 'react'
-import {Link} from 'react-router-dom'
+import React, { useEffect, useMemo, useState } from 'react'
 
-import {SegmentEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
+import classNames from 'classnames'
+import { fromJS, List, Map } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { Link } from 'react-router-dom'
+
+import { Label, Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
 import {
-    GORGIAS_CHAT_DEFAULT_COLOR,
-    GORGIAS_CHAT_WIDGET_TEXTS,
-    GORGIAS_CHAT_WIDGET_AVATAR_TYPE_DEFAULT,
-    GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
-    GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
-    GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY,
-    GORGIAS_CHAT_LIVE_CHAT_OFFLINE,
-    GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
+    getGorgiasChatLanguageOptions,
+    getHasShopifyScriptTagScopes,
     GORGIAS_CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
     GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
+    GORGIAS_CHAT_DEFAULT_COLOR,
+    GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY,
+    GORGIAS_CHAT_LIVE_CHAT_OFFLINE,
     GORGIAS_CHAT_OFFLINE_MODE_ENABLED_DATETIME_DEFAULT,
+    GORGIAS_CHAT_WIDGET_AVATAR_TYPE_DEFAULT,
+    GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
+    GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
+    GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
+    GORGIAS_CHAT_WIDGET_PRIVACY_POLICY_DISCLAIMER_ENABLED_DEFAULT,
+    GORGIAS_CHAT_WIDGET_TEXTS,
     LanguageItem,
     mapIntegrationLanguagesToLanguagePicker,
     mapLanguagePickerToIntegrationLanguages,
-    getGorgiasChatLanguageOptions,
-    getHasShopifyScriptTagScopes,
-    GORGIAS_CHAT_WIDGET_PRIVACY_POLICY_DISCLAIMER_ENABLED_DEFAULT,
 } from 'config/integrations/gorgias_chat'
-import {Label as DesignSystemLabel} from 'gorgias-design-system/Input/Label'
+import { Label as DesignSystemLabel } from 'gorgias-design-system/Input/Label'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
-    GorgiasChatAvatarNameType,
     GorgiasChatAvatarImageType,
-    GorgiasChatCreationWizardSteps,
-    GorgiasChatCreationWizardStatus,
+    GorgiasChatAvatarNameType,
     GorgiasChatCreationWizardInstallationMethod,
+    GorgiasChatCreationWizardStatus,
+    GorgiasChatCreationWizardSteps,
     IntegrationType,
 } from 'models/integration/types'
-import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
+import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import Button from 'pages/common/components/button/Button'
 import {
-    LanguagePicker,
     Language,
+    LanguagePicker,
 } from 'pages/common/components/LanguagePicker/LanguagePicker'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
+import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 import InputField from 'pages/common/forms/input/InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import history from 'pages/history'
-import {updateOrCreateIntegration} from 'state/integrations/actions'
+import { updateOrCreateIntegration } from 'state/integrations/actions'
 import {
     DEPRECATED_getIntegrationsByTypes,
     makeGetRedirectUri,
 } from 'state/integrations/selectors'
 
-import {StoreNameDropdown} from '../../../GorgiasChatIntegrationAppearance/StoreNameDropdown'
+import { StoreNameDropdown } from '../../../GorgiasChatIntegrationAppearance/StoreNameDropdown'
 import useThemeAppExtensionInstallation from '../../../hooks/useThemeAppExtensionInstallation'
 import useLogWizardEvent from '../../hooks/useLogWizardEvent'
 import DiscardNewChatPrompt from '../DiscardNewChatPrompt'
@@ -112,7 +114,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
     }, [currentLanguages])
 
     const gorgiasChatIntegrations = useAppSelector(
-        DEPRECATED_getIntegrationsByTypes([IntegrationType.GorgiasChat])
+        DEPRECATED_getIntegrationsByTypes([IntegrationType.GorgiasChat]),
     )
 
     const allStoreIntegrations = useAppSelector(
@@ -120,7 +122,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
             IntegrationType.Shopify,
             IntegrationType.BigCommerce,
             IntegrationType.Magento2,
-        ])
+        ]),
     )
 
     const storeIntegrations = allStoreIntegrations as List<Map<any, any>>
@@ -142,7 +144,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
         currentLiveChatAvailability ||
         integration.getIn(
             ['meta', 'preferences', 'live_chat_availability'],
-            GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY
+            GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY,
         )
 
     const name = currentName ?? integration.get('name')
@@ -154,12 +156,12 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
         currentLanguage ||
         integration.getIn(
             ['meta', 'language'],
-            GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT
+            GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
         )
 
     const languagePickerLanguages = useMemo(
         () => mapIntegrationLanguagesToLanguagePicker(integration),
-        [integration]
+        [integration],
     )
 
     const handleLanguageChange = (languages: Language[]) => {
@@ -174,7 +176,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
             ? storeIntegrations.find(
                   (storeIntegration) =>
                       storeIntegration?.get('id') ===
-                      integration.getIn(['meta', 'shop_integration_id'])
+                      integration.getIn(['meta', 'shop_integration_id']),
               )
             : storeIntegrations.size === 1
               ? storeIntegrations.first()
@@ -184,11 +186,11 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
         ? storeIntegration?.get('type') === IntegrationType.Shopify
         : false
 
-    const {shouldUseThemeAppExtensionInstallation} =
+    const { shouldUseThemeAppExtensionInstallation } =
         useThemeAppExtensionInstallation(
             isStoreOfShopifyType
                 ? (storeIntegration as Immutable.Map<any, any>)?.toJS()
-                : undefined
+                : undefined,
         )
 
     const hasShopifyScriptTagScope =
@@ -207,7 +209,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
             if (shopName) {
                 window.location.href = redirectUri.replace(
                     '{shop_name}',
-                    shopName
+                    shopName,
                 )
             }
         })
@@ -220,7 +222,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
         currentInstallationMethod ??
         integration.getIn(
             ['meta', 'wizard', 'installation_method'],
-            GorgiasChatCreationWizardInstallationMethod.OneClick
+            GorgiasChatCreationWizardInstallationMethod.OneClick,
         )
 
     const isStoreRequired =
@@ -232,7 +234,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
     const goToCreatedIntegrationWizard = (id: number) => {
         if (!isUpdate) {
             history.replace(
-                `/app/settings/channels/gorgias_chat/${id}/create-wizard`
+                `/app/settings/channels/gorgias_chat/${id}/create-wizard`,
             )
         }
     }
@@ -252,7 +254,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
     const onSave = (
         shouldGoToNextStep = false,
         isContinueLater = false,
-        shouldCheckShopifyPermissions = false
+        shouldCheckShopifyPermissions = false,
     ) => {
         if (hasIncompleteFields) {
             setHasFailedSubmit(true)
@@ -281,18 +283,18 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                 meta: (integration.get('meta') as Map<any, any>)
                     .setIn(
                         ['preferences', 'live_chat_availability'],
-                        liveChatAvailability
+                        liveChatAvailability,
                     )
                     .set('language', language)
                     .setIn(
                         ['wizard', 'step'],
                         shouldGoToNextStep
                             ? GorgiasChatCreationWizardSteps.Branding
-                            : GorgiasChatCreationWizardSteps.Basics
+                            : GorgiasChatCreationWizardSteps.Basics,
                     )
                     .setIn(
                         ['wizard', 'installation_method'],
-                        installationMethod
+                        installationMethod,
                     )
                     .toJS(),
                 decoration: (integration.get('decoration') as Map<any, any>)
@@ -344,7 +346,9 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
 
         form.meta = {
             ...form.meta,
-            ...(chatMultiLanguagesEnabled ? {languages: currentLanguages} : {}),
+            ...(chatMultiLanguagesEnabled
+                ? { languages: currentLanguages }
+                : {}),
             shop_name: storeIntegration
                 ? getShopNameFromStoreIntegration(storeIntegration?.toJS())
                 : null,
@@ -359,7 +363,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                 fromJS(form),
                 undefined,
                 true,
-                ({id}) => {
+                ({ id }) => {
                     logWizardEvent(
                         isContinueLater
                             ? SegmentEvent.ChatWidgetWizardSaveLaterClicked
@@ -370,7 +374,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                             shop_type: storeIntegration
                                 ? storeIntegration?.get('type')
                                 : undefined,
-                        }
+                        },
                     )
 
                     setHasSubmitted(true)
@@ -382,8 +386,8 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                     goToCreatedIntegrationWizard(id)
                 },
                 shouldGoToNextStep,
-                'Changes saved'
-            )
+                'Changes saved',
+            ),
         )
     }
 
@@ -457,7 +461,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                                 onClick={() =>
                                     onSave()?.then(() => {
                                         history.push(
-                                            '/app/settings/channels/gorgias_chat'
+                                            '/app/settings/channels/gorgias_chat',
                                         )
                                     })
                                 }
@@ -505,7 +509,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                                     <DesignSystemLabel
                                         className={classNames(
                                             css.label,
-                                            css.languageLabel
+                                            css.languageLabel,
                                         )}
                                         label="Default language"
                                         required
@@ -525,7 +529,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                                         id="default-language-icon"
                                         className={classNames(
                                             'material-icons-outlined',
-                                            css.tooltipIcon
+                                            css.tooltipIcon,
                                         )}
                                     >
                                         info
@@ -534,7 +538,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                                 <LanguagePicker
                                     languages={languagePickerLanguages}
                                     availableLanguages={getGorgiasChatLanguageOptions(
-                                        enableNewLanguages
+                                        enableNewLanguages,
                                     ).toJS()}
                                     onSelectLanguageChange={(languages) =>
                                         handleLanguageChange(languages)
@@ -554,7 +558,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                                         >['onChange']
                                     }
                                     options={getGorgiasChatLanguageOptions(
-                                        enableNewLanguages
+                                        enableNewLanguages,
                                     ).toJS()}
                                     className={css.languageSelect}
                                     dropdownMenuClassName={
@@ -580,11 +584,11 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                                         storeIntegrations.size === 1
                                     ) {
                                         setCurrentStoreIntegration(
-                                            storeIntegrations.first()
+                                            storeIntegrations.first(),
                                         )
                                     }
                                     setCurrentInstallationMethod(
-                                        GorgiasChatCreationWizardInstallationMethod.OneClick
+                                        GorgiasChatCreationWizardInstallationMethod.OneClick,
                                     )
                                 }}
                             />
@@ -595,7 +599,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                                 caption="Websites, knowledge bases, etc."
                                 onClick={() => {
                                     setCurrentInstallationMethod(
-                                        GorgiasChatCreationWizardInstallationMethod.Manual
+                                        GorgiasChatCreationWizardInstallationMethod.Manual,
                                     )
                                     setCurrentStoreIntegration(false)
                                 }}
@@ -622,7 +626,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                                 const storeIntegration = storeIntegrations.find(
                                     (storeIntegration) =>
                                         storeIntegration?.get('id') ===
-                                        storeIntegrationId
+                                        storeIntegrationId,
                                 )
 
                                 setCurrentStoreIntegration(storeIntegration)
@@ -673,7 +677,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                                 caption="Creates live chat tickets when an agent is available during business hours."
                                 onClick={() =>
                                     setCurrentLiveChatAvailability(
-                                        GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY
+                                        GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY,
                                     )
                                 }
                             />
@@ -687,7 +691,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                                 caption="Creates offline capture tickets that you can respond to by email at any moment."
                                 onClick={() =>
                                     setCurrentLiveChatAvailability(
-                                        GORGIAS_CHAT_LIVE_CHAT_OFFLINE
+                                        GORGIAS_CHAT_LIVE_CHAT_OFFLINE,
                                     )
                                 }
                             />

@@ -1,8 +1,9 @@
-import {fromJS, Map} from 'immutable'
-import _upperFirst from 'lodash/upperFirst'
 import React from 'react'
 
-import {TICKET_STATUSES} from 'config'
+import { fromJS, Map } from 'immutable'
+import _upperFirst from 'lodash/upperFirst'
+
+import { TICKET_STATUSES } from 'config'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 
 type Props = {
@@ -27,7 +28,7 @@ const SetStatusAction = ({
             <SelectField
                 value={action.getIn(['arguments', 'status'])}
                 onChange={(value) =>
-                    updateActionArgs(index, fromJS({status: value}))
+                    updateActionArgs(index, fromJS({ status: value }))
                 }
                 options={TICKET_STATUSES.map((status) => ({
                     value: status,

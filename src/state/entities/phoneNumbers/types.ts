@@ -1,11 +1,10 @@
-import {PayloadActionCreator} from '@reduxjs/toolkit'
+import { PayloadActionCreator } from '@reduxjs/toolkit'
 
 import {
     NewPhoneNumber,
     OldPhoneNumber,
     PhoneNumber,
 } from '../../../models/phoneNumber/types'
-
 import {
     PHONE_NUMBER_CREATED,
     PHONE_NUMBER_FETCHED,

@@ -1,15 +1,17 @@
-import classNamesBind from 'classnames/bind'
 import React from 'react'
-import {Col, Container, Row} from 'reactstrap'
 
-import {TicketMessage} from 'models/ticket/types'
+import classNamesBind from 'classnames/bind'
+import { Col, Container, Row } from 'reactstrap'
+
+import { TicketMessage } from 'models/ticket/types'
 import ProductEmbeddedCard from 'pages/common/components/ProductEmbeddedCard/ProductEmbeddedCard'
 import TicketMessageEmbeddedCard from 'pages/common/components/TicketMessageEmbeddedCard/TicketMessageEmbeddedCard'
-import {mapQuotedTweetTicketMessageToEmbeddedCard} from 'pages/common/components/TicketMessageEmbeddedCard/utils'
+import { mapQuotedTweetTicketMessageToEmbeddedCard } from 'pages/common/components/TicketMessageEmbeddedCard/utils'
 import FacebookCarousel from 'pages/tickets/detail/components/FacebookCarousel'
 
-import css from './Body.less'
 import Content from './Content'
+
+import css from './Body.less'
 
 const classNames = classNamesBind.bind(css)
 
@@ -20,7 +22,7 @@ type Props = {
 }
 
 const Body = (props: Props) => {
-    const {message, className} = props
+    const { message, className } = props
 
     return (
         <div
@@ -47,7 +49,7 @@ const Body = (props: Props) => {
                         <Col md="9" className="p-0">
                             <TicketMessageEmbeddedCard
                                 {...mapQuotedTweetTicketMessageToEmbeddedCard(
-                                    message
+                                    message,
                                 )}
                             />
                         </Col>

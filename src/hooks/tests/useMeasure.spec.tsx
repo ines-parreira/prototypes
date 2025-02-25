@@ -1,4 +1,4 @@
-import {renderHook, act} from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react-hooks'
 import noop from 'lodash/noop'
 
 import useMeasure from '../useMeasure'
@@ -13,7 +13,7 @@ const resizeObserverMethods = {
 
 describe('useMeasure', () => {
     it('should have default state with every value 0', () => {
-        const {result} = renderHook(() => useMeasure())
+        const { result } = renderHook(() => useMeasure())
 
         act(() => {
             const div = document.createElement('div')
@@ -34,7 +34,7 @@ describe('useMeasure', () => {
     it('should synchronously set up ResizeObserver listener', () => {
         const spy = jest.spyOn(window, 'ResizeObserver')
 
-        const {result} = renderHook(() => useMeasure())
+        const { result } = renderHook(() => useMeasure())
 
         act(() => {
             const div = document.createElement('div')
@@ -52,7 +52,7 @@ describe('useMeasure', () => {
             return resizeObserverMethods
         }) as MockedResizeObserver)
 
-        const {result} = renderHook(() => useMeasure())
+        const { result } = renderHook(() => useMeasure())
 
         act(() => {
             const div = document.createElement('div')
@@ -72,7 +72,7 @@ describe('useMeasure', () => {
         }
 
         act(() => {
-            resizeListener([{contentRect}])
+            resizeListener([{ contentRect }])
         })
 
         expect(result.current[1]).toMatchObject(contentRect)
@@ -85,7 +85,7 @@ describe('useMeasure', () => {
             return resizeObserverMethods
         }) as MockedResizeObserver)
 
-        const {result} = renderHook(() => useMeasure())
+        const { result } = renderHook(() => useMeasure())
 
         act(() => {
             const div = document.createElement('div')
@@ -105,7 +105,7 @@ describe('useMeasure', () => {
         }
 
         act(() => {
-            resizeListener([{contentRect}])
+            resizeListener([{ contentRect }])
         })
 
         expect(result.current[1]).toMatchObject(contentRect)
@@ -122,7 +122,7 @@ describe('useMeasure', () => {
         }
 
         act(() => {
-            resizeListener([{contentRect: updatedContentRect}])
+            resizeListener([{ contentRect: updatedContentRect }])
         })
 
         expect(result.current[1]).toMatchObject(updatedContentRect)
@@ -131,10 +131,10 @@ describe('useMeasure', () => {
     it('should call .disconnect() on ResizeObserver when component unmounts', () => {
         const disconnect = jest.fn()
         jest.spyOn(window, 'ResizeObserver').mockImplementation((() => {
-            return {observe: noop, disconnect}
+            return { observe: noop, disconnect }
         }) as MockedResizeObserver)
 
-        const {result, unmount} = renderHook(() => useMeasure())
+        const { result, unmount } = renderHook(() => useMeasure())
 
         act(() => {
             const div = document.createElement('div')

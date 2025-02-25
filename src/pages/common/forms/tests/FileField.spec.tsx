@@ -1,18 +1,18 @@
-import {fireEvent, render} from '@testing-library/react'
+import React, { ComponentProps } from 'react'
 
+import { fireEvent, render } from '@testing-library/react'
 import _noop from 'lodash/noop'
-import React, {ComponentProps} from 'react'
-import {Input} from 'reactstrap'
+import { Input } from 'reactstrap'
 
-import {uploadFiles} from 'common/utils'
+import { uploadFiles } from 'common/utils'
 
-import {FileFieldContainer} from '../FileField'
+import { FileFieldContainer } from '../FileField'
 
 jest.mock('common/utils', () => {
     const mockedUtils = jest.requireActual('common/utils')
     return {
         ...mockedUtils,
-        uploadFiles: jest.fn(() => Promise.resolve([{url: 'file1'}])),
+        uploadFiles: jest.fn(() => Promise.resolve([{ url: 'file1' }])),
     } as unknown
 })
 
@@ -25,7 +25,7 @@ jest.mock('reactstrap', () => {
     const reactstrap = jest.requireActual('reactstrap')
     return {
         ...reactstrap,
-        Input: ({innerRef, onChange}: ComponentProps<typeof Input>) => {
+        Input: ({ innerRef, onChange }: ComponentProps<typeof Input>) => {
             if (innerRef && typeof innerRef === 'object') {
                 // @ts-ignore
                 innerRef.current =
@@ -55,12 +55,12 @@ describe('<FileField/>', () => {
     describe('handleRemove()', () => {
         it('should call onChange with an empty string when removing the file', () => {
             const removeFn = jest.fn()
-            const {getByText} = render(
+            const { getByText } = render(
                 <FileFieldContainer
                     {...minProps}
                     isRemovable
                     onChange={removeFn}
-                />
+                />,
             )
 
             fireEvent.click(getByText('close'))
@@ -71,8 +71,8 @@ describe('<FileField/>', () => {
 
     describe('handleOnChange()', () => {
         it('should notify a warning when trying to upload a SVG', () => {
-            const {getByLabelText, queryByText} = render(
-                <FileFieldContainer {...minProps} />
+            const { getByLabelText, queryByText } = render(
+                <FileFieldContainer {...minProps} />,
             )
 
             fireEvent.change(getByLabelText('file input mock'), {
@@ -91,15 +91,15 @@ describe('<FileField/>', () => {
         })
 
         it('should not allow uploading files larger than 10MB', () => {
-            const {getByLabelText} = render(
-                <FileFieldContainer {...minProps} maxSize={10 * 1000 * 1000} />
+            const { getByLabelText } = render(
+                <FileFieldContainer {...minProps} maxSize={10 * 1000 * 1000} />,
             )
 
             fireEvent.change(getByLabelText('file input mock'), {
                 target: {
                     files: [
-                        {size: 1000 * 1000 * 10},
-                        {size: 1000 * 1000 * 10},
+                        { size: 1000 * 1000 * 10 },
+                        { size: 1000 * 1000 * 10 },
                     ] as any,
                 },
             })
@@ -112,13 +112,13 @@ describe('<FileField/>', () => {
         })
 
         it('should not allow uploading files larger than 1kB', () => {
-            const {getByLabelText} = render(
-                <FileFieldContainer {...minProps} maxSize={1000} />
+            const { getByLabelText } = render(
+                <FileFieldContainer {...minProps} maxSize={1000} />,
             )
 
             fireEvent.change(getByLabelText('file input mock'), {
                 target: {
-                    files: [{size: 1000}, {size: 1000}] as any,
+                    files: [{ size: 1000 }, { size: 1000 }] as any,
                 },
             })
 
@@ -132,41 +132,44 @@ describe('<FileField/>', () => {
 
     describe('render()', () => {
         it('should render a basic file input', () => {
-            const {getByLabelText} = render(
+            const { getByLabelText } = render(
                 <FileFieldContainer
                     {...minProps}
                     value="value"
                     onChange={_noop}
-                />
+                />,
             )
 
             expect(getByLabelText('file input mock')).toBeInTheDocument()
         })
 
         it('should render preview', () => {
-            const {getByRole} = render(
-                <FileFieldContainer {...minProps} previewUrl="url" />
+            const { getByRole } = render(
+                <FileFieldContainer {...minProps} previewUrl="url" />,
             )
 
             expect(getByRole('img')).toBeInTheDocument()
         })
 
         it('should not render preview', () => {
-            const {queryByRole} = render(
-                <FileFieldContainer {...minProps} previewUrl="url" noPreview />
+            const { queryByRole } = render(
+                <FileFieldContainer {...minProps} previewUrl="url" noPreview />,
             )
 
             expect(queryByRole('img')).toBeNull()
         })
 
         it('should display loading when loading', () => {
-            const {getByLabelText, getByText} = render(
-                <FileFieldContainer {...minProps} />
+            const { getByLabelText, getByText } = render(
+                <FileFieldContainer {...minProps} />,
             )
 
             fireEvent.change(getByLabelText('file input mock'), {
                 target: {
-                    files: [{type: 'image/png'}, {type: 'image/png'}] as any,
+                    files: [
+                        { type: 'image/png' },
+                        { type: 'image/png' },
+                    ] as any,
                 },
             })
 
@@ -176,8 +179,8 @@ describe('<FileField/>', () => {
 
     it('should open the file dialog on upload button click', () => {
         const placeholder = 'Select'
-        const {getByText} = render(
-            <FileFieldContainer {...minProps} placeholder={placeholder} />
+        const { getByText } = render(
+            <FileFieldContainer {...minProps} placeholder={placeholder} />,
         )
 
         fireEvent.click(getByText(placeholder))

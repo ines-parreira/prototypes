@@ -1,32 +1,32 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {keyBy as _keyBy} from 'lodash'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { renderHook } from '@testing-library/react-hooks'
+import { keyBy as _keyBy } from 'lodash'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {SelectableOption} from 'pages/common/forms/SelectField/types'
-import {HELP_CENTER_DEFAULT_LOCALE} from 'pages/settings/helpCenter/constants'
-import {getCategoriesFlatSorted} from 'pages/settings/helpCenter/fixtures/getCategoriesTreeFlatSorted.fixtures'
-import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { SelectableOption } from 'pages/common/forms/SelectField/types'
+import { HELP_CENTER_DEFAULT_LOCALE } from 'pages/settings/helpCenter/constants'
+import { getCategoriesFlatSorted } from 'pages/settings/helpCenter/fixtures/getCategoriesTreeFlatSorted.fixtures'
+import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
-import {useHelpCenterIdParam} from 'pages/settings/helpCenter/hooks/useHelpCenterIdParam'
-
-import {isNonRootCategory} from 'state/entities/helpCenter/categories'
-import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/reducer'
-import {RootState, StoreDispatch} from 'state/types'
-import {initialState as uiState} from 'state/ui/helpCenter/reducer'
+import { useHelpCenterIdParam } from 'pages/settings/helpCenter/hooks/useHelpCenterIdParam'
+import { isNonRootCategory } from 'state/entities/helpCenter/categories'
+import { initialState as helpCenterInitialState } from 'state/entities/helpCenter/reducer'
+import { RootState, StoreDispatch } from 'state/types'
+import { initialState as uiState } from 'state/ui/helpCenter/reducer'
 
 import useCategoriesOptions from '../hooks/useCategoriesOptions'
 
 jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
 ;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
-    getSingleHelpCenterResponseFixture
+    getSingleHelpCenterResponseFixture,
 )
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterIdParam')
 ;(useHelpCenterIdParam as jest.Mock).mockReturnValue(
-    getSingleHelpCenterResponseFixture.id
+    getSingleHelpCenterResponseFixture.id,
 )
 
 const mockFetchCategories = jest.fn().mockResolvedValue(null)
@@ -46,10 +46,10 @@ const defaultState: Partial<RootState> = {
     entities: {
         helpCenter: {
             ...helpCenterInitialState,
-            categories: {categoriesById: _keyBy(categories, 'id')},
+            categories: { categoriesById: _keyBy(categories, 'id') },
         },
     } as any,
-    ui: {helpCenter: uiState} as any,
+    ui: { helpCenter: uiState } as any,
 }
 
 const dependencyWrapper: React.ComponentType<any> = ({
@@ -60,14 +60,14 @@ const dependencyWrapper: React.ComponentType<any> = ({
 
 describe('useCategoriesOptions()', () => {
     it('returns the category options', () => {
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useCategoriesOptions({
                     locale: HELP_CENTER_DEFAULT_LOCALE,
                 }),
             {
                 wrapper: dependencyWrapper,
-            }
+            },
         )
 
         const actualResult: SelectableOption[] = []
@@ -80,7 +80,7 @@ describe('useCategoriesOptions()', () => {
         })
 
         const expectedResult = [
-            {value: 'null'},
+            { value: 'null' },
             ...categories.filter(isNonRootCategory).map((category) => ({
                 text: category.translation.title,
                 value: category.id,

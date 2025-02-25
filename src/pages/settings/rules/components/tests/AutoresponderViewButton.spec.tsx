@@ -1,15 +1,16 @@
-import {render, waitFor, fireEvent} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { fireEvent, render, waitFor } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {emptyRuleRecipeFixture} from 'fixtures/ruleRecipe'
-import {view} from 'fixtures/views'
-import {RuleRecipe} from 'models/ruleRecipe/types'
-import {fetchTags, createTag} from 'models/tag/resources'
+import { emptyRuleRecipeFixture } from 'fixtures/ruleRecipe'
+import { view } from 'fixtures/views'
+import { RuleRecipe } from 'models/ruleRecipe/types'
+import { createTag, fetchTags } from 'models/tag/resources'
 import history from 'pages/history'
-import {RootState, StoreDispatch} from 'state/types'
+import { RootState, StoreDispatch } from 'state/types'
 
 import AutoresponderViewButton from '../AutoresponderViewButton'
 
@@ -21,7 +22,7 @@ jest.mock('models/tag/resources', () => {
     return {
         ...resource,
         createTag: jest.fn(),
-        fetchTags: jest.fn().mockResolvedValue({data: {data: []}}),
+        fetchTags: jest.fn().mockResolvedValue({ data: { data: [] } }),
     } as Record<string, unknown>
 })
 
@@ -46,10 +47,10 @@ describe('<AutoresponderViewButton/>', () => {
     } as RootState)
 
     it('should render correctly', async () => {
-        const {container, getByText} = render(
+        const { container, getByText } = render(
             <Provider store={store}>
                 <AutoresponderViewButton {...minProps} />
-            </Provider>
+            </Provider>,
         )
         await waitFor(() => getByText(/View Tickets Closed By Rule/))
         expect(container.firstChild).toMatchSnapshot()
@@ -63,10 +64,10 @@ describe('<AutoresponderViewButton/>', () => {
                 },
             },
         } as RootState)
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <AutoresponderViewButton {...minProps} />
-            </Provider>
+            </Provider>,
         )
         const link = getByText(/View Tickets Closed By Rule/i)
         await waitFor(() => {
@@ -97,10 +98,10 @@ describe('<AutoresponderViewButton/>', () => {
                 },
             },
         } as RootState)
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <AutoresponderViewButton {...minProps} />
-            </Provider>
+            </Provider>,
         )
         const link = getByText(/View Tickets Closed By Rule/i)
         await waitFor(() => {

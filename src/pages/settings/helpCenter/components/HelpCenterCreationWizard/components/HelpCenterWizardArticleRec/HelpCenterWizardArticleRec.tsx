@@ -1,7 +1,8 @@
-import classnames from 'classnames'
 import React from 'react'
 
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import classnames from 'classnames'
+
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 
 import css from './HelpCenterWizardArticleRec.less'
@@ -53,7 +54,7 @@ const HelpCenterWizardArticleRec = ({
                     <i
                         className={classnames(
                             'material-icons mr-1',
-                            css.AIIcon
+                            css.AIIcon,
                         )}
                     >
                         auto_awesome

@@ -1,16 +1,16 @@
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
+import React, { ReactNode } from 'react'
 
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import React, {ReactNode} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     useAIAgentGetOtherResources,
     UseAIAgentGetOtherResourcesProps,
 } from 'pages/tickets/detail/hooks/useAIAgentGetOtherResources'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
-import {MultiLevelSelectProps} from '../Deprecated_MultiLevelSelect/Deprecated_MultiLevelSelect'
+import { MultiLevelSelectProps } from '../Deprecated_MultiLevelSelect/Deprecated_MultiLevelSelect'
 import FeedbackOtherResourcesSelect, {
     NO_RELEVANT_RESOURCES_LABEL,
 } from '../FeedbackOtherResourcesSelect'
@@ -18,7 +18,7 @@ import FeedbackOtherResourcesSelect, {
 jest.mock('pages/tickets/detail/hooks/useAIAgentGetOtherResources')
 jest.mock('state/ticket/actions')
 jest.mock('hooks/useAppDispatch')
-jest.mock('hooks/useElementSize', () => () => ({width: 100, height: 100}))
+jest.mock('hooks/useElementSize', () => () => ({ width: 100, height: 100 }))
 jest.mock('common/segment/segment')
 
 const mockDispatch = jest.fn()
@@ -37,13 +37,13 @@ jest.mock(
                 <button onClick={props.onApplyClick}>Apply</button>
             </div>
         )
-    }
+    },
 )
 
 jest.mock('@gorgias/merchant-ui-kit', () => {
     return {
         ...jest.requireActual('@gorgias/merchant-ui-kit'),
-        Tooltip: ({children}: {children: ReactNode}) => (
+        Tooltip: ({ children }: { children: ReactNode }) => (
             <div>TooltipMock{children}</div>
         ),
     } as Record<string, unknown>
@@ -64,18 +64,18 @@ describe('FeedbackOtherResourcesSelect Component', () => {
         optionsOverride: string
     }) => {
         const mockOptions = {
-            [`${optionName}Options`]: [{value: resourceId, label}],
+            [`${optionName}Options`]: [{ value: resourceId, label }],
         } as unknown as ReturnType<typeof useAIAgentGetOtherResources>
 
         mockUseAIAgentGetOtherResources.mockReturnValue({
             ...mockUseAIAgentGetOtherResources(
-                {} as UseAIAgentGetOtherResourcesProps
+                {} as UseAIAgentGetOtherResourcesProps,
             ),
             ...mockOptions,
         })
 
         return {
-            initialValues: [{type: 'resource', resourceId, resourceType}],
+            initialValues: [{ type: 'resource', resourceId, resourceType }],
             expectedValues: [`${optionsOverride}::${label}`],
         }
     }
@@ -108,13 +108,13 @@ describe('FeedbackOtherResourcesSelect Component', () => {
                 onRemove={jest.fn()}
                 accountId={1}
                 {...props}
-            />
+            />,
         )
     }
 
     it('renders the component correctly with preselected guidance option', () => {
         const label = 'Guidance Label'
-        const {initialValues} = setupMockResourcesValues({
+        const { initialValues } = setupMockResourcesValues({
             optionName: 'guidance',
             resourceType: 'guidance',
             resourceId: '20',
@@ -135,12 +135,12 @@ describe('FeedbackOtherResourcesSelect Component', () => {
         expect(mockChildComponent).toHaveBeenCalledWith(
             expect.objectContaining({
                 values: [],
-            })
+            }),
         )
     })
 
     it('renders multi select component correctly with preselected article option', () => {
-        const {initialValues, expectedValues} = setupMockResourcesValues({
+        const { initialValues, expectedValues } = setupMockResourcesValues({
             optionName: 'articles',
             resourceType: 'article',
             resourceId: '1',
@@ -148,31 +148,31 @@ describe('FeedbackOtherResourcesSelect Component', () => {
             optionsOverride: 'Knowledge::Help Center articles',
         })
 
-        renderComponent({initialValues})
+        renderComponent({ initialValues })
 
         expect(mockChildComponent).toHaveBeenCalledWith(
             expect.objectContaining({
                 values: expectedValues,
-            })
+            }),
         )
     })
 
     it('renders multi select component correctly with preselected other option', () => {
         renderComponent({
             initialValues: [
-                {type: 'resource', resourceId: '1', resourceType: 'other'},
+                { type: 'resource', resourceId: '1', resourceType: 'other' },
             ],
         })
 
         expect(mockChildComponent).toHaveBeenCalledWith(
             expect.objectContaining({
                 values: [NO_RELEVANT_RESOURCES_LABEL],
-            })
+            }),
         )
     })
 
     it('renders multi select component correctly with preselected guidance option', async () => {
-        const {initialValues, expectedValues} = setupMockResourcesValues({
+        const { initialValues, expectedValues } = setupMockResourcesValues({
             optionName: 'guidance',
             resourceType: 'guidance',
             resourceId: '2',
@@ -180,19 +180,19 @@ describe('FeedbackOtherResourcesSelect Component', () => {
             optionsOverride: 'Guidance',
         })
 
-        renderComponent({initialValues})
+        renderComponent({ initialValues })
 
         await waitFor(() => {
             expect(mockChildComponent).toHaveBeenCalledWith(
                 expect.objectContaining({
                     values: expectedValues,
-                })
+                }),
             )
         })
     })
 
     it('renders multi select component correctly with preselected macro option', async () => {
-        const {initialValues, expectedValues} = setupMockResourcesValues({
+        const { initialValues, expectedValues } = setupMockResourcesValues({
             optionName: 'macros',
             resourceType: 'macro',
             resourceId: '2',
@@ -200,19 +200,19 @@ describe('FeedbackOtherResourcesSelect Component', () => {
             optionsOverride: 'Knowledge::Macros',
         })
 
-        renderComponent({initialValues})
+        renderComponent({ initialValues })
 
         await waitFor(() => {
             expect(mockChildComponent).toHaveBeenCalledWith(
                 expect.objectContaining({
                     values: expectedValues,
-                })
+                }),
             )
         })
     })
 
     it('renders multi select component correctly with preselected snippet option', async () => {
-        const {initialValues, expectedValues} = setupMockResourcesValues({
+        const { initialValues, expectedValues } = setupMockResourcesValues({
             optionName: 'snippets',
             resourceType: 'external_snippet',
             resourceId: '2',
@@ -220,19 +220,19 @@ describe('FeedbackOtherResourcesSelect Component', () => {
             optionsOverride: 'Knowledge::External websites',
         })
 
-        renderComponent({initialValues})
+        renderComponent({ initialValues })
 
         await waitFor(() => {
             expect(mockChildComponent).toHaveBeenCalledWith(
                 expect.objectContaining({
                     values: expectedValues,
-                })
+                }),
             )
         })
     })
 
     it('renders multi select component correctly with preselected file external snippet option', async () => {
-        const {initialValues, expectedValues} = setupMockResourcesValues({
+        const { initialValues, expectedValues } = setupMockResourcesValues({
             optionName: 'fileSnippets',
             resourceType: 'file_external_snippet',
             resourceId: '2',
@@ -240,19 +240,19 @@ describe('FeedbackOtherResourcesSelect Component', () => {
             optionsOverride: 'Knowledge::External files',
         })
 
-        renderComponent({initialValues})
+        renderComponent({ initialValues })
 
         await waitFor(() => {
             expect(mockChildComponent).toHaveBeenCalledWith(
                 expect.objectContaining({
                     values: expectedValues,
-                })
+                }),
             )
         })
     })
 
     it('renders multi select component correctly with preselected hard action option', async () => {
-        const {initialValues, expectedValues} = setupMockResourcesValues({
+        const { initialValues, expectedValues } = setupMockResourcesValues({
             optionName: 'actions',
             resourceType: 'hard_action',
             resourceId: 2,
@@ -260,19 +260,19 @@ describe('FeedbackOtherResourcesSelect Component', () => {
             optionsOverride: 'Actions::Hard action',
         })
 
-        renderComponent({initialValues})
+        renderComponent({ initialValues })
 
         await waitFor(() => {
             expect(mockChildComponent).toHaveBeenCalledWith(
                 expect.objectContaining({
                     values: expectedValues,
-                })
+                }),
             )
         })
     })
 
     it('renders multi select component correctly with preselected soft action option', async () => {
-        const {initialValues, expectedValues} = setupMockResourcesValues({
+        const { initialValues, expectedValues } = setupMockResourcesValues({
             optionName: 'actions',
             resourceType: 'soft_action',
             resourceId: 2,
@@ -280,21 +280,21 @@ describe('FeedbackOtherResourcesSelect Component', () => {
             optionsOverride: 'Actions::Soft action',
         })
 
-        renderComponent({initialValues})
+        renderComponent({ initialValues })
 
         await waitFor(() => {
             expect(mockChildComponent).toHaveBeenCalledWith(
                 expect.objectContaining({
                     values: expectedValues,
-                })
+                }),
             )
         })
     })
 
     it('should handle apply correctly for other option', () => {
-        const {getByText} = renderComponent({
+        const { getByText } = renderComponent({
             initialValues: [
-                {type: 'resource', resourceId: '1', resourceType: 'other'},
+                { type: 'resource', resourceId: '1', resourceType: 'other' },
             ],
         })
 
@@ -305,9 +305,9 @@ describe('FeedbackOtherResourcesSelect Component', () => {
     })
 
     it('should handle apply correctly for guidance option', () => {
-        const {getByText} = renderComponent({
+        const { getByText } = renderComponent({
             initialValues: [
-                {type: 'resource', resourceId: '1', resourceType: 'guidance'},
+                { type: 'resource', resourceId: '1', resourceType: 'guidance' },
             ],
         })
 
@@ -357,7 +357,7 @@ describe('FeedbackOtherResourcesSelect Component', () => {
         jest.spyOn(
             HTMLElement.prototype,
             'offsetWidth',
-            'get'
+            'get',
         ).mockImplementation(() => {
             mockValue += 5
             return mockValue
@@ -365,14 +365,14 @@ describe('FeedbackOtherResourcesSelect Component', () => {
         jest.spyOn(
             HTMLElement.prototype,
             'scrollWidth',
-            'get'
+            'get',
         ).mockImplementation(() => {
             mockValue += 5
             return mockValue
         })
 
         const label = 'overflowing label'
-        const {initialValues} = setupMockResourcesValues({
+        const { initialValues } = setupMockResourcesValues({
             optionName: 'guidance',
             resourceType: 'guidance',
             resourceId: '20',
@@ -394,16 +394,16 @@ describe('FeedbackOtherResourcesSelect Component', () => {
         jest.spyOn(
             HTMLElement.prototype,
             'offsetWidth',
-            'get'
+            'get',
         ).mockImplementation(() => 0)
         jest.spyOn(
             HTMLElement.prototype,
             'scrollWidth',
-            'get'
+            'get',
         ).mockImplementation(() => 0)
 
         const label = 'label without tooltip'
-        const {initialValues} = setupMockResourcesValues({
+        const { initialValues } = setupMockResourcesValues({
             optionName: 'guidance',
             resourceType: 'guidance',
             resourceId: '20',
@@ -418,7 +418,7 @@ describe('FeedbackOtherResourcesSelect Component', () => {
         await waitFor(() => {
             userEvent.hover(screen.getByText(label))
             expect(
-                screen.queryByText(`TooltipMock${label}`)
+                screen.queryByText(`TooltipMock${label}`),
             ).not.toBeInTheDocument()
         })
     })

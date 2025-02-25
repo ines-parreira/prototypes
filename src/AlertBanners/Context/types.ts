@@ -1,4 +1,4 @@
-import {BannerCategory, ContextBanner} from '../types'
+import { BannerCategory, ContextBanner } from '../types'
 
 export const BannerActionTypes = {
     ADD: 'add',
@@ -25,7 +25,7 @@ type RemoveBannerAction = {
     instanceId: string
 }
 
-export type BannerActions = {type: ActionTypes} & (
+export type BannerActions = { type: ActionTypes } & (
     | AddAction
     | RemoveCategoryAction
     | RemoveBannerAction

@@ -1,8 +1,10 @@
-import {LoadingSpinner, Badge} from '@gorgias/merchant-ui-kit'
-import cn from 'classnames'
 import React from 'react'
 
-import type {SaveState} from '../hooks/useSaveState'
+import cn from 'classnames'
+
+import { Badge, LoadingSpinner } from '@gorgias/merchant-ui-kit'
+
+import type { SaveState } from '../hooks/useSaveState'
 
 import css from './SaveBadge.less'
 
@@ -10,7 +12,7 @@ type Props = {
     state: SaveState
 }
 
-export default function SaveBadge({state}: Props) {
+export default function SaveBadge({ state }: Props) {
     if (state === 'saving') {
         return (
             <Badge className={css.badge} type="grey">

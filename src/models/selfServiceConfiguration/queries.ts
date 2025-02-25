@@ -1,14 +1,14 @@
-import {UseQueryOptions, useQuery, useMutation} from '@tanstack/react-query'
+import { useMutation, useQuery, UseQueryOptions } from '@tanstack/react-query'
 
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
-import {MutationOverrides} from 'types/query'
+import { MutationOverrides } from 'types/query'
 
 import {
     fetchSelfServiceConfigurationSSP,
     updateSelfServiceConfigurationSSP,
 } from './resources'
-import {SelfServiceConfiguration} from './types'
-import {getShopNameFromStoreIntegration} from './utils'
+import { SelfServiceConfiguration } from './types'
+import { getShopNameFromStoreIntegration } from './utils'
 
 export const STALE_TIME_MS = 10 * 60 * 1000 // 10 minutes
 export const CACHE_TIME_MS = 20 * 60 * 1000 // 20 minutes
@@ -24,7 +24,7 @@ export const useGetSelfServiceConfiguration = (
     shopName: string | undefined,
     overrides?: UseQueryOptions<
         Awaited<ReturnType<typeof fetchSelfServiceConfigurationSSP>>
-    >
+    >,
 ) => {
     return useQuery({
         queryKey: selfServiceConfigurationKeys.detail(shopName, shopType),
@@ -42,7 +42,7 @@ export const useGetSelfServiceConfiguration = (
 }
 
 export const useGetSelfServiceConfigurations = (
-    overrides?: UseQueryOptions<SelfServiceConfiguration[]>
+    overrides?: UseQueryOptions<SelfServiceConfiguration[]>,
 ) => {
     const integrations = useStoreIntegrations()
 
@@ -53,9 +53,9 @@ export const useGetSelfServiceConfigurations = (
                 integrations.map((integration) =>
                     fetchSelfServiceConfigurationSSP(
                         getShopNameFromStoreIntegration(integration),
-                        integration.type
-                    )
-                )
+                        integration.type,
+                    ),
+                ),
             )
             return configurations ?? []
         },
@@ -64,7 +64,7 @@ export const useGetSelfServiceConfigurations = (
 }
 
 export const useUpdateSelfServiceConfiguration = (
-    overrides?: MutationOverrides<typeof updateSelfServiceConfigurationSSP>
+    overrides?: MutationOverrides<typeof updateSelfServiceConfigurationSSP>,
 ) => {
     return useMutation({
         mutationFn: (params) => updateSelfServiceConfigurationSSP(...params),

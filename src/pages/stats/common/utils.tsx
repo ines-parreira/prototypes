@@ -1,25 +1,24 @@
+import { useContext, useMemo } from 'react'
+
 import _isNumber from 'lodash/isNumber'
-import moment, {Moment} from 'moment-timezone'
-import {useContext, useMemo} from 'react'
+import moment, { Moment } from 'moment-timezone'
 
-import {getTicketViewField, getTicketViewFieldPath} from 'config/views'
-
-import {DateTimeResultFormatType} from 'constants/datetime'
-import {ReportingMetricItem} from 'hooks/reporting/useMetricPerDimension'
-import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
-
+import { getTicketViewField, getTicketViewFieldPath } from 'config/views'
+import { DateTimeResultFormatType } from 'constants/datetime'
+import { ReportingMetricItem } from 'hooks/reporting/useMetricPerDimension'
+import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
 import useAppSelector from 'hooks/useAppSelector'
-import {ReportingGranularity} from 'models/reporting/types'
-import {ViewField} from 'models/view/types'
+import { ReportingGranularity } from 'models/reporting/types'
+import { ViewField } from 'models/view/types'
 import StatsFiltersContext from 'pages/stats/StatsFiltersContext'
 import {
     CollectionOperator,
     DatetimeOperator,
     EqualityOperator,
 } from 'state/rules/types'
-import {RootState} from 'state/types'
-import {ViewFilter} from 'state/views/types'
-import {formatDatetime} from 'utils'
+import { RootState } from 'state/types'
+import { ViewFilter } from 'state/views/types'
+import { formatDatetime } from 'utils'
 
 export const DEFAULT_LOCALE = 'en-US'
 export const NOT_AVAILABLE_TEXT = 'N/A'
@@ -32,10 +31,10 @@ export enum StartDayOfWeek {
 
 export const comparedPeriodString = (
     previousStartDatetime: Moment,
-    previousEndDatetime: Moment
+    previousEndDatetime: Moment,
 ) => {
     let previousPeriod = `${previousStartDatetime.format(
-        SHORT_FORMAT
+        SHORT_FORMAT,
     )} - ${previousEndDatetime.format(SHORT_FORMAT)}`
 
     if (previousStartDatetime.isSame(previousEndDatetime, 'day')) {
@@ -47,11 +46,11 @@ export const comparedPeriodString = (
 
 export const formatComparedPeriodString = (
     previousStartDatetime: Moment,
-    previousEndDatetime: Moment
+    previousEndDatetime: Moment,
 ) => {
     return `Compared to: ${comparedPeriodString(
         previousStartDatetime,
-        previousEndDatetime
+        previousEndDatetime,
     )}`
 }
 
@@ -117,7 +116,7 @@ export const useStatsViewFilters = (periodFilterLeft: string): ViewFilter[] => {
     const tagsState = useAppSelector((state: RootState) => state.entities.tags)
     return useMemo(() => {
         const filters: ViewFilter[] = []
-        const {period, channels, integrations, agents, tags} = statsFilters
+        const { period, channels, integrations, agents, tags } = statsFilters
 
         filters.push({
             left: periodFilterLeft,
@@ -136,14 +135,14 @@ export const useStatsViewFilters = (periodFilterLeft: string): ViewFilter[] => {
         if (channels?.length) {
             filters.push({
                 left: getTicketViewFieldPath(
-                    getTicketViewField(ViewField.Channel)
+                    getTicketViewField(ViewField.Channel),
                 ),
                 operator:
                     channels.length > 1
                         ? CollectionOperator.ContainsAny
                         : EqualityOperator.Eq,
                 right: JSON.stringify(
-                    channels.length > 1 ? channels : channels[0]
+                    channels.length > 1 ? channels : channels[0],
                 ),
             })
         }
@@ -151,14 +150,14 @@ export const useStatsViewFilters = (periodFilterLeft: string): ViewFilter[] => {
         if (integrations?.length) {
             filters.push({
                 left: getTicketViewFieldPath(
-                    getTicketViewField(ViewField.Integrations)
+                    getTicketViewField(ViewField.Integrations),
                 ),
                 operator:
                     integrations.length > 1
                         ? CollectionOperator.ContainsAny
                         : EqualityOperator.Eq,
                 right: JSON.stringify(
-                    integrations.length > 1 ? integrations : integrations[0]
+                    integrations.length > 1 ? integrations : integrations[0],
                 ),
             })
         }
@@ -166,7 +165,7 @@ export const useStatsViewFilters = (periodFilterLeft: string): ViewFilter[] => {
         if (agents?.length) {
             filters.push({
                 left: getTicketViewFieldPath(
-                    getTicketViewField(ViewField.Assignee)
+                    getTicketViewField(ViewField.Assignee),
                 ),
                 operator:
                     agents.length > 1
@@ -187,7 +186,7 @@ export const useStatsViewFilters = (periodFilterLeft: string): ViewFilter[] => {
             if (tagNames.length) {
                 filters.push({
                     left: getTicketViewFieldPath(
-                        getTicketViewField(ViewField.Tags)
+                        getTicketViewField(ViewField.Tags),
                     ),
                     operator: CollectionOperator.ContainsAny,
                     right: JSON.stringify(tagNames),
@@ -210,7 +209,7 @@ export type MetricValueFormat =
 
 const metricToDecimal = (
     value: number,
-    formatOptions?: Intl.NumberFormatOptions
+    formatOptions?: Intl.NumberFormatOptions,
 ) => {
     return value.toLocaleString(DEFAULT_LOCALE, {
         maximumFractionDigits: 2,
@@ -227,7 +226,7 @@ export const formatMetricValue = (
     value: number | null | undefined,
     format: MetricValueFormat = 'decimal',
     notAvailableText: string = NOT_AVAILABLE_TEXT,
-    additionalFormatOptions?: Intl.NumberFormatOptions
+    additionalFormatOptions?: Intl.NumberFormatOptions,
 ) => {
     if (value === null || value === undefined) {
         return notAvailableText
@@ -281,7 +280,7 @@ const formatTrendAsPercent = (prevValue: number, absDiff: number) => {
 export const formatMetricTrend = (
     value: number,
     prevValue: number,
-    format: MetricTrendFormat
+    format: MetricTrendFormat,
 ) => {
     const diff = value - prevValue
     const absDiff = Math.abs(diff)
@@ -319,7 +318,7 @@ export const getFormat = (granularity: ReportingGranularity) =>
 const formatTimeSeries = (
     label: string,
     items: TimeSeriesDataItem[],
-    format: string
+    format: string,
 ) => ({
     label: label,
     values: items.map((item) => ({
@@ -331,7 +330,7 @@ const formatTimeSeries = (
 export const formatTimeSeriesData = (
     data: TimeSeriesDataItem[][] = [],
     label: string,
-    granularity: ReportingGranularity
+    granularity: ReportingGranularity,
 ) => {
     const format = getFormat(granularity)
 
@@ -341,20 +340,20 @@ export const formatTimeSeriesData = (
 export const formatLabeledTimeSeriesData = (
     data: TimeSeriesDataItem[][] = [],
     labels: string[],
-    granularity: ReportingGranularity
+    granularity: ReportingGranularity,
 ) => {
     const format = getFormat(granularity)
 
     return data.map((items, index) =>
-        formatTimeSeries(labels[index], items, format)
+        formatTimeSeries(labels[index], items, format),
     )
 }
 
 export const formatLabeledTooltipTimeSeriesData = (
     data: TimeSeriesDataItem[][] = [],
-    legendInfo: {labels: string[]; tooltips: string[]},
+    legendInfo: { labels: string[]; tooltips: string[] },
     granularity: ReportingGranularity,
-    dashedItems?: Array<boolean>
+    dashedItems?: Array<boolean>,
 ) => {
     const format = getFormat(granularity)
 
@@ -368,18 +367,18 @@ export const formatLabeledTooltipTimeSeriesData = (
 export const isMetricForAgent = (
     metric: ReportingMetricItem,
     agentId: number | string,
-    agentIdFields: string[]
+    agentIdFields: string[],
 ) => {
     return agentIdFields.reduce(
         (acc, agentIdField) =>
             metric[agentIdField] === String(agentId) ? true : acc,
-        false
+        false,
     )
 }
 
 export const periodPickerMaxSpanDays = (
     maxSpan?: daterangepicker.Options['maxSpan'],
-    minDate?: daterangepicker.Options['minDate']
+    minDate?: daterangepicker.Options['minDate'],
 ) => {
     if (!minDate && maxSpan) {
         return Number(maxSpan)
@@ -390,7 +389,7 @@ export const periodPickerMaxSpanDays = (
         const minDateToStart = moment(minDate)
         const diffInDaysBetweenMinDateAndMaxSpan = today.diff(
             minDateToStart,
-            'days'
+            'days',
         )
         return Math.min(diffInDaysBetweenMinDateAndMaxSpan, Number(maxSpan))
     }
@@ -401,7 +400,7 @@ export const periodPickerMaxSpanDays = (
 export const getDateRangePickerLabel = (
     startDate: Moment,
     endDate: Moment,
-    labelDateFormat: DateTimeResultFormatType
+    labelDateFormat: DateTimeResultFormatType,
 ) => {
     const start = formatDatetime(startDate, labelDateFormat).toString()
     const end = formatDatetime(endDate, labelDateFormat).toString()
@@ -428,7 +427,7 @@ export const lastWeekDateRange = (startWeekDay: StartDayOfWeek) => {
         startWeekDay === StartDayOfWeek.Sunday ? 'week' : 'isoWeek'
     const start = moment().startOf(weekStartMomentActual).subtract(1, 'weeks')
     const end = moment().startOf(weekStartMomentActual).subtract(1, 'seconds')
-    return {start, end}
+    return { start, end }
 }
 
 export function move<T>(array: T[], srcIndex: number, targetIndex: number) {

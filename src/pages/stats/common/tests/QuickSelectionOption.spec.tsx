@@ -1,5 +1,6 @@
-import {render} from '@testing-library/react'
 import React from 'react'
+
+import { render } from '@testing-library/react'
 
 import QuickSelectionOption from '../QuickSelectionOption'
 
@@ -11,27 +12,27 @@ describe('QuickSelectionOption', () => {
     }
 
     it('should display label to select content', () => {
-        const {container} = render(<QuickSelectionOption {...commonProps} />)
+        const { container } = render(<QuickSelectionOption {...commonProps} />)
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should display label to deselect one item', () => {
-        const {container} = render(
-            <QuickSelectionOption {...commonProps} selectedItemsCount={1} />
+        const { container } = render(
+            <QuickSelectionOption {...commonProps} selectedItemsCount={1} />,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should display label to deselect all content', () => {
-        const {container} = render(
-            <QuickSelectionOption {...commonProps} selectedItemsCount={10} />
+        const { container } = render(
+            <QuickSelectionOption {...commonProps} selectedItemsCount={10} />,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should display label to select partial content', () => {
-        const {getByText} = render(
-            <QuickSelectionOption {...commonProps} isPartial />
+        const { getByText } = render(
+            <QuickSelectionOption {...commonProps} isPartial />,
         )
         expect(getByText(/Select displayed/i)).toBeTruthy()
     })

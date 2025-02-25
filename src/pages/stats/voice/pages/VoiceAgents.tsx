@@ -1,33 +1,34 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import moment from 'moment'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {PaywallConfig, paywallConfigs} from 'config/paywalls'
-import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import moment from 'moment'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { PaywallConfig, paywallConfigs } from 'config/paywalls'
+import { useCleanStatsFiltersWithLogicalOperators } from 'hooks/reporting/useCleanStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
-import {useGridSize} from 'hooks/useGridSize'
-import {ProductType} from 'models/billing/types'
-import {FilterKey} from 'models/stat/types'
+import { useGridSize } from 'hooks/useGridSize'
+import { ProductType } from 'models/billing/types'
+import { FilterKey } from 'models/stat/types'
 import withProductEnabledPaywall from 'pages/common/utils/withProductEnabledPaywall'
-import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
+import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
 import DEPRECATED_AgentsStatsFilter from 'pages/stats/common/filters/DEPRECATED_AgentsStatsFilter'
 import DEPRECATED_IntegrationsStatsFilter from 'pages/stats/common/filters/DEPRECATED_IntegrationsStatsFilter'
 import DEPRECATED_PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
 import DEPRECATED_TagsStatsFilter from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
-import {CustomReportComponent} from 'pages/stats/custom-reports/CustomReportComponent'
+import { CustomReportComponent } from 'pages/stats/custom-reports/CustomReportComponent'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
 import StatsPage from 'pages/stats/StatsPage'
-import {VoiceAgentsDownloadDataButton} from 'pages/stats/voice/components/VoiceAgentsDownloadDataButton/VoiceAgentsDownloadDataButton'
-import {MIN_DATE_FOR_ADVANCED_VOICE_STATS} from 'pages/stats/voice/constants/voiceOverview'
+import { VoiceAgentsDownloadDataButton } from 'pages/stats/voice/components/VoiceAgentsDownloadDataButton/VoiceAgentsDownloadDataButton'
+import { MIN_DATE_FOR_ADVANCED_VOICE_STATS } from 'pages/stats/voice/constants/voiceOverview'
 import {
     VoiceAgentsChart,
     VoiceAgentsReportConfig,
 } from 'pages/stats/voice/pages/VoiceAgentsReportConfig'
-import {AccountFeature} from 'state/currentAccount/types'
-import {getPhoneIntegrations} from 'state/integrations/selectors'
+import { AccountFeature } from 'state/currentAccount/types'
+import { getPhoneIntegrations } from 'state/integrations/selectors'
 import {
     getPageStatsFilters,
     getPageStatsFiltersWithLogicalOperators,
@@ -40,10 +41,10 @@ function VoiceAgents() {
     const statsFilters = useAppSelector(getPageStatsFilters)
 
     const pageStatsFiltersWithLogicalOperators = useAppSelector(
-        getPageStatsFiltersWithLogicalOperators
+        getPageStatsFiltersWithLogicalOperators,
     )
     useCleanStatsFiltersWithLogicalOperators(
-        pageStatsFiltersWithLogicalOperators
+        pageStatsFiltersWithLogicalOperators,
     )
 
     const isVoiceAgentsNewFilters =
@@ -76,7 +77,7 @@ function VoiceAgents() {
                                 initialSettings={{
                                     minDate: moment(
                                         MIN_DATE_FOR_ADVANCED_VOICE_STATS,
-                                        'YYYY-MM-DD'
+                                        'YYYY-MM-DD',
                                     ).toDate(),
                                     maxSpan: 365,
                                 }}
@@ -101,7 +102,7 @@ function VoiceAgents() {
                                     initialSettings: {
                                         minDate: moment(
                                             MIN_DATE_FOR_ADVANCED_VOICE_STATS,
-                                            'YYYY-MM-DD'
+                                            'YYYY-MM-DD',
                                         ).toDate(),
                                         maxSpan: 365,
                                     },
@@ -139,5 +140,5 @@ export default withProductEnabledPaywall(
             ...paywallConfigs[AccountFeature.PhoneNumber],
             pageHeader: VoiceAgentsReportConfig.reportName,
         } as PaywallConfig,
-    }
+    },
 )(VoiceAgents)

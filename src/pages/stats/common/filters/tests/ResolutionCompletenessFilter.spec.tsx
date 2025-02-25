@@ -1,10 +1,11 @@
-import {fireEvent, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {SegmentEvent, logEvent} from 'common/segment'
-import {withLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {FilterKey} from 'models/stat/types'
+import { fireEvent, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { withLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { FilterKey } from 'models/stat/types'
 import {
     FILTER_CLEAR_ICON,
     FILTER_DESELECT_ALL_LABEL,
@@ -13,22 +14,22 @@ import {
     LogicalOperatorEnum,
     LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'
-import {FilterLabels} from 'pages/stats/common/filters/constants'
+import { FilterLabels } from 'pages/stats/common/filters/constants'
 import {
     ResolutionCompletenessFilter,
     ResolutionCompletenessFilterWithSavedState,
     ResolutionCompletenessFilterWithState,
 } from 'pages/stats/common/filters/ResolutionCompletenessFilter'
 import * as statsSlice from 'state/stats/statsSlice'
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
 import * as filtersSlice from 'state/ui/stats/filtersSlice'
-import {renderWithStore} from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 const mockedRemove = jest.fn()
 
 jest.mock('common/segment', () => ({
     logEvent: jest.fn(),
-    SegmentEvent: {StatFilterSelected: 'stat-filter-selected'},
+    SegmentEvent: { StatFilterSelected: 'stat-filter-selected' },
 }))
 
 const defaultState = {
@@ -56,7 +57,7 @@ describe('ResolutionCompletenessFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState
+            defaultState,
         )
 
     it('should render ResolutionCompletenessFilter component just fine if value is undefined', () => {
@@ -69,11 +70,11 @@ describe('ResolutionCompletenessFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState
+            defaultState,
         )
 
         expect(
-            screen.getByText(FilterLabels[FilterKey.ResolutionCompleteness])
+            screen.getByText(FilterLabels[FilterKey.ResolutionCompleteness]),
         ).toBeInTheDocument()
         expect(screen.getByText(FILTER_VALUE_PLACEHOLDER)).toBeTruthy()
     })
@@ -129,8 +130,8 @@ describe('ResolutionCompletenessFilter', () => {
         const isNotOneOfRadioLabel = screen.getByLabelText(
             new RegExp(
                 LogicalOperatorLabel[LogicalOperatorEnum.NOT_ONE_OF],
-                'i'
-            )
+                'i',
+            ),
         )
 
         userEvent.click(isNotOneOfRadioLabel)
@@ -163,11 +164,11 @@ describe('ResolutionCompletenessFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState
+            defaultState,
         )
 
         fireEvent.click(
-            screen.getByText(LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF])
+            screen.getByText(LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF]),
         )
         fireEvent.click(screen.getByText(FILTER_DESELECT_ALL_LABEL))
 
@@ -178,7 +179,7 @@ describe('ResolutionCompletenessFilter', () => {
     })
 
     it('should dispatch the right actions on options deselection', () => {
-        const {rerenderComponent} = renderComponent()
+        const { rerenderComponent } = renderComponent()
 
         rerenderComponent(
             <ResolutionCompletenessFilter
@@ -189,11 +190,11 @@ describe('ResolutionCompletenessFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState
+            defaultState,
         )
 
         fireEvent.click(
-            screen.getByText(LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF])
+            screen.getByText(LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF]),
         )
         fireEvent.click(screen.getAllByText('Complete')[1])
 
@@ -204,19 +205,21 @@ describe('ResolutionCompletenessFilter', () => {
         it('should render with state and handle updates', () => {
             const spy = jest.spyOn(
                 statsSlice,
-                'mergeStatsFiltersWithLogicalOperator'
+                'mergeStatsFiltersWithLogicalOperator',
             )
 
             renderWithStore(
                 <ResolutionCompletenessFilterWithState />,
-                defaultState
+                defaultState,
             )
 
             userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
             userEvent.click(screen.getByText('Complete'))
 
             expect(
-                screen.getByText(FilterLabels[FilterKey.ResolutionCompleteness])
+                screen.getByText(
+                    FilterLabels[FilterKey.ResolutionCompleteness],
+                ),
             ).toBeInTheDocument()
             expect(spy).toHaveBeenCalled()
 
@@ -232,18 +235,20 @@ describe('ResolutionCompletenessFilter', () => {
             const spy = jest.spyOn(filtersSlice, 'upsertSavedFilterFilter')
             const removeSpy = jest.spyOn(
                 filtersSlice,
-                'removeFilterFromSavedFilterDraft'
+                'removeFilterFromSavedFilterDraft',
             )
 
             renderWithStore(
                 <ResolutionCompletenessFilterWithSavedState />,
-                defaultState
+                defaultState,
             )
             userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
             userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
 
             expect(
-                screen.getByText(FilterLabels[FilterKey.ResolutionCompleteness])
+                screen.getByText(
+                    FilterLabels[FilterKey.ResolutionCompleteness],
+                ),
             ).toBeInTheDocument()
             expect(spy).toHaveBeenCalled()
 

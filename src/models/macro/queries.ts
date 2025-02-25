@@ -1,6 +1,9 @@
-import {UseInfiniteQueryOptions, useInfiniteQuery} from '@tanstack/react-query'
+import {
+    useInfiniteQuery,
+    UseInfiniteQueryOptions,
+} from '@tanstack/react-query'
 
-import {fetchMacros} from './resources'
+import { fetchMacros } from './resources'
 
 /**
  * RQ Key Factory for Macros
@@ -22,11 +25,11 @@ export const useGetAICompatibleMacros = <
         Awaited<ReturnType<typeof fetchMacros>>,
         unknown,
         TData
-    >
+    >,
 ) => {
     return useInfiniteQuery({
         queryKey: macroKeys.lists(),
-        queryFn: async ({pageParam}) =>
+        queryFn: async ({ pageParam }) =>
             fetchMacros({
                 cursor: pageParam,
                 limit: 100,

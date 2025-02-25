@@ -1,4 +1,4 @@
-import {Config, PanelConfig} from '../types'
+import { Config, PanelConfig } from '../types'
 import clamp from './clamp'
 
 type Options = {
@@ -6,9 +6,9 @@ type Options = {
     totalWidth: number
 }
 
-export default function computeDefaultWidths({config, totalWidth}: Options) {
+export default function computeDefaultWidths({ config, totalWidth }: Options) {
     const widths = config.map(([w, min, max]) =>
-        w === Infinity ? 0 : clamp(w, min || 0, max || Infinity)
+        w === Infinity ? 0 : clamp(w, min || 0, max || Infinity),
     )
 
     const consumedWidth = widths
@@ -18,7 +18,7 @@ export default function computeDefaultWidths({config, totalWidth}: Options) {
     let remainingWidth = totalWidth - consumedWidth
 
     const indexedConfig = config.map(
-        (panelConfig, index): [number, PanelConfig] => [index, panelConfig]
+        (panelConfig, index): [number, PanelConfig] => [index, panelConfig],
     )
 
     const leftovers = indexedConfig.filter(([, [w]]) => w === Infinity)
@@ -57,7 +57,7 @@ export default function computeDefaultWidths({config, totalWidth}: Options) {
         // then we divvy up the remaining width across all panels, we
         // floor this to avoid weird sub-pixel alignments
         const averageRemainingWidth = Math.floor(
-            remainingWidth / leftovers.length
+            remainingWidth / leftovers.length,
         )
 
         leftovers.forEach(([index]) => {
@@ -88,11 +88,11 @@ export default function computeDefaultWidths({config, totalWidth}: Options) {
     // to make sure we don't do sub-pixel division, so we calculate the
     // average again and give the first panel a little extra
     const noMaxLeftovers = indexedConfig.filter(
-        ([, [, , max]]) => !max || max === Infinity
+        ([, [, , max]]) => !max || max === Infinity,
     )
 
     const averageRemainingWidth = Math.floor(
-        remainingWidth / noMaxLeftovers.length
+        remainingWidth / noMaxLeftovers.length,
     )
     const excessWidth =
         remainingWidth - averageRemainingWidth * noMaxLeftovers.length

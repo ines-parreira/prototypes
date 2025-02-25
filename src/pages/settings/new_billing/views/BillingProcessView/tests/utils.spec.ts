@@ -2,9 +2,9 @@ import {
     basicMonthlyAutomationPlan,
     basicMonthlyHelpdeskPlan,
 } from 'fixtures/productPrices'
-import {Cadence} from 'models/billing/types'
+import { Cadence } from 'models/billing/types'
 
-import {setHelpdeskNotification, setAutomationNotification} from '../utils'
+import { setAutomationNotification, setHelpdeskNotification } from '../utils'
 
 describe('setHelpdeskNotification', () => {
     const onClick = jest.fn()
@@ -27,7 +27,7 @@ describe('setHelpdeskNotification', () => {
         })
 
         expect(notification?.message).toContain(
-            'Success! Helpdesk was upgraded to <strong>New Helpdesk Plan</strong>'
+            'Success! Helpdesk was upgraded to <strong>New Helpdesk Plan</strong>',
         )
         expect(notification?.buttons?.[0].name).toBe('Helpdesk Settings')
     })
@@ -50,7 +50,7 @@ describe('setHelpdeskNotification', () => {
         })
 
         expect(notification?.message).toContain(
-            'Your subscription will change to <strong>New Helpdesk Plan</strong> on <strong>2023-06-30</strong>.'
+            'Your subscription will change to <strong>New Helpdesk Plan</strong> on <strong>2023-06-30</strong>.',
         )
         expect(notification?.buttons?.length).toBe(0)
     })
@@ -76,7 +76,7 @@ describe('setAutomationNotification', () => {
         })
 
         expect(notification?.message).toContain(
-            'Woohoo! You now have access to <strong>Automate!</strong>'
+            'Woohoo! You now have access to <strong>Automate!</strong>',
         )
         expect(notification?.buttons?.[0].name).toBe('Set Up Automate')
     })
@@ -102,7 +102,7 @@ describe('setAutomationNotification', () => {
         })
 
         expect(notification?.message).toContain(
-            `Success! You now have <strong>${newPlan.num_quota_tickets} automated interactions per month</strong>`
+            `Success! You now have <strong>${newPlan.num_quota_tickets} automated interactions per month</strong>`,
         )
         expect(notification?.buttons?.[0].name).toBe('Automate Settings')
     })
@@ -128,7 +128,7 @@ describe('setAutomationNotification', () => {
         })
 
         expect(notification?.message).toContain(
-            `Your Automate subscription will change to <strong>${newPlan.num_quota_tickets} automated interactions/month</strong> on <strong>${periodEnd}</strong>.`
+            `Your Automate subscription will change to <strong>${newPlan.num_quota_tickets} automated interactions/month</strong> on <strong>${periodEnd}</strong>.`,
         )
         expect(notification?.buttons?.length).toBe(0)
     })

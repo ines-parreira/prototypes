@@ -1,7 +1,9 @@
-import {EmailIntegration} from '@gorgias/api-queries'
 import React from 'react'
-import {Link} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
+
+import { Link } from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
+
+import { EmailIntegration } from '@gorgias/api-queries'
 
 import css from './EmailIntegrationOnboardingBreadcrumbs.less'
 

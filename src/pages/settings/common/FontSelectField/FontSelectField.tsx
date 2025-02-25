@@ -1,14 +1,16 @@
+import React, { useEffect, useMemo, useState } from 'react'
+
 import uniq from 'lodash/uniq'
-import React, {useEffect, useMemo, useState} from 'react'
 
 import SelectField from '../../../common/forms/SelectField/SelectField'
 import SelectFieldDropdownAction from '../../../common/forms/SelectField/SelectFieldDropdownAction'
-import {Value, Option} from '../../../common/forms/SelectField/types'
+import { Option, Value } from '../../../common/forms/SelectField/types'
 import {
     FontCatalogueModal,
     getMultipleFontLink,
 } from './components/FontCatalogueModal/FontCatalogueModal'
-import {AGENT_ADDED_FONTS} from './constants'
+import { AGENT_ADDED_FONTS } from './constants'
+
 import css from './FontSelectField.less'
 
 type Props = {
@@ -20,7 +22,7 @@ type Props = {
 
 const getOptionFromFontName = (fontName: string) => ({
     value: fontName,
-    label: <span style={{fontFamily: fontName}}>{fontName}</span>,
+    label: <span style={{ fontFamily: fontName }}>{fontName}</span>,
 })
 
 const getFontsFromLocalStorage = (): string[] => {
@@ -52,7 +54,7 @@ export const FontSelectField = ({
         (value: string) => void,
     ]
     const [fontsFromLocalStorage, setFontsFromLocalStorage] = useState(() =>
-        getFontsFromLocalStorage()
+        getFontsFromLocalStorage(),
     )
 
     useEffect(() => {
@@ -66,7 +68,7 @@ export const FontSelectField = ({
         void addLinkToDownloadFonts(
             defaultFonts.includes(selectedFont)
                 ? fontsFromLocalStorage
-                : [...fontsFromLocalStorage, selectedFont]
+                : [...fontsFromLocalStorage, selectedFont],
         )
     }, [fontsFromLocalStorage, selectedFont, defaultFonts])
 
@@ -98,24 +100,24 @@ export const FontSelectField = ({
 
         if (shouldDisplayHeaders) {
             displayedOptions.push(
-                {isDivider: true},
-                {isHeader: true, label: 'RECENTLY ADDED'}
+                { isDivider: true },
+                { isHeader: true, label: 'RECENTLY ADDED' },
             )
         }
 
         displayedOptions.push(
-            ...recentlyAddedFonts.map((font) => getOptionFromFontName(font))
+            ...recentlyAddedFonts.map((font) => getOptionFromFontName(font)),
         )
 
         if (shouldDisplayHeaders) {
             displayedOptions.push(
-                {isDivider: true},
-                {isHeader: true, label: 'STANDARD FONTS'}
+                { isDivider: true },
+                { isHeader: true, label: 'STANDARD FONTS' },
             )
         }
 
         displayedOptions.push(
-            ...defaultFonts.map((font) => getOptionFromFontName(font))
+            ...defaultFonts.map((font) => getOptionFromFontName(font)),
         )
 
         return displayedOptions

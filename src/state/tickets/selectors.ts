@@ -1,19 +1,18 @@
-import {fromJS, List} from 'immutable'
+import { fromJS, List } from 'immutable'
 
-import {createImmutableSelector} from '../../utils'
-import {RootState} from '../types'
-
-import {TicketsState} from './types'
+import { createImmutableSelector } from '../../utils'
+import { RootState } from '../types'
+import { TicketsState } from './types'
 
 export const getTicketsState = (state: RootState): TicketsState =>
     state.tickets || fromJS({})
 
 export const getTickets = createImmutableSelector(
     getTicketsState,
-    (state) => (state.get('items') || fromJS([])) as List<any>
+    (state) => (state.get('items') || fromJS([])) as List<any>,
 )
 
 export const getCursor = createImmutableSelector(
     getTicketsState,
-    (state) => state.get('cursor', null) as Maybe<string>
+    (state) => state.get('cursor', null) as Maybe<string>,
 )

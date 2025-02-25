@@ -1,1 +1,1 @@
-export {default} from './UpdateReportLinkModal'
+export { default } from './UpdateReportLinkModal'

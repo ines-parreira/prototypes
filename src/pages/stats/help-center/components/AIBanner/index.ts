@@ -1,1 +1,1 @@
-export {default} from './AIBanner'
+export { default } from './AIBanner'

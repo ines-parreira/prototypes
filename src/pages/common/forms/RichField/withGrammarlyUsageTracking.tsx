@@ -1,7 +1,7 @@
-import React, {ComponentType, Component} from 'react'
+import React, { Component, ComponentType } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {tryLocalStorage} from 'services/common/utils'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { tryLocalStorage } from 'services/common/utils'
 
 export type InjectedProps = {
     detectGrammarly: () => void
@@ -21,7 +21,7 @@ function findGrammarlyOnPage(): boolean {
 }
 
 export default function withGrammarlyUsageTracking<Props>(
-    WrappedComponent: ComponentType<Props & InjectedProps>
+    WrappedComponent: ComponentType<Props & InjectedProps>,
 ): ComponentType<Props> {
     class Wrapper extends Component<Props, State> {
         state: State = {
@@ -35,7 +35,7 @@ export default function withGrammarlyUsageTracking<Props>(
                 (window.localStorage &&
                     Date.now() -
                         +localStorage.getItem(
-                            GRAMMARLY_FOUND_LOCAL_STORAGE_TAG
+                            GRAMMARLY_FOUND_LOCAL_STORAGE_TAG,
                         )! <
                         SEGMENT_LOG_THROTTLE_TIME)
 
@@ -47,12 +47,12 @@ export default function withGrammarlyUsageTracking<Props>(
                     return
                 }
                 logEvent(SegmentEvent.GrammarlyEnabled)
-                this.setState({grammarlyAlreadyLogged: true})
+                this.setState({ grammarlyAlreadyLogged: true })
                 tryLocalStorage(() =>
                     window.localStorage.setItem(
                         GRAMMARLY_FOUND_LOCAL_STORAGE_TAG,
-                        Date.now().toString()
-                    )
+                        Date.now().toString(),
+                    ),
                 )
             }, 0)
         }

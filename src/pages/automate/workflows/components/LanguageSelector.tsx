@@ -1,9 +1,10 @@
-import classNames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useMemo, useRef, useState} from 'react'
-import {ReactCountryFlag} from 'react-country-flag'
+import React, { useMemo, useRef, useState } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import classNames from 'classnames'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { ReactCountryFlag } from 'react-country-flag'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
@@ -12,6 +13,7 @@ import {
     LanguageCode,
     supportedLanguages,
 } from '../models/workflowConfiguration.types'
+
 import css from './WorkflowLanguageSelect.less'
 
 type Props = {
@@ -31,13 +33,13 @@ export default function LanguageSelector({
     const enableNewLanguages = useFlags()[FeatureFlagKey.EnableNewLanguages]
 
     const filteredLanguages = useMemo(() => {
-        let options = supportedLanguages.filter(({code}) =>
-            languages.includes(code)
+        let options = supportedLanguages.filter(({ code }) =>
+            languages.includes(code),
         )
 
         if (!enableNewLanguages) {
             options = options.filter(
-                ({code}) => !unsupportedLanguageCodes.includes(code)
+                ({ code }) => !unsupportedLanguageCodes.includes(code),
             )
         }
         return options
@@ -56,7 +58,7 @@ export default function LanguageSelector({
                         className={css.countryFlag}
                     />
                     {
-                        supportedLanguages.find(({code}) => code === selected)
+                        supportedLanguages.find(({ code }) => code === selected)
                             ?.label
                     }
                 </div>
@@ -71,7 +73,7 @@ export default function LanguageSelector({
                 value={selected}
             >
                 <DropdownBody className={css.dropdownBody}>
-                    {filteredLanguages.map(({code, label}) => (
+                    {filteredLanguages.map(({ code, label }) => (
                         <DropdownItem
                             key={code}
                             option={{

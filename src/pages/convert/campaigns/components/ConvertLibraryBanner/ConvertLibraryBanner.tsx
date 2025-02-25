@@ -1,8 +1,9 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
+
+import { Link } from 'react-router-dom'
 
 import Button from 'pages/common/components/button/Button'
-import {assetsUrl} from 'utils'
+import { assetsUrl } from 'utils'
 
 import css from './ConvertLibraryBanner.less'
 
@@ -10,7 +11,7 @@ type Props = {
     integrationId: number
 }
 
-const ConvertLibraryBanner = ({integrationId}: Props) => {
+const ConvertLibraryBanner = ({ integrationId }: Props) => {
     return (
         <div className={css.container}>
             <div className={css.bannerContent}>
@@ -34,7 +35,7 @@ const ConvertLibraryBanner = ({integrationId}: Props) => {
                 <div className={css.preview}>
                     <img
                         src={assetsUrl(
-                            '/img/presentationals/convert-templates-banner.png'
+                            '/img/presentationals/convert-templates-banner.png',
                         )}
                         alt="Convert campaign library preview"
                     />

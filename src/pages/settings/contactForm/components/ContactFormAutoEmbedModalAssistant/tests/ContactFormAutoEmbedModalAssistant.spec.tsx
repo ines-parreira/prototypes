@@ -1,15 +1,16 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {CONTACT_FORM_EMBED_FORM_TEXTS} from 'pages/settings/contactForm/constants'
-import {ShopifyPagesListFixture} from 'pages/settings/contactForm/fixtures/shopifyPage'
-import {useCreatePageEmbedment} from 'pages/settings/contactForm/queries'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
-import {MODAL_LABELS} from '../constants'
+import { CONTACT_FORM_EMBED_FORM_TEXTS } from 'pages/settings/contactForm/constants'
+import { ShopifyPagesListFixture } from 'pages/settings/contactForm/fixtures/shopifyPage'
+import { useCreatePageEmbedment } from 'pages/settings/contactForm/queries'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
+
+import { MODAL_LABELS } from '../constants'
 import ContactFormAutoEmbedModalAssistant from '../ContactFormAutoEmbedModalAssistant'
 
 const queryClient = mockQueryClient()
@@ -45,7 +46,7 @@ describe('<ContactFormAutoEmbedModalAssistant />', () => {
                     pages={pages}
                     contactFormId={contactFormId}
                 />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         screen.getByText(MODAL_LABELS.TITLE)
@@ -70,7 +71,7 @@ describe('<ContactFormAutoEmbedModalAssistant />', () => {
                     pages={pages}
                     contactFormId={contactFormId}
                 />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         const cancelButton = screen.getByText(MODAL_LABELS.CANCEL)
@@ -93,7 +94,7 @@ describe('<ContactFormAutoEmbedModalAssistant />', () => {
                     pages={pages}
                     contactFormId={contactFormId}
                 />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         const embedButton = screen.getByRole('button', {
@@ -103,10 +104,10 @@ describe('<ContactFormAutoEmbedModalAssistant />', () => {
         expect(embedButton).toBeAriaDisabled()
 
         const pageNameInput = screen.getByPlaceholderText(
-            CONTACT_FORM_EMBED_FORM_TEXTS.PageNamePlaceholder
+            CONTACT_FORM_EMBED_FORM_TEXTS.PageNamePlaceholder,
         )
         const pageSlugInput = screen.getByPlaceholderText(
-            CONTACT_FORM_EMBED_FORM_TEXTS.PageSlugPlaceholder
+            CONTACT_FORM_EMBED_FORM_TEXTS.PageSlugPlaceholder,
         )
 
         // Set the page name and slug

@@ -1,4 +1,4 @@
-import {TicketChannel} from 'business/types/ticket'
+import { TicketChannel } from 'business/types/ticket'
 import {
     PickedCustomerWithHighlights,
     PickedTicketWithHighlights,
@@ -9,7 +9,7 @@ export const HIGHLIGHT_TAG = '<em>'
 const DEFAULT_HIGHLIGHT_TRIM_LENGTH = 15
 
 const getCustomer = (
-    item: {id: number; name: string; email: string | null},
+    item: { id: number; name: string; email: string | null },
     sender?: {
         name?: string[]
         address?: string[]
@@ -17,7 +17,7 @@ const getCustomer = (
     recipient?: {
         name?: string[]
         address?: string[]
-    }
+    },
 ) => {
     const highlightedSenderName = sender?.name?.[0]
     const highlightedSenderAddress = sender?.address?.[0]
@@ -36,7 +36,7 @@ const getCustomer = (
 }
 
 export const ticketHighlightsTransform = (item: PickedTicketWithHighlights) => {
-    const {highlights, ...rest} = item
+    const { highlights, ...rest } = item
     if (highlights === undefined) {
         return {
             ...rest,
@@ -53,7 +53,7 @@ export const ticketHighlightsTransform = (item: PickedTicketWithHighlights) => {
     const customer = getCustomer(
         item.customer,
         highlights?.messages?.from,
-        highlights?.messages?.to
+        highlights?.messages?.to,
     )
 
     return {
@@ -68,11 +68,11 @@ export const ticketHighlightsTransform = (item: PickedTicketWithHighlights) => {
 }
 
 export const customerHighlightsTransform = (
-    item: PickedCustomerWithHighlights
+    item: PickedCustomerWithHighlights,
 ) => {
     const highlights = item?.highlights
     const phoneNumber = item.channels.find(
-        (channel) => channel.type === TicketChannel.Phone
+        (channel) => channel.type === TicketChannel.Phone,
     )?.address
 
     const phoneNumberOrAddress =
@@ -90,7 +90,7 @@ export const customerHighlightsTransform = (
 }
 
 export const callHighlightsTransform = (
-    item: PicketVoiceCallWithHighlights
+    item: PicketVoiceCallWithHighlights,
 ) => {
     const highlights = item.highlights
 
@@ -110,7 +110,7 @@ export const callHighlightsTransform = (
 
 export const trimWithEllipsisBeforeTheHighlight = (
     highlight: string,
-    charactersToTrim = DEFAULT_HIGHLIGHT_TRIM_LENGTH
+    charactersToTrim = DEFAULT_HIGHLIGHT_TRIM_LENGTH,
 ) => {
     const firstHighlightPosition = highlight
         .toLowerCase()
@@ -119,7 +119,7 @@ export const trimWithEllipsisBeforeTheHighlight = (
         return `...${highlight.substring(
             firstHighlightPosition -
                 Math.min(firstHighlightPosition, charactersToTrim),
-            highlight.length
+            highlight.length,
         )}`
     }
 

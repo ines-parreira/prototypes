@@ -1,11 +1,11 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
-import {produce} from 'immer'
-import {fromJS, Map} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {get, set} from 'lodash'
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
-import {connect} from 'react-redux'
-import {Link, useHistory, useLocation} from 'react-router-dom'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+
+import { produce } from 'immer'
+import { fromJS, Map } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { get, set } from 'lodash'
+import { connect } from 'react-redux'
+import { Link, useHistory, useLocation } from 'react-router-dom'
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -16,19 +16,21 @@ import {
     Row,
 } from 'reactstrap'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {GORGIAS_CHAT_INTEGRATION_TYPE} from 'constants/integration'
-import {LanguageChat} from 'constants/languages'
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { GORGIAS_CHAT_INTEGRATION_TYPE } from 'constants/integration'
+import { LanguageChat } from 'constants/languages'
 import useEffectOnce from 'hooks/useEffectOnce'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import PageHeader from 'pages/common/components/PageHeader'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationHeader'
-import {getHasAutomate} from 'state/billing/selectors'
+import { getHasAutomate } from 'state/billing/selectors'
 import * as IntegrationsActions from 'state/integrations/actions'
-import {notify} from 'state/notifications/actions'
-import {RootState} from 'state/types'
+import { notify } from 'state/notifications/actions'
+import { RootState } from 'state/types'
 
 import {
     getLanguagesFromChatConfig,
@@ -51,36 +53,36 @@ import {
     Translations,
 } from '../../../../../../../rest_api/gorgias_chat_protected_api/types'
 import * as integrationSelectors from '../../../../../../../state/integrations/selectors'
-import {NotificationStatus} from '../../../../../../../state/notifications/types'
-import {FlagLanguageItem} from '../../../../../../common/components/LanguageBulletList'
+import { NotificationStatus } from '../../../../../../../state/notifications/types'
+import { FlagLanguageItem } from '../../../../../../common/components/LanguageBulletList'
 import useIntegrationPageViewLogEvent from '../../../../hooks/useIntegrationPageViewLogEvent'
-
 import useIsAutomateSubscriber from '../../hooks/useIsAutomateSubscriber'
 import GorgiasTranslateExitModal from './GorgiasTranslateExitModal'
 import GorgiasTranslateInputGroup from './GorgiasTranslateInputGroup'
-import css from './GorgiasTranslateText.less'
 import GorgiasTranslateTextBackLink from './GorgiasTranslateTextBackLink'
 import translationsAvailableKeys, {
     deleteUnusedKeys,
 } from './translations-available-keys'
 import isEqualTextsPerLanguage from './utils/CompareTextsPerLanguage'
 
+import css from './GorgiasTranslateText.less'
+
 const generalKeys = Object.keys(translationsAvailableKeys.general)
 const generalLegacySoloLanguage = Object.keys(
-    translationsAvailableKeys.generalLegacySoloLanguage
+    translationsAvailableKeys.generalLegacySoloLanguage,
 )
 const introKeys = Object.keys(translationsAvailableKeys.intro)
 const contactFormKeys = Object.keys(translationsAvailableKeys.contactForm)
 const contactFormComfirmationEmailKeys = Object.keys(
-    translationsAvailableKeys.contactFormConfirmationEmail
+    translationsAvailableKeys.contactFormConfirmationEmail,
 )
 const dynamicWaitTimeKeys = Object.keys(
-    translationsAvailableKeys.dynamicWaitTime
+    translationsAvailableKeys.dynamicWaitTime,
 )
 const emailCaptureKeys = Object.keys(translationsAvailableKeys.emailCapture)
 const autoResponderKeys = Object.keys(translationsAvailableKeys.autoResponder)
 const privacyPolicyDisclaimerKeys = Object.keys(
-    translationsAvailableKeys.privacyPolicyDisclaimer
+    translationsAvailableKeys.privacyPolicyDisclaimer,
 )
 
 type OwnProps = {
@@ -95,7 +97,7 @@ const mapStateToProps = (state: RootState) => {
             integrationSelectors.makeGetIntegrationsByTypes(state),
         gorgiasChatExtraState:
             integrationSelectors.getIntegrationTypeExtraState(
-                GORGIAS_CHAT_INTEGRATION_TYPE as IntegrationType
+                GORGIAS_CHAT_INTEGRATION_TYPE as IntegrationType,
             )(state),
     }
 }
@@ -117,7 +119,7 @@ export const multiLanguageInitialTextsEmptyData: TextsMultiLanguage =
                 meta: {},
             } as TextsPerLanguage,
         }),
-        {} as TextsMultiLanguage
+        {} as TextsMultiLanguage,
     )
 
 function GorgiasTranslateText({
@@ -131,7 +133,7 @@ function GorgiasTranslateText({
         {
             isReady: !!integration,
             integration,
-        }
+        },
     )
 
     const renameContactFormEnabled =
@@ -145,7 +147,7 @@ function GorgiasTranslateText({
 
     const segments = location.pathname.split('/')
     const [lastSegment, setLastSegment] = useState<string | undefined>(
-        undefined
+        undefined,
     )
     const [language, setLanguage] = useState<Map<string, string> | null>(null)
     const [hasChanges, setHasChanges] = useState(false)
@@ -175,7 +177,7 @@ function GorgiasTranslateText({
                   sspTexts: {},
                   meta: {},
               }
-            : multiLanguageInitialTextsEmptyData
+            : multiLanguageInitialTextsEmptyData,
     )
 
     // Store the initial state texts of the selected language.
@@ -190,14 +192,14 @@ function GorgiasTranslateText({
         useState<TextsPerLanguage>(initialTextsOfSelectedLanguage)
 
     const [textsLoadingState, setTextsLoadingState] = useState<LoadingState>(
-        LoadingState.NOT_LOADED
+        LoadingState.NOT_LOADED,
     )
     const [translationsLoadingState, setTranslationsLoadingState] =
         useState<LoadingState>(LoadingState.NOT_LOADED)
 
     const languagePickerLanguages = useMemo(
         () => mapIntegrationLanguagesToLanguagePicker(integration),
-        [integration]
+        [integration],
     )
 
     const integrationDefaultLanguage = useMemo(() => {
@@ -225,7 +227,7 @@ function GorgiasTranslateText({
 
         if (IsLegacyMonoLanguageMode) {
             return getSelectedLanguage(
-                integrationDefaultLanguage as LanguageChat
+                integrationDefaultLanguage as LanguageChat,
             )
         }
 
@@ -273,7 +275,7 @@ function GorgiasTranslateText({
             setTranslationsLoadingState(LoadingState.LOADING)
 
             void IntegrationsActions.getTranslations(
-                language.get('value')
+                language.get('value'),
             ).then((data: Translations) => {
                 if (IsLegacyMonoLanguageMode) {
                     setTranslations(data)
@@ -312,7 +314,7 @@ function GorgiasTranslateText({
                             // Keep using the legacy mono-language format.
                             setInitialTexts(data as TextsLegacyMonoLanguage)
                             setInitialTextsOfSelectedLanguage(
-                                data as TextsPerLanguage
+                                data as TextsPerLanguage,
                             )
                             setTextsOfSelectedLanguage(data as TextsPerLanguage)
                         } else {
@@ -328,7 +330,7 @@ function GorgiasTranslateText({
                                     language.get('value') as LanguageChat
                                 ]
                             setInitialTextsOfSelectedLanguage(
-                                textsOfSelectedLanguage
+                                textsOfSelectedLanguage,
                             )
                             setTextsOfSelectedLanguage(textsOfSelectedLanguage)
                         }
@@ -340,7 +342,7 @@ function GorgiasTranslateText({
                         }
 
                         const languageEnum = language.get(
-                            'value'
+                            'value',
                         ) as LanguageChat
 
                         // Set Privacy policy disclaimer text if missing and needed, to avoid blocking the user with a required field empty.
@@ -359,10 +361,10 @@ function GorgiasTranslateText({
                                         `${languageEnum}.texts.privacyPolicyDisclaimer`,
                                         get(
                                             translations,
-                                            'texts.privacyPolicyDisclaimer'
-                                        )
+                                            'texts.privacyPolicyDisclaimer',
+                                        ),
                                     )
-                                }
+                                },
                             )
                         }
 
@@ -374,7 +376,7 @@ function GorgiasTranslateText({
                     }
 
                     setTextsLoadingState(LoadingState.LOADED)
-                }
+                },
             )
         }
     }, [
@@ -415,9 +417,9 @@ function GorgiasTranslateText({
                     set(
                         textsDraft,
                         `texts.introductionText`,
-                        integrationChat.decoration.introduction_text
+                        integrationChat.decoration.introduction_text,
                     )
-                }
+                },
             )
         }
 
@@ -431,9 +433,9 @@ function GorgiasTranslateText({
                     set(
                         textsDraft,
                         `texts.offlineIntroductionText`,
-                        integrationChat.decoration.offline_introduction_text
+                        integrationChat.decoration.offline_introduction_text,
                     )
-                }
+                },
             )
         }
         if (!chatTitleFromToneOfVoice && integrationChat.name) {
@@ -441,7 +443,7 @@ function GorgiasTranslateText({
                 newTextsOfSelectedLanguage,
                 (textsDraft) => {
                     set(textsDraft, `texts.chatTitle`, integrationChat.name)
-                }
+                },
             )
         }
         if (
@@ -454,9 +456,9 @@ function GorgiasTranslateText({
                     set(
                         textsDraft,
                         `texts.chatWithUs`,
-                        integrationChat.decoration.launcher?.label
+                        integrationChat.decoration.launcher?.label,
                     )
-                }
+                },
             )
         }
 
@@ -481,7 +483,7 @@ function GorgiasTranslateText({
 
     const handleLanguageChange = (
         language: LanguageChat,
-        calledFromConfirmationModal = false
+        calledFromConfirmationModal = false,
     ) => {
         if (hasChanges && !calledFromConfirmationModal) {
             setPreModalSelectedLanguage(language)
@@ -520,21 +522,21 @@ function GorgiasTranslateText({
         'preferences',
         'email_capture_enforcement',
     ])
-    const filterForlEmailCaptureKeys = {emailCaptureEnforcement}
+    const filterForlEmailCaptureKeys = { emailCaptureEnforcement }
 
     const dispatchNotification = useCallback(
         (
             message: string,
-            status: NotificationStatus = NotificationStatus.Success
+            status: NotificationStatus = NotificationStatus.Success,
         ) => {
             void dispatch(
                 notify({
                     status,
                     message: message,
-                })
+                }),
             )
         },
-        [dispatch]
+        [dispatch],
     )
 
     const onClickToExit = useCallback(
@@ -546,7 +548,7 @@ function GorgiasTranslateText({
                 history.push(backUrl)
             }
         },
-        [hasChanges, history, backUrl]
+        [hasChanges, history, backUrl],
     )
 
     const closeWarning = () => {
@@ -566,20 +568,20 @@ function GorgiasTranslateText({
                 setTextsOfSelectedLanguage(draft)
             }
         },
-        [textsOfSelectedLanguage, setTextsOfSelectedLanguage, setHasChanges]
+        [textsOfSelectedLanguage, setTextsOfSelectedLanguage, setHasChanges],
     )
 
     const updateApplicationTexts = useCallback(async (): Promise<void> => {
         const applicationId: string = integration.getIn(['meta', 'app_id'])
 
         const processedTranslations: TextsPerLanguage = deleteUnusedKeys(
-            textsOfSelectedLanguage
+            textsOfSelectedLanguage,
         )
 
         if (IsLegacyMonoLanguageMode) {
             await IntegrationsActions.updateApplicationTexts(
                 applicationId,
-                processedTranslations
+                processedTranslations,
             )
         } else {
             const mergedData = {
@@ -588,7 +590,7 @@ function GorgiasTranslateText({
             }
             await IntegrationsActions.updateApplicationTexts(
                 applicationId,
-                mergedData
+                mergedData,
             )
             // When updating the default language copy, we need to update the integration decoration + name as well.
             // It's important for integration.name, and less for decoration but we can sync until we fully drop the decoration texts.
@@ -625,8 +627,8 @@ function GorgiasTranslateText({
                         undefined,
                         undefined,
                         undefined,
-                        true //disableSuccessNotification // TODO. Refactor updateOrCreateIntegration to use a options object.
-                    )
+                        true, //disableSuccessNotification // TODO. Refactor updateOrCreateIntegration to use a options object.
+                    ),
                 )
                 // Update the translations to reflect the new integration name in the page.
                 setTranslations({
@@ -651,7 +653,7 @@ function GorgiasTranslateText({
     ])
 
     const resetValues = useCallback(() => {
-        setTextsOfSelectedLanguage({...initialTextsOfSelectedLanguage})
+        setTextsOfSelectedLanguage({ ...initialTextsOfSelectedLanguage })
         setHasChanges(false)
         dispatchNotification('Discarded changes')
     }, [
@@ -679,12 +681,12 @@ function GorgiasTranslateText({
                                 textsOfSelectedLanguage,
                         })
                         setInitialTextsOfSelectedLanguage(
-                            textsOfSelectedLanguage
+                            textsOfSelectedLanguage,
                         )
                     } else {
                         dispatchNotification(
                             `There was a problem. We couldn't update your changes`,
-                            NotificationStatus.Error
+                            NotificationStatus.Error,
                         )
                         return
                     }
@@ -699,7 +701,7 @@ function GorgiasTranslateText({
             } catch {
                 dispatchNotification(
                     `There was a problem. We couldn't update your changes`,
-                    NotificationStatus.Error
+                    NotificationStatus.Error,
                 )
             }
         },
@@ -711,7 +713,7 @@ function GorgiasTranslateText({
             textsOfSelectedLanguage,
             language,
             initialTexts,
-        ]
+        ],
     )
 
     const trackInput = useCallback(
@@ -721,11 +723,11 @@ function GorgiasTranslateText({
                 key_value: key,
             })
         },
-        [integration]
+        [integration],
     )
 
     const onDiscardChangesAndExit = () => {
-        setTextsOfSelectedLanguage({...initialTextsOfSelectedLanguage})
+        setTextsOfSelectedLanguage({ ...initialTextsOfSelectedLanguage })
         setHasChanges(false)
         history.push(backUrl)
     }
@@ -738,7 +740,7 @@ function GorgiasTranslateText({
         } catch {
             dispatchNotification(
                 `There was a problem. We couldn't update your changes`,
-                NotificationStatus.Error
+                NotificationStatus.Error,
             )
         }
     }
@@ -762,7 +764,7 @@ function GorgiasTranslateText({
         } catch {
             dispatchNotification(
                 `There was a problem. We couldn't update your changes`,
-                NotificationStatus.Error
+                NotificationStatus.Error,
             )
         }
     }
@@ -823,13 +825,13 @@ function GorgiasTranslateText({
                                                 >
                                                     <FlagLanguageItem
                                                         key={language.get(
-                                                            'value'
+                                                            'value',
                                                         )}
                                                         code={language.get(
-                                                            'value'
+                                                            'value',
                                                         )}
                                                         name={language.get(
-                                                            'label'
+                                                            'label',
                                                         )}
                                                     />
                                                 </span>
@@ -841,11 +843,11 @@ function GorgiasTranslateText({
                                                 >
                                                     <SelectField
                                                         value={language.get(
-                                                            'value'
+                                                            'value',
                                                         )}
                                                         onChange={(language) =>
                                                             handleLanguageChange(
-                                                                language as LanguageChat
+                                                                language as LanguageChat,
                                                             )
                                                         }
                                                         options={
@@ -973,7 +975,7 @@ function GorgiasTranslateText({
                     <GorgiasTranslateInputGroup
                         title="Dynamic wait time"
                         keys={dynamicWaitTimeKeys}
-                        filtersForKeys={{isAutomateSubscriber}}
+                        filtersForKeys={{ isAutomateSubscriber }}
                         isFilteredByActive
                         textsPerLanguage={textsOfSelectedLanguage}
                         translations={translations}
@@ -1002,7 +1004,7 @@ function GorgiasTranslateText({
                     <GorgiasTranslateInputGroup
                         title="Auto-reply with wait time"
                         keys={autoResponderKeys}
-                        filtersForKeys={{isAutomateSubscriber}}
+                        filtersForKeys={{ isAutomateSubscriber }}
                         isFilteredByActive
                         textsPerLanguage={textsOfSelectedLanguage}
                         translations={translations}
@@ -1069,11 +1071,11 @@ function GorgiasTranslateText({
 
 export default connect(
     mapStateToProps,
-    mapDispatchToProps
+    mapDispatchToProps,
 )(GorgiasTranslateText)
 
 function getSelectedLanguage(
-    languageValue: LanguageChat
+    languageValue: LanguageChat,
 ): Map<string, string> | null {
     if ([...Object.values(LanguageChat)].includes(languageValue)) {
         return GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS.find((el) => {

@@ -1,20 +1,21 @@
-import React, {useCallback, useContext} from 'react'
+import React, { useCallback, useContext } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
-import {Source} from 'models/widget/types'
-import {applyCustomActionTemplate} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/helpers/templating'
-import {useTemplateContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/hooks/useTemplateContext'
+import { Source } from 'models/widget/types'
+import { applyCustomActionTemplate } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/helpers/templating'
+import { useTemplateContext } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/hooks/useTemplateContext'
 import {
     Link as LinkType,
     RemoveLink,
     SubmitLink,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
-import {AppContext} from 'providers/infobar/AppContext'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import { AppContext } from 'providers/infobar/AppContext'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import Editor from './Editor'
+
 import css from './Links.less'
 
 type Props = {
@@ -37,10 +38,10 @@ export function Link(props: Props) {
         onRemove,
         onSubmit,
     } = props
-    const {url: linkUrl, label: linkLabel} = link
+    const { url: linkUrl, label: linkLabel } = link
 
-    const {integrationId} = useContext(IntegrationContext)
-    const {appId} = useContext(AppContext)
+    const { integrationId } = useContext(IntegrationContext)
+    const { appId } = useContext(AppContext)
 
     const currentAccount = useAppSelector(getCurrentAccountState)
 

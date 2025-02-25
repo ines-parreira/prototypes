@@ -1,18 +1,19 @@
-import {useQueryClient} from '@tanstack/react-query'
+import React, { useEffect, useState } from 'react'
+
+import { useQueryClient } from '@tanstack/react-query'
 import classNames from 'classnames'
 import _upperFirst from 'lodash/upperFirst'
-import React, {useState, useEffect} from 'react'
-import {useHistory, Link} from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
-import {SegmentEvent, logEvent} from 'common/segment'
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {HelpCenterPageEmbedment} from 'models/helpCenter/types'
+import { HelpCenterPageEmbedment } from 'models/helpCenter/types'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import {
-    PageEmbedmentPosition,
     EmbeddablePage,
+    PageEmbedmentPosition,
 } from 'pages/common/components/PageEmbedmentForm'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
@@ -23,22 +24,23 @@ import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {CONTACT_FORM_EMBEDMENTS_LIMIT} from 'pages/settings/contactForm/constants'
+import { CONTACT_FORM_EMBEDMENTS_LIMIT } from 'pages/settings/contactForm/constants'
 import contactFormCss from 'pages/settings/contactForm/contactForm.less'
 import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal'
 import {
     helpCenterPageEmbedmentsKeys,
-    useUpdatePageEmbedment,
     useDeletePageEmbedment,
     useGetShopifyPages,
+    useUpdatePageEmbedment,
 } from 'pages/settings/helpCenter/queries'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
-import {HELP_CENTER_BASE_PATH} from '../../constants'
+import { HELP_CENTER_BASE_PATH } from '../../constants'
 import HelpCenterAutoEmbedModalAssistant from '../HelpCenterAutoEmbedModalAssistant'
+
 import css from './ManageEmbedments.less'
 
 type ManageEmbedmentsProps = {
@@ -52,18 +54,18 @@ const PositionOptions = Object.values(PageEmbedmentPosition).map(
     (position) => ({
         value: position,
         label: _upperFirst(position.toLowerCase()),
-    })
+    }),
 )
 
 const resetDraftPositions = (
-    embedments: HelpCenterPageEmbedment[]
+    embedments: HelpCenterPageEmbedment[],
 ): Record<number, PageEmbedmentPosition> =>
     embedments.reduce(
         (acc, embedment) => ({
             ...acc,
             [embedment.id]: embedment.position ?? PageEmbedmentPosition.TOP,
         }),
-        {}
+        {},
     )
 
 const ManageEmbedments = ({
@@ -105,7 +107,7 @@ const ManageEmbedments = ({
         onSuccess: async (updatedPageEmbedment) => {
             if (!updatedPageEmbedment) {
                 return void appDispatch(
-                    notify({message: 'Something went wrong'})
+                    notify({ message: 'Something went wrong' }),
                 )
             }
 
@@ -113,11 +115,11 @@ const ManageEmbedments = ({
                 notify({
                     message: 'Help Center position updated',
                     status: NotificationStatus.Success,
-                })
+                }),
             )
 
             await queryClient.invalidateQueries(
-                helpCenterPageEmbedmentsKeys.lists(helpCenterId)
+                helpCenterPageEmbedmentsKeys.lists(helpCenterId),
             )
         },
         onError: () => {
@@ -125,7 +127,7 @@ const ManageEmbedments = ({
                 notify({
                     message: 'Something went wrong',
                     status: NotificationStatus.Error,
-                })
+                }),
             )
         },
     })
@@ -136,11 +138,11 @@ const ManageEmbedments = ({
                 notify({
                     message: 'Help Center removed from page.',
                     status: NotificationStatus.Success,
-                })
+                }),
             )
 
             await queryClient.invalidateQueries(
-                helpCenterPageEmbedmentsKeys.lists(helpCenterId)
+                helpCenterPageEmbedmentsKeys.lists(helpCenterId),
             )
         },
         onError: () => {
@@ -148,7 +150,7 @@ const ManageEmbedments = ({
                 notify({
                     message: 'Something went wrong',
                     status: NotificationStatus.Error,
-                })
+                }),
             )
         },
     })
@@ -160,15 +162,15 @@ const ManageEmbedments = ({
     const availablePages = pages.filter((page) =>
         embedments.every(
             (pageEmbedment) =>
-                pageEmbedment.page_external_id !== page.external_id
-        )
+                pageEmbedment.page_external_id !== page.external_id,
+        ),
     )
 
     const onPositionChange = (
         embedmentId: number,
-        newPosition: PageEmbedmentPosition
+        newPosition: PageEmbedmentPosition,
     ) => {
-        setDraftPositions({...draftPositions, [embedmentId]: newPosition})
+        setDraftPositions({ ...draftPositions, [embedmentId]: newPosition })
     }
 
     const onDelete = (embedmentId: number) => async () => {
@@ -198,8 +200,8 @@ const ManageEmbedments = ({
                         help_center_id: helpCenterId,
                         embedment_id: embedment.id,
                     },
-                    {position: newPosition},
-                ]
+                    { position: newPosition },
+                ],
             )
 
             if (pageEmbedment) {
@@ -219,7 +221,7 @@ const ManageEmbedments = ({
         (embedment) =>
             embedment.id &&
             embedment.position &&
-            draftPositions[embedment.id] !== embedment.position
+            draftPositions[embedment.id] !== embedment.position,
     )
 
     return (
@@ -228,7 +230,7 @@ const ManageEmbedments = ({
                 <h2
                     className={classNames(
                         contactFormCss.sectionTitle,
-                        contactFormCss.mbXxs
+                        contactFormCss.mbXxs,
                     )}
                 >
                     Manage embedded pages
@@ -247,7 +249,7 @@ const ManageEmbedments = ({
                 <TableWrapper>
                     <TableHead>
                         <HeaderCellProperty
-                            style={{width: '50%'}}
+                            style={{ width: '50%' }}
                             title="Page"
                         />
                         <HeaderCellProperty
@@ -274,7 +276,7 @@ const ManageEmbedments = ({
                                 const previewLink = shopName
                                     ? `https://${shopName}.myshopify.com/${
                                           embedment.page_path_url.startsWith(
-                                              '/'
+                                              '/',
                                           )
                                               ? embedment.page_path_url.slice(1)
                                               : embedment.page_path_url
@@ -298,11 +300,11 @@ const ManageEmbedments = ({
                                         <BodyCell>
                                             <SelectField
                                                 fixedWidth
-                                                style={{width: '200px'}}
+                                                style={{ width: '200px' }}
                                                 onChange={(value) =>
                                                     onPositionChange(
                                                         embedment.id,
-                                                        value as PageEmbedmentPosition
+                                                        value as PageEmbedmentPosition,
                                                     )
                                                 }
                                                 value={
@@ -347,7 +349,7 @@ const ManageEmbedments = ({
                                                     </>
                                                 }
                                                 onConfirm={onDelete(
-                                                    embedment.id
+                                                    embedment.id,
                                                 )}
                                                 placement="bottom"
                                                 title={
@@ -390,7 +392,7 @@ const ManageEmbedments = ({
                                         </BodyCell>
                                     </TableBodyRow>
                                 )
-                            }
+                            },
                         )}
                     </TableBody>
                 </TableWrapper>
@@ -406,7 +408,7 @@ const ManageEmbedments = ({
                                 account_domain: currentAccount.get('domain'),
                                 help_center_id: helpCenterId,
                                 page_embedments_count: embedments.length,
-                            }
+                            },
                         )
                         setIsEmbedModalOpen(true)
                     }}

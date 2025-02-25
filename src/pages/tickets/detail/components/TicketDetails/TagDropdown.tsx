@@ -1,13 +1,15 @@
-import {Tag} from '@gorgias/api-queries'
-import cn from 'classnames'
-import {List, Map} from 'immutable'
-import React, {useCallback, useMemo, useRef, useState} from 'react'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
 
-import {Item} from 'components/Dropdown'
+import cn from 'classnames'
+import { List, Map } from 'immutable'
+
+import { Tag } from '@gorgias/api-queries'
+
+import { Item } from 'components/Dropdown'
 import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
 import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import {TagDropdownMenu} from 'tags'
+import { TagDropdownMenu } from 'tags'
 
 import css from './TagDropdown.less'
 
@@ -33,12 +35,12 @@ const TagDropdown = ({
 
     const existingTagNames = useMemo(
         () => ticketTags.map((x?: Map<any, any>) => x!.get('name') as string),
-        [ticketTags]
+        [ticketTags],
     )
 
     const filterBy = useCallback(
         (tag: Tag) => !existingTagNames.contains(tag.name),
-        [existingTagNames]
+        [existingTagNames],
     )
 
     useConditionalShortcuts(shouldBindKeys, 'TicketDetailContainer', {
@@ -59,7 +61,7 @@ const TagDropdown = ({
                 intent="secondary"
                 fillStyle={transparent ? 'ghost' : 'fill'}
                 size="small"
-                className={cn({[css.isOpen]: isDropdownOpen})}
+                className={cn({ [css.isOpen]: isDropdownOpen })}
                 leadingIcon="add"
             >
                 Add tags

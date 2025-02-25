@@ -1,19 +1,19 @@
-import {FilterComponentKey, FilterKey, StaticFilter} from 'models/stat/types'
-import {AUTO_QA_FILTER_KEYS} from 'pages/stats/common/filters/constants'
-import {OptionalFilter} from 'pages/stats/common/filters/FiltersPanel'
+import { FilterComponentKey, FilterKey, StaticFilter } from 'models/stat/types'
+import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
+import { OptionalFilter } from 'pages/stats/common/filters/FiltersPanel'
 import {
     ChartType,
     DataExportFormat,
     ReportConfig,
 } from 'pages/stats/custom-reports/types'
-import {VoiceAgentsTableCard} from 'pages/stats/voice/components/VoiceAgentsTableCard'
+import { VoiceAgentsTableCard } from 'pages/stats/voice/components/VoiceAgentsTableCard'
 import {
     VOICE_AGENTS_PAGE_TITLE,
     VOICE_CALL_ACTIVITY_HINT,
     VOICE_CALL_ACTIVITY_TITLE,
 } from 'pages/stats/voice/constants/voiceAgents'
-import {STATS_ROUTES} from 'routes/constants'
-import {fetchVoiceAgentsReportData} from 'services/reporting/voiceAgentsReportingService'
+import { STATS_ROUTES } from 'routes/constants'
+import { fetchVoiceAgentsReportData } from 'services/reporting/voiceAgentsReportingService'
 
 export enum VoiceAgentsChart {
     VoiceAgentsTable = 'voice-agents-table',

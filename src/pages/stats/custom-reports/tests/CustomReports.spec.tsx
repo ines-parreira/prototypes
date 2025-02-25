@@ -1,22 +1,23 @@
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import React from 'react'
-import {useHistory} from 'react-router-dom'
 
-import {useCustomReportActions} from 'hooks/reporting/custom-reports/useCustomReportActions'
-import {useDashboardNameValidation} from 'hooks/reporting/custom-reports/useDashboardNameValidation'
-import {useReportRestrictions} from 'hooks/reporting/custom-reports/useReportRestrictions'
-import {useNotify} from 'hooks/useNotify'
-import {CreateCustomReport} from 'pages/stats/custom-reports/CreateCustomReport/CreateCustomReport'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { useHistory } from 'react-router-dom'
+
+import { useCustomReportActions } from 'hooks/reporting/custom-reports/useCustomReportActions'
+import { useDashboardNameValidation } from 'hooks/reporting/custom-reports/useDashboardNameValidation'
+import { useReportRestrictions } from 'hooks/reporting/custom-reports/useReportRestrictions'
+import { useNotify } from 'hooks/useNotify'
+import { CreateCustomReport } from 'pages/stats/custom-reports/CreateCustomReport/CreateCustomReport'
 import {
     createDashboardName,
     CUSTOM_REPORT_CTA,
     CustomReports,
 } from 'pages/stats/custom-reports/CustomReports'
-import {MODAL_TITLE} from 'pages/stats/custom-reports/CustomReportsModal/CustomReportsModal'
-import {OverviewChart} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
-import {assumeMock} from 'utils/testing'
+import { MODAL_TITLE } from 'pages/stats/custom-reports/CustomReportsModal/CustomReportsModal'
+import { OverviewChart } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
+import { assumeMock } from 'utils/testing'
 
-import {DashboardInput} from '../types'
+import { DashboardInput } from '../types'
 
 jest.mock('react-router-dom', () => ({
     useHistory: jest.fn(),
@@ -74,8 +75,8 @@ describe('CustomReports', () => {
             push: historyPushMock,
         } as any)
 
-        useNotifyMock.mockReturnValue({error: notifyMock} as any)
-        useReportRestrictionsMock.mockReturnValue({restrictionsMap: {}})
+        useNotifyMock.mockReturnValue({ error: notifyMock } as any)
+        useReportRestrictionsMock.mockReturnValue({ restrictionsMap: {} })
     })
 
     afterEach(() => {
@@ -120,14 +121,16 @@ describe('CustomReports', () => {
         const dashboardName = 'Dashboard'
 
         const nameInput = screen.getByRole('textbox')
-        fireEvent.change(nameInput, {target: {value: dashboardName}})
+        fireEvent.change(nameInput, { target: { value: dashboardName } })
 
         const addChartsButton = screen.getByText(CUSTOM_REPORT_CTA)
         fireEvent.click(addChartsButton)
 
-        const searchInput = screen.getByRole('textbox', {name: 'Search charts'})
+        const searchInput = screen.getByRole('textbox', {
+            name: 'Search charts',
+        })
         fireEvent.change(searchInput, {
-            target: {value: 'Average CSAT'},
+            target: { value: 'Average CSAT' },
         })
 
         const firstCheckbox = screen.getAllByRole('checkbox')[0]
@@ -145,7 +148,7 @@ describe('CustomReports', () => {
                         emoji: '',
                     },
                     chartIds: [OverviewChart.CustomerSatisfactionTrendCard],
-                })
+                }),
             )
         })
     })
@@ -156,9 +159,11 @@ describe('CustomReports', () => {
         const addChartsButton = screen.getByText(CUSTOM_REPORT_CTA)
         fireEvent.click(addChartsButton)
 
-        const searchInput = screen.getByRole('textbox', {name: 'Search charts'})
+        const searchInput = screen.getByRole('textbox', {
+            name: 'Search charts',
+        })
         fireEvent.change(searchInput, {
-            target: {value: 'Average CSAT'},
+            target: { value: 'Average CSAT' },
         })
 
         const firstCheckbox = screen.getAllByRole('checkbox')[0]
@@ -173,7 +178,7 @@ describe('CustomReports', () => {
                     dashboard: expect.objectContaining({
                         name: 'Untitled-2025-01-15-12-10',
                     }),
-                })
+                }),
             )
         })
     })
@@ -190,8 +195,8 @@ describe('CustomReports', () => {
                 onSuccess?: (data: any) => void
                 dashboard: DashboardInput
             }) => {
-                onSuccess && onSuccess({...dashboard, id})
-                createDashboardHandlerMock({dashboard, onSuccess})
+                onSuccess && onSuccess({ ...dashboard, id })
+                createDashboardHandlerMock({ dashboard, onSuccess })
             },
         } as any)
 
@@ -200,14 +205,16 @@ describe('CustomReports', () => {
         const dashboardName = 'Dashboard'
 
         const nameInput = screen.getByRole('textbox')
-        fireEvent.change(nameInput, {target: {value: dashboardName}})
+        fireEvent.change(nameInput, { target: { value: dashboardName } })
 
         const addChartsButton = screen.getByText(CUSTOM_REPORT_CTA)
         fireEvent.click(addChartsButton)
 
-        const searchInput = screen.getByRole('textbox', {name: 'Search charts'})
+        const searchInput = screen.getByRole('textbox', {
+            name: 'Search charts',
+        })
         fireEvent.change(searchInput, {
-            target: {value: 'Average CSAT'},
+            target: { value: 'Average CSAT' },
         })
 
         const firstCheckbox = screen.getAllByRole('checkbox')[0]
@@ -219,7 +226,7 @@ describe('CustomReports', () => {
         await waitFor(() => {
             expect(historyPushMock).toHaveBeenCalledTimes(1)
             expect(historyPushMock).toHaveBeenCalledWith(
-                expect.stringContaining(String(id))
+                expect.stringContaining(String(id)),
             )
         })
     })
@@ -234,7 +241,7 @@ describe('CustomReports', () => {
         render(<CustomReports />)
 
         const nameInput = screen.getByRole('textbox')
-        fireEvent.change(nameInput, {target: {value: 'valid name'}})
+        fireEvent.change(nameInput, { target: { value: 'valid name' } })
         fireEvent.blur(nameInput)
 
         expect(notifyMock).not.toHaveBeenCalled()

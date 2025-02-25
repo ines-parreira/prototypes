@@ -1,1 +1,1 @@
-export {default} from './TopProductsCard'
+export { default } from './TopProductsCard'

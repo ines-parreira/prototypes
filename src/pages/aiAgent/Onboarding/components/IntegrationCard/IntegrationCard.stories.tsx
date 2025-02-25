@@ -1,11 +1,10 @@
-import {Meta, StoryObj} from '@storybook/react'
-
 import React from 'react'
+
+import { Meta, StoryObj } from '@storybook/react'
 
 import gmailLogo from 'assets/img/integrations/gmail.svg'
 
-import StatusBadge, {StatusEnum} from '../StatusBadge'
-
+import StatusBadge, { StatusEnum } from '../StatusBadge'
 import IntegrationCard from './IntegrationCard'
 
 const storyConfig: Meta<typeof IntegrationCard> = {

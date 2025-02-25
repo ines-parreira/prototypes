@@ -1,14 +1,14 @@
-import {Device} from '@twilio/voice-sdk'
+import { Device } from '@twilio/voice-sdk'
 import UAParser from 'ua-parser-js'
 
-import {isDesktopDevice} from 'utils/device'
+import { isDesktopDevice } from 'utils/device'
 
 import * as utils from '../device'
 
 jest.mock('ua-parser-js', () => {
     return {
         UAParser: jest.fn().mockImplementation(() => ({
-            getDevice: jest.fn().mockReturnValue({type: undefined}),
+            getDevice: jest.fn().mockReturnValue({ type: undefined }),
         })),
     }
 })
@@ -19,7 +19,7 @@ describe('device utils', () => {
     describe('getDeviceType', () => {
         it('should return the device type', () => {
             ;(UAParserSpy as jest.SpyInstance).mockImplementationOnce(() => ({
-                getDevice: jest.fn().mockReturnValue({type: 'mobile'}),
+                getDevice: jest.fn().mockReturnValue({ type: 'mobile' }),
             }))
 
             const result = utils.getDeviceType()
@@ -28,7 +28,7 @@ describe('device utils', () => {
 
         it(`should return 'desktop' if the device type is not recognized`, () => {
             ;(UAParserSpy as jest.SpyInstance).mockImplementationOnce(() => ({
-                getDevice: jest.fn().mockReturnValue({type: undefined}),
+                getDevice: jest.fn().mockReturnValue({ type: undefined }),
             }))
 
             const result = utils.getDeviceType()

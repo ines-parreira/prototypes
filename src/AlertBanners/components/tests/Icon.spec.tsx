@@ -1,8 +1,9 @@
-import {screen, render} from '@testing-library/react'
 import React from 'react'
 
-import {AlertBannerTypes} from '../../types'
-import {Icon} from '../Icon'
+import { render, screen } from '@testing-library/react'
+
+import { AlertBannerTypes } from '../../types'
+import { Icon } from '../Icon'
 
 describe('<Icon/>', () => {
     const types = [
@@ -17,6 +18,6 @@ describe('<Icon/>', () => {
             render(<Icon type={type} />)
 
             expect(screen.getByText(icon)).toBeInTheDocument()
-        }
+        },
     )
 })

@@ -8,14 +8,14 @@ import {
 
 export function createArticleFromDto(
     payload: ArticleWithLocalTranslation,
-    position: number
+    position: number,
 ): Article {
     return {
-        rating: {up: 0, down: 0},
+        rating: { up: 0, down: 0 },
         ...payload,
         position,
         translation: {
-            rating: {up: 0, down: 0},
+            rating: { up: 0, down: 0 },
             ...payload.translation,
         },
     }
@@ -27,13 +27,13 @@ export function createArticleFromDto(
  *
  * @param tree The root node of the tree
  */
-export function flattenTree<Tree extends {id: number; children: Tree[]}>(
-    tree: Tree
-): Array<Omit<Tree, 'children'> & {children: number[]}> {
-    const flatTree: Array<Omit<Tree, 'children'> & {children: number[]}> = []
+export function flattenTree<Tree extends { id: number; children: Tree[] }>(
+    tree: Tree,
+): Array<Omit<Tree, 'children'> & { children: number[] }> {
+    const flatTree: Array<Omit<Tree, 'children'> & { children: number[] }> = []
 
     const parseNode = (node: Tree) => {
-        const {children, ...category} = node
+        const { children, ...category } = node
 
         flatTree.push({
             ...category,
@@ -50,7 +50,7 @@ export function flattenTree<Tree extends {id: number; children: Tree[]}>(
 }
 
 export function flattenCategories(
-    category: CategoryWithLocalTranslation
+    category: CategoryWithLocalTranslation,
 ): Category[] {
     const flattenCategoriesWithLocalTranslation = flattenTree(category)
 

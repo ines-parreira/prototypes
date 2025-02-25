@@ -1,42 +1,42 @@
-import {screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
+import React, { ComponentProps } from 'react'
 
-import React, {ComponentProps} from 'react'
-import {MemoryRouter} from 'react-router-dom'
+import { screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { MemoryRouter } from 'react-router-dom'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {account} from 'fixtures/account'
-import {billingState} from 'fixtures/billing'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { account } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
 import {
     AUTOMATION_PRODUCT_ID,
     basicYearlyAutomationPlan,
     basicYearlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
-import {useAgentsMetrics} from 'hooks/reporting/support-performance/agents/useAgentsMetrics'
-import {useAgentsSummaryMetrics} from 'hooks/reporting/support-performance/agents/useAgentsSummaryMetrics'
-import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
-import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
-import {AUTO_QA_FILTER_KEYS} from 'pages/stats/common/filters/constants'
+import { useAgentsMetrics } from 'hooks/reporting/support-performance/agents/useAgentsMetrics'
+import { useAgentsSummaryMetrics } from 'hooks/reporting/support-performance/agents/useAgentsSummaryMetrics'
+import { useAgentsTableConfigSetting } from 'hooks/reporting/useAgentsTableConfigSetting'
+import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
+import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
-import {AgentsPerformanceCardExtra} from 'pages/stats/support-performance/agents/AgentsPerformanceCardExtra'
-import {AgentsTableWithDefaultState} from 'pages/stats/support-performance/agents/AgentsTable'
-import {AGENT_PERFORMANCE_SECTION_TITLE} from 'pages/stats/support-performance/agents/AgentsTableChart'
-import {TableColumnsOrder} from 'pages/stats/support-performance/agents/AgentsTableConfig'
-import {DownloadAgentsPerformanceDataButton} from 'pages/stats/support-performance/agents/DownloadAgentsPerformanceDataButton'
+import { AgentsPerformanceCardExtra } from 'pages/stats/support-performance/agents/AgentsPerformanceCardExtra'
+import { AgentsTableWithDefaultState } from 'pages/stats/support-performance/agents/AgentsTable'
+import { AGENT_PERFORMANCE_SECTION_TITLE } from 'pages/stats/support-performance/agents/AgentsTableChart'
+import { TableColumnsOrder } from 'pages/stats/support-performance/agents/AgentsTableConfig'
+import { DownloadAgentsPerformanceDataButton } from 'pages/stats/support-performance/agents/DownloadAgentsPerformanceDataButton'
 import SupportPerformanceAgentsReport, {
     AGENTS_PAGE_TITLE,
 } from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReport'
-import {AGENTS_OPTIONAL_FILTERS} from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReportConfig'
-import {TopCsatPerformers} from 'pages/stats/support-performance/agents/TopCsatPerformers'
-import {TopFirstResponseTimePerformers} from 'pages/stats/support-performance/agents/TopFirstResponseTimePerformers'
-import {TopResponseTimePerformers} from 'pages/stats/support-performance/agents/TopResponseTimePerformers'
-import {SupportPerformanceFilters} from 'pages/stats/support-performance/SupportPerformanceFilters'
-import {RootState} from 'state/types'
-import {assumeMock, renderWithStore} from 'utils/testing'
+import { AGENTS_OPTIONAL_FILTERS } from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReportConfig'
+import { TopCsatPerformers } from 'pages/stats/support-performance/agents/TopCsatPerformers'
+import { TopFirstResponseTimePerformers } from 'pages/stats/support-performance/agents/TopFirstResponseTimePerformers'
+import { TopResponseTimePerformers } from 'pages/stats/support-performance/agents/TopResponseTimePerformers'
+import { SupportPerformanceFilters } from 'pages/stats/support-performance/SupportPerformanceFilters'
+import { RootState } from 'state/types'
+import { assumeMock, renderWithStore } from 'utils/testing'
 
-import {TopClosedTicketsPerformers} from '../TopClosedTicketsPerformers'
+import { TopClosedTicketsPerformers } from '../TopClosedTicketsPerformers'
 
 jest.unmock('react-router-dom')
 
@@ -51,25 +51,25 @@ jest.mock(
         return props.optionalFilters?.map((optionalFilter) => (
             <div key={optionalFilter}>{optionalFilter}</div>
         ))
-    }
+    },
 )
 jest.mock(
-    'pages/stats/support-performance/agents/AgentsPerformanceCardExtra.tsx'
+    'pages/stats/support-performance/agents/AgentsPerformanceCardExtra.tsx',
 )
 const AgentsPerformanceCardExtraMock = assumeMock(AgentsPerformanceCardExtra)
 jest.mock(
-    'pages/stats/support-performance/agents/DownloadAgentsPerformanceDataButton'
+    'pages/stats/support-performance/agents/DownloadAgentsPerformanceDataButton',
 )
 const DownloadAgentsPerformanceDataButtonMock = assumeMock(
-    DownloadAgentsPerformanceDataButton
+    DownloadAgentsPerformanceDataButton,
 )
 jest.mock('pages/stats/support-performance/agents/TopCsatPerformers')
 const TopCsatPerformersMock = assumeMock(TopCsatPerformers)
 jest.mock(
-    'pages/stats/support-performance/agents/TopFirstResponseTimePerformers'
+    'pages/stats/support-performance/agents/TopFirstResponseTimePerformers',
 )
 const TopFirstResponseTimePerformersMock = assumeMock(
-    TopFirstResponseTimePerformers
+    TopFirstResponseTimePerformers,
 )
 jest.mock('pages/stats/support-performance/agents/TopResponseTimePerformers')
 const TopResponseTimePerformersMock = assumeMock(TopResponseTimePerformers)
@@ -107,7 +107,7 @@ describe('SupportPerformanceAgents', () => {
             closedTicketsMetric: {
                 isFetching: false,
                 isError: false,
-                data: {allData: [], value: null},
+                data: { allData: [], value: null },
             },
         },
     } as any)
@@ -116,7 +116,7 @@ describe('SupportPerformanceAgents', () => {
             closedTicketsMetric: {
                 isFetching: false,
                 isError: false,
-                data: {value: 2},
+                data: { value: 2 },
             },
         },
     } as any)
@@ -129,12 +129,12 @@ describe('SupportPerformanceAgents', () => {
             <MemoryRouter>
                 <SupportPerformanceAgentsReport />
             </MemoryRouter>,
-            defaultState
+            defaultState,
         )
 
         expect(screen.getByText(AGENTS_PAGE_TITLE)).toBeInTheDocument()
         expect(
-            screen.getByText(AGENT_PERFORMANCE_SECTION_TITLE)
+            screen.getByText(AGENT_PERFORMANCE_SECTION_TITLE),
         ).toBeInTheDocument()
     })
 
@@ -143,7 +143,7 @@ describe('SupportPerformanceAgents', () => {
             <MemoryRouter>
                 <SupportPerformanceAgentsReport />
             </MemoryRouter>,
-            defaultState
+            defaultState,
         )
 
         expect(DownloadAgentsPerformanceDataButtonMock).toHaveBeenCalled()
@@ -154,7 +154,7 @@ describe('SupportPerformanceAgents', () => {
             <MemoryRouter>
                 <SupportPerformanceAgentsReport />
             </MemoryRouter>,
-            defaultState
+            defaultState,
         )
 
         expect(AgentsPerformanceCardExtraMock).toHaveBeenCalled()
@@ -165,18 +165,18 @@ describe('SupportPerformanceAgents', () => {
     })
 
     it('should render New FiltersPanel and hide legacy filters', () => {
-        mockFlags({[FeatureFlagKey.AnalyticsNewFilters]: true})
+        mockFlags({ [FeatureFlagKey.AnalyticsNewFilters]: true })
 
-        const {getByText} = renderWithStore(
+        const { getByText } = renderWithStore(
             <MemoryRouter>
                 <SupportPerformanceAgentsReport />
             </MemoryRouter>,
-            defaultState
+            defaultState,
         )
 
         expect(SupportPerformanceFiltersMock).toHaveBeenCalledWith(
-            expect.objectContaining({hidden: true}),
-            {}
+            expect.objectContaining({ hidden: true }),
+            {},
         )
         AGENTS_OPTIONAL_FILTERS.forEach((filter) => {
             expect(getByText(filter)).toBeInTheDocument()
@@ -189,16 +189,16 @@ describe('SupportPerformanceAgents', () => {
         })
         const extendedOptionalFilters = [...AGENTS_OPTIONAL_FILTERS]
 
-        const {getByText} = renderWithStore(
+        const { getByText } = renderWithStore(
             <MemoryRouter>
                 <SupportPerformanceAgentsReport />
             </MemoryRouter>,
-            defaultState
+            defaultState,
         )
 
         expect(SupportPerformanceFiltersMock).toHaveBeenCalledWith(
-            expect.objectContaining({hidden: true}),
-            {}
+            expect.objectContaining({ hidden: true }),
+            {},
         )
         extendedOptionalFilters.forEach((filter) => {
             expect(getByText(filter)).toBeInTheDocument()
@@ -228,16 +228,16 @@ describe('SupportPerformanceAgents', () => {
             ...AUTO_QA_FILTER_KEYS,
         ]
 
-        const {getByText} = renderWithStore(
+        const { getByText } = renderWithStore(
             <MemoryRouter>
                 <SupportPerformanceAgentsReport />
             </MemoryRouter>,
-            state
+            state,
         )
 
         expect(SupportPerformanceFiltersMock).toHaveBeenCalledWith(
-            expect.objectContaining({hidden: true}),
-            {}
+            expect.objectContaining({ hidden: true }),
+            {},
         )
         extendedOptionalFilters.forEach((filter) => {
             expect(getByText(filter)).toBeInTheDocument()

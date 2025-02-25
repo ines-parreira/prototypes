@@ -1,8 +1,9 @@
-import {render, screen} from '@testing-library/react'
-import {fromJS, List} from 'immutable'
 import React from 'react'
 
-import {RuleItemActions} from 'pages/settings/rules/types'
+import { render, screen } from '@testing-library/react'
+import { fromJS, List } from 'immutable'
+
+import { RuleItemActions } from 'pages/settings/rules/types'
 
 import ObjectExpression from '../ObjectExpression'
 
@@ -20,7 +21,7 @@ jest.mock(
                 PropertyMock: {JSON.stringify(leftsiblings?.toJS())}
                 {JSON.stringify(parent?.toJS())}
             </div>
-        )
+        ),
 )
 
 const commonProps = {
@@ -69,7 +70,7 @@ describe('<ObjectExpression />', () => {
                 config={{
                     compact: false,
                     name: 'Send email',
-                    args: {body_text: {hide: true}},
+                    args: { body_text: { hide: true } },
                 }}
                 properties={[
                     {
@@ -89,7 +90,7 @@ describe('<ObjectExpression />', () => {
                         shorthand: false,
                     },
                 ]}
-            />
+            />,
         )
 
         expect(screen.queryByText(/PropertyMock:/)).not.toBeInTheDocument()

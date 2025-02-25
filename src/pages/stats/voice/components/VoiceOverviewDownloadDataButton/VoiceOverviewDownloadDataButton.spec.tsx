@@ -1,13 +1,12 @@
-import {render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-
 import React from 'react'
 
-import {VoiceOverviewDownloadDataButton} from 'pages/stats/voice/components/VoiceOverviewDownloadDataButton/VoiceOverviewDownloadDataButton'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
-import {useVoiceOverviewReportData} from 'services/reporting/voiceOverviewReportingService'
-import {saveZippedFiles} from 'utils/file'
-import {assumeMock} from 'utils/testing'
+import { VoiceOverviewDownloadDataButton } from 'pages/stats/voice/components/VoiceOverviewDownloadDataButton/VoiceOverviewDownloadDataButton'
+import { useVoiceOverviewReportData } from 'services/reporting/voiceOverviewReportingService'
+import { saveZippedFiles } from 'utils/file'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('utils/file')
 const saveZippedFilesMock = assumeMock(saveZippedFiles)

@@ -1,2 +1,2 @@
-export {default} from './SummaryFooter'
+export { default } from './SummaryFooter'
 export * from './SummaryFooter'

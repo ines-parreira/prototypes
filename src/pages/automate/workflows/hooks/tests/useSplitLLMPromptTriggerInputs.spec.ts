@@ -1,19 +1,19 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {buildNodeCommonProperties} from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import {LLMPromptTriggerNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { buildNodeCommonProperties } from 'pages/automate/workflows/models/visualBuilderGraph.model'
+import { LLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 import useSplitLLMPromptTriggerInputs from '../useSplitLLMPromptTriggerInputs'
 
 describe('useSplitLLMPromptTriggerInputs()', () => {
     const inputs: LLMPromptTriggerNodeType['data']['inputs'] = [
-        {id: 'input1', name: '', instructions: '', data_type: 'string'},
-        {id: 'input2', name: '', instructions: '', kind: 'product'},
-        {id: 'input3', name: '', instructions: '', data_type: 'number'},
+        { id: 'input1', name: '', instructions: '', data_type: 'string' },
+        { id: 'input2', name: '', instructions: '', kind: 'product' },
+        { id: 'input3', name: '', instructions: '', data_type: 'number' },
     ]
 
     it('should split inputs into matching and non-matching based on template inputs', () => {
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useSplitLLMPromptTriggerInputs(inputs, [
                 {
                     ...buildNodeCommonProperties(),
@@ -43,22 +43,22 @@ describe('useSplitLLMPromptTriggerInputs()', () => {
                         values: {},
                     },
                 },
-            ])
+            ]),
         )
 
         const [nonMatching, matching] = result.current
 
         expect(nonMatching).toEqual([
-            {id: 'input3', name: '', instructions: '', data_type: 'number'},
+            { id: 'input3', name: '', instructions: '', data_type: 'number' },
         ])
         expect(matching).toEqual([
-            {id: 'input1', name: '', instructions: '', data_type: 'string'},
-            {id: 'input2', name: '', instructions: '', kind: 'product'},
+            { id: 'input1', name: '', instructions: '', data_type: 'string' },
+            { id: 'input2', name: '', instructions: '', kind: 'product' },
         ])
     })
 
     it('should return all inputs as non-matching when no template inputs match', () => {
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useSplitLLMPromptTriggerInputs(inputs, [
                 {
                     ...buildNodeCommonProperties(),
@@ -81,7 +81,7 @@ describe('useSplitLLMPromptTriggerInputs()', () => {
                         values: {},
                     },
                 },
-            ])
+            ]),
         )
 
         const [nonMatching, matching] = result.current
@@ -91,7 +91,7 @@ describe('useSplitLLMPromptTriggerInputs()', () => {
     })
 
     it('should handle empty inputs and nodes gracefully', () => {
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useSplitLLMPromptTriggerInputs(
                 [],
                 [
@@ -106,8 +106,8 @@ describe('useSplitLLMPromptTriggerInputs()', () => {
                             instructions: '',
                         },
                     },
-                ]
-            )
+                ],
+            ),
         )
 
         const [nonMatching, matching] = result.current
@@ -117,7 +117,7 @@ describe('useSplitLLMPromptTriggerInputs()', () => {
     })
 
     it('should handle nodes without reusable_llm_prompt_call type', () => {
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useSplitLLMPromptTriggerInputs(inputs, [
                 {
                     ...buildNodeCommonProperties(),
@@ -137,7 +137,7 @@ describe('useSplitLLMPromptTriggerInputs()', () => {
                         action: 'end',
                     },
                 },
-            ])
+            ]),
         )
 
         const [nonMatching, matching] = result.current

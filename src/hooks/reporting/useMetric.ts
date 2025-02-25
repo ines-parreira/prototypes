@@ -1,13 +1,13 @@
-import {Metric} from 'hooks/reporting/metrics'
-import {QueryReturnType, selectMeasure} from 'hooks/reporting/useMetricTrend'
-import {Cubes} from 'models/reporting/cubes'
-import {fetchPostReporting, usePostReporting} from 'models/reporting/queries'
-import {ReportingQuery} from 'models/reporting/types'
+import { Metric } from 'hooks/reporting/metrics'
+import { QueryReturnType, selectMeasure } from 'hooks/reporting/useMetricTrend'
+import { Cubes } from 'models/reporting/cubes'
+import { fetchPostReporting, usePostReporting } from 'models/reporting/queries'
+import { ReportingQuery } from 'models/reporting/types'
 
 export type MetricFetch = (...arg: any) => Promise<Metric>
 
 export function useMetric<TCube extends Cubes = Cubes>(
-    query: ReportingQuery<TCube>
+    query: ReportingQuery<TCube>,
 ): Metric {
     const currentPeriodMetric = usePostReporting<
         QueryReturnType<TCube['measures']>,
@@ -30,7 +30,7 @@ export function useMetric<TCube extends Cubes = Cubes>(
 }
 
 export const fetchMetric = async <TCube extends Cubes = Cubes>(
-    query: ReportingQuery<TCube>
+    query: ReportingQuery<TCube>,
 ): Promise<Metric> => {
     return fetchPostReporting<
         QueryReturnType<TCube['measures']>,

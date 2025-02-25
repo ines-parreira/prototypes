@@ -1,8 +1,9 @@
-import {renderHook, act} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { act, renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -10,27 +11,27 @@ import {
     AI_AGENT_SET_AND_OPTIMIZED_TYPE,
     AI_AGENT_SET_AND_OPTIMIZED_WORKFLOW,
 } from 'automate/notifications/constants'
-import {AiAgentNotificationType} from 'automate/notifications/types'
-import {logEvent, SegmentEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {account} from 'fixtures/account'
-import {user} from 'fixtures/users'
+import { AiAgentNotificationType } from 'automate/notifications/types'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { account } from 'fixtures/account'
+import { user } from 'fixtures/users'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {AiAgentOnboardingState} from 'models/aiAgent/types'
-import {NotificationEvent} from 'services/notificationTracker/constants'
+import { AiAgentOnboardingState } from 'models/aiAgent/types'
+import { NotificationEvent } from 'services/notificationTracker/constants'
 import * as notificationTracker from 'services/notificationTracker/notificationTracker'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {RootState} from 'state/types'
-import {assumeMock} from 'utils/testing'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { RootState } from 'state/types'
+import { assumeMock } from 'utils/testing'
 
-import {getOnboardingNotificationStateFixture} from '../../fixtures/onboardingNotificationState.fixture'
+import { getOnboardingNotificationStateFixture } from '../../fixtures/onboardingNotificationState.fixture'
 import {
     NUMBER_OF_MILLISECONDS_IN_A_DAY,
     useAiAgentOnboardingNotification,
 } from '../useAiAgentOnboardingNotification'
-import {useOnboardingNotificationState} from '../useOnboardingNotificationState'
-import {useOnboardingNotificationStateMutation} from '../useOnboardingNotificationStateMutation'
+import { useOnboardingNotificationState } from '../useOnboardingNotificationState'
+import { useOnboardingNotificationStateMutation } from '../useOnboardingNotificationStateMutation'
 
 jest.mock(
     'common/segment',
@@ -38,17 +39,17 @@ jest.mock(
         ({
             ...jest.requireActual('common/segment'),
             logEvent: jest.fn(),
-        }) as typeof import('common/segment')
+        }) as typeof import('common/segment'),
 )
 
 jest.mock('services/notificationTracker/notificationTracker')
 jest.mock('../useOnboardingNotificationState')
 const mockUseOnboardingnotificationState = assumeMock(
-    useOnboardingNotificationState
+    useOnboardingNotificationState,
 )
 jest.mock('../useOnboardingNotificationStateMutation')
 const mockUseOnboardingNotificationStateMutation = assumeMock(
-    useOnboardingNotificationStateMutation
+    useOnboardingNotificationStateMutation,
 )
 
 jest.mock('state/notifications/actions')
@@ -60,7 +61,7 @@ const SHOP_NAME = 'shop-name'
 const mockedOnboardingNotificationState = getOnboardingNotificationStateFixture(
     {
         shopName: SHOP_NAME,
-    }
+    },
 )
 
 const defaultState: Partial<RootState> = {
@@ -77,10 +78,10 @@ describe('useAiAgentOnboardingNotification', () => {
     const mockDispatch = jest.fn()
     const mockCreateOnboardingNotificationState = jest
         .fn()
-        .mockResolvedValue({mockedOnboardingNotificationState})
+        .mockResolvedValue({ mockedOnboardingNotificationState })
     const mockUpsertOnboardingNotificationState = jest
         .fn()
-        .mockResolvedValue({mockedOnboardingNotificationState})
+        .mockResolvedValue({ mockedOnboardingNotificationState })
 
     beforeEach(() => {
         jest.resetAllMocks()
@@ -105,15 +106,15 @@ describe('useAiAgentOnboardingNotification', () => {
     })
 
     it('should return isAdmin and isAiAgentOnboardingNotificationEnabled correctly', () => {
-        const {result} = renderHook(
-            () => useAiAgentOnboardingNotification({shopName: SHOP_NAME}),
+        const { result } = renderHook(
+            () => useAiAgentOnboardingNotification({ shopName: SHOP_NAME }),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
                 ),
-            }
+            },
         )
 
         expect(result.current.isAdmin).toBe(true)
@@ -126,15 +127,15 @@ describe('useAiAgentOnboardingNotification', () => {
             isLoading: false,
         })
 
-        const {result} = renderHook(
-            () => useAiAgentOnboardingNotification({shopName: SHOP_NAME}),
+        const { result } = renderHook(
+            () => useAiAgentOnboardingNotification({ shopName: SHOP_NAME }),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
                 ),
-            }
+            },
         )
 
         const payload = {
@@ -153,7 +154,7 @@ describe('useAiAgentOnboardingNotification', () => {
             notify({
                 status: NotificationStatus.Error,
                 message: 'Failed to save onboarding notification state',
-            })
+            }),
         )
     })
 
@@ -170,15 +171,15 @@ describe('useAiAgentOnboardingNotification', () => {
             error: null,
         })
 
-        const {result} = renderHook(
-            () => useAiAgentOnboardingNotification({shopName: SHOP_NAME}),
+        const { result } = renderHook(
+            () => useAiAgentOnboardingNotification({ shopName: SHOP_NAME }),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
                 ),
-            }
+            },
         )
 
         const payload = {
@@ -194,26 +195,26 @@ describe('useAiAgentOnboardingNotification', () => {
             {
                 ...payload,
                 shopName: SHOP_NAME,
-            }
+            },
         )
         expect(mockDispatch).toHaveBeenCalledWith(
             notify({
                 status: NotificationStatus.Error,
                 message: 'Failed to save onboarding notification state',
-            })
+            }),
         )
     })
 
     it('should log notification event when handleOnSendOrCancelNotification is called', () => {
-        const {result} = renderHook(
-            () => useAiAgentOnboardingNotification({shopName: SHOP_NAME}),
+        const { result } = renderHook(
+            () => useAiAgentOnboardingNotification({ shopName: SHOP_NAME }),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
                 ),
-            }
+            },
         )
 
         const notificationType = AiAgentNotificationType.FirstAiAgentTicket
@@ -229,7 +230,7 @@ describe('useAiAgentOnboardingNotification', () => {
             notification_workflow: AI_AGENT_SET_AND_OPTIMIZED_WORKFLOW,
             notification_type: AI_AGENT_SET_AND_OPTIMIZED_TYPE,
             idempotency_key: expect.stringContaining(
-                `idempotent:${ACCOUNT_DOMAIN}+${SHOP_NAME}+${notificationType}`
+                `idempotent:${ACCOUNT_DOMAIN}+${SHOP_NAME}+${notificationType}`,
             ),
             notification_data: {
                 ai_agent_notification_type: notificationType,
@@ -241,15 +242,15 @@ describe('useAiAgentOnboardingNotification', () => {
     })
 
     it('should log notification segment event when handleOnSendOrCancelNotification is called', () => {
-        const {result} = renderHook(
-            () => useAiAgentOnboardingNotification({shopName: SHOP_NAME}),
+        const { result } = renderHook(
+            () => useAiAgentOnboardingNotification({ shopName: SHOP_NAME }),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
                 ),
-            }
+            },
         )
 
         const notificationType = AiAgentNotificationType.FirstAiAgentTicket
@@ -264,20 +265,20 @@ describe('useAiAgentOnboardingNotification', () => {
             SegmentEvent.AiAgentOnboardingNotificationTriggered,
             {
                 type: notificationType,
-            }
+            },
         )
     })
 
     it('should not log notification segment event if handleOnSendOrCancelNotification is called to cancel the call', () => {
-        const {result} = renderHook(
-            () => useAiAgentOnboardingNotification({shopName: SHOP_NAME}),
+        const { result } = renderHook(
+            () => useAiAgentOnboardingNotification({ shopName: SHOP_NAME }),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
                 ),
-            }
+            },
         )
 
         const notificationType = AiAgentNotificationType.FirstAiAgentTicket
@@ -298,15 +299,15 @@ describe('useAiAgentOnboardingNotification', () => {
             isLoading: false,
         })
 
-        const {result} = renderHook(
-            () => useAiAgentOnboardingNotification({shopName: undefined}),
+        const { result } = renderHook(
+            () => useAiAgentOnboardingNotification({ shopName: undefined }),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
                 ),
-            }
+            },
         )
 
         const payload = {
@@ -325,21 +326,21 @@ describe('useAiAgentOnboardingNotification', () => {
             onboardingNotificationState: {
                 ...mockedOnboardingNotificationState,
                 activateAiAgentNotificationReceivedDatetime: new Date(
-                    Date.now() - 7 * NUMBER_OF_MILLISECONDS_IN_A_DAY
+                    Date.now() - 7 * NUMBER_OF_MILLISECONDS_IN_A_DAY,
                 ).toISOString(),
             },
             isLoading: false,
         })
 
-        const {result} = renderHook(
-            () => useAiAgentOnboardingNotification({shopName: SHOP_NAME}),
+        const { result } = renderHook(
+            () => useAiAgentOnboardingNotification({ shopName: SHOP_NAME }),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
                 ),
-            }
+            },
         )
 
         act(() => {
@@ -347,7 +348,7 @@ describe('useAiAgentOnboardingNotification', () => {
         })
 
         expect(logEvent).toHaveBeenCalledWith(
-            SegmentEvent.AiAgentEnablementPostReceivedOnboardingNotification
+            SegmentEvent.AiAgentEnablementPostReceivedOnboardingNotification,
         )
     })
 
@@ -357,15 +358,15 @@ describe('useAiAgentOnboardingNotification', () => {
             isLoading: false,
         })
 
-        const {result} = renderHook(
-            () => useAiAgentOnboardingNotification({shopName: SHOP_NAME}),
+        const { result } = renderHook(
+            () => useAiAgentOnboardingNotification({ shopName: SHOP_NAME }),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
                 ),
-            }
+            },
         )
 
         act(() => {
@@ -380,21 +381,21 @@ describe('useAiAgentOnboardingNotification', () => {
             onboardingNotificationState: {
                 ...mockedOnboardingNotificationState,
                 activateAiAgentNotificationReceivedDatetime: new Date(
-                    Date.now() - 20 * NUMBER_OF_MILLISECONDS_IN_A_DAY
+                    Date.now() - 20 * NUMBER_OF_MILLISECONDS_IN_A_DAY,
                 ).toISOString(),
             },
             isLoading: false,
         })
 
-        const {result} = renderHook(
-            () => useAiAgentOnboardingNotification({shopName: SHOP_NAME}),
+        const { result } = renderHook(
+            () => useAiAgentOnboardingNotification({ shopName: SHOP_NAME }),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
                 ),
-            }
+            },
         )
 
         act(() => {
@@ -410,15 +411,15 @@ describe('useAiAgentOnboardingNotification', () => {
             isLoading: false,
         })
 
-        const {result} = renderHook(
-            () => useAiAgentOnboardingNotification({shopName: SHOP_NAME}),
+        const { result } = renderHook(
+            () => useAiAgentOnboardingNotification({ shopName: SHOP_NAME }),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
                 ),
-            }
+            },
         )
 
         act(() => {
@@ -433,26 +434,26 @@ describe('useAiAgentOnboardingNotification', () => {
             onboardingNotificationState: {
                 ...mockedOnboardingNotificationState,
                 finishAiAgentSetupNotificationReceivedDatetime: new Date(
-                    Date.now() - 7 * NUMBER_OF_MILLISECONDS_IN_A_DAY
+                    Date.now() - 7 * NUMBER_OF_MILLISECONDS_IN_A_DAY,
                 ).toISOString(),
             },
             isLoading: false,
         })
 
-        const {result} = renderHook(
-            () => useAiAgentOnboardingNotification({shopName: SHOP_NAME}),
+        const { result } = renderHook(
+            () => useAiAgentOnboardingNotification({ shopName: SHOP_NAME }),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
                 ),
-            }
+            },
         )
 
         act(() => {
             result.current.handleOnPerformActionPostReceivedNotification(
-                AiAgentNotificationType.FinishAiAgentSetup
+                AiAgentNotificationType.FinishAiAgentSetup,
             )
         })
 
@@ -460,7 +461,7 @@ describe('useAiAgentOnboardingNotification', () => {
             SegmentEvent.AiAgentActionPerformedPostReceivedOnboardingNotification,
             {
                 type: AiAgentNotificationType.FinishAiAgentSetup,
-            }
+            },
         )
     })
 
@@ -470,20 +471,20 @@ describe('useAiAgentOnboardingNotification', () => {
             isLoading: false,
         })
 
-        const {result} = renderHook(
-            () => useAiAgentOnboardingNotification({shopName: SHOP_NAME}),
+        const { result } = renderHook(
+            () => useAiAgentOnboardingNotification({ shopName: SHOP_NAME }),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
                 ),
-            }
+            },
         )
 
         act(() => {
             result.current.handleOnPerformActionPostReceivedNotification(
-                AiAgentNotificationType.StartAiAgentSetup
+                AiAgentNotificationType.StartAiAgentSetup,
             )
         })
 
@@ -495,26 +496,26 @@ describe('useAiAgentOnboardingNotification', () => {
             onboardingNotificationState: {
                 ...mockedOnboardingNotificationState,
                 finishAiAgentSetupNotificationReceivedDatetime: new Date(
-                    Date.now() - 20 * NUMBER_OF_MILLISECONDS_IN_A_DAY
+                    Date.now() - 20 * NUMBER_OF_MILLISECONDS_IN_A_DAY,
                 ).toISOString(),
             },
             isLoading: false,
         })
 
-        const {result} = renderHook(
-            () => useAiAgentOnboardingNotification({shopName: SHOP_NAME}),
+        const { result } = renderHook(
+            () => useAiAgentOnboardingNotification({ shopName: SHOP_NAME }),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
                 ),
-            }
+            },
         )
 
         act(() => {
             result.current.handleOnPerformActionPostReceivedNotification(
-                AiAgentNotificationType.FinishAiAgentSetup
+                AiAgentNotificationType.FinishAiAgentSetup,
             )
         })
 
@@ -527,20 +528,20 @@ describe('useAiAgentOnboardingNotification', () => {
             isLoading: false,
         })
 
-        const {result} = renderHook(
-            () => useAiAgentOnboardingNotification({shopName: SHOP_NAME}),
+        const { result } = renderHook(
+            () => useAiAgentOnboardingNotification({ shopName: SHOP_NAME }),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
                 ),
-            }
+            },
         )
 
         act(() => {
             result.current.handleOnPerformActionPostReceivedNotification(
-                AiAgentNotificationType.FinishAiAgentSetup
+                AiAgentNotificationType.FinishAiAgentSetup,
             )
         })
 
@@ -556,15 +557,15 @@ describe('useAiAgentOnboardingNotification', () => {
             isLoading: false,
         })
 
-        const {result} = renderHook(
-            () => useAiAgentOnboardingNotification({shopName: SHOP_NAME}),
+        const { result } = renderHook(
+            () => useAiAgentOnboardingNotification({ shopName: SHOP_NAME }),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
                 ),
-            }
+            },
         )
 
         act(() => {
@@ -578,7 +579,7 @@ describe('useAiAgentOnboardingNotification', () => {
             notification_workflow: AI_AGENT_SET_AND_OPTIMIZED_WORKFLOW,
             notification_type: AI_AGENT_SET_AND_OPTIMIZED_TYPE,
             idempotency_key: expect.stringContaining(
-                `idempotent:${ACCOUNT_DOMAIN}+${SHOP_NAME}+${notificationType}`
+                `idempotent:${ACCOUNT_DOMAIN}+${SHOP_NAME}+${notificationType}`,
             ),
             notification_data: {
                 ai_agent_notification_type: notificationType,
@@ -601,15 +602,15 @@ describe('useAiAgentOnboardingNotification', () => {
             isLoading: false,
         })
 
-        const {result} = renderHook(
-            () => useAiAgentOnboardingNotification({shopName: SHOP_NAME}),
+        const { result } = renderHook(
+            () => useAiAgentOnboardingNotification({ shopName: SHOP_NAME }),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
                 ),
-            }
+            },
         )
 
         act(() => {
@@ -628,15 +629,15 @@ describe('useAiAgentOnboardingNotification', () => {
             isLoading: false,
         })
 
-        const {result} = renderHook(
-            () => useAiAgentOnboardingNotification({shopName: SHOP_NAME}),
+        const { result } = renderHook(
+            () => useAiAgentOnboardingNotification({ shopName: SHOP_NAME }),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
                 ),
-            }
+            },
         )
 
         act(() => {
@@ -655,15 +656,15 @@ describe('useAiAgentOnboardingNotification', () => {
             isLoading: false,
         })
 
-        const {result} = renderHook(
-            () => useAiAgentOnboardingNotification({shopName: SHOP_NAME}),
+        const { result } = renderHook(
+            () => useAiAgentOnboardingNotification({ shopName: SHOP_NAME }),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
                 ),
-            }
+            },
         )
 
         act(() => {
@@ -683,15 +684,15 @@ describe('useAiAgentOnboardingNotification', () => {
             isLoading: false,
         })
 
-        const {result} = renderHook(
-            () => useAiAgentOnboardingNotification({shopName: SHOP_NAME}),
+        const { result } = renderHook(
+            () => useAiAgentOnboardingNotification({ shopName: SHOP_NAME }),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
                 ),
-            }
+            },
         )
 
         act(() => {
@@ -705,7 +706,7 @@ describe('useAiAgentOnboardingNotification', () => {
         const mockedValue = {
             ...mockedOnboardingNotificationState,
             activateAiAgentNotificationReceivedDatetime: new Date(
-                Date.now() - 7 * NUMBER_OF_MILLISECONDS_IN_A_DAY
+                Date.now() - 7 * NUMBER_OF_MILLISECONDS_IN_A_DAY,
             ).toISOString(),
             onboardingState: AiAgentOnboardingState.FinishedSetup,
         }
@@ -715,15 +716,15 @@ describe('useAiAgentOnboardingNotification', () => {
             isLoading: false,
         })
 
-        const {result} = renderHook(
-            () => useAiAgentOnboardingNotification({shopName: SHOP_NAME}),
+        const { result } = renderHook(
+            () => useAiAgentOnboardingNotification({ shopName: SHOP_NAME }),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
                 ),
-            }
+            },
         )
 
         act(() => {
@@ -737,7 +738,7 @@ describe('useAiAgentOnboardingNotification', () => {
             notification_workflow: AI_AGENT_SET_AND_OPTIMIZED_WORKFLOW,
             notification_type: AI_AGENT_SET_AND_OPTIMIZED_TYPE,
             idempotency_key: expect.stringContaining(
-                `idempotent:${ACCOUNT_DOMAIN}+${SHOP_NAME}+${notificationType}`
+                `idempotent:${ACCOUNT_DOMAIN}+${SHOP_NAME}+${notificationType}`,
             ),
             notification_data: {},
             cancellation_key: `cancel:${ACCOUNT_DOMAIN}+${SHOP_NAME}+${notificationType}`,
@@ -750,14 +751,14 @@ describe('useAiAgentOnboardingNotification', () => {
         })
 
         expect(logEvent).toHaveBeenCalledWith(
-            SegmentEvent.AiAgentEnablementPostReceivedOnboardingNotification
+            SegmentEvent.AiAgentEnablementPostReceivedOnboardingNotification,
         )
 
         expect(logEvent).toHaveBeenCalledWith(
             SegmentEvent.AiAgentActionPerformedPostReceivedOnboardingNotification,
             {
                 type: AiAgentNotificationType.ActivateAiAgent,
-            }
+            },
         )
     })
 
@@ -773,15 +774,15 @@ describe('useAiAgentOnboardingNotification', () => {
             isLoading: false,
         })
 
-        const {result} = renderHook(
-            () => useAiAgentOnboardingNotification({shopName: SHOP_NAME}),
+        const { result } = renderHook(
+            () => useAiAgentOnboardingNotification({ shopName: SHOP_NAME }),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
                 ),
-            }
+            },
         )
 
         act(() => {
@@ -802,15 +803,15 @@ describe('useAiAgentOnboardingNotification', () => {
             isLoading: false,
         })
 
-        const {result} = renderHook(
-            () => useAiAgentOnboardingNotification({shopName: SHOP_NAME}),
+        const { result } = renderHook(
+            () => useAiAgentOnboardingNotification({ shopName: SHOP_NAME }),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
                 ),
-            }
+            },
         )
 
         act(() => {
@@ -831,15 +832,15 @@ describe('useAiAgentOnboardingNotification', () => {
             isLoading: false,
         })
 
-        const {result} = renderHook(
-            () => useAiAgentOnboardingNotification({shopName: SHOP_NAME}),
+        const { result } = renderHook(
+            () => useAiAgentOnboardingNotification({ shopName: SHOP_NAME }),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
                 ),
-            }
+            },
         )
 
         act(() => {

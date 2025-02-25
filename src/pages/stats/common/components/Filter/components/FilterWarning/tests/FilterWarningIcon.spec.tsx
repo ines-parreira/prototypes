@@ -1,9 +1,10 @@
-import {act, render, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {FilterWarningIcon} from 'pages/stats/common/components/Filter/components/FilterWarning/FilterWarningIcon'
-import {FILTER_WARNING_ICON} from 'pages/stats/common/components/Filter/constants'
+import { act, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { FilterWarningIcon } from 'pages/stats/common/components/Filter/components/FilterWarning/FilterWarningIcon'
+import { FILTER_WARNING_ICON } from 'pages/stats/common/components/Filter/constants'
 
 describe('FilterWarningIcon', () => {
     it.each(['not-applicable' as const, 'non-existent' as const])(
@@ -15,7 +16,7 @@ describe('FilterWarningIcon', () => {
                 <FilterWarningIcon
                     warningType={warningType}
                     tooltip={tooltipText}
-                />
+                />,
             )
             const icon = screen.getByText(FILTER_WARNING_ICON)
             act(() => {
@@ -27,6 +28,6 @@ describe('FilterWarningIcon', () => {
             await waitFor(() => {
                 expect(screen.getByText(tooltipText)).toBeInTheDocument()
             })
-        }
+        },
     )
 })

@@ -1,22 +1,24 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { useState } from 'react'
+
 import classNames from 'classnames'
-import React, {useState} from 'react'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useLocalStorage from 'hooks/useLocalStorage'
-import {ShopifyIntegration} from 'models/integration/types'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import { ShopifyIntegration } from 'models/integration/types'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
-
 import useShopifyThemeAppExtension from 'pages/integrations/integration/components/gorgias_chat/hooks/useShopifyThemeAppExtension'
 import useThemeAppExtensionInstallation, {
     getGorgiasMainThemeAppExtensionId,
 } from 'pages/integrations/integration/components/gorgias_chat/hooks/useThemeAppExtensionInstallation'
 
-import css from './ContactFormMailtoReplacementSection.less'
 import ContactFormMailtoReplacementSectionItem from './ContactFormMailtoReplacementSectionItem'
-import {useContactFormMailtoReplacementConfig} from './useContactFormMailtoReplacementConfig'
+import { useContactFormMailtoReplacementConfig } from './useContactFormMailtoReplacementConfig'
+
+import css from './ContactFormMailtoReplacementSection.less'
 
 export const ALERT_LOCAL_STORAGE_KEY = `gorgias-contact-form-alert-replace-mailto`
 
@@ -32,7 +34,7 @@ const ContactFormMailtoReplacementSection = ({
 }: ContactFormMailtoReplacementSectionProps) => {
     const [isAlertDiscarded, setAlertDiscarded] = useLocalStorage(
         ALERT_LOCAL_STORAGE_KEY,
-        true
+        true,
     )
 
     const {
@@ -40,7 +42,7 @@ const ContactFormMailtoReplacementSection = ({
         upsertMailtoReplacementConfig,
         mailtoReplacementConfig,
         emailsFromEmailIntegrations,
-    } = useContactFormMailtoReplacementConfig({contactFormId})
+    } = useContactFormMailtoReplacementConfig({ contactFormId })
     const [selectedEmails, setSelectedEmails] = useState<string[]>(emailList)
     const onAlertClose = () => {
         setAlertDiscarded(false)
@@ -50,7 +52,7 @@ const ContactFormMailtoReplacementSection = ({
         shouldUseThemeAppExtensionInstallation,
         themeAppExtensionEnabled,
     } = useThemeAppExtensionInstallation(shopifyIntegration)
-    const {isInstalled: isThemeAppExtensionInstalled} =
+    const { isInstalled: isThemeAppExtensionInstalled } =
         useShopifyThemeAppExtension({
             shopifyIntegration,
             appUuid: getGorgiasMainThemeAppExtensionId(),
@@ -82,7 +84,7 @@ const ContactFormMailtoReplacementSection = ({
         const mailtoReplacementConfigEmails =
             mailtoReplacementConfig?.emails || []
         const uniqNewEmails = Array.from(
-            new Set([...selectedEmails, ...mailtoReplacementConfigEmails])
+            new Set([...selectedEmails, ...mailtoReplacementConfigEmails]),
             // Edge case: if user selects all emails and one of them was already deleted from email integration we filter them out
         ).filter((email) => emailsFromEmailIntegrations.includes(email))
 
@@ -97,7 +99,7 @@ const ContactFormMailtoReplacementSection = ({
             window.open(
                 themeAppExtensionInstallationUrl,
                 '_blank',
-                'noopener noreferrer'
+                'noopener noreferrer',
             )
             setWasInstallationInitiated(true)
         }
@@ -105,7 +107,7 @@ const ContactFormMailtoReplacementSection = ({
 
     const onRemoveEmail = (email: string) => {
         const newEmails = mailtoReplacementConfig?.emails.filter(
-            (configEmail) => configEmail !== email
+            (configEmail) => configEmail !== email,
         )
 
         // Preselect the email that was removed
@@ -218,7 +220,7 @@ const ContactFormMailtoReplacementSection = ({
                                                 Undo
                                             </Tooltip>
                                         </li>
-                                    )
+                                    ),
                                 )}
                             </ul>
                         </div>

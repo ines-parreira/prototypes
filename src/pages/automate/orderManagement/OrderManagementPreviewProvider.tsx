@@ -1,13 +1,14 @@
-import React, {ReactNode, useMemo, useState} from 'react'
-import {useParams} from 'react-router-dom'
+import React, { ReactNode, useMemo, useState } from 'react'
 
-import {SegmentEvent} from 'common/segment'
-import {IntegrationType} from 'models/integration/constants'
+import { useParams } from 'react-router-dom'
+
+import { SegmentEvent } from 'common/segment'
+import { IntegrationType } from 'models/integration/constants'
 import useSelfServiceChannels, {
     SelfServiceChannel,
 } from 'pages/automate/common/hooks/useSelfServiceChannels'
 
-import {useHistoryTracking} from '../common/hooks/useHistoryTracking'
+import { useHistoryTracking } from '../common/hooks/useHistoryTracking'
 import OrderManagementPreviewContext, {
     OrderManagementPreviewContextType,
 } from './OrderManagementPreviewContext'
@@ -16,13 +17,13 @@ type Props = {
     children: ReactNode
 }
 
-const OrderManagementPreviewProvider = ({children}: Props) => {
+const OrderManagementPreviewProvider = ({ children }: Props) => {
     useHistoryTracking(SegmentEvent.AutomateOrderManagementVisited)
-    const {shopName} = useParams<{shopName: string}>()
+    const { shopName } = useParams<{ shopName: string }>()
     const channels = useSelfServiceChannels(IntegrationType.Shopify, shopName)
 
     const [channel, setChannel] = useState<SelfServiceChannel | undefined>(
-        channels[0]
+        channels[0],
     )
 
     const orderManagementPreviewContext =
@@ -32,7 +33,7 @@ const OrderManagementPreviewProvider = ({children}: Props) => {
                 channel,
                 onChannelChange: setChannel,
             }),
-            [channels, channel, setChannel]
+            [channels, channel, setChannel],
         )
 
     return (

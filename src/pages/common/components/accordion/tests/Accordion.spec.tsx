@@ -1,5 +1,6 @@
-import {render, screen, act, fireEvent, waitFor} from '@testing-library/react'
 import React from 'react'
+
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 
 import Accordion from '../Accordion'
 import AccordionBody from '../AccordionBody'
@@ -8,7 +9,7 @@ import AccordionItem from '../AccordionItem'
 
 describe('<Accordion />', () => {
     it('should render accordion component', () => {
-        const {container} = render(
+        const { container } = render(
             <Accordion>
                 <AccordionItem id="1">
                     <AccordionHeader>Header 1</AccordionHeader>
@@ -26,7 +27,7 @@ describe('<Accordion />', () => {
                         lobortis eget.
                     </AccordionBody>
                 </AccordionItem>
-            </Accordion>
+            </Accordion>,
         )
 
         expect(container).toMatchSnapshot()
@@ -43,11 +44,11 @@ describe('<Accordion />', () => {
                     <AccordionHeader>Header 2</AccordionHeader>
                     <AccordionBody>Body 2</AccordionBody>
                 </AccordionItem>
-            </Accordion>
+            </Accordion>,
         )
 
         expect(screen.getByText('Body 2').parentElement).not.toHaveClass(
-            'isCollapsed'
+            'isCollapsed',
         )
     })
 
@@ -62,7 +63,7 @@ describe('<Accordion />', () => {
                     <AccordionHeader>Header 2</AccordionHeader>
                     <AccordionBody>Body 2</AccordionBody>
                 </AccordionItem>
-            </Accordion>
+            </Accordion>,
         )
 
         act(() => {
@@ -71,7 +72,7 @@ describe('<Accordion />', () => {
 
         await waitFor(() => {
             expect(screen.getByText('Body 2').parentElement).not.toHaveClass(
-                'isCollapsed'
+                'isCollapsed',
             )
         })
     })
@@ -87,7 +88,7 @@ describe('<Accordion />', () => {
                     <AccordionHeader>Header 2</AccordionHeader>
                     <AccordionBody>Body 2</AccordionBody>
                 </AccordionItem>
-            </Accordion>
+            </Accordion>,
         )
 
         act(() => {
@@ -96,7 +97,7 @@ describe('<Accordion />', () => {
 
         await waitFor(() => {
             expect(screen.getByText('Body 2').parentElement).toHaveClass(
-                'isCollapsed'
+                'isCollapsed',
             )
         })
     })
@@ -112,7 +113,7 @@ describe('<Accordion />', () => {
                     <AccordionHeader>Header 2</AccordionHeader>
                     <AccordionBody>Body 2</AccordionBody>
                 </AccordionItem>
-            </Accordion>
+            </Accordion>,
         )
 
         act(() => {
@@ -121,7 +122,7 @@ describe('<Accordion />', () => {
 
         await waitFor(() => {
             expect(screen.getByText('Body 2').parentElement).toHaveClass(
-                'isCollapsed'
+                'isCollapsed',
             )
         })
     })
@@ -137,7 +138,7 @@ describe('<Accordion />', () => {
                     <AccordionHeader>Header 2</AccordionHeader>
                     <AccordionBody>Body 2</AccordionBody>
                 </AccordionItem>
-            </Accordion>
+            </Accordion>,
         )
 
         act(() => {
@@ -146,7 +147,7 @@ describe('<Accordion />', () => {
 
         await waitFor(() => {
             expect(screen.getByText('Body 2').parentElement).toHaveClass(
-                'isCollapsed'
+                'isCollapsed',
             )
         })
     })

@@ -1,14 +1,15 @@
-import {Badge} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
 import React from 'react'
-import {Card, CardBody, CardTitle} from 'reactstrap'
 
-import {Customer} from 'models/customer/types'
-import {PickedCustomerWithHighlights} from 'models/search/types'
+import classnames from 'classnames'
+import { Card, CardBody, CardTitle } from 'reactstrap'
 
+import { Badge } from '@gorgias/merchant-ui-kit'
+
+import { Customer } from 'models/customer/types'
+import { PickedCustomerWithHighlights } from 'models/search/types'
 import css from 'pages/common/components/infobar/Infobar.less'
-import {customerHighlightsTransform} from 'pages/common/components/Spotlight/helpers'
-import {sanitizeHtmlDefault} from 'utils/html'
+import { customerHighlightsTransform } from 'pages/common/components/Spotlight/helpers'
+import { sanitizeHtmlDefault } from 'utils/html'
 
 export const NO_CUSTOMER_FOUND_PLACEHOLDER = 'No customer found.'
 
@@ -59,11 +60,11 @@ export const InfobarSearchResultsList = ({
                                         <span
                                             className={classnames(
                                                 css.subtitle,
-                                                'd-block mb-1 text-truncate'
+                                                'd-block mb-1 text-truncate',
                                             )}
                                             dangerouslySetInnerHTML={{
                                                 __html: sanitizeHtmlDefault(
-                                                    customer.name
+                                                    customer.name,
                                                 ),
                                             }}
                                         />
@@ -83,11 +84,11 @@ export const InfobarSearchResultsList = ({
                                     <div
                                         className={classnames(
                                             css.detail,
-                                            'd-block text-truncate'
+                                            'd-block text-truncate',
                                         )}
                                         dangerouslySetInnerHTML={{
                                             __html: sanitizeHtmlDefault(
-                                                customer.email
+                                                customer.email,
                                             ),
                                         }}
                                     />
@@ -96,11 +97,11 @@ export const InfobarSearchResultsList = ({
                                     <div
                                         className={classnames(
                                             css.detail,
-                                            'd-block text-truncate'
+                                            'd-block text-truncate',
                                         )}
                                         dangerouslySetInnerHTML={{
                                             __html: sanitizeHtmlDefault(
-                                                customer.orderId
+                                                customer.orderId,
                                             ),
                                         }}
                                     />

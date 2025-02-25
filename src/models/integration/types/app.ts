@@ -1,9 +1,9 @@
-import type {IntegrationConfig} from 'config'
-import type {IntegrationListItem} from 'state/integrations/types'
+import type { IntegrationConfig } from 'config'
+import type { IntegrationListItem } from 'state/integrations/types'
 
-import type {Integration} from '.'
-import {IntegrationType} from '../constants'
-import type {IntegrationBase} from './base'
+import type { Integration } from '.'
+import { IntegrationType } from '../constants'
+import type { IntegrationBase } from './base'
 
 export type AppIntegration = IntegrationBase & {
     type: IntegrationType.App
@@ -34,11 +34,11 @@ export enum Category {
 }
 
 export const isAppIntegration = (
-    integration: Maybe<Integration>
+    integration: Maybe<Integration>,
 ): integration is AppIntegration => integration?.type === IntegrationType.App
 
 export const isCategory = (
-    potentialCategory: Maybe<string>
+    potentialCategory: Maybe<string>,
 ): potentialCategory is Category =>
     Object.values<string>(Category).includes(potentialCategory || '')
 
@@ -119,10 +119,10 @@ export type AppErrorLog = {
 }
 
 export const isAppListItem = (
-    input: IntegrationListItem | AppListItem
+    input: IntegrationListItem | AppListItem,
 ): input is AppListItem => input.type === IntegrationType.App
 
 export const isAppDetail = (
-    input: Record<string, unknown>
+    input: Record<string, unknown>,
 ): input is AppDetail =>
     input?.type === IntegrationType.App && typeof input?.appId === 'string'

@@ -6,7 +6,7 @@ import PageHeader from 'pages/common/components/PageHeader'
 
 import css from './StoreIntegrationView.less'
 
-const StoreIntegrationView = ({title}: {title: string}) => {
+const StoreIntegrationView = ({ title }: { title: string }) => {
     return (
         <div className={css.layout}>
             <PageHeader title={title}></PageHeader>

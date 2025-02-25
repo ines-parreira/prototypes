@@ -1,7 +1,8 @@
-import {render, screen, fireEvent} from '@testing-library/react'
 import React from 'react'
 
-import {CustomDropdownInput} from '../CustomDropdownInput'
+import { fireEvent, render, screen } from '@testing-library/react'
+
+import { CustomDropdownInput } from '../CustomDropdownInput'
 
 describe('CustomDropdownInput', () => {
     const onFocus = jest.fn()

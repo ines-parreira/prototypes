@@ -1,12 +1,13 @@
-import {Map, List} from 'immutable'
 import React from 'react'
+
+import { List, Map } from 'immutable'
 
 import {
     ActionConfig,
     Argument,
 } from 'pages/common/components/ast/actions/config'
-import {RuleItemActions} from 'pages/settings/rules/types'
-import {ObjectExpressionProperty} from 'state/rules/types'
+import { RuleItemActions } from 'pages/settings/rules/types'
+import { ObjectExpressionProperty } from 'state/rules/types'
 
 import Property from '../Property'
 
@@ -22,7 +23,9 @@ type Props = {
     schemas: Map<any, any>
 }
 
-function hasHidden(value?: Record<string, unknown>): value is {hide: boolean} {
+function hasHidden(
+    value?: Record<string, unknown>,
+): value is { hide: boolean } {
     return !!value && 'hide' in value
 }
 

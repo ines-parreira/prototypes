@@ -1,11 +1,12 @@
-import {screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {renderWithRouter} from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
 import Integration from '../Integration'
 
@@ -20,13 +21,13 @@ describe('<Integration/>', () => {
     }
 
     it('should render a loader because the integration is loading', () => {
-        const {container} = renderWithRouter(
+        const { container } = renderWithRouter(
             <Provider store={store}>
                 <Integration
                     {...minProps}
-                    loading={fromJS({integration: true})}
+                    loading={fromJS({ integration: true })}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(container).toMatchSnapshot()
@@ -39,11 +40,11 @@ describe('<Integration/>', () => {
                     {...minProps}
                     integration={fromJS({
                         meta: {
-                            import_state: {is_over: false},
+                            import_state: { is_over: false },
                         },
                     })}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText(/Import in progress/))
@@ -56,11 +57,11 @@ describe('<Integration/>', () => {
                     {...minProps}
                     integration={fromJS({
                         meta: {
-                            import_state: {is_over: true},
+                            import_state: { is_over: true },
                         },
                     })}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText(/All your Magento2 customers/))
@@ -77,7 +78,7 @@ describe('<Integration/>', () => {
                         },
                     })}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.queryByLabelText(/Consumer key/)).toBe(null)
@@ -94,7 +95,7 @@ describe('<Integration/>', () => {
                         },
                     })}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByLabelText(/Consumer key/))

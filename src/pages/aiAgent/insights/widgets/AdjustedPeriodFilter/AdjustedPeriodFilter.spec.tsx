@@ -1,13 +1,14 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {screen} from '@testing-library/react'
-import moment from 'moment'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { screen } from '@testing-library/react'
+import moment from 'moment'
+import { Provider } from 'react-redux'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock, mockStore, renderWithRouter} from 'utils/testing'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock, mockStore, renderWithRouter } from 'utils/testing'
 
 import {
     AdjustedPeriodFilter,
@@ -64,7 +65,7 @@ const renderComponent = () => {
         {
             path: `/:shopType/:shopName/ai-agent/optimize`,
             route: `/${SHOP_TYPE}/${SHOP_NAME}/ai-agent/optimize`,
-        }
+        },
     )
 }
 
@@ -81,7 +82,7 @@ describe('subtractsPeriodWithoutDataIfNeeded', () => {
         const recentDate = moment().subtract(48, 'hours')
         const result = subtractsPeriodWithoutDataIfNeeded(recentDate.clone())
         expect(result.toISOString()).toBe(
-            recentDate.subtract(72, 'hours').toISOString()
+            recentDate.subtract(72, 'hours').toISOString(),
         )
     })
 

@@ -1,5 +1,5 @@
-import {TicketTimeDimensions} from 'models/reporting/cubes/TicketCube'
-import {Cube} from 'models/reporting/types'
+import { TicketTimeDimensions } from 'models/reporting/cubes/TicketCube'
+import { Cube } from 'models/reporting/types'
 
 export enum TicketMessagesMeasure {
     MedianFirstResponseTime = 'TicketMessagesEnriched.medianFirstResponseTime',

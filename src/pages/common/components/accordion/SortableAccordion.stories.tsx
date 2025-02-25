@@ -1,8 +1,9 @@
-import {Meta, Story} from '@storybook/react'
-import {createDragDropManager} from 'dnd-core'
-import React, {ComponentProps, useState} from 'react'
-import {DndProvider} from 'react-dnd'
-import {HTML5Backend} from 'react-dnd-html5-backend'
+import React, { ComponentProps, useState } from 'react'
+
+import { Meta, Story } from '@storybook/react'
+import { createDragDropManager } from 'dnd-core'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import AccordionBody from './AccordionBody'
 import SortableAccordion from './SortableAccordion'
@@ -48,11 +49,11 @@ const storyConfig: Meta = {
     },
 }
 
-type Item = {id: string; isDisabled?: boolean}
+type Item = { id: string; isDisabled?: boolean }
 
 const Template: Story<
-    ComponentProps<typeof SortableAccordion> & {items: Item[]}
-> = ({items, ...props}) => {
+    ComponentProps<typeof SortableAccordion> & { items: Item[] }
+> = ({ items, ...props }) => {
     const [orderedItems, setOrderedItems] = useState(items)
 
     return (
@@ -61,8 +62,8 @@ const Template: Story<
             onReorder={(reorderedItems) => {
                 setOrderedItems(
                     reorderedItems.map(
-                        (id) => items.find((item) => item.id === id) as Item
-                    )
+                        (id) => items.find((item) => item.id === id) as Item,
+                    ),
                 )
             }}
         >
@@ -88,19 +89,19 @@ const Template: Story<
 
 export const Default = Template.bind({})
 Default.args = {
-    items: [{id: '1'}, {id: '2'}, {id: '3'}],
+    items: [{ id: '1' }, { id: '2' }, { id: '3' }],
 }
 
 export const Disabled = Template.bind({})
 Disabled.args = {
-    items: [{id: '1'}, {id: '2'}, {id: '3'}],
+    items: [{ id: '1' }, { id: '2' }, { id: '3' }],
     isDisabled: true,
 }
 
 export const WithDisabledItem = Template.bind({})
 WithDisabledItem.args = {
     type: 'sortable-accordion-with-disabled-item',
-    items: [{id: '1', isDisabled: true}, {id: '2'}, {id: '3'}],
+    items: [{ id: '1', isDisabled: true }, { id: '2' }, { id: '3' }],
 }
 
 export default storyConfig

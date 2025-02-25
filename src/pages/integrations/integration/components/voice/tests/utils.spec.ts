@@ -1,6 +1,6 @@
-import {VoiceMessageType} from 'models/integration/constants'
+import { VoiceMessageType } from 'models/integration/constants'
 
-import {getVoiceMessagePayload, isValueInRange} from '../utils'
+import { getVoiceMessagePayload, isValueInRange } from '../utils'
 
 describe('isValueInRange', () => {
     it('should check if a number is inside the range', () => {

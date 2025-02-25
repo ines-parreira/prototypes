@@ -1,23 +1,25 @@
-import classNamesBind from 'classnames/bind'
-import {fromJS, Map} from 'immutable'
-import _memoize from 'lodash/memoize'
-import moment, {Moment} from 'moment'
-import React, {Component, ReactNode} from 'react'
+import React, { Component, ReactNode } from 'react'
 
-import {TicketVia} from 'business/types/ticket'
-import {IntegrationType} from 'models/integration/constants'
-import {isFailed, isPending} from 'models/ticket/predicates'
-import {TicketMessage} from 'models/ticket/types'
+import classNamesBind from 'classnames/bind'
+import { fromJS, Map } from 'immutable'
+import _memoize from 'lodash/memoize'
+import moment, { Moment } from 'moment'
+
+import { TicketVia } from 'business/types/ticket'
+import { IntegrationType } from 'models/integration/constants'
+import { isFailed, isPending } from 'models/ticket/predicates'
+import { TicketMessage } from 'models/ticket/types'
 import Avatar from 'pages/common/components/Avatar/Avatar'
-import {getDisplayCustomerLastSeenOnChat} from 'pages/common/components/infobar/utils'
-import {scrollToReactNode} from 'pages/common/utils/keyboard'
-import {AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS} from 'state/agents/constants'
+import { getDisplayCustomerLastSeenOnChat } from 'pages/common/components/infobar/utils'
+import { scrollToReactNode } from 'pages/common/utils/keyboard'
+import { AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS } from 'state/agents/constants'
 
 import AIAgentBanner from './AIAgentBanner'
 import AIAgentMessageEvents from './AIAgentMessageEvents'
-import css from './Container.less'
 import Footer from './Footer'
 import Header from './Header'
+
+import css from './Container.less'
 
 const classNames = classNamesBind.bind(css)
 
@@ -101,7 +103,7 @@ export default class Container extends Component<Props> {
 
                 const memoizedCustomerIntegrationsData = _memoize(
                     (customer: Map<any, any>): Map<any, any> =>
-                        customer.get('integrations') as Map<any, any>
+                        customer.get('integrations') as Map<any, any>,
                 )
 
                 const customerIntegrationsData =
@@ -112,21 +114,21 @@ export default class Container extends Component<Props> {
                     chatIntegrationData = customerIntegrationsData.find(
                         (customerIntegrationData: Map<any, any>) =>
                             customerIntegrationData.get(
-                                '__integration_type__'
-                            ) === IntegrationType.GorgiasChat
+                                '__integration_type__',
+                            ) === IntegrationType.GorgiasChat,
                     )
                 }
 
                 if (chatIntegrationData) {
                     lastSeenOnChat = chatIntegrationData.get(
-                        'chat_recent_activity_timestamp'
+                        'chat_recent_activity_timestamp',
                     )
                 }
 
                 if (lastSeenOnChat) {
                     timeReadableValue = getDisplayCustomerLastSeenOnChat(
                         lastSeenOnChat,
-                        timezone
+                        timezone,
                     )
 
                     badgeColor =
@@ -159,12 +161,12 @@ export default class Container extends Component<Props> {
         }
 
         // appear animation if message is created after the ticket body component is mounted
-        const {lastMessageDatetimeAfterMount} = this.props
+        const { lastMessageDatetimeAfterMount } = this.props
         const appear =
             !!lastMessageDatetimeAfterMount &&
             !message.from_agent &&
             moment(message.created_datetime).diff(
-                lastMessageDatetimeAfterMount
+                lastMessageDatetimeAfterMount,
             ) > 0
 
         const showAIAgentMessageEvents =
@@ -177,8 +179,8 @@ export default class Container extends Component<Props> {
                 (message) =>
                     message.via === TicketVia.Api &&
                     AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS.includes(
-                        message.sender.email
-                    )
+                        message.sender.email,
+                    ),
             )
 
         return (
@@ -199,7 +201,7 @@ export default class Container extends Component<Props> {
                                     this.props.isBodyHighlighted,
                                 ticketHandledByAIAgent: isAIAgentMessage,
                                 aiMessageSelected: isAIAgentMessageSelected,
-                            }
+                            },
                         )}
                     >
                         {avatar}

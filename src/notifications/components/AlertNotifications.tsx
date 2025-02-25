@@ -1,10 +1,11 @@
-import React, {useCallback} from 'react'
-import {createPortal} from 'react-dom'
-import NotificationsSystem, {dismissNotification} from 'reapop'
+import React, { useCallback } from 'react'
 
-import {useAppNode} from 'appNode'
+import { createPortal } from 'react-dom'
+import NotificationsSystem, { dismissNotification } from 'reapop'
+
+import { useAppNode } from 'appNode'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {NotificationIcon} from 'pages/common/components/NotificationIcon'
+import { NotificationIcon } from 'pages/common/components/NotificationIcon'
 import notificationsTheme from 'pages/common/components/Notifications'
 
 import useAlertNotifications from '../hooks/useAlertNotifications'
@@ -18,16 +19,16 @@ export default function Notifications() {
         (id) => {
             dispatch(dismissNotification(id))
         },
-        [dispatch]
+        [dispatch],
     )
 
     return createPortal(
         <NotificationsSystem
-            components={{NotificationIcon}}
+            components={{ NotificationIcon }}
             dismissNotification={dismiss}
             notifications={alertNotifications}
             theme={notificationsTheme}
         />,
-        appNode ?? document.body
+        appNode ?? document.body,
     )
 }

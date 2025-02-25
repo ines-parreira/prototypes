@@ -1,17 +1,18 @@
-import {render, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
+
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import {
     TicketSLADimension,
     TicketSLAStatus,
 } from 'models/reporting/cubes/sla/TicketSLACube'
-import {formatDuration} from 'pages/stats/common/utils'
+import { formatDuration } from 'pages/stats/common/utils'
 import {
     PENDING_SLA_TIME_LABEL,
     SLAStatusCell,
 } from 'pages/stats/sla/components/SlaStatusCell'
-import {SlaStatusLabel} from 'services/reporting/constants'
+import { SlaStatusLabel } from 'services/reporting/constants'
 
 describe('<SLAStatusCell />', () => {
     it("should render Ticket SLA's status with metrics in a tooltip", () => {
@@ -70,18 +71,18 @@ describe('<SLAStatusCell />', () => {
         await waitFor(() => {
             expect(
                 screen.getByText(
-                    formatDuration(breachedMetric[TicketSLADimension.SlaDelta])
-                )
+                    formatDuration(breachedMetric[TicketSLADimension.SlaDelta]),
+                ),
             ).toBeInTheDocument()
             expect(
                 screen.getByText(
                     new RegExp(
-                        SlaStatusLabel[satisfiedMetricStatus].toLowerCase()
-                    )
-                )
+                        SlaStatusLabel[satisfiedMetricStatus].toLowerCase(),
+                    ),
+                ),
             ).toBeInTheDocument()
             expect(
-                screen.getByText(new RegExp(PENDING_SLA_TIME_LABEL))
+                screen.getByText(new RegExp(PENDING_SLA_TIME_LABEL)),
             ).toBeInTheDocument()
         })
     })

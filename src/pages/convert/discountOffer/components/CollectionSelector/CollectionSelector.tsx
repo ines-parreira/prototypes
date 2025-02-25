@@ -1,8 +1,8 @@
+import React, { useCallback, useMemo, useRef, useState } from 'react'
+
 import _debounce from 'lodash/debounce'
-import React, {useCallback, useMemo, useRef, useState} from 'react'
 
-import {useCollectionsFromShopifyIntegration} from 'models/integration/queries'
-
+import { useCollectionsFromShopifyIntegration } from 'models/integration/queries'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
@@ -36,9 +36,9 @@ const CollectionSelector: React.FC<Props> = ({
     const [search, setSearch] = useState<string>('')
     const [isSelectOpen, setIsSelectOpen] = useState(false)
 
-    const {data: collectionData} = useCollectionsFromShopifyIntegration(
+    const { data: collectionData } = useCollectionsFromShopifyIntegration(
         integrationId,
-        {search: search}
+        { search: search },
     )
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -46,7 +46,7 @@ const CollectionSelector: React.FC<Props> = ({
         _debounce((value: string) => {
             setSearch(value)
         }, 250),
-        [setSearch]
+        [setSearch],
     )
     const productCollections = useMemo<Option[]>(() => {
         return (
@@ -54,7 +54,7 @@ const CollectionSelector: React.FC<Props> = ({
                 (segment): Option => ({
                     label: segment.title,
                     value: segment.id.toString(),
-                })
+                }),
             ) ?? []
         )
     }, [collectionData])
@@ -67,7 +67,7 @@ const CollectionSelector: React.FC<Props> = ({
                 return ''
             case 1:
                 return productCollections.find(
-                    (item) => item.value === value[0]
+                    (item) => item.value === value[0],
                 )?.label
             default:
                 return `${value?.length} collections selected`

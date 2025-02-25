@@ -5,13 +5,14 @@ import React, {
     useRef,
     useState,
 } from 'react'
-import {Popover} from 'reactstrap'
+
+import { Popover } from 'reactstrap'
 
 import useAppSelector from 'hooks/useAppSelector'
 import useId from 'hooks/useId'
 import IconButton from 'pages/common/components/button/IconButton'
-import {ModalContext} from 'pages/common/components/modal/Modal'
-import {RootState} from 'state/types'
+import { ModalContext } from 'pages/common/components/modal/Modal'
+import { RootState } from 'state/types'
 
 import css from './LinkPopover.less'
 
@@ -22,13 +23,18 @@ type Props = {
     onEdit?: () => void
 }
 
-export default function LinkPopover({children, url, onDelete, onEdit}: Props) {
+export default function LinkPopover({
+    children,
+    url,
+    onDelete,
+    onEdit,
+}: Props) {
     const id = useId()
 
     const [isOpen, setIsOpen] = useState(false)
     const timeout = useRef<ReturnType<typeof setTimeout> | null>(null)
     const isEditingLink = useAppSelector(
-        (state: RootState) => state.ui.editor.isEditingLink
+        (state: RootState) => state.ui.editor.isEditingLink,
     )
 
     useEffect(
@@ -37,7 +43,7 @@ export default function LinkPopover({children, url, onDelete, onEdit}: Props) {
                 clearTimeout(timeout.current)
             }
         },
-        []
+        [],
     )
 
     const handleMouseEnter = useCallback(
@@ -50,7 +56,7 @@ export default function LinkPopover({children, url, onDelete, onEdit}: Props) {
                 setIsOpen(true)
             }
         },
-        [isEditingLink]
+        [isEditingLink],
     )
 
     const handleMouseLeave = useCallback((e: MouseEvent) => {
@@ -66,7 +72,7 @@ export default function LinkPopover({children, url, onDelete, onEdit}: Props) {
             if (onEdit) onEdit()
             setIsOpen(false)
         },
-        [onEdit]
+        [onEdit],
     )
 
     const handleClickDelete = useCallback(
@@ -74,7 +80,7 @@ export default function LinkPopover({children, url, onDelete, onEdit}: Props) {
             e.preventDefault()
             if (onDelete) onDelete()
         },
-        [onDelete]
+        [onDelete],
     )
 
     const linkId = `link-${id}`

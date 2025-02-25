@@ -1,13 +1,13 @@
-import {useCallback, useMemo} from 'react'
+import { useCallback, useMemo } from 'react'
 
-import {IntegrationType} from 'models/integration/constants'
+import { IntegrationType } from 'models/integration/constants'
 import {
     AUTOMATED_RESPONSE,
     SelfServiceConfiguration,
 } from 'models/selfServiceConfiguration/types'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 
-import {DEFAULT_RESPONSE_MESSAGE_CONTENT} from '../constants'
+import { DEFAULT_RESPONSE_MESSAGE_CONTENT } from '../constants'
 
 const useCancelOrderFlow = (shopName: string) => {
     const {
@@ -26,7 +26,7 @@ const useCancelOrderFlow = (shopName: string) => {
                 draft.cancelOrderPolicy.action = cancelOrderFlow.action
             })
         },
-        [handleSelfServiceConfigurationUpdate]
+        [handleSelfServiceConfigurationUpdate],
     )
 
     const cancelOrderFlow = useMemo(
@@ -38,7 +38,7 @@ const useCancelOrderFlow = (shopName: string) => {
                     responseMessageContent: DEFAULT_RESPONSE_MESSAGE_CONTENT,
                 },
             },
-        [selfServiceConfiguration?.cancelOrderPolicy]
+        [selfServiceConfiguration?.cancelOrderPolicy],
     )
 
     return {

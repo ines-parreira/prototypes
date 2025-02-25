@@ -1,13 +1,13 @@
 import client from 'models/api/resources'
-import {ApiListResponseCursorPagination} from 'models/api/types'
+import { ApiListResponseCursorPagination } from 'models/api/types'
 
 import {
-    WhatsAppMessageTemplate,
     ListWhatsAppMessageTemplatesParams,
+    WhatsAppMessageTemplate,
 } from './types'
 
 export async function listWhatsAppMessageTemplates(
-    params?: ListWhatsAppMessageTemplatesParams
+    params?: ListWhatsAppMessageTemplatesParams,
 ): Promise<ApiListResponseCursorPagination<WhatsAppMessageTemplate[]>> {
     const response = await client.get<
         ApiListResponseCursorPagination<WhatsAppMessageTemplate[]>

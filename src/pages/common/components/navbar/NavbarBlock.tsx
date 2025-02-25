@@ -1,16 +1,23 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { ReactNode, useRef, useState } from 'react'
+
 import classnames from 'classnames'
 import _kebabCase from 'lodash/kebabCase'
-import React, {ReactNode, useRef, useState} from 'react'
-import {useDrag} from 'react-dnd'
-import {Dropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'
+import { useDrag } from 'react-dnd'
+import {
+    Dropdown,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+} from 'reactstrap'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import navbarCss from 'assets/css/navbar.less'
-import {ViewCategoryNavbar} from 'models/view/types'
+import { ViewCategoryNavbar } from 'models/view/types'
 import css from 'pages/common/components/navbar/NavbarBlock.less'
 import IconInput from 'pages/common/forms/input/IconInput'
 import TicketNavbarDropTarget from 'pages/tickets/navbar/TicketNavbarDropTarget'
-import {TicketNavbarElementType} from 'state/ui/ticketNavbar/types'
+import { TicketNavbarElementType } from 'state/ui/ticketNavbar/types'
 
 type Props = {
     actions?: {
@@ -55,7 +62,7 @@ export default function NavbarBlock({
     const [isOpen, setOpen] = useState(false)
     const categoryRef = useRef<HTMLHeadingElement>(null)
 
-    const [{isDragging}, drag] = useDrag({
+    const [{ isDragging }, drag] = useDrag({
         item: {
             id: value,
             type: TicketNavbarElementType.Category,
@@ -98,7 +105,7 @@ export default function NavbarBlock({
                             <i
                                 className={classnames(
                                     'material-icons',
-                                    navbarCss.icon
+                                    navbarCss.icon,
                                 )}
                             >
                                 {icon}
@@ -115,7 +122,7 @@ export default function NavbarBlock({
                             <DropdownToggle
                                 className={classnames(
                                     css.toggle,
-                                    'btn-transparent'
+                                    'btn-transparent',
                                 )}
                                 color="secondary"
                                 type="button"
@@ -141,7 +148,7 @@ export default function NavbarBlock({
                                         <DropdownItem
                                             className={classnames(
                                                 css.action,
-                                                dropdownClassName
+                                                dropdownClassName,
                                             )}
                                             key={action.label}
                                             onClick={action.onClick}

@@ -1,23 +1,24 @@
-import classNames from 'classnames'
-import React, {ReactNode, useRef, useState} from 'react'
+import React, { ReactNode, useRef, useState } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {useCustomReportActions} from 'hooks/reporting/custom-reports/useCustomReportActions'
+import classNames from 'classnames'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { useCustomReportActions } from 'hooks/reporting/custom-reports/useCustomReportActions'
 import useAppSelector from 'hooks/useAppSelector'
-import {CustomReportChild} from 'models/stat/types'
+import { CustomReportChild } from 'models/stat/types'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import IconInput from 'pages/common/forms/input/IconInput'
-import {AddChartToDashboardModal} from 'pages/stats/custom-reports/ChartsActionMenu/AddChartToDashboardModal'
+import { AddChartToDashboardModal } from 'pages/stats/custom-reports/ChartsActionMenu/AddChartToDashboardModal'
 import css from 'pages/stats/custom-reports/ChartsActionMenu/ChartsActionMenu.less'
-import {MAX_DASHBOARDS_ALLOWED} from 'pages/stats/custom-reports/constants'
+import { MAX_DASHBOARDS_ALLOWED } from 'pages/stats/custom-reports/constants'
 import {
     CustomReportChildType,
     CustomReportSchema,
 } from 'pages/stats/custom-reports/types'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {isTeamLead} from 'utils'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { isTeamLead } from 'utils'
 
 export const ADD_TO_DASHBOARD = 'Add To Dashboard'
 export const CREATE_NEW_DASHBOARD_LABEL = 'Create New Dashboard'
@@ -54,7 +55,7 @@ const childrenContainChart =
         if (dashboardChild.type !== CustomReportChildType.Chart) {
             return dashboardChild.children.reduce(
                 childrenContainChart(chartId),
-                hasChart
+                hasChart,
             )
         } else if (dashboardChild.config_id === chartId) {
             return true
@@ -106,7 +107,7 @@ export const ChartsActionMenu = ({
     const dashboards = getDashboardsHandler()
 
     const filteredDashboards = dashboards.filter(
-        (dashboard) => !containsChart(dashboard, chartId)
+        (dashboard) => !containsChart(dashboard, chartId),
     )
 
     const limitReached = dashboards.length >= MAX_DASHBOARDS_ALLOWED
@@ -160,7 +161,7 @@ export const ChartsActionMenu = ({
                                         {
                                             [css.disableAddToDashboardAction]:
                                                 limitReached,
-                                        }
+                                        },
                                     )}
                                     isDisabled={limitReached}
                                     shouldCloseOnSelect

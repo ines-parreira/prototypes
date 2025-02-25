@@ -1,1 +1,1 @@
-export {default} from './CampaignLibrarySection'
+export { default } from './CampaignLibrarySection'

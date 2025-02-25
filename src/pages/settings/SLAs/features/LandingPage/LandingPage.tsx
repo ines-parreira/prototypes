@@ -1,11 +1,11 @@
 import React from 'react'
 
-import {TEMPLATES_LIST} from 'pages/settings/SLAs/config/templates'
+import { TEMPLATES_LIST } from 'pages/settings/SLAs/config/templates'
 import Templates from 'pages/settings/SLAs/features/SLATemplateList/views/Templates'
 
 import PageHeader from '../PageHeader/PageHeader'
-
 import LandingBanner from './LandingBanner'
+
 import css from './LandingPage.less'
 
 const LandingPage = () => {

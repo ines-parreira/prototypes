@@ -1,11 +1,8 @@
-import {renderHook} from '@testing-library/react-hooks'
-
-import {mockFlags} from 'jest-launchdarkly-mock'
-
+import { renderHook } from '@testing-library/react-hooks'
+import { mockFlags } from 'jest-launchdarkly-mock'
 import moment from 'moment/moment'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-
+import { FeatureFlagKey } from 'config/featureFlags'
 import {
     fetchAllAutomatedInteractions,
     fetchAllAutomatedInteractionsByAutoResponders,
@@ -24,63 +21,63 @@ import {
     useFirstResponseTimeIncludingAIAgent,
     useResolutionTimeExcludingAIAgent,
 } from 'hooks/reporting/automate/automationTrends'
-import {useAIAgentUserId} from 'hooks/reporting/automate/useAIAgentUserId'
+import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
 import {
     fetchAutomationRateTrend,
     useAutomationRateTrend,
 } from 'hooks/reporting/automate/useAutomationRateTrend'
-import {StatsFilters} from 'models/stat/types'
-import {assumeMock} from 'utils/testing'
+import { StatsFilters } from 'models/stat/types'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/automate/useAIAgentUserId')
 const useAIAgentUserIdMock = assumeMock(useAIAgentUserId)
 
 jest.mock('hooks/reporting/automate/automationTrends')
 const useFilteredAutomatedInteractionsMock = assumeMock(
-    useFilteredAutomatedInteractions
+    useFilteredAutomatedInteractions,
 )
 const fetchFilteredAutomatedInteractionsMock = assumeMock(
-    fetchFilteredAutomatedInteractions
+    fetchFilteredAutomatedInteractions,
 )
 const useAllAutomatedInteractionsByAutoRespondersMock = assumeMock(
-    useAllAutomatedInteractionsByAutoResponders
+    useAllAutomatedInteractionsByAutoResponders,
 )
 const fetchAllAutomatedInteractionsByAutoRespondersMock = assumeMock(
-    fetchAllAutomatedInteractionsByAutoResponders
+    fetchAllAutomatedInteractionsByAutoResponders,
 )
 const useAllAutomatedInteractionsMock = assumeMock(useAllAutomatedInteractions)
 const fetchAllAutomatedInteractionsMock = assumeMock(
-    fetchAllAutomatedInteractions
+    fetchAllAutomatedInteractions,
 )
 const useBillableTicketsExcludingAIAgentMock = assumeMock(
-    useBillableTicketsExcludingAIAgent
+    useBillableTicketsExcludingAIAgent,
 )
 const fetchBillableTicketsExcludingAIAgentMock = assumeMock(
-    fetchBillableTicketsExcludingAIAgent
+    fetchBillableTicketsExcludingAIAgent,
 )
 const useFilteredAutomatedInteractionsByAutoRespondersMock = assumeMock(
-    useFilteredAutomatedInteractionsByAutoResponders
+    useFilteredAutomatedInteractionsByAutoResponders,
 )
 const fetchFilteredAutomatedInteractionsByAutoRespondersMock = assumeMock(
-    fetchFilteredAutomatedInteractionsByAutoResponders
+    fetchFilteredAutomatedInteractionsByAutoResponders,
 )
 const useFirstResponseTimeExcludingAIAgentMock = assumeMock(
-    useFirstResponseTimeExcludingAIAgent
+    useFirstResponseTimeExcludingAIAgent,
 )
 const fetchFirstResponseTimeExcludingAIAgentMock = assumeMock(
-    fetchFirstResponseTimeExcludingAIAgent
+    fetchFirstResponseTimeExcludingAIAgent,
 )
 const useFirstResponseTimeIncludingAIAgentMock = assumeMock(
-    useFirstResponseTimeIncludingAIAgent
+    useFirstResponseTimeIncludingAIAgent,
 )
 const fetchFirstResponseTimeIncludingAIAgentMock = assumeMock(
-    fetchFirstResponseTimeIncludingAIAgent
+    fetchFirstResponseTimeIncludingAIAgent,
 )
 const useResolutionTimeExcludingAIAgentMock = assumeMock(
-    useResolutionTimeExcludingAIAgent
+    useResolutionTimeExcludingAIAgent,
 )
 const fetchResolutionTimeExcludingAIAgentMock = assumeMock(
-    fetchResolutionTimeExcludingAIAgent
+    fetchResolutionTimeExcludingAIAgent,
 )
 
 describe('AutomationRateTrend', () => {
@@ -163,7 +160,7 @@ describe('AutomationRateTrend', () => {
                     isFetching: false,
                     isFetched: true,
                     isError: false,
-                } as any
+                } as any,
             )
             useFirstResponseTimeExcludingAIAgentMock.mockReturnValue({
                 data: ticketDatasetExcludingAIAgent,
@@ -186,8 +183,8 @@ describe('AutomationRateTrend', () => {
         })
 
         it('should fetch and format data with a hook', () => {
-            const {result} = renderHook(() =>
-                useAutomationRateTrend(statsFilters, timezone)
+            const { result } = renderHook(() =>
+                useAutomationRateTrend(statsFilters, timezone),
             )
 
             expect(result.current).toEqual({
@@ -205,8 +202,8 @@ describe('AutomationRateTrend', () => {
                 [FeatureFlagKey.AutomateNonFilteredDenominatorInAutomationRate]:
                     true,
             })
-            const {result} = renderHook(() =>
-                useAutomationRateTrend(statsFilters, timezone)
+            const { result } = renderHook(() =>
+                useAutomationRateTrend(statsFilters, timezone),
             )
 
             expect(result.current).toEqual({
@@ -234,7 +231,7 @@ describe('AutomationRateTrend', () => {
                     isFetched: true,
                     isFetching: false,
                     isError: false,
-                } as any
+                } as any,
             )
             fetchAllAutomatedInteractionsMock.mockResolvedValue({
                 data: allAutomatedInteractionsData,
@@ -254,7 +251,7 @@ describe('AutomationRateTrend', () => {
                     isFetching: false,
                     isFetched: true,
                     isError: false,
-                } as any
+                } as any,
             )
             fetchFirstResponseTimeExcludingAIAgentMock.mockResolvedValue({
                 data: ticketDatasetExcludingAIAgent,
@@ -281,7 +278,7 @@ describe('AutomationRateTrend', () => {
                 statsFilters,
                 timezone,
                 false,
-                aiAgentUserId
+                aiAgentUserId,
             )
 
             expect(result).toEqual({
@@ -299,7 +296,7 @@ describe('AutomationRateTrend', () => {
                 statsFilters,
                 timezone,
                 true,
-                aiAgentUserId
+                aiAgentUserId,
             )
 
             expect(result).toEqual({

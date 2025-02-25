@@ -1,6 +1,6 @@
-import {ContactFormsState} from 'state/entities/contactForm/contactForms'
+import { ContactFormsState } from 'state/entities/contactForm/contactForms'
 
-import {ContactFormsAutomationSettingsState} from './contactFormsAutomationSettings'
+import { ContactFormsAutomationSettingsState } from './contactFormsAutomationSettings'
 
 export type ContactFormState = {
     contactForms: ContactFormsState

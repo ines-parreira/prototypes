@@ -1,13 +1,13 @@
-import {UserRole, UserSettingType, User} from 'config/types/user'
-import {Metric} from 'hooks/reporting/metrics'
-import {HelpdeskMessageMeasure} from 'models/reporting/cubes/HelpdeskMessageCube'
-import {TicketDimension} from 'models/reporting/cubes/TicketCube'
+import { User, UserRole, UserSettingType } from 'config/types/user'
+import { Metric } from 'hooks/reporting/metrics'
+import { HelpdeskMessageMeasure } from 'models/reporting/cubes/HelpdeskMessageCube'
+import { TicketDimension } from 'models/reporting/cubes/TicketCube'
 import {
     AgentsPerformanceReportData,
     createAgentsReport,
     SUMMARY_ROW_AGENT_COLUMN_LABEL,
 } from 'services/reporting/agentsPerformanceReportingService'
-import {AgentsTableColumn} from 'state/ui/stats/types'
+import { AgentsTableColumn } from 'state/ui/stats/types'
 import * as files from 'utils/file'
 
 jest.mock('utils/file')
@@ -72,7 +72,7 @@ const agents: User[] = [
         firstname: 'John',
         lastname: 'Doe',
         email: 'johndoe@example.com',
-        role: {name: UserRole.Admin},
+        role: { name: UserRole.Admin },
         active: true,
         bio: 'Lorem ipsum dolor sit amet',
         country: 'United States',
@@ -86,7 +86,7 @@ const agents: User[] = [
             {
                 id: 1,
                 type: UserSettingType.Preferences,
-                data: {available: false, show_macros: false},
+                data: { available: false, show_macros: false },
             },
         ],
         timezone: 'America/New_York',
@@ -114,17 +114,17 @@ const reportDataFactory = (
     agents: User[],
     reportData: any,
     metricsOverride: Record<string, any> | undefined = {},
-    testName: string | undefined = ''
+    testName: string | undefined = '',
 ) => {
     const baseMetrics = baseMetricBuilder(reportData)
     const data: AgentsPerformanceReportData = {
         ...baseMetrics,
     }
     const summaryData: AgentsPerformanceReportData<Metric> = {
-        ...{...baseMetrics, ...metricsOverride},
+        ...{ ...baseMetrics, ...metricsOverride },
     }
 
-    return {agents, data, summaryData, testName}
+    return { agents, data, summaryData, testName }
 }
 
 const testCasesData = [
@@ -133,25 +133,25 @@ const testCasesData = [
         agents,
         reportDataWithoutCubeMetrics,
         undefined,
-        'Report data without cube metrics'
+        'Report data without cube metrics',
     ),
     reportDataFactory(
         agents,
         reportDataWithCubeMetrics,
         {
-            closedTicketsMetric: {data: null},
-            ticketsRepliedMetric: {data: null},
-            messagesSentMetric: {data: null},
-            oneTouchTicketsMetric: {data: null},
+            closedTicketsMetric: { data: null },
+            ticketsRepliedMetric: { data: null },
+            messagesSentMetric: { data: null },
+            oneTouchTicketsMetric: { data: null },
         },
-        'Report data with cube metrics'
+        'Report data with cube metrics',
     ),
 ]
 
 describe('agentsPerformanceReportingService', () => {
     it.each(testCasesData)(
         'should call saveReport with $testName',
-        ({agents, data, summaryData, testName}) => {
+        ({ agents, data, summaryData, testName }) => {
             const fakeReport1 = 'someString'
 
             jest.spyOn(files, 'createCsv').mockReturnValue(fakeReport1)
@@ -161,7 +161,7 @@ describe('agentsPerformanceReportingService', () => {
                 data,
                 summaryData,
                 columnsOrder,
-                testName
+                testName,
             )
 
             expect(result).toEqual({
@@ -169,12 +169,12 @@ describe('agentsPerformanceReportingService', () => {
                     [testName]: fakeReport1,
                 },
             })
-        }
+        },
     )
 
     it('should return agent name', () => {
         const reportData = testCasesData.find(
-            ({testName}) => testName === 'Report data with cube metrics'
+            ({ testName }) => testName === 'Report data with cube metrics',
         )
         const fakeReport1 = 'someString'
         const fileName = 'someFileName'
@@ -183,13 +183,13 @@ describe('agentsPerformanceReportingService', () => {
             .mockReturnValue(fakeReport1)
 
         if (reportData) {
-            const {data, summaryData} = reportData
+            const { data, summaryData } = reportData
             createAgentsReport(
                 agents,
                 data,
                 summaryData,
                 columnsOrder,
-                fileName
+                fileName,
             )
         }
         const summaryRowAgentLabel = createCsvMock.mock.calls[0][0][1][0]
@@ -201,41 +201,41 @@ describe('agentsPerformanceReportingService', () => {
 
     it('should return empty when no data', () => {
         const reportData = testCasesData.find(
-            ({testName}) => testName === 'Report data with cube metrics'
+            ({ testName }) => testName === 'Report data with cube metrics',
         )
         const fileName = 'someFileName'
 
         if (reportData) {
-            const {summaryData} = reportData
+            const { summaryData } = reportData
             const result = createAgentsReport(
                 agents,
                 null,
                 summaryData,
                 columnsOrder,
-                fileName
+                fileName,
             )
 
-            expect(result).toEqual({files: {}})
+            expect(result).toEqual({ files: {} })
         }
     })
 
     it('should return empty when no summary data', () => {
         const reportData = testCasesData.find(
-            ({testName}) => testName === 'Report data with cube metrics'
+            ({ testName }) => testName === 'Report data with cube metrics',
         )
         const fileName = 'someFileName'
 
         if (reportData) {
-            const {data} = reportData
+            const { data } = reportData
             const result = createAgentsReport(
                 agents,
                 data,
                 null,
                 columnsOrder,
-                fileName
+                fileName,
             )
 
-            expect(result).toEqual({files: {}})
+            expect(result).toEqual({ files: {} })
         }
     })
 })

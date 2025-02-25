@@ -1,15 +1,16 @@
-import {render, screen, fireEvent, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import * as actions from 'state/widgets/actions'
 
-import {Link} from '../../types'
-import {Links} from '../Links'
+import { Link } from '../../types'
+import { Links } from '../Links'
 
 const mockStore = configureMockStore([thunk])
 
@@ -39,14 +40,14 @@ describe('<Links/>', () => {
     }
 
     it('should render an empty component (no links, no button)', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider
                 store={mockStore({
-                    customers: fromJS({active: {}}),
+                    customers: fromJS({ active: {} }),
                 })}
             >
                 <Links {...props} links={[]} />
-            </Provider>
+            </Provider>,
         )
 
         expect(container).toMatchSnapshot()
@@ -57,15 +58,15 @@ describe('<Links/>', () => {
         render(
             <Provider
                 store={mockStore({
-                    customers: fromJS({active: {}}),
+                    customers: fromJS({ active: {} }),
                 })}
             >
                 <Links {...props} links={[]} isEditing />
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            screen.queryAllByText(new RegExp(label + '.*', 'm'))
+            screen.queryAllByText(new RegExp(label + '.*', 'm')),
         ).toHaveLength(0)
         expect(screen.queryByText('Add Link')).toBeTruthy()
     })
@@ -74,15 +75,15 @@ describe('<Links/>', () => {
         render(
             <Provider
                 store={mockStore({
-                    customers: fromJS({active: {}}),
+                    customers: fromJS({ active: {} }),
                 })}
             >
                 <Links {...props} links={getLinks(4)} />
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            screen.queryAllByText(new RegExp(label + '.*', 'm'))
+            screen.queryAllByText(new RegExp(label + '.*', 'm')),
         ).toHaveLength(4)
         expect(screen.queryByText('SHOW MORE')).toBeNull()
         expect(screen.queryByText('Add Link')).toBeNull()
@@ -92,15 +93,15 @@ describe('<Links/>', () => {
         render(
             <Provider
                 store={mockStore({
-                    customers: fromJS({active: {}}),
+                    customers: fromJS({ active: {} }),
                 })}
             >
                 <Links {...props} links={getLinks(5)} />
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            screen.queryAllByText(new RegExp(label + '.*', 'm'))
+            screen.queryAllByText(new RegExp(label + '.*', 'm')),
         ).toHaveLength(5)
         expect(screen.queryByText('Add Link')).toBeFalsy()
         expect(screen.queryByText(/show more/i)).toBeTruthy()
@@ -110,11 +111,11 @@ describe('<Links/>', () => {
         render(
             <Provider
                 store={mockStore({
-                    customers: fromJS({active: {}}),
+                    customers: fromJS({ active: {} }),
                 })}
             >
                 <Links {...props} links={[]} isEditing />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(screen.getByText('Add Link'))
@@ -127,11 +128,11 @@ describe('<Links/>', () => {
         render(
             <Provider
                 store={mockStore({
-                    customers: fromJS({active: {}}),
+                    customers: fromJS({ active: {} }),
                 })}
             >
                 <Links {...props} links={getLinks(1)} isEditing />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(screen.getAllByText('delete')[0])
@@ -144,11 +145,11 @@ describe('<Links/>', () => {
         render(
             <Provider
                 store={mockStore({
-                    customers: fromJS({active: {}}),
+                    customers: fromJS({ active: {} }),
                 })}
             >
                 <Links {...props} links={getLinks(2)} isEditing />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(screen.getAllByText('delete')[0])
@@ -161,11 +162,11 @@ describe('<Links/>', () => {
         render(
             <Provider
                 store={mockStore({
-                    customers: fromJS({active: {}}),
+                    customers: fromJS({ active: {} }),
                 })}
             >
                 <Links {...props} links={getLinks(1)} isEditing />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(screen.getByText('edit'))
@@ -180,11 +181,11 @@ describe('<Links/>', () => {
         render(
             <Provider
                 store={mockStore({
-                    customers: fromJS({active: {}}),
+                    customers: fromJS({ active: {} }),
                 })}
             >
                 <Links {...props} links={[]} isEditing />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(screen.getByText('Add Link'))

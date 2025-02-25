@@ -1,17 +1,17 @@
-import {waitFor} from '@testing-library/react'
-import {renderHook, act} from '@testing-library/react-hooks'
+import { waitFor } from '@testing-library/react'
+import { act, renderHook } from '@testing-library/react-hooks'
 
-import {TwilioSocketEventType} from 'business/twilio'
+import { TwilioSocketEventType } from 'business/twilio'
 import {
     gatherCallContext,
     handleCallEvents,
     sendTwilioSocketEvent,
 } from 'hooks/integrations/phone/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
-import {connectCall} from '../api'
-import {useOutboundCall} from '../useOutboundCall'
+import { connectCall } from '../api'
+import { useOutboundCall } from '../useOutboundCall'
 import useVoiceDevice from '../useVoiceDevice'
 
 jest.mock('hooks/useAppDispatch')
@@ -41,7 +41,7 @@ describe('useOutboundCall', () => {
     })
 
     it('should call the necessary functions with the correct parameters', async () => {
-        const {result} = renderHook(() => useOutboundCall())
+        const { result } = renderHook(() => useOutboundCall())
 
         const options = {
             fromAddress: 'from@example.com',
@@ -82,7 +82,7 @@ describe('useOutboundCall', () => {
         expect(handleCallEvents).toHaveBeenCalledWith(
             {},
             dispatchMock,
-            actionsMock
+            actionsMock,
         )
 
         expect(actionsMock.setIsDialing).toHaveBeenCalledWith(true)
@@ -97,7 +97,7 @@ describe('useOutboundCall', () => {
             actions: actionsMock,
         } as any)
 
-        const {result} = renderHook(() => useOutboundCall())
+        const { result } = renderHook(() => useOutboundCall())
 
         const options = {
             fromAddress: 'from@example.com',

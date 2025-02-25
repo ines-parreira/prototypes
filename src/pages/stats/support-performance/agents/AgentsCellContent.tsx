@@ -1,10 +1,11 @@
-import {Skeleton} from '@gorgias/merchant-ui-kit'
+import React, { PropsWithRef } from 'react'
+
 import classNames from 'classnames'
 
-import React, {PropsWithRef} from 'react'
+import { Skeleton } from '@gorgias/merchant-ui-kit'
 
-import {User} from 'config/types/user'
-import {StatsFilters} from 'models/stat/types'
+import { User } from 'config/types/user'
+import { StatsFilters } from 'models/stat/types'
 import BodyCell, {
     Props as BodyCellProps,
 } from 'pages/common/components/table/cells/BodyCell'
@@ -13,13 +14,13 @@ import {
     MetricValueFormat,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
-import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
+import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
 import css from 'pages/stats/heatmap.less'
 import {
     METRIC_COLUMN_WIDTH,
     MetricQueryPerAgentQuery,
 } from 'pages/stats/support-performance/agents/AgentsTableConfig'
-import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
+import { DrillDownMetric } from 'state/ui/stats/drillDownSlice'
 
 export type AgentsCellContentProps = {
     agent: User
@@ -46,20 +47,20 @@ export const AgentsCellContent = ({
     isHeatmapMode,
     isSortingMetricLoading,
 }: AgentsCellContentProps) => {
-    const {isAnalyticsNewFilters, cleanStatsFilters, userTimezone} =
+    const { isAnalyticsNewFilters, cleanStatsFilters, userTimezone } =
         statsFilters
-    const {data, isFetching} = useMetricPerAgentQueryHook(
+    const { data, isFetching } = useMetricPerAgentQueryHook(
         cleanStatsFilters,
         userTimezone,
         undefined,
-        String(agent.id)
+        String(agent.id),
     )
     const metricValue = data?.value
     const isLoading = isFetching || isSortingMetricLoading
     const formattedMetric = formatMetricValue(
         metricValue,
         metricFormat,
-        NOT_AVAILABLE_PLACEHOLDER
+        NOT_AVAILABLE_PLACEHOLDER,
     )
 
     return (
@@ -67,12 +68,12 @@ export const AgentsCellContent = ({
             {...bodyCellProps}
             className={classNames(
                 [css.heatmap],
-                isHeatmapMode && !isLoading && css[`p${String(data?.decile)}`]
+                isHeatmapMode && !isLoading && css[`p${String(data?.decile)}`],
             )}
             innerClassName={classNames(
                 bodyCellProps?.innerClassName,
                 [css.heatmap],
-                isHeatmapMode && !isLoading && css[`p${String(data?.decile)}`]
+                isHeatmapMode && !isLoading && css[`p${String(data?.decile)}`],
             )}
         >
             {isLoading ? (

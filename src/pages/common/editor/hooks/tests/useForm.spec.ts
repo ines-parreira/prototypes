@@ -1,7 +1,8 @@
-import {act, renderHook} from '@testing-library/react-hooks'
-import {FormEvent} from 'react'
+import { FormEvent } from 'react'
 
-import {TicketStatus} from 'business/types/ticket'
+import { act, renderHook } from '@testing-library/react-hooks'
+
+import { TicketStatus } from 'business/types/ticket'
 
 import useForm from '../useForm'
 
@@ -15,7 +16,7 @@ describe('useForm', () => {
         jest.resetAllMocks()
 
         checkValidity = jest.fn(() => false)
-        form = {checkValidity} as unknown as HTMLFormElement
+        form = { checkValidity } as unknown as HTMLFormElement
         event = {
             preventDefault: jest.fn(),
             target: form,
@@ -24,17 +25,17 @@ describe('useForm', () => {
     })
 
     it('should return default state on initial render', () => {
-        const {result} = renderHook(() => useForm(submit))
+        const { result } = renderHook(() => useForm(submit))
 
         expect(result.current).toEqual({
-            formRef: expect.objectContaining({current: null}),
+            formRef: expect.objectContaining({ current: null }),
             onSubmit: expect.any(Function),
             setTicketStatus: expect.any(Function),
         })
     })
 
     it('should prevent the default form submit event', () => {
-        const {result} = renderHook(() => useForm(submit))
+        const { result } = renderHook(() => useForm(submit))
 
         result.current.formRef.current = form
         result.current.onSubmit(event)
@@ -43,7 +44,7 @@ describe('useForm', () => {
     })
 
     it('should not call submit if the target of the submit event is not the correct form', () => {
-        const {result} = renderHook(() => useForm(submit))
+        const { result } = renderHook(() => useForm(submit))
 
         result.current.formRef.current = form
         result.current.onSubmit({
@@ -54,7 +55,7 @@ describe('useForm', () => {
     })
 
     it('should not call submit if the form is not valid', () => {
-        const {result} = renderHook(() => useForm(submit))
+        const { result } = renderHook(() => useForm(submit))
 
         result.current.formRef.current = form
         result.current.onSubmit(event)
@@ -63,7 +64,7 @@ describe('useForm', () => {
     })
 
     it('should call submit with the default ticket status', () => {
-        const {result} = renderHook(() => useForm(submit))
+        const { result } = renderHook(() => useForm(submit))
 
         checkValidity.mockReturnValue(true)
         result.current.formRef.current = form
@@ -71,11 +72,11 @@ describe('useForm', () => {
             result.current.onSubmit(event)
         })
 
-        expect(submit).toHaveBeenCalledWith({status: TicketStatus.Open})
+        expect(submit).toHaveBeenCalledWith({ status: TicketStatus.Open })
     })
 
     it('should call submit with a changed ticket status', () => {
-        const {result} = renderHook(() => useForm(submit))
+        const { result } = renderHook(() => useForm(submit))
 
         act(() => {
             result.current.setTicketStatus(TicketStatus.Closed)
@@ -87,11 +88,11 @@ describe('useForm', () => {
             result.current.onSubmit(event)
         })
 
-        expect(submit).toHaveBeenCalledWith({status: TicketStatus.Closed})
+        expect(submit).toHaveBeenCalledWith({ status: TicketStatus.Closed })
     })
 
     it('should reset the ticket status', () => {
-        const {result} = renderHook(() => useForm(submit))
+        const { result } = renderHook(() => useForm(submit))
 
         act(() => {
             result.current.setTicketStatus(TicketStatus.Closed)
@@ -102,11 +103,11 @@ describe('useForm', () => {
         act(() => {
             result.current.onSubmit(event)
         })
-        expect(submit).toHaveBeenCalledWith({status: TicketStatus.Closed})
+        expect(submit).toHaveBeenCalledWith({ status: TicketStatus.Closed })
 
         act(() => {
             result.current.onSubmit(event)
         })
-        expect(submit).toHaveBeenCalledWith({status: TicketStatus.Open})
+        expect(submit).toHaveBeenCalledWith({ status: TicketStatus.Open })
     })
 })

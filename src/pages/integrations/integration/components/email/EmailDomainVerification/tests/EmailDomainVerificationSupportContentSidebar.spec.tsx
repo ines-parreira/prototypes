@@ -1,8 +1,10 @@
-import {SelectField} from '@gorgias/merchant-ui-kit'
-import {screen, render, act} from '@testing-library/react'
 import React from 'react'
 
-import {assumeMock} from 'utils/testing'
+import { act, render, screen } from '@testing-library/react'
+
+import { SelectField } from '@gorgias/merchant-ui-kit'
+
+import { assumeMock } from 'utils/testing'
 
 import EmailDomainVerificationSupportContentSidebar from '../EmailDomainVerificationSupportContentSidebar'
 import SupportContentLearnMore from '../SupportContentLearnMore'
@@ -20,35 +22,35 @@ describe('EmailDomainVerificationSupportContentSidebar', () => {
 
     beforeEach(() => {
         SelectFieldMock.mockReturnValue(<div>SelectField</div>)
-        SupportContentLearnMoreMock.mockImplementation(({children}) => (
+        SupportContentLearnMoreMock.mockImplementation(({ children }) => (
             <div data-testid="supportContentLearnMore">{children}</div>
         ))
     })
 
     it('default state - should display dropdown, dynamic content and links', () => {
-        const {container} = renderComponent()
+        const { container } = renderComponent()
 
         expect(screen.getByText('SelectField')).toBeInTheDocument()
         expect(
             container.querySelector(
-                '[data-candu-id=email-domain-verification-support-content-default]'
-            )
+                '[data-candu-id=email-domain-verification-support-content-default]',
+            ),
         ).toBeInTheDocument()
 
         expect(
-            screen.getByText('Identify Your Domain Registrar')
+            screen.getByText('Identify Your Domain Registrar'),
         ).toBeInTheDocument()
         expect(
-            screen.getByText('Adding values to a Domain Registrar')
+            screen.getByText('Adding values to a Domain Registrar'),
         ).toBeInTheDocument()
         expect(
-            screen.getByText('Email Domain Verification 101')
+            screen.getByText('Email Domain Verification 101'),
         ).toBeInTheDocument()
         expect(screen.getByText('Domain Verification FAQs')).toBeInTheDocument()
     })
 
     it('should display dynamic content and links based on dropdown selection', () => {
-        const {container} = renderComponent()
+        const { container } = renderComponent()
 
         act(() => {
             SelectFieldMock.mock.lastCall?.[0].onChange({
@@ -59,17 +61,17 @@ describe('EmailDomainVerificationSupportContentSidebar', () => {
         })
 
         expect(
-            screen.queryByText('Identify Your Domain Registrar')
+            screen.queryByText('Identify Your Domain Registrar'),
         ).not.toBeInTheDocument()
         expect(
-            screen.queryByText('Adding values to a Domain Registrar')
+            screen.queryByText('Adding values to a Domain Registrar'),
         ).not.toBeInTheDocument()
 
         expect(screen.getByText('GoDaddy Support')).toBeInTheDocument()
         expect(
             container.querySelector(
-                '[data-candu-id=email-domain-verification-support-content-godaddy]'
-            )
+                '[data-candu-id=email-domain-verification-support-content-godaddy]',
+            ),
         ).toBeInTheDocument()
     })
 

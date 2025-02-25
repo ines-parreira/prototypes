@@ -1,39 +1,40 @@
-import {fromJS} from 'immutable'
-import React, {ForwardedRef, forwardRef, useMemo} from 'react'
+import React, { ForwardedRef, forwardRef, useMemo } from 'react'
 
-import {TicketChannel} from 'business/types/ticket'
-import {logEvent, SegmentEvent} from 'common/segment'
+import { fromJS } from 'immutable'
+
+import { TicketChannel } from 'business/types/ticket'
+import { logEvent, SegmentEvent } from 'common/segment'
 import {
     UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_DISCOUNT_CODES,
     UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_PRODUCT_LINKS,
     UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_VIDEOS,
 } from 'config/integrations/shopify'
-import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
+import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationType} from 'models/integration/constants'
-import {ShopifyIntegration} from 'models/integration/types'
+import { IntegrationType } from 'models/integration/constants'
+import { ShopifyIntegration } from 'models/integration/types'
 import {
     ToolbarContext,
     ToolbarContextType,
 } from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'
-import {TooltipTourConfigurationType} from 'pages/common/draftjs/plugins/toolbar/types'
-import {RichFieldEditorPlacement} from 'pages/common/forms/RichField/enums'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {getIntegrationsByType} from 'state/integrations/selectors'
+import { TooltipTourConfigurationType } from 'pages/common/draftjs/plugins/toolbar/types'
+import { RichFieldEditorPlacement } from 'pages/common/forms/RichField/enums'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { getIntegrationsByType } from 'state/integrations/selectors'
 import {
-    addNewMessageDiscountCode,
     addAttachment,
+    addNewMessageDiscountCode,
 } from 'state/newMessage/actions'
 import {
-    getNewMessageChannel,
     isNewMessagePublic as getIsNewMessagePublic,
+    getNewMessageChannel,
 } from 'state/newMessage/selectors'
-import {getAllCustomerIdsFromTicket} from 'state/ticket/helpers'
-import {getTicketState} from 'state/ticket/selectors'
-import {canAddVideoPlayer} from 'utils'
+import { getAllCustomerIdsFromTicket } from 'state/ticket/helpers'
+import { getTicketState } from 'state/ticket/selectors'
+import { canAddVideoPlayer } from 'utils'
 
-import RichField, {Props as RichFieldProps} from './RichField'
+import RichField, { Props as RichFieldProps } from './RichField'
 
 type Props = {
     disableOutOfStockProducts?: boolean
@@ -70,7 +71,7 @@ const TicketRichField = (
         contactFormButtonEnabled,
         ...props
     }: Props,
-    ref: ForwardedRef<RichField>
+    ref: ForwardedRef<RichField>,
 ) => {
     const dispatch = useAppDispatch()
     const currentAccount = useAppSelector(getCurrentAccountState)
@@ -84,7 +85,7 @@ const TicketRichField = (
             placementType: placementType,
             canAddVideoPlayer: canAddVideoPlayer(
                 newMessageChannel,
-                isNewMessagePublic
+                isNewMessagePublic,
             ),
             onInsertVideoAddedFromInsertLink: () => {
                 logEvent(SegmentEvent.InsertVideoAddedFromInsertLink, {
@@ -95,7 +96,7 @@ const TicketRichField = (
             },
             canAddVideoLink:
                 !UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_VIDEOS.includes(
-                    newMessageChannel
+                    newMessageChannel,
                 ),
             onInsertVideoOpen: () => {
                 logEvent(SegmentEvent.InsertVideoOpen, {
@@ -113,7 +114,7 @@ const TicketRichField = (
             },
             canAddDiscountCodeLink:
                 !UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_DISCOUNT_CODES.includes(
-                    newMessageChannel
+                    newMessageChannel,
                 ),
             canAddUtm: canAddUtm,
             supportsUniqueDiscountOffer,
@@ -123,7 +124,7 @@ const TicketRichField = (
                     ticket,
                     (integration) =>
                         integration.get('__integration_type__') ===
-                        SHOPIFY_INTEGRATION_TYPE
+                        SHOPIFY_INTEGRATION_TYPE,
                 )
 
                 logEvent(SegmentEvent.InsertDiscountCodeOpen, {
@@ -137,8 +138,8 @@ const TicketRichField = (
                 dispatch(
                     addNewMessageDiscountCode(
                         ticket?.get('id') || 'new',
-                        discount
-                    )
+                        discount,
+                    ),
                 )
             },
             canAddProductCard:
@@ -147,7 +148,7 @@ const TicketRichField = (
                     !isNewMessagePublic),
             canAddProductLink:
                 !UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_PRODUCT_LINKS.includes(
-                    newMessageChannel
+                    newMessageChannel,
                 ),
             canAddProductAutomations,
             toolbarTour: toolbarTour ?? {},
@@ -207,7 +208,7 @@ const TicketRichField = (
             placementType,
             onContactFormOpenChange,
             contactFormButtonEnabled,
-        ]
+        ],
     )
 
     return (

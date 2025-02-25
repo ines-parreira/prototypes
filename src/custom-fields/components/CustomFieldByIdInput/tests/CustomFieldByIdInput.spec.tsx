@@ -1,10 +1,11 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
+import { render } from '@testing-library/react'
+
 import CustomFieldInput from 'custom-fields/components/CustomFieldInput'
-import {useCustomFieldDefinition} from 'custom-fields/hooks/queries/useCustomFieldDefinition'
-import {ticketInputFieldDefinition} from 'fixtures/customField'
-import {assumeMock} from 'utils/testing'
+import { useCustomFieldDefinition } from 'custom-fields/hooks/queries/useCustomFieldDefinition'
+import { ticketInputFieldDefinition } from 'fixtures/customField'
+import { assumeMock } from 'utils/testing'
 
 import CustomFieldByIdInput from '../CustomFieldByIdInput'
 
@@ -36,7 +37,7 @@ describe('<CustomFieldIdInput/>', () => {
             isLoading: true,
         } as any)
 
-        const {getByText} = render(<CustomFieldByIdInput {...baseProps} />)
+        const { getByText } = render(<CustomFieldByIdInput {...baseProps} />)
 
         expect(getByText('Loader')).toBeInTheDocument()
     })
@@ -46,7 +47,7 @@ describe('<CustomFieldIdInput/>', () => {
             data: undefined,
         } as any)
 
-        const {getByText} = render(<CustomFieldByIdInput {...baseProps} />)
+        const { getByText } = render(<CustomFieldByIdInput {...baseProps} />)
 
         expect(getByText('Missing custom field')).toBeInTheDocument()
     })
@@ -60,7 +61,7 @@ describe('<CustomFieldIdInput/>', () => {
                 field: ticketInputFieldDefinition,
                 onChange: expect.any(Function),
             }),
-            expect.any(Object)
+            expect.any(Object),
         )
     })
 })

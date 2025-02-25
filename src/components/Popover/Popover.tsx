@@ -1,11 +1,19 @@
+import React, {
+    PropsWithChildren,
+    ReactNode,
+    RefObject,
+    useLayoutEffect,
+    useRef,
+} from 'react'
+
 import {
     arrow,
     autoUpdate,
     flip,
     FloatingArrow,
     FloatingFocusManager,
-    OffsetOptions,
     offset,
+    OffsetOptions,
     Placement,
     shift,
     useClick,
@@ -15,16 +23,9 @@ import {
     useRole,
 } from '@floating-ui/react'
 import cn from 'classnames'
-import React, {
-    PropsWithChildren,
-    ReactNode,
-    RefObject,
-    useLayoutEffect,
-    useRef,
-} from 'react'
 
-import {THEME_NAME, useTheme} from 'core/theme'
-import Button, {type ButtonProps} from 'pages/common/components/button/Button'
+import { THEME_NAME, useTheme } from 'core/theme'
+import Button, { type ButtonProps } from 'pages/common/components/button/Button'
 
 import css from './Popover.less'
 
@@ -59,15 +60,15 @@ export default function Popover({
 
     const arrowRef = useRef(null)
 
-    const {refs, floatingStyles, context} = useFloating({
+    const { refs, floatingStyles, context } = useFloating({
         open: isOpen,
         onOpenChange: setIsOpen,
         placement,
         middleware: [
             offset(offsetValue),
-            flip({fallbackAxisSideDirection: 'end'}),
+            flip({ fallbackAxisSideDirection: 'end' }),
             shift(),
-            arrow({element: arrowRef}),
+            arrow({ element: arrowRef }),
         ],
         whileElementsMounted: autoUpdate,
     })
@@ -76,7 +77,7 @@ export default function Popover({
     const dismiss = useDismiss(context)
     const role = useRole(context)
 
-    const {getFloatingProps} = useInteractions([click, dismiss, role])
+    const { getFloatingProps } = useInteractions([click, dismiss, role])
 
     useLayoutEffect(() => {
         refs.setReference(target.current)

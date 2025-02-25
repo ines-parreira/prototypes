@@ -1,9 +1,10 @@
-import {Meta, Story} from '@storybook/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {MemoryRouter} from 'react-router-dom'
+import React, { ComponentProps } from 'react'
 
-import {revenuePerAgent, ticketsClosedPerAgent} from 'fixtures/stats'
+import { Meta, Story } from '@storybook/react'
+import { fromJS } from 'immutable'
+import { MemoryRouter } from 'react-router-dom'
+
+import { revenuePerAgent, ticketsClosedPerAgent } from 'fixtures/stats'
 
 import TableStat from './TableStat'
 
@@ -18,7 +19,7 @@ const Template: Story<ComponentProps<typeof TableStat>> = (props) => (
 )
 
 const defaultProps: ComponentProps<typeof TableStat> = {
-    context: {tagColors: null},
+    context: { tagColors: null },
     data: fromJS(revenuePerAgent.data.data),
     meta: fromJS(revenuePerAgent.meta),
     config: fromJS({}),
@@ -32,13 +33,13 @@ WithExpand.args = {
     ...defaultProps,
     data: fromJS(ticketsClosedPerAgent.data.data),
     meta: fromJS(ticketsClosedPerAgent.meta),
-    config: fromJS({tableOptions: {showLines: 1}}),
+    config: fromJS({ tableOptions: { showLines: 1 } }),
 }
 
 export const NoData = Template.bind({})
 NoData.args = {
     ...defaultProps,
-    data: fromJS({lines: []}),
+    data: fromJS({ lines: [] }),
 }
 
 export default storyConfig

@@ -1,4 +1,4 @@
-import {OBJECT_TYPES} from 'custom-fields/constants'
+import { OBJECT_TYPES } from 'custom-fields/constants'
 import {
     CustomField,
     CustomFieldInput,

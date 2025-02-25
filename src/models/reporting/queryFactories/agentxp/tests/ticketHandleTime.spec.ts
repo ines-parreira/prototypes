@@ -1,7 +1,7 @@
 import moment from 'moment/moment'
 
-import {TicketChannel} from 'business/types/ticket'
-import {OrderDirection} from 'models/api/types'
+import { TicketChannel } from 'business/types/ticket'
+import { OrderDirection } from 'models/api/types'
 import {
     HandleTimeDimension,
     HandleTimeMeasure,
@@ -11,14 +11,14 @@ import {
     TicketMember,
     TicketSegment,
 } from 'models/reporting/cubes/TicketCube'
-import {TicketMessagesMember} from 'models/reporting/cubes/TicketMessagesCube'
+import { TicketMessagesMember } from 'models/reporting/cubes/TicketMessagesCube'
 import {
     ticketAverageHandleTimePerAgentQueryFactory,
-    ticketHandleTimePerTicketDrillDownQueryFactory,
     ticketAverageHandleTimeQueryFactory,
+    ticketHandleTimePerTicketDrillDownQueryFactory,
 } from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
-import {ReportingFilterOperator} from 'models/reporting/types'
-import {LegacyStatsFilters} from 'models/stat/types'
+import { ReportingFilterOperator } from 'models/reporting/types'
+import { LegacyStatsFilters } from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
@@ -44,7 +44,7 @@ describe('onlineTimePerAgentQueryFactory', () => {
     describe('ticketHandleTimeQueryFactory', () => {
         it('should build the query', () => {
             expect(
-                ticketAverageHandleTimeQueryFactory(statsFilters, timezone)
+                ticketAverageHandleTimeQueryFactory(statsFilters, timezone),
             ).toEqual({
                 dimensions: [],
                 filters: [
@@ -62,7 +62,7 @@ describe('onlineTimePerAgentQueryFactory', () => {
                         member: TicketMessagesMember.Integration,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.integrations?.map((i) =>
-                            String(i)
+                            String(i),
                         ),
                     },
                     {
@@ -92,8 +92,8 @@ describe('onlineTimePerAgentQueryFactory', () => {
                 ticketAverageHandleTimeQueryFactory(
                     statsFilters,
                     timezone,
-                    sorting
-                )
+                    sorting,
+                ),
             ).toEqual({
                 dimensions: [],
                 filters: [
@@ -111,7 +111,7 @@ describe('onlineTimePerAgentQueryFactory', () => {
                         member: TicketMessagesMember.Integration,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.integrations?.map((i) =>
-                            String(i)
+                            String(i),
                         ),
                     },
                     {
@@ -143,8 +143,8 @@ describe('onlineTimePerAgentQueryFactory', () => {
             expect(
                 ticketHandleTimePerTicketDrillDownQueryFactory(
                     statsFilters,
-                    timezone
-                )
+                    timezone,
+                ),
             ).toEqual({
                 dimensions: [
                     TicketDimension.TicketId,
@@ -165,7 +165,7 @@ describe('onlineTimePerAgentQueryFactory', () => {
                         member: TicketMessagesMember.Integration,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.integrations?.map((i) =>
-                            String(i)
+                            String(i),
                         ),
                     },
                     {
@@ -197,8 +197,8 @@ describe('onlineTimePerAgentQueryFactory', () => {
                 ticketHandleTimePerTicketDrillDownQueryFactory(
                     statsFilters,
                     timezone,
-                    sorting
-                )
+                    sorting,
+                ),
             ).toEqual({
                 dimensions: [
                     TicketDimension.TicketId,
@@ -219,7 +219,7 @@ describe('onlineTimePerAgentQueryFactory', () => {
                         member: TicketMessagesMember.Integration,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.integrations?.map((i) =>
-                            String(i)
+                            String(i),
                         ),
                     },
                     {
@@ -253,8 +253,8 @@ describe('onlineTimePerAgentQueryFactory', () => {
             expect(
                 ticketAverageHandleTimePerAgentQueryFactory(
                     statsFilters,
-                    timezone
-                )
+                    timezone,
+                ),
             ).toEqual({
                 dimensions: [TicketDimension.AssigneeUserId],
                 filters: [
@@ -272,7 +272,7 @@ describe('onlineTimePerAgentQueryFactory', () => {
                         member: TicketMessagesMember.Integration,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.integrations?.map((i) =>
-                            String(i)
+                            String(i),
                         ),
                     },
                     {
@@ -304,8 +304,8 @@ describe('onlineTimePerAgentQueryFactory', () => {
                 ticketAverageHandleTimePerAgentQueryFactory(
                     statsFilters,
                     timezone,
-                    sorting
-                )
+                    sorting,
+                ),
             ).toEqual({
                 dimensions: [TicketDimension.AssigneeUserId],
                 filters: [
@@ -323,7 +323,7 @@ describe('onlineTimePerAgentQueryFactory', () => {
                         member: TicketMessagesMember.Integration,
                         operator: ReportingFilterOperator.Equals,
                         values: statsFilters.integrations?.map((i) =>
-                            String(i)
+                            String(i),
                         ),
                     },
                     {

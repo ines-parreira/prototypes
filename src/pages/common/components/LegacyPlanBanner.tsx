@@ -1,16 +1,16 @@
 import React from 'react'
 
-import {openChat} from '../../../utils'
-
-import {AlertType} from './Alert/Alert'
+import { openChat } from '../../../utils'
+import { AlertType } from './Alert/Alert'
 import LinkAlert from './Alert/LinkAlert'
+
 import css from './LegacyPlanBanner.less'
 
 type Props = {
     isCustomPrice?: boolean
 }
 
-export function LegacyPlanBanner({isCustomPrice = false}: Props) {
+export function LegacyPlanBanner({ isCustomPrice = false }: Props) {
     return (
         <LinkAlert
             type={AlertType.Error}

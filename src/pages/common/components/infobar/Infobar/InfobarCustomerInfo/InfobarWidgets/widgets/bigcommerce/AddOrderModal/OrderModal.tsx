@@ -1,5 +1,3 @@
-import {Label, Tooltip} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
 import React, {
     ChangeEvent,
     useCallback,
@@ -8,13 +6,16 @@ import React, {
     useMemo,
     useState,
 } from 'react'
-import {Row} from 'reactstrap'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import classnames from 'classnames'
+import { Row } from 'reactstrap'
 
+import { Label, Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {OptionSelection} from 'models/integration/resources/bigcommerce'
+import { OptionSelection } from 'models/integration/resources/bigcommerce'
 import {
     AddressType,
     BigCommerceActionType,
@@ -32,36 +33,34 @@ import {
     IntegrationType,
     ProductModifiersChangedError,
 } from 'models/integration/types'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
-import {InfobarModalProps} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
+import { InfobarModalProps } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
+import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 import CheckBox from 'pages/common/forms/CheckBox'
-import {CustomerContext} from 'providers/infobar/CustomerContext'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import { CustomerContext } from 'providers/infobar/CustomerContext'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
-import {getCustomerAddresses} from 'state/infobarActions/bigcommerce/createOrder/selectors'
-import {getIntegrationsByType} from 'state/integrations/selectors'
+import { getCustomerAddresses } from 'state/infobarActions/bigcommerce/createOrder/selectors'
+import { getIntegrationsByType } from 'state/integrations/selectors'
 
-import {AddressesDropdown} from './AddressesDropdown'
-
+import { AddressesDropdown } from './AddressesDropdown'
 import useAddModifiersPopover from './components/modifiers-popover/useAddModifiersPopover'
-import {modifierValuesToOptionSelections} from './components/modifiers-popover/utils'
+import { modifierValuesToOptionSelections } from './components/modifiers-popover/utils'
 import OrderTable from './components/order-table/OrderTable'
-import {CurrencyPickerDropdown} from './CurrencyPickerDropdown'
+import { CurrencyPickerDropdown } from './CurrencyPickerDropdown'
 import GeneralErrorPopupModal from './GeneralErrorPopupModal'
-import css from './OrderModal.less'
 import {
     initializeCart,
     useCheckout,
     useValidationStatus,
 } from './OrderModalHelper'
 import OrderTotals from './OrderTotals'
-import {ProductSearch} from './ProductSearch'
+import { ProductSearch } from './ProductSearch'
 import {
     addCustomLineItem,
     addLineItem,
@@ -76,6 +75,8 @@ import {
     updateRow,
 } from './utils'
 
+import css from './OrderModal.less'
+
 type Props = {
     integration: BigCommerceIntegration
     customerId?: Maybe<number>
@@ -86,7 +87,7 @@ export function OrderModal({
     integration,
     customerId,
     availableAddresses,
-    data = {actionName: null, customer: null, order: null},
+    data = { actionName: null, customer: null, order: null },
     onClose,
 }: Props) {
     const dispatch = useAppDispatch()
@@ -95,13 +96,13 @@ export function OrderModal({
         ? integration.meta.available_currencies.length > 1
         : false
     const [currency, setCurrency] = useState(
-        storeHasMultipleCurrencies ? '' : integration.meta.currency
+        storeHasMultipleCurrencies ? '' : integration.meta.currency,
     )
     const [isLoading, setIsLoading] = useState(false)
     const [isDraftOrder, setIsDraftOrder] = useState(true)
 
     const [products, setProducts] = useState<BigCommerceProductsListType>(
-        new Map()
+        new Map(),
     )
     const [customAddresses, setCustomAddresses] = useState<
         Array<BigCommerceCustomerAddress>
@@ -139,7 +140,7 @@ export function OrderModal({
         availableAddresses,
         customAddresses,
         billingAddress,
-        shippingAddress
+        shippingAddress,
     )
 
     const isEditionDisabled =
@@ -147,7 +148,7 @@ export function OrderModal({
 
     const actionName = data.actionName || BigCommerceActionType.CreateOrder
 
-    const {validationStatus, performValidations} = useValidationStatus({
+    const { validationStatus, performValidations } = useValidationStatus({
         products,
         billingAddress,
         shippingAddress,
@@ -232,7 +233,7 @@ export function OrderModal({
                 cart,
                 note,
                 comment,
-                isDraftOrder
+                isDraftOrder,
             )
         }
 
@@ -268,7 +269,7 @@ export function OrderModal({
                     'global',
                     error instanceof BigCommerceGeneralError
                         ? error.message
-                        : BigCommerceGeneralErrorMessage.defaultError
+                        : BigCommerceGeneralErrorMessage.defaultError,
                 )
             } finally {
                 setIsLoading(false)
@@ -301,11 +302,11 @@ export function OrderModal({
                 void onSelectAddress(
                     billingAddress,
                     'billing',
-                    data?.customer?.email
+                    data?.customer?.email,
                 )
             }
         }, // eslint-disable-next-line react-hooks/exhaustive-deps
-        [hasDifferentShippingAddress]
+        [hasDifferentShippingAddress],
     )
 
     const handleAddCustomProduct = (customProduct: BigCommerceCustomProduct) =>
@@ -326,7 +327,7 @@ export function OrderModal({
         variant: BigCommerceProductVariant
         optionSelections?: OptionSelection[]
     }) => {
-        const {product, variant, optionSelections} = props
+        const { product, variant, optionSelections } = props
 
         return addLineItem({
             actionName,
@@ -350,12 +351,12 @@ export function OrderModal({
         maybeOpenModifierPopover,
     } = useAddModifiersPopover(
         integration.meta.store_hash,
-        async ({product, variant, modifierValues}) => {
+        async ({ product, variant, modifierValues }) => {
             const optionSelections =
                 modifierValuesToOptionSelections(modifierValues)
 
             try {
-                await handleAddRow({product, variant, optionSelections})
+                await handleAddRow({ product, variant, optionSelections })
             } catch (error) {
                 if (error instanceof ProductModifiersChangedError) {
                     maybeOpenModifierPopover({
@@ -365,7 +366,7 @@ export function OrderModal({
                     })
                 }
             }
-        }
+        },
     )
 
     const [discounts, setDiscounts] = useState<Map<string, number>>(new Map())
@@ -434,7 +435,7 @@ export function OrderModal({
                                                     setModalErrors(
                                                         'modal',
                                                         null,
-                                                        key
+                                                        key,
                                                     )
                                                 }}
                                             >
@@ -442,7 +443,7 @@ export function OrderModal({
                                                     dangerouslySetInnerHTML={{
                                                         __html:
                                                             errors.modal.get(
-                                                                key
+                                                                key,
                                                             ) || '',
                                                     }}
                                                 />
@@ -514,7 +515,7 @@ export function OrderModal({
                                 <p
                                     className={classnames(
                                         css.caption,
-                                        css.hasError
+                                        css.hasError,
                                     )}
                                 >
                                     Select at least one product.
@@ -536,7 +537,7 @@ export function OrderModal({
                                     onLineItemDiscount={async (
                                         index,
                                         listPrice,
-                                        action: 'add' | 'remove'
+                                        action: 'add' | 'remove',
                                     ) =>
                                         await setLineItemDiscount({
                                             actionName,
@@ -629,7 +630,7 @@ export function OrderModal({
                                 availableAddresses={
                                     new Array<BigCommerceCustomerAddress>(
                                         ...availableAddresses,
-                                        ...customAddresses
+                                        ...customAddresses,
                                     )
                                 }
                                 onSelectAddress={onSelectAddress}
@@ -639,12 +640,12 @@ export function OrderModal({
                                 hasError={
                                     !validationStatus.billingAddress ||
                                     !!errors.component.get(
-                                        'onSelectBillingAddress'
+                                        'onSelectBillingAddress',
                                     )
                                 }
                                 errorMessage={
                                     errors.component.get(
-                                        'onSelectBillingAddress'
+                                        'onSelectBillingAddress',
                                     ) || ''
                                 }
                                 isDisabled={!currency || isEditionDisabled}
@@ -657,7 +658,7 @@ export function OrderModal({
                                 onChange={() => {
                                     if (!isTotalPriceLoading) {
                                         setHasDifferentShippingAddress(
-                                            !hasDifferentShippingAddress
+                                            !hasDifferentShippingAddress,
                                         )
                                     }
                                 }}
@@ -671,7 +672,7 @@ export function OrderModal({
                                     availableAddresses={
                                         new Array<BigCommerceCustomerAddress>(
                                             ...availableAddresses,
-                                            ...customAddresses
+                                            ...customAddresses,
                                         )
                                     }
                                     onSelectAddress={onSelectAddress}
@@ -681,12 +682,12 @@ export function OrderModal({
                                     hasError={
                                         !validationStatus.shippingAddress ||
                                         !!errors.component.get(
-                                            'onSelectShippingAddress'
+                                            'onSelectShippingAddress',
                                         )
                                     }
                                     errorMessage={
                                         errors.component.get(
-                                            'onSelectShippingAddress'
+                                            'onSelectShippingAddress',
                                         ) || ''
                                     }
                                     isDisabled={!currency || isEditionDisabled}
@@ -780,23 +781,23 @@ type ConnectedProps = {
 } & Pick<InfobarModalProps, 'isOpen' | 'onClose'>
 
 export default function OrderModalRenderWrapper(props: ConnectedProps) {
-    const {integrationId} = useContext(IntegrationContext)
-    const {customerId} = useContext(CustomerContext)
+    const { integrationId } = useContext(IntegrationContext)
+    const { customerId } = useContext(CustomerContext)
 
     const integrations = useAppSelector(
-        getIntegrationsByType(IntegrationType.BigCommerce)
+        getIntegrationsByType(IntegrationType.BigCommerce),
     )
 
     const integration = useMemo(
         () =>
             integrations.find(
-                (integration) => integration.id === integrationId
+                (integration) => integration.id === integrationId,
             ),
-        [integrations, integrationId]
+        [integrations, integrationId],
     )
 
     const availableAddresses: BigCommerceCustomerAddress[] = useAppSelector(
-        getCustomerAddresses(integrationId)
+        getCustomerAddresses(integrationId),
     )
 
     if (!integration || !props.isOpen) {

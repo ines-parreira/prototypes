@@ -1,15 +1,17 @@
 // Please use src/pages/common/forms/input/InputField.tsx instead
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { ChangeEvent, ReactNode } from 'react'
+
 import classnames from 'classnames'
 import _omit from 'lodash/omit'
 import _uniqueId from 'lodash/uniqueId'
-import React, {ChangeEvent, ReactNode} from 'react'
-import {FormGroup, FormText, Input as BootstrapInput, Label} from 'reactstrap'
-import {InputProps} from 'reactstrap/lib/Input'
+import { Input as BootstrapInput, FormGroup, FormText, Label } from 'reactstrap'
+import { InputProps } from 'reactstrap/lib/Input'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import css from 'pages/common/forms/DEPRECATED_InputField.less'
 import Errors from 'pages/common/forms/Errors'
-import {defined} from 'utils'
+import { defined } from 'utils'
 
 export type InputFieldProps<T = any> = {
     onChange?: (value: T) => void
@@ -38,7 +40,7 @@ export default class InputField<
     }
 
     _onChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const {type, onChange, caseInsensitive} = this.props
+        const { type, onChange, caseInsensitive } = this.props
         let value: string | number = e.target.value
 
         if (type === 'number') {
@@ -61,7 +63,7 @@ export default class InputField<
     }
 
     _getField = () => {
-        const {children, error, ...rest} = _omit(this.props, [
+        const { children, error, ...rest } = _omit(this.props, [
             'leftAddon',
             'rightAddon',
             'caseInsensitive',
@@ -137,7 +139,7 @@ export default class InputField<
                                 <i
                                     className={classnames(
                                         'material-icons-outlined',
-                                        css.tooltip
+                                        css.tooltip,
                                     )}
                                 >
                                     info
@@ -175,7 +177,7 @@ export default class InputField<
                             <span
                                 className={classnames(
                                     'input-group-text',
-                                    css.inputGroupText
+                                    css.inputGroupText,
                                 )}
                             >
                                 {leftAddon}
@@ -188,7 +190,7 @@ export default class InputField<
                             <span
                                 className={classnames(
                                     'input-group-text',
-                                    css.inputGroupText
+                                    css.inputGroupText,
                                 )}
                             >
                                 {rightAddon}

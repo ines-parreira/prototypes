@@ -1,4 +1,4 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
 // Quick replies
 export const QUICK_REPLIES_DEFAULTS = fromJS([

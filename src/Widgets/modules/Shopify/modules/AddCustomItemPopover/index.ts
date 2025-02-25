@@ -1,1 +1,1 @@
-export {default} from './components/AddCustomItemPopover'
+export { default } from './components/AddCustomItemPopover'

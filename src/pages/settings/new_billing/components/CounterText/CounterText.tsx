@@ -1,13 +1,13 @@
 import React from 'react'
 
-import {Cadence, Plan, ProductType} from 'models/billing/types'
+import { Cadence, Plan, ProductType } from 'models/billing/types'
 import {
     getOverageUnitPriceFormatted,
     getPlanPriceFormatted,
     isLegacyAutomate,
     isTrial,
 } from 'models/billing/utils'
-import {PRODUCT_INFO} from 'pages/settings/new_billing/constants'
+import { PRODUCT_INFO } from 'pages/settings/new_billing/constants'
 
 export type CounterTextProps = {
     plan: Plan | undefined
@@ -15,7 +15,7 @@ export type CounterTextProps = {
     cadence: Cadence
 }
 
-const CounterText = ({plan, type, cadence}: CounterTextProps) => {
+const CounterText = ({ plan, type, cadence }: CounterTextProps) => {
     return (
         <>
             {isTrial(plan) && !isLegacyAutomate(plan) && (

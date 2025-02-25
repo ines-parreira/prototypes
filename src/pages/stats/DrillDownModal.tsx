@@ -1,20 +1,19 @@
-import React, {FunctionComponent} from 'react'
+import React, { FunctionComponent } from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-
-import {CampaignSalesDrillDownTableContent} from 'pages/stats/convert/components/CampaignSalesDrillDownTableContent'
-import {getDrillDownHook} from 'pages/stats/DrillDownHookConfig'
-import {DrillDownInfoBar} from 'pages/stats/DrillDownInfoBar'
-import {TicketDrillDownTableContent} from 'pages/stats/TicketDrillDownTableContent'
+import { CampaignSalesDrillDownTableContent } from 'pages/stats/convert/components/CampaignSalesDrillDownTableContent'
+import { getDrillDownHook } from 'pages/stats/DrillDownHookConfig'
+import { DrillDownInfoBar } from 'pages/stats/DrillDownInfoBar'
+import { TicketDrillDownTableContent } from 'pages/stats/TicketDrillDownTableContent'
 import {
-    getDrillDownModalState,
-    getDrillDownMetric,
     closeDrillDownModal,
     DrillDownMetric,
+    getDrillDownMetric,
+    getDrillDownModalState,
     setShouldUseNewFilterData,
 } from 'state/ui/stats/drillDownSlice'
 import {
@@ -23,11 +22,11 @@ import {
     VoiceMetric,
 } from 'state/ui/stats/types'
 
-import {DrillDownTable} from './DrillDownTable'
+import { DrillDownTable } from './DrillDownTable'
 import VoiceCallDrillDownTableContent from './voice/components/VoiceCallTable/VoiceCallDrillDownTableContent'
 
 const getTableContent = (
-    metricData: DrillDownMetric
+    metricData: DrillDownMetric,
 ): FunctionComponent<{
     metricData: DrillDownMetric
 }> => {

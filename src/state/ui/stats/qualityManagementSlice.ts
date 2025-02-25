@@ -1,8 +1,8 @@
-import {createSlice} from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 
-import {RootState} from 'state/types'
-import {QUALITY_MANAGEMENT_SLICE_NAME} from 'state/ui/stats/constants'
-import {CsatSentiment} from 'state/ui/stats/types'
+import { RootState } from 'state/types'
+import { QUALITY_MANAGEMENT_SLICE_NAME } from 'state/ui/stats/constants'
+import { CsatSentiment } from 'state/ui/stats/types'
 
 export type QualityManagementState = {
     commentHighlightsCsatSentiment: CsatSentiment
@@ -25,7 +25,7 @@ export const qualityManagementSlice = createSlice({
     },
 })
 
-export const {toggleCommentHighlightsCsatSentiment} =
+export const { toggleCommentHighlightsCsatSentiment } =
     qualityManagementSlice.actions
 
 export const getCommentHighlightsCsatSentiment = (state: RootState) =>

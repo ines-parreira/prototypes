@@ -1,16 +1,17 @@
-import {Skeleton} from '@gorgias/merchant-ui-kit'
-import {fromJS} from 'immutable'
-import React, {useMemo, useState} from 'react'
+import React, { useMemo, useState } from 'react'
 
-import {SegmentEvent, logEvent} from 'common/segment'
+import { fromJS } from 'immutable'
+
+import { Skeleton } from '@gorgias/merchant-ui-kit'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {useGetAiAgentFeedback} from 'models/aiAgentFeedback/queries'
-
-import {MacroActionName, MacroActionType} from 'models/macroAction/types'
-import {TicketMessage} from 'models/ticket/types'
+import { useGetAiAgentFeedback } from 'models/aiAgentFeedback/queries'
+import { MacroActionName, MacroActionType } from 'models/macroAction/types'
+import { TicketMessage } from 'models/ticket/types'
 import Button from 'pages/common/components/button/Button'
-import {getCurrentAccountId} from 'state/currentAccount/selectors'
+import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import {
     applyMacro,
     applyMacroAction,
@@ -28,9 +29,14 @@ export type Props = {
     isTrial?: boolean
 }
 
-const AIAgentDraftMessage = ({ticketId, message, messages, isTrial}: Props) => {
+const AIAgentDraftMessage = ({
+    ticketId,
+    message,
+    messages,
+    isTrial,
+}: Props) => {
     const accountId = useAppSelector(getCurrentAccountId)
-    const {data, isLoading} = useGetAiAgentFeedback()
+    const { data, isLoading } = useGetAiAgentFeedback()
     const dispatch = useAppDispatch()
     const [hideMessage, setHideMessage] = useState(false)
 
@@ -38,7 +44,7 @@ const AIAgentDraftMessage = ({ticketId, message, messages, isTrial}: Props) => {
 
     const feedbackMessage = useMemo(
         () => feedback?.messages.find((m) => m.messageId === message.id),
-        [feedback, message]
+        [feedback, message],
     )
 
     const draftMessage = feedbackMessage?.draftMessage
@@ -46,8 +52,8 @@ const AIAgentDraftMessage = ({ticketId, message, messages, isTrial}: Props) => {
     const handleCopyToEditor = () => {
         void dispatch(
             updateTicketMessage(ticketId, message.id!, {
-                meta: {hidden: true},
-            })
+                meta: { hidden: true },
+            }),
         )
         setHideMessage(true)
 
@@ -66,8 +72,8 @@ const AIAgentDraftMessage = ({ticketId, message, messages, isTrial}: Props) => {
                         name: MacroActionName.SetResponseText,
                         title: 'Set Response Text',
                         type: MacroActionType.User,
-                    })
-                )
+                    }),
+                ),
             )
 
             if (draftMessage.ticketActions) {
@@ -76,8 +82,8 @@ const AIAgentDraftMessage = ({ticketId, message, messages, isTrial}: Props) => {
                         fromJS({
                             actions: draftMessage.ticketActions,
                         }),
-                        ticketId
-                    )
+                        ticketId,
+                    ),
                 )
             }
         }

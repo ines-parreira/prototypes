@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
 import arrow from 'assets/img/icons/arrow.svg'
 import Modal from 'pages/common/components/modal/Modal'

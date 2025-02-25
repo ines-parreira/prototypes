@@ -1,6 +1,7 @@
+import React, { useEffect, useRef } from 'react'
+
 import classnames from 'classnames'
-import React, {useEffect, useRef} from 'react'
-import {useHistory} from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 import ContactFormPreview from 'pages/settings/contactForm/components/ContactFormPreview'
 
@@ -8,13 +9,14 @@ import cancelIcon from '../../../../../assets/img/self-service/cancel.svg'
 import reportIssueIcon from '../../../../../assets/img/self-service/report-issue.svg'
 import returnIcon from '../../../../../assets/img/self-service/return.svg'
 import trackIcon from '../../../../../assets/img/self-service/track.svg'
-import {HELP_CENTER_TEXTS} from '../../../../../config/helpCenter'
+import { HELP_CENTER_TEXTS } from '../../../../../config/helpCenter'
 import useWorkflowsEntrypoints from './hooks/useWorkflowsEntrypoints'
 import OrderManagementFlowItemPreview from './OrderManagementFlowItemPreview'
-import {useSelfServicePreviewContext} from './SelfServicePreviewContext'
+import { useSelfServicePreviewContext } from './SelfServicePreviewContext'
+
 import css from './SelfServiceStandaloneContactFormHomePage.less'
 
-const WorkflowItem = ({label}: {label: string}) => (
+const WorkflowItem = ({ label }: { label: string }) => (
     <div className={css.workflowItem}>
         <div className={css.flowLabel}>{label}</div>
         <i className={classnames('material-icons', css.flowChevron)}>
@@ -36,7 +38,7 @@ const SelfServiceStandaloneContactFormHomePage = ({
 }: SelfServiceStandaloneContactFormHomepageProps) => {
     const history = useHistory()
     const workflowsEntrypoints = useWorkflowsEntrypoints(locale)
-    const {selfServiceConfiguration, hoveredOrderManagementFlow} =
+    const { selfServiceConfiguration, hoveredOrderManagementFlow } =
         useSelfServicePreviewContext()
     const isOrderManagementEnabled =
         selfServiceConfiguration?.cancelOrderPolicy.enabled ||

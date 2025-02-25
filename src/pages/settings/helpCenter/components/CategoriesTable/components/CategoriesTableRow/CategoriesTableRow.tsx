@@ -1,7 +1,3 @@
-import {LoadingSpinner, Tooltip} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
-import _keyBy from 'lodash/keyBy'
-import _noop from 'lodash/noop'
 import React, {
     MouseEvent,
     ReactElement,
@@ -10,13 +6,19 @@ import React, {
     useMemo,
     useState,
 } from 'react'
-import {Badge} from 'reactstrap'
+
+import classNames from 'classnames'
+import _keyBy from 'lodash/keyBy'
+import _noop from 'lodash/noop'
+import { Badge } from 'reactstrap'
+
+import { LoadingSpinner, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {useModalManager} from 'hooks/useModalManager'
-import {Article, NonRootCategory} from 'models/helpCenter/types'
-import {LanguageList} from 'pages/common/components/LanguageBulletList'
+import { useModalManager } from 'hooks/useModalManager'
+import { Article, NonRootCategory } from 'models/helpCenter/types'
+import { LanguageList } from 'pages/common/components/LanguageBulletList'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
@@ -25,17 +27,17 @@ import {
     DroppableTableBodyRow,
     RowEventListeners,
 } from 'pages/settings/helpCenter/components/DroppableTableBodyRow'
-import {TableActions} from 'pages/settings/helpCenter/components/TableActions'
+import { TableActions } from 'pages/settings/helpCenter/components/TableActions'
 import {
     ARTICLES_PER_PAGE,
     CategoryRowActionTypes,
     MODALS,
 } from 'pages/settings/helpCenter/constants'
-import {useArticlesActions} from 'pages/settings/helpCenter/hooks/useArticlesActions'
-import {useCategoriesActions} from 'pages/settings/helpCenter/hooks/useCategoriesActions'
-import {useAbilityChecker} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
-import {getCategoryDndType} from 'pages/settings/helpCenter/utils/getCategoryDndType'
+import { useArticlesActions } from 'pages/settings/helpCenter/hooks/useArticlesActions'
+import { useCategoriesActions } from 'pages/settings/helpCenter/hooks/useCategoriesActions'
+import { useAbilityChecker } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
+import { getCategoryDndType } from 'pages/settings/helpCenter/utils/getCategoryDndType'
 import {
     getArticlesInCategory,
     getUncategorizedArticles,
@@ -44,13 +46,13 @@ import {
     getCategoriesById,
     getNonRootCategoriesById,
 } from 'state/entities/helpCenter/categories'
-import {changeViewLanguage, getViewLanguage} from 'state/ui/helpCenter'
-import {unreachable} from 'utils'
+import { changeViewLanguage, getViewLanguage } from 'state/ui/helpCenter'
+import { unreachable } from 'utils'
 
-import {useCategoryRowActions} from '../../../../hooks/useCategoryRowActions'
+import { useCategoryRowActions } from '../../../../hooks/useCategoryRowActions'
 import VisibilityCell from '../../../VisibilityCell/VisibilityCell'
+import { CATEGORY_NR_OF_COLUMNS } from '../../constants'
 
-import {CATEGORY_NR_OF_COLUMNS} from '../../constants'
 import css from './CategoriesTableRow.less'
 
 export type CategoriesTableRowProps = {
@@ -65,7 +67,7 @@ export type CategoriesTableRowProps = {
         categoryId: number | null,
         articles: Article[],
         level: number,
-        isUnlisted: boolean
+        isUnlisted: boolean,
     ) => ReactElement
     tooltip?: string
     shouldRenderRowWithoutArticles?: boolean
@@ -120,10 +122,12 @@ const DroppableCategoriesTableRow = ({
 }: DroppableCategoriesTableRowProps) => {
     const dispatch = useAppDispatch()
     const locales = useSupportedLocales()
-    const categoryModal = useModalManager(MODALS.CATEGORY, {autoDestroy: false})
-    const articleModal = useModalManager(MODALS.ARTICLE, {autoDestroy: false})
+    const categoryModal = useModalManager(MODALS.CATEGORY, {
+        autoDestroy: false,
+    })
+    const articleModal = useModalManager(MODALS.ARTICLE, { autoDestroy: false })
     const viewLanguage = useAppSelector(getViewLanguage)
-    const {isPassingRulesCheck} = useAbilityChecker()
+    const { isPassingRulesCheck } = useAbilityChecker()
 
     const categoryRowActions = useCategoryRowActions(category.id, level)
 
@@ -145,7 +149,7 @@ const DroppableCategoriesTableRow = ({
                 case 'categorySettings': {
                     if (category.translation.locale !== viewLanguage) {
                         dispatch(
-                            changeViewLanguage(category.translation.locale)
+                            changeViewLanguage(category.translation.locale),
                         )
                     }
 
@@ -171,11 +175,11 @@ const DroppableCategoriesTableRow = ({
                 }
             }
         },
-        [articleModal, category, categoryModal, dispatch, viewLanguage]
+        [articleModal, category, categoryModal, dispatch, viewLanguage],
     )
 
-    const canUpdateCategory = isPassingRulesCheck(({can}) =>
-        can('update', 'CategoryEntity')
+    const canUpdateCategory = isPassingRulesCheck(({ can }) =>
+        can('update', 'CategoryEntity'),
     )
 
     return (
@@ -185,7 +189,7 @@ const DroppableCategoriesTableRow = ({
                 id: category.id,
                 position,
                 type: getCategoryDndType(
-                    category.translation.parent_category_id
+                    category.translation.parent_category_id,
                 ),
             }}
             onDragStart={canUpdateCategory ? onDragStart : _noop}
@@ -196,7 +200,7 @@ const DroppableCategoriesTableRow = ({
         >
             {headerCell}
             <BodyCell
-                style={{minWidth: 110, width: 110}}
+                style={{ minWidth: 110, width: 110 }}
                 innerClassName={bodyInnerClass}
                 onClick={onClick}
             >
@@ -206,7 +210,7 @@ const DroppableCategoriesTableRow = ({
                 />
             </BodyCell>
             <BodyCell
-                style={{minWidth: 104, width: 104}}
+                style={{ minWidth: 104, width: 104 }}
                 innerClassName={bodyInnerClass}
                 onClick={onClick}
             >
@@ -217,14 +221,14 @@ const DroppableCategoriesTableRow = ({
                 />
             </BodyCell>
             <BodyCell
-                style={{minWidth: 104, width: 104}}
+                style={{ minWidth: 104, width: 104 }}
                 innerClassName={bodyInnerClass}
                 onClick={onClick}
             >
                 {' '}
             </BodyCell>
             <BodyCell
-                style={{minWidth: 120, width: 120}}
+                style={{ minWidth: 120, width: 120 }}
                 innerClassName={classNames(css.actions, bodyInnerClass)}
             >
                 <TableActions
@@ -252,12 +256,12 @@ export const CategoriesTableRow = ({
     const nonNullCategories = useAppSelector(getNonRootCategoriesById)
     const [isOpen, setOpen] = useState(false)
     const articlesCount = props.category.articleCount
-    const {isLoading, fetchArticles} = useArticlesActions()
-    const {fetchCategoryArticleCount} = useCategoriesActions()
+    const { isLoading, fetchArticles } = useArticlesActions()
+    const { fetchCategoryArticleCount } = useCategoriesActions()
     const articles = useAppSelector(
         categoryId !== null
             ? getArticlesInCategory(categoryId)
-            : getUncategorizedArticles
+            : getUncategorizedArticles,
     )
     const hasArticles = useMemo(() => articlesCount > 0, [articlesCount])
     const subcategoriesCount = props.category.children.length
@@ -266,7 +270,7 @@ export const CategoriesTableRow = ({
 
     const hasMore = useMemo(
         () => articles.length < articlesCount,
-        [articles, articlesCount]
+        [articles, articlesCount],
     )
 
     const fetchMore = useCallback(async () => {
@@ -284,7 +288,7 @@ export const CategoriesTableRow = ({
 
             void fetchMore()
         },
-        [fetchMore]
+        [fetchMore],
     )
 
     const handleOnDragStart = useCallback(() => {
@@ -358,7 +362,7 @@ export const CategoriesTableRow = ({
                                                     }
                                                 />
                                             )
-                                        }
+                                        },
                                     )}
                                 </TableBody>
                             </TableWrapper>
@@ -375,7 +379,7 @@ export const CategoriesTableRow = ({
                                 categoryId,
                                 articles,
                                 level,
-                                isUnlisted
+                                isUnlisted,
                             )}
                         </BodyCell>
                     </TableBodyRow>
@@ -386,7 +390,7 @@ export const CategoriesTableRow = ({
                             colSpan={CATEGORY_NR_OF_COLUMNS}
                             innerClassName={classNames(
                                 css['no-click'],
-                                css['load-more']
+                                css['load-more'],
                             )}
                         >
                             {isLoading ? (
@@ -422,7 +426,7 @@ export const CategoriesTableRow = ({
             <span className={css['caret-placeholder']} />
         )
     const countBadge = props.isCountBadgeLoading ? (
-        <LoadingSpinner size="small" style={{marginLeft: 8}} />
+        <LoadingSpinner size="small" style={{ marginLeft: 8 }} />
     ) : (
         <Badge pill color="light" className={css.count}>
             {hasArticles || hasSubcategories
@@ -430,7 +434,7 @@ export const CategoriesTableRow = ({
                 : 'No Published Articles'}
         </Badge>
     )
-    const bodyInnerClass = classNames({[css['no-click']]: !hasArticles})
+    const bodyInnerClass = classNames({ [css['no-click']]: !hasArticles })
     const handleOnClick = useCallback(() => {
         if (hasArticles || hasSubcategories) {
             const nextIsOpen = !isOpen

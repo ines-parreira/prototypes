@@ -1,19 +1,19 @@
-import {AddressElement, Elements, useElements} from '@stripe/react-stripe-js'
-import {
-    loadStripe,
-    StripeAddressElementChangeEvent,
-    type Stripe,
-} from '@stripe/stripe-js'
-import {fireEvent, screen, waitFor, act} from '@testing-library/react'
-import MockAdapter from 'axios-mock-adapter'
 import React from 'react'
 
+import { AddressElement, Elements, useElements } from '@stripe/react-stripe-js'
+import {
+    loadStripe,
+    type Stripe,
+    StripeAddressElementChangeEvent,
+} from '@stripe/stripe-js'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
+
 import client from 'models/api/resources'
+import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
+import { assumeMock } from 'utils/testing'
 
-import {renderWithStoreAndQueryClientAndRouter} from 'tests/renderWithStoreAndQueryClientAndRouter'
-import {assumeMock} from 'utils/testing'
-
-import {BillingAddressSetupView} from '../BillingAddressSetupView'
+import { BillingAddressSetupView } from '../BillingAddressSetupView'
 
 jest.mock('hooks/useAppSelector')
 
@@ -24,13 +24,13 @@ window.STRIPE_PUBLIC_KEY = 'pk_test_123'
 
 jest.mock('@stripe/react-stripe-js')
 
-assumeMock(Elements).mockImplementation(({children}: any) => (
+assumeMock(Elements).mockImplementation(({ children }: any) => (
     <div data-testid="stripe-elements">{children}</div>
 ))
 
 let handleAddressChange: (event: StripeAddressElementChangeEvent) => any
 
-assumeMock(AddressElement).mockImplementation(({onChange}) => {
+assumeMock(AddressElement).mockImplementation(({ onChange }) => {
     handleAddressChange = onChange ?? (() => {})
 
     return <div data-testid="stripe-address-element" />
@@ -68,7 +68,7 @@ describe('BillingAddressSetupView', () => {
         expect(screen.getByText('Billing Information')).toBeVisible()
         expect(screen.getByText('Email')).toBeVisible()
         expect(
-            screen.getByRole('button', {name: 'Save Billing Information'})
+            screen.getByRole('button', { name: 'Save Billing Information' }),
         ).toBeVisible()
         expect(screen.getByTestId('stripe-address-element')).toBeInTheDocument()
     })
@@ -85,18 +85,20 @@ describe('BillingAddressSetupView', () => {
 
         // Should show the notice that invoices are sent to this email address
         expect(
-            screen.getByText('Invoices are sent to this email address.')
+            screen.getByText('Invoices are sent to this email address.'),
         ).toBeVisible()
 
         mockAddressValue({
             complete: true,
-            value: {address: {postal_code: '12345', country: 'US'}},
+            value: { address: { postal_code: '12345', country: 'US' } },
         } as StripeAddressElementChangeEvent)
 
         await waitFor(() => {
             // The address is complete and the email is valid, so the submit button should be enabled
             expect(
-                screen.getByRole('button', {name: 'Save Billing Information'})
+                screen.getByRole('button', {
+                    name: 'Save Billing Information',
+                }),
             ).not.toBeAriaDisabled()
         })
     })
@@ -109,16 +111,16 @@ describe('BillingAddressSetupView', () => {
         })
 
         expect(
-            screen.queryByDisplayValue('new@example.com')
+            screen.queryByDisplayValue('new@example.com'),
         ).not.toBeInTheDocument()
 
-        fireEvent.change(screen.getByRole('textbox', {name: 'Email'}), {
-            target: {value: 'new@example.com'},
+        fireEvent.change(screen.getByRole('textbox', { name: 'Email' }), {
+            target: { value: 'new@example.com' },
         })
 
         await waitFor(() => {
             expect(
-                screen.queryByDisplayValue('test@example.com')
+                screen.queryByDisplayValue('test@example.com'),
             ).not.toBeInTheDocument()
             expect(screen.getByDisplayValue('new@example.com')).toBeVisible()
         })
@@ -131,30 +133,30 @@ describe('BillingAddressSetupView', () => {
             expect(screen.getByDisplayValue('test@example.com')).toBeVisible()
         })
 
-        fireEvent.change(screen.getByRole('textbox', {name: 'Email'}), {
-            target: {value: 'new@example.com'},
+        fireEvent.change(screen.getByRole('textbox', { name: 'Email' }), {
+            target: { value: 'new@example.com' },
         })
 
         mockAddressValue({
             complete: true,
-            value: {address: {country: 'FR', postal_code: '75019'}},
+            value: { address: { country: 'FR', postal_code: '75019' } },
         } as StripeAddressElementChangeEvent)
 
         await waitFor(() => {
             expect(
-                screen.getByRole('textbox', {name: 'VAT Number info'})
+                screen.getByRole('textbox', { name: 'VAT Number info' }),
             ).toBeVisible()
         })
 
         fireEvent.click(
-            screen.getByRole('button', {name: 'Save Billing Information'})
+            screen.getByRole('button', { name: 'Save Billing Information' }),
         )
 
         fireEvent.change(
-            screen.getByRole('textbox', {name: 'VAT Number info'}),
+            screen.getByRole('textbox', { name: 'VAT Number info' }),
             {
-                target: {value: 'FRAB123456789'},
-            }
+                target: { value: 'FRAB123456789' },
+            },
         )
 
         await waitFor(() => {
@@ -166,7 +168,7 @@ describe('BillingAddressSetupView', () => {
         })
 
         fireEvent.click(
-            screen.getByRole('button', {name: 'Save Billing Information'})
+            screen.getByRole('button', { name: 'Save Billing Information' }),
         )
 
         await waitFor(() => {

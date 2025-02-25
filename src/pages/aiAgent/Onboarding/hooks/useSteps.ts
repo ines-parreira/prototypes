@@ -1,17 +1,17 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {StoreIntegration} from 'models/integration/types'
-import {useGetOnboardingData} from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
-import {useShopifyIntegrations} from 'pages/aiAgent/Onboarding/hooks/useShopifyIntegrations'
-import {AiAgentScopes, WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
-import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
-import {useEmailIntegrations} from 'pages/settings/contactForm/hooks/useEmailIntegrations'
+import { StoreIntegration } from 'models/integration/types'
+import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
+import { useShopifyIntegrations } from 'pages/aiAgent/Onboarding/hooks/useShopifyIntegrations'
+import { AiAgentScopes, WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
+import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
+import { useEmailIntegrations } from 'pages/settings/contactForm/hooks/useEmailIntegrations'
 
-export const useSteps = ({shopName}: {shopName: string}) => {
-    const {integration} = useShopifyIntegrationAndScope(shopName)
+export const useSteps = ({ shopName }: { shopName: string }) => {
+    const { integration } = useShopifyIntegrationAndScope(shopName)
     const shopifyIntegrations: StoreIntegration[] = useShopifyIntegrations()
-    const {emailIntegrations, defaultIntegration} = useEmailIntegrations()
-    const {data, isLoading} = useGetOnboardingData(shopName)
+    const { emailIntegrations, defaultIntegration } = useEmailIntegrations()
+    const { data, isLoading } = useGetOnboardingData(shopName)
 
     // Step configuration array
     const steps = useMemo(
@@ -57,13 +57,13 @@ export const useSteps = ({shopName}: {shopName: string}) => {
             defaultIntegration,
             data?.scopes,
             isLoading,
-        ]
+        ],
     )
 
     // Filter steps based on conditions
     const validSteps = useMemo(
         () => steps.filter((step) => step.condition),
-        [steps]
+        [steps],
     )
 
     const totalSteps = useMemo(() => validSteps.length, [validSteps])

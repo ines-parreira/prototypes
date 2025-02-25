@@ -1,11 +1,11 @@
-import {useMutation, useQuery, UseQueryOptions} from '@tanstack/react-query'
+import { useMutation, useQuery, UseQueryOptions } from '@tanstack/react-query'
 
-import {CONVERT_DEFAULT_OPTIONS} from 'models/convert/constants'
-import {useConvertApi} from 'pages/convert/common/hooks/useConvertApi'
-import {MutationOverrides} from 'types/query'
+import { CONVERT_DEFAULT_OPTIONS } from 'models/convert/constants'
+import { useConvertApi } from 'pages/convert/common/hooks/useConvertApi'
+import { MutationOverrides } from 'types/query'
 
-import {createABTest, listABTests, updateABTest} from './resources'
-import {ABTest, ABTestListOptions} from './types'
+import { createABTest, listABTests, updateABTest } from './resources'
+import { ABTest, ABTestListOptions } from './types'
 
 export const abTestKeys = {
     all: () => ['abTest'] as const,
@@ -20,9 +20,9 @@ export const useListABTests = (
         Awaited<ReturnType<typeof listABTests>>,
         unknown,
         ABTest[]
-    >
+    >,
 ) => {
-    const {client: convertClient} = useConvertApi()
+    const { client: convertClient } = useConvertApi()
 
     return useQuery({
         queryKey: abTestKeys.list(params),
@@ -35,9 +35,9 @@ export const useListABTests = (
 }
 
 export const useCreateABTest = (
-    overrides?: MutationOverrides<typeof createABTest>
+    overrides?: MutationOverrides<typeof createABTest>,
 ) => {
-    const {client: convertClient} = useConvertApi()
+    const { client: convertClient } = useConvertApi()
 
     return useMutation({
         mutationFn: ([client = convertClient, data]) =>
@@ -48,9 +48,9 @@ export const useCreateABTest = (
 }
 
 export const useUpdateABTest = (
-    overrides?: MutationOverrides<typeof updateABTest>
+    overrides?: MutationOverrides<typeof updateABTest>,
 ) => {
-    const {client: convertClient} = useConvertApi()
+    const { client: convertClient } = useConvertApi()
 
     return useMutation({
         mutationFn: ([client = convertClient, pathParams, data]) =>

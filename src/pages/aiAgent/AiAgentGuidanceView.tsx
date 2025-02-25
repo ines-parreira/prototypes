@@ -1,22 +1,24 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
-import React, {useEffect} from 'react'
+import React, { useEffect } from 'react'
 
-import {SegmentEvent, logEvent} from 'common/segment'
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {LocaleCode} from 'models/helpCenter/types'
+import { LocaleCode } from 'models/helpCenter/types'
 import history from 'pages/history'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+
+import AiGuidanceEmptyState from './components/AiGuidanceEmptyState/AiGuidanceEmptyState'
+import { GuidanceEmptyState } from './components/GuidanceEmptyState/GuidanceEmptyState'
+import { GuidanceHeader } from './components/GuidanceHeader/GuidanceHeader'
+import { GuidanceList } from './components/GuidanceList/GuidanceList'
+import { GuidanceTopRecommendations } from './components/GuidanceTopRecommendations/GuidanceTopRecommendations'
+import { useAiAgentNavigation } from './hooks/useAiAgentNavigation'
+import { useGuidanceAiSuggestions } from './hooks/useGuidanceAiSuggestions'
+import { useGuidanceArticleMutation } from './hooks/useGuidanceArticleMutation'
 
 import css from './AiAgentGuidanceView.less'
-import AiGuidanceEmptyState from './components/AiGuidanceEmptyState/AiGuidanceEmptyState'
-import {GuidanceEmptyState} from './components/GuidanceEmptyState/GuidanceEmptyState'
-import {GuidanceHeader} from './components/GuidanceHeader/GuidanceHeader'
-import {GuidanceList} from './components/GuidanceList/GuidanceList'
-import {GuidanceTopRecommendations} from './components/GuidanceTopRecommendations/GuidanceTopRecommendations'
-import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
-import {useGuidanceAiSuggestions} from './hooks/useGuidanceAiSuggestions'
-import {useGuidanceArticleMutation} from './hooks/useGuidanceArticleMutation'
 
 type Props = {
     helpCenterId: number
@@ -29,7 +31,7 @@ export const AiAgentGuidanceView = ({
     shopName,
     locale,
 }: Props) => {
-    const {deleteGuidanceArticle, updateGuidanceArticle} =
+    const { deleteGuidanceArticle, updateGuidanceArticle } =
         useGuidanceArticleMutation({
             guidanceHelpCenterId: helpCenterId,
         })
@@ -59,7 +61,7 @@ export const AiAgentGuidanceView = ({
         isEmptyStateAIGuidances,
     ])
 
-    const {routes} = useAiAgentNavigation({shopName})
+    const { routes } = useAiAgentNavigation({ shopName })
 
     const dispatch = useAppDispatch()
 
@@ -71,33 +73,33 @@ export const AiAgentGuidanceView = ({
                 notify({
                     status: NotificationStatus.Success,
                     message: 'Guidance successfully deleted',
-                })
+                }),
             )
         } catch {
             void dispatch(
                 notify({
                     status: NotificationStatus.Error,
                     message: 'Error during guidance article deletion.',
-                })
+                }),
             )
         }
     }
 
     const onChangeVisibility = async (
         articleId: number,
-        isVisible: boolean
+        isVisible: boolean,
     ) => {
         try {
             await updateGuidanceArticle(
-                {visibility: isVisible ? 'PUBLIC' : 'UNLISTED'},
-                {articleId, locale}
+                { visibility: isVisible ? 'PUBLIC' : 'UNLISTED' },
+                { articleId, locale },
             )
         } catch {
             void dispatch(
                 notify({
                     status: NotificationStatus.Error,
                     message: 'Error during guidance article visibility change.',
-                })
+                }),
             )
         }
     }

@@ -1,5 +1,6 @@
-import {fromJS, Map} from 'immutable'
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
+
+import { fromJS, Map } from 'immutable'
 
 import {
     REVENUE_OVERVIEW,
@@ -8,30 +9,31 @@ import {
     REVENUE_PER_TICKET,
     stats as statsConfig,
 } from 'config/stats'
-
 import useStatResource from 'hooks/reporting/useStatResource'
 import useAppSelector from 'hooks/useAppSelector'
-import {OneDimensionalUnionChart, TwoDimensionalChart} from 'models/stat/types'
+import {
+    OneDimensionalUnionChart,
+    TwoDimensionalChart,
+} from 'models/stat/types'
 import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
 import ConvertLimitBanner from 'pages/convert/campaigns/components/ConvertLimitBanner/ConvertLimitBanner'
-
-import {BarStat} from 'pages/stats/common/components/charts/BarStat'
+import { BarStat } from 'pages/stats/common/components/charts/BarStat'
 import KeyMetricStat from 'pages/stats/common/components/charts/KeyMetricStat/KeyMetricStat'
 import TableStat from 'pages/stats/common/components/charts/TableStat/TableStat'
 import KeyMetricStatWrapper from 'pages/stats/KeyMetricStatWrapper'
 import RevenueStatsRestrictedFeature from 'pages/stats/RevenueStatsRestrictedFeature'
 import StatsPage from 'pages/stats/StatsPage'
 import StatWrapper from 'pages/stats/StatWrapper'
-import {SupportPerformanceRevenueFilters} from 'pages/stats/support-performance/revenue/SupportPerformanceRevenueFilters'
-import {AccountFeature} from 'state/currentAccount/types'
-import {getStatsStoreIntegrations} from 'state/stats/selectors'
-import {getCleanStatsFiltersWithInitialStoreIntegration} from 'state/ui/stats/selectors'
+import { SupportPerformanceRevenueFilters } from 'pages/stats/support-performance/revenue/SupportPerformanceRevenueFilters'
+import { AccountFeature } from 'state/currentAccount/types'
+import { getStatsStoreIntegrations } from 'state/stats/selectors'
+import { getCleanStatsFiltersWithInitialStoreIntegration } from 'state/ui/stats/selectors'
 
 const SUPPORT_PERFORMANCE_REVENUE_STAT_NAME = 'support-performance-revenue'
 
 function SupportPerformanceRevenue() {
-    const {statsFilters: pageStatsFilters} = useAppSelector(
-        getCleanStatsFiltersWithInitialStoreIntegration
+    const { statsFilters: pageStatsFilters } = useAppSelector(
+        getCleanStatsFiltersWithInitialStoreIntegration,
     )
 
     const [revenueOverview, isFetchingRevenueOverview] =
@@ -43,7 +45,7 @@ function SupportPerformanceRevenue() {
 
     const immutableOverview = useMemo(
         () => fromJS(revenueOverview || {}) as Map<any, any>,
-        [revenueOverview]
+        [revenueOverview],
     )
 
     const [revenuePerDay, isFetchingRevenuePerDay] =
@@ -112,7 +114,7 @@ helping customers through the purchasing journey."
                     >
                         {(stat) => (
                             <TableStat
-                                context={{tagColors: null}}
+                                context={{ tagColors: null }}
                                 data={stat.getIn(['data', 'data'])}
                                 meta={stat.get('meta')}
                                 config={statsConfig.get(REVENUE_PER_AGENT)}
@@ -129,7 +131,7 @@ helping customers through the purchasing journey."
                     >
                         {(stat) => (
                             <TableStat
-                                context={{tagColors: null}}
+                                context={{ tagColors: null }}
                                 data={stat.getIn(['data', 'data'])}
                                 meta={stat.get('meta')}
                                 config={statsConfig.get(REVENUE_PER_TICKET)}
@@ -152,5 +154,5 @@ function RevenueOrRestrictedFeaturePage() {
 }
 
 export default withFeaturePaywall(AccountFeature.RevenueStatistics)(
-    RevenueOrRestrictedFeaturePage
+    RevenueOrRestrictedFeaturePage,
 )

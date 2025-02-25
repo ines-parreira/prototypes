@@ -1,11 +1,10 @@
-import {agents} from 'fixtures/agents'
+import { agents } from 'fixtures/agents'
 import {
     TicketQAScoreDimensionName,
     TicketQAScoreMeasure,
 } from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
-import {TicketDimension} from 'models/reporting/cubes/TicketCube'
-import {VoiceCallDimension} from 'models/reporting/cubes/VoiceCallCube'
-
+import { TicketDimension } from 'models/reporting/cubes/TicketCube'
+import { VoiceCallDimension } from 'models/reporting/cubes/VoiceCallCube'
 import {
     formatTicketDrillDownRowData,
     formatVoiceDrillDownRowData,
@@ -95,7 +94,7 @@ describe('DrillDownFormatters', () => {
                 ...cubeResult,
                 ...enrichment,
             }
-            const agentsData = [{...agents[0], id: agentId}]
+            const agentsData = [{ ...agents[0], id: agentId }]
 
             const formattedData = formatTicketDrillDownRowData({
                 row: ticketRow,
@@ -111,7 +110,7 @@ describe('DrillDownFormatters', () => {
                             '1',
                         [TicketQAScoreDimensionName.CommunicationSkills]: '5',
                     },
-                })
+                }),
             )
         })
 
@@ -124,7 +123,7 @@ describe('DrillDownFormatters', () => {
                 ...cubeResult,
                 ...enrichment,
             }
-            const agentsData = [{...agents[0], id: agentId}]
+            const agentsData = [{ ...agents[0], id: agentId }]
 
             const formattedData = formatTicketDrillDownRowData({
                 row: ticketRow,
@@ -140,7 +139,7 @@ describe('DrillDownFormatters', () => {
                             '1',
                         [TicketQAScoreDimensionName.CommunicationSkills]: '5',
                     },
-                })
+                }),
             )
         })
     })
@@ -152,7 +151,7 @@ describe('DrillDownFormatters', () => {
                 'Ticket.channel': 'chat',
                 'Ticket.contact_reason': null,
                 'Ticket.created_datetime': '2024-12-19T17:13:00.291264',
-                'Ticket.custom_fields': {1: '1::1', 2: '2::2'},
+                'Ticket.custom_fields': { 1: '1::1', 2: '2::2' },
                 'TicketEnriched.ticketId': '1',
             }
             const result = formatTicketDrillDownRowData({
@@ -187,7 +186,7 @@ describe('DrillDownFormatters', () => {
                 'Ticket.channel': 'chat',
                 'Ticket.contact_reason': null,
                 'Ticket.created_datetime': '2024-12-19T17:13:00.291264',
-                'Ticket.custom_fields': {1: '1::1', 2: '2::2'},
+                'Ticket.custom_fields': { 1: '1::1', 2: '2::2' },
                 'TicketEnriched.ticketId': '1',
             }
             const result = formatTicketDrillDownRowData({

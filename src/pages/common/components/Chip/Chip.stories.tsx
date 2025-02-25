@@ -1,7 +1,8 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {Chip} from './Chip'
+import { Meta, Story } from '@storybook/react'
+
+import { Chip } from './Chip'
 
 const storyConfig: Meta = {
     title: 'Data Display/Chip',

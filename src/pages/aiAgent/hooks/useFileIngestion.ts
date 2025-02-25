@@ -1,5 +1,6 @@
-import {useQueryClient} from '@tanstack/react-query'
-import {useCallback, useEffect, useState} from 'react'
+import { useCallback, useEffect, useState } from 'react'
+
+import { useQueryClient } from '@tanstack/react-query'
 
 import {
     helpCenterKeys,
@@ -7,7 +8,7 @@ import {
     useDeleteFileIngestion,
     useGetFileIngestion,
 } from 'models/helpCenter/queries'
-import {Components} from 'rest_api/help_center_api/client.generated'
+import { Components } from 'rest_api/help_center_api/client.generated'
 
 const UPDATE_STATUS_INTERVAL_MS = 5000
 
@@ -21,7 +22,7 @@ export const useFileIngestion = ({
     onFailure?: (dto: Components.Schemas.RetrieveFileIngestionLogDto) => void
 }): {
     ingestFile: (
-        createFileIngestionLogDto: Components.Schemas.CreateFileIngestionLogDto
+        createFileIngestionLogDto: Components.Schemas.CreateFileIngestionLogDto,
     ) => Promise<void>
     ingestedFiles: Components.Schemas.RetrieveFileIngestionLogDto[] | null
     deleteIngestedFile: (ingestedFileId: number) => Promise<void>
@@ -36,14 +37,14 @@ export const useFileIngestion = ({
             queryClient.invalidateQueries({
                 queryKey: helpCenterKeys.fileIngestions(helpCenterId),
             }),
-        [helpCenterId, queryClient]
+        [helpCenterId, queryClient],
     )
 
-    const {mutateAsync: createFileIngestionAsync} = useCreateFileIngestion({
+    const { mutateAsync: createFileIngestionAsync } = useCreateFileIngestion({
         onSuccess: invalidateQueries,
     })
 
-    const {data: ingestedFiles, isLoading} = useGetFileIngestion(
+    const { data: ingestedFiles, isLoading } = useGetFileIngestion(
         {
             help_center_id: helpCenterId,
         },
@@ -51,19 +52,19 @@ export const useFileIngestion = ({
             refetchOnWindowFocus: false,
             refetchInterval:
                 ingestingFileId === null ? false : UPDATE_STATUS_INTERVAL_MS,
-        }
+        },
     )
 
-    const {mutateAsync: deleteFileIngestionAsync} = useDeleteFileIngestion({
+    const { mutateAsync: deleteFileIngestionAsync } = useDeleteFileIngestion({
         onSuccess: invalidateQueries,
     })
 
     const ingestFile = async (
-        createFileIngestionLogDto: Components.Schemas.CreateFileIngestionLogDto
+        createFileIngestionLogDto: Components.Schemas.CreateFileIngestionLogDto,
     ) => {
         const resp = await createFileIngestionAsync([
             undefined,
-            {help_center_id: helpCenterId},
+            { help_center_id: helpCenterId },
             createFileIngestionLogDto,
         ])
 
@@ -73,7 +74,7 @@ export const useFileIngestion = ({
     const deleteIngestedFile = async (ingestedFileId: number) => {
         await deleteFileIngestionAsync([
             undefined,
-            {help_center_id: helpCenterId, file_ingestion_id: ingestedFileId},
+            { help_center_id: helpCenterId, file_ingestion_id: ingestedFileId },
         ]).finally(() => invalidateQueries())
     }
 
@@ -81,7 +82,7 @@ export const useFileIngestion = ({
         if (ingestingFileId === null || !ingestedFiles) return
 
         const ingestingFile = ingestedFiles.data.find(
-            (x) => x.id === ingestingFileId
+            (x) => x.id === ingestingFileId,
         )
 
         if (!ingestingFile || ingestingFile.status === 'PENDING') return

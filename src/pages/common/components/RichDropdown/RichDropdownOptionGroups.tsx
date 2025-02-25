@@ -1,18 +1,19 @@
-import React, {Fragment} from 'react'
-import {DropdownItem} from 'reactstrap'
+import React, { Fragment } from 'react'
+
+import { DropdownItem } from 'reactstrap'
 
 import RichDropdownOptions from './RichDropdownOptions'
-import {OptionGroup} from './types'
+import { OptionGroup } from './types'
 
 type Props = {
     onClick: (optionKey: string) => void
     options: OptionGroup[]
 }
 
-export default function RichDropdownOptionGroups({onClick, options}: Props) {
+export default function RichDropdownOptionGroups({ onClick, options }: Props) {
     return (
         <>
-            {options.map(({key, label, options}) => (
+            {options.map(({ key, label, options }) => (
                 <Fragment key={key}>
                     <DropdownItem divider />
                     <DropdownItem header>{label}</DropdownItem>

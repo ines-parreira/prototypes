@@ -1,8 +1,7 @@
-import {produce} from 'immer'
-
+import { produce } from 'immer'
 import _merge from 'lodash/merge'
 
-import {App} from 'pages/automate/actionsPlatform/types'
+import { App } from 'pages/automate/actionsPlatform/types'
 import {
     buildEdgeCommonProperties,
     cleanConditionsFromEmptyVariables,
@@ -12,39 +11,42 @@ import {
     WorkflowConfiguration,
 } from 'pages/automate/workflows/models/workflowConfiguration.types'
 
-import {getWorkflowVariableListForNode} from '../../models/variables.model'
+import { getWorkflowVariableListForNode } from '../../models/variables.model'
 import {
     AutomatedMessageNodeType,
     CancelSubscriptionNodeType,
     ChannelTriggerNodeType,
+    CreateDiscountCodeNodeType,
     EndNodeType,
     FileUploadNodeType,
     OrderLineItemSelectionNodeType,
     OrderSelectionNodeType,
     RemoveItemNodeType,
-    CreateDiscountCodeNodeType,
+    ReplaceItemNodeType,
     SkipChargeNodeType,
     TextReplyNodeType,
     UpdateShippingAddressNodeType,
     VisualBuilderEdge,
-    VisualBuilderGraph,
-    VisualBuilderNode,
-    ReplaceItemNodeType,
     VisualBuilderErrors,
-    VisualBuilderTouched,
+    VisualBuilderGraph,
     VisualBuilderGraphAppApp,
+    VisualBuilderNode,
+    VisualBuilderTouched,
 } from '../../models/visualBuilderGraph.types'
 import {
     buildAutomatedMessageNode,
     buildCancelOrderNode,
     buildCancelSubscriptionNode,
+    buildCreateDiscountCodeNode,
     buildEndNode,
     buildFileUploadNode,
     buildOrderLineItemSelectionNode,
     buildOrderSelectionNode,
     buildRefundOrderNode,
+    buildRefundShippingCostsNode,
     buildRemoveItemNode,
-    buildCreateDiscountCodeNode,
+    buildReplaceItemNode,
+    buildReshipForFreeNode,
     buildShopperAuthenticationNode,
     buildSkipChargeNode,
     buildTextReplyNode,
@@ -53,9 +55,6 @@ import {
     deleteBranch,
     getFallibleNodeSuccessConditions,
     greyOutBranch,
-    buildRefundShippingCostsNode,
-    buildReshipForFreeNode,
-    buildReplaceItemNode,
 } from './utils'
 
 export type VisualBuilderBaseAction =
@@ -318,7 +317,7 @@ export type VisualBuilderBaseAction =
 
 export function baseReducer(
     graph: VisualBuilderGraph,
-    action: VisualBuilderBaseAction
+    action: VisualBuilderBaseAction,
 ): VisualBuilderGraph {
     switch (action.type) {
         case 'RESET_GRAPH':
@@ -350,7 +349,7 @@ export function baseReducer(
                 const node = draft.nodes.find(
                     (n): n is ChannelTriggerNodeType =>
                         n.id === action.channelTriggerNodeId &&
-                        n.type === 'channel_trigger'
+                        n.type === 'channel_trigger',
                 )
                 if (node) {
                     // If the name of the flow is the same as the channel label, sync changes between them.
@@ -365,7 +364,7 @@ export function baseReducer(
                 const node = draft.nodes.find(
                     (n): n is AutomatedMessageNodeType =>
                         n.id === action.automatedMessageNodeId &&
-                        n.type === 'automated_message'
+                        n.type === 'automated_message',
                 )
                 if (node) {
                     node.data.content = action.content
@@ -376,7 +375,7 @@ export function baseReducer(
                 const node = draft.nodes.find(
                     (n): n is TextReplyNodeType =>
                         n.id === action.textReplyNodeId &&
-                        n.type === 'text_reply'
+                        n.type === 'text_reply',
                 )
                 if (node) {
                     node.data.content = action.content
@@ -387,7 +386,7 @@ export function baseReducer(
                 const node = draft.nodes.find(
                     (n): n is FileUploadNodeType =>
                         n.id === action.fileUploadNodeId &&
-                        n.type === 'file_upload'
+                        n.type === 'file_upload',
                 )
                 if (node) {
                     node.data.content = action.content
@@ -398,7 +397,7 @@ export function baseReducer(
                 const node = draft.nodes.find(
                     (n): n is OrderSelectionNodeType =>
                         n.id === action.orderSelectionNodeId &&
-                        n.type === 'order_selection'
+                        n.type === 'order_selection',
                 )
                 if (node) {
                     node.data.content = action.content
@@ -409,7 +408,7 @@ export function baseReducer(
                 const node = draft.nodes.find(
                     (n): n is OrderLineItemSelectionNodeType =>
                         n.id === action.orderLineItemSelectionNodeId &&
-                        n.type === 'order_line_item_selection'
+                        n.type === 'order_line_item_selection',
                 )
                 if (node) {
                     node.data.content = action.content
@@ -418,7 +417,7 @@ export function baseReducer(
         case 'SET_END_NODE_SETTINGS':
             return produce(graph, (draft) => {
                 const node = draft.nodes.find(
-                    (n): n is EndNodeType => n.id === action.endNodeId
+                    (n): n is EndNodeType => n.id === action.endNodeId,
                 )
                 if (node) {
                     node.data.action = action.settings.action
@@ -434,54 +433,54 @@ export function baseReducer(
                 insertNodeBefore(
                     graph,
                     buildAutomatedMessageNode(),
-                    action.beforeNodeId
-                )
+                    action.beforeNodeId,
+                ),
             )
         case 'INSERT_TEXT_REPLY_NODE':
             return computeNodesPositions(
                 insertNodeBefore(
                     graph,
                     buildTextReplyNode(),
-                    action.beforeNodeId
-                )
+                    action.beforeNodeId,
+                ),
             )
         case 'INSERT_FILE_UPLOAD_NODE':
             return computeNodesPositions(
                 insertNodeBefore(
                     graph,
                     buildFileUploadNode(),
-                    action.beforeNodeId
-                )
+                    action.beforeNodeId,
+                ),
             )
         case 'INSERT_SHOPPER_AUTHENTICATION_NODE':
             return computeNodesPositions(
                 insertNodeBefore(
                     graph,
                     buildShopperAuthenticationNode(action.storeIntegrationId),
-                    action.beforeNodeId
-                )
+                    action.beforeNodeId,
+                ),
             )
         case 'INSERT_ORDER_SELECTION_NODE':
             return computeNodesPositions(
                 insertNodeBefore(
                     graph,
                     buildOrderSelectionNode(),
-                    action.beforeNodeId
-                )
+                    action.beforeNodeId,
+                ),
             )
         case 'INSERT_ORDER_LINE_ITEM_SELECTION_NODE':
             return computeNodesPositions(
                 insertNodeBefore(
                     graph,
                     buildOrderLineItemSelectionNode(),
-                    action.beforeNodeId
-                )
+                    action.beforeNodeId,
+                ),
             )
         case 'DELETE_NODE':
             return computeNodesPositions(
                 produce(graph, (draft) => {
                     const nodeIndex = draft.nodes.findIndex(
-                        (n) => n.id === action.nodeId
+                        (n) => n.id === action.nodeId,
                     )
                     if (nodeIndex === -1) return
 
@@ -489,10 +488,10 @@ export function baseReducer(
 
                     draft.nodes.splice(nodeIndex, 1)
                     const incomingEdge = draft.edges.find(
-                        (e) => e.target === action.nodeId
+                        (e) => e.target === action.nodeId,
                     )
                     const outgoingEdges = draft.edges.filter(
-                        (e) => e.source === action.nodeId
+                        (e) => e.source === action.nodeId,
                     )
 
                     if (incomingEdge) {
@@ -503,9 +502,9 @@ export function baseReducer(
                             index < outgoingEdges.length;
                             index++
                         ) {
-                            const {nodes, edges} = deleteBranch(
+                            const { nodes, edges } = deleteBranch(
                                 draft,
-                                outgoingEdges[index].target
+                                outgoingEdges[index].target,
                             )
 
                             draft.nodes = nodes
@@ -526,8 +525,8 @@ export function baseReducer(
                                                     draft,
                                                     edge.target,
                                                     action.steps,
-                                                    action.apps
-                                                )
+                                                    action.apps,
+                                                ),
                                             )
                                         return edge
                                     }
@@ -553,7 +552,7 @@ export function baseReducer(
                             }
                         })
                     }
-                })
+                }),
             )
         case 'DELETE_BRANCH': {
             const triggerNode = graph.nodes[0]
@@ -563,13 +562,13 @@ export function baseReducer(
             return computeNodesPositions(
                 produce(nextGraph, (draft) => {
                     const incomingEdge = draft.edges.find(
-                        (e) => e.target === action.nodeId
+                        (e) => e.target === action.nodeId,
                     )
                     if (!incomingEdge) return
                     const endNode = buildEndNode(
                         triggerNode.type === 'channel_trigger'
                             ? 'ask-for-feedback'
-                            : 'end-success'
+                            : 'end-success',
                     )
                     draft.nodes.push(endNode)
                     incomingEdge.target = endNode.id
@@ -587,7 +586,7 @@ export function baseReducer(
                             }
                         })
                     }
-                })
+                }),
             )
         }
         case 'GREY_OUT_BRANCH': {
@@ -598,80 +597,80 @@ export function baseReducer(
                 insertFallibleNode(
                     graph,
                     buildCancelOrderNode(action),
-                    action.beforeNodeId
-                )
+                    action.beforeNodeId,
+                ),
             )
         case 'INSERT_REFUND_ORDER_NODE':
             return computeNodesPositions(
                 insertFallibleNode(
                     graph,
                     buildRefundOrderNode(action),
-                    action.beforeNodeId
-                )
+                    action.beforeNodeId,
+                ),
             )
         case 'INSERT_UPDATE_SHIPPING_ADDRESS_NODE':
             return computeNodesPositions(
                 insertFallibleNode(
                     graph,
                     buildUpdateShippingAddressNode(action),
-                    action.beforeNodeId
-                )
+                    action.beforeNodeId,
+                ),
             )
         case 'INSERT_REMOVE_ITEM_NODE':
             return computeNodesPositions(
                 insertFallibleNode(
                     graph,
                     buildRemoveItemNode(action),
-                    action.beforeNodeId
-                )
+                    action.beforeNodeId,
+                ),
             )
         case 'INSERT_REPLACE_ITEM_NODE':
             return computeNodesPositions(
                 insertFallibleNode(
                     graph,
                     buildReplaceItemNode(action),
-                    action.beforeNodeId
-                )
+                    action.beforeNodeId,
+                ),
             )
         case 'INSERT_CREATE_DISCOUNT_CODE_NODE':
             return computeNodesPositions(
                 insertFallibleNode(
                     graph,
                     buildCreateDiscountCodeNode(action),
-                    action.beforeNodeId
-                )
+                    action.beforeNodeId,
+                ),
             )
         case 'INSERT_REFUND_SHIPPING_COSTS_NODE':
             return computeNodesPositions(
                 insertFallibleNode(
                     graph,
                     buildRefundShippingCostsNode(action),
-                    action.beforeNodeId
-                )
+                    action.beforeNodeId,
+                ),
             )
         case 'INSERT_RESHIP_FOR_FREE_NODE':
             return computeNodesPositions(
                 insertFallibleNode(
                     graph,
                     buildReshipForFreeNode(action),
-                    action.beforeNodeId
-                )
+                    action.beforeNodeId,
+                ),
             )
         case 'INSERT_CANCEL_SUBSCRIPTION_NODE':
             return computeNodesPositions(
                 insertFallibleNode(
                     graph,
                     buildCancelSubscriptionNode(action),
-                    action.beforeNodeId
-                )
+                    action.beforeNodeId,
+                ),
             )
         case 'INSERT_SKIP_CHARGE_NODE':
             return computeNodesPositions(
                 insertFallibleNode(
                     graph,
                     buildSkipChargeNode(action),
-                    action.beforeNodeId
-                )
+                    action.beforeNodeId,
+                ),
             )
         case 'SET_BRANCH_IDS_EDITING':
             return produce(graph, (draft) => {
@@ -694,7 +693,7 @@ export function baseReducer(
             return produce(graph, (draft) => {
                 const node = draft.nodes.find(
                     (n): n is UpdateShippingAddressNodeType =>
-                        n.id === action.updateShippingAddressNodeId
+                        n.id === action.updateShippingAddressNodeId,
                 )
 
                 if (node) {
@@ -714,7 +713,7 @@ export function baseReducer(
             return produce(graph, (draft) => {
                 const node = draft.nodes.find(
                     (n): n is RemoveItemNodeType =>
-                        n.id === action.removeItemNodeId
+                        n.id === action.removeItemNodeId,
                 )
 
                 if (node) {
@@ -726,7 +725,7 @@ export function baseReducer(
             return produce(graph, (draft) => {
                 const node = draft.nodes.find(
                     (n): n is ReplaceItemNodeType =>
-                        n.id === action.replaceItemNodeId
+                        n.id === action.replaceItemNodeId,
                 )
 
                 if (node) {
@@ -741,7 +740,7 @@ export function baseReducer(
             return produce(graph, (draft) => {
                 const node = draft.nodes.find(
                     (n): n is CreateDiscountCodeNodeType =>
-                        n.id === action.createDiscountCodeNodeId
+                        n.id === action.createDiscountCodeNodeId,
                 )
 
                 if (node) {
@@ -754,7 +753,7 @@ export function baseReducer(
             return produce(graph, (draft) => {
                 const node = draft.nodes.find(
                     (n): n is CancelSubscriptionNodeType =>
-                        n.id === action.cancelSubscriptionNodeId
+                        n.id === action.cancelSubscriptionNodeId,
                 )
 
                 if (node) {
@@ -766,7 +765,7 @@ export function baseReducer(
             return produce(graph, (draft) => {
                 const node = draft.nodes.find(
                     (n): n is SkipChargeNodeType =>
-                        n.id === action.skipChargeNodeId
+                        n.id === action.skipChargeNodeId,
                 )
 
                 if (node) {
@@ -778,7 +777,7 @@ export function baseReducer(
             return produce(graph, (draft) => {
                 const app = draft.apps?.find(
                     (app): app is VisualBuilderGraphAppApp =>
-                        app.type === 'app' && app.app_id === action.appId
+                        app.type === 'app' && app.app_id === action.appId,
                 )
 
                 if (app) {
@@ -789,7 +788,7 @@ export function baseReducer(
             return produce(graph, (draft) => {
                 const app = draft.apps?.find(
                     (app): app is VisualBuilderGraphAppApp =>
-                        app.type === 'app' && app.app_id === action.appId
+                        app.type === 'app' && app.app_id === action.appId,
                 )
 
                 if (app) {
@@ -828,7 +827,7 @@ export function baseReducer(
                     if (node) {
                         node.data.touched = _merge(
                             node.data.touched,
-                            action.touched
+                            action.touched,
                         )
                     }
                 } else if (action.appId) {
@@ -849,7 +848,7 @@ export function baseReducer(
 function insertNodeBefore(
     graph: VisualBuilderGraph,
     nodeToInsert: VisualBuilderNode,
-    beforeNodeId: string
+    beforeNodeId: string,
 ) {
     return produce(graph, (draft) => {
         const edge = draft.edges.find((e) => e.target === beforeNodeId)
@@ -878,7 +877,7 @@ function insertNodeBefore(
 function insertFallibleNode(
     graph: VisualBuilderGraph,
     nodeToInsert: VisualBuilderNode,
-    beforeNodeId: string
+    beforeNodeId: string,
 ) {
     const triggerNode = graph.nodes[0]
 
@@ -888,7 +887,7 @@ function insertFallibleNode(
         const endNode = buildEndNode(
             triggerNode.type === 'channel_trigger'
                 ? 'ask-for-feedback'
-                : 'end-failure'
+                : 'end-failure',
         )
 
         const targetNode = draft.nodes.find((node) => node.id === beforeNodeId)
@@ -910,7 +909,7 @@ function insertFallibleNode(
                 data: {
                     name: 'Success',
                     conditions: getFallibleNodeSuccessConditions(
-                        nodeToInsert.id
+                        nodeToInsert.id,
                     ),
                 },
             },
@@ -921,7 +920,7 @@ function insertFallibleNode(
                 data: {
                     name: 'Error',
                 },
-            }
+            },
         )
 
         if (
@@ -940,7 +939,7 @@ function insertFallibleNode(
 
 function computeAppUsage(
     graph: VisualBuilderGraph,
-    steps: WorkflowConfiguration[]
+    steps: WorkflowConfiguration[],
 ) {
     return graph.nodes.reduce<Record<string, boolean>>((acc, node) => {
         switch (node.type) {
@@ -948,7 +947,8 @@ function computeAppUsage(
                 const step = steps.find(
                     (step) =>
                         step.id === node.data.configuration_id &&
-                        step.internal_id === node.data.configuration_internal_id
+                        step.internal_id ===
+                            node.data.configuration_internal_id,
                 )
 
                 if (step && step.apps) {

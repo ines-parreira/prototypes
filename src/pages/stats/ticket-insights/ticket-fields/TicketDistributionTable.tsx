@@ -1,36 +1,38 @@
-import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
-import {Skeleton} from '@gorgias/merchant-ui-kit'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useTicketsDistribution} from 'hooks/reporting/useTicketsDistribution'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
+import { Skeleton } from '@gorgias/merchant-ui-kit'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useTicketsDistribution } from 'hooks/reporting/useTicketsDistribution'
 import useAppSelector from 'hooks/useAppSelector'
-import {useWidthBasedOnScreen} from 'hooks/useWidthBasedOnScreen'
+import { useWidthBasedOnScreen } from 'hooks/useWidthBasedOnScreen'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import ChartCard from 'pages/stats/ChartCard'
 import {
-    NOT_AVAILABLE_PLACEHOLDER,
     formatMetricValue,
+    NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
-import {DashboardChartProps} from 'pages/stats/custom-reports/types'
+import { DashboardChartProps } from 'pages/stats/custom-reports/types'
 import {
     DistributionCategoryCell,
     formatCategory,
 } from 'pages/stats/DistributionCategoryCell'
-import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
+import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
 import GaugeAddon from 'pages/stats/GaugeAddon'
-import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
+import { NoDataAvailable } from 'pages/stats/NoDataAvailable'
 import css from 'pages/stats/ticket-insights/ticket-fields/TicketDistributionTable.less'
 import {
     TicketInsightsFieldsMetric,
     TicketInsightsFieldsMetricConfig,
 } from 'pages/stats/ticket-insights/ticket-fields/TicketInsightsFieldsMetricConfig'
-import {getSelectedCustomField} from 'state/ui/stats/ticketInsightsSlice'
-import {TicketFieldsMetric} from 'state/ui/stats/types'
+import { getSelectedCustomField } from 'state/ui/stats/ticketInsightsSlice'
+import { TicketFieldsMetric } from 'state/ui/stats/types'
 
 export const OUTSIDE_TOP_DATA = {
     title: 'Outside of Top used',
@@ -71,7 +73,7 @@ const LoadingFallback = () => {
 }
 
 const NoDataFallback = () => {
-    return <NoDataAvailable style={{minHeight: 300}} />
+    return <NoDataAvailable style={{ minHeight: 300 }} />
 }
 
 const useIsAnalyticsNewFilters = () => {
@@ -130,7 +132,7 @@ const TicketDistributionTable = ({
                                     {formatMetricValue(
                                         item.value,
                                         'decimal',
-                                        NOT_AVAILABLE_PLACEHOLDER
+                                        NOT_AVAILABLE_PLACEHOLDER,
                                     )}
                                 </DrillDownModalTrigger>
                             </BodyCell>
@@ -138,7 +140,7 @@ const TicketDistributionTable = ({
                                 {formatMetricValue(
                                     item.valueInPercentage,
                                     'percent-refined',
-                                    NOT_AVAILABLE_PLACEHOLDER
+                                    NOT_AVAILABLE_PLACEHOLDER,
                                 )}
                             </BodyCell>
                         </TableBodyRow>
@@ -158,14 +160,14 @@ const TicketDistributionTable = ({
                                 {formatMetricValue(
                                     outsideTopTotal,
                                     'decimal',
-                                    NOT_AVAILABLE_PLACEHOLDER
+                                    NOT_AVAILABLE_PLACEHOLDER,
                                 )}
                             </BodyCell>
                             <BodyCell justifyContent="right" width={80}>
                                 {formatMetricValue(
                                     outsideTopTotalPercentage,
                                     'percent-refined',
-                                    NOT_AVAILABLE_PLACEHOLDER
+                                    NOT_AVAILABLE_PLACEHOLDER,
                                 )}
                             </BodyCell>
                         </TableBodyRow>
@@ -214,7 +216,7 @@ export const TicketDistributionChart = ({
 }: DashboardChartProps) => {
     const selectedCustomField = useSelectedCustomField()
 
-    const {hint, title} =
+    const { hint, title } =
         TicketInsightsFieldsMetricConfig[
             TicketInsightsFieldsMetric.TicketDistribution
         ]

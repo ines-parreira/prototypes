@@ -1,28 +1,30 @@
+import React, { useEffect, useState } from 'react'
+
 import classnames from 'classnames'
-import {fromJS, Set, Map, List} from 'immutable'
-import React, {useState, useEffect} from 'react'
-import {Link} from 'react-router-dom'
+import { fromJS, List, Map, Set } from 'immutable'
+import { Link } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {CustomerEcommerceData} from 'models/customerEcommerceData/types'
-import {IntegrationType} from 'models/integration/types/'
+import { CustomerEcommerceData } from 'models/customerEcommerceData/types'
+import { IntegrationType } from 'models/integration/types/'
 import {
     areSourcesReady,
     jsonToWidgets,
 } from 'pages/common/components/infobar/utils'
 import history from 'pages/history'
-import {DEPRECATED_getIntegrations} from 'state/integrations/selectors'
+import { DEPRECATED_getIntegrations } from 'state/integrations/selectors'
 import {
     CUSTOM_WIDGET_TYPE,
-    CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
-    WOOCOMMERCE_WIDGET_TYPE,
-    CUSTOMER_EXTERNAL_DATA_KEY,
-    STANDALONE_WIDGET_TYPE,
     CUSTOMER_ECOMMERCE_DATA_KEY,
+    CUSTOMER_EXTERNAL_DATA_KEY,
+    CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
+    STANDALONE_WIDGET_TYPE,
+    WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
 
-import css from './SourceWrapper.less'
 import Widgets from './Widgets'
+
+import css from './SourceWrapper.less'
 
 export const WIDGET_DATA_TYPES = [
     {
@@ -192,7 +194,7 @@ export default function SourceWrapper({
         Map<string, unknown>[]
     >([])
     const [availableTypes, setAvailableTypes] = useState<Set<string>>(
-        fromJS([])
+        fromJS([]),
     )
 
     const integrations = useAppSelector(DEPRECATED_getIntegrations)
@@ -218,7 +220,7 @@ export default function SourceWrapper({
             .map((widgetsTemplate) => {
                 let ret = widgetsTemplate
                 const sourcePath = widgetsTemplate.get(
-                    'sourcePath'
+                    'sourcePath',
                 ) as List<string>
 
                 if (sourcePath.includes('integrations')) {
@@ -233,13 +235,13 @@ export default function SourceWrapper({
 
                     const integration = getIntegrationById(
                         integrations,
-                        integrationId
+                        integrationId,
                     )
 
                     // If there's already a sourceWidget of this type, we don't want another one (except for http)
                     if (
                         typesAlreadyDisplayed.includes(
-                            integration.get('type')
+                            integration.get('type'),
                         ) &&
                         integration.get('type') !== 'http'
                     ) {
@@ -250,7 +252,7 @@ export default function SourceWrapper({
                     ret = widgetsTemplate.set('type', integration.get('type'))
                 } else if (sourcePath.includes(CUSTOMER_EXTERNAL_DATA_KEY)) {
                     typesAlreadyDisplayed.push(
-                        CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE
+                        CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
                     )
                 } else if (sourcePath.includes(CUSTOMER_ECOMMERCE_DATA_KEY)) {
                     const customerEcommerceData = (
@@ -284,7 +286,7 @@ export default function SourceWrapper({
                 },
                 sourcePath: [''],
                 integration_id: null,
-            }) as Map<string, unknown>
+            }) as Map<string, unknown>,
         )
         typesAlreadyDisplayed.push(STANDALONE_WIDGET_TYPE)
 
@@ -300,7 +302,7 @@ export default function SourceWrapper({
     const isDragging = widgets.getIn(['_internal', 'drag', 'isDragging'])
 
     return (
-        <div className={classnames({dragging: isDragging})}>
+        <div className={classnames({ dragging: isDragging })}>
             <h3 className="mb-4">
                 Manage widgets
                 <a className="clickable float-right" onClick={leaveEditionMode}>
@@ -318,7 +320,7 @@ export default function SourceWrapper({
                     <section
                         className={classnames(
                             css.dataFields,
-                            css[widgetDataType.type]
+                            css[widgetDataType.type],
                         )}
                         key={idx}
                     >
@@ -333,11 +335,11 @@ export default function SourceWrapper({
                             widgets={widgetsTemplate.filter(
                                 (widgetsTemplate) =>
                                     widgetsTemplate?.get('type') ===
-                                    widgetDataType.type
+                                    widgetDataType.type,
                             )}
                         />
                     </section>
-                ) : null
+                ) : null,
             )}
         </div>
     )
@@ -345,13 +347,13 @@ export default function SourceWrapper({
 
 function getIntegrationById(
     integrations: List<Map<any, any>>,
-    id: string | number
+    id: string | number,
 ) {
     return (
         integrations.find(
             (integration) =>
                 (integration?.get('id', '') as string | number).toString() ===
-                (id || '').toString()
+                (id || '').toString(),
         ) || fromJS({})
     )
 }

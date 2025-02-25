@@ -1,10 +1,10 @@
 import memoize from 'memoize-one'
 
-import {getAccessToken, getBearerAuthorizationHeader} from 'rest_api/auth'
+import { getAccessToken, getBearerAuthorizationHeader } from 'rest_api/auth'
 
-import {Client} from './client.generated'
-import {AppAbility, AbilityRules, createAbility} from './ability'
-import {helpCenterAPI} from './client'
+import { AbilityRules, AppAbility, createAbility } from './ability'
+import { helpCenterAPI } from './client'
+import { Client } from './client.generated'
 
 let agentAbility: AppAbility | undefined
 
@@ -15,8 +15,8 @@ function createAgentAbility(token: string | null) {
     if (!rawPayload) {
         return undefined
     }
-    const parsedToken: {rules?: AbilityRules} = JSON.parse(
-        window.atob(rawPayload)
+    const parsedToken: { rules?: AbilityRules } = JSON.parse(
+        window.atob(rawPayload),
     )
     if (parsedToken?.rules && Array.isArray(parsedToken.rules)) {
         return createAbility(parsedToken.rules)
@@ -26,7 +26,7 @@ function createAgentAbility(token: string | null) {
 }
 
 async function buildHelpCenterClient(
-    setAgentAbility?: (ability: AppAbility | undefined) => void
+    setAgentAbility?: (ability: AppAbility | undefined) => void,
 ): Promise<Client> {
     const client = await helpCenterAPI.getClient<Client>()
 

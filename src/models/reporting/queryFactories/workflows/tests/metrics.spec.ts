@@ -43,7 +43,7 @@ describe('Workflow metrics', () => {
                     ],
                     measures: [WorkflowDatasetMeasure.CountEvents],
                     timezone: 'UTC',
-                }
+                },
             )
         })
     })
@@ -78,7 +78,7 @@ describe('Workflow metrics', () => {
     describe('workflowDatasetStepCountQueryFactory', () => {
         it('should count events by workflow id and group by event type and step id', () => {
             expect(
-                workflowDatasetStepCountQueryFactory(filters, timezone)
+                workflowDatasetStepCountQueryFactory(filters, timezone),
             ).toEqual({
                 dimensions: [
                     WorkflowDatasetDimension.EventType,

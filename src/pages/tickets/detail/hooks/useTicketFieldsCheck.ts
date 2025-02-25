@@ -1,12 +1,13 @@
-import {Macro} from '@gorgias/api-queries'
-import {useCallback} from 'react'
+import { useCallback } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useFlag} from 'core/flags'
-import {OBJECT_TYPES} from 'custom-fields/constants'
-import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import {useCustomFieldsConditionsEvaluationResults} from 'custom-fields/hooks/useCustomFieldsConditionsEvaluationResults'
+import { Macro } from '@gorgias/api-queries'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
+import { OBJECT_TYPES } from 'custom-fields/constants'
+import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import { useCustomFieldsConditionsEvaluationResults } from 'custom-fields/hooks/useCustomFieldsConditionsEvaluationResults'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -15,8 +16,8 @@ import {
 } from 'state/ticket/actions'
 import {
     getAppliedMacro,
-    getTicketFieldState,
     getTicket,
+    getTicketFieldState,
 } from 'state/ticket/selectors'
 import {
     getInvalidTicketFieldIds,
@@ -29,11 +30,11 @@ export function useTicketFieldsCheck(ticketId: number) {
     const appliedMacro = useAppSelector(getAppliedMacro)
     const ticketState = useAppSelector(getTicket)
     const conditionalFieldsSupported = useFlag(
-        FeatureFlagKey.TicketConditionalFields
+        FeatureFlagKey.TicketConditionalFields,
     )
 
     const {
-        data: {data: fieldDefinitions = []} = {},
+        data: { data: fieldDefinitions = [] } = {},
         isLoading: isTicketFieldDefinitionLoading,
     } = useCustomFieldDefinitions({
         archived: false,
@@ -45,11 +46,11 @@ export function useTicketFieldsCheck(ticketId: number) {
     } = useCustomFieldsConditionsEvaluationResults(
         OBJECT_TYPES.TICKET,
         ticketState,
-        conditionalFieldsSupported
+        conditionalFieldsSupported,
     )
 
     const checkTicketFieldErrors = useCallback(
-        ({includeMacro = false}: {includeMacro?: boolean} = {}) => {
+        ({ includeMacro = false }: { includeMacro?: boolean } = {}) => {
             // We need to take into account the fact that a macro
             // can also set some custom fields afterwards
             const invalidFields = getInvalidTicketFieldIds({
@@ -76,7 +77,7 @@ export function useTicketFieldsCheck(ticketId: number) {
                     SegmentEvent.CustomFieldTicketValueRequiredMissingError,
                     {
                         ticketId,
-                    }
+                    },
                 )
                 dispatch(triggerTicketFieldsErrors(invalidFields))
                 dispatch(setHasAttemptedToCloseTicket(true))
@@ -95,8 +96,8 @@ export function useTicketFieldsCheck(ticketId: number) {
             ticketFieldConditionsLoading,
             dispatch,
             conditionalFieldsSupported,
-        ]
+        ],
     )
 
-    return {checkTicketFieldErrors}
+    return { checkTicketFieldErrors }
 }

@@ -1,55 +1,56 @@
-import {render} from '@testing-library/react'
-import {fromJS, Map} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { render } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 
-import {AfterTitle, TitleWrapperContainer, Wrapper} from '../Subscription'
+import { AfterTitle, TitleWrapperContainer, Wrapper } from '../Subscription'
 
 const mockStore = configureMockStore([thunk])
-const integrationContextData = {integration: fromJS({}), integrationId: 1}
+const integrationContextData = { integration: fromJS({}), integrationId: 1 }
 
 describe('Subscription', () => {
     describe('AfterTitle', () => {
         it('should display only the cancel action because the subscription is not cancelled', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore({})}>
                     <IntegrationContext.Provider value={integrationContextData}>
-                        <Wrapper source={fromJS({cancelled_at: false})}>
+                        <Wrapper source={fromJS({ cancelled_at: false })}>
                             <AfterTitle isEditing={false} source={fromJS({})} />
                         </Wrapper>
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(container).toMatchSnapshot()
         })
 
         it('should display only the activate action because the subscription is cancelled with cancelled_at', () => {
-            const {getByText} = render(
+            const { getByText } = render(
                 <Provider store={mockStore({})}>
                     <IntegrationContext.Provider value={integrationContextData}>
-                        <Wrapper source={fromJS({cancelled_at: true})}>
+                        <Wrapper source={fromJS({ cancelled_at: true })}>
                             <AfterTitle isEditing={false} source={fromJS({})} />
                         </Wrapper>
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
             expect(getByText('Activate')).toBeVisible()
         })
 
         it('should display only the activate action because the subscription is cancelled status cancelled', () => {
-            const {getByText} = render(
+            const { getByText } = render(
                 <Provider store={mockStore({})}>
                     <IntegrationContext.Provider value={integrationContextData}>
-                        <Wrapper source={fromJS({status: 'CANCELLED'})}>
+                        <Wrapper source={fromJS({ status: 'CANCELLED' })}>
                             <AfterTitle isEditing={false} source={fromJS({})} />
                         </Wrapper>
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
             expect(getByText('Activate')).toBeVisible()
         })
@@ -76,7 +77,7 @@ describe('Subscription', () => {
             integrationId,
             integration: fromJS({
                 id: integrationId,
-                meta: {store_name: 'mystore'},
+                meta: { store_name: 'mystore' },
             }),
         }
 
@@ -92,7 +93,7 @@ describe('Subscription', () => {
         it('should not render any link because no customer hash is available', () => {
             window.location.pathname = ''
 
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore({})}>
                     <IntegrationContext.Provider
                         value={integrationContextData2}
@@ -101,14 +102,14 @@ describe('Subscription', () => {
                             <TitleWrapperContainer {...minProps} />
                         </Wrapper>
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(container).toMatchSnapshot()
         })
 
         it('should not render any provided link when no customer hash is available', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore({})}>
                     <IntegrationContext.Provider
                         value={integrationContextData2}
@@ -124,7 +125,7 @@ describe('Subscription', () => {
                             />
                         </Wrapper>
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(container).toMatchSnapshot()
@@ -136,7 +137,7 @@ describe('Subscription', () => {
             })
 
             it('should render default link because no custom link is set', () => {
-                const {container} = render(
+                const { container } = render(
                     <Provider store={mockStore({})}>
                         <IntegrationContext.Provider
                             value={integrationContextData2}
@@ -148,14 +149,14 @@ describe('Subscription', () => {
                                 />
                             </Wrapper>
                         </IntegrationContext.Provider>
-                    </Provider>
+                    </Provider>,
                 )
 
                 expect(container).toMatchSnapshot()
             })
 
             it('should render custom link because it is set', () => {
-                const {container} = render(
+                const { container } = render(
                     <Provider store={mockStore({})}>
                         <IntegrationContext.Provider
                             value={integrationContextData2}
@@ -172,7 +173,7 @@ describe('Subscription', () => {
                                 />
                             </Wrapper>
                         </IntegrationContext.Provider>
-                    </Provider>
+                    </Provider>,
                 )
 
                 expect(container).toMatchSnapshot()
@@ -185,7 +186,7 @@ describe('Subscription', () => {
             })
 
             it('should render default link because no custom link is set', () => {
-                const {container} = render(
+                const { container } = render(
                     <Provider store={mockStore({})}>
                         <IntegrationContext.Provider
                             value={integrationContextData2}
@@ -197,14 +198,14 @@ describe('Subscription', () => {
                                 />
                             </Wrapper>
                         </IntegrationContext.Provider>
-                    </Provider>
+                    </Provider>,
                 )
 
                 expect(container).toMatchSnapshot()
             })
 
             it('should render custom link because it is set', () => {
-                const {container} = render(
+                const { container } = render(
                     <Provider store={mockStore({})}>
                         <IntegrationContext.Provider
                             value={integrationContextData2}
@@ -221,7 +222,7 @@ describe('Subscription', () => {
                                 />
                             </Wrapper>
                         </IntegrationContext.Provider>
-                    </Provider>
+                    </Provider>,
                 )
 
                 expect(container).toMatchSnapshot()

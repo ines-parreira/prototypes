@@ -1,20 +1,21 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
+import React, { ComponentProps } from 'react'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
 import _cloneDeep from 'lodash/cloneDeep'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {account} from 'fixtures/account'
-import {billingState} from 'fixtures/billing'
+import { account } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
 import {
     HELPDESK_PRODUCT_ID,
     products,
     starterHelpdeskPlan,
 } from 'fixtures/productPrices'
 import UpgradeButton from 'pages/common/components/UpgradeButton'
-import {RootState, StoreDispatch} from 'state/types'
+import { RootState, StoreDispatch } from 'state/types'
 
 import AutomateSubscriptionButton from '../AutomateSubscriptionButton'
 
@@ -24,7 +25,7 @@ jest.mock(
     () => (props: ComponentProps<typeof UpgradeButton>) => {
         mockUpgradeButton(props)
         return 'UpgradeButtonMock'
-    }
+    },
 )
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -45,7 +46,7 @@ describe('AutomateSubscriptionButton', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <AutomateSubscriptionButton {...minProps} />
-            </Provider>
+            </Provider>,
         )
         expect(mockUpgradeButton).toHaveBeenLastCalledWith(minProps)
     })
@@ -72,7 +73,7 @@ describe('AutomateSubscriptionButton', () => {
                 })}
             >
                 <AutomateSubscriptionButton label="Foo" />
-            </Provider>
+            </Provider>,
         )
         expect(mockUpgradeButton).toHaveBeenCalledWith({
             label: minProps.label,

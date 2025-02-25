@@ -1,5 +1,6 @@
-import {fireEvent, render, screen} from '@testing-library/react'
 import React from 'react'
+
+import { fireEvent, render, screen } from '@testing-library/react'
 
 import SortOrderDropdown from '../SortOrderDropdown'
 
@@ -11,14 +12,14 @@ describe('<SortingDropdown />', () => {
             <SortOrderDropdown
                 onChange={jest.fn()}
                 value="created_datetime:asc"
-            />
+            />,
         )
 
         fireEvent.click(screen.getByText('swap_vert'))
         expect(
             screen.getByRole('option', {
                 name: /↑ Created/,
-            }).textContent
+            }).textContent,
         ).toContain('done')
     })
 
@@ -28,7 +29,7 @@ describe('<SortingDropdown />', () => {
             <SortOrderDropdown
                 onChange={onChange}
                 value="created_datetime:asc"
-            />
+            />,
         )
 
         fireEvent.click(screen.getByText('swap_vert'))

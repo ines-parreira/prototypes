@@ -1,13 +1,13 @@
-import {render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {Provider} from 'react-redux'
+import { render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import Property from 'pages/common/components/ast/Property'
-import {RootState, StoreDispatch} from 'state/types'
+import { RootState, StoreDispatch } from 'state/types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -21,8 +21,8 @@ const commonProps = {
     },
     parent: fromJS(['body', 0, 'expression']),
     properties: [],
-    schemas: fromJS({foo: 'schemas'}),
-    value: {value: 'foo'},
+    schemas: fromJS({ foo: 'schemas' }),
+    value: { value: 'foo' },
     rule: fromJS({}),
 }
 
@@ -38,46 +38,46 @@ describe('<Property />', () => {
                             'One or multiple email addresses are invalid',
                     }}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            screen.getByText('One or multiple email addresses are invalid')
+            screen.getByText('One or multiple email addresses are invalid'),
         ).toBeInTheDocument()
     })
 
     it("should not display errors if the validate method of the field's config does not raise any", () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore({})}>
                 <Property
                     {...commonProps}
-                    config={{name: '', validate: () => undefined}}
+                    config={{ name: '', validate: () => undefined }}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild?.textContent).toBe('')
     })
 
     it('should not display errors if there is no validate method', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore({})}>
                 <Property {...commonProps} config={{}} />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild?.textContent).toBe('')
     })
 
     it('should render a compact (inline) Property', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore({})}>
                 <Property {...commonProps} config={{}} compact={true} />
-            </Provider>
+            </Provider>,
         )
 
         expect((container.firstChild as HTMLElement).classList).toContain(
-            'd-flex'
+            'd-flex',
         )
     })
 })

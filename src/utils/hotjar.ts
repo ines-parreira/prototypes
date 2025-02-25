@@ -1,5 +1,5 @@
-import {User} from 'config/types/user'
-import {Account} from 'state/currentAccount/types'
+import { User } from 'config/types/user'
+import { Account } from 'state/currentAccount/types'
 
 export type InitHotjarParams = {
     clientVersion: string

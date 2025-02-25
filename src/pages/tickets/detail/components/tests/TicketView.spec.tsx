@@ -1,10 +1,10 @@
-import {render} from '@testing-library/react'
+import React, { ComponentProps } from 'react'
 
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
 import TicketView from '../TicketView'
 
@@ -39,25 +39,27 @@ describe('<TicketView />', () => {
                     _internal: {
                         isShopperTyping: false,
                     },
-                })
+                }),
             )
             .mockReturnValueOnce(
                 fromJS({
                     _internal: {
                         isShopperTyping: false,
                     },
-                })
+                }),
             )
     })
 
     it('should not have the hidden classes', () => {
-        const {container} = render(<TicketView {...minProps} />)
+        const { container } = render(<TicketView {...minProps} />)
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should have the hidden classes', () => {
-        const {container} = render(<TicketView {...minProps} isTicketHidden />)
+        const { container } = render(
+            <TicketView {...minProps} isTicketHidden />,
+        )
 
         expect(container.firstChild).toMatchSnapshot()
     })

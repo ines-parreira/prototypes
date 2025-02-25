@@ -1,10 +1,13 @@
-import {WorkflowDatasetFilterMember} from 'models/reporting/cubes/automate_v2/WorkflowDatasetCube'
-import {ReportingFilter, ReportingFilterOperator} from 'models/reporting/types'
-import {WorkflowStatsFilters} from 'models/stat/types'
-import {formatReportingQueryDate} from 'utils/reporting'
+import { WorkflowDatasetFilterMember } from 'models/reporting/cubes/automate_v2/WorkflowDatasetCube'
+import {
+    ReportingFilter,
+    ReportingFilterOperator,
+} from 'models/reporting/types'
+import { WorkflowStatsFilters } from 'models/stat/types'
+import { formatReportingQueryDate } from 'utils/reporting'
 
 export const workflowDatasetDefaultFilters = (
-    filters: WorkflowStatsFilters
+    filters: WorkflowStatsFilters,
 ): ReportingFilter[] => [
     {
         member: WorkflowDatasetFilterMember.PeriodStart,

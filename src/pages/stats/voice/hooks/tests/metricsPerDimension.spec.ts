@@ -1,20 +1,19 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment/moment'
 
 import {
     fetchMetricPerDimension,
     useMetricPerDimension,
 } from 'hooks/reporting/useMetricPerDimension'
-
-import {VoiceCallSegment} from 'models/reporting/cubes/VoiceCallCube'
+import { VoiceCallSegment } from 'models/reporting/cubes/VoiceCallCube'
 import {
     voiceCallAverageTalkTimePerAgentQueryFactory,
     voiceCallCountPerFilteringAgentQueryFactory,
 } from 'models/reporting/queryFactories/voice/voiceCall'
-import {declinedVoiceCallsCountPerAgentQueryFactory} from 'models/reporting/queryFactories/voice/voiceEventsByAgent'
-import {StatsFilters} from 'models/stat/types'
-import {formatReportingQueryDate} from 'utils/reporting'
-import {assumeMock} from 'utils/testing'
+import { declinedVoiceCallsCountPerAgentQueryFactory } from 'models/reporting/queryFactories/voice/voiceEventsByAgent'
+import { StatsFilters } from 'models/stat/types'
+import { formatReportingQueryDate } from 'utils/reporting'
+import { assumeMock } from 'utils/testing'
 
 import {
     fetchAnsweredCallsMetricPerAgent,
@@ -48,13 +47,17 @@ describe('metricsPerDimension', () => {
     describe('hooks', () => {
         it('useTotalCallsMetricPerAgent', () => {
             renderHook(() =>
-                useTotalCallsMetricPerAgent(statsFilters, userTimezone, agentId)
+                useTotalCallsMetricPerAgent(
+                    statsFilters,
+                    userTimezone,
+                    agentId,
+                ),
             )
 
             expect(useMetricPerDimensionMock.mock.calls[0]).toEqual([
                 voiceCallCountPerFilteringAgentQueryFactory(
                     statsFilters,
-                    userTimezone
+                    userTimezone,
                 ),
                 agentId,
             ])
@@ -65,15 +68,15 @@ describe('metricsPerDimension', () => {
                 useAnsweredCallsMetricPerAgent(
                     statsFilters,
                     userTimezone,
-                    agentId
-                )
+                    agentId,
+                ),
             )
 
             expect(useMetricPerDimensionMock.mock.calls[0]).toEqual([
                 voiceCallCountPerFilteringAgentQueryFactory(
                     statsFilters,
                     userTimezone,
-                    VoiceCallSegment.answeredCallsByAgent
+                    VoiceCallSegment.answeredCallsByAgent,
                 ),
                 agentId,
             ])
@@ -84,15 +87,15 @@ describe('metricsPerDimension', () => {
                 useMissedCallsMetricPerAgent(
                     statsFilters,
                     userTimezone,
-                    agentId
-                )
+                    agentId,
+                ),
             )
 
             expect(useMetricPerDimensionMock.mock.calls[0]).toEqual([
                 voiceCallCountPerFilteringAgentQueryFactory(
                     statsFilters,
                     userTimezone,
-                    VoiceCallSegment.missedCallsByAgent
+                    VoiceCallSegment.missedCallsByAgent,
                 ),
                 agentId,
             ])
@@ -103,15 +106,15 @@ describe('metricsPerDimension', () => {
                 useOutboundCallsMetricPerAgent(
                     statsFilters,
                     userTimezone,
-                    agentId
-                )
+                    agentId,
+                ),
             )
 
             expect(useMetricPerDimensionMock.mock.calls[0]).toEqual([
                 voiceCallCountPerFilteringAgentQueryFactory(
                     statsFilters,
                     userTimezone,
-                    VoiceCallSegment.outboundCalls
+                    VoiceCallSegment.outboundCalls,
                 ),
                 agentId,
             ])
@@ -122,14 +125,14 @@ describe('metricsPerDimension', () => {
                 useAverageTalkTimeMetricPerAgent(
                     statsFilters,
                     userTimezone,
-                    agentId
-                )
+                    agentId,
+                ),
             )
 
             expect(useMetricPerDimensionMock.mock.calls[0]).toEqual([
                 voiceCallAverageTalkTimePerAgentQueryFactory(
                     statsFilters,
-                    userTimezone
+                    userTimezone,
                 ),
                 agentId,
             ])
@@ -140,14 +143,14 @@ describe('metricsPerDimension', () => {
                 useDeclinedCallsMetricPerAgent(
                     statsFilters,
                     userTimezone,
-                    agentId
-                )
+                    agentId,
+                ),
             )
 
             expect(useMetricPerDimensionMock.mock.calls[0]).toEqual([
                 declinedVoiceCallsCountPerAgentQueryFactory(
                     statsFilters,
-                    userTimezone
+                    userTimezone,
                 ),
                 agentId,
             ])
@@ -166,7 +169,7 @@ describe('metricsPerDimension', () => {
                     voiceCallCountPerFilteringAgentQueryFactory(
                         statsFilters,
                         timezone,
-                        VoiceCallSegment.answeredCallsByAgent
+                        VoiceCallSegment.answeredCallsByAgent,
                     ),
             },
             {
@@ -175,7 +178,7 @@ describe('metricsPerDimension', () => {
                     voiceCallCountPerFilteringAgentQueryFactory(
                         statsFilters,
                         timezone,
-                        VoiceCallSegment.missedCallsByAgent
+                        VoiceCallSegment.missedCallsByAgent,
                     ),
             },
             {
@@ -184,7 +187,7 @@ describe('metricsPerDimension', () => {
                     voiceCallCountPerFilteringAgentQueryFactory(
                         statsFilters,
                         timezone,
-                        VoiceCallSegment.outboundCalls
+                        VoiceCallSegment.outboundCalls,
                     ),
             },
             {
@@ -195,12 +198,12 @@ describe('metricsPerDimension', () => {
                 fetch: fetchDeclinedCallsMetricPerAgent,
                 query: declinedVoiceCallsCountPerAgentQueryFactory,
             },
-        ])('should use query', async ({fetch, query}) => {
+        ])('should use query', async ({ fetch, query }) => {
             await fetch(statsFilters, userTimezone, agentId)
 
             expect(fetchMetricPerDimensionMock).toHaveBeenCalledWith(
                 query(statsFilters, userTimezone),
-                agentId
+                agentId,
             )
         })
     })

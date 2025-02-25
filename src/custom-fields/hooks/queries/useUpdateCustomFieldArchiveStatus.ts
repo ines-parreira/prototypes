@@ -1,28 +1,29 @@
-import {ObjectType} from '@gorgias/api-queries'
-import {useQueryClient} from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import moment from 'moment'
 
-import {OBJECT_TYPE_SETTINGS} from 'custom-fields/constants'
+import { ObjectType } from '@gorgias/api-queries'
+
+import { OBJECT_TYPE_SETTINGS } from 'custom-fields/constants'
 import {
     customFieldDefinitionKeys,
     useUpdatePartialCustomField,
 } from 'custom-fields/hooks/queries/queries'
-import {CustomField} from 'custom-fields/types'
+import { CustomField } from 'custom-fields/types'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {errorToChildren} from 'utils'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { errorToChildren } from 'utils'
 
 export const useUpdateCustomFieldArchiveStatus = (
     id: number,
-    objectType: ObjectType
+    objectType: ObjectType,
 ) => {
     const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
 
-    const {mutate, mutateAsync, ...mutationQueryAPI} =
+    const { mutate, mutateAsync, ...mutationQueryAPI } =
         useUpdatePartialCustomField({
-            onSuccess: (_, [, {deactivated_datetime}]) => {
+            onSuccess: (_, [, { deactivated_datetime }]) => {
                 void queryClient.invalidateQueries({
                     queryKey: customFieldDefinitionKeys.all(),
                 })
@@ -36,10 +37,10 @@ export const useUpdateCustomFieldArchiveStatus = (
                                 : 'moved to active'
                         }.`,
                         status: NotificationStatus.Success,
-                    })
+                    }),
                 )
             },
-            onError: (error, [, {deactivated_datetime}]) => {
+            onError: (error, [, { deactivated_datetime }]) => {
                 void dispatch(
                     notify({
                         title: `Failed to ${
@@ -48,7 +49,7 @@ export const useUpdateCustomFieldArchiveStatus = (
                         message: errorToChildren(error) || undefined,
                         allowHTML: true,
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
             },
         })
@@ -66,7 +67,7 @@ export const useUpdateCustomFieldArchiveStatus = (
 
 function onMutate(
     id: number,
-    archived: boolean
+    archived: boolean,
 ): [id: number, data: Partial<CustomField>] {
     return [
         id,

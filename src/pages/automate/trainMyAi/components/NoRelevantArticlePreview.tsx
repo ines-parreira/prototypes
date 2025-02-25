@@ -1,5 +1,6 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
+
+import { Link } from 'react-router-dom'
 
 import Button from 'pages/common/components/button/Button'
 
@@ -9,7 +10,7 @@ type Props = {
     helpCenterId?: number
 }
 
-export default function NoRelevantArticlePreview({helpCenterId}: Props) {
+export default function NoRelevantArticlePreview({ helpCenterId }: Props) {
     return (
         <div className={css.container}>
             <p>No relevant articles</p>

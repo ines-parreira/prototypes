@@ -1,8 +1,9 @@
-import {Badge} from '@gorgias/merchant-ui-kit'
-import React, {useState} from 'react'
+import React, { useState } from 'react'
+
+import { Badge } from '@gorgias/merchant-ui-kit'
 
 import useInterval from 'hooks/useInterval'
-import {VoiceCall, VoiceCallStatus} from 'models/voiceCall/types'
+import { VoiceCall, VoiceCallStatus } from 'models/voiceCall/types'
 import {
     getFormattedDurationEndedCall,
     getFormattedDurationOngoingCall,
@@ -17,7 +18,7 @@ export default function TicketVoiceCallDuration({
     voiceCall,
 }: TicketVoiceCallDurationProps) {
     const [ongoingCallDuration, setOngoingCallDuration] = useState(
-        getFormattedDurationOngoingCall(voiceCall.started_datetime)
+        getFormattedDurationOngoingCall(voiceCall.started_datetime),
     )
     const isFinalStatus = isFinalVoiceCallStatus(voiceCall.status)
 
@@ -27,7 +28,7 @@ export default function TicketVoiceCallDuration({
         }
 
         setOngoingCallDuration(
-            getFormattedDurationOngoingCall(voiceCall.started_datetime)
+            getFormattedDurationOngoingCall(voiceCall.started_datetime),
         )
     }, 1000)
 
@@ -62,7 +63,7 @@ export default function TicketVoiceCallDuration({
         >
             {isFinalStatus
                 ? `DURATION: ${getFormattedDurationEndedCall(
-                      voiceCall.duration
+                      voiceCall.duration,
                   )}`
                 : `CONNECTED: ${ongoingCallDuration}`}
         </Badge>

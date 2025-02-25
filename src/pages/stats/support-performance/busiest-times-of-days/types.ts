@@ -19,7 +19,7 @@ export enum DayOfWeek {
     SUNDAY = 'SUNDAY',
 }
 
-export const columnsOrder: {field: BTODColumns; label: string}[] = [
+export const columnsOrder: { field: BTODColumns; label: string }[] = [
     {
         label: 'HOUR',
         field: 'HOUR',

@@ -1,37 +1,37 @@
-import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import React, { ComponentProps } from 'react'
 
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {agents} from 'fixtures/agents'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-import {ReportingGranularity} from 'models/reporting/types'
-import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
-import {AgentsCellContent} from 'pages/stats/support-performance/agents/AgentsCellContent'
-import {AgentsHeaderCellContent} from 'pages/stats/support-performance/agents/AgentsHeaderCellContent'
+import { agents } from 'fixtures/agents'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { ReportingGranularity } from 'models/reporting/types'
+import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
+import { AgentsCellContent } from 'pages/stats/support-performance/agents/AgentsCellContent'
+import { AgentsHeaderCellContent } from 'pages/stats/support-performance/agents/AgentsHeaderCellContent'
 import {
     AgentsTable,
     AgentsTableWithDefaultState,
 } from 'pages/stats/support-performance/agents/AgentsTable'
 import {
-    TableColumnsOrderWithOnlineTime,
     getColumnWidth,
+    TableColumnsOrderWithOnlineTime,
     TableLabels,
 } from 'pages/stats/support-performance/agents/AgentsTableConfig'
-import {AgentsTableSummaryCell} from 'pages/stats/support-performance/agents/AgentsTableSummaryCell'
-import {RootState, StoreDispatch} from 'state/types'
+import { AgentsTableSummaryCell } from 'pages/stats/support-performance/agents/AgentsTableSummaryCell'
+import { RootState, StoreDispatch } from 'state/types'
 import {
+    getHeatmapMode,
     getPaginatedAgents,
     getSortedAgents,
-    pageSet,
     isSortingMetricLoading,
-    getHeatmapMode,
+    pageSet,
 } from 'state/ui/stats/agentPerformanceSlice'
-import {AgentsTableColumn} from 'state/ui/stats/types'
-import {assumeMock, renderWithStore} from 'utils/testing'
+import { AgentsTableColumn } from 'state/ui/stats/types'
+import { assumeMock, renderWithStore } from 'utils/testing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -44,7 +44,7 @@ jest.mock(
             getPaginatedAgents: jest.fn(),
             isSortingMetricLoading: jest.fn(),
             getHeatmapMode: jest.fn(),
-        }) as Record<string, any>
+        }) as Record<string, any>,
 )
 jest.mock(
     'state/stats/selectors',
@@ -52,7 +52,7 @@ jest.mock(
         ({
             ...jest.requireActual('state/stats/selectors'),
             getPageStatsFilters: jest.fn(),
-        }) as Record<string, any>
+        }) as Record<string, any>,
 )
 jest.mock('pages/stats/DrillDownModalTrigger.tsx', () => ({
     DrillDownModalTrigger: ({
@@ -114,7 +114,7 @@ describe('<AgentsTable>', () => {
                         paginatedAgents={paginatedAgents}
                         statsFilters={statsFiltersWithTimeZone}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(screen.getByRole('table')).toBeInTheDocument()
@@ -123,7 +123,7 @@ describe('<AgentsTable>', () => {
                     expect.objectContaining({
                         title: TableLabels[column],
                     }),
-                    {}
+                    {},
                 )
             })
 
@@ -131,7 +131,7 @@ describe('<AgentsTable>', () => {
                 expect.objectContaining({
                     agent: filteredAgents[0],
                 }),
-                {}
+                {},
             )
         })
 
@@ -142,11 +142,11 @@ describe('<AgentsTable>', () => {
                         paginatedAgents={paginatedAgents}
                         statsFilters={statsFiltersWithTimeZone}
                     />
-                </Provider>
+                </Provider>,
             )
             act(() => {
                 const tableRow = document.getElementsByClassName('container')[0]
-                fireEvent.scroll(tableRow, {target: {scrollLeft: 50}})
+                fireEvent.scroll(tableRow, { target: { scrollLeft: 50 } })
             })
 
             await waitFor(() => {
@@ -161,16 +161,16 @@ describe('<AgentsTable>', () => {
                         paginatedAgents={paginatedAgents}
                         statsFilters={statsFiltersWithTimeZone}
                     />
-                </Provider>
+                </Provider>,
             )
             act(() => {
                 const tableRow = document.getElementsByClassName('container')[0]
-                fireEvent.scroll(tableRow, {target: {scrollLeft: 0}})
+                fireEvent.scroll(tableRow, { target: { scrollLeft: 0 } })
             })
 
             await waitFor(() => {
                 expect(screen.getAllByRole('cell')[0]).not.toHaveClass(
-                    'withShadow'
+                    'withShadow',
                 )
             })
         })
@@ -184,7 +184,7 @@ describe('<AgentsTable>', () => {
                         paginatedAgents={paginatedAgents}
                         statsFilters={statsFiltersWithTimeZone}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(screen.getByText(currentPage)).toBeInTheDocument()
@@ -204,7 +204,7 @@ describe('<AgentsTable>', () => {
                         paginatedAgents={notManyPaginatedAgentsMock}
                         statsFilters={statsFiltersWithTimeZone}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(screen.queryByText(currentPage)).not.toBeInTheDocument()
@@ -226,7 +226,7 @@ describe('<AgentsTable>', () => {
                         paginatedAgents={paginatedAgents}
                         statsFilters={statsFiltersWithTimeZone}
                     />
-                </Provider>
+                </Provider>,
             )
             act(() => {
                 const pageButton = screen.getByText(pageToClick)
@@ -258,12 +258,12 @@ describe('<AgentsTable>', () => {
             }) => {
                 global.innerWidth = screenResolution
                 expect(getColumnWidth(AgentsTableColumn.AgentName)).toEqual(
-                    expectedAgentsWidth
+                    expectedAgentsWidth,
                 )
                 expect(
-                    getColumnWidth(AgentsTableColumn.CustomerSatisfaction)
+                    getColumnWidth(AgentsTableColumn.CustomerSatisfaction),
                 ).toEqual(expectedOtherColumnsWidth)
-            }
+            },
         )
     })
 
@@ -271,7 +271,7 @@ describe('<AgentsTable>', () => {
         const filteredAgents = agents.slice(1)
         beforeEach(() => {
             useNewStatsFiltersMock.mockReturnValue(
-                statsFiltersWithTimeZone as any
+                statsFiltersWithTimeZone as any,
             )
             getPaginatedAgentsMock.mockReturnValue({
                 agents: filteredAgents,

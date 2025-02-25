@@ -1,19 +1,19 @@
-import {WaitMusicType} from '@gorgias/api-queries'
-
-import {fireEvent, render, waitFor} from '@testing-library/react'
 import React from 'react'
 
-import {MAX_WAIT_MUSIC_CUSTOM_RECORDING_FILE_SIZE_MB} from 'models/integration/constants'
-import {LocalWaitMusicPreferences} from 'models/integration/types/phone'
-import {PhoneCountry} from 'models/phoneNumber/types'
+import { fireEvent, render, waitFor } from '@testing-library/react'
 
-import {assumeMock} from 'utils/testing'
+import { WaitMusicType } from '@gorgias/api-queries'
+
+import { MAX_WAIT_MUSIC_CUSTOM_RECORDING_FILE_SIZE_MB } from 'models/integration/constants'
+import { LocalWaitMusicPreferences } from 'models/integration/types/phone'
+import { PhoneCountry } from 'models/phoneNumber/types'
+import { assumeMock } from 'utils/testing'
 
 import useVoiceMessageValidation from '../hooks/useVoiceMessageValidation'
 import WaitMusicField from '../WaitMusicField'
 
 jest.mock(
-    'pages/integrations/integration/components/voice/hooks/useVoiceMessageValidation'
+    'pages/integrations/integration/components/voice/hooks/useVoiceMessageValidation',
 )
 const validateVoiceRecordingUploadMock = jest.fn()
 assumeMock(useVoiceMessageValidation).mockReturnValue({
@@ -38,12 +38,12 @@ describe('<WaitMusicField />', () => {
     })
 
     it('should render', () => {
-        const {queryByText} = render(
+        const { queryByText } = render(
             <WaitMusicField
-                preferences={{type: WaitMusicType.Library}}
+                preferences={{ type: WaitMusicType.Library }}
                 onChange={onChange}
                 integrationCountry={PhoneCountry.US}
-            />
+            />,
         )
 
         expect(queryByText('Choose from library')).toBeInTheDocument()
@@ -51,12 +51,12 @@ describe('<WaitMusicField />', () => {
     })
 
     it('should change wait music type to custom recording', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <WaitMusicField
-                preferences={{type: WaitMusicType.Library}}
+                preferences={{ type: WaitMusicType.Library }}
                 onChange={onChange}
                 integrationCountry={PhoneCountry.US}
-            />
+            />,
         )
 
         fireEvent.click(getByText('Custom recording'))
@@ -67,12 +67,12 @@ describe('<WaitMusicField />', () => {
     })
 
     it('should change wait music type to library', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <WaitMusicField
-                preferences={{type: WaitMusicType.CustomRecording}}
+                preferences={{ type: WaitMusicType.CustomRecording }}
                 onChange={onChange}
                 integrationCountry={PhoneCountry.US}
-            />
+            />,
         )
 
         fireEvent.click(getByText('Choose from library'))
@@ -83,12 +83,12 @@ describe('<WaitMusicField />', () => {
     })
 
     it('should change library audio on select', async () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <WaitMusicField
-                preferences={{type: WaitMusicType.Library}}
+                preferences={{ type: WaitMusicType.Library }}
                 onChange={onChange}
                 integrationCountry={PhoneCountry.US}
-            />
+            />,
         )
 
         fireEvent.click(getByText('arrow_drop_down'))
@@ -122,12 +122,12 @@ describe('<WaitMusicField />', () => {
             type: 'audio/mpeg',
         })
 
-        const {container} = render(
+        const { container } = render(
             <WaitMusicField
-                preferences={{type: WaitMusicType.CustomRecording}}
+                preferences={{ type: WaitMusicType.CustomRecording }}
                 onChange={onChange}
                 integrationCountry={PhoneCountry.US}
-            />
+            />,
         )
 
         expect(container).toHaveTextContent('Supported file: .mp3 (Max 3MB)')
@@ -135,7 +135,7 @@ describe('<WaitMusicField />', () => {
         const input = container.querySelector('input[type="file"]')
         expect(input).toBeInTheDocument()
         if (input) {
-            fireEvent.change(input, {target: {files: [file]}})
+            fireEvent.change(input, { target: { files: [file] } })
         }
 
         await waitFor(() => {
@@ -151,7 +151,7 @@ describe('<WaitMusicField />', () => {
                 expect.anything(),
                 undefined,
                 MAX_WAIT_MUSIC_CUSTOM_RECORDING_FILE_SIZE_MB,
-                true
+                true,
             )
         })
     })

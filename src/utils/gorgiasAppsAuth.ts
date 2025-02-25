@@ -1,4 +1,4 @@
-import {AxiosHeaders, AxiosResponse, InternalAxiosRequestConfig} from 'axios'
+import { AxiosHeaders, AxiosResponse, InternalAxiosRequestConfig } from 'axios'
 
 import gorgiasApiClient from 'models/api/resources'
 
@@ -7,7 +7,7 @@ function isValidAccessToken(token: string | null): boolean {
         return false
     }
 
-    const {exp} = JSON.parse(atob(token.split('.')[1]))
+    const { exp } = JSON.parse(atob(token.split('.')[1]))
     const expirationDate = new Date(exp * 1000)
     return new Date() < expirationDate
 }
@@ -44,7 +44,7 @@ export class GorgiasAppAuthService {
         this.authPendingRequest = gorgiasApiClient.post('/gorgias-apps/auth')
 
         const {
-            data: {token},
+            data: { token },
         } = await this.authPendingRequest
         this.setAccessToken(token)
         this.authPendingRequest = null

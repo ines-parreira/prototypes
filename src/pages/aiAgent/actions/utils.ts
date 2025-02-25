@@ -1,6 +1,6 @@
-import {ulid} from 'ulidx'
+import { ulid } from 'ulidx'
 
-import {WorkflowConfigurationBuilder} from 'pages/automate/workflows/models/workflowConfiguration.model'
+import { WorkflowConfigurationBuilder } from 'pages/automate/workflows/models/workflowConfiguration.model'
 
 export const getInitialConfiguration = () => {
     const httpStepId = ulid()

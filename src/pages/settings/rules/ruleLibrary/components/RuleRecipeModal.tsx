@@ -1,23 +1,25 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { useCallback, useState } from 'react'
+
 import classnames from 'classnames'
 import _flatten from 'lodash/flatten'
 import pluralize from 'pluralize'
-import React, {useCallback, useState} from 'react'
-import {Badge, Modal, ModalBody, ModalFooter, ModalHeader} from 'reactstrap'
+import { Badge, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap'
 
-import {useAppNode} from 'appNode'
-import {logEvent, SegmentEvent} from 'common/segment'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { useAppNode } from 'appNode'
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
-import {RuleRecipe} from 'models/ruleRecipe/types'
+import { RuleRecipe } from 'models/ruleRecipe/types'
 import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import CheckBox from 'pages/common/forms/CheckBox'
 import history from 'pages/history'
 import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
 import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
-import {getHasAutomate} from 'state/billing/selectors'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {getRulesLimitStatus} from 'state/entities/rules/selectors'
+import { getHasAutomate } from 'state/billing/selectors'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { getRulesLimitStatus } from 'state/entities/rules/selectors'
 import {
     AnyManagedRuleSettings,
     ManagedRulesSlugs,
@@ -25,8 +27,7 @@ import {
     RuleType,
 } from 'state/rules/types'
 
-import {RuleItemActions} from '../../types'
-
+import { RuleItemActions } from '../../types'
 import {
     InstallationError,
     InstallationErrorMessage,
@@ -62,7 +63,7 @@ export const RuleRecipeModal = ({
     aiAgentLink,
 }: Props) => {
     const currentAccount = useAppSelector(getCurrentAccountState)
-    const {rule, slug, triggered_count, views_per_section} = recipe
+    const { rule, slug, triggered_count, views_per_section } = recipe
     const [shouldCreateviews, setShouldCreateViews] = useState(true)
     const [showAutomationModal, setShowAutomationModal] = useState(false)
     const [isSubscribing, setIsSubscribing] = useState(false)
@@ -72,7 +73,7 @@ export const RuleRecipeModal = ({
     >(
         ruleLimitStatus === RuleLimitStatus.Reached
             ? [InstallationError.MaxRulesReached]
-            : []
+            : [],
     )
     const hasAutomate = useAppSelector(getHasAutomate)
     const appNode = useAppNode()
@@ -110,7 +111,7 @@ export const RuleRecipeModal = ({
                 ])
             }
         },
-        [installationErrors, shouldHandleError]
+        [installationErrors, shouldHandleError],
     )
     const ErrorTooltip = () => (
         <Tooltip target={`#${installButtonId}`}>
@@ -168,7 +169,7 @@ export const RuleRecipeModal = ({
         if (!views_per_section) return <></>
 
         const viewNames = _flatten(Object.values(views_per_section)).map(
-            ({name}) => name
+            ({ name }) => name,
         )
 
         const viewDescriptions: Record<string, string> = {
@@ -180,7 +181,7 @@ export const RuleRecipeModal = ({
         }
 
         const allViewsHaveDescriptions = viewNames.every(
-            (name) => viewDescriptions[name]
+            (name) => viewDescriptions[name],
         )
 
         return (
@@ -213,11 +214,11 @@ export const RuleRecipeModal = ({
                                 ? 'Create the ticket views listed above to see tickets that trigger this rule.'
                                 : `Create the ticket ${pluralize(
                                       'view',
-                                      viewNames.length
+                                      viewNames.length,
                                   )} ${viewNames
                                       .map((name) => `"${name}"`)
                                       .join(
-                                          ' and '
+                                          ' and ',
                                       )} to see tickets that trigger this rule.`}
                         </div>
                         <div className={css.viewsSecondaryLabel}>
@@ -247,7 +248,7 @@ export const RuleRecipeModal = ({
                     </span>
                     <Badge
                         key={recipe.recipe_tag}
-                        cssModule={{badge: css.badge}}
+                        cssModule={{ badge: css.badge }}
                         style={tagColors[recipe.recipe_tag]}
                     >
                         {recipe.recipe_tag}

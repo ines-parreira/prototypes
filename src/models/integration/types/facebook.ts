@@ -1,8 +1,8 @@
 // g/integrations/facebook/schemas.py
-import {IntegrationType} from '../constants'
-import type {Integration} from './'
-import type {IntegrationBase} from './base'
-import type {OAuth2, AutoResponder} from './misc'
+import { IntegrationType } from '../constants'
+import type { Integration } from './'
+import type { IntegrationBase } from './base'
+import type { AutoResponder, OAuth2 } from './misc'
 
 export type FacebookIntegration = IntegrationBase & {
     type: IntegrationType.Facebook
@@ -65,6 +65,6 @@ export type FacebokIntegrationPreferences = {
 }
 
 export const isFacebookIntegration = (
-    integration: Maybe<Integration>
+    integration: Maybe<Integration>,
 ): integration is FacebookIntegration =>
     integration?.type === IntegrationType.Facebook

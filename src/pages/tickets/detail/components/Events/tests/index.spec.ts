@@ -1,7 +1,7 @@
-import {fromJS, Map} from 'immutable'
+import { fromJS, Map } from 'immutable'
 
-import {getEvent} from '..'
-import {eventMatcher} from '../matcher'
+import { getEvent } from '..'
+import { eventMatcher } from '../matcher'
 
 jest.mock('../matcher')
 const mockEventMatcher = eventMatcher as jest.Mock
@@ -28,7 +28,7 @@ describe('getEvent', () => {
 
     it('Should return an empty event if eventMatcher return undefined', () => {
         const event = getEvent({
-            integration: fromJS({type: 'type'}),
+            integration: fromJS({ type: 'type' }),
             actionConfig,
             payload: Map(),
             data: Map(),
@@ -45,7 +45,7 @@ describe('getEvent', () => {
             objectLink: 'test',
         })
         const event = getEvent({
-            integration: fromJS({type: 'type'}),
+            integration: fromJS({ type: 'type' }),
             actionConfig,
             payload: Map(),
             data: Map(),

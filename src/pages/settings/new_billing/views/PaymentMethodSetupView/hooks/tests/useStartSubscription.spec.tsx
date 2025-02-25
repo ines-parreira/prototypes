@@ -1,19 +1,20 @@
-import {renderHook, act} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
-import {useHistory} from 'react-router-dom'
+
+import { act, renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import GorgiasApi from 'services/gorgiasApi'
-import {setCurrentSubscription} from 'state/currentAccount/actions'
+import { setCurrentSubscription } from 'state/currentAccount/actions'
 import * as selectors from 'state/currentAccount/selectors'
 import * as actions from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {assumeMock} from 'utils/testing'
+import { NotificationStatus } from 'state/notifications/types'
+import { assumeMock } from 'utils/testing'
 
-import {useStartSubscription} from '../useStartSubscription'
+import { useStartSubscription } from '../useStartSubscription'
 
 jest.useFakeTimers()
 
@@ -27,16 +28,16 @@ const middlewares = [thunk]
 const mockStore = configureStore(middlewares)
 
 const renderHookWithMockStore = <TProps, TResult>(
-    callback: (props: TProps) => TResult
+    callback: (props: TProps) => TResult,
 ) => {
     const store = mockStore({})
-    const wrapper = ({children}: any) => (
+    const wrapper = ({ children }: any) => (
         <Provider store={store}>{children}</Provider>
     )
 
-    const result = renderHook(callback, {wrapper})
+    const result = renderHook(callback, { wrapper })
 
-    return {...result, store}
+    return { ...result, store }
 }
 
 const mockGetIsCurrentSubscriptionTrialingOrCanceled = (value: boolean) =>
@@ -50,7 +51,7 @@ let gorgiasApiInstance: {
 
 const startSubscription = async (
     response = {},
-    error?: Record<string, any>
+    error?: Record<string, any>,
 ) => {
     if (error) {
         gorgiasApiInstance.startSubscription.mockRejectedValue(error)
@@ -60,7 +61,7 @@ const startSubscription = async (
 
     const notifySpy = jest.spyOn(actions, 'notify')
 
-    const {result, store} = renderHookWithMockStore(useStartSubscription)
+    const { result, store } = renderHookWithMockStore(useStartSubscription)
 
     await act(async () => {
         // start subscription
@@ -79,10 +80,10 @@ describe('useStartSubscription', () => {
             startSubscription: jest.fn(),
         }
         ;(GorgiasApi as unknown as jest.Mock).mockImplementation(
-            () => gorgiasApiInstance
+            () => gorgiasApiInstance,
         )
 
-        assumeMock(useHistory).mockReturnValue({push: jest.fn()} as any)
+        assumeMock(useHistory).mockReturnValue({ push: jest.fn() } as any)
     })
 
     describe('if subscription IS NOT trialing or canceled', () => {
@@ -103,15 +104,15 @@ describe('useStartSubscription', () => {
         })
 
         it('should start subscription and handle confirmation_url', async () => {
-            const {store, notifySpy} = await startSubscription({
+            const { store, notifySpy } = await startSubscription({
                 subscription: {},
-                payment: {confirmation_url: 'https://example.com'},
+                payment: { confirmation_url: 'https://example.com' },
             })
 
             expect(gorgiasApiInstance.startSubscription).toHaveBeenCalled()
 
             expect(store.getActions()).toContainEqual(
-                setCurrentSubscription(fromJS({}))
+                setCurrentSubscription(fromJS({})),
             )
 
             expect(notifySpy).toHaveBeenCalledWith({
@@ -126,14 +127,14 @@ describe('useStartSubscription', () => {
             jest.runAllTimers()
 
             expect(useHistory().push).toHaveBeenCalledWith(
-                'https://example.com'
+                'https://example.com',
             )
         })
 
         it('should start subscription and handle payment error', async () => {
-            const {notifySpy} = await startSubscription({
+            const { notifySpy } = await startSubscription({
                 subscription: {},
-                payment: {error: 'Payment failed'},
+                payment: { error: 'Payment failed' },
             })
 
             expect(notifySpy).toHaveBeenCalledWith({
@@ -144,12 +145,12 @@ describe('useStartSubscription', () => {
         })
 
         it('should handle generic API error', async () => {
-            const {notifySpy} = await startSubscription(
+            const { notifySpy } = await startSubscription(
                 {},
                 {
-                    response: {data: {error: {msg: 'API Error'}}},
+                    response: { data: { error: { msg: 'API Error' } } },
                     isAxiosError: true,
-                }
+                },
             )
 
             expect(notifySpy).toHaveBeenCalledWith({
@@ -159,9 +160,9 @@ describe('useStartSubscription', () => {
         })
 
         it('should handle unknown error', async () => {
-            const {notifySpy} = await startSubscription(
+            const { notifySpy } = await startSubscription(
                 {},
-                new Error('Unknown error')
+                new Error('Unknown error'),
             )
 
             expect(notifySpy).toHaveBeenCalledWith({

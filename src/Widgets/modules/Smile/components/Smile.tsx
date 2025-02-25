@@ -1,12 +1,12 @@
 import React from 'react'
 
 import Template, {
-    TemplateCustomization,
     CustomizationContext,
+    TemplateCustomization,
 } from 'Widgets/modules/Template'
-import {WidgetProps} from 'Widgets/modules/Widget'
+import { WidgetProps } from 'Widgets/modules/Widget'
 
-import {customerCustomization} from './Customer'
+import { customerCustomization } from './Customer'
 
 export const customization: TemplateCustomization = {
     card: [

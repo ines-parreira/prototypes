@@ -1,8 +1,9 @@
-import {render, fireEvent, screen} from '@testing-library/react'
-import {Chart} from 'chart.js'
 import React from 'react'
 
-import {ChartLegend} from 'pages/stats/common/components/charts/ChartLegend'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { Chart } from 'chart.js'
+
+import { ChartLegend } from 'pages/stats/common/components/charts/ChartLegend'
 
 jest.mock('chart.js')
 jest.mock(
@@ -34,7 +35,7 @@ jest.mock(
                     ))}
                 </div>
             )
-        }
+        },
 )
 
 const initialProps = {
@@ -59,7 +60,7 @@ const initialProps = {
 }
 
 const setup = (props = {}) => {
-    return render(<ChartLegend {...{...initialProps, ...props}} />)
+    return render(<ChartLegend {...{ ...initialProps, ...props }} />)
 }
 
 describe('ChartLegend Component', () => {
@@ -71,27 +72,27 @@ describe('ChartLegend Component', () => {
     it('should render correctly when displayLegend is true', () => {
         setup({
             displayLegend: true,
-            data: [{label: 'Test Label', tooltip: 'Test Tooltip'}],
+            data: [{ label: 'Test Label', tooltip: 'Test Tooltip' }],
         })
         expect(screen.getByText('Test Label')).toBeInTheDocument()
     })
 
     it('applies correct classes based on legendOnLeft prop', () => {
-        const {rerender} = setup({
-            data: [{label: 'Legend'}],
+        const { rerender } = setup({
+            data: [{ label: 'Legend' }],
             displayLegend: true,
             legendOnLeft: true,
         })
         expect(screen.getByText('Legend').parentElement).toHaveClass(
-            'legendOnLeft'
+            'legendOnLeft',
         )
         rerender(
             <ChartLegend
                 {...initialProps}
-                data={[{label: 'Legend', values: [{x: '0', y: 0}]}]}
+                data={[{ label: 'Legend', values: [{ x: '0', y: 0 }] }]}
                 displayLegend={true}
                 legendOnLeft={false}
-            />
+            />,
         )
         expect(screen.getByText('Legend')).not.toHaveClass('legendOnLeft')
     })
@@ -106,7 +107,7 @@ describe('ChartLegend Component', () => {
 
         setup({
             displayLegend: true,
-            data: [{label: 'Item 1', tooltip: 'Tooltip 1'}],
+            data: [{ label: 'Item 1', tooltip: 'Tooltip 1' }],
             chartColors: () => '#000',
             toggleLegend: true,
             chart: chartMock,

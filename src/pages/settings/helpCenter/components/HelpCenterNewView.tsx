@@ -1,19 +1,20 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import {Label, Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+
 import axios from 'axios'
 import classnames from 'classnames'
-import {produce} from 'immer'
+import { produce } from 'immer'
 import _debounce from 'lodash/debounce'
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {Link, useHistory, useLocation} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
+import { connect, ConnectedProps } from 'react-redux'
+import { Link, useHistory, useLocation } from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
+
+import { Label, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import shopify from 'assets/img/integrations/shopify.png'
 import useAppSelector from 'hooks/useAppSelector'
-import {CreateHelpCenterDto, LocaleCode} from 'models/helpCenter/types'
+import { CreateHelpCenterDto, LocaleCode } from 'models/helpCenter/types'
 import Button from 'pages/common/components/button/Button'
-
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
@@ -23,41 +24,41 @@ import {
     isBaseEmailIntegration,
     isGenericEmailIntegration,
 } from 'pages/integrations/integration/components/email/helpers'
-import {getHasAutomate} from 'state/billing/selectors'
+import { getHasAutomate } from 'state/billing/selectors'
 import {
     helpCenterCreated,
     helpCenterUpdated,
 } from 'state/entities/helpCenter/helpCenters/actions'
 import * as integrationsSelectors from 'state/integrations/selectors'
-import {notify as notifyAction} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {reportError} from 'utils/errors'
+import { notify as notifyAction } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { reportError } from 'utils/errors'
 
-import {EMAIL_INTEGRATION_TYPES} from '../../../../constants/integration'
+import { EMAIL_INTEGRATION_TYPES } from '../../../../constants/integration'
 import useAppDispatch from '../../../../hooks/useAppDispatch'
-import settingsCss from '../../settings.less'
-import {SubdomainInput} from '../components/SubdomainSection'
+import { SubdomainInput } from '../components/SubdomainSection'
 import {
     HELP_CENTER_BASE_PATH,
     HELP_CENTER_DEFAULT_COLOR,
     HELP_CENTER_DEFAULT_LOCALE,
     HELP_CENTER_DEFAULT_THEME,
 } from '../constants'
-import {useEnableArticleRecommendation} from '../hooks/useEnableArticleRecommendation'
-import {useAbilityChecker, useHelpCenterApi} from '../hooks/useHelpCenterApi'
-import {useShopifyStoreWithChatConnectionsOptions} from '../hooks/useShopifyStoreWithChatConnectionsOptions'
-import {useSupportedLocales} from '../providers/SupportedLocales'
-import {HelpCenterTheme} from '../types'
-import {getNewHelpCenterTranslation, slugify} from '../utils/helpCenter.utils'
-import {getLocaleSelectOptions} from '../utils/localeSelectOptions'
+import { useEnableArticleRecommendation } from '../hooks/useEnableArticleRecommendation'
+import { useAbilityChecker, useHelpCenterApi } from '../hooks/useHelpCenterApi'
+import { useShopifyStoreWithChatConnectionsOptions } from '../hooks/useShopifyStoreWithChatConnectionsOptions'
+import { useSupportedLocales } from '../providers/SupportedLocales'
+import { HelpCenterTheme } from '../types'
+import { getNewHelpCenterTranslation, slugify } from '../utils/helpCenter.utils'
+import { getLocaleSelectOptions } from '../utils/localeSelectOptions'
 import {
     getNameValidationError,
     getSubdomainValidationError,
     isValidSubdomain,
 } from '../utils/validations'
+import { LanguageBadgeTags } from './HelpCenterPreferencesView/components/AvailableLanguagesTags/LanguageBadgeTags'
 
+import settingsCss from '../../settings.less'
 import css from './HelpCenterNewView.less'
-import {LanguageBadgeTags} from './HelpCenterPreferencesView/components/AvailableLanguagesTags/LanguageBadgeTags'
 
 type Props = ConnectedProps<typeof connector>
 
@@ -75,7 +76,10 @@ const initialFormState: CreateHelpCenterPayload = {
     shop_name: undefined,
 }
 
-const HelpCenterNewView = ({notify, helpCenterCreated}: Props): JSX.Element => {
+const HelpCenterNewView = ({
+    notify,
+    helpCenterCreated,
+}: Props): JSX.Element => {
     const dispatch = useAppDispatch()
     const history = useHistory()
     const location = useLocation()
@@ -86,21 +90,21 @@ const HelpCenterNewView = ({notify, helpCenterCreated}: Props): JSX.Element => {
         icon: css['shopify-icon'],
         connectedChatsCount: css['select-connected-chats'],
     })
-    const {client} = useHelpCenterApi()
+    const { client } = useHelpCenterApi()
     const [isLoading, setIsLoading] = useState(false)
     const [isPristineSubdomain, setPristineSubdomain] = useState(true)
     const [isSubdomainAvailable, setIsSubdomainAvailable] = useState(true)
     const disconnectButtonRef = useRef<HTMLSpanElement>(null)
     const enableArticleRecommendation = useEnableArticleRecommendation()
-    const {isPassingRulesCheck} = useAbilityChecker()
+    const { isPassingRulesCheck } = useAbilityChecker()
 
     const [defaultLocale, setDefaultLocale] = useState(
-        HELP_CENTER_DEFAULT_LOCALE
+        HELP_CENTER_DEFAULT_LOCALE,
     )
     const [availableLocales, setAvailableLocales] = useState([defaultLocale])
 
     const emailIntegrations = useAppSelector(
-        integrationsSelectors.getIntegrationsByTypes(EMAIL_INTEGRATION_TYPES)
+        integrationsSelectors.getIntegrationsByTypes(EMAIL_INTEGRATION_TYPES),
     ).filter(isGenericEmailIntegration)
 
     const defaultEmailIntegration =
@@ -113,7 +117,7 @@ const HelpCenterNewView = ({notify, helpCenterCreated}: Props): JSX.Element => {
                 email: defaultEmailIntegration?.meta.address,
                 id: defaultEmailIntegration?.id,
             },
-        }
+        },
     )
 
     const subdomainError = useMemo(
@@ -121,10 +125,10 @@ const HelpCenterNewView = ({notify, helpCenterCreated}: Props): JSX.Element => {
             newHelpCenter?.subdomain
                 ? getSubdomainValidationError(
                       newHelpCenter.subdomain,
-                      isSubdomainAvailable
+                      isSubdomainAvailable,
                   )
                 : null,
-        [newHelpCenter.subdomain, isSubdomainAvailable]
+        [newHelpCenter.subdomain, isSubdomainAvailable],
     )
 
     const nameError = useMemo(
@@ -132,7 +136,7 @@ const HelpCenterNewView = ({notify, helpCenterCreated}: Props): JSX.Element => {
             newHelpCenter?.name
                 ? getNameValidationError(newHelpCenter.name)
                 : undefined,
-        [newHelpCenter.name]
+        [newHelpCenter.name],
     )!
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -161,13 +165,13 @@ const HelpCenterNewView = ({notify, helpCenterCreated}: Props): JSX.Element => {
                 }
             }
         }, 500),
-        [newHelpCenter.subdomain]
+        [newHelpCenter.subdomain],
     )
 
     const onChangeContactFormIntegration = useCallback(
         (integrationId: number | string) => {
             const selectedIntegration = emailIntegrations.find(
-                (integration) => integration.id === integrationId
+                (integration) => integration.id === integrationId,
             )
 
             if (selectedIntegration) {
@@ -180,7 +184,7 @@ const HelpCenterNewView = ({notify, helpCenterCreated}: Props): JSX.Element => {
                 }))
             }
         },
-        [emailIntegrations]
+        [emailIntegrations],
     )
 
     const handleChangeShopifyStore = useCallback(
@@ -201,7 +205,7 @@ const HelpCenterNewView = ({notify, helpCenterCreated}: Props): JSX.Element => {
                 self_service_deactivated: undefined,
             }))
         },
-        [setNewHelpCenter, hasAutomate]
+        [setNewHelpCenter, hasAutomate],
     )
 
     const navigateToStartView = () =>
@@ -224,12 +228,12 @@ const HelpCenterNewView = ({notify, helpCenterCreated}: Props): JSX.Element => {
             })
 
             const otherLocales = availableLocales.filter(
-                (locale) => locale !== defaultLocale
+                (locale) => locale !== defaultLocale,
             )
 
-            const {data: createdHelpCenter} = await client.createHelpCenter(
+            const { data: createdHelpCenter } = await client.createHelpCenter(
                 null,
-                {...payload, default_locale: defaultLocale}
+                { ...payload, default_locale: defaultLocale },
             )
 
             helpCenterCreated(createdHelpCenter)
@@ -242,16 +246,16 @@ const HelpCenterNewView = ({notify, helpCenterCreated}: Props): JSX.Element => {
                             {
                                 help_center_id: createdHelpCenter.id,
                             },
-                            getNewHelpCenterTranslation(locale)
-                        )
-                    )
+                            getNewHelpCenterTranslation(locale),
+                        ),
+                    ),
                 )
 
                 dispatch(
                     helpCenterUpdated({
                         ...createdHelpCenter,
                         supported_locales: [defaultLocale, ...otherLocales],
-                    })
+                    }),
                 )
 
                 navigateToHelpCenterArticles(createdHelpCenter.id)
@@ -302,7 +306,7 @@ const HelpCenterNewView = ({notify, helpCenterCreated}: Props): JSX.Element => {
     }
 
     const canSubmit =
-        isPassingRulesCheck(({can}) => can('create', 'HelpCenterEntity')) &&
+        isPassingRulesCheck(({ can }) => can('create', 'HelpCenterEntity')) &&
         newHelpCenter.name &&
         !subdomainError &&
         !nameError
@@ -390,7 +394,7 @@ const HelpCenterNewView = ({notify, helpCenterCreated}: Props): JSX.Element => {
                             <SelectField
                                 options={getLocaleSelectOptions(
                                     locales,
-                                    availableLocales
+                                    availableLocales,
                                 )}
                                 fullWidth
                                 value={defaultLocale}
@@ -446,7 +450,7 @@ const HelpCenterNewView = ({notify, helpCenterCreated}: Props): JSX.Element => {
                                 <span
                                     className={classnames(
                                         'ml-auto',
-                                        css['disconnect-button']
+                                        css['disconnect-button'],
                                     )}
                                     ref={disconnectButtonRef}
                                     onClick={() => handleChangeShopifyStore('')}

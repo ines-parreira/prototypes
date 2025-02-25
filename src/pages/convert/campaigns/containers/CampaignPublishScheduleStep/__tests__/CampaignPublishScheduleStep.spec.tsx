@@ -1,29 +1,29 @@
-import {act, render, fireEvent, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { act, fireEvent, render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import {ulid} from 'ulidx'
+import { ulid } from 'ulidx'
 
-import {campaign, campaignSchedule} from 'fixtures/campaign'
+import { campaign, campaignSchedule } from 'fixtures/campaign'
 import {
     CampaignDetailsFormApi,
     CampaignDetailsFormProvider,
 } from 'pages/convert/campaigns/providers/CampaignDetailsForm/context'
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
-import {CampaignStepsKeys} from 'pages/convert/campaigns/types/CampaignSteps'
+import { Campaign } from 'pages/convert/campaigns/types/Campaign'
+import { CampaignStepsKeys } from 'pages/convert/campaigns/types/CampaignSteps'
 import {
-    CampaignScheduleRuleValueEnum,
     CampaignScheduleModeEnum,
+    CampaignScheduleRuleValueEnum,
 } from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
-import {CampaignTriggerBusinessHoursValuesEnum} from 'pages/convert/campaigns/types/enums/CampaignTriggerBusinessHoursValues.enum'
-import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
-
-import {SETTING_TYPE_BUSINESS_HOURS} from 'state/currentAccount/constants'
-import {RootState, StoreDispatch} from 'state/types'
+import { CampaignTriggerBusinessHoursValuesEnum } from 'pages/convert/campaigns/types/enums/CampaignTriggerBusinessHoursValues.enum'
+import { CampaignTriggerOperator } from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
+import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import { SETTING_TYPE_BUSINESS_HOURS } from 'state/currentAccount/constants'
+import { RootState, StoreDispatch } from 'state/types'
 
 import {
     CampaignPublishScheduleStep,
@@ -36,7 +36,7 @@ const mockOpenFn = jest.fn()
 jest.mock('hooks/useModalManager/useModalManager.tsx', () => {
     return {
         useModalManager: () => ({
-            getParams: jest.fn().mockReturnValue({id: 1}),
+            getParams: jest.fn().mockReturnValue({ id: 1 }),
             isOpen: jest.fn().mockReturnValue(false),
             on: jest.fn(),
             openModal: mockOpenFn,
@@ -102,7 +102,7 @@ describe('CampaignPublishScheduleStep', () => {
                     [trigger?.id ?? id.toString()]: trigger,
                 }
             },
-            {}
+            {},
         )
 
         const campaignContextValues: CampaignDetailsFormApi = {
@@ -122,7 +122,7 @@ describe('CampaignPublishScheduleStep', () => {
                 <CampaignDetailsFormProvider value={campaignContextValues}>
                     <CampaignPublishScheduleStep {...props} />
                 </CampaignDetailsFormProvider>
-            </Provider>
+            </Provider>,
         )
     }
 
@@ -131,7 +131,7 @@ describe('CampaignPublishScheduleStep', () => {
     })
 
     it('renders', () => {
-        const {getByText, container} = renderComponent({
+        const { getByText, container } = renderComponent({
             props: defaultProps,
             campaignData: {
                 publish_mode: CampaignScheduleModeEnum.Schedule,
@@ -150,19 +150,19 @@ describe('CampaignPublishScheduleStep', () => {
         expect(getByText('Add Date-Specific Hours')).toBeInTheDocument()
 
         const scheduleOption = container.querySelector(
-            `#${CampaignScheduleModeEnum.Schedule}`
+            `#${CampaignScheduleModeEnum.Schedule}`,
         )
         expect(scheduleOption).not.toBeDisabled()
     })
 
     it('end date is not specified', () => {
-        const {getByText, container} = renderComponent({
-            campaignData: {publish_mode: CampaignScheduleModeEnum.Schedule},
+        const { getByText, container } = renderComponent({
+            campaignData: { publish_mode: CampaignScheduleModeEnum.Schedule },
             props: defaultProps,
         })
 
         const scheduleOption = container.querySelector(
-            `#${CampaignScheduleModeEnum.Schedule}`
+            `#${CampaignScheduleModeEnum.Schedule}`,
         )
         expect(scheduleOption).toBeInTheDocument()
 
@@ -172,23 +172,23 @@ describe('CampaignPublishScheduleStep', () => {
 
         expect(
             getByText(
-                /The campaign will run indefinitely if no end date is set./
-            )
+                /The campaign will run indefinitely if no end date is set./,
+            ),
         ).toBeInTheDocument()
     })
 
     it('schedule configuration section is disabled', () => {
-        const {container} = renderComponent({
-            props: {...defaultProps, isDisabled: true},
+        const { container } = renderComponent({
+            props: { ...defaultProps, isDisabled: true },
         })
 
         expect(
-            container.getElementsByClassName('toggleContainer')[0].className
+            container.getElementsByClassName('toggleContainer')[0].className,
         ).toContain('isDisabled')
     })
 
     it('renders notice when user is not convert subscriber', () => {
-        const {getByText, container} = renderComponent({
+        const { getByText, container } = renderComponent({
             props: {
                 ...defaultProps,
                 isConvertSubscriber: false,
@@ -196,7 +196,7 @@ describe('CampaignPublishScheduleStep', () => {
         })
 
         const scheduleOption = container.querySelector(
-            `#${CampaignScheduleModeEnum.Schedule}`
+            `#${CampaignScheduleModeEnum.Schedule}`,
         )
         expect(scheduleOption).toBeDisabled()
 
@@ -204,7 +204,7 @@ describe('CampaignPublishScheduleStep', () => {
     })
 
     it('user can open and close `subscribe to convert` modal', () => {
-        const {getByText} = renderComponent({
+        const { getByText } = renderComponent({
             props: {
                 ...defaultProps,
                 isConvertSubscriber: false,
@@ -219,7 +219,7 @@ describe('CampaignPublishScheduleStep', () => {
     })
 
     it('schedule option is disabled for light campaign', () => {
-        const {container} = renderComponent({
+        const { container } = renderComponent({
             props: {
                 ...defaultProps,
                 isConvertSubscriber: false,
@@ -228,13 +228,13 @@ describe('CampaignPublishScheduleStep', () => {
         })
 
         const scheduleOption = container.querySelector(
-            `#${CampaignScheduleModeEnum.Schedule}`
+            `#${CampaignScheduleModeEnum.Schedule}`,
         )
         expect(scheduleOption).toBeDisabled()
     })
 
     it('when user selects schedule option, the campaign is updated', () => {
-        const {getByText} = renderComponent({props: defaultProps})
+        const { getByText } = renderComponent({ props: defaultProps })
 
         const scheduleOption = getByText(/Schedule/)
 
@@ -244,7 +244,7 @@ describe('CampaignPublishScheduleStep', () => {
 
         expect(updateCampaignSpy).toHaveBeenCalledWith(
             'publish_mode',
-            'schedule'
+            'schedule',
         )
 
         updateCampaignSpy.mockReset()
@@ -256,7 +256,7 @@ describe('CampaignPublishScheduleStep', () => {
 
         expect(updateCampaignSpy).toHaveBeenCalledWith(
             'publish_mode',
-            'publish_now'
+            'publish_now',
         )
     })
 
@@ -283,16 +283,16 @@ describe('CampaignPublishScheduleStep', () => {
         userEvent.click(duringOptionSelect)
 
         expect(screen.getByLabelText('Scheduled duration').textContent).toEqual(
-            'Business hours'
+            'Business hours',
         )
         expect(
-            screen.queryByText(DURING_BH_TRIGGER_CAPTION_TEXT)
+            screen.queryByText(DURING_BH_TRIGGER_CAPTION_TEXT),
         ).toBeInTheDocument()
     })
 
     it('user is able to select `during` option when mode is schedule', () => {
-        const {getByRole} = renderComponent({
-            campaignData: {publish_mode: CampaignScheduleModeEnum.Schedule},
+        const { getByRole } = renderComponent({
+            campaignData: { publish_mode: CampaignScheduleModeEnum.Schedule },
             props: defaultProps,
         })
 
@@ -303,7 +303,7 @@ describe('CampaignPublishScheduleStep', () => {
         userEvent.click(
             getByRole('menuitem', {
                 name: 'Business hours',
-            })
+            }),
         )
 
         expect(updateCampaignSpy).toHaveBeenCalledWith('schedule', {
@@ -313,13 +313,13 @@ describe('CampaignPublishScheduleStep', () => {
             start_datetime: expect.any(String),
         })
         expect(
-            screen.queryByText(DURING_BH_TRIGGER_CAPTION_TEXT)
+            screen.queryByText(DURING_BH_TRIGGER_CAPTION_TEXT),
         ).not.toBeInTheDocument()
     })
 
     it('user is able to selects dates', () => {
-        const {getByLabelText, getAllByText, getAllByRole} = renderComponent({
-            campaignData: {publish_mode: CampaignScheduleModeEnum.Schedule},
+        const { getByLabelText, getAllByText, getAllByRole } = renderComponent({
+            campaignData: { publish_mode: CampaignScheduleModeEnum.Schedule },
             props: defaultProps,
         })
 
@@ -376,7 +376,7 @@ describe('CampaignPublishScheduleStep', () => {
     })
 
     it('user is able clear end date', () => {
-        const {getByText} = renderComponent({
+        const { getByText } = renderComponent({
             campaignData: {
                 publish_mode: CampaignScheduleModeEnum.Schedule,
                 schedule: {

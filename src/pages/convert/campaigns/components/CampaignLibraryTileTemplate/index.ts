@@ -1,1 +1,1 @@
-export {default} from './CampaignLibraryTileTemplate'
+export { default } from './CampaignLibraryTileTemplate'

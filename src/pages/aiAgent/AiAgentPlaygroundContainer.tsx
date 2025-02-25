@@ -1,17 +1,19 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
-import {useParams} from 'react-router-dom'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { useParams } from 'react-router-dom'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 
 import PostCompletionWizardModal from './AiAgentOnboardingWizard/PostCompletionWizardModal'
+import { AiAgentPlaygroundView } from './AiAgentPlaygroundView'
+import { AiAgentLayout } from './components/AiAgentLayout/AiAgentLayout'
+import { AI_AGENT, TEST } from './constants'
+
 import css from './AiAgentPlaygroundContainer.less'
-import {AiAgentPlaygroundView} from './AiAgentPlaygroundView'
-import {AiAgentLayout} from './components/AiAgentLayout/AiAgentLayout'
-import {AI_AGENT, TEST} from './constants'
 
 export const AiAgentPlaygroundContainer = () => {
-    const {shopName} = useParams<{
+    const { shopName } = useParams<{
         shopName: string
     }>()
     const isStandaloneMenuEnabled =

@@ -1,5 +1,6 @@
-import {THEME_NAME} from '@gorgias/design-tokens'
-import {useEffect} from 'react'
+import { useEffect } from 'react'
+
+import { THEME_NAME } from '@gorgias/design-tokens'
 
 import useTheme from './useTheme'
 

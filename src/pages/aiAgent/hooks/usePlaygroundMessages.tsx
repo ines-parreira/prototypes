@@ -1,27 +1,28 @@
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+
 import axios from 'axios'
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
 
-import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
-import {useSubmitPlaygroundTicket} from 'models/aiAgent/queries'
-import {StoreConfiguration} from 'models/aiAgent/types'
+import { AI_AGENT_SENTRY_TEAM } from 'common/const/sentryTeamNames'
+import { useSubmitPlaygroundTicket } from 'models/aiAgent/queries'
+import { StoreConfiguration } from 'models/aiAgent/types'
 import {
-    MessageType,
-    PlaygroundPromptMessage,
-    PlaygroundMessage,
-    PlaygroundTextMessage,
     isApiEligiblePlaygroundMessage,
+    MessageType,
+    PlaygroundMessage,
+    PlaygroundPromptMessage,
+    PlaygroundTextMessage,
 } from 'models/aiAgentPlayground/types'
-import {reportError} from 'utils/errors'
+import { reportError } from 'utils/errors'
 
-import {PlaygroundChannels} from '../components/PlaygroundChat/PlaygroundChat.types'
+import { PlaygroundChannels } from '../components/PlaygroundChat/PlaygroundChat.types'
 import {
     AI_AGENT_SENDER,
     GREETING_MESSAGE,
     PlaygroundGenericErrorMessage,
 } from '../components/PlaygroundMessage/PlaygroundMessage'
-import {PLAYGROUND_CUSTOMER_MOCK} from '../constants'
-import {PlaygroundCustomer} from '../types'
-import {handleAiAgentResponse} from '../utils/playground-handler.utils'
+import { PLAYGROUND_CUSTOMER_MOCK } from '../constants'
+import { PlaygroundCustomer } from '../types'
+import { handleAiAgentResponse } from '../utils/playground-handler.utils'
 import {
     getLastShopperMessage,
     getPlaygroundInitialMessage,
@@ -29,7 +30,7 @@ import {
     mapPlaygroundMessagesToServerMessages,
     shouldDisplayActions,
 } from '../utils/playground-messages.utils'
-import {getTicketCustomer} from '../utils/playground-ticket.util'
+import { getTicketCustomer } from '../utils/playground-ticket.util'
 
 export const usePlaygroundMessages = ({
     storeData,
@@ -53,12 +54,12 @@ export const usePlaygroundMessages = ({
                 type: MessageType.MESSAGE,
                 content: getPlaygroundInitialMessage(
                     channel,
-                    currentUserFirstName
+                    currentUserFirstName,
                 ),
                 createdDatetime: new Date().toISOString(),
             },
         ],
-        [channel, currentUserFirstName]
+        [channel, currentUserFirstName],
     )
 
     const [messages, setMessages] =
@@ -76,7 +77,7 @@ export const usePlaygroundMessages = ({
 
     const abortControllerRef = useRef<AbortController>()
 
-    const {mutateAsync: submitPlaygroundTicket, isLoading: isSubmitting} =
+    const { mutateAsync: submitPlaygroundTicket, isLoading: isSubmitting } =
         useSubmitPlaygroundTicket()
 
     const onNewConversation = useCallback(() => {
@@ -95,12 +96,12 @@ export const usePlaygroundMessages = ({
             {
                 customer,
                 subject,
-            }: {customer: PlaygroundCustomer; subject?: string}
+            }: { customer: PlaygroundCustomer; subject?: string },
         ) => {
             // Simulate an async API call to process the message
 
             const filteredMessages = newMessages.filter(
-                isApiEligiblePlaygroundMessage
+                isApiEligiblePlaygroundMessage,
             )
 
             const lastMessage = getLastShopperMessage(filteredMessages)
@@ -114,7 +115,7 @@ export const usePlaygroundMessages = ({
                 })
             } catch (error) {
                 reportError(error, {
-                    tags: {team: AI_AGENT_SENTRY_TEAM},
+                    tags: { team: AI_AGENT_SENTRY_TEAM },
                     extra: {
                         context: 'Error during get customer for playground',
                         customer,
@@ -127,7 +128,7 @@ export const usePlaygroundMessages = ({
                 const abortController = new AbortController()
                 abortControllerRef.current = abortController
 
-                const {data: aiAgentResponse} = await submitPlaygroundTicket([
+                const { data: aiAgentResponse } = await submitPlaygroundTicket([
                     {
                         domain: gorgiasDomain,
                         customer_email: customer.email,
@@ -138,15 +139,15 @@ export const usePlaygroundMessages = ({
                         customer: messageCustomer,
                         messages: mapPlaygroundMessagesToServerMessages(
                             filteredMessages,
-                            channel
+                            channel,
                         ),
                         meta: getPlaygroundMessageMeta(
                             lastMessage,
                             // If the only message is coming from the user, it's the first message and we should mark it as such
                             channel === 'chat' &&
                                 filteredMessages.filter(
-                                    (m) => m.sender !== AI_AGENT_SENDER
-                                ).length === 1
+                                    (m) => m.sender !== AI_AGENT_SENDER,
+                                ).length === 1,
                         ),
                         subject: subject ?? '',
                         http_integration_id: httpIntegrationId,
@@ -177,7 +178,7 @@ export const usePlaygroundMessages = ({
                     const filteredMessages: PlaygroundMessage[] =
                         prevMessages.filter(
                             (message) =>
-                                message.type !== MessageType.PLACEHOLDER
+                                message.type !== MessageType.PLACEHOLDER,
                         )
 
                     // Add the actual processed message
@@ -190,7 +191,7 @@ export const usePlaygroundMessages = ({
                 }
 
                 reportError(error, {
-                    tags: {team: AI_AGENT_SENTRY_TEAM},
+                    tags: { team: AI_AGENT_SENTRY_TEAM },
                     extra: {
                         context:
                             'Error during message submission from playground',
@@ -212,7 +213,7 @@ export const usePlaygroundMessages = ({
 
                 setMessages((prevMessages) => [
                     ...prevMessages.filter(
-                        (message) => message.type !== MessageType.PLACEHOLDER
+                        (message) => message.type !== MessageType.PLACEHOLDER,
                     ),
                     errorMessage,
                 ])
@@ -226,7 +227,7 @@ export const usePlaygroundMessages = ({
             onNewConversation,
             storeData,
             submitPlaygroundTicket,
-        ]
+        ],
     )
 
     const onMessageSend = useCallback(
@@ -235,7 +236,7 @@ export const usePlaygroundMessages = ({
             {
                 customer,
                 subject,
-            }: {customer: PlaygroundCustomer; subject?: string}
+            }: { customer: PlaygroundCustomer; subject?: string },
         ) => {
             const newMessages = [...messages, newMessage]
             // Add placeholder only for real message processing as for action response is fast and we don't need it
@@ -266,9 +267,9 @@ export const usePlaygroundMessages = ({
             // Remove waiting state before each message send
             setIsWaitingResponse(false)
 
-            await processMessages(newMessages, {customer, subject})
+            await processMessages(newMessages, { customer, subject })
         },
-        [channel, messages, processMessages]
+        [channel, messages, processMessages],
     )
 
     return {

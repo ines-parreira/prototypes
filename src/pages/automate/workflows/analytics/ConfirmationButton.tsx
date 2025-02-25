@@ -1,4 +1,4 @@
-import React, {PropsWithChildren, ReactNode} from 'react'
+import React, { PropsWithChildren, ReactNode } from 'react'
 
 import Button from 'pages/common/components/button/Button'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
@@ -28,14 +28,14 @@ export const ConfirmationButton = ({
             buttonProps={{
                 intent: 'destructive',
             }}
-            cancelButtonProps={{intent: 'secondary'}}
+            cancelButtonProps={{ intent: 'secondary' }}
             onConfirm={onClick}
             showCancelButton={true}
             confirmLabel={confirmationButtonLabel}
             title={confirmationTitle}
             content={confirmationText}
         >
-            {({uid, onDisplayConfirmation}) => (
+            {({ uid, onDisplayConfirmation }) => (
                 <Button
                     id={uid}
                     intent="secondary"

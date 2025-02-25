@@ -1,39 +1,39 @@
-import {act} from '@testing-library/react-hooks'
-import {produce} from 'immer'
-import {ulid} from 'ulidx'
+import { act } from '@testing-library/react-hooks'
+import { produce } from 'immer'
+import { ulid } from 'ulidx'
 
-import {shopifyIntegration} from 'fixtures/integrations'
+import { shopifyIntegration } from 'fixtures/integrations'
 import {
+    useDeleteWorkflowConfigurationTranslations,
+    useFetchWorkflowConfigurationTranslations,
     useGetWorkflowConfiguration,
     useUpsertWorkflowConfiguration,
-    useFetchWorkflowConfigurationTranslations,
-    useDeleteWorkflowConfigurationTranslations,
     useUpsertWorkflowConfigurationTranslations,
 } from 'models/workflows/queries'
-import {useSelfServiceStoreIntegrationContext} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
-import {WorkflowConfiguration} from 'pages/automate/workflows/models/workflowConfiguration.types'
-import {renderHookWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
+import { useSelfServiceStoreIntegrationContext } from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
+import { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
+import { renderHookWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
-import {useWorkflowEditor} from '../useWorkflowEditor'
+import { useWorkflowEditor } from '../useWorkflowEditor'
 
 jest.mock('pages/automate/common/hooks/useSelfServiceStoreIntegration')
 jest.mock('models/workflows/queries')
 
 const mockUseGetWorkflowConfiguration = jest.mocked(useGetWorkflowConfiguration)
 const mockUseUpsertWorkflowConfiguration = jest.mocked(
-    useUpsertWorkflowConfiguration
+    useUpsertWorkflowConfiguration,
 )
 const mockUseFetchWorkflowConfigurationTranslations = jest.mocked(
-    useFetchWorkflowConfigurationTranslations
+    useFetchWorkflowConfigurationTranslations,
 )
 const mockUseDeleteWorkflowConfigurationTranslations = jest.mocked(
-    useDeleteWorkflowConfigurationTranslations
+    useDeleteWorkflowConfigurationTranslations,
 )
 const mockUseUpsertWorkflowConfigurationTranslations = jest.mocked(
-    useUpsertWorkflowConfigurationTranslations
+    useUpsertWorkflowConfigurationTranslations,
 )
 const mockUseSelfServiceStoreIntegrationContext = jest.mocked(
-    useSelfServiceStoreIntegrationContext
+    useSelfServiceStoreIntegrationContext,
 )
 
 describe('useWorkflowEditor()', () => {
@@ -63,7 +63,7 @@ describe('useWorkflowEditor()', () => {
             typeof useUpsertWorkflowConfigurationTranslations
         >)
         mockUseSelfServiceStoreIntegrationContext.mockReturnValue(
-            shopifyIntegration
+            shopifyIntegration,
         )
     })
 
@@ -73,8 +73,8 @@ describe('useWorkflowEditor()', () => {
             data: undefined,
         } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-        const {result} = renderHookWithQueryClientProvider(() =>
-            useWorkflowEditor(ulid(), true)
+        const { result } = renderHookWithQueryClientProvider(() =>
+            useWorkflowEditor(ulid(), true),
         )
 
         expect(result.current.configuration.name).toEqual('')
@@ -86,8 +86,8 @@ describe('useWorkflowEditor()', () => {
             data: undefined,
         } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
-        const {result} = renderHookWithQueryClientProvider(() =>
-            useWorkflowEditor(ulid(), true)
+        const { result } = renderHookWithQueryClientProvider(() =>
+            useWorkflowEditor(ulid(), true),
         )
 
         expect(result.current.configuration.is_draft).toBe(true)
@@ -141,17 +141,17 @@ describe('useWorkflowEditor()', () => {
             data: configuration,
         } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
         mockUseUpsertWorkflowConfiguration.mockReturnValue({
-            mutateAsync: jest.fn().mockImplementation(([, {is_draft}]) => {
+            mutateAsync: jest.fn().mockImplementation(([, { is_draft }]) => {
                 configuration = produce(configuration, (draft) => {
                     draft.is_draft = is_draft
                 })
 
-                return {data: configuration}
+                return { data: configuration }
             }),
         } as unknown as ReturnType<typeof useUpsertWorkflowConfiguration>)
 
-        const {result, waitForNextUpdate} = renderHookWithQueryClientProvider(
-            () => useWorkflowEditor(configuration.id, false)
+        const { result, waitForNextUpdate } = renderHookWithQueryClientProvider(
+            () => useWorkflowEditor(configuration.id, false),
         )
         await waitForNextUpdate()
         expect(result.current.configuration.is_draft).toBe(true)
@@ -231,19 +231,19 @@ describe('useWorkflowEditor()', () => {
         mockUseUpsertWorkflowConfiguration.mockReturnValue({
             mutateAsync: jest
                 .fn()
-                .mockImplementation(([, {is_draft, name}]) => {
+                .mockImplementation(([, { is_draft, name }]) => {
                     configuration = produce(configuration, (draft) => {
                         draft.is_draft = is_draft
                         draft.name = name
                     })
 
-                    return {data: configuration}
+                    return { data: configuration }
                 }),
         } as unknown as ReturnType<typeof useUpsertWorkflowConfiguration>)
 
-        const {result, waitForNextUpdate, rerender} =
+        const { result, waitForNextUpdate, rerender } =
             renderHookWithQueryClientProvider(() =>
-                useWorkflowEditor(configuration.id, false)
+                useWorkflowEditor(configuration.id, false),
             )
 
         await waitForNextUpdate()
@@ -252,7 +252,7 @@ describe('useWorkflowEditor()', () => {
         expect(result.current.isDirty).toBe(false)
 
         act(() =>
-            result.current.dispatch({type: 'SET_NAME', name: 'local name'})
+            result.current.dispatch({ type: 'SET_NAME', name: 'local name' }),
         )
 
         rerender()
@@ -276,7 +276,7 @@ describe('useWorkflowEditor()', () => {
         expect(result.current.currentLanguage).toBe('en-US')
 
         act(() => {
-            result.current.dispatch({type: 'SET_NAME', name: 'updated'})
+            result.current.dispatch({ type: 'SET_NAME', name: 'updated' })
         })
 
         expect(result.current.isDirty).toBe(true)
@@ -337,17 +337,17 @@ describe('useWorkflowEditor()', () => {
         } as unknown as ReturnType<typeof useGetWorkflowConfiguration>)
 
         mockUseUpsertWorkflowConfiguration.mockReturnValue({
-            mutateAsync: jest.fn().mockImplementation(([, {is_draft}]) => {
+            mutateAsync: jest.fn().mockImplementation(([, { is_draft }]) => {
                 configuration = produce(configuration, (draft) => {
                     draft.is_draft = is_draft
                 })
 
-                return {data: configuration}
+                return { data: configuration }
             }),
         } as unknown as ReturnType<typeof useUpsertWorkflowConfiguration>)
 
-        const {result, waitForNextUpdate} = renderHookWithQueryClientProvider(
-            () => useWorkflowEditor(configuration.id, false)
+        const { result, waitForNextUpdate } = renderHookWithQueryClientProvider(
+            () => useWorkflowEditor(configuration.id, false),
         )
         await waitForNextUpdate()
         expect(result.current.currentLanguage).toBe('de-DE')

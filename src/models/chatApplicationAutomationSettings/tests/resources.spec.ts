@@ -1,8 +1,8 @@
-import {getGorgiasChatProtectedApiClient} from 'rest_api/gorgias_chat_protected_api/client'
+import { getGorgiasChatProtectedApiClient } from 'rest_api/gorgias_chat_protected_api/client'
 
 import {
-    fetchChatsApplicationAutomationSettings,
     fetchChatApplicationAutomationSettings,
+    fetchChatsApplicationAutomationSettings,
     upsertChatApplicationAutomationSettings,
 } from '../resources'
 
@@ -30,18 +30,18 @@ describe('resources.ts', () => {
                     .mockResolvedValue(mockResponse),
             }
             mockedGetGorgiasChatProtectedApiClient.mockResolvedValue(
-                mockClient as any
+                mockClient as any,
             )
 
             const result =
                 await fetchChatApplicationAutomationSettings('app_id_123')
 
             expect(
-                mockedGetGorgiasChatProtectedApiClient
+                mockedGetGorgiasChatProtectedApiClient,
             ).toHaveBeenCalledTimes(1)
             expect(
-                mockClient.getApplicationAutomationSettings
-            ).toHaveBeenCalledWith({applicationId: 'app_id_123'})
+                mockClient.getApplicationAutomationSettings,
+            ).toHaveBeenCalledWith({ applicationId: 'app_id_123' })
             expect(result).toEqual(mockResponse.data)
         })
     })
@@ -61,7 +61,7 @@ describe('resources.ts', () => {
                     .mockResolvedValue(mockResponse),
             }
             mockedGetGorgiasChatProtectedApiClient.mockResolvedValue(
-                mockClient as any
+                mockClient as any,
             )
 
             const applicationIds = ['app_id_123', 'app_id_456']
@@ -69,7 +69,7 @@ describe('resources.ts', () => {
                 await fetchChatsApplicationAutomationSettings(applicationIds)
 
             expect(
-                mockedGetGorgiasChatProtectedApiClient
+                mockedGetGorgiasChatProtectedApiClient,
             ).toHaveBeenCalledTimes(2)
             expect(result).toEqual([mockResponse.data, mockResponse.data])
         })
@@ -90,7 +90,7 @@ describe('resources.ts', () => {
                     .mockResolvedValue(mockResponse),
             }
             mockedGetGorgiasChatProtectedApiClient.mockResolvedValue(
-                mockClient as any
+                mockClient as any,
             )
 
             const payload: any = {
@@ -100,15 +100,15 @@ describe('resources.ts', () => {
             }
             const result = await upsertChatApplicationAutomationSettings(
                 'app_id_123',
-                payload
+                payload,
             )
 
             expect(
-                mockedGetGorgiasChatProtectedApiClient
+                mockedGetGorgiasChatProtectedApiClient,
             ).toHaveBeenCalledTimes(1)
             expect(
-                mockClient.upsertApplicationAutomationSettings
-            ).toHaveBeenCalledWith({applicationId: 'app_id_123'}, payload)
+                mockClient.upsertApplicationAutomationSettings,
+            ).toHaveBeenCalledWith({ applicationId: 'app_id_123' }, payload)
             expect(result).toEqual(mockResponse.data)
         })
     })

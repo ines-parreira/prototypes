@@ -6,7 +6,7 @@ const HideAction: React.FC<{
     shouldHide: boolean
     isFacebookComment: boolean
     toggleHideComment: () => void
-}> = ({shouldHide, isFacebookComment, toggleHideComment}) => {
+}> = ({ shouldHide, isFacebookComment, toggleHideComment }) => {
     const hideText = shouldHide ? 'Hide' : 'Unhide'
 
     return (

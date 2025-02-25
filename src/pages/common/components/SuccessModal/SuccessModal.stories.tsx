@@ -1,7 +1,8 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import SuccessModal, {SuccessModalIcon} from './SuccessModal'
+import { Meta, Story } from '@storybook/react'
+
+import SuccessModal, { SuccessModalIcon } from './SuccessModal'
 
 const storyConfig: Meta = {
     title: 'General/Modals/Success modal',

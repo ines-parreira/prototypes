@@ -1,9 +1,10 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {assumeMock} from 'utils/testing'
+import { render, screen } from '@testing-library/react'
 
-import type {ContextValue} from '../../Context'
+import { assumeMock } from 'utils/testing'
+
+import type { ContextValue } from '../../Context'
 import useContextValue from '../../hooks/useContextValue'
 import Panels from '../Panels'
 
@@ -12,7 +13,7 @@ const useContextValueMock = assumeMock(useContextValue)
 
 describe('Panels', () => {
     beforeEach(() => {
-        useContextValueMock.mockReturnValue({totalSize: 1000} as ContextValue)
+        useContextValueMock.mockReturnValue({ totalSize: 1000 } as ContextValue)
     })
 
     it('should render the panels and call the context', () => {

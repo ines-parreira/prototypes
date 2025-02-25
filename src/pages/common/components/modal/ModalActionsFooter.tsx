@@ -1,6 +1,7 @@
+import React, { Children, ReactNode } from 'react'
+
 import classnames from 'classnames'
 import _isString from 'lodash/isString'
-import React, {Children, ReactNode} from 'react'
 
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 
@@ -12,17 +13,17 @@ type Props = {
     className?: string
 }
 
-const ModalActionsFooter = ({children, className, extra}: Props) => {
+const ModalActionsFooter = ({ children, className, extra }: Props) => {
     return (
         <ModalFooter
             className={classnames(
                 css.wrapper,
-                {[css.hasExtraInfo]: !!extra},
-                className
+                { [css.hasExtraInfo]: !!extra },
+                className,
             )}
         >
             {!!extra && (
-                <div className={classnames({[css.extra]: _isString(extra)})}>
+                <div className={classnames({ [css.extra]: _isString(extra) })}>
                     {extra}
                 </div>
             )}

@@ -1,8 +1,8 @@
-import {Store} from 'redux'
+import { Store } from 'redux'
 
-import {NodeEnv, envVars} from 'utils/environment'
+import { envVars, NodeEnv } from 'utils/environment'
 
-import {InitialRootState} from '../types'
+import { InitialRootState } from '../types'
 
 let configureStore: (initialState: InitialRootState) => Store
 

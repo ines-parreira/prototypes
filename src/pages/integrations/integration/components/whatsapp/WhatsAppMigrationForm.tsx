@@ -1,7 +1,7 @@
 import React from 'react'
 
 import useWhatsAppMigration from 'hooks/useWhatsAppMigration'
-import {WhatsAppCodeVerificationMethod} from 'models/integration/types'
+import { WhatsAppCodeVerificationMethod } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import FormRow from 'pages/common/forms/FormRow'
 import InputField from 'pages/common/forms/input/InputField'
@@ -72,7 +72,7 @@ export default function WhatsAppMigrationForm(): JSX.Element | null {
                             ]}
                             onChange={(value) =>
                                 migration.updateVerificationMethod(
-                                    value as WhatsAppCodeVerificationMethod
+                                    value as WhatsAppCodeVerificationMethod,
                                 )
                             }
                             selectedValue={migration.verificationMethod}

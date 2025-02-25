@@ -1,13 +1,14 @@
-import {Skeleton} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-import {useShoutoutTopResults} from 'hooks/reporting/useShoutoutTopResults'
+import { Skeleton } from '@gorgias/merchant-ui-kit'
+
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useShoutoutTopResults } from 'hooks/reporting/useShoutoutTopResults'
 import Shoutout, {
     SHOUTOUT_HEIGHT_PX,
 } from 'pages/stats/common/components/Shoutout/Shoutout'
-import {DashboardChartProps} from 'pages/stats/custom-reports/types'
-import {ShoutoutConfig} from 'pages/stats/support-performance/agents/AgentsShoutOutsConfig'
+import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { ShoutoutConfig } from 'pages/stats/support-performance/agents/AgentsShoutOutsConfig'
 
 export default function AgentsShoutOut({
     useQuery,
@@ -18,7 +19,7 @@ export default function AgentsShoutOut({
     chartId,
     dashboard,
 }: ShoutoutConfig & DashboardChartProps) {
-    const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone } = useNewStatsFilters()
     const queryResult = useQuery(cleanStatsFilters, userTimezone, queryOrder)
 
     const data = useShoutoutTopResults(queryResult, formatValue, measure)

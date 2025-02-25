@@ -1,17 +1,18 @@
+import React, { useCallback, useMemo, useState } from 'react'
+
 import _keyBy from 'lodash/keyBy'
 import _noop from 'lodash/noop'
-import React, {useCallback, useMemo, useState} from 'react'
-import {useHistory} from 'react-router-dom'
-import {Container} from 'reactstrap'
-import {ulid} from 'ulidx'
+import { useHistory } from 'react-router-dom'
+import { Container } from 'reactstrap'
+import { ulid } from 'ulidx'
 
 import {
     useVisualBuilder,
     VisualBuilderContext,
 } from 'pages/automate/workflows/hooks/useVisualBuilder'
-import {useVisualBuilderGraphReducer} from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
-import {computeNodesPositions} from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer/utils'
-import {transformVisualBuilderGraphIntoWfConfiguration} from 'pages/automate/workflows/models/visualBuilderGraph.model'
+import { useVisualBuilderGraphReducer } from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
+import { computeNodesPositions } from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer/utils'
+import { transformVisualBuilderGraphIntoWfConfiguration } from 'pages/automate/workflows/models/visualBuilderGraph.model'
 import {
     transformWorkflowConfigurationIntoVisualBuilderGraph,
     WorkflowConfigurationBuilder,
@@ -24,9 +25,8 @@ import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import PageHeader from 'pages/common/components/PageHeader'
 import InputField from 'pages/common/forms/input/InputField'
 
-import {AiAgentMovedBanner} from '../common/components/AiAgentMovedBanner'
-import {useDisplayAiAgentMovedBanner} from '../common/hooks/useDisplayAiAgentMovedBanner'
-import css from './ActionsPlatformEditStepView.less'
+import { AiAgentMovedBanner } from '../common/components/AiAgentMovedBanner'
+import { useDisplayAiAgentMovedBanner } from '../common/hooks/useDisplayAiAgentMovedBanner'
 import ActionsPlatformStepAppSelectBox from './components/ActionsPlatformStepAppSelectBox'
 import WorkflowVisualBuilder from './components/visualBuilder/WorkflowVisualBuilder'
 import useApps from './hooks/useApps'
@@ -34,7 +34,9 @@ import useCreateActionTemplate from './hooks/useCreateActionTemplate'
 import useTouchActionStepGraph from './hooks/useTouchActionStepGraph'
 import useValidateActionStepGraph from './hooks/useValidateActionStepGraph'
 import useValidateOnVisualBuilderGraphChange from './hooks/useValidateOnVisualBuilderGraphChange'
-import {ActionTemplate, ActionTemplateApp} from './types'
+import { ActionTemplate, ActionTemplateApp } from './types'
+
+import css from './ActionsPlatformEditStepView.less'
 
 const getInitialTemplate = () => {
     const b = new WorkflowConfigurationBuilder({
@@ -75,17 +77,19 @@ const getInitialTemplate = () => {
         is_draft: true,
         available_languages: [],
     })
-    b.insertHttpRequestConditionAndEndStepAndSelect('success', {success: true})
+    b.insertHttpRequestConditionAndEndStepAndSelect('success', {
+        success: true,
+    })
     b.selectParentStep()
-    b.insertHttpRequestConditionAndEndStepAndSelect('error', {success: false})
+    b.insertHttpRequestConditionAndEndStepAndSelect('error', { success: false })
 
     return b.build()
 }
 
 const ActionsPlatformCreateStepView = () => {
-    const {isLoading: isCreateActionTemplateLoading, createActionTemplate} =
+    const { isLoading: isCreateActionTemplateLoading, createActionTemplate } =
         useCreateActionTemplate()
-    const {apps = [], isLoading: isAppsLoading, actionsApps} = useApps()
+    const { apps = [], isLoading: isAppsLoading, actionsApps } = useApps()
     const displayAiAgentMovedBanner = useDisplayAiAgentMovedBanner()
 
     const history = useHistory()
@@ -94,17 +98,20 @@ const ActionsPlatformCreateStepView = () => {
 
     const [visualBuilderGraphDirty, dispatch] = useVisualBuilderGraphReducer(
         computeNodesPositions(
-            transformWorkflowConfigurationIntoVisualBuilderGraph(template, true)
-        )
+            transformWorkflowConfigurationIntoVisualBuilderGraph(
+                template,
+                true,
+            ),
+        ),
     )
 
     const visualBuilderContextValue = useVisualBuilder(
         visualBuilderGraphDirty,
         dispatch,
-        true
+        true,
     )
 
-    const {getVariableListForNode} = visualBuilderContextValue
+    const { getVariableListForNode } = visualBuilderContextValue
 
     const handleValidate = useValidateActionStepGraph(getVariableListForNode)
     const handleTouch = useTouchActionStepGraph()
@@ -138,12 +145,12 @@ const ActionsPlatformCreateStepView = () => {
                 transformVisualBuilderGraphIntoWfConfiguration(
                     visualBuilderGraphDirty,
                     isDraft,
-                    []
+                    [],
                 ) as ActionTemplate,
             ])
 
             history.push(
-                `/app/automation/actions-platform/steps/edit/${visualBuilderGraphDirty.id}`
+                `/app/automation/actions-platform/steps/edit/${visualBuilderGraphDirty.id}`,
             )
         },
         [
@@ -153,14 +160,14 @@ const ActionsPlatformCreateStepView = () => {
             handleTouch,
             history,
             dispatch,
-        ]
+        ],
     )
 
     const selectableApps = useMemo(() => {
         const actionsAppsByAppId = _keyBy(actionsApps, 'id')
 
         return apps.filter(
-            (app) => app.type !== 'app' || app.id in actionsAppsByAppId
+            (app) => app.type !== 'app' || app.id in actionsAppsByAppId,
         )
     }, [actionsApps, apps])
 
@@ -190,7 +197,7 @@ const ActionsPlatformCreateStepView = () => {
                         intent="secondary"
                         onClick={() => {
                             history.push(
-                                '/app/automation/actions-platform/steps'
+                                '/app/automation/actions-platform/steps',
                             )
                         }}
                         isDisabled={

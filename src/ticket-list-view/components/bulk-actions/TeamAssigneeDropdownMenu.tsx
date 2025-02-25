@@ -1,4 +1,3 @@
-import {ListTeamsOrderBy} from '@gorgias/api-queries'
 import React, {
     KeyboardEvent,
     useCallback,
@@ -7,16 +6,19 @@ import React, {
     useState,
 } from 'react'
 
-import {Body, Context, focusOnNextItem, Item} from 'components/Dropdown'
+import { ListTeamsOrderBy } from '@gorgias/api-queries'
+
+import { Body, Context, focusOnNextItem, Item } from 'components/Dropdown'
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
-import {Team} from 'models/team/types'
+import { Team } from 'models/team/types'
 import Button from 'pages/common/components/button/Button'
 import DropdownFooter from 'pages/common/components/dropdown/DropdownFooter'
 import useSearch from 'search/useSearch'
 import useListTeams from 'teams/useListTeams'
 
-import css from './style.less'
 import TeamDropdownItem from './TeamDropdownItem'
+
+import css from './style.less'
 
 type Props = {
     onClick: (item: Item | null) => void
@@ -25,7 +27,7 @@ type Props = {
 const LIMIT_ITEMS_SEARCH = 30
 const STALE_TIME = 5 * 60 * 1000 // 5 minutes
 
-const TeamAssigneeDropdownMenu = ({onClick}: Props) => {
+const TeamAssigneeDropdownMenu = ({ onClick }: Props) => {
     const wrapperRef = useRef<HTMLDivElement>(null)
     const [search, setSearch] = useState('')
     const [debouncedSearch, setDebouncedSearch] = useState('')
@@ -34,7 +36,7 @@ const TeamAssigneeDropdownMenu = ({onClick}: Props) => {
             setDebouncedSearch(search)
         },
         [search],
-        300
+        300,
     )
 
     const teamsResponse = useListTeams(
@@ -46,7 +48,7 @@ const TeamAssigneeDropdownMenu = ({onClick}: Props) => {
             refetchOnWindowFocus: false,
             staleTime: STALE_TIME,
             enabled: !debouncedSearch,
-        }
+        },
     )
 
     const loadMore = useCallback(() => {
@@ -60,7 +62,7 @@ const TeamAssigneeDropdownMenu = ({onClick}: Props) => {
             teamsResponse.data?.pages?.reduce((acc, page) => {
                 return [...acc, ...page.data.data]
             }, [] as Team[]),
-        [teamsResponse.data?.pages]
+        [teamsResponse.data?.pages],
     )
 
     const searchResponse = useSearch(
@@ -73,7 +75,7 @@ const TeamAssigneeDropdownMenu = ({onClick}: Props) => {
             refetchOnWindowFocus: false,
             staleTime: STALE_TIME,
             enabled: !!debouncedSearch,
-        }
+        },
     )
 
     const data = useMemo(
@@ -84,7 +86,7 @@ const TeamAssigneeDropdownMenu = ({onClick}: Props) => {
                       'id' | 'name'
                   >[]) ?? [])
                 : (aggregatedTeamsData ?? []),
-        [search, searchResponse, aggregatedTeamsData]
+        [search, searchResponse, aggregatedTeamsData],
     )
 
     const isLoading = useMemo(
@@ -92,7 +94,7 @@ const TeamAssigneeDropdownMenu = ({onClick}: Props) => {
             debouncedSearch !== search ||
             teamsResponse.isFetching ||
             searchResponse.isFetching,
-        [debouncedSearch, search, searchResponse, teamsResponse]
+        [debouncedSearch, search, searchResponse, teamsResponse],
     )
 
     const handleOnClick = useCallback(
@@ -101,7 +103,7 @@ const TeamAssigneeDropdownMenu = ({onClick}: Props) => {
             setSearch('')
             setDebouncedSearch('')
         },
-        [onClick]
+        [onClick],
     )
 
     const onKeyDown = (e: KeyboardEvent<HTMLElement>) => {
@@ -135,7 +137,7 @@ const TeamAssigneeDropdownMenu = ({onClick}: Props) => {
             loadMore,
             search,
             teamsResponse.isInitialLoading,
-        ]
+        ],
     )
 
     return (

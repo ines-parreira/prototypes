@@ -1,9 +1,8 @@
-import {createSelector} from 'reselect'
+import { createSelector } from 'reselect'
 
-import {RuleLimitStatus} from '../../rules/types'
-import {RootState} from '../../types'
-
-import {RulesState} from './types'
+import { RuleLimitStatus } from '../../rules/types'
+import { RootState } from '../../types'
+import { RulesState } from './types'
 
 export const RULE_MAX_NUMBER_WARNING = 65
 export const RULE_MAX_NUMBER = 70
@@ -15,7 +14,7 @@ export const getSortedRules = createSelector(rulesSelector, (rules) =>
     Object.values(rules)
         .sort((left, right) => (left.name < right.name ? -1 : 1))
         .sort((left, right) => right.priority - left.priority)
-        .filter((rule) => rule.type !== 'system')
+        .filter((rule) => rule.type !== 'system'),
 )
 
 export const getRulesLimitStatus = createSelector(getSortedRules, (rules) => {

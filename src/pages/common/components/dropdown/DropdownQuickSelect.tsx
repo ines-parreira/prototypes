@@ -1,7 +1,6 @@
-import classnames from 'classnames'
 import React, {
-    forwardRef,
     ForwardedRef,
+    forwardRef,
     KeyboardEvent,
     ReactNode,
     useCallback,
@@ -11,10 +10,13 @@ import React, {
     useRef,
 } from 'react'
 
+import classnames from 'classnames'
+
 import useEffectOnce from 'hooks/useEffectOnce'
 import CheckBox from 'pages/common/forms/CheckBox'
 
-import {DropdownContext} from './Dropdown'
+import { DropdownContext } from './Dropdown'
+
 import css from './DropdownQuickSelect.less'
 
 export const SELECT_ALL_LABEL = 'Select all'
@@ -44,7 +46,7 @@ const DropdownQuickSelect = <T extends boolean | number | string>(
         shouldCloseOnSelect,
         values,
     }: Props<T>,
-    ref: ForwardedRef<HTMLDivElement>
+    ref: ForwardedRef<HTMLDivElement>,
 ) => {
     const itemRef = useRef<HTMLDivElement>(null)
     const dropdownContext = useContext(DropdownContext)
@@ -61,23 +63,23 @@ const DropdownQuickSelect = <T extends boolean | number | string>(
 
     if (!dropdownContext) {
         throw new Error(
-            'DropdownQuickSelect must be used within a DropdownContext.Provider'
+            'DropdownQuickSelect must be used within a DropdownContext.Provider',
         )
     }
-    const {value, onToggle} = dropdownContext
+    const { value, onToggle } = dropdownContext
 
     const valueLength = useMemo(
         () => (Array.isArray(value) ? value.length : 0),
-        [value]
+        [value],
     )
     const isSelected = useMemo(
         () => valueLength === values.length && valueLength > 0,
-        [valueLength, values]
+        [valueLength, values],
     )
 
     const isIndeterminate = useMemo(
         () => !isSelected && valueLength > 0,
-        [isSelected, valueLength]
+        [isSelected, valueLength],
     )
 
     const handleClick = useCallback(() => {
@@ -105,7 +107,7 @@ const DropdownQuickSelect = <T extends boolean | number | string>(
                 handleClick()
             }
         },
-        [handleClick]
+        [handleClick],
     )
 
     return (

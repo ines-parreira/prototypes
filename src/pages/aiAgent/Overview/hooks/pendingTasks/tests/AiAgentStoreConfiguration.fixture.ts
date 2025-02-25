@@ -1,6 +1,6 @@
-import {AiAgentScope} from 'models/aiAgent/types'
+import { AiAgentScope } from 'models/aiAgent/types'
 
-import {AiAgentStoreConfigurationData} from '../useFetchAiAgentStoreConfigurationData'
+import { AiAgentStoreConfigurationData } from '../useFetchAiAgentStoreConfigurationData'
 
 type AllKeys = keyof AiAgentStoreConfigurationFixture
 type ConfiguredAiAgentStoreConfigurationFixture<
@@ -31,7 +31,7 @@ export class AiAgentStoreConfigurationFixture {
         >
     }
 
-    withConnectedEmailIntegrations(...ids: {id: number; email: string}[]) {
+    withConnectedEmailIntegrations(...ids: { id: number; email: string }[]) {
         this.aiAgentStoreConfigurationData.monitoredEmailIntegrations = ids
         return this as AiAgentStoreConfigurationFixtureFullyConfigured &
             ConfiguredAiAgentStoreConfigurationFixture<

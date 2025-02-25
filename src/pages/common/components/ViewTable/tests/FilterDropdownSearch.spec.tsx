@@ -1,12 +1,13 @@
-import {fireEvent, render, act} from '@testing-library/react'
-import {fromJS, List} from 'immutable'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {getTicketViewField} from 'config/views'
-import {ViewField} from 'models/view/types'
+import { act, fireEvent, render } from '@testing-library/react'
+import { fromJS, List } from 'immutable'
+
+import { getTicketViewField } from 'config/views'
+import { ViewField } from 'models/view/types'
 import Search from 'pages/common/components/Search'
-import {fieldEnumSearch} from 'state/views/actions'
-import {flushPromises} from 'utils/testing'
+import { fieldEnumSearch } from 'state/views/actions'
+import { flushPromises } from 'utils/testing'
 
 import FilterDropdownSearch from '../FilterDropdownSearch'
 
@@ -49,13 +50,13 @@ describe('FilterDropdownSearch', () => {
 
     beforeEach(() => {
         fieldEnumSearchMock.mockReturnValue(() =>
-            Promise.resolve(defaultResults)
+            Promise.resolve(defaultResults),
         )
         mockSearchChangeValue.mockReturnValue('foo')
     })
 
     it('should render the search bar', () => {
-        const {container} = render(<FilterDropdownSearch {...minProps} />)
+        const { container } = render(<FilterDropdownSearch {...minProps} />)
         expect(container.firstChild).toMatchSnapshot()
     })
 
@@ -66,12 +67,12 @@ describe('FilterDropdownSearch', () => {
         expect(fieldEnumSearchMock).toHaveBeenLastCalledWith(
             minProps.field,
             '',
-            expect.anything()
+            expect.anything(),
         )
     })
 
     it('should perform a search on search change', async () => {
-        const {getByTestId} = render(<FilterDropdownSearch {...minProps} />)
+        const { getByTestId } = render(<FilterDropdownSearch {...minProps} />)
 
         fireEvent.click(getByTestId('search-change'))
         await act(flushPromises)
@@ -80,16 +81,16 @@ describe('FilterDropdownSearch', () => {
         expect(fieldEnumSearchMock).toHaveBeenLastCalledWith(
             minProps.field,
             'foo',
-            expect.anything()
+            expect.anything(),
         )
         expect(minProps.onSearchSuccess).toHaveBeenLastCalledWith(
-            defaultResults
+            defaultResults,
         )
     })
 
     it('should not call onSuccess when request is cancelled', async () => {
         fieldEnumSearchMock.mockReturnValue(() => Promise.resolve(null))
-        const {getByTestId} = render(<FilterDropdownSearch {...minProps} />)
+        const { getByTestId } = render(<FilterDropdownSearch {...minProps} />)
 
         fireEvent.click(getByTestId('search-change'))
         await act(flushPromises)
@@ -99,9 +100,9 @@ describe('FilterDropdownSearch', () => {
 
     it('should call onError on search failure', async () => {
         fieldEnumSearchMock.mockReturnValue(() =>
-            Promise.reject(new Error('Test error'))
+            Promise.reject(new Error('Test error')),
         )
-        const {getByTestId} = render(<FilterDropdownSearch {...minProps} />)
+        const { getByTestId } = render(<FilterDropdownSearch {...minProps} />)
 
         fireEvent.click(getByTestId('search-change'))
         await act(flushPromises)

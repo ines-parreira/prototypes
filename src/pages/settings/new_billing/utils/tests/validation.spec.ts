@@ -1,4 +1,4 @@
-import {validatePostalCode} from '../validations'
+import { validatePostalCode } from '../validations'
 
 const noError = undefined
 const error = 'Postal code is invalid'

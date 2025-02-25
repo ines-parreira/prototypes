@@ -1,25 +1,25 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
 import {
     useMetricPerDimension,
     useMetricPerDimensionWithEnrichment,
 } from 'hooks/reporting/useMetricPerDimension'
-import {IDRecord, MergedRecord} from 'hooks/reporting/withEnrichment'
+import { IDRecord, MergedRecord } from 'hooks/reporting/withEnrichment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {OrderDirection} from 'models/api/types'
-import {DrillDownReportingQuery} from 'models/job/types'
-import {TicketSLADimension} from 'models/reporting/cubes/sla/TicketSLACube'
-import {EnrichmentFields, ReportingQuery} from 'models/reporting/types'
-import {useGetCustomTicketsFieldsDefinitionData} from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
+import { OrderDirection } from 'models/api/types'
+import { DrillDownReportingQuery } from 'models/job/types'
+import { TicketSLADimension } from 'models/reporting/cubes/sla/TicketSLACube'
+import { EnrichmentFields, ReportingQuery } from 'models/reporting/types'
+import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import {
     BaseDrillDownRowData,
     DrillDownFormatterProps,
 } from 'pages/stats/DrillDownFormatters'
-import {getDrillDownQuery} from 'pages/stats/DrillDownTableConfig'
-import {AutoQAAgentsTableColumn} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
-import {OverviewMetric} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
-import {getHumanAndAutomationBotAgentsJS} from 'state/agents/selectors'
+import { getDrillDownQuery } from 'pages/stats/DrillDownTableConfig'
+import { AutoQAAgentsTableColumn } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
+import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
+import { getHumanAndAutomationBotAgentsJS } from 'state/agents/selectors'
 import {
     DrillDownMetric,
     getDrillDownCurrentPage,
@@ -63,7 +63,7 @@ export const defaultEnrichmentFields: EnrichmentFields[] = [
 ]
 
 export const getDrillDownMetricOrder = (
-    metricName: DrillDownMetric['metricName']
+    metricName: DrillDownMetric['metricName'],
 ) => {
     return metricName === OverviewMetric.CustomerSatisfaction ||
         metricName === SatisfactionMetric.AverageSurveyScore ||
@@ -89,11 +89,13 @@ export const getDrillDownMetricOrder = (
 
 export const useDrillDownQuery = (metricData: DrillDownMetric) => {
     const isAnalyticsNewFilters = useAppSelector(getIsNewFilter)
-    const {cleanStatsFilters: legacyStatsFilters} = useAppSelector(
-        getCleanStatsFiltersWithTimezone
+    const { cleanStatsFilters: legacyStatsFilters } = useAppSelector(
+        getCleanStatsFiltersWithTimezone,
     )
-    const {cleanStatsFilters: statsFiltersWithLogicalOperators, userTimezone} =
-        useAppSelector(getCleanStatsFiltersWithLogicalOperatorsWithTimezone)
+    const {
+        cleanStatsFilters: statsFiltersWithLogicalOperators,
+        userTimezone,
+    } = useAppSelector(getCleanStatsFiltersWithLogicalOperatorsWithTimezone)
     const cleanStatsFilters = isAnalyticsNewFilters
         ? statsFiltersWithLogicalOperators
         : legacyStatsFilters
@@ -101,7 +103,7 @@ export const useDrillDownQuery = (metricData: DrillDownMetric) => {
     return getDrillDownQuery(metricData)(
         cleanStatsFilters,
         userTimezone,
-        getDrillDownMetricOrder(metricData.metricName)
+        getDrillDownMetricOrder(metricData.metricName),
     )
 }
 
@@ -113,7 +115,7 @@ function withoutLimit<T extends ReportingQuery>(query: T): T {
 }
 
 export const useDrillDownQueryWithoutLimit = (
-    metricData: DrillDownMetric
+    metricData: DrillDownMetric,
 ): DrillDownReportingQuery => {
     const query = useDrillDownQuery(metricData)
 
@@ -121,30 +123,30 @@ export const useDrillDownQueryWithoutLimit = (
 }
 
 export type DrillDownDataHook<T extends BaseDrillDownRowData> = (
-    metricData: DrillDownMetric
+    metricData: DrillDownMetric,
 ) => DrillDownData<T>
 
 export function useEnrichedDrillDownData<T>(
     metricData: DrillDownMetric,
     enrichmentFields: EnrichmentFields[],
     getDrillDownFormatter: (props: DrillDownFormatterProps) => T,
-    enrichmentIdField: EnrichmentFields
+    enrichmentIdField: EnrichmentFields,
 ): DrillDownData<T> {
     const dispatch = useAppDispatch()
     const currentPage = useAppSelector(getDrillDownCurrentPage)
     const query = useDrillDownQuery(metricData)
     const agents = useAppSelector(getHumanAndAutomationBotAgentsJS)
-    const {data: someData, isFetching} = useMetricPerDimensionWithEnrichment(
+    const { data: someData, isFetching } = useMetricPerDimensionWithEnrichment(
         query,
         enrichmentFields,
-        enrichmentIdField
+        enrichmentIdField,
     )
 
     const customFieldsIds = useGetCustomTicketsFieldsDefinitionData()
 
     const rowData = useMemo(
         () => aggregateSlas(someData?.allData, metricData, query.dimensions[0]),
-        [metricData, query.dimensions, someData?.allData]
+        [metricData, query.dimensions, someData?.allData],
     )
     const totalResults = rowData.length
 
@@ -159,9 +161,9 @@ export function useEnrichedDrillDownData<T>(
                 setCurrentPage(
                     Math.min(
                         page,
-                        Math.ceil(totalResults / DRILL_DOWN_PER_PAGE)
-                    )
-                )
+                        Math.ceil(totalResults / DRILL_DOWN_PER_PAGE),
+                    ),
+                ),
             ),
         data: rowData
             .map((row) =>
@@ -171,23 +173,23 @@ export function useEnrichedDrillDownData<T>(
                     agents,
                     ticketIdField: query.dimensions[0],
                     customFieldsIds,
-                })
+                }),
             )
             .slice(
                 Math.max((currentPage - 1) * DRILL_DOWN_PER_PAGE, 0),
-                Math.min(currentPage * DRILL_DOWN_PER_PAGE, totalResults)
+                Math.min(currentPage * DRILL_DOWN_PER_PAGE, totalResults),
             ),
     }
 }
 
 export function useDrillDownData<T>(
     metricData: DrillDownMetric,
-    getDrillDownFormatter: (props: DrillDownFormatterProps) => T
+    getDrillDownFormatter: (props: DrillDownFormatterProps) => T,
 ): DrillDownData<T> {
     const dispatch = useAppDispatch()
     const currentPage = useAppSelector(getDrillDownCurrentPage)
     const query = useDrillDownQuery(metricData)
-    const {data: someData, isFetching} = useMetricPerDimension(query)
+    const { data: someData, isFetching } = useMetricPerDimension(query)
 
     const rowData = useMemo(() => someData?.allData || [], [someData])
     const totalResults = rowData.length
@@ -196,11 +198,11 @@ export function useDrillDownData<T>(
         getDrillDownFormatter({
             row,
             metricField: query.dimensions[1] ?? query.measures[0],
-        })
+        }),
     )
     const slicedRowData = formattedRowData.slice(
         Math.max((currentPage - 1) * DRILL_DOWN_PER_PAGE, 0),
-        Math.min(currentPage * DRILL_DOWN_PER_PAGE, totalResults)
+        Math.min(currentPage * DRILL_DOWN_PER_PAGE, totalResults),
     )
 
     return {
@@ -214,9 +216,9 @@ export function useDrillDownData<T>(
                 setCurrentPage(
                     Math.min(
                         page,
-                        Math.ceil(totalResults / DRILL_DOWN_PER_PAGE)
-                    )
-                )
+                        Math.ceil(totalResults / DRILL_DOWN_PER_PAGE),
+                    ),
+                ),
             ),
         data: slicedRowData,
     }
@@ -228,7 +230,7 @@ const aggregateSlas = (
               IDRecord<any>)[]
         | undefined,
     metricData: DrillDownMetric,
-    ticketIdField: string
+    ticketIdField: string,
 ): MergedRecord<any, any>[] => {
     if (allData === undefined) {
         return []
@@ -262,7 +264,7 @@ const aggregateSlas = (
                         },
                     },
                 }
-            }, {})
+            }, {}),
         )
     }
 

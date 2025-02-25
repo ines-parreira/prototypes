@@ -1,8 +1,9 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import InstructionsCard, {InstructionsCardProps} from '../InstructionsCard'
-import {InstructionTab} from '../types'
+import { render, screen } from '@testing-library/react'
+
+import InstructionsCard, { InstructionsCardProps } from '../InstructionsCard'
+import { InstructionTab } from '../types'
 
 const tabA: InstructionTab = {
     id: 'a',
@@ -32,7 +33,7 @@ describe('<InstructionsCard />', () => {
             <InstructionsCard
                 {...instructionsCardProps}
                 tabs={[instructionsCardProps.tabs[0]]}
-            />
+            />,
         )
 
         screen.getByText('instruction A1')
@@ -111,7 +112,7 @@ describe('<InstructionsCard />', () => {
             <InstructionsCard
                 {...instructionsCardProps}
                 onCopyClick={onCopyClick}
-            />
+            />,
         )
 
         // click on copy button

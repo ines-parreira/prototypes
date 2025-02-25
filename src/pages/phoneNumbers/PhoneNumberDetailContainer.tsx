@@ -1,29 +1,28 @@
-import React, {useEffect} from 'react'
+import React, { useEffect } from 'react'
 
-import {ReactCountryFlag} from 'react-country-flag'
-import {Link, useParams} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
+import { ReactCountryFlag } from 'react-country-flag'
+import { Link, useParams } from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem, Container } from 'reactstrap'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {fetchNewPhoneNumber} from 'models/phoneNumber/resources'
+import { fetchNewPhoneNumber } from 'models/phoneNumber/resources'
 import PageHeader from 'pages/common/components/PageHeader'
 import PhoneNumberDetails from 'pages/phoneNumbers/PhoneNumberDetails'
-
 import css from 'pages/settings/settings.less'
-import {newPhoneNumberFetched} from 'state/entities/phoneNumbers/actions'
-import {getNewPhoneNumber} from 'state/entities/phoneNumbers/selectors'
+import { newPhoneNumberFetched } from 'state/entities/phoneNumbers/actions'
+import { getNewPhoneNumber } from 'state/entities/phoneNumbers/selectors'
 
-import {countryCode, isNewPhoneNumber} from './utils'
+import { countryCode, isNewPhoneNumber } from './utils'
 
 export function PhoneNumberDetailContainer() {
-    const {phoneNumberId} = useParams<{phoneNumberId: string}>()
+    const { phoneNumberId } = useParams<{ phoneNumberId: string }>()
     const dispatch = useAppDispatch()
 
     useEffect(() => {
         const fetchPhoneNumber = async () => {
             const phoneNumber = await fetchNewPhoneNumber(
-                parseInt(phoneNumberId)
+                parseInt(phoneNumberId),
             )
             dispatch(newPhoneNumberFetched(phoneNumber))
         }

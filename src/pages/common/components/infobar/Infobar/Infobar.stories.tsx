@@ -1,18 +1,19 @@
-import {Meta} from '@storybook/react'
-import {QueryClientProvider} from '@tanstack/react-query'
-import {fromJS, Map} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
-import {MemoryRouter} from 'react-router-dom'
+
+import { Meta } from '@storybook/react'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fromJS, Map } from 'immutable'
+import { Provider } from 'react-redux'
+import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {appQueryClient} from 'api/queryClient'
-import {HTTP_INTEGRATION_TYPE} from 'constants/integration'
-import {ThemeProvider, useTheme} from 'core/theme'
-import {ticket} from 'fixtures/ticket'
+import { appQueryClient } from 'api/queryClient'
+import { HTTP_INTEGRATION_TYPE } from 'constants/integration'
+import { ThemeProvider, useTheme } from 'core/theme'
+import { ticket } from 'fixtures/ticket'
 import Infobar from 'pages/common/components/infobar/Infobar/Infobar'
-import {initLaunchDarkly} from 'utils/launchDarkly'
+import { initLaunchDarkly } from 'utils/launchDarkly'
 
 initLaunchDarkly(null as any, null as any)
 
@@ -21,7 +22,7 @@ const defaultState = {
         id: Math.random() * 1000,
     }),
     integrations: fromJS({
-        integrations: [{type: HTTP_INTEGRATION_TYPE}],
+        integrations: [{ type: HTTP_INTEGRATION_TYPE }],
     }),
     ticket: fromJS(ticket),
 }
@@ -30,7 +31,7 @@ const storyConfig: Meta = {
     title: 'Infobar/Infobar',
     component: Infobar,
     parameters: {
-        chromatic: {disableSnapshot: false},
+        chromatic: { disableSnapshot: false },
     },
     args: {
         customer: fromJS({
@@ -45,7 +46,7 @@ const storyConfig: Meta = {
             },
             customer: {
                 id: 2,
-                data: {name: 'Marie Curie'},
+                data: { name: 'Marie Curie' },
             },
         }),
         widgets: fromJS({

@@ -1,14 +1,13 @@
 import React from 'react'
 
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
-import {OverviewMetricConfig} from 'pages/stats/convert/constants/ConvertPerformanceOverviewConfig'
-import {usePerformanceTotalStats} from 'pages/stats/convert/hooks/usePerformanceTotalStats'
-import {CampaignsTotalsMetricNames} from 'pages/stats/convert/services/constants'
-import {DashboardChartProps} from 'pages/stats/custom-reports/types'
-import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
+import { OverviewMetricConfig } from 'pages/stats/convert/constants/ConvertPerformanceOverviewConfig'
+import { usePerformanceTotalStats } from 'pages/stats/convert/hooks/usePerformanceTotalStats'
+import { CampaignsTotalsMetricNames } from 'pages/stats/convert/services/constants'
+import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
 import MetricCard from 'pages/stats/MetricCard'
-
-import {ConvertMetric} from 'state/ui/stats/types'
+import { ConvertMetric } from 'state/ui/stats/types'
 
 export const PerformanceCampaignSalesKpiChart = ({
     chartId,

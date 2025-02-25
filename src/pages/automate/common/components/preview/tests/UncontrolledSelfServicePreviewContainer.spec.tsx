@@ -1,5 +1,6 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import UncontrolledSelfServicePreviewContainer from '../UncontrolledSelfServicePreviewContainer'
 
@@ -8,7 +9,7 @@ describe('<UncontrolledSelfServicePreviewContainer />', () => {
         render(
             <UncontrolledSelfServicePreviewContainer channels={[]}>
                 {() => <div></div>}
-            </UncontrolledSelfServicePreviewContainer>
+            </UncontrolledSelfServicePreviewContainer>,
         )
         expect(screen.getByText('Channel')).toBeInTheDocument()
     })

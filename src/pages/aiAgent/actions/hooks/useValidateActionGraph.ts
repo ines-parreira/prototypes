@@ -1,20 +1,21 @@
-import {produce} from 'immer'
-import _set from 'lodash/set'
-import {useCallback} from 'react'
+import { useCallback } from 'react'
 
-import {VisualBuilderContextType} from 'pages/automate/workflows/hooks/useVisualBuilder'
+import { produce } from 'immer'
+import _set from 'lodash/set'
+
+import { VisualBuilderContextType } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {
     getConditionsNodeErrors,
     getGraphAppAppErrors,
     getHTTPRequestNodeErrors,
     getLLMPromptTriggerNodeErrors,
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import {VisualBuilderGraph} from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import {WorkflowConfiguration} from 'pages/automate/workflows/models/workflowConfiguration.types'
+import { VisualBuilderGraph } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
 
 const useValidateActionGraph = (
     getVariableListForNode: VisualBuilderContextType['getVariableListForNode'],
-    actions: Pick<WorkflowConfiguration, 'id' | 'name'>[]
+    actions: Pick<WorkflowConfiguration, 'id' | 'name'>[],
 ) => {
     return useCallback(
         (graph: VisualBuilderGraph) => {
@@ -30,20 +31,20 @@ const useValidateActionGraph = (
                         _set(
                             draft.errors,
                             'name',
-                            'Action name must be less than 100 characters'
+                            'Action name must be less than 100 characters',
                         )
                     } else if (
                         actions.some(
                             (action) =>
                                 action.name === graph.name &&
-                                action.id !== graph.id
+                                action.id !== graph.id,
                         )
                     ) {
                         draft.errors ??= {}
                         _set(
                             draft.errors,
                             'name',
-                            'An Action already exists with this name. Choose a unique name.'
+                            'An Action already exists with this name. Choose a unique name.',
                         )
                     }
                 }
@@ -63,7 +64,7 @@ const useValidateActionGraph = (
                     _set(
                         draft.errors,
                         'nodes',
-                        'At least one Action step is required'
+                        'At least one Action step is required',
                     )
                 }
 
@@ -74,20 +75,20 @@ const useValidateActionGraph = (
                         case 'llm_prompt_trigger':
                             node.data.errors = getLLMPromptTriggerNodeErrors(
                                 node,
-                                getVariableListForNode(node.id)
+                                getVariableListForNode(node.id),
                             )
                             break
                         case 'http_request':
                             node.data.errors = getHTTPRequestNodeErrors(
                                 node,
-                                getVariableListForNode(node.id)
+                                getVariableListForNode(node.id),
                             )
                             break
                         case 'conditions':
                             node.data.errors = getConditionsNodeErrors(
                                 graph.edges,
                                 node,
-                                getVariableListForNode(node.id)
+                                getVariableListForNode(node.id),
                             )
                             break
                         case 'reusable_llm_prompt_call':
@@ -98,7 +99,7 @@ const useValidateActionGraph = (
                 })
             })
         },
-        [getVariableListForNode, actions]
+        [getVariableListForNode, actions],
     )
 }
 

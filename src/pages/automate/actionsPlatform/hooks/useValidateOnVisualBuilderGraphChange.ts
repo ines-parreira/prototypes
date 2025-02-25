@@ -1,7 +1,7 @@
-import {Dispatch, useEffect} from 'react'
+import { Dispatch, useEffect } from 'react'
 
-import {VisualBuilderGraphAction} from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
-import {VisualBuilderGraph} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { VisualBuilderGraphAction } from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
+import { VisualBuilderGraph } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 import useIsVisualBuilderGraphChanged from './useIsVisualBuilderGraphChanged'
 

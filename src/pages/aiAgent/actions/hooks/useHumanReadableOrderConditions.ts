@@ -1,17 +1,17 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {getDisplayValue} from 'pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/conditions/NumberConditionType'
-import {getOperatorListByVariable} from 'pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/constants'
-import {ConditionSchema} from 'pages/automate/workflows/models/conditions.types'
-import {parseWorkflowVariable} from 'pages/automate/workflows/models/variables.model'
-import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
+import { getDisplayValue } from 'pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/conditions/NumberConditionType'
+import { getOperatorListByVariable } from 'pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/constants'
+import { ConditionSchema } from 'pages/automate/workflows/models/conditions.types'
+import { parseWorkflowVariable } from 'pages/automate/workflows/models/variables.model'
+import { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
 
 type Props = {
     variables: WorkflowVariableList
     conditions: ConditionSchema[]
 }
 
-const useHumanReadableOrderConditions = ({variables, conditions}: Props) => {
+const useHumanReadableOrderConditions = ({ variables, conditions }: Props) => {
     return useMemo(() => {
         const messages: string[] = []
 
@@ -46,16 +46,16 @@ const useHumanReadableOrderConditions = ({variables, conditions}: Props) => {
                 if (variable.type === 'string' && variable.options) {
                     displayValue =
                         variable.options.find(
-                            (option) => option.value === schema[1]
+                            (option) => option.value === schema[1],
                         )?.label ?? schema[1]
                 }
 
                 messages.push(
-                    `${variable.name} ${operator.label.toLowerCase()} ${displayValue}`
+                    `${variable.name} ${operator.label.toLowerCase()} ${displayValue}`,
                 )
             } else {
                 messages.push(
-                    `${variable.name} ${operator.label.toLowerCase()}`
+                    `${variable.name} ${operator.label.toLowerCase()}`,
                 )
             }
         })

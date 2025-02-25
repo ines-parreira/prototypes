@@ -1,5 +1,6 @@
-import {Badge} from '@gorgias/merchant-ui-kit'
 import React from 'react'
+
+import { Badge } from '@gorgias/merchant-ui-kit'
 
 import css from './DraftBadge.less'
 

@@ -1,3 +1,5 @@
+import React from 'react'
+
 import {
     createEvent,
     fireEvent,
@@ -6,13 +8,12 @@ import {
     waitFor,
 } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {mockFlags} from 'jest-launchdarkly-mock'
-import {omit} from 'lodash'
-import React from 'react'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { omit } from 'lodash'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {OBJECT_TYPE_SETTINGS, OBJECT_TYPES} from 'custom-fields/constants'
-import {useUpdateCustomFieldArchiveStatus} from 'custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { OBJECT_TYPE_SETTINGS, OBJECT_TYPES } from 'custom-fields/constants'
+import { useUpdateCustomFieldArchiveStatus } from 'custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus'
 import {
     aiManagedTicketInputFieldDefinition,
     archivedTicketInputFieldDefinition,
@@ -24,23 +25,23 @@ import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import ArchiveConfirmationModal from 'pages/settings/customFields/components/ArchiveConfirmationModal'
 import DropdownInput from 'pages/settings/customFields/components/DropdownInput'
 import FieldForm from 'pages/settings/customFields/components/FieldForm'
-import {assumeMock, getLastMockCall, renderWithRouter} from 'utils/testing'
+import { assumeMock, getLastMockCall, renderWithRouter } from 'utils/testing'
 
 jest.mock('pages/settings/customFields/components/DropdownInput', () =>
-    jest.fn(() => <div>Dropdown</div>)
+    jest.fn(() => <div>Dropdown</div>),
 )
 jest.mock('custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus')
 jest.mock(
     'pages/settings/customFields/components/ArchiveConfirmationModal',
-    () => jest.fn(() => null)
+    () => jest.fn(() => null),
 )
 jest.mock('pages/common/components/UnsavedChangesPrompt', () =>
-    jest.fn(() => null)
+    jest.fn(() => null),
 )
 
 const DropdownInputMock = assumeMock(DropdownInput)
 const useUpdateCustomFieldArchiveStatusMock = assumeMock(
-    useUpdateCustomFieldArchiveStatus
+    useUpdateCustomFieldArchiveStatus,
 )
 const ArchiveConfirmationModalMock = assumeMock(ArchiveConfirmationModal)
 const mockedUnsavedChangesPrompt = assumeMock(UnsavedChangesPrompt)
@@ -106,7 +107,7 @@ describe('<FieldForm/>', () => {
     it('should disable the save button if the form is not valid', () => {
         const props = {
             ...defaultProps,
-            field: {...customFieldInputDefinition, label: ''},
+            field: { ...customFieldInputDefinition, label: '' },
         }
 
         render(<FieldForm {...props} />)
@@ -149,15 +150,15 @@ describe('<FieldForm/>', () => {
     it('should call onSubmit if the form is valid and the save button is clicked', () => {
         render(
             <FieldForm
-                {...{...defaultProps, field: customFieldInputDefinition}}
-            />
+                {...{ ...defaultProps, field: customFieldInputDefinition }}
+            />,
         )
 
         fireEvent.click(screen.getByText(/Save changes/))
 
         expect(defaultProps.onSubmit).toHaveBeenCalledTimes(1)
         expect(defaultProps.onSubmit).toHaveBeenCalledWith(
-            omit(customFieldInputDefinition, ['priority'])
+            omit(customFieldInputDefinition, ['priority']),
         )
     })
 
@@ -185,7 +186,7 @@ describe('<FieldForm/>', () => {
 
         await userEvent.type(
             screen.getByLabelText(/Required to close ticket/),
-            'checkbox'
+            'checkbox',
         )
         userEvent.click(screen.getByLabelText(/Required to close ticket/))
         await waitFor(() => {
@@ -207,7 +208,7 @@ describe('<FieldForm/>', () => {
             'Always required',
             'Conditionally visible',
         ]) {
-            const input = screen.getByLabelText(label, {selector: 'input'})
+            const input = screen.getByLabelText(label, { selector: 'input' })
             expect(input).toBeInTheDocument()
 
             fireEvent.click(input)
@@ -216,7 +217,9 @@ describe('<FieldForm/>', () => {
 
         // Change the value to "conditional"
         userEvent.click(
-            screen.getByLabelText('Conditionally visible', {selector: 'input'})
+            screen.getByLabelText('Conditionally visible', {
+                selector: 'input',
+            }),
         )
 
         // Submit the form
@@ -225,7 +228,7 @@ describe('<FieldForm/>', () => {
         // The submit event must contain "requirement_type=conditional"
         expect(defaultProps.onSubmit).toHaveBeenCalledTimes(1)
         expect(defaultProps.onSubmit).toHaveBeenCalledWith(
-            expect.objectContaining({requirement_type: 'conditional'})
+            expect.objectContaining({ requirement_type: 'conditional' }),
         )
     })
 
@@ -238,7 +241,7 @@ describe('<FieldForm/>', () => {
         renderWithRouter(<FieldForm {...props} />)
 
         const nameInput = screen.getByLabelText(/Name/)
-        fireEvent.change(nameInput, {target: {value: 'New name'}})
+        fireEvent.change(nameInput, { target: { value: 'New name' } })
         expect(mockedUnsavedChangesPrompt).toHaveBeenCalledTimes(1)
     })
 
@@ -252,7 +255,7 @@ describe('<FieldForm/>', () => {
 
         const nameInput = screen.getByLabelText(/Name/)
         nameInput.focus()
-        fireEvent.keyDown(nameInput, {key: 'Enter'})
+        fireEvent.keyDown(nameInput, { key: 'Enter' })
 
         expect(props.onSubmit).not.toHaveBeenCalled()
     })
@@ -282,7 +285,7 @@ describe('<FieldForm/>', () => {
                 customFieldLabel: defaultProps.field.label,
                 isOpen: true,
             }),
-            {}
+            {},
         )
 
         getLastMockCall(ArchiveConfirmationModalMock)[0].onConfirm()
@@ -298,7 +301,7 @@ describe('<FieldForm/>', () => {
                 customFieldLabel: defaultProps.field.label,
                 isOpen: true,
             }),
-            {}
+            {},
         )
 
         getLastMockCall(ArchiveConfirmationModalMock)[0].onClose()
@@ -307,7 +310,7 @@ describe('<FieldForm/>', () => {
                 customFieldLabel: defaultProps.field.label,
                 isOpen: false,
             }),
-            {}
+            {},
         )
     })
 
@@ -318,26 +321,29 @@ describe('<FieldForm/>', () => {
                 <FieldForm
                     {...{
                         ...defaultProps,
-                        field: {...defaultProps.field, object_type: objectType},
+                        field: {
+                            ...defaultProps.field,
+                            object_type: objectType,
+                        },
                         objectType,
                     }}
-                />
+                />,
             )
 
             const namePlaceholder = screen
                 .getByLabelText(/Name/)
                 .getAttribute('placeholder')
             expect(namePlaceholder).toEqual(
-                OBJECT_TYPE_SETTINGS[objectType].PLACEHOLDERS.LABEL
+                OBJECT_TYPE_SETTINGS[objectType].PLACEHOLDERS.LABEL,
             )
 
             const descriptionPlaceholder = screen
                 .getByLabelText(/Description/)
                 .getAttribute('placeholder')
             expect(descriptionPlaceholder).toEqual(
-                OBJECT_TYPE_SETTINGS[objectType].PLACEHOLDERS.DESCRIPTION
+                OBJECT_TYPE_SETTINGS[objectType].PLACEHOLDERS.DESCRIPTION,
             )
-        }
+        },
     )
 
     describe('Archived field', () => {
@@ -393,7 +399,7 @@ describe('<FieldForm/>', () => {
                 expect.objectContaining({
                     isDisabled: true,
                 }),
-                {}
+                {},
             )
         })
     })

@@ -1,20 +1,22 @@
-import {ListUsersRolesItem, queryKeys} from '@gorgias/api-queries'
-import {QueryClientProvider} from '@tanstack/react-query'
-import * as reactQuery from '@tanstack/react-query'
-import {waitFor} from '@testing-library/react'
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
 
-import {agents} from 'fixtures/agents'
+import { QueryClientProvider } from '@tanstack/react-query'
+import * as reactQuery from '@tanstack/react-query'
+import { waitFor } from '@testing-library/react'
+import { renderHook } from '@testing-library/react-hooks'
+
+import { ListUsersRolesItem, queryKeys } from '@gorgias/api-queries'
+
+import { agents } from 'fixtures/agents'
 import {
-    axiosSuccessResponse,
     apiListCursorPaginationResponse,
+    axiosSuccessResponse,
 } from 'fixtures/axiosResponse'
-import {handleError} from 'hooks/agents/errorHandler'
+import { handleError } from 'hooks/agents/errorHandler'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {fetchAgents} from 'models/agents/resources'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { fetchAgents } from 'models/agents/resources'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 import useListUsers from '../useListUsers'
 
@@ -41,10 +43,10 @@ describe('useListUsers', () => {
             enabled: true,
         }
         mockFetchAgents.mockResolvedValueOnce(
-            axiosSuccessResponse(apiListCursorPaginationResponse(agents))
+            axiosSuccessResponse(apiListCursorPaginationResponse(agents)),
         )
-        const {result} = renderHook(() => useListUsers({roles}, query), {
-            wrapper: ({children}) => (
+        const { result } = renderHook(() => useListUsers({ roles }, query), {
+            wrapper: ({ children }) => (
                 <QueryClientProvider client={queryClient}>
                     {children}
                 </QueryClientProvider>
@@ -57,12 +59,12 @@ describe('useListUsers', () => {
                 queryFn: expect.any(Function),
                 getNextPageParam: expect.any(Function),
                 ...query,
-            })
+            }),
         )
         expect(mockFetchAgents).toHaveBeenCalledWith(
             expect.objectContaining({
                 roles,
-            })
+            }),
         )
         await waitFor(() => expect(result.current.isLoading).toBe(false))
         expect(result.current.data?.pages[0]).toEqual(
@@ -70,7 +72,7 @@ describe('useListUsers', () => {
                 data: expect.objectContaining({
                     data: agents,
                 }),
-            })
+            }),
         )
     })
 
@@ -79,8 +81,8 @@ describe('useListUsers', () => {
         mockFetchAgents.mockRejectedValueOnce({
             response: errorMsgMock,
         })
-        const {result} = renderHook(() => useListUsers(), {
-            wrapper: ({children}) => (
+        const { result } = renderHook(() => useListUsers(), {
+            wrapper: ({ children }) => (
                 <QueryClientProvider client={queryClient}>
                     {children}
                 </QueryClientProvider>
@@ -93,7 +95,7 @@ describe('useListUsers', () => {
                 response: errorMsgMock,
             }),
             expect.any(String),
-            dispatchMock
+            dispatchMock,
         )
         expect(result.current.isLoading).toBe(false)
     })

@@ -1,10 +1,10 @@
-import classnames from 'classnames'
 import React from 'react'
 
-import {useSendersForSelectedChannel} from 'hooks/useOutboundChannels'
-import {SourceAddress} from 'models/ticket/types'
+import classnames from 'classnames'
 
-import {humanizeAddress} from 'state/ticket/utils'
+import { useSendersForSelectedChannel } from 'hooks/useOutboundChannels'
+import { SourceAddress } from 'models/ticket/types'
+import { humanizeAddress } from 'state/ticket/utils'
 
 import css from './DEPRECATED_SenderSelectField.less'
 
@@ -17,8 +17,8 @@ type Props = {
  * @date 2024-03-22
  * @type feature-component
  */
-const SenderSelectField = ({tabIndex}: Props) => {
-    const {selectedSender, selectedChannel, senders, selectSender} =
+const SenderSelectField = ({ tabIndex }: Props) => {
+    const { selectedSender, selectedChannel, senders, selectSender } =
         useSendersForSelectedChannel()
 
     return (
@@ -31,7 +31,7 @@ const SenderSelectField = ({tabIndex}: Props) => {
                 value={selectedSender?.address}
                 onChange={(event) => {
                     const sender = senders.find(
-                        (sender) => sender.address === event.target.value
+                        (sender) => sender.address === event.target.value,
                     )
                     if (sender) {
                         selectSender(sender)
@@ -47,7 +47,7 @@ const SenderSelectField = ({tabIndex}: Props) => {
                             {sender.address &&
                                 `(${humanizeAddress(
                                     sender.address,
-                                    selectedChannel
+                                    selectedChannel,
                                 )})`}
                         </option>
                     ))}

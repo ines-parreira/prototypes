@@ -1,10 +1,12 @@
-import classnames from 'classnames'
 import React from 'react'
 
-import {HELP_CENTER_DEFAULT_LAYOUT} from '../../constants'
+import classnames from 'classnames'
+
+import { HELP_CENTER_DEFAULT_LAYOUT } from '../../constants'
 import HelpCenterPreviewDefaultHomePage from './HelpCenterPreviewDefaultHomePage'
-import css from './HelpCenterPreviewHomePage.less'
 import HelpCenterPreviewOnePagerHomePage from './HelpCenterPreviewOnePagerHomePage'
+
+import css from './HelpCenterPreviewHomePage.less'
 
 type HelpCenterPreviewHomePageProps = {
     layout: 'default' | '1-pager'

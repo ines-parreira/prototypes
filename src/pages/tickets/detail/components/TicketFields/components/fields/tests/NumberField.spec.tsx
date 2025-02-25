@@ -1,10 +1,11 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
+import React from 'react'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
-import {fromJS} from 'immutable'
-import React from 'react'
-import {Provider} from 'react-redux'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import client from 'models/api/resources'
@@ -13,7 +14,7 @@ import {
     updateCustomFieldState,
     updateCustomFieldValue,
 } from 'state/ticket/actions'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import NumberField from '../NumberField'
 
@@ -57,32 +58,35 @@ describe('<NumberField />', () => {
         (valueToRender) => {
             const props = {
                 ...initialProps,
-                fieldState: {...initialProps.fieldState, value: valueToRender},
+                fieldState: {
+                    ...initialProps.fieldState,
+                    value: valueToRender,
+                },
             }
-            const {container} = render(
+            const { container } = render(
                 <QueryClientProvider client={queryClient}>
                     <Provider store={store}>
                         <NumberField {...props} />
                     </Provider>
-                </QueryClientProvider>
+                </QueryClientProvider>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
-        }
+        },
     )
 
     it('should render the number field component correctly but dispatch an error', () => {
         // This can happen if the definition changed and the existing value is no longer valid
-        const {container} = render(
+        const { container } = render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={store}>
                     <NumberField {...initialProps} max={10} />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(store.dispatch).toHaveBeenCalledWith(
-            updateCustomFieldError(fieldState.id, true)
+            updateCustomFieldError(fieldState.id, true),
         )
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -93,7 +97,7 @@ describe('<NumberField />', () => {
                 <Provider store={store}>
                     <NumberField {...initialProps} />)
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
         await waitFor(() => {
             userEvent.hover(screen.getByRole('spinbutton'))
@@ -113,11 +117,11 @@ describe('<NumberField />', () => {
                     <NumberField
                         {...{
                             ...initialProps,
-                            fieldState: {...fieldState, hasError: true},
+                            fieldState: { ...fieldState, hasError: true },
                         }}
                     />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         const newValue = '100'
@@ -126,7 +130,7 @@ describe('<NumberField />', () => {
         await userEvent.type(input, newValue)
 
         expect(store.dispatch).toHaveBeenCalledWith(
-            updateCustomFieldError(fieldState.id, false)
+            updateCustomFieldError(fieldState.id, false),
         )
 
         fireEvent.blur(input)
@@ -137,7 +141,7 @@ describe('<NumberField />', () => {
         expect(store.dispatch).toHaveBeenCalledTimes(4)
         expect(store.dispatch).toHaveBeenNthCalledWith(
             4,
-            updateCustomFieldValue(fieldState.id, Number(newValue))
+            updateCustomFieldValue(fieldState.id, Number(newValue)),
         )
     })
 
@@ -149,15 +153,15 @@ describe('<NumberField />', () => {
             })
         render(
             <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore({ticket: fromJS({})})}>
+                <Provider store={mockStore({ ticket: fromJS({}) })}>
                     <NumberField
                         {...{
                             ...initialProps,
-                            fieldState: {...fieldState, hasError: true},
+                            fieldState: { ...fieldState, hasError: true },
                         }}
                     />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         const input = screen.getByRole('spinbutton')
@@ -174,13 +178,13 @@ describe('<NumberField />', () => {
         async (initialValue) => {
             mockedServer
                 .onPut(
-                    `/api/tickets/${ticketId}/custom-fields/${fieldState.id}`
+                    `/api/tickets/${ticketId}/custom-fields/${fieldState.id}`,
                 )
                 .reply(400)
 
             const props = {
                 ...initialProps,
-                fieldState: {...initialProps.fieldState, value: initialValue},
+                fieldState: { ...initialProps.fieldState, value: initialValue },
                 isRequired: false,
                 max: fieldState.value,
             }
@@ -189,7 +193,7 @@ describe('<NumberField />', () => {
                     <Provider store={store}>
                         <NumberField {...props} />
                     </Provider>
-                </QueryClientProvider>
+                </QueryClientProvider>,
             )
 
             const input = screen.getByRole('spinbutton')
@@ -202,19 +206,19 @@ describe('<NumberField />', () => {
                         id: fieldState.id,
                         value: initialValue,
                         hasError: false,
-                    })
+                    }),
                 )
             })
-        }
+        },
     )
 
     it('should update the value when the value prop changes', () => {
-        const {rerender} = render(
+        const { rerender } = render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={store}>
                     <NumberField {...initialProps} />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
         const input = screen.getByRole('spinbutton')
         expect(input).toHaveValue(fieldState.value)
@@ -228,7 +232,7 @@ describe('<NumberField />', () => {
                 <Provider store={store}>
                     <NumberField {...initialProps} fieldState={newFieldState} />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
         expect(input).toHaveValue(newFieldState.value)
     })

@@ -1,9 +1,9 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {User, UserRole} from 'config/types/user'
+import { User, UserRole } from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
-import {AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS} from 'state/agents/constants'
-import {getHumanAndAutomationBotAgentsJS} from 'state/agents/selectors'
+import { AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS } from 'state/agents/constants'
+import { getHumanAndAutomationBotAgentsJS } from 'state/agents/selectors'
 
 export const useAIAgentUser = (): User | undefined => {
     const agents = useAppSelector(getHumanAndAutomationBotAgentsJS)
@@ -14,10 +14,10 @@ export const useAIAgentUser = (): User | undefined => {
                 (agent) =>
                     agent.role.name === UserRole.Bot &&
                     AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS.includes(
-                        agent.email
-                    )
+                        agent.email,
+                    ),
             ),
-        [agents]
+        [agents],
     )
 }
 

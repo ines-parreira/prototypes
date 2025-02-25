@@ -1,11 +1,11 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
 
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import { Link } from 'react-router-dom'
 
-import {linkToShopifyIntegration} from 'pages/settings/contactForm/utils/navigation'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { linkToShopifyIntegration } from 'pages/settings/contactForm/utils/navigation'
 
-import {HelpCenterAutoEmbedReadinessStatus} from '../HelpCenterAutoEmbedPublishSection/types'
+import { HelpCenterAutoEmbedReadinessStatus } from '../HelpCenterAutoEmbedPublishSection/types'
 
 export type HelpCenterAutoEmbedWarningBannerProps = {
     details?: {
@@ -15,16 +15,16 @@ export type HelpCenterAutoEmbedWarningBannerProps = {
 }
 
 const HelpCenterAutoEmbedWarningBanner = (
-    props: HelpCenterAutoEmbedWarningBannerProps
+    props: HelpCenterAutoEmbedWarningBannerProps,
 ) => {
-    const {details} = props
+    const { details } = props
 
     const [isPermissionDismissed, setPermissionDismissed] =
         React.useState(false)
 
     if (!details) return null
 
-    const {type, entityId} = details
+    const { type, entityId } = details
 
     if (
         type === HelpCenterAutoEmbedReadinessStatus.NEED_PERMISSION_UPDATE &&

@@ -1,5 +1,6 @@
-import parsePhoneNumber from 'libphonenumber-js'
 import React from 'react'
+
+import parsePhoneNumber from 'libphonenumber-js'
 
 import css from './PhoneCustomerName.less'
 

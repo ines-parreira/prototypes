@@ -1,10 +1,9 @@
 import React from 'react'
 
-import {IntegrationType} from 'models/integration/constants'
+import { IntegrationType } from 'models/integration/constants'
 import AppDetails from 'pages/common/components/ProductDetail'
-import {mapAppToDetail} from 'pages/integrations/mappers/appToDetail'
-
-import {getIntegrationConfig} from 'state/integrations/helpers'
+import { mapAppToDetail } from 'pages/integrations/mappers/appToDetail'
+import { getIntegrationConfig } from 'state/integrations/helpers'
 
 import WhatsAppIntegrationConnectButton from './WhatsAppIntegrationConnectButton'
 

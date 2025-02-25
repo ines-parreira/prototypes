@@ -1,8 +1,9 @@
-import {fireEvent, render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {SearchBar} from 'pages/common/components/SearchBar/SearchBar'
+import { fireEvent, render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { SearchBar } from 'pages/common/components/SearchBar/SearchBar'
 
 const handleSearchValue = jest.fn()
 

@@ -7,7 +7,7 @@ type Props = {
     goToNewWorkflowPage: () => void
 }
 
-const WorkflowCustomFlowCard = ({goToNewWorkflowPage}: Props) => (
+const WorkflowCustomFlowCard = ({ goToNewWorkflowPage }: Props) => (
     <>
         <div className={css.container} onClick={goToNewWorkflowPage}>
             <div className={css.header}>

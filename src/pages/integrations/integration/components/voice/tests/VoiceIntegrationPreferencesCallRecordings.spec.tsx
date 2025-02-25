@@ -1,12 +1,14 @@
-import {VoiceMessageType} from '@gorgias/api-queries'
-import {render, RenderResult} from '@testing-library/react'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
-import {useFormContext} from 'react-hook-form'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {FormField} from 'core/forms'
-import {assumeMock} from 'utils/testing'
+import { render, RenderResult } from '@testing-library/react'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { useFormContext } from 'react-hook-form'
+
+import { VoiceMessageType } from '@gorgias/api-queries'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { FormField } from 'core/forms'
+import { assumeMock } from 'utils/testing'
 
 import VoiceIntegrationPreferencesCallRecordings from '../VoiceIntegrationPreferencesCallRecordings'
 import VoiceMessageField from '../VoiceMessageField'
@@ -21,7 +23,7 @@ const VoiceMessageFieldMock = assumeMock(VoiceMessageField)
 const watchMock = jest.fn()
 const mockUseFormContextReturnValue = {
     watch: watchMock,
-    formState: {defaultValues: {}},
+    formState: { defaultValues: {} },
 } as unknown as ReturnType<typeof useFormContext>
 
 jest.mock('react-hook-form')
@@ -35,7 +37,7 @@ describe('<VoiceIntegrationPreferencesCallRecordings />', () => {
         VoiceMessageFieldMock.mockReturnValue(<div>VoiceMessageField</div>)
         watchMock.mockReturnValue([false, false] as [boolean, boolean])
         useFormContextMock.mockReturnValue(mockUseFormContextReturnValue)
-        FormFieldMock.mockImplementation(({label, children}: any) => (
+        FormFieldMock.mockImplementation(({ label, children }: any) => (
             <div>{label ?? children}</div>
         ))
     })
@@ -47,11 +49,11 @@ describe('<VoiceIntegrationPreferencesCallRecordings />', () => {
     it('should render call recording preferences', () => {
         watchMock.mockReturnValue([true, true] as [boolean, boolean])
 
-        const {getByText, getAllByText} = renderComponent()
+        const { getByText, getAllByText } = renderComponent()
 
         expect(getByText('Call Recording')).toBeInTheDocument()
         expect(
-            getByText('Automatically record and store all customer calls.')
+            getByText('Automatically record and store all customer calls.'),
         ).toBeInTheDocument()
         expect(getByText('Inbound calls')).toBeInTheDocument()
         expect(getByText('Outbound calls')).toBeInTheDocument()
@@ -66,34 +68,34 @@ describe('<VoiceIntegrationPreferencesCallRecordings />', () => {
                 [FeatureFlagKey.CustomRecordingNotification]: false,
             })
 
-            const {queryByText} = renderComponent()
+            const { queryByText } = renderComponent()
 
             expect(
-                queryByText('Call recording notifications')
+                queryByText('Call recording notifications'),
             ).not.toBeInTheDocument()
             expect(queryByText('VoiceMessageField')).not.toBeInTheDocument()
         })
 
         it('should render recording notification settings', () => {
-            const {getByText} = renderComponent()
+            const { getByText } = renderComponent()
 
             expect(
-                getByText('Call recording notifications')
+                getByText('Call recording notifications'),
             ).toBeInTheDocument()
         })
 
         it('should disable recording notification settings when both call recording settings are disabled', () => {
-            const {getByText} = renderComponent()
+            const { getByText } = renderComponent()
 
             expect(
-                getByText('Call recording notifications')
+                getByText('Call recording notifications'),
             ).toBeInTheDocument()
             expect(FormFieldMock).toHaveBeenLastCalledWith(
                 expect.objectContaining({
                     name: 'meta.recording_notification',
                     isDisabled: true,
                 }),
-                {}
+                {},
             )
         })
     })
@@ -103,7 +105,8 @@ describe('<VoiceIntegrationPreferencesCallRecordings />', () => {
             const getValidateObj = () => {
                 const recordingNotificationFormFieldCall =
                     FormFieldMock.mock.calls.find(
-                        (call) => call[0].name === 'meta.recording_notification'
+                        (call) =>
+                            call[0].name === 'meta.recording_notification',
                     )
 
                 return (
@@ -133,7 +136,7 @@ describe('<VoiceIntegrationPreferencesCallRecordings />', () => {
                 expect(
                     validate.textToSpeech({
                         voice_message_type: VoiceMessageType.TextToSpeech,
-                    })
+                    }),
                 ).toBe('Text to speech content is required')
             })
 
@@ -145,7 +148,7 @@ describe('<VoiceIntegrationPreferencesCallRecordings />', () => {
                 expect(
                     validate.voiceRecording({
                         voice_message_type: VoiceMessageType.VoiceRecording,
-                    })
+                    }),
                 ).toBe('Voice recording is required')
             })
         })

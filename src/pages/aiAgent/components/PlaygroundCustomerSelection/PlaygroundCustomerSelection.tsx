@@ -1,14 +1,14 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {Value} from 'pages/common/forms/SelectField/types'
+import { Value } from 'pages/common/forms/SelectField/types'
 
 import {
     CustomerHttpIntegrationDataMock,
     DEFAULT_PLAYGROUND_CUSTOMER,
 } from '../../constants'
-import {PlaygroundCustomer} from '../../types'
-import {CustomerSearchDropdownSelectView} from '../CustomerSearchDropdownSelect/CustomerSearchDropdownSelectView'
+import { PlaygroundCustomer } from '../../types'
+import { CustomerSearchDropdownSelectView } from '../CustomerSearchDropdownSelect/CustomerSearchDropdownSelectView'
 
 import css from './PlaygroundCustomerSelection.less'
 
@@ -40,7 +40,7 @@ export const PlaygroundCustomerSelection = ({
     isDisabled,
 }: Props) => {
     const [senderSelectedOption, setSenderSelectedOption] = useState<string>(
-        SenderTypeValues.NEW_CUSTOMER
+        SenderTypeValues.NEW_CUSTOMER,
     )
 
     const handleSenderSelectChange = (value: Value) => {

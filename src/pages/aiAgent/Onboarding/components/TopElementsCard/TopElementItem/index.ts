@@ -1,1 +1,1 @@
-export {default} from './TopElementItem'
+export { default } from './TopElementItem'

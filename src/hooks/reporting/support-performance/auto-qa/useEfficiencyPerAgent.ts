@@ -2,28 +2,28 @@ import {
     fetchMetricPerDimension,
     useMetricPerDimension,
 } from 'hooks/reporting/useMetricPerDimension'
-import {OrderDirection} from 'models/api/types'
-import {efficiencyPerAgentQueryFactory} from 'models/reporting/queryFactories/auto-qa/efficiencyQueryFactory'
-import {StatsFilters} from 'models/stat/types'
+import { OrderDirection } from 'models/api/types'
+import { efficiencyPerAgentQueryFactory } from 'models/reporting/queryFactories/auto-qa/efficiencyQueryFactory'
+import { StatsFilters } from 'models/stat/types'
 
 export const useEfficiencyPerAgent = (
     statsFilters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
-    agentAssigneeId?: string
+    agentAssigneeId?: string,
 ) =>
     useMetricPerDimension(
         efficiencyPerAgentQueryFactory(statsFilters, timezone, sorting),
-        agentAssigneeId
+        agentAssigneeId,
     )
 
 export const fetchEfficiencyPerAgent = (
     statsFilters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
-    agentAssigneeId?: string
+    agentAssigneeId?: string,
 ) =>
     fetchMetricPerDimension(
         efficiencyPerAgentQueryFactory(statsFilters, timezone, sorting),
-        agentAssigneeId
+        agentAssigneeId,
     )

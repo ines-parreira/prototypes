@@ -1,5 +1,6 @@
-import {List, Map} from 'immutable'
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
+
+import { List, Map } from 'immutable'
 
 export const ContactFormAttachmentContainer = (props: {
     attachment: Map<any, any>
@@ -7,7 +8,7 @@ export const ContactFormAttachmentContainer = (props: {
     onClose: (event: any) => void
     onEdit: () => void
 }) => {
-    const {attachment, css, onClose, onEdit} = props
+    const { attachment, css, onClose, onEdit } = props
     const flatFields = useMemo(() => {
         const flatSteps: List<Map<any, any>> = attachment.getIn([
             'extra',
@@ -18,8 +19,8 @@ export const ContactFormAttachmentContainer = (props: {
                 (
                     (step as Map<any, any>).get('fields') as List<Map<any, any>>
                 ).map(
-                    (fields) => (fields as Map<any, any>).get('name') as string
-                )
+                    (fields) => (fields as Map<any, any>).get('name') as string,
+                ),
             )
             .reduce<
                 string[]

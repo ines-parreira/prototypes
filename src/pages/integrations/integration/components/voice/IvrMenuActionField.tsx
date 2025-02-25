@@ -1,25 +1,27 @@
+import React, { useState } from 'react'
+
 import classNames from 'classnames'
-import React, {useState} from 'react'
-import {Row, Col} from 'reactstrap'
+import { Col, Row } from 'reactstrap'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {DEFAULT_VOICE_MESSAGE} from 'models/integration/constants'
+import { DEFAULT_VOICE_MESSAGE } from 'models/integration/constants'
 import {
-    VoiceMessage,
     IvrMenuAction,
     IvrMenuActionType,
+    VoiceMessage,
 } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
-import {Drawer} from 'pages/common/components/Drawer'
+import { Drawer } from 'pages/common/components/Drawer'
 import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
-import {getSmsIntegrations} from 'state/integrations/selectors'
+import { getSmsIntegrations } from 'state/integrations/selectors'
 
-import css from './IvrMenuActionField.less'
 import IvrMenuActionSelect from './IvrMenuActionSelect'
 import IvrMenuActionSendToSMSField from './IvrMenuActionSendToSMSField'
 import IvrPhoneNumberSelectField from './IvrPhoneNumberSelectField'
 import VoiceMessageField from './VoiceMessageField'
+
+import css from './IvrMenuActionField.less'
 
 type Props = {
     value: IvrMenuAction
@@ -112,7 +114,7 @@ const IvrMenuActionField = ({
                                             voice_message: editingVoiceMessage,
                                         })
                                         setEditingVoiceMessage(
-                                            DEFAULT_VOICE_MESSAGE
+                                            DEFAULT_VOICE_MESSAGE,
                                         )
                                         setDrawerOpen(false)
                                     }}

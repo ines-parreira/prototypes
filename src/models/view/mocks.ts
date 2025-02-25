@@ -1,4 +1,4 @@
-import {OrderDirection} from 'models/api/types'
+import { OrderDirection } from 'models/api/types'
 import {
     View,
     ViewCategory,

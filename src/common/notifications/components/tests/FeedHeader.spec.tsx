@@ -1,13 +1,14 @@
-import {FilterStatus} from '@knocklabs/react'
-import {render, screen} from '@testing-library/react'
 import React from 'react'
+
+import { FilterStatus } from '@knocklabs/react'
+import { render, screen } from '@testing-library/react'
 
 import {
     logEvent,
     NotificationCenterEventTypes,
     SegmentEvent,
 } from 'common/segment'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
 import useCount from '../../hooks/useCount'
 import FeedHeader from '../FeedHeader'
@@ -25,7 +26,7 @@ jest.mock(
                     markAllAsRead: mockMarkAllAsRead,
                 },
             }),
-        }) as Record<string, unknown>
+        }) as Record<string, unknown>,
 )
 
 jest.mock('common/segment', () => ({

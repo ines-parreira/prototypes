@@ -1,14 +1,15 @@
-import React, {useRef, useState} from 'react'
+import React, { useRef, useState } from 'react'
 
 import {
     useVisualBuilderContext,
     VisualBuilderContextType,
 } from 'pages/automate/workflows/hooks/useVisualBuilder'
 
-import css from './EdgeBlock.less'
 import EdgeIconButton from './EdgeIconButton'
 import EdgeLabel from './EdgeLabel'
 import NodeMenu from './NodeMenu'
+
+import css from './EdgeBlock.less'
 
 export type VisualBuilderEdgeProps = {
     nodeId: string
@@ -97,7 +98,7 @@ export default function EdgeBlock({
     const edgeRef = useRef<HTMLDivElement>(null)
     const [menuRef, setMenuRef] = useState<HTMLElement | null>(null)
     const [isNodeMenuDropdownOpen, setIsNodeMenuDropdownOpen] = useState(false)
-    const {visualBuilderGraph} = useVisualBuilderContext()
+    const { visualBuilderGraph } = useVisualBuilderContext()
 
     return (
         <div

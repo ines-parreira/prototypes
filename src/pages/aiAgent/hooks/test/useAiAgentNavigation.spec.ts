@@ -1,10 +1,10 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {useFlags} from 'launchdarkly-react-client-sdk'
+import { renderHook } from '@testing-library/react-hooks'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {assumeMock} from 'utils/testing'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { assumeMock } from 'utils/testing'
 
-import {useAiAgentNavigation} from '../useAiAgentNavigation'
+import { useAiAgentNavigation } from '../useAiAgentNavigation'
 
 jest.mock('launchdarkly-react-client-sdk', () => ({
     useFlag: jest.fn(),
@@ -24,8 +24,8 @@ describe('useAiAgentNavigation', () => {
     })
 
     it('should return navigationItems with guidance and playground', () => {
-        const {result} = renderHook(() =>
-            useAiAgentNavigation({shopName: 'test'})
+        const { result } = renderHook(() =>
+            useAiAgentNavigation({ shopName: 'test' }),
         )
         expect(result.current.navigationItems).toEqual([
             {
@@ -56,8 +56,8 @@ describe('useAiAgentNavigation', () => {
             [FeatureFlagKey.AiAgentKnowledgeTab]: true,
         })
 
-        const {result} = renderHook(() =>
-            useAiAgentNavigation({shopName: 'test'})
+        const { result } = renderHook(() =>
+            useAiAgentNavigation({ shopName: 'test' }),
         )
 
         expect(result.current.navigationItems).toEqual(
@@ -67,7 +67,7 @@ describe('useAiAgentNavigation', () => {
                     route: '/app/automation/shopify/test/ai-agent/knowledge',
                     title: 'Knowledge',
                 },
-            ])
+            ]),
         )
     })
 
@@ -76,8 +76,8 @@ describe('useAiAgentNavigation', () => {
             [FeatureFlagKey.AiAgentOptimizeTab]: true,
         })
 
-        const {result} = renderHook(() =>
-            useAiAgentNavigation({shopName: 'test'})
+        const { result } = renderHook(() =>
+            useAiAgentNavigation({ shopName: 'test' }),
         )
 
         expect(result.current.navigationItems).toEqual(
@@ -87,7 +87,7 @@ describe('useAiAgentNavigation', () => {
                     title: 'Optimize',
                     exact: false,
                 },
-            ])
+            ]),
         )
     })
 
@@ -95,8 +95,8 @@ describe('useAiAgentNavigation', () => {
         window.USER_IMPERSONATED = true
         window.DEVELOPMENT = false
 
-        const {result} = renderHook(() =>
-            useAiAgentNavigation({shopName: 'test'})
+        const { result } = renderHook(() =>
+            useAiAgentNavigation({ shopName: 'test' }),
         )
         expect(result.current.navigationItems).toEqual([
             {
@@ -130,8 +130,8 @@ describe('useAiAgentNavigation', () => {
         window.USER_IMPERSONATED = null
         window.DEVELOPMENT = false
 
-        const {result} = renderHook(() =>
-            useAiAgentNavigation({shopName: 'test'})
+        const { result } = renderHook(() =>
+            useAiAgentNavigation({ shopName: 'test' }),
         )
         expect(result.current.navigationItems).toEqual([
             {
@@ -161,8 +161,8 @@ describe('useAiAgentNavigation', () => {
         window.USER_IMPERSONATED = null
         window.DEVELOPMENT = true
 
-        const {result} = renderHook(() =>
-            useAiAgentNavigation({shopName: 'test'})
+        const { result } = renderHook(() =>
+            useAiAgentNavigation({ shopName: 'test' }),
         )
         expect(result.current.navigationItems).toEqual(
             expect.arrayContaining([
@@ -184,7 +184,7 @@ describe('useAiAgentNavigation', () => {
                     route: '/app/automation/shopify/test/ai-agent/preview-mode',
                     title: 'Preview',
                 },
-            ])
+            ]),
         )
     })
 
@@ -192,8 +192,8 @@ describe('useAiAgentNavigation', () => {
         window.USER_IMPERSONATED = true
         window.DEVELOPMENT = true
 
-        const {result} = renderHook(() =>
-            useAiAgentNavigation({shopName: 'test'})
+        const { result } = renderHook(() =>
+            useAiAgentNavigation({ shopName: 'test' }),
         )
         expect(result.current.navigationItems).toEqual(
             expect.arrayContaining([
@@ -215,7 +215,7 @@ describe('useAiAgentNavigation', () => {
                     route: '/app/automation/shopify/test/ai-agent/preview-mode',
                     title: 'Preview',
                 },
-            ])
+            ]),
         )
     })
 
@@ -223,31 +223,31 @@ describe('useAiAgentNavigation', () => {
         window.USER_IMPERSONATED = true
         window.DEVELOPMENT = true
 
-        const {result} = renderHook(() =>
-            useAiAgentNavigation({shopName: 'test'})
+        const { result } = renderHook(() =>
+            useAiAgentNavigation({ shopName: 'test' }),
         )
         expect(result.current.routes.configuration('email')).toEqual(
-            '/app/automation/shopify/test/ai-agent/settings?section=email'
+            '/app/automation/shopify/test/ai-agent/settings?section=email',
         )
         expect(
-            result.current.routes.newGuidanceTemplateArticle('templateId')
+            result.current.routes.newGuidanceTemplateArticle('templateId'),
         ).toEqual(
-            '/app/automation/shopify/test/ai-agent/guidance/templates/templateId'
+            '/app/automation/shopify/test/ai-agent/guidance/templates/templateId',
         )
         expect(result.current.routes.editAction('configurationId')).toEqual(
-            '/app/automation/shopify/test/ai-agent/actions/edit/configurationId'
+            '/app/automation/shopify/test/ai-agent/actions/edit/configurationId',
         )
         expect(result.current.routes.optimizeIntent('intentId')).toEqual(
-            '/app/automation/shopify/test/ai-agent/optimize/intentId'
+            '/app/automation/shopify/test/ai-agent/optimize/intentId',
         )
         expect(result.current.routes.actionEvents('configurationId')).toEqual(
-            '/app/automation/shopify/test/ai-agent/actions/events/configurationId'
+            '/app/automation/shopify/test/ai-agent/actions/events/configurationId',
         )
     })
 
     it('should contain the overview page route', () => {
-        const {result} = renderHook(() =>
-            useAiAgentNavigation({shopName: 'test'})
+        const { result } = renderHook(() =>
+            useAiAgentNavigation({ shopName: 'test' }),
         )
 
         expect(result.current.routes.overview).toBe('/app/ai-agent/overview')
@@ -263,44 +263,44 @@ describe('useAiAgentNavigation', () => {
         })
 
         it('should return /knowledge/guidance path', () => {
-            const {result} = renderHook(() =>
-                useAiAgentNavigation({shopName: 'test'})
+            const { result } = renderHook(() =>
+                useAiAgentNavigation({ shopName: 'test' }),
             )
             expect(result.current.routes.guidance).toEqual(
-                '/app/ai-agent/shopify/test/knowledge/guidance'
+                '/app/ai-agent/shopify/test/knowledge/guidance',
             )
         })
 
         it('should return /knowledge/actions path', () => {
-            const {result} = renderHook(() =>
-                useAiAgentNavigation({shopName: 'test'})
+            const { result } = renderHook(() =>
+                useAiAgentNavigation({ shopName: 'test' }),
             )
             expect(result.current.routes.actions).toEqual(
-                '/app/ai-agent/shopify/test/knowledge/actions'
+                '/app/ai-agent/shopify/test/knowledge/actions',
             )
         })
 
         it('should return /settings/preview path when user is a Gorgias user', () => {
             window.USER_IMPERSONATED = true
 
-            const {result} = renderHook(() =>
-                useAiAgentNavigation({shopName: 'test'})
+            const { result } = renderHook(() =>
+                useAiAgentNavigation({ shopName: 'test' }),
             )
 
             expect(result.current.routes.previewMode).toEqual(
-                '/app/ai-agent/shopify/test/settings/preview'
+                '/app/ai-agent/shopify/test/settings/preview',
             )
         })
 
         it('should return /sales path when user is a Gorgias user', () => {
             window.USER_IMPERSONATED = true
 
-            const {result} = renderHook(() =>
-                useAiAgentNavigation({shopName: 'test'})
+            const { result } = renderHook(() =>
+                useAiAgentNavigation({ shopName: 'test' }),
             )
 
             expect(result.current.routes.sales).toEqual(
-                '/app/ai-agent/shopify/test/sales'
+                '/app/ai-agent/shopify/test/sales',
             )
         })
     })

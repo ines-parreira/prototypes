@@ -1,9 +1,10 @@
-import React, {ReactNode} from 'react'
+import React, { ReactNode } from 'react'
 
-import {SelfServiceChannelType} from 'pages/automate/common/hooks/useSelfServiceChannels'
+import { SelfServiceChannelType } from 'pages/automate/common/hooks/useSelfServiceChannels'
+
+import { ChannelConfig } from './utils'
 
 import css from '../WorkflowsPublisher.less'
-import {ChannelConfig} from './utils'
 
 const ChannelBlock = ({
     children,

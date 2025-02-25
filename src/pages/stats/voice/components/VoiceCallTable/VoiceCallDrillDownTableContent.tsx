@@ -1,20 +1,20 @@
 import React from 'react'
 
-import {useDrillDownData} from 'hooks/reporting/useDrillDownData'
-import {formatVoiceDrillDownRowData} from 'pages/stats/DrillDownFormatters'
-import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
+import { useDrillDownData } from 'hooks/reporting/useDrillDownData'
+import { formatVoiceDrillDownRowData } from 'pages/stats/DrillDownFormatters'
+import { DrillDownMetric } from 'state/ui/stats/drillDownSlice'
 
-import {getVoiceDrillDownColumns} from './utils'
+import { getVoiceDrillDownColumns } from './utils'
 import VoiceCallTableContent from './VoiceCallTableContent'
 
 type Props = {
     metricData: DrillDownMetric
 }
 
-export default function VoiceCallDrillDownTableContent({metricData}: Props) {
-    const {data, isFetching} = useDrillDownData(
+export default function VoiceCallDrillDownTableContent({ metricData }: Props) {
+    const { data, isFetching } = useDrillDownData(
         metricData,
-        formatVoiceDrillDownRowData
+        formatVoiceDrillDownRowData,
     )
 
     return (

@@ -1,12 +1,13 @@
-import moment, {Moment} from 'moment-timezone'
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
+
+import moment, { Moment } from 'moment-timezone'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {
     getBusinessHoursRangesByUserTimezone,
     getBusinessHoursSettings,
 } from 'state/currentAccount/selectors'
-import {getTimezone} from 'state/currentUser/selectors'
+import { getTimezone } from 'state/currentUser/selectors'
 
 import css from './StatCurrentDate.less'
 
@@ -22,8 +23,8 @@ export default function StatCurrentDate() {
             ?.map(
                 (range: Moment[]) =>
                     `${range[0].format('hh:mm a')} - ${range[1].format(
-                        'hh:mm a'
-                    )}`
+                        'hh:mm a',
+                    )}`,
             )
             .join(', ')
     }, [businessRanges])

@@ -1,33 +1,32 @@
-import {createSelector} from 'reselect'
+import { createSelector } from 'reselect'
 
-import {Category, NonRootCategory} from 'models/helpCenter/types'
-
+import { Category, NonRootCategory } from 'models/helpCenter/types'
 import {
     CATEGORY_TREE_MAX_LEVEL,
     HELP_CENTER_ROOT_CATEGORY_ID,
 } from 'pages/settings/helpCenter/constants'
 
-import {getArticles} from '../articles/selectors'
-import {getHelpCenterStore} from '../selectors'
-import {isNonRootCategory} from './types'
+import { getArticles } from '../articles/selectors'
+import { getHelpCenterStore } from '../selectors'
+import { isNonRootCategory } from './types'
 
 export const helpCenterCategoriesStore = createSelector(
     getHelpCenterStore,
-    (store) => store.categories
+    (store) => store.categories,
 )
 
 export const getCategoriesById = createSelector(
     helpCenterCategoriesStore,
     (store) => {
-        const {categoriesById} = store
+        const { categoriesById } = store
 
         return categoriesById
-    }
+    },
 )
 
 export const getRootCategory = createSelector(
     getCategoriesById,
-    (categoriesById) => categoriesById['0']
+    (categoriesById) => categoriesById['0'],
 )
 
 export const getCategories = createSelector(
@@ -41,14 +40,14 @@ export const getCategories = createSelector(
             }
             categoriesArray.push(category)
             category.children.forEach((categoryId) =>
-                traverseCategories(categoriesById[categoryId])
+                traverseCategories(categoriesById[categoryId]),
             )
         }
 
         traverseCategories(rootCategory)
 
         return categoriesArray
-    }
+    },
 )
 
 export const getNonRootCategoriesById = createSelector(
@@ -61,7 +60,7 @@ export const getNonRootCategoriesById = createSelector(
             }
         })
         return categoriesById
-    }
+    },
 )
 
 export const getParentCategories = createSelector(
@@ -84,12 +83,12 @@ export const getParentCategories = createSelector(
         traverseCategories(rootCategory, 0)
 
         return categoriesArray
-    }
+    },
 )
 
 export const getCategoryById = (id: number | undefined) =>
     createSelector(getCategoriesById, (categories) =>
-        id !== undefined ? categories[id.toString()] : undefined
+        id !== undefined ? categories[id.toString()] : undefined,
     )
 
 export const getCategoriesWithArticles = createSelector(
@@ -101,14 +100,14 @@ export const getCategoriesWithArticles = createSelector(
             const articlesInCategory = articles.filter(
                 (article) =>
                     article.translation.category_id &&
-                    article.translation.category_id === category.id
+                    article.translation.category_id === category.id,
             )
 
             return {
                 ...category,
                 articles: articlesInCategory,
             }
-        })
+        }),
 )
 
 export const hasNestedCategories = createSelector(
@@ -124,5 +123,5 @@ export const hasNestedCategories = createSelector(
             }
         }
         return false
-    }
+    },
 )

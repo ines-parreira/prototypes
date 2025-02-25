@@ -1,16 +1,16 @@
 import moment from 'moment'
 
-import {OrderDirection} from 'models/api/types'
-import {TicketDimension} from 'models/reporting/cubes/TicketCube'
-import {TicketSatisfactionSurveyDimension} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
-import {ReportingFilterOperator} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import { OrderDirection } from 'models/api/types'
+import { TicketDimension } from 'models/reporting/cubes/TicketCube'
+import { TicketSatisfactionSurveyDimension } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
+import { ReportingFilterOperator } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
 import {
     statsFiltersToReportingFilters,
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
 
-import {commentHighlightsQueryFactory} from '../commentHighlightsQueryFactory'
+import { commentHighlightsQueryFactory } from '../commentHighlightsQueryFactory'
 
 describe('commentHighlightsQueryFactory', () => {
     const periodStart = moment()
@@ -27,7 +27,7 @@ describe('commentHighlightsQueryFactory', () => {
         const query = commentHighlightsQueryFactory(
             statsFilters,
             timezone,
-            surveyScores
+            surveyScores,
         )
 
         expect(query).toEqual({
@@ -44,7 +44,7 @@ describe('commentHighlightsQueryFactory', () => {
             filters: [
                 ...statsFiltersToReportingFilters(
                     TicketStatsFiltersMembers,
-                    statsFilters
+                    statsFilters,
                 ),
                 {
                     member: TicketDimension.SurveyScore,

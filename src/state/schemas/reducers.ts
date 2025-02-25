@@ -1,11 +1,11 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
-import {SchemasState} from './types'
+import { SchemasState } from './types'
 
 const initialState: SchemasState = fromJS({})
 
 export default function reducer(
-    state: SchemasState = initialState
+    state: SchemasState = initialState,
 ): SchemasState {
     return state
 }

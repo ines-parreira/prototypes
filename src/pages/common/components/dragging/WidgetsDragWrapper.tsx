@@ -1,11 +1,16 @@
-import React, {ReactNode} from 'react'
-import {GroupOptions} from 'sortablejs'
+import React, { ReactNode } from 'react'
+
+import { GroupOptions } from 'sortablejs'
 
 import useAppDispatch from 'hooks/useAppDispatch'
+import {
+    cancelDrag,
+    drag,
+    drop,
+    stopWidgetEdition,
+} from 'state/widgets/actions'
 
-import {stopWidgetEdition, drag, cancelDrag, drop} from 'state/widgets/actions'
-
-import ReactSortable, {isSortableEvent} from './ReactSortable'
+import ReactSortable, { isSortableEvent } from './ReactSortable'
 
 type Props = {
     children: ReactNode
@@ -58,8 +63,8 @@ function DragWrapper({
                                 templatePath,
                                 key,
                                 evt.newIndex,
-                                evt.oldIndex
-                            )
+                                evt.oldIndex,
+                            ),
                         )
                     }
                 }

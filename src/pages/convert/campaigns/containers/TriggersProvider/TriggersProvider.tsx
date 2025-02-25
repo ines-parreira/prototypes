@@ -1,11 +1,10 @@
-import React, {ReactNode, useMemo, useState} from 'react'
+import React, { ReactNode, useMemo, useState } from 'react'
 
 import {
     DeleteTriggerFn,
     UpdateTriggerFn,
 } from 'pages/convert/campaigns/types/AdvancedTriggerBaseProps'
-
-import {CampaignTrigger} from 'pages/convert/campaigns/types/CampaignTrigger'
+import { CampaignTrigger } from 'pages/convert/campaigns/types/CampaignTrigger'
 
 import TriggersContext from './context'
 
@@ -37,7 +36,7 @@ export const TriggersProvider = ({
         const trigger = triggers[triggerId]
         if (trigger && trigger.id in triggersValidation) {
             setTriggersValidation((prevState) => {
-                const {[trigger.id]: __, ...rest} = prevState
+                const { [trigger.id]: __, ...rest } = prevState
                 return rest
             })
         }
@@ -46,7 +45,7 @@ export const TriggersProvider = ({
 
     const areTriggersValid = useMemo<boolean>(() => {
         return Object.values(triggersValidation).every((value) =>
-            value === undefined ? true : Boolean(value)
+            value === undefined ? true : Boolean(value),
         )
     }, [triggersValidation])
 

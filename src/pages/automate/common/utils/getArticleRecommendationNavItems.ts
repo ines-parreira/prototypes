@@ -1,6 +1,6 @@
 export const getArticleRecommendationNavItems = (
     shopType: string,
-    shopName: string
+    shopName: string,
 ) => {
     const baseUrl = `/app/automation/${shopType}/${shopName}/article-recommendation`
     return [

@@ -1,27 +1,27 @@
 import React from 'react'
 
-import {ContentType} from 'models/api/types'
+import { ContentType } from 'models/api/types'
 import JsonField from 'pages/common/forms/JsonField'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 
-import {Action, OnChangeAction} from '../../../types'
+import { Action, OnChangeAction } from '../../../types'
+import Parameters from './Parameters'
 
 import css from './Body.less'
-import Parameters from './Parameters'
 
 type Props = {
     body: Action['body']
     onChange: OnChangeAction
 }
 
-const Body = ({body, onChange}: Props) => (
+const Body = ({ body, onChange }: Props) => (
     <>
         <div className={css.formParamSection}>Body</div>
         <RadioFieldSet
             className="mb-4"
             options={[
-                {value: ContentType.Json, label: ContentType.Json},
-                {value: ContentType.Form, label: ContentType.Form},
+                { value: ContentType.Json, label: ContentType.Json },
+                { value: ContentType.Form, label: ContentType.Form },
             ]}
             selectedValue={body.contentType}
             onChange={(value) => onChange('body.contentType', value)}

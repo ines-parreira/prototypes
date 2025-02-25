@@ -1,8 +1,8 @@
-import {JobType} from '@gorgias/api-queries'
+import React, { MouseEvent, useMemo, useRef, useState } from 'react'
+
 import classnames from 'classnames'
-import {fromJS, List, Map} from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 import moment from 'moment'
-import React, {MouseEvent, useMemo, useRef, useState} from 'react'
 import {
     ButtonDropdown,
     DropdownItem,
@@ -14,38 +14,38 @@ import {
     UncontrolledButtonDropdown,
 } from 'reactstrap'
 
-import {useAppNode} from 'appNode'
-import {SegmentEvent, logEvent} from 'common/segment'
-import {UserRole} from 'config/types/user'
+import { JobType } from '@gorgias/api-queries'
+
+import { useAppNode } from 'appNode'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { UserRole } from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useShortcuts from 'hooks/useShortcuts'
-
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import Group from 'pages/common/components/layout/Group'
 import TextInput from 'pages/common/forms/input/TextInput'
-import {AgentLabel, TeamLabel} from 'pages/common/utils/labels'
-
+import { AgentLabel, TeamLabel } from 'pages/common/utils/labels'
 import css from 'pages/tickets/list/components/TicketListActions.less'
-import {getHumanAgents} from 'state/agents/selectors'
-import {getTeams} from 'state/teams/selectors'
-import {createJob as createJobTicket} from 'state/tickets/actions'
-import {getTickets} from 'state/tickets/selectors'
+import { getHumanAgents } from 'state/agents/selectors'
+import { getTeams } from 'state/teams/selectors'
+import { createJob as createJobTicket } from 'state/tickets/actions'
+import { getTickets } from 'state/tickets/selectors'
 import {
     createJob as createJobView,
     updateSelectedItemsIds,
 } from 'state/views/actions'
 import {
     areAllActiveViewItemsSelected,
-    areFiltersValid as getAreFiltersValid,
     getActiveView,
+    areFiltersValid as getAreFiltersValid,
     isActiveViewTrashView as getIsActiveViewTrashView,
     getViewCount,
 } from 'state/views/selectors'
-import {TagDropdownMenu} from 'tags'
-import {hasRole} from 'utils'
+import { TagDropdownMenu } from 'tags'
+import { hasRole } from 'utils'
 
 export const SHORTCUT_MANAGER_COMPONENT_NAME = 'TicketListActions'
 
@@ -80,7 +80,7 @@ export const TicketListActions = ({
     const tickets = useAppSelector(getTickets)
 
     const [openDropdown, setOpenDropdown] = useState<ActionDropdown | null>(
-        null
+        null,
     )
     const [teamsSearchQuery, setTeamsSearchQuery] = useState('')
     const [agentsSearchQuery, setAgentsSearchQuery] = useState('')
@@ -92,7 +92,7 @@ export const TicketListActions = ({
     const appNode = useAppNode()
     const hasAgentRole = useMemo(
         () => hasRole(currentUser, UserRole.Agent),
-        [currentUser]
+        [currentUser],
     )
 
     const hasSelectedItems = !selectedItemsIds.isEmpty()
@@ -102,7 +102,7 @@ export const TicketListActions = ({
         return teams.filter((team) =>
             (team!.get('name') as string)
                 .toLowerCase()
-                .includes(teamsSearchQuery.toLowerCase())
+                .includes(teamsSearchQuery.toLowerCase()),
         )
     }, [teams, teamsSearchQuery])
 
@@ -118,14 +118,14 @@ export const TicketListActions = ({
 
     const selectedCount = useMemo(
         () => (allViewItemsSelected ? viewCount : selectedItemsIds.size),
-        [allViewItemsSelected, viewCount, selectedItemsIds.size]
+        [allViewItemsSelected, viewCount, selectedItemsIds.size],
     )
 
     const selectedTickets = useMemo<List<Map<any, any>>>(() => {
         return selectedItemsIds
             .map((id) => {
                 return tickets.find(
-                    (ticket: Map<any, any>) => ticket.get('id') === id
+                    (ticket: Map<any, any>) => ticket.get('id') === id,
                 ) as Map<any, any> | undefined
             })
             .filter((ticket) => !!ticket) as List<Map<any, any>>
@@ -135,7 +135,7 @@ export const TicketListActions = ({
         return (
             allViewItemsSelected ||
             !!selectedTickets.find(
-                (ticket) => ticket!.get('is_unread') as boolean
+                (ticket) => ticket!.get('is_unread') as boolean,
             )
         )
     }, [selectedTickets, allViewItemsSelected])
@@ -176,7 +176,7 @@ export const TicketListActions = ({
 
     const createJob = async (
         jobType: JobType,
-        jobParams: Record<string, unknown>
+        jobParams: Record<string, unknown>,
     ) => {
         setIsLaunchingJob(true)
         try {
@@ -184,7 +184,7 @@ export const TicketListActions = ({
                 await dispatch(createJobView(activeView, jobType, jobParams))
             } else {
                 await dispatch(
-                    createJobTicket(selectedItemsIds, jobType, jobParams)
+                    createJobTicket(selectedItemsIds, jobType, jobParams),
                 )
             }
 
@@ -203,7 +203,7 @@ export const TicketListActions = ({
             | 'is_unread'
             | 'status'
             | 'tags',
-        value: any
+        value: any,
     ) => {
         if (!hasSelectedItems) {
             return
@@ -211,9 +211,9 @@ export const TicketListActions = ({
         logEvent(SegmentEvent.BulkAction, {
             type: key,
             location: 'full-width-mode',
-            ...('is_unread' === key || 'status' === key ? {value} : {}),
+            ...('is_unread' === key || 'status' === key ? { value } : {}),
         })
-        void createJob(JobType.UpdateTicket, {updates: {[key]: value}})
+        void createJob(JobType.UpdateTicket, { updates: { [key]: value } })
     }
 
     const bulkExport = () => {
@@ -234,7 +234,7 @@ export const TicketListActions = ({
         })
         toggleTrashConfirmation(false)
         void createJob(JobType.UpdateTicket, {
-            updates: {trashed_datetime: moment.utc()},
+            updates: { trashed_datetime: moment.utc() },
         })
     }
 
@@ -244,7 +244,7 @@ export const TicketListActions = ({
             location: 'full-width-mode',
         })
         void createJob(JobType.UpdateTicket, {
-            updates: {trashed_datetime: null},
+            updates: { trashed_datetime: null },
         })
     }
 
@@ -459,7 +459,7 @@ export const TicketListActions = ({
                         <span
                             className={classnames(
                                 'text-warning',
-                                css['clear-assignee']
+                                css['clear-assignee'],
                             )}
                         >
                             Clear assignee
@@ -513,7 +513,7 @@ export const TicketListActions = ({
                                     onClick={() => {
                                         bulkUpdate(
                                             'assignee_team_id',
-                                            team!.get('id')
+                                            team!.get('id'),
                                         )
                                     }}
                                 >
@@ -538,7 +538,7 @@ export const TicketListActions = ({
                         <span
                             className={classnames(
                                 'text-warning',
-                                css['clear-assignee']
+                                css['clear-assignee'],
                             )}
                         >
                             Clear assignee

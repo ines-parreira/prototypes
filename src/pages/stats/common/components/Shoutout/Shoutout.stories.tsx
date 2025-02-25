@@ -1,15 +1,15 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {personNames} from 'fixtures/personNames'
+import { Meta, Story } from '@storybook/react'
 
+import { personNames } from 'fixtures/personNames'
 import Shoutout from 'pages/stats/common/components/Shoutout/Shoutout'
 
 const storyConfig: Meta = {
     title: 'Stats/Shoutout',
     component: Shoutout,
     parameters: {
-        chromatic: {disableSnapshot: false},
+        chromatic: { disableSnapshot: false },
     },
     argTypes: {
         multiplePersonsLabel: {
@@ -35,8 +35,8 @@ const storyConfig: Meta = {
     },
 }
 
-const Template: Story<ComponentProps<typeof Shoutout>> = ({...props}) => (
-    <div style={{maxWidth: 280, margin: '0 auto'}}>
+const Template: Story<ComponentProps<typeof Shoutout>> = ({ ...props }) => (
+    <div style={{ maxWidth: 280, margin: '0 auto' }}>
         <Shoutout {...props} />
     </div>
 )
@@ -80,5 +80,5 @@ NoData.args = {
 export default storyConfig
 
 function getPersonList(max = 15) {
-    return personNames.map((name) => ({name})).slice(0, max)
+    return personNames.map((name) => ({ name })).slice(0, max)
 }

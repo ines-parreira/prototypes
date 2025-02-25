@@ -1,13 +1,13 @@
-import {render, screen} from '@testing-library/react'
+import React, { ComponentProps } from 'react'
 
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import { render, screen } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {TicketChannel} from 'business/types/ticket'
-import {agents} from 'fixtures/agents'
-import {integrationsState} from 'fixtures/integrations'
+import { TicketChannel } from 'business/types/ticket'
+import { agents } from 'fixtures/agents'
+import { integrationsState } from 'fixtures/integrations'
 import {
     useClosedTicketsTrend,
     useCustomerSatisfactionTrend,
@@ -16,33 +16,32 @@ import {
     useMessagesPerTicketTrend,
     useMessagesSentTrend,
     useOpenTicketsTrend,
+    useTicketHandleTimeTrend,
     useTicketsCreatedTrend,
     useTicketsRepliedTrend,
-    useTicketHandleTimeTrend,
 } from 'hooks/reporting/metricTrends'
-import {useAverageScoreTrend} from 'hooks/reporting/quality-management/satisfaction/useAverageScoreTrend'
-import {useOneTouchTicketsPercentageMetricTrend} from 'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricTrend'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-import {ReportingGranularity} from 'models/reporting/types'
-import {LegacyStatsFilters} from 'models/stat/types'
+import { useAverageScoreTrend } from 'hooks/reporting/quality-management/satisfaction/useAverageScoreTrend'
+import { useOneTouchTicketsPercentageMetricTrend } from 'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricTrend'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { MetricTrend } from 'hooks/reporting/useMetricTrend'
+import { ReportingGranularity } from 'models/reporting/types'
+import { LegacyStatsFilters } from 'models/stat/types'
 import TrendBadge, {
     DEFAULT_BADGE_TEXT,
 } from 'pages/stats/common/components/TrendBadge'
-import {NOT_AVAILABLE_PLACEHOLDER} from 'pages/stats/common/utils'
-import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
-import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
-import {AverageScoreTrend} from 'pages/stats/quality-management/satisfaction/AverageSurveyScoreDonutChart/AverageScoreTrend'
+import { NOT_AVAILABLE_PLACEHOLDER } from 'pages/stats/common/utils'
+import { DEFAULT_TIMEZONE } from 'pages/stats/convert/constants/components'
+import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
+import { AverageScoreTrend } from 'pages/stats/quality-management/satisfaction/AverageSurveyScoreDonutChart/AverageScoreTrend'
 import {
     OverviewMetric,
     OverviewMetricConfig,
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
-
-import {getBadgeTooltipForPreviousPeriod} from 'pages/stats/utils'
-import {fromLegacyStatsFilters} from 'state/stats/utils'
-import {RootState, StoreDispatch} from 'state/types'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
-import {assumeMock} from 'utils/testing'
+import { getBadgeTooltipForPreviousPeriod } from 'pages/stats/utils'
+import { fromLegacyStatsFilters } from 'state/stats/utils'
+import { RootState, StoreDispatch } from 'state/types'
+import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('pages/stats/DrillDownModal.tsx', () => ({
     DrillDownModal: () => null,
@@ -60,20 +59,20 @@ const trendBadgeMock = assumeMock(TrendBadge)
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 jest.mock('hooks/reporting/metricTrends')
 jest.mock(
-    'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricTrend'
+    'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricTrend',
 )
 jest.mock(
-    'hooks/reporting/quality-management/satisfaction/useAverageScoreTrend'
+    'hooks/reporting/quality-management/satisfaction/useAverageScoreTrend',
 )
 
 const useCustomerSatisfactionTrendMock = assumeMock(
-    useCustomerSatisfactionTrend
+    useCustomerSatisfactionTrend,
 )
 const useMedianFirstResponseTimeTrendMock = assumeMock(
-    useMedianFirstResponseTimeTrend
+    useMedianFirstResponseTimeTrend,
 )
 const useMedianResolutionTimeTrendMock = assumeMock(
-    useMedianResolutionTimeTrend
+    useMedianResolutionTimeTrend,
 )
 const useMessagesPerTicketTrendMock = assumeMock(useMessagesPerTicketTrend)
 const useOpenTicketsTrendMock = assumeMock(useOpenTicketsTrend)
@@ -83,7 +82,7 @@ const useTicketsRepliedTrendMock = assumeMock(useTicketsRepliedTrend)
 const useMessagesSentTrendMock = assumeMock(useMessagesSentTrend)
 const useTicketHandleTimeTrendMock = assumeMock(useTicketHandleTimeTrend)
 const useOneTouchTicketTrendMock = assumeMock(
-    useOneTouchTicketsPercentageMetricTrend
+    useOneTouchTicketsPercentageMetricTrend,
 )
 const useAverageScoreTrendMock = assumeMock(useAverageScoreTrend)
 jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
@@ -106,7 +105,7 @@ describe('<AverageScoreTrend />', () => {
             filters: fromLegacyStatsFilters(defaultStatsFilters),
         },
         ui: {
-            stats: {filters: uiStatsInitialState},
+            stats: { filters: uiStatsInitialState },
         },
     } as RootState
     const value = 456
@@ -187,16 +186,16 @@ describe('<AverageScoreTrend />', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         useCustomerSatisfactionTrendMock.mockReturnValue(
-            customerSatisfactionMetricTrend
+            customerSatisfactionMetricTrend,
         )
         useMedianFirstResponseTimeTrendMock.mockReturnValue(
-            medianFirstResponseTimeMetricTrend
+            medianFirstResponseTimeMetricTrend,
         )
         useMedianResolutionTimeTrendMock.mockReturnValue(
-            medianResolutionTimeMetricTrend
+            medianResolutionTimeMetricTrend,
         )
         useMessagesPerTicketTrendMock.mockReturnValue(
-            messagesPerTicketMetricTrend
+            messagesPerTicketMetricTrend,
         )
         useOpenTicketsTrendMock.mockReturnValue(openTicketsMetricTrend)
         useClosedTicketsTrendMock.mockReturnValue(closedTicketsMetricTrend)
@@ -225,7 +224,7 @@ describe('<AverageScoreTrend />', () => {
                         {...OverviewMetricConfig[overviewMetric]}
                         drillDownMetric={overviewMetric}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(trendBadgeMock.mock.calls).toContainEqual(
@@ -235,7 +234,7 @@ describe('<AverageScoreTrend />', () => {
                             OverviewMetricConfig[overviewMetric].interpretAs,
                         tooltipData: {
                             period: getBadgeTooltipForPreviousPeriod(
-                                defaultStatsFilters.period
+                                defaultStatsFilters.period,
                             ),
                         },
                         value: defaultMetricTrend?.data?.value,
@@ -244,15 +243,15 @@ describe('<AverageScoreTrend />', () => {
                         metricFormat:
                             OverviewMetricConfig[overviewMetric].metricFormat,
                     }),
-                ])
+                ]),
             )
-        }
+        },
     )
 
     it('should render not available placeholder and default badge text if no data available', () => {
         const metric = OverviewMetric.CustomerSatisfaction
         useCustomerSatisfactionTrendMock.mockReturnValue({
-            data: {value: null, prevValue: null},
+            data: { value: null, prevValue: null },
             isFetching: false,
             isError: false,
         })
@@ -263,13 +262,13 @@ describe('<AverageScoreTrend />', () => {
                     {...OverviewMetricConfig[metric]}
                     drillDownMetric={metric}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(
             screen.getByText(
-                `${NOT_AVAILABLE_PLACEHOLDER}${DEFAULT_BADGE_TEXT}`
-            )
+                `${NOT_AVAILABLE_PLACEHOLDER}${DEFAULT_BADGE_TEXT}`,
+            ),
         ).toBeInTheDocument()
     })
 
@@ -282,7 +281,7 @@ describe('<AverageScoreTrend />', () => {
         })
         const metric = OverviewMetric.CustomerSatisfaction
         const useTrendSpy = jest.fn().mockReturnValue({
-            data: {value: null, prevValue: null},
+            data: { value: null, prevValue: null },
             isFetching: false,
             isError: false,
         })
@@ -294,12 +293,12 @@ describe('<AverageScoreTrend />', () => {
                     useTrend={useTrendSpy}
                     drillDownMetric={metric}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(useTrendSpy).toHaveBeenCalledWith(
             defaultStatsFilters,
-            DEFAULT_TIMEZONE
+            DEFAULT_TIMEZONE,
         )
     })
 
@@ -312,7 +311,7 @@ describe('<AverageScoreTrend />', () => {
         })
         const metric = OverviewMetric.CustomerSatisfaction
         const useTrendSpy = jest.fn().mockReturnValue({
-            data: {value: null, prevValue: null},
+            data: { value: null, prevValue: null },
             isFetching: false,
             isError: false,
         })
@@ -324,28 +323,28 @@ describe('<AverageScoreTrend />', () => {
                     useTrend={useTrendSpy}
                     drillDownMetric={metric}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(useTrendSpy).toHaveBeenCalledWith(
             fromLegacyStatsFilters(defaultStatsFilters),
-            DEFAULT_TIMEZONE
+            DEFAULT_TIMEZONE,
         )
     })
 
     it('should render customer experience section with a badge and with custom class name', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <AverageScoreTrend
                     className="averageScoreMetric"
                     useTrend={useAverageScoreTrend}
                     interpretAs={'more-is-better'}
                 />
-            </Provider>
+            </Provider>,
         )
 
         const averageScoreMetric = container.querySelector(
-            '.averageScoreMetric'
+            '.averageScoreMetric',
         )
         expect(averageScoreMetric).toBeInTheDocument()
         expect(averageScoreMetric).toHaveTextContent('456')
@@ -355,14 +354,14 @@ describe('<AverageScoreTrend />', () => {
                     interpretAs: 'more-is-better',
                     tooltipData: {
                         period: getBadgeTooltipForPreviousPeriod(
-                            defaultStatsFilters.period
+                            defaultStatsFilters.period,
                         ),
                     },
                     value: defaultMetricTrend?.data?.value,
                     prevValue: defaultMetricTrend.data?.prevValue,
                     isLoading: !defaultMetricTrend?.data,
                 }),
-            ])
+            ]),
         )
     })
 })

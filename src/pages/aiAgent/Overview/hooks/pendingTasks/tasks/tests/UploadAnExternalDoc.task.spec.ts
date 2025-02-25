@@ -1,6 +1,6 @@
-import {FileIngestionDataFixture} from '../../tests/FileIngestionData.fixture'
-import {UploadAnExternalDocTask} from '../UploadAnExternalDoc.task'
-import {buildRuleEngineData, buildRuleEngineRoutes} from './utils'
+import { FileIngestionDataFixture } from '../../tests/FileIngestionData.fixture'
+import { UploadAnExternalDocTask } from '../UploadAnExternalDoc.task'
+import { buildRuleEngineData, buildRuleEngineRoutes } from './utils'
 
 describe('UploadAnExternalDoc', () => {
     it('should display the task if no file ingested', () => {
@@ -9,8 +9,8 @@ describe('UploadAnExternalDoc', () => {
             .build()
 
         const task = new UploadAnExternalDocTask(
-            buildRuleEngineData({fileIngestion}),
-            buildRuleEngineRoutes()
+            buildRuleEngineData({ fileIngestion }),
+            buildRuleEngineRoutes(),
         )
         expect(task.display).toBe(true)
     })
@@ -44,12 +44,12 @@ describe('UploadAnExternalDoc', () => {
         },
     ])(
         'should not display the task if $type file exists',
-        ({fileIngestion}) => {
+        ({ fileIngestion }) => {
             const task = new UploadAnExternalDocTask(
-                buildRuleEngineData({fileIngestion}),
-                buildRuleEngineRoutes()
+                buildRuleEngineData({ fileIngestion }),
+                buildRuleEngineRoutes(),
             )
             expect(task.display).toBe(false)
-        }
+        },
     )
 })

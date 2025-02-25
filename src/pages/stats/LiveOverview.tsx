@@ -1,5 +1,6 @@
+import React, { useMemo } from 'react'
+
 import moment from 'moment'
-import React, {useMemo} from 'react'
 
 import {
     LIVE_OVERVIEW_METRICS,
@@ -8,37 +9,37 @@ import {
     SUPPORT_VOLUME_PER_HOUR,
     USERS_STATUSES,
 } from 'config/stats'
-
 import useStatResource from 'hooks/reporting/useStatResource'
 import useAppSelector from 'hooks/useAppSelector'
 import {
-    OneDimensionalChart,
     LegacyStatsFilters,
+    OneDimensionalChart,
     TwoDimensionalChart,
 } from 'models/stat/types'
 import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
-import {LiveOverviewFilters} from 'pages/stats/LiveOverviewFilters'
-import {AccountFeature} from 'state/currentAccount/types'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
+import { LiveOverviewFilters } from 'pages/stats/LiveOverviewFilters'
+import { AccountFeature } from 'state/currentAccount/types'
+import { getCleanStatsFiltersWithTimezone } from 'state/ui/stats/selectors'
 
 import MultiResourceKeyMetricStat from './common/components/charts/KeyMetricStat/MultiResourceKeyMetricStat'
 import LineStat from './common/components/charts/LineStat'
 import StatCurrentDate from './common/components/StatCurrentDate'
 import KeyMetricStatWrapper from './KeyMetricStatWrapper'
-import css from './LiveOverview.less'
 import StatsPage from './StatsPage'
 import StatWrapper from './StatWrapper'
+
+import css from './LiveOverview.less'
 
 const LIVE_OVERVIEW_STAT_NAME = 'live-overview'
 
 function LiveOverview() {
-    const {cleanStatsFilters, userTimezone} = useAppSelector(
-        getCleanStatsFiltersWithTimezone
+    const { cleanStatsFilters, userTimezone } = useAppSelector(
+        getCleanStatsFiltersWithTimezone,
     )
 
     const pageStatsFilters = useMemo<LegacyStatsFilters>(() => {
         const currentDay = userTimezone ? moment().tz(userTimezone) : moment()
-        const {channels, agents} = cleanStatsFilters
+        const { channels, agents } = cleanStatsFilters
         return {
             channels,
             agents,
@@ -134,7 +135,7 @@ function LiveOverview() {
                                     meta={stat.get('meta')}
                                     legend={stat.getIn(['data', 'legend'])}
                                     config={statsConfig.get(
-                                        SUPPORT_VOLUME_PER_HOUR
+                                        SUPPORT_VOLUME_PER_HOUR,
                                     )}
                                 />
                             )
@@ -147,5 +148,5 @@ function LiveOverview() {
 }
 
 export default withFeaturePaywall(AccountFeature.OverviewLiveStatistics)(
-    LiveOverview
+    LiveOverview,
 )

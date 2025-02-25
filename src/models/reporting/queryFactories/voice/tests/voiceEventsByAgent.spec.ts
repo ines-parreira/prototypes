@@ -1,15 +1,15 @@
 import moment from 'moment'
 
-import {TicketMember} from 'models/reporting/cubes/TicketCube'
+import { TicketMember } from 'models/reporting/cubes/TicketCube'
 import {
+    VoiceEventsByAgentDimension,
     VoiceEventsByAgentMeasure,
     VoiceEventsByAgentMember,
     VoiceEventsByAgentSegment,
-    VoiceEventsByAgentDimension,
 } from 'models/reporting/cubes/VoiceEventsByAgent'
-import {ReportingFilterOperator} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
-import {formatReportingQueryDate} from 'utils/reporting'
+import { ReportingFilterOperator } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
+import { formatReportingQueryDate } from 'utils/reporting'
 
 import {
     declinedVoiceCallsCountPerAgentQueryFactory,
@@ -29,7 +29,7 @@ describe('voice events by agent factories', () => {
     it('declinedVoiceCallsCountPerAgentQueryFactory should create a query', () => {
         const query = declinedVoiceCallsCountPerAgentQueryFactory(
             statsFilters,
-            'UTC'
+            'UTC',
         )
 
         expect(query).toEqual({
@@ -116,8 +116,8 @@ describe('voice events by agent factories', () => {
                         operator: ReportingFilterOperator.BeforeDate,
                         values: [periodEnd],
                     },
-                ])
+                ]),
             )
-        }
+        },
     )
 })

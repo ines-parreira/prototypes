@@ -1,10 +1,11 @@
-import classnames from 'classnames'
 import React from 'react'
 
+import classnames from 'classnames'
+
 import academy from 'assets/img/academy.png'
-import {logEvent, SegmentEvent} from 'common/segment'
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import css from './CourseCard.less'
 

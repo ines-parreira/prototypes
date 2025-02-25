@@ -1,8 +1,8 @@
-import React, {ReactNode, ComponentType, Component} from 'react'
+import React, { Component, ComponentType, ReactNode } from 'react'
 
 import createToolbarPlugin from '../../draftjs/plugins/toolbar/index'
-import {ActionName} from '../../draftjs/plugins/toolbar/types'
-import {Plugin} from '../../draftjs/plugins/types'
+import { ActionName } from '../../draftjs/plugins/toolbar/types'
+import { Plugin } from '../../draftjs/plugins/types'
 
 export type RequiredProps = {
     displayedActions?: ActionName[]
@@ -18,7 +18,7 @@ type State = {
 
 export type InjectedProps = {
     createToolbarPlugin: (
-        imageDecorator?: (decorator: ReactNode) => ReactNode
+        imageDecorator?: (decorator: ReactNode) => ReactNode,
     ) => Plugin
     onLinkUrlChange: (url: string) => void
     onLinkTextChange: (text: string) => void
@@ -28,7 +28,7 @@ export type InjectedProps = {
 } & State
 
 export default function provideToolbarPlugin<Props extends RequiredProps>(
-    WrappedComponent: ComponentType<Props & InjectedProps>
+    WrappedComponent: ComponentType<Props & InjectedProps>,
 ): ComponentType<Props> {
     class Wrapper extends Component<Props, State> {
         state: State = {
@@ -39,7 +39,7 @@ export default function provideToolbarPlugin<Props extends RequiredProps>(
         }
 
         _createToolbarPlugin = (
-            imageDecorator?: (decorator: ReactNode) => ReactNode
+            imageDecorator?: (decorator: ReactNode) => ReactNode,
         ) =>
             createToolbarPlugin({
                 onLinkEdit: this._onToolbarPluginLinkEdit,
@@ -48,15 +48,15 @@ export default function provideToolbarPlugin<Props extends RequiredProps>(
                 imageDecorator,
             })
 
-        _onLinkTextChange = (linkText: string) => this.setState({linkText})
+        _onLinkTextChange = (linkText: string) => this.setState({ linkText })
 
-        _onLinkUrlChange = (linkUrl: string) => this.setState({linkUrl})
+        _onLinkUrlChange = (linkUrl: string) => this.setState({ linkUrl })
 
         _onLinkTargetChange = (linkTarget: string) =>
-            this.setState({linkTarget})
+            this.setState({ linkTarget })
 
         _onLinkOpen = () => {
-            this.setState({linkIsOpen: true})
+            this.setState({ linkIsOpen: true })
         }
 
         _onLinkClose = () => {
@@ -73,7 +73,7 @@ export default function provideToolbarPlugin<Props extends RequiredProps>(
             entityKey: string,
             text: string,
             url: string,
-            target: string
+            target: string,
         ) => {
             this.setState({
                 linkEntityKey: entityKey,

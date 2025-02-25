@@ -1,9 +1,9 @@
-import {Dispatch, SetStateAction, useEffect} from 'react'
+import { Dispatch, SetStateAction, useEffect } from 'react'
 
-import {UserRole} from 'config/types/user'
-import {handleError} from 'hooks/agents/errorHandler'
-import {useGetAgent} from 'models/agents/queries'
-import {StoreDispatch} from 'state/types'
+import { UserRole } from 'config/types/user'
+import { handleError } from 'hooks/agents/errorHandler'
+import { useGetAgent } from 'models/agents/queries'
+import { StoreDispatch } from 'state/types'
 
 export const useGetAgentWithEffects = ({
     agentId,
@@ -15,7 +15,7 @@ export const useGetAgentWithEffects = ({
     agentId: number
     isEdit: boolean
     setAgentState: Dispatch<
-        SetStateAction<{name: string; email: string; role: UserRole}>
+        SetStateAction<{ name: string; email: string; role: UserRole }>
     >
     set2FA: Dispatch<SetStateAction<boolean | undefined>>
     dispatch: StoreDispatch
@@ -33,7 +33,7 @@ export const useGetAgentWithEffects = ({
             handleError(
                 error,
                 `Failed to fetch agent with id ${agentId}`,
-                dispatch
+                dispatch,
             )
         } else {
             setAgentState({
@@ -44,10 +44,10 @@ export const useGetAgentWithEffects = ({
             // the 2FA modal does not reset agent queries so local state
             // needs to have priority over the query 2FA value
             set2FA((has2FA) =>
-                has2FA === undefined ? agent?.has_2fa_enabled : has2FA
+                has2FA === undefined ? agent?.has_2fa_enabled : has2FA,
             )
         }
     }, [agent, error, agentId, setAgentState, set2FA, dispatch])
 
-    return {rawData: agent, isLoading}
+    return { rawData: agent, isLoading }
 }

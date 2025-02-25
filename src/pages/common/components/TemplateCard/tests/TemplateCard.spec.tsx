@@ -1,5 +1,6 @@
-import {render} from '@testing-library/react'
 import React from 'react'
+
+import { render } from '@testing-library/react'
 
 import TemplateCard from '../TemplateCard'
 
@@ -11,7 +12,7 @@ describe('<TemplateCard />', () => {
     }
 
     it('should display a template card with specific style', () => {
-        const {container, getByText} = render(<TemplateCard {...props} />)
+        const { container, getByText } = render(<TemplateCard {...props} />)
 
         expect(container.firstChild).toHaveClass('templateCard')
         expect(getByText(props.description)).toBeInTheDocument()

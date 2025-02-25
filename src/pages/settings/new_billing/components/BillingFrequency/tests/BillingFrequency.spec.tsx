@@ -1,10 +1,11 @@
-import {render} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {Cadence} from 'models/billing/types'
+import { render } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
-import BillingFrequency, {BillingFrequencyProps} from '../BillingFrequency'
+import { Cadence } from 'models/billing/types'
+
+import BillingFrequency, { BillingFrequencyProps } from '../BillingFrequency'
 
 describe('BillingFrequency', () => {
     const mockSelectedCadence = Cadence.Month
@@ -21,17 +22,19 @@ describe('BillingFrequency', () => {
     }
 
     it('should render correctly', () => {
-        const {getByText} = setup()
+        const { getByText } = setup()
         expect(getByText('Monthly')).toBeInTheDocument()
         expect(getByText('Yearly')).toBeInTheDocument()
     })
 
     it('should call setSelectedCadence and setSelectedPlans with the correct values when a radio button is clicked', () => {
-        const {getByLabelText} = setup()
+        const { getByLabelText } = setup()
         const monthlyRadioButton = getByLabelText('Monthly', {
             selector: 'input',
         })
-        const yearlyRadioButton = getByLabelText('Yearly', {selector: 'input'})
+        const yearlyRadioButton = getByLabelText('Yearly', {
+            selector: 'input',
+        })
 
         userEvent.click(monthlyRadioButton)
         expect(mockOnFrequencySelect).toHaveBeenCalledWith('month')

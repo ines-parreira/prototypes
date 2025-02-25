@@ -1,69 +1,68 @@
-import {act} from '@testing-library/react'
-
+import { act } from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {appQueryClient} from 'api/queryClient'
-import {User} from 'config/types/user'
-import {createJob} from 'models/job/resources'
-import {Job, JobType} from 'models/job/types'
-import {closedTicketsQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import { appQueryClient } from 'api/queryClient'
+import { User } from 'config/types/user'
+import { createJob } from 'models/job/resources'
+import { Job, JobType } from 'models/job/types'
+import { closedTicketsQueryFactory } from 'models/reporting/queryFactories/support-performance/closedTickets'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import {
     CSAT_SCORE,
     SatisfactionMetricConfig as SatisfactionTrendCardConfig,
 } from 'pages/stats/quality-management/satisfaction/SatisfactionMetricsConfig'
-import {SLA_STATUS_COLUMN_LABEL} from 'pages/stats/sla/SlaConfig'
+import { SLA_STATUS_COLUMN_LABEL } from 'pages/stats/sla/SlaConfig'
 import {
     buildAgentMetric,
     TableLabels,
 } from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import {
-    AutoQAAgentsTableColumn,
     AutoQAAgentsColumnConfig,
+    AutoQAAgentsTableColumn,
     TableLabels as autoQATableLabels,
 } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
-import {TrendCardConfig} from 'pages/stats/support-performance/auto-qa/AutoQAMetricsConfig'
+import { TrendCardConfig } from 'pages/stats/support-performance/auto-qa/AutoQAMetricsConfig'
 import {
     ChannelColumnConfig,
     ChannelsTableLabels,
 } from 'pages/stats/support-performance/channels/ChannelsTableConfig'
-import {OverviewMetric} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
-import {MEDIAN_RESOLUTION_TIME_LABEL} from 'services/reporting/constants'
-import {RootState, StoreDispatch} from 'state/types'
+import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
+import { MEDIAN_RESOLUTION_TIME_LABEL } from 'services/reporting/constants'
+import { RootState, StoreDispatch } from 'state/types'
 import {
-    initialState,
-    setMetricData,
+    closeDrillDownModal,
+    createExportDrillDownJob,
     drillDownSlice,
+    getDrillDownCurrentPage,
     getDrillDownMetric,
     getDrillDownMetricColumn,
     getDrillDownModalState,
-    createExportDrillDownJob,
-    closeDrillDownModal,
-    SLA_FORMAT,
-    setCurrentPage,
-    getDrillDownCurrentPage,
-    setShouldUseNewFilterData,
     getIsNewFilter,
+    initialState,
+    setCurrentPage,
+    setMetricData,
+    setShouldUseNewFilterData,
+    SLA_FORMAT,
 } from 'state/ui/stats/drillDownSlice'
 import {
-    SlaMetric,
     AgentsTableColumn,
-    TicketFieldsMetric,
-    ConvertMetric,
-    VoiceAgentsMetric,
     AutoQAMetric,
-    SatisfactionMetric,
     ChannelsTableColumns,
+    ConvertMetric,
+    SatisfactionMetric,
+    SlaMetric,
+    TicketFieldsMetric,
+    VoiceAgentsMetric,
 } from 'state/ui/stats/types'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('models/job/resources')
 const createJobMock = assumeMock(createJob)
 const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])
 const store = mockStore({
     ui: {
-        stats: {[drillDownSlice.name]: initialState},
+        stats: { [drillDownSlice.name]: initialState },
     },
 } as RootState)
 
@@ -78,11 +77,11 @@ describe('drillDownSlice', () => {
                 setMetricData({
                     metricName: AgentsTableColumn.CustomerSatisfaction,
                     perAgentId: 1,
-                })
+                }),
             )
 
             expect(newState.metricData?.metricName).toEqual(
-                AgentsTableColumn.CustomerSatisfaction
+                AgentsTableColumn.CustomerSatisfaction,
             )
             expect(newState.isOpen).toBeTruthy()
         })
@@ -93,11 +92,11 @@ describe('drillDownSlice', () => {
                 setMetricData({
                     metricName: AgentsTableColumn.ClosedTickets,
                     perAgentId: 1,
-                })
+                }),
             )
 
             expect(newState.metricData?.metricName).toEqual(
-                AgentsTableColumn.ClosedTickets
+                AgentsTableColumn.ClosedTickets,
             )
             expect(newState.isOpen).toEqual(true)
         })
@@ -105,7 +104,7 @@ describe('drillDownSlice', () => {
         it('should close the modal', () => {
             const newState = drillDownSlice.reducer(
                 initialState,
-                closeDrillDownModal()
+                closeDrillDownModal(),
             )
 
             expect(newState.isOpen).toEqual(false)
@@ -114,7 +113,7 @@ describe('drillDownSlice', () => {
         it('should set export loading state', () => {
             const newState = drillDownSlice.reducer(
                 initialState,
-                createExportDrillDownJob.pending
+                createExportDrillDownJob.pending,
             )
 
             expect(newState.export.isLoading).toEqual(true)
@@ -123,7 +122,7 @@ describe('drillDownSlice', () => {
         it('should set current page state', () => {
             const newState = drillDownSlice.reducer(
                 initialState,
-                setCurrentPage(5)
+                setCurrentPage(5),
             )
 
             expect(newState.currentPage).toEqual(5)
@@ -136,9 +135,9 @@ describe('drillDownSlice', () => {
             const newState = drillDownSlice.reducer(
                 {
                     ...initialState,
-                    export: {...initialState.export, isLoading: true},
+                    export: { ...initialState.export, isLoading: true },
                 },
-                action
+                action,
             )
 
             expect(newState.export.isLoading).toEqual(false)
@@ -147,7 +146,7 @@ describe('drillDownSlice', () => {
         it('should set new filter value to true', () => {
             const newState = drillDownSlice.reducer(
                 initialState,
-                setShouldUseNewFilterData(true)
+                setShouldUseNewFilterData(true),
             )
 
             expect(newState.isNewFilter).toBeTruthy
@@ -175,9 +174,9 @@ describe('drillDownSlice', () => {
         } as RootState
 
         const voiceAgentsMetricsWithExpectedValues = Object.values(
-            VoiceAgentsMetric
+            VoiceAgentsMetric,
         ).map((name) => ({
-            metricData: {metricName: name, perAgentId: 123},
+            metricData: { metricName: name, perAgentId: 123 },
             expectedValues: {
                 metricTitle: '',
                 showMetric: false,
@@ -380,7 +379,7 @@ describe('drillDownSlice', () => {
                 },
             },
             ...voiceAgentsMetricsWithExpectedValues,
-        ])('getDrillDownMetricColumn', ({metricData, expectedValues}) => {
+        ])('getDrillDownMetricColumn', ({ metricData, expectedValues }) => {
             expect(
                 getDrillDownMetricColumn({
                     ...state,
@@ -391,7 +390,7 @@ describe('drillDownSlice', () => {
                             },
                         },
                     },
-                } as RootState)
+                } as RootState),
             ).toEqual(expectedValues)
         })
 
@@ -412,13 +411,13 @@ describe('drillDownSlice', () => {
                     end_datetime: '1970-01-01T00:00:00+00:00',
                 },
             },
-            'someTimeZone'
+            'someTimeZone',
         )
         const actionParams = {
             query: exampleQuery,
             jobType: JobType.ExportTicketDrilldown,
         }
-        createJobMock.mockResolvedValue({id: 123} as unknown as Job)
+        createJobMock.mockResolvedValue({ id: 123 } as unknown as Job)
 
         beforeEach(() => {
             store.getState().ui.stats[drillDownSlice.name] = {
@@ -434,7 +433,7 @@ describe('drillDownSlice', () => {
 
             expect(createJobMock).toHaveBeenCalledWith({
                 type: JobType.ExportTicketDrilldown,
-                params: {reporting_query: exampleQuery},
+                params: { reporting_query: exampleQuery },
             })
         })
 
@@ -458,19 +457,19 @@ describe('drillDownSlice', () => {
                     ...actionParams,
                     jobType: JobType.ExportConvertCampaignSalesDrilldown,
                     context,
-                })
+                }),
             )
 
             expect(createJobMock).toHaveBeenCalledWith({
                 type: JobType.ExportConvertCampaignSalesDrilldown,
-                params: {reporting_query: exampleQuery, context},
+                params: { reporting_query: exampleQuery, context },
             })
         })
 
         it('should invalidate Jobs query cache', async () => {
             const invalidateQueryMock = jest.spyOn(
                 mockAppQueryClient,
-                'invalidateQueries' as any
+                'invalidateQueries' as any,
             )
 
             await act(async () => {
@@ -488,7 +487,7 @@ describe('drillDownSlice', () => {
         } as User
 
         expect(
-            buildAgentMetric(AgentsTableColumn.CustomerSatisfaction, agent)
+            buildAgentMetric(AgentsTableColumn.CustomerSatisfaction, agent),
         ).toEqual({
             title: `${TableLabels[AgentsTableColumn.CustomerSatisfaction]} | ${
                 agent.name

@@ -1,14 +1,15 @@
-import {fireEvent, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { fireEvent, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import Integration from 'pages/integrations/integration/components/bigcommerce/Integration'
-import {getConnectUrl} from 'pages/integrations/integration/components/bigcommerce/Utils'
+import { getConnectUrl } from 'pages/integrations/integration/components/bigcommerce/Utils'
 import * as actions from 'state/integrations/actions'
-import {renderWithRouter} from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
 jest.spyOn(actions, 'deleteIntegration')
 jest.spyOn(actions, 'updateOrCreateIntegrationRequest')
@@ -26,13 +27,13 @@ describe('<BigCommerceIntegration/>', () => {
 
     describe('render()', () => {
         it('should render a loader because the integration is loading', () => {
-            const {container} = renderWithRouter(
+            const { container } = renderWithRouter(
                 <Provider store={store}>
                     <Integration
                         {...minProps}
-                        loading={fromJS({integration: true})}
+                        loading={fromJS({ integration: true })}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(container).toMatchSnapshot()
@@ -46,14 +47,14 @@ describe('<BigCommerceIntegration/>', () => {
                         integration={fromJS({
                             meta: {
                                 import_state: {
-                                    products: {is_over: true},
-                                    customers: {is_over: false},
-                                    external_orders: {is_over: true},
+                                    products: { is_over: true },
+                                    customers: { is_over: false },
+                                    external_orders: { is_over: true },
                                 },
                             },
                         })}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(screen.getByText(/Import in progress/))
@@ -67,35 +68,35 @@ describe('<BigCommerceIntegration/>', () => {
                         integration={fromJS({
                             meta: {
                                 import_state: {
-                                    products: {is_over: true},
-                                    customers: {is_over: true},
-                                    external_orders: {is_over: true},
+                                    products: { is_over: true },
+                                    customers: { is_over: true },
+                                    external_orders: { is_over: true },
                                 },
                             },
                         })}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(
                 screen.getByText(
-                    /Import complete. The real-time sync with BigCommerce is active./
-                )
+                    /Import complete. The real-time sync with BigCommerce is active./,
+                ),
             )
         })
 
         it('should render an integration with a delete button that deletes the integration', async () => {
-            const {container} = renderWithRouter(
+            const { container } = renderWithRouter(
                 <Provider store={store}>
                     <Integration {...minProps} />
-                </Provider>
+                </Provider>,
             )
 
             expect(container).toMatchSnapshot()
             fireEvent.click(
                 screen.getByRole('button', {
                     name: /Delete/,
-                })
+                }),
             )
 
             await screen.findByText(/Are you sure\?/)
@@ -103,7 +104,7 @@ describe('<BigCommerceIntegration/>', () => {
             fireEvent.click(
                 screen.getByRole('button', {
                     name: /Confirm/,
-                })
+                }),
             )
             expect(deleteIntegration.mock.calls).toMatchSnapshot()
         })
@@ -115,14 +116,14 @@ describe('<BigCommerceIntegration/>', () => {
                         {...minProps}
                         integration={fromJS({
                             deactivated_datetime: '2018-01-01 10:12',
-                            meta: {shop_id: 'kumbawa'},
+                            meta: { shop_id: 'kumbawa' },
                         })}
                         redirectUri={getConnectUrl()}
                     />
-                </Provider>
+                </Provider>,
             )
 
-            fireEvent.click(screen.getByRole('button', {name: 'Reconnect'}))
+            fireEvent.click(screen.getByRole('button', { name: 'Reconnect' }))
             expect(window.location.href).toBe(getConnectUrl())
         })
     })

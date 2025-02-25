@@ -1,20 +1,21 @@
-import {screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
+import React, { ComponentProps } from 'react'
+
+import { screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
 import _cloneDeep from 'lodash/cloneDeep'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {billingState} from 'fixtures/billing'
+import { billingState } from 'fixtures/billing'
 import {
     basicMonthlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
     products,
     proMonthlyHelpdeskPlan,
 } from 'fixtures/productPrices'
-import {IntegrationType} from 'models/integration/types'
-import {renderWithRouter} from 'utils/testing'
+import { IntegrationType } from 'models/integration/types'
+import { renderWithRouter } from 'utils/testing'
 
 import Magento2 from '../Magento2'
 
@@ -38,7 +39,7 @@ describe('<Magento2/>', () => {
                 id: '1',
                 type: IntegrationType.Magento2,
                 name: 'myShop1',
-                meta: {shop_url: 'mystore.com/admin'},
+                meta: { shop_url: 'mystore.com/admin' },
             },
         ]),
         loading: fromJS({}),
@@ -47,10 +48,10 @@ describe('<Magento2/>', () => {
 
     describe('Detail', () => {
         it('should render a detail view', () => {
-            const {container} = renderWithRouter(
+            const { container } = renderWithRouter(
                 <Provider store={store}>
                     <Magento2 {...minProps} />
-                </Provider>
+                </Provider>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -59,14 +60,14 @@ describe('<Magento2/>', () => {
 
     describe('Integration', () => {
         it('should render', () => {
-            const {container} = renderWithRouter(
+            const { container } = renderWithRouter(
                 <Provider store={store}>
                     <Magento2 {...minProps} />
                 </Provider>,
                 {
                     path: '/:integrationType/:integrationId?',
                     route: `/magento2/1/`,
-                }
+                },
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -75,14 +76,14 @@ describe('<Magento2/>', () => {
 
     describe('New', () => {
         it('should render', () => {
-            const {container} = renderWithRouter(
+            const { container } = renderWithRouter(
                 <Provider store={store}>
                     <Magento2 {...minProps} />
                 </Provider>,
                 {
                     path: '/:integrationType/:integrationId?',
                     route: `/magento2/new/`,
-                }
+                },
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -91,14 +92,14 @@ describe('<Magento2/>', () => {
 
     describe('List', () => {
         it('should render', () => {
-            const {container} = renderWithRouter(
+            const { container } = renderWithRouter(
                 <Provider store={store}>
                     <Magento2 {...minProps} />
                 </Provider>,
                 {
                     path: '/:integrationType/:integrationId?',
                     route: `/magento2/connections/`,
-                }
+                },
             )
             expect(container.firstChild).toMatchSnapshot()
         })
@@ -111,7 +112,7 @@ describe('<Magento2/>', () => {
                 {
                     path: '/:integrationType/:integrationId?',
                     route: `/magento2/connections/`,
-                }
+                },
             )
             expect(screen.getByText(/You have no integration/))
         })
@@ -126,7 +127,7 @@ describe('<Magento2/>', () => {
                                 id: '1',
                                 type: IntegrationType.Magento2,
                                 name: 'myShop1',
-                                meta: {shop_url: 'mystore.com/admin'},
+                                meta: { shop_url: 'mystore.com/admin' },
                                 deactivated_datetime: true,
                             },
                         ])}
@@ -135,9 +136,9 @@ describe('<Magento2/>', () => {
                 {
                     path: '/:integrationType/:integrationId?',
                     route: `/magento2/connections/`,
-                }
+                },
             )
-            expect(screen.getByRole('button', {name: 'Reconnect'}))
+            expect(screen.getByRole('button', { name: 'Reconnect' }))
         })
     })
 
@@ -178,14 +179,14 @@ describe('<Magento2/>', () => {
                     {
                         path: '/:integrationType/:integrationId?',
                         route: `/integrations/${integrationType}/new`,
-                    }
+                    },
                 )
                 expect(
                     screen.getByText(
-                        'App is not available on your current plan.'
-                    )
+                        'App is not available on your current plan.',
+                    ),
                 )
-            }
+            },
         )
     })
 })

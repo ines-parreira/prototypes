@@ -1,11 +1,12 @@
-import {useQuery, UseQueryOptions} from '@tanstack/react-query'
+import { useQuery, UseQueryOptions } from '@tanstack/react-query'
+import { AxiosResponse } from 'axios'
 
-import {AxiosResponse} from 'axios'
-
-import {appQueryClient} from 'api/queryClient'
-
-import {doNotRetry40XErrorsHandler} from 'api/utils'
-import {postEnrichedReporting, postReporting} from 'models/reporting/resources'
+import { appQueryClient } from 'api/queryClient'
+import { doNotRetry40XErrorsHandler } from 'api/utils'
+import {
+    postEnrichedReporting,
+    postReporting,
+} from 'models/reporting/resources'
 import {
     Cube,
     EnrichmentFields,
@@ -44,7 +45,7 @@ export const fetchPostReporting = <
         UsePostReportingQueryData<TData>,
         unknown,
         SelectData
-    >
+    >,
 ) => {
     return appQueryClient.fetchQuery({
         queryKey: reportingKeys.post(data),
@@ -64,7 +65,7 @@ export const usePostReporting = <
         UsePostReportingQueryData<TData>,
         unknown,
         SelectData
-    >
+    >,
 ) => {
     return useQuery({
         queryKey: reportingKeys.post(data),
@@ -87,14 +88,14 @@ export const useEnrichedPostReporting = <
         UseEnrichedPostReportingQueryData<TData>,
         unknown,
         SelectData
-    >
+    >,
 ) => {
     return useQuery({
         queryKey: reportingKeys.postEnriched(data),
         queryFn: () =>
             postEnrichedReporting<TData, TCube>(
                 data.query,
-                data.enrichment_fields
+                data.enrichment_fields,
             ),
         ...defaultOptions,
         ...overrides,

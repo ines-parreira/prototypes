@@ -1,7 +1,8 @@
-import {render, fireEvent, screen} from '@testing-library/react'
 import React from 'react'
 
-import {ContentType} from 'models/api/types'
+import { fireEvent, render, screen } from '@testing-library/react'
+
+import { ContentType } from 'models/api/types'
 
 import Body from '../Body'
 
@@ -17,17 +18,17 @@ describe('<Body/>', () => {
                     [ContentType.Json]: {},
                     [ContentType.Form]: [],
                 }}
-            />
+            />,
         )
 
         fireEvent.click(
             screen.getByRole('radio', {
                 name: ContentType.Form,
-            })
+            }),
         )
         expect(onChange).toHaveBeenCalledWith(
             'body.contentType',
-            ContentType.Form
+            ContentType.Form,
         )
     })
 
@@ -40,11 +41,11 @@ describe('<Body/>', () => {
                     [ContentType.Json]: {},
                     [ContentType.Form]: [],
                 }}
-            />
+            />,
         )
 
         fireEvent.change(screen.getByRole('textbox'), {
-            target: {value: '{"ok": "ok"}'},
+            target: { value: '{"ok": "ok"}' },
         })
         expect(onChange).toHaveBeenCalled()
     })
@@ -58,13 +59,13 @@ describe('<Body/>', () => {
                     [ContentType.Form]: [],
                     [ContentType.Json]: {},
                 }}
-            />
+            />,
         )
 
         fireEvent.click(
             screen.getByRole('button', {
                 name: /Add Body Parameter/,
-            })
+            }),
         )
         expect(onChange).toHaveBeenCalled()
     })

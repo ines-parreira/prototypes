@@ -1,9 +1,10 @@
-import {render, screen, fireEvent} from '@testing-library/react'
 import React from 'react'
 
-import {AiAgentChannel, DEFAULT_WIZARD_FORM_VALUES} from '../../constants'
-import {WizardFormValues} from '../../types'
-import {HeaderSection} from '../HeaderSection'
+import { fireEvent, render, screen } from '@testing-library/react'
+
+import { AiAgentChannel, DEFAULT_WIZARD_FORM_VALUES } from '../../constants'
+import { WizardFormValues } from '../../types'
+import { HeaderSection } from '../HeaderSection'
 
 describe('HeaderSection', () => {
     const mockHandleFormUpdate = jest.fn()
@@ -11,7 +12,7 @@ describe('HeaderSection', () => {
     const renderComponent = (
         enabledChannels: AiAgentChannel[],
         isValid: boolean,
-        shouldDisplayValidationIcon?: boolean
+        shouldDisplayValidationIcon?: boolean,
     ) => {
         const wizard: WizardFormValues = {
             ...DEFAULT_WIZARD_FORM_VALUES,
@@ -24,7 +25,7 @@ describe('HeaderSection', () => {
                 wizard={wizard}
                 handleFormUpdate={mockHandleFormUpdate}
                 shouldDisplayValidationIcon={shouldDisplayValidationIcon}
-            />
+            />,
         )
     }
 
@@ -71,7 +72,7 @@ describe('HeaderSection', () => {
         fireEvent.click(checkedCheckbox)
 
         expect(mockHandleFormUpdate).toHaveBeenCalledWith({
-            wizard: {...DEFAULT_WIZARD_FORM_VALUES, enabledChannels: []},
+            wizard: { ...DEFAULT_WIZARD_FORM_VALUES, enabledChannels: [] },
         })
     })
 

@@ -1,8 +1,9 @@
-import {Meta, StoryFn} from '@storybook/react'
-import React, {ComponentProps} from 'react'
-import {MemoryRouter} from 'react-router-dom'
+import React, { ComponentProps } from 'react'
 
-import {EntityType} from 'hooks/useSearchRankScenario'
+import { Meta, StoryFn } from '@storybook/react'
+import { MemoryRouter } from 'react-router-dom'
+
+import { EntityType } from 'hooks/useSearchRankScenario'
 import SpotlightRow from 'pages/common/components/Spotlight/SpotlightRow'
 
 const storyConfig: Meta = {

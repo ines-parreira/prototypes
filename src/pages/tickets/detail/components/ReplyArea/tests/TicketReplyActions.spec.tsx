@@ -1,14 +1,15 @@
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {ACTION_TEMPLATES} from '../../../../../../config'
-import {integrationsState} from '../../../../../../fixtures/integrations'
-import {MacroActionName} from '../../../../../../models/macroAction/types'
-import {RootState} from '../../../../../../state/types'
+import { ACTION_TEMPLATES } from '../../../../../../config'
+import { integrationsState } from '../../../../../../fixtures/integrations'
+import { MacroActionName } from '../../../../../../models/macroAction/types'
+import { RootState } from '../../../../../../state/types'
 import TicketReplyActions from '../TicketReplyActions'
 
 const mockStore = configureMockStore([thunk])
@@ -25,7 +26,7 @@ describe('<TicketReplyActions/>', () => {
         appliedMacro: fromJS({
             actions: [
                 ACTION_TEMPLATES.find(
-                    (action) => action.name === MacroActionName.AddInternalNote
+                    (action) => action.name === MacroActionName.AddInternalNote,
                 ),
             ],
         }),
@@ -37,10 +38,10 @@ describe('<TicketReplyActions/>', () => {
     document.body.appendChild(element)
 
     it('should render the ticket reply macro actions uncollapsed', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <TicketReplyActions {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -67,20 +68,20 @@ describe('<TicketReplyActions/>', () => {
             onDelete: jest.fn(),
         }
 
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <TicketReplyActions {...props} />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should collapse the macro actions', async () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <TicketReplyActions {...minProps} />
-            </Provider>
+            </Provider>,
         )
         const header = screen.getByText('Actions performed')
         const collapsingElement = container.firstChild?.lastChild as HTMLElement
@@ -96,7 +97,7 @@ describe('<TicketReplyActions/>', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <TicketReplyActions {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(screen.getByText('close'))

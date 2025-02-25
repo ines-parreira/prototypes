@@ -1,14 +1,14 @@
-import {useDeleteIntegration} from '@gorgias/api-queries'
-import {renderHook, act} from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react-hooks'
+
+import { useDeleteIntegration } from '@gorgias/api-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {isGorgiasApiError} from 'models/api/types'
+import { isGorgiasApiError } from 'models/api/types'
 import history from 'pages/history'
-import {DELETE_INTEGRATION_SUCCESS} from 'state/integrations/constants'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-
-import {assumeMock} from 'utils/testing'
+import { DELETE_INTEGRATION_SUCCESS } from 'state/integrations/constants'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { assumeMock } from 'utils/testing'
 
 import useDeleteEmailIntegration from '../useDeleteEmailIntegration'
 
@@ -33,15 +33,15 @@ describe('useDeleteEmailIntegration', () => {
     })
 
     it('should handle successful deletion', () => {
-        const integration = {id: 'test-id'}
+        const integration = { id: 'test-id' }
         const mutate = jest.fn()
         useDeleteIntegrationMock.mockReturnValue({
             mutate,
             isLoading: false,
         } as any)
 
-        const {result} = renderHook(() =>
-            useDeleteEmailIntegration(integration as any)
+        const { result } = renderHook(() =>
+            useDeleteEmailIntegration(integration as any),
         )
 
         act(() => {
@@ -51,14 +51,14 @@ describe('useDeleteEmailIntegration', () => {
         expect(mutate).toHaveBeenCalledWith(
             expect.objectContaining({
                 id: 'test-id',
-            })
+            }),
         )
 
         act(() => {
             useDeleteIntegrationMock.mock.lastCall?.[0]?.mutation?.onSuccess?.(
                 null as any,
                 null as any,
-                null as any
+                null as any,
             )
         })
 
@@ -70,10 +70,10 @@ describe('useDeleteEmailIntegration', () => {
     })
 
     it('should handle deletion error', () => {
-        const integration = {id: 'test-id'}
+        const integration = { id: 'test-id' }
         const mutate = jest.fn()
         const errorResponse = {
-            response: {data: {error: {msg: 'Error message'}}},
+            response: { data: { error: { msg: 'Error message' } } },
         }
         useDeleteIntegrationMock.mockReturnValue({
             mutate,
@@ -81,8 +81,8 @@ describe('useDeleteEmailIntegration', () => {
         } as any)
         isGorgiasApiErrorMock.mockReturnValue(true)
 
-        const {result} = renderHook(() =>
-            useDeleteEmailIntegration(integration as any)
+        const { result } = renderHook(() =>
+            useDeleteEmailIntegration(integration as any),
         )
 
         act(() => {
@@ -93,7 +93,7 @@ describe('useDeleteEmailIntegration', () => {
             useDeleteIntegrationMock.mock.lastCall?.[0]?.mutation?.onError?.(
                 errorResponse,
                 null as any,
-                null as any
+                null as any,
             )
         })
 
@@ -101,12 +101,12 @@ describe('useDeleteEmailIntegration', () => {
             notify({
                 status: NotificationStatus.Error,
                 message: 'Error message',
-            })
+            }),
         )
     })
 
     it('should handle deletion error with default message', () => {
-        const integration = {id: 'test-id'}
+        const integration = { id: 'test-id' }
         const mutate = jest.fn()
         useDeleteIntegrationMock.mockReturnValue({
             mutate,
@@ -114,8 +114,8 @@ describe('useDeleteEmailIntegration', () => {
         } as any)
         isGorgiasApiErrorMock.mockReturnValue(false)
 
-        const {result} = renderHook(() =>
-            useDeleteEmailIntegration(integration as any)
+        const { result } = renderHook(() =>
+            useDeleteEmailIntegration(integration as any),
         )
 
         act(() => {
@@ -126,7 +126,7 @@ describe('useDeleteEmailIntegration', () => {
             useDeleteIntegrationMock.mock.lastCall?.[0]?.mutation?.onError?.(
                 null as any,
                 null as any,
-                null as any
+                null as any,
             )
         })
 
@@ -134,7 +134,7 @@ describe('useDeleteEmailIntegration', () => {
             notify({
                 status: NotificationStatus.Error,
                 message: 'Failed to delete integration',
-            })
+            }),
         )
     })
 })

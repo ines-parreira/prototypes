@@ -1,11 +1,12 @@
+import React, { ChangeEvent } from 'react'
+
 import _omit from 'lodash/omit'
-import React, {ChangeEvent} from 'react'
-import {Input, FormGroup} from 'reactstrap'
+import { FormGroup, Input } from 'reactstrap'
 
-import {HTTPForm} from 'models/integration/types/http'
-import {JSONValue} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
+import { HTTPForm } from 'models/integration/types/http'
+import { JSONValue } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 
-import DEPRECATED_InputField, {InputFieldProps} from './DEPRECATED_InputField'
+import DEPRECATED_InputField, { InputFieldProps } from './DEPRECATED_InputField'
 import Errors from './Errors'
 
 type Props = InputFieldProps<HTTPForm | JSONValue>
@@ -28,7 +29,7 @@ export default class JsonField extends DEPRECATED_InputField<Props, State> {
             let text: string | null = JSON.stringify(
                 this.props.value,
                 undefined,
-                4
+                4,
             )
 
             if (text === '""') {
@@ -66,7 +67,7 @@ export default class JsonField extends DEPRECATED_InputField<Props, State> {
     }
 
     _getField = () => {
-        const {children, ...rest} = _omit(this.props, [
+        const { children, ...rest } = _omit(this.props, [
             'error',
             'type',
             'help',

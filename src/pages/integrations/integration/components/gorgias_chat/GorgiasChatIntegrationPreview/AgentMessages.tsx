@@ -1,25 +1,27 @@
-import classnames from 'classnames'
-import {fromJS, Map} from 'immutable'
 import React from 'react'
+
+import classnames from 'classnames'
+import { fromJS, Map } from 'immutable'
 
 import {
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from 'config/integrations/gorgias_chat'
-
 import ArticleAttachment from 'gorgias-design-system/Attachments/ArticleAttachment'
-import {GorgiasChatAvatarSettings} from 'models/integration/types'
+import { GorgiasChatAvatarSettings } from 'models/integration/types'
+import { ProductCardAttachment } from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
+import { ProductCarousel } from 'pages/convert/campaigns/components/CampaignPreview/components/ProductCarousel'
+import { transformAttachmentToProduct } from 'pages/convert/campaigns/utils/transformAttachmentToProduct'
 
-import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
-import {ProductCarousel} from 'pages/convert/campaigns/components/CampaignPreview/components/ProductCarousel'
-import {transformAttachmentToProduct} from 'pages/convert/campaigns/utils/transformAttachmentToProduct'
-
-import {AgentDisplayName} from './AgentDisplayName'
-
-import {ArticleAttachmentSchema, isArticleAttachment} from './ArticleAttachment'
+import { AgentDisplayName } from './AgentDisplayName'
+import {
+    ArticleAttachmentSchema,
+    isArticleAttachment,
+} from './ArticleAttachment'
 import ChatAvatar from './ChatAvatar'
+import { FileIcon } from './icon-utils'
+
 import css from './ChatIntegrationPreview.less'
-import {FileIcon} from './icon-utils'
 
 export type AgentMessage = {
     content: string
@@ -52,7 +54,7 @@ const renderAgentMessage = ({
                                 title={attachment.title}
                                 description={attachment.summary}
                                 leadIcon={<FileIcon />}
-                                style={{margin: '-14px'}}
+                                style={{ margin: '-14px' }}
                             />
                         )
                     }
@@ -65,7 +67,7 @@ const renderAgentMessage = ({
 
 const renderAttachments = (
     attachments: ProductCardAttachment[] | ArticleAttachmentSchema[],
-    conversationColor: string
+    conversationColor: string,
 ) => {
     const products = transformAttachmentToProduct(fromJS(attachments), {})
 
@@ -151,7 +153,7 @@ const AgentMessages: React.FC<Props> = ({
                                 {
                                     [css.isAnimated]:
                                         enableAgentMessagesAnimations,
-                                }
+                                },
                             )}
                             style={
                                 backgroundColor
@@ -165,7 +167,7 @@ const AgentMessages: React.FC<Props> = ({
                         </div>
                         {renderAttachments(
                             message.attachments,
-                            conversationColor
+                            conversationColor,
                         )}
                     </div>
                 ))}

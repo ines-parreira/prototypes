@@ -1,11 +1,13 @@
-import {EmailIntegration} from '@gorgias/api-queries'
-import {screen, render} from '@testing-library/react'
 import React from 'react'
 
-import * as integrationsSelectors from 'state/integrations/selectors'
-import {assumeMock} from 'utils/testing'
+import { render, screen } from '@testing-library/react'
 
-import {isBaseEmailAddress} from '../../helpers'
+import { EmailIntegration } from '@gorgias/api-queries'
+
+import * as integrationsSelectors from 'state/integrations/selectors'
+import { assumeMock } from 'utils/testing'
+
+import { isBaseEmailAddress } from '../../helpers'
 import RecordsTable from '../components/RecordsTable'
 import EmailDomainVerificationContent from '../EmailDomainVerificationContent'
 import useDomainVerification from '../useDomainVerification'
@@ -20,7 +22,7 @@ const useDomainVerificationMock = assumeMock(useDomainVerification)
 const RecordsTableMock = assumeMock(RecordsTable)
 const getIntegrationsLoadingSpy = jest.spyOn(
     integrationsSelectors,
-    'getIntegrationsLoading'
+    'getIntegrationsLoading',
 )
 
 describe('EmailDomainVerificationContent', () => {
@@ -35,7 +37,7 @@ describe('EmailDomainVerificationContent', () => {
                         },
                     } as EmailIntegration
                 }
-            />
+            />,
         )
 
     beforeEach(() => {
@@ -43,7 +45,7 @@ describe('EmailDomainVerificationContent', () => {
         RecordsTableMock.mockImplementation(() => <div>RecordsTable</div>)
         useDomainVerificationMock.mockReturnValue({
             domain: undefined,
-            errors: {createDomain: null},
+            errors: { createDomain: null },
         } as ReturnType<typeof useDomainVerification>)
         getIntegrationsLoadingSpy.mockImplementation(() => ({
             integration: false,
@@ -57,22 +59,22 @@ describe('EmailDomainVerificationContent', () => {
 
         expect(
             screen.getByText(
-                'The base email integration cannot have a domain associated.'
-            )
+                'The base email integration cannot have a domain associated.',
+            ),
         ).toBeInTheDocument()
     })
 
     it('should pass domain to RecordsTable', () => {
         useDomainVerificationMock.mockReturnValue({
-            domain: {name: 'gorgias.com'},
-            errors: {createDomain: null},
+            domain: { name: 'gorgias.com' },
+            errors: { createDomain: null },
         } as ReturnType<typeof useDomainVerification>)
 
         renderComponent()
 
         expect(RecordsTableMock).toHaveBeenCalledWith(
-            expect.objectContaining({domainName: 'gorgias.com'}),
-            {}
+            expect.objectContaining({ domainName: 'gorgias.com' }),
+            {},
         )
     })
 
@@ -81,14 +83,14 @@ describe('EmailDomainVerificationContent', () => {
             useDomainVerificationMock.mockReturnValue({
                 domain: undefined,
                 isCreatingDomain: true,
-                errors: {createDomain: null},
+                errors: { createDomain: null },
             } as ReturnType<typeof useDomainVerification>)
 
             renderComponent()
 
             expect(RecordsTableMock).toHaveBeenCalledWith(
-                expect.objectContaining({isLoading: true}),
-                {}
+                expect.objectContaining({ isLoading: true }),
+                {},
             )
         })
 
@@ -100,22 +102,22 @@ describe('EmailDomainVerificationContent', () => {
             renderComponent()
 
             expect(RecordsTableMock).toHaveBeenCalledWith(
-                expect.objectContaining({isLoading: true}),
-                {}
+                expect.objectContaining({ isLoading: true }),
+                {},
             )
         })
 
         it('should display loading state when domain is not fetched', () => {
             useDomainVerificationMock.mockReturnValue({
                 domain: undefined,
-                errors: {createDomain: null},
+                errors: { createDomain: null },
             } as ReturnType<typeof useDomainVerification>)
 
             renderComponent()
 
             expect(RecordsTableMock).toHaveBeenCalledWith(
-                expect.objectContaining({isLoading: true}),
-                {}
+                expect.objectContaining({ isLoading: true }),
+                {},
             )
         })
 
@@ -123,14 +125,14 @@ describe('EmailDomainVerificationContent', () => {
             useDomainVerificationMock.mockReturnValue({
                 domain: undefined,
                 isFetching: true,
-                errors: {createDomain: null},
+                errors: { createDomain: null },
             } as ReturnType<typeof useDomainVerification>)
 
             renderComponent()
 
             expect(RecordsTableMock).toHaveBeenCalledWith(
-                expect.objectContaining({isLoading: true}),
-                {}
+                expect.objectContaining({ isLoading: true }),
+                {},
             )
         })
     })
@@ -138,14 +140,14 @@ describe('EmailDomainVerificationContent', () => {
     describe('success state', () => {
         it('should display success message when domain is verified', () => {
             useDomainVerificationMock.mockReturnValue({
-                domain: {verified: true},
-                errors: {createDomain: null},
+                domain: { verified: true },
+                errors: { createDomain: null },
             } as ReturnType<typeof useDomainVerification>)
 
             renderComponent()
 
             expect(
-                screen.getByText(/Your domain has been successfully verified/)
+                screen.getByText(/Your domain has been successfully verified/),
             ).toBeInTheDocument()
         })
     })
@@ -154,13 +156,13 @@ describe('EmailDomainVerificationContent', () => {
         it('should display error state when domain is not fetched and domain creation error is present', () => {
             useDomainVerificationMock.mockReturnValue({
                 domain: undefined,
-                errors: {createDomain: {message: 'error'}},
+                errors: { createDomain: { message: 'error' } },
             } as ReturnType<typeof useDomainVerification>)
 
             renderComponent()
 
             expect(
-                screen.getByText(/Please contact support for assistance/)
+                screen.getByText(/Please contact support for assistance/),
             ).toBeInTheDocument()
         })
     })

@@ -1,17 +1,18 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {render, screen, waitFor} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { render, screen, waitFor } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {TicketVias} from 'business/ticket'
-import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
-import {emptyRuleRecipeFixture} from 'fixtures/ruleRecipe'
-import {fetchRule} from 'models/rule/resources'
-import {ManagedRuleDisplayName} from 'state/rules/constants'
-import {ManagedRule, ManagedRulesSlugs, RuleType} from 'state/rules/types'
-import {RootState, StoreDispatch} from 'state/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { TicketVias } from 'business/ticket'
+import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
+import { emptyRuleRecipeFixture } from 'fixtures/ruleRecipe'
+import { fetchRule } from 'models/rule/resources'
+import { ManagedRuleDisplayName } from 'state/rules/constants'
+import { ManagedRule, ManagedRulesSlugs, RuleType } from 'state/rules/types'
+import { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import Meta from '../Meta'
 
@@ -20,8 +21,8 @@ const queryClient = mockQueryClient()
 
 const store = mockStore({
     entities: {
-        rules: {4: {id: '4', name: 'rule 4'}} as unknown,
-        ruleRecipes: {[emptyRuleRecipeFixture.slug]: emptyRuleRecipeFixture},
+        rules: { 4: { id: '4', name: 'rule 4' } } as unknown,
+        ruleRecipes: { [emptyRuleRecipeFixture.slug]: emptyRuleRecipeFixture },
     },
 } as RootState)
 
@@ -32,7 +33,7 @@ describe('ticket message meta', () => {
         render(
             <Provider store={store}>
                 <Meta messageId="some-id" via="rule" ruleId="4" />
-            </Provider>
+            </Provider>,
         )
 
         await screen.findByText('sent via:')
@@ -41,7 +42,7 @@ describe('ticket message meta', () => {
 
     it('should fetch rule and display its name', async () => {
         const mockFetchRule = fetchRule as jest.MockedFunction<typeof fetchRule>
-        const rule = {id: '5', name: 'rule 5'}
+        const rule = { id: '5', name: 'rule 5' }
         mockFetchRule.mockImplementation(() => {
             return Promise.resolve(rule as any)
         })
@@ -49,7 +50,7 @@ describe('ticket message meta', () => {
         render(
             <Provider store={store}>
                 <Meta messageId="some-id" via="rule" ruleId={rule.id} />
-            </Provider>
+            </Provider>,
         )
 
         expect(mockFetchRule).toHaveBeenCalled()
@@ -66,7 +67,7 @@ describe('ticket message meta', () => {
             id: 1,
             name: ruleName,
             type: RuleType.Managed,
-            settings: {slug: ManagedRulesSlugs.AutoReplyWismo},
+            settings: { slug: ManagedRulesSlugs.AutoReplyWismo },
         }
 
         mockFetchRule.mockImplementation(() => {
@@ -80,14 +81,14 @@ describe('ticket message meta', () => {
                     via="rule"
                     ruleId={rule.id.toString()}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(await screen.findByText('sent via:')).toBeTruthy()
         expect(
             await screen.findByText(
-                ManagedRuleDisplayName.get(rule.settings.slug)!
-            )
+                ManagedRuleDisplayName.get(rule.settings.slug)!,
+            ),
         ).toBeTruthy()
 
         expect(mockFetchRule).toHaveBeenCalled()
@@ -95,21 +96,21 @@ describe('ticket message meta', () => {
 
     it('should persist fetched rule in redux store', async () => {
         const mockFetchRule = fetchRule as jest.MockedFunction<typeof fetchRule>
-        const rule = {id: '5', name: 'rule 5'}
+        const rule = { id: '5', name: 'rule 5' }
         mockFetchRule.mockImplementation(() => {
             return Promise.resolve(rule as any)
         })
 
-        const {rerender} = render(
+        const { rerender } = render(
             <Provider store={store}>
                 <Meta messageId="some-id" via="rule" ruleId={rule.id} />
-            </Provider>
+            </Provider>,
         )
 
         rerender(
             <Provider store={store}>
                 <Meta messageId="some-id" via="rule" ruleId={rule.id} />
-            </Provider>
+            </Provider>,
         )
 
         expect(mockFetchRule).toHaveBeenCalledTimes(1)
@@ -123,9 +124,9 @@ describe('ticket message meta', () => {
                 <Meta
                     messageId="some-id"
                     via="something"
-                    meta={{rule_suggestion_slug: emptyRuleRecipeFixture.slug}}
+                    meta={{ rule_suggestion_slug: emptyRuleRecipeFixture.slug }}
                 />
-            </Provider>
+            </Provider>,
         )
 
         await screen.findByText('sent via suggested rule:')
@@ -138,9 +139,9 @@ describe('ticket message meta', () => {
                 <Meta
                     messageId="some-id"
                     via="something"
-                    meta={{ai_suggestion: true}}
+                    meta={{ ai_suggestion: true }}
                 />
-            </Provider>
+            </Provider>,
         )
 
         await screen.findByText('answer suggested from Gorgias AI')
@@ -150,7 +151,7 @@ describe('ticket message meta', () => {
         'should add a -sent via campaign- label because the message was sent by a campaign on a ' +
             'gorgias-chat integration',
         () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <Meta
                         messageId="some-id"
@@ -160,10 +161,10 @@ describe('ticket message meta', () => {
                             campaign_id: '123',
                         }}
                     />
-                </Provider>
+                </Provider>,
             )
             expect(container.firstChild).toMatchSnapshot()
-        }
+        },
     )
 
     describe('facebook', () => {
@@ -171,21 +172,21 @@ describe('ticket message meta', () => {
             const pageId = '871900732905218'
             const postId = '2750858871676052'
             const source = {
-                extra: {page_id: pageId, post_id: `${pageId}_${postId}`},
-                from: {address: `${pageId}-${pageId}`, name: 'Nulastin'},
+                extra: { page_id: pageId, post_id: `${pageId}_${postId}` },
+                from: { address: `${pageId}-${pageId}`, name: 'Nulastin' },
                 type: TicketMessageSourceType.FacebookPost,
-                to: [{address: `${pageId}-${pageId}`, name: 'Nulastin'}],
+                to: [{ address: `${pageId}-${pageId}`, name: 'Nulastin' }],
             }
 
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <Meta via="facebook" integrationId={118} source={source} />
-                </Provider>
+                </Provider>,
             )
 
             expect(container.textContent).toBe('go to post')
             expect(container.querySelector('a')?.href).toBe(
-                `https://facebook.com/${pageId}/posts/${postId}`
+                `https://facebook.com/${pageId}/posts/${postId}`,
             )
         })
 
@@ -200,12 +201,12 @@ describe('ticket message meta', () => {
                     post_id: `${pageId}_${postId}`,
                     parent_id: `${pageId}_${postId}`,
                 },
-                from: {address: `${pageId}-${userId}`, name: 'Foo Bar'},
+                from: { address: `${pageId}-${userId}`, name: 'Foo Bar' },
                 type: TicketMessageSourceType.FacebookComment,
-                to: [{address: `${pageId}-${pageId}`, name: 'Nulastin'}],
+                to: [{ address: `${pageId}-${pageId}`, name: 'Nulastin' }],
             }
 
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <Meta
                         messageId={`${postId}_${commentId}`}
@@ -213,12 +214,12 @@ describe('ticket message meta', () => {
                         integrationId={118}
                         source={source}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(container.textContent).toBe('go to comment')
             expect(container.querySelector('a')?.href).toBe(
-                `https://facebook.com/${pageId}/posts/${postId}?comment_id=${commentId}`
+                `https://facebook.com/${pageId}/posts/${postId}?comment_id=${commentId}`,
             )
         })
 
@@ -233,9 +234,9 @@ describe('ticket message meta', () => {
                     post_id: `${pageId}_${postId}`,
                     parent_id: `${pageId}_${postId}`,
                 },
-                from: {address: `${pageId}-${userId}`, name: 'Foo Bar'},
+                from: { address: `${pageId}-${userId}`, name: 'Foo Bar' },
                 type: TicketMessageSourceType.FacebookComment,
-                to: [{address: `${pageId}-${pageId}`, name: 'Nulastin'}],
+                to: [{ address: `${pageId}-${pageId}`, name: 'Nulastin' }],
             }
 
             const meta = {
@@ -245,7 +246,7 @@ describe('ticket message meta', () => {
                 },
             }
 
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <QueryClientProvider client={queryClient}>
                         <Meta
@@ -256,17 +257,17 @@ describe('ticket message meta', () => {
                             meta={meta}
                         />
                     </QueryClientProvider>
-                </Provider>
+                </Provider>,
             )
             await waitFor(() =>
                 expect(container.textContent).toContain(
-                    'responded to via Messenger'
-                )
+                    'responded to via Messenger',
+                ),
             )
 
             const links = Array.from(container.querySelectorAll('a'))
             expect(links[0].href).toEqual(
-                `https://facebook.com/${pageId}/posts/${postId}?comment_id=${commentId}`
+                `https://facebook.com/${pageId}/posts/${postId}?comment_id=${commentId}`,
             )
             expect(links[1].href).toEqual(`${window.location.href}3312`)
         })
@@ -279,16 +280,16 @@ describe('ticket message meta', () => {
                 },
             }
 
-            const {container, getByText} = render(
+            const { container, getByText } = render(
                 <Provider store={store}>
                     <Meta via="facebook" meta={meta} />
-                </Provider>
+                </Provider>,
             )
 
             await waitFor(() =>
                 expect(container.textContent).toContain(
-                    'responded via Messenger to'
-                )
+                    'responded via Messenger to',
+                ),
             )
 
             expect(getByText('Comment')).toHaveAttribute('href', '3312')
@@ -306,12 +307,12 @@ describe('ticket message meta', () => {
                     post_id: `${pageId}_${postId}`,
                     parent_id: `${pageId}_${commentId}`,
                 },
-                from: {address: `${pageId}-${pageId}`, name: 'Nulastin'},
+                from: { address: `${pageId}-${pageId}`, name: 'Nulastin' },
                 type: TicketMessageSourceType.FacebookComment,
-                to: [{address: `${pageId}-${userId}`, name: 'Foo Bar'}],
+                to: [{ address: `${pageId}-${userId}`, name: 'Foo Bar' }],
             }
 
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <Meta
                         messageId={`${postId}_${replyId}`}
@@ -319,12 +320,12 @@ describe('ticket message meta', () => {
                         integrationId={118}
                         source={source}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(container.textContent).toBe('go to reply')
             expect(container.querySelector('a')?.href).toBe(
-                `https://facebook.com/${pageId}/posts/${postId}?comment_id=${commentId}&reply_comment_id=${replyId}`
+                `https://facebook.com/${pageId}/posts/${postId}?comment_id=${commentId}&reply_comment_id=${replyId}`,
             )
         })
 
@@ -332,16 +333,16 @@ describe('ticket message meta', () => {
             const pageId = '2022935111288280'
             const userId = '1940476102688095'
             const source = {
-                extra: {page_id: pageId},
-                from: {address: `${pageId}-${userId}`, name: 'A Virk'},
+                extra: { page_id: pageId },
+                from: { address: `${pageId}-${userId}`, name: 'A Virk' },
                 type: TicketMessageSourceType.FacebookComment,
-                to: [{address: `${pageId}-${pageId}-${pageId}`, name: 'IQ²'}],
+                to: [{ address: `${pageId}-${pageId}-${pageId}`, name: 'IQ²' }],
             }
 
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <Meta via="facebook" integrationId={118} source={source} />
-                </Provider>
+                </Provider>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -356,20 +357,20 @@ describe('ticket message meta', () => {
                     post_id: `${pageId}_${postId}`,
                     permalink: 'https://facebook.com/permalink',
                 },
-                from: {address: `${pageId}-${pageId}`, name: 'Nulastin'},
+                from: { address: `${pageId}-${pageId}`, name: 'Nulastin' },
                 type: TicketMessageSourceType.FacebookMentionPost,
-                to: [{address: `${pageId}-${pageId}`, name: 'Nulastin'}],
+                to: [{ address: `${pageId}-${pageId}`, name: 'Nulastin' }],
             }
 
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <Meta via="facebook" integrationId={118} source={source} />
-                </Provider>
+                </Provider>,
             )
 
             expect(container.textContent).toBe('go to post')
             expect(container.querySelector('a')?.href).toBe(
-                'https://facebook.com/permalink'
+                'https://facebook.com/permalink',
             )
         })
 
@@ -386,12 +387,12 @@ describe('ticket message meta', () => {
                     parent_id: `${feedId}_${postId}`,
                     permalink: permalink,
                 },
-                from: {address: `${pageId}-${pageId}`, name: 'Nulastin'},
+                from: { address: `${pageId}-${pageId}`, name: 'Nulastin' },
                 type: TicketMessageSourceType.FacebookMentionComment,
-                to: [{address: `${pageId}-${pageId}`, name: 'Nulastin'}],
+                to: [{ address: `${pageId}-${pageId}`, name: 'Nulastin' }],
             }
 
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <Meta
                         via="facebook"
@@ -399,7 +400,7 @@ describe('ticket message meta', () => {
                         source={source}
                         messageId={`${postId}_${commentId}`}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(container.textContent).toBe('go to comment')
@@ -417,12 +418,12 @@ describe('ticket message meta', () => {
                     post_id: `${feedId}_${postId}`,
                     parent_id: `${feedId}_${postId}`,
                 },
-                from: {address: `${pageId}-${pageId}`, name: 'Nulastin'},
+                from: { address: `${pageId}-${pageId}`, name: 'Nulastin' },
                 type: TicketMessageSourceType.FacebookMentionComment,
-                to: [{address: `${pageId}-${pageId}`, name: 'Nulastin'}],
+                to: [{ address: `${pageId}-${pageId}`, name: 'Nulastin' }],
             }
 
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <Meta
                         via="facebook"
@@ -430,12 +431,12 @@ describe('ticket message meta', () => {
                         source={source}
                         messageId={`${postId}_${commentId}`}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(container.textContent).toBe('go to comment')
             expect(container.querySelector('a')?.href).toBe(
-                `https://facebook.com/${feedId}/posts/${postId}?comment_id=${commentId}`
+                `https://facebook.com/${feedId}/posts/${postId}?comment_id=${commentId}`,
             )
         })
 
@@ -452,12 +453,12 @@ describe('ticket message meta', () => {
                     parent_id: `${postId}_${commentId}`,
                     permalink: 'https://facebook.com/permalink',
                 },
-                from: {address: `${pageId}-${pageId}`, name: 'Nulastin'},
+                from: { address: `${pageId}-${pageId}`, name: 'Nulastin' },
                 type: TicketMessageSourceType.FacebookMentionComment,
-                to: [{address: `${pageId}-${pageId}`, name: 'Nulastin'}],
+                to: [{ address: `${pageId}-${pageId}`, name: 'Nulastin' }],
             }
 
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <Meta
                         via="facebook"
@@ -465,12 +466,12 @@ describe('ticket message meta', () => {
                         source={source}
                         messageId={`${commentId}_${replyId}`}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(container.textContent).toBe('go to reply')
             expect(container.querySelector('a')?.href).toBe(
-                `https://facebook.com/${feedId}/posts/${postId}?comment_id=${commentId}&reply_comment_id=${replyId}`
+                `https://facebook.com/${feedId}/posts/${postId}?comment_id=${commentId}&reply_comment_id=${replyId}`,
             )
         })
     })
@@ -479,16 +480,16 @@ describe('ticket message meta', () => {
         it('should display "go to media" link', () => {
             const permalink = 'https://www.instagram.com/p/B_V7_Znngrv/'
             const source = {
-                from: {name: 'trudoglife', address: 'trudoglife'},
-                to: [{name: 'trudoglife', address: 'trudoglife'}],
-                extra: {media_id: '18101302111081366', permalink},
+                from: { name: 'trudoglife', address: 'trudoglife' },
+                to: [{ name: 'trudoglife', address: 'trudoglife' }],
+                extra: { media_id: '18101302111081366', permalink },
                 type: TicketMessageSourceType.InstagramMedia,
             }
 
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <Meta via="instagram" integrationId={118} source={source} />
-                </Provider>
+                </Provider>,
             )
 
             expect(container.textContent).toBe('go to media')
@@ -498,9 +499,9 @@ describe('ticket message meta', () => {
         it('should display "responded to via Messenger by" with ticket link', async () => {
             const permalink = 'https://www.instagram.com/p/B_V7_Znngrv/'
             const source = {
-                from: {name: 'trudoglife', address: 'trudoglife'},
-                to: [{name: 'trudoglife', address: 'trudoglife'}],
-                extra: {media_id: '18101302111081366', permalink},
+                from: { name: 'trudoglife', address: 'trudoglife' },
+                to: [{ name: 'trudoglife', address: 'trudoglife' }],
+                extra: { media_id: '18101302111081366', permalink },
                 type: TicketMessageSourceType.InstagramComment,
             }
 
@@ -511,7 +512,7 @@ describe('ticket message meta', () => {
                 },
             }
 
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <QueryClientProvider client={queryClient}>
                         <Meta
@@ -521,15 +522,15 @@ describe('ticket message meta', () => {
                             meta={meta}
                         />
                     </QueryClientProvider>
-                </Provider>
+                </Provider>,
             )
             await waitFor(() =>
                 expect(container.textContent).toContain(
-                    'responded to via Messenger'
-                )
+                    'responded to via Messenger',
+                ),
             )
             expect(container.querySelector('a')?.href).toBe(
-                `${window.location.href}3312`
+                `${window.location.href}3312`,
             )
         })
     })
@@ -545,27 +546,27 @@ describe('ticket message meta', () => {
                 const tweetId = '1399880580741935107'
                 const tweetPermalink = `https://twitter.com/${fromUsername}/status/${tweetId}`
                 const source = {
-                    from: {name: fromUsername, address: '12345'},
-                    to: [{name: fromUsername, address: '12345'}],
+                    from: { name: fromUsername, address: '12345' },
+                    to: [{ name: fromUsername, address: '12345' }],
                     extra: {
                         conversation_id: tweetId,
                     },
                     type: type,
                 }
 
-                const {container} = render(
+                const { container } = render(
                     <Provider store={store}>
                         <Meta
                             via={TicketChannel.Twitter}
                             integrationId={118}
                             source={source}
                         />
-                    </Provider>
+                    </Provider>,
                 )
 
                 expect(container.textContent).toBe('go to tweet')
                 expect(container.querySelector('a')?.href).toBe(tweetPermalink)
-            }
+            },
         )
 
         it('should display "replying to @twitter_handle - go to tweet" link', () => {
@@ -575,8 +576,8 @@ describe('ticket message meta', () => {
             const tweetPermalink = `https://twitter.com/${fromUsername}/status/${tweetId}`
             const toProfileLink = `https://twitter.com/${toUsername}`
             const source = {
-                from: {name: fromUsername, address: '12346'},
-                to: [{name: toUsername, address: '12345'}],
+                from: { name: fromUsername, address: '12346' },
+                to: [{ name: toUsername, address: '12345' }],
                 extra: {
                     parent_id: '1399880580741935107',
                     conversation_id: '1399880580741935107',
@@ -584,7 +585,7 @@ describe('ticket message meta', () => {
                 type: TicketMessageSourceType.TwitterTweet,
             }
 
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <Meta
                         externalId={tweetId}
@@ -592,11 +593,11 @@ describe('ticket message meta', () => {
                         integrationId={118}
                         source={source}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(container.textContent).toBe(
-                `replying to @${toUsername} - go to tweet`
+                `replying to @${toUsername} - go to tweet`,
             )
 
             const links = Array.from(container.querySelectorAll('a'))
@@ -612,8 +613,8 @@ describe('ticket message meta', () => {
             const tweetPermalink = `https://twitter.com/${fromUsername}/status/${tweetId}`
             const toProfileLink = `https://twitter.com/${toUsername}`
             const source = {
-                from: {name: fromUsername, address: '12346'},
-                to: [{name: toUsername, address: '12345'}],
+                from: { name: fromUsername, address: '12346' },
+                to: [{ name: toUsername, address: '12345' }],
                 extra: {
                     parent_id: '1399880580741935107',
                     conversation_id: '1399880580741935107',
@@ -633,7 +634,7 @@ describe('ticket message meta', () => {
                 },
             }
 
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <Meta
                         externalId={tweetId}
@@ -642,11 +643,11 @@ describe('ticket message meta', () => {
                         source={source}
                         meta={meta}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(container.textContent).toBe(
-                `retweeting @${toUsername} - go to tweet`
+                `retweeting @${toUsername} - go to tweet`,
             )
 
             const links = Array.from(container.querySelectorAll('a'))
@@ -658,7 +659,7 @@ describe('ticket message meta', () => {
 
     describe('live-chat-message', () => {
         it('should add a `from https://...` with because the message was sent via live chat', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <Meta
                         messageId="some-id"
@@ -669,7 +670,7 @@ describe('ticket message meta', () => {
                                 'https://gorgias.com/best-helpdesk-ever/',
                         }}
                     />
-                </Provider>
+                </Provider>,
             )
             expect(container.firstChild).toMatchSnapshot()
         })
@@ -677,7 +678,7 @@ describe('ticket message meta', () => {
 
     describe('chat-contact-form', () => {
         it('should add a `via contact form from https://...` because the message was sent via chat contact form', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <Meta
                         messageId="some-id"
@@ -685,20 +686,20 @@ describe('ticket message meta', () => {
                         integrationId={118}
                         source={{
                             type: TicketMessageSourceType.ChatContactForm,
-                            to: [{address: 'someAddress', name: 'someName'}],
+                            to: [{ address: 'someAddress', name: 'someName' }],
                         }}
                         meta={{
                             current_page:
                                 'https://gorgias.com/best-helpdesk-ever/',
                         }}
                     />
-                </Provider>
+                </Provider>,
             )
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should add a `via contact form` because the message was sent via chat contact form (but no current_url metadata)', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <Meta
                         messageId="some-id"
@@ -706,19 +707,19 @@ describe('ticket message meta', () => {
                         integrationId={118}
                         source={{
                             type: TicketMessageSourceType.ChatContactForm,
-                            to: [{address: 'someAddress', name: 'someName'}],
+                            to: [{ address: 'someAddress', name: 'someName' }],
                         }}
                         meta={{
                             current_page: undefined,
                         }}
                     />
-                </Provider>
+                </Provider>,
             )
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should add sms deflection details', () => {
-            const {getByText} = render(
+            const { getByText } = render(
                 <Provider store={store}>
                     <Meta
                         messageId="some-id"
@@ -726,17 +727,17 @@ describe('ticket message meta', () => {
                         integrationId={118}
                         source={{
                             type: TicketMessageSourceType.Sms,
-                            to: [{address: 'someAddress', name: 'someName'}],
+                            to: [{ address: 'someAddress', name: 'someName' }],
                         }}
                         meta={{
                             sms_deflection:
                                 'sent via: Fake phone integration Menu Option 123',
                         }}
                     />
-                </Provider>
+                </Provider>,
             )
             expect(
-                getByText('sent via: Fake phone integration Menu Option 123')
+                getByText('sent via: Fake phone integration Menu Option 123'),
             ).toBeInTheDocument()
         })
     })

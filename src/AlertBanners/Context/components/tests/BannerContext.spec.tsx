@@ -1,8 +1,9 @@
-import {render, screen} from '@testing-library/react'
-import React, {useContext} from 'react'
+import React, { useContext } from 'react'
 
-import {BannersContext, BannersDispatchContext} from '../../context'
-import {BannersContextProvider} from '../BannerContext'
+import { render, screen } from '@testing-library/react'
+
+import { BannersContext, BannersDispatchContext } from '../../context'
+import { BannersContextProvider } from '../BannerContext'
 
 describe('BannersContextProvider', () => {
     it('should render children', () => {
@@ -21,7 +22,7 @@ describe('BannersContextProvider', () => {
         render(
             <BannersContextProvider>
                 <MyComponent />
-            </BannersContextProvider>
+            </BannersContextProvider>,
         )
 
         expect(myContextSpy).toHaveBeenCalledWith([], expect.any(Function))

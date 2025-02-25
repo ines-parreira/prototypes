@@ -1,9 +1,10 @@
-import {Label} from '@gorgias/merchant-ui-kit'
+import React, { PropsWithChildren, useRef, useState } from 'react'
+
 import classnames from 'classnames'
-import React, {PropsWithChildren, useRef, useState} from 'react'
 
-import {BigCommerceProductSwatchModifier} from 'models/integration/types'
+import { Label } from '@gorgias/merchant-ui-kit'
 
+import { BigCommerceProductSwatchModifier } from 'models/integration/types'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
@@ -11,11 +12,12 @@ import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 
+import { FieldProps } from './types'
+
 import css from './ModifierSwatch.less'
 import sharedCss from './Shared.less'
-import {FieldProps} from './types'
 
-const ColorLabelContainer = ({children}: PropsWithChildren<unknown>) => (
+const ColorLabelContainer = ({ children }: PropsWithChildren<unknown>) => (
     <div className={css.colorLabelContainer}>{children}</div>
 )
 
@@ -46,7 +48,7 @@ const ColorLabel = ({
             <ColorLabelContainer>
                 <div
                     className={css.color}
-                    style={{backgroundColor: valueData.colors[0]}}
+                    style={{ backgroundColor: valueData.colors[0] }}
                 />
                 <span>{label}</span>
             </ColorLabelContainer>
@@ -59,11 +61,11 @@ const ColorLabel = ({
                 <div className={css.color}>
                     <div
                         className={classnames(css.twoColor, css.extraColors)}
-                        style={{backgroundColor: valueData.colors[0]}}
+                        style={{ backgroundColor: valueData.colors[0] }}
                     />
                     <div
                         className={classnames(css.twoColor, css.extraColors)}
-                        style={{backgroundColor: valueData.colors[1]}}
+                        style={{ backgroundColor: valueData.colors[1] }}
                     />
                 </div>
                 <span>{label}</span>
@@ -77,15 +79,15 @@ const ColorLabel = ({
                 <div className={css.color}>
                     <div
                         className={classnames(css.threeColor, css.extraColors)}
-                        style={{backgroundColor: valueData.colors[0]}}
+                        style={{ backgroundColor: valueData.colors[0] }}
                     />
                     <div
                         className={classnames(css.threeColor, css.extraColors)}
-                        style={{backgroundColor: valueData.colors[1]}}
+                        style={{ backgroundColor: valueData.colors[1] }}
                     />
                     <div
                         className={classnames(css.threeColor, css.extraColors)}
-                        style={{backgroundColor: valueData.colors[2]}}
+                        style={{ backgroundColor: valueData.colors[2] }}
                     />
                 </div>
                 <span>{label}</span>
@@ -107,7 +109,7 @@ export const ModifierSwatch = ({
 
     const [isSelectOpen, setIsSelectOpen] = useState(false)
 
-    const label = modifier.option_values.find(({id}) => id === value)?.label
+    const label = modifier.option_values.find(({ id }) => id === value)?.label
     const hasError = Boolean(error)
 
     return (
@@ -144,7 +146,7 @@ export const ModifierSwatch = ({
                                         onClick={() =>
                                             onSetValue(
                                                 modifier.id,
-                                                optionValue.id
+                                                optionValue.id,
                                             )
                                         }
                                     >

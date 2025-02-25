@@ -1,14 +1,17 @@
-import {OrderDirection} from 'models/api/types'
-import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
-import {TicketDimension, TicketMember} from 'models/reporting/cubes/TicketCube'
+import { OrderDirection } from 'models/api/types'
+import { HelpdeskMessageCubeWithJoins } from 'models/reporting/cubes/HelpdeskMessageCube'
+import {
+    TicketDimension,
+    TicketMember,
+} from 'models/reporting/cubes/TicketCube'
 import {
     TicketCustomFieldsCube,
     TicketCustomFieldsDimension,
     TicketCustomFieldsMeasure,
     TicketCustomFieldsMember,
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
-import {TicketSatisfactionSurveyDimension} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
-import {customerSatisfactionMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
+import { TicketSatisfactionSurveyDimension } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
+import { customerSatisfactionMetricPerAgentQueryFactory } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
 import {
     deduplicateCustomFields,
     injectDrillDownCustomFieldId,
@@ -20,7 +23,7 @@ import {
     ReportingQuery,
     TimeSeriesQuery,
 } from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import { StatsFilters } from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
@@ -36,7 +39,7 @@ export const customFieldsTicketCountQueryFactory = (
     timezone: string,
     customFieldId: string,
     sorting?: OrderDirection,
-    additionalFilters?: ReportingFilter[]
+    additionalFilters?: ReportingFilter[],
 ): ReportingQuery<TicketCustomFieldsCube> => ({
     measures: [TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount],
     dimensions: [TicketCustomFieldsDimension.TicketCustomFieldsValueString],
@@ -78,17 +81,17 @@ export const customFieldsTicketCountPerTicketDrillDownQueryFactory = (
     customFieldId: string,
     customFieldsValueStrings: string[] | null,
     customFieldPeriod: StatsFilters['period'],
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
     const baseQuery = customFieldsTicketCountQueryFactory(
         injectDrillDownCustomFieldId(
             filters,
             Number(customFieldId),
-            customFieldsValueStrings
+            customFieldsValueStrings,
         ),
         timezone,
         customFieldId,
-        sorting
+        sorting,
     )
 
     return {
@@ -98,7 +101,7 @@ export const customFieldsTicketCountPerTicketDrillDownQueryFactory = (
             ...baseQuery.filters.filter(
                 (filter) =>
                     filter.member !==
-                    TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime
+                    TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime,
             ),
             {
                 member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime,
@@ -123,7 +126,7 @@ export const customFieldsTicketCountPerIntentLevelPerTicketDrillDownQueryFactory
         customFieldId: string,
         customFieldsValueStrings: string[] | null,
         customFieldPeriod: StatsFilters['period'],
-        sorting?: OrderDirection
+        sorting?: OrderDirection,
     ): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
         return {
             measures: [],
@@ -133,7 +136,7 @@ export const customFieldsTicketCountPerIntentLevelPerTicketDrillDownQueryFactory
                 ...NotSpamNorTrashedTicketsFilter,
                 ...statsFiltersToReportingFilters(
                     TicketStatsFiltersMembers,
-                    filters
+                    filters,
                 ),
                 {
                     member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
@@ -154,10 +157,10 @@ export const customFieldsTicketCountPerIntentLevelPerTicketDrillDownQueryFactory
                     operator: ReportingFilterOperator.InDateRange,
                     values: [
                         formatReportingQueryDate(
-                            customFieldPeriod.start_datetime
+                            customFieldPeriod.start_datetime,
                         ),
                         formatReportingQueryDate(
-                            customFieldPeriod.end_datetime
+                            customFieldPeriod.end_datetime,
                         ),
                     ],
                 },
@@ -175,20 +178,20 @@ export const coverageRateTicketDrillDownQueryFactory = (
     customFieldId: string,
     customFieldsValueStrings: string[] | null,
     customFieldPeriod: StatsFilters['period'],
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
     const baseQuery = customFieldsTicketCountQueryFactory(
         filters,
         timezone,
         customFieldId,
-        sorting
+        sorting,
     )
 
     const queryFilters = [
         ...baseQuery.filters.filter(
             (filter) =>
                 filter.member !==
-                TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime
+                TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime,
         ),
         {
             member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime,
@@ -215,12 +218,12 @@ export const aiInsightsCustomerSatisfactionMetricDrillDownQueryFactory = (
     timezone: string,
     customFieldId: string,
     perAgentId: string | null,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
     const baseQuery = customerSatisfactionMetricPerAgentQueryFactory(
         filters,
         timezone,
-        sorting
+        sorting,
     )
 
     return {
@@ -269,13 +272,13 @@ export const customFieldsTicketCountTimeSeriesQueryFactory = (
     timezone: string,
     granularity: ReportingGranularity,
     customFieldId: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ): TimeSeriesQuery<HelpdeskMessageCubeWithJoins> => ({
     ...customFieldsTicketCountQueryFactory(
         filters,
         timezone,
         customFieldId,
-        sorting
+        sorting,
     ),
     timeDimensions: [
         {
@@ -292,7 +295,7 @@ export const customFieldsTicketTotalCountQueryFactory = (
     filters: StatsFilters,
     timezone: string,
     customFieldId: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ): ReportingQuery<TicketCustomFieldsCube> => ({
     measures: [TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount],
     dimensions: [],
@@ -332,7 +335,7 @@ export const customFieldsTicketFactory = (
     timezone: string,
     customFieldId: string,
     additionalFilter?: ReportingFilter,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
     measures: [TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount],
     dimensions: [TicketDimension.TicketId],

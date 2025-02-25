@@ -1,14 +1,14 @@
-import classNames from 'classnames'
 import React from 'react'
-import {Label} from 'reactstrap'
 
-import {FormField} from 'core/forms'
-import {PhoneRingingBehaviour} from 'models/integration/types'
+import classNames from 'classnames'
+import { Label } from 'reactstrap'
+
+import { FormField } from 'core/forms'
+import { PhoneRingingBehaviour } from 'models/integration/types'
 import CheckBoxField from 'pages/common/forms/CheckBoxField'
 import RadioButtonField from 'pages/common/forms/RadioButtonField'
-
 import settingsCss from 'pages/settings/settings.less'
-import {HintTooltip} from 'pages/stats/common/HintTooltip'
+import { HintTooltip } from 'pages/stats/common/HintTooltip'
 
 import {
     RING_TIME_MAX_VALUE,
@@ -18,8 +18,9 @@ import {
     WAIT_TIME_MIN_VALUE,
     WAIT_TIME_VALIDATION_ERROR,
 } from './constants'
-import css from './VoiceIntegrationPreferences.less'
 import VoiceIntegrationPreferencesTeamSelect from './VoiceIntegrationPreferencesTeamSelect'
+
+import css from './VoiceIntegrationPreferences.less'
 
 type Props = {
     isIvr: boolean
@@ -33,7 +34,7 @@ export default function VoiceIntegrationPreferencesInboundCalls({
             <h2
                 className={classNames(
                     settingsCss.headingSection,
-                    css.sectionHeader
+                    css.sectionHeader,
                 )}
             >
                 Inbound calls

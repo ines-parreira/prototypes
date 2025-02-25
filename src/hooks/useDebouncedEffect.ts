@@ -1,4 +1,4 @@
-import {DependencyList, useEffect} from 'react'
+import { DependencyList, useEffect } from 'react'
 
 import useDebouncedCallback from './useDebouncedCallback'
 
@@ -16,7 +16,7 @@ export default function useDebouncedEffect(
     callback: (...args: any[]) => unknown,
     deps: DependencyList,
     delay: number,
-    maxWait = 0
+    maxWait = 0,
 ): void {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(useDebouncedCallback(callback, delay, maxWait), deps)

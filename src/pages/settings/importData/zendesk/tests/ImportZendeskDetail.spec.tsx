@@ -1,13 +1,14 @@
-import {render, RenderResult, fireEvent} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { fireEvent, render, RenderResult } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import * as ReactRouterDom from 'react-router-dom'
 
-import {mockStore} from 'utils/testing'
+import { mockStore } from 'utils/testing'
 
-import {ImportZendeskDetail} from '../ImportZendeskDetail'
-import {successImport} from './fixtures'
+import { ImportZendeskDetail } from '../ImportZendeskDetail'
+import { successImport } from './fixtures'
 
 jest.mock(
     'react-router',
@@ -15,14 +16,16 @@ jest.mock(
         ({
             ...jest.requireActual('react-router'),
             useParams: jest.fn(),
-        }) as Record<string, any>
+        }) as Record<string, any>,
 )
 const mockUseParams = jest.spyOn(ReactRouterDom, 'useParams')
 
 const renderComponent = (
-    props: ComponentProps<typeof ImportZendeskDetail> & {integrationId?: string}
+    props: ComponentProps<typeof ImportZendeskDetail> & {
+        integrationId?: string
+    },
 ): RenderResult => {
-    mockUseParams.mockReturnValue({integrationId: props.integrationId || '1'})
+    mockUseParams.mockReturnValue({ integrationId: props.integrationId || '1' })
 
     return render(
         <Provider
@@ -31,14 +34,14 @@ const renderComponent = (
             } as any)}
         >
             <ImportZendeskDetail {...props} />
-        </Provider>
+        </Provider>,
     )
 }
 
 describe('<ImportZendeskDetail/>', () => {
     describe('rendering', () => {
         it('should display the popover', () => {
-            const {getByText} = renderComponent({
+            const { getByText } = renderComponent({
                 fetchIntegration: jest.fn(),
                 updateOrCreateIntegration: jest.fn(),
                 integrations: [successImport],
@@ -57,13 +60,13 @@ describe('<ImportZendeskDetail/>', () => {
                 loading: false,
             } as any
 
-            const {getByText, rerender} = renderComponent(props)
+            const { getByText, rerender } = renderComponent(props)
             fireEvent.click(getByText('Resume'))
             expect(updateIntegrationMock).toBeCalledWith(
                 fromJS({
                     id: 1,
-                    meta: {continuous_import_enabled: true},
-                })
+                    meta: { continuous_import_enabled: true },
+                }),
             )
             rerender(
                 <Provider
@@ -85,7 +88,7 @@ describe('<ImportZendeskDetail/>', () => {
                             ],
                         }}
                     />
-                </Provider>
+                </Provider>,
             )
             expect(getByText('Pause')).toBeDefined()
         })

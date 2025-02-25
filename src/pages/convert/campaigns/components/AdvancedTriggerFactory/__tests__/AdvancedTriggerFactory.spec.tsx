@@ -4,14 +4,14 @@ import {
     useProductsFromShopifyIntegration,
     useShopifyTags,
 } from 'models/integration/queries'
-import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
-import {AdvancedTriggerFactory} from 'pages/convert/campaigns/components/AdvancedTriggerFactory/AdvancedTriggerFactory'
-import {TRIGGERS_CONFIG} from 'pages/convert/campaigns/constants/triggers'
-import {useIntegrationContext} from 'pages/convert/campaigns/containers/IntegrationProvider'
-import {useTriggers} from 'pages/convert/campaigns/containers/TriggersProvider'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
-import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
+import { AdvancedTriggerFactory } from 'pages/convert/campaigns/components/AdvancedTriggerFactory/AdvancedTriggerFactory'
+import { TRIGGERS_CONFIG } from 'pages/convert/campaigns/constants/triggers'
+import { useIntegrationContext } from 'pages/convert/campaigns/containers/IntegrationProvider'
+import { useTriggers } from 'pages/convert/campaigns/containers/TriggersProvider'
+import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('pages/convert/campaigns/containers/TriggersProvider')
 const useTriggersMock = assumeMock(useTriggers)
@@ -22,7 +22,7 @@ const useIsConvertSubscriberMock = assumeMock(useIsConvertSubscriber)
 jest.mock('models/integration/queries')
 const useShopifyTagsMock = assumeMock(useShopifyTags)
 const useProductsFromShopifyIntegrationMock = assumeMock(
-    useProductsFromShopifyIntegration
+    useProductsFromShopifyIntegration,
 )
 
 jest.mock('pages/convert/campaigns/containers/IntegrationProvider')
@@ -43,9 +43,9 @@ describe('AdvancedTriggerFactory', () => {
             onDeleteTrigger: jest.fn(),
             onTriggerValidationUpdate: jest.fn(),
         })
-        useShopifyTagsMock.mockReturnValue({data: ['tag1']} as any)
+        useShopifyTagsMock.mockReturnValue({ data: ['tag1'] } as any)
         integrationContextMock.mockReturnValue({
-            shopifyIntegration: {id: 1},
+            shopifyIntegration: { id: 1 },
         } as any)
         useProductsFromShopifyIntegrationMock.mockReturnValue({
             data: [
@@ -72,19 +72,19 @@ describe('AdvancedTriggerFactory', () => {
                 value: TRIGGERS_CONFIG[type].defaults.value,
                 type,
             }
-            const {queryAllByText} = renderWithQueryClientProvider(
-                <AdvancedTriggerFactory id="1" trigger={trigger} />
+            const { queryAllByText } = renderWithQueryClientProvider(
+                <AdvancedTriggerFactory id="1" trigger={trigger} />,
             )
 
             if (TRIGGERS_CONFIG[type].requirements.hidden) {
-                expect(queryAllByText(expectedLabel, {exact: false})).toEqual(
-                    []
+                expect(queryAllByText(expectedLabel, { exact: false })).toEqual(
+                    [],
                 )
             } else {
                 expect(
-                    queryAllByText(expectedLabel, {exact: false})
+                    queryAllByText(expectedLabel, { exact: false }),
                 ).not.toEqual([])
             }
-        }
+        },
     )
 })

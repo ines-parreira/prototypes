@@ -1,4 +1,4 @@
-import {Article, CreateArticleDto} from 'models/helpCenter/types'
+import { Article, CreateArticleDto } from 'models/helpCenter/types'
 
 import {
     isExistingArticle,
@@ -35,7 +35,7 @@ export type ArticleMode =
     | ArticleModeUnchangedNotPublished
 
 export const canDelete = (
-    mode: ArticleMode
+    mode: ArticleMode,
 ): mode is
     | ArticleModeUnchangedPublished
     | ArticleModeModified
@@ -47,16 +47,16 @@ export const getArticleMode = (
     handlers: {
         createArticle: (
             article: CreateArticleDto | Article | null,
-            isPublished: boolean
+            isPublished: boolean,
         ) => Promise<void>
         deleteArticle: () => Promise<void>
         updateArticle: (
             article: Article | null,
-            isPublished: boolean
+            isPublished: boolean,
         ) => Promise<void>
-    }
+    },
 ): ArticleMode => {
-    const {createArticle, deleteArticle, updateArticle} = handlers
+    const { createArticle, deleteArticle, updateArticle } = handlers
 
     if (!isExistingArticle(article)) {
         return {

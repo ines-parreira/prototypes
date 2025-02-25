@@ -1,62 +1,64 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 import _noop from 'lodash/noop'
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
-import {useHistory, useParams} from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     useGetStoreWorkflowsConfigurations,
     useGetWorkflowConfigurationTemplates,
     useListActionsApps,
 } from 'models/workflows/queries'
-import {AiAgentLayout} from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
-import {ACTIONS, AI_AGENT} from 'pages/aiAgent/constants'
-import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
+import { ACTIONS, AI_AGENT } from 'pages/aiAgent/constants'
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import ActionsPlatformTemplateVisualBuilderView from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateVisualBuilderView'
 import useValidateOnVisualBuilderGraphChange from 'pages/automate/actionsPlatform/hooks/useValidateOnVisualBuilderGraphChange'
 import {
     useVisualBuilder,
     VisualBuilderContext,
 } from 'pages/automate/workflows/hooks/useVisualBuilder'
-import {useVisualBuilderGraphReducer} from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
-import {computeNodesPositions} from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer/utils'
+import { useVisualBuilderGraphReducer } from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
+import { computeNodesPositions } from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer/utils'
 import {
     areGraphsEqual,
     transformVisualBuilderGraphIntoWfConfiguration,
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import {LLMPromptTriggerNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import {transformWorkflowConfigurationIntoVisualBuilderGraph} from 'pages/automate/workflows/models/workflowConfiguration.model'
-import {WorkflowConfiguration} from 'pages/automate/workflows/models/workflowConfiguration.types'
+import { LLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { transformWorkflowConfigurationIntoVisualBuilderGraph } from 'pages/automate/workflows/models/workflowConfiguration.model'
+import { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {ConfirmModalAction} from 'pages/common/components/ConfirmModalAction'
+import { ConfirmModalAction } from 'pages/common/components/ConfirmModalAction'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 import ActionFormView from './components/ActionFormView'
-import css from './CreateActionView.less'
 import use3plIntegrations from './hooks/use3plIntegrations'
 import useDeleteAction from './hooks/useDeleteAction'
 import useTouchActionGraph from './hooks/useTouchActionGraph'
 import useUpsertAction from './hooks/useUpsertAction'
 import useValidateActionGraph from './hooks/useValidateActionGraph'
 import StoreAppsProvider from './providers/StoreAppsProvider'
-import {StoreWorkflowsConfiguration} from './types'
+import { StoreWorkflowsConfiguration } from './types'
+
+import css from './CreateActionView.less'
 
 type Props = {
     configuration: WorkflowConfiguration
 }
 
-const EditActionView = ({configuration}: Props) => {
-    const {shopName, shopType} = useParams<{
+const EditActionView = ({ configuration }: Props) => {
+    const { shopName, shopType } = useParams<{
         shopName: string
         shopType: 'shopify'
     }>()
-    const {routes} = useAiAgentNavigation({shopName})
+    const { routes } = useAiAgentNavigation({ shopName })
     const {
         isLoading: isEditActionLoading,
         mutateAsync: editAction,
@@ -75,7 +77,7 @@ const EditActionView = ({configuration}: Props) => {
     const appDispatch = useAppDispatch()
     const history = useHistory()
 
-    const {data: steps = []} = useGetWorkflowConfigurationTemplates({
+    const { data: steps = [] } = useGetWorkflowConfigurationTemplates({
         triggers: ['reusable-llm-prompt'],
     })
     const [saveAndTestButtonRef, setSaveAndTestButtonRef] =
@@ -88,45 +90,45 @@ const EditActionView = ({configuration}: Props) => {
         computeNodesPositions(
             transformWorkflowConfigurationIntoVisualBuilderGraph<LLMPromptTriggerNodeType>(
                 configuration,
-                false
-            )
-        )
+                false,
+            ),
+        ),
     )
     const [visualBuilderGraph, setVisualBuilderGraph] = useState(
-        visualBuilderGraphDirty
+        visualBuilderGraphDirty,
     )
 
     const visualBuilderContextValue = useVisualBuilder(
         visualBuilderGraphDirty,
         dispatch,
         false,
-        availableIntegrations
+        availableIntegrations,
     )
 
     const isVisualBuilderGraphDirty = useMemo(
         () =>
             !areGraphsEqual(
                 visualBuilderContextValue.initialVisualBuilderGraph,
-                visualBuilderGraphDirty
+                visualBuilderGraphDirty,
             ),
         [
             visualBuilderContextValue.initialVisualBuilderGraph,
             visualBuilderGraphDirty,
-        ]
+        ],
     )
 
-    const {getVariableListForNode} = visualBuilderContextValue
+    const { getVariableListForNode } = visualBuilderContextValue
 
-    const {data: actions = []} = useGetStoreWorkflowsConfigurations({
+    const { data: actions = [] } = useGetStoreWorkflowsConfigurations({
         storeName: shopName,
         storeType: shopType,
         triggers: ['llm-prompt'],
     })
-    const {data: actionsApps = []} = useListActionsApps()
+    const { data: actionsApps = [] } = useListActionsApps()
 
     const handleValidate = useValidateActionGraph(
         getVariableListForNode,
-        actions
+        actions,
     )
     const handleTouch = useTouchActionGraph(actionsApps)
 
@@ -155,7 +157,7 @@ const EditActionView = ({configuration}: Props) => {
                     showDismissButton: true,
                     status: NotificationStatus.Error,
                     message: 'Fix errors in order to save Action',
-                })
+                }),
             )
 
             return Promise.reject()
@@ -166,7 +168,7 @@ const EditActionView = ({configuration}: Props) => {
                 visualBuilderGraphDirty,
                 false,
                 steps,
-                availableIntegrations
+                availableIntegrations,
             )
 
         await editAction([
@@ -201,7 +203,7 @@ const EditActionView = ({configuration}: Props) => {
     useEffect(() => {
         if (isEditActionSuccess) {
             history.push(
-                isSaveAndTestButtonClicked ? routes.test : routes.actions
+                isSaveAndTestButtonClicked ? routes.test : routes.actions,
             )
         }
     }, [isEditActionSuccess, isSaveAndTestButtonClicked, history, routes])
@@ -252,7 +254,7 @@ const EditActionView = ({configuration}: Props) => {
                         intent="secondary"
                         onClick={() => {
                             history.push(
-                                routes.actionEvents(visualBuilderGraphDirty.id)
+                                routes.actionEvents(visualBuilderGraphDirty.id),
                             )
                         }}
                     >

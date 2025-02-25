@@ -1,8 +1,9 @@
-import classnames from 'classnames'
 import React from 'react'
 
-import {useSavedSizes} from 'core/layout/panels'
-import {DEFAULT_WIDTH} from 'pages/common/components/infobar/InfobarLayout'
+import classnames from 'classnames'
+
+import { useSavedSizes } from 'core/layout/panels'
+import { DEFAULT_WIDTH } from 'pages/common/components/infobar/InfobarLayout'
 
 import css from './PhoneInfobarWrapper.less'
 
@@ -20,8 +21,8 @@ export default function PhoneInfobarWrapper({
 
     return (
         <div
-            style={{width: `${width}px`}}
-            className={classnames(css.container, {[css.primary]: primary})}
+            style={{ width: `${width}px` }}
+            className={classnames(css.container, { [css.primary]: primary })}
         >
             <div className={css.inner}>{children}</div>
         </div>

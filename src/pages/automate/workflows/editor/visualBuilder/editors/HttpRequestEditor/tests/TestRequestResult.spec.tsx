@@ -1,5 +1,6 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import TestRequestResult from '../TestRequestResult'
 
@@ -33,14 +34,14 @@ describe('<TestRequestResult />', () => {
                 onChangeVariable={jest.fn()}
                 onDeleteVariable={jest.fn()}
                 onAddVariable={jest.fn()}
-            />
+            />,
         )
 
         expect(screen.getByDisplayValue('filtered string')).toBeInTheDocument()
         expect(
             screen.getByDisplayValue(
-                '[{"name":"test","value":"filtered string"}]'
-            )
+                '[{"name":"test","value":"filtered string"}]',
+            ),
         ).toBeInTheDocument()
     })
 })

@@ -1,35 +1,35 @@
-import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import React, { ComponentProps } from 'react'
 
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {agents} from 'fixtures/agents'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-import {ReportingGranularity} from 'models/reporting/types'
-import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
-import {AgentsCellContent} from 'pages/stats/support-performance/agents/AgentsCellContent'
-import {AgentsHeaderCellContent} from 'pages/stats/support-performance/agents/AgentsHeaderCellContent'
-import {AgentsTableSummaryCell} from 'pages/stats/support-performance/agents/AgentsTableSummaryCell'
-import {AutoQAAgentsTable} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTable'
+import { agents } from 'fixtures/agents'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { ReportingGranularity } from 'models/reporting/types'
+import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
+import { AgentsCellContent } from 'pages/stats/support-performance/agents/AgentsCellContent'
+import { AgentsHeaderCellContent } from 'pages/stats/support-performance/agents/AgentsHeaderCellContent'
+import { AgentsTableSummaryCell } from 'pages/stats/support-performance/agents/AgentsTableSummaryCell'
+import { AutoQAAgentsTable } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTable'
 import {
     AUTO_QA_AGENTS_TABLE_DIMENSIONS_COLUMNS_ORDER,
     AutoQAAgentsTableColumn,
     getColumnWidth,
     TableLabels,
 } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
-import {getPageStatsFilters} from 'state/stats/selectors'
-import {RootState, StoreDispatch} from 'state/types'
+import { getPageStatsFilters } from 'state/stats/selectors'
+import { RootState, StoreDispatch } from 'state/types'
 import {
+    getHeatmapMode,
     getPaginatedAutoQAAgents,
     getSortedAutoQAAgents,
-    pageSet,
-    getHeatmapMode,
     isSortingMetricLoading,
+    pageSet,
 } from 'state/ui/stats/autoQAAgentPerformanceSlice'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -42,7 +42,7 @@ jest.mock(
             getPaginatedAutoQAAgents: jest.fn(),
             getHeatmapMode: jest.fn(),
             isSortingMetricLoading: jest.fn(),
-        }) as Record<string, any>
+        }) as Record<string, any>,
 )
 jest.mock(
     'state/stats/selectors',
@@ -50,7 +50,7 @@ jest.mock(
         ({
             ...jest.requireActual('state/stats/selectors'),
             getPageStatsFilters: jest.fn(),
-        }) as Record<string, any>
+        }) as Record<string, any>,
 )
 jest.mock('pages/stats/DrillDownModalTrigger.tsx', () => ({
     DrillDownModalTrigger: ({
@@ -112,7 +112,7 @@ describe('<AutoQAAgentsTable />', () => {
         render(
             <Provider store={mockStore({})}>
                 <AutoQAAgentsTable />
-            </Provider>
+            </Provider>,
         )
 
         const tableColumns = AUTO_QA_AGENTS_TABLE_DIMENSIONS_COLUMNS_ORDER
@@ -123,7 +123,7 @@ describe('<AutoQAAgentsTable />', () => {
                 expect.objectContaining({
                     title: TableLabels[column],
                 }),
-                {}
+                {},
             )
         })
 
@@ -131,7 +131,7 @@ describe('<AutoQAAgentsTable />', () => {
             expect.objectContaining({
                 agent: paginatedAgents[0],
             }),
-            {}
+            {},
         )
     })
 
@@ -139,11 +139,11 @@ describe('<AutoQAAgentsTable />', () => {
         render(
             <Provider store={mockStore({})}>
                 <AutoQAAgentsTable />
-            </Provider>
+            </Provider>,
         )
         act(() => {
             const tableRow = document.getElementsByClassName('container')[0]
-            fireEvent.scroll(tableRow, {target: {scrollLeft: 50}})
+            fireEvent.scroll(tableRow, { target: { scrollLeft: 50 } })
         })
 
         await waitFor(() => {
@@ -155,11 +155,11 @@ describe('<AutoQAAgentsTable />', () => {
         render(
             <Provider store={mockStore({})}>
                 <AutoQAAgentsTable />
-            </Provider>
+            </Provider>,
         )
         act(() => {
             const tableRow = document.getElementsByClassName('container')[0]
-            fireEvent.scroll(tableRow, {target: {scrollLeft: 0}})
+            fireEvent.scroll(tableRow, { target: { scrollLeft: 0 } })
         })
 
         await waitFor(() => {
@@ -172,7 +172,7 @@ describe('<AutoQAAgentsTable />', () => {
             render(
                 <Provider store={mockStore({})}>
                     <AutoQAAgentsTable />
-                </Provider>
+                </Provider>,
             )
 
             expect(screen.getByText(currentPage)).toBeInTheDocument()
@@ -189,7 +189,7 @@ describe('<AutoQAAgentsTable />', () => {
             render(
                 <Provider store={mockStore({})}>
                     <AutoQAAgentsTable />
-                </Provider>
+                </Provider>,
             )
 
             expect(screen.queryByText(currentPage)).not.toBeInTheDocument()
@@ -208,7 +208,7 @@ describe('<AutoQAAgentsTable />', () => {
             render(
                 <Provider store={store}>
                     <AutoQAAgentsTable />
-                </Provider>
+                </Provider>,
             )
             act(() => {
                 const pageButton = screen.getByText(pageToClick)
@@ -240,12 +240,12 @@ describe('<AutoQAAgentsTable />', () => {
             }) => {
                 global.innerWidth = screenResolution
                 expect(
-                    getColumnWidth(AutoQAAgentsTableColumn.AgentName)
+                    getColumnWidth(AutoQAAgentsTableColumn.AgentName),
                 ).toEqual(expectedAgentsWidth)
                 expect(
-                    getColumnWidth(AutoQAAgentsTableColumn.CommunicationSkills)
+                    getColumnWidth(AutoQAAgentsTableColumn.CommunicationSkills),
                 ).toEqual(expectedOtherColumnsWidth)
-            }
+            },
         )
     })
 })

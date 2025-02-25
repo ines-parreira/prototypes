@@ -10,16 +10,16 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "article_ingestion_log_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
-                "responses": {"204": {"description": ""}},
+                "responses": { "204": { "description": "" } },
                 "tags": ["article-ingestion"]
             }
         },
@@ -32,20 +32,23 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "account_id",
                         "required": false,
                         "in": "query",
-                        "schema": {"type": "string"}
+                        "schema": { "type": "string" }
                     },
                     {
                         "name": "ids",
                         "required": false,
                         "in": "query",
                         "description": "List of numeric ids in the form ids=1&ids=2...",
-                        "schema": {"type": "array", "items": {"type": "number"}}
+                        "schema": {
+                            "type": "array",
+                            "items": { "type": "number" }
+                        }
                     }
                 ],
                 "responses": {
@@ -75,7 +78,7 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "requestBody": {
@@ -88,7 +91,7 @@
                         }
                     }
                 },
-                "responses": {"201": {"description": ""}},
+                "responses": { "201": { "description": "" } },
                 "tags": ["article-ingestion"]
             }
         },
@@ -107,7 +110,7 @@
                         }
                     }
                 },
-                "responses": {"201": {"description": ""}},
+                "responses": { "201": { "description": "" } },
                 "tags": ["article-ingestion"]
             }
         },
@@ -120,13 +123,13 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "category_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "locale",
@@ -168,13 +171,16 @@
                         "required": false,
                         "in": "query",
                         "description": "List of numeric ids in the form ids=1&ids=2...",
-                        "schema": {"type": "array", "items": {"type": "number"}}
+                        "schema": {
+                            "type": "array",
+                            "items": { "type": "number" }
+                        }
                     },
                     {
                         "name": "order_by",
                         "required": false,
                         "in": "query",
-                        "schema": {"enum": ["position"], "type": "string"}
+                        "schema": { "enum": ["position"], "type": "string" }
                     },
                     {
                         "name": "order_dir",
@@ -223,16 +229,16 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "category_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
-                "responses": {"200": {"description": ""}},
+                "responses": { "200": { "description": "" } },
                 "tags": ["articles"]
             }
         },
@@ -245,13 +251,13 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "category_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "responses": {
@@ -261,7 +267,7 @@
                             "application/json": {
                                 "schema": {
                                     "type": "array",
-                                    "items": {"type": "number"}
+                                    "items": { "type": "number" }
                                 }
                             }
                         }
@@ -278,13 +284,13 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "category_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "requestBody": {
@@ -293,7 +299,7 @@
                         "application/json": {
                             "schema": {
                                 "type": "array",
-                                "items": {"type": "number"}
+                                "items": { "type": "number" }
                             }
                         }
                     }
@@ -305,7 +311,7 @@
                             "application/json": {
                                 "schema": {
                                     "type": "array",
-                                    "items": {"type": "number"}
+                                    "items": { "type": "number" }
                                 }
                             }
                         }
@@ -324,13 +330,13 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "has_category",
                         "required": false,
                         "in": "query",
-                        "schema": {"type": "boolean"}
+                        "schema": { "type": "boolean" }
                     },
                     {
                         "name": "locale",
@@ -372,13 +378,16 @@
                         "required": false,
                         "in": "query",
                         "description": "List of numeric ids in the form ids=1&ids=2...",
-                        "schema": {"type": "array", "items": {"type": "number"}}
+                        "schema": {
+                            "type": "array",
+                            "items": { "type": "number" }
+                        }
                     },
                     {
                         "name": "order_by",
                         "required": false,
                         "in": "query",
-                        "schema": {"enum": ["position"], "type": "string"}
+                        "schema": { "enum": ["position"], "type": "string" }
                     },
                     {
                         "name": "order_dir",
@@ -428,7 +437,7 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "requestBody": {
@@ -465,7 +474,7 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "responses": {
@@ -475,7 +484,7 @@
                             "application/json": {
                                 "schema": {
                                     "type": "array",
-                                    "items": {"type": "number"}
+                                    "items": { "type": "number" }
                                 }
                             }
                         }
@@ -492,7 +501,7 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "requestBody": {
@@ -501,7 +510,7 @@
                         "application/json": {
                             "schema": {
                                 "type": "array",
-                                "items": {"type": "number"}
+                                "items": { "type": "number" }
                             }
                         }
                     }
@@ -513,7 +522,7 @@
                             "application/json": {
                                 "schema": {
                                     "type": "array",
-                                    "items": {"type": "number"}
+                                    "items": { "type": "number" }
                                 }
                             }
                         }
@@ -531,13 +540,13 @@
                         "name": "id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "version_status",
@@ -579,7 +588,7 @@
                         "required": false,
                         "in": "query",
                         "description": "When true, if the translation for the requested\n    `locale` can't be found, the response will include a fallback translation.\n\n    If the requested resource exists in help center's default locale, that's the\n    one that'll be returned. Otherwise the first available translation will be returned.\n\n    The response will include the property `locale_fallback` that gives details\n    on how the fallback was chosen.",
-                        "schema": {"type": "boolean"}
+                        "schema": { "type": "boolean" }
                     }
                 ],
                 "responses": {
@@ -604,13 +613,13 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "requestBody": {
@@ -645,16 +654,16 @@
                         "name": "id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
-                "responses": {"200": {"description": ""}},
+                "responses": { "200": { "description": "" } },
                 "tags": ["articles"]
             }
         },
@@ -667,13 +676,13 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "article_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "version_status",
@@ -722,13 +731,13 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "article_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "requestBody": {
@@ -765,19 +774,19 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "article_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "locale",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "string"}
+                        "schema": { "type": "string" }
                     }
                 ],
                 "requestBody": {
@@ -813,22 +822,22 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "article_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "locale",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "string"}
+                        "schema": { "type": "string" }
                     }
                 ],
-                "responses": {"200": {"description": ""}},
+                "responses": { "200": { "description": "" } },
                 "tags": ["article-translations"]
             }
         },
@@ -841,19 +850,19 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "article_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "locale",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "string"}
+                        "schema": { "type": "string" }
                     }
                 ],
                 "requestBody": {
@@ -890,25 +899,25 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "article_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "locale",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "string"}
+                        "schema": { "type": "string" }
                     },
                     {
                         "name": "ratingId",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "requestBody": {
@@ -943,16 +952,16 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "ratingId",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
-                "responses": {"200": {"description": ""}},
+                "responses": { "200": { "description": "" } },
                 "tags": ["article-translation-rating"]
             }
         },
@@ -994,32 +1003,32 @@
                         "name": "subdomain",
                         "required": false,
                         "in": "query",
-                        "schema": {"type": "string"}
+                        "schema": { "type": "string" }
                     },
                     {
                         "name": "custom_domain",
                         "required": false,
                         "in": "query",
-                        "schema": {"type": "string"}
+                        "schema": { "type": "string" }
                     },
                     {
                         "name": "shop_name",
                         "required": false,
                         "in": "query",
-                        "schema": {"type": "string"}
+                        "schema": { "type": "string" }
                     },
                     {
                         "name": "account_id",
                         "required": false,
                         "in": "query",
-                        "schema": {"type": "string"}
+                        "schema": { "type": "string" }
                     },
                     {
                         "name": "with_wizard",
                         "required": false,
                         "in": "query",
                         "description": "Include the wizard in the response",
-                        "schema": {"type": "boolean"}
+                        "schema": { "type": "boolean" }
                     },
                     {
                         "name": "type",
@@ -1034,14 +1043,17 @@
                         "name": "active",
                         "required": false,
                         "in": "query",
-                        "schema": {"type": "boolean"}
+                        "schema": { "type": "boolean" }
                     },
                     {
                         "name": "fields",
                         "required": false,
                         "in": "query",
                         "description": "List of field names among `[translations, redirects]` in the form of `fields=name1&fields=name2`. If not provided, the default value will be `\"translations,redirects\"`",
-                        "schema": {"type": "array", "items": {"type": "string"}}
+                        "schema": {
+                            "type": "array",
+                            "items": { "type": "string" }
+                        }
                     },
                     {
                         "name": "per_page",
@@ -1083,13 +1095,13 @@
                         "name": "subdomain",
                         "required": false,
                         "in": "query",
-                        "schema": {"type": "string"}
+                        "schema": { "type": "string" }
                     },
                     {
                         "name": "custom_domain",
                         "required": false,
                         "in": "query",
-                        "schema": {"type": "string"}
+                        "schema": { "type": "string" }
                     }
                 ],
                 "responses": {
@@ -1116,10 +1128,10 @@
                         "name": "subdomain",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "string"}
+                        "schema": { "type": "string" }
                     }
                 ],
-                "responses": {"204": {"description": ""}},
+                "responses": { "204": { "description": "" } },
                 "tags": ["help-centers"]
             }
         },
@@ -1132,21 +1144,24 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "with_wizard",
                         "required": false,
                         "in": "query",
                         "description": "Include the wizard in the response",
-                        "schema": {"type": "boolean"}
+                        "schema": { "type": "boolean" }
                     },
                     {
                         "name": "fields",
                         "required": false,
                         "in": "query",
                         "description": "List of field names among `[translations, redirects]` in the form of `fields=name1&fields=name2`. If not provided, the default value will be `\"translations,redirects\"`",
-                        "schema": {"type": "array", "items": {"type": "string"}}
+                        "schema": {
+                            "type": "array",
+                            "items": { "type": "string" }
+                        }
                     }
                 ],
                 "responses": {
@@ -1171,7 +1186,7 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "requestBody": {
@@ -1206,10 +1221,10 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
-                "responses": {"200": {"description": ""}},
+                "responses": { "200": { "description": "" } },
                 "tags": ["help-centers"]
             }
         },
@@ -1222,14 +1237,17 @@
                         "name": "uid",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "string"}
+                        "schema": { "type": "string" }
                     },
                     {
                         "name": "fields",
                         "required": false,
                         "in": "query",
                         "description": "List of field names among `[translations, redirects]` in the form of `fields=name1&fields=name2`. If not provided, the default value will be `\"translations,redirects\"`",
-                        "schema": {"type": "array", "items": {"type": "string"}}
+                        "schema": {
+                            "type": "array",
+                            "items": { "type": "string" }
+                        }
                     }
                 ],
                 "responses": {
@@ -1262,7 +1280,7 @@
                         }
                     }
                 },
-                "responses": {"201": {"description": ""}},
+                "responses": { "201": { "description": "" } },
                 "tags": ["help-centers"]
             }
         },
@@ -1275,10 +1293,10 @@
                         "name": "shop_name",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "string"}
+                        "schema": { "type": "string" }
                     }
                 ],
-                "responses": {"201": {"description": ""}},
+                "responses": { "201": { "description": "" } },
                 "tags": ["help-centers"]
             }
         },
@@ -1292,7 +1310,7 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "responses": {
@@ -1319,7 +1337,7 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "responses": {
@@ -1344,7 +1362,7 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "requestBody": {
@@ -1381,7 +1399,7 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "responses": {
@@ -1411,7 +1429,7 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "per_page",
@@ -1450,7 +1468,7 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "requestBody": {
@@ -1487,13 +1505,13 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "locale",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "string"}
+                        "schema": { "type": "string" }
                     }
                 ],
                 "requestBody": {
@@ -1528,16 +1546,16 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "locale",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "string"}
+                        "schema": { "type": "string" }
                     }
                 ],
-                "responses": {"200": {"description": ""}},
+                "responses": { "200": { "description": "" } },
                 "tags": ["help-center-translations"]
             }
         },
@@ -1550,7 +1568,7 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "per_page",
@@ -1589,7 +1607,7 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "requestBody": {
@@ -1626,13 +1644,13 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "hostname",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "string"}
+                        "schema": { "type": "string" }
                     }
                 ],
                 "responses": {
@@ -1657,16 +1675,16 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "hostname",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "string"}
+                        "schema": { "type": "string" }
                     }
                 ],
-                "responses": {"200": {"description": ""}},
+                "responses": { "200": { "description": "" } },
                 "tags": ["custom-domains"]
             }
         },
@@ -1679,13 +1697,13 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "hostname",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "string"}
+                        "schema": { "type": "string" }
                     }
                 ],
                 "responses": {
@@ -1712,13 +1730,13 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "locale",
                         "required": true,
                         "in": "query",
-                        "schema": {"type": "string"}
+                        "schema": { "type": "string" }
                     }
                 ],
                 "responses": {
@@ -1745,13 +1763,13 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "locale",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "string"}
+                        "schema": { "type": "string" }
                     }
                 ],
                 "requestBody": {
@@ -1811,7 +1829,7 @@
                         "name": "locale",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "string"}
+                        "schema": { "type": "string" }
                     }
                 ],
                 "responses": {
@@ -1838,7 +1856,7 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "requestBody": {
@@ -1874,13 +1892,13 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "from",
                         "required": false,
                         "in": "query",
-                        "schema": {"type": "string"}
+                        "schema": { "type": "string" }
                     }
                 ],
                 "responses": {
@@ -1908,16 +1926,16 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "from",
                         "required": true,
                         "in": "query",
-                        "schema": {"type": "string"}
+                        "schema": { "type": "string" }
                     }
                 ],
-                "responses": {"200": {"description": ""}},
+                "responses": { "200": { "description": "" } },
                 "tags": ["redirects"]
             }
         },
@@ -1931,7 +1949,7 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "requestBody": {
@@ -1967,7 +1985,7 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "locale",
@@ -1998,13 +2016,13 @@
                         "name": "has_articles",
                         "required": false,
                         "in": "query",
-                        "schema": {"type": "boolean"}
+                        "schema": { "type": "boolean" }
                     },
                     {
                         "name": "order_by",
                         "required": false,
                         "in": "query",
-                        "schema": {"enum": ["position"], "type": "string"}
+                        "schema": { "enum": ["position"], "type": "string" }
                     },
                     {
                         "name": "order_dir",
@@ -2055,7 +2073,7 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "responses": {
@@ -2065,7 +2083,7 @@
                             "application/json": {
                                 "schema": {
                                     "type": "array",
-                                    "items": {"type": "number"}
+                                    "items": { "type": "number" }
                                 }
                             }
                         }
@@ -2082,7 +2100,7 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "requestBody": {
@@ -2091,7 +2109,7 @@
                         "application/json": {
                             "schema": {
                                 "type": "array",
-                                "items": {"type": "number"}
+                                "items": { "type": "number" }
                             }
                         }
                     }
@@ -2103,7 +2121,7 @@
                             "application/json": {
                                 "schema": {
                                     "type": "array",
-                                    "items": {"type": "number"}
+                                    "items": { "type": "number" }
                                 }
                             }
                         }
@@ -2121,13 +2139,13 @@
                         "name": "id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "locale",
@@ -2159,7 +2177,7 @@
                         "required": false,
                         "in": "query",
                         "description": "When true, if the translation for the requested\n    `locale` can't be found, the response will include a fallback translation.\n\n    If the requested resource exists in help center's default locale, that's the\n    one that'll be returned. Otherwise the first available translation will be returned.\n\n    The response will include the property `locale_fallback` that gives details\n    on how the fallback was chosen.",
-                        "schema": {"type": "boolean"}
+                        "schema": { "type": "boolean" }
                     }
                 ],
                 "responses": {
@@ -2184,16 +2202,16 @@
                         "name": "id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
-                "responses": {"200": {"description": ""}},
+                "responses": { "200": { "description": "" } },
                 "tags": ["categories"]
             }
         },
@@ -2206,13 +2224,13 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "category_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "per_page",
@@ -2252,13 +2270,13 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "category_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "requestBody": {
@@ -2296,19 +2314,19 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "category_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "locale",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "string"}
+                        "schema": { "type": "string" }
                     }
                 ],
                 "requestBody": {
@@ -2344,22 +2362,22 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "category_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "locale",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "string"}
+                        "schema": { "type": "string" }
                     }
                 ],
-                "responses": {"200": {"description": ""}},
+                "responses": { "200": { "description": "" } },
                 "tags": ["category-translations"]
             }
         },
@@ -2372,14 +2390,14 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "parent_category_id",
                         "required": true,
                         "in": "path",
                         "description": "The category id that will be used as the root node of the tree. If `0` is provided, the children will be the top level categories of the help center",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "locale",
@@ -2412,20 +2430,23 @@
                         "required": false,
                         "in": "query",
                         "description": "If not provided, all the category levels will be returned. If a negative number is provided, the whole tree will be returned",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "fields",
                         "required": false,
                         "in": "query",
                         "description": "List of field names among `[articles]` in the form of `fields=name1&fields=name2`. If not provided, the default value will be `\"\"`",
-                        "schema": {"type": "array", "items": {"type": "string"}}
+                        "schema": {
+                            "type": "array",
+                            "items": { "type": "string" }
+                        }
                     },
                     {
                         "name": "order_by",
                         "required": false,
                         "in": "query",
-                        "schema": {"enum": ["position"], "type": "string"}
+                        "schema": { "enum": ["position"], "type": "string" }
                     },
                     {
                         "name": "order_dir",
@@ -2463,13 +2484,13 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "parent_category_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "responses": {
@@ -2479,7 +2500,7 @@
                             "application/json": {
                                 "schema": {
                                     "type": "array",
-                                    "items": {"type": "number"}
+                                    "items": { "type": "number" }
                                 }
                             }
                         }
@@ -2496,13 +2517,13 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "parent_category_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "requestBody": {
@@ -2511,7 +2532,7 @@
                         "application/json": {
                             "schema": {
                                 "type": "array",
-                                "items": {"type": "number"}
+                                "items": { "type": "number" }
                             }
                         }
                     }
@@ -2523,7 +2544,7 @@
                             "application/json": {
                                 "schema": {
                                     "type": "array",
-                                    "items": {"type": "number"}
+                                    "items": { "type": "number" }
                                 }
                             }
                         }
@@ -2541,7 +2562,7 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "requestBody": {
@@ -2554,7 +2575,7 @@
                         }
                     }
                 },
-                "responses": {"204": {"description": ""}},
+                "responses": { "204": { "description": "" } },
                 "tags": ["article-templates"]
             },
             "put": {
@@ -2565,7 +2586,7 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "requestBody": {
@@ -2578,7 +2599,7 @@
                         }
                     }
                 },
-                "responses": {"204": {"description": ""}},
+                "responses": { "204": { "description": "" } },
                 "tags": ["article-templates"]
             }
         },
@@ -2591,7 +2612,7 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "responses": {
@@ -2621,13 +2642,13 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "store_integration_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "responses": {
@@ -2812,7 +2833,7 @@
                         "required": false,
                         "in": "query",
                         "description": "Whether the attachment is private",
-                        "schema": {"type": "string"}
+                        "schema": { "type": "string" }
                     }
                 ],
                 "requestBody": {
@@ -2849,10 +2870,10 @@
                         "name": "input_name",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "string"}
+                        "schema": { "type": "string" }
                     }
                 ],
-                "responses": {"204": {"description": ""}},
+                "responses": { "204": { "description": "" } },
                 "tags": ["contact-forms"]
             }
         },
@@ -2928,7 +2949,7 @@
                         "name": "id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "responses": {
@@ -2953,7 +2974,7 @@
                         "name": "id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "requestBody": {
@@ -2988,10 +3009,10 @@
                         "name": "id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
-                "responses": {"204": {"description": ""}},
+                "responses": { "204": { "description": "" } },
                 "tags": ["contact-forms"]
             }
         },
@@ -3004,7 +3025,7 @@
                         "name": "uid",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "string"}
+                        "schema": { "type": "string" }
                     }
                 ],
                 "responses": {
@@ -3031,7 +3052,7 @@
                         "name": "uid",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "string"}
+                        "schema": { "type": "string" }
                     }
                 ],
                 "requestBody": {
@@ -3044,7 +3065,7 @@
                         }
                     }
                 },
-                "responses": {"204": {"description": ""}},
+                "responses": { "204": { "description": "" } },
                 "tags": ["contact-forms"]
             }
         },
@@ -3057,7 +3078,7 @@
                         "name": "id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "responses": {
@@ -3082,7 +3103,7 @@
                         "name": "id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "requestBody": {
@@ -3125,7 +3146,7 @@
                         }
                     }
                 },
-                "responses": {"201": {"description": ""}},
+                "responses": { "201": { "description": "" } },
                 "tags": ["contact-forms"]
             }
         },
@@ -3145,7 +3166,7 @@
                         }
                     }
                 },
-                "responses": {"204": {"description": ""}},
+                "responses": { "204": { "description": "" } },
                 "tags": ["contact-forms"]
             }
         },
@@ -3159,7 +3180,7 @@
                         "name": "contact_form_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "requestBody": {
@@ -3194,7 +3215,7 @@
                         "name": "contact_form_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "responses": {
@@ -3224,13 +3245,13 @@
                         "name": "embedment_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "contact_form_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "requestBody": {
@@ -3265,16 +3286,16 @@
                         "name": "embedment_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "contact_form_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
-                "responses": {"204": {"description": ""}},
+                "responses": { "204": { "description": "" } },
                 "tags": ["contact-form-shopify-page-embedments"]
             }
         },
@@ -3287,7 +3308,7 @@
                         "name": "contact_form_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "responses": {
@@ -3318,7 +3339,7 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "requestBody": {
@@ -3353,7 +3374,7 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "responses": {
@@ -3383,13 +3404,13 @@
                         "name": "embedment_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "requestBody": {
@@ -3424,16 +3445,16 @@
                         "name": "embedment_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
-                "responses": {"204": {"description": ""}},
+                "responses": { "204": { "description": "" } },
                 "tags": ["help-center-shopify-page-embedments"]
             }
         },
@@ -3446,7 +3467,7 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "responses": {
@@ -3496,7 +3517,7 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "requestBody": {
@@ -3531,14 +3552,17 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "ids",
                         "required": false,
                         "in": "query",
                         "description": "List of numeric ids in the form ids=1&ids=2...",
-                        "schema": {"type": "array", "items": {"type": "number"}}
+                        "schema": {
+                            "type": "array",
+                            "items": { "type": "number" }
+                        }
                     }
                 ],
                 "responses": {
@@ -3568,13 +3592,13 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "file_ingestion_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "responses": {
@@ -3597,7 +3621,7 @@
                 "operationId": "listGoogleFonts",
                 "summary": "List google fonts",
                 "parameters": [],
-                "responses": {"200": {"description": ""}},
+                "responses": { "200": { "description": "" } },
                 "tags": ["google-fonts"]
             }
         },
@@ -3610,13 +3634,13 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "store_integration_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "responses": {
@@ -3646,7 +3670,7 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "requestBody": {
@@ -3683,7 +3707,7 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "requestBody": {
@@ -3720,14 +3744,16 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "responses": {
                     "200": {
                         "description": "",
                         "content": {
-                            "application/json": {"schema": {"type": "string"}}
+                            "application/json": {
+                                "schema": { "type": "string" }
+                            }
                         }
                     }
                 },
@@ -3743,7 +3769,7 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "responses": {
@@ -3770,7 +3796,7 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "requestBody": {
@@ -3783,7 +3809,7 @@
                         }
                     }
                 },
-                "responses": {"201": {"description": ""}},
+                "responses": { "201": { "description": "" } },
                 "tags": ["import-hotswap"]
             }
         },
@@ -3796,7 +3822,7 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "responses": {
@@ -3823,7 +3849,7 @@
                         "name": "contact_form_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "responses": {
@@ -3849,7 +3875,7 @@
                         "name": "contact_form_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "requestBody": {
@@ -3885,7 +3911,7 @@
                         "name": "shop_name",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "string"}
+                        "schema": { "type": "string" }
                     }
                 ],
                 "responses": {
@@ -3912,7 +3938,7 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "requestBody": {
@@ -3947,7 +3973,7 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "locale",
@@ -3987,7 +4013,7 @@
                         "name": "order_by",
                         "required": false,
                         "in": "query",
-                        "schema": {"enum": ["position"], "type": "string"}
+                        "schema": { "enum": ["position"], "type": "string" }
                     },
                     {
                         "name": "order_dir",
@@ -4038,13 +4064,13 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
                 "requestBody": {
@@ -4079,16 +4105,16 @@
                         "name": "id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     }
                 ],
-                "responses": {"200": {"description": ""}},
+                "responses": { "200": { "description": "" } },
                 "tags": ["navigation-links"]
             }
         },
@@ -4101,7 +4127,7 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "locale",
@@ -4145,7 +4171,7 @@
                             "application/json": {
                                 "schema": {
                                     "type": "array",
-                                    "items": {"type": "number"}
+                                    "items": { "type": "number" }
                                 }
                             }
                         }
@@ -4162,7 +4188,7 @@
                         "name": "help_center_id",
                         "required": true,
                         "in": "path",
-                        "schema": {"type": "number"}
+                        "schema": { "type": "number" }
                     },
                     {
                         "name": "locale",
@@ -4205,7 +4231,7 @@
                         "application/json": {
                             "schema": {
                                 "type": "array",
-                                "items": {"type": "number"}
+                                "items": { "type": "number" }
                             }
                         }
                     }
@@ -4217,7 +4243,7 @@
                             "application/json": {
                                 "schema": {
                                     "type": "array",
-                                    "items": {"type": "number"}
+                                    "items": { "type": "number" }
                                 }
                             }
                         }
@@ -4241,7 +4267,7 @@
                         }
                     }
                 },
-                "responses": {"204": {"description": ""}},
+                "responses": { "204": { "description": "" } },
                 "tags": ["workflows"]
             }
         }
@@ -4256,9 +4282,9 @@
     "servers": [],
     "components": {
         "securitySchemes": {
-            "ApiKey": {"type": "apiKey", "in": "header", "name": "X-API-KEY"},
-            "AgentBasicAuth": {"scheme": "basic", "type": "http"},
-            "AgentBearerAuth": {"scheme": "bearer", "type": "http"}
+            "ApiKey": { "type": "apiKey", "in": "header", "name": "X-API-KEY" },
+            "AgentBasicAuth": { "scheme": "basic", "type": "http" },
+            "AgentBearerAuth": { "scheme": "bearer", "type": "http" }
         },
         "schemas": {
             "MLSnippetsIngestionMeta": {
@@ -4280,18 +4306,18 @@
             "ArticleIngestionLogDto": {
                 "type": "object",
                 "properties": {
-                    "help_center_id": {"type": "number"},
+                    "help_center_id": { "type": "number" },
                     "article_ids": {
                         "type": "array",
-                        "items": {"type": "number"}
+                        "items": { "type": "number" }
                     },
-                    "raw_text": {"type": "string", "nullable": true},
-                    "dataset_id": {"type": "string"},
-                    "latest_sync": {"format": "date-time", "type": "string"},
-                    "id": {"type": "number"},
-                    "url": {"type": "string", "nullable": true},
-                    "domain": {"type": "string", "nullable": true},
-                    "source": {"type": "string", "enum": ["url"]},
+                    "raw_text": { "type": "string", "nullable": true },
+                    "dataset_id": { "type": "string" },
+                    "latest_sync": { "format": "date-time", "type": "string" },
+                    "id": { "type": "number" },
+                    "url": { "type": "string", "nullable": true },
+                    "domain": { "type": "string", "nullable": true },
+                    "source": { "type": "string", "enum": ["url"] },
                     "status": {
                         "type": "string",
                         "nullable": true,
@@ -4316,7 +4342,7 @@
             },
             "LinkDto": {
                 "type": "object",
-                "properties": {"url": {"type": "string"}},
+                "properties": { "url": { "type": "string" } },
                 "required": ["url"]
             },
             "ApifyInputDto": {
@@ -4324,7 +4350,7 @@
                 "properties": {
                     "links": {
                         "type": "array",
-                        "items": {"$ref": "#/components/schemas/LinkDto"}
+                        "items": { "$ref": "#/components/schemas/LinkDto" }
                     }
                 },
                 "required": ["links"]
@@ -4332,35 +4358,35 @@
             "EventDataDto": {
                 "type": "object",
                 "properties": {
-                    "actorId": {"type": "string"},
-                    "actorRunId": {"type": "string"}
+                    "actorId": { "type": "string" },
+                    "actorRunId": { "type": "string" }
                 },
                 "required": ["actorId", "actorRunId"]
             },
             "ResourceDto": {
                 "type": "object",
                 "properties": {
-                    "id": {"type": "string"},
-                    "actId": {"type": "string"},
-                    "userId": {"type": "string"},
-                    "startedAt": {"type": "string"},
-                    "finishedAt": {"type": "string"},
-                    "status": {"type": "string"},
-                    "statusMessage": {"type": "string"},
-                    "isStatusMessageTerminal": {"type": "boolean"},
-                    "meta": {"type": "object"},
-                    "stats": {"type": "object"},
-                    "options": {"type": "object"},
-                    "buildId": {"type": "string"},
-                    "exitCode": {"type": "number"},
-                    "defaultKeyValueStoreId": {"type": "string"},
-                    "defaultDatasetId": {"type": "string"},
-                    "defaultRequestQueueId": {"type": "string"},
-                    "buildNumber": {"type": "string"},
-                    "containerUrl": {"type": "string"},
-                    "usage": {"type": "object"},
-                    "usageTotalUsd": {"type": "number"},
-                    "usageUsd": {"type": "object"}
+                    "id": { "type": "string" },
+                    "actId": { "type": "string" },
+                    "userId": { "type": "string" },
+                    "startedAt": { "type": "string" },
+                    "finishedAt": { "type": "string" },
+                    "status": { "type": "string" },
+                    "statusMessage": { "type": "string" },
+                    "isStatusMessageTerminal": { "type": "boolean" },
+                    "meta": { "type": "object" },
+                    "stats": { "type": "object" },
+                    "options": { "type": "object" },
+                    "buildId": { "type": "string" },
+                    "exitCode": { "type": "number" },
+                    "defaultKeyValueStoreId": { "type": "string" },
+                    "defaultDatasetId": { "type": "string" },
+                    "defaultRequestQueueId": { "type": "string" },
+                    "buildNumber": { "type": "string" },
+                    "containerUrl": { "type": "string" },
+                    "usage": { "type": "object" },
+                    "usageTotalUsd": { "type": "number" },
+                    "usageUsd": { "type": "object" }
                 },
                 "required": [
                     "id",
@@ -4389,11 +4415,13 @@
             "ApifyWebhookDto": {
                 "type": "object",
                 "properties": {
-                    "userId": {"type": "string"},
-                    "createdAt": {"type": "string"},
-                    "eventType": {"type": "string"},
-                    "eventData": {"$ref": "#/components/schemas/EventDataDto"},
-                    "resource": {"$ref": "#/components/schemas/ResourceDto"}
+                    "userId": { "type": "string" },
+                    "createdAt": { "type": "string" },
+                    "eventType": { "type": "string" },
+                    "eventData": {
+                        "$ref": "#/components/schemas/EventDataDto"
+                    },
+                    "resource": { "$ref": "#/components/schemas/ResourceDto" }
                 },
                 "required": [
                     "userId",
@@ -4448,16 +4476,16 @@
             "Rating": {
                 "type": "object",
                 "properties": {
-                    "up": {"type": "number"},
-                    "down": {"type": "number"}
+                    "up": { "type": "number" },
+                    "down": { "type": "number" }
                 },
                 "required": ["up", "down"]
             },
             "ArticleTranslationSeoMeta": {
                 "type": "object",
                 "properties": {
-                    "title": {"type": "string", "nullable": true},
-                    "description": {"type": "string", "nullable": true}
+                    "title": { "type": "string", "nullable": true },
+                    "description": { "type": "string", "nullable": true }
                 },
                 "required": ["title", "description"]
             },
@@ -4477,10 +4505,10 @@
                         "type": "string",
                         "nullable": true
                     },
-                    "title": {"type": "string"},
-                    "excerpt": {"type": "string"},
-                    "content": {"type": "string"},
-                    "slug": {"type": "string"},
+                    "title": { "type": "string" },
+                    "excerpt": { "type": "string" },
+                    "content": { "type": "string" },
+                    "slug": { "type": "string" },
                     "locale": {
                         "enum": [
                             "cs-CZ",
@@ -4501,9 +4529,9 @@
                         ],
                         "type": "string"
                     },
-                    "article_id": {"type": "number"},
-                    "category_id": {"type": "number", "nullable": true},
-                    "article_unlisted_id": {"type": "string"},
+                    "article_id": { "type": "number" },
+                    "category_id": { "type": "number", "nullable": true },
+                    "article_unlisted_id": { "type": "string" },
                     "seo_meta": {
                         "nullable": false,
                         "allOf": [
@@ -4516,8 +4544,8 @@
                         "enum": ["PUBLIC", "UNLISTED"],
                         "type": "string"
                     },
-                    "is_current": {"type": "boolean"},
-                    "rating": {"$ref": "#/components/schemas/Rating"},
+                    "is_current": { "type": "boolean" },
+                    "rating": { "$ref": "#/components/schemas/Rating" },
                     "locale_fallback": {
                         "description": "Gives details on how the translation fallback was chosen:\n- `undefined`: the translation is the requested one\n- `default`: the translation is in help center's default locale\n- `available`: the translation corresponds to the first available one",
                         "enum": ["available", "default"],
@@ -4544,8 +4572,8 @@
             "ArticleListDataDto": {
                 "type": "object",
                 "properties": {
-                    "id": {"type": "number"},
-                    "unlisted_id": {"type": "string"},
+                    "id": { "type": "number" },
+                    "unlisted_id": { "type": "string" },
                     "created_datetime": {
                         "format": "date-time",
                         "type": "string"
@@ -4559,9 +4587,9 @@
                         "type": "string",
                         "nullable": true
                     },
-                    "category_id": {"type": "number", "nullable": true},
-                    "help_center_id": {"type": "number"},
-                    "template_key": {"type": "string", "nullable": true},
+                    "category_id": { "type": "number", "nullable": true },
+                    "help_center_id": { "type": "number" },
+                    "template_key": { "type": "string", "nullable": true },
                     "origin": {
                         "nullable": true,
                         "type": "string",
@@ -4596,7 +4624,7 @@
                         }
                     },
                     "rating": {
-                        "allOf": [{"$ref": "#/components/schemas/Rating"}]
+                        "allOf": [{ "$ref": "#/components/schemas/Rating" }]
                     },
                     "translation": {
                         "allOf": [
@@ -4621,7 +4649,7 @@
             "ArticlesListPageDto": {
                 "type": "object",
                 "properties": {
-                    "meta": {"$ref": "#/components/schemas/PageMetaDto"},
+                    "meta": { "$ref": "#/components/schemas/PageMetaDto" },
                     "object": {
                         "type": "string",
                         "default": "list",
@@ -4652,10 +4680,10 @@
                         "type": "string",
                         "nullable": true
                     },
-                    "title": {"type": "string"},
-                    "excerpt": {"type": "string"},
-                    "content": {"type": "string"},
-                    "slug": {"type": "string"},
+                    "title": { "type": "string" },
+                    "excerpt": { "type": "string" },
+                    "content": { "type": "string" },
+                    "slug": { "type": "string" },
                     "locale": {
                         "enum": [
                             "cs-CZ",
@@ -4676,9 +4704,9 @@
                         ],
                         "type": "string"
                     },
-                    "article_id": {"type": "number"},
-                    "category_id": {"type": "number", "nullable": true},
-                    "article_unlisted_id": {"type": "string"},
+                    "article_id": { "type": "number" },
+                    "category_id": { "type": "number", "nullable": true },
+                    "article_unlisted_id": { "type": "string" },
                     "seo_meta": {
                         "nullable": false,
                         "allOf": [
@@ -4691,7 +4719,7 @@
                         "enum": ["PUBLIC", "UNLISTED"],
                         "type": "string"
                     },
-                    "is_current": {"type": "boolean"},
+                    "is_current": { "type": "boolean" },
                     "locale_fallback": {
                         "description": "Gives details on how the translation fallback was chosen:\n- `undefined`: the translation is the requested one\n- `default`: the translation is in help center's default locale\n- `available`: the translation corresponds to the first available one",
                         "enum": ["available", "default"],
@@ -4730,7 +4758,7 @@
                         "type": "string",
                         "nullable": true
                     },
-                    "unlisted_id": {"type": "string"},
+                    "unlisted_id": { "type": "string" },
                     "available_locales": {
                         "type": "array",
                         "items": {
@@ -4754,9 +4782,9 @@
                             ]
                         }
                     },
-                    "category_id": {"type": "number", "nullable": true},
-                    "help_center_id": {"type": "number"},
-                    "template_key": {"type": "string", "nullable": true},
+                    "category_id": { "type": "number", "nullable": true },
+                    "help_center_id": { "type": "number" },
+                    "template_key": { "type": "string", "nullable": true },
                     "origin": {
                         "nullable": true,
                         "type": "string",
@@ -4767,7 +4795,7 @@
                             "topQuestionsSection"
                         ]
                     },
-                    "id": {"type": "number"},
+                    "id": { "type": "number" },
                     "translation": {
                         "$ref": "#/components/schemas/LocalArticleTranslation"
                     }
@@ -4813,7 +4841,7 @@
                         "nullable": true,
                         "description": "Deletion date"
                     },
-                    "category_id": {"type": "number", "nullable": true},
+                    "category_id": { "type": "number", "nullable": true },
                     "available_locales": {
                         "type": "array",
                         "items": {
@@ -4837,8 +4865,8 @@
                             ]
                         }
                     },
-                    "help_center_id": {"type": "number"},
-                    "template_key": {"type": "string", "nullable": true},
+                    "help_center_id": { "type": "number" },
+                    "template_key": { "type": "string", "nullable": true },
                     "origin": {
                         "nullable": true,
                         "type": "string",
@@ -4849,7 +4877,7 @@
                             "topQuestionsSection"
                         ]
                     },
-                    "id": {"type": "number"}
+                    "id": { "type": "number" }
                 },
                 "required": [
                     "created_datetime",
@@ -5010,10 +5038,10 @@
                         "type": "string",
                         "nullable": true
                     },
-                    "title": {"type": "string"},
-                    "excerpt": {"type": "string"},
-                    "content": {"type": "string"},
-                    "slug": {"type": "string"},
+                    "title": { "type": "string" },
+                    "excerpt": { "type": "string" },
+                    "content": { "type": "string" },
+                    "slug": { "type": "string" },
                     "locale": {
                         "enum": [
                             "cs-CZ",
@@ -5034,9 +5062,9 @@
                         ],
                         "type": "string"
                     },
-                    "article_id": {"type": "number"},
-                    "category_id": {"type": "number", "nullable": true},
-                    "article_unlisted_id": {"type": "string"},
+                    "article_id": { "type": "number" },
+                    "category_id": { "type": "number", "nullable": true },
+                    "article_unlisted_id": { "type": "string" },
                     "seo_meta": {
                         "nullable": false,
                         "allOf": [
@@ -5049,8 +5077,8 @@
                         "enum": ["PUBLIC", "UNLISTED"],
                         "type": "string"
                     },
-                    "is_current": {"type": "boolean"},
-                    "rating": {"$ref": "#/components/schemas/Rating"}
+                    "is_current": { "type": "boolean" },
+                    "rating": { "$ref": "#/components/schemas/Rating" }
                 },
                 "required": [
                     "created_datetime",
@@ -5072,7 +5100,7 @@
             "ArticleTranslationsListPageDto": {
                 "type": "object",
                 "properties": {
-                    "meta": {"$ref": "#/components/schemas/PageMetaDto"},
+                    "meta": { "$ref": "#/components/schemas/PageMetaDto" },
                     "object": {
                         "type": "string",
                         "default": "list",
@@ -5103,10 +5131,10 @@
                         "type": "string",
                         "nullable": true
                     },
-                    "title": {"type": "string"},
-                    "excerpt": {"type": "string"},
-                    "content": {"type": "string"},
-                    "slug": {"type": "string"},
+                    "title": { "type": "string" },
+                    "excerpt": { "type": "string" },
+                    "content": { "type": "string" },
+                    "slug": { "type": "string" },
                     "locale": {
                         "enum": [
                             "cs-CZ",
@@ -5127,9 +5155,9 @@
                         ],
                         "type": "string"
                     },
-                    "article_id": {"type": "number"},
-                    "category_id": {"type": "number", "nullable": true},
-                    "article_unlisted_id": {"type": "string"},
+                    "article_id": { "type": "number" },
+                    "category_id": { "type": "number", "nullable": true },
+                    "article_unlisted_id": { "type": "string" },
                     "seo_meta": {
                         "nullable": false,
                         "allOf": [
@@ -5142,7 +5170,7 @@
                         "enum": ["PUBLIC", "UNLISTED"],
                         "type": "string"
                     },
-                    "is_current": {"type": "boolean"}
+                    "is_current": { "type": "boolean" }
                 },
                 "required": [
                     "created_datetime",
@@ -5220,15 +5248,15 @@
                         "enum": ["-1", "1"],
                         "type": "string"
                     },
-                    "context": {"type": "object"}
+                    "context": { "type": "object" }
                 },
                 "required": ["rating", "context"]
             },
             "RatingContextDto": {
                 "type": "object",
                 "properties": {
-                    "ip_address": {"type": "string"},
-                    "user_agent": {"type": "string"}
+                    "ip_address": { "type": "string" },
+                    "user_agent": { "type": "string" }
                 },
                 "required": ["ip_address", "user_agent"]
             },
@@ -5251,9 +5279,11 @@
                         "nullable": true,
                         "description": "Deletion date"
                     },
-                    "id": {"type": "number"},
-                    "rating": {"enum": ["-1", "1"], "type": "string"},
-                    "context": {"$ref": "#/components/schemas/RatingContextDto"}
+                    "id": { "type": "number" },
+                    "rating": { "enum": ["-1", "1"], "type": "string" },
+                    "context": {
+                        "$ref": "#/components/schemas/RatingContextDto"
+                    }
                 },
                 "required": [
                     "created_datetime",
@@ -5272,7 +5302,7 @@
                         "enum": ["-1", "1"],
                         "type": "string"
                     },
-                    "context": {"type": "object"}
+                    "context": { "type": "object" }
                 },
                 "required": ["rating", "context"]
             },
@@ -5284,7 +5314,7 @@
                         "description": "Identifier",
                         "minimum": 1
                     },
-                    "email": {"type": "string", "description": "Email value"}
+                    "email": { "type": "string", "description": "Email value" }
                 },
                 "required": ["id", "email"]
             },
@@ -5302,14 +5332,14 @@
             "HelpCenterWizardDto": {
                 "type": "object",
                 "properties": {
-                    "step_name": {"type": "string", "example": "automate"},
+                    "step_name": { "type": "string", "example": "automate" },
                     "step_data": {
                         "nullable": true,
                         "allOf": [
-                            {"$ref": "#/components/schemas/WizardStepDataVo"}
+                            { "$ref": "#/components/schemas/WizardStepDataVo" }
                         ]
                     },
-                    "completed": {"type": "boolean", "nullable": true}
+                    "completed": { "type": "boolean", "nullable": true }
                 },
                 "required": ["step_name"]
             },
@@ -5367,13 +5397,13 @@
                         "description": "Boolean indicating if search feature is deactivated for this Help center.",
                         "example": false
                     },
-                    "primary_color": {"type": "string", "nullable": true},
+                    "primary_color": { "type": "string", "nullable": true },
                     "theme": {
                         "nullable": true,
                         "default": "light",
                         "type": "object"
                     },
-                    "shop_name": {"type": "string", "nullable": true},
+                    "shop_name": { "type": "string", "nullable": true },
                     "self_service_deactivated": {
                         "type": "boolean",
                         "description": "Boolean indicating if self service is deactivated for this Help center.",
@@ -5391,15 +5421,19 @@
                     "email_integration": {
                         "description": "Email integration used to receive this contact form inquiries",
                         "nullable": true,
-                        "example": {"id": 1, "email": "jonh@example.com"},
+                        "example": { "id": 1, "email": "jonh@example.com" },
                         "allOf": [
-                            {"$ref": "#/components/schemas/EmailIntegrationDto"}
+                            {
+                                "$ref": "#/components/schemas/EmailIntegrationDto"
+                            }
                         ]
                     },
                     "wizard": {
                         "nullable": true,
                         "allOf": [
-                            {"$ref": "#/components/schemas/HelpCenterWizardDto"}
+                            {
+                                "$ref": "#/components/schemas/HelpCenterWizardDto"
+                            }
                         ]
                     },
                     "type": {
@@ -5416,7 +5450,7 @@
                         "enum": ["default", "1-pager"],
                         "type": "string"
                     },
-                    "account_id": {"type": "number"}
+                    "account_id": { "type": "number" }
                 },
                 "required": ["name", "default_locale"]
             },
@@ -5439,14 +5473,14 @@
                         "nullable": true,
                         "description": "Deletion date"
                     },
-                    "id": {"type": "number"},
+                    "id": { "type": "number" },
                     "uid": {
                         "type": "string",
                         "description": "Unique alphanumerical identifier",
                         "example": "hcuid123"
                     },
-                    "name": {"type": "string"},
-                    "subdomain": {"type": "string"},
+                    "name": { "type": "string" },
+                    "subdomain": { "type": "string" },
                     "deactivated_datetime": {
                         "format": "date-time",
                         "type": "string",
@@ -5496,8 +5530,8 @@
                             ]
                         }
                     },
-                    "favicon_url": {"type": "string", "nullable": true},
-                    "brand_logo_url": {"type": "string", "nullable": true},
+                    "favicon_url": { "type": "string", "nullable": true },
+                    "brand_logo_url": { "type": "string", "nullable": true },
                     "brand_logo_light_url": {
                         "type": "string",
                         "nullable": true
@@ -5512,16 +5546,16 @@
                         "type": "string",
                         "nullable": true
                     },
-                    "algolia_api_key": {"type": "string", "nullable": true},
-                    "algolia_app_id": {"type": "string"},
-                    "algolia_index_name": {"type": "string"},
-                    "primary_color": {"type": "string", "nullable": false},
+                    "algolia_api_key": { "type": "string", "nullable": true },
+                    "algolia_app_id": { "type": "string" },
+                    "algolia_index_name": { "type": "string" },
+                    "primary_color": { "type": "string", "nullable": false },
                     "primary_font_family": {
                         "type": "string",
                         "nullable": false
                     },
-                    "theme": {"type": "string", "nullable": false},
-                    "shop_name": {"type": "string", "nullable": true},
+                    "theme": { "type": "string", "nullable": false },
+                    "shop_name": { "type": "string", "nullable": true },
                     "self_service_deactivated_datetime": {
                         "format": "date-time",
                         "type": "string",
@@ -5536,11 +5570,13 @@
                         "enum": ["automation", "manual"],
                         "type": "string"
                     },
-                    "gaid": {"type": "string", "nullable": true},
+                    "gaid": { "type": "string", "nullable": true },
                     "email_integration": {
                         "nullable": true,
                         "allOf": [
-                            {"$ref": "#/components/schemas/EmailIntegrationDto"}
+                            {
+                                "$ref": "#/components/schemas/EmailIntegrationDto"
+                            }
                         ]
                     },
                     "automation_settings_id": {
@@ -5553,11 +5589,13 @@
                         "type": "string",
                         "description": "Code snippet template to use to embed this help center"
                     },
-                    "integration_id": {"type": "number", "nullable": true},
+                    "integration_id": { "type": "number", "nullable": true },
                     "wizard": {
                         "nullable": true,
                         "allOf": [
-                            {"$ref": "#/components/schemas/HelpCenterWizardDto"}
+                            {
+                                "$ref": "#/components/schemas/HelpCenterWizardDto"
+                            }
                         ]
                     },
                     "type": {
@@ -5605,16 +5643,16 @@
             "AccountInfoDto": {
                 "type": "object",
                 "properties": {
-                    "account_id": {"type": "number"},
-                    "shop_name": {"type": "string", "nullable": true}
+                    "account_id": { "type": "number" },
+                    "shop_name": { "type": "string", "nullable": true }
                 },
                 "required": ["account_id", "shop_name"]
             },
             "HelpCenterTranslationSeoMeta": {
                 "type": "object",
                 "properties": {
-                    "title": {"type": "string", "nullable": true},
-                    "description": {"type": "string", "nullable": true}
+                    "title": { "type": "string", "nullable": true },
+                    "description": { "type": "string", "nullable": true }
                 },
                 "required": ["title", "description"]
             },
@@ -5625,16 +5663,16 @@
                         "type": "string",
                         "nullable": true
                     },
-                    "description": {"type": "string"},
-                    "email": {"type": "string"}
+                    "description": { "type": "string" },
+                    "email": { "type": "string" }
                 },
                 "required": ["deactivated_datetime", "description", "email"]
             },
             "ContactPhoneNumber": {
                 "type": "object",
                 "properties": {
-                    "reference": {"type": "string"},
-                    "phone_number": {"type": "string"}
+                    "reference": { "type": "string" },
+                    "phone_number": { "type": "string" }
                 },
                 "required": ["reference", "phone_number"]
             },
@@ -5645,7 +5683,7 @@
                         "type": "string",
                         "nullable": true
                     },
-                    "description": {"type": "string"},
+                    "description": { "type": "string" },
                     "phone_numbers": {
                         "type": "array",
                         "items": {
@@ -5666,7 +5704,7 @@
                         "type": "string",
                         "nullable": true
                     },
-                    "description": {"type": "string"}
+                    "description": { "type": "string" }
                 },
                 "required": ["deactivated_datetime", "description"]
             },
@@ -5675,17 +5713,17 @@
                 "properties": {
                     "email": {
                         "allOf": [
-                            {"$ref": "#/components/schemas/EmailContactInfo"}
+                            { "$ref": "#/components/schemas/EmailContactInfo" }
                         ]
                     },
                     "phone": {
                         "allOf": [
-                            {"$ref": "#/components/schemas/PhoneContactInfo"}
+                            { "$ref": "#/components/schemas/PhoneContactInfo" }
                         ]
                     },
                     "chat": {
                         "allOf": [
-                            {"$ref": "#/components/schemas/ChatContactInfo"}
+                            { "$ref": "#/components/schemas/ChatContactInfo" }
                         ]
                     }
                 },
@@ -5694,21 +5732,21 @@
             "ExtraHTML": {
                 "type": "object",
                 "properties": {
-                    "extra_head": {"type": "string"},
+                    "extra_head": { "type": "string" },
                     "extra_head_deactivated_datetime": {
                         "format": "date-time",
                         "type": "string",
                         "nullable": true,
                         "default": "2022-01-01T00:00:00Z"
                     },
-                    "custom_header": {"type": "string"},
+                    "custom_header": { "type": "string" },
                     "custom_header_deactivated_datetime": {
                         "format": "date-time",
                         "type": "string",
                         "nullable": true,
                         "default": "2022-01-01T00:00:00Z"
                     },
-                    "custom_footer": {"type": "string"},
+                    "custom_footer": { "type": "string" },
                     "custom_footer_deactivated_datetime": {
                         "format": "date-time",
                         "type": "string",
@@ -5744,10 +5782,10 @@
                         "nullable": true,
                         "description": "Deletion date"
                     },
-                    "help_center_id": {"type": "number"},
-                    "banner_text": {"type": "string", "nullable": true},
-                    "banner_image_url": {"type": "string", "nullable": true},
-                    "banner_image_vertical_offset": {"type": "number"},
+                    "help_center_id": { "type": "number" },
+                    "banner_text": { "type": "string", "nullable": true },
+                    "banner_image_url": { "type": "string", "nullable": true },
+                    "banner_image_vertical_offset": { "type": "number" },
                     "locale": {
                         "enum": [
                             "cs-CZ",
@@ -5778,15 +5816,17 @@
                     },
                     "contact_info": {
                         "nullable": false,
-                        "allOf": [{"$ref": "#/components/schemas/ContactInfo"}]
+                        "allOf": [
+                            { "$ref": "#/components/schemas/ContactInfo" }
+                        ]
                     },
                     "extra_html": {
                         "nullable": false,
-                        "allOf": [{"$ref": "#/components/schemas/ExtraHTML"}]
+                        "allOf": [{ "$ref": "#/components/schemas/ExtraHTML" }]
                     },
-                    "chat_app_key": {"type": "string", "nullable": true},
-                    "contact_form_id": {"type": "number", "nullable": true},
-                    "logo_hyperlink": {"type": "string", "nullable": true}
+                    "chat_app_key": { "type": "string", "nullable": true },
+                    "contact_form_id": { "type": "number", "nullable": true },
+                    "logo_hyperlink": { "type": "string", "nullable": true }
                 },
                 "required": [
                     "created_datetime",
@@ -5821,10 +5861,10 @@
                         "nullable": true,
                         "description": "Deletion date"
                     },
-                    "id": {"type": "number"},
-                    "from": {"type": "string"},
-                    "to": {"type": "string"},
-                    "help_center_id": {"type": "number"}
+                    "id": { "type": "number" },
+                    "from": { "type": "string" },
+                    "to": { "type": "string" },
+                    "help_center_id": { "type": "number" }
                 },
                 "required": [
                     "created_datetime",
@@ -5854,14 +5894,14 @@
                         "nullable": true,
                         "description": "Deletion date"
                     },
-                    "id": {"type": "number"},
+                    "id": { "type": "number" },
                     "uid": {
                         "type": "string",
                         "description": "Unique alphanumerical identifier",
                         "example": "hcuid123"
                     },
-                    "name": {"type": "string"},
-                    "subdomain": {"type": "string"},
+                    "name": { "type": "string" },
+                    "subdomain": { "type": "string" },
                     "deactivated_datetime": {
                         "format": "date-time",
                         "type": "string",
@@ -5911,8 +5951,8 @@
                             ]
                         }
                     },
-                    "favicon_url": {"type": "string", "nullable": true},
-                    "brand_logo_url": {"type": "string", "nullable": true},
+                    "favicon_url": { "type": "string", "nullable": true },
+                    "brand_logo_url": { "type": "string", "nullable": true },
                     "brand_logo_light_url": {
                         "type": "string",
                         "nullable": true
@@ -5927,16 +5967,16 @@
                         "type": "string",
                         "nullable": true
                     },
-                    "algolia_api_key": {"type": "string", "nullable": true},
-                    "algolia_app_id": {"type": "string"},
-                    "algolia_index_name": {"type": "string"},
-                    "primary_color": {"type": "string", "nullable": false},
+                    "algolia_api_key": { "type": "string", "nullable": true },
+                    "algolia_app_id": { "type": "string" },
+                    "algolia_index_name": { "type": "string" },
+                    "primary_color": { "type": "string", "nullable": false },
                     "primary_font_family": {
                         "type": "string",
                         "nullable": false
                     },
-                    "theme": {"type": "string", "nullable": false},
-                    "shop_name": {"type": "string", "nullable": true},
+                    "theme": { "type": "string", "nullable": false },
+                    "shop_name": { "type": "string", "nullable": true },
                     "self_service_deactivated_datetime": {
                         "format": "date-time",
                         "type": "string",
@@ -5951,11 +5991,13 @@
                         "enum": ["automation", "manual"],
                         "type": "string"
                     },
-                    "gaid": {"type": "string", "nullable": true},
+                    "gaid": { "type": "string", "nullable": true },
                     "email_integration": {
                         "nullable": true,
                         "allOf": [
-                            {"$ref": "#/components/schemas/EmailIntegrationDto"}
+                            {
+                                "$ref": "#/components/schemas/EmailIntegrationDto"
+                            }
                         ]
                     },
                     "automation_settings_id": {
@@ -5968,11 +6010,13 @@
                         "type": "string",
                         "description": "Code snippet template to use to embed this help center"
                     },
-                    "integration_id": {"type": "number", "nullable": true},
+                    "integration_id": { "type": "number", "nullable": true },
                     "wizard": {
                         "nullable": true,
                         "allOf": [
-                            {"$ref": "#/components/schemas/HelpCenterWizardDto"}
+                            {
+                                "$ref": "#/components/schemas/HelpCenterWizardDto"
+                            }
                         ]
                     },
                     "type": {
@@ -5985,7 +6029,7 @@
                         "type": "string",
                         "nullable": false
                     },
-                    "account_id": {"type": "number"},
+                    "account_id": { "type": "number" },
                     "translations": {
                         "minItems": 1,
                         "type": "array",
@@ -5995,7 +6039,7 @@
                     },
                     "redirects": {
                         "type": "array",
-                        "items": {"$ref": "#/components/schemas/RedirectDto"}
+                        "items": { "$ref": "#/components/schemas/RedirectDto" }
                     }
                 },
                 "required": [
@@ -6033,7 +6077,7 @@
             "HelpCentersListPageDto": {
                 "type": "object",
                 "properties": {
-                    "meta": {"$ref": "#/components/schemas/PageMetaDto"},
+                    "meta": { "$ref": "#/components/schemas/PageMetaDto" },
                     "object": {
                         "type": "string",
                         "default": "list",
@@ -6102,13 +6146,13 @@
                         "description": "Boolean indicating if search feature is deactivated for this Help center.",
                         "example": false
                     },
-                    "primary_color": {"type": "string", "nullable": true},
+                    "primary_color": { "type": "string", "nullable": true },
                     "theme": {
                         "nullable": true,
                         "default": "light",
                         "type": "object"
                     },
-                    "shop_name": {"type": "string", "nullable": true},
+                    "shop_name": { "type": "string", "nullable": true },
                     "self_service_deactivated": {
                         "type": "boolean",
                         "description": "Boolean indicating if self service is deactivated for this Help center.",
@@ -6122,15 +6166,19 @@
                     "email_integration": {
                         "description": "Email integration used to receive this contact form inquiries",
                         "nullable": true,
-                        "example": {"id": 1, "email": "jonh@example.com"},
+                        "example": { "id": 1, "email": "jonh@example.com" },
                         "allOf": [
-                            {"$ref": "#/components/schemas/EmailIntegrationDto"}
+                            {
+                                "$ref": "#/components/schemas/EmailIntegrationDto"
+                            }
                         ]
                     },
                     "wizard": {
                         "nullable": true,
                         "allOf": [
-                            {"$ref": "#/components/schemas/HelpCenterWizardDto"}
+                            {
+                                "$ref": "#/components/schemas/HelpCenterWizardDto"
+                            }
                         ]
                     },
                     "deactivated": {
@@ -6147,7 +6195,10 @@
                         "description": "Boolean indicating if \"Powered By Gorgias\" will be displayed in this help center footer",
                         "example": false
                     },
-                    "primary_font_family": {"type": "string", "nullable": true}
+                    "primary_font_family": {
+                        "type": "string",
+                        "nullable": true
+                    }
                 }
             },
             "DeleteAccountDto": {
@@ -6189,14 +6240,14 @@
                 "type": "object",
                 "properties": {
                     "workflows": {
-                        "example": [{"id": "workflowId", "enabled": true}],
+                        "example": [{ "id": "workflowId", "enabled": true }],
                         "type": "array",
-                        "items": {"$ref": "#/components/schemas/WorkflowVo"}
+                        "items": { "$ref": "#/components/schemas/WorkflowVo" }
                     },
                     "order_management": {
-                        "example": {"enabled": true},
+                        "example": { "enabled": true },
                         "allOf": [
-                            {"$ref": "#/components/schemas/OrderManagementVo"}
+                            { "$ref": "#/components/schemas/OrderManagementVo" }
                         ]
                     }
                 },
@@ -6206,14 +6257,14 @@
                 "type": "object",
                 "properties": {
                     "workflows": {
-                        "example": [{"id": "workflowId", "enabled": true}],
+                        "example": [{ "id": "workflowId", "enabled": true }],
                         "type": "array",
-                        "items": {"$ref": "#/components/schemas/WorkflowVo"}
+                        "items": { "$ref": "#/components/schemas/WorkflowVo" }
                     },
                     "order_management": {
-                        "example": {"enabled": true},
+                        "example": { "enabled": true },
                         "allOf": [
-                            {"$ref": "#/components/schemas/OrderManagementVo"}
+                            { "$ref": "#/components/schemas/OrderManagementVo" }
                         ]
                     }
                 }
@@ -6241,14 +6292,14 @@
                         ],
                         "type": "string"
                     },
-                    "url": {"type": "string"}
+                    "url": { "type": "string" }
                 },
                 "required": ["locale", "url"]
             },
             "HelpCenterSiteMapUrlDto": {
                 "type": "object",
                 "properties": {
-                    "url": {"type": "string"},
+                    "url": { "type": "string" },
                     "type": {
                         "enum": ["article", "category", "contact_form"],
                         "type": "string"
@@ -6274,7 +6325,7 @@
             "HelpCenterTranslationsListPageDto": {
                 "type": "object",
                 "properties": {
-                    "meta": {"$ref": "#/components/schemas/PageMetaDto"},
+                    "meta": { "$ref": "#/components/schemas/PageMetaDto" },
                     "object": {
                         "type": "string",
                         "default": "list",
@@ -6338,24 +6389,24 @@
                             }
                         ]
                     },
-                    "chat_app_key": {"type": "string", "nullable": true}
+                    "chat_app_key": { "type": "string", "nullable": true }
                 },
                 "required": ["locale", "seo_meta"]
             },
             "EmailContactInfoDto": {
                 "type": "object",
                 "properties": {
-                    "email": {"type": "string"},
-                    "enabled": {"type": "boolean"},
-                    "description": {"type": "string"}
+                    "email": { "type": "string" },
+                    "enabled": { "type": "boolean" },
+                    "description": { "type": "string" }
                 },
                 "required": ["email", "enabled", "description"]
             },
             "ContactPhoneNumberDto": {
                 "type": "object",
                 "properties": {
-                    "reference": {"type": "string"},
-                    "phone_number": {"type": "string"}
+                    "reference": { "type": "string" },
+                    "phone_number": { "type": "string" }
                 },
                 "required": ["reference", "phone_number"]
             },
@@ -6368,16 +6419,16 @@
                             "$ref": "#/components/schemas/ContactPhoneNumberDto"
                         }
                     },
-                    "enabled": {"type": "boolean"},
-                    "description": {"type": "string"}
+                    "enabled": { "type": "boolean" },
+                    "description": { "type": "string" }
                 },
                 "required": ["phone_numbers", "enabled", "description"]
             },
             "ChatContactInfoDto": {
                 "type": "object",
                 "properties": {
-                    "enabled": {"type": "boolean"},
-                    "description": {"type": "string"}
+                    "enabled": { "type": "boolean" },
+                    "description": { "type": "string" }
                 },
                 "required": ["enabled", "description"]
             },
@@ -6390,7 +6441,9 @@
                     "phone": {
                         "$ref": "#/components/schemas/PhoneContactInfoDto"
                     },
-                    "chat": {"$ref": "#/components/schemas/ChatContactInfoDto"}
+                    "chat": {
+                        "$ref": "#/components/schemas/ChatContactInfoDto"
+                    }
                 },
                 "required": ["email", "phone", "chat"]
             },
@@ -6440,23 +6493,25 @@
                             }
                         ]
                     },
-                    "chat_app_key": {"type": "string", "nullable": true},
+                    "chat_app_key": { "type": "string", "nullable": true },
                     "banner_text": {
                         "type": "string",
                         "nullable": true,
                         "description": "The banner text of the help center in the `locale`'s translation."
                     },
-                    "banner_image_url": {"type": "string", "nullable": true},
-                    "banner_image_vertical_offset": {"type": "number"},
+                    "banner_image_url": { "type": "string", "nullable": true },
+                    "banner_image_vertical_offset": { "type": "number" },
                     "contact_info": {
                         "allOf": [
-                            {"$ref": "#/components/schemas/ContactInfoDto"}
+                            { "$ref": "#/components/schemas/ContactInfoDto" }
                         ]
                     },
                     "extra_html": {
-                        "allOf": [{"$ref": "#/components/schemas/ExtraHTMLDto"}]
+                        "allOf": [
+                            { "$ref": "#/components/schemas/ExtraHTMLDto" }
+                        ]
                     },
-                    "logo_hyperlink": {"type": "string", "nullable": true}
+                    "logo_hyperlink": { "type": "string", "nullable": true }
                 }
             },
             "CustomDomain": {
@@ -6480,11 +6535,11 @@
                     },
                     "verification_errors": {
                         "type": "array",
-                        "items": {"type": "string"}
+                        "items": { "type": "string" }
                     },
-                    "id": {"type": "number"},
-                    "hostname": {"type": "string"},
-                    "help_center_id": {"type": "number"},
+                    "id": { "type": "number" },
+                    "hostname": { "type": "string" },
+                    "help_center_id": { "type": "number" },
                     "status": {
                         "description": "The status of this custom domain:\n- `active`: the custom domain is validated and working\n- `pending`: the custom domain is pending validation\n- `unknown`: the custom domain is in an unknown status, check `verification_errors`\nto know more.",
                         "enum": ["active", "pending", "unknown"],
@@ -6503,7 +6558,7 @@
             "CustomDomainsListPageDto": {
                 "type": "object",
                 "properties": {
-                    "meta": {"$ref": "#/components/schemas/PageMetaDto"},
+                    "meta": { "$ref": "#/components/schemas/PageMetaDto" },
                     "object": {
                         "type": "string",
                         "default": "list",
@@ -6511,14 +6566,14 @@
                     },
                     "data": {
                         "type": "array",
-                        "items": {"$ref": "#/components/schemas/CustomDomain"}
+                        "items": { "$ref": "#/components/schemas/CustomDomain" }
                     }
                 },
                 "required": ["meta", "object", "data"]
             },
             "CreateCustomDomainDto": {
                 "type": "object",
-                "properties": {"hostname": {"type": "string"}},
+                "properties": { "hostname": { "type": "string" } },
                 "required": ["hostname"]
             },
             "UpdateExtraHTMLDto": {
@@ -6559,7 +6614,7 @@
             "LocaleDto": {
                 "type": "object",
                 "properties": {
-                    "name": {"type": "string"},
+                    "name": { "type": "string" },
                     "code": {
                         "enum": [
                             "cs-CZ",
@@ -6586,8 +6641,8 @@
             "CreateRedirectDto": {
                 "type": "object",
                 "properties": {
-                    "from": {"type": "string"},
-                    "to": {"type": "string"}
+                    "from": { "type": "string" },
+                    "to": { "type": "string" }
                 },
                 "required": ["from", "to"]
             },
@@ -6699,8 +6754,8 @@
             "CategoryTranslationSeoMeta": {
                 "type": "object",
                 "properties": {
-                    "title": {"type": "string", "nullable": true},
-                    "description": {"type": "string", "nullable": true}
+                    "title": { "type": "string", "nullable": true },
+                    "description": { "type": "string", "nullable": true }
                 },
                 "required": ["title", "description"]
             },
@@ -6723,9 +6778,12 @@
                         "nullable": true,
                         "description": "Deletion date"
                     },
-                    "category_id": {"type": "number"},
-                    "category_unlisted_id": {"type": "string"},
-                    "parent_category_id": {"type": "number", "nullable": true},
+                    "category_id": { "type": "number" },
+                    "category_unlisted_id": { "type": "string" },
+                    "parent_category_id": {
+                        "type": "number",
+                        "nullable": true
+                    },
                     "locale": {
                         "enum": [
                             "cs-CZ",
@@ -6768,9 +6826,9 @@
                         "enum": ["available", "default"],
                         "type": "string"
                     },
-                    "title": {"type": "string"},
-                    "description": {"type": "string", "nullable": true},
-                    "slug": {"type": "string"}
+                    "title": { "type": "string" },
+                    "description": { "type": "string", "nullable": true },
+                    "slug": { "type": "string" }
                 },
                 "required": [
                     "created_datetime",
@@ -6806,8 +6864,8 @@
                         "nullable": true,
                         "description": "Deletion date"
                     },
-                    "unlisted_id": {"type": "string"},
-                    "help_center_id": {"type": "number"},
+                    "unlisted_id": { "type": "string" },
+                    "help_center_id": { "type": "number" },
                     "available_locales": {
                         "type": "array",
                         "items": {
@@ -6834,7 +6892,7 @@
                     "translation": {
                         "$ref": "#/components/schemas/LocalCategoryTranslation"
                     },
-                    "id": {"type": "number"}
+                    "id": { "type": "number" }
                 },
                 "required": [
                     "created_datetime",
@@ -6849,7 +6907,7 @@
             "CategoriesListPageDto": {
                 "type": "object",
                 "properties": {
-                    "meta": {"$ref": "#/components/schemas/PageMetaDto"},
+                    "meta": { "$ref": "#/components/schemas/PageMetaDto" },
                     "object": {
                         "type": "string",
                         "default": "list",
@@ -6883,9 +6941,12 @@
                         "nullable": true,
                         "description": "Deletion date"
                     },
-                    "category_id": {"type": "number"},
-                    "category_unlisted_id": {"type": "string"},
-                    "parent_category_id": {"type": "number", "nullable": true},
+                    "category_id": { "type": "number" },
+                    "category_unlisted_id": { "type": "string" },
+                    "parent_category_id": {
+                        "type": "number",
+                        "nullable": true
+                    },
                     "locale": {
                         "enum": [
                             "cs-CZ",
@@ -6923,9 +6984,9 @@
                         "nullable": true,
                         "example": "https://cdn.shopify.com/image.jpg"
                     },
-                    "title": {"type": "string"},
-                    "description": {"type": "string", "nullable": true},
-                    "slug": {"type": "string"}
+                    "title": { "type": "string" },
+                    "description": { "type": "string", "nullable": true },
+                    "slug": { "type": "string" }
                 },
                 "required": [
                     "created_datetime",
@@ -6945,7 +7006,7 @@
             "CategoryTranslationsListPageDto": {
                 "type": "object",
                 "properties": {
-                    "meta": {"$ref": "#/components/schemas/PageMetaDto"},
+                    "meta": { "$ref": "#/components/schemas/PageMetaDto" },
                     "object": {
                         "type": "string",
                         "default": "list",
@@ -7046,10 +7107,10 @@
                         "nullable": true,
                         "description": "Deletion date"
                     },
-                    "unlisted_id": {"type": "string"},
-                    "category_id": {"type": "number", "nullable": true},
-                    "help_center_id": {"type": "number"},
-                    "template_key": {"type": "string", "nullable": true},
+                    "unlisted_id": { "type": "string" },
+                    "category_id": { "type": "number", "nullable": true },
+                    "help_center_id": { "type": "number" },
+                    "template_key": { "type": "string", "nullable": true },
                     "origin": {
                         "nullable": true,
                         "type": "string",
@@ -7090,7 +7151,7 @@
                             }
                         ]
                     },
-                    "id": {"type": "number"}
+                    "id": { "type": "number" }
                 },
                 "required": [
                     "created_datetime",
@@ -7122,8 +7183,8 @@
                         "nullable": true,
                         "description": "Deletion date"
                     },
-                    "unlisted_id": {"type": "string"},
-                    "help_center_id": {"type": "number"},
+                    "unlisted_id": { "type": "string" },
+                    "help_center_id": { "type": "number" },
                     "available_locales": {
                         "type": "array",
                         "items": {
@@ -7168,7 +7229,7 @@
                             "$ref": "#/components/schemas/CategoryTreeArticleDto"
                         }
                     },
-                    "id": {"type": "number"}
+                    "id": { "type": "number" }
                 },
                 "required": [
                     "created_datetime",
@@ -7184,7 +7245,7 @@
             "UpsertArticleTemplateReviewDto": {
                 "type": "object",
                 "properties": {
-                    "template_key": {"type": "string"},
+                    "template_key": { "type": "string" },
                     "action": {
                         "enum": [
                             "archive",
@@ -7205,8 +7266,8 @@
             "ArticleTemplateReviewDto": {
                 "type": "object",
                 "properties": {
-                    "template_key": {"type": "string"},
-                    "help_center_id": {"type": "number"},
+                    "template_key": { "type": "string" },
+                    "help_center_id": { "type": "number" },
                     "action": {
                         "enum": [
                             "archive",
@@ -7227,14 +7288,14 @@
             "AIArticleTemplateDto": {
                 "type": "object",
                 "properties": {
-                    "key": {"type": "string"},
-                    "title": {"type": "string"},
-                    "html_content": {"type": "string"},
+                    "key": { "type": "string" },
+                    "title": { "type": "string" },
+                    "html_content": { "type": "string" },
                     "excerpt": {
                         "type": "string",
                         "description": "\n      A short summary of the article.\n      Usually the first paragraph of the article.\n    "
                     },
-                    "category": {"type": "string"},
+                    "category": { "type": "string" },
                     "score": {
                         "type": "number",
                         "description": "\n      The relevancy of the article template.\n      The higher being the more relevant.\n      Static article templates have a score between 0 and -1.\n      Expecting AI articles to have a score between 0 and 1 in the future.\n    "
@@ -7243,7 +7304,10 @@
                         "type": "number",
                         "description": "\n      The number of tickets used to generate the article.\n      Value can be -1 if this data is not available.\n    "
                     },
-                    "batch_datetime": {"format": "date-time", "type": "string"},
+                    "batch_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
                     "review_action": {
                         "enum": [
                             "archive",
@@ -7272,14 +7336,14 @@
             "ArticleTemplateDto": {
                 "type": "object",
                 "properties": {
-                    "key": {"type": "string"},
-                    "title": {"type": "string"},
-                    "html_content": {"type": "string"},
+                    "key": { "type": "string" },
+                    "title": { "type": "string" },
+                    "html_content": { "type": "string" },
                     "excerpt": {
                         "type": "string",
                         "description": "\n      A short summary of the article.\n      Usually the first paragraph of the article.\n    "
                     },
-                    "category": {"type": "string"},
+                    "category": { "type": "string" },
                     "score": {
                         "type": "number",
                         "description": "\n      The relevancy of the article template.\n      The higher being the more relevant.\n      Static article templates have a score between 0 and -1.\n      Expecting AI articles to have a score between 0 and 1 in the future.\n    "
@@ -7336,7 +7400,9 @@
             "UploadAttachmentDto": {
                 "type": "object",
                 "properties": {
-                    "file": {"$ref": "#/components/schemas/AttachmentFileDto"},
+                    "file": {
+                        "$ref": "#/components/schemas/AttachmentFileDto"
+                    },
                     "channel": {
                         "$ref": "#/components/schemas/AttachmentChannelDto"
                     }
@@ -7346,8 +7412,8 @@
             "SignedPostPolicyDto": {
                 "type": "object",
                 "properties": {
-                    "url": {"type": "string"},
-                    "fields": {"type": "object"}
+                    "url": { "type": "string" },
+                    "fields": { "type": "object" }
                 },
                 "required": ["url", "fields"]
             },
@@ -7404,9 +7470,11 @@
                     },
                     "email_integration": {
                         "description": "Email integration used to receive this contact form inquiries",
-                        "example": {"id": 1, "email": "jonh@example.com"},
+                        "example": { "id": 1, "email": "jonh@example.com" },
                         "allOf": [
-                            {"$ref": "#/components/schemas/EmailIntegrationDto"}
+                            {
+                                "$ref": "#/components/schemas/EmailIntegrationDto"
+                            }
                         ]
                     },
                     "subject_lines": {
@@ -7428,7 +7496,7 @@
                             }
                         ]
                     },
-                    "shop_name": {"type": "string", "nullable": true},
+                    "shop_name": { "type": "string", "nullable": true },
                     "form_display_mode": {
                         "enum": ["show_after_button_click", "show_immediately"],
                         "type": "string"
@@ -7442,7 +7510,7 @@
                     "options": {
                         "description": "List of options that will be displayed to the user in the subject line's select dropdown\nEach option can be from 2 to 50 character long\nMax 15 options",
                         "type": "array",
-                        "items": {"type": "string"}
+                        "items": { "type": "string" }
                     },
                     "allow_other": {
                         "type": "boolean",
@@ -7538,15 +7606,17 @@
                             "allow_other": true
                         },
                         "allOf": [
-                            {"$ref": "#/components/schemas/SubjectLinesDto"}
+                            { "$ref": "#/components/schemas/SubjectLinesDto" }
                         ]
                     },
                     "email_integration": {
                         "nullable": true,
                         "description": "Email integration details used to create Helpdesk tickets",
-                        "example": {"id": 1, "email": "jonh@example.com"},
+                        "example": { "id": 1, "email": "jonh@example.com" },
                         "allOf": [
-                            {"$ref": "#/components/schemas/EmailIntegrationDto"}
+                            {
+                                "$ref": "#/components/schemas/EmailIntegrationDto"
+                            }
                         ]
                     },
                     "code_snippet_template": {
@@ -7557,7 +7627,7 @@
                         "type": "string",
                         "description": "Url template to use to construct the shareable Contact form link"
                     },
-                    "shop_name": {"type": "string", "nullable": true},
+                    "shop_name": { "type": "string", "nullable": true },
                     "deactivated_datetime": {
                         "format": "date-time",
                         "type": "string",
@@ -7570,7 +7640,7 @@
                         "description": "Automation settings id in contact form",
                         "example": 2
                     },
-                    "integration_id": {"type": "number", "nullable": true},
+                    "integration_id": { "type": "number", "nullable": true },
                     "form_display_mode": {
                         "enum": ["show_after_button_click", "show_immediately"],
                         "type": "string",
@@ -7601,7 +7671,7 @@
             "ContactFormsListPageDto": {
                 "type": "object",
                 "properties": {
-                    "meta": {"$ref": "#/components/schemas/PageMetaDto"},
+                    "meta": { "$ref": "#/components/schemas/PageMetaDto" },
                     "object": {
                         "type": "string",
                         "default": "list",
@@ -7609,7 +7679,9 @@
                     },
                     "data": {
                         "type": "array",
-                        "items": {"$ref": "#/components/schemas/ContactFormDto"}
+                        "items": {
+                            "$ref": "#/components/schemas/ContactFormDto"
+                        }
                     }
                 },
                 "required": ["meta", "object", "data"]
@@ -7648,9 +7720,11 @@
                     },
                     "email_integration": {
                         "description": "Email integration used to receive this contact form inquiries",
-                        "example": {"id": 1, "email": "jonh@example.com"},
+                        "example": { "id": 1, "email": "jonh@example.com" },
                         "allOf": [
-                            {"$ref": "#/components/schemas/EmailIntegrationDto"}
+                            {
+                                "$ref": "#/components/schemas/EmailIntegrationDto"
+                            }
                         ]
                     },
                     "subject_lines": {
@@ -7672,7 +7746,7 @@
                             }
                         ]
                     },
-                    "shop_name": {"type": "string", "nullable": true},
+                    "shop_name": { "type": "string", "nullable": true },
                     "form_display_mode": {
                         "enum": ["show_after_button_click", "show_immediately"],
                         "type": "string"
@@ -7763,13 +7837,13 @@
             },
             "PurgeCacheContactFormDto": {
                 "type": "object",
-                "properties": {"shop_name": {"type": "string"}},
+                "properties": { "shop_name": { "type": "string" } },
                 "required": ["shop_name"]
             },
             "FallbackEmailIntegrationDto": {
                 "type": "object",
                 "properties": {
-                    "id": {"type": "number", "example": 12345},
+                    "id": { "type": "number", "example": 12345 },
                     "email": {
                         "type": "string",
                         "example": "acme-support@gorgias.xyz"
@@ -7818,7 +7892,7 @@
                         "maxLength": 255,
                         "pattern": "SHOPIFY_PAGE_HANDLE_REGEX"
                     },
-                    "position": {"enum": ["BOTTOM", "TOP"], "type": "string"},
+                    "position": { "enum": ["BOTTOM", "TOP"], "type": "string" },
                     "title": {
                         "type": "string",
                         "example": "My new page",
@@ -7830,7 +7904,7 @@
             "PageEmbedmentDto": {
                 "type": "object",
                 "properties": {
-                    "id": {"type": "number", "example": 1},
+                    "id": { "type": "number", "example": 1 },
                     "page_external_id": {
                         "type": "string",
                         "example": "229672878386"
@@ -7843,7 +7917,7 @@
                         "type": "string",
                         "example": "my-page-title"
                     },
-                    "position": {"enum": ["BOTTOM", "TOP"], "type": "string"},
+                    "position": { "enum": ["BOTTOM", "TOP"], "type": "string" },
                     "created_datetime": {
                         "format": "date-time",
                         "type": "string"
@@ -7865,45 +7939,45 @@
             "UpdatePageEmbedmentDto": {
                 "type": "object",
                 "properties": {
-                    "position": {"enum": ["BOTTOM", "TOP"], "type": "string"}
+                    "position": { "enum": ["BOTTOM", "TOP"], "type": "string" }
                 },
                 "required": ["position"]
             },
             "ContactFormPageDto": {
                 "type": "object",
                 "properties": {
-                    "external_id": {"type": "string"},
-                    "title": {"type": "string"},
-                    "url_path": {"type": "string"},
-                    "body_html": {"type": "string", "nullable": true}
+                    "external_id": { "type": "string" },
+                    "title": { "type": "string" },
+                    "url_path": { "type": "string" },
+                    "body_html": { "type": "string", "nullable": true }
                 },
                 "required": ["external_id", "title", "url_path", "body_html"]
             },
             "HelpCenterStorePageDto": {
                 "type": "object",
                 "properties": {
-                    "external_id": {"type": "string"},
-                    "title": {"type": "string"},
-                    "url_path": {"type": "string"},
-                    "body_html": {"type": "string", "nullable": true}
+                    "external_id": { "type": "string" },
+                    "title": { "type": "string" },
+                    "url_path": { "type": "string" },
+                    "body_html": { "type": "string", "nullable": true }
                 },
                 "required": ["external_id", "title", "url_path", "body_html"]
             },
             "AccessTokenDto": {
                 "type": "object",
                 "properties": {
-                    "access_token": {"type": "string"},
-                    "token_type": {"type": "string"}
+                    "access_token": { "type": "string" },
+                    "token_type": { "type": "string" }
                 },
                 "required": ["access_token", "token_type"]
             },
             "CreateFileIngestionLogDto": {
                 "type": "object",
                 "properties": {
-                    "filename": {"type": "string"},
-                    "type": {"type": "string"},
-                    "size_bytes": {"type": "number"},
-                    "google_storage_url": {"type": "string"}
+                    "filename": { "type": "string" },
+                    "type": { "type": "string" },
+                    "size_bytes": { "type": "number" },
+                    "google_storage_url": { "type": "string" }
                 },
                 "required": [
                     "filename",
@@ -7915,16 +7989,16 @@
             "FileIngestionLogDto": {
                 "type": "object",
                 "properties": {
-                    "id": {"type": "number"},
-                    "help_center_id": {"type": "number"},
+                    "id": { "type": "number" },
+                    "help_center_id": { "type": "number" },
                     "snippets_article_ids": {
                         "type": "array",
-                        "items": {"type": "number"}
+                        "items": { "type": "number" }
                     },
-                    "filename": {"type": "string"},
-                    "type": {"type": "string"},
-                    "size_bytes": {"type": "number"},
-                    "google_storage_url": {"type": "string"},
+                    "filename": { "type": "string" },
+                    "type": { "type": "string" },
+                    "size_bytes": { "type": "number" },
+                    "google_storage_url": { "type": "string" },
                     "status": {
                         "enum": ["FAILED", "PENDING", "SUCCESSFUL"],
                         "type": "string"
@@ -7953,10 +8027,10 @@
             "RetrieveFileIngestionLogDto": {
                 "type": "object",
                 "properties": {
-                    "id": {"type": "number"},
-                    "help_center_id": {"type": "number"},
-                    "filename": {"type": "string"},
-                    "google_storage_url": {"type": "string"},
+                    "id": { "type": "number" },
+                    "help_center_id": { "type": "number" },
+                    "filename": { "type": "string" },
+                    "google_storage_url": { "type": "string" },
                     "status": {
                         "enum": ["FAILED", "PENDING", "SUCCESSFUL"],
                         "type": "string"
@@ -7978,10 +8052,13 @@
             "AIGuidanceDto": {
                 "type": "object",
                 "properties": {
-                    "key": {"type": "string"},
-                    "name": {"type": "string"},
-                    "content": {"type": "string"},
-                    "batch_datetime": {"format": "date-time", "type": "string"},
+                    "key": { "type": "string" },
+                    "name": { "type": "string" },
+                    "content": { "type": "string" },
+                    "batch_datetime": {
+                        "format": "date-time",
+                        "type": "string"
+                    },
                     "review_action": {
                         "enum": ["created", "none"],
                         "type": "string"
@@ -8007,7 +8084,7 @@
             "ColumnSourceCsvOnly": {
                 "type": "object",
                 "properties": {
-                    "source": {"$ref": "#/components/schemas/ColumnSourceCsv"}
+                    "source": { "$ref": "#/components/schemas/ColumnSourceCsv" }
                 },
                 "required": ["source"]
             },
@@ -8037,7 +8114,7 @@
                             {
                                 "$ref": "#/components/schemas/ColumnSourceAutoGenerated"
                             },
-                            {"$ref": "#/components/schemas/ColumnSourceCsv"}
+                            { "$ref": "#/components/schemas/ColumnSourceCsv" }
                         ]
                     }
                 },
@@ -8109,12 +8186,12 @@
                     },
                     "article_columns": {
                         "allOf": [
-                            {"$ref": "#/components/schemas/ArticleColumns"}
+                            { "$ref": "#/components/schemas/ArticleColumns" }
                         ]
                     },
                     "category_columns": {
                         "allOf": [
-                            {"$ref": "#/components/schemas/CategoryColumns"}
+                            { "$ref": "#/components/schemas/CategoryColumns" }
                         ]
                     }
                 },
@@ -8128,7 +8205,7 @@
                         "example": "SUCCESS",
                         "enum": ["SUCCESS"]
                     },
-                    "num_imported_csv_rows": {"type": "number"}
+                    "num_imported_csv_rows": { "type": "number" }
                 },
                 "required": ["status", "num_imported_csv_rows"]
             },
@@ -8140,9 +8217,9 @@
                         "example": "PARTIAL",
                         "enum": ["PARTIAL"]
                     },
-                    "num_imported_csv_rows": {"type": "number"},
-                    "num_erroneous_csv_rows": {"type": "number"},
-                    "erroneous_csv_rows_file_url": {"type": "string"}
+                    "num_imported_csv_rows": { "type": "number" },
+                    "num_erroneous_csv_rows": { "type": "number" },
+                    "erroneous_csv_rows_file_url": { "type": "string" }
                 },
                 "required": [
                     "status",
@@ -8158,7 +8235,7 @@
                         "example": "FAILED",
                         "enum": ["FAILED"]
                     },
-                    "failed_reason": {"type": "string"}
+                    "failed_reason": { "type": "string" }
                 },
                 "required": ["status"]
             },
@@ -8198,11 +8275,11 @@
             "AnalyseCsvResponseColumnDto": {
                 "type": "object",
                 "properties": {
-                    "name": {"type": "string", "example": "article_title"},
+                    "name": { "type": "string", "example": "article_title" },
                     "samples": {
                         "example": ["What is Gorgias?", "Installation Guide"],
                         "type": "array",
-                        "items": {"type": "string"}
+                        "items": { "type": "string" }
                     }
                 },
                 "required": ["name", "samples"]
@@ -8221,7 +8298,7 @@
                             "$ref": "#/components/schemas/AnalyseCsvResponseColumnDto"
                         }
                     },
-                    "num_rows": {"type": "number", "example": 1000}
+                    "num_rows": { "type": "number", "example": 1000 }
                 },
                 "required": ["status", "columns", "num_rows"]
             },
@@ -8309,23 +8386,26 @@
             "MailtoReplacementConfigGetDto": {
                 "type": "object",
                 "properties": {
-                    "emails": {"type": "array", "items": {"type": "string"}}
+                    "emails": { "type": "array", "items": { "type": "string" } }
                 },
                 "required": ["emails"]
             },
             "UpsertMailtoReplacementConfigDto": {
                 "type": "object",
                 "properties": {
-                    "emails": {"type": "array", "items": {"type": "string"}}
+                    "emails": { "type": "array", "items": { "type": "string" } }
                 },
                 "required": ["emails"]
             },
             "MailtoReplacementConfigDto": {
                 "type": "object",
                 "properties": {
-                    "emails": {"type": "array", "items": {"type": "string"}},
-                    "contactFormUid": {"type": "string"},
-                    "shopifyShopName": {"type": "string"}
+                    "emails": {
+                        "type": "array",
+                        "items": { "type": "string" }
+                    },
+                    "contactFormUid": { "type": "string" },
+                    "shopifyShopName": { "type": "string" }
                 },
                 "required": ["emails", "contactFormUid", "shopifyShopName"]
             },
@@ -8377,7 +8457,9 @@
                         "enum": ["footer", "header"],
                         "type": "string"
                     },
-                    "meta": {"$ref": "#/components/schemas/NavigationLinkMeta"}
+                    "meta": {
+                        "$ref": "#/components/schemas/NavigationLinkMeta"
+                    }
                 },
                 "required": ["label", "value", "locale", "group"]
             },
@@ -8400,9 +8482,9 @@
                         "nullable": true,
                         "description": "Deletion date"
                     },
-                    "id": {"type": "number"},
-                    "label": {"type": "string"},
-                    "value": {"type": "string"},
+                    "id": { "type": "number" },
+                    "label": { "type": "string" },
+                    "value": { "type": "string" },
                     "locale": {
                         "enum": [
                             "cs-CZ",
@@ -8423,9 +8505,11 @@
                         ],
                         "type": "string"
                     },
-                    "group": {"enum": ["footer", "header"], "type": "string"},
-                    "meta": {"$ref": "#/components/schemas/NavigationLinkMeta"},
-                    "help_center_id": {"type": "number"}
+                    "group": { "enum": ["footer", "header"], "type": "string" },
+                    "meta": {
+                        "$ref": "#/components/schemas/NavigationLinkMeta"
+                    },
+                    "help_center_id": { "type": "number" }
                 },
                 "required": [
                     "created_datetime",
@@ -8455,13 +8539,15 @@
                         "enum": ["footer", "header"],
                         "type": "string"
                     },
-                    "meta": {"$ref": "#/components/schemas/NavigationLinkMeta"}
+                    "meta": {
+                        "$ref": "#/components/schemas/NavigationLinkMeta"
+                    }
                 }
             },
             "NavigationLinksListPageDto": {
                 "type": "object",
                 "properties": {
-                    "meta": {"$ref": "#/components/schemas/PageMetaDto"},
+                    "meta": { "$ref": "#/components/schemas/PageMetaDto" },
                     "object": {
                         "type": "string",
                         "default": "list",
@@ -8479,13 +8565,13 @@
             "WorkflowHandoverMessageAttachmentExtraDto": {
                 "type": "object",
                 "properties": {
-                    "product_id": {"type": "number"},
-                    "variant_id": {"type": "number"},
-                    "price": {"type": "string"},
-                    "variant_name": {"type": "string"},
-                    "product_link": {"type": "string"},
-                    "currency": {"type": "string"},
-                    "featured_image": {"type": "string"}
+                    "product_id": { "type": "number" },
+                    "variant_id": { "type": "number" },
+                    "price": { "type": "string" },
+                    "variant_name": { "type": "string" },
+                    "product_link": { "type": "string" },
+                    "currency": { "type": "string" },
+                    "featured_image": { "type": "string" }
                 },
                 "required": [
                     "product_id",
@@ -8497,10 +8583,10 @@
             "WorkflowHandoverMessageAttachmentDto": {
                 "type": "object",
                 "properties": {
-                    "url": {"type": "string"},
-                    "name": {"type": "string"},
-                    "size": {"type": "number", "nullable": true},
-                    "content_type": {"type": "string"},
+                    "url": { "type": "string" },
+                    "name": { "type": "string" },
+                    "size": { "type": "number", "nullable": true },
+                    "content_type": { "type": "string" },
                     "extra": {
                         "$ref": "#/components/schemas/WorkflowHandoverMessageAttachmentExtraDto"
                     }
@@ -8510,24 +8596,24 @@
             "WorkflowHandoverMessageDto": {
                 "type": "object",
                 "properties": {
-                    "subject": {"type": "string"},
-                    "body_html": {"type": "string"},
+                    "subject": { "type": "string" },
+                    "body_html": { "type": "string" },
                     "attachments": {
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/WorkflowHandoverMessageAttachmentDto"
                         }
                     },
-                    "from_agent": {"type": "boolean"},
-                    "sent_datetime": {"type": "string"}
+                    "from_agent": { "type": "boolean" },
+                    "sent_datetime": { "type": "string" }
                 },
                 "required": ["attachments", "from_agent"]
             },
             "WorkflowHandoverDto": {
                 "type": "object",
                 "properties": {
-                    "contact_form_uid": {"type": "string"},
-                    "help_center_id": {"type": "number"},
+                    "contact_form_uid": { "type": "string" },
+                    "help_center_id": { "type": "number" },
                     "locale": {
                         "enum": [
                             "cs-CZ",
@@ -8548,9 +8634,9 @@
                         ],
                         "type": "string"
                     },
-                    "workflow_entrypoint_label": {"type": "string"},
-                    "workflow_configuration_id": {"type": "string"},
-                    "workflow_execution_id": {"type": "string"},
+                    "workflow_entrypoint_label": { "type": "string" },
+                    "workflow_configuration_id": { "type": "string" },
+                    "workflow_execution_id": { "type": "string" },
                     "conversation": {
                         "type": "array",
                         "items": {
@@ -8562,11 +8648,11 @@
                         "minLength": 3,
                         "maxLength": 320
                     },
-                    "url": {"type": "string"},
+                    "url": { "type": "string" },
                     "ticket_tags": {
                         "nullable": true,
                         "type": "array",
-                        "items": {"type": "string"}
+                        "items": { "type": "string" }
                     },
                     "ticket_assignee_team_id": {
                         "type": "number",
@@ -8589,5 +8675,5 @@
             }
         }
     },
-    "security": [{"AgentBasicAuth": []}]
+    "security": [{ "AgentBasicAuth": [] }]
 }

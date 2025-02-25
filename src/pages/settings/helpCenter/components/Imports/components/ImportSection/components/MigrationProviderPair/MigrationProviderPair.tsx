@@ -1,5 +1,6 @@
-import classNames from 'classnames'
 import React from 'react'
+
+import classNames from 'classnames'
 
 import css from './MigrationProviderPair.less'
 
@@ -13,7 +14,7 @@ type Props = {
     right: ImgConfig
 }
 
-const MigrationProviderPair: React.FC<Props> = ({left, right}) => {
+const MigrationProviderPair: React.FC<Props> = ({ left, right }) => {
     return (
         <div className={css.wrapper}>
             <img src={left.src} alt={left.alt} className={css.image} />

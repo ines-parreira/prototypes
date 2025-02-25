@@ -1,10 +1,9 @@
 import MockAdapter from 'axios-mock-adapter'
 
-import {apiListCursorPaginationResponse} from 'fixtures/axiosResponse'
-
+import { apiListCursorPaginationResponse } from 'fixtures/axiosResponse'
 import client from 'models/api/resources'
 
-import {getHTTPEvents, getHTTPEvent} from '../http'
+import { getHTTPEvent, getHTTPEvents } from '../http'
 
 const mockedServer = new MockAdapter(client)
 
@@ -15,7 +14,7 @@ describe('HTTP event resources', () => {
 
     describe('getHTTPEvents', () => {
         it('should resolve with a list of http events on success', async () => {
-            const response = [{id: 1}, {id: 2}]
+            const response = [{ id: 1 }, { id: 2 }]
             mockedServer
                 .onGet('/api/integrations/1/events/')
                 .reply(200, apiListCursorPaginationResponse(response))
@@ -27,16 +26,16 @@ describe('HTTP event resources', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onGet('/api/integrations/1/events/')
-                .reply(404, {message: 'error'})
+                .reply(404, { message: 'error' })
             return expect(getHTTPEvents(1)).rejects.toEqual(
-                new Error('Request failed with status code 404')
+                new Error('Request failed with status code 404'),
             )
         })
     })
 
     describe('getHTTPEvent', () => {
         it('should resolve with an existing CustomField on success', async () => {
-            const response = {id: 1}
+            const response = { id: 1 }
             mockedServer
                 .onGet('/api/integrations/1/events/1')
                 .reply(200, response)
@@ -49,9 +48,9 @@ describe('HTTP event resources', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onGet('/api/integrations/1/events/1')
-                .reply(404, {message: 'error'})
+                .reply(404, { message: 'error' })
             return expect(getHTTPEvent(1, 1)).rejects.toEqual(
-                new Error('Request failed with status code 404')
+                new Error('Request failed with status code 404'),
             )
         })
     })

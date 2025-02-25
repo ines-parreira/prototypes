@@ -2,12 +2,12 @@ import {
     CreateShopifyPageEmbedmentDto,
     UpdateShopifyPageEmbedmentDto,
 } from 'models/contactForm/types'
-import {HelpCenterClient} from 'rest_api/help_center_api/client'
-import {Paths} from 'rest_api/help_center_api/client.generated'
+import { HelpCenterClient } from 'rest_api/help_center_api/client'
+import { Paths } from 'rest_api/help_center_api/client.generated'
 
 export const getContactForms = async (
     client: HelpCenterClient | undefined,
-    queryParams: Paths.ListContactForms.QueryParameters = {}
+    queryParams: Paths.ListContactForms.QueryParameters = {},
 ) => {
     if (!client) return null
     const res = await client.listContactForms(queryParams)
@@ -17,7 +17,7 @@ export const getContactForms = async (
 
 export const createContactForm = async (
     client: HelpCenterClient | undefined,
-    body: Paths.CreateContactForm.RequestBody
+    body: Paths.CreateContactForm.RequestBody,
 ) => {
     if (!client) return null
 
@@ -28,7 +28,7 @@ export const createContactForm = async (
 
 export const getShopifyPages = async (
     client: HelpCenterClient | undefined,
-    pathParameters: Paths.ListContactFormShopifyPages.PathParameters
+    pathParameters: Paths.ListContactFormShopifyPages.PathParameters,
 ) => {
     if (!client) return null
 
@@ -39,7 +39,7 @@ export const getShopifyPages = async (
 
 export const getPageEmbedments = async (
     client: HelpCenterClient | undefined,
-    pathParameters: Paths.ListContactFormShopifyPageEmbedments.PathParameters
+    pathParameters: Paths.ListContactFormShopifyPageEmbedments.PathParameters,
 ) => {
     if (!client) return null
 
@@ -52,13 +52,13 @@ export const getPageEmbedments = async (
 export const createPageEmbedment = async (
     client: HelpCenterClient | undefined,
     pathParameters: Paths.CreateContactFormShopifyPageEmbedment.PathParameters,
-    body: CreateShopifyPageEmbedmentDto
+    body: CreateShopifyPageEmbedmentDto,
 ) => {
     if (!client) return null
 
     const res = await client.createContactFormShopifyPageEmbedment(
         pathParameters,
-        body
+        body,
     )
 
     return res.data
@@ -67,13 +67,13 @@ export const createPageEmbedment = async (
 export const updatePageEmbedment = async (
     client: HelpCenterClient | undefined,
     pathParameters: Paths.UpdateContactFormShopifyPageEmbedment.PathParameters,
-    body: UpdateShopifyPageEmbedmentDto
+    body: UpdateShopifyPageEmbedmentDto,
 ) => {
     if (!client) return null
 
     const res = await client.updateContactFormShopifyPageEmbedment(
         pathParameters,
-        body
+        body,
     )
 
     return res.data
@@ -81,7 +81,7 @@ export const updatePageEmbedment = async (
 
 export const deletePageEmbedment = async (
     client: HelpCenterClient | undefined,
-    pathParameters: Paths.DeleteContactFormShopifyPageEmbedment.PathParameters
+    pathParameters: Paths.DeleteContactFormShopifyPageEmbedment.PathParameters,
 ) => {
     if (!client) return null
 

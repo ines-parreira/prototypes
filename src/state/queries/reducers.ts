@@ -1,8 +1,8 @@
-import {GorgiasAction} from 'state/types'
-import {getMoment} from 'utils/date'
+import { GorgiasAction } from 'state/types'
+import { getMoment } from 'utils/date'
 
 import * as constants from './constants'
-import {QueriesState} from './types'
+import { QueriesState } from './types'
 
 export const initialState: QueriesState = {
     timestamp: {},
@@ -10,7 +10,7 @@ export const initialState: QueriesState = {
 
 export default function reducer(
     state: QueriesState = initialState,
-    action: GorgiasAction
+    action: GorgiasAction,
 ): QueriesState {
     switch (action.type) {
         case constants.UPDATE_QUERY_TIMESTAMP: {

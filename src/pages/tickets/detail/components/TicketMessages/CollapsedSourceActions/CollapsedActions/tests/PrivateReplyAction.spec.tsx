@@ -1,14 +1,14 @@
-import {render} from '@testing-library/react'
-import _noop from 'lodash/noop'
 import React from 'react'
 
-import {Dropdown} from 'reactstrap'
+import { render } from '@testing-library/react'
+import _noop from 'lodash/noop'
+import { Dropdown } from 'reactstrap'
 
-import {message} from 'models/ticket/tests/mocks'
+import { message } from 'models/ticket/tests/mocks'
 
 import PrivateReplyAction from '../PrivateReplyAction'
 
-const renderAction = ({isFacebookComment = false} = {}) =>
+const renderAction = ({ isFacebookComment = false } = {}) =>
     render(
         <Dropdown toggle={_noop}>
             <PrivateReplyAction
@@ -16,7 +16,7 @@ const renderAction = ({isFacebookComment = false} = {}) =>
                 isFacebookComment={isFacebookComment}
                 onClick={_noop}
             />
-        </Dropdown>
+        </Dropdown>,
     )
 
 describe('<PrivateReplyAction/>', () => {
@@ -30,10 +30,10 @@ describe('<PrivateReplyAction/>', () => {
     ])(
         'should display the correct text for %s comment',
         (_, isFacebookComment) => {
-            const {container} = renderAction({
+            const { container } = renderAction({
                 isFacebookComment,
             })
             expect(container.firstChild).toMatchSnapshot()
-        }
+        },
     )
 })

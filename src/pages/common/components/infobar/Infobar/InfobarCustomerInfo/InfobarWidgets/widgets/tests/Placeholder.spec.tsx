@@ -1,12 +1,13 @@
-import {render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {Template} from 'models/widget/types'
-import {Widget} from 'state/widgets/types'
-import {assumeMock} from 'utils/testing'
-import {WidgetContext} from 'Widgets/contexts/WidgetContext'
+import { Template } from 'models/widget/types'
+import { Widget } from 'state/widgets/types'
+import { assumeMock } from 'utils/testing'
+import { WidgetContext } from 'Widgets/contexts/WidgetContext'
 
 import Placeholder from '../Placeholder'
 
@@ -35,7 +36,7 @@ describe('PlaceholderWidget component', () => {
                 }
             >
                 <Placeholder {...minProps} />
-            </WidgetContext.Provider>
+            </WidgetContext.Provider>,
         )
 
         expect(screen.getByText('Widget for Shopify data'))
@@ -47,7 +48,7 @@ describe('PlaceholderWidget component', () => {
                 id: integrationId,
                 type: 'http',
                 name: 'my little integration http',
-            })
+            }),
         )
 
         render(
@@ -60,7 +61,7 @@ describe('PlaceholderWidget component', () => {
                 }
             >
                 <Placeholder {...minProps} />
-            </WidgetContext.Provider>
+            </WidgetContext.Provider>,
         )
 
         expect(screen.getByText('Widget for my little integration http data'))

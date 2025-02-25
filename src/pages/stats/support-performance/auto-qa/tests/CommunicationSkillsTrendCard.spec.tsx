@@ -1,18 +1,19 @@
-import {screen} from '@testing-library/react'
 import React from 'react'
 
-import {useCommunicationSkillsTrend} from 'hooks/reporting/support-performance/auto-qa/useCommunicationSkillsTrend'
-import {TREND_BADGE_FORMAT} from 'pages/stats/common/components/TrendBadge'
-import {formatMetricTrend, formatMetricValue} from 'pages/stats/common/utils'
-import {TrendCardConfig} from 'pages/stats/support-performance/auto-qa/AutoQAMetricsConfig'
-import {CommunicationSkillsTrendCard} from 'pages/stats/support-performance/auto-qa/CommunicationSkillsTrendCard'
-import {RootState} from 'state/types'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
-import {AutoQAMetric} from 'state/ui/stats/types'
-import {assumeMock, renderWithStore} from 'utils/testing'
+import { screen } from '@testing-library/react'
+
+import { useCommunicationSkillsTrend } from 'hooks/reporting/support-performance/auto-qa/useCommunicationSkillsTrend'
+import { TREND_BADGE_FORMAT } from 'pages/stats/common/components/TrendBadge'
+import { formatMetricTrend, formatMetricValue } from 'pages/stats/common/utils'
+import { TrendCardConfig } from 'pages/stats/support-performance/auto-qa/AutoQAMetricsConfig'
+import { CommunicationSkillsTrendCard } from 'pages/stats/support-performance/auto-qa/CommunicationSkillsTrendCard'
+import { RootState } from 'state/types'
+import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
+import { AutoQAMetric } from 'state/ui/stats/types'
+import { assumeMock, renderWithStore } from 'utils/testing'
 
 jest.mock(
-    'hooks/reporting/support-performance/auto-qa/useCommunicationSkillsTrend'
+    'hooks/reporting/support-performance/auto-qa/useCommunicationSkillsTrend',
 )
 const useCommunicationSkillsTrendMock = assumeMock(useCommunicationSkillsTrend)
 
@@ -27,7 +28,7 @@ describe('CommunicationSkillsTrendCard', () => {
             },
         },
         ui: {
-            stats: {filters: uiStatsInitialState},
+            stats: { filters: uiStatsInitialState },
         },
     } as RootState
     const value = 5
@@ -52,17 +53,17 @@ describe('CommunicationSkillsTrendCard', () => {
                 formatMetricValue(
                     value,
                     TrendCardConfig[AutoQAMetric.CommunicationSkills]
-                        .metricFormat
-                )
-            )
+                        .metricFormat,
+                ),
+            ),
         ).toBeInTheDocument()
         expect(
             screen.getByText(
                 String(
                     formatMetricTrend(value, prevValue, TREND_BADGE_FORMAT)
-                        .formattedTrend
-                )
-            )
+                        .formattedTrend,
+                ),
+            ),
         ).toBeInTheDocument()
     })
 })

@@ -4,7 +4,7 @@ type Props = {
     aiAgentLink?: string
 }
 
-export const AiAgentRequirements = ({aiAgentLink}: Props) => {
+export const AiAgentRequirements = ({ aiAgentLink }: Props) => {
     return (
         <div>
             Applicable if{' '}

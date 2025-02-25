@@ -1,22 +1,24 @@
-import {List as ImmutableList, Map} from 'immutable'
 import React from 'react'
-import {Link} from 'react-router-dom'
 
-import {IntegrationType} from 'models/integration/types'
+import { List as ImmutableList, Map } from 'immutable'
+import { Link } from 'react-router-dom'
+
+import { IntegrationType } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import ConnectLink from 'pages/integrations/components/ConnectLink'
 
 import NoIntegration from '../NoIntegration'
+import { getConnectUrl } from './Utils'
+
 import css from './List.less'
-import {getConnectUrl} from './Utils'
 
 type Props = {
     integrations: ImmutableList<Map<any, any>>
     loading: Map<any, any>
 }
 
-function List({integrations, loading}: Props) {
+function List({ integrations, loading }: Props) {
     if (loading.get('integrations', false)) {
         return <Loader />
     }
@@ -30,7 +32,7 @@ function List({integrations, loading}: Props) {
                         }`
                         const reactivateUrl = getConnectUrl()
                         const isDisabled = integration!.get(
-                            'deactivated_datetime'
+                            'deactivated_datetime',
                         )
                         const isSubmitting = loading.get('updateIntegration')
                         return (

@@ -1,18 +1,19 @@
-import {render} from '@testing-library/react'
 import React from 'react'
-import {Route, useRouteMatch} from 'react-router-dom'
 
-import {PageSection} from 'config/pages'
-import {AGENT_ROLE} from 'config/user'
-import {SLAForm, SLAList, SLATemplateList} from 'pages/settings/SLAs'
-import {assumeMock} from 'utils/testing'
+import { render } from '@testing-library/react'
+import { Route, useRouteMatch } from 'react-router-dom'
 
-import {renderAppSettings} from '../helpers/settingsRenderer'
-import {SLA} from '../SLA'
+import { PageSection } from 'config/pages'
+import { AGENT_ROLE } from 'config/user'
+import { SLAForm, SLAList, SLATemplateList } from 'pages/settings/SLAs'
+import { assumeMock } from 'utils/testing'
+
+import { renderAppSettings } from '../helpers/settingsRenderer'
+import { SLA } from '../SLA'
 
 jest.mock('react-router-dom', () => ({
     Route: jest.fn(() => <div>route</div>),
-    Switch: jest.fn(({children}) => <div>{children}</div>),
+    Switch: jest.fn(({ children }) => <div>{children}</div>),
     useRouteMatch: jest.fn(),
 }))
 
@@ -61,7 +62,7 @@ describe('SLA', () => {
         ],
     ])(
         'should call renderer and Route with correct props',
-        ({callOrder, path, exact, component}) => {
+        ({ callOrder, path, exact, component }) => {
             render(<SLA />)
 
             expect(mockedRenderAppSettings.mock.calls[callOrder]).toEqual([
@@ -78,6 +79,6 @@ describe('SLA', () => {
                 },
                 {},
             ])
-        }
+        },
     )
 })

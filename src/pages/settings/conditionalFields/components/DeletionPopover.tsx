@@ -1,9 +1,10 @@
-import {CustomFieldCondition} from '@gorgias/api-queries'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { CustomFieldCondition } from '@gorgias/api-queries'
 
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import history from 'pages/history'
-import {CUSTOM_FIELD_CONDITIONS_ROUTE} from 'routes/constants'
+import { CUSTOM_FIELD_CONDITIONS_ROUTE } from 'routes/constants'
 
 import useDeleteCustomFieldCondition from '../hooks/useDeleteCustomFieldCondition'
 
@@ -18,7 +19,7 @@ export function DeletionPopover({
     condition,
     redirect = false,
 }: Props) {
-    const {mutateAsync: deleteCondition, isLoading: isDeleting} =
+    const { mutateAsync: deleteCondition, isLoading: isDeleting } =
         useDeleteCustomFieldCondition()
 
     return (
@@ -36,10 +37,10 @@ export function DeletionPopover({
                 </>
             }
             onConfirm={async () => {
-                await deleteCondition({id: condition.id})
+                await deleteCondition({ id: condition.id })
                 if (redirect) {
                     history.push(
-                        `/app/settings/${CUSTOM_FIELD_CONDITIONS_ROUTE}`
+                        `/app/settings/${CUSTOM_FIELD_CONDITIONS_ROUTE}`,
                     )
                 }
             }}

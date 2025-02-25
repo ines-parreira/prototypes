@@ -1,9 +1,9 @@
-import {OrderDirection} from 'models/api/types'
+import { OrderDirection } from 'models/api/types'
 import {
-    TicketDimension,
-    TicketSegment,
     TicketCubeWithJoins,
+    TicketDimension,
     TicketMember,
+    TicketSegment,
 } from 'models/reporting/cubes/TicketCube'
 import {
     TicketMessagesDimension,
@@ -11,9 +11,9 @@ import {
     TicketMessagesMember,
     TicketMessagesSegment,
 } from 'models/reporting/cubes/TicketMessagesCube'
-import {ReportingFilterOperator, ReportingQuery} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
-import {subtractDaysFromDate} from 'utils/date'
+import { ReportingFilterOperator, ReportingQuery } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
+import { subtractDaysFromDate } from 'utils/date'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
@@ -27,13 +27,13 @@ export const MESSAGES_MAX_DAYS_INTO_THE_PAST = 180
 
 export const messagesPerTicketQueryFactory = (
     filters: StatsFilters,
-    timezone: string
+    timezone: string,
 ): ReportingQuery<TicketCubeWithJoins> => {
     const hardPeriodStart = formatReportingQueryDate(
         subtractDaysFromDate(
             filters.period.start_datetime,
-            MESSAGES_MAX_DAYS_INTO_THE_PAST
-        )
+            MESSAGES_MAX_DAYS_INTO_THE_PAST,
+        ),
     )
     return {
         measures: [TicketMessagesMeasure.MessagesAverage],
@@ -43,7 +43,7 @@ export const messagesPerTicketQueryFactory = (
             ...NotSpamNorTrashedTicketsFilter,
             ...statsFiltersToReportingFilters(
                 TicketStatsFiltersMembers,
-                filters
+                filters,
             ),
             {
                 member: TicketMessagesMember.PeriodStart,
@@ -66,7 +66,7 @@ export const messagesPerTicketQueryFactory = (
 export const messagesPerTicketDrillDownQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ): ReportingQuery<TicketCubeWithJoins> => {
     const baseQuery = messagesPerTicketQueryFactory(filters, timezone)
     return {

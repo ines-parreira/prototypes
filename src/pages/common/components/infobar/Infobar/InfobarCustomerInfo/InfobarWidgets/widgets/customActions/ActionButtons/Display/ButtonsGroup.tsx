@@ -1,17 +1,18 @@
-import classnames from 'classnames'
-import React, {ComponentProps, memo, useRef} from 'react'
-import {UncontrolledDropdown, DropdownMenu, DropdownToggle} from 'reactstrap'
+import React, { ComponentProps, memo, useRef } from 'react'
 
-import {ContentType} from 'models/api/types'
-import {Source} from 'models/widget/types'
+import classnames from 'classnames'
+import { DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap'
+
+import { ContentType } from 'models/api/types'
+import { Source } from 'models/widget/types'
 import IconButton from 'pages/common/components/button/IconButton'
-import {mapTemplateParameters} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/helpers/mapTemplateParameters'
-import {useComputeNbButtonDisplayed} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/hooks/useComputeNbButtonDisplayed'
+import { mapTemplateParameters } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/helpers/mapTemplateParameters'
+import { useComputeNbButtonDisplayed } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/hooks/useComputeNbButtonDisplayed'
 import {
     applyCustomActionTemplate,
     applyCustomActionVariables,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/helpers/templating'
-import {useTemplateContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/hooks/useTemplateContext'
+import { useTemplateContext } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/hooks/useTemplateContext'
 import {
     Action,
     Button as ButtonType,
@@ -19,6 +20,7 @@ import {
 import Group from 'pages/common/components/layout/Group'
 
 import Button from './Button'
+
 import css from './ButtonsGroup.less'
 
 type Props = {
@@ -26,13 +28,13 @@ type Props = {
     source: Source
 }
 
-function ButtonsGroup({buttons, source}: Props) {
+function ButtonsGroup({ buttons, source }: Props) {
     //buttons management
     const containerRef = useRef<HTMLDivElement | null>(null)
     const nbButtonDisplayed = useComputeNbButtonDisplayed(
         buttons,
         containerRef,
-        source
+        source,
     )
 
     // dropdown management
@@ -91,30 +93,30 @@ function TemplatedButton({
         url: applyCustomActionTemplate(
             button.action.url,
             templateContext,
-            true
+            true,
         ),
         params: mapTemplateParameters(
             button.action.params,
             templateContext,
-            true
+            true,
         ),
         headers: mapTemplateParameters(
             button.action.headers,
             templateContext,
-            true
+            true,
         ),
         body: {
             ...button.action.body,
             [ContentType.Form]: mapTemplateParameters(
                 button.action.body[ContentType.Form],
                 templateContext,
-                true
+                true,
             ),
             [ContentType.Json]: JSON.parse(
                 applyCustomActionVariables(
                     JSON.stringify(button.action.body[ContentType.Json]),
-                    templateContext.variables
-                )
+                    templateContext.variables,
+                ),
             ),
         },
     }

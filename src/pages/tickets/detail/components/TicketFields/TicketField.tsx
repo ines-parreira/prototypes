@@ -1,4 +1,4 @@
-import React, {memo} from 'react'
+import React, { memo } from 'react'
 
 import {
     CustomField,
@@ -18,8 +18,8 @@ type Props = {
     isRequired: boolean
 }
 
-function TicketField({fieldDefinition, fieldState, isRequired}: Props) {
-    const {id, label, definition, managed_type} = fieldDefinition
+function TicketField({ fieldDefinition, fieldState, isRequired }: Props) {
+    const { id, label, definition, managed_type } = fieldDefinition
 
     const baseFieldProps = {
         id,

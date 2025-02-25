@@ -1,12 +1,13 @@
+import React from 'react'
+
 import styled from '@emotion/styled'
 import classnames from 'classnames'
-import React from 'react'
-import {useHistory} from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 import {
+    getPrimaryLanguageFromChatConfig,
     GORGIAS_CHAT_SSP_TEXTS,
     GORGIAS_CHAT_WIDGET_TEXTS,
-    getPrimaryLanguageFromChatConfig,
 } from 'config/integrations/gorgias_chat'
 import Card from 'gorgias-design-system/Cards/Card'
 import Conversation from 'gorgias-design-system/HomepageModules/Conversation/Conversation'
@@ -17,7 +18,6 @@ import {
     GorgiasChatAvatarSettings,
     GorgiasChatIntegration,
 } from 'models/integration/types'
-
 import ConversationAvatars from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ConversationAvatars'
 import {
     AddIcon,
@@ -26,10 +26,11 @@ import {
     PlaneIcon,
 } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/icon-utils'
 
-import {MAX_ACTIVE_FLOWS} from '../constants'
+import { MAX_ACTIVE_FLOWS } from '../constants'
 import useWorkflowsEntrypoints from './hooks/useWorkflowsEntrypoints'
+import { useSelfServicePreviewContext } from './SelfServicePreviewContext'
+
 import css from './SelfServiceChatIntegrationHomePage.less'
-import {useSelfServicePreviewContext} from './SelfServicePreviewContext'
 
 const StyledCard = styled(Card)`
     padding: 8px 16px 8px 8px;
@@ -106,7 +107,7 @@ const SelfServiceChatIntegrationHomePage = ({
                             readOnly
                             style={
                                 isArticleRecommendationEnabled
-                                    ? {marginLeft: '10px'}
+                                    ? { marginLeft: '10px' }
                                     : {}
                             }
                         />
@@ -164,7 +165,7 @@ const SelfServiceChatIntegrationHomePage = ({
                         trailIcon={<ChevronRightIcon />}
                         className={classnames(css.listGroupItemHeading, {
                             [css.isHighlighted]: Boolean(
-                                hoveredOrderManagementFlow
+                                hoveredOrderManagementFlow,
                             ),
                         })}
                     />

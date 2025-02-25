@@ -9,54 +9,54 @@ import {
     interactionsByEventTypeTimeSeriesQueryFactory,
     interactionsTimeSeriesQueryFactory,
 } from 'models/reporting/queryFactories/automate_v2/timeseries'
-import {ReportingGranularity} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import { ReportingGranularity } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
 
 export function useAutomationDatasetTimeSeries(
     filters: StatsFilters,
     timezone: string,
-    granularity: ReportingGranularity
+    granularity: ReportingGranularity,
 ) {
     return useTimeSeries(
-        interactionsTimeSeriesQueryFactory(filters, timezone, granularity)
+        interactionsTimeSeriesQueryFactory(filters, timezone, granularity),
     )
 }
 
 export function fetchAutomationDatasetTimeSeries(
     filters: StatsFilters,
     timezone: string,
-    granularity: ReportingGranularity
+    granularity: ReportingGranularity,
 ) {
     return fetchTimeSeries(
-        interactionsTimeSeriesQueryFactory(filters, timezone, granularity)
+        interactionsTimeSeriesQueryFactory(filters, timezone, granularity),
     )
 }
 
 export function useAutomationDatasetByEventTypeTimeSeries(
     filters: StatsFilters,
     timezone: string,
-    granularity: ReportingGranularity
+    granularity: ReportingGranularity,
 ) {
     return useTimeSeriesPerDimension(
         interactionsByEventTypeTimeSeriesQueryFactory(
             filters,
             timezone,
-            granularity
-        )
+            granularity,
+        ),
     )
 }
 
 export function fetchAutomationDatasetByEventTypeTimeSeries(
     filters: StatsFilters,
     timezone: string,
-    granularity: ReportingGranularity
+    granularity: ReportingGranularity,
 ) {
     return fetchTimeSeriesPerDimension(
         interactionsByEventTypeTimeSeriesQueryFactory(
             filters,
             timezone,
-            granularity
-        )
+            granularity,
+        ),
     )
 }
 
@@ -64,15 +64,15 @@ export function useBillableTicketDatasetTimeSeries(
     filters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity,
-    aiAgentUserId?: string
+    aiAgentUserId?: string,
 ) {
     return useTimeSeries(
         billableTicketDatasetExcludingAIAgentTimeSeriesQueryFactory(
             filters,
             timezone,
             granularity,
-            aiAgentUserId
-        )
+            aiAgentUserId,
+        ),
     )
 }
 
@@ -80,14 +80,14 @@ export function fetchBillableTicketDatasetTimeSeries(
     filters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity,
-    aiAgentUserId?: string
+    aiAgentUserId?: string,
 ) {
     return fetchTimeSeries(
         billableTicketDatasetExcludingAIAgentTimeSeriesQueryFactory(
             filters,
             timezone,
             granularity,
-            aiAgentUserId
-        )
+            aiAgentUserId,
+        ),
     )
 }

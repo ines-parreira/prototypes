@@ -1,9 +1,8 @@
-import {UseQueryOptions, useMutation, useQuery} from '@tanstack/react-query'
+import { useMutation, useQuery, UseQueryOptions } from '@tanstack/react-query'
+import { AxiosError, AxiosResponse } from 'axios'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import {AxiosError, AxiosResponse} from 'axios'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-
-import {FeatureFlagKey} from 'config/featureFlags'
+import { FeatureFlagKey } from 'config/featureFlags'
 import {
     createOnboardingNotificationState,
     createStoreConfiguration,
@@ -17,18 +16,18 @@ import {
     upsertOnboardingNotificationState,
     upsertStoreConfiguration,
 } from 'models/aiAgent/resources/configuration'
-import {searchCustomer} from 'models/aiAgentPlayground/resources'
-import {SearchCustomerRequest} from 'models/aiAgentPlayground/types'
-import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import {Paths} from 'rest_api/help_center_api/client.generated'
-import {MutationOverrides} from 'types/query'
+import { searchCustomer } from 'models/aiAgentPlayground/resources'
+import { SearchCustomerRequest } from 'models/aiAgentPlayground/types'
+import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import { Paths } from 'rest_api/help_center_api/client.generated'
+import { MutationOverrides } from 'types/query'
 
-import {getAIGeneratedGuidances} from './resources/guidances'
+import { getAIGeneratedGuidances } from './resources/guidances'
 import {
     createContextAndGenerateCustomToneOfVoicePreview,
     createContextAndSubmitPlaygroundTicket,
 } from './resources/message-processing'
-import {getPlaygroundExecutions} from './resources/playground'
+import { getPlaygroundExecutions } from './resources/playground'
 import {
     GetOnboardingNotificationStateParams,
     GetPlaygroundExecutionsParams,
@@ -51,7 +50,7 @@ export const useGetAccountConfiguration = (
     accountDomain: string,
     overrides?: UseQueryOptions<
         Awaited<ReturnType<typeof getAccountConfiguration>>
-    >
+    >,
 ) => {
     return useQuery({
         queryKey: accountConfigurationKeys.detail(accountDomain),
@@ -63,7 +62,7 @@ export const useGetAccountConfiguration = (
 }
 
 export const useUpsertAccountConfigurationPure = (
-    overrides?: MutationOverrides<typeof upsertAccountConfiguration>
+    overrides?: MutationOverrides<typeof upsertAccountConfiguration>,
 ) => {
     return useMutation({
         mutationFn: (params) => upsertAccountConfiguration(...params),
@@ -74,7 +73,7 @@ export const useUpsertAccountConfigurationPure = (
 export const storeConfigurationKeys = {
     all: () => ['aiAgentStoreConfigurations'] as const,
     lists: () => [...storeConfigurationKeys.all(), 'list'] as const,
-    list: (params: {query: string}) =>
+    list: (params: { query: string }) =>
         [...storeConfigurationKeys.lists(), params] as const,
     details: () => [...storeConfigurationKeys.all(), 'detail'] as const,
     detail: (params: GetStoreConfigurationParams) =>
@@ -87,7 +86,7 @@ export const useGetStoreConfigurationPure = (
     params: GetStoreConfigurationParams,
     overrides?: UseQueryOptions<
         Awaited<ReturnType<typeof getStoreConfiguration>>
-    >
+    >,
 ) => {
     return useQuery({
         queryKey: storeConfigurationKeys.detail(params),
@@ -107,7 +106,7 @@ export const useGetStoresConfigurationForAccount = (
     params: GetStoreConfigurationForAccountParams,
     overrides?: UseQueryOptions<
         AxiosResponse<StoreConfigurationResponse | undefined>[]
-    >
+    >,
 ) => {
     const queryFn = () => {
         const getAllStoreConfigurationPromise: Promise<
@@ -116,14 +115,14 @@ export const useGetStoresConfigurationForAccount = (
 
         for (const storeName of params.storesName) {
             getAllStoreConfigurationPromise.push(
-                getStoreConfiguration({...params, storeName}).catch(
+                getStoreConfiguration({ ...params, storeName }).catch(
                     (e: AxiosError) => {
                         if (e.status === 404) {
                             return e.response as AxiosResponse<undefined>
                         }
                         throw e
-                    }
-                )
+                    },
+                ),
             )
         }
 
@@ -144,7 +143,7 @@ export const useGetStoresConfigurationForAccount = (
 }
 
 export const useCreateStoreConfigurationPure = (
-    overrides?: MutationOverrides<typeof createStoreConfiguration>
+    overrides?: MutationOverrides<typeof createStoreConfiguration>,
 ) => {
     return useMutation({
         mutationFn: (params) => createStoreConfiguration(...params),
@@ -153,7 +152,7 @@ export const useCreateStoreConfigurationPure = (
 }
 
 export const useUpsertStoreConfigurationPure = (
-    overrides?: MutationOverrides<typeof upsertStoreConfiguration>
+    overrides?: MutationOverrides<typeof upsertStoreConfiguration>,
 ) => {
     return useMutation({
         mutationFn: (params) => upsertStoreConfiguration(...params),
@@ -162,7 +161,7 @@ export const useUpsertStoreConfigurationPure = (
 }
 
 export const useCreateStoreSnippetHelpCenter = (
-    overrides?: MutationOverrides<typeof createStoreSnippetHelpCenter>
+    overrides?: MutationOverrides<typeof createStoreSnippetHelpCenter>,
 ) => {
     return useMutation({
         mutationFn: (params) => createStoreSnippetHelpCenter(...params),
@@ -176,7 +175,9 @@ export const searchCustomerKeys = {
 }
 
 export const useSubmitPlaygroundTicket = (
-    overrides?: MutationOverrides<typeof createContextAndSubmitPlaygroundTicket>
+    overrides?: MutationOverrides<
+        typeof createContextAndSubmitPlaygroundTicket
+    >,
 ) =>
     useMutation({
         mutationFn: (body) => createContextAndSubmitPlaygroundTicket(...body),
@@ -185,7 +186,7 @@ export const useSubmitPlaygroundTicket = (
 
 export const useSearchCustomer = (
     params: SearchCustomerRequest,
-    overrides?: UseQueryOptions<Awaited<ReturnType<typeof searchCustomer>>>
+    overrides?: UseQueryOptions<Awaited<ReturnType<typeof searchCustomer>>>,
 ) => {
     return useQuery({
         queryKey: searchCustomerKeys.search(params.email),
@@ -204,7 +205,7 @@ export const aiGeneratedGuidanceKeys = {
         [...aiGeneratedGuidanceKeys.lists(), helpCenterId] as const,
     listWithStore: (
         helpCenterId: number | null,
-        storeIntegrationId: number | null
+        storeIntegrationId: number | null,
     ) => [
         ...aiGeneratedGuidanceKeys.list(helpCenterId),
         'store',
@@ -221,9 +222,9 @@ export const useGetAIGeneratedGuidances = <
         Awaited<ReturnType<typeof getAIGeneratedGuidances>>,
         unknown,
         TData
-    >
+    >,
 ) => {
-    const {client} = useHelpCenterApi()
+    const { client } = useHelpCenterApi()
 
     const isAiAgentAIGeneratedGuidancesEnabled =
         useFlags()[FeatureFlagKey.AiAgentAIGeneratedGuidances]
@@ -231,7 +232,7 @@ export const useGetAIGeneratedGuidances = <
     return useQuery({
         queryKey: aiGeneratedGuidanceKeys.listWithStore(
             helpCenterId,
-            storeIntegrationId
+            storeIntegrationId,
         ),
         queryFn: async () => {
             if (
@@ -261,7 +262,7 @@ export const useGetWelcomePageAcknowledged = (
     storeName: string,
     overrides?: UseQueryOptions<
         Awaited<ReturnType<typeof getWelcomePageAcknowledged>>
-    >
+    >,
 ) => {
     return useQuery({
         queryKey: getWelcomePageAcknowledgedKey(storeName),
@@ -271,7 +272,7 @@ export const useGetWelcomePageAcknowledged = (
 }
 
 export const useCreateWelcomePageAcknowledged = (
-    overrides?: MutationOverrides<typeof createWelcomePageAcknowledged>
+    overrides?: MutationOverrides<typeof createWelcomePageAcknowledged>,
 ) => {
     return useMutation({
         mutationFn: ([accountDomain, storeName]) =>
@@ -284,7 +285,7 @@ export const useCreateWelcomePageAcknowledged = (
 export const useGenerateCustomToneOfVoicePreview = (
     overrides?: MutationOverrides<
         typeof createContextAndGenerateCustomToneOfVoicePreview
-    >
+    >,
 ) =>
     useMutation({
         mutationFn: (body) =>
@@ -305,14 +306,14 @@ export const useGetOnboardingNotificationState = (
     params: GetOnboardingNotificationStateParams,
     overrides?: UseQueryOptions<
         Awaited<ReturnType<typeof getOnboardingNotificationState>>
-    >
+    >,
 ) => {
     return useQuery({
         queryKey: onboardingNotificationStateKeys.detail(params),
         queryFn: () =>
             getOnboardingNotificationState(
                 params.accountDomain,
-                params.storeName
+                params.storeName,
             ),
         staleTime: STALE_TIME_MS,
         cacheTime: CACHE_TIME_MS,
@@ -325,16 +326,16 @@ export const useGetOrCreateOnboardingNotificationState = (
     params: GetOnboardingNotificationStateParams,
     overrides?: UseQueryOptions<
         Awaited<ReturnType<typeof getOnboardingNotificationState>>
-    >
+    >,
 ) => {
-    const {accountDomain, storeName} = params
+    const { accountDomain, storeName } = params
 
     return useQuery({
         queryKey: onboardingNotificationStateKeys.detail(params),
         queryFn: async () => {
             const fetchData = await getOnboardingNotificationState(
                 accountDomain,
-                storeName
+                storeName,
             )
 
             if (!fetchData?.data.onboardingNotificationState && !!storeName) {
@@ -343,7 +344,7 @@ export const useGetOrCreateOnboardingNotificationState = (
                     storeName,
                     {
                         shopName: storeName,
-                    }
+                    },
                 )
 
                 return createdData
@@ -359,7 +360,7 @@ export const useGetOrCreateOnboardingNotificationState = (
 }
 
 export const useCreateOnboardingNotificationState = (
-    overrides?: MutationOverrides<typeof createOnboardingNotificationState>
+    overrides?: MutationOverrides<typeof createOnboardingNotificationState>,
 ) => {
     return useMutation({
         mutationFn: (params) => createOnboardingNotificationState(...params),
@@ -368,7 +369,7 @@ export const useCreateOnboardingNotificationState = (
 }
 
 export const useUpsertOnboardingNotificationState = (
-    overrides?: MutationOverrides<typeof upsertOnboardingNotificationState>
+    overrides?: MutationOverrides<typeof upsertOnboardingNotificationState>,
 ) => {
     return useMutation({
         mutationFn: (params) => upsertOnboardingNotificationState(...params),
@@ -387,7 +388,7 @@ export const useGetPlaygroundExecutions = (
     params: GetPlaygroundExecutionsParams,
     overrides?: UseQueryOptions<
         Awaited<ReturnType<typeof getPlaygroundExecutions>>
-    >
+    >,
 ) => {
     return useQuery({
         queryKey: playgroundExecutionsKeys.detail(params),

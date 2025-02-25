@@ -35,5 +35,5 @@ export const DiscountStrategyLabels: Record<
     },
 }
 export const DiscountStrategySteps = Object.entries(DiscountStrategyLabels).map(
-    ([key, {label}]) => ({key, label})
+    ([key, { label }]) => ({ key, label }),
 )

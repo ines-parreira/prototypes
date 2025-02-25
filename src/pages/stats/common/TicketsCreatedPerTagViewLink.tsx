@@ -1,13 +1,14 @@
+import React, { ReactNode, useMemo } from 'react'
+
 import _isEqual from 'lodash/isEqual'
-import React, {ReactNode, useMemo} from 'react'
 
-import {logEvent, SegmentEvent, StatViewLinkClickedStat} from 'common/segment'
-import {getTicketViewField, getTicketViewFieldPath} from 'config/views'
-import {ViewField} from 'models/view/types'
-import {CollectionOperator} from 'state/rules/types'
-import {ViewFilter} from 'state/views/types'
+import { logEvent, SegmentEvent, StatViewLinkClickedStat } from 'common/segment'
+import { getTicketViewField, getTicketViewFieldPath } from 'config/views'
+import { ViewField } from 'models/view/types'
+import { CollectionOperator } from 'state/rules/types'
+import { ViewFilter } from 'state/views/types'
 
-import {useStatsViewFilters} from './utils'
+import { useStatsViewFilters } from './utils'
 import ViewLink from './ViewLink'
 
 type Props = {
@@ -22,12 +23,12 @@ export default function TicketsCreatedPerTagViewLink({
     untaggedName = 'Untagged',
 }: Props) {
     const statsViewFilters = useStatsViewFilters(
-        getTicketViewFieldPath(getTicketViewField(ViewField.Created))
+        getTicketViewFieldPath(getTicketViewField(ViewField.Created)),
     )
 
     const filters = useMemo(() => {
         const tagFilterLeft = getTicketViewFieldPath(
-            getTicketViewField(ViewField.Tags)
+            getTicketViewField(ViewField.Tags),
         )
         const tagFilter: ViewFilter =
             tagName === untaggedName
@@ -43,7 +44,7 @@ export default function TicketsCreatedPerTagViewLink({
         return [
             tagFilter,
             ...statsViewFilters.filter(
-                (filter) => !_isEqual(filter, tagFilter)
+                (filter) => !_isEqual(filter, tagFilter),
             ),
         ]
     }, [statsViewFilters, tagName, untaggedName])

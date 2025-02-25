@@ -1,7 +1,8 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {TicketStatus} from 'business/types/ticket'
+import { render } from '@testing-library/react'
+
+import { TicketStatus } from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
 
 import useAutoQA from '../../hooks/useAutoQA'
@@ -18,7 +19,7 @@ jest.mock('../Dimension', () => () => <p>Dimension</p>)
 
 describe('AutoQA', () => {
     beforeEach(() => {
-        useAppSelectorMock.mockReturnValue({id: 1, status: TicketStatus.Open})
+        useAppSelectorMock.mockReturnValue({ id: 1, status: TicketStatus.Open })
         useAutoQAMock.mockReturnValue({
             changeHandlers: [],
             dimensions: [],
@@ -28,19 +29,22 @@ describe('AutoQA', () => {
     })
 
     it('should render the component', () => {
-        const {getByText} = render(<AutoQA />)
+        const { getByText } = render(<AutoQA />)
         expect(getByText('QA Score')).toBeInTheDocument()
     })
 
     it('should render a skeleton while data is loading', () => {
         useAutoQAMock.mockReturnValue({
             changeHandlers: [jest.fn()],
-            dimensions: [{name: 'communication_skills'}, {name: 'resolution'}],
+            dimensions: [
+                { name: 'communication_skills' },
+                { name: 'resolution' },
+            ],
             isLoading: true,
             lastUpdated: new Date('2024-09-17T21:00:00Z'),
         })
 
-        const {getByText} = render(<AutoQA />)
+        const { getByText } = render(<AutoQA />)
         expect(getByText('Loading...')).toBeInTheDocument()
     })
 
@@ -52,16 +56,19 @@ describe('AutoQA', () => {
             lastUpdated: null,
         })
 
-        const {getByText} = render(<AutoQA />)
+        const { getByText } = render(<AutoQA />)
         expect(
             getByText(
-                'Auto QA results will be available 12 hours after ticket closure.'
-            )
+                'Auto QA results will be available 12 hours after ticket closure.',
+            ),
         ).toBeInTheDocument()
     })
 
     it('should render a message if there is no data available on closed tickets', () => {
-        useAppSelectorMock.mockReturnValue({id: 1, status: TicketStatus.Closed})
+        useAppSelectorMock.mockReturnValue({
+            id: 1,
+            status: TicketStatus.Closed,
+        })
         useAutoQAMock.mockReturnValue({
             changeHandlers: [],
             dimensions: [],
@@ -69,23 +76,26 @@ describe('AutoQA', () => {
             lastUpdated: null,
         })
 
-        const {getByText} = render(<AutoQA />)
+        const { getByText } = render(<AutoQA />)
         expect(
             getByText(
-                /Only tickets that meet certain requirements are scored by Auto QA./
-            )
+                /Only tickets that meet certain requirements are scored by Auto QA./,
+            ),
         ).toBeInTheDocument()
     })
 
     it('should render each returned dimension', () => {
         useAutoQAMock.mockReturnValue({
             changeHandlers: [jest.fn()],
-            dimensions: [{name: 'communication_skills'}, {name: 'resolution'}],
+            dimensions: [
+                { name: 'communication_skills' },
+                { name: 'resolution' },
+            ],
             isLoading: false,
             lastUpdated: new Date('2024-09-17T21:00:00Z'),
         })
 
-        const {getAllByText} = render(<AutoQA />)
+        const { getAllByText } = render(<AutoQA />)
         const els = getAllByText('Dimension')
         expect(els.length).toBe(2)
     })
@@ -94,7 +104,10 @@ describe('AutoQA', () => {
         const now = new Date()
         useAutoQAMock.mockReturnValue({
             changeHandlers: [jest.fn()],
-            dimensions: [{name: 'communication_skills'}, {name: 'resolution'}],
+            dimensions: [
+                { name: 'communication_skills' },
+                { name: 'resolution' },
+            ],
             isLoading: false,
             lastUpdated: new Date(
                 now.getFullYear(),
@@ -102,10 +115,10 @@ describe('AutoQA', () => {
                 now.getDate(),
                 21,
                 0,
-                0
+                0,
             ),
         })
-        const {getByText} = render(<AutoQA />)
+        const { getByText } = render(<AutoQA />)
         expect(getByText('Last updated: Today at 9:00 PM')).toBeInTheDocument()
     })
 })

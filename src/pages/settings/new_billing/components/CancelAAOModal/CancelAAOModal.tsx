@@ -1,5 +1,6 @@
+import React, { useState } from 'react'
+
 import moment from 'moment'
-import React, {useState} from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import Button from 'pages/common/components/button/Button'
@@ -7,14 +8,13 @@ import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-
 import {
     getCurrentAutomatePlan,
     getCurrentHelpdeskPlan,
 } from 'state/billing/selectors'
-import {CurrentProductsUsages} from 'state/billing/types'
-import {getCurrentDomain, isTrialing} from 'state/currentAccount/selectors'
-import {getCurrentUser} from 'state/currentUser/selectors'
+import { CurrentProductsUsages } from 'state/billing/types'
+import { getCurrentDomain, isTrialing } from 'state/currentAccount/selectors'
+import { getCurrentUser } from 'state/currentUser/selectors'
 
 import {
     BILLING_SUPPORT_EMAIL,
@@ -23,9 +23,10 @@ import {
     ZAPIER_REMOVE_AAO_HOOK,
 } from '../../constants'
 import useAutomationFeatures from '../../hooks/useAutomationFeatures'
-import {sendRemoveNotificationZap} from '../../utils/sendRemoveNotificationZap'
-import css from './CancelAAOModal.less'
+import { sendRemoveNotificationZap } from '../../utils/sendRemoveNotificationZap'
 import ReasonsAAOModal from './ReasonsAAOModal'
+
+import css from './CancelAAOModal.less'
 
 export type CancelAAOModalProps = {
     isOpen: boolean
@@ -65,7 +66,7 @@ const CancelAAOModal = ({
     const AAOUsage = currentUsage.automation
     const automatedInteractions = AAOUsage?.data.num_tickets ?? 0
     const subscriptionStartDate = moment(
-        AAOUsage?.meta.subscription_start_datetime
+        AAOUsage?.meta.subscription_start_datetime,
     ).format(DATE_FORMAT)
 
     const updateReasons = (index: number) => {

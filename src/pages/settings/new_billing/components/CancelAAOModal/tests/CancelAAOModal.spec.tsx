@@ -1,20 +1,21 @@
-import {render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import {
-    HELPDESK_PRODUCT_ID,
     basicMonthlyHelpdeskPlan,
-    products,
     currentProductsUsage,
+    HELPDESK_PRODUCT_ID,
+    products,
 } from 'fixtures/productPrices'
-import {RootState, StoreDispatch} from 'state/types'
+import { RootState, StoreDispatch } from 'state/types'
 
-import {sendRemoveNotificationZap} from '../../../utils/sendRemoveNotificationZap'
-import CancelAAOModal, {CancelAAOModalProps} from '../CancelAAOModal'
+import { sendRemoveNotificationZap } from '../../../utils/sendRemoveNotificationZap'
+import CancelAAOModal, { CancelAAOModalProps } from '../CancelAAOModal'
 
 jest.mock('../../../utils/sendRemoveNotificationZap', () => ({
     sendRemoveNotificationZap: jest.fn(),
@@ -54,20 +55,20 @@ describe('CancelAAOModal', () => {
         return render(
             <Provider store={store}>
                 <CancelAAOModal {...defaultProps} />
-            </Provider>
+            </Provider>,
         )
     }
 
     it('should render correctly', () => {
-        const {getByText} = screen
+        const { getByText } = screen
         setup()
         expect(
-            getByText('Are you sure you want to unsubscribe from Automate?')
+            getByText('Are you sure you want to unsubscribe from Automate?'),
         ).toBeInTheDocument()
     })
 
     it('should call handleOnClose when the "Keep using automate" button is clicked', () => {
-        const {getByText} = screen
+        const { getByText } = screen
         setup()
         const closeButton = getByText('Keep using automate')
         userEvent.click(closeButton)
@@ -75,26 +76,26 @@ describe('CancelAAOModal', () => {
     })
 
     it('should show the second modal', () => {
-        const {getByText} = screen
+        const { getByText } = screen
         setup()
         const continueButton = getByText('Continue')
         userEvent.click(continueButton)
         expect(
-            getByText("Let us know why you're changing your subscription")
+            getByText("Let us know why you're changing your subscription"),
         ).toBeInTheDocument()
     })
 
     it('should enable the Submit button and call the handleCancelAAO', async () => {
-        const {getByText, getByPlaceholderText, getByRole} = screen
+        const { getByText, getByPlaceholderText, getByRole } = screen
         setup()
         const continueButton = getByText('Continue')
         userEvent.click(continueButton)
-        const submitButton = getByRole('button', {name: 'Submit'})
+        const submitButton = getByRole('button', { name: 'Submit' })
         expect(submitButton).toBeAriaDisabled()
         const firstCheckbox = getByText(`It's not automating enough`)
         userEvent.click(firstCheckbox)
         const textarea = getByPlaceholderText(
-            `It didn't work out for me because...`
+            `It didn't work out for me because...`,
         )
         await userEvent.type(textarea, 'test')
 

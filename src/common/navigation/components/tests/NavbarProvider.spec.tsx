@@ -1,13 +1,13 @@
-import {render, act, fireEvent} from '@testing-library/react'
 import React from 'react'
 
-import {
-    NavBarDisplayMode,
-    NavBarContextType,
-} from '../../hooks/useNavBar/context'
-import {useNavBar} from '../../hooks/useNavBar/useNavBar'
+import { act, fireEvent, render } from '@testing-library/react'
 
-import {NAVBAR_DISPLAY_KEY, NavBarProvider} from '../NavBarProvider'
+import {
+    NavBarContextType,
+    NavBarDisplayMode,
+} from '../../hooks/useNavBar/context'
+import { useNavBar } from '../../hooks/useNavBar/useNavBar'
+import { NAVBAR_DISPLAY_KEY, NavBarProvider } from '../NavBarProvider'
 
 // Updated Test component with interactive buttons
 function TestComponent() {
@@ -45,14 +45,14 @@ describe('NavBarProvider', () => {
     })
 
     it('provides initial state', () => {
-        const {getByTestId} = render(
+        const { getByTestId } = render(
             <NavBarProvider>
                 <TestComponent />
-            </NavBarProvider>
+            </NavBarProvider>,
         )
 
         const state = JSON.parse(
-            getByTestId('test-component').dataset.state!
+            getByTestId('test-component').dataset.state!,
         ) as NavBarContextType
         expect(state.navBarDisplay).toBe(NavBarDisplayMode.Open)
         expect(state.isNavBarVisible).toBe(true)
@@ -60,16 +60,16 @@ describe('NavBarProvider', () => {
     })
 
     it('handles hover enter/leave correctly without freeze', () => {
-        const {getByTestId} = render(
+        const { getByTestId } = render(
             <NavBarProvider>
                 <TestComponent />
-            </NavBarProvider>
+            </NavBarProvider>,
         )
 
         const navbarArea = getByTestId('navbar-area')
         const getState = () =>
             JSON.parse(
-                getByTestId('test-component').dataset.state!
+                getByTestId('test-component').dataset.state!,
             ) as NavBarContextType
 
         // Initial state should be Open
@@ -92,16 +92,16 @@ describe('NavBarProvider', () => {
     })
 
     it('maintains open state during hover events', () => {
-        const {getByTestId} = render(
+        const { getByTestId } = render(
             <NavBarProvider>
                 <TestComponent />
-            </NavBarProvider>
+            </NavBarProvider>,
         )
 
         const navbarArea = getByTestId('navbar-area')
         const getState = () =>
             JSON.parse(
-                getByTestId('test-component').dataset.state!
+                getByTestId('test-component').dataset.state!,
             ) as NavBarContextType
 
         act(() => {
@@ -116,17 +116,17 @@ describe('NavBarProvider', () => {
     })
 
     it('handles hover events with freeze behavior', () => {
-        const {getByTestId} = render(
+        const { getByTestId } = render(
             <NavBarProvider>
                 <TestComponent />
-            </NavBarProvider>
+            </NavBarProvider>,
         )
 
         const homeButton = getByTestId('home-button')
         const navbarArea = getByTestId('navbar-area')
         const getState = () =>
             JSON.parse(
-                getByTestId('test-component').dataset.state!
+                getByTestId('test-component').dataset.state!,
             ) as NavBarContextType
 
         // Click home button to collapse and freeze
@@ -156,10 +156,10 @@ describe('NavBarProvider', () => {
     })
 
     it('handles overlay hover correctly', () => {
-        const {getByTestId} = render(
+        const { getByTestId } = render(
             <NavBarProvider>
                 <TestComponent />
-            </NavBarProvider>
+            </NavBarProvider>,
         )
 
         const overlayArea = getByTestId('overlay-area')
@@ -167,7 +167,7 @@ describe('NavBarProvider', () => {
         const homeButton = getByTestId('home-button')
         const getState = () =>
             JSON.parse(
-                getByTestId('test-component').dataset.state!
+                getByTestId('test-component').dataset.state!,
             ) as NavBarContextType
 
         // First collapse the navbar from its default Open state
@@ -197,16 +197,16 @@ describe('NavBarProvider', () => {
     })
 
     it('persists navbar state in localStorage', () => {
-        const {getByTestId, rerender} = render(
+        const { getByTestId, rerender } = render(
             <NavBarProvider>
                 <TestComponent />
-            </NavBarProvider>
+            </NavBarProvider>,
         )
 
         const homeButton = getByTestId('home-button')
         const getState = () =>
             JSON.parse(
-                getByTestId('test-component').dataset.state!
+                getByTestId('test-component').dataset.state!,
             ) as NavBarContextType
 
         // Change state
@@ -222,7 +222,7 @@ describe('NavBarProvider', () => {
         rerender(
             <NavBarProvider>
                 <TestComponent />
-            </NavBarProvider>
+            </NavBarProvider>,
         )
 
         expect(getState().navBarDisplay).toBe(NavBarDisplayMode.Collapsed)

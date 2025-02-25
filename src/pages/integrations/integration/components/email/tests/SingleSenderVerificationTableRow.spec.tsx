@@ -1,3 +1,5 @@
+import React, { ComponentProps } from 'react'
+
 import {
     cleanup,
     fireEvent,
@@ -5,13 +7,12 @@ import {
     screen,
     waitFor,
 } from '@testing-library/react'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import { Provider } from 'react-redux'
 
-import {migrationOutboundVerificationUnverifiedSingleSender} from 'fixtures/emailMigration'
-import {EmailMigrationSenderVerificationIntegration} from 'models/integration/types'
-import {VerificationStatus} from 'models/singleSenderVerification/types'
-import {mockStore} from 'utils/testing'
+import { migrationOutboundVerificationUnverifiedSingleSender } from 'fixtures/emailMigration'
+import { EmailMigrationSenderVerificationIntegration } from 'models/integration/types'
+import { VerificationStatus } from 'models/singleSenderVerification/types'
+import { mockStore } from 'utils/testing'
 
 import SingleSenderVerificationTableRow from '../EmailMigration/SingleSenderVerificationTableRow'
 
@@ -49,7 +50,7 @@ jest.mock(
                     confirm
                 </button>
             </div>
-        )
+        ),
 )
 
 const failedIntegration = {
@@ -73,7 +74,7 @@ describe('SingleSenderVerificationTableRow', () => {
     const refreshMigrationData = jest.fn()
 
     const renderComponent = (
-        props: Partial<ComponentProps<typeof SingleSenderVerificationTableRow>>
+        props: Partial<ComponentProps<typeof SingleSenderVerificationTableRow>>,
     ) =>
         render(
             <Provider store={mockStore({} as any)}>
@@ -83,7 +84,7 @@ describe('SingleSenderVerificationTableRow', () => {
                     integration={unverifiedIntegration}
                     {...props}
                 />
-            </Provider>
+            </Provider>,
         )
 
     afterEach(() => {
@@ -103,10 +104,10 @@ describe('SingleSenderVerificationTableRow', () => {
     it.each([failedIntegration, pendingIntegration])(
         'should display button to expand sender details when status is %s',
         async (integration) => {
-            renderComponent({integration})
+            renderComponent({ integration })
 
             const toggleButton = screen.getByTestId(
-                'toggle-sender-details-visible'
+                'toggle-sender-details-visible',
             )
 
             fireEvent.click(toggleButton)
@@ -114,7 +115,7 @@ describe('SingleSenderVerificationTableRow', () => {
             expect(screen.getByTestId('address-container')).toBeVisible()
             /* delete button should be visible */
             fireEvent.click(
-                screen.getByRole('button', {name: /delete verification/i})
+                screen.getByRole('button', { name: /delete verification/i }),
             )
             fireEvent.click(screen.getByTestId('confirm-delete-button'))
 
@@ -123,7 +124,7 @@ describe('SingleSenderVerificationTableRow', () => {
             await waitFor(() => {
                 expect(refreshMigrationData).toHaveBeenCalledTimes(1)
             })
-        }
+        },
     )
 
     it('should display retry button when status is failed', async () => {
@@ -133,14 +134,14 @@ describe('SingleSenderVerificationTableRow', () => {
         })
 
         fireEvent.click(
-            screen.getByRole('button', {name: /retry verification/i})
+            screen.getByRole('button', { name: /retry verification/i }),
         )
 
-        const {address, city, state, zip, country, email} =
+        const { address, city, state, zip, country, email } =
             failedIntegration.sender_verification!
         expect(mockCreateVerification).toHaveBeenCalledWith(
             failedIntegration.id,
-            {address, city, state, zip, country, email}
+            { address, city, state, zip, country, email },
         )
 
         await waitFor(() => {
@@ -154,12 +155,12 @@ describe('SingleSenderVerificationTableRow', () => {
             hasSubmittedBulkVerification: true,
         })
         expect(
-            screen.getByRole('button', {name: /submit address/i})
+            screen.getByRole('button', { name: /submit address/i }),
         ).toBeVisible()
         fireEvent.click(screen.getByTestId('confirm-submit-details-button'))
         expect(mockCreateVerification).toHaveBeenCalledWith(
             unverifiedIntegration.id,
-            mockNewSenderDetails
+            mockNewSenderDetails,
         )
     })
 })

@@ -1,8 +1,9 @@
-import {Badge} from '@gorgias/merchant-ui-kit'
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
+
+import { Badge } from '@gorgias/merchant-ui-kit'
 
 import useInterval from 'hooks/useInterval'
-import {getFormattedDurationOngoingCall} from 'models/voiceCall/utils'
+import { getFormattedDurationOngoingCall } from 'models/voiceCall/utils'
 
 import css from './VoiceCallTimerBadge.less'
 
@@ -10,9 +11,9 @@ type Props = {
     datetime: string
 }
 
-export default function VoiceCallTimerBadge({datetime}: Props) {
+export default function VoiceCallTimerBadge({ datetime }: Props) {
     const [displayedDuration, setDisplayedDuration] = useState(
-        getFormattedDurationOngoingCall(datetime)
+        getFormattedDurationOngoingCall(datetime),
     )
 
     useEffect(() => {

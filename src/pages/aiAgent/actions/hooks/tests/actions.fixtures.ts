@@ -1,4 +1,4 @@
-import {StoresWorkflowConfiguration} from '../../types'
+import { StoresWorkflowConfiguration } from '../../types'
 
 export const actionConfigurationFixture: StoresWorkflowConfiguration[number] = {
     internal_id: '01HWMV7AMNQYX73B007W65T2SE',

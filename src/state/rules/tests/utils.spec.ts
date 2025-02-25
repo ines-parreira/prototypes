@@ -1,10 +1,10 @@
-import {fromJS, Map} from 'immutable'
+import { fromJS, Map } from 'immutable'
 
-import {toImmutable} from 'common/utils'
+import { toImmutable } from 'common/utils'
 
 import schemasJSON from '../../../fixtures/openapi.json'
-import {findProperty} from '../../../utils'
-import {resolveCallee, resolveSecondArg} from '../utils'
+import { findProperty } from '../../../utils'
+import { resolveCallee, resolveSecondArg } from '../utils'
 
 const schemas = fromJS(schemasJSON) as Map<any, any>
 const emptyCallExpression = fromJS({})
@@ -15,36 +15,36 @@ describe('resolveCallee function', () => {
     it('should return first operator when there is no default', () => {
         let firstArgSchema = getFirstArgSchema('ticket.snooze_datetime')
         expect(['isEmpty', 'isNotEmpty']).toContain(
-            resolveCallee(emptyCallExpression, firstArgSchema)
+            resolveCallee(emptyCallExpression, firstArgSchema),
         )
 
         firstArgSchema = getFirstArgSchema('ticket.language')
         expect(['eq', 'neq']).toContain(
-            resolveCallee(emptyCallExpression, firstArgSchema)
+            resolveCallee(emptyCallExpression, firstArgSchema),
         )
 
         firstArgSchema = getFirstArgSchema('ticket.channel')
         expect(['eq', 'neq']).toContain(
-            resolveCallee(emptyCallExpression, firstArgSchema)
+            resolveCallee(emptyCallExpression, firstArgSchema),
         )
     })
 
     it('should return default operator', () => {
         const firstArgSchema = getFirstArgSchema('ticket.created_datetime')
         expect(resolveCallee(emptyCallExpression, firstArgSchema)).toBe(
-            'gteTimedelta'
+            'gteTimedelta',
         )
     })
 
     it('should not return default operator because it is deprecated', () => {
         const deprecatedOperator = 'contains'
         const firstArgSchema = getFirstArgSchema(
-            'ticket.created_datetime'
+            'ticket.created_datetime',
         ).setIn(['meta', 'defaultOperator'], deprecatedOperator)
 
         const resolvedOperator = resolveCallee(
             emptyCallExpression,
-            firstArgSchema
+            firstArgSchema,
         )
 
         expect(resolvedOperator).not.toBe(deprecatedOperator)
@@ -52,8 +52,8 @@ describe('resolveCallee function', () => {
             Object.keys(
                 (
                     firstArgSchema.getIn(['meta', 'operators']) as Map<any, any>
-                ).toJS()
-            )
+                ).toJS(),
+            ),
         ).toContain(resolvedOperator)
     })
 
@@ -61,9 +61,9 @@ describe('resolveCallee function', () => {
         const firstArgSchema = getFirstArgSchema('ticket.channel').setIn(
             ['meta', 'operators'],
             fromJS({
-                contains: {label: 'contains'},
-                eq: {label: 'is'},
-            })
+                contains: { label: 'contains' },
+                eq: { label: 'is' },
+            }),
         )
 
         expect(resolveCallee(emptyCallExpression, firstArgSchema)).toBe('eq')
@@ -84,7 +84,7 @@ describe('resolveSecondArg function', () => {
     ])('Should return default value (%s)', (callee, secondArg) => {
         // No current value, no schema
         expect(resolveSecondArg(emptyCallExpression, callee, false)).toBe(
-            secondArg
+            secondArg,
         )
     })
 
@@ -98,7 +98,12 @@ describe('resolveSecondArg function', () => {
         //No current value, with schema
         const firstArgSchema = getFirstArgSchema(firstArg)
         expect(
-            resolveSecondArg(emptyCallExpression, callee, false, firstArgSchema)
+            resolveSecondArg(
+                emptyCallExpression,
+                callee,
+                false,
+                firstArgSchema,
+            ),
         ).toBe(secondArg)
     })
 
@@ -122,7 +127,7 @@ describe('resolveSecondArg function', () => {
         })
         const firstArgSchema = getFirstArgSchema(firstArg)
         expect(
-            resolveSecondArg(callExpression, callee, false, firstArgSchema)
+            resolveSecondArg(callExpression, callee, false, firstArgSchema),
         ).toBe(secondArg)
     })
 
@@ -146,7 +151,7 @@ describe('resolveSecondArg function', () => {
         })
         const firstArgSchema = getFirstArgSchema(firstArg)
         expect(
-            resolveSecondArg(callExpression, callee, true, firstArgSchema)
+            resolveSecondArg(callExpression, callee, true, firstArgSchema),
         ).toBe(secondArg)
     })
 })

@@ -2,7 +2,7 @@ import axios from 'axios'
 
 export const doNotRetry40XErrorsHandler = (
     failureCount: number,
-    error: unknown
+    error: unknown,
 ) => {
     if (axios.isAxiosError(error)) {
         const statusCode = error?.response?.status

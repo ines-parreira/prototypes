@@ -1,14 +1,14 @@
+import React, { ComponentProps } from 'react'
+
 import classnames from 'classnames'
-import {Map, List} from 'immutable'
-import React, {ComponentProps} from 'react'
+import { List, Map } from 'immutable'
 
 import Expression from 'pages/common/components/ast/expression/Expression'
-
-import {StatementProps} from 'pages/common/hooks/rule/RuleProvider'
-import {RuleItemActions} from 'pages/settings/rules/types'
+import { StatementProps } from 'pages/common/hooks/rule/RuleProvider'
+import { RuleItemActions } from 'pages/settings/rules/types'
 
 import AlternateStatement from './AlternateStatement'
-import {ConsequentStatement} from './ConsequentStatement'
+import { ConsequentStatement } from './ConsequentStatement'
 import TestExpression from './TestExpression'
 
 /**
@@ -49,10 +49,10 @@ export default class IfStatement extends React.Component<
             test,
             depth,
         } = this.props
-        const {isHovered} = this.state
+        const { isHovered } = this.state
 
         return (
-            <div className={classnames('IfStatement', {hovered: isHovered})}>
+            <div className={classnames('IfStatement', { hovered: isHovered })}>
                 <TestExpression
                     actions={actions}
                     rule={rule}
@@ -60,8 +60,8 @@ export default class IfStatement extends React.Component<
                     schemas={schemas}
                     test={test}
                     depth={depth}
-                    onMouseEnter={() => this.setState({isHovered: true})}
-                    onMouseLeave={() => this.setState({isHovered: false})}
+                    onMouseEnter={() => this.setState({ isHovered: true })}
+                    onMouseLeave={() => this.setState({ isHovered: false })}
                     isHovered={isHovered}
                 />
                 <ConsequentStatement

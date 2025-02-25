@@ -1,8 +1,7 @@
-import {campaign, campaignVariant} from 'fixtures/campaign'
+import { campaign, campaignVariant } from 'fixtures/campaign'
+import { Campaign } from 'pages/convert/campaigns/types/Campaign'
 
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
-
-import {createCampaignFromVariant} from '../createCampaignFromVariant'
+import { createCampaignFromVariant } from '../createCampaignFromVariant'
 
 const channelConnectionId = 'channelConnectionId'
 
@@ -12,15 +11,15 @@ describe('createCampaignFromVariant', () => {
             createCampaignFromVariant(
                 campaign as Campaign,
                 undefined,
-                undefined
-            )
+                undefined,
+            ),
         ).toThrow('Channel connection ID is required')
     })
     it('return new record with campaign content', () => {
         const payload = createCampaignFromVariant(
             campaign as Campaign,
             channelConnectionId,
-            undefined
+            undefined,
         )
 
         expect(payload.message_text).toEqual(campaign.message_text)
@@ -31,7 +30,7 @@ describe('createCampaignFromVariant', () => {
         const payload = createCampaignFromVariant(
             campaign as Campaign,
             channelConnectionId,
-            campaignVariant
+            campaignVariant,
         )
 
         expect(payload.message_text).toEqual(campaignVariant.message_text)
@@ -46,7 +45,7 @@ describe('createCampaignFromVariant', () => {
                 attachments: undefined,
             } as Campaign,
             channelConnectionId,
-            undefined
+            undefined,
         )
 
         expect(payload.message_html).toEqual('')
@@ -60,7 +59,7 @@ describe('createCampaignFromVariant', () => {
                 ...campaignVariant,
                 message_html: undefined,
                 attachments: undefined,
-            }
+            },
         )
 
         expect(payload.message_html).toEqual('')

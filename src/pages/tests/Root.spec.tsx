@@ -1,21 +1,22 @@
-import {render, screen} from '@testing-library/react'
-import type {Location} from 'history'
-import type {LDClient} from 'launchdarkly-js-client-sdk'
 import React from 'react'
-import type {ReactNode} from 'react'
-import type {Store} from 'redux'
+import type { ReactNode } from 'react'
+
+import { render, screen } from '@testing-library/react'
+import type { Location } from 'history'
+import type { LDClient } from 'launchdarkly-js-client-sdk'
+import type { Store } from 'redux'
 
 import activityTracker from 'services/activityTracker'
-import type {RootState} from 'state/types'
-import type {GorgiasInitialState} from 'types'
-import {getLDClient} from 'utils/launchDarkly'
-import {assumeMock} from 'utils/testing'
+import type { RootState } from 'state/types'
+import type { GorgiasInitialState } from 'types'
+import { getLDClient } from 'utils/launchDarkly'
+import { assumeMock } from 'utils/testing'
 
 import history from '../history'
 import Root from '../Root'
 
 jest.mock('@gorgias/realtime', () => ({
-    RealtimeProvider: ({children}: {children: ReactNode}) => (
+    RealtimeProvider: ({ children }: { children: ReactNode }) => (
         <div>
             <p>RealtimeProvider</p>
             {children}
@@ -23,7 +24,7 @@ jest.mock('@gorgias/realtime', () => ({
     ),
 }))
 jest.mock('@tanstack/react-query', () => ({
-    QueryClientProvider: ({children}: {children: ReactNode}) => (
+    QueryClientProvider: ({ children }: { children: ReactNode }) => (
         <div>
             <p>QueryClientProvider</p>
             {children}
@@ -31,7 +32,7 @@ jest.mock('@tanstack/react-query', () => ({
     ),
 }))
 jest.mock('react-dnd', () => ({
-    DndProvider: ({children}: {children: ReactNode}) => (
+    DndProvider: ({ children }: { children: ReactNode }) => (
         <div>
             <p>DndProvider</p>
             {children}
@@ -39,7 +40,7 @@ jest.mock('react-dnd', () => ({
     ),
 }))
 jest.mock('react-redux', () => ({
-    Provider: ({children}: {children: ReactNode}) => (
+    Provider: ({ children }: { children: ReactNode }) => (
         <div>
             <p>ReduxProvider</p>
             {children}
@@ -47,7 +48,7 @@ jest.mock('react-redux', () => ({
     ),
 }))
 jest.mock('react-router-dom', () => ({
-    Router: ({children}: {children: ReactNode}) => (
+    Router: ({ children }: { children: ReactNode }) => (
         <div>
             <p>Router</p>
             {children}
@@ -55,7 +56,7 @@ jest.mock('react-router-dom', () => ({
     ),
 }))
 jest.mock('react-router-dom-v5-compat', () => ({
-    CompatRouter: ({children}: {children: ReactNode}) => (
+    CompatRouter: ({ children }: { children: ReactNode }) => (
         <div>
             <p>CompatRouter</p>
             {children}
@@ -64,7 +65,7 @@ jest.mock('react-router-dom-v5-compat', () => ({
 }))
 
 jest.mock('main/app', () => ({
-    Main: ({children}: {children: ReactNode}) => (
+    Main: ({ children }: { children: ReactNode }) => (
         <div>
             <p>Main</p>
             {children}
@@ -72,14 +73,14 @@ jest.mock('main/app', () => ({
     ),
 }))
 jest.mock('routes', () => () => <div>RoutesWrapper</div>)
-jest.mock('services/activityTracker', () => ({createUserContext: jest.fn()}))
+jest.mock('services/activityTracker', () => ({ createUserContext: jest.fn() }))
 jest.mock('utils/launchDarkly', () => ({
     getLDClient: jest.fn(),
     LDContext: {},
 }))
 const getLDClientMock = assumeMock(getLDClient)
 
-jest.mock('../history', () => ({listen: jest.fn()}))
+jest.mock('../history', () => ({ listen: jest.fn() }))
 
 describe('Root', () => {
     let waitUntilGoalsReady: jest.Mock
@@ -106,8 +107,8 @@ describe('Root', () => {
 
     it('should create a user context for the activity tracker', () => {
         window.GORGIAS_STATE = {
-            currentAccount: {id: 10},
-            currentUser: {id: 20},
+            currentAccount: { id: 10 },
+            currentUser: { id: 20 },
         } as GorgiasInitialState
         window.CLIENT_ID = '30'
         render(<Root store={store} />)
@@ -116,7 +117,7 @@ describe('Root', () => {
             (l: Location) => void,
         ][]
 
-        listener({pathname: '/app'} as Location)
+        listener({ pathname: '/app' } as Location)
         expect(activityTracker.createUserContext).toHaveBeenCalledWith({
             accountId: 10,
             clientId: '30',

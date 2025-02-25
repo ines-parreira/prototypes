@@ -1,15 +1,15 @@
-import {render, screen, fireEvent} from '@testing-library/react'
 import React from 'react'
 
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { fireEvent, render, screen } from '@testing-library/react'
+
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {useGridSize} from 'hooks/useGridSize'
+import { useGridSize } from 'hooks/useGridSize'
 import useLocalStorage from 'hooks/useLocalStorage'
+import { MetricTrendFormat } from 'pages/stats/common/utils'
+import { OverviewMetric } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 
-import {MetricTrendFormat} from 'pages/stats/common/utils'
-import {OverviewMetric} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
-
-import {IntentsPerformance} from './IntentsPerformance'
+import { IntentsPerformance } from './IntentsPerformance'
 
 // Mock dependencies
 jest.mock('hooks/reporting/support-performance/useNewStatsFilters', () => ({
@@ -31,7 +31,7 @@ const mockUseAppDispatch = useAppDispatch as jest.Mock
 // Set default values
 const period = {
     start_datetime: new Date(
-        new Date().setDate(new Date().getDate() - 7)
+        new Date().setDate(new Date().getDate() - 7),
     ).toISOString(),
     end_datetime: new Date().toISOString(),
 }
@@ -46,7 +46,7 @@ const metric1 = {
     trend: {
         isFetching: false,
         isError: false,
-        data: {value: 0.3, prevValue: 0.27},
+        data: { value: 0.3, prevValue: 0.27 },
     },
     interpretAs,
     metricFormat: 'decimal-to-percent' as MetricTrendFormat,
@@ -62,7 +62,7 @@ const metric2 = {
     trend: {
         isFetching: false,
         isError: false,
-        data: {value: 420, prevValue: 450},
+        data: { value: 420, prevValue: 450 },
     },
     interpretAs,
     tip: <div>Automated interactions tip</div>,
@@ -76,7 +76,7 @@ const metric3 = {
     trend: {
         isFetching: false,
         isError: false,
-        data: {value: 0.16, prevValue: 0.14},
+        data: { value: 0.16, prevValue: 0.14 },
     },
     interpretAs,
     metricFormat: 'decimal-to-percent' as MetricTrendFormat,
@@ -91,7 +91,7 @@ const metric4 = {
     trend: {
         isFetching: false,
         isError: false,
-        data: {value: 3.5, prevValue: 2.5},
+        data: { value: 3.5, prevValue: 2.5 },
     },
     interpretAs,
     metricFormat: 'decimal' as MetricTrendFormat,
@@ -100,7 +100,7 @@ const metric4 = {
 
 describe('IntentsPerformance', () => {
     beforeEach(() => {
-        mockUseNewStatsFilters.mockReturnValue({isAnalyticsNewFilters: true})
+        mockUseNewStatsFilters.mockReturnValue({ isAnalyticsNewFilters: true })
         mockUseGridSize.mockReturnValue(() => 3)
         mockUseLocalStorage.mockReturnValue([true, jest.fn()])
         mockUseAppDispatch.mockReturnValue(() => null)
@@ -113,7 +113,7 @@ describe('IntentsPerformance', () => {
                 shouldDisplayTipsCTA={true}
                 period={period}
                 metrics={[metric1, metric2, metric3, metric4]}
-            />
+            />,
         )
 
         expect(screen.getByText('Title of the section')).toBeInTheDocument()
@@ -139,7 +139,7 @@ describe('IntentsPerformance', () => {
                 period={period}
                 metrics={[metric1, metric2, metric3, metric4]}
                 sectionSubtitle="Subtitle of the section"
-            />
+            />,
         )
 
         expect(screen.getByText('Subtitle of the section')).toBeInTheDocument()
@@ -154,7 +154,7 @@ describe('IntentsPerformance', () => {
                 shouldDisplayTipsCTA={false}
                 period={period}
                 metrics={[metric1, metric2, metric3, metric4]}
-            />
+            />,
         )
 
         const toggleButton = screen.queryByRole('button')
@@ -162,11 +162,11 @@ describe('IntentsPerformance', () => {
 
         expect(screen.getByText('Coverage rate tip')).toBeInTheDocument()
         expect(
-            screen.getByText('Automated interactions tip')
+            screen.getByText('Automated interactions tip'),
         ).toBeInTheDocument()
         expect(screen.getByText('Automation rate tip')).toBeInTheDocument()
         expect(
-            screen.getByText('Customer satisfaction tip')
+            screen.getByText('Customer satisfaction tip'),
         ).toBeInTheDocument()
     })
 
@@ -180,18 +180,18 @@ describe('IntentsPerformance', () => {
                 shouldDisplayTipsCTA={true}
                 period={period}
                 metrics={[metric1, metric2, metric3, metric4]}
-            />
+            />,
         )
 
         expect(screen.queryByText('Coverage rate tip')).not.toBeInTheDocument()
         expect(
-            screen.queryByText('Automated interactions tip')
+            screen.queryByText('Automated interactions tip'),
         ).not.toBeInTheDocument()
         expect(
-            screen.queryByText('Automation rate tip')
+            screen.queryByText('Automation rate tip'),
         ).not.toBeInTheDocument()
         expect(
-            screen.queryByText('Customer satisfaction tip')
+            screen.queryByText('Customer satisfaction tip'),
         ).not.toBeInTheDocument()
 
         const toggleButton = screen.getByRole('button')
@@ -200,7 +200,7 @@ describe('IntentsPerformance', () => {
     })
 
     it('only renders a TrendBadge when previous value is available', () => {
-        const {container} = render(
+        const { container } = render(
             <IntentsPerformance
                 sectionTitle="Title of the section"
                 shouldDisplayTipsCTA={true}
@@ -214,18 +214,18 @@ describe('IntentsPerformance', () => {
                         trend: {
                             isFetching: false,
                             isError: false,
-                            data: {value: 3.5, prevValue: null},
+                            data: { value: 3.5, prevValue: null },
                         },
                     },
                 ]}
-            />
+            />,
         )
 
         expect(container.querySelectorAll('[id^="badge-"]')).toHaveLength(3)
     })
 
     it('renders a loading state when data is fetching', () => {
-        const {container} = render(
+        const { container } = render(
             <IntentsPerformance
                 sectionTitle="Title of the section"
                 shouldDisplayTipsCTA={true}
@@ -247,11 +247,11 @@ describe('IntentsPerformance', () => {
                         },
                     },
                 ]}
-            />
+            />,
         )
 
         expect(
-            container.getElementsByClassName('react-loading-skeleton')
+            container.getElementsByClassName('react-loading-skeleton'),
         ).toHaveLength(3)
     })
 
@@ -267,17 +267,17 @@ describe('IntentsPerformance', () => {
                         trend: {
                             isFetching: false,
                             isError: false,
-                            data: {value: null, prevValue: null},
+                            data: { value: null, prevValue: null },
                         },
                     },
                 ]}
-            />
+            />,
         )
 
         expect(screen.getByText('-')).toBeInTheDocument()
         expect(screen.getByText('No data')).toBeInTheDocument()
         expect(
-            screen.getByText('No data available for the selected filters.')
+            screen.getByText('No data available for the selected filters.'),
         ).toBeInTheDocument()
     })
 })

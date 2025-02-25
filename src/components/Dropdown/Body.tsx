@@ -1,4 +1,3 @@
-import cn from 'classnames'
 import React, {
     KeyboardEvent,
     ReactNode,
@@ -7,21 +6,28 @@ import React, {
     useRef,
 } from 'react'
 
+import cn from 'classnames'
+
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import dropdownItemCss from 'pages/common/components/dropdown/DropdownItem.less'
 import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
 import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'
 
-import Context, {Item} from './Context'
+import Context, { Item } from './Context'
 import focusOnNextItem from './focusOnNextItem'
+
 import css from './style.less'
 
-const Body = ({onRenderItem}: {onRenderItem?: (label: Item) => ReactNode}) => {
+const Body = ({
+    onRenderItem,
+}: {
+    onRenderItem?: (label: Item) => ReactNode
+}) => {
     const context = useContext(Context)
     if (!context) {
         throw new Error(
-            'Body must be used within a components/Dropdown/Context.Provider'
+            'Body must be used within a components/Dropdown/Context.Provider',
         )
     }
     const searchInputRef = useRef<HTMLInputElement>(null)
@@ -45,7 +51,7 @@ const Body = ({onRenderItem}: {onRenderItem?: (label: Item) => ReactNode}) => {
             onClick?.(item)
             searchInputRef.current?.focus()
         },
-        [onClick, searchInputRef]
+        [onClick, searchInputRef],
     )
 
     const onKeyDown = (e: KeyboardEvent<HTMLElement>) => {
@@ -103,7 +109,7 @@ const Body = ({onRenderItem}: {onRenderItem?: (label: Item) => ReactNode}) => {
                         <div
                             className={cn(
                                 dropdownItemCss.item,
-                                dropdownItemCss.disabled
+                                dropdownItemCss.disabled,
                             )}
                         >
                             No results

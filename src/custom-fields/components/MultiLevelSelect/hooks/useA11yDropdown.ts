@@ -1,6 +1,6 @@
-import {RefObject, useCallback, useEffect, useRef} from 'react'
+import { RefObject, useCallback, useEffect, useRef } from 'react'
 
-import {PREVIOUS_BUTTON_ID} from '../constants'
+import { PREVIOUS_BUTTON_ID } from '../constants'
 
 export function useA11yDropdown({
     isActive,
@@ -27,7 +27,7 @@ export function useA11yDropdown({
             }
             setActive(nextIsActive)
         },
-        [setActive, inputRef]
+        [setActive, inputRef],
     )
 
     useEffect(() => {
@@ -43,7 +43,7 @@ export function useA11yDropdown({
                 currentModalRef = modalRef.current
                 if (currentModalRef) {
                     modalButtonsRef.current = Array.from(
-                        currentModalRef.querySelectorAll('button')
+                        currentModalRef.querySelectorAll('button'),
                     )
                     searchInputRef.current =
                         currentModalRef.querySelector('input')
@@ -57,7 +57,7 @@ export function useA11yDropdown({
 
                     currentModalRef.addEventListener(
                         'keydown',
-                        handleModalKeyDown
+                        handleModalKeyDown,
                     )
                 }
             }, 0)

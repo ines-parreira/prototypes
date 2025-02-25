@@ -1,7 +1,7 @@
-import {List} from 'immutable'
+import { List } from 'immutable'
 
-import {AttachmentPosition} from '../types/CampaignAttachment'
-import {CampaignProduct} from '../types/CampaignProduct'
+import { AttachmentPosition } from '../types/CampaignAttachment'
+import { CampaignProduct } from '../types/CampaignProduct'
 
 type AttachmentImmutable = {
     content_type: string
@@ -23,12 +23,12 @@ type AttachmentImmutable = {
 
 export function transformAttachmentToProduct(
     attachments: List<any>,
-    context: {currency?: string}
+    context: { currency?: string },
 ) {
     return (attachments.toJS() as AttachmentImmutable[])
         .filter(
             (attachment) =>
-                attachment.content_type === 'application/productCard'
+                attachment.content_type === 'application/productCard',
         )
         .map((attachment) => {
             return {

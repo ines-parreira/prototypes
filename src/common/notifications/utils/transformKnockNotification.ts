@@ -1,11 +1,11 @@
-import {FeedItem} from '@knocklabs/client'
+import { FeedItem } from '@knocklabs/client'
 
-import {Notification, RawNotification} from '../types'
+import { Notification, RawNotification } from '../types'
 
 export default function transformKnockNotification(
-    item: FeedItem<RawNotification>
+    item: FeedItem<RawNotification>,
 ): Notification | null {
-    const {data, id, inserted_at, read_at, seen_at} = item
+    const { data, id, inserted_at, read_at, seen_at } = item
     if (!data) return null
 
     return {

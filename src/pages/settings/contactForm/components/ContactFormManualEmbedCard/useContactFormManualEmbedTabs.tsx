@@ -1,14 +1,15 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     InstructionTab,
     InstructionTabs,
 } from 'pages/common/components/InstructionsCard'
-import {getShopifyIntegrationByShopName} from 'state/integrations/selectors'
-import {isNotEmptyArray} from 'utils'
+import { getShopifyIntegrationByShopName } from 'state/integrations/selectors'
+import { isNotEmptyArray } from 'utils'
 
 enum InstructionsCardStateKeyEnum {
     ANY_OTHER_WEBSITE = 'any-other-website',
@@ -59,10 +60,10 @@ export const SHOPIFY_WEBSITE_TAB: InstructionTab = {
         `Go to your store's admin panel and under <b>Online Store</b>, select <b>Pages</b>.`,
         'Select the page where you want to embed the contact form',
         `Under the <b>Content</b> section, click <span style="${CHEVRON_SPAN_WRAPPER_INLINE_STYLE.join(
-            ';'
+            ';',
         )}">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="${CHEVRON_SVG_INLINE_STYLE.join(
-            ';'
+            ';',
         )}">
         <path d="M5.79966 10.5999L3.19966 7.99994L5.79966 5.39994C6.05966 5.13994 6.05966 4.72661 5.79966 4.46661C5.53966 4.20661 5.12633 4.20661 4.86633 4.46661L1.80633 7.52661C1.54633 7.78661 1.54633 8.20661 1.80633 8.46661L4.86633 11.5333C5.12633 11.7933 5.53966 11.7933 5.79966 11.5333C6.05966 11.2733 6.05966 10.8599 5.79966 10.5999ZM10.1997 10.5999L12.7997 7.99994L10.1997 5.39994C9.93966 5.13994 9.93966 4.72661 10.1997 4.46661C10.4597 4.20661 10.873 4.20661 11.133 4.46661L14.193 7.52661C14.453 7.78661 14.453 8.20661 14.193 8.46661L11.133 11.5333C10.873 11.7933 10.4597 11.7933 10.1997 11.5333C9.93966 11.2733 9.93966 10.8599 10.1997 10.5999Z" fill="#1D365C"/>
         </svg>
@@ -109,7 +110,7 @@ export const CARD_STATES_MAP: Record<
 export function getCardState(
     isAutoEmbedFlagActive: boolean,
     shopName: string | null,
-    shopifyIntegration: Immutable.Map<any, any>
+    shopifyIntegration: Immutable.Map<any, any>,
 ) {
     // flag is not active, we show the "Any Other Website" tab only
     if (!isAutoEmbedFlagActive) {
@@ -133,20 +134,20 @@ export function getCardState(
 
 export const useContactFormManualEmbedInstructionsCardState = (
     code: string,
-    shopName: string | null
+    shopName: string | null,
 ): InstructionsCardState => {
     const isAutoEmbedFlagActive =
         useFlags()[FeatureFlagKey.ContactFormAutoEmbed] ?? false
 
     const shopifyIntegration = useAppSelector(
-        getShopifyIntegrationByShopName(shopName ?? '')
+        getShopifyIntegrationByShopName(shopName ?? ''),
     )
 
     const result = useMemo(() => {
         const selectedState = getCardState(
             Boolean(isAutoEmbedFlagActive),
             shopName,
-            shopifyIntegration
+            shopifyIntegration,
         )
 
         const modifiedTabs = CARD_STATES_MAP[selectedState].tabs.map((tab) => {

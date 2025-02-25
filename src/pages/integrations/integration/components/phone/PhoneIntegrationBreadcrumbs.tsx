@@ -1,16 +1,17 @@
 import React from 'react'
-import {Link, useParams} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
+
+import { Link, useParams } from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {
-    PhoneIntegration,
     IntegrationType,
+    PhoneIntegration,
     SmsIntegration,
     WhatsAppIntegration,
 } from 'models/integration/types'
-import {friendlyName} from 'pages/phoneNumbers/utils'
-import {getNewPhoneNumber} from 'state/entities/phoneNumbers/selectors'
+import { friendlyName } from 'pages/phoneNumbers/utils'
+import { getNewPhoneNumber } from 'state/entities/phoneNumbers/selectors'
 
 type Props = {
     type: IntegrationType.Phone | IntegrationType.Sms | IntegrationType.WhatsApp
@@ -21,7 +22,7 @@ export default function PhoneIntegrationBreadcrumbs({
     type,
     integration,
 }: Props): JSX.Element {
-    const {integrationId} = useParams<{integrationId: string}>()
+    const { integrationId } = useParams<{ integrationId: string }>()
     const phoneNumber = useAppSelector((state) => {
         if (integration) {
             const phoneNumberId = integration.meta?.phone_number_id

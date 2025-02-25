@@ -1,7 +1,7 @@
-import {IntegrationType} from 'models/integration/types'
-import {RootState} from 'state/types'
+import { IntegrationType } from 'models/integration/types'
+import { RootState } from 'state/types'
 
-import {initialState} from '../reducers'
+import { initialState } from '../reducers'
 import * as selectors from '../selectors'
 
 describe('infobarActions.shopify.refundOrder selectors', () => {

@@ -1,23 +1,26 @@
-import {CustomFieldCondition} from '@gorgias/api-queries'
-import moment from 'moment'
-import React, {MouseEvent, useCallback} from 'react'
-import {Link} from 'react-router-dom'
+import React, { MouseEvent, useCallback } from 'react'
 
-import {DateAndTimeFormatting} from 'constants/datetime'
+import moment from 'moment'
+import { Link } from 'react-router-dom'
+
+import { CustomFieldCondition } from '@gorgias/api-queries'
+
+import { DateAndTimeFormatting } from 'constants/datetime'
 import IconButton from 'pages/common/components/button/IconButton'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import BodyCellContent from 'pages/common/components/table/cells/BodyCellContent'
-import {TableBodyRowDraggable} from 'pages/common/components/table/TableBodyRowDraggable'
+import { TableBodyRowDraggable } from 'pages/common/components/table/TableBodyRowDraggable'
 import ToggleInput from 'pages/common/forms/ToggleInput'
-import {Callbacks} from 'pages/common/hooks/useReorderDnD'
+import { Callbacks } from 'pages/common/hooks/useReorderDnD'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import history from 'pages/history'
 
 import useCreateCustomFieldCondition from '../hooks/useCreateCustomFieldCondition'
 import useUpdateCustomFieldCondition from '../hooks/useUpdateCustomFieldCondition'
+import { DeletionPopover } from './DeletionPopover'
+
 import css from './ConditionalFieldRow.less'
-import {DeletionPopover} from './DeletionPopover'
 
 type ConditionalFieldRowProps = {
     condition: CustomFieldCondition
@@ -34,21 +37,21 @@ export default function ConditionalFieldRow({
     onMoveEntity,
     onDropEntity,
 }: ConditionalFieldRowProps) {
-    const {mutateAsync: updateCondition, isLoading: isUpdating} =
+    const { mutateAsync: updateCondition, isLoading: isUpdating } =
         useUpdateCustomFieldCondition()
-    const {mutateAsync: createCondition, isLoading: isCreating} =
+    const { mutateAsync: createCondition, isLoading: isCreating } =
         useCreateCustomFieldCondition()
 
     const handleActivate = useCallback(() => {
         void updateCondition({
             id: condition.id,
-            data: {deactivated_datetime: null},
+            data: { deactivated_datetime: null },
         })
     }, [condition, updateCondition])
     const handleDeactivate = useCallback(() => {
         void updateCondition({
             id: condition.id,
-            data: {deactivated_datetime: moment().toISOString()},
+            data: { deactivated_datetime: moment().toISOString() },
         })
     }, [condition, updateCondition])
     const handleToggleClick = useCallback(
@@ -61,7 +64,7 @@ export default function ConditionalFieldRow({
                     onDisplayConfirmation(event)
                 }
             },
-        [condition, handleActivate]
+        [condition, handleActivate],
     )
 
     const handleDuplicate = async () => {
@@ -77,7 +80,7 @@ export default function ConditionalFieldRow({
                 },
             })
             history.push(
-                `/app/settings/ticket-field-conditions/${newCondition.data.id}`
+                `/app/settings/ticket-field-conditions/${newCondition.data.id}`,
             )
         } catch {
             /* no-op */
@@ -108,13 +111,13 @@ export default function ConditionalFieldRow({
                     onConfirm={handleDeactivate}
                     placement="bottom"
                 >
-                    {({uid, onDisplayConfirmation}) => (
+                    {({ uid, onDisplayConfirmation }) => (
                         <div id={uid}>
                             <ToggleInput
                                 isToggled={!condition.deactivated_datetime}
                                 isLoading={isUpdating}
                                 onClick={handleToggleClick(
-                                    onDisplayConfirmation
+                                    onDisplayConfirmation,
                                 )}
                             />
                         </div>
@@ -152,7 +155,7 @@ export default function ConditionalFieldRow({
                     file_copy
                 </IconButton>
                 <DeletionPopover condition={condition}>
-                    {({uid, onDisplayConfirmation}) => (
+                    {({ uid, onDisplayConfirmation }) => (
                         <IconButton
                             fillStyle="ghost"
                             intent="destructive"

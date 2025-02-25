@@ -1,12 +1,13 @@
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useFlag} from 'core/flags'
-import {Sender} from 'hooks/useOutboundChannels'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
+import { Sender } from 'hooks/useOutboundChannels'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import DefaultIntegrationBadge from 'pages/integrations/integration/components/email/DefaultIntegrationBadge'
 
 import ReconnectButton from './ReconnectButton'
+
 import css from './SenderDropDownItem.less'
 
 const SenderDropDownItem = ({
@@ -17,7 +18,7 @@ const SenderDropDownItem = ({
     onSelect: (sender: Sender) => void
 }) => {
     const isDefaultAddressFeatureEnabled = useFlag(
-        FeatureFlagKey.DefaultEmailAddress
+        FeatureFlagKey.DefaultEmailAddress,
     )
 
     return (

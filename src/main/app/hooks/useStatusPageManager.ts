@@ -1,4 +1,4 @@
-import {useEffect} from 'react'
+import { useEffect } from 'react'
 
 import statusPageManager from 'services/statusPageManager/statusPageManager'
 

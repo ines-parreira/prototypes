@@ -1,15 +1,16 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {screen, render} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { render, screen } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import CurrentHelpCenterContext from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
-import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {EditionManagerContextProvider} from 'pages/settings/helpCenter/providers/EditionManagerContext'
-import {RootState, StoreDispatch} from 'state/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { EditionManagerContextProvider } from 'pages/settings/helpCenter/providers/EditionManagerContext'
+import { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import PreviewArticle from '../PreviewArticle'
 
@@ -85,7 +86,7 @@ describe('<PreviewArticle />', () => {
                         </EditionManagerContextProvider>
                     </CurrentHelpCenterContext.Provider>
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(screen.getByText('article content')).toBeInTheDocument()

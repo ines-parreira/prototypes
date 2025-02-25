@@ -1,17 +1,18 @@
-import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
-import {Moment} from 'moment'
+import { Moment } from 'moment'
 
-import {TicketChannel} from 'business/types/ticket'
+import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
+
+import { TicketChannel } from 'business/types/ticket'
 import {
+    dateInPastFromStartOfToday,
     endOfLastMonth,
     endOfToday,
+    last365DaysStartingFromToday,
     lastWeekDateRange,
     StartDayOfWeek,
     startOfLastMonth,
     startOfMonth,
-    dateInPastFromStartOfToday,
     startOfToday,
-    last365DaysStartingFromToday,
 } from 'pages/stats/common/utils'
 
 export const DEFAULT_TIMEZONE = 'UTC'
@@ -71,37 +72,37 @@ export const getNewSetOfRanges = ({
         }
     }
     excludeOptions?: string[]
-} = {}): {[key: string]: [Moment, Moment]} => {
+} = {}): { [key: string]: [Moment, Moment] } => {
     const applyAdjustments = (
         date: Moment,
-        adjustments: ((date: Moment) => Moment)[] = []
+        adjustments: ((date: Moment) => Moment)[] = [],
     ): Moment => {
         return adjustments.reduce(
             (adjustedDate, adjustFn) => adjustFn(adjustedDate),
-            date
+            date,
         )
     }
 
     const defaultSetOfRanges = getDefaultSetOfRanges()
-    const ranges: {[key: string]: [Moment, Moment]} = {
+    const ranges: { [key: string]: [Moment, Moment] } = {
         [TODAY]: [
             applyAdjustments(
                 defaultSetOfRanges[TODAY][0],
-                adjustments[TODAY]?.start
+                adjustments[TODAY]?.start,
             ),
             applyAdjustments(
                 defaultSetOfRanges[TODAY][1],
-                adjustments[TODAY]?.end
+                adjustments[TODAY]?.end,
             ),
         ],
         [YESTERDAY]: [
             applyAdjustments(
                 dateInPastFromStartOfToday(2),
-                adjustments[YESTERDAY]?.start
+                adjustments[YESTERDAY]?.start,
             ),
             applyAdjustments(
                 startOfToday().subtract(1, 'seconds'),
-                adjustments[YESTERDAY]?.end
+                adjustments[YESTERDAY]?.end,
             ),
         ],
         [MONTH_TO_DATE]: [
@@ -112,14 +113,14 @@ export const getNewSetOfRanges = ({
             lastWeekDateRange(StartDayOfWeek.Sunday).start,
             applyAdjustments(
                 lastWeekDateRange(StartDayOfWeek.Sunday).end,
-                adjustments[LAST_WEEK_SUN]?.end
+                adjustments[LAST_WEEK_SUN]?.end,
             ),
         ],
         [LAST_WEEK_MON]: [
             lastWeekDateRange(StartDayOfWeek.Monday).start,
             applyAdjustments(
                 lastWeekDateRange(StartDayOfWeek.Monday).end,
-                adjustments[LAST_WEEK_MON]?.end
+                adjustments[LAST_WEEK_MON]?.end,
             ),
         ],
         [LAST_MONTH]: [
@@ -129,47 +130,47 @@ export const getNewSetOfRanges = ({
         [PAST_7_DAYS]: [
             applyAdjustments(
                 defaultSetOfRanges[PAST_7_DAYS][0],
-                adjustments[PAST_7_DAYS]?.start
+                adjustments[PAST_7_DAYS]?.start,
             ),
             applyAdjustments(
                 defaultSetOfRanges[PAST_7_DAYS][1],
-                adjustments[PAST_7_DAYS]?.end
+                adjustments[PAST_7_DAYS]?.end,
             ),
         ],
         [PAST_30_DAYS]: [
             applyAdjustments(
                 defaultSetOfRanges[PAST_30_DAYS][0],
-                adjustments[PAST_30_DAYS]?.start
+                adjustments[PAST_30_DAYS]?.start,
             ),
             applyAdjustments(
                 defaultSetOfRanges[PAST_30_DAYS][1],
-                adjustments[PAST_30_DAYS]?.end
+                adjustments[PAST_30_DAYS]?.end,
             ),
         ],
         [PAST_60_DAYS]: [
             applyAdjustments(
                 defaultSetOfRanges[PAST_60_DAYS][0],
-                adjustments[PAST_60_DAYS]?.start
+                adjustments[PAST_60_DAYS]?.start,
             ),
             applyAdjustments(
                 defaultSetOfRanges[PAST_60_DAYS][1],
-                adjustments[PAST_60_DAYS]?.end
+                adjustments[PAST_60_DAYS]?.end,
             ),
         ],
         [PAST_90_DAYS]: [
             applyAdjustments(
                 defaultSetOfRanges[PAST_90_DAYS][0],
-                adjustments[PAST_90_DAYS]?.start
+                adjustments[PAST_90_DAYS]?.start,
             ),
             applyAdjustments(
                 defaultSetOfRanges[PAST_90_DAYS][1],
-                adjustments[PAST_90_DAYS]?.end
+                adjustments[PAST_90_DAYS]?.end,
             ),
         ],
         [PAST_YEAR]: [
             applyAdjustments(
                 last365DaysStartingFromToday(),
-                adjustments[PAST_YEAR]?.start
+                adjustments[PAST_YEAR]?.start,
             ),
             applyAdjustments(endOfToday(), adjustments[PAST_YEAR]?.end),
         ],

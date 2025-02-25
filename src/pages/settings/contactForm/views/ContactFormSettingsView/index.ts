@@ -1,1 +1,1 @@
-export {default} from './ContactFormSettingsView'
+export { default } from './ContactFormSettingsView'

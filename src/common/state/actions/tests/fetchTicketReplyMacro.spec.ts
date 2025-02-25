@@ -1,5 +1,4 @@
-import {FETCH_TICKET_REPLY_MACRO} from '../../constants'
-
+import { FETCH_TICKET_REPLY_MACRO } from '../../constants'
 import fetchTicketReplyMacro from '../fetchTicketReplyMacro'
 
 describe('fetchTicketReplyMacro', () => {

@@ -1,15 +1,16 @@
-import {List, Map} from 'immutable'
 import React from 'react'
+
+import { List, Map } from 'immutable'
 import {
-    UncontrolledButtonDropdown,
-    DropdownToggle,
-    DropdownMenu,
-    DropdownItem,
     Button,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+    UncontrolledButtonDropdown,
 } from 'reactstrap'
 
-import {RuleOperation} from '../../../../../state/rules/types'
-import {RuleItemActions} from '../../../../settings/rules/types'
+import { RuleOperation } from '../../../../../state/rules/types'
+import { RuleItemActions } from '../../../../settings/rules/types'
 import useHoverable from '../../../hooks/useHoverable'
 
 type Props = {
@@ -26,7 +27,7 @@ export default function AddLogicalCondition({
     parent,
     hoverableClassName,
 }: Props) {
-    const {setRef} = useHoverable()
+    const { setRef } = useHoverable()
 
     const handleAndClick = () => {
         const actionNode = {
@@ -64,7 +65,7 @@ export default function AddLogicalCondition({
         actions.modifyCodeAST(
             parent,
             actionNode,
-            RuleOperation.UpdateLogicalOperator
+            RuleOperation.UpdateLogicalOperator,
         )
     }
 
@@ -104,7 +105,7 @@ export default function AddLogicalCondition({
         actions.modifyCodeAST(
             parent,
             actionNode,
-            RuleOperation.UpdateLogicalOperator
+            RuleOperation.UpdateLogicalOperator,
         )
     }
 
@@ -119,7 +120,7 @@ export default function AddLogicalCondition({
         actions.modifyCodeAST(
             parent.pop(),
             actionNode,
-            RuleOperation.UpdateIfStatement
+            RuleOperation.UpdateIfStatement,
         )
     }
 

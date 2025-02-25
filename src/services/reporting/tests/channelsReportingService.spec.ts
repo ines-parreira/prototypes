@@ -1,12 +1,12 @@
-import {channels} from 'fixtures/channels'
-import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
-import {Channel} from 'models/channel/types'
-import {HandleTimeMeasure} from 'models/reporting/cubes/agentxp/HandleTimeCube'
-import {HelpdeskMessageMeasure} from 'models/reporting/cubes/HelpdeskMessageCube'
-import {TicketMeasure} from 'models/reporting/cubes/TicketCube'
-import {TicketMessagesMeasure} from 'models/reporting/cubes/TicketMessagesCube'
-import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
-import {CHANNEL_DIMENSION} from 'models/reporting/queryFactories/support-performance/constants'
+import { channels } from 'fixtures/channels'
+import { MetricWithDecile } from 'hooks/reporting/useMetricPerDimension'
+import { Channel } from 'models/channel/types'
+import { HandleTimeMeasure } from 'models/reporting/cubes/agentxp/HandleTimeCube'
+import { HelpdeskMessageMeasure } from 'models/reporting/cubes/HelpdeskMessageCube'
+import { TicketMeasure } from 'models/reporting/cubes/TicketCube'
+import { TicketMessagesMeasure } from 'models/reporting/cubes/TicketMessagesCube'
+import { TicketSatisfactionSurveyMeasure } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
+import { CHANNEL_DIMENSION } from 'models/reporting/queryFactories/support-performance/constants'
 import {
     ChannelsTableLabels,
     columnsOrder,
@@ -32,7 +32,7 @@ describe('channelsReportingService', () => {
         const exampleData = (
             channel: string,
             metricField: ChannelsReportMetrics,
-            value: string
+            value: string,
         ): MetricWithDecile => ({
             isFetching: false,
             isError: false,
@@ -53,47 +53,47 @@ describe('channelsReportingService', () => {
             createdTicketsMetricPerChannel: exampleData(
                 channelA.slug,
                 TicketMeasure.TicketCount,
-                '5'
+                '5',
             ),
             percentageOfCreatedTicketsMetricPerChannel: exampleData(
                 channelA.slug,
                 TicketMeasure.TicketCount,
-                '5'
+                '5',
             ),
             closedTicketsMetricPerChannel: exampleData(
                 channelA.slug,
                 TicketMeasure.TicketCount,
-                '5'
+                '5',
             ),
             ticketAverageHandleTimePerChannel: exampleData(
                 channelA.slug,
                 HandleTimeMeasure.AverageHandleTime,
-                '5'
+                '5',
             ),
             medianFirstResponseTimeMetricPerChannel: exampleData(
                 channelA.slug,
                 TicketMessagesMeasure.MedianFirstResponseTime,
-                '5'
+                '5',
             ),
             medianResolutionTimeMetricPerChannel: exampleData(
                 channelA.slug,
                 TicketMessagesMeasure.MedianResolutionTime,
-                '5'
+                '5',
             ),
             ticketsRepliedMetricPerChannel: exampleData(
                 channelA.slug,
                 TicketMeasure.TicketCount,
-                '5'
+                '5',
             ),
             messagesSentMetricPerChannel: exampleData(
                 channelA.slug,
                 HelpdeskMessageMeasure.MessageCount,
-                '5'
+                '5',
             ),
             customerSatisfactionMetricPerChannel: exampleData(
                 channelA.slug,
                 TicketSatisfactionSurveyMeasure.AvgSurveyScore,
-                '5'
+                '5',
             ),
         }
         saveReport(reportChannels, data, columnsOrder, fileName)
@@ -107,6 +107,6 @@ describe('channelsReportingService', () => {
     it('should return empty when no data', () => {
         const result = saveReport(reportChannels, null, columnsOrder, fileName)
 
-        expect(result).toEqual({files: {}})
+        expect(result).toEqual({ files: {} })
     })
 })

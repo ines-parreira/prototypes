@@ -1,8 +1,9 @@
-import {render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {DownloadDataButton} from 'pages/stats/support-performance/components/DownloadDataButton'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { DownloadDataButton } from 'pages/stats/support-performance/components/DownloadDataButton'
 
 describe('DownloadOverviewData', () => {
     it('should be disabled', () => {
@@ -11,7 +12,7 @@ describe('DownloadOverviewData', () => {
                 onClick={jest.fn()}
                 disabled={true}
                 title="some title"
-            />
+            />,
         )
         const button = screen.getByRole('button')
 
@@ -26,7 +27,7 @@ describe('DownloadOverviewData', () => {
                 onClick={onClickSpy}
                 disabled={false}
                 title={'some title'}
-            />
+            />,
         )
         const button = screen.getByRole('button')
         userEvent.click(button)

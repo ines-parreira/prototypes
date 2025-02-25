@@ -1,18 +1,21 @@
-import {VoiceCallDirection} from '@gorgias/api-queries'
-import classNames from 'classnames'
 import React from 'react'
 
-import {VoiceCallSummary} from 'pages/stats/voice/models/types'
+import classNames from 'classnames'
+
+import { VoiceCallDirection } from '@gorgias/api-queries'
+
+import { VoiceCallSummary } from 'pages/stats/voice/models/types'
+
+import { isLiveCallRinging, isLiveInboundVoiceCallAnswered } from './utils'
 
 import css from './LiveVoiceCallStatusLabel.less'
-import {isLiveInboundVoiceCallAnswered, isLiveCallRinging} from './utils'
 
 type Props = {
     direction: VoiceCallDirection
     status: VoiceCallSummary['status']
 }
 
-export default function LiveVoiceCallStatusLabel({direction, status}: Props) {
+export default function LiveVoiceCallStatusLabel({ direction, status }: Props) {
     const isOutbound = direction === VoiceCallDirection.Outbound
 
     if (isOutbound && isLiveCallRinging(status)) {

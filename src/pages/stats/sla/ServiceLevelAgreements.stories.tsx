@@ -1,21 +1,23 @@
-import {Tag} from '@gorgias/api-queries'
-import {Meta, StoryFn} from '@storybook/react'
-import {QueryClientProvider} from '@tanstack/react-query'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { Meta, StoryFn } from '@storybook/react'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {appQueryClient} from 'api/queryClient'
-import {billingState} from 'fixtures/billing'
-import {reportingKeys} from 'models/reporting/queries'
+import { Tag } from '@gorgias/api-queries'
+
+import { appQueryClient } from 'api/queryClient'
+import { billingState } from 'fixtures/billing'
+import { reportingKeys } from 'models/reporting/queries'
 import {
     satisfiedOrBreachedTicketsQueryFactory,
     satisfiedOrBreachedTicketsTimeSeriesQueryFactory,
 } from 'models/reporting/queryFactories/sla/satisfiedOrBreachedTickets'
-import {ServiceLevelAgreements} from 'pages/stats/sla/ServiceLevelAgreements'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
+import { ServiceLevelAgreements } from 'pages/stats/sla/ServiceLevelAgreements'
+import { getCleanStatsFiltersWithTimezone } from 'state/ui/stats/selectors'
 
 const slaPoliciesResponse = {
     object: 'list',
@@ -137,31 +139,31 @@ const storyConfig: Meta = {
     title: 'Stats/Reports/SLAs',
     component: ServiceLevelAgreements,
     parameters: {
-        chromatic: {disableSnapshot: false},
+        chromatic: { disableSnapshot: false },
     },
 }
 
 const Template: StoryFn<ComponentProps<typeof ServiceLevelAgreements>> = () => {
-    const {cleanStatsFilters, userTimezone, granularity} =
+    const { cleanStatsFilters, userTimezone, granularity } =
         getCleanStatsFiltersWithTimezone(defaultState as any)
 
     appQueryClient.setQueryData(
-        ['slaPolicies', 'listSlaPolicies', {queryParams: undefined}],
+        ['slaPolicies', 'listSlaPolicies', { queryParams: undefined }],
         {
             data: slaPoliciesResponse,
-        }
+        },
     )
 
     appQueryClient.setQueryData(
         reportingKeys.post([
             satisfiedOrBreachedTicketsQueryFactory(
                 cleanStatsFilters,
-                userTimezone
+                userTimezone,
             ),
         ]),
         {
             data: achievementRateTrendResponse,
-        }
+        },
     )
 
     appQueryClient.setQueryData(
@@ -169,12 +171,12 @@ const Template: StoryFn<ComponentProps<typeof ServiceLevelAgreements>> = () => {
             satisfiedOrBreachedTicketsTimeSeriesQueryFactory(
                 cleanStatsFilters,
                 userTimezone,
-                granularity
+                granularity,
             ),
         ]),
         {
             data: achievedAndBreachedResponse,
-        }
+        },
     )
 
     return (

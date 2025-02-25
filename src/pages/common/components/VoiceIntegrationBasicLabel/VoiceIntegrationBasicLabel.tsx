@@ -1,15 +1,15 @@
 import React from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {formatPhoneNumberInternational} from 'pages/phoneNumbers/utils'
-import {getIntegrationById} from 'state/integrations/selectors'
+import { formatPhoneNumberInternational } from 'pages/phoneNumbers/utils'
+import { getIntegrationById } from 'state/integrations/selectors'
 
 type Props = {
     integrationId: number
     phoneNumber?: string
 }
 
-function VoiceIntegrationBasicLabel({integrationId, phoneNumber}: Props) {
+function VoiceIntegrationBasicLabel({ integrationId, phoneNumber }: Props) {
     const integration = useAppSelector(getIntegrationById(integrationId))
     const formattedPhoneNumber = formatPhoneNumberInternational(phoneNumber)
     const integrationName = integration?.get('name')

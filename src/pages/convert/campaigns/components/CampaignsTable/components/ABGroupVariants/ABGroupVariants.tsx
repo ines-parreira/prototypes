@@ -1,15 +1,15 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
+
+import { Link } from 'react-router-dom'
 
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-
 import {
     abVariantControlVariantUrl,
     abVariantEditorUrl,
 } from 'pages/convert/abVariants/urls'
-import {generateVariantName} from 'pages/convert/abVariants/utils/generateVariantName'
-import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
+import { generateVariantName } from 'pages/convert/abVariants/utils/generateVariantName'
+import { CampaignVariant } from 'pages/convert/campaigns/types/CampaignVariant'
 
 import css from './ABGroupVariants.less'
 
@@ -27,13 +27,13 @@ const ABGroupVariants: React.FC<Props> = ({
     return (
         <>
             <TableBodyRow>
-                <BodyCell style={{width: 88}}></BodyCell>
+                <BodyCell style={{ width: 88 }}></BodyCell>
                 <BodyCell>
                     <Link
                         className={css.link}
                         to={abVariantControlVariantUrl(
                             integrationId,
-                            campaignId
+                            campaignId,
                         )}
                     >
                         Control Variant
@@ -42,14 +42,14 @@ const ABGroupVariants: React.FC<Props> = ({
             </TableBodyRow>
             {(variants ?? []).map((variant, idx) => (
                 <TableBodyRow key={`variant-${idx}`}>
-                    <BodyCell style={{width: 88}}></BodyCell>
+                    <BodyCell style={{ width: 88 }}></BodyCell>
                     <BodyCell>
                         <Link
                             className={css.link}
                             to={abVariantEditorUrl(
                                 integrationId,
                                 campaignId,
-                                variant.id
+                                variant.id,
                             )}
                         >
                             {generateVariantName(idx)}

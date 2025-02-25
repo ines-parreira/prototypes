@@ -1,8 +1,9 @@
-import {render, fireEvent, screen} from '@testing-library/react'
 import React from 'react'
 
-import {actionFixture} from 'fixtures/infobarCustomActions'
-import {ContentType} from 'models/api/types'
+import { fireEvent, render, screen } from '@testing-library/react'
+
+import { actionFixture } from 'fixtures/infobarCustomActions'
+import { ContentType } from 'models/api/types'
 
 import Form from '..'
 
@@ -38,10 +39,10 @@ describe('<Form/>', () => {
                 button={button}
                 onClose={onClose}
                 onSubmit={onSubmit}
-            />
+            />,
         )
 
-        fireEvent.click(screen.getByRole('button', {name: 'Save'}))
+        fireEvent.click(screen.getByRole('button', { name: 'Save' }))
         expect(onSubmit).toHaveBeenCalledWith(button, index)
         expect(onClose).toHaveBeenCalled()
     })
@@ -49,13 +50,16 @@ describe('<Form/>', () => {
     it('should submit updated label', () => {
         render(<Form button={button} onClose={onClose} onSubmit={onSubmit} />)
         const newValue = ' newValue '
-        fireEvent.change(screen.getByRole('textbox', {name: /Button title/}), {
-            target: {value: newValue},
-        })
-        fireEvent.click(screen.getByRole('button', {name: 'Save'}))
+        fireEvent.change(
+            screen.getByRole('textbox', { name: /Button title/ }),
+            {
+                target: { value: newValue },
+            },
+        )
+        fireEvent.click(screen.getByRole('button', { name: 'Save' }))
         expect(onSubmit).toHaveBeenCalledWith(
-            {...button, label: newValue.trim()},
-            undefined
+            { ...button, label: newValue.trim() },
+            undefined,
         )
     })
 
@@ -66,14 +70,16 @@ describe('<Form/>', () => {
                 button={button}
                 onClose={onClose}
                 onSubmit={onSubmit}
-            />
+            />,
         )
         const newValue = 'newValue'
-        fireEvent.click(screen.getAllByRole('button', {name: /Add Header/})[0])
+        fireEvent.click(
+            screen.getAllByRole('button', { name: /Add Header/ })[0],
+        )
         fireEvent.change(screen.getByPlaceholderText('Key'), {
-            target: {value: newValue},
+            target: { value: newValue },
         })
-        fireEvent.submit(screen.getByRole('button', {name: 'Save'}))
+        fireEvent.submit(screen.getByRole('button', { name: 'Save' }))
         expect(onSubmit).toHaveBeenCalledWith(
             {
                 ...button,
@@ -90,12 +96,12 @@ describe('<Form/>', () => {
                     ],
                 },
             },
-            2
+            2,
         )
     })
 
     it('should remove duplicates on submit', () => {
-        const action = actionFixture({edit: true})
+        const action = actionFixture({ edit: true })
         action.params.push(action.params[0])
         const button = {
             label: 'label',
@@ -107,15 +113,15 @@ describe('<Form/>', () => {
                 button={button}
                 onClose={onClose}
                 onSubmit={onSubmit}
-            />
+            />,
         )
-        fireEvent.click(screen.getByRole('button', {name: 'Save'}))
+        fireEvent.click(screen.getByRole('button', { name: 'Save' }))
         expect(onSubmit).toHaveBeenCalledWith(
             {
                 ...button,
-                action: actionFixture({edit: true}),
+                action: actionFixture({ edit: true }),
             },
-            2
+            2,
         )
     })
 
@@ -143,15 +149,15 @@ describe('<Form/>', () => {
                 button={button}
                 onClose={onClose}
                 onSubmit={onSubmit}
-            />
+            />,
         )
-        fireEvent.click(screen.getByRole('button', {name: 'Save'}))
+        fireEvent.click(screen.getByRole('button', { name: 'Save' }))
         expect(onSubmit).toHaveBeenCalledWith(
             {
                 ...button,
                 action: actionFixture(),
             },
-            2
+            2,
         )
     })
 
@@ -176,15 +182,15 @@ describe('<Form/>', () => {
                 button={button}
                 onClose={onClose}
                 onSubmit={onSubmit}
-            />
+            />,
         )
-        fireEvent.click(screen.getByRole('button', {name: 'Save'}))
+        fireEvent.click(screen.getByRole('button', { name: 'Save' }))
         expect(onSubmit).toHaveBeenCalledWith(
             {
                 ...button,
                 action: actionFixture(),
             },
-            2
+            2,
         )
     })
 })

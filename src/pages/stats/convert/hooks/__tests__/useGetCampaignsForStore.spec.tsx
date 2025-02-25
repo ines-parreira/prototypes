@@ -1,23 +1,23 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
-import React, {ComponentType} from 'react'
-import {Provider} from 'react-redux'
-import {createStore} from 'redux'
+import React, { ComponentType } from 'react'
 
-import {campaign} from 'fixtures/campaign'
-import {channelConnection} from 'fixtures/channelConnection'
-import {useListCampaigns} from 'models/convert/campaign/queries'
-import {IntegrationType} from 'models/integration/types'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import {RootState} from 'state/types'
+import { renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import { createStore } from 'redux'
 
-import {assumeMock} from 'utils/testing'
+import { campaign } from 'fixtures/campaign'
+import { channelConnection } from 'fixtures/channelConnection'
+import { useListCampaigns } from 'models/convert/campaign/queries'
+import { IntegrationType } from 'models/integration/types'
+import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import { RootState } from 'state/types'
+import { assumeMock } from 'utils/testing'
 
-import {useGetCampaignsForStore} from '../useGetCampaignsForStore'
+import { useGetCampaignsForStore } from '../useGetCampaignsForStore'
 
 jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')
 const useGetOrCreateChannelConnectionMock = assumeMock(
-    useGetOrCreateChannelConnection
+    useGetOrCreateChannelConnection,
 )
 
 jest.mock('models/convert/campaign/queries')
@@ -78,16 +78,16 @@ describe('useGetCampaignsForStore', () => {
             } as any)
             const store = createStore(
                 (state) => state as RootState,
-                defaultState
+                defaultState,
             )
             const hookOptions = {
-                wrapper: (({children}) => (
+                wrapper: (({ children }) => (
                     <Provider store={store}>{children}</Provider>
                 )) as ComponentType,
             }
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () => useGetCampaignsForStore([]),
-                hookOptions
+                hookOptions,
             )
 
             expect(result.current).toEqual({
@@ -101,16 +101,16 @@ describe('useGetCampaignsForStore', () => {
         it('returns an empty list', () => {
             const store = createStore(
                 (state) => state as RootState,
-                defaultState
+                defaultState,
             )
             const hookOptions = {
-                wrapper: (({children}) => (
+                wrapper: (({ children }) => (
                     <Provider store={store}>{children}</Provider>
                 )) as ComponentType,
             }
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () => useGetCampaignsForStore([3]),
-                hookOptions
+                hookOptions,
             )
 
             expect(result.current).toEqual({
@@ -128,16 +128,16 @@ describe('useGetCampaignsForStore', () => {
 
             const store = createStore(
                 (state) => state as RootState,
-                defaultState
+                defaultState,
             )
             const hookOptions = {
-                wrapper: (({children}) => (
+                wrapper: (({ children }) => (
                     <Provider store={store}>{children}</Provider>
                 )) as ComponentType,
             }
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () => useGetCampaignsForStore([2]),
-                hookOptions
+                hookOptions,
             )
 
             expect(result.current).toEqual({

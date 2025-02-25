@@ -1,29 +1,30 @@
-import {fireEvent, screen, within} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, screen, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
-import {useGetHelpCenterList} from 'models/helpCenter/queries'
-import {useAiAgentEnabled} from 'pages/aiAgent/hooks/useAiAgentEnabled'
+import { axiosSuccessResponse } from 'fixtures/axiosResponse'
+import { useGetHelpCenterList } from 'models/helpCenter/queries'
+import { useAiAgentEnabled } from 'pages/aiAgent/hooks/useAiAgentEnabled'
 import history from 'pages/history'
-import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {reportError} from 'utils/errors'
-import {assumeMock, renderWithRouter} from 'utils/testing'
+import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { reportError } from 'utils/errors'
+import { assumeMock, renderWithRouter } from 'utils/testing'
 
-import {AiAgentGuidanceContainer} from '../AiAgentGuidanceContainer'
+import { AiAgentGuidanceContainer } from '../AiAgentGuidanceContainer'
 import {
     GUIDANCE_ARTICLE_LIMIT,
     GUIDANCE_ARTICLE_LIMIT_WARNING,
 } from '../constants'
-import {getGuidanceArticleFixture} from '../fixtures/guidanceArticle.fixture'
-import {getStoreConfigurationFixture} from '../fixtures/storeConfiguration.fixtures'
-import {useGuidanceAiSuggestions} from '../hooks/useGuidanceAiSuggestions'
-import {useGuidanceArticleMutation} from '../hooks/useGuidanceArticleMutation'
-import {useGuidanceArticles} from '../hooks/useGuidanceArticles'
-import {useAiAgentStoreConfigurationContext} from '../providers/AiAgentStoreConfigurationContext'
+import { getGuidanceArticleFixture } from '../fixtures/guidanceArticle.fixture'
+import { getStoreConfigurationFixture } from '../fixtures/storeConfiguration.fixtures'
+import { useGuidanceAiSuggestions } from '../hooks/useGuidanceAiSuggestions'
+import { useGuidanceArticleMutation } from '../hooks/useGuidanceArticleMutation'
+import { useGuidanceArticles } from '../hooks/useGuidanceArticles'
+import { useAiAgentStoreConfigurationContext } from '../providers/AiAgentStoreConfigurationContext'
 
 jest.mock('pages/history')
 jest.mock('hooks/useAppDispatch', () => () => jest.fn())
@@ -63,11 +64,14 @@ const mockedUseGuidanceArticleMutation = jest.mocked(useGuidanceArticleMutation)
 const mockedUseGuidanceAiSuggestions = jest.mocked(useGuidanceAiSuggestions)
 const mockUseGetHelpCenterList = jest.mocked(useGetHelpCenterList)
 const mockedUseAiAgentStoreConfigurationContext = assumeMock(
-    useAiAgentStoreConfigurationContext
+    useAiAgentStoreConfigurationContext,
 )
 const mockUseEnableAiAgent = jest.mocked(useAiAgentEnabled)
 
-const helpCenter = {...getHelpCentersResponseFixture.data[0], type: 'guidance'}
+const helpCenter = {
+    ...getHelpCentersResponseFixture.data[0],
+    type: 'guidance',
+}
 const defaultGuidanceArticleProps: ReturnType<typeof useGuidanceArticles> = {
     guidanceArticles: [],
     isGuidanceArticleListLoading: false,
@@ -119,7 +123,7 @@ const renderComponent = () => {
         {
             path: `/:shopType/:shopName/ai-agent/guidance`,
             route: '/shopify/test-shop/ai-agent/guidance',
-        }
+        },
     )
 }
 
@@ -140,10 +144,10 @@ describe('<AiAgentGuidanceContainer />', () => {
         })
         mockedUseGuidanceArticles.mockReturnValue(defaultGuidanceArticleProps)
         mockedUseGuidanceArticleMutation.mockReturnValue(
-            defaultGuidanceArticleMutationProps
+            defaultGuidanceArticleMutationProps,
         )
         mockedUseGuidanceAiSuggestions.mockReturnValue(
-            defaultGuidanceAiSuggestionsProps
+            defaultGuidanceAiSuggestionsProps,
         )
         mockUseGetHelpCenterList.mockReturnValue({
             data: axiosSuccessResponse({
@@ -186,7 +190,7 @@ describe('<AiAgentGuidanceContainer />', () => {
         renderComponent()
 
         expect(
-            screen.getByText((text) => text.includes('Please configure'))
+            screen.getByText((text) => text.includes('Please configure')),
         ).toBeInTheDocument()
     })
 
@@ -235,17 +239,17 @@ describe('<AiAgentGuidanceContainer />', () => {
 
         expect(
             screen.getByText(
-                /Add Guidance to tell AI Agent how to handle specific/
-            )
+                /Add Guidance to tell AI Agent how to handle specific/,
+            ),
         ).toBeInTheDocument()
 
         const createCustomGuidanceButton = screen.getByText(
-            'Create Custom Guidance'
+            'Create Custom Guidance',
         )
         userEvent.click(createCustomGuidanceButton)
 
         expect(history.push).toHaveBeenCalledWith(
-            '/app/automation/shopify/test-shop/ai-agent/guidance/new'
+            '/app/automation/shopify/test-shop/ai-agent/guidance/new',
         )
     })
 
@@ -261,7 +265,7 @@ describe('<AiAgentGuidanceContainer />', () => {
         userEvent.click(browseSuggestions)
 
         expect(history.push).toHaveBeenCalledWith(
-            '/app/automation/shopify/test-shop/ai-agent/guidance/library'
+            '/app/automation/shopify/test-shop/ai-agent/guidance/library',
         )
     })
 
@@ -272,7 +276,7 @@ describe('<AiAgentGuidanceContainer />', () => {
                 ...defaultGuidanceAiSuggestionsProps,
                 isGuidancesAndAIGuidances: true,
                 guidanceArticles,
-                guidanceAISuggestions: [{name: 'AI Guidance 1'} as any],
+                guidanceAISuggestions: [{ name: 'AI Guidance 1' } as any],
             })
 
             renderComponent()
@@ -280,13 +284,13 @@ describe('<AiAgentGuidanceContainer />', () => {
             expect(screen.getByText('AI Guidance 1')).toBeInTheDocument()
 
             expect(
-                screen.queryByRole('button', {name: 'Create From Template'})
+                screen.queryByRole('button', { name: 'Create From Template' }),
             ).not.toBeInTheDocument()
             expect(
-                screen.getByRole('button', {name: 'Browse Suggestions'})
+                screen.getByRole('button', { name: 'Browse Suggestions' }),
             ).toBeInTheDocument()
             expect(
-                screen.getByRole('button', {name: 'Create Custom Guidance'})
+                screen.getByRole('button', { name: 'Create Custom Guidance' }),
             ).toBeInTheDocument()
         })
 
@@ -301,7 +305,7 @@ describe('<AiAgentGuidanceContainer />', () => {
             renderComponent()
 
             expect(
-                screen.getByText(guidanceArticles[0].title)
+                screen.getByText(guidanceArticles[0].title),
             ).toBeInTheDocument()
         })
 
@@ -321,13 +325,13 @@ describe('<AiAgentGuidanceContainer />', () => {
             renderComponent()
 
             userEvent.click(
-                screen.getByRole('button', {name: 'Delete guidance'})
+                screen.getByRole('button', { name: 'Delete guidance' }),
             )
 
             userEvent.click(screen.getByText('Delete'))
 
             expect(deleteGuidanceArticle).toHaveBeenCalledWith(
-                guidanceArticles[0].id
+                guidanceArticles[0].id,
             )
         })
 
@@ -345,8 +349,8 @@ describe('<AiAgentGuidanceContainer />', () => {
 
             expect(
                 screen.getByText(
-                    `You’ve added ${GUIDANCE_ARTICLE_LIMIT_WARNING} out of ${GUIDANCE_ARTICLE_LIMIT} pieces of guidance.`
-                )
+                    `You’ve added ${GUIDANCE_ARTICLE_LIMIT_WARNING} out of ${GUIDANCE_ARTICLE_LIMIT} pieces of guidance.`,
+                ),
             ).toBeInTheDocument()
         })
 
@@ -363,7 +367,7 @@ describe('<AiAgentGuidanceContainer />', () => {
             renderComponent()
 
             expect(
-                screen.getByRole('button', {name: 'Create From Template'})
+                screen.getByRole('button', { name: 'Create From Template' }),
             ).toBeAriaDisabled()
         })
 
@@ -389,14 +393,14 @@ describe('<AiAgentGuidanceContainer />', () => {
 
             // Check first row title. Should be Asc by default
             expect(document.querySelector('tbody tr')).toHaveTextContent(
-                'New article'
+                'New article',
             )
 
             userEvent.click(screen.getByText('Last updated'))
 
             // Check first row title. Should be Desc after click
             expect(document.querySelector('tbody tr')).toHaveTextContent(
-                'Old article'
+                'Old article',
             )
         })
 
@@ -427,8 +431,8 @@ describe('<AiAgentGuidanceContainer />', () => {
             renderComponent()
 
             const firstRowToggle = within(
-                document.querySelector('tbody tr')!
-            ).getByRole('checkbox', {name: 'Toggle guidance visibility'})
+                document.querySelector('tbody tr')!,
+            ).getByRole('checkbox', { name: 'Toggle guidance visibility' })
 
             expect(firstRowToggle).toBeChecked()
 
@@ -441,7 +445,7 @@ describe('<AiAgentGuidanceContainer />', () => {
                 {
                     articleId: guidanceArticles[0].id,
                     locale: guidanceArticles[0].locale,
-                }
+                },
             )
         })
     })

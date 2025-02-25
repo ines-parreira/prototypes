@@ -1,20 +1,21 @@
-import {AxiosError} from 'axios'
+import React, { FormEvent, useState } from 'react'
+
+import { AxiosError } from 'axios'
 import classnames from 'classnames'
-import {fromJS, Map} from 'immutable'
-import React, {FormEvent, useState} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {Button, Form, FormGroup, Container, Label, Input} from 'reactstrap'
+import { fromJS, Map } from 'immutable'
+import { connect, ConnectedProps } from 'react-redux'
+import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap'
 
 import client from 'models/api/resources'
 import PageHeader from 'pages/common/components/PageHeader'
 import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {Option} from 'pages/common/forms/SelectField/types'
+import { Option } from 'pages/common/forms/SelectField/types'
 import rawTypeOptions from 'pages/integrations/integration/components/phone/options/types.json'
-import {getCountryFromPhoneNumber} from 'pages/phoneNumbers/utils'
+import { getCountryFromPhoneNumber } from 'pages/phoneNumbers/utils'
 import settingsCss from 'pages/settings/settings.less'
-import {notify as notifyAction} from 'state/notifications/actions'
-import {Notification, NotificationStatus} from 'state/notifications/types'
+import { notify as notifyAction } from 'state/notifications/actions'
+import { Notification, NotificationStatus } from 'state/notifications/types'
 
 const typeOptions: Option[] = rawTypeOptions
 
@@ -25,7 +26,7 @@ type Errors = {
     type?: string
 }
 
-const ImportPhoneNumber = ({notify}: Props) => {
+const ImportPhoneNumber = ({ notify }: Props) => {
     const [formData, setFormData] = useState<Map<any, any>>(fromJS({}))
     const [isLoading, setIsLoading] = useState(false)
 
@@ -53,7 +54,9 @@ const ImportPhoneNumber = ({notify}: Props) => {
 
             void (await notify(notification))
         } catch (error) {
-            const {response} = error as AxiosError<{error: {data?: Errors}}>
+            const { response } = error as AxiosError<{
+                error: { data?: Errors }
+            }>
 
             if (response) {
                 const notification: Notification = {
@@ -98,7 +101,7 @@ const ImportPhoneNumber = ({notify}: Props) => {
                             value={formData.get('area_code') || ''}
                             onChange={(e) =>
                                 setFormData(
-                                    formData.set('area_code', e.target.value)
+                                    formData.set('area_code', e.target.value),
                                 )
                             }
                         />
@@ -114,7 +117,7 @@ const ImportPhoneNumber = ({notify}: Props) => {
                             value={formData.get('state') || ''}
                             onChange={(e) =>
                                 setFormData(
-                                    formData.set('state', e.target.value)
+                                    formData.set('state', e.target.value),
                                 )
                             }
                         />
@@ -128,11 +131,11 @@ const ImportPhoneNumber = ({notify}: Props) => {
                         <SelectField
                             id="type"
                             options={typeOptions}
-                            style={{display: 'inline-block'}}
+                            style={{ display: 'inline-block' }}
                             value={formData.get('phone_number_type') || ''}
                             onChange={(value) =>
                                 setFormData(
-                                    formData.set('phone_number_type', value)
+                                    formData.set('phone_number_type', value),
                                 )
                             }
                         />

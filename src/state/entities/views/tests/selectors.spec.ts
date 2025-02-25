@@ -1,9 +1,9 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
-import {user} from '../../../../fixtures/users'
-import {ViewType} from '../../../../models/view/types'
-import {RootState} from '../../../types'
-import {getOrderedViewsByType, getTicketViews} from '../selectors'
+import { user } from '../../../../fixtures/users'
+import { ViewType } from '../../../../models/view/types'
+import { RootState } from '../../../types'
+import { getOrderedViewsByType, getTicketViews } from '../selectors'
 
 describe('selectors', () => {
     const state: RootState = {
@@ -47,7 +47,7 @@ describe('selectors', () => {
     describe('getOrderedViewsByType', () => {
         it('should return the ordered list of views', () => {
             expect(
-                getOrderedViewsByType(ViewType.TicketList)(state)
+                getOrderedViewsByType(ViewType.TicketList)(state),
             ).toMatchSnapshot()
         })
     })

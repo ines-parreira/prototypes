@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'

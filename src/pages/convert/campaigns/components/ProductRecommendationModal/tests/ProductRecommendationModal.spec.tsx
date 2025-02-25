@@ -1,9 +1,10 @@
-import {fireEvent, render} from '@testing-library/react'
 import React from 'react'
 
-import {ProductRecommendationScenario} from 'pages/convert/campaigns/types/CampaignAttachment'
-import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import { fireEvent, render } from '@testing-library/react'
+
+import { ProductRecommendationScenario } from 'pages/convert/campaigns/types/CampaignAttachment'
+import { CampaignTriggerOperator } from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
+import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 
 import ProductRecommendationModal from '../ProductRecommendationModal'
 
@@ -32,17 +33,17 @@ describe('<ProductRecommendationModal />', () => {
     ])(
         'renders the modal for scenario',
         (scenario, expectedTitle, expectedContent) => {
-            const {queryByText} = render(
-                <ProductRecommendationModal {...{...props, scenario}} />
+            const { queryByText } = render(
+                <ProductRecommendationModal {...{ ...props, scenario }} />,
             )
 
             expect(
-                queryByText(expectedTitle, {exact: false})
+                queryByText(expectedTitle, { exact: false }),
             ).toBeInTheDocument()
             expect(
-                queryByText(expectedContent, {exact: false})
+                queryByText(expectedContent, { exact: false }),
             ).toBeInTheDocument()
-        }
+        },
     )
 
     it.each([
@@ -61,8 +62,8 @@ describe('<ProductRecommendationModal />', () => {
     ])(
         'calls `onSubmit` when the submit button is clicked',
         (scenario, triggerType, triggerOperator, triggerValue) => {
-            const {getByRole} = render(
-                <ProductRecommendationModal {...{...props, scenario}} />
+            const { getByRole } = render(
+                <ProductRecommendationModal {...{ ...props, scenario }} />,
             )
 
             const deactivateButton = getByRole('button', {
@@ -76,11 +77,11 @@ describe('<ProductRecommendationModal />', () => {
                 operator: triggerOperator,
                 value: triggerValue,
             })
-        }
+        },
     )
 
     it('calls `onClose` when the close button is clicked', () => {
-        const {getByText} = render(<ProductRecommendationModal {...props} />)
+        const { getByText } = render(<ProductRecommendationModal {...props} />)
 
         fireEvent.click(getByText('Cancel'))
 
@@ -88,11 +89,11 @@ describe('<ProductRecommendationModal />', () => {
     })
 
     it('returns `null` for unsupported scenarion', () => {
-        const {container} = render(
+        const { container } = render(
             <ProductRecommendationModal
                 {...props}
                 scenario={ProductRecommendationScenario.Newest}
-            />
+            />,
         )
 
         expect(container.firstChild).toBeNull()

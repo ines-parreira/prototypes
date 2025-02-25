@@ -6,7 +6,8 @@ import {
 } from 'models/integration/types'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 
-import {isBigCommerceCartLineItem} from '../../utils'
+import { isBigCommerceCartLineItem } from '../../utils'
+
 import css from './OrderLineItemRow.less'
 
 type Props = {
@@ -14,7 +15,7 @@ type Props = {
     lineItem: BigCommerceCartLineItem | BigCommerceCustomCartLineItem
 }
 
-export function TotalPriceComponent({currencyCode, lineItem}: Props) {
+export function TotalPriceComponent({ currencyCode, lineItem }: Props) {
     const price = isBigCommerceCartLineItem(lineItem)
         ? lineItem.extended_sale_price // Line Item
         : lineItem.extended_list_price // Custom Line Item

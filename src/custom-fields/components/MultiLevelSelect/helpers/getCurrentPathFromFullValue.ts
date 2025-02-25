@@ -1,8 +1,8 @@
-import {DROPDOWN_NESTING_DELIMITER} from 'custom-fields/constants'
-import {CustomFieldValue} from 'custom-fields/types'
+import { DROPDOWN_NESTING_DELIMITER } from 'custom-fields/constants'
+import { CustomFieldValue } from 'custom-fields/types'
 
 export function getCurrentPathFromFullValue(
-    value: CustomFieldValue | undefined
+    value: CustomFieldValue | undefined,
 ) {
     return typeof value === 'string' &&
         value.includes(DROPDOWN_NESTING_DELIMITER)

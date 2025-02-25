@@ -1,1 +1,1 @@
-export {default as EmptyTicket} from './components/EmptyTicket'
+export { default as EmptyTicket } from './components/EmptyTicket'

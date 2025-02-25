@@ -1,27 +1,27 @@
-import {AxiosError} from 'axios'
-import {parse as parseQueryString} from 'qs'
-import React, {useEffect, useState} from 'react'
-import {useHistory, useLocation} from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
 
-import {getAccessToken} from 'rest_api/auth'
+import { AxiosError } from 'axios'
+import { parse as parseQueryString } from 'qs'
+import { useHistory, useLocation } from 'react-router-dom'
+
+import { getAccessToken } from 'rest_api/auth'
 
 import useAppDispatch from '../../../../hooks/useAppDispatch'
-import {CsvColumnPreview} from '../../../../models/helpCenter/types'
-import {notify} from '../../../../state/notifications/actions'
-import {NotificationStatus} from '../../../../state/notifications/types'
+import { CsvColumnPreview } from '../../../../models/helpCenter/types'
+import { notify } from '../../../../state/notifications/actions'
+import { NotificationStatus } from '../../../../state/notifications/types'
 import Loader from '../../../common/components/Loader/Loader'
 import PageHeader from '../../../common/components/PageHeader'
-import {HELP_CENTER_BASE_PATH} from '../constants'
+import { HELP_CENTER_BASE_PATH } from '../constants'
 import useCurrentHelpCenter from '../hooks/useCurrentHelpCenter'
-import {useHelpCenterApi} from '../hooks/useHelpCenterApi'
-import {useMigrationApi} from '../hooks/useMigrationApi'
-import {useSupportedLocales} from '../providers/SupportedLocales'
-
-import {HelpCenterDetailsBreadcrumb} from './HelpCenterDetailsBreadcrumb'
+import { useHelpCenterApi } from '../hooks/useHelpCenterApi'
+import { useMigrationApi } from '../hooks/useMigrationApi'
+import { useSupportedLocales } from '../providers/SupportedLocales'
+import { HelpCenterDetailsBreadcrumb } from './HelpCenterDetailsBreadcrumb'
 import CsvColumnMatching from './Imports/components/CsvColumnMatching/CsvColumnMatching'
-import {GorgiasFieldsMappingsLocalized} from './Imports/components/CsvColumnMatching/types'
-import {mapCSVLocalValuesToAPIPayload} from './Imports/components/CsvColumnMatching/utils'
-import {AutoOpenSessionLocationState} from './Imports/components/ImportSection/types'
+import { GorgiasFieldsMappingsLocalized } from './Imports/components/CsvColumnMatching/types'
+import { mapCSVLocalValuesToAPIPayload } from './Imports/components/CsvColumnMatching/utils'
+import { AutoOpenSessionLocationState } from './Imports/components/ImportSection/types'
 import {
     getErrorMessage,
     responseIsSession,
@@ -29,10 +29,10 @@ import {
 
 const urlToArticles = (
     helpCenterId: number,
-    locationPathname: string
+    locationPathname: string,
 ): string => {
     const helpCenterRootPath = locationPathname.split(
-        helpCenterId.toString()
+        helpCenterId.toString(),
     )[0]
 
     return `${helpCenterRootPath}${helpCenterId}/articles`
@@ -43,10 +43,10 @@ export const HelpCenterImportCsvColumnMatchingView: React.FC = () => {
     const location = useLocation()
     const helpCenter = useCurrentHelpCenter()
     const [fileUrl, setFileUrl] = useState<string | null>(null)
-    const {client} = useHelpCenterApi()
+    const { client } = useHelpCenterApi()
     const migrationClient = useMigrationApi()
     const [csvColumns, setCsvColumns] = useState<CsvColumnPreview[] | null>(
-        null
+        null,
     )
     const history = useHistory()
     const dispatch = useAppDispatch()
@@ -67,7 +67,7 @@ export const HelpCenterImportCsvColumnMatchingView: React.FC = () => {
                     message:
                         'Could not load CSV file: missing URL parameter file_url',
                     noAutoDismiss: true,
-                })
+                }),
             )
         }
     }, [dispatch, location.search])
@@ -78,7 +78,7 @@ export const HelpCenterImportCsvColumnMatchingView: React.FC = () => {
 
         void (async () => {
             try {
-                const {data} = await migrationClient.analysis(undefined, {
+                const { data } = await migrationClient.analysis(undefined, {
                     file_url: fileUrl,
                 })
                 if (!('result' in data)) return
@@ -100,11 +100,11 @@ export const HelpCenterImportCsvColumnMatchingView: React.FC = () => {
                             status: NotificationStatus.Error,
                             message: `Could not analyse CSV file: ${error}`,
                             noAutoDismiss: true,
-                        })
+                        }),
                     )
 
                     history.push(
-                        urlToArticles(helpCenter.id, location.pathname)
+                        urlToArticles(helpCenter.id, location.pathname),
                     )
                 } else {
                     setCsvColumns(data.result.columns)
@@ -118,7 +118,7 @@ export const HelpCenterImportCsvColumnMatchingView: React.FC = () => {
                             message:
                                 'The CSV analysis took too long, your file may be too big. Try to split it into several smaller files.',
                             noAutoDismiss: true,
-                        })
+                        }),
                     )
                 }
 
@@ -127,7 +127,7 @@ export const HelpCenterImportCsvColumnMatchingView: React.FC = () => {
                         status: NotificationStatus.Error,
                         message: `Could not load CSV file from url ${fileUrl}, please check that the URL is valid`,
                         noAutoDismiss: true,
-                    })
+                    }),
                 )
             }
         })()
@@ -158,7 +158,7 @@ export const HelpCenterImportCsvColumnMatchingView: React.FC = () => {
         setImportInProgress(true)
 
         try {
-            const {data} = await migrationClient.sessionCreate(undefined, {
+            const { data } = await migrationClient.sessionCreate(undefined, {
                 migration: {
                     provider: providerPayload,
                     receiver: {
@@ -175,7 +175,7 @@ export const HelpCenterImportCsvColumnMatchingView: React.FC = () => {
             }
             history.push(
                 `${HELP_CENTER_BASE_PATH}/${helpCenter.id}/articles`,
-                locationState
+                locationState,
             )
         } catch (error) {
             let message = 'There was an error importing your CSV file'
@@ -183,7 +183,7 @@ export const HelpCenterImportCsvColumnMatchingView: React.FC = () => {
             const errorMessage = getErrorMessage(error)
             if (errorMessage) message += ': ' + errorMessage
 
-            void dispatch(notify({status: NotificationStatus.Error, message}))
+            void dispatch(notify({ status: NotificationStatus.Error, message }))
         } finally {
             setImportInProgress(false)
         }

@@ -1,13 +1,14 @@
-import {cleanup, render, screen} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { cleanup, render, screen } from '@testing-library/react'
+import { Provider } from 'react-redux'
 
 import {
     migrationOutboundVerificationUnverifiedSingleSender,
     migrationOutboundVerificationVerifiedSingleSender,
 } from 'fixtures/emailMigration'
-import {EmailMigrationOutboundVerification} from 'models/integration/types'
-import {mockStore} from 'utils/testing'
+import { EmailMigrationOutboundVerification } from 'models/integration/types'
+import { mockStore } from 'utils/testing'
 
 import SingleSenderVerificationAccordionItem from '../EmailMigration/SingleSenderVerificationAccordionItem'
 
@@ -17,7 +18,7 @@ jest.mock('@gorgias/analytics-ui-kit', () => ({
 
 describe('SingleSenderVerificationAccordionItem', () => {
     const renderComponent = (
-        verification: EmailMigrationOutboundVerification
+        verification: EmailMigrationOutboundVerification,
     ) =>
         render(
             <Provider store={mockStore({} as any)}>
@@ -27,7 +28,7 @@ describe('SingleSenderVerificationAccordionItem', () => {
                     onBulkSubmitClick={jest.fn()}
                     refreshMigrationData={jest.fn()}
                 />
-            </Provider>
+            </Provider>,
         )
 
     afterEach(cleanup)
@@ -40,7 +41,7 @@ describe('SingleSenderVerificationAccordionItem', () => {
     it('should not display verified domain card when single sender is verified', () => {
         renderComponent(migrationOutboundVerificationUnverifiedSingleSender)
         expect(
-            screen.queryByTestId('verified-domain-card')
+            screen.queryByTestId('verified-domain-card'),
         ).not.toBeInTheDocument()
     })
 })

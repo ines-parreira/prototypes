@@ -1,45 +1,46 @@
-import {useAgentActivity} from '@gorgias/realtime'
-import {useMemo} from 'react'
+import { useMemo } from 'react'
+
+import { useAgentActivity } from '@gorgias/realtime'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {getCurrentUser} from 'state/currentUser/selectors'
+import { getCurrentUser } from 'state/currentUser/selectors'
 
-import {TicketPresenceState} from './useCollisionDetection'
+import { TicketPresenceState } from './useCollisionDetection'
 
 export default function useRealtimePresence(
-    ticketId: number
+    ticketId: number,
 ): TicketPresenceState {
     const currentUser = useAppSelector(getCurrentUser)
-    const {getTicketActivity} = useAgentActivity()
+    const { getTicketActivity } = useAgentActivity()
     const ticketActivity = getTicketActivity(ticketId)
 
     const agentsViewing = useMemo(
         () =>
             ticketActivity.viewing.filter(
-                (user) => user.id !== currentUser.get('id')
+                (user) => user.id !== currentUser.get('id'),
             ),
-        [currentUser, ticketActivity.viewing]
+        [currentUser, ticketActivity.viewing],
     )
     const agentsTyping = useMemo(
         () =>
             ticketActivity.typing.filter(
-                (user) => user.id !== currentUser.get('id')
+                (user) => user.id !== currentUser.get('id'),
             ),
-        [currentUser, ticketActivity.typing]
+        [currentUser, ticketActivity.typing],
     )
     const agentsViewingNotTyping = useMemo(
         () =>
             agentsViewing.filter(
                 (viewingUser) =>
                     !agentsTyping.some(
-                        (typingUser) => typingUser.id === viewingUser.id
-                    )
+                        (typingUser) => typingUser.id === viewingUser.id,
+                    ),
             ),
-        [agentsViewing, agentsTyping]
+        [agentsViewing, agentsTyping],
     )
     const hasBoth = useMemo(
         () => agentsTyping.length > 0 && agentsViewingNotTyping.length > 0,
-        [agentsTyping, agentsViewingNotTyping]
+        [agentsTyping, agentsViewingNotTyping],
     )
 
     return useMemo(
@@ -49,6 +50,6 @@ export default function useRealtimePresence(
             agentsTyping,
             hasBoth,
         }),
-        [agentsViewing, agentsViewingNotTyping, agentsTyping, hasBoth]
+        [agentsViewing, agentsViewingNotTyping, agentsTyping, hasBoth],
     )
 }

@@ -1,15 +1,13 @@
 import React from 'react'
 
-import {useGridSize} from 'hooks/useGridSize'
-import {FilterKey} from 'models/stat/types'
-
-import {AiSalesAgentChart} from 'pages/stats/aiSalesAgent/AiSalesAgentMetricsConfig'
+import { useGridSize } from 'hooks/useGridSize'
+import { FilterKey } from 'models/stat/types'
+import { AiSalesAgentChart } from 'pages/stats/aiSalesAgent/AiSalesAgentMetricsConfig'
 import AiSalesAgentOverviewDownloadButton from 'pages/stats/aiSalesAgent/AiSalesAgentOverviewDownloadButton'
-import {AiSalesAgentReportConfig} from 'pages/stats/aiSalesAgent/AiSalesAgentReportConfig'
-import {RenderChart} from 'pages/stats/aiSalesAgent/components/RenderChart'
-import {PAGE_TITLE_AI_SALES_AGENT_SALES_OVERVIEW} from 'pages/stats/aiSalesAgent/constants'
-import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
-
+import { AiSalesAgentReportConfig } from 'pages/stats/aiSalesAgent/AiSalesAgentReportConfig'
+import { RenderChart } from 'pages/stats/aiSalesAgent/components/RenderChart'
+import { PAGE_TITLE_AI_SALES_AGENT_SALES_OVERVIEW } from 'pages/stats/aiSalesAgent/constants'
+import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'

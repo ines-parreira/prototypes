@@ -1,7 +1,9 @@
-import {THEME_NAME} from '@gorgias/design-tokens'
-import {ThemeContext as UIKitThemeContext} from '@gorgias/merchant-ui-kit'
-import {render} from '@testing-library/react'
-import React, {useContext} from 'react'
+import React, { useContext } from 'react'
+
+import { render } from '@testing-library/react'
+
+import { THEME_NAME } from '@gorgias/design-tokens'
+import { ThemeContext as UIKitThemeContext } from '@gorgias/merchant-ui-kit'
 
 import AppThemeContext from '../ThemeContext'
 import ThemeProvider from '../ThemeProvider'
@@ -16,10 +18,10 @@ describe('ThemeProvider', () => {
             return <p>Test component</p>
         }
 
-        const {getByText} = render(
+        const { getByText } = render(
             <ThemeProvider>
                 <TestComponent />
-            </ThemeProvider>
+            </ThemeProvider>,
         )
 
         expect(getByText('Test component')).toBeInTheDocument()

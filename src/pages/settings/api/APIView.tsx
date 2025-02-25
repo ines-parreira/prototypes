@@ -1,25 +1,26 @@
+import React, { Component } from 'react'
+
 import classnames from 'classnames'
 import copy from 'copy-to-clipboard'
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 import _camelCase from 'lodash/camelCase'
-import React, {Component} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {FormGroup, Label} from 'reactstrap'
-import {InputType} from 'reactstrap/es/Input'
+import { connect, ConnectedProps } from 'react-redux'
+import { FormGroup, Label } from 'reactstrap'
+import { InputType } from 'reactstrap/es/Input'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { logEvent, SegmentEvent } from 'common/segment'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import PageHeader from 'pages/common/components/PageHeader'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import TextInput from 'pages/common/forms/input/TextInput'
-import {fetchCurrentAuths, resetApiKey} from 'state/auths/actions'
-import {getApiKey} from 'state/auths/selectors'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {RootState} from 'state/types'
+import { fetchCurrentAuths, resetApiKey } from 'state/auths/actions'
+import { getApiKey } from 'state/auths/selectors'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { RootState } from 'state/types'
 
 import css from '../settings.less'
 
@@ -49,13 +50,13 @@ export class APIViewContainer extends Component<Props, State> {
     UNSAFE_componentWillMount() {
         // Load postman js
         ;(function (
-            p: Window & {_pm?: () => void; PostmanRunObject?: any[]},
+            p: Window & { _pm?: () => void; PostmanRunObject?: any[] },
             o: Document,
             s: '_pm',
             t: 'PostmanRunObject',
             m: string,
             a,
-            n?: HTMLScriptElement
+            n?: HTMLScriptElement,
         ) {
             !p[s] &&
                 (p[s] = function () {
@@ -67,16 +68,16 @@ export class APIViewContainer extends Component<Props, State> {
                     // eslint-disable-next-line no-param-reassign
                     ((n = o.createElement('script')),
                     (n.id = s + t),
-                    ((n as unknown as {async: number}).async = 1),
+                    ((n as unknown as { async: number }).async = 1),
                     (n.src = m),
-                    n)
+                    n),
                 )
         })(
             window,
             document,
             '_pm',
             'PostmanRunObject',
-            'https://run.pstmn.io/button.js'
+            'https://run.pstmn.io/button.js',
         )
     }
 
@@ -113,7 +114,7 @@ export class APIViewContainer extends Component<Props, State> {
     }
 
     _subscribeToDeveloperNewsletter = () => {
-        const {notify} = this.props
+        const { notify } = this.props
 
         logEvent(SegmentEvent.SubscribedToDevNewsletter)
         void notify({
@@ -125,7 +126,7 @@ export class APIViewContainer extends Component<Props, State> {
 
     _resetApiKey = () => {
         const confirm = window.confirm(
-            'You are about to reset your API key. Are you sure?'
+            'You are about to reset your API key. Are you sure?',
         )
 
         if (confirm) {
@@ -206,7 +207,7 @@ export class APIViewContainer extends Component<Props, State> {
     }
 
     render() {
-        const {domain, apiKey, email} = this.props
+        const { domain, apiKey, email } = this.props
         const postmanVars = [
             {
                 enabled: true,
@@ -228,7 +229,7 @@ export class APIViewContainer extends Component<Props, State> {
             },
         ]
         const postmanParams = encodeURI(
-            `env[Gorgias Helpdesk]=${btoa(JSON.stringify(postmanVars))}`
+            `env[Gorgias Helpdesk]=${btoa(JSON.stringify(postmanVars))}`,
         )
         const url = `https://${domain}.gorgias.com/api/`
 
@@ -256,7 +257,7 @@ export class APIViewContainer extends Component<Props, State> {
                         <div
                             className={classnames(
                                 'heading-section-semibold',
-                                css.mb16
+                                css.mb16,
                             )}
                         >
                             API Access &amp; Credentials
@@ -323,7 +324,7 @@ export class APIViewContainer extends Component<Props, State> {
                         <div
                             className={classnames(
                                 'heading-subsection-semibold',
-                                css.mb8
+                                css.mb8,
                             )}
                         >
                             Postman collection
@@ -345,7 +346,7 @@ export class APIViewContainer extends Component<Props, State> {
                         <div
                             className={classnames(
                                 'postman-run-button',
-                                css.mb32
+                                css.mb32,
                             )}
                             data-postman-action="collection/import"
                             data-postman-var-1="15687974-2ca60778-1282-4a00-9d6a-8e90213b8248"
@@ -356,7 +357,7 @@ export class APIViewContainer extends Component<Props, State> {
                         <div
                             className={classnames(
                                 'heading-section-semibold',
-                                css.mb8
+                                css.mb8,
                             )}
                         >
                             Developer newsletter
@@ -392,7 +393,7 @@ const connector = connect(
         fetchCurrentAuths,
         notify,
         resetApiKey,
-    }
+    },
 )
 
 export default connector(APIViewContainer)

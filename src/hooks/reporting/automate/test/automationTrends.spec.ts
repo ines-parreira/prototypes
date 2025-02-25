@@ -1,4 +1,4 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
 import {
     fetchAllAutomatedInteractions,
@@ -21,18 +21,18 @@ import {
     useResolutionTimeResolvedByAIAgent,
 } from 'hooks/reporting/automate/automationTrends'
 import {
-    MultipleMetricsData,
     fetchMultipleMetricsTrends,
+    MultipleMetricsData,
     useMultipleMetricsTrends,
 } from 'hooks/reporting/useMultipleMetricsTrend'
-import {Cubes} from 'models/reporting/cubes'
-import {AutomationDatasetMeasure} from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
-import {BillableTicketDatasetMeasure} from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
-import {automationDatasetQueryFactory} from 'models/reporting/queryFactories/automate_v2/metrics'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {StatsFilters} from 'models/stat/types'
-import {getPreviousPeriod} from 'utils/reporting'
-import {assumeMock} from 'utils/testing'
+import { Cubes } from 'models/reporting/cubes'
+import { AutomationDatasetMeasure } from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
+import { BillableTicketDatasetMeasure } from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
+import { automationDatasetQueryFactory } from 'models/reporting/queryFactories/automate_v2/metrics'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { StatsFilters } from 'models/stat/types'
+import { getPreviousPeriod } from 'utils/reporting'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/useMultipleMetricsTrend')
 const useMultipleMetricsTrendsMock = assumeMock(useMultipleMetricsTrends)
@@ -73,8 +73,8 @@ describe('automationTrends', () => {
                     isError: false,
                 })
 
-                const {result} = renderHook(() =>
-                    useFilteredAutomatedInteractions(statsFilters, timezone)
+                const { result } = renderHook(() =>
+                    useFilteredAutomatedInteractions(statsFilters, timezone),
                 )
 
                 expect(result.current).toEqual({
@@ -98,7 +98,7 @@ describe('automationTrends', () => {
 
                 const result = await fetchFilteredAutomatedInteractions(
                     statsFilters,
-                    timezone
+                    timezone,
                 )
 
                 expect(fetchMultipleMetricsTrendsMock).toHaveBeenCalledWith(
@@ -108,8 +108,8 @@ describe('automationTrends', () => {
                             ...statsFilters,
                             period: getPreviousPeriod(statsFilters.period),
                         },
-                        timezone
-                    )
+                        timezone,
+                    ),
                 )
                 expect(result).toEqual({
                     data: filteredAutomatedInteractionsTrend,
@@ -130,11 +130,11 @@ describe('automationTrends', () => {
                     isError: false,
                 })
 
-                const {result} = renderHook(() =>
+                const { result } = renderHook(() =>
                     useFilteredAutomatedInteractionsByAutoResponders(
                         statsFilters,
-                        timezone
-                    )
+                        timezone,
+                    ),
                 )
 
                 expect(useMultipleMetricsTrendsMock).toHaveBeenCalledWith(
@@ -144,8 +144,8 @@ describe('automationTrends', () => {
                             ...statsFilters,
                             period: getPreviousPeriod(statsFilters.period),
                         },
-                        timezone
-                    )
+                        timezone,
+                    ),
                 )
                 expect(result.current).toEqual({
                     data: automatedInteractionsByAutoRespondersTrend,
@@ -169,7 +169,7 @@ describe('automationTrends', () => {
                 const result =
                     await fetchFilteredAutomatedInteractionsByAutoResponders(
                         statsFilters,
-                        timezone
+                        timezone,
                     )
 
                 expect(fetchMultipleMetricsTrendsMock).toHaveBeenCalledWith(
@@ -179,8 +179,8 @@ describe('automationTrends', () => {
                             ...statsFilters,
                             period: getPreviousPeriod(statsFilters.period),
                         },
-                        timezone
-                    )
+                        timezone,
+                    ),
                 )
                 expect(result).toEqual({
                     data: automatedInteractionsByAutoRespondersTrend,
@@ -201,8 +201,8 @@ describe('automationTrends', () => {
                     isError: false,
                 })
 
-                const {result} = renderHook(() =>
-                    useAllAutomatedInteractions(statsFilters, timezone)
+                const { result } = renderHook(() =>
+                    useAllAutomatedInteractions(statsFilters, timezone),
                 )
 
                 expect(result.current).toEqual({
@@ -226,18 +226,18 @@ describe('automationTrends', () => {
 
                 const result = await fetchAllAutomatedInteractions(
                     statsFilters,
-                    timezone
+                    timezone,
                 )
 
                 expect(fetchMultipleMetricsTrendsMock).toHaveBeenCalledWith(
                     automationDatasetQueryFactory(
-                        {period: statsFilters.period},
-                        timezone
+                        { period: statsFilters.period },
+                        timezone,
                     ),
                     automationDatasetQueryFactory(
-                        {period: getPreviousPeriod(statsFilters.period)},
-                        timezone
-                    )
+                        { period: getPreviousPeriod(statsFilters.period) },
+                        timezone,
+                    ),
                 )
                 expect(result).toEqual({
                     data: filteredAutomatedInteractionsTrend,
@@ -258,22 +258,22 @@ describe('automationTrends', () => {
                     isError: false,
                 })
 
-                const {result} = renderHook(() =>
+                const { result } = renderHook(() =>
                     useAllAutomatedInteractionsByAutoResponders(
                         statsFilters,
-                        timezone
-                    )
+                        timezone,
+                    ),
                 )
 
                 expect(useMultipleMetricsTrendsMock).toHaveBeenCalledWith(
                     automationDatasetQueryFactory(
-                        {period: statsFilters.period},
-                        timezone
+                        { period: statsFilters.period },
+                        timezone,
                     ),
                     automationDatasetQueryFactory(
-                        {period: getPreviousPeriod(statsFilters.period)},
-                        timezone
-                    )
+                        { period: getPreviousPeriod(statsFilters.period) },
+                        timezone,
+                    ),
                 )
                 expect(result.current).toEqual({
                     data: automatedInteractionsByAutoRespondersTrend,
@@ -297,18 +297,18 @@ describe('automationTrends', () => {
                 const result =
                     await fetchAllAutomatedInteractionsByAutoResponders(
                         statsFilters,
-                        timezone
+                        timezone,
                     )
 
                 expect(fetchMultipleMetricsTrendsMock).toHaveBeenCalledWith(
                     automationDatasetQueryFactory(
-                        {period: statsFilters.period},
-                        timezone
+                        { period: statsFilters.period },
+                        timezone,
                     ),
                     automationDatasetQueryFactory(
-                        {period: getPreviousPeriod(statsFilters.period)},
-                        timezone
-                    )
+                        { period: getPreviousPeriod(statsFilters.period) },
+                        timezone,
+                    ),
                 )
                 expect(result).toEqual({
                     data: automatedInteractionsByAutoRespondersTrend,
@@ -320,9 +320,9 @@ describe('automationTrends', () => {
 
         describe('billableTickets', () => {
             const aiAgentUserId = '4000'
-            const billableTicketCount = {value: 123, prevValue: 456}
-            const totalFirstResponseTime = {value: 789, prevValue: 654}
-            const totalResolutionTime = {value: 543, prevValue: 987}
+            const billableTicketCount = { value: 123, prevValue: 456 }
+            const totalFirstResponseTime = { value: 789, prevValue: 654 }
+            const totalResolutionTime = { value: 543, prevValue: 987 }
 
             beforeEach(() => {
                 useMultipleMetricsTrendsMock.mockReturnValue({
@@ -352,12 +352,12 @@ describe('automationTrends', () => {
             })
 
             it('should fetch query and return data for billableTicketsExcludingAIAgent with a hook', () => {
-                const {result} = renderHook(() =>
+                const { result } = renderHook(() =>
                     useBillableTicketsExcludingAIAgent(
                         statsFilters,
                         timezone,
-                        aiAgentUserId
-                    )
+                        aiAgentUserId,
+                    ),
                 )
 
                 expect(result.current).toEqual({
@@ -371,7 +371,7 @@ describe('automationTrends', () => {
                 const result = await fetchBillableTicketsExcludingAIAgent(
                     statsFilters,
                     timezone,
-                    aiAgentUserId
+                    aiAgentUserId,
                 )
 
                 expect(result).toEqual({
@@ -382,12 +382,12 @@ describe('automationTrends', () => {
             })
 
             it('should fetch query and return data for FirstResponseTimeExcludingAIAgent with a hook', () => {
-                const {result} = renderHook(() =>
+                const { result } = renderHook(() =>
                     useFirstResponseTimeExcludingAIAgent(
                         statsFilters,
                         timezone,
-                        aiAgentUserId
-                    )
+                        aiAgentUserId,
+                    ),
                 )
 
                 expect(result.current).toEqual({
@@ -401,7 +401,7 @@ describe('automationTrends', () => {
                 const result = await fetchFirstResponseTimeExcludingAIAgent(
                     statsFilters,
                     timezone,
-                    aiAgentUserId
+                    aiAgentUserId,
                 )
 
                 expect(result).toEqual({
@@ -412,8 +412,11 @@ describe('automationTrends', () => {
             })
 
             it('should fetch query and return data for useFirstResponseTimeIncludingAIAgent with a hook', () => {
-                const {result} = renderHook(() =>
-                    useFirstResponseTimeIncludingAIAgent(statsFilters, timezone)
+                const { result } = renderHook(() =>
+                    useFirstResponseTimeIncludingAIAgent(
+                        statsFilters,
+                        timezone,
+                    ),
                 )
 
                 expect(result.current).toEqual({
@@ -426,7 +429,7 @@ describe('automationTrends', () => {
             it('should fetch query and return data for fetchFirstResponseTimeIncludingAIAgent with a fetch method', async () => {
                 const result = await fetchFirstResponseTimeIncludingAIAgent(
                     statsFilters,
-                    timezone
+                    timezone,
                 )
 
                 expect(result).toEqual({
@@ -437,12 +440,12 @@ describe('automationTrends', () => {
             })
 
             it('should fetch query and return data for FirstResponseTimeExcludingAIAgent with a hook', () => {
-                const {result} = renderHook(() =>
+                const { result } = renderHook(() =>
                     useResolutionTimeExcludingAIAgent(
                         statsFilters,
                         timezone,
-                        aiAgentUserId
-                    )
+                        aiAgentUserId,
+                    ),
                 )
 
                 expect(result.current).toEqual({
@@ -456,7 +459,7 @@ describe('automationTrends', () => {
                 const result = await fetchResolutionTimeExcludingAIAgent(
                     statsFilters,
                     timezone,
-                    aiAgentUserId
+                    aiAgentUserId,
                 )
 
                 expect(result).toEqual({
@@ -467,8 +470,8 @@ describe('automationTrends', () => {
             })
 
             it('should fetch query and return data for useResolutionTimeResolvedByAIAgent with a hook', () => {
-                const {result} = renderHook(() =>
-                    useResolutionTimeResolvedByAIAgent(statsFilters, timezone)
+                const { result } = renderHook(() =>
+                    useResolutionTimeResolvedByAIAgent(statsFilters, timezone),
                 )
 
                 expect(result.current).toEqual({
@@ -481,7 +484,7 @@ describe('automationTrends', () => {
             it('should fetch query and return data for fetchResolutionTimeResolvedByAIAgent with a fetch method', async () => {
                 const result = await fetchResolutionTimeResolvedByAIAgent(
                     statsFilters,
-                    timezone
+                    timezone,
                 )
 
                 expect(result).toEqual({

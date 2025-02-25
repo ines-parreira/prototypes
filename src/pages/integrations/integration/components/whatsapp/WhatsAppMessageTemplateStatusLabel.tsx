@@ -1,11 +1,12 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
-import useId from 'hooks/useId'
-import {WhatsAppMessageTemplateStatus} from 'models/whatsAppMessageTemplates/types'
-import Status, {StatusType} from 'pages/common/components/Status/Status'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
-import {templateAlertContent} from './constants'
+import useId from 'hooks/useId'
+import { WhatsAppMessageTemplateStatus } from 'models/whatsAppMessageTemplates/types'
+import Status, { StatusType } from 'pages/common/components/Status/Status'
+
+import { templateAlertContent } from './constants'
 
 type Props = {
     status: WhatsAppMessageTemplateStatus
@@ -18,7 +19,7 @@ export default function WhatsAppMessageTemplateStatusLabel({
 }: Props) {
     const randomId = useId()
 
-    const {intent, label} = templateStatusToStatusProps[status] ?? {}
+    const { intent, label } = templateStatusToStatusProps[status] ?? {}
     const id = `template-status-${randomId}`
 
     const alertContent = templateAlertContent[status]

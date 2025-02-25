@@ -1,4 +1,4 @@
-import {AutomatePlan, HelpdeskPlan, Cadence} from '../models/billing/types'
+import { AutomatePlan, Cadence, HelpdeskPlan } from '../models/billing/types'
 import {
     AccountFeature,
     AccountFeatureMetadata,
@@ -15,7 +15,7 @@ export enum PlanName {
 }
 
 export const convertLegacyPlanNameToPublicPlanName = (
-    legacyPlanName: string
+    legacyPlanName: string,
 ): PlanName => {
     const name = legacyPlanName.split(' ')[0]
 
@@ -37,7 +37,7 @@ export const convertLegacyPlanNameToPublicPlanName = (
 
 export const getCheapestPriceNameForFeature = (
     featureName: AccountFeature,
-    plans: (HelpdeskPlan | AutomatePlan)[]
+    plans: (HelpdeskPlan | AutomatePlan)[],
 ) => {
     return plans
         .filter((plan) => plan.cadence === Cadence.Month)
@@ -48,6 +48,6 @@ export const getCheapestPriceNameForFeature = (
                         AccountFeature,
                         AccountFeatureMetadata
                     >
-                )[featureName]?.enabled
+                )[featureName]?.enabled,
         )?.name
 }

@@ -1,3 +1,5 @@
+import React from 'react'
+
 import {
     cleanup,
     fireEvent,
@@ -6,17 +8,16 @@ import {
     waitFor,
 } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
-import React from 'react'
-import {Provider} from 'react-redux'
+import { Provider } from 'react-redux'
 
 import client from 'models/api/resources'
-import {EmailMigrationInboundVerificationStatus} from 'models/integration/types'
-import {UPDATE_EMAIL_MIGRATION_VERIFICATION_STATUS} from 'state/integrations/constants'
-import {mockStore} from 'utils/testing'
+import { EmailMigrationInboundVerificationStatus } from 'models/integration/types'
+import { UPDATE_EMAIL_MIGRATION_VERIFICATION_STATUS } from 'state/integrations/constants'
+import { mockStore } from 'utils/testing'
 
 import EmailForwardingButton from '../EmailMigration/EmailForwardingButton'
 import * as utils from '../EmailMigration/utils'
-import {EmailVerificationStatus} from '../EmailVerificationStatusLabel'
+import { EmailVerificationStatus } from '../EmailVerificationStatusLabel'
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
@@ -24,17 +25,17 @@ jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
 const serverMock = new MockAdapter(client)
 const computeStatusSpy = jest.spyOn(
     utils,
-    'computeMigrationInboundVerificationStatus'
+    'computeMigrationInboundVerificationStatus',
 )
 
-const mockMigration = {integration: {id: 1, meta: {}}}
+const mockMigration = { integration: { id: 1, meta: {} } }
 
 describe('EmailForwardingButton', () => {
     const renderComponent = (migration = mockMigration) =>
         render(
             <Provider store={mockStore({} as any)}>
                 <EmailForwardingButton migration={migration as any} />
-            </Provider>
+            </Provider>,
         )
 
     afterEach(cleanup)
@@ -51,7 +52,7 @@ describe('EmailForwardingButton', () => {
         ${EmailVerificationStatus.Failed}     | ${'Retry verification'}
     `(
         'Should display "$buttonText" when status is "$status" and call verify',
-        async ({status, buttonText}) => {
+        async ({ status, buttonText }) => {
             computeStatusSpy.mockReturnValue(status)
             serverMock
                 .onPost(`/integrations/email/1/migration/verify`)
@@ -67,8 +68,8 @@ describe('EmailForwardingButton', () => {
                     integrationId: 1,
                     emailMigrationVerificationStatus:
                         EmailMigrationInboundVerificationStatus.InboundPending,
-                })
+                }),
             )
-        }
+        },
     )
 })

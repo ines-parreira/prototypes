@@ -1,6 +1,6 @@
-import React, {ReactNode} from 'react'
+import React, { ReactNode } from 'react'
 
-import {OrderDirection} from 'models/api/types'
+import { OrderDirection } from 'models/api/types'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'

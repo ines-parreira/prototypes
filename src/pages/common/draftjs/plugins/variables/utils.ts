@@ -1,11 +1,11 @@
-import {EditorState, SelectionState, Modifier} from 'draft-js'
+import { EditorState, Modifier, SelectionState } from 'draft-js'
 import findWithRegex from 'find-with-regex'
 import _get from 'lodash/get'
 
-import {templateRegex} from 'pages/common/utils/template'
-import {getVariableWithValue} from 'tickets/common/utils'
+import { templateRegex } from 'pages/common/utils/template'
+import { getVariableWithValue } from 'tickets/common/utils'
 
-import {DecoratorComponentProps} from '../types'
+import { DecoratorComponentProps } from '../types'
 
 /**
  * Transform variables (ex: {ticket.customer.name}) in visual tag
@@ -16,7 +16,7 @@ import {DecoratorComponentProps} from '../types'
  */
 export const attachEntitiesToVariables = (
     editorState: EditorState,
-    immutable = false
+    immutable = false,
 ): EditorState => {
     const contentState = editorState.getCurrentContent()
     const blocks = contentState.getBlockMap()
@@ -50,14 +50,14 @@ export const attachEntitiesToVariables = (
                         entityKey,
                         {
                             immutable: true,
-                        }
+                        },
                     )
                 }
 
                 // remove invalid variable
                 if (value !== _get(entityData, 'result')) {
                     const entitySelection = SelectionState.createEmpty(
-                        block!.getKey()
+                        block!.getKey(),
                     )
                         .set('anchorOffset', start)
                         .set('focusOffset', end) as SelectionState
@@ -65,10 +65,10 @@ export const attachEntitiesToVariables = (
                     newContentState = Modifier.applyEntity(
                         newContentState,
                         entitySelection,
-                        null
+                        null,
                     )
                 }
-            }
+            },
         )
 
         // refresh the block pointer, in case we changed it
@@ -113,7 +113,7 @@ export const attachEntitiesToVariables = (
                     ...variable,
                     immutable: isImmutable,
                     result: value,
-                }
+                },
             )
             const entityKey = entityContentState.getLastCreatedEntityKey()
             newContentState = Modifier.replaceText(
@@ -121,7 +121,7 @@ export const attachEntitiesToVariables = (
                 selection,
                 value,
                 undefined,
-                entityKey
+                entityKey,
             )
         }
         /* eslint-disable */
@@ -133,7 +133,7 @@ export const attachEntitiesToVariables = (
         const newEditorState = EditorState.push(
             editorState,
             newContentState,
-            'apply-entity'
+            'apply-entity',
         )
         const currentSelection = editorState.getSelection()
 
@@ -152,7 +152,7 @@ export const attachEntitiesToVariables = (
 
 const KEY_SEPARATOR = '-'
 export const setVariableEditable = (props: DecoratorComponentProps): any => {
-    const {entityKey, offsetKey} = props
+    const { entityKey, offsetKey } = props
     const editorState = props.getEditorState()
     const contentState = editorState.getCurrentContent()
     const newContentState = contentState.mergeEntityData(entityKey, {
@@ -173,7 +173,7 @@ export const setVariableEditable = (props: DecoratorComponentProps): any => {
         (character) => {
             return entityKey === character.getEntity()
         },
-        (start) => (offset = start)
+        (start) => (offset = start),
     )
 
     // set selection at start of variable
@@ -186,7 +186,7 @@ export const setVariableEditable = (props: DecoratorComponentProps): any => {
         // so we forceSelection to force the editor re-render.
         EditorState.forceSelection(
             EditorState.push(editorState, newContentState, 'apply-entity'),
-            selection
-        )
+            selection,
+        ),
     )
 }

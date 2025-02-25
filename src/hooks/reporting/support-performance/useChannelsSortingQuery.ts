@@ -1,34 +1,34 @@
-import {useEffect} from 'react'
-// eslint-disable-next-line no-restricted-imports
-import {useDispatch} from 'react-redux'
+import { useEffect } from 'react'
 
-import {MetricPerChannelQueryHook} from 'hooks/reporting/support-performance/channels/metricsPerChannel'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
+// eslint-disable-next-line no-restricted-imports
+import { useDispatch } from 'react-redux'
+
+import { MetricPerChannelQueryHook } from 'hooks/reporting/support-performance/channels/metricsPerChannel'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
-import {opposite, OrderDirection} from 'models/api/types'
-import {CHANNEL_DIMENSION} from 'models/reporting/queryFactories/support-performance/constants'
+import { opposite, OrderDirection } from 'models/api/types'
+import { CHANNEL_DIMENSION } from 'models/reporting/queryFactories/support-performance/constants'
 import {
+    getChannelsSorting,
     sortingLoaded,
     sortingLoading,
     sortingSet,
-    getChannelsSorting,
 } from 'state/ui/stats/channelsSlice'
-
-import {ChannelsTableColumns} from 'state/ui/stats/types'
-import {notEmpty} from 'utils'
+import { ChannelsTableColumns } from 'state/ui/stats/types'
+import { notEmpty } from 'utils'
 
 export const useChannelsSortingQuery = (
     column: ChannelsTableColumns,
-    useQuery: MetricPerChannelQueryHook
+    useQuery: MetricPerChannelQueryHook,
 ) => {
     const dispatch = useDispatch()
-    const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone } = useNewStatsFilters()
 
     const sorting = useAppSelector(getChannelsSorting)
-    const {isFetching, data} = useQuery(
+    const { isFetching, data } = useQuery(
         cleanStatsFilters,
         userTimezone,
-        sorting.direction
+        sorting.direction,
     )
 
     const sortCallback = () => {
@@ -39,7 +39,7 @@ export const useChannelsSortingQuery = (
                     sorting.field === column
                         ? opposite(sorting.direction)
                         : OrderDirection.Desc,
-            })
+            }),
         )
     }
 
@@ -53,8 +53,8 @@ export const useChannelsSortingQuery = (
                         sortingLoaded(
                             (data?.allData ?? [])
                                 .map((result) => result[CHANNEL_DIMENSION])
-                                .filter(notEmpty)
-                        )
+                                .filter(notEmpty),
+                        ),
                     )
             }
         }

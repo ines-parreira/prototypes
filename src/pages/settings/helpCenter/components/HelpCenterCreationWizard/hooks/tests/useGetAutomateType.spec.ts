@@ -1,7 +1,7 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {HelpCenterAutomateType} from 'models/helpCenter/types'
+import { HelpCenterAutomateType } from 'models/helpCenter/types'
 
 import useGetAutomateType from '../useGetAutomateType'
 
@@ -12,7 +12,7 @@ describe('useGetAutomateType', () => {
     it('returns NON_AUTOMATE when hasAutomate is false', () => {
         useAppSelectorMock.mockReturnValueOnce(false)
 
-        const {result} = renderHook(() => useGetAutomateType())
+        const { result } = renderHook(() => useGetAutomateType())
 
         expect(result.current).toEqual(HelpCenterAutomateType.NON_AUTOMATE)
     })
@@ -20,7 +20,7 @@ describe('useGetAutomateType', () => {
     it('returns NON_AUTOMATE when hasAutomate is undefined', () => {
         useAppSelectorMock.mockReturnValueOnce(undefined)
 
-        const {result} = renderHook(() => useGetAutomateType())
+        const { result } = renderHook(() => useGetAutomateType())
 
         expect(result.current).toEqual(HelpCenterAutomateType.NON_AUTOMATE)
     })
@@ -29,7 +29,7 @@ describe('useGetAutomateType', () => {
         useAppSelectorMock.mockReturnValueOnce(true)
         useAppSelectorMock.mockReturnValueOnce([])
 
-        const {result} = renderHook(() => useGetAutomateType())
+        const { result } = renderHook(() => useGetAutomateType())
 
         expect(result.current).toEqual(HelpCenterAutomateType.AUTOMATE_NO_STORE)
     })
@@ -38,7 +38,7 @@ describe('useGetAutomateType', () => {
         useAppSelectorMock.mockReturnValueOnce(true)
         useAppSelectorMock.mockReturnValueOnce(undefined)
 
-        const {result} = renderHook(() => useGetAutomateType())
+        const { result } = renderHook(() => useGetAutomateType())
 
         expect(result.current).toEqual(HelpCenterAutomateType.AUTOMATE_NO_STORE)
     })
@@ -46,11 +46,11 @@ describe('useGetAutomateType', () => {
     it('returns AUTOMATE when hasAutomate is true and shopifyShopsOptions is not empty', () => {
         useAppSelectorMock.mockReturnValueOnce(true)
         const storeMock = [
-            {option: 'test', icon: 'test', connectedChatsCount: 'test'},
+            { option: 'test', icon: 'test', connectedChatsCount: 'test' },
         ]
         useAppSelectorMock.mockReturnValueOnce(storeMock)
 
-        const {result} = renderHook(() => useGetAutomateType())
+        const { result } = renderHook(() => useGetAutomateType())
 
         expect(result.current).toEqual(HelpCenterAutomateType.AUTOMATE)
     })

@@ -1,10 +1,12 @@
-import {Badge} from '@gorgias/merchant-ui-kit'
 import React from 'react'
-import {useHistory} from 'react-router-dom'
+
+import { useHistory } from 'react-router-dom'
+
+import { Badge } from '@gorgias/merchant-ui-kit'
 
 import Button from 'pages/common/components/button/Button'
-import {useHelpCenterIdParam} from 'pages/settings/helpCenter/hooks/useHelpCenterIdParam'
-import {assetsUrl} from 'utils'
+import { useHelpCenterIdParam } from 'pages/settings/helpCenter/hooks/useHelpCenterIdParam'
+import { assetsUrl } from 'utils'
 
 import css from './AILibraryBanner.less'
 
@@ -33,7 +35,7 @@ const AILibraryBanner = () => {
                                 `/app/settings/help-center/${helpCenterId}/ai-library`,
                                 {
                                     from: 'no-articles-banner',
-                                }
+                                },
                             )
                         }}
                     >

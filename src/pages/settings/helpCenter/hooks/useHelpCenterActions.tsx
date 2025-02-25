@@ -1,23 +1,23 @@
-import {useCallback} from 'react'
+import { useCallback } from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {helpCenterUpdated} from 'state/entities/helpCenter/helpCenters/actions'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {reportError} from 'utils/errors'
+import { helpCenterUpdated } from 'state/entities/helpCenter/helpCenters/actions'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { reportError } from 'utils/errors'
 
 import useCurrentHelpCenter from '../hooks/useCurrentHelpCenter'
-import {useHelpCenterApi} from './useHelpCenterApi'
+import { useHelpCenterApi } from './useHelpCenterApi'
 
 export const useHelpCenterActions = () => {
     const dispatch = useAppDispatch()
-    const {client} = useHelpCenterApi()
+    const { client } = useHelpCenterApi()
     const helpCenter = useCurrentHelpCenter()
 
     const fetchHelpCenterTranslations = useCallback(async () => {
         if (client && helpCenter) {
             try {
-                const {data} = await client.getHelpCenter({
+                const { data } = await client.getHelpCenter({
                     help_center_id: helpCenter.id,
                     fields: ['translations'],
                 })
@@ -28,7 +28,7 @@ export const useHelpCenterActions = () => {
                     notify({
                         message: "Failed to fetch Help Center's translations",
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
                 reportError(err as Error)
             }
@@ -39,23 +39,23 @@ export const useHelpCenterActions = () => {
         if (client && helpCenter) {
             try {
                 const {
-                    data: {data: customDomains},
+                    data: { data: customDomains },
                 } = await client.listCustomDomains({
                     help_center_id: helpCenter.id,
                 })
 
                 const activeCustomDomain = customDomains.find(
-                    (domain) => domain.status === 'active'
+                    (domain) => domain.status === 'active',
                 )
                 const customDomain = activeCustomDomain ?? customDomains[0]
 
-                dispatch(helpCenterUpdated({...helpCenter, customDomain}))
+                dispatch(helpCenterUpdated({ ...helpCenter, customDomain }))
             } catch (err) {
                 void dispatch(
                     notify({
                         message: "Failed to fetch Help Center's custom domains",
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
 
                 reportError(err as Error)
@@ -63,5 +63,5 @@ export const useHelpCenterActions = () => {
         }
     }, [client, helpCenter, dispatch])
 
-    return {fetchHelpCenterTranslations, getHelpCenterCustomDomain}
+    return { fetchHelpCenterTranslations, getHelpCenterCustomDomain }
 }

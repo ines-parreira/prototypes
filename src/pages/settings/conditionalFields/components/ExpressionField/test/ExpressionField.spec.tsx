@@ -1,15 +1,17 @@
-import {ExpressionFieldSource, ExpressionOperator} from '@gorgias/api-queries'
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {UseFormStateReturn, useFieldArray, useFormState} from 'core/forms'
-import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import {CustomField} from 'custom-fields/types'
-import {assumeMock, getLastMockCall} from 'utils/testing'
+import { render, screen } from '@testing-library/react'
 
-import {AddButton} from '../AddButton'
-import {ExpressionField} from '../ExpressionField'
-import {ExpressionRow} from '../ExpressionRow'
+import { ExpressionFieldSource, ExpressionOperator } from '@gorgias/api-queries'
+
+import { useFieldArray, useFormState, UseFormStateReturn } from 'core/forms'
+import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import { CustomField } from 'custom-fields/types'
+import { assumeMock, getLastMockCall } from 'utils/testing'
+
+import { AddButton } from '../AddButton'
+import { ExpressionField } from '../ExpressionField'
+import { ExpressionRow } from '../ExpressionRow'
 
 jest.mock(
     'core/forms',
@@ -19,7 +21,7 @@ jest.mock(
             useFieldArray: jest.fn(),
             useFormState: jest.fn(),
             FormField: jest.fn(() => <div />),
-        }) as Record<string, unknown>
+        }) as Record<string, unknown>,
 )
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions', () => ({
     useCustomFieldDefinitions: jest.fn(),
@@ -39,17 +41,17 @@ const AddButtonMock = assumeMock(AddButton)
 describe('ExpressionField', () => {
     const definitions: CustomField[] = []
     const useFieldArrayReturnObject = {
-        fields: [{id: 1}, {id: 2}],
+        fields: [{ id: 1 }, { id: 2 }],
         remove: jest.fn(),
         append: jest.fn(),
     } as unknown as ReturnType<typeof useFieldArray>
 
     beforeEach(() => {
         useCustomFieldDefinitionsMock.mockReturnValue({
-            data: {data: definitions},
+            data: { data: definitions },
         } as ReturnType<typeof useCustomFieldDefinitions>)
         useFieldArrayMock.mockReturnValue(useFieldArrayReturnObject)
-        useFormStateMock.mockReturnValue({errors: {}} as UseFormStateReturn<
+        useFormStateMock.mockReturnValue({ errors: {} } as UseFormStateReturn<
             Record<string, unknown>
         >)
     })
@@ -57,10 +59,10 @@ describe('ExpressionField', () => {
     it('should call useFormState, useFieldArray and FormField with correct props', () => {
         render(<ExpressionField />)
 
-        expect(useFormStateMock).toHaveBeenCalledWith({name: 'expression'})
+        expect(useFormStateMock).toHaveBeenCalledWith({ name: 'expression' })
         expect(useFieldArrayMock).toHaveBeenCalledWith({
             name: 'expression',
-            rules: {required: expect.any(String)},
+            rules: { required: expect.any(String) },
         })
 
         expect(ExpressionRow).toHaveBeenCalledTimes(2)
@@ -71,7 +73,7 @@ describe('ExpressionField', () => {
                 customFieldDefinitions: definitions,
                 onRemove: useFieldArrayReturnObject.remove,
             },
-            {}
+            {},
         )
         expect(ExpressionRow).toHaveBeenNthCalledWith(
             2,
@@ -80,7 +82,7 @@ describe('ExpressionField', () => {
                 customFieldDefinitions: definitions,
                 onRemove: useFieldArrayReturnObject.remove,
             },
-            {}
+            {},
         )
     })
 

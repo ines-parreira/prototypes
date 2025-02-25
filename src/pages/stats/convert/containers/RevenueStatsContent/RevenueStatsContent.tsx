@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {useIsConvertPerformanceViewEnabled} from 'pages/convert/common/hooks/useIsConvertPerformanceViewEnabled'
+import { useIsConvertPerformanceViewEnabled } from 'pages/convert/common/hooks/useIsConvertPerformanceViewEnabled'
 import {
     CampaignsLegacyChart,
     CampaignsLegacyReportConfig,
@@ -9,10 +9,9 @@ import {
     CampaignsChart,
     CampaignsPerformanceReportConfig,
 } from 'pages/stats/convert/campaigns/CampaignsPerformanceReportConfig'
-
 import CampaignPerformanceCharts from 'pages/stats/convert/components/CampaignPerformanceCharts'
-import {CampaignTotalsStat} from 'pages/stats/convert/components/CampaignTotalsStat'
-import {CustomReportComponent} from 'pages/stats/custom-reports/CustomReportComponent'
+import { CampaignTotalsStat } from 'pages/stats/convert/components/CampaignTotalsStat'
+import { CustomReportComponent } from 'pages/stats/custom-reports/CustomReportComponent'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
 

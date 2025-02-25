@@ -1,8 +1,8 @@
-import {useState} from 'react'
+import { useState } from 'react'
 
-import {GenericAttachment} from 'common/types'
-import {uploadAttachments} from 'rest_api/help_center_api/uploadAttachments'
-import {getBase64} from 'utils/file'
+import { GenericAttachment } from 'common/types'
+import { uploadAttachments } from 'rest_api/help_center_api/uploadAttachments'
+import { getBase64 } from 'utils/file'
 
 import useCurrentHelpCenter from './useCurrentHelpCenter'
 
@@ -60,7 +60,7 @@ export function useFileUpload(): FileUpload {
             return
         }
         return getBase64(payload).then((serializedFile) =>
-            setSerializedFile(serializedFile)
+            setSerializedFile(serializedFile),
         )
     }
 

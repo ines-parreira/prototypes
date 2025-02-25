@@ -1,14 +1,15 @@
-import {render} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import {fromJS} from 'immutable'
-import _noop from 'lodash/noop'
 import React from 'react'
+
+import { render } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { fromJS } from 'immutable'
+import _noop from 'lodash/noop'
 
 import BusinessHoursForm from '../BusinessHoursForm'
 
 describe('<BusinessHoursForm />', () => {
     it('should render', () => {
-        const {container} = render(
+        const { container } = render(
             <BusinessHoursForm
                 onChange={_noop}
                 businessHour={fromJS({
@@ -16,7 +17,7 @@ describe('<BusinessHoursForm />', () => {
                     from_time: '09:00',
                     to_time: '18:00',
                 })}
-            />
+            />,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -25,7 +26,7 @@ describe('<BusinessHoursForm />', () => {
     it('should call onChange with the passed data merged with the new data', () => {
         const spy = jest.fn()
 
-        const {getByText} = render(
+        const { getByText } = render(
             <BusinessHoursForm
                 onChange={spy}
                 businessHour={fromJS({
@@ -33,7 +34,7 @@ describe('<BusinessHoursForm />', () => {
                     from_time: '09:00',
                     to_time: '18:00',
                 })}
-            />
+            />,
         )
 
         userEvent.click(getByText('Monday'))
@@ -45,7 +46,7 @@ describe('<BusinessHoursForm />', () => {
                 days: '2',
                 from_time: '09:00',
                 to_time: '18:00',
-            })
+            }),
         )
     })
 })

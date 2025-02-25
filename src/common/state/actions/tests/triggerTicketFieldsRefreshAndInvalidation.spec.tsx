@@ -1,34 +1,35 @@
-import {listCustomFieldConditions} from '@gorgias/api-client'
-import {RequirementType} from '@gorgias/api-queries'
+import React from 'react'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { render, screen, waitFor } from '@testing-library/react'
+import { Map } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
+import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
+import thunk from 'redux-thunk'
+
+import { listCustomFieldConditions } from '@gorgias/api-client'
+import { RequirementType } from '@gorgias/api-queries'
 import {
     ExpressionFieldSource,
     ExpressionFieldType,
     ExpressionOperator,
 } from '@gorgias/api-types'
-import {QueryClientProvider} from '@tanstack/react-query'
-import {render, waitFor, screen} from '@testing-library/react'
 
-import {Map} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
-import React from 'react'
-import {Provider} from 'react-redux'
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
-import thunk from 'redux-thunk'
-
-import {appQueryClient} from 'api/queryClient'
-import {FeatureFlagKey} from 'config/featureFlags'
+import { appQueryClient } from 'api/queryClient'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useFlag from 'core/flags/hooks/useFlag'
-import {getCustomFields} from 'custom-fields/resources'
+import { getCustomFields } from 'custom-fields/resources'
 import {
     ticketDropdownFieldDefinition,
     ticketInputFieldDefinition,
 } from 'fixtures/customField'
-import {customFieldCondition} from 'fixtures/customFieldCondition'
+import { customFieldCondition } from 'fixtures/customFieldCondition'
 import TicketFields from 'pages/tickets/detail/components/TicketFields/TicketFields'
-import {initialState as newMessageState} from 'state/newMessage/reducers'
-import {initialState as ticketState} from 'state/ticket/reducers'
-import {StoreDispatch} from 'state/types'
-import {assumeMock} from 'utils/testing'
+import { initialState as newMessageState } from 'state/newMessage/reducers'
+import { initialState as ticketState } from 'state/ticket/reducers'
+import { StoreDispatch } from 'state/types'
+import { assumeMock } from 'utils/testing'
 
 import triggerTicketFieldsRefreshAndInvalidation from '../triggerTicketFieldsRefreshAndInvalidation'
 
@@ -49,7 +50,7 @@ const mockedUseFlag = assumeMock(useFlag)
 
 const middlewares = [thunk]
 const mockStore = configureMockStore<MockedRootState, StoreDispatch>(
-    middlewares
+    middlewares,
 )
 
 describe('triggerTicketFieldsRefreshAndInvalidation()', () => {
@@ -77,7 +78,7 @@ describe('triggerTicketFieldsRefreshAndInvalidation()', () => {
             newMessage: newMessageState,
         })
         mockedGetCustomFields.mockResolvedValue({
-            data: {data: [visibleTicketField]},
+            data: { data: [visibleTicketField] },
         } as any)
         mockedListCustomFieldConditions.mockResolvedValue({
             data: {
@@ -88,7 +89,7 @@ describe('triggerTicketFieldsRefreshAndInvalidation()', () => {
 
     it('should dispatch SET_INVALID_CUSTOM_FIELDS_TO_ERRORED with correct errored fields with flag disabled', async () => {
         // Mock the flag
-        mockFlags({[FeatureFlagKey.TicketConditionalFields]: false})
+        mockFlags({ [FeatureFlagKey.TicketConditionalFields]: false })
 
         // Render the queries and cache the data
         render(
@@ -96,11 +97,11 @@ describe('triggerTicketFieldsRefreshAndInvalidation()', () => {
                 <Provider store={store}>
                     <TicketFields />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
         await waitFor(() => {
             expect(
-                screen.getByText(RegExp(visibleTicketField.label))
+                screen.getByText(RegExp(visibleTicketField.label)),
             ).toBeDefined()
         })
 
@@ -128,7 +129,7 @@ describe('triggerTicketFieldsRefreshAndInvalidation()', () => {
     it('should dispatch SET_INVALID_CUSTOM_FIELDS_TO_ERRORED with correct errored fields with flag enabled', async () => {
         // Mock the flag
         mockedUseFlag.mockReturnValue(true)
-        mockFlags({[FeatureFlagKey.TicketConditionalFields]: true})
+        mockFlags({ [FeatureFlagKey.TicketConditionalFields]: true })
 
         // Render the queries and cache the data
         render(
@@ -136,11 +137,11 @@ describe('triggerTicketFieldsRefreshAndInvalidation()', () => {
                 <Provider store={store}>
                     <TicketFields />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
         await waitFor(() => {
             expect(
-                screen.getAllByText(RegExp(visibleTicketField.label))
+                screen.getAllByText(RegExp(visibleTicketField.label)),
             ).toBeDefined()
         })
 

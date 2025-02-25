@@ -1,10 +1,10 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
 import IconButton from 'pages/common/components/button/IconButton'
 import Modal from 'pages/common/components/modal/Modal'
-import {VoiceCallSummary} from 'pages/stats/voice/models/types'
-import {useDownloadRecording} from 'pages/tickets/detail/components/PhoneEvent/DownloadableDeletableRecording'
-import {replaceAttachmentURL} from 'utils'
+import { VoiceCallSummary } from 'pages/stats/voice/models/types'
+import { useDownloadRecording } from 'pages/tickets/detail/components/PhoneEvent/DownloadableDeletableRecording'
+import { replaceAttachmentURL } from 'utils'
 
 import css from './VoiceCallRecording.less'
 
@@ -34,10 +34,10 @@ const getRecordingData = (voiceCall: VoiceCallSummary) => {
     }
 }
 
-const VoiceCallRecording = ({voiceCall, isDownloadable = true}: Props) => {
-    const {recordingUrl, isAvailable} = getRecordingData(voiceCall)
+const VoiceCallRecording = ({ voiceCall, isDownloadable = true }: Props) => {
+    const { recordingUrl, isAvailable } = getRecordingData(voiceCall)
     const [isOpen, setOpen] = useState(false)
-    const {downloadRecording, isRequestPending} =
+    const { downloadRecording, isRequestPending } =
         useDownloadRecording(recordingUrl)
 
     const togglePopover = () => {

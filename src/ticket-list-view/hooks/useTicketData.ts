@@ -1,14 +1,15 @@
-import {QueryKey, useQueryClient} from '@tanstack/react-query'
-import {useCallback, useEffect, useMemo, useState} from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import {fetchTicketsByTicketIds} from 'models/ticket/resources'
+import { QueryKey, useQueryClient } from '@tanstack/react-query'
 
-import {TicketSummary} from '../types'
+import { fetchTicketsByTicketIds } from 'models/ticket/resources'
+
+import { TicketSummary } from '../types'
 
 export default function useTicketData(
     visibleStaleTicketIds: number[],
     markUpdated: (ticketIds: number[]) => void,
-    ticketId?: number
+    ticketId?: number,
 ) {
     const queryClient = useQueryClient()
     const [data, setData] = useState<Record<number, TicketSummary>>({})
@@ -18,27 +19,27 @@ export default function useTicketData(
             visibleStaleTicketIds?.length > 0
                 ? ['tickets', 'ticket_ids', visibleStaleTicketIds]
                 : undefined,
-        [visibleStaleTicketIds]
+        [visibleStaleTicketIds],
     )
 
     const bulkToggleUnread = useCallback(
         (ticketIds: number[], isUnread: boolean) => {
             setData((currentData) => {
-                const newData = {...currentData}
+                const newData = { ...currentData }
                 let isDirty = false
 
                 ticketIds.forEach((ticketId) => {
                     const ticket = currentData[ticketId]
                     if (!ticket) return
 
-                    newData[ticketId] = {...ticket, is_unread: isUnread}
+                    newData[ticketId] = { ...ticket, is_unread: isUnread }
                     isDirty = true
                 })
 
                 return isDirty ? newData : currentData
             })
         },
-        []
+        [],
     )
 
     const toggleUnread = useCallback((ticketId: number, isUnread: boolean) => {
@@ -73,7 +74,10 @@ export default function useTicketData(
                 })
 
                 setData((currentData) =>
-                    res.reduce((acc, d) => ({...acc, [d.id]: d}), currentData)
+                    res.reduce(
+                        (acc, d) => ({ ...acc, [d.id]: d }),
+                        currentData,
+                    ),
                 )
 
                 markUpdated(visibleStaleTicketIds)
@@ -84,7 +88,7 @@ export default function useTicketData(
     }, [markUpdated, queryClient, queryKey, visibleStaleTicketIds])
 
     return useMemo(
-        () => ({bulkToggleUnread, data, toggleUnread}),
-        [bulkToggleUnread, data, toggleUnread]
+        () => ({ bulkToggleUnread, data, toggleUnread }),
+        [bulkToggleUnread, data, toggleUnread],
     )
 }

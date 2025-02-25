@@ -1,14 +1,15 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
 
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import { Link } from 'react-router-dom'
 
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import {
     linkToContactFormPreferences,
     linkToShopifyIntegration,
 } from 'pages/settings/contactForm/utils/navigation'
 
-import {ContactFormAutoEmbedReadinessStatus} from '../ContactFormAutoEmbedPublishSection/types'
+import { ContactFormAutoEmbedReadinessStatus } from '../ContactFormAutoEmbedPublishSection/types'
+
 import css from './ContactFormIntegrationWarningBanner.less'
 
 export type ContactFormIntegrationWarningBannerProps = {
@@ -19,9 +20,9 @@ export type ContactFormIntegrationWarningBannerProps = {
 }
 
 const ContactFormIntegrationWarningBanner = (
-    props: ContactFormIntegrationWarningBannerProps
+    props: ContactFormIntegrationWarningBannerProps,
 ) => {
-    const {details} = props
+    const { details } = props
 
     const [isConnectDismissed, setIsConnectDismissed] = React.useState(false)
     const [isPermissionDismissed, setPermissionDismissed] =
@@ -29,7 +30,7 @@ const ContactFormIntegrationWarningBanner = (
 
     if (!details) return null
 
-    const {type, entityId} = details
+    const { type, entityId } = details
 
     if (
         type === ContactFormAutoEmbedReadinessStatus.NOT_CONNECTED &&
@@ -51,11 +52,11 @@ const ContactFormIntegrationWarningBanner = (
                         justifyContent: 'space-between',
                     }}
                 >
-                    <div style={{display: 'inline-block'}}>
+                    <div style={{ display: 'inline-block' }}>
                         Connect Shopify to enable auto-embedding and replace
                         mailto links to your website.
                     </div>
-                    <div style={{display: 'inline-block'}}>
+                    <div style={{ display: 'inline-block' }}>
                         <Link
                             target="_blank"
                             to={linkToContactFormPreferences(entityId)}

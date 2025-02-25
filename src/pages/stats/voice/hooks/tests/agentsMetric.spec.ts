@@ -1,8 +1,7 @@
-import {renderHook} from '@testing-library/react-hooks'
-
+import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment/moment'
 
-import {fetchMetric, useMetric} from 'hooks/reporting/useMetric'
+import { fetchMetric, useMetric } from 'hooks/reporting/useMetric'
 import {
     VoiceCallMeasure,
     VoiceCallMember,
@@ -17,27 +16,27 @@ import {
     voiceCallAverageTalkTimeQueryFactory,
     voiceCallCountQueryFactory,
 } from 'models/reporting/queryFactories/voice/voiceCall'
-import {declinedVoiceCallsCountQueryFactory} from 'models/reporting/queryFactories/voice/voiceEventsByAgent'
-import {LegacyStatsFilters} from 'models/stat/types'
-import {formatReportingQueryDate, withFilter} from 'utils/reporting'
-import {assumeMock} from 'utils/testing'
+import { declinedVoiceCallsCountQueryFactory } from 'models/reporting/queryFactories/voice/voiceEventsByAgent'
+import { LegacyStatsFilters } from 'models/stat/types'
+import { formatReportingQueryDate, withFilter } from 'utils/reporting'
+import { assumeMock } from 'utils/testing'
 
 import {
-    useTotalCallsMetric,
-    useAnsweredCallsMetric,
-    useMissedCallsMetric,
-    useOutboundCallsMetric,
-    useDeclinedCallsMetric,
-    useAverageTalkTimeMetric,
-    fetchTotalCallsMetric,
     fetchAnsweredCallsMetric,
+    fetchAverageTalkTimeMetric,
+    fetchDeclinedCallsMetric,
     fetchMissedCallsMetric,
     fetchOutboundCallsMetric,
-    fetchDeclinedCallsMetric,
-    fetchAverageTalkTimeMetric,
+    fetchTotalCallsMetric,
     ignoreCallsWithNoAgentsFilter,
-    ignoreDeclinedWithNoAgentsFilter,
     ignoreCallsWithNoAssignedAgentFilter,
+    ignoreDeclinedWithNoAgentsFilter,
+    useAnsweredCallsMetric,
+    useAverageTalkTimeMetric,
+    useDeclinedCallsMetric,
+    useMissedCallsMetric,
+    useOutboundCallsMetric,
+    useTotalCallsMetric,
 } from '../agentMetrics'
 
 jest.mock('hooks/reporting/useMetric')
@@ -206,7 +205,7 @@ describe('metricsPerDimension', () => {
 
         it('useAverageTalkTimeMetric', () => {
             renderHook(() =>
-                useAverageTalkTimeMetric(statsFilters, userTimezone)
+                useAverageTalkTimeMetric(statsFilters, userTimezone),
             )
 
             expect(useMetricMock.mock.calls[0]).toEqual([
@@ -277,16 +276,16 @@ describe('metricsPerDimension', () => {
             },
         ])(
             'should use $fetch and $segment',
-            async ({fetch, queryFactory, segment, filter}) => {
+            async ({ fetch, queryFactory, segment, filter }) => {
                 await fetch(statsFilters, userTimezone)
 
                 expect(fetchMetricMock).toHaveBeenCalledWith(
                     withFilter(
                         queryFactory(statsFilters, userTimezone, segment),
-                        filter
-                    )
+                        filter,
+                    ),
                 )
-            }
+            },
         )
     })
 })

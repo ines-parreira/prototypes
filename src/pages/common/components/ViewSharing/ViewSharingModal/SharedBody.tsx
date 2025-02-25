@@ -1,11 +1,12 @@
-import classnames from 'classnames'
-import {List, Map} from 'immutable'
 import React from 'react'
-import {ListGroup, ListGroupItem} from 'reactstrap'
+
+import classnames from 'classnames'
+import { List, Map } from 'immutable'
+import { ListGroup, ListGroupItem } from 'reactstrap'
 
 import IconButton from 'pages/common/components/button/IconButton'
 import UncontrolledPeopleSearchInput from 'pages/common/forms/PeopleSearchInput/UncontrolledPeopleSearchInput'
-import {AgentLabel, TeamLabel} from 'pages/common/utils/labels'
+import { AgentLabel, TeamLabel } from 'pages/common/utils/labels'
 
 import css from './SharedBody.less'
 
@@ -82,7 +83,7 @@ export default function SharedBody({
                     <ListGroupItem
                         className={classnames(
                             css.listGroupItem,
-                            css.userListGroupItem
+                            css.userListGroupItem,
                         )}
                     >
                         No user selected
@@ -93,7 +94,7 @@ export default function SharedBody({
                             key={user.get('id')}
                             className={classnames(
                                 css.listGroupItem,
-                                css.userListGroupItem
+                                css.userListGroupItem,
                             )}
                         >
                             <IconButton

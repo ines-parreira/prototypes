@@ -1,5 +1,6 @@
+import React, { ReactNode } from 'react'
+
 import classNames from 'classnames'
-import React, {ReactNode} from 'react'
 
 import css from './VerificationCard.less'
 
@@ -19,7 +20,9 @@ export default function VerificationCard({
     isDisabled,
 }: Props) {
     return (
-        <div className={classNames(css.card, {[css.transparent]: isDisabled})}>
+        <div
+            className={classNames(css.card, { [css.transparent]: isDisabled })}
+        >
             <div className="d-flex align-items-center justify-content-between">
                 <div>
                     <div className={css.cardHeader}>{header}</div>

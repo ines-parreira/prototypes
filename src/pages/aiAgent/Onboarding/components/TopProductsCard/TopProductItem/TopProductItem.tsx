@@ -1,7 +1,7 @@
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {Product} from 'pages/aiAgent/Onboarding/components/TopProductsCard/types'
-import {formatCurrency} from 'pages/stats/common/utils'
+import { Product } from 'pages/aiAgent/Onboarding/components/TopProductsCard/types'
+import { formatCurrency } from 'pages/stats/common/utils'
 
 import css from './TopProductItem.less'
 
@@ -9,7 +9,7 @@ type Props = {
     product: Product
 }
 
-const TopProductItem = ({product}: Props) => {
+const TopProductItem = ({ product }: Props) => {
     const formattedPrice = useMemo(() => {
         return formatCurrency(product.price ?? 0, product.currency ?? 'USD')
     }, [product.currency, product.price])

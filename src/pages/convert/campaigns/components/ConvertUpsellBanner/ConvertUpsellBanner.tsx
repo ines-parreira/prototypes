@@ -1,10 +1,9 @@
 import React from 'react'
 
 import Button from 'pages/common/components/button/Button'
-
 import LinkButton from 'pages/common/components/button/LinkButton'
-import {CONVERT_BOOK_DEMO_LINK} from 'pages/convert/common/constants'
-import {assetsUrl} from 'utils'
+import { CONVERT_BOOK_DEMO_LINK } from 'pages/convert/common/constants'
+import { assetsUrl } from 'utils'
 
 import css from './ConvertUpsellBanner.less'
 
@@ -46,7 +45,7 @@ const ConvertUpsellBanner = () => {
                 <div className={css.preview}>
                     <img
                         src={assetsUrl(
-                            '/img/presentationals/convert-upsell-banner.png'
+                            '/img/presentationals/convert-upsell-banner.png',
                         )}
                         alt="Convert subscription features preview"
                     />

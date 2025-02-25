@@ -1,4 +1,4 @@
-import {buildSDKMocks} from '../../../../rest_api/help_center_api/tests/buildSdkMocks'
+import { buildSDKMocks } from '../../../../rest_api/help_center_api/tests/buildSdkMocks'
 import {
     ContactFormFixture,
     ContactFormGeneric500ErrorFixture,
@@ -9,11 +9,11 @@ import {
     PageEmbedmentsListFixture,
 } from '../fixtures/pageEmbedment'
 import {
-    ShopifyPagesListFixture,
     ShopifyPagesGeneric500ErrorFixture,
+    ShopifyPagesListFixture,
 } from '../fixtures/shopifyPage'
 import * as contactFormResourceMethods from '../resources'
-import {mockResourceServerReplies} from './resource-mocks'
+import { mockResourceServerReplies } from './resource-mocks'
 
 describe('getContactForms', () => {
     let sdkMocks: Awaited<ReturnType<typeof buildSDKMocks>>
@@ -28,7 +28,7 @@ describe('getContactForms', () => {
         })
 
         const data = await contactFormResourceMethods.getContactForms(
-            sdkMocks.client
+            sdkMocks.client,
         )
         expect(data).toEqual(ContactFormListFixtures)
         expect(sdkMocks.mockedServer.history).toMatchSnapshot()
@@ -43,9 +43,9 @@ describe('getContactForms', () => {
             .reply(500, ContactFormGeneric500ErrorFixture)
 
         await expect(
-            contactFormResourceMethods.getContactForms(sdkMocks.client)
+            contactFormResourceMethods.getContactForms(sdkMocks.client),
         ).rejects.toMatchInlineSnapshot(
-            `[Error: Request failed with status code 500]`
+            `[Error: Request failed with status code 500]`,
         )
         expect(sdkMocks.mockedServer.history).toMatchSnapshot()
     })
@@ -65,7 +65,7 @@ describe('getShopifyPages', () => {
 
         const data = await contactFormResourceMethods.getShopifyPages(
             sdkMocks.client,
-            {contact_form_id: 1}
+            { contact_form_id: 1 },
         )
         expect(data).toEqual(ShopifyPagesListFixture)
         expect(sdkMocks.mockedServer.history).toMatchSnapshot()
@@ -83,9 +83,9 @@ describe('getShopifyPages', () => {
         await expect(
             contactFormResourceMethods.getShopifyPages(sdkMocks.client, {
                 contact_form_id: 1,
-            })
+            }),
         ).rejects.toMatchInlineSnapshot(
-            `[Error: Request failed with status code 500]`
+            `[Error: Request failed with status code 500]`,
         )
         expect(sdkMocks.mockedServer.history).toMatchSnapshot()
     })
@@ -105,7 +105,7 @@ describe('getPageEmbedments', () => {
 
         const data = await contactFormResourceMethods.getPageEmbedments(
             sdkMocks.client,
-            {contact_form_id: 1}
+            { contact_form_id: 1 },
         )
         expect(data).toEqual(PageEmbedmentsListFixture)
         expect(sdkMocks.mockedServer.history).toMatchSnapshot()
@@ -123,9 +123,9 @@ describe('getPageEmbedments', () => {
         await expect(
             contactFormResourceMethods.getPageEmbedments(sdkMocks.client, {
                 contact_form_id: 1,
-            })
+            }),
         ).rejects.toMatchInlineSnapshot(
-            `[Error: Request failed with status code 500]`
+            `[Error: Request failed with status code 500]`,
         )
         expect(sdkMocks.mockedServer.history).toMatchSnapshot()
     })
@@ -156,7 +156,7 @@ describe('createContactForm', () => {
 
         const data = await contactFormResourceMethods.createContactForm(
             sdkMocks.client,
-            payload
+            payload,
         )
         expect(data).toEqual(ContactFormFixture)
         expect(sdkMocks.mockedServer.history).toMatchSnapshot()
@@ -174,10 +174,10 @@ describe('createContactForm', () => {
         await expect(
             contactFormResourceMethods.createContactForm(
                 sdkMocks.client,
-                payload
-            )
+                payload,
+            ),
         ).rejects.toMatchInlineSnapshot(
-            `[Error: Request failed with status code 500]`
+            `[Error: Request failed with status code 500]`,
         )
         expect(sdkMocks.mockedServer.history).toMatchSnapshot()
     })
@@ -204,8 +204,8 @@ describe('createPageEmbedment', () => {
 
         const data = await contactFormResourceMethods.createPageEmbedment(
             sdkMocks.client,
-            {contact_form_id: 1},
-            payload
+            { contact_form_id: 1 },
+            payload,
         )
         expect(data).toEqual(PageEmbedmentFixture)
         expect(sdkMocks.mockedServer.history).toMatchSnapshot()
@@ -223,11 +223,11 @@ describe('createPageEmbedment', () => {
         await expect(
             contactFormResourceMethods.createPageEmbedment(
                 sdkMocks.client,
-                {contact_form_id: 1},
-                payload
-            )
+                { contact_form_id: 1 },
+                payload,
+            ),
         ).rejects.toMatchInlineSnapshot(
-            `[Error: Request failed with status code 500]`
+            `[Error: Request failed with status code 500]`,
         )
         expect(sdkMocks.mockedServer.history).toMatchSnapshot()
     })

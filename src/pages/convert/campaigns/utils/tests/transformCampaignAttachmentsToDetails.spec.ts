@@ -1,11 +1,11 @@
-import {AttachmentEnum} from 'common/types'
+import { AttachmentEnum } from 'common/types'
 import {
     campaignDiscountOfferAttachment,
     campaignProductAttachment,
     campaignProductRecommendationAttachment,
 } from 'fixtures/campaign'
-import {sampleContactFormAttachment} from 'pages/convert/campaigns/components/ContactCaptureForm/tests/fixtures'
-import {transformCampaignAttachmentsToDetails} from 'pages/convert/campaigns/utils/transformCampaignAttachmentsToDetails'
+import { sampleContactFormAttachment } from 'pages/convert/campaigns/components/ContactCaptureForm/tests/fixtures'
+import { transformCampaignAttachmentsToDetails } from 'pages/convert/campaigns/utils/transformCampaignAttachmentsToDetails'
 
 describe('transformCampaignAttachmentsToDetails', () => {
     it('should transform product attachment', () => {
@@ -67,7 +67,7 @@ describe('transformCampaignAttachmentsToDetails', () => {
     it('should transform contact form attachment', () => {
         const jsAttachment = sampleContactFormAttachment.toJS()
         const attachments = [jsAttachment]
-        const {contentType: __, ...expected} = jsAttachment
+        const { contentType: __, ...expected } = jsAttachment
         const result = transformCampaignAttachmentsToDetails(attachments)
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         expected.content_type = AttachmentEnum.ContactForm

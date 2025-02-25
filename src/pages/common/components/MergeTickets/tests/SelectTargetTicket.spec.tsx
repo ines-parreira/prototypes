@@ -1,9 +1,10 @@
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {channels as mockChannels} from 'fixtures/channels'
+import { fromJS } from 'immutable'
+
+import { channels as mockChannels } from 'fixtures/channels'
 import SelectTargetTicket from 'pages/common/components/MergeTickets/SelectTargetTicket'
-import {renderWithStore} from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 jest.mock('services/channels', () => ({
     getChannels: () => mockChannels,
@@ -29,13 +30,13 @@ describe('SelectTargetTicket component', () => {
     })
 
     it('should render', () => {
-        const {container} = renderWithStore(
+        const { container } = renderWithStore(
             <SelectTargetTicket
                 sourceTicket={baseTicket}
                 updateTargetTicket={baseTicket}
                 customerId={123}
             />,
-            {}
+            {},
         )
 
         expect(container.firstChild).toMatchSnapshot()

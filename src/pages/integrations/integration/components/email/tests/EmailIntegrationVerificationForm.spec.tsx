@@ -1,14 +1,16 @@
-import {EmailIntegration} from '@gorgias/api-queries'
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import React from 'react'
 
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+
+import { EmailIntegration } from '@gorgias/api-queries'
+
 import EmailIntegrationVerificationForm from 'pages/integrations/integration/components/email/EmailIntegrationVerificationForm'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
 import {
     EmailIntegrationOnboardingStep,
-    UseEmailOnboardingHookResult,
     useEmailOnboarding,
+    UseEmailOnboardingHookResult,
 } from '../hooks/useEmailOnboarding'
 
 const renderComponent = () => render(<EmailIntegrationVerificationForm />)
@@ -23,7 +25,7 @@ const existingIntegration = {
 } as EmailIntegration
 jest.mock(
     '../BaseEmailIntegrationInputField',
-    () => () => '<BaseEmailIntegrationInputField />'
+    () => () => '<BaseEmailIntegrationInputField />',
 )
 
 const defaultHookResult = {
@@ -45,27 +47,27 @@ describe('<EmailIntegrationVerificationForm />', () => {
         renderComponent()
 
         expect(
-            screen.getByText('Verification in progress...')
+            screen.getByText('Verification in progress...'),
         ).toBeInTheDocument()
 
         expect(
             screen.getByText(
-                /We are waiting for the verification email we sent to/
-            )
+                /We are waiting for the verification email we sent to/,
+            ),
         ).toBeInTheDocument()
 
         expect(
-            screen.getByText('acme@gorgias.test', {selector: 'span'})
+            screen.getByText('acme@gorgias.test', { selector: 'span' }),
         ).toBeInTheDocument()
 
         expect(
-            screen.getByText(/This process can take up to 1 minute/)
+            screen.getByText(/This process can take up to 1 minute/),
         ).toBeInTheDocument()
 
         expect(
             screen.getByRole('button', {
                 name: 'Re-Send Verification Email',
-            })
+            }),
         ).toBeInTheDocument()
     })
 
@@ -77,20 +79,20 @@ describe('<EmailIntegrationVerificationForm />', () => {
         renderComponent()
         expect(
             screen.getByText(
-                'Your emails will appear in your Gorgias inbox as tickets.'
-            )
+                'Your emails will appear in your Gorgias inbox as tickets.',
+            ),
         ).toBeInTheDocument()
 
         expect(
             screen.getByText(
-                /Your email integration has been verified! Your customer emails will now appear in Gorgias as tickets you can handle directly from your inbox./
-            )
+                /Your email integration has been verified! Your customer emails will now appear in Gorgias as tickets you can handle directly from your inbox./,
+            ),
         ).toBeInTheDocument()
 
         expect(
             screen.getByText('Learn more about handling tickets.', {
                 selector: 'a',
-            })
+            }),
         ).toBeInTheDocument()
     })
 
@@ -101,13 +103,13 @@ describe('<EmailIntegrationVerificationForm />', () => {
         })
         renderComponent()
         expect(
-            screen.getByText("We haven't received your forwarded email.")
+            screen.getByText("We haven't received your forwarded email."),
         ).toBeInTheDocument()
 
         expect(
             screen.getByText(
-                /Please check you’ve set up the forwarding settings correctly in your support email settings and then resend the verification email to try again./
-            )
+                /Please check you’ve set up the forwarding settings correctly in your support email settings and then resend the verification email to try again./,
+            ),
         ).toBeInTheDocument()
 
         expect(
@@ -115,8 +117,8 @@ describe('<EmailIntegrationVerificationForm />', () => {
                 'View step-by-step email forwarding setup guides.',
                 {
                     selector: 'a',
-                }
-            )
+                },
+            ),
         ).toBeInTheDocument()
     })
 

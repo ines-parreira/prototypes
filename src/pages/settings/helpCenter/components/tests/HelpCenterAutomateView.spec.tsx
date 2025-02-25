@@ -1,7 +1,8 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {HelpCenterAutomateView} from '../HelpCenterAutomateView'
+import { render } from '@testing-library/react'
+
+import { HelpCenterAutomateView } from '../HelpCenterAutomateView'
 
 jest.mock(
     'pages/automate/connectedChannels/components/ConnectedChannelsHelpCenterView',
@@ -9,21 +10,21 @@ jest.mock(
         ConnectedChannelsHelpCenterView: ({
             helpCenter,
         }: {
-            helpCenter: {id: string}
+            helpCenter: { id: string }
         }) => (
             <div data-testid="ConnectedChannelsHelpCenterView">
                 {helpCenter.id}
             </div>
         ),
-    })
+    }),
 )
 
 jest.mock(
     '../HelpCenterPageWrapper',
     () =>
-        ({children}: {children: React.ReactNode}) => (
+        ({ children }: { children: React.ReactNode }) => (
             <div data-testid="HelpCenterPageWrapper">{children}</div>
-        )
+        ),
 )
 
 jest.mock('../../hooks/useCurrentHelpCenter', () => {
@@ -40,10 +41,10 @@ describe('HelpCenterAutomateView', () => {
     })
 
     it('should render ConnectedChannelsContactFormView', () => {
-        const {getByTestId} = render(<HelpCenterAutomateView />)
+        const { getByTestId } = render(<HelpCenterAutomateView />)
 
         expect(
-            getByTestId('ConnectedChannelsHelpCenterView')
+            getByTestId('ConnectedChannelsHelpCenterView'),
         ).toHaveTextContent('1')
     })
 })

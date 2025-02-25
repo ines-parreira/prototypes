@@ -1,8 +1,9 @@
 import React from 'react'
 
 import Feature from '../UI/Feature'
+import { ProductFeature } from './types'
+
 import css from './ProductFeaturesFOMO.less'
-import {ProductFeature} from './types'
 
 export type ProductFOMOProps = {
     periodEnd: string
@@ -10,7 +11,7 @@ export type ProductFOMOProps = {
 }
 
 const ProductFeaturesFOMO = (props: ProductFOMOProps) => {
-    const {periodEnd, features} = props
+    const { periodEnd, features } = props
 
     return (
         <>

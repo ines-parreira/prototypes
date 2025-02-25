@@ -2,28 +2,28 @@ import {
     fetchMetricPerDimension,
     useMetricPerDimension,
 } from 'hooks/reporting/useMetricPerDimension'
-import {OrderDirection} from 'models/api/types'
-import {accuracyPerAgentQueryFactory} from 'models/reporting/queryFactories/auto-qa/accuracyQueryFactory'
-import {StatsFilters} from 'models/stat/types'
+import { OrderDirection } from 'models/api/types'
+import { accuracyPerAgentQueryFactory } from 'models/reporting/queryFactories/auto-qa/accuracyQueryFactory'
+import { StatsFilters } from 'models/stat/types'
 
 export const useAccuracyPerAgent = (
     statsFilters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
-    agentAssigneeId?: string
+    agentAssigneeId?: string,
 ) =>
     useMetricPerDimension(
         accuracyPerAgentQueryFactory(statsFilters, timezone, sorting),
-        agentAssigneeId
+        agentAssigneeId,
     )
 
 export const fetchAccuracyPerAgent = (
     statsFilters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
-    agentAssigneeId?: string
+    agentAssigneeId?: string,
 ) =>
     fetchMetricPerDimension(
         accuracyPerAgentQueryFactory(statsFilters, timezone, sorting),
-        agentAssigneeId
+        agentAssigneeId,
     )

@@ -1,30 +1,31 @@
 import React from 'react'
 
-import {Tag} from 'models/aiAgent/types'
+import { Tag } from 'models/aiAgent/types'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import InputField from 'pages/common/forms/input/InputField'
 
-import css from './TagList.less'
 import TagSearchSelect from './TagSearchSelect'
+
+import css from './TagList.less'
 
 type Props = {
     tags: Tag[]
     onTagsUpdate: (tags: Tag[]) => void
 }
 
-const TagList = ({tags, onTagsUpdate}: Props) => {
+const TagList = ({ tags, onTagsUpdate }: Props) => {
     const handleTagSelect = (name: string, index: number) => {
         const updatedTags = tags.map((tag, i) =>
-            i === index ? {...tag, name} : tag
+            i === index ? { ...tag, name } : tag,
         )
         onTagsUpdate(updatedTags)
     }
 
     const handleDescriptionChange = (index: number, newDescription: string) => {
         const updatedTags = tags.map((tag, i) =>
-            i === index ? {...tag, description: newDescription} : tag
+            i === index ? { ...tag, description: newDescription } : tag,
         )
         onTagsUpdate(updatedTags)
     }
@@ -78,7 +79,7 @@ const TagList = ({tags, onTagsUpdate}: Props) => {
                 className={css.addButton}
                 intent="secondary"
                 onClick={() =>
-                    onTagsUpdate([...tags, {name: '', description: ''}])
+                    onTagsUpdate([...tags, { name: '', description: '' }])
                 }
                 leadingIcon="add"
             >

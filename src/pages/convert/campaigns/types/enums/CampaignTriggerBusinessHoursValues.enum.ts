@@ -6,6 +6,6 @@ export enum CampaignTriggerBusinessHoursValuesEnum {
 
 export function isBusinessHoursValue(value: string) {
     return Object.values(CampaignTriggerBusinessHoursValuesEnum).includes(
-        value as CampaignTriggerBusinessHoursValuesEnum
+        value as CampaignTriggerBusinessHoursValuesEnum,
     )
 }

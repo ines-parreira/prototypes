@@ -1,4 +1,3 @@
-import {Label} from '@gorgias/merchant-ui-kit'
 import React, {
     forwardRef,
     useCallback,
@@ -9,14 +8,19 @@ import React, {
     useState,
 } from 'react'
 
+import { Label } from '@gorgias/merchant-ui-kit'
+
 import store from 'assets/img/icons/store.svg'
 import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
-import {useGetHelpCenterArticleList} from 'models/helpCenter/queries'
-import {HelpCenter, HelpCenterCreationWizardStep} from 'models/helpCenter/types'
-import {IntegrationType, StoreIntegration} from 'models/integration/types'
-import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
-import {Entrypoint} from 'pages/automate/common/components/WorkflowsFeatureList'
+import { useGetHelpCenterArticleList } from 'models/helpCenter/queries'
+import {
+    HelpCenter,
+    HelpCenterCreationWizardStep,
+} from 'models/helpCenter/types'
+import { IntegrationType, StoreIntegration } from 'models/integration/types'
+import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
+import { Entrypoint } from 'pages/automate/common/components/WorkflowsFeatureList'
 import useHelpCenterAutomationSettings from 'pages/automate/common/hooks/useHelpCenterAutomationSettings'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import WizardFooter, {
@@ -30,19 +34,20 @@ import {
     HELP_CENTER_STEPS_TITLES,
     NEXT_ACTION,
 } from 'pages/settings/helpCenter/constants'
-import {useStoreOptions} from 'pages/settings/helpCenter/hooks/useStoreOptions'
-import {getIntegrationsByTypes} from 'state/integrations/selectors'
+import { useStoreOptions } from 'pages/settings/helpCenter/hooks/useStoreOptions'
+import { getIntegrationsByTypes } from 'state/integrations/selectors'
 
-import {mapEntrypointsToAutomationSettings} from '../../HelpCenterCreationWizardUtils'
+import { mapEntrypointsToAutomationSettings } from '../../HelpCenterCreationWizardUtils'
 import {
-    UseHelpCenterAutomationFormState,
     useHelpCenterAutomationForm,
+    UseHelpCenterAutomationFormState,
 } from '../../hooks/useHelpCenterAutomationForm'
-import {useHelpCenterCreationWizard} from '../../hooks/useHelpCenterCreationWizard'
+import { useHelpCenterCreationWizard } from '../../hooks/useHelpCenterCreationWizard'
 import HelpCenterWizardArticleRec from '../HelpCenterWizardArticleRec/HelpCenterWizardArticleRec'
 import HelpCenterWizardAutomationPreview from '../HelpCenterWizardAutomationPreview/HelpCenterWizardAutomationPreview'
 import HelpCenterWizardFlows from '../HelpCenterWizardFlows/HelpCenterWizardFlows'
 import HelpCenterWizardOrderManagement from '../HelpCenterWizardOrderManagement/HelpCenterWizardOrderManagement'
+
 import css from './HelpCenterCreationWizardStepAutomate.less'
 
 type Props = {
@@ -79,7 +84,7 @@ const HelpCenterCreationWizardAutomateItems = forwardRef<
             updateFlows,
             setIsSelfServiceConfigurationLoading,
         },
-        ref
+        ref,
     ) => {
         const {
             isFetchPending: isSelfServiceConfigurationPending,
@@ -91,13 +96,13 @@ const HelpCenterCreationWizardAutomateItems = forwardRef<
             storeIntegrationName,
             // Avoid notifications about the self service configuration
             // eslint-disable-next-line @typescript-eslint/no-empty-function
-            () => {}
+            () => {},
         )
 
         useEffect(() => {
             setIsSelfServiceConfigurationLoading(
                 isSelfServiceConfigurationPending ||
-                    isSelfServiceConfigurationUpdating
+                    isSelfServiceConfigurationUpdating,
             )
         }, [
             isSelfServiceConfigurationPending,
@@ -112,7 +117,7 @@ const HelpCenterCreationWizardAutomateItems = forwardRef<
                 helpCenter.id
 
         const chatIntegrations = useAppSelector(
-            getIntegrationsByTypes([IntegrationType.GorgiasChat])
+            getIntegrationsByTypes([IntegrationType.GorgiasChat]),
         )
 
         const {
@@ -142,7 +147,7 @@ const HelpCenterCreationWizardAutomateItems = forwardRef<
                     helpCenterFlows.map((flow) => ({
                         workflow_id: flow.id,
                         enabled: flow.enabled,
-                    }))
+                    })),
                 )
             }
         }, [automationSettings.workflows, isFetchPending, updateFlows])
@@ -150,7 +155,7 @@ const HelpCenterCreationWizardAutomateItems = forwardRef<
         useEffect(() => {
             if (!isFetchPending && chatIntegrations.length > 0) {
                 updateArticleRecommendationEnabled(
-                    !isArticleRecomAlreadyEnabled
+                    !isArticleRecomAlreadyEnabled,
                 )
             }
         }, [
@@ -162,7 +167,7 @@ const HelpCenterCreationWizardAutomateItems = forwardRef<
 
         const onSave = useCallback(async () => {
             const automationSettings = mapEntrypointsToAutomationSettings(
-                state.flows
+                state.flows,
             )
             await handleHelpCenterAutomationSettingsUpdate(automationSettings)
 
@@ -242,10 +247,10 @@ const HelpCenterCreationWizardAutomateItems = forwardRef<
                 />
             </>
         )
-    }
+    },
 )
 
-const HelpCenterCreationWizardStepAutomate = ({helpCenter}: Props) => {
+const HelpCenterCreationWizardStepAutomate = ({ helpCenter }: Props) => {
     const [selectedStoreIntegration, setSelectedStoreIntegration] =
         useState<StoreIntegration>()
     const [
@@ -264,7 +269,7 @@ const HelpCenterCreationWizardStepAutomate = ({helpCenter}: Props) => {
         handleFormUpdate,
     } = useHelpCenterCreationWizard(
         helpCenter,
-        HelpCenterCreationWizardStep.Automate
+        HelpCenterCreationWizardStep.Automate,
     )
 
     const allStoreIntegrations = useAppSelector(
@@ -272,21 +277,21 @@ const HelpCenterCreationWizardStepAutomate = ({helpCenter}: Props) => {
             IntegrationType.Shopify,
             IntegrationType.BigCommerce,
             IntegrationType.Magento2,
-        ])
+        ]),
     )
 
     const shopifyIntegrations = useMemo(
         () =>
             allStoreIntegrations.filter(
                 (storeIntegration) =>
-                    storeIntegration.type === IntegrationType.Shopify
+                    storeIntegration.type === IntegrationType.Shopify,
             ),
-        [allStoreIntegrations]
+        [allStoreIntegrations],
     )
 
     useEffectOnce(() => {
         const foundIntegration = allStoreIntegrations.find(
-            (integration) => integration.name === helpCenter.shop_name
+            (integration) => integration.name === helpCenter.shop_name,
         )
         if (foundIntegration) {
             setSelectedStoreIntegration(foundIntegration)
@@ -312,12 +317,12 @@ const HelpCenterCreationWizardStepAutomate = ({helpCenter}: Props) => {
             helpCenter.self_service_deactivated_datetime === null,
     })
 
-    const {data: helpCenterArticles} = useGetHelpCenterArticleList(
+    const { data: helpCenterArticles } = useGetHelpCenterArticleList(
         helpCenter.id,
         {
             version_status: 'latest_draft',
             locale: helpCenter.default_locale,
-        }
+        },
     )
 
     const isStoreRequired = !!shopifyIntegrations.length
@@ -376,11 +381,11 @@ const HelpCenterCreationWizardStepAutomate = ({helpCenter}: Props) => {
 
     const handleStoreChange = (shopName: string) => {
         const storeIntegration = allStoreIntegrations.find(
-            (integration) => integration.name === shopName
+            (integration) => integration.name === shopName,
         )
         if (storeIntegration) {
             setSelectedStoreIntegration(storeIntegration)
-            handleFormUpdate({shopName})
+            handleFormUpdate({ shopName })
             handleSave({
                 stepName: HelpCenterCreationWizardStep.Automate,
                 payload: {

@@ -1,15 +1,16 @@
+import React, { ReactNode, useMemo } from 'react'
+
 import classnames from 'classnames'
-import React, {ReactNode, useMemo} from 'react'
 
-import {SegmentEvent, logEvent} from 'common/segment'
-import {useAccountStoreConfiguration} from 'pages/aiAgent/hooks/useAccountStoreConfiguration'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { useAccountStoreConfiguration } from 'pages/aiAgent/hooks/useAccountStoreConfiguration'
 import Button from 'pages/common/components/button/Button'
-
 import history from 'pages/history'
 
-import {AiAgentView} from '../AiAgentView/AiAgentView'
+import { AiAgentView } from '../AiAgentView/AiAgentView'
+import { useAiAgentHeaderNavbarItems } from './useAiAgentHeaderNavbarItems'
+
 import css from './AiAgentLayout.less'
-import {useAiAgentHeaderNavbarItems} from './useAiAgentHeaderNavbarItems'
 
 type Props = {
     children?: ReactNode
@@ -28,7 +29,7 @@ export const AiAgentLayout = ({
 }: Props) => {
     const headerNavbarItems = useAiAgentHeaderNavbarItems(shopName)
 
-    const {aiAgentTicketViewId} = useAccountStoreConfiguration({
+    const { aiAgentTicketViewId } = useAccountStoreConfiguration({
         storeNames: [shopName],
     })
 

@@ -1,19 +1,19 @@
+import { useEffect, useMemo, useState } from 'react'
+
 import _defaultsDeep from 'lodash/defaultsDeep'
-import {useEffect, useState, useMemo} from 'react'
 
-import {ModalManager} from './Manager'
-
+import { ModalManager } from './Manager'
 import {
+    CallbackFunction,
+    Event,
+    HookConfig,
     ModalParams,
     useModalManagerApi,
-    Event,
-    CallbackFunction,
-    HookConfig,
 } from './typings'
 
 const createUndefinedModalError = (methodName: string) =>
     new Error(
-        `You must provide modal name in 'useModalManage' otherwise in method '${methodName}'`
+        `You must provide modal name in 'useModalManage' otherwise in method '${methodName}'`,
     )
 
 /**
@@ -29,14 +29,14 @@ const createUndefinedModalError = (methodName: string) =>
 export const useModalManager = (
     manager: ModalManager,
     name?: string,
-    config?: HookConfig
+    config?: HookConfig,
 ): useModalManagerApi => {
     const _name = name
     const [, update] = useState(0)
     const innerConfig: HookConfig = useMemo(
         // ? We need to cast the return because the signature of "_defaultsDeep" returns "any"
-        () => _defaultsDeep(config, {autoDestroy: true}) as HookConfig,
-        [config]
+        () => _defaultsDeep(config, { autoDestroy: true }) as HookConfig,
+        [config],
     )
 
     useEffect(() => {
@@ -68,7 +68,7 @@ export const useModalManager = (
         openModal: (
             name: string | undefined = _name,
             closeOther?: boolean,
-            params?: ModalParams
+            params?: ModalParams,
         ) => {
             if (!name) throw createUndefinedModalError('openModal')
             return manager.openModal(name, closeOther, params)

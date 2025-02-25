@@ -1,8 +1,8 @@
-import {CursorPaginationMeta} from '@gorgias/api-queries'
+import { CursorPaginationMeta } from '@gorgias/api-queries'
 
-import {ReportingGranularity} from 'models/reporting/types'
-import {ReportIssueReasons} from 'models/selfServiceConfiguration/types'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import { ReportingGranularity } from 'models/reporting/types'
+import { ReportIssueReasons } from 'models/selfServiceConfiguration/types'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 
 export enum FilterKey {
     Accuracy = 'accuracy',
@@ -367,7 +367,7 @@ export type StatCell =
     | NumericStatCell
     | TicketDetailStatCell
     | OnlineTimeDetailStatCell
-    | {type: StatType.Date; value: string | null}
+    | { type: StatType.Date; value: string | null }
     | {
           type: StatType.SatisfactionSurveyLink
           ticket_id: number
@@ -378,7 +378,7 @@ export type StatCell =
           customer_id: number
           customer_name: string | null
       }
-    | {type: StatType.SatisfactionScore; value: number | null}
+    | { type: StatType.SatisfactionScore; value: number | null }
     | {
           type: StatType.Currency
           value: number
@@ -389,7 +389,7 @@ export type StatCell =
           ticket_id: number
           subject: string
       }
-    | {type: StatType.Boolean; value: boolean}
+    | { type: StatType.Boolean; value: boolean }
     | {
           type: StatType.User
           value: {
@@ -397,7 +397,7 @@ export type StatCell =
               id: number
           }
       }
-    | {type: StatType.Object; value: Record<string, unknown>}
+    | { type: StatType.Object; value: Record<string, unknown> }
     | {
           type: StatType.Product
           value: {
@@ -411,7 +411,7 @@ export type StatCell =
       }
     | {
           type: StatType.Issues
-          value: {[key in ReportIssueReasons]?: number}
+          value: { [key in ReportIssueReasons]?: number }
       }
     | {
           type: StatType.TitleWithLink

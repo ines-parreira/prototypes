@@ -1,11 +1,13 @@
-import moment from 'moment-timezone'
 import React from 'react'
-import {useLocation} from 'react-router-dom'
 
-import {useSearchParam} from 'hooks/useSearchParam'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import moment from 'moment-timezone'
+import { useLocation } from 'react-router-dom'
+
+import { useSearchParam } from 'hooks/useSearchParam'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 
 import useWorkflowAnalyticsDisplayBanner from '../hooks/useWorkflowAnalyticsDisplayBanner'
+
 import css from './WorkflowAnalytics.less'
 
 interface WorkflowAnalyticsBannerProps {
@@ -17,8 +19,8 @@ const WorkflowAnalyticsBanner: React.FC<WorkflowAnalyticsBannerProps> = ({
     workflowUpdatedDatetime,
     hasDataAvailable,
 }) => {
-    const location = useLocation<{from?: string}>()
-    const {from} = location.state || {}
+    const location = useLocation<{ from?: string }>()
+    const { from } = location.state || {}
     const [startDatetime] = useSearchParam('start_datetime')
 
     const {

@@ -1,12 +1,14 @@
-import {Tooltip, Badge} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
 import React from 'react'
-import {useCookies} from 'react-cookie'
+
+import classNames from 'classnames'
+import { useCookies } from 'react-cookie'
+
+import { Badge, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 
-import {SegmentEvent} from '../../../../../common/segment'
-import {logEventWithSampling} from '../../../../../common/segment/segment'
+import { SegmentEvent } from '../../../../../common/segment'
+import { logEventWithSampling } from '../../../../../common/segment/segment'
 import {
     Action,
     Feedback,
@@ -15,21 +17,22 @@ import {
     Knowledge,
 } from '../../../../../models/aiAgentFeedback/types'
 import IconButton from '../../../../common/components/button/IconButton'
+import { ActionStatus, ResourceSection } from './types'
+
 import css from './AIAgentFeedbackBar.less'
-import {ActionStatus, ResourceSection} from './types'
 
 export const TOOLTIP_COOKIE_NAME =
     'helpdesk-show-ticket-ai-agent-message-feedback-tooltip'
 
 type FeedbackResourceSectionProps = {
-    resource: (Knowledge | Guidance | Action) & {feedback: Feedback}
+    resource: (Knowledge | Guidance | Action) & { feedback: Feedback }
     resourceType: FeedbackOnResource['resourceType']
     resourceSection: ResourceSection
     handleSubmitFeedback: (
         resourceId: number | string,
         resourceType: FeedbackOnResource['resourceType'],
         feedback: Feedback,
-        resourceSection?: ResourceSection
+        resourceSection?: ResourceSection,
     ) => void
     href?: string
     dataTestId?: string
@@ -68,7 +71,7 @@ export const FeedbackResourceSection: React.FC<
             resource.id,
             resourceType,
             buttonType,
-            resourceSection
+            resourceSection,
         )
     }
 
@@ -173,7 +176,7 @@ export const FeedbackResourceSection: React.FC<
                     data-testid="badge-test-id"
                     id={`badge-${resourceId}-${resourceType}`}
                     upperCase={false}
-                    style={{textTransform: 'capitalize', flexShrink: 0}}
+                    style={{ textTransform: 'capitalize', flexShrink: 0 }}
                     type={
                         resource.status === ActionStatus.CONFIRMED
                             ? 'light-success'
@@ -222,7 +225,7 @@ export const FeedbackResourceSection: React.FC<
                             SegmentEvent.AiAgentFeedbackResourceClicked,
                             {
                                 type: resourceType,
-                            }
+                            },
                         )
                     }}
                 >

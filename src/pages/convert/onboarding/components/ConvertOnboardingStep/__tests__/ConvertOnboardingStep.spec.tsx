@@ -1,5 +1,6 @@
-import {render, fireEvent, screen} from '@testing-library/react'
 import React from 'react'
+
+import { fireEvent, render, screen } from '@testing-library/react'
 
 import ConvertOnboardingStep from '../ConvertOnboardingStep'
 
@@ -15,7 +16,9 @@ describe('ConvertOnboardingStep', () => {
     }
 
     test('renders with correct props', () => {
-        const {getByText} = render(<ConvertOnboardingStep {...defaultProps} />)
+        const { getByText } = render(
+            <ConvertOnboardingStep {...defaultProps} />,
+        )
 
         // Check if all props are rendered correctly
         expect(getByText('Title')).toBeInTheDocument()
@@ -25,7 +28,9 @@ describe('ConvertOnboardingStep', () => {
     })
 
     test('calls onClick handler when action button is clicked', () => {
-        const {getByText} = render(<ConvertOnboardingStep {...defaultProps} />)
+        const { getByText } = render(
+            <ConvertOnboardingStep {...defaultProps} />,
+        )
 
         fireEvent.click(getByText('Action'))
 
@@ -33,11 +38,11 @@ describe('ConvertOnboardingStep', () => {
     })
 
     test('disables action button when isDisabled is true', () => {
-        const {getByRole} = render(
-            <ConvertOnboardingStep {...defaultProps} isDisabled={true} />
+        const { getByRole } = render(
+            <ConvertOnboardingStep {...defaultProps} isDisabled={true} />,
         )
 
-        expect(getByRole('button', {name: 'Action'})).toBeAriaDisabled()
+        expect(getByRole('button', { name: 'Action' })).toBeAriaDisabled()
     })
 
     test('renders completed icon when isCompleted is true', () => {

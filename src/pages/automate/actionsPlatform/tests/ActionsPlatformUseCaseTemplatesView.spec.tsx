@@ -1,19 +1,16 @@
-import {act, fireEvent, screen, waitFor} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {Provider} from 'react-redux'
-
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-
 import thunk from 'redux-thunk'
 
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import {IntegrationType} from 'models/integration/constants'
-import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
-import {RootState, StoreDispatch} from 'state/types'
-
-import {renderWithRouter} from 'utils/testing'
+import { IntegrationType } from 'models/integration/constants'
+import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
+import { RootState, StoreDispatch } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
 import ActionsPlatformUseCaseTemplatesView from '../ActionsPlatformUseCaseTemplatesView'
 import useApps from '../hooks/useApps'
@@ -34,7 +31,7 @@ const mockStore = configureMockStore<RootState, StoreDispatch>([thunk])({
 } as RootState)
 
 const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
-    useGetWorkflowConfigurationTemplates
+    useGetWorkflowConfigurationTemplates,
 )
 const mockUseApps = jest.mocked(useApps)
 const mockUseGetDateAndTimeFormat = jest.mocked(useGetDateAndTimeFormat)
@@ -45,14 +42,14 @@ mockUseGetWorkflowConfigurationTemplates.mockReturnValue({
         {
             id: '1',
             name: 'test1',
-            apps: [{type: 'shopify'}],
+            apps: [{ type: 'shopify' }],
             updated_datetime: '2024-08-02T08:18:51.611Z',
             category: 'orders',
         },
         {
             id: '2',
             name: 'test2',
-            apps: [{type: 'recharge'}],
+            apps: [{ type: 'recharge' }],
             updated_datetime: '2024-08-01T08:18:51.611Z',
             category: 'orders',
         },
@@ -94,13 +91,13 @@ describe('<ActionsPlatformUseCaseTemplatesView />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <ActionsPlatformUseCaseTemplatesView />{' '}
-            </Provider>
+            </Provider>,
         )
 
         expect(
             screen.getByText(
-                'Create, customize and maintain Action templates for AI Agent.'
-            )
+                'Create, customize and maintain Action templates for AI Agent.',
+            ),
         ).toBeInTheDocument()
         expect(screen.getByText('test1')).toBeInTheDocument()
         expect(screen.getByText('test2')).toBeInTheDocument()
@@ -110,7 +107,7 @@ describe('<ActionsPlatformUseCaseTemplatesView />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <ActionsPlatformUseCaseTemplatesView />
-            </Provider>
+            </Provider>,
         )
 
         act(() => {
@@ -129,7 +126,7 @@ describe('<ActionsPlatformUseCaseTemplatesView />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <ActionsPlatformUseCaseTemplatesView />
-            </Provider>
+            </Provider>,
         )
 
         act(() => {
@@ -150,7 +147,7 @@ describe('<ActionsPlatformUseCaseTemplatesView />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <ActionsPlatformUseCaseTemplatesView />
-            </Provider>
+            </Provider>,
         )
 
         act(() => {

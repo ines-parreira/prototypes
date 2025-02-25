@@ -1,34 +1,35 @@
-import {screen} from '@testing-library/react'
+import React, { ComponentProps } from 'react'
+
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {TicketStatus} from 'business/types/ticket'
-import {UserRole} from 'config/types/user'
-import {useFlag} from 'core/flags'
-import {ticket} from 'fixtures/ticket'
-import {user} from 'fixtures/users'
-import {Infobar} from 'pages/common/components/infobar/Infobar/Infobar'
-import {useHasAIAgent} from 'pages/tickets/detail/components/TicketFeedback'
-import {getHasAutomate} from 'state/billing/selectors'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {getAIAgentMessages} from 'state/ticket/selectors'
-import {RootState, StoreState} from 'state/types'
+import { TicketStatus } from 'business/types/ticket'
+import { UserRole } from 'config/types/user'
+import { useFlag } from 'core/flags'
+import { ticket } from 'fixtures/ticket'
+import { user } from 'fixtures/users'
+import { Infobar } from 'pages/common/components/infobar/Infobar/Infobar'
+import { useHasAIAgent } from 'pages/tickets/detail/components/TicketFeedback'
+import { getHasAutomate } from 'state/billing/selectors'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { getAIAgentMessages } from 'state/ticket/selectors'
+import { RootState, StoreState } from 'state/types'
 import {
     changeActiveTab,
     changeTicketMessage,
     getActiveTab,
 } from 'state/ui/ticketAIAgentFeedback'
-import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants'
-import {selectContext, fetchWidgets} from 'state/widgets/actions'
-import {assumeMock, renderWithRouter} from 'utils/testing'
+import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constants'
+import { fetchWidgets, selectContext } from 'state/widgets/actions'
+import { assumeMock, renderWithRouter } from 'utils/testing'
 
 import {
-    CUSTOMER_DETAILS_TAB,
     AI_FEEDBACK_TAB,
+    CUSTOMER_DETAILS_TAB,
     TicketInfobarContainer,
 } from '../TicketInfobarContainer'
 
@@ -38,12 +39,12 @@ jest.mock('pages/tickets/detail/components/TicketFeedback', () => ({
 }))
 const useHasAIAgentMock = useHasAIAgent as jest.Mock
 
-jest.mock('core/flags', () => ({useFlag: jest.fn()}))
+jest.mock('core/flags', () => ({ useFlag: jest.fn() }))
 const useFlagMock = useFlag as jest.Mock
 
 jest.mock('state/currentUser/selectors')
 const getCurrentUserMock = assumeMock(getCurrentUser)
-jest.mock('state/billing/selectors', () => ({getHasAutomate: jest.fn()}))
+jest.mock('state/billing/selectors', () => ({ getHasAutomate: jest.fn() }))
 const getHasAutomateMock = assumeMock(getHasAutomate)
 
 jest.mock('state/widgets/actions')
@@ -55,7 +56,7 @@ jest.mock(
         ({
             ...jest.requireActual('state/ticket/selectors'),
             getAIAgentMessages: jest.fn(),
-        }) as Record<string, unknown>
+        }) as Record<string, unknown>,
 )
 jest.mock(
     'pages/common/components/infobar/Infobar/Infobar',
@@ -77,7 +78,7 @@ jest.mock(
                 <div>widgets: {JSON.stringify(widgets)}</div>
                 <div>context: {context}</div>
             </div>
-        )
+        ),
 )
 
 const mockedGetAIAgentMessages = assumeMock(getAIAgentMessages)
@@ -126,8 +127,8 @@ describe('<TicketInfobarContainer />', () => {
         getCurrentUserMock.mockReturnValue(
             fromJS({
                 id: 2,
-                role: {name: UserRole.BasicAgent},
-            })
+                role: { name: UserRole.BasicAgent },
+            }),
         )
         useFlagMock.mockReturnValue(false)
         getHasAutomateMock.mockReturnValue(true)
@@ -142,14 +143,14 @@ describe('<TicketInfobarContainer />', () => {
     })
 
     it('should render infobar for active customer', () => {
-        const {container} = renderWithRouter(
+        const { container } = renderWithRouter(
             <Provider store={store}>
                 <TicketInfobarContainer {...minProps} />
             </Provider>,
             {
                 path: '/foo/:ticketId?',
                 route: '/foo/new',
-            }
+            },
         )
 
         expect(mockedSelectContext).toHaveBeenCalledWith()
@@ -168,7 +169,7 @@ describe('<TicketInfobarContainer />', () => {
             {
                 path: '/foo/:ticketId?',
                 route: '/foo/new',
-            }
+            },
         )
         const aiAgentTab = screen.queryByText(AI_FEEDBACK_TAB)
 
@@ -183,7 +184,7 @@ describe('<TicketInfobarContainer />', () => {
             {
                 path: '/foo/:ticketId?',
                 route: '/foo/new',
-            }
+            },
         )
 
         const aiAgentTab = screen.getByText(AI_FEEDBACK_TAB)
@@ -217,7 +218,7 @@ describe('<TicketInfobarContainer />', () => {
             {
                 path: '/foo/:ticketId?',
                 route: '/foo/new',
-            }
+            },
         )
 
         const aiAgentTab = screen.getByText(AI_FEEDBACK_TAB)
@@ -257,7 +258,7 @@ describe('<TicketInfobarContainer />', () => {
             {
                 path: '/foo/:ticketId?',
                 route: '/foo/new',
-            }
+            },
         )
 
         const aiAgentTab = screen.getByText(AI_FEEDBACK_TAB)
@@ -275,17 +276,17 @@ describe('<TicketInfobarContainer />', () => {
     it('should switch to the Ticket Feedback tab if the user is a team lead and is coming with AI tab search param', () => {
         const store = mockStore({
             ...state,
-            ticket: fromJS({...ticket, status: TicketStatus.Closed}),
+            ticket: fromJS({ ...ticket, status: TicketStatus.Closed }),
         })
         store.dispatch = jest.fn()
         getCurrentUserMock.mockReturnValue(
             fromJS({
                 id: 2,
-                role: {name: UserRole.Agent},
-            })
+                role: { name: UserRole.Agent },
+            }),
         )
         mockedGetActiveTab.mockReturnValue(
-            TicketAIAgentFeedbackTab.CustomerInformation
+            TicketAIAgentFeedbackTab.CustomerInformation,
         )
         renderWithRouter(
             <Provider store={store}>
@@ -294,7 +295,7 @@ describe('<TicketInfobarContainer />', () => {
             {
                 path: `/foo/:ticketId?`,
                 route: `/foo/123/?activeTab=${TicketAIAgentFeedbackTab.AIAgent}`,
-            }
+            },
         )
 
         const customerInformationTab = screen.getByText(AI_FEEDBACK_TAB)
@@ -306,7 +307,7 @@ describe('<TicketInfobarContainer />', () => {
 
     it('should not call changeActive tab when AI Agent tab is clicked and is already active', () => {
         mockedGetActiveTab.mockReturnValue(
-            TicketAIAgentFeedbackTab.CustomerInformation
+            TicketAIAgentFeedbackTab.CustomerInformation,
         )
         renderWithRouter(
             <Provider store={store}>
@@ -315,7 +316,7 @@ describe('<TicketInfobarContainer />', () => {
             {
                 path: '/foo/:ticketId?',
                 route: '/foo/new',
-            }
+            },
         )
 
         const customerInformationTab = screen.getByText(CUSTOMER_DETAILS_TAB)

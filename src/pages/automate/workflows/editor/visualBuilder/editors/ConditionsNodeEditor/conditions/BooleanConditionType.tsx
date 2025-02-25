@@ -1,5 +1,6 @@
-import {produce} from 'immer'
 import React from 'react'
+
+import { produce } from 'immer'
 
 import {
     ConditionSchema,
@@ -40,7 +41,7 @@ export const BooleanConditionType = ({
                         }
 
                         schema[1] = Boolean(nextValue)
-                    })
+                    }),
                 )
             }}
             options={[

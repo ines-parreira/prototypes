@@ -6,17 +6,21 @@ import _merge from 'lodash/merge'
 import _omit from 'lodash/omit'
 import _omitBy from 'lodash/omitBy'
 import _setWith from 'lodash/setWith'
-import {Edge, Node} from 'reactflow'
-import {ulid} from 'ulidx'
+import { Edge, Node } from 'reactflow'
+import { ulid } from 'ulidx'
 
-import {validateHttpHeaderName, validateWebhookURL} from 'utils'
+import { validateHttpHeaderName, validateWebhookURL } from 'utils'
 
 import {
     ActionsApp,
     ActionTemplate,
     ActionTemplateApp,
 } from '../../actionsPlatform/types'
-import {ConditionSchema, ConditionsSchema, VarSchema} from './conditions.types'
+import {
+    ConditionSchema,
+    ConditionsSchema,
+    VarSchema,
+} from './conditions.types'
 import {
     extractVariablesFromNode,
     getWorkflowVariableListForNode,
@@ -27,36 +31,36 @@ import {
     validateJSONWithVariables,
 } from './variables.model'
 import {
-    WorkflowVariableList,
-    SHIPMONK_APPLICATION_ID,
     AvailableIntegrations,
+    SHIPMONK_APPLICATION_ID,
+    WorkflowVariableList,
 } from './variables.types'
 import {
-    VisualBuilderEdge,
-    VisualBuilderGraph,
-    VisualBuilderNode,
-    isMultipleChoicesNodeType,
+    AutomatedMessageNodeType,
+    CancelSubscriptionNodeType,
+    ChannelTriggerNodeType,
+    ConditionsNodeType,
+    FileUploadNodeType,
+    HttpRequestNodeType,
     isConditionsNodeType,
     isHttpRequestNodeType,
+    isMultipleChoicesNodeType,
     LLMPromptTriggerNodeType,
-    ReusableLLMPromptTriggerNodeType,
-    HttpRequestNodeType,
-    ConditionsNodeType,
-    ChannelTriggerNodeType,
     MultipleChoicesNodeType,
-    AutomatedMessageNodeType,
-    TextReplyNodeType,
-    FileUploadNodeType,
-    OrderSelectionNodeType,
     OrderLineItemSelectionNodeType,
-    SkipChargeNodeType,
-    CancelSubscriptionNodeType,
-    ReplaceItemNodeType,
+    OrderSelectionNodeType,
     RemoveItemNodeType,
-    UpdateShippingAddressNodeType,
-    VisualBuilderGraphAppApp,
-    VisualBuilderGraphApp,
+    ReplaceItemNodeType,
     ReusableLLMPromptCallNodeType,
+    ReusableLLMPromptTriggerNodeType,
+    SkipChargeNodeType,
+    TextReplyNodeType,
+    UpdateShippingAddressNodeType,
+    VisualBuilderEdge,
+    VisualBuilderGraph,
+    VisualBuilderGraphApp,
+    VisualBuilderGraphAppApp,
+    VisualBuilderNode,
 } from './visualBuilderGraph.types'
 import {
     WorkflowConfiguration,
@@ -88,10 +92,10 @@ import {
 export const buildEdgeCommonProperties: () => Pick<
     Edge,
     'id' | 'type' | 'style' | 'interactionWidth' | 'data'
-> & {id: string} = () => ({
+> & { id: string } = () => ({
     id: ulid(),
     type: 'custom',
-    style: {stroke: '#D2D7DE'},
+    style: { stroke: '#D2D7DE' },
     interactionWidth: 0,
     data: {},
 })
@@ -101,13 +105,13 @@ export const buildNodeCommonProperties: () => Pick<
     'id' | 'position'
 > = () => ({
     id: ulid(),
-    position: {x: 0, y: 0},
+    position: { x: 0, y: 0 },
 })
 
 export function areGraphsEqual(
     g1: VisualBuilderGraph,
     g2: VisualBuilderGraph,
-    ignoreTouched = true
+    ignoreTouched = true,
 ): boolean {
     const essentialGraph = (g: VisualBuilderGraph) =>
         _omit(
@@ -120,9 +124,9 @@ export function areGraphsEqual(
                                 node.data,
                                 ignoreTouched
                                     ? ['isGreyedOut', 'errors', 'touched']
-                                    : ['isGreyedOut', 'errors']
+                                    : ['isGreyedOut', 'errors'],
                             ),
-                            (value) => value === undefined
+                            (value) => value === undefined,
                         )
 
                         if (node.type === 'http_request') {
@@ -130,7 +134,7 @@ export function areGraphsEqual(
                                 data,
                                 ignoreTouched
                                     ? ['testRequestResult', 'errors', 'touched']
-                                    : ['testRequestResult', 'errors']
+                                    : ['testRequestResult', 'errors'],
                             )
 
                             return {
@@ -142,31 +146,31 @@ export function areGraphsEqual(
                                         (header) => ({
                                             ...header,
                                             name: header.name.toLowerCase(),
-                                        })
+                                        }),
                                     ),
                                 },
                             }
                         }
 
-                        return {id: node.id, type: node.type, data}
+                        return { id: node.id, type: node.type, data }
                     })
                     .sort((a, b) => a.id.localeCompare(b.id)),
                 edges: g.edges
-                    .map(({source, target, data}) => ({
+                    .map(({ source, target, data }) => ({
                         source,
                         target,
                         data,
                     }))
                     .sort((a, b) =>
                         `${a.source}-${a.target}`.localeCompare(
-                            `${b.source}-${b.target}`
-                        )
+                            `${b.source}-${b.target}`,
+                        ),
                     ),
                 apps: g.apps?.map((app) =>
                     _omit(
                         app,
-                        ignoreTouched ? ['errors', 'touched'] : ['errors']
-                    )
+                        ignoreTouched ? ['errors', 'touched'] : ['errors'],
+                    ),
                 ),
             },
             ignoreTouched
@@ -182,7 +186,7 @@ export function areGraphsEqual(
                       'choiceEventIdEditing',
                       'branchIdsEditing',
                       'errors',
-                  ]
+                  ],
         )
 
     return _isEqual(essentialGraph(g1), essentialGraph(g2))
@@ -198,18 +202,18 @@ export function walkVisualBuilderGraph(
             nextNodes: VisualBuilderNode[]
             incomingEdge: VisualBuilderEdge | undefined
             outgoingEdges: VisualBuilderEdge[]
-        }
+        },
     ) => void,
     direction: 'upwards' | 'downwards' = 'downwards',
     indexes?: {
         nodeById: Record<string, VisualBuilderNode>
         edgesBySource: Record<string, VisualBuilderEdge[]>
         edgesByTarget: Record<string, VisualBuilderEdge[]>
-    }
+    },
 ) {
-    const {nodes, edges} = g
+    const { nodes, edges } = g
     // Build indexes on first iteration
-    const {nodeById, edgesBySource, edgesByTarget} = indexes ?? {
+    const { nodeById, edgesBySource, edgesByTarget } = indexes ?? {
         nodeById: _keyBy(nodes, 'id'),
         edgesBySource: _groupBy(edges, 'source'),
         edgesByTarget: _groupBy(edges, 'target'),
@@ -233,10 +237,10 @@ export function walkVisualBuilderGraph(
     }
 
     const nextNodes = nextEdges.map(
-        (e) => nodeById[direction === 'downwards' ? e.target : e.source]
+        (e) => nodeById[direction === 'downwards' ? e.target : e.source],
     )
 
-    f(node, {previousNode, nextNodes, incomingEdge, outgoingEdges: nextEdges})
+    f(node, { previousNode, nextNodes, incomingEdge, outgoingEdges: nextEdges })
 
     for (const edge of nextEdges) {
         walkVisualBuilderGraph(
@@ -248,14 +252,14 @@ export function walkVisualBuilderGraph(
                 nodeById,
                 edgesBySource,
                 edgesByTarget,
-            }
+            },
         )
     }
 }
 
 export function cleanConditionsFromEmptyVariables(
     conditions: ConditionsSchema,
-    availableVariables: WorkflowVariableList
+    availableVariables: WorkflowVariableList,
 ) {
     const clear = (condition: ConditionSchema) => {
         const operator = Object.keys(condition)?.[0] as keyof ConditionSchema
@@ -289,12 +293,12 @@ export function cleanConditionsFromEmptyVariables(
 function setLLMPromptCustomerObjectInput(
     trigger: Extract<
         NonNullable<WorkflowConfiguration['triggers']>[number],
-        {kind: 'llm-prompt'}
-    >
+        { kind: 'llm-prompt' }
+    >,
 ): void {
     if (
         !trigger.settings.object_inputs.find(
-            (input) => input.kind === 'customer'
+            (input) => input.kind === 'customer',
         )
     ) {
         trigger.settings.object_inputs.push({
@@ -307,8 +311,8 @@ function setLLMPromptCustomerObjectInput(
 function setLLMPromptOrderObjectInput(
     trigger: Extract<
         NonNullable<WorkflowConfiguration['triggers']>[number],
-        {kind: 'llm-prompt'}
-    >
+        { kind: 'llm-prompt' }
+    >,
 ): void {
     setLLMPromptCustomerObjectInput(trigger)
 
@@ -325,19 +329,19 @@ function setLLMPromptOrderObjectInput(
 function setLLMPromptShipmonkOrderObjectInput(
     trigger: Extract<
         NonNullable<WorkflowConfiguration['triggers']>[number],
-        {kind: 'llm-prompt'}
+        { kind: 'llm-prompt' }
     >,
-    availableIntegrations: AvailableIntegrations
+    availableIntegrations: AvailableIntegrations,
 ): void {
     const shipmonkIntegration = availableIntegrations?.find(
-        (integration) => integration.application_id === SHIPMONK_APPLICATION_ID
+        (integration) => integration.application_id === SHIPMONK_APPLICATION_ID,
     )
     if (!shipmonkIntegration) return
     setLLMPromptCustomerObjectInput(trigger)
 
     if (
         !trigger.settings.object_inputs.find(
-            (input) => input.kind === 'order-shipmonk'
+            (input) => input.kind === 'order-shipmonk',
         )
     ) {
         trigger.settings.object_inputs.push({
@@ -352,9 +356,9 @@ function setLLMPromptObjectInputs(
     node: VisualBuilderNode,
     trigger: Extract<
         NonNullable<WorkflowConfiguration['triggers']>[number],
-        {kind: 'llm-prompt'}
+        { kind: 'llm-prompt' }
     >,
-    availableIntegrations: AvailableIntegrations = []
+    availableIntegrations: AvailableIntegrations = [],
 ) {
     const variables = extractVariablesFromNode(node, g.edges)
     const availableVariables = getWorkflowVariableListForNode(
@@ -362,7 +366,7 @@ function setLLMPromptObjectInputs(
         node.id,
         [],
         [],
-        availableIntegrations
+        availableIntegrations,
     )
 
     variables
@@ -378,7 +382,7 @@ function setLLMPromptObjectInputs(
                 case 'order_shipmonk':
                     setLLMPromptShipmonkOrderObjectInput(
                         trigger,
-                        availableIntegrations
+                        availableIntegrations,
                     )
                     break
             }
@@ -390,15 +394,15 @@ function setReusableLLMPromptObjectInputs(
     node: VisualBuilderNode,
     trigger: Extract<
         NonNullable<WorkflowConfiguration['triggers']>[number],
-        {kind: 'reusable-llm-prompt'}
-    >
+        { kind: 'reusable-llm-prompt' }
+    >,
 ) {
     const variables = extractVariablesFromNode(node, g.edges)
     const availableVariables = getWorkflowVariableListForNode(
         g,
         node.id,
         [],
-        []
+        [],
     )
 
     variables
@@ -409,19 +413,19 @@ function setReusableLLMPromptObjectInputs(
                     {
                         if (
                             !trigger.settings.object_inputs.find(
-                                (input) => input.kind === 'customer'
+                                (input) => input.kind === 'customer',
                             )
                         ) {
                             const index =
                                 trigger.settings.object_inputs.findIndex(
-                                    (input) => input.kind === 'order'
+                                    (input) => input.kind === 'order',
                                 )
 
                             if (index !== -1) {
                                 trigger.settings.object_inputs.splice(
                                     index,
                                     0,
-                                    {kind: 'customer'}
+                                    { kind: 'customer' },
                                 )
                             } else {
                                 trigger.settings.object_inputs.push({
@@ -435,19 +439,19 @@ function setReusableLLMPromptObjectInputs(
                     {
                         if (
                             !trigger.settings.object_inputs.find(
-                                (input) => input.kind === 'customer'
+                                (input) => input.kind === 'customer',
                             )
                         ) {
                             const index =
                                 trigger.settings.object_inputs.findIndex(
-                                    (input) => input.kind === 'order'
+                                    (input) => input.kind === 'order',
                                 )
 
                             if (index !== -1) {
                                 trigger.settings.object_inputs.splice(
                                     index,
                                     0,
-                                    {kind: 'customer'}
+                                    { kind: 'customer' },
                                 )
                             } else {
                                 trigger.settings.object_inputs.push({
@@ -458,10 +462,12 @@ function setReusableLLMPromptObjectInputs(
 
                         if (
                             !trigger.settings.object_inputs.find(
-                                (input) => input.kind === 'order'
+                                (input) => input.kind === 'order',
                             )
                         ) {
-                            trigger.settings.object_inputs.push({kind: 'order'})
+                            trigger.settings.object_inputs.push({
+                                kind: 'order',
+                            })
                         }
                     }
                     break
@@ -472,15 +478,15 @@ function setReusableLLMPromptObjectInputs(
 function setStaticInputs(
     c: WorkflowConfiguration,
     inputs: Exclude<VisualBuilderGraph['inputs'], undefined | null>,
-    values: Exclude<VisualBuilderGraph['values'], undefined | null>
+    values: Exclude<VisualBuilderGraph['values'], undefined | null>,
 ) {
     c.values = c.values || {}
-    inputs.forEach(({id}) => {
+    inputs.forEach(({ id }) => {
         c.values![id] = values[id]
     })
 
     c.inputs = (c.inputs || [])
-        .filter(({id}) => !inputs.some((input) => input.id === id))
+        .filter(({ id }) => !inputs.some((input) => input.id === id))
         .concat(inputs)
 }
 
@@ -488,7 +494,7 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
     g: VisualBuilderGraph,
     isDraft = true,
     steps: WorkflowConfiguration[],
-    availableIntegrations: AvailableIntegrations = []
+    availableIntegrations: AvailableIntegrations = [],
 ) {
     const c: WorkflowConfiguration = {
         id: g.id,
@@ -501,7 +507,7 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
         steps: [],
         transitions: [],
         apps: g.apps?.map(
-            (app) => _omit(app, ['errors', 'touched']) as ActionTemplateApp
+            (app) => _omit(app, ['errors', 'touched']) as ActionTemplateApp,
         ),
         inputs: _cloneDeep(g.inputs),
         values: _cloneDeep(g.values),
@@ -514,7 +520,7 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
     walkVisualBuilderGraph(
         g,
         g.nodes[0].id,
-        (node, {previousNode, incomingEdge}) => {
+        (node, { previousNode, incomingEdge }) => {
             if (node.type === 'channel_trigger') {
                 c.entrypoint = {
                     label: node.data.label,
@@ -524,29 +530,30 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
             } else if (node.type === 'llm_prompt_trigger') {
                 const trigger: Extract<
                     NonNullable<WorkflowConfiguration['triggers']>[number],
-                    {kind: 'llm-prompt'}
+                    { kind: 'llm-prompt' }
                 > = {
                     kind: 'llm-prompt',
                     settings: {
                         custom_inputs: node.data.inputs.filter(
                             (
-                                input
+                                input,
                             ): input is Extract<
                                 NonNullable<
                                     WorkflowConfiguration['triggers']
                                 >[number],
-                                {kind: 'llm-prompt'}
+                                { kind: 'llm-prompt' }
                             >['settings']['custom_inputs'][number] =>
-                                'data_type' in input
+                                'data_type' in input,
                         ),
                         object_inputs: node.data.inputs
                             .filter(
                                 (
-                                    input
+                                    input,
                                 ): input is Extract<
                                     LLMPromptTriggerNodeType['data']['inputs'][number],
-                                    {kind: 'product'}
-                                > => 'kind' in input && input.kind === 'product'
+                                    { kind: 'product' }
+                                > =>
+                                    'kind' in input && input.kind === 'product',
                             )
                             .map((input) => ({
                                 ...input,
@@ -572,7 +579,7 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                     g,
                     node,
                     trigger,
-                    availableIntegrations
+                    availableIntegrations,
                 )
 
                 c.triggers = [trigger]
@@ -597,22 +604,23 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         settings: {
                             custom_inputs: node.data.inputs.filter(
                                 (
-                                    input
+                                    input,
                                 ): input is Extract<
                                     NonNullable<
                                         WorkflowConfiguration['triggers']
                                     >[number],
-                                    {kind: 'reusable-llm-prompt'}
+                                    { kind: 'reusable-llm-prompt' }
                                 >['settings']['custom_inputs'][number] =>
-                                    'data_type' in input
+                                    'data_type' in input,
                             ),
                             object_inputs: node.data.inputs.filter(
                                 (
-                                    input
+                                    input,
                                 ): input is Extract<
                                     ReusableLLMPromptTriggerNodeType['data']['inputs'][number],
-                                    {kind: 'product'}
-                                > => 'kind' in input && input.kind === 'product'
+                                    { kind: 'product' }
+                                > =>
+                                    'kind' in input && input.kind === 'product',
                             ),
                             outputs: [],
                         },
@@ -784,7 +792,7 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         g,
                         node,
                         trigger,
-                        availableIntegrations
+                        availableIntegrations,
                     )
                 }
 
@@ -819,7 +827,7 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                     }
 
                     const configuration = steps.find(
-                        (step) => step.id === node.data.configuration_id
+                        (step) => step.id === node.data.configuration_id,
                     )
 
                     configuration?.triggers?.forEach((t) => {
@@ -854,11 +862,11 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         break
                     case 'application/x-www-form-urlencoded': {
                         const entries = node.data.formUrlencoded?.map(
-                            (entry) => [entry.key, entry.value]
+                            (entry) => [entry.key, entry.value],
                         )
 
                         body = unescapeUrlEncodedVariables(
-                            new URLSearchParams(entries).toString()
+                            new URLSearchParams(entries).toString(),
                         )
                         break
                     }
@@ -890,21 +898,21 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                 const variablesByOutputPath = _keyBy(
                     step.settings.variables,
                     (variable) =>
-                        `steps_state.${step.id}.content.${variable.id}`
+                        `steps_state.${step.id}.content.${variable.id}`,
                 )
 
                 if (trigger?.kind === 'llm-prompt' && node.data.outputs) {
                     trigger.settings.outputs.push(
                         ...node.data.outputs.filter(
-                            (output) => output.path in variablesByOutputPath
-                        )
+                            (output) => output.path in variablesByOutputPath,
+                        ),
                     )
 
                     setLLMPromptObjectInputs(
                         g,
                         node,
                         trigger,
-                        availableIntegrations
+                        availableIntegrations,
                     )
                 }
 
@@ -915,7 +923,8 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                     trigger.settings.outputs.push(
                         ...node.data.outputs
                             .filter(
-                                (output) => output.path in variablesByOutputPath
+                                (output) =>
+                                    output.path in variablesByOutputPath,
                             )
                             .map((output) => ({
                                 ...output,
@@ -923,7 +932,7 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                                 data_type:
                                     variablesByOutputPath[output.path]
                                         .data_type,
-                            }))
+                            })),
                     )
 
                     setReusableLLMPromptObjectInputs(g, node, trigger)
@@ -977,7 +986,7 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         g,
                         node,
                         trigger,
-                        availableIntegrations
+                        availableIntegrations,
                     )
                 }
 
@@ -1010,7 +1019,7 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         g,
                         node,
                         trigger,
-                        availableIntegrations
+                        availableIntegrations,
                     )
                 }
 
@@ -1053,7 +1062,7 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         g,
                         node,
                         trigger,
-                        availableIntegrations
+                        availableIntegrations,
                     )
                 }
 
@@ -1088,7 +1097,7 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         g,
                         node,
                         trigger,
-                        availableIntegrations
+                        availableIntegrations,
                     )
                 }
 
@@ -1126,7 +1135,7 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         g,
                         node,
                         trigger,
-                        availableIntegrations
+                        availableIntegrations,
                     )
                 }
 
@@ -1148,7 +1157,7 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                                     label: 'Fixed amount (currency set in Shopify)',
                                     value: 'fixed',
                                 },
-                                {label: 'Percentange (%)', value: 'percent'},
+                                { label: 'Percentange (%)', value: 'percent' },
                             ],
                         },
                         {
@@ -1168,7 +1177,7 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         discount_type: 'fixed',
                         amount: 0,
                         valid_for: 0,
-                    }
+                    },
                 )
 
                 const step: WorkflowStepCreateDiscountCode = {
@@ -1198,7 +1207,7 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         g,
                         node,
                         trigger,
-                        availableIntegrations
+                        availableIntegrations,
                     )
                 }
 
@@ -1239,7 +1248,7 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         g,
                         node,
                         trigger,
-                        availableIntegrations
+                        availableIntegrations,
                     )
                 }
 
@@ -1272,7 +1281,7 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         g,
                         node,
                         trigger,
-                        availableIntegrations
+                        availableIntegrations,
                     )
                 }
 
@@ -1306,7 +1315,7 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         g,
                         node,
                         trigger,
-                        availableIntegrations
+                        availableIntegrations,
                     )
                 }
 
@@ -1340,7 +1349,7 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                         g,
                         node,
                         trigger,
-                        availableIntegrations
+                        availableIntegrations,
                     )
                 }
 
@@ -1365,15 +1374,15 @@ export function transformVisualBuilderGraphIntoWfConfiguration(
                                   g,
                                   node.id,
                                   steps,
-                                  []
-                              )
+                                  [],
+                              ),
                           )
                         : undefined,
                 })
             } else {
                 c.initial_step_id = stepIdByNodeId[node.id]
             }
-        }
+        },
     )
     return c
 }
@@ -1395,10 +1404,10 @@ export function getIncoming(
         | 'cancel_subscription'
         | 'skip_charge'
         | 'reusable_llm_prompt_call',
-    steps: WorkflowConfiguration[]
+    steps: WorkflowConfiguration[],
 ) {
     const incomingEdge = visualBuilderGraph.edges.find(
-        ({target}) => target === currentNodeId
+        ({ target }) => target === currentNodeId,
     )
 
     if (!incomingEdge) {
@@ -1407,7 +1416,7 @@ export function getIncoming(
 
     const previousNodeId = incomingEdge.source
     const previousNode = previousNodeId
-        ? visualBuilderGraph.nodes.find(({id}) => id === previousNodeId)
+        ? visualBuilderGraph.nodes.find(({ id }) => id === previousNodeId)
         : undefined
 
     switch (type) {
@@ -1417,7 +1426,7 @@ export function getIncoming(
                 previousNode?.type === 'multiple_choices' &&
                 choiceEventId != null
                     ? previousNode.data.choices.findIndex(
-                          ({event_id}) => event_id === choiceEventId
+                          ({ event_id }) => event_id === choiceEventId,
                       )
                     : -1
             if (
@@ -1476,7 +1485,7 @@ export function getIncoming(
                     (step) =>
                         step.id === previousNode.data.configuration_id &&
                         step.internal_id ===
-                            previousNode.data.configuration_internal_id
+                            previousNode.data.configuration_internal_id,
                 )
 
                 const isClickable =
@@ -1514,9 +1523,9 @@ export function getIncoming(
 export function isNodeUniquePerPath(
     type: VisualBuilderNode['type'],
     graph: VisualBuilderGraph,
-    nodeId: string
+    nodeId: string,
 ) {
-    const {nodes} = graph
+    const { nodes } = graph
     const childrenIds: Set<string> = new Set()
     walkVisualBuilderGraph(
         graph,
@@ -1524,7 +1533,7 @@ export function isNodeUniquePerPath(
         (node) => {
             childrenIds.add(node.id)
         },
-        'upwards'
+        'upwards',
     )
     walkVisualBuilderGraph(
         graph,
@@ -1532,18 +1541,18 @@ export function isNodeUniquePerPath(
         (node) => {
             childrenIds.add(node.id)
         },
-        'downwards'
+        'downwards',
     )
 
     return !Boolean(
-        nodes.find((node) => childrenIds.has(node.id) && node.type === type)
+        nodes.find((node) => childrenIds.has(node.id) && node.type === type),
     )
 }
 
 export function hasParentNodeInPath(
     type: VisualBuilderNode['type'],
     graph: VisualBuilderGraph,
-    nodeId: string
+    nodeId: string,
 ) {
     let hasParentNode = false
 
@@ -1555,7 +1564,7 @@ export function hasParentNodeInPath(
                 hasParentNode = true
             }
         },
-        'upwards'
+        'upwards',
     )
 
     return hasParentNode
@@ -1569,7 +1578,7 @@ export function getGraphTouched(): NonNullable<VisualBuilderGraph['touched']> {
 }
 
 export function getGraphAppAppTouched(
-    authType: ActionsApp['auth_type']
+    authType: ActionsApp['auth_type'],
 ): NonNullable<VisualBuilderGraphAppApp['touched']> {
     switch (authType) {
         case 'api-key':
@@ -1586,7 +1595,7 @@ export function getGraphAppAppTouched(
 }
 
 export function getGraphAppAppErrors(
-    app: VisualBuilderGraphAppApp
+    app: VisualBuilderGraphAppApp,
 ): VisualBuilderGraphAppApp['errors'] {
     let errors: VisualBuilderGraphAppApp['errors'] = null
 
@@ -1598,7 +1607,7 @@ export function getGraphAppAppErrors(
         errors = mergeErrors(
             errors,
             'refresh_token',
-            'Refresh token is required'
+            'Refresh token is required',
         )
     }
 
@@ -1608,13 +1617,13 @@ export function getGraphAppAppErrors(
 function mergeErrors<T extends VisualBuilderNode['data']['errors']>(
     errors: T,
     path: string,
-    error: string
+    error: string,
 ): NonNullable<T> {
     return _merge(_setWith({}, path, error, Object), errors)
 }
 
 export function getLLMPromptTriggerNodeTouched(
-    node: LLMPromptTriggerNodeType
+    node: LLMPromptTriggerNodeType,
 ): NonNullable<LLMPromptTriggerNodeType['data']['touched']> {
     return {
         instructions: true,
@@ -1634,21 +1643,21 @@ export function getLLMPromptTriggerNodeTouched(
                     instructions: true,
                 },
             }),
-            {}
+            {},
         ),
         conditions: node.data.conditions.reduce<Record<string, boolean>>(
             (touched, _condition, index) => ({
                 ...touched,
                 [index]: true,
             }),
-            {}
+            {},
         ),
     }
 }
 
 export function getLLMPromptTriggerNodeErrors(
     node: LLMPromptTriggerNodeType,
-    variables: WorkflowVariableList
+    variables: WorkflowVariableList,
 ): LLMPromptTriggerNodeType['data']['errors'] {
     let errors: LLMPromptTriggerNodeType['data']['errors'] = null
 
@@ -1661,7 +1670,7 @@ export function getLLMPromptTriggerNodeErrors(
             errors = mergeErrors(
                 errors,
                 `inputs.${input.id}.name`,
-                'Name is required'
+                'Name is required',
             )
         }
 
@@ -1672,7 +1681,7 @@ export function getLLMPromptTriggerNodeErrors(
             errors = mergeErrors(
                 errors,
                 `inputs.${input.id}.instructions`,
-                'Description is required'
+                'Description is required',
             )
         }
     })
@@ -1683,7 +1692,7 @@ export function getLLMPromptTriggerNodeErrors(
                 errors = mergeErrors(
                     errors,
                     `conditions`,
-                    'Add conditions or select "No conditions required"'
+                    'Add conditions or select "No conditions required"',
                 )
             }
         } else {
@@ -1708,7 +1717,7 @@ export function getLLMPromptTriggerNodeErrors(
                     errors = mergeErrors(
                         errors,
                         `conditions.${index}`,
-                        'Invalid variables'
+                        'Invalid variables',
                     )
                 } else if (
                     variable.type === 'date' &&
@@ -1718,7 +1727,7 @@ export function getLLMPromptTriggerNodeErrors(
                     errors = mergeErrors(
                         errors,
                         `conditions.${index}`,
-                        'Choose a date'
+                        'Choose a date',
                     )
                 } else if (
                     key !== 'exists' &&
@@ -1728,7 +1737,7 @@ export function getLLMPromptTriggerNodeErrors(
                     errors = mergeErrors(
                         errors,
                         `conditions.${index}`,
-                        'Enter a value'
+                        'Enter a value',
                     )
                 } else if (
                     variable.type === 'string' &&
@@ -1738,7 +1747,7 @@ export function getLLMPromptTriggerNodeErrors(
                     errors = mergeErrors(
                         errors,
                         `conditions.${index}`,
-                        'Enter a value'
+                        'Enter a value',
                     )
                 } else if (
                     variable.type === 'number' &&
@@ -1748,7 +1757,7 @@ export function getLLMPromptTriggerNodeErrors(
                     errors = mergeErrors(
                         errors,
                         `conditions.${index}`,
-                        'Enter a value'
+                        'Enter a value',
                     )
                 }
             }
@@ -1759,7 +1768,7 @@ export function getLLMPromptTriggerNodeErrors(
 }
 
 export function getHTTPRequestNodeTouched(
-    node: HttpRequestNodeType
+    node: HttpRequestNodeType,
 ): NonNullable<HttpRequestNodeType['data']['touched']> {
     return {
         name: true,
@@ -1780,7 +1789,7 @@ export function getHTTPRequestNodeTouched(
                     value: true,
                 },
             }),
-            {}
+            {},
         ),
         json: true,
         formUrlencoded: node.data.formUrlencoded?.reduce<
@@ -1799,7 +1808,7 @@ export function getHTTPRequestNodeTouched(
                     value: true,
                 },
             }),
-            {}
+            {},
         ),
         variables: node.data.variables?.reduce<
             Record<
@@ -1817,14 +1826,14 @@ export function getHTTPRequestNodeTouched(
                     jsonpath: true,
                 },
             }),
-            {}
+            {},
         ),
     }
 }
 
 export function getHTTPRequestNodeErrors(
     node: HttpRequestNodeType,
-    variables: WorkflowVariableList
+    variables: WorkflowVariableList,
 ): HttpRequestNodeType['data']['errors'] {
     let errors: HttpRequestNodeType['data']['errors'] = null
 
@@ -1854,7 +1863,7 @@ export function getHTTPRequestNodeErrors(
                 errors = mergeErrors(
                     errors,
                     `headers.${index}.name`,
-                    'Name is required'
+                    'Name is required',
                 )
             } else if (!validateHttpHeaderName(header.name)) {
                 errors = mergeErrors(errors, `headers.${index}`, 'Invalid name')
@@ -1866,19 +1875,19 @@ export function getHTTPRequestNodeErrors(
                 errors = mergeErrors(
                     errors,
                     `headers.${index}.value`,
-                    'Value is required'
+                    'Value is required',
                 )
             } else if (hasInvalidVariables(header.value, variables)) {
                 errors = mergeErrors(
                     errors,
                     `headers.${index}.value`,
-                    'Invalid variables'
+                    'Invalid variables',
                 )
             } else if (!isValidLiquidSyntax(header.value)) {
                 errors = mergeErrors(
                     errors,
                     `headers.${index}.value`,
-                    'Invalid variables syntax'
+                    'Invalid variables syntax',
                 )
             }
         }
@@ -1901,7 +1910,7 @@ export function getHTTPRequestNodeErrors(
                     errors = mergeErrors(
                         errors,
                         `json`,
-                        'Invalid variables syntax'
+                        'Invalid variables syntax',
                     )
                 }
             }
@@ -1916,7 +1925,7 @@ export function getHTTPRequestNodeErrors(
                         errors = mergeErrors(
                             errors,
                             `formUrlencoded.${index}.key`,
-                            'Key is required'
+                            'Key is required',
                         )
                     }
 
@@ -1925,19 +1934,19 @@ export function getHTTPRequestNodeErrors(
                             errors = mergeErrors(
                                 errors,
                                 `formUrlencoded.${index}.value`,
-                                'Value is required'
+                                'Value is required',
                             )
                         } else if (hasInvalidVariables(item.value, variables)) {
                             errors = mergeErrors(
                                 errors,
                                 `formUrlencoded.${index}.value`,
-                                'Invalid variables'
+                                'Invalid variables',
                             )
                         } else if (!isValidLiquidSyntax(item.value)) {
                             errors = mergeErrors(
                                 errors,
                                 `formUrlencoded.${index}.value`,
-                                'Invalid variables syntax'
+                                'Invalid variables syntax',
                             )
                         }
                     }
@@ -1954,7 +1963,7 @@ export function getHTTPRequestNodeErrors(
             errors = mergeErrors(
                 errors,
                 `variables.${index}.name`,
-                'Name is required'
+                'Name is required',
             )
         }
 
@@ -1965,7 +1974,7 @@ export function getHTTPRequestNodeErrors(
             errors = mergeErrors(
                 errors,
                 `variables.${index}.jsonpath`,
-                'JSONPath is required'
+                'JSONPath is required',
             )
         }
     })
@@ -1975,7 +1984,7 @@ export function getHTTPRequestNodeErrors(
 
 export function getConditionsNodeTouched(
     edges: VisualBuilderGraph['edges'],
-    node: ConditionsNodeType
+    node: ConditionsNodeType,
 ): NonNullable<ConditionsNodeType['data']['touched']> {
     return {
         branches: edges
@@ -2002,11 +2011,11 @@ export function getConditionsNodeTouched(
                                 ...touched,
                                 [index]: true,
                             }),
-                            {}
+                            {},
                         ),
                     },
                 }),
-                {}
+                {},
             ),
     }
 }
@@ -2014,7 +2023,7 @@ export function getConditionsNodeTouched(
 export function getConditionsNodeErrors(
     edges: VisualBuilderGraph['edges'],
     node: ConditionsNodeType,
-    variables: WorkflowVariableList
+    variables: WorkflowVariableList,
 ): ConditionsNodeType['data']['errors'] {
     let errors: ConditionsNodeType['data']['errors'] = null
 
@@ -2028,7 +2037,7 @@ export function getConditionsNodeErrors(
                 errors = mergeErrors(
                     errors,
                     `branches.${edge.id}.name`,
-                    'Name is required'
+                    'Name is required',
                 )
             }
 
@@ -2043,7 +2052,7 @@ export function getConditionsNodeErrors(
                 errors = mergeErrors(
                     errors,
                     `branches.${edge.id}.conditions`,
-                    'A branch must have at least 1 condition'
+                    'A branch must have at least 1 condition',
                 )
             } else {
                 for (let index = 0; index < conditions.length; index++) {
@@ -2063,14 +2072,14 @@ export function getConditionsNodeErrors(
                     const variableInUse = schema[0].var
                     const variable = parseWorkflowVariable(
                         variableInUse,
-                        variables
+                        variables,
                     )
 
                     if (!variable) {
                         errors = mergeErrors(
                             errors,
                             `branches.${edge.id}.conditions.${index}`,
-                            'Invalid variables'
+                            'Invalid variables',
                         )
                     } else if (
                         variable.type === 'date' &&
@@ -2080,7 +2089,7 @@ export function getConditionsNodeErrors(
                         errors = mergeErrors(
                             errors,
                             `branches.${edge.id}.conditions.${index}`,
-                            'Choose a date'
+                            'Choose a date',
                         )
                     } else if (
                         key !== 'exists' &&
@@ -2090,7 +2099,7 @@ export function getConditionsNodeErrors(
                         errors = mergeErrors(
                             errors,
                             `branches.${edge.id}.conditions.${index}`,
-                            'Enter a value'
+                            'Enter a value',
                         )
                     } else if (
                         variable.type === 'string' &&
@@ -2100,7 +2109,7 @@ export function getConditionsNodeErrors(
                         errors = mergeErrors(
                             errors,
                             `branches.${edge.id}.conditions.${index}`,
-                            'Enter a value'
+                            'Enter a value',
                         )
                     } else if (
                         variable.type === 'number' &&
@@ -2110,7 +2119,7 @@ export function getConditionsNodeErrors(
                         errors = mergeErrors(
                             errors,
                             `branches.${edge.id}.conditions.${index}`,
-                            'Enter a value'
+                            'Enter a value',
                         )
                     }
                 }
@@ -2129,7 +2138,7 @@ export function getChannelTriggerNodeTouched(): NonNullable<
 }
 
 export function getChannelTriggerNodeErrors(
-    node: ChannelTriggerNodeType
+    node: ChannelTriggerNodeType,
 ): ChannelTriggerNodeType['data']['errors'] {
     let errors: ChannelTriggerNodeType['data']['errors'] = null
 
@@ -2141,7 +2150,7 @@ export function getChannelTriggerNodeErrors(
 }
 
 export function getReusableLLMPromptTriggerNodeTouched(
-    node: ReusableLLMPromptTriggerNodeType
+    node: ReusableLLMPromptTriggerNodeType,
 ): NonNullable<ReusableLLMPromptTriggerNodeType['data']['touched']> {
     return {
         inputs: node.data.inputs.reduce<
@@ -2160,21 +2169,21 @@ export function getReusableLLMPromptTriggerNodeTouched(
                     instructions: true,
                 },
             }),
-            {}
+            {},
         ),
         conditions: node.data.conditions.reduce<Record<string, boolean>>(
             (touched, _condition, index) => ({
                 ...touched,
                 [index]: true,
             }),
-            {}
+            {},
         ),
     }
 }
 
 export function getReusableLLMPromptTriggerNodeErrors(
     node: ReusableLLMPromptTriggerNodeType,
-    variables: WorkflowVariableList
+    variables: WorkflowVariableList,
 ): ReusableLLMPromptTriggerNodeType['data']['errors'] {
     let errors: ReusableLLMPromptTriggerNodeType['data']['errors'] = null
 
@@ -2183,7 +2192,7 @@ export function getReusableLLMPromptTriggerNodeErrors(
             errors = mergeErrors(
                 errors,
                 `inputs.${input.id}.name`,
-                'Name is required'
+                'Name is required',
             )
         }
 
@@ -2194,7 +2203,7 @@ export function getReusableLLMPromptTriggerNodeErrors(
             errors = mergeErrors(
                 errors,
                 `inputs.${input.id}.instructions`,
-                'Description is required'
+                'Description is required',
             )
         }
     })
@@ -2205,7 +2214,7 @@ export function getReusableLLMPromptTriggerNodeErrors(
                 errors = mergeErrors(
                     errors,
                     `conditions`,
-                    'Add conditions or select "No conditions required"'
+                    'Add conditions or select "No conditions required"',
                 )
             }
         } else {
@@ -2230,7 +2239,7 @@ export function getReusableLLMPromptTriggerNodeErrors(
                     errors = mergeErrors(
                         errors,
                         `conditions.${index}`,
-                        'Invalid variables'
+                        'Invalid variables',
                     )
                 } else if (
                     variable.type === 'date' &&
@@ -2240,7 +2249,7 @@ export function getReusableLLMPromptTriggerNodeErrors(
                     errors = mergeErrors(
                         errors,
                         `conditions.${index}`,
-                        'Choose a date'
+                        'Choose a date',
                     )
                 } else if (
                     key !== 'exists' &&
@@ -2250,7 +2259,7 @@ export function getReusableLLMPromptTriggerNodeErrors(
                     errors = mergeErrors(
                         errors,
                         `conditions.${index}`,
-                        'Enter a value'
+                        'Enter a value',
                     )
                 } else if (
                     variable.type === 'string' &&
@@ -2260,7 +2269,7 @@ export function getReusableLLMPromptTriggerNodeErrors(
                     errors = mergeErrors(
                         errors,
                         `conditions.${index}`,
-                        'Enter a value'
+                        'Enter a value',
                     )
                 } else if (
                     variable.type === 'number' &&
@@ -2270,7 +2279,7 @@ export function getReusableLLMPromptTriggerNodeErrors(
                     errors = mergeErrors(
                         errors,
                         `conditions.${index}`,
-                        'Enter a value'
+                        'Enter a value',
                     )
                 }
             }
@@ -2281,25 +2290,25 @@ export function getReusableLLMPromptTriggerNodeErrors(
 }
 
 export function getMultipleChoicesNodeTouched(
-    node: MultipleChoicesNodeType
+    node: MultipleChoicesNodeType,
 ): NonNullable<MultipleChoicesNodeType['data']['touched']> {
     return {
         content: true,
-        choices: node.data.choices.reduce<Record<string, {label?: boolean}>>(
+        choices: node.data.choices.reduce<Record<string, { label?: boolean }>>(
             (touched, choice) => ({
                 ...touched,
                 [choice.event_id]: {
                     label: true,
                 },
             }),
-            {}
+            {},
         ),
     }
 }
 
 export function getMultipleChoicesNodeErrors(
     node: MultipleChoicesNodeType,
-    variables: WorkflowVariableList
+    variables: WorkflowVariableList,
 ): MultipleChoicesNodeType['data']['errors'] {
     let errors: MultipleChoicesNodeType['data']['errors'] = null
 
@@ -2319,19 +2328,19 @@ export function getMultipleChoicesNodeErrors(
                 errors = mergeErrors(
                     errors,
                     `choices.${choice.event_id}.label`,
-                    'Option label is required'
+                    'Option label is required',
                 )
             } else if (hasInvalidVariables(choice.label, variables)) {
                 errors = mergeErrors(
                     errors,
                     `choices.${choice.event_id}.label`,
-                    'Invalid variables'
+                    'Invalid variables',
                 )
             } else if (!isValidLiquidSyntax(choice.label)) {
                 errors = mergeErrors(
                     errors,
                     `choices.${choice.event_id}.label`,
-                    'Invalid variables syntax'
+                    'Invalid variables syntax',
                 )
             }
         }
@@ -2350,7 +2359,7 @@ export function getAutomatedMessageNodeTouched(): NonNullable<
 
 export function getAutomatedMessageNodeErrors(
     node: AutomatedMessageNodeType,
-    variables: WorkflowVariableList
+    variables: WorkflowVariableList,
 ): AutomatedMessageNodeType['data']['errors'] {
     let errors: AutomatedMessageNodeType['data']['errors'] = null
 
@@ -2377,7 +2386,7 @@ export function getTextReplyNodeTouched(): NonNullable<
 
 export function getTextReplyNodeErrors(
     node: TextReplyNodeType,
-    variables: WorkflowVariableList
+    variables: WorkflowVariableList,
 ): TextReplyNodeType['data']['errors'] {
     let errors: TextReplyNodeType['data']['errors'] = null
 
@@ -2404,7 +2413,7 @@ export function getFileUploadNodeTouched(): NonNullable<
 
 export function getFileUploadNodeErrors(
     node: FileUploadNodeType,
-    variables: WorkflowVariableList
+    variables: WorkflowVariableList,
 ): FileUploadNodeType['data']['errors'] {
     let errors: FileUploadNodeType['data']['errors'] = null
 
@@ -2431,7 +2440,7 @@ export function getOrderSelectionNodeTouched(): NonNullable<
 
 export function getOrderSelectionNodeErrors(
     node: OrderSelectionNodeType,
-    variables: WorkflowVariableList
+    variables: WorkflowVariableList,
 ): OrderSelectionNodeType['data']['errors'] {
     let errors: OrderSelectionNodeType['data']['errors'] = null
 
@@ -2458,7 +2467,7 @@ export function getOrderLineItemSelectionNodeTouched(): NonNullable<
 
 export function getOrderLineItemSelectionNodeErrors(
     node: OrderLineItemSelectionNodeType,
-    variables: WorkflowVariableList
+    variables: WorkflowVariableList,
 ): OrderLineItemSelectionNodeType['data']['errors'] {
     let errors: OrderLineItemSelectionNodeType['data']['errors'] = null
 
@@ -2486,7 +2495,7 @@ export function getSkipChargeNodeTouched(): NonNullable<
 
 export function getSkipChargeNodeErrors(
     node: SkipChargeNodeType,
-    variables: WorkflowVariableList
+    variables: WorkflowVariableList,
 ): SkipChargeNodeType['data']['errors'] {
     let errors: SkipChargeNodeType['data']['errors'] = null
 
@@ -2495,7 +2504,7 @@ export function getSkipChargeNodeErrors(
             errors = mergeErrors(
                 errors,
                 `subscriptionId`,
-                'Subscription id is required'
+                'Subscription id is required',
             )
         } else if (hasInvalidVariables(node.data.subscriptionId, variables)) {
             errors = mergeErrors(errors, `subscriptionId`, 'Invalid variables')
@@ -2503,7 +2512,7 @@ export function getSkipChargeNodeErrors(
             errors = mergeErrors(
                 errors,
                 `subscriptionId`,
-                'Invalid variables syntax'
+                'Invalid variables syntax',
             )
         }
     }
@@ -2532,7 +2541,7 @@ export function getCancelSubscriptionNodeTouched(): NonNullable<
 
 export function getCancelSubscriptionNodeErrors(
     node: CancelSubscriptionNodeType,
-    variables: WorkflowVariableList
+    variables: WorkflowVariableList,
 ): SkipChargeNodeType['data']['errors'] {
     let errors: CancelSubscriptionNodeType['data']['errors'] = null
 
@@ -2541,7 +2550,7 @@ export function getCancelSubscriptionNodeErrors(
             errors = mergeErrors(
                 errors,
                 `subscriptionId`,
-                'Subscription id is required'
+                'Subscription id is required',
             )
         } else if (hasInvalidVariables(node.data.subscriptionId, variables)) {
             errors = mergeErrors(errors, `subscriptionId`, 'Invalid variables')
@@ -2549,7 +2558,7 @@ export function getCancelSubscriptionNodeErrors(
             errors = mergeErrors(
                 errors,
                 `subscriptionId`,
-                'Invalid variables syntax'
+                'Invalid variables syntax',
             )
         }
     }
@@ -2580,7 +2589,7 @@ export function getReplaceItemNodeTouched(): NonNullable<
 
 export function getReplaceItemNodeErrors(
     node: ReplaceItemNodeType,
-    variables: WorkflowVariableList
+    variables: WorkflowVariableList,
 ): ReplaceItemNodeType['data']['errors'] {
     let errors: ReplaceItemNodeType['data']['errors'] = null
 
@@ -2589,19 +2598,19 @@ export function getReplaceItemNodeErrors(
             errors = mergeErrors(
                 errors,
                 `productVariantId`,
-                'Product variant id is required'
+                'Product variant id is required',
             )
         } else if (hasInvalidVariables(node.data.productVariantId, variables)) {
             errors = mergeErrors(
                 errors,
                 `productVariantId`,
-                'Invalid variables'
+                'Invalid variables',
             )
         } else if (!isValidLiquidSyntax(node.data.productVariantId)) {
             errors = mergeErrors(
                 errors,
                 `productVariantId`,
-                'Invalid variables syntax'
+                'Invalid variables syntax',
             )
         }
     }
@@ -2621,7 +2630,7 @@ export function getReplaceItemNodeErrors(
             errors = mergeErrors(
                 errors,
                 `addedProductVariantId`,
-                'Added product variant id is required'
+                'Added product variant id is required',
             )
         } else if (
             hasInvalidVariables(node.data.addedProductVariantId, variables)
@@ -2629,13 +2638,13 @@ export function getReplaceItemNodeErrors(
             errors = mergeErrors(
                 errors,
                 `addedProductVariantId`,
-                'Invalid variables'
+                'Invalid variables',
             )
         } else if (!isValidLiquidSyntax(node.data.addedProductVariantId)) {
             errors = mergeErrors(
                 errors,
                 `addedProductVariantId`,
-                'Invalid variables syntax'
+                'Invalid variables syntax',
             )
         }
     }
@@ -2645,7 +2654,7 @@ export function getReplaceItemNodeErrors(
             errors = mergeErrors(
                 errors,
                 `addedQuantity`,
-                'Added quantity is required'
+                'Added quantity is required',
             )
         } else if (hasInvalidVariables(node.data.addedQuantity, variables)) {
             errors = mergeErrors(errors, `addedQuantity`, 'Invalid variables')
@@ -2653,7 +2662,7 @@ export function getReplaceItemNodeErrors(
             errors = mergeErrors(
                 errors,
                 `addedQuantity`,
-                'Invalid variables syntax'
+                'Invalid variables syntax',
             )
         }
     }
@@ -2672,7 +2681,7 @@ export function getRemoveItemNodeTouched(): NonNullable<
 
 export function getRemoveItemNodeErrors(
     node: RemoveItemNodeType,
-    variables: WorkflowVariableList
+    variables: WorkflowVariableList,
 ): RemoveItemNodeType['data']['errors'] {
     let errors: RemoveItemNodeType['data']['errors'] = null
 
@@ -2681,19 +2690,19 @@ export function getRemoveItemNodeErrors(
             errors = mergeErrors(
                 errors,
                 `productVariantId`,
-                'Product variant id is required'
+                'Product variant id is required',
             )
         } else if (hasInvalidVariables(node.data.productVariantId, variables)) {
             errors = mergeErrors(
                 errors,
                 `productVariantId`,
-                'Invalid variables'
+                'Invalid variables',
             )
         } else if (!isValidLiquidSyntax(node.data.productVariantId)) {
             errors = mergeErrors(
                 errors,
                 `productVariantId`,
-                'Invalid variables syntax'
+                'Invalid variables syntax',
             )
         }
     }
@@ -2730,7 +2739,7 @@ export function getUpdateShippingAddressNodeTouched(): NonNullable<
 
 export function getUpdateShippingAddressNodeErrors(
     node: UpdateShippingAddressNodeType,
-    variables: WorkflowVariableList
+    variables: WorkflowVariableList,
 ): UpdateShippingAddressNodeType['data']['errors'] {
     let errors: UpdateShippingAddressNodeType['data']['errors'] = null
 
@@ -2749,7 +2758,7 @@ export function getUpdateShippingAddressNodeErrors(
             errors = mergeErrors(
                 errors,
                 `address1`,
-                'Address line 1 is required'
+                'Address line 1 is required',
             )
         } else if (hasInvalidVariables(node.data.address1, variables)) {
             errors = mergeErrors(errors, `address1`, 'Invalid variables')
@@ -2763,7 +2772,7 @@ export function getUpdateShippingAddressNodeErrors(
             errors = mergeErrors(
                 errors,
                 `address2`,
-                'Address line 2 is required'
+                'Address line 2 is required',
             )
         } else if (hasInvalidVariables(node.data.address2, variables)) {
             errors = mergeErrors(errors, `address2`, 'Invalid variables')
@@ -2841,7 +2850,7 @@ export function getUpdateShippingAddressNodeErrors(
             errors = mergeErrors(
                 errors,
                 `firstName`,
-                'Invalid variables syntax'
+                'Invalid variables syntax',
             )
         }
     }
@@ -2850,7 +2859,7 @@ export function getUpdateShippingAddressNodeErrors(
 }
 
 export const getReusableLLMPromptCallNodeHasInputs = (
-    step: Pick<ActionTemplate, 'inputs'>
+    step: Pick<ActionTemplate, 'inputs'>,
 ): boolean => {
     return !!step.inputs?.length
 }
@@ -2858,7 +2867,7 @@ export const getReusableLLMPromptCallNodeHasInputs = (
 export const getReusableLLMPromptCallNodeHasMissingValues = (
     hasInputs: boolean,
     step: Pick<ActionTemplate, 'inputs'>,
-    values: ReusableLLMPromptCallNodeType['data']['values']
+    values: ReusableLLMPromptCallNodeType['data']['values'],
 ): boolean => {
     return (
         hasInputs && (step.inputs?.length ?? 0) !== Object.keys(values).length
@@ -2868,7 +2877,7 @@ export const getReusableLLMPromptCallNodeHasMissingValues = (
 export const getReusableLLMPromptCallNodeHasAllValues = (
     hasInputs: boolean,
     step: Pick<ActionTemplate, 'inputs'>,
-    values: ReusableLLMPromptCallNodeType['data']['values']
+    values: ReusableLLMPromptCallNodeType['data']['values'],
 ): boolean => {
     return (
         hasInputs && (step.inputs?.length ?? 0) === Object.keys(values).length
@@ -2878,7 +2887,7 @@ export const getReusableLLMPromptCallNodeHasAllValues = (
 export const getReusableLLMPromptCallNodeHasMissingCredentials = (
     graphApp: VisualBuilderGraphApp | undefined,
     actionsApp: Pick<ActionsApp, 'auth_type'> | undefined,
-    isTemplate: boolean
+    isTemplate: boolean,
 ): boolean => {
     if (!graphApp || graphApp.type !== 'app' || !actionsApp || isTemplate) {
         return false
@@ -2896,14 +2905,14 @@ export const getReusableLLMPromptCallNodeHasMissingCredentials = (
 
 export const getReusableLLMPromptCallNodeHasCredentials = (
     templateApp: Pick<ActionTemplateApp, 'type'>,
-    isTemplate: boolean
+    isTemplate: boolean,
 ): boolean => {
     return templateApp.type === 'app' && !isTemplate
 }
 
 export const getReusableLLMPromptCallNodeIsClickable = (
     hasCredentials: boolean,
-    hasInputs: boolean
+    hasInputs: boolean,
 ): boolean => {
     return hasCredentials || hasInputs
 }
@@ -2927,28 +2936,28 @@ export const getReusableLLMPromptCallNodeStatuses = ({
     const hasMissingValues = getReusableLLMPromptCallNodeHasMissingValues(
         hasInputs,
         step,
-        values
+        values,
     )
     const hasAllValues = getReusableLLMPromptCallNodeHasAllValues(
         hasInputs,
         step,
-        values
+        values,
     )
 
     const hasMissingCredentials =
         getReusableLLMPromptCallNodeHasMissingCredentials(
             graphApp,
             actionsApp,
-            isTemplate
+            isTemplate,
         )
     const hasCredentials = getReusableLLMPromptCallNodeHasCredentials(
         templateApp,
-        isTemplate
+        isTemplate,
     )
 
     const isClickable = getReusableLLMPromptCallNodeIsClickable(
         hasCredentials,
-        hasInputs
+        hasInputs,
     )
 
     return {

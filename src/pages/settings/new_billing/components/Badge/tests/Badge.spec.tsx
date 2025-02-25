@@ -1,12 +1,13 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import Badge, {BadgeType} from '../Badge'
+import { render } from '@testing-library/react'
+
+import Badge, { BadgeType } from '../Badge'
 
 describe('<Badge />', () => {
     it('should render a badge', () => {
-        const {container} = render(
-            <Badge type={BadgeType.Success} text="success" />
+        const { container } = render(
+            <Badge type={BadgeType.Success} text="success" />,
         )
         expect(container).toMatchSnapshot()
     })

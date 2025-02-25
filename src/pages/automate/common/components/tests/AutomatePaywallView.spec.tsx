@@ -1,26 +1,27 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {render, screen, fireEvent} from '@testing-library/react'
-import {fromJS, Map} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {SegmentEvent, logEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {AGENT_ROLE} from 'config/user'
-import {HTTP_INTEGRATION_TYPE} from 'constants/integration'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { AGENT_ROLE } from 'config/user'
+import { HTTP_INTEGRATION_TYPE } from 'constants/integration'
 import {
     HELPDESK_PRODUCT_ID,
     legacyBasicHelpdeskPlan,
     products,
 } from 'fixtures/productPrices'
-import {ticket} from 'fixtures/ticket'
-import {user} from 'fixtures/users'
+import { ticket } from 'fixtures/ticket'
+import { user } from 'fixtures/users'
 import AutomatePaywallView from 'pages/automate/common/components/AutomatePaywallView'
-import {usePaywallConfig} from 'pages/automate/common/hooks/usePaywallConfig'
-import {AutomateFeatures} from 'pages/automate/common/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { usePaywallConfig } from 'pages/automate/common/hooks/usePaywallConfig'
+import { AutomateFeatures } from 'pages/automate/common/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 jest.mock('launchdarkly-react-client-sdk')
 jest.mock('common/segment')
@@ -36,7 +37,7 @@ const defaultState = {
         id: Math.random() * 1000,
     }),
     integrations: fromJS({
-        integrations: [{type: HTTP_INTEGRATION_TYPE}],
+        integrations: [{ type: HTTP_INTEGRATION_TYPE }],
     }),
     ticket: fromJS(ticket),
 }
@@ -86,20 +87,20 @@ describe('AutomatePaywallView', () => {
                         }),
                         currentUser: fromJS({
                             ...user,
-                            role: {name: AGENT_ROLE},
+                            role: { name: AGENT_ROLE },
                         }),
-                        billing: fromJS({products}),
+                        billing: fromJS({ products }),
                     })}
                 >
                     {ui}
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
     }
 
     it('renders the component correctly', () => {
         renderWithProvider(
-            <AutomatePaywallView automateFeature={AutomateFeatures.Automate} />
+            <AutomatePaywallView automateFeature={AutomateFeatures.Automate} />,
         )
 
         expect(screen.getByText('Automate')).toBeInTheDocument()
@@ -108,21 +109,21 @@ describe('AutomatePaywallView', () => {
         expect(screen.getByText('Description 1')).toBeInTheDocument()
         expect(screen.getByText('Description 2')).toBeInTheDocument()
         expect(
-            screen.getByText('Select plan to get started')
+            screen.getByText('Select plan to get started'),
         ).toBeInTheDocument()
         expect(screen.getByText('Learn more')).toBeInTheDocument()
     })
 
     it('logs event on mount', () => {
         renderWithProvider(
-            <AutomatePaywallView automateFeature={AutomateFeatures.Automate} />
+            <AutomatePaywallView automateFeature={AutomateFeatures.Automate} />,
         )
 
         expect(mockLogEvent).toHaveBeenCalledWith(
             SegmentEvent.AutomatePaywallVisited,
             {
                 location: AutomateFeatures.Automate,
-            }
+            },
         )
     })
 
@@ -133,7 +134,7 @@ describe('AutomatePaywallView', () => {
         })
 
         renderWithProvider(
-            <AutomatePaywallView automateFeature={AutomateFeatures.Automate} />
+            <AutomatePaywallView automateFeature={AutomateFeatures.Automate} />,
         )
 
         expect(screen.queryByText('Automate')).not.toBeInTheDocument()
@@ -146,7 +147,7 @@ describe('AutomatePaywallView', () => {
         })
 
         renderWithProvider(
-            <AutomatePaywallView automateFeature={AutomateFeatures.Automate} />
+            <AutomatePaywallView automateFeature={AutomateFeatures.Automate} />,
         )
 
         expect(screen.queryByAltText('logo-alt')).not.toBeInTheDocument()
@@ -159,7 +160,7 @@ describe('AutomatePaywallView', () => {
         })
 
         renderWithProvider(
-            <AutomatePaywallView automateFeature={AutomateFeatures.Automate} />
+            <AutomatePaywallView automateFeature={AutomateFeatures.Automate} />,
         )
         expect(screen.queryByText('Learn more')).not.toBeInTheDocument()
     })
@@ -171,34 +172,34 @@ describe('AutomatePaywallView', () => {
         })
 
         renderWithProvider(
-            <AutomatePaywallView automateFeature={AutomateFeatures.Automate} />
+            <AutomatePaywallView automateFeature={AutomateFeatures.Automate} />,
         )
 
         expect(
-            screen.getByRole('button', {name: 'My custom call to Action'})
+            screen.getByRole('button', { name: 'My custom call to Action' }),
         ).toBeInTheDocument()
         expect(
-            screen.queryByText('Select plan to get started')
+            screen.queryByText('Select plan to get started'),
         ).not.toBeInTheDocument()
     })
 
     it('displays ROI Calculator button when feature flag is enabled', () => {
         renderWithProvider(
-            <AutomatePaywallView automateFeature={AutomateFeatures.Automate} />
+            <AutomatePaywallView automateFeature={AutomateFeatures.Automate} />,
         )
 
         expect(
-            screen.getByText('Calculate Potential Return on Investment')
+            screen.getByText('Calculate Potential Return on Investment'),
         ).toBeInTheDocument()
     })
 
     it('opens ROI Calculator modal on button click', () => {
         renderWithProvider(
-            <AutomatePaywallView automateFeature={AutomateFeatures.Automate} />
+            <AutomatePaywallView automateFeature={AutomateFeatures.Automate} />,
         )
 
         fireEvent.click(
-            screen.getByText('Calculate Potential Return on Investment')
+            screen.getByText('Calculate Potential Return on Investment'),
         )
         expect(screen.getByRole('dialog')).toBeInTheDocument()
     })
@@ -208,11 +209,11 @@ describe('AutomatePaywallView', () => {
             [FeatureFlagKey.ObservabilityROICalculator]: false,
         })
         renderWithProvider(
-            <AutomatePaywallView automateFeature={AutomateFeatures.Automate} />
+            <AutomatePaywallView automateFeature={AutomateFeatures.Automate} />,
         )
 
         expect(
-            screen.queryByText('Calculate Potential Return on Investment')
+            screen.queryByText('Calculate Potential Return on Investment'),
         ).not.toBeInTheDocument()
     })
 })

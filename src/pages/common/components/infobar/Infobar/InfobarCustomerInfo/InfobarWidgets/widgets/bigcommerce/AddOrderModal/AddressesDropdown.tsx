@@ -1,8 +1,10 @@
-import {Label, Tooltip} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
-import React, {useRef, useState} from 'react'
+import React, { useRef, useState } from 'react'
 
-import {BigCommerceCustomerAddress} from 'models/integration/types'
+import classnames from 'classnames'
+
+import { Label, Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { BigCommerceCustomerAddress } from 'models/integration/types'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
@@ -10,10 +12,11 @@ import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 
+import { CustomAddressModal } from './CustomAddressModal'
+import { buildAddressComponent, getOneLineAddress } from './utils'
+
 import css from './AddressesDropdown.less'
-import {CustomAddressModal} from './CustomAddressModal'
 import cssOrderModal from './OrderModal.less'
-import {buildAddressComponent, getOneLineAddress} from './utils'
 
 const BILLING_ADDRESS_DROPDOWN_ID = 'billing-address-dropdown'
 const SHIPPING_ADDRESS_DROPDOWN_ID = 'shipping-address-dropdown'
@@ -25,7 +28,7 @@ type Props = {
     onSelectAddress: (
         selectedAddress: BigCommerceCustomerAddress,
         addressType: 'billing' | 'shipping',
-        customerEmail: Maybe<string>
+        customerEmail: Maybe<string>,
     ) => Promise<void>
     addressType: 'billing' | 'shipping'
     currencyCode: string
@@ -47,7 +50,7 @@ function AddressesDropdownItems({
     onSelectAddress: (
         selectedAddress: BigCommerceCustomerAddress,
         addressType: 'billing' | 'shipping',
-        customerEmail: Maybe<string>
+        customerEmail: Maybe<string>,
     ) => Promise<void>
     addressType: 'billing' | 'shipping'
     customerEmail: Maybe<string>
@@ -68,7 +71,7 @@ function AddressesDropdownItems({
                         void onSelectAddress(
                             address,
                             addressType,
-                            customerEmail
+                            customerEmail,
                         )
                     }}
                 >
@@ -146,7 +149,9 @@ export function AddressesDropdown({
                         floating={floatingSelectRef}
                         onToggle={setIsSelectOpen}
                         placeholder={'Select from address book...'}
-                        label={getOneLineAddress({addressObj: selectedAddress})}
+                        label={getOneLineAddress({
+                            addressObj: selectedAddress,
+                        })}
                     >
                         <SelectInputBoxContext.Consumer>
                             {(context) => (

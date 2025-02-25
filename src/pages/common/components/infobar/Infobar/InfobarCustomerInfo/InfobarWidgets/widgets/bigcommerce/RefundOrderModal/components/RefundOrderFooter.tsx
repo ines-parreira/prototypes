@@ -1,9 +1,11 @@
-import {Label} from '@gorgias/merchant-ui-kit'
+import React, { Dispatch, useRef, useState } from 'react'
+
 import classNames from 'classnames'
-import React, {Dispatch, useRef, useState} from 'react'
+
+import { Label } from '@gorgias/merchant-ui-kit'
 
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
-import {OrderStatusList} from 'models/integration/types'
+import { OrderStatusList } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
@@ -14,11 +16,12 @@ import SelectInputBox, {
 } from 'pages/common/forms/input/SelectInputBox'
 import TextArea from 'pages/common/forms/TextArea'
 
-import cssRefundOrderModal from '../RefundOrderModal.less'
 import {
     BIGCOMMERCE_REFUND_ACTION_TYPE,
     BigCommerceRefundActionType,
 } from '../types'
+
+import cssRefundOrderModal from '../RefundOrderModal.less'
 import css from './RefundOrderFooter.less'
 
 type Props = {
@@ -47,7 +50,7 @@ export function RefundOrderFooter({
             })
         },
         [reasonForRefund],
-        300
+        300,
     )
 
     return (
@@ -72,7 +75,7 @@ export function RefundOrderFooter({
             <Label
                 className={classNames(
                     cssRefundOrderModal.label,
-                    cssRefundOrderModal.smallSpacingMarginTop
+                    cssRefundOrderModal.smallSpacingMarginTop,
                 )}
                 htmlFor="newOrderStatus"
             >

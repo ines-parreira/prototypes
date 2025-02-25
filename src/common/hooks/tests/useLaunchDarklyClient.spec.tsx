@@ -1,6 +1,6 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {getLDClient} from 'utils/launchDarkly'
+import { getLDClient } from 'utils/launchDarkly'
 
 import useLaunchDarklyClient from '../useLaunchDarklyClient'
 
@@ -10,7 +10,7 @@ jest.mock('utils/launchDarkly', () => ({
 
 describe('useLaunchDarklyClient', () => {
     let mockWaitForInitialization: jest.Mock
-    let mockLDClient: {waitForInitialization: jest.Mock}
+    let mockLDClient: { waitForInitialization: jest.Mock }
     beforeEach(() => {
         jest.resetAllMocks()
         mockWaitForInitialization = jest.fn().mockResolvedValueOnce(undefined)
@@ -21,8 +21,8 @@ describe('useLaunchDarklyClient', () => {
     })
 
     it('should initialize LaunchDarkly client and set the state correctly', async () => {
-        const {result, waitForNextUpdate} = renderHook(() =>
-            useLaunchDarklyClient()
+        const { result, waitForNextUpdate } = renderHook(() =>
+            useLaunchDarklyClient(),
         )
 
         expect(result.current.ldClient).toBeNull()
@@ -38,7 +38,7 @@ describe('useLaunchDarklyClient', () => {
     it('should not set state if LaunchDarkly client is null', () => {
         ;(getLDClient as jest.Mock).mockReturnValue(null)
 
-        const {result} = renderHook(() => useLaunchDarklyClient())
+        const { result } = renderHook(() => useLaunchDarklyClient())
 
         expect(result.current.ldClient).toBeNull()
         expect(result.current.isLdInitialized).toBe(false)

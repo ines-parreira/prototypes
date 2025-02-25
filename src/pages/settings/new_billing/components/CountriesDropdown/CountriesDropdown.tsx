@@ -1,6 +1,6 @@
-import React, {useRef, useState} from 'react'
+import React, { useRef, useState } from 'react'
 
-import {Country, countries} from 'config/countries'
+import { countries, Country } from 'config/countries'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
@@ -17,7 +17,7 @@ type Props = {
     error?: string
 }
 
-const CountriesDropdown = ({country, onChange, error}: Props) => {
+const CountriesDropdown = ({ country, onChange, error }: Props) => {
     const targetRef = useRef<HTMLDivElement>(null)
     const floatingRef = useRef<HTMLDivElement>(null)
     const [isSelectOpen, setIsSelectOpen] = useState(false)

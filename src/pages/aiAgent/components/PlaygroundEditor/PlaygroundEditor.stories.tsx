@@ -1,7 +1,8 @@
-import {Meta, StoryObj} from '@storybook/react'
 import React from 'react'
 
-import {PlaygroundEditor} from './PlaygroundEditor'
+import { Meta, StoryObj } from '@storybook/react'
+
+import { PlaygroundEditor } from './PlaygroundEditor'
 
 const meta: Meta<typeof PlaygroundEditor> = {
     title: 'AI Agent/Playground/Editor',

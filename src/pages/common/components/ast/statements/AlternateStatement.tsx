@@ -1,12 +1,12 @@
-import {Map, List} from 'immutable'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { List, Map } from 'immutable'
 
 import Foldable from 'pages/common/components/ast/Foldable/Foldable'
 import AddActionOrIfStatement from 'pages/common/components/ast/operations/AddActionOrIfStatement'
-
-import {StatementProps} from 'pages/common/hooks/rule/RuleProvider'
-import {useRuleContext} from 'pages/common/hooks/useRuleContext'
-import {RuleItemActions} from 'pages/settings/rules/types'
+import { StatementProps } from 'pages/common/hooks/rule/RuleProvider'
+import { useRuleContext } from 'pages/common/hooks/useRuleContext'
+import { RuleItemActions } from 'pages/settings/rules/types'
 
 import BlockStatement from './BlockStatement'
 
@@ -27,7 +27,7 @@ export default function AlternateStatement({
     schemas,
     depth,
 }: AlternateStatementProps) {
-    const {Statement} = useRuleContext()
+    const { Statement } = useRuleContext()
 
     return (
         <div className="alternate">

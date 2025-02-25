@@ -1,8 +1,10 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
-import React, {memo} from 'react'
-import {NodeProps} from 'reactflow'
+import React, { memo } from 'react'
 
-import {useGetWorkflowConfigurationTemplate} from 'models/workflows/queries'
+import { NodeProps } from 'reactflow'
+
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+
+import { useGetWorkflowConfigurationTemplate } from 'models/workflows/queries'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import useGetAppFromTemplateApp from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
 import {
@@ -10,12 +12,12 @@ import {
     getGraphAppFromTemplateApp,
 } from 'pages/automate/actionsPlatform/utils'
 import ReusableLLMPromptCallNodeStatusLabel from 'pages/automate/workflows/components/ReusableLLMPromptCallNodeStatusLabel'
-import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
+import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {
     useVisualBuilderNodeProps,
     VisualBuilderNodeProps,
 } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
-import {getReusableLLMPromptCallNodeStatuses} from 'pages/automate/workflows/models/visualBuilderGraph.model'
+import { getReusableLLMPromptCallNodeStatuses } from 'pages/automate/workflows/models/visualBuilderGraph.model'
 import {
     ReusableLLMPromptCallNodeType,
     VisualBuilderGraph,
@@ -43,10 +45,10 @@ const ReusableLLMPromptCallNode = memo(function ReusableLLMPromptCallNode({
     apps: graphApps,
     isTemplate,
 }: Props) {
-    const {data: step} = useGetWorkflowConfigurationTemplate(configurationId)
-    const {apps, actionsApps} = useApps()
+    const { data: step } = useGetWorkflowConfigurationTemplate(configurationId)
+    const { apps, actionsApps } = useApps()
 
-    const getAppFromTemplateApp = useGetAppFromTemplateApp({apps})
+    const getAppFromTemplateApp = useGetAppFromTemplateApp({ apps })
 
     if (!step) {
         return (
@@ -122,9 +124,9 @@ const ReusableLLMPromptCallNode = memo(function ReusableLLMPromptCallNode({
 })
 
 export default function ReusableLLMPromptCallNodeWrapper(
-    node: NodeProps<ReusableLLMPromptCallNodeType['data']>
+    node: NodeProps<ReusableLLMPromptCallNodeType['data']>,
 ) {
-    const {visualBuilderGraph} = useVisualBuilderContext()
+    const { visualBuilderGraph } = useVisualBuilderContext()
 
     const commonProps = useVisualBuilderNodeProps(node)
 

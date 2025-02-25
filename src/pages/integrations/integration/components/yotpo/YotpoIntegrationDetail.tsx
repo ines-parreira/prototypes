@@ -1,8 +1,9 @@
+import React, { Component, MouseEvent } from 'react'
+
 import classNames from 'classnames'
-import {fromJS, Map} from 'immutable'
-import {parse} from 'qs'
-import React, {MouseEvent, Component} from 'react'
-import {Link, RouteComponentProps} from 'react-router-dom'
+import { fromJS, Map } from 'immutable'
+import { parse } from 'qs'
+import { Link, RouteComponentProps } from 'react-router-dom'
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -12,15 +13,15 @@ import {
     Row,
 } from 'reactstrap'
 
-import {PENDING_AUTHENTICATION_STATUS} from 'constants/integration'
-import {IntegrationType} from 'models/integration/constants'
+import { PENDING_AUTHENTICATION_STATUS } from 'constants/integration'
+import { IntegrationType } from 'models/integration/constants'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import CheckBox from 'pages/common/forms/CheckBox'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import withRouter from 'pages/common/utils/withRouter'
-import {INTEGRATION_REMOVAL_CONFIGURATION_TEXT} from 'pages/integrations/integration/constants'
+import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 import css from 'pages/settings/settings.less'
 import {
     deleteIntegration,
@@ -60,7 +61,7 @@ export class YotpoIntegrationDetailComponent extends Component<Props, State> {
                 integrationName: this.props.integration.get('name'),
                 enable_yotpo_tickets: this.props.integration.getIn(
                     ['meta', 'enable_yotpo_tickets'],
-                    false
+                    false,
                 ),
             })
         }
@@ -75,14 +76,14 @@ export class YotpoIntegrationDetailComponent extends Component<Props, State> {
                 integrationName: nextProps.integration.get('name'),
                 enable_yotpo_tickets: nextProps.integration.getIn(
                     ['meta', 'enable_yotpo_tickets'],
-                    false
+                    false,
                 ),
             })
             const authenticationRequired =
                 nextProps.integration.getIn(['meta', 'oauth', 'status']) ===
                 PENDING_AUTHENTICATION_STATUS
             const isAuthenticating =
-                parse(nextProps.location.search, {ignoreQueryPrefix: true})
+                parse(nextProps.location.search, { ignoreQueryPrefix: true })
                     ?.action === 'authentication'
 
             if (isAuthenticating) {
@@ -91,14 +92,14 @@ export class YotpoIntegrationDetailComponent extends Component<Props, State> {
                         nextProps.actions.fetchIntegration(
                             nextProps.integration.get('id') as string,
                             nextProps.integration.get(
-                                'type'
+                                'type',
                             ) as IntegrationType,
-                            true
+                            true,
                         )
                     }, 3000)
                 } else {
                     nextProps.actions.triggerCreateSuccess(
-                        nextProps.integration.toJS()
+                        nextProps.integration.toJS(),
                     )
                 }
             }
@@ -115,15 +116,15 @@ export class YotpoIntegrationDetailComponent extends Component<Props, State> {
                     this.props.integration.get('meta') as Map<any, any>
                 ).setIn(
                     ['enable_yotpo_tickets'],
-                    this.state.enable_yotpo_tickets
+                    this.state.enable_yotpo_tickets,
                 ),
-            })
+            }),
         )
     }
 
     render(): JSX.Element {
-        const {actions, integration, loading} = this.props
-        const {enable_yotpo_tickets} = this.state
+        const { actions, integration, loading } = this.props
+        const { enable_yotpo_tickets } = this.state
 
         const isSubmitting = loading.get('updateIntegration')
 
@@ -170,7 +171,7 @@ export class YotpoIntegrationDetailComponent extends Component<Props, State> {
                                 label="Integration name"
                                 value={this.state.integrationName}
                                 onChange={(value: string) =>
-                                    this.setState({integrationName: value})
+                                    this.setState({ integrationName: value })
                                 }
                             />
                             <CheckBox
@@ -216,7 +217,7 @@ export class YotpoIntegrationDetailComponent extends Component<Props, State> {
                                     className="float-right"
                                     onConfirm={() =>
                                         void actions.deleteIntegration(
-                                            integration
+                                            integration,
                                         )
                                     }
                                     confirmationContent={

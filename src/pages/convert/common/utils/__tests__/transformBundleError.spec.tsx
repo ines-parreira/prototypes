@@ -1,6 +1,6 @@
-import {AxiosError} from 'axios'
+import { AxiosError } from 'axios'
 
-import {transformBundleError} from '../transformBundleError'
+import { transformBundleError } from '../transformBundleError'
 
 const integrationId = 1
 const operationError = 'Bundle install problem'
@@ -32,7 +32,11 @@ const serverError = {
 describe('transformBundleError', () => {
     it('transform permission error', () => {
         expect(
-            transformBundleError(permissionError, operationError, integrationId)
+            transformBundleError(
+                permissionError,
+                operationError,
+                integrationId,
+            ),
         ).toEqual({
             buttons: [
                 {
@@ -50,7 +54,7 @@ describe('transformBundleError', () => {
     })
     it('transform server error', () => {
         expect(
-            transformBundleError(serverError, operationError, integrationId)
+            transformBundleError(serverError, operationError, integrationId),
         ).toEqual({
             buttons: [],
             message: 'Bundle install problem',

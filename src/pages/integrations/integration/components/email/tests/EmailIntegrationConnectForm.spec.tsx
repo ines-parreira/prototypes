@@ -1,14 +1,16 @@
-import {EmailIntegration} from '@gorgias/api-queries'
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
 import React from 'react'
 
-import {assumeMock} from 'utils/testing'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+
+import { EmailIntegration } from '@gorgias/api-queries'
+
+import { assumeMock } from 'utils/testing'
 
 import EmailIntegrationConnectForm from '../EmailIntegrationConnectForm'
 import {
     EmailIntegrationOnboardingStep,
-    UseEmailOnboardingHookResult,
     useEmailOnboarding,
+    UseEmailOnboardingHookResult,
 } from '../hooks/useEmailOnboarding'
 
 const renderComponent = () => render(<EmailIntegrationConnectForm />)
@@ -49,38 +51,38 @@ describe('<EmailIntegrationConnectForm />', () => {
         renderComponent()
 
         expect(
-            screen.getByText('Connect your support email')
+            screen.getByText('Connect your support email'),
         ).toBeInTheDocument()
         expect(
             screen.getByText(
-                'In order to email your customers through Gorgias, you need to connect your support email. Enter the email address you currently use to talk with customers and then choose a display name that customers will see on your responses.'
-            )
+                'In order to email your customers through Gorgias, you need to connect your support email. Enter the email address you currently use to talk with customers and then choose a display name that customers will see on your responses.',
+            ),
         ).toBeInTheDocument()
 
         expect(
             screen.getByRole('textbox', {
                 name: 'Support email address required',
-            })
+            }),
         ).toBeInTheDocument()
         expect(
             screen.getByRole('textbox', {
                 name: 'Display name required',
-            })
+            }),
         ).toBeInTheDocument()
 
         expect(
             screen.getByText(
-                'Enter the email address you currently use to talk with customers.'
-            )
+                'Enter the email address you currently use to talk with customers.',
+            ),
         ).toBeInTheDocument()
         expect(
             screen.getByText(
-                'The name that customers will see when they receive emails from you. Cannot contain these characters: @,;<>[]'
-            )
+                'The name that customers will see when they receive emails from you. Cannot contain these characters: @,;<>[]',
+            ),
         ).toBeInTheDocument()
 
-        expect(screen.getByRole('button', {name: 'Next'})).toBeInTheDocument()
-        expect(screen.getByRole('button', {name: 'Next'})).toBeAriaDisabled()
+        expect(screen.getByRole('button', { name: 'Next' })).toBeInTheDocument()
+        expect(screen.getByRole('button', { name: 'Next' })).toBeAriaDisabled()
     })
 
     it('should validate the email field', async () => {
@@ -91,8 +93,8 @@ describe('<EmailIntegrationConnectForm />', () => {
                 name: 'Support email address required',
             }),
             {
-                target: {value: 'not-a-valid-email'},
-            }
+                target: { value: 'not-a-valid-email' },
+            },
         )
 
         fireEvent.submit(screen.getByRole('form'))
@@ -100,8 +102,8 @@ describe('<EmailIntegrationConnectForm />', () => {
         await waitFor(() => {
             expect(
                 screen.getByText(
-                    'Email format must include @ and a domain, e.g. example@domain.com'
-                )
+                    'Email format must include @ and a domain, e.g. example@domain.com',
+                ),
             ).toBeInTheDocument()
         })
     })
@@ -114,8 +116,8 @@ describe('<EmailIntegrationConnectForm />', () => {
                 name: 'Display name required',
             }),
             {
-                target: {value: ''},
-            }
+                target: { value: '' },
+            },
         )
 
         fireEvent.change(
@@ -123,15 +125,15 @@ describe('<EmailIntegrationConnectForm />', () => {
                 name: 'Support email address required',
             }),
             {
-                target: {value: 'acme@gorgias.test'},
-            }
+                target: { value: 'acme@gorgias.test' },
+            },
         )
 
         fireEvent.submit(screen.getByRole('form'))
 
         await waitFor(() => {
             expect(
-                screen.getByText('This field is required')
+                screen.getByText('This field is required'),
             ).toBeInTheDocument()
         })
 
@@ -140,15 +142,15 @@ describe('<EmailIntegrationConnectForm />', () => {
                 name: 'Display name required',
             }),
             {
-                target: {value: 'invalid name <X>'},
-            }
+                target: { value: 'invalid name <X>' },
+            },
         )
 
         await waitFor(() => {
             expect(
                 screen.getByText(
-                    'The name that customers will see when they receive emails from you. Cannot contain these characters: @,;<>[]'
-                )
+                    'The name that customers will see when they receive emails from you. Cannot contain these characters: @,;<>[]',
+                ),
             ).toBeInTheDocument()
         })
     })
@@ -196,7 +198,7 @@ describe('<EmailIntegrationConnectForm />', () => {
         expect(
             screen.getByRole('button', {
                 name: 'Delete integration',
-            })
+            }),
         ).toBeInTheDocument()
     })
 
@@ -208,8 +210,8 @@ describe('<EmailIntegrationConnectForm />', () => {
                 name: 'Display name required',
             }),
             {
-                target: {value: 'Support address'},
-            }
+                target: { value: 'Support address' },
+            },
         )
 
         fireEvent.change(
@@ -217,8 +219,8 @@ describe('<EmailIntegrationConnectForm />', () => {
                 name: 'Support email address required',
             }),
             {
-                target: {value: 'acme@gorgias.test'},
-            }
+                target: { value: 'acme@gorgias.test' },
+            },
         )
 
         fireEvent.submit(screen.getByRole('form'))
@@ -226,7 +228,7 @@ describe('<EmailIntegrationConnectForm />', () => {
         await waitFor(() => {
             expect(defaultHookResult.connectIntegration).toHaveBeenCalledWith({
                 name: 'Support address',
-                meta: {address: 'acme@gorgias.test'},
+                meta: { address: 'acme@gorgias.test' },
             })
         })
     })

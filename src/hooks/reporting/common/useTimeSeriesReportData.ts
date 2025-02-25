@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react'
+import { useEffect, useState } from 'react'
 
 import {
     getPeriodDateTimes,
@@ -6,16 +6,19 @@ import {
     TimeSeriesPerDimension,
     TimeSeriesPerDimensionFetch,
 } from 'hooks/reporting/useTimeSeries'
-import {ReportingGranularity} from 'models/reporting/types'
-import {Period, StatsFilters} from 'models/stat/types'
-import {NOT_AVAILABLE_LABEL} from 'services/reporting/constants'
-import {TimeSeriesDataWithLabels} from 'services/reporting/supportPerformanceReportingService'
+import { ReportingGranularity } from 'models/reporting/types'
+import { Period, StatsFilters } from 'models/stat/types'
+import { NOT_AVAILABLE_LABEL } from 'services/reporting/constants'
+import { TimeSeriesDataWithLabels } from 'services/reporting/supportPerformanceReportingService'
 
 export const useTimeSeriesReportData = (
     cleanStatsFilters: StatsFilters,
     userTimezone: string,
     granularity: ReportingGranularity,
-    timeSeriesReportSource: {fetchTimeSeries: TimeSeriesFetch; title: string}[]
+    timeSeriesReportSource: {
+        fetchTimeSeries: TimeSeriesFetch
+        title: string
+    }[],
 ) => {
     const [timeSeriesData, setTimeSeriesData] = useState<{
         isFetching: boolean
@@ -27,7 +30,7 @@ export const useTimeSeriesReportData = (
 
     useEffect(() => {
         const timeSeriesPromises = timeSeriesReportSource.map((r) =>
-            r.fetchTimeSeries(cleanStatsFilters, userTimezone, granularity)
+            r.fetchTimeSeries(cleanStatsFilters, userTimezone, granularity),
         )
 
         void Promise.all(timeSeriesPromises)
@@ -40,7 +43,7 @@ export const useTimeSeriesReportData = (
                     })),
                 })
             })
-            .catch(() => setTimeSeriesData({isFetching: false, data: []}))
+            .catch(() => setTimeSeriesData({ isFetching: false, data: [] }))
     }, [cleanStatsFilters, granularity, timeSeriesReportSource, userTimezone])
 
     return timeSeriesData
@@ -51,11 +54,11 @@ const formatTimeSeriesPerDimensionResults = (
     granularity: ReportingGranularity,
     data: TimeSeriesPerDimension,
     headers: string[],
-    dimensions: string[]
+    dimensions: string[],
 ): (string | number)[][] => {
     const dates = getPeriodDateTimes(
         [period.start_datetime, period.end_datetime],
-        granularity
+        granularity,
     )
     return [
         headers,
@@ -63,8 +66,9 @@ const formatTimeSeriesPerDimensionResults = (
             date,
             ...dimensions.map(
                 (dimension) =>
-                    data[dimension]?.[0].find(({dateTime}) => date === dateTime)
-                        ?.value || NOT_AVAILABLE_LABEL
+                    data[dimension]?.[0].find(
+                        ({ dateTime }) => date === dateTime,
+                    )?.value || NOT_AVAILABLE_LABEL,
             ),
         ]),
     ]
@@ -79,7 +83,7 @@ export const useTimeSeriesPerDimensionReportData = (
         title: string
         headers: string[]
         dimensions: string[]
-    }[]
+    }[],
 ) => {
     const [timeSeriesData, setTimeSeriesData] = useState<{
         isFetching: boolean
@@ -94,7 +98,7 @@ export const useTimeSeriesPerDimensionReportData = (
 
     useEffect(() => {
         const timeSeriesPromises = timeSeriesReportSource.map((r) =>
-            r.fetchTimeSeries(cleanStatsFilters, userTimezone, granularity)
+            r.fetchTimeSeries(cleanStatsFilters, userTimezone, granularity),
         )
 
         void Promise.all(timeSeriesPromises)
@@ -107,13 +111,13 @@ export const useTimeSeriesPerDimensionReportData = (
                             granularity,
                             r,
                             timeSeriesReportSource[index].headers,
-                            timeSeriesReportSource[index].dimensions
+                            timeSeriesReportSource[index].dimensions,
                         ),
                         label: timeSeriesReportSource[index].title,
                     })),
                 })
             })
-            .catch(() => setTimeSeriesData({isFetching: false, data: []}))
+            .catch(() => setTimeSeriesData({ isFetching: false, data: [] }))
     }, [cleanStatsFilters, granularity, timeSeriesReportSource, userTimezone])
 
     return timeSeriesData

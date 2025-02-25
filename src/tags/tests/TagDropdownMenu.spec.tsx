@@ -1,18 +1,20 @@
-import {queryKeys} from '@gorgias/api-queries'
-import {QueryClientProvider, QueryKey} from '@tanstack/react-query'
-import {fireEvent, render, waitFor} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps, ContextType} from 'react'
-import {act} from 'react-dom/test-utils'
-import {Provider} from 'react-redux'
+import React, { ComponentProps, ContextType } from 'react'
+
+import { QueryClientProvider, QueryKey } from '@tanstack/react-query'
+import { fireEvent, render, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { act } from 'react-dom/test-utils'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {UserRole} from 'config/types/user'
-import {user} from 'fixtures/users'
-import {DropdownContext} from 'pages/common/components/dropdown/Dropdown'
+import { queryKeys } from '@gorgias/api-queries'
+
+import { UserRole } from 'config/types/user'
+import { user } from 'fixtures/users'
+import { DropdownContext } from 'pages/common/components/dropdown/Dropdown'
 import useListTags from 'tags/useListTags'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import TagDropdownMenu from '../TagDropdownMenu'
 
@@ -46,7 +48,7 @@ describe('<TagDropdownMenu />', () => {
     }
     const renderWithWrappers = (
         props: ComponentProps<typeof TagDropdownMenu>,
-        state = defaultState
+        state = defaultState,
     ) =>
         render(
             <Provider store={mockStore(state)}>
@@ -55,7 +57,7 @@ describe('<TagDropdownMenu />', () => {
                         <TagDropdownMenu {...props} />
                     </QueryClientProvider>
                 </DropdownContext.Provider>
-            </Provider>
+            </Provider>,
         )
 
     beforeEach(() => {
@@ -66,8 +68,8 @@ describe('<TagDropdownMenu />', () => {
                     {
                         data: {
                             data: [
-                                {id: 1, name: 'exchange'},
-                                {id: 2, name: 'refund'},
+                                { id: 1, name: 'exchange' },
+                                { id: 2, name: 'refund' },
                             ],
                         },
                     },
@@ -85,13 +87,13 @@ describe('<TagDropdownMenu />', () => {
             isFetching: true,
         })
 
-        const {getByText} = renderWithWrappers(props)
+        const { getByText } = renderWithWrappers(props)
 
         expect(getByText('SpinnerMock')).toBeInTheDocument()
     })
 
     it('should display tags', () => {
-        const {getByText} = renderWithWrappers(props)
+        const { getByText } = renderWithWrappers(props)
 
         expect(getByText('exchange')).toBeInTheDocument()
         expect(getByText('refund')).toBeInTheDocument()
@@ -99,16 +101,16 @@ describe('<TagDropdownMenu />', () => {
 
     it('should filter tags', () => {
         const filterBy = jest.fn()
-        renderWithWrappers({...props, filterBy})
+        renderWithWrappers({ ...props, filterBy })
 
         expect(filterBy).toHaveBeenCalled()
     })
 
     it('should trigger tag request for searched term', async () => {
-        const {getByPlaceholderText} = renderWithWrappers(props)
+        const { getByPlaceholderText } = renderWithWrappers(props)
 
         fireEvent.change(getByPlaceholderText(/Search/), {
-            target: {value: 'Foo'},
+            target: { value: 'Foo' },
         })
 
         await waitFor(() =>
@@ -118,18 +120,18 @@ describe('<TagDropdownMenu />', () => {
                 }),
                 expect.objectContaining({
                     refetchOnWindowFocus: false,
-                })
-            )
+                }),
+            ),
         )
     })
 
     it('should loop through items via keyboard events', () => {
-        const {getAllByRole, getByPlaceholderText, getByText} =
+        const { getAllByRole, getByPlaceholderText, getByText } =
             renderWithWrappers(props)
 
         const searchInput = getByPlaceholderText(/Search/)
         fireEvent.change(searchInput, {
-            target: {value: 'x'},
+            target: { value: 'x' },
         })
         act(() => jest.runAllTimers())
         const items = getAllByRole('listitem')
@@ -181,26 +183,26 @@ describe('<TagDropdownMenu />', () => {
     })
 
     it('should remove matching queries after tag creation', () => {
-        const {getByPlaceholderText, getByText} = renderWithWrappers(props)
+        const { getByPlaceholderText, getByText } = renderWithWrappers(props)
         const queryKeysTags = queryKeys.tags.listTags()
 
         fireEvent.change(getByPlaceholderText(/Search/), {
-            target: {value: 'Foo'},
+            target: { value: 'Foo' },
         })
         act(() => jest.runAllTimers())
 
         getByText(/Create/i).click()
         const removeQuery = removeQueriesMock.mock.calls[0][0] as unknown as {
-            predicate: ({queryKey}: {queryKey: QueryKey}) => boolean
+            predicate: ({ queryKey }: { queryKey: QueryKey }) => boolean
         }
 
         expect(
             removeQuery.predicate({
                 queryKey: [queryKeysTags[0], queryKeysTags[1]],
-            })
+            }),
         ).toBeFalsy()
         expect(
-            removeQuery.predicate({queryKey: ['agent', 'lists']})
+            removeQuery.predicate({ queryKey: ['agent', 'lists'] }),
         ).toBeFalsy()
         expect(
             removeQuery.predicate({
@@ -213,26 +215,26 @@ describe('<TagDropdownMenu />', () => {
                         },
                     },
                 ],
-            })
+            }),
         ).toBeTruthy()
     })
 
     it('should trigger tag creation through keyboard shortcut', () => {
-        const {getByPlaceholderText, getByText} = renderWithWrappers(props)
+        const { getByPlaceholderText, getByText } = renderWithWrappers(props)
         fireEvent.change(getByPlaceholderText(/Search/), {
-            target: {value: 'Foo'},
+            target: { value: 'Foo' },
         })
         act(() => jest.runAllTimers())
 
-        fireEvent.keyDown(getByText(/Create/i), {key: 'Enter'})
-        expect(props.onClick).toHaveBeenCalledWith({name: 'Foo'})
+        fireEvent.keyDown(getByText(/Create/i), { key: 'Enter' })
+        expect(props.onClick).toHaveBeenCalledWith({ name: 'Foo' })
     })
 
     it('should enable tag creation for lead agent', () => {
-        const {getByPlaceholderText, getByText} = renderWithWrappers(props)
+        const { getByPlaceholderText, getByText } = renderWithWrappers(props)
 
         fireEvent.change(getByPlaceholderText(/Search/), {
-            target: {value: 'Foo'},
+            target: { value: 'Foo' },
         })
         act(() => jest.runAllTimers())
 
@@ -240,15 +242,18 @@ describe('<TagDropdownMenu />', () => {
     })
 
     it('should disable tag creation for basic agent and below', () => {
-        const {getByPlaceholderText, queryByText} = renderWithWrappers(props, {
-            currentUser: fromJS({
-                ...user,
-                role: {name: UserRole.BasicAgent},
-            }),
-        })
+        const { getByPlaceholderText, queryByText } = renderWithWrappers(
+            props,
+            {
+                currentUser: fromJS({
+                    ...user,
+                    role: { name: UserRole.BasicAgent },
+                }),
+            },
+        )
 
         fireEvent.change(getByPlaceholderText(/Search/), {
-            target: {value: 'Foo'},
+            target: { value: 'Foo' },
         })
         act(() => jest.runAllTimers())
 

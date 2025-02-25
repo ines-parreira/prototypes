@@ -1,8 +1,8 @@
-import {createSelector} from 'reselect'
+import { createSelector } from 'reselect'
 
-import {getEntities} from 'state/entities/selectors'
+import { getEntities } from 'state/entities/selectors'
 
 export const getEntitiesTags = createSelector(
     getEntities,
-    (state) => state.tags
+    (state) => state.tags,
 )

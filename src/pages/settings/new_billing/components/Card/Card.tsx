@@ -11,7 +11,7 @@ export type CardProps = {
     }
 }
 
-const Card = ({children, title, link}: CardProps) => {
+const Card = ({ children, title, link }: CardProps) => {
     return (
         <div className={css.container}>
             <div className={css.header}>

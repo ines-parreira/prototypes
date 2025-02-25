@@ -1,4 +1,4 @@
-import React, {FC, useRef, useState} from 'react'
+import React, { FC, useRef, useState } from 'react'
 
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
@@ -8,7 +8,7 @@ import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 
-type EmailItem = {email: string; id: number}
+type EmailItem = { email: string; id: number }
 
 type Props = {
     /**
@@ -46,7 +46,7 @@ export const EmailIntegrationListSelection: FC<Props> = ({
     // used to display the list of selected emails when the dropdown is closed
     const selectedEmailLabels = selectedIds
         .map((selectedId) =>
-            emailItems.find((email) => email.id === selectedId)
+            emailItems.find((email) => email.id === selectedId),
         )
         .filter((input): input is EmailItem => Boolean(input))
         .map((selectedEmail) => selectedEmail.email)
@@ -55,7 +55,7 @@ export const EmailIntegrationListSelection: FC<Props> = ({
     const handleIdToggled = (id: number) => {
         if (selectedIds.includes(id)) {
             const nextSelectedIds = selectedIds.filter(
-                (selectedId) => selectedId !== id
+                (selectedId) => selectedId !== id,
             )
 
             onSelectionChange(nextSelectedIds)
@@ -88,7 +88,7 @@ export const EmailIntegrationListSelection: FC<Props> = ({
                     >
                         <DropdownSearch autoFocus />
                         <DropdownBody>
-                            {emailItems.map(({email, id}) => (
+                            {emailItems.map(({ email, id }) => (
                                 <DropdownItem
                                     key={id}
                                     option={{

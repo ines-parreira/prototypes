@@ -1,11 +1,12 @@
-import React, {ComponentProps, CSSProperties} from 'react'
-import {DropdownMenu} from 'reactstrap'
+import React, { ComponentProps, CSSProperties } from 'react'
+
+import { DropdownMenu } from 'reactstrap'
 
 type Props = ComponentProps<typeof DropdownMenu> & {
     style?: CSSProperties
 }
 
-export default function TagDropdownMenu({container, ...props}: Props) {
+export default function TagDropdownMenu({ container, ...props }: Props) {
     return (
         <DropdownMenu
             {...props}

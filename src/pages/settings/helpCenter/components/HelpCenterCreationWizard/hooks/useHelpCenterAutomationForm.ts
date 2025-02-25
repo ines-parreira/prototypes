@@ -1,8 +1,8 @@
-import {useCallback, useReducer} from 'react'
+import { useCallback, useReducer } from 'react'
 
-import {SegmentEvent} from 'common/segment'
-import {logEvent} from 'common/segment/segment'
-import {Entrypoint} from 'pages/automate/common/components/WorkflowsFeatureList'
+import { SegmentEvent } from 'common/segment'
+import { logEvent } from 'common/segment/segment'
+import { Entrypoint } from 'pages/automate/common/components/WorkflowsFeatureList'
 
 export type UseHelpCenterAutomationFormState = {
     orderManagementEnabled: boolean
@@ -32,15 +32,15 @@ type UseHelpCenterAutomationFormActions =
 
 const reducer = (
     state: UseHelpCenterAutomationFormState,
-    action: UseHelpCenterAutomationFormActions
+    action: UseHelpCenterAutomationFormActions,
 ): UseHelpCenterAutomationFormState => {
     switch (action.type) {
         case 'orderManagementUpdate':
-            return {...state, orderManagementEnabled: action.payload}
+            return { ...state, orderManagementEnabled: action.payload }
         case 'articleRecommendationUpdate':
-            return {...state, articleRecommendationEnabled: action.payload}
+            return { ...state, articleRecommendationEnabled: action.payload }
         case 'flowsUpdate':
-            return {...state, flows: action.payload}
+            return { ...state, flows: action.payload }
     }
 }
 
@@ -51,7 +51,7 @@ const defaultState: UseHelpCenterAutomationFormState = {
 }
 
 export const useHelpCenterAutomationForm = (
-    initialState: Partial<UseHelpCenterAutomationFormState>
+    initialState: Partial<UseHelpCenterAutomationFormState>,
 ) => {
     const [state, dispatch] = useReducer(reducer, {
         ...defaultState,
@@ -59,21 +59,21 @@ export const useHelpCenterAutomationForm = (
     })
 
     const updateOrderManagementEnabled = useCallback((enabled: boolean) => {
-        dispatch({type: 'orderManagementUpdate', payload: enabled})
+        dispatch({ type: 'orderManagementUpdate', payload: enabled })
     }, [])
 
     const updateArticleRecommendationEnabled = useCallback(
         (enabled: boolean) => {
-            dispatch({type: 'articleRecommendationUpdate', payload: enabled})
+            dispatch({ type: 'articleRecommendationUpdate', payload: enabled })
         },
-        []
+        [],
     )
 
     const updateFlows = useCallback((flows: Entrypoint[]) => {
         logEvent(SegmentEvent.AutomateChannelUpdateFromHelpCenterWizard, {
             page: 'HelpCenterWizard',
         })
-        dispatch({type: 'flowsUpdate', payload: flows})
+        dispatch({ type: 'flowsUpdate', payload: flows })
     }, [])
 
     return {

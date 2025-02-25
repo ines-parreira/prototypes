@@ -1,9 +1,9 @@
 import React from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { logEvent, SegmentEvent } from 'common/segment'
 import InstructionsCard from 'pages/common/components/InstructionsCard'
 
-import {useContactFormManualEmbedInstructionsCardState} from './useContactFormManualEmbedTabs'
+import { useContactFormManualEmbedInstructionsCardState } from './useContactFormManualEmbedTabs'
 
 type ContactFormManualEmbedCardProps = {
     codeSnippet: string
@@ -14,9 +14,9 @@ export function ContactFormManualEmbedCard({
     codeSnippet,
     shopName,
 }: ContactFormManualEmbedCardProps) {
-    const {isOpen, tabs} = useContactFormManualEmbedInstructionsCardState(
+    const { isOpen, tabs } = useContactFormManualEmbedInstructionsCardState(
         codeSnippet,
-        shopName
+        shopName,
     )
 
     return (

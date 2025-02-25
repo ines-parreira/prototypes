@@ -1,15 +1,16 @@
-import React, {useCallback, useEffect} from 'react'
-import {useHistory, useLocation} from 'react-router-dom'
+import React, { useCallback, useEffect } from 'react'
 
-import {useSearchParam} from 'hooks/useSearchParam'
+import { useHistory, useLocation } from 'react-router-dom'
+
+import { useSearchParam } from 'hooks/useSearchParam'
 
 import {
     AllRecommendationsStatus,
     isAllRecommendationStatus,
 } from '../hooks/useAIArticleRecommendationItems'
 import AutomateAllRecommendationsView from './AutomateAllRecommendationsView'
-import {useHasEmailToStoreConnection} from './TopQuestions/useHasEmailToStoreConnection'
-import {useTopQuestionsFilters} from './TopQuestions/useTopQuestionsFilters'
+import { useHasEmailToStoreConnection } from './TopQuestions/useHasEmailToStoreConnection'
+import { useTopQuestionsFilters } from './TopQuestions/useTopQuestionsFilters'
 
 const AutomateAllRecommendationsPage = () => {
     const location = useLocation()
@@ -67,7 +68,7 @@ const AutomateAllRecommendationsPage = () => {
             if (store_integration_id !== undefined) {
                 searchParams.set(
                     'store_integration_id',
-                    String(store_integration_id)
+                    String(store_integration_id),
                 )
                 searchParams.delete('page')
             }
@@ -88,7 +89,7 @@ const AutomateAllRecommendationsPage = () => {
                 search: searchParams.toString(),
             })
         },
-        [history, location.pathname, location.search]
+        [history, location.pathname, location.search],
     )
 
     useEffect(() => {
@@ -108,19 +109,19 @@ const AutomateAllRecommendationsPage = () => {
             (!initialHelpCenterId ||
                 initialHelpCenterId !== selectedHelpCenter.id)
         ) {
-            updateQueryParams({help_center_id: selectedHelpCenter.id})
+            updateQueryParams({ help_center_id: selectedHelpCenter.id })
         }
     }, [initialHelpCenterId, selectedHelpCenter, updateQueryParams])
 
     const onPageChange = (page: number) => {
         if (currentPage !== page) {
-            updateQueryParams({page})
+            updateQueryParams({ page })
         }
     }
 
     const onStatusChange = (status: AllRecommendationsStatus) => {
         if (status !== currentStatus) {
-            updateQueryParams({status})
+            updateQueryParams({ status })
         }
     }
 

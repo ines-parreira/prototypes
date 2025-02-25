@@ -1,4 +1,4 @@
-import {IntegrationType} from 'models/integration/constants'
+import { IntegrationType } from 'models/integration/constants'
 import {
     WorkflowConfiguration,
     WorkflowConfigurationShallow,
@@ -20,7 +20,7 @@ export function mockWorkflowConfiguration(uid: string): WorkflowConfiguration {
 }
 
 export function mockWorkflowConfigurationShallow(
-    uid: string
+    uid: string,
 ): WorkflowConfigurationShallow {
     const date = new Date()
 
@@ -35,7 +35,7 @@ export function mockWorkflowConfigurationShallow(
 export function getIntegration(
     id: number,
     type: IntegrationType,
-    shopName?: string
+    shopName?: string,
 ) {
     return {
         id,

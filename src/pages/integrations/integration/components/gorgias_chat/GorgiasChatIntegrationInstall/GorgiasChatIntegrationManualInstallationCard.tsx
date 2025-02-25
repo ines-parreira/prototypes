@@ -1,17 +1,18 @@
-import classnames from 'classnames'
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 
-import {useGetInstallationSnippet} from 'models/integration/queries'
+import classnames from 'classnames'
+
+import { useGetInstallationSnippet } from 'models/integration/queries'
 import IconButton from 'pages/common/components/button/IconButton'
 import Collapse from 'pages/common/components/Collapse/Collapse'
+import { useConvertBundleInChatSnippetEnabled } from 'pages/integrations/integration/components/gorgias_chat/hooks/useConvertBundleInChatSnippetEnabled'
+import { useConvertBundleInstallationSnippet } from 'pages/integrations/integration/components/gorgias_chat/hooks/useConvertBundleInstallationSnippet'
 
-import {useConvertBundleInChatSnippetEnabled} from 'pages/integrations/integration/components/gorgias_chat/hooks/useConvertBundleInChatSnippetEnabled'
-import {useConvertBundleInstallationSnippet} from 'pages/integrations/integration/components/gorgias_chat/hooks/useConvertBundleInstallationSnippet'
-
-import css from './GorgiasChatIntegrationManualInstallationCard.less'
 import ManualInstallationGTMTab from './GorgiasChatIntegrationManualInstallationTabs/ManualInstallationGTMTab'
 import ManualInstallationOtherWebsiteTab from './GorgiasChatIntegrationManualInstallationTabs/ManualInstallationOtherWebsiteTab'
 import ManualInstallationShopifyWebsiteTab from './GorgiasChatIntegrationManualInstallationTabs/ManualInstallationShopifyWebsiteTab'
+
+import css from './GorgiasChatIntegrationManualInstallationCard.less'
 
 type Props = {
     applicationId?: string
@@ -32,14 +33,14 @@ const GorgiasChatIntegrationManualInstallationCard = ({
     isConnectedToShopify,
     isInstalledManually,
 }: Props) => {
-    const {data} = useGetInstallationSnippet(
-        {applicationId: applicationId!},
-        {enabled: !!applicationId}
+    const { data } = useGetInstallationSnippet(
+        { applicationId: applicationId! },
+        { enabled: !!applicationId },
     )
 
     const [isOpen, setIsOpen] = useState(!isConnected || !isConnectedToShopify)
     const [activeTab, setActiveTab] = useState<Tab>(
-        isConnectedToShopify ? Tab.SHOPIFY : Tab.OTHER
+        isConnectedToShopify ? Tab.SHOPIFY : Tab.OTHER,
     )
 
     useEffect(() => {
@@ -47,7 +48,7 @@ const GorgiasChatIntegrationManualInstallationCard = ({
         setActiveTab(isConnectedToShopify ? Tab.SHOPIFY : Tab.OTHER)
     }, [isConnected, isConnectedToShopify])
 
-    const {snippet, appKey} = data || {}
+    const { snippet, appKey } = data || {}
 
     const bundleSnippet = useConvertBundleInstallationSnippet()
     const isBundleSnippetEnabled = useConvertBundleInChatSnippetEnabled()
@@ -99,10 +100,10 @@ const GorgiasChatIntegrationManualInstallationCard = ({
     }
     const tabItems = [
         ...(!isConnected || isConnectedToShopify
-            ? [{id: Tab.SHOPIFY, title: 'Shopify Website'}]
+            ? [{ id: Tab.SHOPIFY, title: 'Shopify Website' }]
             : []),
-        {id: Tab.OTHER, title: 'Any Other Website'},
-        {id: Tab.GTM, title: 'Google Tag Manager'},
+        { id: Tab.OTHER, title: 'Any Other Website' },
+        { id: Tab.GTM, title: 'Google Tag Manager' },
     ]
 
     return (
@@ -116,7 +117,7 @@ const GorgiasChatIntegrationManualInstallationCard = ({
                 {isInstalledManually ? (
                     <i
                         className="material-icons text-success"
-                        style={{fontSize: 24}}
+                        style={{ fontSize: 24 }}
                     >
                         check_circle
                     </i>
@@ -150,7 +151,7 @@ const GorgiasChatIntegrationManualInstallationCard = ({
             <Collapse isOpen={isOpen}>
                 <div className={css.content}>
                     <div className={css.tabs}>
-                        {tabItems.map(({id, title}) => (
+                        {tabItems.map(({ id, title }) => (
                             <div
                                 key={id}
                                 className={classnames(css.tabItem, {

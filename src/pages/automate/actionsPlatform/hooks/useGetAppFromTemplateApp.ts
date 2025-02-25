@@ -1,16 +1,16 @@
-import {useCallback} from 'react'
+import { useCallback } from 'react'
 
-import {ActionTemplateApp, App} from '../types'
+import { ActionTemplateApp, App } from '../types'
 
 export type GetAppFromTemplateApp = (
-    templateApp: ActionTemplateApp
+    templateApp: ActionTemplateApp,
 ) => App | undefined
 
 type Props = {
     apps: App[]
 }
 
-const useGetAppFromTemplateApp = ({apps}: Props) => {
+const useGetAppFromTemplateApp = ({ apps }: Props) => {
     return useCallback<GetAppFromTemplateApp>(
         (templateApp) => {
             switch (templateApp.type) {
@@ -21,11 +21,11 @@ const useGetAppFromTemplateApp = ({apps}: Props) => {
                     return apps.find(
                         (app) =>
                             app.type === templateApp.type &&
-                            app.id === templateApp.app_id
+                            app.id === templateApp.app_id,
                     )
             }
         },
-        [apps]
+        [apps],
     )
 }
 

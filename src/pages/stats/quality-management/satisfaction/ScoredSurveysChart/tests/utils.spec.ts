@@ -1,6 +1,6 @@
-import {ScoredSurveyDataKey} from 'hooks/reporting/quality-management/satisfaction/useScoredSurveys'
-import {OrderDirection} from 'models/api/types'
-import {sortScoredSurveyData} from 'pages/stats/quality-management/satisfaction/ScoredSurveysChart/utils'
+import { ScoredSurveyDataKey } from 'hooks/reporting/quality-management/satisfaction/useScoredSurveys'
+import { OrderDirection } from 'models/api/types'
+import { sortScoredSurveyData } from 'pages/stats/quality-management/satisfaction/ScoredSurveysChart/utils'
 
 const sampleScoredSurveyData = [
     {
@@ -73,7 +73,7 @@ describe('sortScoredSurveyData', () => {
         const sorted = sortScoredSurveyData(
             sampleScoredSurveyData,
             ScoredSurveyDataKey.SURVEY_SCORE,
-            OrderDirection.Asc
+            OrderDirection.Asc,
         )
         expect(sorted.map((item) => item.surveyScore)).toEqual([
             '2',
@@ -90,7 +90,7 @@ describe('sortScoredSurveyData', () => {
         const sorted = sortScoredSurveyData(
             sampleScoredSurveyData,
             ScoredSurveyDataKey.SURVEY_SCORE,
-            OrderDirection.Desc
+            OrderDirection.Desc,
         )
         expect(sorted.map((item) => item.surveyScore)).toEqual([
             '5',
@@ -107,7 +107,7 @@ describe('sortScoredSurveyData', () => {
         const sorted = sortScoredSurveyData(
             sampleScoredSurveyData,
             ScoredSurveyDataKey.SURVEY_SCORED_DATE,
-            OrderDirection.Asc
+            OrderDirection.Asc,
         )
         expect(sorted.map((item) => item.surveyScoredDate)).toEqual([
             '2024-12-05T08:30:00.000',
@@ -124,7 +124,7 @@ describe('sortScoredSurveyData', () => {
         const sorted = sortScoredSurveyData(
             sampleScoredSurveyData,
             ScoredSurveyDataKey.SURVEY_SCORED_DATE,
-            OrderDirection.Desc
+            OrderDirection.Desc,
         )
         expect(sorted.map((item) => item.surveyScoredDate)).toEqual([
             '2025-02-20T09:15:00.000',
@@ -141,7 +141,7 @@ describe('sortScoredSurveyData', () => {
         const sorted = sortScoredSurveyData(
             sampleScoredSurveyData,
             ScoredSurveyDataKey.ASSIGNEE,
-            OrderDirection.Asc
+            OrderDirection.Asc,
         )
         expect(sorted.map((item) => item.assignee)).toEqual([
             'Aretha Franklin',
@@ -158,7 +158,7 @@ describe('sortScoredSurveyData', () => {
         const sorted = sortScoredSurveyData(
             sampleScoredSurveyData,
             ScoredSurveyDataKey.ASSIGNEE,
-            OrderDirection.Asc
+            OrderDirection.Asc,
         )
         expect(sorted.map((item) => item.assignee)).toEqual([
             'Aretha Franklin',

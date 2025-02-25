@@ -1,47 +1,48 @@
-import {useQueryClient} from '@tanstack/react-query'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
+
+import { useQueryClient } from '@tanstack/react-query'
 import classnames from 'classnames'
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
-import {useLocation, useParams} from 'react-router-dom'
-import {Col, Container, Row} from 'reactstrap'
+import { useLocation, useParams } from 'react-router-dom'
+import { Col, Container, Row } from 'reactstrap'
 
 import {
     GORGIAS_CHAT_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
 } from 'constants/integration'
 import useAppSelector from 'hooks/useAppSelector'
-
-import {bundleKeys} from 'models/convert/bundle/queries'
-import {BundleStatus} from 'models/convert/bundle/types'
-import {IntegrationType} from 'models/integration/constants'
+import { bundleKeys } from 'models/convert/bundle/queries'
+import { BundleStatus } from 'models/convert/bundle/types'
+import { IntegrationType } from 'models/integration/constants'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import {
     NavigatedSuccessModalLocationState,
     NavigatedSuccessModalName,
 } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
-import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
+import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
 import ConvertInstallModal from 'pages/convert/bundles/components/ConvertInstallModal'
-import {useGetConvertBundle} from 'pages/convert/bundles/hooks/useGetConvertBundle'
-import {useUpdateChannelConnection} from 'pages/convert/channelConnections/hooks/useUpdateChannelConnection'
-import {CONVERT_ROUTE_PARAM_NAME} from 'pages/convert/common/constants'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import {ConvertRouteParams} from 'pages/convert/common/types'
-import {useBackToConvert} from 'pages/convert/onboarding/hooks/useBackToConvert'
+import { useGetConvertBundle } from 'pages/convert/bundles/hooks/useGetConvertBundle'
+import { useUpdateChannelConnection } from 'pages/convert/channelConnections/hooks/useUpdateChannelConnection'
+import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
+import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import { ConvertRouteParams } from 'pages/convert/common/types'
+import { useBackToConvert } from 'pages/convert/onboarding/hooks/useBackToConvert'
 import history from 'pages/history'
 import {
     getIntegrationById,
     getIntegrationsByType,
 } from 'state/integrations/selectors'
-import {assetsUrl, toJS} from 'utils'
+import { assetsUrl, toJS } from 'utils'
 
 import ConvertOnboardingStep from '../ConvertOnboardingStep'
+
 import css from './ConvertOnboardingView.less'
 
 const BOOK_CALL_URL =
     'https://calendly.com/gorgias-implementation/convert-implementation?utm_medium=in_product&utm_source=helpdesk&utm_campaign=onboarding_flow'
 
 const ConvertOnboardingView = () => {
-    const {[CONVERT_ROUTE_PARAM_NAME]: integrationId} =
+    const { [CONVERT_ROUTE_PARAM_NAME]: integrationId } =
         useParams<ConvertRouteParams>()
 
     const queryClient = useQueryClient()
@@ -49,23 +50,23 @@ const ConvertOnboardingView = () => {
 
     const chatIntegrationId = parseInt(integrationId || '')
     const chatIntegration = useAppSelector(
-        getIntegrationById(chatIntegrationId)
+        getIntegrationById(chatIntegrationId),
     )
 
     const shopifyIntegrations = useAppSelector(
-        getIntegrationsByType(IntegrationType.Shopify)
+        getIntegrationsByType(IntegrationType.Shopify),
     )
 
-    const {setBackIntegrationId} = useBackToConvert()
+    const { setBackIntegrationId } = useBackToConvert()
 
     const hasChat = useMemo(
         () =>
             Boolean(
                 chatIntegration &&
                     chatIntegration.get('type') ===
-                        GORGIAS_CHAT_INTEGRATION_TYPE
+                        GORGIAS_CHAT_INTEGRATION_TYPE,
             ),
-        [chatIntegration]
+        [chatIntegration],
     )
 
     const storeIntegrationId = useMemo(() => {
@@ -84,20 +85,20 @@ const ConvertOnboardingView = () => {
     }, [chatIntegration, hasChat, shopifyIntegrations])
 
     const storeIntegration = useAppSelector(
-        getIntegrationById(storeIntegrationId)
+        getIntegrationById(storeIntegrationId),
     )
 
     const hasStore = useMemo(
         () =>
             Boolean(
                 storeIntegration &&
-                    storeIntegration.get('type') === SHOPIFY_INTEGRATION_TYPE
+                    storeIntegration.get('type') === SHOPIFY_INTEGRATION_TYPE,
             ),
-        [storeIntegration]
+        [storeIntegration],
     )
 
-    const {channelConnection} = useGetOrCreateChannelConnection(
-        toJS(chatIntegration)
+    const { channelConnection } = useGetOrCreateChannelConnection(
+        toJS(chatIntegration),
     )
 
     const [isOnboarded, isSetup] = useMemo(() => {
@@ -107,11 +108,14 @@ const ConvertOnboardingView = () => {
         ]
     }, [channelConnection])
 
-    const {bundle} = useGetConvertBundle(storeIntegrationId, chatIntegrationId)
+    const { bundle } = useGetConvertBundle(
+        storeIntegrationId,
+        chatIntegrationId,
+    )
 
     const isInstalled = useMemo(
         () => !!bundle && bundle.status === BundleStatus.Installed,
-        [bundle]
+        [bundle],
     )
 
     const isSubscriber = useIsConvertSubscriber()
@@ -122,11 +126,13 @@ const ConvertOnboardingView = () => {
         if (updateChannelConnection.isLoading) return
 
         if (!!channelConnection) {
-            const data = isSubscriber ? {is_onboarded: true} : {is_setup: true}
+            const data = isSubscriber
+                ? { is_onboarded: true }
+                : { is_setup: true }
 
             await updateChannelConnection.mutateAsync([
                 undefined,
-                {channel_connection_id: channelConnection.id},
+                { channel_connection_id: channelConnection.id },
                 data,
             ])
         }
@@ -140,7 +146,7 @@ const ConvertOnboardingView = () => {
             }
             history.push(
                 `/app/convert/${chatIntegrationId}/campaigns`,
-                locationState
+                locationState,
             )
         }
     }, [chatIntegrationId, isSubscriber, isOnboarded, isSetup])
@@ -164,7 +170,7 @@ const ConvertOnboardingView = () => {
                     className={classnames(
                         'align-items-center',
                         'mx-0',
-                        css.pageWrapper
+                        css.pageWrapper,
                     )}
                 >
                     <Col
@@ -174,7 +180,7 @@ const ConvertOnboardingView = () => {
                         className={classnames(
                             css.content,
                             'mt-sm-5',
-                            'mt-lg-0'
+                            'mt-lg-0',
                         )}
                     >
                         {isSubscriber && (!hasChat || hasStore) ? (
@@ -305,13 +311,13 @@ const ConvertOnboardingView = () => {
                             'px-5',
                             'py-4',
                             'mt-sm-5',
-                            'mt-lg-0'
+                            'mt-lg-0',
                         )}
                     >
                         {isSubscriber ? (
                             <img
                                 src={assetsUrl(
-                                    '/img/presentationals/convert-campaign.png'
+                                    '/img/presentationals/convert-campaign.png',
                                 )}
                                 className={css.forSubscribers}
                                 alt="Convert campaign preview"
@@ -319,7 +325,7 @@ const ConvertOnboardingView = () => {
                         ) : (
                             <img
                                 src={assetsUrl(
-                                    '/img/presentationals/convert-basic-campaign.png'
+                                    '/img/presentationals/convert-basic-campaign.png',
                                 )}
                                 alt="Convert campaign preview"
                             />

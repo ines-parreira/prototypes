@@ -1,16 +1,17 @@
+import { useQueryClient } from '@tanstack/react-query'
+
 import {
     ArchiveMacroAsUserResult,
     Macro,
     queryKeys,
     useBulkArchiveMacros as useBulkArchiveMacrosPrimitive,
 } from '@gorgias/api-queries'
-import {useQueryClient} from '@tanstack/react-query'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {isGorgiasApiError} from 'models/api/types'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {errorToChildren} from 'utils'
+import { isGorgiasApiError } from 'models/api/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { errorToChildren } from 'utils'
 
 const queryKey = queryKeys.macros.listMacros() as string[]
 queryKey.pop()
@@ -33,7 +34,7 @@ export function useBulkArchiveMacros(macros?: Macro[]) {
                         errors.push(data)
                     } else {
                         const macroName = macros?.find(
-                            ({id}) => id === data.id
+                            ({ id }) => id === data.id,
                         )?.name
                         successes.push(macroName ?? '')
                     }
@@ -43,14 +44,14 @@ export function useBulkArchiveMacros(macros?: Macro[]) {
                         notify({
                             message: `Successfully archived macro${successes.length > 1 ? 's' : ''}${successes[0] ? ': ' + successes.join(', ') : ''}`,
                             status: NotificationStatus.Success,
-                        })
+                        }),
                     )
                 }
 
                 if (errors) {
                     for (const data of errors) {
                         const macroName = macros?.find(
-                            ({id}) => id === data.id
+                            ({ id }) => id === data.id,
                         )?.name
 
                         void dispatch(
@@ -67,7 +68,7 @@ export function useBulkArchiveMacros(macros?: Macro[]) {
                                 })!,
                                 allowHTML: true,
                                 status: NotificationStatus.Error,
-                            })
+                            }),
                         )
                     }
                 }
@@ -84,7 +85,7 @@ export function useBulkArchiveMacros(macros?: Macro[]) {
                         message: errorToChildren(error) || undefined,
                         allowHTML: true,
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
             },
         },

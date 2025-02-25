@@ -1,28 +1,30 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
-import {fromJS, List, Map} from 'immutable'
-import _sample from 'lodash/sample'
-import React, {ReactNode, useCallback, useMemo} from 'react'
+import React, { ReactNode, useCallback, useMemo } from 'react'
 
-import {TicketStatus} from 'business/types/ticket'
-import {logEvent, SegmentEvent} from 'common/segment'
+import classnames from 'classnames'
+import { fromJS, List, Map } from 'immutable'
+import _sample from 'lodash/sample'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { TicketStatus } from 'business/types/ticket'
+import { logEvent, SegmentEvent } from 'common/segment'
 import keymap from 'config/shortcuts'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {MacroActionName} from 'models/macroAction/types'
+import { MacroActionName } from 'models/macroAction/types'
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import shortcutManager from 'services/shortcutManager'
-import {submitSetting} from 'state/currentUser/actions'
+import { submitSetting } from 'state/currentUser/actions'
 import {
-    getPreferences,
     isHidingTips as getIsHidingTips,
+    getPreferences,
 } from 'state/currentUser/selectors'
 import {
     canSend as getCanSend,
     hasContent as getHasContent,
 } from 'state/newMessage/selectors'
-import {hasContentlessAction as getHasContentlessAction} from 'state/ticket/selectors'
+import { hasContentlessAction as getHasContentlessAction } from 'state/ticket/selectors'
 
 import css from './TicketSubmitButtons.less'
 
@@ -61,7 +63,7 @@ type Props = {
     setTicketStatus: (status: TicketStatus) => void
 }
 
-export function TicketSubmitButtons({setTicketStatus}: Props) {
+export function TicketSubmitButtons({ setTicketStatus }: Props) {
     const dispatch = useAppDispatch()
 
     const hasContent = useAppSelector(getHasContent)
@@ -83,7 +85,7 @@ export function TicketSubmitButtons({setTicketStatus}: Props) {
     const handleClickHideTips = useCallback(() => {
         const newPreferences = currentUserPreferences.setIn(
             ['data', 'hide_tips'],
-            true
+            true,
         )
         return dispatch(submitSetting(newPreferences.toJS(), false))
     }, [currentUserPreferences, dispatch])
@@ -101,11 +103,11 @@ export function TicketSubmitButtons({setTicketStatus}: Props) {
 
     const actions = ticket.getIn(
         ['state', 'appliedMacro', 'actions'],
-        fromJS([])
+        fromJS([]),
     ) as List<Map<any, any>>
 
     const hasSetSubjectAction = actions.some(
-        (action) => action?.get('name') === MacroActionName.SetSubject
+        (action) => action?.get('name') === MacroActionName.SetSubject,
     )
 
     const text = hasContent || !hasContentlessAction ? 'Send' : 'Apply Macro'
@@ -116,7 +118,7 @@ export function TicketSubmitButtons({setTicketStatus}: Props) {
         <div
             className={classnames(
                 css.component,
-                'd-flex align-items-center justify-content-between'
+                'd-flex align-items-center justify-content-between',
             )}
         >
             <div
@@ -155,7 +157,7 @@ export function TicketSubmitButtons({setTicketStatus}: Props) {
                         offset="0, 4px"
                     >
                         {shortcutManager.getActionKeys(
-                            keymap.TicketDetailContainer.actions.SUBMIT_TICKET
+                            keymap.TicketDetailContainer.actions.SUBMIT_TICKET,
                         )}
                     </Tooltip>
                 )}
@@ -197,7 +199,7 @@ export function TicketSubmitButtons({setTicketStatus}: Props) {
                     >
                         {shortcutManager.getActionKeys(
                             keymap.TicketDetailContainer.actions
-                                .SUBMIT_CLOSE_TICKET
+                                .SUBMIT_CLOSE_TICKET,
                         )}
                     </Tooltip>
                 )}
@@ -206,7 +208,7 @@ export function TicketSubmitButtons({setTicketStatus}: Props) {
                 <small
                     className={classnames(
                         css.tip,
-                        'text-faded d-none d-md-inline-block'
+                        'text-faded d-none d-md-inline-block',
                     )}
                 >
                     <i className="material-icons md-1 mr-1 align-text-bottom">

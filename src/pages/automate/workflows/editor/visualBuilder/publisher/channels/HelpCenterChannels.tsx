@@ -1,11 +1,11 @@
-import React, {useCallback, useMemo} from 'react'
+import React, { useCallback, useMemo } from 'react'
 
-import {TicketChannel} from 'business/types/ticket'
-import {HelpCenterAutomationSettings} from 'models/helpCenter/types'
+import { TicketChannel } from 'business/types/ticket'
+import { HelpCenterAutomationSettings } from 'models/helpCenter/types'
 import useHelpCentersAutomationSettings from 'pages/automate/common/hooks/useHelpCentersAutomationSettings'
-import {SelfServiceChannelType} from 'pages/automate/common/hooks/useSelfServiceChannels'
-import {SelfServiceHelpCenterChannel} from 'pages/automate/common/hooks/useSelfServiceHelpCenterChannels'
-import {WorkflowConfiguration} from 'pages/automate/workflows/models/workflowConfiguration.types'
+import { SelfServiceChannelType } from 'pages/automate/common/hooks/useSelfServiceChannels'
+import { SelfServiceHelpCenterChannel } from 'pages/automate/common/hooks/useSelfServiceHelpCenterChannels'
+import { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
 
 import ChannelBlock from '../helper/ChannelBlock'
 import useOnlySupportedChannels from '../helper/useOnlySupportedChannels'
@@ -26,7 +26,7 @@ const ChannelItem = ({
     applicationAutomationSettings: HelpCenterAutomationSettings
     handleHelpCenterAutomationSettingsUpdate: (
         helpCenterId: number,
-        chatApplicationAutomationSettings: Partial<HelpCenterAutomationSettings>
+        chatApplicationAutomationSettings: Partial<HelpCenterAutomationSettings>,
     ) => Promise<void>
 }) => {
     const workflows = applicationAutomationSettings?.workflows || []
@@ -42,7 +42,7 @@ const ChannelItem = ({
             applicationAutomationSettings,
             channel.value.id,
             handleHelpCenterAutomationSettingsUpdate,
-        ]
+        ],
     )
     return (
         <ChannelToggle
@@ -65,7 +65,7 @@ const HelpCenterChannels = ({
 }) => {
     const onlySupportedChannels = useOnlySupportedChannels(
         configuration,
-        TicketChannel.HelpCenter
+        TicketChannel.HelpCenter,
     )
     const appIds = useMemo(() => {
         return helpCentersChannels.map((channel) => channel.value.id)

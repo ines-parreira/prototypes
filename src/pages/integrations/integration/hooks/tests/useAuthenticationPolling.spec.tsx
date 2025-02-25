@@ -1,13 +1,14 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {createMemoryHistory} from 'history'
-import {Map, fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
-import {Router} from 'react-router-dom'
+
+import { renderHook } from '@testing-library/react-hooks'
+import { createMemoryHistory } from 'history'
+import { fromJS, Map } from 'immutable'
+import { Provider } from 'react-redux'
+import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {PENDING_AUTHENTICATION_STATUS} from 'constants/integration'
+import { PENDING_AUTHENTICATION_STATUS } from 'constants/integration'
 import * as actions from 'state/integrations/actions'
 
 import useAuthenticationPolling from '../useAuthenticationPolling'
@@ -39,25 +40,25 @@ describe('useAuthenticationPolling()', () => {
         })
         const store = mockStore({})
         store.dispatch = jest.fn()
-        const {rerender} = renderHook(
-            ({integration}: Props) => useAuthenticationPolling(integration),
+        const { rerender } = renderHook(
+            ({ integration }: Props) => useAuthenticationPolling(integration),
             {
                 initialProps: {
                     integration: fromJS({}),
                 },
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Router history={history}>
                         <Provider store={mockStore({})}>{children}</Provider>
                     </Router>
                 ),
-            }
+            },
         )
         jest.runAllTimers()
         expect(triggerCreateSuccess).toHaveBeenCalledTimes(0)
         expect(fetchIntegration).toHaveBeenCalledTimes(0)
         history.push('/')
         rerender({
-            integration: fromJS({id: 'someid'}),
+            integration: fromJS({ id: 'someid' }),
         })
         expect(triggerCreateSuccess).toHaveBeenCalledTimes(0)
         expect(fetchIntegration).toHaveBeenCalledTimes(0)
@@ -69,28 +70,30 @@ describe('useAuthenticationPolling()', () => {
         })
         const store = mockStore({})
         store.dispatch = jest.fn()
-        const {result, rerender} = renderHook(
-            ({integration}: Props) => useAuthenticationPolling(integration),
+        const { result, rerender } = renderHook(
+            ({ integration }: Props) => useAuthenticationPolling(integration),
             {
                 initialProps: {
                     integration: fromJS({
                         id: 'someId',
                         type: 'someType',
-                        meta: {oauth: {status: PENDING_AUTHENTICATION_STATUS}},
+                        meta: {
+                            oauth: { status: PENDING_AUTHENTICATION_STATUS },
+                        },
                     }),
                 },
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Router history={history}>
                         <Provider store={mockStore({})}>{children}</Provider>
                     </Router>
                 ),
-            }
+            },
         )
         expect(result.current).toBe(true)
         rerender({
             integration: fromJS({
                 id: 'someid',
-                meta: {oauth: {status: 'not pending'}},
+                meta: { oauth: { status: 'not pending' } },
             }),
         })
         expect(result.current).toBe(false)
@@ -102,22 +105,24 @@ describe('useAuthenticationPolling()', () => {
         })
         const store = mockStore({})
         store.dispatch = jest.fn()
-        const {rerender} = renderHook(
-            ({integration}: Props) => useAuthenticationPolling(integration),
+        const { rerender } = renderHook(
+            ({ integration }: Props) => useAuthenticationPolling(integration),
             {
                 initialProps: {
                     integration: fromJS({
                         id: 'someId',
                         type: 'someType',
-                        meta: {oauth: {status: PENDING_AUTHENTICATION_STATUS}},
+                        meta: {
+                            oauth: { status: PENDING_AUTHENTICATION_STATUS },
+                        },
                     }),
                 },
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Router history={history}>
                         <Provider store={mockStore({})}>{children}</Provider>
                     </Router>
                 ),
-            }
+            },
         )
         expect(fetchIntegration).toHaveBeenCalledTimes(0)
         jest.runAllTimers()
@@ -133,7 +138,7 @@ describe('useAuthenticationPolling()', () => {
         rerender({
             integration: fromJS({
                 id: 'someid',
-                meta: {oauth: {status: 'not pending'}},
+                meta: { oauth: { status: 'not pending' } },
             }),
         })
         expect(fetchIntegration).toHaveBeenCalledTimes(1)

@@ -1,23 +1,22 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {fireEvent, act, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {Provider} from 'react-redux'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { act, fireEvent, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import routerDom from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
-import {abTest} from 'fixtures/abTest'
-import {account} from 'fixtures/account'
-import {channelConnection} from 'fixtures/channelConnection'
-import {entitiesInitialState} from 'fixtures/entities'
-import {integrationsState} from 'fixtures/integrations'
-import {useListABTests, useUpdateABTest} from 'models/convert/abTest/queries'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import {RootState, StoreDispatch} from 'state/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-
-import {assumeMock, renderWithRouter} from 'utils/testing'
+import { abTest } from 'fixtures/abTest'
+import { account } from 'fixtures/account'
+import { channelConnection } from 'fixtures/channelConnection'
+import { entitiesInitialState } from 'fixtures/entities'
+import { integrationsState } from 'fixtures/integrations'
+import { useListABTests, useUpdateABTest } from 'models/convert/abTest/queries'
+import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock, renderWithRouter } from 'utils/testing'
 
 import UpdateABTestView from '../UpdateABTestView'
 
@@ -41,7 +40,7 @@ const queryClient = mockQueryClient()
 
 jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')
 const useGetOrCreateChannelConnectionMock = assumeMock(
-    useGetOrCreateChannelConnection
+    useGetOrCreateChannelConnection,
 )
 
 const updateFnMock: jest.Mock = jest.fn()
@@ -59,7 +58,7 @@ describe('<UpdateABTestView/>', () => {
                 <Provider store={mockStore(defaultState)}>
                     <UpdateABTestView />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
     }
 
@@ -118,7 +117,7 @@ describe('<UpdateABTestView/>', () => {
 
         act(() => {
             fireEvent.change(screen.getByLabelText('Report link'), {
-                target: {value: 'https://example.com'},
+                target: { value: 'https://example.com' },
             })
         })
 

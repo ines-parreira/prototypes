@@ -1,5 +1,6 @@
-import React, {useEffect, useMemo} from 'react'
-import {useParams} from 'react-router-dom'
+import React, { useEffect, useMemo } from 'react'
+
+import { useParams } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -11,24 +12,24 @@ import {
     NavigatedSuccessModalName,
 } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 import Wizard from 'pages/common/components/wizard/Wizard'
-import {useGetConvertBundle} from 'pages/convert/bundles/hooks/useGetConvertBundle'
-import {CONVERT_ROUTE_PARAM_NAME} from 'pages/convert/common/constants'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import {ConvertRouteParams} from 'pages/convert/common/types'
+import { useGetConvertBundle } from 'pages/convert/bundles/hooks/useGetConvertBundle'
+import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
+import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import { ConvertRouteParams } from 'pages/convert/common/types'
 import history from 'pages/history'
-import {getIntegrationById} from 'state/integrations/selectors'
-import {toJS} from 'utils'
+import { getIntegrationById } from 'state/integrations/selectors'
+import { toJS } from 'utils'
 
 import WizardLayout from './components/WizardLayout'
-import {OnboardingWizardSteps} from './constants'
+import { OnboardingWizardSteps } from './constants'
 
 const ConvertOnboardingWizardView = () => {
-    const {[CONVERT_ROUTE_PARAM_NAME]: integrationId} =
+    const { [CONVERT_ROUTE_PARAM_NAME]: integrationId } =
         useParams<ConvertRouteParams>()
 
     const chatIntegrationId = parseInt(integrationId || '')
     const chatIntegration = useAppSelector(
-        getIntegrationById(chatIntegrationId)
+        getIntegrationById(chatIntegrationId),
     )
 
     const storeIntegrationId = useMemo(() => {
@@ -43,10 +44,13 @@ const ConvertOnboardingWizardView = () => {
     }, [chatIntegration, chatIntegrationId])
 
     const storeIntegration = useAppSelector(
-        getIntegrationById(storeIntegrationId)
+        getIntegrationById(storeIntegrationId),
     )
 
-    const {bundle} = useGetConvertBundle(storeIntegrationId, chatIntegrationId)
+    const { bundle } = useGetConvertBundle(
+        storeIntegrationId,
+        chatIntegrationId,
+    )
 
     const steps = useMemo(() => {
         return Object.values(OnboardingWizardSteps).filter((step) => {
@@ -64,8 +68,8 @@ const ConvertOnboardingWizardView = () => {
     }, [bundle])
     const initialStep = OnboardingWizardSteps.Campaigns
 
-    const {channelConnection} = useGetOrCreateChannelConnection(
-        toJS(chatIntegration)
+    const { channelConnection } = useGetOrCreateChannelConnection(
+        toJS(chatIntegration),
     )
 
     useEffect(() => {
@@ -76,7 +80,7 @@ const ConvertOnboardingWizardView = () => {
             }
             history.push(
                 `/app/convert/${chatIntegrationId}/campaigns`,
-                locationState
+                locationState,
             )
         }
     }, [channelConnection, chatIntegrationId])

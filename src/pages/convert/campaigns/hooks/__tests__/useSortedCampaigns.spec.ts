@@ -1,12 +1,11 @@
-import {act, renderHook} from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react-hooks'
 
 import useSearch from 'hooks/useSearch'
+import { CampaignScheduleRuleValueEnum } from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
 
-import {CampaignScheduleRuleValueEnum} from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
-
-import {Campaign} from '../../types/Campaign'
-import {CampaignStatus} from '../../types/enums/CampaignStatus.enum'
-import {useSortedCampaigns} from '../useSortedCampaigns'
+import { Campaign } from '../../types/Campaign'
+import { CampaignStatus } from '../../types/enums/CampaignStatus.enum'
+import { useSortedCampaigns } from '../useSortedCampaigns'
 
 jest.mock('hooks/useSearch')
 
@@ -154,7 +153,7 @@ describe('useSortedCampaigns()', () => {
     })
 
     it('should sort campaigns by status and creation date by default', () => {
-        const {result} = renderHook(() => useSortedCampaigns(campaigns))
+        const { result } = renderHook(() => useSortedCampaigns(campaigns))
 
         expect(result.current.sortBy).toBeUndefined()
         expect(result.current.sortedCampaigns).toStrictEqual([
@@ -167,7 +166,7 @@ describe('useSortedCampaigns()', () => {
     })
 
     it('should toggle the order if the sorting key is unchanged', () => {
-        const {result} = renderHook(() => useSortedCampaigns(campaigns))
+        const { result } = renderHook(() => useSortedCampaigns(campaigns))
 
         act(() => {
             result.current.changeSorting('name')
@@ -187,7 +186,7 @@ describe('useSortedCampaigns()', () => {
             sortBy: 'name',
             sortDirection: 'desc',
         }))
-        const {result} = renderHook(() => useSortedCampaigns(campaigns))
+        const { result } = renderHook(() => useSortedCampaigns(campaigns))
 
         expect(result.current.sortBy).toBe('name')
         expect(result.current.sortDirection).toEqual('desc')
@@ -216,7 +215,7 @@ describe('useSortedCampaigns()', () => {
                 sortBy: 'name',
                 sortDirection: 'desc',
             }))
-            const {result} = renderHook(() => useSortedCampaigns(campaigns))
+            const { result } = renderHook(() => useSortedCampaigns(campaigns))
 
             expect(result.current.sortBy).toEqual('name')
             expect(result.current.sortDirection).toEqual('desc')
@@ -229,7 +228,7 @@ describe('useSortedCampaigns()', () => {
                 sortBy: 'name',
                 sortDirection: 'asc',
             }))
-            const {result} = renderHook(() => useSortedCampaigns(campaigns))
+            const { result } = renderHook(() => useSortedCampaigns(campaigns))
 
             expect(result.current.sortBy).toEqual('name')
             expect(result.current.sortDirection).toEqual('asc')
@@ -254,7 +253,7 @@ describe('useSortedCampaigns()', () => {
                 sortBy: 'created_datetime',
                 sortDirection: 'desc',
             }))
-            const {result} = renderHook(() => useSortedCampaigns(campaigns))
+            const { result } = renderHook(() => useSortedCampaigns(campaigns))
 
             expect(result.current.sortBy).toEqual('created_datetime')
             expect(result.current.sortDirection).toEqual('desc')
@@ -267,7 +266,7 @@ describe('useSortedCampaigns()', () => {
                 sortBy: 'created_datetime',
                 sortDirection: 'asc',
             }))
-            const {result} = renderHook(() => useSortedCampaigns(campaigns))
+            const { result } = renderHook(() => useSortedCampaigns(campaigns))
 
             expect(result.current.sortBy).toEqual('created_datetime')
             expect(result.current.sortDirection).toEqual('asc')
@@ -292,7 +291,7 @@ describe('useSortedCampaigns()', () => {
                 sortBy: 'schedule',
                 sortDirection: 'desc',
             }))
-            const {result} = renderHook(() => useSortedCampaigns(campaigns))
+            const { result } = renderHook(() => useSortedCampaigns(campaigns))
 
             expect(result.current.sortBy).toEqual('schedule')
             expect(result.current.sortDirection).toEqual('desc')
@@ -305,7 +304,7 @@ describe('useSortedCampaigns()', () => {
                 sortBy: 'schedule',
                 sortDirection: 'asc',
             }))
-            const {result} = renderHook(() => useSortedCampaigns(campaigns))
+            const { result } = renderHook(() => useSortedCampaigns(campaigns))
 
             expect(result.current.sortBy).toEqual('schedule')
             expect(result.current.sortDirection).toEqual('asc')

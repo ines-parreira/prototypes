@@ -1,7 +1,8 @@
-import {QueryClient, useQueryClient} from '@tanstack/react-query'
-import {render, screen, waitFor} from '@testing-library/react'
-import user from '@testing-library/user-event'
 import React from 'react'
+
+import { QueryClient, useQueryClient } from '@tanstack/react-query'
+import { render, screen, waitFor } from '@testing-library/react'
+import user from '@testing-library/user-event'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
@@ -11,15 +12,15 @@ import {
     SubscriptionStatus,
     UpcomingInvoiceSummary,
 } from 'models/billing/types'
-import {useExtendTrialWithSideEffects} from 'pages/settings/new_billing/hooks/useExtendTrialWithSideEffects'
-import {useReactivateTrialWithSideEffects} from 'pages/settings/new_billing/hooks/useReactivateTrialWithSideEffects'
-import {assumeMock} from 'utils/testing'
+import { useExtendTrialWithSideEffects } from 'pages/settings/new_billing/hooks/useExtendTrialWithSideEffects'
+import { useReactivateTrialWithSideEffects } from 'pages/settings/new_billing/hooks/useReactivateTrialWithSideEffects'
+import { assumeMock } from 'utils/testing'
 
 import AddSalesCouponModal from '../../AddSalesCouponModal'
 import UpcomingInvoiceCard from '../UpcomingInvoiceCard'
 
 jest.mock('../../AddSalesCouponModal/AddSalesCouponModal', () =>
-    jest.fn(() => <div data-testid="add-sales-coupon-modal"></div>)
+    jest.fn(() => <div data-testid="add-sales-coupon-modal"></div>),
 )
 const AddSalesCouponModalMock = assumeMock(AddSalesCouponModal)
 
@@ -91,7 +92,7 @@ useQueryClientMock.mockImplementation(
     () =>
         ({
             invalidateQueries: invalidateQueriesMock,
-        }) as unknown as QueryClient
+        }) as unknown as QueryClient,
 )
 
 // Mock useExtendTrialMock
@@ -108,7 +109,7 @@ useExtendTrialMock.mockImplementation(() => {
 const useReactivateTrialWithSideEffectsMutateMock = jest.fn()
 jest.mock('pages/settings/new_billing/hooks/useReactivateTrialWithSideEffects')
 const useReactivateTrialWithSideEffectsMock = assumeMock(
-    useReactivateTrialWithSideEffects
+    useReactivateTrialWithSideEffects,
 )
 useReactivateTrialWithSideEffectsMock.mockImplementation(() => {
     const result = {
@@ -131,10 +132,10 @@ describe('UpcomingInvoiceCard', () => {
             <UpcomingInvoiceCard
                 {...upcomingInvoiceCardParams}
                 upcomingInvoice={null}
-            />
+            />,
         )
         expect(
-            screen.getByText('No upcoming invoice for now')
+            screen.getByText('No upcoming invoice for now'),
         ).toBeInTheDocument()
     })
 
@@ -148,27 +149,27 @@ describe('UpcomingInvoiceCard', () => {
             <UpcomingInvoiceCard
                 {...upcomingInvoiceCardParams}
                 subscriptionStatus={SubscriptionStatus.ACTIVE}
-            />
+            />,
         )
         expect(
-            screen.queryByRole('button', {name: /Apply coupon/i})
+            screen.queryByRole('button', { name: /Apply coupon/i }),
         ).not.toBeInTheDocument()
 
         expect(
-            screen.queryByRole('button', {name: /Extend trial/i})
+            screen.queryByRole('button', { name: /Extend trial/i }),
         ).not.toBeInTheDocument()
 
         render(
             <UpcomingInvoiceCard
                 {...upcomingInvoiceCardParams}
                 subscriptionStatus={SubscriptionStatus.TRIALING}
-            />
+            />,
         )
         expect(
-            screen.getByRole('button', {name: /Apply coupon/i})
+            screen.getByRole('button', { name: /Apply coupon/i }),
         ).toBeInTheDocument()
         expect(
-            screen.getByRole('button', {name: /Extend trial/i})
+            screen.getByRole('button', { name: /Extend trial/i }),
         ).toBeInTheDocument()
     })
 
@@ -177,9 +178,9 @@ describe('UpcomingInvoiceCard', () => {
             <UpcomingInvoiceCard
                 {...upcomingInvoiceCardParams}
                 subscriptionStatus={SubscriptionStatus.TRIALING}
-            />
+            />,
         )
-        user.click(screen.getByRole('button', {name: /Extend trial/i}))
+        user.click(screen.getByRole('button', { name: /Extend trial/i }))
         const confirmButton = await screen.findByRole('button', {
             name: /Confirm/i,
         })
@@ -194,10 +195,10 @@ describe('UpcomingInvoiceCard', () => {
                 {...upcomingInvoiceCardParams}
                 subscriptionStatus={SubscriptionStatus.TRIALING}
                 hasExtendedTrial={true}
-            />
+            />,
         )
         expect(
-            screen.queryByRole('button', {name: /Extend trial/i})
+            screen.queryByRole('button', { name: /Extend trial/i }),
         ).not.toBeInTheDocument()
     })
 
@@ -206,9 +207,9 @@ describe('UpcomingInvoiceCard', () => {
             <UpcomingInvoiceCard
                 {...upcomingInvoiceCardParams}
                 subscriptionStatus={SubscriptionStatus.TRIALING}
-            />
+            />,
         )
-        user.click(screen.getByRole('button', {name: /Apply coupon/i}))
+        user.click(screen.getByRole('button', { name: /Apply coupon/i }))
 
         expect(AddSalesCouponModalMock).toHaveBeenLastCalledWith(
             {
@@ -218,7 +219,7 @@ describe('UpcomingInvoiceCard', () => {
                 onCloseModal: expect.any(Function),
                 title: 'Apply Helpdesk and Automate coupon',
             },
-            {}
+            {},
         )
     })
 
@@ -229,7 +230,7 @@ describe('UpcomingInvoiceCard', () => {
                 subscriptionStatus={SubscriptionStatus.TRIALING}
                 currentHelpdeskAndAutomateCoupon={coupon}
                 upcomingInvoice={upcomingInvoiceWithCouponApplied}
-            />
+            />,
         )
         expect(screen.getByText(coupon.name)).toBeInTheDocument()
 
@@ -249,7 +250,7 @@ describe('UpcomingInvoiceCard', () => {
                 onCloseModal: expect.any(Function),
                 title: 'Apply Helpdesk and Automate coupon',
             },
-            {}
+            {},
         )
     })
 
@@ -259,28 +260,30 @@ describe('UpcomingInvoiceCard', () => {
                 {...upcomingInvoiceCardParams}
                 subscriptionStatus={SubscriptionStatus.CANCELED}
                 hasExtendedTrial={false}
-            />
+            />,
         )
 
-        user.click(screen.getByRole('button', {name: 'Reactivate trial'}))
-
-        await waitFor(() => {
-            expect(screen.getByRole('button', {name: 'Confirm'})).toBeVisible()
-        })
-
-        // Verify that the confirm ation is called only once even if it is clicked multiple times
-        user.click(screen.getByRole('button', {name: 'Confirm'}))
-        user.click(screen.getByRole('button', {name: 'Confirm'}))
-        user.click(screen.getByRole('button', {name: 'Confirm'}))
+        user.click(screen.getByRole('button', { name: 'Reactivate trial' }))
 
         await waitFor(() => {
             expect(
-                screen.queryByRole('button', {name: 'Confirm'})
+                screen.getByRole('button', { name: 'Confirm' }),
+            ).toBeVisible()
+        })
+
+        // Verify that the confirm ation is called only once even if it is clicked multiple times
+        user.click(screen.getByRole('button', { name: 'Confirm' }))
+        user.click(screen.getByRole('button', { name: 'Confirm' }))
+        user.click(screen.getByRole('button', { name: 'Confirm' }))
+
+        await waitFor(() => {
+            expect(
+                screen.queryByRole('button', { name: 'Confirm' }),
             ).not.toBeInTheDocument()
         })
 
         expect(
-            useReactivateTrialWithSideEffectsMutateMock
+            useReactivateTrialWithSideEffectsMutateMock,
         ).toHaveBeenCalledTimes(1)
     })
 })

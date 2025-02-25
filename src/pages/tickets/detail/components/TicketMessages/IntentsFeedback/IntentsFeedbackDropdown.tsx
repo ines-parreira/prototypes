@@ -1,9 +1,16 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
-import React, {ReactNode, useState} from 'react'
-import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
+import React, { ReactNode, useState } from 'react'
 
-import {Messages} from './constants'
+import classnames from 'classnames'
+import {
+    Dropdown,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+} from 'reactstrap'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { Messages } from './constants'
 
 import css from './IntentsFeedbackDropdown.less'
 

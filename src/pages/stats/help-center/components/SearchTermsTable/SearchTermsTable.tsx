@@ -1,13 +1,12 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
 import Modal from 'pages/common/components/modal/Modal'
 import HelpCenterStatsTable, {
     TableCellType,
 } from 'pages/stats/help-center/components/HelpCenterStatsTable/HelpCenterStatsTable'
 import SearchQueryModal from 'pages/stats/help-center/components/SearchQueryModal/SearchQueryModal'
-import {useSearchTermsMetrics} from 'pages/stats/help-center/hooks/useSearchTermsMetrics'
+import { useSearchTermsMetrics } from 'pages/stats/help-center/hooks/useSearchTermsMetrics'
 
 const ITEMS_PER_PAGE = 20
 
@@ -59,8 +58,8 @@ type Props = {
     helpCenterDomain: string
 }
 
-export const SearchTermsTable = ({helpCenterDomain}: Props) => {
-    const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
+export const SearchTermsTable = ({ helpCenterDomain }: Props) => {
+    const { cleanStatsFilters, userTimezone } = useNewStatsFilters()
     const [currentPage, setCurrentPage] = useState(1)
 
     const [modalState, setModalState] = useState<ModalStateType>(modalIntiState)
@@ -72,7 +71,7 @@ export const SearchTermsTable = ({helpCenterDomain}: Props) => {
         })
     }
 
-    const {data, total, isLoading} = useSearchTermsMetrics({
+    const { data, total, isLoading } = useSearchTermsMetrics({
         statsFilters: cleanStatsFilters,
         timezone: userTimezone,
         currentPage: currentPage,

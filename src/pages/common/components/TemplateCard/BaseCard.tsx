@@ -1,7 +1,8 @@
-import classNames from 'classnames'
-import React, {CSSProperties, MouseEventHandler, ReactNode} from 'react'
+import React, { CSSProperties, MouseEventHandler, ReactNode } from 'react'
 
-import {THEME_NAME, useTheme} from 'core/theme'
+import classNames from 'classnames'
+
+import { THEME_NAME, useTheme } from 'core/theme'
 import Button from 'pages/common/components/button/Button'
 
 import css from './Card.less'
@@ -39,7 +40,7 @@ function BaseCard({
                     [css.default]: theme.resolvedName !== THEME_NAME.Dark,
                     [css.dark]: theme.resolvedName === THEME_NAME.Dark,
                 },
-                className
+                className,
             )}
             onClick={onClick}
             style={style}

@@ -1,7 +1,8 @@
-import {cleanup, render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {VoiceCall, VoiceCallStatus} from 'models/voiceCall/types'
+import { cleanup, render, screen } from '@testing-library/react'
+
+import { VoiceCall, VoiceCallStatus } from 'models/voiceCall/types'
 import * as utils from 'models/voiceCall/utils'
 
 import TicketVoiceCallDuration from '../TicketVoiceCallDuration'
@@ -17,7 +18,7 @@ jest.useFakeTimers()
 const ifFinalVoiceCallStatusSpy = jest.spyOn(utils, 'isFinalVoiceCallStatus')
 const getFormattedDurationOngoingCallSpy = jest.spyOn(
     utils,
-    'getFormattedDurationOngoingCall'
+    'getFormattedDurationOngoingCall',
 )
 
 const renderComponent = (voiceCall: any) =>
@@ -29,14 +30,14 @@ describe('TicketVoiceCallDuration', () => {
     it('should render the duration of an ended call', () => {
         ifFinalVoiceCallStatusSpy.mockReturnValue(true)
 
-        renderComponent({status: VoiceCallStatus.Completed, duration: 60})
+        renderComponent({ status: VoiceCallStatus.Completed, duration: 60 })
         expect(screen.getByText(/duration/i)).toBeInTheDocument()
     })
 
     it('should render the duration of an ongoing call', () => {
         ifFinalVoiceCallStatusSpy.mockReturnValue(false)
 
-        renderComponent({status: VoiceCallStatus.Connected})
+        renderComponent({ status: VoiceCallStatus.Connected })
         expect(screen.getByText(/connected: 30s/i)).toBeInTheDocument()
 
         getFormattedDurationOngoingCallSpy.mockReturnValueOnce('31s')
@@ -52,7 +53,7 @@ describe('TicketVoiceCallDuration', () => {
         VoiceCallStatus.Failed,
         VoiceCallStatus.NoAnswer,
     ])('should not render anything for %s voice call status', (status) => {
-        renderComponent({status})
+        renderComponent({ status })
         expect(screen.queryByText('connected:')).not.toBeInTheDocument()
         expect(screen.queryByText('duration:')).not.toBeInTheDocument()
     })
@@ -71,6 +72,6 @@ describe('TicketVoiceCallDuration', () => {
             })
             expect(screen.queryByText('connected:')).not.toBeInTheDocument()
             expect(screen.queryByText('duration:')).not.toBeInTheDocument()
-        }
+        },
     )
 })

@@ -1,17 +1,18 @@
-import {QueryClient, useQueryClient} from '@tanstack/react-query'
-import {act, render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
-import {useRouteMatch} from 'react-router-dom'
 
-import {macros} from 'fixtures/macro'
-import {useBulkArchiveMacros, useBulkUnarchiveMacros} from 'hooks/macros'
+import { QueryClient, useQueryClient } from '@tanstack/react-query'
+import { act, render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { useRouteMatch } from 'react-router-dom'
+
+import { macros } from 'fixtures/macro'
+import { useBulkArchiveMacros, useBulkUnarchiveMacros } from 'hooks/macros'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {OrderDirection} from 'models/api/types'
-import {MacroSortableProperties} from 'models/macro/types'
-import {assumeMock} from 'utils/testing'
+import { OrderDirection } from 'models/api/types'
+import { MacroSortableProperties } from 'models/macro/types'
+import { assumeMock } from 'utils/testing'
 
-import {MacrosSettingsItem} from '../MacrosSettingsItem'
+import { MacrosSettingsItem } from '../MacrosSettingsItem'
 
 jest.mock('@gorgias/merchant-ui-kit', () => {
     return {
@@ -39,10 +40,10 @@ jest.mock(
             ...jest.requireActual('react-router-dom'),
             useRouteMatch: jest.fn(),
             Link: jest.fn(
-                ({children}: {children: React.ReactNode}) => children
+                ({ children }: { children: React.ReactNode }) => children,
             ),
-            NavLink: ({children}: {children: React.ReactNode}) => children,
-        }) as Record<string, unknown>
+            NavLink: ({ children }: { children: React.ReactNode }) => children,
+        }) as Record<string, unknown>,
 )
 
 const mockUseRouteMatch = useRouteMatch as jest.Mock
@@ -84,7 +85,7 @@ describe('<MacrosSettingsItem />', () => {
             () =>
                 ({
                     invalidateQueries: invalidateQueriesMock,
-                }) as unknown as QueryClient
+                }) as unknown as QueryClient,
         )
         useAppDispatchMock.mockReturnValue(dispatchMock)
         useBulkArchiveMacrosMock.mockReturnValue({
@@ -116,7 +117,7 @@ describe('<MacrosSettingsItem />', () => {
             userEvent.click(screen.getByTitle('Delete macro'))
         })
         act(() => {
-            userEvent.click(screen.getByText('Confirm', {exact: false}))
+            userEvent.click(screen.getByText('Confirm', { exact: false }))
         })
 
         expect(minProps.onMacroDelete).toHaveBeenCalledWith(1)

@@ -1,8 +1,8 @@
-import {Map} from 'immutable'
 import React from 'react'
 
-import {formatDuration} from '../../../../stats/common/utils'
+import { Map } from 'immutable'
 
+import { formatDuration } from '../../../../stats/common/utils'
 import DownloadableDeletableRecording from './DownloadableDeletableRecording'
 
 type OwnProps = {
@@ -17,7 +17,7 @@ export default function PhoneEventDetailsVoicemail({
     phoneNumber,
 }: OwnProps): JSX.Element {
     const recordingDuration = formatDuration(
-        eventData.getIn(['call', 'recording_duration'], 0)
+        eventData.getIn(['call', 'recording_duration'], 0),
     )
     const twilioRecordingURL = eventData.getIn([
         'call',

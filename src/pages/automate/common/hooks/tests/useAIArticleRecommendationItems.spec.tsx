@@ -1,18 +1,19 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
 
-import {AIArticlesRecommendationFixture} from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
-import {ArticleOrigin} from 'pages/settings/helpCenter/types/articleOrigin.enum'
-import {ITEMS_PER_PAGE} from 'pages/stats/convert/constants/campaignPerformanceTable'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {useTopQuestionsArticles} from '../../components/TopQuestions/useTopQuestionsArticles'
+import { AIArticlesRecommendationFixture } from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
+import { ArticleOrigin } from 'pages/settings/helpCenter/types/articleOrigin.enum'
+import { ITEMS_PER_PAGE } from 'pages/stats/convert/constants/campaignPerformanceTable'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
+
+import { useTopQuestionsArticles } from '../../components/TopQuestions/useTopQuestionsArticles'
 import {
-    useAIArticleRecommendationItems,
     AllRecommendationsStatus,
     isAllRecommendationStatus,
+    useAIArticleRecommendationItems,
 } from '../useAIArticleRecommendationItems'
 
 const queryClient = mockQueryClient()
@@ -35,12 +36,12 @@ describe('useAIArticleRecommendationItems', () => {
                     createArticle: mockedCreateArticle,
                     dismissArticle: jest.fn(),
                 }
-            }
+            },
         )
     })
 
     it('should return sorted paginated items', () => {
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useAIArticleRecommendationItems({
                     helpCenterId: 1,
@@ -52,12 +53,12 @@ describe('useAIArticleRecommendationItems', () => {
                     origin: ArticleOrigin.ALL_RECOMMENDATIONS_PAGE,
                 }),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         {children}
                     </QueryClientProvider>
                 ),
-            }
+            },
         )
 
         expect(result.current.paginatedItems).toEqual([
@@ -88,7 +89,7 @@ describe('useAIArticleRecommendationItems', () => {
     })
 
     it('should return paginated and filtered items', () => {
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useAIArticleRecommendationItems({
                     helpCenterId: 1,
@@ -100,12 +101,12 @@ describe('useAIArticleRecommendationItems', () => {
                     origin: ArticleOrigin.ALL_RECOMMENDATIONS_PAGE,
                 }),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         {children}
                     </QueryClientProvider>
                 ),
-            }
+            },
         )
 
         expect(result.current.paginatedItems).toEqual([
@@ -122,7 +123,7 @@ describe('useAIArticleRecommendationItems', () => {
     })
 
     it('should handle pagination correctly', () => {
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useAIArticleRecommendationItems({
                     helpCenterId: 1,
@@ -134,12 +135,12 @@ describe('useAIArticleRecommendationItems', () => {
                     origin: ArticleOrigin.ALL_RECOMMENDATIONS_PAGE,
                 }),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         {children}
                     </QueryClientProvider>
                 ),
-            }
+            },
         )
 
         expect(result.current.paginatedItems).toEqual([
@@ -156,7 +157,7 @@ describe('useAIArticleRecommendationItems', () => {
     })
 
     it('should call createArticle with correct arguments', async () => {
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useAIArticleRecommendationItems({
                     helpCenterId: 1,
@@ -168,19 +169,19 @@ describe('useAIArticleRecommendationItems', () => {
                     origin: ArticleOrigin.ALL_RECOMMENDATIONS_PAGE,
                 }),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         {children}
                     </QueryClientProvider>
                 ),
-            }
+            },
         )
 
         await result.current.paginatedItems[0].createArticle()
 
         expect(mockedCreateArticle).toHaveBeenCalledWith(
             'ai_Generated_3',
-            ArticleOrigin.ALL_RECOMMENDATIONS_PAGE
+            ArticleOrigin.ALL_RECOMMENDATIONS_PAGE,
         )
     })
 
@@ -192,7 +193,7 @@ describe('useAIArticleRecommendationItems', () => {
             dismissArticle: jest.fn(),
         })
 
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useAIArticleRecommendationItems({
                     helpCenterId: 1,
@@ -204,12 +205,12 @@ describe('useAIArticleRecommendationItems', () => {
                     origin: ArticleOrigin.ALL_RECOMMENDATIONS_PAGE,
                 }),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         {children}
                     </QueryClientProvider>
                 ),
-            }
+            },
         )
 
         expect(result.current.paginatedItems).toEqual([])

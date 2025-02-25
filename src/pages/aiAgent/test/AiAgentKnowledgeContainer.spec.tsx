@@ -1,40 +1,40 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {act, fireEvent, screen} from '@testing-library/react'
-import {createMemoryHistory} from 'history'
-import {fromJS} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {keyBy} from 'lodash'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { act, fireEvent, screen } from '@testing-library/react'
+import { createMemoryHistory } from 'history'
+import { fromJS } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { keyBy } from 'lodash'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-
-import {account} from 'fixtures/account'
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
-import {billingState} from 'fixtures/billing'
-import {user} from 'fixtures/users'
-import {StoreConfiguration} from 'models/aiAgent/types'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { account } from 'fixtures/account'
+import { axiosSuccessResponse } from 'fixtures/axiosResponse'
+import { billingState } from 'fixtures/billing'
+import { user } from 'fixtures/users'
+import { StoreConfiguration } from 'models/aiAgent/types'
 import {
-    useGetHelpCenterList,
-    useGetArticleIngestionLogs,
     useCreateFileIngestion,
     useDeleteFileIngestion,
+    useGetArticleIngestionLogs,
     useGetFileIngestion,
+    useGetHelpCenterList,
 } from 'models/helpCenter/queries'
-import {AiAgentKnowledgeContainer} from 'pages/aiAgent/AiAgentKnowledgeContainer'
-import {usePublicResourcesPooling} from 'pages/aiAgent/hooks/usePublicResourcesPooling'
-import {useAiAgentStoreConfigurationContext} from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
-import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
-import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {RootState} from 'state/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock, renderWithRouter} from 'utils/testing'
+import { AiAgentKnowledgeContainer } from 'pages/aiAgent/AiAgentKnowledgeContainer'
+import { usePublicResourcesPooling } from 'pages/aiAgent/hooks/usePublicResourcesPooling'
+import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
+import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
+import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { RootState } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock, renderWithRouter } from 'utils/testing'
 
-import {INITIAL_FORM_VALUES} from '../constants'
-import {applicationsAutomationSettingsAiAgentEnabledFixture} from '../fixtures/applicationAutomationSettings.fixture'
-import {getStoreConfigurationFixture} from '../fixtures/storeConfiguration.fixtures'
+import { INITIAL_FORM_VALUES } from '../constants'
+import { applicationsAutomationSettingsAiAgentEnabledFixture } from '../fixtures/applicationAutomationSettings.fixture'
+import { getStoreConfigurationFixture } from '../fixtures/storeConfiguration.fixtures'
 
 jest.mock('launchdarkly-react-client-sdk', () => ({
     useFlag: jest.fn(),
@@ -45,7 +45,7 @@ jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext', () => ({
     useAiAgentStoreConfigurationContext: jest.fn(),
 }))
 const mockedUseAiAgentStoreConfigurationContext = jest.mocked(
-    useAiAgentStoreConfigurationContext
+    useAiAgentStoreConfigurationContext,
 )
 
 jest.mock('pages/aiAgent/hooks/usePublicResourcesPooling', () => ({
@@ -97,7 +97,7 @@ const defaultState: Partial<RootState> = {
                 automationSettingsByContactFormId: {
                     [ContactFormFixture.id]: {
                         workflows: [],
-                        order_management: {enabled: false},
+                        order_management: { enabled: false },
                     },
                 },
             },
@@ -138,7 +138,7 @@ const renderComponent = ({
     mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
         storeConfiguration: noStoreConfiguration
             ? undefined
-            : {...storeConfiguration, helpCenterId},
+            : { ...storeConfiguration, helpCenterId },
         isLoading: isStoreConfigLoading,
         updateStoreConfiguration: mockUpdateStoreConfiguration,
         createStoreConfiguration: jest.fn(),
@@ -167,8 +167,12 @@ const renderComponent = ({
 
     mockUseGetArticleIngestionLogs.mockReturnValue({
         data: [
-            {id: 1, status: 'SUCCESSFUL', url: 'http://my-shop.com/faq'},
-            {id: 2, status: 'SUCCESSFUL', url: 'http://my-shop.com/knowledge'},
+            { id: 1, status: 'SUCCESSFUL', url: 'http://my-shop.com/faq' },
+            {
+                id: 2,
+                status: 'SUCCESSFUL',
+                url: 'http://my-shop.com/knowledge',
+            },
         ],
     } as unknown as ReturnType<typeof useGetArticleIngestionLogs>)
 
@@ -198,7 +202,7 @@ const renderComponent = ({
             path: `/:shopType/:shopName/ai-agent/knowledge`,
             route: '/shopify/test-store/ai-agent/knowledge',
             history,
-        }
+        },
     )
 }
 
@@ -208,20 +212,20 @@ describe('AiAgentKnowledgeContainer', () => {
 
         expect(
             screen.getByText(
-                'Connect at least one of the knowledge sources below to enable AI Agent.'
-            )
+                'Connect at least one of the knowledge sources below to enable AI Agent.',
+            ),
         ).toBeInTheDocument()
 
         expect(
             screen.getByText(
-                'Add external URLs for AI Agent to reference. Links to your Gorgias Help Center or main domain are not accepted, as AI Agent needs specific pages to provide accurate answers.'
-            )
+                'Add external URLs for AI Agent to reference. Links to your Gorgias Help Center or main domain are not accepted, as AI Agent needs specific pages to provide accurate answers.',
+            ),
         ).toBeInTheDocument()
 
         expect(
             screen.queryByText(
-                'Upload knowledge and process documents for AI Agent to reference. Do not upload files that may contain any sensitive or personal information. Images will be ignored.'
-            )
+                'Upload knowledge and process documents for AI Agent to reference. Do not upload files that may contain any sensitive or personal information. Images will be ignored.',
+            ),
         ).not.toBeInTheDocument()
 
         expect(screen.queryByTestId('loader')).not.toBeInTheDocument()
@@ -236,18 +240,18 @@ describe('AiAgentKnowledgeContainer', () => {
 
         expect(
             screen.getByText(
-                'Upload knowledge and process documents for AI Agent to reference. Do not upload files that may contain any sensitive or personal information. Images will be ignored.'
-            )
+                'Upload knowledge and process documents for AI Agent to reference. Do not upload files that may contain any sensitive or personal information. Images will be ignored.',
+            ),
         ).toBeInTheDocument()
     })
 
     it('should show a loader if store config is still loading', () => {
-        renderComponent({isStoreConfigLoading: true})
+        renderComponent({ isStoreConfigLoading: true })
         expect(screen.queryByTestId('loader')).toBeInTheDocument()
     })
 
     it('should show a loader if help centers are still loading', () => {
-        renderComponent({isLoadingHelpCenters: true})
+        renderComponent({ isLoadingHelpCenters: true })
         expect(screen.queryByTestId('loader')).toBeInTheDocument()
     })
 
@@ -269,7 +273,7 @@ describe('AiAgentKnowledgeContainer', () => {
     })
 
     it('should submit the form with the correct data on submit if there is no store configuration yet', () => {
-        renderComponent({noStoreConfiguration: true})
+        renderComponent({ noStoreConfiguration: true })
 
         const dropdown = screen.getByText('help center 1')
         fireEvent.focus(dropdown)
@@ -303,8 +307,8 @@ describe('AiAgentKnowledgeContainer', () => {
 
         expect(
             screen.getByText(
-                'Your changes to this page will be lost if you don’t save them.'
-            )
+                'Your changes to this page will be lost if you don’t save them.',
+            ),
         ).toBeInTheDocument()
     })
 
@@ -327,7 +331,7 @@ describe('AiAgentKnowledgeContainer', () => {
     it('should deactivate the AI Agent when there is no knowledge source connected', () => {
         jest.useFakeTimers().setSystemTime(new Date('2024-10-16'))
 
-        renderComponent({helpCenterId: null})
+        renderComponent({ helpCenterId: null })
 
         const deleteButtons = screen.getAllByLabelText('Delete public URL')
         fireEvent.click(deleteButtons[0])
@@ -343,10 +347,10 @@ describe('AiAgentKnowledgeContainer', () => {
             helpCenterId: null,
             deactivatedDatetime: new Date('2024-10-16').toISOString(),
             chatChannelDeactivatedDatetime: new Date(
-                '2024-10-16'
+                '2024-10-16',
             ).toISOString(),
             emailChannelDeactivatedDatetime: new Date(
-                '2024-10-16'
+                '2024-10-16',
             ).toISOString(),
             trialModeActivatedDatetime: null,
             previewModeActivatedDatetime: null,

@@ -1,9 +1,9 @@
-import {User} from 'config/types/user'
-import {USER_ROLES} from 'config/user'
-import {fetchAgents} from 'models/agents/resources'
-import {FetchAgentsOptions} from 'models/agents/types'
+import { User } from 'config/types/user'
+import { USER_ROLES } from 'config/user'
+import { fetchAgents } from 'models/agents/resources'
+import { FetchAgentsOptions } from 'models/agents/types'
 import GorgiasApi from 'services/gorgiasApi'
-import {StoreDispatch} from 'state/types'
+import { StoreDispatch } from 'state/types'
 
 import {
     FeedbackStatus,
@@ -13,9 +13,15 @@ import * as constants from './constants'
 
 export function fetchUsers(options: FetchAgentsOptions = {}) {
     return async (
-        dispatch: StoreDispatch
+        dispatch: StoreDispatch,
     ): Promise<ReturnType<StoreDispatch>> => {
-        const {cursor, externalId, limit, orderBy, roles = USER_ROLES} = options
+        const {
+            cursor,
+            externalId,
+            limit,
+            orderBy,
+            roles = USER_ROLES,
+        } = options
         dispatch({
             type: constants.FETCH_USER_LIST_START,
         })
@@ -29,7 +35,7 @@ export function fetchUsers(options: FetchAgentsOptions = {}) {
                 limit,
                 orderBy,
                 roles,
-            }
+            },
         )
 
         let result: User[] = []
@@ -58,7 +64,7 @@ export const setAgentsLocations = (locations: Record<string, unknown>) => ({
 })
 
 export const setAgentsTypingStatuses = (
-    locations: Record<string, unknown>
+    locations: Record<string, unknown>,
 ) => ({
     type: constants.SET_AGENTS_TYPING_STATUSES,
     data: locations,
@@ -66,7 +72,7 @@ export const setAgentsTypingStatuses = (
 
 export const setAgentFeedbackMessageStatus = (
     status: FeedbackStatus | null,
-    resourceType: ResourceSection
+    resourceType: ResourceSection,
 ) => ({
     type: constants.SET_AGENT_FEEDBACK_MESSAGE_STATUS,
     data: {

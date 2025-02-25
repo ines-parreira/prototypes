@@ -1,9 +1,10 @@
-import {render} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
-import {useParams} from 'react-router-dom'
+
+import { render } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -17,7 +18,7 @@ const useParamsMock = useParams as jest.Mock
 
 describe('<IvrPhoneNumberSelectField />', () => {
     const mockOnChange = jest.fn()
-    useParamsMock.mockReturnValue({integrationId: 123})
+    useParamsMock.mockReturnValue({ integrationId: 123 })
 
     const state = {
         integrations: fromJS({
@@ -42,7 +43,7 @@ describe('<IvrPhoneNumberSelectField />', () => {
     }
 
     it('renders existing option', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={mockStore(state)}>
                 <IvrPhoneNumberSelectField
                     onChange={mockOnChange}
@@ -51,14 +52,14 @@ describe('<IvrPhoneNumberSelectField />', () => {
                         integration_id: 1,
                     }}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(getByText('Phone Integration 1')).toBeInTheDocument()
     })
 
     it('renders component', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={mockStore(state)}>
                 <IvrPhoneNumberSelectField
                     onChange={mockOnChange}
@@ -66,7 +67,7 @@ describe('<IvrPhoneNumberSelectField />', () => {
                         phone_number: '123',
                     }}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(getByText('Select phone number')).toBeInTheDocument()

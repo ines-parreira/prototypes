@@ -1,4 +1,4 @@
-import moment, {Moment} from 'moment-timezone'
+import moment, { Moment } from 'moment-timezone'
 
 import {
     fetchMessagesSentTimeSeries,
@@ -19,8 +19,8 @@ import {
     BusiestTimeOfDaysMetrics,
     DayOfWeek,
 } from 'pages/stats/support-performance/busiest-times-of-days/types'
-import {AccountSettingBusinessHours} from 'state/currentAccount/types'
-import {stringToDatetimeWithTimeZone} from 'utils/date'
+import { AccountSettingBusinessHours } from 'state/currentAccount/types'
+import { stringToDatetimeWithTimeZone } from 'utils/date'
 
 export const weekDayLabel = (weekDay: number) => {
     switch (weekDay) {
@@ -77,14 +77,14 @@ const createBTODDataStruct = (): BTODData => {
                 [DayOfWeek.FRIDAY]: 0,
                 [DayOfWeek.SATURDAY]: 0,
                 [DayOfWeek.SUNDAY]: 0,
-            })
+            }),
     )
     return result
 }
 
 export function getAggregatedBusiestTimesOfDayData(
     data: TimeSeriesDataItem[][] | undefined,
-    timeZone: string
+    timeZone: string,
 ): {
     btodData: BTODData
     max: number
@@ -93,7 +93,7 @@ export function getAggregatedBusiestTimesOfDayData(
     let max = 0
 
     data?.[0].forEach((record) => {
-        const {value, dateTime} = record
+        const { value, dateTime } = record
         if (value > max) {
             max = value
         }
@@ -110,7 +110,7 @@ export function getAggregatedBusiestTimesOfDayData(
         }
     })
 
-    return {btodData: result, max}
+    return { btodData: result, max }
 }
 
 type BusinessHour = {
@@ -121,7 +121,7 @@ type BusinessHour = {
 
 const startsYesterday = (
     fromTime: moment.Moment,
-    targetFromTime: moment.Moment
+    targetFromTime: moment.Moment,
 ): boolean =>
     fromTime.isoWeekday() !== 1 && targetFromTime.isoWeekday() !== 1
         ? targetFromTime.isoWeekday() < fromTime.isoWeekday()
@@ -129,17 +129,17 @@ const startsYesterday = (
 
 const endsToday = (
     fromTime: moment.Moment,
-    targetToTime: moment.Moment
+    targetToTime: moment.Moment,
 ): boolean => targetToTime.isoWeekday() === fromTime.isoWeekday()
 
 const startsToday = (
     fromTime: moment.Moment,
-    targetFromTime: moment.Moment
+    targetFromTime: moment.Moment,
 ): boolean => targetFromTime.isoWeekday() === fromTime.isoWeekday()
 
 const endsTomorrow = (
     fromTime: moment.Moment,
-    targetToTime: moment.Moment
+    targetToTime: moment.Moment,
 ): boolean =>
     fromTime.isoWeekday() !== 7
         ? targetToTime.isoWeekday() > fromTime.isoWeekday()
@@ -147,7 +147,7 @@ const endsTomorrow = (
 
 const startsTomorrow = (
     fromTime: moment.Moment,
-    targetFromTime: moment.Moment
+    targetFromTime: moment.Moment,
 ): boolean =>
     fromTime.isoWeekday() !== 7
         ? targetFromTime.isoWeekday() > fromTime.isoWeekday()
@@ -164,7 +164,7 @@ const newPeriod = (fromTime: Moment, toTime: Moment, days: number[]) => ({
 export const businessHourToNewTimeZone = (
     currentBusinessHour: BusinessHour,
     sourceTimeZone: string,
-    targetTimeZone: string
+    targetTimeZone: string,
 ): BusinessHour[] => {
     const daysAsNumbers = currentBusinessHour.days
         .split(',')
@@ -172,13 +172,13 @@ export const businessHourToNewTimeZone = (
     const fromTime = moment.tz(
         currentBusinessHour.from_time,
         BUSINESS_HOUR_TIME_FORMAT,
-        sourceTimeZone
+        sourceTimeZone,
     )
     const targetFromTime = fromTime.clone().tz(targetTimeZone)
     const toTime = moment.tz(
         currentBusinessHour.to_time,
         BUSINESS_HOUR_TIME_FORMAT,
-        sourceTimeZone
+        sourceTimeZone,
     )
     const targetToTime = toTime.clone().tz(targetTimeZone)
 
@@ -191,13 +191,13 @@ export const businessHourToNewTimeZone = (
             newPeriod(
                 targetFromTime,
                 targetFromTime.clone().hour(23).minutes(59),
-                daysAsNumbers.map((day) => (day !== 1 ? day - 1 : 7))
+                daysAsNumbers.map((day) => (day !== 1 ? day - 1 : 7)),
             ),
             newPeriod(
                 targetToTime.clone().startOf('day'),
                 targetToTime,
-                daysAsNumbers
-            )
+                daysAsNumbers,
+            ),
         )
     } else if (
         startsToday(fromTime, targetFromTime) &&
@@ -212,13 +212,13 @@ export const businessHourToNewTimeZone = (
             newPeriod(
                 targetFromTime,
                 targetFromTime.clone().hour(23).minutes(59),
-                daysAsNumbers
+                daysAsNumbers,
             ),
             newPeriod(
                 targetToTime.clone().startOf('day'),
                 targetToTime,
-                daysAsNumbers.map((day) => (day !== 7 ? day + 1 : 1))
-            )
+                daysAsNumbers.map((day) => (day !== 7 ? day + 1 : 1)),
+            ),
         )
     } else if (
         startsTomorrow(fromTime, targetFromTime) &&
@@ -228,8 +228,8 @@ export const businessHourToNewTimeZone = (
             newPeriod(
                 targetFromTime,
                 targetToTime,
-                daysAsNumbers.map((day) => (day !== 7 ? day + 1 : 1))
-            )
+                daysAsNumbers.map((day) => (day !== 7 ? day + 1 : 1)),
+            ),
         )
     }
 
@@ -239,13 +239,13 @@ export const businessHourToNewTimeZone = (
 export const changeBusinessHoursTimeZone = (
     businessHours: BusinessHour[],
     sourceTimeZone: string,
-    targetTimeZone: string
+    targetTimeZone: string,
 ): BusinessHour[] => {
     return businessHours.reduce<BusinessHour[]>((acc, currentBusinessHour) => {
         const formattedNewPeriods = businessHourToNewTimeZone(
             currentBusinessHour,
             sourceTimeZone,
-            targetTimeZone
+            targetTimeZone,
         )
         return [...acc, ...formattedNewPeriods]
     }, [])
@@ -253,7 +253,7 @@ export const changeBusinessHoursTimeZone = (
 
 export const getWorkingHoursInTimeZone = (
     businessHours: AccountSettingBusinessHours | undefined,
-    timeZone: string
+    timeZone: string,
 ) => {
     if (businessHours === undefined) {
         return getWorkingHours(businessHours)
@@ -263,7 +263,7 @@ export const getWorkingHoursInTimeZone = (
     const businessHoursInTimeZone = changeBusinessHoursTimeZone(
         businessHours.data.business_hours,
         fromTimeZone,
-        timeZone
+        timeZone,
     )
 
     return getWorkingHours({
@@ -276,30 +276,32 @@ export const getWorkingHoursInTimeZone = (
 }
 
 export const getWorkingHours = (
-    businessHours: AccountSettingBusinessHours | undefined
+    businessHours: AccountSettingBusinessHours | undefined,
 ) => {
     const result: BTODData = createBTODDataStruct()
     if (businessHours === undefined) {
         return result
     }
 
-    businessHours.data.business_hours.forEach(({days, from_time, to_time}) => {
-        let startTime = Number(from_time.slice(0, 2))
-        const endTime =
-            Number(to_time.slice(0, 2)) +
-            (Number(to_time.slice(3, 5)) === 59 ? 1 : 0)
+    businessHours.data.business_hours.forEach(
+        ({ days, from_time, to_time }) => {
+            let startTime = Number(from_time.slice(0, 2))
+            const endTime =
+                Number(to_time.slice(0, 2)) +
+                (Number(to_time.slice(3, 5)) === 59 ? 1 : 0)
 
-        while (startTime < endTime) {
-            days.split(',').forEach((day) => {
-                const weekday = weekDayLabel(Number(day))
-                if (weekday) {
-                    result[startTime][weekday] = 1
-                }
-            })
+            while (startTime < endTime) {
+                days.split(',').forEach((day) => {
+                    const weekday = weekDayLabel(Number(day))
+                    if (weekday) {
+                        result[startTime][weekday] = 1
+                    }
+                })
 
-            startTime++
-        }
-    })
+                startTime++
+            }
+        },
+    )
     return result
 }
 
@@ -312,7 +314,7 @@ export function get24Hours() {
 }
 
 export const getMetricQuery = (
-    metric: BusiestTimeOfDaysMetrics
+    metric: BusiestTimeOfDaysMetrics,
 ): TimeSeriesHook => {
     switch (metric) {
         case BusiestTimeOfDaysMetrics.MessagesSent:
@@ -327,7 +329,7 @@ export const getMetricQuery = (
 }
 
 export const getMetricFetch = (
-    metric: BusiestTimeOfDaysMetrics
+    metric: BusiestTimeOfDaysMetrics,
 ): TimeSeriesFetch => {
     switch (metric) {
         case BusiestTimeOfDaysMetrics.MessagesSent:

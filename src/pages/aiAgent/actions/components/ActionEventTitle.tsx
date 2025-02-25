@@ -2,9 +2,10 @@ import React from 'react'
 
 import webhooksIcon from 'assets/img/icons/webhooks.svg'
 
-import {LlmTriggeredExecution} from '../types'
-import css from './ActionEventTitle.less'
+import { LlmTriggeredExecution } from '../types'
 import ActionStatus from './ActionsStatus'
+
+import css from './ActionEventTitle.less'
 
 export type ActionEventTitleProps = {
     isCustomAction?: boolean

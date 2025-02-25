@@ -1,12 +1,12 @@
-import {useQueryClient} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
+import { useQueryClient } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
 
 import {
     getWelcomePageAcknowledgedKey,
     useCreateWelcomePageAcknowledged,
 } from 'models/aiAgent/queries'
 
-import {useWelcomePageAcknowledgedMutation} from '../useWelcomePageAcknowledgedMutation'
+import { useWelcomePageAcknowledgedMutation } from '../useWelcomePageAcknowledgedMutation'
 
 jest.mock('@tanstack/react-query', () => ({
     useQueryClient: jest.fn(),
@@ -36,13 +36,13 @@ describe('useWelcomePageAcknowledgedMutation', () => {
             mutateAsync: createWelcomePageAcknowledgedMock,
         })
 
-        const {result} = renderHook(() =>
-            useWelcomePageAcknowledgedMutation({shopName})
+        const { result } = renderHook(() =>
+            useWelcomePageAcknowledgedMutation({ shopName }),
         )
 
         expect(result.current.isLoading).toBe(false)
         expect(result.current.createWelcomePageAcknowledged).toBe(
-            createWelcomePageAcknowledgedMock
+            createWelcomePageAcknowledgedMock,
         )
     })
 
@@ -56,10 +56,10 @@ describe('useWelcomePageAcknowledgedMutation', () => {
         ;(getWelcomePageAcknowledgedKey as jest.Mock).mockReturnValue(queryKey)
         ;(useQueryClient as jest.Mock).mockReturnValue(queryClientMock)
 
-        renderHook(() => useWelcomePageAcknowledgedMutation({shopName}))
+        renderHook(() => useWelcomePageAcknowledgedMutation({ shopName }))
         ;(
             (useCreateWelcomePageAcknowledged as jest.Mock).mock.calls[0] as [
-                {onSuccess: () => void},
+                { onSuccess: () => void },
             ]
         )[0].onSuccess()
 
@@ -74,8 +74,8 @@ describe('useWelcomePageAcknowledgedMutation', () => {
             mutateAsync: createWelcomePageAcknowledgedMock,
         })
 
-        const {result} = renderHook(() =>
-            useWelcomePageAcknowledgedMutation({shopName})
+        const { result } = renderHook(() =>
+            useWelcomePageAcknowledgedMutation({ shopName }),
         )
 
         expect(result.current.isLoading).toBe(true)

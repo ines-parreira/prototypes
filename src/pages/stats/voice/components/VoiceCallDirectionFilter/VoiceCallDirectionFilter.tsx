@@ -1,5 +1,11 @@
-import React, {useState} from 'react'
-import {DropdownItem, DropdownMenu, DropdownToggle, Dropdown} from 'reactstrap'
+import React, { useState } from 'react'
+
+import {
+    Dropdown,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+} from 'reactstrap'
 
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {
@@ -8,7 +14,7 @@ import {
     MISSED_CALLS_FILTER_LABEL,
     OUTBOUND_CALLS_FILTER_LABEL,
 } from 'pages/stats/voice/constants/voiceOverview'
-import {VoiceCallFilterOptions} from 'pages/stats/voice/models/types'
+import { VoiceCallFilterOptions } from 'pages/stats/voice/models/types'
 
 import css from './VoiceCallDirectionFilter.less'
 
@@ -22,7 +28,7 @@ function VoiceCallDirectionFilter({
     onFilterSelect: (value: VoiceCallFilterOptions) => void
 }) {
     const options: Option[] = [
-        {label: ALL_CALLS_FILTER_LABEL, value: VoiceCallFilterOptions.All},
+        { label: ALL_CALLS_FILTER_LABEL, value: VoiceCallFilterOptions.All },
         {
             label: OUTBOUND_CALLS_FILTER_LABEL,
             value: VoiceCallFilterOptions.Outbound,

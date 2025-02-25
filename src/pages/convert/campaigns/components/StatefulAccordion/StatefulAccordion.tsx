@@ -1,5 +1,6 @@
+import React, { ReactNode } from 'react'
+
 import classNames from 'classnames'
-import React, {ReactNode} from 'react'
 
 import checkIconDisabled from 'assets/img/icons/check-circle-disabled.svg'
 import checkIcon from 'assets/img/icons/check-circle.svg'

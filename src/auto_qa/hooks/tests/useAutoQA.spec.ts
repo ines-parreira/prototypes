@@ -1,9 +1,10 @@
+import { act, renderHook } from '@testing-library/react-hooks'
+
 import {
     TicketQAScoreDimensionName,
     useListTicketQaScoreDimensions,
     useUpsertTicketQaScoreDimension,
 } from '@gorgias/api-queries'
-import {act, renderHook} from '@testing-library/react-hooks'
 
 import useAutoQA from '../useAutoQA'
 
@@ -122,7 +123,7 @@ describe('useAutoQA', () => {
             },
         })
 
-        const {result} = renderHook(() => useAutoQA(1))
+        const { result } = renderHook(() => useAutoQA(1))
 
         const expectedResult = [
             {
@@ -159,7 +160,7 @@ describe('useAutoQA', () => {
     })
 
     it('should return the dimensions containing manually scored dimensions', () => {
-        const {result} = renderHook(() => useAutoQA(1))
+        const { result } = renderHook(() => useAutoQA(1))
 
         expect(result.current.dimensions).toEqual([
             expect.objectContaining({
@@ -187,10 +188,13 @@ describe('useAutoQA', () => {
     })
 
     it('should return an edited value if applicable', () => {
-        const {result} = renderHook(() => useAutoQA(1))
+        const { result } = renderHook(() => useAutoQA(1))
 
         expect(result.current.dimensions).toEqual([
-            expect.objectContaining({prediction: 0, explanation: 'Beep-boop'}),
+            expect.objectContaining({
+                prediction: 0,
+                explanation: 'Beep-boop',
+            }),
             expect.objectContaining({
                 prediction: 5,
                 explanation: 'Boop-boop',
@@ -223,7 +227,7 @@ describe('useAutoQA', () => {
             ](1, 'Yup')
         })
         expect(result.current.dimensions).toEqual([
-            expect.objectContaining({prediction: 1, explanation: 'Yup'}),
+            expect.objectContaining({ prediction: 1, explanation: 'Yup' }),
             expect.objectContaining({
                 prediction: 5,
                 explanation: 'Boop-boop',
@@ -256,7 +260,7 @@ describe('useAutoQA', () => {
             ](5, 'Excellent')
         })
         expect(result.current.dimensions).toEqual([
-            expect.objectContaining({prediction: 1, explanation: 'Yup'}),
+            expect.objectContaining({ prediction: 1, explanation: 'Yup' }),
             expect.objectContaining({
                 prediction: 5,
                 explanation: 'Boop-boop',
@@ -292,7 +296,7 @@ describe('useAutoQA', () => {
             mutateAsync,
         })
 
-        const {result} = renderHook(() => useAutoQA(1))
+        const { result } = renderHook(() => useAutoQA(1))
 
         act(() => {
             result.current.changeHandlers[
@@ -318,10 +322,13 @@ describe('useAutoQA', () => {
             },
             {
                 onSuccess: expect.anything(),
-            }
+            },
         )
         ;(
-            mutateAsync.mock.calls[0] as [{data: []}, {onSuccess: () => void}]
+            mutateAsync.mock.calls[0] as [
+                { data: [] },
+                { onSuccess: () => void },
+            ]
         )[1].onSuccess()
         expect(refetchMock).toHaveBeenCalled()
     })
@@ -334,12 +341,12 @@ describe('useAutoQA', () => {
             mutateAsync,
         })
 
-        const {result} = renderHook(() => useAutoQA(1))
+        const { result } = renderHook(() => useAutoQA(1))
 
         act(() => {
             result.current.changeHandlers[TicketQAScoreDimensionName.Accuracy](
                 1,
-                undefined
+                undefined,
             )
         })
         act(() => {
@@ -361,10 +368,13 @@ describe('useAutoQA', () => {
             },
             {
                 onSuccess: expect.anything(),
-            }
+            },
         )
         ;(
-            mutateAsync.mock.calls[0] as [{data: []}, {onSuccess: () => void}]
+            mutateAsync.mock.calls[0] as [
+                { data: [] },
+                { onSuccess: () => void },
+            ]
         )[1].onSuccess()
         expect(refetchMock).toHaveBeenCalled()
     })

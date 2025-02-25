@@ -1,11 +1,11 @@
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {Value} from 'pages/common/forms/SelectField/types'
+import { Value } from 'pages/common/forms/SelectField/types'
 
 import useCurrentHelpCenter from '../../hooks/useCurrentHelpCenter'
-import {useSupportedLocales} from '../../providers/SupportedLocales'
-import {getLocaleSelectOptions} from '../../utils/localeSelectOptions'
+import { useSupportedLocales } from '../../providers/SupportedLocales'
+import { getLocaleSelectOptions } from '../../utils/localeSelectOptions'
 
 type Props = {
     value?: Value | null
@@ -19,7 +19,7 @@ export const LanguageSelect: React.FC<Props> = (props) => {
 
     const localeOptions = useMemo(
         () => getLocaleSelectOptions(locales, helpCenter.supported_locales),
-        [locales, helpCenter.supported_locales]
+        [locales, helpCenter.supported_locales],
     )
 
     return (
@@ -27,7 +27,7 @@ export const LanguageSelect: React.FC<Props> = (props) => {
             fixedWidth
             options={localeOptions}
             aria-label="language selector"
-            style={props.fullWidth ? {} : {width: '140px'}}
+            style={props.fullWidth ? {} : { width: '140px' }}
             {...props}
         />
     )

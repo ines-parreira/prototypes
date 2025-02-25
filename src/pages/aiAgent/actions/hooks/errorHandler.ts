@@ -1,13 +1,13 @@
 import axios from 'axios'
 
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {StoreDispatch} from 'state/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { StoreDispatch } from 'state/types'
 
 export function handleError(
     error: unknown,
     defaultMsg: string,
-    dispatch: StoreDispatch
+    dispatch: StoreDispatch,
 ) {
     if (axios.isAxiosError(error)) {
         if (error.response?.status === 409) {
@@ -17,19 +17,20 @@ export function handleError(
                     status: NotificationStatus.Error,
                     message:
                         'An Action with this name already exists. Choose a unique name in order to save.',
-                })
+                }),
             )
             return undefined
         }
 
-        const message = (error?.response?.data as {message: string} | undefined)
-            ?.message
+        const message = (
+            error?.response?.data as { message: string } | undefined
+        )?.message
         if (message) {
             void dispatch(
                 notify({
                     status: NotificationStatus.Error,
                     message: message,
-                })
+                }),
             )
             return undefined
         }
@@ -38,6 +39,6 @@ export function handleError(
         notify({
             status: NotificationStatus.Error,
             message: defaultMsg,
-        })
+        }),
     )
 }

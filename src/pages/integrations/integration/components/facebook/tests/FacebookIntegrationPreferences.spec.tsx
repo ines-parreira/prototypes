@@ -1,6 +1,7 @@
-import {fireEvent, render, waitFor} from '@testing-library/react'
-import {fromJS, Map} from 'immutable'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { fireEvent, render, waitFor } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
 
 import {
     CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
@@ -8,10 +9,10 @@ import {
     CHAT_AUTO_RESPONDER_REPLY_IN_DAY,
     CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
 } from 'config/integrations'
-import {FACEBOOK_LANGUAGE_DEFAULT} from 'config/integrations/facebook'
-import {FACEBOOK_INTEGRATION_TYPE} from 'constants/integration'
+import { FACEBOOK_LANGUAGE_DEFAULT } from 'config/integrations/facebook'
+import { FACEBOOK_INTEGRATION_TYPE } from 'constants/integration'
 
-import {FacebookIntegrationPreferences} from '../FacebookIntegrationPreferences'
+import { FacebookIntegrationPreferences } from '../FacebookIntegrationPreferences'
 
 const mockUpdateOrCreateIntegration = jest.fn()
 
@@ -23,12 +24,12 @@ describe('<FacebookIntegrationPreferences/>', () => {
 
     describe('componentWillMount()', () => {
         it('should not initialize the state because the passed integration is empty', () => {
-            const {getByText, queryByRole} = render(
-                <FacebookIntegrationPreferences {...minProps} />
+            const { getByText, queryByRole } = render(
+                <FacebookIntegrationPreferences {...minProps} />,
             )
 
             expect(getByText(/This message will be sent/)).toHaveClass(
-                'text-faded'
+                'text-faded',
             )
             expect(queryByRole('radio')).toBeNull()
         })
@@ -50,19 +51,19 @@ describe('<FacebookIntegrationPreferences/>', () => {
                 },
             })
 
-            const {getByText} = render(
+            const { getByText } = render(
                 <FacebookIntegrationPreferences
                     {...minProps}
                     integration={integration}
-                />
+                />,
             )
 
             expect(getByText(/This message will be sent/)).not.toHaveClass(
-                'text-faded'
+                'text-faded',
             )
             await waitFor(() => {
                 expect(
-                    document.getElementById(CHAT_AUTO_RESPONDER_REPLY_IN_HOURS)
+                    document.getElementById(CHAT_AUTO_RESPONDER_REPLY_IN_HOURS),
                 ).toBeChecked()
             })
         })
@@ -70,19 +71,19 @@ describe('<FacebookIntegrationPreferences/>', () => {
 
     describe('componentDidUpdate()', () => {
         it('should not initialize the state because the passed integration is empty', () => {
-            const {getByText, queryByRole, rerender} = render(
-                <FacebookIntegrationPreferences {...minProps} />
+            const { getByText, queryByRole, rerender } = render(
+                <FacebookIntegrationPreferences {...minProps} />,
             )
 
             rerender(
                 <FacebookIntegrationPreferences
                     {...minProps}
                     integration={fromJS({})}
-                />
+                />,
             )
 
             expect(getByText(/This message will be sent/)).toHaveClass(
-                'text-faded'
+                'text-faded',
             )
             expect(queryByRole('radio')).toBeNull()
         })
@@ -103,22 +104,22 @@ describe('<FacebookIntegrationPreferences/>', () => {
                     },
                 },
             })
-            const {getByText, rerender} = render(
-                <FacebookIntegrationPreferences {...minProps} />
+            const { getByText, rerender } = render(
+                <FacebookIntegrationPreferences {...minProps} />,
             )
             rerender(
                 <FacebookIntegrationPreferences
                     {...minProps}
                     integration={integration}
-                />
+                />,
             )
 
             expect(getByText(/This message will be sent/)).not.toHaveClass(
-                'text-faded'
+                'text-faded',
             )
             await waitFor(() => {
                 expect(
-                    document.getElementById(CHAT_AUTO_RESPONDER_REPLY_IN_HOURS)
+                    document.getElementById(CHAT_AUTO_RESPONDER_REPLY_IN_HOURS),
                 ).toBeChecked()
             })
         })
@@ -126,8 +127,8 @@ describe('<FacebookIntegrationPreferences/>', () => {
 
     describe('_setAutoResponderEnabled()', () => {
         it('should set passed value in the state', () => {
-            const {getByRole} = render(
-                <FacebookIntegrationPreferences {...minProps} />
+            const { getByRole } = render(
+                <FacebookIntegrationPreferences {...minProps} />,
             )
             const checkbox = getByRole('checkbox')
 
@@ -161,16 +162,16 @@ describe('<FacebookIntegrationPreferences/>', () => {
                 <FacebookIntegrationPreferences
                     {...minProps}
                     integration={integration}
-                />
+                />,
             )
 
             fireEvent.click(
-                document.getElementById(CHAT_AUTO_RESPONDER_REPLY_IN_DAY)!
+                document.getElementById(CHAT_AUTO_RESPONDER_REPLY_IN_DAY)!,
             )
 
             await waitFor(() => {
                 expect(
-                    document.getElementById(CHAT_AUTO_RESPONDER_REPLY_IN_DAY)
+                    document.getElementById(CHAT_AUTO_RESPONDER_REPLY_IN_DAY),
                 ).toBeChecked()
             })
         })
@@ -178,8 +179,8 @@ describe('<FacebookIntegrationPreferences/>', () => {
 
     describe('form submission', () => {
         it('should submit the form with defaults', () => {
-            const {getByText} = render(
-                <FacebookIntegrationPreferences {...minProps} />
+            const { getByText } = render(
+                <FacebookIntegrationPreferences {...minProps} />,
             )
 
             fireEvent.click(getByText('Save changes'))
@@ -195,7 +196,7 @@ describe('<FacebookIntegrationPreferences/>', () => {
                             },
                         },
                     },
-                })
+                }),
             )
         })
 
@@ -215,15 +216,15 @@ describe('<FacebookIntegrationPreferences/>', () => {
                     },
                 },
             })
-            const {getByText} = render(
+            const { getByText } = render(
                 <FacebookIntegrationPreferences
                     {...minProps}
                     integration={integration}
-                />
+                />,
             )
 
             fireEvent.click(
-                document.getElementById(CHAT_AUTO_RESPONDER_REPLY_IN_DAY)!
+                document.getElementById(CHAT_AUTO_RESPONDER_REPLY_IN_DAY)!,
             )
             fireEvent.click(getByText('Save changes'))
 
@@ -232,45 +233,45 @@ describe('<FacebookIntegrationPreferences/>', () => {
                     id: integration.get('id'),
                     meta: (integration.get('meta') as Map<any, any>).setIn(
                         ['preferences', 'auto_responder', 'reply'],
-                        CHAT_AUTO_RESPONDER_REPLY_IN_DAY
+                        CHAT_AUTO_RESPONDER_REPLY_IN_DAY,
                     ),
-                })
+                }),
             )
         })
     })
 
     describe('render()', () => {
         it('should render the Facebook preferences', () => {
-            const {container} = render(
+            const { container } = render(
                 <FacebookIntegrationPreferences
                     {...minProps}
                     integration={fromJS({
                         id: 2,
                         type: FACEBOOK_INTEGRATION_TYPE,
-                        meta: {language: FACEBOOK_LANGUAGE_DEFAULT},
+                        meta: { language: FACEBOOK_LANGUAGE_DEFAULT },
                     })}
-                />
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render loading buttons because the integration is being updated', () => {
-            const {getByText} = render(
+            const { getByText } = render(
                 <FacebookIntegrationPreferences
                     {...minProps}
                     integration={fromJS({
                         id: 2,
                         type: FACEBOOK_INTEGRATION_TYPE,
-                        meta: {language: FACEBOOK_LANGUAGE_DEFAULT},
+                        meta: { language: FACEBOOK_LANGUAGE_DEFAULT },
                     })}
-                />
+                />,
             )
 
             fireEvent.click(getByText('Save changes'))
 
             expect(getByText('Save changes').parentNode).toHaveClass(
-                'btn-loading'
+                'btn-loading',
             )
         })
     })

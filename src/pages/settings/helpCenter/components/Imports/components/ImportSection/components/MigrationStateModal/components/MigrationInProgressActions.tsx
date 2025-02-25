@@ -1,9 +1,10 @@
 import React from 'react'
-import {Progress} from 'reactstrap'
+
+import { Progress } from 'reactstrap'
 
 import Button from 'pages/common/components/button/Button'
 
-import {InProgressMigrationState} from '../../../types'
+import { InProgressMigrationState } from '../../../types'
 
 type Props = {
     state: InProgressMigrationState

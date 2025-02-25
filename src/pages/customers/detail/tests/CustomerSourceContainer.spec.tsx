@@ -1,22 +1,23 @@
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {shopifyWidget} from 'fixtures/widgets'
+import { fromJS } from 'immutable'
 
-import {renderWithRouter} from '../../../../utils/testing'
+import { shopifyWidget } from 'fixtures/widgets'
+
+import { renderWithRouter } from '../../../../utils/testing'
 import SourceWrapper from '../../../common/components/sourceWidgets/SourceWrapper'
-import {CustomerSourceContainer} from '../CustomerSourceContainer'
+import { CustomerSourceContainer } from '../CustomerSourceContainer'
 
 jest.mock(
     '../../../common/components/sourceWidgets/SourceWrapper',
     () =>
-        ({context, identifier}: ComponentProps<typeof SourceWrapper>) => (
+        ({ context, identifier }: ComponentProps<typeof SourceWrapper>) => (
             <div>
                 SourceWrapper
                 <div>context: {context}</div>
                 <div>identifier: {identifier}</div>
             </div>
-        )
+        ),
 )
 
 describe('<CustomerSourceContainer />', () => {
@@ -58,12 +59,12 @@ describe('<CustomerSourceContainer />', () => {
     } as unknown as ComponentProps<typeof CustomerSourceContainer>
 
     it('should display content when a customer id is provided', () => {
-        const {container} = renderWithRouter(
+        const { container } = renderWithRouter(
             <CustomerSourceContainer {...minProps} />,
             {
                 path: '/foo/:customerId?',
                 route: '/foo/1',
-            }
+            },
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -76,7 +77,7 @@ describe('<CustomerSourceContainer />', () => {
         })
 
         expect(minProps.actions.customers.fetchCustomer).toHaveBeenCalledWith(
-            '1'
+            '1',
         )
     })
 })

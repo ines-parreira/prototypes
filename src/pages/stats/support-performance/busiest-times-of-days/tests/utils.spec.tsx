@@ -1,8 +1,8 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
 import * as timeSeriesHooks from 'hooks/reporting/timeSeries'
-import {TicketMeasure} from 'models/reporting/cubes/TicketCube'
-import {ReportingGranularity} from 'models/reporting/types'
+import { TicketMeasure } from 'models/reporting/cubes/TicketCube'
+import { ReportingGranularity } from 'models/reporting/types'
 import {
     BusiestTimeOfDaysMetrics,
     DayOfWeek,
@@ -93,54 +93,54 @@ describe('getAggregatedBusiestTimesOfDayData', () => {
 
         const aggregatedData = getAggregatedBusiestTimesOfDayData(
             data.data,
-            timeZone
+            timeZone,
         )
 
         expect(Object.keys(aggregatedData.btodData).length).toEqual(24)
         Object.keys(aggregatedData.btodData).forEach((hour) =>
             expect(
-                Object.keys(aggregatedData.btodData[Number(hour)]).length
-            ).toEqual(Object.keys(DayOfWeek).length)
+                Object.keys(aggregatedData.btodData[Number(hour)]).length,
+            ).toEqual(Object.keys(DayOfWeek).length),
         )
         expect(aggregatedData.btodData[0]).toEqual(
             expect.objectContaining({
                 [DayOfWeek.MONDAY]: mondayAfterMidnight.value,
-            })
+            }),
         )
         expect(aggregatedData.btodData[2]).toEqual(
             expect.objectContaining({
                 [DayOfWeek.MONDAY]: monday2am.value,
-            })
+            }),
         )
         expect(aggregatedData.btodData[1]).toEqual(
             expect.objectContaining({
                 [DayOfWeek.TUESDAY]:
                     tuesday1am.value + tuesdayWeekLater1am.value,
-            })
+            }),
         )
         expect(aggregatedData.btodData[23]).toEqual(
             expect.objectContaining({
                 [DayOfWeek.WEDNESDAY]: wednesdayBeforeMidnight.value,
-            })
+            }),
         )
     })
 
     it('should return hook for each metric', () => {
         const useMessagesSentTimeSeriesSpy = jest.spyOn(
             timeSeriesHooks,
-            'useMessagesSentTimeSeries'
+            'useMessagesSentTimeSeries',
         )
         const useTicketsRepliedTimeSeriesSpy = jest.spyOn(
             timeSeriesHooks,
-            'useTicketsRepliedTimeSeries'
+            'useTicketsRepliedTimeSeries',
         )
         const useTicketsClosedTimeSeriesSpy = jest.spyOn(
             timeSeriesHooks,
-            'useTicketsClosedTimeSeries'
+            'useTicketsClosedTimeSeries',
         )
         const useTicketsCreatedTimeSeriesSpy = jest.spyOn(
             timeSeriesHooks,
-            'useTicketsCreatedTimeSeries'
+            'useTicketsCreatedTimeSeries',
         )
         const filters = {
             period: {
@@ -211,28 +211,28 @@ describe('getWorkingHours', () => {
                 '2': expect.objectContaining({
                     [DayOfWeek.WEDNESDAY]: 1,
                 }),
-            })
+            }),
         )
         expect(hours).toEqual(
             expect.objectContaining({
                 '3': expect.objectContaining({
                     [DayOfWeek.WEDNESDAY]: 0,
                 }),
-            })
+            }),
         )
         expect(hours).toEqual(
             expect.objectContaining({
                 '22': expect.objectContaining({
                     [DayOfWeek.SUNDAY]: 1,
                 }),
-            })
+            }),
         )
         expect(hours).toEqual(
             expect.objectContaining({
                 '23': expect.objectContaining({
                     [DayOfWeek.SUNDAY]: 1,
                 }),
-            })
+            }),
         )
     })
 })
@@ -242,7 +242,7 @@ describe('getWorkingHoursInTimeZone', () => {
         const newTimeZone = 'CET'
         const newWorkingHours = getWorkingHoursInTimeZone(
             workingHours,
-            newTimeZone
+            newTimeZone,
         )
 
         expect(newWorkingHours).toEqual(
@@ -254,10 +254,10 @@ describe('getWorkingHoursInTimeZone', () => {
                     business_hours: changeBusinessHoursTimeZone(
                         workingHours.data.business_hours,
                         workingHours.data.timezone,
-                        newTimeZone
+                        newTimeZone,
                     ),
                 },
-            })
+            }),
         )
     })
 })
@@ -268,7 +268,7 @@ describe('changeBusinessHoursTimeZone', () => {
         const newBusinessHours = changeBusinessHoursTimeZone(
             workingHours.data.business_hours,
             workingHours.data.timezone,
-            newTimeZone
+            newTimeZone,
         )
 
         expect(newBusinessHours).toEqual([
@@ -458,27 +458,27 @@ describe('businessHourToNewTimeZone', () => {
             const onMonday = new Date('2019-05-13T12:34:56.000Z')
 
             global.Date.now = jest.fn(
-                () => onMonday
+                () => onMonday,
             ) as unknown as typeof Date.now
             expect(
                 businessHourToNewTimeZone(
                     from.business_hour,
                     from.timeZone,
-                    to.timeZone
-                )
+                    to.timeZone,
+                ),
             ).toEqual(to.business_hours)
             const onSunday = new Date('2019-05-19T12:34:56.000Z')
 
             global.Date.now = jest.fn(
-                () => onSunday
+                () => onSunday,
             ) as unknown as typeof Date.now
             expect(
                 businessHourToNewTimeZone(
                     from.business_hour,
                     from.timeZone,
-                    to.timeZone
-                )
+                    to.timeZone,
+                ),
             ).toEqual(to.business_hours)
-        }
+        },
     )
 })

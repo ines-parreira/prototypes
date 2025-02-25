@@ -1,14 +1,13 @@
-import {fireEvent, render} from '@testing-library/react'
 import React from 'react'
 
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
+import { fireEvent, render } from '@testing-library/react'
+
+import { Campaign } from 'pages/convert/campaigns/types/Campaign'
 import history from 'pages/history'
+import { useCampaignStatsFilters } from 'pages/stats/convert/hooks/useCampaignStatsFilters'
+import { CampaignTableContentCell } from 'pages/stats/convert/types/CampaignTableContentCell'
 
-import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
-
-import {CampaignTableContentCell} from 'pages/stats/convert/types/CampaignTableContentCell'
-
-import {TicketsCreatedCell} from '../TicketsCreatedCell'
+import { TicketsCreatedCell } from '../TicketsCreatedCell'
 
 jest.mock('pages/history')
 jest.mock('pages/stats/convert/hooks/useCampaignStatsFilters')
@@ -47,8 +46,8 @@ describe('<TicketsCreatedCell />', () => {
     })
 
     it('should not redirect the page if there are no tickets created yet', () => {
-        const {container, getByText} = render(
-            <TicketsCreatedCell cell={cell} data={0} />
+        const { container, getByText } = render(
+            <TicketsCreatedCell cell={cell} data={0} />,
         )
 
         expect(container.querySelector('a')).toBeNull()
@@ -68,8 +67,8 @@ describe('<TicketsCreatedCell />', () => {
                 name: "Welcome's visitors",
             },
         } as unknown as CampaignTableContentCell
-        const {getByText} = render(
-            <TicketsCreatedCell cell={innerCell} data={2} />
+        const { getByText } = render(
+            <TicketsCreatedCell cell={innerCell} data={2} />,
         )
         fireEvent.click(getByText('2'))
         expect(historySpy).toHaveBeenCalledWith({
@@ -83,8 +82,8 @@ describe('<TicketsCreatedCell />', () => {
     })
 
     it('should redirect the page if there are tickets created', () => {
-        const {container, getByText} = render(
-            <TicketsCreatedCell cell={cell} data={2} />
+        const { container, getByText } = render(
+            <TicketsCreatedCell cell={cell} data={2} />,
         )
 
         expect(container.querySelector('a')).not.toBeNull()

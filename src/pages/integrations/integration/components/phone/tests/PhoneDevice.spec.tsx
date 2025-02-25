@@ -1,7 +1,8 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {assumeMock} from 'utils/testing'
+import { render, screen } from '@testing-library/react'
+
+import { assumeMock } from 'utils/testing'
 
 import PhoneDevice from '../PhoneDevice'
 import PhoneDeviceDialer from '../PhoneDeviceDialer'
@@ -13,13 +14,13 @@ const PhoneDeviceDialerMock = assumeMock(PhoneDeviceDialer)
 describe('PhoneDevice', () => {
     const setIsOpen = jest.fn()
 
-    const renderComponent = ({isOpen = true}: {isOpen?: boolean} = {}) => {
+    const renderComponent = ({ isOpen = true }: { isOpen?: boolean } = {}) => {
         return render(
             <PhoneDevice
                 isOpen={isOpen}
                 setIsOpen={setIsOpen}
-                target={{current: null} as React.RefObject<null>}
-            />
+                target={{ current: null } as React.RefObject<null>}
+            />,
         )
     }
 
@@ -36,7 +37,7 @@ describe('PhoneDevice', () => {
     })
 
     it('does not render dialer when isOpen is false', () => {
-        const {queryByTestId} = renderComponent({isOpen: false})
+        const { queryByTestId } = renderComponent({ isOpen: false })
 
         expect(queryByTestId('mock-phone-device-dialer')).toBeNull()
     })

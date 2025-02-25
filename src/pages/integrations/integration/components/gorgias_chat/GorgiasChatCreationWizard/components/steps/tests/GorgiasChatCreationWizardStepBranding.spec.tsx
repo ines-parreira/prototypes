@@ -1,14 +1,14 @@
-import {fireEvent, render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
-import {MemoryRouter} from 'react-router-dom'
 
+import { fireEvent, render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {GORGIAS_CHAT_DEFAULT_COLOR} from 'config/integrations/gorgias_chat'
-import {GorgiasChatCreationWizardSteps} from 'models/integration/types'
+import { GORGIAS_CHAT_DEFAULT_COLOR } from 'config/integrations/gorgias_chat'
+import { GorgiasChatCreationWizardSteps } from 'models/integration/types'
 import Wizard from 'pages/common/components/wizard/Wizard'
 import * as actions from 'state/integrations/actions'
 
@@ -16,7 +16,7 @@ import GorgiasChatCreationWizardStepBranding from '../GorgiasChatCreationWizardS
 
 jest.mock(
     'pages/common/hooks/useIsIntersectingWithBrowserViewport',
-    () => () => false
+    () => () => false,
 )
 
 const mockStore = configureMockStore([thunk])
@@ -39,51 +39,51 @@ const minProps: React.ComponentProps<
 
 describe('<GorgiasChatCreationWizardStepBranding />', () => {
     it('renders wizard with default options selected', () => {
-        const {container, getByLabelText} = render(
+        const { container, getByLabelText } = render(
             <MemoryRouter>
                 <Provider store={mockStore({})}>
                     <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
                         <GorgiasChatCreationWizardStepBranding {...minProps} />
                     </Wizard>
                 </Provider>
-            </MemoryRouter>
+            </MemoryRouter>,
         )
 
         container
             .querySelectorAll('.colorPicker input')
             .forEach((input) =>
-                expect(input).toHaveValue(GORGIAS_CHAT_DEFAULT_COLOR)
+                expect(input).toHaveValue(GORGIAS_CHAT_DEFAULT_COLOR),
             )
 
-        expect(getByLabelText('Icon', {selector: 'input'})).toBeChecked()
+        expect(getByLabelText('Icon', { selector: 'input' })).toBeChecked()
     })
 
     it('submits form when fields have been changed', () => {
-        const {container, getByRole, getByLabelText} = render(
+        const { container, getByRole, getByLabelText } = render(
             <MemoryRouter>
                 <Provider store={mockStore({})}>
                     <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
                         <GorgiasChatCreationWizardStepBranding {...minProps} />
                     </Wizard>
                 </Provider>
-            </MemoryRouter>
+            </MemoryRouter>,
         )
 
         fireEvent.change(container.querySelector('.colorPicker input')!, {
-            target: {value: '#f00ba5'},
+            target: { value: '#f00ba5' },
         })
 
-        fireEvent.click(getByLabelText('Icon and label', {selector: 'input'}))
+        fireEvent.click(getByLabelText('Icon and label', { selector: 'input' }))
 
         const spy = jest.spyOn(actions, 'updateOrCreateIntegration')
 
-        fireEvent.click(getByRole('button', {name: 'Next'}))
+        fireEvent.click(getByRole('button', { name: 'Next' }))
 
         expect(spy.mock.calls).toMatchSnapshot()
     })
 
     it('disables buttons when submitting form', () => {
-        const {getByRole} = render(
+        const { getByRole } = render(
             <MemoryRouter>
                 <Provider store={mockStore({})}>
                     <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
@@ -93,13 +93,13 @@ describe('<GorgiasChatCreationWizardStepBranding />', () => {
                         />
                     </Wizard>
                 </Provider>
-            </MemoryRouter>
+            </MemoryRouter>,
         )
 
         expect(
-            getByRole('button', {name: 'Save & Customize Later'})
+            getByRole('button', { name: 'Save & Customize Later' }),
         ).toBeAriaDisabled()
-        expect(getByRole('button', {name: 'Back'})).toBeAriaDisabled()
-        expect(getByRole('button', {name: /Next/})).toBeAriaDisabled()
+        expect(getByRole('button', { name: 'Back' })).toBeAriaDisabled()
+        expect(getByRole('button', { name: /Next/ })).toBeAriaDisabled()
     })
 })

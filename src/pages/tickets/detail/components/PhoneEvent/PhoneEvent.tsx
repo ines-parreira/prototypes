@@ -1,15 +1,17 @@
-import classnames from 'classnames'
-import {Map} from 'immutable'
-import React, {useCallback, useState} from 'react'
-import {Link} from 'react-router-dom'
+import React, { useCallback, useState } from 'react'
 
-import {PhoneIntegrationEvent} from 'constants/integrations/types/event'
+import classnames from 'classnames'
+import { Map } from 'immutable'
+import { Link } from 'react-router-dom'
+
+import { PhoneIntegrationEvent } from 'constants/integrations/types/event'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 
-import css from '../Event.less'
 import callAnsweredIcon from './icons/call-answered.svg'
 import callForwardedIcon from './icons/call-forwarded.svg'
 import PhoneEventDetails from './PhoneEventDetails'
+
+import css from '../Event.less'
 
 const icons = new window.Map<string, string>([
     [PhoneIntegrationEvent.ConversationStarted, callAnsweredIcon],
@@ -52,7 +54,7 @@ type Props = {
     isLast: boolean
 }
 
-export default function PhoneEvent({event, isLast}: Props): JSX.Element {
+export default function PhoneEvent({ event, isLast }: Props): JSX.Element {
     const eventType = event.get('type')
     const icon = icons.get(eventType) || null
 
@@ -125,7 +127,7 @@ export default function PhoneEvent({event, isLast}: Props): JSX.Element {
                             onClick={() =>
                                 setDisplayAdditionalInfo(
                                     (displayAdditionalInfo) =>
-                                        !displayAdditionalInfo
+                                        !displayAdditionalInfo,
                                 )
                             }
                         >

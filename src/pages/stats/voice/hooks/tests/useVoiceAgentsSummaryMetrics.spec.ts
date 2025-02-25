@@ -1,10 +1,10 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {useFlags} from 'launchdarkly-react-client-sdk'
+import { renderHook } from '@testing-library/react-hooks'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 import moment from 'moment/moment'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
-import {StatsFilters} from 'models/stat/types'
+import { StatsFilters } from 'models/stat/types'
 import {
     useAnsweredCallsMetric,
     useAverageTalkTimeMetric,
@@ -13,9 +13,9 @@ import {
     useOutboundCallsMetric,
     useTotalCallsMetric,
 } from 'pages/stats/voice/hooks/agentMetrics'
-import {useVoiceAgentsSummaryMetrics} from 'pages/stats/voice/hooks/useVoiceAgentsSummaryMetrics'
-import {formatReportingQueryDate} from 'utils/reporting'
-import {assumeMock} from 'utils/testing'
+import { useVoiceAgentsSummaryMetrics } from 'pages/stats/voice/hooks/useVoiceAgentsSummaryMetrics'
+import { formatReportingQueryDate } from 'utils/reporting'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/useAppSelector')
 const useAppSelectorMock = assumeMock(useAppSelector)
@@ -59,8 +59,8 @@ describe('useVoiceAgentsSummaryMetrics', () => {
         useOutboundCallsMetricMock.mockReturnValue(metricData)
         useAverageTalkTimeMetricMock.mockReturnValue(metricData)
 
-        const {result} = renderHook(() =>
-            useVoiceAgentsSummaryMetrics(statsFilters, userTimezone)
+        const { result } = renderHook(() =>
+            useVoiceAgentsSummaryMetrics(statsFilters, userTimezone),
         )
 
         expect(result.current).toEqual({
@@ -81,27 +81,27 @@ describe('useVoiceAgentsSummaryMetrics', () => {
 
         expect(useTotalCallsMetricMock).toHaveBeenCalledWith(
             statsFilters,
-            userTimezone
+            userTimezone,
         )
         expect(useAnsweredCallsMetricMock).toHaveBeenCalledWith(
             statsFilters,
-            userTimezone
+            userTimezone,
         )
         expect(useMissedCallsMetricMock).toHaveBeenCalledWith(
             statsFilters,
-            userTimezone
+            userTimezone,
         )
         expect(useDeclinedCallsMetricMock).toHaveBeenCalledWith(
             statsFilters,
-            userTimezone
+            userTimezone,
         )
         expect(useOutboundCallsMetricMock).toHaveBeenCalledWith(
             statsFilters,
-            userTimezone
+            userTimezone,
         )
         expect(useAverageTalkTimeMetricMock).toHaveBeenCalledWith(
             statsFilters,
-            userTimezone
+            userTimezone,
         )
     })
 })
@@ -121,8 +121,8 @@ describe('useVoiceAgentsSummaryMetrics with AnalyticsNewFiltersVoice', () => {
         useOutboundCallsMetricMock.mockReturnValue(metricData)
         useAverageTalkTimeMetricMock.mockReturnValue(metricData)
 
-        const {result} = renderHook(() =>
-            useVoiceAgentsSummaryMetrics(statsFilters, userTimezone)
+        const { result } = renderHook(() =>
+            useVoiceAgentsSummaryMetrics(statsFilters, userTimezone),
         )
 
         expect(result.current).toEqual({
@@ -143,27 +143,27 @@ describe('useVoiceAgentsSummaryMetrics with AnalyticsNewFiltersVoice', () => {
 
         expect(useTotalCallsMetricMock).toHaveBeenCalledWith(
             statsFilters,
-            userTimezone
+            userTimezone,
         )
         expect(useAnsweredCallsMetricMock).toHaveBeenCalledWith(
             statsFilters,
-            userTimezone
+            userTimezone,
         )
         expect(useMissedCallsMetricMock).toHaveBeenCalledWith(
             statsFilters,
-            userTimezone
+            userTimezone,
         )
         expect(useDeclinedCallsMetricMock).toHaveBeenCalledWith(
             statsFilters,
-            userTimezone
+            userTimezone,
         )
         expect(useOutboundCallsMetricMock).toHaveBeenCalledWith(
             statsFilters,
-            userTimezone
+            userTimezone,
         )
         expect(useAverageTalkTimeMetricMock).toHaveBeenCalledWith(
             statsFilters,
-            userTimezone
+            userTimezone,
         )
     })
 })

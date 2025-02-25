@@ -1,11 +1,11 @@
-import React, {CSSProperties, useMemo} from 'react'
+import React, { CSSProperties, useMemo } from 'react'
 
-import Draggable, {DraggableEventHandler} from 'react-draggable'
+import Draggable, { DraggableEventHandler } from 'react-draggable'
 
-import {AttachmentPosition} from '../../../../types/CampaignAttachment'
+import { AttachmentPosition } from '../../../../types/CampaignAttachment'
+import { getDraggableContainerBounds } from './utils'
 
 import css from './ImagePosition.less'
-import {getDraggableContainerBounds} from './utils'
 
 export const VISIBLE_IMAGE_CONTAINER = {
     width: 280,
@@ -32,7 +32,7 @@ export const ImagePosition = ({
     y,
     onDrag,
 }: Props) => {
-    const {src, ...imageSize} = image
+    const { src, ...imageSize } = image
 
     const imageStyle = useMemo<CSSProperties>(() => {
         if (!image) {
@@ -63,7 +63,7 @@ export const ImagePosition = ({
     }, [image, readonly, imageSize, src, x, y, size])
 
     const handleDrag: DraggableEventHandler = (_event, data) => {
-        const {y, x} = data
+        const { y, x } = data
 
         onDrag && onDrag(x, y)
     }
@@ -76,7 +76,7 @@ export const ImagePosition = ({
     const draggableContainerBounds = getDraggableContainerBounds(
         imageSize,
         VISIBLE_IMAGE_CONTAINER,
-        size
+        size,
     )
 
     return (
@@ -100,7 +100,7 @@ export const ImagePosition = ({
             <div className={css.visibleContainer} style={containerStyles}>
                 <div
                     className={css.visibleImage}
-                    style={{...containerStyles, ...imageStyle}}
+                    style={{ ...containerStyles, ...imageStyle }}
                 />
             </div>
         </>

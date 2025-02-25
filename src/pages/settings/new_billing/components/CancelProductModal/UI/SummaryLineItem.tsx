@@ -1,13 +1,15 @@
-import classNames from 'classnames'
 import React from 'react'
 
+import classNames from 'classnames'
+
+import { SummaryItemData } from './types'
+
 import css from './SummaryLineItem.less'
-import {SummaryItemData} from './types'
 
 type CancelledLineItemProps = {
     summaryItem: SummaryItemData
 }
-const SummaryLineItem = ({summaryItem}: CancelledLineItemProps) => {
+const SummaryLineItem = ({ summaryItem }: CancelledLineItemProps) => {
     return (
         <div className={css.container}>
             <div

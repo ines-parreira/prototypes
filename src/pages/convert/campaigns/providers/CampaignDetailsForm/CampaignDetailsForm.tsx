@@ -1,24 +1,24 @@
-import {Skeleton} from '@gorgias/merchant-ui-kit'
-import cn from 'classnames'
-import {EditorState} from 'draft-js'
-import {produce} from 'immer'
-import {fromJS, Map} from 'immutable'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
+import cn from 'classnames'
+import { EditorState } from 'draft-js'
+import { produce } from 'immer'
+import { fromJS, Map } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 import _isEmpty from 'lodash/isEmpty'
 import _trim from 'lodash/trim'
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
 
-import {AlertBanner, AlertBannerTypes} from 'AlertBanners'
-import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
+import { Skeleton } from '@gorgias/merchant-ui-kit'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { AlertBanner, AlertBannerTypes } from 'AlertBanners'
+import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
+import { FeatureFlagKey } from 'config/featureFlags'
 import {
     getPrimaryLanguageFromChatConfig,
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from 'config/integrations/gorgias_chat'
-import {User} from 'config/types/user'
+import { User } from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -28,64 +28,61 @@ import {
     GorgiasChatIntegration,
 } from 'models/integration/types'
 import Accordion from 'pages/common/components/accordion/Accordion'
-import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
-
-import {findContactCaptureForm} from 'pages/convert/campaigns/components/ContactCaptureForm/utils'
-import {ProductRecommendationBanner} from 'pages/convert/campaigns/components/ProductRecommendationBanner/ProductRecommendationBanner'
-import {DEFAULT_CAMPAIGN_NAME} from 'pages/convert/campaigns/constants/labels'
-import {useGetPreviewProducts} from 'pages/convert/campaigns/hooks/useGetPreviewProducts'
+import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
+import { findContactCaptureForm } from 'pages/convert/campaigns/components/ContactCaptureForm/utils'
+import { ProductRecommendationBanner } from 'pages/convert/campaigns/components/ProductRecommendationBanner/ProductRecommendationBanner'
+import { DEFAULT_CAMPAIGN_NAME } from 'pages/convert/campaigns/constants/labels'
+import { useGetPreviewProducts } from 'pages/convert/campaigns/hooks/useGetPreviewProducts'
 import {
     CampaignContactFormAttachment,
     CampaignFormExtra,
     CampaignProductRecommendation,
 } from 'pages/convert/campaigns/types/CampaignAttachment'
-import {WizardConfiguration} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
+import { WizardConfiguration } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
 import {
     CampaignScheduleModeEnum,
     CampaignScheduleRuleValueEnum,
 } from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
-import {createCampaignPayload} from 'pages/convert/campaigns/utils/createCampaignPayload'
-import {transformAttachmentsToContactCaptureForms} from 'pages/convert/campaigns/utils/transformAttachmentsToContactCaptureForms'
-import {transformAttachmentsToProductRecommendations} from 'pages/convert/campaigns/utils/transformAttachmentsToProductRecommendations'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import { createCampaignPayload } from 'pages/convert/campaigns/utils/createCampaignPayload'
+import { transformAttachmentsToContactCaptureForms } from 'pages/convert/campaigns/utils/transformAttachmentsToContactCaptureForms'
+import { transformAttachmentsToProductRecommendations } from 'pages/convert/campaigns/utils/transformAttachmentsToProductRecommendations'
+import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import history from 'pages/history'
-import {useConvertGeneralSettings} from 'pages/stats/convert/hooks/useConvertGeneralSettings'
+import { useConvertGeneralSettings } from 'pages/stats/convert/hooks/useConvertGeneralSettings'
 import {
     deleteAttachment,
     setNewMessageForChatCampaign,
 } from 'state/newMessage/actions'
-import {getNewMessageAttachments} from 'state/newMessage/selectors'
-import {convertToHTML} from 'utils/editor'
-import {sanitizeHtmlDefault} from 'utils/html'
+import { getNewMessageAttachments } from 'state/newMessage/selectors'
+import { convertToHTML } from 'utils/editor'
+import { sanitizeHtmlDefault } from 'utils/html'
 
-import {HeaderReturnButton} from '../../../common/components/HeaderReturnButton'
-import {CampaignFooter} from '../../components/CampaignFooter'
+import { HeaderReturnButton } from '../../../common/components/HeaderReturnButton'
+import { CampaignFooter } from '../../components/CampaignFooter'
 import CampaignPreview from '../../components/CampaignPreview'
-import {CampaignAudienceStep} from '../../containers/CampaignAudienceStep'
-import {CampaignBasicStep} from '../../containers/CampaignBasicStep'
-import {CampaignMessageStep} from '../../containers/CampaignMessageStep'
+import { CampaignAudienceStep } from '../../containers/CampaignAudienceStep'
+import { CampaignBasicStep } from '../../containers/CampaignBasicStep'
+import { CampaignMessageStep } from '../../containers/CampaignMessageStep'
 import CampaignPublishScheduleStep from '../../containers/CampaignPublishScheduleStep'
-import {IntegrationProvider} from '../../containers/IntegrationProvider'
-import {useChatPreviewProps} from '../../hooks/useChatPreviewProps'
-import {useManageTriggers} from '../../hooks/useManageTriggers'
-import {usePristineSteps} from '../../hooks/usePristineSteps'
-
-import {useUtm} from '../../hooks/useUtm'
-import {Campaign} from '../../types/Campaign'
-import {CampaignAuthor} from '../../types/CampaignAgent'
-import {CampaignDiscountOffer} from '../../types/CampaignDiscountOffer'
-import {CampaignProduct} from '../../types/CampaignProduct'
-import {CampaignStepsKeys} from '../../types/CampaignSteps'
-import {CampaignStatus} from '../../types/enums/CampaignStatus.enum'
-import {transformAttachmentsToDiscountOffers} from '../../utils/transformAttachmentsToDiscountOffers'
-import {transformAttachmentToProduct} from '../../utils/transformAttachmentToProduct'
-import {transformCampaignAttachmentsToDetails} from '../../utils/transformCampaignAttachmentsToDetails'
-
+import { IntegrationProvider } from '../../containers/IntegrationProvider'
+import { useChatPreviewProps } from '../../hooks/useChatPreviewProps'
+import { useManageTriggers } from '../../hooks/useManageTriggers'
+import { usePristineSteps } from '../../hooks/usePristineSteps'
+import { useUtm } from '../../hooks/useUtm'
+import { Campaign } from '../../types/Campaign'
+import { CampaignAuthor } from '../../types/CampaignAgent'
+import { CampaignDiscountOffer } from '../../types/CampaignDiscountOffer'
+import { CampaignProduct } from '../../types/CampaignProduct'
+import { CampaignStepsKeys } from '../../types/CampaignSteps'
+import { CampaignStatus } from '../../types/enums/CampaignStatus.enum'
+import { transformAttachmentsToDiscountOffers } from '../../utils/transformAttachmentsToDiscountOffers'
+import { transformAttachmentToProduct } from '../../utils/transformAttachmentToProduct'
+import { transformCampaignAttachmentsToDetails } from '../../utils/transformCampaignAttachmentsToDetails'
 import {
     CampaigFormConfigurationProvider,
     CampaignFormConfigurationType,
 } from './configurationContext'
-import {CampaignDetailsFormApi, CampaignDetailsFormProvider} from './context'
+import { CampaignDetailsFormApi, CampaignDetailsFormProvider } from './context'
 
 import css from './style.less'
 
@@ -154,8 +151,8 @@ export const CampaignDetailsForm = ({
 }: Props) => {
     const dispatch = useAppDispatch()
 
-    const {channelConnection} = useGetOrCreateChannelConnection(
-        integration.toJS()
+    const { channelConnection } = useGetOrCreateChannelConnection(
+        integration.toJS(),
     )
 
     const [formValidationState, setFormValidationState] = useState<
@@ -179,14 +176,14 @@ export const CampaignDetailsForm = ({
 
     const isConvertSubscriber = useIsConvertSubscriber()
 
-    const {pristine, onChangePristine} = usePristineSteps(defaultOpenedStep)
+    const { pristine, onChangePristine } = usePristineSteps(defaultOpenedStep)
     const chatPreviewProps = useChatPreviewProps(integration)
 
     const attachments = useAppSelector(getNewMessageAttachments)
 
     const defaultLanguage = useMemo<string>(() => {
         return getPrimaryLanguageFromChatConfig(
-            (integration.toJS() as GorgiasChatIntegration).meta
+            (integration.toJS() as GorgiasChatIntegration).meta,
         )
     }, [integration])
 
@@ -216,11 +213,11 @@ export const CampaignDetailsForm = ({
     useEffect(() => {
         // Make sure the form is loaded only when the campaign object is ready in context
         setIsFormLoading(
-            isEditMode ? Boolean(isLoading && !campaignData.id) : isLoading
+            isEditMode ? Boolean(isLoading && !campaignData.id) : isLoading,
         )
     }, [campaignData, isEditMode, isLoading])
 
-    const {triggers, addTrigger, updateTrigger, deleteTrigger} =
+    const { triggers, addTrigger, updateTrigger, deleteTrigger } =
         useManageTriggers(campaign.triggers)
 
     const chatMultiLanguagesEnabled =
@@ -254,7 +251,7 @@ export const CampaignDetailsForm = ({
                                 CampaignScheduleModeEnum.SaveAndPublishLater
                         }
                     }
-                })
+                }),
             )
 
             if (
@@ -262,7 +259,7 @@ export const CampaignDetailsForm = ({
                 campaign.attachments.length > 0
             ) {
                 const attachments = transformCampaignAttachmentsToDetails(
-                    campaign.attachments
+                    campaign.attachments,
                 )
 
                 void dispatch(
@@ -270,7 +267,7 @@ export const CampaignDetailsForm = ({
                         channel: TicketChannel.Chat,
                         sourceType: TicketMessageSourceType.Chat,
                         attachments: fromJS(attachments),
-                    })
+                    }),
                 )
 
                 return
@@ -282,7 +279,7 @@ export const CampaignDetailsForm = ({
                 attachments: fromJS([]),
                 channel: TicketChannel.Chat,
                 sourceType: TicketMessageSourceType.Chat,
-            })
+            }),
         )
 
         return () => {
@@ -324,7 +321,7 @@ export const CampaignDetailsForm = ({
     const productsToPreview = useGetPreviewProducts(
         shopifyIntegration,
         productRecommendations,
-        shopifyProducts
+        shopifyProducts,
     )
 
     const handleUpdateCampaign = useCallback(
@@ -333,7 +330,7 @@ export const CampaignDetailsForm = ({
                 setCampaignData(
                     produce((draft) => {
                         draft.name = payload
-                    })
+                    }),
                 )
             }
 
@@ -341,7 +338,7 @@ export const CampaignDetailsForm = ({
                 setCampaignData(
                     produce((draft) => {
                         draft.language = payload
-                    })
+                    }),
                 )
             }
 
@@ -355,7 +352,7 @@ export const CampaignDetailsForm = ({
                                 delay: payload,
                             }
                         }
-                    })
+                    }),
                 )
             }
 
@@ -370,7 +367,7 @@ export const CampaignDetailsForm = ({
                                 noReply: payload,
                             }
                         }
-                    })
+                    }),
                 )
             }
 
@@ -399,7 +396,7 @@ export const CampaignDetailsForm = ({
                             delete draft.meta.agentName
                             delete draft.meta.agentAvatarUrl
                         }
-                    })
+                    }),
                 )
             }
 
@@ -410,7 +407,7 @@ export const CampaignDetailsForm = ({
                     produce((draft) => {
                         draft.message_text = content.getPlainText()
                         draft.message_html = convertToHTML(content)
-                    })
+                    }),
                 )
             }
 
@@ -418,7 +415,7 @@ export const CampaignDetailsForm = ({
                 setCampaignData(
                     produce((draft) => {
                         draft.publish_mode = payload
-                    })
+                    }),
                 )
             }
 
@@ -426,7 +423,7 @@ export const CampaignDetailsForm = ({
                 setCampaignData(
                     produce((draft) => {
                         draft.schedule = payload
-                    })
+                    }),
                 )
             }
 
@@ -441,7 +438,7 @@ export const CampaignDetailsForm = ({
                                 maxCampaignDisplaysInSession: payload,
                             }
                         }
-                    })
+                    }),
                 )
             }
 
@@ -456,7 +453,7 @@ export const CampaignDetailsForm = ({
                                 minimumTimeBetweenCampaigns: payload,
                             }
                         }
-                    })
+                    }),
                 )
             }
 
@@ -471,15 +468,15 @@ export const CampaignDetailsForm = ({
                                 copySuggestion: payload,
                             }
                         }
-                    })
+                    }),
                 )
             }
         },
-        [agents]
+        [agents],
     )
 
     const utmProps = useUtm(channelConnection, campaignData.name)
-    const {appliedUtmEnabled, appliedUtmQueryString} = utmProps
+    const { appliedUtmEnabled, appliedUtmQueryString } = utmProps
 
     const handleSaveCampaign = async (activate = false) => {
         if (!isCampaignValid) return
@@ -492,7 +489,7 @@ export const CampaignDetailsForm = ({
         let activateCampaign = activate
         if (displayScheduleSection) {
             activateCampaign = shouldActivateCampaign(
-                campaignData.publish_mode as string
+                campaignData.publish_mode as string,
             )
         }
 
@@ -530,7 +527,7 @@ export const CampaignDetailsForm = ({
             dispatch(
                 setNewMessageForChatCampaign({
                     attachments: fromJS(attachments),
-                })
+                }),
             )
         }
     }
@@ -541,7 +538,7 @@ export const CampaignDetailsForm = ({
         setActionInProgress('duplicate')
 
         await duplicateCampaign(fromJS(campaign)).then(() =>
-            setActionInProgress('')
+            setActionInProgress(''),
         )
     }
 
@@ -621,7 +618,7 @@ export const CampaignDetailsForm = ({
                 [step]: value,
             }))
         },
-        [setFormValidationState]
+        [setFormValidationState],
     )
 
     const isCampaignValid =
@@ -636,11 +633,11 @@ export const CampaignDetailsForm = ({
         () => ({
             imageType: integration.getIn(
                 ['decoration', 'avatar', 'image_type'],
-                GorgiasChatAvatarImageType.AGENT_PICTURE
+                GorgiasChatAvatarImageType.AGENT_PICTURE,
             ),
             nameType: integration.getIn(
                 ['decoration', 'avatar', 'name_type'],
-                GorgiasChatAvatarNameType.AGENT_FIRST_NAME
+                GorgiasChatAvatarNameType.AGENT_FIRST_NAME,
             ),
             companyLogoUrl: integration.getIn([
                 'decoration',
@@ -648,7 +645,7 @@ export const CampaignDetailsForm = ({
                 'company_logo_url',
             ]),
         }),
-        [integration]
+        [integration],
     )
 
     const campaignDetailContext = useMemo<CampaignDetailsFormApi>(() => {
@@ -676,7 +673,7 @@ export const CampaignDetailsForm = ({
                 configuration: wizardConfiguration,
                 utmConfiguration: utmProps,
             }) as CampaignFormConfigurationType,
-        [isEditMode, wizardConfiguration, utmProps]
+        [isEditMode, wizardConfiguration, utmProps],
     )
 
     const isLightCampaign = campaign?.is_light
@@ -684,7 +681,7 @@ export const CampaignDetailsForm = ({
         return isLightCampaign && isConvertSubscriber && isShopifyStore
     }, [isLightCampaign, isConvertSubscriber, isShopifyStore])
 
-    const {emailDisclaimer: emailDisclaimerSettings} =
+    const { emailDisclaimer: emailDisclaimerSettings } =
         useConvertGeneralSettings(integration.toJS())
 
     return (
@@ -743,10 +740,10 @@ export const CampaignDetailsForm = ({
                                             key={CampaignStepsKeys.Basics}
                                             isPristine={pristine.basics}
                                             isValid={isStepValid(
-                                                CampaignStepsKeys.Basics
+                                                CampaignStepsKeys.Basics,
                                             )}
                                             isDisabled={isStepDisabled(
-                                                CampaignStepsKeys.Basics
+                                                CampaignStepsKeys.Basics,
                                             )}
                                         />
                                         <CampaignAudienceStep
@@ -754,10 +751,10 @@ export const CampaignDetailsForm = ({
                                             key={CampaignStepsKeys.Audience}
                                             isPristine={pristine.audience}
                                             isValid={isStepValid(
-                                                CampaignStepsKeys.Audience
+                                                CampaignStepsKeys.Audience,
                                             )}
                                             isDisabled={isStepDisabled(
-                                                CampaignStepsKeys.Audience
+                                                CampaignStepsKeys.Audience,
                                             )}
                                             isConvertSubscriber={
                                                 isConvertSubscriber
@@ -766,22 +763,22 @@ export const CampaignDetailsForm = ({
                                             isLightCampaign={isLightCampaign}
                                             integration={integration}
                                             onValidationChange={updateSetValidation(
-                                                CampaignStepsKeys.Audience
+                                                CampaignStepsKeys.Audience,
                                             )}
                                         />
                                         <CampaignMessageStep
                                             agents={agents}
                                             count={3}
                                             shopifyIntegrationId={shopifyIntegration.get(
-                                                'id'
+                                                'id',
                                             )}
                                             key={CampaignStepsKeys.Message}
                                             isPristine={pristine.message}
                                             isValid={isStepValid(
-                                                CampaignStepsKeys.Message
+                                                CampaignStepsKeys.Message,
                                             )}
                                             isDisabled={isStepDisabled(
-                                                CampaignStepsKeys.Message
+                                                CampaignStepsKeys.Message,
                                             )}
                                             isConvertSubscriber={
                                                 isConvertSubscriber
@@ -806,10 +803,10 @@ export const CampaignDetailsForm = ({
                                                     pristine.publish_schedule
                                                 }
                                                 isValid={isStepValid(
-                                                    CampaignStepsKeys.PublishSchedule
+                                                    CampaignStepsKeys.PublishSchedule,
                                                 )}
                                                 isDisabled={isStepDisabled(
-                                                    CampaignStepsKeys.PublishSchedule
+                                                    CampaignStepsKeys.PublishSchedule,
                                                 )}
                                                 isConvertSubscriber={
                                                     isConvertSubscriber
@@ -823,7 +820,7 @@ export const CampaignDetailsForm = ({
                                     <div className="mt-4">
                                         <CampaignFooter
                                             integrationId={integration.get(
-                                                'id'
+                                                'id',
                                             )}
                                             isCampaignValid={isCampaignValid}
                                             isLightCampaign={isLightCampaign}
@@ -897,7 +894,7 @@ export const CampaignDetailsForm = ({
                                         discountOffers={discountOffers}
                                         contactCaptureForm={contactCaptureForm}
                                         html={sanitizeHtmlDefault(
-                                            campaignData.message_html || ''
+                                            campaignData.message_html || '',
                                         )}
                                         authorName={
                                             campaignData.meta?.agentName ?? ``

@@ -1,9 +1,10 @@
-import {render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {useNotificationsOverlay} from 'common/notifications'
-import {assumeMock} from 'utils/testing'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { useNotificationsOverlay } from 'common/notifications'
+import { assumeMock } from 'utils/testing'
 
 import NotificationsItem from '../NotificationsItem'
 

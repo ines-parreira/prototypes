@@ -1,6 +1,6 @@
-import {AiAgentStoreConfigurationFixture} from '../../tests/AiAgentStoreConfiguration.fixture'
-import {EnableAIAgentOnChatTask} from '../EnableAIAgentOnChat.task'
-import {buildRuleEngineData, buildRuleEngineRoutes} from './utils'
+import { AiAgentStoreConfigurationFixture } from '../../tests/AiAgentStoreConfiguration.fixture'
+import { EnableAIAgentOnChatTask } from '../EnableAIAgentOnChat.task'
+import { buildRuleEngineData, buildRuleEngineRoutes } from './utils'
 
 describe('EnableAIAgentOnChat', () => {
     it('should display the task if ai agent store configuration chat disabled', () => {
@@ -13,7 +13,7 @@ describe('EnableAIAgentOnChat', () => {
             buildRuleEngineData({
                 aiAgentStoreConfiguration,
             }),
-            buildRuleEngineRoutes()
+            buildRuleEngineRoutes(),
         )
         expect(task.display).toBe(true)
     })
@@ -29,7 +29,7 @@ describe('EnableAIAgentOnChat', () => {
             buildRuleEngineData({
                 aiAgentStoreConfiguration,
             }),
-            buildRuleEngineRoutes()
+            buildRuleEngineRoutes(),
         )
         expect(task.display).toBe(false)
     })

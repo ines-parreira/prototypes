@@ -1,12 +1,13 @@
+import React, { useState } from 'react'
+
 import classNames from 'classnames'
-import React, {useState} from 'react'
 
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'
 import TemplateLanguageFilterDropdown from 'pages/tickets/detail/components/ReplyArea/TemplateLanguageFilterDropdown'
 import TemplateTypeFilterDropdown from 'pages/tickets/detail/components/ReplyArea/TemplateTypeFilterDropdown'
-import {TemplateTypeFilterOption} from 'pages/tickets/detail/components/ReplyArea/types'
+import { TemplateTypeFilterOption } from 'pages/tickets/detail/components/ReplyArea/types'
 
 import useWhatsAppEditor from './useWhatsAppEditor'
 
@@ -40,7 +41,7 @@ export default function WhatsAppMessageTemplateSearch() {
             setSearchFilter(filters)
         },
         [filters],
-        SEARCH_DEBOUNCE_DELAY
+        SEARCH_DEBOUNCE_DELAY,
     )
 
     const handleInputFocus = () => {
@@ -55,7 +56,9 @@ export default function WhatsAppMessageTemplateSearch() {
             <TextInput
                 tabIndex={3}
                 placeholder={'Search WhatsApp templates by name'}
-                onChange={(newName) => setFilters({...filters, name: newName})}
+                onChange={(newName) =>
+                    setFilters({ ...filters, name: newName })
+                }
                 onFocus={handleInputFocus}
                 className={css.input}
                 prefix={<IconInput className={css.searchIcon} icon="search" />}
@@ -71,7 +74,7 @@ export default function WhatsAppMessageTemplateSearch() {
                     <TemplateLanguageFilterDropdown
                         value={filters.language}
                         onChange={(newLanguage) =>
-                            setFilters({...filters, language: newLanguage})
+                            setFilters({ ...filters, language: newLanguage })
                         }
                     />
                 </div>

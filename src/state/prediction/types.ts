@@ -1,3 +1,3 @@
-import {Map} from 'immutable'
+import { Map } from 'immutable'
 
 export type PredictionContext = Map<any, any>

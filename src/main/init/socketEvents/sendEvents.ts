@@ -1,4 +1,4 @@
-import {SendEvent, SocketEventType} from 'services/socketManager/types'
+import { SendEvent, SocketEventType } from 'services/socketManager/types'
 
 /**
  * Events that can be sent to server via socket

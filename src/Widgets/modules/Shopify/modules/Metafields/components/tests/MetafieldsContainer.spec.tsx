@@ -1,5 +1,6 @@
-import {fireEvent, render} from '@testing-library/react'
 import React from 'react'
+
+import { fireEvent, render } from '@testing-library/react'
 
 import MetafieldsContainer from '../MetafieldsContainer'
 
@@ -8,7 +9,7 @@ describe('<MetafieldsContainer />', () => {
         const wrapper = render(
             <MetafieldsContainer>
                 <div className={'test-class'}>expect when expanded</div>
-            </MetafieldsContainer>
+            </MetafieldsContainer>,
         )
 
         const clickWrapper = wrapper.getByTitle('Unfold this card')

@@ -1,15 +1,15 @@
-import {Map} from 'immutable'
-import React, {MouseEvent, useCallback, useMemo, useState} from 'react'
+import React, { MouseEvent, useCallback, useMemo, useState } from 'react'
+
+import { Map } from 'immutable'
 
 import useLocalStorage from 'hooks/useLocalStorage'
 import IconButton from 'pages/common/components/button/IconButton'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
-
 import LightCampaignModal from 'pages/convert/campaigns/components/LightCampaignModal/LightCampaignModal'
-import {LightCampaignModalType} from 'pages/convert/campaigns/types/enums/LightCampaignModalType'
-import {chatIsShopifyStore} from 'pages/convert/campaigns/utils/chatIsShopifyStore'
+import { LightCampaignModalType } from 'pages/convert/campaigns/types/enums/LightCampaignModalType'
+import { chatIsShopifyStore } from 'pages/convert/campaigns/utils/chatIsShopifyStore'
 
-import {Campaign} from '../../../../types/Campaign'
+import { Campaign } from '../../../../types/Campaign'
 
 type Props = {
     campaign: Campaign
@@ -41,7 +41,7 @@ export const CampaignToolsCell = ({
     }, [integration])
     const [lightModalDismissed, setLightModalDismissed] = useLocalStorage(
         storageKey,
-        false
+        false,
     )
 
     const isLight = campaign.is_light
@@ -52,10 +52,10 @@ export const CampaignToolsCell = ({
             onClickDelete(campaign)
             setIsLightModalOpen(false)
         },
-        [onClickDelete]
+        [onClickDelete],
     )
 
-    const renderConfirmation = useCallback(({uid, onDisplayConfirmation}) => {
+    const renderConfirmation = useCallback(({ uid, onDisplayConfirmation }) => {
         return (
             <IconButton
                 className="mr-1"

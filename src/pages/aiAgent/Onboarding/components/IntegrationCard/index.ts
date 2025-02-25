@@ -1,1 +1,1 @@
-export {default} from './IntegrationCard'
+export { default } from './IntegrationCard'

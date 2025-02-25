@@ -1,10 +1,12 @@
-import isEqual from 'lodash/isEqual'
 import React from 'react'
 
-import {AiAgentScopes} from 'pages/aiAgent/Onboarding/types'
+import isEqual from 'lodash/isEqual'
 
-import {GoalOption} from './constants'
+import { AiAgentScopes } from 'pages/aiAgent/Onboarding/types'
+
+import { GoalOption } from './constants'
 import Goal from './Goal'
+
 import css from './Goals.less'
 
 type Props = {
@@ -12,7 +14,7 @@ type Props = {
     onSelect: (value: AiAgentScopes[]) => void
 }
 
-const Goals: React.FC<Props> = ({value, onSelect}) => {
+const Goals: React.FC<Props> = ({ value, onSelect }) => {
     return (
         <div className={css.goalsContainer}>
             {GoalOption.map((goal) => {

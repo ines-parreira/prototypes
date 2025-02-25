@@ -1,8 +1,9 @@
-import {Meta, Story} from '@storybook/react'
-import _noop from 'lodash/noop'
-import React, {ComponentProps, ContextType} from 'react'
+import React, { ComponentProps, ContextType } from 'react'
 
-import {DropdownContext} from './Dropdown'
+import { Meta, Story } from '@storybook/react'
+import _noop from 'lodash/noop'
+
+import { DropdownContext } from './Dropdown'
 import DropdownItem from './DropdownItem'
 
 const mockContext: ContextType<typeof DropdownContext> = {
@@ -26,7 +27,7 @@ const DefaultTemplate: Story<ComponentProps<typeof DropdownItem>> = (props) => (
 )
 
 const defaultProps: Omit<ComponentProps<typeof DropdownItem>, 'onClick'> = {
-    option: {label: 'Foo', value: 'foo'},
+    option: { label: 'Foo', value: 'foo' },
 }
 
 const defaultArgTypes = {
@@ -43,9 +44,9 @@ Default.args = {
 Default.argTypes = defaultArgTypes
 
 const WithCheckBoxTemplate: Story<ComponentProps<typeof DropdownItem>> = (
-    props
+    props,
 ) => (
-    <DropdownContext.Provider value={{...mockContext, isMultiple: true}}>
+    <DropdownContext.Provider value={{ ...mockContext, isMultiple: true }}>
         <DropdownItem {...props} />
     </DropdownContext.Provider>
 )
@@ -58,7 +59,7 @@ WithCheckBox.args = {
 WithCheckBox.argTypes = defaultArgTypes
 
 const WithSelectionTickTemplate: Story<ComponentProps<typeof DropdownItem>> = (
-    props
+    props,
 ) => (
     <DropdownContext.Provider
         value={{

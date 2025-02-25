@@ -1,8 +1,9 @@
-import styled from '@emotion/styled'
-import React, {HTMLAttributes} from 'react'
+import React, { HTMLAttributes } from 'react'
 
-import {gorgiasColors} from 'gorgias-design-system/styles'
-import {getContrastColor} from 'gorgias-design-system/utils'
+import styled from '@emotion/styled'
+
+import { gorgiasColors } from 'gorgias-design-system/styles'
+import { getContrastColor } from 'gorgias-design-system/utils'
 
 import BubbleIcon from './icons/BubbleIcon'
 import CloseIcon from './icons/CloseIcon'
@@ -17,13 +18,13 @@ const StyledLabel = styled.span<{
     font-weight: 600;
     letter-spacing: -0.01em;
     white-space: pre;
-    color: ${({color}) => color};
+    color: ${({ color }) => color};
 
     margin-left: 32px;
 
     transition: opacity 200ms ease;
 
-    ${({showIconOnly}) => showIconOnly && 'opacity: 0;'}
+    ${({ showIconOnly }) => showIconOnly && 'opacity: 0;'}
 `
 
 const StyledIconContainer = styled.div<{
@@ -39,9 +40,9 @@ const StyledIconContainer = styled.div<{
 
     transition: all 200ms ease;
 
-    ${({hideIcon}) => hideIcon && 'opacity: 0;'}
+    ${({ hideIcon }) => hideIcon && 'opacity: 0;'}
 
-    ${({isCloseIcon, isLabelHidden}) => {
+    ${({ isCloseIcon, isLabelHidden }) => {
         let iconSize, padding
 
         iconSize = padding = '20px'
@@ -93,7 +94,7 @@ const StyledLauncher = styled.button<{
 
     position: relative;
 
-    background: ${({color}) => color};
+    background: ${({ color }) => color};
 
     &,
     &:focus {
@@ -107,7 +108,7 @@ const StyledLauncher = styled.button<{
 
     transition: all 200ms ease;
 
-    ${({showIconOnly}) => {
+    ${({ showIconOnly }) => {
         const buttonSize = '52px'
         const horizontalPadding = '20px'
         const iconWidth = '32px'

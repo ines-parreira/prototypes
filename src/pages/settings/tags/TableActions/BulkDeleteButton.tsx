@@ -6,7 +6,7 @@ import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPop
 export const getPluralOrSingular = (
     count: number,
     singular: string,
-    plural: string
+    plural: string,
 ) => (count > 1 ? plural : singular)
 
 export enum MessageType {
@@ -65,7 +65,7 @@ const BulkDeleteButton = ({
             }
             onConfirm={onBulkDelete}
         >
-            {({uid, onDisplayConfirmation}) => (
+            {({ uid, onDisplayConfirmation }) => (
                 <Button
                     isDisabled={!selectedTagsCount}
                     id={uid}

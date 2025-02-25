@@ -1,15 +1,17 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
 import React, {
     ForwardedRef,
     forwardRef,
-    TextareaHTMLAttributes,
     ReactNode,
+    TextareaHTMLAttributes,
     useCallback,
-    useRef,
-    useImperativeHandle,
     useEffect,
+    useImperativeHandle,
+    useRef,
 } from 'react'
+
+import classnames from 'classnames'
+
+import { Label } from '@gorgias/merchant-ui-kit'
 
 import useId from 'hooks/useId'
 import Caption from 'pages/common/forms/Caption/Caption'
@@ -48,7 +50,7 @@ function TextArea(
         autoRowHeight,
         ...props
     }: Props,
-    ref: ForwardedRef<HTMLTextAreaElement>
+    ref: ForwardedRef<HTMLTextAreaElement>,
 ) {
     const randomId = useId()
     const textareaId = id || 'textarea-' + randomId
@@ -95,7 +97,7 @@ function TextArea(
             }
             return onChange(event.target.value)
         },
-        [onChange, autoRowHeight, adjustRowHeight]
+        [onChange, autoRowHeight, adjustRowHeight],
     )
 
     return (
@@ -113,15 +115,15 @@ function TextArea(
             <textarea
                 className={classnames(
                     css.textarea,
-                    {[css.error]: !!error},
-                    innerClassName
+                    { [css.error]: !!error },
+                    innerClassName,
                 )}
                 id={textareaId}
                 name={textareaId}
                 onChange={onChangeHandler}
                 required={isRequired}
                 disabled={isDisabled}
-                {...(caption && {'aria-describedby': captionId})}
+                {...(caption && { 'aria-describedby': captionId })}
                 ref={innerTextAreaRef}
                 {...props}
             />

@@ -1,19 +1,21 @@
-import classnames from 'classnames'
 import React from 'react'
-import {Badge} from 'reactstrap'
 
-import {getIconFromActionType} from 'models/macroAction/helpers'
-import {actionTypeToName, MacroAction} from 'models/macroAction/types'
-import {getSortedIntegrationActions} from 'pages/tickets/common/utils'
+import classnames from 'classnames'
+import { Badge } from 'reactstrap'
 
-import {BaseActionPreview} from './BaseActionPreview'
+import { getIconFromActionType } from 'models/macroAction/helpers'
+import { actionTypeToName, MacroAction } from 'models/macroAction/types'
+import { getSortedIntegrationActions } from 'pages/tickets/common/utils'
+
+import { BaseActionPreview } from './BaseActionPreview'
+
 import css from './ComplexActionPreview.less'
 
 type Props = {
     actions: MacroAction[]
 }
 
-export const ComplexActionPreview = ({actions}: Props) => {
+export const ComplexActionPreview = ({ actions }: Props) => {
     const sortedActions = getSortedIntegrationActions(actions)
 
     return (
@@ -31,7 +33,7 @@ export const ComplexActionPreview = ({actions}: Props) => {
                                 key={`integration-action-${action.title}`}
                                 className={classnames(
                                     css.integration,
-                                    css[actionType]
+                                    css[actionType],
                                 )}
                             >
                                 <span>

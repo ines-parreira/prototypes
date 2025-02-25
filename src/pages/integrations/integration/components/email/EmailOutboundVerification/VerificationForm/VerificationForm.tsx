@@ -1,10 +1,11 @@
-import classNames from 'classnames'
-import React, {useState} from 'react'
-import {Form, FormGroup, Label} from 'reactstrap'
+import React, { useState } from 'react'
 
-import {states} from 'config/states'
-import {states as countries} from 'fixtures/states'
-import {SenderInformation} from 'models/singleSenderVerification/types'
+import classNames from 'classnames'
+import { Form, FormGroup, Label } from 'reactstrap'
+
+import { states } from 'config/states'
+import { states as countries } from 'fixtures/states'
+import { SenderInformation } from 'models/singleSenderVerification/types'
 import Button from 'pages/common/components/button/Button'
 import InputField from 'pages/common/forms/input/InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
@@ -43,7 +44,7 @@ export default function VerificationForm({
     const [stateValue, setStateValue] = useState(initialValues.state ?? '')
     const [zip, setZip] = useState(initialValues.zip ?? '')
 
-    const {email} = initialValues
+    const { email } = initialValues
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()

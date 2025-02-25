@@ -1,14 +1,14 @@
-import {AiAgentOnboardingWizardStep} from 'models/aiAgent/types'
+import { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
 
 import {
-    SIGNATURE_MAX_LENGTH,
-    MAX_EXCLUDED_TOPICS,
-    EXCLUDED_TOPIC_MAX_LENGTH,
-    ToneOfVoice,
     AiAgentChannel,
     CUSTOM_TONE_OF_VOICE_MAX_LENGTH,
+    EXCLUDED_TOPIC_MAX_LENGTH,
+    MAX_EXCLUDED_TOPICS,
+    SIGNATURE_MAX_LENGTH,
+    ToneOfVoice,
 } from '../constants'
-import {FormValues, ValidFormValues} from '../types'
+import { FormValues, ValidFormValues } from '../types'
 
 export enum StoreConfigurationValidationMessage {
     SignatureEmpty = 'Signature cannot be empty',
@@ -47,7 +47,7 @@ export const getValidStoreConfigurationFormValues = (
     opts: {
         isOnboardingWizardPage: boolean
         isAiAgentChatEnabled: boolean | undefined
-    }
+    },
 ): ValidFormValues => {
     const isWizardStepKnowledgeOrCompleted =
         formValues.wizard?.stepName === AiAgentOnboardingWizardStep.Knowledge ||
@@ -61,7 +61,7 @@ export const getValidStoreConfigurationFormValues = (
         if (formValues.signature !== null) {
             if (formValues.signature.length > SIGNATURE_MAX_LENGTH) {
                 throw new Error(
-                    StoreConfigurationValidationMessage.SignatureLength
+                    StoreConfigurationValidationMessage.SignatureLength,
                 )
             }
         }
@@ -74,8 +74,8 @@ export const getValidStoreConfigurationFormValues = (
             throw new Error(
                 simplifyWizardErrors(
                     formValues,
-                    StoreConfigurationValidationMessage.SignatureEmpty
-                )
+                    StoreConfigurationValidationMessage.SignatureEmpty,
+                ),
             )
         }
     }
@@ -85,22 +85,22 @@ export const getValidStoreConfigurationFormValues = (
         formValues.excludedTopics.length > 0
     ) {
         const hasEmptyFields = formValues.excludedTopics.some(
-            (topic) => topic === ''
+            (topic) => topic === '',
         )
         if (hasEmptyFields) {
             throw new Error(
-                StoreConfigurationValidationMessage.ExcludedTopicEmpty
+                StoreConfigurationValidationMessage.ExcludedTopicEmpty,
             )
         }
         if (formValues.excludedTopics.length > MAX_EXCLUDED_TOPICS) {
             throw new Error(
-                StoreConfigurationValidationMessage.ExcludedTopicsLength
+                StoreConfigurationValidationMessage.ExcludedTopicsLength,
             )
         }
         for (const topic of formValues.excludedTopics) {
             if (topic.length > EXCLUDED_TOPIC_MAX_LENGTH) {
                 throw new Error(
-                    StoreConfigurationValidationMessage.ExcludedTopicLength
+                    StoreConfigurationValidationMessage.ExcludedTopicLength,
                 )
             }
         }
@@ -108,7 +108,7 @@ export const getValidStoreConfigurationFormValues = (
 
     if (formValues.tags !== null && formValues.tags.length > 0) {
         const hasEmptyFields = formValues.tags.some(
-            (tag) => tag.name === '' || tag.description === ''
+            (tag) => tag.name === '' || tag.description === '',
         )
         if (hasEmptyFields) {
             throw new Error(StoreConfigurationValidationMessage.TagsEmpty)
@@ -124,8 +124,8 @@ export const getValidStoreConfigurationFormValues = (
         throw new Error(
             simplifyWizardErrors(
                 formValues,
-                StoreConfigurationValidationMessage.CustomToneOfVoiceEmpty
-            )
+                StoreConfigurationValidationMessage.CustomToneOfVoiceEmpty,
+            ),
         )
     }
 
@@ -134,7 +134,7 @@ export const getValidStoreConfigurationFormValues = (
         formValues.emailChannelDeactivatedDatetime === null
     ) {
         throw new Error(
-            StoreConfigurationValidationMessage.EmailIntegrationError
+            StoreConfigurationValidationMessage.EmailIntegrationError,
         )
     }
 
@@ -144,7 +144,7 @@ export const getValidStoreConfigurationFormValues = (
         formValues.chatChannelDeactivatedDatetime === null
     ) {
         throw new Error(
-            StoreConfigurationValidationMessage.ChatIntegrationError
+            StoreConfigurationValidationMessage.ChatIntegrationError,
         )
     }
 
@@ -189,7 +189,7 @@ export const getValidStoreConfigurationFormValues = (
             CUSTOM_TONE_OF_VOICE_MAX_LENGTH
     ) {
         throw new Error(
-            StoreConfigurationValidationMessage.CustomToneOfVoiceLength
+            StoreConfigurationValidationMessage.CustomToneOfVoiceLength,
         )
     }
 

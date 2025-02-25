@@ -1,14 +1,15 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {integrationsState} from 'fixtures/integrations'
-import {emptyRuleRecipeFixture} from 'fixtures/ruleRecipe'
-import {ManagedRulesSlugs} from 'state/rules/types'
-import {RootState, StoreDispatch} from 'state/types'
+import { integrationsState } from 'fixtures/integrations'
+import { emptyRuleRecipeFixture } from 'fixtures/ruleRecipe'
+import { ManagedRulesSlugs } from 'state/rules/types'
+import { RootState, StoreDispatch } from 'state/types'
 
 import AutoReplyFAQEditor from '../AutoReplyFAQEditor'
 
@@ -31,7 +32,7 @@ describe('<AutoReplyFAQEditor/>', () => {
         ruleRecipes: {
             [ManagedRulesSlugs.AutoReplyFAQ as string]: emptyRuleRecipeFixture,
         },
-        helpCenter: {articles: {}, categories: {}, helpCenters: {}},
+        helpCenter: { articles: {}, categories: {}, helpCenters: {} },
     }
 
     it('should render correctly', () => {
@@ -39,10 +40,10 @@ describe('<AutoReplyFAQEditor/>', () => {
             entities,
             integrations: fromJS(integrationsState),
         } as RootState)
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <AutoReplyFAQEditor {...minProps} />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -55,25 +56,25 @@ describe('<AutoReplyFAQEditor/>', () => {
                     categories: {},
                     helpCenters: {
                         helpCentersById: {
-                            '1': {id: 1, name: 'help center 1', type: 'faq'},
-                            '2': {id: 2, name: 'help center 2', type: 'faq'},
+                            '1': { id: 1, name: 'help center 1', type: 'faq' },
+                            '2': { id: 2, name: 'help center 2', type: 'faq' },
                         },
                     },
                 },
             },
             integrations: fromJS(integrationsState),
         } as unknown as RootState)
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <AutoReplyFAQEditor {...minProps} />
-            </Provider>
+            </Provider>,
         )
         expect(getByText('help center 1'))
         expect(getByText('help center 2'))
         expect(
             getByText(
-                'You have more than 1 help center. Ensure the desired help center is selected below.'
-            )
+                'You have more than 1 help center. Ensure the desired help center is selected below.',
+            ),
         )
     })
     it('should render an <Alert/> if the helpCenter is no longer available', () => {
@@ -85,23 +86,23 @@ describe('<AutoReplyFAQEditor/>', () => {
                     categories: {},
                     helpCenters: {
                         helpCentersById: {
-                            '2': {id: 2, name: 'help center 2', type: 'faq'},
+                            '2': { id: 2, name: 'help center 2', type: 'faq' },
                         },
                     },
                 },
             },
             integrations: fromJS(integrationsState),
         } as unknown as RootState)
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <AutoReplyFAQEditor {...minProps} />
-            </Provider>
+            </Provider>,
         )
         expect(getByText('help center 2'))
         expect(
             getByText(
-                'Your previously selected help center was deleted. Please select a new one to reactivate this rule.'
-            )
+                'Your previously selected help center was deleted. Please select a new one to reactivate this rule.',
+            ),
         )
         expect(minProps.handleInstallationError).toHaveBeenCalled()
     })

@@ -1,19 +1,21 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import '@testing-library/jest-dom/extend-expect'
-import {BrowserRouter} from 'react-router-dom'
+import { render, screen } from '@testing-library/react'
 
-import {IntegrationType} from 'models/integration/constants'
-import {ShopType} from 'models/selfServiceConfiguration/types'
-import {AiAgentNavbarSectionBlock} from 'pages/aiAgent/components/AiAgentNavbar/AiAgentNavbarSectionBlock'
-import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import '@testing-library/jest-dom/extend-expect'
+
+import { BrowserRouter } from 'react-router-dom'
+
+import { IntegrationType } from 'models/integration/constants'
+import { ShopType } from 'models/selfServiceConfiguration/types'
+import { AiAgentNavbarSectionBlock } from 'pages/aiAgent/components/AiAgentNavbar/AiAgentNavbarSectionBlock'
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import {
     OnboardingState,
     useAiAgentOnboardingState,
 } from 'pages/aiAgent/hooks/useAiAgentOnboardingState'
-import {useReportChartRestrictions} from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
-import {assumeMock} from 'utils/testing'
+import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation')
 jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingState')
@@ -25,7 +27,7 @@ jest.mock(
     'pages/stats/report-chart-restrictions/useReportChartRestrictions',
     () => ({
         useReportChartRestrictions: jest.fn(),
-    })
+    }),
 )
 const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
 
@@ -41,10 +43,10 @@ describe('AiAgentNavbarSectionBlock', () => {
     beforeEach(() => {
         mockUseAiAgentNavigation.mockReturnValue({
             // @ts-ignore We don't test this part
-            routes: {main: '/main'},
+            routes: { main: '/main' },
             navigationItems: [
-                {route: '/route1', title: 'Route 1', dataCanduId: 'candu-1'},
-                {route: '/route2', title: 'Route 2'},
+                { route: '/route1', title: 'Route 1', dataCanduId: 'candu-1' },
+                { route: '/route2', title: 'Route 2' },
             ],
         })
         mockUseAiAgentOnboardingState.mockReturnValue(OnboardingState.Onboarded)
@@ -57,7 +59,7 @@ describe('AiAgentNavbarSectionBlock', () => {
         render(
             <BrowserRouter>
                 <AiAgentNavbarSectionBlock {...defaultProps} />
-            </BrowserRouter>
+            </BrowserRouter>,
         )
 
         expect(screen.getByAltText('shopify logo')).toBeInTheDocument()
@@ -68,13 +70,13 @@ describe('AiAgentNavbarSectionBlock', () => {
 
     test('renders the component with non-onboarded state', () => {
         mockUseAiAgentOnboardingState.mockReturnValueOnce(
-            OnboardingState.WelcomeStatic
+            OnboardingState.WelcomeStatic,
         )
 
         render(
             <BrowserRouter>
                 <AiAgentNavbarSectionBlock {...defaultProps} />
-            </BrowserRouter>
+            </BrowserRouter>,
         )
 
         expect(screen.getByAltText('shopify logo')).toBeInTheDocument()
@@ -85,13 +87,13 @@ describe('AiAgentNavbarSectionBlock', () => {
 
     test('does not render the component when loading', () => {
         mockUseAiAgentOnboardingState.mockReturnValueOnce(
-            OnboardingState.Loading
+            OnboardingState.Loading,
         )
 
-        const {container} = render(
+        const { container } = render(
             <BrowserRouter>
                 <AiAgentNavbarSectionBlock {...defaultProps} />
-            </BrowserRouter>
+            </BrowserRouter>,
         )
 
         expect(container.firstChild).toBeNull()

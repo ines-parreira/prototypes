@@ -1,17 +1,16 @@
-import React, {useMemo} from 'react'
-import {Link} from 'react-router-dom'
+import React, { useMemo } from 'react'
 
-import {useModalManager} from 'hooks/useModalManager'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import { Link } from 'react-router-dom'
 
+import { useModalManager } from 'hooks/useModalManager'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import CampaignFromABTestModal from 'pages/convert/abVariants/components/CampaignFromABTestModal'
 import VariantsList from 'pages/convert/abVariants/components/VariantsList'
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
-
-import {ABGroupStatus} from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
-import {isActiveStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
-import {HeaderReturnButton} from 'pages/convert/common/components/HeaderReturnButton'
+import { Campaign } from 'pages/convert/campaigns/types/Campaign'
+import { ABGroupStatus } from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
+import { isActiveStatus } from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
+import { HeaderReturnButton } from 'pages/convert/common/components/HeaderReturnButton'
 
 import css from './ABTestSettingsPage.less'
 
@@ -34,7 +33,7 @@ export const ABTestSettingsPage: React.FC<Props> = ({
         return (
             isActiveStatus(campaign.status) &&
             ([ABGroupStatus.Draft, ABGroupStatus.Paused] as string[]).indexOf(
-                campaign.ab_group?.status ?? ''
+                campaign.ab_group?.status ?? '',
             ) >= 0
         )
     }, [campaign])

@@ -1,9 +1,9 @@
-import {screen} from '@testing-library/react'
-import MockAdapter from 'axios-mock-adapter'
 import React from 'react'
 
-import client from 'models/api/resources'
+import { screen } from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
 
+import client from 'models/api/resources'
 import {
     payingWithAchCredit,
     payingWithAchDebit,
@@ -13,10 +13,10 @@ import {
     payWithShopifyButNotActivated,
     trial,
 } from 'pages/settings/new_billing/fixtures'
-import {ignoreHTML} from 'tests/ignoreHTML'
-import {renderWithStoreAndQueryClientProvider} from 'tests/renderWithStoreAndQueryClientProvider'
+import { ignoreHTML } from 'tests/ignoreHTML'
+import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
-import {NewSummaryPaymentSection} from '../NewSummaryPaymentSection'
+import { NewSummaryPaymentSection } from '../NewSummaryPaymentSection'
 
 const mockedServer = new MockAdapter(client)
 
@@ -28,14 +28,14 @@ describe('NewSummaryPaymentSection', () => {
 
         expect(
             await screen.findByText(
-                /No payment method registered on your account/
-            )
+                /No payment method registered on your account/,
+            ),
         ).toBeInTheDocument()
 
         // and merchant can change its payment method
         expect(screen.getByText('Add Payment Method')).toHaveAttribute(
             'to',
-            '/app/settings/billing/payment/card'
+            '/app/settings/billing/payment/card',
         )
     })
 
@@ -45,7 +45,7 @@ describe('NewSummaryPaymentSection', () => {
         renderWithStoreAndQueryClientProvider(<NewSummaryPaymentSection />, {})
 
         expect(
-            await screen.findByText(ignoreHTML(/Visa ending with 4321/))
+            await screen.findByText(ignoreHTML(/Visa ending with 4321/)),
         ).toBeInTheDocument()
 
         expect(screen.queryByText(/is expired/)).not.toBeInTheDocument()
@@ -53,7 +53,7 @@ describe('NewSummaryPaymentSection', () => {
         // and merchant can change its payment method
         expect(screen.getByText('Change Payment Method')).toHaveAttribute(
             'to',
-            '/app/settings/billing/payment/card'
+            '/app/settings/billing/payment/card',
         )
     })
 
@@ -66,14 +66,14 @@ describe('NewSummaryPaymentSection', () => {
 
         expect(
             await screen.findByText(
-                ignoreHTML(/Visa ending with 4321 is expired/)
-            )
+                ignoreHTML(/Visa ending with 4321 is expired/),
+            ),
         ).toBeInTheDocument()
 
         // and merchant can change its payment method
         expect(screen.getByText('Change Payment Method')).toHaveAttribute(
             'to',
-            '/app/settings/billing/payment/card'
+            '/app/settings/billing/payment/card',
         )
     })
 
@@ -85,15 +85,15 @@ describe('NewSummaryPaymentSection', () => {
         expect(
             await screen.findByText(
                 ignoreHTML(
-                    'Bank transfer (ACH debit) from account Wells Fargo ending with 9876'
-                )
-            )
+                    'Bank transfer (ACH debit) from account Wells Fargo ending with 9876',
+                ),
+            ),
         ).toBeInTheDocument()
 
         // and merchant can change its payment method
         expect(screen.getByText('Change Payment Method')).toHaveAttribute(
             'to',
-            '/app/settings/billing/payment/card'
+            '/app/settings/billing/payment/card',
         )
     })
 
@@ -103,12 +103,12 @@ describe('NewSummaryPaymentSection', () => {
         renderWithStoreAndQueryClientProvider(<NewSummaryPaymentSection />, {})
 
         expect(
-            await screen.findByText(ignoreHTML('Bank transfer (ACH credit)'))
+            await screen.findByText(ignoreHTML('Bank transfer (ACH credit)')),
         ).toBeInTheDocument()
 
         // and merchant CANNOT change its payment method
         expect(
-            screen.queryByText(/Change Payment Method/)
+            screen.queryByText(/Change Payment Method/),
         ).not.toBeInTheDocument()
     })
 
@@ -120,12 +120,12 @@ describe('NewSummaryPaymentSection', () => {
         renderWithStoreAndQueryClientProvider(<NewSummaryPaymentSection />, {})
 
         expect(
-            await screen.findByText(/Payment with Shopify is inactive./)
+            await screen.findByText(/Payment with Shopify is inactive./),
         ).toBeInTheDocument()
 
         // and merchant can activate its Shopify Billing
         expect(
-            screen.getByText('Activate Billing with Shopify')
+            screen.getByText('Activate Billing with Shopify'),
         ).toHaveAttribute('to', '/integrations/shopify/billing/activate/')
     })
 
@@ -136,12 +136,12 @@ describe('NewSummaryPaymentSection', () => {
 
         expect(
             await screen.findByText(
-                /Payment with Shopify is active \(Subscription ID: 28982542566\). You're all set./
-            )
+                /Payment with Shopify is active \(Subscription ID: 28982542566\). You're all set./,
+            ),
         ).toBeInTheDocument()
 
         expect(
-            screen.queryByText(/Activate Billing with Shopify/)
+            screen.queryByText(/Activate Billing with Shopify/),
         ).not.toBeInTheDocument()
     })
 })

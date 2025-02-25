@@ -1,19 +1,19 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {doNotRetry40XErrorsHandler} from 'api/utils'
-import {assumeMock} from 'utils/testing'
+import { doNotRetry40XErrorsHandler } from 'api/utils'
+import { assumeMock } from 'utils/testing'
 
-import {useGetAIArticlesByHelpCenterAndStore} from '../../queries'
-import {useGetAIArticles} from '../useGetAIArticles'
+import { useGetAIArticlesByHelpCenterAndStore } from '../../queries'
+import { useGetAIArticles } from '../useGetAIArticles'
 
 jest.mock('pages/settings/helpCenter/queries')
 
 const mockedUseGetAIArticlesByHelpCenterAndStore = assumeMock(
-    useGetAIArticlesByHelpCenterAndStore
+    useGetAIArticlesByHelpCenterAndStore,
 )
 
 describe('useGetAIArticles', () => {
-    const aiArticles = [{id: 2, title: 'Article 2'}]
+    const aiArticles = [{ id: 2, title: 'Article 2' }]
 
     beforeEach(() => {
         jest.resetAllMocks()
@@ -27,12 +27,12 @@ describe('useGetAIArticles', () => {
         })
     })
     it('should fetch ai articles by help center and store', () => {
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useGetAIArticles({
                 helpCenterId: 1,
                 storeIntegrationId: 2,
                 locale: 'en-US',
-            })
+            }),
         )
 
         expect(mockedUseGetAIArticlesByHelpCenterAndStore).toHaveBeenCalledWith(
@@ -42,19 +42,19 @@ describe('useGetAIArticles', () => {
             {
                 refetchOnWindowFocus: false,
                 retry: doNotRetry40XErrorsHandler,
-            }
+            },
         )
         expect(result.current.fetchedArticles).toEqual(aiArticles)
     })
 
     it('should return null when enabled is false', () => {
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useGetAIArticles({
                 helpCenterId: 1,
                 storeIntegrationId: 2,
                 locale: 'en-US',
                 enabled: false,
-            })
+            }),
         )
 
         expect(result.current.fetchedArticles).toBeNull()
@@ -68,14 +68,14 @@ describe('useGetAIArticles', () => {
                 } as unknown as ReturnType<
                     typeof useGetAIArticlesByHelpCenterAndStore
                 >
-            }
+            },
         )
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useGetAIArticles({
                 helpCenterId: 1,
                 storeIntegrationId: 2,
                 locale: 'en-US',
-            })
+            }),
         )
 
         expect(result.current.fetchedArticles).toBeNull()

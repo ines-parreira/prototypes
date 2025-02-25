@@ -1,4 +1,4 @@
-import {ContentState, RichUtils, SelectionState, EditorState} from 'draft-js'
+import { ContentState, EditorState, RichUtils, SelectionState } from 'draft-js'
 
 import createFoundUrl from '../foundUrl'
 
@@ -27,10 +27,10 @@ describe('foundUrl decorator', () => {
     it('should not select urls that are entities', () => {
         const text = 'find a url http://google.com'
         let editorState = EditorState.createWithContent(
-            ContentState.createFromText(text)
+            ContentState.createFromText(text),
         )
         const selection = SelectionState.createEmpty(
-            editorState.getCurrentContent().getFirstBlock().getKey()
+            editorState.getCurrentContent().getFirstBlock().getKey(),
         )
             .set('anchorOffset', 18)
             .set('focusOffset', 28) as SelectionState
@@ -44,7 +44,7 @@ describe('foundUrl decorator', () => {
         foundUrl.strategy(
             editorState.getCurrentContent().getFirstBlock(),
             spy,
-            editorState.getCurrentContent()
+            editorState.getCurrentContent(),
         )
         expect(spy.mock.calls.length).toBe(0)
     })

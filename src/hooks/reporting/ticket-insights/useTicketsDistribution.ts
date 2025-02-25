@@ -1,51 +1,51 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {useCustomFieldsTicketCount} from 'hooks/reporting/metricsPerCustomField'
-
+import { useCustomFieldsTicketCount } from 'hooks/reporting/metricsPerCustomField'
 import useAppSelector from 'hooks/useAppSelector'
-
-import {OrderDirection} from 'models/api/types'
+import { OrderDirection } from 'models/api/types'
 import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMeasure,
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
-import {NOT_AVAILABLE_PLACEHOLDER} from 'pages/stats/common/utils'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
-import {getSelectedCustomField} from 'state/ui/stats/ticketInsightsSlice'
+import { NOT_AVAILABLE_PLACEHOLDER } from 'pages/stats/common/utils'
+import { getCleanStatsFiltersWithTimezone } from 'state/ui/stats/selectors'
+import { getSelectedCustomField } from 'state/ui/stats/ticketInsightsSlice'
 
 export const useTicketsDistribution = (topAmount = 10) => {
-    const {cleanStatsFilters, userTimezone} = useAppSelector(
-        getCleanStatsFiltersWithTimezone
+    const { cleanStatsFilters, userTimezone } = useAppSelector(
+        getCleanStatsFiltersWithTimezone,
     )
     const selectedCustomField = useAppSelector(getSelectedCustomField)
 
-    const {data, isFetching} = useCustomFieldsTicketCount(
+    const { data, isFetching } = useCustomFieldsTicketCount(
         cleanStatsFilters,
         userTimezone,
         String(selectedCustomField.id),
-        OrderDirection.Desc
+        OrderDirection.Desc,
     )
 
     const topData = useMemo(
         () => data?.allData.slice(0, topAmount) || [],
-        [data?.allData, topAmount]
+        [data?.allData, topAmount],
     )
     const ticketsCountTotal =
         data?.allData.reduce(
             (acc, cur) =>
                 acc +
                 Number(
-                    cur[TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount]
+                    cur[
+                        TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount
+                    ],
                 ),
-            0
+            0,
         ) || 0
 
     const topDataMaxValue = Math.max(
         ...topData.map((item) =>
             Number(
-                item[TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount]
-            )
-        )
+                item[TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount],
+            ),
+        ),
     )
 
     const outsideTopTotal =
@@ -58,9 +58,9 @@ export const useTicketsDistribution = (topAmount = 10) => {
                         cur[
                             TicketCustomFieldsMeasure
                                 .TicketCustomFieldsTicketCount
-                        ]
+                        ],
                     ),
-                0
+                0,
             ) || 0
 
     const maxTicketCount = Math.max(topDataMaxValue, outsideTopTotal)
@@ -77,7 +77,7 @@ export const useTicketsDistribution = (topAmount = 10) => {
                 value: Number(
                     item[
                         TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount
-                    ]
+                    ],
                 ),
                 valueInPercentage:
                     (100 *
@@ -85,7 +85,7 @@ export const useTicketsDistribution = (topAmount = 10) => {
                             item[
                                 TicketCustomFieldsMeasure
                                     .TicketCustomFieldsTicketCount
-                            ]
+                            ],
                         )) /
                     ticketsCountTotal,
                 gaugePercentage:
@@ -94,7 +94,7 @@ export const useTicketsDistribution = (topAmount = 10) => {
                             item[
                                 TicketCustomFieldsMeasure
                                     .TicketCustomFieldsTicketCount
-                            ]
+                            ],
                         )) /
                     maxTicketCount,
             })),
@@ -112,6 +112,6 @@ export const useTicketsDistribution = (topAmount = 10) => {
             topData,
             topDataMaxValue,
             maxTicketCount,
-        ]
+        ],
     )
 }

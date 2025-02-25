@@ -1,14 +1,16 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
-import {fromJS, List, Map} from 'immutable'
-import _debounce from 'lodash/debounce'
-import React, {Component} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
+import React, { Component } from 'react'
 
-import {withAppNode, WithAppNodeProps} from 'appNode'
-import {FORM_CONTENT_TYPE} from 'config'
-import {getIconFromActionType} from 'models/macroAction/helpers'
-import {MacroActionName} from 'models/macroAction/types'
+import classnames from 'classnames'
+import { fromJS, List, Map } from 'immutable'
+import _debounce from 'lodash/debounce'
+import { connect, ConnectedProps } from 'react-redux'
+
+import { Label } from '@gorgias/merchant-ui-kit'
+
+import { withAppNode, WithAppNodeProps } from 'appNode'
+import { FORM_CONTENT_TYPE } from 'config'
+import { getIconFromActionType } from 'models/macroAction/helpers'
+import { MacroActionName } from 'models/macroAction/types'
 import CustomFieldIdInput from 'pages/common/components/ast/widget/CustomFieldIdInput'
 import CustomFieldSelect from 'pages/common/components/ast/widget/CustomFieldSelect'
 import Caption from 'pages/common/forms/Caption/Caption'
@@ -22,8 +24,8 @@ import ResponseAction from 'pages/tickets/common/macros/components/actions/Respo
 import SetAssigneeAction from 'pages/tickets/common/macros/components/actions/SetAssigneeAction'
 import SetStatusAction from 'pages/tickets/common/macros/components/actions/SetStatusAction'
 import SnoozeTicketAction from 'pages/tickets/common/macros/components/actions/SnoozeTicketAction'
-import {updateActionArgsOnApplied} from 'state/ticket/actions'
-import {getActionTemplate} from 'utils'
+import { updateActionArgsOnApplied } from 'state/ticket/actions'
+import { getActionTemplate } from 'utils'
 
 import css from './TicketReplyAction.less'
 
@@ -47,8 +49,8 @@ export class TicketReplyActionContainer extends Component<Props, State> {
     }
 
     componentDidUpdate(prevProps: Props, prevState: State) {
-        const {index, ticketId} = this.props
-        const {currentArguments} = this.state
+        const { index, ticketId } = this.props
+        const { currentArguments } = this.state
 
         if (prevState.currentArguments !== currentArguments) {
             this.debouncedUpdateActionArgs(index, currentArguments, ticketId)
@@ -56,8 +58,8 @@ export class TicketReplyActionContainer extends Component<Props, State> {
     }
 
     getAction = () => {
-        const {action} = this.props
-        const {currentArguments} = this.state
+        const { action } = this.props
+        const { currentArguments } = this.state
 
         return action.get('arguments') === currentArguments
             ? action
@@ -66,13 +68,13 @@ export class TicketReplyActionContainer extends Component<Props, State> {
 
     debouncedUpdateActionArgs = _debounce(
         this.props.updateActionArgsOnApplied,
-        200
+        200,
     )
 
     setListDictValue = (
         arg: Map<any, any>,
         value: number | string | boolean,
-        category: string
+        category: string,
     ) => {
         const action = this.getAction()
         const index = (
@@ -84,7 +86,7 @@ export class TicketReplyActionContainer extends Component<Props, State> {
         ).setIn([category, index, 'value'], value)
 
         if (~index) {
-            this.setState({currentArguments: newValue})
+            this.setState({ currentArguments: newValue })
         }
     }
 
@@ -93,11 +95,11 @@ export class TicketReplyActionContainer extends Component<Props, State> {
             this.props.updateActionArgsOnApplied(
                 index,
                 args,
-                this.props.ticketId
+                this.props.ticketId,
             )
         },
         200,
-        {leading: true, trailing: false}
+        { leading: true, trailing: false },
     )
 
     setValue(key: string, value: number | string | boolean) {
@@ -107,7 +109,7 @@ export class TicketReplyActionContainer extends Component<Props, State> {
             action.get('arguments', fromJS({})) as Map<any, any>
         ).set(key, value)
 
-        this.setState({currentArguments: newValue})
+        this.setState({ currentArguments: newValue })
     }
 
     renderListDictArgs = (title: string, args: List<any>, category: string) => {
@@ -143,7 +145,7 @@ export class TicketReplyActionContainer extends Component<Props, State> {
 
         const sortedArgs = Object.entries(template.arguments).sort(
             ([, value_a], [, value_b]) =>
-                (value_a.display_order ?? 0) - (value_b.display_order ?? 0)
+                (value_a.display_order ?? 0) - (value_b.display_order ?? 0),
         )
 
         return (
@@ -194,7 +196,7 @@ export class TicketReplyActionContainer extends Component<Props, State> {
                                     <SelectField
                                         className={classnames(
                                             css.input,
-                                            'ml-2'
+                                            'ml-2',
                                         )}
                                         {...args.input}
                                         value={value as string | number}
@@ -215,7 +217,7 @@ export class TicketReplyActionContainer extends Component<Props, State> {
                                     updateActionArgs={(_, value) => {
                                         this.setValue(
                                             key,
-                                            value.get('snooze_timedelta')
+                                            value.get('snooze_timedelta'),
                                         )
                                     }}
                                 />
@@ -229,7 +231,7 @@ export class TicketReplyActionContainer extends Component<Props, State> {
                                     updateActionArgs={(_, value) => {
                                         this.setValue(
                                             key,
-                                            value.get('assignee_team')
+                                            value.get('assignee_team'),
                                         )
                                     }}
                                     handleTeams={true}
@@ -247,7 +249,7 @@ export class TicketReplyActionContainer extends Component<Props, State> {
                                     updateActionArgs={(_, value) => {
                                         this.setValue(
                                             key,
-                                            value.get('assignee_user')
+                                            value.get('assignee_user'),
                                         )
                                     }}
                                     handleUsers={true}
@@ -283,7 +285,7 @@ export class TicketReplyActionContainer extends Component<Props, State> {
                                         updateActionArgs={(_, value) => {
                                             this.setValue(
                                                 key,
-                                                value.get('tags')
+                                                value.get('tags'),
                                             )
                                         }}
                                         right
@@ -304,7 +306,7 @@ export class TicketReplyActionContainer extends Component<Props, State> {
                                 >
                                     <CustomFieldSelect
                                         value={actionArgs.get(
-                                            'custom_field_id'
+                                            'custom_field_id',
                                         )}
                                         className={css.customFieldSelect}
                                         viewMode
@@ -314,7 +316,7 @@ export class TicketReplyActionContainer extends Component<Props, State> {
                                             this.setValue(key, value!)
                                         }
                                         customFieldId={actionArgs.get(
-                                            'custom_field_id'
+                                            'custom_field_id',
                                         )}
                                         value={value}
                                         className={css.customFieldInput}
@@ -337,12 +339,12 @@ export class TicketReplyActionContainer extends Component<Props, State> {
                                         key={key}
                                         {...args.input}
                                         className={classnames(
-                                            {'mt-3': !isInline},
-                                            css.inputField
+                                            { 'mt-3': !isInline },
+                                            css.inputField,
                                         )}
                                         value={value as string}
                                         onChange={(
-                                            value: number | string | boolean
+                                            value: number | string | boolean,
                                         ) => this.setValue(key, value)}
                                         isRequired={!!args.required}
                                         label={
@@ -362,7 +364,7 @@ export class TicketReplyActionContainer extends Component<Props, State> {
     }
 
     render() {
-        const {remove, ticketId, className} = this.props
+        const { remove, ticketId, className } = this.props
         const action = this.getAction()
 
         let type = action.get('name')
@@ -390,14 +392,14 @@ export class TicketReplyActionContainer extends Component<Props, State> {
                 action.getIn(['arguments', 'headers'], fromJS([])) as List<any>
             ).filter(
                 (curAction: Map<any, any>) =>
-                    curAction.get('editable') as boolean
+                    curAction.get('editable') as boolean,
             ) as List<any>
 
             const paramsArgs = (
                 action.getIn(['arguments', 'params'], fromJS([])) as List<any>
             ).filter(
                 (curAction: Map<any, any>) =>
-                    curAction.get('editable') as boolean
+                    curAction.get('editable') as boolean,
             ) as List<any>
 
             const formData =
@@ -406,11 +408,11 @@ export class TicketReplyActionContainer extends Component<Props, State> {
                     ? ((
                           action.getIn(
                               ['arguments', 'form'],
-                              fromJS([])
+                              fromJS([]),
                           ) as List<any>
                       ).filter(
                           (curAction: Map<any, any>) =>
-                              curAction.get('editable') as boolean
+                              curAction.get('editable') as boolean,
                       ) as List<any>)
                     : (fromJS([]) as List<any>)
 
@@ -423,12 +425,12 @@ export class TicketReplyActionContainer extends Component<Props, State> {
                         {this.renderListDictArgs(
                             'Headers',
                             headersArgs,
-                            'headers'
+                            'headers',
                         )}
                         {this.renderListDictArgs(
                             'URL Parameters',
                             paramsArgs,
-                            'params'
+                            'params',
                         )}
                         {this.renderListDictArgs('Form Data', formData, 'form')}
                     </div>
@@ -460,14 +462,14 @@ export class TicketReplyActionContainer extends Component<Props, State> {
                         updateActionArgs={(_, value: Map<any, any>) => {
                             const oldBodyHtml = this.props.action.getIn(
                                 ['arguments', 'body_html'],
-                                ''
+                                '',
                             )
                             const bodyHtml = value.get('body_html', '')
 
                             if (oldBodyHtml !== bodyHtml) {
                                 this.setArguments(this.props.index, value)
                             } else {
-                                this.setState({currentArguments: value})
+                                this.setState({ currentArguments: value })
                             }
                         }}
                     />
@@ -523,7 +525,7 @@ export class TicketReplyActionContainer extends Component<Props, State> {
                         <i
                             className={classnames(
                                 css.closeIcon,
-                                'material-icons ml-4'
+                                'material-icons ml-4',
                             )}
                             onClick={() =>
                                 remove && remove(this.props.index, ticketId)

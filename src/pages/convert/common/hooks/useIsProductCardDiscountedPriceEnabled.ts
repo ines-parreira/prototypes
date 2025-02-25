@@ -1,6 +1,6 @@
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useFlag} from 'core/flags'
-import {getLDClient} from 'utils/launchDarkly'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
+import { getLDClient } from 'utils/launchDarkly'
 
 export const useIsProductCardDiscountedPriceEnabled = () => {
     return useFlag(FeatureFlagKey.ProductCardDiscountedPrice)
@@ -11,6 +11,6 @@ export const getIsProductCardDiscountedPriceEnabled = () => {
     const client = getLDClient()
     return client.variation(
         FeatureFlagKey.ProductCardDiscountedPrice,
-        false
+        false,
     ) as boolean
 }

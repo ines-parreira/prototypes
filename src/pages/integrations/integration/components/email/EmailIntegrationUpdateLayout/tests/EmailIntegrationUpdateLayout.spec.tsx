@@ -1,11 +1,12 @@
-import {render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {Integration} from 'models/integration/types'
-import {assumeMock} from 'utils/testing'
+import { render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { Integration } from 'models/integration/types'
+import { assumeMock } from 'utils/testing'
 
 import {
     canIntegrationDomainBeVerified,
@@ -17,13 +18,13 @@ jest.mock('../../helpers')
 
 const isGenericEmailIntegrationMock = assumeMock(isGenericEmailIntegration)
 const canIntegrationDomainBeVerifiedMock = assumeMock(
-    canIntegrationDomainBeVerified
+    canIntegrationDomainBeVerified,
 )
 
 const integration = {
     id: 1,
     name: 'name',
-    meta: {address: 'some-email@address.com'},
+    meta: { address: 'some-email@address.com' },
 }
 
 const minProps: ComponentProps<typeof EmailIntegrationUpdateLayout> = {
@@ -31,7 +32,7 @@ const minProps: ComponentProps<typeof EmailIntegrationUpdateLayout> = {
 }
 
 const renderComponent = (
-    props: ComponentProps<typeof EmailIntegrationUpdateLayout>
+    props: ComponentProps<typeof EmailIntegrationUpdateLayout>,
 ) => render(<EmailIntegrationUpdateLayout {...props} />)
 
 describe('EmailIntegrationUpdateLayout', () => {
@@ -46,7 +47,7 @@ describe('EmailIntegrationUpdateLayout', () => {
     it('should not render anything if the integration is not of type email', () => {
         isGenericEmailIntegrationMock.mockReturnValue(false)
 
-        const {container} = renderComponent(minProps)
+        const { container } = renderComponent(minProps)
 
         expect(container.innerHTML).toBe('')
     })
@@ -70,15 +71,15 @@ describe('EmailIntegrationUpdateLayout', () => {
 
         expect(
             screen.getByText(
-                'Praesent commodo cursus magna, vel scelerisque nisl consectetur et.'
-            )
+                'Praesent commodo cursus magna, vel scelerisque nisl consectetur et.',
+            ),
         ).toBeInTheDocument()
 
         const preferencesLink = screen.getByText('Preferences')
         expect(preferencesLink).toBeInTheDocument()
         expect(preferencesLink.closest('a')).toHaveAttribute(
             'href',
-            `/app/settings/channels/email/${integration.id}`
+            `/app/settings/channels/email/${integration.id}`,
         )
     })
 
@@ -87,21 +88,21 @@ describe('EmailIntegrationUpdateLayout', () => {
             ...minProps,
             integration: {
                 ...integration,
-                meta: {provider: 'sendgrid'},
+                meta: { provider: 'sendgrid' },
             } as Integration,
         })
 
         expect(
-            screen.queryByText('Domain Verification')
+            screen.queryByText('Domain Verification'),
         ).not.toBeInTheDocument()
 
         const outboundVerificationLink = screen.getByText(
-            'Outbound Verification'
+            'Outbound Verification',
         )
         expect(outboundVerificationLink).toBeInTheDocument()
         expect(outboundVerificationLink.closest('a')).toHaveAttribute(
             'href',
-            `/app/settings/channels/email/${integration.id}/outbound-verification`
+            `/app/settings/channels/email/${integration.id}/outbound-verification`,
         )
     })
 
@@ -110,7 +111,7 @@ describe('EmailIntegrationUpdateLayout', () => {
             ...minProps,
             integration: {
                 ...integration,
-                meta: {provider: 'mailgun'},
+                meta: { provider: 'mailgun' },
             } as Integration,
         })
 
@@ -118,11 +119,11 @@ describe('EmailIntegrationUpdateLayout', () => {
         expect(domainVerificationLink).toBeInTheDocument()
         expect(domainVerificationLink.closest('a')).toHaveAttribute(
             'href',
-            `/app/settings/channels/email/${integration.id}/dns`
+            `/app/settings/channels/email/${integration.id}/dns`,
         )
 
         expect(
-            screen.queryByText('Outbound Verification')
+            screen.queryByText('Outbound Verification'),
         ).not.toBeInTheDocument()
     })
 
@@ -133,10 +134,10 @@ describe('EmailIntegrationUpdateLayout', () => {
 
         expect(screen.getByText('Preferences')).toBeInTheDocument()
         expect(
-            screen.queryByText('Domain Verification')
+            screen.queryByText('Domain Verification'),
         ).not.toBeInTheDocument()
         expect(
-            screen.queryByText('Outbound Verification')
+            screen.queryByText('Outbound Verification'),
         ).not.toBeInTheDocument()
     })
 
@@ -150,14 +151,14 @@ describe('EmailIntegrationUpdateLayout', () => {
                 {...minProps}
                 integration={fromJS({
                     id: 1,
-                    meta: {address: 'test@gorgias.com', provider: 'sendgrid'},
+                    meta: { address: 'test@gorgias.com', provider: 'sendgrid' },
                 })}
             >
                 <span>
                     Praesent commodo cursus magna, vel scelerisque nisl
                     consectetur et.
                 </span>
-            </EmailIntegrationUpdateLayout>
+            </EmailIntegrationUpdateLayout>,
         )
 
         expect(screen.getByText('Domain Verification')).toBeInTheDocument()

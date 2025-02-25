@@ -1,9 +1,8 @@
 import React from 'react'
 
-import {useIsChartRestricted} from 'hooks/reporting/custom-reports/useReportRestrictions'
-
-import {CustomReportChart} from 'pages/stats/custom-reports/CustomReportChart'
-import {CustomReportComponent} from 'pages/stats/custom-reports/CustomReportComponent'
+import { useIsChartRestricted } from 'hooks/reporting/custom-reports/useReportRestrictions'
+import { CustomReportChart } from 'pages/stats/custom-reports/CustomReportChart'
+import { CustomReportComponent } from 'pages/stats/custom-reports/CustomReportComponent'
 import {
     CustomReportChartSchema,
     CustomReportChildType,
@@ -12,7 +11,7 @@ import {
     OverviewChart,
     SupportPerformanceOverviewReportConfig,
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
-import {assumeMock, renderWithDnD} from 'utils/testing'
+import { assumeMock, renderWithDnD } from 'utils/testing'
 
 jest.mock('pages/stats/custom-reports/CustomReportComponent', () => ({
     __esModule: true,
@@ -36,13 +35,13 @@ describe('CustomReportChart', () => {
             config_id: 'randomString',
         }
 
-        const {container} = renderWithDnD(
+        const { container } = renderWithDnD(
             <CustomReportChart
                 onMove={jest.fn()}
                 onDrop={jest.fn()}
                 findChartIndex={jest.fn()}
                 schema={schema}
-            />
+            />,
         )
 
         expect(container).toBeEmptyDOMElement()
@@ -60,7 +59,7 @@ describe('CustomReportChart', () => {
                 onDrop={jest.fn()}
                 findChartIndex={jest.fn()}
                 schema={schema}
-            />
+            />,
         )
 
         expect(CustomReportComponentMock).toHaveBeenCalledWith(
@@ -68,7 +67,7 @@ describe('CustomReportChart', () => {
                 chart: schema.config_id,
                 config: SupportPerformanceOverviewReportConfig,
             },
-            {}
+            {},
         )
     })
 })

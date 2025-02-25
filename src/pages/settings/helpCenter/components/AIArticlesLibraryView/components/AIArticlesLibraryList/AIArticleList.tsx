@@ -1,4 +1,4 @@
-import React, {Dispatch, SetStateAction} from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 
 import {
     AIArticleToggleOption,
@@ -8,6 +8,7 @@ import {
 
 import AIArticleRow from '../AIArticleRow/AIArticleRow'
 import AIArticlesToggleButton from '../AIArticlesToggleButton'
+
 import css from './AIArticlesLibraryList.less'
 
 type AIArticleListProps = {
@@ -23,7 +24,7 @@ type AIArticleListProps = {
     >
     selectedArticleType: AIArticleToggleOptionValue
     setSelectedArticleType: Dispatch<SetStateAction<AIArticleToggleOptionValue>>
-    toggleOptions: (AIArticleToggleOption & {count: number})[]
+    toggleOptions: (AIArticleToggleOption & { count: number })[]
 }
 
 const AIArticlesList = ({

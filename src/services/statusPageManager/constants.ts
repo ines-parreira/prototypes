@@ -1,8 +1,8 @@
-import {AlertBannerTypes} from 'AlertBanners'
-import {IntegrationType} from 'models/integration/types'
-import {NodeEnv, envVars} from 'utils/environment'
+import { AlertBannerTypes } from 'AlertBanners'
+import { IntegrationType } from 'models/integration/types'
+import { envVars, NodeEnv } from 'utils/environment'
 
-import {IncidentImpact} from './types'
+import { IncidentImpact } from './types'
 
 const isProduction = envVars.NODE_ENV === NodeEnv.Production
 
@@ -12,7 +12,7 @@ export const CLUSTER_GROUP_ID = isProduction ? '88h5zd5h2mgt' : 'nydnlcqwbz23'
 export const HELPCENTER_GROUP_ID = 'pg54vh9swgvc'
 
 // We're grouping our components (ex: REST API, Facebook Comments, etc..) into groups below (used for filtering).
-export const HELPDESK_GROUP_IDS: {[key: string]: string} = isProduction
+export const HELPDESK_GROUP_IDS: { [key: string]: string } = isProduction
     ? Object.freeze({
           xdk1c5fgbgyh: 'Helpdesk',
           '0x365t428kwc': 'Integrations',

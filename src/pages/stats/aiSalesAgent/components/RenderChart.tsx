@@ -1,6 +1,6 @@
-import {createElement, memo} from 'react'
+import { createElement, memo } from 'react'
 
-import {ReportConfig} from 'pages/stats/custom-reports/types'
+import { ReportConfig } from 'pages/stats/custom-reports/types'
 
 type Props<T extends string> = {
     chart: T
@@ -8,7 +8,7 @@ type Props<T extends string> = {
 }
 
 export const RenderChart = memo(
-    <T extends string>({chart, config}: Props<T>) => {
+    <T extends string>({ chart, config }: Props<T>) => {
         return createElement(config.charts[chart].chartComponent)
-    }
+    },
 )

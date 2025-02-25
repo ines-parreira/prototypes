@@ -1,8 +1,8 @@
+import React, { useEffect } from 'react'
+
 import classNames from 'classnames'
-import React, {useEffect} from 'react'
 
-import {UserSearchResult} from 'models/search/types'
-
+import { UserSearchResult } from 'models/search/types'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 
 import css from './PhoneDevice.less'

@@ -1,23 +1,24 @@
-import {fireEvent, screen, render} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {UserRole} from 'config/types/user'
-import {account, automationSubscriptionProductPrices} from 'fixtures/account'
-import {agents} from 'fixtures/agents'
-import {billingState} from 'fixtures/billing'
-import {integrationsState} from 'fixtures/integrations'
-import {emptyManagedRule, emptyRule} from 'fixtures/rule'
-import {emptyRuleRecipeFixture} from 'fixtures/ruleRecipe'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { UserRole } from 'config/types/user'
+import { account, automationSubscriptionProductPrices } from 'fixtures/account'
+import { agents } from 'fixtures/agents'
+import { billingState } from 'fixtures/billing'
+import { integrationsState } from 'fixtures/integrations'
+import { emptyManagedRule, emptyRule } from 'fixtures/rule'
+import { emptyRuleRecipeFixture } from 'fixtures/ruleRecipe'
 import useElementSize from 'hooks/useElementSize'
 import useMeasure from 'hooks/useMeasure'
-import {sendTicketMessage} from 'state/newMessage/actions'
-import {emailTicket} from 'state/ticket/tests/fixtures'
+import { sendTicketMessage } from 'state/newMessage/actions'
+import { emailTicket } from 'state/ticket/tests/fixtures'
 
 import RuleSuggestion, {
     getRuleSuggestionContent,
@@ -53,14 +54,14 @@ const store = {
             products: automationSubscriptionProductPrices,
         },
     }),
-    billing: fromJS({...billingState}),
+    billing: fromJS({ ...billingState }),
     entities: {
-        rules: {[emptyRule.id]: emptyRule},
-        ruleRecipes: {[emptyRuleRecipeFixture.slug]: emptyRuleRecipeFixture},
+        rules: { [emptyRule.id]: emptyRule },
+        ruleRecipes: { [emptyRuleRecipeFixture.slug]: emptyRuleRecipeFixture },
     },
     integrations: fromJS(integrationsState),
-    ui: {editor: {isFocused: false}},
-    ticket: fromJS({_internal: {isPartialUpdating: false}}),
+    ui: { editor: { isFocused: false } },
+    ticket: fromJS({ _internal: { isPartialUpdating: false } }),
 }
 
 const ticket = {
@@ -69,7 +70,7 @@ const ticket = {
         rule_suggestion: {
             slug: emptyRuleRecipeFixture.slug,
             actions: [
-                {name: 'addTags', args: {tags: 'auto-close'}},
+                { name: 'addTags', args: { tags: 'auto-close' } },
                 {
                     name: 'replyToTicket',
                     args: {
@@ -98,20 +99,23 @@ describe('RuleSuggestion', () => {
     })
 
     it('should display RuleSuggestion', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(store)}>
                 <RuleSuggestion {...minProps} />
-            </Provider>
+            </Provider>,
         )
         expect(container).toMatchSnapshot()
     })
 
     it('should not display RuleSuggestion (no addon)', () => {
-        const noAddonStore = {...store, currentAccount: fromJS({...account})}
-        const {container} = render(
+        const noAddonStore = {
+            ...store,
+            currentAccount: fromJS({ ...account }),
+        }
+        const { container } = render(
             <Provider store={mockStore(noAddonStore)}>
                 <RuleSuggestion {...minProps} />
-            </Provider>
+            </Provider>,
         )
         expect(container).toMatchSnapshot()
     })
@@ -122,7 +126,9 @@ describe('RuleSuggestion', () => {
             meta: {
                 rule_suggestion: {
                     slug: emptyRuleRecipeFixture.slug,
-                    actions: [{name: 'addTags', args: {tags: 'auto-close'}}],
+                    actions: [
+                        { name: 'addTags', args: { tags: 'auto-close' } },
+                    ],
                 },
             },
         }
@@ -130,7 +136,7 @@ describe('RuleSuggestion', () => {
         render(
             <Provider store={mockStore(store)}>
                 <RuleSuggestion ticket={ticket} />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(screen.getByText(/Apply/))
@@ -144,10 +150,10 @@ describe('RuleSuggestion', () => {
         render(
             <Provider store={mockStore(store)}>
                 <RuleSuggestion {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
-        const button = screen.getByRole('button', {name: /Apply/})
+        const button = screen.getByRole('button', { name: /Apply/ })
         fireEvent.click(button)
         expect((sendTicketMessage as jest.Mock).mock.calls).toMatchSnapshot()
         expect(button).toBeAriaDisabled()
@@ -160,10 +166,10 @@ describe('RuleSuggestion', () => {
             bodyHeight,
         ])
 
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(store)}>
                 <RuleSuggestion {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(await screen.findByText('Expand'))
@@ -177,16 +183,18 @@ describe('RuleSuggestion', () => {
             ...store,
             currentUser: fromJS({
                 ...agents[0],
-                role: {name: UserRole.LiteAgent},
+                role: { name: UserRole.LiteAgent },
             }),
         }
         render(
             <Provider store={mockStore(liteAgentStore)}>
                 <RuleSuggestion {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
-        expect(screen.getByRole('button', {name: /Install/})).toBeAriaDisabled()
+        expect(
+            screen.getByRole('button', { name: /Install/ }),
+        ).toBeAriaDisabled()
     })
 
     it('should display activate if rule already installed', () => {
@@ -197,7 +205,7 @@ describe('RuleSuggestion', () => {
                 rules: [
                     {
                         ...emptyManagedRule,
-                        settings: {slug: emptyRuleRecipeFixture.slug},
+                        settings: { slug: emptyRuleRecipeFixture.slug },
                         deactivated_datetime: '01/01/2022',
                     },
                 ],
@@ -207,7 +215,7 @@ describe('RuleSuggestion', () => {
         render(
             <Provider store={mockStore(storeWithRule)}>
                 <RuleSuggestion {...minProps} />
-            </Provider>
+            </Provider>,
         )
         const activate = screen.getByText(/Activate/)
         expect(!!activate).toBeTruthy()
@@ -221,7 +229,7 @@ describe('RuleSuggestion', () => {
                 rules: [
                     {
                         ...emptyManagedRule,
-                        settings: {slug: emptyRuleRecipeFixture.slug},
+                        settings: { slug: emptyRuleRecipeFixture.slug },
                     },
                 ],
             },
@@ -230,7 +238,7 @@ describe('RuleSuggestion', () => {
         render(
             <Provider store={mockStore(storeWithRule)}>
                 <RuleSuggestion {...minProps} />
-            </Provider>
+            </Provider>,
         )
         const install = screen.queryByText('Install')
         const activate = screen.queryByText('Activate')
@@ -243,7 +251,7 @@ describe('RuleSuggestion', () => {
         expect(isSuggestionEmpty(getRuleSuggestionContent(ticket))).toBe(false)
         const noAction = {
             ...emailTicket.toJS(),
-            meta: {rule_suggestion: {actions: []}},
+            meta: { rule_suggestion: { actions: [] } },
         }
         expect(getRuleSuggestionContent(noAction)).toMatchSnapshot()
         expect(isSuggestionEmpty(getRuleSuggestionContent(noAction))).toBe(true)
@@ -257,7 +265,7 @@ describe('RuleSuggestion', () => {
         render(
             <Provider store={mockStore(store)}>
                 <RuleSuggestion {...minProps} />
-            </Provider>
+            </Provider>,
         )
         const bookDemo = screen.queryByText('Book Demo')
         const dismiss = screen.queryByText('Dismiss')
@@ -279,13 +287,13 @@ describe('RuleSuggestion', () => {
             ...store,
             currentUser: fromJS({
                 ...agents[0],
-                role: {name: UserRole.LiteAgent},
+                role: { name: UserRole.LiteAgent },
             }),
         }
         render(
             <Provider store={mockStore(liteAgentStore)}>
                 <RuleSuggestion {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
         const notifyAdmin = screen.queryByText('Notify Admin')

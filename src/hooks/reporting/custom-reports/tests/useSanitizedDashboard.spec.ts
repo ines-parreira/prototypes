@@ -1,14 +1,17 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {useSanitizedDashboard} from 'hooks/reporting/custom-reports/useSanitizedDashboard'
-import {CustomReportChartSchema, CustomReportRowSchema} from 'models/stat/types'
+import { useSanitizedDashboard } from 'hooks/reporting/custom-reports/useSanitizedDashboard'
+import {
+    CustomReportChartSchema,
+    CustomReportRowSchema,
+} from 'models/stat/types'
 import {
     CustomReportChildType,
     CustomReportSchema,
     CustomReportSectionSchema,
 } from 'pages/stats/custom-reports/types'
-import {useReportChartRestrictions} from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
-import {assumeMock} from 'utils/testing'
+import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('pages/stats/report-chart-restrictions/useReportChartRestrictions')
 const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
@@ -33,7 +36,7 @@ describe('useSanitizedDashboard', () => {
             isRouteRestrictedToCurrentUser: () => false,
         }))
 
-        const {result} = renderHook(() => useSanitizedDashboard(dashboard))
+        const { result } = renderHook(() => useSanitizedDashboard(dashboard))
         expect(result.current).toEqual(dashboard)
     })
 
@@ -60,7 +63,7 @@ describe('useSanitizedDashboard', () => {
             isRouteRestrictedToCurrentUser: () => true,
         }))
 
-        const {result} = renderHook(() => useSanitizedDashboard(dashboard))
+        const { result } = renderHook(() => useSanitizedDashboard(dashboard))
 
         const charts = result.current.children as CustomReportChartSchema[]
         expect(charts).toHaveLength(1)
@@ -101,7 +104,7 @@ describe('useSanitizedDashboard', () => {
             isRouteRestrictedToCurrentUser: () => true,
         }))
 
-        const {result} = renderHook(() => useSanitizedDashboard(dashboard))
+        const { result } = renderHook(() => useSanitizedDashboard(dashboard))
 
         const section = result.current.children[0] as CustomReportSectionSchema
         const row = section.children[0] as CustomReportRowSchema
@@ -138,7 +141,7 @@ describe('useSanitizedDashboard', () => {
             isRouteRestrictedToCurrentUser: () => false,
         }))
 
-        const {result} = renderHook(() => useSanitizedDashboard(dashboard))
+        const { result } = renderHook(() => useSanitizedDashboard(dashboard))
 
         expect(result.current).toEqual(dashboard)
     })

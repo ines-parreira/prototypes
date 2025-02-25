@@ -8,16 +8,22 @@ import {
 } from '../automateStatsCalculatedTrends'
 
 describe('Wrapper Functions for Trends Calculation', () => {
-    const interactions = {value: 100, prevValue: 200}
-    const billableTickets = {value: 20, prevValue: 15}
-    const interactionsByAutoResponders = {value: 30, prevValue: 50}
-    const totalFirstResponseTimeExcludingAIAgent = {value: 300, prevValue: 500}
-    const totalFirstResponseTimeIncludingAIAgent = {value: 300, prevValue: 500}
-    const totalResolutionTimeExcludingAIAgent = {value: 5000, prevValue: 4000}
-    const totalResolutionTimeResolvedByAIAgent = {value: 0, prevValue: 0}
-    const aiAgentTicketsAutomatedTickets = {value: 5, prevValue: 1}
-    const aiAgentTickets = {value: 10, prevValue: 5}
-    const allTickets = {value: 20, prevValue: 10}
+    const interactions = { value: 100, prevValue: 200 }
+    const billableTickets = { value: 20, prevValue: 15 }
+    const interactionsByAutoResponders = { value: 30, prevValue: 50 }
+    const totalFirstResponseTimeExcludingAIAgent = {
+        value: 300,
+        prevValue: 500,
+    }
+    const totalFirstResponseTimeIncludingAIAgent = {
+        value: 300,
+        prevValue: 500,
+    }
+    const totalResolutionTimeExcludingAIAgent = { value: 5000, prevValue: 4000 }
+    const totalResolutionTimeResolvedByAIAgent = { value: 0, prevValue: 0 }
+    const aiAgentTicketsAutomatedTickets = { value: 5, prevValue: 1 }
+    const aiAgentTickets = { value: 10, prevValue: 5 }
+    const allTickets = { value: 20, prevValue: 10 }
 
     describe('getAutomationRateTrend Function', () => {
         it('should calculate automation rate trend correctly', () => {
@@ -26,7 +32,7 @@ describe('Wrapper Functions for Trends Calculation', () => {
                 false,
                 interactions,
                 billableTickets,
-                interactionsByAutoResponders
+                interactionsByAutoResponders,
             )
             expect(result.data.value).toBeCloseTo(1.1111, 3)
             expect(result.data.prevValue).toBeCloseTo(1.212121, 3)
@@ -35,9 +41,9 @@ describe('Wrapper Functions for Trends Calculation', () => {
             const result = getAutomationRateTrend(
                 false,
                 false,
-                {value: null, prevValue: null},
+                { value: null, prevValue: null },
                 billableTickets,
-                interactionsByAutoResponders
+                interactionsByAutoResponders,
             )
             expect(result.data.value).toBe(0)
             expect(result.data.prevValue).toBe(0)
@@ -51,7 +57,7 @@ describe('Wrapper Functions for Trends Calculation', () => {
                 isError: false,
                 filteredAutomatedInteractions: interactions,
                 billableTicketsCount: billableTickets,
-                allAutomatedInteractions: {value: 50, prevValue: 100},
+                allAutomatedInteractions: { value: 50, prevValue: 100 },
                 allAutomatedInteractionsByAutoResponders:
                     interactionsByAutoResponders,
             })
@@ -68,7 +74,7 @@ describe('Wrapper Functions for Trends Calculation', () => {
                 interactions,
                 billableTickets,
                 totalFirstResponseTimeExcludingAIAgent,
-                totalFirstResponseTimeIncludingAIAgent
+                totalFirstResponseTimeIncludingAIAgent,
             )
             expect(result.data.value).toBeCloseTo(12.5, 1)
             expect(result.data.prevValue).toBeCloseTo(31.0, 1)
@@ -77,10 +83,10 @@ describe('Wrapper Functions for Trends Calculation', () => {
             const result = getDecreaseInFirstResponseTimeTrend(
                 false,
                 false,
-                {value: null, prevValue: null},
+                { value: null, prevValue: null },
                 billableTickets,
                 totalFirstResponseTimeExcludingAIAgent,
-                totalFirstResponseTimeIncludingAIAgent
+                totalFirstResponseTimeIncludingAIAgent,
             )
             expect(result.data.value).toBe(0)
             expect(result.data.prevValue).toBe(0)
@@ -95,7 +101,7 @@ describe('Wrapper Functions for Trends Calculation', () => {
                 interactions,
                 billableTickets,
                 totalResolutionTimeExcludingAIAgent,
-                totalResolutionTimeResolvedByAIAgent
+                totalResolutionTimeResolvedByAIAgent,
             )
             expect(result.data.value).toBeCloseTo(208.3333, 1)
             expect(result.data.prevValue).toBeCloseTo(248.062, 1)
@@ -104,10 +110,10 @@ describe('Wrapper Functions for Trends Calculation', () => {
             const result = getDecreaseInResolutionTimeTrend(
                 false,
                 false,
-                {value: null, prevValue: null},
+                { value: null, prevValue: null },
                 billableTickets,
-                {value: 100, prevValue: 100},
-                {value: 100, prevValue: 100}
+                { value: 100, prevValue: 100 },
+                { value: 100, prevValue: 100 },
             )
             expect(result.data.value).toBe(0)
             expect(result.data.prevValue).toBe(0)

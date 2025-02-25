@@ -1,10 +1,9 @@
-import {fromJS, Map, List} from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 import moment from 'moment'
 
-import {GorgiasAction} from '../types'
-
+import { GorgiasAction } from '../types'
 import * as constants from './constants'
-import {ChatsState} from './types'
+import { ChatsState } from './types'
 
 export const initialState: ChatsState = fromJS({
     tickets: [],
@@ -15,7 +14,7 @@ const sortChats = (ticket: Map<any, any>) =>
 
 export default function reducer(
     state: ChatsState = initialState,
-    action: GorgiasAction
+    action: GorgiasAction,
 ): ChatsState {
     switch (action.type) {
         case constants.SET_CHATS: {
@@ -23,8 +22,8 @@ export default function reducer(
                 'tickets',
                 () =>
                     (fromJS(action.tickets) as List<any>).sortBy(
-                        sortChats
-                    ) as List<any>
+                        sortChats,
+                    ) as List<any>,
             )
         }
 
@@ -36,7 +35,7 @@ export default function reducer(
                 newState.get('tickets', fromJS([])) as List<any>
             ).findIndex(
                 (ticket: Map<any, any>) =>
-                    ticket.get('id') === newTicket.get('id')
+                    ticket.get('id') === newTicket.get('id'),
             )
 
             if (~index) {
@@ -45,12 +44,12 @@ export default function reducer(
             } else {
                 // add the new chat
                 newState = newState.update('tickets', (tickets: List<any>) =>
-                    tickets.push(newTicket)
+                    tickets.push(newTicket),
                 )
             }
 
             return newState.update('tickets', (tickets: List<any>) =>
-                tickets.sortBy(sortChats)
+                tickets.sortBy(sortChats),
             )
         }
 
@@ -58,8 +57,8 @@ export default function reducer(
             return state.update('tickets', (tickets: List<any>) =>
                 tickets.filter(
                     (ticket: Map<any, any>) =>
-                        ticket.get('id') !== action.ticketId
-                )
+                        ticket.get('id') !== action.ticketId,
+                ),
             )
         }
 
@@ -72,7 +71,7 @@ export default function reducer(
                     if (ticket.get('id') === ticketId) {
                         return ticket.set(
                             'is_unread',
-                            action.type === constants.MARK_CHAT_AS_UNREAD
+                            action.type === constants.MARK_CHAT_AS_UNREAD,
                         )
                     }
 

@@ -1,3 +1,7 @@
+import React, { createRef, useContext } from 'react'
+
+import { isArray, map, startCase, truncate } from 'lodash'
+
 import {
     DimensionShopifyMetafieldData,
     MoneyShopifyMetafield,
@@ -6,28 +10,26 @@ import {
     VolumeShopifyMetafieldData,
     WeightShopifyMetafieldData,
 } from '@gorgias/api-queries'
-import {ShopifyMetafieldType} from '@gorgias/api-types'
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import {isArray, map, startCase, truncate} from 'lodash'
-import React, {createRef, useContext} from 'react'
+import { ShopifyMetafieldType } from '@gorgias/api-types'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
-import {DateAndTimeFormatting} from 'constants/datetime'
-import {Badge} from 'gorgias-design-system/Badge/Badge'
+import { DateAndTimeFormatting } from 'constants/datetime'
+import { Badge } from 'gorgias-design-system/Badge/Badge'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
+import { CopyButton, StaticField } from 'Widgets/modules/Template/modules/Field'
 
-import {StaticField, CopyButton} from 'Widgets/modules/Template/modules/Field'
+import { extractGid, prepareGidUrl } from '../helpers/Gid'
+import { shortenUrl } from '../helpers/shortenUrl'
 
-import {extractGid, prepareGidUrl} from '../helpers/Gid'
-import {shortenUrl} from '../helpers/shortenUrl'
 import css from './Metafield.less'
 
 type Props = {
     metafield: ShopifyMetafield
 }
 
-export default function Metafield({metafield}: Props) {
+export default function Metafield({ metafield }: Props) {
     const label = metafield.key || ''
 
     switch (metafield.type) {
@@ -260,7 +262,7 @@ type MetafieldProps = {
     value: string
 }
 
-function UrlMetafield({value}: MetafieldProps) {
+function UrlMetafield({ value }: MetafieldProps) {
     return (
         <FieldWithCopyButton value={value}>
             <a href={value} target="_blank" rel="noreferrer">
@@ -270,7 +272,7 @@ function UrlMetafield({value}: MetafieldProps) {
     )
 }
 
-function DateMetafield({value}: MetafieldProps) {
+function DateMetafield({ value }: MetafieldProps) {
     return (
         <FieldWithCopyButton value={value}>
             <DatetimeLabel
@@ -282,7 +284,7 @@ function DateMetafield({value}: MetafieldProps) {
     )
 }
 
-function DateTimeMetafield({value}: MetafieldProps) {
+function DateTimeMetafield({ value }: MetafieldProps) {
     return (
         <FieldWithCopyButton value={value}>
             <DatetimeLabel
@@ -301,7 +303,7 @@ function DateTimeMetafield({value}: MetafieldProps) {
     )
 }
 
-function BooleanMetafield({value}: {value: boolean}) {
+function BooleanMetafield({ value }: { value: boolean }) {
     const text = value ? 'true' : 'false'
     const color = value ? 'accessoryGreen' : 'accessoryRed'
     return (
@@ -330,12 +332,12 @@ function DimensionMetafield({
     return <FieldWithCopyButton value={copiableValue} />
 }
 
-function RatingMetafield({value}: {value: RatingShopifyMetafieldData}) {
+function RatingMetafield({ value }: { value: RatingShopifyMetafieldData }) {
     const copiableValue = `${value.value} out of ${value.scale_max}`
     return <FieldWithCopyButton value={copiableValue} />
 }
 
-function MoneyMetafield({value}: {value: MoneyShopifyMetafield}) {
+function MoneyMetafield({ value }: { value: MoneyShopifyMetafield }) {
     const copiableValue = `${value.value.amount} ${value.value.currency_code}`
     return (
         <FieldWithCopyButton value={copiableValue}>
@@ -348,7 +350,7 @@ function MoneyMetafield({value}: {value: MoneyShopifyMetafield}) {
     )
 }
 
-function ColorMetafield({value}: MetafieldProps) {
+function ColorMetafield({ value }: MetafieldProps) {
     return (
         <FieldWithCopyButton value={value}>
             <svg className={css.colorBadge}>
@@ -389,7 +391,7 @@ function ReferenceMetafield({
     return null
 }
 
-function RichTextFieldMetafield({value}: {value: Record<string, unknown>}) {
+function RichTextFieldMetafield({ value }: { value: Record<string, unknown> }) {
     const render = (node: Record<string, unknown>): string => {
         if ('type' in node && 'value' in node && node.type === 'text') {
             return String(node.value)
@@ -406,7 +408,7 @@ function RichTextFieldMetafield({value}: {value: Record<string, unknown>}) {
     return <FieldWithCopyButton value={compactValue} tooltip={true} />
 }
 
-function JsonMetafield({value}: {value: Record<string, unknown>}) {
+function JsonMetafield({ value }: { value: Record<string, unknown> }) {
     const formattedJson = JSON.stringify(value, null, 4)
     return <FieldWithCopyButton value={formattedJson} tooltip={true} />
 }
@@ -421,7 +423,7 @@ function FieldWithCopyButton({
     tooltip?: boolean
 }) {
     const ref = createRef<HTMLDivElement>()
-    const shortenedValue = truncate(value, {length: 80})
+    const shortenedValue = truncate(value, { length: 80 })
     const isTrimmed = value.length > 80
     return (
         <>

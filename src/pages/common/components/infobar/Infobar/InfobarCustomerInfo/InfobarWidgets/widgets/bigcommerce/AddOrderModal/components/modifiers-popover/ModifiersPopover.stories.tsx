@@ -1,13 +1,14 @@
-import {action} from '@storybook/addon-actions'
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { action } from '@storybook/addon-actions'
+import { Meta, Story } from '@storybook/react'
 
 import {
-    bigCommerceProductFixture,
     bigCommerceLineItemFixture,
+    bigCommerceProductFixture,
 } from 'fixtures/bigcommerce'
 
-import {ModifiersPopoverBody, ModifiersPopover} from './ModifiersPopover'
+import { ModifiersPopover, ModifiersPopoverBody } from './ModifiersPopover'
 
 const storyConfig: Meta = {
     title: 'BigCommerce/AddOrderModal/ModifiersPopover',

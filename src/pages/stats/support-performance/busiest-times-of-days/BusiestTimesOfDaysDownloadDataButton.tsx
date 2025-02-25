@@ -1,10 +1,10 @@
 import React from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {TimeSeriesHook} from 'hooks/reporting/useTimeSeries'
-import {DownloadDataButton} from 'pages/stats/support-performance/components/DownloadDataButton'
-import {useAggregatedBusiestTimesOfDayReportData} from 'services/reporting/busiestTimesOfDaysReportingService'
-import {saveZippedFiles} from 'utils/file'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { TimeSeriesHook } from 'hooks/reporting/useTimeSeries'
+import { DownloadDataButton } from 'pages/stats/support-performance/components/DownloadDataButton'
+import { useAggregatedBusiestTimesOfDayReportData } from 'services/reporting/busiestTimesOfDaysReportingService'
+import { saveZippedFiles } from 'utils/file'
 
 const DOWNLOAD_BUTTON_TITLE = 'Download Busiest Times of Days Data'
 
@@ -13,7 +13,7 @@ export const BusiestTimesOfDaysDownloadDataButton = ({
 }: {
     useMetricQuery: TimeSeriesHook
 }) => {
-    const {files, fileName, isLoading} =
+    const { files, fileName, isLoading } =
         useAggregatedBusiestTimesOfDayReportData(useMetricQuery)
 
     return (

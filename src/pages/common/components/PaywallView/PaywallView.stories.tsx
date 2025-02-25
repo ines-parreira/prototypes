@@ -1,10 +1,10 @@
-import {Meta, StoryObj} from '@storybook/react'
-import React, {ComponentProps} from 'react'
-import {MemoryRouter} from 'react-router-dom'
+import React, { ComponentProps } from 'react'
+
+import { Meta, StoryObj } from '@storybook/react'
+import { MemoryRouter } from 'react-router-dom'
 
 import Button from 'pages/common/components/button/Button'
-
-import {assetsUrl} from 'utils'
+import { assetsUrl } from 'utils'
 
 import HeroImageCarousel from '../HeroImageCarousel/HeroImageCarousel'
 import PaywallView from './PaywallView'
@@ -87,14 +87,14 @@ export const Default: Story = {
                         slides={[
                             {
                                 imageUrl: assetsUrl(
-                                    '/img/paywalls/screens/automate_paywall_statistics.png'
+                                    '/img/paywalls/screens/automate_paywall_statistics.png',
                                 ),
                                 description:
                                     'Track performance and improve your automations with dedicated statistics.',
                             },
                             {
                                 imageUrl: assetsUrl(
-                                    '/img/paywalls/screens/automate_paywall_flows.png'
+                                    '/img/paywalls/screens/automate_paywall_flows.png',
                                 ),
                                 description:
                                     'Build personalized, automated interactions with Flows.',

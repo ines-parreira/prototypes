@@ -1,39 +1,41 @@
-import React, {useCallback, useMemo} from 'react'
-import {Container} from 'reactstrap'
+import React, { useCallback, useMemo } from 'react'
 
-import {DraftBadge} from 'pages/automate/workflows/components/DraftBadge'
+import { Container } from 'reactstrap'
+
+import { DraftBadge } from 'pages/automate/workflows/components/DraftBadge'
 import {
     useVisualBuilder,
     VisualBuilderContext,
 } from 'pages/automate/workflows/hooks/useVisualBuilder'
-import {useVisualBuilderGraphReducer} from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
-import {computeNodesPositions} from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer/utils'
+import { useVisualBuilderGraphReducer } from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
+import { computeNodesPositions } from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer/utils'
 import {
     areGraphsEqual,
     transformVisualBuilderGraphIntoWfConfiguration,
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import {transformWorkflowConfigurationIntoVisualBuilderGraph} from 'pages/automate/workflows/models/workflowConfiguration.model'
+import { transformWorkflowConfigurationIntoVisualBuilderGraph } from 'pages/automate/workflows/models/workflowConfiguration.model'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import InputField from 'pages/common/forms/input/InputField'
 
-import {AiAgentMovedBanner} from '../common/components/AiAgentMovedBanner'
-import {useDisplayAiAgentMovedBanner} from '../common/hooks/useDisplayAiAgentMovedBanner'
-import css from './ActionsPlatformEditStepView.less'
+import { AiAgentMovedBanner } from '../common/components/AiAgentMovedBanner'
+import { useDisplayAiAgentMovedBanner } from '../common/hooks/useDisplayAiAgentMovedBanner'
 import WorkflowVisualBuilder from './components/visualBuilder/WorkflowVisualBuilder'
 import useEditActionTemplate from './hooks/useEditActionTemplate'
 import useTouchActionStepGraph from './hooks/useTouchActionStepGraph'
 import useValidateActionStepGraph from './hooks/useValidateActionStepGraph'
 import useValidateOnVisualBuilderGraphChange from './hooks/useValidateOnVisualBuilderGraphChange'
-import {ActionTemplate} from './types'
+import { ActionTemplate } from './types'
+
+import css from './ActionsPlatformEditStepView.less'
 
 type Props = {
     template: ActionTemplate
 }
 
-const ActionsPlatformEditStepView = ({template}: Props) => {
-    const {isLoading: isEditActionTemplateLoading, editActionTemplate} =
+const ActionsPlatformEditStepView = ({ template }: Props) => {
+    const { isLoading: isEditActionTemplateLoading, editActionTemplate } =
         useEditActionTemplate()
 
     const displayAiAgentMovedBanner = useDisplayAiAgentMovedBanner()
@@ -43,26 +45,26 @@ const ActionsPlatformEditStepView = ({template}: Props) => {
             computeNodesPositions(
                 transformWorkflowConfigurationIntoVisualBuilderGraph(
                     template,
-                    true
-                )
+                    true,
+                ),
             ),
-        [template]
+        [template],
     )
     const [visualBuilderGraphDirty, dispatch] =
         useVisualBuilderGraphReducer(visualBuilderGraph)
 
     const isVisualBuilderGraphDirty = useMemo(
         () => !areGraphsEqual(visualBuilderGraph, visualBuilderGraphDirty),
-        [visualBuilderGraph, visualBuilderGraphDirty]
+        [visualBuilderGraph, visualBuilderGraphDirty],
     )
 
     const visualBuilderContextValue = useVisualBuilder(
         visualBuilderGraphDirty,
         dispatch,
-        true
+        true,
     )
 
-    const {getVariableListForNode} = visualBuilderContextValue
+    const { getVariableListForNode } = visualBuilderContextValue
 
     const handleValidate = useValidateActionStepGraph(getVariableListForNode)
     const handleTouch = useTouchActionStepGraph()
@@ -93,7 +95,7 @@ const ActionsPlatformEditStepView = ({template}: Props) => {
                 transformVisualBuilderGraphIntoWfConfiguration(
                     visualBuilderGraphDirty,
                     isDraft,
-                    []
+                    [],
                 ) as ActionTemplate
 
             await editActionTemplate([
@@ -108,8 +110,8 @@ const ActionsPlatformEditStepView = ({template}: Props) => {
                 graph: computeNodesPositions(
                     transformWorkflowConfigurationIntoVisualBuilderGraph(
                         configurationDirty,
-                        true
-                    )
+                        true,
+                    ),
                 ),
             })
         },
@@ -119,7 +121,7 @@ const ActionsPlatformEditStepView = ({template}: Props) => {
             handleValidate,
             handleTouch,
             dispatch,
-        ]
+        ],
     )
 
     const isDraft = visualBuilderGraphDirty.is_draft
@@ -184,10 +186,10 @@ const ActionsPlatformEditStepView = ({template}: Props) => {
                                     void handleSave(false)
                                 }}
                                 showCancelButton
-                                cancelButtonProps={{intent: 'secondary'}}
+                                cancelButtonProps={{ intent: 'secondary' }}
                                 content="Are you sure you want to publish this Action step? This will prevent you from updating settings like name, conditions and deleting already existing inputs."
                             >
-                                {({uid, onDisplayConfirmation}) => (
+                                {({ uid, onDisplayConfirmation }) => (
                                     <Button
                                         id={uid}
                                         intent="primary"
@@ -205,10 +207,10 @@ const ActionsPlatformEditStepView = ({template}: Props) => {
                                 void handleSave(false)
                             }}
                             showCancelButton
-                            cancelButtonProps={{intent: 'secondary'}}
+                            cancelButtonProps={{ intent: 'secondary' }}
                             content="Are you sure you want to update this Action step? This will also update all Actions using this step."
                         >
-                            {({uid, onDisplayConfirmation}) => (
+                            {({ uid, onDisplayConfirmation }) => (
                                 <Button
                                     id={uid}
                                     intent="primary"

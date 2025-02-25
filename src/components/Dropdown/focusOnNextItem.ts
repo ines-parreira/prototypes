@@ -1,8 +1,8 @@
-import {KeyboardEvent, RefObject} from 'react'
+import { KeyboardEvent, RefObject } from 'react'
 
 export default function focusOnNextItem(
     e: KeyboardEvent<HTMLElement>,
-    ref?: RefObject<HTMLDivElement>
+    ref?: RefObject<HTMLDivElement>,
 ) {
     if (
         document.activeElement === e.currentTarget &&
@@ -10,7 +10,7 @@ export default function focusOnNextItem(
     ) {
         e.preventDefault()
         const items: HTMLElement[] = Array.from(
-            ref?.current?.querySelectorAll('[role="listitem"]') ?? []
+            ref?.current?.querySelectorAll('[role="listitem"]') ?? [],
         )
 
         const index = items.indexOf(document.activeElement as HTMLElement)

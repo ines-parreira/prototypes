@@ -1,13 +1,15 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { RefObject, useEffect, useState } from 'react'
+
 import classNames from 'classnames'
 import Editor from 'draft-js-plugins-editor'
-import React, {RefObject, useEffect, useState} from 'react'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import TextInputWithVariables from 'pages/automate/workflows/editor/visualBuilder/components/variables/TextInputWithVariables'
-import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
-import {WorkflowVariableList} from 'pages/automate/workflows/models/variables.types'
+import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
+import { WorkflowVariableList } from 'pages/automate/workflows/models/variables.types'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
-import {useReorderDnD} from 'pages/common/hooks/useReorderDnD'
+import { useReorderDnD } from 'pages/common/hooks/useReorderDnD'
 
 import css from './ReplyButtonItem.less'
 
@@ -47,12 +49,12 @@ export default function ReplyButtonItem({
     onBlur,
 }: ReplyButtonItemProps) {
     const [ref, setRef] = useState<Editor | null>(null)
-    const {visualBuilderGraph, dispatch} = useVisualBuilderContext()
+    const { visualBuilderGraph, dispatch } = useVisualBuilderContext()
     const dndType = 'workflow-multiple-choices-reply-button'
-    const {dragRef, dropRef, handlerId, isDragging} = useReorderDnD(
-        {position: index, type: dndType},
+    const { dragRef, dropRef, handlerId, isDragging } = useReorderDnD(
+        { position: index, type: dndType },
         [dndType],
-        {onHover: onMove, onDrop, onCancel}
+        { onHover: onMove, onDrop, onCancel },
     )
 
     useEffect(() => {
@@ -65,7 +67,7 @@ export default function ReplyButtonItem({
         <div
             className={css.container}
             ref={dropRef as RefObject<HTMLDivElement>}
-            style={{opacity: isDragging ? 0 : 1}}
+            style={{ opacity: isDragging ? 0 : 1 }}
             data-handler-id={handlerId}
         >
             <i
@@ -108,10 +110,10 @@ export default function ReplyButtonItem({
                 onCancel={() => {
                     onDeleteChoiceCancel(index)
                 }}
-                cancelButtonProps={{intent: 'secondary'}}
+                cancelButtonProps={{ intent: 'secondary' }}
                 showCancelButton
             >
-                {({uid, onDisplayConfirmation}) => (
+                {({ uid, onDisplayConfirmation }) => (
                     <>
                         <i
                             id={uid}
@@ -120,7 +122,7 @@ export default function ReplyButtonItem({
                                 'material-icons clickable',
                                 {
                                     [css.isDisabled]: !!disabledTooltip,
-                                }
+                                },
                             )}
                             onClick={() => {
                                 if (!disabledTooltip) {

@@ -1,4 +1,4 @@
-import React, {PropsWithChildren} from 'react'
+import React, { PropsWithChildren } from 'react'
 
 import css from './Header.less'
 
@@ -6,7 +6,7 @@ type Props = PropsWithChildren<{
     alert?: React.ReactNode
 }>
 
-const Header = ({children, alert}: Props) => {
+const Header = ({ children, alert }: Props) => {
     return (
         <div className={css.header}>
             {alert}

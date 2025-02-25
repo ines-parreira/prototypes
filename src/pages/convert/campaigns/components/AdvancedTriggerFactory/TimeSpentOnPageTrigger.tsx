@@ -1,10 +1,11 @@
+import React, { useEffect, useState } from 'react'
+
 import classnames from 'classnames'
-import React, {useEffect, useState} from 'react'
 
 import Button from 'pages/common/components/button/Button'
 import InputField from 'pages/common/forms/input/InputField'
 
-import {AdvancedTriggerBaseProps} from '../../types/AdvancedTriggerBaseProps'
+import { AdvancedTriggerBaseProps } from '../../types/AdvancedTriggerBaseProps'
 
 import css from './style.less'
 
@@ -20,7 +21,7 @@ export const TimeSpentOnPageTrigger = ({
     onUpdateTrigger,
 }: Props): JSX.Element => {
     const [innerValue, setInnerValue] = useState<number>(
-        ensureNumberType(trigger.value)
+        ensureNumberType(trigger.value),
     )
     const handleChangeValue = (value: string) => {
         setInnerValue(ensureNumberType(value))

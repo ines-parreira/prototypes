@@ -1,5 +1,6 @@
+import React, { ForwardedRef, forwardRef, ReactNode } from 'react'
+
 import classNames from 'classnames'
-import React, {ForwardedRef, ReactNode, forwardRef} from 'react'
 
 import css from './Label.less'
 
@@ -11,8 +12,8 @@ type Props = {
 }
 
 function Label(
-    {className, label, children, isRequired = false}: Props,
-    ref: ForwardedRef<HTMLLabelElement>
+    { className, label, children, isRequired = false }: Props,
+    ref: ForwardedRef<HTMLLabelElement>,
 ) {
     return (
         <label ref={ref} className={classNames(css.wrapper, className)}>

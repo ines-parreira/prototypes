@@ -1,7 +1,8 @@
-import {act, fireEvent, render} from '@testing-library/react'
 import React from 'react'
 
-import {LinkItem, Props} from '../LinkItem'
+import { act, fireEvent, render } from '@testing-library/react'
+
+import { LinkItem, Props } from '../LinkItem'
 
 const ErrMessage = {
     invalidUrl: 'URL is invalid',
@@ -9,14 +10,14 @@ const ErrMessage = {
     missingLabel: 'Please enter a valid title',
 }
 
-const ControlledLinkItem = ({onChange, ...props}: Props) => {
+const ControlledLinkItem = ({ onChange, ...props }: Props) => {
     const [label, setLabel] = React.useState(props.label)
     const [value, setValue] = React.useState(props.value)
 
     const handleOnChange = (
         ev: React.ChangeEvent<HTMLInputElement>,
         type: 'label' | 'value',
-        id: number
+        id: number,
     ) => {
         if (type === 'value') {
             setValue(ev.target.value)
@@ -39,74 +40,74 @@ const ControlledLinkItem = ({onChange, ...props}: Props) => {
 
 describe('<LinkItem>', () => {
     it('should display the link item', () => {
-        const {container} = render(
+        const { container } = render(
             <LinkItem
                 id={1}
                 label="Test link"
                 value="https://test.com"
                 onChange={jest.fn()}
                 onDelete={jest.fn()}
-            />
+            />,
         )
 
         expect(container).toMatchSnapshot()
     })
 
     it('should display the link item with an error message', () => {
-        const {container} = render(
+        const { container } = render(
             <LinkItem
                 id={2}
                 label="Test link"
                 value="/invalid-link"
                 onChange={jest.fn()}
                 onDelete={jest.fn()}
-            />
+            />,
         )
 
         expect(container).toMatchSnapshot()
     })
 
     it('displays error if value is empty and label is not', () => {
-        const {getByTestId} = render(
+        const { getByTestId } = render(
             <LinkItem
                 id={1}
                 label="Test link"
                 value=""
                 onChange={jest.fn()}
                 onDelete={jest.fn()}
-            />
+            />,
         )
 
         expect(getByTestId('link-item-value-error-1').textContent).toEqual(
-            ErrMessage.missingUrl
+            ErrMessage.missingUrl,
         )
     })
 
     it('displays error if label is empty and value is not', () => {
-        const {getByTestId} = render(
+        const { getByTestId } = render(
             <LinkItem
                 id={1}
                 label=""
                 value="https://test.com"
                 onChange={jest.fn()}
                 onDelete={jest.fn()}
-            />
+            />,
         )
 
         expect(getByTestId('link-item-label-error-1').textContent).toEqual(
-            ErrMessage.missingLabel
+            ErrMessage.missingLabel,
         )
     })
 
     it('updates error message on change event', () => {
-        const {getByTestId, queryByTestId} = render(
+        const { getByTestId, queryByTestId } = render(
             <ControlledLinkItem
                 id={1}
                 label=""
                 value=""
                 onChange={jest.fn()}
                 onDelete={jest.fn()}
-            />
+            />,
         )
 
         const labelInput = getByTestId('link-item-label-1') as HTMLInputElement
@@ -125,7 +126,7 @@ describe('<LinkItem>', () => {
         // Input a link title and no link value
         // Expect missing error message for link input
         act(() => {
-            fireEvent.change(labelInput, {target: {value: 'Home'}})
+            fireEvent.change(labelInput, { target: { value: 'Home' } })
         })
         expect(labelInput.value).toEqual('Home')
         expect(valueInput.value).toEqual('')
@@ -135,7 +136,7 @@ describe('<LinkItem>', () => {
         // Input an invalid link value along with the link title
         // Expect invalid error message for link input
         act(() => {
-            fireEvent.change(valueInput, {target: {value: 'invalid'}})
+            fireEvent.change(valueInput, { target: { value: 'invalid' } })
         })
         expect(labelInput.value).toEqual('Home')
         expect(valueInput.value).toEqual('invalid')
@@ -145,7 +146,7 @@ describe('<LinkItem>', () => {
         // Input an invalid link value along with the link title
         // Expect invalid error message for link input
         act(() => {
-            fireEvent.change(valueInput, {target: {value: '/pricing'}})
+            fireEvent.change(valueInput, { target: { value: '/pricing' } })
         })
         expect(labelInput.value).toEqual('Home')
         expect(valueInput.value).toEqual('/pricing')
@@ -155,9 +156,9 @@ describe('<LinkItem>', () => {
         // Reset the link title and input a valid link value
         // Expect missing error message for title
         act(() => {
-            fireEvent.change(labelInput, {target: {value: ''}})
+            fireEvent.change(labelInput, { target: { value: '' } })
             fireEvent.change(valueInput, {
-                target: {value: 'www.gorgias.com'},
+                target: { value: 'www.gorgias.com' },
             })
         })
         expect(labelInput.value).toEqual('')
@@ -168,9 +169,9 @@ describe('<LinkItem>', () => {
         // Input a valid title and a valid link
         // Expect no errors
         act(() => {
-            fireEvent.change(labelInput, {target: {value: 'Home'}})
+            fireEvent.change(labelInput, { target: { value: 'Home' } })
             fireEvent.change(valueInput, {
-                target: {value: 'https://gorgias.com'},
+                target: { value: 'https://gorgias.com' },
             })
         })
         expect(labelInput.value).toEqual('Home')

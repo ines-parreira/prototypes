@@ -1,17 +1,18 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-import {fireEvent, screen, waitFor} from '@testing-library/react'
-import {createDragDropManager} from 'dnd-core'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
-import {DndProvider} from 'react-dnd'
-import {HTML5Backend} from 'react-dnd-html5-backend'
-import {act} from 'react-dom/test-utils'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { createDragDropManager } from 'dnd-core'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+import { act } from 'react-dom/test-utils'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import useLanguagesMismatchWarnings from 'pages/automate/workflows/hooks/useLanguagesMismatchWarnings'
-import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
+import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
-import {FlowsSettings} from '../components/FlowsSettings'
+import { FlowsSettings } from '../components/FlowsSettings'
 
 const manager = createDragDropManager(HTML5Backend, undefined, undefined)
 jest.mock('launchdarkly-react-client-sdk')
@@ -143,7 +144,7 @@ describe('FlowsSettings', () => {
                     ]}
                     onChange={jest.fn()}
                 />
-            </DndProvider>
+            </DndProvider>,
         )
 
         expect(screen.getByText('Flow 1')).toBeInTheDocument()
@@ -188,7 +189,7 @@ describe('FlowsSettings', () => {
                     ]}
                     onChange={jest.fn()}
                 />
-            </DndProvider>
+            </DndProvider>,
         )
 
         // role of "i"
@@ -238,21 +239,21 @@ describe('FlowsSettings', () => {
                     ]}
                     onChange={jest.fn()}
                 />
-            </DndProvider>
+            </DndProvider>,
         )
 
         // open dropdown
-        const addFlowButton = screen.getByRole('button', {name: /add flow/i})
+        const addFlowButton = screen.getByRole('button', { name: /add flow/i })
         fireEvent.click(addFlowButton)
         const searchInput = screen.getByPlaceholderText(/Search flows/i)
-        fireEvent.change(searchInput, {target: {value: 'Flow 1'}})
+        fireEvent.change(searchInput, { target: { value: 'Flow 1' } })
         await act(async () => {
             await waitFor(
                 () => {
                     expect(screen.getByText('Flow 1')).toBeInTheDocument()
                     expect(screen.queryByText('Flow 2')).toBeNull()
                 },
-                {timeout: 1000}
+                { timeout: 1000 },
             )
         })
     })
@@ -266,24 +267,24 @@ describe('FlowsSettings', () => {
                     shopType="shopify"
                     shopName="Shop Name"
                     workflowEntrypoints={[
-                        {workflow_id: '1'},
-                        {workflow_id: '2'},
-                        {workflow_id: '3'},
+                        { workflow_id: '1' },
+                        { workflow_id: '2' },
+                        { workflow_id: '3' },
                     ]}
                     primaryLanguage="en"
                     configurations={[
-                        {id: '1', name: 'Flow 1'} as any,
-                        {id: '2', name: 'Flow 2'} as any,
-                        {id: '3', name: 'Flow 3'} as any,
+                        { id: '1', name: 'Flow 1' } as any,
+                        { id: '2', name: 'Flow 2' } as any,
+                        { id: '3', name: 'Flow 3' } as any,
                     ]}
                     automationSettingsWorkflows={[
-                        {workflow_id: '1', enabled: true},
-                        {workflow_id: '2', enabled: true},
-                        {workflow_id: '3', enabled: false},
+                        { workflow_id: '1', enabled: true },
+                        { workflow_id: '2', enabled: true },
+                        { workflow_id: '3', enabled: false },
                     ]}
                     onChange={jest.fn()}
                 />
-            </DndProvider>
+            </DndProvider>,
         )
 
         expect(screen.getByText('Flow 1')).toBeInTheDocument()
@@ -300,24 +301,24 @@ describe('FlowsSettings', () => {
                     shopType="shopify"
                     shopName="Shop Name"
                     workflowEntrypoints={[
-                        {workflow_id: '1'},
-                        {workflow_id: '2'},
+                        { workflow_id: '1' },
+                        { workflow_id: '2' },
                     ]}
                     primaryLanguage="en"
                     configurations={[
-                        {id: '1', name: 'Flow 1'} as any,
-                        {id: '2', name: 'Flow 2'} as any,
+                        { id: '1', name: 'Flow 1' } as any,
+                        { id: '2', name: 'Flow 2' } as any,
                     ]}
                     automationSettingsWorkflows={[
-                        {workflow_id: '1', enabled: true},
-                        {workflow_id: '2', enabled: true},
+                        { workflow_id: '1', enabled: true },
+                        { workflow_id: '2', enabled: true },
                     ]}
                     onChange={jest.fn()}
                 />
-            </DndProvider>
+            </DndProvider>,
         )
 
-        const addFlowButton = screen.getByRole('button', {name: /add flow/i})
+        const addFlowButton = screen.getByRole('button', { name: /add flow/i })
         fireEvent.click(addFlowButton)
         expect(screen.getByPlaceholderText(/Search Flows/i)).toBeInTheDocument()
 
@@ -334,36 +335,36 @@ describe('FlowsSettings', () => {
                     shopType="shopify"
                     shopName="Shop Name"
                     workflowEntrypoints={[
-                        {workflow_id: '1'},
-                        {workflow_id: '2'},
-                        {workflow_id: '3'},
-                        {workflow_id: '4'},
-                        {workflow_id: '5'},
-                        {workflow_id: '6'},
+                        { workflow_id: '1' },
+                        { workflow_id: '2' },
+                        { workflow_id: '3' },
+                        { workflow_id: '4' },
+                        { workflow_id: '5' },
+                        { workflow_id: '6' },
                     ]}
                     primaryLanguage="en"
                     configurations={[
-                        {id: '1', name: 'Flow 1'} as any,
-                        {id: '2', name: 'Flow 2'} as any,
-                        {id: '3', name: 'Flow 3'} as any,
-                        {id: '4', name: 'Flow 4'} as any,
-                        {id: '5', name: 'Flow 5'} as any,
-                        {id: '6', name: 'Flow 6'} as any,
+                        { id: '1', name: 'Flow 1' } as any,
+                        { id: '2', name: 'Flow 2' } as any,
+                        { id: '3', name: 'Flow 3' } as any,
+                        { id: '4', name: 'Flow 4' } as any,
+                        { id: '5', name: 'Flow 5' } as any,
+                        { id: '6', name: 'Flow 6' } as any,
                     ]}
                     automationSettingsWorkflows={[
-                        {workflow_id: '1', enabled: true},
-                        {workflow_id: '2', enabled: true},
-                        {workflow_id: '3', enabled: true},
-                        {workflow_id: '4', enabled: true},
-                        {workflow_id: '5', enabled: true},
-                        {workflow_id: '6', enabled: true},
+                        { workflow_id: '1', enabled: true },
+                        { workflow_id: '2', enabled: true },
+                        { workflow_id: '3', enabled: true },
+                        { workflow_id: '4', enabled: true },
+                        { workflow_id: '5', enabled: true },
+                        { workflow_id: '6', enabled: true },
                     ]}
                     onChange={jest.fn()}
                 />
-            </DndProvider>
+            </DndProvider>,
         )
 
-        const addFlowButton = screen.getByRole('button', {name: /add flow/i})
+        const addFlowButton = screen.getByRole('button', { name: /add flow/i })
         expect(addFlowButton).toBeAriaDisabled()
 
         await act(async () => {
@@ -371,8 +372,8 @@ describe('FlowsSettings', () => {
             await waitFor(() => {
                 expect(
                     screen.getByText(
-                        /You’ve reached the maximum number of Flows to display on this channel./i
-                    )
+                        /You’ve reached the maximum number of Flows to display on this channel./i,
+                    ),
                 ).toBeInTheDocument()
             })
         })
@@ -391,36 +392,36 @@ describe('FlowsSettings', () => {
                     shopType="shopify"
                     shopName="Shop Name"
                     workflowEntrypoints={[
-                        {workflow_id: '1'},
-                        {workflow_id: '2'},
-                        {workflow_id: '3'},
-                        {workflow_id: '4'},
-                        {workflow_id: '5'},
-                        {workflow_id: '6'},
+                        { workflow_id: '1' },
+                        { workflow_id: '2' },
+                        { workflow_id: '3' },
+                        { workflow_id: '4' },
+                        { workflow_id: '5' },
+                        { workflow_id: '6' },
                     ]}
                     primaryLanguage="en"
                     configurations={[
-                        {id: '1', name: 'Flow 1'} as any,
-                        {id: '2', name: 'Flow 2'} as any,
-                        {id: '3', name: 'Flow 3'} as any,
-                        {id: '4', name: 'Flow 4'} as any,
-                        {id: '5', name: 'Flow 5'} as any,
-                        {id: '6', name: 'Flow 6'} as any,
+                        { id: '1', name: 'Flow 1' } as any,
+                        { id: '2', name: 'Flow 2' } as any,
+                        { id: '3', name: 'Flow 3' } as any,
+                        { id: '4', name: 'Flow 4' } as any,
+                        { id: '5', name: 'Flow 5' } as any,
+                        { id: '6', name: 'Flow 6' } as any,
                     ]}
                     automationSettingsWorkflows={[
-                        {workflow_id: '1', enabled: true},
-                        {workflow_id: '2', enabled: true},
-                        {workflow_id: '3', enabled: true},
-                        {workflow_id: '4', enabled: true},
-                        {workflow_id: '5', enabled: true},
-                        {workflow_id: '6', enabled: true},
+                        { workflow_id: '1', enabled: true },
+                        { workflow_id: '2', enabled: true },
+                        { workflow_id: '3', enabled: true },
+                        { workflow_id: '4', enabled: true },
+                        { workflow_id: '5', enabled: true },
+                        { workflow_id: '6', enabled: true },
                     ]}
                     onChange={jest.fn()}
                 />
-            </DndProvider>
+            </DndProvider>,
         )
 
-        const addFlowButton = screen.getByRole('button', {name: /add flow/i})
+        const addFlowButton = screen.getByRole('button', { name: /add flow/i })
         expect(addFlowButton).toBeAriaEnabled()
     })
 
@@ -464,11 +465,11 @@ describe('FlowsSettings', () => {
                     ]}
                     onChange={onChange}
                 />
-            </DndProvider>
+            </DndProvider>,
         )
 
         // open dropdown
-        const addFlowButton = screen.getByRole('button', {name: /add flow/i})
+        const addFlowButton = screen.getByRole('button', { name: /add flow/i })
         fireEvent.click(addFlowButton)
         const flow1 = screen.getByText(/Flow 1/i)
         fireEvent.click(flow1)
@@ -479,7 +480,7 @@ describe('FlowsSettings', () => {
                     enabled: true,
                 },
             ],
-            'add'
+            'add',
         )
     })
 
@@ -523,9 +524,9 @@ describe('FlowsSettings', () => {
                     ]}
                     onChange={onChange}
                 />
-            </DndProvider>
+            </DndProvider>,
         )
-        const closeButton = screen.getAllByRole('button', {name: /close/i})[0]
+        const closeButton = screen.getAllByRole('button', { name: /close/i })[0]
         closeButton.click()
         expect(onChange).toHaveBeenCalledWith([], 'remove')
     })
@@ -616,10 +617,10 @@ describe('FlowsSettings', () => {
                     ]}
                     onChange={jest.fn()}
                 />
-            </DndProvider>
+            </DndProvider>,
         )
 
-        const addFlowButton = screen.getByRole('button', {name: /add flow/i})
+        const addFlowButton = screen.getByRole('button', { name: /add flow/i })
         expect(addFlowButton).toBeAriaDisabled()
 
         await act(async () => {
@@ -627,15 +628,15 @@ describe('FlowsSettings', () => {
             await waitFor(() => {
                 expect(
                     screen.getByText(
-                        /reached the maximum number of Flows to display on this channel/i
-                    )
+                        /reached the maximum number of Flows to display on this channel/i,
+                    ),
                 ).toBeInTheDocument()
             })
         })
     })
 
     it('Should render text based on the quick response sunset flag if true', () => {
-        const {getByText} = renderWithQueryClientProvider(
+        const { getByText } = renderWithQueryClientProvider(
             <DndProvider manager={manager}>
                 <FlowsSettings
                     channelType="chat"
@@ -673,12 +674,12 @@ describe('FlowsSettings', () => {
                     ]}
                     onChange={jest.fn()}
                 />
-            </DndProvider>
+            </DndProvider>,
         )
         expect(
             getByText(
-                `Display up to 6 Flows on your Chat to proactively resolve top customer requests.`
-            )
+                `Display up to 6 Flows on your Chat to proactively resolve top customer requests.`,
+            ),
         ).toBeInTheDocument()
     })
 
@@ -728,7 +729,7 @@ describe('FlowsSettings', () => {
                     ]}
                     onChange={jest.fn()}
                 />
-            </DndProvider>
+            </DndProvider>,
         )
 
         expect(screen.getAllByText('warning')).toHaveLength(2)
@@ -779,7 +780,7 @@ describe('FlowsSettings', () => {
                     ]}
                     onChange={jest.fn()}
                 />
-            </DndProvider>
+            </DndProvider>,
         )
         expect(screen.getAllByText('warning')).toHaveLength(1)
     })
@@ -830,10 +831,10 @@ describe('FlowsSettings', () => {
                     ]}
                     onChange={jest.fn()}
                 />
-            </DndProvider>
+            </DndProvider>,
         )
 
-        const addFlowButton = screen.getByRole('button', {name: /add flow/i})
+        const addFlowButton = screen.getByRole('button', { name: /add flow/i })
         fireEvent.click(addFlowButton)
         expect(screen.queryByText('Flow 1')).toBeNull()
         expect(screen.queryByText('Flow 2')).toBeNull()

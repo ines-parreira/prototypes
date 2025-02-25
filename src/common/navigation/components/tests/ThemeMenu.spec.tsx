@@ -1,8 +1,9 @@
-import {render, within} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { render, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import {
     THEME_CONFIGS,
     THEME_NAME,
@@ -10,7 +11,7 @@ import {
     useSetTheme,
     useTheme,
 } from 'core/theme'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
 import ThemeMenu from '../ThemeMenu'
 
@@ -20,7 +21,7 @@ jest.mock(
         ({
             ...jest.requireActual('common/segment'),
             logEvent: jest.fn(),
-        }) as typeof import('common/segment')
+        }) as typeof import('common/segment'),
 )
 
 jest.mock(
@@ -30,7 +31,7 @@ jest.mock(
             ...jest.requireActual('core/theme'),
             useSetTheme: jest.fn(),
             useTheme: jest.fn(),
-        }) as typeof import('core/theme')
+        }) as typeof import('core/theme'),
 )
 const useSetThemeMock = assumeMock(useSetTheme)
 const useThemeMock = assumeMock(useTheme)
@@ -48,22 +49,22 @@ describe('ThemeMenu', () => {
         })
     })
 
-    it.each(THEME_CONFIGS.map(({label, name}) => [name, label]))(
+    it.each(THEME_CONFIGS.map(({ label, name }) => [name, label]))(
         'should render the %s theme',
         (_, label) => {
-            const {getByText} = render(<ThemeMenu />)
+            const { getByText } = render(<ThemeMenu />)
             expect(getByText(label)).toBeInTheDocument()
-        }
+        },
     )
 
     it('should mark the active theme', () => {
-        const {getByText} = render(<ThemeMenu />)
+        const { getByText } = render(<ThemeMenu />)
         const el = getByText('Classic')
         expect(within(el).getByText('done')).toBeInTheDocument()
     })
 
     it('should set the active theme and log an event', () => {
-        const {getByText} = render(<ThemeMenu />)
+        const { getByText } = render(<ThemeMenu />)
         userEvent.click(getByText('Dark'))
         expect(setTheme).toHaveBeenCalledWith(THEME_NAME.Dark)
         expect(logEvent).toHaveBeenCalledWith(SegmentEvent.ThemeUpdate, {

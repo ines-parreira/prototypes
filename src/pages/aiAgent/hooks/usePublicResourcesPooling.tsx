@@ -1,26 +1,26 @@
-import {useQueryClient} from '@tanstack/react-query'
-import {useEffect, useMemo} from 'react'
+import { useEffect, useMemo } from 'react'
 
-import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
+import { useQueryClient } from '@tanstack/react-query'
+
+import { AI_AGENT_SENTRY_TEAM } from 'common/const/sentryTeamNames'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {useSearchParam} from 'hooks/useSearchParam'
+import { useSearchParam } from 'hooks/useSearchParam'
 import {
     helpCenterKeys,
     useGetArticleIngestionLogs,
 } from 'models/helpCenter/queries'
-import {getArticleIngestionLogs} from 'models/helpCenter/resources'
+import { getArticleIngestionLogs } from 'models/helpCenter/resources'
 import history from 'pages/history'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {reportError} from 'utils/errors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { reportError } from 'utils/errors'
 
-import {updateArticleIngestionLogs} from '../components/PublicSourcesSection/utils'
-
+import { updateArticleIngestionLogs } from '../components/PublicSourcesSection/utils'
 import {
     ArticleIngestionLogsStatus,
     WIZARD_POST_COMPLETION_QUERY_KEY,
 } from '../constants'
-import {useAiAgentNavigation} from './useAiAgentNavigation'
+import { useAiAgentNavigation } from './useAiAgentNavigation'
 
 const UPDATE_STATUS_INTERVAL = 5000
 
@@ -37,17 +37,17 @@ export const usePublicResourcesPooling = ({
 }): UsePublicResourcesPoolingReturn => {
     const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
-    const {routes} = useAiAgentNavigation({shopName})
+    const { routes } = useAiAgentNavigation({ shopName })
     const [wizardQueryParam] = useSearchParam(WIZARD_POST_COMPLETION_QUERY_KEY)
 
-    const {data: articleIngestionLogs} = useGetArticleIngestionLogs(
+    const { data: articleIngestionLogs } = useGetArticleIngestionLogs(
         {
             help_center_id: helpCenterId,
         },
         {
             // Only read from existing cache. No fetching
             enabled: false,
-        }
+        },
     )
 
     const processingArticleIngestionIds = useMemo(
@@ -55,7 +55,7 @@ export const usePublicResourcesPooling = ({
             articleIngestionLogs
                 ?.filter((log) => log.status === 'PENDING')
                 .map((log) => log.id),
-        [articleIngestionLogs]
+        [articleIngestionLogs],
     )
 
     // Pooling of processing article ingestion logs
@@ -72,13 +72,13 @@ export const usePublicResourcesPooling = ({
             enabled:
                 processingArticleIngestionIds &&
                 processingArticleIngestionIds.length > 0,
-        }
+        },
     )
 
     useEffect(() => {
         if (processingArticleIngestionError) {
             reportError(processingArticleIngestionError, {
-                tags: {team: AI_AGENT_SENTRY_TEAM},
+                tags: { team: AI_AGENT_SENTRY_TEAM },
                 extra: {
                     context: 'Error during article ingestion logs pooling',
                 },
@@ -96,10 +96,10 @@ export const usePublicResourcesPooling = ({
         }
 
         const isOnboardingWizardPage = window.location.pathname.includes(
-            routes.onboardingWizard
+            routes.onboardingWizard,
         )
         const pendingArticleIngestionIds = processingArticleIngestions.filter(
-            (log) => log.status === 'PENDING'
+            (log) => log.status === 'PENDING',
         )
 
         if (
@@ -114,12 +114,12 @@ export const usePublicResourcesPooling = ({
                         'Syncing in progress. You can finish onboarding while sources are syncing.',
                     showDismissButton: true,
                     dismissible: true,
-                })
+                }),
             )
         }
 
         const finishedArticleIngestionIds = processingArticleIngestions.filter(
-            (log) => log.status !== 'PENDING'
+            (log) => log.status !== 'PENDING',
         )
         if (finishedArticleIngestionIds.length === 0) return
 
@@ -128,23 +128,23 @@ export const usePublicResourcesPooling = ({
             (
                 previous:
                     | Awaited<ReturnType<typeof getArticleIngestionLogs>>
-                    | undefined
+                    | undefined,
             ) => {
                 const mergedData = previous
                     ? updateArticleIngestionLogs(
                           previous,
-                          finishedArticleIngestionIds
+                          finishedArticleIngestionIds,
                       )
                     : finishedArticleIngestionIds
 
                 return mergedData
-            }
+            },
         )
 
         // Remove cache for finished article ingestion logs
         const ids = processingArticleIngestions.map((log) => log.id)
         queryClient.removeQueries([
-            helpCenterKeys.articleIngestionLogs(helpCenterId, {ids}),
+            helpCenterKeys.articleIngestionLogs(helpCenterId, { ids }),
         ])
 
         // Don't send notification if not all URL processed
@@ -156,7 +156,7 @@ export const usePublicResourcesPooling = ({
         }
 
         const isAllSuccess = finishedArticleIngestionIds.every(
-            (log) => log.status === 'SUCCESSFUL'
+            (log) => log.status === 'SUCCESSFUL',
         )
 
         if (!!wizardQueryParam) return
@@ -180,11 +180,11 @@ export const usePublicResourcesPooling = ({
                               },
                           ],
                     showDismissButton: isOnboardingWizardPage,
-                })
+                }),
             )
         } else {
             const isConfigurationPage = window.location.pathname.startsWith(
-                routes.configuration()
+                routes.configuration(),
             )
             void dispatch(
                 notify({
@@ -204,7 +204,7 @@ export const usePublicResourcesPooling = ({
                                   },
                               ],
                     showDismissButton: isOnboardingWizardPage,
-                })
+                }),
             )
         }
     }, [
@@ -221,5 +221,5 @@ export const usePublicResourcesPooling = ({
         return logs.map((log) => log.status)
     }, [articleIngestionLogs])
 
-    return {articleIngestionLogsStatus}
+    return { articleIngestionLogsStatus }
 }

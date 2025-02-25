@@ -1,8 +1,23 @@
-import React, {useEffect} from 'react'
+import React, { useEffect } from 'react'
 
-import {ThemeProvider, useSetTheme} from '../src/core/theme'
-import {initLaunchDarkly} from '../src/utils/launchDarkly.ts'
-import {decorator as LDDecorator} from './launchdarkly-js-client-sdk.tsx'
+import {
+    ArcElement,
+    BarController,
+    BarElement,
+    CategoryScale,
+    Chart,
+    Filler,
+    Legend,
+    LinearScale,
+    LineController,
+    LineElement,
+    PointElement,
+    Tooltip,
+} from 'chart.js'
+
+import { ThemeProvider, useSetTheme } from '../src/core/theme'
+import { initLaunchDarkly } from '../src/utils/launchDarkly.ts'
+import { decorator as LDDecorator } from './launchdarkly-js-client-sdk.tsx'
 
 initLaunchDarkly()
 
@@ -11,26 +26,11 @@ require('@storybook/addon-console')
 require('assets/css/main.less')
 require('./style.less')
 
-import {
-    BarElement,
-    BarController,
-    Chart,
-    LineController,
-    LineElement,
-    PointElement,
-    Tooltip,
-    Legend,
-    LinearScale,
-    CategoryScale,
-    Filler,
-    ArcElement,
-} from 'chart.js'
-
 export const parameters = {
-    chromatic: {disableSnapshot: true},
+    chromatic: { disableSnapshot: true },
     viewMode: 'docs',
     docs: {
-        canvas: {sourceState: 'shown'},
+        canvas: { sourceState: 'shown' },
     },
     options: {
         storySort: {
@@ -77,7 +77,7 @@ Chart.register(
     LinearScale,
     CategoryScale,
     Filler,
-    ArcElement
+    ArcElement,
 )
 
 export const preview = {
@@ -90,8 +90,8 @@ export const preview = {
             toolbar: {
                 icon: 'circlehollow',
                 items: [
-                    {value: 'light', icon: 'circlehollow', title: 'Light'},
-                    {value: 'dark', icon: 'circle', title: 'Dark'},
+                    { value: 'light', icon: 'circlehollow', title: 'Light' },
+                    { value: 'dark', icon: 'circle', title: 'Dark' },
                 ],
                 showName: true,
             },
@@ -99,7 +99,7 @@ export const preview = {
     },
 }
 
-const ThemeBlock = ({background, children}) => (
+const ThemeBlock = ({ background, children }) => (
     <div
         style={{
             height: '100%',
@@ -113,7 +113,7 @@ const ThemeBlock = ({background, children}) => (
     </div>
 )
 
-const ThemeConsumer = ({children, theme}) => {
+const ThemeConsumer = ({ children, theme }) => {
     const setTheme = useSetTheme()
 
     useEffect(() => {
@@ -128,7 +128,7 @@ const withTheme = (StoryFn, context) => {
     const background = theme === 'dark' ? '#333' : '#fff'
 
     return (
-        <div className={theme} style={{height: '100%'}}>
+        <div className={theme} style={{ height: '100%' }}>
             <ThemeProvider>
                 <ThemeConsumer theme={theme}>
                     <ThemeBlock background={background}>

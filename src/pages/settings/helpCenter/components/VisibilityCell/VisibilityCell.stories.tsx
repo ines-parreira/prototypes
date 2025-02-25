@@ -1,7 +1,8 @@
-import {Meta, Story} from '@storybook/react'
 import React from 'react'
 
-import VisibilityCell, {VisibilityCellProps} from './VisibilityCell'
+import { Meta, Story } from '@storybook/react'
+
+import VisibilityCell, { VisibilityCellProps } from './VisibilityCell'
 
 const storyConfig: Meta = {
     title: 'Help Center/VisibilityCell',
@@ -17,7 +18,7 @@ const storyConfig: Meta = {
     },
 }
 
-const Template: Story<VisibilityCellProps> = ({status}) => {
+const Template: Story<VisibilityCellProps> = ({ status }) => {
     return <VisibilityCell status={status} />
 }
 

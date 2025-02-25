@@ -1,6 +1,6 @@
-import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
+import { CampaignTriggerOperator } from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
 
 export type ValidatorType = (
     value: string,
-    operator: CampaignTriggerOperator
+    operator: CampaignTriggerOperator,
 ) => boolean | void

@@ -1,12 +1,10 @@
-import path from 'path'
-
-import {codecovWebpackPlugin} from '@codecov/webpack-plugin'
-import {rspack, Configuration as RspackConfiguration} from '@rspack/core'
+import { codecovWebpackPlugin } from '@codecov/webpack-plugin'
+import { rspack, Configuration as RspackConfiguration } from '@rspack/core'
 import ReactRefreshPlugin from '@rspack/plugin-react-refresh'
 import NodePolyfillPlugin from 'node-polyfill-webpack-plugin'
-
-import {RspackManifestPlugin} from 'rspack-manifest-plugin'
-import {TsCheckerRspackPlugin} from 'ts-checker-rspack-plugin'
+import path from 'path'
+import { RspackManifestPlugin } from 'rspack-manifest-plugin'
+import { TsCheckerRspackPlugin } from 'ts-checker-rspack-plugin'
 
 const {
     NODE_ENV,
@@ -38,7 +36,7 @@ const devtool = isProd ? 'source-map' : 'cheap-module-source-map'
 
 const devServer: RspackConfiguration['devServer'] = {
     static: [
-        {directory: buildDir},
+        { directory: buildDir },
         {
             directory: path.join(__dirname, 'src', 'assets'),
             publicPath: '/assets',
@@ -109,7 +107,7 @@ export default {
     optimization,
     entry: {
         build: `${srcDir}/main/init`,
-        ...(isProd && {font: `${srcDir}/assets/css/font.less`}),
+        ...(isProd && { font: `${srcDir}/assets/css/font.less` }),
     },
     output: {
         publicPath: isProd ? '' : BUNDLE_PUBLIC_PATH,
@@ -130,7 +128,7 @@ export default {
         }),
         new NodePolyfillPlugin(),
         new rspack.CssExtractRspackPlugin({
-            filename: ({chunk}) => {
+            filename: ({ chunk }) => {
                 return chunk?.name === 'font'
                     ? fontsBundleFile
                     : styleBundleFile
@@ -138,7 +136,7 @@ export default {
         }),
         new rspack.DefinePlugin({
             'process.env.GORGIAS_ASSETS_URL': JSON.stringify(
-                GORGIAS_ASSETS_URL || 'http://localhost:8080/'
+                GORGIAS_ASSETS_URL || 'http://localhost:8080/',
             ),
             'process.env.WEB_APP_RELEASE': JSON.stringify(WEB_APP_RELEASE),
         }),
@@ -154,7 +152,7 @@ export default {
             uploadToken: process.env.CODECOV_TOKEN,
         }),
         new rspack.BannerPlugin(
-            'WEB_APP_RELEASE: ' + WEB_APP_RELEASE || 'undefined'
+            'WEB_APP_RELEASE: ' + WEB_APP_RELEASE || 'undefined',
         ),
         new TsCheckerRspackPlugin(),
     ].filter(Boolean),
@@ -231,7 +229,7 @@ export default {
                 },
                 include: /node_modules/,
                 type: 'javascript/auto',
-                use: [{loader: 'url-loader'}],
+                use: [{ loader: 'url-loader' }],
             },
         ],
     },

@@ -1,12 +1,12 @@
-import classnames from 'classnames'
 import React from 'react'
-import {FormGroup} from 'reactstrap'
 
-import {CallForwardingCountries} from 'business/twilio'
+import classnames from 'classnames'
+import { FormGroup } from 'reactstrap'
+
+import { CallForwardingCountries } from 'business/twilio'
 import CheckBox from 'pages/common/forms/CheckBox'
 import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
 import ToggleInput from 'pages/common/forms/ToggleInput'
-
 import settingsCss from 'pages/settings/settings.less'
 
 import css from './ForwardingCallsPreferences.less'
@@ -39,7 +39,7 @@ function ForwardingCallsPreferences({
             <ToggleInput
                 className={classnames(
                     settingsCss.inputField,
-                    settingsCss.subsection
+                    settingsCss.subsection,
                 )}
                 name="forward_calls"
                 isToggled={forwardCalls ?? false}

@@ -1,6 +1,7 @@
+import React from 'react'
+
 import classNames from 'classnames'
 import _isNumber from 'lodash/isNumber'
-import React from 'react'
 
 import css from './StatDifference.less'
 
@@ -40,7 +41,7 @@ export default function StatDifference({
                 className={classNames(
                     'material-icons mr-1',
                     css.statsDifference,
-                    css[colorLabel]
+                    css[colorLabel],
                 )}
             >
                 {icon}

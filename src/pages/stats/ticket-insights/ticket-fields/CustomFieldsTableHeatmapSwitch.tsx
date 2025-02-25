@@ -1,9 +1,10 @@
 import React from 'react'
+
 // eslint-disable-next-line no-restricted-imports
-import {useDispatch} from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {TableHeatmapSwitch} from 'pages/stats/common/components/Table/TableHeatmapSwitch'
+import { TableHeatmapSwitch } from 'pages/stats/common/components/Table/TableHeatmapSwitch'
 import {
     getHeatmapMode,
     toggleHeatmapMode,

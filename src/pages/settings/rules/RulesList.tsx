@@ -1,33 +1,33 @@
+import React, { useCallback, useMemo, useState } from 'react'
+
 import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
-import React, {useCallback, useMemo, useState} from 'react'
-import {useHistory} from 'react-router-dom'
-import {Container} from 'reactstrap'
+import { useHistory } from 'react-router-dom'
+import { Container } from 'reactstrap'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
 import useEffectOnce from 'hooks/useEffectOnce'
-import {fetchRules} from 'models/rule/resources'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import { fetchRules } from 'models/rule/resources'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import Search from 'pages/common/components/Search'
 import Video from 'pages/common/components/Video/Video'
-
-import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
+import { useHelpCenterList } from 'pages/settings/helpCenter/hooks/useHelpCenterList'
 import settingsCss from 'pages/settings/settings.less'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {rulesFetched} from 'state/entities/rules/actions'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { rulesFetched } from 'state/entities/rules/actions'
 import {
     getRulesLimitStatus,
     getSortedRules,
 } from 'state/entities/rules/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {RuleLimitStatus} from 'state/rules/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { RuleLimitStatus } from 'state/rules/types'
 
 import List from './accountRules/RulesList'
 import CourseCard from './components/CourseCard'
@@ -53,17 +53,19 @@ export function RulesList() {
                 from: 'rules-library',
             })
         }, 400),
-        [currentAccount]
+        [currentAccount],
     )
 
     const dispatch = useAppDispatch()
     const rules = useAppSelector(getSortedRules)
     const limitStatus = useAppSelector(getRulesLimitStatus)
 
-    const {isLoading: isHelpCenterLoading} = useHelpCenterList({per_page: 900})
+    const { isLoading: isHelpCenterLoading } = useHelpCenterList({
+        per_page: 900,
+    })
     const isReady = useMemo(() => !isHelpCenterLoading, [isHelpCenterLoading])
 
-    const [{loading: isFetchingRules}, handleFetchRules] = useAsyncFn(
+    const [{ loading: isFetchingRules }, handleFetchRules] = useAsyncFn(
         async () => {
             try {
                 const res = await fetchRules()
@@ -73,25 +75,25 @@ export function RulesList() {
                     notify({
                         message: 'Failed to fetch rules',
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
             }
-        }
+        },
     )
 
     const [searchTerm, setSearchTerm] = useState('')
 
     useEffectOnce(() => {
         const {
-            location: {hash},
+            location: { hash },
         } = history
 
         if (hash.includes('#rule-library')) {
             history.replace(
                 `/app/settings/rules/library${hash.replace(
                     '#rule-library',
-                    ''
-                )}`
+                    '',
+                )}`,
             )
         }
 
@@ -99,8 +101,8 @@ export function RulesList() {
     })
 
     const customRuleCount = rules.reduce(
-        (total, {type}) => total + Number(type !== 'managed'),
-        0
+        (total, { type }) => total + Number(type !== 'managed'),
+        0,
     )
 
     const isCustomRuleCountBelowBreakpoint =

@@ -1,13 +1,15 @@
+import React, { HTMLAttributes, ReactNode } from 'react'
+
 import cn from 'classnames'
-import React, {HTMLAttributes, ReactNode} from 'react'
 
 import IconButton from 'pages/common/components/button/IconButton'
-import {sanitizeHtmlDefault} from 'utils/html'
+import { sanitizeHtmlDefault } from 'utils/html'
 
-import {AlertBannerTypes, AlertBannerCTATypes} from '../types'
+import { AlertBannerCTATypes, AlertBannerTypes } from '../types'
+import { CTA } from './CTA'
+import { Icon } from './Icon'
+
 import css from './AlertBanner.less'
-import {CTA} from './CTA'
-import {Icon} from './Icon'
 
 export type AlertBannerProps = {
     CTA?: AlertBannerCTATypes

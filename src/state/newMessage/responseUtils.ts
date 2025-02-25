@@ -1,21 +1,20 @@
-import {ContentState, convertFromRaw, SelectionState} from 'draft-js'
-import {fromJS, Map} from 'immutable'
+import { ContentState, convertFromRaw, SelectionState } from 'draft-js'
+import { fromJS, Map } from 'immutable'
 import _findIndex from 'lodash/findIndex'
 import _pick from 'lodash/pick'
 import _take from 'lodash/take'
 import _takeRight from 'lodash/takeRight'
 
-import {TicketMessageSourceType} from 'business/types/ticket'
-import {DiscountCode} from 'models/discountCodes/types'
-import {convertToRawWithoutPredictions} from 'pages/common/draftjs/plugins/prediction/utils'
-import {renderTemplate} from 'pages/common/utils/template'
-import {isRichType} from 'tickets/common/utils'
-import {toJS} from 'utils'
-import {convertFromHTML, convertToHTML} from 'utils/editor'
-import {sanitizeHtmlForFacebookMessenger} from 'utils/html'
+import { TicketMessageSourceType } from 'business/types/ticket'
+import { DiscountCode } from 'models/discountCodes/types'
+import { convertToRawWithoutPredictions } from 'pages/common/draftjs/plugins/prediction/utils'
+import { renderTemplate } from 'pages/common/utils/template'
+import { isRichType } from 'tickets/common/utils'
+import { toJS } from 'utils'
+import { convertFromHTML, convertToHTML } from 'utils/editor'
+import { sanitizeHtmlForFacebookMessenger } from 'utils/html'
 
-import {CurrentUser, StoreState} from '../types'
-
+import { CurrentUser, StoreState } from '../types'
 import {
     deleteEmailExtraContent,
     hasEmailExtraContent,
@@ -23,8 +22,8 @@ import {
     Signature,
 } from './emailExtraUtils'
 import * as selectors from './selectors'
-import ticketReplyCache, {TopRankMacroState} from './ticketReplyCache'
-import {NewMessage, ReplyAreaState} from './types'
+import ticketReplyCache, { TopRankMacroState } from './ticketReplyCache'
+import { NewMessage, ReplyAreaState } from './types'
 
 export type MessageContext = {
     action: {
@@ -49,7 +48,7 @@ export type MessageContext = {
 }
 
 export const getSourceTypeCache = (
-    ticketId: string
+    ticketId: string,
 ): TicketMessageSourceType => {
     return ticketReplyCache
         .get(ticketId)
@@ -58,9 +57,9 @@ export const getSourceTypeCache = (
 
 export const setSourceTypeCache = (
     ticketId: string,
-    sourceType: string
+    sourceType: string,
 ): void => {
-    return ticketReplyCache.set(ticketId, {sourceType})
+    return ticketReplyCache.set(ticketId, { sourceType })
 }
 
 export const deleteReplyCache = (ticketId: string): void => {
@@ -71,7 +70,7 @@ export const deleteReplyCache = (ticketId: string): void => {
  * Get the initial editor state (contentState + selectionState) from cache or return an empty state
  */
 const getCache = (context: MessageContext): MessageContext => {
-    const {action} = context
+    const { action } = context
 
     // Proceed only if the change didn't come from a macro
     if (action.fromMacro) {
@@ -86,23 +85,23 @@ const getCache = (context: MessageContext): MessageContext => {
 
 export const transformMessageContext = (
     cachedContent: Map<any, any>,
-    context?: MessageContext
+    context?: MessageContext,
 ) => {
     const contextResult = context || ({} as MessageContext)
 
     if (cachedContent && !cachedContent.isEmpty()) {
         const cachedContentState = cachedContent.get(
-            'contentState'
+            'contentState',
         ) as ContentState
         if (cachedContentState) {
             contextResult.contentState = convertFromRaw(
-                cachedContentState.toJS()
+                cachedContentState.toJS(),
             )
             contextResult.forceFocus = true
             contextResult.forceUpdate = true
             contextResult.emailExtraAdded = cachedContent.get(
                 'emailExtraAdded',
-                false
+                false,
             )
             const cachedSelectionState = cachedContent.get('selectionState')
             if (cachedSelectionState) {
@@ -114,26 +113,26 @@ export const transformMessageContext = (
 
             if (hasEmailExtraContent(contextResult.contentState)) {
                 contextResult.contentState = deleteEmailExtraContent(
-                    contextResult.contentState
+                    contextResult.contentState,
                 )
                 contextResult.emailExtraAdded = false
                 if (
                     contextResult.selectionState &&
                     (!contextResult.contentState.getBlockForKey(
-                        contextResult.selectionState.getAnchorKey()
+                        contextResult.selectionState.getAnchorKey(),
                     ) ||
                         !contextResult.contentState.getBlockForKey(
-                            contextResult.selectionState.getFocusKey()
+                            contextResult.selectionState.getFocusKey(),
                         ))
                 ) {
                     const lastBlock = contextResult.contentState.getLastBlock()
                     contextResult.selectionState = SelectionState.createEmpty(
-                        lastBlock.getKey()
+                        lastBlock.getKey(),
                     )
                         .set('anchorOffset', lastBlock.getLength())
                         .set(
                             'focusOffset',
-                            lastBlock.getLength()
+                            lastBlock.getLength(),
                         ) as SelectionState
                 }
             }
@@ -147,7 +146,7 @@ export const transformMessageContext = (
         }
         contextResult.inserted_discounts = cachedContent.get(
             'inserted_discounts',
-            fromJS([])
+            fromJS([]),
         )
     }
 
@@ -173,7 +172,7 @@ export const updateCache = (context: MessageContext) => {
             contentState.hasText() &&
             !hasOnlySignatureText(
                 contentState,
-                action.signature || fromJS({})
+                action.signature || fromJS({}),
             )) ||
         appliedMacro
     ) {
@@ -208,7 +207,7 @@ const _markCacheAdded = (context: MessageContext): MessageContext => {
  * Add a cache (if any) as the content state
  */
 export const addCache = (context: MessageContext): MessageContext => {
-    const {state} = context
+    const { state } = context
 
     context.cacheAdded = state.getIn(['state', 'cacheAdded'], false)
 
@@ -223,7 +222,7 @@ export const addCache = (context: MessageContext): MessageContext => {
  * Return a selectionState after the last ContentBlock
  */
 export const selectionAfter = (
-    blocks: Array<{key: string; text: string}>
+    blocks: Array<{ key: string; text: string }>,
 ): Maybe<SelectionState> => {
     if (blocks && blocks.length) {
         // we only want the last block, we put the selection after it
@@ -240,7 +239,7 @@ export const selectionAfter = (
  * Add macro text and return the new editor state (contentState and selectionState).
  */
 export const applyMacro = (context: MessageContext): MessageContext => {
-    const {contentState, selectionState, action, state} = context
+    const { contentState, selectionState, action, state } = context
 
     // Only when it's from a macro
     if (!action.fromMacro) {
@@ -286,14 +285,14 @@ export const applyMacro = (context: MessageContext): MessageContext => {
             // Here we cut the current content at the cursor position to insert the macro.
             // Ex. : content is [1, 2, 3, 4, 5], we want to insert the macro ['a', 'b'] at index 2
             let idx = _findIndex(currBlocks, {
-                key: (selectionState as SelectionState & {focusKey: string})
+                key: (selectionState as SelectionState & { focusKey: string })
                     .focusKey,
             } as any)
 
             // if the focusOffset is bigger than 0 it means that the cursor is not at the beginning of the block
             // so we have to add our macro after the block
             if (
-                (selectionState as SelectionState & {focusOffset: number})
+                (selectionState as SelectionState & { focusOffset: number })
                     .focusOffset > 0
             ) {
                 idx += 1
@@ -310,7 +309,7 @@ export const applyMacro = (context: MessageContext): MessageContext => {
 
             // Set the selection just after the macro content was inserted
             context.selectionState = selectionAfter(
-                blocks as any
+                blocks as any,
             ) as SelectionState
 
             // => [1, 2, 'a', 'b', 3, 4, 5]
@@ -320,7 +319,7 @@ export const applyMacro = (context: MessageContext): MessageContext => {
 
             // selection should be at the end here because we had no selection before
             context.selectionState = selectionAfter(
-                blocks as any
+                blocks as any,
             ) as SelectionState
         }
     } else {
@@ -336,7 +335,7 @@ export const applyMacro = (context: MessageContext): MessageContext => {
 }
 
 export const toReplyAreaState = (
-    replyAreaStateMap: Map<any, any>
+    replyAreaStateMap: Map<any, any>,
 ): ReplyAreaState => {
     const replyAreaState = toJS<ReplyAreaState>(replyAreaStateMap)
     replyAreaState.contentState = replyAreaStateMap.get('contentState')
@@ -346,9 +345,9 @@ export const toReplyAreaState = (
 
 export const updateNewMessageWithContentState = (
     prevNewMessage: NewMessage,
-    contentState: ContentState
+    contentState: ContentState,
 ): NewMessage => {
-    const newMessage = {...prevNewMessage}
+    const newMessage = { ...prevNewMessage }
     delete newMessage.stripped_html
     delete newMessage.stripped_text
     newMessage.body_html = convertToHTML(contentState)

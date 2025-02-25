@@ -1,7 +1,8 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -24,7 +25,7 @@ global.Date.now = jest.fn(() => mockDate) as unknown as typeof Date.now
 
 const mockStore = configureMockStore([thunk])
 const store = mockStore({
-    billing: fromJS({products: []}),
+    billing: fromJS({ products: [] }),
 })
 
 describe('<SourceDetailsHeader/>', () => {
@@ -35,54 +36,54 @@ describe('<SourceDetailsHeader/>', () => {
     }
     it(`should render a DatetimeLabel and the SourceActionsHeader because the message is not duplicated
             and is not deleted`, () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <SourceDetailsHeader {...minProps} />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it(`should render a DatetimeLabel because the message is not duplicated and should not render the
             SourceActionsHeader because the message is deleted`, () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <SourceDetailsHeader {...minProps} isMessageDeleted={true} />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it(`should render a "go to ticket" link instead of the date because the message is duplicated and should render the
             SourceActionsHeader because the message is not deleted`, () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <SourceDetailsHeader
                     {...minProps}
                     message={duplicatedHiddenFacebookMessage}
                 />
-            </Provider>
+            </Provider>,
         )
         expect(getByText(/go to/i)).toBeInTheDocument()
         expect(getByText('ticket').getAttribute('href')).toEqual(
-            duplicatedHiddenFacebookMessage.meta!.private_reply!.original_ticket_id!.toString()
+            duplicatedHiddenFacebookMessage.meta!.private_reply!.original_ticket_id!.toString(),
         )
     })
 
     it(`should render a "go to ticket" link instead of the date because the message is duplicated and should not
             render the SourceActionsHeader because the message is deleted`, () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <SourceDetailsHeader
                     {...minProps}
                     message={duplicatedHiddenFacebookMessage}
                     isMessageDeleted={true}
                 />
-            </Provider>
+            </Provider>,
         )
         expect(getByText(/go to/i)).toBeInTheDocument()
         expect(getByText('ticket').getAttribute('href')).toEqual(
-            duplicatedHiddenFacebookMessage.meta!.private_reply!.original_ticket_id!.toString()
+            duplicatedHiddenFacebookMessage.meta!.private_reply!.original_ticket_id!.toString(),
         )
     })
 })

@@ -1,15 +1,15 @@
-import {fireEvent, render} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import {fromJS, Map} from 'immutable'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {SegmentEvent, logEvent} from 'common/segment'
+import { fireEvent, render } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { fromJS, Map } from 'immutable'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import {
     shopifyAvailableShippingRate,
     shopifyShippingLineFixture,
 } from 'fixtures/shopify'
-
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
+import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import ShippingPopover from '../ShippingPopover'
 
@@ -33,7 +33,7 @@ describe('<ShippingPopover/>', () => {
 
     describe('render()', () => {
         it('should render without value', () => {
-            const {baseElement} = render(
+            const { baseElement } = render(
                 <ShippingPopover
                     id="shipping-lines"
                     actionName={ShopifyActionType.DuplicateOrder}
@@ -44,7 +44,7 @@ describe('<ShippingPopover/>', () => {
                     onChange={onChange}
                 >
                     Add shipping
-                </ShippingPopover>
+                </ShippingPopover>,
             )
 
             expect(baseElement).toMatchSnapshot()
@@ -53,7 +53,7 @@ describe('<ShippingPopover/>', () => {
         it('should render with value', () => {
             const shippingLine = fromJS(shopifyShippingLineFixture())
 
-            const {baseElement} = render(
+            const { baseElement } = render(
                 <ShippingPopover
                     id="shipping-lines"
                     actionName={ShopifyActionType.DuplicateOrder}
@@ -64,7 +64,7 @@ describe('<ShippingPopover/>', () => {
                     onChange={onChange}
                 >
                     Add shipping
-                </ShippingPopover>
+                </ShippingPopover>,
             )
 
             expect(baseElement).toMatchSnapshot()
@@ -88,7 +88,7 @@ describe('<ShippingPopover/>', () => {
             (actionName, openEvent, submitEvent) => {
                 const shippingLine = fromJS(shopifyShippingLineFixture())
                 const label = 'Add shipping'
-                const {getByPlaceholderText, getByText} = render(
+                const { getByPlaceholderText, getByText } = render(
                     <ShippingPopover
                         id="shipping-lines"
                         actionName={actionName}
@@ -99,7 +99,7 @@ describe('<ShippingPopover/>', () => {
                         onChange={onChange}
                     >
                         {label}
-                    </ShippingPopover>
+                    </ShippingPopover>,
                 )
 
                 // Open popover
@@ -109,10 +109,10 @@ describe('<ShippingPopover/>', () => {
                 // Change form values
                 userEvent.click(getByText(/custom/i))
                 fireEvent.change(customInput, {
-                    target: {value: 'Test'},
+                    target: { value: 'Test' },
                 })
                 fireEvent.change(document.getElementsByTagName('input')[1], {
-                    target: {value: 12},
+                    target: { value: 12 },
                 })
                 // Submit
                 userEvent.click(getByText('Apply'))
@@ -123,13 +123,13 @@ describe('<ShippingPopover/>', () => {
                         handle: null,
                         price: 12.0,
                         title: 'Test',
-                    })
+                    }),
                 )
 
                 expect(logEvent).toHaveBeenCalledWith(submitEvent, {
                     handle: 'custom',
                 })
-            }
+            },
         )
 
         it.each([
@@ -152,7 +152,7 @@ describe('<ShippingPopover/>', () => {
                     price: undefined,
                 })
                 const label = 'Add shipping'
-                const {getByPlaceholderText, getByText} = render(
+                const { getByPlaceholderText, getByText } = render(
                     <ShippingPopover
                         id="shipping-lines"
                         actionName={actionName}
@@ -163,7 +163,7 @@ describe('<ShippingPopover/>', () => {
                         onChange={onChange}
                     >
                         {label}
-                    </ShippingPopover>
+                    </ShippingPopover>,
                 )
 
                 // Open popover
@@ -173,7 +173,7 @@ describe('<ShippingPopover/>', () => {
                 // Change form values, but leave default $0 for shipping cost
                 userEvent.click(getByText(/custom/i))
                 fireEvent.change(customInput, {
-                    target: {value: 'Test default'},
+                    target: { value: 'Test default' },
                 })
                 // Submit
                 userEvent.click(getByText('Apply'))
@@ -184,19 +184,19 @@ describe('<ShippingPopover/>', () => {
                         handle: null,
                         price: 0,
                         title: 'Test default',
-                    })
+                    }),
                 )
 
                 expect(logEvent).toHaveBeenCalledWith(submitEvent, {
                     handle: 'custom',
                 })
-            }
+            },
         )
 
         it('should call onChange() with free shipping line', () => {
             const shippingLine = fromJS(shopifyShippingLineFixture())
             const label = 'Add shipping'
-            const {getByLabelText, getByText} = render(
+            const { getByLabelText, getByText } = render(
                 <ShippingPopover
                     id="shipping-lines"
                     actionName={ShopifyActionType.DuplicateOrder}
@@ -207,7 +207,7 @@ describe('<ShippingPopover/>', () => {
                     onChange={onChange}
                 >
                     {label}
-                </ShippingPopover>
+                </ShippingPopover>,
             )
 
             userEvent.click(getByText(label))
@@ -220,16 +220,16 @@ describe('<ShippingPopover/>', () => {
                     handle: null,
                     price: '0.00',
                     title: 'Free shipping',
-                })
+                }),
             )
         })
 
         it('should call onChange() with available shipping line', () => {
             const availableShippingRate = fromJS(
-                shopifyAvailableShippingRate()
+                shopifyAvailableShippingRate(),
             ) as Map<any, any>
             const label = 'Add shipping'
-            const {getByLabelText, getByText} = render(
+            const { getByLabelText, getByText } = render(
                 <ShippingPopover
                     id="shipping-lines"
                     actionName={ShopifyActionType.DuplicateOrder}
@@ -240,7 +240,7 @@ describe('<ShippingPopover/>', () => {
                     onChange={onChange}
                 >
                     {label}
-                </ShippingPopover>
+                </ShippingPopover>,
             )
 
             // Open popover
@@ -248,8 +248,8 @@ describe('<ShippingPopover/>', () => {
             // Change form values
             userEvent.click(
                 getByLabelText(
-                    new RegExp(availableShippingRate.get('title'), 'i')
-                )
+                    new RegExp(availableShippingRate.get('title'), 'i'),
+                ),
             )
             // Submit
             userEvent.click(getByText('Apply'))
@@ -260,7 +260,7 @@ describe('<ShippingPopover/>', () => {
                     handle: availableShippingRate.get('handle'),
                     price: null,
                     title: null,
-                })
+                }),
             )
         })
     })
@@ -281,7 +281,7 @@ describe('<ShippingPopover/>', () => {
                 any
             >
             const label = 'Add shipping'
-            const {getByText} = render(
+            const { getByText } = render(
                 <ShippingPopover
                     id="shipping-lines"
                     actionName={ShopifyActionType.DuplicateOrder}
@@ -292,7 +292,7 @@ describe('<ShippingPopover/>', () => {
                     onChange={onChange}
                 >
                     {label}
-                </ShippingPopover>
+                </ShippingPopover>,
             )
 
             userEvent.click(getByText(label))
@@ -314,7 +314,7 @@ describe('<ShippingPopover/>', () => {
             ],
         ])('should track %s', (actionName, event) => {
             const label = 'Add shipping'
-            const {getByText} = render(
+            const { getByText } = render(
                 <ShippingPopover
                     id="shipping-lines"
                     actionName={actionName}
@@ -325,7 +325,7 @@ describe('<ShippingPopover/>', () => {
                     onChange={onChange}
                 >
                     {label}
-                </ShippingPopover>
+                </ShippingPopover>,
             )
             userEvent.click(getByText(label))
             userEvent.click(getByText('Close'))

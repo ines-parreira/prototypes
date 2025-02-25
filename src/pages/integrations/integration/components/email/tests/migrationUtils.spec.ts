@@ -9,18 +9,18 @@ import {
     EmailMigrationInboundVerification,
     EmailMigrationInboundVerificationStatus,
 } from 'models/integration/types'
-import {VerificationStatus} from 'models/singleSenderVerification/types'
+import { VerificationStatus } from 'models/singleSenderVerification/types'
 
 import {
-    computeMigrationInboundVerificationStatus,
     computeDomainSingleSenderVerificationStatus,
     computeDomainVerificationStatus,
+    computeMigrationInboundVerificationStatus,
+    computeSingleSenderVerificationStatus,
     getInboundUnverifiedMigrations,
     getSingleSenderUnverifiedIntegrations,
-    computeSingleSenderVerificationStatus,
     listAddressDetailsInline,
 } from '../EmailMigration/utils'
-import {EmailVerificationStatus} from '../EmailVerificationStatusLabel'
+import { EmailVerificationStatus } from '../EmailVerificationStatusLabel'
 
 describe('migration utils', () => {
     describe('getInboundUnverifiedMigrations', () => {
@@ -35,11 +35,11 @@ describe('migration utils', () => {
             }
             const verifiedMigration = {
                 status: EmailMigrationInboundVerificationStatus.InboundSuccess,
-                integration: {meta: {address: 'second@gorgias.com'}} as any,
+                integration: { meta: { address: 'second@gorgias.com' } } as any,
             }
             const partiallyVerifiedMigration = {
                 status: EmailMigrationInboundVerificationStatus.InboundPartialSuccess,
-                integration: {meta: {address: 'third@gorgias.com'}} as any,
+                integration: { meta: { address: 'third@gorgias.com' } } as any,
             }
 
             const migrations = [
@@ -59,7 +59,7 @@ describe('migration utils', () => {
             expect(
                 computeMigrationInboundVerificationStatus({
                     status: EmailMigrationInboundVerificationStatus.Initiated,
-                } as any)
+                } as any),
             ).toBe(EmailVerificationStatus.Unverified)
         })
 
@@ -69,9 +69,9 @@ describe('migration utils', () => {
                 expect(
                     computeMigrationInboundVerificationStatus({
                         status,
-                    } as any)
+                    } as any),
                 ).toBe(EmailVerificationStatus.Pending)
-            }
+            },
         )
 
         it.each([
@@ -81,7 +81,7 @@ describe('migration utils', () => {
             expect(
                 computeMigrationInboundVerificationStatus({
                     status,
-                } as any)
+                } as any),
             ).toBe(EmailVerificationStatus.Failed)
         })
 
@@ -92,7 +92,7 @@ describe('migration utils', () => {
             expect(
                 computeMigrationInboundVerificationStatus({
                     status,
-                } as any)
+                } as any),
             ).toBe(EmailVerificationStatus.Success)
         })
     })
@@ -101,14 +101,14 @@ describe('migration utils', () => {
         describe('selected verification type - Domain verification', () => {
             it('should return Unverified when status is unverified', () => {
                 const result = computeDomainVerificationStatus(
-                    migrationOutboundVerificationNotStarted
+                    migrationOutboundVerificationNotStarted,
                 )
                 expect(result).toBe(EmailVerificationStatus.Unverified)
             })
 
             it('should return Success when status is verified', () => {
                 const result = computeDomainVerificationStatus(
-                    migrationOutboundVerificationVerifiedDomain
+                    migrationOutboundVerificationVerifiedDomain,
                 )
                 expect(result).toBe(EmailVerificationStatus.Success)
             })
@@ -121,7 +121,7 @@ describe('migration utils', () => {
                 sender_verification: {},
             }
             const verifiedIntegration = {
-                sender_verification: {status: VerificationStatus.Verified},
+                sender_verification: { status: VerificationStatus.Verified },
             }
 
             const result = getSingleSenderUnverifiedIntegrations({
@@ -171,28 +171,28 @@ describe('migration utils', () => {
     describe('computeDomainSingleSenderVerificationStatus', () => {
         it('should return Unverified when no single sender verifications are submitted', () => {
             const result = computeDomainSingleSenderVerificationStatus(
-                migrationOutboundVerificationNotStarted
+                migrationOutboundVerificationNotStarted,
             )
             expect(result).toBe(EmailVerificationStatus.Unverified)
         })
 
         it('should return Pending when single sender verifications are submitted and they are not verified yet', () => {
             const result = computeDomainSingleSenderVerificationStatus(
-                migrationOutboundVerificationUnverifiedSingleSender
+                migrationOutboundVerificationUnverifiedSingleSender,
             )
             expect(result).toBe(EmailVerificationStatus.Pending)
         })
 
         it('should return Failed when single sender verifications are submitted and some of them failed', () => {
             const result = computeDomainSingleSenderVerificationStatus(
-                migrationOutboundVerificationFailedSingleSender
+                migrationOutboundVerificationFailedSingleSender,
             )
             expect(result).toBe(EmailVerificationStatus.Failed)
         })
 
         it('should return Success when single sender verifications are submitted and they are verified', () => {
             const result = computeDomainSingleSenderVerificationStatus(
-                migrationOutboundVerificationVerifiedSingleSender
+                migrationOutboundVerificationVerifiedSingleSender,
             )
             expect(result).toBe(EmailVerificationStatus.Success)
         })
@@ -210,7 +210,7 @@ describe('migration utils', () => {
                 },
             } as any)
             expect(result).toBe(
-                '611 Mission Street, San Francisco, CA 94105, US'
+                '611 Mission Street, San Francisco, CA 94105, US',
             )
         })
 

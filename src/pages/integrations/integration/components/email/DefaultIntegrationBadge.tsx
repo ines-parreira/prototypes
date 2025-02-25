@@ -1,5 +1,6 @@
-import {Tooltip, Badge} from '@gorgias/merchant-ui-kit'
-import React, {useRef} from 'react'
+import React, { useRef } from 'react'
+
+import { Badge, Tooltip } from '@gorgias/merchant-ui-kit'
 
 function DefaultIntegrationBadge() {
     const badgeRef = useRef<HTMLDivElement>(null)

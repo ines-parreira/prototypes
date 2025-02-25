@@ -1,9 +1,9 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {useGetWorkflowConfigurations} from 'models/workflows/queries'
-import {Entrypoint} from 'pages/automate/common/components/WorkflowsFeatureList'
+import { useGetWorkflowConfigurations } from 'models/workflows/queries'
+import { Entrypoint } from 'pages/automate/common/components/WorkflowsFeatureList'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import {ChannelLanguage} from 'pages/automate/common/types'
+import { ChannelLanguage } from 'pages/automate/common/types'
 
 export const useHelpCenterFlows = ({
     shopType,
@@ -16,7 +16,7 @@ export const useHelpCenterFlows = ({
     supportedLocales: ChannelLanguage[]
     flows: Entrypoint[]
 }) => {
-    const {isLoading: isWorkflowsFetchPending, data: workflowConfigurations} =
+    const { isLoading: isWorkflowsFetchPending, data: workflowConfigurations } =
         useGetWorkflowConfigurations()
 
     const {
@@ -29,8 +29,8 @@ export const useHelpCenterFlows = ({
     const supportedWorkflowConfigurations = workflowConfigurations?.filter(
         (config) =>
             config.available_languages.some((lang) =>
-                supportedLocales.includes(lang)
-            ) && !config.is_draft
+                supportedLocales.includes(lang),
+            ) && !config.is_draft,
     )
 
     const availableWorkflowsEntrypoints = useMemo(
@@ -40,37 +40,37 @@ export const useHelpCenterFlows = ({
                 (sspConfig) =>
                     supportedWorkflowConfigurations?.find(
                         (workflowConfig) =>
-                            workflowConfig.id === sspConfig.workflow_id
-                    )
+                            workflowConfig.id === sspConfig.workflow_id,
+                    ),
             ) ?? [],
         [
             selfServiceConfiguration?.workflowsEntrypoints,
             supportedWorkflowConfigurations,
-        ]
+        ],
     )
 
     const workflowsEntrypoints = useMemo(() => {
         const availableWorkflowsIds = availableWorkflowsEntrypoints.map(
-            ({workflow_id}) => workflow_id
+            ({ workflow_id }) => workflow_id,
         )
-        const existingWorkflows = flows.filter(({workflow_id}) =>
-            availableWorkflowsIds.includes(workflow_id)
+        const existingWorkflows = flows.filter(({ workflow_id }) =>
+            availableWorkflowsIds.includes(workflow_id),
         )
 
         const existingWorkflowsIds = existingWorkflows.map(
-            ({workflow_id}) => workflow_id
+            ({ workflow_id }) => workflow_id,
         )
 
         const newWorkflows = availableWorkflowsEntrypoints.filter(
-            ({workflow_id}) => !existingWorkflowsIds.includes(workflow_id)
+            ({ workflow_id }) => !existingWorkflowsIds.includes(workflow_id),
         )
 
         return [
-            ...existingWorkflows.map(({workflow_id, enabled}) => ({
+            ...existingWorkflows.map(({ workflow_id, enabled }) => ({
                 workflow_id,
                 enabled,
             })),
-            ...newWorkflows.map(({workflow_id}) => ({
+            ...newWorkflows.map(({ workflow_id }) => ({
                 workflow_id,
                 enabled: false,
             })),
@@ -83,7 +83,7 @@ export const useHelpCenterFlows = ({
 
         return workflowConfigurations
             ?.filter((workflowConfiguration) =>
-                enabledWorkflowsIds.includes(workflowConfiguration.id)
+                enabledWorkflowsIds.includes(workflowConfiguration.id),
             )
             .map((workflowConfiguration) => ({
                 name: workflowConfiguration.name,

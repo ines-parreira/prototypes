@@ -1,7 +1,8 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {CardHeaderIcon} from '../CardHeaderIcon'
+import { render, screen } from '@testing-library/react'
+
+import { CardHeaderIcon } from '../CardHeaderIcon'
 
 describe('<CardHeaderIcon/>', () => {
     const props = {
@@ -19,7 +20,7 @@ describe('<CardHeaderIcon/>', () => {
         render(<CardHeaderIcon {...props} />)
 
         expect(screen.getByAltText(props.alt).getAttribute('src')).toBe(
-            props.src
+            props.src,
         )
     })
 

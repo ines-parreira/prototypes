@@ -1,29 +1,30 @@
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { renderHook } from '@testing-library/react-hooks'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {useTagsTicketCount} from 'hooks/reporting/metricsPerPeriod'
-import {useTagsTimeSeries} from 'hooks/reporting/ticket-insights/useTagsTimeSeries'
-import {useTagsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
+import { useTagsTicketCount } from 'hooks/reporting/metricsPerPeriod'
+import { useTagsTimeSeries } from 'hooks/reporting/ticket-insights/useTagsTimeSeries'
+import { useTagsTicketCountTimeSeries } from 'hooks/reporting/timeSeries'
 import {
     TicketTagsEnrichedDimension,
     TicketTagsEnrichedMeasure,
 } from 'models/reporting/cubes/TicketTagsEnrichedCube'
-import {ReportingGranularity} from 'models/reporting/types'
-import {TagsState} from 'state/entities/tags/types'
-import {initialState} from 'state/stats/statsSlice'
-import {RootState} from 'state/types'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
-import {ticketInsightsSlice} from 'state/ui/stats/ticketInsightsSlice'
-import {assumeMock} from 'utils/testing'
+import { ReportingGranularity } from 'models/reporting/types'
+import { TagsState } from 'state/entities/tags/types'
+import { initialState } from 'state/stats/statsSlice'
+import { RootState } from 'state/types'
+import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
+import { ticketInsightsSlice } from 'state/ui/stats/ticketInsightsSlice'
+import { assumeMock } from 'utils/testing'
 
 const mockStore = configureMockStore([thunk])
 
 jest.mock('hooks/reporting/timeSeries')
 const useTagsTicketCountTimeSeriesMock = assumeMock(
-    useTagsTicketCountTimeSeries
+    useTagsTicketCountTimeSeries,
 )
 jest.mock('hooks/reporting/metricsPerPeriod')
 const useTagsTicketCountMock = assumeMock(useTagsTicketCount)
@@ -38,7 +39,7 @@ describe('useTagsTimeSeries', () => {
         ui: {
             stats: {
                 [ticketInsightsSlice.name]: {
-                    selectedCustomField: {id: 2},
+                    selectedCustomField: { id: 2 },
                 },
                 filters: uiStatsInitialState,
             },
@@ -77,16 +78,16 @@ describe('useTagsTimeSeries', () => {
         data: {
             [tagId]: [
                 [
-                    {dateTime: '2023-04-07T00:00:00.000', value: 10},
-                    {dateTime: '2023-04-08T00:00:00.000', value: 15},
-                    {dateTime: '2023-04-09T00:00:00.000', value: 20},
+                    { dateTime: '2023-04-07T00:00:00.000', value: 10 },
+                    { dateTime: '2023-04-08T00:00:00.000', value: 15 },
+                    { dateTime: '2023-04-09T00:00:00.000', value: 20 },
                 ],
             ],
             [anotherTagId]: [
                 [
-                    {dateTime: '2023-04-07T00:00:00.000', value: 11},
-                    {dateTime: '2023-04-08T00:00:00.000', value: 16},
-                    {dateTime: '2023-04-09T00:00:00.000', value: 21},
+                    { dateTime: '2023-04-07T00:00:00.000', value: 11 },
+                    { dateTime: '2023-04-08T00:00:00.000', value: 16 },
+                    { dateTime: '2023-04-09T00:00:00.000', value: 21 },
                 ],
             ],
         },
@@ -121,8 +122,8 @@ describe('useTagsTimeSeries', () => {
     })
 
     it('should return tags trend', () => {
-        const {result} = renderHook(() => useTagsTimeSeries(), {
-            wrapper: ({children}) => (
+        const { result } = renderHook(() => useTagsTimeSeries(), {
+            wrapper: ({ children }) => (
                 <Provider store={mockStore(defaultState)}>{children}</Provider>
             ),
         })
@@ -131,14 +132,14 @@ describe('useTagsTimeSeries', () => {
             isFetching: false,
             data: [
                 [
-                    {dateTime: '2023-04-07T00:00:00.000', value: 11},
-                    {dateTime: '2023-04-08T00:00:00.000', value: 16},
-                    {dateTime: '2023-04-09T00:00:00.000', value: 21},
+                    { dateTime: '2023-04-07T00:00:00.000', value: 11 },
+                    { dateTime: '2023-04-08T00:00:00.000', value: 16 },
+                    { dateTime: '2023-04-09T00:00:00.000', value: 21 },
                 ],
                 [
-                    {dateTime: '2023-04-07T00:00:00.000', value: 10},
-                    {dateTime: '2023-04-08T00:00:00.000', value: 15},
-                    {dateTime: '2023-04-09T00:00:00.000', value: 20},
+                    { dateTime: '2023-04-07T00:00:00.000', value: 10 },
+                    { dateTime: '2023-04-08T00:00:00.000', value: 15 },
+                    { dateTime: '2023-04-09T00:00:00.000', value: 20 },
                 ],
             ],
             granularity: ReportingGranularity.Hour,
@@ -146,7 +147,7 @@ describe('useTagsTimeSeries', () => {
                 labels: [fakeTagName, anotherTagName],
                 tooltips: [fakeTagName, anotherTagName],
             },
-            legendDatasetVisibility: {0: true, 1: true},
+            legendDatasetVisibility: { 0: true, 1: true },
         })
     })
 
@@ -172,8 +173,8 @@ describe('useTagsTimeSeries', () => {
             },
         } as unknown as RootState
 
-        const {result} = renderHook(() => useTagsTimeSeries(), {
-            wrapper: ({children}) => (
+        const { result } = renderHook(() => useTagsTimeSeries(), {
+            wrapper: ({ children }) => (
                 <Provider store={mockStore(state)}>{children}</Provider>
             ),
         })
@@ -182,14 +183,14 @@ describe('useTagsTimeSeries', () => {
             isFetching: false,
             data: [
                 [
-                    {dateTime: '2023-04-07T00:00:00.000', value: 11},
-                    {dateTime: '2023-04-08T00:00:00.000', value: 16},
-                    {dateTime: '2023-04-09T00:00:00.000', value: 21},
+                    { dateTime: '2023-04-07T00:00:00.000', value: 11 },
+                    { dateTime: '2023-04-08T00:00:00.000', value: 16 },
+                    { dateTime: '2023-04-09T00:00:00.000', value: 21 },
                 ],
                 [
-                    {dateTime: '2023-04-07T00:00:00.000', value: 10},
-                    {dateTime: '2023-04-08T00:00:00.000', value: 15},
-                    {dateTime: '2023-04-09T00:00:00.000', value: 20},
+                    { dateTime: '2023-04-07T00:00:00.000', value: 10 },
+                    { dateTime: '2023-04-08T00:00:00.000', value: 15 },
+                    { dateTime: '2023-04-09T00:00:00.000', value: 20 },
                 ],
             ],
             granularity: ReportingGranularity.Hour,
@@ -197,7 +198,7 @@ describe('useTagsTimeSeries', () => {
                 labels: [String(anotherTagId), tagId],
                 tooltips: [String(anotherTagId), tagId],
             },
-            legendDatasetVisibility: {0: true, 1: true},
+            legendDatasetVisibility: { 0: true, 1: true },
         })
     })
 
@@ -207,8 +208,8 @@ describe('useTagsTimeSeries', () => {
             isFetching: false,
         } as any)
 
-        const {result} = renderHook(() => useTagsTimeSeries(), {
-            wrapper: ({children}) => (
+        const { result } = renderHook(() => useTagsTimeSeries(), {
+            wrapper: ({ children }) => (
                 <Provider store={mockStore(defaultState)}>{children}</Provider>
             ),
         })

@@ -30,7 +30,7 @@ declare module 'sortablejs' {
                       to: Sortable,
                       from: Sortable,
                       dragEl: HTMLElement,
-                      event: SortableEvent
+                      event: SortableEvent,
                   ) => PullResult)
         }
 

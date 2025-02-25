@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {BlockStatementProps} from '../types'
+import { BlockStatementProps } from '../types'
 import BlockStatementItem from './BlockStatementItem'
 
 const BlockStatement = ({

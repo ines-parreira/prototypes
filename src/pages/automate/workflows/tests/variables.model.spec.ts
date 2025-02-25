@@ -1,4 +1,4 @@
-import {ulid} from 'ulidx'
+import { ulid } from 'ulidx'
 
 import {
     buildWorkflowVariableFromNode,
@@ -10,10 +10,10 @@ import {
     prerenderVariables,
 } from '../models/variables.model'
 import {
-    WorkflowVariableList,
     SHIPMONK_APPLICATION_ID,
+    WorkflowVariableList,
 } from '../models/variables.types'
-import {buildNodeCommonProperties} from '../models/visualBuilderGraph.model'
+import { buildNodeCommonProperties } from '../models/visualBuilderGraph.model'
 import {
     CreateDiscountCodeNodeType,
     OrderSelectionNodeType,
@@ -21,7 +21,7 @@ import {
     ReshipForFreeNodeType,
     VisualBuilderGraph,
 } from '../models/visualBuilderGraph.types'
-import {visualBuilderGraphSimpleChoicesFixture} from './visualBuilderGraph.fixtures'
+import { visualBuilderGraphSimpleChoicesFixture } from './visualBuilderGraph.fixtures'
 
 describe('parseWorkflowVariable()', () => {
     it('should parse an available flow variable', () => {
@@ -35,7 +35,7 @@ describe('parseWorkflowVariable()', () => {
         ]
         const parsed = parseWorkflowVariable(
             'steps_state.text_reply1.content.text',
-            availableVariables
+            availableVariables,
         )
         expect(parsed).toEqual({
             nodeType: 'text_reply',
@@ -62,7 +62,7 @@ describe('parseWorkflowVariable()', () => {
         ]
         const parsed = parseWorkflowVariable(
             'steps_state.shopper_authentication1.customer.firstname',
-            availableVariables
+            availableVariables,
         )
         expect(parsed).toEqual({
             name: 'Customer first name',
@@ -76,7 +76,7 @@ describe('parseWorkflowVariable()', () => {
         const availableVariables: WorkflowVariableList = []
         const parsed = parseWorkflowVariable(
             'steps_state.shopper_authentication1.customer.firstname',
-            availableVariables
+            availableVariables,
         )
         expect(parsed).toEqual(null)
     })
@@ -86,13 +86,13 @@ describe('getAvailableFlowVariables', () => {
     const g = visualBuilderGraphSimpleChoicesFixture
     test('no available variables at the beginning of the flow', () => {
         expect(
-            getWorkflowVariableListForNode(g, 'multiple_choices1', [], [])
+            getWorkflowVariableListForNode(g, 'multiple_choices1', [], []),
         ).toEqual([])
     })
 
     test('selected choice and text input variables available', () => {
         expect(
-            getWorkflowVariableListForNode(g, 'file_upload1', [], [])
+            getWorkflowVariableListForNode(g, 'file_upload1', [], []),
         ).toEqual([
             {
                 nodeType: 'multiple_choices',
@@ -111,7 +111,7 @@ describe('getAvailableFlowVariables', () => {
 
     test('only selected choice available', () => {
         expect(
-            getWorkflowVariableListForNode(g, 'automated_message1', [], [])
+            getWorkflowVariableListForNode(g, 'automated_message1', [], []),
         ).toEqual([
             {
                 nodeType: 'multiple_choices',
@@ -132,12 +132,12 @@ describe('getAvailableFlowVariables', () => {
                             type: 'channel_trigger',
                         },
                     ],
-                    edges: [{target: 'conditions_end1'}],
+                    edges: [{ target: 'conditions_end1' }],
                 } as any,
                 'conditions_end1',
                 [],
-                []
-            )
+                [],
+            ),
         ).toEqual([])
     })
     test('returns available variables if available integrations are there', () => {
@@ -156,13 +156,13 @@ describe('getAvailableFlowVariables', () => {
                             application_id: SHIPMONK_APPLICATION_ID,
                             integration_id: 1,
                         },
-                    ]
-                )
+                    ],
+                ),
             ).toEqual([
                 expect.objectContaining({
                     nodeType: 'order_shipmonk',
                 }),
-            ])
+            ]),
         )
     })
 })
@@ -185,8 +185,8 @@ describe('prerenderVariables()', () => {
                             },
                         ],
                     },
-                ]
-            )
+                ],
+            ),
         ).toEqual('{}')
     })
 })
@@ -229,15 +229,15 @@ describe('buildWorkflowVariableFromNode()', () => {
                         node,
                     ],
                     edges: [],
-                    apps: [{type: 'shopify'}],
+                    apps: [{ type: 'shopify' }],
                     nodeEditingId: null,
                     choiceEventIdEditing: null,
                     branchIdsEditing: [],
                 },
                 node,
                 [],
-                []
-            )
+                [],
+            ),
         ).toEqual({
             name: 'Order selection',
             nodeType: 'order_selection',
@@ -413,8 +413,8 @@ describe('buildWorkflowVariableFromNode()', () => {
                 },
                 node,
                 [],
-                []
-            )
+                [],
+            ),
         ).toEqual({
             name: 'Order selection',
             nodeType: 'order_selection',
@@ -482,14 +482,14 @@ describe('buildWorkflowVariableFromNode()', () => {
                     node,
                 ],
                 edges: [],
-                apps: [{type: 'shopify'}],
+                apps: [{ type: 'shopify' }],
                 nodeEditingId: null,
                 choiceEventIdEditing: null,
                 branchIdsEditing: [],
             },
             node,
             [],
-            []
+            [],
         )
         expect(result).toEqual({
             name: 'Create discount code success',
@@ -531,14 +531,14 @@ describe('buildWorkflowVariableFromNode()', () => {
                     node,
                 ],
                 edges: [],
-                apps: [{type: 'shopify'}],
+                apps: [{ type: 'shopify' }],
                 nodeEditingId: null,
                 choiceEventIdEditing: null,
                 branchIdsEditing: [],
             },
             node,
             [],
-            []
+            [],
         )
         expect(result).toEqual({
             name: 'Refund shipping costs success',
@@ -580,14 +580,14 @@ describe('buildWorkflowVariableFromNode()', () => {
                     node,
                 ],
                 edges: [],
-                apps: [{type: 'shopify'}],
+                apps: [{ type: 'shopify' }],
                 nodeEditingId: null,
                 choiceEventIdEditing: null,
                 branchIdsEditing: [],
             },
             node,
             [],
-            []
+            [],
         )
         expect(result).toEqual({
             name: 'Reship for free success',
@@ -602,24 +602,24 @@ describe('extractVariablesFromText()', () => {
     it('should extract variable without filter from text', () => {
         expect(
             extractVariablesFromText(
-                '{{steps_state.http_request1.content.variable1}}'
-            )
-        ).toEqual([{value: 'steps_state.http_request1.content.variable1'}])
+                '{{steps_state.http_request1.content.variable1}}',
+            ),
+        ).toEqual([{ value: 'steps_state.http_request1.content.variable1' }])
     })
 
     it('should trim whitespaces from value', () => {
         expect(
             extractVariablesFromText(
-                '{{ steps_state.http_request1.content.variable1 }}'
-            )
-        ).toEqual([{value: 'steps_state.http_request1.content.variable1'}])
+                '{{ steps_state.http_request1.content.variable1 }}',
+            ),
+        ).toEqual([{ value: 'steps_state.http_request1.content.variable1' }])
     })
 
     it('should extract value with filter', () => {
         expect(
             extractVariablesFromText(
-                '{{steps_state.http_request1.content.variable1 | json}}'
-            )
+                '{{steps_state.http_request1.content.variable1 | json}}',
+            ),
         ).toEqual([
             {
                 value: 'steps_state.http_request1.content.variable1',
@@ -631,8 +631,8 @@ describe('extractVariablesFromText()', () => {
     it('should extract value with multiple filter', () => {
         expect(
             extractVariablesFromText(
-                '{{steps_state.http_request1.content.variable1 | json | default: "null"}}'
-            )
+                '{{steps_state.http_request1.content.variable1 | json | default: "null"}}',
+            ),
         ).toEqual([
             {
                 value: 'steps_state.http_request1.content.variable1',
@@ -734,7 +734,7 @@ describe('buildWorkflowVariableFromTrigger()', () => {
                         },
                     ],
                 },
-            ])
+            ]),
         )
     })
 })
@@ -760,7 +760,7 @@ describe('extractVariablesFromNode()', () => {
                         text: 'text {{variable1}}',
                     },
                 },
-            })
+            }),
         ).toEqual(['variable1', 'variable2', 'variable3'])
     })
     it('should extract varialbes from llm_prompt_trigger conditions', () => {
@@ -785,7 +785,7 @@ describe('extractVariablesFromNode()', () => {
                         },
                     ],
                 },
-            })
+            }),
         ).toEqual(['objects.order.external_fulfillment_status'])
     })
 })

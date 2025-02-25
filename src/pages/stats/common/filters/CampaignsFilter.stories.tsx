@@ -1,20 +1,21 @@
-import {Meta, StoryFn} from '@storybook/react'
-import {QueryClientProvider} from '@tanstack/react-query'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
-import {MemoryRouter, Route} from 'react-router-dom'
+import React, { ComponentProps } from 'react'
+
+import { Meta, StoryFn } from '@storybook/react'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import { MemoryRouter, Route } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {appQueryClient} from 'api/queryClient'
-import {campaignsResponseData} from 'fixtures/campaign'
-import {campaignKeys} from 'models/convert/campaign/queries'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {FilterKey} from 'models/stat/types'
+import { appQueryClient } from 'api/queryClient'
+import { campaignsResponseData } from 'fixtures/campaign'
+import { campaignKeys } from 'models/convert/campaign/queries'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { FilterKey } from 'models/stat/types'
 import CampaignsFilter from 'pages/stats/common/filters/CampaignsFilter'
-import {initialState} from 'state/stats/statsSlice'
-import {RootState} from 'state/types'
+import { initialState } from 'state/stats/statsSlice'
+import { RootState } from 'state/types'
 
 const defaultState = {
     stats: {
@@ -104,7 +105,7 @@ const Template: StoryFn<ComponentProps<typeof CampaignsFilter>> = (props) => {
         }),
         {
             data: campaignsResponseData,
-        }
+        },
     )
 
     return (

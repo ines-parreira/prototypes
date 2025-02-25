@@ -1,6 +1,7 @@
-import {render, screen} from '@testing-library/react'
+import React, { ComponentProps } from 'react'
+
+import { render, screen } from '@testing-library/react'
 import _noop from 'lodash/noop'
-import React, {ComponentProps} from 'react'
 
 import MultiSelectField from '../MultiSelectField'
 
@@ -37,11 +38,11 @@ describe('MultiSelectField', () => {
     })
 
     it('should render the select field with no selected option', () => {
-        const {container} = render(
-            <MultiSelectField {...props} values={null} />
+        const { container } = render(
+            <MultiSelectField {...props} values={null} />,
         )
         expect(
-            container.getElementsByClassName('container')[0].childNodes.length
+            container.getElementsByClassName('container')[0].childNodes.length,
         ).toBe(1)
     })
 })

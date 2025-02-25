@@ -1,14 +1,12 @@
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {IntegrationType} from 'models/integration/constants'
-
-import {hasShopifyRequiredPermissions} from 'pages/aiAgent/utils/shopify-integration.utils'
-import {useHasEmailToStoreConnection} from 'pages/automate/common/components/TopQuestions/useHasEmailToStoreConnection'
-import {useHelpCentersArticleCount} from 'pages/automate/common/hooks/useHelpCentersArticleCount'
-
+import { IntegrationType } from 'models/integration/constants'
+import { hasShopifyRequiredPermissions } from 'pages/aiAgent/utils/shopify-integration.utils'
+import { useHasEmailToStoreConnection } from 'pages/automate/common/components/TopQuestions/useHasEmailToStoreConnection'
+import { useHelpCentersArticleCount } from 'pages/automate/common/hooks/useHelpCentersArticleCount'
 import useSelfServiceStoreIntegration from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
-import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
-import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
+import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
+import { useHelpCenterList } from 'pages/settings/helpCenter/hooks/useHelpCenterList'
 
 import {
     AiAgentWelcomePageProps,
@@ -30,7 +28,7 @@ export const AIAgentWelcomePageDynamic = ({
     const isOnboardingWizard = state === 'onboardingWizard'
 
     // Check - Shopify integration permission
-    const {integration: shopifyIntegration} =
+    const { integration: shopifyIntegration } =
         useShopifyIntegrationAndScope(shopName)
 
     const shopifyPermissionUpdated = useMemo(() => {
@@ -46,13 +44,13 @@ export const AIAgentWelcomePageDynamic = ({
             }
         }
 
-        return {checked: true}
+        return { checked: true }
     }, [isOnboardingWizard, shopifyIntegration])
 
     // Check - Email integrations
     const storeIntegration = useSelfServiceStoreIntegration(
         IntegrationType.Shopify,
-        shopName
+        shopName,
     )
 
     const {
@@ -61,7 +59,7 @@ export const AIAgentWelcomePageDynamic = ({
     } = useHasEmailToStoreConnection(storeIntegration?.id)
 
     // Check - Help Center
-    const helpCenterList = useHelpCenterList({shop_name: shopName})
+    const helpCenterList = useHelpCenterList({ shop_name: shopName })
 
     const helpCentersConnectedToStoreIds = useMemo(
         () =>
@@ -70,12 +68,12 @@ export const AIAgentWelcomePageDynamic = ({
                 : helpCenterList.helpCenters
                       .filter((helpCenter) => helpCenter.shop_name === shopName)
                       .map((helpCenter) => helpCenter.id),
-        [helpCenterList.helpCenters, helpCenterList.isLoading, shopName]
+        [helpCenterList.helpCenters, helpCenterList.isLoading, shopName],
     )
 
     // Check 20 articles
     const helpCentersArticlesCount = useHelpCentersArticleCount(
-        helpCentersConnectedToStoreIds
+        helpCentersConnectedToStoreIds,
     )
 
     const has20Articles: DynamicItem | undefined = useMemo(() => {
@@ -90,10 +88,10 @@ export const AIAgentWelcomePageDynamic = ({
 
         if (
             helpCentersArticlesCount.some(
-                (x) => x.count !== undefined && x.count >= 20
+                (x) => x.count !== undefined && x.count >= 20,
             )
         ) {
-            return {checked: true}
+            return { checked: true }
         }
 
         return {
@@ -102,7 +100,7 @@ export const AIAgentWelcomePageDynamic = ({
                 helpCentersArticlesCount.length === 1
                     ? '/app/settings/help-center/{id}/ai-library'.replace(
                           '{id}',
-                          helpCentersArticlesCount[0].helpCenterId.toString()
+                          helpCentersArticlesCount[0].helpCenterId.toString(),
                       )
                     : '/app/settings/help-center',
         }
@@ -132,7 +130,7 @@ export const AIAgentWelcomePageDynamic = ({
             storeConfiguration={storeConfiguration}
             emailConnected={
                 hasEmailToStoreConnection
-                    ? {checked: true}
+                    ? { checked: true }
                     : {
                           checked: false,
                           link: '/app/settings/channels/email',
@@ -140,7 +138,7 @@ export const AIAgentWelcomePageDynamic = ({
             }
             helpCenterCreated={
                 helpCentersConnectedToStoreIds.length !== 0
-                    ? {checked: true}
+                    ? { checked: true }
                     : {
                           checked: false,
                           link: '/app/settings/help-center/new',

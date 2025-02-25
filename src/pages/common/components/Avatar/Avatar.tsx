@@ -1,10 +1,13 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { Component, CSSProperties } from 'react'
+
 import classnames from 'classnames'
 import _isEqual from 'lodash/isEqual'
-import React, {Component, CSSProperties} from 'react'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { getAvatar, getAvatarFromCache, getInitials } from './utils'
 
 import css from './Avatar.less'
-import {getInitials, getAvatar, getAvatarFromCache} from './utils'
 
 type Props = {
     email: string
@@ -73,7 +76,7 @@ export default class Avatar extends Component<Props, State> {
         const imageUrl =
             props.url || getAvatarFromCache(props.email, props.size)
 
-        return {imageUrl}
+        return { imageUrl }
     }
 
     _setImageUrl = () => {
@@ -98,7 +101,7 @@ export default class Avatar extends Component<Props, State> {
             }).then((imageUrl: Maybe<string>) => {
                 // Still need to do it here in case the component is unmounted while the promise is pending
                 if (this.isMounted) {
-                    this.setState({imageUrl})
+                    this.setState({ imageUrl })
                 }
             })
         }
@@ -127,7 +130,7 @@ export default class Avatar extends Component<Props, State> {
                         css.component,
                         css.aiAgent,
                         css[shape],
-                        className
+                        className,
                     )}
                     style={{
                         width: `${size}px`,
@@ -138,7 +141,7 @@ export default class Avatar extends Component<Props, State> {
                     <i
                         className={classnames(
                             'material-icons',
-                            css.aiAgentIcon
+                            css.aiAgentIcon,
                         )}
                     >
                         auto_awesome
@@ -155,7 +158,7 @@ export default class Avatar extends Component<Props, State> {
                         [css.hasImage]: !!this.state.imageUrl,
                     },
                     css[shape],
-                    className
+                    className,
                 )}
                 style={{
                     width: `${size}px`,
@@ -172,7 +175,7 @@ export default class Avatar extends Component<Props, State> {
                         fontSize: `${size / 2.4}px`,
                     }}
                 >
-                    <span style={{lineHeight: `${+size + 2}px`}}>
+                    <span style={{ lineHeight: `${+size + 2}px` }}>
                         {getInitials(name, showFirstInitialOnly)}
                     </span>
                 </div>
@@ -188,7 +191,7 @@ export default class Avatar extends Component<Props, State> {
                 {badgeColor && (
                     <>
                         <div
-                            {...(withTooltip && {id: 'tooltip'})}
+                            {...(withTooltip && { id: 'tooltip' })}
                             className={classnames(css.badge, badgeClassName)}
                             style={{
                                 backgroundColor: badgeColor,

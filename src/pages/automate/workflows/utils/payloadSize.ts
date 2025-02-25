@@ -1,6 +1,6 @@
 export const getPayloadSizeToLimitRate = (
     value: unknown,
-    limit: number
+    limit: number,
 ): number => {
     return new Blob([JSON.stringify(value)]).size / limit
 }

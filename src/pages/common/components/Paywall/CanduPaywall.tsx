@@ -1,4 +1,4 @@
-import React, {ComponentProps, ComponentType, ReactNode} from 'react'
+import React, { ComponentProps, ComponentType, ReactNode } from 'react'
 
 import useHasCanduContent from 'hooks/candu/useHasCanduContent'
 
@@ -10,14 +10,14 @@ type Props = {
     children: ReactNode
 }
 
-const CanduPaywall = ({title, canduId, children}: Props) => {
-    const {ref, hasCanduContent} = useHasCanduContent<HTMLDivElement>(canduId)
+const CanduPaywall = ({ title, canduId, children }: Props) => {
+    const { ref, hasCanduContent } = useHasCanduContent<HTMLDivElement>(canduId)
 
     return (
         <>
             <div
                 className="full-width"
-                style={hasCanduContent ? undefined : {display: 'none'}}
+                style={hasCanduContent ? undefined : { display: 'none' }}
             >
                 <PageHeader title={title} />
                 <div

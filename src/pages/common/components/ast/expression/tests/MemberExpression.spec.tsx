@@ -1,11 +1,12 @@
-import {render, fireEvent} from '@testing-library/react'
-import {fromJS, Map} from 'immutable'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {rule} from 'fixtures/rule'
-import {IDENTIFIER_VARIABLES_BY_CATEGORY} from 'models/rule/constants'
+import { fireEvent, render } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
 
-import {MemberExpressionContainer} from '../MemberExpression'
+import { rule } from 'fixtures/rule'
+import { IDENTIFIER_VARIABLES_BY_CATEGORY } from 'models/rule/constants'
+
+import { MemberExpressionContainer } from '../MemberExpression'
 
 describe('<MemberExpression/>', () => {
     const minProps = {
@@ -104,25 +105,29 @@ describe('<MemberExpression/>', () => {
     } as unknown as ComponentProps<typeof MemberExpressionContainer>
 
     it('should render', () => {
-        const {container} = render(<MemberExpressionContainer {...minProps} />)
+        const { container } = render(
+            <MemberExpressionContainer {...minProps} />,
+        )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should update the dropdown on clicking a category', () => {
-        const {container, getByText} = render(
-            <MemberExpressionContainer {...minProps} />
+        const { container, getByText } = render(
+            <MemberExpressionContainer {...minProps} />,
         )
         const newValue = 'Shopify Last Order'
 
         fireEvent.click(getByText(newValue))
         expect(container.querySelector('.backOption')?.textContent).toContain(
-            newValue
+            newValue,
         )
     })
 
     it('should update the rule on clicking a variable option', () => {
-        const {getByText} = render(<MemberExpressionContainer {...minProps} />)
+        const { getByText } = render(
+            <MemberExpressionContainer {...minProps} />,
+        )
 
         fireEvent.click(getByText('Shopify Last Order'))
         fireEvent.click(getByText('Fulfillment status'))
@@ -135,7 +140,7 @@ describe('<MemberExpression/>', () => {
         expect(actionCall[0]).toEqualImmutable(minProps.parent)
 
         const value = IDENTIFIER_VARIABLES_BY_CATEGORY['shopifyLastOrder']
-            .find(({label}) => label === 'Fulfillment status')
+            .find(({ label }) => label === 'Fulfillment status')
             ?.value!.split('.')
             .reverse()
         const outputContent = (item: Map<any, any>, count: number) => {
@@ -152,8 +157,8 @@ describe('<MemberExpression/>', () => {
         expect(actionCall[2]).toBe('UPDATE')
     })
     it('should exclude quick resppnses from the drop down', () => {
-        const {getByText, queryByText} = render(
-            <MemberExpressionContainer {...minProps} />
+        const { getByText, queryByText } = render(
+            <MemberExpressionContainer {...minProps} />,
         )
 
         expect(queryByText('Quick Responses')).not.toBeInTheDocument()

@@ -1,6 +1,6 @@
-import {Hit} from '@algolia/client-search'
+import { Hit } from '@algolia/client-search'
 
-import {LocaleCode, VisibilityStatus} from 'models/helpCenter/types'
+import { LocaleCode, VisibilityStatus } from 'models/helpCenter/types'
 
 export type AlgoliaHit<T> = Hit<T>
 
@@ -73,9 +73,9 @@ export type AlgoliaSearchResult<T> = {
 }
 
 export const isArticleAlgoliaHit = (
-    hit: AlgoliaHit<EntitiesArticleRecord | EntitiesCategoryRecord>
+    hit: AlgoliaHit<EntitiesArticleRecord | EntitiesCategoryRecord>,
 ): hit is AlgoliaHit<EntitiesArticleRecord> => hit.type === 'article'
 
 export const isCategoryAlgoliaHit = (
-    hit: AlgoliaHit<EntitiesArticleRecord | EntitiesCategoryRecord>
+    hit: AlgoliaHit<EntitiesArticleRecord | EntitiesCategoryRecord>,
 ): hit is AlgoliaHit<EntitiesCategoryRecord> => hit.type === 'category'

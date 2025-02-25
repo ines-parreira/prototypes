@@ -1,10 +1,11 @@
-import {Meta, Story} from '@storybook/react'
 import React from 'react'
-import {BrowserRouter} from 'react-router-dom'
 
-import {Language} from 'constants/languages'
+import { Meta, Story } from '@storybook/react'
+import { BrowserRouter } from 'react-router-dom'
 
-import {GorgiasChatIntegrationLanguagesTable} from './GorgiasChatIntegrationLanguagesTable'
+import { Language } from 'constants/languages'
+
+import { GorgiasChatIntegrationLanguagesTable } from './GorgiasChatIntegrationLanguagesTable'
 import {
     GorgiasChatIntegrationLanguagesTableRow,
     GorgiasChatIntegrationLanguagesTableRowProps,

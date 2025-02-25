@@ -1,22 +1,24 @@
-import {AxiosError} from 'axios'
+import React, { createRef, RefObject } from 'react'
+
+import { AxiosError } from 'axios'
 import classnames from 'classnames'
-import {fromJS, Map} from 'immutable'
+import { fromJS, Map } from 'immutable'
 import _isArray from 'lodash/isArray'
 import _omit from 'lodash/omit'
-import React, {createRef, RefObject} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {Input} from 'reactstrap'
-import {InputType} from 'reactstrap/lib/Input'
+import { connect, ConnectedProps } from 'react-redux'
+import { Input } from 'reactstrap'
+import { InputType } from 'reactstrap/lib/Input'
 
-import {UploadType} from 'common/types'
-import {uploadFiles} from 'common/utils'
+import { UploadType } from 'common/types'
+import { uploadFiles } from 'common/utils'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {getFileTooLargeError} from 'utils/file'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { getFileTooLargeError } from 'utils/file'
 
-import DEPRECATED_InputField, {InputFieldProps} from './DEPRECATED_InputField'
+import DEPRECATED_InputField, { InputFieldProps } from './DEPRECATED_InputField'
+
 import css from './FileField.less'
 
 const DEFAULT_ERROR = 'Failed to upload files. Please try again later.'
@@ -77,7 +79,7 @@ export class FileFieldContainer extends DEPRECATED_InputField<Props> {
     _onUploadStatusChange = (isUploading: boolean) => {
         this.props.onUploadStatusChange &&
             this.props.onUploadStatusChange(isUploading)
-        this.setState({isUploading})
+        this.setState({ isUploading })
     }
 
     handleOnChange = (event: {
@@ -165,7 +167,7 @@ export class FileFieldContainer extends DEPRECATED_InputField<Props> {
                     status: NotificationStatus.Error,
                     message: errorMessage,
                 })
-            }
+            },
         )
     }
 
@@ -182,10 +184,10 @@ export class FileFieldContainer extends DEPRECATED_InputField<Props> {
     }
 
     _getField = () => {
-        const {noPreview, isRemovable, placeholder, className, value} =
+        const { noPreview, isRemovable, placeholder, className, value } =
             this.props
 
-        const {isUploading} = this.state
+        const { isUploading } = this.state
 
         const disabled = isUploading
 
@@ -254,6 +256,6 @@ export class FileFieldContainer extends DEPRECATED_InputField<Props> {
     }
 }
 
-const connector = connect(null, {notify}, null, {forwardRef: true})
+const connector = connect(null, { notify }, null, { forwardRef: true })
 
 export default connector(FileFieldContainer)

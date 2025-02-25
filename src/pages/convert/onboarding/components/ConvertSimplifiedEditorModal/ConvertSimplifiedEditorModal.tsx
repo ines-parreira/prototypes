@@ -1,11 +1,13 @@
-import {Badge, BadgeIcon} from '@gorgias/merchant-ui-kit'
-import {produce} from 'immer'
-import {Map, fromJS} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useEffect, useState, useMemo, useCallback} from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
-import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
-import {FeatureFlagKey} from 'config/featureFlags'
+import { produce } from 'immer'
+import { fromJS, Map } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { Badge, BadgeIcon } from '@gorgias/merchant-ui-kit'
+
+import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
+import { FeatureFlagKey } from 'config/featureFlags'
 import {
     getPrimaryLanguageFromChatConfig,
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
@@ -13,52 +15,49 @@ import {
 } from 'config/integrations/gorgias_chat'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {GorgiasChatIntegration} from 'models/integration/types'
+import { GorgiasChatIntegration } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
-
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
-
-import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
+import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
 import CampaignPreview from 'pages/convert/campaigns/components/CampaignPreview'
-
-import {findContactCaptureForm} from 'pages/convert/campaigns/components/ContactCaptureForm/utils'
-import {ProductRecommendationBanner} from 'pages/convert/campaigns/components/ProductRecommendationBanner/ProductRecommendationBanner'
-import {useChatPreviewProps} from 'pages/convert/campaigns/hooks/useChatPreviewProps'
-import {useCreateCampaign} from 'pages/convert/campaigns/hooks/useCreateCampaign'
-import {useGetPreviewProducts} from 'pages/convert/campaigns/hooks/useGetPreviewProducts'
-import {useManageTriggers} from 'pages/convert/campaigns/hooks/useManageTriggers'
-import {useUpdateCampaign} from 'pages/convert/campaigns/hooks/useUpdateCampaign'
-import {useUtm} from 'pages/convert/campaigns/hooks/useUtm'
+import { findContactCaptureForm } from 'pages/convert/campaigns/components/ContactCaptureForm/utils'
+import { ProductRecommendationBanner } from 'pages/convert/campaigns/components/ProductRecommendationBanner/ProductRecommendationBanner'
+import { useChatPreviewProps } from 'pages/convert/campaigns/hooks/useChatPreviewProps'
+import { useCreateCampaign } from 'pages/convert/campaigns/hooks/useCreateCampaign'
+import { useGetPreviewProducts } from 'pages/convert/campaigns/hooks/useGetPreviewProducts'
+import { useManageTriggers } from 'pages/convert/campaigns/hooks/useManageTriggers'
+import { useUpdateCampaign } from 'pages/convert/campaigns/hooks/useUpdateCampaign'
+import { useUtm } from 'pages/convert/campaigns/hooks/useUtm'
 import {
     CampaignDetailsFormApi,
     CampaignDetailsFormProvider,
 } from 'pages/convert/campaigns/providers/CampaignDetailsForm/context'
-import {CampaignTemplate} from 'pages/convert/campaigns/templates/types'
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
+import { CampaignTemplate } from 'pages/convert/campaigns/templates/types'
+import { Campaign } from 'pages/convert/campaigns/types/Campaign'
 import {
     CampaignContactFormAttachment,
     CampaignFormExtra,
     CampaignProductRecommendation,
 } from 'pages/convert/campaigns/types/CampaignAttachment'
-import {CampaignDiscountOffer} from 'pages/convert/campaigns/types/CampaignDiscountOffer'
-import {WizardConfiguration} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
-import {CampaignProduct} from 'pages/convert/campaigns/types/CampaignProduct'
-import {createCampaignPayload} from 'pages/convert/campaigns/utils/createCampaignPayload'
-import {transformAttachmentsToContactCaptureForms} from 'pages/convert/campaigns/utils/transformAttachmentsToContactCaptureForms'
-import {transformAttachmentsToDiscountOffers} from 'pages/convert/campaigns/utils/transformAttachmentsToDiscountOffers'
-import {transformAttachmentsToProductRecommendations} from 'pages/convert/campaigns/utils/transformAttachmentsToProductRecommendations'
-import {transformAttachmentToProduct} from 'pages/convert/campaigns/utils/transformAttachmentToProduct'
-import {transformCampaignAttachmentsToDetails} from 'pages/convert/campaigns/utils/transformCampaignAttachmentsToDetails'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import { CampaignDiscountOffer } from 'pages/convert/campaigns/types/CampaignDiscountOffer'
+import { WizardConfiguration } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
+import { CampaignProduct } from 'pages/convert/campaigns/types/CampaignProduct'
+import { createCampaignPayload } from 'pages/convert/campaigns/utils/createCampaignPayload'
+import { transformAttachmentsToContactCaptureForms } from 'pages/convert/campaigns/utils/transformAttachmentsToContactCaptureForms'
+import { transformAttachmentsToDiscountOffers } from 'pages/convert/campaigns/utils/transformAttachmentsToDiscountOffers'
+import { transformAttachmentsToProductRecommendations } from 'pages/convert/campaigns/utils/transformAttachmentsToProductRecommendations'
+import { transformAttachmentToProduct } from 'pages/convert/campaigns/utils/transformAttachmentToProduct'
+import { transformCampaignAttachmentsToDetails } from 'pages/convert/campaigns/utils/transformCampaignAttachmentsToDetails'
+import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import SimpleCampaignEditor from 'pages/convert/onboarding/components/SimpleCampaignEditor/SimpleCampaignEditor'
-import {useConvertGeneralSettings} from 'pages/stats/convert/hooks/useConvertGeneralSettings'
-import {getIntegrationById} from 'state/integrations/selectors'
-import {setNewMessageForChatCampaign} from 'state/newMessage/actions'
-import {getNewMessageAttachments} from 'state/newMessage/selectors'
-import {toJS} from 'utils'
-import {sanitizeHtmlDefault} from 'utils/html'
+import { useConvertGeneralSettings } from 'pages/stats/convert/hooks/useConvertGeneralSettings'
+import { getIntegrationById } from 'state/integrations/selectors'
+import { setNewMessageForChatCampaign } from 'state/newMessage/actions'
+import { getNewMessageAttachments } from 'state/newMessage/selectors'
+import { toJS } from 'utils'
+import { sanitizeHtmlDefault } from 'utils/html'
 
 import css from './ConvertSimplifiedEditorModal.less'
 
@@ -90,14 +89,14 @@ const ConvertSimplifiedEditorModal: React.FC<Props> = (props) => {
     const isConvertSubscriber = useIsConvertSubscriber()
     const chatPreviewProps = useChatPreviewProps(integration)
     const storeIntegration = useAppSelector(
-        getIntegrationById(integration.getIn(['meta', 'shop_integration_id']))
+        getIntegrationById(integration.getIn(['meta', 'shop_integration_id'])),
     )
     const attachments = useAppSelector(getNewMessageAttachments)
-    const {channelConnection} = useGetOrCreateChannelConnection(
-        gorgiasChatIntegration
+    const { channelConnection } = useGetOrCreateChannelConnection(
+        gorgiasChatIntegration,
     )
-    const {mutateAsync: createCampaign} = useCreateCampaign()
-    const {mutateAsync: updateCampaign} = useUpdateCampaign()
+    const { mutateAsync: createCampaign } = useCreateCampaign()
+    const { mutateAsync: updateCampaign } = useUpdateCampaign()
 
     const defaultLanguage = useMemo<string>(() => {
         return getPrimaryLanguageFromChatConfig(gorgiasChatIntegration.meta)
@@ -111,7 +110,7 @@ const ConvertSimplifiedEditorModal: React.FC<Props> = (props) => {
             campaign.attachments.length > 0
         ) {
             attachments = transformCampaignAttachmentsToDetails(
-                campaign.attachments
+                campaign.attachments,
             )
         }
 
@@ -120,7 +119,7 @@ const ConvertSimplifiedEditorModal: React.FC<Props> = (props) => {
                 channel: TicketChannel.Chat,
                 sourceType: TicketMessageSourceType.Chat,
                 attachments: fromJS(attachments),
-            })
+            }),
         )
     }
 
@@ -179,7 +178,7 @@ const ConvertSimplifiedEditorModal: React.FC<Props> = (props) => {
 
     const contactForm = useMemo<CampaignContactFormAttachment[]>(
         () => transformAttachmentsToContactCaptureForms(attachments),
-        [attachments]
+        [attachments],
     )
 
     const productRecommendationScenario = useMemo(() => {
@@ -191,7 +190,7 @@ const ConvertSimplifiedEditorModal: React.FC<Props> = (props) => {
     const productsToPreview = useGetPreviewProducts(
         storeIntegration,
         productRecommendations,
-        shopifyProducts
+        shopifyProducts,
     )
 
     const contactCaptureForm = useMemo<CampaignFormExtra | undefined>(() => {
@@ -206,9 +205,9 @@ const ConvertSimplifiedEditorModal: React.FC<Props> = (props) => {
     }, [])
 
     const utmProps = useUtm(channelConnection, campaign?.name || '')
-    const {appliedUtmEnabled, appliedUtmQueryString} = utmProps
+    const { appliedUtmEnabled, appliedUtmQueryString } = utmProps
 
-    const {emailDisclaimer: emailDisclaimerSettings} =
+    const { emailDisclaimer: emailDisclaimerSettings } =
         useConvertGeneralSettings(gorgiasChatIntegration)
 
     const onSubmit = async (activate = false) => {
@@ -260,7 +259,7 @@ const ConvertSimplifiedEditorModal: React.FC<Props> = (props) => {
         onClose()
     }
 
-    const {triggers} = useManageTriggers(campaign?.triggers)
+    const { triggers } = useManageTriggers(campaign?.triggers)
 
     const handleUpdateCampaign = useCallback(
         (key: string, payload: any) => {
@@ -275,11 +274,11 @@ const ConvertSimplifiedEditorModal: React.FC<Props> = (props) => {
                                 copySuggestion: payload,
                             }
                         }
-                    })
+                    }),
                 )
             }
         },
-        [setCampaign]
+        [setCampaign],
     )
 
     const campaignDetailContext = useMemo<CampaignDetailsFormApi>(() => {
@@ -380,7 +379,7 @@ const ConvertSimplifiedEditorModal: React.FC<Props> = (props) => {
                                         discountOffers={discountOffers}
                                         contactCaptureForm={contactCaptureForm}
                                         html={sanitizeHtmlDefault(
-                                            campaign.message_html || ''
+                                            campaign.message_html || '',
                                         )}
                                         authorName={
                                             campaign.meta?.agentName ?? ``

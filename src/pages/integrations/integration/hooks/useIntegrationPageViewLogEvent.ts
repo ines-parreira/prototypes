@@ -1,7 +1,8 @@
-import {Map} from 'immutable'
-import {useEffect, useState} from 'react'
+import { useEffect, useState } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { Map } from 'immutable'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 
 export type Options = {
     isReady: boolean
@@ -10,14 +11,14 @@ export type Options = {
 
 export default function useIntegrationPageViewLogEvent(
     event: SegmentEvent,
-    options: Options
+    options: Options,
 ) {
     const [trackedPageViewed, setTrackedPageViewed] = useState(false)
 
     useEffect(() => {
         if (options.isReady && !trackedPageViewed) {
             const id = options.integration?.get('id')
-            logEvent(event, (id && {id}) || {})
+            logEvent(event, (id && { id }) || {})
             setTrackedPageViewed(true)
         }
     }, [trackedPageViewed, event, options.isReady, options.integration])

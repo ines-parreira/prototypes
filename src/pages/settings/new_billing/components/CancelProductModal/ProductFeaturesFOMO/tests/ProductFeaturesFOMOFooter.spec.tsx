@@ -1,5 +1,6 @@
-import {render, fireEvent} from '@testing-library/react'
 import React from 'react'
+
+import { fireEvent, render } from '@testing-library/react'
 
 import ProductFeaturesFOMOFooter from '../ProductFeaturesFOMOFooter'
 
@@ -14,12 +15,12 @@ describe('ProductFeaturesFOMOFooter', () => {
     })
 
     it('renders correctly', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <ProductFeaturesFOMOFooter
                 onClose={onCloseMock}
                 onContinue={onContinueMock}
                 productType={productType}
-            />
+            />,
         )
 
         expect(getByText(`Keep using ${productType}`)).toBeInTheDocument()
@@ -27,12 +28,12 @@ describe('ProductFeaturesFOMOFooter', () => {
     })
 
     it('calls onClose when "Keep using" button is clicked', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <ProductFeaturesFOMOFooter
                 onClose={onCloseMock}
                 onContinue={onContinueMock}
                 productType={productType}
-            />
+            />,
         )
 
         fireEvent.click(getByText(`Keep using ${productType}`))
@@ -40,12 +41,12 @@ describe('ProductFeaturesFOMOFooter', () => {
     })
 
     it('calls onContinue when "Continue cancelling" button is clicked', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <ProductFeaturesFOMOFooter
                 onClose={onCloseMock}
                 onContinue={onContinueMock}
                 productType={productType}
-            />
+            />,
         )
 
         fireEvent.click(getByText('Continue cancelling'))

@@ -1,9 +1,11 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import {Map, List} from 'immutable'
 import React from 'react'
 
-import {RuleOperation} from '../../../../../state/rules/types'
-import {RuleItemActions} from '../../../../settings/rules/types'
+import { List, Map } from 'immutable'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { RuleOperation } from '../../../../../state/rules/types'
+import { RuleItemActions } from '../../../../settings/rules/types'
 
 type Props = {
     rule: Map<any, any>
@@ -15,12 +17,12 @@ type Props = {
 
 export default class DeleteBlockStatementItem extends React.Component<Props> {
     _handleClick = () => {
-        const {actions, parent} = this.props
+        const { actions, parent } = this.props
         actions.modifyCodeAST(parent, null, RuleOperation.Delete)
     }
 
     render() {
-        const {isDisplayed, parent, type} = this.props
+        const { isDisplayed, parent, type } = this.props
         const display = isDisplayed ? 'block' : 'none'
 
         const label = `Delete this ${type}`
@@ -30,7 +32,7 @@ export default class DeleteBlockStatementItem extends React.Component<Props> {
         return (
             <span
                 className="clickable delete-blockstatement"
-                style={{display}}
+                style={{ display }}
                 onClick={this._handleClick}
             >
                 <i id={uniqueId} className="material-icons">

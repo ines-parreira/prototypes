@@ -1,9 +1,10 @@
-import {useTheme} from '@emotion/react'
-import styled from '@emotion/styled'
-import React, {HTMLAttributes} from 'react'
+import React, { HTMLAttributes } from 'react'
 
-import {gorgiasColors} from 'gorgias-design-system/styles'
-import {ChatTheme} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview'
+import { useTheme } from '@emotion/react'
+import styled from '@emotion/styled'
+
+import { gorgiasColors } from 'gorgias-design-system/styles'
+import { ChatTheme } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview'
 
 const StyledIcon = styled.div`
     margin-left: auto;
@@ -13,8 +14,8 @@ const StyledContentPlaceholder = styled.div`
     flex: 1;
 `
 
-const StyledContent = styled.div<{variant: ConversationVariant}>`
-    ${({variant}) => variant === 'collapsed' && 'padding: 12px 16px;'}
+const StyledContent = styled.div<{ variant: ConversationVariant }>`
+    ${({ variant }) => variant === 'collapsed' && 'padding: 12px 16px;'}
 
     overflow-y: auto;
     overflow-x: hidden;
@@ -62,10 +63,10 @@ const StyledConversationHeader = styled.div<{
     padding: 12px 16px;
 
     svg .withFill {
-        fill: ${({theme}) => theme?.mainColor};
+        fill: ${({ theme }) => theme?.mainColor};
     }
 
-    ${({variant, showBorder}) => `
+    ${({ variant, showBorder }) => `
         ${variant === 'collapsed' ? 'cursor: pointer;' : ''}
         ${
             // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
@@ -80,7 +81,7 @@ const StyledConversationContainer = styled.div<{
     isConversationView?: boolean
 }>`
     border-radius: 8px;
-    ${({variant}) => (variant === 'collapsed' ? 'width: 100%;' : 'flex: 1;')}
+    ${({ variant }) => (variant === 'collapsed' ? 'width: 100%;' : 'flex: 1;')}
 
     background: ${gorgiasColors.neutralGrey0};
     box-shadow: 1px 1px 8px 0px rgba(22, 22, 22, 0.05);
@@ -89,7 +90,7 @@ const StyledConversationContainer = styled.div<{
     display: flex;
     flex-direction: column;
 
-    ${({isConversationView}) =>
+    ${({ isConversationView }) =>
         isConversationView
             ? 'border-bottom-left-radius:0; border-bottom-right-radius: 0;'
             : ''}

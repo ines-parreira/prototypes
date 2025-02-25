@@ -1,1 +1,1 @@
-export {default} from './components/Smile'
+export { default } from './components/Smile'

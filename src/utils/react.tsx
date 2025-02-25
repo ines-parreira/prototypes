@@ -10,9 +10,9 @@ export const ComposedElements = <
         children?: React.ReactNode
     },
 >(
-    props: P
+    props: P,
 ) => {
-    const {elements, children, ...otherProps} = props
+    const { elements, children, ...otherProps } = props
     if (!elements.length) {
         return null
     }

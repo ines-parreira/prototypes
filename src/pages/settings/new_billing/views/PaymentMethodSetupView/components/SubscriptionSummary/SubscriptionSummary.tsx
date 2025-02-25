@@ -9,16 +9,16 @@ import {
 
 import useAppSelector from 'hooks/useAppSelector'
 import useSessionStorage from 'hooks/useSessionStorage'
-import {ProductType} from 'models/billing/types'
+import { ProductType } from 'models/billing/types'
 import Card from 'pages/settings/new_billing/components/Card'
-import {FormSubmitButtonError} from 'pages/settings/new_billing/components/FormSubmitButton/FormSubmitButtonError'
+import { FormSubmitButtonError } from 'pages/settings/new_billing/components/FormSubmitButton/FormSubmitButtonError'
 import SummaryFooter from 'pages/settings/new_billing/components/SummaryFooter'
 import SummaryItem from 'pages/settings/new_billing/components/SummaryItem'
 import SummaryTotal from 'pages/settings/new_billing/components/SummaryTotal'
-import {SELECTED_PRODUCTS_SESSION_STORAGE_KEY} from 'pages/settings/new_billing/constants'
-import {useBillingPlans} from 'pages/settings/new_billing/hooks/useBillingPlan'
-import {SelectedPlans} from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'
-import {isTrialing as getIsTrialing} from 'state/currentAccount/selectors'
+import { SELECTED_PRODUCTS_SESSION_STORAGE_KEY } from 'pages/settings/new_billing/constants'
+import { useBillingPlans } from 'pages/settings/new_billing/hooks/useBillingPlan'
+import { SelectedPlans } from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'
+import { isTrialing as getIsTrialing } from 'state/currentAccount/selectors'
 
 import css from './SubscriptionSummary.less'
 
@@ -33,10 +33,10 @@ export function SubscriptionSummary<TFields extends FieldValues>({
     dispatchBillingError,
     onValidSubmit,
 }: ISubscriptionSummaryProps<TFields>) {
-    const {isSubmitting} = useFormState()
+    const { isSubmitting } = useFormState()
 
     const [selectedPlansFromSessionStorage] = useSessionStorage<SelectedPlans>(
-        SELECTED_PRODUCTS_SESSION_STORAGE_KEY
+        SELECTED_PRODUCTS_SESSION_STORAGE_KEY,
     )
 
     const isTrialing = useAppSelector(getIsTrialing)
@@ -150,9 +150,9 @@ export function SubscriptionSummary<TFields extends FieldValues>({
 
 // We need to throw validation errors to stop the SummaryFooter from starting a subscription
 function useHandleUpdateSubscription<TFields extends FieldValues>(
-    onValidSubmit: ISubscriptionSummaryProps<TFields>['onValidSubmit']
+    onValidSubmit: ISubscriptionSummaryProps<TFields>['onValidSubmit'],
 ) {
-    const {handleSubmit} = useFormContext<TFields>()
+    const { handleSubmit } = useFormContext<TFields>()
 
     return () =>
         new Promise<void>(async (resolve, reject) => {
@@ -160,7 +160,7 @@ function useHandleUpdateSubscription<TFields extends FieldValues>(
                 await handleSubmit(onValidSubmit, (validationErrors) => {
                     reject(
                         Object.values(validationErrors)[0] ??
-                            new Error('Unknown validation error')
+                            new Error('Unknown validation error'),
                     )
                 })(undefined)
 

@@ -1,8 +1,8 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {useListWorkflowEntryPoints} from 'models/workflows/queries'
+import { useListWorkflowEntryPoints } from 'models/workflows/queries'
 
-import {useSelfServicePreviewContext} from '../../SelfServicePreviewContext'
+import { useSelfServicePreviewContext } from '../../SelfServicePreviewContext'
 import useWorkflowsEntrypoints from '../useWorkflowsEntrypoints'
 
 // Mock the dependencies
@@ -44,15 +44,15 @@ describe('useWorkflowsEntrypoints', () => {
         // Mock the context to return no enabled workflows
         ;(useSelfServicePreviewContext as jest.Mock).mockReturnValue({
             workflowsEntrypoints: [
-                {workflow_id: '1', enabled: false},
-                {workflow_id: '2', enabled: false},
+                { workflow_id: '1', enabled: false },
+                { workflow_id: '2', enabled: false },
             ],
         })
         ;(useListWorkflowEntryPoints as jest.Mock).mockReturnValue({
             data: {},
         })
 
-        const {result} = renderHook(() => useWorkflowsEntrypoints('en'))
+        const { result } = renderHook(() => useWorkflowsEntrypoints('en'))
 
         expect(result.current).toEqual([])
     })
@@ -60,8 +60,8 @@ describe('useWorkflowsEntrypoints', () => {
     it('should return the correct entrypoints with labels', () => {
         ;(useSelfServicePreviewContext as jest.Mock).mockReturnValue({
             workflowsEntrypoints: [
-                {workflow_id: '1', enabled: true},
-                {workflow_id: '2', enabled: true},
+                { workflow_id: '1', enabled: true },
+                { workflow_id: '2', enabled: true },
             ],
         })
         ;(useListWorkflowEntryPoints as jest.Mock).mockReturnValue({
@@ -71,19 +71,19 @@ describe('useWorkflowsEntrypoints', () => {
             },
         })
 
-        const {result} = renderHook(() => useWorkflowsEntrypoints('en'))
+        const { result } = renderHook(() => useWorkflowsEntrypoints('en'))
 
         expect(result.current).toEqual([
-            {workflow_id: '1', label: 'Workflow 1 Label'},
-            {workflow_id: '2', label: 'Workflow 2 Label'},
+            { workflow_id: '1', label: 'Workflow 1 Label' },
+            { workflow_id: '2', label: 'Workflow 2 Label' },
         ])
     })
 
     it('should filter out workflows without labels', () => {
         ;(useSelfServicePreviewContext as jest.Mock).mockReturnValue({
             workflowsEntrypoints: [
-                {workflow_id: '1', enabled: true},
-                {workflow_id: '2', enabled: true},
+                { workflow_id: '1', enabled: true },
+                { workflow_id: '2', enabled: true },
             ],
         })
         ;(useListWorkflowEntryPoints as jest.Mock).mockReturnValue({
@@ -93,10 +93,10 @@ describe('useWorkflowsEntrypoints', () => {
             },
         })
 
-        const {result} = renderHook(() => useWorkflowsEntrypoints('en'))
+        const { result } = renderHook(() => useWorkflowsEntrypoints('en'))
 
         expect(result.current).toEqual([
-            {workflow_id: '1', label: 'Workflow 1 Label'},
+            { workflow_id: '1', label: 'Workflow 1 Label' },
         ])
     })
 
@@ -108,7 +108,7 @@ describe('useWorkflowsEntrypoints', () => {
             data: {},
         })
 
-        const {result} = renderHook(() => useWorkflowsEntrypoints('en'))
+        const { result } = renderHook(() => useWorkflowsEntrypoints('en'))
 
         expect(result.current).toEqual([])
     })

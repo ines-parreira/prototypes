@@ -1,14 +1,15 @@
-import moment from 'moment'
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {usePostReporting} from 'models/reporting/queries'
-import {getCampaignABTestEvents} from 'pages/stats/convert/clients/CampaignCubeQueries'
-import {CubeFilterParams, CubeMetric} from 'pages/stats/convert/clients/types'
+import moment from 'moment'
+
+import { usePostReporting } from 'models/reporting/queries'
+import { getCampaignABTestEvents } from 'pages/stats/convert/clients/CampaignCubeQueries'
+import { CubeFilterParams, CubeMetric } from 'pages/stats/convert/clients/types'
 import {
     getMetricFromCubeData,
     transformToCampaignAbTestEvent,
 } from 'pages/stats/convert/services/CampaignMetricsHelper'
-import {getPreviousMonthRange} from 'pages/stats/convert/utils/getPreviousMonthRange'
+import { getPreviousMonthRange } from 'pages/stats/convert/utils/getPreviousMonthRange'
 
 const MIN_NUMBER_OF_ORDERS = 2000
 const MIN_SUBSCRIPTION_DAYS = 30
@@ -33,11 +34,11 @@ export const useCanRequestABTest = (shopName: string) => {
 
     const campaignABTestEventsQuery = useMemo(
         () => getCampaignABTestEvents(attrs),
-        [attrs]
+        [attrs],
     )
     const campaignABTestEventsData = usePostReporting<[CubeMetric], CubeMetric>(
         campaignABTestEventsQuery,
-        OVERRIDES
+        OVERRIDES,
     )
 
     const canRequestABTest = useMemo<boolean>(() => {
@@ -47,7 +48,7 @@ export const useCanRequestABTest = (shopName: string) => {
 
         const daysDiff = moment(new Date()).diff(
             moment(transformedData.firstImpression),
-            'days'
+            'days',
         )
 
         return (

@@ -1,17 +1,18 @@
-import {fromJS, Map} from 'immutable'
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {getActionByName} from 'config/actions'
-import {PHONE_EVENTS} from 'constants/event'
+import { fromJS, Map } from 'immutable'
+
+import { getActionByName } from 'config/actions'
+import { PHONE_EVENTS } from 'constants/event'
 import useAppSelector from 'hooks/useAppSelector'
-import {isTicketEvent, isTicketRuleSuggestion} from 'models/ticket/predicates'
-import {contentfulEventTypesValues} from 'pages/tickets/detail/components/AuditLogEvent'
-import {PRIVATE_REPLY_ACTIONS} from 'pages/tickets/detail/components/PrivateReplyEvent/constants'
+import { isTicketEvent, isTicketRuleSuggestion } from 'models/ticket/predicates'
+import { contentfulEventTypesValues } from 'pages/tickets/detail/components/AuditLogEvent'
+import { PRIVATE_REPLY_ACTIONS } from 'pages/tickets/detail/components/PrivateReplyEvent/constants'
 import {
     getRuleSuggestionContent,
     isSuggestionEmpty,
 } from 'pages/tickets/detail/components/RuleSuggestion/RuleSuggestion'
-import {getTicketBodyElements, getTicketState} from 'state/ticket/selectors'
+import { getTicketBodyElements, getTicketState } from 'state/ticket/selectors'
 
 import useRuleSuggestionForDemos from './useRuleSuggestionForDemos'
 
@@ -20,9 +21,9 @@ type FakeVirtuosoItems = 'header'
 export default function useGroupedElements() {
     const bodyElements = useAppSelector(getTicketBodyElements)
     const ticket = useAppSelector(getTicketState)
-    const {shouldDisplayDemoSuggestion} = useRuleSuggestionForDemos(
+    const { shouldDisplayDemoSuggestion } = useRuleSuggestionForDemos(
         ticket.get('id'),
-        true
+        true,
     )
 
     return useMemo(
@@ -37,7 +38,7 @@ export default function useGroupedElements() {
                     return (
                         shouldDisplayDemoSuggestion &&
                         !isSuggestionEmpty(
-                            getRuleSuggestionContent(ticket.toJS())
+                            getRuleSuggestionContent(ticket.toJS()),
                         )
                     )
                 if (!isTicketEvent(element)) return true
@@ -48,7 +49,7 @@ export default function useGroupedElements() {
 
                 return (
                     contentfulEventTypesValues.includes(
-                        element.type as (typeof contentfulEventTypesValues)[number]
+                        element.type as (typeof contentfulEventTypesValues)[number],
                     ) ||
                     (PHONE_EVENTS as string[]).includes(element.type) ||
                     (!!actionName &&
@@ -57,6 +58,6 @@ export default function useGroupedElements() {
                 )
             }),
         ],
-        [bodyElements, ticket, shouldDisplayDemoSuggestion]
+        [bodyElements, ticket, shouldDisplayDemoSuggestion],
     )
 }

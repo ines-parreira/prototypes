@@ -1,4 +1,4 @@
-import {slaPolicy1, UISLAPolicy1} from 'pages/settings/SLAs/fixtures/fixtures'
+import { slaPolicy1, UISLAPolicy1 } from 'pages/settings/SLAs/fixtures/fixtures'
 
 import makeUISLAPolicy from '../makeUISLAPolicy'
 

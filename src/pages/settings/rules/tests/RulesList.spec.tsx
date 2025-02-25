@@ -1,18 +1,18 @@
-import {render, screen, waitFor} from '@testing-library/react'
-import {createMemoryHistory} from 'history'
 import React from 'react'
-import {Provider} from 'react-redux'
-import {Router} from 'react-router-dom'
+
+import { render, screen, waitFor } from '@testing-library/react'
+import { createMemoryHistory } from 'history'
+import { Provider } from 'react-redux'
+import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {emptyRule as ruleFixture} from '../../../../fixtures/rule'
-import {fetchRules} from '../../../../models/rule/resources'
-import {RULE_MAX_NUMBER} from '../../../../state/entities/rules/selectors'
-import {RulesState} from '../../../../state/entities/rules/types'
-import {RootState, StoreDispatch} from '../../../../state/types'
-
-import {RulesList} from '../RulesList'
+import { emptyRule as ruleFixture } from '../../../../fixtures/rule'
+import { fetchRules } from '../../../../models/rule/resources'
+import { RULE_MAX_NUMBER } from '../../../../state/entities/rules/selectors'
+import { RulesState } from '../../../../state/entities/rules/types'
+import { RootState, StoreDispatch } from '../../../../state/types'
+import { RulesList } from '../RulesList'
 
 jest.mock('../../../../models/rule/resources')
 jest.mock('../../../../state/entities/rules/actions')
@@ -24,7 +24,7 @@ jest.mock('../components/CreateRuleFooter', () => () => {
 })
 
 const createRuleFixtures = (length: number) => {
-    return Array.from({length}, (_, i) => ({
+    return Array.from({ length }, (_, i) => ({
         ...ruleFixture,
         id: i + 1,
     })).reduce((acc, value) => {
@@ -58,7 +58,7 @@ describe('<RulesList/>', () => {
                 <Provider store={mockStore(populateStore(1))}>
                     <RulesList />
                 </Provider>
-            </Router>
+            </Router>,
         )
 
         await waitFor(() => {
@@ -72,7 +72,7 @@ describe('<RulesList/>', () => {
                 <Provider store={mockStore(populateStore(6))}>
                     <RulesList />
                 </Provider>
-            </Router>
+            </Router>,
         )
 
         await waitFor(() => {
@@ -82,12 +82,12 @@ describe('<RulesList/>', () => {
     })
 
     it('should render the rules list', () => {
-        const {container} = render(
+        const { container } = render(
             <Router history={history}>
                 <Provider store={mockStore(populateStore(5))}>
                     <RulesList />
                 </Provider>
-            </Router>
+            </Router>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -98,29 +98,29 @@ describe('<RulesList/>', () => {
                 <Provider store={mockStore(populateStore(1))}>
                     <RulesList />
                 </Provider>
-            </Router>
+            </Router>,
         )
         expect(fetchRulesMock).toHaveBeenCalled()
     })
 
     it('should render a warning when reaching the rule limit', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Router history={history}>
                 <Provider store={mockStore(populateStore(65))}>
                     <RulesList />
                 </Provider>
-            </Router>
+            </Router>,
         )
         expect(getByText(/65 out of 70/)).not.toBe(null)
     })
 
     it('should render an error when reached the rule limit', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Router history={history}>
                 <Provider store={mockStore(populateStore(RULE_MAX_NUMBER))}>
                     <RulesList />
                 </Provider>
-            </Router>
+            </Router>,
         )
         expect(getByText(/you have reached the 70 rule limit/i)).not.toBe(null)
     })

@@ -1,26 +1,27 @@
-import {act, renderHook} from '@testing-library/react-hooks'
 import React from 'react'
-import {Provider} from 'react-redux'
 
-import {createVerification} from 'models/singleSenderVerification/resources'
-import {mockStore} from 'utils/testing'
+import { act, renderHook } from '@testing-library/react-hooks'
+import { Provider } from 'react-redux'
+
+import { createVerification } from 'models/singleSenderVerification/resources'
+import { mockStore } from 'utils/testing'
 
 import useBulkCreateSingleSenderVerification from '../hooks/useBulkCreateSingleSenderVerification'
 
 jest.mock('models/singleSenderVerification/resources')
 
 describe('useBulkCreateSingleSenderVerification', () => {
-    const wrapper = ({children}: any) => {
+    const wrapper = ({ children }: any) => {
         return <Provider store={mockStore({} as any)}>{children}</Provider>
     }
 
     it('should call createVerification for each integration', () => {
-        const {result} = renderHook(useBulkCreateSingleSenderVerification, {
+        const { result } = renderHook(useBulkCreateSingleSenderVerification, {
             wrapper,
         })
         const integrations = [
-            {id: 1, meta: {address: 'email1@gorgias.com'}},
-            {id: 2, meta: {address: 'email2@gorgias.com'}},
+            { id: 1, meta: { address: 'email1@gorgias.com' } },
+            { id: 2, meta: { address: 'email2@gorgias.com' } },
         ] as any
         const values = {
             address: 'address',
@@ -33,7 +34,7 @@ describe('useBulkCreateSingleSenderVerification', () => {
         void act(() => {
             void result.current.bulkCreateSingleSenderVerification(
                 integrations,
-                values
+                values,
             )
         })
 

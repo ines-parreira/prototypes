@@ -1,16 +1,16 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
+import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
 import useAppSelector from 'hooks/useAppSelector'
-import {HelpCenter} from 'models/helpCenter/types'
-import {useConfigurationForm} from 'pages/aiAgent/hooks/useConfigurationForm'
-import {getIntegrationsByTypes} from 'state/integrations/selectors'
+import { HelpCenter } from 'models/helpCenter/types'
+import { useConfigurationForm } from 'pages/aiAgent/hooks/useConfigurationForm'
+import { getIntegrationsByTypes } from 'state/integrations/selectors'
 
-import {INITIAL_FORM_VALUES} from '../constants'
-import {useAiAgentStoreConfigurationContext} from '../providers/AiAgentStoreConfigurationContext'
-import {FormValues} from '../types'
-import {isAiAgentEnabled} from '../util'
-import {getFormValuesFromStoreConfiguration} from './utils/configurationForm.utils'
+import { INITIAL_FORM_VALUES } from '../constants'
+import { useAiAgentStoreConfigurationContext } from '../providers/AiAgentStoreConfigurationContext'
+import { FormValues } from '../types'
+import { isAiAgentEnabled } from '../util'
+import { getFormValuesFromStoreConfiguration } from './utils/configurationForm.utils'
 
 /**
  * A custom hook that enables the capability to create a form for the store configuration of AI agent.
@@ -25,12 +25,12 @@ import {getFormValuesFromStoreConfiguration} from './utils/configurationForm.uti
  */
 export const useStoreConfigurationForm = (
     shopName: string,
-    faqHelpCenters: HelpCenter[]
+    faqHelpCenters: HelpCenter[],
 ) => {
     // because this selector is a function which return function we need to memoized it before send to reselect
     const selector = useMemo(
         () => getIntegrationsByTypes(EMAIL_INTEGRATION_TYPES),
-        []
+        [],
     )
     const emailIntegrations = useAppSelector(selector)
     const emailItems = useMemo(() => {
@@ -40,7 +40,7 @@ export const useStoreConfigurationForm = (
         }))
     }, [emailIntegrations])
 
-    const {storeConfiguration} = useAiAgentStoreConfigurationContext()
+    const { storeConfiguration } = useAiAgentStoreConfigurationContext()
 
     const defaultFormValues: Partial<FormValues> = useMemo(() => {
         const initialHelpCenter = faqHelpCenters[0]
@@ -64,14 +64,14 @@ export const useStoreConfigurationForm = (
         configurationForm.formValues.emailChannelDeactivatedDatetime !==
             undefined
             ? configurationForm.formValues.emailChannelDeactivatedDatetime
-            : INITIAL_FORM_VALUES.emailChannelDeactivatedDatetime
+            : INITIAL_FORM_VALUES.emailChannelDeactivatedDatetime,
     )
 
     const isChatChannelEnabled = isAiAgentEnabled(
         configurationForm.formValues.chatChannelDeactivatedDatetime !==
             undefined
             ? configurationForm.formValues.chatChannelDeactivatedDatetime
-            : INITIAL_FORM_VALUES.chatChannelDeactivatedDatetime
+            : INITIAL_FORM_VALUES.chatChannelDeactivatedDatetime,
     )
 
     return {

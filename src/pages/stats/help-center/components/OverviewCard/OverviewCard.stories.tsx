@@ -1,7 +1,7 @@
-import {Meta, StoryObj} from '@storybook/react'
 import React from 'react'
 
-import {Provider} from 'react-redux'
+import { Meta, StoryObj } from '@storybook/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 

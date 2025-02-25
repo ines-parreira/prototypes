@@ -1,11 +1,13 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import _noop from 'lodash/noop'
-import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react'
-import {Prompt, useHistory, useLocation, useParams} from 'react-router-dom'
-import {ulid} from 'ulidx'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import _noop from 'lodash/noop'
+import { Prompt, useHistory, useLocation, useParams } from 'react-router-dom'
+import { ulid } from 'ulidx'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useEffectOnce from 'hooks/useEffectOnce'
 import {
@@ -13,24 +15,24 @@ import {
     useGetWorkflowConfigurationTemplates,
     useListActionsApps,
 } from 'models/workflows/queries'
-import {AiAgentLayout} from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
-import {ACTIONS, AI_AGENT} from 'pages/aiAgent/constants'
-import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { AiAgentLayout } from 'pages/aiAgent/components/AiAgentLayout/AiAgentLayout'
+import { ACTIONS, AI_AGENT } from 'pages/aiAgent/constants'
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import ActionsPlatformTemplateVisualBuilderView from 'pages/automate/actionsPlatform/components/ActionsPlatformTemplateVisualBuilderView'
 import useValidateOnVisualBuilderGraphChange from 'pages/automate/actionsPlatform/hooks/useValidateOnVisualBuilderGraphChange'
 import {
     useVisualBuilder,
     VisualBuilderContext,
 } from 'pages/automate/workflows/hooks/useVisualBuilder'
-import {useVisualBuilderGraphReducer} from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
-import {computeNodesPositions} from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer/utils'
-import {transformVisualBuilderGraphIntoWfConfiguration} from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import {LLMPromptTriggerNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { useVisualBuilderGraphReducer } from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer'
+import { computeNodesPositions } from 'pages/automate/workflows/hooks/useVisualBuilderGraphReducer/utils'
+import { transformVisualBuilderGraphIntoWfConfiguration } from 'pages/automate/workflows/models/visualBuilderGraph.model'
+import { LLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import {
     transformWorkflowConfigurationIntoVisualBuilderGraph,
     WorkflowConfigurationBuilder,
 } from 'pages/automate/workflows/models/workflowConfiguration.model'
-import {WorkflowConfiguration} from 'pages/automate/workflows/models/workflowConfiguration.types'
+import { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import Modal from 'pages/common/components/modal/Modal'
@@ -38,18 +40,19 @@ import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import useUnsavedChangesPrompt from 'pages/common/components/useUnsavedChangesPrompt'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
-import {useAiAgentOnboardingNotification} from '../hooks/useAiAgentOnboardingNotification'
+import { useAiAgentOnboardingNotification } from '../hooks/useAiAgentOnboardingNotification'
 import ActionFormView from './components/ActionFormView'
-import css from './CreateActionView.less'
 import use3plIntegrations from './hooks/use3plIntegrations'
 import useTouchActionGraph from './hooks/useTouchActionGraph'
 import useUpsertAction from './hooks/useUpsertAction'
 import useValidateActionGraph from './hooks/useValidateActionGraph'
 import StoreAppsProvider from './providers/StoreAppsProvider'
-import {StoreWorkflowsConfiguration} from './types'
+import { StoreWorkflowsConfiguration } from './types'
+
+import css from './CreateActionView.less'
 
 const getInitialConfiguration = () => {
     const b = new WorkflowConfigurationBuilder({
@@ -93,7 +96,7 @@ const getInitialConfiguration = () => {
 }
 
 const CreateActionView = () => {
-    const {state} = useLocation<WorkflowConfiguration | undefined>()
+    const { state } = useLocation<WorkflowConfiguration | undefined>()
 
     const configurationFromTemplate = useRef(state)
 
@@ -101,11 +104,11 @@ const CreateActionView = () => {
         window.history.replaceState(null, '')
     })
 
-    const {shopName, shopType} = useParams<{
+    const { shopName, shopType } = useParams<{
         shopName: string
         shopType: 'shopify'
     }>()
-    const {routes} = useAiAgentNavigation({shopName})
+    const { routes } = useAiAgentNavigation({ shopName })
     const {
         isLoading: isCreateActionLoading,
         mutateAsync: createAction,
@@ -119,7 +122,7 @@ const CreateActionView = () => {
     const history = useHistory()
     const configuration = useMemo(
         () => configurationFromTemplate.current ?? getInitialConfiguration(),
-        []
+        [],
     )
 
     const [createAndTestButtonRef, setCreateAndTestButtonRef] =
@@ -127,10 +130,10 @@ const CreateActionView = () => {
     const [isCreateAndTestButtonClicked, setIsCreateAndTestButtonClicked] =
         useState(false)
 
-    const {data: steps = []} = useGetWorkflowConfigurationTemplates({
+    const { data: steps = [] } = useGetWorkflowConfigurationTemplates({
         triggers: ['reusable-llm-prompt'],
     })
-    const {data: actionsApps = []} = useListActionsApps()
+    const { data: actionsApps = [] } = useListActionsApps()
 
     const availableIntegrations = use3plIntegrations()
 
@@ -138,25 +141,25 @@ const CreateActionView = () => {
         computeNodesPositions(
             transformWorkflowConfigurationIntoVisualBuilderGraph<LLMPromptTriggerNodeType>(
                 configuration,
-                false
-            )
-        )
+                false,
+            ),
+        ),
     )
     const [visualBuilderGraph, setVisualBuilderGraph] = useState(
-        visualBuilderGraphDirty
+        visualBuilderGraphDirty,
     )
 
     const visualBuilderContextValue = useVisualBuilder(
         visualBuilderGraphDirty,
         dispatch,
         true,
-        availableIntegrations
+        availableIntegrations,
     )
 
-    const {getVariableListForNode, initialVisualBuilderGraph} =
+    const { getVariableListForNode, initialVisualBuilderGraph } =
         visualBuilderContextValue
 
-    const {data: actions = []} = useGetStoreWorkflowsConfigurations({
+    const { data: actions = [] } = useGetStoreWorkflowsConfigurations({
         storeName: shopName,
         storeType: shopType,
         triggers: ['llm-prompt'],
@@ -164,7 +167,7 @@ const CreateActionView = () => {
 
     const handleValidate = useValidateActionGraph(
         getVariableListForNode,
-        actions
+        actions,
     )
     const handleTouch = useTouchActionGraph(actionsApps)
 
@@ -193,7 +196,7 @@ const CreateActionView = () => {
                     showDismissButton: true,
                     status: NotificationStatus.Error,
                     message: 'Fix errors in order to create Action',
-                })
+                }),
             )
 
             return Promise.reject()
@@ -209,7 +212,7 @@ const CreateActionView = () => {
                 visualBuilderGraphDirty,
                 false,
                 steps,
-                availableIntegrations
+                availableIntegrations,
             ) as StoreWorkflowsConfiguration,
         ])
     }, [
@@ -227,7 +230,7 @@ const CreateActionView = () => {
 
     const [isEditingSteps, setIsEditingSteps] = useState(false)
 
-    const {isOpen, onClose, redirectToOriginalLocation, onNavigateAway} =
+    const { isOpen, onClose, redirectToOriginalLocation, onNavigateAway } =
         useUnsavedChangesPrompt({
             when: !isCreateActionSuccess && !isEditingSteps,
         })
@@ -235,7 +238,7 @@ const CreateActionView = () => {
     const {
         isLoading: isLoadingOnboardingNotificationState,
         handleOnTriggerActivateAiAgentNotification,
-    } = useAiAgentOnboardingNotification({shopName})
+    } = useAiAgentOnboardingNotification({ shopName })
 
     useEffect(() => {
         if (isCreateActionSuccess) {

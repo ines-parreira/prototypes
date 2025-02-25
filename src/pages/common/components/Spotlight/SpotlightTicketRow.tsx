@@ -1,21 +1,20 @@
-import {fromJS} from 'immutable'
+import React, { ComponentProps, useMemo } from 'react'
+
+import { fromJS } from 'immutable'
 import moment from 'moment'
-import React, {ComponentProps, useMemo} from 'react'
 
-import {DateAndTimeFormatting} from 'constants/datetime'
-
+import { DateAndTimeFormatting } from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import {EntityType} from 'hooks/useSearchRankScenario'
-import {PickedTicketWithHighlights} from 'models/search/types'
-
-import {TicketAssignee} from 'models/ticket/types'
-import {ticketHighlightsTransform} from 'pages/common/components/Spotlight/helpers'
+import { EntityType } from 'hooks/useSearchRankScenario'
+import { PickedTicketWithHighlights } from 'models/search/types'
+import { TicketAssignee } from 'models/ticket/types'
+import { ticketHighlightsTransform } from 'pages/common/components/Spotlight/helpers'
 import SpotlightRow from 'pages/common/components/Spotlight/SpotlightRow'
 import css from 'pages/common/components/Spotlight/SpotlightTicketRow.less'
 import TicketIcon from 'pages/common/components/TicketIcon'
-import {UserAssigneeLabel} from 'pages/common/utils/labels'
-import {formatDatetime} from 'utils'
-import {sanitizeHtmlDefault} from 'utils/html'
+import { UserAssigneeLabel } from 'pages/common/utils/labels'
+import { formatDatetime } from 'utils'
+import { sanitizeHtmlDefault } from 'utils/html'
 
 type SpotlightTicketRowProps = {
     item: PickedTicketWithHighlights
@@ -38,7 +37,7 @@ const SpotlightTicketRow = ({
 }: SpotlightTicketRowProps) => {
     const itemWithHighlights = useMemo(
         () => ticketHighlightsTransform(item),
-        [item]
+        [item],
     )
 
     return (
@@ -81,10 +80,10 @@ const SpotlightTicketInfo = ({
     date: string
 }) => {
     const datetimeFormatShort = useGetDateAndTimeFormat(
-        DateAndTimeFormatting.ShortDateWithOrdinalSuffixDay
+        DateAndTimeFormatting.ShortDateWithOrdinalSuffixDay,
     )
     const datetimeFormatShortWithYear = useGetDateAndTimeFormat(
-        DateAndTimeFormatting.ShortDateWithYearAndOrdinalSuffixDay
+        DateAndTimeFormatting.ShortDateWithYearAndOrdinalSuffixDay,
     )
 
     const formattedDate = useMemo(() => {
@@ -95,7 +94,9 @@ const SpotlightTicketInfo = ({
             ? 'Today'
             : formatDatetime(
                   date,
-                  isThisYear ? datetimeFormatShort : datetimeFormatShortWithYear
+                  isThisYear
+                      ? datetimeFormatShort
+                      : datetimeFormatShortWithYear,
               )
     }, [date, datetimeFormatShort, datetimeFormatShortWithYear])
 

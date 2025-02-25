@@ -1,5 +1,5 @@
 import history from '../pages/history'
-import {KeyMap} from '../services/shortcutManager/shortcutManager'
+import { KeyMap } from '../services/shortcutManager/shortcutManager'
 
 const shortcuts: Record<string, KeyMap> = {
     App: {

@@ -7,28 +7,27 @@ import {
 } from 'draft-js'
 import _pickBy from 'lodash/pickBy'
 
-import {getEntitySelectionState} from '../../../../../utils/editor'
-
-import {cachedSelection, predictionKey} from './state'
+import { getEntitySelectionState } from '../../../../../utils/editor'
+import { cachedSelection, predictionKey } from './state'
 
 const PREDICTION_TYPE = 'prediction'
 
 export const createPrediction = (
     text: string,
-    editorState: EditorState
+    editorState: EditorState,
 ): string => {
     const currentContent = editorState.getCurrentContent()
     const entityContentState = currentContent.createEntity(
         PREDICTION_TYPE,
         'IMMUTABLE',
-        {text}
+        { text },
     )
     return entityContentState.getLastCreatedEntityKey()
 }
 
 export const insertPrediction = (
     entityKey: string,
-    editorState: EditorState
+    editorState: EditorState,
 ) => {
     const currentContent = editorState.getCurrentContent()
     const selection = editorState.getSelection()
@@ -37,7 +36,7 @@ export const insertPrediction = (
         selection,
         ' ',
         undefined,
-        entityKey
+        entityKey,
     )
 
     return EditorState.push(editorState, textWithEntity, 'insert-characters')
@@ -45,7 +44,7 @@ export const insertPrediction = (
 
 export const removePrediction = (
     entityKey: string,
-    editorState: EditorState
+    editorState: EditorState,
 ) => {
     const selection = editorState.getSelection()
     const contentState = editorState.getCurrentContent()
@@ -58,19 +57,19 @@ export const removePrediction = (
     const newContentState = Modifier.removeRange(
         contentState,
         entitySelection,
-        'forward'
+        'forward',
     )
     const newEditorState = EditorState.push(
         editorState,
         newContentState,
-        'remove-range'
+        'remove-range',
     )
     return EditorState.acceptSelection(newEditorState, selection)
 }
 
 export const getPredictionText = (
     entityKey: string,
-    editorState: EditorState
+    editorState: EditorState,
 ) => {
     return (
         editorState.getCurrentContent().getEntity(entityKey).getData() as {
@@ -90,7 +89,7 @@ export const usePrediction = (entityKey: string, editorState: EditorState) => {
     const newContentState = Modifier.replaceWithFragment(
         currentContent,
         selection,
-        predictionContentState.getBlockMap()
+        predictionContentState.getBlockMap(),
     )
 
     return EditorState.push(editorState, newContentState, 'insert-fragment')
@@ -99,13 +98,13 @@ export const usePrediction = (entityKey: string, editorState: EditorState) => {
 export const removeFirstNCharsOfPrediction = (
     entityKey: string,
     editorState: EditorState,
-    n: number
+    n: number,
 ): EditorState => {
     const selection = editorState.getSelection()
     const predictionText = getPredictionText(entityKey, editorState)
     const newEntityKey = createPrediction(
         predictionText.substring(n),
-        editorState
+        editorState,
     )
 
     let newEditorState = removePrediction(entityKey, editorState)
@@ -119,14 +118,14 @@ export const removeFirstNCharsOfPrediction = (
 
 // It returns plain text stripping the prediction artifacts
 export const getPlainTextFromStateWithPrediction = (
-    editorState: EditorState
+    editorState: EditorState,
 ): string => {
     const text = editorState.getCurrentContent().getPlainText()
     return text.slice(0, -1)
 }
 
 export const convertToRawWithoutPredictions = (
-    contentState: ContentState
+    contentState: ContentState,
 ): {
     blocks: RawDraftContentBlock[]
     entityMap: {

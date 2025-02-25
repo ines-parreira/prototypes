@@ -1,4 +1,4 @@
-import {ReactNode} from 'react'
+import { ReactNode } from 'react'
 
 export type Value = number | string
 
@@ -14,6 +14,6 @@ export type SelectableOption = {
 
 export type Option =
     | SelectableOption
-    | {label: string; isHeader: true}
-    | {label: ReactNode; isAction: true; onClick: () => void}
-    | {isDivider: true}
+    | { label: string; isHeader: true }
+    | { label: ReactNode; isAction: true; onClick: () => void }
+    | { isDivider: true }

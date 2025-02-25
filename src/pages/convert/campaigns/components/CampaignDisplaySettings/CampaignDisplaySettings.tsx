@@ -1,11 +1,11 @@
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {CampaignDelay} from 'pages/convert/campaigns/components/CampaignDelay'
-import {CampaignDeviceType} from 'pages/convert/campaigns/components/CampaignDeviceType'
-import {CampaignPreferences} from 'pages/convert/campaigns/components/CampaignPreferences/CampaignPreferences'
-import {WithRevenuePaywall} from 'pages/convert/campaigns/components/WithRevenuePaywall'
-import {CampaignTriggerMap} from 'pages/convert/campaigns/types/CampaignTriggerMap'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import { CampaignDelay } from 'pages/convert/campaigns/components/CampaignDelay'
+import { CampaignDeviceType } from 'pages/convert/campaigns/components/CampaignDeviceType'
+import { CampaignPreferences } from 'pages/convert/campaigns/components/CampaignPreferences/CampaignPreferences'
+import { WithRevenuePaywall } from 'pages/convert/campaigns/components/WithRevenuePaywall'
+import { CampaignTriggerMap } from 'pages/convert/campaigns/types/CampaignTriggerMap'
+import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 import useIsCampaignProritizationEnabled from 'pages/convert/common/hooks/useIsCampaignProritizationEnabled'
 
 import css from './CampaignDisplaySettings.less'
@@ -20,18 +20,18 @@ type Props = {
     onChangeNoReply: (value: boolean) => void
     onChangeIncognitoVisitor: (
         triggerId: string,
-        value: boolean | undefined
+        value: boolean | undefined,
     ) => void
 }
 
 function getTriggerIdByKey(
     triggers: CampaignTriggerMap,
-    key: CampaignTriggerType
+    key: CampaignTriggerType,
 ): string {
     return (
         Object.entries(triggers).find(
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            ([id, trigger]) => trigger.type === key
+            ([id, trigger]) => trigger.type === key,
         )?.[0] || ''
     )
 }
@@ -48,7 +48,7 @@ export const CampaignDisplaySettings = ({
 }: Props): JSX.Element => {
     const deviceTypeId = getTriggerIdByKey(
         triggers,
-        CampaignTriggerType.DeviceType
+        CampaignTriggerType.DeviceType,
     )
 
     const shouldRenderSettings = isConvertSubscriber || deviceTypeId || delay
@@ -89,7 +89,7 @@ export const CampaignDisplaySettings = ({
 
     return (
         <WithRevenuePaywall showPaywall={!isConvertSubscriber}>
-            <h3 style={{marginTop: 32}}>Display</h3>
+            <h3 style={{ marginTop: 32 }}>Display</h3>
             <div className={css.settingsContainer}>
                 <div className={css.sectionItem}>
                     <CampaignDelay

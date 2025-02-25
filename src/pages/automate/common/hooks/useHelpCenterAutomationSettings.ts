@@ -1,103 +1,102 @@
+import { useEffect, useMemo } from 'react'
+
 import axios from 'axios'
-import {useEffect, useMemo} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
-
-import {HelpCenterAutomationSettings} from 'models/helpCenter/types'
-import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import { HelpCenterAutomationSettings } from 'models/helpCenter/types'
+import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {
+    getHelpCentersAutomationSettings,
     helpCenterAutomationSettingsFetched,
     helpCenterAutomationSettingsUpdated,
-    getHelpCentersAutomationSettings,
 } from 'state/entities/helpCenter/helpCentersAutomationSettings'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {reportError} from 'utils/errors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { reportError } from 'utils/errors'
 
 const useHelpCentersAutomationSettings = (
     helpCenterId: number,
-    withNotifications = true
+    withNotifications = true,
 ) => {
     const dispatch = useAppDispatch()
-    const {client} = useHelpCenterApi()
+    const { client } = useHelpCenterApi()
 
     const helpCentersAutomationSettings = useAppSelector(
-        getHelpCentersAutomationSettings
+        getHelpCentersAutomationSettings,
     )
 
-    const [{loading: isFetchPending}, handleHelpCenterAutomationSettingsFetch] =
-        useAsyncFn(async () => {
-            if (!client) {
-                return
-            }
+    const [
+        { loading: isFetchPending },
+        handleHelpCenterAutomationSettingsFetch,
+    ] = useAsyncFn(async () => {
+        if (!client) {
+            return
+        }
 
-            try {
-                const {data: automationSettings} =
-                    await client.getHelpCenterAutomationSettings({
-                        help_center_id: helpCenterId,
-                    })
+        try {
+            const { data: automationSettings } =
+                await client.getHelpCenterAutomationSettings({
+                    help_center_id: helpCenterId,
+                })
 
-                void dispatch(
+            void dispatch(
+                helpCenterAutomationSettingsFetched({
+                    helpCenterId: helpCenterId.toString(),
+                    automationSettings,
+                }),
+            )
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response?.status === 404) {
+                return dispatch(
                     helpCenterAutomationSettingsFetched({
                         helpCenterId: helpCenterId.toString(),
-                        automationSettings,
-                    })
-                )
-            } catch (error) {
-                if (
-                    axios.isAxiosError(error) &&
-                    error.response?.status === 404
-                ) {
-                    return dispatch(
-                        helpCenterAutomationSettingsFetched({
-                            helpCenterId: helpCenterId.toString(),
-                            automationSettings: {
-                                workflows: [],
-                                order_management: {enabled: false},
-                            },
-                        })
-                    )
-                }
-
-                if (error instanceof Error) {
-                    reportError(error)
-                }
-
-                void dispatch(
-                    notify({
-                        message: 'Failed to fetch Automate settings',
-                        status: NotificationStatus.Error,
-                    })
+                        automationSettings: {
+                            workflows: [],
+                            order_management: { enabled: false },
+                        },
+                    }),
                 )
             }
-        }, [client, helpCenterId])
+
+            if (error instanceof Error) {
+                reportError(error)
+            }
+
+            void dispatch(
+                notify({
+                    message: 'Failed to fetch Automate settings',
+                    status: NotificationStatus.Error,
+                }),
+            )
+        }
+    }, [client, helpCenterId])
 
     const [
-        {loading: isUpdatePending},
+        { loading: isUpdatePending },
         handleHelpCenterAutomationSettingsUpdate,
     ] = useAsyncFn(
         async (
             automationSettings: Partial<HelpCenterAutomationSettings>,
-            notificationMessage?: string
+            notificationMessage?: string,
         ) => {
             if (!client) {
                 return
             }
 
             try {
-                const {data: updatedAutomationSettings} =
+                const { data: updatedAutomationSettings } =
                     await client.upsertHelpCenterAutomationSettings(
-                        {help_center_id: helpCenterId},
-                        automationSettings
+                        { help_center_id: helpCenterId },
+                        automationSettings,
                     )
 
                 void dispatch(
                     helpCenterAutomationSettingsUpdated({
                         helpCenterId: helpCenterId.toString(),
                         automationSettings: updatedAutomationSettings,
-                    })
+                    }),
                 )
 
                 if (withNotifications) {
@@ -106,7 +105,7 @@ const useHelpCentersAutomationSettings = (
                             message:
                                 notificationMessage ?? 'Successfully updated',
                             status: NotificationStatus.Success,
-                        })
+                        }),
                     )
                 }
             } catch (error) {
@@ -118,11 +117,11 @@ const useHelpCentersAutomationSettings = (
                     notify({
                         message: 'Failed to update Automate settings',
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
             }
         },
-        [client, helpCenterId]
+        [client, helpCenterId],
     )
 
     useEffect(() => {
@@ -144,7 +143,7 @@ const useHelpCentersAutomationSettings = (
             isUpdatePending,
             automationSettings: helpCentersAutomationSettings[
                 helpCenterId.toString()
-            ] ?? {workflows: []},
+            ] ?? { workflows: [] },
             handleHelpCenterAutomationSettingsFetch,
             handleHelpCenterAutomationSettingsUpdate,
         }),
@@ -155,7 +154,7 @@ const useHelpCentersAutomationSettings = (
             helpCentersAutomationSettings,
             handleHelpCenterAutomationSettingsFetch,
             handleHelpCenterAutomationSettingsUpdate,
-        ]
+        ],
     )
 }
 

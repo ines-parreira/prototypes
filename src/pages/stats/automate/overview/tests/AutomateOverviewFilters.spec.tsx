@@ -1,23 +1,24 @@
-import {render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import LD from 'launchdarkly-react-client-sdk'
 import React from 'react'
-import {Provider} from 'react-redux'
-import {MemoryRouter} from 'react-router-dom'
+
+import { render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import LD from 'launchdarkly-react-client-sdk'
+import { Provider } from 'react-redux'
+import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {TicketChannel} from 'business/types/ticket'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {account} from 'fixtures/account'
-import {agents} from 'fixtures/agents'
-import {integrationsState} from 'fixtures/integrations'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {TagFilterInstanceId} from 'models/stat/types'
-import {AutomateOverviewFilters} from 'pages/stats/automate/overview/AutomateOverviewFilters'
-import {CALENDAR_ICON} from 'pages/stats/common/PeriodPicker'
-import {RootState, StoreDispatch} from 'state/types'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
+import { TicketChannel } from 'business/types/ticket'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { account } from 'fixtures/account'
+import { agents } from 'fixtures/agents'
+import { integrationsState } from 'fixtures/integrations'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { TagFilterInstanceId } from 'models/stat/types'
+import { AutomateOverviewFilters } from 'pages/stats/automate/overview/AutomateOverviewFilters'
+import { CALENDAR_ICON } from 'pages/stats/common/PeriodPicker'
+import { RootState, StoreDispatch } from 'state/types'
+import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -44,7 +45,7 @@ describe('<AutomateOverviewFilters />', () => {
             },
         },
         ui: {
-            stats: {filters: uiStatsInitialState},
+            stats: { filters: uiStatsInitialState },
         },
     } as RootState
 
@@ -75,7 +76,7 @@ describe('<AutomateOverviewFilters />', () => {
                 >
                     <AutomateOverviewFilters />
                 </Provider>
-            </MemoryRouter>
+            </MemoryRouter>,
         )
 
         // filtersLabels.forEach((filterLabels) => {

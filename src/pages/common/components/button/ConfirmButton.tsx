@@ -1,9 +1,10 @@
-import React, {ComponentProps, ReactNode} from 'react'
-import {Popover} from 'reactstrap'
+import React, { ComponentProps, ReactNode } from 'react'
+
+import { Popover } from 'reactstrap'
 
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 
-import Button, {type ButtonProps} from './Button'
+import Button, { type ButtonProps } from './Button'
 
 type Props = {
     confirmationButtonIntent?: ButtonProps['intent']
@@ -50,7 +51,7 @@ export default function ConfirmButton({
             cancelLabel={cancelLabel}
             showCancelButton={showCancelButton}
         >
-            {({uid, onDisplayConfirmation, elementRef}) => (
+            {({ uid, onDisplayConfirmation, elementRef }) => (
                 <Button
                     {...other}
                     id={uid}

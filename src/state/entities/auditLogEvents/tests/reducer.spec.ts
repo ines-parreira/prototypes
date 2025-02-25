@@ -1,8 +1,7 @@
-import {events as eventsFixtures} from '../../../../fixtures/event'
-import {auditLogEventsFetched} from '../actions'
+import { events as eventsFixtures } from '../../../../fixtures/event'
+import { auditLogEventsFetched } from '../actions'
 import reducer from '../reducer'
-
-import {AuditLogEventsState} from '../types'
+import { AuditLogEventsState } from '../types'
 
 describe('audit log events reducer', () => {
     describe('fetchEvents action', () => {
@@ -11,7 +10,7 @@ describe('audit log events reducer', () => {
         it('should add the events to the state', () => {
             const newState = reducer(
                 initialState,
-                auditLogEventsFetched(eventsFixtures)
+                auditLogEventsFetched(eventsFixtures),
             )
             expect(newState).toMatchSnapshot()
         })

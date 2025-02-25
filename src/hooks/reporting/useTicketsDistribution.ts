@@ -1,20 +1,18 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {useCustomFieldsTicketCount} from 'hooks/reporting/metricsPerCustomField'
-
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useCustomFieldsTicketCount } from 'hooks/reporting/metricsPerCustomField'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
-
-import {OrderDirection} from 'models/api/types'
+import { OrderDirection } from 'models/api/types'
 import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMeasure,
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
-import {NOT_AVAILABLE_PLACEHOLDER} from 'pages/stats/common/utils'
-import {getSelectedCustomField} from 'state/ui/stats/ticketInsightsSlice'
+import { NOT_AVAILABLE_PLACEHOLDER } from 'pages/stats/common/utils'
+import { getSelectedCustomField } from 'state/ui/stats/ticketInsightsSlice'
 
 export const useTicketsDistribution = (topAmount = 10) => {
-    const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone } = useNewStatsFilters()
     const selectedCustomField = useAppSelector(getSelectedCustomField)
 
     const ticketCountField =
@@ -22,25 +20,25 @@ export const useTicketsDistribution = (topAmount = 10) => {
     const customFieldDimension =
         TicketCustomFieldsDimension.TicketCustomFieldsValueString
 
-    const {data, isFetching} = useCustomFieldsTicketCount(
+    const { data, isFetching } = useCustomFieldsTicketCount(
         cleanStatsFilters,
         userTimezone,
         String(selectedCustomField.id),
-        OrderDirection.Desc
+        OrderDirection.Desc,
     )
 
     const topData = useMemo(
         () => data?.allData.slice(0, topAmount) || [],
-        [data?.allData, topAmount]
+        [data?.allData, topAmount],
     )
     const ticketsCountTotal =
         data?.allData.reduce(
             (acc, cur) => acc + Number(cur[ticketCountField]),
-            0
+            0,
         ) || 0
 
     const topDataMaxValue = Math.max(
-        ...topData.map((item) => Number(item[ticketCountField]))
+        ...topData.map((item) => Number(item[ticketCountField])),
     )
 
     const outsideTopTotal =
@@ -80,6 +78,6 @@ export const useTicketsDistribution = (topAmount = 10) => {
             customFieldDimension,
             ticketCountField,
             maxTicketCount,
-        ]
+        ],
     )
 }

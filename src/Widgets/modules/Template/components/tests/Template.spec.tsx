@@ -1,8 +1,9 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {shopifyWidget} from 'fixtures/widgets'
-import {LEAF_TYPES} from 'models/widget/constants'
+import { render } from '@testing-library/react'
+
+import { shopifyWidget } from 'fixtures/widgets'
+import { LEAF_TYPES } from 'models/widget/constants'
 import {
     CardTemplate,
     LeafTemplate,
@@ -10,10 +11,9 @@ import {
     ListTemplate,
     WrapperTemplate,
 } from 'models/widget/types'
-import {EditionContext} from 'providers/infobar/EditionContext'
-import {assumeMock, getLastMockCall} from 'utils/testing'
-
-import {WidgetContext} from 'Widgets/contexts/WidgetContext'
+import { EditionContext } from 'providers/infobar/EditionContext'
+import { assumeMock, getLastMockCall } from 'utils/testing'
+import { WidgetContext } from 'Widgets/contexts/WidgetContext'
 import Card, {
     CardCustomization,
     HiddenField,
@@ -22,13 +22,13 @@ import Field from 'Widgets/modules/Template/modules/Field'
 import ListWidget from 'Widgets/modules/Template/modules/List'
 import Wrapper from 'Widgets/modules/Template/modules/Wrapper'
 
-import {CustomizationContext} from '../../contexts/CustomizationContext'
+import { CustomizationContext } from '../../contexts/CustomizationContext'
 import {
     seekCardCustomization,
     seekFieldCustomization,
 } from '../../helpers/customization'
-import {FieldEditFormData} from '../../modules/Field/types'
-import Template, {self} from '../Template'
+import { FieldEditFormData } from '../../modules/Field/types'
+import Template, { self } from '../Template'
 
 jest.spyOn(self, 'Template')
 const spiedTemplate = assumeMock(self.Template)
@@ -55,7 +55,7 @@ const cardCustomizationMock: CardCustomization = {
 
 seekCardCustomizationMock.mockReturnValue(cardCustomizationMock)
 
-const leafTemplate = {type: 'text'} as LeafTemplate
+const leafTemplate = { type: 'text' } as LeafTemplate
 const cardTemplate = {
     type: 'card',
     widgets: [leafTemplate, leafTemplate],
@@ -64,7 +64,7 @@ const wrapperTemplate = {
     type: 'wrapper',
     widgets: [cardTemplate, cardTemplate],
 } as WrapperTemplate
-const listTemplate = {type: 'list', widgets: [leafTemplate]} as ListTemplate
+const listTemplate = { type: 'list', widgets: [leafTemplate] } as ListTemplate
 
 const minProps = {
     parentTemplate: undefined,
@@ -89,7 +89,7 @@ describe('Template', () => {
     })
 
     it("should return null if there's no template", () => {
-        const {container} = render(<Template {...minProps} template={null} />)
+        const { container } = render(<Template {...minProps} template={null} />)
 
         expect(container).toBeEmptyDOMElement()
     })
@@ -101,18 +101,18 @@ describe('Template', () => {
                 customization: cardCustomizationMock,
             },
         ]
-        const customization = {card: cardCustomizationObjects}
+        const customization = { card: cardCustomizationObjects }
 
         it('should provide correct customization value to seekCardCustomization', () => {
             render(
                 <CustomizationContext.Provider value={customization}>
                     <Template {...minProps} />
-                </CustomizationContext.Provider>
+                </CustomizationContext.Provider>,
             )
 
             expect(seekCardCustomizationMock).toHaveBeenCalledWith(
                 cardCustomizationObjects,
-                cardTemplate
+                cardTemplate,
             )
         })
 
@@ -120,7 +120,7 @@ describe('Template', () => {
             render(
                 <CustomizationContext.Provider value={customization}>
                     <Template {...minProps} />
-                </CustomizationContext.Provider>
+                </CustomizationContext.Provider>,
             )
 
             expect(getLastMockCall(cardMock)[0].extensions).toEqual({
@@ -129,7 +129,7 @@ describe('Template', () => {
             })
 
             expect(getLastMockCall(cardMock)[0].editionHiddenFields).toEqual(
-                editionHiddenFields
+                editionHiddenFields,
             )
         })
     })
@@ -144,16 +144,16 @@ describe('Template', () => {
         it('should provide correct customization value to seekFieldCustomization', () => {
             render(
                 <CustomizationContext.Provider
-                    value={{field: [fieldCustomization]}}
+                    value={{ field: [fieldCustomization] }}
                 >
                     <Template {...minProps} template={leafTemplate} />
-                </CustomizationContext.Provider>
+                </CustomizationContext.Provider>,
             )
 
             expect(seekFieldCustomizationMock).toHaveBeenCalledWith(
                 [fieldCustomization],
                 minProps.source,
-                leafTemplate
+                leafTemplate,
             )
         })
 
@@ -171,7 +171,7 @@ describe('Template', () => {
             render(<Template {...minProps} template={leafTemplate} />)
 
             expect(getLastMockCall(fieldMock)[0]).toEqual(
-                expect.objectContaining(returnedValues)
+                expect.objectContaining(returnedValues),
             )
         })
     })
@@ -181,13 +181,13 @@ describe('Template', () => {
             render(
                 <Template
                     {...minProps}
-                    template={{...wrapperTemplate, widgets: undefined}}
-                />
+                    template={{ ...wrapperTemplate, widgets: undefined }}
+                />,
             )
             expect(getLastMockCall(wrapperMock)[0]).toEqual(
                 expect.objectContaining({
                     children: [],
-                })
+                }),
             )
         })
 
@@ -202,7 +202,7 @@ describe('Template', () => {
         })
 
         it('should call Template recursively with correct props', () => {
-            wrapperMock.mockImplementation(({children}) => (
+            wrapperMock.mockImplementation(({ children }) => (
                 <div>{children}</div>
             ))
             render(<Template {...minProps} template={wrapperTemplate} />)
@@ -221,12 +221,12 @@ describe('Template', () => {
     })
 
     describe('List', () => {
-        const validListSource = [{ok: 'foo'}]
+        const validListSource = [{ ok: 'foo' }]
 
         it.each([
             [{}, listTemplate],
             [[], listTemplate],
-            [validListSource, {...listTemplate, widgets: []} as ListTemplate],
+            [validListSource, { ...listTemplate, widgets: [] } as ListTemplate],
         ])(
             'should not render if source is not ok or template is missing',
             (source, template) => {
@@ -235,11 +235,11 @@ describe('Template', () => {
                         {...minProps}
                         source={source}
                         template={template}
-                    />
+                    />,
                 )
 
                 expect(listMock).not.toHaveBeenCalled()
-            }
+            },
         )
 
         it('should pass correct props to List', () => {
@@ -248,7 +248,7 @@ describe('Template', () => {
                     {...minProps}
                     template={listTemplate}
                     source={validListSource}
-                />
+                />,
             )
 
             expect(getLastMockCall(listMock)[0]).toEqual({
@@ -260,7 +260,7 @@ describe('Template', () => {
         })
 
         it('should call Template recursively with correct props', () => {
-            listMock.mockImplementation(({children}) => (
+            listMock.mockImplementation(({ children }) => (
                 <div>{children(undefined, 0)}</div>
             ))
             render(
@@ -268,7 +268,7 @@ describe('Template', () => {
                     {...minProps}
                     template={listTemplate}
                     source={validListSource}
-                />
+                />,
             )
 
             expect(spiedTemplate).toHaveBeenCalledTimes(1)
@@ -292,19 +292,19 @@ describe('Template', () => {
                 render(
                     <WidgetContext.Provider value={shopifyWidget}>
                         <Template {...minProps} source={source} />
-                    </WidgetContext.Provider>
+                    </WidgetContext.Provider>,
                 )
                 expect(cardMock).not.toHaveBeenCalled()
-            }
+            },
         )
 
         it('should render if source has no key but widget is in edition mode', () => {
             render(
-                <EditionContext.Provider value={{isEditing: true}}>
-                    <WidgetContext.Provider value={{...shopifyWidget}}>
+                <EditionContext.Provider value={{ isEditing: true }}>
+                    <WidgetContext.Provider value={{ ...shopifyWidget }}>
                         <Template {...minProps} source={{}} />
                     </WidgetContext.Provider>
-                </EditionContext.Provider>
+                </EditionContext.Provider>,
             )
             expect(cardMock).toHaveBeenCalled()
         })
@@ -320,7 +320,7 @@ describe('Template', () => {
                     {...minProps}
                     parentTemplate={wrapperTemplate}
                     isFirstOfList
-                />
+                />,
             )
 
             expect(getLastMockCall(cardMock)[0]).toEqual(
@@ -330,12 +330,12 @@ describe('Template', () => {
                     template: minProps.template,
                     parentTemplate: wrapperTemplate,
                     isFirstOfList: true,
-                })
+                }),
             )
         })
 
         it('should call Template recursively with correct props', () => {
-            cardMock.mockImplementation(({children}) => <div>{children}</div>)
+            cardMock.mockImplementation(({ children }) => <div>{children}</div>)
             render(<Template {...minProps} template={cardTemplate} />)
 
             expect(spiedTemplate).toHaveBeenCalledTimes(2)
@@ -358,7 +358,7 @@ describe('Template', () => {
                     {...minProps}
                     template={leafTemplate}
                     source={'foo'}
-                />
+                />,
             )
 
             expect(getLastMockCall(fieldMock)[0]).toEqual({
@@ -374,9 +374,9 @@ describe('Template', () => {
             render(
                 <Template
                     {...minProps}
-                    template={{type: 'unknown'} as LeafTemplate}
+                    template={{ type: 'unknown' } as LeafTemplate}
                     source={'foo'}
-                />
+                />,
             )
 
             expect(getLastMockCall(fieldMock)[0].type).toBe(LEAF_TYPES.TEXT)

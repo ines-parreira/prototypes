@@ -2,13 +2,11 @@
  * Force scroll to the focused input element,
  * when the onscreen keyboard pops up mobile.
  */
-
 import {
-    isTouchDevice,
     isMediumOrSmallScreen,
+    isTouchDevice,
 } from '../pages/common/utils/mobile'
-
-import {isEditable} from './common/utils'
+import { isEditable } from './common/utils'
 
 window.addEventListener('focusin', () => {
     // if focused element is editable,

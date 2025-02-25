@@ -1,24 +1,24 @@
-import {act, renderHook} from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react-hooks'
 
-import {TicketSummary} from '../../types'
+import { TicketSummary } from '../../types'
 import useSelection from '../useSelection'
 
 describe('useSelection', () => {
     const dummyTickets = [
-        {id: 1},
-        {id: 2},
-        {id: 3},
-        {id: 4},
-        {id: 5},
-        {id: 6},
-        {id: 7},
-        {id: 8},
-        {id: 9},
-        {id: 10},
+        { id: 1 },
+        { id: 2 },
+        { id: 3 },
+        { id: 4 },
+        { id: 5 },
+        { id: 6 },
+        { id: 7 },
+        { id: 8 },
+        { id: 9 },
+        { id: 10 },
     ] as TicketSummary[]
 
     it('should return a map of selected tickets and a function to select tickets', () => {
-        const {result} = renderHook(() => useSelection(dummyTickets))
+        const { result } = renderHook(() => useSelection(dummyTickets))
 
         expect(result.current).toMatchObject({
             onSelect: expect.any(Function),
@@ -27,16 +27,16 @@ describe('useSelection', () => {
     })
 
     it('should select a single ticket', () => {
-        const {result} = renderHook(() => useSelection(dummyTickets))
+        const { result } = renderHook(() => useSelection(dummyTickets))
         act(() => {
             result.current.onSelect(1, true, false)
         })
 
-        expect(result.current.selectedTickets).toEqual({1: true})
+        expect(result.current.selectedTickets).toEqual({ 1: true })
     })
 
     it('should deselect a single ticket', () => {
-        const {result} = renderHook(() => useSelection(dummyTickets))
+        const { result } = renderHook(() => useSelection(dummyTickets))
         act(() => {
             result.current.onSelect(1, true, false)
         })
@@ -48,7 +48,7 @@ describe('useSelection', () => {
     })
 
     it('should select a range of tickets', () => {
-        const {result} = renderHook(() => useSelection(dummyTickets))
+        const { result } = renderHook(() => useSelection(dummyTickets))
         act(() => {
             result.current.onSelect(1, true, false)
         })
@@ -66,7 +66,7 @@ describe('useSelection', () => {
     })
 
     it('should deselect a range of tickets', () => {
-        const {result} = renderHook(() => useSelection(dummyTickets))
+        const { result } = renderHook(() => useSelection(dummyTickets))
         act(() => {
             result.current.onSelect(1, true, false)
         })
@@ -87,7 +87,7 @@ describe('useSelection', () => {
     })
 
     it('should return the currently selected tickets if a selected ticket is not in the ticket list', () => {
-        const {result} = renderHook(() => useSelection(dummyTickets))
+        const { result } = renderHook(() => useSelection(dummyTickets))
         act(() => {
             result.current.onSelect(1, true, false)
         })
@@ -101,7 +101,7 @@ describe('useSelection', () => {
     })
 
     it('should clear all selected tickets', () => {
-        const {result} = renderHook(() => useSelection(dummyTickets))
+        const { result } = renderHook(() => useSelection(dummyTickets))
         act(() => {
             result.current.onSelect(1, true, false)
         })
@@ -113,7 +113,7 @@ describe('useSelection', () => {
     })
 
     it('should select all', () => {
-        const {result} = renderHook(() => useSelection(dummyTickets))
+        const { result } = renderHook(() => useSelection(dummyTickets))
         act(() => {
             result.current.onSelect(1, true, false)
         })
@@ -125,12 +125,12 @@ describe('useSelection', () => {
             expect.objectContaining({
                 hasSelectedAll: true,
                 selectedTickets: {},
-            })
+            }),
         )
     })
 
     it('should deselect all', () => {
-        const {result} = renderHook(() => useSelection(dummyTickets))
+        const { result } = renderHook(() => useSelection(dummyTickets))
         act(() => {
             result.current.onSelectAll(true)
         })
@@ -142,7 +142,7 @@ describe('useSelection', () => {
     })
 
     it('should deselect all when calling clear', () => {
-        const {result} = renderHook(() => useSelection(dummyTickets))
+        const { result } = renderHook(() => useSelection(dummyTickets))
         act(() => {
             result.current.onSelectAll(true)
         })
@@ -154,7 +154,7 @@ describe('useSelection', () => {
     })
 
     it('should disable select all when a single ticket is deselected', () => {
-        const {result} = renderHook(() => useSelection(dummyTickets))
+        const { result } = renderHook(() => useSelection(dummyTickets))
         act(() => {
             result.current.onSelectAll(true)
         })
@@ -166,7 +166,7 @@ describe('useSelection', () => {
             expect.objectContaining({
                 hasSelectedAll: false,
                 selectedTickets: {},
-            })
+            }),
         )
     })
 })

@@ -1,15 +1,17 @@
-import {Badge} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
 import React from 'react'
+
+import classNames from 'classnames'
+
+import { Badge } from '@gorgias/merchant-ui-kit'
 
 import cssNavbar from 'assets/css/navbar.less'
 import useAppSelector from 'hooks/useAppSelector'
-import {ProductType} from 'models/billing/types'
+import { ProductType } from 'models/billing/types'
 import NavbarLink, {
     NavbarLinkProps,
 } from 'pages/common/components/navbar/NavbarLink'
 import UpgradeIcon from 'pages/common/components/UpgradeIcon'
-import {currentAccountHasProduct} from 'state/billing/selectors'
+import { currentAccountHasProduct } from 'state/billing/selectors'
 
 type Props = {
     to: string
@@ -18,16 +20,16 @@ type Props = {
     isNew?: boolean
 }
 
-function VoiceStatsNavbarItem({to, title, commonNavLinkProps, isNew}: Props) {
+function VoiceStatsNavbarItem({ to, title, commonNavLinkProps, isNew }: Props) {
     const hasVoiceFeature = useAppSelector(
-        currentAccountHasProduct(ProductType.Voice)
+        currentAccountHasProduct(ProductType.Voice),
     )
 
     return (
         <div
             className={classNames(
                 cssNavbar['link-wrapper'],
-                cssNavbar.isNested
+                cssNavbar.isNested,
             )}
         >
             <NavbarLink {...commonNavLinkProps} to={to}>

@@ -1,7 +1,7 @@
-import React, {ComponentType, CSSProperties} from 'react'
+import React, { ComponentType, CSSProperties } from 'react'
 
 import MultiSelectOptionsField from './MultiSelectOptionsField/MultiSelectOptionsField'
-import {Option} from './MultiSelectOptionsField/types'
+import { Option } from './MultiSelectOptionsField/types'
 
 type Props = {
     allowCustomValues: boolean
@@ -39,13 +39,13 @@ export default class MultiSelectField extends React.Component<Props> {
             (value) => {
                 return (
                     this.props.options.find(
-                        (option: Option) => option.value === value
+                        (option: Option) => option.value === value,
                     ) || {
                         value,
                         label: value,
                     }
                 )
-            }
+            },
         )
         return (
             <MultiSelectOptionsField

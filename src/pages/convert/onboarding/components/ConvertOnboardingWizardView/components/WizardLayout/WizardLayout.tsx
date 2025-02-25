@@ -1,10 +1,11 @@
-import {useQueryClient} from '@tanstack/react-query'
-import classnames from 'classnames'
-import {Map} from 'immutable'
-import React, {useCallback, useContext, useMemo, useState} from 'react'
-import {Container} from 'reactstrap'
+import React, { useCallback, useContext, useMemo, useState } from 'react'
 
-import {getPrimaryLanguageFromChatConfig} from 'config/integrations/gorgias_chat'
+import { useQueryClient } from '@tanstack/react-query'
+import classnames from 'classnames'
+import { Map } from 'immutable'
+import { Container } from 'reactstrap'
+
+import { getPrimaryLanguageFromChatConfig } from 'config/integrations/gorgias_chat'
 import {
     BundleActionResponse,
     BundleInstallationMethod,
@@ -14,29 +15,29 @@ import {
     useCreateCampaign,
     useListCampaigns,
 } from 'models/convert/campaign/queries'
-import {ChannelConnection} from 'models/convert/channelConnection/types'
-import {GorgiasChatIntegration} from 'models/integration/types'
+import { ChannelConnection } from 'models/convert/channelConnection/types'
+import { GorgiasChatIntegration } from 'models/integration/types'
 import PageHeader from 'pages/common/components/PageHeader'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
-import {WizardContext} from 'pages/common/components/wizard/Wizard'
+import { WizardContext } from 'pages/common/components/wizard/Wizard'
 import WizardProgressHeader from 'pages/common/components/wizard/WizardProgressHeader'
 import WizardStep from 'pages/common/components/wizard/WizardStep'
 import ConvertInstallModal from 'pages/convert/bundles/components/ConvertInstallModal'
-import {useInstallBundle} from 'pages/convert/bundles/hooks/useInstallBundle'
-import {ONBOARDING_CAMPAIGN_TEMPLATES_LIST} from 'pages/convert/campaigns/templates'
-import {useUpdateChannelConnection} from 'pages/convert/channelConnections/hooks/useUpdateChannelConnection'
+import { useInstallBundle } from 'pages/convert/bundles/hooks/useInstallBundle'
+import { ONBOARDING_CAMPAIGN_TEMPLATES_LIST } from 'pages/convert/campaigns/templates'
+import { useUpdateChannelConnection } from 'pages/convert/channelConnections/hooks/useUpdateChannelConnection'
 import useIsManualInstallationMethodRequired from 'pages/convert/common/hooks/useIsManualInstallationMethodRequired'
 import {
     ONBOARDING_WIZARD_LABELS,
     OnboardingWizardSteps,
 } from 'pages/convert/onboarding/components/ConvertOnboardingWizardView/constants'
 import history from 'pages/history'
-
-import {reportError} from 'utils/errors'
+import { reportError } from 'utils/errors'
 
 import WizardCampaignsStep from '../WizardCampaignsStep'
 import WizardFooter from '../WizardFooter'
 import WizardInstallStep from '../WizardInstallStep'
+
 import css from './WizardLayout.less'
 
 type Props = {
@@ -53,27 +54,27 @@ const WizardLayout = ({
     storeIntegration,
 }: Props) => {
     const wizardContext = useContext(WizardContext)
-    const {goToPreviousStep, goToNextStep} = useNavigateWizardSteps()
+    const { goToPreviousStep, goToNextStep } = useNavigateWizardSteps()
     const queryClient = useQueryClient()
     const updateChannelConnection = useUpdateChannelConnection()
 
     const chatIntegration = integration.toJS() as GorgiasChatIntegration
 
     const createCampaign = useCreateCampaign()
-    const {data: campaigns} = useListCampaigns(
+    const { data: campaigns } = useListCampaigns(
         {
             channelConnectionId: channelConnection?.id,
         },
         {
             enabled: !!channelConnection,
-        }
+        },
     )
 
     const chatIntegrationId = integration.get('id') as number
 
     const isManualMethodRequired = useIsManualInstallationMethodRequired(
         chatIntegration,
-        storeIntegration.toJS()
+        storeIntegration.toJS(),
     )
 
     // Install bundle
@@ -81,16 +82,16 @@ const WizardLayout = ({
         useState<BundleInstallationMethod>(
             isManualMethodRequired
                 ? BundleInstallationMethod.Manual
-                : BundleInstallationMethod.OneClick
+                : BundleInstallationMethod.OneClick,
         )
 
     const [bundleData, setBundleData] = useState<BundleActionResponse>()
 
     const [isInstallModalOpen, setInstallModalOpen] = useState(false)
 
-    const {isSubmitting, installBundle} = useInstallBundle(
+    const { isSubmitting, installBundle } = useInstallBundle(
         storeIntegration.get('id'),
-        installationMethod
+        installationMethod,
     )
 
     const nextStepLabel = useMemo(() => {
@@ -110,8 +111,8 @@ const WizardLayout = ({
         return ONBOARDING_CAMPAIGN_TEMPLATES_LIST.filter(
             (template) =>
                 !campaigns.some(
-                    (campaign) => campaign.template_id === template.slug
-                )
+                    (campaign) => campaign.template_id === template.slug,
+                ),
         )
     }, [campaigns])
 
@@ -123,7 +124,7 @@ const WizardLayout = ({
                     uncreatedCampaigns.map(async (campaign) => {
                         const data = await campaign.getConfiguration(
                             storeIntegration,
-                            integration
+                            integration,
                         )
                         await createCampaign.mutateAsync([
                             undefined,
@@ -131,12 +132,12 @@ const WizardLayout = ({
                                 ...data,
                                 variants: [],
                                 language: getPrimaryLanguageFromChatConfig(
-                                    chatIntegration.meta
+                                    chatIntegration.meta,
                                 ),
                                 channel_connection_id: channelConnection.id,
                             },
                         ])
-                    })
+                    }),
                 )
             } catch (e) {
                 // do not block the onboarding process if there is an error in creating default campaigns
@@ -156,8 +157,8 @@ const WizardLayout = ({
 
             await updateChannelConnection.mutateAsync([
                 undefined,
-                {channel_connection_id: channelConnection.id},
-                {is_onboarded: true},
+                { channel_connection_id: channelConnection.id },
+                { is_onboarded: true },
             ])
         }
     }, [

@@ -1,12 +1,13 @@
+import { RefObject, useEffect } from 'react'
+
 import _throttle from 'lodash/throttle'
-import {RefObject, useEffect} from 'react'
 import scrollIntoView from 'scroll-into-view-if-needed'
 import getScrollParent from 'scrollparent'
 
 const useScrollActiveItemIntoView = (
     elementRef: RefObject<HTMLElement>,
     isActive: boolean,
-    shouldScrollOnScrollParentResize?: boolean
+    shouldScrollOnScrollParentResize?: boolean,
 ) => {
     useEffect(() => {
         let scrollableParentResizeObserver: ResizeObserver | undefined

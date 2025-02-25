@@ -1,7 +1,7 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
-import {shopifyIntegration} from 'fixtures/integrations'
-import {shopifyProductResult} from 'fixtures/shopify'
+import { shopifyIntegration } from 'fixtures/integrations'
+import { shopifyProductResult } from 'fixtures/shopify'
 
 import {
     mapIntegrationToPickedShopifyIntegration,
@@ -17,9 +17,9 @@ describe('toolbar utils functions', () => {
             const result = transformShopifyProductToProductCardDetails(
                 product as any,
                 mapIntegrationToPickedShopifyIntegration(
-                    fromJS(shopifyIntegration)
+                    fromJS(shopifyIntegration),
                 ),
-                false
+                false,
             )
 
             expect(result).toMatchObject({

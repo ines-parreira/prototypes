@@ -1,26 +1,28 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
-import {
-    getCountryCallingCode,
-    CountryCode,
-    parsePhoneNumber,
-    isValidPhoneNumber,
-} from 'libphonenumber-js'
 import React, {
-    useState,
+    ComponentProps,
+    ForwardedRef,
+    forwardRef,
+    ReactNode,
+    useCallback,
     useEffect,
+    useImperativeHandle,
     useMemo,
     useRef,
-    useCallback,
-    ComponentProps,
-    ReactNode,
-    forwardRef,
-    useImperativeHandle,
-    ForwardedRef,
+    useState,
 } from 'react'
-import {ReactCountryFlag as CountryFlag} from 'react-country-flag'
 
-import {countries} from 'config/countries'
+import classnames from 'classnames'
+import {
+    CountryCode,
+    getCountryCallingCode,
+    isValidPhoneNumber,
+    parsePhoneNumber,
+} from 'libphonenumber-js'
+import { ReactCountryFlag as CountryFlag } from 'react-country-flag'
+
+import { Label } from '@gorgias/merchant-ui-kit'
+
+import { countries } from 'config/countries'
 import useUpdateEffect from 'hooks/useUpdateEffect'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
@@ -31,18 +33,18 @@ import InputGroup, {
 } from 'pages/common/forms/input/InputGroup'
 import TextInput from 'pages/common/forms/input/TextInput'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {useOnClickOutside} from 'pages/common/hooks/useOnClickOutside'
+import { useOnClickOutside } from 'pages/common/hooks/useOnClickOutside'
 import {
-    getCountryFromPhoneNumber,
     buildInternationalNumber,
     formatAsNationalNumber,
+    getCountryFromPhoneNumber,
 } from 'pages/phoneNumbers/utils'
-import {getCountryCountryCallingCodeSelectOptions} from 'pages/settings/helpCenter/utils/phoneCodeSelectOptions'
-import {reportError} from 'utils/errors'
+import { getCountryCountryCallingCodeSelectOptions } from 'pages/settings/helpCenter/utils/phoneCodeSelectOptions'
+import { reportError } from 'utils/errors'
 
 import css from './PhoneNumberInput.less'
 
-const typedCountries = countries as {value: CountryCode; label: string}[]
+const typedCountries = countries as { value: CountryCode; label: string }[]
 
 export type PhoneNumberInputHandle = {
     onChange: (value: string) => void
@@ -85,13 +87,13 @@ const PhoneNumberInput = (
         onKeyDown,
         ...other
     }: Props,
-    ref: ForwardedRef<PhoneNumberInputHandle>
+    ref: ForwardedRef<PhoneNumberInputHandle>,
 ) => {
     const containerRef = useRef<HTMLDivElement>(null)
     const inputRef = useRef<HTMLInputElement>(null)
     const [isPhoneNumberTooLong, setIsPhoneNumberTooLong] = useState(false)
     const [currentCountry, setCurrentCountry] = useState<CountryCode>(
-        getCountryFromPhoneNumber(value) ?? defaultCountry
+        getCountryFromPhoneNumber(value) ?? defaultCountry,
     )
     const [isCountrySelectVisible, setCountrySelectVisible] =
         useState<boolean>(false)
@@ -124,9 +126,9 @@ const PhoneNumberInput = (
         () =>
             getCountryCountryCallingCodeSelectOptions(
                 typedCountries,
-                allowedCountries
+                allowedCountries,
             ),
-        [allowedCountries]
+        [allowedCountries],
     )
 
     const handleNumberChange = useCallback(
@@ -149,7 +151,7 @@ const PhoneNumberInput = (
                 ? onChange?.('')
                 : onChange?.(buildInternationalNumber(number, country))
         },
-        [onChange, setCurrentCountry, onLetterEntered]
+        [onChange, setCurrentCountry, onLetterEntered],
     )
 
     const handleCountryChange = useCallback(
@@ -162,10 +164,10 @@ const PhoneNumberInput = (
             onChange?.(
                 getCountryFromPhoneNumber(newNumber) === country
                     ? newNumber
-                    : ''
+                    : '',
             )
         },
-        [onChange, setCurrentCountry]
+        [onChange, setCurrentCountry],
     )
 
     useEffect(() => {
@@ -187,7 +189,7 @@ const PhoneNumberInput = (
             },
             inputValue: inputRef.current?.value ?? '',
         }),
-        [handleNumberChange, currentCountry, handleCountryChange, value]
+        [handleNumberChange, currentCountry, handleCountryChange, value],
     )
 
     const hasError = !!error || isPhoneNumberTooLong
@@ -235,11 +237,11 @@ const PhoneNumberInput = (
                                 onChange={(nextCountry) => {
                                     handleCountryChange(
                                         formatAsNationalNumber(value),
-                                        nextCountry as CountryCode
+                                        nextCountry as CountryCode,
                                     )
                                     inputRef.current?.focus()
                                 }}
-                                style={{width: '100%'}}
+                                style={{ width: '100%' }}
                                 fullWidth
                                 shouldFocus
                                 container={containerRef.current!}

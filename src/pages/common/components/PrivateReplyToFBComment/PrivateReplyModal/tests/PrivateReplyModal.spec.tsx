@@ -1,24 +1,23 @@
-import {fireEvent, render, screen} from '@testing-library/react'
-import MockAdapter from 'axios-mock-adapter'
-
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render, screen } from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {TicketMessageSourceType} from 'business/types/ticket'
+import { TicketMessageSourceType } from 'business/types/ticket'
 import client from 'models/api/resources'
 import * as infobarActions from 'state/infobar/actions'
-import {SET_INVALID_CUSTOM_FIELDS_TO_ERRORED} from 'state/ticket/constants'
-
-import {flushPromises} from 'utils/testing'
+import { SET_INVALID_CUSTOM_FIELDS_TO_ERRORED } from 'state/ticket/constants'
+import { flushPromises } from 'utils/testing'
 
 import PrivateReplyModal from '../PrivateReplyModal'
 
 jest.mock(
     'pages/common/components/TicketMessageEmbeddedCard/TicketMessageEmbeddedCard.tsx',
-    () => () => <div>mocked TicketMessageEmbeddedCard</div>
+    () => () => <div>mocked TicketMessageEmbeddedCard</div>,
 )
 
 const defaultProps = {
@@ -54,7 +53,7 @@ const defaultProps = {
 
 const mockStore = configureMockStore([thunk])
 const store = mockStore({
-    entities: {rules: {}},
+    entities: { rules: {} },
     ticket: fromJS({
         id: defaultProps.ticketId,
     }),
@@ -68,7 +67,7 @@ describe('<PrivateReplyModal/>', () => {
     })
 
     it('should render the modal', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <PrivateReplyModal
                     {...defaultProps}
@@ -76,7 +75,7 @@ describe('<PrivateReplyModal/>', () => {
                     isOpen
                     toggle={jest.fn()}
                 />
-            </Provider>
+            </Provider>,
         )
         expect(container.parentNode).toMatchSnapshot()
     })
@@ -84,7 +83,7 @@ describe('<PrivateReplyModal/>', () => {
     it('should dispatch setInvalidCustomFieldsToErrored if missing custom fields when send and closing the modal', async () => {
         mockedServer.onPost('/api/actions/execute/').reply(201, '')
         mockedServer.onPut(`/api/tickets/${defaultProps.ticketId}`).reply(400, {
-            error: {msg: 'foo error'},
+            error: { msg: 'foo error' },
         })
 
         render(
@@ -95,11 +94,11 @@ describe('<PrivateReplyModal/>', () => {
                     isOpen
                     toggle={jest.fn()}
                 />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.change(screen.getByRole('textbox'), {
-            target: {value: 'some comment'},
+            target: { value: 'some comment' },
         })
         fireEvent.click(screen.getByText(/close/i))
 
@@ -108,7 +107,7 @@ describe('<PrivateReplyModal/>', () => {
         expect(store.getActions().pop()).toEqual(
             expect.objectContaining({
                 type: SET_INVALID_CUSTOM_FIELDS_TO_ERRORED,
-            })
+            }),
         )
     })
 })

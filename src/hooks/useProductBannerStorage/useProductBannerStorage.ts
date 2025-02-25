@@ -1,15 +1,15 @@
-import {useCallback} from 'react'
+import { useCallback } from 'react'
 
 import useLocalStorage from 'hooks/useLocalStorage'
 
-import {PRODUCT_BANNER_KEY} from './constants'
-import {ProductBannerItem} from './types/ProductBannerItem'
-import {ProductBannerRecord} from './types/ProductBannerRecord'
+import { PRODUCT_BANNER_KEY } from './constants'
+import { ProductBannerItem } from './types/ProductBannerItem'
+import { ProductBannerRecord } from './types/ProductBannerRecord'
 
 export function useProductBannerStorage() {
     const [products, setProducts] = useLocalStorage<ProductBannerRecord | null>(
         'gorgias:productBanners',
-        null
+        null,
     )
 
     const getProductBanner = useCallback(
@@ -19,7 +19,7 @@ export function useProductBannerStorage() {
             }
             return null
         },
-        [products]
+        [products],
     )
 
     const updateProductBanner = useCallback(
@@ -29,7 +29,7 @@ export function useProductBannerStorage() {
                 [key]: payload,
             })
         },
-        [products, setProducts]
+        [products, setProducts],
     )
 
     return {

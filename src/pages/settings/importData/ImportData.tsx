@@ -1,27 +1,28 @@
-import classnames from 'classnames'
 import React from 'react'
-import {Link} from 'react-router-dom'
+
+import classnames from 'classnames'
+import { Link } from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
-import {IntegrationType} from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import LinkAlert from 'pages/common/components/Alert/LinkAlert'
 import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
-import {fetchIntegrations} from 'state/integrations/actions'
-import {getIntegrationsByType} from 'state/integrations/selectors'
+import { fetchIntegrations } from 'state/integrations/actions'
+import { getIntegrationsByType } from 'state/integrations/selectors'
+import { RootState } from 'state/types'
 
-import {RootState} from 'state/types'
+import ImportZendeskDataList from './zendesk/ImportZendeskDataList'
 
 import css from '../settings.less'
-import ImportZendeskDataList from './zendesk/ImportZendeskDataList'
 
 const ImportData = () => {
     const dispatch = useAppDispatch()
     const zendeskIntegrations = useAppSelector(
-        getIntegrationsByType(IntegrationType.Zendesk)
+        getIntegrationsByType(IntegrationType.Zendesk),
     )
 
     const loading = useAppSelector(
@@ -30,7 +31,7 @@ const ImportData = () => {
                 'state',
                 'loading',
                 'integrations',
-            ]) as boolean
+            ]) as boolean,
     )
 
     useEffectOnce(() => {

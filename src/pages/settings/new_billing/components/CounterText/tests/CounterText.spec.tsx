@@ -1,10 +1,14 @@
-import {render, waitFor} from '@testing-library/react'
 import React from 'react'
 
-import {basicMonthlyAutomationPlan, convertPlan0} from 'fixtures/productPrices'
-import {Cadence, ProductType} from 'models/billing/types'
+import { render, waitFor } from '@testing-library/react'
+
+import {
+    basicMonthlyAutomationPlan,
+    convertPlan0,
+} from 'fixtures/productPrices'
+import { Cadence, ProductType } from 'models/billing/types'
 import CounterText from 'pages/settings/new_billing/components/CounterText/CounterText'
-import {PRODUCT_INFO} from 'pages/settings/new_billing/constants'
+import { PRODUCT_INFO } from 'pages/settings/new_billing/constants'
 
 describe('CounterText', () => {
     it('should render the trial price text', () => {
@@ -14,7 +18,7 @@ describe('CounterText', () => {
             cadence: Cadence.Month,
         }
 
-        const {getByText} = render(<CounterText {...props} />)
+        const { getByText } = render(<CounterText {...props} />)
 
         expect(getByText('$1')).toBeInTheDocument()
         expect(getByText('per click')).toBeInTheDocument()
@@ -30,13 +34,13 @@ describe('CounterText', () => {
             cadence: cadence,
         }
 
-        const {getByText} = render(<CounterText {...props} />)
+        const { getByText } = render(<CounterText {...props} />)
 
         await waitFor(() => {
             expect(
-                getByText(PRODUCT_INFO[type].counter, {exact: false})
+                getByText(PRODUCT_INFO[type].counter, { exact: false }),
             ).toBeInTheDocument()
-            expect(getByText(cadence, {exact: false})).toBeInTheDocument()
+            expect(getByText(cadence, { exact: false })).toBeInTheDocument()
         })
     })
 })

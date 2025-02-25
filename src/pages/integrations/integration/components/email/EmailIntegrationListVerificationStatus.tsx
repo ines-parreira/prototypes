@@ -1,11 +1,12 @@
-import {EmailIntegration, GmailIntegration} from '@gorgias/api-queries'
 import React from 'react'
 
-import {OutlookIntegration} from 'models/integration/types'
-import Button, {type ButtonProps} from 'pages/common/components/button/Button'
-import Status, {StatusType} from 'pages/common/components/Status/Status'
+import { EmailIntegration, GmailIntegration } from '@gorgias/api-queries'
 
-import {canIntegrationDomainBeVerified} from './helpers'
+import { OutlookIntegration } from 'models/integration/types'
+import Button, { type ButtonProps } from 'pages/common/components/button/Button'
+import Status, { StatusType } from 'pages/common/components/Status/Status'
+
+import { canIntegrationDomainBeVerified } from './helpers'
 
 type Props = {
     active: boolean

@@ -1,15 +1,14 @@
-import {Meta, StoryFn} from '@storybook/react'
+import React, { ComponentProps } from 'react'
 
-import {fromJS} from 'immutable'
-
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import { Meta, StoryFn } from '@storybook/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {AttachmentEnum} from 'common/types'
-import {GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT} from 'config/integrations/gorgias_chat'
-import {billingState} from 'fixtures/billing'
-import {user} from 'fixtures/users'
+import { AttachmentEnum } from 'common/types'
+import { GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT } from 'config/integrations/gorgias_chat'
+import { billingState } from 'fixtures/billing'
+import { user } from 'fixtures/users'
 import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
@@ -29,7 +28,7 @@ const defaultState = {
 }
 
 const Template: StoryFn<ComponentProps<typeof ChatIntegrationPreview>> = (
-    props
+    props,
 ) => (
     <Provider store={configureMockStore()(defaultState)}>
         <ChatIntegrationPreview {...props} />

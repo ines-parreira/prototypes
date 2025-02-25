@@ -1,12 +1,13 @@
 import React from 'react'
 
-import {SegmentEvent, logEvent} from 'common/segment'
+import { logEvent, SegmentEvent } from 'common/segment'
 import history from 'pages/history'
 
-import {useAiAgentNavigation} from '../../hooks/useAiAgentNavigation'
-import {AIGuidance} from '../../types'
-import {GuidanceAiSuggestionCard} from '../GuidanceAiSuggestionCard/GuidanceAiSuggestionCard'
-import {SeeAllSuggestionsCard} from '../SeeAllSuggestionsCard/SeeAllSuggestionsCard'
+import { useAiAgentNavigation } from '../../hooks/useAiAgentNavigation'
+import { AIGuidance } from '../../types'
+import { GuidanceAiSuggestionCard } from '../GuidanceAiSuggestionCard/GuidanceAiSuggestionCard'
+import { SeeAllSuggestionsCard } from '../SeeAllSuggestionsCard/SeeAllSuggestionsCard'
+
 import css from './GuidanceAiSuggestionsList.less'
 
 type Props = {
@@ -24,7 +25,7 @@ export const GuidanceAiSuggestionsList = ({
     showAllSuggestionsCard,
     source,
 }: Props) => {
-    const {routes} = useAiAgentNavigation({shopName})
+    const { routes } = useAiAgentNavigation({ shopName })
 
     const onAiSuggestionClick = (aiGuidance: AIGuidance) => {
         logEvent(SegmentEvent.AiAgentGuidanceCardClicked, {

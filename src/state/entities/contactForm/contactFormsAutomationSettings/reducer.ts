@@ -1,4 +1,4 @@
-import {createReducer} from '@reduxjs/toolkit'
+import { createReducer } from '@reduxjs/toolkit'
 
 import {
     contactFormAutomationSettingsFetched,
@@ -6,7 +6,7 @@ import {
     contactFormsAutomationSettingsFetched,
 } from 'state/entities/contactForm/contactFormsAutomationSettings/actions'
 
-import {ContactFormsAutomationSettingsState} from './types'
+import { ContactFormsAutomationSettingsState } from './types'
 
 export const initialState: ContactFormsAutomationSettingsState = {
     automationSettingsByContactFormId: {},
@@ -19,28 +19,34 @@ const contactFormAutomationSettingsReducer =
             builder
                 .addCase(
                     contactFormAutomationSettingsFetched,
-                    (state, {payload: {contactFormId, automationSettings}}) => {
+                    (
+                        state,
+                        { payload: { contactFormId, automationSettings } },
+                    ) => {
                         state.automationSettingsByContactFormId[contactFormId] =
                             automationSettings
-                    }
+                    },
                 )
                 .addCase(
                     contactFormsAutomationSettingsFetched,
-                    (state, {payload}) => {
+                    (state, { payload }) => {
                         payload.forEach((settings) => {
                             state.automationSettingsByContactFormId[
                                 settings.contactFormId
                             ] = settings.automationSettings
                         })
-                    }
+                    },
                 )
                 .addCase(
                     contactFormAutomationSettingsUpdated,
-                    (state, {payload: {contactFormId, automationSettings}}) => {
+                    (
+                        state,
+                        { payload: { contactFormId, automationSettings } },
+                    ) => {
                         state.automationSettingsByContactFormId[contactFormId] =
                             automationSettings
-                    }
-                )
+                    },
+                ),
     )
 
 export default contactFormAutomationSettingsReducer

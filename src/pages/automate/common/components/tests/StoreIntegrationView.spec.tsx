@@ -1,5 +1,6 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import StoreIntegrationView from '../StoreIntegrationView'
 
@@ -20,7 +21,7 @@ describe('StoreIntegrationView', () => {
     test('renders correct title text', () => {
         render(<StoreIntegrationView title="Test Title" />)
         const titleElement = screen.getByText(
-            'You don’t have a store connected'
+            'You don’t have a store connected',
         )
         expect(titleElement).toBeInTheDocument()
     })
@@ -28,7 +29,7 @@ describe('StoreIntegrationView', () => {
     test('renders correct description text', () => {
         render(<StoreIntegrationView title="Test Title" />)
         const descriptionElement = screen.getByText(
-            'Connect Shopify, Magento or BigCommerce stores to start using Automate!'
+            'Connect Shopify, Magento or BigCommerce stores to start using Automate!',
         )
         expect(descriptionElement).toBeInTheDocument()
     })

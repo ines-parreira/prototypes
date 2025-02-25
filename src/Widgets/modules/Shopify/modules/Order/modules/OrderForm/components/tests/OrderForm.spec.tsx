@@ -1,6 +1,7 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
 
 import {
     shopifyLineItemFixture,
@@ -9,8 +10,7 @@ import {
     shopifyRefundOrderPayloadFixture,
     shopifySuggestedRefundFixture,
 } from 'fixtures/shopify'
-
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
+import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import OrderForm from '../OrderForm'
 
@@ -18,7 +18,7 @@ describe('<OrderForm/>', () => {
     const order = fromJS(shopifyOrderFixture())
     const refund = fromJS(shopifySuggestedRefundFixture())
     const payload = fromJS(shopifyRefundOrderPayloadFixture())
-    const lineItems = fromJS([shopifyLineItemFixture({currencyCode: 'USD'})])
+    const lineItems = fromJS([shopifyLineItemFixture({ currencyCode: 'USD' })])
 
     let setPayload: jest.MockedFunction<any>
     let onPayloadChange: jest.MockedFunction<any>
@@ -34,7 +34,7 @@ describe('<OrderForm/>', () => {
 
     describe('render()', () => {
         it('should render', () => {
-            const {container} = render(
+            const { container } = render(
                 <OrderForm
                     shopName="storegorgias3"
                     actionName={ShopifyActionType.CancelOrder}
@@ -50,14 +50,14 @@ describe('<OrderForm/>', () => {
                     onReasonChange={onReasonChange}
                     notify={false}
                     onNotifyChange={jest.fn()}
-                />
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render with zero quantity', () => {
-            const {container} = render(
+            const { container } = render(
                 <OrderForm
                     shopName="storegorgias3"
                     actionName={ShopifyActionType.CancelOrder}
@@ -74,7 +74,7 @@ describe('<OrderForm/>', () => {
                     notify={false}
                     onNotifyChange={jest.fn()}
                     keepLineItemQuantityAsDefault={false}
-                />
+                />,
             )
 
             expect(container).toMatchSnapshot()
@@ -82,10 +82,10 @@ describe('<OrderForm/>', () => {
 
         it('should render for multi-currency order', () => {
             const multiCurrencyOrder = fromJS(
-                shopifyMultiCurrencyOrderFixture()
+                shopifyMultiCurrencyOrderFixture(),
             )
 
-            const {container} = render(
+            const { container } = render(
                 <OrderForm
                     shopName="storegorgias3"
                     actionName={ShopifyActionType.CancelOrder}
@@ -101,7 +101,7 @@ describe('<OrderForm/>', () => {
                     onReasonChange={onReasonChange}
                     notify={false}
                     onNotifyChange={jest.fn()}
-                />
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()

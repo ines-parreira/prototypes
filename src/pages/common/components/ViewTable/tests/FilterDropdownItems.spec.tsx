@@ -1,21 +1,22 @@
-import {fireEvent, render} from '@testing-library/react'
-import {fromJS, Map, List} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Dropdown} from 'reactstrap'
+import React, { ComponentProps } from 'react'
 
-import {getTicketViewField} from 'config/views'
-import {ViewField} from 'models/view/types'
+import { fireEvent, render } from '@testing-library/react'
+import { fromJS, List, Map } from 'immutable'
+import { Dropdown } from 'reactstrap'
+
+import { getTicketViewField } from 'config/views'
+import { ViewField } from 'models/view/types'
 
 import FilterDropdownItems from '../FilterDropdownItems'
 
 jest.mock('pages/common/utils/labels', () => ({
-    RenderLabel: ({value}: {value: Map<any, any>}) => {
+    RenderLabel: ({ value }: { value: Map<any, any> }) => {
         return <span>{value.get('name')}</span>
     },
 }))
 
 describe('FilterDropdownItems', () => {
-    const defaultItems = [{id: 1, name: 'Foo', email: 'foo@example.com'}]
+    const defaultItems = [{ id: 1, name: 'Foo', email: 'foo@example.com' }]
     const minProps: ComponentProps<typeof FilterDropdownItems> = {
         field: getTicketViewField(ViewField.Customer),
         isLoading: false,
@@ -25,36 +26,36 @@ describe('FilterDropdownItems', () => {
     }
 
     it('it should render items', () => {
-        const {container} = render(<FilterDropdownItems {...minProps} />)
+        const { container } = render(<FilterDropdownItems {...minProps} />)
         expect(container).toMatchSnapshot()
     })
 
     it('should render loader when loading', () => {
-        const {container} = render(
-            <FilterDropdownItems {...minProps} isLoading />
+        const { container } = render(
+            <FilterDropdownItems {...minProps} isLoading />,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render null when items are not passed', () => {
-        const {container} = render(
-            <FilterDropdownItems {...minProps} items={null} />
+        const { container } = render(
+            <FilterDropdownItems {...minProps} items={null} />,
         )
         expect(container.firstChild).toBe(null)
     })
 
     it('should render a message when items array is empty', () => {
-        const {container} = render(
-            <FilterDropdownItems {...minProps} items={fromJS([])} />
+        const { container } = render(
+            <FilterDropdownItems {...minProps} items={fromJS([])} />,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should call onItemClick on item click', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Dropdown isOpen toggle={jest.fn()}>
                 <FilterDropdownItems {...minProps} />
-            </Dropdown>
+            </Dropdown>,
         )
 
         fireEvent.click(getByText(defaultItems[0].name))
@@ -65,10 +66,10 @@ describe('FilterDropdownItems', () => {
     it('should call onItemClick on item click when passed items are a list of objects', () => {
         let items = fromJS([]) as List<any>
         items = items.push(defaultItems[0])
-        const {getByText} = render(
+        const { getByText } = render(
             <Dropdown isOpen toggle={jest.fn()}>
                 <FilterDropdownItems {...minProps} items={items} />
-            </Dropdown>
+            </Dropdown>,
         )
 
         fireEvent.click(getByText(defaultItems[0].name))
@@ -77,23 +78,23 @@ describe('FilterDropdownItems', () => {
     })
 
     it('should render "me" item for assignee field', () => {
-        const {container} = render(
+        const { container } = render(
             <FilterDropdownItems
                 {...minProps}
                 field={getTicketViewField(ViewField.Assignee)}
-            />
+            />,
         )
         expect(container).toMatchSnapshot()
     })
 
     it('should call onMeItemClick on me item click', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Dropdown isOpen toggle={jest.fn()}>
                 <FilterDropdownItems
                     {...minProps}
                     field={getTicketViewField(ViewField.Assignee)}
                 />
-            </Dropdown>
+            </Dropdown>,
         )
 
         fireEvent.click(getByText('Me (current user)'))

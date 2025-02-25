@@ -1,12 +1,15 @@
-import {Label} from '@gorgias/merchant-ui-kit'
+import React, { useEffect, useMemo } from 'react'
+
 import classnames from 'classnames'
-import React, {useEffect, useMemo} from 'react'
 
-import {SelfServiceChatChannel} from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import { Label } from '@gorgias/merchant-ui-kit'
 
-import {INITIAL_FORM_VALUES} from '../../../constants'
-import {FormValues, UpdateValue} from '../../../types'
-import {ChatIntegrationListSelection} from '../../ChatIntegrationListSelection/ChatIntegrationListSelection'
+import { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+
+import { INITIAL_FORM_VALUES } from '../../../constants'
+import { FormValues, UpdateValue } from '../../../types'
+import { ChatIntegrationListSelection } from '../../ChatIntegrationListSelection/ChatIntegrationListSelection'
+
 import css from './ChatSettingsFormComponent.less'
 
 type EmailFormComponentProps = {
@@ -77,7 +80,7 @@ export const ChatSettingsFormComponent = ({
                     selectedIds={
                         monitoredChatIntegrations !== null
                             ? monitoredChatIntegrations.map(
-                                  (integration) => integration
+                                  (integration) => integration,
                               )
                             : INITIAL_FORM_VALUES.monitoredChatIntegrations
                     }

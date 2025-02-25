@@ -1,18 +1,18 @@
-import type {Map} from 'immutable'
-import React, {ContextType, ReactNode} from 'react'
+import React, { ContextType, ReactNode } from 'react'
+
+import type { Map } from 'immutable'
 
 import logo from 'assets/img/infobar/magento.svg'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import {
-    ExpandAllButton,
     CardCustomization,
+    ExpandAllButton,
 } from 'Widgets/modules/Template/modules/Card/'
-import {CardHeaderIcon} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderIcon'
-import {CardHeaderSubtitle} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderSubtitle'
-import {CardHeaderTitle} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderTitle'
-import {StaticField} from 'Widgets/modules/Template/modules/Field'
+import { CardHeaderIcon } from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderIcon'
+import { CardHeaderSubtitle } from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderSubtitle'
+import { CardHeaderTitle } from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderTitle'
+import { StaticField } from 'Widgets/modules/Template/modules/Field'
 
 type AfterTitleProps = {
     source: Map<string, any>
@@ -20,7 +20,7 @@ type AfterTitleProps = {
 
 class AfterTitle extends React.Component<AfterTitleProps> {
     render() {
-        const {source} = this.props
+        const { source } = this.props
 
         return (
             <>
@@ -45,7 +45,7 @@ class TitleWrapper extends React.Component<TitleWrapperProps> {
     static contextType = IntegrationContext
     context!: ContextType<typeof IntegrationContext>
     render() {
-        const {children, source, isEditing} = this.props
+        const { children, source, isEditing } = this.props
 
         const storeUrl: string = this.context.integration.getIn([
             'meta',

@@ -1,5 +1,6 @@
+import React, { ReactNode } from 'react'
+
 import cn from 'classnames'
-import React, {ReactNode} from 'react'
 
 import css from './TourTooltip.less'
 
@@ -9,7 +10,7 @@ type Props = {
     children: ReactNode
 }
 
-const TourTooltip = ({isOpen, text, children}: Props) => {
+const TourTooltip = ({ isOpen, text, children }: Props) => {
     return (
         <>
             <div className={cn(css.tooltipWrapper, 'tooltip')} role="tooltip">

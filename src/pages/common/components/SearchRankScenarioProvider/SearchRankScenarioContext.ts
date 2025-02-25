@@ -1,5 +1,5 @@
-import {createContext} from 'react'
+import { createContext } from 'react'
 
-import {SearchRank} from 'hooks/useSearchRankScenario'
+import { SearchRank } from 'hooks/useSearchRankScenario'
 
 export default createContext<SearchRank | null>(null)

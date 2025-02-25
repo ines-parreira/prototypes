@@ -1,4 +1,4 @@
-import React, {ComponentProps, forwardRef} from 'react'
+import React, { ComponentProps, forwardRef } from 'react'
 
 import ToggleInput from 'pages/common/forms/ToggleInput'
 
@@ -11,8 +11,8 @@ type ToggleInputFieldProps = {
 >
 
 export default forwardRef(function ToggleInputField(
-    {value, onChange, ...toggleInputProps}: ToggleInputFieldProps,
-    __ref
+    { value, onChange, ...toggleInputProps }: ToggleInputFieldProps,
+    __ref,
 ) {
     return (
         <ToggleInput

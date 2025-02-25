@@ -1,13 +1,14 @@
-import {QueryClientProvider, UseQueryResult} from '@tanstack/react-query'
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
-import {ContentType, HttpMethod} from 'models/api/types'
-import {useGetHTTPEvent} from 'models/integration/queries/http'
-import {HTTPIntegrationEvent} from 'models/integration/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { QueryClientProvider, UseQueryResult } from '@tanstack/react-query'
+import { render, screen } from '@testing-library/react'
+
+import { axiosSuccessResponse } from 'fixtures/axiosResponse'
+import { ContentType, HttpMethod } from 'models/api/types'
+import { useGetHTTPEvent } from 'models/integration/queries/http'
+import { HTTPIntegrationEvent } from 'models/integration/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 import Events from '../Event'
 
@@ -49,18 +50,18 @@ describe('Event', () => {
 
     it('should retrieve data when calling useGetHTTPEvent override function', () => {
         mockUseGetHTTPEvent.mockReturnValue(
-            mockEvent as unknown as UseQueryResult
+            mockEvent as unknown as UseQueryResult,
         )
         render(
             <QueryClientProvider client={queryClient}>
                 <Events integrationId={INTEGRATION_ID} eventId={EVENT_ID} />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         const objectWithDataKey =
             'this is a string' as unknown as HTTPIntegrationEvent
         const selectReturn = mockUseGetHTTPEvent.mock.calls[0][1]?.select!(
-            axiosSuccessResponse(objectWithDataKey)
+            axiosSuccessResponse(objectWithDataKey),
         )
 
         expect(selectReturn).toBe(objectWithDataKey)
@@ -68,17 +69,17 @@ describe('Event', () => {
 
     it('should render', () => {
         mockUseGetHTTPEvent.mockReturnValue(
-            mockEvent as unknown as UseQueryResult
+            mockEvent as unknown as UseQueryResult,
         )
 
-        const {container} = render(
+        const { container } = render(
             <QueryClientProvider client={queryClient}>
                 <Events integrationId={INTEGRATION_ID} eventId={EVENT_ID} />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
         expect(mockUseGetHTTPEvent).toHaveBeenCalledWith(
-            {eventId: EVENT_ID, integrationId: INTEGRATION_ID},
-            expect.any(Object)
+            { eventId: EVENT_ID, integrationId: INTEGRATION_ID },
+            expect.any(Object),
         )
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -92,7 +93,7 @@ describe('Event', () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <Events integrationId={INTEGRATION_ID} eventId={EVENT_ID} />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(screen.getByTestId('loader'))
@@ -107,7 +108,7 @@ describe('Event', () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <Events integrationId={INTEGRATION_ID} eventId={EVENT_ID} />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(screen.getByText(/An error occurred/))
@@ -115,7 +116,7 @@ describe('Event', () => {
 
     it('should render an error if there is no request in the event', () => {
         mockUseGetHTTPEvent.mockReturnValue({
-            data: {...mockEvent.data, request: undefined},
+            data: { ...mockEvent.data, request: undefined },
             isLoading: false,
             isError: false,
         } as unknown as UseQueryResult)
@@ -123,7 +124,7 @@ describe('Event', () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <Events integrationId={INTEGRATION_ID} eventId={EVENT_ID} />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(screen.getByText(/error occurred before/))
@@ -133,7 +134,7 @@ describe('Event', () => {
         mockUseGetHTTPEvent.mockReturnValue({
             data: {
                 ...mockEvent.data,
-                response: {error: 'welp'},
+                response: { error: 'welp' },
                 status_code: undefined,
             },
             isLoading: false,
@@ -143,11 +144,11 @@ describe('Event', () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <Events integrationId={INTEGRATION_ID} eventId={EVENT_ID} />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(
-            screen.getAllByText(/There was an error while making this request/)
+            screen.getAllByText(/There was an error while making this request/),
         ).toHaveLength(1)
         expect(screen.getByText(/welp/))
     })
@@ -168,11 +169,11 @@ describe('Event', () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <Events integrationId={INTEGRATION_ID} eventId={EVENT_ID} />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(
-            screen.getAllByText(/There was an error while making this request/)
+            screen.getAllByText(/There was an error while making this request/),
         ).toHaveLength(1)
         expect(screen.getByText(/welp/))
     })
@@ -181,7 +182,10 @@ describe('Event', () => {
         mockUseGetHTTPEvent.mockReturnValue({
             data: {
                 ...mockEvent.data,
-                request: {...mockEvent.data.request, params: '{"foo": "bar"}'},
+                request: {
+                    ...mockEvent.data.request,
+                    params: '{"foo": "bar"}',
+                },
             },
             isLoading: false,
             isError: false,
@@ -190,7 +194,7 @@ describe('Event', () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <Events integrationId={INTEGRATION_ID} eventId={EVENT_ID} />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
         expect(screen.getByText(/Params are not compatible/))
         expect(screen.getByText(/"foo":/))
@@ -200,7 +204,7 @@ describe('Event', () => {
         mockUseGetHTTPEvent.mockReturnValue({
             data: {
                 ...mockEvent.data,
-                request: {...mockEvent.data.request, params: {foo: 'bar'}},
+                request: { ...mockEvent.data.request, params: { foo: 'bar' } },
             },
             isLoading: false,
             isError: false,
@@ -209,7 +213,7 @@ describe('Event', () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <Events integrationId={INTEGRATION_ID} eventId={EVENT_ID} />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
         expect(screen.getByText(/Params/))
         expect(screen.getByText(/foo:/))
@@ -219,7 +223,7 @@ describe('Event', () => {
         mockUseGetHTTPEvent.mockReturnValue({
             data: {
                 ...mockEvent.data,
-                request: {...mockEvent.data.request, body: '{"foo": "bar"}'},
+                request: { ...mockEvent.data.request, body: '{"foo": "bar"}' },
             },
             isLoading: false,
             isError: false,
@@ -228,7 +232,7 @@ describe('Event', () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <Events integrationId={INTEGRATION_ID} eventId={EVENT_ID} />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
         expect(screen.getByText(/"foo":/))
     })
@@ -237,7 +241,7 @@ describe('Event', () => {
         mockUseGetHTTPEvent.mockReturnValue({
             data: {
                 ...mockEvent.data,
-                request: {...mockEvent.data.request, body: {foo: 'bar'}},
+                request: { ...mockEvent.data.request, body: { foo: 'bar' } },
             },
             isLoading: false,
             isError: false,
@@ -246,7 +250,7 @@ describe('Event', () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <Events integrationId={INTEGRATION_ID} eventId={EVENT_ID} />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
         expect(screen.getByText(/foo:/))
     })
@@ -255,7 +259,7 @@ describe('Event', () => {
         mockUseGetHTTPEvent.mockReturnValue({
             data: {
                 ...mockEvent.data,
-                response: {...mockEvent.data.response, body: ''},
+                response: { ...mockEvent.data.response, body: '' },
             },
             isLoading: false,
             isError: false,
@@ -264,7 +268,7 @@ describe('Event', () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <Events integrationId={INTEGRATION_ID} eventId={EVENT_ID} />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
         expect(screen.getByText(/empty/))
     })
@@ -282,12 +286,12 @@ describe('Event', () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <Events integrationId={0} eventId={0} />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
         expect(
             screen.getByText(
-                /The following error occurred before we could send the request/
-            )
+                /The following error occurred before we could send the request/,
+            ),
         )
     })
 })

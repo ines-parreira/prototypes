@@ -1,18 +1,20 @@
-import {render, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+// sort-imports-ignore
+import mockedVirtuoso from 'tests/mockedVirtuoso'
+
 import React from 'react'
 
-// eslint-disable-next-line import/order
-import mockedVirtuoso from 'tests/mockedVirtuoso'
-import {customer} from 'fixtures/customer'
-import {ticket} from 'fixtures/ticket'
-import {voiceCall} from 'fixtures/voiceCalls'
-import {Customer} from 'models/customer/types'
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { customer } from 'fixtures/customer'
+import { ticket } from 'fixtures/ticket'
+import { voiceCall } from 'fixtures/voiceCalls'
+import { Customer } from 'models/customer/types'
 import {
     PickedCustomerWithHighlights,
     PickedTicketWithHighlights,
 } from 'models/search/types'
-import {ViewType} from 'models/view/types'
+import { ViewType } from 'models/view/types'
 import {
     CUSTOMERS_LABEL,
     TICKETS_LABEL,
@@ -25,7 +27,7 @@ import {
     SpotlightModalContent,
 } from 'pages/common/components/Spotlight/SpotlightModalContent'
 import SpotlightTicketRow from 'pages/common/components/Spotlight/SpotlightTicketRow'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('react-virtuoso', () => mockedVirtuoso)
 
@@ -57,7 +59,7 @@ describe('<SpotlightModalContent />', () => {
             registerResultSelection: jest.fn(),
             endScenario: jest.fn(),
         },
-        modalBodyRef: {current: null},
+        modalBodyRef: { current: null },
         nextCursor: undefined,
         handleLoadMore: jest.fn(),
         isFetchingMore: false,
@@ -119,7 +121,7 @@ describe('<SpotlightModalContent />', () => {
             expect.objectContaining({
                 item: ticket,
             }),
-            {}
+            {},
         )
     })
 
@@ -136,7 +138,7 @@ describe('<SpotlightModalContent />', () => {
             expect.objectContaining({
                 item: ticketWithHighlights,
             }),
-            {}
+            {},
         )
     })
 
@@ -153,7 +155,7 @@ describe('<SpotlightModalContent />', () => {
             expect.objectContaining({
                 item: customer,
             }),
-            {}
+            {},
         )
     })
 
@@ -170,7 +172,7 @@ describe('<SpotlightModalContent />', () => {
             expect.objectContaining({
                 item: customerWithHighlights,
             }),
-            {}
+            {},
         )
     })
 
@@ -182,20 +184,20 @@ describe('<SpotlightModalContent />', () => {
             tickets: [ticketWithHighlights],
             customers: [customerWithHighlights],
         }
-        const {getByText} = render(<SpotlightModalContent {...props} />)
+        const { getByText } = render(<SpotlightModalContent {...props} />)
 
         await waitFor(() => {
             expect(SpotlightTicketRowMock).toHaveBeenCalledWith(
                 expect.objectContaining({
                     item: ticketWithHighlights,
                 }),
-                {}
+                {},
             )
             expect(SpotlightCustomerRowMock).toHaveBeenCalledWith(
                 expect.objectContaining({
                     item: customerWithHighlights,
                 }),
-                {}
+                {},
             )
             expect(getByText(TICKETS_LABEL)).toBeInTheDocument()
             expect(getByText(CUSTOMERS_LABEL)).toBeInTheDocument()
@@ -211,20 +213,20 @@ describe('<SpotlightModalContent />', () => {
             recentCustomers: [customerWithHighlights],
             hasSearched: false,
         }
-        const {getByText} = render(<SpotlightModalContent {...props} />)
+        const { getByText } = render(<SpotlightModalContent {...props} />)
 
         await waitFor(() => {
             expect(SpotlightTicketRowMock).toHaveBeenCalledWith(
                 expect.objectContaining({
                     item: ticketWithHighlights,
                 }),
-                {}
+                {},
             )
             expect(SpotlightCustomerRowMock).toHaveBeenCalledWith(
                 expect.objectContaining({
                     item: customerWithHighlights,
                 }),
-                {}
+                {},
             )
             expect(SpotlightCallRowMock).not.toHaveBeenCalled()
             expect(getByText(RECENTLY_ACCESSED_LABEL)).toBeInTheDocument()
@@ -242,26 +244,26 @@ describe('<SpotlightModalContent />', () => {
             hasSearched: false,
             showCallsTab: true,
         }
-        const {getByText} = render(<SpotlightModalContent {...props} />)
+        const { getByText } = render(<SpotlightModalContent {...props} />)
 
         await waitFor(() => {
             expect(SpotlightTicketRowMock).toHaveBeenCalledWith(
                 expect.objectContaining({
                     item: ticketWithHighlights,
                 }),
-                {}
+                {},
             )
             expect(SpotlightCustomerRowMock).toHaveBeenCalledWith(
                 expect.objectContaining({
                     item: customerWithHighlights,
                 }),
-                {}
+                {},
             )
             expect(SpotlightCallRowMock).toHaveBeenCalledWith(
                 expect.objectContaining({
                     item: voiceCall,
                 }),
-                {}
+                {},
             )
             expect(getByText(RECENTLY_ACCESSED_LABEL)).toBeInTheDocument()
         })
@@ -278,7 +280,7 @@ describe('<SpotlightModalContent />', () => {
             hasSearched: false,
             showCallsTab: true,
         }
-        const {getByText} = render(<SpotlightModalContent {...props} />)
+        const { getByText } = render(<SpotlightModalContent {...props} />)
 
         await waitFor(() => {
             expect(SpotlightTicketRowMock).not.toHaveBeenCalled()
@@ -287,7 +289,7 @@ describe('<SpotlightModalContent />', () => {
                 expect.objectContaining({
                     item: voiceCall,
                 }),
-                {}
+                {},
             )
             expect(getByText(RECENTLY_ACCESSED_LABEL)).toBeInTheDocument()
         })
@@ -321,10 +323,10 @@ describe('<SpotlightModalContent />', () => {
             showCallsTab: true,
         }
 
-        const {getByText} = render(<SpotlightModalContent {...props} />)
+        const { getByText } = render(<SpotlightModalContent {...props} />)
 
         expect(
-            getByText('Try searching for a ticket, call or customer.')
+            getByText('Try searching for a ticket, call or customer.'),
         ).toBeInTheDocument()
     })
 
@@ -337,10 +339,10 @@ describe('<SpotlightModalContent />', () => {
             showCallsTab: false,
         }
 
-        const {getByText} = render(<SpotlightModalContent {...props} />)
+        const { getByText } = render(<SpotlightModalContent {...props} />)
 
         expect(
-            getByText('Try searching for a ticket or customer.')
+            getByText('Try searching for a ticket or customer.'),
         ).toBeInTheDocument()
     })
 
@@ -353,7 +355,7 @@ describe('<SpotlightModalContent />', () => {
             customers: [customerWithHighlights],
         }
 
-        const {queryByText} = render(<SpotlightModalContent {...props} />)
+        const { queryByText } = render(<SpotlightModalContent {...props} />)
 
         expect(queryByText('Use advanced search')).toBeNull()
     })

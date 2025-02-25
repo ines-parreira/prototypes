@@ -1,9 +1,8 @@
-import querystring from 'querystring'
-import url from 'url'
-
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
-import {fromJS, List} from 'immutable'
+import { fromJS, List } from 'immutable'
+import querystring from 'querystring'
+import url from 'url'
 
 import {
     basicMonthlyHelpdeskPlan,
@@ -14,7 +13,7 @@ import {
     shopifyInvoicePayloadFixture,
 } from 'fixtures/shopify'
 import client from 'models/api/resources'
-import {ApiListResponseCursorPagination} from 'models/api/types'
+import { ApiListResponseCursorPagination } from 'models/api/types'
 import {
     Event,
     EventObjectType,
@@ -23,10 +22,10 @@ import {
 } from 'models/event/types'
 import {
     IntegrationDataItem,
-    IntegrationType,
     IntegrationDataItemType,
+    IntegrationType,
 } from 'models/integration/types'
-import {ViewVisibility} from 'models/view/types'
+import { ViewVisibility } from 'models/view/types'
 import GorgiasApi from 'services/gorgiasApi'
 
 describe('services', () => {
@@ -43,7 +42,9 @@ describe('services', () => {
 
         describe('cancelPendingRequests()', () => {
             it('should not be able to cancel pending requests because instance was not created with this ability', () => {
-                const gorgiasApi = new GorgiasApi({requestsCancellation: false})
+                const gorgiasApi = new GorgiasApi({
+                    requestsCancellation: false,
+                })
                 let errorCaught: Error | null = null
 
                 try {
@@ -55,10 +56,12 @@ describe('services', () => {
             })
 
             it('should cancel pending requests', async () => {
-                apiMock = new MockAdapter(client, {delayResponse: 2000})
+                apiMock = new MockAdapter(client, { delayResponse: 2000 })
                 apiMock.onAny().reply(200, {})
 
-                const gorgiasApi = new GorgiasApi({requestsCancellation: true})
+                const gorgiasApi = new GorgiasApi({
+                    requestsCancellation: true,
+                })
                 let errorCaught = null
 
                 setTimeout(() => {
@@ -74,12 +77,14 @@ describe('services', () => {
             })
 
             it('should cancel pending requests and refresh token', async () => {
-                const expectedData = {foo: 'bar'}
+                const expectedData = { foo: 'bar' }
 
-                apiMock = new MockAdapter(client, {delayResponse: 500})
+                apiMock = new MockAdapter(client, { delayResponse: 500 })
                 apiMock.onPut().reply(200, {}).onPut().reply(200, expectedData)
 
-                const gorgiasApi = new GorgiasApi({requestsCancellation: true})
+                const gorgiasApi = new GorgiasApi({
+                    requestsCancellation: true,
+                })
                 let errorCaught = null
 
                 setTimeout(() => {
@@ -101,9 +106,9 @@ describe('services', () => {
         describe('*paginate()', () => {
             it('should yield each page of requested items until last page is reached', async () => {
                 const mocks = [
-                    {data: [1, 2, 3], meta: {next_page: '/foo/bar?page=2'}},
-                    {data: [4, 5, 6], meta: {next_page: '/foo/bar?page=3'}},
-                    {data: [7, 8, 9], meta: {}},
+                    { data: [1, 2, 3], meta: { next_page: '/foo/bar?page=2' } },
+                    { data: [4, 5, 6], meta: { next_page: '/foo/bar?page=3' } },
+                    { data: [7, 8, 9], meta: {} },
                 ]
 
                 const path = '/foo/bar'
@@ -183,11 +188,11 @@ describe('services', () => {
                 const gorgiasApi = new GorgiasApi()
                 const pages = []
 
-                const asyncFunction = (params?: {cursor?: string | null}) =>
-                    gorgiasApi._api.get('/foo/bar', {params})
+                const asyncFunction = (params?: { cursor?: string | null }) =>
+                    gorgiasApi._api.get('/foo/bar', { params })
 
                 for await (const events of gorgiasApi.cursorPaginate(
-                    asyncFunction
+                    asyncFunction,
                 )) {
                     pages.push(events)
                 }
@@ -226,7 +231,7 @@ describe('services', () => {
                 }
                 apiMock.onAny().reply(202, expectedInvoice)
                 const invoice = await new GorgiasApi().payInvoice(
-                    expectedInvoice['id']
+                    expectedInvoice['id'],
                 )
                 expect(invoice.toJS()).toEqual(expectedInvoice)
                 expect(apiMock.history).toMatchSnapshot()
@@ -242,7 +247,7 @@ describe('services', () => {
                 }
                 apiMock.onAny().reply(202, expectedInvoice)
                 const invoice = await new GorgiasApi().confirmInvoicePayment(
-                    expectedInvoice['id']
+                    expectedInvoice['id'],
                 )
                 expect(invoice.toJS()).toEqual(expectedInvoice)
                 expect(apiMock.history).toMatchSnapshot()
@@ -281,7 +286,7 @@ describe('services', () => {
 
                 // @ts-ignore ts(2763)
                 for await (const events of gorgiasApi.getTicketEvents(
-                    ticketId
+                    ticketId,
                 )) {
                     pages.push(events)
                 }
@@ -325,7 +330,7 @@ describe('services', () => {
 
                 // @ts-ignore ts(2763)
                 for await (const events of gorgiasApi.getSatisfactionSurveyEvents(
-                    surveyId
+                    surveyId,
                 )) {
                     pages.push(events)
                 }
@@ -341,9 +346,9 @@ describe('services', () => {
             it('should return search results for given filter', async () => {
                 const endpoint = '/foo'
                 const filter = 'abc'
-                const data = [{id: 1}, {id: 2}, {id: 3}]
+                const data = [{ id: 1 }, { id: 2 }, { id: 3 }]
 
-                apiMock.onGet(endpoint).reply(200, {data})
+                apiMock.onGet(endpoint).reply(200, { data })
 
                 const gorgiasApi = new GorgiasApi()
                 const searchResults = await gorgiasApi.search(endpoint, filter)
@@ -391,7 +396,7 @@ describe('services', () => {
                 const generator = gorgiasApi.getIntegrationDataItems(
                     integrationId,
                     integrationDataItemType,
-                    []
+                    [],
                 )
 
                 for await (const events of generator) {
@@ -407,7 +412,7 @@ describe('services', () => {
 
         describe('createDraftOrder()', () => {
             it('should create a draft order and return its values', async () => {
-                const data = {draft_order: {id: 123}}
+                const data = { draft_order: { id: 123 } }
                 apiMock
                     .onPost('/integrations/shopify/order/draft/')
                     .reply(200, data)
@@ -415,11 +420,11 @@ describe('services', () => {
                 const gorgiasApi = new GorgiasApi()
                 const integrationId = 1
                 const orderId = 2
-                const payload = fromJS({line_items: []})
+                const payload = fromJS({ line_items: [] })
                 const draftOrder = await gorgiasApi.createDraftOrder(
                     integrationId,
                     payload,
-                    orderId
+                    orderId,
                 )
 
                 expect(draftOrder).toEqual([fromJS(data.draft_order), null])
@@ -427,7 +432,7 @@ describe('services', () => {
 
             it('should create a draft order and return its values with a polling config', async () => {
                 const data = {
-                    draft_order: {id: 123},
+                    draft_order: { id: 123 },
                     location: '/foo',
                     retry_after: '3',
                 }
@@ -438,16 +443,16 @@ describe('services', () => {
                 const gorgiasApi = new GorgiasApi()
                 const integrationId = 1
                 const orderId = 2
-                const payload = fromJS({line_items: []})
+                const payload = fromJS({ line_items: [] })
                 const draftOrder = await gorgiasApi.createDraftOrder(
                     integrationId,
                     payload,
-                    orderId
+                    orderId,
                 )
 
                 expect(draftOrder).toEqual([
                     fromJS(data.draft_order),
-                    {location: '/foo', retry_after: 3},
+                    { location: '/foo', retry_after: 3 },
                 ])
             })
         })
@@ -455,18 +460,18 @@ describe('services', () => {
         describe('updateDraftOrder()', () => {
             it('should update a draft order and return its values', async () => {
                 const draftOrderId = 2
-                const data = {draft_order: {id: 123}}
+                const data = { draft_order: { id: 123 } }
                 apiMock
                     .onPut(`/integrations/shopify/order/draft/${draftOrderId}/`)
                     .reply(200, data)
 
                 const gorgiasApi = new GorgiasApi()
                 const integrationId = 1
-                const payload = fromJS({line_items: []})
+                const payload = fromJS({ line_items: [] })
                 const draftOrder = await gorgiasApi.upsertDraftOrder(
                     integrationId,
                     payload,
-                    draftOrderId
+                    draftOrderId,
                 )
 
                 expect(draftOrder).toEqual([fromJS(data.draft_order), null])
@@ -475,7 +480,7 @@ describe('services', () => {
             it('should update a draft order and return its values with a polling config', async () => {
                 const draftOrderId = 2
                 const data = {
-                    draft_order: {id: 123},
+                    draft_order: { id: 123 },
                     location: '/foo',
                     retry_after: '3',
                 }
@@ -485,16 +490,16 @@ describe('services', () => {
 
                 const gorgiasApi = new GorgiasApi()
                 const integrationId = 1
-                const payload = fromJS({line_items: []})
+                const payload = fromJS({ line_items: [] })
                 const draftOrder = await gorgiasApi.upsertDraftOrder(
                     integrationId,
                     payload,
-                    draftOrderId
+                    draftOrderId,
                 )
 
                 expect(draftOrder).toEqual([
                     fromJS(data.draft_order),
-                    {location: '/foo', retry_after: 3},
+                    { location: '/foo', retry_after: 3 },
                 ])
             })
         })
@@ -502,7 +507,7 @@ describe('services', () => {
         describe('getDraftOrder()', () => {
             it('should fetch a draft order and return its values', async () => {
                 const draftOrderId = 2
-                const data = {draft_order: {id: 123}}
+                const data = { draft_order: { id: 123 } }
                 apiMock
                     .onGet(`/integrations/shopify/order/draft/${draftOrderId}/`)
                     .reply(200, data)
@@ -511,7 +516,7 @@ describe('services', () => {
                 const integrationId = 1
                 const draftOrder = await gorgiasApi.getDraftOrder(
                     integrationId,
-                    draftOrderId
+                    draftOrderId,
                 )
 
                 expect(draftOrder).toEqual([fromJS(data.draft_order), null])
@@ -520,7 +525,7 @@ describe('services', () => {
             it('should fetch a draft order and return its values with a polling config', async () => {
                 const draftOrderId = 2
                 const data = {
-                    draft_order: {id: 123},
+                    draft_order: { id: 123 },
                     location: '/foo',
                     retry_after: '3',
                 }
@@ -532,12 +537,12 @@ describe('services', () => {
                 const integrationId = 1
                 const draftOrder = await gorgiasApi.getDraftOrder(
                     integrationId,
-                    draftOrderId
+                    draftOrderId,
                 )
 
                 expect(draftOrder).toEqual([
                     fromJS(data.draft_order),
-                    {location: '/foo', retry_after: 3},
+                    { location: '/foo', retry_after: 3 },
                 ])
             })
         })
@@ -547,7 +552,7 @@ describe('services', () => {
                 const draftOrderId = 2
                 apiMock
                     .onDelete(
-                        `/integrations/shopify/order/draft/${draftOrderId}/`
+                        `/integrations/shopify/order/draft/${draftOrderId}/`,
                     )
                     .reply(204)
 
@@ -564,7 +569,7 @@ describe('services', () => {
                 const draftOrderId = 2
                 apiMock
                     .onPost(
-                        `/integrations/shopify/order/draft/${draftOrderId}/send-invoice/`
+                        `/integrations/shopify/order/draft/${draftOrderId}/send-invoice/`,
                     )
                     .reply(200)
 
@@ -574,7 +579,7 @@ describe('services', () => {
                 await gorgiasApi.emailDraftOrderInvoice(
                     integrationId,
                     draftOrderId,
-                    invoicePayload
+                    invoicePayload,
                 )
 
                 expect(apiMock.history).toMatchSnapshot()
@@ -584,11 +589,11 @@ describe('services', () => {
         describe('calculateRefund()', () => {
             it('should calculate refund for given draft order', async () => {
                 const orderId = 2
-                const expectedRefund = {foo: 'bar'}
-                const data = {refund: expectedRefund}
+                const expectedRefund = { foo: 'bar' }
+                const data = { refund: expectedRefund }
                 apiMock
                     .onPost(
-                        `/integrations/shopify/order/${orderId}/refunds/calculate/`
+                        `/integrations/shopify/order/${orderId}/refunds/calculate/`,
                     )
                     .reply(200, data)
 
@@ -598,7 +603,7 @@ describe('services', () => {
                 const refund = await gorgiasApi.calculateRefund(
                     integrationId,
                     orderId,
-                    payload
+                    payload,
                 )
 
                 expect(refund).toEqual(fromJS(expectedRefund))
@@ -629,8 +634,8 @@ describe('services', () => {
             it("should update view's sharing options", async () => {
                 const viewId = 1
                 const visibility = ViewVisibility.Public
-                const teams = fromJS([{id: 2}]) as List<any>
-                const users = fromJS([{id: 3}]) as List<any>
+                const teams = fromJS([{ id: 2 }]) as List<any>
+                const users = fromJS([{ id: 3 }]) as List<any>
                 const expectedResult = {
                     visibility,
                     shared_with_teams: teams.toJS(),
@@ -644,7 +649,7 @@ describe('services', () => {
                     viewId,
                     visibility,
                     teams,
-                    users
+                    users,
                 )
 
                 expect(result).toEqual(expectedResult)

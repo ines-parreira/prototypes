@@ -1,12 +1,12 @@
-import {useQueryClient} from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     useDeleteWorkflowConfigurationTemplate,
     workflowsConfigurationTemplateDefinitionKeys,
 } from 'models/workflows/queries'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 const useDeleteActionTemplate = () => {
     const dispatch = useAppDispatch()
@@ -14,7 +14,7 @@ const useDeleteActionTemplate = () => {
 
     const queryKey = workflowsConfigurationTemplateDefinitionKeys.all()
 
-    const {mutateAsync, isLoading} = useDeleteWorkflowConfigurationTemplate({
+    const { mutateAsync, isLoading } = useDeleteWorkflowConfigurationTemplate({
         onSuccess: () => {
             void queryClient.invalidateQueries({
                 queryKey,
@@ -24,12 +24,12 @@ const useDeleteActionTemplate = () => {
                 notify({
                     status: NotificationStatus.Success,
                     message: 'Successfully deleted',
-                })
+                }),
             )
         },
     })
 
-    return {isLoading, deleteActionTemplate: mutateAsync}
+    return { isLoading, deleteActionTemplate: mutateAsync }
 }
 
 export default useDeleteActionTemplate

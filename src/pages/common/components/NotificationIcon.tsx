@@ -1,5 +1,6 @@
-import React, {ComponentProps, useMemo} from 'react'
-import {STATUSES} from 'reapop'
+import React, { ComponentProps, useMemo } from 'react'
+
+import { STATUSES } from 'reapop'
 import ReapopNotificationIcon from 'reapop/dist/components/NotificationIcon'
 
 import errorIcon from 'assets/img/icons/error.svg'

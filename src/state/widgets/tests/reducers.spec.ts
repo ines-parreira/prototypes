@@ -1,16 +1,16 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
-import {GorgiasAction} from 'state/types'
+import { GorgiasAction } from 'state/types'
 
 import * as types from '../constants'
-import reducer, {initialState} from '../reducers'
-import {Widget} from '../types'
+import reducer, { initialState } from '../reducers'
+import { Widget } from '../types'
 
 describe('reducers', () => {
     describe('widgets', () => {
         it('initial state', () => {
             expect(reducer(undefined, {} as GorgiasAction)).toEqualImmutable(
-                initialState
+                initialState,
             )
         })
 
@@ -42,7 +42,7 @@ describe('reducers', () => {
                 reducer(initialState, {
                     type: types.FETCH_WIDGETS_SUCCESS,
                     items,
-                })
+                }),
             ).toEqualImmutable(expected)
         })
     })
@@ -61,15 +61,15 @@ describe('reducers', () => {
             ]
             const currentState = initialState.setIn(
                 ['_internal', 'currentlyEditedWidgetPath'],
-                '0.meta.custom.links'
+                '0.meta.custom.links',
             )
 
             const expectedState = currentState
                 .setIn(
                     ['_internal', 'editedItems'].concat(
-                        '0.meta.custom.links'.split('.')
+                        '0.meta.custom.links'.split('.'),
                     ),
-                    fromJS(data)
+                    fromJS(data),
                 )
                 .setIn(['_internal', 'isDirty'], true)
 
@@ -77,7 +77,7 @@ describe('reducers', () => {
                 reducer(currentState, {
                     type: types.UPDATE_CUSTOM_ACTION,
                     data,
-                })
+                }),
             ).toEqualImmutable(expectedState)
         })
     })

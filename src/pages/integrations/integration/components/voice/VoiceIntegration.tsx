@@ -1,9 +1,10 @@
 import React from 'react'
-import {useParams, Switch, Route} from 'react-router-dom'
+
+import { Route, Switch, useParams } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import useSearch from 'hooks/useSearch'
-import {IntegrationType, isPhoneIntegration} from 'models/integration/types'
+import { IntegrationType, isPhoneIntegration } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import ConnectLink from 'pages/integrations/components/ConnectLink'
@@ -15,27 +16,26 @@ import VoiceIntegrationIvr from 'pages/integrations/integration/components/voice
 import VoiceIntegrationPreferences from 'pages/integrations/integration/components/voice/VoiceIntegrationPreferences'
 import VoiceIntegrationSecondaryNavigation from 'pages/integrations/integration/components/voice/VoiceIntegrationSecondaryNavigation'
 import VoiceIntegrationVoicemail from 'pages/integrations/integration/components/voice/VoiceIntegrationVoicemail'
-
-import {getIntegrationConfig} from 'state/integrations/helpers'
+import { getIntegrationConfig } from 'state/integrations/helpers'
 import {
     getIntegrationById,
     getPhoneIntegrations,
 } from 'state/integrations/selectors'
 
-import {getDefaultRoutes} from '../../utils/defaultRoutes'
+import { getDefaultRoutes } from '../../utils/defaultRoutes'
 import VoiceIntegrationDetails from './VoiceIntegrationDetails'
 
 export default function VoiceIntegration() {
     const config = getIntegrationConfig(IntegrationType.Phone)
-    const {integrationId} = useParams<{integrationId: string}>()
-    const {phoneNumberId} = useSearch<{
+    const { integrationId } = useParams<{ integrationId: string }>()
+    const { phoneNumberId } = useSearch<{
         phoneNumberId: string
     }>()
 
     const currentIntegration = useAppSelector((state) => {
         if (integrationId) {
             const integration = getIntegrationById(parseInt(integrationId))(
-                state
+                state,
             )?.toJS()
             if (isPhoneIntegration(integration)) {
                 return integration

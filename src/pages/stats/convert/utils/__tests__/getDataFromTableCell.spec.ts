@@ -1,11 +1,11 @@
-import {campaignVariant} from 'fixtures/campaign'
+import { campaignVariant } from 'fixtures/campaign'
 import {
     CampaignPreview,
     InferredCampaignStatus,
 } from 'models/convert/campaign/types'
-import {CampaignTableContentCell} from 'pages/stats/convert/types/CampaignTableContentCell'
-import {CampaignTableKeys} from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
-import {getDataFromTableCell} from 'pages/stats/convert/utils/getDataFromTableCell'
+import { CampaignTableContentCell } from 'pages/stats/convert/types/CampaignTableContentCell'
+import { CampaignTableKeys } from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
+import { getDataFromTableCell } from 'pages/stats/convert/utils/getDataFromTableCell'
 
 describe('getDataFromTableCell', () => {
     const campaignName = 'Super conversion campaign name'
@@ -30,7 +30,7 @@ describe('getDataFromTableCell', () => {
     it('should return the correct value for CampaignName', () => {
         const result = getDataFromTableCell(
             cell,
-            CampaignTableKeys.CampaignName
+            CampaignTableKeys.CampaignName,
         )
 
         expect(result).toEqual(campaignName)
@@ -39,7 +39,7 @@ describe('getDataFromTableCell', () => {
     it('should return the correct value for CampaignCurrentStatus', () => {
         const result = getDataFromTableCell(
             cell,
-            CampaignTableKeys.CampaignCurrentStatus
+            CampaignTableKeys.CampaignCurrentStatus,
         )
 
         expect(result).toEqual(campaignStatus)
@@ -48,7 +48,7 @@ describe('getDataFromTableCell', () => {
     it('should return the correct value for CampaignId', () => {
         const result = getDataFromTableCell(
             cell,
-            CampaignTableKeys.ClicksConverted
+            CampaignTableKeys.ClicksConverted,
         )
 
         expect(result).toEqual(clicksConverted)
@@ -57,7 +57,7 @@ describe('getDataFromTableCell', () => {
     it('should return 0 for key not present in data', () => {
         const result = getDataFromTableCell(
             cell,
-            CampaignTableKeys.ClicksConversionRate
+            CampaignTableKeys.ClicksConversionRate,
         )
 
         expect(result).toEqual(0)
@@ -67,7 +67,7 @@ describe('getDataFromTableCell', () => {
         const result = getDataFromTableCell(
             cell,
             CampaignTableKeys.ClicksConverted,
-            campaignVariant.id
+            campaignVariant.id,
         )
 
         expect(result).toEqual(clicksVariantConverted)

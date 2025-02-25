@@ -1,5 +1,5 @@
-import {filterTaxIdsByAddress} from 'pages/settings/new_billing/utils/filterTaxIdsByAddress'
-import {BillingContactUpdatePayload, TaxIdType} from 'state/billing/types'
+import { filterTaxIdsByAddress } from 'pages/settings/new_billing/utils/filterTaxIdsByAddress'
+import { BillingContactUpdatePayload, TaxIdType } from 'state/billing/types'
 
 describe('filterTaxIdsByAddress', () => {
     const mockTaxIds: BillingContactUpdatePayload['tax_ids'] = {
@@ -16,7 +16,7 @@ describe('filterTaxIdsByAddress', () => {
         expect(
             filterTaxIdsByAddress(mockTaxIds, {
                 country: 'FR',
-            })
+            }),
         ).toEqual({
             [TaxIdType.eu_vat]: 'FRAB123456789',
             [TaxIdType.au_abn]: undefined,
@@ -33,7 +33,7 @@ describe('filterTaxIdsByAddress', () => {
             filterTaxIdsByAddress(mockTaxIds, {
                 country: 'AU',
                 state: 'VIC',
-            })
+            }),
         ).toEqual({
             [TaxIdType.eu_vat]: undefined,
             [TaxIdType.au_abn]: '12345678912',
@@ -50,7 +50,7 @@ describe('filterTaxIdsByAddress', () => {
             filterTaxIdsByAddress(mockTaxIds, {
                 country: 'CA',
                 state: 'ON',
-            })
+            }),
         ).toEqual({
             [TaxIdType.eu_vat]: undefined,
             [TaxIdType.au_abn]: undefined,
@@ -67,7 +67,7 @@ describe('filterTaxIdsByAddress', () => {
             filterTaxIdsByAddress(mockTaxIds, {
                 country: 'CA',
                 state: 'BC',
-            })
+            }),
         ).toEqual({
             [TaxIdType.eu_vat]: undefined,
             [TaxIdType.au_abn]: undefined,
@@ -84,7 +84,7 @@ describe('filterTaxIdsByAddress', () => {
             filterTaxIdsByAddress(mockTaxIds, {
                 country: 'CA',
                 state: 'QC',
-            })
+            }),
         ).toEqual({
             [TaxIdType.eu_vat]: undefined,
             [TaxIdType.au_abn]: undefined,
@@ -101,7 +101,7 @@ describe('filterTaxIdsByAddress', () => {
             filterTaxIdsByAddress(mockTaxIds, {
                 country: 'US',
                 state: 'CA',
-            })
+            }),
         ).toEqual({
             [TaxIdType.eu_vat]: undefined,
             [TaxIdType.au_abn]: undefined,

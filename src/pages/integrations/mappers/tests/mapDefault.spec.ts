@@ -1,10 +1,10 @@
-import {dummyAppDetail} from 'fixtures/apps'
+import { dummyAppDetail } from 'fixtures/apps'
 
-import {mapDefaults, DEFAULT_VALUES} from '../mapDefaults'
+import { DEFAULT_VALUES, mapDefaults } from '../mapDefaults'
 
 describe(`mapDefaults`, () => {
     it('should map data correctly', () => {
-        const emptyAppDetail = {...dummyAppDetail}
+        const emptyAppDetail = { ...dummyAppDetail }
         for (const key in DEFAULT_VALUES) {
             //@ts-ignore
             emptyAppDetail[key] = null
@@ -20,6 +20,6 @@ describe(`mapDefaults`, () => {
     })
     it('should do nothing if app is approved', () => {
         expect(mapDefaults(dummyAppDetail)).toBe(dummyAppDetail)
-        expect(mapDefaults({...dummyAppDetail, title: ''}).title).toBe('')
+        expect(mapDefaults({ ...dummyAppDetail, title: '' }).title).toBe('')
     })
 })

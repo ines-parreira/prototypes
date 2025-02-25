@@ -1,12 +1,12 @@
-import {AutomationDatasetFilterMember} from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
-import {BillableTicketDatasetFilterMember} from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
+import { AutomationDatasetFilterMember } from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
+import { BillableTicketDatasetFilterMember } from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
 import {
     automationDatasetAdditionalFilters,
     billableTicketDatasetAdditionalFilters,
     mapTicketChannelsToAutomateChannels,
 } from 'models/reporting/queryFactories/automate_v2/filters'
-import {ReportingFilterOperator} from 'models/reporting/types'
-import {fromLegacyStatsFilters} from 'state/stats/utils'
+import { ReportingFilterOperator } from 'models/reporting/types'
+import { fromLegacyStatsFilters } from 'state/stats/utils'
 
 describe('billableTicketDatasetAdditionalFilters', () => {
     const legacyStatsFilters = {
@@ -29,10 +29,10 @@ describe('billableTicketDatasetAdditionalFilters', () => {
                 member: BillableTicketDatasetFilterMember.Channel,
                 operator: ReportingFilterOperator.Equals,
                 values: mapTicketChannelsToAutomateChannels(
-                    legacyStatsFilters.channels
+                    legacyStatsFilters.channels,
                 ),
             })
-        }
+        },
     )
 
     it('should return no filter when channels filter is undefined in filters state', () => {
@@ -84,10 +84,10 @@ describe('automationDatasetAdditionalFilters', () => {
                 member: AutomationDatasetFilterMember.Channel,
                 operator: ReportingFilterOperator.Equals,
                 values: mapTicketChannelsToAutomateChannels(
-                    legacyStatsFilters.channels
+                    legacyStatsFilters.channels,
                 ),
             })
-        }
+        },
     )
 
     it('should return no filter when no channels filter', () => {

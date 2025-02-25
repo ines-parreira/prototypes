@@ -1,10 +1,11 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {TicketChannel, TicketStatus} from 'business/types/ticket'
-import type {Notification} from 'common/notifications'
+import { render } from '@testing-library/react'
 
-import type {TicketPayload} from '../../types'
+import { TicketChannel, TicketStatus } from 'business/types/ticket'
+import type { Notification } from 'common/notifications'
+
+import type { TicketPayload } from '../../types'
 import TicketNotification from '../TicketNotification'
 
 const notification: Notification<TicketPayload> = {
@@ -32,11 +33,11 @@ const notification: Notification<TicketPayload> = {
 
 describe('<TicketNotification />', () => {
     it('should render notification content', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <TicketNotification
                 notification={notification}
                 headerExtra="extra"
-            />
+            />,
         )
 
         expect(getByText('New message')).toBeInTheDocument()
@@ -45,7 +46,7 @@ describe('<TicketNotification />', () => {
     })
 
     it('should render regular notification icon', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <TicketNotification
                 notification={{
                     ...notification,
@@ -54,7 +55,7 @@ describe('<TicketNotification />', () => {
                     },
                     type: 'ticket.assigned',
                 }}
-            />
+            />,
         )
 
         expect(getByText('person')).toBeInTheDocument()

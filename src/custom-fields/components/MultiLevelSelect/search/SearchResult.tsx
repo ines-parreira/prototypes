@@ -1,8 +1,9 @@
 import React from 'react'
 
-import {CustomFieldValue} from 'custom-fields/types'
+import { CustomFieldValue } from 'custom-fields/types'
 
 import CheckIcon from '../CheckIcon'
+
 import dropdownCss from '../MultiLevelSelect.less'
 import searchCss from './search.less'
 

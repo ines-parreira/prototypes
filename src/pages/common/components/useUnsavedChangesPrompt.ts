@@ -1,6 +1,7 @@
-import {Location} from 'history'
-import {useCallback, useEffect, useRef, useState} from 'react'
-import {PromptProps} from 'react-router-dom'
+import { useCallback, useEffect, useRef, useState } from 'react'
+
+import { Location } from 'history'
+import { PromptProps } from 'react-router-dom'
 
 import history from 'pages/history'
 
@@ -8,7 +9,7 @@ type Props = {
     when: boolean | undefined
 }
 
-const useUnsavedChangesPrompt = ({when}: Props) => {
+const useUnsavedChangesPrompt = ({ when }: Props) => {
     const isDiscarding = useRef(false)
     const [show, setShow] = useState(false)
     const [location, setLocation] = useState<Location>()
@@ -20,7 +21,7 @@ const useUnsavedChangesPrompt = ({when}: Props) => {
                 event.returnValue = ''
             }
         },
-        [when]
+        [when],
     )
 
     useEffect(() => {
@@ -58,7 +59,7 @@ const useUnsavedChangesPrompt = ({when}: Props) => {
 
             return true
         },
-        []
+        [],
     )
 
     const onClose = useCallback(() => {

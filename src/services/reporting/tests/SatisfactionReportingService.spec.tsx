@@ -1,27 +1,27 @@
-import {renderHook} from '@testing-library/react-hooks'
-import moment from 'moment'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { renderHook } from '@testing-library/react-hooks'
+import moment from 'moment'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {useTables} from 'hooks/reporting/common/useTableReportData'
-import {useSatisfactionMetrics} from 'hooks/reporting/quality-management/satisfaction/useSatisfactionMetrics'
+import { useTables } from 'hooks/reporting/common/useTableReportData'
+import { useSatisfactionMetrics } from 'hooks/reporting/quality-management/satisfaction/useSatisfactionMetrics'
 import {
     fetchScoredSurveys,
     useScoredSurveys,
 } from 'hooks/reporting/quality-management/satisfaction/useScoredSurveys'
-import {fetchSurveyScores} from 'hooks/reporting/quality-management/satisfaction/useSurveyScores'
-import {getCsvFileNameWithDates} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
-import {TicketSatisfactionSurveyDimension} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
-
-import {formatMetricValue} from 'pages/stats/common/utils'
-import {getFormattedInfo} from 'pages/stats/quality-management/satisfaction/AverageScorePerDimensionTrendChart/utils'
-import {formatSurveyScores} from 'pages/stats/quality-management/satisfaction/AverageSurveyScoreDonutChart/AverageSurveyScoreDonutChart'
-import {SatisfactionMetricConfig} from 'pages/stats/quality-management/satisfaction/SatisfactionMetricsConfig'
-
-import {DATE_TIME_FORMAT} from 'services/reporting/constants'
+import { fetchSurveyScores } from 'hooks/reporting/quality-management/satisfaction/useSurveyScores'
+import { getCsvFileNameWithDates } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
+import { TicketSatisfactionSurveyDimension } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
+import { formatMetricValue } from 'pages/stats/common/utils'
+import { getFormattedInfo } from 'pages/stats/quality-management/satisfaction/AverageScorePerDimensionTrendChart/utils'
+import { formatSurveyScores } from 'pages/stats/quality-management/satisfaction/AverageSurveyScoreDonutChart/AverageSurveyScoreDonutChart'
+import { SatisfactionMetricConfig } from 'pages/stats/quality-management/satisfaction/SatisfactionMetricsConfig'
+import { DATE_TIME_FORMAT } from 'services/reporting/constants'
 import {
+    fetchScoredSurveysReportData,
     fetchSurveyScoresReportData,
     formatScoredSurveysReport,
     SATISFACTION_METRICS_FILE_NAME,
@@ -29,15 +29,14 @@ import {
     SATISFACTION_TRENDS_METRICS_FILE_NAME,
     saveReport,
     useSatisfactionReportData,
-    fetchScoredSurveysReportData,
 } from 'services/reporting/satisfactionReportingService'
-import {SatisfactionMetric} from 'state/ui/stats/types'
-import {createCsv} from 'utils/file'
-import {getPreviousPeriod} from 'utils/reporting'
-import {assumeMock} from 'utils/testing'
+import { SatisfactionMetric } from 'state/ui/stats/types'
+import { createCsv } from 'utils/file'
+import { getPreviousPeriod } from 'utils/reporting'
+import { assumeMock } from 'utils/testing'
 
 jest.mock(
-    'hooks/reporting/quality-management/satisfaction/useSatisfactionMetrics'
+    'hooks/reporting/quality-management/satisfaction/useSatisfactionMetrics',
 )
 const useSatisfactionMetricsMock = assumeMock(useSatisfactionMetrics)
 jest.mock('hooks/reporting/quality-management/satisfaction/useSurveyScores')
@@ -47,7 +46,7 @@ jest.mock('hooks/reporting/quality-management/satisfaction/useScoredSurveys')
 const fetchScoredSurveysMock = assumeMock(fetchScoredSurveys)
 
 jest.mock(
-    'pages/stats/quality-management/satisfaction/AverageScorePerDimensionTrendChart/utils'
+    'pages/stats/quality-management/satisfaction/AverageScorePerDimensionTrendChart/utils',
 )
 const getLineChartFormattedInfoMock = assumeMock(getFormattedInfo)
 
@@ -67,32 +66,32 @@ describe('satisfactionReportingService', () => {
     const previousPeriod = getPreviousPeriod(period)
     const startDate = moment(period.start_datetime).format(DATE_TIME_FORMAT)
     const previousStartDate = moment(previousPeriod.start_datetime).format(
-        DATE_TIME_FORMAT
+        DATE_TIME_FORMAT,
     )
     const endDate = moment(period.end_datetime).format(DATE_TIME_FORMAT)
     const previousEndDate = moment(previousPeriod.end_datetime).format(
-        DATE_TIME_FORMAT
+        DATE_TIME_FORMAT,
     )
     const userTimezone = 'UTC'
     const defaultData = {
-        satisfactionScoreTrend: {data: undefined},
-        responseRateTrend: {data: undefined},
-        surveysSentTrend: {data: undefined},
-        averageScoreTrend: {data: undefined},
-        surveyScores: {data: undefined},
+        satisfactionScoreTrend: { data: undefined },
+        responseRateTrend: { data: undefined },
+        surveysSentTrend: { data: undefined },
+        averageScoreTrend: { data: undefined },
+        surveyScores: { data: undefined },
     } as any
     const fileName = getCsvFileNameWithDates(
         period,
-        SATISFACTION_METRICS_FILE_NAME
+        SATISFACTION_METRICS_FILE_NAME,
     )
     const trendsFileName = getCsvFileNameWithDates(
         period,
-        SATISFACTION_TRENDS_METRICS_FILE_NAME
+        SATISFACTION_TRENDS_METRICS_FILE_NAME,
     )
 
     const scoredSurveysFileName = getCsvFileNameWithDates(
         period,
-        SATISFACTION_SCORED_SURVEYS
+        SATISFACTION_SCORED_SURVEYS,
     )
     const exampleTrendData = {
         isFetching: false,
@@ -109,11 +108,11 @@ describe('satisfactionReportingService', () => {
             value: null,
             decile: null,
             allData: [
-                {[TicketSatisfactionSurveyDimension.SurveyScore]: '1'},
-                {[TicketSatisfactionSurveyDimension.SurveyScore]: '2'},
-                {[TicketSatisfactionSurveyDimension.SurveyScore]: '3'},
-                {[TicketSatisfactionSurveyDimension.SurveyScore]: '4'},
-                {[TicketSatisfactionSurveyDimension.SurveyScore]: '5'},
+                { [TicketSatisfactionSurveyDimension.SurveyScore]: '1' },
+                { [TicketSatisfactionSurveyDimension.SurveyScore]: '2' },
+                { [TicketSatisfactionSurveyDimension.SurveyScore]: '3' },
+                { [TicketSatisfactionSurveyDimension.SurveyScore]: '4' },
+                { [TicketSatisfactionSurveyDimension.SurveyScore]: '5' },
             ],
         },
     }
@@ -141,8 +140,8 @@ describe('satisfactionReportingService', () => {
     ]
     const formattedExampleSurveyScoresData = formatSurveyScores(
         exampleSurveyScoresData,
-        '- star count'
-    ).map(({value, label}) => [label, value])
+        '- star count',
+    ).map(({ value, label }) => [label, value])
 
     const defaultState = {
         stats: {
@@ -173,8 +172,8 @@ describe('satisfactionReportingService', () => {
         getLineChartFormattedInfoMock.mockReturnValue({
             dataToRender: [
                 [
-                    {dateTime: '2023-08-01', value: 4.5},
-                    {dateTime: '2023-08-02', value: 4.7},
+                    { dateTime: '2023-08-01', value: 4.5 },
+                    { dateTime: '2023-08-02', value: 4.7 },
                 ],
             ],
             labels: ['Agent 1'],
@@ -205,13 +204,13 @@ describe('satisfactionReportingService', () => {
                             exampleTrendData.data.value,
                             SatisfactionMetricConfig[
                                 SatisfactionMetric.AverageSurveyScore
-                            ].metricFormat
+                            ].metricFormat,
                         ),
                         formatMetricValue(
                             exampleTrendData.data.prevValue,
                             SatisfactionMetricConfig[
                                 SatisfactionMetric.AverageSurveyScore
-                            ].metricFormat
+                            ].metricFormat,
                         ),
                     ],
                     ...formattedExampleSurveyScoresData,
@@ -223,13 +222,13 @@ describe('satisfactionReportingService', () => {
                             exampleTrendData.data.value,
                             SatisfactionMetricConfig[
                                 SatisfactionMetric.SatisfactionScore
-                            ].metricFormat
+                            ].metricFormat,
                         ),
                         formatMetricValue(
                             exampleTrendData.data.prevValue,
                             SatisfactionMetricConfig[
                                 SatisfactionMetric.SatisfactionScore
-                            ].metricFormat
+                            ].metricFormat,
                         ),
                     ],
                     [
@@ -240,13 +239,13 @@ describe('satisfactionReportingService', () => {
                             exampleTrendData.data.value,
                             SatisfactionMetricConfig[
                                 SatisfactionMetric.ResponseRate
-                            ].metricFormat
+                            ].metricFormat,
                         ),
                         formatMetricValue(
                             exampleTrendData.data.prevValue,
                             SatisfactionMetricConfig[
                                 SatisfactionMetric.ResponseRate
-                            ].metricFormat
+                            ].metricFormat,
                         ),
                     ],
                     [
@@ -256,16 +255,16 @@ describe('satisfactionReportingService', () => {
                             exampleTrendData.data.value,
                             SatisfactionMetricConfig[
                                 SatisfactionMetric.SurveysSent
-                            ].metricFormat
+                            ].metricFormat,
                         ),
                         formatMetricValue(
                             exampleTrendData.data.prevValue,
                             SatisfactionMetricConfig[
                                 SatisfactionMetric.SurveysSent
-                            ].metricFormat
+                            ].metricFormat,
                         ),
                     ],
-                ])
+                ]),
             )
         })
     })
@@ -277,8 +276,8 @@ describe('satisfactionReportingService', () => {
 
         it('should fetch and format Survey scores report', async () => {
             const result = await fetchSurveyScoresReportData(
-                {period},
-                userTimezone
+                { period },
+                userTimezone,
             )
 
             expect(result).toEqual({
@@ -298,8 +297,8 @@ describe('satisfactionReportingService', () => {
             fetchSurveyScoresMock.mockRejectedValue({})
 
             const result = await fetchSurveyScoresReportData(
-                {period},
-                userTimezone
+                { period },
+                userTimezone,
             )
 
             expect(result).toEqual({
@@ -326,8 +325,8 @@ describe('satisfactionReportingService', () => {
         })
 
         it('should return formatted report data', () => {
-            const {result} = renderHook(() => useSatisfactionReportData(), {
-                wrapper: ({children}) => (
+            const { result } = renderHook(() => useSatisfactionReportData(), {
+                wrapper: ({ children }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
@@ -338,7 +337,7 @@ describe('satisfactionReportingService', () => {
                 files: {
                     [trendsFileName]: saveReport(defaultData, period),
                     [scoredSurveysFileName]: formatScoredSurveysReport(
-                        exampleScoredSurveysData.data
+                        exampleScoredSurveysData.data,
                     ),
                 },
                 fileName,
@@ -349,7 +348,7 @@ describe('satisfactionReportingService', () => {
 
     describe('fetchScoredSurveysReportData', () => {
         const formattedExampleScoredSurveyData = formatScoredSurveysReport(
-            exampleScoredSurveysData.data
+            exampleScoredSurveysData.data,
         )
 
         beforeEach(() => {
@@ -358,13 +357,13 @@ describe('satisfactionReportingService', () => {
 
         it('should fetch and format Scored surveys report', async () => {
             const result = await fetchScoredSurveysReportData(
-                {period},
-                userTimezone
+                { period },
+                userTimezone,
             )
 
             const fileName = getCsvFileNameWithDates(
                 period,
-                SATISFACTION_SCORED_SURVEYS
+                SATISFACTION_SCORED_SURVEYS,
             )
 
             expect(result).toEqual({
@@ -381,8 +380,8 @@ describe('satisfactionReportingService', () => {
             fetchScoredSurveysMock.mockRejectedValue({})
 
             const result = await fetchSurveyScoresReportData(
-                {period},
-                userTimezone
+                { period },
+                userTimezone,
             )
 
             expect(result).toEqual({

@@ -1,30 +1,30 @@
-import {getGorgiasSSPApiClient} from 'rest_api/ssp_api/client'
+import { getGorgiasSSPApiClient } from 'rest_api/ssp_api/client'
 
-import {SelfServiceConfiguration} from './types'
+import { SelfServiceConfiguration } from './types'
 
 export const fetchSelfServiceConfigurationSSP = async (
     shopName: string,
-    shopType: string
+    shopType: string,
 ): Promise<SelfServiceConfiguration> => {
     const sspClient = await getGorgiasSSPApiClient()
 
     return sspClient
         .get<SelfServiceConfiguration>(
-            `/helpdesk/configurations?shop_name=${shopName}&type=${shopType}`
+            `/helpdesk/configurations?shop_name=${shopName}&type=${shopType}`,
         )
 
-        .then(({data}) => data)
+        .then(({ data }) => data)
 }
 
 export const updateSelfServiceConfigurationSSP = async (
-    configuration: SelfServiceConfiguration
+    configuration: SelfServiceConfiguration,
 ): Promise<SelfServiceConfiguration> => {
     const sspClient = await getGorgiasSSPApiClient()
 
     return sspClient
         .put<SelfServiceConfiguration>(
             `/helpdesk/configurations?shop_name=${configuration.shopName}&type=${configuration.type}`,
-            configuration
+            configuration,
         )
-        .then(({data}) => data)
+        .then(({ data }) => data)
 }

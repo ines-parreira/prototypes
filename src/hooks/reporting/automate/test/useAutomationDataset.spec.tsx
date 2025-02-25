@@ -1,8 +1,8 @@
-import {QueryClientProvider, UseQueryResult} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
-
-import moment from 'moment'
 import React from 'react'
+
+import { QueryClientProvider, UseQueryResult } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
+import moment from 'moment'
 
 import {
     useAllAutomatedInteractions,
@@ -23,27 +23,26 @@ import {
     useAutomationDatasetTimeSeries,
     useBillableTicketDatasetTimeSeries,
 } from 'hooks/reporting/automate/timeSeries'
-import {useAIAgentUserId} from 'hooks/reporting/automate/useAIAgentUserId'
+import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
 import {
     fetchAutomateMetricsTimeSeries,
     useAutomateMetricsTimeSeries,
     useAutomateMetricsTrend,
 } from 'hooks/reporting/automate/useAutomationDataset'
-
-import {AutomateEventType} from 'hooks/reporting/automate/utils'
-import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
-import {ReportingGranularity} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
-import {AUTOMATION_RATE_LABEL} from 'pages/stats/self-service/constants'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { AutomateEventType } from 'hooks/reporting/automate/utils'
+import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
+import { ReportingGranularity } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
+import { AUTOMATION_RATE_LABEL } from 'pages/stats/self-service/constants'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 const queryClient = mockQueryClient()
 const timezone = 'UTC'
 const granularity = ReportingGranularity.Day
 export const getMockData = (
     values: number[],
-    measure = 'AutomationDataset.automatedInteractions'
+    measure = 'AutomationDataset.automatedInteractions',
 ) => {
     const data = []
     for (const i of values) {
@@ -62,7 +61,7 @@ const automatedInteractionsDataByEventType = {
     article_recommendation_started: [
         getMockData(
             [1, 2, 3],
-            AutomateEventType.ARTICLE_RECOMMENDATION_STARTED
+            AutomateEventType.ARTICLE_RECOMMENDATION_STARTED,
         ),
     ],
     flow_started: [getMockData([1, 2, 3], AutomateEventType.FLOW_STARTED)],
@@ -76,7 +75,7 @@ const automatedInteractionsDataByEventType = {
     ticket_message_created_from_autoresponder: [
         getMockData(
             [1, 2, 3],
-            AutomateEventType.TICKET_MESSAGE_CREATED_FROM_AUTORESPONDER
+            AutomateEventType.TICKET_MESSAGE_CREATED_FROM_AUTORESPONDER,
         ),
     ],
     quick_response_started: [
@@ -88,48 +87,48 @@ jest.mock('hooks/reporting/automate/useAIAgentUserId')
 const useAIAgentUserIdMock = assumeMock(useAIAgentUserId)
 jest.mock('hooks/reporting/automate/timeSeries')
 const useAutomationDatasetTimeSeriesMock = assumeMock(
-    useAutomationDatasetTimeSeries
+    useAutomationDatasetTimeSeries,
 )
 const fetchAutomationDatasetTimeSeriesMock = assumeMock(
-    fetchAutomationDatasetTimeSeries
+    fetchAutomationDatasetTimeSeries,
 )
 const useAutomationDatasetByEventTypeTimeSeriesMock = assumeMock(
-    useAutomationDatasetByEventTypeTimeSeries
+    useAutomationDatasetByEventTypeTimeSeries,
 )
 const fetchAutomationDatasetByEventTypeTimeSeriesMock = assumeMock(
-    fetchAutomationDatasetByEventTypeTimeSeries
+    fetchAutomationDatasetByEventTypeTimeSeries,
 )
 const useBillableTicketDatasetTimeSeriesMock = assumeMock(
-    useBillableTicketDatasetTimeSeries
+    useBillableTicketDatasetTimeSeries,
 )
 const fetchBillableTicketDatasetTimeSeriesMock = assumeMock(
-    fetchBillableTicketDatasetTimeSeries
+    fetchBillableTicketDatasetTimeSeries,
 )
 jest.mock('hooks/reporting/automate/automationTrends')
 const useFilteredAutomatedInteractionsMock = assumeMock(
-    useFilteredAutomatedInteractions
+    useFilteredAutomatedInteractions,
 )
 const useAllAutomatedInteractionsByAutoRespondersMock = assumeMock(
-    useAllAutomatedInteractionsByAutoResponders
+    useAllAutomatedInteractionsByAutoResponders,
 )
 const useAllAutomatedInteractionsMock = assumeMock(useAllAutomatedInteractions)
 const useBillableTicketsExcludingAIAgentMock = assumeMock(
-    useBillableTicketsExcludingAIAgent
+    useBillableTicketsExcludingAIAgent,
 )
 const useResolutionTimeResolvedByAIAgentMock = assumeMock(
-    useResolutionTimeResolvedByAIAgent
+    useResolutionTimeResolvedByAIAgent,
 )
 const useFilteredAutomatedInteractionsByAutoRespondersMock = assumeMock(
-    useFilteredAutomatedInteractionsByAutoResponders
+    useFilteredAutomatedInteractionsByAutoResponders,
 )
 const useFirstResponseTimeExcludingAIAgentMock = assumeMock(
-    useFirstResponseTimeExcludingAIAgent
+    useFirstResponseTimeExcludingAIAgent,
 )
 const useFirstResponseTimeIncludingAIAgentMock = assumeMock(
-    useFirstResponseTimeIncludingAIAgent
+    useFirstResponseTimeIncludingAIAgent,
 )
 const useResolutionTimeExcludingAIAgentMock = assumeMock(
-    useResolutionTimeExcludingAIAgent
+    useResolutionTimeExcludingAIAgent,
 )
 
 describe('useAutomationDatasetV2', () => {
@@ -152,7 +151,7 @@ describe('useAutomationDatasetV2', () => {
                 getMockData([2, 3, 7]),
                 getMockData(
                     [0, 1, 1],
-                    'AutomationDataset.automatedInteractionsByAutoResponders'
+                    'AutomationDataset.automatedInteractionsByAutoResponders',
                 ),
             ],
             isFetched: true,
@@ -161,7 +160,7 @@ describe('useAutomationDatasetV2', () => {
             data: [
                 getMockData(
                     [1, 2, 6],
-                    'BillableTicketDataset.billableTicketCount'
+                    'BillableTicketDataset.billableTicketCount',
                 ),
             ],
             isFetched: true,
@@ -173,20 +172,20 @@ describe('useAutomationDatasetV2', () => {
         } as any)
 
         jest.spyOn(queryClient, 'invalidateQueries')
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useAutomateMetricsTimeSeries(
                     statsFilters,
                     timezone,
-                    granularity
+                    granularity,
                 ),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         {children}
                     </QueryClientProvider>
                 ),
-            }
+            },
         )
 
         expect(result.current.automationRateTimeSeries).toEqual([
@@ -215,7 +214,7 @@ describe('useAutomationDatasetV2', () => {
             getMockData([2, 3, 7]),
             getMockData(
                 [0, 1, 1],
-                'AutomationDataset.automatedInteractionsByAutoResponders'
+                'AutomationDataset.automatedInteractionsByAutoResponders',
             ),
         ] as any)
         fetchBillableTicketDatasetTimeSeriesMock.mockResolvedValue([
@@ -232,7 +231,7 @@ describe('useAutomationDatasetV2', () => {
             timezone,
             granularity,
             false,
-            aIAgentUserId
+            aIAgentUserId,
         )
 
         expect(result.automationRateTimeSeries).toEqual([
@@ -330,7 +329,7 @@ describe('useAutomationDatasetV2', () => {
                     data: filteredAutomatedInteractionsDataByAutoResponders,
                     isFetching: false,
                     isFetched: true,
-                } as any
+                } as any,
             )
             useFirstResponseTimeExcludingAIAgentMock.mockReturnValue({
                 data: ticketDatasetExcludingAIAgent,
@@ -355,15 +354,15 @@ describe('useAutomationDatasetV2', () => {
             >)
 
             jest.spyOn(queryClient, 'invalidateQueries')
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () => useAutomateMetricsTrend(statsFilters, timezone),
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
                             {children}
                         </QueryClientProvider>
                     ),
-                }
+                },
             )
 
             expect(result.current.automatedInteractionTrend.data).toEqual({
@@ -375,7 +374,7 @@ describe('useAutomationDatasetV2', () => {
                 value: 0.7260541950441965,
             })
             expect(
-                result.current.decreaseInFirstResponseTimeTrend.data
+                result.current.decreaseInFirstResponseTimeTrend.data,
             ).toEqual({
                 prevValue: 0,
                 value: 717716.5952535146,

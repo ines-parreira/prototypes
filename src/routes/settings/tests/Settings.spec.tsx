@@ -1,34 +1,34 @@
-import {render} from '@testing-library/react'
 import React from 'react'
-import {Route, useRouteMatch} from 'react-router-dom'
 
-import {PageSection} from 'config/pages'
-import {ADMIN_ROLE} from 'config/user'
+import { render } from '@testing-library/react'
+import { Route, useRouteMatch } from 'react-router-dom'
 
+import { PageSection } from 'config/pages'
+import { ADMIN_ROLE } from 'config/user'
 import IntegrationDetail from 'pages/integrations/integration/Integration'
 import {
     CUSTOM_FIELD_CONDITIONS_ROUTE,
     CUSTOM_FIELD_ROUTES,
 } from 'routes/constants'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
-import {Billing} from '../Billing'
-import {Channels} from '../Channels'
-import {ConditionalFields} from '../ConditionalFields'
-import {ContactForm} from '../ContactForm'
-import {Convert} from '../Convert'
-import {CustomFields} from '../CustomFields'
-import {HelpCenter} from '../HelpCenter'
-import {renderAppSettings} from '../helpers/settingsRenderer'
-import {Import} from '../Import'
-import {Integrations} from '../Integrations'
-import {Macros} from '../Macros'
-import {PhoneNumbers} from '../PhoneNumbers'
-import {Rules} from '../Rules'
-import {SettingRoutes} from '../Settings'
-import {SLA} from '../SLA'
-import {Teams} from '../Teams'
-import {Users} from '../Users'
+import { Billing } from '../Billing'
+import { Channels } from '../Channels'
+import { ConditionalFields } from '../ConditionalFields'
+import { ContactForm } from '../ContactForm'
+import { Convert } from '../Convert'
+import { CustomFields } from '../CustomFields'
+import { HelpCenter } from '../HelpCenter'
+import { renderAppSettings } from '../helpers/settingsRenderer'
+import { Import } from '../Import'
+import { Integrations } from '../Integrations'
+import { Macros } from '../Macros'
+import { PhoneNumbers } from '../PhoneNumbers'
+import { Rules } from '../Rules'
+import { SettingRoutes } from '../Settings'
+import { SLA } from '../SLA'
+import { Teams } from '../Teams'
+import { Users } from '../Users'
 
 jest.mock('../SLA', () => ({
     SLA: jest.fn(() => <div>SLA</div>),
@@ -36,7 +36,7 @@ jest.mock('../SLA', () => ({
 
 jest.mock('react-router-dom', () => ({
     Route: jest.fn(() => <div>route</div>),
-    Switch: jest.fn(({children}) => <div>{children}</div>),
+    Switch: jest.fn(({ children }) => <div>{children}</div>),
     useRouteMatch: jest.fn(),
     Link: jest.fn(() => <div>Link</div>),
 }))
@@ -189,7 +189,7 @@ describe('Settings', () => {
                             type: component,
                         }),
                         path,
-                        ...(exact ? {exact} : {}),
+                        ...(exact ? { exact } : {}),
                     },
                     {},
                 ])
@@ -197,10 +197,10 @@ describe('Settings', () => {
                     expect(
                         mockedRenderAppSettings.mock.calls[
                             renderHelperCallOrder
-                        ]
+                        ],
                     ).toEqual([component, renderHelperProps])
                 }
-            }
+            },
         )
     })
 })

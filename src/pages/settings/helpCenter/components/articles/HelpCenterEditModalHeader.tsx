@@ -1,4 +1,3 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
 import React, {
     ChangeEvent,
     ReactChild,
@@ -8,29 +7,30 @@ import React, {
     useState,
 } from 'react'
 
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
 import useAppSelector from 'hooks/useAppSelector'
-import {Article, LocaleCode, VisibilityStatus} from 'models/helpCenter/types'
+import { Article, LocaleCode, VisibilityStatus } from 'models/helpCenter/types'
 import IconButton from 'pages/common/components/button/IconButton'
-import {getCategories} from 'state/entities/helpCenter/categories'
+import { getCategories } from 'state/entities/helpCenter/categories'
 
 import {
     DRAWER_TRANSITION_DURATION_MS,
     EditingStateEnum,
     HELP_CENTER_TITLE_MAX_LENGTH,
 } from '../../constants'
-import {useAbilityChecker} from '../../hooks/useHelpCenterApi'
-import {useEditionManager} from '../../providers/EditionManagerContext'
-
-import {useSupportedLocales} from '../../providers/SupportedLocales'
-import {ArticleMode} from '../../types/articleMode'
+import { useAbilityChecker } from '../../hooks/useHelpCenterApi'
+import { useEditionManager } from '../../providers/EditionManagerContext'
+import { useSupportedLocales } from '../../providers/SupportedLocales'
+import { ArticleMode } from '../../types/articleMode'
 import {
-    getHomePageItemHashUrl,
     getArticleUrl,
+    getHomePageItemHashUrl,
     isExistingArticle,
 } from '../../utils/helpCenter.utils'
-import {getLocaleSelectOptions} from '../../utils/localeSelectOptions'
+import { getLocaleSelectOptions } from '../../utils/localeSelectOptions'
 import EditingState from '../EditingState/EditingState'
-import {isOneOfParentsUnlisted} from '../HelpCenterCategoryEdit/utils'
+import { isOneOfParentsUnlisted } from '../HelpCenterCategoryEdit/utils'
 import SelectVisibilityStatus from '../SelectVisibilityStatus/SelectVisibilityStatus'
 import ArticleCategorySelect from './ArticleCategorySelect'
 import {
@@ -51,7 +51,7 @@ export type Props = {
     onClose: () => void
     onArticleLanguageSelectActionClick: (
         action: ActionType,
-        currentOption: OptionItem
+        currentOption: OptionItem,
     ) => void
     onCopyLinkToClipboard: (article: Article, isUnlisted: boolean) => void
     toggleModalBtn?: ReactChild
@@ -162,7 +162,7 @@ export const HelpCenterEditModalHeader = ({
                     canBeDeleted,
                 }
             }),
-        [locales, supportedLocales, articleLocales]
+        [locales, supportedLocales, articleLocales],
     )
 
     const editingState = useMemo(() => {
@@ -210,11 +210,11 @@ export const HelpCenterEditModalHeader = ({
         selectedArticle,
     ])
 
-    const {isPassingRulesCheck} = useAbilityChecker()
+    const { isPassingRulesCheck } = useAbilityChecker()
 
     useEffect(() => {
         setIsParentUnlisted(
-            isOneOfParentsUnlisted(categories, selectedCategoryId)
+            isOneOfParentsUnlisted(categories, selectedCategoryId),
         )
     }, [selectedCategoryId, categories])
 
@@ -224,13 +224,13 @@ export const HelpCenterEditModalHeader = ({
             // otherwise it breaks the animation
             setTimeout(
                 () => titleInputRef.current?.focus(),
-                DRAWER_TRANSITION_DURATION_MS
+                DRAWER_TRANSITION_DURATION_MS,
             )
         }
     }, [autoFocus])
 
-    const canUpdateArticle = isPassingRulesCheck(({can}) =>
-        can('update', 'ArticleEntity')
+    const canUpdateArticle = isPassingRulesCheck(({ can }) =>
+        can('update', 'ArticleEntity'),
     )
 
     const showPreviewArticleButton =
@@ -381,15 +381,15 @@ export const HelpCenterEditModalHeader = ({
                                                   category_id: value,
                                               },
                                           }
-                                        : null
+                                        : null,
                                 )
                                 setSelectedCategoryId(value)
                                 if (value) {
                                     setShowNotification(
                                         isOneOfParentsUnlisted(
                                             categories,
-                                            value
-                                        )
+                                            value,
+                                        ),
                                     )
                                 } else {
                                     setShowNotification(false)
@@ -411,7 +411,7 @@ export const HelpCenterEditModalHeader = ({
                                                   visibility_status: status,
                                               },
                                           }
-                                        : null
+                                        : null,
                                 )
                             }}
                             status={visibilityStatus}

@@ -3,7 +3,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import client from '../../../models/api/resources'
-import {RootState, StoreDispatch} from '../../types'
+import { RootState, StoreDispatch } from '../../types'
 import * as actions from '../actions'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -21,11 +21,11 @@ describe('actions', () => {
         it('should dispatch results', async () => {
             const response = {
                 data: [
-                    {id: 1, order: 0},
-                    {id: 2, order: 1},
-                    {id: 3, order: 2},
+                    { id: 1, order: 0 },
+                    { id: 2, order: 1 },
+                    { id: 3, order: 2 },
                 ],
-                meta: {next_cursor: null},
+                meta: { next_cursor: null },
             }
 
             mockServer.onGet('/api/widgets/').reply(200, response)

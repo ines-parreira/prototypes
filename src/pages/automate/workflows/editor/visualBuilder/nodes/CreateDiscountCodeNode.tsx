@@ -1,16 +1,17 @@
-import React, {memo} from 'react'
-import {NodeProps} from 'reactflow'
+import React, { memo } from 'react'
+
+import { NodeProps } from 'reactflow'
 
 import VisualBuilderActionTag from 'pages/automate/workflows/components/VisualBuilderActionTag'
 import {
     useVisualBuilderNodeProps,
     VisualBuilderNodeProps,
 } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
-import {CreateDiscountCodeNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { CreateDiscountCodeNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 import EdgeBlock from '../components/EdgeBlock'
 import NodeDeleteIcon from '../components/NodeDeleteIcon'
-import {defaultNodeNames} from './constants'
+import { defaultNodeNames } from './constants'
 import VisualBuilderNode from './VisualBuilderNode'
 import VisualBuilderNodeContent from './VisualBuilderNodeContent'
 
@@ -39,7 +40,7 @@ const CreateDiscountCodeNode = memo(function CreateDiscountCodeNode({
 })
 
 export default function CreateDiscountCodeNodeWrapper(
-    node: NodeProps<CreateDiscountCodeNodeType['data']>
+    node: NodeProps<CreateDiscountCodeNodeType['data']>,
 ) {
     const commonProps = useVisualBuilderNodeProps(node)
 

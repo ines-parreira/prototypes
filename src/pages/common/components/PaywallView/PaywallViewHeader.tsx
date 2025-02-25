@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react'
+import React, { ReactNode } from 'react'
 
 import css from './PaywallViewHeader.less'
 
@@ -8,7 +8,7 @@ type Props = {
     title?: ReactNode
 }
 
-export default function PaywallViewHeader({logo, logoAlt, title}: Props) {
+export default function PaywallViewHeader({ logo, logoAlt, title }: Props) {
     return (
         <>
             {logo && (

@@ -1,11 +1,12 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { ReactNode } from 'react'
 
 import classNames from 'classnames'
-import React, {ReactNode} from 'react'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useId from 'hooks/useId'
 import IconButton from 'pages/common/components/button/IconButton'
-import {Drawer} from 'pages/common/components/Drawer'
+import { Drawer } from 'pages/common/components/Drawer'
 import ShortcutIcon from 'pages/common/components/ShortcutIcon/ShortcutIcon'
 
 import css from './NodeEditorDrawer.less'

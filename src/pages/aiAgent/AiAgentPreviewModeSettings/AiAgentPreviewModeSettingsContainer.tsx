@@ -1,18 +1,18 @@
 import React from 'react'
-import {useParams} from 'react-router-dom'
+
+import { useParams } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
-
-import {useGetOrCreateSnippetHelpCenter} from 'pages/aiAgent/hooks/useGetOrCreateSnippetHelpCenter'
-import {usePublicResources} from 'pages/aiAgent/hooks/usePublicResources'
-import {useAiAgentStoreConfigurationContext} from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
+import { useGetOrCreateSnippetHelpCenter } from 'pages/aiAgent/hooks/useGetOrCreateSnippetHelpCenter'
+import { usePublicResources } from 'pages/aiAgent/hooks/usePublicResources'
+import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import Loader from 'pages/common/components/Loader/Loader'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import AiAgentPreviewModeSettingsView from './AiAgentPreviewModeSettingsView'
 
 export const AiAgentPreviewModeSettingsContainer = () => {
-    const {shopName} = useParams<{shopName: string}>()
+    const { shopName } = useParams<{ shopName: string }>()
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
 
@@ -25,7 +25,7 @@ export const AiAgentPreviewModeSettingsContainer = () => {
     const hasNoEmailConnected =
         !storeConfiguration?.monitoredEmailIntegrations?.length
 
-    const {helpCenter, isLoading: isHelpCenterLoading} =
+    const { helpCenter, isLoading: isHelpCenterLoading } =
         useGetOrCreateSnippetHelpCenter({
             accountDomain,
             shopName,

@@ -1,20 +1,21 @@
-import {render, fireEvent, screen} from '@testing-library/react'
 import React from 'react'
 
-import {actionFixture} from 'fixtures/infobarCustomActions'
-import {useComputeNbButtonDisplayed} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/hooks/useComputeNbButtonDisplayed'
-import {useTemplateContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/hooks/useTemplateContext'
-import {assumeMock} from 'utils/testing'
+import { fireEvent, render, screen } from '@testing-library/react'
 
-import {Button} from '../Button'
+import { actionFixture } from 'fixtures/infobarCustomActions'
+import { useComputeNbButtonDisplayed } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/hooks/useComputeNbButtonDisplayed'
+import { useTemplateContext } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/hooks/useTemplateContext'
+import { assumeMock } from 'utils/testing'
+
+import { Button } from '../Button'
 import ButtonsGroup from '../ButtonsGroup'
 
 jest.mock('../Button')
 jest.mock(
-    'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/hooks/useTemplateContext'
+    'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/hooks/useTemplateContext',
 )
 jest.mock(
-    'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/hooks/useComputeNbButtonDisplayed'
+    'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/hooks/useComputeNbButtonDisplayed',
 )
 const ButtonMock = assumeMock(Button)
 const useTemplateContextMock = assumeMock(useTemplateContext)
@@ -38,24 +39,24 @@ describe('<ButtonsGroup/>', () => {
     const action = actionFixture()
 
     const buttons = [
-        {label: '{{label_0}}', action},
-        {label: '{{label_1}}', action},
-        {label: 'ok', action},
-        {label: 'who cares', action},
+        { label: '{{label_0}}', action },
+        { label: '{{label_1}}', action },
+        { label: 'ok', action },
+        { label: 'who cares', action },
     ]
 
     it('should render with correct label and without a dropdown ', () => {
         render(<ButtonsGroup buttons={buttons.slice(0, 2)} source={source} />)
 
         expect(screen.getAllByRole('button').length).toBe(2)
-        expect(screen.queryByRole('button', {name: 'more_horiz'})).toBeFalsy()
+        expect(screen.queryByRole('button', { name: 'more_horiz' })).toBeFalsy()
     })
 
     it('should render with a dropdown', () => {
         render(<ButtonsGroup buttons={buttons} source={source} />)
 
         expect(
-            screen.getByRole('button', {name: 'more_horiz'})
+            screen.getByRole('button', { name: 'more_horiz' }),
         ).toBeInTheDocument()
         expect(screen.queryByRole('menu')).toBeFalsy()
     })
@@ -63,12 +64,12 @@ describe('<ButtonsGroup/>', () => {
     it('should show button in dropdown on click, with correct label', () => {
         render(<ButtonsGroup buttons={buttons} source={source} />)
 
-        fireEvent.click(screen.getByRole('button', {name: 'more_horiz'}))
+        fireEvent.click(screen.getByRole('button', { name: 'more_horiz' }))
         expect(screen.queryByRole('menu')?.getAttribute('aria-hidden')).toBe(
-            'false'
+            'false',
         )
         expect(screen.queryByRole('menu')).toContainElement(
-            screen.getAllByRole('button').pop() || null
+            screen.getAllByRole('button').pop() || null,
         )
     })
 
@@ -99,7 +100,7 @@ describe('<ButtonsGroup/>', () => {
                     },
                 ]}
                 source={source}
-            />
+            />,
         )
 
         expect(ButtonMock.mock.calls[0][0]).toEqual(
@@ -114,7 +115,7 @@ describe('<ButtonsGroup/>', () => {
                         },
                     ],
                 },
-            })
+            }),
         )
     })
 
@@ -136,7 +137,7 @@ describe('<ButtonsGroup/>', () => {
                     },
                 ]}
                 source={source}
-            />
+            />,
         )
 
         expect(ButtonMock.mock.calls[0][0]).toEqual(
@@ -151,7 +152,7 @@ describe('<ButtonsGroup/>', () => {
                         },
                     ],
                 },
-            })
+            }),
         )
     })
 })

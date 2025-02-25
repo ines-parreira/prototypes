@@ -1,13 +1,13 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
+import { useMetricPerDimension } from 'hooks/reporting/useMetricPerDimension'
 import {
     HelpCenterTrackingEventDimensions,
     HelpCenterTrackingEventMeasures,
     HelpCenterTrackingEventMember,
 } from 'models/reporting/cubes/HelpCenterTrackingEventCube'
 
-import {useSearchQueryMetrics} from '../useSearchQueryMetrics'
+import { useSearchQueryMetrics } from '../useSearchQueryMetrics'
 
 jest.mock('hooks/reporting/useMetricPerDimension', () => ({
     useMetricPerDimension: jest.fn(),
@@ -45,7 +45,7 @@ describe('useSearchQueryMetrics', () => {
                 timezone,
                 searchQuery,
                 helpCenterDomain,
-            })
+            }),
         )
 
         expect(mockUseMetricPerDimension).toHaveBeenCalledWith(
@@ -58,7 +58,7 @@ describe('useSearchQueryMetrics', () => {
                     },
                 ]),
                 timezone: timezone,
-            })
+            }),
         )
     })
 
@@ -82,13 +82,13 @@ describe('useSearchQueryMetrics', () => {
                 decile: null,
             },
         })
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useSearchQueryMetrics({
                 statsFilters,
                 timezone,
                 searchQuery: 'searchQuery',
                 helpCenterDomain,
-            })
+            }),
         )
 
         expect(result.current).toEqual({
@@ -119,13 +119,13 @@ describe('useSearchQueryMetrics', () => {
                 decile: null,
             },
         })
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useSearchQueryMetrics({
                 statsFilters,
                 timezone,
                 searchQuery: 'searchQuery',
                 helpCenterDomain,
-            })
+            }),
         )
 
         expect(result.current).toEqual({
@@ -152,13 +152,13 @@ describe('useSearchQueryMetrics', () => {
             isError: false,
             data: null,
         })
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useSearchQueryMetrics({
                 statsFilters,
                 timezone,
                 searchQuery: 'searchQuery',
                 helpCenterDomain,
-            })
+            }),
         )
 
         expect(result.current).toEqual({

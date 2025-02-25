@@ -1,23 +1,25 @@
-import {useListLiveCallQueueAgents} from '@gorgias/api-queries'
-import {Skeleton} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
-import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
+import { useListLiveCallQueueAgents } from '@gorgias/api-queries'
+import { Skeleton } from '@gorgias/merchant-ui-kit'
+
+import { FilterKey, StatsFiltersWithLogicalOperator } from 'models/stat/types'
 import Button from 'pages/common/components/button/Button'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
+import { NoDataAvailable } from 'pages/stats/NoDataAvailable'
 
 import LiveVoiceAgentsList from './LiveVoiceAgentsList'
+
 import css from './LiveVoiceAgentsList.less'
 
 type Props = {
     cleanStatsFilters: StatsFiltersWithLogicalOperator
 }
 
-export default function LiveVoiceAgentsSection({cleanStatsFilters}: Props) {
+export default function LiveVoiceAgentsSection({ cleanStatsFilters }: Props) {
     const {
         data: agents,
         isLoading,
@@ -37,7 +39,7 @@ export default function LiveVoiceAgentsSection({cleanStatsFilters}: Props) {
             query: {
                 refetchOnWindowFocus: false,
             },
-        }
+        },
     )
 
     if (isLoading && !agents) {
@@ -88,7 +90,7 @@ export default function LiveVoiceAgentsSection({cleanStatsFilters}: Props) {
     )
 }
 
-const Wrapper = ({children}: {children: React.ReactNode}) => (
+const Wrapper = ({ children }: { children: React.ReactNode }) => (
     <>
         <div className={css.title}>Agents</div>
         {children}

@@ -1,1 +1,1 @@
-export {default} from './ABTestSettingsPage'
+export { default } from './ABTestSettingsPage'

@@ -1,10 +1,12 @@
-import {Label} from '@gorgias/merchant-ui-kit'
+import React, { useMemo } from 'react'
+
 import _noop from 'lodash/noop'
-import React, {useMemo} from 'react'
+
+import { Label } from '@gorgias/merchant-ui-kit'
 
 import Button from 'pages/common/components/button/Button'
 
-import {Input} from '../types'
+import { Input } from '../types'
 import ActionFormInput from './ActionFormInput'
 
 import css from './ActionFormInputs.less'
@@ -48,7 +50,7 @@ const ActionFormInputs = ({
 }: Props) => {
     const semiImmutableInputIdsSet = useMemo(
         () => new Set(semiImmutableInputs.map((input) => input.id)),
-        [semiImmutableInputs]
+        [semiImmutableInputs],
     )
 
     return (

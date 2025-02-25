@@ -1,5 +1,5 @@
-import {channelConnectionId} from 'fixtures/channelConnection'
-import {RevenueAddonClient} from 'rest_api/revenue_addon_api/client'
+import { channelConnectionId } from 'fixtures/channelConnection'
+import { RevenueAddonClient } from 'rest_api/revenue_addon_api/client'
 
 import * as resources from '../resources'
 
@@ -9,7 +9,10 @@ describe('Convert settings resources', () => {
     describe('getSettingsList', () => {
         it('should resolve with filtered settings on success', async () => {
             const expectedResponse = [
-                {type: 'performance_report_visible_fields', data: {foo: 'bar'}},
+                {
+                    type: 'performance_report_visible_fields',
+                    data: { foo: 'bar' },
+                },
             ]
             const client = {
                 get_settings: jest.fn().mockReturnValue(expectedResponse),
@@ -27,7 +30,7 @@ describe('Convert settings resources', () => {
             const client = {
                 update_setting: jest.fn().mockReturnValue({
                     type: 'performance_report_visible_fields',
-                    data: {foo: 'bar', bar: '1'},
+                    data: { foo: 'bar', bar: '1' },
                 }),
             } as unknown as RevenueAddonClient
 
@@ -38,12 +41,12 @@ describe('Convert settings resources', () => {
                 },
                 {
                     type: 'performance_report_visible_fields',
-                    data: {foo: 'bar', bar: '1'},
-                }
+                    data: { foo: 'bar', bar: '1' },
+                },
             )
             expect(res).toEqual({
                 type: 'performance_report_visible_fields',
-                data: {foo: 'bar', bar: '1'},
+                data: { foo: 'bar', bar: '1' },
             })
         })
     })

@@ -1,12 +1,13 @@
-import React, {useCallback} from 'react'
-import {Col, Row, FormGroup} from 'reactstrap'
+import React, { useCallback } from 'react'
 
-import {PhoneCountry} from 'business/twilio'
-import {AddressType} from 'models/integration/types'
-import {AddressInformation} from 'models/phoneNumber/types'
-import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
+import { Col, FormGroup, Row } from 'reactstrap'
+
+import { PhoneCountry } from 'business/twilio'
+import { AddressType } from 'models/integration/types'
+import { AddressInformation } from 'models/phoneNumber/types'
+import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 import InputField from 'pages/common/forms/input/InputField'
-import {countryName} from 'pages/phoneNumbers/utils'
+import { countryName } from 'pages/phoneNumbers/utils'
 
 type Props = {
     value: Partial<AddressInformation>
@@ -26,7 +27,7 @@ export default function PhoneAddressFields({
                 [key]: changedValue,
             })
         },
-        [value, onChange]
+        [value, onChange],
     )
 
     return (

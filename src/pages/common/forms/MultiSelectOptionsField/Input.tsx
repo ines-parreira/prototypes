@@ -1,5 +1,6 @@
+import React, { ChangeEvent, Component, FocusEvent, KeyboardEvent } from 'react'
+
 import classnames from 'classnames'
-import React, {Component, FocusEvent, KeyboardEvent, ChangeEvent} from 'react'
 
 import css from 'pages/common/forms/MultiSelectOptionsField/Input.less'
 
@@ -29,7 +30,7 @@ export default class Input extends Component<Props> {
     }
 
     updateFocus = () => {
-        const {isFocused} = this.props
+        const { isFocused } = this.props
 
         if (isFocused) {
             this.inputRef.current && this.inputRef.current.focus()
@@ -39,7 +40,7 @@ export default class Input extends Component<Props> {
     }
 
     handleBlur = (event: FocusEvent) => {
-        const {onBlur} = this.props
+        const { onBlur } = this.props
 
         event.preventDefault()
         event.stopPropagation()
@@ -47,7 +48,7 @@ export default class Input extends Component<Props> {
     }
 
     handleKeyDown = (event: KeyboardEvent) => {
-        const {onBlur, onChange, onDelete, onSubmit, onUp, onDown, value} =
+        const { onBlur, onChange, onDelete, onSubmit, onUp, onDown, value } =
             this.props
         const key = event.key
         const killedEventsKeys = ['ArrowUp', 'ArrowDown', 'Enter']
@@ -92,12 +93,12 @@ export default class Input extends Component<Props> {
     }
 
     handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const {onChange} = this.props
+        const { onChange } = this.props
         onChange(event.target.value)
     }
 
     render() {
-        const {placeholder, value, onFocus, isCompact} = this.props
+        const { placeholder, value, onFocus, isCompact } = this.props
 
         return (
             <input

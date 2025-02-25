@@ -4,7 +4,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import Alert from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import Group from 'pages/common/components/layout/Group'
-import {getAppliedMacro} from 'state/ticket/selectors'
+import { getAppliedMacro } from 'state/ticket/selectors'
 
 import css from './PrefillMacroAlert.less'
 
@@ -13,7 +13,10 @@ interface Props {
     onKeepMacro: () => void
 }
 
-export default function PrefillMacroAlert({onRemoveMacro, onKeepMacro}: Props) {
+export default function PrefillMacroAlert({
+    onRemoveMacro,
+    onKeepMacro,
+}: Props) {
     const appliedMacro = useAppSelector(getAppliedMacro)
 
     return (

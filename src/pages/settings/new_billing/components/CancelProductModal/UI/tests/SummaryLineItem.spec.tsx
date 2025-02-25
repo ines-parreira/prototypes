@@ -1,7 +1,8 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {Cadence} from 'models/billing/types'
+import { render } from '@testing-library/react'
+
+import { Cadence } from 'models/billing/types'
 
 import SummaryLineItem from '../SummaryLineItem'
 
@@ -9,7 +10,7 @@ describe('SummaryLineItem', () => {
     it.each([true, false])(
         'should render with strikeThrough: %v',
         (strickenOut) => {
-            const {container} = render(
+            const { container } = render(
                 <SummaryLineItem
                     summaryItem={{
                         title: 'Helpdesk',
@@ -20,7 +21,7 @@ describe('SummaryLineItem', () => {
                         amount: '$250',
                         strickenOut: strickenOut,
                     }}
-                />
+                />,
             )
 
             expect(container).toHaveTextContent('Helpdesk')
@@ -35,6 +36,6 @@ describe('SummaryLineItem', () => {
             } else {
                 expect(strickenThroughText).toBeNull()
             }
-        }
+        },
     )
 })

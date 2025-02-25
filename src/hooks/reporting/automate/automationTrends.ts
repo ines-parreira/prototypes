@@ -2,18 +2,18 @@ import {
     fetchMultipleMetricsTrends,
     useMultipleMetricsTrends,
 } from 'hooks/reporting/useMultipleMetricsTrend'
-import {Cubes} from 'models/reporting/cubes'
-import {AutomationDatasetMeasure} from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
-import {BillableTicketDatasetMeasure} from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
+import { Cubes } from 'models/reporting/cubes'
+import { AutomationDatasetMeasure } from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
+import { BillableTicketDatasetMeasure } from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
 import {
     automationDatasetQueryFactory,
     billableTicketDatasetExcludingAIAgentQueryFactory,
     billableTicketDatasetQueryFactory,
     billableTicketDatasetResolvedByAIAgentQueryFactory,
 } from 'models/reporting/queryFactories/automate_v2/metrics'
-import {ReportingQuery} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
-import {getPreviousPeriod} from 'utils/reporting'
+import { ReportingQuery } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
+import { getPreviousPeriod } from 'utils/reporting'
 
 export const useTrendFromMultipleMetricsTrend = <
     Metric extends Cubes['measures'],
@@ -23,16 +23,16 @@ export const useTrendFromMultipleMetricsTrend = <
     timezone: string,
     queryFactory: (
         filters: StatsFilters,
-        timezone: string
+        timezone: string,
     ) => ReportingQuery<TCube>,
-    metric: Metric
+    metric: Metric,
 ) => {
     const trendData = useMultipleMetricsTrends(
         queryFactory(filters, timezone),
         queryFactory(
-            {...filters, period: getPreviousPeriod(filters.period)},
-            timezone
-        )
+            { ...filters, period: getPreviousPeriod(filters.period) },
+            timezone,
+        ),
     )
 
     return {
@@ -50,16 +50,16 @@ export const fetchTrendFromMultipleMetricsTrend = async <
     timezone: string,
     queryFactory: (
         filters: StatsFilters,
-        timezone: string
+        timezone: string,
     ) => ReportingQuery<TCube>,
-    metric: Metric
+    metric: Metric,
 ) =>
     fetchMultipleMetricsTrends(
         queryFactory(filters, timezone),
         queryFactory(
-            {...filters, period: getPreviousPeriod(filters.period)},
-            timezone
-        )
+            { ...filters, period: getPreviousPeriod(filters.period) },
+            timezone,
+        ),
     ).then((result) => {
         return {
             data: result.data?.[metric],
@@ -78,17 +78,17 @@ export const useTrendFromMultipleMetricsTrendPerDimension = <
     queryFactory: (
         filters: StatsFilters,
         timezone: string,
-        dimensionId: string | undefined
+        dimensionId: string | undefined,
     ) => ReportingQuery<TCube>,
-    metric: Metric
+    metric: Metric,
 ) => {
     const filteredAutomatedInteractionsData = useMultipleMetricsTrends(
         queryFactory(filters, timezone, dimensionId),
         queryFactory(
-            {...filters, period: getPreviousPeriod(filters.period)},
+            { ...filters, period: getPreviousPeriod(filters.period) },
             timezone,
-            dimensionId
-        )
+            dimensionId,
+        ),
     )
 
     return {
@@ -108,17 +108,17 @@ export const fetchTrendFromMultipleMetricsTrendPerDimension = <
     queryFactory: (
         filters: StatsFilters,
         timezone: string,
-        dimensionId: string | undefined
+        dimensionId: string | undefined,
     ) => ReportingQuery<TCube>,
-    metric: Metric
+    metric: Metric,
 ) => {
     return fetchMultipleMetricsTrends(
         queryFactory(filters, timezone, dimensionId),
         queryFactory(
-            {...filters, period: getPreviousPeriod(filters.period)},
+            { ...filters, period: getPreviousPeriod(filters.period) },
             timezone,
-            dimensionId
-        )
+            dimensionId,
+        ),
     ).then((result) => {
         return {
             data: result.data?.[metric],
@@ -130,210 +130,210 @@ export const fetchTrendFromMultipleMetricsTrendPerDimension = <
 
 export const useFilteredAutomatedInteractions = (
     filters: StatsFilters,
-    timezone: string
+    timezone: string,
 ) =>
     useTrendFromMultipleMetricsTrend(
         filters,
         timezone,
         automationDatasetQueryFactory,
-        AutomationDatasetMeasure.AutomatedInteractions
+        AutomationDatasetMeasure.AutomatedInteractions,
     )
 
 export const fetchFilteredAutomatedInteractions = (
     filters: StatsFilters,
-    timezone: string
+    timezone: string,
 ) =>
     fetchTrendFromMultipleMetricsTrend(
         filters,
         timezone,
         automationDatasetQueryFactory,
-        AutomationDatasetMeasure.AutomatedInteractions
+        AutomationDatasetMeasure.AutomatedInteractions,
     )
 
 export const useFilteredAutomatedInteractionsByAutoResponders = (
     filters: StatsFilters,
-    timezone: string
+    timezone: string,
 ) =>
     useTrendFromMultipleMetricsTrend(
         filters,
         timezone,
         automationDatasetQueryFactory,
-        AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders
+        AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders,
     )
 
 export const fetchFilteredAutomatedInteractionsByAutoResponders = (
     filters: StatsFilters,
-    timezone: string
+    timezone: string,
 ) =>
     fetchTrendFromMultipleMetricsTrend(
         filters,
         timezone,
         automationDatasetQueryFactory,
-        AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders
+        AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders,
     )
 
 export const useAllAutomatedInteractions = (
     filters: StatsFilters,
-    timezone: string
+    timezone: string,
 ) =>
     useTrendFromMultipleMetricsTrend(
-        {period: filters.period},
+        { period: filters.period },
         timezone,
         automationDatasetQueryFactory,
-        AutomationDatasetMeasure.AutomatedInteractions
+        AutomationDatasetMeasure.AutomatedInteractions,
     )
 
 export const fetchAllAutomatedInteractions = (
     filters: StatsFilters,
-    timezone: string
+    timezone: string,
 ) =>
     fetchTrendFromMultipleMetricsTrend(
-        {period: filters.period},
+        { period: filters.period },
         timezone,
         automationDatasetQueryFactory,
-        AutomationDatasetMeasure.AutomatedInteractions
+        AutomationDatasetMeasure.AutomatedInteractions,
     )
 
 export const useAllAutomatedInteractionsByAutoResponders = (
     filters: StatsFilters,
-    timezone: string
+    timezone: string,
 ) =>
     useTrendFromMultipleMetricsTrend(
-        {period: filters.period},
+        { period: filters.period },
         timezone,
         automationDatasetQueryFactory,
-        AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders
+        AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders,
     )
 
 export const fetchAllAutomatedInteractionsByAutoResponders = (
     filters: StatsFilters,
-    timezone: string
+    timezone: string,
 ) =>
     fetchTrendFromMultipleMetricsTrend(
-        {period: filters.period},
+        { period: filters.period },
         timezone,
         automationDatasetQueryFactory,
-        AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders
+        AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders,
     )
 
 export const useBillableTicketsExcludingAIAgent = (
     filters: StatsFilters,
     timezone: string,
-    aiAgentUserId: string | undefined
+    aiAgentUserId: string | undefined,
 ) =>
     useTrendFromMultipleMetricsTrendPerDimension(
         filters,
         timezone,
         aiAgentUserId,
         billableTicketDatasetExcludingAIAgentQueryFactory,
-        BillableTicketDatasetMeasure.BillableTicketCount
+        BillableTicketDatasetMeasure.BillableTicketCount,
     )
 export const fetchBillableTicketsExcludingAIAgent = (
     filters: StatsFilters,
     timezone: string,
-    aiAgentUserId: string | undefined
+    aiAgentUserId: string | undefined,
 ) =>
     fetchTrendFromMultipleMetricsTrendPerDimension(
         filters,
         timezone,
         aiAgentUserId,
         billableTicketDatasetExcludingAIAgentQueryFactory,
-        BillableTicketDatasetMeasure.BillableTicketCount
+        BillableTicketDatasetMeasure.BillableTicketCount,
     )
 
 export const useFirstResponseTimeExcludingAIAgent = (
     filters: StatsFilters,
     timezone: string,
-    aiAgentUserId: string | undefined
+    aiAgentUserId: string | undefined,
 ) =>
     useTrendFromMultipleMetricsTrendPerDimension(
         filters,
         timezone,
         aiAgentUserId,
         billableTicketDatasetExcludingAIAgentQueryFactory,
-        BillableTicketDatasetMeasure.TotalFirstResponseTime
+        BillableTicketDatasetMeasure.TotalFirstResponseTime,
     )
 
 export const fetchFirstResponseTimeExcludingAIAgent = (
     filters: StatsFilters,
     timezone: string,
-    aiAgentUserId: string | undefined
+    aiAgentUserId: string | undefined,
 ) =>
     fetchTrendFromMultipleMetricsTrendPerDimension(
         filters,
         timezone,
         aiAgentUserId,
         billableTicketDatasetExcludingAIAgentQueryFactory,
-        BillableTicketDatasetMeasure.TotalFirstResponseTime
+        BillableTicketDatasetMeasure.TotalFirstResponseTime,
     )
 
 export const useResolutionTimeExcludingAIAgent = (
     filters: StatsFilters,
     timezone: string,
-    aiAgentUserId: string | undefined
+    aiAgentUserId: string | undefined,
 ) =>
     useTrendFromMultipleMetricsTrendPerDimension(
         filters,
         timezone,
         aiAgentUserId,
         billableTicketDatasetExcludingAIAgentQueryFactory,
-        BillableTicketDatasetMeasure.TotalResolutionTime
+        BillableTicketDatasetMeasure.TotalResolutionTime,
     )
 
 export const fetchResolutionTimeExcludingAIAgent = (
     filters: StatsFilters,
     timezone: string,
-    aiAgentUserId: string | undefined
+    aiAgentUserId: string | undefined,
 ) =>
     fetchTrendFromMultipleMetricsTrendPerDimension(
         filters,
         timezone,
         aiAgentUserId,
         billableTicketDatasetExcludingAIAgentQueryFactory,
-        BillableTicketDatasetMeasure.TotalResolutionTime
+        BillableTicketDatasetMeasure.TotalResolutionTime,
     )
 
 export const useFirstResponseTimeIncludingAIAgent = (
     filters: StatsFilters,
-    timezone: string
+    timezone: string,
 ) =>
     useTrendFromMultipleMetricsTrend(
         filters,
         timezone,
         billableTicketDatasetQueryFactory,
-        BillableTicketDatasetMeasure.TotalFirstResponseTime
+        BillableTicketDatasetMeasure.TotalFirstResponseTime,
     )
 
 export const fetchFirstResponseTimeIncludingAIAgent = (
     filters: StatsFilters,
-    timezone: string
+    timezone: string,
 ) =>
     fetchTrendFromMultipleMetricsTrend(
         filters,
         timezone,
         billableTicketDatasetQueryFactory,
-        BillableTicketDatasetMeasure.TotalFirstResponseTime
+        BillableTicketDatasetMeasure.TotalFirstResponseTime,
     )
 
 export const useResolutionTimeResolvedByAIAgent = (
     filters: StatsFilters,
-    timezone: string
+    timezone: string,
 ) =>
     useTrendFromMultipleMetricsTrend(
         filters,
         timezone,
         billableTicketDatasetResolvedByAIAgentQueryFactory,
-        BillableTicketDatasetMeasure.TotalResolutionTime
+        BillableTicketDatasetMeasure.TotalResolutionTime,
     )
 
 export const fetchResolutionTimeResolvedByAIAgent = async (
     filters: StatsFilters,
-    timezone: string
+    timezone: string,
 ) => {
     return fetchTrendFromMultipleMetricsTrend(
         filters,
         timezone,
         billableTicketDatasetResolvedByAIAgentQueryFactory,
-        BillableTicketDatasetMeasure.TotalResolutionTime
+        BillableTicketDatasetMeasure.TotalResolutionTime,
     )
 }

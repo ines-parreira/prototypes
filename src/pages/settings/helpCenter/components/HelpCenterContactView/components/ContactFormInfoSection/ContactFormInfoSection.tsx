@@ -1,33 +1,33 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useCallback, useState} from 'react'
+import React, { useCallback, useState } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
+import classnames from 'classnames'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
 import useAppSelector from 'hooks/useAppSelector'
 import useLocalStorage from 'hooks/useLocalStorage'
-
-import {EmailContactInfoDto} from 'models/helpCenter/types'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import { EmailContactInfoDto } from 'models/helpCenter/types'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import TextArea from 'pages/common/forms/TextArea'
-
 import {
     isBaseEmailAddress,
     isGenericEmailIntegration,
 } from 'pages/integrations/integration/components/email/helpers'
-import {CONTACT_FORM_ALERT_ACKNOWLEDGED_LOCAL_STORAGE_KEY} from 'pages/settings/helpCenter/constants'
-import {useHelpCenterTranslation} from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
+import { CONTACT_FORM_ALERT_ACKNOWLEDGED_LOCAL_STORAGE_KEY } from 'pages/settings/helpCenter/constants'
+import { useHelpCenterTranslation } from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
 import settingsCss from 'pages/settings/settings.less'
 import * as integrationsSelectors from 'state/integrations/selectors'
 
 import ToggleInput from '../../../../../../common/forms/ToggleInput'
 import SubjectLines from '../../../SubjectLines/SubjectLines'
-import {MAX_DESCRIPTION_LENGTH} from '../../constants'
-import helpCenterContactViewCss from '../../HelpCenterContactView.less'
+import { MAX_DESCRIPTION_LENGTH } from '../../constants'
 import ContactCard from '../ContactCard'
 
+import helpCenterContactViewCss from '../../HelpCenterContactView.less'
 import css from './ContactFormInfoSection.less'
 
 const ContactFormInfoSection = () => {
@@ -36,7 +36,7 @@ const ContactFormInfoSection = () => {
     const {
         emailIntegration,
         updateEmailIntegration,
-        translation: {contactInfo},
+        translation: { contactInfo },
         updateTranslation,
         updateContactForm,
         contactForm,
@@ -44,19 +44,19 @@ const ContactFormInfoSection = () => {
     } = useHelpCenterTranslation()
 
     const integrations = useAppSelector(
-        integrationsSelectors.getIntegrationsByTypes(EMAIL_INTEGRATION_TYPES)
+        integrationsSelectors.getIntegrationsByTypes(EMAIL_INTEGRATION_TYPES),
     )
 
     const emailIntegrations = integrations.filter(isGenericEmailIntegration)
 
-    const {description} = contactInfo.email
+    const { description } = contactInfo.email
 
     const isSubjectLinesAvailable =
         useFlags()[FeatureFlagKey.HelpCenterSubjectLines]
 
     const [isAlertAcknowledged, setIsAlertAcknowledged] = useLocalStorage(
         CONTACT_FORM_ALERT_ACKNOWLEDGED_LOCAL_STORAGE_KEY,
-        false
+        false,
     )
 
     const isEmailIntegrationSelected = !!emailIntegration?.email
@@ -84,7 +84,7 @@ const ContactFormInfoSection = () => {
     const onChangeContactFormIntegration = useCallback(
         (integrationId: number | string) => {
             const selectedIntegration = emailIntegrations.find(
-                (integration) => integration.id === integrationId
+                (integration) => integration.id === integrationId,
             )
 
             if (selectedIntegration) {
@@ -95,7 +95,7 @@ const ContactFormInfoSection = () => {
                 setIsAlertAcknowledged(false)
             }
         },
-        [emailIntegrations, updateEmailIntegration, setIsAlertAcknowledged]
+        [emailIntegrations, updateEmailIntegration, setIsAlertAcknowledged],
     )
 
     return (
@@ -105,7 +105,7 @@ const ContactFormInfoSection = () => {
                     <section
                         className={classnames(
                             css.emailSection,
-                            settingsCss.mb40
+                            settingsCss.mb40,
                         )}
                     >
                         <div className={css.heading}>
@@ -163,7 +163,7 @@ const ContactFormInfoSection = () => {
                     <ToggleInput
                         isToggled={!!contactForm.card_enabled}
                         onClick={(value) => {
-                            updateContactForm({card_enabled: value})
+                            updateContactForm({ card_enabled: value })
                             setIsDirty(true)
                         }}
                         isDisabled={!emailIntegration.email}
@@ -205,7 +205,9 @@ const ContactFormInfoSection = () => {
                             description="Here is a default list of subject lines. If there is no subject added, user can freely type any subject."
                             subjectLines={contactForm.subject_lines}
                             updateSubjectLines={(subjectLines) => {
-                                updateContactForm({subject_lines: subjectLines})
+                                updateContactForm({
+                                    subject_lines: subjectLines,
+                                })
                             }}
                             setIsDirty={setIsDirty}
                         />

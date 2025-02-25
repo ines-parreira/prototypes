@@ -1,18 +1,18 @@
-import {Tag} from '@gorgias/api-queries'
+import { useMemo } from 'react'
+
 import _fromPairs from 'lodash/fromPairs'
 import _sortBy from 'lodash/sortBy'
-import {useMemo} from 'react'
 
-import {useTagSearch} from 'hooks/reporting/common/useTagSearch'
-import {useTagsTicketCount} from 'hooks/reporting/metricsPerPeriod'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { Tag } from '@gorgias/api-queries'
 
-import {useTagsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
-import {MetricPerDimensionTrend} from 'hooks/reporting/useMetricPerDimension'
-import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
-import {OrderDirection} from 'models/api/types'
-
-import {TicketTagsEnrichedMember} from 'models/reporting/cubes/TicketTagsEnrichedCube'
+import { useTagSearch } from 'hooks/reporting/common/useTagSearch'
+import { useTagsTicketCount } from 'hooks/reporting/metricsPerPeriod'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useTagsTicketCountTimeSeries } from 'hooks/reporting/timeSeries'
+import { MetricPerDimensionTrend } from 'hooks/reporting/useMetricPerDimension'
+import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
+import { OrderDirection } from 'models/api/types'
+import { TicketTagsEnrichedMember } from 'models/reporting/cubes/TicketTagsEnrichedCube'
 
 const DATASET_VISIBILITY_ITEMS = 3
 
@@ -20,17 +20,17 @@ const getSortedData = (
     data: Record<string, TimeSeriesDataItem[][]>,
     tagsTicketCount: MetricPerDimensionTrend,
     tags: Tag[],
-    topAmount: number
+    topAmount: number,
 ) => {
     const getTagById = (id: string) =>
         tags.find((t) => String(t.id) === id)?.name || id
 
     const sortingOrder = tagsTicketCount.data?.value.map(
-        (v) => v[TicketTagsEnrichedMember.TagId]
+        (v) => v[TicketTagsEnrichedMember.TagId],
     )
 
     const sortedData = _sortBy(Object.entries(data), ([key]) =>
-        sortingOrder.indexOf(key)
+        sortingOrder.indexOf(key),
     )
 
     const topData = sortedData.slice(0, topAmount)
@@ -45,38 +45,39 @@ const getSortedData = (
         .map((tagId) => getTagById(tagId))
 
     const initialVisibility = _fromPairs(
-        topData.map((_, index) => [index, index < DATASET_VISIBILITY_ITEMS])
+        topData.map((_, index) => [index, index < DATASET_VISIBILITY_ITEMS]),
     )
 
-    return {dataToRender, labels, tooltips, initialVisibility}
+    return { dataToRender, labels, tooltips, initialVisibility }
 }
 
 export const useTagsTimeSeries = (topAmount = 10) => {
-    const {tagsState} = useTagSearch()
-    const {cleanStatsFilters, userTimezone, granularity} = useNewStatsFilters()
+    const { tagsState } = useTagSearch()
+    const { cleanStatsFilters, userTimezone, granularity } =
+        useNewStatsFilters()
 
     const tags: Tag[] = useMemo(() => {
         return Object.keys(tagsState).map(
-            (tagId) => tagsState[tagId.toString()]
+            (tagId) => tagsState[tagId.toString()],
         )
     }, [tagsState])
 
-    const {data = {}, isFetching} = useTagsTicketCountTimeSeries(
+    const { data = {}, isFetching } = useTagsTicketCountTimeSeries(
         cleanStatsFilters,
         userTimezone,
         granularity,
-        OrderDirection.Desc
+        OrderDirection.Desc,
     )
 
     const tagsTicketCount = useTagsTicketCount(
         cleanStatsFilters,
         userTimezone,
-        OrderDirection.Desc
+        OrderDirection.Desc,
     )
 
-    const {dataToRender, labels, tooltips, initialVisibility} = useMemo(
+    const { dataToRender, labels, tooltips, initialVisibility } = useMemo(
         () => getSortedData(data, tagsTicketCount, tags, topAmount),
-        [data, tagsTicketCount, tags, topAmount]
+        [data, tagsTicketCount, tags, topAmount],
     )
 
     return {

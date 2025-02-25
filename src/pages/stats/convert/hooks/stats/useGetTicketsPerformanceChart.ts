@@ -1,12 +1,12 @@
-import {useEffect, useMemo, useState} from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
-import {TicketChannel} from 'business/types/ticket'
+import { TicketChannel } from 'business/types/ticket'
 import useAsyncFn from 'hooks/useAsyncFn'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-import {getTicketsPerformanceData} from 'pages/stats/convert/clients/RevenueAttributionClient'
-import {RevenueAttributionFilterParams} from 'pages/stats/convert/clients/types'
-import {getDataFromStatResult} from 'pages/stats/convert/services/CampaignMetricsHelper'
-import {CampaignGraphData} from 'pages/stats/convert/services/types'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
+import { getTicketsPerformanceData } from 'pages/stats/convert/clients/RevenueAttributionClient'
+import { RevenueAttributionFilterParams } from 'pages/stats/convert/clients/types'
+import { getDataFromStatResult } from 'pages/stats/convert/services/CampaignMetricsHelper'
+import { CampaignGraphData } from 'pages/stats/convert/services/types'
 
 export type GetTicketsPerformanceQuery = {
     isFetching: boolean
@@ -20,7 +20,7 @@ export const useTicketsPerformanceChart = (
     endDate: string,
     integrationIds: number[],
     campaignsOperator: LogicalOperatorEnum,
-    channels: TicketChannel[]
+    channels: TicketChannel[],
 ): GetTicketsPerformanceQuery => {
     const [data, setData] = useState<CampaignGraphData | undefined>(undefined)
     const [error, setError] = useState<Error | undefined>(undefined)
@@ -41,10 +41,10 @@ export const useTicketsPerformanceChart = (
             integrationIds,
             channels,
             campaignsOperator,
-        ]
+        ],
     )
 
-    const [{loading}, fetchTotals] = useAsyncFn(async () => {
+    const [{ loading }, fetchTotals] = useAsyncFn(async () => {
         try {
             const ticketsPerformance = await getTicketsPerformanceData(attrs)
             const ticketsPerformanceData =

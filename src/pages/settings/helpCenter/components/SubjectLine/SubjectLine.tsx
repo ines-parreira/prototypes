@@ -1,8 +1,9 @@
-import classNames from 'classnames'
 import React from 'react'
 
+import classNames from 'classnames'
+
 import TextInput from 'pages/common/forms/input/TextInput'
-import {Callbacks, useReorderDnD} from 'pages/common/hooks/useReorderDnD'
+import { Callbacks, useReorderDnD } from 'pages/common/hooks/useReorderDnD'
 
 import css from './SubjectLine.less'
 
@@ -21,13 +22,13 @@ const SubjectLine = ({
     position,
     onMoveEntity,
 }: SubjectLineProps) => {
-    const {dragRef, dropRef, handlerId, isDragging} = useReorderDnD(
+    const { dragRef, dropRef, handlerId, isDragging } = useReorderDnD(
         {
             position,
             type: `SUBJECT_LINES`,
         },
         [`SUBJECT_LINES`],
-        {onHover: onMoveEntity}
+        { onHover: onMoveEntity },
     )
 
     const opacity = isDragging ? 0 : 1
@@ -37,7 +38,7 @@ const SubjectLine = ({
             className={css.wrapper}
             ref={dropRef as React.Ref<HTMLDivElement>}
             data-handler-id={handlerId}
-            style={{opacity}}
+            style={{ opacity }}
         >
             <div ref={dragRef as React.Ref<HTMLDivElement>}>
                 <i className={classNames('material-icons', css.dragIndicator)}>

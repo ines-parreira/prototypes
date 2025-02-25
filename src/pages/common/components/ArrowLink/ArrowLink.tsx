@@ -1,5 +1,6 @@
-import React, {HTMLProps, ReactNode} from 'react'
-import {Link} from 'react-router-dom'
+import React, { HTMLProps, ReactNode } from 'react'
+
+import { Link } from 'react-router-dom'
 
 import css from './ArrowLink.less'
 

@@ -1,16 +1,16 @@
-import {Map} from 'immutable'
+import { Map } from 'immutable'
 import moment from 'moment-timezone'
 
-import {INTEGRATION_DATA_ITEM_TYPE_PRODUCT} from 'constants/integration'
-import {Product} from 'constants/integrations/types/shopify'
+import { INTEGRATION_DATA_ITEM_TYPE_PRODUCT } from 'constants/integration'
+import { Product } from 'constants/integrations/types/shopify'
 import client from 'models/api/resources'
-import {DiscountCode} from 'models/discountCodes/types'
-import {IntegrationDataItem} from 'models/integration/types'
-import {isProductAvailable} from 'pages/convert/campaigns/utils/checkProductAvailability'
-import {transformProductToCampaignAttachment} from 'pages/convert/campaigns/utils/transformProductToCampaignAttachment'
+import { DiscountCode } from 'models/discountCodes/types'
+import { IntegrationDataItem } from 'models/integration/types'
+import { isProductAvailable } from 'pages/convert/campaigns/utils/checkProductAvailability'
+import { transformProductToCampaignAttachment } from 'pages/convert/campaigns/utils/transformProductToCampaignAttachment'
 import GorgiasApi from 'services/gorgiasApi'
 
-import {CampaignConfiguration, CampaignTemplate} from './types'
+import { CampaignConfiguration, CampaignTemplate } from './types'
 
 export class CannotCreateDiscountCode extends Error {
     constructor() {
@@ -23,7 +23,7 @@ export class CampaignConfigurationBuilder {
 
     constructor(
         template: CampaignTemplate,
-        configuration: CampaignConfiguration
+        configuration: CampaignConfiguration,
     ) {
         this.data = {
             ...configuration,
@@ -33,26 +33,26 @@ export class CampaignConfigurationBuilder {
 
     async attachProductCards(
         storeIntegration: Map<string, any>,
-        productCount: number
+        productCount: number,
     ) {
         const gorgiasApi = new GorgiasApi()
         const integrationId = storeIntegration.get('id') as number
         const attachments = (await gorgiasApi.search(
             `/api/integrations/${integrationId}/${INTEGRATION_DATA_ITEM_TYPE_PRODUCT}/`,
-            ''
+            '',
         )) as IntegrationDataItem<Product>[]
 
         this.data.attachments = attachments
             .filter(
                 (product) =>
                     !!product.data?.image?.src &&
-                    isProductAvailable(product.data)
+                    isProductAvailable(product.data),
             )
             .slice(0, productCount)
             .map((product) => {
                 return transformProductToCampaignAttachment(
                     product,
-                    storeIntegration
+                    storeIntegration,
                 )
             })
     }
@@ -61,19 +61,17 @@ export class CampaignConfigurationBuilder {
         storeIntegration: Map<string, any>,
         type: 'percentage' | 'fixed' | 'free_shipping',
         code: string,
-        value: number
+        value: number,
     ) {
         const integrationId = storeIntegration.get('id') as number
 
-        const listResponse: {data: {data: DiscountCode[]}} = await client.get(
-            `/api/discount-codes/${integrationId}/`,
-            {
-                params: {search: code},
-            }
-        )
+        const listResponse: { data: { data: DiscountCode[] } } =
+            await client.get(`/api/discount-codes/${integrationId}/`, {
+                params: { search: code },
+            })
 
         const existingCode = listResponse.data.data.find(
-            (result) => result.code === code
+            (result) => result.code === code,
         )
         if (!!existingCode) {
             return existingCode.code
@@ -90,7 +88,7 @@ export class CampaignConfigurationBuilder {
         }
 
         try {
-            const createResponse: {data: DiscountCode; status: number} =
+            const createResponse: { data: DiscountCode; status: number } =
                 await client.post(`/api/discount-codes/${integrationId}/`, data)
 
             if (createResponse.status !== 201) {

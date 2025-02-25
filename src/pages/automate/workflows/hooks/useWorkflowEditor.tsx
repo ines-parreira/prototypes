@@ -1,5 +1,3 @@
-import {useQueryClient} from '@tanstack/react-query'
-import {produce} from 'immer'
 import React, {
     createContext,
     useCallback,
@@ -10,19 +8,22 @@ import React, {
     useState,
 } from 'react'
 
-import {WorkflowStepMetricsMap} from 'hooks/reporting/automate/utils'
+import { useQueryClient } from '@tanstack/react-query'
+import { produce } from 'immer'
+
+import { WorkflowStepMetricsMap } from 'hooks/reporting/automate/utils'
 import useThrottledValue from 'hooks/useThrottledValue'
-import {IntegrationType} from 'models/integration/constants'
+import { IntegrationType } from 'models/integration/constants'
 import {
     useGetWorkflowConfiguration,
     useUpsertWorkflowConfiguration,
     workflowsConfigurationDefinitionKeys,
 } from 'models/workflows/queries'
 import useValidateOnVisualBuilderGraphChange from 'pages/automate/actionsPlatform/hooks/useValidateOnVisualBuilderGraphChange'
-import {useSelfServiceStoreIntegrationContext} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
+import { useSelfServiceStoreIntegrationContext } from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 
-import {MAX_CONFIGURATION_SIZE_IN_BYTES} from '../constants'
-import {getWorkflowVariableListForNode} from '../models/variables.model'
+import { MAX_CONFIGURATION_SIZE_IN_BYTES } from '../constants'
+import { getWorkflowVariableListForNode } from '../models/variables.model'
 import {
     areGraphsEqual,
     transformVisualBuilderGraphIntoWfConfiguration,
@@ -31,12 +32,12 @@ import {
     ChannelTriggerNodeType,
     VisualBuilderGraph,
 } from '../models/visualBuilderGraph.types'
-import {transformWorkflowConfigurationIntoVisualBuilderGraph} from '../models/workflowConfiguration.model'
+import { transformWorkflowConfigurationIntoVisualBuilderGraph } from '../models/workflowConfiguration.model'
 import {
     LanguageCode,
     WorkflowConfiguration,
 } from '../models/workflowConfiguration.types'
-import {WorkflowConfigurationUpsertDto} from '../types'
+import { WorkflowConfigurationUpsertDto } from '../types'
 import {
     getPayloadSizeToLimitRate,
     isPayloadTooLarge,
@@ -48,11 +49,11 @@ import {
     useVisualBuilderGraphReducer,
     VisualBuilderGraphAction,
 } from './useVisualBuilderGraphReducer'
-import {computeNodesPositions} from './useVisualBuilderGraphReducer/utils'
+import { computeNodesPositions } from './useVisualBuilderGraphReducer/utils'
 import useWorkflowTranslations, {
     emptyTranslatedTexts,
 } from './useWorkflowTranslations'
-import {workflowConfigurationFactory} from './utils'
+import { workflowConfigurationFactory } from './utils'
 
 export type WorkflowEditorContext = {
     configuration: WorkflowConfiguration
@@ -74,7 +75,7 @@ export type WorkflowEditorContext = {
     deleteTranslation: (lang: LanguageCode) => void
     translateGraph: (
         graph: VisualBuilderGraph,
-        lang: LanguageCode
+        lang: LanguageCode,
     ) => VisualBuilderGraph
     setIsTesting: (isTesting: boolean) => void
     translationSizeToLimitRate: number
@@ -95,7 +96,7 @@ export function useWorkflowEditorContext() {
     const context = useContext(WorkflowEditorContext)
     if (!context)
         throw new Error(
-            'A workflowConfigurationContext cannot be found in the scope'
+            'A workflowConfigurationContext cannot be found in the scope',
         )
     return context
 }
@@ -107,12 +108,12 @@ export const withWorkflowEditorContext =
             isNewWorkflow: boolean
         },
     >(
-        Component: React.FC<WrappedProps>
+        Component: React.FC<WrappedProps>,
     ) =>
     (props: WrappedProps) => {
         const contextValue = useWorkflowEditor(
             props.workflowId,
-            props.isNewWorkflow
+            props.isNewWorkflow,
         )
         return (
             <WorkflowEditorContext.Provider value={contextValue}>
@@ -123,15 +124,15 @@ export const withWorkflowEditorContext =
 
 export function useWorkflowEditor(
     workflowId: string,
-    isNew: boolean
+    isNew: boolean,
 ): WorkflowEditorContext {
     const queryClient = useQueryClient()
     const storeIntegration = useSelfServiceStoreIntegrationContext()
 
-    const {mutateAsync: upsertWorkflowConfiguration} =
+    const { mutateAsync: upsertWorkflowConfiguration } =
         useUpsertWorkflowConfiguration()
 
-    const {data: remoteConfiguration, isInitialLoading: isFetchPending} =
+    const { data: remoteConfiguration, isInitialLoading: isFetchPending } =
         useGetWorkflowConfiguration(workflowId, {
             enabled: !isNew,
             refetchOnMount: 'always',
@@ -143,7 +144,7 @@ export function useWorkflowEditor(
     const [isFlowPublishingInChannels, setFlowPublishingInChannels] =
         useState(false)
     const workflowFactoryInstance = useRef(
-        workflowConfigurationFactory(workflowId)
+        workflowConfigurationFactory(workflowId),
     )
     const [zoom, setZoom] = useState(1)
     const [workflowStepMetrics, setWorkflowStepMetrics] =
@@ -157,16 +158,16 @@ export function useWorkflowEditor(
         useState<VisualBuilderGraph>(
             computeNodesPositions(
                 transformWorkflowConfigurationIntoVisualBuilderGraph(
-                    workflowFactoryInstance.current
-                )
-            )
+                    workflowFactoryInstance.current,
+                ),
+            ),
         )
     const [visualBuilderGraphDirty, dispatch] = useVisualBuilderGraphReducer(
         computeNodesPositions(
             transformWorkflowConfigurationIntoVisualBuilderGraph<ChannelTriggerNodeType>(
-                workflowFactoryInstance.current
-            )
-        )
+                workflowFactoryInstance.current,
+            ),
+        ),
     )
     const {
         areTranslationsDirty,
@@ -186,7 +187,7 @@ export function useWorkflowEditor(
         visualBuilderGraphDirty.available_languages ?? ['en-US'],
         isNew,
         visualBuilderGraphDirty.internal_id !==
-            workflowFactoryInstance.current.internal_id
+            workflowFactoryInstance.current.internal_id,
     )
 
     useEffect(() => {
@@ -206,7 +207,7 @@ export function useWorkflowEditor(
     useEffect(() => {
         if (!isNew && remoteConfiguration) {
             setCurrentLanguage(
-                remoteConfiguration.available_languages[0] ?? 'en-US'
+                remoteConfiguration.available_languages[0] ?? 'en-US',
             )
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -226,26 +227,26 @@ export function useWorkflowEditor(
                             draft.apps?.every((app) => app.type !== 'shopify')
                         ) {
                             draft.apps ??= []
-                            draft.apps.push({type: 'shopify'})
+                            draft.apps.push({ type: 'shopify' })
                         }
                         break
                     }
                 }
-            }
+            },
         )
 
         dispatch({
             type: 'RESET_GRAPH',
             graph: transformWorkflowConfigurationIntoVisualBuilderGraph(
-                configuration
+                configuration,
             ),
         })
         setVisualBuilderGraph(
             computeNodesPositions(
                 transformWorkflowConfigurationIntoVisualBuilderGraph(
-                    configuration
-                )
-            )
+                    configuration,
+                ),
+            ),
         )
     }, [dispatch, remoteConfiguration, storeIntegration.type])
 
@@ -253,13 +254,13 @@ export function useWorkflowEditor(
         () =>
             !areGraphsEqual(
                 translateWithSavedTranslations(visualBuilderGraph),
-                visualBuilderGraphDirty
+                visualBuilderGraphDirty,
             ),
         [
             visualBuilderGraph,
             visualBuilderGraphDirty,
             translateWithSavedTranslations,
-        ]
+        ],
     )
     const isDirty = isVisualBuilderGraphDirty || areTranslationsDirty
 
@@ -270,18 +271,18 @@ export function useWorkflowEditor(
                     transformVisualBuilderGraphIntoWfConfiguration(
                         graph,
                         true,
-                        []
-                    )
+                        [],
+                    ),
                 ),
-                MAX_CONFIGURATION_SIZE_IN_BYTES
+                MAX_CONFIGURATION_SIZE_IN_BYTES,
             ),
         [visualBuilderGraphDirty],
-        500
+        500,
     )
     const currentTranslationSizeToLimitRate = useThrottledValue(
         (graph) => computeCurrentTranslationSizeToLimitRate(graph),
         [visualBuilderGraphDirty],
-        500
+        500,
     )
 
     const getVariableListForNode = useCallback(
@@ -290,10 +291,10 @@ export function useWorkflowEditor(
                 visualBuilderGraphDirty,
                 nodeId,
                 [],
-                []
+                [],
             )
         },
-        [visualBuilderGraphDirty]
+        [visualBuilderGraphDirty],
     )
 
     const handleValidateGraph = useValidateWorkflowGraph(getVariableListForNode)
@@ -310,7 +311,7 @@ export function useWorkflowEditor(
         (isDraft: boolean): boolean => {
             const graph = handleValidateGraph(
                 handleTouchGraph(visualBuilderGraphDirty),
-                isDraft
+                isDraft,
             )
 
             const isErrored =
@@ -333,9 +334,9 @@ export function useWorkflowEditor(
                 const graph = handleValidateGraph(
                     translateGraph(
                         handleTouchGraph(visualBuilderGraphDirty),
-                        language
+                        language,
                     ),
-                    isDraft
+                    isDraft,
                 )
 
                 const isErrored =
@@ -346,9 +347,9 @@ export function useWorkflowEditor(
                     const graph = handleValidateGraph(
                         switchLanguage(
                             handleTouchGraph(visualBuilderGraphDirty),
-                            language
+                            language,
                         ),
-                        isDraft
+                        isDraft,
                     )
 
                     dispatch({
@@ -370,7 +371,7 @@ export function useWorkflowEditor(
             handleValidateGraph,
             handleTouchGraph,
             currentLanguage,
-        ]
+        ],
     )
 
     const handleValidateSize = useCallback((): string | undefined => {
@@ -380,23 +381,23 @@ export function useWorkflowEditor(
                     transformVisualBuilderGraphIntoWfConfiguration(
                         visualBuilderGraphDirty,
                         visualBuilderGraphDirty.is_draft,
-                        []
-                    )
+                        [],
+                    ),
                 ),
-                MAX_CONFIGURATION_SIZE_IN_BYTES
+                MAX_CONFIGURATION_SIZE_IN_BYTES,
             )
         ) {
             return 'This Flow is too large to save. Please remove steps and try again.'
         }
 
         const tooLargeLangs = getLangsOfTooLargeTranslations(
-            visualBuilderGraphDirty
+            visualBuilderGraphDirty,
         )
 
         if (tooLargeLangs.length > 0) {
             const nextGraph = switchLanguage(
                 visualBuilderGraphDirty,
-                tooLargeLangs[0]
+                tooLargeLangs[0],
             )
             dispatch({
                 type: 'RESET_GRAPH',
@@ -416,11 +417,11 @@ export function useWorkflowEditor(
         async (configurationDirty: WorkflowConfiguration) => {
             const configurationUpsertDto = produce(
                 emptyTranslatedTexts(
-                    configurationDirty
+                    configurationDirty,
                 ) as WorkflowConfigurationUpsertDto,
                 (draft) => {
                     delete draft.apps
-                }
+                },
             )
 
             let configuration: WorkflowConfiguration
@@ -432,8 +433,8 @@ export function useWorkflowEditor(
                     [
                         visualBuilderGraphDirty.internal_id,
                         configurationUpsertDto,
-                    ]
-                )) as {data: WorkflowConfiguration}
+                    ],
+                )) as { data: WorkflowConfiguration }
 
                 await saveTranslations(visualBuilderGraphDirty)
                 configuration = updatedConfiguration.data
@@ -443,8 +444,8 @@ export function useWorkflowEditor(
                     [
                         visualBuilderGraphDirty.internal_id,
                         configurationUpsertDto,
-                    ]
-                )) as {data: WorkflowConfiguration}
+                    ],
+                )) as { data: WorkflowConfiguration }
 
                 configuration = updatedConfiguration.data
             }
@@ -465,21 +466,21 @@ export function useWorkflowEditor(
                     return data?.map((configuration) =>
                         configuration.id === updatedConfiguration.id
                             ? updatedConfiguration
-                            : configuration
+                            : configuration,
                     )
-                }
+                },
             )
             queryClient.setQueriesData<WorkflowConfiguration>(
                 workflowsConfigurationDefinitionKeys.get(
-                    updatedConfiguration.id
+                    updatedConfiguration.id,
                 ),
-                updatedConfiguration
+                updatedConfiguration,
             )
 
             dispatch({
                 type: 'RESET_GRAPH',
                 graph: transformWorkflowConfigurationIntoVisualBuilderGraph(
-                    configurationDirty
+                    configurationDirty,
                 ),
             })
             return configuration.id
@@ -491,7 +492,7 @@ export function useWorkflowEditor(
             upsertWorkflowConfiguration,
             visualBuilderGraphDirty,
             saveTranslations,
-        ]
+        ],
     )
 
     const handlePublish = useCallback(async () => {
@@ -504,7 +505,7 @@ export function useWorkflowEditor(
                 transformVisualBuilderGraphIntoWfConfiguration(
                     visualBuilderGraphDirty,
                     false,
-                    []
+                    [],
                 )
             return await updateWorkflow(configurationDirty)
         } finally {
@@ -526,7 +527,7 @@ export function useWorkflowEditor(
                 transformVisualBuilderGraphIntoWfConfiguration(
                     visualBuilderGraphDirty,
                     true,
-                    []
+                    [],
                 )
             return await updateWorkflow(configurationDirty)
         } finally {
@@ -546,28 +547,28 @@ export function useWorkflowEditor(
         (nextLanguage: LanguageCode) => {
             const nextVisualBuilderGraph = switchLanguage(
                 handleUntouchGraph(visualBuilderGraphDirty),
-                nextLanguage
+                nextLanguage,
             )
             dispatch({
                 type: 'RESET_GRAPH',
                 graph: nextVisualBuilderGraph,
             })
         },
-        [visualBuilderGraphDirty, switchLanguage, dispatch, handleUntouchGraph]
+        [visualBuilderGraphDirty, switchLanguage, dispatch, handleUntouchGraph],
     )
 
     const deleteTranslationCallback = useCallback(
         (lang: LanguageCode) => {
             const nextVisualBuilderGraph = deleteTranslation(
                 visualBuilderGraphDirty,
-                lang
+                lang,
             )
             dispatch({
                 type: 'RESET_GRAPH',
                 graph: nextVisualBuilderGraph,
             })
         },
-        [deleteTranslation, visualBuilderGraphDirty, dispatch]
+        [deleteTranslation, visualBuilderGraphDirty, dispatch],
     )
 
     return {
@@ -602,7 +603,7 @@ export function useWorkflowEditor(
 }
 
 export function createWorkflowEditorContextForPreview(
-    visualBuilderGraph: VisualBuilderGraph<ChannelTriggerNodeType>
+    visualBuilderGraph: VisualBuilderGraph<ChannelTriggerNodeType>,
 ): WorkflowEditorContext {
     return {
         configuration: workflowConfigurationFactory('id'),

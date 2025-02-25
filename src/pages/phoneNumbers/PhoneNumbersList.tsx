@@ -1,10 +1,11 @@
-import {sortBy, reverse} from 'lodash'
-import React, {useEffect, useState, useCallback} from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
+
+import { reverse, sortBy } from 'lodash'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {OrderDirection} from 'models/api/types'
-import {IntegrationType} from 'models/integration/types'
-import {NewPhoneNumber, PhoneNumber} from 'models/phoneNumber/types'
+import { OrderDirection } from 'models/api/types'
+import { IntegrationType } from 'models/integration/types'
+import { NewPhoneNumber, PhoneNumber } from 'models/phoneNumber/types'
 import SourceIcon from 'pages/common/components/SourceIcon'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
@@ -15,17 +16,18 @@ import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import history from 'pages/history'
 import ForwardIcon from 'pages/integrations/common/components/ForwardIcon'
-import {getNewPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
+import { getNewPhoneNumbers } from 'state/entities/phoneNumbers/selectors'
+
+import PhoneNumberTitle from './PhoneNumberTitle'
 
 import css from './PhoneNumbersList.less'
-import PhoneNumberTitle from './PhoneNumberTitle'
 
 export function PhoneNumbersList(): JSX.Element | null {
     const phoneNumbers = useAppSelector(getNewPhoneNumbers)
 
     const [orderBy, setOrderBy] = useState<string>('id')
     const [orderDirection, setOrderDirection] = useState<OrderDirection>(
-        OrderDirection.Desc
+        OrderDirection.Desc,
     )
     const [sortedPhoneNumbers, setSortedPhoneNumbers] = useState<
         NewPhoneNumber[]
@@ -36,7 +38,7 @@ export function PhoneNumbersList(): JSX.Element | null {
         setSortedPhoneNumbers(
             orderDirection === OrderDirection.Asc
                 ? sortBy(numbers, orderBy)
-                : reverse(sortBy(numbers, orderBy))
+                : reverse(sortBy(numbers, orderBy)),
         )
     }, [phoneNumbers, orderBy, orderDirection, setSortedPhoneNumbers])
 
@@ -46,14 +48,14 @@ export function PhoneNumbersList(): JSX.Element | null {
                 setOrderDirection(
                     orderDirection === OrderDirection.Asc
                         ? OrderDirection.Desc
-                        : OrderDirection.Asc
+                        : OrderDirection.Asc,
                 )
             } else {
                 setOrderBy(column)
                 setOrderDirection(OrderDirection.Asc)
             }
         },
-        [setOrderBy, setOrderDirection, orderBy, orderDirection]
+        [setOrderBy, setOrderDirection, orderBy, orderDirection],
     )
 
     if (!sortedPhoneNumbers.length) {
@@ -62,10 +64,10 @@ export function PhoneNumbersList(): JSX.Element | null {
 
     const hasIntegration = (
         phoneNumber: PhoneNumber,
-        type: IntegrationType
+        type: IntegrationType,
     ): boolean => {
         return !!phoneNumber.integrations.find(
-            (integration) => integration.type === type
+            (integration) => integration.type === type,
         )
     }
 
@@ -105,7 +107,7 @@ export function PhoneNumbersList(): JSX.Element | null {
                             <BodyCell>
                                 {hasIntegration(
                                     phoneNumber,
-                                    IntegrationType.Phone
+                                    IntegrationType.Phone,
                                 ) && (
                                     <SourceIcon
                                         type={IntegrationType.Phone}
@@ -114,7 +116,7 @@ export function PhoneNumbersList(): JSX.Element | null {
                                 )}
                                 {hasIntegration(
                                     phoneNumber,
-                                    IntegrationType.Sms
+                                    IntegrationType.Sms,
                                 ) && (
                                     <SourceIcon
                                         type={IntegrationType.Sms}
@@ -123,7 +125,7 @@ export function PhoneNumbersList(): JSX.Element | null {
                                 )}
                                 {hasIntegration(
                                     phoneNumber,
-                                    IntegrationType.WhatsApp
+                                    IntegrationType.WhatsApp,
                                 ) && (
                                     <SourceIcon
                                         type={IntegrationType.WhatsApp}

@@ -1,8 +1,8 @@
-import {ChannelsReportData} from 'hooks/reporting/support-performance/channels/useChannelsReportMetrics'
-import {nonEmptyChannels} from 'hooks/reporting/support-performance/useSortedChannelsWithData'
-import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
-import {Channel} from 'models/channel/types'
-import {AgentTimeTrackingCube} from 'models/reporting/cubes/agentxp/AgentTimeTrackingCube'
+import { ChannelsReportData } from 'hooks/reporting/support-performance/channels/useChannelsReportMetrics'
+import { nonEmptyChannels } from 'hooks/reporting/support-performance/useSortedChannelsWithData'
+import { MetricWithDecile } from 'hooks/reporting/useMetricPerDimension'
+import { Channel } from 'models/channel/types'
+import { AgentTimeTrackingCube } from 'models/reporting/cubes/agentxp/AgentTimeTrackingCube'
 import {
     HandleTimeCube,
     HandleTimeMeasure,
@@ -11,10 +11,10 @@ import {
     HelpdeskMessageCubeWithJoins,
     HelpdeskMessageMeasure,
 } from 'models/reporting/cubes/HelpdeskMessageCube'
-import {TicketMeasure} from 'models/reporting/cubes/TicketCube'
-import {TicketMessagesMeasure} from 'models/reporting/cubes/TicketMessagesCube'
-import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
-import {CHANNEL_DIMENSION} from 'models/reporting/queryFactories/support-performance/constants'
+import { TicketMeasure } from 'models/reporting/cubes/TicketCube'
+import { TicketMessagesMeasure } from 'models/reporting/cubes/TicketMessagesCube'
+import { TicketSatisfactionSurveyMeasure } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
+import { CHANNEL_DIMENSION } from 'models/reporting/queryFactories/support-performance/constants'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
@@ -24,8 +24,8 @@ import {
     ChannelsTableLabels,
     LeadColumn,
 } from 'pages/stats/support-performance/channels/ChannelsTableConfig'
-import {ChannelsTableColumns} from 'state/ui/stats/types'
-import {createCsv} from 'utils/file'
+import { ChannelsTableColumns } from 'state/ui/stats/types'
+import { createCsv } from 'utils/file'
 
 export type ChannelsReportMetrics =
     | HelpdeskMessageCubeWithJoins['dimensions']
@@ -55,16 +55,16 @@ const formatMetric = (column: ChannelsTableColumns, value?: number | null) =>
     formatMetricValue(
         value,
         ChannelColumnConfig[column].format,
-        NOT_AVAILABLE_PLACEHOLDER
+        NOT_AVAILABLE_PLACEHOLDER,
     )
 const getChannelMetric = (
     channelSlug: string,
     data: Pick<MetricWithDecile, 'data'>,
     channelIdField: string,
-    metricField: ChannelsReportMetrics
+    metricField: ChannelsReportMetrics,
 ) => {
     const metricValue = data.data?.allData.find(
-        (item) => item[channelIdField] === channelSlug
+        (item) => item[channelIdField] === channelSlug,
     )?.[metricField]
     return typeof metricValue === 'string' ? Number(metricValue) : metricValue
 }
@@ -72,7 +72,7 @@ const getChannelMetric = (
 const getMetric = (
     column: ChannelsTableColumns,
     channel: Channel,
-    summaryDataMap: ReportDataMap
+    summaryDataMap: ReportDataMap,
 ) =>
     column === LeadColumn
         ? channel.slug
@@ -82,15 +82,15 @@ const getMetric = (
                   channel.slug,
                   summaryDataMap[column].metricData,
                   summaryDataMap[column].idField,
-                  summaryDataMap[column].metricField
-              )
+                  summaryDataMap[column].metricField,
+              ),
           )
 
 export const saveReport = (
     channels: Channel[],
     data: ChannelsReportData | null,
     columnsOrder: ChannelsTableColumns[],
-    fileName: string
+    fileName: string,
 ) => {
     if (data === null) {
         return {
@@ -103,7 +103,7 @@ export const saveReport = (
     const columnsToMetricDataMap: ReportDataMap = {
         [ChannelsTableColumns.Channel]: {
             column: ChannelsTableColumns.Channel,
-            metricData: {data: null},
+            metricData: { data: null },
             idField: CHANNEL_DIMENSION,
             metricField: AvgSurveyScore,
         },
@@ -167,7 +167,7 @@ export const saveReport = (
         columnsOrder.map((column) => ChannelsTableLabels[column]),
         ...visibleChannels.map((channel) => {
             return columnsOrder.map((column) =>
-                getMetric(column, channel, columnsToMetricDataMap)
+                getMetric(column, channel, columnsToMetricDataMap),
             )
         }),
     ]

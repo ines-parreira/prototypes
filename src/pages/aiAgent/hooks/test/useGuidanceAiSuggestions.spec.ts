@@ -1,17 +1,17 @@
-import {QueryClient, useQueryClient} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
+import { QueryClient, useQueryClient } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {useGetAIGeneratedGuidances} from 'models/aiAgent/queries'
-import {IntegrationType} from 'models/integration/constants'
-import {StoreState} from 'state/types'
-import {assumeMock} from 'utils/testing'
+import { useGetAIGeneratedGuidances } from 'models/aiAgent/queries'
+import { IntegrationType } from 'models/integration/constants'
+import { StoreState } from 'state/types'
+import { assumeMock } from 'utils/testing'
 
-import {getAIGuidanceFixture} from '../../fixtures/aiGuidance.fixture'
-import {getGuidanceArticleFixture} from '../../fixtures/guidanceArticle.fixture'
-import {useGuidanceAiSuggestions} from '../useGuidanceAiSuggestions'
-import {useGuidanceArticles} from '../useGuidanceArticles'
+import { getAIGuidanceFixture } from '../../fixtures/aiGuidance.fixture'
+import { getGuidanceArticleFixture } from '../../fixtures/guidanceArticle.fixture'
+import { useGuidanceAiSuggestions } from '../useGuidanceAiSuggestions'
+import { useGuidanceArticles } from '../useGuidanceArticles'
 
 jest.mock('../useGuidanceArticles')
 jest.mock('models/aiAgent/queries')
@@ -24,7 +24,7 @@ const mockedUseAppSelector = assumeMock(useAppSelector)
 const mockedUseGetAIGeneratedGuidances = (
     data: any,
     error: Error | null = null,
-    isLoading: boolean = false
+    isLoading: boolean = false,
 ) => {
     ;(useGetAIGeneratedGuidances as jest.Mock).mockReturnValue({
         data,
@@ -56,7 +56,7 @@ describe('useGuidanceAiSuggestions', () => {
             () =>
                 ({
                     invalidateQueries: invalidateQueriesMock,
-                }) as unknown as QueryClient
+                }) as unknown as QueryClient,
         )
         mockedUseGuidanceArticles.mockReturnValue({
             guidanceArticles,
@@ -66,21 +66,25 @@ describe('useGuidanceAiSuggestions', () => {
             selector({
                 integrations: fromJS({
                     integrations: [
-                        {id: 1, type: IntegrationType.Shopify, name: 'My Shop'},
+                        {
+                            id: 1,
+                            type: IntegrationType.Shopify,
+                            name: 'My Shop',
+                        },
                     ],
                 }),
-            } as unknown as StoreState)
+            } as unknown as StoreState),
         )
     })
 
     it('should return isGuidancesOnly true', () => {
         mockedUseGetAIGeneratedGuidances([])
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useGuidanceAiSuggestions({
                 helpCenterId,
                 shopName,
-            })
+            }),
         )
 
         expect(result.current.guidanceArticles).toEqual(guidanceArticles)
@@ -95,17 +99,17 @@ describe('useGuidanceAiSuggestions', () => {
 
     it('should return isGuidancesAndAIGuidances true', () => {
         const aiGuidances = [
-            {...getAIGuidanceFixture('1'), review_action: 'none'},
-            {...getAIGuidanceFixture('2'), review_action: 'created'},
+            { ...getAIGuidanceFixture('1'), review_action: 'none' },
+            { ...getAIGuidanceFixture('2'), review_action: 'created' },
         ]
 
         mockedUseGetAIGeneratedGuidances(aiGuidances)
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useGuidanceAiSuggestions({
                 helpCenterId,
                 shopName,
-            })
+            }),
         )
 
         expect(result.current.guidanceArticles).toEqual(guidanceArticles)
@@ -126,11 +130,11 @@ describe('useGuidanceAiSuggestions', () => {
 
         mockedUseGetAIGeneratedGuidances([])
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useGuidanceAiSuggestions({
                 helpCenterId,
                 shopName,
-            })
+            }),
         )
 
         expect(result.current.guidanceArticles).toEqual([])
@@ -150,17 +154,17 @@ describe('useGuidanceAiSuggestions', () => {
         })
 
         const aiGuidances = [
-            {...getAIGuidanceFixture('1'), review_action: 'none'},
-            {...getAIGuidanceFixture('2'), review_action: 'none'},
+            { ...getAIGuidanceFixture('1'), review_action: 'none' },
+            { ...getAIGuidanceFixture('2'), review_action: 'none' },
         ]
 
         mockedUseGetAIGeneratedGuidances(aiGuidances)
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useGuidanceAiSuggestions({
                 helpCenterId,
                 shopName,
-            })
+            }),
         )
 
         expect(result.current.guidanceArticles).toEqual([])
@@ -180,17 +184,17 @@ describe('useGuidanceAiSuggestions', () => {
         })
 
         const aiGuidances = [
-            {...getAIGuidanceFixture('1'), review_action: 'created'},
-            {...getAIGuidanceFixture('2'), review_action: 'created'},
+            { ...getAIGuidanceFixture('1'), review_action: 'created' },
+            { ...getAIGuidanceFixture('2'), review_action: 'created' },
         ]
 
         mockedUseGetAIGeneratedGuidances(aiGuidances)
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useGuidanceAiSuggestions({
                 helpCenterId,
                 shopName,
-            })
+            }),
         )
 
         expect(result.current.guidanceArticles).toEqual([])
@@ -209,17 +213,17 @@ describe('useGuidanceAiSuggestions', () => {
             isGuidanceArticleListLoading: false,
         })
         const aiGuidances = [
-            {...getAIGuidanceFixture('1'), review_action: 'none'},
-            {...getAIGuidanceFixture('2'), review_action: 'none'},
+            { ...getAIGuidanceFixture('1'), review_action: 'none' },
+            { ...getAIGuidanceFixture('2'), review_action: 'none' },
         ]
 
         mockedUseGetAIGeneratedGuidances(aiGuidances)
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useGuidanceAiSuggestions({
                 helpCenterId,
                 shopName,
-            })
+            }),
         )
         await result.current.invalidateAiGuidances()
         expect(invalidateQueriesMock).toHaveBeenCalled()

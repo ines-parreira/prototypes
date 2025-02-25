@@ -1,10 +1,9 @@
-import React, {ComponentProps, useCallback} from 'react'
+import React, { ComponentProps, useCallback } from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {LegacyStatsFilters} from 'models/stat/types'
-
-import {useGetCampaignsForStore} from 'pages/stats/convert/hooks/useGetCampaignsForStore'
-import {mergeStatsFilters} from 'state/stats/statsSlice'
+import { LegacyStatsFilters } from 'models/stat/types'
+import { useGetCampaignsForStore } from 'pages/stats/convert/hooks/useGetCampaignsForStore'
+import { mergeStatsFilters } from 'state/stats/statsSlice'
 
 import SelectFilter from './common/SelectFilter'
 
@@ -24,14 +23,14 @@ export default function CampaignsStatsFilter({
 }: Props) {
     const dispatch = useAppDispatch()
 
-    const {campaigns} = useGetCampaignsForStore(selectedIntegrations || [])
+    const { campaigns } = useGetCampaignsForStore(selectedIntegrations || [])
 
     const handleFilterChange: ComponentProps<typeof SelectFilter>['onChange'] =
         useCallback(
             (values) => {
-                dispatch(mergeStatsFilters({campaigns: values as string[]}))
+                dispatch(mergeStatsFilters({ campaigns: values as string[] }))
             },
-            [dispatch]
+            [dispatch],
         )
 
     return (

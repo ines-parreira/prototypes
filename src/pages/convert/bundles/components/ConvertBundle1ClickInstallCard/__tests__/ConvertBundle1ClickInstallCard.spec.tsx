@@ -1,18 +1,19 @@
-import {render, screen, fireEvent, waitFor} from '@testing-library/react'
-import MockAdapter from 'axios-mock-adapter'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {convertBundle} from 'fixtures/convertBundle'
+import { convertBundle } from 'fixtures/convertBundle'
 import client from 'models/api/resources'
 import {
     BundleInstallationMethodResponse,
     BundleStatus,
 } from 'models/convert/bundle/types'
-import {IntegrationType} from 'models/integration/constants'
+import { IntegrationType } from 'models/integration/constants'
 
 import ConvertBundle1ClickInstallCard from '../ConvertBundle1ClickInstallCard'
 
@@ -54,16 +55,16 @@ describe('ConvertBundle1ClickInstallCard Component', () => {
                             method: BundleInstallationMethodResponse.OneClick,
                         }}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(
-                screen.getByText('1-click installation for Shopify')
+                screen.getByText('1-click installation for Shopify'),
             ).toBeInTheDocument()
             expect(
                 screen.getByText(
-                    'Add the Campaign bundle to your Shopify store in one click.'
-                )
+                    'Add the Campaign bundle to your Shopify store in one click.',
+                ),
             ).toBeInTheDocument()
             expect(screen.getByText('Install')).toBeInTheDocument()
             expect(screen.queryByText('Uninstall')).not.toBeInTheDocument()
@@ -80,16 +81,16 @@ describe('ConvertBundle1ClickInstallCard Component', () => {
                             method: BundleInstallationMethodResponse.OneClick,
                         }}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(
-                screen.getByText('1-click installation for Shopify')
+                screen.getByText('1-click installation for Shopify'),
             ).toBeInTheDocument()
             expect(
                 screen.getByText(
-                    'Add the Campaign bundle to your Shopify store in one click.'
-                )
+                    'Add the Campaign bundle to your Shopify store in one click.',
+                ),
             ).toBeInTheDocument()
             expect(screen.queryByText('Install')).not.toBeInTheDocument()
             expect(screen.getByText('Uninstall')).toBeInTheDocument()
@@ -112,7 +113,7 @@ describe('ConvertBundle1ClickInstallCard Component', () => {
                         }}
                         onChange={onChange}
                     />
-                </Provider>
+                </Provider>,
             )
 
             const installButton = screen.getByText('Install')
@@ -126,7 +127,7 @@ describe('ConvertBundle1ClickInstallCard Component', () => {
         it('triggers onChange when uninstall button is clicked', async () => {
             mockedServer
                 .onPost(
-                    `/api/revenue-addon-bundle/${convertBundle.id}/uninstall/`
+                    `/api/revenue-addon-bundle/${convertBundle.id}/uninstall/`,
                 )
                 .reply(200, {})
 
@@ -142,7 +143,7 @@ describe('ConvertBundle1ClickInstallCard Component', () => {
                         }}
                         onChange={onChange}
                     />
-                </Provider>
+                </Provider>,
             )
 
             const uninstallButton = screen.getByText('Uninstall')
@@ -172,11 +173,11 @@ describe('ConvertBundle1ClickInstallCard Component', () => {
                             method: BundleInstallationMethodResponse.ThemeApp,
                         }}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(
-                screen.queryByText('Quick installation for Shopify')
+                screen.queryByText('Quick installation for Shopify'),
             ).not.toBeInTheDocument()
         })
 
@@ -191,16 +192,16 @@ describe('ConvertBundle1ClickInstallCard Component', () => {
                             method: BundleInstallationMethodResponse.ThemeApp,
                         }}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(
-                screen.getByText('Quick installation for Shopify')
+                screen.getByText('Quick installation for Shopify'),
             ).toBeInTheDocument()
             expect(
                 screen.getByText(
-                    'Campaign bundle added to your Shopify store together with Chat.'
-                )
+                    'Campaign bundle added to your Shopify store together with Chat.',
+                ),
             ).toBeInTheDocument()
             expect(screen.queryByText('Install')).not.toBeInTheDocument()
             expect(screen.getByText('Uninstall')).toBeInTheDocument()
@@ -217,7 +218,7 @@ describe('ConvertBundle1ClickInstallCard Component', () => {
                             method: BundleInstallationMethodResponse.ThemeApp,
                         }}
                     />
-                </Provider>
+                </Provider>,
             )
 
             const uninstallButton = screen.getByText('Uninstall')
@@ -225,7 +226,7 @@ describe('ConvertBundle1ClickInstallCard Component', () => {
 
             await waitFor(() => {
                 expect(window.location.href).toBe(
-                    '/app/settings/channels/gorgias_chat/1/installation'
+                    '/app/settings/channels/gorgias_chat/1/installation',
                 )
             })
         })

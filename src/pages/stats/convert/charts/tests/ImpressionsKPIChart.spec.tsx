@@ -1,12 +1,12 @@
-import {render, screen} from '@testing-library/react'
-
 import React from 'react'
 
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-import {ImpressionsKPIChart} from 'pages/stats/convert/charts/ImpressionsKPIChart'
-import {useCampaignTotalStats} from 'pages/stats/convert/hooks/useCampaignTotalStats'
-import {CampaignsTotalsMetricNames} from 'pages/stats/convert/services/constants'
-import {assumeMock} from 'utils/testing'
+import { render, screen } from '@testing-library/react'
+
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
+import { ImpressionsKPIChart } from 'pages/stats/convert/charts/ImpressionsKPIChart'
+import { useCampaignTotalStats } from 'pages/stats/convert/hooks/useCampaignTotalStats'
+import { CampaignsTotalsMetricNames } from 'pages/stats/convert/services/constants'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('pages/stats/convert/hooks/useCampaignTotalStats')
 const useCampaignTotalStatsMock = assumeMock(useCampaignTotalStats)
@@ -25,7 +25,7 @@ describe('ImpressionsKPIChart', () => {
         render(<ImpressionsKPIChart />)
 
         expect(
-            document.querySelector('.react-loading-skeleton')
+            document.querySelector('.react-loading-skeleton'),
         ).toBeInTheDocument()
     })
 
@@ -50,7 +50,7 @@ describe('ImpressionsKPIChart', () => {
         render(<ImpressionsKPIChart />)
 
         expect(
-            screen.getByText(impressions, {exact: false})
+            screen.getByText(impressions, { exact: false }),
         ).toBeInTheDocument()
     })
 })

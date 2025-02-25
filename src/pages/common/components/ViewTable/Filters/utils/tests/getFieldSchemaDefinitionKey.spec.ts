@@ -1,8 +1,7 @@
-import {CustomField} from 'custom-fields/types'
+import { CustomField } from 'custom-fields/types'
 
 import getFieldSchemaDefinitionKey from '../getFieldSchemaDefinitionKey'
-
-import {mockCustomField} from './mocks'
+import { mockCustomField } from './mocks'
 
 describe('getFieldSchemaDefinitionKey', () => {
     it('should return the field schema definition key', () => {
@@ -13,12 +12,12 @@ describe('getFieldSchemaDefinitionKey', () => {
         const mockDropdownCustomField = {
             definition: {
                 data_type: 'text',
-                input_settings: {input_type: 'dropdown'},
+                input_settings: { input_type: 'dropdown' },
             },
         } as CustomField
 
         expect(getFieldSchemaDefinitionKey(mockDropdownCustomField)).toBe(
-            'dropdown'
+            'dropdown',
         )
     })
 })

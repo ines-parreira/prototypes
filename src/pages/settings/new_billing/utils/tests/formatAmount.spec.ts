@@ -1,4 +1,6 @@
-import {formatAmount, formatNumTickets} from '../formatAmount' // Replace 'yourFile' with the actual file name
+import { formatAmount, formatNumTickets } from '../formatAmount'
+
+// Replace 'yourFile' with the actual file name
 
 describe('formatAmount', () => {
     it('should format amount with currency when currency is provided', () => {

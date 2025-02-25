@@ -1,15 +1,16 @@
-import {screen, fireEvent, waitFor} from '@testing-library/react'
 import React from 'react'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import {useFileIngestion} from 'pages/aiAgent/hooks/useFileIngestion'
-import {Components} from 'rest_api/help_center_api/client.generated'
-import {uploadAttachments} from 'rest_api/help_center_api/uploadAttachments'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {assumeMock, renderWithRouter} from 'utils/testing'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 
-import {ExternalFilesSection} from './ExternalFilesSection'
+import useAppDispatch from 'hooks/useAppDispatch'
+import { useFileIngestion } from 'pages/aiAgent/hooks/useFileIngestion'
+import { Components } from 'rest_api/help_center_api/client.generated'
+import { uploadAttachments } from 'rest_api/help_center_api/uploadAttachments'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { assumeMock, renderWithRouter } from 'utils/testing'
+
+import { ExternalFilesSection } from './ExternalFilesSection'
 
 jest.mock('state/notifications/actions')
 jest.mock('hooks/useAppDispatch')
@@ -56,7 +57,7 @@ const renderComponent = ({
         <ExternalFilesSection
             helpCenterId={1}
             onEmptyStateChange={mockOnEmptyStateChange}
-        />
+        />,
     )
 }
 
@@ -68,7 +69,7 @@ describe('ExternalFilesSection', () => {
     })
 
     it('should render correctly when still loading', () => {
-        renderComponent({ingestedFiles: null})
+        renderComponent({ ingestedFiles: null })
         expect(screen.getByText('External documents')).toBeInTheDocument()
         expect(mockOnEmptyStateChange).not.toHaveBeenCalled()
     })
@@ -98,7 +99,7 @@ describe('ExternalFilesSection', () => {
         fireEvent.change(fileInput)
 
         expect(
-            screen.getByRole('button', {name: /Uploading../})
+            screen.getByRole('button', { name: /Uploading../ }),
         ).toBeAriaDisabled()
 
         await waitFor(() => {
@@ -147,7 +148,7 @@ describe('ExternalFilesSection', () => {
         expect(mockOnEmptyStateChange).toHaveBeenCalledWith(false)
 
         expect(
-            screen.getByRole('button', {name: /Uploading../})
+            screen.getByRole('button', { name: /Uploading../ }),
         ).toBeAriaDisabled()
         expect(screen.queryByText('test.pdf')).not.toBeInTheDocument()
         expect(screen.queryByText('test2.pdf')).not.toBeInTheDocument()
@@ -162,7 +163,7 @@ describe('ExternalFilesSection', () => {
             type: 'application/pdf',
         })
 
-        Object.defineProperty(file, 'size', {value: 50 * 1024 * 1024 + 1})
+        Object.defineProperty(file, 'size', { value: 50 * 1024 * 1024 + 1 })
         Object.defineProperty(fileInput, 'files', {
             value: [file],
         })
@@ -281,7 +282,7 @@ describe('ExternalFilesSection', () => {
 
     it('should disable the upload button when max files is reached', () => {
         renderComponent({
-            ingestedFiles: Array.from({length: 10}, (_, i) => ({
+            ingestedFiles: Array.from({ length: 10 }, (_, i) => ({
                 id: i + 1,
                 help_center_id: 1,
                 filename: `test-${i + 1}.pdf`,
@@ -292,7 +293,7 @@ describe('ExternalFilesSection', () => {
         })
 
         expect(screen.getByText('Upload File').closest('button')).toHaveClass(
-            'isDisabled'
+            'isDisabled',
         )
     })
 })

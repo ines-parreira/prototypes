@@ -1,44 +1,45 @@
-import {setDefaultConfig} from '@gorgias/api-queries'
 import {
-    Chart,
+    ArcElement,
     BarController,
     BarElement,
+    CategoryScale,
+    Chart,
+    Filler,
+    Legend,
+    LinearScale,
     LineController,
     LineElement,
     PointElement,
-    LinearScale,
-    CategoryScale,
     Tooltip,
-    Legend,
-    Filler,
-    ArcElement,
 } from 'chart.js'
 import moment from 'moment-timezone'
 
+import { setDefaultConfig } from '@gorgias/api-queries'
+
 import './polyfills'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {store} from 'common/store'
-import {EditableUserProfile} from 'config/types/user'
-import {initializeNewReleaseHandler} from 'models/api/resources'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { store } from 'common/store'
+import { EditableUserProfile } from 'config/types/user'
+import { initializeNewReleaseHandler } from 'models/api/resources'
 import GreyArea from 'pages/stats/ChartPluginGreyArea'
 import {
     getCurrentAutomatePlan,
     getCurrentHelpdeskPlan,
 } from 'state/billing/selectors'
-import {notify} from 'state/notifications/actions'
-import {RootState} from 'state/types'
-import {transformSystemMessagesToNotifications} from 'utils'
-import {initDatadogLogger, initDatadogRum} from 'utils/datadog'
+import { notify } from 'state/notifications/actions'
+import { RootState } from 'state/types'
+import { transformSystemMessagesToNotifications } from 'utils'
+import { initDatadogLogger, initDatadogRum } from 'utils/datadog'
 import {
     envVars,
     getEnvironment,
     isProduction,
     isStaging,
 } from 'utils/environment'
-import {initErrorReporter} from 'utils/errors'
-import {identifyUser as identifyHotjarUser} from 'utils/hotjar'
-import {initLaunchDarkly} from 'utils/launchDarkly'
+import { initErrorReporter } from 'utils/errors'
+import { identifyUser as identifyHotjarUser } from 'utils/hotjar'
+import { initLaunchDarkly } from 'utils/launchDarkly'
 
 setDefaultConfig({
     headers: {
@@ -56,10 +57,10 @@ const initMoment = (currentUser: EditableUserProfile) => {
 
 export function initApp() {
     const environment = getEnvironment()
-    const {WEB_APP_RELEASE} = envVars
+    const { WEB_APP_RELEASE } = envVars
 
     if (WEB_APP_RELEASE) {
-        const {currentUser, currentAccount} = window.GORGIAS_STATE
+        const { currentUser, currentAccount } = window.GORGIAS_STATE
         if (isStaging() || isProduction()) {
             initDatadogLogger({
                 account: currentAccount,
@@ -115,7 +116,7 @@ export function initApp() {
 
     // Dispatch system messages as notifications
     transformSystemMessagesToNotifications(
-        window.SYSTEM_MESSAGES || []
+        window.SYSTEM_MESSAGES || [],
     ).forEach((notification) => {
         store.dispatch(notify(notification) as any)
     })
@@ -131,7 +132,7 @@ export function initApp() {
         state.currentUser.toJS(),
         state.currentAccount.toJS(),
         currentHelpdeskProduct?.price_id,
-        currentAutomationProduct?.price_id
+        currentAutomationProduct?.price_id,
     )
 
     Chart.register(
@@ -146,7 +147,7 @@ export function initApp() {
         CategoryScale,
         Filler,
         GreyArea,
-        ArcElement
+        ArcElement,
     )
 
     return store

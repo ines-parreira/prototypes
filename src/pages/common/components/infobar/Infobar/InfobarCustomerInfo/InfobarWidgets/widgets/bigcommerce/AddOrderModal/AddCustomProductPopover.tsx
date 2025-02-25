@@ -1,13 +1,14 @@
-import React, {useRef, useState} from 'react'
+import React, { useRef, useState } from 'react'
 
-import {BigCommerceCustomProduct} from 'models/integration/types'
+import { BigCommerceCustomProduct } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import InputField from 'pages/common/forms/input/InputField'
-import {getMoneySymbol} from 'utils/getMoneySymbol'
+import { getMoneySymbol } from 'utils/getMoneySymbol'
+
+import { PopoverContainer } from './components/popover-container/PopoverContainer'
 
 import css from './AddCustomProductPopover.less'
-import {PopoverContainer} from './components/popover-container/PopoverContainer'
 
 type Props = {
     id: string

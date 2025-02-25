@@ -1,18 +1,19 @@
-import {useListLiveCallQueueVoiceCalls} from '@gorgias/api-queries'
 import React from 'react'
 
-import {PaywallConfig, paywallConfigs} from 'config/paywalls'
+import { useListLiveCallQueueVoiceCalls } from '@gorgias/api-queries'
+
+import { PaywallConfig, paywallConfigs } from 'config/paywalls'
 import useAppSelector from 'hooks/useAppSelector'
-import {ProductType} from 'models/billing/types'
-import {FilterKey} from 'models/stat/types'
+import { ProductType } from 'models/billing/types'
+import { FilterKey } from 'models/stat/types'
 import withProductEnabledPaywall from 'pages/common/utils/withProductEnabledPaywall'
-import {AnalyticsFooter} from 'pages/stats/AnalyticsFooter'
+import { AnalyticsFooter } from 'pages/stats/AnalyticsFooter'
 import StatsPage from 'pages/stats/StatsPage'
 import LiveVoiceAgentsSection from 'pages/stats/voice/components/LiveVoice/LiveVoiceAgentsSection'
 import LiveVoiceCallTable from 'pages/stats/voice/components/LiveVoice/LiveVoiceCallTable'
 import LiveVoiceFilters from 'pages/stats/voice/components/LiveVoice/LiveVoiceFilters'
-import {AccountFeature} from 'state/currentAccount/types'
-import {getCleanStatsFiltersWithLogicalOperatorsWithTimezone} from 'state/ui/stats/selectors'
+import { AccountFeature } from 'state/currentAccount/types'
+import { getCleanStatsFiltersWithLogicalOperatorsWithTimezone } from 'state/ui/stats/selectors'
 
 import LiveVoiceMetrics from '../components/LiveVoice/LiveVoiceMetrics'
 import {
@@ -20,13 +21,14 @@ import {
     LIVE_VOICE_PAGE_TITLE_DESCRIPTION,
 } from '../constants/liveVoice'
 import VoicePaywall from '../VoicePaywall'
+
 import css from './LiveVoice.less'
 
 function LiveVoice() {
-    const {cleanStatsFilters} = useAppSelector(
-        getCleanStatsFiltersWithLogicalOperatorsWithTimezone
+    const { cleanStatsFilters } = useAppSelector(
+        getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
     )
-    const {data: voiceCalls, isLoading} = useListLiveCallQueueVoiceCalls(
+    const { data: voiceCalls, isLoading } = useListLiveCallQueueVoiceCalls(
         {
             agent_ids: cleanStatsFilters?.[FilterKey.Agents]?.values,
             integration_ids:
@@ -42,7 +44,7 @@ function LiveVoice() {
                 refetchOnWindowFocus: false,
                 select: (data) => data.data.data,
             },
-        }
+        },
     )
 
     return (
@@ -84,5 +86,5 @@ export default withProductEnabledPaywall(
             ...paywallConfigs[AccountFeature.PhoneNumber],
             pageHeader: LIVE_VOICE_PAGE_TITLE,
         } as PaywallConfig,
-    }
+    },
 )(LiveVoice)

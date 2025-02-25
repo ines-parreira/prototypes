@@ -1,4 +1,4 @@
-import {fromJS, Map} from 'immutable'
+import { fromJS, Map } from 'immutable'
 
 /**
  * On the GraphQL API, Shopify is using camel case for the keys. Also, on the `draftOrderCalculate` mutation, some
@@ -8,7 +8,7 @@ import {fromJS, Map} from 'immutable'
  * @return Payload used to calculated the draft order on the GraphQL API.
  */
 export function getCalculateDraftOrderPayload(
-    draftOrderPayload: Map<any, any>
+    draftOrderPayload: Map<any, any>,
 ): Map<any, any> {
     const appliedDiscount: Map<any, any> =
         draftOrderPayload.get('applied_discount')
@@ -38,11 +38,11 @@ export function getCalculateDraftOrderPayload(
                 appliedDiscount: !!lineItemAppliedDiscount
                     ? {
                           value: parseFloat(
-                              lineItemAppliedDiscount.get('value')
+                              lineItemAppliedDiscount.get('value'),
                           ),
                           valueType: (
                               lineItemAppliedDiscount.get(
-                                  'value_type'
+                                  'value_type',
                               ) as string
                           ).toUpperCase(),
                       }

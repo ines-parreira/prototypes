@@ -1,13 +1,13 @@
-import {screen} from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {AxiosError} from 'axios'
+import { AxiosError } from 'axios'
 
-import {UniqueDiscountOfferCreatePayload} from 'models/convert/discountOffer/types'
+import { UniqueDiscountOfferCreatePayload } from 'models/convert/discountOffer/types'
 
 export const transformAxiosError = (
     errors?: AxiosError<{
         detail: Partial<UniqueDiscountOfferCreatePayload>[]
-    }> | null
+    }> | null,
 ): Partial<UniqueDiscountOfferCreatePayload> => {
     if (!errors) {
         return {}
@@ -31,26 +31,26 @@ export const setupValidModalParameters = async () => {
     const discountTypeSelect = screen.getByLabelText('Discount')
     const discountValueInput = screen.getByLabelText('Discount value')
     const minRequirementsRadio = screen.getByLabelText(
-        'Minimum purchase amount'
+        'Minimum purchase amount',
     )
     const noMinRequirementsRadio = screen.getByLabelText(
-        'No minimum requirements'
+        'No minimum requirements',
     )
 
     userEvent.click(discountTypeSelect)
 
-    userEvent.click(screen.getByRole('menuitem', {name: 'Percentage'}))
+    userEvent.click(screen.getByRole('menuitem', { name: 'Percentage' }))
 
     await userEvent.type(discountValueInput, initial.value.toString())
 
     userEvent.click(noMinRequirementsRadio)
     userEvent.click(minRequirementsRadio)
     const minPurchaseAmountInput = screen.getByLabelText(
-        'Minimum purchase amount value'
+        'Minimum purchase amount value',
     )
     userEvent.clear(minPurchaseAmountInput)
     await userEvent.type(
         minPurchaseAmountInput,
-        initial.minimum_purchase_amount.toString()
+        initial.minimum_purchase_amount.toString(),
     )
 }

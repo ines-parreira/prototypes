@@ -1,12 +1,16 @@
-import {useEffect, useMemo} from 'react'
+import { useEffect, useMemo } from 'react'
 
-import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
-import {useGetArticleIngestionLogs} from 'models/helpCenter/queries'
-import {reportError} from 'utils/errors'
+import { AI_AGENT_SENTRY_TEAM } from 'common/const/sentryTeamNames'
+import { useGetArticleIngestionLogs } from 'models/helpCenter/queries'
+import { reportError } from 'utils/errors'
 
-import {mapArticleIngestionLogsToSourceItem} from '../components/PublicSourcesSection/utils'
+import { mapArticleIngestionLogsToSourceItem } from '../components/PublicSourcesSection/utils'
 
-export const usePublicResources = ({helpCenterId}: {helpCenterId?: number}) => {
+export const usePublicResources = ({
+    helpCenterId,
+}: {
+    helpCenterId?: number
+}) => {
     const {
         data: articleIngestionLogs,
         error,
@@ -18,18 +22,18 @@ export const usePublicResources = ({helpCenterId}: {helpCenterId?: number}) => {
         {
             refetchOnWindowFocus: false,
             enabled: !!helpCenterId,
-        }
+        },
     )
 
     const sourceItems = useMemo(
         () => articleIngestionLogs?.map(mapArticleIngestionLogsToSourceItem),
-        [articleIngestionLogs]
+        [articleIngestionLogs],
     )
 
     useEffect(() => {
         if (error) {
             reportError(error, {
-                tags: {team: AI_AGENT_SENTRY_TEAM},
+                tags: { team: AI_AGENT_SENTRY_TEAM },
                 extra: {
                     context: 'Error during article ingestion logs fetching',
                 },
@@ -37,5 +41,5 @@ export const usePublicResources = ({helpCenterId}: {helpCenterId?: number}) => {
         }
     }, [error])
 
-    return {sourceItems, isSourceItemsListLoading}
+    return { sourceItems, isSourceItemsListLoading }
 }

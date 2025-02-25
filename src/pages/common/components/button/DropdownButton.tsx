@@ -1,9 +1,11 @@
+import React, { ComponentProps, ForwardedRef, forwardRef, Ref } from 'react'
+
 import classnames from 'classnames'
-import React, {ComponentProps, ForwardedRef, forwardRef, Ref} from 'react'
 
 import Button from './Button'
-import css from './DropdownButton.less'
 import IconButton from './IconButton'
+
+import css from './DropdownButton.less'
 
 type Props = {
     toggleId?: string
@@ -22,7 +24,7 @@ const DropdownButton = (
         toggleRef,
         ...others
     }: Props & ComponentProps<typeof Button>,
-    ref: ForwardedRef<HTMLDivElement>
+    ref: ForwardedRef<HTMLDivElement>,
 ) => {
     return (
         <div className={classnames(className, css.wrapper)} ref={ref}>

@@ -1,1 +1,1 @@
-export {default} from './EmailIntegrationInputSection'
+export { default } from './EmailIntegrationInputSection'

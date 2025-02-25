@@ -1,10 +1,11 @@
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
 
-import {assetsUrl} from 'utils'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {AutomateFeatures} from '../../types'
-import {PaywallFeature, usePaywallConfig} from '../usePaywallConfig'
+import { assetsUrl } from 'utils'
+
+import { AutomateFeatures } from '../../types'
+import { PaywallFeature, usePaywallConfig } from '../usePaywallConfig'
 
 jest.mock('launchdarkly-react-client-sdk')
 jest.mock('utils')
@@ -14,13 +15,13 @@ const mockAssetsUrl = assetsUrl as jest.MockedFunction<typeof assetsUrl>
 describe('usePaywallConfig', () => {
     beforeEach(() => {
         mockAssetsUrl.mockImplementation(
-            (path: string) => `https://mockedurl.com${path}`
+            (path: string) => `https://mockedurl.com${path}`,
         )
     })
 
     it('should return the correct config for AutomateFeatures.Automate', () => {
-        const {result} = renderHook(() =>
-            usePaywallConfig(AutomateFeatures.Automate)
+        const { result } = renderHook(() =>
+            usePaywallConfig(AutomateFeatures.Automate),
         )
 
         const expectedConfig: PaywallFeature = {
@@ -74,8 +75,8 @@ describe('usePaywallConfig', () => {
     })
 
     it('should return the correct config for AutomateFeatures.AutomateStats', () => {
-        const {result} = renderHook(() =>
-            usePaywallConfig(AutomateFeatures.AutomateStats)
+        const { result } = renderHook(() =>
+            usePaywallConfig(AutomateFeatures.AutomateStats),
         )
 
         const expectedConfig: PaywallFeature = {
@@ -129,8 +130,8 @@ describe('usePaywallConfig', () => {
     })
 
     it('should return the correct config for AutomateFeatures.AiAgent', () => {
-        const {result} = renderHook(() =>
-            usePaywallConfig(AutomateFeatures.AiAgent)
+        const { result } = renderHook(() =>
+            usePaywallConfig(AutomateFeatures.AiAgent),
         )
 
         const expectedConfig: PaywallFeature = {
@@ -160,8 +161,8 @@ describe('usePaywallConfig', () => {
 
     it('should return the correct config for AutomateFeatures.AutomateChat', () => {
         const customCta = <div role="button">My custom call to Action</div>
-        const {result} = renderHook(() =>
-            usePaywallConfig(AutomateFeatures.AutomateChat, customCta)
+        const { result } = renderHook(() =>
+            usePaywallConfig(AutomateFeatures.AutomateChat, customCta),
         )
 
         const expectedConfig: PaywallFeature = {
@@ -191,8 +192,8 @@ describe('usePaywallConfig', () => {
 
     it('should return the correct config for AutomateFeatures.AutomateContactForm', () => {
         const customCta = <div role="button">My custom call to Action</div>
-        const {result} = renderHook(() =>
-            usePaywallConfig(AutomateFeatures.AutomateContactForm, customCta)
+        const { result } = renderHook(() =>
+            usePaywallConfig(AutomateFeatures.AutomateContactForm, customCta),
         )
         const expectedConfig: PaywallFeature = {
             headerTitle: '',
@@ -210,7 +211,7 @@ describe('usePaywallConfig', () => {
             slidesData: [
                 {
                     imageUrl: assetsUrl(
-                        '/img/paywalls/screens/contact-form-preview.png'
+                        '/img/paywalls/screens/contact-form-preview.png',
                     ),
                     description: '',
                 },
@@ -221,8 +222,8 @@ describe('usePaywallConfig', () => {
 
     it('should return the correct config for AutomateFeatures.AutomateHelpCenter', () => {
         const customCta = <div role="button">My custom call to Action</div>
-        const {result} = renderHook(() =>
-            usePaywallConfig(AutomateFeatures.AutomateHelpCenter, customCta)
+        const { result } = renderHook(() =>
+            usePaywallConfig(AutomateFeatures.AutomateHelpCenter, customCta),
         )
 
         const expectedConfig: PaywallFeature = {
@@ -241,7 +242,7 @@ describe('usePaywallConfig', () => {
             slidesData: [
                 {
                     imageUrl: assetsUrl(
-                        '/img/paywalls/screens/help-center-preview.png'
+                        '/img/paywalls/screens/help-center-preview.png',
                     ),
                     description: '',
                 },

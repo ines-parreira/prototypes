@@ -1,6 +1,7 @@
-import {act, render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
+
+import { act, render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import {
     InfobarSearchResultsList,
@@ -19,7 +20,7 @@ describe('<InfobarSearchResultsList />', () => {
         render(<InfobarSearchResultsList {...commonProps} />)
 
         expect(
-            screen.getByText(NO_CUSTOMER_FOUND_PLACEHOLDER)
+            screen.getByText(NO_CUSTOMER_FOUND_PLACEHOLDER),
         ).toBeInTheDocument()
     })
 
@@ -30,7 +31,7 @@ describe('<InfobarSearchResultsList />', () => {
             <InfobarSearchResultsList
                 {...commonProps}
                 errorMessage={errorMessage}
-            />
+            />,
         )
 
         expect(screen.getByText(errorMessage)).toBeInTheDocument()
@@ -56,7 +57,7 @@ describe('<InfobarSearchResultsList />', () => {
             <InfobarSearchResultsList
                 {...commonProps}
                 searchResults={searchResults}
-            />
+            />,
         )
 
         searchResults.forEach((result) => {
@@ -88,7 +89,7 @@ describe('<InfobarSearchResultsList />', () => {
                 {...commonProps}
                 searchResults={searchResults}
                 onCustomerClick={onClickSpy}
-            />
+            />,
         )
         act(() => {
             userEvent.click(screen.getByText(user.name))
@@ -96,7 +97,7 @@ describe('<InfobarSearchResultsList />', () => {
 
         expect(onClickSpy).toHaveBeenCalledWith(
             user.id,
-            searchResults.findIndex((result) => result.id === user.id)
+            searchResults.findIndex((result) => result.id === user.id),
         )
     })
 
@@ -122,21 +123,21 @@ describe('<InfobarSearchResultsList />', () => {
             <InfobarSearchResultsList
                 {...commonProps}
                 searchResults={searchResults}
-            />
+            />,
         )
 
         expect(screen.getByText(highlightedEmailPart)).toBeInTheDocument()
         expect(
-            screen.getByText(highlightedEmailPart).tagName.toLocaleLowerCase()
+            screen.getByText(highlightedEmailPart).tagName.toLocaleLowerCase(),
         ).toBe('em')
         expect(screen.getByText(highlightedNamePart)).toBeInTheDocument()
         expect(
-            screen.getByText(highlightedNamePart).tagName.toLocaleLowerCase()
+            screen.getByText(highlightedNamePart).tagName.toLocaleLowerCase(),
         ).toBe('em')
         expect(
             screen
-                .getByText(orderId, {exact: false})
-                .tagName.toLocaleLowerCase()
+                .getByText(orderId, { exact: false })
+                .tagName.toLocaleLowerCase(),
         ).toBe('em')
     })
 })

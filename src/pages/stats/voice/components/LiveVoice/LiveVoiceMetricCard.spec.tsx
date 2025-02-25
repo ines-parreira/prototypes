@@ -1,12 +1,13 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
 import * as utils from 'pages/stats/common/utils'
-import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
+import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
 import MetricCard from 'pages/stats/MetricCard'
 import LiveVoiceMetricCard from 'pages/stats/voice/components/LiveVoice/LiveVoiceMetricCard'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('pages/stats/BigNumberMetric')
 jest.mock('pages/stats/MetricCard')
@@ -24,11 +25,13 @@ const renderComponent = (props: any) => {
 describe('LiveVoiceMetricCard', () => {
     beforeEach(() => {
         formatMetricValueSpy.mockReturnValue('Formatted Value')
-        BigNumberMetricMock.mockImplementation(({children}) => (
+        BigNumberMetricMock.mockImplementation(({ children }) => (
             <div>{children}</div>
         ))
-        MetricCardMock.mockImplementation(({children}) => <div>{children}</div>)
-        DrillDownModalTriggerMock.mockImplementation(({children}) => (
+        MetricCardMock.mockImplementation(({ children }) => (
+            <div>{children}</div>
+        ))
+        DrillDownModalTriggerMock.mockImplementation(({ children }) => (
             <div>{children}</div>
         ))
     })
@@ -45,10 +48,10 @@ describe('LiveVoiceMetricCard', () => {
         expect(MetricCardMock).toHaveBeenLastCalledWith(
             expect.objectContaining({
                 title: props.title,
-                hint: {title: props.hint},
+                hint: { title: props.hint },
                 isLoading: props.isLoading,
             }),
-            {}
+            {},
         )
     })
 
@@ -78,7 +81,7 @@ describe('LiveVoiceMetricCard', () => {
             expect.objectContaining({
                 isLoading: props.isLoading,
             }),
-            {}
+            {},
         )
     })
 
@@ -101,7 +104,7 @@ describe('LiveVoiceMetricCard', () => {
                 },
                 useNewFilterData: true,
             }),
-            {}
+            {},
         )
     })
 
@@ -132,7 +135,7 @@ describe('LiveVoiceMetricCard', () => {
             expect.objectContaining({
                 enabled: false,
             }),
-            {}
+            {},
         )
     })
 })

@@ -1,6 +1,8 @@
-import {combineReducers} from 'redux'
+import { combineReducers } from 'redux'
 
-import articlesReducer, {initialState as articlesInitialState} from './articles'
+import articlesReducer, {
+    initialState as articlesInitialState,
+} from './articles'
 import categoriesReducer, {
     initialState as categoriesInitialState,
 } from './categories'

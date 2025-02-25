@@ -1,31 +1,32 @@
+import axios from 'axios'
+import { isEmpty } from 'lodash'
+
 import {
     EmailIntegration as NEW_EmailIntegration,
     GmailIntegration as NEW_GmailIntegration,
 } from '@gorgias/api-queries'
-import axios from 'axios'
-import {isEmpty} from 'lodash'
 
-import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
+import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
 import {
     EmailIntegrationDefaultProviderSetting,
     EmailProvider,
 } from 'models/integration/constants'
 import {
+    DNSRecordType,
+    DomainDNSRecord,
     EmailIntegration,
     GmailIntegration,
     Integration,
     IntegrationType,
-    OutlookIntegration,
     OutboundVerificationStatusValue,
-    DomainDNSRecord,
-    DNSRecordType,
+    OutlookIntegration,
 } from 'models/integration/types'
 
-import {commonDomains} from './EmailDomainVerification/constants'
+import { commonDomains } from './EmailDomainVerification/constants'
 import * as helpers from './helpers'
 
 export const isSingleSenderVerificationInProgress = (
-    integration: EmailIntegration
+    integration: EmailIntegration,
 ): boolean => {
     const verificationStatus =
         integration.meta.outbound_verification_status?.single_sender
@@ -36,7 +37,7 @@ export const isSingleSenderVerificationInProgress = (
 }
 
 export const isOutboundDomainVerified = (
-    integration: EmailIntegration | GmailIntegration | OutlookIntegration
+    integration: EmailIntegration | GmailIntegration | OutlookIntegration,
 ): boolean => {
     return (
         integration.meta?.outbound_verification_status?.domain ===
@@ -45,7 +46,7 @@ export const isOutboundDomainVerified = (
 }
 
 export const isSingleSenderVerified = (
-    integration: EmailIntegration
+    integration: EmailIntegration,
 ): boolean => {
     return (
         integration.meta.outbound_verification_status?.single_sender ===
@@ -54,7 +55,7 @@ export const isSingleSenderVerified = (
 }
 
 export const isOutboundVerifiedSendgrid = (
-    integration: EmailIntegration
+    integration: EmailIntegration,
 ): boolean => {
     return (
         isOutboundDomainVerified(integration) ||
@@ -66,7 +67,7 @@ export const getDomainFromEmailAddress = (address: string): string =>
     address.substring(address.lastIndexOf('@') + 1)
 
 export const isSendgridEmailIntegration = (
-    integration: Integration
+    integration: Integration,
 ): boolean => {
     return (
         integration.type === IntegrationType.Email &&
@@ -75,10 +76,10 @@ export const isSendgridEmailIntegration = (
 }
 
 export const isGenericEmailIntegration = (
-    integration: Integration
+    integration: Integration,
 ): integration is EmailIntegration | GmailIntegration | OutlookIntegration => {
     return (EMAIL_INTEGRATION_TYPES as IntegrationType[]).includes(
-        integration.type
+        integration.type,
     )
 }
 
@@ -87,7 +88,7 @@ export const isBaseEmailAddress = (emailAddress: string): boolean => {
         window.GORGIAS_STATE?.integrations?.authentication?.email
             ?.forwarding_email_address
     const forwardingAddressDomain = getDomainFromEmailAddress(
-        forwardingEmailAddress ?? '@'
+        forwardingEmailAddress ?? '@',
     )
 
     return emailAddress.endsWith(`@${forwardingAddressDomain}`)
@@ -99,7 +100,7 @@ export const isBaseEmailIntegration = (
         | GmailIntegration
         | OutlookIntegration
         | NEW_EmailIntegration
-        | NEW_GmailIntegration
+        | NEW_GmailIntegration,
 ): boolean => {
     return isBaseEmailAddress(emailIntegration.meta.address)
 }
@@ -112,7 +113,7 @@ export const isCommonDomainEmail = (emailAddress: string): boolean => {
 
 export const isCommonDomain = (domain: string): boolean => {
     return !!commonDomains.find((commonDomain) =>
-        domain.startsWith(commonDomain)
+        domain.startsWith(commonDomain),
     )
 }
 
@@ -122,7 +123,7 @@ export const canIntegrationDomainBeVerified = (
         | GmailIntegration
         | OutlookIntegration
         | NEW_EmailIntegration
-        | NEW_GmailIntegration
+        | NEW_GmailIntegration,
 ): boolean => {
     return (
         !helpers.isBaseEmailIntegration(emailIntegration) &&
@@ -131,7 +132,7 @@ export const canIntegrationDomainBeVerified = (
 }
 
 export const canEnableEmailingViaInternalProvider = (
-    emailIntegration: GmailIntegration | OutlookIntegration
+    emailIntegration: GmailIntegration | OutlookIntegration,
 ): boolean => {
     return isOutboundDomainVerified(emailIntegration)
 }
@@ -144,31 +145,31 @@ export const outboundEmailProviderSettingByIntegrationType = {
 }
 
 export function getOutboundEmailProviderSettingKey(
-    integrationType: IntegrationType.Gmail | IntegrationType.Outlook
+    integrationType: IntegrationType.Gmail | IntegrationType.Outlook,
 ) {
     return outboundEmailProviderSettingByIntegrationType[integrationType]
 }
 
 export function removeDomainFromDNSRecord(
     record: DomainDNSRecord,
-    domain?: string
+    domain?: string,
 ): DomainDNSRecord {
     if (!domain) {
         return record
     }
     const host = record.host.replace(domain, '').replace(/\.$/, '') || '@'
-    return {...record, host}
+    return { ...record, host }
 }
 
 export function removeDomainFromDNSRecords(
     records: DomainDNSRecord[],
-    domain?: string
+    domain?: string,
 ): DomainDNSRecord[] {
     return records.map((record) => removeDomainFromDNSRecord(record, domain))
 }
 
 export const parseRecordsCurrentValues = (
-    records: DomainDNSRecord[]
+    records: DomainDNSRecord[],
 ): DomainDNSRecord[] => {
     return records.map((record) => {
         const parsedValues = record.current_values?.map((value) => {
@@ -186,12 +187,12 @@ export const parseRecordsCurrentValues = (
             }
         })
 
-        return {...record, current_values: parsedValues}
+        return { ...record, current_values: parsedValues }
     })
 }
 
 export async function populateCurrentValuesForDNSRecords(
-    records: DomainDNSRecord[]
+    records: DomainDNSRecord[],
 ): Promise<DomainDNSRecord[]> {
     try {
         return Promise.all(
@@ -210,7 +211,7 @@ export async function populateCurrentValuesForDNSRecords(
                         return record
                     })
                     .catch(() => record)
-            })
+            }),
         )
     } catch {
         return records
@@ -219,7 +220,7 @@ export async function populateCurrentValuesForDNSRecords(
 
 export type DNSQueryResponse = {
     Status: number
-    Question: Array<{name: string; type: number}>
+    Question: Array<{ name: string; type: number }>
     Answer: Array<DNSQueryAnswer>
 }
 
@@ -232,13 +233,13 @@ export type DNSQueryAnswer = {
 
 export async function getDNSRecord(
     name: string,
-    type: string
+    type: string,
 ): Promise<DNSQueryAnswer[] | null> {
     const GOOGLE_DNS_URL = 'https://dns.google/resolve'
     try {
         //eslint-disable-next-line no-restricted-properties
         const response = await axios.get<DNSQueryResponse>(GOOGLE_DNS_URL, {
-            params: {name, type},
+            params: { name, type },
         })
 
         if (!response || response?.data?.Status !== 0) {

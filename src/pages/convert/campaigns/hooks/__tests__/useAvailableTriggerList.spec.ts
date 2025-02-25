@@ -1,22 +1,21 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
 import {
     CONVERT_LIGHT_TRIGGERS,
     TRIGGERS_CONFIG,
 } from 'pages/convert/campaigns/constants/triggers'
 
-import {CampaignTriggerType} from '../../types/enums/CampaignTriggerType.enum'
-
-import {useAvailableTriggerList} from '../useAvailableTriggerList'
+import { CampaignTriggerType } from '../../types/enums/CampaignTriggerType.enum'
+import { useAvailableTriggerList } from '../useAvailableTriggerList'
 
 describe('useAvailableTriggerList()', () => {
     describe('Merchant IS NOT a revenue subscriber and DOES NOT HAVE a Shopify chat', () => {
         it('returns only legacy triggers', () => {
-            const {result} = renderHook(() =>
+            const { result } = renderHook(() =>
                 useAvailableTriggerList({
                     isConvertSubscriber: false,
                     isShopifyStore: false,
-                })
+                }),
             )
 
             expect(Object.keys(result.current)).toStrictEqual([
@@ -33,11 +32,11 @@ describe('useAvailableTriggerList()', () => {
 
     describe('Merchant IS NOT a revenue subscriber and HAS a Shopify chat', () => {
         it('returns legacy triggers', () => {
-            const {result} = renderHook(() =>
+            const { result } = renderHook(() =>
                 useAvailableTriggerList({
                     isConvertSubscriber: false,
                     isShopifyStore: true,
-                })
+                }),
             )
 
             expect(Object.keys(result.current)).toStrictEqual([
@@ -54,11 +53,11 @@ describe('useAvailableTriggerList()', () => {
 
     describe('Merchant IS a revenue subscriber and DOES NOT HAVE a Shopify chat', () => {
         it('returns both legacy and advanced (non Shopify) triggers', () => {
-            const {result} = renderHook(() =>
+            const { result } = renderHook(() =>
                 useAvailableTriggerList({
                     isConvertSubscriber: true,
                     isShopifyStore: false,
-                })
+                }),
             )
 
             expect(Object.keys(result.current)).toStrictEqual([
@@ -83,11 +82,11 @@ describe('useAvailableTriggerList()', () => {
 
     describe('Merchant IS a revenue subscriber and HAS a Shopify chat', () => {
         it('returns all triggers except hidden', () => {
-            const {result} = renderHook(() =>
+            const { result } = renderHook(() =>
                 useAvailableTriggerList({
                     isConvertSubscriber: true,
                     isShopifyStore: true,
-                })
+                }),
             )
 
             const {
@@ -103,12 +102,12 @@ describe('useAvailableTriggerList()', () => {
 
     describe('Merchant IS a Convert subscriber and HAS a Shopify chat and IS light campaign', () => {
         it('returns only light campaign triggers', () => {
-            const {result} = renderHook(() =>
+            const { result } = renderHook(() =>
                 useAvailableTriggerList({
                     isConvertSubscriber: true,
                     isShopifyStore: true,
                     isLightCampaign: true,
-                })
+                }),
             )
 
             const expected = {

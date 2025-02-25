@@ -1,10 +1,9 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {useAbilityChecker} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import { useAbilityChecker } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 
-import {useLimitations} from '../../../../../hooks/helpCenter/useLimitations'
-
-import {useArticleRowActions} from '../useArticleRowActions'
+import { useLimitations } from '../../../../../hooks/helpCenter/useLimitations'
+import { useArticleRowActions } from '../useArticleRowActions'
 
 jest.mock('hooks/helpCenter/useLimitations')
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi')
@@ -39,11 +38,13 @@ describe('useArticleRowActions()', () => {
 
     beforeEach(() => {
         mockUseLimitation.mockReturnValue(defaultLimitations)
-        mockUseAbilityChecker.mockReturnValue({isPassingRulesCheck: () => true})
+        mockUseAbilityChecker.mockReturnValue({
+            isPassingRulesCheck: () => true,
+        })
     })
 
     it('returns all the actions - enabled', () => {
-        const {result} = renderHook(() => useArticleRowActions(articleId))
+        const { result } = renderHook(() => useArticleRowActions(articleId))
 
         expect(result.current).toMatchInlineSnapshot(`
             [
@@ -95,7 +96,7 @@ describe('useArticleRowActions()', () => {
             },
         })
 
-        const {result} = renderHook(() => useArticleRowActions(articleId))
+        const { result } = renderHook(() => useArticleRowActions(articleId))
 
         expect(result.current).toMatchInlineSnapshot(`
             [
@@ -135,7 +136,7 @@ describe('useArticleRowActions()', () => {
             isPassingRulesCheck: () => false,
         })
 
-        const {result} = renderHook(() => useArticleRowActions(articleId))
+        const { result } = renderHook(() => useArticleRowActions(articleId))
         expect(result.current).toMatchInlineSnapshot(`
             [
               {

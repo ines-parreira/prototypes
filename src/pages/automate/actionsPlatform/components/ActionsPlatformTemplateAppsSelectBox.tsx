@@ -1,8 +1,10 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import {produce} from 'immer'
-import React, {useCallback, useRef, useState} from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 
-import {IntegrationType} from 'models/integration/constants'
+import { produce } from 'immer'
+
+import { Label } from '@gorgias/merchant-ui-kit'
+
+import { IntegrationType } from 'models/integration/constants'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
@@ -12,7 +14,7 @@ import SelectInputBox, {
 } from 'pages/common/forms/input/SelectInputBox'
 
 import useGetAppFromTemplateApp from '../hooks/useGetAppFromTemplateApp'
-import {ActionTemplateApp, App} from '../types'
+import { ActionTemplateApp, App } from '../types'
 
 import css from './ActionsPlatformAppSelectBox.less'
 
@@ -34,7 +36,7 @@ const ActionsPlatformTemplateAppsSelectBox = ({
 
     const [isOpen, setIsOpen] = useState(false)
 
-    const getAppFromTemplateApp = useGetAppFromTemplateApp({apps})
+    const getAppFromTemplateApp = useGetAppFromTemplateApp({ apps })
 
     const appsValue = value
         .map(getAppFromTemplateApp)
@@ -49,7 +51,7 @@ const ActionsPlatformTemplateAppsSelectBox = ({
                             const index = draft.findIndex(
                                 (item) =>
                                     item.type === 'app' &&
-                                    item.app_id === app.id
+                                    item.app_id === app.id,
                             )
 
                             if (index !== -1) {
@@ -68,13 +70,13 @@ const ActionsPlatformTemplateAppsSelectBox = ({
                 case 'shopify': {
                     const nextValue = produce(value, (draft) => {
                         const index = draft.findIndex(
-                            (item) => item.type === 'shopify'
+                            (item) => item.type === 'shopify',
                         )
 
                         if (index !== -1) {
                             draft.splice(index, 1)
                         } else {
-                            draft.push({type: 'shopify'})
+                            draft.push({ type: 'shopify' })
                         }
                     })
 
@@ -86,13 +88,13 @@ const ActionsPlatformTemplateAppsSelectBox = ({
                     const type = app.type
                     const nextValue = produce(value, (draft) => {
                         const index = draft.findIndex(
-                            (item) => item.type === type
+                            (item) => item.type === type,
                         )
 
                         if (index !== -1) {
                             draft.splice(index, 1)
                         } else {
-                            draft.unshift({type})
+                            draft.unshift({ type })
                         }
                     })
 
@@ -100,7 +102,7 @@ const ActionsPlatformTemplateAppsSelectBox = ({
                 }
             }
         },
-        [value, onChange]
+        [value, onChange],
     )
 
     return (
@@ -143,7 +145,7 @@ const ActionsPlatformTemplateAppsSelectBox = ({
                                                     (item.type === 'app'
                                                         ? item.app_id !== app.id
                                                         : item.type !==
-                                                          app.type)
+                                                          app.type),
                                             ) && app.type !== 'shopify'
                                         }
                                     >

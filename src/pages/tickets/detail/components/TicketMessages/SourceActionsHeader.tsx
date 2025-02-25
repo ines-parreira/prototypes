@@ -1,13 +1,14 @@
-import classNamesBind from 'classnames/bind'
-import React, {Component} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
+import React, { Component } from 'react'
 
-import {TicketMessageSourceType} from 'business/types/ticket'
-import type {TicketMessage} from 'models/ticket/types'
+import classNamesBind from 'classnames/bind'
+import { connect, ConnectedProps } from 'react-redux'
+
+import { TicketMessageSourceType } from 'business/types/ticket'
+import type { TicketMessage } from 'models/ticket/types'
 import PrivateReply from 'pages/common/components/PrivateReplyToFBComment/PrivateReply'
-import {getIsCurrentHelpdeskLegacy} from 'state/billing/selectors'
+import { getIsCurrentHelpdeskLegacy } from 'state/billing/selectors'
 import * as infobarActions from 'state/infobar/actions'
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
 
 import CollapsedSourceActions from './CollapsedSourceActions/CollapsedSourceActions'
 import IntentsFeedback from './IntentsFeedback/IntentsFeedback'
@@ -26,7 +27,7 @@ type Props = {
 export class SourceActionsHeader extends Component<Props> {
     _executeAction = (actionName: string) => {
         const {
-            message: {integration_id: integrationId, message_id: messageId},
+            message: { integration_id: integrationId, message_id: messageId },
             executeAction,
         } = this.props
         if (integrationId) {
@@ -42,13 +43,13 @@ export class SourceActionsHeader extends Component<Props> {
 
     _toggleInstagramHideComment = (hide: boolean) => {
         this._executeAction(
-            hide ? 'instagramHideComment' : 'instagramUnhideComment'
+            hide ? 'instagramHideComment' : 'instagramUnhideComment',
         )
     }
 
     _toggleFacebookHideComment = (hide: boolean) => {
         this._executeAction(
-            hide ? 'facebookHideComment' : 'facebookUnhideComment'
+            hide ? 'facebookHideComment' : 'facebookUnhideComment',
         )
     }
 
@@ -60,7 +61,7 @@ export class SourceActionsHeader extends Component<Props> {
                 integration_id: integrationId,
                 message_id: messageId,
                 from_agent: fromAgent,
-                sender: {id: senderId},
+                sender: { id: senderId },
                 id: ticketMessageId,
                 ticket_id: ticketId,
                 body_text: bodyText,
@@ -140,7 +141,7 @@ export class SourceActionsHeader extends Component<Props> {
                                 className={classNames(
                                     'hidden-sm-down',
                                     css.actionButton,
-                                    css.replyButton
+                                    css.replyButton,
                                 )}
                             />
                         )}
@@ -151,7 +152,7 @@ export class SourceActionsHeader extends Component<Props> {
                                 'btn-secondary',
                                 'hidden-sm-down',
                                 css.visibilityButton,
-                                css.actionButton
+                                css.actionButton,
                             )}
                             onClick={toggleHideComment}
                         >
@@ -186,7 +187,7 @@ const connector = connect(
     },
     {
         executeAction: infobarActions.executeAction,
-    }
+    },
 )
 
 export default connector(SourceActionsHeader)

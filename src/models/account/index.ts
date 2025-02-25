@@ -1,1 +1,1 @@
-export {createAccountSetting, updateAccountSetting} from './resources'
+export { createAccountSetting, updateAccountSetting } from './resources'

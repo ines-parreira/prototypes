@@ -3,13 +3,13 @@ import React from 'react'
 import Loader from 'pages/common/components/Loader/Loader'
 import StatsPage from 'pages/stats/StatsPage'
 
-import {HELP_CENTER_STATS_TEST_IDS} from '../../pages/tests/constants'
+import { HELP_CENTER_STATS_TEST_IDS } from '../../pages/tests/constants'
 
 type HelpCenterStatsLoadingProps = {
     title: string
 }
 
-const HelpCenterStatsLoading = ({title}: HelpCenterStatsLoadingProps) => (
+const HelpCenterStatsLoading = ({ title }: HelpCenterStatsLoadingProps) => (
     <div className="full-width">
         <StatsPage title={title} titleExtra={<></>}>
             <Loader

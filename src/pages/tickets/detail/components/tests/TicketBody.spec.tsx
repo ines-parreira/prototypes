@@ -1,19 +1,20 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import _noop from 'lodash/noop'
 import React from 'react'
-import {Provider} from 'react-redux'
-import {VirtuosoProps} from 'react-virtuoso'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import _noop from 'lodash/noop'
+import { Provider } from 'react-redux'
+import { VirtuosoProps } from 'react-virtuoso'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {voiceCall} from 'fixtures/voiceCalls'
+import { voiceCall } from 'fixtures/voiceCalls'
 import useSearch from 'hooks/useSearch'
-import {message as defaultMessage} from 'models/ticket/tests/mocks'
+import { message as defaultMessage } from 'models/ticket/tests/mocks'
 import TicketBody from 'pages/tickets/detail/components/TicketBody'
 import TicketBodyElement from 'pages/tickets/detail/components/TicketBodyElement'
-import {getQueryData} from 'state/queries/selectors'
-import {assumeMock} from 'utils/testing'
+import { getQueryData } from 'state/queries/selectors'
+import { assumeMock } from 'utils/testing'
 
 const mockStore = configureMockStore([thunk])
 
@@ -28,12 +29,12 @@ const mockVirtuoso = jest.fn<
 >()
 
 jest.mock('pages/tickets/detail/components/TicketBodyElement', () =>
-    jest.fn(({index}: {index: number}) => <p>TicketBodyElement {index}</p>)
+    jest.fn(({ index }: { index: number }) => <p>TicketBodyElement {index}</p>),
 )
 
 jest.mock(
     'pages/tickets/detail/components/TicketHeaderWrapper/TicketHeaderWrapper',
-    () => () => <p>TicketHeaderWrapper</p>
+    () => () => <p>TicketHeaderWrapper</p>,
 )
 
 jest.mock(
@@ -42,13 +43,13 @@ jest.mock(
         ({
             ...jest.requireActual('state/queries/selectors'),
             getQueryTimestamp: jest.fn(() => jest.fn()),
-        }) as Record<string, unknown>
+        }) as Record<string, unknown>,
 )
 
 jest.mock('state/billing/selectors')
 
 jest.mock('react-virtuoso', () => {
-    const {forwardRef, Fragment} = jest.requireActual('react')
+    const { forwardRef, Fragment } = jest.requireActual('react')
     //eslint-disable-next-line @typescript-eslint/no-unused-vars
     function Virtuoso(props: VirtuosoProps<unknown, unknown>, _ref: any) {
         mockVirtuoso(props)
@@ -64,7 +65,7 @@ jest.mock('react-virtuoso', () => {
     }
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    return {Virtuoso: forwardRef(Virtuoso)}
+    return { Virtuoso: forwardRef(Virtuoso) }
 })
 
 const mockTicketBodyElement = assumeMock(TicketBodyElement)
@@ -78,18 +79,18 @@ jest.mock(
         ({
             ...jest.requireActual('state/queries/selectors'),
             getQueryData: jest.fn(() => jest.fn()),
-        }) as Record<string, unknown>
+        }) as Record<string, unknown>,
 )
 const mockGetQueryData = assumeMock(getQueryData)
 
 describe('TicketBody', () => {
     beforeEach(() => {
         mockTicketBodyElement.mockClear()
-        mockUseSearch.mockReturnValue({call_id: undefined})
+        mockUseSearch.mockReturnValue({ call_id: undefined })
     })
 
     it('should render an element for each given element', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider
                 store={mockStore({
                     ticket: fromJS({
@@ -105,7 +106,7 @@ describe('TicketBody', () => {
                     shopperName=""
                     submit={_noop}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(getByText('TicketHeaderWrapper')).toBeInTheDocument()
@@ -130,18 +131,18 @@ describe('TicketBody', () => {
                     shopperName=""
                     submit={_noop}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(TicketBodyElement).toHaveBeenNthCalledWith(
             1,
-            expect.objectContaining({isLast: false}),
-            {}
+            expect.objectContaining({ isLast: false }),
+            {},
         )
         expect(TicketBodyElement).toHaveBeenNthCalledWith(
             2,
-            expect.objectContaining({isLast: true}),
-            {}
+            expect.objectContaining({ isLast: true }),
+            {},
         )
     })
 
@@ -157,7 +158,7 @@ describe('TicketBody', () => {
                     shopperName=""
                     submit={() => {}}
                 />
-            </Provider>
+            </Provider>,
         )
 
         // Check if Virtuoso is called with the correct component props
@@ -166,7 +167,7 @@ describe('TicketBody', () => {
                 components: expect.objectContaining({
                     Item: expect.any(Function),
                 }),
-            })
+            }),
         )
 
         // Extract the Item function from Virtuoso call
@@ -179,28 +180,28 @@ describe('TicketBody', () => {
             // Render the Item component manually and check if it receives the correct props
             const ItemComponent = virtuosoCall.components.Item as React.FC<any>
             const mockProps = {
-                style: {margin: '5px'},
+                style: { margin: '5px' },
                 children: <p>Test Item Content</p>,
             }
 
-            const {getByText} = render(<ItemComponent {...mockProps} />)
+            const { getByText } = render(<ItemComponent {...mockProps} />)
 
             const itemElement = getByText('Test Item Content')
 
             expect(itemElement).toBeInTheDocument()
             expect(itemElement.parentElement).toHaveStyle(
-                'position: relative; margin: 5px'
+                'position: relative; margin: 5px',
             )
         }
     })
 
     it('should scroll to the voice call', () => {
-        mockUseSearch.mockReturnValue({call_id: voiceCall.id})
+        mockUseSearch.mockReturnValue({ call_id: voiceCall.id })
         // @ts-ignore
         mockGetQueryData.mockReturnValue(() => ({
             data: [voiceCall],
         }))
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider
                 store={mockStore({
                     ticket: fromJS({
@@ -216,7 +217,7 @@ describe('TicketBody', () => {
                     shopperName=""
                     submit={() => {}}
                 />
-            </Provider>
+            </Provider>,
         )
         expect(getByText('TicketHeaderWrapper')).toBeInTheDocument()
         expect(getByText(`TicketBodyElement 1`)).toBeInTheDocument()
@@ -225,18 +226,18 @@ describe('TicketBody', () => {
         // Check if Virtuoso is called with the correct component props
         expect(mockVirtuoso).toHaveBeenCalledWith(
             expect.objectContaining({
-                initialTopMostItemIndex: {index: 2},
-            })
+                initialTopMostItemIndex: { index: 2 },
+            }),
         )
     })
 
     it('should not scroll if no voice call is passed', () => {
-        mockUseSearch.mockReturnValue({call_id: undefined})
+        mockUseSearch.mockReturnValue({ call_id: undefined })
         // @ts-ignore
         mockGetQueryData.mockReturnValue(() => ({
             data: [voiceCall],
         }))
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider
                 store={mockStore({
                     ticket: fromJS({
@@ -252,7 +253,7 @@ describe('TicketBody', () => {
                     shopperName=""
                     submit={() => {}}
                 />
-            </Provider>
+            </Provider>,
         )
         expect(getByText('TicketHeaderWrapper')).toBeInTheDocument()
         expect(getByText(`TicketBodyElement 1`)).toBeInTheDocument()
@@ -261,8 +262,8 @@ describe('TicketBody', () => {
         // Check if Virtuoso is called with the correct component props
         expect(mockVirtuoso).toHaveBeenCalledWith(
             expect.objectContaining({
-                initialTopMostItemIndex: {index: 'LAST'},
-            })
+                initialTopMostItemIndex: { index: 'LAST' },
+            }),
         )
     })
 })

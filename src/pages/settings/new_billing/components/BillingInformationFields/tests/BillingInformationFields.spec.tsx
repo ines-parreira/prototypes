@@ -1,13 +1,13 @@
-import {AddressElement} from '@stripe/react-stripe-js'
-import {StripeAddressElementChangeEvent} from '@stripe/stripe-js'
-import {act, render, screen, waitFor} from '@testing-library/react'
-
 import React from 'react'
 
-import {Form} from 'core/forms'
-import {BillingInformationFields} from 'pages/settings/new_billing/components/BillingInformationFields/BillingInformationFields'
-import {VATCountries} from 'state/billing/types'
-import {assumeMock} from 'utils/testing'
+import { AddressElement } from '@stripe/react-stripe-js'
+import { StripeAddressElementChangeEvent } from '@stripe/stripe-js'
+import { act, render, screen, waitFor } from '@testing-library/react'
+
+import { Form } from 'core/forms'
+import { BillingInformationFields } from 'pages/settings/new_billing/components/BillingInformationFields/BillingInformationFields'
+import { VATCountries } from 'state/billing/types'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('@stripe/react-stripe-js')
 
@@ -15,7 +15,7 @@ let handleAddressChange:
     | ((event: StripeAddressElementChangeEvent) => void)
     | undefined
 
-assumeMock(AddressElement).mockImplementation(({onChange}) => {
+assumeMock(AddressElement).mockImplementation(({ onChange }) => {
     handleAddressChange = onChange
     return <div data-testid="stripe-address-element" />
 })
@@ -25,11 +25,11 @@ describe('BillingInformationFields', () => {
         render(
             <Form onValidSubmit={jest.fn()}>
                 <BillingInformationFields />
-            </Form>
+            </Form>,
         )
 
         expect(screen.getByText('Billing Information')).toBeVisible()
-        expect(screen.getByRole('textbox', {name: 'Email'})).toBeVisible()
+        expect(screen.getByRole('textbox', { name: 'Email' })).toBeVisible()
         expect(screen.getByTestId('stripe-address-element')).toBeVisible()
     })
 
@@ -38,21 +38,21 @@ describe('BillingInformationFields', () => {
             render(
                 <Form onValidSubmit={jest.fn()}>
                     <BillingInformationFields />
-                </Form>
+                </Form>,
             )
 
             act(() => {
                 handleAddressChange?.({
-                    value: {address: {country: 'CA', state: 'BC'}},
+                    value: { address: { country: 'CA', state: 'BC' } },
                 } as any)
             })
 
             await waitFor(() => {
                 expect(
-                    screen.getByRole('textbox', {name: 'GST/HST ID info'})
+                    screen.getByRole('textbox', { name: 'GST/HST ID info' }),
                 ).toBeVisible()
                 expect(
-                    screen.getByRole('textbox', {name: 'PST ID info'})
+                    screen.getByRole('textbox', { name: 'PST ID info' }),
                 ).toBeVisible()
             })
         })
@@ -61,21 +61,21 @@ describe('BillingInformationFields', () => {
             render(
                 <Form onValidSubmit={jest.fn()}>
                     <BillingInformationFields />
-                </Form>
+                </Form>,
             )
 
             act(() => {
                 handleAddressChange?.({
-                    value: {address: {country: 'CA', state: 'SK'}},
+                    value: { address: { country: 'CA', state: 'SK' } },
                 } as any)
             })
 
             await waitFor(() => {
                 expect(
-                    screen.getByRole('textbox', {name: 'GST/HST ID info'})
+                    screen.getByRole('textbox', { name: 'GST/HST ID info' }),
                 ).toBeVisible()
                 expect(
-                    screen.getByRole('textbox', {name: 'PST ID info'})
+                    screen.getByRole('textbox', { name: 'PST ID info' }),
                 ).toBeVisible()
             })
         })
@@ -84,21 +84,21 @@ describe('BillingInformationFields', () => {
             render(
                 <Form onValidSubmit={jest.fn()}>
                     <BillingInformationFields />
-                </Form>
+                </Form>,
             )
 
             act(() => {
                 handleAddressChange?.({
-                    value: {address: {country: 'CA', state: 'MB'}},
+                    value: { address: { country: 'CA', state: 'MB' } },
                 } as any)
             })
 
             await waitFor(() => {
                 expect(
-                    screen.getByRole('textbox', {name: 'GST/HST ID info'})
+                    screen.getByRole('textbox', { name: 'GST/HST ID info' }),
                 ).toBeVisible()
                 expect(
-                    screen.getByRole('textbox', {name: 'PST ID info'})
+                    screen.getByRole('textbox', { name: 'PST ID info' }),
                 ).toBeVisible()
             })
         })
@@ -107,21 +107,21 @@ describe('BillingInformationFields', () => {
             render(
                 <Form onValidSubmit={jest.fn()}>
                     <BillingInformationFields />
-                </Form>
+                </Form>,
             )
 
             act(() => {
                 handleAddressChange?.({
-                    value: {address: {country: 'CA', state: 'QC'}},
+                    value: { address: { country: 'CA', state: 'QC' } },
                 } as any)
             })
 
             await waitFor(() => {
                 expect(
-                    screen.getByRole('textbox', {name: 'GST/HST ID info'})
+                    screen.getByRole('textbox', { name: 'GST/HST ID info' }),
                 ).toBeVisible()
                 expect(
-                    screen.getByRole('textbox', {name: 'QST ID info'})
+                    screen.getByRole('textbox', { name: 'QST ID info' }),
                 ).toBeVisible()
             })
         })
@@ -130,18 +130,18 @@ describe('BillingInformationFields', () => {
             render(
                 <Form onValidSubmit={jest.fn()}>
                     <BillingInformationFields />
-                </Form>
+                </Form>,
             )
 
             act(() => {
                 handleAddressChange?.({
-                    value: {address: {country: 'AU'}},
+                    value: { address: { country: 'AU' } },
                 } as any)
             })
 
             await waitFor(() => {
                 expect(
-                    screen.getByRole('textbox', {name: 'ABN Number info'})
+                    screen.getByRole('textbox', { name: 'ABN Number info' }),
                 ).toBeVisible()
             })
         })
@@ -152,21 +152,23 @@ describe('BillingInformationFields', () => {
                 render(
                     <Form onValidSubmit={jest.fn()}>
                         <BillingInformationFields />
-                    </Form>
+                    </Form>,
                 )
 
                 act(() => {
                     handleAddressChange?.({
-                        value: {address: {country}},
+                        value: { address: { country } },
                     } as any)
                 })
 
                 await waitFor(() => {
                     expect(
-                        screen.getByRole('textbox', {name: 'VAT Number info'})
+                        screen.getByRole('textbox', {
+                            name: 'VAT Number info',
+                        }),
                     ).toBeVisible()
                 })
-            }
+            },
         )
     })
 })

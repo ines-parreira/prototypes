@@ -1,19 +1,20 @@
-import {useKnockClient} from '@knocklabs/react'
-import {useCallback, useMemo, useState} from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
-import {AI_AGENT_SET_AND_OPTIMIZED_TYPE} from 'automate/notifications/constants'
-import {logEvent, SegmentEvent} from 'common/segment'
-import {UserSettingType} from 'config/types/user'
+import { useKnockClient } from '@knocklabs/react'
+
+import { AI_AGENT_SET_AND_OPTIMIZED_TYPE } from 'automate/notifications/constants'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { UserSettingType } from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
 import useEffectOnce from 'hooks/useEffectOnce'
-import {defaultSound, SoundValue} from 'services/NotificationSounds'
-import {submitSetting} from 'state/currentUser/actions'
-import {getNotificationSettings} from 'state/currentUser/selectors'
+import { defaultSound, SoundValue } from 'services/NotificationSounds'
+import { submitSetting } from 'state/currentUser/actions'
+import { getNotificationSettings } from 'state/currentUser/selectors'
 
-import {categories, channels, notifications} from '../data'
-import type {NotificationConfig, Settings} from '../types'
+import { categories, channels, notifications } from '../data'
+import type { NotificationConfig, Settings } from '../types'
 
 export default function useSettings() {
     const dispatch = useAppDispatch()
@@ -25,13 +26,13 @@ export default function useSettings() {
             categories
                 .reduce(
                     (acc, c) => [...acc, ...(c.notifications || [])],
-                    [] as string[]
+                    [] as string[],
                 )
                 .map((n) => notifications[n]),
-        []
+        [],
     )
 
-    const [{loading: isFetchingKnockPreferences}, getKnockPreferences] =
+    const [{ loading: isFetchingKnockPreferences }, getKnockPreferences] =
         useAsyncFn(async () => {
             await knockClient.user.identify()
             return await knockClient.preferences.get()
@@ -54,7 +55,7 @@ export default function useSettings() {
                 (eventsAcc, config) => {
                     const eventSettings = allSettings?.data.events?.[
                         config.type
-                    ] || {sound: defaultSound.sound}
+                    ] || { sound: defaultSound.sound }
 
                     const workflowPreferences =
                         config.type !== 'legacy-chat-and-messaging'
@@ -88,12 +89,12 @@ export default function useSettings() {
                                                     channel.type
                                                 ],
                                 }),
-                                eventsAcc[config.type]?.channels || {}
+                                eventsAcc[config.type]?.channels || {},
                             ),
                         },
                     }
                 },
-                {} as Settings['events']
+                {} as Settings['events'],
             ),
         }
 
@@ -120,7 +121,7 @@ export default function useSettings() {
                 },
             }))
         },
-        []
+        [],
     )
 
     const handleChangeSound = useCallback(
@@ -138,11 +139,11 @@ export default function useSettings() {
                 }
             })
         },
-        []
+        [],
     )
 
     const handleChangeVolume = useCallback((volume: number) => {
-        setSettings((s) => ({...s, volume}))
+        setSettings((s) => ({ ...s, volume }))
     }, [])
 
     const save = useCallback(async () => {
@@ -160,7 +161,7 @@ export default function useSettings() {
                 events: notificationsWithSettings
                     .filter(
                         (config): config is NotificationConfig =>
-                            config.type !== 'legacy-chat-and-messaging'
+                            config.type !== 'legacy-chat-and-messaging',
                     )
                     .reduce(
                         (acc, config) => ({
@@ -169,7 +170,7 @@ export default function useSettings() {
                                 sound: settings.events[config.type].sound,
                             },
                         }),
-                        {}
+                        {},
                     ),
             },
             id: allSettings?.id,
@@ -185,7 +186,7 @@ export default function useSettings() {
         } = notificationsWithSettings
             .filter(
                 (config): config is NotificationConfig =>
-                    config.type !== 'legacy-chat-and-messaging'
+                    config.type !== 'legacy-chat-and-messaging',
             )
             .reduce(
                 (eventsAcc, config) => ({
@@ -199,11 +200,11 @@ export default function useSettings() {
                                         channel.type
                                     ],
                             }),
-                            {}
+                            {},
                         ),
                     },
                 }),
-                {}
+                {},
             )
 
         await Promise.all([
@@ -254,6 +255,6 @@ export default function useSettings() {
             handleChangeSound,
             handleChangeVolume,
             isFetchingKnockPreferences,
-        ]
+        ],
     )
 }

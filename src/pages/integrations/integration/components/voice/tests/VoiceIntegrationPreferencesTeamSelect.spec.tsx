@@ -1,7 +1,8 @@
-import {render, fireEvent} from '@testing-library/react'
 import React from 'react'
 
-import {useListTeams} from 'models/team/queries'
+import { fireEvent, render } from '@testing-library/react'
+
+import { useListTeams } from 'models/team/queries'
 
 import VoiceIntegrationPreferencesTeamSelect, {
     NO_TEAM_SELECTED_LABEL,
@@ -13,24 +14,24 @@ jest.mock('models/team/queries', () => ({
 
 describe('<VoiceIntegrationPreferencesTeamSelect />', () => {
     const mockTeams = [
-        {id: 1, name: 'Team 1', members: []},
-        {id: 2, name: 'Team 2', members: [{}, {}]},
-        {id: 3, name: 'Team 3', members: [{}]},
+        { id: 1, name: 'Team 1', members: [] },
+        { id: 2, name: 'Team 2', members: [{}, {}] },
+        { id: 3, name: 'Team 3', members: [{}] },
     ]
     const handleChange = jest.fn()
 
     it('should display the selected team name', () => {
         ;(useListTeams as jest.Mock).mockReturnValue({
-            data: {data: {data: mockTeams}},
+            data: { data: { data: mockTeams } },
             isLoading: false,
             error: null,
         })
 
-        const {getByText} = render(
+        const { getByText } = render(
             <VoiceIntegrationPreferencesTeamSelect
                 value={2}
                 onChange={handleChange}
-            />
+            />,
         )
 
         expect(getByText('Team 2')).toBeInTheDocument()
@@ -38,13 +39,13 @@ describe('<VoiceIntegrationPreferencesTeamSelect />', () => {
 
     it('should open the dropdown when clicked', () => {
         ;(useListTeams as jest.Mock).mockReturnValue({
-            data: {data: {data: mockTeams}},
+            data: { data: { data: mockTeams } },
             isLoading: false,
             error: null,
         })
 
-        const {getByText} = render(
-            <VoiceIntegrationPreferencesTeamSelect onChange={handleChange} />
+        const { getByText } = render(
+            <VoiceIntegrationPreferencesTeamSelect onChange={handleChange} />,
         )
 
         const selectInput = getByText(NO_TEAM_SELECTED_LABEL)
@@ -59,13 +60,13 @@ describe('<VoiceIntegrationPreferencesTeamSelect />', () => {
 
     it('should call the onChange function when a team is selected', () => {
         ;(useListTeams as jest.Mock).mockReturnValue({
-            data: {data: {data: mockTeams}},
+            data: { data: { data: mockTeams } },
             isLoading: false,
             error: null,
         })
 
-        const {getByText} = render(
-            <VoiceIntegrationPreferencesTeamSelect onChange={handleChange} />
+        const { getByText } = render(
+            <VoiceIntegrationPreferencesTeamSelect onChange={handleChange} />,
         )
 
         const selectInput = getByText(NO_TEAM_SELECTED_LABEL)
@@ -83,8 +84,8 @@ describe('<VoiceIntegrationPreferencesTeamSelect />', () => {
             error: new Error('error'),
         })
 
-        const {getByText, queryByText} = render(
-            <VoiceIntegrationPreferencesTeamSelect onChange={handleChange} />
+        const { getByText, queryByText } = render(
+            <VoiceIntegrationPreferencesTeamSelect onChange={handleChange} />,
         )
 
         const selectInput = getByText(NO_TEAM_SELECTED_LABEL)
@@ -96,16 +97,16 @@ describe('<VoiceIntegrationPreferencesTeamSelect />', () => {
 
     it('should be able to clear team selection', () => {
         ;(useListTeams as jest.Mock).mockReturnValue({
-            data: {data: {data: mockTeams}},
+            data: { data: { data: mockTeams } },
             isLoading: false,
             error: null,
         })
 
-        const {getByText} = render(
+        const { getByText } = render(
             <VoiceIntegrationPreferencesTeamSelect
                 value={2}
                 onChange={handleChange}
-            />
+            />,
         )
 
         const selectInput = getByText('Team 2')
@@ -118,13 +119,13 @@ describe('<VoiceIntegrationPreferencesTeamSelect />', () => {
 
     it('should display message when there is no selected team', () => {
         ;(useListTeams as jest.Mock).mockReturnValue({
-            data: {data: {data: mockTeams}},
+            data: { data: { data: mockTeams } },
             isLoading: false,
             error: null,
         })
 
-        const {getByText} = render(
-            <VoiceIntegrationPreferencesTeamSelect onChange={handleChange} />
+        const { getByText } = render(
+            <VoiceIntegrationPreferencesTeamSelect onChange={handleChange} />,
         )
 
         expect(getByText(NO_TEAM_SELECTED_LABEL)).toBeInTheDocument()

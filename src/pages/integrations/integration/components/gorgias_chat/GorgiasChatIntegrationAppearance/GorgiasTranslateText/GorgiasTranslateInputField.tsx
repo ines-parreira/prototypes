@@ -1,15 +1,17 @@
-import classnames from 'classnames'
-import {EditorState} from 'draft-js'
-import React, {useState} from 'react'
-import {Col, Container, Row} from 'reactstrap'
+import React, { useState } from 'react'
 
-import {ActionName} from 'pages/common/draftjs/plugins/toolbar/types'
+import classnames from 'classnames'
+import { EditorState } from 'draft-js'
+import { Col, Container, Row } from 'reactstrap'
+
+import { ActionName } from 'pages/common/draftjs/plugins/toolbar/types'
 import RichField from 'pages/common/forms/RichField/RichField'
 import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
-import {convertToHTML} from 'utils/editor'
-import {sanitizeHtmlDefault} from 'utils/html'
+import { convertToHTML } from 'utils/editor'
+import { sanitizeHtmlDefault } from 'utils/html'
 
 import TextArea from '../../../../../../common/forms/TextArea'
+
 import css from './GorgiasTranslateText.less'
 
 type Props = {
@@ -116,7 +118,7 @@ const GorgiasTranslateInputField = ({
                                 [css.hasError]: hasError,
                             })}
                             ref={(ref) => setRichArea(ref)}
-                            value={{html: value, text: value}}
+                            value={{ html: value, text: value }}
                             aria-label={defaultValue}
                             placeholder={'Enter customer value'}
                             maxLength={maxLength}

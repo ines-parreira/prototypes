@@ -1,26 +1,25 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import moment from 'moment'
 import React from 'react'
-import {NavLink} from 'react-router-dom'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import moment from 'moment'
+import { NavLink } from 'react-router-dom'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
-import {StatsFilters} from 'models/stat/types'
-
-import {Kpi} from 'pages/aiAgent/components/Kpi/Kpi'
-import {CardTitle} from 'pages/aiAgent/Onboarding/components/Card'
-import {OverviewCard} from 'pages/aiAgent/Overview/components/OverviewCard/OverviewCard'
+import { StatsFilters } from 'models/stat/types'
+import { Kpi } from 'pages/aiAgent/components/Kpi/Kpi'
+import { CardTitle } from 'pages/aiAgent/Onboarding/components/Card'
+import { OverviewCard } from 'pages/aiAgent/Overview/components/OverviewCard/OverviewCard'
 import {
     AiAgentType,
     useAiAgentTypeForAccount,
 } from 'pages/aiAgent/Overview/hooks/useAiAgentType'
-import {useMixedKpis} from 'pages/aiAgent/Overview/hooks/useMixedKpis'
-import {useSalesKpis} from 'pages/aiAgent/Overview/hooks/useSalesKpis'
-import {useSupportKpis} from 'pages/aiAgent/Overview/hooks/useSupportKpis'
-import {KpiMetric} from 'pages/aiAgent/Overview/types'
+import { useMixedKpis } from 'pages/aiAgent/Overview/hooks/useMixedKpis'
+import { useSalesKpis } from 'pages/aiAgent/Overview/hooks/useSalesKpis'
+import { useSupportKpis } from 'pages/aiAgent/Overview/hooks/useSupportKpis'
+import { KpiMetric } from 'pages/aiAgent/Overview/types'
 import Button from 'pages/common/components/button/Button'
-
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
+import { getCleanStatsFiltersWithTimezone } from 'state/ui/stats/selectors'
 
 import css from './KpiSection.less'
 
@@ -67,16 +66,16 @@ const KpiContainer = ({
     )
 }
 
-const SalesKpi = ({filters, timezone}: KpiProps) => {
-    const {metrics} = useSalesKpis(filters, timezone)
+const SalesKpi = ({ filters, timezone }: KpiProps) => {
+    const { metrics } = useSalesKpis(filters, timezone)
     return <KpiContainer metrics={metrics} />
 }
-const SupportKpi = ({filters, timezone}: KpiProps) => {
-    const {metrics} = useSupportKpis(filters, timezone)
+const SupportKpi = ({ filters, timezone }: KpiProps) => {
+    const { metrics } = useSupportKpis(filters, timezone)
     return <KpiContainer metrics={metrics} />
 }
-const MixedKpi = ({filters, timezone}: KpiProps) => {
-    const {metrics} = useMixedKpis(filters, timezone)
+const MixedKpi = ({ filters, timezone }: KpiProps) => {
+    const { metrics } = useMixedKpis(filters, timezone)
     return <KpiContainer metrics={metrics} />
 }
 
@@ -96,7 +95,7 @@ const KpiForAiAgentType = ({
             end_datetime: moment().format(),
         },
     }
-    const {userTimezone} = useAppSelector(getCleanStatsFiltersWithTimezone)
+    const { userTimezone } = useAppSelector(getCleanStatsFiltersWithTimezone)
 
     if (isLoading || !aiAgentType) {
         return <KpiContainer isLoading />
@@ -114,7 +113,7 @@ const KpiForAiAgentType = ({
 
 export const KpiSection = () => {
     //TODO: Redirect to sales analytics page
-    const {isLoading, aiAgentType} = useAiAgentTypeForAccount()
+    const { isLoading, aiAgentType } = useAiAgentTypeForAccount()
     const hasAnalytics =
         useFlags()[FeatureFlagKey.StandaloneAiSalesAnalyticsPage]
 

@@ -1,8 +1,8 @@
-import {ProductRecommendationScenario} from 'pages/convert/campaigns/types/CampaignAttachment'
-import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import { ProductRecommendationScenario } from 'pages/convert/campaigns/types/CampaignAttachment'
+import { CampaignTriggerOperator } from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
+import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 
-import {getRecommendedTriggerForScenario} from '../geRecommendedTriggerForScenario'
+import { getRecommendedTriggerForScenario } from '../geRecommendedTriggerForScenario'
 
 describe('getRecommendedTriggerForScenario', () => {
     it('should return a trigger for SimilarBought scenario', () => {

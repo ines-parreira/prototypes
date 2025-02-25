@@ -1,23 +1,23 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
 import useAppSelector from 'hooks/useAppSelector'
 
-import {useCurrentPriceIds} from '../useGetCurrentPriceIds'
+import { useCurrentPriceIds } from '../useGetCurrentPriceIds'
 
 jest.mock('hooks/useAppSelector', () => jest.fn())
 const mockUseAppSelector = useAppSelector as jest.Mock
 
 describe('useGetCurrentPriceIds', () => {
     const currentProducts = {
-        helpdesk: {price_id: 'helpdeskPrice'},
-        automation: {price_id: 'automationPrice'},
-        convert: {price_id: 'convertPlan'},
+        helpdesk: { price_id: 'helpdeskPrice' },
+        automation: { price_id: 'automationPrice' },
+        convert: { price_id: 'convertPlan' },
     }
 
     it('should return the current price ids', () => {
         mockUseAppSelector.mockReturnValueOnce(currentProducts)
 
-        const {result} = renderHook(() => useCurrentPriceIds())
+        const { result } = renderHook(() => useCurrentPriceIds())
 
         expect(result.current).toEqual([
             'helpdeskPrice',
@@ -32,7 +32,7 @@ describe('useGetCurrentPriceIds', () => {
             automation: undefined,
         })
 
-        const {result} = renderHook(() => useCurrentPriceIds())
+        const { result } = renderHook(() => useCurrentPriceIds())
 
         expect(result.current).toEqual(['helpdeskPrice', 'convertPlan'])
     })
@@ -40,7 +40,7 @@ describe('useGetCurrentPriceIds', () => {
     it('should return the empty price id list', () => {
         mockUseAppSelector.mockReturnValueOnce(null)
 
-        const {result} = renderHook(() => useCurrentPriceIds())
+        const { result } = renderHook(() => useCurrentPriceIds())
 
         expect(result.current).toEqual([])
     })

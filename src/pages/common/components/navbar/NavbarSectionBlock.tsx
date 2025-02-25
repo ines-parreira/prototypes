@@ -1,5 +1,6 @@
+import React, { ReactNode } from 'react'
+
 import classnames from 'classnames'
-import React, {ReactNode} from 'react'
 
 import css from './NavbarSectionBlock.less'
 
@@ -28,7 +29,7 @@ const NavbarSectionBlock = ({
                         onClick={onToggle}
                         className={classnames(
                             css.toggleSectionIcon,
-                            'material-icons'
+                            'material-icons',
                         )}
                     >
                         {isExpanded ? 'arrow_drop_down' : 'arrow_right'}

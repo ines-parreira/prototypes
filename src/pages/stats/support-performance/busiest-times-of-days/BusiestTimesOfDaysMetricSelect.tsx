@@ -1,12 +1,13 @@
-import React, {useCallback, useRef, useState} from 'react'
+import React, { useCallback, useRef, useState } from 'react'
+
 // eslint-disable-next-line no-restricted-imports
-import {useDispatch} from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 import useAppSelector from 'hooks/useAppSelector'
 import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import {BusiestTimeOfDaysMetrics} from 'pages/stats/support-performance/busiest-times-of-days/types'
+import { BusiestTimeOfDaysMetrics } from 'pages/stats/support-performance/busiest-times-of-days/types'
 import {
     metricLabels,
     metrics,
@@ -24,7 +25,7 @@ export const BusiestTimesOfDaysMetricSelect = () => {
         (opt: BusiestTimeOfDaysMetrics) => {
             dispatch(setSelectedMetric(opt))
         },
-        [dispatch]
+        [dispatch],
     )
     const [isOpen, setIsOpen] = useState(false)
     const buttonRef = useRef(null)
@@ -56,7 +57,7 @@ export const BusiestTimesOfDaysMetricSelect = () => {
                             handleSelectMetric(field)
                             setIsOpen(false)
                         }}
-                        option={{value: field, label: metricLabels[field]}}
+                        option={{ value: field, label: metricLabels[field] }}
                     >
                         <span className={css.dropdownItemContent}>
                             {metricLabels[field]}

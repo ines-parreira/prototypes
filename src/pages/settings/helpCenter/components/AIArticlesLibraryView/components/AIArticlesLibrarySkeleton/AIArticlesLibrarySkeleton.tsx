@@ -1,5 +1,6 @@
-import {Skeleton} from '@gorgias/merchant-ui-kit'
 import React from 'react'
+
+import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import Button from 'pages/common/components/button/Button'
 
@@ -28,7 +29,7 @@ const LibrarySkeleton = () => {
                     <div># of ticket inquiries</div>
                 </div>
                 <div className={css.list}>
-                    {Array.from({length: 7}).map((_, index) => (
+                    {Array.from({ length: 7 }).map((_, index) => (
                         <Skeleton key={index} width={'100%'} height={72} />
                     ))}
                 </div>
@@ -45,7 +46,7 @@ const LibrarySkeleton = () => {
                 <div className={previewCss.descriptionContainer}>
                     <Skeleton height={28} width={'100%'} />
                     <div className={css.textRows}>
-                        {Array.from({length: 24}).map((_, index) => (
+                        {Array.from({ length: 24 }).map((_, index) => (
                             <Skeleton key={index} width={'100%'} />
                         ))}
                     </div>

@@ -1,12 +1,13 @@
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {User} from '../../../../../config/types/user'
-import {deleteTwoFASecret} from '../../../../../models/twoFactorAuthentication/resources'
+import { User } from '../../../../../config/types/user'
+import { deleteTwoFASecret } from '../../../../../models/twoFactorAuthentication/resources'
 import TwoFactorAuthenticationDisableModal from '../TwoFactorAuthenticationDisableModal'
 
 jest.mock('models/twoFactorAuthentication/resources')
@@ -33,27 +34,27 @@ describe('<TwoFactorAuthenticationDisableModal />', () => {
     })
 
     it.each([undefined, 1])('should render the modal', async (userId) => {
-        const user = userId ? ({id: userId} as User) : undefined
-        const {baseElement} = render(
+        const user = userId ? ({ id: userId } as User) : undefined
+        const { baseElement } = render(
             <Provider store={store}>
                 <TwoFactorAuthenticationDisableModal {...minProps} user={user}>
                     Foo <b>body</b>
                 </TwoFactorAuthenticationDisableModal>
-            </Provider>
+            </Provider>,
         )
 
         // Wait until the show class is added to the modal
         await waitFor(() =>
             expect(
-                baseElement.getElementsByClassName('modal show').length
-            ).toBe(1)
+                baseElement.getElementsByClassName('modal show').length,
+            ).toBe(1),
         )
 
         expect(baseElement).toMatchSnapshot()
     })
 
     it('should not render the modal when not open', () => {
-        const {baseElement} = render(
+        const { baseElement } = render(
             <Provider store={store}>
                 <TwoFactorAuthenticationDisableModal
                     {...minProps}
@@ -61,7 +62,7 @@ describe('<TwoFactorAuthenticationDisableModal />', () => {
                 >
                     Foo <b>body</b>
                 </TwoFactorAuthenticationDisableModal>
-            </Provider>
+            </Provider>,
         )
         expect(baseElement).toMatchSnapshot()
     })
@@ -69,11 +70,11 @@ describe('<TwoFactorAuthenticationDisableModal />', () => {
     it.each([undefined, 1])(
         'should call the delete function',
         async (userId) => {
-            const user = userId ? ({id: userId} as User) : undefined
+            const user = userId ? ({ id: userId } as User) : undefined
             const twofa_code = '123456'
             const password = 'abcde'
 
-            const {baseElement, getByPlaceholderText} = render(
+            const { baseElement, getByPlaceholderText } = render(
                 <Provider store={store}>
                     <TwoFactorAuthenticationDisableModal
                         {...minProps}
@@ -81,27 +82,27 @@ describe('<TwoFactorAuthenticationDisableModal />', () => {
                     >
                         Foo <b>body</b>
                     </TwoFactorAuthenticationDisableModal>
-                </Provider>
+                </Provider>,
             )
 
             // Wait until the show class is added to the modal
             await waitFor(() =>
                 expect(
-                    baseElement.getElementsByClassName('modal show').length
-                ).toBe(1)
+                    baseElement.getElementsByClassName('modal show').length,
+                ).toBe(1),
             )
 
             // Fill the verification code if not provided an user ID
             if (!userId) {
                 const inputField = getByPlaceholderText(
-                    'Enter 6-digit verification code from app or recovery code'
+                    'Enter 6-digit verification code from app or recovery code',
                 ) as HTMLInputElement
-                fireEvent.change(inputField, {target: {value: twofa_code}})
+                fireEvent.change(inputField, { target: { value: twofa_code } })
 
                 const passwordField = getByPlaceholderText(
-                    'Enter your password'
+                    'Enter your password',
                 ) as HTMLInputElement
-                fireEvent.change(passwordField, {target: {value: password}})
+                fireEvent.change(passwordField, { target: { value: password } })
             }
 
             const continueButton = screen.getByText(minProps.actionButtonText)
@@ -110,7 +111,7 @@ describe('<TwoFactorAuthenticationDisableModal />', () => {
             // wait for the loading spinners to disappear
             await waitFor(() => {
                 expect(() => screen.queryAllByText('Loading...')).toHaveLength(
-                    0
+                    0,
                 )
             })
 
@@ -120,12 +121,12 @@ describe('<TwoFactorAuthenticationDisableModal />', () => {
                 expect(deleteTwoFASecretMock).toHaveBeenCalledWith(
                     undefined,
                     twofa_code,
-                    password
+                    password,
                 )
             }
 
             expect(baseElement).toMatchSnapshot()
-        }
+        },
     )
 
     it.each([undefined, 1])(
@@ -134,13 +135,13 @@ describe('<TwoFactorAuthenticationDisableModal />', () => {
             deleteTwoFASecretMock.mockRejectedValue({
                 response: {
                     data: {
-                        error: {msg: 'foo error deleteTwoFASecretMock'},
+                        error: { msg: 'foo error deleteTwoFASecretMock' },
                     },
                 },
             })
-            const user = userId ? ({id: userId} as User) : undefined
+            const user = userId ? ({ id: userId } as User) : undefined
 
-            const {baseElement, getByPlaceholderText} = render(
+            const { baseElement, getByPlaceholderText } = render(
                 <Provider store={store}>
                     <TwoFactorAuthenticationDisableModal
                         {...minProps}
@@ -148,22 +149,22 @@ describe('<TwoFactorAuthenticationDisableModal />', () => {
                     >
                         Foo <b>body</b>
                     </TwoFactorAuthenticationDisableModal>
-                </Provider>
+                </Provider>,
             )
 
             // Wait until the show class is added to the modal
             await waitFor(() =>
                 expect(
-                    baseElement.getElementsByClassName('modal show').length
-                ).toBe(1)
+                    baseElement.getElementsByClassName('modal show').length,
+                ).toBe(1),
             )
 
             // Fill the verification code if not provided an user ID
             if (!userId) {
                 const inputField = getByPlaceholderText(
-                    'Enter 6-digit verification code from app or recovery code'
+                    'Enter 6-digit verification code from app or recovery code',
                 ) as HTMLInputElement
-                fireEvent.change(inputField, {target: {value: '123456'}})
+                fireEvent.change(inputField, { target: { value: '123456' } })
             }
 
             const continueButton = screen.getByText(minProps.actionButtonText)
@@ -172,7 +173,7 @@ describe('<TwoFactorAuthenticationDisableModal />', () => {
             // wait for the loading spinners to disappear
             await waitFor(() => {
                 expect(() => screen.queryAllByText('Loading...')).toHaveLength(
-                    0
+                    0,
                 )
             })
 
@@ -183,6 +184,6 @@ describe('<TwoFactorAuthenticationDisableModal />', () => {
             }
 
             expect(baseElement).toMatchSnapshot()
-        }
+        },
     )
 })

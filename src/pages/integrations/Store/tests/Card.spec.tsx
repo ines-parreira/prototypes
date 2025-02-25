@@ -1,20 +1,20 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render, screen } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { applications as mockApplications } from 'fixtures/applications'
+import { dummyAppListIntegrationItem, dummyAppListItem } from 'fixtures/apps'
+import { IntegrationType } from 'models/integration/constants'
+import { Category } from 'models/integration/types/app'
+import { Application, getApplicationById } from 'services/applications'
+
+import Card, { CARD_LINK_TEST_ID, LOADING_TEST_ID, Pills } from '../Card'
+
 const mockStore = configureMockStore([thunk])
 const store = mockStore({})
-
-import {applications as mockApplications} from 'fixtures/applications'
-import {dummyAppListIntegrationItem, dummyAppListItem} from 'fixtures/apps'
-import {IntegrationType} from 'models/integration/constants'
-import {Category} from 'models/integration/types/app'
-
-import {Application, getApplicationById} from 'services/applications'
-
-import Card, {Pills, CARD_LINK_TEST_ID, LOADING_TEST_ID} from '../Card'
 
 jest.mock('services/applications', () => ({
     getApplicationById: jest.fn(),
@@ -22,8 +22,8 @@ jest.mock('services/applications', () => ({
 
 describe('<Pills />', () => {
     it('should render an empty div', () => {
-        const {container} = render(
-            <Pills item={{...dummyAppListIntegrationItem, count: 0}} />
+        const { container } = render(
+            <Pills item={{ ...dummyAppListIntegrationItem, count: 0 }} />,
         )
         expect(container.firstChild?.firstChild).toBeNull()
     })
@@ -34,7 +34,7 @@ describe('<Pills />', () => {
                     ...dummyAppListIntegrationItem,
                     requiredPriceName: 'enterprise',
                 }}
-            />
+            />,
         )
         expect(screen.getByText('Upgrade'))
     })
@@ -47,7 +47,7 @@ describe('<Pills />', () => {
                     count: 2,
                     type: IntegrationType.BigCommerce,
                 }}
-            />
+            />,
         )
         expect(screen.getByText('2'))
     })
@@ -59,7 +59,7 @@ describe('<Pills />', () => {
 
 describe('<Card />', () => {
     it('should render a basic link card with proper link', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <Card
                     item={{
@@ -68,7 +68,7 @@ describe('<Card />', () => {
                         type: IntegrationType.BigCommerce,
                     }}
                 />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -79,7 +79,7 @@ describe('<Card />', () => {
         const application = mockApplications[0]
         application.supports_multiple_connections = true
         mockedGetApplicationById.mockReturnValue(application)
-        const {getByTestId} = render(
+        const { getByTestId } = render(
             <Provider store={store}>
                 <Card
                     item={{
@@ -89,11 +89,11 @@ describe('<Card />', () => {
                         appId: application.id,
                     }}
                 />
-            </Provider>
+            </Provider>,
         )
         expect(getByTestId('card-link')).toHaveAttribute(
             'to',
-            `/app/settings/integrations/app/${application.id}/connections`
+            `/app/settings/integrations/app/${application.id}/connections`,
         )
     })
 
@@ -103,7 +103,7 @@ describe('<Card />', () => {
         const application = mockApplications[0]
         application.supports_multiple_connections = true
         mockedGetApplicationById.mockReturnValue(application)
-        const {getByTestId} = render(
+        const { getByTestId } = render(
             <Provider store={store}>
                 <Card
                     item={{
@@ -113,11 +113,11 @@ describe('<Card />', () => {
                         appId: application.id,
                     }}
                 />
-            </Provider>
+            </Provider>,
         )
         expect(getByTestId('card-link')).toHaveAttribute(
             'to',
-            `/app/settings/integrations/app/${application.id}`
+            `/app/settings/integrations/app/${application.id}`,
         )
     })
 
@@ -130,7 +130,7 @@ describe('<Card />', () => {
                         requiredPriceName: 'enterprise',
                     }}
                 />
-            </Provider>
+            </Provider>,
         )
         expect(screen.queryByTestId(CARD_LINK_TEST_ID)).toBeNull()
     })
@@ -144,7 +144,7 @@ describe('<Card />', () => {
                     }}
                     isFeatured
                 />
-            </Provider>
+            </Provider>,
         )
         expect(screen.getByTestId(CARD_LINK_TEST_ID)).toHaveClass('featured')
         expect(screen.getByText('Featured'))
@@ -161,7 +161,7 @@ describe('<Card />', () => {
                     isFeatured
                     hasNoFeaturedPill
                 />
-            </Provider>
+            </Provider>,
         )
         expect(screen.getByTestId(CARD_LINK_TEST_ID)).toHaveClass('featured')
         expect(screen.queryByText('Featured')).toBeNull()
@@ -176,7 +176,7 @@ describe('<Card />', () => {
                     }}
                     isLoading
                 />
-            </Provider>
+            </Provider>,
         )
         expect(screen.queryByTestId(CARD_LINK_TEST_ID)).toBeNull()
         expect(screen.getByTestId(LOADING_TEST_ID))

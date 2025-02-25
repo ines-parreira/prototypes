@@ -1,12 +1,14 @@
-import classNames from 'classnames'
 import React from 'react'
-import {Link} from 'react-router-dom'
 
-import {SelfServiceChannelType} from 'pages/automate/common/hooks/useSelfServiceChannels'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import classNames from 'classnames'
+import { Link } from 'react-router-dom'
+
+import { SelfServiceChannelType } from 'pages/automate/common/hooks/useSelfServiceChannels'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+
+import { ChannelConfig } from './utils'
 
 import css from '../WorkflowsPublisher.less'
-import {ChannelConfig} from './utils'
 
 const NoChannelsAlert = ({
     channelType,

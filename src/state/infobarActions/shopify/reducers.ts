@@ -1,4 +1,4 @@
-import {combineReducers} from 'redux'
+import { combineReducers } from 'redux'
 
 import shopifyCancelOrderReducer from './cancelOrder/reducers'
 import shopifyCreateOrderReducer from './createOrder/reducers'

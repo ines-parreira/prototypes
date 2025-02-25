@@ -1,18 +1,18 @@
-import {render} from '@testing-library/react'
-import React, {ComponentProps, useContext} from 'react'
+import React, { ComponentProps, useContext } from 'react'
 
-import {LeafTemplate} from 'models/widget/types'
-import {assumeMock} from 'utils/testing'
+import { render } from '@testing-library/react'
 
-import Template, {CustomizationContext} from 'Widgets/modules/Template'
-import {FALLBACK_VALUE} from 'Widgets/modules/Template/modules/Field'
+import { LeafTemplate } from 'models/widget/types'
+import { assumeMock } from 'utils/testing'
+import Template, { CustomizationContext } from 'Widgets/modules/Template'
+import { FALLBACK_VALUE } from 'Widgets/modules/Template/modules/Field'
 
-import {formatRechargeDateTime} from '../../helpers/formatRechargeDateTime'
-import RechargeWidget, {customization} from '../Recharge'
+import { formatRechargeDateTime } from '../../helpers/formatRechargeDateTime'
+import RechargeWidget, { customization } from '../Recharge'
 
 jest.mock('Widgets/modules/Template', () => {
     const templateExports: Record<string, unknown> = jest.requireActual(
-        'Widgets/modules/Template'
+        'Widgets/modules/Template',
     )
     return {
         ...templateExports,
@@ -63,11 +63,11 @@ describe('card customization', () => {
     ])(
         'should have a dataMatcher that matches the given path, or not',
         (dataPath, output) => {
-            const hasMatch = cardCustomization.some(({dataMatcher}) => {
+            const hasMatch = cardCustomization.some(({ dataMatcher }) => {
                 return dataMatcher.test(dataPath)
             })
             expect(hasMatch).toBe(output)
-        }
+        },
     )
 })
 
@@ -81,13 +81,13 @@ describe('field customization', () => {
 
     it('should return FALLBACK_VALUE if source is not a string when calling `getValue`', () => {
         expect(
-            customization.field?.[0].getValue({}, {} as LeafTemplate)
+            customization.field?.[0].getValue({}, {} as LeafTemplate),
         ).toEqual(FALLBACK_VALUE)
     })
 
     it('should return null when getValueString is called with a non-string source', () => {
         expect(
-            customization.field?.[0].getValueString({}, {} as LeafTemplate)
+            customization.field?.[0].getValueString({}, {} as LeafTemplate),
         ).toBeNull()
     })
 

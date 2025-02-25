@@ -1,11 +1,12 @@
-import {fireEvent, render} from '@testing-library/react'
-import {fromJS, Map} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {shopifyIntegration} from 'fixtures/integrations'
-import {BundleInstallationMethod} from 'models/convert/bundle/types'
+import { shopifyIntegration } from 'fixtures/integrations'
+import { BundleInstallationMethod } from 'models/convert/bundle/types'
 import * as useThemeAppExtensionInstallation from 'pages/integrations/integration/components/gorgias_chat/hooks/useThemeAppExtensionInstallation'
 
 import WizardInstallStep from '../WizardInstallStep'
@@ -20,7 +21,7 @@ const defaultState = {
 
 const useThemeAppExtensionInstallationSpy = jest.spyOn(
     useThemeAppExtensionInstallation,
-    'default'
+    'default',
 )
 
 describe('WizardInstallStep', () => {
@@ -42,7 +43,7 @@ describe('WizardInstallStep', () => {
     })
 
     test('calls setInstallationMethod with OneClick method when OneClick option is clicked', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={mockStore(defaultState)}>
                 <WizardInstallStep
                     integration={integration}
@@ -50,23 +51,23 @@ describe('WizardInstallStep', () => {
                     installationMethod={BundleInstallationMethod.Manual}
                     setInstallationMethod={setInstallationMethod}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            getByText('1-click installation for Shopify')
+            getByText('1-click installation for Shopify'),
         ).toBeInTheDocument()
         expect(getByText('Manual installation')).toBeInTheDocument()
 
         fireEvent.click(getByText('1-click installation for Shopify'))
 
         expect(setInstallationMethod).toHaveBeenCalledWith(
-            BundleInstallationMethod.OneClick
+            BundleInstallationMethod.OneClick,
         )
     })
 
     test('calls setInstallationMethod with Manual method when Manual option is clicked', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={mockStore(defaultState)}>
                 <WizardInstallStep
                     integration={integration}
@@ -74,18 +75,18 @@ describe('WizardInstallStep', () => {
                     installationMethod={BundleInstallationMethod.OneClick}
                     setInstallationMethod={setInstallationMethod}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            getByText('1-click installation for Shopify')
+            getByText('1-click installation for Shopify'),
         ).toBeInTheDocument()
         expect(getByText('Manual installation')).toBeInTheDocument()
 
         fireEvent.click(getByText('Manual installation'))
 
         expect(setInstallationMethod).toHaveBeenCalledWith(
-            BundleInstallationMethod.Manual
+            BundleInstallationMethod.Manual,
         )
     })
 
@@ -96,7 +97,7 @@ describe('WizardInstallStep', () => {
             themeAppExtensionEnabled: true,
         })
 
-        const {getByText, queryByText} = render(
+        const { getByText, queryByText } = render(
             <Provider store={mockStore(defaultState)}>
                 <WizardInstallStep
                     integration={integration}
@@ -104,11 +105,11 @@ describe('WizardInstallStep', () => {
                     installationMethod={BundleInstallationMethod.OneClick}
                     setInstallationMethod={setInstallationMethod}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            queryByText('1-click installation for Shopify')
+            queryByText('1-click installation for Shopify'),
         ).not.toBeInTheDocument()
         expect(getByText('Manual installation')).toBeInTheDocument()
     })

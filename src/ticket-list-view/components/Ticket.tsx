@@ -1,5 +1,3 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import cn from 'classnames'
 import React, {
     ComponentProps,
     MouseEvent,
@@ -7,9 +5,13 @@ import React, {
     useMemo,
     useRef,
 } from 'react'
-import {Link} from 'react-router-dom'
-import {CSSTransition} from 'react-transition-group'
-import {Components} from 'react-virtuoso'
+
+import cn from 'classnames'
+import { Link } from 'react-router-dom'
+import { CSSTransition } from 'react-transition-group'
+import { Components } from 'react-virtuoso'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import RelativeTime from 'pages/common/components/RelativeTime'
 import SourceIcon from 'pages/common/components/SourceIcon'
@@ -17,9 +19,10 @@ import ViewingIndicator from 'pages/common/components/ViewingIndicator/ViewingIn
 import CheckBox from 'pages/common/forms/CheckBox'
 
 import useIsTicketViewed from '../hooks/useIsTicketViewed'
-import {TicketPartial, TicketSummary} from '../types'
-import css from './Ticket.less'
+import { TicketPartial, TicketSummary } from '../types'
 import TicketSkeleton from './TicketSkeleton'
+
+import css from './Ticket.less'
 
 type InjectedProps = ComponentProps<typeof CSSTransition> &
     ComponentProps<NonNullable<Components['Item']>>
@@ -57,13 +60,13 @@ export default function Ticket({
     ['data-known-size']: dataKnownSize,
     ...transitionProps
 }: MergedProps) {
-    const {isTicketViewed, agentViewingMessage} = useIsTicketViewed(ticket.id)
+    const { isTicketViewed, agentViewingMessage } = useIsTicketViewed(ticket.id)
     const datetime = useMemo(
         () =>
             'channel' in ticket
                 ? ticket.last_message_datetime || ticket.updated_datetime
                 : null,
-        [ticket]
+        [ticket],
     )
 
     const checkboxRef = useRef<HTMLInputElement | null>(null)
@@ -77,7 +80,7 @@ export default function Ticket({
         (e: MouseEvent<HTMLInputElement>) => {
             onSelect(ticket.id, e.currentTarget.checked, e.shiftKey)
         },
-        [ticket, onSelect]
+        [ticket, onSelect],
     )
 
     const excerptRef = useRef<HTMLDivElement | null>(null)

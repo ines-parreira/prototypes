@@ -1,19 +1,19 @@
+import React, { useState } from 'react'
+
 import classNames from 'classnames'
-import React, {useState} from 'react'
-import {Dropdown, DropdownMenu, DropdownToggle} from 'reactstrap'
-import {Selector} from 'reselect'
-import {v4 as uuidv4} from 'uuid'
+import { Dropdown, DropdownMenu, DropdownToggle } from 'reactstrap'
+import { Selector } from 'reselect'
+import { v4 as uuidv4 } from 'uuid'
 
 import useAppSelector from 'hooks/useAppSelector'
 import useDeepEffect from 'hooks/useDeepEffect'
 import Button from 'pages/common/components/button/Button'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import css from 'pages/stats/common/components/Table/EditColumns.less'
-import {EditColumnsItem} from 'pages/stats/common/components/Table/EditColumnsItem'
-
-import {TooltipData} from 'pages/stats/types'
-import {AccountSettingTableConfig} from 'state/currentAccount/types'
-import {RootState, StoreDispatch} from 'state/types'
+import { EditColumnsItem } from 'pages/stats/common/components/Table/EditColumnsItem'
+import { TooltipData } from 'pages/stats/types'
+import { AccountSettingTableConfig } from 'state/currentAccount/types'
+import { RootState, StoreDispatch } from 'state/types'
 import {
     TableColumnSet,
     TableSetting,
@@ -28,14 +28,14 @@ export const SAVE_BUTTON_TEXT = 'Save'
 
 const dragToPosition = <T extends TableColumnSet>(
     columnsList: TableViewColumn<T>[],
-    target: {id: string},
-    from: {id: string}
+    target: { id: string },
+    from: { id: string },
 ): TableViewColumn<T>[] => {
     const targetPosition = columnsList.findIndex(
-        (column) => column.id === target.id
+        (column) => column.id === target.id,
     )
     const fromPosition = columnsList.findIndex(
-        (column) => column.id === from.id
+        (column) => column.id === from.id,
     )
 
     const newList = [...columnsList]
@@ -58,12 +58,12 @@ export const EditTableColumns = <T extends TableColumnSet>({
     >
     fallbackViews: TableSetting<T>
     tableLabels: Record<T, string>
-    tooltips: Record<T, {hint: TooltipData | null}>
+    tooltips: Record<T, { hint: TooltipData | null }>
     leadColumn: T
     useTableSetting: () => {
         currentView: TableView<T>
         submitActiveView: (
-            activeView: TableView<T>
+            activeView: TableView<T>,
         ) => Promise<ReturnType<StoreDispatch>> | Promise<boolean>
     }
 }) => {
@@ -73,7 +73,7 @@ export const EditTableColumns = <T extends TableColumnSet>({
     const settings = useAppSelector(settingsSelector)
     const currentSettings = settings ? settings.data : fallbackViews
 
-    const {currentView, submitActiveView} = useTableSetting()
+    const { currentView, submitActiveView } = useTableSetting()
 
     const [columnsVisibility, setColumnsVisibility] = useState<
         TableViewColumn<T>[]
@@ -101,14 +101,14 @@ export const EditTableColumns = <T extends TableColumnSet>({
                     }
                 }
                 return item
-            })
+            }),
         )
         setHasChanges(true)
     }
 
-    const dropBefore = (item: {id: string}, from: {id: string}) => {
+    const dropBefore = (item: { id: string }, from: { id: string }) => {
         setColumnsVisibility((prevState) =>
-            dragToPosition(prevState, item, from)
+            dragToPosition(prevState, item, from),
         )
         setHasChanges(true)
         return from
@@ -116,7 +116,7 @@ export const EditTableColumns = <T extends TableColumnSet>({
 
     const handleSave = async () => {
         const isNewView = !currentSettings.views.find(
-            (view) => view.id === currentView.id
+            (view) => view.id === currentView.id,
         )
 
         setIsLoading(true)
@@ -151,7 +151,7 @@ export const EditTableColumns = <T extends TableColumnSet>({
 
             <DropdownMenu className={css.dropdownMenu}>
                 <div className={css.dropdownMenuContainer}>
-                    {columnsVisibility.map(({id, visibility}) => (
+                    {columnsVisibility.map(({ id, visibility }) => (
                         <EditColumnsItem
                             key={id}
                             title={tableLabels[id]}
@@ -161,7 +161,7 @@ export const EditTableColumns = <T extends TableColumnSet>({
                             onChange={handleChangeVisibility(id)}
                             tooltip={tooltips[id]?.hint?.title}
                             onDrop={dropBefore}
-                            option={{id}}
+                            option={{ id }}
                         />
                     ))}
                 </div>

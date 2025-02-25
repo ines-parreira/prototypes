@@ -1,11 +1,12 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-import React, {ComponentProps, ContextType} from 'react'
+import React, { ComponentProps, ContextType } from 'react'
 
-import {focusOnNextItem} from 'components/Dropdown'
-import {DropdownContext} from 'pages/common/components/dropdown/Dropdown'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+
+import { focusOnNextItem } from 'components/Dropdown'
+import { DropdownContext } from 'pages/common/components/dropdown/Dropdown'
 import useSearch from 'search/useSearch'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import useListUsers from 'users/useListUsers'
 
 import UserAssigneeDropdownMenu from '../UserAssigneeDropdownMenu'
@@ -26,9 +27,9 @@ jest.mock('@gorgias/merchant-ui-kit', () => ({
 jest.mock(
     '../UserDropdownItem',
     () =>
-        ({item}: ComponentProps<typeof UserDropdownItem>) => (
+        ({ item }: ComponentProps<typeof UserDropdownItem>) => (
             <div>{item.name}</div>
-        )
+        ),
 )
 
 const queryClient = mockQueryClient()
@@ -53,12 +54,12 @@ describe('<UserAssigneeDropdownMenu />', () => {
                 <QueryClientProvider client={queryClient}>
                     <UserAssigneeDropdownMenu {...props} />
                 </QueryClientProvider>
-            </DropdownContext.Provider>
+            </DropdownContext.Provider>,
         )
 
     const agents = [
-        {id: 8, name: 'Agent numero uno'},
-        {id: 23, name: 'Backup agent'},
+        { id: 8, name: 'Agent numero uno' },
+        { id: 23, name: 'Backup agent' },
     ]
     beforeEach(() => {
         mockUseListUsers.mockReturnValue({
@@ -105,7 +106,7 @@ describe('<UserAssigneeDropdownMenu />', () => {
         renderWithWrapper()
 
         fireEvent.change(screen.getByPlaceholderText(/Search/), {
-            target: {value: 'Foo'},
+            target: { value: 'Foo' },
         })
 
         await waitFor(() =>
@@ -115,8 +116,8 @@ describe('<UserAssigneeDropdownMenu />', () => {
                 }),
                 expect.objectContaining({
                     refetchOnWindowFocus: false,
-                })
-            )
+                }),
+            ),
         )
     })
 
@@ -176,7 +177,7 @@ describe('<UserAssigneeDropdownMenu />', () => {
     it('should load more data', async () => {
         const originalScrollHeight = Object.getOwnPropertyDescriptor(
             Element.prototype,
-            'scrollHeight'
+            'scrollHeight',
         ) || {
             configurable: true,
             value: 0,
@@ -188,14 +189,14 @@ describe('<UserAssigneeDropdownMenu />', () => {
 
         renderWithWrapper()
         fireEvent.scroll(screen.getByRole('list'), {
-            target: {scrollTop: 100},
+            target: { scrollTop: 100 },
         })
 
         await waitFor(() => expect(mockFetchNextPage).toBeCalled())
         Object.defineProperty(
             HTMLElement.prototype,
             'scrollHeight',
-            originalScrollHeight
+            originalScrollHeight,
         )
     })
 })

@@ -1,17 +1,20 @@
-import {ListTagsOrderBy, Tag} from '@gorgias/api-queries'
+import React, { useMemo } from 'react'
+
 import classnames from 'classnames'
-import {List} from 'immutable'
-import React, {useMemo} from 'react'
+import { List } from 'immutable'
+
+import { ListTagsOrderBy, Tag } from '@gorgias/api-queries'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {ORDER_BY, OrderBy} from 'models/tag/types'
+import { ORDER_BY, OrderBy } from 'models/tag/types'
 import Button from 'pages/common/components/button/Button'
 import CheckBox from 'pages/common/forms/CheckBox'
-import {makeGetSelectedTagMeta, getSelectAll} from 'state/tags/selectors'
+import { getSelectAll, makeGetSelectedTagMeta } from 'state/tags/selectors'
 
 import Row from './Row'
-import css from './Table.less'
 import TableActions from './TableActions/TableActions'
+
+import css from './Table.less'
 
 function isSortable(value: string): value is OrderBy {
     return ORDER_BY.includes(value as OrderBy)
@@ -26,7 +29,7 @@ type Props = {
     onMerge: () => void
     onSelectAll: (value?: boolean) => void
     onSort: (sort: OrderBy, direction: boolean) => void
-    refresh: (args?: {refreshPreviousPage?: boolean}) => void
+    refresh: (args?: { refreshPreviousPage?: boolean }) => void
     reverse: boolean
     selectedTagsIds: List<number>
     sort?: string
@@ -63,14 +66,14 @@ const Table = ({
         () =>
             Object.assign(
                 {},
-                ...tags.map((tag) => ({[tag.id]: tag}))
+                ...tags.map((tag) => ({ [tag.id]: tag })),
             ) as Record<number, Tag>,
-        [tags]
+        [tags],
     )
     const getSelectedTagMeta = useAppSelector(makeGetSelectedTagMeta)
     const areAllSelectedTagsAtCurrentPage = useMemo(
         () => selectedTagsIds.every((id) => !!keyedTags[id!]),
-        [keyedTags, selectedTagsIds]
+        [keyedTags, selectedTagsIds],
     )
 
     const sortValue = useMemo(() => sort ?? columns[0].field, [columns, sort])
@@ -104,7 +107,7 @@ const Table = ({
                             <div
                                 className={classnames(
                                     css.headerCell,
-                                    'cell-wrapper'
+                                    'cell-wrapper',
                                 )}
                             >
                                 {i === 0 && (
@@ -117,7 +120,7 @@ const Table = ({
                                 <Button
                                     className={classnames(css.columnHeadCell, {
                                         [css.isNotSortable]: !isSortable(
-                                            column.field
+                                            column.field,
                                         ),
                                     })}
                                     intent="secondary"
@@ -145,7 +148,7 @@ const Table = ({
                             <i
                                 className={classnames(
                                     'material-icons',
-                                    css.icon
+                                    css.icon,
                                 )}
                             >
                                 warning

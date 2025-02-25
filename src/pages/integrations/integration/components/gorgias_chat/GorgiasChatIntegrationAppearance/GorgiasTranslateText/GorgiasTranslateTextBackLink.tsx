@@ -1,5 +1,6 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
+
+import { Link } from 'react-router-dom'
 
 import ArrowBackwardIcon from 'assets/img/icons/arrow-backward.svg'
 
@@ -10,7 +11,7 @@ export type Props = {
     url: string
 }
 
-const GorgiasTranslateTextBackLink = ({onClick, url}: Props) => {
+const GorgiasTranslateTextBackLink = ({ onClick, url }: Props) => {
     return (
         <div className={css.backWrapper}>
             <Link onClick={onClick} to={url} className="d-flex">

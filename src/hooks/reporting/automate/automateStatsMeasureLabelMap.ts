@@ -1,10 +1,10 @@
-import {AutomationBillingEventMeasure} from 'models/reporting/cubes/automate/AutomationBillingEventCube'
+import { AutomationBillingEventMeasure } from 'models/reporting/cubes/automate/AutomationBillingEventCube'
 import {
+    ARTICLE_RECOMMENDATION as ARTICLE_RECOMMENDATION_LABEL,
     FLOWS,
     QUICK_RESPONSES as QUICK_RESPONSES_LABEL,
-    ARTICLE_RECOMMENDATION as ARTICLE_RECOMMENDATION_LABEL,
 } from 'pages/automate/common/components/constants'
-import {AutomatedInteractionByFeatures} from 'pages/stats/types'
+import { AutomatedInteractionByFeatures } from 'pages/stats/types'
 
 export enum DisplayEventType {
     AI_AGENT = 'AI Agent',

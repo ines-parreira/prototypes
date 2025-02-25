@@ -1,8 +1,10 @@
-import classNames from 'classnames'
 import React from 'react'
 
-import {FileUpload} from '../../../../hooks/useFileUpload'
-import {ImageUpload} from '../../../ImageUpload'
+import classNames from 'classnames'
+
+import { FileUpload } from '../../../../hooks/useFileUpload'
+import { ImageUpload } from '../../../ImageUpload'
+
 import css from './CategoryImageEdit.less'
 
 export type CategoryImageEditProps = {
@@ -14,7 +16,7 @@ export type CategoryImageEditProps = {
 
 const getImageUploadHighlightText = (
     upload: FileUpload,
-    currentImage?: string | null
+    currentImage?: string | null,
 ) => {
     return (upload.isTouched && upload.payload) ||
         (!upload.isTouched && currentImage)
@@ -53,7 +55,7 @@ export const CategoryImageEdit = ({
             helpTextProps={{
                 highlight: getImageUploadHighlightText(
                     imageFile,
-                    currentImageUrl
+                    currentImageUrl,
                 ),
                 onRemoveClick: isImageUploaded ? onRemoveImageClick : undefined,
                 text: !isImageUploaded

@@ -1,11 +1,11 @@
-import {MatcherContext} from '@jest/expect'
-import {matcherHint, printReceived} from 'jest-matcher-utils'
+import { MatcherContext } from '@jest/expect'
+import { matcherHint, printReceived } from 'jest-matcher-utils'
 
-import {isElementOrAncestorAriaDisabled, isHtmlElement} from './utils'
+import { isElementOrAncestorAriaDisabled, isHtmlElement } from './utils'
 
 export default function toBeAriaDisabled(
     this: MatcherContext,
-    element: unknown
+    element: unknown,
 ) {
     const isElement = isHtmlElement(element, toBeAriaDisabled, this)
 
@@ -22,12 +22,12 @@ export default function toBeAriaDisabled(
                 matcherHint(
                     `${this.isNot ? '.not' : ''}.toBeAriaDisabled`,
                     'element',
-                    ''
+                    '',
                 ),
                 '',
                 `Received element ${is} disabled:`,
                 `  ${printReceived(
-                    isElement ? element.cloneNode(false) : undefined
+                    isElement ? element.cloneNode(false) : undefined,
                 )}`,
             ].join('\n')
         },

@@ -1,11 +1,13 @@
-import classnames from 'classnames'
-import React, {memo} from 'react'
+import React, { memo } from 'react'
 
-import {Source, CardTemplate} from 'models/widget/types'
+import classnames from 'classnames'
+
+import { CardTemplate, Source } from 'models/widget/types'
 
 import ActionButtons from './ActionButtons'
-import css from './CustomActions.less'
 import Links from './Links'
+
+import css from './CustomActions.less'
 
 type Props = {
     template: CardTemplate
@@ -14,7 +16,7 @@ type Props = {
 }
 
 function CustomActions(props: Props) {
-    const {template, source, isEditing} = props
+    const { template, source, isEditing } = props
     const templatePath = template.templatePath || ''
     const absolutePath = template.absolutePath || []
     const links = template.meta?.custom?.links || []

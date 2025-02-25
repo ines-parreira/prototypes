@@ -1,10 +1,10 @@
 import {
-    SHOW_MORE_WIDTH,
-    NB_MIN_BUTTON_DISPLAYED,
-    FONT_SIZE,
     BUTTON_SPACING,
+    FONT_SIZE,
+    NB_MIN_BUTTON_DISPLAYED,
+    SHOW_MORE_WIDTH,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/constants'
-import {applyCustomActionTemplate} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/helpers/templating'
+import { applyCustomActionTemplate } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/helpers/templating'
 import {
     Button as ButtonType,
     TemplateContext,
@@ -13,7 +13,7 @@ import {
 export function computeNbButtonDisplayed(
     buttons: ButtonType[],
     templateContext: TemplateContext,
-    availableSpace: number | undefined
+    availableSpace: number | undefined,
 ) {
     // First pass, we see how many buttons we can fit until we overflow
     if (buttons.length <= NB_MIN_BUTTON_DISPLAYED || !availableSpace)
@@ -28,7 +28,7 @@ export function computeNbButtonDisplayed(
     ) {
         computedLength += computeButtonLength(
             buttons[nbButtonDisplayed].label,
-            templateContext
+            templateContext,
         )
         nbButtonDisplayed++
     }
@@ -43,7 +43,7 @@ export function computeNbButtonDisplayed(
         nbButtonDisplayed--
         computedLength -= computeButtonLength(
             buttons[nbButtonDisplayed].label,
-            templateContext
+            templateContext,
         )
         if (nbButtonDisplayed < buttons.length)
             newAvailablePxSpace = availableSpace - SHOW_MORE_WIDTH
@@ -56,7 +56,7 @@ export function computeNbButtonDisplayed(
 
 export function computeButtonLength(
     label: string,
-    templateContext: TemplateContext
+    templateContext: TemplateContext,
 ) {
     return (
         applyCustomActionTemplate(label, templateContext).length * FONT_SIZE +

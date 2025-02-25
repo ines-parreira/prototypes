@@ -1,4 +1,4 @@
-import {fromJS, List, Map} from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 import _isEqual from 'lodash/isEqual'
 
 import {
@@ -12,7 +12,7 @@ import {
  */
 export function calculateEditDiff(
     newPayload: Map<any, any>,
-    oldPayload: Map<any, any>
+    oldPayload: Map<any, any>,
 ) {
     const oldList = oldPayload.get('line_items') as List<Map<any, any>>
     const newList = newPayload.get('line_items') as List<Map<any, any>>
@@ -22,21 +22,24 @@ export function calculateEditDiff(
     const oldListArray = oldList.toArray()
     const newListArray = newList.toArray()
 
-    const editToPerform: Edit_to_perform = {action: '', calculated_order_id: ''}
+    const editToPerform: Edit_to_perform = {
+        action: '',
+        calculated_order_id: '',
+    }
 
     //a new variant has been added
     if (oldListArray.length < newListArray.length) {
         //new item is most probably at the end of the newListArray
         for (let i = newListArray.length - 1; i >= 0; i--) {
             const alreadyExists = oldListArray.some((oldVariant) =>
-                _isEqual(oldVariant, newListArray[i])
+                _isEqual(oldVariant, newListArray[i]),
             )
 
             if (!alreadyExists) {
                 if (newListArray[i].get('variant_admin_graphql_api_id')) {
                     editToPerform.action = EditOrderAction.AddVariant
                     editToPerform.variant_id = newListArray[i].get(
-                        'variant_admin_graphql_api_id'
+                        'variant_admin_graphql_api_id',
                     )
                     editToPerform.quantity = newListArray[i].get('quantity')
                 } else {
@@ -62,12 +65,12 @@ export function calculateEditDiff(
 
         oldListArray.some(function (oldVariant) {
             const index = newListArray.findIndex((newVariant) =>
-                _isEqual(oldVariant, newVariant)
+                _isEqual(oldVariant, newVariant),
             )
             //old item has not been found
             if (index === -1) {
                 editToPerform.line_item_id = oldVariant.get(
-                    'lineItem_admin_graphql_api_id'
+                    'lineItem_admin_graphql_api_id',
                 )
             }
         })
@@ -76,7 +79,7 @@ export function calculateEditDiff(
         const changed_item_index = newListArray.findIndex(
             function (newVariant, index) {
                 return !_isEqual(newVariant, oldListArray[index])
-            }
+            },
         )
 
         if (changed_item_index !== -1) {
@@ -85,7 +88,7 @@ export function calculateEditDiff(
             editToPerform.action = EditOrderAction.ChangeLineItem
 
             editToPerform.line_item_id = changed_item.get(
-                'lineItem_admin_graphql_api_id'
+                'lineItem_admin_graphql_api_id',
             )
             editToPerform.quantity = changed_item.get('quantity')
             editToPerform.restock = changed_item.get('restock_item') || false
@@ -100,12 +103,12 @@ export function calculateEditDiff(
                 quantityIsTheSame = true
 
             const applied_discount = changed_item.get(
-                'applied_discount'
+                'applied_discount',
             ) as Map<any, any>
 
             // the change was about the item discount
             if (applied_discount && quantityIsTheSame) {
-                const discount: {[key: string]: any} = {}
+                const discount: { [key: string]: any } = {}
 
                 editToPerform.action = EditOrderAction.ApplyItemDiscount
                 discount['description'] = applied_discount.get('title')
@@ -117,7 +120,7 @@ export function calculateEditDiff(
                     }
                 } else
                     discount['percent_value'] = parseFloat(
-                        applied_discount.get('value')
+                        applied_discount.get('value'),
                     )
 
                 editToPerform.discount = fromJS(discount)
@@ -125,7 +128,7 @@ export function calculateEditDiff(
             } else if (!applied_discount && quantityIsTheSame) {
                 editToPerform.action = EditOrderAction.RemoveItemDiscount
                 editToPerform.discount_item_id = changed_item.get(
-                    'discountApplication_admin_graphql_api_id'
+                    'discountApplication_admin_graphql_api_id',
                 )
             }
         }

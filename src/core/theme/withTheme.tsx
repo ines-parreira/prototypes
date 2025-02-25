@@ -1,7 +1,7 @@
 import React from 'react'
-import type {ComponentType} from 'react'
+import type { ComponentType } from 'react'
 
-import type {SetTheme, Theme} from './types'
+import type { SetTheme, Theme } from './types'
 import useSetTheme from './useSetTheme'
 import useTheme from './useTheme'
 
@@ -11,7 +11,7 @@ export type WithThemeProps = {
 }
 
 export default function withTheme<T extends object>(
-    Component: ComponentType<T & WithThemeProps>
+    Component: ComponentType<T & WithThemeProps>,
 ) {
     return (props: T) => {
         const setTheme = useSetTheme()

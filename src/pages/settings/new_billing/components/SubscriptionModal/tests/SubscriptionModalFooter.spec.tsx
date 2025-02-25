@@ -1,11 +1,12 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
 
-import {UserRole} from 'config/types/user'
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+
+import { UserRole } from 'config/types/user'
 import SubscriptionModalFooter from 'pages/settings/new_billing/components/SubscriptionModal/SubscriptionModalFooter'
-import {mockStore} from 'utils/testing'
+import { mockStore } from 'utils/testing'
 
 describe('SubscriptionModalFooter', () => {
     const confirmLabel = 'Confirm'
@@ -29,22 +30,22 @@ describe('SubscriptionModalFooter', () => {
         return render(
             <Provider store={mockStore(storeState as any)}>
                 <SubscriptionModalFooter {...props} />
-            </Provider>
+            </Provider>,
         )
     }
 
     it('should render clickable button for admin', () => {
-        const {getByRole} = renderForRole(UserRole.Admin)
+        const { getByRole } = renderForRole(UserRole.Admin)
 
-        const confirmButton = getByRole('button', {name: confirmLabel})
+        const confirmButton = getByRole('button', { name: confirmLabel })
 
         expect(confirmButton).toBeAriaEnabled()
     })
 
     it('should render disabled button for non-admin', () => {
-        const {getByRole} = renderForRole(UserRole.BasicAgent)
+        const { getByRole } = renderForRole(UserRole.BasicAgent)
 
-        const confirmButton = getByRole('button', {name: confirmLabel})
+        const confirmButton = getByRole('button', { name: confirmLabel })
 
         expect(confirmButton).toBeAriaDisabled()
     })

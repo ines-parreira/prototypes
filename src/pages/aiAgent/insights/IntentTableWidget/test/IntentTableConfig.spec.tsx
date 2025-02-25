@@ -1,23 +1,23 @@
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
-import {Provider} from 'react-redux'
 
+import { renderHook } from '@testing-library/react-hooks'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {OrderDirection} from 'models/api/types'
-import {isMediumOrSmallScreen} from 'pages/common/utils/mobile'
+import { OrderDirection } from 'models/api/types'
+import { isMediumOrSmallScreen } from 'pages/common/utils/mobile'
 
 import {
-    useIntentSortingQuery,
+    getColumnContentAlignment,
     getColumnWidth,
-    TableLabels,
     INTENT_NAME_COLUMN_WIDTH,
     MOBILE_INTENT_NAME_COLUMN_WIDTH,
-    getColumnContentAlignment,
+    TableLabels,
+    useIntentSortingQuery,
 } from '../IntentTableConfig'
-import {IntentTableColumn} from '../types'
+import { IntentTableColumn } from '../types'
 
 const mockDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockDispatch)
@@ -62,7 +62,7 @@ describe('TableConfig Utilities and Hooks', () => {
         it('contains correct label for each column', () => {
             expect(TableLabels[IntentTableColumn.IntentName]).toBe('Intent')
             expect(TableLabels[IntentTableColumn.AutomationOpportunities]).toBe(
-                'Automation opportunity'
+                'Automation opportunity',
             )
             expect(TableLabels[IntentTableColumn.Tickets]).toBe('Tickets')
         })
@@ -71,20 +71,20 @@ describe('TableConfig Utilities and Hooks', () => {
     describe('useIntentSortingQuery', () => {
         it('returns the correct sorting state', () => {
             const column = IntentTableColumn.Tickets
-            const mockSorting = {field: column, direction: 'desc'}
+            const mockSorting = { field: column, direction: 'desc' }
             const query = jest.fn()
 
             useAppSelectorMock.mockReturnValue(mockSorting)
 
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () => useIntentSortingQuery(column, query),
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <Provider store={mockStore(defaultState)}>
                             {children}
                         </Provider>
                     ),
-                }
+                },
             )
 
             expect(result.current.field).toBe(column)
@@ -96,14 +96,14 @@ describe('TableConfig Utilities and Hooks', () => {
     describe('getColumnContentAlignment', () => {
         it('returns correct alignment for IntentName column', () => {
             const columnAlignment = getColumnContentAlignment(
-                IntentTableColumn.IntentName
+                IntentTableColumn.IntentName,
             )
             expect(columnAlignment).toBe('left')
         })
 
         it('returns correct alignment for other columns', () => {
             const columnAlignment = getColumnContentAlignment(
-                IntentTableColumn.AutomationOpportunities
+                IntentTableColumn.AutomationOpportunities,
             )
             expect(columnAlignment).toBe('right')
         })

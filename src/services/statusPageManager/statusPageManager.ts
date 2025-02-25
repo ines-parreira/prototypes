@@ -1,32 +1,32 @@
-import {EnhancedStore} from '@reduxjs/toolkit'
-import {Set as ImmutableSet, Map as ImmutableMap} from 'immutable'
+import { EnhancedStore } from '@reduxjs/toolkit'
+import { Map as ImmutableMap, Set as ImmutableSet } from 'immutable'
 import moment from 'moment'
-import {dismissNotification} from 'reapop'
+import { dismissNotification } from 'reapop'
 
-import {AlertBannerTypes} from 'AlertBanners'
-import {store as reduxStore} from 'common/store'
-import {HelpCenter} from 'models/helpCenter/types'
-import {IntegrationType} from 'models/integration/types'
-import {tryLocalStorage} from 'services/common/utils'
-import {getHelpCenters} from 'state/entities/helpCenter/helpCenters'
-import {getActiveIntegrations} from 'state/integrations/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStyle} from 'state/notifications/types'
+import { AlertBannerTypes } from 'AlertBanners'
+import { store as reduxStore } from 'common/store'
+import { HelpCenter } from 'models/helpCenter/types'
+import { IntegrationType } from 'models/integration/types'
+import { tryLocalStorage } from 'services/common/utils'
+import { getHelpCenters } from 'state/entities/helpCenter/helpCenters'
+import { getActiveIntegrations } from 'state/integrations/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStyle } from 'state/notifications/types'
 
 import {
     CLUSTER_GROUP_ID,
+    DISMISSED_MAINTENANCES_LOCAL_STORAGE_KEY,
+    DISMISSED_NOTIFICATIONS_LOCAL_STORAGE_KEY,
+    HELPCENTER_GROUP_ID,
+    HELPDESK_GROUP_IDS,
+    INCIDENT_IMPACT_LABEL,
     INCIDENTS_NOTIFICATION_ID,
     INCIDENTS_POLLING_INTERVAL_SECONDS,
-    HELPDESK_GROUP_IDS,
     INTEGRATION_COMPONENTS_TYPES,
     MAINTENANCE_NOTIFICATION_BEFORE_MINUTES,
     MAINTENANCE_NOTIFICATION_ID,
     MAINTENANCE_POLLING_INTERVAL_SECONDS,
     PAGE_ID,
-    INCIDENT_IMPACT_LABEL,
-    DISMISSED_NOTIFICATIONS_LOCAL_STORAGE_KEY,
-    DISMISSED_MAINTENANCES_LOCAL_STORAGE_KEY,
-    HELPCENTER_GROUP_ID,
 } from './constants'
 import {
     ComponentStatus,
@@ -34,10 +34,10 @@ import {
     MaintenanceStatus,
     Page,
     StatusPageComponent,
-    StatusPageScheduledMaintenance,
-    StatusPageScheduledMaintenanceResponseData,
     StatusPageIncident,
     StatusPageIncidentsResponseData,
+    StatusPageScheduledMaintenance,
+    StatusPageScheduledMaintenanceResponseData,
 } from './types'
 
 //$TsFixMe remove once init.js is migrated
@@ -60,14 +60,14 @@ export class StatusPageManager {
     constructor() {
         if (window.StatusPage) {
             // docs: https://status.gorgias.com/api#status
-            this.statusPage = new window.StatusPage.page({page: PAGE_ID})
+            this.statusPage = new window.StatusPage.page({ page: PAGE_ID })
         }
 
         const activeIntegrations = getActiveIntegrations(this.store.getState())
         this.activeIntegrationsTypes = activeIntegrations
             .map(
                 (integration: ImmutableMap<any, any>) =>
-                    integration.get('type') as IntegrationType
+                    integration.get('type') as IntegrationType,
             )
             .toSet()
     }
@@ -83,12 +83,12 @@ export class StatusPageManager {
         // since the status can change we need to poll them continuously to give updates to users.
         this.fetchUnresolvedIncidentsInterval = window.setInterval(
             this.fetchUnresolvedIncidents,
-            INCIDENTS_POLLING_INTERVAL_SECONDS * 1000
+            INCIDENTS_POLLING_INTERVAL_SECONDS * 1000,
         )
 
         this.fetchScheduledMaintenancesInterval = window.setInterval(
             this.fetchScheduledMaintenances,
-            MAINTENANCE_POLLING_INTERVAL_SECONDS * 1000
+            MAINTENANCE_POLLING_INTERVAL_SECONDS * 1000,
         )
     }
 
@@ -142,7 +142,7 @@ export class StatusPageManager {
         impact: IncidentImpact,
         components: StatusPageComponent[],
         helpCenters: Record<string, HelpCenter>,
-        activeIntegrationsTypes?: ImmutableSet<IntegrationType>
+        activeIntegrationsTypes?: ImmutableSet<IntegrationType>,
     ) {
         return components.filter((component) => {
             const affectedIntegrationType =
@@ -187,19 +187,19 @@ export class StatusPageManager {
 
     static saveNotificationIds(
         notificationIds: string[],
-        localStorageKey: string
+        localStorageKey: string,
     ) {
         tryLocalStorage(() =>
             window.localStorage.setItem(
                 localStorageKey,
-                JSON.stringify(notificationIds)
-            )
+                JSON.stringify(notificationIds),
+            ),
         )
     }
 
     static getSavedNotificationIds(localStorageKey: string): string[] {
         return JSON.parse(
-            window.localStorage.getItem(localStorageKey) || '[]'
+            window.localStorage.getItem(localStorageKey) || '[]',
         ) as string[]
     }
 
@@ -208,7 +208,7 @@ export class StatusPageManager {
 
         const relevantIncidents = data.incidents
             .filter((incident) =>
-                StatusPageManager.isEventImpactingCurrentCluster(incident)
+                StatusPageManager.isEventImpactingCurrentCluster(incident),
             )
             .map((incident) => ({
                 ...incident,
@@ -216,7 +216,7 @@ export class StatusPageManager {
                     incident.impact,
                     incident.components,
                     helpCenters,
-                    this.activeIntegrationsTypes
+                    this.activeIntegrationsTypes,
                 ),
             }))
             .filter((incident) => incident.components.length)
@@ -224,24 +224,24 @@ export class StatusPageManager {
         // remove all previous notifications
         this.previousIncidentsIds.forEach((id) => {
             this.store.dispatch(
-                dismissNotification(`${INCIDENTS_NOTIFICATION_ID}-${id}`)
+                dismissNotification(`${INCIDENTS_NOTIFICATION_ID}-${id}`),
             )
         })
         this.previousIncidentsIds = []
 
-        const relevantIncidentsIds = relevantIncidents.map(({id}) => id)
+        const relevantIncidentsIds = relevantIncidents.map(({ id }) => id)
         // notifications dismissed by user are retrieved in localStorage
         const closedNotificationIds = StatusPageManager.getSavedNotificationIds(
-            DISMISSED_NOTIFICATIONS_LOCAL_STORAGE_KEY
+            DISMISSED_NOTIFICATIONS_LOCAL_STORAGE_KEY,
         )
         const cleanedNotificationIds = closedNotificationIds.filter((id) =>
-            relevantIncidentsIds.includes(id)
+            relevantIncidentsIds.includes(id),
         )
 
         // clear local storage from irrelevant/outdated incidents ids
         StatusPageManager.saveNotificationIds(
             cleanedNotificationIds,
-            DISMISSED_NOTIFICATIONS_LOCAL_STORAGE_KEY
+            DISMISSED_NOTIFICATIONS_LOCAL_STORAGE_KEY,
         )
 
         for (const incident of relevantIncidents) {
@@ -260,7 +260,7 @@ export class StatusPageManager {
                     // if there are mixed incident levels we combine the groups/names - this can lead to some
                     // confusion, but it can be resolved by looking at the status page incident itself.
                     notification.groupNames.add(
-                        HELPDESK_GROUP_IDS[component.group_id]
+                        HELPDESK_GROUP_IDS[component.group_id],
                     )
                     // we have a lot of components -> only show a couple
                     if (notification.componentNames.size < 5) {
@@ -268,7 +268,7 @@ export class StatusPageManager {
                     }
                 })
                 const components = `${Array.from(
-                    notification.componentNames
+                    notification.componentNames,
                 ).join(', ')} component${
                     notification.componentNames.size > 1 ? 's' : ''
                 }`
@@ -276,7 +276,7 @@ export class StatusPageManager {
                 Currently experiencing ${
                     notification.label
                 } in our ${Array.from(notification.groupNames).join(
-                    ' & '
+                    ' & ',
                 )} affecting ${components}.
                 Find out more on our <a href="${
                     data.page.url
@@ -291,16 +291,16 @@ export class StatusPageManager {
                         onClose: () =>
                             StatusPageManager.hideNotification(
                                 incident.id,
-                                DISMISSED_NOTIFICATIONS_LOCAL_STORAGE_KEY
+                                DISMISSED_NOTIFICATIONS_LOCAL_STORAGE_KEY,
                             ),
-                    }) as any
+                    }) as any,
                 )
             }
         }
     }
 
     processScheduledMaintenances = (
-        data: StatusPageScheduledMaintenanceResponseData
+        data: StatusPageScheduledMaintenanceResponseData,
     ) => {
         this.store.dispatch(dismissNotification(MAINTENANCE_NOTIFICATION_ID))
 
@@ -311,12 +311,12 @@ export class StatusPageManager {
             .filter((maintenance) => {
                 const isOnCurrentCluster =
                     StatusPageManager.isEventImpactingCurrentCluster(
-                        maintenance
+                        maintenance,
                     )
 
                 const startsInMinutes = moment(maintenance.scheduled_for).diff(
                     now,
-                    'minutes'
+                    'minutes',
                 )
 
                 const isInTimeRange =
@@ -335,7 +335,7 @@ export class StatusPageManager {
                     maintenance.impact,
                     maintenance.components,
                     helpCenters,
-                    this.activeIntegrationsTypes
+                    this.activeIntegrationsTypes,
                 ),
             }))
             .filter((maintenance) => maintenance.components.length)
@@ -344,16 +344,16 @@ export class StatusPageManager {
             // notifications dismissed by user are retrieved in localStorage
             const closedNotificationIds =
                 StatusPageManager.getSavedNotificationIds(
-                    DISMISSED_MAINTENANCES_LOCAL_STORAGE_KEY
+                    DISMISSED_MAINTENANCES_LOCAL_STORAGE_KEY,
                 )
 
             const cleanedNotificationIds = closedNotificationIds.filter(
-                (id) => maintenance.id === id
+                (id) => maintenance.id === id,
             )
 
             StatusPageManager.saveNotificationIds(
                 cleanedNotificationIds,
-                DISMISSED_MAINTENANCES_LOCAL_STORAGE_KEY
+                DISMISSED_MAINTENANCES_LOCAL_STORAGE_KEY,
             )
 
             if (
@@ -362,9 +362,9 @@ export class StatusPageManager {
             ) {
                 StatusPageManager.saveNotificationIds(
                     cleanedNotificationIds.filter(
-                        (id) => id !== maintenance.id
+                        (id) => id !== maintenance.id,
                     ),
-                    DISMISSED_MAINTENANCES_LOCAL_STORAGE_KEY
+                    DISMISSED_MAINTENANCES_LOCAL_STORAGE_KEY,
                 )
             }
 
@@ -400,7 +400,7 @@ export class StatusPageManager {
                 const message = `A scheduled maintenance for
 ${Array.from(notification.groupNames).join(' & ')} affecting
 ${Array.from(notification.componentNames).join(
-    ', '
+    ', ',
 )} ${startText} <em>${scheduledFor.fromNow()}</em>.
 
 Find out more on our <a href="${
@@ -419,9 +419,9 @@ Find out more on our <a href="${
                         onClose: () =>
                             StatusPageManager.hideNotification(
                                 maintenance.id,
-                                DISMISSED_MAINTENANCES_LOCAL_STORAGE_KEY
+                                DISMISSED_MAINTENANCES_LOCAL_STORAGE_KEY,
                             ),
-                    }) as any
+                    }) as any,
                 )
             }
         }

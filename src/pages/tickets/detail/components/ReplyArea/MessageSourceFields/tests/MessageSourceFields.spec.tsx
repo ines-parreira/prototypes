@@ -1,12 +1,13 @@
-import {fireEvent, render} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import LD from 'launchdarkly-react-client-sdk'
 import React from 'react'
-import {Provider} from 'react-redux'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {RootState} from 'state/types'
-import {mockStore} from 'utils/testing'
+import { fireEvent, render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import LD from 'launchdarkly-react-client-sdk'
+import { Provider } from 'react-redux'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { RootState } from 'state/types'
+import { mockStore } from 'utils/testing'
 
 import MessageSourceFields from '../MessageSourceFields'
 
@@ -15,7 +16,7 @@ describe('<MessageSourceFields />', () => {
         render(
             <Provider store={mockStore(state as any)}>
                 <MessageSourceFields />
-            </Provider>
+            </Provider>,
         )
 
     describe('for a new ticket', () => {
@@ -43,19 +44,19 @@ describe('<MessageSourceFields />', () => {
         }
 
         it('renders the Internal Note label when new message is not public', () => {
-            const {getByText} = renderWithStore({})
+            const { getByText } = renderWithStore({})
 
             expect(getByText('Internal note')).toBeInTheDocument()
         })
 
         it('renders in the open state with the correct fields for the email source', () => {
-            const {getByText, getByPlaceholderText} =
+            const { getByText, getByPlaceholderText } =
                 renderWithStore(initialState)
 
             expect(getByText('To:')).toBeInTheDocument()
             expect(getByText('From:')).toBeInTheDocument()
             expect(
-                getByPlaceholderText('Search customers...')
+                getByPlaceholderText('Search customers...'),
             ).toBeInTheDocument()
         })
     })
@@ -94,22 +95,22 @@ describe('<MessageSourceFields />', () => {
         }
 
         it('renders in the closed state with only the receiver visible', () => {
-            const {getByText, queryByText, queryByPlaceholderText} =
+            const { getByText, queryByText, queryByPlaceholderText } =
                 renderWithStore(initialState)
 
             expect(getByText('To:')).toBeInTheDocument()
             expect(getByText('Mary (mary@thecustomer.com)')).toBeInTheDocument()
             expect(queryByText('From:')).not.toBeInTheDocument()
             expect(
-                queryByPlaceholderText('Search customers...')
+                queryByPlaceholderText('Search customers...'),
             ).not.toBeInTheDocument()
             expect(
-                queryByText('Support Email (support@acme.com)')
+                queryByText('Support Email (support@acme.com)'),
             ).not.toBeInTheDocument()
         })
 
         it('can be opened for sources that allow changing recipients', () => {
-            const {getByText, queryByText} = renderWithStore(initialState)
+            const { getByText, queryByText } = renderWithStore(initialState)
 
             expect(getByText('To:')).toBeInTheDocument()
             expect(getByText('Mary (mary@thecustomer.com)')).toBeInTheDocument()
@@ -122,7 +123,7 @@ describe('<MessageSourceFields />', () => {
         })
 
         it('cannot be opened for sources that do not allow changing recipients', () => {
-            const {getByText, queryByText} = renderWithStore({
+            const { getByText, queryByText } = renderWithStore({
                 ...initialState,
                 newMessage: fromJS({
                     integrations: fromJS({
@@ -189,7 +190,7 @@ describe('<MessageSourceFields />', () => {
                 [FeatureFlagKey.NewSenderSelect]: false,
             }))
 
-            const {container, getByText} = renderWithStore(initialState)
+            const { container, getByText } = renderWithStore(initialState)
 
             expect(getByText('To:')).toBeInTheDocument()
             expect(getByText('From:')).toBeInTheDocument()
@@ -201,7 +202,7 @@ describe('<MessageSourceFields />', () => {
                 [FeatureFlagKey.NewSenderSelect]: true,
             }))
 
-            const {container, getByText} = renderWithStore(initialState)
+            const { container, getByText } = renderWithStore(initialState)
 
             expect(getByText('To:')).toBeInTheDocument()
             expect(getByText('From:')).toBeInTheDocument()

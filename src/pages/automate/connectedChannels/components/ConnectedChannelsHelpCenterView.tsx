@@ -1,29 +1,32 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
-import {noop} from 'lodash'
-import React, {useCallback} from 'react'
-import {useParams} from 'react-router-dom'
+import React, { useCallback } from 'react'
 
-import {SegmentEvent, logEvent} from 'common/segment'
+import classNames from 'classnames'
+import { noop } from 'lodash'
+import { useParams } from 'react-router-dom'
+
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {useUpdateHelpCenter} from 'models/helpCenter/queries'
-import {HelpCenter} from 'models/helpCenter/types'
-import {IntegrationType} from 'models/integration/types'
-import {useGetWorkflowConfigurations} from 'models/workflows/queries'
+import { useUpdateHelpCenter } from 'models/helpCenter/queries'
+import { HelpCenter } from 'models/helpCenter/types'
+import { IntegrationType } from 'models/integration/types'
+import { useGetWorkflowConfigurations } from 'models/workflows/queries'
 import useHelpCentersAutomationSettings from 'pages/automate/common/hooks/useHelpCenterAutomationSettings'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import useSelfServiceHelpCenterChannels from 'pages/automate/common/hooks/useSelfServiceHelpCenterChannels'
-import {AutomateFeatures} from 'pages/automate/common/types'
-import {helpCenterUpdated} from 'state/entities/helpCenter/helpCenters'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { AutomateFeatures } from 'pages/automate/common/types'
+import { helpCenterUpdated } from 'state/entities/helpCenter/helpCenters'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 import ConnectedChannelsPreview from '../ConnectedChannelsPreview'
+import { ConnectedChannelsEmptyView } from './ConnectedChannelsEmptyView'
+import { CurrentlyViewingDropdown } from './CurrentlyViewingDropdown'
+import { FeatureSettings } from './FeatureSettings'
+import { FlowsSettings } from './FlowsSettings'
+
 import css from './ConnectedChannelsChatView.less'
-import {ConnectedChannelsEmptyView} from './ConnectedChannelsEmptyView'
-import {CurrentlyViewingDropdown} from './CurrentlyViewingDropdown'
-import {FeatureSettings} from './FeatureSettings'
-import {FlowsSettings} from './FlowsSettings'
 
 interface Props {
     helpCenter?: HelpCenter
@@ -33,7 +36,7 @@ export const ConnectedChannelsHelpCenterView = ({
     helpCenter,
     hideDropdown,
 }: Props) => {
-    const {shopType: shopTypeParam, shopName: shopNameParam} = useParams<{
+    const { shopType: shopTypeParam, shopName: shopNameParam } = useParams<{
         shopType: string
         shopName: string
     }>()
@@ -46,23 +49,23 @@ export const ConnectedChannelsHelpCenterView = ({
         storeIntegration,
         isFetchPending: isSelfServiceConfigurationFetchPending,
     } = useSelfServiceConfiguration(shopType, shopName)
-    const {data: workflowConfigurations = []} = useGetWorkflowConfigurations()
+    const { data: workflowConfigurations = [] } = useGetWorkflowConfigurations()
 
     const helpCenterChannels = useSelfServiceHelpCenterChannels(
         shopType,
-        shopName
+        shopName,
     )
 
     const [selectedChannel, setSelectedChannel] = React.useState<number | null>(
         () =>
             helpCenter
                 ? helpCenter.id
-                : (helpCenterChannels[0]?.value.id ?? null)
+                : (helpCenterChannels[0]?.value.id ?? null),
     )
 
     const currentChannel =
         helpCenterChannels.find(
-            (channel) => channel.value.id === selectedChannel
+            (channel) => channel.value.id === selectedChannel,
         ) ?? helpCenterChannels?.[0]
 
     const currentChannelId = currentChannel?.value.id ?? ''
@@ -74,14 +77,14 @@ export const ConnectedChannelsHelpCenterView = ({
         handleHelpCenterAutomationSettingsUpdate,
         isFetchPending,
     } = useHelpCentersAutomationSettings(currentChannelId)
-    const {mutateAsync: updateHelpCenterMutateAsync} = useUpdateHelpCenter()
+    const { mutateAsync: updateHelpCenterMutateAsync } = useUpdateHelpCenter()
 
     const updateOrderManagement = useCallback(
         async (value: boolean) => {
             try {
                 const res = await updateHelpCenterMutateAsync([
                     undefined,
-                    {help_center_id: currentChannelId},
+                    { help_center_id: currentChannelId },
                     {
                         self_service_deactivated: !value,
                     },
@@ -95,7 +98,7 @@ export const ConnectedChannelsHelpCenterView = ({
                             value ? 'enabled' : 'disabled'
                         }`,
                         status: NotificationStatus.Success,
-                    })
+                    }),
                 )
             } catch {
                 void dispatch(
@@ -104,11 +107,11 @@ export const ConnectedChannelsHelpCenterView = ({
                             value ? 'enable' : 'disable'
                         } Order Management`,
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
             }
         },
-        [updateHelpCenterMutateAsync, dispatch, currentChannelId]
+        [updateHelpCenterMutateAsync, dispatch, currentChannelId],
     )
 
     const isOrderManagementEnabled =
@@ -174,7 +177,7 @@ export const ConnectedChannelsHelpCenterView = ({
                         (workflow) => ({
                             workflow_id: workflow.id,
                             enabled: workflow.enabled,
-                        })
+                        }),
                     )}
                     onChange={(nextEntrypoints, action) => {
                         const readableAction =
@@ -188,7 +191,7 @@ export const ConnectedChannelsHelpCenterView = ({
                             SegmentEvent.AutomateChannelUpdateFromChannels,
                             {
                                 page: 'Channels',
-                            }
+                            },
                         )
 
                         void handleHelpCenterAutomationSettingsUpdate(
@@ -198,12 +201,12 @@ export const ConnectedChannelsHelpCenterView = ({
                                     (entrypoint) => ({
                                         id: entrypoint.workflow_id,
                                         enabled: entrypoint.enabled,
-                                    })
+                                    }),
                                 ),
                             },
                             `${
                                 action === 'reorder' ? 'Flows' : 'Flow'
-                            } ${readableAction}`
+                            } ${readableAction}`,
                         )
                     }}
                 />

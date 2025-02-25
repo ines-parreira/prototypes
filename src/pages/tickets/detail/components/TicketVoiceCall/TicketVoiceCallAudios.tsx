@@ -1,23 +1,24 @@
-import {Skeleton} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
-import {useListRecordings} from 'models/voiceCall/queries'
-import {VoiceCall, VoiceCallRecordingType} from 'models/voiceCall/types'
+import { Skeleton } from '@gorgias/merchant-ui-kit'
+
+import { useListRecordings } from 'models/voiceCall/queries'
+import { VoiceCall, VoiceCallRecordingType } from 'models/voiceCall/types'
+
+import VoiceCallAudio from './VoiceCallAudio'
+import VoiceCallTranscription from './VoiceCallTranscription'
 
 import css from './TicketVoiceCallContainer.less'
-import VoiceCallAudio from './VoiceCallAudio'
-
-import VoiceCallTranscription from './VoiceCallTranscription'
 
 type Props = {
     voiceCall: VoiceCall
     type: VoiceCallRecordingType
 }
 
-export default function TicketVoiceCallAudios({type, voiceCall}: Props) {
-    const {data, isLoading, error} = useListRecordings(
-        {call_id: voiceCall.id},
-        {staleTime: Infinity}
+export default function TicketVoiceCallAudios({ type, voiceCall }: Props) {
+    const { data, isLoading, error } = useListRecordings(
+        { call_id: voiceCall.id },
+        { staleTime: Infinity },
     )
 
     const audios = data?.data?.data

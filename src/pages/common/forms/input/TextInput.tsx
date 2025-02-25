@@ -1,4 +1,3 @@
-import classnames from 'classnames'
 import React, {
     ForwardedRef,
     forwardRef,
@@ -10,6 +9,8 @@ import React, {
     useState,
 } from 'react'
 
+import classnames from 'classnames'
+
 import useEffectOnce from 'hooks/useEffectOnce'
 import useEvent from 'hooks/useEvent'
 import useId from 'hooks/useId'
@@ -17,7 +18,7 @@ import {
     GroupContext,
     GroupPositionContext,
 } from 'pages/common/components/layout/Group'
-import {InputGroupContext} from 'pages/common/forms/input/InputGroup'
+import { InputGroupContext } from 'pages/common/forms/input/InputGroup'
 
 import css from './TextInput.less'
 
@@ -52,11 +53,11 @@ function TextInput(
         inputWrapperClassName,
         ...props
     }: Props,
-    ref: ForwardedRef<HTMLInputElement>
+    ref: ForwardedRef<HTMLInputElement>,
 ) {
     const randomId = useId()
     const [inputElement, setInputElement] = useState<HTMLInputElement | null>(
-        null
+        null,
     )
     useImperativeHandle(ref, () => inputElement!)
     const inputId = id || 'input-text-' + randomId
@@ -100,7 +101,7 @@ function TextInput(
                     [css.isNested]: !!inputGroupContext,
                 },
                 className,
-                inputWrapperClassName
+                inputWrapperClassName,
             )}
         >
             {prefix && (

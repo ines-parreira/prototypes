@@ -1,21 +1,21 @@
-import React, {useCallback} from 'react'
-import {Form} from 'reactstrap'
+import React, { useCallback } from 'react'
 
-import {PhoneCountry} from 'business/twilio'
+import { Form } from 'reactstrap'
+
+import { PhoneCountry } from 'business/twilio'
 import useAppSelector from 'hooks/useAppSelector'
-import {PhoneIntegration, isPhoneIntegration} from 'models/integration/types'
+import { isPhoneIntegration, PhoneIntegration } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import VoiceMessageField from 'pages/integrations/integration/components/voice/VoiceMessageField'
-
 import SettingsContent from 'pages/settings/SettingsContent'
 import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
-
-import {getNewPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
+import { getNewPhoneNumbers } from 'state/entities/phoneNumbers/selectors'
 
 import useVoiceIntegrationGreetingMessage from './hooks/useVoiceIntegrationGreetingMessage'
-import css from './VoiceIntegrationGreetingMessage.less'
 import WaitMusicField from './WaitMusicField'
-import {DEFAULT_WAIT_MUSIC_PREFERENCES} from './waitMusicLibraryConstants'
+import { DEFAULT_WAIT_MUSIC_PREFERENCES } from './waitMusicLibraryConstants'
+
+import css from './VoiceIntegrationGreetingMessage.less'
 
 type Props = {
     integration: PhoneIntegration
@@ -50,7 +50,7 @@ export default function VoiceIntegrationGreetingMessage({
 
             await makeApiCalls()
         },
-        [makeApiCalls]
+        [makeApiCalls],
     )
 
     if (!isPhoneIntegration(integration)) {

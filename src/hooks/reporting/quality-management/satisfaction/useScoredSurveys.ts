@@ -1,15 +1,15 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
 import {
     fetchMetricPerDimensionWithEnrichment,
     useMetricPerDimensionWithEnrichment,
 } from 'hooks/reporting/useMetricPerDimension'
-import {MergedRecord} from 'hooks/reporting/withEnrichment'
-import {TicketDimension} from 'models/reporting/cubes/TicketCube'
-import {TicketSatisfactionSurveyDimension} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
-import {scoredSurveysQueryFactory} from 'models/reporting/queryFactories/satisfaction/scoredSurveysQueryFactory'
-import {EnrichmentFields} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import { MergedRecord } from 'hooks/reporting/withEnrichment'
+import { TicketDimension } from 'models/reporting/cubes/TicketCube'
+import { TicketSatisfactionSurveyDimension } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
+import { scoredSurveysQueryFactory } from 'models/reporting/queryFactories/satisfaction/scoredSurveysQueryFactory'
+import { EnrichmentFields } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
 
 export enum ScoredSurveyDataKey {
     ASSIGNEE = 'assignee',
@@ -43,7 +43,7 @@ const mapScoredSurveysQueryResponse = (
     allData?: MergedRecord<
         TicketSatisfactionSurveyDimension | EnrichmentFields,
         TicketDimension
-    >[]
+    >[],
 ): ScoredSurveysData[] | undefined => {
     if (!allData) {
         return
@@ -67,12 +67,12 @@ const mapScoredSurveysQueryResponse = (
 export const useScoredSurveys = (
     filters: StatsFilters,
     timezone: string,
-    limit?: number
+    limit?: number,
 ): ScoredSurveysQueryData => {
-    const {data, isFetching, isError} = useMetricPerDimensionWithEnrichment(
+    const { data, isFetching, isError } = useMetricPerDimensionWithEnrichment(
         scoredSurveysQueryFactory(filters, timezone, limit),
         [EnrichmentFields.CustomerName, EnrichmentFields.AssigneeName],
-        EnrichmentFields.TicketId
+        EnrichmentFields.TicketId,
     )
 
     const processedData = useMemo(() => {
@@ -89,12 +89,12 @@ export const useScoredSurveys = (
 export const fetchScoredSurveys = (
     filters: StatsFilters,
     timezone: string,
-    limit?: number
+    limit?: number,
 ) =>
     fetchMetricPerDimensionWithEnrichment(
         scoredSurveysQueryFactory(filters, timezone, limit),
         [EnrichmentFields.CustomerName, EnrichmentFields.AssigneeName],
-        EnrichmentFields.TicketId
+        EnrichmentFields.TicketId,
     )
         .then((result) => {
             return {

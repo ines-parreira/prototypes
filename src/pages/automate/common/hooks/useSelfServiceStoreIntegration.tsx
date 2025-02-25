@@ -1,7 +1,7 @@
-import React, {createContext, useMemo} from 'react'
+import React, { createContext, useMemo } from 'react'
 
-import {IntegrationType, StoreIntegration} from 'models/integration/types'
-import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
+import { IntegrationType, StoreIntegration } from 'models/integration/types'
+import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 
 import useStoreIntegrations from './useStoreIntegrations'
 
@@ -12,7 +12,7 @@ const useSelfServiceStoreIntegration = (shopType: string, shopName: string) => {
         return storeIntegrations.find(
             (storeIntegration) =>
                 storeIntegration.type === shopType &&
-                getShopNameFromStoreIntegration(storeIntegration) === shopName
+                getShopNameFromStoreIntegration(storeIntegration) === shopName,
         )
     }, [storeIntegrations, shopType, shopName])
 }
@@ -32,13 +32,13 @@ export const withSelfServiceStoreIntegrationContext =
             notReadyFallback?: React.ReactNode
         },
     >(
-        Component: React.FC<WrappedProps>
+        Component: React.FC<WrappedProps>,
     ) =>
     (props: WrappedProps) => {
-        const {shopType, shopName} = props
+        const { shopType, shopName } = props
         const storeIntegration = useSelfServiceStoreIntegration(
             shopType,
-            shopName
+            shopName,
         )
         return (
             <StoreIntegrationContext.Provider value={storeIntegration}>
@@ -51,7 +51,7 @@ export const useSelfServiceStoreIntegrationContext = () => {
     const storeIntegration = React.useContext(StoreIntegrationContext)
     if (!storeIntegration) {
         throw new Error(
-            'useSelfServiceStoreIntegrationContext must be used within a component wrapped with withSelfServiceStoreIntegrationContext'
+            'useSelfServiceStoreIntegrationContext must be used within a component wrapped with withSelfServiceStoreIntegrationContext',
         )
     }
     return storeIntegration

@@ -1,10 +1,11 @@
-import {renderHook} from '@testing-library/react-hooks'
-import React, {ReactNode} from 'react'
-import {Provider} from 'react-redux'
+import React, { ReactNode } from 'react'
+
+import { renderHook } from '@testing-library/react-hooks'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {StoreDispatch, RootState} from '../../state/types'
+import { RootState, StoreDispatch } from '../../state/types'
 import useAppDispatch from '../useAppDispatch'
 
 describe('useAppDispatch', () => {
@@ -20,22 +21,22 @@ describe('useAppDispatch', () => {
 
     it('should dispatch a sync action', () => {
         const {
-            result: {current: dispatch},
+            result: { current: dispatch },
         } = renderHook(useAppDispatch, {
-            wrapper: ({children}: {children?: ReactNode}) => (
+            wrapper: ({ children }: { children?: ReactNode }) => (
                 <Provider store={store}>{children}</Provider>
             ),
         })
 
-        dispatch((() => ({type: 'Foo', payload: 'foo'}))())
+        dispatch((() => ({ type: 'Foo', payload: 'foo' }))())
         expect(store.getActions()).toMatchSnapshot()
     })
 
     it('should dispatch an async action', async () => {
         const {
-            result: {current: dispatch},
+            result: { current: dispatch },
         } = renderHook(useAppDispatch, {
-            wrapper: ({children}: {children?: ReactNode}) => (
+            wrapper: ({ children }: { children?: ReactNode }) => (
                 <Provider store={store}>{children}</Provider>
             ),
         })
@@ -45,8 +46,8 @@ describe('useAppDispatch', () => {
                 await new Promise<void>((resolve) => {
                     resolve()
                 })
-                dispatch({type: 'Bar', payload: 'bar'})
-            })()
+                dispatch({ type: 'Bar', payload: 'bar' })
+            })(),
         )
         expect(store.getActions()).toMatchSnapshot()
     })

@@ -1,22 +1,23 @@
-import {endsWith} from 'lodash'
-import React, {useCallback, useMemo} from 'react'
-import {Col, FormGroup, Label, Row} from 'reactstrap'
+import React, { useCallback, useMemo } from 'react'
+
+import { endsWith } from 'lodash'
+import { Col, FormGroup, Label, Row } from 'reactstrap'
 
 import {
-    PhoneNumberMeta,
     PhoneCountry,
+    PhoneNumberMeta,
     PhoneType,
 } from 'models/phoneNumber/types'
 import InputField from 'pages/common/forms/input/InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import type {SelectableOption} from 'pages/common/forms/SelectField/types'
+import type { SelectableOption } from 'pages/common/forms/SelectField/types'
 
 import rawAuAreaCodeOptions from './options/area-codes/au.json'
 import rawCaAreaCodeOptions from './options/area-codes/ca.json'
 import rawTollFreeAreaCodeOptions from './options/area-codes/toll-free.json'
 import rawUsAreaCodeOptions from './options/area-codes/us.json'
 import rawCountryOptions from './options/countries.json'
-import {getAvailableStates} from './utils'
+import { getAvailableStates } from './utils'
 
 const countryOptions: SelectableOption[] = rawCountryOptions
 
@@ -74,7 +75,7 @@ export default function PhoneDetailsFields({
     value,
     onChange,
 }: Props): JSX.Element {
-    const {country, type, state, area_code} = value
+    const { country, type, state, area_code } = value
 
     const handleCountryChange = useCallback(
         (country) => {
@@ -86,7 +87,7 @@ export default function PhoneDetailsFields({
                 state: '',
             })
         },
-        [onChange, value]
+        [onChange, value],
     )
 
     const handleAreaCodeChange = useCallback(
@@ -106,7 +107,7 @@ export default function PhoneDetailsFields({
                 })
             }
         },
-        [onChange, value, type]
+        [onChange, value, type],
     )
 
     const handleTypeChange = useCallback(
@@ -127,7 +128,7 @@ export default function PhoneDetailsFields({
                 area_code,
             })
         },
-        [onChange, value, country]
+        [onChange, value, country],
     )
 
     const handleStateChange = useCallback(
@@ -138,7 +139,7 @@ export default function PhoneDetailsFields({
                 area_code: undefined,
             })
         },
-        [onChange, value]
+        [onChange, value],
     )
 
     const areaCodeOptions: SelectableOption[] = useMemo(() => {
@@ -187,7 +188,7 @@ export default function PhoneDetailsFields({
             areaCodeOptions.find(
                 (option) =>
                     option.value === area_code.toString() ||
-                    endsWith(option.value.toString(), `-${area_code}`)
+                    endsWith(option.value.toString(), `-${area_code}`),
             )?.value) ??
         area_code
 
@@ -238,7 +239,7 @@ export default function PhoneDetailsFields({
                                               (state) => ({
                                                   label: state.name,
                                                   value: state.code,
-                                              })
+                                              }),
                                           )
                                         : []
                                 }

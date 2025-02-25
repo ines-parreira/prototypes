@@ -1,4 +1,4 @@
-import {lighten, getContrast, toRgba} from 'color2k'
+import { getContrast, lighten, toRgba } from 'color2k'
 
 const DEFAULT_CONTRAST_LEVEL = 3.5
 
@@ -11,7 +11,7 @@ const DEFAULT_CONTRAST_LEVEL = 3.5
 export function getEnoughContrastedColor(
     color: string,
     backgroundColor: string,
-    contrastLevel = DEFAULT_CONTRAST_LEVEL
+    contrastLevel = DEFAULT_CONTRAST_LEVEL,
 ) {
     try {
         let count = 0

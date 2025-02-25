@@ -1,9 +1,10 @@
-import {render, fireEvent} from '@testing-library/react'
 import React from 'react'
-import {MemoryRouter} from 'react-router-dom'
 
-import {useBackToConvert} from 'pages/convert/onboarding/hooks/useBackToConvert'
-import {assumeMock} from 'utils/testing'
+import { fireEvent, render } from '@testing-library/react'
+import { MemoryRouter } from 'react-router-dom'
+
+import { useBackToConvert } from 'pages/convert/onboarding/hooks/useBackToConvert'
+import { assumeMock } from 'utils/testing'
 
 import BackToConvertButton from '../BackToConvertButton'
 
@@ -18,10 +19,10 @@ describe('BackToConvertButton', () => {
             removeBackIntegrationId: jest.fn(),
         })
 
-        const {container} = render(
+        const { container } = render(
             <MemoryRouter>
                 <BackToConvertButton />
-            </MemoryRouter>
+            </MemoryRouter>,
         )
 
         expect(container.firstChild).toBeNull()
@@ -35,10 +36,10 @@ describe('BackToConvertButton', () => {
             removeBackIntegrationId: removeBackIntegrationId,
         })
 
-        const {getByText} = render(
+        const { getByText } = render(
             <MemoryRouter>
                 <BackToConvertButton />
-            </MemoryRouter>
+            </MemoryRouter>,
         )
 
         expect(getByText('Back To Convert')).toBeInTheDocument()

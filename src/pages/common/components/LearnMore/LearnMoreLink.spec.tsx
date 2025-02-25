@@ -1,5 +1,6 @@
-import {screen, render} from '@testing-library/react'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import LearnMoreLink from './LearnMoreLink'
 
@@ -11,7 +12,7 @@ describe('LearnMoreLink', () => {
         expect(screen.getByText('Learn More')).toBeInTheDocument()
         expect(screen.getByText('Learn More').closest('a')).toHaveAttribute(
             'href',
-            'www.gorgias.com'
+            'www.gorgias.com',
         )
     })
 })

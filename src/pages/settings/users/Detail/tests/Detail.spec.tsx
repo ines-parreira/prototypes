@@ -1,24 +1,25 @@
-import {render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
-import {act} from 'react-dom/test-utils'
-import {useParams} from 'react-router-dom'
 
-import {User, UserRole} from 'config/types/user'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { act } from 'react-dom/test-utils'
+import { useParams } from 'react-router-dom'
+
+import { User, UserRole } from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
-import {getAccountOwnerId} from 'state/currentAccount/selectors'
-import {getCurrentUserId} from 'state/currentUser/selectors'
-import {StoreState} from 'state/types'
-import {assumeMock, getLastMockCall} from 'utils/testing'
+import { getAccountOwnerId } from 'state/currentAccount/selectors'
+import { getCurrentUserId } from 'state/currentUser/selectors'
+import { StoreState } from 'state/types'
+import { assumeMock, getLastMockCall } from 'utils/testing'
 
-import {navigateBackToUserList} from '../constants'
-import {Detail} from '../Detail'
-import {Footer} from '../Footer'
-import {Header} from '../Header'
-import {useGetAgentWithEffects} from '../hooks/useGetAgentWithEffect'
-import {Info} from '../Info'
-import {Role} from '../Role'
-import {Statuses} from '../Statuses'
+import { navigateBackToUserList } from '../constants'
+import { Detail } from '../Detail'
+import { Footer } from '../Footer'
+import { Header } from '../Header'
+import { useGetAgentWithEffects } from '../hooks/useGetAgentWithEffect'
+import { Info } from '../Info'
+import { Role } from '../Role'
+import { Statuses } from '../Statuses'
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
@@ -39,7 +40,7 @@ jest.mock('../Footer')
 
 const mockedUseAppSelector = assumeMock(useAppSelector)
 mockedUseAppSelector.mockImplementation(
-    (selector: (state: StoreState) => unknown) => selector({} as StoreState)
+    (selector: (state: StoreState) => unknown) => selector({} as StoreState),
 )
 const mockedUpdateAgent = jest.fn(() => undefined)
 jest.mock('hooks/agents/useUpdateAgent', () => ({
@@ -76,7 +77,7 @@ describe('Detail', () => {
         const unsafeAgentId = '1'
         const accountOwnerId = 1
         const currentUserId = 1
-        useParamsMock.mockReturnValue({id: unsafeAgentId})
+        useParamsMock.mockReturnValue({ id: unsafeAgentId })
         useGetAgentWithEffectsMock.mockReturnValue({
             rawData: undefined,
             isLoading: true,
@@ -93,14 +94,14 @@ describe('Detail', () => {
         const unsafeAgentId = '1'
         const accountOwnerId = 1
         const currentUserId = 1
-        useParamsMock.mockReturnValue({id: unsafeAgentId})
+        useParamsMock.mockReturnValue({ id: unsafeAgentId })
         useGetAgentWithEffectsMock.mockReturnValue({
             rawData: undefined,
             isLoading: false,
         })
         mockedGetAccountOwnerId.mockReturnValue(accountOwnerId)
         mockedGetCurrentUserId.mockReturnValue(currentUserId)
-        const {container} = render(<Detail />)
+        const { container } = render(<Detail />)
 
         expect(container.firstChild).toBeNull()
     })
@@ -110,7 +111,7 @@ describe('Detail', () => {
         const currentUserId = 1
         const name = ' Spaced '
         const email = ' UppercasedSpace'
-        useParamsMock.mockReturnValue({id: ''})
+        useParamsMock.mockReturnValue({ id: '' })
         useGetAgentWithEffectsMock.mockReturnValue({
             rawData: {} as User,
             isLoading: false,
@@ -133,10 +134,10 @@ describe('Detail', () => {
                 {
                     email: email.trim().toLocaleLowerCase(),
                     name: name.trim(),
-                    role: {name: UserRole.BasicAgent},
+                    role: { name: UserRole.BasicAgent },
                 },
             ],
-            {onSuccess: navigateBackToUserList}
+            { onSuccess: navigateBackToUserList },
         )
         expect(mockedCreateAgent).toHaveBeenCalledTimes(1)
     })
@@ -145,7 +146,7 @@ describe('Detail', () => {
         const unsafeAgentId = '1'
         const accountOwnerId = 1
         const currentUserId = 1
-        useParamsMock.mockReturnValue({id: unsafeAgentId})
+        useParamsMock.mockReturnValue({ id: unsafeAgentId })
         useGetAgentWithEffectsMock.mockReturnValue({
             rawData: {} as User,
             isLoading: false,
@@ -173,7 +174,7 @@ describe('Detail', () => {
                 isEdit: true,
                 name: 'M. Love',
             },
-            {}
+            {},
         )
         expect(mockedStatuses).toHaveBeenLastCalledWith(
             {
@@ -184,7 +185,7 @@ describe('Detail', () => {
                 rawData: {},
                 set2FA: expect.any(Function),
             },
-            {}
+            {},
         )
         expect(mockedInfo).toHaveBeenLastCalledWith(
             {
@@ -196,7 +197,7 @@ describe('Detail', () => {
                 name: 'M. Love',
                 setAgentState: expect.any(Function),
             },
-            {}
+            {},
         )
         expect(mockedRoles).toHaveBeenLastCalledWith(
             {
@@ -205,7 +206,7 @@ describe('Detail', () => {
                 role: 'basic-agent',
                 setAgentState: expect.any(Function),
             },
-            {}
+            {},
         )
         expect(mockedFooter).toHaveBeenLastCalledWith(
             {
@@ -221,7 +222,7 @@ describe('Detail', () => {
                 isViewingAccountOwner: true,
                 rawData: {},
             },
-            {}
+            {},
         )
     })
 
@@ -229,7 +230,7 @@ describe('Detail', () => {
         const unsafeAgentId = '1'
         const accountOwnerId = 1
         const currentUserId = 1
-        useParamsMock.mockReturnValue({id: unsafeAgentId})
+        useParamsMock.mockReturnValue({ id: unsafeAgentId })
         useGetAgentWithEffectsMock.mockReturnValue({
             rawData: {} as User,
             isLoading: false,
@@ -242,15 +243,15 @@ describe('Detail', () => {
 
         expect(mockedUpdateAgent).toHaveBeenNthCalledWith(
             1,
-            [{agent: {email: '', name: ''}, id: 1}],
-            {onSuccess: navigateBackToUserList}
+            [{ agent: { email: '', name: '' }, id: 1 }],
+            { onSuccess: navigateBackToUserList },
         )
     })
 
     it('should save the details on submit with all the data', () => {
         const accountOwnerId = 1
         const currentUserId = 1
-        useParamsMock.mockReturnValue({id: ''})
+        useParamsMock.mockReturnValue({ id: '' })
         useGetAgentWithEffectsMock.mockReturnValue({
             rawData: {} as User,
             isLoading: false,
@@ -263,8 +264,8 @@ describe('Detail', () => {
 
         expect(mockedCreateAgent).toHaveBeenNthCalledWith(
             1,
-            [{email: '', name: '', role: {name: UserRole.BasicAgent}}],
-            {onSuccess: navigateBackToUserList}
+            [{ email: '', name: '', role: { name: UserRole.BasicAgent } }],
+            { onSuccess: navigateBackToUserList },
         )
     })
 })

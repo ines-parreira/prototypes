@@ -1,4 +1,4 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
 import {
     WhatsAppCodeVerificationMethod,
@@ -7,9 +7,9 @@ import {
 } from 'models/integration/types'
 
 import useWhatsAppMigration, {
+    privateFunctions,
     WhatsAppMigrationStatus as Status,
     WhatsAppMigrationStep as Step,
-    privateFunctions,
 } from '../useWhatsAppMigration'
 
 describe('useWhatsAppMigration()', () => {
@@ -47,7 +47,7 @@ describe('utilities', () => {
                     target: undefined,
                     progress: undefined,
                     verification: undefined,
-                })
+                }),
             ).toEqual(Status.NotStarted)
 
             expect(
@@ -62,7 +62,7 @@ describe('utilities', () => {
                         phone_number: '',
                     },
                     progress: undefined,
-                })
+                }),
             ).toEqual(Status.NotStarted)
         })
 
@@ -79,7 +79,7 @@ describe('utilities', () => {
                         phone_number: '',
                     },
                     progress: undefined,
-                })
+                }),
             ).toEqual(Status.NotSubmitted)
 
             expect(
@@ -94,7 +94,7 @@ describe('utilities', () => {
                         phone_number: '+1231231231',
                     },
                     progress: undefined,
-                })
+                }),
             ).toEqual(Status.NotSubmitted)
         })
 
@@ -116,7 +116,7 @@ describe('utilities', () => {
                         verification_status:
                             WhatsAppPhoneNumberVerificationStatus.Unverified,
                     },
-                })
+                }),
             ).toEqual(Status.Unverified)
         })
 
@@ -138,7 +138,7 @@ describe('utilities', () => {
                         verification_status:
                             WhatsAppPhoneNumberVerificationStatus.Unverified,
                     },
-                })
+                }),
             ).toEqual(Status.Pending)
         })
 
@@ -160,7 +160,7 @@ describe('utilities', () => {
                         verification_status:
                             WhatsAppPhoneNumberVerificationStatus.Verified,
                     },
-                })
+                }),
             ).toEqual(Status.Verified)
         })
 
@@ -182,7 +182,7 @@ describe('utilities', () => {
                         verification_status:
                             WhatsAppPhoneNumberVerificationStatus.Verified,
                     },
-                })
+                }),
             ).toEqual(Status.Verified)
         })
     })
@@ -208,16 +208,16 @@ describe('utilities', () => {
                 isValid: false,
             }
             expect(validateTargetWithFriendlyErrors(undefined)).toEqual(
-                validationResult
+                validationResult,
             )
             expect(validateTargetWithFriendlyErrors(null)).toEqual(
-                validationResult
+                validationResult,
             )
             expect(
                 validateTargetWithFriendlyErrors({
                     phone_number: '',
                     waba_id: '',
-                })
+                }),
             ).toEqual(validationResult)
         })
 
@@ -234,14 +234,14 @@ describe('utilities', () => {
                 validateTargetWithFriendlyErrors({
                     phone_number: '1231231',
                     waba_id: '123123',
-                })
+                }),
             ).toEqual(validationResult)
 
             expect(
                 validateTargetWithFriendlyErrors({
                     phone_number: '+123123112313',
                     waba_id: '123123',
-                })
+                }),
             ).toEqual(validationResult)
         })
 
@@ -260,7 +260,7 @@ describe('utilities', () => {
             }
 
             expect(validateTargetWithFriendlyErrors(validTarget)).toEqual(
-                validationResult
+                validationResult,
             )
         })
     })

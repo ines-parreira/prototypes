@@ -1,2 +1,2 @@
-export {default} from './AddSalesCouponModal'
+export { default } from './AddSalesCouponModal'
 export * from './AddSalesCouponModal'

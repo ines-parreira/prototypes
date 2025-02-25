@@ -1,4 +1,4 @@
-import {ConvertPlan, Cadence} from 'models/billing/types'
+import { Cadence, ConvertPlan } from 'models/billing/types'
 
 const convertPlansMapping: Record<string, string> = {
     Starter: 'convert-01',
@@ -11,11 +11,11 @@ const convertPlansMapping: Record<string, string> = {
 export const getDefaultConvertPlanIndex = (
     cadence?: Cadence,
     convertAvailablePlans?: ConvertPlan[],
-    helpdeskPlanName?: string
+    helpdeskPlanName?: string,
 ): number => {
     let convertInitialIndex =
         convertAvailablePlans?.findIndex(
-            (plan) => !!plan.amount && plan.cadence === cadence
+            (plan) => !!plan.amount && plan.cadence === cadence,
         ) ?? 0
 
     if (helpdeskPlanName && !!convertPlansMapping[helpdeskPlanName]) {
@@ -23,8 +23,8 @@ export const getDefaultConvertPlanIndex = (
             (plan) =>
                 plan.cadence === cadence &&
                 plan.internal_id.startsWith(
-                    convertPlansMapping[helpdeskPlanName]
-                )
+                    convertPlansMapping[helpdeskPlanName],
+                ),
         )
         convertInitialIndex = mappedIndex ?? convertInitialIndex
     }

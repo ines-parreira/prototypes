@@ -1,12 +1,13 @@
-import {render, fireEvent} from '@testing-library/react'
 import React from 'react'
 
-import {MacroActionName} from 'models/macroAction/types'
+import { fireEvent, render } from '@testing-library/react'
+
+import { MacroActionName } from 'models/macroAction/types'
 import {
     action as defaultAction,
     message as defaultMessage,
 } from 'models/ticket/tests/mocks'
-import {Action, ActionStatus, TicketMessage} from 'models/ticket/types'
+import { Action, ActionStatus, TicketMessage } from 'models/ticket/types'
 
 import Actions from '../Actions'
 
@@ -63,28 +64,28 @@ describe('Actions component', () => {
                 ...defaultAction,
                 name: MacroActionName.AddTags,
                 title: 'Add tags',
-                arguments: {tags: 'tag1,tag2'},
+                arguments: { tags: 'tag1,tag2' },
             },
             {
                 ...defaultAction,
                 status: ActionStatus.Cancelled,
                 name: MacroActionName.SetAssignee,
                 title: 'Assign an agent',
-                arguments: {assignee_user: 'User 1'},
+                arguments: { assignee_user: 'User 1' },
             },
         ],
     }
 
     it('should display only actions with execution in back-end', () => {
-        const {container} = render(<Actions message={message} />)
+        const { container } = render(<Actions message={message} />)
         // 6 actions + 1 header message
         expect((container.firstChild as HTMLDivElement).children).toHaveLength(
-            7
+            7,
         )
     })
 
     it('should display the action badge correctly', async () => {
-        const {findByText} = render(<Actions message={message} />)
+        const { findByText } = render(<Actions message={message} />)
         expect(await findByText('action1')).toMatchSnapshot()
         expect(await findByText('Add tags: tag1, tag2')).toMatchSnapshot()
     })
@@ -102,8 +103,8 @@ describe('Actions component', () => {
             ],
         }
 
-        const {findByText} = render(
-            <Actions message={messageWithExcludedAutoMerge} />
+        const { findByText } = render(
+            <Actions message={messageWithExcludedAutoMerge} />,
         )
         expect(await findByText(title)).toBeInTheDocument()
     })
@@ -121,17 +122,17 @@ describe('Actions component', () => {
             ],
         }
 
-        const {findByText} = render(
-            <Actions message={messageWithExcludedCSAT} />
+        const { findByText } = render(
+            <Actions message={messageWithExcludedCSAT} />,
         )
         expect(await findByText(title)).toBeInTheDocument()
     })
 
     it('should display modal when hovering http or shopify action', async () => {
-        const {findByText} = render(<Actions message={message} />)
+        const { findByText } = render(<Actions message={message} />)
         fireEvent.mouseOver(await findByText('action1'))
         expect(
-            await findByText('Action failed.', {exact: false})
+            await findByText('Action failed.', { exact: false }),
         ).toMatchSnapshot()
     })
 
@@ -151,10 +152,10 @@ describe('Actions component', () => {
                 },
             ],
         }
-        const {findByText} = render(<Actions message={messageWithRefund} />)
+        const { findByText } = render(<Actions message={messageWithRefund} />)
         fireEvent.mouseOver(await findByText('Refund Action'))
         expect(
-            await findByText('Action succeeded.', {exact: false})
+            await findByText('Action succeeded.', { exact: false }),
         ).toMatchSnapshot()
         fireEvent.click(await findByText('More details'))
         expect((await findByText('order_id:')).closest('div')).toMatchSnapshot()
@@ -179,7 +180,7 @@ describe('Actions component', () => {
                 },
             ],
         }
-        const {findByText} = render(<Actions message={messageWithRefund} />)
+        const { findByText } = render(<Actions message={messageWithRefund} />)
         fireEvent.mouseOver(await findByText('Refund Action'))
         fireEvent.click(await findByText('More details'))
         expect((await findByText('order_id:')).closest('div')).toMatchSnapshot()

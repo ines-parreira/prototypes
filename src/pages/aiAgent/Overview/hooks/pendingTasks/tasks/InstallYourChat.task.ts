@@ -1,5 +1,5 @@
-import {RuleEngineData, RuleEngineRoutes} from '../ruleEngine'
-import {Task} from './Task'
+import { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
+import { Task } from './Task'
 
 export class InstallYourChatTask extends Task {
     constructor(data: RuleEngineData, routes: RuleEngineRoutes) {
@@ -8,7 +8,7 @@ export class InstallYourChatTask extends Task {
             'Installing your chat is mandatory to be able to activate AI Agent',
             'BASIC',
             data,
-            routes
+            routes,
         )
     }
 
@@ -29,7 +29,7 @@ export class InstallYourChatTask extends Task {
         }
 
         const firstChatNotInstalled = data.chatIntegrationsStatus.find(
-            (c) => !c.installed
+            (c) => !c.installed,
         )!
         return `/app/settings/channels/gorgias_chat/${firstChatNotInstalled.chatId}/installation`
     }

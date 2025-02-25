@@ -1,7 +1,7 @@
 import useAppSelector from 'hooks/useAppSelector'
-import {useCurrentContactForm} from 'pages/settings/contactForm/hooks/useCurrentContactForm'
-import {useGetShopifyPages} from 'pages/settings/contactForm/queries'
-import {getShopifyIntegrationByShopName} from 'state/integrations/selectors'
+import { useCurrentContactForm } from 'pages/settings/contactForm/hooks/useCurrentContactForm'
+import { useGetShopifyPages } from 'pages/settings/contactForm/queries'
+import { getShopifyIntegrationByShopName } from 'state/integrations/selectors'
 
 // It's used to be type safe when contact form is missing the shop name
 const SHOP_NAME_PLACEHOLDER = 'no shop'
@@ -12,13 +12,13 @@ export function useIsShopifyCredentialsWorking() {
     const contactForm = useCurrentContactForm()
     const shopifyIntegration = useAppSelector(
         getShopifyIntegrationByShopName(
-            contactForm?.shop_name || SHOP_NAME_PLACEHOLDER
-        )
+            contactForm?.shop_name || SHOP_NAME_PLACEHOLDER,
+        ),
     )
 
     const needScopeUpdate = !shopifyIntegration.isEmpty()
         ? Boolean(
-              shopifyIntegration.getIn(['meta', 'need_scope_update'], false)
+              shopifyIntegration.getIn(['meta', 'need_scope_update'], false),
           )
         : false
 

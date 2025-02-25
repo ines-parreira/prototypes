@@ -1,38 +1,38 @@
 import client from 'models/api/resources'
 
-import {SenderVerification, SenderInformation} from './types'
+import { SenderInformation, SenderVerification } from './types'
 
 export const createVerification = async (
     id: number,
-    senderInformation: SenderInformation
+    senderInformation: SenderInformation,
 ): Promise<SenderVerification> => {
     const res = await client.post<SenderVerification>(
         `/integrations/email/${id}/sender-verification`,
-        senderInformation
+        senderInformation,
     )
     return res.data
 }
 
 export const resendVerificationEmail = async (id: number): Promise<void> => {
     await client.post(
-        `/integrations/email/${id}/sender-verification/send-email`
+        `/integrations/email/${id}/sender-verification/send-email`,
     )
 }
 
 export const getVerification = async (
-    id: number
+    id: number,
 ): Promise<SenderVerification> => {
     const res = await client.get<SenderVerification>(
-        `/integrations/email/${id}/sender-verification`
+        `/integrations/email/${id}/sender-verification`,
     )
     return res.data
 }
 
 export const checkVerification = async (
-    id: number
+    id: number,
 ): Promise<SenderVerification> => {
     const res = await client.post<SenderVerification>(
-        `/integrations/email/${id}/sender-verification/check`
+        `/integrations/email/${id}/sender-verification/check`,
     )
     return res.data
 }

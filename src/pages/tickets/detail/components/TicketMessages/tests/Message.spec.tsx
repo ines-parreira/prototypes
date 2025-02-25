@@ -1,7 +1,8 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {TicketMessage} from 'models/ticket/types'
+import { render } from '@testing-library/react'
+
+import { TicketMessage } from 'models/ticket/types'
 import Message from 'pages/tickets/detail/components/TicketMessages/Message'
 
 jest.mock('pages/common/components/AIBanner/AIBanner', () => () => (
@@ -30,7 +31,7 @@ describe('Message', () => {
     }
 
     it('should render a message with all required sections', () => {
-        const {getByText} = render(<Message {...defaultProps} />)
+        const { getByText } = render(<Message {...defaultProps} />)
         expect(getByText('Body')).toBeInTheDocument()
         expect(getByText('Attachments')).toBeInTheDocument()
         expect(getByText('Actions')).toBeInTheDocument()
@@ -38,14 +39,14 @@ describe('Message', () => {
     })
 
     it('should render the source details if showSourceDetails is true', () => {
-        const {getByText} = render(
-            <Message {...defaultProps} showSourceDetails />
+        const { getByText } = render(
+            <Message {...defaultProps} showSourceDetails />,
         )
         expect(getByText('SourceDetailsHeader')).toBeInTheDocument()
     })
 
     it('should display an embedded reply details card if meta.replied_to is present', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Message
                 {...defaultProps}
                 message={{
@@ -57,7 +58,7 @@ describe('Message', () => {
                         },
                     },
                 }}
-            />
+            />,
         )
         expect(getByText('ReplyDetailsCard')).toBeInTheDocument()
     })

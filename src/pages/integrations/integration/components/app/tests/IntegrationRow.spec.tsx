@@ -1,17 +1,17 @@
-import {render} from '@testing-library/react'
-
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {Integration} from 'models/integration/types'
+import { Integration } from 'models/integration/types'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-import {getReconnectUrl} from 'pages/integrations/integration/components/app/helpers'
+import { getReconnectUrl } from 'pages/integrations/integration/components/app/helpers'
 import IntegrationRow from 'pages/integrations/integration/components/app/IntegrationRow'
-import {RootState, StoreDispatch} from 'state/types'
-import {assumeMock} from 'utils/testing'
+import { RootState, StoreDispatch } from 'state/types'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('../helpers')
 const getReconnectUrlMock = assumeMock(getReconnectUrl)
@@ -27,9 +27,9 @@ describe('<IntegrationRow/>', () => {
             type: 'app',
             application_id: '1',
             name: 'my app',
-            meta: {address: '@myapp'},
+            meta: { address: '@myapp' },
         } as Integration
-        const {container, getByText} = render(
+        const { container, getByText } = render(
             <Provider store={appStore}>
                 <TableWrapper>
                     <TableBody>
@@ -39,7 +39,7 @@ describe('<IntegrationRow/>', () => {
                         />
                     </TableBody>
                 </TableWrapper>
-            </Provider>
+            </Provider>,
         )
 
         expect(getByText('my app')).toBeDefined()
@@ -56,10 +56,10 @@ describe('<IntegrationRow/>', () => {
             type: 'ecom',
             application_id: '1',
             name: 'my ecom store',
-            meta: {store_uuid: '@store'},
+            meta: { store_uuid: '@store' },
         } as Integration
 
-        const {container, getByText} = render(
+        const { container, getByText } = render(
             <Provider store={appStore}>
                 <TableWrapper>
                     <TableBody>
@@ -69,7 +69,7 @@ describe('<IntegrationRow/>', () => {
                         />
                     </TableBody>
                 </TableWrapper>
-            </Provider>
+            </Provider>,
         )
 
         expect(getByText('my ecom store')).toBeDefined()
@@ -86,17 +86,17 @@ describe('<IntegrationRow/>', () => {
             type: 'ecom',
             application_id: '1',
             name: 'my ecom store',
-            meta: {store_uuid: '@store'},
+            meta: { store_uuid: '@store' },
         } as Integration
         const loadingIntegrationAppStore = mockStore({
             integrations: fromJS({
                 state: {
-                    loading: {delete: 1},
+                    loading: { delete: 1 },
                 },
             }),
         })
 
-        const {container} = render(
+        const { container } = render(
             <Provider store={loadingIntegrationAppStore}>
                 <TableWrapper>
                     <TableBody>
@@ -106,7 +106,7 @@ describe('<IntegrationRow/>', () => {
                         />
                     </TableBody>
                 </TableWrapper>
-            </Provider>
+            </Provider>,
         )
 
         const loadingIcon = container.querySelector('svg')
@@ -118,11 +118,11 @@ describe('<IntegrationRow/>', () => {
             type: 'app',
             application_id: '1',
             name: 'my deactivated app',
-            meta: {address: '@deactivatedapp'},
+            meta: { address: '@deactivatedapp' },
             deactivated_datetime: '2021-01-01T00:00:00Z',
         } as Integration
 
-        const {container, getByText} = render(
+        const { container, getByText } = render(
             <Provider store={appStore}>
                 <TableWrapper>
                     <TableBody>
@@ -132,7 +132,7 @@ describe('<IntegrationRow/>', () => {
                         />
                     </TableBody>
                 </TableWrapper>
-            </Provider>
+            </Provider>,
         )
 
         expect(getByText('my deactivated app')).toBeDefined()

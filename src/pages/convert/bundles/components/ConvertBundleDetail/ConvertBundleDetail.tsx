@@ -1,21 +1,23 @@
-import {useQueryClient} from '@tanstack/react-query'
-import classnames from 'classnames'
-import {Map} from 'immutable'
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
-import {Link} from 'react-router-dom'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
-import {GORGIAS_CHAT_INTEGRATION_TYPE} from 'constants/integration'
+import { useQueryClient } from '@tanstack/react-query'
+import classnames from 'classnames'
+import { Map } from 'immutable'
+import { Link } from 'react-router-dom'
+
+import { GORGIAS_CHAT_INTEGRATION_TYPE } from 'constants/integration'
 import useAppDispatch from 'hooks/useAppDispatch'
 import client from 'models/api/resources'
-import {bundleKeys} from 'models/convert/bundle/queries'
-import {Bundle, BundleActionResponse} from 'models/convert/bundle/types'
+import { bundleKeys } from 'models/convert/bundle/queries'
+import { Bundle, BundleActionResponse } from 'models/convert/bundle/types'
 import BundleManualInstallationCard from 'pages/convert/bundles/components/BundleManualInstallationCard/BundleManualInstallationCard'
-import {convertStatusKeys} from 'pages/convert/common/hooks/useGetConvertStatus'
-import {getIconFromType} from 'state/integrations/helpers'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { convertStatusKeys } from 'pages/convert/common/hooks/useGetConvertStatus'
+import { getIconFromType } from 'state/integrations/helpers'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 import ConvertBundle1ClickInstallCard from '../ConvertBundle1ClickInstallCard'
+
 import css from './ConvertBundleDetail.less'
 
 type Props = {
@@ -44,7 +46,7 @@ const ConvertBundleDetail = ({
 
         client
             .get<BundleActionResponse>(
-                `/api/revenue-addon-bundle/${bundle.id}/`
+                `/api/revenue-addon-bundle/${bundle.id}/`,
             )
             .then((response) => {
                 setCode(response.data.code)
@@ -54,7 +56,7 @@ const ConvertBundleDetail = ({
                     notify({
                         status: NotificationStatus.Error,
                         message: 'Could not get bundle code',
-                    })
+                    }),
                 )
             })
     }
@@ -82,7 +84,7 @@ const ConvertBundleDetail = ({
 
     const integrationId = useMemo(
         () => (!!storeIntegrationId ? storeIntegrationId : chatIntegrationId),
-        [storeIntegrationId, chatIntegrationId]
+        [storeIntegrationId, chatIntegrationId],
     )
 
     const handle1ClickInstall = useCallback(
@@ -98,7 +100,7 @@ const ConvertBundleDetail = ({
                 onChange(isInstalled)
             }
         },
-        [onChange, queryClient]
+        [onChange, queryClient],
     )
 
     return (
@@ -110,7 +112,7 @@ const ConvertBundleDetail = ({
                         <i
                             className={classnames(
                                 'material-icons',
-                                css.storeIcon
+                                css.storeIcon,
                             )}
                         >
                             forum
@@ -134,14 +136,14 @@ const ConvertBundleDetail = ({
                                 className={css.storeIcon}
                                 alt="logo"
                                 src={getIconFromType(
-                                    storeIntegration.get('type')
+                                    storeIntegration.get('type'),
                                 )}
                             />
                         ) : (
                             <i
                                 className={classnames(
                                     'material-icons',
-                                    css.storeIcon
+                                    css.storeIcon,
                                 )}
                             >
                                 store

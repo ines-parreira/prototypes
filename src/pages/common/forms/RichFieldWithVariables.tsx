@@ -1,8 +1,8 @@
 /* istanbul ignore file */
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { Component, ComponentProps } from 'react'
+
 import classNames from 'classnames'
-import {EditorState} from 'draft-js'
-import React, {Component, ComponentProps} from 'react'
+import { EditorState } from 'draft-js'
 import {
     DropdownItem,
     DropdownMenu,
@@ -11,13 +11,16 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
 import Button from 'pages/common/components/button/Button'
-import {attachEntitiesToVariables} from 'pages/common/draftjs/plugins/variables/utils'
-import {getVariables} from 'tickets/common/utils'
-import {insertText} from 'utils'
+import { attachEntitiesToVariables } from 'pages/common/draftjs/plugins/variables/utils'
+import { getVariables } from 'tickets/common/utils'
+import { insertText } from 'utils'
 
 import RichField from './RichField/RichField'
 import TicketRichField from './RichField/TicketRichField'
+
 import css from './RichFieldWithVariables.less'
 
 type Props = {
@@ -97,7 +100,7 @@ export default class RichFieldWithVariables extends Component<Props> {
                                                         type="button"
                                                         onClick={() => {
                                                             this._insertText(
-                                                                variable.value
+                                                                variable.value,
                                                             )
                                                         }}
                                                     >
@@ -115,7 +118,7 @@ export default class RichFieldWithVariables extends Component<Props> {
                                                     )}
                                                 </div>
                                             )
-                                        }
+                                        },
                                     )}
                                 </DropdownMenu>
                             </UncontrolledDropdown>
@@ -130,7 +133,7 @@ export default class RichFieldWithVariables extends Component<Props> {
                             >
                                 {category.name}
                             </Button>
-                        )
+                        ),
                     )}
                 </div>
                 <TicketRichField

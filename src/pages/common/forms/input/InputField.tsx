@@ -1,4 +1,3 @@
-import {Label} from '@gorgias/merchant-ui-kit'
 import React, {
     ComponentProps,
     createContext,
@@ -6,11 +5,14 @@ import React, {
     ReactNode,
 } from 'react'
 
+import { Label } from '@gorgias/merchant-ui-kit'
+
 import useId from 'hooks/useId'
 import Caption from 'pages/common/forms/Caption/Caption'
 
-import css from './InputField.less'
 import TextInput from './TextInput'
+
+import css from './InputField.less'
 
 type Props = {
     caption?: ReactNode
@@ -36,14 +38,14 @@ export default forwardRef<HTMLInputElement, Props>(function InputField(
         isRequired = false,
         ...props
     }: Props,
-    ref
+    ref,
 ) {
     const randomId = useId()
     const inputId = id || 'input-text-' + randomId
     const captionId = `${inputId}-caption`
 
     return (
-        <InputFieldContext.Provider value={{id: inputId}}>
+        <InputFieldContext.Provider value={{ id: inputId }}>
             <div className={className}>
                 {!!label && (
                     <Label
@@ -61,7 +63,7 @@ export default forwardRef<HTMLInputElement, Props>(function InputField(
                     isRequired={isRequired}
                     hasError={!!error}
                     id={inputId}
-                    {...(caption && {'aria-describedby': captionId})}
+                    {...(caption && { 'aria-describedby': captionId })}
                     {...props}
                 />
                 {!!(caption || error) && (

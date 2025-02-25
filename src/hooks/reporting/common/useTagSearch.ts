@@ -1,23 +1,25 @@
-import {ListTagsOrderBy, ListTagsParams, Tag} from '@gorgias/api-queries'
-import {CancelToken} from 'axios'
-import {filter} from 'lodash'
-import {useCallback, useState} from 'react'
+import { useCallback, useState } from 'react'
+
+import { CancelToken } from 'axios'
+import { filter } from 'lodash'
+
+import { ListTagsOrderBy, ListTagsParams, Tag } from '@gorgias/api-queries'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
-import {OrderDirection} from 'models/api/types'
-import {fetchTags} from 'models/tag/resources'
-import {OrderByOrderDir} from 'models/tag/types'
-import {tagsFetched} from 'state/entities/tags/actions'
-import {getEntitiesTags} from 'state/entities/tags/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {notUndefined} from 'utils/types'
+import { OrderDirection } from 'models/api/types'
+import { fetchTags } from 'models/tag/resources'
+import { OrderByOrderDir } from 'models/tag/types'
+import { tagsFetched } from 'state/entities/tags/actions'
+import { getEntitiesTags } from 'state/entities/tags/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { notUndefined } from 'utils/types'
 
-const ORDER_OPTIONS: {order_by: OrderByOrderDir} = {
+const ORDER_OPTIONS: { order_by: OrderByOrderDir } = {
     order_by: `${ListTagsOrderBy.Name}:${OrderDirection.Asc}`,
 }
 
@@ -37,12 +39,12 @@ export const useTagSearch = () => {
             async (
                 options: Omit<ListTagsParams, 'order_by'> & {
                     order_by?: OrderByOrderDir
-                } = {}
+                } = {},
             ) =>
-                await fetchTags(options, {cancelToken})
+                await fetchTags(options, { cancelToken }),
     )
 
-    const [{loading: isFetchingTags}, handleFetchTags] = useAsyncFn(
+    const [{ loading: isFetchingTags }, handleFetchTags] = useAsyncFn(
         async (search: string, isFromScroll = false) => {
             try {
                 const previousIds = isFromScroll ? tagIds : []
@@ -71,11 +73,11 @@ export const useTagSearch = () => {
                     notify({
                         message: TAGS_FETCH_ERROR_MESSAGE,
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
             }
         },
-        [dispatch, cancellableFetchTags, nextCursor, tagSearch, tagIds]
+        [dispatch, cancellableFetchTags, nextCursor, tagSearch, tagIds],
     )
 
     const handleTagsSearch = useCallback(
@@ -84,7 +86,7 @@ export const useTagSearch = () => {
                 setDebouncedTagSearch(search)
             }
         },
-        [setDebouncedTagSearch, tagSearch]
+        [setDebouncedTagSearch, tagSearch],
     )
 
     useDebouncedEffect(
@@ -92,7 +94,7 @@ export const useTagSearch = () => {
             void handleFetchTags(debouncedTagSearch)
         },
         [debouncedTagSearch],
-        300
+        300,
     )
 
     const onLoad = useCallback(async () => {
@@ -110,7 +112,7 @@ export const useTagSearch = () => {
                 state[tag.id] = tag
                 return state
             },
-            {}
+            {},
         ),
         shouldLoadMore: !!nextCursor && !isFetchingTags,
         tags: tagIds

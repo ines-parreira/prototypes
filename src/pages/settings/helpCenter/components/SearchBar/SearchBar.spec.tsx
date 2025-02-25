@@ -1,11 +1,11 @@
-import {render, fireEvent, waitFor} from '@testing-library/react'
 import React from 'react'
 
-import {getSingleHelpCenterResponseFixture as helpCenter} from '../../fixtures/getHelpCentersResponse.fixture'
-import {SearchContextProvider} from '../../providers/SearchContext'
-import {AlgoliaSearchResult, EntitiesBaseRecord} from '../../types/algolia'
+import { fireEvent, render, waitFor } from '@testing-library/react'
 
-import {SearchBar} from './SearchBar'
+import { getSingleHelpCenterResponseFixture as helpCenter } from '../../fixtures/getHelpCentersResponse.fixture'
+import { SearchContextProvider } from '../../providers/SearchContext'
+import { AlgoliaSearchResult, EntitiesBaseRecord } from '../../types/algolia'
+import { SearchBar } from './SearchBar'
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
 jest.mock('lodash/debounce', () => jest.fn((fn) => fn))
@@ -13,7 +13,7 @@ jest.mock('lodash/debounce', () => jest.fn((fn) => fn))
 const initSearchClient = jest.spyOn(
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     require('pages/settings/helpCenter/utils/algolia'),
-    'initSearchClient'
+    'initSearchClient',
 )
 
 const search = jest.fn()
@@ -48,7 +48,7 @@ describe('SearchBar', () => {
                     ],
                     resultsCount: 1,
                     nbPages: 1,
-                })
+                }),
         )
     })
 
@@ -56,13 +56,13 @@ describe('SearchBar', () => {
         initSearchClient.mockImplementationOnce(() =>
             Promise.resolve({
                 search,
-            })
+            }),
         )
 
-        const {container, getByRole, rerender} = render(
+        const { container, getByRole, rerender } = render(
             <SearchContextProvider helpCenter={helpCenter}>
                 <SearchBar />
-            </SearchContextProvider>
+            </SearchContextProvider>,
         )
 
         await waitFor(() => {
@@ -72,13 +72,13 @@ describe('SearchBar', () => {
         rerender(
             <SearchContextProvider helpCenter={helpCenter}>
                 <SearchBar />
-            </SearchContextProvider>
+            </SearchContextProvider>,
         )
 
         expect(container).toMatchSnapshot()
 
         fireEvent.change(getByRole('textbox'), {
-            target: {value: 'my search'},
+            target: { value: 'my search' },
         })
 
         await waitFor(() => {
@@ -99,7 +99,7 @@ describe('SearchBar', () => {
         rerender(
             <SearchContextProvider helpCenter={helpCenter}>
                 <SearchBar />
-            </SearchContextProvider>
+            </SearchContextProvider>,
         )
 
         // it should have search clear button when search input is not empty
@@ -110,13 +110,13 @@ describe('SearchBar', () => {
         initSearchClient.mockImplementationOnce(() =>
             Promise.resolve({
                 search,
-            })
+            }),
         )
 
-        const {getByRole, rerender} = render(
+        const { getByRole, rerender } = render(
             <SearchContextProvider helpCenter={helpCenter}>
                 <SearchBar />
-            </SearchContextProvider>
+            </SearchContextProvider>,
         )
 
         await waitFor(() => {
@@ -126,11 +126,11 @@ describe('SearchBar', () => {
         rerender(
             <SearchContextProvider helpCenter={helpCenter}>
                 <SearchBar />
-            </SearchContextProvider>
+            </SearchContextProvider>,
         )
 
         fireEvent.change(getByRole('textbox'), {
-            target: {value: '     '},
+            target: { value: '     ' },
         })
 
         await waitFor(() => {
@@ -138,7 +138,7 @@ describe('SearchBar', () => {
         })
 
         fireEvent.change(getByRole('textbox'), {
-            target: {value: '  te   '},
+            target: { value: '  te   ' },
         })
 
         await waitFor(() => {
@@ -146,7 +146,7 @@ describe('SearchBar', () => {
         })
 
         fireEvent.change(getByRole('textbox'), {
-            target: {value: '  tes   '},
+            target: { value: '  tes   ' },
         })
 
         await waitFor(() => {
@@ -156,13 +156,13 @@ describe('SearchBar', () => {
 
     it('renders disabled input if the search client could not be initialized', async () => {
         initSearchClient.mockImplementationOnce(() =>
-            Promise.resolve('no_index')
+            Promise.resolve('no_index'),
         )
 
-        const {container, rerender} = render(
+        const { container, rerender } = render(
             <SearchContextProvider helpCenter={helpCenter}>
                 <SearchBar />
-            </SearchContextProvider>
+            </SearchContextProvider>,
         )
 
         await waitFor(() => {
@@ -172,7 +172,7 @@ describe('SearchBar', () => {
         rerender(
             <SearchContextProvider helpCenter={helpCenter}>
                 <SearchBar />
-            </SearchContextProvider>
+            </SearchContextProvider>,
         )
 
         expect(container.firstChild?.lastChild).toHaveProperty('disabled')

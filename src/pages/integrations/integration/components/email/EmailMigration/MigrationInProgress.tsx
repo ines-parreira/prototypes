@@ -1,23 +1,24 @@
-import {AxiosError} from 'axios'
-import React, {useEffect, useState} from 'react'
-import {Col, Container} from 'reactstrap'
+import React, { useEffect, useState } from 'react'
+
+import { AxiosError } from 'axios'
+import { Col, Container } from 'reactstrap'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
 import useEffectOnce from 'hooks/useEffectOnce'
-import {fetchMigrations} from 'models/integration/resources/email'
+import { fetchMigrations } from 'models/integration/resources/email'
 import Loader from 'pages/common/components/Loader/Loader'
 import settingsCss from 'pages/settings/settings.less'
-import {SET_EMAIL_PROVIDER_MIGRATIONS} from 'state/integrations/constants'
-import {getEmailMigrations} from 'state/integrations/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { SET_EMAIL_PROVIDER_MIGRATIONS } from 'state/integrations/constants'
+import { getEmailMigrations } from 'state/integrations/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 import SteppedNavBar from '../SteppedNavBar/SteppedNavBar'
 import MigrationEmailForwarding from './MigrationEmailForwarding'
 import MigrationOutboundVerification from './MigrationOutboundVerification'
-import {getInboundUnverifiedMigrations} from './utils'
+import { getInboundUnverifiedMigrations } from './utils'
 
 enum VerificationStep {
     InboundVerification = 0,
@@ -26,7 +27,7 @@ enum VerificationStep {
 
 export default function MigrationInProgress() {
     const [currentStep, setCurrentStep] = useState<VerificationStep | null>(
-        null
+        null,
     )
     const migrations = useAppSelector(getEmailMigrations)
 
@@ -35,7 +36,7 @@ export default function MigrationInProgress() {
     const inboundUnverifiedMigrations =
         getInboundUnverifiedMigrations(migrations)
 
-    const [{loading}, loadMigrations] = useAsyncFn(async () => {
+    const [{ loading }, loadMigrations] = useAsyncFn(async () => {
         try {
             const response = await fetchMigrations()
             dispatch({
@@ -43,7 +44,7 @@ export default function MigrationInProgress() {
                 emailMigrations: response.data,
             })
         } catch (error) {
-            const {response} = error as AxiosError<{error: {msg: string}}>
+            const { response } = error as AxiosError<{ error: { msg: string } }>
             const errorMsg =
                 response && response.data.error
                     ? response.data.error.msg
@@ -52,7 +53,7 @@ export default function MigrationInProgress() {
                 notify({
                     message: errorMsg,
                     status: NotificationStatus.Error,
-                })
+                }),
             )
         }
     })
@@ -71,7 +72,7 @@ export default function MigrationInProgress() {
             setCurrentStep(
                 isInboundVerificationStepComplete
                     ? VerificationStep.DomainVerification
-                    : VerificationStep.InboundVerification
+                    : VerificationStep.InboundVerification,
             )
         }
     }, [

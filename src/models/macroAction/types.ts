@@ -1,7 +1,7 @@
-import type {User} from 'config/types/user'
-import {HttpMethod} from 'models/api/types'
-import type {Team} from 'models/team/types'
-import {ApplyExternalTemplateActionArguments} from 'models/whatsAppMessageTemplates/types'
+import type { User } from 'config/types/user'
+import { HttpMethod } from 'models/api/types'
+import type { Team } from 'models/team/types'
+import { ApplyExternalTemplateActionArguments } from 'models/whatsAppMessageTemplates/types'
 
 export enum MacroActionName {
     AddAttachments = 'addAttachments',
@@ -80,7 +80,7 @@ export type MacroActionAttachment = {
     size?: number
 }
 
-export const actionTypeToName: {[key: string]: string} = {
+export const actionTypeToName: { [key: string]: string } = {
     http: 'Http',
     shopify: 'Shopify',
     addInternalNote: 'Internal note',

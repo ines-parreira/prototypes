@@ -1,6 +1,7 @@
+import React, { ReactNode } from 'react'
+
 import classnames from 'classnames'
-import React, {ReactNode} from 'react'
-import {Button} from 'reactstrap'
+import { Button } from 'reactstrap'
 
 import PopoverModal from 'pages/common/components/PopoverModal'
 
@@ -36,7 +37,7 @@ export default function HeaderTitle({
                                 const windowRef = window.open(
                                     helpUrl,
                                     '_blank',
-                                    'noopener'
+                                    'noopener',
                                 )
                                 windowRef?.focus()
                             }}

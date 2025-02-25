@@ -1,15 +1,14 @@
 import React from 'react'
 
-import {ZendeskIntegrationMeta} from '../../../../models/integration/types'
-import Alert, {AlertType} from '../../../common/components/Alert/Alert'
-
-import {ImportStatus} from './types'
+import { ZendeskIntegrationMeta } from '../../../../models/integration/types'
+import Alert, { AlertType } from '../../../common/components/Alert/Alert'
+import { ImportStatus } from './types'
 
 interface ImportStatusAlertProps {
     integrationMeta: ZendeskIntegrationMeta
 }
 
-const ImportStatusAlert = ({integrationMeta}: ImportStatusAlertProps) => {
+const ImportStatusAlert = ({ integrationMeta }: ImportStatusAlertProps) => {
     const importStatus = integrationMeta.status
     if (
         importStatus === ImportStatus.Pending ||

@@ -1,27 +1,30 @@
-import {Badge} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
 import React from 'react'
-import {useHistory} from 'react-router-dom'
 
-import {HELP_CENTER_TEXTS} from 'config/helpCenter'
-import {HelpCenter} from 'models/helpCenter/types'
+import classnames from 'classnames'
+import { useHistory } from 'react-router-dom'
+
+import { Badge } from '@gorgias/merchant-ui-kit'
+
+import { HELP_CENTER_TEXTS } from 'config/helpCenter'
+import { HelpCenter } from 'models/helpCenter/types'
 
 import MousePointer from './components/MousePointer'
-import {LINE_ITEMS} from './constants'
+import { LINE_ITEMS } from './constants'
 import useOrderDates from './hooks/useOrderDates'
-import useOrdersPagePreview, {PreviewStep} from './hooks/useOrdersPagePreview'
+import useOrdersPagePreview, { PreviewStep } from './hooks/useOrdersPagePreview'
+import { useSelfServicePreviewContext } from './SelfServicePreviewContext'
+
 import css from './SelfServiceHelpCenterOrdersPage.less'
-import {useSelfServicePreviewContext} from './SelfServicePreviewContext'
 
 type Props = {
     helpCenter: HelpCenter
 }
 
-const SelfServiceHelpCenterOrdersPage = ({helpCenter}: Props) => {
-    const {orderManagementFlow, hasHoveredReportOrderIssueScenario} =
+const SelfServiceHelpCenterOrdersPage = ({ helpCenter }: Props) => {
+    const { orderManagementFlow, hasHoveredReportOrderIssueScenario } =
         useSelfServicePreviewContext()
-    const {previewStep} = useOrdersPagePreview()
-    const {orderPlacedDate} = useOrderDates(helpCenter.default_locale)
+    const { previewStep } = useOrdersPagePreview()
+    const { orderPlacedDate } = useOrderDates(helpCenter.default_locale)
 
     const history = useHistory()
     const helpCenterTexts = HELP_CENTER_TEXTS[helpCenter.default_locale]
@@ -37,7 +40,7 @@ const SelfServiceHelpCenterOrdersPage = ({helpCenter}: Props) => {
                 <div className={css.orderNumber}>
                     {helpCenterTexts.orderNumber.replace(
                         '{{orderNumber}}',
-                        '#3089'
+                        '#3089',
                     )}
                 </div>
                 <div className={css.orderDate}>
@@ -77,7 +80,7 @@ const SelfServiceHelpCenterOrdersPage = ({helpCenter}: Props) => {
                                                 [css.isActive]:
                                                     previewStep ===
                                                     PreviewStep.TRACK_CLICK,
-                                            }
+                                            },
                                         )}
                                     >
                                         {helpCenterTexts.orderFlowTrack}
@@ -107,7 +110,7 @@ const SelfServiceHelpCenterOrdersPage = ({helpCenter}: Props) => {
                                             {
                                                 [css.isActive]:
                                                     hasHoveredReportOrderIssueScenario,
-                                            }
+                                            },
                                         )}
                                     >
                                         {helpCenterTexts.orderFlowReport}

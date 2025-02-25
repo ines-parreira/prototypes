@@ -1,5 +1,6 @@
-import {render, act, fireEvent, screen} from '@testing-library/react'
 import React from 'react'
+
+import { act, fireEvent, render, screen } from '@testing-library/react'
 
 import TextareaWithVariables from '../TextareaWithVariables'
 
@@ -25,7 +26,7 @@ describe('<TextareaWithVariables />', () => {
                         ],
                     },
                 ]}
-            />
+            />,
         )
 
         act(() => {
@@ -41,7 +42,7 @@ describe('<TextareaWithVariables />', () => {
         })
 
         expect(mockOnChange).toHaveBeenCalledWith(
-            '{{steps_state.http_request1.content.variable1 | json}}'
+            '{{steps_state.http_request1.content.variable1 | json}}',
         )
     })
 
@@ -66,7 +67,7 @@ describe('<TextareaWithVariables />', () => {
                         ],
                     },
                 ]}
-            />
+            />,
         )
 
         act(() => {
@@ -82,7 +83,7 @@ describe('<TextareaWithVariables />', () => {
         })
 
         expect(mockOnChange).toHaveBeenCalledWith(
-            '{{steps_state.http_request1.content.variable1 | date}}'
+            '{{steps_state.http_request1.content.variable1 | date}}',
         )
     })
 
@@ -107,7 +108,7 @@ describe('<TextareaWithVariables />', () => {
                         ],
                     },
                 ]}
-            />
+            />,
         )
 
         act(() => {
@@ -123,7 +124,7 @@ describe('<TextareaWithVariables />', () => {
         })
 
         expect(mockOnChange).toHaveBeenCalledWith(
-            '{{steps_state.http_request1.content.variable1 | json}}'
+            '{{steps_state.http_request1.content.variable1 | json}}',
         )
     })
 
@@ -148,7 +149,7 @@ describe('<TextareaWithVariables />', () => {
                         ],
                     },
                 ]}
-            />
+            />,
         )
 
         act(() => {
@@ -164,7 +165,7 @@ describe('<TextareaWithVariables />', () => {
         })
 
         expect(mockOnChange).toHaveBeenCalledWith(
-            '{{steps_state.http_request1.content.variable1 | json_escape}}'
+            '{{steps_state.http_request1.content.variable1 | json_escape}}',
         )
     })
 
@@ -189,7 +190,7 @@ describe('<TextareaWithVariables />', () => {
                         ],
                     },
                 ]}
-            />
+            />,
         )
 
         act(() => {
@@ -205,7 +206,7 @@ describe('<TextareaWithVariables />', () => {
         })
 
         expect(mockOnChange).toHaveBeenCalledWith(
-            '{{steps_state.http_request1.content.variable1}}'
+            '{{steps_state.http_request1.content.variable1}}',
         )
     })
 
@@ -231,7 +232,7 @@ describe('<TextareaWithVariables />', () => {
                     },
                 ]}
                 allowFilters
-            />
+            />,
         )
 
         act(() => {
@@ -240,12 +241,12 @@ describe('<TextareaWithVariables />', () => {
 
         act(() => {
             fireEvent.change(screen.getByDisplayValue('date'), {
-                target: {value: 'date | json | default: "null"'},
+                target: { value: 'date | json | default: "null"' },
             })
         })
 
         expect(mockOnChange).toHaveBeenCalledWith(
-            '{{steps_state.http_request1.content.variable1 | date | json | default: "null"}}'
+            '{{steps_state.http_request1.content.variable1 | date | json | default: "null"}}',
         )
     })
 
@@ -256,7 +257,7 @@ describe('<TextareaWithVariables />', () => {
                 onChange={jest.fn()}
                 variables={[]}
                 allowFilters
-            />
+            />,
         )
 
         act(() => {

@@ -1,11 +1,12 @@
+import React, { Component, ReactNode } from 'react'
+
 import classnames from 'classnames'
 import Clipboard from 'clipboard'
-import React, {ReactNode, Component} from 'react'
-import {Alert, Card, CardBody} from 'reactstrap'
+import { Alert, Card, CardBody } from 'reactstrap'
 
-import {FACEBOOK_INTEGRATION_TYPE} from 'constants/integration'
+import { FACEBOOK_INTEGRATION_TYPE } from 'constants/integration'
 import Button from 'pages/common/components/button/Button'
-import {assetsUrl} from 'utils'
+import { assetsUrl } from 'utils'
 
 import css from './CustomInstallationCard.less'
 
@@ -31,14 +32,14 @@ export default class CustomInstallationCard extends Component<Props, State> {
     componentDidMount() {
         this.clipboard = new Clipboard('#copy-code-snippet')
         this.clipboard.on('success', () => {
-            this.setState({isCopied: true})
+            this.setState({ isCopied: true })
 
             if (this.clearIsCopiedTimeout) {
                 clearTimeout(this.clearIsCopiedTimeout)
             }
 
             this.clearIsCopiedTimeout = window.setTimeout(() => {
-                this.setState({isCopied: false})
+                this.setState({ isCopied: false })
                 this.clearIsCopiedTimeout = null
             }, 1500)
         })
@@ -55,7 +56,7 @@ export default class CustomInstallationCard extends Component<Props, State> {
     }
 
     render() {
-        const {description, code, integrationType} = this.props
+        const { description, code, integrationType } = this.props
 
         return (
             <Card className={css['integration-card']}>
@@ -65,7 +66,7 @@ export default class CustomInstallationCard extends Component<Props, State> {
                             <img
                                 alt="javascript-logo"
                                 src={assetsUrl(
-                                    '/img/integrations/javascript.png'
+                                    '/img/integrations/javascript.png',
                                 )}
                             />
                         </div>

@@ -1,10 +1,11 @@
-import {render, screen} from '@testing-library/react'
-import {fromJS, Map} from 'immutable'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {INFOBAR_CUSTOM_BUTTON_ACTION_NAME} from 'config/actions'
+import { render, screen } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
 
-import {EventContainer} from '../Event'
+import { INFOBAR_CUSTOM_BUTTON_ACTION_NAME } from 'config/actions'
+
+import { EventContainer } from '../Event'
 
 jest.mock('pages/common/utils/DatetimeLabel', () => () => (
     <div>MockedDatetimeLabel</div>
@@ -66,7 +67,7 @@ describe('Event component', () => {
     const minProps: ComponentProps<typeof EventContainer> = {
         event: fromJS({}),
         isLast: false,
-        appData: {__app_name__: 'foo'},
+        appData: { __app_name__: 'foo' },
         ...getProps(rechargeIntegrationId),
         dispatch: jest.fn(),
     }
@@ -84,8 +85,8 @@ describe('Event component', () => {
                 status: 'success',
             },
         })
-        const {container} = render(
-            <EventContainer {...minProps} event={event} />
+        const { container } = render(
+            <EventContainer {...minProps} event={event} />,
         )
         expect(container).toMatchSnapshot()
     })
@@ -103,8 +104,8 @@ describe('Event component', () => {
             },
         })
 
-        const {container} = render(
-            <EventContainer {...minProps} event={event} />
+        const { container } = render(
+            <EventContainer {...minProps} event={event} />,
         )
 
         expect(container).toMatchSnapshot()

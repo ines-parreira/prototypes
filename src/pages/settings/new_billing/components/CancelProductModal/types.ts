@@ -1,6 +1,6 @@
-import {ProductType} from 'models/billing/types'
+import { ProductType } from 'models/billing/types'
 
-import {ProductFeature} from './ProductFeaturesFOMO/types'
+import { ProductFeature } from './ProductFeaturesFOMO/types'
 
 export type Reason = {
     label: string
@@ -16,7 +16,7 @@ export type CancellationScenario = {
     features: ProductFeature[]
     reasonsToCanduContents: ReasonsToCanduContent[]
     cancelProductAction: () => (
-        dispatch: React.Dispatch<any>
+        dispatch: React.Dispatch<any>,
     ) => Promise<boolean>
 }
 

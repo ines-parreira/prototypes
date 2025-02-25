@@ -1,7 +1,8 @@
-import hash from 'object-hash'
-import React, {Fragment, ReactNode} from 'react'
+import React, { Fragment, ReactNode } from 'react'
 
-import {renderTemplate} from './template'
+import hash from 'object-hash'
+
+import { renderTemplate } from './template'
 
 const iconRegex = /\B(:\w+:)\B/gi
 
@@ -28,7 +29,7 @@ const isValidIcon = (value: string): value is IconName => value in icons
  */
 export const renderInfobarTemplate = (
     body: string,
-    context: Record<string, unknown> = {}
+    context: Record<string, unknown> = {},
 ): ReactNode => {
     return renderTemplate(body, context)
         .split(iconRegex)

@@ -1,12 +1,11 @@
-import {ChartArea, TooltipItem} from 'chart.js'
+import { ChartArea, TooltipItem } from 'chart.js'
 import moment from 'moment'
 
-import {ReportingGranularity} from 'models/reporting/types'
-import {AggregationWindow, Period} from 'models/stat/types'
-import {formatPercentage} from 'pages/common/utils/numbers'
-import {comparedPeriodString, getFormat} from 'pages/stats/common/utils'
-
-import {toRGBA} from 'utils'
+import { ReportingGranularity } from 'models/reporting/types'
+import { AggregationWindow, Period } from 'models/stat/types'
+import { formatPercentage } from 'pages/common/utils/numbers'
+import { comparedPeriodString, getFormat } from 'pages/stats/common/utils'
+import { toRGBA } from 'utils'
 import {
     MONTH_AND_YEAR_SHORT,
     SHORT_DATE_FORMAT_US,
@@ -14,7 +13,7 @@ import {
     SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_US,
     SHORT_DATE_WITH_DAY_OF_THE_WEEK_FORMAT_WORLD,
 } from 'utils/date'
-import {formatReportingQueryDate, getPreviousPeriod} from 'utils/reporting'
+import { formatReportingQueryDate, getPreviousPeriod } from 'utils/reporting'
 
 export const NUMBER_TICK_FORMATTER = new Intl.NumberFormat('en-US', {
     notation: 'compact',
@@ -26,7 +25,7 @@ export const TICKET_CUSTOM_FIELDS_NEW_SEPARATOR = ' > '
 export function getGradient(
     color: string,
     canvasArea?: ChartArea,
-    canvasContext?: CanvasRenderingContext2D
+    canvasContext?: CanvasRenderingContext2D,
 ): CanvasGradient | string {
     if (!canvasContext || !canvasArea) {
         return color
@@ -35,7 +34,7 @@ export function getGradient(
         0,
         0,
         0,
-        canvasArea.bottom
+        canvasArea.bottom,
     )
     gradient.addColorStop(0, toRGBA(color, 0.2))
     gradient.addColorStop(1, toRGBA(color, 0))
@@ -44,7 +43,7 @@ export function getGradient(
 }
 
 export const renderTooltipLabelAsPercentage = (
-    context: TooltipItem<'line'>
+    context: TooltipItem<'line'>,
 ) => {
     const label = context?.dataset?.label || ''
     if (typeof context.parsed.y === 'number') {
@@ -71,7 +70,7 @@ export const renderTickLabelAsNumber = (value: string | number) => {
 
 export const formatDates = (
     granularity: ReportingGranularity,
-    dateTime: string
+    dateTime: string,
 ) => {
     const date = moment(dateTime)
     let format = getFormat(granularity)
@@ -103,7 +102,7 @@ export const formatDates = (
 
 export const getUtcPeriodFromDateAndGranularity = (
     dateTime: string,
-    granularity: AggregationWindow
+    granularity: AggregationWindow,
 ) => {
     let startDate = moment.utc(dateTime).startOf('day').toISOString()
     let endDate = moment.utc(dateTime).endOf('day').toISOString()
@@ -122,12 +121,12 @@ export const getUtcPeriodFromDateAndGranularity = (
 }
 
 export const getBadgeTooltipForPreviousPeriod = (
-    statsFiltersPeriod: Period
+    statsFiltersPeriod: Period,
 ) => {
     const period = getPreviousPeriod(statsFiltersPeriod)
     return comparedPeriodString(
         moment(period.start_datetime),
-        moment(period.end_datetime)
+        moment(period.end_datetime),
     )
 }
 

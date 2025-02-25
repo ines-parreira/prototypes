@@ -1,6 +1,8 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import {fromJS} from 'immutable'
 import React from 'react'
+
+import { fromJS } from 'immutable'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -14,18 +16,18 @@ import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPop
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import css from 'pages/integrations/integration/components/app/IntegrationRow.less'
-import {getCurrentDomain} from 'state/currentAccount/selectors'
-import {deleteIntegration} from 'state/integrations/actions'
-import {getIntegrationsLoading} from 'state/integrations/selectors'
+import { getCurrentDomain } from 'state/currentAccount/selectors'
+import { deleteIntegration } from 'state/integrations/actions'
+import { getIntegrationsLoading } from 'state/integrations/selectors'
 
-import {getReconnectUrl} from './helpers'
+import { getReconnectUrl } from './helpers'
 
 type Props = {
     integration: Integration
     connectUrl: string
 }
 
-export default function IntegrationRow({integration, connectUrl}: Props) {
+export default function IntegrationRow({ integration, connectUrl }: Props) {
     const domain = useAppSelector(getCurrentDomain)
     const isDisabled = integration.deactivated_datetime
     const reconnectUrl = getReconnectUrl(connectUrl, domain, integration)
@@ -77,8 +79,8 @@ export default function IntegrationRow({integration, connectUrl}: Props) {
                     )}
                     <ConfirmationPopover
                         id={`delete-${integration.id}`}
-                        buttonProps={{intent: 'destructive'}}
-                        cancelButtonProps={{intent: 'secondary'}}
+                        buttonProps={{ intent: 'destructive' }}
+                        cancelButtonProps={{ intent: 'secondary' }}
                         content="Are you sure you want to delete this account? All associated views and rules will be disabled."
                         title={<b>Delete account?</b>}
                         onConfirm={() =>
@@ -87,7 +89,7 @@ export default function IntegrationRow({integration, connectUrl}: Props) {
                         confirmLabel="Delete"
                         showCancelButton
                     >
-                        {({uid, onDisplayConfirmation}) => (
+                        {({ uid, onDisplayConfirmation }) => (
                             <>
                                 <IconButton
                                     id={uid}

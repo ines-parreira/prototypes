@@ -1,16 +1,17 @@
-import classnames from 'classnames'
-import {EditorState} from 'draft-js'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {UploadType} from 'common/types'
-import {AUTOMATED_RESPONSE_MESSAGE_TEXT_MAX_LENGTH} from 'models/selfServiceConfiguration/constants'
-import {ReportIssueCaseReasonAction} from 'models/selfServiceConfiguration/types'
+import classnames from 'classnames'
+import { EditorState } from 'draft-js'
+import { fromJS } from 'immutable'
+
+import { UploadType } from 'common/types'
+import { AUTOMATED_RESPONSE_MESSAGE_TEXT_MAX_LENGTH } from 'models/selfServiceConfiguration/constants'
+import { ReportIssueCaseReasonAction } from 'models/selfServiceConfiguration/types'
 import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 import RichField from 'pages/common/forms/RichField/RichField'
 import ToggleInput from 'pages/common/forms/ToggleInput'
-import {convertToHTML} from 'utils/editor'
-import {trimHTML} from 'utils/html'
+import { convertToHTML } from 'utils/editor'
+import { trimHTML } from 'utils/html'
 
 import {
     usePropagateError,
@@ -24,14 +25,14 @@ type Props = {
     onChange: (nextValue: ReportIssueCaseReasonAction) => void
 }
 
-const ReportOrderIssueScenarioReasonAction = ({value, onChange}: Props) => {
+const ReportOrderIssueScenarioReasonAction = ({ value, onChange }: Props) => {
     const hasError =
         value.responseMessageContent.text.length >
         AUTOMATED_RESPONSE_MESSAGE_TEXT_MAX_LENGTH
 
     usePropagateError('action', hasError)
 
-    const {storeIntegration} = useReportOrderIssueScenarioFormContext()
+    const { storeIntegration } = useReportOrderIssueScenarioFormContext()
 
     const handleResponseMessageContentChange = (editorState: EditorState) => {
         const content = editorState.getCurrentContent()
@@ -48,7 +49,7 @@ const ReportOrderIssueScenarioReasonAction = ({value, onChange}: Props) => {
         })
     }
     const handleShowHelpfulPromptChange = (nextShowHelpfulPrompt: boolean) => {
-        onChange({...value, showHelpfulPrompt: nextShowHelpfulPrompt})
+        onChange({ ...value, showHelpfulPrompt: nextShowHelpfulPrompt })
     }
 
     return (

@@ -1,11 +1,13 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import {Map} from 'immutable'
 import React from 'react'
 
-import {SegmentEvent} from 'common/segment'
-import {HelpdeskPlan} from 'models/billing/types'
+import { Map } from 'immutable'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { SegmentEvent } from 'common/segment'
+import { HelpdeskPlan } from 'models/billing/types'
 import UpgradeButton from 'pages/common/components/UpgradeButton/UpgradeButton'
-import {AccountFeature} from 'state/currentAccount/types'
+import { AccountFeature } from 'state/currentAccount/types'
 
 // PERMISSIONS in FB documentation
 // https://developers.facebook.com/docs/pages/overview/permissions-features#permissions
@@ -177,7 +179,7 @@ export function getFacebookUserTypeByRoles(userRoles: FacebookRole[]) {
  */
 export function hasFacebookRole(
     userRoles: FacebookRole[],
-    roleToSearch: FacebookRole
+    roleToSearch: FacebookRole,
 ) {
     if (!userRoles) {
         return false
@@ -191,7 +193,7 @@ export function hasFacebookRole(
  */
 export function canEnableMetaSetting(
     userPermissions: string[],
-    metaSetting: string
+    metaSetting: string,
 ) {
     if (!userPermissions) {
         return false
@@ -227,7 +229,7 @@ export const InstagramDMSettingStatus = {
 
 export function getInstagramDMSettingStatus(
     canEnableInstagramDirectMessage: boolean,
-    integration: Map<any, any>
+    integration: Map<any, any>,
 ) {
     if (!canEnableInstagramDirectMessage) {
         // User did not grant the permission so he should reconnect
@@ -254,7 +256,7 @@ export function getInstagramDMSettingsInlineComponent(
     instagramDMSettingStatus: number,
     currentAccount: Map<any, any>,
     currentHelpdeskProduct: HelpdeskPlan | undefined,
-    tooltipId?: number
+    tooltipId?: number,
 ) {
     const currentPriceHasInstagramDMFeature =
         !!currentHelpdeskProduct?.features[

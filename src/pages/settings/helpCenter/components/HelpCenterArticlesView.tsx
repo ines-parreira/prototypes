@@ -1,16 +1,16 @@
+import React, { useEffect, useMemo, useRef, useState } from 'react'
+
 import copy from 'copy-to-clipboard'
 import _isEqual from 'lodash/isEqual'
-import React, {useEffect, useMemo, useRef, useState} from 'react'
+import { useLocation } from 'react-router-dom'
 
-import {useLocation} from 'react-router-dom'
-
-import {logEvent, SegmentEvent} from 'common/segment'
-import {useLimitations} from 'hooks/helpCenter/useLimitations'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { useLimitations } from 'hooks/helpCenter/useLimitations'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {Event, useModalManager} from 'hooks/useModalManager'
+import { Event, useModalManager } from 'hooks/useModalManager'
 import usePrevious from 'hooks/usePrevious'
-import {useSearchParam} from 'hooks/useSearchParam'
+import { useSearchParam } from 'hooks/useSearchParam'
 import {
     Article,
     ArticleTemplate,
@@ -19,71 +19,72 @@ import {
     CreateArticleTranslationDto,
     LocaleCode,
 } from 'models/helpCenter/types'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {resetArticles} from 'state/entities/helpCenter/articles'
-import {resetCategories} from 'state/entities/helpCenter/categories'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {changeViewLanguage, getViewLanguage} from 'state/ui/helpCenter'
-import {unreachable} from 'utils'
-import {reportError} from 'utils/errors'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { resetArticles } from 'state/entities/helpCenter/articles'
+import { resetCategories } from 'state/entities/helpCenter/categories'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { changeViewLanguage, getViewLanguage } from 'state/ui/helpCenter'
+import { unreachable } from 'utils'
+import { reportError } from 'utils/errors'
 
 import {
     ArticleRowActionTypes,
     DRAWER_TRANSITION_DURATION_MS,
-    HELP_CENTER_DEFAULT_LOCALE,
-    HELP_CENTER_CREATE_ARTICLE_QUERY_KEY,
     HELP_CENTER_CREATE_ARTICLE_FROM_SCRATCH_QUERY_VALUE,
-    MODALS,
+    HELP_CENTER_CREATE_ARTICLE_QUERY_KEY,
     HELP_CENTER_DEFAULT_LAYOUT,
+    HELP_CENTER_DEFAULT_LOCALE,
+    MODALS,
 } from '../constants'
-import {useArticlesActions} from '../hooks/useArticlesActions'
+import { useArticlesActions } from '../hooks/useArticlesActions'
 import useCurrentHelpCenter from '../hooks/useCurrentHelpCenter'
-import {useHelpCenterActions} from '../hooks/useHelpCenterActions'
-import {useHelpCenterApi, useAbilityChecker} from '../hooks/useHelpCenterApi'
-
-import {useEditionManager} from '../providers/EditionManagerContext'
-import {useSearchContext} from '../providers/SearchContext'
-
-import {useGetArticleTemplate, useUpsertArticleTemplateReview} from '../queries'
-import {ArticleMode, getArticleMode} from '../types/articleMode'
-import {getGenericMessageFromError} from '../utils'
+import { useHelpCenterActions } from '../hooks/useHelpCenterActions'
+import { useAbilityChecker, useHelpCenterApi } from '../hooks/useHelpCenterApi'
+import { useEditionManager } from '../providers/EditionManagerContext'
+import { useSearchContext } from '../providers/SearchContext'
+import {
+    useGetArticleTemplate,
+    useUpsertArticleTemplateReview,
+} from '../queries'
+import { ArticleMode, getArticleMode } from '../types/articleMode'
+import { getGenericMessageFromError } from '../utils'
 import {
     articleRequiredFields,
-    getHomePageItemHashUrl,
     getArticleUrl,
     getHelpCenterDomain,
+    getHomePageItemHashUrl,
     getNewArticleTranslation,
     isArticleTemplateKey,
     isExistingArticle,
     slugify,
 } from '../utils/helpCenter.utils'
-import {ActionType, OptionItem} from './articles/ArticleLanguageSelect'
-import {CloseModal} from './articles/CloseModal'
-
+import { ActionType, OptionItem } from './articles/ArticleLanguageSelect'
+import { CloseModal } from './articles/CloseModal'
 import HelpCenterArticleModalAdvancedViewContent from './articles/HelpCenterEditArticleModalContent/HelpCenterArticleModalAdvancedViewContent'
 import HelpCenterArticleModalBasicViewContent from './articles/HelpCenterEditArticleModalContent/HelpCenterArticleModalBasicViewContent'
-import {HelpCenterArticleModalView} from './articles/HelpCenterEditArticleModalContent/types'
+import { HelpCenterArticleModalView } from './articles/HelpCenterEditArticleModalContent/types'
 import HelpCenterEditModal from './articles/HelpCenterEditModal'
-import {ArticlesTable} from './ArticlesTable'
-import {CategoriesViews} from './CategoriesView'
-import {CategoryDrawer} from './CategoryDrawer'
-import {ConfirmationModal} from './ConfirmationModal'
-import css from './HelpCenterArticlesView.less'
+import { ArticlesTable } from './ArticlesTable'
+import { CategoriesViews } from './CategoriesView'
+import { CategoryDrawer } from './CategoryDrawer'
+import { ConfirmationModal } from './ConfirmationModal'
 import HelpCenterPageWrapper from './HelpCenterPageWrapper'
 import HelpCenterWizardCompletedModal from './HelpCenterWizardCompletedModal/HelpCenterWizardCompletedModal'
 import MaxArticleBanner from './Paywalls/MaxArticleBanner'
-import {SearchView} from './SearchView'
+import { SearchView } from './SearchView'
+
+import css from './HelpCenterArticlesView.less'
 
 export const HelpCenterArticlesView: React.FC = () => {
     const dispatch = useAppDispatch()
-    const {client} = useHelpCenterApi()
+    const { client } = useHelpCenterApi()
     const articlesActions = useArticlesActions()
     const helpCenter = useCurrentHelpCenter()
-    const {getHelpCenterCustomDomain} = useHelpCenterActions()
+    const { getHelpCenterCustomDomain } = useHelpCenterActions()
     const [isReady, setIsReady] = useState(false)
-    const {setSearchInput} = useSearchContext()
+    const { setSearchInput } = useSearchContext()
     const currentAccount = useAppSelector(getCurrentAccountState)
     const currentUser = useAppSelector(getCurrentUser)
     const [createArticleSeachParam, setCreateArticleSeachParam] =
@@ -106,9 +107,9 @@ export const HelpCenterArticlesView: React.FC = () => {
         setSelectedTemplateKey,
     } = useEditionManager()
 
-    const {searchResults} = useSearchContext()
+    const { searchResults } = useSearchContext()
 
-    const {isPassingRulesCheck} = useAbilityChecker()
+    const { isPassingRulesCheck } = useAbilityChecker()
 
     /**
      * States
@@ -119,8 +120,10 @@ export const HelpCenterArticlesView: React.FC = () => {
         useAppSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
 
     // modal instance initializations
-    const categoryModal = useModalManager(MODALS.CATEGORY, {autoDestroy: false})
-    const articleModal = useModalManager(MODALS.ARTICLE, {autoDestroy: false})
+    const categoryModal = useModalManager(MODALS.CATEGORY, {
+        autoDestroy: false,
+    })
+    const articleModal = useModalManager(MODALS.ARTICLE, { autoDestroy: false })
 
     // modal states
     const [pendingDeleteLocaleOptionItem, setPendingDeleteLocaleOptionItem] =
@@ -140,15 +143,15 @@ export const HelpCenterArticlesView: React.FC = () => {
         useState(false)
 
     // editor states
-    const [counters, setCounters] = useState<{charCount: number}>()
+    const [counters, setCounters] = useState<{ charCount: number }>()
 
-    const {data: template} = useGetArticleTemplate(
+    const { data: template } = useGetArticleTemplate(
         selectedTemplateKey,
         viewLanguage,
         {
             refetchOnWindowFocus: false,
             retry: false,
-        }
+        },
     )
 
     // template states
@@ -192,7 +195,7 @@ export const HelpCenterArticlesView: React.FC = () => {
         if (articleId && client) {
             const fetchAndSetArticle = async (articleId: string) => {
                 try {
-                    const {data: fetchedArticle} = await client.getArticle({
+                    const { data: fetchedArticle } = await client.getArticle({
                         id: Number(articleId),
                         help_center_id: helpCenter.id,
                         locale: 'en-US',
@@ -208,7 +211,7 @@ export const HelpCenterArticlesView: React.FC = () => {
                         notify({
                             message: 'Failed to fetch article',
                             status: NotificationStatus.Error,
-                        })
+                        }),
                     )
                     reportError(err as Error)
                 }
@@ -241,7 +244,7 @@ export const HelpCenterArticlesView: React.FC = () => {
                 setIsFetchingArticleTranslations(true)
 
                 const {
-                    data: {data: translations},
+                    data: { data: translations },
                 } = await client.listArticleTranslations({
                     help_center_id: helpCenter.id,
                     article_id: selectedArticle.id,
@@ -249,9 +252,11 @@ export const HelpCenterArticlesView: React.FC = () => {
                 })
 
                 const translation =
-                    translations.find(({locale}) => locale === viewLanguage) ||
-                    translations.find(({locale}) =>
-                        helpCenter.supported_locales.includes(locale)
+                    translations.find(
+                        ({ locale }) => locale === viewLanguage,
+                    ) ||
+                    translations.find(({ locale }) =>
+                        helpCenter.supported_locales.includes(locale),
                     )
 
                 if (translation) {
@@ -269,7 +274,7 @@ export const HelpCenterArticlesView: React.FC = () => {
 
                 if (selectedArticle.translation.category_id !== undefined) {
                     setSelectedCategoryId(
-                        selectedArticle.translation.category_id
+                        selectedArticle.translation.category_id,
                     )
                 }
 
@@ -279,7 +284,7 @@ export const HelpCenterArticlesView: React.FC = () => {
                     notify({
                         message: 'Failed to fetch article translations',
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
                 reportError(err as Error)
             } finally {
@@ -330,7 +335,7 @@ export const HelpCenterArticlesView: React.FC = () => {
                 translation: {
                     ...getNewArticleTranslation(
                         selectedArticleLanguage,
-                        selectedCategoryId
+                        selectedCategoryId,
                     ),
                     content,
                     title,
@@ -375,7 +380,7 @@ export const HelpCenterArticlesView: React.FC = () => {
         onArticleSelect({
             translation: getNewArticleTranslation(
                 selectedArticleLanguage,
-                categoryFromModalParams
+                categoryFromModalParams,
             ),
         })
 
@@ -391,10 +396,10 @@ export const HelpCenterArticlesView: React.FC = () => {
             {
                 translation: getNewArticleTranslation(
                     selectedArticleLanguage,
-                    categoryFromModalParams
+                    categoryFromModalParams,
                 ),
             },
-            template
+            template,
         )
 
         setSelectedCategoryId(categoryFromModalParams)
@@ -407,8 +412,8 @@ export const HelpCenterArticlesView: React.FC = () => {
     }
 
     const onArticleChange = (
-        {content}: {content: string},
-        charCount?: number
+        { content }: { content: string },
+        charCount?: number,
     ) => {
         setSelectedArticle((prevSelectedArticle) =>
             prevSelectedArticle?.translation
@@ -419,11 +424,11 @@ export const HelpCenterArticlesView: React.FC = () => {
                           content,
                       },
                   }
-                : prevSelectedArticle
+                : prevSelectedArticle,
         )
 
         if (typeof charCount === 'number') {
-            setCounters({charCount})
+            setCounters({ charCount })
         }
     }
 
@@ -448,14 +453,14 @@ export const HelpCenterArticlesView: React.FC = () => {
 
     const onArticleSelect = (
         article: Article | CreateArticleDto,
-        template?: ArticleTemplate
+        template?: ArticleTemplate,
     ) => {
         setSelectedArticleTranslations(null)
 
         const templateKey = article.template_key || template?.key
 
         setSelectedTemplateKey(
-            isArticleTemplateKey(templateKey) ? templateKey : null
+            isArticleTemplateKey(templateKey) ? templateKey : null,
         )
 
         setSelectedArticle({
@@ -490,7 +495,7 @@ export const HelpCenterArticlesView: React.FC = () => {
             ...oldTranslations
                 .filter(
                     (translation) =>
-                        translation.locale !== article.translation.locale
+                        translation.locale !== article.translation.locale,
                 )
                 .map((translation) => ({
                     ...translation,
@@ -504,7 +509,7 @@ export const HelpCenterArticlesView: React.FC = () => {
 
     const createArticle = async (
         article: CreateArticleDto | Article | null,
-        isPublished: boolean
+        isPublished: boolean,
     ) => {
         if (!article?.translation) {
             return
@@ -516,7 +521,7 @@ export const HelpCenterArticlesView: React.FC = () => {
                     ...article.translation,
                     is_current: isPublished,
                 },
-                selectedTemplateKey
+                selectedTemplateKey,
             )
 
             reloadArticle(newArticle)
@@ -527,7 +532,7 @@ export const HelpCenterArticlesView: React.FC = () => {
                     SegmentEvent.HelpCenterTemplatesArticleFromTemplateCreated,
                     {
                         template_key: selectedTemplateKey,
-                    }
+                    },
                 )
             }
 
@@ -537,7 +542,7 @@ export const HelpCenterArticlesView: React.FC = () => {
                         isPublished ? ' and published' : ''
                     } with success`,
                     status: NotificationStatus.Success,
-                })
+                }),
             )
         } catch (err) {
             const errorMessage = getGenericMessageFromError(err)
@@ -546,7 +551,7 @@ export const HelpCenterArticlesView: React.FC = () => {
                 notify({
                     message: `Failed to create the article: ${errorMessage}`,
                     status: NotificationStatus.Error,
-                })
+                }),
             )
             reportError(err as Error)
         }
@@ -556,7 +561,7 @@ export const HelpCenterArticlesView: React.FC = () => {
 
     const updateArticle = async (
         article: Article | null,
-        isPublished: boolean
+        isPublished: boolean,
     ) => {
         if (!article?.translation) {
             return
@@ -576,7 +581,7 @@ export const HelpCenterArticlesView: React.FC = () => {
                         ...article.translation,
                         is_current: isPublished,
                     },
-                }
+                },
             )
 
             reloadArticle(updatedArticle)
@@ -585,8 +590,8 @@ export const HelpCenterArticlesView: React.FC = () => {
             if (updateAIArticleTemplateReview && article.template_key) {
                 await reviewArticle.mutateAsync([
                     undefined,
-                    {help_center_id: helpCenter.id},
-                    {action: 'publish', template_key: article.template_key},
+                    { help_center_id: helpCenter.id },
+                    { action: 'publish', template_key: article.template_key },
                 ])
             }
 
@@ -596,7 +601,7 @@ export const HelpCenterArticlesView: React.FC = () => {
                         isPublished ? ' and published' : ''
                     } with success`,
                     status: NotificationStatus.Success,
-                })
+                }),
             )
         } catch (err) {
             const errorMessage = getGenericMessageFromError(err)
@@ -605,7 +610,7 @@ export const HelpCenterArticlesView: React.FC = () => {
                 notify({
                     message: `Failed to save the article: ${errorMessage}`,
                     status: NotificationStatus.Error,
-                })
+                }),
             )
             reportError(err as Error)
         }
@@ -622,14 +627,14 @@ export const HelpCenterArticlesView: React.FC = () => {
                 notify({
                     message: 'Article deleted with success',
                     status: NotificationStatus.Success,
-                })
+                }),
             )
         } catch (err) {
             void dispatch(
                 notify({
                     message: 'Failed to delete the article',
                     status: NotificationStatus.Error,
-                })
+                }),
             )
             reportError(err as Error)
         } finally {
@@ -642,7 +647,7 @@ export const HelpCenterArticlesView: React.FC = () => {
 
     const onArticlesReorder = (
         categoryId: number | null,
-        articles: Article[]
+        articles: Article[],
     ): void => {
         void articlesActions.updateArticlesPositions(articles, categoryId)
         resetSearch()
@@ -651,7 +656,7 @@ export const HelpCenterArticlesView: React.FC = () => {
     const onArticleRowSettingsClick = async (
         action: ArticleRowActionTypes,
         article: Article,
-        isArticleOrAncestorUnlisted: boolean
+        isArticleOrAncestorUnlisted: boolean,
     ) => {
         switch (action) {
             case 'articleSettings': {
@@ -685,14 +690,14 @@ export const HelpCenterArticlesView: React.FC = () => {
                         notify({
                             message: 'Article duplicated with success',
                             status: NotificationStatus.Success,
-                        })
+                        }),
                     )
                 } catch (err) {
                     void dispatch(
                         notify({
                             message: 'Failed to duplicate the article',
                             status: NotificationStatus.Error,
-                        })
+                        }),
                     )
                     reportError(err as Error)
                 }
@@ -710,8 +715,8 @@ export const HelpCenterArticlesView: React.FC = () => {
         if (!article.translation) {
             return
         }
-        const {id: articleId, translation} = article
-        const {locale, slug, article_unlisted_id: unlistedId} = translation
+        const { id: articleId, translation } = article
+        const { locale, slug, article_unlisted_id: unlistedId } = translation
 
         const domain = getHelpCenterDomain(helpCenter)
 
@@ -732,21 +737,21 @@ export const HelpCenterArticlesView: React.FC = () => {
                           locale,
                           itemId: articleId,
                           isUnlisted,
-                      })
+                      }),
             )
 
             void dispatch(
                 notify({
                     message: 'Link copied with success',
                     status: NotificationStatus.Success,
-                })
+                }),
             )
         } catch (err) {
             void dispatch(
                 notify({
                     message: 'Failed to copy the link',
                     status: NotificationStatus.Error,
-                })
+                }),
             )
             reportError(err as Error)
         }
@@ -754,7 +759,7 @@ export const HelpCenterArticlesView: React.FC = () => {
 
     const onArticleLanguageSelect = (
         localeCode: LocaleCode,
-        translation: ArticleTranslationWithRating | CreateArticleTranslationDto
+        translation: ArticleTranslationWithRating | CreateArticleTranslationDto,
     ) => {
         if (!selectedArticle) {
             return
@@ -764,15 +769,15 @@ export const HelpCenterArticlesView: React.FC = () => {
         }
         setSelectedArticle((prevSelectedArticle) =>
             prevSelectedArticle
-                ? {...prevSelectedArticle, translation}
-                : prevSelectedArticle
+                ? { ...prevSelectedArticle, translation }
+                : prevSelectedArticle,
         )
         setSelectedArticleLanguage(localeCode)
     }
 
     const onArticleLanguageSelectActionClick = (
         action: ActionType,
-        option: OptionItem
+        option: OptionItem,
     ) => {
         if (action === 'delete') {
             setPendingDeleteLocaleOptionItem(option)
@@ -788,7 +793,7 @@ export const HelpCenterArticlesView: React.FC = () => {
         ) {
             void articlesActions.deleteArticleTranslation(
                 selectedArticle.id,
-                pendingDeleteLocaleOptionItem.value
+                pendingDeleteLocaleOptionItem.value,
             )
         }
         onArticleModalClose()
@@ -805,7 +810,7 @@ export const HelpCenterArticlesView: React.FC = () => {
                     isExistingArticle(selectedArticle)
                 ) {
                     const {
-                        data: {data: translations},
+                        data: { data: translations },
                     } = await client.listArticleTranslations({
                         help_center_id: helpCenter.id,
                         article_id: selectedArticle.id,
@@ -813,7 +818,7 @@ export const HelpCenterArticlesView: React.FC = () => {
                     })
                     const translation =
                         translations.find(
-                            ({locale}) => locale === localeCode
+                            ({ locale }) => locale === localeCode,
                         ) ??
                         getNewArticleTranslation(localeCode, selectedCategoryId)
                     onArticleLanguageSelect(localeCode, translation)
@@ -821,7 +826,7 @@ export const HelpCenterArticlesView: React.FC = () => {
                 } else {
                     const translation = getNewArticleTranslation(
                         localeCode,
-                        selectedCategoryId
+                        selectedCategoryId,
                     )
                     onArticleLanguageSelect(localeCode, translation)
                 }
@@ -829,8 +834,8 @@ export const HelpCenterArticlesView: React.FC = () => {
         } else {
             const translation =
                 selectedArticleTranslations?.find(
-                    ({locale: translationLocale}) =>
-                        translationLocale === localeCode
+                    ({ locale: translationLocale }) =>
+                        translationLocale === localeCode,
                 ) ?? getNewArticleTranslation(localeCode, selectedCategoryId)
             if (translation) onArticleLanguageSelect(localeCode, translation)
         }
@@ -869,7 +874,7 @@ export const HelpCenterArticlesView: React.FC = () => {
             setSelectedArticle({
                 ...selectedArticle,
                 available_locales: selectedArticle.available_locales.includes(
-                    selectedArticleLanguage
+                    selectedArticleLanguage,
                 )
                     ? selectedArticle.available_locales
                     : [
@@ -939,12 +944,12 @@ export const HelpCenterArticlesView: React.FC = () => {
         setShowTemplates((showTemplates) => !showTemplates)
     }
 
-    const canUpdateArticle = isPassingRulesCheck(({can}) =>
-        can('update', 'ArticleEntity')
+    const canUpdateArticle = isPassingRulesCheck(({ can }) =>
+        can('update', 'ArticleEntity'),
     )
 
-    const canUpdateCategory = isPassingRulesCheck(({can}) =>
-        can('update', 'CategoryEntity')
+    const canUpdateCategory = isPassingRulesCheck(({ can }) =>
+        can('update', 'CategoryEntity'),
     )
 
     /**
@@ -972,7 +977,7 @@ export const HelpCenterArticlesView: React.FC = () => {
 
         const translationHasBeenChanged = !_isEqual(
             currentTranslation,
-            selectedExistingArticleTranslation
+            selectedExistingArticleTranslation,
         )
 
         // selectedArticle?.category_id is number | undefined | null, we want to compare it to number | null
@@ -1082,7 +1087,7 @@ export const HelpCenterArticlesView: React.FC = () => {
                         categoryId,
                         articles,
                         level,
-                        isUnlisted
+                        isUnlisted,
                     ) => (
                         <ArticlesTable
                             isNested
@@ -1110,7 +1115,7 @@ export const HelpCenterArticlesView: React.FC = () => {
                         createArticle,
                         deleteArticle: onArticleDelete,
                         updateArticle,
-                    })
+                    }),
                 )}
             </HelpCenterEditModal>
 
@@ -1149,7 +1154,7 @@ export const HelpCenterArticlesView: React.FC = () => {
                             article?
                         </span>
                     }
-                    style={{width: '100%', maxWidth: 610}}
+                    style={{ width: '100%', maxWidth: 610 }}
                     onClose={() => setPendingDeleteLocaleOptionItem(undefined)}
                     onConfirm={onArticleTranslationDeletionConfirm}
                 >

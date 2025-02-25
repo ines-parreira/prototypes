@@ -1,9 +1,10 @@
-import {Meta, StoryFn} from '@storybook/react'
-import moment from 'moment'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {ThemeProvider} from 'core/theme'
-import {ticketsCreatedDataItem} from 'fixtures/chart'
+import { Meta, StoryFn } from '@storybook/react'
+import moment from 'moment'
+
+import { ThemeProvider } from 'core/theme'
+import { ticketsCreatedDataItem } from 'fixtures/chart'
 
 import LineChart from './LineChart'
 
@@ -13,9 +14,9 @@ const storyConfig: Meta = {
 }
 
 const Template: StoryFn<ComponentProps<typeof LineChart>> = (
-    props: ComponentProps<typeof LineChart>
+    props: ComponentProps<typeof LineChart>,
 ) => (
-    <div style={{height: '250px'}}>
+    <div style={{ height: '250px' }}>
         <ThemeProvider>
             <LineChart {...props} />
         </ThemeProvider>

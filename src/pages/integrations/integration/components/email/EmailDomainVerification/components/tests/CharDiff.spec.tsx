@@ -1,8 +1,9 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {diffChars} from 'utils/diffCheck'
-import {assumeMock} from 'utils/testing'
+import { render, screen } from '@testing-library/react'
+
+import { diffChars } from 'utils/diffCheck'
+import { assumeMock } from 'utils/testing'
 
 import CharDiff from '../CharDiff'
 
@@ -16,15 +17,15 @@ describe('CharDiff', () => {
     it('should return null when diffChars returns undefined', () => {
         diffCharsMock.mockReturnValue(undefined)
 
-        const {container} = renderComponent()
+        const { container } = renderComponent()
 
         expect(container).toBeEmptyDOMElement()
     })
 
     it('should render diff tokens in order when diffChars returns a result', () => {
         diffCharsMock.mockReturnValue([
-            {added: true, removed: false, value: 'a'},
-            {added: false, removed: true, value: 'b'},
+            { added: true, removed: false, value: 'a' },
+            { added: false, removed: true, value: 'b' },
         ] as ReturnType<typeof diffChars>)
 
         renderComponent()
@@ -37,8 +38,8 @@ describe('CharDiff', () => {
 
     it('should render added tokens with added class and removed token with removed class', () => {
         diffCharsMock.mockReturnValue([
-            {added: true, removed: false, value: 'a'},
-            {added: false, removed: true, value: 'b'},
+            { added: true, removed: false, value: 'a' },
+            { added: false, removed: true, value: 'b' },
         ] as ReturnType<typeof diffChars>)
 
         renderComponent()
@@ -49,10 +50,10 @@ describe('CharDiff', () => {
 
     it('should render linebreaks correctly', () => {
         diffCharsMock.mockReturnValue([
-            {added: true, removed: false, value: 'a\nb'},
-            {added: false, removed: true, value: 'c\r\nd'},
-            {added: false, removed: true, value: '\n'},
-            {added: true, removed: false, value: '\n'},
+            { added: true, removed: false, value: 'a\nb' },
+            { added: false, removed: true, value: 'c\r\nd' },
+            { added: false, removed: true, value: '\n' },
+            { added: true, removed: false, value: '\n' },
         ] as ReturnType<typeof diffChars>)
 
         renderComponent()

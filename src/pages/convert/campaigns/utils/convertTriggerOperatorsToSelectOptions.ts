@@ -1,11 +1,11 @@
-import {Option} from 'pages/common/forms/SelectField/types'
+import { Option } from 'pages/common/forms/SelectField/types'
 
-import {TRIGGERS_CONFIG} from '../constants/triggers'
-import {CampaignTriggerType} from '../types/enums/CampaignTriggerType.enum'
+import { TRIGGERS_CONFIG } from '../constants/triggers'
+import { CampaignTriggerType } from '../types/enums/CampaignTriggerType.enum'
 
 export const convertTriggerOperatorsToSelectOptions = (
     triggerType: CampaignTriggerType,
-    multipleInputs?: boolean
+    multipleInputs?: boolean,
 ): Option[] => {
     return Object.entries(TRIGGERS_CONFIG[triggerType].operators).map(
         ([operatorName, operatorConfig]) => {
@@ -15,6 +15,6 @@ export const convertTriggerOperatorsToSelectOptions = (
                     multipleInputs ? 'one of' : ''
                 }`,
             }
-        }
+        },
     )
 }

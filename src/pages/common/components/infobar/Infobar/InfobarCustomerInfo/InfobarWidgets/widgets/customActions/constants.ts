@@ -1,4 +1,4 @@
-import {ContentType} from 'models/api/types'
+import { ContentType } from 'models/api/types'
 
 export const NB_MIN_BUTTON_DISPLAYED = 2
 export const FONT_SIZE = 12

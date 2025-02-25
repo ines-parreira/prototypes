@@ -1,12 +1,13 @@
+import React, { useEffect, useMemo, useState } from 'react'
+
 import classnames from 'classnames'
 import Clipboard from 'clipboard'
-import {List, Map, fromJS} from 'immutable'
-import React, {useEffect, useMemo, useState} from 'react'
-import {Link} from 'react-router-dom'
+import { fromJS, List, Map } from 'immutable'
+import { Link } from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationType} from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import Button from 'pages/common/components/button/Button'
 import css from 'pages/common/components/infobar/Infobar.less'
@@ -14,13 +15,13 @@ import {
     areSourcesReady,
     jsonToWidgets,
 } from 'pages/common/components/infobar/utils'
-import {CustomerTimelineButton} from 'pages/tickets/detail/components/CustomerTimeline/CustomerTimelineButton'
-import {CustomerContext} from 'providers/infobar/CustomerContext'
-import {EditionContext} from 'providers/infobar/EditionContext'
-import {getDisplayName} from 'state/customers/helpers'
-import {getIntegrationsByTypes} from 'state/integrations/selectors'
+import { CustomerTimelineButton } from 'pages/tickets/detail/components/CustomerTimeline/CustomerTimelineButton'
+import { CustomerContext } from 'providers/infobar/CustomerContext'
+import { EditionContext } from 'providers/infobar/EditionContext'
+import { getDisplayName } from 'state/customers/helpers'
+import { getIntegrationsByTypes } from 'state/integrations/selectors'
 import * as actions from 'state/widgets/actions'
-import {itemsWithContext} from 'state/widgets/utils'
+import { itemsWithContext } from 'state/widgets/utils'
 
 import AddAppSuggestion from './AddAppSuggestion'
 import CustomerChannels from './CustomerChannels'
@@ -36,7 +37,7 @@ type GenerateButtonProps = {
 /**
  * Render a button that generates a widget template as edited template
  */
-const GenerateButton = ({sources, widgets}: GenerateButtonProps) => {
+const GenerateButton = ({ sources, widgets }: GenerateButtonProps) => {
     const dispatch = useAppDispatch()
     const generateWidgets = () => {
         const context = widgets ? widgets.get('currentContext', '') : ''
@@ -81,14 +82,14 @@ const InfobarCustomerInfo = ({
                 IntegrationType.Shopify,
                 IntegrationType.Smile,
                 IntegrationType.BigCommerce,
-            ])
+            ]),
         ).length > 0
 
     const editionContextObject = useMemo(
         () => ({
             isEditing,
         }),
-        [isEditing]
+        [isEditing],
     )
 
     const [isInitialized, setIsInitialized] = useState(false)
@@ -113,7 +114,7 @@ const InfobarCustomerInfo = ({
         const context = widgets.get('currentContext', '')
         const currentItems = itemsWithContext(
             widgets.get('items', fromJS([])),
-            context
+            context,
         )
 
         return !currentItems.isEmpty()
@@ -162,7 +163,7 @@ const InfobarCustomerInfo = ({
                     (
                         renderedContextWidgets.getIn(
                             [0, 'template'],
-                            fromJS({})
+                            fromJS({}),
                         ) as Map<any, any>
                     ).isEmpty()))
 
@@ -173,7 +174,7 @@ const InfobarCustomerInfo = ({
         const allWidgetsTemplatesAreEmpty =
             !renderedContextWidgets ||
             renderedContextWidgets.every((widget: Map<any, any>) =>
-                (widget.get('template', fromJS({})) as Map<any, any>).isEmpty()
+                (widget.get('template', fromJS({})) as Map<any, any>).isEmpty(),
             )
 
         if (!isEditing && allWidgetsTemplatesAreEmpty) {
@@ -218,14 +219,14 @@ const InfobarCustomerInfo = ({
                     customerIntegrationData.get('__integration_type__') ===
                     IntegrationType.GorgiasChat
                 )
-            }
+            },
         )
     }
 
     let lastSeenOnChat
     if (chatIntegrationData) {
         lastSeenOnChat = chatIntegrationData.get(
-            'chat_recent_activity_timestamp'
+            'chat_recent_activity_timestamp',
         )
     }
 

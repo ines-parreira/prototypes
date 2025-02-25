@@ -1,16 +1,17 @@
-import {NotificationFeed, useKnockFeed} from '@knocklabs/react'
-import type {RenderItemProps} from '@knocklabs/react'
-import {render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
-import type {ComponentProps} from 'react'
+import type { ComponentProps } from 'react'
+
+import { NotificationFeed, useKnockFeed } from '@knocklabs/react'
+import type { RenderItemProps } from '@knocklabs/react'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import {
     logEvent,
     NotificationCenterEventTypes,
     SegmentEvent,
 } from 'common/segment'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
 import Feed from '../Feed'
 import FeedHeader from '../FeedHeader'
@@ -21,9 +22,9 @@ let mockItem: RenderItemProps['item']
 jest.mock('@knocklabs/react', () => {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
     const actual = jest.requireActual(
-        '@knocklabs/react'
+        '@knocklabs/react',
     ) as typeof import('@knocklabs/react')
-    const {FilterStatus} = actual
+    const { FilterStatus } = actual
     return {
         ...actual,
         NotificationFeed: ({
@@ -52,31 +53,31 @@ jest.mock(
         ({
             ...jest.requireActual('common/segment'),
             logEvent: jest.fn(),
-        }) as typeof import('common/segment')
+        }) as typeof import('common/segment'),
 )
 jest.mock(
     '../FeedHeader',
     () =>
-        ({onToggleVisibility}: ComponentProps<typeof FeedHeader>) => (
+        ({ onToggleVisibility }: ComponentProps<typeof FeedHeader>) => (
             <div>
                 <p>FeedHeader</p>
                 <button type="button" onClick={onToggleVisibility}>
                     onClose
                 </button>
             </div>
-        )
+        ),
 )
 jest.mock(
     '../FeedItem',
     () =>
-        ({onClick, onToggleRead}: ComponentProps<typeof FeedItem>) => (
+        ({ onClick, onToggleRead }: ComponentProps<typeof FeedItem>) => (
             <div onClick={onClick}>
                 <p>FeedItem</p>
                 <button type="button" onClick={onToggleRead}>
                     onToggleRead
                 </button>
             </div>
-        )
+        ),
 )
 
 const defaultItem = {
@@ -98,7 +99,7 @@ describe('Feed', () => {
         markAsRead = jest.fn()
         markAsUnread = jest.fn()
         useKnockFeedMock.mockReturnValue({
-            feedClient: {markAsRead, markAsUnread},
+            feedClient: { markAsRead, markAsUnread },
         } as unknown as ReturnType<typeof useKnockFeed>)
 
         mockItem = defaultItem
@@ -122,7 +123,7 @@ describe('Feed', () => {
     })
 
     it('should mark as unread a read notification on toggle', () => {
-        const readItem = {...defaultItem, read_at: '2024-12-19T23:16:00'}
+        const readItem = { ...defaultItem, read_at: '2024-12-19T23:16:00' }
         mockItem = readItem
 
         render(<Feed />)

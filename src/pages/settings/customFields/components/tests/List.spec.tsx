@@ -1,8 +1,9 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {ticketInputFieldDefinition} from 'fixtures/customField'
-import {assumeMock} from 'utils/testing'
+import { render, screen } from '@testing-library/react'
+
+import { ticketInputFieldDefinition } from 'fixtures/customField'
+import { assumeMock } from 'utils/testing'
 
 import List from '../List'
 import Row from '../Row'
@@ -14,7 +15,7 @@ jest.mock('../Row', () =>
                 <td>This is a row</td>
             </tr>
         )
-    })
+    }),
 )
 
 const MockedRow = assumeMock(Row)
@@ -27,7 +28,7 @@ describe('<List />', () => {
             onReorder: jest.fn(),
         }
 
-        const {container} = render(<List {...props} />)
+        const { container } = render(<List {...props} />)
 
         expect(container.firstChild).toBeNull()
     })
@@ -45,7 +46,7 @@ describe('<List />', () => {
             render(<List {...props} />)
 
             expect(screen.getAllByRole('columnheader')).toHaveLength(6)
-        }
+        },
     )
 
     it('should call Row component with the correct props', () => {
@@ -65,7 +66,7 @@ describe('<List />', () => {
                 onMoveEntity: expect.any(Function),
                 onDropEntity: expect.any(Function),
             },
-            {}
+            {},
         )
         expect(MockedRow).toHaveBeenCalledTimes(1)
         expect(screen.getByText('This is a row')).toBeInTheDocument()

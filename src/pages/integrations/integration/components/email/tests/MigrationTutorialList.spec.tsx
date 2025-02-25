@@ -1,7 +1,8 @@
-import {cleanup, render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {providerTutorials} from '../EmailMigration/constants'
+import { cleanup, render, screen } from '@testing-library/react'
+
+import { providerTutorials } from '../EmailMigration/constants'
 import MigrationTutorialList from '../EmailMigration/MigrationTutorialList'
 
 describe('MigrationTutorialList', () => {
@@ -11,7 +12,7 @@ describe('MigrationTutorialList', () => {
                 tutorials={providerTutorials}
                 description={<div data-testid="tutorials-description" />}
                 footer={<div data-testid="tutorials-footer" />}
-            />
+            />,
         )
 
     afterEach(cleanup)
@@ -21,7 +22,7 @@ describe('MigrationTutorialList', () => {
         (label) => {
             renderComponent()
             expect(screen.getByText(label)).toBeVisible()
-        }
+        },
     )
 
     it('should display description and footer', () => {
@@ -68,7 +69,7 @@ describe('MigrationTutorialList', () => {
             'link',
             {
                 name: provider.providerSettingsText,
-            }
+            },
         )
         expect(helpDocsLink.href).toBe(provider.docsUrl)
         expect(providerSettingsLink.href).toBe(provider.providerSettingsUrl)

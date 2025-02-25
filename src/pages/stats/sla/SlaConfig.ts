@@ -1,9 +1,9 @@
-import {useBreachedSlaTicketsTrend} from 'hooks/reporting/sla/useSLAsTicketsTrends'
-import {useTicketSlaAchievementRateTrend} from 'hooks/reporting/sla/useTicketSlaAchievementRate'
-import {MetricTrendHook} from 'hooks/reporting/useMetricTrend'
-import {MetricTrendFormat} from 'pages/stats/common/utils'
-import {TooltipData} from 'pages/stats/types'
-import {SlaMetric} from 'state/ui/stats/types'
+import { useBreachedSlaTicketsTrend } from 'hooks/reporting/sla/useSLAsTicketsTrends'
+import { useTicketSlaAchievementRateTrend } from 'hooks/reporting/sla/useTicketSlaAchievementRate'
+import { MetricTrendHook } from 'hooks/reporting/useMetricTrend'
+import { MetricTrendFormat } from 'pages/stats/common/utils'
+import { TooltipData } from 'pages/stats/types'
+import { SlaMetric } from 'state/ui/stats/types'
 
 export const SLA_STATUS_COLUMN_LABEL = 'SLA status'
 

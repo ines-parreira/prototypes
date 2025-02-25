@@ -1,9 +1,9 @@
 import {
-    OldPhoneNumber,
-    PhoneType,
-    PhoneCountry,
     AddressType,
+    OldPhoneNumber,
     PhoneCapabilitiesLimitationsMap,
+    PhoneCountry,
+    PhoneType,
 } from 'models/phoneNumber/types'
 
 export const phoneNumbers: OldPhoneNumber[] = [

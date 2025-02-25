@@ -1,7 +1,8 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {OrderDirection} from 'models/api/types'
+import { Meta, Story } from '@storybook/react'
+
+import { OrderDirection } from 'models/api/types'
 
 import TableHead from '../TableHead'
 import TableWrapper from '../TableWrapper'
@@ -14,12 +15,12 @@ const storyConfig: Meta = {
 }
 
 const HeaderCellTemplate: Story<ComponentProps<typeof HeaderCell>> = (
-    props
+    props,
 ) => (
     <TableWrapper>
         <TableHead>
             {['Column 1', 'Column 2', 'Column 3'].map((value, index) => (
-                <HeaderCell key={index} style={{width: '33%'}} {...props}>
+                <HeaderCell key={index} style={{ width: '33%' }} {...props}>
                     {value}
                 </HeaderCell>
             ))}

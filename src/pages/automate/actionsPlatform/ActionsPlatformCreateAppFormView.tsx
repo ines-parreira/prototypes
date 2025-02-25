@@ -1,8 +1,9 @@
-import _keyBy from 'lodash/keyBy'
-import React, {useMemo} from 'react'
-import {useHistory} from 'react-router-dom'
+import React, { useMemo } from 'react'
 
-import {IntegrationType} from 'models/integration/constants'
+import _keyBy from 'lodash/keyBy'
+import { useHistory } from 'react-router-dom'
+
+import { IntegrationType } from 'models/integration/constants'
 import AutomateFormView from 'pages/automate/common/components/AutomateFormView'
 
 import ActionsPlatformAppForm from './components/ActionsPlatformAppForm'
@@ -17,7 +18,7 @@ const ActionsPlatformCreateAppFormView = () => {
         isLoading: isAppsLoading,
         actionsApps,
     } = useApps([IntegrationType.App])
-    const {createActionsApp, isLoading: isCreateActionsAppLoading} =
+    const { createActionsApp, isLoading: isCreateActionsAppLoading } =
         useCreateActionsApp()
 
     const isLoading = isAppsLoading
@@ -53,7 +54,7 @@ const ActionsPlatformCreateAppFormView = () => {
             <ActionsPlatformAppForm
                 apps={filteredApps}
                 onSubmit={async (value) => {
-                    await createActionsApp([{id: value.id}, value])
+                    await createActionsApp([{ id: value.id }, value])
 
                     history.push('/app/automation/actions-platform/apps')
                 }}

@@ -1,18 +1,19 @@
-import {Tooltip, Badge} from '@gorgias/merchant-ui-kit'
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
-import {EmailProvider} from 'models/integration/constants'
-import {EmailIntegration} from 'models/integration/types'
+import { Badge, Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { EmailProvider } from 'models/integration/constants'
+import { EmailIntegration } from 'models/integration/types'
 import Alert from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import history from 'pages/history'
 
 import {
+    isSingleSenderVerified as checkIsSingleSenderVerified,
     getDomainFromEmailAddress,
     isBaseEmailIntegration,
     isOutboundDomainVerified,
-    isSingleSenderVerified as checkIsSingleSenderVerified,
 } from '../helpers'
 import useCreateDomainVerification from '../hooks/useCreateDomainVerification'
 import VerificationCard from './VerificationCard/VerificationCard'
@@ -36,7 +37,8 @@ export default function EmailVerification({
     const isBaseIntegration = isBaseEmailIntegration(integration)
 
     const domain = getDomainFromEmailAddress(integration.meta.address)
-    const {isLoading, createDomainVerification} = useCreateDomainVerification()
+    const { isLoading, createDomainVerification } =
+        useCreateDomainVerification()
 
     const handleVerifyDomainClick = async () => {
         await createDomainVerification({

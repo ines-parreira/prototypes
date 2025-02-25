@@ -1,25 +1,25 @@
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
+import React, { ReactNode } from 'react'
+
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
-import {createMemoryHistory} from 'history'
-import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
-import React, {ReactNode} from 'react'
-import {Provider as ReduxProvider} from 'react-redux'
-import {Router} from 'react-router-dom'
+import { createMemoryHistory } from 'history'
+import { mockFlags, resetLDMocks } from 'jest-launchdarkly-mock'
+import { Provider as ReduxProvider } from 'react-redux'
+import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
-import {useMigrationApi} from 'pages/settings/helpCenter/hooks/useMigrationApi'
-
-import {getAccessToken} from 'rest_api/auth'
-import {getMigrationClient} from 'rest_api/migration_api'
-import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
-import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
-import {RootState, StoreDispatch} from 'state/types'
-import {initialState as uiState} from 'state/ui/helpCenter/reducer'
+import { useMigrationApi } from 'pages/settings/helpCenter/hooks/useMigrationApi'
+import { getAccessToken } from 'rest_api/auth'
+import { getMigrationClient } from 'rest_api/migration_api'
+import { initialState as articlesState } from 'state/entities/helpCenter/articles/reducer'
+import { initialState as categoriesState } from 'state/entities/helpCenter/categories/reducer'
+import { RootState, StoreDispatch } from 'state/types'
+import { initialState as uiState } from 'state/ui/helpCenter/reducer'
 
 import {
     helpCenterMigrationConfig,
@@ -31,31 +31,31 @@ import {
     partiallySucceededMigrationStats,
     succeededMigrationStats,
 } from './fixtures/migration-sessions'
-import ImportSection, {ACTIVE_MIGRATION_UPDATE_TIMEOUT} from './ImportSection'
-import {sessionHasProgressStatus} from './utils'
+import ImportSection, { ACTIVE_MIGRATION_UPDATE_TIMEOUT } from './ImportSection'
+import { sessionHasProgressStatus } from './utils'
 
 jest.mock(
     'pages/common/components/modal/Modal',
     () =>
-        ({children}: {children: ReactNode}) => {
+        ({ children }: { children: ReactNode }) => {
             return <div>{children}</div>
-        }
+        },
 )
 
 jest.mock(
     'pages/common/components/modal/ModalBody',
     () =>
-        ({children}: {children: ReactNode}) => {
+        ({ children }: { children: ReactNode }) => {
             return <div>{children}</div>
-        }
+        },
 )
 
 jest.mock(
     'pages/common/components/modal/ModalHeader',
     () =>
-        ({children}: {children: ReactNode}) => {
+        ({ children }: { children: ReactNode }) => {
             return <div>{children}</div>
-        }
+        },
 )
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -74,7 +74,7 @@ const defaultState: Partial<RootState> = {
         },
     } as any,
     ui: {
-        helpCenter: {...uiState, currentId: 1},
+        helpCenter: { ...uiState, currentId: 1 },
     } as any,
 }
 
@@ -89,7 +89,7 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
 
 jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
 ;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
-    getSingleHelpCenterResponseFixture
+    getSingleHelpCenterResponseFixture,
 )
 
 // Migration client calls this function in an interceptor to set the access token
@@ -101,7 +101,7 @@ const history = createMemoryHistory()
 
 const renderWithStore = (element: React.ReactElement) =>
     render(element, {
-        wrapper: ({children}: any) => (
+        wrapper: ({ children }: any) => (
             <Router history={history}>
                 <ReduxProvider store={mockStore(defaultState)}>
                     {children}
@@ -111,7 +111,7 @@ const renderWithStore = (element: React.ReactElement) =>
     })
 
 const activeMigration = migrationSessions.find((session) =>
-    sessionHasProgressStatus(session)
+    sessionHasProgressStatus(session),
 )!
 
 const succeededMigration = {
@@ -183,19 +183,19 @@ describe('<ImportSection />', () => {
         renderWithStore(<ImportSection />)
 
         const importInProgress = await waitFor(() =>
-            screen.getByTestId('import-in-progress-info')
+            screen.getByTestId('import-in-progress-info'),
         )
         expect(importInProgress).not.toBeNull()
 
         const moreDetails = screen.getByTestId(
-            'import-in-progress-more-details-trigger'
+            'import-in-progress-more-details-trigger',
         )
 
         fireEvent.click(moreDetails)
 
         // Make sure it displays the progress of the active migration in the state modal
         const progressElement = screen.queryByText(
-            `${activeMigration.result.progress}% Complete`
+            `${activeMigration.result.progress}% Complete`,
         )
 
         expect(progressElement).not.toBeNull()
@@ -222,12 +222,12 @@ describe('<ImportSection />', () => {
         renderWithStore(<ImportSection />)
 
         const importArticlesButton = await waitFor(() =>
-            screen.getByRole('button', {name: /Import Articles/})
+            screen.getByRole('button', { name: /Import Articles/ }),
         )
         fireEvent.click(importArticlesButton)
 
         const importFromAnotherProvider = await waitFor(() =>
-            screen.getByTestId('import-articles-modal-file-drop-area')
+            screen.getByTestId('import-articles-modal-file-drop-area'),
         )
         fireEvent.click(importFromAnotherProvider)
 
@@ -244,22 +244,22 @@ describe('<ImportSection />', () => {
         await userEvent.type(apiKeyInput, 'api-key')
         fireEvent.click(submitButton)
         const startMigrationButton = await waitFor(() =>
-            screen.getByRole('button', {name: 'Start migrating'})
+            screen.getByRole('button', { name: 'Start migrating' }),
         )
         fireEvent.click(startMigrationButton)
 
         // Make sure it displays the progress of the active migration in the state modal
         const progressElement = await waitFor(() =>
             screen.getByText(
-                new RegExp(`${activeMigration.result.progress}% Complete`)
-            )
+                new RegExp(`${activeMigration.result.progress}% Complete`),
+            ),
         )
         expect(progressElement).not.toBeNull()
         jest.advanceTimersByTime(ACTIVE_MIGRATION_UPDATE_TIMEOUT)
 
         // Should become 100% after the first update
         const fullProgressElement = await waitFor(() =>
-            screen.getByText(/100% Complete/)
+            screen.getByText(/100% Complete/),
         )
         expect(fullProgressElement).not.toBeNull()
 
@@ -293,12 +293,12 @@ describe('<ImportSection />', () => {
         const importArticlesButton = await waitFor(() =>
             screen.getByRole('button', {
                 name: /Import Articles/,
-            })
+            }),
         )
         fireEvent.click(importArticlesButton)
 
         const importFromAnotherProvider = await waitFor(() =>
-            screen.getByTestId('import-articles-modal-file-drop-area')
+            screen.getByTestId('import-articles-modal-file-drop-area'),
         )
         fireEvent.click(importFromAnotherProvider)
 
@@ -317,7 +317,7 @@ describe('<ImportSection />', () => {
         const startMigrationButton = await waitFor(() =>
             screen.getByRole('button', {
                 name: 'Start migrating',
-            })
+            }),
         )
         fireEvent.click(startMigrationButton)
 
@@ -328,8 +328,8 @@ describe('<ImportSection />', () => {
         // Make sure it displays the progress of the active migration in the state modal
         const progressElement = await waitFor(() =>
             screen.getByText(
-                new RegExp(`${activeMigration.result.progress}% Complete`)
-            )
+                new RegExp(`${activeMigration.result.progress}% Complete`),
+            ),
         )
         expect(progressElement).not.toBeNull()
         jest.advanceTimersByTime(ACTIVE_MIGRATION_UPDATE_TIMEOUT)
@@ -339,7 +339,7 @@ describe('<ImportSection />', () => {
             .replyOnce(200, partiallySucceededMigration)
 
         const firstRetryButton = await waitFor(() =>
-            screen.getByRole('button', {name: /Retry/})
+            screen.getByRole('button', { name: /Retry/ }),
         )
 
         fireEvent.click(firstRetryButton)
@@ -352,7 +352,7 @@ describe('<ImportSection />', () => {
 
         // The first one was for failed migration, this one is for partially succeeded
         const secondRetryButton = await waitFor(() =>
-            screen.getByRole('button', {name: /Retry/})
+            screen.getByRole('button', { name: /Retry/ }),
         )
 
         fireEvent.click(secondRetryButton)
@@ -362,14 +362,14 @@ describe('<ImportSection />', () => {
         // Rollback (reverting) creates a new session
         mockAPI
             .onPost(
-                '/api/sessions/e60c7fc6-eeed-419a-996c-711241db0d26/rollback'
+                '/api/sessions/e60c7fc6-eeed-419a-996c-711241db0d26/rollback',
             )
             .replyOnce(200, rollbackMigration)
 
         const revertButton = await waitFor(() =>
             screen.getByRole('button', {
                 name: /Revert/,
-            })
+            }),
         )
 
         fireEvent.click(revertButton)
@@ -377,7 +377,7 @@ describe('<ImportSection />', () => {
         jest.advanceTimersByTime(ACTIVE_MIGRATION_UPDATE_TIMEOUT)
 
         const revertNotice = await waitFor(() =>
-            screen.getByText(/Reverting migration from /)
+            screen.getByText(/Reverting migration from /),
         )
 
         expect(revertNotice).not.toBeNull()
@@ -400,27 +400,27 @@ describe('<ImportSection />', () => {
         renderWithStore(<ImportSection />)
 
         const importArticlesButton = await waitFor(() =>
-            screen.getByRole('button', {name: /Import Articles/})
+            screen.getByRole('button', { name: /Import Articles/ }),
         )
         fireEvent.click(importArticlesButton)
 
         const importFromAnotherProvider = await waitFor(() =>
-            screen.getByTestId('import-articles-modal-file-drop-area')
+            screen.getByTestId('import-articles-modal-file-drop-area'),
         )
         fireEvent.click(importFromAnotherProvider)
 
         // Choose provider
         const HelpDocsProvider = await waitFor(() =>
-            screen.queryByText(/HelpDocs/)
+            screen.queryByText(/HelpDocs/),
         )
         const ZendeskProvider = await waitFor(() =>
-            screen.queryByText(/Zendesk/)
+            screen.queryByText(/Zendesk/),
         )
         const IntercomProvider = await waitFor(() =>
-            screen.queryByText(/Intercom/)
+            screen.queryByText(/Intercom/),
         )
         const ReAmazeProvider = await waitFor(() =>
-            screen.queryByText(/Re:amaze/)
+            screen.queryByText(/Re:amaze/),
         )
 
         // Available providers should exist

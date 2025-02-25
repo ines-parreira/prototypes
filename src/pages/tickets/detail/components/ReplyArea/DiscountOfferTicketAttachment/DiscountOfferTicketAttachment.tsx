@@ -1,18 +1,18 @@
+import React, { MouseEvent, useCallback } from 'react'
+
 import classNames from 'classnames'
-import {Map} from 'immutable'
-import React, {MouseEvent, useCallback} from 'react'
+import { Map } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
-
-import {useModalManager} from 'hooks/useModalManager'
-import {useGetDiscountOffer} from 'models/convert/discountOffer/queries'
-import {UniqueDiscountOffer} from 'models/convert/discountOffer/types'
-import {UNIQUE_DISCOUNT_MODAL_NAME} from 'models/discountCodes/constants'
-import {UniqueDiscountOfferCreateModal} from 'pages/common/components/UniqueDiscountOfferCreateModal/UniqueDiscountOfferCreateModal'
-import {computeDiscountOfferSummary} from 'pages/common/components/UniqueDiscountOfferResults/utils'
-import {DiscountOfferAttachment} from 'pages/convert/campaigns/types/CampaignAttachment'
-import {testIds} from 'pages/tickets/detail/components/ReplyArea/DiscountOfferTicketAttachment/utils'
-import {getIntegrationById} from 'state/integrations/selectors'
+import { useModalManager } from 'hooks/useModalManager'
+import { useGetDiscountOffer } from 'models/convert/discountOffer/queries'
+import { UniqueDiscountOffer } from 'models/convert/discountOffer/types'
+import { UNIQUE_DISCOUNT_MODAL_NAME } from 'models/discountCodes/constants'
+import { UniqueDiscountOfferCreateModal } from 'pages/common/components/UniqueDiscountOfferCreateModal/UniqueDiscountOfferCreateModal'
+import { computeDiscountOfferSummary } from 'pages/common/components/UniqueDiscountOfferResults/utils'
+import { DiscountOfferAttachment } from 'pages/convert/campaigns/types/CampaignAttachment'
+import { testIds } from 'pages/tickets/detail/components/ReplyArea/DiscountOfferTicketAttachment/utils'
+import { getIntegrationById } from 'state/integrations/selectors'
 
 import css from './DiscountOfferTicketAttachment.less'
 
@@ -28,8 +28,8 @@ export type DiscountOfferTicketAttachmentType = {
 const getMeaningfulDiscountOfferInfo = (
     attachment: DiscountOfferAttachment,
     asyncOffer: UniqueDiscountOffer | undefined,
-    integration: Map<string, string> | undefined
-): {summary: string; name: string; id: string} => {
+    integration: Map<string, string> | undefined,
+): { summary: string; name: string; id: string } => {
     if (!asyncOffer) {
         const {
             discount_offer_id,
@@ -44,7 +44,7 @@ const getMeaningfulDiscountOfferInfo = (
             computeDiscountOfferSummary(
                 discount_offer_type,
                 discount_offer_value,
-                integration
+                integration,
             )
 
         return {
@@ -57,25 +57,25 @@ const getMeaningfulDiscountOfferInfo = (
     const summary = computeDiscountOfferSummary(
         asyncOffer.type,
         asyncOffer.value,
-        integration
+        integration,
     )
-    return {id: asyncOffer.id, name: asyncOffer.prefix, summary}
+    return { id: asyncOffer.id, name: asyncOffer.prefix, summary }
 }
 
 export const DiscountOfferTicketAttachment: React.FC<
     DiscountOfferTicketAttachmentType
-> = ({discountOffer, supportsEdit, onRemove}) => {
-    const {data: asyncDiscountOffer} = useGetDiscountOffer(
+> = ({ discountOffer, supportsEdit, onRemove }) => {
+    const { data: asyncDiscountOffer } = useGetDiscountOffer(
         {
             discount_offer_id: discountOffer.extra.discount_offer_id,
         },
         {
             enabled: !!discountOffer.extra.discount_offer_id && !!supportsEdit,
-        }
+        },
     )
 
     const integration = useAppSelector(
-        getIntegrationById(Number(asyncDiscountOffer?.store_integration_id))
+        getIntegrationById(Number(asyncDiscountOffer?.store_integration_id)),
     )
 
     const editDiscountModal = useModalManager(UNIQUE_DISCOUNT_MODAL_NAME, {
@@ -90,7 +90,7 @@ export const DiscountOfferTicketAttachment: React.FC<
         editDiscountModal.openModal(
             UNIQUE_DISCOUNT_MODAL_NAME,
             false,
-            asyncDiscountOffer
+            asyncDiscountOffer,
         )
     }, [editDiscountModal, asyncDiscountOffer])
 
@@ -101,7 +101,7 @@ export const DiscountOfferTicketAttachment: React.FC<
     } = getMeaningfulDiscountOfferInfo(
         discountOffer,
         asyncDiscountOffer,
-        integration
+        integration,
     )
 
     const renderRemoveIcon = () => {

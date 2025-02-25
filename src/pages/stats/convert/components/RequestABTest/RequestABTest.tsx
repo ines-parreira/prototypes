@@ -1,48 +1,50 @@
-import React, {useState, useMemo, useCallback} from 'react'
-import {useParams} from 'react-router-dom'
+import React, { useCallback, useMemo, useState } from 'react'
+
+import { useParams } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
-
-import {useListABTests} from 'models/convert/abTest/queries'
-import {ABTestListOptions as ABTestListOptionsParams} from 'models/convert/abTest/types'
-import {GorgiasChatIntegration, IntegrationType} from 'models/integration/types'
+import { useListABTests } from 'models/convert/abTest/queries'
+import { ABTestListOptions as ABTestListOptionsParams } from 'models/convert/abTest/types'
+import {
+    GorgiasChatIntegration,
+    IntegrationType,
+} from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
-import {useCreateABTest} from 'pages/convert/abTests/hooks/useCreateABTest'
-import {useUpdateABTest} from 'pages/convert/abTests/hooks/useUpdateABTest'
-import {CONVERT_ROUTE_PARAM_NAME} from 'pages/convert/common/constants'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import {ConvertRouteParams} from 'pages/convert/common/types'
+import { useCreateABTest } from 'pages/convert/abTests/hooks/useCreateABTest'
+import { useUpdateABTest } from 'pages/convert/abTests/hooks/useUpdateABTest'
+import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
+import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import { ConvertRouteParams } from 'pages/convert/common/types'
 import RequestABTestModal from 'pages/stats/convert/components/RequestABTestModal'
 import ViewABTestModal from 'pages/stats/convert/components/ViewABTestModal'
-
-import {useCanRequestABTest} from 'pages/stats/convert/hooks/stats/useCanRequestABTest'
-import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
-import {useGetNamespacedShopNameForStore} from 'pages/stats/convert/hooks/useGetNamespacedShopNameForStore'
-import {getIntegrationById} from 'state/integrations/selectors'
-import {toJS} from 'utils'
+import { useCanRequestABTest } from 'pages/stats/convert/hooks/stats/useCanRequestABTest'
+import { useCampaignStatsFilters } from 'pages/stats/convert/hooks/useCampaignStatsFilters'
+import { useGetNamespacedShopNameForStore } from 'pages/stats/convert/hooks/useGetNamespacedShopNameForStore'
+import { getIntegrationById } from 'state/integrations/selectors'
+import { toJS } from 'utils'
 
 import css from './RequestABTest.less'
 
 const RequestABTest = () => {
-    const {[CONVERT_ROUTE_PARAM_NAME]: integrationId} =
+    const { [CONVERT_ROUTE_PARAM_NAME]: integrationId } =
         useParams<ConvertRouteParams>()
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
     const chatIntegrationId = parseInt(integrationId)
     const integration = useAppSelector(getIntegrationById(chatIntegrationId))
 
-    const {selectedIntegrations} = useCampaignStatsFilters()
+    const { selectedIntegrations } = useCampaignStatsFilters()
 
     const namespacedShopName =
         useGetNamespacedShopNameForStore(selectedIntegrations)
 
-    const {channelConnection, isLoading: isChannelConnectionLoading} =
+    const { channelConnection, isLoading: isChannelConnectionLoading } =
         useGetOrCreateChannelConnection(toJS(integration))
 
-    const {mutateAsync: createABTest} = useCreateABTest()
-    const {mutateAsync: updateABTest} = useUpdateABTest()
+    const { mutateAsync: createABTest } = useCreateABTest()
+    const { mutateAsync: updateABTest } = useUpdateABTest()
 
-    const {isFetching, canRequestABTest} =
+    const { isFetching, canRequestABTest } =
         useCanRequestABTest(namespacedShopName)
 
     const abTestListOptions = useMemo(() => {
@@ -53,11 +55,11 @@ const RequestABTest = () => {
         } as ABTestListOptionsParams
     }, [channelConnection])
 
-    const {data: abTests, isLoading: areABTestLoading} = useListABTests(
+    const { data: abTests, isLoading: areABTestLoading } = useListABTests(
         abTestListOptions,
         {
             enabled: !!channelConnection && !!abTestListOptions,
-        }
+        },
     )
 
     const handleCreateABTest = useCallback(async () => {

@@ -1,8 +1,8 @@
 import React from 'react'
 
-import {Language} from 'constants/languages'
+import { Language } from 'constants/languages'
 
-import {ContactFormDisplayMode} from './types/formDisplayMode.enum'
+import { ContactFormDisplayMode } from './types/formDisplayMode.enum'
 
 export const CONTACT_FORM_EMBEDMENTS_LIMIT = 50
 
@@ -41,5 +41,5 @@ export const CONTACT_FORM_EMBED_FORM_TEXTS = {
 
 export const CONTACT_FORM_DEFAULT_AUTOMATION_SETTINGS = {
     workflows: [],
-    order_management: {enabled: false},
+    order_management: { enabled: false },
 }

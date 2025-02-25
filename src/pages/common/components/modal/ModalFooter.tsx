@@ -1,5 +1,6 @@
+import React, { ReactNode } from 'react'
+
 import classnames from 'classnames'
-import React, {ReactNode} from 'react'
 
 import css from './ModalFooter.less'
 
@@ -8,7 +9,7 @@ type Props = {
     className?: string
 }
 
-const ModalFooter = ({children, className}: Props) => (
+const ModalFooter = ({ children, className }: Props) => (
     <div className={classnames(css.wrapper, className)}>{children}</div>
 )
 

@@ -1,16 +1,17 @@
-import {render} from '@testing-library/react'
+import React, { ComponentProps, ReactNode } from 'react'
+
+import { render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {Identifier} from 'estree'
-import {fromJS} from 'immutable'
-import React, {ComponentProps, ReactNode} from 'react'
-import {Provider} from 'react-redux'
+import { Identifier } from 'estree'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {DateTimeFormatMapper, DateTimeFormatType} from 'constants/datetime'
+import { DateTimeFormatMapper, DateTimeFormatType } from 'constants/datetime'
 import CustomFieldByIdInput from 'custom-fields/components/CustomFieldByIdInput/CustomFieldByIdInput'
-import {RightContainer} from 'pages/common/components/ViewTable/Filters/Right'
-import {CHANNELS} from 'tickets/common/config'
+import { RightContainer } from 'pages/common/components/ViewTable/Filters/Right'
+import { CHANNELS } from 'tickets/common/config'
 
 jest.mock('moment-timezone', () => () => {
     const moment: (date: string) => Record<string, unknown> =
@@ -22,9 +23,9 @@ jest.mock('moment-timezone', () => () => {
 jest.mock(
     'pages/common/forms/DatePicker',
     () =>
-        ({children}: {children: ReactNode}) => {
+        ({ children }: { children: ReactNode }) => {
             return <>{children}</>
-        }
+        },
 )
 
 jest.mock(
@@ -35,7 +36,7 @@ jest.mock(
             onChange,
             dropdownAdditionalProps,
         }: ComponentProps<typeof CustomFieldByIdInput>) => {
-            const {allowMultiValues, customDisplayValue} =
+            const { allowMultiValues, customDisplayValue } =
                 dropdownAdditionalProps || {}
             return (
                 <div
@@ -55,7 +56,7 @@ jest.mock(
                     )}
                 </div>
             )
-        }
+        },
 )
 
 const mockStore = configureMockStore([thunk])
@@ -106,7 +107,7 @@ describe('<Right />', () => {
     } as unknown as ComponentProps<typeof RightContainer>
 
     it('should default the current datetime when the date value is invalid', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <RightContainer
                     {...minProps}
@@ -126,14 +127,14 @@ describe('<Right />', () => {
                         value: '2021-12-1T06:00:00.000Z',
                     }}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render humanized label if ticket channel is selected', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <RightContainer
                     {...minProps}
@@ -152,7 +153,7 @@ describe('<Right />', () => {
                         enum: CHANNELS,
                     })}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -178,17 +179,17 @@ describe('<Right />', () => {
         }
 
         it('should set rendered custom field value on mount', () => {
-            const {getByText} = render(
+            const { getByText } = render(
                 <Provider store={store}>
                     <RightContainer {...minProps} {...baseCustomFieldProps} />
-                </Provider>
+                </Provider>,
             )
 
             expect(getByText('Value: "foo"')).toBeInTheDocument()
         })
 
         it('should set rendered custom field values for Array expression on mount', () => {
-            const {getByText} = render(
+            const { getByText } = render(
                 <Provider store={store}>
                     <RightContainer
                         {...minProps}
@@ -209,17 +210,17 @@ describe('<Right />', () => {
                             ],
                         }}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(getByText('Value: ["foo","bar"]')).toBeInTheDocument()
         })
 
         it('should set displayed custom field value as undefined on update if node does not provide a value', () => {
-            const {rerender, queryByText} = render(
+            const { rerender, queryByText } = render(
                 <Provider store={store}>
                     <RightContainer {...minProps} {...baseCustomFieldProps} />
-                </Provider>
+                </Provider>,
             )
 
             rerender(
@@ -233,17 +234,17 @@ describe('<Right />', () => {
                             raw: "''",
                         }}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(queryByText('Value: "foo"')).not.toBeInTheDocument()
         })
 
         it('should handle custom field value change', () => {
-            const {getByText, container} = render(
+            const { getByText, container } = render(
                 <Provider store={store}>
                     <RightContainer {...minProps} {...baseCustomFieldProps} />
-                </Provider>
+                </Provider>,
             )
 
             userEvent.click(container.firstChild as Element)
@@ -252,7 +253,7 @@ describe('<Right />', () => {
         })
 
         it('should handle custom field custom display value', () => {
-            const {getByText} = render(
+            const { getByText } = render(
                 <Provider store={store}>
                     <RightContainer
                         {...minProps}
@@ -273,14 +274,14 @@ describe('<Right />', () => {
                             ],
                         }}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(getByText('Custom: 2 fields selected')).toBeInTheDocument()
         })
 
         it('should return empty string for custom field custom display value if value is empty', () => {
-            const {queryByText} = render(
+            const { queryByText } = render(
                 <Provider store={store}>
                     <RightContainer
                         {...minProps}
@@ -290,7 +291,7 @@ describe('<Right />', () => {
                             elements: [],
                         }}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(queryByText(/Custom:/)).not.toBeInTheDocument()
@@ -298,21 +299,21 @@ describe('<Right />', () => {
     })
 
     it('should render plain danger button when no field is present, but a value is passed in node', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <RightContainer
                     {...minProps}
                     field={undefined}
-                    node={{value: true, raw: 'true', type: 'Literal'}}
+                    node={{ value: true, raw: 'true', type: 'Literal' }}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(getByText('true')).toHaveClass('btn-outline-danger')
     })
 
     it('should render nothing when no field is present and no value is passed in node', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <RightContainer
                     {...minProps}
@@ -320,7 +321,7 @@ describe('<Right />', () => {
                     // @ts-ignore this is not likely to happen, but there is a safeguard in place
                     node={{}}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(container).toBeEmptyDOMElement()

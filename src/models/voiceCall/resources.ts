@@ -1,25 +1,25 @@
-import {searchVoiceCalls as apiSearchVoiceCalls} from '@gorgias/api-client'
+import { searchVoiceCalls as apiSearchVoiceCalls } from '@gorgias/api-client'
 
 import client from 'models/api/resources'
-import {ApiListResponseCursorPagination} from 'models/api/types'
-import {deepMapKeysToSnakeCase} from 'models/api/utils'
+import { ApiListResponseCursorPagination } from 'models/api/types'
+import { deepMapKeysToSnakeCase } from 'models/api/utils'
 import {
     VoiceCallSearchOptions,
     VoiceCallWithHighlightsResponse,
 } from 'models/search/types'
-import {mergeEntitiesWithHighlights} from 'models/search/utils'
+import { mergeEntitiesWithHighlights } from 'models/search/utils'
 
 import {
-    VoiceCall,
-    ListVoiceCallsParams,
-    ListCallRecordingsParams,
-    VoiceCallRecording,
     ListCallEventsParams,
+    ListCallRecordingsParams,
+    ListVoiceCallsParams,
+    VoiceCall,
     VoiceCallEvent,
+    VoiceCallRecording,
 } from './types'
 
 export async function listVoiceCalls(
-    params?: ListVoiceCallsParams
+    params?: ListVoiceCallsParams,
 ): Promise<ApiListResponseCursorPagination<VoiceCall[]>> {
     const response = await client.get<
         ApiListResponseCursorPagination<VoiceCall[]>
@@ -31,7 +31,7 @@ export async function listVoiceCalls(
 }
 
 export async function listVoiceCallRecordings(
-    params?: ListCallRecordingsParams
+    params?: ListCallRecordingsParams,
 ) {
     const response = await client.get<
         ApiListResponseCursorPagination<VoiceCallRecording[]>
@@ -71,20 +71,20 @@ export const searchVoiceCalls = async ({
             }),
         },
         {
-            ...(cancelToken ? {cancelToken} : {}),
-        }
+            ...(cancelToken ? { cancelToken } : {}),
+        },
     )
 }
 
 export const searchVoiceCallsWithHighlights = (
-    options: Omit<VoiceCallSearchOptions, 'withHighlights'>
+    options: Omit<VoiceCallSearchOptions, 'withHighlights'>,
 ) =>
-    searchVoiceCalls({...options, withHighlights: true}).then((resp) => ({
+    searchVoiceCalls({ ...options, withHighlights: true }).then((resp) => ({
         ...resp,
         data: {
             ...resp.data,
             data: (resp.data?.data as VoiceCallWithHighlightsResponse[]).map(
-                mergeEntitiesWithHighlights
+                mergeEntitiesWithHighlights,
             ),
         },
     }))

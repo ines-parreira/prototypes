@@ -1,14 +1,14 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {hasShopifyRequiredPermissions} from 'pages/aiAgent/utils/shopify-integration.utils'
-import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
+import { hasShopifyRequiredPermissions } from 'pages/aiAgent/utils/shopify-integration.utils'
+import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 
 export const useShopifyPermissionsData = ({
     storeName,
 }: {
     storeName: string
-}): {data?: ShopifyPermissionsData} => {
-    const {integration} = useShopifyIntegrationAndScope(storeName)
+}): { data?: ShopifyPermissionsData } => {
+    const { integration } = useShopifyIntegrationAndScope(storeName)
 
     return useMemo(
         () => ({
@@ -20,7 +20,7 @@ export const useShopifyPermissionsData = ({
                   }
                 : undefined,
         }),
-        [integration]
+        [integration],
     )
 }
 

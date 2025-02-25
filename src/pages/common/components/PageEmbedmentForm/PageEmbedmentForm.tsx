@@ -1,6 +1,8 @@
-import {Label, Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { useEffect, useRef, useState } from 'react'
+
 import classNames from 'classnames'
-import React, {useRef, useState, useEffect} from 'react'
+
+import { Label, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import imageLayoutBottom from 'assets/img/icons/layout-bottom.svg'
 import imageLayoutTop from 'assets/img/icons/layout-top.svg'
@@ -9,22 +11,21 @@ import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import DropdownSearch from 'pages/common/components/dropdown/DropdownSearch'
 import ModalBody from 'pages/common/components/modal/ModalBody'
-import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
+import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 import InputField from 'pages/common/forms/input/InputField'
 import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
+import { slugify } from 'utils/slugifyForShopify'
 
-import {slugify} from 'utils/slugifyForShopify'
-
-import {SHOPIFY_PAGE_EMBEDMENT_PATH_PREFIX} from './constants'
-import css from './PageEmbedmentForm.less'
-import {EmbedMode, PageEmbedmentPosition, EmbeddablePage} from './types'
-
+import { SHOPIFY_PAGE_EMBEDMENT_PATH_PREFIX } from './constants'
+import { EmbeddablePage, EmbedMode, PageEmbedmentPosition } from './types'
 import {
     PageEmbedmentFormReducerDispatch,
     PageEmbedmentFormReducerState,
 } from './usePageEmbedmentForm'
+
+import css from './PageEmbedmentForm.less'
 
 export type PageEmbedmentFormProps = {
     modeSelectionTitle: string
@@ -261,12 +262,12 @@ const PageEmbedmentForm = ({
                                                     >
                                                         {url_path?.replace(
                                                             SHOPIFY_PAGE_EMBEDMENT_PATH_PREFIX,
-                                                            ''
+                                                            '',
                                                         )}
                                                     </span>
                                                 </div>
                                             </DropdownItem>
-                                        )
+                                        ),
                                     )}
                                 </DropdownBody>
                             </Dropdown>

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 
 import ToggleInput from 'pages/common/forms/ToggleInput'
 
@@ -9,7 +9,10 @@ type Props = {
     onChange: (value: boolean) => void
 }
 
-export const CampaignWithNoReply = ({value, onChange}: Props): JSX.Element => {
+export const CampaignWithNoReply = ({
+    value,
+    onChange,
+}: Props): JSX.Element => {
     const [isEnabled, setEnabled] = useState<boolean>(value)
 
     const handleClickToggle = (nextValue: boolean) => {

@@ -3,7 +3,7 @@ import {
     TooltipTourConfigurationType,
 } from 'pages/common/draftjs/plugins/toolbar/types'
 
-import {CampaignStepsKeys} from './CampaignSteps'
+import { CampaignStepsKeys } from './CampaignSteps'
 
 export enum TooltipActionType {
     Link = ActionName.Link,

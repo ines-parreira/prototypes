@@ -1,10 +1,11 @@
-import classnames from 'classnames'
-import {fromJS, List} from 'immutable'
 import React from 'react'
-import {Col, Row} from 'reactstrap'
 
-import {GenericAttachment} from 'common/types'
-import {Actor, Meta, Source} from 'models/ticket/types'
+import classnames from 'classnames'
+import { fromJS, List } from 'immutable'
+import { Col, Row } from 'reactstrap'
+
+import { GenericAttachment } from 'common/types'
+import { Actor, Meta, Source } from 'models/ticket/types'
 import Avatar from 'pages/common/components/Avatar/Avatar'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 import TicketAttachments from 'pages/tickets/detail/components/ReplyArea/TicketAttachments'
@@ -95,7 +96,7 @@ export default function TicketMessageEmbeddedCard({
                                 'justify-content-center',
                                 'align-self-center',
                                 css.dateTimeText,
-                                'pr-0'
+                                'pr-0',
                             )}
                         >
                             {dateTimeLabelContent}
@@ -131,7 +132,7 @@ export default function TicketMessageEmbeddedCard({
                                 'text-right',
                                 'justify-content-center',
                                 'align-self-center',
-                                css.dateTimeText
+                                css.dateTimeText,
                             )}
                         >
                             {dateTimeLabelContent}

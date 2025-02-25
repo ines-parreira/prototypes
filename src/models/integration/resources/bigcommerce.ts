@@ -1,49 +1,49 @@
-import {AxiosError} from 'axios'
+import { AxiosError } from 'axios'
 
 import client from 'models/api/resources'
 
 import {
+    BigCommerceAddressResponse,
+    BigCommerceAvailablePaymentOptionsData,
     BigCommerceCart,
+    BigCommerceCartErrorResponse,
     BigCommerceCartLineItem,
+    BigCommerceCartRedirect,
+    BigCommerceCartResponse,
+    BigCommerceCheckout,
+    BigCommerceCheckoutErrorResponse,
+    BigCommerceCheckoutResponse,
+    BigCommerceCouponError,
+    BigCommerceCouponErrorMessage,
+    BigCommerceCreateConsignmentPayload,
+    BigCommerceCustomAddress,
     BigCommerceCustomCartLineItem,
     BigCommerceCustomerAddress,
-    BigCommerceCheckout,
-    BigCommerceCreateConsignmentPayload,
-    BigCommerceUpsertConsignmentPayload,
     BigCommerceCustomProduct,
-    BigCommerceGeneralErrorMessage,
-    BigCommerceCartResponse,
-    BigCommerceNestedCartResponse,
-    BigCommerceCheckoutResponse,
-    BigCommerceNestedCheckoutResponse,
-    BigCommerceCouponErrorMessage,
-    BigCommerceCouponError,
-    BigCommerceGeneralError,
-    BigCommerceLineItemErrorMessage,
-    ProductModifiersChangedError,
-    BigCommerceLineItemError,
-    BigCommerceCartErrorResponse,
-    BigCommerceCheckoutErrorResponse,
-    BigCommerceCartRedirect,
-    BigCommerceDuplicateOrderResponse,
     BigCommerceDuplicateOrderErrorResponse,
-    BigCommerceAddressResponse,
-    BigCommerceCustomAddress,
-    CalculateOrderRefundDataResponse,
+    BigCommerceDuplicateOrderResponse,
+    BigCommerceGeneralError,
+    BigCommerceGeneralErrorMessage,
+    BigCommerceLineItemError,
+    BigCommerceLineItemErrorMessage,
+    BigCommerceNestedCartResponse,
+    BigCommerceNestedCheckoutResponse,
+    BigCommerceRefundItemsPayload,
+    BigCommerceUpsertConsignmentPayload,
     CalculateOrderRefundDataErrorResponse,
     CalculateOrderRefundDataNestedResponse,
-    CalculateOrderRefundQuotesDataResponse,
-    BigCommerceAvailablePaymentOptionsData,
-    BigCommerceRefundItemsPayload,
+    CalculateOrderRefundDataResponse,
     CalculateOrderRefundQuotesDataErrorResponse,
+    CalculateOrderRefundQuotesDataResponse,
+    ProductModifiersChangedError,
 } from '../types'
 
-export type OptionSelection = {option_id: number; option_value: number}
+export type OptionSelection = { option_id: number; option_value: number }
 
 export async function createBigCommerceCart(
     integrationId: number,
     customerId: number,
-    currency: string
+    currency: string,
 ): Promise<BigCommerceCart> {
     const url = '/integrations/bigcommerce/order/cart/'
 
@@ -64,30 +64,30 @@ export async function createBigCommerceCart(
         .then((response) => {
             if (!('cart' in response.data) || !response.data.cart) {
                 throw new BigCommerceGeneralError(
-                    BigCommerceGeneralErrorMessage.defaultError
+                    BigCommerceGeneralErrorMessage.defaultError,
                 )
             }
 
             return response.data.cart
         })
         .catch((error: AxiosError<BigCommerceCartErrorResponse>) => {
-            const {response} = error
+            const { response } = error
 
             if (response?.status === 429) {
                 throw new BigCommerceGeneralError(
-                    BigCommerceGeneralErrorMessage.rateLimitingError
+                    BigCommerceGeneralErrorMessage.rateLimitingError,
                 )
             }
 
             throw new BigCommerceGeneralError(
-                BigCommerceGeneralErrorMessage.defaultError
+                BigCommerceGeneralErrorMessage.defaultError,
             )
         })
 }
 
 export async function deleteBigCommerceCart(
     integrationId: number,
-    cartId: Maybe<string>
+    cartId: Maybe<string>,
 ) {
     const url = '/integrations/bigcommerce/order/cart/'
 
@@ -104,7 +104,7 @@ export async function deleteBigCommerceCart(
 export async function addBigCommerceCheckoutBillingAddress(
     integrationId: number,
     cartId: string,
-    payload: BigCommerceCustomerAddress
+    payload: BigCommerceCustomerAddress,
 ): Promise<BigCommerceCheckout> {
     const url = '/integrations/bigcommerce/order/billing-address/'
 
@@ -118,23 +118,23 @@ export async function addBigCommerceCheckoutBillingAddress(
         .then((response) => {
             if (!('checkout' in response.data) || !response.data.checkout) {
                 throw new BigCommerceGeneralError(
-                    BigCommerceGeneralErrorMessage.defaultError
+                    BigCommerceGeneralErrorMessage.defaultError,
                 )
             }
 
             return response.data.checkout
         })
         .catch((error: AxiosError<BigCommerceCheckoutErrorResponse>) => {
-            const {response} = error
+            const { response } = error
 
             if (response?.status === 429) {
                 throw new BigCommerceGeneralError(
-                    BigCommerceGeneralErrorMessage.rateLimitingError
+                    BigCommerceGeneralErrorMessage.rateLimitingError,
                 )
             }
 
             throw new BigCommerceGeneralError(
-                BigCommerceGeneralErrorMessage.defaultError
+                BigCommerceGeneralErrorMessage.defaultError,
             )
         })
 }
@@ -157,24 +157,24 @@ export async function addBigCommerceCustomAddressToCustomerAddressBook({
         .then((response) => {
             if (!('address' in response.data) || !response.data.address) {
                 throw new BigCommerceGeneralError(
-                    BigCommerceGeneralErrorMessage.defaultError
+                    BigCommerceGeneralErrorMessage.defaultError,
                 )
             }
 
             return response.data.address
         })
         .catch((error) => {
-            const {response} =
+            const { response } =
                 error as AxiosError<BigCommerceCheckoutErrorResponse>
 
             if (response?.status === 429) {
                 throw new BigCommerceGeneralError(
-                    BigCommerceGeneralErrorMessage.rateLimitingError
+                    BigCommerceGeneralErrorMessage.rateLimitingError,
                 )
             }
 
             throw new BigCommerceGeneralError(
-                BigCommerceGeneralErrorMessage.defaultError
+                BigCommerceGeneralErrorMessage.defaultError,
             )
         })
 }
@@ -223,18 +223,18 @@ export async function addBigCommerceLineItem({
         .then((response) => {
             if (!('cart' in response.data) || !response.data.cart) {
                 throw new BigCommerceLineItemError(
-                    BigCommerceLineItemErrorMessage.defaultAddLineItemError
+                    BigCommerceLineItemErrorMessage.defaultAddLineItemError,
                 )
             }
 
             return response.data.cart
         })
         .catch((error: AxiosError<BigCommerceCartErrorResponse>) => {
-            const {response} = error
+            const { response } = error
 
             if (response?.status === 429) {
                 throw new BigCommerceGeneralError(
-                    BigCommerceGeneralErrorMessage.rateLimitingError
+                    BigCommerceGeneralErrorMessage.rateLimitingError,
                 )
             }
 
@@ -246,7 +246,7 @@ export async function addBigCommerceLineItem({
                 // To prevent this case (availability = 'disabled'):
                 // Purchasability -> This product cannot be purchased in my online store
                 throw new ProductModifiersChangedError(
-                    response.data.error.data.updated_product
+                    response.data.error.data.updated_product,
                 )
             }
 
@@ -257,7 +257,7 @@ export async function addBigCommerceLineItem({
             ) {
                 // Purchasability -> This product cannot be purchased in my online store
                 throw new BigCommerceLineItemError(
-                    BigCommerceLineItemErrorMessage.onlyOfflineAvailabilityError
+                    BigCommerceLineItemErrorMessage.onlyOfflineAvailabilityError,
                 )
             }
 
@@ -265,15 +265,15 @@ export async function addBigCommerceLineItem({
                 throw new BigCommerceLineItemError(
                     Object.values(BigCommerceLineItemErrorMessage)?.includes(
                         response.data.error
-                            .msg as BigCommerceLineItemErrorMessage
+                            .msg as BigCommerceLineItemErrorMessage,
                     )
                         ? response.data.error.msg
-                        : BigCommerceLineItemErrorMessage.defaultAddLineItemError
+                        : BigCommerceLineItemErrorMessage.defaultAddLineItemError,
                 )
             }
 
             throw new BigCommerceLineItemError(
-                BigCommerceLineItemErrorMessage.defaultAddLineItemError
+                BigCommerceLineItemErrorMessage.defaultAddLineItemError,
             )
         })
 }
@@ -327,11 +327,11 @@ export async function editBigCommerceLineItem({
             return response.data.data.cart
         })
         .catch((error: AxiosError<BigCommerceCartErrorResponse>) => {
-            const {response} = error
+            const { response } = error
 
             if (response?.status === 429) {
                 throw new BigCommerceGeneralError(
-                    BigCommerceGeneralErrorMessage.rateLimitingError
+                    BigCommerceGeneralErrorMessage.rateLimitingError,
                 )
             }
 
@@ -339,10 +339,10 @@ export async function editBigCommerceLineItem({
                 throw new BigCommerceLineItemError(
                     Object.values(BigCommerceLineItemErrorMessage)?.includes(
                         response.data.error
-                            .msg as BigCommerceLineItemErrorMessage
+                            .msg as BigCommerceLineItemErrorMessage,
                     )
                         ? response.data.error.msg
-                        : defaultError
+                        : defaultError,
                 )
             }
 
@@ -389,18 +389,18 @@ export async function editBigCommerceLineItemModifiers({
                 !response.data.data.cart
             ) {
                 throw new BigCommerceLineItemError(
-                    BigCommerceLineItemErrorMessage.defaultUpdateLineItemError
+                    BigCommerceLineItemErrorMessage.defaultUpdateLineItemError,
                 )
             }
 
             return response.data.data.cart
         })
         .catch((error: AxiosError<BigCommerceCartErrorResponse>) => {
-            const {response} = error
+            const { response } = error
 
             if (response?.status === 429) {
                 throw new BigCommerceGeneralError(
-                    BigCommerceGeneralErrorMessage.rateLimitingError
+                    BigCommerceGeneralErrorMessage.rateLimitingError,
                 )
             }
 
@@ -408,15 +408,15 @@ export async function editBigCommerceLineItemModifiers({
                 throw new BigCommerceLineItemError(
                     Object.values(BigCommerceLineItemErrorMessage)?.includes(
                         response.data.error
-                            .msg as BigCommerceLineItemErrorMessage
+                            .msg as BigCommerceLineItemErrorMessage,
                     )
                         ? response.data.error.msg
-                        : BigCommerceLineItemErrorMessage.defaultUpdateLineItemError
+                        : BigCommerceLineItemErrorMessage.defaultUpdateLineItemError,
                 )
             }
 
             throw new BigCommerceLineItemError(
-                BigCommerceLineItemErrorMessage.defaultUpdateLineItemError
+                BigCommerceLineItemErrorMessage.defaultUpdateLineItemError,
             )
         })
 }
@@ -424,7 +424,7 @@ export async function editBigCommerceLineItemModifiers({
 export async function removeBigCommerceLineItem(
     integrationId: number,
     cartId: string,
-    lineItemId: string
+    lineItemId: string,
 ): Promise<BigCommerceCart> {
     // Deletes a Cart line item or a custom line item.
 
@@ -446,23 +446,23 @@ export async function removeBigCommerceLineItem(
                 !result.data.data.cart
             ) {
                 throw new BigCommerceLineItemError(
-                    BigCommerceLineItemErrorMessage.defaultRemoveLineItemError
+                    BigCommerceLineItemErrorMessage.defaultRemoveLineItemError,
                 )
             }
 
             return result.data.data.cart
         })
         .catch((error: AxiosError<BigCommerceCartErrorResponse>) => {
-            const {response} = error
+            const { response } = error
 
             if (response?.status === 429) {
                 throw new BigCommerceGeneralError(
-                    BigCommerceGeneralErrorMessage.rateLimitingError
+                    BigCommerceGeneralErrorMessage.rateLimitingError,
                 )
             }
 
             throw new BigCommerceLineItemError(
-                BigCommerceLineItemErrorMessage.defaultRemoveLineItemError
+                BigCommerceLineItemErrorMessage.defaultRemoveLineItemError,
             )
         })
 }
@@ -488,23 +488,23 @@ export async function createBigCommerceCheckoutConsignment({
         .then((response) => {
             if (!('checkout' in response.data) || !response.data.checkout) {
                 throw new BigCommerceGeneralError(
-                    BigCommerceGeneralErrorMessage.defaultError
+                    BigCommerceGeneralErrorMessage.defaultError,
                 )
             }
 
             return response.data.checkout
         })
         .catch((error: AxiosError<BigCommerceCheckoutErrorResponse>) => {
-            const {response} = error
+            const { response } = error
 
             if (response?.status === 429) {
                 throw new BigCommerceGeneralError(
-                    BigCommerceGeneralErrorMessage.rateLimitingError
+                    BigCommerceGeneralErrorMessage.rateLimitingError,
                 )
             }
 
             throw new BigCommerceGeneralError(
-                BigCommerceGeneralErrorMessage.defaultError
+                BigCommerceGeneralErrorMessage.defaultError,
             )
         })
 }
@@ -539,24 +539,24 @@ export async function updateBigCommerceCheckoutConsignment({
             ) {
                 throw new BigCommerceGeneralError(
                     BigCommerceGeneralErrorMessage.defaultError,
-                    response.status
+                    response.status,
                 )
             }
 
             return response.data.data.checkout
         })
         .catch((error: AxiosError<BigCommerceCheckoutErrorResponse>) => {
-            const {response} = error
+            const { response } = error
 
             if (response?.status === 429) {
                 throw new BigCommerceGeneralError(
-                    BigCommerceGeneralErrorMessage.rateLimitingError
+                    BigCommerceGeneralErrorMessage.rateLimitingError,
                 )
             }
 
             throw new BigCommerceGeneralError(
                 BigCommerceGeneralErrorMessage.defaultError,
-                response?.status
+                response?.status,
             )
         })
 }
@@ -585,23 +585,23 @@ export async function getBigCommerceCheckout({
                 !response.data.data.checkout
             ) {
                 throw new BigCommerceGeneralError(
-                    BigCommerceGeneralErrorMessage.defaultError
+                    BigCommerceGeneralErrorMessage.defaultError,
                 )
             }
 
             return response.data.data.checkout
         })
         .catch((error: AxiosError<BigCommerceCheckoutErrorResponse>) => {
-            const {response} = error
+            const { response } = error
 
             if (response?.status === 429) {
                 throw new BigCommerceGeneralError(
-                    BigCommerceGeneralErrorMessage.rateLimitingError
+                    BigCommerceGeneralErrorMessage.rateLimitingError,
                 )
             }
 
             throw new BigCommerceGeneralError(
-                BigCommerceGeneralErrorMessage.defaultError
+                BigCommerceGeneralErrorMessage.defaultError,
             )
         })
 }
@@ -617,7 +617,7 @@ export async function updateBigCommerceCheckoutDiscount({
 }): Promise<BigCommerceCheckout> {
     const url = '/integrations/bigcommerce/order/discounts/'
 
-    const payload = [{discounted_amount: discountAmount, name: 'Manual'}]
+    const payload = [{ discounted_amount: discountAmount, name: 'Manual' }]
 
     return await client
         .post<BigCommerceCheckoutResponse>(url, payload, {
@@ -629,23 +629,23 @@ export async function updateBigCommerceCheckoutDiscount({
         .then((response) => {
             if (!('checkout' in response.data) || !response.data.checkout) {
                 throw new BigCommerceGeneralError(
-                    BigCommerceGeneralErrorMessage.defaultError
+                    BigCommerceGeneralErrorMessage.defaultError,
                 )
             }
 
             return response.data.checkout
         })
         .catch((error: AxiosError<BigCommerceCheckoutErrorResponse>) => {
-            const {response} = error
+            const { response } = error
 
             if (response?.status === 429) {
                 throw new BigCommerceGeneralError(
-                    BigCommerceGeneralErrorMessage.rateLimitingError
+                    BigCommerceGeneralErrorMessage.rateLimitingError,
                 )
             }
 
             throw new BigCommerceGeneralError(
-                BigCommerceGeneralErrorMessage.defaultError
+                BigCommerceGeneralErrorMessage.defaultError,
             )
         })
 }
@@ -661,7 +661,7 @@ export async function updateBigCommerceCoupon({
 }): Promise<BigCommerceCheckout> {
     const url = '/integrations/bigcommerce/order/coupons/'
 
-    const payload = {coupon_code: couponCode}
+    const payload = { coupon_code: couponCode }
 
     return await client
         .post<BigCommerceCheckoutResponse>(url, payload, {
@@ -673,33 +673,34 @@ export async function updateBigCommerceCoupon({
         .then((response) => {
             if (!('checkout' in response.data) || !response.data.checkout) {
                 throw new BigCommerceCouponError(
-                    BigCommerceCouponErrorMessage.defaultCouponError
+                    BigCommerceCouponErrorMessage.defaultCouponError,
                 )
             }
 
             return response.data.checkout
         })
         .catch((error: AxiosError<BigCommerceCheckoutErrorResponse>) => {
-            const {response} = error
+            const { response } = error
 
             if (response?.status === 429) {
                 throw new BigCommerceGeneralError(
-                    BigCommerceGeneralErrorMessage.rateLimitingError
+                    BigCommerceGeneralErrorMessage.rateLimitingError,
                 )
             }
 
             if (response?.data?.error?.msg) {
                 throw new BigCommerceCouponError(
                     Object.values(BigCommerceCouponErrorMessage)?.includes(
-                        response.data.error.msg as BigCommerceCouponErrorMessage
+                        response.data.error
+                            .msg as BigCommerceCouponErrorMessage,
                     )
                         ? response.data.error.msg
-                        : BigCommerceCouponErrorMessage.defaultCouponError
+                        : BigCommerceCouponErrorMessage.defaultCouponError,
                 )
             }
 
             throw new BigCommerceCouponError(
-                BigCommerceCouponErrorMessage.defaultCouponError
+                BigCommerceCouponErrorMessage.defaultCouponError,
             )
         })
 }
@@ -734,33 +735,34 @@ export async function deleteBigCommerceCoupon({
                 !response.data.data.checkout
             ) {
                 throw new BigCommerceCouponError(
-                    BigCommerceCouponErrorMessage.defaultCouponError
+                    BigCommerceCouponErrorMessage.defaultCouponError,
                 )
             }
 
             return response.data.data.checkout
         })
         .catch((error: AxiosError<BigCommerceCheckoutErrorResponse>) => {
-            const {response} = error
+            const { response } = error
 
             if (response?.status === 429) {
                 throw new BigCommerceGeneralError(
-                    BigCommerceGeneralErrorMessage.rateLimitingError
+                    BigCommerceGeneralErrorMessage.rateLimitingError,
                 )
             }
 
             if (response?.data?.error?.msg) {
                 throw new BigCommerceCouponError(
                     Object.values(BigCommerceCouponErrorMessage)?.includes(
-                        response.data.error.msg as BigCommerceCouponErrorMessage
+                        response.data.error
+                            .msg as BigCommerceCouponErrorMessage,
                     )
                         ? response.data.error.msg
-                        : BigCommerceCouponErrorMessage.defaultCouponError
+                        : BigCommerceCouponErrorMessage.defaultCouponError,
                 )
             }
 
             throw new BigCommerceCouponError(
-                BigCommerceCouponErrorMessage.defaultCouponError
+                BigCommerceCouponErrorMessage.defaultCouponError,
             )
         })
 }
@@ -784,7 +786,7 @@ export async function getBigCommerceDraftOrderUrl({
                 cart_id: cartId,
                 update_customer_data: customerId,
             },
-        }
+        },
     )
 
     return response.data.data
@@ -820,7 +822,7 @@ export async function createCartFromOrder({
                     customer_id: customerId,
                     bigcommerce_order_id: bigcommerceOrderId,
                 },
-            }
+            },
         )
         .then((response) => {
             if (
@@ -831,7 +833,7 @@ export async function createCartFromOrder({
                     !response.data.missing_line_items?.length)
             ) {
                 throw new BigCommerceGeneralError(
-                    BigCommerceGeneralErrorMessage.defaultError
+                    BigCommerceGeneralErrorMessage.defaultError,
                 )
             }
 
@@ -842,16 +844,16 @@ export async function createCartFromOrder({
             }
         })
         .catch((error: AxiosError<BigCommerceDuplicateOrderErrorResponse>) => {
-            const {response} = error
+            const { response } = error
 
             if (response?.status === 429) {
                 throw new BigCommerceGeneralError(
-                    BigCommerceGeneralErrorMessage.rateLimitingError
+                    BigCommerceGeneralErrorMessage.rateLimitingError,
                 )
             }
 
             throw new BigCommerceGeneralError(
-                BigCommerceGeneralErrorMessage.defaultError
+                BigCommerceGeneralErrorMessage.defaultError,
             )
         })
 }
@@ -882,23 +884,23 @@ export async function getBigCommerceOrderRefundData({
                 !response.data?.data?.individual_items_level_refund_data
             ) {
                 throw new BigCommerceGeneralError(
-                    BigCommerceGeneralErrorMessage.defaultError
+                    BigCommerceGeneralErrorMessage.defaultError,
                 )
             }
 
             return response.data.data
         })
         .catch((error: AxiosError<CalculateOrderRefundDataErrorResponse>) => {
-            const {response} = error
+            const { response } = error
 
             if (response?.status === 429) {
                 throw new BigCommerceGeneralError(
-                    BigCommerceGeneralErrorMessage.rateLimitingError
+                    BigCommerceGeneralErrorMessage.rateLimitingError,
                 )
             }
 
             throw new BigCommerceGeneralError(
-                BigCommerceGeneralErrorMessage.defaultError
+                BigCommerceGeneralErrorMessage.defaultError,
             )
         })
 }
@@ -926,7 +928,7 @@ export async function getBigCommerceAvailablePaymentOptionsData({
         .then((response) => {
             if (!response.data || !('refund_methods' in response.data)) {
                 throw new BigCommerceGeneralError(
-                    BigCommerceGeneralErrorMessage.defaultError
+                    BigCommerceGeneralErrorMessage.defaultError,
                 )
             }
 
@@ -934,13 +936,13 @@ export async function getBigCommerceAvailablePaymentOptionsData({
         })
         .catch(
             (
-                error: AxiosError<CalculateOrderRefundQuotesDataErrorResponse>
+                error: AxiosError<CalculateOrderRefundQuotesDataErrorResponse>,
             ) => {
-                const {response} = error
+                const { response } = error
 
                 if (response?.status === 429) {
                     throw new BigCommerceGeneralError(
-                        BigCommerceGeneralErrorMessage.rateLimitingError
+                        BigCommerceGeneralErrorMessage.rateLimitingError,
                     )
                 }
 
@@ -948,16 +950,16 @@ export async function getBigCommerceAvailablePaymentOptionsData({
                     throw new BigCommerceGeneralError(
                         new RegExp(
                             `Order with ID ${orderId} can not be refunded.$`,
-                            'i'
+                            'i',
                         ).test(response.data.error.msg)
                             ? BigCommerceGeneralErrorMessage.defaultRefundError
-                            : BigCommerceGeneralErrorMessage.defaultError
+                            : BigCommerceGeneralErrorMessage.defaultError,
                     )
                 }
 
                 throw new BigCommerceGeneralError(
-                    BigCommerceGeneralErrorMessage.defaultError
+                    BigCommerceGeneralErrorMessage.defaultError,
                 )
-            }
+            },
         )
 }

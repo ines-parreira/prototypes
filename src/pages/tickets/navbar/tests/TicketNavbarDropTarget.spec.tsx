@@ -1,13 +1,14 @@
-import {render, fireEvent} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
-import {DndProvider, useDrag} from 'react-dnd'
-import {HTML5Backend} from 'react-dnd-html5-backend'
+import React, { ComponentProps } from 'react'
+
+import { fireEvent, render } from '@testing-library/react'
+import { DndProvider, useDrag } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import TicketNavbarDropTarget, {
     TicketNavbarDropDirection,
 } from '../TicketNavbarDropTarget'
 
-const MockedDragComponent = ({isOver}: {isOver?: boolean}) => {
+const MockedDragComponent = ({ isOver }: { isOver?: boolean }) => {
     const [, drag] = useDrag({
         item: {
             id: 1,
@@ -23,7 +24,7 @@ const MockedDragComponent = ({isOver}: {isOver?: boolean}) => {
 }
 
 const WrappedTicketNavbarDropTarget = (
-    props: ComponentProps<typeof TicketNavbarDropTarget>
+    props: ComponentProps<typeof TicketNavbarDropTarget>,
 ) => (
     <DndProvider backend={HTML5Backend}>
         <TicketNavbarDropTarget {...props} />
@@ -38,18 +39,18 @@ const minProps = {
 
 describe('<TicketNavbarDropTarget/>', () => {
     it('should render', () => {
-        const {container} = render(
-            <WrappedTicketNavbarDropTarget {...minProps} />
+        const { container } = render(
+            <WrappedTicketNavbarDropTarget {...minProps} />,
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should show an indicator and pass isOver to children', () => {
-        const {container, getByText} = render(
+        const { container, getByText } = render(
             <WrappedTicketNavbarDropTarget {...minProps}>
                 {(isOver) => <MockedDragComponent isOver={isOver} />}
-            </WrappedTicketNavbarDropTarget>
+            </WrappedTicketNavbarDropTarget>,
         )
 
         fireEvent.dragStart(getByText('Drag me!'))
@@ -59,8 +60,8 @@ describe('<TicketNavbarDropTarget/>', () => {
     })
 
     it('should handle drop event', () => {
-        const {container, getByText} = render(
-            <WrappedTicketNavbarDropTarget {...minProps} />
+        const { container, getByText } = render(
+            <WrappedTicketNavbarDropTarget {...minProps} />,
         )
 
         fireEvent.dragStart(getByText('Drag me!'))
@@ -69,9 +70,9 @@ describe('<TicketNavbarDropTarget/>', () => {
         fireEvent.drop(container.firstChild as ChildNode)
         expect(minProps.onDrop).toHaveBeenNthCalledWith(
             1,
-            {id: 1, type: 'foo'},
+            { id: 1, type: 'foo' },
             expect.any(Object),
-            TicketNavbarDropDirection.Down
+            TicketNavbarDropDirection.Down,
         )
     })
 })

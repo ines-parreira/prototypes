@@ -1,12 +1,13 @@
-import _get from 'lodash/get'
 import React from 'react'
+
+import _get from 'lodash/get'
 import Slider from 'react-slick'
-import {Card, CardImg, CardBody, CardTitle, CardSubtitle} from 'reactstrap'
+import { Card, CardBody, CardImg, CardSubtitle, CardTitle } from 'reactstrap'
 
 import Button from 'pages/common/components/button/Button'
 import Group from 'pages/common/components/layout/Group'
 
-import {FacebookCarouselTemplate} from '../../../../models/ticket/types'
+import { FacebookCarouselTemplate } from '../../../../models/ticket/types'
 
 import css from './FacebookCarousel.less'
 
@@ -14,7 +15,7 @@ type Props = {
     data: FacebookCarouselTemplate[]
 }
 
-const FacebookCarousel = ({data = []}: Props) => (
+const FacebookCarousel = ({ data = [] }: Props) => (
     <div className={css.carousel}>
         {data.map((template, idx) => {
             const templateType =
@@ -35,11 +36,11 @@ const FacebookCarousel = ({data = []}: Props) => (
                     responsive={[
                         {
                             breakpoint: 769,
-                            settings: {slidesToShow: 1},
+                            settings: { slidesToShow: 1 },
                         },
                         {
                             breakpoint: 1441,
-                            settings: {slidesToShow: 2},
+                            settings: { slidesToShow: 2 },
                         },
                     ]}
                 >
@@ -78,7 +79,7 @@ const FacebookCarousel = ({data = []}: Props) => (
                                                             window
                                                                 .open(
                                                                     button.url,
-                                                                    '_blank'
+                                                                    '_blank',
                                                                 )
                                                                 ?.focus()
                                                         }}

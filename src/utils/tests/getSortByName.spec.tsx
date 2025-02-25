@@ -1,4 +1,4 @@
-import {getSortByName} from 'utils/getSortByName'
+import { getSortByName } from 'utils/getSortByName'
 
 describe('getSortByName', () => {
     it.each([
@@ -15,6 +15,6 @@ describe('getSortByName', () => {
         ['a', '\tb', -1],
         ['a', '&', 1],
     ])('should sort `%s` and `%s`, expecting `%s`', (a, b, expected) => {
-        expect(getSortByName({name: a}, {name: b})).toEqual(expected)
+        expect(getSortByName({ name: a }, { name: b })).toEqual(expected)
     })
 })

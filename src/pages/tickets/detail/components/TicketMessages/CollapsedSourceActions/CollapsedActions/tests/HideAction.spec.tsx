@@ -1,12 +1,12 @@
-import {render} from '@testing-library/react'
-import _noop from 'lodash/noop'
 import React from 'react'
 
-import {Dropdown} from 'reactstrap'
+import { render } from '@testing-library/react'
+import _noop from 'lodash/noop'
+import { Dropdown } from 'reactstrap'
 
 import HideAction from '../HideAction'
 
-const renderAction = ({shouldHide = false, isFacebookComment = true} = {}) =>
+const renderAction = ({ shouldHide = false, isFacebookComment = true } = {}) =>
     render(
         <Dropdown toggle={_noop}>
             <HideAction
@@ -14,7 +14,7 @@ const renderAction = ({shouldHide = false, isFacebookComment = true} = {}) =>
                 isFacebookComment={isFacebookComment}
                 toggleHideComment={_noop}
             />
-        </Dropdown>
+        </Dropdown>,
     )
 
 describe('<HideAction/>', () => {
@@ -38,7 +38,7 @@ describe('<HideAction/>', () => {
             },
         ],
     ])('should display the correct text for %s comment', (_, props) => {
-        const {container} = renderAction(props)
+        const { container } = renderAction(props)
         expect(container.firstChild).toMatchSnapshot()
     })
 })

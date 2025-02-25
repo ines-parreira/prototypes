@@ -1,13 +1,13 @@
-import React, {useEffect} from 'react'
+import React, { useEffect } from 'react'
 
-import {TicketChannel} from 'business/types/ticket'
+import { TicketChannel } from 'business/types/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {useSearchParam} from 'hooks/useSearchParam'
-import {last28DaysStatsFilters} from 'pages/automate/common/utils/last28DaysStatsFilters'
+import { useSearchParam } from 'hooks/useSearchParam'
+import { last28DaysStatsFilters } from 'pages/automate/common/utils/last28DaysStatsFilters'
 import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
-import {getStatsFilters} from 'state/stats/selectors'
-import {mergeStatsFilters} from 'state/stats/statsSlice'
+import { getStatsFilters } from 'state/stats/selectors'
+import { mergeStatsFilters } from 'state/stats/statsSlice'
 
 export const AUTOMATE_ENABLED_CHANNELS = [
     TicketChannel.Chat,

@@ -1,5 +1,5 @@
-import {TicketCubeWithJoins} from 'models/reporting/cubes/TicketCube'
-import {Cube, JoinedCubesWithMapping} from 'models/reporting/types'
+import { TicketCubeWithJoins } from 'models/reporting/cubes/TicketCube'
+import { Cube, JoinedCubesWithMapping } from 'models/reporting/types'
 
 export enum HelpdeskMessageMeasure {
     TicketCount = 'HelpdeskMessageEnriched.ticketCount',

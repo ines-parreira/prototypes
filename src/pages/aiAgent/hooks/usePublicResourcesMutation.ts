@@ -1,12 +1,12 @@
-import {useQueryClient} from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 
-import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
+import { AI_AGENT_SENTRY_TEAM } from 'common/const/sentryTeamNames'
 import {
     helpCenterKeys,
     useDeleteArticleIngestionLog,
     useStartArticleIngestion,
 } from 'models/helpCenter/queries'
-import {reportError} from 'utils/errors'
+import { reportError } from 'utils/errors'
 
 export const usePublicResourceMutation = ({
     helpCenterId,
@@ -15,25 +15,26 @@ export const usePublicResourceMutation = ({
 }) => {
     const queryClient = useQueryClient()
 
-    const {mutateAsync: startArticleIngestionAsync} = useStartArticleIngestion({
-        onSuccess: async () => {
-            await queryClient.invalidateQueries({
-                queryKey: helpCenterKeys.articleIngestionLogs(helpCenterId),
-            })
-        },
-    })
+    const { mutateAsync: startArticleIngestionAsync } =
+        useStartArticleIngestion({
+            onSuccess: async () => {
+                await queryClient.invalidateQueries({
+                    queryKey: helpCenterKeys.articleIngestionLogs(helpCenterId),
+                })
+            },
+        })
 
     const addPublicResource = async (urls: string[]) => {
-        const links = urls.map((url) => ({url}))
+        const links = urls.map((url) => ({ url }))
         try {
             await startArticleIngestionAsync([
                 undefined,
-                {help_center_id: helpCenterId},
-                {links},
+                { help_center_id: helpCenterId },
+                { links },
             ])
         } catch (error) {
             reportError(error, {
-                tags: {team: AI_AGENT_SENTRY_TEAM},
+                tags: { team: AI_AGENT_SENTRY_TEAM },
                 extra: {
                     context: 'Error during article ingestion start',
                     links,
@@ -44,7 +45,7 @@ export const usePublicResourceMutation = ({
         }
     }
 
-    const {mutateAsync: deleteArticleIngestionLogAsync} =
+    const { mutateAsync: deleteArticleIngestionLogAsync } =
         useDeleteArticleIngestionLog({
             onSuccess: async () => {
                 await queryClient.invalidateQueries({
@@ -63,7 +64,7 @@ export const usePublicResourceMutation = ({
             ])
         } catch (error) {
             reportError(error, {
-                tags: {team: AI_AGENT_SENTRY_TEAM},
+                tags: { team: AI_AGENT_SENTRY_TEAM },
                 extra: {
                     context: 'Error during article ingestion log deleting',
                 },
@@ -73,5 +74,5 @@ export const usePublicResourceMutation = ({
         }
     }
 
-    return {addPublicResource, deletePublicResource}
+    return { addPublicResource, deletePublicResource }
 }

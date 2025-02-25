@@ -1,12 +1,12 @@
-import {getSingleArticleEnglish} from 'pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
+import { getSingleArticleEnglish } from 'pages/settings/helpCenter/fixtures/getArticlesResponse.fixture'
 
-import {getGuidanceArticleFixture} from '../../fixtures/guidanceArticle.fixture'
-import {UpdateGuidanceArticle} from '../../types'
+import { getGuidanceArticleFixture } from '../../fixtures/guidanceArticle.fixture'
+import { UpdateGuidanceArticle } from '../../types'
 import {
-    mapGuidanceToArticleApi,
-    mapUpdateGuidanceArticleToArticleApi,
     mapArticleApiToGuidanceArticle,
     mapGuidanceFormFieldsToGuidanceArticle,
+    mapGuidanceToArticleApi,
+    mapUpdateGuidanceArticleToArticleApi,
 } from '../guidance.utils'
 
 const guidanceArticle = getGuidanceArticleFixture(1, {
@@ -54,7 +54,7 @@ describe('guidance.utils', () => {
             }
 
             const result = mapUpdateGuidanceArticleToArticleApi(
-                updateGuidanceArticle
+                updateGuidanceArticle,
             )
 
             expect(result).toEqual(expected)
@@ -103,7 +103,7 @@ describe('guidance.utils', () => {
             const result = mapGuidanceFormFieldsToGuidanceArticle(
                 formValues,
                 locale,
-                templateKey
+                templateKey,
             )
 
             expect(result).toEqual(expected)

@@ -1,9 +1,10 @@
-import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
+import React, { ComponentProps } from 'react'
+
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
-import {fromJS, Map as ImmutableMap} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import { fromJS, Map as ImmutableMap } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -13,7 +14,7 @@ import {
     bigCommerceIntegrationFixture,
     bigCommerceOrderFixture,
 } from 'fixtures/bigcommerce'
-import {integrationsState} from 'fixtures/integrations'
+import { integrationsState } from 'fixtures/integrations'
 import client from 'models/api/resources'
 import * as bigcommerceApi from 'models/integration/resources/bigcommerce'
 import {
@@ -67,7 +68,7 @@ describe('RefundOrderModal', () => {
         apiMock = new MockAdapter(client)
         jest.spyOn(
             integrationHelpers,
-            'fetchIntegrationProducts'
+            'fetchIntegrationProducts',
         ).mockReturnValue(
             new Promise((resolve) =>
                 resolve([
@@ -75,8 +76,8 @@ describe('RefundOrderModal', () => {
                         102: bigCommerceOrderFixture.bc_products[0].product_id,
                         image_url: 'https://gorgias.io',
                     }),
-                ])
-            )
+                ]),
+            ),
         )
     })
 
@@ -122,12 +123,12 @@ describe('RefundOrderModal', () => {
     it('should render Refund Order - OK', async () => {
         apiMock.onAny().reply(200, getBigCommerceOrderRefundDataOkResponse)
 
-        const {baseElement} = render(
+        const { baseElement } = render(
             <>
                 <Provider store={store}>
                     <RefundOrderModal {...refundOrderProps} />
                 </Provider>
-            </>
+            </>,
         )
 
         await screen.findByText('Refund €0.00')
@@ -138,12 +139,12 @@ describe('RefundOrderModal', () => {
     it('should render Refund Order - ERROR popup', async () => {
         apiMock.onAny().reply(400, getBigCommerceOrderRefundDataErrorResponse)
 
-        const {baseElement} = render(
+        const { baseElement } = render(
             <>
                 <Provider store={store}>
                     <RefundOrderModal {...refundOrderProps} />
                 </Provider>
-            </>
+            </>,
         )
 
         await screen.findByText(BigCommerceGeneralErrorMessage.defaultError)
@@ -154,16 +155,16 @@ describe('RefundOrderModal', () => {
     it('should render Refund Order - Too Many Requests ERROR popup', async () => {
         apiMock.onAny().reply(429, getBigCommerceOrderRefundDataErrorResponse)
 
-        const {baseElement} = render(
+        const { baseElement } = render(
             <>
                 <Provider store={store}>
                     <RefundOrderModal {...refundOrderProps} />
                 </Provider>
-            </>
+            </>,
         )
 
         await screen.findByText(
-            BigCommerceGeneralErrorMessage.rateLimitingError
+            BigCommerceGeneralErrorMessage.rateLimitingError,
         )
 
         expect(baseElement).toMatchSnapshot()
@@ -176,7 +177,7 @@ describe('RefundOrderModalConnected', () => {
 
         jest.spyOn(
             integrationHelpers,
-            'fetchIntegrationProducts'
+            'fetchIntegrationProducts',
         ).mockReturnValue(
             new Promise((resolve) =>
                 resolve([
@@ -184,8 +185,8 @@ describe('RefundOrderModalConnected', () => {
                         id: bigCommerceOrderFixture.bc_products[0].product_id,
                         image_url: 'https://gorgias.io',
                     }),
-                ])
-            )
+                ]),
+            ),
         )
     })
 
@@ -230,17 +231,17 @@ describe('RefundOrderModalConnected', () => {
                         />
                     </IntegrationContext.Provider>
                 </CustomerContext.Provider>
-            </Provider>
+            </Provider>,
         )
     }
 
     it('Refund Order - renders null when `isOpen` is false', () => {
-        const {container} = renderSubject({})
+        const { container } = renderSubject({})
         expect(container.firstChild).toBe(null)
     })
 
     it('Refund Order - renders null when IntegrationContext has no integrationId', () => {
-        const {container} = renderSubject({
+        const { container } = renderSubject({
             integrationContextValue: {
                 integrationId: null,
                 integration: fromJS({}),
@@ -250,7 +251,7 @@ describe('RefundOrderModalConnected', () => {
     })
 
     it('Refund Order - renders null when CustomerContext has no customerId', () => {
-        const {container} = renderSubject({
+        const { container } = renderSubject({
             customerContextValue: {
                 customerId: null,
             },
@@ -269,7 +270,7 @@ describe('RefundOrderModalConnected', () => {
     it('`Refund` button does not send a refund BigCommerce order action when data is incomplete', () => {
         const bigcommerceRefundOrderSpy = jest.spyOn(
             utils,
-            'bigcommerceRefundOrder'
+            'bigcommerceRefundOrder',
         )
 
         refundOrderProps.isOpen = true
@@ -277,7 +278,7 @@ describe('RefundOrderModalConnected', () => {
             refundOrderModalProps: refundOrderProps,
         })
 
-        screen.getByRole('button', {name: /Refund/i}).click()
+        screen.getByRole('button', { name: /Refund/i }).click()
 
         expect(bigcommerceRefundOrderSpy).toHaveBeenCalledTimes(0)
     })
@@ -293,17 +294,17 @@ describe('RefundOrderModalConnected', () => {
                             bigcommerceOrderLevelRefundData,
                         individual_items_level_refund_data:
                             bigCommerceCalculateOrderRefundDataResponseApiFixture.individual_items_level_refund_data,
-                    })
-                )
+                    }),
+                ),
             )
         const getBigCommerceAvailablePaymentOptionsDataSpy = jest
             .spyOn(bigcommerceApi, 'getBigCommerceAvailablePaymentOptionsData')
             .mockReturnValue(
                 new Promise((resolve) =>
                     resolve(
-                        bigCommerceAvailablePaymentOptionsDataResponseFixture
-                    )
-                )
+                        bigCommerceAvailablePaymentOptionsDataResponseFixture,
+                    ),
+                ),
             )
         const bigcommerceRefundOrderSpy = jest
             .spyOn(utils, 'bigcommerceRefundOrder')
@@ -324,7 +325,7 @@ describe('RefundOrderModalConnected', () => {
         })
 
         // Change the refund method => available amount for refund is displayed
-        fireEvent.click(screen.getByRole('radio', {name: /Manual amount/}))
+        fireEvent.click(screen.getByRole('radio', { name: /Manual amount/ }))
         act(() => jest.runAllTimers())
 
         // Select an amount to refund
@@ -334,22 +335,22 @@ describe('RefundOrderModalConnected', () => {
                     new RegExp(
                         `Available for refund: ${utils.formatAmount(
                             bigcommerceOrder.currency_code,
-                            bigcommerceOrderLevelRefundData.available_amount
-                        )}`
-                    )
-                )
+                            bigcommerceOrderLevelRefundData.available_amount,
+                        )}`,
+                    ),
+                ),
             ).toBeInTheDocument()
         })
 
         const amountToRefund = 10
         fireEvent.change(screen.getByRole('spinbutton'), {
-            target: {value: amountToRefund},
+            target: { value: amountToRefund },
         })
         act(() => jest.runAllTimers())
 
         // Called twice: once in default `Entire order`, once in `Manual amount`
         expect(
-            getBigCommerceAvailablePaymentOptionsDataSpy
+            getBigCommerceAvailablePaymentOptionsDataSpy,
         ).toHaveBeenCalledTimes(2)
 
         // Select a refund method
@@ -360,7 +361,7 @@ describe('RefundOrderModalConnected', () => {
 
         // Select a reason for refund
         fireEvent.change(screen.getByRole('textbox'), {
-            target: {value: 'Refunded from Gorgias'},
+            target: { value: 'Refunded from Gorgias' },
         })
         act(() => jest.runAllTimers())
 
@@ -368,7 +369,9 @@ describe('RefundOrderModalConnected', () => {
         const newOrderStatus = 'Partially Shipped'
 
         userEvent.click(screen.getByRole('combobox'))
-        userEvent.click(screen.getByRole('option', {name: /Partially Shipped/}))
+        userEvent.click(
+            screen.getByRole('option', { name: /Partially Shipped/ }),
+        )
 
         // Refund order
         screen
@@ -376,9 +379,9 @@ describe('RefundOrderModalConnected', () => {
                 name: new RegExp(
                     `Refund ${utils.formatAmount(
                         bigcommerceOrder.currency_code,
-                        bigCommerceAvailablePaymentOptionsDataResponseFixture.total_refund_amount
+                        bigCommerceAvailablePaymentOptionsDataResponseFixture.total_refund_amount,
                     )}`,
-                    'i'
+                    'i',
                 ),
             })
             .click()
@@ -388,7 +391,7 @@ describe('RefundOrderModalConnected', () => {
             BigCommerceActionType.RefundOrder,
             expect.any(Function),
             integrationsState.integrations.find(
-                (integration) => integration.type === 'bigcommerce'
+                (integration) => integration.type === 'bigcommerce',
             ),
             defaultCustomerContextValue.customerId.toString(),
             bigcommerceOrder.id,
@@ -405,7 +408,7 @@ describe('RefundOrderModalConnected', () => {
             bigCommerceAvailablePaymentOptionsDataResponseFixture
                 .refund_methods[1],
             'Refunded from Gorgias',
-            newOrderStatus
+            newOrderStatus,
         )
         expect(onResetSpy).toHaveBeenCalledTimes(1)
     })
@@ -421,17 +424,17 @@ describe('RefundOrderModalConnected', () => {
                             bigcommerceOrderLevelRefundData,
                         individual_items_level_refund_data:
                             bigCommerceCalculateOrderRefundDataResponseApiFixture.individual_items_level_refund_data,
-                    })
-                )
+                    }),
+                ),
             )
         const getBigCommerceAvailablePaymentOptionsDataSpy = jest
             .spyOn(bigcommerceApi, 'getBigCommerceAvailablePaymentOptionsData')
             .mockReturnValue(
                 new Promise((resolve) =>
                     resolve(
-                        bigCommerceAvailablePaymentOptionsDataResponseFixture
-                    )
-                )
+                        bigCommerceAvailablePaymentOptionsDataResponseFixture,
+                    ),
+                ),
             )
         const bigcommerceRefundOrderSpy = jest
             .spyOn(utils, 'bigcommerceRefundOrder')
@@ -457,7 +460,7 @@ describe('RefundOrderModalConnected', () => {
         act(() => jest.runAllTimers())
 
         expect(
-            getBigCommerceAvailablePaymentOptionsDataSpy
+            getBigCommerceAvailablePaymentOptionsDataSpy,
         ).toHaveBeenCalledTimes(3)
 
         // Select a refund method
@@ -468,7 +471,7 @@ describe('RefundOrderModalConnected', () => {
 
         // Select a reason for refund
         fireEvent.change(screen.getByRole('textbox'), {
-            target: {value: 'Refunded from Gorgias'},
+            target: { value: 'Refunded from Gorgias' },
         })
         act(() => jest.runAllTimers())
 
@@ -476,7 +479,9 @@ describe('RefundOrderModalConnected', () => {
         const newOrderStatus = 'Partially Shipped'
 
         userEvent.click(screen.getByRole('combobox'))
-        userEvent.click(screen.getByRole('option', {name: /Partially Shipped/}))
+        userEvent.click(
+            screen.getByRole('option', { name: /Partially Shipped/ }),
+        )
 
         // Refund order
         screen
@@ -484,9 +489,9 @@ describe('RefundOrderModalConnected', () => {
                 name: new RegExp(
                     `Refund ${utils.formatAmount(
                         bigcommerceOrder.currency_code,
-                        bigCommerceAvailablePaymentOptionsDataResponseFixture.total_refund_amount
+                        bigCommerceAvailablePaymentOptionsDataResponseFixture.total_refund_amount,
                     )}`,
-                    'i'
+                    'i',
                 ),
             })
             .click()
@@ -496,7 +501,7 @@ describe('RefundOrderModalConnected', () => {
             BigCommerceActionType.RefundOrder,
             expect.any(Function),
             integrationsState.integrations.find(
-                (integration) => integration.type === 'bigcommerce'
+                (integration) => integration.type === 'bigcommerce',
             ),
             defaultCustomerContextValue.customerId.toString(),
             bigcommerceOrder.id,
@@ -544,7 +549,7 @@ describe('RefundOrderModalConnected', () => {
             bigCommerceAvailablePaymentOptionsDataResponseFixture
                 .refund_methods[1],
             'Refunded from Gorgias',
-            newOrderStatus
+            newOrderStatus,
         )
         expect(onResetSpy).toHaveBeenCalledTimes(1)
     })
@@ -559,17 +564,17 @@ describe('RefundOrderModalConnected', () => {
                             bigcommerceOrderLevelRefundData,
                         individual_items_level_refund_data:
                             bigCommerceCalculateOrderRefundDataResponseApiFixture.individual_items_level_refund_data,
-                    })
-                )
+                    }),
+                ),
             )
         const getBigCommerceAvailablePaymentOptionsDataSpy = jest
             .spyOn(bigcommerceApi, 'getBigCommerceAvailablePaymentOptionsData')
             .mockReturnValue(
                 new Promise((resolve) =>
                     resolve(
-                        bigCommerceAvailablePaymentOptionsDataResponseFixture
-                    )
-                )
+                        bigCommerceAvailablePaymentOptionsDataResponseFixture,
+                    ),
+                ),
             )
         const bigcommerceRefundOrderSpy = jest
             .spyOn(utils, 'bigcommerceRefundOrder')
@@ -595,7 +600,7 @@ describe('RefundOrderModalConnected', () => {
         act(() => jest.runAllTimers())
 
         expect(
-            getBigCommerceAvailablePaymentOptionsDataSpy
+            getBigCommerceAvailablePaymentOptionsDataSpy,
         ).toHaveBeenCalledTimes(3)
 
         // Deselect `Shipping cost` & `Handling fee` checkboxes
@@ -604,7 +609,7 @@ describe('RefundOrderModalConnected', () => {
         act(() => jest.runAllTimers())
 
         expect(
-            getBigCommerceAvailablePaymentOptionsDataSpy
+            getBigCommerceAvailablePaymentOptionsDataSpy,
         ).toHaveBeenCalledTimes(5)
 
         // Select a refund method
@@ -615,7 +620,7 @@ describe('RefundOrderModalConnected', () => {
 
         // Select a reason for refund
         fireEvent.change(screen.getByRole('textbox'), {
-            target: {value: 'Refunded from Gorgias'},
+            target: { value: 'Refunded from Gorgias' },
         })
         act(() => jest.runAllTimers())
 
@@ -623,7 +628,9 @@ describe('RefundOrderModalConnected', () => {
         const newOrderStatus = 'Partially Shipped'
 
         userEvent.click(screen.getByRole('combobox'))
-        userEvent.click(screen.getByRole('option', {name: /Partially Shipped/}))
+        userEvent.click(
+            screen.getByRole('option', { name: /Partially Shipped/ }),
+        )
 
         // Refund order
         screen
@@ -631,9 +638,9 @@ describe('RefundOrderModalConnected', () => {
                 name: new RegExp(
                     `Refund ${utils.formatAmount(
                         bigcommerceOrder.currency_code,
-                        bigCommerceAvailablePaymentOptionsDataResponseFixture.total_refund_amount
+                        bigCommerceAvailablePaymentOptionsDataResponseFixture.total_refund_amount,
                     )}`,
-                    'i'
+                    'i',
                 ),
             })
             .click()
@@ -643,7 +650,7 @@ describe('RefundOrderModalConnected', () => {
             BigCommerceActionType.RefundOrder,
             expect.any(Function),
             integrationsState.integrations.find(
-                (integration) => integration.type === 'bigcommerce'
+                (integration) => integration.type === 'bigcommerce',
             ),
             defaultCustomerContextValue.customerId.toString(),
             bigcommerceOrder.id,
@@ -676,7 +683,7 @@ describe('RefundOrderModalConnected', () => {
             bigCommerceAvailablePaymentOptionsDataResponseFixture
                 .refund_methods[1],
             'Refunded from Gorgias',
-            newOrderStatus
+            newOrderStatus,
         )
         expect(onResetSpy).toHaveBeenCalledTimes(1)
     })

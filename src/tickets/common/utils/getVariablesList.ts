@@ -1,11 +1,11 @@
-import {Variable, VARIABLES} from 'tickets/common/config'
+import { Variable, VARIABLES } from 'tickets/common/config'
 
 /**
  * Return array of configs of variables
  * Autocomplete fullName and type properties of each config
  */
 export default function getVariablesList(
-    variablesList: Array<Variable> = VARIABLES
+    variablesList: Array<Variable> = VARIABLES,
 ): Array<Variable> {
     const variables: Variable[] = []
 

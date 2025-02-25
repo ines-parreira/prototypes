@@ -1,9 +1,10 @@
+import React, { useCallback, useState } from 'react'
+
 import noop from 'lodash/noop'
-import React, {useCallback, useState} from 'react'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
+import { FilterKey, StatsFiltersWithLogicalOperator } from 'models/stat/types'
 import Filter from 'pages/stats/common/components/Filter'
 import {
     LogicalOperatorEnum,
@@ -13,21 +14,24 @@ import {
     agentsFilterLogicalOperators,
     FilterLabels,
 } from 'pages/stats/common/filters/constants'
-import {emptyFilter, logSegmentEvent} from 'pages/stats/common/filters/helpers'
+import {
+    emptyFilter,
+    logSegmentEvent,
+} from 'pages/stats/common/filters/helpers'
 import {
     OptionalFilterProps,
     RemovableFilter,
 } from 'pages/stats/common/filters/types'
-import {DropdownOption} from 'pages/stats/types'
-import {getFilterAgentsJS} from 'state/agents/selectors'
+import { DropdownOption } from 'pages/stats/types'
+import { getFilterAgentsJS } from 'state/agents/selectors'
 import {
     getPageStatsFiltersWithLogicalOperators,
     getSavedFiltersWithLogicalOperators,
 } from 'state/stats/selectors'
-import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
-import {getFilterTeamsJS} from 'state/teams/selectors'
-import {RootState} from 'state/types'
-import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
+import { mergeStatsFiltersWithLogicalOperator } from 'state/stats/statsSlice'
+import { getFilterTeamsJS } from 'state/teams/selectors'
+import { RootState } from 'state/types'
+import { statFiltersClean, statFiltersDirty } from 'state/ui/stats/actions'
 import {
     removeFilterFromSavedFilterDraft,
     upsertSavedFilterFilter,
@@ -39,7 +43,7 @@ type Props = {
         value: Exclude<
             StatsFiltersWithLogicalOperator[FilterKey.Agents],
             undefined
-        >
+        >,
     ) => void
     dispatchRemove: () => void
     dispatchStatFiltersDirty?: () => void
@@ -72,7 +76,7 @@ export default function AgentsFilter({
                 operator: value.operator,
             })
         },
-        [dispatchUpdate, value.operator]
+        [dispatchUpdate, value.operator],
     )
 
     const filterOptions = [
@@ -85,14 +89,14 @@ export default function AgentsFilter({
                 })),
             ],
         },
-        {title: 'Users', options: agents},
+        { title: 'Users', options: agents },
     ]
 
     const getSelectedItems = useCallback(() => {
         const agentsInValue = () =>
             agents.filter((agent) => value.values.includes(Number(agent.value)))
 
-        const selectedAgents = agentsInValue().map(({label, value}) => ({
+        const selectedAgents = agentsInValue().map(({ label, value }) => ({
             label,
             value,
         }))
@@ -101,17 +105,17 @@ export default function AgentsFilter({
 
     const handleTeamOption = (opt: DropdownOption) => {
         const foundTeam = teams.filter(
-            (team) => team.value === opt.value.replace(teamValuePrefix, '')
+            (team) => team.value === opt.value.replace(teamValuePrefix, ''),
         )[0]
         const teamIsSelected = selectedTeamOption.find(
-            (team) => team.value === opt.value
+            (team) => team.value === opt.value,
         )
         if (teamIsSelected) {
             handleFilterValuesChange(
-                value.values.filter((id) => !foundTeam.members.includes(id))
+                value.values.filter((id) => !foundTeam.members.includes(id)),
             )
             setSelectedTeamOption(
-                selectedTeamOption.filter((team) => team.value !== opt.value)
+                selectedTeamOption.filter((team) => team.value !== opt.value),
             )
         } else {
             handleFilterValuesChange([
@@ -129,7 +133,7 @@ export default function AgentsFilter({
 
         if (agentIsSelected) {
             handleFilterValuesChange(
-                value.values.filter((id) => id !== Number(foundAgent?.value))
+                value.values.filter((id) => id !== Number(foundAgent?.value)),
             )
         } else {
             handleFilterValuesChange([
@@ -154,7 +158,7 @@ export default function AgentsFilter({
                 operator: operator,
             })
         },
-        [dispatchUpdate, value.values]
+        [dispatchUpdate, value.values],
     )
 
     const handleDropdownOpen = () => {
@@ -168,7 +172,7 @@ export default function AgentsFilter({
     return (
         <Filter
             filterName={FilterLabels[FilterKey.Agents]}
-            filterErrors={{warningType}}
+            filterErrors={{ warningType }}
             selectedOptions={getSelectedItems()}
             selectedLogicalOperator={value.operator}
             logicalOperators={agentsFilterLogicalOperators}
@@ -176,7 +180,7 @@ export default function AgentsFilter({
             onChangeOption={onOptionChange}
             onSelectAll={() => {
                 handleFilterValuesChange(
-                    agents.map((agent) => Number(agent.value))
+                    agents.map((agent) => Number(agent.value)),
                 )
             }}
             onRemoveAll={() => {
@@ -212,7 +216,7 @@ export const AgentsFiltersWithState = connect(
             }),
         dispatchStatFiltersDirty: statFiltersDirty,
         dispatchStatFiltersClean: statFiltersClean,
-    }
+    },
 )(AgentsFilter)
 
 export const AgentsFiltersWithSavedState = connect(
@@ -230,5 +234,5 @@ export const AgentsFiltersWithSavedState = connect(
             removeFilterFromSavedFilterDraft({
                 filterKey: FilterKey.Agents,
             }),
-    }
+    },
 )(AgentsFilter)

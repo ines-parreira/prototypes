@@ -1,4 +1,4 @@
-import React, {createRef, FunctionComponent, ChangeEvent} from 'react'
+import React, { ChangeEvent, createRef, FunctionComponent } from 'react'
 
 import css from './UploadButton.less'
 
@@ -9,7 +9,7 @@ export type UploadButtonProps = Omit<
     name: string
     onChange?: (
         event: ChangeEvent<HTMLInputElement>,
-        ref: HTMLInputElement | null
+        ref: HTMLInputElement | null,
     ) => void
 }
 
@@ -35,7 +35,7 @@ export const UploadButton: FunctionComponent<UploadButtonProps> = ({
                 type="file"
                 name={name}
                 id={name}
-                style={{display: 'none'}}
+                style={{ display: 'none' }}
                 onChange={(...args) => {
                     if (onChange) {
                         onChange(...args, inputRef.current)

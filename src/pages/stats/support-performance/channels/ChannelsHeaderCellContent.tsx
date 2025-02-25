@@ -1,15 +1,15 @@
 import React from 'react'
 
-import {useChannelsSortingQuery} from 'hooks/reporting/support-performance/useChannelsSortingQuery'
-import {OrderDirection} from 'models/api/types'
+import { useChannelsSortingQuery } from 'hooks/reporting/support-performance/useChannelsSortingQuery'
+import { OrderDirection } from 'models/api/types'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import {HintTooltip} from 'pages/stats/common/HintTooltip'
+import { HintTooltip } from 'pages/stats/common/HintTooltip'
 import {
     ChannelColumnConfig,
     ChannelsTableLabels,
     LeadColumn,
 } from 'pages/stats/support-performance/channels/ChannelsTableConfig'
-import {ChannelsTableColumns} from 'state/ui/stats/types'
+import { ChannelsTableColumns } from 'state/ui/stats/types'
 
 type ChannelsHeaderCellContentProps = {
     column: ChannelsTableColumns
@@ -23,9 +23,9 @@ export const ChannelsHeaderCellContent = ({
     width,
 }: ChannelsHeaderCellContentProps) => {
     const query = ChannelColumnConfig[column].useMetric
-    const {sortCallback, direction, field} = useChannelsSortingQuery(
+    const { sortCallback, direction, field } = useChannelsSortingQuery(
         column,
-        query
+        query,
     )
     const isOrderedBy = column === field
     const tooltip = ChannelColumnConfig[column].hint

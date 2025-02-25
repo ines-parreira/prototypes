@@ -1,4 +1,4 @@
-import {useCallback, useMemo, useState} from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import useLocalStorage from './useLocalStorage'
 
@@ -17,7 +17,7 @@ export function useDismissFlag(key: string, defaultVisible = false) {
             isDismissed: isHiddenPermanently || !visible,
             dismiss: handleOnDismiss,
         }),
-        [handleOnDismiss, isHiddenPermanently, visible]
+        [handleOnDismiss, isHiddenPermanently, visible],
     )
 
     return api

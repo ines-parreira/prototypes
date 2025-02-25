@@ -1,14 +1,14 @@
-import {useEffect} from 'react'
+import { useEffect } from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {fetchRuleRecipes} from 'models/ruleRecipe/resources'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { fetchRuleRecipes } from 'models/ruleRecipe/resources'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
-import {ruleRecipesFetched} from './actions'
-import {ruleRecipes} from './selectors'
-import {RuleRecipesState} from './types'
+import { ruleRecipesFetched } from './actions'
+import { ruleRecipes } from './selectors'
+import { RuleRecipesState } from './types'
 
 let loading = false
 
@@ -29,7 +29,7 @@ export const useRuleRecipes = (): RuleRecipesState | null => {
                     notify({
                         message: 'Failed to fetch rules templates',
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
             }
         }

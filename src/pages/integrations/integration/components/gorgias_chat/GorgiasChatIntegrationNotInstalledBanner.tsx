@@ -1,9 +1,10 @@
-import {Map} from 'immutable'
 import React from 'react'
 
-import {AlertBanner, AlertBannerTypes} from 'AlertBanners'
-import {IntegrationType} from 'models/integration/types'
-import {Tab} from 'pages/integrations/integration/types'
+import { Map } from 'immutable'
+
+import { AlertBanner, AlertBannerTypes } from 'AlertBanners'
+import { IntegrationType } from 'models/integration/types'
+import { Tab } from 'pages/integrations/integration/types'
 
 type Props = {
     integration: Map<any, any>

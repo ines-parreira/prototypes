@@ -8,7 +8,7 @@ describe('isFullWidthViewPath', () => {
 
     it('should return true if the path is for a full width view with a slug', () => {
         const result = isFullWidthViewPath(
-            '/app/tickets/123456/my-awesome-view'
+            '/app/tickets/123456/my-awesome-view',
         )
         expect(result).toBe(true)
     })

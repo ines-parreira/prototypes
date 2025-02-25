@@ -1,16 +1,17 @@
-import classNames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
+import classNames from 'classnames'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
 import navbarCss from 'assets/css/navbar.less'
-import {ActiveContent, Navbar} from 'common/navigation'
-import {FeatureFlagKey} from 'config/featureFlags'
+import { ActiveContent, Navbar } from 'common/navigation'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import NavbarLink from 'pages/common/components/navbar/NavbarLink'
 import css from 'pages/convert/common/components/ConvertNavbar/ConvertNavbar.less'
-import {getHasAutomate} from 'state/billing/selectors'
+import { getHasAutomate } from 'state/billing/selectors'
 
-import {AiAgentNavbarView} from './AiAgentNavbarView'
+import { AiAgentNavbarView } from './AiAgentNavbarView'
 
 export const AiAgentNavbar = () => {
     const hasAutomate = useAppSelector(getHasAutomate)
@@ -29,7 +30,7 @@ export const AiAgentNavbar = () => {
                 <div
                     className={classNames(
                         navbarCss['link-wrapper'],
-                        css.navbarItem
+                        css.navbarItem,
                     )}
                 >
                     <NavbarLink to="/app/ai-agent/overview" exact>

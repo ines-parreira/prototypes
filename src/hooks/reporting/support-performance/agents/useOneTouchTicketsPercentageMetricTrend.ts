@@ -4,13 +4,13 @@ import {
     useClosedTicketsTrend,
     useOneTouchTicketsTrend,
 } from 'hooks/reporting/metricTrends'
-import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-import {StatsFilters} from 'models/stat/types'
-import {calculatePercentage} from 'utils/reporting'
+import { MetricTrend } from 'hooks/reporting/useMetricTrend'
+import { StatsFilters } from 'models/stat/types'
+import { calculatePercentage } from 'utils/reporting'
 
 const formatData = (
     oneTouchTicketsTrend: MetricTrend,
-    closedTicketsTrend: MetricTrend
+    closedTicketsTrend: MetricTrend,
 ) => {
     let metricValue: number | null = null
     let prevMetricValue: number | null = null
@@ -18,7 +18,7 @@ const formatData = (
     if (closedTicketsTrend.data?.value && oneTouchTicketsTrend.data?.value) {
         metricValue = calculatePercentage(
             oneTouchTicketsTrend.data.value,
-            closedTicketsTrend.data.value
+            closedTicketsTrend.data.value,
         )
     }
 
@@ -28,7 +28,7 @@ const formatData = (
     ) {
         prevMetricValue = calculatePercentage(
             oneTouchTicketsTrend.data.prevValue,
-            closedTicketsTrend.data.prevValue
+            closedTicketsTrend.data.prevValue,
         )
     }
 
@@ -40,7 +40,7 @@ const formatData = (
 
 export const useOneTouchTicketsPercentageMetricTrend = (
     statsFilters: StatsFilters,
-    timezone: string
+    timezone: string,
 ): MetricTrend => {
     const oneTouchTicketsTrend = useOneTouchTicketsTrend(statsFilters, timezone)
     const closedTicketsTrend = useClosedTicketsTrend(statsFilters, timezone)
@@ -59,7 +59,7 @@ export const useOneTouchTicketsPercentageMetricTrend = (
 
 export const fetchOneTouchTicketsPercentageMetricTrend = (
     statsFilters: StatsFilters,
-    timezone: string
+    timezone: string,
 ): Promise<MetricTrend> =>
     Promise.all([
         fetchOneTouchTicketsTrend(statsFilters, timezone),

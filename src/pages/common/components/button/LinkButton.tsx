@@ -1,4 +1,4 @@
-import React, {AnchorHTMLAttributes, ComponentProps, forwardRef} from 'react'
+import React, { AnchorHTMLAttributes, ComponentProps, forwardRef } from 'react'
 
 import BaseButton from './BaseButton'
 
@@ -18,7 +18,7 @@ const LinkButton = forwardRef<HTMLAnchorElement, Props>(function (
 
         ...other
     },
-    ref
+    ref,
 ) {
     return (
         <BaseButton

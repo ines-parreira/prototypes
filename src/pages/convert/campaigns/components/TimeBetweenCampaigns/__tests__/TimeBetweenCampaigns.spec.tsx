@@ -1,6 +1,7 @@
-import {render, screen, fireEvent, act, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
+
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import TimeBetweenCampaigns from '../TimeBetweenCampaigns'
 
@@ -16,7 +17,7 @@ describe('<MaximumCampaignDisplayed />', () => {
         render(<TimeBetweenCampaigns {...defaultProps} />)
 
         expect(
-            screen.getByText('Time between campaign displays')
+            screen.getByText('Time between campaign displays'),
         ).toBeInTheDocument()
     })
 
@@ -25,9 +26,9 @@ describe('<MaximumCampaignDisplayed />', () => {
             <TimeBetweenCampaigns
                 {...{
                     ...defaultProps,
-                    ...{config: {value: 30, unit: 'seconds'}},
+                    ...{ config: { value: 30, unit: 'seconds' } },
                 }}
-            />
+            />,
         )
 
         const toggleInput = screen.getByRole('checkbox')
@@ -38,8 +39,8 @@ describe('<MaximumCampaignDisplayed />', () => {
         const onChangeMock = jest.fn()
         render(
             <TimeBetweenCampaigns
-                {...{...defaultProps, ...{onChange: onChangeMock}}}
-            />
+                {...{ ...defaultProps, ...{ onChange: onChangeMock } }}
+            />,
         )
 
         const toggleInput = screen.getByRole('checkbox')
@@ -48,15 +49,18 @@ describe('<MaximumCampaignDisplayed />', () => {
             fireEvent.click(toggleInput)
         })
 
-        expect(onChangeMock).toHaveBeenCalledWith({unit: 'seconds', value: 30})
+        expect(onChangeMock).toHaveBeenCalledWith({
+            unit: 'seconds',
+            value: 30,
+        })
     })
 
     it('user can modify values', async () => {
         const onChangeMock = jest.fn()
-        const {container} = render(
+        const { container } = render(
             <TimeBetweenCampaigns
-                {...{...defaultProps, ...{onChange: onChangeMock}}}
-            />
+                {...{ ...defaultProps, ...{ onChange: onChangeMock } }}
+            />,
         )
 
         const toggleInput = screen.getByRole('checkbox')
@@ -65,7 +69,7 @@ describe('<MaximumCampaignDisplayed />', () => {
         })
 
         const valueInput = container.querySelector(
-            'input[type="number"]'
+            'input[type="number"]',
         ) as Element
 
         userEvent.clear(valueInput)
@@ -86,10 +90,10 @@ describe('<MaximumCampaignDisplayed />', () => {
                     ...defaultProps,
                     ...{
                         onChange: onChangeMock,
-                        config: {value: 60, unit: 'seconds'},
+                        config: { value: 60, unit: 'seconds' },
                     },
                 }}
-            />
+            />,
         )
 
         const input = screen.getByRole('textbox')
@@ -115,10 +119,10 @@ describe('<MaximumCampaignDisplayed />', () => {
                     ...defaultProps,
                     ...{
                         onChange: onChangeMock,
-                        config: {value: 1, unit: 'minutes'},
+                        config: { value: 1, unit: 'minutes' },
                     },
                 }}
-            />
+            />,
         )
 
         const input = screen.getByRole('textbox')
@@ -138,20 +142,20 @@ describe('<MaximumCampaignDisplayed />', () => {
     it('shoud show error when value is out of range', async () => {
         const onChangeMock = jest.fn()
 
-        const {container} = render(
+        const { container } = render(
             <TimeBetweenCampaigns
                 {...{
                     ...defaultProps,
                     ...{
                         onChange: onChangeMock,
-                        config: {value: 1, unit: 'seconds'},
+                        config: { value: 1, unit: 'seconds' },
                     },
                 }}
-            />
+            />,
         )
 
         const valueInput = container.querySelector(
-            'input[type="number"]'
+            'input[type="number"]',
         ) as Element
 
         userEvent.clear(valueInput)
@@ -162,7 +166,7 @@ describe('<MaximumCampaignDisplayed />', () => {
             unit: 'seconds',
         })
         expect(
-            screen.getByText('Value should be between 0 and 60 seconds')
+            screen.getByText('Value should be between 0 and 60 seconds'),
         ).toBeInTheDocument()
     })
 })

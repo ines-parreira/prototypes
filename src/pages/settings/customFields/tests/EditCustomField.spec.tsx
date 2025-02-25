@@ -1,28 +1,29 @@
-import {screen, render} from '@testing-library/react'
 import React from 'react'
 
-import {OBJECT_TYPES} from 'custom-fields/constants'
-import {useCustomFieldDefinition} from 'custom-fields/hooks/queries/useCustomFieldDefinition'
-import {CustomField} from 'custom-fields/types'
+import { render, screen } from '@testing-library/react'
+
+import { OBJECT_TYPES } from 'custom-fields/constants'
+import { useCustomFieldDefinition } from 'custom-fields/hooks/queries/useCustomFieldDefinition'
+import { CustomField } from 'custom-fields/types'
 import {
     aiManagedTicketInputFieldDefinition,
-    productManagedTicketInputFieldDefinition,
-    managedTicketInputFieldDefinition,
-    ticketInputFieldDefinition,
     managedCustomerInputFieldDefinition,
+    managedTicketInputFieldDefinition,
+    productManagedTicketInputFieldDefinition,
+    ticketInputFieldDefinition,
 } from 'fixtures/customField'
 import EditCustomField from 'pages/settings/customFields/EditCustomField'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
 import EditFieldForm from '../components/EditFieldForm'
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
-    useParams: () => ({id: 10}),
+    useParams: () => ({ id: 10 }),
     Link: () => 'link',
 }))
 jest.mock('../components/EditFieldForm', () =>
-    jest.fn(() => <div>They see me rollin', they hatiiin'</div>)
+    jest.fn(() => <div>They see me rollin', they hatiiin'</div>),
 )
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinition')
 const useCustomFieldDefinitionMock = assumeMock(useCustomFieldDefinition)
@@ -43,15 +44,15 @@ describe('<EditCustomField/>', () => {
 
         expect(useCustomFieldDefinition).toHaveBeenCalledWith(10)
         expect(EditFieldForm).toHaveBeenCalledWith(
-            {field: ticketInputFieldDefinition},
-            {}
+            { field: ticketInputFieldDefinition },
+            {},
         )
     })
 
     it('should render no text when field is not a managed field', () => {
         render(<EditCustomField objectType={OBJECT_TYPES.TICKET} />)
         expect(
-            screen.queryByText(/This field is managed/)
+            screen.queryByText(/This field is managed/),
         ).not.toBeInTheDocument()
         expect(screen.queryByText(/Use this field/)).not.toBeInTheDocument()
     })
@@ -83,7 +84,7 @@ describe('<EditCustomField/>', () => {
         setTicketFieldDefinition(managedCustomerInputFieldDefinition)
         render(<EditCustomField objectType={OBJECT_TYPES.CUSTOMER} />)
         expect(
-            screen.getByText('see this article').getAttribute('href')
+            screen.getByText('see this article').getAttribute('href'),
         ).toEqual('https://link.gorgias.com/tjj')
     })
 
@@ -91,7 +92,7 @@ describe('<EditCustomField/>', () => {
         setTicketFieldDefinition(managedTicketInputFieldDefinition)
         render(<EditCustomField objectType={OBJECT_TYPES.TICKET} />)
         expect(
-            screen.getByText('see this article').getAttribute('href')
+            screen.getByText('see this article').getAttribute('href'),
         ).toEqual('https://link.gorgias.com/dz7')
     })
 })

@@ -1,11 +1,12 @@
-import {useListSlaPolicies} from '@gorgias/api-queries'
-import {Skeleton} from '@gorgias/merchant-ui-kit'
-import React, {PropsWithChildren} from 'react'
+import React, { PropsWithChildren } from 'react'
 
-import {ServiceLevelAgreementsEmptyState} from 'pages/stats/sla/ServiceLevelAgreementsEmptyState'
+import { useListSlaPolicies } from '@gorgias/api-queries'
+import { Skeleton } from '@gorgias/merchant-ui-kit'
 
-export const WithSlaEmptyState = ({children}: PropsWithChildren<unknown>) => {
-    const {data, isLoading} = useListSlaPolicies()
+import { ServiceLevelAgreementsEmptyState } from 'pages/stats/sla/ServiceLevelAgreementsEmptyState'
+
+export const WithSlaEmptyState = ({ children }: PropsWithChildren<unknown>) => {
+    const { data, isLoading } = useListSlaPolicies()
 
     if (isLoading) {
         return <Skeleton />

@@ -1,11 +1,12 @@
-import {render, fireEvent, waitFor} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render, waitFor } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {VoiceMessageType, VoiceMessage} from 'models/integration/types'
-import {Account} from 'state/currentAccount/types'
-import {RootState, StoreDispatch} from 'state/types'
+import { VoiceMessage, VoiceMessageType } from 'models/integration/types'
+import { Account } from 'state/currentAccount/types'
+import { RootState, StoreDispatch } from 'state/types'
 
 import VoiceMessageField from '../VoiceMessageField'
 
@@ -29,15 +30,15 @@ describe('<VoiceMessageField />', () => {
     })
 
     it('should allow changing the text to speech text', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore({})}>
                 <VoiceMessageField value={defaultMessage} onChange={onChange} />
-            </Provider>
+            </Provider>,
         )
         const textarea = container.querySelector('textarea')
         if (textarea) {
             fireEvent.change(textarea, {
-                target: {value: 'Please hold'},
+                target: { value: 'Please hold' },
             })
         }
 
@@ -56,15 +57,15 @@ describe('<VoiceMessageField />', () => {
             voice_message_type: VoiceMessageType.VoiceRecording,
         }
 
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore({})}>
                 <VoiceMessageField value={defaultMessage} onChange={onChange} />
-            </Provider>
+            </Provider>,
         )
 
         const input = container.querySelector('input[type="file"]')
         if (input) {
-            fireEvent.change(input, {target: {files: [file]}})
+            fireEvent.change(input, { target: { files: [file] } })
         }
 
         await waitFor(() => {
@@ -89,19 +90,19 @@ describe('<VoiceMessageField />', () => {
             voice_message_type: VoiceMessageType.VoiceRecording,
         }
 
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore({})}>
                 <VoiceMessageField
                     maxRecordingDuration={5}
                     value={defaultMessage}
                     onChange={onChange}
                 />
-            </Provider>
+            </Provider>,
         )
 
         const input = container.querySelector('input[type="file"]')
         if (input) {
-            fireEvent.change(input, {target: {files: [file]}})
+            fireEvent.change(input, { target: { files: [file] } })
         }
 
         await expect(
@@ -113,19 +114,19 @@ describe('<VoiceMessageField />', () => {
                     new_voice_recording_file_name: 'example.mp3',
                     new_voice_recording_file_type: 'audio/mpeg',
                 })
-            })
+            }),
         ).rejects.toThrow()
     })
 
     it('should allow setting no voice message', () => {
-        const {getByLabelText} = render(
+        const { getByLabelText } = render(
             <Provider store={mockStore({})}>
                 <VoiceMessageField
                     value={defaultMessage}
                     onChange={onChange}
                     allowNone
                 />
-            </Provider>
+            </Provider>,
         )
 
         const noneOption = getByLabelText(/None/)
@@ -163,7 +164,7 @@ describe('<VoiceMessageField horizontal="true" />', () => {
                     horizontal={true}
                     isDisabled={isDisabled}
                 />
-            </Provider>
+            </Provider>,
         )
     }
 
@@ -176,18 +177,18 @@ describe('<VoiceMessageField horizontal="true" />', () => {
     })
 
     it('should render', () => {
-        const {getByLabelText} = renderComponent()
+        const { getByLabelText } = renderComponent()
         expect(getByLabelText('Text-to-speech')).toBeInTheDocument()
         expect(getByLabelText('Custom recording')).toBeInTheDocument()
         expect(getByLabelText('None')).toBeInTheDocument()
     })
 
     it('should allow changing the text to speech text', () => {
-        const {container} = renderComponent()
+        const { container } = renderComponent()
         const textarea = container.querySelector('textarea')
         if (textarea) {
             fireEvent.change(textarea, {
-                target: {value: 'Please hold'},
+                target: { value: 'Please hold' },
             })
         }
 
@@ -202,17 +203,17 @@ describe('<VoiceMessageField horizontal="true" />', () => {
             voice_message_type: VoiceMessageType.TextToSpeech,
             text_to_speech_content: null,
         }
-        const {container, getByPlaceholderText} = renderComponent({message})
+        const { container, getByPlaceholderText } = renderComponent({ message })
 
         expect(
-            getByPlaceholderText('Write a message to convert to speech')
+            getByPlaceholderText('Write a message to convert to speech'),
         ).toBeInTheDocument()
 
         const textarea = container.querySelector('textarea')
         expect(textarea).toBeInTheDocument()
         if (textarea) {
             fireEvent.change(textarea, {
-                target: {value: 'Please hold'},
+                target: { value: 'Please hold' },
             })
         }
 
@@ -226,10 +227,10 @@ describe('<VoiceMessageField horizontal="true" />', () => {
         const message = {
             voice_message_type: VoiceMessageType.TextToSpeech,
         } as VoiceMessage
-        const {getByText} = renderComponent({message})
+        const { getByText } = renderComponent({ message })
 
         expect(
-            getByText('Text-to-speech message is required')
+            getByText('Text-to-speech message is required'),
         ).toBeInTheDocument()
     })
 
@@ -242,12 +243,12 @@ describe('<VoiceMessageField horizontal="true" />', () => {
             voice_message_type: VoiceMessageType.VoiceRecording,
         }
 
-        const {container} = renderComponent({message})
+        const { container } = renderComponent({ message })
 
         const input = container.querySelector('input[type="file"]')
         expect(input).toBeInTheDocument()
         if (input) {
-            fireEvent.change(input, {target: {files: [file]}})
+            fireEvent.change(input, { target: { files: [file] } })
         }
 
         await waitFor(() => {
@@ -264,7 +265,7 @@ describe('<VoiceMessageField horizontal="true" />', () => {
     })
 
     it('should allow setting no voice message', () => {
-        const {getByLabelText} = renderComponent()
+        const { getByLabelText } = renderComponent()
 
         const noneOption = getByLabelText(/None/)
         fireEvent.click(noneOption)
@@ -276,7 +277,7 @@ describe('<VoiceMessageField horizontal="true" />', () => {
     })
 
     it('should disable all options when isDisabled is true', () => {
-        const {getByLabelText} = renderComponent({
+        const { getByLabelText } = renderComponent({
             isDisabled: true,
         })
 

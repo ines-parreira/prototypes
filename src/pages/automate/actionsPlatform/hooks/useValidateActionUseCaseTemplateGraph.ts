@@ -1,13 +1,14 @@
-import {produce} from 'immer'
-import _set from 'lodash/set'
-import {useCallback} from 'react'
+import { useCallback } from 'react'
 
-import {VisualBuilderContextType} from 'pages/automate/workflows/hooks/useVisualBuilder'
-import {getLLMPromptTriggerNodeErrors} from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import {VisualBuilderGraph} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { produce } from 'immer'
+import _set from 'lodash/set'
+
+import { VisualBuilderContextType } from 'pages/automate/workflows/hooks/useVisualBuilder'
+import { getLLMPromptTriggerNodeErrors } from 'pages/automate/workflows/models/visualBuilderGraph.model'
+import { VisualBuilderGraph } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 const useValidateActionUseCaseTemplateGraph = (
-    getVariableListForNode: VisualBuilderContextType['getVariableListForNode']
+    getVariableListForNode: VisualBuilderContextType['getVariableListForNode'],
 ) => {
     return useCallback(
         (graph: VisualBuilderGraph) => {
@@ -23,7 +24,7 @@ const useValidateActionUseCaseTemplateGraph = (
                         _set(
                             draft.errors,
                             'name',
-                            'Action name must be less than 100 characters'
+                            'Action name must be less than 100 characters',
                         )
                     }
                 }
@@ -38,7 +39,7 @@ const useValidateActionUseCaseTemplateGraph = (
                     _set(
                         draft.errors,
                         'nodes',
-                        'At least one Action step is required'
+                        'At least one Action step is required',
                     )
                 }
 
@@ -49,7 +50,7 @@ const useValidateActionUseCaseTemplateGraph = (
                         case 'llm_prompt_trigger':
                             node.data.errors = getLLMPromptTriggerNodeErrors(
                                 node,
-                                getVariableListForNode(node.id)
+                                getVariableListForNode(node.id),
                             )
                             break
                         case 'reusable_llm_prompt_call':
@@ -60,7 +61,7 @@ const useValidateActionUseCaseTemplateGraph = (
                 })
             })
         },
-        [getVariableListForNode]
+        [getVariableListForNode],
     )
 }
 

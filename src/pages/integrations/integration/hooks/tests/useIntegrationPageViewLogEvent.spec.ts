@@ -1,12 +1,12 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {Map} from 'immutable'
+import { renderHook } from '@testing-library/react-hooks'
+import { Map } from 'immutable'
 
 import * as segmentTracker from 'common/segment'
 
 import useIntegrationPageViewLogEvent from '../useIntegrationPageViewLogEvent'
 
 const logEventSpy = jest.spyOn(segmentTracker, 'logEvent')
-const {SegmentEvent} = segmentTracker
+const { SegmentEvent } = segmentTracker
 
 describe('useIntegrationPageViewLogEvent', () => {
     afterEach(() => {
@@ -20,8 +20,8 @@ describe('useIntegrationPageViewLogEvent', () => {
                 {
                     isReady: false,
                     integration: Map<any, any>(),
-                }
-            )
+                },
+            ),
         )
         expect(logEventSpy).not.toHaveBeenCalled()
     })
@@ -33,13 +33,13 @@ describe('useIntegrationPageViewLogEvent', () => {
                 {
                     isReady: true,
                     integration: Map<any, any>([['id', '1']]),
-                }
-            )
+                },
+            ),
         )
 
         expect(logEventSpy).toHaveBeenCalledWith(
             SegmentEvent.ChatSettingsAppearancePageViewed,
-            {id: '1'}
+            { id: '1' },
         )
     })
 
@@ -50,13 +50,13 @@ describe('useIntegrationPageViewLogEvent', () => {
                 {
                     isReady: true,
                     integration: Map<any, any>(),
-                }
-            )
+                },
+            ),
         )
 
         expect(logEventSpy).toHaveBeenCalledWith(
             SegmentEvent.ChatSettingsAppearancePageViewed,
-            {}
+            {},
         )
     })
 })

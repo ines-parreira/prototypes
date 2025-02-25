@@ -1,12 +1,13 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import {
     NavBarContextType,
     NavBarDisplayMode,
 } from '../../hooks/useNavBar/context'
-import {useNavBar} from '../../hooks/useNavBar/useNavBar'
-import {NavBarButtonTooltip} from '../NavBarButtonTooltip'
+import { useNavBar } from '../../hooks/useNavBar/useNavBar'
+import { NavBarButtonTooltip } from '../NavBarButtonTooltip'
 
 jest.mock('../../hooks/useNavBar/useNavBar')
 const mockUseNavBar = useNavBar as jest.MockedFunction<typeof useNavBar>

@@ -1,8 +1,8 @@
 import React from 'react'
 
 import {
-    ProductItemRefundData,
     GiftWrappingItemRefundData,
+    ProductItemRefundData,
 } from 'models/integration/types'
 import {
     calculateGiftWrappingPrice,
@@ -10,12 +10,13 @@ import {
     formatPrice,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/RefundOrderModal/utils'
 
-import {GiftWrappingComponent} from './GiftWrappingComponent'
+import { GiftWrappingComponent } from './GiftWrappingComponent'
+import { PriceComponent } from './PriceComponent'
+import { ProductComponent } from './ProductComponent'
+import { QuantityComponent } from './QuantityComponent'
+import { TotalPriceComponent } from './TotalPriceComponent'
+
 import bigcommerceTableCss from './OrderTable.less'
-import {PriceComponent} from './PriceComponent'
-import {ProductComponent} from './ProductComponent'
-import {QuantityComponent} from './QuantityComponent'
-import {TotalPriceComponent} from './TotalPriceComponent'
 
 type Props = {
     productImage: Maybe<string>
@@ -102,7 +103,7 @@ export function OrderLineItemRow({
                         <TotalPriceComponent
                             price={String(
                                 giftWrappingPrice *
-                                    giftWrappingAvailableQuantity
+                                    giftWrappingAvailableQuantity,
                             )}
                             isDisabled={giftWrappingIsDisabled}
                             currencyCode={currencyCode}

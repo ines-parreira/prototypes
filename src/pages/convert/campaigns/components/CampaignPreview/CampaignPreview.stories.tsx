@@ -1,8 +1,9 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT} from 'config/integrations/gorgias_chat'
-import {GorgiasChatPositionAlignmentEnum} from 'models/integration/types/gorgiasChat'
+import { Meta, Story } from '@storybook/react'
+
+import { GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT } from 'config/integrations/gorgias_chat'
+import { GorgiasChatPositionAlignmentEnum } from 'models/integration/types/gorgiasChat'
 
 import CampaignPreview from './CampaignPreview'
 

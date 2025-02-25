@@ -1,21 +1,22 @@
-import _debounce from 'lodash/debounce'
-import React, {useCallback, useEffect, useState} from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
-import {OptionSelection} from 'models/integration/resources/bigcommerce'
+import _debounce from 'lodash/debounce'
+
+import { OptionSelection } from 'models/integration/resources/bigcommerce'
 import {
     BigCommerceCartLineItem,
     BigCommerceCustomCartLineItem,
-    BigCommerceProduct,
     BigCommerceCustomProduct,
+    BigCommerceProduct,
 } from 'models/integration/types'
 
-import {isBigCommerceCartLineItem, isBigCommerceProduct} from '../../utils'
+import { isBigCommerceCartLineItem, isBigCommerceProduct } from '../../utils'
 import useEditModifiersPopover from '../modifiers-popover/useEditModifiersPopover'
-import {modifierValuesToOptionSelections} from '../modifiers-popover/utils'
+import { modifierValuesToOptionSelections } from '../modifiers-popover/utils'
 import PriceComponent from './PriceComponent'
 import ProductComponent from './ProductComponent'
-import {QuantityComponent} from './QuantityComponent'
-import {TotalPriceComponent} from './TotalPriceComponent'
+import { QuantityComponent } from './QuantityComponent'
+import { TotalPriceComponent } from './TotalPriceComponent'
 
 type Props = {
     id: string
@@ -39,7 +40,7 @@ type Props = {
     onLineItemDiscount: (
         index: number,
         discountAmount: number,
-        action: 'add' | 'remove'
+        action: 'add' | 'remove',
     ) => void
     discounts: Map<string, number>
     setDiscounts: (value: Map<string, number>) => void
@@ -70,7 +71,7 @@ export default function OrderLineItemRow({
                 setQuantity(oldQuantity)
             }
         }, 250),
-        [index, onChange]
+        [index, onChange],
     )
 
     const handleQuantityChange = (value: string) => {
@@ -98,7 +99,7 @@ export default function OrderLineItemRow({
         setReference,
         modifiersPopover,
         openModifierPopover,
-    } = useEditModifiersPopover(storeHash, ({modifierValues}) => {
+    } = useEditModifiersPopover(storeHash, ({ modifierValues }) => {
         const optionSelections =
             modifierValuesToOptionSelections(modifierValues)
 

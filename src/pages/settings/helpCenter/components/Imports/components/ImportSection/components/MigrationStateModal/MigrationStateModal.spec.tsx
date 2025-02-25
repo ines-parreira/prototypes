@@ -1,8 +1,9 @@
-import {fireEvent, render, screen} from '@testing-library/react'
-import {noop} from 'lodash'
 import React from 'react'
 
-import {migrationProviders} from '../../fixtures/migration-providers'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { noop } from 'lodash'
+
+import { migrationProviders } from '../../fixtures/migration-providers'
 import {
     emptyMigrationStats,
     failedMigrationStats,
@@ -11,9 +12,8 @@ import {
     partiallySucceededMigrationStats,
     succeededMigrationStats,
 } from '../../fixtures/migration-sessions'
-import {MigrationStatus} from '../../types'
-import {parseSessionStats} from '../../utils'
-
+import { MigrationStatus } from '../../types'
+import { parseSessionStats } from '../../utils'
 import MigrationStateModal from './MigrationStateModal'
 
 const provider = migrationProviders[0]
@@ -40,7 +40,7 @@ const parsedStatsWithoutFailures = parseSessionStats({
 describe('<MigrationStateModal />', () => {
     describe('snapshots', () => {
         test('Connected', () => {
-            const {baseElement} = render(
+            const { baseElement } = render(
                 <MigrationStateModal
                     isOpen
                     onClose={noop}
@@ -51,12 +51,12 @@ describe('<MigrationStateModal />', () => {
                         isMigrationStartLoading: false,
                     }}
                     stats={emptyParsedStats}
-                />
+                />,
             )
             expect(baseElement).toMatchSnapshot()
         })
         test('Migration start loading', () => {
-            const {baseElement} = render(
+            const { baseElement } = render(
                 <MigrationStateModal
                     isOpen
                     onClose={noop}
@@ -67,12 +67,12 @@ describe('<MigrationStateModal />', () => {
                         isMigrationStartLoading: true,
                     }}
                     stats={emptyParsedStats}
-                />
+                />,
             )
             expect(baseElement).toMatchSnapshot()
         })
         test('In progress without failures', () => {
-            const {baseElement} = render(
+            const { baseElement } = render(
                 <MigrationStateModal
                     isOpen
                     onClose={noop}
@@ -82,12 +82,12 @@ describe('<MigrationStateModal />', () => {
                         progress: 25,
                     }}
                     stats={parsedStatsWithoutFailures}
-                />
+                />,
             )
             expect(baseElement).toMatchSnapshot()
         })
         test('In progress with failures', () => {
-            const {baseElement} = render(
+            const { baseElement } = render(
                 <MigrationStateModal
                     isOpen
                     onClose={noop}
@@ -97,12 +97,12 @@ describe('<MigrationStateModal />', () => {
                         progress: 25,
                     }}
                     stats={parsedStatsWithFailures}
-                />
+                />,
             )
             expect(baseElement).toMatchSnapshot()
         })
         test('Succeeded', () => {
-            const {baseElement} = render(
+            const { baseElement } = render(
                 <MigrationStateModal
                     isOpen
                     onClose={noop}
@@ -112,12 +112,12 @@ describe('<MigrationStateModal />', () => {
                         onFinish: noop,
                     }}
                     stats={succeededMigrationParsedStats}
-                />
+                />,
             )
             expect(baseElement).toMatchSnapshot()
         })
         test('Partially succeeded', () => {
-            const {baseElement} = render(
+            const { baseElement } = render(
                 <MigrationStateModal
                     isOpen
                     onClose={noop}
@@ -131,12 +131,12 @@ describe('<MigrationStateModal />', () => {
                         onFinish: noop,
                     }}
                     stats={partiallySucceededMigrationParsedStats}
-                />
+                />,
             )
             expect(baseElement).toMatchSnapshot()
         })
         test('Completely failed', () => {
-            const {baseElement} = render(
+            const { baseElement } = render(
                 <MigrationStateModal
                     isOpen
                     onClose={noop}
@@ -148,7 +148,7 @@ describe('<MigrationStateModal />', () => {
                         onFinish: noop,
                     }}
                     stats={failedMigrationParsedStats}
-                />
+                />,
             )
             expect(baseElement).toMatchSnapshot()
         })
@@ -167,7 +167,7 @@ describe('<MigrationStateModal />', () => {
                         onMigrationStart: migrationStartHandler,
                     }}
                     stats={emptyParsedStats}
-                />
+                />,
             )
 
             const startButton = screen.getByText('Start migrating')
@@ -187,7 +187,7 @@ describe('<MigrationStateModal />', () => {
                         onFinish: finishHandler,
                     }}
                     stats={succeededMigrationParsedStats}
-                />
+                />,
             )
 
             const finishButton = screen.getByText('Finish')
@@ -214,7 +214,7 @@ describe('<MigrationStateModal />', () => {
                         onFinish: finishHandler,
                     }}
                     stats={succeededMigrationParsedStats}
-                />
+                />,
             )
 
             const retryButton = screen.getByText('Retry')
@@ -248,7 +248,7 @@ describe('<MigrationStateModal />', () => {
                         onFinish: finishHandler,
                     }}
                     stats={succeededMigrationParsedStats}
-                />
+                />,
             )
 
             const retryButton = screen.getByText('Retry')

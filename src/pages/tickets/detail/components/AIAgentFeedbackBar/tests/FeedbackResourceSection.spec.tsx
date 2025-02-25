@@ -1,19 +1,20 @@
-import {render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
-import {useCookies} from 'react-cookie'
 
-import {logEventWithSampling} from 'common/segment/segment'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { useCookies } from 'react-cookie'
+
+import { logEventWithSampling } from 'common/segment/segment'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
-import {Feedback, FeedbackOnResource} from 'models/aiAgentFeedback/types'
-import {assumeMock} from 'utils/testing'
+import { Feedback, FeedbackOnResource } from 'models/aiAgentFeedback/types'
+import { assumeMock } from 'utils/testing'
 
-import {SegmentEvent} from '../../../../../../common/segment'
+import { SegmentEvent } from '../../../../../../common/segment'
 import {
     FeedbackResourceSection,
     TOOLTIP_COOKIE_NAME,
 } from '../FeedbackResourceSection'
-import {ActionStatus, ResourceSection} from '../types'
+import { ActionStatus, ResourceSection } from '../types'
 
 const mockHandleSubmitFeedback = jest.fn()
 const mockSetCookie = jest.fn()
@@ -54,11 +55,11 @@ const resourceSection = 'someSection' as ResourceSection
 const renderFeedbackResourceComponent = (
     feedback: Feedback = 'thumbs_up',
     resource = guidanceResource,
-    resourceType: FeedbackOnResource['resourceType'] = 'guidance'
+    resourceType: FeedbackOnResource['resourceType'] = 'guidance',
 ) =>
     render(
         <FeedbackResourceSection
-            resource={{...resource, feedback}}
+            resource={{ ...resource, feedback }}
             resourceType={resourceType}
             handleSubmitFeedback={mockHandleSubmitFeedback}
             href="https://example.com"
@@ -66,13 +67,13 @@ const renderFeedbackResourceComponent = (
             resourceId={1}
             resourceSection={resourceSection}
             accountId={1}
-        />
+        />,
     )
 
 describe('FeedbackResourceSection', () => {
     beforeEach(() => {
         mockedUseCookies.mockReturnValue([
-            {[TOOLTIP_COOKIE_NAME]: false},
+            { [TOOLTIP_COOKIE_NAME]: false },
             mockSetCookie,
             mockRemoveCookie,
             mockResetCookies,
@@ -99,7 +100,7 @@ describe('FeedbackResourceSection', () => {
             guidanceResource.id,
             'guidance',
             'thumbs_up',
-            resourceSection
+            resourceSection,
         )
 
         expect(logEventMock).toHaveBeenNthCalledWith(
@@ -109,13 +110,13 @@ describe('FeedbackResourceSection', () => {
                 accountId: 1,
                 outcome: 'thumbs_up',
                 source: 'guidance',
-            }
+            },
         )
     })
 
     it('does not display the tooltip when the cookie is set', () => {
         mockedUseCookies.mockImplementation(() => [
-            {[TOOLTIP_COOKIE_NAME]: true},
+            { [TOOLTIP_COOKIE_NAME]: true },
             mockSetCookie,
             mockRemoveCookie,
             mockResetCookies,
@@ -124,7 +125,7 @@ describe('FeedbackResourceSection', () => {
         const thumbsButton = screen.getByTitle('Mark as Correct')
         userEvent.click(thumbsButton)
         const tooltip = screen.queryByAltText(
-            `thumbs down for ${guidanceResource.id}`
+            `thumbs down for ${guidanceResource.id}`,
         )
         expect(tooltip).toBeNull()
     })
@@ -140,7 +141,7 @@ describe('FeedbackResourceSection', () => {
 
     it('does not call setCookie when handleBlur is triggered and cookie is already set', () => {
         mockedUseCookies.mockImplementation(() => [
-            {[TOOLTIP_COOKIE_NAME]: true},
+            { [TOOLTIP_COOKIE_NAME]: true },
             mockSetCookie,
             mockRemoveCookie,
             mockResetCookies,
@@ -157,7 +158,7 @@ describe('FeedbackResourceSection', () => {
         renderFeedbackResourceComponent(
             'thumbs_up',
             mockResourceConfirmed,
-            'hard_action'
+            'hard_action',
         )
 
         const badge = screen.getByTestId('badge-test-id')
@@ -168,7 +169,7 @@ describe('FeedbackResourceSection', () => {
         renderFeedbackResourceComponent(
             'thumbs_up',
             mockResourceCancelled,
-            'hard_action'
+            'hard_action',
         )
 
         const badge = screen.getByTestId('badge-test-id')

@@ -1,1 +1,1 @@
-export {default} from './CampaignPerformanceCharts'
+export { default } from './CampaignPerformanceCharts'

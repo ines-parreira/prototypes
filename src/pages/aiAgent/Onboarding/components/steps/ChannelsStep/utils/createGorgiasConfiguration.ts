@@ -11,18 +11,18 @@ import {
     GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from 'config/integrations/gorgias_chat'
-import {GORGIAS_CHAT_INTEGRATION_TYPE} from 'constants/integration'
+import { GORGIAS_CHAT_INTEGRATION_TYPE } from 'constants/integration'
 import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
     GorgiasChatBackgroundColorStyle,
     StoreIntegration,
 } from 'models/integration/types'
-import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
+import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 
 export const createChatConfiguration = (
     storeIntegration: StoreIntegration,
-    color: string
+    color: string,
 ) => {
     const language = GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT
     return {

@@ -1,8 +1,8 @@
-import {render, screen} from '@testing-library/react'
-
 import React from 'react'
 
-import {CustomReportSection} from 'pages/stats/custom-reports/CustomReportSection'
+import { render, screen } from '@testing-library/react'
+
+import { CustomReportSection } from 'pages/stats/custom-reports/CustomReportSection'
 import {
     CustomReportChildType,
     CustomReportRowSchema,
@@ -26,7 +26,7 @@ describe('CustomReportSection', () => {
         render(
             <CustomReportSection schema={section}>
                 {<ChildComponent />}
-            </CustomReportSection>
+            </CustomReportSection>,
         )
 
         expect(screen.getByText(CHILD_COMPONENT_CONTENT)).toBeInTheDocument()

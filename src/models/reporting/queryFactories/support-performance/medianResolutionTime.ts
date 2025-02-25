@@ -1,14 +1,17 @@
-import {OrderDirection} from 'models/api/types'
-import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
-import {TicketDimension, TicketSegment} from 'models/reporting/cubes/TicketCube'
+import { OrderDirection } from 'models/api/types'
+import { HelpdeskMessageCubeWithJoins } from 'models/reporting/cubes/HelpdeskMessageCube'
+import {
+    TicketDimension,
+    TicketSegment,
+} from 'models/reporting/cubes/TicketCube'
 import {
     TicketMessagesDimension,
     TicketMessagesMeasure,
     TicketMessagesSegment,
 } from 'models/reporting/cubes/TicketMessagesCube'
-import {CHANNEL_DIMENSION} from 'models/reporting/queryFactories/support-performance/constants'
-import {ReportingQuery} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import { CHANNEL_DIMENSION } from 'models/reporting/queryFactories/support-performance/constants'
+import { ReportingQuery } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     NotSpamNorTrashedTicketsFilter,
@@ -21,7 +24,7 @@ import {
 export const medianResolutionTimeQueryFactory = (
     statsFilters: StatsFilters,
     timezone: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
     measures: [TicketMessagesMeasure.MedianResolutionTime],
     dimensions: [],
@@ -34,7 +37,7 @@ export const medianResolutionTimeQueryFactory = (
         ...NotSpamNorTrashedTicketsFilter,
         ...statsFiltersToReportingFilters(
             TicketStatsFiltersMembers,
-            statsFilters
+            statsFilters,
         ),
     ],
     ...(sorting
@@ -47,19 +50,19 @@ export const medianResolutionTimeQueryFactory = (
 export const medianResolutionTimeMetricPerAgentQueryFactory =
     perDimensionQueryFactory(
         medianResolutionTimeQueryFactory,
-        TicketDimension.AssigneeUserId
+        TicketDimension.AssigneeUserId,
     )
 
 export const medianResolutionTimeMetricPerChannelQueryFactory =
     perDimensionQueryFactory(
         medianResolutionTimeQueryFactory,
-        CHANNEL_DIMENSION
+        CHANNEL_DIMENSION,
     )
 
 export const resolutionTimeMetricPerTicketDrillDownQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
     ...medianResolutionTimeQueryFactory(filters, timezone),
     measures: [],

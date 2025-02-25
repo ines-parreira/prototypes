@@ -1,11 +1,12 @@
-import classnames from 'classnames'
-import {Set} from 'immutable'
-import React, {Component} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {NavLink, RouteComponentProps} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem, Col, Container} from 'reactstrap'
+import React, { Component } from 'react'
 
-import {CursorDirection, OrderDirection} from 'models/api/types'
+import classnames from 'classnames'
+import { Set } from 'immutable'
+import { connect, ConnectedProps } from 'react-redux'
+import { NavLink, RouteComponentProps } from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem, Col, Container } from 'reactstrap'
+
+import { CursorDirection, OrderDirection } from 'models/api/types'
 import {
     addTeamMember,
     deleteTeamMember,
@@ -29,21 +30,21 @@ import CheckBox from 'pages/common/forms/CheckBox'
 import withRouter from 'pages/common/utils/withRouter'
 import settingsCss from 'pages/settings/settings.less'
 import css from 'pages/settings/teams/List.less'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 import {
-    fetchTeamMembersSuccess,
     deleteTeamSuccess,
+    fetchTeamMembersSuccess,
     fetchTeamSuccess,
     updateTeamSuccess,
 } from 'state/teams/actions'
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
 
 import AddMember from './AddMember'
 import Row from './Row'
 
 type Props = ConnectedProps<typeof connector> &
-    RouteComponentProps<{id: string}>
+    RouteComponentProps<{ id: string }>
 
 type State = {
     cursor?: string
@@ -69,7 +70,7 @@ export class MembersListContainer extends Component<Props, State> {
     }
 
     async componentDidMount() {
-        this.setState({isFetching: true})
+        this.setState({ isFetching: true })
         await this.fetchTeam()
         await this.fetchPage()
     }
@@ -77,7 +78,7 @@ export class MembersListContainer extends Component<Props, State> {
     fetchTeam = async (): Promise<void> => {
         try {
             const res = await fetchTeam(parseInt(this.props.match.params.id))
-            this.setState({team: res})
+            this.setState({ team: res })
             this.props.fetchTeamSuccess(res)
         } catch {
             void this.props.notify({
@@ -89,9 +90,9 @@ export class MembersListContainer extends Component<Props, State> {
     }
 
     fetchTeamMembers = async (
-        params?: Partial<FetchTeamMembersOptions>
+        params?: Partial<FetchTeamMembersOptions>,
     ): Promise<void> => {
-        const {search} = this.state
+        const { search } = this.state
         const id = parseInt(this.props.match.params.id)
 
         const res = await fetchTeamMembers({
@@ -118,7 +119,7 @@ export class MembersListContainer extends Component<Props, State> {
     }
 
     fetchPage = (direction?: CursorDirection) => {
-        const {meta, search} = this.state
+        const { meta, search } = this.state
         const params: FetchTeamMembersOptions = {
             id: parseInt(this.props.match.params.id),
             cursor: null,
@@ -135,14 +136,14 @@ export class MembersListContainer extends Component<Props, State> {
             params.cursor = meta?.next_cursor
         }
 
-        this.setState({isFetching: true})
+        this.setState({ isFetching: true })
         return this.fetchTeamMembers(params).finally(() => {
-            this.setState({isFetching: false})
+            this.setState({ isFetching: false })
         })
     }
 
     onSearch = (search: string) => {
-        this.setState({search}, () => void this.fetchTeamMembers())
+        this.setState({ search }, () => void this.fetchTeamMembers())
     }
 
     addTeamMember = async (userId: number) => {
@@ -169,7 +170,7 @@ export class MembersListContainer extends Component<Props, State> {
     }
 
     deleteTeamMember = async (memberId: number) => {
-        const {cursor, members, meta, team} = this.state
+        const { cursor, members, meta, team } = this.state
 
         if (team?.id) {
             try {
@@ -181,7 +182,7 @@ export class MembersListContainer extends Component<Props, State> {
                             : cursor
                         : undefined
 
-                await this.fetchTeamMembers({cursor: newCursor})
+                await this.fetchTeamMembers({ cursor: newCursor })
                 await this.fetchTeam()
 
                 void this.props.notify({
@@ -199,10 +200,10 @@ export class MembersListContainer extends Component<Props, State> {
     }
 
     deleteTeamMemberSelection = async () => {
-        const {cursor, members, meta, team} = this.state
+        const { cursor, members, meta, team } = this.state
 
         if (team?.id) {
-            this.setState({isDeleting: true})
+            this.setState({ isDeleting: true })
             const selection = this.state.selection
 
             await deleteTeamMembers(team.id, selection)
@@ -217,15 +218,15 @@ export class MembersListContainer extends Component<Props, State> {
                         : cursor
                     : undefined
 
-            await this.fetchTeamMembers({cursor: newCursor})
+            await this.fetchTeamMembers({ cursor: newCursor })
             await this.fetchTeam()
 
-            this.setState({isDeleting: false})
+            this.setState({ isDeleting: false })
         }
     }
 
     toggleTeamMemberSelection = (memberId: number) => {
-        const {selection} = this.state
+        const { selection } = this.state
 
         this.setState({
             selection: selection.includes(memberId)
@@ -235,9 +236,16 @@ export class MembersListContainer extends Component<Props, State> {
     }
 
     render() {
-        const {accountOwnerId} = this.props
-        const {isDeleting, isFetching, members, meta, selection, search, team} =
-            this.state
+        const { accountOwnerId } = this.props
+        const {
+            isDeleting,
+            isFetching,
+            members,
+            meta,
+            selection,
+            search,
+            team,
+        } = this.state
 
         const allMemberIds = Set(members.map((member) => member.id))
         const isAllSelected = !allMemberIds.subtract(selection).size
@@ -321,7 +329,7 @@ export class MembersListContainer extends Component<Props, State> {
                             fluid
                             className={classnames(
                                 settingsCss.pageContainer,
-                                settingsCss.pt0
+                                settingsCss.pt0,
                             )}
                         >
                             <div className={css.list}>
@@ -341,7 +349,7 @@ export class MembersListContainer extends Component<Props, State> {
                                                 this.toggleTeamMemberSelection
                                             }
                                             isSelected={this.state.selection.includes(
-                                                memberId
+                                                memberId,
                                             )}
                                         />
                                     )
@@ -365,7 +373,7 @@ export class MembersListContainer extends Component<Props, State> {
                         fluid
                         className={classnames(
                             settingsCss.pageContainer,
-                            css.listContainer
+                            css.listContainer,
                         )}
                     >
                         {!search.length ? (
@@ -394,7 +402,7 @@ const connector = connect(
         fetchTeamSuccess,
         notify,
         updateTeamSuccess,
-    }
+    },
 )
 
 export default withRouter(connector(MembersListContainer))

@@ -1,9 +1,9 @@
-import {DROPDOWN_NESTING_DELIMITER} from 'custom-fields/constants'
-import {CustomFieldValue} from 'custom-fields/types'
+import { DROPDOWN_NESTING_DELIMITER } from 'custom-fields/constants'
+import { CustomFieldValue } from 'custom-fields/types'
 
 export function getFullValueFromCurrentPath(
     currentPath: string[],
-    value: CustomFieldValue
+    value: CustomFieldValue,
 ) {
     let fullValue = value
     if (typeof value === 'string') {

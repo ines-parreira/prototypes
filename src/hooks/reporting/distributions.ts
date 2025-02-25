@@ -1,31 +1,34 @@
-import {TicketChannel} from 'business/types/ticket'
-import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
-import {TicketDimension, TicketMeasure} from 'models/reporting/cubes/TicketCube'
+import { TicketChannel } from 'business/types/ticket'
+import { HelpdeskMessageCubeWithJoins } from 'models/reporting/cubes/HelpdeskMessageCube'
+import {
+    TicketDimension,
+    TicketMeasure,
+} from 'models/reporting/cubes/TicketCube'
 import {
     fetchPostReporting,
     usePostReporting,
     UsePostReportingQueryData,
 } from 'models/reporting/queries'
-import {workloadPerChannelDistributionQueryFactory} from 'models/reporting/queryFactories/support-performance/workloadPerChannel'
-import {StatsFilters} from 'models/stat/types'
-import {OneDimensionalDataItem} from 'pages/stats/types'
-import {humanizeChannel} from 'state/ticket/utils'
-import {getPreviousPeriod} from 'utils/reporting'
+import { workloadPerChannelDistributionQueryFactory } from 'models/reporting/queryFactories/support-performance/workloadPerChannel'
+import { StatsFilters } from 'models/stat/types'
+import { OneDimensionalDataItem } from 'pages/stats/types'
+import { humanizeChannel } from 'state/ticket/utils'
+import { getPreviousPeriod } from 'utils/reporting'
 
 export const CHANNEL_DIMENSION = TicketDimension.Channel
 export const TICKET_COUNT_MEASURE = TicketMeasure.TicketCount
 
 export type MetricPerDimensionFetch = (
     filters: StatsFilters,
-    timezone: string
+    timezone: string,
 ) => Promise<{
-    data: {label: string; value: number}[]
+    data: { label: string; value: number }[]
 }>
 
 export const useWorkloadPerChannelDistribution = (
     filters: StatsFilters,
     timezone: string,
-    enabled?: boolean
+    enabled?: boolean,
 ) => {
     const query = workloadPerChannelDistributionQueryFactory(filters, timezone)
 
@@ -45,7 +48,7 @@ export const useWorkloadPerChannelDistribution = (
 
 export const fetchWorkloadPerChannelDistribution = (
     filters: StatsFilters,
-    timezone: string
+    timezone: string,
 ) => {
     const query = workloadPerChannelDistributionQueryFactory(filters, timezone)
 
@@ -61,7 +64,7 @@ export const fetchWorkloadPerChannelDistribution = (
             data: selectPerChannel(
                 res,
                 CHANNEL_DIMENSION,
-                TICKET_COUNT_MEASURE
+                TICKET_COUNT_MEASURE,
             ),
         }
     })
@@ -70,14 +73,14 @@ export const fetchWorkloadPerChannelDistribution = (
 export const useWorkloadPerChannelDistributionForPreviousPeriod = (
     filters: StatsFilters,
     timezone: string,
-    enabled?: boolean
+    enabled?: boolean,
 ) => {
     const query = workloadPerChannelDistributionQueryFactory(
         {
             ...filters,
             period: getPreviousPeriod(filters.period),
         },
-        timezone
+        timezone,
     )
     return usePostReporting<
         {
@@ -95,14 +98,14 @@ export const useWorkloadPerChannelDistributionForPreviousPeriod = (
 
 export const fetchWorkloadPerChannelDistributionForPreviousPeriod = (
     filters: StatsFilters,
-    timezone: string
+    timezone: string,
 ) => {
     const query = workloadPerChannelDistributionQueryFactory(
         {
             ...filters,
             period: getPreviousPeriod(filters.period),
         },
-        timezone
+        timezone,
     )
 
     return fetchPostReporting<
@@ -117,7 +120,7 @@ export const fetchWorkloadPerChannelDistributionForPreviousPeriod = (
             data: selectPerChannel(
                 res,
                 CHANNEL_DIMENSION,
-                TICKET_COUNT_MEASURE
+                TICKET_COUNT_MEASURE,
             ),
         }
     })
@@ -131,7 +134,7 @@ export const selectPerChannel = (
         }[]
     >,
     dimension: typeof CHANNEL_DIMENSION,
-    measure: typeof TICKET_COUNT_MEASURE
+    measure: typeof TICKET_COUNT_MEASURE,
 ) => {
     return data.data.data.map((item) => ({
         label: humanizeChannel(item[dimension]),

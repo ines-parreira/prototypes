@@ -1,20 +1,19 @@
-import {fireEvent, render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {campaign} from 'fixtures/campaign'
-import {channelConnection} from 'fixtures/channelConnection'
-import {integrationsState} from 'fixtures/integrations'
-import {useListCampaigns} from 'models/convert/campaign/queries'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import {initialState} from 'state/stats/statsSlice'
-
-import {RootState} from 'state/types'
-
-import {assumeMock} from 'utils/testing'
+import { campaign } from 'fixtures/campaign'
+import { channelConnection } from 'fixtures/channelConnection'
+import { integrationsState } from 'fixtures/integrations'
+import { useListCampaigns } from 'models/convert/campaign/queries'
+import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import { initialState } from 'state/stats/statsSlice'
+import { RootState } from 'state/types'
+import { assumeMock } from 'utils/testing'
 
 import CampaignsStatsFilter from '../CampaignsStatsFilter'
 
@@ -22,7 +21,7 @@ const mockStore = configureMockStore([thunk])
 
 jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')
 const useGetOrCreateChannelConnectionMock = assumeMock(
-    useGetOrCreateChannelConnection
+    useGetOrCreateChannelConnection,
 )
 
 jest.mock('models/convert/campaign/queries')
@@ -45,26 +44,26 @@ describe('CampaignsStatsFilter', () => {
     })
 
     it('should render campaigns stats filter', () => {
-        const {getByLabelText} = render(
+        const { getByLabelText } = render(
             <Provider store={mockStore(defaultState)}>
                 <CampaignsStatsFilter
                     value={[campaign.id]}
                     selectedIntegrations={[gorgiasChatId]}
                 />
-            </Provider>
+            </Provider>,
         )
         expect(getByLabelText(campaign.name)).toBeInTheDocument()
     })
 
     it('should merge stats filters on item select', () => {
         const store = mockStore(defaultState)
-        const {getByLabelText} = render(
+        const { getByLabelText } = render(
             <Provider store={store}>
                 <CampaignsStatsFilter
                     value={[]}
                     selectedIntegrations={[gorgiasChatId]}
                 />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(getByLabelText(campaign.name))

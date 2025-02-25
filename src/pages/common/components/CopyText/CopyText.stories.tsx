@@ -1,7 +1,8 @@
-import {Meta, Story} from '@storybook/react'
 import React from 'react'
 
-import CopyText, {CopyTextProps} from './CopyText'
+import { Meta, Story } from '@storybook/react'
+
+import CopyText, { CopyTextProps } from './CopyText'
 
 const storyConfig: Meta = {
     title: 'General/CopyText',

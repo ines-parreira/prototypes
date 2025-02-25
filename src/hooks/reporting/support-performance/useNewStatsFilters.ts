@@ -1,6 +1,6 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
@@ -10,8 +10,8 @@ import {
 export const useNewStatsFilters = () => {
     const isAnalyticsNewFilters =
         !!useFlags()[FeatureFlagKey.AnalyticsNewFilters]
-    const {cleanStatsFilters: legacyStatsFilters} = useAppSelector(
-        getCleanStatsFiltersWithTimezone
+    const { cleanStatsFilters: legacyStatsFilters } = useAppSelector(
+        getCleanStatsFiltersWithTimezone,
     )
     const {
         cleanStatsFilters: statsFiltersWithLogicalOperators,

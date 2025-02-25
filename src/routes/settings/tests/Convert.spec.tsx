@@ -1,20 +1,21 @@
-import {render} from '@testing-library/react'
 import React from 'react'
-import {Redirect, Route, useRouteMatch} from 'react-router-dom'
 
-import {RevenueAddonApiClientProvider} from 'pages/convert/common/hooks/useConvertApi'
-import {assumeMock} from 'utils/testing'
+import { render } from '@testing-library/react'
+import { Redirect, Route, useRouteMatch } from 'react-router-dom'
 
-import {Convert} from '../Convert'
+import { RevenueAddonApiClientProvider } from 'pages/convert/common/hooks/useConvertApi'
+import { assumeMock } from 'utils/testing'
+
+import { Convert } from '../Convert'
 
 jest.mock('react-router-dom', () => ({
     Redirect: jest.fn(() => <div>Redirect</div>),
     Route: jest.fn(() => <div>route</div>),
-    Switch: jest.fn(({children}) => <div>{children}</div>),
+    Switch: jest.fn(({ children }) => <div>{children}</div>),
     useRouteMatch: jest.fn(),
 }))
 jest.mock('pages/convert/common/hooks/useConvertApi', () => ({
-    RevenueAddonApiClientProvider: jest.fn(({children}) => (
+    RevenueAddonApiClientProvider: jest.fn(({ children }) => (
         <div>{children}</div>
     )),
 }))
@@ -38,14 +39,14 @@ describe('Convert', () => {
     })
 
     it.each([
-        [{callOrder: 0, path: '/click-tracking'}],
-        [{callOrder: 1, path: '/click-tracking/subscribe'}],
-        [{callOrder: 2, path: '/installations'}],
-        [{callOrder: 3, path: '/installations/new'}],
-        [{callOrder: 4, path: '/installations/:bundleId'}],
+        [{ callOrder: 0, path: '/click-tracking' }],
+        [{ callOrder: 1, path: '/click-tracking/subscribe' }],
+        [{ callOrder: 2, path: '/installations' }],
+        [{ callOrder: 3, path: '/installations/new' }],
+        [{ callOrder: 4, path: '/installations/:bundleId' }],
     ])(
         'should call Router/Redirect with correct props',
-        ({callOrder, path}) => {
+        ({ callOrder, path }) => {
             render(<Convert />)
 
             expect(mockedRoute.mock.calls[callOrder]).toEqual([
@@ -61,6 +62,6 @@ describe('Convert', () => {
                 },
                 {},
             ])
-        }
+        },
     )
 })

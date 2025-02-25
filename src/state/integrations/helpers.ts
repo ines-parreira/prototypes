@@ -1,35 +1,35 @@
-import {fromJS, List, Map} from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 import _find from 'lodash/find'
 import moment from 'moment-timezone'
 
-import {IntegrationConfig, INTEGRATION_TYPE_CONFIG} from 'config'
+import { INTEGRATION_TYPE_CONFIG, IntegrationConfig } from 'config'
 import {
     GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS,
     GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY,
     GORGIAS_CHAT_LIVE_CHAT_OFFLINE,
 } from 'config/integrations/gorgias_chat'
-import {IntegrationType} from 'models/integration/constants'
+import { IntegrationType } from 'models/integration/constants'
 import {
     GorgiasChatStatusEnum,
     IntegrationDataItemType,
 } from 'models/integration/types'
-import {InstallationStatus} from 'rest_api/gorgias_chat_protected_api/types'
+import { InstallationStatus } from 'rest_api/gorgias_chat_protected_api/types'
 import GorgiasApi from 'services/gorgiasApi'
-import {AccountSettingBusinessHours} from 'state/currentAccount/types'
-import {assetsUrl} from 'utils'
+import { AccountSettingBusinessHours } from 'state/currentAccount/types'
+import { assetsUrl } from 'utils'
 
 export const getIntegrationsByTypes = (
     integrations: List<any> = fromJS([]),
-    types: Array<string> = []
+    types: Array<string> = [],
 ): List<any> =>
     integrations.filter((inte: Map<any, any>) =>
-        types.includes(inte.get('type', ''))
+        types.includes(inte.get('type', '')),
     ) as List<any>
 
 export const getIntegrationConfig = (
-    type: IntegrationType
+    type: IntegrationType,
 ): IntegrationConfig | undefined => {
-    return _find(INTEGRATION_TYPE_CONFIG, {type})
+    return _find(INTEGRATION_TYPE_CONFIG, { type })
 }
 
 export const getIconFromType = (type: IntegrationType): string => {
@@ -44,7 +44,7 @@ export const getIconFromType = (type: IntegrationType): string => {
  */
 export const fetchIntegrationProducts = async (
     integrationId: number,
-    productsIds: number[]
+    productsIds: number[],
 ): Promise<Map<string, any>[]> => {
     const products: Map<string, any>[] = []
 
@@ -52,7 +52,7 @@ export const fetchIntegrationProducts = async (
     const generator = api.getIntegrationDataItems(
         integrationId,
         IntegrationDataItemType.IntegrationDataItemTypeProduct,
-        productsIds
+        productsIds,
     )
 
     for await (const items of generator) {
@@ -70,13 +70,13 @@ export const fetchIntegrationProducts = async (
  * Check if now is during account's business hour
  */
 export function isAccountDuringBusinessHours(
-    accountBusinessHoursSetting?: AccountSettingBusinessHours | null
+    accountBusinessHoursSetting?: AccountSettingBusinessHours | null,
 ) {
     if (!accountBusinessHoursSetting) {
         return false
     }
 
-    const {business_hours: businessHoursSettings, timezone} =
+    const { business_hours: businessHoursSettings, timezone } =
         accountBusinessHoursSetting.data
     const now = moment.tz(timezone)
     const weekday = !now.weekday() ? 7 : now.weekday() // transform Sunday from 0 to 7
@@ -119,7 +119,7 @@ export function isAccountDuringBusinessHours(
 
             return now.isBetween(fromTime, toTime, 'seconds', '[]') // [] means inclusive
         },
-        false
+        false,
     )
 }
 
@@ -141,7 +141,7 @@ const getShouldIgnoreInstalledStatus = (chat: Map<any, any>): boolean => {
         0
 
     const duration = moment.duration(
-        moment().diff(moment(oneClickInstallationDatetime))
+        moment().diff(moment(oneClickInstallationDatetime)),
     )
     const hours = duration.asHours()
 
@@ -167,7 +167,7 @@ const getShouldForceShowChatAsUninstalled = (chat: Map<any, any>): boolean => {
         0
 
     const duration = moment.duration(
-        moment().diff(moment(oneClickUninstallationDatetime))
+        moment().diff(moment(oneClickUninstallationDatetime)),
     )
     const hours = duration.asHours()
 
@@ -184,7 +184,7 @@ const getShouldForceShowChatAsUninstalled = (chat: Map<any, any>): boolean => {
 export const computeChatIntegrationStatus = (
     chat: Map<any, any>,
     isBusinessHours: boolean,
-    installationStatus: InstallationStatus
+    installationStatus: InstallationStatus,
 ): GorgiasChatStatusEnum | null => {
     const shouldIgnoreInstalledStatus = getShouldIgnoreInstalledStatus(chat)
     const shouldForceShowChatAsUninstalled =
@@ -204,7 +204,7 @@ export const computeChatIntegrationStatus = (
 
     const isHideOutsideBusinessHoursEnabled = !!chat.getIn(
         ['meta', 'preferences', 'hide_outside_business_hours'],
-        false
+        false,
     )
 
     if (!isBusinessHours) {
@@ -217,7 +217,7 @@ export const computeChatIntegrationStatus = (
 
     const liveChatAvailability = chat.getIn(
         ['meta', 'preferences', 'live_chat_availability'],
-        GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY
+        GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY,
     )
 
     switch (liveChatAvailability) {
@@ -239,7 +239,7 @@ export const computeChatIntegrationStatus = (
 // not just the top 3 ecom ones
 export const isWellKnownEcomIntegrationIdMisMatch = (
     responseIntegrationType: string,
-    clientIntegrationType: IntegrationType
+    clientIntegrationType: IntegrationType,
 ) => {
     return !!(
         responseIntegrationType &&

@@ -1,30 +1,30 @@
-import {renderHook} from '@testing-library/react-hooks'
-
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { renderHook } from '@testing-library/react-hooks'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {useAutoQAAgentsSortingQuery} from 'hooks/reporting/useAutoQAAgentsSortingQuery'
-import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
-import {opposite, OrderDirection} from 'models/api/types'
-import {TicketQAScoreMeasure} from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
-import {TicketMessagesCube} from 'models/reporting/cubes/TicketMessagesCube'
+import { useAutoQAAgentsSortingQuery } from 'hooks/reporting/useAutoQAAgentsSortingQuery'
+import { MetricWithDecile } from 'hooks/reporting/useMetricPerDimension'
+import { opposite, OrderDirection } from 'models/api/types'
+import { TicketQAScoreMeasure } from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
+import { TicketMessagesCube } from 'models/reporting/cubes/TicketMessagesCube'
 import {
     AutoQAAgentsTableColumn,
     getQuery,
 } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
-import {initialState as filtersInitialState} from 'state/stats/statsSlice'
-import {RootState, StoreDispatch} from 'state/types'
-import {DEFAULT_SORTING_DIRECTION} from 'state/ui/stats/agentPerformanceSlice'
+import { initialState as filtersInitialState } from 'state/stats/statsSlice'
+import { RootState, StoreDispatch } from 'state/types'
+import { DEFAULT_SORTING_DIRECTION } from 'state/ui/stats/agentPerformanceSlice'
 import {
     initialState as autoQAInitialState,
     sortingLoaded,
     sortingLoading,
     sortingSet,
 } from 'state/ui/stats/autoQAAgentPerformanceSlice'
-import {AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME} from 'state/ui/stats/constants'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
+import { AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME } from 'state/ui/stats/constants'
+import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -60,18 +60,18 @@ describe('useAgentsSortingQuery', () => {
             const store = mockStore(defaultState)
             const column = AutoQAAgentsTableColumn.ResolutionCompleteness
 
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () =>
                     useAutoQAAgentsSortingQuery(
                         column,
                         queryHook,
-                        statsFiltersWithTimezone
+                        statsFiltersWithTimezone,
                     ),
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <Provider store={store}>{children}</Provider>
                     ),
-                }
+                },
             )
 
             result.current.sortCallback()
@@ -80,7 +80,7 @@ describe('useAgentsSortingQuery', () => {
                 sortingSet({
                     direction: DEFAULT_SORTING_DIRECTION,
                     field: column,
-                })
+                }),
             )
         })
 
@@ -88,31 +88,31 @@ describe('useAgentsSortingQuery', () => {
             const store = mockStore(defaultState)
             const column = autoQAInitialState.sorting.field
 
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () =>
                     useAutoQAAgentsSortingQuery(
                         column,
                         queryHook,
-                        statsFiltersWithTimezone
+                        statsFiltersWithTimezone,
                     ),
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <Provider store={store}>{children}</Provider>
                     ),
-                }
+                },
             )
 
             result.current.sortCallback()
 
             const expectedSortingDirection = opposite(
-                autoQAInitialState.sorting.direction
+                autoQAInitialState.sorting.direction,
             )
 
             expect(store.getActions()).toContainEqual(
                 sortingSet({
                     direction: expectedSortingDirection,
                     field: column,
-                })
+                }),
             )
         })
     })
@@ -121,7 +121,7 @@ describe('useAgentsSortingQuery', () => {
         const metricData: MetricWithDecile<TicketMessagesCube>['data'] = {
             value: 123,
             decile: 5,
-            allData: [{[TicketQAScoreMeasure.AverageScore]: '123'}],
+            allData: [{ [TicketQAScoreMeasure.AverageScore]: '123' }],
         }
         const store = mockStore({
             ...defaultState,
@@ -151,17 +151,17 @@ describe('useAgentsSortingQuery', () => {
                 useAutoQAAgentsSortingQuery(
                     column,
                     queryHook,
-                    statsFiltersWithTimezone
+                    statsFiltersWithTimezone,
                 ),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={store}>{children}</Provider>
                 ),
-            }
+            },
         )
 
         expect(store.getActions()).toContainEqual(
-            sortingLoaded(metricData.allData)
+            sortingLoaded(metricData.allData),
         )
     })
 
@@ -169,7 +169,7 @@ describe('useAgentsSortingQuery', () => {
         const metricData: MetricWithDecile<TicketMessagesCube>['data'] = {
             value: 123,
             decile: 5,
-            allData: [{[TicketQAScoreMeasure.AverageScore]: '123'}],
+            allData: [{ [TicketQAScoreMeasure.AverageScore]: '123' }],
         }
         const store = mockStore({
             ...defaultState,
@@ -198,17 +198,17 @@ describe('useAgentsSortingQuery', () => {
                 useAutoQAAgentsSortingQuery(
                     column,
                     queryHook,
-                    statsFiltersWithTimezone
+                    statsFiltersWithTimezone,
                 ),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={store}>{children}</Provider>
                 ),
-            }
+            },
         )
 
         expect(store.getActions()).not.toContainEqual(
-            sortingLoaded(metricData.allData)
+            sortingLoaded(metricData.allData),
         )
     })
 
@@ -238,13 +238,13 @@ describe('useAgentsSortingQuery', () => {
                 useAutoQAAgentsSortingQuery(
                     agentNameColumn,
                     getQuery(agentNameColumn),
-                    statsFiltersWithTimezone
+                    statsFiltersWithTimezone,
                 ),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={store}>{children}</Provider>
                 ),
-            }
+            },
         )
 
         expect(store.getActions()).toContainEqual(sortingLoaded(null))
@@ -279,13 +279,13 @@ describe('useAgentsSortingQuery', () => {
                 useAutoQAAgentsSortingQuery(
                     column,
                     queryHook,
-                    statsFiltersWithTimezone
+                    statsFiltersWithTimezone,
                 ),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={store}>{children}</Provider>
                 ),
-            }
+            },
         )
 
         expect(store.getActions()).toContainEqual(sortingLoading())

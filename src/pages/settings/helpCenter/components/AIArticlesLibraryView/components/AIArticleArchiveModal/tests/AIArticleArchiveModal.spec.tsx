@@ -1,8 +1,9 @@
-import {act, fireEvent, render, waitFor} from '@testing-library/react'
-import React, {createRef} from 'react'
+import React, { createRef } from 'react'
 
-import {AIArticle} from 'models/helpCenter/types'
-import {SelectableOption} from 'pages/common/forms/SelectField/types'
+import { act, fireEvent, render, waitFor } from '@testing-library/react'
+
+import { AIArticle } from 'models/helpCenter/types'
+import { SelectableOption } from 'pages/common/forms/SelectField/types'
 
 import AIArticleArchiveModal, {
     AIArticleArchiveModalHandle,
@@ -34,8 +35,8 @@ jest.mock('pages/common/forms/SelectField/SelectField', () => ({
 
 describe('<AIArticleArchiveModal />', () => {
     it('should be hidden by default', () => {
-        const {queryByRole} = render(
-            <AIArticleArchiveModal onArchive={() => ({})} />
+        const { queryByRole } = render(
+            <AIArticleArchiveModal onArchive={() => ({})} />,
         )
 
         expect(queryByRole('dialog')).not.toBeInTheDocument()
@@ -54,8 +55,8 @@ describe('<AIArticleArchiveModal />', () => {
         }
 
         const ref = createRef<AIArticleArchiveModalHandle>()
-        const {queryByRole} = render(
-            <AIArticleArchiveModal onArchive={() => ({})} ref={ref} />
+        const { queryByRole } = render(
+            <AIArticleArchiveModal onArchive={() => ({})} ref={ref} />,
         )
         act(() => ref.current?.open(article))
 
@@ -77,12 +78,12 @@ describe('<AIArticleArchiveModal />', () => {
         const onArchiveMock = jest.fn()
 
         const ref = createRef<AIArticleArchiveModalHandle>()
-        const {getByText, getByPlaceholderText, getByRole} = render(
-            <AIArticleArchiveModal onArchive={onArchiveMock} ref={ref} />
+        const { getByText, getByPlaceholderText, getByRole } = render(
+            <AIArticleArchiveModal onArchive={onArchiveMock} ref={ref} />,
         )
         act(() => ref.current?.open(article))
 
-        expect(getByRole('button', {name: 'Archive'})).toBeAriaDisabled()
+        expect(getByRole('button', { name: 'Archive' })).toBeAriaDisabled()
 
         fireEvent.click(getByText(ArchiveReason.AlreadyExists))
 
@@ -94,7 +95,7 @@ describe('<AIArticleArchiveModal />', () => {
 
         expect(onArchiveMock).toHaveBeenCalledWith(
             article,
-            ArchiveReason.AlreadyExists
+            ArchiveReason.AlreadyExists,
         )
     })
 
@@ -113,12 +114,12 @@ describe('<AIArticleArchiveModal />', () => {
         const onArchiveMock = jest.fn()
 
         const ref = createRef<AIArticleArchiveModalHandle>()
-        const {getByText, getByPlaceholderText, getByRole} = render(
-            <AIArticleArchiveModal onArchive={onArchiveMock} ref={ref} />
+        const { getByText, getByPlaceholderText, getByRole } = render(
+            <AIArticleArchiveModal onArchive={onArchiveMock} ref={ref} />,
         )
         act(() => ref.current?.open(article))
 
-        expect(getByRole('button', {name: 'Archive'})).toBeAriaDisabled()
+        expect(getByRole('button', { name: 'Archive' })).toBeAriaDisabled()
 
         fireEvent.click(getByText(ArchiveReason.Other))
 
@@ -126,7 +127,7 @@ describe('<AIArticleArchiveModal />', () => {
 
         await waitFor(() => expect(textarea).toBeVisible())
 
-        fireEvent.change(textarea, {target: {value: 'Test reason'}})
+        fireEvent.change(textarea, { target: { value: 'Test reason' } })
 
         fireEvent.click(getByText('Archive'))
 

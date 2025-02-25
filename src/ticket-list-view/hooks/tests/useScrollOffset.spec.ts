@@ -1,4 +1,4 @@
-import {act, renderHook} from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react-hooks'
 
 import useScrollOffset from '../useScrollOffset'
 
@@ -12,12 +12,12 @@ describe('useScrollOffset', () => {
             scrollTop: 0,
         } as unknown as HTMLDivElement
 
-        const {result, unmount} = renderHook(() => useScrollOffset(element))
+        const { result, unmount } = renderHook(() => useScrollOffset(element))
 
         expect(result.current).toEqual([0])
         expect(addEventListener).toHaveBeenCalledWith(
             'scroll',
-            expect.any(Function)
+            expect.any(Function),
         )
 
         const [[, cb]] = addEventListener.mock.calls as [[string, () => void]]

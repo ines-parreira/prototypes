@@ -1,14 +1,14 @@
-import {createSelector} from 'reselect'
+import { createSelector } from 'reselect'
 
-import {UserViewsOrderingSettingData} from 'config/types/user'
-import {View, ViewCategory, ViewType, ViewVisibility} from 'models/view/types'
-import {TicketNavbarElement} from 'pages/tickets/navbar/TicketNavbarContent'
-import {getViewsOrderingSetting} from 'state/currentAccount/selectors'
-import {AccountViewsOrderingSettingData} from 'state/currentAccount/types'
-import {getViewsOrderingUserSetting} from 'state/currentUser/selectors'
-import {RootState} from 'state/types'
+import { UserViewsOrderingSettingData } from 'config/types/user'
+import { View, ViewCategory, ViewType, ViewVisibility } from 'models/view/types'
+import { TicketNavbarElement } from 'pages/tickets/navbar/TicketNavbarContent'
+import { getViewsOrderingSetting } from 'state/currentAccount/selectors'
+import { AccountViewsOrderingSettingData } from 'state/currentAccount/types'
+import { getViewsOrderingUserSetting } from 'state/currentUser/selectors'
+import { RootState } from 'state/types'
 
-import {TicketNavbarElementType} from './types'
+import { TicketNavbarElementType } from './types'
 
 const createTicketNavbarElementsSelector = (viewVisibility: ViewVisibility) => {
     const emptyViewsOrdering: UserViewsOrderingSettingData = {
@@ -40,7 +40,7 @@ const createTicketNavbarElementsSelector = (viewVisibility: ViewVisibility) => {
                         view.category !== ViewCategory.System &&
                         (viewVisibility === ViewVisibility.Private
                             ? view.visibility === ViewVisibility.Private
-                            : view.visibility !== ViewVisibility.Private)
+                            : view.visibility !== ViewVisibility.Private),
                 )
                 .map((view) => ({
                     data: view,
@@ -50,7 +50,7 @@ const createTicketNavbarElementsSelector = (viewVisibility: ViewVisibility) => {
                 .filter((section) =>
                     viewVisibility === ViewVisibility.Private
                         ? section.private
-                        : !section.private
+                        : !section.private,
                 )
                 .map((section) => ({
                     children: viewElements
@@ -71,7 +71,7 @@ const createTicketNavbarElementsSelector = (viewVisibility: ViewVisibility) => {
                                 (optimisticSettings.views[view2.id]
                                     ? optimisticSettings.views[view2.id]
                                           .display_order
-                                    : setting.views?.[view2.id]?.display_order)
+                                    : setting.views?.[view2.id]?.display_order),
                         ),
                     data: section,
                     type: TicketNavbarElementType.Section,
@@ -92,13 +92,15 @@ const createTicketNavbarElementsSelector = (viewVisibility: ViewVisibility) => {
                     (element) =>
                         element.type !== TicketNavbarElementType.View ||
                         element.data.section_id == null ||
-                        !sectionIds.includes(element.data.section_id.toString())
+                        !sectionIds.includes(
+                            element.data.section_id.toString(),
+                        ),
                 )
                 .sort(
                     (element1, element2) =>
-                        getDisplayOrder(element1) - getDisplayOrder(element2)
+                        getDisplayOrder(element1) - getDisplayOrder(element2),
                 )
-        }
+        },
     )
 }
 
@@ -106,5 +108,5 @@ export const getPrivateTicketNavbarElements =
     createTicketNavbarElementsSelector(ViewVisibility.Private)
 
 export const getPublicTicketNavbarElements = createTicketNavbarElementsSelector(
-    ViewVisibility.Public
+    ViewVisibility.Public,
 )

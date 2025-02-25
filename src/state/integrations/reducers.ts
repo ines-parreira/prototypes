@@ -1,4 +1,4 @@
-import {fromJS, Map, List} from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 import moment from 'moment'
 
 import {
@@ -6,10 +6,10 @@ import {
     Integration,
     IntegrationType,
 } from 'models/integration/types'
-import {GorgiasAction} from 'state/types'
+import { GorgiasAction } from 'state/types'
 
 import * as constants from './constants'
-import {IntegrationsImmutableState} from './types'
+import { IntegrationsImmutableState } from './types'
 
 export const initialState: IntegrationsImmutableState = fromJS({
     integrations: [],
@@ -61,7 +61,7 @@ export const initialState: IntegrationsImmutableState = fromJS({
  */
 export default function reducer(
     state: IntegrationsImmutableState = initialState,
-    action: GorgiasAction
+    action: GorgiasAction,
 ): IntegrationsImmutableState {
     switch (action.type) {
         case constants.FETCH_INTEGRATION_START:
@@ -109,10 +109,10 @@ export default function reducer(
             )
                 .sortBy(
                     (integration: Map<any, any>) =>
-                        integration.get('name') as string
+                        integration.get('name') as string,
                 )
                 .sortBy((integration: Map<any, any>) =>
-                    moment(integration.get('deactivated_datetime'))
+                    moment(integration.get('deactivated_datetime')),
                 ) as List<any>
             return state
                 .set('integrations', integrations)
@@ -123,7 +123,7 @@ export default function reducer(
         case constants.UPDATE_INTEGRATION_START:
             return state.setIn(
                 ['state', 'loading', 'updateIntegration'],
-                (action.integration as Map<any, any>).get('id', true)
+                (action.integration as Map<any, any>).get('id', true),
             )
 
         case constants.CREATE_INTEGRATION_ERROR:
@@ -138,7 +138,7 @@ export default function reducer(
                 state.get('integrations') as List<any>
             ).findIndex(
                 (integration: Map<any, any>) =>
-                    newIntegration.get('id') === integration.get('id')
+                    newIntegration.get('id') === integration.get('id'),
             )
 
             const newState = state
@@ -154,10 +154,10 @@ export default function reducer(
             integrations = integrations
                 .sortBy(
                     (integration: Map<any, any>) =>
-                        integration.get('name') as string
+                        integration.get('name') as string,
                 )
                 .sortBy((integration: Map<any, any>) =>
-                    moment(integration.get('deactivated_datetime'))
+                    moment(integration.get('deactivated_datetime')),
                 ) as List<any>
 
             return newState.set('integrations', integrations)
@@ -173,9 +173,9 @@ export default function reducer(
                         .valueSeq()
                         .filter(
                             (integration: Map<any, any>) =>
-                                integration.get('id') !== action.id
+                                integration.get('id') !== action.id,
                         )
-                        .toList()
+                        .toList(),
                 )
                 .setIn(['state', 'loading', 'delete'], false)
 
@@ -204,21 +204,21 @@ export default function reducer(
             return state
                 .setIn(
                     ['integration', 'meta', 'email_forwarding_activated'],
-                    true
+                    true,
                 )
                 .set(
                     'integrations',
                     integrations.update(
                         integrations.findIndex(
                             (integration: Map<any, any>) =>
-                                integration.get('id') === action.integrationId
+                                integration.get('id') === action.integrationId,
                         ),
                         (integration: Map<any, any>) =>
                             integration.setIn(
                                 ['meta', 'email_forwarding_activated'],
-                                true
-                            )
-                    )
+                                true,
+                            ),
+                    ),
                 )
         }
 
@@ -230,11 +230,11 @@ export default function reducer(
                 integrations.update(
                     integrations.findIndex(
                         (integration: Map<any, any>) =>
-                            integration.get('id') === action.integrationId
+                            integration.get('id') === action.integrationId,
                     ),
                     (integration: Map<any, any>) =>
-                        integration.setIn(['meta', 'verified'], true)
-                )
+                        integration.setIn(['meta', 'verified'], true),
+                ),
             )
         }
 
@@ -250,12 +250,12 @@ export default function reducer(
             if (
                 !currentPage ||
                 action.forceOverride ||
-                (action.resp as {meta: {page: number}}).meta.page ===
+                (action.resp as { meta: { page: number } }).meta.page ===
                     currentPage
             ) {
                 return state.setIn(
                     ['extra', action.integrationType, 'onboardingIntegrations'],
-                    fromJS(action.resp)
+                    fromJS(action.resp),
                 )
             }
 
@@ -266,7 +266,7 @@ export default function reducer(
                     'onboardingIntegrations',
                     'meta',
                 ],
-                fromJS((action.resp as {meta: Record<string, any>}).meta)
+                fromJS((action.resp as { meta: Record<string, any> }).meta),
             )
         }
 
@@ -285,14 +285,14 @@ export default function reducer(
                     integrations.update(
                         integrations.findIndex(
                             (integration: Map<any, any>) =>
-                                integration.get('id') === action.id
+                                integration.get('id') === action.id,
                         ),
                         (integration: Map<any, any>) =>
                             integration.setIn(
                                 ['meta', 'status'],
-                                action.chatStatus
-                            )
-                    )
+                                action.chatStatus,
+                            ),
+                    ),
                 )
         }
 
@@ -304,12 +304,12 @@ export default function reducer(
         case constants.SET_EMAIL_PROVIDER_MIGRATION_BANNER_STATUS:
             return state.set(
                 'emailMigrationBannerStatus',
-                fromJS(action.emailMigrationBannerStatus)
+                fromJS(action.emailMigrationBannerStatus),
             )
         case constants.SET_EMAIL_PROVIDER_MIGRATIONS:
             return state.setIn(
                 ['migrations', 'email'],
-                fromJS(action.emailMigrations)
+                fromJS(action.emailMigrations),
             )
 
         case constants.UPDATE_EMAIL_MIGRATION_VERIFICATION_STATUS: {
@@ -323,7 +323,7 @@ export default function reducer(
                           ...migration,
                           status: action.emailMigrationVerificationStatus,
                       }
-                    : migration
+                    : migration,
             )
 
             return state.setIn(['migrations', 'email'], fromJS(newMigrations))
@@ -331,7 +331,7 @@ export default function reducer(
         case constants.UPDATE_FORWARDING_EMAIL_ADDRESS:
             return state.setIn(
                 ['authentication', 'email', 'forwarding_email_address'],
-                action.emailForwardingAddress
+                action.emailForwardingAddress,
             )
         case constants.HIDE_SHOPIFY_CHECKOUT_CHAT_BANNER:
             return state.setIn(
@@ -340,7 +340,7 @@ export default function reducer(
                     IntegrationType.GorgiasChat,
                     'shopifyCheckoutChatBannerVisible',
                 ],
-                false
+                false,
             )
         default:
             return state

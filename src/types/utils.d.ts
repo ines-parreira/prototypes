@@ -2,7 +2,7 @@ declare type Maybe<T> = T | undefined | null
 
 declare type UnionOmit<
     T,
-    K extends string | number | symbol
+    K extends string | number | symbol,
 > = T extends unknown ? Omit<T, K> : never
 
 declare type ValueOf<T> = T[keyof T]
@@ -17,16 +17,16 @@ type RemoveIndex<T> = {
     [K in keyof T as string extends K
         ? never
         : number extends K
-        ? never
-        : K]: T[K]
+          ? never
+          : K]: T[K]
 }
 
 type DeepPartial<T> = {
     [P in keyof T]?: T[P] extends (infer U)[]
         ? DeepPartial<U>[]
         : T[P] extends object | undefined
-        ? DeepPartial<T[P]>
-        : T[P]
+          ? DeepPartial<T[P]>
+          : T[P]
 }
 
 type AllKeys<T> = T extends unknown ? keyof T : never

@@ -1,6 +1,6 @@
-import {StoreState} from 'state/types'
+import { StoreState } from 'state/types'
 
-import {getChatInstallationStatus} from '../selectors'
+import { getChatInstallationStatus } from '../selectors'
 
 const storeInstallationOk: Partial<StoreState> = {
     entities: {
@@ -23,13 +23,13 @@ const storeInstallationNok: Partial<StoreState> = {
 describe('getChatInstallationStatus()', () => {
     it('returns installed:true', () => {
         expect(
-            getChatInstallationStatus(storeInstallationOk as StoreState)
-        ).toEqual({installed: true, installedOnShopifyCheckout: true})
+            getChatInstallationStatus(storeInstallationOk as StoreState),
+        ).toEqual({ installed: true, installedOnShopifyCheckout: true })
     })
 
     it('returns installed:false', () => {
         expect(
-            getChatInstallationStatus(storeInstallationNok as StoreState)
-        ).toEqual({installed: false, installedOnShopifyCheckout: false})
+            getChatInstallationStatus(storeInstallationNok as StoreState),
+        ).toEqual({ installed: false, installedOnShopifyCheckout: false })
     })
 })

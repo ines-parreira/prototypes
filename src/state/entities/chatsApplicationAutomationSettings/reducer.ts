@@ -1,13 +1,12 @@
-import {createReducer} from '@reduxjs/toolkit'
+import { createReducer } from '@reduxjs/toolkit'
 
-import {ChatApplicationAutomationSettings} from '../../../models/chatApplicationAutomationSettings/types'
-
+import { ChatApplicationAutomationSettings } from '../../../models/chatApplicationAutomationSettings/types'
 import {
     chatApplicationAutomationSettingsFetched,
     chatApplicationAutomationSettingsUpdated,
     chatsApplicationAutomationSettingsFetched,
 } from './actions'
-import {ChatsApplicationAutomationSettingsState} from './types'
+import { ChatsApplicationAutomationSettingsState } from './types'
 
 export const initialState: ChatsApplicationAutomationSettingsState = {}
 
@@ -18,30 +17,30 @@ const chatsApplicationAutomationSettingsReducer =
             builder
                 .addCase(
                     chatsApplicationAutomationSettingsFetched,
-                    (state, {payload}) => {
+                    (state, { payload }) => {
                         payload.map(
                             (
-                                chatApplicationAutomationSettings: ChatApplicationAutomationSettings
+                                chatApplicationAutomationSettings: ChatApplicationAutomationSettings,
                             ) => {
                                 state[
                                     chatApplicationAutomationSettings.applicationId.toString()
                                 ] = chatApplicationAutomationSettings
-                            }
+                            },
                         )
-                    }
+                    },
                 )
                 .addCase(
                     chatApplicationAutomationSettingsFetched,
-                    (state, {payload}) => {
+                    (state, { payload }) => {
                         state[payload.applicationId.toString()] = payload
-                    }
+                    },
                 )
                 .addCase(
                     chatApplicationAutomationSettingsUpdated,
-                    (state, {payload}) => {
+                    (state, { payload }) => {
                         state[payload.applicationId.toString()] = payload
-                    }
-                )
+                    },
+                ),
     )
 
 export default chatsApplicationAutomationSettingsReducer

@@ -1,13 +1,14 @@
-import {act, render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import {StyleSheetTestUtils} from 'aphrodite'
-import {fromJS, List, Map} from 'immutable'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {AttachmentEnum} from 'common/types'
+import { act, render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { StyleSheetTestUtils } from 'aphrodite'
+import { fromJS, List, Map } from 'immutable'
+
+import { AttachmentEnum } from 'common/types'
 import * as discountedPriceFlagModule from 'pages/convert/common/hooks/useIsProductCardDiscountedPriceEnabled'
-import {Account} from 'state/currentAccount/types'
-import {replaceAttachmentURL} from 'utils'
+import { Account } from 'state/currentAccount/types'
+import { replaceAttachmentURL } from 'utils'
 
 import TicketAttachments from '../TicketAttachments'
 
@@ -93,14 +94,14 @@ describe('TicketAttachments component', () => {
 
     describe('read-only', () => {
         it('should match snapshot', () => {
-            const {container} = render(<TicketAttachments {...minProps} />)
+            const { container } = render(<TicketAttachments {...minProps} />)
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should display all attachments', () => {
             render(<TicketAttachments {...minProps} />)
             expect(
-                document.getElementsByClassName('attachmentContainer').length
+                document.getElementsByClassName('attachmentContainer').length,
             ).toBe(attachments.size)
         })
 
@@ -109,8 +110,8 @@ describe('TicketAttachments component', () => {
             expect(screen.getAllByRole('link')[0]).toHaveStyle(
                 `backgroundImage: url(${replaceAttachmentURL(
                     'https://uploads.gorgi.us/bar',
-                    '120x80'
-                )})`
+                    '120x80',
+                )})`,
             )
         })
 
@@ -121,7 +122,7 @@ describe('TicketAttachments component', () => {
 
         it('should not show the remove button', () => {
             expect(
-                document.getElementsByClassName('itemRemove').length
+                document.getElementsByClassName('itemRemove').length,
             ).toEqual(0)
         })
     })
@@ -131,7 +132,7 @@ describe('TicketAttachments component', () => {
             render(<TicketAttachments {...minProps} removable />)
 
             expect(
-                document.getElementsByClassName('itemRemove').length
+                document.getElementsByClassName('itemRemove').length,
             ).toBeGreaterThan(0)
         })
     })
@@ -166,7 +167,7 @@ describe('TicketAttachments component', () => {
 
             expect(document.getElementsByTagName('img')[1]).toHaveAttribute(
                 'src',
-                'https://uploads.gorgi.us/bar'
+                'https://uploads.gorgi.us/bar',
             )
         })
 
@@ -189,7 +190,7 @@ describe('TicketAttachments component', () => {
 
     describe('private', () => {
         it("should display an error message if there's private attachments", () => {
-            const {container} = render(
+            const { container } = render(
                 <TicketAttachments
                     {...minProps}
                     attachments={fromJS([
@@ -212,7 +213,7 @@ describe('TicketAttachments component', () => {
                             public: false,
                         },
                     ])}
-                />
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -262,23 +263,23 @@ describe('TicketAttachments component', () => {
                     },
                 },
             ]) as List<Map<string, string>>
-            const {getByText, queryByText} = render(
-                <TicketAttachments {...minProps} attachments={attachments} />
+            const { getByText, queryByText } = render(
+                <TicketAttachments {...minProps} attachments={attachments} />,
             )
 
             expect(getByText('warning')).toBeInTheDocument()
             expect(getByText(/we couldn't download/)).toBeInTheDocument()
             expect(
-                getByText(attachments.getIn([0, 'name']))
+                getByText(attachments.getIn([0, 'name'])),
             ).toBeInTheDocument()
             expect(
-                queryByText(attachments.getIn([1, 'name']))
+                queryByText(attachments.getIn([1, 'name'])),
             ).not.toBeInTheDocument()
             expect(
-                getByText(attachments.getIn([2, 'name']))
+                getByText(attachments.getIn([2, 'name'])),
             ).toBeInTheDocument()
             expect(
-                getByText(attachments.getIn([3, 'name']))
+                getByText(attachments.getIn([3, 'name'])),
             ).toBeInTheDocument()
             expect(getByText('$2.00')).toBeInTheDocument()
         })
@@ -291,8 +292,8 @@ describe('TicketAttachments component', () => {
                     url: 'http://gorgias.io/bar',
                 },
             ]) as List<Map<string, string>>
-            const {getAllByText} = render(
-                <TicketAttachments {...minProps} attachments={attachments} />
+            const { getAllByText } = render(
+                <TicketAttachments {...minProps} attachments={attachments} />,
             )
 
             expect(getAllByText(attachments.getIn([0, 'name']))).toHaveLength(2)
@@ -316,11 +317,11 @@ describe('TicketAttachments component', () => {
         it('should display compare-at price if flag is enabled', () => {
             jest.spyOn(
                 discountedPriceFlagModule,
-                'getIsProductCardDiscountedPriceEnabled'
+                'getIsProductCardDiscountedPriceEnabled',
             ).mockReturnValue(true)
 
-            const {getByText} = render(
-                <TicketAttachments {...minProps} attachments={attachments} />
+            const { getByText } = render(
+                <TicketAttachments {...minProps} attachments={attachments} />,
             )
 
             getByText('$31.24')
@@ -330,11 +331,11 @@ describe('TicketAttachments component', () => {
         it('should display compare-at price if flag is disabled', () => {
             jest.spyOn(
                 discountedPriceFlagModule,
-                'getIsProductCardDiscountedPriceEnabled'
+                'getIsProductCardDiscountedPriceEnabled',
             ).mockReturnValue(false)
 
-            const {getByText, queryByText} = render(
-                <TicketAttachments {...minProps} attachments={attachments} />
+            const { getByText, queryByText } = render(
+                <TicketAttachments {...minProps} attachments={attachments} />,
             )
 
             getByText('$31.24')

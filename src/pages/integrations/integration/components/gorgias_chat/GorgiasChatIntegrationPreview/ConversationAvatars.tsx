@@ -1,23 +1,22 @@
-import {List, Map} from 'immutable'
 import React from 'react'
+
+import { List, Map } from 'immutable'
 
 import Avatar from 'gorgias-design-system/Avatar/Avatar'
 import AvatarGroup from 'gorgias-design-system/Avatar/AvatarGroup'
-
 import useAppSelector from 'hooks/useAppSelector'
 import {
-    GorgiasChatAvatarSettings,
     GorgiasChatAvatarImageType,
+    GorgiasChatAvatarSettings,
 } from 'models/integration/types'
-
-import {getHumanAgents} from 'state/agents/selectors'
+import { getHumanAgents } from 'state/agents/selectors'
 
 type Props = {
     avatar?: GorgiasChatAvatarSettings
     chatTitle: string
 }
 
-const ConversationAvatars: React.FC<Props> = ({avatar, chatTitle}) => {
+const ConversationAvatars: React.FC<Props> = ({ avatar, chatTitle }) => {
     const agents = useAppSelector(getHumanAgents) as List<Map<any, any>>
 
     if (avatar?.imageType === GorgiasChatAvatarImageType.COMPANY_LOGO) {

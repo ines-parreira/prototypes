@@ -1,6 +1,7 @@
-import {render} from '@testing-library/react'
-import {ContentState} from 'draft-js'
 import React from 'react'
+
+import { render } from '@testing-library/react'
+import { ContentState } from 'draft-js'
 
 import Mention from '../index'
 
@@ -11,15 +12,15 @@ describe('Mention', () => {
         const entityContentState = contentState.createEntity(
             'mention',
             'SEGMENTED',
-            {mention}
+            { mention },
         )
         const entityKey = entityContentState.getLastCreatedEntityKey()
-        const {container} = render(
+        const { container } = render(
             <Mention
                 contentState={contentState}
                 entityKey={entityKey}
                 theme={{}}
-            />
+            />,
         )
 
         expect(container.children.length).toEqual(1)

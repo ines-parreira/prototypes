@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useId from 'hooks/useId'
@@ -14,14 +14,15 @@ import {
 } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
-import {Drawer} from 'pages/common/components/Drawer'
+import { Drawer } from 'pages/common/components/Drawer'
 import TextArea from 'pages/common/forms/TextArea'
 import SmsIntegrationSelect from 'pages/integrations/integration/components/sms/SmsIntegrationSelect'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+
+import VoiceMessageField from './VoiceMessageField'
 
 import css from './IvrMenuActionField.less'
-import VoiceMessageField from './VoiceMessageField'
 
 const HELPER_TEXT = `This message will be sent to callers in a form of SMS once this IVR option is selected`
 
@@ -53,7 +54,7 @@ const IvrMenuActionSendToSMSField = ({
     const [smsSentToCallers, setSmsSentToCallers] =
         useState<string>(initialSmsContent)
     const [smsIntegrationId, setSmsIntegrationId] = useState<number | null>(
-        initialSmsIntegrationId
+        initialSmsIntegrationId,
     )
 
     const dispatch = useAppDispatch()
@@ -82,7 +83,7 @@ const IvrMenuActionSendToSMSField = ({
                 notify({
                     message: `Cannot save. Please select an SMS integration.`,
                     status: NotificationStatus.Error,
-                })
+                }),
             )
             return
         }
@@ -97,7 +98,7 @@ const IvrMenuActionSendToSMSField = ({
                 notify({
                     message: `Cannot save. Upload a recording to use it as your confirmation message.`,
                     status: NotificationStatus.Error,
-                })
+                }),
             )
             return
         }

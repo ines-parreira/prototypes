@@ -1,11 +1,12 @@
-import {fromJS, List} from 'immutable'
 import React from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {bindActionCreators} from 'redux'
+
+import { fromJS, List } from 'immutable'
+import { connect, ConnectedProps } from 'react-redux'
+import { bindActionCreators } from 'redux'
 
 import * as userActions from 'state/agents/actions'
 import * as agentSelectors from 'state/agents/selectors'
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
 
 import Select from './ReactSelect'
 
@@ -20,7 +21,7 @@ export class AssigneeUserSelectContainer extends React.Component<
     OwnProps & ConnectedProps<typeof connector>
 > {
     componentDidMount() {
-        const {actions, agents} = this.props
+        const { actions, agents } = this.props
 
         if (agents.isEmpty()) {
             actions.fetchUsers()
@@ -28,7 +29,7 @@ export class AssigneeUserSelectContainer extends React.Component<
     }
 
     render() {
-        const {value, onChange, agents, className, allowUnassign} = this.props
+        const { value, onChange, agents, className, allowUnassign } = this.props
         let options: List<any> = fromJS(
             allowUnassign
                 ? [
@@ -44,7 +45,7 @@ export class AssigneeUserSelectContainer extends React.Component<
                           ),
                       },
                   ]
-                : []
+                : [],
         )
 
         if (agents.isEmpty()) {
@@ -88,7 +89,7 @@ const connector = connect(
     }),
     (dispatch) => ({
         actions: bindActionCreators(userActions, dispatch),
-    })
+    }),
 )
 
 export default connector(AssigneeUserSelectContainer)

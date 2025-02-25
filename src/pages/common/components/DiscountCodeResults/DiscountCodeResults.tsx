@@ -1,34 +1,34 @@
-import classnames from 'classnames'
-import {List, Map} from 'immutable'
-import React, {ChangeEvent, useState, useCallback, useMemo} from 'react'
-import {Link} from 'react-router-dom'
-import {Input, ListGroup, ListGroupItem, Modal} from 'reactstrap'
+import React, { ChangeEvent, useCallback, useMemo, useState } from 'react'
 
-import {useAppNode} from 'appNode'
-import {logEvent, SegmentEvent} from 'common/segment'
-import {SHOPIFY_INTEGRATION_TYPE} from 'constants/integration'
+import classnames from 'classnames'
+import { List, Map } from 'immutable'
+import { Link } from 'react-router-dom'
+import { Input, ListGroup, ListGroupItem, Modal } from 'reactstrap'
+
+import { useAppNode } from 'appNode'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
-import {useModalManager} from 'hooks/useModalManager'
+import { useModalManager } from 'hooks/useModalManager'
 import client from 'models/api/resources'
 import {
     DISCOUNT_MODAL_NAME,
     DISCOUNTS_PER_PAGE,
 } from 'models/discountCodes/constants'
-import {DiscountCode} from 'models/discountCodes/types'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import { DiscountCode } from 'models/discountCodes/types'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import DiscountCodeCreateModal from 'pages/common/components/DiscountCodeCreateModal/DiscountCodeCreateModal'
 import Loader from 'pages/common/components/Loader/Loader'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {getAllCustomerIdsFromTicket} from 'state/ticket/helpers'
-import {getTicketState} from 'state/ticket/selectors'
-
-import {toJS} from 'utils'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { getAllCustomerIdsFromTicket } from 'state/ticket/helpers'
+import { getTicketState } from 'state/ticket/selectors'
+import { toJS } from 'utils'
 
 import css from './DiscountCodeResults.less'
 
@@ -60,36 +60,38 @@ export default function DiscountCodeResults({
     }, [integration])
 
     const hasShopifyDiscountScope = ['read_discounts', 'write_discounts'].every(
-        (scope) => shopifyScope.includes(scope)
+        (scope) => shopifyScope.includes(scope),
     )
 
-    const [{loading: isLoading}, handleFetchResults] = useAsyncFn(async () => {
-        if (!hasShopifyDiscountScope) return
+    const [{ loading: isLoading }, handleFetchResults] =
+        useAsyncFn(async () => {
+            if (!hasShopifyDiscountScope) return
 
-        try {
-            const response: {data: {data: DiscountCode[]}} = await client.get(
-                `/api/discount-codes/${integration.get('id')}/`,
-                {
-                    params: {search: filter},
-                }
-            )
-            setDiscountResults(response.data.data)
-        } catch {
-            void dispatch(
-                notify({
-                    message: "Couldn't fetch discount codes",
-                    status: NotificationStatus.Error,
-                })
-            )
-        }
-    }, [hasShopifyDiscountScope, filter])
+            try {
+                const response: { data: { data: DiscountCode[] } } =
+                    await client.get(
+                        `/api/discount-codes/${integration.get('id')}/`,
+                        {
+                            params: { search: filter },
+                        },
+                    )
+                setDiscountResults(response.data.data)
+            } catch {
+                void dispatch(
+                    notify({
+                        message: "Couldn't fetch discount codes",
+                        status: NotificationStatus.Error,
+                    }),
+                )
+            }
+        }, [hasShopifyDiscountScope, filter])
 
     const handleChange = useCallback(
         (event: ChangeEvent<HTMLInputElement>) => {
             event.preventDefault()
             setFilter(event.target.value)
         },
-        [setFilter]
+        [setFilter],
     )
 
     const discountModal = useModalManager(DISCOUNT_MODAL_NAME, {
@@ -115,7 +117,7 @@ export default function DiscountCodeResults({
                 ticket,
                 (integration) =>
                     integration.get('__integration_type__') ===
-                    SHOPIFY_INTEGRATION_TYPE
+                    SHOPIFY_INTEGRATION_TYPE,
             )
             logEvent(SegmentEvent.InsertDiscountCodeCreated, {
                 account_domain: currentAccount?.get('domain'),
@@ -127,7 +129,7 @@ export default function DiscountCodeResults({
                 customer: customerData,
             })
         },
-        [discountCodes, discountModal, currentAccount, ticket]
+        [discountCodes, discountModal, currentAccount, ticket],
     )
 
     useDebouncedEffect(handleFetchResults, [filter], 300)
@@ -137,7 +139,7 @@ export default function DiscountCodeResults({
             <div
                 className={classnames(
                     'input-icon input-icon-left',
-                    css.searchInput
+                    css.searchInput,
                 )}
             >
                 <i className="icon material-icons md-2">
@@ -191,13 +193,13 @@ export default function DiscountCodeResults({
             </div>
             <div className={css.listGroupContainer}>
                 {!hasShopifyDiscountScope ? (
-                    <div style={{padding: '8px'}}>
+                    <div style={{ padding: '8px' }}>
                         <Alert type={AlertType.Error}>
                             Missing Shopify permissions. To use this new
                             feature, please go to the{' '}
                             <Link
                                 to={`/app/settings/integrations/shopify/${integration.get(
-                                    'id'
+                                    'id',
                                 )}`}
                             >
                                 settings page of your Shopify integration&nbsp;
@@ -214,7 +216,7 @@ export default function DiscountCodeResults({
                                         key={index}
                                         tag="button"
                                         id={'resultRow'.concat(
-                                            index.toString()
+                                            index.toString(),
                                         )}
                                         action
                                         onClick={(event) => {

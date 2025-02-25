@@ -36,7 +36,7 @@ describe('getMetricValue', () => {
 
             // assert
             expect(value).toStrictEqual(expected)
-        }
+        },
     )
 
     it('has reasonable defaults', () => {

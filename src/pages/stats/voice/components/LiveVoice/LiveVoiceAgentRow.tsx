@@ -1,24 +1,27 @@
+import React, { useState } from 'react'
+
+import classNames from 'classnames'
+
 import {
     LiveCallQueueAgent,
     LiveCallQueueAgentCallStatusesItemStatus,
 } from '@gorgias/api-queries'
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
-import React, {useState} from 'react'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useInterval from 'hooks/useInterval'
-import {getFormattedDurationOngoingCall} from 'models/voiceCall/utils'
+import { getFormattedDurationOngoingCall } from 'models/voiceCall/utils'
 import AgentCard from 'pages/common/components/AgentCard/AgentCard'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 
+import { getOldestCall, isAgentAvailable, isAgentBusy } from './utils'
+
 import css from './LiveVoiceAgentsList.less'
-import {getOldestCall, isAgentAvailable, isAgentBusy} from './utils'
 
 export type Props = {
     agent: LiveCallQueueAgent
 }
 
-export default function LiveVoiceAgentRow({agent}: Props) {
+export default function LiveVoiceAgentRow({ agent }: Props) {
     const cardProps = getCardProps(agent)
     const forwardIconId = `tooltip-forward-${agent.id}`
     const shouldDisplayForwardIcon =
@@ -51,7 +54,7 @@ export default function LiveVoiceAgentRow({agent}: Props) {
                         id={forwardIconId}
                         className={classNames(
                             'icon material-icons',
-                            css.forwardIcon
+                            css.forwardIcon,
                         )}
                     >
                         phone_forwarded
@@ -83,7 +86,7 @@ const getCardProps = (agent: LiveCallQueueAgent) => {
 
     if (isAgentAvailable(agent)) {
         return agent.online
-            ? {badgeColor: 'var(--feedback-success)'}
+            ? { badgeColor: 'var(--feedback-success)' }
             : {
                   badgeColor: 'var(--neutral-grey-4)',
                   description: 'Available while offline',
@@ -91,6 +94,6 @@ const getCardProps = (agent: LiveCallQueueAgent) => {
     }
 
     return agent.online
-        ? {badgeColor: 'var(--feedback-error)'}
-        : {badgeColor: 'var(--neutral-grey-4)'}
+        ? { badgeColor: 'var(--feedback-error)' }
+        : { badgeColor: 'var(--neutral-grey-4)' }
 }

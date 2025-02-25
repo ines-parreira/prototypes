@@ -1,12 +1,16 @@
 import React from 'react'
-import {UncontrolledTooltip} from 'reactstrap'
+
+import { UncontrolledTooltip } from 'reactstrap'
 
 type Props = {
     isSystem: boolean
     isAllowed: boolean
 }
 
-export default function ViewSharingButtonTooltip({isSystem, isAllowed}: Props) {
+export default function ViewSharingButtonTooltip({
+    isSystem,
+    isAllowed,
+}: Props) {
     if (isSystem) {
         return (
             <UncontrolledTooltip target="view-sharing-button" placement="left">

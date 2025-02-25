@@ -1,9 +1,9 @@
-import {MatcherContext, MatcherFunction} from '@jest/expect'
+import { MatcherContext, MatcherFunction } from '@jest/expect'
 
 import {
-    isHtmlElement,
     HtmlElementTypeError,
     isElementOrAncestorAriaDisabled,
+    isHtmlElement,
 } from '../utils'
 
 describe('isHtmlElement', () => {
@@ -13,7 +13,7 @@ describe('isHtmlElement', () => {
             result = isHtmlElement(
                 'notAnElement',
                 (() => {}) as unknown as MatcherFunction,
-                {} as MatcherContext
+                {} as MatcherContext,
             )
         }
         expect(func).toThrow(HtmlElementTypeError)
@@ -34,7 +34,7 @@ describe('isHtmlElement', () => {
                     },
                 },
                 (() => {}) as unknown as MatcherFunction,
-                {} as MatcherContext
+                {} as MatcherContext,
             )
         }).toThrow(HtmlElementTypeError)
         expect(result).toBeUndefined()
@@ -45,7 +45,7 @@ describe('isHtmlElement', () => {
             isHtmlElement(
                 document.body,
                 (() => {}) as unknown as MatcherFunction,
-                {} as MatcherContext
+                {} as MatcherContext,
             )
         }).not.toThrow()
     })
@@ -58,7 +58,7 @@ describe('isHtmlElement', () => {
             result = isHtmlElement(
                 htmlElement,
                 (() => {}) as unknown as MatcherFunction,
-                {} as MatcherContext
+                {} as MatcherContext,
             )
         }
         expect(func).not.toThrow(HtmlElementTypeError)
@@ -70,13 +70,13 @@ describe('isHtmlElement', () => {
 
         const svgElement = document.createElementNS(
             'http://www.w3.org/2000/svg',
-            'svg'
+            'svg',
         )
         const func = () => {
             result = isHtmlElement(
                 svgElement,
                 (() => {}) as unknown as MatcherFunction,
-                {} as MatcherContext
+                {} as MatcherContext,
             )
         }
         expect(func).not.toThrow()

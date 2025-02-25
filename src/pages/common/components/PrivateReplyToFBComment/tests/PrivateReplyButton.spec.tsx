@@ -1,9 +1,10 @@
-import {render} from '@testing-library/react'
 import React from 'react'
+
+import { render } from '@testing-library/react'
 
 import Button from 'pages/common/components/button/Button'
 
-import {TicketMessageSourceType} from '../../../../../business/types/ticket'
+import { TicketMessageSourceType } from '../../../../../business/types/ticket'
 import * as infobarActions from '../../../../../state/infobar/actions'
 import PrivateReplyButton from '../PrivateReplyButton'
 
@@ -41,13 +42,13 @@ const defaultProps = {
 describe('<PrivateReplyButton/>', () => {
     describe('render', () => {
         it('should render the button', () => {
-            const {container} = render(
+            const { container } = render(
                 <PrivateReplyButton
                     {...defaultProps}
                     messageCreatedDatetime={Date().toString()}
                     buttonComponent={Button}
                     onClick={() => ({})}
-                />
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -60,22 +61,22 @@ describe('<PrivateReplyButton/>', () => {
                 let createdDatetime = 'Sun Nov 01 2020 01:01:01 UTC+0000'
 
                 if (is_already_sent) {
-                    meta = {private_reply: {already_sent: true}}
+                    meta = { private_reply: { already_sent: true } }
                     createdDatetime = Date().toString()
                 }
 
-                const {container} = render(
+                const { container } = render(
                     <PrivateReplyButton
                         {...defaultProps}
                         messageCreatedDatetime={createdDatetime}
                         meta={meta}
                         buttonComponent={Button}
                         onClick={() => ({})}
-                    />
+                    />,
                 )
 
                 expect(container.firstChild).toMatchSnapshot()
-            }
+            },
         )
     })
 })

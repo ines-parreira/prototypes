@@ -1,8 +1,9 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
+import React, { ComponentProps } from 'react'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
 import _noop from 'lodash/noop'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -10,16 +11,16 @@ import {
     SelfServiceConfiguration,
     ShopType,
 } from '../../../../../../models/selfServiceConfiguration/types'
-import {initialState as helpCenterInitialState} from '../../../../../../state/entities/helpCenter/reducer'
-import {SelfServiceConfigurationsState} from '../../../../../../state/entities/selfServiceConfigurations/types'
+import { initialState as helpCenterInitialState } from '../../../../../../state/entities/helpCenter/reducer'
+import { SelfServiceConfigurationsState } from '../../../../../../state/entities/selfServiceConfigurations/types'
 import SelfServiceFlowSelect from '../SelfServiceFlowSelect'
 
 const mockStore = configureMockStore([thunk])
 
 const createSelfServiceConfigurationFixtures = (
-    length: number
+    length: number,
 ): SelfServiceConfiguration[] => {
-    return Array.from({length}, (_, i) => ({
+    return Array.from({ length }, (_, i) => ({
         id: i + 1,
         type: 'shopify' as ShopType,
         shopName: `mystore${i + 1}`,
@@ -58,10 +59,10 @@ describe('<SelfServiceFlowSelect />', () => {
         billing: fromJS({}),
         currentAccount: fromJS({
             features: {
-                automation_return_flow: {enabled: true},
-                automation_cancellations_flow: {enabled: true},
-                automation_track_order_flow: {enabled: true},
-                automation_report_issue_flow: {enabled: true},
+                automation_return_flow: { enabled: true },
+                automation_cancellations_flow: { enabled: true },
+                automation_track_order_flow: { enabled: true },
+                automation_report_issue_flow: { enabled: true },
             },
             created_datetime: '2021-08-01T00:00:00Z',
         }),
@@ -90,7 +91,7 @@ describe('<SelfServiceFlowSelect />', () => {
         const useGetSelfServiceConfigurationsMock = jest.spyOn(
             // eslint-disable-next-line @typescript-eslint/no-var-requires
             require('models/selfServiceConfiguration/queries'),
-            'useGetSelfServiceConfigurations'
+            'useGetSelfServiceConfigurations',
         )
 
         useGetSelfServiceConfigurationsMock.mockImplementationOnce(() => ({
@@ -98,7 +99,7 @@ describe('<SelfServiceFlowSelect />', () => {
             isLoading: false,
         }))
 
-        const {container} = render(
+        const { container } = render(
             <Provider
                 store={mockStore({
                     ...defaultState,
@@ -108,18 +109,18 @@ describe('<SelfServiceFlowSelect />', () => {
                             selfServiceConfigurations.reduce(
                                 (
                                     configurations: SelfServiceConfigurationsState,
-                                    configuration: SelfServiceConfiguration
+                                    configuration: SelfServiceConfiguration,
                                 ) => ({
                                     ...configurations,
                                     [configuration.id]: configuration,
                                 }),
-                                {} as Partial<SelfServiceConfiguration>
+                                {} as Partial<SelfServiceConfiguration>,
                             ),
                     },
                 })}
             >
                 <SelfServiceFlowSelect {...minProps} />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -129,7 +130,7 @@ describe('<SelfServiceFlowSelect />', () => {
         const useGetSelfServiceConfigurationsMock = jest.spyOn(
             // eslint-disable-next-line @typescript-eslint/no-var-requires
             require('models/selfServiceConfiguration/queries'),
-            'useGetSelfServiceConfigurations'
+            'useGetSelfServiceConfigurations',
         )
 
         useGetSelfServiceConfigurationsMock.mockImplementationOnce(() => ({
@@ -137,13 +138,13 @@ describe('<SelfServiceFlowSelect />', () => {
             isLoading: false,
         }))
 
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore()}>
                 <SelfServiceFlowSelect
                     {...minProps}
                     value={'reasonIncorrectItems'}
                 />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })

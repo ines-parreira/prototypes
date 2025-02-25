@@ -1,1 +1,1 @@
-export {default} from './SimpleCampaignEditor'
+export { default } from './SimpleCampaignEditor'

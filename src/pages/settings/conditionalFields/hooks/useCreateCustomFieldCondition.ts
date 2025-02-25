@@ -1,14 +1,15 @@
+import { useQueryClient } from '@tanstack/react-query'
+
 import {
     queryKeys,
     useCreateCustomFieldCondition as useCreate,
 } from '@gorgias/api-queries'
-import {useQueryClient} from '@tanstack/react-query'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {isGorgiasApiError} from 'models/api/types'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {errorToChildren} from 'utils'
+import { isGorgiasApiError } from 'models/api/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { errorToChildren } from 'utils'
 
 /**
  * Wrapper for the SDK's useCreateCustomFieldCondition method that:
@@ -24,13 +25,13 @@ export default function useCreateCustomFieldCondition() {
             onSuccess: () => {
                 const queryKey =
                     queryKeys.customFieldConditions.listCustomFieldConditions()
-                void queryClient.invalidateQueries({queryKey})
+                void queryClient.invalidateQueries({ queryKey })
 
                 void dispatch(
                     notify({
                         status: NotificationStatus.Success,
                         message: 'Condition created successfully',
-                    })
+                    }),
                 )
             },
             onError: (error) => {
@@ -42,7 +43,7 @@ export default function useCreateCustomFieldCondition() {
                             : 'Failed to create condition',
                         message: errorToChildren(error) || undefined,
                         allowHTML: true,
-                    })
+                    }),
                 )
             },
         },

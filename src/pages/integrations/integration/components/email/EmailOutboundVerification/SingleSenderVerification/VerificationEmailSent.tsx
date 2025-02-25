@@ -1,20 +1,21 @@
-import {AxiosError} from 'axios'
+import React, { useEffect, useRef } from 'react'
+
+import { AxiosError } from 'axios'
 import classNames from 'classnames'
-import React, {useEffect, useRef} from 'react'
-import {useHistory} from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAsyncFn from 'hooks/useAsyncFn'
-import {EmailProvider} from 'models/integration/constants'
-import {resendVerificationEmail} from 'models/singleSenderVerification/resources'
+import { EmailProvider } from 'models/integration/constants'
+import { resendVerificationEmail } from 'models/singleSenderVerification/resources'
 import {
     SenderVerification,
     VerificationStatus,
 } from 'models/singleSenderVerification/types'
 import Alert from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 import DeleteVerificationButton from '../DeleteVerificationButton'
 
@@ -45,7 +46,7 @@ export default function VerificationEmailSent({
         if (verification.status !== VerificationStatus.Verified) {
             pollingTimer.current = setTimeout(
                 refetchVerification,
-                5000
+                5000,
             ) as unknown as number
         } else {
             onVerificationUpdate()
@@ -62,17 +63,17 @@ export default function VerificationEmailSent({
         baseURL,
     ])
 
-    const [{loading: isLoading}, handleResendEmail] = useAsyncFn(async () => {
+    const [{ loading: isLoading }, handleResendEmail] = useAsyncFn(async () => {
         try {
             await resendVerificationEmail(verification.integration_id)
             void dispatch(
                 notify({
                     message: 'Verification email resent successfully.',
                     status: NotificationStatus.Success,
-                })
+                }),
             )
         } catch (error) {
-            const {response} = error as AxiosError<{error: {msg: string}}>
+            const { response } = error as AxiosError<{ error: { msg: string } }>
             const errorMsg =
                 response && response.data.error
                     ? response.data.error.msg
@@ -82,7 +83,7 @@ export default function VerificationEmailSent({
                 notify({
                     message: errorMsg,
                     status: NotificationStatus.Error,
-                })
+                }),
             )
         }
     }, [dispatch, verification])

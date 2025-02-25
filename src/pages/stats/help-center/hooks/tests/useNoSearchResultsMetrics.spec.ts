@@ -1,7 +1,7 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {useMetric} from 'hooks/reporting/useMetric'
-import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
+import { useMetric } from 'hooks/reporting/useMetric'
+import { useMetricPerDimension } from 'hooks/reporting/useMetricPerDimension'
 import {
     HelpCenterTrackingEventDimensions,
     HelpCenterTrackingEventMeasures,
@@ -9,7 +9,7 @@ import {
     HelpCenterTrackingEventSegment,
 } from 'models/reporting/cubes/HelpCenterTrackingEventCube'
 
-import {useNoSearchResultsMetrics} from '../useNoSearchResultsMetrics'
+import { useNoSearchResultsMetrics } from '../useNoSearchResultsMetrics'
 
 jest.mock('hooks/reporting/useMetric', () => ({
     useMetric: jest.fn(),
@@ -33,7 +33,7 @@ const currentPage = 1
 
 describe('useNoSearchResultsMetrics', () => {
     beforeEach(() => {
-        mockUseMetric.mockReturnValue({isFetching: false, isError: false})
+        mockUseMetric.mockReturnValue({ isFetching: false, isError: false })
         mockUseMetricPerDimension.mockReturnValue({
             isFetching: false,
             isError: false,
@@ -52,7 +52,7 @@ describe('useNoSearchResultsMetrics', () => {
                 timezone,
                 itemPerPage,
                 currentPage,
-            })
+            }),
         )
 
         expect(mockUseMetric).toHaveBeenCalledWith({
@@ -79,15 +79,15 @@ describe('useNoSearchResultsMetrics', () => {
         mockUseMetric.mockReturnValue({
             isFetching: false,
             isError: false,
-            data: {value: 10},
+            data: { value: 10 },
         })
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useNoSearchResultsMetrics({
                 statsFilters,
                 timezone,
                 itemPerPage,
                 currentPage,
-            })
+            }),
         )
 
         expect(result.current).toEqual({
@@ -116,13 +116,13 @@ describe('useNoSearchResultsMetrics', () => {
                 decile: null,
             },
         })
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useNoSearchResultsMetrics({
                 statsFilters,
                 timezone,
                 itemPerPage,
                 currentPage,
-            })
+            }),
         )
 
         expect(result.current).toEqual({
@@ -153,13 +153,13 @@ describe('useNoSearchResultsMetrics', () => {
                 decile: null,
             },
         })
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useNoSearchResultsMetrics({
                 statsFilters,
                 timezone,
                 itemPerPage,
                 currentPage,
-            })
+            }),
         )
 
         expect(result.current).toEqual({
@@ -186,13 +186,13 @@ describe('useNoSearchResultsMetrics', () => {
             isError: false,
             data: null,
         })
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useNoSearchResultsMetrics({
                 statsFilters,
                 timezone,
                 itemPerPage,
                 currentPage,
-            })
+            }),
         )
 
         expect(result.current).toEqual({

@@ -1,9 +1,8 @@
-import {useCallback, useMemo} from 'react'
+import { useCallback, useMemo } from 'react'
 
-import {useBannersDispatchContext, BannerActionTypes} from '../Context'
-import {useDismissedStorage} from '../Storage'
-
-import {BannerCategory, ContextBanner} from '../types'
+import { BannerActionTypes, useBannersDispatchContext } from '../Context'
+import { useDismissedStorage } from '../Storage'
+import { BannerCategory, ContextBanner } from '../types'
 
 export function useBanners() {
     const bannerDispatch = useBannersDispatchContext()
@@ -16,11 +15,11 @@ export function useBanners() {
                 instanceId,
             })
         },
-        [bannerDispatch]
+        [bannerDispatch],
     )
 
-    const {setDismissed, isBannerDismissed} = useDismissedStorage(
-        updateCurrentTabState
+    const { setDismissed, isBannerDismissed } = useDismissedStorage(
+        updateCurrentTabState,
     )
 
     const dismissBanner = useCallback(
@@ -32,7 +31,7 @@ export function useBanners() {
                 instanceId,
             })
         },
-        [setDismissed, bannerDispatch]
+        [setDismissed, bannerDispatch],
     )
 
     const dispatchAddAndHandleDismiss = useCallback(
@@ -45,10 +44,10 @@ export function useBanners() {
                   }
             bannerDispatch({
                 type: BannerActionTypes.ADD,
-                payload: {...payload, onClose},
+                payload: { ...payload, onClose },
             })
         },
-        [bannerDispatch, dismissBanner]
+        [bannerDispatch, dismissBanner],
     )
 
     return useMemo(
@@ -81,6 +80,6 @@ export function useBanners() {
             dispatchAddAndHandleDismiss,
             bannerDispatch,
             dismissBanner,
-        ]
+        ],
     )
 }

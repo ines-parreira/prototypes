@@ -1,7 +1,7 @@
-import {VoiceCallDimension} from 'models/reporting/cubes/VoiceCallCube'
-import {VoiceAgentsMetric, VoiceMetric} from 'state/ui/stats/types'
+import { VoiceCallDimension } from 'models/reporting/cubes/VoiceCallCube'
+import { VoiceAgentsMetric, VoiceMetric } from 'state/ui/stats/types'
 
-import {VoiceCallTableColumnName} from './constants'
+import { VoiceCallTableColumnName } from './constants'
 import {
     filterAndOrderCells,
     getVoiceDrillDownColumns,
@@ -13,20 +13,20 @@ describe('utils', () => {
     describe('filterAndOrderCells', () => {
         it('should return an array of cells with the correct order', () => {
             const allColumns = {
-                column1: {props: {someProp: 'someValue'}},
-                column2: {props: {someProp: 'someValue'}},
-                column3: {props: {someProp: 'someValue'}},
+                column1: { props: { someProp: 'someValue' } },
+                column2: { props: { someProp: 'someValue' } },
+                column3: { props: { someProp: 'someValue' } },
             }
             const requiredColumns = ['column2', 'column1']
 
             const result = filterAndOrderCells(
                 allColumns as any,
-                requiredColumns as VoiceCallTableColumnName[]
+                requiredColumns as VoiceCallTableColumnName[],
             )
 
             expect(result).toEqual([
-                {key: 'column2', props: {someProp: 'someValue'}},
-                {key: 'column1', props: {someProp: 'someValue'}},
+                { key: 'column2', props: { someProp: 'someValue' } },
+                { key: 'column1', props: { someProp: 'someValue' } },
             ])
         })
     })
@@ -87,7 +87,7 @@ describe('utils', () => {
 
         it('should return the correct columns for AgentAverageTalkTime', () => {
             const result = getVoiceDrillDownColumns(
-                VoiceAgentsMetric.AgentAverageTalkTime
+                VoiceAgentsMetric.AgentAverageTalkTime,
             )
 
             expect(result).toEqual([
@@ -136,7 +136,7 @@ describe('utils', () => {
                 const result = voiceCallTableColumnNameToDimension(columnName)
 
                 expect(result).toBe(dimension)
-            }
+            },
         )
     })
 

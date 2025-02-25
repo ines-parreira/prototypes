@@ -1,5 +1,6 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps, useEffect, useState} from 'react'
+import React, { ComponentProps, useEffect, useState } from 'react'
+
+import { Meta, Story } from '@storybook/react'
 
 import ToggleInput from 'pages/common/forms/ToggleInput'
 
@@ -31,7 +32,7 @@ const Template: Story<ComponentProps<typeof Collapse>> = ({
         <>
             <ToggleInput isToggled={isOpen} onClick={setIsOpen} />
             <Collapse isOpen={isOpen} {...props}>
-                <div style={{width: 500}}>
+                <div style={{ width: 500 }}>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                     Aenean vitae turpis sed diam luctus ultricies vitae sed
                     ligula. In ullamcorper odio risus, non efficitur arcu
@@ -56,6 +57,6 @@ export const Default = Template.bind({})
 Default.args = {}
 
 export const Horizontal = Template.bind({})
-Horizontal.args = {direction: 'horizontal'}
+Horizontal.args = { direction: 'horizontal' }
 
 export default storyConfig

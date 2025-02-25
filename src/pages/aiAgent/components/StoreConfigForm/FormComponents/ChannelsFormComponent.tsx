@@ -1,23 +1,24 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {Fragment} from 'react'
-import {Link} from 'react-router-dom'
+import React, { Fragment } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { Link } from 'react-router-dom'
 
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
-import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
-import {getHasAutomate} from 'state/billing/selectors'
+import { getHasAutomate } from 'state/billing/selectors'
 
-import {FormValues, UpdateValue} from '../../../types'
-import {ConfigurationSection} from '../../ConfigurationSection/ConfigurationSection'
-import {SettingsBannerType} from '../constants'
+import { FormValues, UpdateValue } from '../../../types'
+import { ConfigurationSection } from '../../ConfigurationSection/ConfigurationSection'
+import { SettingsBannerType } from '../constants'
+import { ChannelToggleInput } from './ChannelToggleInput'
+import { ChatSettingsFormComponent } from './ChatSettingsFormComponent'
+import { EmailFormComponent } from './EmailFormComponent'
+import { SettingsBanner } from './SettingsBanner'
+import { SignatureFormComponent } from './SignatureFormComponent'
+
 import css from '../StoreConfigForm.less'
-import {ChannelToggleInput} from './ChannelToggleInput'
-import {ChatSettingsFormComponent} from './ChatSettingsFormComponent'
-import {EmailFormComponent} from './EmailFormComponent'
-import {SettingsBanner} from './SettingsBanner'
-import {SignatureFormComponent} from './SignatureFormComponent'
 
 type Props = {
     shopName: string
@@ -30,7 +31,7 @@ type Props = {
     updateChatChannelDeactivatedDatetime: (datetime: string | null) => void
 
     signature: string | null
-    monitoredEmailIntegrations: {id: number; email: string}[] | null
+    monitoredEmailIntegrations: { id: number; email: string }[] | null
     isEmailChannelEnabled: boolean
     emailChannelDeactivatedDatetime: string | null | undefined
     updateEmailChannelDeactivatedDatetime: (datetime: string | null) => void
@@ -58,7 +59,7 @@ export const ChannelsFormComponent = ({
     const hasAutomate = useAppSelector(getHasAutomate)
     const chatChannels = useSelfServiceChatChannels(shopType, shopName)
 
-    const {routes} = useAiAgentNavigation({shopName})
+    const { routes } = useAiAgentNavigation({ shopName })
 
     return (
         <>
@@ -77,7 +78,7 @@ export const ChannelsFormComponent = ({
                             isToggled={isChatChannelEnabled}
                             onUpdate={(isToggled) =>
                                 updateChatChannelDeactivatedDatetime(
-                                    isToggled ? null : new Date().toISOString()
+                                    isToggled ? null : new Date().toISOString(),
                                 )
                             }
                             channel="chat"
@@ -116,7 +117,7 @@ export const ChannelsFormComponent = ({
                         isToggled={isEmailChannelEnabled}
                         onUpdate={(isToggled) => {
                             updateEmailChannelDeactivatedDatetime(
-                                isToggled ? null : new Date().toISOString()
+                                isToggled ? null : new Date().toISOString(),
                             )
                         }}
                         channel="email"

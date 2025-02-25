@@ -1,7 +1,8 @@
-import _noop from 'lodash/noop'
-import {createContext, useContext} from 'react'
+import { createContext, useContext } from 'react'
 
-import {SelfServiceChannel} from 'pages/automate/common/hooks/useSelfServiceChannels'
+import _noop from 'lodash/noop'
+
+import { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
 
 export type OrderManagementPreviewContextType = {
     channels: SelfServiceChannel[]

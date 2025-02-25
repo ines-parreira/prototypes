@@ -1,4 +1,6 @@
-import {QueryClientProvider} from '@tanstack/react-query'
+import React from 'react'
+
+import { QueryClientProvider } from '@tanstack/react-query'
 import {
     act,
     createEvent,
@@ -7,15 +9,11 @@ import {
     waitFor,
 } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {createMemoryHistory} from 'history'
-import {fromJS} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
-import React from 'react'
-
-import {Provider} from 'react-redux'
-
-import routerDom, {useParams} from 'react-router-dom'
-
+import { createMemoryHistory } from 'history'
+import { fromJS } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
+import routerDom, { useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -23,28 +21,26 @@ import {
     campaignWithABGroup,
     variants as variantsFixture,
 } from 'fixtures/abGroup'
-import {entitiesInitialState} from 'fixtures/entities'
-import {integrationsState} from 'fixtures/integrations'
-
+import { entitiesInitialState } from 'fixtures/entities'
+import { integrationsState } from 'fixtures/integrations'
 import {
     useGetCampaign,
     useUpdateCampaign,
 } from 'models/convert/campaign/queries'
-import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
+import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
 import {
     abVariantAddUrl,
     abVariantControlVariantUrl,
     abVariantEditorUrl,
     abVariantsUrl,
 } from 'pages/convert/abVariants/urls'
-import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
+import { CampaignVariant } from 'pages/convert/campaigns/types/CampaignVariant'
+import { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { getLDClient } from 'utils/launchDarkly'
+import { assumeMock, renderWithRouter } from 'utils/testing'
 
-import {RootState, StoreDispatch} from 'state/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {getLDClient} from 'utils/launchDarkly'
-import {assumeMock, renderWithRouter} from 'utils/testing'
-
-import {ABGroupView} from '../ABGroupPage'
+import { ABGroupView } from '../ABGroupPage'
 
 jest.mock('utils/launchDarkly')
 
@@ -84,7 +80,7 @@ const renderComponent = (props: any, route?: string) => {
         </Provider>,
         {
             history,
-        }
+        },
     )
 }
 
@@ -127,7 +123,7 @@ describe('ABGroupView', () => {
     })
 
     beforeEach(() => {
-        useGetCampaignMock.mockReturnValue({data: campaignWithABGroup} as any)
+        useGetCampaignMock.mockReturnValue({ data: campaignWithABGroup } as any)
         useUpdateCampaignMock.mockImplementation(() => {
             return {
                 mutateAsync: updateCampaignMock,
@@ -136,7 +132,7 @@ describe('ABGroupView', () => {
     })
 
     it('renders', () => {
-        const {getByText} = renderComponent({
+        const { getByText } = renderComponent({
             campaign: campaignWithABGroup,
             integrationId: 8,
         })
@@ -153,21 +149,21 @@ describe('ABGroupView', () => {
             abVariantId: variantsFixture[0].id,
         })
 
-        const {getByRole} = renderComponent(
+        const { getByRole } = renderComponent(
             {
                 campaign: campaignWithABGroup,
                 integrationId: integrationId,
             },
-            abVariantControlVariantUrl(integrationId, campaignWithABGroup.id)
+            abVariantControlVariantUrl(integrationId, campaignWithABGroup.id),
         )
 
         act(() => {
-            userEvent.click(getByRole('button', {name: 'Update Control'}))
+            userEvent.click(getByRole('button', { name: 'Update Control' }))
         })
 
         expect(updateCampaignMock).toBeCalledWith([
             undefined,
-            {campaign_id: 'ee869594-65e2-45a5-a759-a4660c9ce677'},
+            { campaign_id: 'ee869594-65e2-45a5-a759-a4660c9ce677' },
             expect.objectContaining({
                 message_html:
                     '<div>Hello, please enjoy your stay on the <strong>internet</strong>.</div>',
@@ -183,7 +179,7 @@ describe('ABGroupView', () => {
             abVariantId: variantsFixture[0].id,
         })
 
-        const {getByRole} = renderComponent(
+        const { getByRole } = renderComponent(
             {
                 campaign: campaignWithABGroup,
                 integrationId: 8,
@@ -191,17 +187,17 @@ describe('ABGroupView', () => {
             abVariantEditorUrl(
                 integrationId,
                 campaignWithABGroup.id,
-                variantsFixture[0].id
-            )
+                variantsFixture[0].id,
+            ),
         )
 
         act(() => {
-            userEvent.click(getByRole('button', {name: 'Update Variant'}))
+            userEvent.click(getByRole('button', { name: 'Update Variant' }))
         })
 
         expect(updateCampaignMock).toBeCalledWith([
             undefined,
-            {campaign_id: 'ee869594-65e2-45a5-a759-a4660c9ce677'},
+            { campaign_id: 'ee869594-65e2-45a5-a759-a4660c9ce677' },
             {
                 variants: [
                     {
@@ -228,7 +224,7 @@ describe('ABGroupView', () => {
             abVariantId: variantsFixture[0].id,
         })
 
-        const {getByRole} = renderComponent(
+        const { getByRole } = renderComponent(
             {
                 campaign: {
                     ...campaignWithABGroup,
@@ -239,17 +235,17 @@ describe('ABGroupView', () => {
             abVariantEditorUrl(
                 integrationId,
                 campaignWithABGroup.id,
-                variantsFixture[0].id
-            )
+                variantsFixture[0].id,
+            ),
         )
 
         act(() => {
-            userEvent.click(getByRole('button', {name: 'Duplicate Variant'}))
+            userEvent.click(getByRole('button', { name: 'Duplicate Variant' }))
         })
 
         expect(updateCampaignMock).toBeCalledWith([
             undefined,
-            {campaign_id: 'ee869594-65e2-45a5-a759-a4660c9ce677'},
+            { campaign_id: 'ee869594-65e2-45a5-a759-a4660c9ce677' },
             {
                 variants: [
                     {
@@ -274,7 +270,7 @@ describe('ABGroupView', () => {
             campaignId: campaignWithABGroup.id,
         })
 
-        const {getByRole, container} = renderComponent(
+        const { getByRole, container } = renderComponent(
             {
                 campaign: {
                     ...campaignWithABGroup,
@@ -289,10 +285,10 @@ describe('ABGroupView', () => {
                 },
                 integrationId: 8,
             },
-            abVariantAddUrl(integrationId, campaignWithABGroup.id)
+            abVariantAddUrl(integrationId, campaignWithABGroup.id),
         )
 
-        const createBtn = getByRole('button', {name: 'Create'})
+        const createBtn = getByRole('button', { name: 'Create' })
         expect(createBtn).toBeInTheDocument()
 
         // simulate "onEditorChange" RichField change event
@@ -317,7 +313,7 @@ describe('ABGroupView', () => {
 
         expect(updateCampaignMock).toBeCalledWith([
             undefined,
-            {campaign_id: 'ee869594-65e2-45a5-a759-a4660c9ce677'},
+            { campaign_id: 'ee869594-65e2-45a5-a759-a4660c9ce677' },
             {
                 variants: [
                     {
@@ -342,15 +338,15 @@ describe('ABGroupView', () => {
             campaignId: campaignWithABGroup.id,
         })
 
-        const {getAllByRole} = renderComponent(
+        const { getAllByRole } = renderComponent(
             {
                 campaign: campaignWithABGroup,
                 integrationId: integrationId,
             },
-            abVariantAddUrl(integrationId, campaignWithABGroup.id)
+            abVariantAddUrl(integrationId, campaignWithABGroup.id),
         )
 
-        const cancelBtn = getAllByRole('button', {name: 'Cancel'})[0]
+        const cancelBtn = getAllByRole('button', { name: 'Cancel' })[0]
         expect(cancelBtn).toBeInTheDocument()
 
         act(() => {
@@ -366,12 +362,12 @@ describe('ABGroupView', () => {
             campaignId: campaignWithABGroup.id,
         })
 
-        const {getByText} = renderComponent(
+        const { getByText } = renderComponent(
             {
                 campaign: campaignWithABGroup,
                 integrationId: integrationId,
             },
-            abVariantsUrl(integrationId, campaignWithABGroup.id)
+            abVariantsUrl(integrationId, campaignWithABGroup.id),
         )
 
         const deleteButtons = screen.getAllByLabelText('Delete campaign')
@@ -393,7 +389,7 @@ describe('ABGroupView', () => {
         await waitFor(() => {
             expect(updateCampaignMock).toBeCalledWith([
                 undefined,
-                {campaign_id: 'ee869594-65e2-45a5-a759-a4660c9ce677'},
+                { campaign_id: 'ee869594-65e2-45a5-a759-a4660c9ce677' },
                 {
                     variants: [
                         {

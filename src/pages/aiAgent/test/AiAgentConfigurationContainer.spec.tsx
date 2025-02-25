@@ -1,29 +1,30 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {screen, fireEvent} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
-import {keyBy} from 'lodash'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { keyBy } from 'lodash'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {account} from 'fixtures/account'
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { account } from 'fixtures/account'
+import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {useGetHelpCenterList} from 'models/helpCenter/queries'
-import {IntegrationType} from 'models/integration/types'
-import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
-import {getHasAutomate} from 'state/billing/selectors'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock, renderWithRouter} from 'utils/testing'
+import { useGetHelpCenterList } from 'models/helpCenter/queries'
+import { IntegrationType } from 'models/integration/types'
+import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
+import { getHasAutomate } from 'state/billing/selectors'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock, renderWithRouter } from 'utils/testing'
 
 import AiAgentConfigurationContainer from '../AiAgentConfigurationContainer'
-import {getStoreConfigurationFixture} from '../fixtures/storeConfiguration.fixtures'
-import {useGetOrCreateSnippetHelpCenter} from '../hooks/useGetOrCreateSnippetHelpCenter'
+import { getStoreConfigurationFixture } from '../fixtures/storeConfiguration.fixtures'
+import { useGetOrCreateSnippetHelpCenter } from '../hooks/useGetOrCreateSnippetHelpCenter'
 import * as useStoreConfigurationFormHookModule from '../hooks/useStoreConfigurationForm'
-import {useAiAgentStoreConfigurationContext} from '../providers/AiAgentStoreConfigurationContext'
+import { useAiAgentStoreConfigurationContext } from '../providers/AiAgentStoreConfigurationContext'
 
 jest.mock('state/billing/selectors', () => ({
     __esModule: true,
@@ -35,7 +36,7 @@ jest.mock('../hooks/useGetOrCreateSnippetHelpCenter', () => ({
     useGetOrCreateSnippetHelpCenter: jest.fn(),
 }))
 const mockUseGetOrCreateSnippetHelpCenter = jest.mocked(
-    useGetOrCreateSnippetHelpCenter
+    useGetOrCreateSnippetHelpCenter,
 )
 
 jest.mock('hooks/useAppDispatch')
@@ -46,7 +47,7 @@ const mockUseGetHelpCenterList = assumeMock(useGetHelpCenterList)
 
 jest.mock('../providers/AiAgentStoreConfigurationContext')
 const mockUseAiAgentStoreConfigurationContext = jest.mocked(
-    useAiAgentStoreConfigurationContext
+    useAiAgentStoreConfigurationContext,
 )
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterList', () => ({
@@ -68,7 +69,7 @@ jest.mock('models/storeMapping/queries', () => ({
 
 jest.mock('common/segment', () => ({
     logEvent: jest.fn(),
-    SegmentEvent: {AiAgentEnabled: 'ai-agent-enabled'},
+    SegmentEvent: { AiAgentEnabled: 'ai-agent-enabled' },
 }))
 
 jest.mock('pages/aiAgent/hooks/usePublicResources', () => ({
@@ -90,7 +91,7 @@ const contactForm = ContactFormFixture
 
 const getState = (accountId?: number) => ({
     currentAccount: fromJS(
-        accountId !== undefined ? {...account, id: accountId} : account
+        accountId !== undefined ? { ...account, id: accountId } : account,
     ),
     integrations: fromJS({
         integrations: [
@@ -121,7 +122,7 @@ const getState = (accountId?: number) => ({
                 automationSettingsByContactFormId: {
                     [contactForm.id]: {
                         workflows: [],
-                        order_management: {enabled: false},
+                        order_management: { enabled: false },
                     },
                 },
             },
@@ -143,8 +144,8 @@ const mockedAiAgentStoreConfigurationContext = {
 const getHelpCenterListResponse = {
     data: axiosSuccessResponse({
         data: [
-            {id: 1, name: 'help center 1', type: 'faq'},
-            {id: 2, name: 'help center 2', type: 'faq'},
+            { id: 1, name: 'help center 1', type: 'faq' },
+            { id: 2, name: 'help center 2', type: 'faq' },
         ],
     }),
     isLoading: false,
@@ -153,7 +154,7 @@ const getHelpCenterListResponse = {
 const renderComponent = ({
     accountId = undefined,
     tab = undefined,
-}: {accountId?: number; tab?: string} = {}) => {
+}: { accountId?: number; tab?: string } = {}) => {
     let path = `/:shopType/:shopName/ai-agent/settings`
     let route = '/shopify/test-shop/ai-agent/settings'
 
@@ -171,7 +172,7 @@ const renderComponent = ({
         {
             path,
             route,
-        }
+        },
     )
 }
 
@@ -211,13 +212,13 @@ describe('AiAgentConfigurationContainer', () => {
     })
 
     it('renders loader if loading store configuration', () => {
-        setupMocks({isStoreConfigurationLoading: true})
+        setupMocks({ isStoreConfigurationLoading: true })
         renderComponent()
         expect(screen.getByLabelText('loading')).toBeInTheDocument()
     })
 
     it('renders loader if loading help centers', () => {
-        setupMocks({isHelpCentersLoading: true})
+        setupMocks({ isHelpCentersLoading: true })
         renderComponent()
         expect(screen.getByLabelText('loading')).toBeInTheDocument()
     })
@@ -227,7 +228,7 @@ describe('AiAgentConfigurationContainer', () => {
         renderComponent()
         expect(screen.getByText('Save Changes')).toBeInTheDocument()
         expect(
-            screen.getAllByText('Enable AI Agent on Email')[0]
+            screen.getAllByText('Enable AI Agent on Email')[0],
         ).toBeInTheDocument()
     })
 
@@ -239,7 +240,7 @@ describe('AiAgentConfigurationContainer', () => {
         renderComponent()
         expect(screen.getByText('Save Changes')).toBeInTheDocument()
         expect(
-            screen.getAllByText('Enable AI Agent on Email')[0]
+            screen.getAllByText('Enable AI Agent on Email')[0],
         ).toBeInTheDocument()
     })
 
@@ -281,12 +282,12 @@ describe('AiAgentConfigurationContainer', () => {
             [FeatureFlagKey.AiAgentChat]: true,
         })
 
-        renderComponent({tab: 'channels'})
+        renderComponent({ tab: 'channels' })
         expect(screen.queryByText('General settings')).not.toBeInTheDocument()
         expect(screen.queryByText('Chat settings')).toBeInTheDocument()
         expect(screen.queryByText('Email settings')).toBeInTheDocument()
         expect(
-            screen.queryByText('Handover and exclusion')
+            screen.queryByText('Handover and exclusion'),
         ).not.toBeInTheDocument()
         expect(screen.queryByText('AI ticket tagging')).not.toBeInTheDocument()
         expect(screen.queryByText('Save Changes')).toBeInTheDocument()
@@ -300,10 +301,10 @@ describe('AiAgentConfigurationContainer', () => {
         beforeEach(() => {
             jest.spyOn(
                 useStoreConfigurationFormHookModule,
-                'useStoreConfigurationForm'
+                'useStoreConfigurationForm',
             ).mockImplementation((...args) => {
                 const originalResult = originalUseStoreConfigurationFormHook(
-                    ...args
+                    ...args,
                 )
                 return {
                     ...originalResult,
@@ -317,14 +318,16 @@ describe('AiAgentConfigurationContainer', () => {
 
         describe('silentHandover toggle', () => {
             it.each([
-                {expected: true, defaultValue: null},
-                {expected: true, defaultValue: false},
-                {expected: false, defaultValue: true},
+                { expected: true, defaultValue: null },
+                { expected: true, defaultValue: false },
+                { expected: false, defaultValue: true },
             ])(
                 'should set silentHandover to $expected when the default value is $defaultValue',
-                ({expected, defaultValue}) => {
+                ({ expected, defaultValue }) => {
                     setupMocks({
-                        storeConfigurationData: {silentHandover: defaultValue},
+                        storeConfigurationData: {
+                            silentHandover: defaultValue,
+                        },
                     })
 
                     mockFlags({
@@ -332,14 +335,14 @@ describe('AiAgentConfigurationContainer', () => {
                         [FeatureFlagKey.AiAgentChat]: true,
                     })
 
-                    const {getByText} = renderComponent()
+                    const { getByText } = renderComponent()
                     fireEvent.click(
-                        getByText('Tell customers when handing over')
+                        getByText('Tell customers when handing over'),
                     )
                     expect(
-                        mockUseStoreConfigurationFormHookUpdateValue
+                        mockUseStoreConfigurationFormHookUpdateValue,
                     ).toHaveBeenCalledWith('silentHandover', expected)
-                }
+                },
             )
         })
     })

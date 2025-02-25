@@ -1,7 +1,8 @@
+import React, { Component, ReactNode } from 'react'
+
 import classNamesBind from 'classnames/bind'
-import React, {Component, ReactNode} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {Badge} from 'reactstrap'
+import { connect, ConnectedProps } from 'react-redux'
+import { Badge } from 'reactstrap'
 
 import angryIcon from 'assets/img/integrations/facebook-reaction-angry.svg'
 import careIcon from 'assets/img/integrations/facebook-reaction-care.svg'
@@ -12,8 +13,8 @@ import loveIcon from 'assets/img/integrations/facebook-reaction-love.svg'
 import prideIcon from 'assets/img/integrations/facebook-reaction-pride.png'
 import sadIcon from 'assets/img/integrations/facebook-reaction-sad.svg'
 import wowIcon from 'assets/img/integrations/facebook-reaction-wow.svg'
-import {TicketMessageSourceType} from 'business/types/ticket'
-import {FacebookReactionType} from 'constants/integrations/facebook'
+import { TicketMessageSourceType } from 'business/types/ticket'
+import { FacebookReactionType } from 'constants/integrations/facebook'
 import {
     FacebookReaction,
     FacebookReactionCounter,
@@ -37,7 +38,7 @@ type Props = {
 } & ConnectedProps<typeof connector>
 
 export class SourceActionsFooter extends Component<Props> {
-    reactionIcons: Partial<{[key in FacebookReactionType]: string}> = {
+    reactionIcons: Partial<{ [key in FacebookReactionType]: string }> = {
         [FacebookReactionType.Like]: likedIcon,
         [FacebookReactionType.Love]: loveIcon,
         [FacebookReactionType.Sad]: sadIcon,
@@ -49,7 +50,7 @@ export class SourceActionsFooter extends Component<Props> {
     }
 
     _executeAction = (actionName: string) => {
-        const {integrationId, messageId, executeAction} = this.props
+        const { integrationId, messageId, executeAction } = this.props
         if (integrationId) {
             executeAction({
                 actionName,
@@ -154,14 +155,14 @@ export class SourceActionsFooter extends Component<Props> {
     _handleOtherReactions = (
         reactionCounter: FacebookReactionCounter,
         pageReactionType: string,
-        customerReactionType: string
+        customerReactionType: string,
     ) => {
         let totalReactions = reactionCounter.total_reactions
         const reactionImages: ReactNode[] = []
 
         const reactionsCounterKeys = Object.keys(reactionCounter)
         const reactions = reactionsCounterKeys.filter(
-            (key) => key !== 'total_reactions'
+            (key) => key !== 'total_reactions',
         ) as FacebookReactionType[]
 
         for (let i = 0; i < reactions.length; i++) {
@@ -184,7 +185,7 @@ export class SourceActionsFooter extends Component<Props> {
                             className={css.groupedReactions}
                             src={icon}
                             alt="Other reactions"
-                        />
+                        />,
                     )
                 }
             }
@@ -197,7 +198,7 @@ export class SourceActionsFooter extends Component<Props> {
                     pill
                     className={classNames(
                         'hidden-sm-down',
-                        css.totalReactionsBadge
+                        css.totalReactionsBadge,
                     )}
                     key="other-reactions"
                 >
@@ -223,7 +224,7 @@ export class SourceActionsFooter extends Component<Props> {
                     key="like-action"
                     className={css.reactionButton}
                     onClick={() => this._toggleLikeComment(true)}
-                    style={{width: '18px'}}
+                    style={{ width: '18px' }}
                 />
             </span>
         )
@@ -239,7 +240,7 @@ export class SourceActionsFooter extends Component<Props> {
         }
 
         return (
-            <span className="mr-3" style={{color: '#ababab'}}>
+            <span className="mr-3" style={{ color: '#ababab' }}>
                 {likingState}
                 <span>
                     <Loader
@@ -255,12 +256,12 @@ export class SourceActionsFooter extends Component<Props> {
 
     _toggleLikeComment = (like: boolean) => {
         this._executeAction(
-            like ? 'facebookLikeComment' : 'facebookUnlikeComment'
+            like ? 'facebookLikeComment' : 'facebookUnlikeComment',
         )
     }
 
     render() {
-        const {source, meta, isMessageHidden, isMessageDeleted} = this.props
+        const { source, meta, isMessageHidden, isMessageDeleted } = this.props
         const widgets: ReactNode[] = []
 
         if (meta?.is_duplicated) {
@@ -297,8 +298,8 @@ export class SourceActionsFooter extends Component<Props> {
             if (meta.facebook_reactions.page_reaction.reaction_type) {
                 widgets.push(
                     this._handlePageReaction(
-                        meta.facebook_reactions.page_reaction.reaction_type
-                    )
+                        meta.facebook_reactions.page_reaction.reaction_type,
+                    ),
                 )
             } else {
                 widgets.push(this._getLikeButton())
@@ -314,8 +315,8 @@ export class SourceActionsFooter extends Component<Props> {
                     meta.facebook_reactions.customer_reaction.reaction_type
                 widgets.push(
                     this._handleCustomerReaction(
-                        meta.facebook_reactions.customer_reaction
-                    )
+                        meta.facebook_reactions.customer_reaction,
+                    ),
                 )
             }
 
@@ -334,8 +335,8 @@ export class SourceActionsFooter extends Component<Props> {
                     this._handleOtherReactions(
                         meta.facebook_reactions.reactions_counter,
                         pageReactionType,
-                        customerReactionType
-                    )
+                        customerReactionType,
+                    ),
                 )
             }
         }
@@ -344,6 +345,6 @@ export class SourceActionsFooter extends Component<Props> {
     }
 }
 
-const connector = connect(null, {executeAction: infobarActions.executeAction})
+const connector = connect(null, { executeAction: infobarActions.executeAction })
 
 export default connector(SourceActionsFooter)

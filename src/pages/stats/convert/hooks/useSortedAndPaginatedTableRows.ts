@@ -1,13 +1,13 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {OrderDirection} from 'models/api/types'
+import { OrderDirection } from 'models/api/types'
 
-import {CampaignTableContentCell} from '../types/CampaignTableContentCell'
+import { CampaignTableContentCell } from '../types/CampaignTableContentCell'
 import {
     CampaignTableKeys,
     isCampaignTableKey,
 } from '../types/enums/CampaignTableKeys.enum'
-import {getDataFromTableCell} from '../utils/getDataFromTableCell'
+import { getDataFromTableCell } from '../utils/getDataFromTableCell'
 
 type Options = {
     offset: number
@@ -18,18 +18,18 @@ type Options = {
 
 export function useSortedAndPaginatedTableRows(
     rows: CampaignTableContentCell[],
-    options: Options
+    options: Options,
 ) {
     const sortedRows = useMemo(() => {
         if (options.orderKey && isCampaignTableKey(options.orderKey)) {
             const sortedRows = [...rows].sort((a, b) => {
                 let aValue = getDataFromTableCell(
                     a,
-                    options.orderKey as CampaignTableKeys
+                    options.orderKey as CampaignTableKeys,
                 )
                 let bValue = getDataFromTableCell(
                     b,
-                    options.orderKey as CampaignTableKeys
+                    options.orderKey as CampaignTableKeys,
                 )
 
                 if (typeof aValue === 'string') {

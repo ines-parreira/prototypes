@@ -1,11 +1,13 @@
-import {useEffect} from 'react'
+import { useEffect } from 'react'
 
-import {AlertBannerTypes, BannerCategories, useBanners} from 'AlertBanners'
-import {DEFAULT_WARNING_MESSAGE} from 'business/twilio'
-import {errorMessage, isRecoverableError} from 'hooks/integrations/phone/utils'
-import {VoiceDeviceActions} from 'pages/integrations/integration/components/voice/types'
-
-import {State} from 'state/twilio/voiceDevice'
+import { AlertBannerTypes, BannerCategories, useBanners } from 'AlertBanners'
+import { DEFAULT_WARNING_MESSAGE } from 'business/twilio'
+import {
+    errorMessage,
+    isRecoverableError,
+} from 'hooks/integrations/phone/utils'
+import { VoiceDeviceActions } from 'pages/integrations/integration/components/voice/types'
+import { State } from 'state/twilio/voiceDevice'
 
 enum PhoneAlertBanner {
     Error = 'phone-error-banner',
@@ -13,8 +15,8 @@ enum PhoneAlertBanner {
 }
 
 export function useErrorHandling(state: State, actions: VoiceDeviceActions) {
-    const {error, warning} = state
-    const {addBanner, removeBanner} = useBanners()
+    const { error, warning } = state
+    const { addBanner, removeBanner } = useBanners()
 
     useEffect(() => {
         if (error && !isRecoverableError(error)) {
@@ -32,7 +34,7 @@ export function useErrorHandling(state: State, actions: VoiceDeviceActions) {
         } else {
             removeBanner(
                 BannerCategories.ERROR_HANDLING,
-                PhoneAlertBanner.Error
+                PhoneAlertBanner.Error,
             )
         }
     }, [addBanner, error, removeBanner])
@@ -53,7 +55,7 @@ export function useErrorHandling(state: State, actions: VoiceDeviceActions) {
         } else {
             removeBanner(
                 BannerCategories.ERROR_HANDLING,
-                PhoneAlertBanner.Warning
+                PhoneAlertBanner.Warning,
             )
         }
     }, [warning, actions, addBanner, removeBanner])

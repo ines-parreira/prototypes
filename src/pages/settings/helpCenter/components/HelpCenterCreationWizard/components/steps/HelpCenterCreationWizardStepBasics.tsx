@@ -1,20 +1,21 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import React, {useEffect, useMemo, useState} from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
+
+import { Label } from '@gorgias/merchant-ui-kit'
 
 import store from 'assets/img/icons/store.svg'
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
-import {useCheckHelpCenterWithSubdomainExists} from 'models/helpCenter/queries'
+import { useCheckHelpCenterWithSubdomainExists } from 'models/helpCenter/queries'
 import {
     HelpCenter,
     HelpCenterAutomateType,
     HelpCenterCreationWizardStep,
 } from 'models/helpCenter/types'
-import {IntegrationType} from 'models/integration/constants'
+import { IntegrationType } from 'models/integration/constants'
 import {
     Language,
     LanguagePicker,
 } from 'pages/common/components/LanguagePicker/LanguagePicker'
-import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
+import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import WizardFooter, {
     FOOTER_BUTTONS,
@@ -35,22 +36,22 @@ import {
     NEXT_ACTION,
     PlatformType,
 } from 'pages/settings/helpCenter/constants'
-
-import {useStoreOptions} from 'pages/settings/helpCenter/hooks/useStoreOptions'
-import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
+import { useStoreOptions } from 'pages/settings/helpCenter/hooks/useStoreOptions'
+import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
 import {
     getSubdomainValidationError,
     isValidSubdomain,
 } from 'pages/settings/helpCenter/utils/validations'
-import {slugify} from 'utils'
+import { slugify } from 'utils'
 
 import {
     mapHelpCenterLanguagesToLanguagePicker,
     mapHelpCenterLocalesToLanguagePicker,
     mapLanguagePickerToHelpCenterLanguages,
 } from '../../HelpCenterCreationWizardUtils'
-import {useHelpCenterCreationWizard} from '../../hooks/useHelpCenterCreationWizard'
+import { useHelpCenterCreationWizard } from '../../hooks/useHelpCenterCreationWizard'
 import DiscardNewHelpCenterPrompt from '../DiscardNewHelpCenterPrompt'
+
 import css from './HelpCenterCreationWizardStepBasics.less'
 
 type Props = {
@@ -72,7 +73,7 @@ const HelpCenterCreationWizardStepBasics: React.FC<Props> = ({
         isLoading: isLoading,
     } = useHelpCenterCreationWizard(
         helpCenter,
-        HelpCenterCreationWizardStep.Basics
+        HelpCenterCreationWizardStep.Basics,
     )
     const helpCenterLocales = useSupportedLocales()
     const integrationOptions = useStoreOptions({
@@ -87,17 +88,17 @@ const HelpCenterCreationWizardStepBasics: React.FC<Props> = ({
         () =>
             mapHelpCenterLanguagesToLanguagePicker(
                 helpCenter,
-                uiLanguageOptions
+                uiLanguageOptions,
             ),
-        [helpCenter, uiLanguageOptions]
+        [helpCenter, uiLanguageOptions],
     )
     const shopifyIntegrations = useMemo(
         () =>
             allStoreIntegrations.filter(
                 (storeIntegration) =>
-                    storeIntegration.type === IntegrationType.Shopify
+                    storeIntegration.type === IntegrationType.Shopify,
             ),
-        [allStoreIntegrations]
+        [allStoreIntegrations],
     )
 
     const [isPristine, setIsPristine] = useState(true)
@@ -131,11 +132,11 @@ const HelpCenterCreationWizardStepBasics: React.FC<Props> = ({
 
             void checkHepCenterMutateAsync([
                 undefined,
-                {subdomain: newHelpCenter.subdomain},
+                { subdomain: newHelpCenter.subdomain },
             ])
         },
         [newHelpCenter.subdomain, shouldDisplayFormErrors],
-        500
+        500,
     )
 
     const subdomainError = useMemo(() => {
@@ -146,7 +147,7 @@ const HelpCenterCreationWizardStepBasics: React.FC<Props> = ({
             (checkSubdomainOnCreate || checkSubdomainOnUpdate)
             ? getSubdomainValidationError(
                   newHelpCenter.subdomain,
-                  isSubdomainAvailable
+                  isSubdomainAvailable,
               )
             : null
     }, [
@@ -192,24 +193,24 @@ const HelpCenterCreationWizardStepBasics: React.FC<Props> = ({
             !isUpdate && (isPristineSubdomain || !newHelpCenter.subdomain)
                 ? slugify(name)
                 : newHelpCenter.subdomain
-        handleFormUpdate({name, subdomain})
+        handleFormUpdate({ name, subdomain })
     }
 
     const handleSubdomainChange = (subdomain: string) => {
         setIsPristine(false)
         setPristineSubdomain(subdomain === helpCenter?.subdomain)
-        handleFormUpdate({subdomain})
+        handleFormUpdate({ subdomain })
     }
 
     const handleLanguageChange = (languages: Language[]) => {
-        const {defaultLocale, supportedLocales} =
+        const { defaultLocale, supportedLocales } =
             mapLanguagePickerToHelpCenterLanguages(languages)
-        handleFormUpdate({defaultLocale, supportedLocales})
+        handleFormUpdate({ defaultLocale, supportedLocales })
     }
 
     const handlePlatformTypeChange = (platformType: PlatformType) => {
         setIsPristine(false)
-        handleFormUpdate({platformType})
+        handleFormUpdate({ platformType })
     }
 
     const handleStoreChange = (storeIntegrationName: string) => {
@@ -368,7 +369,7 @@ const HelpCenterCreationWizardStepBasics: React.FC<Props> = ({
                                         caption="Shopify, Magento, BigCommerce"
                                         onClick={() =>
                                             handlePlatformTypeChange(
-                                                PlatformType.ECOMMERCE
+                                                PlatformType.ECOMMERCE,
                                             )
                                         }
                                     />
@@ -382,7 +383,7 @@ const HelpCenterCreationWizardStepBasics: React.FC<Props> = ({
                                         caption="Websites, knowledge bases, etc."
                                         onClick={() =>
                                             handlePlatformTypeChange(
-                                                PlatformType.WEBSITE
+                                                PlatformType.WEBSITE,
                                             )
                                         }
                                     />

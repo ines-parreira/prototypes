@@ -1,17 +1,17 @@
-import {action} from '@storybook/addon-actions'
-import {Meta, StoryObj} from '@storybook/react'
 import React from 'react'
 
-import {MemoryRouter} from 'react-router-dom'
+import { action } from '@storybook/addon-actions'
+import { Meta, StoryObj } from '@storybook/react'
+import { MemoryRouter } from 'react-router-dom'
 
-import {IntegrationType} from 'models/integration/constants'
+import { IntegrationType } from 'models/integration/constants'
 
 import {
-    TopQuestionsSection as TopQuestionsSectionComponent,
-    TopQuestionsSectionLoading as TopQuestionsSectionLoadingComponent,
     TopQuestionsSectionAllReviewed as TopQuestionsSectionAllReviewedComponent,
-    TopQuestionsSectionNoRecommendations as TopQuestionsSectionNoRecommendationsComponent,
+    TopQuestionsSection as TopQuestionsSectionComponent,
     TopQuestionsSectionConnectStoreToEmail as TopQuestionsSectionConnectEmailComponent,
+    TopQuestionsSectionLoading as TopQuestionsSectionLoadingComponent,
+    TopQuestionsSectionNoRecommendations as TopQuestionsSectionNoRecommendationsComponent,
 } from './TopQuestionsSection'
 
 const meta: Meta<typeof TopQuestionsSectionComponent> = {
@@ -56,9 +56,9 @@ const meta: Meta<typeof TopQuestionsSectionComponent> = {
 export default meta
 type Story = StoryObj<typeof TopQuestionsSectionComponent>
 
-const Renderer = ({children}: {children: React.ReactNode}) => (
+const Renderer = ({ children }: { children: React.ReactNode }) => (
     <MemoryRouter>
-        <div style={{width: '1154px'}}>{children}</div>
+        <div style={{ width: '1154px' }}>{children}</div>
     </MemoryRouter>
 )
 
@@ -90,7 +90,7 @@ export const TopQuestionsSectionLessThan4: Story = {
 export const TopQuestionsSectionWide: Story = {
     render: (args) => (
         <MemoryRouter>
-            <div style={{width: '1600px'}}>
+            <div style={{ width: '1600px' }}>
                 <TopQuestionsSectionComponent
                     {...args}
                     onDismiss={() => Promise.resolve()}
@@ -104,7 +104,7 @@ export const TopQuestionsSectionWide: Story = {
 export const TopQuestionsSectionWideLessThan4: Story = {
     render: (args) => (
         <MemoryRouter>
-            <div style={{width: '1600px'}}>
+            <div style={{ width: '1600px' }}>
                 <TopQuestionsSectionComponent
                     {...args}
                     topQuestions={args.topQuestions.slice(0, 2)}
@@ -203,7 +203,7 @@ export const TopQuestionsSectionWithShopFilter: Story = {
                 },
             ],
             setSelectedStoreIntegrationId: action(
-                'setSelectedShopIntegrationId'
+                'setSelectedShopIntegrationId',
             ),
         },
     },

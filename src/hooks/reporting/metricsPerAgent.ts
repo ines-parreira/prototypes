@@ -3,25 +3,25 @@ import {
     MetricWithDecileFetch,
     useMetricPerDimension,
 } from 'hooks/reporting/useMetricPerDimension'
-import {OrderDirection} from 'models/api/types'
-import {Cubes} from 'models/reporting/cubes'
-import {onlineTimePerAgentQueryFactory} from 'models/reporting/queryFactories/agentxp/onlineTime'
-import {ticketAverageHandleTimePerAgentQueryFactory} from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
-import {closedTicketsPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
-import {customerSatisfactionMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
-import {medianFirstResponseTimeMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
-import {medianResolutionTimeMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
-import {messagesSentMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
-import {oneTouchTicketsPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
-import {ticketsRepliedMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
-import {zeroTouchTicketsPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/zeroTouchTickets'
-import {ReportingQuery} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import { OrderDirection } from 'models/api/types'
+import { Cubes } from 'models/reporting/cubes'
+import { onlineTimePerAgentQueryFactory } from 'models/reporting/queryFactories/agentxp/onlineTime'
+import { ticketAverageHandleTimePerAgentQueryFactory } from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
+import { closedTicketsPerAgentQueryFactory } from 'models/reporting/queryFactories/support-performance/closedTickets'
+import { customerSatisfactionMetricPerAgentQueryFactory } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
+import { medianFirstResponseTimeMetricPerAgentQueryFactory } from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
+import { medianResolutionTimeMetricPerAgentQueryFactory } from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
+import { messagesSentMetricPerAgentQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesSent'
+import { oneTouchTicketsPerAgentQueryFactory } from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
+import { ticketsRepliedMetricPerAgentQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsReplied'
+import { zeroTouchTicketsPerAgentQueryFactory } from 'models/reporting/queryFactories/support-performance/zeroTouchTickets'
+import { ReportingQuery } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
 
 type QueryFactory<TCube extends Cubes> = (
     filters: StatsFilters,
     timezone: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ) => ReportingQuery<TCube>
 
 export const createFetchPerDimension =
@@ -30,11 +30,11 @@ export const createFetchPerDimension =
         statsFilters: StatsFilters,
         timezone: string,
         sorting?: OrderDirection,
-        dimensionId?: string
+        dimensionId?: string,
     ) =>
         fetchMetricPerDimension(
             query(statsFilters, timezone, sorting),
-            dimensionId
+            dimensionId,
         )
 
 export const createMetricPerDimensionHook =
@@ -43,87 +43,87 @@ export const createMetricPerDimensionHook =
         statsFilters: StatsFilters,
         timezone: string,
         sorting?: OrderDirection,
-        dimensionId?: string
+        dimensionId?: string,
     ) =>
         useMetricPerDimension(
             query(statsFilters, timezone, sorting),
-            dimensionId
+            dimensionId,
         )
 
 export const useMedianFirstResponseTimeMetricPerAgent =
     createMetricPerDimensionHook(
-        medianFirstResponseTimeMetricPerAgentQueryFactory
+        medianFirstResponseTimeMetricPerAgentQueryFactory,
     )
 
 export const fetchMedianFirstResponseTimeMetricPerAgent =
     createFetchPerDimension(medianFirstResponseTimeMetricPerAgentQueryFactory)
 
 export const useTicketsRepliedMetricPerAgent = createMetricPerDimensionHook(
-    ticketsRepliedMetricPerAgentQueryFactory
+    ticketsRepliedMetricPerAgentQueryFactory,
 )
 
 export const fetchTicketsRepliedMetricPerAgent = createFetchPerDimension(
-    ticketsRepliedMetricPerAgentQueryFactory
+    ticketsRepliedMetricPerAgentQueryFactory,
 )
 
 export const useClosedTicketsMetricPerAgent = createMetricPerDimensionHook(
-    closedTicketsPerAgentQueryFactory
+    closedTicketsPerAgentQueryFactory,
 )
 
 export const fetchClosedTicketsMetricPerAgent = createFetchPerDimension(
-    closedTicketsPerAgentQueryFactory
+    closedTicketsPerAgentQueryFactory,
 )
 
 export const useMessagesSentMetricPerAgent = createMetricPerDimensionHook(
-    messagesSentMetricPerAgentQueryFactory
+    messagesSentMetricPerAgentQueryFactory,
 )
 
 export const fetchMessagesSentMetricPerAgent = createFetchPerDimension(
-    messagesSentMetricPerAgentQueryFactory
+    messagesSentMetricPerAgentQueryFactory,
 )
 
 export const useMedianResolutionTimeMetricPerAgent =
     createMetricPerDimensionHook(medianResolutionTimeMetricPerAgentQueryFactory)
 
 export const fetchMedianResolutionTimeMetricPerAgent = createFetchPerDimension(
-    medianResolutionTimeMetricPerAgentQueryFactory
+    medianResolutionTimeMetricPerAgentQueryFactory,
 )
 
 export const useCustomerSatisfactionMetricPerAgent =
     createMetricPerDimensionHook(customerSatisfactionMetricPerAgentQueryFactory)
 
 export const fetchCustomerSatisfactionMetricPerAgent = createFetchPerDimension(
-    customerSatisfactionMetricPerAgentQueryFactory
+    customerSatisfactionMetricPerAgentQueryFactory,
 )
 
 export const useOneTouchTicketsMetricPerAgent = createMetricPerDimensionHook(
-    oneTouchTicketsPerAgentQueryFactory
+    oneTouchTicketsPerAgentQueryFactory,
 )
 
 export const fetchOneTouchTicketsMetricPerAgent = createFetchPerDimension(
-    oneTouchTicketsPerAgentQueryFactory
+    oneTouchTicketsPerAgentQueryFactory,
 )
 
 export const useZeroTouchTicketsMetricPerAgent = createMetricPerDimensionHook(
-    zeroTouchTicketsPerAgentQueryFactory
+    zeroTouchTicketsPerAgentQueryFactory,
 )
 
 export const fetchZeroTouchTicketsMetricPerAgent = createFetchPerDimension(
-    zeroTouchTicketsPerAgentQueryFactory
+    zeroTouchTicketsPerAgentQueryFactory,
 )
 
 export const useOnlineTimePerAgent = createMetricPerDimensionHook(
-    onlineTimePerAgentQueryFactory
+    onlineTimePerAgentQueryFactory,
 )
 
 export const fetchOnlineTimePerAgent = createFetchPerDimension(
-    onlineTimePerAgentQueryFactory
+    onlineTimePerAgentQueryFactory,
 )
 
 export const useTicketAverageHandleTimePerAgent = createMetricPerDimensionHook(
-    ticketAverageHandleTimePerAgentQueryFactory
+    ticketAverageHandleTimePerAgentQueryFactory,
 )
 
 export const fetchTicketAverageHandleTimePerAgent = createFetchPerDimension(
-    ticketAverageHandleTimePerAgentQueryFactory
+    ticketAverageHandleTimePerAgentQueryFactory,
 )

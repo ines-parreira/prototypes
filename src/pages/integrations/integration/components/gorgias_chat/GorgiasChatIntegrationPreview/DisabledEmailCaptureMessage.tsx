@@ -1,11 +1,12 @@
-import {Map} from 'immutable'
 import React from 'react'
+
+import { Map } from 'immutable'
 
 import {
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from 'config/integrations/gorgias_chat'
-import {GorgiasChatAvatarSettings} from 'models/integration/types'
+import { GorgiasChatAvatarSettings } from 'models/integration/types'
 
 import AgentMessages from './AgentMessages'
 

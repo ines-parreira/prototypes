@@ -1,12 +1,13 @@
+import React, { useMemo } from 'react'
+
 import indefinite from 'indefinite'
 import _startCase from 'lodash/startCase'
-import React, {useMemo} from 'react'
 
-import {PageSection} from 'config/pages'
-import {roleRestrictionConfigs} from 'config/roleRestrictions'
-import {UserRole} from 'config/types/user'
-import {USER_ROLES_ORDERED_BY_PRIVILEGES} from 'config/user'
-import {RoleLabel} from 'pages/common/utils/labels'
+import { PageSection } from 'config/pages'
+import { roleRestrictionConfigs } from 'config/roleRestrictions'
+import { UserRole } from 'config/types/user'
+import { USER_ROLES_ORDERED_BY_PRIVILEGES } from 'config/user'
+import { RoleLabel } from 'pages/common/utils/labels'
 
 import PageHeader from './PageHeader'
 
@@ -17,15 +18,15 @@ type Props = {
     page?: PageSection
 }
 
-const RestrictedPage = ({requiredRole, page}: Props) => {
+const RestrictedPage = ({ requiredRole, page }: Props) => {
     const role = useMemo(() => {
         const roleIndex = USER_ROLES_ORDERED_BY_PRIVILEGES.findIndex(
-            (role) => role === requiredRole
+            (role) => role === requiredRole,
         )
         const requiredRoles = USER_ROLES_ORDERED_BY_PRIVILEGES.slice(
-            roleIndex
+            roleIndex,
         ).map((role) =>
-            role === UserRole.Agent ? 'Lead Agent' : _startCase(role)
+            role === UserRole.Agent ? 'Lead Agent' : _startCase(role),
         )
 
         return requiredRoles.reduce((acc: string, role: string, index) => {
@@ -34,14 +35,14 @@ const RestrictedPage = ({requiredRole, page}: Props) => {
                     ? role
                     : index === requiredRoles.length - 1
                       ? ` or ${role}`
-                      : `, ${role}`
+                      : `, ${role}`,
             )
         }, '')
     }, [requiredRole])
 
     const config = useMemo(
         () => (page ? roleRestrictionConfigs[page] : undefined),
-        [page]
+        [page],
     )
 
     return (
@@ -49,12 +50,12 @@ const RestrictedPage = ({requiredRole, page}: Props) => {
             {!!config?.pageHeader && <PageHeader title={config.pageHeader} />}
             <div className={css.content}>
                 <div className={css.badge}>
-                    <RoleLabel role={{name: requiredRole}} />
+                    <RoleLabel role={{ name: requiredRole }} />
                 </div>
                 <h2 className={css.heading}>Restricted access</h2>
                 <p className={css.description}>
                     To be able to see {config?.pageHeader || 'this page'} you
-                    need to be {indefinite(role, {articleOnly: true})}{' '}
+                    need to be {indefinite(role, { articleOnly: true })}{' '}
                     <b>{role}</b>.
                 </p>
                 <a

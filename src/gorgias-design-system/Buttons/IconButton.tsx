@@ -1,15 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
+import React, { HTMLAttributes } from 'react'
 
-import {useTheme, Theme} from '@emotion/react'
-
+import { Theme, useTheme } from '@emotion/react'
 import styled from '@emotion/styled'
-import React, {HTMLAttributes} from 'react'
 
-import {gorgiasColors} from 'gorgias-design-system/styles'
-import {relativeLighten, relativeDarken} from 'gorgias-design-system/utils'
-
-import {ChatTheme} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview'
+import { gorgiasColors } from 'gorgias-design-system/styles'
+import { relativeDarken, relativeLighten } from 'gorgias-design-system/utils'
+import { ChatTheme } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview'
 
 const getIconStylesByVariant = ({
     variant,
@@ -73,7 +71,7 @@ const getButtonStylesByVariant = ({
             break
     }
 
-    return {color, hoverColor, activeColor}
+    return { color, hoverColor, activeColor }
 }
 
 const StyledIconContainer = styled.div<Omit<IconButtonProps, 'icon'>>`
@@ -81,12 +79,12 @@ const StyledIconContainer = styled.div<Omit<IconButtonProps, 'icon'>>`
     justify-content: center;
     align-items: center;
 
-    width: ${({size}) => (size === 'small' ? '20px' : '24px')};
-    height: ${({size}) => (size === 'small' ? '20px' : '24px')};
+    width: ${({ size }) => (size === 'small' ? '20px' : '24px')};
+    height: ${({ size }) => (size === 'small' ? '20px' : '24px')};
 `
 
 const StyledButton = styled.button<
-    Omit<IconButtonProps, 'icon'> & {theme: ChatTheme}
+    Omit<IconButtonProps, 'icon'> & { theme: ChatTheme }
 >`
     &,
     &:focus {
@@ -95,16 +93,16 @@ const StyledButton = styled.button<
     border: 0;
     border-radius: 4px;
 
-    padding: ${({size}) => (size === 'small' ? '4px' : '10px')};
+    padding: ${({ size }) => (size === 'small' ? '4px' : '10px')};
 
-    ${({disabled, variant, fill, theme}) => {
+    ${({ disabled, variant, fill, theme }) => {
         if (disabled && !(fill === 'ghost' && variant === 'primary')) {
             return `
                 background: ${gorgiasColors.neutralGrey3};
             `
         }
 
-        const {color, hoverColor, activeColor} = getButtonStylesByVariant({
+        const { color, hoverColor, activeColor } = getButtonStylesByVariant({
             variant,
             fill,
             theme,
@@ -121,7 +119,7 @@ const StyledButton = styled.button<
         `
     }}
 
-    ${({disabled, variant, fill, theme}) => {
+    ${({ disabled, variant, fill, theme }) => {
         if (disabled) {
             let color = gorgiasColors.neutralGrey0
 
@@ -136,7 +134,7 @@ const StyledButton = styled.button<
             `
         }
 
-        const {color, hoverColor, activeColor} = getIconStylesByVariant({
+        const { color, hoverColor, activeColor } = getIconStylesByVariant({
             variant,
             fill,
             theme,
@@ -199,7 +197,7 @@ type IconButtonProps = {
  */
 const IconButton: React.FC<
     HTMLAttributes<HTMLButtonElement> & IconButtonProps
-> = ({disabled, size, variant, fill, icon, ...props}) => {
+> = ({ disabled, size, variant, fill, icon, ...props }) => {
     const theme: Theme = useTheme()
     return (
         <StyledButton

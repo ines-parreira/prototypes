@@ -1,11 +1,13 @@
-import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import React, {useMemo, useRef} from 'react'
+import React, { useMemo, useRef } from 'react'
 
-import {DEFAULT_LOCALE, formatNumber} from './common/utils'
-import css from './GaugeChart.less'
+import colors from '@gorgias/design-tokens/dist/tokens/colors.json'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { DEFAULT_LOCALE, formatNumber } from './common/utils'
 import Legend from './Legend'
-import {OneDimensionalDataItem} from './types'
+import { OneDimensionalDataItem } from './types'
+
+import css from './GaugeChart.less'
 
 const STAT_COLORS = Object.freeze([
     colors['📺 Classic'].Main.Variations.Primary_3.value,
@@ -27,8 +29,8 @@ export default function GaugeChart({
     restLabel = 'Others',
 }: Props) {
     const total = useMemo(
-        () => data.reduce((acc, {value}) => acc + value, 0),
-        [data]
+        () => data.reduce((acc, { value }) => acc + value, 0),
+        [data],
     )
     const displayItems = useMemo(() => {
         if (data.length <= STAT_COLORS.length) {
@@ -52,7 +54,7 @@ export default function GaugeChart({
                     }
                     return acc
                 },
-                [] as (OneDimensionalDataItem & {color: string})[]
+                [] as (OneDimensionalDataItem & { color: string })[],
             ),
             {
                 label: restLabel,
@@ -82,7 +84,7 @@ export default function GaugeChart({
                     </div>
                     <Legend
                         className={css.legend}
-                        items={displayItems.map(({label, color}) => ({
+                        items={displayItems.map(({ label, color }) => ({
                             label,
                             color,
                         }))}
@@ -107,7 +109,7 @@ type BarSegmentProps = {
     label: string
 }
 
-function BarSegment({color, label, value, total}: BarSegmentProps) {
+function BarSegment({ color, label, value, total }: BarSegmentProps) {
     const ref = useRef<HTMLDivElement>(null)
     return (
         <>
@@ -131,7 +133,7 @@ type TooltipContentProps = {
     value: number
     total: number
 }
-const TooltipContent = ({label, value, total}: TooltipContentProps) => {
+const TooltipContent = ({ label, value, total }: TooltipContentProps) => {
     return (
         <>
             {label}:{' '}

@@ -1,18 +1,21 @@
-import {Map, List} from 'immutable'
 import React from 'react'
 
-import {IntegrationType} from 'models/integration/constants'
+import { List, Map } from 'immutable'
+
+import { IntegrationType } from 'models/integration/constants'
 import history from 'pages/history'
 
 import IntegrationList from '../IntegrationList'
-
 import AircallIntegrationListItem from './AircallIntegrationListItem'
 
 type Props = {
     integrations: List<Map<any, any>>
     loading: Map<any, any>
 }
-export default function AircallIntegrationList({integrations, loading}: Props) {
+export default function AircallIntegrationList({
+    integrations,
+    loading,
+}: Props) {
     const longTypeDescription = (
         <span>
             Aircall is a phone app that helps you set up a call center in
@@ -37,7 +40,7 @@ export default function AircallIntegrationList({integrations, loading}: Props) {
             integrations={
                 integrations.filter(
                     (integration) =>
-                        integration!.get('type') === IntegrationType.Aircall
+                        integration!.get('type') === IntegrationType.Aircall,
                 ) as List<Map<any, any>>
             }
             createIntegration={() =>

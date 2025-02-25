@@ -1,34 +1,34 @@
-import classNames from 'classnames'
-
 import React from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import classNames from 'classnames'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import {
     defaultEnrichmentFields,
     useEnrichedDrillDownData,
 } from 'hooks/reporting/useDrillDownData'
 import useAppSelector from 'hooks/useAppSelector'
-import {TicketQAScoreDimensionName} from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
-import {EnrichmentFields} from 'models/reporting/types'
+import { TicketQAScoreDimensionName } from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
+import { EnrichmentFields } from 'models/reporting/types'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-import {AgentAvatar} from 'pages/stats/common/AgentAvatar'
-import {DrillDownTableContentSkeleton} from 'pages/stats/common/components/Table/DrillDownTableContentSkeleton'
-import {HintTooltipContent} from 'pages/stats/common/HintTooltip'
+import { AgentAvatar } from 'pages/stats/common/AgentAvatar'
+import { DrillDownTableContentSkeleton } from 'pages/stats/common/components/Table/DrillDownTableContentSkeleton'
+import { HintTooltipContent } from 'pages/stats/common/HintTooltip'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
-import {formatTicketDrillDownRowData} from 'pages/stats/DrillDownFormatters'
+import { formatTicketDrillDownRowData } from 'pages/stats/DrillDownFormatters'
 import css from 'pages/stats/DrillDownTable.less'
-import {DrillDownTicketDetailsCell} from 'pages/stats/DrillDownTicketDetailsCell'
-import {SLAStatusCell} from 'pages/stats/sla/components/SlaStatusCell'
-import {AutoQAAgentsTableColumn} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
-import {AutoQACompletenessCell} from 'pages/stats/support-performance/auto-qa/AutoQACompletenessCell'
+import { DrillDownTicketDetailsCell } from 'pages/stats/DrillDownTicketDetailsCell'
+import { SLAStatusCell } from 'pages/stats/sla/components/SlaStatusCell'
+import { AutoQAAgentsTableColumn } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
+import { AutoQACompletenessCell } from 'pages/stats/support-performance/auto-qa/AutoQACompletenessCell'
 import {
     ACCURACY_LABEL,
     BRAND_VOICE_LABEL,
@@ -39,15 +39,15 @@ import {
     RESOLUTION_COMPLETENESS_SHORT_LABEL,
     TrendCardConfig,
 } from 'pages/stats/support-performance/auto-qa/AutoQAMetricsConfig'
-import {TruncateCellContent} from 'pages/stats/TruncateCellContent'
+import { TruncateCellContent } from 'pages/stats/TruncateCellContent'
 import {
     AutoQAAgentMetric,
     DrillDownMetric,
     getDrillDownMetricColumn,
     SLA_FORMAT,
 } from 'state/ui/stats/drillDownSlice'
-import {AIInsightsMetric, AutoQAMetric} from 'state/ui/stats/types'
-import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants'
+import { AIInsightsMetric, AutoQAMetric } from 'state/ui/stats/types'
+import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constants'
 
 const tooltipHints = {
     metric: 'The metric values displayed in this column are based on the tickets’ state at the end of the selected period.',
@@ -72,12 +72,12 @@ const tooltipHints = {
 }
 
 const isAutoQAMetric = (
-    metricName: DrillDownMetric['metricName']
+    metricName: DrillDownMetric['metricName'],
 ): metricName is AutoQAMetric =>
     Object.values(AutoQAMetric).map(String).includes(String(metricName))
 
 const isAutoQAAgentsTableColumn = (
-    metricName: DrillDownMetric['metricName']
+    metricName: DrillDownMetric['metricName'],
 ): metricName is AutoQAAgentMetric =>
     [
         AutoQAAgentsTableColumn.ResolutionCompleteness,
@@ -105,7 +105,7 @@ const getOnClickHandler =
         ) {
             window.open(
                 `/app/ticket/${ticketId}?activeTab=${TicketAIAgentFeedbackTab.AIAgent}`,
-                '_blank'
+                '_blank',
             )
         } else {
             window.open(`/app/ticket/${ticketId}`, '_blank')
@@ -123,8 +123,8 @@ export const TicketDrillDownTableContent = ({
     const isAutoQAReviewedClosedTickets =
         metricData.metricName === AutoQAMetric.ReviewedClosedTickets ||
         metricData.metricName === AutoQAAgentsTableColumn.ReviewedClosedTickets
-    const {showMetric, metricTitle, metricValueFormat} = useAppSelector(
-        getDrillDownMetricColumn
+    const { showMetric, metricTitle, metricValueFormat } = useAppSelector(
+        getDrillDownMetricColumn,
     )
 
     const isAiInsightsMetric =
@@ -136,11 +136,11 @@ export const TicketDrillDownTableContent = ({
         metricData.metricName ===
             AIInsightsMetric.TicketDrillDownPerCustomerSatisfaction
 
-    const {data, isFetching} = useEnrichedDrillDownData(
+    const { data, isFetching } = useEnrichedDrillDownData(
         metricData,
         defaultEnrichmentFields,
         formatTicketDrillDownRowData,
-        EnrichmentFields.TicketId
+        EnrichmentFields.TicketId,
     )
 
     const getTicketColumnWidth = () => {
@@ -340,7 +340,7 @@ export const TicketDrillDownTableContent = ({
                             })}
                             onClick={getOnClickHandler(
                                 item.ticket.id,
-                                metricData.metricName
+                                metricData.metricName,
                             )}
                         >
                             <DrillDownTicketDetailsCell
@@ -368,7 +368,7 @@ export const TicketDrillDownTableContent = ({
                                         ? formatMetricValue(
                                               item.metricValue,
                                               metricValueFormat,
-                                              NOT_AVAILABLE_PLACEHOLDER
+                                              NOT_AVAILABLE_PLACEHOLDER,
                                           )
                                         : item.rowData && (
                                               <SLAStatusCell

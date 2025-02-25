@@ -1,4 +1,4 @@
-import {IntegrationType} from '../models/integration/types'
+import { IntegrationType } from '../models/integration/types'
 
 //$TsFixMe fallback values for js, use IntegrationType enum instead
 export const AIRCALL_INTEGRATION_TYPE = 'aircall'
@@ -44,7 +44,7 @@ export const INTEGRATION_TYPES_MAP = Object.freeze({
 })
 
 export const INTEGRATION_TYPES = Object.freeze(
-    Object.values(INTEGRATION_TYPES_MAP)
+    Object.values(INTEGRATION_TYPES_MAP),
 )
 
 export const EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS = Object.freeze([
@@ -73,7 +73,7 @@ export const INTEGRATION_DATA_ITEM_TYPES_MAP = Object.freeze({
 })
 
 export const INTEGRATION_DATA_ITEM_TYPES = Object.freeze(
-    Object.values(INTEGRATION_DATA_ITEM_TYPES_MAP)
+    Object.values(INTEGRATION_DATA_ITEM_TYPES_MAP),
 )
 
 export const PRODUCTS_PER_PAGE = 30

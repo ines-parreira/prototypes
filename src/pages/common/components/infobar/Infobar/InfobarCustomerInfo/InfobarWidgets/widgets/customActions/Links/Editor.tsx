@@ -5,10 +5,11 @@ import React, {
     useEffect,
     useState,
 } from 'react'
-import {Popover, PopoverBody} from 'reactstrap'
 
-import {useAppNode} from 'appNode'
-import {logEvent, SegmentEvent} from 'common/segment'
+import { Popover, PopoverBody } from 'reactstrap'
+
+import { useAppNode } from 'appNode'
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import Button from 'pages/common/components/button/Button'
 import {
@@ -16,10 +17,10 @@ import {
     SubmitLink,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 import InputField from 'pages/common/forms/input/InputField'
-import {AppContext} from 'providers/infobar/AppContext'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {ensureHTTPS} from 'utils/url'
+import { AppContext } from 'providers/infobar/AppContext'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { ensureHTTPS } from 'utils/url'
 
 import css from './Links.less'
 
@@ -53,11 +54,11 @@ export default function Editor(props: Props) {
     } = props
 
     const currentAccount = useAppSelector(getCurrentAccountState)
-    const {integrationId} = useContext(IntegrationContext)
-    const {appId} = useContext(AppContext)
+    const { integrationId } = useContext(IntegrationContext)
+    const { appId } = useContext(AppContext)
 
     const [canSubmit, setCanSubmit] = useState(
-        checkCanSubmit(link.url, link.label)
+        checkCanSubmit(link.url, link.label),
     )
     const [popoverOpen, setPopoverOpen] = useState(false)
     const [redirectionLinkTitle, setRedirectionLinkTitle] = useState(link.label)
@@ -102,7 +103,7 @@ export default function Editor(props: Props) {
             }
             setPopoverOpen((state) => !state)
         },
-        [index, onSubmit, isEditing, redirectionLinkTitle, redirectionLinkUrl]
+        [index, onSubmit, isEditing, redirectionLinkTitle, redirectionLinkUrl],
     )
 
     const handleBlur = useCallback(() => {

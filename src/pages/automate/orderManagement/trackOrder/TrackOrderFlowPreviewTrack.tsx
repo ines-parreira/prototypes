@@ -1,18 +1,18 @@
-import {createMemoryHistory} from 'history'
-import React, {useState, useEffect, useMemo, useRef} from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
+
+import { createMemoryHistory } from 'history'
 
 import {
     PolicyKey,
     ResponseMessageContent,
 } from 'models/selfServiceConfiguration/types'
-
-import {SELF_SERVICE_PREVIEW_ROUTES} from 'pages/automate/common/components/preview/constants'
+import { SELF_SERVICE_PREVIEW_ROUTES } from 'pages/automate/common/components/preview/constants'
 import SelfServicePreview from 'pages/automate/common/components/preview/SelfServicePreview'
 import SelfServicePreviewContainer from 'pages/automate/common/components/preview/SelfServicePreviewContainer'
 import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'
 import Button from 'pages/common/components/button/Button'
 
-import {useOrderManagementPreviewContext} from '../OrderManagementPreviewContext'
+import { useOrderManagementPreviewContext } from '../OrderManagementPreviewContext'
 
 import css from './TrackOrderFlowPreviewTrack.less'
 
@@ -42,13 +42,13 @@ export default function TrackOrderFlowPreview({
             createMemoryHistory({
                 initialEntries: [SELF_SERVICE_PREVIEW_ROUTES.ORDERS],
             }),
-        []
+        [],
     )
 
     useEffect(() => {
         const unregister = history.listen((location) => {
             setCurrentLocation(
-                location.pathname as (typeof SELF_SERVICE_PREVIEW_ROUTES)[keyof typeof SELF_SERVICE_PREVIEW_ROUTES]
+                location.pathname as (typeof SELF_SERVICE_PREVIEW_ROUTES)[keyof typeof SELF_SERVICE_PREVIEW_ROUTES],
             )
         })
 
@@ -107,14 +107,14 @@ export default function TrackOrderFlowPreview({
         setPolicyKey('trackOrderPolicy')
     }
 
-    const {channels, channel, onChannelChange} =
+    const { channels, channel, onChannelChange } =
         useOrderManagementPreviewContext()
 
     const shouldDisplayPreviewButton = useMemo(
         () =>
             !isTrackOrderPreviewPlaying &&
             currentLocation === SELF_SERVICE_PREVIEW_ROUTES.ORDERS,
-        [isTrackOrderPreviewPlaying, currentLocation]
+        [isTrackOrderPreviewPlaying, currentLocation],
     )
 
     return (

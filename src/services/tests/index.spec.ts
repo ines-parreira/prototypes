@@ -1,4 +1,4 @@
-import {notificationSounds} from '..'
+import { notificationSounds } from '..'
 import NotificationSounds from '../NotificationSounds'
 
 jest.mock('../NotificationSounds')

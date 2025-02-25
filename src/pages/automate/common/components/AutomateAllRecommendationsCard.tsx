@@ -1,17 +1,19 @@
-import {Card} from '@gorgias/analytics-ui-kit'
-import {Badge} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
+import { Card } from '@gorgias/analytics-ui-kit'
+import { Badge } from '@gorgias/merchant-ui-kit'
+
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
-import {TooltipData} from 'pages/stats/types'
+import { NoDataAvailable } from 'pages/stats/NoDataAvailable'
+import { TooltipData } from 'pages/stats/types'
 
 import {
     AIArticleRecommendationItem,
     AllRecommendationsStatus,
 } from '../hooks/useAIArticleRecommendationItems'
-import css from './AutomateAllRecommendationsCard.less'
 import AutomateAllRecommendationsTable from './AutomateAllRecommendationsTable'
+
+import css from './AutomateAllRecommendationsCard.less'
 
 export type AllRecomendationsColumn = {
     name: string
@@ -93,7 +95,7 @@ const AutomateAllRecommendationsCard = ({
                 {!isLoading && totalItemsCount > 0 && (
                     <SelectField
                         fixedWidth
-                        style={{width: '160px'}}
+                        style={{ width: '160px' }}
                         dropdownMenuClassName={css.dropdownMenu}
                         value={statusFilter}
                         onChange={(value) =>

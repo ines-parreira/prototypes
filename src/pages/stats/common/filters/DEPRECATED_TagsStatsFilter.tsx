@@ -1,19 +1,17 @@
-import React, {ComponentProps, useCallback} from 'react'
+import React, { ComponentProps, useCallback } from 'react'
 
-import {useTagSearch} from 'hooks/reporting/common/useTagSearch'
-
+import { useTagSearch } from 'hooks/reporting/common/useTagSearch'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {LegacyStatsFilters} from 'models/stat/types'
+import { LegacyStatsFilters } from 'models/stat/types'
 import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
 import TagDropdownMenu from 'pages/common/components/TagDropdownMenu/TagDropdownMenu'
-
 import css from 'pages/stats/common/filters/DEPRECATED_TagsStatsFilter.less'
 import SelectFilter from 'pages/stats/common/SelectFilter'
 import SelectStatsFilter from 'pages/stats/common/SelectStatsFilter'
-import {mergeStatsFilters} from 'state/stats/statsSlice'
+import { mergeStatsFilters } from 'state/stats/statsSlice'
 
 const TagDropdownMenuWrapper = (
-    props: ComponentProps<typeof TagDropdownMenu>
+    props: ComponentProps<typeof TagDropdownMenu>,
 ) => <TagDropdownMenu {...props} />
 
 type Props = {
@@ -45,12 +43,12 @@ export default function DEPRECATED_TagsStatsFilter({
     const handleFilterChange: ComponentProps<typeof Component>['onChange'] =
         useCallback(
             (values) => {
-                dispatch(mergeStatsFilters({tags: values as number[]}))
+                dispatch(mergeStatsFilters({ tags: values as number[] }))
             },
-            [dispatch]
+            [dispatch],
         )
 
-    const {handleTagsSearch, onLoad, tags, shouldLoadMore} = useTagSearch()
+    const { handleTagsSearch, onLoad, tags, shouldLoadMore } = useTagSearch()
 
     return (
         <Component

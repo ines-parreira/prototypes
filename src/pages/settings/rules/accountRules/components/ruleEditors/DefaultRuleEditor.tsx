@@ -1,8 +1,3 @@
-import classnames from 'classnames'
-import esprima from 'esprima'
-import {Map, List} from 'immutable'
-import _getIn from 'lodash/get'
-import moment from 'moment'
 import React, {
     ForwardedRef,
     forwardRef,
@@ -13,44 +8,48 @@ import React, {
     useMemo,
     useState,
 } from 'react'
-import {FormGroup, Label} from 'reactstrap'
 
-import {fromAST} from 'common/utils'
+import classnames from 'classnames'
+import esprima from 'esprima'
+import { List, Map } from 'immutable'
+import _getIn from 'lodash/get'
+import moment from 'moment'
+import { FormGroup, Label } from 'reactstrap'
+
+import { fromAST } from 'common/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
-import {createRule} from 'models/rule/resources'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import {ErrorsContext} from 'pages/common/components/ast/Errors'
-import {updateCodeAst} from 'pages/common/components/ast/utils'
+import { createRule } from 'models/rule/resources'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { ErrorsContext } from 'pages/common/components/ast/Errors'
+import { updateCodeAst } from 'pages/common/components/ast/utils'
 import TextInput from 'pages/common/forms/input/TextInput'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import history from 'pages/history'
-import {ruleCreated} from 'state/entities/rules/actions'
-import {getRulesLimitStatus} from 'state/entities/rules/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {eventTypes as getEventTypes} from 'state/rules/helpers'
+import { ruleCreated } from 'state/entities/rules/actions'
+import { getRulesLimitStatus } from 'state/entities/rules/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { eventTypes as getEventTypes } from 'state/rules/helpers'
 import {
     Rule,
     RuleDraft,
     RuleLimitStatus,
     RuleOperation,
 } from 'state/rules/types'
-import {getEmptyRule} from 'state/rules/utils'
-
-import {getSchemas} from 'state/schemas/selectors'
+import { getEmptyRule } from 'state/rules/utils'
+import { getSchemas } from 'state/schemas/selectors'
 
 import RuleEditor from '../../../components/RuleEditor'
 import RuleItemButtons from '../../../components/RuleItemButtons'
-import {CodeASTType} from '../../../types'
-
-import {RuleEditorProps, EditorHandle} from '../RuleFormEditor'
+import { CodeASTType } from '../../../types'
+import { EditorHandle, RuleEditorProps } from '../RuleFormEditor'
+import { getRuleActions } from './utils'
 
 import css from './DefaultRuleEditor.less'
 import commonCss from './RuleEditor.less'
-import {getRuleActions} from './utils'
 
 const DefaultRuleEditor = (
     {
@@ -61,9 +60,9 @@ const DefaultRuleEditor = (
         isSubmitting,
         isDeleting,
     }: RuleEditorProps,
-    ref: ForwardedRef<EditorHandle>
+    ref: ForwardedRef<EditorHandle>,
 ) => {
-    const {errors} = useContext(ErrorsContext)
+    const { errors } = useContext(ErrorsContext)
     const [ruleDraft, setRuleDraft] = useState<RuleDraft>(getEmptyRule())
     const eventTypes = useMemo(() => getEventTypes(ruleDraft), [ruleDraft])
     const dispatch = useAppDispatch()
@@ -79,15 +78,15 @@ const DefaultRuleEditor = (
             !hasMissingFields &&
             !!eventTypes.length &&
             !isSubmitting,
-        [hasAgentPrivileges, hasMissingFields, eventTypes, isSubmitting]
+        [hasAgentPrivileges, hasMissingFields, eventTypes, isSubmitting],
     )
 
     const canDuplicate = useMemo(
         () => canSubmit && limitStatus !== RuleLimitStatus.Reached,
-        [canSubmit, limitStatus]
+        [canSubmit, limitStatus],
     )
 
-    const [{loading: isDuplicatePending}, handleRuleDuplicate] =
+    const [{ loading: isDuplicatePending }, handleRuleDuplicate] =
         useAsyncFn(async () => {
             if (!rule || !canDuplicate || isDuplicatePending) {
                 return
@@ -108,7 +107,7 @@ const DefaultRuleEditor = (
                     notify({
                         message: `Successfully duplicated rule.`,
                         status: NotificationStatus.Success,
-                    })
+                    }),
                 )
                 history.push(`/app/settings/rules/${newRule.id}`)
             } catch {
@@ -121,12 +120,12 @@ const DefaultRuleEditor = (
 
     useEffect(() => {
         if (rule) {
-            const {name, description, code, event_types} = rule
+            const { name, description, code, event_types } = rule
             handleDirtyForm(
                 ruleDraft.event_types !== event_types ||
                     ruleDraft.name !== name ||
                     ruleDraft.description !== description ||
-                    ruleDraft.code !== code
+                    ruleDraft.code !== code,
             )
         } else {
             const emptyRule = getEmptyRule()
@@ -134,7 +133,7 @@ const DefaultRuleEditor = (
                 ruleDraft.name !== emptyRule.name ||
                     ruleDraft.code !== emptyRule.code ||
                     ruleDraft.description !== emptyRule.description ||
-                    ruleDraft.event_types !== emptyRule.event_types
+                    ruleDraft.event_types !== emptyRule.event_types,
             )
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -161,7 +160,7 @@ const DefaultRuleEditor = (
     }
 
     const handleActivate = () => {
-        setRuleDraft({...ruleDraft, deactivated_datetime: null})
+        setRuleDraft({ ...ruleDraft, deactivated_datetime: null })
     }
 
     const handleDeactivate = () => {
@@ -199,16 +198,16 @@ const DefaultRuleEditor = (
         path: List<any>,
         value: Maybe<string | Record<string, unknown>>,
         operation: RuleOperation,
-        code_ast?: CodeASTType
+        code_ast?: CodeASTType,
     ): esprima.Program => {
-        const {code, ast} = updateCodeAst(
+        const { code, ast } = updateCodeAst(
             schemas,
             code_ast ?? ruleDraft.code_ast,
             path,
             value,
-            operation
+            operation,
         )
-        setRuleDraft({...ruleDraft, code, code_ast: ast})
+        setRuleDraft({ ...ruleDraft, code, code_ast: ast })
         return ast
     }
 
@@ -220,10 +219,10 @@ const DefaultRuleEditor = (
 
     const submit = useCallback(
         () => handleSubmit(ruleDraft, hasMissingFields),
-        [handleSubmit, hasMissingFields, ruleDraft]
+        [handleSubmit, hasMissingFields, ruleDraft],
     )
 
-    useImperativeHandle(ref, () => ({submit}), [submit])
+    useImperativeHandle(ref, () => ({ submit }), [submit])
 
     const ruleActions = useMemo(() => getRuleActions(ruleDraft), [ruleDraft])
 
@@ -262,7 +261,7 @@ const DefaultRuleEditor = (
                     id="ruleName"
                     hasError={!ruleDraft.name}
                     onChange={(name: string) =>
-                        setRuleDraft({...ruleDraft, name})
+                        setRuleDraft({ ...ruleDraft, name })
                     }
                     value={ruleDraft.name}
                 />
@@ -274,7 +273,7 @@ const DefaultRuleEditor = (
                 <TextInput
                     id="ruleDescription"
                     onChange={(description: string) =>
-                        setRuleDraft({...ruleDraft, description})
+                        setRuleDraft({ ...ruleDraft, description })
                     }
                     value={ruleDraft.description}
                     type="textarea"
@@ -285,9 +284,9 @@ const DefaultRuleEditor = (
             </Label>
             <RuleEditor
                 ruleDraft={ruleDraft}
-                actions={{modifyCodeAST, getCondition}}
+                actions={{ modifyCodeAST, getCondition }}
                 handleEventChanges={(event_types: string) =>
-                    setRuleDraft({...ruleDraft, event_types})
+                    setRuleDraft({ ...ruleDraft, event_types })
                 }
             />
             <div className={commonCss.toggleButtonContainer}>
@@ -302,7 +301,7 @@ const DefaultRuleEditor = (
                     <Label
                         className={classnames(
                             commonCss.toggleLabel,
-                            'mr-2 mb-0'
+                            'mr-2 mb-0',
                         )}
                     >
                         Enable rule

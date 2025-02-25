@@ -1,3 +1,5 @@
+import React from 'react'
+
 import {
     AddressElement,
     PaymentElement,
@@ -8,10 +10,9 @@ import {
     StripeAddressElementChangeEvent,
     StripePaymentElementChangeEvent,
 } from '@stripe/stripe-js'
-import {act, fireEvent, screen, waitFor} from '@testing-library/react'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
-import {fromJS} from 'immutable'
-import React from 'react'
+import { fromJS } from 'immutable'
 
 import {
     basicMonthlyHelpdeskPlan,
@@ -19,19 +20,18 @@ import {
     products,
 } from 'fixtures/productPrices'
 import client from 'models/api/resources'
-import {ProductType} from 'models/billing/types'
+import { ProductType } from 'models/billing/types'
 import {
     BILLING_BASE_PATH,
     BILLING_PAYMENT_PATH,
     SELECTED_PRODUCTS_SESSION_STORAGE_KEY,
 } from 'pages/settings/new_billing/constants'
-import {SelectedPlans} from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'
-import {FormContainer} from 'pages/settings/new_billing/views/PaymentMethodSetupView/components/FormContainer/FormContainer'
-
-import type {BillingContactDetailResponse} from 'state/billing/types'
-import {RootState} from 'state/types'
-import {renderWithStoreAndQueryClientAndRouter} from 'tests/renderWithStoreAndQueryClientAndRouter'
-import {assumeMock} from 'utils/testing'
+import { SelectedPlans } from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'
+import { FormContainer } from 'pages/settings/new_billing/views/PaymentMethodSetupView/components/FormContainer/FormContainer'
+import type { BillingContactDetailResponse } from 'state/billing/types'
+import { RootState } from 'state/types'
+import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('@stripe/react-stripe-js')
 
@@ -43,7 +43,7 @@ let handlePaymentElementChange:
     | ((event: StripePaymentElementChangeEvent) => void)
     | undefined
 
-assumeMock(PaymentElement).mockImplementation(({onChange}) => {
+assumeMock(PaymentElement).mockImplementation(({ onChange }) => {
     handlePaymentElementChange = onChange
 
     return <div data-testid="stripe-payment-element" />
@@ -51,7 +51,9 @@ assumeMock(PaymentElement).mockImplementation(({onChange}) => {
 
 assumeMock(useElements).mockReturnValue({} as any)
 assumeMock(useStripe).mockReturnValue({
-    confirmSetup: jest.fn().mockResolvedValue({setupIntent: {id: 'si_123'}}),
+    confirmSetup: jest
+        .fn()
+        .mockResolvedValue({ setupIntent: { id: 'si_123' } }),
 } as any)
 
 let handlePaymentElementOnChangeEvent:
@@ -59,7 +61,7 @@ let handlePaymentElementOnChangeEvent:
     | undefined
 
 const mockStripeElementsValue = ({
-    address = {address: {}} as any,
+    address = { address: {} } as any,
     paymentMethod,
 }: {
     address?: Partial<StripeAddressElementChangeEvent>
@@ -70,7 +72,7 @@ const mockStripeElementsValue = ({
             getValue: jest
                 .fn()
                 .mockResolvedValue(
-                    element === 'address' ? address : paymentMethod
+                    element === 'address' ? address : paymentMethod,
                 ),
             on: jest.fn().mockImplementation((event, callback) => {
                 if (event === 'change') {
@@ -135,17 +137,17 @@ describe('FormContainer', () => {
             [ProductType.Automation]: {
                 isSelected: false,
             },
-            [ProductType.Voice]: {isSelected: false},
-            [ProductType.SMS]: {isSelected: false},
-            [ProductType.Convert]: {isSelected: false},
+            [ProductType.Voice]: { isSelected: false },
+            [ProductType.SMS]: { isSelected: false },
+            [ProductType.Convert]: { isSelected: false },
         }
 
         sessionStorage.setItem(
             SELECTED_PRODUCTS_SESSION_STORAGE_KEY,
-            JSON.stringify(selectedProducts)
+            JSON.stringify(selectedProducts),
         )
 
-        const {history} = renderWithStoreAndQueryClientAndRouter(
+        const { history } = renderWithStoreAndQueryClientAndRouter(
             <FormContainer
                 hasCreditCard={true}
                 billingInformation={{
@@ -154,7 +156,7 @@ describe('FormContainer', () => {
                 }}
                 dispatchBillingError={() => {}}
             />,
-            initialReduxState
+            initialReduxState,
         )
 
         mockStripeElementsValue({
@@ -176,11 +178,11 @@ describe('FormContainer', () => {
 
         await waitFor(() => {
             expect(
-                screen.getByRole('button', {name: 'Subscribe now'})
+                screen.getByRole('button', { name: 'Subscribe now' }),
             ).toBeAriaEnabled()
         })
 
-        fireEvent.click(screen.getByRole('button', {name: 'Subscribe now'}))
+        fireEvent.click(screen.getByRole('button', { name: 'Subscribe now' }))
 
         await waitFor(() => {
             expect(history.location.pathname).toBe(BILLING_BASE_PATH)
@@ -197,7 +199,7 @@ describe('FormContainer', () => {
             },
         })
 
-        const {history} = renderWithStoreAndQueryClientAndRouter(
+        const { history } = renderWithStoreAndQueryClientAndRouter(
             <FormContainer
                 hasCreditCard={true}
                 billingInformation={
@@ -220,7 +222,7 @@ describe('FormContainer', () => {
                         status: 'active',
                     }),
                 }),
-            }
+            },
         )
 
         mockStripeElementsValue({
@@ -235,7 +237,7 @@ describe('FormContainer', () => {
         expect(history.location.pathname).toBe('/')
 
         fireEvent.click(
-            screen.getByRole('button', {name: 'Update payment method'})
+            screen.getByRole('button', { name: 'Update payment method' }),
         )
 
         await waitFor(() => {

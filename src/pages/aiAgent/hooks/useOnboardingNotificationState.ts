@@ -1,4 +1,4 @@
-import {useGetOrCreateOnboardingNotificationState} from 'models/aiAgent/queries'
+import { useGetOrCreateOnboardingNotificationState } from 'models/aiAgent/queries'
 
 type Params = {
     accountDomain: string
@@ -23,7 +23,7 @@ export const useOnboardingNotificationState = ({
             retry: 1,
             refetchOnWindowFocus: false,
             enabled: enabled ?? true,
-        }
+        },
     )
 
     return {

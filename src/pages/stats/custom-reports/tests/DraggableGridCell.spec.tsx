@@ -1,24 +1,25 @@
-import {render, waitFor} from '@testing-library/react'
-import {renderHook, act} from '@testing-library/react-hooks'
 import React from 'react'
-import {DragSourceMonitor, DropTargetMonitor, useDragLayer} from 'react-dnd'
+
+import { render, waitFor } from '@testing-library/react'
+import { act, renderHook } from '@testing-library/react-hooks'
+import { DragSourceMonitor, DropTargetMonitor, useDragLayer } from 'react-dnd'
 
 import {
-    useMeasure,
     createDragItem,
-    createMoveHandler,
-    DraggablePreview,
-    createIsDragging,
     createDropzoneHoverHandler,
+    createIsDragging,
+    createMoveHandler,
     createMoveRawHandler,
+    DraggablePreview,
     MeasureRect,
+    useMeasure,
 } from 'pages/stats/custom-reports/DraggableGridCell'
 import {
+    CustomReportChartSchema,
     CustomReportChild,
     CustomReportChildType,
-    CustomReportChartSchema,
 } from 'pages/stats/custom-reports/types'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
 const dummyRect = {
     x: 0,
@@ -31,7 +32,7 @@ const dummyRect = {
     right: 100,
 }
 
-jest.mock('react-dnd', () => ({useDragLayer: jest.fn(), useDrag: jest.fn()}))
+jest.mock('react-dnd', () => ({ useDragLayer: jest.fn(), useDrag: jest.fn() }))
 const mockUseDragLayer = assumeMock(useDragLayer)
 
 const createDummyDragItem = ({
@@ -68,7 +69,7 @@ describe('createMoveHandler(node, target, handleMove)', () => {
                     right: 100,
                     top: 0,
                     bottom: 100,
-                }) as DOMRect
+                }) as DOMRect,
         )
         mockFindChartIndex.mockClear()
     })
@@ -83,10 +84,10 @@ describe('createMoveHandler(node, target, handleMove)', () => {
     })
 
     it('does nothing if node is null', () => {
-        const targetItem = createDummyDragItem({configId: '1'})
-        const srcItem = createDummyDragItem({configId: '2'})
+        const targetItem = createDummyDragItem({ configId: '1' })
+        const srcItem = createDummyDragItem({ configId: '2' })
         const monitor = {
-            getClientOffset: () => ({x: 0, y: 0}),
+            getClientOffset: () => ({ x: 0, y: 0 }),
         } as DropTargetMonitor
         const onMove = jest.fn()
 
@@ -94,7 +95,7 @@ describe('createMoveHandler(node, target, handleMove)', () => {
             null,
             targetItem,
             onMove,
-            mockFindChartIndex
+            mockFindChartIndex,
         )
 
         handleMove(srcItem, monitor)
@@ -103,9 +104,9 @@ describe('createMoveHandler(node, target, handleMove)', () => {
     })
 
     it('does nothing if hovering over itself', () => {
-        const item = createDummyDragItem({configId: '1', size: 2})
+        const item = createDummyDragItem({ configId: '1', size: 2 })
         const monitor = {
-            getClientOffset: () => ({x: 0, y: 0}),
+            getClientOffset: () => ({ x: 0, y: 0 }),
         } as DropTargetMonitor
         const onMove = jest.fn()
 
@@ -113,7 +114,7 @@ describe('createMoveHandler(node, target, handleMove)', () => {
             node,
             item,
             onMove,
-            mockFindChartIndex
+            mockFindChartIndex,
         )
 
         handleMove(item, monitor)
@@ -122,10 +123,10 @@ describe('createMoveHandler(node, target, handleMove)', () => {
     })
 
     it('does nothing if not past the hover threshold', () => {
-        const targetItem = createDummyDragItem({configId: '1', size: 4})
-        const srcItem = createDummyDragItem({configId: '2', size: 2})
+        const targetItem = createDummyDragItem({ configId: '1', size: 4 })
+        const srcItem = createDummyDragItem({ configId: '2', size: 2 })
         const monitor = {
-            getClientOffset: () => ({x: 50, y: 50}),
+            getClientOffset: () => ({ x: 50, y: 50 }),
         } as DropTargetMonitor
         const onMove = jest.fn()
 
@@ -133,7 +134,7 @@ describe('createMoveHandler(node, target, handleMove)', () => {
             node,
             targetItem,
             onMove,
-            mockFindChartIndex
+            mockFindChartIndex,
         )
 
         handleMove(srcItem, monitor)
@@ -146,7 +147,7 @@ describe('createMoveHandler(node, target, handleMove)', () => {
             const targetId = '1'
             const srcId = '2'
             mockFindChartIndex.mockImplementation((id) =>
-                id === srcId ? 1 : 0
+                id === srcId ? 1 : 0,
             )
 
             const targetItem = createDummyDragItem({
@@ -158,7 +159,7 @@ describe('createMoveHandler(node, target, handleMove)', () => {
                 size: 2,
             })
             const monitor = {
-                getClientOffset: () => ({x: 50, y: 50}),
+                getClientOffset: () => ({ x: 50, y: 50 }),
             } as DropTargetMonitor
             const onMove = jest.fn()
 
@@ -166,7 +167,7 @@ describe('createMoveHandler(node, target, handleMove)', () => {
                 node,
                 targetItem,
                 onMove,
-                mockFindChartIndex
+                mockFindChartIndex,
             )
             handleMove(srcItem, monitor)
 
@@ -177,7 +178,7 @@ describe('createMoveHandler(node, target, handleMove)', () => {
             const targetId = '1'
             const srcId = '2'
             mockFindChartIndex.mockImplementation((id) =>
-                id === srcId ? 0 : 1
+                id === srcId ? 0 : 1,
             )
 
             const targetItem = createDummyDragItem({
@@ -189,7 +190,7 @@ describe('createMoveHandler(node, target, handleMove)', () => {
                 size: 2,
             })
             const monitor = {
-                getClientOffset: () => ({x: 50, y: 50}),
+                getClientOffset: () => ({ x: 50, y: 50 }),
             } as DropTargetMonitor
             const onMove = jest.fn()
 
@@ -197,7 +198,7 @@ describe('createMoveHandler(node, target, handleMove)', () => {
                 node,
                 targetItem,
                 onMove,
-                mockFindChartIndex
+                mockFindChartIndex,
             )
             handleMove(srcItem, monitor)
 
@@ -207,10 +208,10 @@ describe('createMoveHandler(node, target, handleMove)', () => {
 
     describe('when target is full width (size 12)', () => {
         it('positions before when hovering above middle', () => {
-            const targetItem = createDummyDragItem({configId: '1', size: 12})
-            const srcItem = createDummyDragItem({configId: '2', size: 2})
+            const targetItem = createDummyDragItem({ configId: '1', size: 12 })
+            const srcItem = createDummyDragItem({ configId: '2', size: 2 })
             const monitor = {
-                getClientOffset: () => ({x: 0, y: 30}),
+                getClientOffset: () => ({ x: 0, y: 30 }),
             } as DropTargetMonitor
             const onMove = jest.fn()
 
@@ -218,7 +219,7 @@ describe('createMoveHandler(node, target, handleMove)', () => {
                 node,
                 targetItem,
                 onMove,
-                mockFindChartIndex
+                mockFindChartIndex,
             )
             handleMove(srcItem, monitor)
 
@@ -226,10 +227,10 @@ describe('createMoveHandler(node, target, handleMove)', () => {
         })
 
         it('positions after when hovering below middle', () => {
-            const targetItem = createDummyDragItem({configId: '1', size: 12})
-            const srcItem = createDummyDragItem({configId: '2', size: 2})
+            const targetItem = createDummyDragItem({ configId: '1', size: 12 })
+            const srcItem = createDummyDragItem({ configId: '2', size: 2 })
             const monitor = {
-                getClientOffset: () => ({x: 0, y: 70}),
+                getClientOffset: () => ({ x: 0, y: 70 }),
             } as DropTargetMonitor
             const onMove = jest.fn()
 
@@ -237,7 +238,7 @@ describe('createMoveHandler(node, target, handleMove)', () => {
                 node,
                 targetItem,
                 onMove,
-                mockFindChartIndex
+                mockFindChartIndex,
             )
             handleMove(srcItem, monitor)
 
@@ -247,10 +248,10 @@ describe('createMoveHandler(node, target, handleMove)', () => {
 
     describe('when target is larger but not full width', () => {
         it('positions before when hovering in top-left quadrant', () => {
-            const targetItem = createDummyDragItem({configId: '1', size: 6})
-            const srcItem = createDummyDragItem({configId: '2', size: 2})
+            const targetItem = createDummyDragItem({ configId: '1', size: 6 })
+            const srcItem = createDummyDragItem({ configId: '2', size: 2 })
             const monitor = {
-                getClientOffset: () => ({x: 20, y: 20}),
+                getClientOffset: () => ({ x: 20, y: 20 }),
             } as DropTargetMonitor
             const onMove = jest.fn()
 
@@ -258,7 +259,7 @@ describe('createMoveHandler(node, target, handleMove)', () => {
                 node,
                 targetItem,
                 onMove,
-                mockFindChartIndex
+                mockFindChartIndex,
             )
             handleMove(srcItem, monitor)
 
@@ -266,10 +267,10 @@ describe('createMoveHandler(node, target, handleMove)', () => {
         })
 
         it('positions after when hovering in bottom-right quadrant', () => {
-            const targetItem = createDummyDragItem({configId: '1', size: 6})
-            const srcItem = createDummyDragItem({configId: '2', size: 2})
+            const targetItem = createDummyDragItem({ configId: '1', size: 6 })
+            const srcItem = createDummyDragItem({ configId: '2', size: 2 })
             const monitor = {
-                getClientOffset: () => ({x: 80, y: 80}),
+                getClientOffset: () => ({ x: 80, y: 80 }),
             } as DropTargetMonitor
             const onMove = jest.fn()
 
@@ -277,7 +278,7 @@ describe('createMoveHandler(node, target, handleMove)', () => {
                 node,
                 targetItem,
                 onMove,
-                mockFindChartIndex
+                mockFindChartIndex,
             )
             handleMove(srcItem, monitor)
 
@@ -285,10 +286,10 @@ describe('createMoveHandler(node, target, handleMove)', () => {
         })
 
         it('positions after when hovering in top-right quadrant', () => {
-            const targetItem = createDummyDragItem({configId: '1', size: 6})
-            const srcItem = createDummyDragItem({configId: '2', size: 2})
+            const targetItem = createDummyDragItem({ configId: '1', size: 6 })
+            const srcItem = createDummyDragItem({ configId: '2', size: 2 })
             const monitor = {
-                getClientOffset: () => ({x: 80, y: 20}),
+                getClientOffset: () => ({ x: 80, y: 20 }),
             } as DropTargetMonitor
             const onMove = jest.fn()
 
@@ -296,7 +297,7 @@ describe('createMoveHandler(node, target, handleMove)', () => {
                 node,
                 targetItem,
                 onMove,
-                mockFindChartIndex
+                mockFindChartIndex,
             )
             handleMove(srcItem, monitor)
 
@@ -304,10 +305,10 @@ describe('createMoveHandler(node, target, handleMove)', () => {
         })
 
         it('positions after when hovering in bottom-left quadrant', () => {
-            const targetItem = createDummyDragItem({configId: '1', size: 6})
-            const srcItem = createDummyDragItem({configId: '2', size: 2})
+            const targetItem = createDummyDragItem({ configId: '1', size: 6 })
+            const srcItem = createDummyDragItem({ configId: '2', size: 2 })
             const monitor = {
-                getClientOffset: () => ({x: 20, y: 80}),
+                getClientOffset: () => ({ x: 20, y: 80 }),
             } as DropTargetMonitor
             const onMove = jest.fn()
 
@@ -315,7 +316,7 @@ describe('createMoveHandler(node, target, handleMove)', () => {
                 node,
                 targetItem,
                 onMove,
-                mockFindChartIndex
+                mockFindChartIndex,
             )
             handleMove(srcItem, monitor)
 
@@ -332,7 +333,7 @@ describe('DraggablePreview', () => {
             item: null,
         })
 
-        const {container} = render(<DraggablePreview />)
+        const { container } = render(<DraggablePreview />)
         expect(container.firstChild).toBeNull()
     })
 
@@ -343,7 +344,7 @@ describe('DraggablePreview', () => {
             item: null,
         })
 
-        const {container} = render(<DraggablePreview />)
+        const { container } = render(<DraggablePreview />)
         expect(container.firstChild).toBeNull()
     })
 
@@ -358,11 +359,11 @@ describe('DraggablePreview', () => {
 
         mockUseDragLayer.mockReturnValue({
             isDragging: true,
-            currentOffset: {x: 100, y: 50},
+            currentOffset: { x: 100, y: 50 },
             item: mockItem,
         })
 
-        const {container} = render(<DraggablePreview />)
+        const { container } = render(<DraggablePreview />)
 
         const previewDiv = container.firstChild as HTMLElement
         expect(previewDiv).toHaveClass('preview')
@@ -387,11 +388,11 @@ describe('DraggablePreview', () => {
 
         mockUseDragLayer.mockReturnValue({
             isDragging: true,
-            currentOffset: {x: 100, y: 50},
+            currentOffset: { x: 100, y: 50 },
             item: mockItem,
         })
 
-        const {getByTestId} = render(<DraggablePreview />)
+        const { getByTestId } = render(<DraggablePreview />)
         expect(getByTestId('mock-content')).toBeInTheDocument()
     })
 })
@@ -425,7 +426,7 @@ describe('useMeasure', () => {
 
     it('should return default state initially', () => {
         const ref = React.createRef<HTMLDivElement>()
-        const {result} = renderHook(() => useMeasure(ref))
+        const { result } = renderHook(() => useMeasure(ref))
 
         expect(result.current).toEqual(defaultState)
     })
@@ -439,7 +440,7 @@ describe('useMeasure', () => {
     })
 
     it('should set up ResizeObserver when ref is available', () => {
-        const ref = {current: document.createElement('div')}
+        const ref = { current: document.createElement('div') }
         renderHook(() => useMeasure(ref))
 
         expect(mockResizeObserver).toHaveBeenCalled()
@@ -447,8 +448,8 @@ describe('useMeasure', () => {
     })
 
     it('should update measurements when ResizeObserver fires', async () => {
-        const ref = {current: document.createElement('div')}
-        const {result} = renderHook(() => useMeasure(ref))
+        const ref = { current: document.createElement('div') }
+        const { result } = renderHook(() => useMeasure(ref))
 
         const contentRect = {
             x: 10,
@@ -460,7 +461,7 @@ describe('useMeasure', () => {
             bottom: 120,
             right: 210,
             toJSON: () => {
-                const {toJSON: __toJSON, ...rest} = contentRect
+                const { toJSON: __toJSON, ...rest } = contentRect
                 return rest
             },
         }
@@ -470,8 +471,8 @@ describe('useMeasure', () => {
                 [ResizeObserverCallback],
             ]
             callback(
-                [{contentRect} as ResizeObserverEntry],
-                mockResizeObserver as unknown as ResizeObserver
+                [{ contentRect } as ResizeObserverEntry],
+                mockResizeObserver as unknown as ResizeObserver,
             )
         })
 
@@ -490,8 +491,8 @@ describe('useMeasure', () => {
     })
 
     it('should clean up ResizeObserver on unmount', () => {
-        const ref = {current: document.createElement('div')}
-        const {unmount} = renderHook(() => useMeasure(ref))
+        const ref = { current: document.createElement('div') }
+        const { unmount } = renderHook(() => useMeasure(ref))
 
         unmount()
 
@@ -501,7 +502,7 @@ describe('useMeasure', () => {
 
 describe('createIsDragging', () => {
     it('returns true when dragging item has matching config_id', () => {
-        const item = createDummyDragItem({configId: 'test-123', size: 2})
+        const item = createDummyDragItem({ configId: 'test-123', size: 2 })
 
         const monitor = {
             getItem: () => item,
@@ -513,7 +514,7 @@ describe('createIsDragging', () => {
     })
 
     it('returns false when dragging item has different config_id', () => {
-        const item = createDummyDragItem({configId: 'test-123', size: 2})
+        const item = createDummyDragItem({ configId: 'test-123', size: 2 })
 
         const monitor = {
             getItem: () => ({
@@ -545,7 +546,7 @@ describe('createDropzoneHoverHandler', () => {
                 children: [],
             },
         ] as CustomReportChild[]
-        const item = createDummyDragItem({configId: 'test-id'})
+        const item = createDummyDragItem({ configId: 'test-id' })
 
         const handler = createDropzoneHoverHandler(schemas, mockMoveHandler)
         handler(item)
@@ -561,7 +562,7 @@ describe('createDropzoneHoverHandler', () => {
                 config_id: firstChartId,
             },
         ] as CustomReportChild[]
-        const item = createDummyDragItem({configId: firstChartId})
+        const item = createDummyDragItem({ configId: firstChartId })
 
         const handler = createDropzoneHoverHandler(schemas, mockMoveHandler)
         handler(item)
@@ -578,7 +579,7 @@ describe('createDropzoneHoverHandler', () => {
                 config_id: firstChartId,
             },
         ] as CustomReportChild[]
-        const item = createDummyDragItem({configId: draggedChartId})
+        const item = createDummyDragItem({ configId: draggedChartId })
 
         const handler = createDropzoneHoverHandler(schemas, mockMoveHandler)
         handler(item)
@@ -586,7 +587,7 @@ describe('createDropzoneHoverHandler', () => {
         expect(mockMoveHandler).toHaveBeenCalledWith(
             draggedChartId,
             firstChartId,
-            'before'
+            'before',
         )
     })
 
@@ -609,7 +610,7 @@ describe('createDropzoneHoverHandler', () => {
                 ],
             },
         ] as CustomReportChild[]
-        const item = createDummyDragItem({configId: draggedChartId})
+        const item = createDummyDragItem({ configId: draggedChartId })
 
         const handler = createDropzoneHoverHandler(schemas, mockMoveHandler)
         handler(item)
@@ -617,7 +618,7 @@ describe('createDropzoneHoverHandler', () => {
         expect(mockMoveHandler).toHaveBeenCalledWith(
             draggedChartId,
             firstChartId,
-            'before'
+            'before',
         )
     })
 })
@@ -637,11 +638,11 @@ describe('createMoveRawHandler', () => {
 
     it('does nothing if dragged item is in the same row', () => {
         const charts = [
-            {config_id: 'chart-1'},
-            {config_id: 'chart-2'},
+            { config_id: 'chart-1' },
+            { config_id: 'chart-2' },
         ] as CustomReportChartSchema[]
 
-        const item = createDummyDragItem({configId: 'chart-1'})
+        const item = createDummyDragItem({ configId: 'chart-1' })
         const handler = createMoveRawHandler(charts, mockMoveHandler)
 
         handler(item)
@@ -651,11 +652,11 @@ describe('createMoveRawHandler', () => {
 
     it('moves item after last chart when from different row', () => {
         const charts = [
-            {config_id: 'chart-1'},
-            {config_id: 'chart-2'},
+            { config_id: 'chart-1' },
+            { config_id: 'chart-2' },
         ] as CustomReportChartSchema[]
 
-        const item = createDummyDragItem({configId: 'chart-3'})
+        const item = createDummyDragItem({ configId: 'chart-3' })
         const handler = createMoveRawHandler(charts, mockMoveHandler)
 
         handler(item)
@@ -663,14 +664,14 @@ describe('createMoveRawHandler', () => {
         expect(mockMoveHandler).toHaveBeenCalledWith(
             'chart-3',
             'chart-2',
-            'after'
+            'after',
         )
     })
 
     it('works with single chart in row', () => {
-        const charts = [{config_id: 'chart-1'}] as CustomReportChartSchema[]
+        const charts = [{ config_id: 'chart-1' }] as CustomReportChartSchema[]
 
-        const item = createDummyDragItem({configId: 'chart-2'})
+        const item = createDummyDragItem({ configId: 'chart-2' })
         const handler = createMoveRawHandler(charts, mockMoveHandler)
 
         handler(item)
@@ -678,7 +679,7 @@ describe('createMoveRawHandler', () => {
         expect(mockMoveHandler).toHaveBeenCalledWith(
             'chart-2',
             'chart-1',
-            'after'
+            'after',
         )
     })
 })

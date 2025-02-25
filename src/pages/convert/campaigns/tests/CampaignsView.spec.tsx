@@ -1,20 +1,19 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {screen, fireEvent, waitFor, act} from '@testing-library/react'
-
-import {createBrowserHistory} from 'history'
-import {fromJS} from 'immutable'
-import _omit from 'lodash/omit'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
+import { createBrowserHistory } from 'history'
+import { fromJS } from 'immutable'
+import _omit from 'lodash/omit'
+import { Provider } from 'react-redux'
 import routerDom from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {billingState} from 'fixtures/billing'
-
-import {campaign} from 'fixtures/campaign'
-import {channelConnection} from 'fixtures/channelConnection'
-import {entitiesInitialState} from 'fixtures/entities'
+import { billingState } from 'fixtures/billing'
+import { campaign } from 'fixtures/campaign'
+import { channelConnection } from 'fixtures/channelConnection'
+import { entitiesInitialState } from 'fixtures/entities'
 import useSearch from 'hooks/useSearch'
 import {
     useCreateCampaign,
@@ -22,19 +21,18 @@ import {
     useListCampaigns,
     useUpdateCampaign,
 } from 'models/convert/campaign/queries'
-
-import {NavigatedSuccessModalName} from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
+import { NavigatedSuccessModalName } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
-import {CampaignScheduleRuleValueEnum} from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
-import {RootState, StoreDispatch} from 'state/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock, renderWithRouter} from 'utils/testing'
+import { CampaignScheduleRuleValueEnum } from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
+import { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock, renderWithRouter } from 'utils/testing'
 
-import {CONVERT_ROUTE_PARAM_NAME} from '../../common/constants'
-import {useGetOrCreateChannelConnection} from '../../common/hooks/useGetOrCreateChannelConnection'
-import {CampaignsView} from '../CampaignsView'
-import {Campaign} from '../types/Campaign'
-import {CampaignStatus} from '../types/enums/CampaignStatus.enum'
+import { CONVERT_ROUTE_PARAM_NAME } from '../../common/constants'
+import { useGetOrCreateChannelConnection } from '../../common/hooks/useGetOrCreateChannelConnection'
+import { CampaignsView } from '../CampaignsView'
+import { Campaign } from '../types/Campaign'
+import { CampaignStatus } from '../types/enums/CampaignStatus.enum'
 
 jest.mock('utils/launchDarkly')
 
@@ -67,7 +65,7 @@ jest.mock('pages/convert/campaigns/components/ConvertSetupBanner', () => {
 
 jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')
 const useGetOrCreateChannelConnectionMock = assumeMock(
-    useGetOrCreateChannelConnection
+    useGetOrCreateChannelConnection,
 )
 
 jest.mock('models/convert/campaign/queries')
@@ -83,7 +81,7 @@ const mockHistory = createBrowserHistory()
 describe('<CampaignsView/>', () => {
     const isConvertSubscriberSpy = jest.spyOn(
         isConvertSubscriberHook,
-        'useIsConvertSubscriber'
+        'useIsConvertSubscriber',
     )
     const mutateCreateMock = jest.fn()
     const mutateDeleteMock = jest.fn()
@@ -217,7 +215,7 @@ describe('<CampaignsView/>', () => {
             </QueryClientProvider>,
             {
                 history: mockHistory,
-            }
+            },
         )
     }
 
@@ -231,10 +229,10 @@ describe('<CampaignsView/>', () => {
             isError: false,
         } as any)
 
-        const {getByText} = renderComponent(defaultState)
+        const { getByText } = renderComponent(defaultState)
 
         expect(
-            getByText("This integration doesn't have any campaigns yet.")
+            getByText("This integration doesn't have any campaigns yet."),
         ).toBeInTheDocument()
     })
 
@@ -243,12 +241,12 @@ describe('<CampaignsView/>', () => {
             [CONVERT_ROUTE_PARAM_NAME]: '118',
         })
 
-        const {getByText} = renderComponent(defaultState)
+        const { getByText } = renderComponent(defaultState)
 
         expect(getByText('Super campaign')).toBeInTheDocument()
         expect(getByText('Not so good campaign')).toBeInTheDocument()
         expect(
-            getByText('campaign with schedule and end date')
+            getByText('campaign with schedule and end date'),
         ).toBeInTheDocument()
         expect(getByText('campaign with schedule')).toBeInTheDocument()
 
@@ -265,14 +263,14 @@ describe('<CampaignsView/>', () => {
         act(() =>
             mockHistory.push('/', {
                 showModal: NavigatedSuccessModalName.ConvertOnboarding,
-            })
+            }),
         )
 
-        const {getByText} = renderComponent(defaultState)
+        const { getByText } = renderComponent(defaultState)
 
         expect(getByText('All set!')).toBeInTheDocument()
         expect(
-            getByText('You can now display campaigns on your website.')
+            getByText('You can now display campaigns on your website.'),
         ).toBeInTheDocument()
     })
 
@@ -291,11 +289,11 @@ describe('<CampaignsView/>', () => {
                 }),
             }
 
-            const {getByText} = renderComponent(state)
+            const { getByText } = renderComponent(state)
 
             expect(getByText('Create Custom Campaign')).toBeInTheDocument()
             expect(
-                getByText('Create Campaign From Library')
+                getByText('Create Campaign From Library'),
             ).toBeInTheDocument()
         })
 
@@ -314,11 +312,11 @@ describe('<CampaignsView/>', () => {
                 }),
             }
 
-            const {getByText, queryByText} = renderComponent(state)
+            const { getByText, queryByText } = renderComponent(state)
 
             expect(getByText('Create Campaign')).toBeInTheDocument()
             expect(
-                queryByText('Create Campaign From Library')
+                queryByText('Create Campaign From Library'),
             ).not.toBeInTheDocument()
         })
     })
@@ -350,9 +348,9 @@ describe('<CampaignsView/>', () => {
                 }),
             }
 
-            const {getByRole, findByText} = renderComponent(state)
+            const { getByRole, findByText } = renderComponent(state)
 
-            const button = getByRole('button', {name: 'Create Campaign'})
+            const button = getByRole('button', { name: 'Create Campaign' })
             expect(button).toBeInTheDocument()
             expect(button).toBeAriaDisabled()
 
@@ -364,11 +362,11 @@ describe('<CampaignsView/>', () => {
             })
             tooltip.click()
             expect(mockHistory.location.pathname).not.toContain(
-                '/campaigns/new'
+                '/campaigns/new',
             )
 
             await waitFor(() => {
-                const link = getByRole('link', {name: 'discover Convert'})
+                const link = getByRole('link', { name: 'discover Convert' })
                 expect(link).toBeInTheDocument()
                 expect(link).toHaveAttribute('target', '_blank')
             })
@@ -461,7 +459,7 @@ describe('<CampaignsView/>', () => {
                 isError: false,
             } as any)
 
-            const {getByRole} = renderComponent(defaultState)
+            const { getByRole } = renderComponent(defaultState)
 
             const toggleBtn = getByRole('switch')
 
@@ -477,9 +475,9 @@ describe('<CampaignsView/>', () => {
                         campaign_id: 'campaign-with-schedule',
                         channelConnectionId: channelConnection.id,
                     },
-                    {status: 'inactive'},
+                    { status: 'inactive' },
                 ],
-                {onSuccess: expect.any(Function)}
+                { onSuccess: expect.any(Function) },
             )
         })
     })
@@ -501,7 +499,7 @@ describe('<CampaignsView/>', () => {
         it('should display the upsell banner for Shopify non-subscribers', () => {
             isConvertSubscriberSpy.mockImplementation(() => false)
 
-            const {getByText} = renderComponent(stateWithShopifyIntegration)
+            const { getByText } = renderComponent(stateWithShopifyIntegration)
 
             expect(getByText('Book Demo')).toBeInTheDocument()
         })
@@ -509,7 +507,7 @@ describe('<CampaignsView/>', () => {
         it('should not display the upsell banner for non-Shopify non-subscribers', () => {
             isConvertSubscriberSpy.mockImplementation(() => false)
 
-            const {queryByText} = renderComponent(defaultState)
+            const { queryByText } = renderComponent(defaultState)
 
             expect(queryByText('Book Demo')).not.toBeInTheDocument()
         })
@@ -517,10 +515,10 @@ describe('<CampaignsView/>', () => {
         it('should not display the upsell banner for Shopify subscribers', () => {
             isConvertSubscriberSpy.mockImplementation(() => true)
 
-            const {queryByText} = renderComponent(stateWithShopifyIntegration)
+            const { queryByText } = renderComponent(stateWithShopifyIntegration)
 
             expect(
-                queryByText('Select Plan To Get Started')
+                queryByText('Select Plan To Get Started'),
             ).not.toBeInTheDocument()
         })
     })

@@ -4,7 +4,7 @@ type Props = {
     color: string
 }
 
-const CloseIcon: React.FC<Props> = ({color}) => (
+const CloseIcon: React.FC<Props> = ({ color }) => (
     <svg
         width="28"
         height="28"

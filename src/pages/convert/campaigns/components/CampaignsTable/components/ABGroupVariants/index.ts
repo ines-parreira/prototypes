@@ -1,1 +1,1 @@
-export {default} from './ABGroupVariants'
+export { default } from './ABGroupVariants'

@@ -1,8 +1,9 @@
-import {render} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {SmsIntegration} from 'models/integration/types'
+import { render } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { SmsIntegration } from 'models/integration/types'
 
 import SmsIntegrationSelect from '../SmsIntegrationSelect'
 
@@ -10,7 +11,7 @@ describe('<SmsIntegrationSelect />', () => {
     const mockOnChange = jest.fn()
     const renderComponent = (
         smsIntegrations: undefined | SmsIntegration[] = undefined,
-        selectedIntegration = 1
+        selectedIntegration = 1,
     ) => {
         const integrations =
             smsIntegrations ??
@@ -26,18 +27,18 @@ describe('<SmsIntegrationSelect />', () => {
                 options={integrations}
                 value={selectedIntegration}
                 onChange={mockOnChange}
-            />
+            />,
         )
     }
 
     it('should render', () => {
-        const {getByText} = renderComponent()
+        const { getByText } = renderComponent()
 
         expect(getByText('TEST SMS INTEGRATION')).toBeInTheDocument()
     })
 
     it('should select option', () => {
-        const {getAllByText, getByText} = renderComponent([
+        const { getAllByText, getByText } = renderComponent([
             {
                 id: 1,
                 name: 'test 1',

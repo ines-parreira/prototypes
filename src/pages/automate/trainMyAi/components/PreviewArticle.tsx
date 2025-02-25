@@ -1,25 +1,26 @@
-import {useQueryClient} from '@tanstack/react-query'
-import React, {useMemo, useCallback, useState} from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
+
+import { useQueryClient } from '@tanstack/react-query'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
-    useUpdateArticleTranslation,
     helpCenterArticleKeys,
     helpCenterKeys,
+    useUpdateArticleTranslation,
 } from 'models/helpCenter/queries'
-import {ArticleTemplateType, HelpCenter} from 'models/helpCenter/types'
+import { ArticleTemplateType, HelpCenter } from 'models/helpCenter/types'
 import ArticleEditor from 'pages/settings/helpCenter/components/HelpCenterCreationWizard/components/HelpCenterWizardArticleEditor/HelpCenterWizardArticleEditor'
-
-import {useEditionManager} from 'pages/settings/helpCenter/providers/EditionManagerContext'
+import { useEditionManager } from 'pages/settings/helpCenter/providers/EditionManagerContext'
 import {
-    slugify,
     getArticleUrl,
     getHelpCenterDomain,
+    slugify,
 } from 'pages/settings/helpCenter/utils/helpCenter.utils'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
-import {Components} from '../../../../rest_api/help_center_api/client.generated'
+import { Components } from '../../../../rest_api/help_center_api/client.generated'
+
 import css from './PreviewArticle.less'
 
 interface Props {
@@ -27,7 +28,7 @@ interface Props {
     helpCenter: HelpCenter
 }
 
-export default function PreviewHeader({articleData, helpCenter}: Props) {
+export default function PreviewHeader({ articleData, helpCenter }: Props) {
     const {
         mutateAsync: updateArticleTranslationMutateAsync,
         isLoading: isUpdateArticleTranslationLoading,
@@ -38,7 +39,7 @@ export default function PreviewHeader({articleData, helpCenter}: Props) {
 
     const dispatch = useAppDispatch()
 
-    const {setEditModal} = useEditionManager()
+    const { setEditModal } = useEditionManager()
 
     const handleEditorReady = useCallback(() => {
         setIsEditorReady(true)
@@ -66,7 +67,7 @@ export default function PreviewHeader({articleData, helpCenter}: Props) {
                     notify({
                         status: NotificationStatus.Error,
                         message: 'Error updating article.',
-                    })
+                    }),
                 )
                 return
             }
@@ -80,14 +81,14 @@ export default function PreviewHeader({articleData, helpCenter}: Props) {
                 notify({
                     status: NotificationStatus.Success,
                     message: 'Article updated successfullly.',
-                })
+                }),
             )
 
             void queryClient.invalidateQueries({
                 queryKey: helpCenterArticleKeys(
                     articleData.help_center_id,
                     articleData.id,
-                    articleData.translation.locale
+                    articleData.translation.locale,
                 ),
             })
             void queryClient.invalidateQueries({
@@ -100,7 +101,7 @@ export default function PreviewHeader({articleData, helpCenter}: Props) {
             queryClient,
             setEditModal,
             updateArticleTranslationMutateAsync,
-        ]
+        ],
     )
 
     const handleEditorClose = useCallback(() => {

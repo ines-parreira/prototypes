@@ -1,21 +1,22 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react'
-import {useHistory} from 'react-router-dom'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
+
+import { useHistory } from 'react-router-dom'
 
 import {
-    GORGIAS_CHAT_SSP_TEXTS,
     getPrimaryLanguageFromChatConfig,
+    GORGIAS_CHAT_SSP_TEXTS,
 } from 'config/integrations/gorgias_chat'
 import useAppSelector from 'hooks/useAppSelector'
-import {GorgiasChatIntegration} from 'models/integration/types'
-import {AgentMessage} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/AgentMessages'
+import { GorgiasChatIntegration } from 'models/integration/types'
+import { AgentMessage } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/AgentMessages'
 import MessageContent from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/MessageContent'
-import {getCurrentUser} from 'state/currentUser/selectors'
+import { getCurrentUser } from 'state/currentUser/selectors'
 
-import {SELF_SERVICE_PREVIEW_ROUTES} from './constants'
+import { SELF_SERVICE_PREVIEW_ROUTES } from './constants'
 import useOrderDates from './hooks/useOrderDates'
+import { useSelfServicePreviewContext } from './SelfServicePreviewContext'
 
 import css from './SelfServiceChatIntegrationReportIssuePage.less'
-import {useSelfServicePreviewContext} from './SelfServicePreviewContext'
 
 type Props = {
     integration: GorgiasChatIntegration
@@ -30,7 +31,7 @@ enum PreviewStep {
 
 const DELAY_BETWEEN_STEPS = 800
 
-const SelfServiceChatIntegrationReportIssuePage = ({integration}: Props) => {
+const SelfServiceChatIntegrationReportIssuePage = ({ integration }: Props) => {
     const history = useHistory()
     const currentUser = useAppSelector(getCurrentUser)
     const [previewStep, setPreviewStep] = useState(PreviewStep.REQUEST)
@@ -40,12 +41,12 @@ const SelfServiceChatIntegrationReportIssuePage = ({integration}: Props) => {
     const language = getPrimaryLanguageFromChatConfig(integration.meta)
     const sspTexts = GORGIAS_CHAT_SSP_TEXTS[language]
 
-    const {decoration} = integration
-    const {reportOrderIssueReason} = useSelfServicePreviewContext()
-    const {orderPlacedDate} = useOrderDates(language)
+    const { decoration } = integration
+    const { reportOrderIssueReason } = useSelfServicePreviewContext()
+    const { orderPlacedDate } = useOrderDates(language)
 
     const hasResponseMessageText = Boolean(
-        reportOrderIssueReason?.action?.responseMessageContent.text
+        reportOrderIssueReason?.action?.responseMessageContent.text,
     )
     const showHelpfulPrompt = reportOrderIssueReason?.action?.showHelpfulPrompt
 
@@ -187,7 +188,7 @@ const SelfServiceChatIntegrationReportIssuePage = ({integration}: Props) => {
                             >
                                 {reply}
                             </div>
-                        )
+                        ),
                     )}
                 </div>
             )}

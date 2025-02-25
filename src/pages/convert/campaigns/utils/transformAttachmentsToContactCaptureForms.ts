@@ -1,10 +1,10 @@
-import {List} from 'immutable'
+import { List } from 'immutable'
 
-import {AttachmentEnum} from 'common/types'
-import {CampaignContactFormAttachment} from 'pages/convert/campaigns/types/CampaignAttachment'
+import { AttachmentEnum } from 'common/types'
+import { CampaignContactFormAttachment } from 'pages/convert/campaigns/types/CampaignAttachment'
 
 export const transformAttachmentsToContactCaptureForms = (
-    attachments: List<any>
+    attachments: List<any>,
 ): CampaignContactFormAttachment[] => {
     const attachmentsJS: {
         content_type?: string
@@ -15,7 +15,7 @@ export const transformAttachmentsToContactCaptureForms = (
     return attachmentsJS
         .filter(
             (attachment) =>
-                attachment.content_type === AttachmentEnum.ContactForm
+                attachment.content_type === AttachmentEnum.ContactForm,
         )
         .map((attachment) => ({
             contentType: AttachmentEnum.ContactForm,

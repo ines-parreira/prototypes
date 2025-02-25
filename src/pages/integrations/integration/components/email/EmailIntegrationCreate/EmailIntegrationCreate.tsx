@@ -1,27 +1,28 @@
-import React, {useCallback} from 'react'
-import {Link} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
+import React, { useCallback } from 'react'
+
+import { Link } from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
 import gmailLogo from 'assets/img/integrations/gmail.svg'
 import officeLogo from 'assets/img/integrations/office.svg'
 import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationType} from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
-import {TemplateCard} from 'pages/common/components/TemplateCard'
+import { TemplateCard } from 'pages/common/components/TemplateCard'
 import settingsCss from 'pages/settings/settings.less'
 import SettingsContent from 'pages/settings/SettingsContent'
 import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
-import {getRedirectUri} from 'state/integrations/selectors'
+import { getRedirectUri } from 'state/integrations/selectors'
 
 import css from './EmailIntegrationCreate.less'
 
 export default function EmailIntegrationCreate() {
     const gmailRedirectUri = useAppSelector(
-        getRedirectUri(IntegrationType.Gmail)
+        getRedirectUri(IntegrationType.Gmail),
     )
     const outlookRedirectUri = useAppSelector(
-        getRedirectUri(IntegrationType.Outlook)
+        getRedirectUri(IntegrationType.Outlook),
     )
 
     const handleSubmit = useCallback(
@@ -29,7 +30,7 @@ export default function EmailIntegrationCreate() {
             e.preventDefault()
             window.open(redirectUri)
         },
-        []
+        [],
     )
 
     return (

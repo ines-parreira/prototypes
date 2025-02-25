@@ -1,18 +1,14 @@
-import {act, fireEvent, screen, waitFor} from '@testing-library/react'
-
-import {createMemoryHistory} from 'history'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {Provider} from 'react-redux'
-
+import { act, fireEvent, screen, waitFor } from '@testing-library/react'
+import { createMemoryHistory } from 'history'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-
 import thunk from 'redux-thunk'
 
-import {RootState, StoreDispatch} from 'state/types'
-
-import {flushPromises, renderWithRouter} from 'utils/testing'
+import { RootState, StoreDispatch } from 'state/types'
+import { flushPromises, renderWithRouter } from 'utils/testing'
 
 import ActionsPlatformCreateAppFormView from '../ActionsPlatformCreateAppFormView'
 import useApps from '../hooks/useApps'
@@ -74,7 +70,7 @@ describe('<ActionsPlatformCreateAppFormView />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <ActionsPlatformCreateAppFormView />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('Actions platform')).toBeInTheDocument()
@@ -90,7 +86,7 @@ describe('<ActionsPlatformCreateAppFormView />', () => {
             <Provider store={mockStore}>
                 <ActionsPlatformCreateAppFormView />
             </Provider>,
-            {history}
+            { history },
         )
 
         act(() => {
@@ -105,8 +101,8 @@ describe('<ActionsPlatformCreateAppFormView />', () => {
             fireEvent.change(
                 screen.getByPlaceholderText('https://link.gorgias.com/xyz'),
                 {
-                    target: {value: 'https://example.com'},
-                }
+                    target: { value: 'https://example.com' },
+                },
             )
         })
 
@@ -117,7 +113,7 @@ describe('<ActionsPlatformCreateAppFormView />', () => {
         })
 
         expect(mockCreateActionsApp).toHaveBeenCalledWith([
-            {id: 'someid'},
+            { id: 'someid' },
             {
                 id: 'someid',
                 auth_type: 'api-key',
@@ -128,7 +124,7 @@ describe('<ActionsPlatformCreateAppFormView />', () => {
         ])
         await waitFor(() => {
             expect(historyPushSpy).toHaveBeenCalledWith(
-                '/app/automation/actions-platform/apps'
+                '/app/automation/actions-platform/apps',
             )
         })
     })
@@ -137,7 +133,7 @@ describe('<ActionsPlatformCreateAppFormView />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <ActionsPlatformCreateAppFormView />
-            </Provider>
+            </Provider>,
         )
 
         act(() => {
@@ -157,7 +153,7 @@ describe('<ActionsPlatformCreateAppFormView />', () => {
         renderWithRouter(
             <Provider store={mockStore}>
                 <ActionsPlatformCreateAppFormView />
-            </Provider>
+            </Provider>,
         )
 
         act(() => {
@@ -172,8 +168,8 @@ describe('<ActionsPlatformCreateAppFormView />', () => {
             fireEvent.change(
                 screen.getByPlaceholderText('https://link.gorgias.com/xyz'),
                 {
-                    target: {value: 'https://example.com'},
-                }
+                    target: { value: 'https://example.com' },
+                },
             )
         })
 

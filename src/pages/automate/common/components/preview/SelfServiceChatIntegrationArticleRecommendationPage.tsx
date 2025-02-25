@@ -1,15 +1,15 @@
 import React from 'react'
 
 import {
-    GORGIAS_CHAT_WIDGET_TEXTS,
-    GORGIAS_CHAT_SSP_TEXTS,
     getPrimaryLanguageFromChatConfig,
+    GORGIAS_CHAT_SSP_TEXTS,
+    GORGIAS_CHAT_WIDGET_TEXTS,
 } from 'config/integrations/gorgias_chat'
 import useAppSelector from 'hooks/useAppSelector'
-import {GorgiasChatIntegration} from 'models/integration/types'
-import {AgentMessage} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/AgentMessages'
+import { GorgiasChatIntegration } from 'models/integration/types'
+import { AgentMessage } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/AgentMessages'
 import MessageContent from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/MessageContent'
-import {getCurrentUser} from 'state/currentUser/selectors'
+import { getCurrentUser } from 'state/currentUser/selectors'
 
 import css from './SelfServiceChatIntegrationArticleRecommendationPage.less'
 
@@ -26,7 +26,7 @@ const SelfServiceChatIntegrationArticleRecommendationPage = ({
     const sspTexts = GORGIAS_CHAT_SSP_TEXTS[language]
     const widgetTranslatedTexts = GORGIAS_CHAT_WIDGET_TEXTS[language]
 
-    const {decoration} = integration
+    const { decoration } = integration
 
     const agentMessages: AgentMessage[] = [
         {
@@ -77,7 +77,7 @@ const SelfServiceChatIntegrationArticleRecommendationPage = ({
                         >
                             {reply}
                         </div>
-                    )
+                    ),
                 )}
             </div>
         </MessageContent>

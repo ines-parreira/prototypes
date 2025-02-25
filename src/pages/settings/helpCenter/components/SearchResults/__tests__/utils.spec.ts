@@ -1,7 +1,7 @@
-import {Category} from 'models/helpCenter/types'
+import { Category } from 'models/helpCenter/types'
 
-import {searchResultsResponseFixture} from '../SearchResults.response.fixture'
-import {getMissingEntities, searchResultsTreeFromAlgolia} from '../utils'
+import { searchResultsResponseFixture } from '../SearchResults.response.fixture'
+import { getMissingEntities, searchResultsTreeFromAlgolia } from '../utils'
 
 const categoriesById: Record<string, Category> = {
     '0': {
@@ -55,7 +55,7 @@ describe('SearchResults utils', () => {
             const resultsTree = searchResultsTreeFromAlgolia(
                 searchResultsResponseFixture,
                 categoriesById,
-                articlesById
+                articlesById,
             )
 
             expect(resultsTree).toMatchSnapshot()
@@ -68,8 +68,8 @@ describe('SearchResults utils', () => {
                 searchResultsTreeFromAlgolia(
                     searchResultsResponseFixture,
                     categoriesById,
-                    articlesById
-                )
+                    articlesById,
+                ),
             )
 
             expect(notLoaded).toEqual({
@@ -132,8 +132,8 @@ describe('SearchResults utils', () => {
                         },
                     ],
                     categoriesById,
-                    articlesById
-                )
+                    articlesById,
+                ),
             )
 
             expect(notLoaded).toEqual({

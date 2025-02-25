@@ -1,14 +1,14 @@
-import {Map} from 'immutable'
 import React from 'react'
 
-import {Source, Template as TemplateType} from 'models/widget/types'
-import Placeholder from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/Placeholder'
-import {WidgetType} from 'state/widgets/types'
+import { Map } from 'immutable'
 
-import {WidgetContextProvider} from 'Widgets/contexts/WidgetContext'
+import { Source, Template as TemplateType } from 'models/widget/types'
+import Placeholder from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/Placeholder'
+import { WidgetType } from 'state/widgets/types'
+import { WidgetContextProvider } from 'Widgets/contexts/WidgetContext'
 import Template from 'Widgets/modules/Template'
 
-import {getWidgetByType} from '../helpers/getWidgetByType'
+import { getWidgetByType } from '../helpers/getWidgetByType'
 
 // This is where we remove immutable and start using plain JS objects for now
 export default function Widget({

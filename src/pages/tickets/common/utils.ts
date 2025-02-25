@@ -1,15 +1,16 @@
-import {MacroAction} from '@gorgias/api-queries'
-import {fromJS, Map} from 'immutable'
+import { fromJS, Map } from 'immutable'
 
-import {TicketMessageSourceType} from 'business/types/ticket'
-import {ActionTemplate} from 'config'
-import {ShopifyProductCardContentType} from 'constants/integrations/shopify'
-import {formatPhoneNumberInternational} from 'pages/phoneNumbers/utils'
+import { MacroAction } from '@gorgias/api-queries'
+
+import { TicketMessageSourceType } from 'business/types/ticket'
+import { ActionTemplate } from 'config'
+import { ShopifyProductCardContentType } from 'constants/integrations/shopify'
+import { formatPhoneNumberInternational } from 'pages/phoneNumbers/utils'
 import {
     getValuePropFromSourceType,
     isPhoneBasedSource,
 } from 'tickets/common/utils'
-import {getActionTemplate} from 'utils'
+import { getActionTemplate } from 'utils'
 
 /**
  * Return the label of the given person
@@ -23,7 +24,7 @@ type Person = {
 }
 export function getPersonLabelFromSource(
     person: Person,
-    sourceType: TicketMessageSourceType
+    sourceType: TicketMessageSourceType,
 ): string {
     const addressProp = getValuePropFromSourceType(sourceType)
     let address: string = (addressProp && person[addressProp]) || ''
@@ -41,7 +42,7 @@ export function getPersonLabelFromSource(
         // shrink email address if too long
         if (address.length > 45) {
             address = `${address.slice(0, 20)}[...]${address.slice(
-                address.length - 20
+                address.length - 20,
             )}`
         }
 
@@ -86,11 +87,11 @@ export function fileIconFromContentType(contentType: string): string {
 export const getSortedIntegrationActionsNames = (actions: ActionTemplate[]) =>
     fromJS(
         actions.reduce(
-            (sorted, {integrationType: type, name}) => {
-                return {...sorted, [type!]: [...(sorted[type!] || []), name]}
+            (sorted, { integrationType: type, name }) => {
+                return { ...sorted, [type!]: [...(sorted[type!] || []), name] }
             },
-            {} as {[key: string]: string[]}
-        )
+            {} as { [key: string]: string[] },
+        ),
     ) as Map<string, any>
 
 /**
@@ -105,7 +106,7 @@ export const getSortedIntegrationActions = (actions: MacroAction[]) =>
         (sorted, action) => {
             const name = action.name
             const type = getActionTemplate(name)?.integrationType || name
-            return {...sorted, [type]: [...(sorted[type] || []), action]}
+            return { ...sorted, [type]: [...(sorted[type] || []), action] }
         },
-        {} as {[key: string]: any[]}
+        {} as { [key: string]: any[] },
     )

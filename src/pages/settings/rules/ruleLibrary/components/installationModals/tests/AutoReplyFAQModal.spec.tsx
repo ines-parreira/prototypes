@@ -1,19 +1,18 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {Provider} from 'react-redux'
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-
 import thunk from 'redux-thunk'
 
-import {emptyManagedRule} from 'fixtures/rule'
-import {HelpCenter} from 'models/helpCenter/types'
-import {IntegrationType} from 'models/integration/constants'
-import {RootState, StoreDispatch} from 'state/types'
+import { emptyManagedRule } from 'fixtures/rule'
+import { HelpCenter } from 'models/helpCenter/types'
+import { IntegrationType } from 'models/integration/constants'
+import { RootState, StoreDispatch } from 'state/types'
 
-import {InstallationError} from '../../../constants'
-import {AutoReplyFAQModal} from '../AutoReplyFAQModal'
+import { InstallationError } from '../../../constants'
+import { AutoReplyFAQModal } from '../AutoReplyFAQModal'
 
 describe('<AutoReplyFAQModal/>', () => {
     const minProps: ComponentProps<typeof AutoReplyFAQModal> = {
@@ -28,17 +27,17 @@ describe('<AutoReplyFAQModal/>', () => {
         thunk,
     ])
     const createStoreWithHelpCenter = (
-        helpCenters: Record<string, HelpCenter>
+        helpCenters: Record<string, HelpCenter>,
     ) => {
         const store = mockStore({
             integrations: fromJS({
-                integrations: fromJS([{type: IntegrationType.Shopify}]),
+                integrations: fromJS([{ type: IntegrationType.Shopify }]),
             }),
             entities: {
                 helpCenter: {
-                    articles: {articlesById: {}},
-                    categories: {categoriesById: {}},
-                    helpCenters: {helpCentersById: helpCenters},
+                    articles: { articlesById: {} },
+                    categories: { categoriesById: {} },
+                    helpCenters: { helpCentersById: helpCenters },
                 },
             } as unknown as RootState['entities'],
         })
@@ -46,12 +45,12 @@ describe('<AutoReplyFAQModal/>', () => {
     }
     it('should render the autoclose spam body when Automate is subscribed', () => {
         const store = createStoreWithHelpCenter({
-            '1': {id: 1, type: 'faq'} as HelpCenter,
+            '1': { id: 1, type: 'faq' } as HelpCenter,
         })
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <AutoReplyFAQModal {...minProps} />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
         expect(minProps.handleDefaultSettings).toHaveBeenNthCalledWith(1, {
@@ -62,10 +61,10 @@ describe('<AutoReplyFAQModal/>', () => {
         const store = createStoreWithHelpCenter({
             '1': {} as HelpCenter,
         })
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <AutoReplyFAQModal {...minProps} />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -74,10 +73,10 @@ describe('<AutoReplyFAQModal/>', () => {
         render(
             <Provider store={store}>
                 <AutoReplyFAQModal {...minProps} />
-            </Provider>
+            </Provider>,
         )
         expect(minProps.handleInstallationError).toHaveBeenCalledWith(
-            InstallationError.NoHelpCenter
+            InstallationError.NoHelpCenter,
         )
     })
 })

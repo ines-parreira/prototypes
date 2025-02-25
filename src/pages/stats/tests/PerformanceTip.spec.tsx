@@ -1,5 +1,6 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import PerformanceTip from 'pages/stats/PerformanceTip'
 
@@ -24,7 +25,7 @@ describe('<PerformanceTip />', () => {
                     type={testName}
                 >
                     {content}
-                </PerformanceTip>
+                </PerformanceTip>,
             )
 
             expect(screen.getByText(iconText)).toBeInTheDocument()
@@ -36,7 +37,7 @@ describe('<PerformanceTip />', () => {
         render(<PerformanceTip showBenchmark={false}></PerformanceTip>)
         expect(screen.queryAllByText('-')).toHaveLength(0)
         expect(
-            screen.getByText('No data available for the selected filters.')
+            screen.getByText('No data available for the selected filters.'),
         ).toBeInTheDocument()
     })
     it(`should render with data without benchmark`, () => {
@@ -51,17 +52,17 @@ describe('<PerformanceTip />', () => {
         expect(screen.queryAllByText('-')).toHaveLength(2)
         expect(screen.getByText('No data')).toBeInTheDocument()
         expect(
-            screen.getByText('No data available for the selected filters.')
+            screen.getByText('No data available for the selected filters.'),
         ).toBeInTheDocument()
     })
     it(`should render with null data state`, () => {
         render(
-            <PerformanceTip topTen={null} avgMerchant={null}></PerformanceTip>
+            <PerformanceTip topTen={null} avgMerchant={null}></PerformanceTip>,
         )
         expect(screen.queryAllByText('-')).toHaveLength(2)
         expect(screen.getByText('No data')).toBeInTheDocument()
         expect(
-            screen.getByText('No data available for the selected filters.')
+            screen.getByText('No data available for the selected filters.'),
         ).toBeInTheDocument()
     })
 })

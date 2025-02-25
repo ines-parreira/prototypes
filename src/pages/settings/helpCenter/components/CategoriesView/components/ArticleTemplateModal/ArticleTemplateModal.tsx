@@ -1,7 +1,7 @@
 import React from 'react'
 
-import {SegmentEvent, logEvent} from 'common/segment'
-import {ArticleTemplate} from 'models/helpCenter/types'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { ArticleTemplate } from 'models/helpCenter/types'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
@@ -27,7 +27,7 @@ export const ArticleTemplateModal = ({
 }: Props) => {
     const sanitizedHtmlContent = (template.html_content || '')?.replace(
         /\\n/g,
-        ''
+        '',
     )
 
     const handleUseTemplate = () => {
@@ -36,7 +36,7 @@ export const ArticleTemplateModal = ({
             SegmentEvent.HelpCenterTemplatesUseTemplateButtonInModalClicked,
             {
                 template_key: template.key,
-            }
+            },
         )
         onClose()
     }

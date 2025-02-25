@@ -1,9 +1,9 @@
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
 import Filter from 'pages/stats/common/components/Filter'
-import {DropdownOption} from 'pages/stats/types'
+import { DropdownOption } from 'pages/stats/types'
 
-type Store = {id: number; name: string; type: string}
+type Store = { id: number; name: string; type: string }
 type Props = {
     stores: Store[]
     onStoreChange: (store: Store) => void
@@ -15,7 +15,11 @@ const storeToOption = (store: Store) => ({
     value: `${store.id}`,
 })
 
-export const StorePicker = ({stores, onStoreChange, selectedStore}: Props) => {
+export const StorePicker = ({
+    stores,
+    onStoreChange,
+    selectedStore,
+}: Props) => {
     const options = useMemo(() => stores.map(storeToOption), [stores])
 
     const onOptionChange = (opt: DropdownOption) => {
@@ -26,7 +30,7 @@ export const StorePicker = ({stores, onStoreChange, selectedStore}: Props) => {
     return (
         <Filter
             filterName={'Store'}
-            filterOptionGroups={[{options: options}]}
+            filterOptionGroups={[{ options: options }]}
             logicalOperators={[]}
             onChangeOption={onOptionChange}
             onSelectAll={() => {}}

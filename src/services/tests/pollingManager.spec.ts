@@ -1,5 +1,5 @@
-import {fromJS} from 'immutable'
-import configureMockStore, {MockStore} from 'redux-mock-store'
+import { fromJS } from 'immutable'
+import configureMockStore, { MockStore } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import pollingManager from '../pollingManager'
@@ -15,7 +15,7 @@ describe('services', () => {
         beforeEach(() => {
             jest.useFakeTimers()
             // mark the current user as inactive
-            store = mockStore({activity: fromJS({})})
+            store = mockStore({ activity: fromJS({}) })
             pollingManager.store = store
             window.DISABLE_ACTIVITY_POLLING = 'False'
             spy = jest.fn()
@@ -38,7 +38,7 @@ describe('services', () => {
         it('should start all pollings', () => {
             store.dispatch = spy
             const oldLocation = window.location
-            window.location = {pathname: '/app/tickets/123456'} as Location
+            window.location = { pathname: '/app/tickets/123456' } as Location
             pollingManager.start()
             // should set intervals to fetch resources periodically
             expect(setInterval).toHaveBeenCalledTimes(2)

@@ -1,5 +1,5 @@
 import useAppSelector from 'hooks/useAppSelector'
-import {getNewPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
+import { getNewPhoneNumbers } from 'state/entities/phoneNumbers/selectors'
 
 export default function usePhoneNumbers() {
     const phoneNumbers = useAppSelector(getNewPhoneNumbers)

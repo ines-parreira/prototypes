@@ -1,5 +1,5 @@
-import {Language} from 'constants/languages'
-import {GorgiasChatIntegrationMeta} from 'models/integration/types'
+import { Language } from 'constants/languages'
+import { GorgiasChatIntegrationMeta } from 'models/integration/types'
 
 import {
     getLanguagesFromChatConfig,
@@ -11,8 +11,8 @@ describe('getLanguagesFromChatConfig', () => {
     it('should return an array of languages if meta.languages exists', () => {
         const meta = {
             languages: [
-                {language: Language.EnglishUs, primary: true},
-                {language: Language.FrenchFr, primary: false},
+                { language: Language.EnglishUs, primary: true },
+                { language: Language.FrenchFr, primary: false },
             ],
         } as Partial<GorgiasChatIntegrationMeta> as GorgiasChatIntegrationMeta
         const result = getLanguagesFromChatConfig(meta)
@@ -39,8 +39,8 @@ describe('getPrimaryLanguageFromChatConfig', () => {
     it('should return the primary language from meta.languages', () => {
         const meta = {
             languages: [
-                {language: Language.FrenchFr, primary: true},
-                {language: Language.EnglishUs},
+                { language: Language.FrenchFr, primary: true },
+                { language: Language.EnglishUs },
             ],
         } as Partial<GorgiasChatIntegrationMeta> as GorgiasChatIntegrationMeta
         const result = getPrimaryLanguageFromChatConfig(meta)
@@ -65,8 +65,8 @@ describe('getPrimaryLanguageFromChatConfig', () => {
     it('should return "en-US" if no primary language is specified in meta.languages', () => {
         const meta = {
             languages: [
-                {language: Language.EnglishUs},
-                {language: Language.FrenchFr},
+                { language: Language.EnglishUs },
+                { language: Language.FrenchFr },
             ],
         } as Partial<GorgiasChatIntegrationMeta> as GorgiasChatIntegrationMeta
         const result = getPrimaryLanguageFromChatConfig(meta)

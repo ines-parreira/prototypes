@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
 import css from 'pages/common/components/SearchBar/SearchBar.less'
 import IconInput from 'pages/common/forms/input/IconInput'

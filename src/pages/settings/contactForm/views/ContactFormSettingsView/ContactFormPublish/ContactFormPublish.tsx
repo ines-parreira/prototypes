@@ -1,14 +1,22 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
 import React from 'react'
-import {Route, Switch} from 'react-router-dom'
-import {Button, FormGroup, Input, InputGroup, InputGroupAddon} from 'reactstrap'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import classNames from 'classnames'
+import { Route, Switch } from 'react-router-dom'
+import {
+    Button,
+    FormGroup,
+    Input,
+    InputGroup,
+    InputGroupAddon,
+} from 'reactstrap'
+
+import { Label } from '@gorgias/merchant-ui-kit'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import BackLink from 'pages/common/components/BackLink'
 import useClipboard from 'pages/common/hooks/useClipboard'
-import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
-import {ContactFormAutoEmbedReadinessStatus} from 'pages/settings/contactForm/components/ContactFormAutoEmbedPublishSection/types'
+import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
+import { ContactFormAutoEmbedReadinessStatus } from 'pages/settings/contactForm/components/ContactFormAutoEmbedPublishSection/types'
 import ContactFormIntegrationWarningBanner, {
     ContactFormIntegrationWarningBannerProps,
 } from 'pages/settings/contactForm/components/ContactFormIntegrationWarningBanner'
@@ -18,10 +26,10 @@ import {
     CONTACT_FORM_PUBLISH_PATH,
 } from 'pages/settings/contactForm/constants'
 import contactFormCss from 'pages/settings/contactForm/contactForm.less'
-import {useCurrentContactForm} from 'pages/settings/contactForm/hooks/useCurrentContactForm'
-import {useIsShopifyCredentialsWorking} from 'pages/settings/contactForm/hooks/useIsShopifyCredentialsWorking'
-import {useGetPageEmbedments} from 'pages/settings/contactForm/queries'
-import {insertContactFormIdParam} from 'pages/settings/contactForm/utils/navigation'
+import { useCurrentContactForm } from 'pages/settings/contactForm/hooks/useCurrentContactForm'
+import { useIsShopifyCredentialsWorking } from 'pages/settings/contactForm/hooks/useIsShopifyCredentialsWorking'
+import { useGetPageEmbedments } from 'pages/settings/contactForm/queries'
+import { insertContactFormIdParam } from 'pages/settings/contactForm/utils/navigation'
 import ManageEmbedments from 'pages/settings/contactForm/views/ContactFormSettingsView/ContactFormPublish/ManageEmbedments/ManageEmbedments'
 import settingsCss from 'pages/settings/settings.less'
 
@@ -58,11 +66,11 @@ const ContactFormPublish = (): JSX.Element => {
     const getPageEmbedments = useGetPageEmbedments(contactForm.id, {
         enabled: Boolean(contactForm.shop_name),
     })
-    const {copyButtonText} = useClipboard('#copy-shareable-link')
+    const { copyButtonText } = useClipboard('#copy-shareable-link')
 
-    const {isWorking, isLoading} = useIsShopifyCredentialsWorking()
+    const { isWorking, isLoading } = useIsShopifyCredentialsWorking()
 
-    const {integrationId, integration, needScopeUpdate} =
+    const { integrationId, integration, needScopeUpdate } =
         useShopifyIntegrationAndScope(contactForm.shop_name ?? '')
 
     const onCopyClick = () => {
@@ -86,7 +94,7 @@ const ContactFormPublish = (): JSX.Element => {
                     <BackLink
                         path={insertContactFormIdParam(
                             CONTACT_FORM_PUBLISH_PATH,
-                            contactForm.id
+                            contactForm.id,
                         )}
                         label={'Back to publishing methods'}
                     />
@@ -98,7 +106,7 @@ const ContactFormPublish = (): JSX.Element => {
                     <div
                         className={classNames(
                             contactFormCss.container,
-                            settingsCss.contentWrapper
+                            settingsCss.contentWrapper,
                         )}
                     >
                         <section>
@@ -106,7 +114,7 @@ const ContactFormPublish = (): JSX.Element => {
                                 <h2
                                     className={classNames(
                                         contactFormCss.sectionTitle,
-                                        contactFormCss.mbXxs
+                                        contactFormCss.mbXxs,
                                     )}
                                 >
                                     Publish

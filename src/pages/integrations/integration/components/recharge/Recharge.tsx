@@ -1,18 +1,19 @@
-import {List as ImmutableList, Map} from 'immutable'
 import React from 'react'
-import {Link, useParams, NavLink} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
+
+import { List as ImmutableList, Map } from 'immutable'
+import { Link, NavLink, useParams } from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationType} from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import Detail from 'pages/common/components/ProductDetail'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
 import ConnectLink from 'pages/integrations/components/ConnectLink'
-import {mapAppToDetail} from 'pages/integrations/mappers/appToDetail'
-import {getIntegrationConfig} from 'state/integrations/helpers'
-import {getEligibleShopifyIntegrationsFor} from 'state/integrations/selectors'
+import { mapAppToDetail } from 'pages/integrations/mappers/appToDetail'
+import { getIntegrationConfig } from 'state/integrations/helpers'
+import { getEligibleShopifyIntegrationsFor } from 'state/integrations/selectors'
 
 import Integration from './Integration'
 import List from './List'
@@ -26,12 +27,12 @@ type Props = {
     redirectUri: string
 }
 
-function Recharge({integration, integrations, loading, redirectUri}: Props) {
+function Recharge({ integration, integrations, loading, redirectUri }: Props) {
     const availableShopifyIntegrations = useAppSelector((state) =>
-        getEligibleShopifyIntegrationsFor(state)(IntegrationType.Recharge)
+        getEligibleShopifyIntegrationsFor(state)(IntegrationType.Recharge),
     )
 
-    const {integrationId} = useParams<{integrationId: string}>()
+    const { integrationId } = useParams<{ integrationId: string }>()
 
     const isNew = integrationId === 'new'
     const isIntegration = integrationId && integrationId !== connectionsPath
@@ -67,7 +68,7 @@ function Recharge({integration, integrations, loading, redirectUri}: Props) {
         isConnectionDisabled: hasNoAvailableShopifyIntegrations,
     }
 
-    const detailProps = mapAppToDetail({...rechargeConfig})
+    const detailProps = mapAppToDetail({ ...rechargeConfig })
     detailProps.alertBanner = alertBanner
     const CTA = (
         <ConnectLink

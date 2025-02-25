@@ -1,2 +1,2 @@
-export {default} from './ProductCardForCoupon'
+export { default } from './ProductCardForCoupon'
 export * from './ProductCardForCoupon'

@@ -1,18 +1,19 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
-import MockAdapter from 'axios-mock-adapter'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
+import MockAdapter from 'axios-mock-adapter'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {apiListCursorPaginationResponse} from 'fixtures/axiosResponse'
+import { apiListCursorPaginationResponse } from 'fixtures/axiosResponse'
 import client from 'models/api/resources'
 import {
     useGetHTTPEvent,
     useGetHTTPEvents,
 } from 'models/integration/queries/http'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 const mockedServer = new MockAdapter(client)
 const queryClient = mockQueryClient()
@@ -24,15 +25,15 @@ describe('queries.spec.tsx', () => {
     })
 
     describe('useGetHTTPEvents', () => {
-        const response = apiListCursorPaginationResponse([{id: 1}, {id: 2}])
+        const response = apiListCursorPaginationResponse([{ id: 1 }, { id: 2 }])
 
         it('should succeed and return proper data', async () => {
             const mockStore = configureMockStore([thunk])()
             mockedServer
                 .onGet('/api/integrations/1/events/')
                 .reply(200, response)
-            const {result, waitFor} = renderHook(() => useGetHTTPEvents(1), {
-                wrapper: ({children}) => (
+            const { result, waitFor } = renderHook(() => useGetHTTPEvents(1), {
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         <Provider store={mockStore}>{children}</Provider>
                     </QueryClientProvider>
@@ -48,9 +49,9 @@ describe('queries.spec.tsx', () => {
             const mockStore = configureMockStore([thunk])()
             mockedServer
                 .onGet('/api/custom-fields')
-                .reply(404, {message: 'error'})
-            const {result, waitFor} = renderHook(() => useGetHTTPEvents(1), {
-                wrapper: ({children}) => (
+                .reply(404, { message: 'error' })
+            const { result, waitFor } = renderHook(() => useGetHTTPEvents(1), {
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         <Provider store={mockStore}>{children}</Provider>
                     </QueryClientProvider>
@@ -65,22 +66,22 @@ describe('queries.spec.tsx', () => {
     })
 
     describe('useGetHTTPEvent', () => {
-        const response = {id: 1}
+        const response = { id: 1 }
 
         it('should succeed and return proper data', async () => {
             const mockStore = configureMockStore([thunk])()
             mockedServer
                 .onGet('/api/integrations/1/events/1')
                 .reply(200, response)
-            const {result, waitFor} = renderHook(
-                () => useGetHTTPEvent({integrationId: 1, eventId: 1}),
+            const { result, waitFor } = renderHook(
+                () => useGetHTTPEvent({ integrationId: 1, eventId: 1 }),
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
                             <Provider store={mockStore}>{children}</Provider>
                         </QueryClientProvider>
                     ),
-                }
+                },
             )
 
             await waitFor(() => expect(result.current.isSuccess).toBe(true))
@@ -92,17 +93,17 @@ describe('queries.spec.tsx', () => {
             const mockStore = configureMockStore([thunk])()
             mockedServer
                 .onGet('/api/integrations/1/events/1')
-                .reply(404, {message: 'error'})
+                .reply(404, { message: 'error' })
 
-            const {result, waitFor} = renderHook(
-                () => useGetHTTPEvent({integrationId: 1, eventId: 1}),
+            const { result, waitFor } = renderHook(
+                () => useGetHTTPEvent({ integrationId: 1, eventId: 1 }),
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
                             <Provider store={mockStore}>{children}</Provider>
                         </QueryClientProvider>
                     ),
-                }
+                },
             )
 
             await waitFor(() => {

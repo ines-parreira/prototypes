@@ -1,6 +1,6 @@
-import {ActionsDataFixture} from '../../tests/ActionsData.fixture'
-import {CreateAnActionTask} from '../CreateAnAction.task'
-import {buildRuleEngineData, buildRuleEngineRoutes} from './utils'
+import { ActionsDataFixture } from '../../tests/ActionsData.fixture'
+import { CreateAnActionTask } from '../CreateAnAction.task'
+import { buildRuleEngineData, buildRuleEngineRoutes } from './utils'
 
 describe('CreateAnAction', () => {
     it('should display the task if no action exists', () => {
@@ -10,7 +10,7 @@ describe('CreateAnAction', () => {
             buildRuleEngineData({
                 actions,
             }),
-            buildRuleEngineRoutes()
+            buildRuleEngineRoutes(),
         )
         expect(task.display).toBe(true)
     })
@@ -26,14 +26,14 @@ describe('CreateAnAction', () => {
         },
     ])(
         'should not display the task if any $type action exists',
-        ({actions}) => {
+        ({ actions }) => {
             const task = new CreateAnActionTask(
                 buildRuleEngineData({
                     actions,
                 }),
-                buildRuleEngineRoutes()
+                buildRuleEngineRoutes(),
             )
             expect(task.display).toBe(false)
-        }
+        },
     )
 })

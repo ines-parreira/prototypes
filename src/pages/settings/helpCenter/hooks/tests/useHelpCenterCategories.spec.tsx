@@ -1,20 +1,20 @@
-import {waitFor} from '@testing-library/react'
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
-import {Provider} from 'react-redux'
 
+import { waitFor } from '@testing-library/react'
+import { renderHook } from '@testing-library/react-hooks'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {getCategories} from 'state/entities/helpCenter/categories'
-import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/reducer'
-import {RootState, StoreDispatch} from 'state/types'
-import {initialState as uiState} from 'state/ui/helpCenter/reducer'
+import { getCategories } from 'state/entities/helpCenter/categories'
+import { initialState as helpCenterInitialState } from 'state/entities/helpCenter/reducer'
+import { RootState, StoreDispatch } from 'state/types'
+import { initialState as uiState } from 'state/ui/helpCenter/reducer'
 
-import {getSingleHelpCenterResponseFixture} from '../../fixtures/getHelpCentersResponse.fixture'
+import { getSingleHelpCenterResponseFixture } from '../../fixtures/getHelpCentersResponse.fixture'
 import useCurrentHelpCenter from '../../hooks/useCurrentHelpCenter'
-import {useCategoriesActions} from '../useCategoriesActions'
-import {useHelpCenterCategories} from '../useHelpCenterCategories'
+import { useCategoriesActions } from '../useCategoriesActions'
+import { useHelpCenterCategories } from '../useHelpCenterCategories'
 
 jest.mock('../useCategoriesActions')
 ;(useCategoriesActions as jest.Mock).mockReturnValue({
@@ -23,7 +23,7 @@ jest.mock('../useCategoriesActions')
 
 jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
 ;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
-    getSingleHelpCenterResponseFixture
+    getSingleHelpCenterResponseFixture,
 )
 
 jest.mock('state/entities/helpCenter/categories', () => ({
@@ -35,7 +35,7 @@ const defaultState: Partial<RootState> = {
     entities: {
         helpCenter: helpCenterInitialState,
     } as any,
-    ui: {helpCenter: uiState} as any,
+    ui: { helpCenter: uiState } as any,
 }
 
 // TODO: This should be extracted in a tests utils folder
@@ -47,11 +47,11 @@ const dependencyWrapper: React.ComponentType<any> = ({
 
 describe('useHelpCenterCategories', () => {
     it('finishes loading once the requests are done', async () => {
-        const {result} = renderHook(
-            () => useHelpCenterCategories({locale: 'en-US'}),
+        const { result } = renderHook(
+            () => useHelpCenterCategories({ locale: 'en-US' }),
             {
                 wrapper: dependencyWrapper,
-            }
+            },
         )
         expect(result.current.isLoading).toBeTruthy()
         await waitFor(() => {
@@ -60,7 +60,7 @@ describe('useHelpCenterCategories', () => {
     })
 
     it('uses the getCategories selector', () => {
-        renderHook(() => useHelpCenterCategories({locale: 'en-US'}), {
+        renderHook(() => useHelpCenterCategories({ locale: 'en-US' }), {
             wrapper: dependencyWrapper,
         })
         expect(getCategories).toHaveBeenCalled()

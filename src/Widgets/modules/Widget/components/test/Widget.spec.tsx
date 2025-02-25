@@ -1,20 +1,20 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps, ReactNode} from 'react'
+import React, { ComponentProps, ReactNode } from 'react'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
 
 import Placeholder from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/Placeholder'
-import {assumeMock} from 'utils/testing'
-
-import {WidgetContextProvider} from 'Widgets/contexts/WidgetContext'
+import { assumeMock } from 'utils/testing'
+import { WidgetContextProvider } from 'Widgets/contexts/WidgetContext'
 import Template from 'Widgets/modules/Template'
 import Widget from 'Widgets/modules/Widget'
 
-import {getWidgetByType} from '../../helpers/getWidgetByType'
+import { getWidgetByType } from '../../helpers/getWidgetByType'
 
 jest.mock('Widgets/modules/Template')
 jest.mock('../../helpers/getWidgetByType')
 jest.mock(
-    'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/Placeholder'
+    'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/Placeholder',
 )
 jest.mock(
     'Widgets/contexts/WidgetContext',
@@ -22,9 +22,9 @@ jest.mock(
         ({
             ...jest.requireActual('Widgets/contexts/WidgetContext'),
             WidgetContextProvider: jest.fn(
-                ({children}: {children: ReactNode}) => children
+                ({ children }: { children: ReactNode }) => children,
             ),
-        }) as Record<string, unknown>
+        }) as Record<string, unknown>,
 )
 const TemplateMock = assumeMock(Template)
 const PlaceholderMock = assumeMock(Placeholder)
@@ -61,7 +61,7 @@ describe('Widget', () => {
                 value: props.widget,
                 children: expect.anything(),
             },
-            expect.anything()
+            expect.anything(),
         )
     })
 
@@ -73,7 +73,7 @@ describe('Widget', () => {
                 isEditing: true,
                 template: passedTemplate,
             },
-            expect.anything()
+            expect.anything(),
         )
     })
 
@@ -87,7 +87,7 @@ describe('Widget', () => {
                 source: props.source?.toJS(),
                 template: passedTemplate,
             },
-            expect.anything()
+            expect.anything(),
         )
     })
 
@@ -102,7 +102,7 @@ describe('Widget', () => {
                 source: props.source?.toJS(),
                 template: passedTemplate,
             },
-            expect.anything()
+            expect.anything(),
         )
     })
 })

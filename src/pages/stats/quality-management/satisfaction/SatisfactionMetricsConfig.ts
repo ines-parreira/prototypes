@@ -22,7 +22,7 @@ import {
     fetchSurveysSentTrend,
     useSurveysSentTrend,
 } from 'hooks/reporting/quality-management/satisfaction/useSurveysSentTrend'
-import {SatisfactionMetric} from 'state/ui/stats/types'
+import { SatisfactionMetric } from 'state/ui/stats/types'
 
 export const SATISFACTION_SCORE_LABEL = 'Satisfaction score'
 export const RESPONSE_RATE_LABEL = 'Response rate'
@@ -85,7 +85,7 @@ export const SatisfactionMetricConfig = {
         hint: {
             title: AVERAGE_CSAT_PER_DIMENSION_DESCRIPTION.replace(
                 '{dimension}',
-                'channel'
+                'channel',
             ),
         },
         interpretAs: 'more-is-better',
@@ -99,7 +99,7 @@ export const SatisfactionMetricConfig = {
         hint: {
             title: AVERAGE_CSAT_PER_DIMENSION_DESCRIPTION.replace(
                 '{dimension}',
-                'assignee'
+                'assignee',
             ),
         },
         interpretAs: 'more-is-better',
@@ -113,7 +113,7 @@ export const SatisfactionMetricConfig = {
         hint: {
             title: AVERAGE_CSAT_PER_DIMENSION_DESCRIPTION.replace(
                 '{dimension}',
-                'integration'
+                'integration',
             ),
         },
         interpretAs: 'more-is-better',

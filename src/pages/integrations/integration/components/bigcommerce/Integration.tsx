@@ -1,8 +1,9 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import {Map} from 'immutable'
+import React, { FormEvent, useCallback } from 'react'
 
-import React, {FormEvent, useCallback} from 'react'
-import {Col, Container, Row} from 'reactstrap'
+import { Map } from 'immutable'
+import { Col, Container, Row } from 'reactstrap'
+
+import { Label } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import Button from 'pages/common/components/button/Button'
@@ -10,9 +11,9 @@ import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import TextInput from 'pages/common/forms/input/TextInput'
-import {getConnectUrl} from 'pages/integrations/integration/components/bigcommerce/Utils'
+import { getConnectUrl } from 'pages/integrations/integration/components/bigcommerce/Utils'
 import SyncNotification from 'pages/integrations/integration/components/SyncNotification'
-import {INTEGRATION_REMOVAL_CONFIGURATION_TEXT} from 'pages/integrations/integration/constants'
+import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 import useAuthenticationPolling from 'pages/integrations/integration/hooks/useAuthenticationPolling'
 import useQueryNotify from 'pages/integrations/integration/hooks/useQueryNotify'
 import settingsCss from 'pages/settings/settings.less'
@@ -27,7 +28,7 @@ type Props = {
     redirectUri: string
 }
 
-const Integration = ({integration, loading}: Props) => {
+const Integration = ({ integration, loading }: Props) => {
     const dispatch = useAppDispatch()
     useQueryNotify()
     const isAuthenticationPending = useAuthenticationPolling(integration)
@@ -57,7 +58,7 @@ const Integration = ({integration, loading}: Props) => {
         'is_over',
     ])
     const needScopeUpdate = Boolean(
-        integration.getIn(['meta', 'need_scope_update'], false)
+        integration.getIn(['meta', 'need_scope_update'], false),
     )
     const shopName = integration.getIn(['meta', 'shop_name'])
 
@@ -67,7 +68,7 @@ const Integration = ({integration, loading}: Props) => {
 
             void dispatch(updateOrCreateIntegrationRequest(integration))
         },
-        [dispatch, integration]
+        [dispatch, integration],
     )
 
     if (loading.get('integration')) {

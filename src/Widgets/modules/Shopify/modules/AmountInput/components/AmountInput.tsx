@@ -1,10 +1,11 @@
+import React, { PureComponent } from 'react'
+
 import classnames from 'classnames'
 import _noop from 'lodash/noop'
-import React, {PureComponent} from 'react'
 
-import {NON_FRACTIONAL_CURRENCIES} from 'constants/integrations/shopify'
+import { NON_FRACTIONAL_CURRENCIES } from 'constants/integrations/shopify'
 import NumberInput from 'pages/common/forms/input/NumberInput'
-import {getMoneySymbol} from 'utils/getMoneySymbol'
+import { getMoneySymbol } from 'utils/getMoneySymbol'
 
 import css from './AmountInput.less'
 
@@ -43,7 +44,7 @@ export default class AmountInput extends PureComponent<Props> {
     }
 
     _onChange = (nextValue?: number) => {
-        const {onChange} = this.props
+        const { onChange } = this.props
 
         onChange(nextValue || 0)
     }
@@ -77,7 +78,7 @@ export default class AmountInput extends PureComponent<Props> {
                     isRequired={required}
                     isDisabled={disabled}
                     onChange={this._onChange}
-                    {...(hasRightLabel ? {suffix: label} : {prefix: label})}
+                    {...(hasRightLabel ? { suffix: label } : { prefix: label })}
                 />
             </div>
         )

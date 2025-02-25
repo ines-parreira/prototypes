@@ -1,5 +1,6 @@
+import React, { useMemo } from 'react'
+
 import classNames from 'classnames'
-import React, {useMemo} from 'react'
 
 import gorgiasLogo from 'assets/img/icons/gorgias-icon-logo-black.png'
 
@@ -8,12 +9,10 @@ import {
     MigrationState,
     MigrationStatus,
 } from '../../types'
-import {ParsedSessionStats} from '../../utils'
-
+import { ParsedSessionStats } from '../../utils'
 import MigrationBaseModal from '../MigrationBaseModal'
 import MigrationBaseModalBody from '../MigrationBaseModalBody'
 import MigrationProviderPair from '../MigrationProviderPair'
-
 import MigrationConnectedActions from './components/MigrationConnectedActions'
 import MigrationFailedActions from './components/MigrationFailedActions'
 import MigrationFailuresDetails from './components/MigrationFailuresDetails'
@@ -42,7 +41,7 @@ const MigrationStateModal: React.FC<Props> = ({
     stats,
     isRevert,
 }) => {
-    const {status} = state
+    const { status } = state
 
     const migrationDidEnd = ![
         MigrationStatus.Connected,
@@ -116,7 +115,7 @@ const MigrationStateModal: React.FC<Props> = ({
                             <i
                                 className={classNames(
                                     css.checkIcon,
-                                    'material-icons'
+                                    'material-icons',
                                 )}
                             >
                                 check

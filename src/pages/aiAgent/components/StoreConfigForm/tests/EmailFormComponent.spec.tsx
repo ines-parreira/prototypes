@@ -1,11 +1,12 @@
-import {render, screen, fireEvent} from '@testing-library/react'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 
-import {EmailFormComponent} from '../FormComponents/EmailFormComponent'
+import { EmailFormComponent } from '../FormComponents/EmailFormComponent'
 
 // Mock dependencies
 jest.mock('launchdarkly-react-client-sdk')
@@ -45,7 +46,7 @@ jest.mock(
                 </button>
             </div>
         ),
-    })
+    }),
 )
 
 const mockUseAppSelector = jest.mocked(useAppSelector)
@@ -54,8 +55,8 @@ const mockUpdateValue = jest.fn()
 
 describe('EmailFormComponent', () => {
     const mockEmailIntegrations = [
-        {id: 1, meta: {address: 'email1@example.com'}},
-        {id: 2, meta: {address: 'email2@example.com'}},
+        { id: 1, meta: { address: 'email1@example.com' } },
+        { id: 2, meta: { address: 'email2@example.com' } },
     ]
 
     const defaultProps = {
@@ -76,28 +77,30 @@ describe('EmailFormComponent', () => {
 
         expect(
             screen.getByText(
-                /AI Agent responds to tickets sent to the following email addresses/
-            )
+                /AI Agent responds to tickets sent to the following email addresses/,
+            ),
         ).toBeInTheDocument()
         expect(screen.getByText('email1@example.com')).toBeInTheDocument()
         expect(screen.getByText('email2@example.com')).toBeInTheDocument()
         expect(
-            screen.getByText('One or more addresses required.')
+            screen.getByText('One or more addresses required.'),
         ).toBeInTheDocument()
     })
 
     it('displays correct footer message when email is selected', () => {
         const props = {
             ...defaultProps,
-            monitoredEmailIntegrations: [{id: 1, email: 'email1@example.com'}],
+            monitoredEmailIntegrations: [
+                { id: 1, email: 'email1@example.com' },
+            ],
         }
 
         render(<EmailFormComponent {...props} />)
 
         expect(
             screen.getByText(
-                'Select one or more email addresses for AI Agent to use. It will also reply to contact forms linked to these email addresses.'
-            )
+                'Select one or more email addresses for AI Agent to use. It will also reply to contact forms linked to these email addresses.',
+            ),
         ).toBeInTheDocument()
     })
 
@@ -108,7 +111,7 @@ describe('EmailFormComponent', () => {
 
         expect(mockUpdateValue).toHaveBeenCalledWith(
             'monitoredEmailIntegrations',
-            [{id: 1, email: 'email1@example.com'}]
+            [{ id: 1, email: 'email1@example.com' }],
         )
     })
 
@@ -121,11 +124,11 @@ describe('EmailFormComponent', () => {
 
         expect(
             screen.getByText(
-                /AI Agent responds to tickets sent to the following email addresses/
-            )
+                /AI Agent responds to tickets sent to the following email addresses/,
+            ),
         ).toBeInTheDocument()
         expect(
-            screen.queryByText('At least one email is required.')
+            screen.queryByText('At least one email is required.'),
         ).not.toBeInTheDocument()
     })
 
@@ -137,12 +140,12 @@ describe('EmailFormComponent', () => {
         render(<EmailFormComponent {...defaultProps} isRequired={true} />)
 
         expect(
-            screen.getByText('One or more addresses required.')
+            screen.getByText('One or more addresses required.'),
         ).toBeInTheDocument()
         expect(
             screen.getByText(
-                /AI Agent responds to tickets sent to the following email addresses/
-            )
+                /AI Agent responds to tickets sent to the following email addresses/,
+            ),
         ).toBeInTheDocument()
     })
 })

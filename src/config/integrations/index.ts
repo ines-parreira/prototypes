@@ -35,7 +35,7 @@ const CHAT_AUTO_RESPONDER_TEXTS: Record<
     Record<string, string>
 > = CHAT_AUTO_RESPONDER_TEXTS_IMPORT
 
-export {CHAT_AUTO_RESPONDER_TEXTS}
+export { CHAT_AUTO_RESPONDER_TEXTS }
 
 const getIntegrationVariables = (variableStoreName: string) => {
     let variables: Array<ValueOf<(typeof allIntegrations)[number]>> = []
@@ -56,11 +56,11 @@ const getIntegrationVariables = (variableStoreName: string) => {
 export const INTEGRATION_VARIABLES = getIntegrationVariables('MACRO_VARIABLES')
 
 export const INTEGRATION_HIDDEN_VARIABLES = getIntegrationVariables(
-    'MACRO_HIDDEN_VARIABLES'
+    'MACRO_HIDDEN_VARIABLES',
 )
 
 export const INTEGRATION_PREVIOUS_VARIABLES = getIntegrationVariables(
-    'MACRO_PREVIOUS_VARIABLES'
+    'MACRO_PREVIOUS_VARIABLES',
 )
 
 const getIntegrationTypesWithVariables = () => {

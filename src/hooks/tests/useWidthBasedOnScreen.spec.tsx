@@ -1,7 +1,7 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {useWidthBasedOnScreen} from 'hooks/useWidthBasedOnScreen'
-import {mockRequestAnimationFrame, triggerWidthResize} from 'utils/testing'
+import { useWidthBasedOnScreen } from 'hooks/useWidthBasedOnScreen'
+import { mockRequestAnimationFrame, triggerWidthResize } from 'utils/testing'
 
 const rafControl = mockRequestAnimationFrame()
 
@@ -31,15 +31,15 @@ describe('useWidthBasedOnScreen', () => {
         },
     ])(
         'should return width based on $screenSize size',
-        ({screenSize, baseWidth, smallScreenWidth, expectedValue}) => {
-            const {result} = renderHook(() => useWidthBasedOnScreen())
+        ({ screenSize, baseWidth, smallScreenWidth, expectedValue }) => {
+            const { result } = renderHook(() => useWidthBasedOnScreen())
 
             triggerWidthResize(screenSize)
             rafControl.run()
 
             expect(result.current(baseWidth, smallScreenWidth)).toBe(
-                expectedValue
+                expectedValue,
             )
-        }
+        },
     )
 })

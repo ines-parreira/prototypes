@@ -1,39 +1,41 @@
-import React, {useState, useMemo, useEffect} from 'react'
-import {Collapse} from 'reactstrap'
+import React, { useEffect, useMemo, useState } from 'react'
 
-import {useUpdateOrDeleteTicketFieldValue} from 'custom-fields/hooks/queries/useUpdateOrDeleteTicketFieldValue'
+import { Collapse } from 'reactstrap'
+
+import { useUpdateOrDeleteTicketFieldValue } from 'custom-fields/hooks/queries/useUpdateOrDeleteTicketFieldValue'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {Ticket} from 'models/ticket/types'
+import { Ticket } from 'models/ticket/types'
 import Button from 'pages/common/components/button/Button'
-import {createInputId} from 'pages/tickets/detail/components/TicketFields/components/fields/DropdownField'
-import {updateCustomFieldState} from 'state/ticket/actions'
+import { createInputId } from 'pages/tickets/detail/components/TicketFields/components/fields/DropdownField'
+import { updateCustomFieldState } from 'state/ticket/actions'
 
-import css from './AISuggestionContactReason.less'
 import InTicketSuggestionContainer from './InTicketSuggestionContainer'
 import SuggestionHeader from './SuggestionHeader'
+
+import css from './AISuggestionContactReason.less'
 
 type Props = {
     ticket: Ticket
 }
 
-export default function ContactReasonSuggestion({ticket}: Props) {
+export default function ContactReasonSuggestion({ ticket }: Props) {
     const dispatch = useAppDispatch()
-    const {mutate} = useUpdateOrDeleteTicketFieldValue()
+    const { mutate } = useUpdateOrDeleteTicketFieldValue()
     const [isConfirmed, setConfirmed] = useState(false)
     const [collapse, setCollapse] = useState(false)
     const [isCollpsed, setIsCollpsed] = useState(false)
 
     const contactReasonPrediction = useMemo(
         () =>
-            Object.values(ticket.custom_fields || {}).find(({prediction}) => {
+            Object.values(ticket.custom_fields || {}).find(({ prediction }) => {
                 return prediction?.display
             }),
-        [ticket]
+        [ticket],
     )
 
     useEffect(() => {
         if (!contactReasonPrediction?.prediction) return
-        const {prediction, hasError, value} = contactReasonPrediction
+        const { prediction, hasError, value } = contactReasonPrediction
 
         if (
             !prediction.confirmed &&
@@ -51,7 +53,7 @@ export default function ContactReasonSuggestion({ticket}: Props) {
         createInputId(ticket.id, contactReasonPrediction?.id ?? '') + '-input'
 
     const contactReasonElement = document.getElementById(
-        contactReasonDropdownInputId
+        contactReasonDropdownInputId,
     )
 
     const handleChangeReason = () => {
@@ -69,7 +71,7 @@ export default function ContactReasonSuggestion({ticket}: Props) {
                     ...contactReasonPrediction.prediction,
                     confirmed: true,
                 },
-            })
+            }),
         )
         mutate([
             {
@@ -146,7 +148,7 @@ export default function ContactReasonSuggestion({ticket}: Props) {
                                 <b>
                                     {contactReasonPrediction?.prediction?.predicted.replace(
                                         /::/g,
-                                        ' - '
+                                        ' - ',
                                     )}
                                 </b>{' '}
                                 as the Contact reason.

@@ -1,26 +1,26 @@
 import React from 'react'
 
-import {DashboardChartProps} from 'pages/stats/custom-reports/types'
+import { DashboardChartProps } from 'pages/stats/custom-reports/types'
 import VoiceCallCallerExperienceMetric from 'pages/stats/voice/components/VoiceCallerExperienceMetric/VoiceCallCallerExperienceMetric'
 import {
     AVERAGE_WAIT_TIME_METRIC_HINT,
     AVERAGE_WAIT_TIME_METRIC_TITLE,
 } from 'pages/stats/voice/constants/voiceOverview'
-import {useNewVoiceStatsFilters} from 'pages/stats/voice/hooks/useNewVoiceStatsFilters'
-import {useVoiceCallAverageTimeTrend} from 'pages/stats/voice/hooks/useVoiceCallAverageTimeTrend'
-import {VoiceCallAverageTimeMetric} from 'pages/stats/voice/models/types'
-import {VoiceMetric} from 'state/ui/stats/types'
+import { useNewVoiceStatsFilters } from 'pages/stats/voice/hooks/useNewVoiceStatsFilters'
+import { useVoiceCallAverageTimeTrend } from 'pages/stats/voice/hooks/useVoiceCallAverageTimeTrend'
+import { VoiceCallAverageTimeMetric } from 'pages/stats/voice/models/types'
+import { VoiceMetric } from 'state/ui/stats/types'
 
 export const VoiceCallCallerExperienceAverageWaitTimeChart = ({
     chartId,
     dashboard,
 }: DashboardChartProps) => {
-    const {cleanStatsFilters, userTimezone, isAnalyticsNewFilters} =
+    const { cleanStatsFilters, userTimezone, isAnalyticsNewFilters } =
         useNewVoiceStatsFilters()
     const averageWaitTimeTrend = useVoiceCallAverageTimeTrend(
         VoiceCallAverageTimeMetric.WaitTime,
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
 
     return (

@@ -1,27 +1,26 @@
 import React from 'react'
 
-import {TicketVia} from 'business/types/ticket'
-
-import {SegmentEvent} from 'common/segment'
-import {logEventWithSampling} from 'common/segment/segment'
+import { TicketVia } from 'business/types/ticket'
+import { SegmentEvent } from 'common/segment'
+import { logEventWithSampling } from 'common/segment/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {useGetAiAgentFeedback} from 'models/aiAgentFeedback/queries'
-
+import { useGetAiAgentFeedback } from 'models/aiAgentFeedback/queries'
 import Button from 'pages/common/components/button/Button'
-import {getAIAgentMessages} from 'state/ticket/selectors'
+import { getAIAgentMessages } from 'state/ticket/selectors'
 import {
     changeTicketMessage,
     getSelectedAIMessage,
 } from 'state/ui/ticketAIAgentFeedback'
 
-import {useAIAgentResourcesWithFeedback} from '../../hooks/useAIAgentResourcesWithFeedback'
-import css from './AIAgentFeedbackBar.less'
+import { useAIAgentResourcesWithFeedback } from '../../hooks/useAIAgentResourcesWithFeedback'
 import AIAgentMessageFeedback from './AIAgentMessageFeedback'
 import AIAgentTicketFeedback from './AIAgentTicketFeedback'
 import useAiAgentMessageFeedback from './hooks/useAiAgentMessageFeedback'
-import {ActionStatus} from './types'
-import {isTrialMessageFromAIAgent} from './utils'
+import { ActionStatus } from './types'
+import { isTrialMessageFromAIAgent } from './utils'
+
+import css from './AIAgentFeedbackBar.less'
 
 export const FEEDBACK_TICKET_SUMMARY_TEST_ID = 'feedback-bar'
 export const FEEDBACK_MESSAGE_CONTAINER_TEST_ID = 'feedback-message-container'
@@ -34,7 +33,7 @@ const AIAgentFeedbackBar = () => {
     const aiMessages = useAppSelector(getAIAgentMessages)
     const publicAIMessages = aiMessages.filter((message) => message.public)
 
-    const {data} = useGetAiAgentFeedback({
+    const { data } = useGetAiAgentFeedback({
         refetchOnWindowFocus: false,
     })
 
@@ -53,13 +52,13 @@ const AIAgentFeedbackBar = () => {
         dispatch(
             changeTicketMessage({
                 message: publicAIMessages.find(
-                    (message) => message.via === TicketVia.Api
+                    (message) => message.via === TicketVia.Api,
                 ),
-            })
+            }),
         )
         logEventWithSampling(
             SegmentEvent.AiAgentFeedbackFirstMessageButtonClicked,
-            {}
+            {},
         )
     }
 
@@ -72,7 +71,7 @@ const AIAgentFeedbackBar = () => {
             const hardAction = resourceWithFeedback.actions.find(
                 (action) =>
                     action.type === 'hard_action' &&
-                    action.status === ActionStatus.NOT_CONFIRMED
+                    action.status === ActionStatus.NOT_CONFIRMED,
             )
 
             if (hardAction) {

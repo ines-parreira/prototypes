@@ -1,19 +1,19 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 import moment from 'moment'
 import * as reapop from 'reapop'
 
-import {IntegrationType} from 'models/integration/constants'
+import { IntegrationType } from 'models/integration/constants'
 import * as actions from 'state/notifications/actions'
 
 import {
+    CLUSTER_GROUP_ID,
+    DISMISSED_MAINTENANCES_LOCAL_STORAGE_KEY,
+    DISMISSED_NOTIFICATIONS_LOCAL_STORAGE_KEY,
+    HELPCENTER_GROUP_ID,
     HELPDESK_GROUP_IDS,
-    MAINTENANCE_STATUSES,
     INCIDENTS_NOTIFICATION_ID,
     MAINTENANCE_NOTIFICATION_ID,
-    CLUSTER_GROUP_ID,
-    DISMISSED_NOTIFICATIONS_LOCAL_STORAGE_KEY,
-    DISMISSED_MAINTENANCES_LOCAL_STORAGE_KEY,
-    HELPCENTER_GROUP_ID,
+    MAINTENANCE_STATUSES,
 } from '../constants'
 import statusPageManager from '../statusPageManager'
 import {
@@ -32,15 +32,15 @@ describe('statusPageManager', () => {
     })
 
     describe('processIncidents()', () => {
-        it.each([null, {}, {invalid: 'data'}])(
+        it.each([null, {}, { invalid: 'data' }])(
             'should throw an error if data is `%s`',
             (data) => {
                 expect(() => {
                     statusPageManager.processIncidents(
-                        data as StatusPageIncidentsResponseData
+                        data as StatusPageIncidentsResponseData,
                     )
                 }).toThrow()
-            }
+            },
         )
 
         it('should remove notification of previous incident', () => {
@@ -79,15 +79,15 @@ describe('statusPageManager', () => {
                 ],
             }
             statusPageManager.processIncidents(
-                args as StatusPageIncidentsResponseData
+                args as StatusPageIncidentsResponseData,
             )
             statusPageManager.processIncidents(
-                args as StatusPageIncidentsResponseData
+                args as StatusPageIncidentsResponseData,
             )
 
             expect(dismissNotificationSpy).toHaveBeenCalledTimes(1)
             expect(dismissNotificationSpy).toBeCalledWith(
-                `${INCIDENTS_NOTIFICATION_ID}-incident-id`
+                `${INCIDENTS_NOTIFICATION_ID}-incident-id`,
             )
         })
 
@@ -180,7 +180,7 @@ describe('statusPageManager', () => {
             const id = 'this-is-my-id'
             localStorage.setItem(
                 DISMISSED_NOTIFICATIONS_LOCAL_STORAGE_KEY,
-                JSON.stringify([id])
+                JSON.stringify([id]),
             )
 
             statusPageManager.processIncidents({
@@ -214,7 +214,7 @@ describe('statusPageManager', () => {
             const id = 'this-is-another-incident-id'
             localStorage.setItem(
                 DISMISSED_NOTIFICATIONS_LOCAL_STORAGE_KEY,
-                JSON.stringify([id])
+                JSON.stringify([id]),
             )
 
             statusPageManager.processIncidents({
@@ -407,15 +407,15 @@ describe('statusPageManager', () => {
     })
 
     describe('processScheduledMaintenances()', () => {
-        it.each([null, {}, {invalid: 'data'}])(
+        it.each([null, {}, { invalid: 'data' }])(
             'should throw an error if data is `%s`',
             (data) => {
                 expect(() => {
                     statusPageManager.processScheduledMaintenances(
-                        data as StatusPageScheduledMaintenanceResponseData
+                        data as StatusPageScheduledMaintenanceResponseData,
                     )
                 }).toThrow()
-            }
+            },
         )
 
         it.each(Object.values(MAINTENANCE_STATUSES))(
@@ -448,10 +448,10 @@ describe('statusPageManager', () => {
                 } as unknown as StatusPageScheduledMaintenanceResponseData)
                 expect(dismissNotificationSpy).toHaveBeenCalledTimes(1)
                 expect(dismissNotificationSpy).toBeCalledWith(
-                    MAINTENANCE_NOTIFICATION_ID
+                    MAINTENANCE_NOTIFICATION_ID,
                 )
                 expect(notifySpy.mock.calls).toMatchSnapshot()
-            }
+            },
         )
 
         describe('cluster filtering', () => {
@@ -560,7 +560,7 @@ describe('statusPageManager', () => {
 
                 localStorage.setItem(
                     DISMISSED_MAINTENANCES_LOCAL_STORAGE_KEY,
-                    JSON.stringify([id])
+                    JSON.stringify([id]),
                 )
 
                 statusPageManager.processScheduledMaintenances({

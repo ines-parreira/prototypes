@@ -1,15 +1,15 @@
-import {UseQueryResult} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
+import { UseQueryResult } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment'
 
-import {VoiceCallMeasure} from 'models/reporting/cubes/VoiceCallCube'
-import {usePostReporting} from 'models/reporting/queries'
-import {voiceCallCountQueryFactory} from 'models/reporting/queryFactories/voice/voiceCall'
-import {StatsFilters} from 'models/stat/types'
-import {formatReportingQueryDate} from 'utils/reporting'
-import {assumeMock} from 'utils/testing'
+import { VoiceCallMeasure } from 'models/reporting/cubes/VoiceCallCube'
+import { usePostReporting } from 'models/reporting/queries'
+import { voiceCallCountQueryFactory } from 'models/reporting/queryFactories/voice/voiceCall'
+import { StatsFilters } from 'models/stat/types'
+import { formatReportingQueryDate } from 'utils/reporting'
+import { assumeMock } from 'utils/testing'
 
-import {useVoiceCallCount} from '../useVoiceCallCount'
+import { useVoiceCallCount } from '../useVoiceCallCount'
 
 jest.mock('models/reporting/queries')
 const usePostReportingMock = assumeMock(usePostReporting)
@@ -24,14 +24,14 @@ describe('useVoiceCallCount', () => {
 
     it('should usePostReporting with query and select', () => {
         usePostReportingMock.mockReturnValueOnce({
-            data: [{[VoiceCallMeasure.VoiceCallCount]: '10'}],
+            data: [{ [VoiceCallMeasure.VoiceCallCount]: '10' }],
         } as UseQueryResult)
 
         const results = renderHook(() => useVoiceCallCount(statsFilters, 'UTC'))
 
         expect(usePostReportingMock.mock.calls[0]).toEqual([
             [voiceCallCountQueryFactory(statsFilters, 'UTC', undefined)],
-            {select: expect.any(Function)},
+            { select: expect.any(Function) },
         ])
         expect(results.result.current).toEqual({
             total: 10,
@@ -41,12 +41,12 @@ describe('useVoiceCallCount', () => {
 
     it('should usePostReporting with different page size', () => {
         usePostReportingMock.mockReturnValueOnce({
-            data: [{[VoiceCallMeasure.VoiceCallCount]: '10'}],
+            data: [{ [VoiceCallMeasure.VoiceCallCount]: '10' }],
             isFetching: true,
         } as UseQueryResult)
 
         const results = renderHook(() =>
-            useVoiceCallCount(statsFilters, 'UTC', undefined, 5)
+            useVoiceCallCount(statsFilters, 'UTC', undefined, 5),
         )
 
         expect(results.result.current).toEqual({
@@ -61,9 +61,9 @@ describe('useVoiceCallCount', () => {
         } as UseQueryResult)
 
         const results = renderHook(() =>
-            useVoiceCallCount(statsFilters, 'UTC', undefined, 5)
+            useVoiceCallCount(statsFilters, 'UTC', undefined, 5),
         )
 
-        expect(results.result.current).toEqual({total: 0, totalPages: 0})
+        expect(results.result.current).toEqual({ total: 0, totalPages: 0 })
     })
 })

@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react'
+import React, { ReactNode } from 'react'
 
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
@@ -9,7 +9,7 @@ type Props = {
     children: ReactNode
 }
 
-export default function EmptyMigrationTableRow({children}: Props) {
+export default function EmptyMigrationTableRow({ children }: Props) {
     return (
         <TableBodyRow>
             <BodyCell colSpan={3} innerClassName={css.emptyState}>

@@ -1,34 +1,35 @@
-import {fireEvent} from '@testing-library/react'
+import React, { ComponentProps, ReactNode } from 'react'
+
+import { fireEvent } from '@testing-library/react'
 import decorateComponentWithProps from 'decorate-component-with-props'
-import {createMemoryHistory} from 'history'
-import {fromJS} from 'immutable'
-import React, {ComponentProps, ReactNode} from 'react'
-import {Provider} from 'react-redux'
+import { createMemoryHistory } from 'history'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {view as fixtureView} from 'fixtures/views'
+import { view as fixtureView } from 'fixtures/views'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {EntityType} from 'models/view/types'
+import { EntityType } from 'models/view/types'
 import CreateTicketButton from 'pages/common/components/CreateTicket/CreateTicketButton'
 import * as ViewTable from 'pages/common/components/ViewTable/ViewTable'
 import MacroContainer from 'pages/tickets/common/macros/MacroContainer'
 import TicketList from 'pages/tickets/list/TicketList'
-import {fetchTags} from 'state/tags/actions'
-import {updateSelectedItemsIds} from 'state/views/actions'
-import {assumeMock, renderWithRouter} from 'utils/testing'
+import { fetchTags } from 'state/tags/actions'
+import { updateSelectedItemsIds } from 'state/views/actions'
+import { assumeMock, renderWithRouter } from 'utils/testing'
 
 jest.mock('decorate-component-with-props')
 const decorateComponentWithPropsMock = assumeMock(decorateComponentWithProps)
 decorateComponentWithPropsMock.mockImplementation((_component, props) => () => (
     <>
         Props:
-        {Object.entries(props as {openMacroModal: () => void}).map(
+        {Object.entries(props as { openMacroModal: () => void }).map(
             ([propName, value]) => (
                 <div key={propName} onClick={value}>
                     {propName}
                 </div>
-            )
+            ),
         )}
     </>
 ))
@@ -49,17 +50,17 @@ const updateSelectedItemsIdsMock = assumeMock(updateSelectedItemsIds)
 jest.mock(
     'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioProvider',
     () =>
-        ({children}: {children: ReactNode}) => (
+        ({ children }: { children: ReactNode }) => (
             <div data-testid="search-rank-scenario-provider">{children}</div>
-        )
+        ),
 )
 const mockItemsIds = fromJS([111])
 jest.mock(
     'pages/tickets/common/macros/MacroContainer',
     () =>
-        ({onComplete}: ComponentProps<typeof MacroContainer>) => (
+        ({ onComplete }: ComponentProps<typeof MacroContainer>) => (
             <div onClick={() => onComplete?.(mockItemsIds)}>MacroContainer</div>
-        )
+        ),
 )
 
 const mockHistoryPush = jest.fn()
@@ -72,7 +73,7 @@ jest.mock(
             useHistory: () => ({
                 push: mockHistoryPush,
             }),
-        }) as Record<string, unknown>
+        }) as Record<string, unknown>,
 )
 
 jest.mock('common/segment')
@@ -86,7 +87,7 @@ jest.mock('@gorgias/realtime', () => ({
 
 const mockStore = configureMockStore([thunk])
 const store = mockStore({
-    tickets: fromJS({items: []}),
+    tickets: fromJS({ items: [] }),
     views: fromJS({
         active: fixtureView,
         _internal: {
@@ -124,15 +125,15 @@ describe('<TicketList />', () => {
                         <div>{viewButtons}</div>
                     </div>
                 )
-            }
+            },
         )
     })
 
     it('should display with default props', () => {
-        const {container} = renderWithRouter(
+        const { container } = renderWithRouter(
             <Provider store={store}>
                 <TicketList />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -141,7 +142,7 @@ describe('<TicketList />', () => {
         renderWithRouter(
             <Provider store={store}>
                 <TicketList />
-            </Provider>
+            </Provider>,
         )
         expect(fetchTagsMock).toHaveBeenCalled()
     })
@@ -154,7 +155,7 @@ describe('<TicketList />', () => {
             {
                 path: 'app/tickets/',
                 route: 'app/tickets/new',
-            }
+            },
         )
         expect(document.title).toEqual('New view')
     })
@@ -163,7 +164,7 @@ describe('<TicketList />', () => {
         renderWithRouter(
             <Provider store={store}>
                 <TicketList />
-            </Provider>
+            </Provider>,
         )
         expect(document.title).toEqual(fixtureView.name)
     })
@@ -176,41 +177,41 @@ describe('<TicketList />', () => {
             {
                 path: 'app/tickets/',
                 route: 'app/tickets/search',
-            }
+            },
         )
         expect(document.title).toEqual('Search')
     })
 
     it('should render SearchRankProvider on search url', () => {
-        const {container} = renderWithRouter(
+        const { container } = renderWithRouter(
             <Provider store={store}>
                 <TicketList />
             </Provider>,
             {
                 path: 'app/tickets/',
                 route: 'app/tickets/search',
-            }
+            },
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render CreateTicketButton when not in edit mode', () => {
-        const {queryByText} = renderWithRouter(
+        const { queryByText } = renderWithRouter(
             <Provider store={store}>
                 <TicketList />
-            </Provider>
+            </Provider>,
         )
 
         expect(queryByText('CreateTicketButton')).toBeInTheDocument()
     })
 
     it('should not render CreateTicketButton when in edit mode', () => {
-        const {queryByText} = renderWithRouter(
+        const { queryByText } = renderWithRouter(
             <Provider
                 store={mockStore({
-                    tickets: fromJS({items: []}),
+                    tickets: fromJS({ items: [] }),
                     views: fromJS({
-                        active: {...fixtureView, editMode: true},
+                        active: { ...fixtureView, editMode: true },
                         _internal: {
                             selectedItemsIds: [],
                         },
@@ -218,7 +219,7 @@ describe('<TicketList />', () => {
                 })}
             >
                 <TicketList />
-            </Provider>
+            </Provider>,
         )
 
         expect(queryByText('CreateTicketButton')).not.toBeInTheDocument()
@@ -232,9 +233,9 @@ describe('<TicketList />', () => {
         renderWithRouter(
             <Provider
                 store={mockStore({
-                    tickets: fromJS({items: []}),
+                    tickets: fromJS({ items: [] }),
                     views: fromJS({
-                        active: {...fixtureView, editMode: true},
+                        active: { ...fixtureView, editMode: true },
                         _internal: {
                             selectedItemsIds: [],
                         },
@@ -242,7 +243,7 @@ describe('<TicketList />', () => {
                 })}
             >
                 <TicketList />
-            </Provider>
+            </Provider>,
         )
 
         expect(spy).toHaveBeenCalledWith(
@@ -250,7 +251,7 @@ describe('<TicketList />', () => {
                 isSearch: false,
                 type: EntityType.Ticket,
             }),
-            {}
+            {},
         )
     })
 
@@ -265,9 +266,9 @@ describe('<TicketList />', () => {
         renderWithRouter(
             <Provider
                 store={mockStore({
-                    tickets: fromJS({items: []}),
+                    tickets: fromJS({ items: [] }),
                     views: fromJS({
-                        active: {...fixtureView, editMode: true},
+                        active: { ...fixtureView, editMode: true },
                         _internal: {
                             selectedItemsIds: [],
                         },
@@ -279,7 +280,7 @@ describe('<TicketList />', () => {
             {
                 path: 'app/tickets/search',
                 history,
-            }
+            },
         )
 
         expect(spy).toHaveBeenCalledWith(
@@ -287,15 +288,15 @@ describe('<TicketList />', () => {
                 isSearch: true,
                 type: EntityType.Ticket,
             }),
-            {}
+            {},
         )
     })
 
     it('should trigger update of selected items ids', () => {
-        const {getByText} = renderWithRouter(
+        const { getByText } = renderWithRouter(
             <Provider store={store}>
                 <TicketList />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(getByText('openMacroModal'))
@@ -307,7 +308,7 @@ describe('<TicketList />', () => {
         renderWithRouter(
             <Provider
                 store={mockStore({
-                    tickets: fromJS({items: [{id: 1}, {id: 2}]}),
+                    tickets: fromJS({ items: [{ id: 1 }, { id: 2 }] }),
                     views: fromJS({
                         active: fixtureView,
                         _internal: {
@@ -317,7 +318,7 @@ describe('<TicketList />', () => {
                 })}
             >
                 <TicketList />
-            </Provider>
+            </Provider>,
         )
 
         expect(mockViewTickets).toHaveBeenCalledWith([1, 2])

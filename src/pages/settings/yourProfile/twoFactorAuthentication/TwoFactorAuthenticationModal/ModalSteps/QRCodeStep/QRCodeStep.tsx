@@ -1,5 +1,3 @@
-import classnames from 'classnames'
-import QRCode from 'qrcode'
 import React, {
     Dispatch,
     SetStateAction,
@@ -8,13 +6,17 @@ import React, {
     useState,
 } from 'react'
 
-import {AuthenticatorData} from 'models/twoFactorAuthentication/types'
+import classnames from 'classnames'
+import QRCode from 'qrcode'
+
+import { AuthenticatorData } from 'models/twoFactorAuthentication/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import InputField from 'pages/common/forms/input/InputField'
 import settingsCss from 'pages/settings/settings.less'
 
-import modalStepsCss from '../ModalSteps.less'
 import CantScanQRCode from './CantScanQRCode'
+
+import modalStepsCss from '../ModalSteps.less'
 import css from './QRCodeStep.less'
 
 type OwnProps = {
@@ -53,7 +55,7 @@ export default function QRCodeStep({
             .catch((error: Error) => {
                 if (!errorText) {
                     setErrorText(
-                        'Failed to load the QR code. Please try again.'
+                        'Failed to load the QR code. Please try again.',
                     )
                 }
                 console.error(error)
@@ -74,7 +76,7 @@ export default function QRCodeStep({
             <div
                 className={classnames(
                     modalStepsCss.headingBold,
-                    settingsCss.mb16
+                    settingsCss.mb16,
                 )}
             >
                 Scan the QR code with your authenticator app
@@ -104,7 +106,7 @@ export default function QRCodeStep({
             <div
                 className={classnames(
                     modalStepsCss.headingBold,
-                    modalStepsCss.mt24
+                    modalStepsCss.mt24,
                 )}
             >
                 Enter one-time code below
@@ -112,7 +114,7 @@ export default function QRCodeStep({
             <div
                 className={classnames(
                     modalStepsCss.textSection,
-                    settingsCss.mb16
+                    settingsCss.mb16,
                 )}
             >
                 The unique one-time code will appear that regenerates every 30

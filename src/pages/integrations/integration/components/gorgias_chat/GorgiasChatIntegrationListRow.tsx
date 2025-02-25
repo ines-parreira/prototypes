@@ -1,42 +1,43 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { memo } from 'react'
+
 import classnames from 'classnames'
-import {List, Map, fromJS} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {memo} from 'react'
-import {NavLink, Link} from 'react-router-dom'
+import { fromJS, List, Map } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { Link, NavLink } from 'react-router-dom'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import dotErrorCross from 'assets/img/icons/dot-error-cross.svg'
 import dotNeutral from 'assets/img/icons/dot-neutral.svg'
 import dotSuccess from 'assets/img/icons/dot-success.svg'
 import dotWarning from 'assets/img/icons/dot-warning.svg'
 import warningIcon from 'assets/img/icons/warning.svg'
-
-import {FeatureFlagKey} from 'config/featureFlags'
+import { FeatureFlagKey } from 'config/featureFlags'
 import {
     getGorgiasChatLanguageByCode,
     getPrimaryLanguageUI,
     getSecondaryLanguages,
     getSecondaryLanguagesAsTooltipContent,
 } from 'config/integrations/gorgias_chat'
-import {Language} from 'constants/languages'
+import { Language } from 'constants/languages'
 import useAppSelector from 'hooks/useAppSelector'
 import BadgeItem from 'pages/common/components/BadgetItem'
-import {LanguageBullet} from 'pages/common/components/LanguageBulletList'
-import {useGorgiasChatIntegrationStatusData} from 'pages/integrations/integration/hooks/useGorgiasChatIntegrationStatusData'
-import {getIconFromType} from 'state/integrations/helpers'
-import {makeGetRedirectUri} from 'state/integrations/selectors'
+import { LanguageBullet } from 'pages/common/components/LanguageBulletList'
+import { useGorgiasChatIntegrationStatusData } from 'pages/integrations/integration/hooks/useGorgiasChatIntegrationStatusData'
+import { getIconFromType } from 'state/integrations/helpers'
+import { makeGetRedirectUri } from 'state/integrations/selectors'
 
 import {
     GorgiasChatCreationWizardStatus,
     GorgiasChatStatusEnum,
     IntegrationType,
 } from '../../../../../models/integration/types'
-
 import BodyCell from '../../../../common/components/table/cells/BodyCell'
 import TableBodyRow from '../../../../common/components/table/TableBodyRow'
 import history from '../../../../history'
 import ForwardIcon from '../../../common/components/ForwardIcon'
-import {Tab} from '../../types'
+import { Tab } from '../../types'
+
 import css from './GorgiasChatIntegrationListRow.less'
 
 export const GorgiasChatIntegrationStatusFeedbackMapping = {
@@ -60,7 +61,7 @@ const GorgiasChatIntegrationListRow = ({
 }: GorgiasChatIntegrationListRowProps) => {
     const getRedirectUri = useAppSelector(makeGetRedirectUri)
 
-    const {chatStatus, isChatStatusLoading, isChatStatusError} =
+    const { chatStatus, isChatStatusLoading, isChatStatusError } =
         useGorgiasChatIntegrationStatusData(chat, isLoadingIntegrations)
     const isChatCreationWizardEnabled =
         useFlags()[FeatureFlagKey.ChatCreationWizard]
@@ -85,21 +86,21 @@ const GorgiasChatIntegrationListRow = ({
     }`
     const shopIntegrationId: number | null = chat.getIn(
         ['meta', 'shop_integration_id'],
-        null
+        null,
     )
     const storeIntegration: Map<any, any> = integrations.find(
-        (_integration) => _integration?.get('id') === shopIntegrationId
+        (_integration) => _integration?.get('id') === shopIntegrationId,
     )
     const isStoreDisconnected =
         !storeIntegration || storeIntegration.get('deactivated_datetime')
 
     const needScopeUpdate = Boolean(
-        storeIntegration?.getIn(['meta', 'need_scope_update'], false)
+        storeIntegration?.getIn(['meta', 'need_scope_update'], false),
     )
 
     const shopifyIntegrationIds: List<number> = chat.getIn(
         ['meta', 'shopify_integration_ids'],
-        fromJS([])
+        fromJS([]),
     )
     const isOneClickInstallation = shopIntegrationId
         ? shopifyIntegrationIds.includes(shopIntegrationId)
@@ -114,7 +115,7 @@ const GorgiasChatIntegrationListRow = ({
 
     const languages: List<Map<string, string>> = chat.getIn(
         ['meta', 'languages'],
-        fromJS([])
+        fromJS([]),
     )
 
     const primaryLanguage =
@@ -156,7 +157,7 @@ const GorgiasChatIntegrationListRow = ({
                                 height={16}
                                 width={16}
                                 src={getIconFromType(
-                                    storeIntegration.get('type')
+                                    storeIntegration.get('type'),
                                 )}
                                 alt="logo"
                             />
@@ -224,7 +225,7 @@ const GorgiasChatIntegrationListRow = ({
                                         id={`chat-status-help-${integrationId}`}
                                         className={classnames(
                                             'material-icons-outlined',
-                                            css.chatStatusTooltipIcon
+                                            css.chatStatusTooltipIcon,
                                         )}
                                     >
                                         timer
@@ -309,7 +310,7 @@ const GorgiasChatIntegrationListRow = ({
                                     <span
                                         dangerouslySetInnerHTML={{
                                             __html: getSecondaryLanguagesAsTooltipContent(
-                                                secondaryLanguages
+                                                secondaryLanguages,
                                             ),
                                         }}
                                     ></span>

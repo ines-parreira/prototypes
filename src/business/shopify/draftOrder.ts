@@ -1,21 +1,20 @@
-import {fromJS, List, Map} from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 
-import {Product, Variant} from '../../constants/integrations/types/shopify'
-
-import {refreshAppliedDiscounts} from './discount'
-import {initLineItemAppliedDiscount} from './lineItem'
+import { Product, Variant } from '../../constants/integrations/types/shopify'
+import { refreshAppliedDiscounts } from './discount'
+import { initLineItemAppliedDiscount } from './lineItem'
 
 export function initDraftOrderPayload(
     customer: Map<any, any>,
     order: Map<any, any> = fromJS({}),
     products = new window.Map(),
-    isEditOrder = false
+    isEditOrder = false,
 ): Map<any, any> {
     const draftOrder = fromJS({
         line_items: (order.get('line_items', []) as List<any>).map(
             (lineItem: Map<any, any>) => {
                 const product: Maybe<Map<any, any>> = lineItem.get(
-                    'product_exists'
+                    'product_exists',
                 )
                     ? products.get(lineItem.get('product_id'))
                     : null
@@ -23,7 +22,7 @@ export function initDraftOrderPayload(
                 const variant = !!product
                     ? ((product.get('variants') as List<any>).find(
                           (variant: Map<any, any>) =>
-                              variant.get('id') === lineItem.get('variant_id')
+                              variant.get('id') === lineItem.get('variant_id'),
                       ) as Maybe<Map<any, any>>)
                     : null
 
@@ -47,7 +46,7 @@ export function initDraftOrderPayload(
                         : null,
                     lineItem_admin_graphql_api_id: lineItem.get('id')
                         ? 'gid://shopify/CalculatedLineItem/'.concat(
-                              lineItem.get('id')
+                              lineItem.get('id'),
                           )
                         : null,
                     initial_quantity: quantity,
@@ -72,10 +71,10 @@ export function initDraftOrderPayload(
                     properties: lineItem.get('properties') || [],
                     applied_discount: initLineItemAppliedDiscount(
                         lineItem,
-                        order
+                        order,
                     ),
                 }) as Map<any, any>
-            }
+            },
         ),
         note: order.get('note') || '',
         tags: order.get('tags') || null,
@@ -95,14 +94,14 @@ export function initDraftOrderPayload(
 export function addVariant(
     draftOrder: Map<any, any>,
     product: Product,
-    variant: Variant
+    variant: Variant,
 ): Map<any, any> {
     const lineItemIndex = (
         draftOrder.get('line_items', []) as List<any>
     ).findIndex(
         (lineItem: Map<any, any>) =>
             lineItem.get('product_id') === product.id &&
-            lineItem.get('variant_id') === variant.id
+            lineItem.get('variant_id') === variant.id,
     )
     return lineItemIndex === -1
         ? draftOrder.update('line_items', (lineItems: List<any>) =>
@@ -122,8 +121,8 @@ export function addVariant(
                       product_exists: true,
                       properties: [],
                       newly_added: true,
-                  })
-              )
+                  }),
+              ),
           )
         : draftOrder.setIn(
               ['line_items', lineItemIndex, 'quantity'],
@@ -131,15 +130,15 @@ export function addVariant(
                   'line_items',
                   lineItemIndex,
                   'quantity',
-              ]) as number) + 1
+              ]) as number) + 1,
           )
 }
 
 export function addCustomLineItem(
     draftOrder: Map<any, any>,
-    lineItem: Map<any, any>
+    lineItem: Map<any, any>,
 ): Map<any, any> {
     return draftOrder.update('line_items', (lineItems: List<any>) =>
-        lineItems.push(lineItem)
+        lineItems.push(lineItem),
     )
 }

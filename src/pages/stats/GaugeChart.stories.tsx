@@ -1,12 +1,13 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { Meta, Story } from '@storybook/react'
 
 import {
     ChatWorkload,
     EmailWorkload,
     InstagramWorkload,
-    PhoneWorkload,
     OthersWorkload,
+    PhoneWorkload,
 } from 'fixtures/chart'
 
 import GaugeChart from './GaugeChart'

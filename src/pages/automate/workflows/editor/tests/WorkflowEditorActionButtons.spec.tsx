@@ -1,7 +1,8 @@
-import {render, screen, fireEvent} from '@testing-library/react'
 import React from 'react'
 
-import {WorkflowEditorActionButtons} from '../WorkflowEditorActionButtons'
+import { fireEvent, render, screen } from '@testing-library/react'
+
+import { WorkflowEditorActionButtons } from '../WorkflowEditorActionButtons'
 
 describe('WorkflowEditorActionButtons', () => {
     const defaultProps = {
@@ -23,8 +24,8 @@ describe('WorkflowEditorActionButtons', () => {
     test('renders Test button and handles click with new workflow', () => {
         render(
             <WorkflowEditorActionButtons
-                {...{...defaultProps, isNewWorkflow: true}}
-            />
+                {...{ ...defaultProps, isNewWorkflow: true }}
+            />,
         )
 
         const testButton = screen.getByText('Test')
@@ -48,7 +49,7 @@ describe('WorkflowEditorActionButtons', () => {
             <WorkflowEditorActionButtons
                 {...defaultProps}
                 isTestDisabled={true}
-            />
+            />,
         )
 
         const testButton = screen.getByText('Test')
@@ -68,7 +69,7 @@ describe('WorkflowEditorActionButtons', () => {
 
     test('does not call onSave when Save button is disabled', () => {
         render(
-            <WorkflowEditorActionButtons {...defaultProps} isDirty={false} />
+            <WorkflowEditorActionButtons {...defaultProps} isDirty={false} />,
         )
 
         const saveButton = screen.getByText('Save')
@@ -91,7 +92,7 @@ describe('WorkflowEditorActionButtons', () => {
             <WorkflowEditorActionButtons
                 {...defaultProps}
                 isNewWorkflow={true}
-            />
+            />,
         )
 
         const cancelButton = screen.getByText('Cancel')
@@ -103,7 +104,7 @@ describe('WorkflowEditorActionButtons', () => {
 
     test('renders View Channel button for non-draft workflows', () => {
         render(
-            <WorkflowEditorActionButtons {...defaultProps} isDraft={false} />
+            <WorkflowEditorActionButtons {...defaultProps} isDraft={false} />,
         )
 
         const viewChannelButton = screen.getByText('chat')

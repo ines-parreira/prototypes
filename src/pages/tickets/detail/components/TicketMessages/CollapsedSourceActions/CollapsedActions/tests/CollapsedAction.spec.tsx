@@ -1,13 +1,13 @@
-import {fireEvent, render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {Dropdown} from 'reactstrap'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { Dropdown } from 'reactstrap'
 
 import CollapsedAction from '../CollapsedAction'
 
 const mockClick = jest.fn()
 
-const renderAction = ({nested = false, disabled = false} = {}) =>
+const renderAction = ({ nested = false, disabled = false } = {}) =>
     render(
         <Dropdown toggle={() => ({})}>
             <CollapsedAction
@@ -18,7 +18,7 @@ const renderAction = ({nested = false, disabled = false} = {}) =>
                 nested={nested}
                 disabled={disabled}
             />
-        </Dropdown>
+        </Dropdown>,
     )
 
 describe('<CollapsedAction/>', () => {
@@ -33,13 +33,13 @@ describe('<CollapsedAction/>', () => {
     })
 
     it('should not call onClick function when disabled', () => {
-        renderAction({disabled: true})
+        renderAction({ disabled: true })
         fireEvent.click(screen.getByText('Title'))
         expect(mockClick).toHaveBeenCalledTimes(0)
     })
 
     it('should display dropdown item with arrow icon', () => {
-        const {container} = renderAction({nested: true})
+        const { container } = renderAction({ nested: true })
         expect(container.firstChild).toMatchSnapshot()
     })
 })

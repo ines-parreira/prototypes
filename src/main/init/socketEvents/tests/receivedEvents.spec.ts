@@ -1,33 +1,34 @@
-import {EnhancedStore} from '@reduxjs/toolkit'
-import {fromJS} from 'immutable'
-import _find from 'lodash/find'
-import _isArray from 'lodash/isArray'
-import _isObject from 'lodash/isObject'
-
-// eslint-disable-next-line import/order
+// sort-imports-ignore
 import {
     advancedMonthlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
     proMonthlyHelpdeskPlan as mockedProMonthlyHelpdeskPlan,
 } from 'fixtures/productPrices'
-import {appQueryClient} from 'api/queryClient'
-import {shouldTicketBeDisplayedInRecentChats} from 'business/recentChats'
-import {TicketStatuses} from 'business/ticket'
-import {store as reduxStore} from 'common/store'
-import {section} from 'fixtures/section'
-import {view} from 'fixtures/views'
-import {HelpdeskPlan, PriceId} from 'models/billing/types'
+
+import { EnhancedStore } from '@reduxjs/toolkit'
+import { fromJS } from 'immutable'
+import _find from 'lodash/find'
+import _isArray from 'lodash/isArray'
+import _isObject from 'lodash/isObject'
+
+import { appQueryClient } from 'api/queryClient'
+import { shouldTicketBeDisplayedInRecentChats } from 'business/recentChats'
+import { TicketStatuses } from 'business/ticket'
+import { store as reduxStore } from 'common/store'
+import { section } from 'fixtures/section'
+import { view } from 'fixtures/views'
+import { HelpdeskPlan, PriceId } from 'models/billing/types'
 import {
     ecommerceStoreFixture,
     shopperAddressFixture,
     shopperFixture,
     shopperOrderFixture,
 } from 'models/customerEcommerceData/fixtures'
-import {voiceCallsKeys} from 'models/voiceCall/queries'
+import { voiceCallsKeys } from 'models/voiceCall/queries'
 import * as voiceCallTypes from 'models/voiceCall/types'
 import history from 'pages/history'
 import * as activityTracker from 'services/activityTracker'
-import {ActivityEvents} from 'services/activityTracker'
+import { ActivityEvents } from 'services/activityTracker'
 import browserNotification from 'services/browserNotification'
 import {
     CustomerExternalDataUpdatedEvent,
@@ -40,7 +41,6 @@ import {
 } from 'services/socketManager/types'
 import * as billingSelectors from 'state/billing/selectors'
 import * as chatActions from 'state/chats/actions'
-
 import * as currentAccountConstants from 'state/currentAccount/constants'
 import * as currentAccountSelectors from 'state/currentAccount/selectors'
 import * as currentUserActions from 'state/currentUser/actions'
@@ -51,10 +51,10 @@ import {
 } from 'state/entities/sections/actions'
 import {
     viewCreated,
-    viewUpdated,
     viewDeleted,
+    viewUpdated,
 } from 'state/entities/views/actions'
-import {viewsCountFetched} from 'state/entities/viewsCount/actions'
+import { viewsCountFetched } from 'state/entities/viewsCount/actions'
 import * as integrationActions from 'state/integrations/actions'
 import * as notificationActions from 'state/notifications/actions'
 import * as ticketActions from 'state/ticket/actions'
@@ -64,18 +64,17 @@ import {
     mergeCustomerEcommerceDataShopperAddress,
     mergeCustomerExternalData,
 } from 'state/ticket/actions'
-import {handleViewsCount} from 'state/views/actions'
-import {isViewSharedWithUser} from 'state/views/utils'
-
-import {isCurrentlyOnTicket} from 'utils'
-import {getLDClient} from 'utils/launchDarkly'
+import { handleViewsCount } from 'state/views/actions'
+import { isViewSharedWithUser } from 'state/views/utils'
+import { isCurrentlyOnTicket } from 'utils'
+import { getLDClient } from 'utils/launchDarkly'
 
 import receivedEvents from '../receivedEvents'
 
 //$TsFixMe remove once init.js is migrated
 const typeSafeReduxStore = reduxStore as EnhancedStore
 
-jest.mock('services/browserNotification', () => ({newMessage: jest.fn()}))
+jest.mock('services/browserNotification', () => ({ newMessage: jest.fn() }))
 
 jest.spyOn(browserNotification, 'newMessage')
 jest.mock('state/chats/actions')
@@ -87,17 +86,17 @@ jest.mock('services/activityTracker')
 
 jest.mock('common/store', () => {
     /* eslint-disable @typescript-eslint/no-var-requires,@typescript-eslint/no-unsafe-member-access */
-    const {fromJS}: {fromJS: (value: any) => any} = require('immutable')
-    const {MAX_RECENT_CHATS} = require('config/recentChats')
-    const configureMockStore: (t: any) => (y: any) => {dispatch: any} =
+    const { fromJS }: { fromJS: (value: any) => any } = require('immutable')
+    const { MAX_RECENT_CHATS } = require('config/recentChats')
+    const configureMockStore: (t: any) => (y: any) => { dispatch: any } =
         require('redux-mock-store').default
     const thunk = require('redux-thunk').default
     /* eslint-enable */
 
     const mockStore = configureMockStore([thunk])
     const store = mockStore({
-        billing: fromJS({products: [mockedProMonthlyHelpdeskPlan]}),
-        currentUser: fromJS({id: 1}),
+        billing: fromJS({ products: [mockedProMonthlyHelpdeskPlan] }),
+        currentUser: fromJS({ id: 1 }),
         chats: fromJS({
             tickets: Array(MAX_RECENT_CHATS - 1).fill({
                 id: 0,
@@ -107,7 +106,7 @@ jest.mock('common/store', () => {
 
     store.dispatch = jest.fn()
 
-    return {store}
+    return { store }
 })
 
 jest.mock('state/currentAccount/selectors', () => {
@@ -171,7 +170,7 @@ describe('receivedEvents', () => {
         })
         const getAvailablePlansMapSpy = jest.spyOn(
             billingSelectors,
-            'getAvailablePlansMap'
+            'getAvailablePlansMap',
         )
 
         beforeEach(() => {
@@ -181,7 +180,7 @@ describe('receivedEvents', () => {
                     ({
                         [mockedProMonthlyHelpdeskPlan.price_id]:
                             mockedProMonthlyHelpdeskPlan,
-                    }) as Record<PriceId, HelpdeskPlan>
+                    }) as Record<PriceId, HelpdeskPlan>,
             )
         })
 
@@ -213,7 +212,7 @@ describe('receivedEvents', () => {
             expect(spy).toHaveBeenCalledWith({
                 newAccountStatus: 'active',
                 currentAccountStatus: 'active',
-                notification: {message: 'hey'},
+                notification: { message: 'hey' },
             })
         })
 
@@ -232,7 +231,7 @@ describe('receivedEvents', () => {
             ).mockReturnValue(fromJS({}))
 
             if (accountUpdatedHandler) {
-                accountUpdatedHandler.onReceive({account: account} as any)
+                accountUpdatedHandler.onReceive({ account: account } as any)
             }
             expect(chatActions.fetchChatsThrottled).not.toHaveBeenCalled()
             expect(typeSafeReduxStore.dispatch).toHaveBeenCalledWith({
@@ -249,7 +248,7 @@ describe('receivedEvents', () => {
                 settings: [
                     {
                         type: currentAccountConstants.SETTING_TYPE_TICKET_ASSIGNMENT,
-                        data: {auto_assign_to_teams: false},
+                        data: { auto_assign_to_teams: false },
                     },
                 ],
             }
@@ -261,7 +260,7 @@ describe('receivedEvents', () => {
             ).mockReturnValue(fromJS({}))
 
             if (accountUpdatedHandler) {
-                accountUpdatedHandler.onReceive({account: account} as any)
+                accountUpdatedHandler.onReceive({ account: account } as any)
             }
             expect(chatActions.fetchChatsThrottled).toHaveBeenCalled()
             expect(typeSafeReduxStore.dispatch).toHaveBeenCalledWith({
@@ -299,7 +298,7 @@ describe('receivedEvents', () => {
                         data: {
                             auto_assign_to_teams: oldAutoAssignToTeams,
                         },
-                    })
+                    }),
                 )
 
                 if (accountUpdatedHandler) {
@@ -312,7 +311,7 @@ describe('receivedEvents', () => {
                     type: currentAccountConstants.UPDATE_ACCOUNT_SUCCESS,
                     resp: account,
                 })
-            }
+            },
         )
 
         it.each([true, false])(
@@ -325,7 +324,7 @@ describe('receivedEvents', () => {
                     settings: [
                         {
                             type: currentAccountConstants.SETTING_TYPE_TICKET_ASSIGNMENT,
-                            data: {auto_assign_to_teams: autoAssignToTeams},
+                            data: { auto_assign_to_teams: autoAssignToTeams },
                         },
                     ],
                 }
@@ -339,7 +338,7 @@ describe('receivedEvents', () => {
                         data: {
                             auto_assign_to_teams: autoAssignToTeams,
                         },
-                    })
+                    }),
                 )
 
                 if (accountUpdatedHandler) {
@@ -352,7 +351,7 @@ describe('receivedEvents', () => {
                     type: currentAccountConstants.UPDATE_ACCOUNT_SUCCESS,
                     resp: account,
                 })
-            }
+            },
         )
 
         it('should not notify and reload app if new account price is preloaded', () => {
@@ -466,9 +465,9 @@ describe('receivedEvents', () => {
                 expect(chatActions.addChat).toHaveBeenCalledWith(
                     ticket,
                     !lastMessageFromAgent,
-                    true
+                    true,
                 )
-            }
+            },
         )
 
         it.each([true, false])(
@@ -514,9 +513,9 @@ describe('receivedEvents', () => {
                 expect(chatActions.addChat).toHaveBeenCalledWith(
                     expectedTicket,
                     !lastMessageFromAgent,
-                    true
+                    true,
                 )
-            }
+            },
         )
 
         it(
@@ -550,9 +549,9 @@ describe('receivedEvents', () => {
                 }
                 expect(chatActions.removeChat).toHaveBeenCalledWith(ticket.id)
                 expect(chatActions.fetchChatsThrottled).toHaveBeenCalledWith(
-                    typeSafeReduxStore.dispatch
+                    typeSafeReduxStore.dispatch,
                 )
-            }
+            },
         )
 
         it.each([
@@ -595,9 +594,9 @@ describe('receivedEvents', () => {
                 expect(chatActions.addChat).toHaveBeenCalledWith(
                     ticket,
                     notifyExpect,
-                    true
+                    true,
                 )
-            }
+            },
         )
     })
 
@@ -623,7 +622,7 @@ describe('receivedEvents', () => {
             }
 
             if (ticketChatUpdatedHandler) {
-                ticketChatUpdatedHandler.onReceive({data: ticket} as any)
+                ticketChatUpdatedHandler.onReceive({ data: ticket } as any)
             }
             expect(chatActions.addChat).toHaveBeenCalledWith(ticket, false)
         })
@@ -645,7 +644,7 @@ describe('receivedEvents', () => {
             }
 
             if (ticketChatUpdatedHandler) {
-                ticketChatUpdatedHandler.onReceive({data: ticket} as any)
+                ticketChatUpdatedHandler.onReceive({ data: ticket } as any)
             }
             expect(chatActions.removeChat).toHaveBeenCalledWith(ticket.id)
         })
@@ -675,9 +674,9 @@ describe('receivedEvents', () => {
                     } as any)
                 }
                 expect(chatActions.fetchChatsThrottled).toHaveBeenCalledWith(
-                    typeSafeReduxStore.dispatch
+                    typeSafeReduxStore.dispatch,
                 )
-            }
+            },
         )
     })
 
@@ -689,7 +688,7 @@ describe('receivedEvents', () => {
         it('should fetch integrations', () => {
             const spy = jest.spyOn(integrationActions, 'fetchIntegrations')
             if (handler) {
-                handler.onReceive({event: {total: 1}} as any)
+                handler.onReceive({ event: { total: 1 } } as any)
             }
             expect(spy).toHaveBeenCalled()
         })
@@ -698,7 +697,7 @@ describe('receivedEvents', () => {
             const spy = jest.spyOn(notificationActions, 'notify')
 
             if (handler) {
-                handler.onReceive({event: {total: 1}} as any)
+                handler.onReceive({ event: { total: 1 } } as any)
             }
             expect(spy).toHaveBeenCalledWith({
                 status: 'success',
@@ -706,7 +705,7 @@ describe('receivedEvents', () => {
             })
 
             if (handler) {
-                handler.onReceive({event: {total: 2}} as any)
+                handler.onReceive({ event: { total: 2 } } as any)
             }
             expect(spy).toHaveBeenCalledWith({
                 status: 'success',
@@ -728,7 +727,7 @@ describe('receivedEvents', () => {
             const spy = jest.spyOn(notificationActions, 'notify')
 
             if (handler) {
-                handler.onReceive({event: event} as any)
+                handler.onReceive({ event: event } as any)
             }
 
             expect(spy.mock.calls).toMatchSnapshot()
@@ -797,7 +796,7 @@ describe('receivedEvents', () => {
 
             expect(spy).toHaveBeenCalledWith(
                 ActivityEvents.UserStartedPhoneCall,
-                {entityId: 456, entityType: 'ticket'}
+                { entityId: 456, entityType: 'ticket' },
             )
         })
     })
@@ -809,7 +808,7 @@ describe('receivedEvents', () => {
 
         it('should dispatch the views count', () => {
             if (handler) {
-                handler.onReceive({counts: {'1': 10, '2': 20}} as any)
+                handler.onReceive({ counts: { '1': 10, '2': 20 } } as any)
             }
 
             expect(viewsCountFetched).toHaveBeenNthCalledWith(1, {
@@ -836,7 +835,7 @@ describe('receivedEvents', () => {
             })
             expect(typeSafeReduxStore.dispatch).toHaveBeenCalledTimes(1)
             expect(typeSafeReduxStore.dispatch).toHaveBeenCalledWith(
-                sectionCreated(section)
+                sectionCreated(section),
             )
         })
 
@@ -852,7 +851,7 @@ describe('receivedEvents', () => {
             })
             expect(typeSafeReduxStore.dispatch).toHaveBeenCalledTimes(1)
             expect(typeSafeReduxStore.dispatch).toHaveBeenCalledWith(
-                sectionUpdated(section)
+                sectionUpdated(section),
             )
         })
 
@@ -868,7 +867,7 @@ describe('receivedEvents', () => {
             })
             expect(typeSafeReduxStore.dispatch).toHaveBeenCalledTimes(1)
             expect(typeSafeReduxStore.dispatch).toHaveBeenCalledWith(
-                sectionDeleted(section.id)
+                sectionDeleted(section.id),
             )
         })
     })
@@ -879,7 +878,7 @@ describe('receivedEvents', () => {
         }) as ReceivedEvent
 
         it('should dispatch the new view', () => {
-            handler.onReceive({view} as any)
+            handler.onReceive({ view } as any)
             expect(viewCreated).toHaveBeenNthCalledWith(1, view)
         })
     })
@@ -895,7 +894,7 @@ describe('receivedEvents', () => {
                     typeof isViewSharedWithUser
                 >
             ).mockImplementationOnce(() => true)
-            handler.onReceive({view} as any)
+            handler.onReceive({ view } as any)
             expect(viewUpdated).toHaveBeenNthCalledWith(1, view)
         })
 
@@ -905,7 +904,7 @@ describe('receivedEvents', () => {
                     typeof isViewSharedWithUser
                 >
             ).mockImplementationOnce(() => false)
-            handler.onReceive({view} as any)
+            handler.onReceive({ view } as any)
             expect(viewDeleted).toHaveBeenNthCalledWith(1, view.id)
         })
     })
@@ -916,7 +915,7 @@ describe('receivedEvents', () => {
         }) as ReceivedEvent
 
         it('should dispatch the deleted view', () => {
-            handler.onReceive({view} as any)
+            handler.onReceive({ view } as any)
             expect(viewDeleted).toHaveBeenNthCalledWith(1, view.id)
         })
     })
@@ -927,14 +926,14 @@ describe('receivedEvents', () => {
         }) as ReceivedEvent
 
         it('should dispatch the updated ticket', () => {
-            handler.onReceive({ticket: {id: 1}} as any)
+            handler.onReceive({ ticket: { id: 1 } } as any)
             expect(ticketActions.mergeTicket).toHaveBeenNthCalledWith(1, {
                 id: 1,
             })
         })
 
         it('should dispatch the updated chat when is unread', () => {
-            handler.onReceive({ticket: {id: 1, is_unread: true}} as any)
+            handler.onReceive({ ticket: { id: 1, is_unread: true } } as any)
             expect(chatActions.markChatAsUnread).toHaveBeenNthCalledWith(1, 1)
         })
     })
@@ -946,13 +945,13 @@ describe('receivedEvents', () => {
 
         it('should dispatch the availability status', () => {
             handler.onReceive({
-                event: {type: SocketEventType.AgentAvailabilityUpdated},
-                data: {user_id: 1, available: true},
+                event: { type: SocketEventType.AgentAvailabilityUpdated },
+                data: { user_id: 1, available: true },
             })
 
             expect(currentUserActions.setIsAvailable).toHaveBeenNthCalledWith(
                 1,
-                true
+                true,
             )
             expect(chatActions.fetchChatsThrottled).toHaveBeenCalled()
         })
@@ -965,7 +964,7 @@ describe('receivedEvents', () => {
 
         it('should dispatch the updated external data for customer id', () => {
             const customerExternalDataUpdatedEvent = {
-                event: {type: SocketEventType.CustomerExternalDataUpdated},
+                event: { type: SocketEventType.CustomerExternalDataUpdated },
                 customer_id: 123,
                 external_data: {
                     'my-awesome-app-id-1': {
@@ -978,7 +977,7 @@ describe('receivedEvents', () => {
             expect(mergeCustomerExternalData).toHaveBeenNthCalledWith(
                 1,
                 customerExternalDataUpdatedEvent.customer_id,
-                customerExternalDataUpdatedEvent.external_data
+                customerExternalDataUpdatedEvent.external_data,
             )
         })
     })
@@ -993,11 +992,11 @@ describe('receivedEvents', () => {
                 event: {
                     type: SocketEventType.TicketTypingActivityShopperStarted,
                 },
-                ticket: {id: 100},
+                ticket: { id: 100 },
             })
 
             expect(ticketActions.setTypingActivityShopper).toHaveBeenCalledWith(
-                100
+                100,
             )
         })
     })
@@ -1026,7 +1025,7 @@ describe('receivedEvents', () => {
             })
             const spy = jest.spyOn(
                 integrationActions,
-                'onVerifyMigrationForwarding'
+                'onVerifyMigrationForwarding',
             )
 
             handler.onReceive({
@@ -1039,7 +1038,7 @@ describe('receivedEvents', () => {
             expect(spy).toHaveBeenCalledWith(
                 reduxStore.dispatch,
                 migration.integration.id,
-                migration.integration.meta.address
+                migration.integration.meta.address,
             )
         })
 
@@ -1057,7 +1056,7 @@ describe('receivedEvents', () => {
             })
             const spy = jest.spyOn(
                 integrationActions,
-                'onVerifyMigrationForwardingFailure'
+                'onVerifyMigrationForwardingFailure',
             )
 
             handler.onReceive({
@@ -1070,7 +1069,7 @@ describe('receivedEvents', () => {
             expect(spy).toHaveBeenCalledWith(
                 reduxStore.dispatch,
                 migration.integration.id,
-                migration.integration.meta.address
+                migration.integration.meta.address,
             )
         })
     })
@@ -1092,7 +1091,7 @@ describe('receivedEvents', () => {
                 ticket_id: voiceCall.ticket_id,
             })
 
-            appQueryClient.setQueryData(queryKey, {data: [{id: 2}]})
+            appQueryClient.setQueryData(queryKey, { data: [{ id: 2 }] })
 
             handler.onReceive({
                 event: {
@@ -1101,7 +1100,7 @@ describe('receivedEvents', () => {
                 voice_call: voiceCall,
             })
             expect(appQueryClient.getQueryData(queryKey)).toEqual({
-                data: [{id: 2}, voiceCall],
+                data: [{ id: 2 }, voiceCall],
             })
         })
     })
@@ -1124,7 +1123,7 @@ describe('receivedEvents', () => {
             })
 
             appQueryClient.setQueryData(queryKey, {
-                data: [{id: 1}, {id: 2}],
+                data: [{ id: 1 }, { id: 2 }],
             })
 
             handler.onReceive({
@@ -1134,7 +1133,7 @@ describe('receivedEvents', () => {
                 voice_call: voiceCall,
             })
             expect(appQueryClient.getQueryData(queryKey)).toEqual({
-                data: [voiceCall, {id: 2}],
+                data: [voiceCall, { id: 2 }],
             })
         })
 
@@ -1155,7 +1154,7 @@ describe('receivedEvents', () => {
             })
 
             appQueryClient.setQueryData(queryKey, {
-                data: [{id: 1}, {id: 2}],
+                data: [{ id: 1 }, { id: 2 }],
             })
 
             handler.onReceive({
@@ -1165,7 +1164,7 @@ describe('receivedEvents', () => {
                 voice_call: voiceCall,
             })
             expect(appQueryClient.getQueryData(queryKey)).toEqual({
-                data: [{id: 1}, {id: 2}],
+                data: [{ id: 1 }, { id: 2 }],
             })
         })
     })
@@ -1267,9 +1266,9 @@ describe('receivedEvents', () => {
                 } as ShopperAddressEvent
                 handler.onReceive(shopperEvent)
                 expect(
-                    mergeCustomerEcommerceDataShopperAddress
+                    mergeCustomerEcommerceDataShopperAddress,
                 ).toHaveBeenCalledTimes(1)
-            }
+            },
         )
     })
 
@@ -1292,7 +1291,7 @@ describe('receivedEvents', () => {
                 } as OrderEvent
                 handler.onReceive(orderEvent)
                 expect(mergeCustomerEcommerceDataOrder).toHaveBeenCalledTimes(1)
-            }
+            },
         )
     })
 })

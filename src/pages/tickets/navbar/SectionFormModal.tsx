@@ -1,7 +1,8 @@
-import React, {useRef} from 'react'
-import {Form} from 'reactstrap'
+import React, { useRef } from 'react'
 
-import {SectionDraft} from 'models/section/types'
+import { Form } from 'reactstrap'
+
+import { SectionDraft } from 'models/section/types'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
@@ -19,7 +20,7 @@ type Props = {
     isSubmitting: boolean
     onChange: <T extends keyof SectionDraft>(
         name: T,
-        value: SectionDraft[T]
+        value: SectionDraft[T],
     ) => void
     onClose: () => void
     onSubmit: () => void
@@ -78,10 +79,10 @@ export default function SectionFormModal({
                                         }
                                         onEmojiSelect={(
                                             emoji: string,
-                                            event
+                                            event,
                                         ) => {
                                             event.stopPropagation()
-                                            onChange('decoration', {emoji})
+                                            onChange('decoration', { emoji })
                                             inputElement.current?.focus()
                                         }}
                                         onEmojiClear={(event) => {

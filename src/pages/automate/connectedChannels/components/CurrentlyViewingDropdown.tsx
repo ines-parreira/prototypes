@@ -1,8 +1,10 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
-import {startCase} from 'lodash'
 import React from 'react'
-import {Link} from 'react-router-dom'
+
+import classNames from 'classnames'
+import { startCase } from 'lodash'
+import { Link } from 'react-router-dom'
+
+import { Label } from '@gorgias/merchant-ui-kit'
 
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
@@ -16,7 +18,7 @@ type ChannelType = 'help-center' | 'chat' | 'contact-form'
 
 const renderIconByChannelType = (
     channelType: ChannelType,
-    isOnButton: boolean = false
+    isOnButton: boolean = false,
 ) => {
     switch (channelType) {
         case 'chat':
@@ -74,7 +76,10 @@ export const CurrentlyViewingDropdown = <T,>({
     const [isSelectOpen, setIsSelectOpen] = React.useState(false)
     const targetRef = React.useRef<HTMLButtonElement>(null)
 
-    const {link, label: channelTypeLabel} = getLinkAndLabel(channelType, appId)
+    const { link, label: channelTypeLabel } = getLinkAndLabel(
+        channelType,
+        appId,
+    )
 
     return (
         <div className={css.currentlyViewingDropdown}>
@@ -92,7 +97,7 @@ export const CurrentlyViewingDropdown = <T,>({
                     <i
                         className={classNames(
                             'material-icons',
-                            css.channelIcon
+                            css.channelIcon,
                         )}
                     >
                         {renderIconByChannelType(channelType, true)}
@@ -134,7 +139,7 @@ export const CurrentlyViewingDropdown = <T,>({
                             <i
                                 className={classNames(
                                     'material-icons',
-                                    css.channelIcon
+                                    css.channelIcon,
                                 )}
                             >
                                 {renderIconByChannelType(channelType)}
@@ -155,7 +160,7 @@ export const CurrentlyViewingDropdown = <T,>({
                             <i
                                 className={classNames(
                                     'material-icons',
-                                    css.chatCtaIcon
+                                    css.chatCtaIcon,
                                 )}
                             >
                                 add

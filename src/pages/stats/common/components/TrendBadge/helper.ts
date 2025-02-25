@@ -1,8 +1,8 @@
-import {InterpretAs} from 'pages/stats/common/components/TrendBadge/TrendBadge'
+import { InterpretAs } from 'pages/stats/common/components/TrendBadge/TrendBadge'
 
 export function getTrendColorFromSign(
     sign: number,
-    interpretAs: InterpretAs
+    interpretAs: InterpretAs,
 ): string {
     let trendColor = sign > 0 || sign < 0 ? 'neutral' : 'unchanged'
     if (interpretAs === 'more-is-better') {

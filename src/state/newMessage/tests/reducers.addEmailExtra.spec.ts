@@ -2,17 +2,17 @@
 // because when draft-js/lib/generateRandomKey is mocked
 // draft-convert removes newlines in convertFromHTML and convertFromText
 // resulting html and text.
-import {ContentState} from 'draft-js'
-import {fromJS, Map} from 'immutable'
+import { ContentState } from 'draft-js'
+import { fromJS, Map } from 'immutable'
 
-import {ticket} from '../../../fixtures/ticket'
+import { ticket } from '../../../fixtures/ticket'
 import {
     convertToHTML,
     getContentStateBlocksSnapshot,
 } from '../../../utils/editor'
-import {addEmailExtra} from '../actions'
-import {ReplyThreadMessage} from '../emailExtraUtils'
-import reducer, {initialState} from '../reducers'
+import { addEmailExtra } from '../actions'
+import { ReplyThreadMessage } from '../emailExtraUtils'
+import reducer, { initialState } from '../reducers'
 
 describe('new message reducer', () => {
     describe('NEW_MESSAGE_ADD_EMAIL_EXTRA action', () => {
@@ -40,9 +40,9 @@ describe('new message reducer', () => {
         }
 
         const getStateSnapshot = (state: Map<any, any>) => {
-            const snapshot = state.toJS() as {state: Record<string, unknown>}
+            const snapshot = state.toJS() as { state: Record<string, unknown> }
             snapshot.state.contentState = getContentStateBlocksSnapshot(
-                state.getIn(['state', 'contentState'])
+                state.getIn(['state', 'contentState']),
             )
             return snapshot
         }
@@ -61,7 +61,7 @@ describe('new message reducer', () => {
                         ...emailExtraArgs,
                         replyThreadMessages,
                     },
-                })
+                }),
             )
             expect(getStateSnapshot(newState)).toMatchSnapshot()
         })

@@ -1,14 +1,14 @@
+import React, { MouseEvent, ReactNode, useContext, useEffect } from 'react'
+
 import classnames from 'classnames'
-import React, {ReactNode, MouseEvent, useContext, useEffect} from 'react'
-import {Link, useHistory} from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
-import {EntityType} from 'hooks/useSearchRankScenario'
-
+import { EntityType } from 'hooks/useSearchRankScenario'
 import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
 import ShortcutIcon from 'pages/common/components/ShortcutIcon/ShortcutIcon'
 import css from 'pages/common/components/Spotlight/SpotlightRow.less'
-import {sanitizeHtmlDefault} from 'utils/html'
-import {isMacOs} from 'utils/platform'
+import { sanitizeHtmlDefault } from 'utils/html'
+import { isMacOs } from 'utils/platform'
 
 type SpotlightRowProps = {
     icon?: ReactNode
@@ -65,7 +65,7 @@ const SpotlightRow = ({
 
     const handleClick = (e: MouseEvent) => {
         onClick?.(e)
-        searchRank?.registerResultSelection({id, index, type: entityType})
+        searchRank?.registerResultSelection({ id, index, type: entityType })
         if (isMacOs ? !e.metaKey : !e.ctrlKey) {
             onCloseModal()
         }

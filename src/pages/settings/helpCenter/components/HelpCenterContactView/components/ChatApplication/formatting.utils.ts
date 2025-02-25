@@ -1,8 +1,8 @@
 import moment from 'moment'
 
-import {localeTimeFormatConfigs} from '../../../../../../../config/locales'
-import {LanguageTimeFormat} from '../../../../../../../constants/languages'
-import {HelpCenterState} from '../../../../../../../state/ui/helpCenter'
+import { localeTimeFormatConfigs } from '../../../../../../../config/locales'
+import { LanguageTimeFormat } from '../../../../../../../constants/languages'
+import { HelpCenterState } from '../../../../../../../state/ui/helpCenter'
 
 export const getTimezoneAbbreviation = (timezone: string) => {
     return moment().tz(timezone).format('z')
@@ -25,7 +25,7 @@ export const convertDaysToName = (daysString: string) => {
 
 export const formatBusinessHoursByLocale = (
     time: string,
-    helpCenterLanguage: HelpCenterState['currentLanguage']
+    helpCenterLanguage: HelpCenterState['currentLanguage'],
 ) => {
     const momentTime = moment(time, 'HH:mm')
 

@@ -1,8 +1,9 @@
 import React from 'react'
-import {FormFeedback, FormGroup, Input} from 'reactstrap'
+
+import { FormFeedback, FormGroup, Input } from 'reactstrap'
 import isUrl from 'validator/lib/isURL'
 
-import {isURLOptions} from '../../utils/navigationLinks'
+import { isURLOptions } from '../../utils/navigationLinks'
 
 import css from './LinkItem.less'
 
@@ -17,7 +18,7 @@ export type LinkItemEventHandlers = {
     onChange: (
         ev: React.ChangeEvent<HTMLInputElement>,
         key: 'label' | 'value',
-        id: number
+        id: number,
     ) => void
     onDelete: (id: number) => void
 }

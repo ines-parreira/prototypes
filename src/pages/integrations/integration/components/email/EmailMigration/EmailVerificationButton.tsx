@@ -2,7 +2,7 @@ import React from 'react'
 
 import Button from 'pages/common/components/button/Button'
 
-import {EmailVerificationStatus} from '../EmailVerificationStatusLabel'
+import { EmailVerificationStatus } from '../EmailVerificationStatusLabel'
 
 type Props = {
     isLoading: boolean

@@ -1,15 +1,21 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import React, {useCallback, useState} from 'react'
-import {Link} from 'react-router-dom'
-import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
+import React, { useCallback, useState } from 'react'
 
-import {gorgiasColors} from 'gorgias-design-system/styles'
+import { Link } from 'react-router-dom'
+import {
+    Dropdown,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+} from 'reactstrap'
 
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { gorgiasColors } from 'gorgias-design-system/styles'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 
 import GorgiasChatIntegrationLanguageDeleteModal from './GorgiasChatIntegrationLanguageDeleteModal'
-import type {LanguageItemRow} from './types'
+import type { LanguageItemRow } from './types'
 
 type GorgiasChatIntegrationLanguagesTableRowActionsProps = {
     language: LanguageItemRow
@@ -84,7 +90,10 @@ export const GorgiasChatIntegrationLanguagesTableRowActions = ({
                             </Tooltip>
                         </DropdownToggle>
 
-                        <DropdownMenu right style={{marginTop: 8, padding: 8}}>
+                        <DropdownMenu
+                            right
+                            style={{ marginTop: 8, padding: 8 }}
+                        >
                             <DropdownItem
                                 data-testid="action-set-default-button"
                                 key="action-set-default-button"

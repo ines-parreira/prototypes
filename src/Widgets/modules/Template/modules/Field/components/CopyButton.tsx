@@ -1,11 +1,12 @@
+import React, { MouseEvent } from 'react'
+
 import copy from 'copy-to-clipboard'
-import React, {MouseEvent} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import IconButton from 'pages/common/components/button/IconButton'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {reportError} from 'utils/errors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { reportError } from 'utils/errors'
 
 import css from './CopyButton.less'
 
@@ -25,7 +26,7 @@ export default function CopyButton({
                 notify({
                     status: NotificationStatus.Success,
                     title: onCopyMessage,
-                })
+                }),
             )
         } catch (err: unknown) {
             reportError(err as Error)
@@ -33,7 +34,7 @@ export default function CopyButton({
                 notify({
                     status: NotificationStatus.Error,
                     title: 'Failed to copy',
-                })
+                }),
             )
         }
     }

@@ -1,1 +1,1 @@
-export {default} from './CampaignPublishScheduleStep'
+export { default } from './CampaignPublishScheduleStep'

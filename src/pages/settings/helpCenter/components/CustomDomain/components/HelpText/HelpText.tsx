@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {isProduction} from '../../../../../../../utils/environment'
+import { isProduction } from '../../../../../../../utils/environment'
 
 import css from '../../CustomDomain.less'
 
@@ -8,7 +8,7 @@ type Props = {
     isHidden: boolean
 }
 
-export const HelpText = ({isHidden}: Props): JSX.Element | null => {
+export const HelpText = ({ isHidden }: Props): JSX.Element | null => {
     if (isHidden) {
         return null
     }

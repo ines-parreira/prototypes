@@ -1,5 +1,6 @@
-import {EmailDomain, HttpError} from '@gorgias/api-queries'
-import {createContext} from 'react'
+import { createContext } from 'react'
+
+import { EmailDomain, HttpError } from '@gorgias/api-queries'
 
 type DomainVerificationErrors = {
     createDomain: HttpError | null

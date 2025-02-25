@@ -1,5 +1,5 @@
-import React, {useState} from 'react'
-import type {ReactNode} from 'react'
+import React, { useState } from 'react'
+import type { ReactNode } from 'react'
 
 import Context from '../Context'
 import useContextValue from '../hooks/useContextValue'
@@ -11,7 +11,7 @@ type Props = {
     size: number
 }
 
-export default function Panels({children, size}: Props) {
+export default function Panels({ children, size }: Props) {
     const [container, setContainer] = useState<HTMLDivElement | null>(null)
     const ctx = useContextValue(container, size)
 
@@ -20,7 +20,7 @@ export default function Panels({children, size}: Props) {
             <div
                 ref={setContainer}
                 className={css.panels}
-                style={{width: ctx.totalSize}}
+                style={{ width: ctx.totalSize }}
             >
                 {children}
             </div>

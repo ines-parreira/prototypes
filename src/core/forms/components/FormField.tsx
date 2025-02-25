@@ -1,7 +1,8 @@
-import React, {ComponentProps, ComponentType, useCallback} from 'react'
+import React, { ComponentProps, ComponentType, useCallback } from 'react'
+
 import {
-    useController,
     ControllerRenderProps,
+    useController,
     UseControllerProps,
 } from 'react-hook-form'
 
@@ -24,7 +25,7 @@ type ControllerParams<CustomFieldProps extends NeededProps> = {
     >
     inputTransform?: (value: any) => CustomFieldProps['value']
     outputTransform?: (
-        value: Parameters<CustomFieldProps['onChange']>[0]
+        value: Parameters<CustomFieldProps['onChange']>[0],
     ) => any
 }
 
@@ -46,7 +47,7 @@ export function FormField<
     ...fieldProps
 }: FormFieldProps<CustomFieldProps>) {
     const {
-        field: {onChange, value, ...controllerFieldProps},
+        field: { onChange, value, ...controllerFieldProps },
         fieldState,
     } = useController({
         name,
@@ -62,7 +63,7 @@ export function FormField<
         (nextValue: unknown) => {
             onChange(outputTransform ? outputTransform(nextValue) : nextValue)
         },
-        [onChange, outputTransform]
+        [onChange, outputTransform],
     )
 
     return (

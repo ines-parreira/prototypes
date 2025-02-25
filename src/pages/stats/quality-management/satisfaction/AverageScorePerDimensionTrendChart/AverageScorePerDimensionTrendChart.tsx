@@ -1,7 +1,7 @@
-import React, {useCallback, useState, useRef, useMemo} from 'react'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
 
-import {TicketDimension} from 'models/reporting/cubes/TicketCube'
-import {TicketMessagesDimension} from 'models/reporting/cubes/TicketMessagesCube'
+import { TicketDimension } from 'models/reporting/cubes/TicketCube'
+import { TicketMessagesDimension } from 'models/reporting/cubes/TicketMessagesCube'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
@@ -9,11 +9,11 @@ import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 import ChartCard from 'pages/stats/ChartCard'
-import {DashboardChartProps} from 'pages/stats/custom-reports/types'
-import {AverageScorePerAssigneeMetric} from 'pages/stats/quality-management/satisfaction/AverageScorePerDimensionTrendChart/AverageScorePerAssigneeMetric'
-import {AverageScorePerChannelMetric} from 'pages/stats/quality-management/satisfaction/AverageScorePerDimensionTrendChart/AverageScorePerChannelMetric'
+import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { AverageScorePerAssigneeMetric } from 'pages/stats/quality-management/satisfaction/AverageScorePerDimensionTrendChart/AverageScorePerAssigneeMetric'
+import { AverageScorePerChannelMetric } from 'pages/stats/quality-management/satisfaction/AverageScorePerDimensionTrendChart/AverageScorePerChannelMetric'
 import css from 'pages/stats/quality-management/satisfaction/AverageScorePerDimensionTrendChart/AverageScorePerDimensionTrendChart.less'
-import {AverageScorePerIntegrationMetric} from 'pages/stats/quality-management/satisfaction/AverageScorePerDimensionTrendChart/AverageScorePerIntegrationMetric'
+import { AverageScorePerIntegrationMetric } from 'pages/stats/quality-management/satisfaction/AverageScorePerDimensionTrendChart/AverageScorePerIntegrationMetric'
 
 type CSATDimension = {
     label: string
@@ -21,15 +21,15 @@ type CSATDimension = {
 }
 
 const AVAILABLE_DIMENSIONS: CSATDimension[] = [
-    {label: 'Per assignee', value: TicketDimension.AssigneeUserId},
-    {label: 'Per channel', value: TicketDimension.Channel},
-    {label: 'Per integration', value: TicketMessagesDimension.Integration},
+    { label: 'Per assignee', value: TicketDimension.AssigneeUserId },
+    { label: 'Per channel', value: TicketDimension.Channel },
+    { label: 'Per integration', value: TicketMessagesDimension.Integration },
 ]
 
 const DEFAULT_DIMENSION = AVAILABLE_DIMENSIONS[1]
 
 export const AverageScorePerDimensionTrendChart = (
-    props: DashboardChartProps
+    props: DashboardChartProps,
 ) => {
     const [selectedDimension, setSelectedDimension] =
         useState(DEFAULT_DIMENSION)
@@ -74,7 +74,7 @@ export const AverageScorePerDimensionTrendChart = (
                                                 AVAILABLE_DIMENSIONS.find(
                                                     (dim) =>
                                                         dim.value ===
-                                                        selectedValue
+                                                        selectedValue,
                                                 )?.label || ''
                                             setSelectedDimension({
                                                 label: selectedLabel,

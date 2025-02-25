@@ -1,8 +1,9 @@
-import {cleanup, fireEvent, render, screen} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 
 import EmailVerificationButton from '../EmailMigration/EmailVerificationButton'
-import {EmailVerificationStatus} from '../EmailVerificationStatusLabel'
+import { EmailVerificationStatus } from '../EmailVerificationStatusLabel'
 
 const commonProps = {
     isLoading: false,
@@ -12,7 +13,7 @@ const commonProps = {
 
 describe('EmailVerificationButton', () => {
     const renderComponent = (
-        props: ComponentProps<typeof EmailVerificationButton>
+        props: ComponentProps<typeof EmailVerificationButton>,
     ) => render(<EmailVerificationButton {...props} />)
 
     afterEach(() => {
@@ -25,7 +26,7 @@ describe('EmailVerificationButton', () => {
             ...commonProps,
             status: EmailVerificationStatus.Unverified,
         })
-        const button = screen.getByRole('button', {name: 'Verify forwarding'})
+        const button = screen.getByRole('button', { name: 'Verify forwarding' })
         fireEvent.click(button)
         expect(commonProps.onLinkButtonClick).toHaveBeenCalledTimes(1)
     })
@@ -36,7 +37,7 @@ describe('EmailVerificationButton', () => {
             status: EmailVerificationStatus.Unverified,
             linkButtonText: 'Custom Text',
         })
-        const button = screen.getByRole('button', {name: 'Custom Text'})
+        const button = screen.getByRole('button', { name: 'Custom Text' })
         fireEvent.click(button)
         expect(commonProps.onLinkButtonClick).toHaveBeenCalledTimes(1)
     })
@@ -46,7 +47,9 @@ describe('EmailVerificationButton', () => {
             ...commonProps,
             status: EmailVerificationStatus.Failed,
         })
-        const button = screen.getByRole('button', {name: /retry verification/i})
+        const button = screen.getByRole('button', {
+            name: /retry verification/i,
+        })
         fireEvent.click(button)
         expect(commonProps.onRetryClick).toHaveBeenCalled()
     })
@@ -56,7 +59,7 @@ describe('EmailVerificationButton', () => {
             ...commonProps,
             status: EmailVerificationStatus.Pending,
         })
-        const button = screen.getByRole('button', {name: /verifying/i})
+        const button = screen.getByRole('button', { name: /verifying/i })
         expect(button).toBeAriaDisabled()
     })
 })

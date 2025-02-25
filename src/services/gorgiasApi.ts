@@ -1,27 +1,28 @@
-import {ListSatisfactionSurveys200} from '@gorgias/api-types'
 import axios, {
     AxiosInstance,
     AxiosRequestConfig,
     AxiosResponse,
     CancelTokenSource,
 } from 'axios'
-import {fromJS, List, Map} from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 
-import {EditOrderAction} from 'constants/integrations/types/shopify'
+import { ListSatisfactionSurveys200 } from '@gorgias/api-types'
+
+import { EditOrderAction } from 'constants/integrations/types/shopify'
 import type {
+    Edit_to_perform,
     PollingConfig,
     Refund,
-    Edit_to_perform,
 } from 'constants/integrations/types/shopify'
-import {createClient} from 'models/api/resources'
+import { createClient } from 'models/api/resources'
 import {
     ApiListResponseCursorPagination,
     ApiListResponseLegacyPagination,
     ApiPaginationParams,
 } from 'models/api/types'
-import {fetchEvents} from 'models/event/resources'
-import {Event, EventObjectType, FetchEventsOptions} from 'models/event/types'
-import {IntegrationDataItemType} from 'models/integration/types'
+import { fetchEvents } from 'models/event/resources'
+import { Event, EventObjectType, FetchEventsOptions } from 'models/event/types'
+import { IntegrationDataItemType } from 'models/integration/types'
 
 type GorgiasApiOptions = {
     requestsCancellation?: boolean
@@ -37,7 +38,7 @@ export default class GorgiasApi {
     _requestCanceller: CancelTokenSource
 
     static _getDraftOrderPollingConfig(
-        responseData: PollingConfig
+        responseData: PollingConfig,
     ): Maybe<PollingConfig> {
         let pollingConfig: Maybe<PollingConfig> = null
 
@@ -51,7 +52,7 @@ export default class GorgiasApi {
         return pollingConfig
     }
 
-    constructor({requestsCancellation = true}: GorgiasApiOptions = {}) {
+    constructor({ requestsCancellation = true }: GorgiasApiOptions = {}) {
         this._api = createClient()
 
         if (requestsCancellation) {
@@ -71,7 +72,7 @@ export default class GorgiasApi {
         if (!this._requestCanceller) {
             throw new Error(
                 'Cannot call `.cancelPendingRequests()` on this instance ' +
-                    'because it was not created with this ability.'
+                    'because it was not created with this ability.',
             )
         }
 
@@ -87,7 +88,7 @@ export default class GorgiasApi {
      */
     async *paginate<T>(
         url: string,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): AsyncGenerator<Array<T>, void, void> {
         let path: Maybe<string> = url
 
@@ -96,7 +97,7 @@ export default class GorgiasApi {
                 ApiListResponseLegacyPagination<T[]>
             > = await this._api.get(path, config)
             const {
-                data: {data, meta},
+                data: { data, meta },
             } = response
             yield data
             path = meta.next_page
@@ -109,13 +110,13 @@ export default class GorgiasApi {
     async *cursorPaginate<V, T extends ApiPaginationParams>(
         asyncMethod: (
             params: T,
-            config?: AxiosRequestConfig
+            config?: AxiosRequestConfig,
         ) => Promise<AxiosResponse<ApiListResponseCursorPagination<Array<V>>>>,
         params: T = {} as T,
-        config?: AxiosRequestConfig
+        config?: AxiosRequestConfig,
     ): AsyncGenerator<V[], void, void> {
         let nextCursor: string | null
-        const options = {...params}
+        const options = { ...params }
 
         do {
             const response = await asyncMethod(
@@ -123,10 +124,10 @@ export default class GorgiasApi {
                     limit: 100,
                     ...options,
                 },
-                config
+                config,
             )
             const {
-                data: {data, meta},
+                data: { data, meta },
             } = response
             yield data
             nextCursor = meta.next_cursor
@@ -148,7 +149,7 @@ export default class GorgiasApi {
     async payInvoice(invoiceId: string) {
         const resp = await this._api.put(
             `/api/billing/invoices/${invoiceId}/pay/`,
-            {}
+            {},
         )
         return fromJS(resp.data) as Map<any, any>
     }
@@ -159,7 +160,7 @@ export default class GorgiasApi {
     async confirmInvoicePayment(invoiceId: string) {
         const resp = await this._api.put(
             `/api/billing/invoices/${invoiceId}/confirm-payment/`,
-            {}
+            {},
         )
         return fromJS(resp.data) as Map<any, any>
     }
@@ -171,7 +172,7 @@ export default class GorgiasApi {
                 objectId: ticketId,
                 objectType: EventObjectType.Ticket,
                 limit: 30,
-            }
+            },
         )
 
         for await (const events of pages) {
@@ -181,14 +182,14 @@ export default class GorgiasApi {
 
     async getSatisfactionSurvey(ticketId: number) {
         const response = await this._api.get(`/api/satisfaction-surveys/`, {
-            params: {ticket_id: ticketId, limit: 1},
+            params: { ticket_id: ticketId, limit: 1 },
         })
         return (response.data as ListSatisfactionSurveys200).data[0] ?? null
     }
 
     async *getSatisfactionSurveyEvents(
         satisfactionSurveyId: number,
-        config?: FetchEventsOptions
+        config?: FetchEventsOptions,
     ) {
         const pages = this.cursorPaginate<Event, FetchEventsOptions>(
             fetchEvents,
@@ -197,7 +198,7 @@ export default class GorgiasApi {
                 objectId: satisfactionSurveyId,
                 objectType: EventObjectType.SatisfactionSurvey,
                 limit: 30,
-            }
+            },
         )
 
         for await (const events of pages) {
@@ -213,10 +214,10 @@ export default class GorgiasApi {
      * Call the given API endpoint with the given filter parameter, and return results
      */
     async search(endpoint: string, filter: string) {
-        const params = filter.length ? {filter} : {}
-        const response = await this._api.get(endpoint, {params})
+        const params = filter.length ? { filter } : {}
+        const response = await this._api.get(endpoint, { params })
 
-        return (response.data as {data: SearchResultType[]}).data
+        return (response.data as { data: SearchResultType[] }).data
     }
 
     /**
@@ -225,7 +226,7 @@ export default class GorgiasApi {
     async *getIntegrationDataItems(
         integrationId: number,
         integrationDataItemType: IntegrationDataItemType,
-        externalIds: Array<string | number>
+        externalIds: Array<string | number>,
     ) {
         const pages = this.paginate(
             `/api/integrations/${integrationId}/${integrationDataItemType}`,
@@ -233,7 +234,7 @@ export default class GorgiasApi {
                 params: {
                     external_ids: externalIds.join(','),
                 },
-            }
+            },
         )
 
         for await (const items of pages) {
@@ -247,7 +248,10 @@ export default class GorgiasApi {
         {
             draftOrderId,
             params = {},
-        }: {draftOrderId?: Maybe<number>; params?: Record<string, unknown>} = {}
+        }: {
+            draftOrderId?: Maybe<number>
+            params?: Record<string, unknown>
+        } = {},
     ): Promise<[Map<any, any>, Maybe<PollingConfig>]> {
         let method
         let url
@@ -270,14 +274,16 @@ export default class GorgiasApi {
         })
 
         return [
-            fromJS((response.data as {draft_order: Map<any, any>}).draft_order),
+            fromJS(
+                (response.data as { draft_order: Map<any, any> }).draft_order,
+            ),
             GorgiasApi._getDraftOrderPollingConfig(response.data),
         ]
     }
 
     async getShippingAddressList(
         integrationId: number,
-        customerId: string
+        customerId: string,
     ): Promise<Map<any, any>> {
         const url = `/integrations/shopify/shipping-address/${customerId}/list/`
         const response = await this._api.get(url, {
@@ -287,7 +293,7 @@ export default class GorgiasApi {
         })
 
         const responseData = response.data as {
-            data: {addresses: List<Map<any, any>>}
+            data: { addresses: List<Map<any, any>> }
         }
 
         const shippingAddressesList = responseData?.data?.addresses
@@ -296,7 +302,7 @@ export default class GorgiasApi {
 
     async calculateDraftOrder(
         integrationId: number,
-        payload: Map<any, any>
+        payload: Map<any, any>,
     ): Promise<Map<any, any>> {
         const url = '/integrations/shopify/order/draft/calculate/'
         const response = await this._api.post(url, payload.toJS(), {
@@ -306,7 +312,7 @@ export default class GorgiasApi {
         })
 
         const responseData = response.data as {
-            data: {draftOrderCalculate: {calculatedDraftOrder: any}}
+            data: { draftOrderCalculate: { calculatedDraftOrder: any } }
         }
 
         const calculatedDraftOrder =
@@ -317,7 +323,7 @@ export default class GorgiasApi {
 
     async calculateEditOrder(
         integrationId: number,
-        payload: Map<any, any>
+        payload: Map<any, any>,
     ): Promise<Map<any, any>> {
         const url = '/integrations/shopify/order/edit/calculate/'
         const response = await this._api.post(url, payload.toJS(), {
@@ -326,7 +332,7 @@ export default class GorgiasApi {
             },
         })
         const responseData = response.data as {
-            data: {draftOrderCalculate: {calculatedDraftOrder: any}}
+            data: { draftOrderCalculate: { calculatedDraftOrder: any } }
         }
 
         const calculatedDraftOrder =
@@ -336,7 +342,7 @@ export default class GorgiasApi {
     }
     async editOrder(
         integrationId: number,
-        payload: Edit_to_perform
+        payload: Edit_to_perform,
     ): Promise<Map<any, any>> {
         const url = '/integrations/shopify/order/edit/calculate/'
         const response = await this._api.post(url, payload, {
@@ -369,7 +375,7 @@ export default class GorgiasApi {
         if (!dataKey) return fromJS({}) as Map<any, any>
 
         const responseData = response.data as {
-            data: {[dataKey: string]: {calculatedOrder: any}}
+            data: { [dataKey: string]: { calculatedOrder: any } }
         }
 
         const editedOrder = responseData?.data?.[dataKey]
@@ -378,7 +384,7 @@ export default class GorgiasApi {
 
     async beginEditOrder(
         integrationId: number,
-        payload: Map<any, any>
+        payload: Map<any, any>,
     ): Promise<Map<any, any>> {
         const url = '/integrations/shopify/order/edit/begin/'
         const response = await this._api.post(url, payload.toJS(), {
@@ -388,7 +394,7 @@ export default class GorgiasApi {
         })
 
         const responseData = response.data as {
-            data: {orderEditBegin: {calculatedOrder: any}}
+            data: { orderEditBegin: { calculatedOrder: any } }
         }
 
         const beginEditOrder =
@@ -399,22 +405,22 @@ export default class GorgiasApi {
     async createDraftOrder(
         integrationId: number,
         payload: Map<any, any>,
-        orderId?: Maybe<number>
+        orderId?: Maybe<number>,
     ): Promise<[Map<any, any>, Maybe<PollingConfig>]> {
-        const params = orderId ? {order_id: orderId} : {}
-        return await this._upsertDraftOder(integrationId, payload, {params})
+        const params = orderId ? { order_id: orderId } : {}
+        return await this._upsertDraftOder(integrationId, payload, { params })
     }
 
     async upsertDraftOrder(
         integrationId: number,
         payload: Map<any, any>,
-        draftOrderId: Maybe<number>
+        draftOrderId: Maybe<number>,
     ): Promise<[Map<any, any>, Maybe<PollingConfig>]> {
         // TODO(@samy): remove warning if it never happens
         const variantIds = (payload.get('line_items', []) as List<any>)
             .map(
                 (lineItem: Map<any, any>) =>
-                    lineItem.get('variant_id') as number
+                    lineItem.get('variant_id') as number,
             )
             .filter((variantId) => !!variantId)
 
@@ -423,7 +429,7 @@ export default class GorgiasApi {
         if (variantIds.size !== uniqueVariantIds.size) {
             console.error(
                 '[SHOPIFY][duplicate-order] Updating draft order with duplicated rows',
-                payload.toJS()
+                payload.toJS(),
             )
         }
 
@@ -434,7 +440,7 @@ export default class GorgiasApi {
 
     async getDraftOrder(
         integrationId: number,
-        draftOrderId: number
+        draftOrderId: number,
     ): Promise<[Map<any, any>, Maybe<PollingConfig>]> {
         const response = await this._api.get(
             `/integrations/shopify/order/draft/${draftOrderId}/`,
@@ -442,18 +448,20 @@ export default class GorgiasApi {
                 params: {
                     integration_id: integrationId,
                 },
-            }
+            },
         )
 
         return [
-            fromJS((response.data as {draft_order: Map<any, any>}).draft_order),
+            fromJS(
+                (response.data as { draft_order: Map<any, any> }).draft_order,
+            ),
             GorgiasApi._getDraftOrderPollingConfig(response.data),
         ]
     }
 
     async deleteDraftOrder(
         integrationId: number,
-        draftOrderId: string | number
+        draftOrderId: string | number,
     ): Promise<void> {
         await this._api.delete(
             `/integrations/shopify/order/draft/${draftOrderId}/`,
@@ -461,14 +469,14 @@ export default class GorgiasApi {
                 params: {
                     integration_id: integrationId,
                 },
-            }
+            },
         )
     }
 
     async emailDraftOrderInvoice(
         integrationId: number,
         draftOrderId: number,
-        invoicePayload: Map<any, any>
+        invoicePayload: Map<any, any>,
     ): Promise<void> {
         await this._api.post(
             `/integrations/shopify/order/draft/${draftOrderId}/send-invoice/`,
@@ -477,14 +485,14 @@ export default class GorgiasApi {
                 params: {
                     integration_id: integrationId,
                 },
-            }
+            },
         )
     }
 
     async calculateRefund(
         integrationId: number,
         orderId: number,
-        payload: Map<any, any>
+        payload: Map<any, any>,
     ) {
         const response = await this._api.post(
             `/integrations/shopify/order/${orderId}/refunds/calculate/`,
@@ -493,10 +501,10 @@ export default class GorgiasApi {
                 params: {
                     integration_id: integrationId,
                 },
-            }
+            },
         )
 
-        return fromJS((response.data as {refund: Refund}).refund) as Map<
+        return fromJS((response.data as { refund: Refund }).refund) as Map<
             any,
             any
         >
@@ -511,15 +519,15 @@ export default class GorgiasApi {
         viewId: number,
         visibility: string,
         teams: List<any>,
-        users: List<any>
+        users: List<any>,
     ) {
         const res = await this._api.put(`/api/views/${viewId}`, {
             visibility,
             shared_with_teams: teams.map(
-                (team: Map<any, any>) => team.get('id') as number
+                (team: Map<any, any>) => team.get('id') as number,
             ),
             shared_with_users: users.map(
-                (user: Map<any, any>) => user.get('id') as number
+                (user: Map<any, any>) => user.get('id') as number,
             ),
         })
         return res.data as Map<any, any>

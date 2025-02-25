@@ -1,5 +1,6 @@
-import classNames from 'classnames'
 import React from 'react'
+
+import classNames from 'classnames'
 
 import css from 'pages/common/components/ProgressTracker/ProgressTracker.less'
 import TrackerCircle from 'pages/common/components/ProgressTracker/TrackerCircle'
@@ -14,7 +15,7 @@ type Props = {
 }
 
 const ProgressTracker = (props: Props) => {
-    const {stepLabel, step, totalSteps, cta, stepTrackerColor, className} =
+    const { stepLabel, step, totalSteps, cta, stepTrackerColor, className } =
         props
 
     const percentage = (step / totalSteps) * 100

@@ -1,21 +1,21 @@
-import {fireEvent, render, RenderResult, screen} from '@testing-library/react'
-
-import {fromJS, Map} from 'immutable'
 import React from 'react'
+
+import { fireEvent, render, RenderResult, screen } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
 
 import {
     IntegrationType,
     ZendeskIntegration,
 } from '../../../../../models/integration/types'
-import {StoreDispatch} from '../../../../../state/types'
-import {ImportZendeskCreate} from '../ImportZendeskCreate'
-import {ZENDESK_CONNECTION_TYPE} from '../types'
-import {failedImport, pendingImport, successImport} from './fixtures'
+import { StoreDispatch } from '../../../../../state/types'
+import { ImportZendeskCreate } from '../ImportZendeskCreate'
+import { ZENDESK_CONNECTION_TYPE } from '../types'
+import { failedImport, pendingImport, successImport } from './fixtures'
 
 interface ImportZendeskCreateProps {
     integrations: ZendeskIntegration[]
     createIntegration(
-        integration: Map<any, any>
+        integration: Map<any, any>,
     ): (dispatch: StoreDispatch) => Promise<unknown>
 }
 const renderComponent = (props: ImportZendeskCreateProps): RenderResult => {
@@ -35,24 +35,24 @@ describe('<ImportZendeskCreate/>', () => {
         it('without any errors and disabled creation button', () => {
             renderComponent(defaultProps)
             expect(
-                screen.getByRole('button', {name: /Start import/})
+                screen.getByRole('button', { name: /Start import/ }),
             ).toBeAriaDisabled()
         })
 
         it('with error because domain already exists', () => {
-            const {getByLabelText, getByText} = renderComponent(defaultProps)
+            const { getByLabelText, getByText } = renderComponent(defaultProps)
             fireEvent.change(getByLabelText('Zendesk subdomain'), {
-                target: {value: 'acme'},
+                target: { value: 'acme' },
             })
 
             expect(getByText('This domain was already imported.')).toBeDefined()
             expect(
-                screen.getByRole('button', {name: /Start import/})
+                screen.getByRole('button', { name: /Start import/ }),
             ).toBeAriaDisabled()
         })
 
         it('submit the form to create integration', () => {
-            const {getByLabelText, getByText, container} =
+            const { getByLabelText, getByText, container } =
                 renderComponent(defaultProps)
             const domain = 'gorgias'
             const apiKey = '123456'
@@ -60,24 +60,24 @@ describe('<ImportZendeskCreate/>', () => {
 
             const mockDate = new Date().toISOString()
             jest.spyOn(global, 'Date').mockImplementation(
-                () => mockDate as unknown as Date
+                () => mockDate as unknown as Date,
             )
             Date.prototype.toISOString = () => mockDate
             Date.now = () => new Date(mockDate).valueOf()
 
             fireEvent.change(getByLabelText('Zendesk subdomain'), {
-                target: {value: 'gorgias'},
+                target: { value: 'gorgias' },
             })
             fireEvent.change(getByLabelText('Login email'), {
-                target: {value: 'gorgias+test@gorgias.com'},
+                target: { value: 'gorgias+test@gorgias.com' },
             })
 
             fireEvent.change(container.querySelector('#id-apiKey') as Element, {
-                target: {value: '123456'},
+                target: { value: '123456' },
             })
 
             expect(
-                screen.getByRole('button', {name: /Start import/})
+                screen.getByRole('button', { name: /Start import/ }),
             ).toBeAriaEnabled()
 
             fireEvent.click(getByText('Start import'))
@@ -96,7 +96,7 @@ describe('<ImportZendeskCreate/>', () => {
                         },
                     ],
                     deactivated_datetime: mockDate,
-                })
+                }),
             )
         })
     })

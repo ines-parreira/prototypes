@@ -1,7 +1,8 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {ModalContext} from '../../Modal'
+import { render, screen } from '@testing-library/react'
+
+import { ModalContext } from '../../Modal'
 import ModalHeader from '../../ModalHeader'
 
 describe('<ModalHeader/>', () => {
@@ -15,7 +16,7 @@ describe('<ModalHeader/>', () => {
                 }}
             >
                 <ModalHeader title="Title of a header" />
-            </ModalContext.Provider>
+            </ModalContext.Provider>,
         )
 
         expect(screen.queryByText('close')).not.toBeInTheDocument()
@@ -31,7 +32,7 @@ describe('<ModalHeader/>', () => {
                 }}
             >
                 <ModalHeader title="Title of a header" forceCloseButton />
-            </ModalContext.Provider>
+            </ModalContext.Provider>,
         )
 
         expect(screen.getByText('close')).toBeInTheDocument()

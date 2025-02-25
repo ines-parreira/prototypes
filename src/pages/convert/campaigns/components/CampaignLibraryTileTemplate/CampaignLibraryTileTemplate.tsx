@@ -1,7 +1,8 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
 
-import {CampaignTemplate} from 'pages/convert/campaigns/templates/types'
+import { Link } from 'react-router-dom'
+
+import { CampaignTemplate } from 'pages/convert/campaigns/templates/types'
 
 import css from './CampaignLibraryTileTemplate.less'
 
@@ -10,7 +11,7 @@ type Props = {
     integrationId: number
 }
 
-const CampainLibraryTileTemplate = ({template, integrationId}: Props) => {
+const CampainLibraryTileTemplate = ({ template, integrationId }: Props) => {
     return (
         <Link
             className={css.link}

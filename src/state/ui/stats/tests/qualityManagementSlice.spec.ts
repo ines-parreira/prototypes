@@ -1,11 +1,11 @@
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
 import {
-    qualityManagementSlice,
-    initialState,
-    toggleCommentHighlightsCsatSentiment,
     getCommentHighlightsCsatSentiment,
+    initialState,
+    qualityManagementSlice,
+    toggleCommentHighlightsCsatSentiment,
 } from 'state/ui/stats/qualityManagementSlice'
-import {CsatSentiment} from 'state/ui/stats/types'
+import { CsatSentiment } from 'state/ui/stats/types'
 
 describe('qualityManagementSlice reducer', () => {
     it('should return the initial state when an unknown action is passed', () => {
@@ -23,11 +23,11 @@ describe('qualityManagementSlice reducer', () => {
 
         const nextState = qualityManagementSlice.reducer(
             previousState,
-            toggleCommentHighlightsCsatSentiment()
+            toggleCommentHighlightsCsatSentiment(),
         )
 
         expect(nextState.commentHighlightsCsatSentiment).toEqual(
-            CsatSentiment.Negative
+            CsatSentiment.Negative,
         )
     })
 
@@ -38,11 +38,11 @@ describe('qualityManagementSlice reducer', () => {
 
         const nextState = qualityManagementSlice.reducer(
             previousState,
-            toggleCommentHighlightsCsatSentiment()
+            toggleCommentHighlightsCsatSentiment(),
         )
 
         expect(nextState.commentHighlightsCsatSentiment).toEqual(
-            CsatSentiment.Positive
+            CsatSentiment.Positive,
         )
     })
 })

@@ -1,28 +1,27 @@
-import {Map} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {ReactNode, useContext} from 'react'
+import React, { ReactNode, useContext } from 'react'
+
+import { Map } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 
 import logo from 'assets/img/infobar/bigcommerce.svg'
-import {logEvent, SegmentEvent} from 'common/segment'
-
-import {FeatureFlagKey} from 'config/featureFlags'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     BigCommerceActionType,
     BigCommerceCustomer,
 } from 'models/integration/types'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {CardHeaderIcon} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderIcon'
-import {CardHeaderSubtitle} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderSubtitle'
-import {CardHeaderTitle} from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderTitle'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { CardHeaderIcon } from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderIcon'
+import { CardHeaderSubtitle } from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderSubtitle'
+import { CardHeaderTitle } from 'Widgets/modules/Template/modules/Card/components/views/CardHeaderTitle'
 import ExpandAllButton from 'Widgets/modules/Template/modules/Card/components/views/ExpandAllButton'
-
-import {CardCustomization} from 'Widgets/modules/Template/modules/Card/types'
+import { CardCustomization } from 'Widgets/modules/Template/modules/Card/types'
 import StaticField from 'Widgets/modules/Template/modules/Field/components/StaticField'
 
 import ActionButtonsGroup from '../ActionButtonsGroup'
-import {InfobarAction} from '../types'
+import { InfobarAction } from '../types'
 import OrderModal from './AddOrderModal/OrderModal'
 
 export const customerCustomization: CardCustomization = {
@@ -35,8 +34,8 @@ type AfterTitleProps = {
     source: Map<any, any>
 }
 
-function AfterTitle({source}: AfterTitleProps) {
-    const {integration} = useContext(IntegrationContext)
+function AfterTitle({ source }: AfterTitleProps) {
+    const { integration } = useContext(IntegrationContext)
     const storeName = integration.getIn(['meta', 'shop_display_name']) as string
 
     const bigCommerceCustomer: BigCommerceCustomer = {
@@ -55,7 +54,7 @@ function AfterTitle({source}: AfterTitleProps) {
                     {
                         value: BigCommerceActionType.CreateOrder,
                         label: 'Create order',
-                        parameters: [{name: 'cart_id', type: 'hidden'}],
+                        parameters: [{ name: 'cart_id', type: 'hidden' }],
                     },
                 ],
                 title: 'Create order',
@@ -88,9 +87,13 @@ type TitleWrapperProps = {
     isEditing?: boolean
 }
 
-export function TitleWrapper({children, source, isEditing}: TitleWrapperProps) {
+export function TitleWrapper({
+    children,
+    source,
+    isEditing,
+}: TitleWrapperProps) {
     const currentAccount = useAppSelector(getCurrentAccountState)
-    const {integration} = useContext(IntegrationContext)
+    const { integration } = useContext(IntegrationContext)
     const storeHash = integration.getIn(['meta', 'store_hash']) as string
     const customerId = (source.get('id') || '') as string
     let customerLink = ''

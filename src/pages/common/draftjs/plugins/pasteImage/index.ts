@@ -1,9 +1,9 @@
 import _noop from 'lodash/noop'
 
-import {EditorHandledNotHandled} from 'utils/editor'
+import { EditorHandledNotHandled } from 'utils/editor'
 
-import {PluginMethods, ImagePluginConfig} from '../types'
-import {insertInlineImages, isImage} from '../utils'
+import { ImagePluginConfig, PluginMethods } from '../types'
+import { insertInlineImages, isImage } from '../utils'
 
 const _handlePastedFiles =
     (config: ImagePluginConfig) =>
@@ -18,7 +18,7 @@ const _handlePastedFiles =
                 images,
                 pluginArgs,
                 config.notify,
-                config.uploadType
+                config.uploadType,
             )
         } else if (config.getCanDropFiles()) {
             config.getAttachFiles()(images)
@@ -32,7 +32,7 @@ const pasteImagePlugin = (
         getAttachFiles: () => _noop,
         getCanDropFiles: () => false,
         getCanInsertInlineImages: () => false,
-    }
+    },
 ) => {
     return {
         handlePastedFiles: _handlePastedFiles(config),

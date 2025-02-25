@@ -1,9 +1,10 @@
-import {screen, render} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {Info} from '../Info'
-import {AgentState} from '../types'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { Info } from '../Info'
+import { AgentState } from '../types'
 
 const mockedInviteAgent = jest.fn(() => Promise.resolve(true))
 jest.mock('hooks/agents/useInviteAgent', () => ({
@@ -45,7 +46,7 @@ describe('Info', () => {
         render(<Info {...props} isEdit isViewingAccountOwner />)
         expect(screen.getByPlaceholderText('Robin McHelpful')).toBeDisabled()
         expect(
-            screen.getByPlaceholderText('robin@mchelpful.com')
+            screen.getByPlaceholderText('robin@mchelpful.com'),
         ).toBeDisabled()
     })
 

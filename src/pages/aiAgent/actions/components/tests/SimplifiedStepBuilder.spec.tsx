@@ -1,10 +1,11 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {fireEvent, screen, within} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, screen, within } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {IntegrationType} from 'models/integration/constants'
+import { IntegrationType } from 'models/integration/constants'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import useGetAppFromTemplateApp from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
 import {
@@ -12,14 +13,14 @@ import {
     ActionTemplate,
     App,
 } from 'pages/automate/actionsPlatform/types'
-import {StoreIntegrationContext} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
-import {VisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
-import {WorkflowChannelSupportContext} from 'pages/automate/workflows/hooks/useWorkflowChannelSupport'
-import {VisualBuilderGraph} from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {renderWithRouterAndDnD} from 'utils/testing'
+import { StoreIntegrationContext } from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
+import { VisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
+import { WorkflowChannelSupportContext } from 'pages/automate/workflows/hooks/useWorkflowChannelSupport'
+import { VisualBuilderGraph } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { renderWithRouterAndDnD } from 'utils/testing'
 
-import {SimplifiedStepBuilder} from '../SimplifiedStepBuilder'
+import { SimplifiedStepBuilder } from '../SimplifiedStepBuilder'
 
 jest.mock('pages/automate/actionsPlatform/hooks/useApps')
 jest.mock('pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp')
@@ -34,7 +35,7 @@ jest.mock(
             __esModule: true,
             default: () => {
                 // eslint-disable-next-line react-hooks/rules-of-hooks, @typescript-eslint/no-unsafe-call
-                const {onClose} = useNodeEditorDrawerContext()
+                const { onClose } = useNodeEditorDrawerContext()
                 return (
                     <div data-testid="reusable-llm-prompt-call-editor">
                         <button
@@ -47,12 +48,12 @@ jest.mock(
                 )
             },
         }
-    }
+    },
 )
 
 jest.mock('../../providers/StoreAppsProvider', () => ({
     __esModule: true,
-    default: ({children}: {children: React.ReactNode}) => <>{children}</>,
+    default: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }))
 
 const mockUseApps = useApps as jest.MockedFunction<typeof useApps>
@@ -93,7 +94,7 @@ const mockStoreIntegration = {
 const renderWithProviders = (
     ui: React.ReactElement,
     graph: VisualBuilderGraph,
-    contextDispatch = jest.fn()
+    contextDispatch = jest.fn(),
 ) => {
     return renderWithRouterAndDnD(
         <Provider store={mockStore({})}>
@@ -130,7 +131,7 @@ const renderWithProviders = (
                     </WorkflowChannelSupportContext.Provider>
                 </StoreIntegrationContext.Provider>
             </QueryClientProvider>
-        </Provider>
+        </Provider>,
     )
 }
 
@@ -143,7 +144,7 @@ describe('SimplifiedStepBuilder', () => {
             {
                 id: 'start',
                 type: 'channel_trigger',
-                position: {x: 0, y: 0},
+                position: { x: 0, y: 0 },
                 data: {
                     label: 'Start',
                     label_tkey: 'start',
@@ -152,7 +153,7 @@ describe('SimplifiedStepBuilder', () => {
             {
                 id: 'node1',
                 type: 'reusable_llm_prompt_call',
-                position: {x: 0, y: 100},
+                position: { x: 0, y: 100 },
                 data: {
                     configuration_id: 'config1',
                     values: {},
@@ -229,7 +230,7 @@ describe('SimplifiedStepBuilder', () => {
                 shopType="shopify"
             />,
             defaultGraph,
-            mockContextDispatch
+            mockContextDispatch,
         )
         expect(screen.getByText('Action steps')).toBeInTheDocument()
     })
@@ -244,11 +245,11 @@ describe('SimplifiedStepBuilder', () => {
                 shopType="shopify"
             />,
             defaultGraph,
-            mockContextDispatch
+            mockContextDispatch,
         )
         const stepList = screen.getByRole('list')
         const stepItems = within(stepList).getAllByText(
-            /test step in test app/i
+            /test step in test app/i,
         )
         expect(stepItems).toHaveLength(1)
     })
@@ -274,7 +275,7 @@ describe('SimplifiedStepBuilder', () => {
                 shopType="shopify"
             />,
             graphWithMissingAuth,
-            mockContextDispatch
+            mockContextDispatch,
         )
 
         expect(screen.getByText(/provide authentication/i)).toBeInTheDocument()
@@ -304,7 +305,7 @@ describe('SimplifiedStepBuilder', () => {
                 shopType="shopify"
             />,
             defaultGraph,
-            mockContextDispatch
+            mockContextDispatch,
         )
 
         expect(screen.getByText(/provide values/i)).toBeInTheDocument()
@@ -341,7 +342,7 @@ describe('SimplifiedStepBuilder', () => {
                 shopType="shopify"
             />,
             defaultGraph,
-            mockContextDispatch
+            mockContextDispatch,
         )
 
         // Open dropdown
@@ -386,11 +387,11 @@ describe('SimplifiedStepBuilder', () => {
                 shopType="shopify"
             />,
             graphWithMissingAuth,
-            mockContextDispatch
+            mockContextDispatch,
         )
 
         expect(
-            screen.getByText(/provide values and authentication/i)
+            screen.getByText(/provide values and authentication/i),
         ).toBeInTheDocument()
     })
 
@@ -404,10 +405,10 @@ describe('SimplifiedStepBuilder', () => {
                 shopType="shopify"
             />,
             defaultGraph,
-            mockContextDispatch
+            mockContextDispatch,
         )
 
-        const deleteIcon = screen.getByRole('button', {name: 'close'})
+        const deleteIcon = screen.getByRole('button', { name: 'close' })
         fireEvent.click(deleteIcon)
 
         expect(mockDispatch).toHaveBeenCalledWith({
@@ -440,10 +441,10 @@ describe('SimplifiedStepBuilder', () => {
                 shopType="shopify"
             />,
             defaultGraph,
-            mockContextDispatch
+            mockContextDispatch,
         )
 
-        const addStepButton = screen.getByRole('button', {name: /add step/i})
+        const addStepButton = screen.getByRole('button', { name: /add step/i })
         fireEvent.click(addStepButton)
 
         expect(screen.getByTestId('floating-overlay')).toBeInTheDocument()
@@ -535,10 +536,10 @@ describe('SimplifiedStepBuilder', () => {
                 shopType="shopify"
             />,
             defaultGraph,
-            mockContextDispatch
+            mockContextDispatch,
         )
 
-        const addStepButton = screen.getByRole('button', {name: /add step/i})
+        const addStepButton = screen.getByRole('button', { name: /add step/i })
         fireEvent.click(addStepButton)
 
         const dropdown = screen.getByTestId('floating-overlay')
@@ -546,7 +547,7 @@ describe('SimplifiedStepBuilder', () => {
 
         expect(screen.getByText(/Test Step 1 in Test App/i)).toBeInTheDocument()
         expect(
-            screen.queryByText(/Test Step 2 in Unused App/i)
+            screen.queryByText(/Test Step 2 in Unused App/i),
         ).not.toBeInTheDocument()
     })
 
@@ -560,7 +561,7 @@ describe('SimplifiedStepBuilder', () => {
                 shopType="shopify"
             />,
             defaultGraph,
-            mockContextDispatch
+            mockContextDispatch,
         )
 
         expect(screen.getByText(/Add one or more steps/i)).toBeInTheDocument()
@@ -590,7 +591,7 @@ describe('SimplifiedStepBuilder', () => {
                 shopType="shopify"
             />,
             defaultGraph,
-            mockContextDispatch
+            mockContextDispatch,
         )
 
         expect(screen.getByText(/provide values/i)).toBeInTheDocument()
@@ -617,11 +618,11 @@ describe('SimplifiedStepBuilder', () => {
                 shopType="shopify"
             />,
             initialGraph,
-            mockContextDispatch
+            mockContextDispatch,
         )
 
         expect(
-            screen.queryByText(/provide authentication/i)
+            screen.queryByText(/provide authentication/i),
         ).not.toBeInTheDocument()
 
         const graphWithInvalidAuth = {
@@ -644,7 +645,7 @@ describe('SimplifiedStepBuilder', () => {
                 shopType="shopify"
             />,
             graphWithInvalidAuth,
-            mockContextDispatch
+            mockContextDispatch,
         )
 
         expect(screen.getByText(/provide authentication/i)).toBeInTheDocument()
@@ -658,7 +659,7 @@ describe('SimplifiedStepBuilder', () => {
                 {
                     id: 'node1',
                     type: 'reusable_llm_prompt_call',
-                    position: {x: 0, y: 100},
+                    position: { x: 0, y: 100 },
                     data: {
                         configuration_id: 'config1',
                         values: {},
@@ -668,7 +669,7 @@ describe('SimplifiedStepBuilder', () => {
                 {
                     id: 'node2',
                     type: 'reusable_llm_prompt_call',
-                    position: {x: 0, y: 200},
+                    position: { x: 0, y: 200 },
                     data: {
                         configuration_id: 'config2',
                         values: {},
@@ -690,7 +691,7 @@ describe('SimplifiedStepBuilder', () => {
             ],
         } as unknown as VisualBuilderGraph
 
-        const {container} = renderWithProviders(
+        const { container } = renderWithProviders(
             <SimplifiedStepBuilder
                 graph={graphWithMultipleSteps}
                 dispatch={mockDispatch}
@@ -712,7 +713,7 @@ describe('SimplifiedStepBuilder', () => {
                 shopType="shopify"
             />,
             graphWithMultipleSteps,
-            mockContextDispatch
+            mockContextDispatch,
         )
 
         // Find the draggable items
@@ -739,7 +740,7 @@ describe('SimplifiedStepBuilder', () => {
                 {
                     id: 'node1',
                     type: 'reusable_llm_prompt_call',
-                    position: {x: 0, y: 100},
+                    position: { x: 0, y: 100 },
                     data: {
                         configuration_id: 'config1',
                         values: {},
@@ -756,7 +757,7 @@ describe('SimplifiedStepBuilder', () => {
             ],
         } as unknown as VisualBuilderGraph
 
-        const {container} = renderWithProviders(
+        const { container } = renderWithProviders(
             <SimplifiedStepBuilder
                 graph={graphWithMultipleSteps}
                 dispatch={mockDispatch}
@@ -772,7 +773,7 @@ describe('SimplifiedStepBuilder', () => {
                 shopType="shopify"
             />,
             graphWithMultipleSteps,
-            mockContextDispatch
+            mockContextDispatch,
         )
 
         // Find the drag handle
@@ -819,7 +820,7 @@ describe('SimplifiedStepBuilder', () => {
                 {
                     id: 'node1',
                     type: 'reusable_llm_prompt_call',
-                    position: {x: 0, y: 100},
+                    position: { x: 0, y: 100 },
                     data: {
                         configuration_id: 'config1',
                         values: {},
@@ -838,12 +839,12 @@ describe('SimplifiedStepBuilder', () => {
                 shopType="shopify"
             />,
             graphWithEditingNode,
-            mockContextDispatch
+            mockContextDispatch,
         )
 
         // Find and click the drawer close button
         const closeButton = await screen.findByTestId(
-            'node-editor-close-drawer'
+            'node-editor-close-drawer',
         )
         fireEvent.click(closeButton)
 
@@ -862,17 +863,17 @@ describe('SimplifiedStepBuilder', () => {
                 shopType="shopify"
             />,
             defaultGraph,
-            mockContextDispatch
+            mockContextDispatch,
         )
 
         expect(screen.queryByTestId('floating-overlay')).not.toBeInTheDocument()
 
-        const addStepButton = screen.getByRole('button', {name: /add step/i})
+        const addStepButton = screen.getByRole('button', { name: /add step/i })
         fireEvent.click(addStepButton)
         expect(screen.getByTestId('floating-overlay')).toBeInTheDocument()
 
         const dropdown = screen.getByTestId('floating-overlay')
-        fireEvent.keyDown(dropdown, {key: 'Escape'})
+        fireEvent.keyDown(dropdown, { key: 'Escape' })
         expect(screen.queryByTestId('floating-overlay')).not.toBeInTheDocument()
     })
 
@@ -886,7 +887,7 @@ describe('SimplifiedStepBuilder', () => {
                 shopType="shopify"
             />,
             defaultGraph,
-            mockContextDispatch
+            mockContextDispatch,
         )
 
         // Open the advanced view modal
@@ -920,7 +921,7 @@ describe('SimplifiedStepBuilder', () => {
                 {
                     id: 'node1',
                     type: 'reusable_llm_prompt_call',
-                    position: {x: 0, y: 100},
+                    position: { x: 0, y: 100 },
                     data: {
                         configuration_id: 'config1',
                         values: {},
@@ -953,7 +954,7 @@ describe('SimplifiedStepBuilder', () => {
                 shopType="shopify"
             />,
             graph,
-            mockContextDispatch
+            mockContextDispatch,
         )
 
         fireEvent.click(screen.getByText(/Step 1 in Test App/))
@@ -972,7 +973,7 @@ describe('SimplifiedStepBuilder', () => {
                 {
                     id: 'node1',
                     type: 'reusable_llm_prompt_call',
-                    position: {x: 0, y: 100},
+                    position: { x: 0, y: 100 },
                     data: {
                         configuration_id: 'config1',
                         values: {},
@@ -991,11 +992,11 @@ describe('SimplifiedStepBuilder', () => {
                 shopType="shopify"
             />,
             graphWithEditingNode,
-            mockContextDispatch
+            mockContextDispatch,
         )
 
         const closeButton = await screen.findByTestId(
-            'node-editor-close-drawer'
+            'node-editor-close-drawer',
         )
         fireEvent.click(closeButton)
 
@@ -1012,7 +1013,7 @@ describe('SimplifiedStepBuilder', () => {
                 {
                     id: 'node1',
                     type: 'reusable_llm_prompt_call',
-                    position: {x: 0, y: 100},
+                    position: { x: 0, y: 100 },
                     data: {
                         configuration_id: 'config1',
                         values: {},
@@ -1022,13 +1023,13 @@ describe('SimplifiedStepBuilder', () => {
                 {
                     id: 'error1',
                     type: 'end',
-                    position: {x: 100, y: 100},
-                    data: {action: 'end-failure'},
+                    position: { x: 100, y: 100 },
+                    data: { action: 'end-failure' },
                 },
                 {
                     id: 'node2',
                     type: 'reusable_llm_prompt_call',
-                    position: {x: 0, y: 200},
+                    position: { x: 0, y: 200 },
                     data: {
                         configuration_id: 'config2',
                         values: {},
@@ -1038,14 +1039,14 @@ describe('SimplifiedStepBuilder', () => {
                 {
                     id: 'error2',
                     type: 'end',
-                    position: {x: 100, y: 200},
-                    data: {action: 'end-failure'},
+                    position: { x: 100, y: 200 },
+                    data: { action: 'end-failure' },
                 },
                 {
                     id: 'success',
                     type: 'end',
-                    position: {x: 0, y: 300},
-                    data: {action: 'end-success'},
+                    position: { x: 0, y: 300 },
+                    data: { action: 'end-success' },
                 },
             ],
             edges: [
@@ -1058,7 +1059,7 @@ describe('SimplifiedStepBuilder', () => {
                     id: 'edge2',
                     source: 'node1',
                     target: 'error1',
-                    data: {name: 'Error'},
+                    data: { name: 'Error' },
                 },
                 {
                     id: 'edge3',
@@ -1070,7 +1071,7 @@ describe('SimplifiedStepBuilder', () => {
                             and: [
                                 {
                                     equals: [
-                                        {var: 'steps_state.node1.success'},
+                                        { var: 'steps_state.node1.success' },
                                         true,
                                     ],
                                 },
@@ -1082,7 +1083,7 @@ describe('SimplifiedStepBuilder', () => {
                     id: 'edge4',
                     source: 'node2',
                     target: 'error2',
-                    data: {name: 'Error'},
+                    data: { name: 'Error' },
                 },
                 {
                     id: 'edge5',
@@ -1094,7 +1095,7 @@ describe('SimplifiedStepBuilder', () => {
                             and: [
                                 {
                                     equals: [
-                                        {var: 'steps_state.node2.success'},
+                                        { var: 'steps_state.node2.success' },
                                         true,
                                     ],
                                 },
@@ -1105,7 +1106,7 @@ describe('SimplifiedStepBuilder', () => {
             ],
         } as unknown as VisualBuilderGraph
 
-        const {container} = renderWithProviders(
+        const { container } = renderWithProviders(
             <SimplifiedStepBuilder
                 graph={graphWithMultipleSteps}
                 dispatch={mockDispatch}
@@ -1127,7 +1128,7 @@ describe('SimplifiedStepBuilder', () => {
                 ]}
             />,
             graphWithMultipleSteps,
-            mockContextDispatch
+            mockContextDispatch,
         )
 
         const stepItems = container.querySelectorAll('[draggable="true"]')
@@ -1151,7 +1152,7 @@ describe('SimplifiedStepBuilder', () => {
                 {
                     id: 'node1',
                     type: 'reusable_llm_prompt_call',
-                    position: {x: 0, y: 100},
+                    position: { x: 0, y: 100 },
                     data: {
                         configuration_id: 'config1',
                         values: {},
@@ -1161,13 +1162,13 @@ describe('SimplifiedStepBuilder', () => {
                 {
                     id: 'error1',
                     type: 'end',
-                    position: {x: 100, y: 100},
-                    data: {action: 'end-failure'},
+                    position: { x: 100, y: 100 },
+                    data: { action: 'end-failure' },
                 },
                 {
                     id: 'node2',
                     type: 'reusable_llm_prompt_call',
-                    position: {x: 0, y: 200},
+                    position: { x: 0, y: 200 },
                     data: {
                         configuration_id: 'config2',
                         values: {},
@@ -1177,13 +1178,13 @@ describe('SimplifiedStepBuilder', () => {
                 {
                     id: 'error2',
                     type: 'end',
-                    position: {x: 100, y: 200},
-                    data: {action: 'end-failure'},
+                    position: { x: 100, y: 200 },
+                    data: { action: 'end-failure' },
                 },
                 {
                     id: 'node3',
                     type: 'reusable_llm_prompt_call',
-                    position: {x: 0, y: 300},
+                    position: { x: 0, y: 300 },
                     data: {
                         configuration_id: 'config3',
                         values: {},
@@ -1193,14 +1194,14 @@ describe('SimplifiedStepBuilder', () => {
                 {
                     id: 'error3',
                     type: 'end',
-                    position: {x: 100, y: 300},
-                    data: {action: 'end-failure'},
+                    position: { x: 100, y: 300 },
+                    data: { action: 'end-failure' },
                 },
                 {
                     id: 'success',
                     type: 'end',
-                    position: {x: 0, y: 400},
-                    data: {action: 'end-success'},
+                    position: { x: 0, y: 400 },
+                    data: { action: 'end-success' },
                 },
             ],
             edges: [
@@ -1213,7 +1214,7 @@ describe('SimplifiedStepBuilder', () => {
                     id: 'edge2',
                     source: 'node1',
                     target: 'error1',
-                    data: {name: 'Error'},
+                    data: { name: 'Error' },
                 },
                 {
                     id: 'edge3',
@@ -1225,7 +1226,7 @@ describe('SimplifiedStepBuilder', () => {
                             and: [
                                 {
                                     equals: [
-                                        {var: 'steps_state.node1.success'},
+                                        { var: 'steps_state.node1.success' },
                                         true,
                                     ],
                                 },
@@ -1237,7 +1238,7 @@ describe('SimplifiedStepBuilder', () => {
                     id: 'edge4',
                     source: 'node2',
                     target: 'error2',
-                    data: {name: 'Error'},
+                    data: { name: 'Error' },
                 },
                 {
                     id: 'edge5',
@@ -1249,7 +1250,7 @@ describe('SimplifiedStepBuilder', () => {
                             and: [
                                 {
                                     equals: [
-                                        {var: 'steps_state.node2.success'},
+                                        { var: 'steps_state.node2.success' },
                                         true,
                                     ],
                                 },
@@ -1261,7 +1262,7 @@ describe('SimplifiedStepBuilder', () => {
                     id: 'edge6',
                     source: 'node3',
                     target: 'error3',
-                    data: {name: 'Error'},
+                    data: { name: 'Error' },
                 },
                 {
                     id: 'edge7',
@@ -1273,7 +1274,7 @@ describe('SimplifiedStepBuilder', () => {
                             and: [
                                 {
                                     equals: [
-                                        {var: 'steps_state.node3.success'},
+                                        { var: 'steps_state.node3.success' },
                                         true,
                                     ],
                                 },
@@ -1284,7 +1285,7 @@ describe('SimplifiedStepBuilder', () => {
             ],
         } as unknown as VisualBuilderGraph
 
-        const {container} = renderWithProviders(
+        const { container } = renderWithProviders(
             <SimplifiedStepBuilder
                 graph={graphWithThreeSteps}
                 dispatch={mockDispatch}
@@ -1312,7 +1313,7 @@ describe('SimplifiedStepBuilder', () => {
                 ]}
             />,
             graphWithThreeSteps,
-            mockContextDispatch
+            mockContextDispatch,
         )
 
         // Find the draggable items
@@ -1339,7 +1340,7 @@ describe('SimplifiedStepBuilder', () => {
                 {
                     id: 'node1',
                     type: 'reusable_llm_prompt_call',
-                    position: {x: 0, y: 100},
+                    position: { x: 0, y: 100 },
                     data: {
                         configuration_id: 'config1',
                         values: {},
@@ -1349,7 +1350,7 @@ describe('SimplifiedStepBuilder', () => {
                 {
                     id: 'node2',
                     type: 'reusable_llm_prompt_call',
-                    position: {x: 0, y: 200},
+                    position: { x: 0, y: 200 },
                     data: {
                         configuration_id: 'config2',
                         values: {},
@@ -1359,14 +1360,14 @@ describe('SimplifiedStepBuilder', () => {
                 {
                     id: 'error2',
                     type: 'end',
-                    position: {x: 100, y: 200},
-                    data: {action: 'end-failure'},
+                    position: { x: 100, y: 200 },
+                    data: { action: 'end-failure' },
                 },
                 {
                     id: 'success',
                     type: 'end',
-                    position: {x: 0, y: 300},
-                    data: {action: 'end-success'},
+                    position: { x: 0, y: 300 },
+                    data: { action: 'end-success' },
                 },
             ],
             edges: [
@@ -1385,7 +1386,7 @@ describe('SimplifiedStepBuilder', () => {
                             and: [
                                 {
                                     equals: [
-                                        {var: 'steps_state.node1.success'},
+                                        { var: 'steps_state.node1.success' },
                                         true,
                                     ],
                                 },
@@ -1397,7 +1398,7 @@ describe('SimplifiedStepBuilder', () => {
                     id: 'edge3',
                     source: 'node2',
                     target: 'error2',
-                    data: {name: 'Error'},
+                    data: { name: 'Error' },
                 },
                 {
                     id: 'edge4',
@@ -1409,7 +1410,7 @@ describe('SimplifiedStepBuilder', () => {
                             and: [
                                 {
                                     equals: [
-                                        {var: 'steps_state.node2.success'},
+                                        { var: 'steps_state.node2.success' },
                                         true,
                                     ],
                                 },
@@ -1420,7 +1421,7 @@ describe('SimplifiedStepBuilder', () => {
             ],
         } as unknown as VisualBuilderGraph
 
-        const {container} = renderWithProviders(
+        const { container } = renderWithProviders(
             <SimplifiedStepBuilder
                 graph={graphWithMixedSteps}
                 dispatch={mockDispatch}
@@ -1442,7 +1443,7 @@ describe('SimplifiedStepBuilder', () => {
                 ]}
             />,
             graphWithMixedSteps,
-            mockContextDispatch
+            mockContextDispatch,
         )
 
         // Find the draggable items

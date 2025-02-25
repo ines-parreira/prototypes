@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
 import EmojiSelect from 'pages/common/components/ViewTable/EmojiSelect/EmojiSelect'
 

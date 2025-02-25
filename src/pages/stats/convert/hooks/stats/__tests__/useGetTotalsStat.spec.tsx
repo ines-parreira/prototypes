@@ -1,15 +1,15 @@
-import {UseQueryResult} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
+import { UseQueryResult } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {usePostReporting} from 'models/reporting/queries'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import { usePostReporting } from 'models/reporting/queries'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import {
     CampaignOrderEventsMeasure,
     OrderConversionMeasure,
 } from 'pages/stats/convert/clients/constants'
-import {useGetTotalsStat} from 'pages/stats/convert/hooks/stats/useGetTotalsStat'
-import {getMetricFromCubeData} from 'pages/stats/convert/services/CampaignMetricsHelper'
-import {assumeMock} from 'utils/testing'
+import { useGetTotalsStat } from 'pages/stats/convert/hooks/stats/useGetTotalsStat'
+import { getMetricFromCubeData } from 'pages/stats/convert/services/CampaignMetricsHelper'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('models/reporting/queries')
 const usePostReportingMock = assumeMock(usePostReporting)
@@ -63,7 +63,7 @@ describe('useGetTotalsStat', () => {
             isFetching: true,
         })
 
-        const {result} = renderHook(() => useGetTotalsStat(...hookArgs))
+        const { result } = renderHook(() => useGetTotalsStat(...hookArgs))
 
         expect(result.current.isFetching).toBe(true)
     })
@@ -74,7 +74,7 @@ describe('useGetTotalsStat', () => {
             isError: true,
         } as UseQueryResult)
 
-        const {result} = renderHook(() => useGetTotalsStat(...hookArgs))
+        const { result } = renderHook(() => useGetTotalsStat(...hookArgs))
 
         expect(result.current.isError).toBe(true)
     })
@@ -83,7 +83,7 @@ describe('useGetTotalsStat', () => {
         const args: typeof hookArgs = [...hookArgs]
         args[1] = null
 
-        const {result} = renderHook(() => useGetTotalsStat(...args))
+        const { result } = renderHook(() => useGetTotalsStat(...args))
 
         usePostReportingMock.mock.calls.map((call) => {
             expect(call[1]?.enabled).toBe(false)
@@ -116,7 +116,7 @@ describe('useGetTotalsStat', () => {
         } as UseQueryResult)
 
         // act
-        const {result} = renderHook(() => useGetTotalsStat(...hookArgs))
+        const { result } = renderHook(() => useGetTotalsStat(...hookArgs))
 
         // assert
         expect(usePostReportingMock.mock.calls).toMatchSnapshot()
@@ -125,7 +125,7 @@ describe('useGetTotalsStat', () => {
             expect.anything(),
             expect.objectContaining({
                 select: getMetricFromCubeData,
-            })
+            }),
         )
         expect(result.current).toMatchSnapshot()
     })

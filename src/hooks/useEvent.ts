@@ -1,4 +1,4 @@
-import {useEffect} from 'react'
+import { useEffect } from 'react'
 
 const defaultTarget = window
 
@@ -12,7 +12,7 @@ export default function useEvent<EventType extends GenericEventType>(
         | undefined
         | ((this: Document, ev: GenericEventMap[EventType]) => any),
     target: null | Element | Window = defaultTarget,
-    options?: boolean | AddEventListenerOptions
+    options?: boolean | AddEventListenerOptions,
 ) {
     useEffect(() => {
         if (!listener || !target) return

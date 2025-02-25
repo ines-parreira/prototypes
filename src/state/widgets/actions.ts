@@ -1,13 +1,13 @@
-import {AxiosError} from 'axios'
-import {Map} from 'immutable'
+import { AxiosError } from 'axios'
+import { Map } from 'immutable'
 import _isUndefined from 'lodash/isUndefined'
 import _last from 'lodash/last'
 import _pick from 'lodash/pick'
 import _size from 'lodash/size'
 
 import client from 'models/api/resources'
-import {CustomerEcommerceData} from 'models/customerEcommerceData/types'
-import {fetchWidgets as fetchWidgetsRequest} from 'models/widget/resources'
+import { CustomerEcommerceData } from 'models/customerEcommerceData/types'
+import { fetchWidgets as fetchWidgetsRequest } from 'models/widget/resources'
 import {
     FetchWidgetsOptions,
     PartialTemplate,
@@ -17,13 +17,13 @@ import {
     Button,
     Link,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
-import {jsonToWidgets} from 'pages/common/components/infobar/utils'
+import { jsonToWidgets } from 'pages/common/components/infobar/utils'
 import GorgiasApi from 'services/gorgiasApi'
 import * as integrationsSelectors from 'state/integrations/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {StoreDispatch, RootState} from 'state/types'
-import {getSources, getSourcesWithCustomer} from 'state/widgets/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { RootState, StoreDispatch } from 'state/types'
+import { getSources, getSourcesWithCustomer } from 'state/widgets/selectors'
 
 import * as types from './constants'
 import {
@@ -31,7 +31,7 @@ import {
     CUSTOMER_EXTERNAL_DATA_KEY,
     WOOCOMMERCE_WIDGET_TYPE,
 } from './constants'
-import {Widget, WidgetEnvironment} from './types'
+import { Widget, WidgetEnvironment } from './types'
 
 export function fetchWidgets(options: FetchWidgetsOptions = {}) {
     return async (dispatch: StoreDispatch) => {
@@ -42,7 +42,7 @@ export function fetchWidgets(options: FetchWidgetsOptions = {}) {
         const client = new GorgiasApi()
         const generator = client.cursorPaginate<Widget, FetchWidgetsOptions>(
             fetchWidgetsRequest,
-            options
+            options,
         )
 
         let result: Widget[] = []
@@ -92,7 +92,7 @@ export function stopWidgetEdition() {
 
 export function generateAndSetWidgets(
     sources: Map<any, any>,
-    context = WidgetEnvironment.Ticket
+    context = WidgetEnvironment.Ticket,
 ) {
     return (dispatch: StoreDispatch): ReturnType<StoreDispatch> => {
         // generate template
@@ -144,7 +144,7 @@ export function drop(
     targetParentTemplatePath = '',
     key = '',
     toIndex = 0,
-    fromIndex = 0
+    fromIndex = 0,
 ) {
     return (dispatch: StoreDispatch, getState: () => RootState) => {
         const state = getState()
@@ -175,7 +175,7 @@ export function drop(
             if (!isNaN(currentIntegrationId)) {
                 const integration =
                     integrationsSelectors.getIntegrationById(
-                        currentIntegrationId
+                        currentIntegrationId,
                     )(state)
 
                 if (integration) {
@@ -237,7 +237,7 @@ export function updateCustomActions(data: Link[] | Button[]) {
 
 export function removeEditedWidget(
     templatePath = '',
-    absolutePath: Template['absolutePath'] = []
+    absolutePath: Template['absolutePath'] = [],
 ) {
     return {
         type: types.REMOVE_EDITED_WIDGET,
@@ -249,7 +249,7 @@ export function removeEditedWidget(
 export function submitWidgets(data: Maybe<Widget[]>) {
     return (
         dispatch: StoreDispatch,
-        getState: () => RootState
+        getState: () => RootState,
     ): Promise<ReturnType<StoreDispatch>> => {
         const context = getState().widgets.get('currentContext', 'ticket')
 
@@ -292,7 +292,7 @@ export function submitWidgets(data: Maybe<Widget[]>) {
         })
 
         return client
-            .put<{data: Widget[]}>('/api/widgets/', items)
+            .put<{ data: Widget[] }>('/api/widgets/', items)
             .then((json) => json?.data)
             .then(
                 (resp) => {
@@ -306,7 +306,7 @@ export function submitWidgets(data: Maybe<Widget[]>) {
                         notify({
                             status: NotificationStatus.Success,
                             message: 'Widgets successfully updated',
-                        })
+                        }),
                     )
                 },
                 (error: AxiosError) => {
@@ -315,7 +315,7 @@ export function submitWidgets(data: Maybe<Widget[]>) {
                         error,
                         reason: 'Failed to update widgets',
                     })
-                }
+                },
             )
     }
 }

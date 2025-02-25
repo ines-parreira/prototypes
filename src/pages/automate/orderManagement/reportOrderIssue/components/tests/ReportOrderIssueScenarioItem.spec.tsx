@@ -1,8 +1,9 @@
-import {render} from '@testing-library/react'
 import React from 'react'
+
+import { render } from '@testing-library/react'
 import * as ReactRouterDom from 'react-router-dom'
 
-import {SelfServiceReportIssueCase} from 'models/selfServiceConfiguration/types'
+import { SelfServiceReportIssueCase } from 'models/selfServiceConfiguration/types'
 
 import ReportOrderIssueScenarioItem from '../ReportOrderIssueScenarioItem'
 
@@ -20,7 +21,7 @@ jest.mock(
                 push: mockHistoryPush,
                 goBack: mockHistoryGoBack,
             }),
-        }) as Record<string, any>
+        }) as Record<string, any>,
 )
 jest.mock('pages/common/hooks/useReorderDnD', () => {
     return {
@@ -81,9 +82,9 @@ describe('ReportOrderIssueScenarioItem component', () => {
         ],
     }
     it('should render warning if all the issue type are configured', () => {
-        useLocationSpy.mockReturnValue({key: 'abc'} as any)
+        useLocationSpy.mockReturnValue({ key: 'abc' } as any)
 
-        const {getByLabelText} = render(
+        const { getByLabelText } = render(
             <table>
                 <tbody>
                     <ReportOrderIssueScenarioItem
@@ -98,18 +99,18 @@ describe('ReportOrderIssueScenarioItem component', () => {
                         isDraggable
                     />
                 </tbody>
-            </table>
+            </table>,
         )
 
         expect(getByLabelText(/Icon for response not configured/i))
     })
     it('should not render warning if all the issue type are configured', () => {
-        useLocationSpy.mockReturnValue({key: 'abc'} as any)
+        useLocationSpy.mockReturnValue({ key: 'abc' } as any)
         item.newReasons[1].action.responseMessageContent = {
             html: 'hello',
             text: 'wold',
         }
-        const {queryByText} = render(
+        const { queryByText } = render(
             <table>
                 <tbody>
                     <ReportOrderIssueScenarioItem
@@ -124,10 +125,10 @@ describe('ReportOrderIssueScenarioItem component', () => {
                         isDraggable
                     />
                 </tbody>
-            </table>
+            </table>,
         )
         expect(
-            queryByText(/Icon for response not configured/i)
+            queryByText(/Icon for response not configured/i),
         ).not.toBeInTheDocument()
     })
 })

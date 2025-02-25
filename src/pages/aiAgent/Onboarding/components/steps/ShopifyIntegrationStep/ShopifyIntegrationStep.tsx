@@ -1,43 +1,40 @@
-import React, {useMemo, useState, useCallback} from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 
-import {FormProvider, useForm} from 'react-hook-form'
-
-import {useHistory, useParams} from 'react-router-dom'
-
-import {z} from 'zod'
+import { FormProvider, useForm } from 'react-hook-form'
+import { useHistory, useParams } from 'react-router-dom'
+import { z } from 'zod'
 
 import shopify from 'assets/img/integrations/shopify.png'
 import useAppSelector from 'hooks/useAppSelector'
-import {StoreIntegration} from 'models/integration/types'
-import {DropdownSelector} from 'pages/aiAgent/Onboarding/components/DropdownSelector/DropdownSelector'
+import { StoreIntegration } from 'models/integration/types'
+import { DropdownSelector } from 'pages/aiAgent/Onboarding/components/DropdownSelector/DropdownSelector'
 import IntegrationCard from 'pages/aiAgent/Onboarding/components/IntegrationCard'
 import MainTitle from 'pages/aiAgent/Onboarding/components/MainTitle/MainTitle'
-import {Separator} from 'pages/aiAgent/Onboarding/components/Separator/Separator'
+import { Separator } from 'pages/aiAgent/Onboarding/components/Separator/Separator'
 import StatusBadge, {
     StatusEnum,
 } from 'pages/aiAgent/Onboarding/components/StatusBadge'
 import css from 'pages/aiAgent/Onboarding/components/steps/ShopifyIntegrationStep/ShopifyIntegrationStep.less'
-import {StepProps} from 'pages/aiAgent/Onboarding/components/steps/types'
-import {useCreateOnboarding} from 'pages/aiAgent/Onboarding/hooks/useCreateOnboarding'
-import {useGetOnboardingData} from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
-import {useGetOnboardingDataByShopName} from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingDataByShopName'
-import {useOnboardingIntegrationRedirection} from 'pages/aiAgent/Onboarding/hooks/useOnboardingIntegrationRedirection'
-import {useShopifyIntegrations} from 'pages/aiAgent/Onboarding/hooks/useShopifyIntegrations'
-import {useSteps} from 'pages/aiAgent/Onboarding/hooks/useSteps'
-import {useUpdateOnboarding} from 'pages/aiAgent/Onboarding/hooks/useUpdateOnboarding'
+import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
+import { useCreateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useCreateOnboarding'
+import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
+import { useGetOnboardingDataByShopName } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingDataByShopName'
+import { useOnboardingIntegrationRedirection } from 'pages/aiAgent/Onboarding/hooks/useOnboardingIntegrationRedirection'
+import { useShopifyIntegrations } from 'pages/aiAgent/Onboarding/hooks/useShopifyIntegrations'
+import { useSteps } from 'pages/aiAgent/Onboarding/hooks/useSteps'
+import { useUpdateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useUpdateOnboarding'
 import {
+    LoadingPulserIcon,
     OnboardingBody,
     OnboardingContentContainer,
     OnboardingPreviewContainer,
-    LoadingPulserIcon,
 } from 'pages/aiAgent/Onboarding/layout/ConvAiOnboardingLayout'
-import {WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
+import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
+import { useEmailIntegrations } from 'pages/settings/contactForm/hooks/useEmailIntegrations'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
-import {useEmailIntegrations} from 'pages/settings/contactForm/hooks/useEmailIntegrations'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-
-const ShopifyIcon: React.FC<{size?: string}> = ({size}) => (
+const ShopifyIcon: React.FC<{ size?: string }> = ({ size }) => (
     <img
         src={shopify}
         alt="Shopify"
@@ -58,13 +55,13 @@ export const ShopifyIntegrationStep: React.FC<StepProps> = ({
     totalSteps,
     goToStep,
 }) => {
-    const {shopName} = useParams<{shopName: string}>()
-    const {validSteps} = useSteps({shopName})
-    const {redirectToIntegration} = useOnboardingIntegrationRedirection()
+    const { shopName } = useParams<{ shopName: string }>()
+    const { validSteps } = useSteps({ shopName })
+    const { redirectToIntegration } = useOnboardingIntegrationRedirection()
     const shopifyIntegrations: StoreIntegration[] = useShopifyIntegrations()
-    const {emailIntegrations, defaultIntegration} = useEmailIntegrations()
+    const { emailIntegrations, defaultIntegration } = useEmailIntegrations()
 
-    const {data, isLoading: isLoadingOnboardingData} =
+    const { data, isLoading: isLoadingOnboardingData } =
         useGetOnboardingData(shopName)
     const {
         mutate: doUpdateOnboardingMutation,
@@ -94,7 +91,7 @@ export const ShopifyIntegrationStep: React.FC<StepProps> = ({
         watch,
         setValue,
         handleSubmit,
-        formState: {isDirty},
+        formState: { isDirty },
     } = methods
 
     // Watch form state
@@ -116,7 +113,7 @@ export const ShopifyIntegrationStep: React.FC<StepProps> = ({
         () =>
             shopifyIntegrations.find((store) => store.name === selectedShop) ||
             shopifyIntegrations[0],
-        [shopifyIntegrations, selectedShop]
+        [shopifyIntegrations, selectedShop],
     )
 
     const onSelectShop = (shopId: number | null) => {
@@ -153,7 +150,7 @@ export const ShopifyIntegrationStep: React.FC<StepProps> = ({
     const onNextClick = () => {
         if (!shopifyIntegrations.length) {
             setShopError(
-                'No Shopify store connected. Please connect a store before proceeding.'
+                'No Shopify store connected. Please connect a store before proceeding.',
             )
             return
         }
@@ -174,12 +171,12 @@ export const ShopifyIntegrationStep: React.FC<StepProps> = ({
         }
         if (data && 'id' in data) {
             doUpdateOnboardingMutation(
-                {...data, id: data.id as string, data: updatedData},
+                { ...data, id: data.id as string, data: updatedData },
                 {
                     onSuccess: () => {
                         goToNextStep()
                     },
-                }
+                },
             )
         } else {
             doCreateOnboardingMutation(updatedData, {

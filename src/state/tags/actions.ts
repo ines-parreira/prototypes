@@ -1,15 +1,16 @@
-import {ListTagsParams, Tag} from '@gorgias/api-queries'
-import axios, {AxiosError, AxiosRequestConfig} from 'axios'
-import {List} from 'immutable'
+import axios, { AxiosError, AxiosRequestConfig } from 'axios'
+import { List } from 'immutable'
+
+import { ListTagsParams, Tag } from '@gorgias/api-queries'
 
 import client from 'models/api/resources'
-import {fetchTags as fetchTagsResources} from 'models/tag/resources'
-import {OrderByOrderDir, TagDraft} from 'models/tag/types'
+import { fetchTags as fetchTagsResources } from 'models/tag/resources'
+import { OrderByOrderDir, TagDraft } from 'models/tag/types'
 import GorgiasApi from 'services/gorgiasApi'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import type {StoreDispatch} from 'state/types'
-import {createErrorNotification} from 'state/utils'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import type { StoreDispatch } from 'state/types'
+import { createErrorNotification } from 'state/utils'
 
 import * as constants from './constants'
 
@@ -24,7 +25,7 @@ export function fetchTags(
     options: Omit<ListTagsParams, 'order_by'> & {
         order_by?: OrderByOrderDir
     } = {},
-    config: AxiosRequestConfig = {}
+    config: AxiosRequestConfig = {},
 ) {
     return async (dispatch: StoreDispatch) => {
         dispatch({
@@ -35,7 +36,7 @@ export function fetchTags(
         const generator = client.cursorPaginate(
             fetchTagsResources,
             options,
-            config
+            config,
         )
 
         let result: Tag[] = []
@@ -46,7 +47,7 @@ export function fetchTags(
             }
             dispatch({
                 type: constants.FETCH_TAG_LIST_SUCCESS,
-                resp: {data: result},
+                resp: { data: result },
             })
         } catch (error) {
             if (!axios.isCancel(error)) {
@@ -72,7 +73,7 @@ export function select(tag: Tag) {
 export function selectAll(tags: Tag[], value?: boolean) {
     return {
         type: constants.SELECT_TAG_ALL,
-        payload: {tags, value},
+        payload: { tags, value },
     }
 }
 
@@ -99,7 +100,7 @@ export const save = (tag: Tag) => {
                     notify({
                         status: NotificationStatus.Success,
                         message: 'Tag saved successfully',
-                    })
+                    }),
                 )
                 return dispatch({
                     type: constants.SAVE_TAG,
@@ -129,7 +130,7 @@ export const create = (tag: TagDraft) => {
                     notify({
                         status: NotificationStatus.Success,
                         message: `Created tag: ${tag.name}`,
-                    })
+                    }),
                 )
                 dispatch({
                     type: constants.CREATE_TAG_SUCCESS,
@@ -142,7 +143,7 @@ export const create = (tag: TagDraft) => {
                     verbose: true,
                     error,
                 })
-            }
+            },
         )
     }
 }
@@ -155,7 +156,7 @@ export const remove = (id: string) => {
                     notify({
                         status: NotificationStatus.Success,
                         message: 'Tag deleted successfully',
-                    })
+                    }),
                 )
             },
             (error: AxiosError) => {
@@ -164,14 +165,14 @@ export const remove = (id: string) => {
                     verbose: true,
                     error,
                 })
-            }
+            },
         )
     }
 }
 
 export const bulkDelete = (ids: Array<string>) => {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
-        return client.delete('/api/tags/', {data: {ids}}).then(
+        return client.delete('/api/tags/', { data: { ids } }).then(
             () => {
                 void dispatch(
                     notify({
@@ -179,7 +180,7 @@ export const bulkDelete = (ids: Array<string>) => {
                         message: `${ids.length} tag${
                             ids.length > 1 ? 's' : ''
                         } deleted successfully`,
-                    })
+                    }),
                 )
             },
             (error: AxiosError) => {
@@ -188,7 +189,7 @@ export const bulkDelete = (ids: Array<string>) => {
                     verbose: true,
                     error,
                 })
-            }
+            },
         )
     }
 }
@@ -212,17 +213,17 @@ export const merge = (ids: List<any>) => {
                         notify({
                             status: NotificationStatus.Success,
                             message: 'Tags merged successfully',
-                        })
+                        }),
                     )
                 },
                 (error: AxiosError) => {
                     return dispatch(
                         createErrorNotification(
                             error,
-                            'Unable to merge these tags'
-                        )
+                            'Unable to merge these tags',
+                        ),
                     )
-                }
+                },
             )
     }
 }

@@ -1,14 +1,15 @@
-import _memoize from 'lodash/memoize'
-import React, {ComponentType} from 'react'
-import {RouteComponentProps} from 'react-router-dom'
+import React, { ComponentType } from 'react'
 
-import {PageSection} from 'config/pages'
-import {UserRole} from 'config/types/user'
+import _memoize from 'lodash/memoize'
+import { RouteComponentProps } from 'react-router-dom'
+
+import { PageSection } from 'config/pages'
+import { UserRole } from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
 import RestrictedPage from 'pages/common/components/RestrictedPage'
 import history from 'pages/history'
-import {getCurrentUserState} from 'state/currentUser/selectors'
-import {hasRole} from 'utils'
+import { getCurrentUserState } from 'state/currentUser/selectors'
+import { hasRole } from 'utils'
 
 // check user role before rendering the desired component
 // You can discard RouteComponentProps if we ever change react-router
@@ -18,7 +19,7 @@ export function rootWithUserRoleRequired<
     Component: ComponentType<P>,
     requiredRole?: UserRole,
     restrictedPage?: PageSection,
-    redirectTo?: string
+    redirectTo?: string,
 ) {
     const UserRoleRequired = (props: P) => {
         const currentUser = useAppSelector(getCurrentUserState)
@@ -42,7 +43,7 @@ export function rootWithUserRoleRequired<
 }
 
 export const memoizedWithUserRoleRequired = _memoize(
-    rootWithUserRoleRequired
+    rootWithUserRoleRequired,
 ) as typeof rootWithUserRoleRequired
 
 export default memoizedWithUserRoleRequired

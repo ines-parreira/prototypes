@@ -1,24 +1,24 @@
 /**
  * Adapted from https://github.com/draft-js-plugins/draft-js-plugins/tree/master/draft-js-mention-plugin
  */
-import {genKey, EditorState, SelectionState, DraftHandleValue} from 'draft-js'
-import {List, Map, fromJS} from 'immutable'
-import React, {Component, KeyboardEvent} from 'react'
+import React, { Component, KeyboardEvent } from 'react'
+
+import { DraftHandleValue, EditorState, genKey, SelectionState } from 'draft-js'
+import { fromJS, List, Map } from 'immutable'
 
 import Entry from 'pages/common/draftjs/plugins/mentions/MentionSuggestions/Entry'
 import DefaultEntryComponent from 'pages/common/draftjs/plugins/mentions/MentionSuggestions/Entry/DefaultEntryComponent'
 import addMention from 'pages/common/draftjs/plugins/mentions/modifiers/addMention'
 import {
-    MentionPluginTheme,
     MentionPluginStore,
+    MentionPluginTheme,
     MentionSuggestionCallbacks,
 } from 'pages/common/draftjs/plugins/mentions/types'
 import {
     decodeOffsetKey,
     getSearchText,
 } from 'pages/common/draftjs/plugins/mentions/utils'
-
-import {EditorHandledNotHandled} from 'utils/editor'
+import { EditorHandledNotHandled } from 'utils/editor'
 
 type Props = {
     callbacks: MentionSuggestionCallbacks
@@ -37,7 +37,7 @@ type Props = {
         state: State
         popover: HTMLElement | null
     }) => Record<string, unknown>
-    onSearchChange: (T: {value: string}) => void
+    onSearchChange: (T: { value: string }) => void
     mentionTrigger: string
     canAddMention?: boolean
     entityMutability: 'SEGMENTED' | 'IMMUTABLE' | 'MUTABLE'
@@ -98,7 +98,7 @@ export default class MentionSuggestions extends Component<Props, State> {
             }
 
             const decoratorRect = this.props.store.getPortalClientRect(
-                this.activeOffsetKey
+                this.activeOffsetKey,
             )
             const newStyles = this.props.positionSuggestions({
                 decoratorRect,
@@ -146,7 +146,7 @@ export default class MentionSuggestions extends Component<Props, State> {
 
         // identify the start & end position of each search-text
         const offsetDetails = searches.map((offsetKey) =>
-            decodeOffsetKey(offsetKey as string)
+            decodeOffsetKey(offsetKey as string),
         )
 
         // a leaf can be empty when it is removed due e.g. using backspace
@@ -160,7 +160,7 @@ export default class MentionSuggestions extends Component<Props, State> {
                             detail!.decoratorKey,
                             'leaves',
                             detail!.leafKey,
-                        ]) as Record<string, unknown>
+                        ]) as Record<string, unknown>,
             )
 
         // if all leaves are undefined the popover should be removed
@@ -182,7 +182,7 @@ export default class MentionSuggestions extends Component<Props, State> {
                     plainText.charAt(anchorOffset) !==
                         this.props.mentionTrigger && // 2 @ characters should close the popup
                     new RegExp(this.props.mentionTrigger, 'g').test(
-                        plainText
+                        plainText,
                     ) &&
                     anchorOffset <= (leave!.end as number)
 
@@ -237,11 +237,11 @@ export default class MentionSuggestions extends Component<Props, State> {
     }
 
     onSearchChange = (editorState: EditorState, selection: SelectionState) => {
-        const {word} = getSearchText(editorState, selection)
+        const { word } = getSearchText(editorState, selection)
         const searchValue = word.substring(1, word.length)
         if (this.lastSearchValue !== searchValue) {
             this.lastSearchValue = searchValue
-            this.props.onSearchChange({value: searchValue})
+            this.props.onSearchChange({ value: searchValue })
         }
     }
 
@@ -249,7 +249,7 @@ export default class MentionSuggestions extends Component<Props, State> {
         keyboardEvent.preventDefault()
         const newIndex = this.state.focusedOptionIndex + 1
         this.onMentionFocus(
-            newIndex >= this.props.suggestions.size ? 0 : newIndex
+            newIndex >= this.props.suggestions.size ? 0 : newIndex,
         )
     }
 
@@ -263,7 +263,7 @@ export default class MentionSuggestions extends Component<Props, State> {
         if (this.props.suggestions.size > 0) {
             const newIndex = this.state.focusedOptionIndex - 1
             this.onMentionFocus(
-                newIndex < 0 ? this.props.suggestions.size - 1 : newIndex
+                newIndex < 0 ? this.props.suggestions.size - 1 : newIndex,
             )
         }
     }
@@ -295,7 +295,7 @@ export default class MentionSuggestions extends Component<Props, State> {
             mention,
             this.props.mentionPrefix,
             this.props.mentionTrigger,
-            this.props.entityMutability
+            this.props.entityMutability,
         )
         this.props.store.setEditorState!(newEditorState)
     }
@@ -310,7 +310,7 @@ export default class MentionSuggestions extends Component<Props, State> {
 
     commitSelection = (): DraftHandleValue => {
         this.onMentionSelect(
-            this.props.suggestions.get(this.state.focusedOptionIndex)
+            this.props.suggestions.get(this.state.focusedOptionIndex),
         )
         return EditorHandledNotHandled.Handled
     }

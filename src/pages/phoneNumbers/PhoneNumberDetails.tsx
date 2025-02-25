@@ -1,31 +1,32 @@
+import React, { useEffect, useState } from 'react'
+
 import classnames from 'classnames'
 import Clipboard from 'clipboard'
-import React, {useState, useEffect} from 'react'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import {
     Col,
-    Row,
     Form,
-    InputGroupAddon,
-    InputGroup,
-    Input,
-    Label,
     FormGroup,
+    Input,
+    InputGroup,
+    InputGroupAddon,
+    Label,
+    Row,
 } from 'reactstrap'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAsyncFn from 'hooks/useAsyncFn'
-import {GorgiasApiError} from 'models/api/types'
-import {IntegrationType} from 'models/integration/types'
+import { GorgiasApiError } from 'models/api/types'
+import { IntegrationType } from 'models/integration/types'
 import {
-    updateNewPhoneNumber,
     deleteNewPhoneNumber,
+    updateNewPhoneNumber,
 } from 'models/phoneNumber/resources'
-import {PhoneCountry, NewPhoneNumber} from 'models/phoneNumber/types'
+import { NewPhoneNumber, PhoneCountry } from 'models/phoneNumber/types'
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import SourceIcon from 'pages/common/components/SourceIcon'
-import {SelectableOption} from 'pages/common/forms/SelectField/types'
+import { SelectableOption } from 'pages/common/forms/SelectField/types'
 import history from 'pages/history'
 import {
     countryCode,
@@ -35,14 +36,15 @@ import {
     isTwilioConnection,
 } from 'pages/phoneNumbers/utils'
 import {
-    newPhoneNumberUpdated,
     newPhoneNumberDeleted,
+    newPhoneNumberUpdated,
 } from 'state/entities/phoneNumbers/actions'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {errorToChildren} from 'utils'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { errorToChildren } from 'utils'
 
 import rawCountries from './options/countries.json'
+
 import css from './PhoneNumberDetails.less'
 
 type Props = {
@@ -51,7 +53,7 @@ type Props = {
 
 const countries: SelectableOption[] = rawCountries
 
-export function PhoneNumberDetails({phoneNumber}: Props) {
+export function PhoneNumberDetails({ phoneNumber }: Props) {
     const dispatch = useAppDispatch()
     const [name, setName] = useState(phoneNumber.name)
 
@@ -61,7 +63,7 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
     const state =
         !!twilioConnection && numberCountryCode === PhoneCountry.US
             ? getAvailableStates(numberCountryCode).find(
-                  (state) => state.code === twilioConnection.meta.address.state
+                  (state) => state.code === twilioConnection.meta.address.state,
               )?.name || ''
             : ''
     const [isPhoneNumberCopied, setIsPhoneNumberCopied] = useState(false)
@@ -70,37 +72,39 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
           numberCountryCode)
         : ''
 
-    const [{loading: isDeletePending}, handleDelete] = useAsyncFn(async () => {
-        try {
-            await deleteNewPhoneNumber(phoneNumber.id)
-            dispatch(newPhoneNumberDeleted(phoneNumber.id))
-            void dispatch(
-                notify({
-                    message: 'Successfully deleted phone number',
-                    status: NotificationStatus.Success,
-                })
-            )
-            history.push('/app/settings/phone-numbers')
-        } catch (error) {
-            void dispatch(
-                notify({
-                    title: (error as GorgiasApiError).response.data.error.msg,
-                    message: errorToChildren(error)!,
-                    allowHTML: true,
-                    status: NotificationStatus.Error,
-                })
-            )
-        }
-    }, [phoneNumber])
+    const [{ loading: isDeletePending }, handleDelete] =
+        useAsyncFn(async () => {
+            try {
+                await deleteNewPhoneNumber(phoneNumber.id)
+                dispatch(newPhoneNumberDeleted(phoneNumber.id))
+                void dispatch(
+                    notify({
+                        message: 'Successfully deleted phone number',
+                        status: NotificationStatus.Success,
+                    }),
+                )
+                history.push('/app/settings/phone-numbers')
+            } catch (error) {
+                void dispatch(
+                    notify({
+                        title: (error as GorgiasApiError).response.data.error
+                            .msg,
+                        message: errorToChildren(error)!,
+                        allowHTML: true,
+                        status: NotificationStatus.Error,
+                    }),
+                )
+            }
+        }, [phoneNumber])
 
     const voiceIntegration = phoneNumber.integrations.find(
-        (integration) => integration.type === IntegrationType.Phone
+        (integration) => integration.type === IntegrationType.Phone,
     )
     const smsIntegration = phoneNumber.integrations.find(
-        (integration) => integration.type === IntegrationType.Sms
+        (integration) => integration.type === IntegrationType.Sms,
     )
     const whatsAppIntegration = phoneNumber.integrations.find(
-        (integration) => integration.type === IntegrationType.WhatsApp
+        (integration) => integration.type === IntegrationType.WhatsApp,
     )
 
     useEffect(() => {
@@ -119,7 +123,7 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
         }
     }, [])
 
-    const [{loading: isLoading}, handleSubmit] = useAsyncFn(
+    const [{ loading: isLoading }, handleSubmit] = useAsyncFn(
         async (event: React.FormEvent) => {
             event.preventDefault()
             if (!isNewPhoneNumber(phoneNumber)) {
@@ -127,7 +131,7 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
             }
 
             try {
-                const res = await updateNewPhoneNumber({...phoneNumber, name})
+                const res = await updateNewPhoneNumber({ ...phoneNumber, name })
                 if (!res) {
                     return
                 }
@@ -136,18 +140,18 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
                     notify({
                         message: 'Successfully updated phone number',
                         status: NotificationStatus.Success,
-                    })
+                    }),
                 )
             } catch {
                 void dispatch(
                     notify({
                         message: 'Failed to update phone number',
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
             }
         },
-        [phoneNumber, name, dispatch]
+        [phoneNumber, name, dispatch],
     )
 
     if (!isNewPhoneNumber(phoneNumber)) {
@@ -183,10 +187,10 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
                             />
                             <InputGroupAddon addonType="append">
                                 <Button
-                                    style={{height: '100%'}}
+                                    style={{ height: '100%' }}
                                     className={classnames(
                                         'copy-phone-number-button',
-                                        css.copyButton
+                                        css.copyButton,
                                     )}
                                     data-clipboard-target="#phone-number"
                                     intent="secondary"
@@ -257,7 +261,7 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
                                     !voiceIntegration ||
                                     !hasCapability(
                                         phoneNumber,
-                                        IntegrationType.Phone
+                                        IntegrationType.Phone,
                                     ),
                             })}
                         >
@@ -278,7 +282,7 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
                                 {!voiceIntegration &&
                                     hasCapability(
                                         phoneNumber,
-                                        IntegrationType.Phone
+                                        IntegrationType.Phone,
                                     ) && (
                                         <Link
                                             to={`/app/settings/channels/phone/new?phoneNumberId=${phoneNumber.id}`}
@@ -305,9 +309,9 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
                                         !smsIntegration ||
                                         !hasCapability(
                                             phoneNumber,
-                                            IntegrationType.Sms
+                                            IntegrationType.Sms,
                                         ),
-                                }
+                                },
                             )}
                         >
                             <Col lg={8}>
@@ -349,9 +353,9 @@ export function PhoneNumberDetails({phoneNumber}: Props) {
                                         !whatsAppIntegration ||
                                         !hasCapability(
                                             phoneNumber,
-                                            IntegrationType.WhatsApp
+                                            IntegrationType.WhatsApp,
                                         ),
-                                }
+                                },
                             )}
                         >
                             <Col lg={8}>

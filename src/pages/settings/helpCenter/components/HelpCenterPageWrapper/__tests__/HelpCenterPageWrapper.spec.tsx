@@ -1,23 +1,24 @@
-import {fireEvent, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { fireEvent, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {billingState} from 'fixtures/billing'
-import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
+import { billingState } from 'fixtures/billing'
+import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
-import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
+import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
 import {
     getAbsoluteUrl,
     getHelpCenterDomain,
 } from 'pages/settings/helpCenter/utils/helpCenter.utils'
-import {RootState, StoreDispatch} from 'state/types'
-import {renderWithRouter} from 'utils/testing'
+import { RootState, StoreDispatch } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
-import {useHasAccessToAILibrary} from '../../AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
+import { useHasAccessToAILibrary } from '../../AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
 import HelpCenterPageWrapper from '../HelpCenterPageWrapper'
 
 jest.mock('../../AIArticlesLibraryView/hooks/useHasAccessToAILibrary')
@@ -25,12 +26,12 @@ jest.mock('../../AIArticlesLibraryView/hooks/useHasAccessToAILibrary')
 
 jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
 ;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
-    getSingleHelpCenterResponseFixture
+    getSingleHelpCenterResponseFixture,
 )
 
 jest.mock('pages/settings/helpCenter/utils/localeSelectOptions', () => {
     const dep: Record<string, unknown> = jest.requireActual(
-        'pages/settings/helpCenter/utils/localeSelectOptions'
+        'pages/settings/helpCenter/utils/localeSelectOptions',
     )
     return {
         ...dep,
@@ -48,11 +49,11 @@ jest.mock('pages/settings/helpCenter/utils/localeSelectOptions', () => {
 })
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => {
     const dep: Record<string, unknown> = jest.requireActual(
-        'pages/settings/helpCenter/hooks/useHelpCenterApi'
+        'pages/settings/helpCenter/hooks/useHelpCenterApi',
     )
     return {
         ...dep,
-        useAbilityChecker: () => ({isPassingRulesCheck: () => true}),
+        useAbilityChecker: () => ({ isPassingRulesCheck: () => true }),
     }
 })
 
@@ -73,11 +74,11 @@ const defaultState: Partial<RootState> = {
                     '1': getSingleHelpCenterResponseFixture,
                 },
             },
-            articles: {articlesById: {}},
-            categories: {categoriesById: {}},
+            articles: { articlesById: {} },
+            categories: { categoriesById: {} },
         },
     } as any,
-    ui: {helpCenter: {currentId: 1, currentLanguage: viewLanguage}} as any,
+    ui: { helpCenter: { currentId: 1, currentLanguage: viewLanguage } } as any,
     billing: fromJS(billingState),
 }
 
@@ -92,36 +93,36 @@ describe('<HelpCenterPageWrapper />', () => {
     }
 
     it('should render the component', () => {
-        const {container} = renderWithRouter(
+        const { container } = renderWithRouter(
             <Provider store={store}>
                 <HelpCenterPageWrapper {...props} />
-            </Provider>
+            </Provider>,
         )
 
         expect(container).toMatchSnapshot()
     })
 
     it('should display a preview button', () => {
-        const {getByRole} = renderWithRouter(
+        const { getByRole } = renderWithRouter(
             <Provider store={store}>
                 <HelpCenterPageWrapper {...props} />
-            </Provider>
+            </Provider>,
         )
 
-        const previewBtn = getByRole('button', {name: /help center preview/i})
+        const previewBtn = getByRole('button', { name: /help center preview/i })
         fireEvent.click(previewBtn)
 
         const domain = getHelpCenterDomain(getSingleHelpCenterResponseFixture)
-        const helpCenterUrl = getAbsoluteUrl({domain, locale: viewLanguage})
+        const helpCenterUrl = getAbsoluteUrl({ domain, locale: viewLanguage })
 
         expect(windowOpenMock).toHaveBeenCalledWith(helpCenterUrl, '_blank')
     })
 
     it('should display a language selector', () => {
-        const {getByRole} = renderWithRouter(
+        const { getByRole } = renderWithRouter(
             <Provider store={store}>
                 <HelpCenterPageWrapper {...props} showLanguageSelector />
-            </Provider>
+            </Provider>,
         )
 
         getByRole('textbox')
@@ -137,7 +138,7 @@ describe('<HelpCenterPageWrapper />', () => {
                     showLanguageSelector
                     onSaveChanges={onSaveChanges}
                 />
-            </Provider>
+            </Provider>,
         )
 
         const englishBtn = screen.getByText(/english/i)
@@ -159,7 +160,7 @@ describe('<HelpCenterPageWrapper />', () => {
                     showLanguageSelector
                     isDirty={true}
                 />
-            </Provider>
+            </Provider>,
         )
 
         const englishBtn = screen.getByText(/english/i)
@@ -168,7 +169,7 @@ describe('<HelpCenterPageWrapper />', () => {
         const spanishBtn = screen.getByText(/spanish/i)
         fireEvent.click(spanishBtn)
 
-        const saveBtn = screen.getByRole('button', {name: /save/i})
+        const saveBtn = screen.getByRole('button', { name: /save/i })
 
         fireEvent.click(saveBtn)
 

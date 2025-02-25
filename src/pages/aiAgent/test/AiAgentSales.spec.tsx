@@ -1,16 +1,17 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
 
-import {mockStore} from 'utils/testing'
+import { render, screen } from '@testing-library/react'
+import { Provider } from 'react-redux'
 
-import {AiAgentSales} from '../AiAgentSales'
+import { mockStore } from 'utils/testing'
+
+import { AiAgentSales } from '../AiAgentSales'
 
 const renderComponent = () =>
     render(
         <Provider store={mockStore({})}>
             <AiAgentSales />
-        </Provider>
+        </Provider>,
     )
 
 describe('<AiAgentSales />', () => {

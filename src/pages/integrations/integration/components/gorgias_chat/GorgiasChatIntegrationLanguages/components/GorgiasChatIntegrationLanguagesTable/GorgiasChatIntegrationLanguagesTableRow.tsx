@@ -1,13 +1,14 @@
 import React from 'react'
 
-import {Badge} from 'gorgias-design-system/Badge/Badge'
+import { Badge } from 'gorgias-design-system/Badge/Badge'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import history from 'pages/history'
 
+import { GorgiasChatIntegrationLanguagesTableRowActions } from './GorgiasChatIntegrationLanguagesTableRowActions'
+import type { LanguageItemRow } from './types'
+
 import css from './GorgiasChatIntegrationLanguagesTable.less'
-import {GorgiasChatIntegrationLanguagesTableRowActions} from './GorgiasChatIntegrationLanguagesTableRowActions'
-import type {LanguageItemRow} from './types'
 
 export type GorgiasChatIntegrationLanguagesTableRowProps = {
     language: LanguageItemRow

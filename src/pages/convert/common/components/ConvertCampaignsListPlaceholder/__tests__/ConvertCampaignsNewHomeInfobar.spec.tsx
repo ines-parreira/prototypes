@@ -1,5 +1,6 @@
-import {fireEvent, render, screen} from '@testing-library/react'
 import React from 'react'
+
+import { fireEvent, render, screen } from '@testing-library/react'
 
 import * as useLocalStorageNewHome from 'hooks/useLocalStorage'
 
@@ -7,7 +8,7 @@ import ConvertCampaignsNewHomeInfobar from '../ConvertCampaignsNewHomeInfobar'
 
 const useLocalStorageSpy = jest.spyOn(
     useLocalStorageNewHome,
-    'default'
+    'default',
 ) as jest.Mock
 
 describe('<ConvertCampaignsNewHomeInfobar/>', () => {
@@ -21,7 +22,7 @@ describe('<ConvertCampaignsNewHomeInfobar/>', () => {
         render(<ConvertCampaignsNewHomeInfobar integrationId={integrationId} />)
 
         expect(
-            screen.getByText('Campaigns have a new home!')
+            screen.getByText('Campaigns have a new home!'),
         ).toBeInTheDocument()
     })
 
@@ -31,7 +32,7 @@ describe('<ConvertCampaignsNewHomeInfobar/>', () => {
         render(<ConvertCampaignsNewHomeInfobar integrationId={integrationId} />)
 
         expect(
-            screen.queryByText('Campaigns have a new home!')
+            screen.queryByText('Campaigns have a new home!'),
         ).not.toBeInTheDocument()
     })
 
@@ -42,7 +43,7 @@ describe('<ConvertCampaignsNewHomeInfobar/>', () => {
         render(<ConvertCampaignsNewHomeInfobar integrationId={integrationId} />)
 
         expect(
-            screen.getByText('Campaigns have a new home!')
+            screen.getByText('Campaigns have a new home!'),
         ).toBeInTheDocument()
 
         fireEvent.click(screen.getByAltText('dismiss-icon'))

@@ -183,7 +183,7 @@ export function sanitizeHtmlForFacebookMessenger(html: string): string {
             full_a_tag: string,
             a_href: string,
             a_url: string,
-            a_text: string
+            a_text: string,
         ) => {
             // Remove trailing slash
             const _a_url = a_url.endsWith('/') ? a_url.slice(0, -1) : a_url
@@ -200,7 +200,7 @@ export function sanitizeHtmlForFacebookMessenger(html: string): string {
             }
 
             return ` ${a_text}: ${a_url} `
-        }
+        },
     )
 
     return sanitizedHtml
@@ -249,7 +249,7 @@ export function textToHTML(text: string): string {
 }
 
 export function trimHTML(html: string): string {
-    const {body} = parseHtml(html.trim())
+    const { body } = parseHtml(html.trim())
 
     const shouldTrim = (node: Element | null) =>
         node &&

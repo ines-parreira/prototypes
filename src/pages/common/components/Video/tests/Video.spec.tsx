@@ -1,5 +1,6 @@
-import {render, screen, fireEvent} from '@testing-library/react'
 import React from 'react'
+
+import { fireEvent, render, screen } from '@testing-library/react'
 
 import Video from '../Video'
 
@@ -11,7 +12,7 @@ describe('Video component', () => {
                 videoURL="https://video.link"
                 previewURL={previewURL}
                 legend="foo"
-            />
+            />,
         )
 
         const img = screen.getByAltText('video preview')
@@ -35,7 +36,7 @@ describe('Video component', () => {
                 videoURL={videoURL}
                 previewURL="https://preview.url"
                 legend="foo"
-            />
+            />,
         )
         fireEvent.click(screen.getByAltText('video preview'))
         const video = screen.getByTitle('foo')
@@ -45,14 +46,14 @@ describe('Video component', () => {
     })
 
     it('should render with default youtubePreviewIndex', () => {
-        const {container} = render(<Video youtubeId="8fDF546" legend="foo" />)
+        const { container } = render(<Video youtubeId="8fDF546" legend="foo" />)
 
         expect(container).toMatchSnapshot()
     })
 
     it('should render with passed youtubePreviewIndex', () => {
-        const {container} = render(
-            <Video youtubeId="8fDF546" legend="foo" youtubePreviewIndex="2" />
+        const { container } = render(
+            <Video youtubeId="8fDF546" legend="foo" youtubePreviewIndex="2" />,
         )
 
         expect(container).toMatchSnapshot()
@@ -60,7 +61,7 @@ describe('Video component', () => {
 
     it('should render iframe only when modal opened', () => {
         render(
-            <Video youtubeId="8fDF546" legend="foo" youtubePreviewIndex="2" />
+            <Video youtubeId="8fDF546" legend="foo" youtubePreviewIndex="2" />,
         )
 
         fireEvent.click(screen.getByAltText('video preview'))

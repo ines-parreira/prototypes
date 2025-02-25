@@ -7,10 +7,10 @@ import React, {
     useState,
 } from 'react'
 
-import {Button} from 'reactstrap'
+import { Button } from 'reactstrap'
 
 import EditorDrawerHeader from 'pages/automate/workflows/editor/visualBuilder/EditorDrawerHeader'
-import {Drawer} from 'pages/common/components/Drawer'
+import { Drawer } from 'pages/common/components/Drawer'
 import Wizard, {
     WizardContext,
     WizardContextState,
@@ -18,8 +18,8 @@ import Wizard, {
 import WizardProgressHeader from 'pages/common/components/wizard/WizardProgressHeader'
 import WizardStep from 'pages/common/components/wizard/WizardStep'
 import css from 'pages/convert/campaigns/components/ContactCaptureForm/AddContactCaptureForm.less'
-import {STEPS} from 'pages/convert/campaigns/components/ContactCaptureForm/steps'
-import {TransitoryAttachmentData} from 'pages/convert/campaigns/components/ContactCaptureForm/types'
+import { STEPS } from 'pages/convert/campaigns/components/ContactCaptureForm/steps'
+import { TransitoryAttachmentData } from 'pages/convert/campaigns/components/ContactCaptureForm/types'
 import {
     transformAttachmentToTransitory,
     transformTransitoryToAttachment,
@@ -34,7 +34,7 @@ export type AddContactCaptureFormProps = {
     onOpenChange: (openState: boolean) => void
     onSubmit?: (
         newAttachmentExtra: CampaignFormExtra,
-        isEditing: boolean
+        isEditing: boolean,
     ) => void
     onCancel?: () => void
     onReset?: () => void
@@ -70,7 +70,7 @@ const AddContactCaptureInnerForm = (props: AddContactCaptureFormInnerProps) => {
     })
 
     const [data, setData] = useState<TransitoryAttachmentData>(
-        initialTransitoryData.current
+        initialTransitoryData.current,
     )
 
     const {
@@ -85,13 +85,13 @@ const AddContactCaptureInnerForm = (props: AddContactCaptureFormInnerProps) => {
 
     const isEditing = useMemo(
         () => !!initialAttachment?.extra,
-        [initialAttachment]
+        [initialAttachment],
     )
 
     useEffect(() => {
         if (initialAttachment?.extra) {
             const injectedTransitoryData = transformAttachmentToTransitory(
-                initialAttachment.extra
+                initialAttachment.extra,
             )
             initialTransitoryData.current = injectedTransitoryData
             setData(injectedTransitoryData)
@@ -118,13 +118,18 @@ const AddContactCaptureInnerForm = (props: AddContactCaptureFormInnerProps) => {
         if (onCancel) onCancel()
     }
 
-    const {activeStepIndex, setActiveStep, previousStep, activeStep, nextStep} =
-        useContext(WizardContext) as WizardContextState
+    const {
+        activeStepIndex,
+        setActiveStep,
+        previousStep,
+        activeStep,
+        nextStep,
+    } = useContext(WizardContext) as WizardContextState
 
     const isFirstStep = useMemo(() => activeStepIndex === 0, [activeStepIndex])
     const isLastStep = useMemo(
         () => activeStepIndex === STEPS.length - 1,
-        [activeStepIndex]
+        [activeStepIndex],
     )
 
     const onClickBack = () => {
@@ -170,7 +175,7 @@ const AddContactCaptureInnerForm = (props: AddContactCaptureFormInnerProps) => {
                             acc[step.label] = step.label
                             return acc
                         },
-                        {} as Record<string, string>
+                        {} as Record<string, string>,
                     )}
                     className={css.wizardHeaderContainer}
                 />

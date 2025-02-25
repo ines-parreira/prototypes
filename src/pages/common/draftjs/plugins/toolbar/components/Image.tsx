@@ -1,3 +1,5 @@
+import React, { ImgHTMLAttributes } from 'react'
+
 import classnames from 'classnames'
 import {
     ContentBlock,
@@ -7,9 +9,8 @@ import {
     SelectionState,
 } from 'draft-js'
 import _omit from 'lodash/omit'
-import React, {ImgHTMLAttributes} from 'react'
 
-import {replaceAttachmentURL} from 'utils'
+import { replaceAttachmentURL } from 'utils'
 
 type Props = {
     alt: string
@@ -36,7 +37,7 @@ class Image extends React.Component<Props> {
     }
 
     render() {
-        const {alt, block, className, theme, contentState, ...otherProps} =
+        const { alt, block, className, theme, contentState, ...otherProps } =
             this.props
 
         const elementProps = _omit(otherProps, [
@@ -51,7 +52,7 @@ class Image extends React.Component<Props> {
             'blockStyleFn',
         ])
 
-        const {src} = contentState.getEntity(block.getEntityAt(0)).getData()
+        const { src } = contentState.getEntity(block.getEntityAt(0)).getData()
 
         return (
             <img

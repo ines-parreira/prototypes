@@ -1,16 +1,16 @@
-import {JobType} from '@gorgias/api-queries'
-import {List} from 'immutable'
-import {notify as updateNotification} from 'reapop'
-import {UpsertNotificationAction} from 'reapop/dist/reducers/notifications/actions'
+import { List } from 'immutable'
+import { notify as updateNotification } from 'reapop'
+import { UpsertNotificationAction } from 'reapop/dist/reducers/notifications/actions'
 
-import {JOBS_PATH} from 'models/job/resources'
+import { JobType } from '@gorgias/api-queries'
+
+import { JOBS_PATH } from 'models/job/resources'
 
 import client from '../../models/api/resources'
-import {buildJobMessage} from '../../utils/notificationUtils'
-import {notify} from '../notifications/actions'
-import {NotificationStatus} from '../notifications/types'
-import {StoreDispatch} from '../types'
-
+import { buildJobMessage } from '../../utils/notificationUtils'
+import { notify } from '../notifications/actions'
+import { NotificationStatus } from '../notifications/types'
+import { StoreDispatch } from '../types'
 import * as types from './constants'
 
 export const updateCursor = (cursor: string) => (dispatch: StoreDispatch) => {
@@ -23,15 +23,15 @@ export const updateCursor = (cursor: string) => (dispatch: StoreDispatch) => {
 export function createJob(
     ids: List<any>,
     jobType: JobType,
-    jobPartialParams: Record<string, unknown>
+    jobPartialParams: Record<string, unknown>,
 ) {
     return (dispatch: StoreDispatch) => {
         const requestPayload = {
             type: jobType,
             params: Object.assign(
                 {},
-                {ticket_ids: ids.toJS()},
-                jobPartialParams
+                { ticket_ids: ids.toJS() },
+                jobPartialParams,
             ),
         }
 
@@ -45,9 +45,9 @@ export function createJob(
                     false,
                     ids.size === 1 ? 'ticket' : 'tickets',
                     jobPartialParams,
-                    ids.size
+                    ids.size,
                 ),
-            })
+            }),
         ) as unknown as UpsertNotificationAction
 
         return client

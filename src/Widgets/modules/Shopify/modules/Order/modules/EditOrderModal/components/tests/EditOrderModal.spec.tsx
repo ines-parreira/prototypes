@@ -1,9 +1,10 @@
-import {render, fireEvent, screen} from '@testing-library/react'
-import {fromJS, Map, List} from 'immutable'
-import React, {ReactNode, ComponentProps} from 'react'
+import React, { ComponentProps, ReactNode } from 'react'
 
-import {initDraftOrderPayload} from 'business/shopify/draftOrder'
-import {integrationsStateWithShopify} from 'fixtures/integrations'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { fromJS, List, Map } from 'immutable'
+
+import { initDraftOrderPayload } from 'business/shopify/draftOrder'
+import { integrationsStateWithShopify } from 'fixtures/integrations'
 import {
     integrationDataItemProductFixture,
     shopifyCustomerFixture,
@@ -13,29 +14,28 @@ import {
     shopifyVariantFixture,
 } from 'fixtures/shopify'
 import ProductSearchInput from 'pages/common/forms/ProductSearchInput/ProductSearchInput'
-import {CustomerContext} from 'providers/infobar/CustomerContext'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import {getDuplicateOrderPayload} from 'state/infobarActions/shopify/createOrder/actions'
-
+import { CustomerContext } from 'providers/infobar/CustomerContext'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
+import { getDuplicateOrderPayload } from 'state/infobarActions/shopify/createOrder/actions'
 import AddCustomItemPopover from 'Widgets/modules/Shopify/modules/AddCustomItemPopover'
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
+import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
-import {EditOrderModalContainer} from '../EditOrderModal'
+import { EditOrderModalContainer } from '../EditOrderModal'
 
 jest.mock(
     'pages/common/utils/DatetimeLabel',
     () =>
-        ({dateTime}: {dateTime: string}) => (
+        ({ dateTime }: { dateTime: string }) => (
             <div data-testid="DatetimeLabel">{dateTime}</div>
-        )
+        ),
 )
 
 jest.mock(
     'pages/common/components/modal/ModalHeader',
     () =>
-        ({title}: {title: ReactNode}) => (
+        ({ title }: { title: ReactNode }) => (
             <div data-testid="Modal-Header">{title}</div>
-        )
+        ),
 )
 
 jest.mock(
@@ -58,7 +58,7 @@ jest.mock(
                 )
             }
             return null
-        }
+        },
 )
 
 const mockFromJS = fromJS
@@ -68,7 +68,7 @@ const mockShopifyCustomLineItemFixture = shopifyCustomLineItemFixture
 jest.mock(
     'pages/common/forms/ProductSearchInput/ProductSearchInput',
     () =>
-        ({onVariantClicked}: ComponentProps<typeof ProductSearchInput>) => {
+        ({ onVariantClicked }: ComponentProps<typeof ProductSearchInput>) => {
             const item = mockIntegrationDataItemProductFixture()
             const variant = item.data.variants[0]
 
@@ -84,20 +84,20 @@ jest.mock(
                     </div>
                 </div>
             )
-        }
+        },
 )
 
 jest.mock(
     'Widgets/modules/Shopify/modules/AddCustomItemPopover',
     () =>
-        ({onSubmit}: ComponentProps<typeof AddCustomItemPopover>) => {
+        ({ onSubmit }: ComponentProps<typeof AddCustomItemPopover>) => {
             return (
                 <div data-testid="AddCustomItemPopover">
                     <div
                         data-testid="AddCustomItemPopover_submit"
                         onClick={() =>
                             onSubmit(
-                                mockFromJS(mockShopifyCustomLineItemFixture())
+                                mockFromJS(mockShopifyCustomLineItemFixture()),
                             )
                         }
                     >
@@ -105,7 +105,7 @@ jest.mock(
                     </div>
                 </div>
             )
-        }
+        },
 )
 
 function getProducts(order: Map<any, any>) {
@@ -118,14 +118,14 @@ function getProducts(order: Map<any, any>) {
                 shopifyVariantFixture({
                     id: lineItem.get('variant_id'),
                     title: lineItem.get('variant_title'),
-                })
+                }),
             )
             let product: Map<any, any>
 
             if (products.has(productId)) {
                 product = products.get(productId)
                 product = product.update('variants', (variants: List<any>) =>
-                    variants.push(variant)
+                    variants.push(variant),
                 )
             } else {
                 product = fromJS(
@@ -133,12 +133,12 @@ function getProducts(order: Map<any, any>) {
                         id: productId,
                         title: lineItem.get('title'),
                         variants: [variant],
-                    })
+                    }),
                 )
             }
 
             products.set(productId, product)
-        }
+        },
     )
 
     return products
@@ -149,7 +149,7 @@ const customer = fromJS(shopifyCustomerFixture())
 const products = getProducts(order)
 const draftOrder = initDraftOrderPayload(customer, order, products)
 const payload = getDuplicateOrderPayload(draftOrder)
-const integrationContextValue = {integration: fromJS({}), integrationId: 1}
+const integrationContextValue = { integration: fromJS({}), integrationId: 1 }
 const minProps = {
     isOpen: true,
     title: 'Edit order',
@@ -192,12 +192,12 @@ const minProps = {
 
 describe('<EditOrderModal/>', () => {
     it('should not render when the modal is closed', () => {
-        const {container} = render(
-            <CustomerContext.Provider value={{customerId: 2}}>
+        const { container } = render(
+            <CustomerContext.Provider value={{ customerId: 2 }}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <EditOrderModalContainer {...minProps} isOpen={false} />
                 </IntegrationContext.Provider>
-            </CustomerContext.Provider>
+            </CustomerContext.Provider>,
         )
 
         expect(container.firstChild).toBeNull()
@@ -205,19 +205,19 @@ describe('<EditOrderModal/>', () => {
 
     it('should render a spinner when missing data', () => {
         render(
-            <CustomerContext.Provider value={{customerId: 2}}>
+            <CustomerContext.Provider value={{ customerId: 2 }}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <EditOrderModalContainer {...minProps} />
                 </IntegrationContext.Provider>
-            </CustomerContext.Provider>
+            </CustomerContext.Provider>,
         )
 
         expect(screen.getByText('Loading...')).toBeInTheDocument()
     })
 
     it('should render with a populated order table when data is populated', () => {
-        const {container} = render(
-            <CustomerContext.Provider value={{customerId: 2}}>
+        const { container } = render(
+            <CustomerContext.Provider value={{ customerId: 2 }}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <EditOrderModalContainer
                         {...minProps}
@@ -225,7 +225,7 @@ describe('<EditOrderModal/>', () => {
                         payload={payload}
                     />
                 </IntegrationContext.Provider>
-            </CustomerContext.Provider>
+            </CustomerContext.Provider>,
         )
 
         expect(container).toMatchSnapshot()
@@ -234,13 +234,13 @@ describe('<EditOrderModal/>', () => {
     it('should render with an empty order table when data is empty', () => {
         const order = (fromJS(shopifyOrderFixture()) as Map<any, any>).set(
             'line_items',
-            []
+            [],
         )
         const products = fromJS([])
         const draftOrder = initDraftOrderPayload(customer, order, products)
         const payload = getDuplicateOrderPayload(draftOrder)
         render(
-            <CustomerContext.Provider value={{customerId: 2}}>
+            <CustomerContext.Provider value={{ customerId: 2 }}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <EditOrderModalContainer
                         {...minProps}
@@ -248,7 +248,7 @@ describe('<EditOrderModal/>', () => {
                         payload={payload}
                     />
                 </IntegrationContext.Provider>
-            </CustomerContext.Provider>
+            </CustomerContext.Provider>,
         )
 
         expect(screen.getByText('No items')).toBeInTheDocument()
@@ -262,7 +262,7 @@ describe('<EditOrderModal/>', () => {
             .toJS()
         const defaultCurrency = 'YEN'
         render(
-            <CustomerContext.Provider value={{customerId: 2}}>
+            <CustomerContext.Provider value={{ customerId: 2 }}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <EditOrderModalContainer
                         {...minProps}
@@ -272,17 +272,17 @@ describe('<EditOrderModal/>', () => {
                         defaultCurrency={defaultCurrency}
                     />
                 </IntegrationContext.Provider>
-            </CustomerContext.Provider>
+            </CustomerContext.Provider>,
         )
 
         expect(
-            screen.getAllByText(new RegExp(defaultCurrency)).length
+            screen.getAllByText(new RegExp(defaultCurrency)).length,
         ).toBeTruthy()
     })
 
     it('should call onInit when modal is opened', () => {
-        const {rerender} = render(
-            <CustomerContext.Provider value={{customerId: 2}}>
+        const { rerender } = render(
+            <CustomerContext.Provider value={{ customerId: 2 }}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <EditOrderModalContainer
                         {...minProps}
@@ -291,11 +291,11 @@ describe('<EditOrderModal/>', () => {
                         payload={payload}
                     />
                 </IntegrationContext.Provider>
-            </CustomerContext.Provider>
+            </CustomerContext.Provider>,
         )
 
         rerender(
-            <CustomerContext.Provider value={{customerId: 2}}>
+            <CustomerContext.Provider value={{ customerId: 2 }}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <EditOrderModalContainer
                         {...minProps}
@@ -304,7 +304,7 @@ describe('<EditOrderModal/>', () => {
                         payload={payload}
                     />
                 </IntegrationContext.Provider>
-            </CustomerContext.Provider>
+            </CustomerContext.Provider>,
         )
 
         expect(minProps.onInit).toHaveBeenCalledWith(
@@ -312,7 +312,7 @@ describe('<EditOrderModal/>', () => {
             order,
             customer,
             'EUR',
-            expect.any(Function)
+            expect.any(Function),
         )
     })
 
@@ -320,8 +320,8 @@ describe('<EditOrderModal/>', () => {
         const item = integrationDataItemProductFixture()
         const product = item.data
         const variant = product.variants[0]
-        const {getByTestId} = render(
-            <CustomerContext.Provider value={{customerId: 2}}>
+        const { getByTestId } = render(
+            <CustomerContext.Provider value={{ customerId: 2 }}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <EditOrderModalContainer
                         {...minProps}
@@ -329,7 +329,7 @@ describe('<EditOrderModal/>', () => {
                         payload={payload}
                     />
                 </IntegrationContext.Provider>
-            </CustomerContext.Provider>
+            </CustomerContext.Provider>,
         )
 
         fireEvent.click(getByTestId('ProductSearchInput_result'))
@@ -337,7 +337,7 @@ describe('<EditOrderModal/>', () => {
             ShopifyActionType.EditOrder,
             1,
             product,
-            variant
+            variant,
         )
     })
 
@@ -345,8 +345,8 @@ describe('<EditOrderModal/>', () => {
         const draftOrder = initDraftOrderPayload(customer, order, products)
         const payload = getDuplicateOrderPayload(draftOrder)
         const lineItem = fromJS(shopifyCustomLineItemFixture())
-        const {getByTestId} = render(
-            <CustomerContext.Provider value={{customerId: 2}}>
+        const { getByTestId } = render(
+            <CustomerContext.Provider value={{ customerId: 2 }}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <EditOrderModalContainer
                         {...minProps}
@@ -354,7 +354,7 @@ describe('<EditOrderModal/>', () => {
                         payload={payload}
                     />
                 </IntegrationContext.Provider>
-            </CustomerContext.Provider>
+            </CustomerContext.Provider>,
         )
 
         fireEvent.click(getByTestId('AddCustomItemPopover_submit'))
@@ -364,8 +364,8 @@ describe('<EditOrderModal/>', () => {
     it('should cancel when closing the modal"', () => {
         const draftOrder = initDraftOrderPayload(customer, order, products)
         const payload = getDuplicateOrderPayload(draftOrder)
-        const {getByTestId} = render(
-            <CustomerContext.Provider value={{customerId: 2}}>
+        const { getByTestId } = render(
+            <CustomerContext.Provider value={{ customerId: 2 }}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <EditOrderModalContainer
                         {...minProps}
@@ -373,14 +373,14 @@ describe('<EditOrderModal/>', () => {
                         payload={payload}
                     />
                 </IntegrationContext.Provider>
-            </CustomerContext.Provider>
+            </CustomerContext.Provider>,
         )
 
         fireEvent.click(getByTestId('Modal'))
         expect(minProps.onCancel).toHaveBeenCalledWith(
             ShopifyActionType.EditOrder,
             1,
-            'header'
+            'header',
         )
         expect(minProps.onClose).toHaveBeenCalled()
         expect(minProps.onReset).toHaveBeenCalled()
@@ -389,8 +389,8 @@ describe('<EditOrderModal/>', () => {
     it('should cancel when clicking on "Cancel"', () => {
         const draftOrder = initDraftOrderPayload(customer, order, products)
         const payload = getDuplicateOrderPayload(draftOrder)
-        const {getByText} = render(
-            <CustomerContext.Provider value={{customerId: 2}}>
+        const { getByText } = render(
+            <CustomerContext.Provider value={{ customerId: 2 }}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <EditOrderModalContainer
                         {...minProps}
@@ -398,14 +398,14 @@ describe('<EditOrderModal/>', () => {
                         payload={payload}
                     />
                 </IntegrationContext.Provider>
-            </CustomerContext.Provider>
+            </CustomerContext.Provider>,
         )
 
         fireEvent.click(getByText(/Cancel/i))
         expect(minProps.onCancel).toHaveBeenCalledWith(
             ShopifyActionType.EditOrder,
             1,
-            'footer'
+            'footer',
         )
         expect(minProps.onClose).toHaveBeenCalled()
         expect(minProps.onReset).toHaveBeenCalled()
@@ -419,8 +419,8 @@ describe('<EditOrderModal/>', () => {
         )
             .setIn([0, 'meta', 'oauth', 'scope'], 'foo')
             .toJS()
-        const {getByTestId} = render(
-            <CustomerContext.Provider value={{customerId: 2}}>
+        const { getByTestId } = render(
+            <CustomerContext.Provider value={{ customerId: 2 }}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <EditOrderModalContainer
                         {...minProps}
@@ -429,7 +429,7 @@ describe('<EditOrderModal/>', () => {
                         payload={payload}
                     />
                 </IntegrationContext.Provider>
-            </CustomerContext.Provider>
+            </CustomerContext.Provider>,
         )
 
         fireEvent.click(getByTestId('Modal'))

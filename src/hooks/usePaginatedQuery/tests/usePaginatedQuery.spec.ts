@@ -1,13 +1,13 @@
-import {UseQueryResult} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
-import {AxiosResponse} from 'axios'
+import { UseQueryResult } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
+import { AxiosResponse } from 'axios'
 
-import {useSearchParam} from 'hooks/useSearchParam'
-import {ApiListResponseCursorPagination} from 'models/api/types'
-import {assumeMock} from 'utils/testing'
+import { useSearchParam } from 'hooks/useSearchParam'
+import { ApiListResponseCursorPagination } from 'models/api/types'
+import { assumeMock } from 'utils/testing'
 
-import {usePaginatedQuery} from '../usePaginatedQuery'
-import {useResponseCursor} from '../useResponseCursor'
+import { usePaginatedQuery } from '../usePaginatedQuery'
+import { useResponseCursor } from '../useResponseCursor'
 
 jest.mock('hooks/useSearchParam')
 const mockedUseSearchParam = assumeMock(useSearchParam)
@@ -28,7 +28,7 @@ describe('useSearchParams hook', () => {
             }) as UseQueryResult<
                 AxiosResponse<ApiListResponseCursorPagination<any>>,
                 unknown
-            >
+            >,
     )
     beforeEach(() => {
         mockedUseSearchParam.mockReturnValue([currentCursor, mockedSetCursor])
@@ -54,13 +54,13 @@ describe('useSearchParams hook', () => {
     })
 
     it('should provide query with given params, a cursor, and overrides', () => {
-        const params = {foo: 'bar'}
-        const overrides = {enabled: false, someParam: 'someValue'}
+        const params = { foo: 'bar' }
+        const overrides = { enabled: false, someParam: 'someValue' }
         renderHook(() => usePaginatedQuery(mockedQuery, params, overrides))
 
         expect(mockedQuery).toHaveBeenCalledWith(
-            {...params, cursor: currentCursor},
-            overrides
+            { ...params, cursor: currentCursor },
+            overrides,
         )
     })
 
@@ -83,14 +83,14 @@ describe('useSearchParams hook', () => {
     })
 
     it('should disable query if a previous cursor is set and no current cursor', () => {
-        const {rerender} = renderHook(() => usePaginatedQuery(mockedQuery))
+        const { rerender } = renderHook(() => usePaginatedQuery(mockedQuery))
 
         mockedUseSearchParam.mockReturnValue([null, mockedSetCursor])
         rerender()
 
         expect(mockedQuery).toHaveBeenLastCalledWith(
-            {cursor: null},
-            {enabled: false}
+            { cursor: null },
+            { enabled: false },
         )
     })
 })

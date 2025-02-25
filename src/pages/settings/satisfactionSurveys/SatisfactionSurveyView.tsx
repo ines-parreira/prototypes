@@ -1,41 +1,42 @@
-import classnames from 'classnames'
-import {EditorState} from 'draft-js'
-import {Map} from 'immutable'
-import React, {FormEvent, useCallback, useState} from 'react'
-import {Form, FormGroup, Label, Row} from 'reactstrap'
+import React, { FormEvent, useCallback, useState } from 'react'
 
-import {UploadType} from 'common/types'
-import {DELAY_SURVEY_FOR} from 'config'
+import classnames from 'classnames'
+import { EditorState } from 'draft-js'
+import { Map } from 'immutable'
+import { Form, FormGroup, Label, Row } from 'reactstrap'
+
+import { UploadType } from 'common/types'
+import { DELAY_SURVEY_FOR } from 'config'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {useGetHelpCenterList} from 'models/helpCenter/queries'
+import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import CheckBox from 'pages/common/forms/CheckBox'
 import RichFieldWithVariables from 'pages/common/forms/RichFieldWithVariables'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {useGetContactFormList} from 'pages/settings/contactForm/queries'
-import {submitSetting} from 'state/currentAccount/actions'
-import {getSurveysSettings} from 'state/currentAccount/selectors'
+import { useGetContactFormList } from 'pages/settings/contactForm/queries'
+import { submitSetting } from 'state/currentAccount/actions'
+import { getSurveysSettings } from 'state/currentAccount/selectors'
 import {
     AccountSettingSatisfactionSurvey,
     AccountSettingType,
 } from 'state/currentAccount/types'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {convertToHTML, getPlainText} from 'utils/editor'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { convertToHTML, getPlainText } from 'utils/editor'
 
 import css from '../settings.less'
 
 function SatisfactionSurveyView() {
     const surveysSettings = useAppSelector(getSurveysSettings)
-    const {data: contactForms} = useGetContactFormList({})
-    const {data: helpCenters} = useGetHelpCenterList({type: 'faq'})
+    const { data: contactForms } = useGetContactFormList({})
+    const { data: helpCenters } = useGetHelpCenterList({ type: 'faq' })
     const dispatch = useAppDispatch()
 
     const [isLoading, setIsLoading] = useState(false)
     const [settings, setSettings] = useState<Map<string, any>>(
-        surveysSettings.get('data')
+        surveysSettings.get('data'),
     )
     const hasChanges = !settings.equals(surveysSettings.get('data'))
 
@@ -46,7 +47,7 @@ function SatisfactionSurveyView() {
             prevState.mergeDeep({
                 survey_email_text: getPlainText(contentState),
                 survey_email_html: convertToHTML(contentState),
-            })
+            }),
         )
     }
 
@@ -62,7 +63,7 @@ function SatisfactionSurveyView() {
         }
 
         return dispatch(
-            submitSetting(newSettings, 'Satisfaction Survey settings saved')
+            submitSetting(newSettings, 'Satisfaction Survey settings saved'),
         ).then(() => {
             setIsLoading(false)
         })
@@ -74,7 +75,7 @@ function SatisfactionSurveyView() {
             notify({
                 status: NotificationStatus.Success,
                 message: 'Changes have been canceled',
-            })
+            }),
         )
     }
 
@@ -94,7 +95,7 @@ function SatisfactionSurveyView() {
                 </CheckBox>
             )
         },
-        [settings]
+        [settings],
     )
 
     return (
@@ -134,7 +135,7 @@ function SatisfactionSurveyView() {
                                 <Label
                                     className={classnames(
                                         'control-label',
-                                        css.mb8
+                                        css.mb8,
                                     )}
                                 >
                                     Send a satisfaction survey email to
@@ -147,12 +148,12 @@ function SatisfactionSurveyView() {
                                     {checkBox(
                                         'send_survey_for_contact_form',
                                         'Contact Form',
-                                        !!contactForms?.pages[0]?.data.length
+                                        !!contactForms?.pages[0]?.data.length,
                                     )}
                                     {checkBox(
                                         'send_survey_for_help_center',
                                         'Help Center',
-                                        !!helpCenters?.data.data.length
+                                        !!helpCenters?.data.data.length,
                                     )}
                                 </Row>
                             </FormGroup>
@@ -189,8 +190,8 @@ function SatisfactionSurveyView() {
                                             setSettings(
                                                 settings.set(
                                                     'survey_interval',
-                                                    value
-                                                )
+                                                    value,
+                                                ),
                                             )
                                         }
                                     />
@@ -201,7 +202,7 @@ function SatisfactionSurveyView() {
                                 <div
                                     className={classnames(
                                         css.mt4,
-                                        'caption-regular'
+                                        'caption-regular',
                                     )}
                                 >
                                     Note: Surveys will not be sent for snoozed

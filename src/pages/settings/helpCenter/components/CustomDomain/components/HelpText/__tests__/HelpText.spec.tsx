@@ -1,11 +1,12 @@
-import {screen, render} from '@testing-library/react'
 import React from 'react'
 
-import {HelpText} from '../HelpText'
+import { render, screen } from '@testing-library/react'
+
+import { HelpText } from '../HelpText'
 
 describe('<HelpText />', () => {
     it('matches snapshot', () => {
-        const {container} = render(<HelpText isHidden={false} />)
+        const { container } = render(<HelpText isHidden={false} />)
         expect(container).toMatchSnapshot()
     })
 

@@ -1,33 +1,34 @@
-import {Map, fromJS} from 'immutable'
-import {useEffect, useMemo, useState} from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
-import {Product, ProductStatus} from 'constants/integrations/types/shopify'
-import {useListProducts} from 'models/integration/queries'
-import {IntegrationDataItem} from 'models/integration/types'
-import {mapIntegrationToPickedShopifyIntegration} from 'pages/common/draftjs/plugins/toolbar/utils'
-import {CampaignProductRecommendation} from 'pages/convert/campaigns/types/CampaignAttachment'
-import {CampaignProduct} from 'pages/convert/campaigns/types/CampaignProduct'
-import {isProductAvailable} from 'pages/convert/campaigns/utils/checkProductAvailability'
-import {pickNRandomShopifyProducts} from 'pages/convert/campaigns/utils/pickNRandomShopifyProducts'
-import {transformAttachmentToProduct} from 'pages/convert/campaigns/utils/transformAttachmentToProduct'
+import { fromJS, Map } from 'immutable'
+
+import { Product, ProductStatus } from 'constants/integrations/types/shopify'
+import { useListProducts } from 'models/integration/queries'
+import { IntegrationDataItem } from 'models/integration/types'
+import { mapIntegrationToPickedShopifyIntegration } from 'pages/common/draftjs/plugins/toolbar/utils'
+import { CampaignProductRecommendation } from 'pages/convert/campaigns/types/CampaignAttachment'
+import { CampaignProduct } from 'pages/convert/campaigns/types/CampaignProduct'
+import { isProductAvailable } from 'pages/convert/campaigns/utils/checkProductAvailability'
+import { pickNRandomShopifyProducts } from 'pages/convert/campaigns/utils/pickNRandomShopifyProducts'
+import { transformAttachmentToProduct } from 'pages/convert/campaigns/utils/transformAttachmentToProduct'
 
 export const useGetPreviewProducts = (
     shopifyIntegration: Map<string, any>,
     productRecommendations: CampaignProductRecommendation[],
     products: CampaignProduct[],
-    productCount = 3
+    productCount = 3,
 ): CampaignProduct[] => {
     const [randomProducts, setRandomProducts] = useState<CampaignProduct[]>([])
 
     const integrationDataItemsResponse = useListProducts(
         shopifyIntegration.get('id'),
-        !!productRecommendations.length && !randomProducts.length
+        !!productRecommendations.length && !randomProducts.length,
     )
 
     const filteredShopifyProducts = useMemo(() => {
         const data = integrationDataItemsResponse?.data?.pages?.reduce(
             (acc, page) => [...acc, ...page.data.data],
-            [] as IntegrationDataItem<Product>[]
+            [] as IntegrationDataItem<Product>[],
         )
         const products = (data || []).filter((item) => {
             return (
@@ -63,13 +64,13 @@ export const useGetPreviewProducts = (
             const newRandomProducts = pickNRandomShopifyProducts(
                 filteredShopifyProducts,
                 integration,
-                productCount
+                productCount,
             )
             const transformedProducts = transformAttachmentToProduct(
                 fromJS(newRandomProducts),
                 {
                     currency: integration.get(['currency']),
-                }
+                },
             )
             setRandomProducts(transformedProducts)
         }

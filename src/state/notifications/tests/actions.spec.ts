@@ -1,16 +1,16 @@
-import {UpsertNotificationAction} from 'reapop/dist/reducers/notifications/actions'
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+import { UpsertNotificationAction } from 'reapop/dist/reducers/notifications/actions'
+import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {AlertBannerTypes} from 'AlertBanners'
+import { AlertBannerTypes } from 'AlertBanners'
 
-import {StoreDispatch} from '../../types'
-import {INITIAL_MESSAGE, notify, handleUsageBanner} from '../actions'
-import {Notification} from '../types'
+import { StoreDispatch } from '../../types'
+import { handleUsageBanner, INITIAL_MESSAGE, notify } from '../actions'
+import { Notification } from '../types'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore<MockedRootState, StoreDispatch>(
-    middlewares
+    middlewares,
 )
 const types = {
     upsertNotification: 'reapop/upsertNotification',
@@ -44,7 +44,7 @@ describe('actions', () => {
             const expectedActions = store.getActions()
             const defaultMessage = Object.assign(
                 {},
-                INITIAL_MESSAGE as Notification
+                INITIAL_MESSAGE as Notification,
             )
 
             expect(expectedActions).toMatchObject([
@@ -59,7 +59,7 @@ describe('actions', () => {
             await store.dispatch(
                 notify({
                     dismissAfter: 0,
-                })
+                }),
             )
             const expectedActions = store.getActions()
 
@@ -78,7 +78,7 @@ describe('actions', () => {
                     title: 'Pizza is a yeasted flatbread typically topped with tomato sauce and cheese and baked in an oven.',
                     message:
                         'It is commonly topped with a selection of meats, vegetables and condiments.',
-                })
+                }),
             )
             const expectedActions = store.getActions()
 
@@ -96,7 +96,7 @@ describe('actions', () => {
                 notify({
                     dismissAfter: 0,
                     dismissible: false,
-                })
+                }),
             )
             const expectedActions = store.getActions()
 
@@ -114,7 +114,7 @@ describe('actions', () => {
                 notify({
                     dismissAfter: 5000,
                     noAutoDismiss: true,
-                })
+                }),
             )
             const expectedActions = store.getActions()
 
@@ -130,7 +130,7 @@ describe('actions', () => {
         it('should set title as content, if content not defined', async () => {
             const title =
                 'Pizza is a yeasted flatbread typically topped with tomato sauce and cheese and baked in an oven.'
-            await store.dispatch(notify({title}))
+            await store.dispatch(notify({ title }))
             const expectedActions = store.getActions()
 
             expect(expectedActions).toMatchObject([
@@ -148,7 +148,7 @@ describe('actions', () => {
                     id: '12345',
                     message: 'Prosciutto e Funghi',
                     dismissAfter: 1,
-                })
+                }),
             )) as UpsertNotificationAction
 
             store = mockStore({
@@ -167,7 +167,7 @@ describe('actions', () => {
                     message: 'Prosciutto e Funghi',
                     dismissAfter: 1,
                     closeOnNext: true,
-                })
+                }),
             )) as UpsertNotificationAction
 
             store = mockStore({
@@ -192,7 +192,7 @@ describe('actions', () => {
                     newAccountStatus: 'active',
                     currentAccountStatus: 'deactivated',
                     notification: undefined,
-                })
+                }),
             )
             const expectedActions = store.getActions()
             expect(expectedActions).toMatchSnapshot()
@@ -204,7 +204,7 @@ describe('actions', () => {
                     newAccountStatus: 'active',
                     currentAccountStatus: 'active',
                     notification: undefined,
-                })
+                }),
             )
             const expectedActions = store.getActions()
             expect(expectedActions).toMatchSnapshot()
@@ -221,7 +221,7 @@ describe('actions', () => {
                         type: AlertBannerTypes.Critical,
                         message: messageNotification,
                     },
-                })
+                }),
             )
             const expectedActions = store.getActions()
             expect(expectedActions).toMatchSnapshot()
@@ -238,7 +238,7 @@ describe('actions', () => {
                         type: AlertBannerTypes.Info,
                         message: messageNotification,
                     },
-                })
+                }),
             )
             const expectedActions = store.getActions()
             expect(expectedActions).toMatchSnapshot()

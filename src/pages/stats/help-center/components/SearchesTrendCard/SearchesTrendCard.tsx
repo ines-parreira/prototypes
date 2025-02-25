@@ -1,22 +1,22 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-import {DashboardChartProps} from 'pages/stats/custom-reports/types'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { DashboardChartProps } from 'pages/stats/custom-reports/types'
 import OverviewCard from 'pages/stats/help-center/components/OverviewCard/OverviewCard'
 import {
     HelpCenterMetric,
     HelpCenterMetricConfig,
 } from 'pages/stats/help-center/HelpCenterMetricsConfig'
-import {useSearchRequestedTrend} from 'pages/stats/help-center/hooks/useSearchRequestedTrend'
+import { useSearchRequestedTrend } from 'pages/stats/help-center/hooks/useSearchRequestedTrend'
 
 export const SearchesTrendCard = ({
     chartId,
     dashboard,
 }: DashboardChartProps) => {
-    const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone } = useNewStatsFilters()
     const searchesMetricTrend = useSearchRequestedTrend(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
 
     // FIXME: revert it to true as soon as the documentation article links are ready

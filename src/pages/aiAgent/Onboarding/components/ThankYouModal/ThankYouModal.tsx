@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react'
+import React, { ReactNode } from 'react'
 
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'

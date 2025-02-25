@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {EmailMigrationSenderVerificationIntegration} from 'models/integration/types'
+import { EmailMigrationSenderVerificationIntegration } from 'models/integration/types'
 import Pagination from 'pages/common/components/Pagination'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
@@ -10,8 +10,9 @@ import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import useClientSidePagination from 'pages/common/hooks/useClientSidePagination'
 
-import css from './SingleSenderVerificationTable.less'
 import SingleSenderVerificationTableRow from './SingleSenderVerificationTableRow'
+
+import css from './SingleSenderVerificationTable.less'
 
 export type Props = {
     integrations: EmailMigrationSenderVerificationIntegration[]
@@ -24,7 +25,7 @@ export default function SingleSenderVerificationTable({
     hasSubmittedBulkVerification,
     refreshMigrationData,
 }: Props) {
-    const {paginatedItems, ...pagination} = useClientSidePagination({
+    const { paginatedItems, ...pagination } = useClientSidePagination({
         items: integrations,
         itemsPerPage: 5,
     })

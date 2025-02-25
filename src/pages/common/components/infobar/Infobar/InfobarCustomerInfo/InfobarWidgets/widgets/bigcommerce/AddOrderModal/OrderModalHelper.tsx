@@ -1,5 +1,6 @@
-import {produce} from 'immer'
-import {useCallback, useEffect, useMemo, useReducer, useState} from 'react'
+import { useCallback, useEffect, useMemo, useReducer, useState } from 'react'
+
+import { produce } from 'immer'
 
 import {
     deleteBigCommerceCoupon,
@@ -54,7 +55,7 @@ export const useValidationStatus = ({
 }) => {
     const [onSubmitValidationDone, setOnSubmitValidationDone] = useReducer(
         () => true,
-        false
+        false,
     )
 
     const [validationStatus, setValidationStatus] =
@@ -85,7 +86,7 @@ export const useValidationStatus = ({
                 products: checkProductsValidity(products),
                 billingAddress: checkAddressValidity(billingAddress),
                 shippingAddress: checkAddressValidity(shippingAddress),
-                checkout: checkCheckoutValidity({checkout, cart}),
+                checkout: checkCheckoutValidity({ checkout, cart }),
             }
 
             setValidationStatus(validationResult)
@@ -99,7 +100,7 @@ export const useValidationStatus = ({
             products,
             billingAddress,
             shippingAddress,
-        ]
+        ],
     )
 
     // performValidations will change identity every time `checkout`, `product`, `billingAddress` or `shippingAddress` is updated
@@ -107,7 +108,7 @@ export const useValidationStatus = ({
         performValidations()
     }, [performValidations])
 
-    return {validationStatus, performValidations}
+    return { validationStatus, performValidations }
 }
 
 const getTotals = ({
@@ -127,15 +128,16 @@ const getTotals = ({
         const discount = cart.discount_amount
         const couponDiscount = cart.coupons.reduce(
             (accum, coupon) => accum + coupon.discounted_amount,
-            0
+            0,
         )
         const shipping =
             shippingAddress &&
             checkout?.consignments?.length &&
             checkout.consignments[0].selected_shipping_option &&
             checkout?.consignments[0].available_shipping_options.find(
-                ({id}) =>
-                    id === checkout.consignments[0].selected_shipping_option?.id
+                ({ id }) =>
+                    id ===
+                    checkout.consignments[0].selected_shipping_option?.id,
             )
                 ? (checkout?.shipping_cost_total_ex_tax ?? 0)
                 : 0
@@ -221,7 +223,7 @@ export const useCheckout = ({
                 'global',
                 error instanceof BigCommerceGeneralError
                     ? error.message
-                    : BigCommerceGeneralErrorMessage.defaultError
+                    : BigCommerceGeneralErrorMessage.defaultError,
             )
             // Rethrow the error for callback consumer
             throw error
@@ -258,7 +260,7 @@ export const useCheckout = ({
     const onSelectAddress = async (
         newSelectedAddress: BigCommerceCustomerAddress,
         addressType: 'billing' | 'shipping',
-        customerEmail: Maybe<string>
+        customerEmail: Maybe<string>,
     ) => {
         if (!cart) {
             return
@@ -266,12 +268,12 @@ export const useCheckout = ({
 
         const allAddresses = Array<BigCommerceCustomerAddress>(
             ...customAddresses,
-            ...availableAddresses
+            ...availableAddresses,
         )
         setIsTotalPriceLoading(true)
         if (
             !allAddresses.find((address) =>
-                isSameAddress(address, newSelectedAddress)
+                isSameAddress(address, newSelectedAddress),
             )
         ) {
             if (!newSelectedAddress.email.length && customerEmail?.length) {
@@ -318,7 +320,7 @@ export const useCheckout = ({
                 null,
                 addressType === 'billing'
                     ? 'onSelectBillingAddress'
-                    : 'onSelectShippingAddress'
+                    : 'onSelectShippingAddress',
             )
         } catch (error) {
             // Error Handling
@@ -334,7 +336,7 @@ export const useCheckout = ({
                     BigCommerceGeneralErrorMessage.defaultError,
                     addressType === 'billing'
                         ? 'onSelectBillingAddress'
-                        : 'onSelectShippingAddress'
+                        : 'onSelectShippingAddress',
                 )
             }
         } finally {
@@ -343,7 +345,7 @@ export const useCheckout = ({
     }
 
     const onUpdateConsignmentShippingMethod = async (
-        selectedShippingMethodId: Maybe<string>
+        selectedShippingMethodId: Maybe<string>,
     ) => {
         if (!cart || !consignment || !selectedShippingMethodId) {
             return
@@ -366,7 +368,7 @@ export const useCheckout = ({
                 'global',
                 error instanceof BigCommerceGeneralError
                     ? error.message
-                    : BigCommerceGeneralErrorMessage.defaultError
+                    : BigCommerceGeneralErrorMessage.defaultError,
             )
             // Rethrow the error for callback consumer
             throw error
@@ -377,7 +379,7 @@ export const useCheckout = ({
 
     const onUpdateDiscountAmount = async (
         actionName: BigCommerceActionType,
-        discountAmount: number
+        discountAmount: number,
     ) => {
         if (!cart) {
             return
@@ -409,7 +411,7 @@ export const useCheckout = ({
                 setModalErrors(
                     'component',
                     BigCommerceGeneralErrorMessage.defaultError,
-                    'onUpdateDiscountAmount'
+                    'onUpdateDiscountAmount',
                 )
             }
             // Rethrow the error for callback consumer
@@ -488,7 +490,7 @@ export const useCheckout = ({
                 cart: checkout?.cart ?? cart,
                 shippingAddress: shippingAddress,
             }),
-        [cart, checkout, shippingAddress]
+        [cart, checkout, shippingAddress],
     )
 
     function setModalErrors(
@@ -498,7 +500,7 @@ export const useCheckout = ({
             | 'lineItem' // Line Item Errors => display the errors at the Line Item level
             | 'component', // Component Errors => display the errors at the component level
         errorMessage: string | null,
-        errorKey?: string
+        errorKey?: string,
     ) {
         const copyErrors = Object.assign({}, errors)
 
@@ -574,7 +576,7 @@ export const initializeCart = async ({
     setBillingAddress: (address: Maybe<BigCommerceCustomerAddress>) => void
     setShippingAddress: (address: Maybe<BigCommerceCustomerAddress>) => void
     setHasDifferentShippingAddress: (
-        hasDifferentShippingAddress: boolean
+        hasDifferentShippingAddress: boolean,
     ) => void
     setComment: (comment: string) => void
     setNote: (note: string) => void
@@ -582,7 +584,7 @@ export const initializeCart = async ({
     setModalErrors: (
         errorLevel: 'global' | 'modal' | 'lineItem' | 'component',
         errorMessage: string | null,
-        errorKey?: string | undefined
+        errorKey?: string | undefined,
     ) => void
 }) => {
     if (actionName === BigCommerceActionType.CreateOrder) {
@@ -599,7 +601,7 @@ export const initializeCart = async ({
 
     if (actionName === BigCommerceActionType.DuplicateOrder) {
         if (order && customerId && !cart) {
-            const {cart, checkout, missingLineItems} =
+            const { cart, checkout, missingLineItems } =
                 await onInitDuplicateView({
                     customerId,
                     integrationId: integration.id,
@@ -615,24 +617,24 @@ export const initializeCart = async ({
                     setCheckout(checkout)
 
                     setBillingAddress(
-                        checkout.billing_address as unknown as BigCommerceCustomerAddress
+                        checkout.billing_address as unknown as BigCommerceCustomerAddress,
                     )
                     if (checkDigitalOrder(checkout.cart)) {
                         setHasDifferentShippingAddress(false)
                         setShippingAddress(
-                            checkout.billing_address as unknown as BigCommerceCustomerAddress
+                            checkout.billing_address as unknown as BigCommerceCustomerAddress,
                         )
                     } else {
                         setHasDifferentShippingAddress(
                             !isSameAddress(
                                 checkout.billing_address as unknown as BigCommerceCustomerAddress,
                                 checkout.consignments[0]
-                                    ?.address as unknown as BigCommerceCustomerAddress
-                            )
+                                    ?.address as unknown as BigCommerceCustomerAddress,
+                            ),
                         )
                         setShippingAddress(
                             checkout.consignments[0]
-                                ?.address as unknown as BigCommerceCustomerAddress
+                                ?.address as unknown as BigCommerceCustomerAddress,
                         )
                     }
                 }
@@ -661,21 +663,21 @@ export const initializeCart = async ({
                     'modal',
                     computeLineItemErrorMessage(
                         Object.values(
-                            BigCommerceLineItemErrorMessage
+                            BigCommerceLineItemErrorMessage,
                         )?.includes(
-                            errorItem.error as BigCommerceLineItemErrorMessage
+                            errorItem.error as BigCommerceLineItemErrorMessage,
                         )
                             ? new BigCommerceLineItemError(errorItem.error)
                             : new BigCommerceLineItemError(
-                                  BigCommerceLineItemErrorMessage.defaultAddLineItemError
+                                  BigCommerceLineItemErrorMessage.defaultAddLineItemError,
                               ),
                         computeLineItemName(errorItem.line_item),
                         BigCommerceLineItemErrorMessage.defaultAddLineItemError,
-                        true
+                        true,
                     ),
                     computeLineItemErrorKey({
                         lineItem: errorItem.line_item,
-                    })
+                    }),
                 )
             })
 

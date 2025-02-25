@@ -1,52 +1,54 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { MouseEvent, useCallback, useMemo } from 'react'
+
 import classnames from 'classnames'
-import {fromJS, Map} from 'immutable'
-import React, {MouseEvent, useCallback, useMemo} from 'react'
-import {Link, useParams} from 'react-router-dom'
+import { fromJS, Map } from 'immutable'
+import { Link, useParams } from 'react-router-dom'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-
 import useAppSelector from 'hooks/useAppSelector'
-
-import {useListCampaigns} from 'models/convert/campaign/queries'
+import { useListCampaigns } from 'models/convert/campaign/queries'
 import {
     CampaignCreatePayload,
     CampaignListOptions as CampaignListOptionsParams,
 } from 'models/convert/campaign/types'
-import {IntegrationType} from 'models/integration/constants'
-
+import { IntegrationType } from 'models/integration/constants'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import NavigatedSuccessModal, {
     NavigatedSuccessModalName,
 } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
-import {SuccessModalIcon} from 'pages/common/components/SuccessModal/SuccessModal'
-import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
+import { SuccessModalIcon } from 'pages/common/components/SuccessModal/SuccessModal'
+import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
 import ConvertUpsellBanner from 'pages/convert/campaigns/components/ConvertUpsellBanner/ConvertUpsellBanner'
-import {useIsCampaignCreationAllowed} from 'pages/convert/campaigns/hooks/useIsCampaignCreationAllowed'
-import {CampaignListOptions} from 'pages/convert/campaigns/providers/CampaignListOptions'
-
-import {CONVERT_ROUTE_PARAM_NAME} from 'pages/convert/common/constants'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import {ConvertRouteParams} from 'pages/convert/common/types'
+import { useIsCampaignCreationAllowed } from 'pages/convert/campaigns/hooks/useIsCampaignCreationAllowed'
+import { CampaignListOptions } from 'pages/convert/campaigns/providers/CampaignListOptions'
+import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
+import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import { ConvertRouteParams } from 'pages/convert/common/types'
 import history from 'pages/history'
-import {getIntegrationById} from 'state/integrations/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {toJS} from 'utils'
+import { getIntegrationById } from 'state/integrations/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { toJS } from 'utils'
 
-import css from './CampaignsView.less'
 import ConvertLibraryBanner from './components/ConvertLibraryBanner'
 import CampaignsList from './containers/CampaignsList/CampaignsList'
-import {useCreateCampaign} from './hooks/useCreateCampaign'
-import {useDeleteCampaign} from './hooks/useDeleteCampaign'
-import {useUpdateCampaign} from './hooks/useUpdateCampaign'
-import {Campaign} from './types/Campaign'
-import {CampaignStatus, isActiveStatus} from './types/enums/CampaignStatus.enum'
-import {duplicateCampaign} from './utils/duplicateCampaign'
+import { useCreateCampaign } from './hooks/useCreateCampaign'
+import { useDeleteCampaign } from './hooks/useDeleteCampaign'
+import { useUpdateCampaign } from './hooks/useUpdateCampaign'
+import { Campaign } from './types/Campaign'
+import {
+    CampaignStatus,
+    isActiveStatus,
+} from './types/enums/CampaignStatus.enum'
+import { duplicateCampaign } from './utils/duplicateCampaign'
+
+import css from './CampaignsView.less'
 
 export const CampaignsView = () => {
-    const {[CONVERT_ROUTE_PARAM_NAME]: integrationId} =
+    const { [CONVERT_ROUTE_PARAM_NAME]: integrationId } =
         useParams<ConvertRouteParams>()
 
     const dispatch = useAppDispatch()
@@ -57,7 +59,7 @@ export const CampaignsView = () => {
 
     const immutableIntegration = useMemo(
         () => fromJS(integration) as Map<any, any>,
-        [integration]
+        [integration],
     )
 
     const hasStoreConnected = useMemo<boolean>(
@@ -65,18 +67,18 @@ export const CampaignsView = () => {
             Boolean(
                 integration.getIn(['meta', 'shop_integration_id']) &&
                     integration.getIn(['meta', 'shop_type']) ===
-                        IntegrationType.Shopify
+                        IntegrationType.Shopify,
             ),
-        [integration]
+        [integration],
     )
 
-    const {channelConnection, isLoading: isChannelConnectionLoading} =
+    const { channelConnection, isLoading: isChannelConnectionLoading } =
         useGetOrCreateChannelConnection(toJS(integration))
 
-    const {mutate: updateCampaign, isLoading: isUpdatingCampaign} =
+    const { mutate: updateCampaign, isLoading: isUpdatingCampaign } =
         useUpdateCampaign()
-    const {mutateAsync: createCampaign} = useCreateCampaign()
-    const {mutate: deleteCampaign, isLoading: isDeletingCampaign} =
+    const { mutateAsync: createCampaign } = useCreateCampaign()
+    const { mutate: deleteCampaign, isLoading: isDeletingCampaign } =
         useDeleteCampaign()
 
     const toggleCampaign = useCallback(
@@ -111,15 +113,15 @@ export const CampaignsView = () => {
                                         dismissAfter: 30000,
                                         dismissible: true,
                                         showDismissButton: true,
-                                    })
+                                    }),
                                 )
                             }
                         },
-                    }
+                    },
                 )
             }
         },
-        [updateCampaign, channelConnection, dispatch]
+        [updateCampaign, channelConnection, dispatch],
     )
 
     const handleDuplicateCampaign = useCallback(
@@ -129,16 +131,16 @@ export const CampaignsView = () => {
             if (!!channelConnection) {
                 const duplicate = duplicateCampaign(
                     campaign,
-                    channelConnection.id
+                    channelConnection.id,
                 ) as CampaignCreatePayload
                 const response = await createCampaign([undefined, duplicate])
                 const newCampaign = response?.data as Campaign
                 history.push(
-                    `/app/convert/${integrationId}/campaigns/${newCampaign?.id}`
+                    `/app/convert/${integrationId}/campaigns/${newCampaign?.id}`,
                 )
             }
         },
-        [createCampaign, channelConnection, integrationId]
+        [createCampaign, channelConnection, integrationId],
     )
 
     const handleDeleteCampaign = useCallback(
@@ -153,7 +155,7 @@ export const CampaignsView = () => {
                 ])
             }
         },
-        [deleteCampaign, channelConnection]
+        [deleteCampaign, channelConnection],
     )
 
     const campaignListOptions = useMemo(() => {
@@ -167,12 +169,10 @@ export const CampaignsView = () => {
         ) as CampaignListOptionsParams
     }, [channelConnection])
 
-    const {data: campaigns, isLoading: areCampaignsLoading} = useListCampaigns(
-        campaignListOptions,
-        {
+    const { data: campaigns, isLoading: areCampaignsLoading } =
+        useListCampaigns(campaignListOptions, {
             enabled: !!channelConnection && !!campaignListOptions,
-        }
-    )
+        })
 
     const allCampaigns = useMemo(() => {
         return (campaigns || []) as Campaign[]
@@ -180,7 +180,7 @@ export const CampaignsView = () => {
 
     const isLoading = useMemo(
         () => isChannelConnectionLoading || areCampaignsLoading,
-        [isChannelConnectionLoading, areCampaignsLoading]
+        [isChannelConnectionLoading, areCampaignsLoading],
     )
 
     const shouldDisplayBanner = useMemo(() => {

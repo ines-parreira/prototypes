@@ -1,8 +1,9 @@
-import {Label, Tooltip} from '@gorgias/merchant-ui-kit'
-import React, {useCallback, useRef} from 'react'
+import React, { useCallback, useRef } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useFlag} from 'core/flags'
+import { Label, Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -12,9 +13,9 @@ import {
 } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {submitSetting} from 'state/currentAccount/actions'
-import {getDefaultIntegrationSettings} from 'state/currentAccount/selectors'
-import {AccountSettingType} from 'state/currentAccount/types'
+import { submitSetting } from 'state/currentAccount/actions'
+import { getDefaultIntegrationSettings } from 'state/currentAccount/selectors'
+import { AccountSettingType } from 'state/currentAccount/types'
 
 import DefaultIntegrationBadge from '../DefaultIntegrationBadge'
 
@@ -24,9 +25,9 @@ type Props = {
     integration: EmailIntegration | GmailIntegration | OutlookIntegration
 }
 
-function EmailIntegrationAddressField({integration}: Props) {
+function EmailIntegrationAddressField({ integration }: Props) {
     const isDefaultAddressFeatureEnabled = useFlag(
-        FeatureFlagKey.DefaultEmailAddress
+        FeatureFlagKey.DefaultEmailAddress,
     )
     const buttonRef = useRef<HTMLButtonElement>(null)
     const dispatch = useAppDispatch()
@@ -41,7 +42,7 @@ function EmailIntegrationAddressField({integration}: Props) {
                     ...(currentSetting?.data ?? {}),
                     email: integration.id,
                 },
-            })
+            }),
         )
     }, [currentSetting, dispatch, integration.id])
 

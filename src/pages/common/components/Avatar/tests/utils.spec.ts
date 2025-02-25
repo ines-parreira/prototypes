@@ -1,6 +1,6 @@
-import {createImageFetchMock} from 'tests/utils'
+import { createImageFetchMock } from 'tests/utils'
 
-import {getInitials, getAvatar, getAvatarFromCache} from '../utils'
+import { getAvatar, getAvatarFromCache, getInitials } from '../utils'
 
 const imageFetchMock = createImageFetchMock()
 
@@ -28,7 +28,7 @@ describe('Avatar utils', () => {
             "should return '%s' initials for '%s'",
             (result, name, useFirstInitialOnly) => {
                 expect(getInitials(name, useFirstInitialOnly)).toBe(result)
-            }
+            },
         )
     })
 
@@ -39,18 +39,18 @@ describe('Avatar utils', () => {
         })
 
         it('should return gravatar url', async () => {
-            const res = await getAvatar({email})
+            const res = await getAvatar({ email })
             expect(res).toEqual(gravatarUrl)
         })
 
         it('should return `null` because the email is invalid', async () => {
             imageFetchMock.mock(jest.fn().mockRejectedValue(undefined))
-            const res = await getAvatar({email: 'invalidEmail@'})
+            const res = await getAvatar({ email: 'invalidEmail@' })
             expect(res).toEqual(null)
         })
 
         it('should return custom sized gravatar', async () => {
-            const res = await getAvatar({email, size: 100})
+            const res = await getAvatar({ email, size: 100 })
             expect(res).toEqual(gravatarUrl.replace('s=50', 's=100'))
         })
     })
@@ -58,28 +58,28 @@ describe('Avatar utils', () => {
     describe('get avatar from cache', () => {
         it('should return `undefined` because there is no avatar cached for this email`', () => {
             expect(
-                getAvatarFromCache('newEmail@example.com', 50)
+                getAvatarFromCache('newEmail@example.com', 50),
             ).toBeUndefined()
         })
 
         it('should return `null` from cache because there is no avatar for this email`', async () => {
             imageFetchMock.mock(jest.fn().mockRejectedValue(undefined))
             const invalidEmail = '12e12e12e@'
-            await getAvatar({email: invalidEmail})
+            await getAvatar({ email: invalidEmail })
             expect(getAvatarFromCache(invalidEmail, 50)).toBeNull()
         })
 
         it('should return picture from cache', () => {
-            return getAvatar({email})
+            return getAvatar({ email })
                 .then(() => getAvatarFromCache(email, 50))
                 .then((res) => expect(res).toEqual(gravatarUrl))
         })
 
         it('should return picture url from cache with a different sizes', () => {
-            return getAvatar({email, size: 50})
+            return getAvatar({ email, size: 50 })
                 .then(() => getAvatarFromCache(email, 100))
                 .then((res) =>
-                    expect(res).toEqual(gravatarUrl.replace('s=50', 's=100'))
+                    expect(res).toEqual(gravatarUrl.replace('s=50', 's=100')),
                 )
         })
     })

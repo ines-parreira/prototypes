@@ -1,6 +1,7 @@
+import React, { useCallback, useMemo } from 'react'
+
 import cn from 'classnames'
 import _kebabCase from 'lodash/kebabCase'
-import React, {useCallback, useMemo} from 'react'
 import {
     DropdownItem,
     DropdownMenu,
@@ -8,27 +9,28 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {closePanels} from 'state/layout/actions'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { closePanels } from 'state/layout/actions'
 
 import {
     MenuItem,
     MenuItemName,
     useMainNavigationItems,
 } from '../hooks/useMainNavigationItems'
-import css from './MainNavigation.less'
 import NavbarLink from './NavbarLink'
 
-export {MenuItemName as ActiveContent}
+import css from './MainNavigation.less'
+
+export { MenuItemName as ActiveContent }
 
 type Props = {
     activeContent: MenuItemName
 }
 
-export default function MainNavigation({activeContent}: Props) {
+export default function MainNavigation({ activeContent }: Props) {
     const dispatch = useAppDispatch()
     const currentUser = useAppSelector(getCurrentUser)
 
@@ -39,12 +41,12 @@ export default function MainNavigation({activeContent}: Props) {
             logEvent(SegmentEvent.MenuMainLinkClicked, item.segmentProp)
             dispatch(closePanels())
         },
-        [dispatch]
+        [dispatch],
     )
 
     const title = useMemo(
         () => mainMenu.find((item) => item.name === activeContent)?.label,
-        [activeContent, mainMenu]
+        [activeContent, mainMenu],
     )
 
     const canduId = `navbar-section-${_kebabCase(activeContent)}`

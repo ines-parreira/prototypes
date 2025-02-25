@@ -1,11 +1,12 @@
-import {render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+
+import { render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {RootState, StoreDispatch} from 'state/types'
+import { RootState, StoreDispatch } from 'state/types'
 
 import FacebookIntegrationLoginButton from '../FacebookIntegrationLoginButton'
 
@@ -14,7 +15,7 @@ describe('FacebookIntegrationLoginButton component', () => {
 
     beforeEach(() => {
         const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>(
-            [thunk]
+            [thunk],
         )
 
         store = mockStore({
@@ -33,7 +34,7 @@ describe('FacebookIntegrationLoginButton component', () => {
         render(
             <Provider store={store}>
                 <FacebookIntegrationLoginButton link />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByRole('link'))
@@ -43,7 +44,7 @@ describe('FacebookIntegrationLoginButton component', () => {
         render(
             <Provider store={store}>
                 <FacebookIntegrationLoginButton reconnect />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByRole('button'))

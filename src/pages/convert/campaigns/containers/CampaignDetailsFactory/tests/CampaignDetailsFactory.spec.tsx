@@ -1,16 +1,16 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {Provider} from 'react-redux'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import routerDom from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
-import {campaign} from 'fixtures/campaign'
-import {channelConnection} from 'fixtures/channelConnection'
-import {entitiesInitialState} from 'fixtures/entities'
-import {integrationsState} from 'fixtures/integrations'
+import { campaign } from 'fixtures/campaign'
+import { channelConnection } from 'fixtures/channelConnection'
+import { entitiesInitialState } from 'fixtures/entities'
+import { integrationsState } from 'fixtures/integrations'
 import {
     useCreateCampaign,
     useDeleteCampaign,
@@ -19,11 +19,10 @@ import {
     useUpdateCampaign,
 } from 'models/convert/campaign/queries'
 import * as revenueBetaHook from 'pages/common/hooks/useIsConvertSubscriber'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import {RootState, StoreDispatch} from 'state/types'
-
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock, renderWithRouter} from 'utils/testing'
+import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock, renderWithRouter } from 'utils/testing'
 
 import CampaignDetailsFactory from '../CampaignDetailsFactory'
 
@@ -48,7 +47,7 @@ const queryClient = mockQueryClient()
 
 jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')
 const useGetOrCreateChannelConnectionMock = assumeMock(
-    useGetOrCreateChannelConnection
+    useGetOrCreateChannelConnection,
 )
 
 jest.mock('models/convert/campaign/queries')
@@ -74,8 +73,8 @@ describe('<CampaignDetailsFactory />', () => {
         useGetOrCreateChannelConnectionMock.mockReturnValue({
             channelConnection: channelConnection,
         } as any)
-        useListCampaignsMock.mockReturnValue({data: [campaign]} as any)
-        useGetCampaignMock.mockReturnValue({data: campaign} as any)
+        useListCampaignsMock.mockReturnValue({ data: [campaign] } as any)
+        useGetCampaignMock.mockReturnValue({ data: campaign } as any)
         useCreateCampaignMock.mockImplementation(() => {
             return {
                 mutateAsync: jest.fn(),
@@ -99,14 +98,14 @@ describe('<CampaignDetailsFactory />', () => {
                 <Provider store={mockStore(defaultState)}>
                     <CampaignDetailsFactory />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
     }
 
     it('renders the "AdvancedCampaignDetails" component if merchant is not a revenue subscriber', () => {
         jest.spyOn(
             revenueBetaHook,
-            'useIsConvertSubscriber'
+            'useIsConvertSubscriber',
         ).mockImplementation(() => true)
 
         renderComponent()
@@ -117,7 +116,7 @@ describe('<CampaignDetailsFactory />', () => {
     it('renders the "AdvancedCampaignDetails" component if merchant is a revenue subscriber', () => {
         jest.spyOn(
             revenueBetaHook,
-            'useIsConvertSubscriber'
+            'useIsConvertSubscriber',
         ).mockImplementation(() => false)
 
         renderComponent()

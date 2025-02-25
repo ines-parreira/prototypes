@@ -1,43 +1,43 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {useGetHelpCenterCategoryTree} from 'models/helpCenter/queries'
-import {HELP_CENTER_ROOT_CATEGORY_ID} from 'pages/settings/helpCenter/constants'
-import {Components, Paths} from 'rest_api/help_center_api/client.generated'
+import { useGetHelpCenterCategoryTree } from 'models/helpCenter/queries'
+import { HELP_CENTER_ROOT_CATEGORY_ID } from 'pages/settings/helpCenter/constants'
+import { Components, Paths } from 'rest_api/help_center_api/client.generated'
 
 const traverseTree = (
     node: Components.Schemas.CategoryTreeDto,
     map: Map<number, string>,
-    locale: Paths.GetCategoryTree.Parameters.Locale
+    locale: Paths.GetCategoryTree.Parameters.Locale,
 ) => {
     node.articles = node.articles?.filter((article) =>
-        article.available_locales.includes(locale)
+        article.available_locales.includes(locale),
     )
     node.articles?.forEach((article) =>
-        map.set(article.id, article.translation_versions.current?.title ?? '')
+        map.set(article.id, article.translation_versions.current?.title ?? ''),
     )
     node.children = node.children?.filter((child) =>
-        child.available_locales.includes(locale)
+        child.available_locales.includes(locale),
     )
     node.children.forEach((child) => traverseTree(child, map, locale))
 }
 
 const filterTreeByLocale = (
     locale: Paths.GetCategoryTree.Parameters.Locale,
-    data: Maybe<Components.Schemas.CategoryTreeDto>
+    data: Maybe<Components.Schemas.CategoryTreeDto>,
 ) => {
     const map = new Map<number, string>()
     map.set(-1, 'No relevant articles')
     map.set(0, 'All Articles')
-    if (!data) return {map}
+    if (!data) return { map }
 
-    const tree = {...data}
+    const tree = { ...data }
     traverseTree(tree, map, locale)
-    return {map, data: tree}
+    return { map, data: tree }
 }
 
 const useHelpCenterArticleTree = (
     helpCenterId: Maybe<number>,
-    locale: Paths.GetCategoryTree.Parameters.Locale = 'en-US'
+    locale: Paths.GetCategoryTree.Parameters.Locale = 'en-US',
 ) => {
     const response = useGetHelpCenterCategoryTree(
         helpCenterId!,
@@ -52,12 +52,12 @@ const useHelpCenterArticleTree = (
         {
             enabled: !!helpCenterId,
             refetchOnWindowFocus: false,
-        }
+        },
     )
-    const {data, map} = useMemo(
+    const { data, map } = useMemo(
         () => filterTreeByLocale(locale, response.data),
 
-        [response.data, locale]
+        [response.data, locale],
     )
     return {
         data,

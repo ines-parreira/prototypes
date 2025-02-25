@@ -1,10 +1,10 @@
-import {act, render, screen, waitFor} from '@testing-library/react'
+import React, { FunctionComponent } from 'react'
+
+import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
-import React, {FunctionComponent} from 'react'
 
 import client from 'models/api/resources'
-
 import SearchInput from 'pages/common/forms/SearchInput/SearchInput'
 import {
     SearchInputResultProps,
@@ -47,16 +47,16 @@ describe('<SearchInput/>', () => {
         })
 
         it('should render a closed dropdown because input is not focused', () => {
-            const {container} = render(
-                <SearchInput endpoint={endpoint} renderResult={Result} />
+            const { container } = render(
+                <SearchInput endpoint={endpoint} renderResult={Result} />,
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render a closed dropdown because input is empty', () => {
-            const {container} = render(
-                <SearchInput endpoint={endpoint} renderResult={Result} />
+            const { container } = render(
+                <SearchInput endpoint={endpoint} renderResult={Result} />,
             )
 
             const input = screen.getByRole('textbox')
@@ -66,22 +66,22 @@ describe('<SearchInput/>', () => {
         })
 
         it('should render an open dropdown because input is focused and value is not empty', async () => {
-            const {container} = render(
+            const { container } = render(
                 <SearchInput
                     endpoint={endpoint}
                     renderResult={Result}
-                    renderResultItemProps={({result: {id}}) =>
-                        id === 1 ? {disabled: true} : {disabled: false}
+                    renderResultItemProps={({ result: { id } }) =>
+                        id === 1 ? { disabled: true } : { disabled: false }
                     }
-                />
+                />,
             )
 
             const results: ResultType[] = [
-                {id: 1, subResults: []},
-                {id: 2, subResults: []},
-                {id: 3, subResults: []},
+                { id: 1, subResults: [] },
+                { id: 2, subResults: [] },
+                { id: 3, subResults: [] },
             ]
-            mockServer.onGet(endpoint).reply(200, {data: results})
+            mockServer.onGet(endpoint).reply(200, { data: results })
 
             const input = screen.getByRole('textbox')
             userEvent.click(input)
@@ -93,22 +93,22 @@ describe('<SearchInput/>', () => {
         })
 
         it('should render sub results', async () => {
-            const {container} = render(
+            const { container } = render(
                 <SearchInput
                     endpoint={endpoint}
                     onResultClicked={(result: ResultType) => result.subResults}
                     renderResult={Result}
                     renderSubResult={SubResult}
-                />
+                />,
             )
 
-            const subResults1: SubResultType[] = [{id: 10}, {id: 11}]
-            const subResults2: SubResultType[] = [{id: 20}, {id: 21}]
+            const subResults1: SubResultType[] = [{ id: 10 }, { id: 11 }]
+            const subResults2: SubResultType[] = [{ id: 20 }, { id: 21 }]
             const results: ResultType[] = [
-                {id: 1, subResults: subResults1},
-                {id: 2, subResults: subResults2},
+                { id: 1, subResults: subResults1 },
+                { id: 2, subResults: subResults2 },
             ]
-            mockServer.onGet(endpoint).reply(200, {data: results})
+            mockServer.onGet(endpoint).reply(200, { data: results })
 
             const input = screen.getByRole('textbox')
             act(() => {

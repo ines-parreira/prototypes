@@ -1,10 +1,11 @@
-import {render, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import React, {ContextType} from 'react'
+import React, { ContextType } from 'react'
 
-import {DropdownContext} from 'pages/common/components/dropdown/Dropdown'
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { DropdownContext } from 'pages/common/components/dropdown/Dropdown'
 import FilterDropdownItemLabel from 'pages/stats/common/components/Filter/components/FilterDropdownItemLabel/FilterDropdownItemLabel'
-import {LABEL_MAX_WIDTH} from 'pages/stats/common/components/Filter/constants'
+import { LABEL_MAX_WIDTH } from 'pages/stats/common/components/Filter/constants'
 
 const mockContext: ContextType<typeof DropdownContext> = {
     isMultiple: false,
@@ -18,10 +19,10 @@ const mockContext: ContextType<typeof DropdownContext> = {
 describe('FilterDropdownItemLabel', () => {
     it('renders the label correctly', () => {
         const label = 'Test Label'
-        const {getByText} = render(
+        const { getByText } = render(
             <DropdownContext.Provider value={mockContext}>
                 <FilterDropdownItemLabel label={label} />
-            </DropdownContext.Provider>
+            </DropdownContext.Provider>,
         )
         expect(getByText(label)).toBeInTheDocument()
     })
@@ -37,22 +38,22 @@ describe('FilterDropdownItemLabel', () => {
         render(
             <DropdownContext.Provider value={mockContext}>
                 <FilterDropdownItemLabel label={label} />
-            </DropdownContext.Provider>
+            </DropdownContext.Provider>,
         )
 
         const filterValueElement = screen.getByText(label)
         userEvent.hover(filterValueElement)
 
         await waitFor(() =>
-            expect(screen.getByRole('tooltip')).toBeInTheDocument()
+            expect(screen.getByRole('tooltip')).toBeInTheDocument(),
         )
     })
 
     it('throws an error when used outside of DropdownContext', () => {
         expect(() =>
-            render(<FilterDropdownItemLabel label={'Label'} />)
+            render(<FilterDropdownItemLabel label={'Label'} />),
         ).toThrow(
-            'DropdownSearch must be used within a DropdownContext.Provider'
+            'DropdownSearch must be used within a DropdownContext.Provider',
         )
     })
 
@@ -65,15 +66,15 @@ describe('FilterDropdownItemLabel', () => {
             query: 'Label',
             expectedHightlight: '[Test] <b>Label</b>',
         },
-    ])('highlights the label correctly', ({query, expectedHightlight}) => {
+    ])('highlights the label correctly', ({ query, expectedHightlight }) => {
         const label = '[Test] Label'
         render(
-            <DropdownContext.Provider value={{...mockContext, query}}>
+            <DropdownContext.Provider value={{ ...mockContext, query }}>
                 <FilterDropdownItemLabel label={label} />
-            </DropdownContext.Provider>
+            </DropdownContext.Provider>,
         )
         expect(screen.getByTestId('filter-dropdown-item-label')).toContainHTML(
-            expectedHightlight
+            expectedHightlight,
         )
     })
 })

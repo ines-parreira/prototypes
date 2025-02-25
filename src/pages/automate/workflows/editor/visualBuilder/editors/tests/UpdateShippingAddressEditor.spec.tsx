@@ -1,13 +1,14 @@
-import {act, fireEvent, render} from '@testing-library/react'
 import React from 'react'
 
+import { act, fireEvent, render } from '@testing-library/react'
+
 import NodeEditorDrawerContext from 'pages/automate/workflows/editor/visualBuilder/NodeEditorDrawerContext'
-import {VisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
+import { VisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {
     buildEdgeCommonProperties,
     buildNodeCommonProperties,
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import {UpdateShippingAddressNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { UpdateShippingAddressNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 import UpdateShippingAddressEditor from '../UpdateShippingAddressEditor'
 
@@ -37,7 +38,7 @@ describe('<UpdateShippingAddressEditor />', () => {
         const mockGetVariableListForNode = jest.fn().mockReturnValue([])
         const mockDispatch = jest.fn()
 
-        const {container} = render(
+        const { container } = render(
             <VisualBuilderContext.Provider
                 value={{
                     visualBuilderGraph: {
@@ -114,17 +115,19 @@ describe('<UpdateShippingAddressEditor />', () => {
                     isNew: false,
                 }}
             >
-                <NodeEditorDrawerContext.Provider value={{onClose: jest.fn()}}>
+                <NodeEditorDrawerContext.Provider
+                    value={{ onClose: jest.fn() }}
+                >
                     <UpdateShippingAddressEditor
                         nodeInEdition={nodeInEdition}
                     />
                 </NodeEditorDrawerContext.Provider>
-            </VisualBuilderContext.Provider>
+            </VisualBuilderContext.Provider>,
         )
 
         act(() => {
             const editor = container.querySelectorAll(
-                '.public-DraftEditor-content'
+                '.public-DraftEditor-content',
             )[0]
 
             fireEvent.focus(editor)
@@ -141,7 +144,7 @@ describe('<UpdateShippingAddressEditor />', () => {
 
         act(() => {
             const editor = container.querySelectorAll(
-                '.public-DraftEditor-content'
+                '.public-DraftEditor-content',
             )[1]
 
             fireEvent.focus(editor)
@@ -158,7 +161,7 @@ describe('<UpdateShippingAddressEditor />', () => {
 
         act(() => {
             const editor = container.querySelectorAll(
-                '.public-DraftEditor-content'
+                '.public-DraftEditor-content',
             )[2]
 
             fireEvent.focus(editor)
@@ -175,7 +178,7 @@ describe('<UpdateShippingAddressEditor />', () => {
 
         act(() => {
             const editor = container.querySelectorAll(
-                '.public-DraftEditor-content'
+                '.public-DraftEditor-content',
             )[3]
 
             fireEvent.focus(editor)
@@ -192,7 +195,7 @@ describe('<UpdateShippingAddressEditor />', () => {
 
         act(() => {
             const editor = container.querySelectorAll(
-                '.public-DraftEditor-content'
+                '.public-DraftEditor-content',
             )[4]
 
             fireEvent.focus(editor)
@@ -209,7 +212,7 @@ describe('<UpdateShippingAddressEditor />', () => {
 
         act(() => {
             const editor = container.querySelectorAll(
-                '.public-DraftEditor-content'
+                '.public-DraftEditor-content',
             )[5]
 
             fireEvent.focus(editor)
@@ -226,7 +229,7 @@ describe('<UpdateShippingAddressEditor />', () => {
 
         act(() => {
             const editor = container.querySelectorAll(
-                '.public-DraftEditor-content'
+                '.public-DraftEditor-content',
             )[6]
 
             fireEvent.focus(editor)
@@ -243,7 +246,7 @@ describe('<UpdateShippingAddressEditor />', () => {
 
         act(() => {
             const editor = container.querySelectorAll(
-                '.public-DraftEditor-content'
+                '.public-DraftEditor-content',
             )[7]
 
             fireEvent.focus(editor)
@@ -260,7 +263,7 @@ describe('<UpdateShippingAddressEditor />', () => {
 
         act(() => {
             const editor = container.querySelectorAll(
-                '.public-DraftEditor-content'
+                '.public-DraftEditor-content',
             )[8]
 
             fireEvent.focus(editor)
@@ -277,7 +280,7 @@ describe('<UpdateShippingAddressEditor />', () => {
 
         act(() => {
             const editor = container.querySelectorAll(
-                '.public-DraftEditor-content'
+                '.public-DraftEditor-content',
             )[9]
 
             fireEvent.focus(editor)
@@ -293,7 +296,7 @@ describe('<UpdateShippingAddressEditor />', () => {
         })
 
         expect(mockGetVariableListForNode).toHaveBeenCalledWith(
-            nodeInEdition.id
+            nodeInEdition.id,
         )
     })
 })

@@ -1,18 +1,18 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
 import {
     CustomReportChild,
     CustomReportChildType,
     CustomReportSchema,
 } from 'pages/stats/custom-reports/types'
-import {useReportChartRestrictions} from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
+import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
 
 const removeRestrictedCharts = (
     dashboard: CustomReportSchema,
-    isChartRestrictedToCurrentUser: (chartId: string) => boolean
+    isChartRestrictedToCurrentUser: (chartId: string) => boolean,
 ): CustomReportSchema => {
     const filterChildren = <T extends CustomReportChild>(
-        children: T[]
+        children: T[],
     ): T[] => {
         return children.reduce<T[]>((acc, child) => {
             if (child.type === CustomReportChildType.Chart) {
@@ -37,12 +37,12 @@ const removeRestrictedCharts = (
 }
 
 export const useSanitizedDashboard = (customReport: CustomReportSchema) => {
-    const {isChartRestrictedToCurrentUser} = useReportChartRestrictions()
+    const { isChartRestrictedToCurrentUser } = useReportChartRestrictions()
 
     return useMemo(() => {
         return removeRestrictedCharts(
             customReport,
-            isChartRestrictedToCurrentUser
+            isChartRestrictedToCurrentUser,
         )
     }, [customReport, isChartRestrictedToCurrentUser])
 }

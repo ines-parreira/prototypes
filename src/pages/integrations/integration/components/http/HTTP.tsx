@@ -1,20 +1,20 @@
 import React from 'react'
 
-import {IntegrationType} from 'models/integration/constants'
+import { IntegrationType } from 'models/integration/constants'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import ConnectLink from 'pages/integrations/components/ConnectLink'
-import {getIntegrationConfig} from 'state/integrations/helpers'
+import { getIntegrationConfig } from 'state/integrations/helpers'
 
 import Breadcrumb from './Breadcrumb'
-import {BASE_PATH, NEW_INTEGRATION_PATH} from './constants'
+import { BASE_PATH, NEW_INTEGRATION_PATH } from './constants'
 import Event from './Event'
 import Events from './Events'
 import Integration from './Integration'
 import Details from './Overview/Details'
 import List from './Overview/List'
 import SecondaryNavigation from './SecondaryNavigation'
-import {useRouteParser} from './useRouteParser'
+import { useRouteParser } from './useRouteParser'
 
 function Http() {
     const {

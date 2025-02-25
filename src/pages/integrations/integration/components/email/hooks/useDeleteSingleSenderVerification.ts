@@ -1,10 +1,11 @@
-import {AxiosError} from 'axios'
-import {useState} from 'react'
+import { useState } from 'react'
+
+import { AxiosError } from 'axios'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {deleteVerification as deleteVerificationRequest} from 'models/singleSenderVerification/resources'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { deleteVerification as deleteVerificationRequest } from 'models/singleSenderVerification/resources'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 export default function useDeleteSingleSenderVerification() {
     const [isLoading, setIsLoading] = useState(false)
@@ -19,10 +20,10 @@ export default function useDeleteSingleSenderVerification() {
                 notify({
                     message: 'Verification deleted successfully',
                     status: NotificationStatus.Success,
-                })
+                }),
             )
         } catch (error) {
-            const {response} = error as AxiosError<{error: {msg: string}}>
+            const { response } = error as AxiosError<{ error: { msg: string } }>
             const errorMsg =
                 response && response.data.error
                     ? response.data.error.msg
@@ -31,7 +32,7 @@ export default function useDeleteSingleSenderVerification() {
                 notify({
                     message: errorMsg,
                     status: NotificationStatus.Error,
-                })
+                }),
             )
         } finally {
             setIsLoading(false)

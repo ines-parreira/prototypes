@@ -1,15 +1,16 @@
-import classnames from 'classnames'
-import React, {useCallback, useEffect, useRef} from 'react'
-import {useLocation} from 'react-router-dom'
-import {Container} from 'reactstrap'
+import React, { useCallback, useEffect, useRef } from 'react'
 
-import {DateAndTimeFormatting} from 'constants/datetime'
+import classnames from 'classnames'
+import { useLocation } from 'react-router-dom'
+import { Container } from 'reactstrap'
+
+import { DateAndTimeFormatting } from 'constants/datetime'
 import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import useSearch from 'hooks/useSearch'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
-import {useSelfServiceConfigurationUpdate} from 'pages/automate/common/hooks/useSelfServiceConfigurationUpdate'
+import { useSelfServiceConfigurationUpdate } from 'pages/automate/common/hooks/useSelfServiceConfigurationUpdate'
 import {
     useSelfServiceStoreIntegrationContext,
     withSelfServiceStoreIntegrationContext,
@@ -18,17 +19,15 @@ import PageHeader from 'pages/common/components/PageHeader'
 import * as ToggleButton from 'pages/common/components/ToggleButton'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import TextInput from 'pages/common/forms/input/TextInput'
+import { DEFAULT_TIMEZONE } from 'pages/stats/convert/constants/components'
+import { getTimezone } from 'state/currentUser/selectors'
+import { Notification, NotificationStatus } from 'state/notifications/types'
+import { formatDatetime } from 'utils'
 
-import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
-import {getTimezone} from 'state/currentUser/selectors'
-import {Notification, NotificationStatus} from 'state/notifications/types'
-
-import {formatDatetime} from 'utils'
-
-import {DraftBadge} from '../components/DraftBadge'
+import { DraftBadge } from '../components/DraftBadge'
 import WorkflowLanguageSelect from '../components/WorkflowLanguageSelect'
-import {MAX_STORAGE_LIMIT_RATE_WARNING_THRESHOLD} from '../constants'
-import {useStoreWorkflowsApi} from '../hooks/useStoreWorkflowsApi'
+import { MAX_STORAGE_LIMIT_RATE_WARNING_THRESHOLD } from '../constants'
+import { useStoreWorkflowsApi } from '../hooks/useStoreWorkflowsApi'
 import useWorkflowChannelSupport, {
     WorkflowChannelSupportContext,
 } from '../hooks/useWorkflowChannelSupport'
@@ -41,16 +40,15 @@ import {
     useWorkflowsIdsEnabledInContactForm,
     useWorkflowsIdsEnabledInHelpCenter,
 } from '../hooks/useWorkflowEnabledInChannels'
-import {transformWorkflowConfigurationIntoVisualBuilderGraph} from '../models/workflowConfiguration.model'
+import { transformWorkflowConfigurationIntoVisualBuilderGraph } from '../models/workflowConfiguration.model'
 import {
-    WorkflowToggle,
     supportedLanguages,
+    WorkflowToggle,
 } from '../models/workflowConfiguration.types'
-
-import {WORKFLOW_TEMPLATES} from '../workflowTemplates'
+import { WORKFLOW_TEMPLATES } from '../workflowTemplates'
 import WorkflowVisualBuilder from './visualBuilder/WorkflowVisualBuilder'
+import { WorkflowEditorActionButtons } from './WorkflowEditorActionButtons'
 
-import {WorkflowEditorActionButtons} from './WorkflowEditorActionButtons'
 import css from './WorkflowEditorView.less'
 
 type WorkflowEditorViewProps = {
@@ -80,20 +78,20 @@ function WorkflowEditorViewWrapped({
     goToWorkflowAnalyticsPage,
     logActionOnFlowBuilder,
 }: WorkflowEditorViewProps) {
-    const {template: templateSlug, from: fromView} = useSearch<{
+    const { template: templateSlug, from: fromView } = useSearch<{
         template: string | undefined
         from: string | undefined
     }>()
     const workflowEditorContext = useWorkflowEditorContext()
-    const location = useLocation<{doShowDisplayInChannels: boolean}>()
+    const location = useLocation<{ doShowDisplayInChannels: boolean }>()
     const chatChannels = useSelfServiceChatChannels(shopType, shopName)
 
     const userTimezone = useAppSelector(
-        (state) => getTimezone(state) || DEFAULT_TIMEZONE
+        (state) => getTimezone(state) || DEFAULT_TIMEZONE,
     )
 
     const datetimeFormat = useGetDateAndTimeFormat(
-        DateAndTimeFormatting.ShortMonthDayWithTime
+        DateAndTimeFormatting.ShortMonthDayWithTime,
     )
     const handleNotify = useCallback(
         (message: string, kind: 'success' | 'error') => {
@@ -105,21 +103,21 @@ function WorkflowEditorViewWrapped({
                         : NotificationStatus.Error,
             })
         },
-        [notifyMerchant]
+        [notifyMerchant],
     )
 
-    const {handleSelfServiceConfigurationUpdate} =
+    const { handleSelfServiceConfigurationUpdate } =
         useSelfServiceConfigurationUpdate({
             handleNotify: notifyMerchant,
         })
 
-    const {appendWorkflowInStore} = useStoreWorkflowsApi(handleNotify)
+    const { appendWorkflowInStore } = useStoreWorkflowsApi(handleNotify)
 
-    const {id: storeIntegrationId} = useSelfServiceStoreIntegrationContext()
+    const { id: storeIntegrationId } = useSelfServiceStoreIntegrationContext()
 
     const workflowChannelSupportContext = useWorkflowChannelSupport(
         shopType,
-        shopName
+        shopName,
     )
 
     const canShowSizeLimitWarning = useRef(true)
@@ -202,15 +200,15 @@ function WorkflowEditorViewWrapped({
     }, [workflowEditorContext])
     const workflowsEnabledInChats = useWorkflowsIdsEnabledInChat(
         shopType,
-        shopName
+        shopName,
     )
     const workflowsEnabledInHC = useWorkflowsIdsEnabledInHelpCenter(
         shopType,
-        shopName
+        shopName,
     )
     const workflowsEnabledInCF = useWorkflowsIdsEnabledInContactForm(
         shopType,
-        shopName
+        shopName,
     )
 
     const doOpenChannelsSidePanel = useCallback(
@@ -220,7 +218,7 @@ function WorkflowEditorViewWrapped({
             if (workflowsEnabledInHC.has(workflowId)) return false
             return true
         },
-        [workflowsEnabledInCF, workflowsEnabledInChats, workflowsEnabledInHC]
+        [workflowsEnabledInCF, workflowsEnabledInChats, workflowsEnabledInHC],
     )
 
     useEffectOnce(() => {
@@ -272,7 +270,7 @@ function WorkflowEditorViewWrapped({
                             ? 'Flow successfully published. You can now enable it on the desired channels.'
                             : 'Successfully saved',
                     },
-                    storeIntegrationId
+                    storeIntegrationId,
                 )
             }
         } catch {
@@ -340,12 +338,12 @@ function WorkflowEditorViewWrapped({
             const template = WORKFLOW_TEMPLATES[templateSlug]
             const configuration = template.getConfiguration(
                 workflowId,
-                storeIntegrationId
+                storeIntegrationId,
             )
             workflowEditorContext.dispatch({
                 type: 'RESET_GRAPH',
                 graph: transformWorkflowConfigurationIntoVisualBuilderGraph(
-                    configuration
+                    configuration,
                 ),
             })
         } else {
@@ -415,7 +413,7 @@ function WorkflowEditorViewWrapped({
                                             !!workflowEditorContext
                                                 .visualBuilderGraph.errors
                                                 ?.name,
-                                    }
+                                    },
                                 )}
                             >
                                 {workflowEditorContext.visualBuilderGraph.errors
@@ -438,12 +436,12 @@ function WorkflowEditorViewWrapped({
                                 }}
                                 onDelete={(lang) => {
                                     workflowEditorContext.deleteTranslation(
-                                        lang
+                                        lang,
                                     )
                                     notifyMerchant({
                                         message: `${
                                             supportedLanguages.find(
-                                                ({code}) => code === lang
+                                                ({ code }) => code === lang,
                                             )?.label ?? ''
                                         } language was successfully deleted`,
                                         status: NotificationStatus.Success,
@@ -456,7 +454,7 @@ function WorkflowEditorViewWrapped({
                                     chatChannels.filter(
                                         (chat) =>
                                             !chat.value.deactivated_datetime &&
-                                            !chat.value.deleted_datetime
+                                            !chat.value.deleted_datetime,
                                     ).length === 0
                                 }
                                 isNewWorkflow={isNewWorkflow}
@@ -482,7 +480,7 @@ function WorkflowEditorViewWrapped({
                                         workflowEditorContext.configuration
                                             .updated_datetime,
                                         datetimeFormat,
-                                        userTimezone
+                                        userTimezone,
                                     )}
                                 </div>
                             )}
@@ -533,5 +531,5 @@ function WorkflowEditorViewWrapped({
 }
 
 export default withSelfServiceStoreIntegrationContext(
-    withWorkflowEditorContext(WorkflowEditorViewWrapped)
+    withWorkflowEditorContext(WorkflowEditorViewWrapped),
 )

@@ -1,6 +1,6 @@
 import moment from 'moment'
 
-import {getDateRange} from 'pages/stats/convert/clients/utils'
+import { getDateRange } from 'pages/stats/convert/clients/utils'
 
 describe('getDateRange', () => {
     it('should return date range in Cube format and without timezone', () => {

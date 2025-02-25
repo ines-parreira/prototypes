@@ -1,22 +1,22 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import LD from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
-import {Provider} from 'react-redux'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import LD from 'launchdarkly-react-client-sdk'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {PageEmbedmentFixture} from 'pages/settings/helpCenter/fixtures/pageEmbedment'
-import {RootState, StoreDispatch} from 'state/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {renderWithRouter} from 'utils/testing'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { PageEmbedmentFixture } from 'pages/settings/helpCenter/fixtures/pageEmbedment'
+import { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { renderWithRouter } from 'utils/testing'
 
-import {useGetShopifyPages} from '../../../queries'
-import {HELP_CENTER_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID} from '../../HelpCenterAutoEmbedCard'
+import { useGetShopifyPages } from '../../../queries'
+import { HELP_CENTER_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID } from '../../HelpCenterAutoEmbedCard'
 import HelpCenterAutoEmbedPublishSection, {
     HelpCenterAutoEmbedPublishSectionProps,
 } from '../HelpCenterAutoEmbedPublishSection'
@@ -86,14 +86,17 @@ const mockFeatureFlagValue = (returnValue: boolean) => {
     }))
 }
 
-const renderView = (ui: JSX.Element, {state}: {state: Partial<RootState>}) => {
+const renderView = (
+    ui: JSX.Element,
+    { state }: { state: Partial<RootState> },
+) => {
     const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([
         thunk,
     ])
     return renderWithRouter(
         <QueryClientProvider client={queryClient}>
             <Provider store={mockStore(state)}>{ui}</Provider>
-        </QueryClientProvider>
+        </QueryClientProvider>,
     )
 }
 
@@ -101,11 +104,11 @@ describe('<HelpCenterAutoEmbedPublishSection />', () => {
     it('renders null if the feature flag is not active', () => {
         mockFeatureFlagValue(false)
 
-        const {container} = renderView(
+        const { container } = renderView(
             <HelpCenterAutoEmbedPublishSection {...defaultProps} />,
             {
                 state: defaultStateWithIntegrations,
-            }
+            },
         )
 
         expect(container).toBeEmptyDOMElement()
@@ -123,7 +126,7 @@ describe('<HelpCenterAutoEmbedPublishSection />', () => {
                 />,
                 {
                     state: defaultStateWithIntegrations,
-                }
+                },
             )
 
             screen
@@ -132,7 +135,7 @@ describe('<HelpCenterAutoEmbedPublishSection />', () => {
 
             expect(useGetShopifyPages).toHaveBeenLastCalledWith(
                 helpCenterWithShop.id,
-                {enabled: false}
+                { enabled: false },
             )
         })
     })
@@ -141,7 +144,7 @@ describe('<HelpCenterAutoEmbedPublishSection />', () => {
         it('should render correct section', () => {
             mockFeatureFlagValue(true)
 
-            const {container} = renderView(
+            const { container } = renderView(
                 <HelpCenterAutoEmbedPublishSection
                     helpCenterShopName={'another-store'}
                     helpCenterId={1}
@@ -149,7 +152,7 @@ describe('<HelpCenterAutoEmbedPublishSection />', () => {
                 />,
                 {
                     state: defaultStateWithIntegrations,
-                }
+                },
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -168,7 +171,7 @@ describe('<HelpCenterAutoEmbedPublishSection />', () => {
                 />,
                 {
                     state: defaultStateWithIntegrations,
-                }
+                },
             )
 
             screen
@@ -177,7 +180,7 @@ describe('<HelpCenterAutoEmbedPublishSection />', () => {
 
             expect(useGetShopifyPages).toHaveBeenLastCalledWith(
                 helpCenterWithShop.id,
-                {enabled: false}
+                { enabled: false },
             )
         })
     })
@@ -187,7 +190,7 @@ describe('<HelpCenterAutoEmbedPublishSection />', () => {
             it('should render correct section', () => {
                 mockFeatureFlagValue(true)
 
-                const {container} = renderView(
+                const { container } = renderView(
                     <HelpCenterAutoEmbedPublishSection
                         helpCenterShopName={SHOPIFY_SHOP_NAME_NO_UPDATE_NEEDED}
                         helpCenterId={1}
@@ -195,13 +198,13 @@ describe('<HelpCenterAutoEmbedPublishSection />', () => {
                     />,
                     {
                         state: defaultStateWithIntegrations,
-                    }
+                    },
                 )
 
                 expect(container.firstChild).toMatchSnapshot()
 
                 expect(
-                    screen.queryByText(/update your Shopify app permissions/i)
+                    screen.queryByText(/update your Shopify app permissions/i),
                 ).toBeNull()
 
                 screen.getByText(/Automatically embed on your website/i)
@@ -209,14 +212,14 @@ describe('<HelpCenterAutoEmbedPublishSection />', () => {
                 screen.getByText(/Gorgias will automatically embed/i)
 
                 screen.getByTestId(
-                    HELP_CENTER_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID
+                    HELP_CENTER_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID,
                 )
             })
 
             it('should render correct section when store has embedments already', () => {
                 mockFeatureFlagValue(true)
 
-                const {container} = renderView(
+                const { container } = renderView(
                     <HelpCenterAutoEmbedPublishSection
                         helpCenterShopName={SHOPIFY_SHOP_NAME_NO_UPDATE_NEEDED}
                         helpCenterId={1}
@@ -224,7 +227,7 @@ describe('<HelpCenterAutoEmbedPublishSection />', () => {
                     />,
                     {
                         state: defaultStateWithIntegrations,
-                    }
+                    },
                 )
 
                 expect(container.firstChild).toMatchSnapshot()
@@ -243,18 +246,18 @@ describe('<HelpCenterAutoEmbedPublishSection />', () => {
                     />,
                     {
                         state: defaultStateWithIntegrations,
-                    }
+                    },
                 )
 
                 screen
                     .getByTestId(
-                        HELP_CENTER_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID
+                        HELP_CENTER_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID,
                     )
                     .click()
 
                 expect(useGetShopifyPages).toHaveBeenLastCalledWith(
                     helpCenterWithShop.id,
-                    {enabled: true}
+                    { enabled: true },
                 )
             })
 
@@ -268,18 +271,18 @@ describe('<HelpCenterAutoEmbedPublishSection />', () => {
                     />,
                     {
                         state: defaultStateWithIntegrations,
-                    }
+                    },
                 )
 
                 screen
                     .getByTestId(
-                        HELP_CENTER_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID
+                        HELP_CENTER_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID,
                     )
                     .click()
 
                 expect(useGetShopifyPages).toHaveBeenLastCalledWith(
                     helpCenterWithShop.id,
-                    {enabled: false}
+                    { enabled: false },
                 )
             })
         })
@@ -288,7 +291,7 @@ describe('<HelpCenterAutoEmbedPublishSection />', () => {
             it('should render correct section', () => {
                 mockFeatureFlagValue(true)
 
-                const {container} = renderView(
+                const { container } = renderView(
                     <HelpCenterAutoEmbedPublishSection
                         helpCenterShopName={SHOPIFY_SHOP_NAME_UPDATE_NEEDED}
                         helpCenterId={1}
@@ -296,7 +299,7 @@ describe('<HelpCenterAutoEmbedPublishSection />', () => {
                     />,
                     {
                         state: defaultStateWithIntegrations,
-                    }
+                    },
                 )
 
                 expect(container.firstChild).toMatchSnapshot()
@@ -308,7 +311,7 @@ describe('<HelpCenterAutoEmbedPublishSection />', () => {
                 screen.getByText(/Gorgias will automatically embed/i)
 
                 screen.getByTestId(
-                    HELP_CENTER_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID
+                    HELP_CENTER_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID,
                 )
             })
 
@@ -321,18 +324,18 @@ describe('<HelpCenterAutoEmbedPublishSection />', () => {
                     />,
                     {
                         state: defaultStateWithIntegrations,
-                    }
+                    },
                 )
 
                 screen
                     .getByTestId(
-                        HELP_CENTER_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID
+                        HELP_CENTER_AUTO_EMBED_CARD_EMBED_BUTTON_TEST_ID,
                     )
                     .click()
 
                 expect(useGetShopifyPages).toHaveBeenLastCalledWith(
                     helpCenterWithShop.id,
-                    {enabled: false}
+                    { enabled: false },
                 )
             })
         })

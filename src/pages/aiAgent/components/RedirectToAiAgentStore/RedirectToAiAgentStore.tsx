@@ -1,13 +1,13 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
-import {useHistory} from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
+
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import useAppSelector from 'hooks/useAppSelector'
-
-import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import StoreIntegrationView from 'pages/automate/common/components/StoreIntegrationView'
-import {getShopifyIntegrationsSortedByName} from 'state/integrations/selectors'
+import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 
 import css from './RedirectToAiAgentStore.less'
 

@@ -1,12 +1,13 @@
-import {ColorType} from '@gorgias/merchant-ui-kit'
 import _capitalize from 'lodash/capitalize'
 import _minBy from 'lodash/minBy'
 
+import { ColorType } from '@gorgias/merchant-ui-kit'
+
 import {
     AutomatePlan,
+    Cadence,
     ConvertPlan,
     HelpdeskPlan,
-    Cadence,
     Plan,
     ProductType,
     SMSOrVoicePlan,
@@ -47,7 +48,7 @@ export function isConvert(plan: Plan): plan is ConvertPlan {
 }
 
 export function isStarterTier(
-    plan: HelpdeskPlan | undefined
+    plan: HelpdeskPlan | undefined,
 ): plan is HelpdeskPlan {
     return !!plan?.internal_id.startsWith('starter-')
 }
@@ -84,9 +85,9 @@ export const getCheapestPrice = (plans?: Plan[], cadence?: Cadence) =>
     !!plans
         ? _minBy(
               plans.filter(
-                  (plan) => plan.cadence === cadence && plan.amount !== 0
+                  (plan) => plan.cadence === cadence && plan.amount !== 0,
               ),
-              (plan) => plan.amount
+              (plan) => plan.amount,
           )
         : undefined
 

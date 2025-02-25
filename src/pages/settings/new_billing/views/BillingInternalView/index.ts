@@ -1,1 +1,1 @@
-export {default} from './BillingInternalView'
+export { default } from './BillingInternalView'

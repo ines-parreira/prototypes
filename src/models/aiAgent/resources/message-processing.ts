@@ -1,8 +1,8 @@
 import axios from 'axios'
 
-import {createMockHttpIntegrationPayload} from 'pages/aiAgent/utils/playground-ticket.util'
+import { createMockHttpIntegrationPayload } from 'pages/aiAgent/utils/playground-ticket.util'
 
-import {isProduction, isStaging} from '../../../utils/environment'
+import { isProduction, isStaging } from '../../../utils/environment'
 import gorgiasAppsAuthInterceptor from '../../../utils/gorgiasAppsAuth'
 import {
     AiAgentCustomToneOfVoiceResponse,
@@ -59,7 +59,7 @@ const mockTicket = (body: CreatePlaygroundBody) => {
 
 export const submitAiAgentTicket = async (
     body: AiAgentInput,
-    abortController?: AbortController
+    abortController?: AbortController,
 ) => {
     return await apiClient.post<AiAgentResponse>(
         '/api/interaction/start',
@@ -69,13 +69,13 @@ export const submitAiAgentTicket = async (
                 playground: true,
             },
             signal: abortController?.signal,
-        }
+        },
     )
 }
 
 export const createContextAndSubmitPlaygroundTicket = async (
     body: CreatePlaygroundBody,
-    abortController?: AbortController
+    abortController?: AbortController,
 ) => {
     const mockedTicket = mockTicket(body)
     return await submitAiAgentTicket(mockedTicket, abortController)
@@ -84,12 +84,12 @@ export const createContextAndSubmitPlaygroundTicket = async (
 export const generateCustomToneOfVoicePreview = async (body: AiAgentInput) => {
     return await apiClient.post<AiAgentCustomToneOfVoiceResponse>(
         '/api/interaction/generate-custom-tov-preview',
-        body
+        body,
     )
 }
 
 export const createContextAndGenerateCustomToneOfVoicePreview = async (
-    body: CreatePlaygroundBody
+    body: CreatePlaygroundBody,
 ) => {
     const mockedTicket = mockTicket(body)
     return await generateCustomToneOfVoicePreview(mockedTicket)

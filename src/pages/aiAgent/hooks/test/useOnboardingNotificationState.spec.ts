@@ -1,20 +1,20 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {useGetOrCreateOnboardingNotificationState} from 'models/aiAgent/queries'
+import { useGetOrCreateOnboardingNotificationState } from 'models/aiAgent/queries'
 import {
     OnboardingNotificationState,
     OnboardingNotificationStateResponse,
 } from 'models/aiAgent/types'
 
-import {getOnboardingNotificationStateFixture} from '../../fixtures/onboardingNotificationState.fixture'
-import {useOnboardingNotificationState} from '../useOnboardingNotificationState'
+import { getOnboardingNotificationStateFixture } from '../../fixtures/onboardingNotificationState.fixture'
+import { useOnboardingNotificationState } from '../useOnboardingNotificationState'
 
 jest.mock('models/aiAgent/queries')
 
 const accountDomain = 'test-account'
 const shopName = 'test-shop'
 const mockedOnboardingNotificationState: OnboardingNotificationState =
-    getOnboardingNotificationStateFixture({shopName})
+    getOnboardingNotificationStateFixture({ shopName })
 
 describe('useOnboardingNotificationState', () => {
     beforeEach(() => {
@@ -23,24 +23,24 @@ describe('useOnboardingNotificationState', () => {
 
     const renderUseOnboardingNotificationStateHook = () => {
         return renderHook(() =>
-            useOnboardingNotificationState({accountDomain, shopName})
+            useOnboardingNotificationState({ accountDomain, shopName }),
         )
     }
 
     const mockUseGetOrCreateOnboardingNotificationState = (
-        data?: OnboardingNotificationStateResponse
+        data?: OnboardingNotificationStateResponse,
     ) => {
         ;(
             useGetOrCreateOnboardingNotificationState as jest.Mock
         ).mockReturnValue({
             isLoading: data === undefined,
-            data: data !== undefined ? {data} : undefined,
+            data: data !== undefined ? { data } : undefined,
         })
     }
 
     it('should return loading state correctly', () => {
         mockUseGetOrCreateOnboardingNotificationState()
-        const {result} = renderUseOnboardingNotificationStateHook()
+        const { result } = renderUseOnboardingNotificationStateHook()
         expect(result.current).toEqual({
             isLoading: true,
             onboardingNotificationState: undefined,
@@ -52,7 +52,7 @@ describe('useOnboardingNotificationState', () => {
             onboardingNotificationState: mockedOnboardingNotificationState,
         }
         mockUseGetOrCreateOnboardingNotificationState(data)
-        const {result} = renderUseOnboardingNotificationStateHook()
+        const { result } = renderUseOnboardingNotificationStateHook()
         expect(result.current).toEqual({
             isLoading: false,
             onboardingNotificationState: data.onboardingNotificationState,

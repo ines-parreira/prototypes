@@ -1,23 +1,25 @@
-import {Label} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
+import { Label } from '@gorgias/merchant-ui-kit'
+
 import TextArea from '../../../../../gorgias-design-system/Input/TextArea'
-import css from './FeedbackNote.less'
 import InfoIconWithTooltip from './InfoIconWithTooltip'
+
+import css from './FeedbackNote.less'
 
 type Props = {
     onBlur: (e: React.ChangeEvent) => void
     value: string
 }
 
-const FeedbackOrders: React.FC<Props> = ({onBlur, value}) => {
+const FeedbackOrders: React.FC<Props> = ({ onBlur, value }) => {
     return (
         <div className={css.container}>
             <Label>
                 Note
                 <InfoIconWithTooltip
                     id="tooltip-ai-agent-feedback-note"
-                    tooltipProps={{autohide: true, placement: 'bottom'}}
+                    tooltipProps={{ autohide: true, placement: 'bottom' }}
                 >
                     <>
                         Keep track of specific details about AI Agent issues.

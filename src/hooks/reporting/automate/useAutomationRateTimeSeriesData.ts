@@ -1,7 +1,8 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import {
     automationRate,
     automationRateUnfilteredDenominator,
@@ -12,20 +13,19 @@ import {
     useAutomationDatasetTimeSeries,
     useBillableTicketDatasetTimeSeries,
 } from 'hooks/reporting/automate/timeSeries'
-import {useAIAgentUserId} from 'hooks/reporting/automate/useAIAgentUserId'
-import {getAutomateStatsByMeasure} from 'hooks/reporting/automate/utils'
-import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
-
-import {AutomationDatasetMeasure} from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
-import {BillableTicketDatasetMeasure} from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
-import {ReportingGranularity} from 'models/reporting/types'
-import {FilterKey, StatsFilters} from 'models/stat/types'
-import {AUTOMATION_RATE_LABEL} from 'pages/automate/automate-metrics/constants'
+import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
+import { getAutomateStatsByMeasure } from 'hooks/reporting/automate/utils'
+import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
+import { AutomationDatasetMeasure } from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
+import { BillableTicketDatasetMeasure } from 'models/reporting/cubes/automate_v2/BillableTicketDatasetCube'
+import { ReportingGranularity } from 'models/reporting/types'
+import { FilterKey, StatsFilters } from 'models/stat/types'
+import { AUTOMATION_RATE_LABEL } from 'pages/automate/automate-metrics/constants'
 
 export const useAutomationRateTimeSeriesData = (
     filters: StatsFilters,
     timezone: string,
-    granularity: ReportingGranularity
+    granularity: ReportingGranularity,
 ) => {
     const isAutomateNonFilteredDenominatorInAutomationRate:
         | boolean
@@ -35,48 +35,48 @@ export const useAutomationRateTimeSeriesData = (
         ]
     const aiAgentUserId = useAIAgentUserId()
     const onlyPeriodFilter = useMemo(
-        () => ({[FilterKey.Period]: filters.period}),
-        [filters.period]
+        () => ({ [FilterKey.Period]: filters.period }),
+        [filters.period],
     )
     const filteredAutomatedInteractionsData = useAutomationDatasetTimeSeries(
         filters,
         timezone,
-        granularity
+        granularity,
     )
     const allAutomatedInteractionsData = useAutomationDatasetTimeSeries(
         onlyPeriodFilter,
         timezone,
-        granularity
+        granularity,
     )
     const filteredInteractionsByAutoRespondersSeries =
         getAutomateStatsByMeasure(
             AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders,
-            filteredAutomatedInteractionsData.data
+            filteredAutomatedInteractionsData.data,
         )
 
     const allAutomatedInteractionsSeries = getAutomateStatsByMeasure(
         AutomationDatasetMeasure.AutomatedInteractions,
-        allAutomatedInteractionsData.data
+        allAutomatedInteractionsData.data,
     )
 
     const allAutomatedInteractionsByAutoRespondersSeries =
         getAutomateStatsByMeasure(
             AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders,
-            allAutomatedInteractionsData.data
+            allAutomatedInteractionsData.data,
         )
     const billableTicketData = useBillableTicketDatasetTimeSeries(
         filters,
         timezone,
         granularity,
-        aiAgentUserId
+        aiAgentUserId,
     )
     const billableTicketCountsSeries = getAutomateStatsByMeasure(
         BillableTicketDatasetMeasure.BillableTicketCount,
-        billableTicketData.data
+        billableTicketData.data,
     )
     const filteredAutomatedInteractionsSeries = getAutomateStatsByMeasure(
         AutomationDatasetMeasure.AutomatedInteractions,
-        filteredAutomatedInteractionsData.data
+        filteredAutomatedInteractionsData.data,
     )
     const automationRates: TimeSeriesDataItem[] = useMemo(() => {
         const rates: TimeSeriesDataItem[] = []
@@ -113,11 +113,11 @@ export const useAutomationRateTimeSeriesData = (
                             : automationRate(
                                   filteredAutomatedInteractions,
                                   billableTicketCount,
-                                  filteredAutomatedInteractionsByAutoResponders
+                                  filteredAutomatedInteractionsByAutoResponders,
                               ),
                         label: AUTOMATION_RATE_LABEL,
                     })
-                }
+                },
             )
         }
         return rates
@@ -143,8 +143,8 @@ export const useAutomationRateTimeSeriesData = (
         billableTicketData.isError
 
     return useMemo(
-        () => ({data: [automationRates], isFetching, isError}),
-        [automationRates, isError, isFetching]
+        () => ({ data: [automationRates], isFetching, isError }),
+        [automationRates, isError, isFetching],
     )
 }
 
@@ -153,22 +153,22 @@ export const fetchAutomationRateTimeSeriesData = (
     timezone: string,
     granularity: ReportingGranularity,
     isAutomateNonFilteredDenominatorInAutomationRate: boolean | undefined,
-    aiAgentUserId: string | undefined
+    aiAgentUserId: string | undefined,
 ) => {
-    const onlyPeriodFilter = {[FilterKey.Period]: filters.period}
+    const onlyPeriodFilter = { [FilterKey.Period]: filters.period }
 
     return Promise.all([
         fetchAutomationDatasetTimeSeries(filters, timezone, granularity),
         fetchAutomationDatasetTimeSeries(
             onlyPeriodFilter,
             timezone,
-            granularity
+            granularity,
         ),
         fetchBillableTicketDatasetTimeSeries(
             filters,
             timezone,
             granularity,
-            aiAgentUserId
+            aiAgentUserId,
         ),
     ]).then(
         ([
@@ -179,28 +179,28 @@ export const fetchAutomationRateTimeSeriesData = (
             const filteredInteractionsByAutoRespondersSeries =
                 getAutomateStatsByMeasure(
                     AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders,
-                    filteredAutomatedInteractionsData
+                    filteredAutomatedInteractionsData,
                 )
 
             const allAutomatedInteractionsSeries = getAutomateStatsByMeasure(
                 AutomationDatasetMeasure.AutomatedInteractions,
-                allAutomatedInteractionsData
+                allAutomatedInteractionsData,
             )
 
             const allAutomatedInteractionsByAutoRespondersSeries =
                 getAutomateStatsByMeasure(
                     AutomationDatasetMeasure.AutomatedInteractionsByAutoResponders,
-                    allAutomatedInteractionsData
+                    allAutomatedInteractionsData,
                 )
 
             const billableTicketCountsSeries = getAutomateStatsByMeasure(
                 BillableTicketDatasetMeasure.BillableTicketCount,
-                billableTicketData
+                billableTicketData,
             )
             const filteredAutomatedInteractionsSeries =
                 getAutomateStatsByMeasure(
                     AutomationDatasetMeasure.AutomatedInteractions,
-                    filteredAutomatedInteractionsData
+                    filteredAutomatedInteractionsData,
                 )
 
             const automationRates: TimeSeriesDataItem[] = []
@@ -235,15 +235,19 @@ export const fetchAutomationRateTimeSeriesData = (
                                 : automationRate(
                                       filteredAutomatedInteractions,
                                       billableTicketCount,
-                                      filteredAutomatedInteractionsByAutoResponders
+                                      filteredAutomatedInteractionsByAutoResponders,
                                   ),
                             label: AUTOMATION_RATE_LABEL,
                         })
-                    }
+                    },
                 )
             }
 
-            return {data: [automationRates], isFetching: false, isError: false}
-        }
+            return {
+                data: [automationRates],
+                isFetching: false,
+                isError: false,
+            }
+        },
     )
 }

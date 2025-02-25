@@ -1,32 +1,32 @@
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
-import {useGetChatsApplicationAutomationSettings} from 'models/automation/queries'
-import {upsertChatApplicationAutomationSettings} from 'models/chatApplicationAutomationSettings/resources'
-import {ChatApplicationAutomationSettings} from 'models/chatApplicationAutomationSettings/types'
+import { useGetChatsApplicationAutomationSettings } from 'models/automation/queries'
+import { upsertChatApplicationAutomationSettings } from 'models/chatApplicationAutomationSettings/resources'
+import { ChatApplicationAutomationSettings } from 'models/chatApplicationAutomationSettings/types'
 import {
     chatApplicationAutomationSettingsUpdated,
     chatsApplicationAutomationSettingsFetched,
 } from 'state/entities/chatsApplicationAutomationSettings/actions'
-import {getChatsApplicationAutomationSettings} from 'state/entities/chatsApplicationAutomationSettings/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { getChatsApplicationAutomationSettings } from 'state/entities/chatsApplicationAutomationSettings/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 const useApplicationsAutomationSettings = (applicationsIds: string[]) => {
     const dispatch = useAppDispatch()
 
     const applicationsAutomationSettings = useAppSelector(
-        getChatsApplicationAutomationSettings
+        getChatsApplicationAutomationSettings,
     )
 
-    const {isLoading} = useGetChatsApplicationAutomationSettings(
+    const { isLoading } = useGetChatsApplicationAutomationSettings(
         applicationsIds,
         {
             enabled: Boolean(applicationsIds.length),
             onSettled: (data) => {
                 if (data) {
                     void dispatch(
-                        chatsApplicationAutomationSettingsFetched(data)
+                        chatsApplicationAutomationSettingsFetched(data),
                     )
                     return data
                 }
@@ -36,23 +36,23 @@ const useApplicationsAutomationSettings = (applicationsIds: string[]) => {
                     notify({
                         message: 'Failed to fetch',
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
             },
-        }
+        },
     )
 
     const [
-        {loading: isUpdatePending},
+        { loading: isUpdatePending },
         handleChatApplicationAutomationSettingsUpdate,
     ] = useAsyncFn(
         async (
             applicationAutomationSettings: ChatApplicationAutomationSettings,
             notificationMessage?: string,
-            silentNotification?: boolean
+            silentNotification?: boolean,
         ) => {
             try {
-                const {articleRecommendation, orderManagement, workflows} =
+                const { articleRecommendation, orderManagement, workflows } =
                     applicationAutomationSettings
 
                 const res = await upsertChatApplicationAutomationSettings(
@@ -61,7 +61,7 @@ const useApplicationsAutomationSettings = (applicationsIds: string[]) => {
                         articleRecommendation,
                         orderManagement,
                         workflows,
-                    }
+                    },
                 )
 
                 void dispatch(chatApplicationAutomationSettingsUpdated(res))
@@ -73,7 +73,7 @@ const useApplicationsAutomationSettings = (applicationsIds: string[]) => {
                     notify({
                         message: notificationMessage ?? 'Successfully updated',
                         status: NotificationStatus.Success,
-                    })
+                    }),
                 )
             } catch {
                 if (silentNotification) {
@@ -83,11 +83,11 @@ const useApplicationsAutomationSettings = (applicationsIds: string[]) => {
                     notify({
                         message: 'Failed to update',
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
             }
         },
-        []
+        [],
     )
 
     return {

@@ -1,7 +1,7 @@
 /* eslint-disable */
 import React from 'react'
 
-import {FroalaEditor} from './froala-config'
+import { FroalaEditor } from './froala-config'
 
 let lastId = 0
 export default class FroalaEditorFunctionality extends React.Component {
@@ -119,7 +119,7 @@ export default class FroalaEditorFunctionality extends React.Component {
         }
 
         this.config = this.clone(this.props.config || this.config)
-        this.config = {...this.config}
+        this.config = { ...this.config }
 
         this.element = this.el
 
@@ -128,7 +128,7 @@ export default class FroalaEditorFunctionality extends React.Component {
         // Default initialized.
         this.registerEvent(
             'initialized',
-            this.config.events && this.config.events.initialized
+            this.config.events && this.config.events.initialized,
         )
 
         // Check if events are set.

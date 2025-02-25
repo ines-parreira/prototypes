@@ -1,6 +1,8 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { Meta, Story } from '@storybook/react'
+
+import { Label } from '@gorgias/merchant-ui-kit'
 
 import IconTooltip from './IconTooltip'
 

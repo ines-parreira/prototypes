@@ -1,29 +1,31 @@
-import {AxiosError} from 'axios'
-import React, {useEffect, useState} from 'react'
-import {useHistory, useLocation} from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
 
-import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
+import { AxiosError } from 'axios'
+import { useHistory, useLocation } from 'react-router-dom'
+
+import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
-import {startEmailMigration} from 'models/integration/resources/email'
-import {EmailIntegration} from 'models/integration/types'
+import { startEmailMigration } from 'models/integration/resources/email'
+import { EmailIntegration } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import useMigrationBannerStatus from 'pages/common/components/EmailMigrationBanner/hooks/useMigrationBannerStatus'
 import Loader from 'pages/common/components/Loader/Loader'
-import {UPDATE_FORWARDING_EMAIL_ADDRESS} from 'state/integrations/constants'
+import { UPDATE_FORWARDING_EMAIL_ADDRESS } from 'state/integrations/constants'
 import {
     getAreIntegrationsLoading,
     getEmailMigrationStatus,
     getIntegrationsByTypes,
 } from 'state/integrations/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {getMoment, stringToDatetime} from 'utils/date'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { getMoment, stringToDatetime } from 'utils/date'
 
-import {isBaseEmailIntegration} from '../helpers'
-import css from './StartMigration.less'
+import { isBaseEmailIntegration } from '../helpers'
 import StartMigrationIntegrationsTable from './StartMigrationIntegrationsTable'
+
+import css from './StartMigration.less'
 
 export default function StartMigration() {
     const [emailMigrationStarted, setEmailMigrationStarted] = useState(false)
@@ -31,7 +33,7 @@ export default function StartMigration() {
     const isLoading = useAppSelector(getAreIntegrationsLoading)
     const fetchMigrationStatus = useMigrationBannerStatus()
     const allEmailIntegrations = useAppSelector(
-        getIntegrationsByTypes(EMAIL_INTEGRATION_TYPES)
+        getIntegrationsByTypes(EMAIL_INTEGRATION_TYPES),
     ) as EmailIntegration[]
     const history = useHistory()
     const location = useLocation()
@@ -39,10 +41,10 @@ export default function StartMigration() {
     const dispatch = useAppDispatch()
 
     const displayedIntegrations = allEmailIntegrations.filter(
-        (integration) => !isBaseEmailIntegration(integration)
+        (integration) => !isBaseEmailIntegration(integration),
     )
 
-    const [{loading}, startMigration] = useAsyncFn(async () => {
+    const [{ loading }, startMigration] = useAsyncFn(async () => {
         try {
             const response = await startEmailMigration()
             dispatch({
@@ -51,7 +53,7 @@ export default function StartMigration() {
             })
             setEmailMigrationStarted(true)
         } catch (error) {
-            const {response} = error as AxiosError<{error: {msg: string}}>
+            const { response } = error as AxiosError<{ error: { msg: string } }>
             const errorMsg =
                 response && response.data.error
                     ? response.data.error.msg
@@ -60,7 +62,7 @@ export default function StartMigration() {
                 notify({
                     message: errorMsg,
                     status: NotificationStatus.Error,
-                })
+                }),
             )
         }
     })

@@ -1,14 +1,15 @@
-import {cleanup, fireEvent, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
-import {MemoryRouter} from 'react-router-dom'
 
-import {UserRole} from 'config/types/user'
+import { cleanup, fireEvent, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import { MemoryRouter } from 'react-router-dom'
+
+import { UserRole } from 'config/types/user'
 import useLocalStorage from 'hooks/useLocalStorage'
-import {IntegrationType} from 'models/integration/constants'
-import {OutboundVerificationStatusValue} from 'models/integration/types'
-import {assumeMock, mockStore, renderWithRouter} from 'utils/testing'
+import { IntegrationType } from 'models/integration/constants'
+import { OutboundVerificationStatusValue } from 'models/integration/types'
+import { assumeMock, mockStore, renderWithRouter } from 'utils/testing'
 
 import EmailDomainVerificationBanner from '../EmailDomainVerificationBanner'
 
@@ -19,7 +20,7 @@ describe('EmailDomainVerificationBanner', () => {
     const renderComponent = (
         userRole = UserRole.Admin,
         domainStatus = OutboundVerificationStatusValue.Pending,
-        route = '/app'
+        route = '/app',
     ) =>
         renderWithRouter(
             <Provider
@@ -40,7 +41,7 @@ describe('EmailDomainVerificationBanner', () => {
                     }),
                     currentUser: fromJS({
                         name: UserRole.Admin,
-                        role: {name: userRole},
+                        role: { name: userRole },
                     }),
                 } as any)}
             >
@@ -48,7 +49,7 @@ describe('EmailDomainVerificationBanner', () => {
                     <EmailDomainVerificationBanner />
                 </MemoryRouter>
             </Provider>,
-            {route}
+            { route },
         )
     const dismissFn = jest.fn()
     beforeEach(() => {
@@ -66,21 +67,21 @@ describe('EmailDomainVerificationBanner', () => {
 
         renderComponent()
         expect(
-            screen.queryByLabelText('Email domain verification')
+            screen.queryByLabelText('Email domain verification'),
         ).not.toBeInTheDocument()
     })
 
     it('should not display the banner if all email domains are verified', () => {
         renderComponent(UserRole.Admin, OutboundVerificationStatusValue.Success)
         expect(
-            screen.queryByLabelText('Email domain verification')
+            screen.queryByLabelText('Email domain verification'),
         ).not.toBeInTheDocument()
     })
 
     it('should not display to non-admin users', () => {
         renderComponent(UserRole.Agent)
         expect(
-            screen.queryByTestId('email-domain-verification-banner')
+            screen.queryByTestId('email-domain-verification-banner'),
         ).not.toBeInTheDocument()
     })
 

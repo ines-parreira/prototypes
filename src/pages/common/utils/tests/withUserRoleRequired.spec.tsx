@@ -1,18 +1,19 @@
-import {screen, render} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {PageSection} from 'config/pages'
-import {UserRole} from 'config/types/user'
-import {user} from 'fixtures/users'
+import { PageSection } from 'config/pages'
+import { UserRole } from 'config/types/user'
+import { user } from 'fixtures/users'
 import RestrictedPage from 'pages/common/components/RestrictedPage'
 import history from 'pages/history'
-import {RootState, StoreDispatch} from 'state/types'
+import { RootState, StoreDispatch } from 'state/types'
 
-import {rootWithUserRoleRequired} from '../withUserRoleRequired'
+import { rootWithUserRoleRequired } from '../withUserRoleRequired'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -25,7 +26,7 @@ jest.mock(
             <span>Required role: {props.requiredRole}</span>
             <span>Page: {props.page}</span>
         </div>
-    )
+    ),
 )
 
 describe('rootWithUserRoleRequired', () => {
@@ -52,7 +53,7 @@ describe('rootWithUserRoleRequired', () => {
         render(
             <Provider store={mockStore(stateWithAdequateRole)}>
                 <WrappedComponent />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('OK')).toBeInTheDocument()
@@ -61,13 +62,13 @@ describe('rootWithUserRoleRequired', () => {
     it('should return the wrapped component if the user has an adequate role', () => {
         const WrappedComponent = rootWithUserRoleRequired(
             AnyComponent,
-            UserRole.Admin
+            UserRole.Admin,
         )
 
         render(
             <Provider store={mockStore(stateWithAdequateRole)}>
                 <WrappedComponent />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('OK')).toBeInTheDocument()
@@ -77,13 +78,13 @@ describe('rootWithUserRoleRequired', () => {
         const WrappedComponent = rootWithUserRoleRequired(
             AnyComponent,
             UserRole.Admin,
-            PageSection.NewBilling
+            PageSection.NewBilling,
         )
 
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(stateWithoutAdequateRole)}>
                 <WrappedComponent />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -94,13 +95,13 @@ describe('rootWithUserRoleRequired', () => {
             AnyComponent,
             UserRole.Admin,
             undefined,
-            'foo/bar'
+            'foo/bar',
         )
 
         render(
             <Provider store={mockStore(stateWithoutAdequateRole)}>
                 <WrappedComponent />
-            </Provider>
+            </Provider>,
         )
 
         expect(history.replace).toHaveBeenCalledWith('foo/bar')

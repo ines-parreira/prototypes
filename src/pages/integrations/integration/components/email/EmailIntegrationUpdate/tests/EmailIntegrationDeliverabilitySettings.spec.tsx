@@ -1,17 +1,16 @@
-import {fireEvent, render, screen} from '@testing-library/react'
-import {capitalize} from 'lodash'
 import React from 'react'
 
-import {integrationBase} from 'fixtures/integrations'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { capitalize } from 'lodash'
 
-import {EmailProvider, IntegrationType} from 'models/integration/constants'
-
+import { integrationBase } from 'fixtures/integrations'
+import { EmailProvider, IntegrationType } from 'models/integration/constants'
 import {
     GmailIntegration,
     OutboundVerificationStatusValue,
     OutlookIntegration,
 } from 'models/integration/types'
-import {getOutboundEmailProviderSettingKey} from 'pages/integrations/integration/components/email/helpers'
+import { getOutboundEmailProviderSettingKey } from 'pages/integrations/integration/components/email/helpers'
 
 import EmailIntegrationDeliverabilitySettings from '../EmailIntegrationDeliverabilitySettings'
 
@@ -29,7 +28,7 @@ const renderComponent = (props: TestProps) => {
         <EmailIntegrationDeliverabilitySettings
             integration={getIntegration(props)}
             onChange={onChange}
-        />
+        />,
     )
 }
 
@@ -90,7 +89,7 @@ describe('<EmailIntegrationDeliverabilitySettings />', () => {
             })
 
             expect(
-                screen.getByText('Outbound Email Delivery Settings')
+                screen.getByText('Outbound Email Delivery Settings'),
             ).toBeInTheDocument()
 
             const nativeRadio = screen.getByRole('radio', {
@@ -103,25 +102,25 @@ describe('<EmailIntegrationDeliverabilitySettings />', () => {
 
             expect(
                 screen.getByText(
-                    'Send emails via Gorgias email delivery platform (recommended)'
-                )
+                    'Send emails via Gorgias email delivery platform (recommended)',
+                ),
             ).toBeInTheDocument()
 
             expect(
                 screen.getByText(
-                    'Potential risk of deliverability issues with high email volume.'
-                )
+                    'Potential risk of deliverability issues with high email volume.',
+                ),
             ).toBeInTheDocument()
 
             expect(
                 screen.getByText(
                     `To avoid deliverability issues that can occur when using ${providerName}'s API`,
-                    {exact: false}
-                )
+                    { exact: false },
+                ),
             ).toBeInTheDocument()
 
             expect(
-                screen.getByText(`Domain Verification`).getAttribute('to')
+                screen.getByText(`Domain Verification`).getAttribute('to'),
             ).toBe('/app/settings/channels/email/1/outbound-verification')
 
             expect(nativeRadio).toBeInTheDocument()
@@ -141,7 +140,7 @@ describe('<EmailIntegrationDeliverabilitySettings />', () => {
             })
 
             expect(
-                screen.getByText('Outbound Email Delivery Settings')
+                screen.getByText('Outbound Email Delivery Settings'),
             ).toBeInTheDocument()
 
             const nativeRadio = screen.getByRole('radio', {
@@ -154,20 +153,20 @@ describe('<EmailIntegrationDeliverabilitySettings />', () => {
 
             expect(
                 screen.getByText(
-                    'Send emails via Gorgias email delivery platform (recommended)'
-                )
+                    'Send emails via Gorgias email delivery platform (recommended)',
+                ),
             ).toBeInTheDocument()
 
             expect(
                 screen.getByText(
-                    'Potential risk of deliverability issues with high email volume.'
-                )
+                    'Potential risk of deliverability issues with high email volume.',
+                ),
             ).toBeInTheDocument()
 
             expect(
                 screen.getByText(
-                    `Your emails are now being sent via Gorgias’ email delivery platform to prevent deliverability issues that can occur when using ${providerName}’s API with high email volumes.`
-                )
+                    `Your emails are now being sent via Gorgias’ email delivery platform to prevent deliverability issues that can occur when using ${providerName}’s API with high email volumes.`,
+                ),
             ).toBeInTheDocument()
 
             expect(nativeRadio).toBeInTheDocument()
@@ -187,7 +186,7 @@ describe('<EmailIntegrationDeliverabilitySettings />', () => {
             })
 
             expect(
-                screen.getByText('Outbound Email Delivery Settings')
+                screen.getByText('Outbound Email Delivery Settings'),
             ).toBeInTheDocument()
 
             const nativeRadio = screen.getByRole('radio', {
@@ -200,20 +199,20 @@ describe('<EmailIntegrationDeliverabilitySettings />', () => {
 
             expect(
                 screen.getByText(
-                    'Send emails via Gorgias email delivery platform (recommended)'
-                )
+                    'Send emails via Gorgias email delivery platform (recommended)',
+                ),
             ).toBeInTheDocument()
 
             expect(
                 screen.getByText(
-                    'Potential risk of deliverability issues with high email volume.'
-                )
+                    'Potential risk of deliverability issues with high email volume.',
+                ),
             ).toBeInTheDocument()
 
             expect(
                 screen.getByText(
-                    `To avoid deliverability issues that can occur when using ${providerName}’s API, it is recommended to use Gorgias’ email delivery platform to send your emails. This ensures successful delivery and tracking.`
-                )
+                    `To avoid deliverability issues that can occur when using ${providerName}’s API, it is recommended to use Gorgias’ email delivery platform to send your emails. This ensures successful delivery and tracking.`,
+                ),
             ).toBeInTheDocument()
 
             expect(nativeRadio).toBeInTheDocument()
@@ -233,7 +232,7 @@ describe('<EmailIntegrationDeliverabilitySettings />', () => {
             })
 
             expect(
-                screen.getByText('Outbound Email Delivery Settings')
+                screen.getByText('Outbound Email Delivery Settings'),
             ).toBeInTheDocument()
 
             const nativeRadio = screen.getByRole('radio', {
@@ -269,11 +268,11 @@ describe('<EmailIntegrationDeliverabilitySettings />', () => {
         })
 
         expect(
-            screen.getByText('Outbound Email Delivery Settings')
+            screen.getByText('Outbound Email Delivery Settings'),
         ).toBeInTheDocument()
 
         expect(screen.getByText('Domain Verification').getAttribute('to')).toBe(
-            '/app/settings/channels/email/1/outbound-verification'
+            '/app/settings/channels/email/1/outbound-verification',
         )
     })
 
@@ -286,11 +285,11 @@ describe('<EmailIntegrationDeliverabilitySettings />', () => {
         })
 
         expect(
-            screen.getByText('Outbound Email Delivery Settings')
+            screen.getByText('Outbound Email Delivery Settings'),
         ).toBeInTheDocument()
 
         expect(screen.getByText('Domain Verification').getAttribute('to')).toBe(
-            '/app/settings/channels/email/1/dns'
+            '/app/settings/channels/email/1/dns',
         )
     })
 

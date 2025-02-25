@@ -1,6 +1,6 @@
-import {OrderDirection} from 'models/api/types'
-import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
-import {TicketDimension} from 'models/reporting/cubes/TicketCube'
+import { OrderDirection } from 'models/api/types'
+import { HelpdeskMessageCubeWithJoins } from 'models/reporting/cubes/HelpdeskMessageCube'
+import { TicketDimension } from 'models/reporting/cubes/TicketCube'
 import {
     TicketSatisfactionSurveyDimension,
     TicketSatisfactionSurveyMeasure,
@@ -11,7 +11,7 @@ import {
     ReportingQuery,
     TimeSeriesQuery,
 } from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import { StatsFilters } from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
@@ -25,7 +25,7 @@ export const averageCSATScorePerDimensionQueryFactory = (
     dimension: string,
     filters: StatsFilters,
     timezone: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
     measures: [
         TicketSatisfactionSurveyMeasure.AvgSurveyScore,
@@ -52,13 +52,13 @@ export const averageCSATScorePerDimensionTimeSeriesFactory = (
     filters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ): TimeSeriesQuery<HelpdeskMessageCubeWithJoins> => ({
     ...averageCSATScorePerDimensionQueryFactory(
         dimension,
         filters,
         timezone,
-        sorting
+        sorting,
     ),
     timeDimensions: [
         {
@@ -74,13 +74,13 @@ export const averageCSATScorePerDimensionDrillDownQueryFactory =
     (
         filters: StatsFilters,
         timezone: string,
-        sorting?: OrderDirection
+        sorting?: OrderDirection,
     ): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
         ...averageCSATScorePerDimensionQueryFactory(
             dimension,
             filters,
             timezone,
-            sorting
+            sorting,
         ),
         dimensions: [TicketDimension.TicketId],
         filters: [
@@ -88,7 +88,7 @@ export const averageCSATScorePerDimensionDrillDownQueryFactory =
                 dimension,
                 filters,
                 timezone,
-                sorting
+                sorting,
             ).filters,
             {
                 member: TicketSatisfactionSurveyDimension.SurveySentDatetime,

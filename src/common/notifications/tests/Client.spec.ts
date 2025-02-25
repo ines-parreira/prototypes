@@ -1,11 +1,11 @@
-import type {Feed, FeedEventPayload} from '@knocklabs/client'
+import type { Feed, FeedEventPayload } from '@knocklabs/client'
 
 import Client from '../Client'
-import type {RawNotification} from '../types'
+import type { RawNotification } from '../types'
 import transformKnockNotification from '../utils/transformKnockNotification'
 
 jest.mock('../utils/transformKnockNotification', () =>
-    jest.fn((n: unknown) => n)
+    jest.fn((n: unknown) => n),
 )
 const transformKnockNotificationMock = transformKnockNotification as jest.Mock
 
@@ -27,14 +27,14 @@ describe('Client', () => {
         const unsub = client.subscribe(jest.fn())
         expect(onMock).toHaveBeenCalledWith(
             'items.received.realtime',
-            expect.any(Function)
+            expect.any(Function),
         )
 
         const [[, fn]] = onMock.mock.calls
         unsub()
         expect(feedClient.off).toHaveBeenCalledWith(
             'items.received.realtime',
-            fn
+            fn,
         )
     })
 
@@ -44,7 +44,7 @@ describe('Client', () => {
         const unsub1 = client.subscribe(jest.fn())
         expect(onMock).toHaveBeenCalledWith(
             'items.received.realtime',
-            expect.any(Function)
+            expect.any(Function),
         )
 
         const unsub2 = client.subscribe(jest.fn())
@@ -57,7 +57,7 @@ describe('Client', () => {
         unsub2()
         expect(feedClient.off).toHaveBeenCalledWith(
             'items.received.realtime',
-            fn
+            fn,
         )
     })
 
@@ -73,12 +73,12 @@ describe('Client', () => {
             [string, (payload: FeedEventPayload<RawNotification>) => void],
         ]
         const payload = {
-            items: [{id: 1}],
+            items: [{ id: 1 }],
         } as unknown as FeedEventPayload<RawNotification>
         fn(payload)
 
-        expect(listener1).toHaveBeenCalledWith({id: 1})
-        expect(listener2).toHaveBeenCalledWith({id: 1})
+        expect(listener1).toHaveBeenCalledWith({ id: 1 })
+        expect(listener2).toHaveBeenCalledWith({ id: 1 })
 
         unsub1()
         unsub2()
@@ -95,7 +95,7 @@ describe('Client', () => {
             [string, (payload: FeedEventPayload<RawNotification>) => void],
         ]
         const payload = {
-            items: [{id: 1}],
+            items: [{ id: 1 }],
         } as unknown as FeedEventPayload<RawNotification>
         fn(payload)
 

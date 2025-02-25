@@ -1,11 +1,10 @@
 import fs from 'fs'
 import path from 'path'
 
-import {main} from '@gorgias/static-analysis'
+import { main } from '@gorgias/static-analysis'
 
 import config from '../../sa.config'
-
-import {Entry, JSONEntry, JSONReport} from './deprecated.types'
+import { Entry, JSONEntry, JSONReport } from './deprecated.types'
 
 const SNAPSHOT_PATH = path.resolve(__dirname, 'deprecated.snapshot.json')
 
@@ -32,7 +31,7 @@ const newDeprecatedEntries: Array<{
 }> = []
 
 const snapshot = JSON.parse(
-    fs.readFileSync(SNAPSHOT_PATH, 'utf8')
+    fs.readFileSync(SNAPSHOT_PATH, 'utf8'),
 ) as JSONReport
 
 for (const entryGroup of snapshot.entries) {
@@ -55,11 +54,11 @@ if (newDeprecatedEntries.length > 0) {
     console.log('New deprecated entries found')
     // eslint-disable-next-line no-console
     console.table(
-        newDeprecatedEntries.map(({oldEntry, newEntry}) => ({
+        newDeprecatedEntries.map(({ oldEntry, newEntry }) => ({
             name: oldEntry.name,
             usageCount: oldEntry.usageCount,
             newUsageCount: newEntry.usageCount,
-        }))
+        })),
     )
     process.exit(1)
 } else {

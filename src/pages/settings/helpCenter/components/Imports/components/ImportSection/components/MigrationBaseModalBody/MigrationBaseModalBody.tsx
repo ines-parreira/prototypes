@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react'
+import React, { ReactNode } from 'react'
 
 import ModalBody from 'pages/common/components/modal/ModalBody'
 
@@ -8,7 +8,7 @@ type Props = {
     children: ReactNode
 }
 
-const MigrationBaseModal: React.FC<Props> = ({children}) => {
+const MigrationBaseModal: React.FC<Props> = ({ children }) => {
     return <ModalBody className={css.wrapper}>{children}</ModalBody>
 }
 

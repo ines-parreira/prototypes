@@ -1,9 +1,9 @@
-import {logEvent} from 'common/segment'
+import { logEvent } from 'common/segment'
 
 import {
-    logUserSubmissionEvent,
-    logDropdownOpenEvent,
     DropdownOpenEventProps,
+    logDropdownOpenEvent,
+    logUserSubmissionEvent,
     UserSubmissionSubEventType,
 } from '../intentsFeedbackSegmentEvents'
 

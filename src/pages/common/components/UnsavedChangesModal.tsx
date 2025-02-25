@@ -1,5 +1,6 @@
-import _noop from 'lodash/noop'
 import React from 'react'
+
+import _noop from 'lodash/noop'
 
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'

@@ -1,25 +1,25 @@
-import {render, screen, fireEvent, act} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { act, fireEvent, render, screen } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {OrderDirection} from 'models/api/types'
-import {ReportingGranularity} from 'models/reporting/types'
-import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
-
-import {DownloadTicketFieldsDataButton} from 'pages/stats/ticket-insights/ticket-fields/DownloadTicketFieldsDataButton'
-import {useCustomFieldsReportData} from 'services/reporting/ticketFieldsReportingService'
-import {initialState} from 'state/stats/statsSlice'
-import {RootState} from 'state/types'
-import {initialState as uiFiltersInitialState} from 'state/ui/stats/filtersSlice'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { OrderDirection } from 'models/api/types'
+import { ReportingGranularity } from 'models/reporting/types'
+import { DOWNLOAD_DATA_BUTTON_LABEL } from 'pages/stats/constants'
+import { DownloadTicketFieldsDataButton } from 'pages/stats/ticket-insights/ticket-fields/DownloadTicketFieldsDataButton'
+import { useCustomFieldsReportData } from 'services/reporting/ticketFieldsReportingService'
+import { initialState } from 'state/stats/statsSlice'
+import { RootState } from 'state/types'
+import { initialState as uiFiltersInitialState } from 'state/ui/stats/filtersSlice'
 import {
-    ticketInsightsSlice,
     getCustomFieldsOrder,
+    ticketInsightsSlice,
 } from 'state/ui/stats/ticketInsightsSlice'
-import {saveZippedFiles} from 'utils/file'
-import {assumeMock} from 'utils/testing'
+import { saveZippedFiles } from 'utils/file'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('services/reporting/ticketFieldsReportingService')
 const useCustomFieldsReportDataMock = assumeMock(useCustomFieldsReportData)
@@ -52,7 +52,7 @@ describe('DownloadTicketFieldsDataButton', () => {
         },
         ui: {
             [ticketInsightsSlice.name]: {
-                selectedCustomField: {id: selectedCustomFieldId},
+                selectedCustomField: { id: selectedCustomFieldId },
             },
             stats: {
                 filters: uiFiltersInitialState,
@@ -84,7 +84,7 @@ describe('DownloadTicketFieldsDataButton', () => {
                 <DownloadTicketFieldsDataButton
                     selectedCustomFieldId={selectedCustomFieldId}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByRole('button')).toBeInTheDocument()
@@ -96,7 +96,7 @@ describe('DownloadTicketFieldsDataButton', () => {
                 <DownloadTicketFieldsDataButton
                     selectedCustomFieldId={selectedCustomFieldId}
                 />
-            </Provider>
+            </Provider>,
         )
         fireEvent.click(screen.getByRole('button'))
 
@@ -105,7 +105,7 @@ describe('DownloadTicketFieldsDataButton', () => {
             userTimezone,
             granularity,
             defaultOrder,
-            String(selectedCustomFieldId)
+            String(selectedCustomFieldId),
         )
         expect(saveZippedFilesMock).toHaveBeenCalledWith({}, fileName)
     })
@@ -121,19 +121,19 @@ describe('DownloadTicketFieldsDataButton', () => {
                 <DownloadTicketFieldsDataButton
                     selectedCustomFieldId={selectedCustomFieldId}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByRole('button')).toBeAriaDisabled()
     })
 
     it('should send event to segment and call saveReport on download data button click', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <DownloadTicketFieldsDataButton
                     selectedCustomFieldId={selectedCustomFieldId}
                 />
-            </Provider>
+            </Provider>,
         )
         act(() => {
             fireEvent.click(getByText(DOWNLOAD_DATA_BUTTON_LABEL))
@@ -143,7 +143,7 @@ describe('DownloadTicketFieldsDataButton', () => {
             SegmentEvent.StatDownloadClicked,
             expect.objectContaining({
                 name: 'all-metrics',
-            })
+            }),
         )
         expect(useCustomFieldsReportDataMock).toHaveBeenCalled()
     })

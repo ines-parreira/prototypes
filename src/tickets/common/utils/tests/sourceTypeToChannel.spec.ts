@@ -3,8 +3,8 @@ import {
     TicketMessageSourceType,
     TicketVia,
 } from 'business/types/ticket'
-import {TicketMessage} from 'models/ticket/types'
-import {DEFAULT_CHANNEL} from 'tickets/common/config'
+import { TicketMessage } from 'models/ticket/types'
+import { DEFAULT_CHANNEL } from 'tickets/common/config'
 
 import sourceTypeToChannel from '../sourceTypeToChannel'
 
@@ -12,7 +12,7 @@ describe('sourceTypeToChannel()', () => {
     it('should return the default channel if there is no source type', () => {
         const channel = sourceTypeToChannel(
             null as unknown as TicketMessageSourceType,
-            []
+            [],
         )
         expect(channel).toBe(DEFAULT_CHANNEL)
     })
@@ -20,7 +20,7 @@ describe('sourceTypeToChannel()', () => {
     it('should return the default channel if there is no message and source type is internal note', () => {
         const channel = sourceTypeToChannel(
             TicketMessageSourceType.InternalNote,
-            []
+            [],
         )
         expect(channel).toBe(DEFAULT_CHANNEL)
     })
@@ -28,7 +28,7 @@ describe('sourceTypeToChannel()', () => {
     it('should return the phone channel if the last not system message is from twilio', () => {
         const channel = sourceTypeToChannel(
             TicketMessageSourceType.InternalNote,
-            [{via: TicketVia.Twilio} as TicketMessage]
+            [{ via: TicketVia.Twilio } as TicketMessage],
         )
         expect(channel).toBe(TicketChannel.Phone)
     })
@@ -36,7 +36,7 @@ describe('sourceTypeToChannel()', () => {
     it('should return the InternalNote if the last message channel is not a legacy channel', () => {
         const channel = sourceTypeToChannel(
             TicketMessageSourceType.InternalNote,
-            [{channel: 'tiktok-shop'} as unknown as TicketMessage]
+            [{ channel: 'tiktok-shop' } as unknown as TicketMessage],
         )
         expect(channel).toBe(TicketChannel.InternalNote)
     })
@@ -48,10 +48,10 @@ describe('sourceTypeToChannel()', () => {
         'should return the FacebookMention channel if the last not system message is from a Facebook Mention Post or Comment',
         (sourceType) => {
             const channel = sourceTypeToChannel(sourceType, [
-                {via: TicketVia.Facebook} as TicketMessage,
+                { via: TicketVia.Facebook } as TicketMessage,
             ])
             expect(channel).toBe(TicketChannel.FacebookMention)
-        }
+        },
     )
 
     it.each([
@@ -62,10 +62,10 @@ describe('sourceTypeToChannel()', () => {
         'should return Twitter channel if the last not system message is from a Twitter Tweet or Quoted Tweet',
         (sourceType) => {
             const channel = sourceTypeToChannel(sourceType, [
-                {via: TicketVia.Twitter} as TicketMessage,
+                { via: TicketVia.Twitter } as TicketMessage,
             ])
             expect(channel).toBe(TicketChannel.Twitter)
-        }
+        },
     )
 
     it.each([
@@ -82,9 +82,9 @@ describe('sourceTypeToChannel()', () => {
             const via = TicketVia.ContactForm
 
             const calculatedChannel = sourceTypeToChannel(sourceType, [
-                {channel, via} as TicketMessage,
+                { channel, via } as TicketMessage,
             ])
             expect(calculatedChannel).toBe(TicketChannel.Email)
-        }
+        },
     )
 })

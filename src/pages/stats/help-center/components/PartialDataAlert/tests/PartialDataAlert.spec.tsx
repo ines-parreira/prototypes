@@ -1,6 +1,7 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render, screen } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -13,13 +14,13 @@ describe('<PartialDataAlert />', () => {
         render(
             <Provider store={mockStore}>
                 <PartialDataAlert collectionStartDate="2023-11-16" />
-            </Provider>
+            </Provider>,
         )
 
         expect(
             screen.getByText(
-                'There is only partial or no data available because we started collecting data from November 16, 2023.'
-            )
+                'There is only partial or no data available because we started collecting data from November 16, 2023.',
+            ),
         ).toBeInTheDocument()
     })
 })

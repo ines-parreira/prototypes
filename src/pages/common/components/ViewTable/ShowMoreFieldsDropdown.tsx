@@ -1,20 +1,21 @@
-import {Map, List} from 'immutable'
 import React from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {
-    UncontrolledDropdown,
-    DropdownToggle,
-    DropdownMenu,
-    DropdownItem,
-} from 'reactstrap'
-import {bindActionCreators} from 'redux'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { List, Map } from 'immutable'
+import { connect, ConnectedProps } from 'react-redux'
+import {
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+    UncontrolledDropdown,
+} from 'reactstrap'
+import { bindActionCreators } from 'redux'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import CheckBox from 'pages/common/forms/CheckBox'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {setFieldVisibility} from 'state/views/actions'
-import {GorgiasThunkDispatch} from 'types/redux-thunk'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { setFieldVisibility } from 'state/views/actions'
+import { GorgiasThunkDispatch } from 'types/redux-thunk'
 
 type OwnProps = {
     config: Map<any, any>
@@ -37,13 +38,13 @@ class ShowMoreFieldsDropdown extends React.Component<Props> {
         return this.props.setFieldVisibility(
             name,
             state,
-            this.props.shouldStoreFieldConfig
+            this.props.shouldStoreFieldConfig,
         )
     }
 
     render() {
         const visibleFieldsNames = this.props.visibleFields.map(
-            (field: Map<any, any>) => field.get('name') as string
+            (field: Map<any, any>) => field.get('name') as string,
         )
 
         return (

@@ -1,14 +1,16 @@
-import {Tag} from '@gorgias/api-queries'
-import {List} from 'immutable'
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
+
+import { List } from 'immutable'
+
+import { Tag } from '@gorgias/api-queries'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {getTags} from 'state/tags/selectors'
-
-import {humanizeArray} from 'utils/string'
+import { getTags } from 'state/tags/selectors'
+import { humanizeArray } from 'utils/string'
 
 import BulkDeleteButton from './BulkDeleteButton'
 import MergeButton from './MergeButton'
+
 import css from './TableActions.less'
 
 type Props = {
@@ -17,17 +19,17 @@ type Props = {
     selectedTagsIds: List<any>
 }
 
-const TableActions = ({onBulkDelete, onMerge, selectedTagsIds}: Props) => {
+const TableActions = ({ onBulkDelete, onMerge, selectedTagsIds }: Props) => {
     const tags = useAppSelector(getTags)
     const keyedTags = useMemo(
         () =>
             Object.assign(
                 {},
                 ...(tags.toJS() as Tag[]).map(
-                    (tag) => ({[tag.id]: tag}) as Record<number, Tag>
-                )
+                    (tag) => ({ [tag.id]: tag }) as Record<number, Tag>,
+                ),
             ) as Record<number, Tag>,
-        [tags]
+        [tags],
     )
 
     const selectedTagsNames = useMemo(
@@ -35,12 +37,12 @@ const TableActions = ({onBulkDelete, onMerge, selectedTagsIds}: Props) => {
             selectedTagsIds
                 .map((id: number) => keyedTags[id].name)
                 .toJS() as string[],
-        [keyedTags, selectedTagsIds]
+        [keyedTags, selectedTagsIds],
     )
 
     const selectedTagText = useMemo(
         () => humanizeArray(selectedTagsNames),
-        [selectedTagsNames]
+        [selectedTagsNames],
     )
 
     return (

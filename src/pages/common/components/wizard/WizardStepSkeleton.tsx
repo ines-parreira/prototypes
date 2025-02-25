@@ -1,11 +1,12 @@
-import {Skeleton} from '@gorgias/merchant-ui-kit'
-import {isObject} from 'lodash'
 import React from 'react'
+
+import { isObject } from 'lodash'
+
+import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import WizardProgressHeader from 'pages/common/components/wizard/WizardProgressHeader'
 import useIsIntersectingWithBrowserViewport from 'pages/common/hooks/useIsIntersectingWithBrowserViewport'
-
-import {AnimatedFadeInOut} from 'pages/settings/helpCenter/components/HelpCenterCreationWizard/components/AnimatedFadeInOut/AnimatedFadeInOut'
+import { AnimatedFadeInOut } from 'pages/settings/helpCenter/components/HelpCenterCreationWizard/components/AnimatedFadeInOut/AnimatedFadeInOut'
 
 import css from './WizardStepSkeleton.less'
 
@@ -22,7 +23,7 @@ type Props = {
 }
 
 const isRecord = (
-    value: string | Record<string, string>
+    value: string | Record<string, string>,
 ): value is Record<string, string> => {
     return isObject(value)
 }

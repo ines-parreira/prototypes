@@ -1,4 +1,4 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
 import {
     buildEdgeCommonProperties,
@@ -9,14 +9,14 @@ import useTouchActionGraph from '../useTouchActionGraph'
 
 describe('useTouchActionGraph()', () => {
     it('should touch action graph', () => {
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useTouchActionGraph([
                 {
                     id: 'app_id',
                     auth_type: 'api-key',
                     auth_settings: {},
                 },
-            ])
+            ]),
         )
 
         expect(
@@ -109,7 +109,7 @@ describe('useTouchActionGraph()', () => {
                         source: 'conditions1',
                         target: 'end1',
                         data: {
-                            conditions: {and: []},
+                            conditions: { and: [] },
                         },
                     },
                 ],
@@ -123,7 +123,7 @@ describe('useTouchActionGraph()', () => {
                         type: 'app',
                     },
                 ],
-            })
+            }),
         ).toEqual(
             expect.objectContaining({
                 nodes: [
@@ -197,7 +197,7 @@ describe('useTouchActionGraph()', () => {
                     name: true,
                     nodes: true,
                 },
-            })
+            }),
         )
     })
 })

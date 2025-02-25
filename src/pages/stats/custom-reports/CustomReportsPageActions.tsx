@@ -1,15 +1,16 @@
-import cn from 'classnames'
-import React, {useState} from 'react'
-import {useHistory, useLocation} from 'react-router-dom'
+import React, { useState } from 'react'
 
-import {useCustomReportActions} from 'hooks/reporting/custom-reports/useCustomReportActions'
-import {useDownloadCustomReportData} from 'hooks/reporting/custom-reports/useDownloadCustomReportData'
+import cn from 'classnames'
+import { useHistory, useLocation } from 'react-router-dom'
+
+import { useCustomReportActions } from 'hooks/reporting/custom-reports/useCustomReportActions'
+import { useDownloadCustomReportData } from 'hooks/reporting/custom-reports/useDownloadCustomReportData'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import {ConfirmationModal} from 'pages/settings/helpCenter/components/ConfirmationModal'
+import { ConfirmationModal } from 'pages/settings/helpCenter/components/ConfirmationModal'
 import css from 'pages/stats/custom-reports/CustomReportsPageActions.less'
-import {CustomReportSchema} from 'pages/stats/custom-reports/types'
+import { CustomReportSchema } from 'pages/stats/custom-reports/types'
 
 export const DOWNLOAD_REPORT_LABEL = 'Download Data'
 export const DELETE_REPORT_LABEL = 'Delete Dashboard'
@@ -46,8 +47,8 @@ export const CustomReportsPageActions = ({
 }: Props) => {
     const history = useHistory()
     const location = useLocation()
-    const {deleteReportHandler} = useCustomReportActions()
-    const {triggerDownload, isLoading} =
+    const { deleteReportHandler } = useCustomReportActions()
+    const { triggerDownload, isLoading } =
         useDownloadCustomReportData(customReport)
 
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
@@ -98,20 +99,20 @@ export const CustomReportsPageActions = ({
                 onToggle={handleToggleDropdown}
             >
                 <DropdownBody>
-                    {actions.map(({label, callback, icon, disabled}) => {
+                    {actions.map(({ label, callback, icon, disabled }) => {
                         return (
                             <DropdownItem
                                 key={label}
                                 onClick={callback}
                                 isDisabled={!!disabled}
-                                option={{label, value: ''}}
+                                option={{ label, value: '' }}
                                 shouldCloseOnSelect
                             >
                                 <div className={css.dropdownItemContent}>
                                     <i
                                         className={cn(
                                             'material-icons',
-                                            css.actionIcon
+                                            css.actionIcon,
                                         )}
                                     >
                                         {icon}

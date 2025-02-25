@@ -1,68 +1,65 @@
+import React, { createRef, useEffect, useMemo, useState } from 'react'
+
 import axios from 'axios'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {createRef, useEffect, useMemo, useState} from 'react'
-import {FormGroup, FormText} from 'reactstrap'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { FormGroup, FormText } from 'reactstrap'
 import isHexColor from 'validator/lib/isHexColor'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
-import {LocaleCode, UpdateHelpCenterDto} from 'models/helpCenter/types'
-import {validLocaleCode} from 'models/helpCenter/utils'
+import { LocaleCode, UpdateHelpCenterDto } from 'models/helpCenter/types'
+import { validLocaleCode } from 'models/helpCenter/utils'
 import Button from 'pages/common/components/button/Button'
-
 import InputField from 'pages/common/forms/input/InputField'
-import {Value} from 'pages/common/forms/SelectField/types'
-
+import { Value } from 'pages/common/forms/SelectField/types'
 import {
+    HELP_CENTER_AVAILABLE_FONTS,
     HELP_CENTER_DEFAULT_COLOR,
     HELP_CENTER_DEFAULT_FONT,
-    HELP_CENTER_DEFAULT_THEME,
     HELP_CENTER_DEFAULT_LOCALE,
-    HELP_CENTER_AVAILABLE_FONTS,
+    HELP_CENTER_DEFAULT_THEME,
 } from 'pages/settings/helpCenter/constants'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import {
     FileUpload,
     useFileUpload,
 } from 'pages/settings/helpCenter/hooks/useFileUpload'
-import {useHelpCenterActions} from 'pages/settings/helpCenter/hooks/useHelpCenterActions'
-import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import { useHelpCenterActions } from 'pages/settings/helpCenter/hooks/useHelpCenterActions'
+import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {
     HelpCenterTheme,
     isHelpCenterTheme,
 } from 'pages/settings/helpCenter/types'
-
 import settingsCss from 'pages/settings/settings.less'
-import {Client, Components} from 'rest_api/help_center_api/client.generated'
+import { Client, Components } from 'rest_api/help_center_api/client.generated'
+import { hasNestedCategories } from 'state/entities/helpCenter/categories'
+import { helpCenterUpdated } from 'state/entities/helpCenter/helpCenters/actions'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { getViewLanguage } from 'state/ui/helpCenter'
+import { reportError } from 'utils/errors'
 
-import {hasNestedCategories} from 'state/entities/helpCenter/categories'
-import {helpCenterUpdated} from 'state/entities/helpCenter/helpCenters/actions'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {getViewLanguage} from 'state/ui/helpCenter'
-import {reportError} from 'utils/errors'
-
-import {FontSelectField} from '../../../common/FontSelectField/FontSelectField'
-import {HelpCenterLayout, isHelpCenterLayout} from '../../types/layout.enum'
-import {getHelpCenterLayout} from '../../utils/helpCenter.utils'
+import { FontSelectField } from '../../../common/FontSelectField/FontSelectField'
+import { HelpCenterLayout, isHelpCenterLayout } from '../../types/layout.enum'
+import { getHelpCenterLayout } from '../../utils/helpCenter.utils'
 import HelpCenterPageWrapper from '../HelpCenterPageWrapper'
-import {ImageRepositioningModal} from '../ImageRepositioningModal'
-import {ImageUpload} from '../ImageUpload'
+import { ImageRepositioningModal } from '../ImageRepositioningModal'
+import { ImageUpload } from '../ImageUpload'
+import { LanguageSelect } from '../LanguageSelect/LanguageSelect'
+import { LayoutSwitch } from '../LayoutSwitch'
+import { RepositionableImageUpload } from '../RepositionableImageUpload/RepositionableImageUpload'
+import { ThemeSwitch } from '../ThemeSwitch'
+import { UpdateToggle } from '../UpdateToggle'
 
-import {LanguageSelect} from '../LanguageSelect/LanguageSelect'
-import {LayoutSwitch} from '../LayoutSwitch'
-import {RepositionableImageUpload} from '../RepositionableImageUpload/RepositionableImageUpload'
-import {ThemeSwitch} from '../ThemeSwitch'
-import {UpdateToggle} from '../UpdateToggle'
 import css from './HelpCenterAppearanceView.less'
 
 export const HelpCenterAppearanceView: React.FC = () => {
     const dispatch = useAppDispatch()
     const helpCenter = useCurrentHelpCenter()
-    const {fetchHelpCenterTranslations} = useHelpCenterActions()
-    const {client} = useHelpCenterApi()
+    const { fetchHelpCenterTranslations } = useHelpCenterActions()
+    const { client } = useHelpCenterApi()
     const helpCenterTheme: HelpCenterTheme =
         helpCenter.theme && isHelpCenterTheme(helpCenter.theme)
             ? helpCenter.theme
@@ -95,7 +92,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
 
     const translation = useMemo(() => {
         return helpCenter.translations?.find(
-            (t) => t.locale === selectedLanguage
+            (t) => t.locale === selectedLanguage,
         )
     }, [helpCenter.translations, selectedLanguage])
 
@@ -163,7 +160,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
     }) => {
         if (client && helpCenter) {
             try {
-                const {updatedTranslation} = await callback()
+                const { updatedTranslation } = await callback()
 
                 const translations = helpCenter.translations?.map(
                     (translation) =>
@@ -177,21 +174,21 @@ export const HelpCenterAppearanceView: React.FC = () => {
                                     banner_image_vertical_offset:
                                         updatedTranslation.banner_image_vertical_offset,
                                 }
-                              : translation
+                              : translation,
                 )
 
                 dispatch(
                     helpCenterUpdated({
                         ...helpCenter,
                         translations,
-                    })
+                    }),
                 )
 
                 void dispatch(
                     notify({
                         message: 'Help Center updated with success',
                         status: NotificationStatus.Success,
-                    })
+                    }),
                 )
             } catch (err) {
                 const errorMessage =
@@ -203,7 +200,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
                     notify({
                         message: `Failed to update the Help Center: ${errorMessage}`,
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
 
                 reportError(err as Error)
@@ -228,18 +225,19 @@ export const HelpCenterAppearanceView: React.FC = () => {
                 payload.brand_logo_light_url = await getFileUploadURL(lightLogo)
                 payload.favicon_url = await getFileUploadURL(favicon)
 
-                const {data: updateHelpCenter} = await client.updateHelpCenter(
-                    {
-                        help_center_id: helpCenter.id,
-                    },
-                    payload
-                )
+                const { data: updateHelpCenter } =
+                    await client.updateHelpCenter(
+                        {
+                            help_center_id: helpCenter.id,
+                        },
+                        payload,
+                    )
 
                 let translations = helpCenter.translations
 
                 if (isBannerTextUpdated || bannerImage.isTouched) {
                     const bannerImageUrl = await getFileUploadURL(bannerImage)
-                    const {data: updatedTranslation} =
+                    const { data: updatedTranslation } =
                         await client.updateHelpCenterTranslation(
                             {
                                 help_center_id: helpCenter.id,
@@ -248,18 +246,20 @@ export const HelpCenterAppearanceView: React.FC = () => {
                             {
                                 banner_text: bannerText,
                                 banner_image_url: bannerImageUrl,
-                            }
+                            },
                         )
 
                     translations = helpCenter.translations?.map(
                         (translation) =>
                             translation.locale === updatedTranslation.locale
                                 ? updatedTranslation
-                                : translation
+                                : translation,
                     )
                 }
 
-                dispatch(helpCenterUpdated({...updateHelpCenter, translations}))
+                dispatch(
+                    helpCenterUpdated({ ...updateHelpCenter, translations }),
+                )
 
                 discardAllFiles()
 
@@ -267,7 +267,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
                     notify({
                         message: 'Help Center updated with success',
                         status: NotificationStatus.Success,
-                    })
+                    }),
                 )
             } catch (err) {
                 const errorMessage =
@@ -279,7 +279,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
                     notify({
                         message: `Failed to update the Help Center: ${errorMessage}`,
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
 
                 reportError(err as Error)
@@ -370,7 +370,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
 
     const getImageUploadHighlightText = (
         upload: FileUpload,
-        currentImage?: string | null
+        currentImage?: string | null,
     ) => {
         return (upload.isTouched && upload.payload) ||
             (!upload.isTouched && currentImage)
@@ -381,9 +381,9 @@ export const HelpCenterAppearanceView: React.FC = () => {
     const saveBannerImage = async (
         locale: LocaleCode,
         bannerImageUrl: string | null | undefined,
-        offset: number
+        offset: number,
     ) => {
-        const {data: updatedTranslation} = await (
+        const { data: updatedTranslation } = await (
             client as Client
         ).updateHelpCenterTranslation(
             {
@@ -393,7 +393,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
             {
                 banner_image_url: bannerImageUrl,
                 banner_image_vertical_offset: offset,
-            }
+            },
         )
         return updatedTranslation
     }
@@ -435,7 +435,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
                         helpTextProps={{
                             highlight: getImageUploadHighlightText(
                                 primaryLogo,
-                                helpCenter.brand_logo_url
+                                helpCenter.brand_logo_url,
                             ),
                             text: ' - recommended size 1640 x 624',
                             className: css.imageUpload,
@@ -453,7 +453,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
                         helpTextProps={{
                             highlight: getImageUploadHighlightText(
                                 lightLogo,
-                                helpCenter.brand_logo_light_url
+                                helpCenter.brand_logo_light_url,
                             ),
                             text: ' - recommended size 1640 x 624',
                             className: css.imageUpload,
@@ -567,7 +567,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
                     helpTextProps={{
                         highlight: getImageUploadHighlightText(
                             bannerImage,
-                            bannerImageUrl
+                            bannerImageUrl,
                         ),
                         text: 'Recommended file size: 2500px wide, 500KB or less. Max file size: 10MB.',
                     }}
@@ -575,7 +575,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
                     inputRef={bannerInputRef}
                     onSubmit={async (offset: number) => {
                         const callback = async () => {
-                            const {data: updatedTranslation} = await (
+                            const { data: updatedTranslation } = await (
                                 client as Client
                             ).updateHelpCenterTranslation(
                                 {
@@ -584,10 +584,10 @@ export const HelpCenterAppearanceView: React.FC = () => {
                                 },
                                 {
                                     banner_image_vertical_offset: offset,
-                                }
+                                },
                             )
 
-                            return {updatedTranslation}
+                            return { updatedTranslation }
                         }
                         await bannerImageSubmitWrapper({
                             callback: callback,
@@ -616,7 +616,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
                                             ? helpCenter.translations.filter(
                                                   (x) =>
                                                       x.locale !==
-                                                      selectedLanguage
+                                                      selectedLanguage,
                                               )
                                             : []
 
@@ -624,7 +624,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
                                         await saveBannerImage(
                                             translation.locale,
                                             bannerImageUrl,
-                                            offset
+                                            offset,
                                         )
                                     }
                                 }
@@ -633,10 +633,10 @@ export const HelpCenterAppearanceView: React.FC = () => {
                                     await saveBannerImage(
                                         selectedLanguage,
                                         bannerImageUrl,
-                                        offset
+                                        offset,
                                     )
 
-                                return {updatedTranslation}
+                                return { updatedTranslation }
                             } finally {
                                 setIsSavingBannerImage(false)
                             }

@@ -1,8 +1,9 @@
-import {Label, Badge, BadgeIcon} from '@gorgias/merchant-ui-kit'
-import React, {useCallback, useRef, useState} from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 
-import {SegmentEvent} from 'common/segment'
-import {logEventWithSampling} from 'common/segment/segment'
+import { Badge, BadgeIcon, Label } from '@gorgias/merchant-ui-kit'
+
+import { SegmentEvent } from 'common/segment'
+import { logEventWithSampling } from 'common/segment/segment'
 import {
     ReportIssueLabels,
     ReportIssueOption,
@@ -21,8 +22,8 @@ const reportIssueOptions = Object.entries(ReportIssueLabels).map(
     ([value, label]) => ({
         value,
         label,
-    })
-) as {value: ReportIssueOption; label: string}[]
+    }),
+) as { value: ReportIssueOption; label: string }[]
 
 type Props = {
     value: ReportIssueOption[]
@@ -47,14 +48,14 @@ const ReportIssueSelect: React.FC<Props> = ({
         onChange(
             value.includes(item)
                 ? value.filter((v) => v !== item)
-                : [...value, item]
+                : [...value, item],
         )
         logEventWithSampling(
             SegmentEvent.AiAgentFeedbackReportIssueSelectAddOption,
             {
                 accountId,
                 value: item,
-            }
+            },
         )
     }
 
@@ -66,7 +67,7 @@ const ReportIssueSelect: React.FC<Props> = ({
             {
                 accountId,
                 value: item,
-            }
+            },
         )
     }
 
@@ -82,11 +83,11 @@ const ReportIssueSelect: React.FC<Props> = ({
                     SegmentEvent.AiAgentFeedbackReportIssueSelectClicked,
                     {
                         accountId,
-                    }
+                    },
                 )
             }
         },
-        [onClose, isOpen, accountId]
+        [onClose, isOpen, accountId],
     )
 
     return (

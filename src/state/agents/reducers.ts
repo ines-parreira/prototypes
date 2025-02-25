@@ -1,17 +1,16 @@
-import {fromJS, Map, List} from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 import _isEqual from 'lodash/isEqual'
 
-import {UserRole, User} from 'config/types/user'
+import { User, UserRole } from 'config/types/user'
 
 import {
     FeedbackStatus,
     ResourceSection,
 } from '../../pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import * as currentUserConstants from '../currentUser/constants'
-import {StoreAction} from '../types'
-
+import { StoreAction } from '../types'
 import * as agentsConstants from './constants'
-import {AgentsState} from './types'
+import { AgentsState } from './types'
 
 export type MessageFeedbackStatusAction = {
     resourceType: ResourceSection
@@ -28,12 +27,12 @@ export const initialState: AgentsState = fromJS({
 
 export default function reducer(
     state: AgentsState = initialState,
-    action: StoreAction
+    action: StoreAction,
 ): AgentsState {
     switch (action.type) {
         case agentsConstants.CREATE_AGENT_SUCCESS: {
             return state.update('all', (agents) =>
-                (agents as List<any>).push(fromJS(action.resp))
+                (agents as List<any>).push(fromJS(action.resp)),
             )
         }
 
@@ -44,7 +43,7 @@ export default function reducer(
             if (_isEqual(action.roles, Object.values(UserRole))) {
                 newState = newState.set(
                     'all',
-                    fromJS((action.resp as {data: unknown}).data)
+                    fromJS((action.resp as { data: unknown }).data),
                 )
             }
 
@@ -69,8 +68,8 @@ export default function reducer(
             return state.update('all', (agents: List<any>) =>
                 agents.filter(
                     (user: Map<any, any>) =>
-                        String(user.get('id')) !== String(action.id)
-                )
+                        String(user.get('id')) !== String(action.id),
+                ),
             )
         }
 
@@ -91,7 +90,7 @@ export default function reducer(
             const existingAgentIndex = (
                 state.get('all') as List<any>
             ).findIndex(
-                (user: Map<any, any>) => user.get('id') === agent.get('id')
+                (user: Map<any, any>) => user.get('id') === agent.get('id'),
             )
 
             if (!~existingAgentIndex) {
@@ -102,7 +101,7 @@ export default function reducer(
         }
 
         case agentsConstants.SET_AGENT_FEEDBACK_MESSAGE_STATUS: {
-            const {resourceType, status} =
+            const { resourceType, status } =
                 action.data as MessageFeedbackStatusAction
             // const feedbackStatusData = fromJS(action.data) as Map<string, unknown>;
 
@@ -112,11 +111,11 @@ export default function reducer(
                     messageFeedbackStatus: Record<
                         ResourceSection,
                         FeedbackStatus
-                    >
+                    >,
                 ) => ({
                     ...messageFeedbackStatus,
                     [resourceType]: status,
-                })
+                }),
             )
         }
 

@@ -4,16 +4,16 @@ import {
     SavedFilter,
     SavedFilterDraft,
 } from 'models/stat/types'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import {
-    getScoreLabelByValue,
-    getScoreLabelsAndValues,
-    getFilterError,
-    getValidMemberName,
-    isFilterApplicable,
     areFiltersApplicable,
     createFilterOptions,
     filterValidOptions,
+    getFilterError,
+    getScoreLabelByValue,
+    getScoreLabelsAndValues,
+    getValidMemberName,
+    isFilterApplicable,
     NON_EXISTENT_VALUES_WARNING_MESSAGE,
 } from 'pages/stats/common/filters/utils'
 
@@ -76,22 +76,22 @@ describe('getFilterError', () => {
     const mockOptions = [
         {
             options: [
-                {label: 'Option 1', value: 'option1'},
-                {label: 'Option 2', value: 'option2'},
+                { label: 'Option 1', value: 'option1' },
+                { label: 'Option 2', value: 'option2' },
             ],
         },
         {
             options: [
-                {label: 'Option 3', value: 'option3'},
-                {label: 'Option 4', value: 'option4'},
+                { label: 'Option 3', value: 'option3' },
+                { label: 'Option 4', value: 'option4' },
             ],
         },
     ]
 
     it('should return undefined when all selected options exist in the available options', () => {
         const selectedOptions = [
-            {label: 'Option 1', value: 'option1'},
-            {label: 'Option 3', value: 'option3'},
+            { label: 'Option 1', value: 'option1' },
+            { label: 'Option 3', value: 'option3' },
         ]
 
         const result = getFilterError({
@@ -107,8 +107,8 @@ describe('getFilterError', () => {
 
     it('should return error message when one selected option does not exist', () => {
         const selectedOptions = [
-            {label: 'Option 1', value: 'option1'},
-            {label: 'Option 5', value: 'option5'},
+            { label: 'Option 1', value: 'option1' },
+            { label: 'Option 5', value: 'option5' },
         ]
 
         const result = getFilterError({
@@ -124,9 +124,9 @@ describe('getFilterError', () => {
 
     it('should return error message when multiple selected options do not exist', () => {
         const selectedOptions = [
-            {label: 'Option 1', value: 'option1'},
-            {label: 'Option 5', value: 'option5'},
-            {label: 'Option 6', value: 'option6'},
+            { label: 'Option 1', value: 'option1' },
+            { label: 'Option 5', value: 'option5' },
+            { label: 'Option 6', value: 'option6' },
         ]
 
         const result = getFilterError({
@@ -154,8 +154,8 @@ describe('getFilterError', () => {
 
     it('should return undefined if no options are provided', () => {
         const selectedOptions = [
-            {label: 'Option 1', value: 'option1'},
-            {label: 'Option 3', value: 'option3'},
+            { label: 'Option 1', value: 'option1' },
+            { label: 'Option 3', value: 'option3' },
         ]
 
         const result = getFilterError({
@@ -170,7 +170,7 @@ describe('getFilterError', () => {
     })
 
     it('should handle the case where selectedOptions is an empty array', () => {
-        const selectedOptions: {label: string; value: string}[] = []
+        const selectedOptions: { label: string; value: string }[] = []
 
         const result = getFilterError({
             options: mockOptions,
@@ -184,8 +184,8 @@ describe('getFilterError', () => {
     })
 
     it('should handle empty options group', () => {
-        const emptyOptions = [{options: []}]
-        const selectedOptions = [{label: 'Option 1', value: 'option1'}]
+        const emptyOptions = [{ options: [] }]
+        const selectedOptions = [{ label: 'Option 1', value: 'option1' }]
 
         const result = getFilterError({
             options: emptyOptions,
@@ -300,13 +300,13 @@ describe('isFilterApplicable', () => {
 describe('getValidMemberName', () => {
     it('should return integrations for Store key', () => {
         expect(getValidMemberName(FilterComponentKey.Store)).toEqual(
-            FilterKey.Integrations
+            FilterKey.Integrations,
         )
     })
 
     it('should return integrations for PhoneIntegration key', () => {
         expect(
-            getValidMemberName(FilterComponentKey.PhoneIntegrations)
+            getValidMemberName(FilterComponentKey.PhoneIntegrations),
         ).toEqual(FilterKey.Integrations)
     })
 
@@ -316,7 +316,7 @@ describe('getValidMemberName', () => {
 
     it('should return CustomFields for CustomField key', () => {
         expect(getValidMemberName(FilterComponentKey.CustomField)).toEqual(
-            FilterKey.CustomFields
+            FilterKey.CustomFields,
         )
     })
 })
@@ -430,8 +430,8 @@ describe('areFiltersApplicable function', () => {
 
 describe('createFilterOptions', () => {
     const tagsMapping = {
-        '1': {name: 'tag1'},
-        '2': {name: 'tag2'},
+        '1': { name: 'tag1' },
+        '2': { name: 'tag2' },
     }
 
     const existingTagIds = Object.keys(tagsMapping).map(Number)
@@ -440,8 +440,8 @@ describe('createFilterOptions', () => {
         const actual = createFilterOptions(existingTagIds, tagsMapping)
 
         const expected = [
-            {value: '1', label: tagsMapping[1].name},
-            {value: '2', label: tagsMapping[2].name},
+            { value: '1', label: tagsMapping[1].name },
+            { value: '2', label: tagsMapping[2].name },
         ]
 
         expect(actual).toEqual(expected)
@@ -454,7 +454,7 @@ describe('createFilterOptions', () => {
 
         const actual = createFilterOptions(missingTagIds, tagsMapping)
 
-        const expected = [{value: String(missingTagId), label: undefined}]
+        const expected = [{ value: String(missingTagId), label: undefined }]
 
         expect(actual).toEqual(expected)
     })
@@ -463,11 +463,11 @@ describe('createFilterOptions', () => {
 describe('filterValidOptions', () => {
     it('should return only options with a label', () => {
         const validOptions = [
-            {value: '1', label: 'tag1'},
-            {value: '2', label: 'tag2'},
+            { value: '1', label: 'tag1' },
+            { value: '2', label: 'tag2' },
         ]
 
-        const invalidOption = {value: '3', label: undefined}
+        const invalidOption = { value: '3', label: undefined }
 
         const options = [...validOptions, invalidOption]
 

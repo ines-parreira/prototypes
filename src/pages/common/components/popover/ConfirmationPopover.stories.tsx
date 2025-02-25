@@ -1,6 +1,7 @@
-import {action} from '@storybook/addon-actions'
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { action } from '@storybook/addon-actions'
+import { Meta, Story } from '@storybook/react'
 
 import IconButton from 'pages/common/components/button/IconButton'
 
@@ -41,7 +42,7 @@ const Template: Story<ComponentProps<typeof ConfirmationPopover>> = (props) => (
             action('clicked!')()
         }}
     >
-        {({uid, onDisplayConfirmation, elementRef}) => (
+        {({ uid, onDisplayConfirmation, elementRef }) => (
             <IconButton
                 id={uid}
                 onClick={onDisplayConfirmation}
@@ -54,7 +55,7 @@ const Template: Story<ComponentProps<typeof ConfirmationPopover>> = (props) => (
 )
 
 const FormTemplate: Story<ComponentProps<typeof ConfirmationPopover>> = (
-    props
+    props,
 ) => (
     <form
         onSubmit={(e) => {
@@ -63,7 +64,7 @@ const FormTemplate: Story<ComponentProps<typeof ConfirmationPopover>> = (
         }}
     >
         <ConfirmationPopover {...props}>
-            {({uid, onDisplayConfirmation, elementRef}) => (
+            {({ uid, onDisplayConfirmation, elementRef }) => (
                 <IconButton
                     id={uid}
                     onClick={onDisplayConfirmation}
@@ -83,7 +84,7 @@ const templateParameters = {
 }
 
 const defaultProps: Partial<ComponentProps<typeof ConfirmationPopover>> = {
-    buttonProps: {type: 'button'},
+    buttonProps: { type: 'button' },
     content: 'Are you sure?',
     placement: 'bottom',
     title: "I'm a title",
@@ -94,7 +95,7 @@ Main.args = defaultProps
 Main.parameters = templateParameters
 
 export const WithinForm = FormTemplate.bind({})
-WithinForm.args = {...defaultProps, buttonProps: {type: 'submit'}}
+WithinForm.args = { ...defaultProps, buttonProps: { type: 'submit' } }
 WithinForm.parameters = templateParameters
 
 export default storyConfig

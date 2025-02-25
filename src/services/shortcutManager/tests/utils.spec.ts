@@ -14,8 +14,8 @@ describe('shortcutManager utils', () => {
             expect(
                 utils.closest(
                     fragment.querySelector('.pepperoni') as Element,
-                    '.pizza'
-                )
+                    '.pizza',
+                ),
             ).toBe(fragment?.querySelector('.pizza'))
         })
 
@@ -23,8 +23,8 @@ describe('shortcutManager utils', () => {
             expect(
                 utils.closest(
                     fragment.querySelector('.pepperoni') as Element,
-                    '.test'
-                )
+                    '.test',
+                ),
             ).toBe(null)
         })
     })

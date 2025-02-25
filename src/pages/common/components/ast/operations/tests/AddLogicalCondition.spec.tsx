@@ -1,8 +1,9 @@
-import {render} from '@testing-library/react'
-import {fromJS, Map} from 'immutable'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {toJS} from 'utils'
+import { render } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
+
+import { toJS } from 'utils'
 
 import AddLogicalCondition from '../AddLogicalCondition'
 
@@ -25,7 +26,7 @@ describe('AddLogicalCondition component', () => {
             },
         }) as Map<any, any>
 
-        const {container} = render(
+        const { container } = render(
             <AddLogicalCondition
                 {...commonProps}
                 actions={{
@@ -37,7 +38,7 @@ describe('AddLogicalCondition component', () => {
                         >) || fromJS({}),
                 }}
                 rule={rule}
-            />
+            />,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -56,7 +57,7 @@ describe('AddLogicalCondition component', () => {
             },
         }) as Map<any, any>
 
-        const {container} = render(
+        const { container } = render(
             <AddLogicalCondition
                 {...commonProps}
                 actions={{
@@ -68,7 +69,7 @@ describe('AddLogicalCondition component', () => {
                         >) || fromJS({}),
                 }}
                 rule={rule}
-            />
+            />,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -87,7 +88,7 @@ describe('AddLogicalCondition component', () => {
             },
         }) as Map<any, any>
 
-        const {container} = render(
+        const { container } = render(
             <AddLogicalCondition
                 {...commonProps}
                 actions={{
@@ -99,7 +100,7 @@ describe('AddLogicalCondition component', () => {
                         >) || fromJS({}),
                 }}
                 rule={rule}
-            />
+            />,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -121,7 +122,7 @@ describe('AddLogicalCondition component', () => {
             },
         }) as Map<any, any>
 
-        const {container} = render(
+        const { container } = render(
             <AddLogicalCondition
                 {...commonProps}
                 actions={{
@@ -133,7 +134,7 @@ describe('AddLogicalCondition component', () => {
                         >) || fromJS({}),
                 }}
                 rule={rule}
-            />
+            />,
         )
 
         expect(container.firstChild).toMatchSnapshot()

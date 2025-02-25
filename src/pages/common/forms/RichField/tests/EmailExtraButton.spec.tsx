@@ -1,14 +1,14 @@
-import {render, fireEvent, RenderResult} from '@testing-library/react'
-import {ContentState, EditorState} from 'draft-js'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {TicketChannel} from '../../../../../business/types/ticket'
-import {ticket} from '../../../../../fixtures/ticket'
-import {addEmailExtra} from '../../../../../state/newMessage/actions'
-import {ReplyThreadMessage} from '../../../../../state/newMessage/emailExtraUtils'
+import { fireEvent, render, RenderResult } from '@testing-library/react'
+import { ContentState, EditorState } from 'draft-js'
+import { fromJS } from 'immutable'
 
-import {EmailExtraButtonContainer} from '../EmailExtraButton'
+import { TicketChannel } from '../../../../../business/types/ticket'
+import { ticket } from '../../../../../fixtures/ticket'
+import { addEmailExtra } from '../../../../../state/newMessage/actions'
+import { ReplyThreadMessage } from '../../../../../state/newMessage/emailExtraUtils'
+import { EmailExtraButtonContainer } from '../EmailExtraButton'
 
 // mock random key generation so they match from a snapshot to the other
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
@@ -32,92 +32,92 @@ const defaultProps: ComponentProps<typeof EmailExtraButtonContainer> = {
     ticket: fromJS(ticket),
 }
 
-const getEllipsisButton = ({getByTitle}: RenderResult) =>
+const getEllipsisButton = ({ getByTitle }: RenderResult) =>
     getByTitle('Show trimmed content')
 
 describe('<EmailExtraButton />', () => {
     const replyThreadMessage = ticket.messages[0] as ReplyThreadMessage
 
     it('should render the email extra button', () => {
-        const {container} = render(
-            <EmailExtraButtonContainer {...defaultProps} />
+        const { container } = render(
+            <EmailExtraButtonContainer {...defaultProps} />,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should not render the email extra button if signature is not set', () => {
-        const {container} = render(
+        const { container } = render(
             <EmailExtraButtonContainer
                 {...defaultProps}
                 signature={fromJS({})}
-            />
+            />,
         )
         expect(container.firstChild).toBe(null)
     })
 
     it('should not render the email extra button if signature is empty', () => {
-        const {container} = render(
+        const { container } = render(
             <EmailExtraButtonContainer
                 {...defaultProps}
                 signature={fromJS({
                     body: '<div><br></div>',
                 })}
-            />
+            />,
         )
         expect(container.firstChild).toBe(null)
     })
 
     it('should not render the email extra button if channel is not email', () => {
-        const {container} = render(
+        const { container } = render(
             <EmailExtraButtonContainer
                 {...defaultProps}
                 newMessageChannel={TicketChannel.Aircall}
-            />
+            />,
         )
         expect(container.firstChild).toBe(null)
     })
 
     it('should not render the email extra button if new message is not public', () => {
-        const {container} = render(
+        const { container } = render(
             <EmailExtraButtonContainer
                 {...defaultProps}
                 isNewMessagePublic={false}
-            />
+            />,
         )
         expect(container.firstChild).toBe(null)
     })
 
     it('should render the email extra button when only reply thread is available', () => {
-        const {container} = render(
+        const { container } = render(
             <EmailExtraButtonContainer
                 {...defaultProps}
                 signature={fromJS({})}
                 ticketMessages={fromJS([replyThreadMessage])}
-            />
+            />,
         )
         expect(container.firstChild).not.toBe(null)
     })
 
     it('should render the email extra button when signature has only text', () => {
-        const {container} = render(
+        const { container } = render(
             <EmailExtraButtonContainer
                 {...defaultProps}
                 signature={fromJS({
                     text: defaultSignature.text,
                 })}
-            />
+            />,
         )
         expect(container.firstChild).not.toBe(null)
     })
 
     it('should render the email extra button when signature has only html', () => {
-        const {container} = render(
+        const { container } = render(
             <EmailExtraButtonContainer
                 {...defaultProps}
                 signature={fromJS({
                     html: defaultSignature.html,
                 })}
-            />
+            />,
         )
         expect(container.firstChild).not.toBe(null)
     })
@@ -125,37 +125,37 @@ describe('<EmailExtraButton />', () => {
     describe('signature in the content', () => {
         const contentStateWithSignature = ContentState.createFromText(
             `some content\n\n${defaultProps.signature.get('text') as string}`,
-            '%%'
+            '%%',
         )
 
         it('should hide the button when signature is in the content', () => {
-            const {container} = render(
+            const { container } = render(
                 <EmailExtraButtonContainer
                     {...defaultProps}
                     editorState={EditorState.createWithContent(
-                        contentStateWithSignature
+                        contentStateWithSignature,
                     )}
-                />
+                />,
             )
             expect(container.firstChild).toBe(null)
         })
 
         it('should not hide the button when signature reply thread is available', () => {
-            const {container} = render(
+            const { container } = render(
                 <EmailExtraButtonContainer
                     {...defaultProps}
                     editorState={EditorState.createWithContent(
-                        contentStateWithSignature
+                        contentStateWithSignature,
                     )}
                     ticketMessages={fromJS([replyThreadMessage])}
-                />
+                />,
             )
             expect(container.firstChild).not.toBe(null)
         })
     })
 
     it('should not display the button if email extra was added to new message', () => {
-        const {container} = render(
+        const { container } = render(
             <EmailExtraButtonContainer
                 {...defaultProps}
                 signature={fromJS({
@@ -163,7 +163,7 @@ describe('<EmailExtraButton />', () => {
                 })}
                 ticketMessages={fromJS([replyThreadMessage])}
                 isNewMessageEmailExtraAdded
-            />
+            />,
         )
         expect(container.firstChild).toBe(null)
     })
@@ -173,7 +173,7 @@ describe('<EmailExtraButton />', () => {
             <EmailExtraButtonContainer
                 {...defaultProps}
                 ticketMessages={fromJS([replyThreadMessage])}
-            />
+            />,
         )
         fireEvent.click(getEllipsisButton(renderResult))
         expect(addEmailExtraMock.mock.calls).toMatchSnapshot()

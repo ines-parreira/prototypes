@@ -1,14 +1,15 @@
-import {Meta, StoryFn} from '@storybook/react'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { Meta, StoryFn } from '@storybook/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {HelpCenter} from 'models/helpCenter/types'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { HelpCenter } from 'models/helpCenter/types'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import HelpCenterFilter from 'pages/stats/common/filters/HelpCenterFilter'
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
 
 const mockStore = {
     entities: {
@@ -19,7 +20,7 @@ const mockStore = {
                         acc[hCenter.id] = hCenter
                         return acc
                     },
-                    {}
+                    {},
                 ),
             },
         },

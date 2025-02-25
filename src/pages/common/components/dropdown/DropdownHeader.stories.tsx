@@ -1,6 +1,7 @@
-import {Meta, Story} from '@storybook/react'
+import React, { ComponentProps, useRef, useState } from 'react'
+
+import { Meta, Story } from '@storybook/react'
 import _noop from 'lodash/noop'
-import React, {ComponentProps, useRef, useState} from 'react'
 
 import Button from 'pages/common/components/button/Button'
 
@@ -15,11 +16,11 @@ const storyConfig: Meta = {
 }
 
 const DefaultTemplate: Story<ComponentProps<typeof DropdownHeader>> = (
-    props
+    props,
 ) => <DropdownHeader {...props} />
 
 const ExampleTemplate: Story<ComponentProps<typeof DropdownHeader>> = (
-    props
+    props,
 ) => {
     const [isOpen, setIsOpen] = useState(false)
     const buttonRef = useRef<HTMLButtonElement>(null)
@@ -68,6 +69,9 @@ export const Default = DefaultTemplate.bind({})
 Default.args = defaultProps
 
 export const Example = ExampleTemplate.bind({})
-Example.args = {...defaultProps, onClick: () => console.warn(`Header clicked!`)}
+Example.args = {
+    ...defaultProps,
+    onClick: () => console.warn(`Header clicked!`),
+}
 
 export default storyConfig

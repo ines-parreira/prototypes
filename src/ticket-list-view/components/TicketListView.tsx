@@ -1,6 +1,3 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import cn from 'classnames'
-import {fromJS} from 'immutable'
 import React, {
     Children,
     cloneElement,
@@ -13,10 +10,15 @@ import React, {
     useMemo,
     useRef,
 } from 'react'
-import {CSSTransition, TransitionGroup} from 'react-transition-group'
-import {Components, Virtuoso, VirtuosoHandle} from 'react-virtuoso'
 
-import {useDesktopOnlyShowGlobalNavFeatureFlag} from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
+import cn from 'classnames'
+import { fromJS } from 'immutable'
+import { CSSTransition, TransitionGroup } from 'react-transition-group'
+import { Components, Virtuoso, VirtuosoHandle } from 'react-virtuoso'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import IconButton from 'pages/common/components/button/IconButton'
@@ -25,28 +27,31 @@ import {
     SplitTicketViewToggle,
     useSplitTicketView,
 } from 'split-ticket-view-toggle'
-import {setViewActive, setViewEditMode} from 'state/views/actions'
-import {getViewCount, getViewPlainJS} from 'state/views/selectors'
-import type {OnToggleUnreadFn} from 'tickets/pages/SplitTicketPage'
+import { setViewActive, setViewEditMode } from 'state/views/actions'
+import { getViewCount, getViewPlainJS } from 'state/views/selectors'
+import type { OnToggleUnreadFn } from 'tickets/pages/SplitTicketPage'
 
-import {TICKET_HEIGHT} from '../constants'
+import { TICKET_HEIGHT } from '../constants'
 import useScrollActiveTicketIntoView from '../hooks/useScrollActiveTicketIntoView'
 import useSelection from '../hooks/useSelection'
-import useSortOrder, {SortOrder} from '../hooks/useSortOrder'
+import useSortOrder, { SortOrder } from '../hooks/useSortOrder'
 import useTickets from '../hooks/useTickets'
-import {TicketSummary} from '../types'
-
+import { TicketSummary } from '../types'
 import BulkActions from './bulk-actions/BulkActions'
-import {Action} from './bulk-actions/types'
+import { Action } from './bulk-actions/types'
 import InvalidFiltersAction from './InvalidFiltersAction'
 import SortOrderDropdown from './SortOrderDropdown'
 import Ticket from './Ticket'
 import TicketListInfo from './TicketListInfo'
-import css from './TicketListView.less'
 import ViewDecoration from './ViewDecoration'
 
+import css from './TicketListView.less'
+
 export const listInfoProps = {
-    DEFAULT: {text: 'No tickets', subText: 'There are no tickets in this view'},
+    DEFAULT: {
+        text: 'No tickets',
+        subText: 'There are no tickets in this view',
+    },
     INVALID_FILTERS: {
         text: 'Invalid filters',
         subText: `This view is deactivated because at least one of its filters is invalid.\nPlease review its filters, and either fix them or delete this view.`,
@@ -93,10 +98,10 @@ export default function TicketListView({
         pauseUpdates,
         resumeUpdates,
     } = useTickets(viewId, sortOrder, activeTicketId, registerToggleUnread)
-    const {setIsEnabled: setSplitTicketView, setShouldRedirectToSplitView} =
+    const { setIsEnabled: setSplitTicketView, setShouldRedirectToSplitView } =
         useSplitTicketView()
 
-    const {hasSelectedAll, onSelect, onSelectAll, selectedTickets, clear} =
+    const { hasSelectedAll, onSelect, onSelectAll, selectedTickets, clear } =
         useSelection(tickets)
 
     const initialLoadedRef = useRef(initialLoaded)
@@ -141,7 +146,7 @@ export default function TicketListView({
             onSelect,
             selectedTickets,
             viewId,
-        ]
+        ],
     )
 
     const setScrollerRef = useCallback(
@@ -150,7 +155,7 @@ export default function TicketListView({
 
             setElement(ref as HTMLElement)
         },
-        [setElement]
+        [setElement],
     )
 
     const ticketListInfoProps = useMemo(
@@ -160,7 +165,7 @@ export default function TicketListView({
                 : isViewNull
                   ? listInfoProps.INACCESSIBLE
                   : listInfoProps.DEFAULT,
-        [areViewFiltersInvalid, isViewNull]
+        [areViewFiltersInvalid, isViewNull],
     )
 
     const goToViewEdition = useCallback(() => {
@@ -177,13 +182,13 @@ export default function TicketListView({
             ) {
                 bulkToggleUnread(
                     Object.keys(selectedTickets).map(Number),
-                    action === Action.MarkAsUnread
+                    action === Action.MarkAsUnread,
                 )
             }
 
             clear()
         },
-        [bulkToggleUnread, clear, selectedTickets]
+        [bulkToggleUnread, clear, selectedTickets],
     )
 
     const virtuosoComponents: Components = {
@@ -205,13 +210,13 @@ export default function TicketListView({
                             ? false
                             : !!ticketIds.current?.length &&
                               !ticketIds.current.includes(
-                                  child.props.ticket?.id
+                                  child.props.ticket?.id,
                               ),
                     })
                 })}
             </Fragment>
         ),
-        List: forwardRef<HTMLDivElement>(({children, ...props}, ref) => (
+        List: forwardRef<HTMLDivElement>(({ children, ...props }, ref) => (
             <div ref={ref} {...props}>
                 <TransitionGroup component={Fragment}>
                     {children as Array<ReactElement>}
@@ -229,13 +234,13 @@ export default function TicketListView({
         activeTicketId,
         tickets,
         ticketIds,
-        virtuosoRef
+        virtuosoRef,
     )
 
     const selectionCount = useMemo(
         () =>
             hasSelectedAll ? viewCount : Object.keys(selectedTickets).length,
-        [hasSelectedAll, selectedTickets, viewCount]
+        [hasSelectedAll, selectedTickets, viewCount],
     )
 
     return (
@@ -260,7 +265,7 @@ export default function TicketListView({
                     >
                         tune
                     </IconButton>
-                    <Tooltip target={editViewRef} innerProps={{fade: false}}>
+                    <Tooltip target={editViewRef} innerProps={{ fade: false }}>
                         Edit view
                     </Tooltip>
                     <SortOrderDropdown

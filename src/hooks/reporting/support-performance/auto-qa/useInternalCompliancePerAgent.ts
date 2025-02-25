@@ -2,28 +2,28 @@ import {
     fetchMetricPerDimension,
     useMetricPerDimension,
 } from 'hooks/reporting/useMetricPerDimension'
-import {OrderDirection} from 'models/api/types'
-import {internalCompliancePerAgentQueryFactory} from 'models/reporting/queryFactories/auto-qa/internalComplianceQueryFactory'
-import {StatsFilters} from 'models/stat/types'
+import { OrderDirection } from 'models/api/types'
+import { internalCompliancePerAgentQueryFactory } from 'models/reporting/queryFactories/auto-qa/internalComplianceQueryFactory'
+import { StatsFilters } from 'models/stat/types'
 
 export const useInternalCompliancePerAgent = (
     statsFilters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
-    agentAssigneeId?: string
+    agentAssigneeId?: string,
 ) =>
     useMetricPerDimension(
         internalCompliancePerAgentQueryFactory(statsFilters, timezone, sorting),
-        agentAssigneeId
+        agentAssigneeId,
     )
 
 export const fetchInternalCompliancePerAgent = (
     statsFilters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
-    agentAssigneeId?: string
+    agentAssigneeId?: string,
 ) =>
     fetchMetricPerDimension(
         internalCompliancePerAgentQueryFactory(statsFilters, timezone, sorting),
-        agentAssigneeId
+        agentAssigneeId,
     )

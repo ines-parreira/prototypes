@@ -1,22 +1,22 @@
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {TicketStatus} from 'business/types/ticket'
-import {logEvent, SegmentEvent, StatViewLinkClickedStat} from 'common/segment'
-import {getTicketViewField, getTicketViewFieldPath} from 'config/views'
-import {ViewField} from 'models/view/types'
+import { TicketStatus } from 'business/types/ticket'
+import { logEvent, SegmentEvent, StatViewLinkClickedStat } from 'common/segment'
+import { getTicketViewField, getTicketViewFieldPath } from 'config/views'
+import { ViewField } from 'models/view/types'
 import SourceIcon from 'pages/common/components/SourceIcon'
 import ViewLink from 'pages/stats/common//ViewLink'
-import {useStatsViewFilters} from 'pages/stats/common/utils'
-import {getChannels} from 'services/channels'
-import {EqualityOperator} from 'state/rules/types'
-import {humanizeChannel} from 'state/ticket/utils'
-import {ViewFilter} from 'state/views/types'
-import {reportError} from 'utils/errors'
+import { useStatsViewFilters } from 'pages/stats/common/utils'
+import { getChannels } from 'services/channels'
+import { EqualityOperator } from 'state/rules/types'
+import { humanizeChannel } from 'state/ticket/utils'
+import { ViewFilter } from 'state/views/types'
+import { reportError } from 'utils/errors'
 
 import css from './TicketDetailsStat.less'
 
 const ASSIGNEE_FILTER_LEFT = getTicketViewFieldPath(
-    getTicketViewField(ViewField.Assignee)
+    getTicketViewField(ViewField.Assignee),
 )
 
 const STATUS_FILTER = {
@@ -41,7 +41,7 @@ export default function TicketDetailsStat({
     channelsBreakdown,
 }: Props) {
     const periodFilterLeft = getTicketViewFieldPath(
-        getTicketViewField(ViewField.Closed)
+        getTicketViewField(ViewField.Closed),
     )
     const statsViewFilters = useStatsViewFilters(periodFilterLeft)
 
@@ -51,26 +51,26 @@ export default function TicketDetailsStat({
             operator: EqualityOperator.Eq,
             right: agentId,
         }),
-        [agentId]
+        [agentId],
     )
 
     const baseFilters = useMemo<ViewFilter[]>(() => {
         return statsViewFilters.filter(
             (filter) =>
                 filter.left !== periodFilterLeft &&
-                filter.left !== ASSIGNEE_FILTER_LEFT
+                filter.left !== ASSIGNEE_FILTER_LEFT,
         )
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [statsViewFilters])
 
     const openTicketsFilters = useMemo<ViewFilter[]>(
         () => [assigneeFilter, STATUS_FILTER, ...baseFilters],
-        [assigneeFilter, baseFilters]
+        [assigneeFilter, baseFilters],
     )
 
     const channelFilters = useMemo<Record<string, ViewFilter[]>>(() => {
         const channelFilterLeft = getTicketViewFieldPath(
-            getTicketViewField(ViewField.Channel)
+            getTicketViewField(ViewField.Channel),
         )
         return getChannels().reduce<Record<string, ViewFilter[]>>(
             (acc, channel) => ({
@@ -84,11 +84,11 @@ export default function TicketDetailsStat({
                         right: JSON.stringify(channel.slug),
                     },
                     ...baseFilters.filter(
-                        (filter) => filter.left !== channelFilterLeft
+                        (filter) => filter.left !== channelFilterLeft,
                     ),
                 ],
             }),
-            {}
+            {},
         )
     }, [assigneeFilter, baseFilters])
 
@@ -124,8 +124,8 @@ export default function TicketDetailsStat({
                         } else if (!channelFilters[channel]) {
                             reportError(
                                 new Error(
-                                    `Channel not found for the name: ${channel}`
-                                )
+                                    `Channel not found for the name: ${channel}`,
+                                ),
                             )
                             return (
                                 <div
@@ -155,7 +155,7 @@ export default function TicketDetailsStat({
                                 />
                                 <ViewLink
                                     viewName={`Open tickets assigned to: ${agentName}, channel: ${humanizeChannel(
-                                        channel
+                                        channel,
                                     )}`}
                                     filters={channelFilters[channel]}
                                     onClick={() => {
@@ -163,7 +163,7 @@ export default function TicketDetailsStat({
                                             SegmentEvent.StatViewLinkClicked,
                                             {
                                                 stat: StatViewLinkClickedStat.TicketsOpenPerAgentPerChannelLive,
-                                            }
+                                            },
                                         )
                                     }}
                                 >
@@ -171,7 +171,7 @@ export default function TicketDetailsStat({
                                 </ViewLink>
                             </div>
                         )
-                    }
+                    },
                 )}
             </div>
         </div>

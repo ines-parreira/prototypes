@@ -1,8 +1,9 @@
-import {Meta, Story} from '@storybook/react'
-import {Map} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
-import {BrowserRouter} from 'react-router-dom'
+import React, { ComponentProps } from 'react'
+
+import { Meta, Story } from '@storybook/react'
+import { Map } from 'immutable'
+import { Provider } from 'react-redux'
+import { BrowserRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import Tip from './Tip'
@@ -30,7 +31,7 @@ const storyConfig: Meta = {
                     'Component for displaying tips.<br/>The tip is meant to be hidden after the user has closed it once. For this, the component sets a key for the user in localStorage.',
             },
         },
-        backgrounds: {default: 'grey'},
+        backgrounds: { default: 'grey' },
     },
     argTypes: {
         storageKey: {
@@ -57,9 +58,9 @@ const defaultProps: ComponentProps<typeof Tip> = {
     children: 'This is a tip!',
 }
 export const Info = Template.bind({})
-Info.args = {...defaultProps}
+Info.args = { ...defaultProps }
 
 export const WithIcon = Template.bind({})
-WithIcon.args = {...defaultProps, icon: true}
+WithIcon.args = { ...defaultProps, icon: true }
 
 export default storyConfig

@@ -1,5 +1,5 @@
-import {HelpdeskMessageMember} from 'models/reporting/cubes/HelpdeskMessageCube'
-import {TicketMember} from 'models/reporting/cubes/TicketCube'
+import { HelpdeskMessageMember } from 'models/reporting/cubes/HelpdeskMessageCube'
+import { TicketMember } from 'models/reporting/cubes/TicketCube'
 import {
     addOptionalFilter,
     FilterOperatorMap,
@@ -23,7 +23,7 @@ import {
     TagFilter,
     TagFilterInstanceId,
 } from 'models/stat/types'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 
 describe('utils', () => {
     describe('addOptionalFilter', () => {
@@ -39,7 +39,7 @@ describe('utils', () => {
                 const updatedFilters = addOptionalFilter(
                     filters,
                     filter,
-                    filterDefaults
+                    filterDefaults,
                 )
 
                 expect(updatedFilters).toContainEqual({
@@ -47,11 +47,11 @@ describe('utils', () => {
                     operator: filterDefaults.operator,
                     values: filter.map(toLowerCaseString),
                 })
-            }
+            },
         )
 
         it.each([
-            [{values: [123, 456], operator: LogicalOperatorEnum.ONE_OF}],
+            [{ values: [123, 456], operator: LogicalOperatorEnum.ONE_OF }],
             [
                 {
                     values: ['asd', 'qwe'],
@@ -68,7 +68,7 @@ describe('utils', () => {
             const updatedFilters = addOptionalFilter(
                 filters,
                 filter,
-                filterDefaults
+                filterDefaults,
             )
 
             expect(updatedFilters).toContainEqual({
@@ -95,7 +95,7 @@ describe('utils', () => {
             const updatedFilters = addOptionalFilter(
                 filters,
                 filter,
-                filterDefaults
+                filterDefaults,
             )
 
             expect(updatedFilters).toEqual([
@@ -124,7 +124,7 @@ describe('utils', () => {
             const updatedFilters = addOptionalFilter(
                 filters,
                 filter,
-                filterDefaults
+                filterDefaults,
             )
 
             expect(updatedFilters).toEqual([
@@ -153,7 +153,7 @@ describe('utils', () => {
             const updatedFilters = addOptionalFilter(
                 filters,
                 filter,
-                filterDefaults
+                filterDefaults,
             )
 
             expect(updatedFilters).toEqual([
@@ -185,7 +185,7 @@ describe('utils', () => {
                 {
                     values: [
                         getCustomFieldValueSerializer(anotherCustomFieldId)(
-                            'Value'
+                            'Value',
                         ),
                     ],
                     operator: LogicalOperatorEnum.ONE_OF,
@@ -201,7 +201,7 @@ describe('utils', () => {
             const updatedFilters = addOptionalFilter(
                 filters,
                 filter,
-                filterDefaults
+                filterDefaults,
             )
 
             expect(updatedFilters).toEqual([
@@ -209,7 +209,7 @@ describe('utils', () => {
                     member: filterDefaults.member,
                     values: filter.reduce<string[]>(
                         (arr, f) => [...arr, ...f.values],
-                        []
+                        [],
                     ),
                     operator: FilterOperatorMap[filter[0].operator],
                 },
@@ -240,7 +240,7 @@ describe('utils', () => {
             const updatedFilters = addOptionalFilter(
                 filters,
                 filter,
-                filterDefaults
+                filterDefaults,
             )
 
             expect(updatedFilters).toEqual(
@@ -248,7 +248,7 @@ describe('utils', () => {
                     values: value.values,
                     member: TicketMember.CustomFieldToExclude,
                     operator: FilterOperatorMap[value.operator],
-                }))
+                })),
             )
         })
 
@@ -269,7 +269,7 @@ describe('utils', () => {
             const updatedFilters = addOptionalFilter(
                 filters,
                 filter,
-                filterDefaults
+                filterDefaults,
             )
 
             expect(updatedFilters).toEqual(
@@ -277,7 +277,7 @@ describe('utils', () => {
                     values: value.values,
                     member: filterDefaults.member,
                     operator: FilterOperatorMap[value.operator],
-                }))
+                })),
             )
         })
 
@@ -371,7 +371,7 @@ describe('utils', () => {
             const updatedFilters = addOptionalFilter(
                 filters,
                 filter,
-                filterDefaults
+                filterDefaults,
             )
 
             expect(updatedFilters).toEqual(filters)
@@ -382,14 +382,14 @@ describe('utils', () => {
         it.each([
             [undefined],
             [[]],
-            [{values: [], operator: LogicalOperatorEnum.ONE_OF}],
+            [{ values: [], operator: LogicalOperatorEnum.ONE_OF }],
         ])('should return false if there is a no value ', (emptyFilter) => {
             expect(hasFilter(emptyFilter)).toBe(false)
         })
 
         it.each([
             [[1, 2]],
-            [{values: [1, 2], operator: LogicalOperatorEnum.ONE_OF}],
+            [{ values: [1, 2], operator: LogicalOperatorEnum.ONE_OF }],
         ])('should return true if there is a value ', (filterWithValues) => {
             expect(hasFilter(filterWithValues)).toBe(true)
         })
@@ -429,14 +429,14 @@ describe('utils', () => {
             const updatedFilters = injectDrillDownCustomFieldId(
                 filters,
                 customFieldId,
-                ['xyz']
+                ['xyz'],
             )
 
             expect(updatedFilters.period).toEqual(filters.period)
             expect(updatedFilters[FilterKey.CustomFields]).toEqual([
                 ...filters[FilterKey.CustomFields],
                 ...drillDownValues.map(
-                    getCustomFieldValueSerializer(customFieldId)
+                    getCustomFieldValueSerializer(customFieldId),
                 ),
             ])
         })
@@ -457,7 +457,7 @@ describe('utils', () => {
                 isPeriodFilter({
                     test: '1970-01-01T00:00:00+00:00',
                     end_datetime: '1970-01-01T00:00:00+00:00',
-                } as any)
+                } as any),
             ).toBe(false)
 
             expect(isPeriodFilter(['test'])).toBe(false)
@@ -484,7 +484,7 @@ describe('utils', () => {
                         operator: LogicalOperatorEnum.ONE_OF,
                         customFieldId: 'customFieldId',
                     },
-                ] as any)
+                ] as any),
             ).toBe(false)
 
             expect(
@@ -493,7 +493,7 @@ describe('utils', () => {
                         customFieldId: 'customFieldId',
                         values: ['1::asd'],
                     },
-                ] as any)
+                ] as any),
             ).toBe(false)
         })
     })
@@ -501,10 +501,10 @@ describe('utils', () => {
     describe('isAggregationWindowFilter', () => {
         expect(isAggregationWindowFilter(123)).toEqual(false)
         expect(isAggregationWindowFilter(ReportingGranularity.Week)).toEqual(
-            true
+            true,
         )
         expect(isAggregationWindowFilter(ReportingGranularity.Second)).toEqual(
-            false
+            false,
         )
     })
 })

@@ -1,21 +1,23 @@
+import React, { Dispatch, useEffect, useState } from 'react'
+
 import classnames from 'classnames'
-import React, {Dispatch, useEffect, useState} from 'react'
 
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import {
     BigCommerceRefundableItemType,
-    CalculateOrderRefundDataResponse,
     BigCommerceRefundItemsPayload,
+    CalculateOrderRefundDataResponse,
 } from 'models/integration/types'
 import NumberInput from 'pages/common/forms/input/NumberInput'
-import {getMoneySymbol} from 'utils/getMoneySymbol'
+import { getMoneySymbol } from 'utils/getMoneySymbol'
 
-import cssRefundOrderModal from '../RefundOrderModal.less'
 import {
     BIGCOMMERCE_REFUND_ACTION_TYPE,
     BigCommerceRefundActionType,
 } from '../types'
-import {formatAmount} from '../utils'
+import { formatAmount } from '../utils'
+
+import cssRefundOrderModal from '../RefundOrderModal.less'
 import css from './ManualAmountRefundOrderModal.less'
 
 type Props = {
@@ -42,7 +44,7 @@ export function ManualAmountRefundOrderModal({
     const currencySymbol = getMoneySymbol(currencyCode || 'USD', true)
     const amountToRefundCaption = `Available for refund: ${formatAmount(
         currencyCode,
-        availableAmount
+        availableAmount,
     )}`
     const [isFirstRender, setIsFirstRender] = useState(true)
 
@@ -107,7 +109,7 @@ export function ManualAmountRefundOrderModal({
             }
         },
         [amountToRefund],
-        1000
+        1000,
     )
 
     return (

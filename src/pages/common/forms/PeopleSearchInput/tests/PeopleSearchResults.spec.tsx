@@ -1,20 +1,21 @@
-import {render} from '@testing-library/react'
-import {fromJS, Map} from 'immutable'
 import React from 'react'
+
+import { render } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
 
 import PeopleSearchResults from '../PeopleSearchResults'
 
 const teams: Map<any, any> = fromJS({
     all: {
-        1: {id: 1, name: 'Team 1', decoration: {}},
-        2: {id: 2, name: 'Team 2', decoration: {}},
+        1: { id: 1, name: 'Team 1', decoration: {} },
+        2: { id: 2, name: 'Team 2', decoration: {} },
     },
 })
 
 const users: Map<any, any> = fromJS({
     all: [
-        {id: 1, name: 'User 1', email: 'email1@foo.com', meta: {}},
-        {id: 2, name: 'User 2', email: 'email2@foo.com', meta: {}},
+        { id: 1, name: 'User 1', email: 'email1@foo.com', meta: {} },
+        { id: 2, name: 'User 2', email: 'email2@foo.com', meta: {} },
     ],
 })
 
@@ -29,7 +30,7 @@ describe('<PeopleSearchResults/>', () => {
 
     describe('render()', () => {
         it('should render', () => {
-            const {container} = render(
+            const { container } = render(
                 <PeopleSearchResults
                     handleTeams
                     handleUsers
@@ -37,7 +38,7 @@ describe('<PeopleSearchResults/>', () => {
                     users={users.get('all')}
                     onTeamClick={onTeamClick}
                     onUserClick={onUserClick}
-                />
+                />,
             )
 
             expect(container).toMatchSnapshot()
@@ -45,7 +46,7 @@ describe('<PeopleSearchResults/>', () => {
 
         it('should render with custom children displayed before teams', () => {
             const customContent = 'foo'
-            const {getByText} = render(
+            const { getByText } = render(
                 <PeopleSearchResults
                     handleTeams
                     handleUsers
@@ -55,14 +56,14 @@ describe('<PeopleSearchResults/>', () => {
                     onUserClick={onUserClick}
                 >
                     <span>foo</span>
-                </PeopleSearchResults>
+                </PeopleSearchResults>,
             )
 
             expect(getByText(customContent)).toBeInTheDocument()
         })
 
         it('should render without teams', () => {
-            const {queryByText} = render(
+            const { queryByText } = render(
                 <PeopleSearchResults
                     handleTeams={false}
                     handleUsers
@@ -70,14 +71,14 @@ describe('<PeopleSearchResults/>', () => {
                     users={users.get('all')}
                     onTeamClick={onTeamClick}
                     onUserClick={onUserClick}
-                />
+                />,
             )
 
             expect(queryByText('Teams')).not.toBeInTheDocument()
         })
 
         it('should render without users', () => {
-            const {queryByText} = render(
+            const { queryByText } = render(
                 <PeopleSearchResults
                     handleTeams
                     handleUsers={false}
@@ -85,7 +86,7 @@ describe('<PeopleSearchResults/>', () => {
                     users={users.get('all')}
                     onTeamClick={onTeamClick}
                     onUserClick={onUserClick}
-                />
+                />,
             )
 
             expect(queryByText('Users')).not.toBeInTheDocument()

@@ -1,7 +1,8 @@
-import styled from '@emotion/styled'
-import React, {HTMLAttributes} from 'react'
+import React, { HTMLAttributes } from 'react'
 
-import {gorgiasColors} from 'gorgias-design-system/styles'
+import styled from '@emotion/styled'
+
+import { gorgiasColors } from 'gorgias-design-system/styles'
 
 export interface CaptionProps {
     /**
@@ -26,7 +27,7 @@ export const StyledCaption = styled.div<CaptionProps>`
  */
 export const Caption: React.FC<
     HTMLAttributes<HTMLDivElement> & CaptionProps
-> = ({isValid, children, ...props}) => {
+> = ({ isValid, children, ...props }) => {
     return (
         <StyledCaption data-invalid={!isValid} {...props}>
             {children}

@@ -1,18 +1,19 @@
-import {fromJS} from 'immutable'
-import _noop from 'lodash/noop'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fromJS } from 'immutable'
+import _noop from 'lodash/noop'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {TicketChannel} from 'business/types/ticket'
-import {integrationsState} from 'fixtures/integrations'
-import {messagesSentPerMacro} from 'fixtures/stats'
+import { TicketChannel } from 'business/types/ticket'
+import { integrationsState } from 'fixtures/integrations'
+import { messagesSentPerMacro } from 'fixtures/stats'
 import useStatResource from 'hooks/reporting/useStatResource'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
 import AutomateMacros from 'pages/stats/AutomateMacros'
-import {RootState, StoreDispatch} from 'state/types'
-import {renderWithRouter} from 'utils/testing'
+import { RootState, StoreDispatch } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
 jest.mock('hooks/reporting/useStatResource')
 jest.spyOn(Date, 'now').mockImplementation(() => 1487076708000)
@@ -21,7 +22,7 @@ jest.mock('pages/stats/DrillDownModal.tsx', () => ({
 }))
 jest.mock(
     'pages/stats/common/filters/DEPRECATED_ChannelsStatsFilter',
-    () => () => <div>ChannelsStatsFilter</div>
+    () => () => <div>ChannelsStatsFilter</div>,
 )
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -57,10 +58,10 @@ describe('AutomateMacros', () => {
             _noop,
         ])
 
-        const {container} = renderWithRouter(
+        const { container } = renderWithRouter(
             <Provider store={mockStore(defaultState)}>
                 <AutomateMacros />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()

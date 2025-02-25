@@ -1,11 +1,11 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 import moment from 'moment'
 
-import {UserSettingType} from 'config/types/user'
-import {defaultTicketView, getExpirationTimeForCount} from 'config/views'
-import {account} from 'fixtures/account'
-import {user} from 'fixtures/users'
-import {newViews} from 'models/view/mocks'
+import { UserSettingType } from 'config/types/user'
+import { defaultTicketView, getExpirationTimeForCount } from 'config/views'
+import { account } from 'fixtures/account'
+import { user } from 'fixtures/users'
+import { newViews } from 'models/view/mocks'
 import {
     EntityType,
     View,
@@ -13,19 +13,16 @@ import {
     ViewType,
     ViewVisibility,
 } from 'models/view/types'
-import {initialState as currentAccountInitialState} from 'state/currentAccount/reducers'
-import {AccountSettingType} from 'state/currentAccount/types'
-import {initialState as currentUserInitialState} from 'state/currentUser/reducers'
-
-import {RootState} from 'state/types'
-
-import {initialState as ticketNavbarInitialState} from 'state/ui/ticketNavbar/reducer'
-import {TicketNavbarElementType} from 'state/ui/ticketNavbar/types'
-import {SYSTEM_VIEWS} from 'state/views/constants'
-
-import {initialState} from 'state/views/reducers'
+import { initialState as currentAccountInitialState } from 'state/currentAccount/reducers'
+import { AccountSettingType } from 'state/currentAccount/types'
+import { initialState as currentUserInitialState } from 'state/currentUser/reducers'
+import { RootState } from 'state/types'
+import { initialState as ticketNavbarInitialState } from 'state/ui/ticketNavbar/reducer'
+import { TicketNavbarElementType } from 'state/ui/ticketNavbar/types'
+import { SYSTEM_VIEWS } from 'state/views/constants'
+import { initialState } from 'state/views/reducers'
 import * as selectors from 'state/views/selectors'
-import {makeGetView} from 'state/views/selectors'
+import { makeGetView } from 'state/views/selectors'
 
 describe('selectors', () => {
     afterEach(() => {
@@ -39,7 +36,7 @@ describe('selectors', () => {
                     'active',
                     fromJS({
                         filters: 'isNotEmpty(ticket.trashed_datetime)',
-                    })
+                    }),
                 ),
             } as RootState
             expect(selectors.isActiveViewTrashView(state)).toBe(true)
@@ -52,7 +49,7 @@ describe('selectors', () => {
                         filters: 'eq(ticket.spam, true)',
                         category: ViewCategory.System,
                         name: 'Trash',
-                    })
+                    }),
                 ),
             } as RootState
             expect(selectors.isActiveViewTrashView(state)).toBe(false)
@@ -66,7 +63,7 @@ describe('selectors', () => {
                     'active',
                     fromJS({
                         allItemsSelected: false,
-                    })
+                    }),
                 ),
             } as RootState
             expect(selectors.areAllActiveViewItemsSelected(state)).toBe(false)
@@ -83,7 +80,7 @@ describe('selectors', () => {
                     'active',
                     fromJS({
                         allItemsSelected: true,
-                    })
+                    }),
                 ),
             } as RootState
             expect(selectors.areAllActiveViewItemsSelected(state)).toBe(true)
@@ -115,12 +112,12 @@ describe('selectors', () => {
                 2: 100,
             }
             const recent = {
-                1: {updated_datetime: now},
-                2: {updated_datetime: now},
+                1: { updated_datetime: now },
+                2: { updated_datetime: now },
             }
 
             const state = {
-                views: initialState.merge(fromJS({recent, counts})),
+                views: initialState.merge(fromJS({ recent, counts })),
             } as RootState
             expect(selectors.getExpiredViewsCounts()(state)).toEqual([])
         })
@@ -143,11 +140,11 @@ describe('selectors', () => {
                     // View count was not already requested.
                     updated_datetime: undefined,
                 },
-                3: {updated_datetime: now},
+                3: { updated_datetime: now },
             }
 
             const state = {
-                views: initialState.merge(fromJS({recent, counts})),
+                views: initialState.merge(fromJS({ recent, counts })),
             } as RootState
             expect(selectors.getExpiredViewsCounts()(state)).toEqual([1, 2])
         })
@@ -156,24 +153,24 @@ describe('selectors', () => {
     describe('getViewIdToDisplay()', () => {
         it('should return null because there is no views', () => {
             const state = {
-                currentUser: fromJS({settings: []}),
+                currentUser: fromJS({ settings: [] }),
                 entities: {
                     sections: {},
                     views: {},
                 },
-                ui: {ticketNavbar: {}},
+                ui: { ticketNavbar: {} },
                 views: initialState.set('items', fromJS([])),
             } as RootState
             expect(
-                selectors.getViewIdToDisplay(state)(ViewType.TicketList)
+                selectors.getViewIdToDisplay(state)(ViewType.TicketList),
             ).toEqual(null)
         })
 
         it('should return the id of the first view of matching type because no urlViewId was passed', () => {
             const viewId = 7
-            const views = [{id: viewId, type: ViewType.TicketList}]
+            const views = [{ id: viewId, type: ViewType.TicketList }]
             const state = {
-                currentUser: fromJS({settings: []}),
+                currentUser: fromJS({ settings: [] }),
                 entities: {
                     sections: {},
                     views: views.reduce(
@@ -181,22 +178,22 @@ describe('selectors', () => {
                             acc[view.id] = view as View
                             return acc
                         },
-                        {} as Record<number, View>
+                        {} as Record<number, View>,
                     ),
                 },
-                ui: {ticketNavbar: {}},
+                ui: { ticketNavbar: {} },
                 views: initialState.set('items', fromJS(views)),
             } as RootState
             expect(
-                selectors.getViewIdToDisplay(state)(ViewType.TicketList)
+                selectors.getViewIdToDisplay(state)(ViewType.TicketList),
             ).toEqual(viewId)
         })
 
         it('should return the passed urlViewId because there is a matching view of the same type', () => {
             const viewId = 7
-            const views = [{id: viewId, type: ViewType.TicketList}]
+            const views = [{ id: viewId, type: ViewType.TicketList }]
             const state = {
-                currentUser: fromJS({settings: []}),
+                currentUser: fromJS({ settings: [] }),
                 entities: {
                     sections: {},
                     views: views.reduce(
@@ -204,17 +201,17 @@ describe('selectors', () => {
                             acc[view.id] = view as View
                             return acc
                         },
-                        {} as Record<number, View>
+                        {} as Record<number, View>,
                     ),
                 },
-                ui: {ticketNavbar: {}},
+                ui: { ticketNavbar: {} },
                 views: initialState.set('items', fromJS(views)),
             } as RootState
             expect(
                 selectors.getViewIdToDisplay(state)(
                     ViewType.TicketList,
-                    viewId.toString()
-                )
+                    viewId.toString(),
+                ),
             ).toEqual(viewId)
         })
 
@@ -225,12 +222,12 @@ describe('selectors', () => {
                 const viewId = 7
                 const ticketViewId = 9
                 const views = [
-                    {id: viewId, type: ViewType.CustomerList},
-                    {id: ticketViewId, type: ViewType.TicketList},
+                    { id: viewId, type: ViewType.CustomerList },
+                    { id: ticketViewId, type: ViewType.TicketList },
                 ]
 
                 const state = {
-                    currentUser: fromJS({settings: []}),
+                    currentUser: fromJS({ settings: [] }),
                     entities: {
                         sections: {},
                         views: views.reduce(
@@ -238,40 +235,40 @@ describe('selectors', () => {
                                 acc[view.id] = view as View
                                 return acc
                             },
-                            {} as Record<number, View>
+                            {} as Record<number, View>,
                         ),
                     },
-                    ui: {ticketNavbar: {}},
+                    ui: { ticketNavbar: {} },
                     views: initialState.set('items', fromJS(views)),
                 } as RootState
                 expect(
                     selectors.getViewIdToDisplay(state)(
                         ViewType.TicketList,
-                        viewId.toString()
-                    )
+                        viewId.toString(),
+                    ),
                 ).toEqual(ticketViewId)
-            }
+            },
         )
     })
 
     describe('getNavigation()', () => {
         it('should return an empty Map because there is no navigation in the state', () => {
             expect(
-                selectors.getNavigation({views: fromJS({})} as RootState)
+                selectors.getNavigation({ views: fromJS({}) } as RootState),
             ).toEqualImmutable(fromJS({}))
             expect(
                 selectors.getNavigation({
-                    views: fromJS({_internal: {navigation: {}}}),
-                } as RootState)
+                    views: fromJS({ _internal: { navigation: {} } }),
+                } as RootState),
             ).toEqualImmutable(fromJS({}))
         })
 
         it('should return navigation from the state', () => {
-            const navigation = fromJS({foo: 'bar'})
+            const navigation = fromJS({ foo: 'bar' })
             const state = {
                 views: initialState.setIn(
                     ['_internal', 'navigation'],
-                    navigation
+                    navigation,
                 ),
             } as RootState
             expect(selectors.getNavigation(state)).toEqualImmutable(navigation)
@@ -284,7 +281,7 @@ describe('selectors', () => {
             const getViewSelector = makeGetView(state)
 
             expect(getViewSelector('', EntityType.Ticket)).toEqual(
-                defaultTicketView.newView()
+                defaultTicketView.newView(),
             )
         })
 
@@ -340,7 +337,7 @@ describe('selectors', () => {
                                 },
                             },
                         },
-                    ])
+                    ]),
                 ),
                 currentAccount: currentAccountInitialState
                     .mergeDeep(account)
@@ -359,7 +356,7 @@ describe('selectors', () => {
                                     },
                                 },
                             },
-                        ])
+                        ]),
                     ),
             } as RootState
             const selector = selectors.makeGetViewsByType()
@@ -375,7 +372,7 @@ describe('selectors', () => {
                         ...viewSetting2,
                         hide: false,
                     },
-                ])
+                ]),
             )
             expect(selector(state, ViewType.CustomerList)).toEqualImmutable(
                 fromJS([
@@ -384,7 +381,7 @@ describe('selectors', () => {
                         ...viewSetting3,
                         hide: false,
                     },
-                ])
+                ]),
             )
         })
 
@@ -439,7 +436,7 @@ describe('selectors', () => {
                                 },
                             },
                         },
-                    ])
+                    ]),
                 ),
                 currentAccount: currentAccountInitialState
                     .mergeDeep(account)
@@ -457,7 +454,7 @@ describe('selectors', () => {
                                     },
                                 },
                             },
-                        ])
+                        ]),
                     ),
             } as RootState
             const selector = selectors.makeGetViewsByType()
@@ -483,7 +480,7 @@ describe('selectors', () => {
                         ...viewSetting1,
                         hide: false,
                     },
-                ])
+                ]),
             )
         })
     })
@@ -491,7 +488,7 @@ describe('selectors', () => {
     describe('getViewIdsOrderedByCollapsedSections', () => {
         window.localStorage.setItem(
             'collapsed-view-sections',
-            JSON.stringify([1])
+            JSON.stringify([1]),
         )
         const selector = selectors.getViewIdsOrderedByCollapsedSections()
 
@@ -499,24 +496,24 @@ describe('selectors', () => {
             selector({
                 views: fromJS({
                     items: [
-                        {id: 1, type: ViewType.TicketList},
-                        {id: 2, section_id: 1, type: ViewType.TicketList},
-                        {id: 3, section_id: 2, type: ViewType.TicketList},
+                        { id: 1, type: ViewType.TicketList },
+                        { id: 2, section_id: 1, type: ViewType.TicketList },
+                        { id: 3, section_id: 2, type: ViewType.TicketList },
                     ],
                 }),
-            } as RootState)
+            } as RootState),
         ).toEqualImmutable(fromJS([1, 3, 2]))
     })
 
     describe('shouldFetchActiveViewTickets', () => {
         it('should return false (no active view)', () => {
-            const state = {views: initialState} as RootState
+            const state = { views: initialState } as RootState
             expect(selectors.shouldFetchActiveViewTickets(state)).toBe(false)
         })
 
         it('should return false (not on a view)', () => {
             window.location.pathname = '/app/ticket/12/'
-            const state = {views: initialState} as RootState
+            const state = { views: initialState } as RootState
             expect(selectors.shouldFetchActiveViewTickets(state)).toBe(false)
         })
 
@@ -528,9 +525,9 @@ describe('selectors', () => {
                     id: 1,
                     editMode: true,
                     type: ViewType.TicketList,
-                })
+                }),
             )
-            const state = {views: viewState} as RootState
+            const state = { views: viewState } as RootState
             expect(selectors.shouldFetchActiveViewTickets(state)).toBe(false)
         })
 
@@ -538,15 +535,15 @@ describe('selectors', () => {
             window.location.pathname = '/app/tickets/12/'
             const viewState = initialState.mergeDeep(
                 fromJS({
-                    active: {id: 1, type: ViewType.TicketList},
+                    active: { id: 1, type: ViewType.TicketList },
                     _internal: {
                         loading: {
                             fetchList: true,
                         },
                     },
-                })
+                }),
             )
-            const state = {views: viewState} as RootState
+            const state = { views: viewState } as RootState
             expect(selectors.shouldFetchActiveViewTickets(state)).toBe(false)
         })
 
@@ -554,15 +551,15 @@ describe('selectors', () => {
             window.location.pathname = '/app/tickets/12/'
             const viewState = initialState.mergeDeep(
                 fromJS({
-                    active: {id: 1},
+                    active: { id: 1 },
                     _internal: {
                         loading: {
                             fetchListDiscreet: true,
                         },
                     },
-                })
+                }),
             )
-            const state = {views: viewState} as RootState
+            const state = { views: viewState } as RootState
             expect(selectors.shouldFetchActiveViewTickets(state)).toBe(false)
         })
 
@@ -570,9 +567,9 @@ describe('selectors', () => {
             window.location.pathname = '/app/tickets/12/'
             const viewState = initialState.set(
                 'active',
-                fromJS({id: 1, type: ViewType.TicketList})
+                fromJS({ id: 1, type: ViewType.TicketList }),
             )
-            const state = {views: viewState} as RootState
+            const state = { views: viewState } as RootState
             expect(selectors.shouldFetchActiveViewTickets(state)).toBe(true)
         })
 
@@ -613,18 +610,18 @@ describe('selectors', () => {
             it('should return the ordered views matching with the correct category', () => {
                 expect(
                     selectors.getSystemTicketNavbarElementsByCategory(
-                        'views_bottom'
-                    )(state)
+                        'views_bottom',
+                    )(state),
                 ).toEqual([
-                    {data: newViews[1], type: TicketNavbarElementType.View},
-                    {data: newViews[3], type: TicketNavbarElementType.View},
+                    { data: newViews[1], type: TicketNavbarElementType.View },
+                    { data: newViews[3], type: TicketNavbarElementType.View },
                 ])
             })
 
             it('should return the visible views', () => {
                 expect(
                     selectors.getSystemTicketNavbarElementsByCategory(
-                        'views_bottom'
+                        'views_bottom',
                     )({
                         ...state,
                         currentAccount: currentAccount.setIn(
@@ -638,11 +635,11 @@ describe('selectors', () => {
                                         hidden_views: [newViews[3].id],
                                     },
                                 },
-                            ])
+                            ]),
                         ),
-                    })
+                    }),
                 ).toEqual([
-                    {data: newViews[1], type: TicketNavbarElementType.View},
+                    { data: newViews[1], type: TicketNavbarElementType.View },
                 ])
             })
 
@@ -650,7 +647,7 @@ describe('selectors', () => {
                 expect(
                     selectors.getSystemTicketNavbarElementsByCategory(
                         'views_bottom',
-                        true
+                        true,
                     )({
                         ...state,
                         currentAccount: currentAccount.setIn(
@@ -664,12 +661,12 @@ describe('selectors', () => {
                                         hidden_views: [newViews[3].id],
                                     },
                                 },
-                            ])
+                            ]),
                         ),
-                    })
+                    }),
                 ).toEqual([
-                    {data: newViews[1], type: TicketNavbarElementType.View},
-                    {data: newViews[3], type: TicketNavbarElementType.View},
+                    { data: newViews[1], type: TicketNavbarElementType.View },
+                    { data: newViews[3], type: TicketNavbarElementType.View },
                 ])
             })
         })
@@ -738,12 +735,12 @@ describe('selectors', () => {
                             type: AccountSettingType.ViewsOrdering,
                             data: {
                                 views: {
-                                    2: {display_order: 4},
-                                    10: {display_order: 3},
+                                    2: { display_order: 4 },
+                                    10: { display_order: 3 },
                                 },
                                 view_sections: {
-                                    1: {display_order: 2},
-                                    48: {display_order: 1},
+                                    1: { display_order: 2 },
+                                    48: { display_order: 1 },
                                 },
                             },
                         },
@@ -757,8 +754,8 @@ describe('selectors', () => {
                             type: UserSettingType.ViewsOrdering,
                             data: {
                                 views: {
-                                    5: {display_order: 4},
-                                    123: {display_order: 6},
+                                    5: { display_order: 4 },
+                                    123: { display_order: 6 },
                                 },
                                 view_sections: {
                                     3: {
@@ -779,25 +776,25 @@ describe('selectors', () => {
             expect(
                 selectors.getDefaultTicketView({
                     ...state,
-                    entities: {...state.entities, views: {}},
-                })
+                    entities: { ...state.entities, views: {} },
+                }),
             ).toBeNull()
         })
 
         it('should return the first available view', () => {
             expect(selectors.getDefaultTicketView(state)).toMatchObject(
-                state.entities.views['10']
+                state.entities.views['10'],
             )
         })
 
         it('should return the first view matching the category order stored in local storage', () => {
             localStorage.setItem(
                 'viewCategories',
-                JSON.stringify([ViewVisibility.Private])
+                JSON.stringify([ViewVisibility.Private]),
             )
 
             expect(selectors.getDefaultTicketView(state)).toMatchObject(
-                state.entities.views['5']
+                state.entities.views['5'],
             )
         })
 
@@ -821,9 +818,9 @@ describe('selectors', () => {
                         },
                     },
                     views: fromJS({
-                        items: Object.values({...views, systemView}),
+                        items: Object.values({ ...views, systemView }),
                     }),
-                })
+                }),
             ).toMatchObject(systemView)
         })
 
@@ -846,9 +843,9 @@ describe('selectors', () => {
                         },
                     },
                     views: fromJS({
-                        items: Object.values({systemView}),
+                        items: Object.values({ systemView }),
                     }),
-                })
+                }),
             ).toMatchObject(systemView)
         })
     })

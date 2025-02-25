@@ -1,9 +1,9 @@
-import {AiAgentScope, StoreConfiguration} from 'models/aiAgent/types'
+import { AiAgentScope, StoreConfiguration } from 'models/aiAgent/types'
 
-import {ToneOfVoice} from '../constants'
+import { ToneOfVoice } from '../constants'
 
 export const getStoreConfigurationFixture = (
-    props?: Partial<StoreConfiguration>
+    props?: Partial<StoreConfiguration>,
 ): StoreConfiguration => ({
     conversationBot: {
         id: 1,

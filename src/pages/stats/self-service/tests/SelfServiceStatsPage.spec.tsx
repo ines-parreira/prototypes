@@ -1,10 +1,10 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import _noop from 'lodash/noop'
 import React from 'react'
 
-import {Provider} from 'react-redux'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import _noop from 'lodash/noop'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -13,10 +13,10 @@ import {
     SELF_SERVICE_TOP_REPORTED_ISSUES,
     SELF_SERVICE_WORKFLOWS_PERFORMANCE,
 } from 'config/stats'
-import {account} from 'fixtures/account'
-import {billingState} from 'fixtures/billing'
-import {entitiesInitialState} from 'fixtures/entities'
-import {integrationsState} from 'fixtures/integrations'
+import { account } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
+import { entitiesInitialState } from 'fixtures/entities'
+import { integrationsState } from 'fixtures/integrations'
 import {
     selfServiceArticleRecommendationPerformance,
     selfServiceArticleRecommendationPerformanceNoData,
@@ -27,20 +27,19 @@ import {
     selfServiceTopReportedIssuesNoData,
 } from 'fixtures/stats'
 import useStatResource from 'hooks/reporting/useStatResource'
-import {IntegrationType} from 'models/integration/constants'
-import {useGetSelfServiceConfigurations} from 'models/selfServiceConfiguration/queries'
-import {downloadStat} from 'models/stat/resources'
-import {useGetWorkflowConfigurations} from 'models/workflows/queries'
-import {useGetAIArticles} from 'pages/settings/helpCenter/queries'
+import { IntegrationType } from 'models/integration/constants'
+import { useGetSelfServiceConfigurations } from 'models/selfServiceConfiguration/queries'
+import { downloadStat } from 'models/stat/resources'
+import { useGetWorkflowConfigurations } from 'models/workflows/queries'
+import { useGetAIArticles } from 'pages/settings/helpCenter/queries'
 import SelfServiceStatsPage from 'pages/stats/self-service/SelfServiceStatsPage'
-import {AccountFeature} from 'state/currentAccount/types'
-import {fromLegacyStatsFilters} from 'state/stats/utils'
-import {RootState, StoreDispatch} from 'state/types'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
-
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {saveFileAsDownloaded} from 'utils/file'
-import {flushPromises, renderWithRouter} from 'utils/testing'
+import { AccountFeature } from 'state/currentAccount/types'
+import { fromLegacyStatsFilters } from 'state/stats/utils'
+import { RootState, StoreDispatch } from 'state/types'
+import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { saveFileAsDownloaded } from 'utils/file'
+import { flushPromises, renderWithRouter } from 'utils/testing'
 
 const mockSelfServiceConfigurations = [
     {
@@ -116,7 +115,7 @@ const useStatResourceMock = useStatResource as jest.MockedFunction<
     typeof useStatResource
 >
 const mockedUseWorkflowConfigurations = jest.mocked(
-    useGetWorkflowConfigurations
+    useGetWorkflowConfigurations,
 )
 
 const mockUseGetSelfServiceConfigurations =
@@ -329,10 +328,10 @@ describe('<SelfServiceStatsPage />', () => {
         },
         currentAccount: fromJS({
             features: {
-                [AccountFeature.AutomationReturnFlow]: {enabled: true},
-                [AccountFeature.AutomationCancellationsFlow]: {enabled: true},
-                [AccountFeature.AutomationTrackOrderFlow]: {enabled: true},
-                [AccountFeature.AutomationReportIssueFlow]: {enabled: true},
+                [AccountFeature.AutomationReturnFlow]: { enabled: true },
+                [AccountFeature.AutomationCancellationsFlow]: { enabled: true },
+                [AccountFeature.AutomationTrackOrderFlow]: { enabled: true },
+                [AccountFeature.AutomationReportIssueFlow]: { enabled: true },
                 [AccountFeature.AutomationSelfServiceStatistics]: {
                     enabled: true,
                 },
@@ -349,7 +348,7 @@ describe('<SelfServiceStatsPage />', () => {
         }),
         billing: fromJS(billingState),
         ui: {
-            stats: {filters: uiStatsInitialState},
+            stats: { filters: uiStatsInitialState },
         },
     } as RootState
 
@@ -371,18 +370,18 @@ describe('<SelfServiceStatsPage />', () => {
     })
 
     it('should display the loader on loading', () => {
-        const {container} = render(
+        const { container } = render(
             <QueryClientProvider client={mockClient}>
                 <Provider store={mockStore(defaultState)}>
                     <SelfServiceStatsPage />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
         expect(container).toMatchSnapshot()
     })
 
     it('should render the filters and stats when stats filters are defined', async () => {
-        useStatResourceMock.mockImplementation(({resourceName}) => {
+        useStatResourceMock.mockImplementation(({ resourceName }) => {
             if (
                 resourceName === SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE
             ) {
@@ -401,12 +400,12 @@ describe('<SelfServiceStatsPage />', () => {
             ]
         })
 
-        const {container} = renderWithRouter(
+        const { container } = renderWithRouter(
             <QueryClientProvider client={mockClient}>
                 <Provider store={mockStore(defaultState)}>
                     <SelfServiceStatsPage />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         await flushPromises()
@@ -415,7 +414,7 @@ describe('<SelfServiceStatsPage />', () => {
     })
 
     it('should render the stats with the feature preview when there is no data and the features are disabled', async () => {
-        useStatResourceMock.mockImplementation(({resourceName}) => {
+        useStatResourceMock.mockImplementation(({ resourceName }) => {
             if (
                 resourceName === SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE
             ) {
@@ -434,20 +433,20 @@ describe('<SelfServiceStatsPage />', () => {
             ]
         })
 
-        const {container, getByText} = renderWithRouter(
+        const { container, getByText } = renderWithRouter(
             <QueryClientProvider client={mockClient}>
                 <Provider store={mockStore(defaultState)}>
                     <SelfServiceStatsPage />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         await flushPromises()
 
         expect(
             getByText(
-                /There is no activity for these features. Your chat or help center may not be properly installed./
-            )
+                /There is no activity for these features. Your chat or help center may not be properly installed./,
+            ),
         ).toBeTruthy()
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -463,7 +462,7 @@ describe('<SelfServiceStatsPage />', () => {
                 <Provider store={mockStore(defaultState)}>
                     <SelfServiceStatsPage />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(screen.getByTestId('self-service-loader')).toBeInTheDocument()
@@ -479,7 +478,7 @@ describe('<SelfServiceStatsPage />', () => {
                 <Provider store={mockStore(defaultState)}>
                     <SelfServiceStatsPage />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(screen.getByTestId('self-service-loader')).toBeInTheDocument()
@@ -499,11 +498,11 @@ describe('<SelfServiceStatsPage />', () => {
                 <Provider store={mockStore(defaultState)}>
                     <SelfServiceStatsPage />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(
-            screen.queryByTestId('self-service-loader')
+            screen.queryByTestId('self-service-loader'),
         ).not.toBeInTheDocument()
     })
     it('should dispatch notification on workflow configuration fetch error', async () => {
@@ -518,7 +517,7 @@ describe('<SelfServiceStatsPage />', () => {
                 <Provider store={mockStore(defaultState)}>
                     <SelfServiceStatsPage />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         await waitFor(() => {
@@ -527,7 +526,7 @@ describe('<SelfServiceStatsPage />', () => {
     })
 
     it('should call refineDownloadedWorkflows on clicking of CSV', async () => {
-        useStatResourceMock.mockImplementation(({resourceName}) => {
+        useStatResourceMock.mockImplementation(({ resourceName }) => {
             if (
                 resourceName === SELF_SERVICE_ARTICLE_RECOMMENDATION_PERFORMANCE
             ) {
@@ -552,12 +551,12 @@ describe('<SelfServiceStatsPage />', () => {
             data: WFConfigData,
         } as unknown as ReturnType<typeof useGetWorkflowConfigurations>)
 
-        const {getAllByText} = renderWithRouter(
+        const { getAllByText } = renderWithRouter(
             <QueryClientProvider client={mockClient}>
                 <Provider store={mockStore(defaultState)}>
                     <SelfServiceStatsPage />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(getAllByText('file_download').length).toBe(4)
@@ -570,7 +569,7 @@ describe('<SelfServiceStatsPage />', () => {
         expect(saveFileAsDownloaded).toHaveBeenCalledWith(
             downloadData.name,
             downloadData.data,
-            downloadData.contentType
+            downloadData.contentType,
         )
     })
 })

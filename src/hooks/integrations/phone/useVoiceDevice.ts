@@ -1,4 +1,4 @@
-import {useContext} from 'react'
+import { useContext } from 'react'
 
 import {
     Context,
@@ -10,7 +10,7 @@ export default function useVoiceDevice(): VoiceDeviceContextState {
 
     if (context === null) {
         throw new Error(
-            'useVoiceDevice must be used within a VoiceDeviceProvider'
+            'useVoiceDevice must be used within a VoiceDeviceProvider',
         )
     }
 

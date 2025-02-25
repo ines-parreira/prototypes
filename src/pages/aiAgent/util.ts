@@ -1,10 +1,10 @@
-import {AI_MANAGED_TYPES} from 'custom-fields/constants'
-import {CustomField} from 'custom-fields/types'
+import { AI_MANAGED_TYPES } from 'custom-fields/constants'
+import { CustomField } from 'custom-fields/types'
 
-import {NonNullProperties} from './types'
+import { NonNullProperties } from './types'
 
 export const filterNonNull = <T extends object>(
-    obj: T
+    obj: T,
 ): Partial<NonNullProperties<T>> => {
     const result: Partial<NonNullProperties<T>> = {}
 

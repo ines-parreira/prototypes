@@ -1,16 +1,17 @@
-import {fireEvent, render} from '@testing-library/react'
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
-import {useVoiceRecordingsContext} from 'pages/common/hooks/useVoiceRecordingsContext'
+import { fireEvent, render } from '@testing-library/react'
+
+import { useVoiceRecordingsContext } from 'pages/common/hooks/useVoiceRecordingsContext'
 
 import VoiceRecordingsProvider from '../VoiceRecordingsProvider'
 
 describe('VoiceRecordingsProvider', () => {
     it('should render children', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <VoiceRecordingsProvider>
                 <div>Test children</div>
-            </VoiceRecordingsProvider>
+            </VoiceRecordingsProvider>,
         )
 
         expect(getByText('Test children')).toBeInTheDocument()
@@ -18,7 +19,7 @@ describe('VoiceRecordingsProvider', () => {
 
     it('should toggle recording opened', () => {
         const Consumer = () => {
-            const {toggleRecordingOpened, isRecordingOpened} =
+            const { toggleRecordingOpened, isRecordingOpened } =
                 useVoiceRecordingsContext()
 
             return (
@@ -32,10 +33,10 @@ describe('VoiceRecordingsProvider', () => {
                 </button>
             )
         }
-        const {getByTestId, getByText} = render(
+        const { getByTestId, getByText } = render(
             <VoiceRecordingsProvider>
                 <Consumer />
-            </VoiceRecordingsProvider>
+            </VoiceRecordingsProvider>,
         )
 
         // initial state is closed
@@ -50,7 +51,7 @@ describe('VoiceRecordingsProvider', () => {
 
     it('should toggle transcription', () => {
         const Consumer = () => {
-            const {toggleTranscriptionOpened, isTranscriptionOpened} =
+            const { toggleTranscriptionOpened, isTranscriptionOpened } =
                 useVoiceRecordingsContext()
 
             return (
@@ -64,10 +65,10 @@ describe('VoiceRecordingsProvider', () => {
                 </button>
             )
         }
-        const {getByTestId, getByText} = render(
+        const { getByTestId, getByText } = render(
             <VoiceRecordingsProvider>
                 <Consumer />
-            </VoiceRecordingsProvider>
+            </VoiceRecordingsProvider>,
         )
 
         // initial state is opened
@@ -81,8 +82,8 @@ describe('VoiceRecordingsProvider', () => {
     })
 
     it('should toggle recording opened with voiceCallId', () => {
-        const Consumer = ({voiceCallId}: {voiceCallId: number}) => {
-            const {toggleRecordingOpened, isRecordingOpened} =
+        const Consumer = ({ voiceCallId }: { voiceCallId: number }) => {
+            const { toggleRecordingOpened, isRecordingOpened } =
                 useVoiceRecordingsContext()
 
             return (
@@ -115,7 +116,7 @@ describe('VoiceRecordingsProvider', () => {
                 </>
             )
         }
-        const {getByTestId} = render(<ParentOfProvider />)
+        const { getByTestId } = render(<ParentOfProvider />)
 
         // initial state
         expect(getByTestId('recording-1')).toHaveTextContent('Opened')

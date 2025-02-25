@@ -1,7 +1,8 @@
-import classNames from 'classnames'
-import React, {useCallback} from 'react'
+import React, { useCallback } from 'react'
 
-import {useTheme} from 'core/theme'
+import classNames from 'classnames'
+
+import { useTheme } from 'core/theme'
 import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
 import useBeforeUnload from 'hooks/useBeforeUnload'
 import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
@@ -15,11 +16,11 @@ import css from './PhoneIntegrationBar.less'
 export default function PhoneIntegrationBar(): JSX.Element | null {
     const theme = useTheme()
 
-    const {call, isDialing, isRinging} = useVoiceDevice()
+    const { call, isDialing, isRinging } = useVoiceDevice()
 
     const isInProgress = useCallback(
         () => !!call || isDialing || isRinging,
-        [call, isDialing, isRinging]
+        [call, isDialing, isRinging],
     )
 
     useBeforeUnload(isInProgress)

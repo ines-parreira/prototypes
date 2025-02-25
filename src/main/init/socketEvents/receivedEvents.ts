@@ -1,22 +1,22 @@
 import * as Sentry from '@sentry/react'
-import {fromJS, List, Map} from 'immutable'
-import {cloneDeep} from 'lodash'
+import { fromJS, List, Map } from 'immutable'
+import { cloneDeep } from 'lodash'
 import _find from 'lodash/find'
 
-import {appQueryClient} from 'api/queryClient'
-import {shouldTicketBeDisplayedInRecentChats} from 'business/recentChats'
-import {logEvent, SegmentEvent} from 'common/segment'
-import {store as reduxStore} from 'common/store'
-import {isSpecificTicketPath} from 'common/utils'
-import {MAX_RECENT_CHATS} from 'config/recentChats'
-import {customFieldDefinitionKeys} from 'custom-fields/hooks/queries/queries'
-import {isMigrationInProgress} from 'hooks/useWhatsAppMigration'
-import {fetchNewPhoneNumbers} from 'models/phoneNumber/resources'
-import {UseListVoiceCalls, voiceCallsKeys} from 'models/voiceCall/queries'
-import {isVoiceCall} from 'models/voiceCall/types'
+import { appQueryClient } from 'api/queryClient'
+import { shouldTicketBeDisplayedInRecentChats } from 'business/recentChats'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { store as reduxStore } from 'common/store'
+import { isSpecificTicketPath } from 'common/utils'
+import { MAX_RECENT_CHATS } from 'config/recentChats'
+import { customFieldDefinitionKeys } from 'custom-fields/hooks/queries/queries'
+import { isMigrationInProgress } from 'hooks/useWhatsAppMigration'
+import { fetchNewPhoneNumbers } from 'models/phoneNumber/resources'
+import { UseListVoiceCalls, voiceCallsKeys } from 'models/voiceCall/queries'
+import { isVoiceCall } from 'models/voiceCall/types'
 import history from 'pages/history'
-import {ActivityEvents, logActivityEvent} from 'services/activityTracker'
-import {SocketManager} from 'services/socketManager/socketManager'
+import { ActivityEvents, logActivityEvent } from 'services/activityTracker'
+import { SocketManager } from 'services/socketManager/socketManager'
 import {
     AccountUpdatedEvent,
     ActionExecutedEvent,
@@ -60,9 +60,9 @@ import * as currentBillingSelectors from 'state/billing/selectors'
 import * as chatsActions from 'state/chats/actions'
 import * as currentAccountConstants from 'state/currentAccount/constants'
 import * as currentAccountSelectors from 'state/currentAccount/selectors'
-import {setIsAvailable} from 'state/currentUser/actions'
+import { setIsAvailable } from 'state/currentUser/actions'
 import * as currentUserSelectors from 'state/currentUser/selectors'
-import {newPhoneNumbersFetched} from 'state/entities/phoneNumbers/actions'
+import { newPhoneNumbersFetched } from 'state/entities/phoneNumbers/actions'
 import {
     sectionCreated,
     sectionDeleted,
@@ -73,23 +73,20 @@ import {
     viewDeleted,
     viewUpdated,
 } from 'state/entities/views/actions'
-import {viewsCountFetched} from 'state/entities/viewsCount/actions'
+import { viewsCountFetched } from 'state/entities/viewsCount/actions'
 import * as infobarActions from 'state/infobar/actions'
 import * as integrationsActions from 'state/integrations/actions'
-import {getEmailMigrations} from 'state/integrations/selectors'
-import {MACRO_PARAMS_UPDATED} from 'state/macro/constants'
-
+import { getEmailMigrations } from 'state/integrations/selectors'
+import { MACRO_PARAMS_UPDATED } from 'state/macro/constants'
 import * as notificationsActions from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {getTeams} from 'state/teams/selectors'
+import { NotificationStatus } from 'state/notifications/types'
+import { getTeams } from 'state/teams/selectors'
 import * as ticketActions from 'state/ticket/actions'
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
 import * as viewsActions from 'state/views/actions'
-
 import * as viewsConstants from 'state/views/constants'
-
-import {isViewSharedWithUser} from 'state/views/utils'
-import {isCurrentlyOnTicket} from 'utils'
+import { isViewSharedWithUser } from 'state/views/utils'
+import { isCurrentlyOnTicket } from 'utils'
 
 /**
  * Events that can be received from server via socket
@@ -100,8 +97,8 @@ const receivedEvents: ReceivedEvent[] = [
         onReceive: function (json) {
             reduxStore.dispatch(
                 ticketActions.mergeCustomer(
-                    (json as CustomerUpdatedEvent).customer
-                )
+                    (json as CustomerUpdatedEvent).customer,
+                ),
             )
         },
     },
@@ -113,8 +110,8 @@ const receivedEvents: ReceivedEvent[] = [
             reduxStore.dispatch(
                 ticketActions.mergeCustomerExternalData(
                     customerExternalDataUpdatedEvent.customer_id,
-                    customerExternalDataUpdatedEvent.external_data
-                )
+                    customerExternalDataUpdatedEvent.external_data,
+                ),
             )
         },
     },
@@ -123,8 +120,8 @@ const receivedEvents: ReceivedEvent[] = [
         onReceive: function (json) {
             reduxStore.dispatch(
                 agentsActions.setAgentsLocations(
-                    (json as UserLocationUpdatedEvent).locations
-                )
+                    (json as UserLocationUpdatedEvent).locations,
+                ),
             )
         },
     },
@@ -133,15 +130,15 @@ const receivedEvents: ReceivedEvent[] = [
         onReceive: function (json) {
             reduxStore.dispatch(
                 agentsActions.setAgentsTypingStatuses(
-                    (json as UserTypingStatusUpdatedEvent).locations
-                )
+                    (json as UserTypingStatusUpdatedEvent).locations,
+                ),
             )
         },
     },
     {
         name: 'ticket-updated',
         onReceive: function (json) {
-            const {ticket} = json as TicketUpdatedEvent
+            const { ticket } = json as TicketUpdatedEvent
             if (ticket.is_unread) {
                 reduxStore.dispatch(chatsActions.markChatAsUnread(ticket.id))
             }
@@ -153,20 +150,20 @@ const receivedEvents: ReceivedEvent[] = [
         onReceive: function (json) {
             if (
                 isCurrentlyOnTicket(
-                    (json as TicketMessageCreatedEvent).ticket.id
+                    (json as TicketMessageCreatedEvent).ticket.id,
                 )
             ) {
                 ;(this as unknown as SocketManager).send(
                     SocketEventType.TicketViewed,
                     (json as TicketMessageCreatedEvent).ticket
-                        .id as unknown as string
+                        .id as unknown as string,
                 )
             }
 
             reduxStore.dispatch(
                 ticketActions.mergeTicket(
-                    (json as TicketMessageCreatedEvent).ticket
-                ) as any
+                    (json as TicketMessageCreatedEvent).ticket,
+                ) as any,
             )
         },
     },
@@ -179,19 +176,19 @@ const receivedEvents: ReceivedEvent[] = [
             reduxStore.dispatch(
                 ticketActions.handleMessageActionError(
                     (json as TicketMessageActionFailedEvent)
-                        .ticket_id as unknown as string
-                ) as any
+                        .ticket_id as unknown as string,
+                ) as any,
             )
         },
     },
     {
         name: 'ticket-message-failed',
         onReceive: function (json) {
-            logEvent(SegmentEvent.TicketMessageFailed, {data: json})
+            logEvent(SegmentEvent.TicketMessageFailed, { data: json })
             reduxStore.dispatch(
                 ticketActions.handleMessageError(
-                    json as TicketMessageFailedEvent
-                ) as any
+                    json as TicketMessageFailedEvent,
+                ) as any,
             )
         },
     },
@@ -200,8 +197,8 @@ const receivedEvents: ReceivedEvent[] = [
         onReceive: function (json) {
             reduxStore.dispatch(
                 infobarActions.handleExecutedAction(
-                    json as ActionExecutedEvent
-                ) as any
+                    json as ActionExecutedEvent,
+                ) as any,
             )
         },
     },
@@ -226,7 +223,7 @@ const receivedEvents: ReceivedEvent[] = [
             const state = reduxStore.getState()
             const currentUser = currentUserSelectors.getCurrentUser(state)
             const teams = getTeams(state)
-            const {view} = json as ViewUpdatedEvent
+            const { view } = json as ViewUpdatedEvent
 
             if (isViewSharedWithUser(view as any, currentUser, teams)) {
                 reduxStore.dispatch({
@@ -236,7 +233,7 @@ const receivedEvents: ReceivedEvent[] = [
                 reduxStore.dispatch(viewUpdated(view))
             } else {
                 reduxStore.dispatch(
-                    viewsActions.deleteViewSuccess(view.id) as any
+                    viewsActions.deleteViewSuccess(view.id) as any,
                 )
                 reduxStore.dispatch(viewDeleted(view.id))
             }
@@ -247,8 +244,8 @@ const receivedEvents: ReceivedEvent[] = [
         onReceive: function (json) {
             reduxStore.dispatch(
                 viewsActions.deleteViewSuccess(
-                    (json as ViewDeletedEvent).view.id
-                ) as any
+                    (json as ViewDeletedEvent).view.id,
+                ) as any,
             )
             reduxStore.dispatch(viewDeleted((json as ViewDeletedEvent).view.id))
         },
@@ -257,7 +254,7 @@ const receivedEvents: ReceivedEvent[] = [
         name: SocketEventType.ViewSectionCreated,
         onReceive: function (json) {
             reduxStore.dispatch(
-                sectionCreated((json as ViewSectionCreatedEvent).view_section)
+                sectionCreated((json as ViewSectionCreatedEvent).view_section),
             )
         },
     },
@@ -265,7 +262,7 @@ const receivedEvents: ReceivedEvent[] = [
         name: SocketEventType.ViewSectionUpdated,
         onReceive: function (json) {
             reduxStore.dispatch(
-                sectionUpdated((json as ViewSectionUpdatedEvent).view_section)
+                sectionUpdated((json as ViewSectionUpdatedEvent).view_section),
             )
         },
     },
@@ -274,8 +271,8 @@ const receivedEvents: ReceivedEvent[] = [
         onReceive: function (json) {
             reduxStore.dispatch(
                 sectionDeleted(
-                    (json as ViewSectionDeletedEvent).view_section.id
-                )
+                    (json as ViewSectionDeletedEvent).view_section.id,
+                ),
             )
         },
     },
@@ -283,12 +280,12 @@ const receivedEvents: ReceivedEvent[] = [
         name: 'views-count-updated',
         onReceive: function (json) {
             reduxStore.dispatch(
-                viewsCountFetched((json as ViewCountUpdatedEvent).counts)
+                viewsCountFetched((json as ViewCountUpdatedEvent).counts),
             )
             reduxStore.dispatch(
                 viewsActions.handleViewsCount(
-                    (json as ViewCountUpdatedEvent).counts
-                ) as any
+                    (json as ViewCountUpdatedEvent).counts,
+                ) as any,
             )
         },
     },
@@ -304,8 +301,8 @@ const receivedEvents: ReceivedEvent[] = [
                 ?.notification
             const currentAccountStatus =
                 //@ts-ignore
-                (state.currentAccount as {status?: {status?: string}})?.status
-                    ?.status || 'active'
+                (state.currentAccount as { status?: { status?: string } })
+                    ?.status?.status || 'active'
 
             if (notification) {
                 reduxStore.dispatch(
@@ -313,7 +310,7 @@ const receivedEvents: ReceivedEvent[] = [
                         newAccountStatus,
                         currentAccountStatus,
                         notification,
-                    }) as any
+                    }) as any,
                 )
             }
 
@@ -326,8 +323,8 @@ const receivedEvents: ReceivedEvent[] = [
                     account.settings || [],
                     (setting) =>
                         setting.type ===
-                        currentAccountConstants.SETTING_TYPE_TICKET_ASSIGNMENT
-                ) || {}
+                        currentAccountConstants.SETTING_TYPE_TICKET_ASSIGNMENT,
+                ) || {},
             ) as Map<any, any>
 
             let shouldFetchChats =
@@ -350,11 +347,11 @@ const receivedEvents: ReceivedEvent[] = [
 
                 const oldAssignmentChannels = oldTicketAssignmentSetting.getIn(
                     ['data', 'assignment_channels'],
-                    fromJS([])
+                    fromJS([]),
                 ) as List<any>
                 const newAssignmentChannels = newTicketAssignmentSetting.getIn(
                     ['data', 'assignment_channels'],
-                    fromJS([])
+                    fromJS([]),
                 ) as List<any>
                 const ticketAssignmentChannelsHaveChanged =
                     !oldAssignmentChannels.equals(newAssignmentChannels)
@@ -378,7 +375,7 @@ const receivedEvents: ReceivedEvent[] = [
             const newAccountProducts =
                 account.current_subscription?.products || {}
             const areProductsLoaded = Object.values(newAccountProducts).every(
-                (priceId) => !!plansMap[priceId]
+                (priceId) => !!plansMap[priceId],
             )
 
             if (!areProductsLoaded) {
@@ -386,7 +383,7 @@ const receivedEvents: ReceivedEvent[] = [
                     notificationsActions.notify({
                         message:
                             'The app will reload automatically in a few seconds to reflect your subscription changes.',
-                    }) as any
+                    }) as any,
                 )
                 setTimeout(() => {
                     window.location.reload()
@@ -421,7 +418,7 @@ const receivedEvents: ReceivedEvent[] = [
                 json as TicketMessageChatCreatedEvent
             ).event.play_sound_notification
 
-            const {currentUser} = state
+            const { currentUser } = state
 
             const ticketAssignmentSetting =
                 currentAccountSelectors.getTicketAssignmentSettings(state)
@@ -432,7 +429,7 @@ const receivedEvents: ReceivedEvent[] = [
             if (isCurrentlyOnTicket(ticket.id)) {
                 ;(this as unknown as SocketManager).send(
                     SocketEventType.TicketViewed,
-                    ticket.id as unknown as string
+                    ticket.id as unknown as string,
                 )
                 ticket.is_unread = false
             }
@@ -442,22 +439,22 @@ const receivedEvents: ReceivedEvent[] = [
                     ticket,
                     ticketAssignmentSetting,
                     currentUser,
-                    currentUserIsAvailable
+                    currentUserIsAvailable,
                 )
             ) {
                 reduxStore.dispatch(
                     chatsActions.addChat(
                         ticket,
                         shouldNotify,
-                        playSoundNotification
-                    ) as any
+                        playSoundNotification,
+                    ) as any,
                 )
                 return
             }
 
             reduxStore.dispatch(chatsActions.removeChat(ticket.id))
 
-            const {chats} = reduxStore.getState() as RootState
+            const { chats } = reduxStore.getState() as RootState
 
             if ((chats.get('tickets') as List<any>).size < MAX_RECENT_CHATS) {
                 chatsActions.fetchChatsThrottled(reduxStore.dispatch)
@@ -469,7 +466,7 @@ const receivedEvents: ReceivedEvent[] = [
         onReceive: function (json) {
             const ticket = (json as TicketChatUpdatedEvent).data
             const state = reduxStore.getState() as RootState
-            const {currentUser} = state
+            const { currentUser } = state
 
             const ticketAssignmentSetting =
                 currentAccountSelectors.getTicketAssignmentSettings(state)
@@ -481,7 +478,7 @@ const receivedEvents: ReceivedEvent[] = [
                     ticket,
                     ticketAssignmentSetting,
                     currentUser,
-                    currentUserIsAvailable
+                    currentUserIsAvailable,
                 )
             ) {
                 reduxStore.dispatch(chatsActions.addChat(ticket, false) as any)
@@ -490,7 +487,7 @@ const receivedEvents: ReceivedEvent[] = [
 
             reduxStore.dispatch(chatsActions.removeChat(ticket.id))
 
-            const {chats} = reduxStore.getState() as RootState
+            const { chats } = reduxStore.getState() as RootState
 
             if ((chats.get('tickets') as List<any>).size < MAX_RECENT_CHATS) {
                 chatsActions.fetchChatsThrottled(reduxStore.dispatch)
@@ -502,7 +499,7 @@ const receivedEvents: ReceivedEvent[] = [
         onReceive: function (json) {
             integrationsActions.onVerify(
                 reduxStore.dispatch,
-                (json as EmailIntegrationVerifiedEvent).integration_id
+                (json as EmailIntegrationVerifiedEvent).integration_id,
             )
         },
     },
@@ -512,7 +509,7 @@ const receivedEvents: ReceivedEvent[] = [
             const integrationId = (json as EmailIntegrationVerifiedEvent)
                 .integration_id
             const migration = getEmailMigrations(reduxStore.getState()).find(
-                (migration) => migration.integration.id === integrationId
+                (migration) => migration.integration.id === integrationId,
             )
 
             if (!migration) return
@@ -520,7 +517,7 @@ const receivedEvents: ReceivedEvent[] = [
             integrationsActions.onVerifyMigrationForwarding(
                 reduxStore.dispatch,
                 integrationId,
-                migration.integration.meta.address
+                migration.integration.meta.address,
             )
         },
     },
@@ -530,7 +527,7 @@ const receivedEvents: ReceivedEvent[] = [
             const integrationId = (json as EmailIntegrationVerifiedEvent)
                 .integration_id
             const migration = getEmailMigrations(reduxStore.getState()).find(
-                (migration) => migration.integration.id === integrationId
+                (migration) => migration.integration.id === integrationId,
             )
 
             if (!migration) return
@@ -538,7 +535,7 @@ const receivedEvents: ReceivedEvent[] = [
             integrationsActions.onVerifyMigrationForwardingFailure(
                 reduxStore.dispatch,
                 integrationId,
-                migration?.integration.meta.address
+                migration?.integration.meta.address,
             )
         },
     },
@@ -547,7 +544,7 @@ const receivedEvents: ReceivedEvent[] = [
         onReceive: function (json) {
             integrationsActions.onEmailForwardingActivated(
                 reduxStore.dispatch,
-                (json as EmailIntegrationVerifiedEvent).integration_id
+                (json as EmailIntegrationVerifiedEvent).integration_id,
             )
         },
     },
@@ -567,14 +564,14 @@ const receivedEvents: ReceivedEvent[] = [
                                   (json as FacebookIntegrationsReconnected)
                                       .event.total
                               } Facebook pages have been reconnected.`,
-                }) as any
+                }) as any,
             )
         },
     },
     {
         name: SocketEventType.OutboundPhoneCallInitiated,
         onReceive: function (json) {
-            const {event} = json as unknown as OutboundPhoneCallInitiated
+            const { event } = json as unknown as OutboundPhoneCallInitiated
             const {
                 phone_ticket_id: phoneTicketId,
                 original_path: originalPath,
@@ -603,7 +600,7 @@ const receivedEvents: ReceivedEvent[] = [
                 type: MACRO_PARAMS_UPDATED,
                 payload: fromJS(
                     (json as unknown as MacroParamsUpdatedEvent).event
-                        .parameters_options
+                        .parameters_options,
                 ),
             })
         },
@@ -613,8 +610,8 @@ const receivedEvents: ReceivedEvent[] = [
         onReceive: function (json) {
             reduxStore.dispatch(
                 setIsAvailable(
-                    (json as AgentAvailabilityUpdatedEvent).data.available
-                )
+                    (json as AgentAvailabilityUpdatedEvent).data.available,
+                ),
             )
 
             chatsActions.fetchChatsThrottled(reduxStore.dispatch)
@@ -623,18 +620,18 @@ const receivedEvents: ReceivedEvent[] = [
     {
         name: SocketEventType.TicketTypingActivityShopperStarted,
         onReceive: function (json) {
-            const {ticket} =
+            const { ticket } =
                 json as unknown as TicketTypingActivityShopperStartedEvent
 
             reduxStore.dispatch(
-                ticketActions.setTypingActivityShopper(ticket.id) as any
+                ticketActions.setTypingActivityShopper(ticket.id) as any,
             )
         },
     },
     {
         name: SocketEventType.ViewDeactivated,
         onReceive: function (json) {
-            const {event} = json as unknown as ViewDeactivated
+            const { event } = json as unknown as ViewDeactivated
             const message = `View "${event.name}" has been deactivated.`
 
             reduxStore.dispatch(
@@ -642,14 +639,14 @@ const receivedEvents: ReceivedEvent[] = [
                     status: NotificationStatus.Warning,
                     allowHTML: true,
                     message,
-                }) as any
+                }) as any,
             )
         },
     },
     {
         name: SocketEventType.WhatsAppOnboardingSucceeded,
         onReceive: async (data) => {
-            const {phone_number} = data as WhatsAppOnboardingSucceededEvent
+            const { phone_number } = data as WhatsAppOnboardingSucceededEvent
             const isMigrating = isMigrationInProgress()
             if (isMigrating) {
                 return
@@ -662,7 +659,7 @@ const receivedEvents: ReceivedEvent[] = [
                 notificationsActions.notify({
                     dismissAfter: 10000,
                     message: `WhatsApp successfully connected for number ${phone_number!}.`,
-                }) as any
+                }) as any,
             )
             reduxStore.dispatch(integrationsActions.fetchIntegrations() as any)
             const phoneNumbers = await fetchNewPhoneNumbers()
@@ -674,7 +671,8 @@ const receivedEvents: ReceivedEvent[] = [
     {
         name: SocketEventType.WhatsAppOnboardingFailed,
         onReceive: (data) => {
-            const {phone_number, error} = data as WhatsAppOnboardingFailedEvent
+            const { phone_number, error } =
+                data as WhatsAppOnboardingFailedEvent
             const listPath = '/app/settings/integrations/whatsapp/integrations'
             if (window.location.pathname !== listPath) {
                 history.push(listPath)
@@ -687,19 +685,19 @@ const receivedEvents: ReceivedEvent[] = [
                     dismissAfter: 10000,
                     status: NotificationStatus.Error,
                     message,
-                }) as any
+                }) as any,
             )
         },
     },
     {
         name: SocketEventType.VoiceCallCreated,
         onReceive: function (json) {
-            const {voice_call} = json as VoiceCallCreatedEvent
+            const { voice_call } = json as VoiceCallCreatedEvent
 
             if (!isVoiceCall(voice_call)) return
 
             appQueryClient.setQueryData<UseListVoiceCalls>(
-                voiceCallsKeys.list({ticket_id: voice_call.ticket_id}),
+                voiceCallsKeys.list({ ticket_id: voice_call.ticket_id }),
                 (oldData) => {
                     if (!oldData) return
 
@@ -707,23 +705,23 @@ const receivedEvents: ReceivedEvent[] = [
                         ...oldData,
                         data: [...oldData.data, voice_call],
                     }
-                }
+                },
             )
         },
     },
     {
         name: SocketEventType.VoiceCallUpdated,
         onReceive: function (json) {
-            const {voice_call} = json as VoiceCallUpdatedEvent
+            const { voice_call } = json as VoiceCallUpdatedEvent
 
             if (!isVoiceCall(voice_call)) return
 
             appQueryClient.setQueryData<UseListVoiceCalls>(
-                voiceCallsKeys.list({ticket_id: voice_call.ticket_id}),
+                voiceCallsKeys.list({ ticket_id: voice_call.ticket_id }),
                 (oldData) => {
                     const voiceCallIndex =
                         oldData?.data.findIndex(
-                            (vc) => vc.id === voice_call.id
+                            (vc) => vc.id === voice_call.id,
                         ) ?? -1
 
                     if (!oldData || voiceCallIndex === -1) return
@@ -732,21 +730,21 @@ const receivedEvents: ReceivedEvent[] = [
                     newData.data[voiceCallIndex] = voice_call
 
                     return newData
-                }
+                },
             )
         },
     },
     {
         name: SocketEventType.VoiceCallRecordingUpdated,
         onReceive: async function (json) {
-            const {voice_call_recording} =
+            const { voice_call_recording } =
                 json as VoiceCallRecordingUpdatedEvent
 
             if (!!voice_call_recording.transcription_status) {
                 await appQueryClient.refetchQueries(
                     voiceCallsKeys.listRecordings({
                         call_id: voice_call_recording.call_id,
-                    })
+                    }),
                 )
             }
         },
@@ -759,8 +757,8 @@ const receivedEvents: ReceivedEvent[] = [
                 ticketActions.mergeCustomerEcommerceDataShopper(
                     eventData.event.data.customer_id,
                     eventData.event.data.store,
-                    eventData.event.data.shopper
-                )
+                    eventData.event.data.shopper,
+                ),
             )
         },
     },
@@ -772,8 +770,8 @@ const receivedEvents: ReceivedEvent[] = [
                 ticketActions.mergeCustomerEcommerceDataShopper(
                     eventData.event.data.customer_id,
                     eventData.event.data.store,
-                    eventData.event.data.shopper
-                )
+                    eventData.event.data.shopper,
+                ),
             )
         },
     },
@@ -785,8 +783,8 @@ const receivedEvents: ReceivedEvent[] = [
                 ticketActions.mergeCustomerEcommerceDataShopperAddress(
                     eventData.event.data.customer_id,
                     eventData.event.data.store_uuid,
-                    eventData.event.data.shopper_address
-                )
+                    eventData.event.data.shopper_address,
+                ),
             )
         },
     },
@@ -798,8 +796,8 @@ const receivedEvents: ReceivedEvent[] = [
                 ticketActions.mergeCustomerEcommerceDataShopperAddress(
                     eventData.event.data.customer_id,
                     eventData.event.data.store_uuid,
-                    eventData.event.data.shopper_address
-                )
+                    eventData.event.data.shopper_address,
+                ),
             )
         },
     },
@@ -811,8 +809,8 @@ const receivedEvents: ReceivedEvent[] = [
                 ticketActions.mergeCustomerEcommerceDataOrder(
                     eventData.event.data.customer_id,
                     eventData.event.data.store_uuid,
-                    eventData.event.data.order
-                )
+                    eventData.event.data.order,
+                ),
             )
         },
     },
@@ -824,8 +822,8 @@ const receivedEvents: ReceivedEvent[] = [
                 ticketActions.mergeCustomerEcommerceDataOrder(
                     eventData.event.data.customer_id,
                     eventData.event.data.store_uuid,
-                    eventData.event.data.order
-                )
+                    eventData.event.data.order,
+                ),
             )
         },
     },

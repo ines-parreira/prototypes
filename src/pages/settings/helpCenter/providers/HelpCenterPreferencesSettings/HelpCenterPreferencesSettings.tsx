@@ -1,4 +1,3 @@
-import {produce, Draft} from 'immer'
 import React, {
     createContext,
     useCallback,
@@ -8,6 +7,8 @@ import React, {
     useState,
 } from 'react'
 
+import { Draft, produce } from 'immer'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -15,21 +16,21 @@ import {
     HelpCenterTranslationSeoMeta,
     LocaleCode,
 } from 'models/helpCenter/types'
-import {HELP_CENTER_DEFAULT_LOCALE} from 'pages/settings/helpCenter/constants'
-import {useHelpCenterActions} from 'pages/settings/helpCenter/hooks/useHelpCenterActions'
-import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import { HELP_CENTER_DEFAULT_LOCALE } from 'pages/settings/helpCenter/constants'
+import { useHelpCenterActions } from 'pages/settings/helpCenter/hooks/useHelpCenterActions'
+import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import {
     getNewHelpCenterTranslation,
     helpCenterSeoMetaFields,
 } from 'pages/settings/helpCenter/utils/helpCenter.utils'
-import {helpCenterUpdated} from 'state/entities/helpCenter/helpCenters/actions'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {getViewLanguage} from 'state/ui/helpCenter'
-import {changeViewLanguage} from 'state/ui/helpCenter/actions'
-import {reportError} from 'utils/errors'
+import { helpCenterUpdated } from 'state/entities/helpCenter/helpCenters/actions'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { getViewLanguage } from 'state/ui/helpCenter'
+import { changeViewLanguage } from 'state/ui/helpCenter/actions'
+import { reportError } from 'utils/errors'
 
-import {getGenericMessageFromError} from '../../utils'
+import { getGenericMessageFromError } from '../../utils'
 
 export type HelpCenterPreferencesState = {
     defaultLanguage: LocaleCode
@@ -84,8 +85,8 @@ export const HelpCenterPreferencesSettings = ({
     helpCenter,
 }: Props): JSX.Element => {
     const dispatch = useAppDispatch()
-    const {client} = useHelpCenterApi()
-    const {fetchHelpCenterTranslations} = useHelpCenterActions()
+    const { client } = useHelpCenterApi()
+    const { fetchHelpCenterTranslations } = useHelpCenterActions()
     const viewLanguage =
         useAppSelector(getViewLanguage) || HELP_CENTER_DEFAULT_LOCALE
     const [preferences, updatePreferences] =
@@ -94,7 +95,7 @@ export const HelpCenterPreferencesSettings = ({
 
     const defaultLanguageChanged = useMemo(
         () => helpCenter.default_locale !== preferences.defaultLanguage,
-        [helpCenter, preferences]
+        [helpCenter, preferences],
     )
 
     const supportedLanguagesChanged = useMemo(() => {
@@ -113,19 +114,19 @@ export const HelpCenterPreferencesSettings = ({
             .sort()
             .some(
                 (locale, index) =>
-                    locale !== [...helpCenter.supported_locales].sort()[index]
+                    locale !== [...helpCenter.supported_locales].sort()[index],
             )
     }, [helpCenter, preferences])
 
     const seoChanged = useMemo(() => {
         const translation = helpCenter.translations?.find(
-            (t) => t.locale === viewLanguage
+            (t) => t.locale === viewLanguage,
         )
 
         if (!translation) return false
 
         return helpCenterSeoMetaFields.some(
-            (key) => translation.seo_meta[key] !== preferences.seoMeta[key]
+            (key) => translation.seo_meta[key] !== preferences.seoMeta[key],
         )
     }, [helpCenter.translations, preferences, viewLanguage])
 
@@ -134,12 +135,12 @@ export const HelpCenterPreferencesSettings = ({
             helpCenter.shop_name !== preferences.connectedShop.shopName ||
             Boolean(helpCenter.self_service_deactivated_datetime) !==
                 preferences.connectedShop.selfServiceDeactivated,
-        [helpCenter, preferences]
+        [helpCenter, preferences],
     )
 
     const canSavePreferences = useMemo(
         () => defaultLanguageChanged || seoChanged || connectedShopChanged,
-        [defaultLanguageChanged, seoChanged, connectedShopChanged]
+        [defaultLanguageChanged, seoChanged, connectedShopChanged],
     )
 
     const savePreferences = async () => {
@@ -148,7 +149,7 @@ export const HelpCenterPreferencesSettings = ({
         setIsSavingInProgress(true)
         try {
             if (seoChanged) {
-                const {seoMeta} = preferences
+                const { seoMeta } = preferences
 
                 await client.updateHelpCenterTranslation(
                     {
@@ -160,38 +161,41 @@ export const HelpCenterPreferencesSettings = ({
                             title: seoMeta.title || null,
                             description: seoMeta.description || null,
                         },
-                    }
+                    },
                 )
 
                 await fetchHelpCenterTranslations()
             }
 
             if (defaultLanguageChanged) {
-                const {data: updatedHelpCenter} = await client.updateHelpCenter(
-                    {help_center_id: helpCenter.id},
-                    {
-                        default_locale: preferences.defaultLanguage,
-                    }
-                )
+                const { data: updatedHelpCenter } =
+                    await client.updateHelpCenter(
+                        { help_center_id: helpCenter.id },
+                        {
+                            default_locale: preferences.defaultLanguage,
+                        },
+                    )
 
                 dispatch(helpCenterUpdated(updatedHelpCenter))
 
                 if (defaultLanguageChanged) {
                     dispatch(
-                        changeViewLanguage(updatedHelpCenter.default_locale)
+                        changeViewLanguage(updatedHelpCenter.default_locale),
                     )
                 }
             }
 
             if (connectedShopChanged) {
-                const {data: updatedHelpCenter} = await client.updateHelpCenter(
-                    {help_center_id: helpCenter.id},
-                    {
-                        shop_name: preferences.connectedShop.shopName,
-                        self_service_deactivated:
-                            preferences.connectedShop.selfServiceDeactivated,
-                    }
-                )
+                const { data: updatedHelpCenter } =
+                    await client.updateHelpCenter(
+                        { help_center_id: helpCenter.id },
+                        {
+                            shop_name: preferences.connectedShop.shopName,
+                            self_service_deactivated:
+                                preferences.connectedShop
+                                    .selfServiceDeactivated,
+                        },
+                    )
 
                 dispatch(helpCenterUpdated(updatedHelpCenter))
             }
@@ -200,7 +204,7 @@ export const HelpCenterPreferencesSettings = ({
                 notify({
                     message: 'Help Center updated with success',
                     status: NotificationStatus.Success,
-                })
+                }),
             )
         } catch (err) {
             const errorMessage = getGenericMessageFromError(err)
@@ -209,7 +213,7 @@ export const HelpCenterPreferencesSettings = ({
                 notify({
                     message: `Could not update the Help Center: ${errorMessage}`,
                     status: NotificationStatus.Error,
-                })
+                }),
             )
 
             reportError(err as Error)
@@ -230,7 +234,7 @@ export const HelpCenterPreferencesSettings = ({
                         locale: locale,
                     })
                 }
-            })
+            }),
         )
 
         // Add new supported locales
@@ -241,17 +245,17 @@ export const HelpCenterPreferencesSettings = ({
                         {
                             help_center_id: helpCenter.id,
                         },
-                        getNewHelpCenterTranslation(locale)
+                        getNewHelpCenterTranslation(locale),
                     )
                 }
-            })
+            }),
         )
 
         dispatch(
             helpCenterUpdated({
                 ...helpCenter,
                 supported_locales: preferences.availableLanguages,
-            })
+            }),
         )
 
         if (!preferences.availableLanguages.includes(viewLanguage)) {
@@ -267,7 +271,7 @@ export const HelpCenterPreferencesSettings = ({
                 ...payload,
             })
         },
-        [updatePreferences, preferences]
+        [updatePreferences, preferences],
     )
 
     const updatePreferencesFromData = useCallback(() => {
@@ -276,11 +280,11 @@ export const HelpCenterPreferencesSettings = ({
             draftSettings.availableLanguages = helpCenter.supported_locales
             draftSettings.connectedShop.shopName = helpCenter.shop_name
             draftSettings.connectedShop.selfServiceDeactivated = Boolean(
-                helpCenter.self_service_deactivated_datetime
+                helpCenter.self_service_deactivated_datetime,
             )
 
             const translation = helpCenter.translations?.find(
-                (t) => t.locale === viewLanguage
+                (t) => t.locale === viewLanguage,
             )
 
             if (translation) {

@@ -1,8 +1,9 @@
-import {Map} from 'immutable'
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
-import {chatIsShopifyStore} from 'pages/convert/campaigns/utils/chatIsShopifyStore'
+import { Map } from 'immutable'
+
+import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
+import { chatIsShopifyStore } from 'pages/convert/campaigns/utils/chatIsShopifyStore'
 
 export const useIsCampaignCreationAllowed = (integration: Map<any, any>) => {
     const isConvertSubscriber = useIsConvertSubscriber()

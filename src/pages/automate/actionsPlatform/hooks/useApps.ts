@@ -1,15 +1,16 @@
-import {DefinedUseQueryResult} from '@tanstack/react-query'
+import { useMemo } from 'react'
+
+import { DefinedUseQueryResult } from '@tanstack/react-query'
 import _keyBy from 'lodash/keyBy'
-import {useMemo} from 'react'
 
-import {INTEGRATION_TYPE_CONFIG, IntegrationConfig} from 'config'
-import {IntegrationType} from 'models/integration/constants'
-import {useGetApps, useGetAppsByIds} from 'models/integration/queries'
-import {AppData} from 'models/integration/types'
-import {useListActionsApps} from 'models/workflows/queries'
-import {assetsUrl} from 'utils'
+import { INTEGRATION_TYPE_CONFIG, IntegrationConfig } from 'config'
+import { IntegrationType } from 'models/integration/constants'
+import { useGetApps, useGetAppsByIds } from 'models/integration/queries'
+import { AppData } from 'models/integration/types'
+import { useListActionsApps } from 'models/workflows/queries'
+import { assetsUrl } from 'utils'
 
-import {App} from '../types'
+import { App } from '../types'
 
 type NativeAppIntegrationConfig = Omit<IntegrationConfig, 'type' | 'image'> & {
     type: IntegrationType.Shopify | IntegrationType.Recharge
@@ -19,7 +20,7 @@ type NativeAppIntegrationConfig = Omit<IntegrationConfig, 'type' | 'image'> & {
 const NATIVE_APPS_TYPES = [IntegrationType.Shopify, IntegrationType.Recharge]
 const NATIVE_APPS: App[] = INTEGRATION_TYPE_CONFIG.filter(
     (integration): integration is NativeAppIntegrationConfig =>
-        NATIVE_APPS_TYPES.includes(integration.type)
+        NATIVE_APPS_TYPES.includes(integration.type),
 ).map((integration) => ({
     id: integration.type,
     type: integration.type,
@@ -32,14 +33,14 @@ const useApps = <T extends App['type'] = App['type']>(
         IntegrationType.Shopify,
         IntegrationType.Recharge,
         IntegrationType.App,
-    ] as T[]
+    ] as T[],
 ) => {
     const {
         data: actionsApps = [],
         isInitialLoading: isActionsAppsInitialLoading,
     } = useListActionsApps()
 
-    const {data: appsList = [], isInitialLoading} = useGetApps()
+    const { data: appsList = [], isInitialLoading } = useGetApps()
 
     const missingApps = useMemo(() => {
         if (isInitialLoading || isActionsAppsInitialLoading) {
@@ -55,7 +56,7 @@ const useApps = <T extends App['type'] = App['type']>(
 
     const appQueries = useGetAppsByIds(missingApps)
 
-    const apps = useMemo<Extract<App, {type: T}>[]>(
+    const apps = useMemo<Extract<App, { type: T }>[]>(
         () =>
             [
                 ...NATIVE_APPS,
@@ -68,18 +69,18 @@ const useApps = <T extends App['type'] = App['type']>(
                 ...appQueries
                     .filter(
                         (query): query is DefinedUseQueryResult<AppData> =>
-                            query.isSuccess
+                            query.isSuccess,
                     )
-                    .map(({data}) => ({
+                    .map(({ data }) => ({
                         id: data.id,
                         type: IntegrationType.App as const,
                         name: data.name,
                         icon: data.app_icon,
                     })),
-            ].filter((app): app is Extract<App, {type: T}> =>
-                types.includes(app.type as T)
+            ].filter((app): app is Extract<App, { type: T }> =>
+                types.includes(app.type as T),
             ),
-        [appsList, appQueries, types]
+        [appsList, appQueries, types],
     )
 
     const isLoading =
@@ -87,7 +88,7 @@ const useApps = <T extends App['type'] = App['type']>(
         isActionsAppsInitialLoading ||
         appQueries.some((query) => query.isLoading)
 
-    return {isLoading, apps, actionsApps}
+    return { isLoading, apps, actionsApps }
 }
 
 export default useApps

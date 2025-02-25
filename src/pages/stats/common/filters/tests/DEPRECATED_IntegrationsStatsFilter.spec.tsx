@@ -1,18 +1,19 @@
-import {fireEvent, render} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {integrationsState} from 'fixtures/integrations'
-import {IntegrationType} from 'models/integration/constants'
-import {Integration} from 'models/integration/types'
+import { integrationsState } from 'fixtures/integrations'
+import { IntegrationType } from 'models/integration/constants'
+import { Integration } from 'models/integration/types'
 import DEPRECATED_IntegrationsStatsFilter, {
     FONT_ICONS,
     IMAGE_ICONS,
 } from 'pages/stats/common/filters/DEPRECATED_IntegrationsStatsFilter'
-import {initialState, mergeStatsFilters} from 'state/stats/statsSlice'
-import {RootState} from 'state/types'
+import { initialState, mergeStatsFilters } from 'state/stats/statsSlice'
+import { RootState } from 'state/types'
 
 const mockStore = configureMockStore([thunk])
 
@@ -22,7 +23,7 @@ describe('DEPRECATED_IntegrationsStatsFilter', () => {
     } as RootState
 
     it('should not render missing integrations', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <DEPRECATED_IntegrationsStatsFilter
                     value={[
@@ -35,7 +36,7 @@ describe('DEPRECATED_IntegrationsStatsFilter', () => {
                     }
                     isMultiple
                 />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -52,24 +53,24 @@ describe('DEPRECATED_IntegrationsStatsFilter', () => {
                 type: integrationType,
             } as Integration
 
-            const {getByText} = render(
+            const { getByText } = render(
                 <Provider store={mockStore(defaultState)}>
                     <DEPRECATED_IntegrationsStatsFilter
                         value={[]}
                         integrations={[integration]}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(
-                getByText(`${integrationType} integration`)
+                getByText(`${integrationType} integration`),
             ).toMatchSnapshot()
-        }
+        },
     )
 
     it('should merge stats filters on item select', () => {
         const store = mockStore(defaultState)
-        const {getByLabelText} = render(
+        const { getByLabelText } = render(
             <Provider store={store}>
                 <DEPRECATED_IntegrationsStatsFilter
                     value={[]}
@@ -77,7 +78,7 @@ describe('DEPRECATED_IntegrationsStatsFilter', () => {
                         integrationsState.integrations as Integration[]
                     }
                 />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(getByLabelText(integrationsState.integrations[1].name))
@@ -87,7 +88,7 @@ describe('DEPRECATED_IntegrationsStatsFilter', () => {
 
     it('should replace the item when isMultiple is set to false', () => {
         const store = mockStore(defaultState)
-        const {getByLabelText} = render(
+        const { getByLabelText } = render(
             <Provider store={store}>
                 <DEPRECATED_IntegrationsStatsFilter
                     value={[integrationsState.integrations[0].id]}
@@ -96,7 +97,7 @@ describe('DEPRECATED_IntegrationsStatsFilter', () => {
                         integrationsState.integrations as Integration[]
                     }
                 />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(getByLabelText(integrationsState.integrations[1].name))
@@ -106,7 +107,7 @@ describe('DEPRECATED_IntegrationsStatsFilter', () => {
 
     it('should allow to select multiple items when isMultiple is set to true', () => {
         const store = mockStore(defaultState)
-        const {getByLabelText} = render(
+        const { getByLabelText } = render(
             <Provider store={store}>
                 <DEPRECATED_IntegrationsStatsFilter
                     value={[integrationsState.integrations[0].id]}
@@ -115,7 +116,7 @@ describe('DEPRECATED_IntegrationsStatsFilter', () => {
                     }
                     isMultiple
                 />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(getByLabelText(integrationsState.integrations[1].name))
@@ -127,7 +128,7 @@ describe('DEPRECATED_IntegrationsStatsFilter', () => {
                     integrationsState.integrations[0].id,
                     integrationsState.integrations[1].id,
                 ],
-            })
+            }),
         )
     })
 })

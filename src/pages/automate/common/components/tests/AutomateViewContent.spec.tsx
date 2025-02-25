@@ -1,7 +1,8 @@
-import {render, screen, fireEvent} from '@testing-library/react'
 import React from 'react'
 
-import {renderWithRouter} from 'utils/testing'
+import { fireEvent, render, screen } from '@testing-library/react'
+
+import { renderWithRouter } from 'utils/testing'
 
 import AutomateViewContent from '../AutomateViewContent'
 
@@ -14,7 +15,7 @@ describe('AutomateViewContent', () => {
                 helpTitle="Help"
             >
                 <div>Child Content</div>
-            </AutomateViewContent>
+            </AutomateViewContent>,
         )
         expect(screen.getByText('Test Description')).toBeInTheDocument()
         expect(screen.getByText('Help')).toBeInTheDocument()
@@ -25,7 +26,7 @@ describe('AutomateViewContent', () => {
         renderWithRouter(
             <AutomateViewContent>
                 <div>Child Content</div>
-            </AutomateViewContent>
+            </AutomateViewContent>,
         )
         expect(screen.getByText('Child Content')).toBeInTheDocument()
     })
@@ -42,7 +43,7 @@ describe('AutomateViewContent', () => {
                 isCancelable={true}
             >
                 <div>Child Content</div>
-            </AutomateViewContent>
+            </AutomateViewContent>,
         )
 
         const saveButton = screen.getByText('Save changes')
@@ -69,7 +70,7 @@ describe('AutomateViewContent', () => {
                 isCancelable={true}
             >
                 <div>Child Content</div>
-            </AutomateViewContent>
+            </AutomateViewContent>,
         )
 
         expect(screen.getByText('Child Content')).toBeInTheDocument()

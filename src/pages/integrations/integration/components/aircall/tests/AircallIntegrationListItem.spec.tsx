@@ -1,12 +1,13 @@
-import {render, fireEvent, screen, act} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { act, fireEvent, render, screen } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {IntegrationType} from 'models/integration/constants'
-import {AircallIntegration} from 'models/integration/types'
-import {deleteIntegration} from 'state/integrations/actions'
-import {RootState, StoreDispatch} from 'state/types'
+import { IntegrationType } from 'models/integration/constants'
+import { AircallIntegration } from 'models/integration/types'
+import { deleteIntegration } from 'state/integrations/actions'
+import { RootState, StoreDispatch } from 'state/types'
 
 import AircallIntegrationListItem from '../AircallIntegrationListItem'
 
@@ -35,19 +36,19 @@ describe('<AircallIntegrationListItem/>', () => {
 
     describe('render()', () => {
         it('should render the aircall integration list item', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <AircallIntegrationListItem {...props} />
-                </Provider>
+                </Provider>,
             )
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should click on delete integration', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <AircallIntegrationListItem {...props} />
-                </Provider>
+                </Provider>,
             )
 
             const deleteButton = container.querySelector(`#delete-button-7`)

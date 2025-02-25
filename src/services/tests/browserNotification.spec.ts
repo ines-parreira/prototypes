@@ -1,9 +1,9 @@
 import PushJS from 'push.js'
 
-import {notificationSounds} from 'services'
-import {getNotificationSettings} from 'state/currentUser/selectors'
+import { notificationSounds } from 'services'
+import { getNotificationSettings } from 'state/currentUser/selectors'
 
-import {BrowserNotification} from '../browserNotification'
+import { BrowserNotification } from '../browserNotification'
 
 jest.mock('common/store', () => ({
     store: {
@@ -64,9 +64,9 @@ describe('browserNotification', () => {
 
                 expect(notificationSounds.play).toHaveBeenCalledWith(
                     'default',
-                    5
+                    5,
                 )
-            }
+            },
         )
 
         it('should require interaction', () => {
@@ -76,7 +76,7 @@ describe('browserNotification', () => {
             })
 
             expect(
-                (PushJS as unknown as {getAll: () => any[]}).getAll()
+                (PushJS as unknown as { getAll: () => any[] }).getAll(),
             ).toMatchSnapshot()
         })
 
@@ -85,7 +85,7 @@ describe('browserNotification', () => {
             browserNotification.newMessage()
 
             expect(
-                (PushJS as unknown as {getAll: () => any[]}).getAll()
+                (PushJS as unknown as { getAll: () => any[] }).getAll(),
             ).toMatchSnapshot()
 
             expect(notificationSounds.play).toHaveBeenCalledWith('default', 5)
@@ -100,7 +100,7 @@ describe('browserNotification', () => {
             })
 
             expect(
-                (PushJS as unknown as {getAll: () => any[]}).getAll()
+                (PushJS as unknown as { getAll: () => any[] }).getAll(),
             ).toMatchSnapshot()
             expect(notificationSounds.play).toHaveBeenCalledWith('default', 5)
         })
@@ -113,7 +113,7 @@ describe('browserNotification', () => {
             })
 
             expect(
-                (PushJS as unknown as {getAll: () => any[]}).getAll()
+                (PushJS as unknown as { getAll: () => any[] }).getAll(),
             ).toMatchSnapshot()
             expect(notificationSounds.play).toHaveBeenCalledWith('default', 5)
         })
@@ -126,7 +126,7 @@ describe('browserNotification', () => {
             })
 
             expect(
-                (PushJS as unknown as {getAll: () => any[]}).getAll()
+                (PushJS as unknown as { getAll: () => any[] }).getAll(),
             ).toMatchSnapshot()
             expect(notificationSounds.play).toHaveBeenCalledWith('default', 5)
         })
@@ -140,7 +140,7 @@ describe('browserNotification', () => {
             })
 
             expect(
-                (PushJS as unknown as {getAll: () => any[]}).getAll()
+                (PushJS as unknown as { getAll: () => any[] }).getAll(),
             ).toMatchSnapshot()
             expect(notificationSounds.play).toHaveBeenCalledWith('default', 5)
         })
@@ -159,7 +159,7 @@ describe('browserNotification', () => {
             })
 
             expect(
-                (PushJS as unknown as {getAll: () => any[]}).getAll()
+                (PushJS as unknown as { getAll: () => any[] }).getAll(),
             ).toMatchSnapshot()
             expect(notificationSounds.play).toHaveBeenCalledTimes(1)
         })
@@ -180,7 +180,7 @@ describe('browserNotification', () => {
             })
 
             expect(
-                (PushJS as unknown as {getAll: () => any[]}).getAll()
+                (PushJS as unknown as { getAll: () => any[] }).getAll(),
             ).toMatchSnapshot()
             expect(notificationSounds.play).toHaveBeenCalledTimes(1)
         })

@@ -1,6 +1,7 @@
+import React, { Component } from 'react'
+
 import classNames from 'classnames'
 import _omit from 'lodash/omit'
-import React, {Component} from 'react'
 import ReactPaginate from 'react-paginate'
 
 import css from './Pagination.less'
@@ -13,7 +14,7 @@ type Props = {
 }
 
 export default class Pagination extends Component<Props> {
-    _handlePageClick = ({selected}: {selected: number}) => {
+    _handlePageClick = ({ selected }: { selected: number }) => {
         // ReactPaginate works with indexes instead of page number, so page 1 for us is page 0 for the lib
         const nextPageNumber = selected + 1
         const currentPage =
@@ -29,7 +30,7 @@ export default class Pagination extends Component<Props> {
     }
 
     render() {
-        const {className, ...properties} = this.props
+        const { className, ...properties } = this.props
 
         const pageCount =
             typeof properties.pageCount === 'string'

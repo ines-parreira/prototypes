@@ -1,1 +1,1 @@
-export {default} from './BundleManualInstallationCard'
+export { default } from './BundleManualInstallationCard'

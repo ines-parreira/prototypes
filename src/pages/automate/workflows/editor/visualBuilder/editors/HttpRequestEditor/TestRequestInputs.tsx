@@ -1,6 +1,6 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
-import {WorkflowVariable} from 'pages/automate/workflows/models/variables.types'
+import { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
 import Button from 'pages/common/components/button/Button'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
@@ -16,7 +16,7 @@ type Props = {
     onSendTestRequest: (
         values: Record<string, string>,
         refreshToken?: string,
-        refreshTokenUrl?: string
+        refreshTokenUrl?: string,
     ) => Promise<void>
     onClose: () => void
 }
@@ -77,7 +77,7 @@ const TestRequestInputs = ({
                         void onSendTestRequest(
                             values,
                             refreshToken,
-                            refreshTokenUrl
+                            refreshTokenUrl,
                         )
                     }}
                 >

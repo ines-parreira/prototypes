@@ -1,24 +1,25 @@
-import {render, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {useSatisfiedOrBreachedTicketsTimeSeries} from 'hooks/reporting/sla/useSatisfiedOrBreachedTicketsTimeSeries'
-import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
-import {TicketSLAStatus} from 'models/reporting/cubes/sla/TicketSLACube'
-import {ReportingGranularity} from 'models/reporting/types'
+import { useSatisfiedOrBreachedTicketsTimeSeries } from 'hooks/reporting/sla/useSatisfiedOrBreachedTicketsTimeSeries'
+import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
+import { TicketSLAStatus } from 'models/reporting/cubes/sla/TicketSLACube'
+import { ReportingGranularity } from 'models/reporting/types'
 import BarChart from 'pages/stats/common/components/charts/BarChart/BarChart'
-import {formatLabeledTimeSeriesData} from 'pages/stats/common/utils'
+import { formatLabeledTimeSeriesData } from 'pages/stats/common/utils'
 import {
     AchievedAndBreachedTicketsChart,
     CHART_FIELDS,
     CHART_TITLE,
     HINT,
 } from 'pages/stats/sla/components/AchievedAndBreachedTicketsChart'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
-import {assumeMock} from 'utils/testing'
+import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
+import { assumeMock } from 'utils/testing'
 
 const mockStore = configureMockStore([thunk])
 
@@ -27,7 +28,7 @@ const BarChartMock = assumeMock(BarChart as unknown as jest.Mock)
 
 jest.mock('hooks/reporting/sla/useSatisfiedOrBreachedTicketsTimeSeries')
 const useSatisfiedAndBreachedTicketsTimeSeriesMock = assumeMock(
-    useSatisfiedOrBreachedTicketsTimeSeries
+    useSatisfiedOrBreachedTicketsTimeSeries,
 )
 
 const defaultState = {
@@ -40,7 +41,7 @@ const defaultState = {
         },
     },
     ui: {
-        stats: {filters: uiStatsInitialState},
+        stats: { filters: uiStatsInitialState },
     },
 }
 const exampleData: Record<string, TimeSeriesDataItem[][]> = {
@@ -96,11 +97,11 @@ describe('<AchievedAndBreachedTicketsChart />', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <AchievedAndBreachedTicketsChart />
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            document.querySelector('.react-loading-skeleton')
+            document.querySelector('.react-loading-skeleton'),
         ).toBeInTheDocument()
     })
 
@@ -108,7 +109,7 @@ describe('<AchievedAndBreachedTicketsChart />', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <AchievedAndBreachedTicketsChart />
-            </Provider>
+            </Provider>,
         )
         userEvent.hover(screen.getByText('info'))
 
@@ -122,12 +123,12 @@ describe('<AchievedAndBreachedTicketsChart />', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <AchievedAndBreachedTicketsChart />
-            </Provider>
+            </Provider>,
         )
 
         expect(BarChartMock).toHaveBeenCalledWith(
-            expect.objectContaining({isStacked: true}),
-            {}
+            expect.objectContaining({ isStacked: true }),
+            {},
         )
         expect(BarChartMock).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -137,10 +138,10 @@ describe('<AchievedAndBreachedTicketsChart />', () => {
                         exampleData[TicketSLAStatus.Breached][0],
                     ],
                     CHART_FIELDS.map((metric) => metric.label),
-                    ReportingGranularity.Day
+                    ReportingGranularity.Day,
                 ),
             }),
-            {}
+            {},
         )
     })
 })
@@ -163,11 +164,11 @@ describe('<AchievedAndBreachedTicketsChart /> with AnalyticsNewFilters', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <AchievedAndBreachedTicketsChart />
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            document.querySelector('.react-loading-skeleton')
+            document.querySelector('.react-loading-skeleton'),
         ).toBeInTheDocument()
     })
 
@@ -175,7 +176,7 @@ describe('<AchievedAndBreachedTicketsChart /> with AnalyticsNewFilters', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <AchievedAndBreachedTicketsChart />
-            </Provider>
+            </Provider>,
         )
         userEvent.hover(screen.getByText('info'))
 
@@ -189,12 +190,12 @@ describe('<AchievedAndBreachedTicketsChart /> with AnalyticsNewFilters', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <AchievedAndBreachedTicketsChart />
-            </Provider>
+            </Provider>,
         )
 
         expect(BarChartMock).toHaveBeenCalledWith(
-            expect.objectContaining({isStacked: true}),
-            {}
+            expect.objectContaining({ isStacked: true }),
+            {},
         )
         expect(BarChartMock).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -204,10 +205,10 @@ describe('<AchievedAndBreachedTicketsChart /> with AnalyticsNewFilters', () => {
                         exampleData[TicketSLAStatus.Breached][0],
                     ],
                     CHART_FIELDS.map((metric) => metric.label),
-                    ReportingGranularity.Day
+                    ReportingGranularity.Day,
                 ),
             }),
-            {}
+            {},
         )
     })
 })

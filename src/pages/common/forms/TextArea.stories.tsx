@@ -1,5 +1,6 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps, useState} from 'react'
+import React, { ComponentProps, useState } from 'react'
+
+import { Meta, Story } from '@storybook/react'
 
 import TextArea from './TextArea'
 
@@ -90,13 +91,13 @@ Default.parameters = templateParameters
 Default.args = defaultProps
 
 export const LongTextOnMount: Story<ComponentProps<typeof TextArea>> = (
-    props
+    props,
 ) => <TextArea {...props} />
 LongTextOnMount.args = {
     ...defaultProps,
     autoRowHeight: true,
     value: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '.repeat(
-        15
+        15,
     ),
 }
 

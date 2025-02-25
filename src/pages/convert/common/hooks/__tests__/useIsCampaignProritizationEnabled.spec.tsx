@@ -1,7 +1,7 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 import LD from 'launchdarkly-react-client-sdk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { FeatureFlagKey } from 'config/featureFlags'
 
 import useIsCampaignProritizationEnabled from '../useIsCampaignProritizationEnabled'
 
@@ -10,7 +10,7 @@ describe('useIsCampaignProritizationEnabled', () => {
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
             [FeatureFlagKey.ConvertCampaignProritization]: true,
         }))
-        const {result} = renderHook(() => useIsCampaignProritizationEnabled())
+        const { result } = renderHook(() => useIsCampaignProritizationEnabled())
         expect(result.current).toBe(true)
     })
 
@@ -18,7 +18,7 @@ describe('useIsCampaignProritizationEnabled', () => {
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({
             [FeatureFlagKey.ConvertCampaignProritization]: false,
         }))
-        const {result} = renderHook(() => useIsCampaignProritizationEnabled())
+        const { result } = renderHook(() => useIsCampaignProritizationEnabled())
         expect(result.current).toBe(false)
     })
 })

@@ -1,10 +1,11 @@
-import {Meta, Story} from '@storybook/react'
-import {noop as _noop} from 'lodash'
 import React from 'react'
-import {DndProvider} from 'react-dnd'
-import {HTML5Backend} from 'react-dnd-html5-backend'
 
-import SubjectLine, {SubjectLineProps} from './SubjectLine'
+import { Meta, Story } from '@storybook/react'
+import { noop as _noop } from 'lodash'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+
+import SubjectLine, { SubjectLineProps } from './SubjectLine'
 
 const storyConfig: Meta = {
     title: 'Help Center/SubjectLine',

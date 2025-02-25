@@ -1,4 +1,4 @@
-import {waitForDocumentVisible} from '../waitForDocumentVisible'
+import { waitForDocumentVisible } from '../waitForDocumentVisible'
 
 function setDocumentHidden(hidden: boolean): void {
     Object.defineProperty(document, 'hidden', {

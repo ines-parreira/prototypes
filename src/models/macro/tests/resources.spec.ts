@@ -2,18 +2,18 @@ import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import _pick from 'lodash/pick'
 
-import {macros as macrosFixtures} from 'fixtures/macro'
+import { macros as macrosFixtures } from 'fixtures/macro'
 import client from 'models/api/resources'
-import {OrderDirection} from 'models/api/types'
+import { OrderDirection } from 'models/api/types'
 
 import {
-    fetchMacros,
-    fetchMacro,
     createMacro,
     deleteMacro,
+    fetchMacro,
+    fetchMacros,
     updateMacro,
 } from '../resources'
-import {MacroSortableProperties} from '../types'
+import { MacroSortableProperties } from '../types'
 
 const mockedServer = new MockAdapter(client)
 
@@ -31,14 +31,14 @@ describe('macro resources', () => {
                     next_cursor: null,
                 },
             })
-            const res = await fetchMacros({search: 'hello'})
+            const res = await fetchMacros({ search: 'hello' })
             expect(res).toMatchSnapshot()
         })
 
         it('should reject an error on fail', () => {
-            mockedServer.onGet('/api/macros/').reply(503, {message: 'error'})
+            mockedServer.onGet('/api/macros/').reply(503, { message: 'error' })
             return expect(fetchMacros()).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                new Error('Request failed with status code 503'),
             )
         })
 
@@ -58,8 +58,8 @@ describe('macro resources', () => {
                     {
                         order_by: `${MacroSortableProperties.CreatedDatetime}:${OrderDirection.Asc}`,
                     },
-                    {cancelToken: source.token}
-                )
+                    { cancelToken: source.token },
+                ),
             ).rejects.toEqual(new axios.Cancel())
         })
     })
@@ -76,9 +76,9 @@ describe('macro resources', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onGet(/\/api\/macros\/\d+\//)
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(fetchMacro(1)).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                new Error('Request failed with status code 503'),
             )
         })
     })
@@ -99,9 +99,9 @@ describe('macro resources', () => {
         })
 
         it('should reject an error on fail', () => {
-            mockedServer.onPost('/api/macros/').reply(503, {message: 'error'})
+            mockedServer.onPost('/api/macros/').reply(503, { message: 'error' })
             return expect(createMacro(macroDraftMock)).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                new Error('Request failed with status code 503'),
             )
         })
     })
@@ -116,9 +116,9 @@ describe('macro resources', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onDelete(/\/api\/macros\/\d+\//)
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(deleteMacro(1)).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                new Error('Request failed with status code 503'),
             )
         })
     })
@@ -136,9 +136,9 @@ describe('macro resources', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onPut(/\/api\/macros\/\d+\//)
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(updateMacro(macrosFixtures[0])).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                new Error('Request failed with status code 503'),
             )
         })
     })

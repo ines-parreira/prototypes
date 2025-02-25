@@ -1,8 +1,8 @@
-import {useMutation, useQuery, UseQueryOptions} from '@tanstack/react-query'
+import { useMutation, useQuery, UseQueryOptions } from '@tanstack/react-query'
 
-import {CONVERT_DEFAULT_OPTIONS} from 'models/convert/constants'
-import {useConvertApi} from 'pages/convert/common/hooks/useConvertApi'
-import {MutationOverrides} from 'types/query'
+import { CONVERT_DEFAULT_OPTIONS } from 'models/convert/constants'
+import { useConvertApi } from 'pages/convert/common/hooks/useConvertApi'
+import { MutationOverrides } from 'types/query'
 
 import {
     createCampaign,
@@ -12,7 +12,7 @@ import {
     suggestCampaignCopy,
     updateCampaign,
 } from './resources'
-import {Campaign, CampaignListOptions, CampaignParams} from './types'
+import { Campaign, CampaignListOptions, CampaignParams } from './types'
 
 export const campaignKeys = {
     all: () => ['campaign'] as const,
@@ -30,9 +30,9 @@ export const useGetCampaign = (
         Awaited<ReturnType<typeof getCampaign>>,
         unknown,
         Campaign
-    >
+    >,
 ) => {
-    const {client: convertClient} = useConvertApi()
+    const { client: convertClient } = useConvertApi()
 
     return useQuery({
         queryKey: campaignKeys.detail(params),
@@ -50,9 +50,9 @@ export const useListCampaigns = (
         Awaited<ReturnType<typeof listCampaigns>>,
         unknown,
         Campaign[]
-    >
+    >,
 ) => {
-    const {client: convertClient} = useConvertApi()
+    const { client: convertClient } = useConvertApi()
 
     return useQuery({
         queryKey: campaignKeys.list(params),
@@ -65,9 +65,9 @@ export const useListCampaigns = (
 }
 
 export const useCreateCampaign = (
-    overrides?: MutationOverrides<typeof createCampaign>
+    overrides?: MutationOverrides<typeof createCampaign>,
 ) => {
-    const {client: convertClient} = useConvertApi()
+    const { client: convertClient } = useConvertApi()
 
     return useMutation({
         mutationFn: ([client = convertClient, data]) =>
@@ -78,9 +78,9 @@ export const useCreateCampaign = (
 }
 
 export const useUpdateCampaign = (
-    overrides?: MutationOverrides<typeof updateCampaign>
+    overrides?: MutationOverrides<typeof updateCampaign>,
 ) => {
-    const {client: convertClient} = useConvertApi()
+    const { client: convertClient } = useConvertApi()
 
     return useMutation({
         mutationFn: ([client = convertClient, pathParams, data]) =>
@@ -91,9 +91,9 @@ export const useUpdateCampaign = (
 }
 
 export const useDeleteCampaign = (
-    overrides?: MutationOverrides<typeof deleteCampaign>
+    overrides?: MutationOverrides<typeof deleteCampaign>,
 ) => {
-    const {client: convertClient} = useConvertApi()
+    const { client: convertClient } = useConvertApi()
 
     return useMutation({
         mutationFn: ([client = convertClient, pathParams]) =>
@@ -104,14 +104,14 @@ export const useDeleteCampaign = (
 }
 
 export const useSuggestCampaignCopy = (
-    overrides?: MutationOverrides<typeof suggestCampaignCopy>
+    overrides?: MutationOverrides<typeof suggestCampaignCopy>,
 ) => {
-    const {client: convertClient} = useConvertApi()
+    const { client: convertClient } = useConvertApi()
 
     return useMutation({
         mutationFn: ([client = convertClient, data]) =>
             suggestCampaignCopy(client, data),
-        ...{...CONVERT_DEFAULT_OPTIONS, staleTime: 0, cacheTime: 0},
+        ...{ ...CONVERT_DEFAULT_OPTIONS, staleTime: 0, cacheTime: 0 },
         ...overrides,
     })
 }

@@ -1,15 +1,17 @@
-import {render, screen} from '@testing-library/react'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
 
+import { render, screen } from '@testing-library/react'
+import { mockFlags } from 'jest-launchdarkly-mock'
+
 import '@testing-library/jest-dom/extend-expect'
-import {StaticRouter} from 'react-router-dom'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {AI_AGENT, GUIDANCE} from 'pages/aiAgent/constants'
-import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { StaticRouter } from 'react-router-dom'
 
-import {GuidanceBreadcrumbs} from './GuidanceBreadcrumbs'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { AI_AGENT, GUIDANCE } from 'pages/aiAgent/constants'
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+
+import { GuidanceBreadcrumbs } from './GuidanceBreadcrumbs'
 
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation')
 
@@ -31,11 +33,11 @@ describe('GuidanceBreadcrumbs', () => {
     })
 
     describe.each([
-        {flag: true, text: GUIDANCE, rootPath: '/guidance'},
-        {flag: false, text: AI_AGENT, rootPath: '/main'},
+        { flag: true, text: GUIDANCE, rootPath: '/guidance' },
+        { flag: false, text: AI_AGENT, rootPath: '/main' },
     ])(
         'with feature flag conv-ai-standalone-menu = $flag',
-        ({flag, text, rootPath}) => {
+        ({ flag, text, rootPath }) => {
             test('renders the component', () => {
                 mockFlags({
                     [FeatureFlagKey.ConvAiStandaloneMenu]: flag,
@@ -44,18 +46,18 @@ describe('GuidanceBreadcrumbs', () => {
                 render(
                     <StaticRouter location="/app/">
                         <GuidanceBreadcrumbs {...defaultProps} />
-                    </StaticRouter>
+                    </StaticRouter>,
                 )
 
                 const rootBreadcrumb = screen.getByText(text)
                 expect(rootBreadcrumb).toBeInTheDocument()
                 expect(rootBreadcrumb.closest('a')).toHaveAttribute(
                     'to',
-                    rootPath
+                    rootPath,
                 )
 
                 expect(screen.getByText(defaultProps.title)).toBeInTheDocument()
             })
-        }
+        },
     )
 })

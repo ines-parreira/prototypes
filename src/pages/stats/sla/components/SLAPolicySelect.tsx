@@ -1,8 +1,10 @@
-import {SLAPolicy, useListSlaPolicies} from '@gorgias/api-queries'
-import {Skeleton} from '@gorgias/merchant-ui-kit'
+import React, { useCallback, useRef, useState } from 'react'
+
 import classnames from 'classnames'
-import React, {useCallback, useRef, useState} from 'react'
-import {DropdownItem as BaseDropdownItem, Input} from 'reactstrap'
+import { DropdownItem as BaseDropdownItem, Input } from 'reactstrap'
+
+import { SLAPolicy, useListSlaPolicies } from '@gorgias/api-queries'
+import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -12,9 +14,9 @@ import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import DropdownQuickSelect from 'pages/common/components/dropdown/DropdownQuickSelect'
 import css from 'pages/stats/ticket-insights/ticket-fields/CustomFieldSelect.less'
-import {getSLAPoliciesStatsFilter} from 'state/stats/selectors'
-import {mergeStatsFilters} from 'state/stats/statsSlice'
-import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
+import { getSLAPoliciesStatsFilter } from 'state/stats/selectors'
+import { mergeStatsFilters } from 'state/stats/statsSlice'
+import { statFiltersClean, statFiltersDirty } from 'state/ui/stats/actions'
 
 export const SELECT_FIELD_LABEL = 'Select Policies'
 export const POLICIES_SEARCH_INPUT_PLACEHOLDER = `Search policies...`
@@ -25,7 +27,7 @@ export const SLAPolicySelect = () => {
 
     const [search, setSearch] = useState('')
 
-    const {data, isLoading} = useListSlaPolicies()
+    const { data, isLoading } = useListSlaPolicies()
     const policies = data?.data.data || []
     const policyIds = policies?.map((policy) => policy.uuid)
 
@@ -47,17 +49,17 @@ export const SLAPolicySelect = () => {
                 dispatch(
                     mergeStatsFilters({
                         slaPolicies: [...policies],
-                    })
+                    }),
                 )
             } else {
                 dispatch(
                     mergeStatsFilters({
                         slaPolicies: [...selectedPolicies, policyId],
-                    })
+                    }),
                 )
             }
         },
-        [dispatch, selectedPolicies]
+        [dispatch, selectedPolicies],
     )
 
     const onSelectAll = useCallback(() => {
@@ -65,7 +67,7 @@ export const SLAPolicySelect = () => {
         dispatch(
             mergeStatsFilters({
                 slaPolicies: [...policyIds],
-            })
+            }),
         )
     }, [dispatch, policyIds])
 
@@ -74,7 +76,7 @@ export const SLAPolicySelect = () => {
         dispatch(
             mergeStatsFilters({
                 slaPolicies: [],
-            })
+            }),
         )
     }, [dispatch])
 
@@ -114,7 +116,7 @@ export const SLAPolicySelect = () => {
                         header
                         className={classnames(
                             'dropdown-item-input',
-                            css.dropdownItemInput
+                            css.dropdownItemInput,
                         )}
                     >
                         <Input
@@ -129,7 +131,7 @@ export const SLAPolicySelect = () => {
                             key={policy.uuid}
                             className={classnames(css.dropdownItem)}
                             onClick={handleClick}
-                            option={{value: policy.uuid, label: policy.name}}
+                            option={{ value: policy.uuid, label: policy.name }}
                         >
                             <span className={css.dropdownItemContent}>
                                 {policy.name}

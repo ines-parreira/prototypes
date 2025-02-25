@@ -1,20 +1,22 @@
-import {Tag} from '@gorgias/api-queries'
-import {act, waitFor} from '@testing-library/react'
-import {act as actHooks, renderHook} from '@testing-library/react-hooks'
-import {AxiosRequestConfig, AxiosResponse} from 'axios'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { act, waitFor } from '@testing-library/react'
+import { act as actHooks, renderHook } from '@testing-library/react-hooks'
+import { AxiosRequestConfig, AxiosResponse } from 'axios'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
+import { Tag } from '@gorgias/api-queries'
 
 import {
     TAGS_FETCH_ERROR_MESSAGE,
     useTagSearch,
 } from 'hooks/reporting/common/useTagSearch'
-import {ApiListResponseCursorPagination} from 'models/api/types'
-import {fetchTags} from 'models/tag/resources'
-import {RootState, StoreDispatch} from 'state/types'
-import {assumeMock} from 'utils/testing'
+import { ApiListResponseCursorPagination } from 'models/api/types'
+import { fetchTags } from 'models/tag/resources'
+import { RootState, StoreDispatch } from 'state/types'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('models/tag/resources')
 const fetchTagsMock = assumeMock(fetchTags)
@@ -51,8 +53,8 @@ describe('useTagSearch', () => {
     it('should do nothing when no response', () => {
         fetchTagsMock.mockResolvedValue(undefined as any)
 
-        const {result} = renderHook(() => useTagSearch(), {
-            wrapper: ({children}) => (
+        const { result } = renderHook(() => useTagSearch(), {
+            wrapper: ({ children }) => (
                 <Provider store={mockStore(defaultState)}>{children}</Provider>
             ),
         })
@@ -73,8 +75,8 @@ describe('useTagSearch', () => {
         const store = mockStore(defaultState)
         fetchTagsMock.mockRejectedValue(new Error('some error'))
 
-        const {result} = renderHook(() => useTagSearch(), {
-            wrapper: ({children}) => (
+        const { result } = renderHook(() => useTagSearch(), {
+            wrapper: ({ children }) => (
                 <Provider store={store}>{children}</Provider>
             ),
         })
@@ -93,7 +95,7 @@ describe('useTagSearch', () => {
                     payload: expect.objectContaining({
                         message: TAGS_FETCH_ERROR_MESSAGE,
                     }),
-                })
+                }),
             )
         })
     })
@@ -114,8 +116,8 @@ describe('useTagSearch', () => {
             },
         })
 
-        const {result} = renderHook(() => useTagSearch(), {
-            wrapper: ({children}) => (
+        const { result } = renderHook(() => useTagSearch(), {
+            wrapper: ({ children }) => (
                 <Provider store={store}>{children}</Provider>
             ),
         })

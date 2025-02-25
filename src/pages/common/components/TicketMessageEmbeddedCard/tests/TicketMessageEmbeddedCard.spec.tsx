@@ -1,19 +1,20 @@
-import {render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {TicketMessageSourceType} from 'business/types/ticket'
+import { render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+
+import { TicketMessageSourceType } from 'business/types/ticket'
 
 import TicketMessageEmbeddedCard from '../TicketMessageEmbeddedCard'
 
 jest.mock(
     'pages/tickets/detail/components/TicketMessages/Meta.tsx',
-    () => () => <div>MockedTicketMessageMeta</div>
+    () => () => <div>MockedTicketMessageMeta</div>,
 )
 
 jest.mock(
     'pages/tickets/detail/components/ReplyArea/TicketAttachments.tsx',
-    () => () => <div>MockedTicketAttachments</div>
+    () => () => <div>MockedTicketAttachments</div>,
 )
 
 jest.mock('pages/common/utils/DatetimeLabel', () => () => (
@@ -55,12 +56,12 @@ describe('<TicketMessageEmbeddedCard/>', () => {
                 ...defaultProps,
                 textBelowAvatar: textBelowAvatar,
             }
-            const {container} = render(
-                <TicketMessageEmbeddedCard {...localDefaultProps} />
+            const { container } = render(
+                <TicketMessageEmbeddedCard {...localDefaultProps} />,
             )
 
             expect(container.firstChild).toMatchSnapshot()
-        }
+        },
     )
 
     it.each([true, false])(
@@ -81,19 +82,19 @@ describe('<TicketMessageEmbeddedCard/>', () => {
                 <TicketMessageEmbeddedCard
                     {...localDefaultProps}
                     textBelowAvatar={false}
-                />
+                />,
             )
 
             const messageCreatedDatetimeElem = screen.queryAllByText(
-                'MockedDatetimeLabel'
+                'MockedDatetimeLabel',
             )
             if (hasMessageCreatedDatetime) {
                 return expect(
-                    messageCreatedDatetimeElem.length
+                    messageCreatedDatetimeElem.length,
                 ).toBeGreaterThanOrEqual(1)
             }
             expect(messageCreatedDatetimeElem.length).toBe(0)
-        }
+        },
     )
 
     it.each([
@@ -123,15 +124,15 @@ describe('<TicketMessageEmbeddedCard/>', () => {
                 <TicketMessageEmbeddedCard
                     {...localDefaultProps}
                     textBelowAvatar={false}
-                />
+                />,
             )
             const attachmentsElem = screen.queryByText(
-                'MockedTicketAttachments'
+                'MockedTicketAttachments',
             )
             if (result) {
                 return expect(attachmentsElem).toBeInTheDocument()
             }
             expect(attachmentsElem).toBeNull()
-        }
+        },
     )
 })

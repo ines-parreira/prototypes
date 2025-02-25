@@ -1,12 +1,12 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment/moment'
-import {act} from 'react-dom/test-utils'
+import { act } from 'react-dom/test-utils'
 
-import {TicketChannel} from 'business/types/ticket'
-import {Stat} from 'models/stat/types'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import { TicketChannel } from 'business/types/ticket'
+import { Stat } from 'models/stat/types'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import * as revenueAttributionClient from 'pages/stats/convert/clients/RevenueAttributionClient'
-import {useTicketsPerformanceChart} from 'pages/stats/convert/hooks/stats/useGetTicketsPerformanceChart'
+import { useTicketsPerformanceChart } from 'pages/stats/convert/hooks/stats/useGetTicketsPerformanceChart'
 
 describe('useTicketsPerformanceChart', () => {
     const startDate = '2023-02-28T00:00:00.000'
@@ -50,13 +50,13 @@ describe('useTicketsPerformanceChart', () => {
     } as unknown as Stat
     jest.spyOn(
         revenueAttributionClient,
-        'getTicketsPerformanceData'
+        'getTicketsPerformanceData',
     ).mockReturnValue(new Promise((resolve) => resolve(ticketsPerformanceData)))
 
     it('should return data in correct format', async () => {
         // act
-        const {result, waitForNextUpdate} = renderHook(() =>
-            useTicketsPerformanceChart(...hookArgs)
+        const { result, waitForNextUpdate } = renderHook(() =>
+            useTicketsPerformanceChart(...hookArgs),
         )
         await act(async () => await waitForNextUpdate())
 

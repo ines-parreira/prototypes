@@ -1,9 +1,10 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render, screen } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {RootState, StoreDispatch} from 'state/types'
+import { RootState, StoreDispatch } from 'state/types'
 
 import LoopReturnsIntegrationCreateModal from '../LoopReturnsIntegrationCreateModal'
 
@@ -18,11 +19,11 @@ describe('<LoopReturnsIntegrationCreateModal />', () => {
                     onClose={jest.fn()}
                     onCreate={jest.fn()}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            screen.getByText('Create new return integration')
+            screen.getByText('Create new return integration'),
         ).toBeInTheDocument()
     })
 })

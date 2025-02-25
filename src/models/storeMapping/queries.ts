@@ -1,13 +1,12 @@
-import {UseQueryOptions, useMutation, useQuery} from '@tanstack/react-query'
+import { useMutation, useQuery, UseQueryOptions } from '@tanstack/react-query'
+import { AxiosError } from 'axios'
 
-import {AxiosError} from 'axios'
-
-import {MutationOverrides} from '../../types/query'
+import { MutationOverrides } from '../../types/query'
 import {
-    listStoreMappings,
     createStoreMapping,
-    updateStoreMapping,
     deleteStoreMapping,
+    listStoreMappings,
+    updateStoreMapping,
 } from './resources'
 
 export const storeMappingKeys = {
@@ -24,7 +23,7 @@ export const useListStoreMappings = <
         Awaited<ReturnType<typeof listStoreMappings>>,
         AxiosError,
         TData
-    >
+    >,
 ) => {
     return useQuery({
         queryKey: storeMappingKeys.list(integrationIds),
@@ -34,7 +33,7 @@ export const useListStoreMappings = <
 }
 
 export const useCreateStoreMapping = (
-    overrides?: MutationOverrides<typeof createStoreMapping>
+    overrides?: MutationOverrides<typeof createStoreMapping>,
 ) => {
     return useMutation({
         mutationFn: (params) => createStoreMapping(...params),
@@ -43,7 +42,7 @@ export const useCreateStoreMapping = (
 }
 
 export const useUpdateStoreMapping = (
-    overrides?: MutationOverrides<typeof updateStoreMapping>
+    overrides?: MutationOverrides<typeof updateStoreMapping>,
 ) => {
     return useMutation({
         mutationFn: (params) => updateStoreMapping(...params),
@@ -52,7 +51,7 @@ export const useUpdateStoreMapping = (
 }
 
 export const useDeleteStoreMapping = (
-    overrides?: MutationOverrides<typeof deleteStoreMapping>
+    overrides?: MutationOverrides<typeof deleteStoreMapping>,
 ) => {
     return useMutation({
         mutationFn: (params) => deleteStoreMapping(...params),

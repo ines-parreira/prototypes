@@ -1,9 +1,9 @@
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
 import useEffectOnce from 'hooks/useEffectOnce'
-import {fetchSubscription} from 'models/billing/resources'
-import {Plan} from 'models/billing/types'
-import {getAvailablePlansMap} from 'state/billing/selectors'
+import { fetchSubscription } from 'models/billing/resources'
+import { Plan } from 'models/billing/types'
+import { getAvailablePlansMap } from 'state/billing/selectors'
 
 interface ScheduledDowngrade {
     datetime: string

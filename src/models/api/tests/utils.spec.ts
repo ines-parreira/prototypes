@@ -1,4 +1,4 @@
-import {deepMapKeysToSnakeCase} from '../utils'
+import { deepMapKeysToSnakeCase } from '../utils'
 
 describe('api model utils', () => {
     describe('deepMapKeysToSnakeCase', () => {
@@ -8,7 +8,7 @@ describe('api model utils', () => {
                     foo: 1,
                     fooBar: 2,
                     _foobar: 3,
-                })
+                }),
             ).toEqual({
                 foo: 1,
                 foo_bar: 2,
@@ -22,7 +22,7 @@ describe('api model utils', () => {
                     fooBar: {
                         fooBar: 1,
                     },
-                })
+                }),
             ).toEqual({
                 foo_bar: {
                     foo_bar: 1,
@@ -41,7 +41,7 @@ describe('api model utils', () => {
                             fooBar: 2,
                         },
                     ],
-                })
+                }),
             ).toEqual({
                 foo: [
                     {
@@ -58,7 +58,7 @@ describe('api model utils', () => {
             'should return non object params',
             (value) => {
                 expect(deepMapKeysToSnakeCase(value as any)).toEqual(value)
-            }
+            },
         )
     })
 })

@@ -1,18 +1,17 @@
 import React from 'react'
 
-import {Route, Switch, useRouteMatch} from 'react-router-dom'
+import { Route, Switch, useRouteMatch } from 'react-router-dom'
 
-import {PageSection} from 'config/pages'
-import {ADMIN_ROLE} from 'config/user'
-
+import { PageSection } from 'config/pages'
+import { ADMIN_ROLE } from 'config/user'
 import TeamsForm from 'pages/settings/teams/Form'
 import TeamsList from 'pages/settings/teams/List'
 import List from 'pages/settings/teams/members/List'
 
-import {renderAppSettings} from './helpers/settingsRenderer'
+import { renderAppSettings } from './helpers/settingsRenderer'
 
 export function Teams() {
-    const {path} = useRouteMatch()
+    const { path } = useRouteMatch()
 
     return (
         <Switch>

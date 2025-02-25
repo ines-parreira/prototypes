@@ -1,21 +1,21 @@
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {defaultNodeNames} from 'pages/automate/workflows/editor/visualBuilder/nodes/constants'
+import { defaultNodeNames } from 'pages/automate/workflows/editor/visualBuilder/nodes/constants'
 import AccordionBody from 'pages/common/components/accordion/AccordionBody'
 import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
 import AccordionItem from 'pages/common/components/accordion/AccordionItem'
-
-import {Components} from 'rest_api/workflows_api/client.generated'
+import { Components } from 'rest_api/workflows_api/client.generated'
 
 import useGetAppImageUrl from '../hooks/useGetAppImageUrl'
-import {ActionStepItem, TemplateConfiguration} from '../types'
+import { ActionStepItem, TemplateConfiguration } from '../types'
 import ActionEventTitle from './ActionEventTitle'
-import css from './ActionStepAccordionItem.less'
 import HttpRequestLogsView from './HttpRequestLogsView'
 import NoHttpRequestLogsView from './NoHttpRequestLogsView'
 
+import css from './ActionStepAccordionItem.less'
+
 function isDefaultNodeKind(
-    kind: ActionStepItem['kind']
+    kind: ActionStepItem['kind'],
 ): kind is keyof typeof defaultNodeNames {
     return kind in defaultNodeNames
 }
@@ -39,14 +39,14 @@ const ActionStepAccordionItem = ({
     const shouldRenderChildAccordions = useMemo(
         () =>
             Object.values(step.steps_state ?? {}).filter(
-                (state) => state.kind !== 'end'
+                (state) => state.kind !== 'end',
             ).length > 1,
-        [step]
+        [step],
     )
     const logs = useMemo(() => {
         return httpExecutionLogs?.filter((log) => {
             const childStep = Object.entries(step.steps_state ?? {}).filter(
-                ([, state]) => state.kind !== 'end'
+                ([, state]) => state.kind !== 'end',
             )
             if (childStep.length === 1) {
                 return log.step_id === childStep[0][0]
@@ -58,17 +58,17 @@ const ActionStepAccordionItem = ({
     const templateConfiguration = useMemo(() => {
         if (isReusableLLMPromptCall) {
             const parentStep = parentTemplateConfiguration?.steps.find(
-                (parentStep) => step.stepId === parentStep.id
+                (parentStep) => step.stepId === parentStep.id,
             )
             if (parentStep?.kind === 'reusable-llm-prompt-call') {
                 const configId = parentStep?.settings?.configuration_id
                 return templateConfigurations?.find(
-                    (config) => config.id === configId
+                    (config) => config.id === configId,
                 )
             }
         }
         return templateConfigurations?.find(
-            (template) => template.initial_step_id === step.stepId
+            (template) => template.initial_step_id === step.stepId,
         )
     }, [
         templateConfigurations,
@@ -78,13 +78,13 @@ const ActionStepAccordionItem = ({
     ])
     const appImageUrl = useGetAppImageUrl(
         templateConfiguration?.apps?.[0] ??
-            parentTemplateConfiguration?.apps?.[0]
+            parentTemplateConfiguration?.apps?.[0],
     )
 
     const actionName = useMemo(() => {
         if (isCustomAction) {
             const parentStep = parentTemplateConfiguration?.steps.find(
-                (parentStep) => step.stepId === parentStep.id
+                (parentStep) => step.stepId === parentStep.id,
             )
             if (parentStep?.kind === 'http-request') {
                 return parentStep?.settings?.name
@@ -92,12 +92,12 @@ const ActionStepAccordionItem = ({
         }
         if (isReusableLLMPromptCall) {
             const parentStep = parentTemplateConfiguration?.steps.find(
-                (parentStep) => step.stepId === parentStep.id
+                (parentStep) => step.stepId === parentStep.id,
             )
             if (parentStep?.kind === 'reusable-llm-prompt-call') {
                 const configId = parentStep?.settings?.configuration_id
                 return templateConfigurations?.find(
-                    (config) => config.id === configId
+                    (config) => config.id === configId,
                 )?.name
             }
         }
@@ -129,7 +129,7 @@ const ActionStepAccordionItem = ({
                     .sort(
                         ([, stateA], [, stateB]) =>
                             new Date(stateA.at).getTime() -
-                            new Date(stateB.at).getTime()
+                            new Date(stateB.at).getTime(),
                     )
                     .map(([stepId, state]) => (
                         <ActionStepAccordionItem

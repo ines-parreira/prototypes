@@ -1,5 +1,6 @@
-import React, {ReactNode} from 'react'
-import {Col, Container, Row} from 'reactstrap'
+import React, { ReactNode } from 'react'
+
+import { Col, Container, Row } from 'reactstrap'
 
 import settingsCss from '../../../../../settings/settings.less'
 import css from './GorgiasChatIntegrationPreviewContainer.less'
@@ -9,7 +10,10 @@ type Props = {
     children: ReactNode
 }
 
-const GorgiasChatIntegrationPreviewContainer = ({children, preview}: Props) => (
+const GorgiasChatIntegrationPreviewContainer = ({
+    children,
+    preview,
+}: Props) => (
     <Container fluid className={settingsCss.pageContainer}>
         <Row>
             <Col>{children}</Col>

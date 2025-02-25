@@ -1,11 +1,12 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {StoreDispatch} from 'state/types'
-import {WidgetEnvironment} from 'state/widgets/types'
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
 
-import {InfobarWidgetsEditionTools} from '../InfobarWidgetsEditionTools'
+import { StoreDispatch } from 'state/types'
+import { WidgetEnvironment } from 'state/widgets/types'
+
+import { InfobarWidgetsEditionTools } from '../InfobarWidgetsEditionTools'
 
 const commonProps: ComponentProps<typeof InfobarWidgetsEditionTools> = {
     widgets: fromJS({
@@ -22,15 +23,15 @@ const commonProps: ComponentProps<typeof InfobarWidgetsEditionTools> = {
 
 describe('InfobarWidgetsEditionTools component', () => {
     it('should render widgets edition tools disabled because the widgets are not dirty', () => {
-        const {container} = render(
-            <InfobarWidgetsEditionTools {...commonProps} />
+        const { container } = render(
+            <InfobarWidgetsEditionTools {...commonProps} />,
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render widgets edition tools loading and disabled, because the widgets are being saved', () => {
-        const {container} = render(
+        const { container } = render(
             <InfobarWidgetsEditionTools
                 {...commonProps}
                 widgets={fromJS({
@@ -41,14 +42,14 @@ describe('InfobarWidgetsEditionTools component', () => {
                         },
                     },
                 })}
-            />
+            />,
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render widgets edition tools enabled because the widgets are dirty and not being saved', () => {
-        const {container} = render(
+        const { container } = render(
             <InfobarWidgetsEditionTools
                 {...commonProps}
                 widgets={fromJS({
@@ -59,7 +60,7 @@ describe('InfobarWidgetsEditionTools component', () => {
                         },
                     },
                 })}
-            />
+            />,
         )
 
         expect(container.firstChild).toMatchSnapshot()

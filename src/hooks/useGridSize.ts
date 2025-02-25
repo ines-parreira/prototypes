@@ -1,6 +1,6 @@
-import {useCallback} from 'react'
+import { useCallback } from 'react'
 
-import {SCREEN_SIZE, useScreenSize} from 'hooks/useScreenSize'
+import { SCREEN_SIZE, useScreenSize } from 'hooks/useScreenSize'
 
 export const useGridSize = () => {
     const screenSize = useScreenSize()
@@ -9,7 +9,7 @@ export const useGridSize = () => {
         (defaultSize: number) => {
             return screenSize === SCREEN_SIZE.SMALL ? 12 : defaultSize
         },
-        [screenSize]
+        [screenSize],
     )
 
     return getGridCellSize

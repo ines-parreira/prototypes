@@ -1,11 +1,12 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {actionFixture} from 'fixtures/infobarCustomActions'
+import { actionFixture } from 'fixtures/infobarCustomActions'
 
 import ActionButtons from '../ActionButtons'
 
@@ -16,8 +17,8 @@ describe('<ActionButtons/>', () => {
 
     const props = {
         buttons: [
-            {label: 'I am in snapshots', action},
-            {label: 'I am in snapshots too', action},
+            { label: 'I am in snapshots', action },
+            { label: 'I am in snapshots too', action },
         ],
         templatePath: '',
         absolutePath: [],
@@ -25,28 +26,28 @@ describe('<ActionButtons/>', () => {
     }
 
     it('should render the editor if isEditing is set to true ', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider
                 store={mockStore({
-                    customers: fromJS({active: {}}),
+                    customers: fromJS({ active: {} }),
                 })}
             >
                 <ActionButtons {...props} isEditing />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render the action buttons if isEditing is set to false', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider
                 store={mockStore({
-                    customers: fromJS({active: {}}),
+                    customers: fromJS({ active: {} }),
                 })}
             >
                 <ActionButtons {...props} isEditing={false} />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()

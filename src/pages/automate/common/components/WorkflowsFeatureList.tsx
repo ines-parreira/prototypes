@@ -1,16 +1,17 @@
-import {Label} from '@gorgias/merchant-ui-kit'
+import React, { ReactNode, useMemo, useRef, useState } from 'react'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 import _isEqual from 'lodash/isEqual'
 import _keyBy from 'lodash/keyBy'
 import _uniq from 'lodash/uniq'
-import React, {ReactNode, useMemo, useRef, useState} from 'react'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
-import {TicketChannel} from 'business/types/ticket'
-import {logEvent, SegmentEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {ListWfConfigurationsResponseDto} from 'pages/automate/workflows/types'
+import { Label } from '@gorgias/merchant-ui-kit'
+
+import { TicketChannel } from 'business/types/ticket'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { ListWfConfigurationsResponseDto } from 'pages/automate/workflows/types'
 import Button from 'pages/common/components/button/Button'
 
 import useLanguagesMismatchWarnings from '../../workflows/hooks/useLanguagesMismatchWarnings'
@@ -18,9 +19,8 @@ import {
     getChannelName,
     useWorkflowChannelSupportContext,
 } from '../../workflows/hooks/useWorkflowChannelSupport'
-import {SelfServiceChannelType} from '../hooks/useSelfServiceChannels'
-import {ChannelLanguage} from '../types'
-
+import { SelfServiceChannelType } from '../hooks/useSelfServiceChannels'
+import { ChannelLanguage } from '../types'
 import WorkflowItem from './WorkflowItem'
 
 import css from './WorkflowsFeatureList.less'
@@ -41,7 +41,7 @@ type Props = {
     onChange: (nextEntrypoints: Entrypoint[]) => void
     workflowsUrl?: string
     configurations: ListWfConfigurationsResponseDto
-    allEntrypoints: {workflow_id: string}[]
+    allEntrypoints: { workflow_id: string }[]
     withLabel?: boolean
     itemLimit?: number
 }
@@ -62,12 +62,12 @@ const WorkflowsFeatureList = ({
     withLabel = true,
     itemLimit,
 }: Props) => {
-    const {getUnsupportedNodeTypes, getSupportedChannels} =
+    const { getUnsupportedNodeTypes, getSupportedChannels } =
         useWorkflowChannelSupportContext()
 
     const configurationsById = useMemo(
         () => _keyBy(configurations, 'id'),
-        [configurations]
+        [configurations],
     )
     const entrypoints = useMemo(() => {
         const entrypointsByWorkflowId = _keyBy(entrypointsProp, 'workflow_id')
@@ -75,7 +75,7 @@ const WorkflowsFeatureList = ({
         const missingEntrypoints = allEntrypoints
             .filter(
                 (entrypoint) =>
-                    !(entrypoint.workflow_id in entrypointsByWorkflowId)
+                    !(entrypoint.workflow_id in entrypointsByWorkflowId),
             )
             .map((entrypoint) => ({
                 workflow_id: entrypoint.workflow_id,
@@ -85,18 +85,18 @@ const WorkflowsFeatureList = ({
         const entrypoints = entrypointsProp
             .filter(
                 (entrypoint) =>
-                    entrypoint.workflow_id in allEntrypointsByWorkflowId
+                    entrypoint.workflow_id in allEntrypointsByWorkflowId,
             )
             .concat(missingEntrypoints)
             .filter(
-                (entrypoint) => entrypoint.workflow_id in configurationsById
+                (entrypoint) => entrypoint.workflow_id in configurationsById,
             )
 
         return entrypoints.slice(0, itemLimit ?? entrypoints.length)
     }, [entrypointsProp, allEntrypoints, configurationsById, itemLimit])
     const enabledEntrypointsCount = useMemo(
         () => entrypoints.filter((entrypoint) => entrypoint.enabled).length,
-        [entrypoints]
+        [entrypoints],
     )
 
     const previousEntrypoints = useRef(entrypoints)
@@ -131,17 +131,20 @@ const WorkflowsFeatureList = ({
     }
     const handleToggle = (index: number, isEnabled: boolean) => {
         const nextEntrypoints = [...dirtyEntrypoints]
-        nextEntrypoints[index] = {...nextEntrypoints[index], enabled: isEnabled}
+        nextEntrypoints[index] = {
+            ...nextEntrypoints[index],
+            enabled: isEnabled,
+        }
         logEvent(SegmentEvent.AutomateChannelUpdateFromFlows, {
             page: 'Workflows',
         })
         onChange(nextEntrypoints)
     }
 
-    const {getLanguagesMismatchWarning} = useLanguagesMismatchWarnings(
+    const { getLanguagesMismatchWarning } = useLanguagesMismatchWarnings(
         channelType,
         integrationId,
-        channelLanguages
+        channelLanguages,
     )
 
     const isMLFlowRecommendationEnabled =
@@ -167,7 +170,7 @@ const WorkflowsFeatureList = ({
             {dirtyEntrypoints.map((entrypoint, index) => {
                 const unsupportedNodeTypes = getUnsupportedNodeTypes(
                     channelType,
-                    configurationsById[entrypoint.workflow_id]
+                    configurationsById[entrypoint.workflow_id],
                 )
                 const onlySupportedChannels = _uniq(
                     unsupportedNodeTypes.reduce(
@@ -175,12 +178,12 @@ const WorkflowsFeatureList = ({
                             ...acc,
                             ...getSupportedChannels(nodeType),
                         ],
-                        [] as SelfServiceChannelType[]
-                    )
+                        [] as SelfServiceChannelType[],
+                    ),
                 )
 
                 const languagesMismatchWarning = getLanguagesMismatchWarning(
-                    entrypoint.workflow_id
+                    entrypoint.workflow_id,
                 )
 
                 const toggleTooltipMessage =

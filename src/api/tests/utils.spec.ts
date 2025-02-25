@@ -1,8 +1,8 @@
-import {AxiosError, AxiosHeaders, AxiosResponse} from 'axios'
+import { AxiosError, AxiosHeaders, AxiosResponse } from 'axios'
 
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
+import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 
-import {doNotRetry40XErrorsHandler} from '../utils'
+import { doNotRetry40XErrorsHandler } from '../utils'
 
 describe('doNotRetry40XErrorsHandler', () => {
     const response: AxiosResponse = axiosSuccessResponse({})
@@ -66,9 +66,9 @@ describe('doNotRetry40XErrorsHandler', () => {
             expect(
                 doNotRetry40XErrorsHandler(
                     failureCount,
-                    axiosErrorWithCode(statusCode)
-                )
+                    axiosErrorWithCode(statusCode),
+                ),
             ).toEqual(shouldRetry)
-        }
+        },
     )
 })

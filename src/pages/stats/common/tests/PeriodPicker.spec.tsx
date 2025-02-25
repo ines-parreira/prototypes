@@ -1,10 +1,11 @@
-import {render} from '@testing-library/react'
-import moment from 'moment-timezone'
 import React from 'react'
-import {Props as MockDateRangePickerProps} from 'react-bootstrap-daterangepicker'
 
-import {useTheme} from 'core/theme'
-import {PeriodPickerContainer, Props} from 'pages/stats/common/PeriodPicker'
+import { render } from '@testing-library/react'
+import moment from 'moment-timezone'
+import { Props as MockDateRangePickerProps } from 'react-bootstrap-daterangepicker'
+
+import { useTheme } from 'core/theme'
+import { PeriodPickerContainer, Props } from 'pages/stats/common/PeriodPicker'
 
 const periodPickerClassListMockSpy = jest.fn()
 const periodPickerRangesClassListMockSpy = jest.fn()
@@ -21,7 +22,7 @@ const mockedEventTarget = {
                 if (val === '.ranges ul') {
                     return {
                         setAttribute: periodPickerRangesAttributesListMockSpy,
-                        classList: {add: periodPickerRangesClassListMockSpy},
+                        classList: { add: periodPickerRangesClassListMockSpy },
                     }
                 }
                 return null
@@ -32,7 +33,7 @@ const mockedEventTarget = {
 jest.mock(
     'react-bootstrap-daterangepicker',
     () =>
-        ({onApply, initialSettings, onShow}: MockDateRangePickerProps) => {
+        ({ onApply, initialSettings, onShow }: MockDateRangePickerProps) => {
             onApply?.({} as any, initialSettings as any)
             return (
                 <div
@@ -43,12 +44,12 @@ jest.mock(
                     onChange={(e) => {
                         onApply?.(
                             e as any,
-                            (e.target as unknown as Record<string, any>).value
+                            (e.target as unknown as Record<string, any>).value,
                         )
                     }}
                 />
             )
-        }
+        },
 )
 
 jest.spyOn(console, 'error').mockImplementation(() => {})
@@ -108,7 +109,7 @@ describe('PeriodPicker', () => {
                 onChange={onChange}
                 endDatetime={endDate}
                 userTimezone={userTimezone}
-            />
+            />,
         )
 
         expect(onChange).toBeCalledWith({
@@ -133,7 +134,7 @@ describe('PeriodPicker', () => {
                         moment.tz('2020-05-07', 'Europe/Paris'),
                     ],
                 }}
-            />
+            />,
         )
 
         expect(onChange).toBeCalledWith({
@@ -153,28 +154,28 @@ describe('PeriodPicker', () => {
             shouldShowMonthAndYearDropdowns: false,
         }
 
-        const {getByTestId} = render(
-            <PickerWithDefaultProps {...pickerV1Props} />
+        const { getByTestId } = render(
+            <PickerWithDefaultProps {...pickerV1Props} />,
         )
 
         getByTestId(mockDateRangePickerTestId).click()
 
         expect(periodPickerClassListMockSpy).toHaveBeenCalledWith(
             theme.resolvedName,
-            'displayed'
+            'displayed',
         )
         expect(periodPickerRangesClassListMockSpy).toHaveBeenCalledWith(
-            'with-label'
+            'with-label',
         )
         expect(periodPickerRangesAttributesListMockSpy).toHaveBeenCalledWith(
             'label',
-            'Shortcuts'
+            'Shortcuts',
         )
     })
 
     it('should render with v2 styles', () => {
-        const {getByTestId} = render(
-            <PickerWithDefaultProps pickerV2Styles={true} />
+        const { getByTestId } = render(
+            <PickerWithDefaultProps pickerV2Styles={true} />,
         )
 
         getByTestId(mockDateRangePickerTestId).click()
@@ -182,13 +183,16 @@ describe('PeriodPicker', () => {
         expect(periodPickerClassListMockSpy).toHaveBeenNthCalledWith(
             2,
             'picker-v2',
-            'apply-v2-styles'
+            'apply-v2-styles',
         )
     })
 
     it('should render with v2 styles and ranges on left', () => {
-        const {getByTestId} = render(
-            <PickerWithDefaultProps pickerV2Styles={true} rangesOnLeft={true} />
+        const { getByTestId } = render(
+            <PickerWithDefaultProps
+                pickerV2Styles={true}
+                rangesOnLeft={true}
+            />,
         )
 
         getByTestId(mockDateRangePickerTestId).click()
@@ -196,19 +200,19 @@ describe('PeriodPicker', () => {
         expect(periodPickerClassListMockSpy).toHaveBeenNthCalledWith(
             2,
             'picker-v2',
-            'apply-v2-styles'
+            'apply-v2-styles',
         )
 
         expect(periodPickerClassListMockSpy).toHaveBeenNthCalledWith(
             3,
             'picker-v2',
-            'ranges-on-left'
+            'ranges-on-left',
         )
     })
 
     it('should render ranges without label', () => {
-        const {getByTestId} = render(
-            <PickerWithDefaultProps showRangesLabel={false} />
+        const { getByTestId } = render(
+            <PickerWithDefaultProps showRangesLabel={false} />,
         )
 
         getByTestId(mockDateRangePickerTestId).click()
@@ -218,31 +222,31 @@ describe('PeriodPicker', () => {
     })
 
     it('should add class names related to buttons on the bottom', () => {
-        const {getByTestId} = render(<PickerWithDefaultProps />)
+        const { getByTestId } = render(<PickerWithDefaultProps />)
 
         getByTestId(mockDateRangePickerTestId).click()
 
         expect(periodPickerClassListMockSpy).toHaveBeenNthCalledWith(
             4,
             'picker-v2',
-            'action-buttons-on-the-bottom'
+            'action-buttons-on-the-bottom',
         )
     })
 
     it('should add class related to date ranges and check that it is added only when buttons on the bottom is enabled', () => {
-        const {getByTestId, rerender} = render(
+        const { getByTestId, rerender } = render(
             <PickerWithDefaultProps
                 actionButtonsOnTheBottom={false}
                 rangeDatesInFooter={true}
-            />
+            />,
         )
 
         getByTestId(mockDateRangePickerTestId).click()
 
         expect(
             periodPickerClassListMockSpy.mock.calls.some((call: string[]) =>
-                call.includes('range-dates-in-footer')
-            )
+                call.includes('range-dates-in-footer'),
+            ),
         ).toBe(false)
 
         periodPickerClassListMockSpy.mockClear()
@@ -256,11 +260,11 @@ describe('PeriodPicker', () => {
         expect(periodPickerClassListMockSpy).toHaveBeenNthCalledWith(
             4,
             'picker-v2',
-            'action-buttons-on-the-bottom'
+            'action-buttons-on-the-bottom',
         )
         expect(periodPickerClassListMockSpy).toHaveBeenNthCalledWith(
             5,
-            'range-dates-in-footer'
+            'range-dates-in-footer',
         )
     })
 })

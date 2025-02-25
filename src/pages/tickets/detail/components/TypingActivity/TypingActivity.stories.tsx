@@ -1,7 +1,8 @@
-import {Meta, Story} from '@storybook/react'
 import React from 'react'
 
-import TypingActivity, {TypingActivityProps} from './TypingActivity'
+import { Meta, Story } from '@storybook/react'
+
+import TypingActivity, { TypingActivityProps } from './TypingActivity'
 
 const storyConfig: Meta = {
     title: 'Chat/TypingActivity',
@@ -9,7 +10,7 @@ const storyConfig: Meta = {
     argTypes: {},
 }
 
-const Template: Story<TypingActivityProps> = ({name, isTyping}) => {
+const Template: Story<TypingActivityProps> = ({ name, isTyping }) => {
     return <TypingActivity name={name} isTyping={isTyping} />
 }
 
@@ -22,9 +23,9 @@ export const Default = Template.bind({})
 Default.args = defaultProps
 
 export const WithCustomerName = Template.bind({})
-WithCustomerName.args = {...defaultProps, name: 'Toni'}
+WithCustomerName.args = { ...defaultProps, name: 'Toni' }
 
 export const NotTyping = Template.bind({})
-NotTyping.args = {...defaultProps, isTyping: false}
+NotTyping.args = { ...defaultProps, isTyping: false }
 
 export default storyConfig

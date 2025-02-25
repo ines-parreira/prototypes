@@ -1,14 +1,16 @@
-import {Macro} from '@gorgias/api-queries'
-import {fromJS, Map, List} from 'immutable'
-import React, {useEffect, useMemo, useState} from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
+
+import { fromJS, List, Map } from 'immutable'
+
+import { Macro } from '@gorgias/api-queries'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {Filters} from 'models/macro/types'
+import { Filters } from 'models/macro/types'
 import useMacrosSearch from 'pages/common/editor/hooks/useMacrosSearch'
-import {getHumanAgents} from 'state/agents/selectors'
+import { getHumanAgents } from 'state/agents/selectors'
 
 import MacroModal from './components/MacroModal'
-import {getDefaultSelectedMacroId} from './utils'
+import { getDefaultSelectedMacroId } from './utils'
 
 type Props = {
     activeView?: Map<any, any>
@@ -39,10 +41,10 @@ const MacroContainer = ({
     const agents = useAppSelector(getHumanAgents)
 
     const [params, setParams] = useState<Filters>(() =>
-        !!selectedMacro ? {search: selectedMacro.name} : {}
+        !!selectedMacro ? { search: selectedMacro.name } : {},
     )
     const [selectedMacroId, setSelectedMacroId] = useState<number | null>(
-        selectedMacro?.id ?? null
+        selectedMacro?.id ?? null,
     )
 
     useEffect(() => {
@@ -51,7 +53,7 @@ const MacroContainer = ({
         }
     }, [selectedMacro?.id])
 
-    const {data, fetchNextPage, isLoading, nextCursor, refetch} =
+    const { data, fetchNextPage, isLoading, nextCursor, refetch } =
         useMacrosSearch({
             params,
             ticket: undefined,
@@ -61,7 +63,7 @@ const MacroContainer = ({
         const macroId = getDefaultSelectedMacroId(
             data,
             selectedMacroId,
-            isCreatingMacro
+            isCreatingMacro,
         )
 
         return data.find((macro) => macro.id === macroId)
@@ -81,7 +83,7 @@ const MacroContainer = ({
     }
 
     const onSearch = (args: Filters = {}) => {
-        const newParams = {...params, ...args, cursor: undefined}
+        const newParams = { ...params, ...args, cursor: undefined }
         setParams(newParams)
     }
 

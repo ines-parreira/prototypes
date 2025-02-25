@@ -1,11 +1,10 @@
 import React from 'react'
 
 import PeriodStatsFilter from 'pages/stats/common/filters/DEPRECATED_PeriodStatsFilter'
-
-import {DEPRECATED_CampaignMultiSelect} from 'pages/stats/convert/components/CampaignMultiSelect'
-import {DEPRECATED_CampaignStatusMultiSelect} from 'pages/stats/convert/components/DEPRECATED_CampaignStatusMultiSelect'
-import {IntegrationMultiSelect} from 'pages/stats/convert/components/IntegrationMultiSelect'
-import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
+import { DEPRECATED_CampaignMultiSelect } from 'pages/stats/convert/components/CampaignMultiSelect'
+import { DEPRECATED_CampaignStatusMultiSelect } from 'pages/stats/convert/components/DEPRECATED_CampaignStatusMultiSelect'
+import { IntegrationMultiSelect } from 'pages/stats/convert/components/IntegrationMultiSelect'
+import { useCampaignStatsFilters } from 'pages/stats/convert/hooks/useCampaignStatsFilters'
 
 import css from './RevenueFilters.less'
 

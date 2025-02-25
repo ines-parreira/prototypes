@@ -1,8 +1,10 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import Clipboard from 'clipboard'
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 
-import {AuthenticatorData} from 'models/twoFactorAuthentication/types'
+import Clipboard from 'clipboard'
+
+import { Label } from '@gorgias/merchant-ui-kit'
+
+import { AuthenticatorData } from 'models/twoFactorAuthentication/types'
 import Button from 'pages/common/components/button/Button'
 import InputField from 'pages/common/forms/input/InputField'
 import InputGroup from 'pages/common/forms/input/InputGroup'
@@ -21,17 +23,17 @@ const authenticatorDataKeyLabelMapper: {
     uri: 'URL',
 }
 
-export default function CantScanQRCode({authenticatorData}: OwnProps) {
+export default function CantScanQRCode({ authenticatorData }: OwnProps) {
     const [displayAuthenticatorData, setDisplayAuthenticatorData] =
         useState(false)
     const [copiedAuthenticatorField, setCopiedAuthenticatorField] = useState('')
     const [timeoutReference, setTimeoutReference] = useState(
-        {} as ReturnType<typeof setTimeout>
+        {} as ReturnType<typeof setTimeout>,
     )
 
     useEffect(() => {
         const clipboardCopiedAuthenticatorField = new Clipboard(
-            '.copy-authenticator-field'
+            '.copy-authenticator-field',
         )
 
         clipboardCopiedAuthenticatorField.on(
@@ -43,9 +45,9 @@ export default function CantScanQRCode({authenticatorData}: OwnProps) {
                 setTimeoutReference(
                     setTimeout(() => {
                         setCopiedAuthenticatorField('')
-                    }, 5000)
+                    }, 5000),
                 )
-            }
+            },
         )
 
         return () => {
@@ -106,7 +108,7 @@ export default function CantScanQRCode({authenticatorData}: OwnProps) {
                                     </Button>
                                 </InputGroup>
                             </div>
-                        )
+                        ),
                     )}
                 </>
             )}

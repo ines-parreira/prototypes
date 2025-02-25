@@ -1,6 +1,6 @@
 import MockAdapter from 'axios-mock-adapter'
 
-import {agents} from 'fixtures/agents'
+import { agents } from 'fixtures/agents'
 import client from 'models/api/resources'
 
 import * as resources from '../resources'
@@ -17,7 +17,7 @@ describe('Agents resources', () => {
             mockedServer.onGet('/api/users/').reply(200, {
                 data: {
                     data: agents,
-                    meta: {next_cursor: null, prev_cursor: null},
+                    meta: { next_cursor: null, prev_cursor: null },
                 },
             })
 
@@ -26,9 +26,9 @@ describe('Agents resources', () => {
         })
 
         it('should reject an error on fail', () => {
-            mockedServer.onGet('/api/users/').reply(503, {message: 'error'})
+            mockedServer.onGet('/api/users/').reply(503, { message: 'error' })
             return expect(resources.fetchAgents()).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                new Error('Request failed with status code 503'),
             )
         })
     })
@@ -42,9 +42,9 @@ describe('Agents resources', () => {
         })
 
         it('should reject an error on fail', () => {
-            mockedServer.onGet('/api/users/1').reply(503, {message: 'error'})
+            mockedServer.onGet('/api/users/1').reply(503, { message: 'error' })
             return expect(resources.fetchAgent(1)).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                new Error('Request failed with status code 503'),
             )
         })
     })
@@ -54,7 +54,7 @@ describe('Agents resources', () => {
         const id = agent.id
         it.each([
             ['createAgent', 'Post', '/api/users', agent, agent],
-            ['updateAgent', 'Put', `/api/users/${id}`, {id, agent}, agent],
+            ['updateAgent', 'Put', `/api/users/${id}`, { id, agent }, agent],
             ['deleteAgent', 'Delete', `/api/users/${id}`, id, undefined],
             ['inviteAgent', 'Post', `/api/users/${id}/invite`, id, undefined],
         ] as const)(
@@ -62,12 +62,12 @@ describe('Agents resources', () => {
             async (name, method, endpoint, param, returnedData) => {
                 mockedServer[`on${method}` as const](endpoint).reply(
                     200,
-                    returnedData
+                    returnedData,
                 )
 
                 const res = await resources[name](param as any)
                 expect(res.data).toEqual(returnedData)
-            }
+            },
         )
     })
 })

@@ -1,20 +1,20 @@
-import {produce} from 'immer'
-import {useCallback, useEffect, useMemo, useState} from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import {ulid} from 'ulidx'
+import { produce } from 'immer'
+import { ulid } from 'ulidx'
 
-import {useIsConvertSubscriber} from 'pages/common/hooks/useIsConvertSubscriber'
-import {getDefaultTriggers} from 'pages/convert/campaigns/utils/getDefaultTriggers'
+import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
+import { getDefaultTriggers } from 'pages/convert/campaigns/utils/getDefaultTriggers'
 
 import {
     CreateTriggerFn,
     DeleteTriggerFn,
     UpdateTriggerFn,
 } from '../types/AdvancedTriggerBaseProps'
-import {CampaignTrigger} from '../types/CampaignTrigger'
-import {CampaignTriggerMap} from '../types/CampaignTriggerMap'
-import {createTrigger} from '../utils/createTrigger'
-import {isAllowedToUpdateTrigger} from '../utils/isAllowedToUpdateTrigger'
+import { CampaignTrigger } from '../types/CampaignTrigger'
+import { CampaignTriggerMap } from '../types/CampaignTriggerMap'
+import { createTrigger } from '../utils/createTrigger'
+import { isAllowedToUpdateTrigger } from '../utils/isAllowedToUpdateTrigger'
 
 export function useManageTriggers(defaultTriggers: CampaignTrigger[] = []) {
     const isConvertSubscriber = useIsConvertSubscriber()
@@ -46,7 +46,7 @@ export function useManageTriggers(defaultTriggers: CampaignTrigger[] = []) {
 
             const isAllowedToEdit = isAllowedToUpdateTrigger(
                 newTrigger,
-                isConvertSubscriber
+                isConvertSubscriber,
             )
 
             if (!isAllowedToEdit) return
@@ -54,10 +54,10 @@ export function useManageTriggers(defaultTriggers: CampaignTrigger[] = []) {
             updateTriggers(
                 produce(triggers, (draft) => {
                     draft[newId] = newTrigger
-                })
+                }),
             )
         },
-        [isConvertSubscriber, triggers, updateTriggers]
+        [isConvertSubscriber, triggers, updateTriggers],
     )
 
     const updateTrigger = useCallback<UpdateTriggerFn>(
@@ -65,7 +65,7 @@ export function useManageTriggers(defaultTriggers: CampaignTrigger[] = []) {
             const currentTrigger = triggers[triggerId]
             const isAllowedToEdit = isAllowedToUpdateTrigger(
                 currentTrigger,
-                isConvertSubscriber
+                isConvertSubscriber,
             )
 
             if (!isAllowedToEdit) return
@@ -80,10 +80,10 @@ export function useManageTriggers(defaultTriggers: CampaignTrigger[] = []) {
                         // We need to allow '' value
                         draft[triggerId].value = payload.value
                     }
-                })
+                }),
             )
         },
-        [isConvertSubscriber, triggers, updateTriggers]
+        [isConvertSubscriber, triggers, updateTriggers],
     )
 
     const deleteTrigger = useCallback<DeleteTriggerFn>(
@@ -91,7 +91,7 @@ export function useManageTriggers(defaultTriggers: CampaignTrigger[] = []) {
             const currentTrigger = triggers[triggerId]
             const isAllowedToEdit = isAllowedToUpdateTrigger(
                 currentTrigger,
-                isConvertSubscriber
+                isConvertSubscriber,
             )
 
             if (!isAllowedToEdit) return
@@ -101,10 +101,10 @@ export function useManageTriggers(defaultTriggers: CampaignTrigger[] = []) {
                     if (draft[triggerId]) {
                         delete draft[triggerId]
                     }
-                })
+                }),
             )
         },
-        [isConvertSubscriber, triggers, updateTriggers]
+        [isConvertSubscriber, triggers, updateTriggers],
     )
 
     const api = useMemo(
@@ -114,7 +114,7 @@ export function useManageTriggers(defaultTriggers: CampaignTrigger[] = []) {
             deleteTrigger,
             triggers,
         }),
-        [addTrigger, deleteTrigger, triggers, updateTrigger]
+        [addTrigger, deleteTrigger, triggers, updateTrigger],
     )
 
     return api

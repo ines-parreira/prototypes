@@ -1,10 +1,12 @@
-import {EmailIntegration} from '@gorgias/api-queries'
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {assumeMock} from 'utils/testing'
+import { render, screen } from '@testing-library/react'
 
-import {getDomainFromEmailAddress} from '../../helpers'
+import { EmailIntegration } from '@gorgias/api-queries'
+
+import { assumeMock } from 'utils/testing'
+
+import { getDomainFromEmailAddress } from '../../helpers'
 import DomainVerificationProvider from '../DomainVerificationProvider'
 import EmailDomainVerification from '../EmailDomainVerification'
 import EmailDomainVerificationActionButtons from '../EmailDomainVerificationActionButtons'
@@ -19,10 +21,10 @@ jest.mock('../EmailDomainVerificationActionButtons')
 jest.mock('../DomainVerificationProvider')
 
 const EmailDomainVerificationContentMock = assumeMock(
-    EmailDomainVerificationContent
+    EmailDomainVerificationContent,
 )
 const EmailDomainVerificationActionButtonsMock = assumeMock(
-    EmailDomainVerificationActionButtons
+    EmailDomainVerificationActionButtons,
 )
 const DomainVerificationProviderMock = assumeMock(DomainVerificationProvider)
 const getDomainFromEmailAddressMock = assumeMock(getDomainFromEmailAddress)
@@ -47,12 +49,14 @@ describe('EmailDomainVerification', () => {
         EmailDomainVerificationActionButtonsMock.mockImplementation(() => (
             <div>ActionButtons</div>
         ))
-        DomainVerificationProviderMock.mockImplementation(({children}: any) => (
-            <div>
-                <div>DomainVerificationProvider</div>
-                {children}
-            </div>
-        ))
+        DomainVerificationProviderMock.mockImplementation(
+            ({ children }: any) => (
+                <div>
+                    <div>DomainVerificationProvider</div>
+                    {children}
+                </div>
+            ),
+        )
     })
 
     it('should render content and sidebar', () => {
@@ -61,7 +65,7 @@ describe('EmailDomainVerification', () => {
         renderComponent()
 
         expect(
-            screen.getByText('DomainVerificationProvider')
+            screen.getByText('DomainVerificationProvider'),
         ).toBeInTheDocument()
         expect(screen.getByText('Content')).toBeInTheDocument()
         expect(screen.getByText('ActionButtons')).toBeInTheDocument()
@@ -69,21 +73,21 @@ describe('EmailDomainVerification', () => {
             {
                 integration,
             },
-            {}
+            {},
         )
         expect(
-            EmailDomainVerificationActionButtonsMock
+            EmailDomainVerificationActionButtonsMock,
         ).toHaveBeenLastCalledWith(
             {
                 integration,
             },
-            {}
+            {},
         )
         expect(DomainVerificationProviderMock).toHaveBeenLastCalledWith(
             expect.objectContaining({
                 domainName: 'gorgias.com',
             }),
-            {}
+            {},
         )
         expect(screen.getByText('SidebarContent')).toBeInTheDocument()
         expect(screen.getByText('VerifyDomainModal')).toBeInTheDocument()

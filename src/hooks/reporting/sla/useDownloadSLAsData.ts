@@ -1,17 +1,17 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {useTimeSeriesPerDimensionReportData} from 'hooks/reporting/common/useTimeSeriesReportData'
-import {useTrendReportData} from 'hooks/reporting/common/useTrendReportData'
-import {fetchSatisfiedOrBreachedTicketsTimeSeries} from 'hooks/reporting/sla/useSatisfiedOrBreachedTicketsTimeSeries'
+import { useTimeSeriesPerDimensionReportData } from 'hooks/reporting/common/useTimeSeriesReportData'
+import { useTrendReportData } from 'hooks/reporting/common/useTrendReportData'
+import { fetchSatisfiedOrBreachedTicketsTimeSeries } from 'hooks/reporting/sla/useSatisfiedOrBreachedTicketsTimeSeries'
 import {
     fetchBreachedSlaTicketsTrend,
     fetchSatisfiedSlaTicketsTrend,
 } from 'hooks/reporting/sla/useSLAsTicketsTrends'
-import {fetchTicketSlaAchievementRateTrend} from 'hooks/reporting/sla/useTicketSlaAchievementRate'
-import {getCsvFileNameWithDates} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-import {TicketSLAStatus} from 'models/reporting/cubes/sla/TicketSLACube'
-import {SlaMetricConfig} from 'pages/stats/sla/SlaConfig'
+import { fetchTicketSlaAchievementRateTrend } from 'hooks/reporting/sla/useTicketSlaAchievementRate'
+import { getCsvFileNameWithDates } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { TicketSLAStatus } from 'models/reporting/cubes/sla/TicketSLACube'
+import { SlaMetricConfig } from 'pages/stats/sla/SlaConfig'
 import {
     ACHIEVED_SLA_LABEL,
     ACHIEVEMENT_RATE_LABEL,
@@ -19,9 +19,9 @@ import {
     DATES_WITHIN_PERIOD_LABEL,
     TICKETS_WITH_BREACHED_SLAS_LABEL,
 } from 'services/reporting/constants'
-import {createTimeSeriesPerDimensionReport} from 'services/reporting/SLAsReportingService'
-import {createTrendReport} from 'services/reporting/supportPerformanceReportingService'
-import {SlaMetric} from 'state/ui/stats/types'
+import { createTimeSeriesPerDimensionReport } from 'services/reporting/SLAsReportingService'
+import { createTrendReport } from 'services/reporting/supportPerformanceReportingService'
+import { SlaMetric } from 'state/ui/stats/types'
 
 export const SLA_OVERVIEW_FILENAME = 'overview'
 export const SLA_TICKETS_IN_POLICY_FILENAME = 'tickets-in-policy'
@@ -69,31 +69,35 @@ export const slaTrendSource = [
 ]
 
 export const useDownloadSLAsData = () => {
-    const {cleanStatsFilters, userTimezone, granularity} = useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone, granularity } =
+        useNewStatsFilters()
 
     const slaTrends = useTrendReportData(
         cleanStatsFilters,
         userTimezone,
-        slaOverviewSource
+        slaOverviewSource,
     )
 
     const slaTicketsInPolicy = useTrendReportData(
         cleanStatsFilters,
         userTimezone,
-        slaTicketsInPolicySource
+        slaTicketsInPolicySource,
     )
 
     const slaOverviewReport = createTrendReport(
         slaTrends.data,
-        getCsvFileNameWithDates(cleanStatsFilters.period, SLA_OVERVIEW_FILENAME)
+        getCsvFileNameWithDates(
+            cleanStatsFilters.period,
+            SLA_OVERVIEW_FILENAME,
+        ),
     )
 
     const slaTicketsInPolicyReport = createTrendReport(
         slaTicketsInPolicy.data,
         getCsvFileNameWithDates(
             cleanStatsFilters.period,
-            SLA_TICKETS_IN_POLICY_FILENAME
-        )
+            SLA_TICKETS_IN_POLICY_FILENAME,
+        ),
     )
 
     const achievedOrBreachedSLAsTicketsTimeSeries =
@@ -101,12 +105,12 @@ export const useDownloadSLAsData = () => {
             cleanStatsFilters,
             userTimezone,
             granularity,
-            slaTrendSource
+            slaTrendSource,
         )
 
     const timeSeriesTrend = createTimeSeriesPerDimensionReport(
         achievedOrBreachedSLAsTicketsTimeSeries.data,
-        cleanStatsFilters.period
+        cleanStatsFilters.period,
     )
 
     const isLoading = useMemo(() => {
@@ -124,7 +128,7 @@ export const useDownloadSLAsData = () => {
     }
     const fileName = getCsvFileNameWithDates(
         cleanStatsFilters.period,
-        SLA_REPORT_FILENAME
+        SLA_REPORT_FILENAME,
     )
 
     return {

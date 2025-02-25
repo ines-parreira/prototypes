@@ -1,8 +1,8 @@
-import {isEmail} from 'utils'
+import { isEmail } from 'utils'
 
 export const emptyError = (
     value: string,
-    fieldName: string
+    fieldName: string,
 ): string | undefined => {
     return value === '' ? `${fieldName} cannot be empty` : undefined
 }
@@ -17,7 +17,7 @@ const canadianPostalCoderegex = new RegExp(/^\w\d\w\d\w\d$/i)
 
 export const validatePostalCode = (
     postalCode: string | undefined,
-    country_code: string
+    country_code: string,
 ): string | undefined => {
     const noError = undefined
     const error = 'Postal code is invalid'

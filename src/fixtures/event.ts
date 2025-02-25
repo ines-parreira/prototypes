@@ -1,6 +1,6 @@
-import {CursorPaginationMeta} from '@gorgias/api-queries'
+import { CursorPaginationMeta } from '@gorgias/api-queries'
 
-import {Event, EventObjectType, EventType} from 'models/event/types'
+import { Event, EventObjectType, EventType } from 'models/event/types'
 
 export const events: Event[] = [
     {

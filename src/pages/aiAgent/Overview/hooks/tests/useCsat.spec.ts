@@ -1,9 +1,9 @@
-import {renderHook} from '@testing-library/react-hooks/dom'
+import { renderHook } from '@testing-library/react-hooks/dom'
 
-import {useMultipleMetricsTrends} from 'hooks/reporting/useMultipleMetricsTrend'
-import {StatsFilters, StatType} from 'models/stat/types'
-import {useCsat} from 'pages/aiAgent/Overview/hooks/kpis/useCsat'
-import {assumeMock} from 'utils/testing'
+import { useMultipleMetricsTrends } from 'hooks/reporting/useMultipleMetricsTrend'
+import { StatsFilters, StatType } from 'models/stat/types'
+import { useCsat } from 'pages/aiAgent/Overview/hooks/kpis/useCsat'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/useMultipleMetricsTrend')
 const useMultipleMetricsTrendsMock = assumeMock(useMultipleMetricsTrends)
@@ -28,7 +28,7 @@ describe('useCsat', () => {
             isFetching: false,
         } as any)
 
-        const {result} = renderHook(() => useCsat(filters, timezone))
+        const { result } = renderHook(() => useCsat(filters, timezone))
 
         expect(result.current).toEqual({
             title: 'CSAT (Customer Satisfaction Score)',
@@ -46,7 +46,7 @@ describe('useCsat', () => {
             isFetching: true,
         } as any)
 
-        const {result} = renderHook(() => useCsat(filters, timezone))
+        const { result } = renderHook(() => useCsat(filters, timezone))
 
         expect(result.current).toEqual({
             title: 'CSAT (Customer Satisfaction Score)',

@@ -1,10 +1,11 @@
-import {render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {ArticleTemplatesListFixture} from 'pages/settings/helpCenter/fixtures/articleTemplate.fixture'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
-import {ArticleTemplateModal} from '../ArticleTemplateModal'
+import { ArticleTemplatesListFixture } from 'pages/settings/helpCenter/fixtures/articleTemplate.fixture'
+
+import { ArticleTemplateModal } from '../ArticleTemplateModal'
 
 const template = ArticleTemplatesListFixture[0]
 const onCloseMock = jest.fn()
@@ -19,7 +20,7 @@ describe('ArticleTemplateModal', () => {
                 onClose={onCloseMock}
                 template={template}
                 onCreateArticleWithTemplate={onCreateArticleWithTemplateMock}
-            />
+            />,
         )
         const title = screen.getAllByText(template.title)[0]
         expect(title).toBeInTheDocument()
@@ -34,7 +35,7 @@ describe('ArticleTemplateModal', () => {
                 onClose={onCloseMock}
                 template={template}
                 onCreateArticleWithTemplate={onCreateArticleWithTemplateMock}
-            />
+            />,
         )
         const closeButton = screen.getByText(/cancel/i)
         userEvent.click(closeButton)
@@ -49,7 +50,7 @@ describe('ArticleTemplateModal', () => {
                 onClose={onCloseMock}
                 template={template}
                 onCreateArticleWithTemplate={onCreateArticleWithTemplateMock}
-            />
+            />,
         )
         const createButton = screen.getByText(/Use template/i)
         userEvent.click(createButton)

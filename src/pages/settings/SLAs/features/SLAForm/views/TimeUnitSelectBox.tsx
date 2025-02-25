@@ -1,5 +1,6 @@
-import {SLAPolicyMetricUnit} from '@gorgias/api-types'
-import React, {forwardRef, useImperativeHandle, useRef, useState} from 'react'
+import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react'
+
+import { SLAPolicyMetricUnit } from '@gorgias/api-types'
 
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
@@ -7,7 +8,7 @@ import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
 import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
-import {timeUnits} from 'pages/settings/SLAs/config/time'
+import { timeUnits } from 'pages/settings/SLAs/config/time'
 
 type TimeUnitSelectBoxProps = {
     value: SLAPolicyMetricUnit | undefined
@@ -18,8 +19,8 @@ type TimeUnitSelectBoxProps = {
 
 export default forwardRef<HTMLDivElement, TimeUnitSelectBoxProps>(
     function TimeUnitSelectBox(
-        {value, onChange, isDisabled, className}: TimeUnitSelectBoxProps,
-        ref
+        { value, onChange, isDisabled, className }: TimeUnitSelectBoxProps,
+        ref,
     ) {
         const floatingRef = useRef<HTMLDivElement>(null)
         const targetRef = useRef<HTMLDivElement>(null)
@@ -64,5 +65,5 @@ export default forwardRef<HTMLDivElement, TimeUnitSelectBoxProps>(
                 </SelectInputBoxContext.Consumer>
             </SelectInputBox>
         )
-    }
+    },
 )

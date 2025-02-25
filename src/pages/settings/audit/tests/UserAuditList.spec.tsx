@@ -1,16 +1,17 @@
+import React from 'react'
+
 import {
     act,
-    render,
     fireEvent,
+    render,
+    screen,
     waitFor,
     waitForElementToBeRemoved,
-    screen,
 } from '@testing-library/react'
-import {AxiosResponse} from 'axios'
+import { AxiosResponse } from 'axios'
 import MockAdapter from 'axios-mock-adapter'
-import {fromJS} from 'immutable'
-import React from 'react'
-import {Provider} from 'react-redux'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -19,12 +20,12 @@ import {
     eventsServerMeta as eventsMetaFixtures,
 } from 'fixtures/event'
 import client from 'models/api/resources'
-import {ApiListResponseCursorPagination} from 'models/api/types'
-import {fetchEvents} from 'models/event/resources'
-import {Event} from 'models/event/types'
-import {AuditLogEventsState} from 'state/entities/auditLogEvents/types'
-import {RootState, StoreDispatch} from 'state/types'
-import {flushPromises} from 'utils/testing'
+import { ApiListResponseCursorPagination } from 'models/api/types'
+import { fetchEvents } from 'models/event/resources'
+import { Event } from 'models/event/types'
+import { AuditLogEventsState } from 'state/entities/auditLogEvents/types'
+import { RootState, StoreDispatch } from 'state/types'
+import { flushPromises } from 'utils/testing'
 
 import UserAuditList from '../UserAuditList'
 
@@ -49,9 +50,9 @@ const fetchEventsMock = fetchEvents as jest.MockedFunction<typeof fetchEvents>
 const mockServer = new MockAdapter(client)
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
-const agent1 = {id: 1, name: 'agent 1', email: 'agent1@gorgias.com'}
-const agent2 = {id: 2, name: 'agent 2', email: 'agent2@gorgias.com'}
-const agent3 = {id: 3, name: ' ', email: 'agent3@gorgias.com'}
+const agent1 = { id: 1, name: 'agent 1', email: 'agent1@gorgias.com' }
+const agent2 = { id: 2, name: 'agent 2', email: 'agent2@gorgias.com' }
+const agent3 = { id: 3, name: ' ', email: 'agent3@gorgias.com' }
 
 const defaultState: Partial<RootState> = {
     agents: fromJS({
@@ -75,7 +76,7 @@ describe('<UserAuditList/>', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <UserAuditList />
-            </Provider>
+            </Provider>,
         )
 
         await waitFor(() => {
@@ -88,7 +89,7 @@ describe('<UserAuditList/>', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <UserAuditList />
-            </Provider>
+            </Provider>,
         )
 
         await act(async () => {
@@ -96,8 +97,8 @@ describe('<UserAuditList/>', () => {
         })
         expect(
             screen.getByText(
-                'There is no event recorded matching these filters.'
-            )
+                'There is no event recorded matching these filters.',
+            ),
         ).toBeInTheDocument()
     })
 
@@ -106,7 +107,7 @@ describe('<UserAuditList/>', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <UserAuditList />
-            </Provider>
+            </Provider>,
         )
 
         act(() => {
@@ -136,10 +137,10 @@ describe('<UserAuditList/>', () => {
                 meta: eventsMetaFixtures,
             },
         } as AxiosResponse<ApiListResponseCursorPagination<Event[]>>)
-        const {container, rerender} = render(
+        const { container, rerender } = render(
             <Provider store={mockStore(defaultState)}>
                 <UserAuditList />
-            </Provider>
+            </Provider>,
         )
 
         await waitForElementToBeRemoved(() => screen.getByText('Loader'))
@@ -153,11 +154,11 @@ describe('<UserAuditList/>', () => {
             <Provider
                 store={mockStore({
                     ...defaultState,
-                    entities: {auditLogEvents: fetchedEvents},
+                    entities: { auditLogEvents: fetchedEvents },
                 } as RootState)}
             >
                 <UserAuditList />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -184,11 +185,11 @@ describe('<UserAuditList/>', () => {
             <Provider
                 store={mockStore({
                     ...defaultState,
-                    entities: {auditLogEvents: fetchedEvents},
+                    entities: { auditLogEvents: fetchedEvents },
                 } as RootState)}
             >
                 <UserAuditList />
-            </Provider>
+            </Provider>,
         )
 
         await waitForElementToBeRemoved(() => screen.getByText('Loader'))
@@ -202,7 +203,7 @@ describe('<UserAuditList/>', () => {
             expect.objectContaining({
                 cursor: meta.next_cursor,
             }),
-            expect.anything()
+            expect.anything(),
         )
 
         fireEvent.click(screen.getByText('keyboard_arrow_left'))
@@ -214,7 +215,7 @@ describe('<UserAuditList/>', () => {
             expect.objectContaining({
                 cursor: meta.prev_cursor,
             }),
-            expect.anything()
+            expect.anything(),
         )
     })
 })

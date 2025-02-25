@@ -1,11 +1,12 @@
-import {Map, fromJS} from 'immutable'
-import {parse} from 'qs'
-import React, {Component, SyntheticEvent} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {Link, RouteComponentProps} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem, Col, Container, Row} from 'reactstrap'
+import React, { Component, SyntheticEvent } from 'react'
 
-import {PENDING_AUTHENTICATION_STATUS} from 'constants/integration'
+import { fromJS, Map } from 'immutable'
+import { parse } from 'qs'
+import { connect, ConnectedProps } from 'react-redux'
+import { Link, RouteComponentProps } from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem, Col, Container, Row } from 'reactstrap'
+
+import { PENDING_AUTHENTICATION_STATUS } from 'constants/integration'
 import LinkAlert from 'pages/common/components/Alert/LinkAlert'
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
@@ -13,11 +14,11 @@ import Loader from 'pages/common/components/Loader/Loader'
 import PageHeader from 'pages/common/components/PageHeader'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import withRouter from 'pages/common/utils/withRouter'
-import {INTEGRATION_REMOVAL_CONFIGURATION_TEXT} from 'pages/integrations/integration/constants'
+import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 import css from 'pages/settings/settings.less'
 import {
-    fetchIntegration,
     deleteIntegration,
+    fetchIntegration,
     updateOrCreateIntegration,
 } from 'state/integrations/actions'
 
@@ -41,7 +42,7 @@ export class SmileIntegrationDetailComponent extends Component<Props, State> {
 
     componentDidMount() {
         if (!this.props.integration.isEmpty()) {
-            this.setState({name: this.props.integration.get('name')})
+            this.setState({ name: this.props.integration.get('name') })
         }
     }
 
@@ -50,13 +51,13 @@ export class SmileIntegrationDetailComponent extends Component<Props, State> {
             this.props.integration.isEmpty() &&
             !nextProps.integration.isEmpty()
         ) {
-            this.setState({name: nextProps.integration.get('name')})
+            this.setState({ name: nextProps.integration.get('name') })
 
             const authenticationRequired =
                 nextProps.integration.getIn(['meta', 'oauth', 'status']) ===
                 PENDING_AUTHENTICATION_STATUS
             const isAuthenticating =
-                parse(nextProps.location.search, {ignoreQueryPrefix: true})
+                parse(nextProps.location.search, { ignoreQueryPrefix: true })
                     .action === 'authentication'
 
             if (isAuthenticating) {
@@ -65,7 +66,7 @@ export class SmileIntegrationDetailComponent extends Component<Props, State> {
                         void this.props.fetchIntegration(
                             nextProps.integration.get('id'),
                             nextProps.integration.get('type'),
-                            true
+                            true,
                         )
                     }, 3000)
                 }
@@ -75,9 +76,9 @@ export class SmileIntegrationDetailComponent extends Component<Props, State> {
 
     _handleUpdate = (evt: SyntheticEvent<HTMLButtonElement>): void => {
         evt.preventDefault()
-        const {integration, updateOrCreateIntegration} = this.props
+        const { integration, updateOrCreateIntegration } = this.props
         void updateOrCreateIntegration(
-            fromJS({id: integration.get('id'), name: this.state.name})
+            fromJS({ id: integration.get('id'), name: this.state.name }),
         )
     }
 
@@ -86,7 +87,7 @@ export class SmileIntegrationDetailComponent extends Component<Props, State> {
     }
 
     render() {
-        const {deleteIntegration, integration, loading} = this.props
+        const { deleteIntegration, integration, loading } = this.props
 
         const isSubmitting = loading.get('updateIntegration')
         const isActive = !integration.get('deactivated_datetime')
@@ -166,7 +167,7 @@ export class SmileIntegrationDetailComponent extends Component<Props, State> {
                                 label="Integration name"
                                 value={this.state.name}
                                 onChange={(value) =>
-                                    this.setState({name: value})
+                                    this.setState({ name: value })
                                 }
                             />
 

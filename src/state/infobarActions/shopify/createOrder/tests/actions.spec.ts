@@ -1,8 +1,8 @@
-import {AxiosResponse} from 'axios'
+import { AxiosResponse } from 'axios'
 import MockAdapter from 'axios-mock-adapter'
-import {fromJS, Map} from 'immutable'
-import {AnyAction} from 'redux'
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+import { fromJS, Map } from 'immutable'
+import { AnyAction } from 'redux'
+import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {
@@ -20,12 +20,12 @@ import {
     IntegrationDataItemType,
     IntegrationType,
 } from 'models/integration/types'
-import {executeAction} from 'state/infobar/actions'
-import {RootState, StoreDispatch} from 'state/types'
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
+import { executeAction } from 'state/infobar/actions'
+import { RootState, StoreDispatch } from 'state/types'
+import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import * as actions from '../actions'
-import {initialState} from '../reducers'
+import { initialState } from '../reducers'
 
 jest.mock('lodash/debounce', () => (fn: Record<string, unknown>) => {
     fn.cancel = jest.fn()
@@ -51,7 +51,7 @@ describe('infobarActions.shopify.createOrder actions', () => {
     const getActions = () =>
         store
             .getActions()
-            .map((action: AnyAction & {payload: Record<string, unknown>}) => {
+            .map((action: AnyAction & { payload: Record<string, unknown> }) => {
                 if (action.type === 'reapop/upsertNotification') {
                     action.payload.id = 1
                 }
@@ -62,7 +62,7 @@ describe('infobarActions.shopify.createOrder actions', () => {
     function mockCalculateSuccess() {
         mockServer
             .onPost(
-                `/integrations/${IntegrationType.Shopify}/order/draft/calculate/`
+                `/integrations/${IntegrationType.Shopify}/order/draft/calculate/`,
             )
             .reply(200, {
                 data: {
@@ -130,10 +130,10 @@ describe('infobarActions.shopify.createOrder actions', () => {
 
             mockServer
                 .onGet(
-                    `/api/integrations/${integrationId}/${integrationDataItemType}`
+                    `/api/integrations/${integrationId}/${integrationDataItemType}`,
                 )
                 .reply(200, {
-                    data: [{data: product}],
+                    data: [{ data: product }],
                     meta: {
                         next_page: null,
                     },
@@ -150,8 +150,8 @@ describe('infobarActions.shopify.createOrder actions', () => {
                         order,
                         customer,
                         currencyCode,
-                        onError
-                    )
+                        onError,
+                    ),
                 )
                 expect(getActions()).toMatchSnapshot()
                 expect(onError).not.toHaveBeenCalled()
@@ -164,8 +164,8 @@ describe('infobarActions.shopify.createOrder actions', () => {
                         null,
                         customer.delete('currency'),
                         'AUD',
-                        onError
-                    )
+                        onError,
+                    ),
                 )
                 expect(getActions()).toMatchSnapshot()
                 expect(onError).not.toHaveBeenCalled()
@@ -176,7 +176,7 @@ describe('infobarActions.shopify.createOrder actions', () => {
             it('should call onError', async () => {
                 mockServer
                     .onPost(
-                        `/integrations/${IntegrationType.Shopify}/order/draft/calculate`
+                        `/integrations/${IntegrationType.Shopify}/order/draft/calculate`,
                     )
                     .reply(500, {
                         error: {
@@ -190,8 +190,8 @@ describe('infobarActions.shopify.createOrder actions', () => {
                         order,
                         customer,
                         currencyCode,
-                        onError
-                    )
+                        onError,
+                    ),
                 )
                 expect(getActions()).toMatchSnapshot()
                 expect(onError).toHaveBeenCalled()
@@ -218,7 +218,7 @@ describe('infobarActions.shopify.createOrder actions', () => {
             it('should calculate draft order', async () => {
                 mockCalculateSuccess()
                 await store.dispatch(
-                    actions.onPayloadChange(integrationId, payload)
+                    actions.onPayloadChange(integrationId, payload),
                 )
                 expect(getActions()).toMatchSnapshot()
             })
@@ -243,7 +243,7 @@ describe('infobarActions.shopify.createOrder actions', () => {
             const product = shopifyProductFixture()
             const variant = product.variants[0]
             await store.dispatch(
-                actions.addRow(actionName, integrationId, product, variant)
+                actions.addRow(actionName, integrationId, product, variant),
             )
             expect(getActions()).toMatchSnapshot()
         })
@@ -272,7 +272,7 @@ describe('infobarActions.shopify.createOrder actions', () => {
                         order.getIn(['line_items', 0]) as Map<any, any>
                     ).set('quantity', 6),
                     index: 0,
-                })
+                }),
             )
             expect(store.getActions()).toMatchSnapshot()
         })
@@ -281,7 +281,7 @@ describe('infobarActions.shopify.createOrder actions', () => {
                 actions.onLineItemChange(integrationId, {
                     remove: true,
                     index: 0,
-                })
+                }),
             )
             expect(store.getActions()).toMatchSnapshot()
         })
@@ -337,7 +337,7 @@ describe('infobarActions.shopify.createOrder actions', () => {
                     [IntegrationType.Shopify]: {
                         createOrder: initialState.set(
                             'payload',
-                            draftOrderPayload
+                            draftOrderPayload,
                         ),
                     },
                 },
@@ -355,7 +355,7 @@ describe('infobarActions.shopify.createOrder actions', () => {
             ).mockImplementation(
                 (...args: ArgumentsOf<typeof executeAction>) =>
                     (...reduxArgs: [StoreDispatch, () => RootState]) => {
-                        const {executeAction: realImplementation} =
+                        const { executeAction: realImplementation } =
                             jest.requireActual('../../../../infobar/actions')
                         const result = (
                             realImplementation as typeof executeAction
@@ -363,7 +363,7 @@ describe('infobarActions.shopify.createOrder actions', () => {
                         const callback = args[0].callback
                         callback!(response)
                         return result
-                    }
+                    },
             )
 
             mockServer
@@ -380,8 +380,8 @@ describe('infobarActions.shopify.createOrder actions', () => {
                     customerId,
                     orderId,
                     invoicePayload,
-                    onSuccess
-                )
+                    onSuccess,
+                ),
             )
 
             process.nextTick(async () => {
@@ -400,8 +400,8 @@ describe('infobarActions.shopify.createOrder actions', () => {
                     customerId,
                     orderId,
                     invoicePayload,
-                    onSuccess
-                )
+                    onSuccess,
+                ),
             )
 
             process.nextTick(async () => {

@@ -1,10 +1,10 @@
-import {CampaignTriggerMap} from 'pages/convert/campaigns/types/CampaignTriggerMap'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import { CampaignTriggerMap } from 'pages/convert/campaigns/types/CampaignTriggerMap'
+import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 
-import {createTrigger} from './createTrigger'
+import { createTrigger } from './createTrigger'
 
 export const getDefaultTriggers = (
-    isConvertSubscriber: boolean
+    isConvertSubscriber: boolean,
 ): CampaignTriggerMap => {
     const currentUrlTriger = createTrigger(CampaignTriggerType.CurrentUrl)
     const defaultTriggers = {
@@ -13,7 +13,7 @@ export const getDefaultTriggers = (
 
     if (isConvertSubscriber) {
         const businessHourTrigger = createTrigger(
-            CampaignTriggerType.BusinessHours
+            CampaignTriggerType.BusinessHours,
         )
         defaultTriggers[businessHourTrigger.id] = businessHourTrigger
     }

@@ -1,11 +1,12 @@
-import React, {KeyboardEvent, useCallback, useState} from 'react'
-import {Button} from 'reactstrap'
+import React, { KeyboardEvent, useCallback, useState } from 'react'
+
+import { Button } from 'reactstrap'
 
 import CheckBox from 'pages/common/forms/CheckBox'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import ToggleInput from 'pages/common/forms/ToggleInput'
-import {useCampaignFormContext} from 'pages/convert/campaigns/hooks/useCampaignFormContext'
-import {UtmConfiguration} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
+import { useCampaignFormContext } from 'pages/convert/campaigns/hooks/useCampaignFormContext'
+import { UtmConfiguration } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
 
 import css from './AddUtm.less'
 
@@ -15,10 +16,10 @@ export type AddUtmProps = {
 }
 
 const AddUtm = (props: AddUtmProps) => {
-    const {utmConfiguration} = useCampaignFormContext()
+    const { utmConfiguration } = useCampaignFormContext()
     const [save, setSave] = useState(false)
 
-    const {onApply: propsOnApply, onKeyDown: propsOnKeyDown} = props
+    const { onApply: propsOnApply, onKeyDown: propsOnKeyDown } = props
 
     const {
         utmEnabled,

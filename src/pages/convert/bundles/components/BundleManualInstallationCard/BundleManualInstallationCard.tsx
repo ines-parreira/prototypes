@@ -1,9 +1,9 @@
+import React, { useEffect, useState } from 'react'
+
 import classnames from 'classnames'
-import React, {useEffect, useState} from 'react'
 
 import IconButton from 'pages/common/components/button/IconButton'
 import Collapse from 'pages/common/components/Collapse/Collapse'
-
 import ManualInstallationOtherWebsiteTab from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationInstall/GorgiasChatIntegrationManualInstallationTabs/ManualInstallationOtherWebsiteTab'
 import ManualInstallationShopifyWebsiteTab from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationInstall/GorgiasChatIntegrationManualInstallationTabs/ManualInstallationShopifyWebsiteTab'
 
@@ -29,7 +29,7 @@ const BundleManualInstallationCard = ({
 }: Props) => {
     const [isOpen, setIsOpen] = useState(!isConnected || !isConnectedToShopify)
     const [activeTab, setActiveTab] = useState<Tab>(
-        isConnectedToShopify ? Tab.SHOPIFY : Tab.OTHER
+        isConnectedToShopify ? Tab.SHOPIFY : Tab.OTHER,
     )
 
     useEffect(() => {
@@ -45,9 +45,9 @@ const BundleManualInstallationCard = ({
     }
     const tabItems = [
         ...(!isConnected || isConnectedToShopify
-            ? [{id: Tab.SHOPIFY, title: 'Shopify Website'}]
+            ? [{ id: Tab.SHOPIFY, title: 'Shopify Website' }]
             : []),
-        {id: Tab.OTHER, title: 'Any Other Website'},
+        { id: Tab.OTHER, title: 'Any Other Website' },
     ]
 
     return (
@@ -92,7 +92,7 @@ const BundleManualInstallationCard = ({
             <Collapse isOpen={isOpen}>
                 <div className={css.content}>
                     <div className={css.tabs}>
-                        {tabItems.map(({id, title}) => (
+                        {tabItems.map(({ id, title }) => (
                             <div
                                 key={id}
                                 className={classnames(css.tabItem, {

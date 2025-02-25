@@ -1,24 +1,23 @@
-import React, {ChangeEvent, useEffect, useMemo, useState} from 'react'
+import React, { ChangeEvent, useEffect, useMemo, useState } from 'react'
 
-import {getContrastColor} from 'gorgias-design-system/utils'
-import {InputRange} from 'pages/common/forms/input/InputRange'
+import { getContrastColor } from 'gorgias-design-system/utils'
+import { InputRange } from 'pages/common/forms/input/InputRange'
 
-import {AttachmentPosition} from '../../../../types/CampaignAttachment'
-
-import {BaseProductCard} from '../BaseProductCard'
+import { AttachmentPosition } from '../../../../types/CampaignAttachment'
+import { BaseProductCard } from '../BaseProductCard'
 import {
     FeaturedImage,
     ImagePosition,
     VISIBLE_IMAGE_CONTAINER,
 } from '../ImagePosition'
-
-import {getDraggableContainerBounds} from '../ImagePosition/utils'
-import css from './ProductCardEdit.less'
+import { getDraggableContainerBounds } from '../ImagePosition/utils'
 import {
     convertRangeValueToSize,
     convertSizeToRangeValue,
     getMinRangeSize,
 } from './utils'
+
+import css from './ProductCardEdit.less'
 
 type Props = {
     bgColor: string
@@ -64,7 +63,7 @@ export const ProductCardEdit = ({
             backgroundColor: bgColor,
             color: getContrastColor(bgColor),
         }),
-        [bgColor]
+        [bgColor],
     )
 
     const handleDrag = (x: number, y: number) => {
@@ -78,16 +77,16 @@ export const ProductCardEdit = ({
         // Do not let user modify the size past a point from which the image would not be 100% within container
         const converted = convertRangeValueToSize(
             Number(ev.target.value),
-            minRangeSize
+            minRangeSize,
         )
         const adjustedSize = Math.max(minRangeSize, converted)
 
         // Check if by zooming, image would get out of bounds and translate the image towards
         // the other sign of the axis
-        const {left, top} = getDraggableContainerBounds(
+        const { left, top } = getDraggableContainerBounds(
             image,
             VISIBLE_IMAGE_CONTAINER,
-            adjustedSize
+            adjustedSize,
         )
 
         const newX = Math.max(x, left)

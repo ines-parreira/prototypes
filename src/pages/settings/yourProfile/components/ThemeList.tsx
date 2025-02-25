@@ -1,9 +1,9 @@
 import React from 'react'
 
-import {THEME_CONFIGS} from 'core/theme'
-import type {HelpdeskThemeName} from 'core/theme'
+import { THEME_CONFIGS } from 'core/theme'
+import type { HelpdeskThemeName } from 'core/theme'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {PreviewRadioButton} from 'pages/common/components/PreviewRadioButton'
+import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 import css from 'pages/settings/yourProfile/components/ThemeList.less'
 
 type Props = {
@@ -11,7 +11,7 @@ type Props = {
     onChangeTheme: (theme: HelpdeskThemeName) => void
 }
 
-export default function ThemeList({savedTheme, onChangeTheme}: Props) {
+export default function ThemeList({ savedTheme, onChangeTheme }: Props) {
     return (
         <div className={css.themeListWrapper}>
             {THEME_CONFIGS.map((themeConfig) => {

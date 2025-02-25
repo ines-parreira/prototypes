@@ -1,11 +1,12 @@
-import {render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
 
-import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { Provider } from 'react-redux'
+
+import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
 import DEPRECATED_HelpCenterStatsLanguageFilter from 'pages/stats/common/filters/HelpCenterStatsLanguageFilter/DEPRECATED_HelpCenterStatsLanguageFilter'
-import {mockStore} from 'utils/testing'
+import { mockStore } from 'utils/testing'
 
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales', () => ({
     useSupportedLocales: jest.fn(),
@@ -16,7 +17,7 @@ const mockUseSupportedLocales = jest.mocked(useSupportedLocales)
 const renderComponent = (
     props: Partial<
         ComponentProps<typeof DEPRECATED_HelpCenterStatsLanguageFilter>
-    >
+    >,
 ) => {
     render(
         <Provider store={mockStore({} as any)}>
@@ -26,7 +27,7 @@ const renderComponent = (
                 onFilterChange={jest.fn()}
                 {...props}
             />
-        </Provider>
+        </Provider>,
     )
 }
 
@@ -36,9 +37,9 @@ describe('<HelpCenterStatsLanguageFilter />', () => {
     })
     it('should render component', () => {
         mockUseSupportedLocales.mockReturnValue([
-            {code: 'en-US', name: 'English'},
+            { code: 'en-US', name: 'English' },
         ])
-        renderComponent({supportedLocales: ['en-US']})
+        renderComponent({ supportedLocales: ['en-US'] })
 
         expect(screen.getByText('English')).toBeInTheDocument()
     })
@@ -46,8 +47,8 @@ describe('<HelpCenterStatsLanguageFilter />', () => {
     it('should call change filter function with correct params', () => {
         const mockOnFilterChange = jest.fn()
         mockUseSupportedLocales.mockReturnValue([
-            {code: 'en-US', name: 'English'},
-            {code: 'fr-FR', name: 'French'},
+            { code: 'en-US', name: 'English' },
+            { code: 'fr-FR', name: 'French' },
         ])
 
         renderComponent({

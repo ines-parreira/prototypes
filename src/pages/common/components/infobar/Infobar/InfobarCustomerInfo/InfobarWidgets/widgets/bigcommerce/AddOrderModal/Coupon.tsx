@@ -1,19 +1,21 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
+import React, { useReducer, useRef, useState } from 'react'
+
 import classnames from 'classnames'
-import React, {useReducer, useRef, useState} from 'react'
+
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import {
     BigCommerceCart,
     BigCommerceCouponError,
     BigCommerceCouponErrorMessage,
-    BigCommerceGeneralErrorMessage,
     BigCommerceGeneralError,
+    BigCommerceGeneralErrorMessage,
 } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import InputField from 'pages/common/forms/input/InputField'
 
-import {PopoverContainer} from './components/popover-container/PopoverContainer'
+import { PopoverContainer } from './components/popover-container/PopoverContainer'
 
 import css from './OrderTotals.less'
 
@@ -24,12 +26,12 @@ type Props = {
     onRemoveCoupon: () => Promise<void>
 }
 
-const initialState = {code: '', error: '', isLoading: false}
+const initialState = { code: '', error: '', isLoading: false }
 
 type ACTION_TYPE =
-    | {type: 'SET_CODE'; code: string}
-    | {type: 'SET_ERROR'; error: string}
-    | {type: 'SET_LOADING'; loading: boolean}
+    | { type: 'SET_CODE'; code: string }
+    | { type: 'SET_ERROR'; error: string }
+    | { type: 'SET_LOADING'; loading: boolean }
 
 const reducer = (state: typeof initialState, action: ACTION_TYPE) => {
     switch (action.type) {
@@ -39,11 +41,11 @@ const reducer = (state: typeof initialState, action: ACTION_TYPE) => {
                 return state
             }
 
-            return {...state, code: action.code, error: ''}
+            return { ...state, code: action.code, error: '' }
         case 'SET_ERROR':
-            return {...state, error: action.error, isLoading: false}
+            return { ...state, error: action.error, isLoading: false }
         case 'SET_LOADING':
-            return {...state, isLoading: action.loading}
+            return { ...state, isLoading: action.loading }
         default:
             throw new Error()
     }
@@ -68,12 +70,12 @@ export function Coupon({
     })
 
     const onClose = () => {
-        dispatch({type: 'SET_ERROR', error: ''})
+        dispatch({ type: 'SET_ERROR', error: '' })
         setIsPopoverOpen(false)
     }
 
     const onApply = async () => {
-        dispatch({type: 'SET_LOADING', loading: true})
+        dispatch({ type: 'SET_LOADING', loading: true })
 
         try {
             await onUpdateCoupon(state.code)
@@ -87,23 +89,23 @@ export function Coupon({
                 onClose()
             } else {
                 error instanceof BigCommerceCouponError
-                    ? dispatch({type: 'SET_ERROR', error: error.message})
+                    ? dispatch({ type: 'SET_ERROR', error: error.message })
                     : dispatch({
                           type: 'SET_ERROR',
                           error: BigCommerceCouponErrorMessage.defaultCouponError,
                       })
             }
         } finally {
-            dispatch({type: 'SET_LOADING', loading: false})
+            dispatch({ type: 'SET_LOADING', loading: false })
         }
     }
 
     const onRemove = async () => {
-        dispatch({type: 'SET_LOADING', loading: true})
+        dispatch({ type: 'SET_LOADING', loading: true })
 
         try {
             await onRemoveCoupon()
-            dispatch({type: 'SET_CODE', code: ''})
+            dispatch({ type: 'SET_CODE', code: '' })
             onClose()
         } catch (error) {
             if (
@@ -114,20 +116,20 @@ export function Coupon({
                 onClose()
             } else {
                 error instanceof BigCommerceCouponError
-                    ? dispatch({type: 'SET_ERROR', error: error.message})
+                    ? dispatch({ type: 'SET_ERROR', error: error.message })
                     : dispatch({
                           type: 'SET_ERROR',
                           error: BigCommerceCouponErrorMessage.defaultCouponError,
                       })
             }
         } finally {
-            dispatch({type: 'SET_LOADING', loading: false})
+            dispatch({ type: 'SET_LOADING', loading: false })
         }
     }
 
     const onToggle = () => {
         if (isPopoverOpen) {
-            dispatch({type: 'SET_ERROR', error: ''})
+            dispatch({ type: 'SET_ERROR', error: '' })
         }
         setIsPopoverOpen((isDropdownOpen) => !isDropdownOpen)
     }
@@ -178,7 +180,9 @@ export function Coupon({
                         className={css.couponContainer}
                         label="Coupon code"
                         value={state.code}
-                        onChange={(code) => dispatch({type: 'SET_CODE', code})}
+                        onChange={(code) =>
+                            dispatch({ type: 'SET_CODE', code })
+                        }
                         error={state.error}
                         id="coupon-code"
                     />

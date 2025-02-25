@@ -1,5 +1,6 @@
-import {produce} from 'immer'
 import React from 'react'
+
+import { produce } from 'immer'
 
 import {
     ConditionSchema,
@@ -7,7 +8,7 @@ import {
     ExistsSchema,
     NumberSchema,
 } from 'pages/automate/workflows/models/conditions.types'
-import {WorkflowVariableFormat} from 'pages/automate/workflows/models/variables.types'
+import { WorkflowVariableFormat } from 'pages/automate/workflows/models/variables.types'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 
 import css from '../ConditionsNodeEditor.less'
@@ -23,7 +24,7 @@ interface Props {
 
 export const getDisplayValue = (
     value: number,
-    format: WorkflowVariableFormat | undefined
+    format: WorkflowVariableFormat | undefined,
 ) => {
     switch (format) {
         case 'currency':
@@ -35,7 +36,7 @@ export const getDisplayValue = (
 
 const getValueFromDisplayValue = (
     displayValue: number,
-    format: WorkflowVariableFormat | undefined
+    format: WorkflowVariableFormat | undefined,
 ) => {
     switch (format) {
         case 'currency':
@@ -80,9 +81,9 @@ export const NumberConditionType = ({
 
                         schema[1] = getValueFromDisplayValue(
                             nextValue ?? 0,
-                            format
+                            format,
                         )
-                    })
+                    }),
                 )
             }}
             isDisabled={isDisabled}

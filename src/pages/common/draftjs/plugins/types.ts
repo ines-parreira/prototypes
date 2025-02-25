@@ -1,10 +1,11 @@
-import {EditorState, ContentState, ContentBlock} from 'draft-js'
-import {ReactNode, ComponentType, KeyboardEvent} from 'react'
+import { ComponentType, KeyboardEvent, ReactNode } from 'react'
 
-import {UploadType} from 'common/types'
+import { ContentBlock, ContentState, EditorState } from 'draft-js'
 
-import {notify} from '../../../../state/notifications/actions'
-import {ConnectedAction} from '../../../../state/types'
+import { UploadType } from 'common/types'
+
+import { notify } from '../../../../state/notifications/actions'
+import { ConnectedAction } from '../../../../state/types'
 
 export type PluginMethods = {
     getEditorState: () => EditorState
@@ -36,7 +37,7 @@ export type Decorator = {
     strategy: (
         contentBlock: ContentBlock,
         decoratorStrategyCallback: DecoratorStrategyCallback,
-        contentState: ContentState
+        contentState: ContentState,
     ) => void
     component: ComponentType<DecoratorComponentProps>
 }
@@ -47,20 +48,20 @@ export type Plugin = {
     decorators?: Decorator[]
     blockRendererFn?: (
         contentBlock: ContentBlock,
-        pluginMethods: PluginMethods
+        pluginMethods: PluginMethods,
     ) => Maybe<Record<string, unknown>>
     keyBindingFn?: (
         event: KeyboardEvent,
-        pluginMethods: PluginMethods
+        pluginMethods: PluginMethods,
     ) => Maybe<string>
     handleKeyCommand?: (
         key: string,
         editorState: EditorState,
-        pluginMethods: PluginMethods
+        pluginMethods: PluginMethods,
     ) => string
     onChange?: (
         editorState: EditorState,
-        pluginMethods: PluginMethods
+        pluginMethods: PluginMethods,
     ) => EditorState
     onTab?: (event: KeyboardEvent, plugin: PluginMethods) => void
     onRightArrow?: (event: KeyboardEvent, plugin: PluginMethods) => void

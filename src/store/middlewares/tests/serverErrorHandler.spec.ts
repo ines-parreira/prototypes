@@ -1,10 +1,10 @@
-import {waitFor} from '@testing-library/react'
-import {ldClientMock} from 'jest-launchdarkly-mock'
+import { waitFor } from '@testing-library/react'
+import { ldClientMock } from 'jest-launchdarkly-mock'
 import _get from 'lodash/get'
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {getLDClient} from 'utils/launchDarkly'
+import { getLDClient } from 'utils/launchDarkly'
 
 import serverErrorHandler from '../serverErrorHandler'
 
@@ -129,9 +129,9 @@ describe('middlewares', () => {
                 _get(store.getActions(), [0, 'payload']),
                 {
                     message: removeWhitespace(
-                        _get(store.getActions(), [0, 'payload', 'message'])
+                        _get(store.getActions(), [0, 'payload', 'message']),
                     ),
-                }
+                },
             )
 
             expect(payload).toMatchObject({

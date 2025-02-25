@@ -1,17 +1,16 @@
+import { Call, Device, TwilioError } from '@twilio/voice-sdk'
 import crypto from 'crypto'
+import { pick } from 'lodash'
 
-import {Call, Device, TwilioError} from '@twilio/voice-sdk'
-import {pick} from 'lodash'
-
-import {appQueryClient} from 'api/queryClient'
+import { appQueryClient } from 'api/queryClient'
 import {
-    MAX_DEVICE_RECONNECT_ATTEMPTS,
     DEFAULT_ERROR_MESSAGE,
+    MAX_DEVICE_RECONNECT_ATTEMPTS,
     TwilioErrorCode,
     TwilioSocketEvent,
     TwilioSocketEventType,
-    VoiceAppErrorCode,
     VoiceAppError,
+    VoiceAppErrorCode,
 } from 'business/twilio'
 import {
     acceptCall,
@@ -20,19 +19,18 @@ import {
     disconnectCall,
     getToken,
 } from 'hooks/integrations/phone/api'
-import {UseListVoiceCalls, voiceCallsKeys} from 'models/voiceCall/queries'
-import {ListVoiceCallsParams} from 'models/voiceCall/types'
-import {CALL_FAILED_MICROPHONE_PERMISSION_ERROR} from 'pages/common/components/PhoneIntegrationBar/constants'
-import {VoiceDeviceActions} from 'pages/integrations/integration/components/voice/types'
-import {ActivityEvents, logActivityEvent} from 'services/activityTracker'
+import { UseListVoiceCalls, voiceCallsKeys } from 'models/voiceCall/queries'
+import { ListVoiceCallsParams } from 'models/voiceCall/types'
+import { CALL_FAILED_MICROPHONE_PERMISSION_ERROR } from 'pages/common/components/PhoneIntegrationBar/constants'
+import { VoiceDeviceActions } from 'pages/integrations/integration/components/voice/types'
+import { ActivityEvents, logActivityEvent } from 'services/activityTracker'
 import socketManager from 'services/socketManager/socketManager'
-import {SocketEventType} from 'services/socketManager/types'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {StoreDispatch} from 'state/types'
-
-import {isProduction} from 'utils/environment'
-import {reportError} from 'utils/errors'
+import { SocketEventType } from 'services/socketManager/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { StoreDispatch } from 'state/types'
+import { isProduction } from 'utils/environment'
+import { reportError } from 'utils/errors'
 
 import * as utils from './utils'
 
@@ -50,7 +48,7 @@ export async function refreshToken(device: Device) {
 export async function connectDevice(
     dispatch: StoreDispatch,
     reconnectAttempts: number,
-    actions: VoiceDeviceActions
+    actions: VoiceDeviceActions,
 ) {
     actions.setIsConnecting(true)
     await utils.sleep(reconnectAttempts * 5000)
@@ -68,7 +66,7 @@ export async function connectDevice(
     const canReconnect = reconnectAttempts < MAX_DEVICE_RECONNECT_ATTEMPTS
     if (!canReconnect) {
         const error = new VoiceAppError(
-            VoiceAppErrorCode.TooManyReconnectionAttepts
+            VoiceAppErrorCode.TooManyReconnectionAttepts,
         )
         actions.setError(error)
         actions.setIsConnecting(false)
@@ -81,7 +79,7 @@ export async function connectDevice(
 
         if (!token) {
             const error = new VoiceAppError(
-                VoiceAppErrorCode.MissingOrInvalidToken
+                VoiceAppErrorCode.MissingOrInvalidToken,
             )
             actions.setError(error)
             actions.setIsConnecting(false)
@@ -113,7 +111,7 @@ export const createDevice = (token: string): Device => {
 export async function registerDevice(
     device: Device,
     dispatch: StoreDispatch,
-    actions: VoiceDeviceActions
+    actions: VoiceDeviceActions,
 ) {
     await device.register()
     utils.handleDeviceEvents(device, dispatch, actions)
@@ -122,7 +120,7 @@ export async function registerDevice(
 export function handleDeviceEvents(
     device: Device,
     dispatch: StoreDispatch,
-    actions: VoiceDeviceActions
+    actions: VoiceDeviceActions,
 ) {
     device.on(Device.EventName.Registered, () => {
         utils.sendTwilioSocketEvent({
@@ -177,7 +175,7 @@ export function handleDeviceEvents(
         if (device.isBusy) {
             reportError(
                 new Error('Incoming call for agent already in a call'),
-                {extra: {call: call.toString()}}
+                { extra: { call: call.toString() } },
             )
 
             call.reject()
@@ -202,7 +200,7 @@ export function handleDeviceEvents(
 export function handleCallEvents(
     call: Call,
     dispatch: StoreDispatch,
-    actions: VoiceDeviceActions
+    actions: VoiceDeviceActions,
 ) {
     call.on('accept', () => {
         utils.sendTwilioSocketEvent({
@@ -321,7 +319,7 @@ export function logCallEnd(call: Call) {
             .getQueriesData<UseListVoiceCalls>(voiceCallsKeys.lists())
             .find(([, data]) => {
                 return !!data?.data.find(
-                    (call) => call.external_id === phoneCallId
+                    (call) => call.external_id === phoneCallId,
                 )
             })?.[0]
 
@@ -344,14 +342,14 @@ export function handleAcceptedCallEvent(call: Call, dispatch: StoreDispatch) {
             notify({
                 status: NotificationStatus.Info,
                 message: 'Another agent already accepted the call',
-            })
+            }),
         )
 
         void cancelCall()
     } else {
         void acceptCall(call)
         const ticketId = parseInt(
-            call.customParameters.get('ticket_id') as string
+            call.customParameters.get('ticket_id') as string,
         )
         logActivityEvent(ActivityEvents.UserStartedPhoneCall, {
             entityId: ticketId,
@@ -362,7 +360,7 @@ export function handleAcceptedCallEvent(call: Call, dispatch: StoreDispatch) {
 
 export async function disconnectDevice(
     device: Device,
-    actions: VoiceDeviceActions
+    actions: VoiceDeviceActions,
 ) {
     try {
         if (

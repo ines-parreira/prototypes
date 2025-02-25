@@ -1,29 +1,30 @@
-import {fireEvent, render} from '@testing-library/react'
 import React from 'react'
 
-import {ArticleLanguageSelect, OptionItem} from '../ArticleLanguageSelect'
+import { fireEvent, render } from '@testing-library/react'
+
+import { ArticleLanguageSelect, OptionItem } from '../ArticleLanguageSelect'
 
 const list: OptionItem[] = [
-    {value: 'en-US', label: 'English', text: 'English', canBeDeleted: false},
-    {value: 'fr-FR', label: 'French', text: 'French'},
+    { value: 'en-US', label: 'English', text: 'English', canBeDeleted: false },
+    { value: 'fr-FR', label: 'French', text: 'French' },
     {
         value: 'de-DE',
         label: 'German',
         text: 'German',
         isComplete: true,
     },
-    {value: 'es-ES', label: 'Spanish', text: 'Spanish'},
+    { value: 'es-ES', label: 'Spanish', text: 'Spanish' },
 ]
 
 describe('<ArticleLanguageSelect>', () => {
     it('opens the dropdown options', () => {
-        const {getByTestId, getByRole} = render(
+        const { getByTestId, getByRole } = render(
             <ArticleLanguageSelect
                 selected="en-US"
                 list={list}
                 onSelect={() => null}
                 onActionClick={() => null}
-            />
+            />,
         )
 
         fireEvent.click(getByRole('button'))
@@ -32,13 +33,13 @@ describe('<ArticleLanguageSelect>', () => {
     })
 
     it('renders all the options', () => {
-        const {getByRole, getByTestId} = render(
+        const { getByRole, getByTestId } = render(
             <ArticleLanguageSelect
                 selected="en-US"
                 list={list}
                 onSelect={() => null}
                 onActionClick={() => null}
-            />
+            />,
         )
 
         fireEvent.click(getByRole('button'))
@@ -51,13 +52,13 @@ describe('<ArticleLanguageSelect>', () => {
     it('calls the onSelect callback with selected value', () => {
         const selectFn = jest.fn()
 
-        const {getByTestId, getByRole} = render(
+        const { getByTestId, getByRole } = render(
             <ArticleLanguageSelect
                 selected="en-US"
                 list={list}
                 onSelect={selectFn}
                 onActionClick={() => null}
-            />
+            />,
         )
         fireEvent.click(getByRole('button'))
 
@@ -76,13 +77,13 @@ describe('<ArticleLanguageSelect>', () => {
                 text: 'English',
             },
         ]
-        const {getByRole, getByText} = render(
+        const { getByRole, getByText } = render(
             <ArticleLanguageSelect
                 selected="en-US"
                 list={mock}
                 onSelect={() => null}
                 onActionClick={() => null}
-            />
+            />,
         )
 
         fireEvent.click(getByRole('button'))
@@ -100,13 +101,13 @@ describe('<ArticleLanguageSelect>', () => {
                 canBeDeleted: true,
             },
         ]
-        const {getByRole, getByText} = render(
+        const { getByRole, getByText } = render(
             <ArticleLanguageSelect
                 selected="en-US"
                 list={mock}
                 onSelect={() => null}
                 onActionClick={() => null}
-            />
+            />,
         )
 
         fireEvent.click(getByRole('button'))
@@ -125,13 +126,13 @@ describe('<ArticleLanguageSelect>', () => {
                 isComplete: true,
             },
         ]
-        const {getByRole, getByText, queryByText} = render(
+        const { getByRole, getByText, queryByText } = render(
             <ArticleLanguageSelect
                 selected="en-US"
                 list={mock}
                 onSelect={() => null}
                 onActionClick={() => null}
-            />
+            />,
         )
 
         fireEvent.click(getByRole('button'))

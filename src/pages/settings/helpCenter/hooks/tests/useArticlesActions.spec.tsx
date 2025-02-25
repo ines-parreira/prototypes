@@ -1,11 +1,12 @@
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
-import {Provider} from 'react-redux'
-import {useParams} from 'react-router-dom'
+
+import { renderHook } from '@testing-library/react-hooks'
+import { Provider } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {CreateArticleTranslationDto} from 'models/helpCenter/types'
+import { CreateArticleTranslationDto } from 'models/helpCenter/types'
 import {
     getArticlesResponseFixture,
     getSingleArticleEnglish,
@@ -18,12 +19,12 @@ import {
     updateArticle,
     updateArticlesOrder,
 } from 'state/entities/helpCenter/articles'
-import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
-import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
-import {RootState, StoreDispatch} from 'state/types'
-import {initialState as uiState} from 'state/ui/helpCenter/reducer'
+import { initialState as articlesState } from 'state/entities/helpCenter/articles/reducer'
+import { initialState as categoriesState } from 'state/entities/helpCenter/categories/reducer'
+import { RootState, StoreDispatch } from 'state/types'
+import { initialState as uiState } from 'state/ui/helpCenter/reducer'
 
-import {useArticlesActions} from '../useArticlesActions'
+import { useArticlesActions } from '../useArticlesActions'
 
 const articles = getArticlesResponseFixture.data
 const uncategoriedArticle = articles[articles.length - 1]
@@ -34,14 +35,14 @@ jest.mock('react-router')
 
 const mockCreateArticle = jest.fn().mockImplementation(
     (
-        {help_center_id}: {help_center_id: number},
+        { help_center_id }: { help_center_id: number },
         {
             category_id,
             translation,
         }: {
             category_id: number | null
             translation: CreateArticleTranslationDto
-        }
+        },
     ) =>
         Promise.resolve({
             data: {
@@ -60,14 +61,14 @@ const mockCreateArticle = jest.fn().mockImplementation(
                     deleted_datetime: null,
                 },
             },
-        })
+        }),
 )
 const mockUpdateArticle = jest
     .fn()
     .mockImplementation(
         (
-            {id, help_center_id}: {id: number; help_center_id: number},
-            {category_id}: {category_id: number | null}
+            { id, help_center_id }: { id: number; help_center_id: number },
+            { category_id }: { category_id: number | null },
         ) =>
             Promise.resolve({
                 data: {
@@ -94,7 +95,7 @@ const mockUpdateArticle = jest
                         deleted_datetime: null,
                     },
                 },
-            })
+            }),
     )
 const mockCreateArticleTranslation = jest
     .fn()
@@ -142,10 +143,10 @@ const mockedListArticles = jest.fn().mockResolvedValue({
 const mockedListCategoryArticles = jest.fn()
 const mockGetCategoryArticlesPositions = jest
     .fn()
-    .mockResolvedValue({data: [1]})
+    .mockResolvedValue({ data: [1] })
 const mockGetUncategorizedArticlesPositions = jest
     .fn()
-    .mockResolvedValue({data: [uncategoriedArticle.id]})
+    .mockResolvedValue({ data: [uncategoriedArticle.id] })
 const mockListArticleTranslations = jest.fn().mockResolvedValue({
     data: {
         data: [
@@ -230,7 +231,7 @@ jest.mock('state/entities/helpCenter/articles', () => ({
         payload: {},
     }),
     getArticlesById: jest.fn().mockReturnValue({
-        '1': {...mockGetSingleArticleEnglish, category_id: 1},
+        '1': { ...mockGetSingleArticleEnglish, category_id: 1 },
     }),
 }))
 
@@ -246,7 +247,7 @@ const defaultState: Partial<RootState> = {
             categories: categoriesState,
         },
     } as any,
-    ui: {helpCenter: uiState} as any,
+    ui: { helpCenter: uiState } as any,
 }
 
 // TODO: This should be extracted in a tests utils folder
@@ -259,11 +260,11 @@ const dependencyWrapper: React.ComponentType<any> = ({
 describe('useArticlesActions()', () => {
     describe('fetchArticles()', () => {
         it('dispatches saveArticles action for uncategorized articles', async () => {
-            const {result} = renderHook(useArticlesActions, {
+            const { result } = renderHook(useArticlesActions, {
                 wrapper: dependencyWrapper,
             })
 
-            await result.current.fetchArticles(null, {page: 1, per_page: 20})
+            await result.current.fetchArticles(null, { page: 1, per_page: 20 })
 
             expect(saveArticles).toHaveBeenCalledWith([
                 {
@@ -276,7 +277,7 @@ describe('useArticlesActions()', () => {
 
     describe('createArticle()', () => {
         it('dispatches saveArticles action for uncategorized article', async () => {
-            const {result} = renderHook(useArticlesActions, {
+            const { result } = renderHook(useArticlesActions, {
                 wrapper: dependencyWrapper,
             })
 
@@ -294,7 +295,7 @@ describe('useArticlesActions()', () => {
                     category_id: null,
                     visibility_status: 'PUBLIC',
                 },
-                null
+                null,
             )
 
             expect(mockFetchCategoryArticleCount).toHaveBeenCalled()
@@ -302,7 +303,7 @@ describe('useArticlesActions()', () => {
         })
 
         it('dispatches saveArticles action for article in category', async () => {
-            const {result} = renderHook(useArticlesActions, {
+            const { result } = renderHook(useArticlesActions, {
                 wrapper: dependencyWrapper,
             })
 
@@ -320,7 +321,7 @@ describe('useArticlesActions()', () => {
                     category_id: 1,
                     visibility_status: 'PUBLIC',
                 },
-                null
+                null,
             )
 
             expect(mockFetchCategoryArticleCount).toHaveBeenCalled()
@@ -330,11 +331,11 @@ describe('useArticlesActions()', () => {
 
     describe('updateArticle()', () => {
         it('dispatches saveArticles and pushArticleSupportedLocales actions for article in category', async () => {
-            const {result} = renderHook(useArticlesActions, {
+            const { result } = renderHook(useArticlesActions, {
                 wrapper: dependencyWrapper,
             })
 
-            const {available_locales} = await result.current.updateArticle(
+            const { available_locales } = await result.current.updateArticle(
                 'fr-FR',
                 {
                     id: 1,
@@ -371,7 +372,7 @@ describe('useArticlesActions()', () => {
                         up: 0,
                         down: 0,
                     },
-                }
+                },
             )
 
             expect(mockFetchCategoryArticleCount).toHaveBeenCalled()
@@ -384,11 +385,11 @@ describe('useArticlesActions()', () => {
         })
 
         it('does not update translation in list if its locale is not the same from the default help center locale', async () => {
-            const {result} = renderHook(useArticlesActions, {
+            const { result } = renderHook(useArticlesActions, {
                 wrapper: dependencyWrapper,
             })
 
-            const {available_locales} = await result.current.updateArticle(
+            const { available_locales } = await result.current.updateArticle(
                 'en-US',
                 {
                     id: 1,
@@ -425,7 +426,7 @@ describe('useArticlesActions()', () => {
                         up: 0,
                         down: 0,
                     },
-                }
+                },
             )
 
             expect(updateArticle).toHaveBeenCalledTimes(0)
@@ -439,7 +440,7 @@ describe('useArticlesActions()', () => {
 
     describe('deleteArticle()', () => {
         it('dispatches deleteArticle action', async () => {
-            const {result} = renderHook(useArticlesActions, {
+            const { result } = renderHook(useArticlesActions, {
                 wrapper: dependencyWrapper,
             })
 
@@ -452,26 +453,26 @@ describe('useArticlesActions()', () => {
 
     describe('updateArticlesPositions()', () => {
         it('dispatches updateArticlesOrder action for article in category', async () => {
-            const {result} = renderHook(useArticlesActions, {
+            const { result } = renderHook(useArticlesActions, {
                 wrapper: dependencyWrapper,
             })
 
             await result.current.updateArticlesPositions(
                 [getSingleArticleEnglish],
-                1
+                1,
             )
 
             expect(updateArticlesOrder).toHaveBeenCalled()
         })
 
         it('dispatches updateArticlesOrder action for uncategorized article', async () => {
-            const {result} = renderHook(useArticlesActions, {
+            const { result } = renderHook(useArticlesActions, {
                 wrapper: dependencyWrapper,
             })
 
             await result.current.updateArticlesPositions(
                 [getSingleArticleEnglish],
-                null
+                null,
             )
 
             expect(updateArticlesOrder).toHaveBeenCalled()
@@ -480,7 +481,7 @@ describe('useArticlesActions()', () => {
 
     describe('deleteArticleTranslation()', () => {
         it('dispatches the removeLocaleFromArticle action', async () => {
-            const {result} = renderHook(useArticlesActions, {
+            const { result } = renderHook(useArticlesActions, {
                 wrapper: dependencyWrapper,
             })
 
@@ -492,7 +493,7 @@ describe('useArticlesActions()', () => {
 
     describe('cloneArticle()', () => {
         it('calls listArticleTranslations to get all the translations', async () => {
-            const {result} = renderHook(useArticlesActions, {
+            const { result } = renderHook(useArticlesActions, {
                 wrapper: dependencyWrapper,
             })
 
@@ -503,7 +504,7 @@ describe('useArticlesActions()', () => {
         })
 
         it('calls createArticle to create the article', async () => {
-            const {result} = renderHook(useArticlesActions, {
+            const { result } = renderHook(useArticlesActions, {
                 wrapper: dependencyWrapper,
             })
 
@@ -513,7 +514,7 @@ describe('useArticlesActions()', () => {
         })
 
         it('calls createArticleTranslation to append all the translations', async () => {
-            const {result} = renderHook(useArticlesActions, {
+            const { result } = renderHook(useArticlesActions, {
                 wrapper: dependencyWrapper,
             })
 

@@ -1,14 +1,15 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
 import IconInput from 'pages/common/forms/input/IconInput'
-import {KpiIcon} from 'pages/stats/common/icons/KpiIcon'
+import { KpiIcon } from 'pages/stats/common/icons/KpiIcon'
 import css from 'pages/stats/custom-reports/CustomReportsModal/ChartIcon.less'
-import {ChartType} from 'pages/stats/custom-reports/types'
+import { ChartType } from 'pages/stats/custom-reports/types'
 
 export const CHARTS_MODAL_ICONS: Record<
     ChartType,
-    {name: string; tooltip: string}
+    { name: string; tooltip: string }
 > = {
     [ChartType.Card]: {
         name: 'KPI',
@@ -25,11 +26,11 @@ export const CHARTS_MODAL_ICONS: Record<
 }
 
 type Props = {
-    icon: {name: string; tooltip: string}
+    icon: { name: string; tooltip: string }
     id: string
 }
 
-export const ChartIcon = ({icon, id}: Props) => {
+export const ChartIcon = ({ icon, id }: Props) => {
     return (
         <>
             <Tooltip target={id}>{icon.tooltip}</Tooltip>

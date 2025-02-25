@@ -1,4 +1,4 @@
-import {getTrackingUrl} from '../delivery'
+import { getTrackingUrl } from '../delivery'
 
 describe('getTrackingUrl()', () => {
     const handledCarriers = ['usps', 'ups', 'fedex', 'canada_post', 'dhl']

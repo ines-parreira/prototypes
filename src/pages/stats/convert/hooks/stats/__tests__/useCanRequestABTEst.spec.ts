@@ -1,11 +1,11 @@
-import {UseQueryResult} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
+import { UseQueryResult } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {usePostReporting} from 'models/reporting/queries'
-import {CampaignOrderEventsMeasure} from 'pages/stats/convert/clients/constants'
-import {useCanRequestABTest} from 'pages/stats/convert/hooks/stats/useCanRequestABTest'
-import {getMetricFromCubeData} from 'pages/stats/convert/services/CampaignMetricsHelper'
-import {assumeMock} from 'utils/testing'
+import { usePostReporting } from 'models/reporting/queries'
+import { CampaignOrderEventsMeasure } from 'pages/stats/convert/clients/constants'
+import { useCanRequestABTest } from 'pages/stats/convert/hooks/stats/useCanRequestABTest'
+import { getMetricFromCubeData } from 'pages/stats/convert/services/CampaignMetricsHelper'
+import { assumeMock } from 'utils/testing'
 
 jest.useFakeTimers().setSystemTime(new Date('2024-04-08'))
 jest.mock('models/reporting/queries')
@@ -36,7 +36,7 @@ describe('useCanRequestABTEst', () => {
             isFetching: true,
         })
 
-        const {result} = renderHook(() => useCanRequestABTest(...hookArgs))
+        const { result } = renderHook(() => useCanRequestABTest(...hookArgs))
 
         expect(result.current.isFetching).toBe(true)
     })
@@ -47,7 +47,7 @@ describe('useCanRequestABTEst', () => {
             isError: true,
         } as UseQueryResult)
 
-        const {result} = renderHook(() => useCanRequestABTest(...hookArgs))
+        const { result } = renderHook(() => useCanRequestABTest(...hookArgs))
 
         expect(result.current.isError).toBe(true)
     })
@@ -59,14 +59,14 @@ describe('useCanRequestABTEst', () => {
             isFetching: true,
         } as UseQueryResult)
 
-        const {result} = renderHook(() => useCanRequestABTest(...hookArgs))
+        const { result } = renderHook(() => useCanRequestABTest(...hookArgs))
 
         expect(usePostReportingMock.mock.calls).toMatchSnapshot()
         expect(usePostReportingMock).toHaveBeenCalledWith(
             expect.anything(),
             expect.objectContaining({
                 select: getMetricFromCubeData,
-            })
+            }),
         )
         expect(result.current).toMatchSnapshot()
     })

@@ -1,20 +1,19 @@
-import {fromJS, Map} from 'immutable'
+import { fromJS, Map } from 'immutable'
 
-import {GorgiasAction} from '../types'
-
+import { GorgiasAction } from '../types'
 import {
-    UPSERT_MACRO,
-    UPSERT_MACROS,
     DELETE_MACRO,
     MACRO_PARAMS_UPDATED,
+    UPSERT_MACRO,
+    UPSERT_MACROS,
 } from './constants'
-import type {State, Macro} from './types'
+import type { Macro, State } from './types'
 
 export default function reducer(
     state: State = fromJS({}),
-    action: GorgiasAction
+    action: GorgiasAction,
 ): State {
-    const {type, payload} = action as {type: string; payload: Map<any, any>}
+    const { type, payload } = action as { type: string; payload: Map<any, any> }
     switch (type) {
         case UPSERT_MACRO:
             return state.setIn(['items', payload.get('id')], payload)

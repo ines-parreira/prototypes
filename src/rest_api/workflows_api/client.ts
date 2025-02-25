@@ -1,11 +1,10 @@
 import memoize from 'memoize-one'
-import OpenAPIClientAxios, {Document} from 'openapi-client-axios'
+import OpenAPIClientAxios, { Document } from 'openapi-client-axios'
 
-import {isProduction, isStaging} from 'utils/environment'
-
+import { isProduction, isStaging } from 'utils/environment'
 import gorgiasAppsAuthInterceptor from 'utils/gorgiasAppsAuth'
 
-import {Client} from './client.generated'
+import { Client } from './client.generated'
 import OpenAPIDoc from './wf-api.openapi.json'
 
 function getWfApiBaseURL(): string {
@@ -29,7 +28,7 @@ async function buildGorgiasWfApiClient() {
 
     const api = new OpenAPIClientAxios({
         definition: OpenAPIDoc as unknown as Document,
-        withServer: {url: getWfApiBaseURL()},
+        withServer: { url: getWfApiBaseURL() },
     })
     apiClient = await api.init<Client>()
     apiClient.interceptors.request.use(gorgiasAppsAuthInterceptor)

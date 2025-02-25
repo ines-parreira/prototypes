@@ -1,9 +1,9 @@
-import {IntegrationConfig} from 'config'
-import {AppDetail, PricingPlan} from 'models/integration/types/app'
-import {ProductDetail} from 'pages/common/components/ProductDetail/types'
+import { IntegrationConfig } from 'config'
+import { AppDetail, PricingPlan } from 'models/integration/types/app'
+import { ProductDetail } from 'pages/common/components/ProductDetail/types'
 
 export function mapAppToDetail(
-    config: AppDetail | IntegrationConfig
+    config: AppDetail | IntegrationConfig,
 ): ProductDetail {
     return {
         ...config,

@@ -1,7 +1,7 @@
-import {SetUpYourEmailTask} from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/SetUpYourEmail.task'
+import { SetUpYourEmailTask } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/SetUpYourEmail.task'
 
-import {EmailIntegrationsDataFixture} from '../../tests/EmailIntegrationsData.fixture'
-import {buildRuleEngineData, buildRuleEngineRoutes} from './utils'
+import { EmailIntegrationsDataFixture } from '../../tests/EmailIntegrationsData.fixture'
+import { buildRuleEngineData, buildRuleEngineRoutes } from './utils'
 
 describe('SetUpYourEmailTask', () => {
     it('should display the task if only email integration is default', () => {
@@ -15,7 +15,7 @@ describe('SetUpYourEmailTask', () => {
             buildRuleEngineData({
                 emailIntegrations,
             }),
-            buildRuleEngineRoutes()
+            buildRuleEngineRoutes(),
         )
 
         expect(task.display).toBe(true)
@@ -32,7 +32,7 @@ describe('SetUpYourEmailTask', () => {
             buildRuleEngineData({
                 emailIntegrations,
             }),
-            buildRuleEngineRoutes()
+            buildRuleEngineRoutes(),
         )
 
         expect(task.display).toBe(false)

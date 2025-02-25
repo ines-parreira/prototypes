@@ -1,12 +1,14 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {screen} from '@testing-library/react'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { screen } from '@testing-library/react'
+
 import '@testing-library/jest-dom'
+
 import React from 'react'
 
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {renderWithRouter} from 'utils/testing'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { renderWithRouter } from 'utils/testing'
 
-import {LlmTriggeredExecution} from '../../types'
+import { LlmTriggeredExecution } from '../../types'
 import ActionEventSidePanel from '../ActionEventSidePanel'
 
 const queryClient = mockQueryClient()
@@ -56,7 +58,7 @@ const actionConfiguration = {
     available_languages: [],
     created_datetime: new Date().toISOString(),
     updated_datetime: new Date().toISOString(),
-    apps: [{type: 'app' as const, app_id: '1'}],
+    apps: [{ type: 'app' as const, app_id: '1' }],
 }
 
 describe('<ActionEventSidePanel />', () => {
@@ -70,7 +72,7 @@ describe('<ActionEventSidePanel />', () => {
                     execution={execution}
                     actionConfiguration={actionConfiguration}
                 />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(screen.getByText('Event details')).toBeInTheDocument()
@@ -107,7 +109,7 @@ describe('<ActionEventSidePanel />', () => {
                     execution={executionWithState}
                     actionConfiguration={actionConfiguration}
                 />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(screen.getByText('Event details')).toBeInTheDocument()
@@ -116,17 +118,17 @@ describe('<ActionEventSidePanel />', () => {
             .getAllByText(/status/i)
             .map((el) => el.closest('.container'))
         const successContainer = containers.find((container) =>
-            container?.textContent?.includes('SUCCESS')
+            container?.textContent?.includes('SUCCESS'),
         )
         const errorContainer = containers.find((container) =>
-            container?.textContent?.includes('ERROR')
+            container?.textContent?.includes('ERROR'),
         )
 
         expect(successContainer).not.toBeNull()
         expect(errorContainer).not.toBeNull()
         if (successContainer && errorContainer)
             expect(containers.indexOf(successContainer)).toBeLessThan(
-                containers.indexOf(errorContainer)
+                containers.indexOf(errorContainer),
             )
     })
 })

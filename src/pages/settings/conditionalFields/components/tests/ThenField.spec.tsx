@@ -1,21 +1,23 @@
-import {RequirementType} from '@gorgias/api-queries'
-import {ExpressionFieldType} from '@gorgias/api-types'
-import {UseQueryResult} from '@tanstack/react-query'
-import {fireEvent, screen, waitFor} from '@testing-library/react'
 import React from 'react'
 
-import {useCustomFieldDefinition} from 'custom-fields/hooks/queries/useCustomFieldDefinition'
-import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import {useUpdateCustomFieldDefinition} from 'custom-fields/hooks/queries/useUpdateCustomFieldDefinition'
-import {CustomField} from 'custom-fields/types'
+import { UseQueryResult } from '@tanstack/react-query'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
+
+import { RequirementType } from '@gorgias/api-queries'
+import { ExpressionFieldType } from '@gorgias/api-types'
+
+import { useCustomFieldDefinition } from 'custom-fields/hooks/queries/useCustomFieldDefinition'
+import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import { useUpdateCustomFieldDefinition } from 'custom-fields/hooks/queries/useUpdateCustomFieldDefinition'
+import { CustomField } from 'custom-fields/types'
 import {
+    ticketBooleanFieldDefinition,
+    ticketDropdownFieldDefinition,
     ticketInputFieldDefinition,
     ticketNumberFieldDefinition,
-    ticketDropdownFieldDefinition,
-    ticketBooleanFieldDefinition,
 } from 'fixtures/customField'
-import {renderWithStoreAndQueryClientProvider} from 'tests/renderWithStoreAndQueryClientProvider'
-import {assumeMock} from 'utils/testing'
+import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
+import { assumeMock } from 'utils/testing'
 
 import ThenField from '../ThenField'
 
@@ -27,7 +29,7 @@ const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
 
 jest.mock('custom-fields/hooks/queries/useUpdateCustomFieldDefinition')
 const useUpdateCustomFieldDefinitionMock = assumeMock(
-    useUpdateCustomFieldDefinition
+    useUpdateCustomFieldDefinition,
 )
 
 const customFields: Record<number, CustomField> = {
@@ -66,18 +68,18 @@ useCustomFieldDefinitionMock.mockImplementation(
         ({
             data: customFields[id],
             isLoading: false,
-        }) as UseQueryResult<CustomField, unknown>
+        }) as UseQueryResult<CustomField, unknown>,
 )
 useCustomFieldDefinitionsMock.mockReturnValue({
-    data: {data: Object.values(customFields)},
+    data: { data: Object.values(customFields) },
     isLoading: false,
 } as any)
 
 const defaultProps = {
     value: [
-        {field_id: 1, type: ExpressionFieldType.Visible},
-        {field_id: 2, type: ExpressionFieldType.Required},
-        {field_id: 3, type: ExpressionFieldType.Visible},
+        { field_id: 1, type: ExpressionFieldType.Visible },
+        { field_id: 2, type: ExpressionFieldType.Required },
+        { field_id: 3, type: ExpressionFieldType.Visible },
     ],
     onChange: jest.fn(),
     ref: () => undefined,
@@ -86,17 +88,17 @@ const defaultProps = {
 describe('ThenField', () => {
     it('should render the empty component when no requirements are set', () => {
         renderWithStoreAndQueryClientProvider(
-            <ThenField {...defaultProps} value={[]} />
+            <ThenField {...defaultProps} value={[]} />,
         )
 
         expect(
-            screen.getByText('No selected ticket fields')
+            screen.getByText('No selected ticket fields'),
         ).toBeInTheDocument()
     })
 
     it('should render the provided error message', () => {
         renderWithStoreAndQueryClientProvider(
-            <ThenField {...defaultProps} error="Some error message" />
+            <ThenField {...defaultProps} error="Some error message" />,
         )
 
         expect(screen.getByText('Some error message')).toBeInTheDocument()
@@ -106,88 +108,88 @@ describe('ThenField', () => {
         renderWithStoreAndQueryClientProvider(<ThenField {...defaultProps} />)
 
         expect(screen.getAllByRole('row').length).toBe(
-            defaultProps.value.length + 1 // +1 for the table header
+            defaultProps.value.length + 1, // +1 for the table header
         )
 
         for (const value of defaultProps.value) {
             expect(
-                screen.getByText('Custom field #' + value.field_id)
+                screen.getByText('Custom field #' + value.field_id),
             ).toBeInTheDocument()
         }
     })
 
     it('should not show the select button when all fields are set', () => {
         const allFields = [
-            {field_id: 1, type: ExpressionFieldType.Visible},
-            {field_id: 2, type: ExpressionFieldType.Required},
-            {field_id: 3, type: ExpressionFieldType.Visible},
-            {field_id: 4, type: ExpressionFieldType.Required},
+            { field_id: 1, type: ExpressionFieldType.Visible },
+            { field_id: 2, type: ExpressionFieldType.Required },
+            { field_id: 3, type: ExpressionFieldType.Visible },
+            { field_id: 4, type: ExpressionFieldType.Required },
         ]
         renderWithStoreAndQueryClientProvider(
-            <ThenField {...defaultProps} value={allFields} />
+            <ThenField {...defaultProps} value={allFields} />,
         )
 
         expect(screen.queryByRole('combobox')).not.toBeInTheDocument()
         expect(
-            screen.getByText('All the possible custom fields have been set.')
+            screen.getByText('All the possible custom fields have been set.'),
         ).toBeInTheDocument()
     })
 
     it('should trigger onChange when adding a new field', () => {
         const onChange = jest.fn()
         renderWithStoreAndQueryClientProvider(
-            <ThenField {...defaultProps} onChange={onChange} />
+            <ThenField {...defaultProps} onChange={onChange} />,
         )
 
         fireEvent.click(screen.getByRole('combobox'))
         fireEvent.click(screen.getByText('Custom field #4'))
 
         expect(onChange).toHaveBeenCalledWith([
-            {field_id: 1, type: ExpressionFieldType.Visible},
-            {field_id: 2, type: ExpressionFieldType.Required},
-            {field_id: 3, type: ExpressionFieldType.Visible},
-            {field_id: 4, type: ExpressionFieldType.Visible}, // New field added as "visible" by default
+            { field_id: 1, type: ExpressionFieldType.Visible },
+            { field_id: 2, type: ExpressionFieldType.Required },
+            { field_id: 3, type: ExpressionFieldType.Visible },
+            { field_id: 4, type: ExpressionFieldType.Visible }, // New field added as "visible" by default
         ])
     })
 
     it('should trigger onChange when clicking the checkbox (visible to required)', () => {
         const onChange = jest.fn()
         renderWithStoreAndQueryClientProvider(
-            <ThenField {...defaultProps} onChange={onChange} />
+            <ThenField {...defaultProps} onChange={onChange} />,
         )
 
         fireEvent.click(screen.getAllByLabelText('Required')[0]) // Check the first entry
         expect(onChange).toHaveBeenCalledWith([
-            {field_id: 1, type: ExpressionFieldType.Required}, // Change from "visible" to "required"
-            {field_id: 2, type: ExpressionFieldType.Required},
-            {field_id: 3, type: ExpressionFieldType.Visible},
+            { field_id: 1, type: ExpressionFieldType.Required }, // Change from "visible" to "required"
+            { field_id: 2, type: ExpressionFieldType.Required },
+            { field_id: 3, type: ExpressionFieldType.Visible },
         ])
     })
 
     it('should trigger onChange when clicking the checkbox (required to visible)', () => {
         const onChange = jest.fn()
         renderWithStoreAndQueryClientProvider(
-            <ThenField {...defaultProps} onChange={onChange} />
+            <ThenField {...defaultProps} onChange={onChange} />,
         )
 
         fireEvent.click(screen.getAllByLabelText('Required')[1]) // Check the second entry
         expect(onChange).toHaveBeenCalledWith([
-            {field_id: 1, type: ExpressionFieldType.Visible},
-            {field_id: 2, type: ExpressionFieldType.Visible}, // Change from "required" to "visible"
-            {field_id: 3, type: ExpressionFieldType.Visible},
+            { field_id: 1, type: ExpressionFieldType.Visible },
+            { field_id: 2, type: ExpressionFieldType.Visible }, // Change from "required" to "visible"
+            { field_id: 3, type: ExpressionFieldType.Visible },
         ])
     })
 
     it('should trigger onChange without the clicked row when clicking the delete button', () => {
         const onChange = jest.fn()
         renderWithStoreAndQueryClientProvider(
-            <ThenField {...defaultProps} onChange={onChange} />
+            <ThenField {...defaultProps} onChange={onChange} />,
         )
 
         fireEvent.click(screen.getAllByTitle('Remove field')[1]) // Delete the second field
         expect(onChange).toHaveBeenCalledWith([
-            {field_id: 1, type: ExpressionFieldType.Visible},
-            {field_id: 3, type: ExpressionFieldType.Visible},
+            { field_id: 1, type: ExpressionFieldType.Visible },
+            { field_id: 3, type: ExpressionFieldType.Visible },
         ])
     })
 
@@ -205,7 +207,7 @@ describe('ThenField', () => {
         const props = {
             ...defaultProps,
             onChange: jest.fn(),
-            value: [{field_id: 1, type: ExpressionFieldType.Visible}],
+            value: [{ field_id: 1, type: ExpressionFieldType.Visible }],
         }
 
         beforeEach(() => {
@@ -214,11 +216,11 @@ describe('ThenField', () => {
                     ({
                         data: fields[id],
                         isLoading: false,
-                    }) as UseQueryResult<CustomField, unknown>
+                    }) as UseQueryResult<CustomField, unknown>,
             )
 
             useCustomFieldDefinitionsMock.mockReturnValue({
-                data: {data: Object.values(fields)},
+                data: { data: Object.values(fields) },
                 isLoading: false,
             } as any)
 
@@ -236,7 +238,7 @@ describe('ThenField', () => {
 
             await waitFor(() => {
                 expect(
-                    screen.getByText('Update field visibility?')
+                    screen.getByText('Update field visibility?'),
                 ).toBeInTheDocument()
             })
             expect(props.onChange).not.toHaveBeenCalled()
@@ -248,16 +250,16 @@ describe('ThenField', () => {
             fireEvent.click(screen.getByText('Custom field #4'))
             await waitFor(() => {
                 expect(
-                    screen.getByText('Update field visibility?')
+                    screen.getByText('Update field visibility?'),
                 ).toBeInTheDocument()
             })
 
-            fireEvent.click(screen.getByRole('button', {name: 'Cancel'}))
+            fireEvent.click(screen.getByRole('button', { name: 'Cancel' }))
 
             expect(props.onChange).not.toHaveBeenCalled()
             await waitFor(() => {
                 expect(
-                    screen.queryByText('Update field visibility?')
+                    screen.queryByText('Update field visibility?'),
                 ).not.toBeInTheDocument()
             })
         })
@@ -266,11 +268,11 @@ describe('ThenField', () => {
             renderWithStoreAndQueryClientProvider(<ThenField {...props} />)
             fireEvent.click(screen.getByRole('combobox'))
             fireEvent.click(screen.getByText('Custom field #4'))
-            fireEvent.click(screen.getByRole('button', {name: 'Confirm'}))
+            fireEvent.click(screen.getByRole('button', { name: 'Confirm' }))
 
             await waitFor(() => {
                 expect(
-                    screen.queryByText('Update field visibility?')
+                    screen.queryByText('Update field visibility?'),
                 ).not.toBeInTheDocument()
                 expect(props.onChange).toHaveBeenCalledWith([
                     ...props.value,

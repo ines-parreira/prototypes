@@ -1,10 +1,11 @@
-import {render, screen} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import HelpCenterPreviewAutomation from '../HelpCenterPreviewAutomation'
 
 const renderComponent = (
-    props: ComponentProps<typeof HelpCenterPreviewAutomation>
+    props: ComponentProps<typeof HelpCenterPreviewAutomation>,
 ) => {
     render(<HelpCenterPreviewAutomation {...props} />)
 }
@@ -12,7 +13,7 @@ const renderComponent = (
 describe('<HelpCenterPreviewAutomation />', () => {
     it('should render flows and order management', () => {
         const flows = [
-            {name: 'Submit a product idea', id: '1'},
+            { name: 'Submit a product idea', id: '1' },
             {
                 name: 'Get replacement parts with long name included in this string',
                 id: '2',
@@ -25,7 +26,7 @@ describe('<HelpCenterPreviewAutomation />', () => {
             'returnOrderPolicy',
         ] as const
 
-        renderComponent({flows, orderManagement})
+        renderComponent({ flows, orderManagement })
 
         flows.forEach((flow) => {
             expect(screen.getByText(flow.name)).toBeInTheDocument()

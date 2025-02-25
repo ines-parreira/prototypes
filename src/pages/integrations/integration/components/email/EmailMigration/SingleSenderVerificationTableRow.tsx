@@ -1,9 +1,10 @@
-import classNames from 'classnames'
-import {isEmpty} from 'lodash'
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
-import {EmailMigrationSenderVerificationIntegration} from 'models/integration/types'
-import {SenderInformation} from 'models/singleSenderVerification/types'
+import classNames from 'classnames'
+import { isEmpty } from 'lodash'
+
+import { EmailMigrationSenderVerificationIntegration } from 'models/integration/types'
+import { SenderInformation } from 'models/singleSenderVerification/types'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
@@ -16,9 +17,9 @@ import useCreateSingleSenderVerification from '../hooks/useCreateSingleSenderVer
 import useDeleteSingleSenderVerification from '../hooks/useDeleteSingleSenderVerification'
 import EmailVerificationButton from './EmailVerificationButton'
 import SingleSenderVerificationFormModal from './SingleSenderVerificationFormModal'
+import { computeSingleSenderVerificationStatus } from './utils'
 
 import css from './SingleSenderVerificationTable.less'
-import {computeSingleSenderVerificationStatus} from './utils'
 
 export type Props = {
     integration: EmailMigrationSenderVerificationIntegration
@@ -35,9 +36,9 @@ export default function SingleSenderVerificationTableRow({
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
     const [isFormModalOpen, setIsFormModalOpen] = useState(false)
 
-    const {isLoading: isDeleteInProgress, deleteVerification} =
+    const { isLoading: isDeleteInProgress, deleteVerification } =
         useDeleteSingleSenderVerification()
-    const {isLoading: isCreateInProgress, createVerification} =
+    const { isLoading: isCreateInProgress, createVerification } =
         useCreateSingleSenderVerification()
 
     const status = computeSingleSenderVerificationStatus(integration)
@@ -45,7 +46,7 @@ export default function SingleSenderVerificationTableRow({
         status === EmailVerificationStatus.Failed ||
         status === EmailVerificationStatus.Pending
 
-    const {address, city, state, zip, country} =
+    const { address, city, state, zip, country } =
         integration.sender_verification ?? {}
     const stateAndZipString = [state, zip].filter(Boolean).join(' ')
 

@@ -1,11 +1,12 @@
-import {fireEvent, render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {IntegrationType} from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 import * as actions from 'state/integrations/actions'
 
 import OneClickIntegrationForm from '../OneClickIntegrationForm'
@@ -52,11 +53,11 @@ describe('<OneClickIntegrationForm/>', () => {
                         redirectUri=""
                         isSubmitting={false}
                     />
-                </Provider>
+                </Provider>,
             )
 
             fireEvent.change(screen.getByLabelText(/Store admin URL/), {
-                target: {value: STORE_URL},
+                target: { value: STORE_URL },
             })
 
             expect(screen.queryByText(/already an integration/)).toBeTruthy()
@@ -77,16 +78,18 @@ describe('<OneClickIntegrationForm/>', () => {
                         redirectUri="something"
                         isSubmitting={false}
                     />
-                </Provider>
+                </Provider>,
             )
 
             fireEvent.change(screen.getByLabelText(/Store admin URL/), {
-                target: {value: 'myShopURL1/admin'},
+                target: { value: 'myShopURL1/admin' },
             })
 
-            fireEvent.submit(screen.getByRole('button', {name: 'Connect App'}))
+            fireEvent.submit(
+                screen.getByRole('button', { name: 'Connect App' }),
+            )
             expect(window.location.href).toBe(
-                `something?store_url=myShopURL1&admin_url_suffix=admin`
+                `something?store_url=myShopURL1&admin_url_suffix=admin`,
             )
         })
     })
@@ -98,21 +101,21 @@ describe('<OneClickIntegrationForm/>', () => {
                 <Provider store={store}>
                     <OneClickIntegrationForm
                         integration={fromJS({
-                            meta: {admin_url_suffix: 'not-admin'},
+                            meta: { admin_url_suffix: 'not-admin' },
                         })}
                         redirectUri="something"
                         isSubmitting={false}
                         isUpdate
                     />
-                </Provider>
+                </Provider>,
             )
 
             fireEvent.change(screen.getByLabelText(/Store admin URL/), {
-                target: {value: 'admin'},
+                target: { value: 'admin' },
             })
 
             fireEvent.click(
-                screen.getByRole('button', {name: 'Update Connection'})
+                screen.getByRole('button', { name: 'Update Connection' }),
             )
 
             expect(updateOrCreateIntegrationRequest.mock.calls)
@@ -136,26 +139,26 @@ describe('<OneClickIntegrationForm/>', () => {
                 <Provider store={store}>
                     <OneClickIntegrationForm
                         integration={fromJS({
-                            meta: {admin_url_suffix: 'admin'},
+                            meta: { admin_url_suffix: 'admin' },
                         })}
                         redirectUri="something"
                         isSubmitting={false}
                         isUpdate
                     />
-                </Provider>
+                </Provider>,
             )
 
             fireEvent.change(screen.getByLabelText(/Store admin URL/), {
-                target: {value: 'myShopURL1/admin'},
+                target: { value: 'myShopURL1/admin' },
             })
 
-            fireEvent.click(screen.getByRole('button', {name: /Delete/}))
+            fireEvent.click(screen.getByRole('button', { name: /Delete/ }))
 
             await screen.findByText(/Are you sure\?/)
             fireEvent.click(
                 screen.getByRole('button', {
                     name: /Confirm/,
-                })
+                }),
             )
 
             expect(deleteIntegration.mock.calls).toMatchInlineSnapshot(`

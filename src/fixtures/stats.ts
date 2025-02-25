@@ -1,10 +1,10 @@
-import {TicketChannel} from 'business/types/ticket'
-import {ReportIssueReasons} from 'models/selfServiceConfiguration/types'
+import { TicketChannel } from 'business/types/ticket'
+import { ReportIssueReasons } from 'models/selfServiceConfiguration/types'
 import {
+    LegacyStatsFilters,
     OneDimensionalChart,
     OneDimensionalUnionChart,
     Stat,
-    LegacyStatsFilters,
     StatType,
     TwoDimensionalChart,
 } from 'models/stat/types'
@@ -117,7 +117,7 @@ export const resolutionTime: Stat<TwoDimensionalChart> = {
 export const firstResponseTime: Stat<TwoDimensionalChart> = {
     data: {
         label: 'First response time (percentiles)',
-        legend: {axes: {x: '', y: 'First response time'}},
+        legend: { axes: { x: '', y: 'First response time' } },
         data: {
             axes: {
                 x: [
@@ -127,8 +127,14 @@ export const firstResponseTime: Stat<TwoDimensionalChart> = {
                 y: [],
             },
             lines: [
-                {name: '50%', data: [0.0, 0.0, 0.0, 0.0, 1563.0, 44772.0, 0.0]},
-                {name: '90%', data: [0.0, 0.0, 0.0, 0.0, 1563.0, 80567.0, 0.0]},
+                {
+                    name: '50%',
+                    data: [0.0, 0.0, 0.0, 0.0, 1563.0, 44772.0, 0.0],
+                },
+                {
+                    name: '90%',
+                    data: [0.0, 0.0, 0.0, 0.0, 1563.0, 80567.0, 0.0],
+                },
             ],
         },
     },
@@ -1373,7 +1379,7 @@ export const selfServiceQuickResponsePerformance: Stat<TwoDimensionalChart> = {
         data: {
             axes: {
                 x: [
-                    {name: 'Quick response', type: StatType.Title},
+                    { name: 'Quick response', type: StatType.Title },
                     {
                         name: 'Automation rate',
                         type: StatType.QuickResponseAutomationRate,
@@ -1394,18 +1400,18 @@ export const selfServiceQuickResponsePerformance: Stat<TwoDimensionalChart> = {
                         type: StatType.Title,
                         value: 'How do I pick the right size?',
                     },
-                    {type: StatType.Percent, value: 86},
-                    {type: StatType.Number, value: 750},
-                    {type: StatType.Number, value: 116},
+                    { type: StatType.Percent, value: 86 },
+                    { type: StatType.Number, value: 750 },
+                    { type: StatType.Number, value: 116 },
                 ],
                 [
                     {
                         type: StatType.Title,
                         value: 'What is your shipping policy?',
                     },
-                    {type: StatType.Percent, value: 85},
-                    {type: StatType.Number, value: 417},
-                    {type: StatType.Number, value: 68},
+                    { type: StatType.Percent, value: 85 },
+                    { type: StatType.Number, value: 417 },
+                    { type: StatType.Number, value: 68 },
                 ],
             ],
         },
@@ -1424,7 +1430,7 @@ export const selfServiceFlowsPerformance: Stat<TwoDimensionalChart> = {
         data: {
             axes: {
                 x: [
-                    {name: 'Flows response', type: StatType.Title},
+                    { name: 'Flows response', type: StatType.Title },
                     {
                         name: 'Automation rate',
                         type: StatType.QuickResponseAutomationRate,
@@ -1445,18 +1451,18 @@ export const selfServiceFlowsPerformance: Stat<TwoDimensionalChart> = {
                         type: StatType.Title,
                         value: 'How do I pick the right size?',
                     },
-                    {type: StatType.Percent, value: 86},
-                    {type: StatType.Number, value: 750},
-                    {type: StatType.Number, value: 116},
+                    { type: StatType.Percent, value: 86 },
+                    { type: StatType.Number, value: 750 },
+                    { type: StatType.Number, value: 116 },
                 ],
                 [
                     {
                         type: StatType.Title,
                         value: 'What is your shipping policy?',
                     },
-                    {type: StatType.Percent, value: 85},
-                    {type: StatType.Number, value: 417},
-                    {type: StatType.Number, value: 68},
+                    { type: StatType.Percent, value: 85 },
+                    { type: StatType.Number, value: 417 },
+                    { type: StatType.Number, value: 68 },
                 ],
             ],
         },
@@ -1476,7 +1482,7 @@ export const selfServiceQuickResponsePerformanceNoData: Stat<TwoDimensionalChart
             data: {
                 axes: {
                     x: [
-                        {name: 'Quick response', type: StatType.Title},
+                        { name: 'Quick response', type: StatType.Title },
                         {
                             name: 'Automation rate',
                             type: StatType.QuickResponseAutomationRate,
@@ -1509,7 +1515,7 @@ export const selfServiceArticleRecommendationPerformance: Stat<TwoDimensionalCha
             data: {
                 axes: {
                     x: [
-                        {name: 'Article', type: StatType.TitleWithLink},
+                        { name: 'Article', type: StatType.TitleWithLink },
                         {
                             name: 'Automation rate',
                             type: StatType.ArticleRecommendationAutomationRate,
@@ -1533,9 +1539,9 @@ export const selfServiceArticleRecommendationPerformance: Stat<TwoDimensionalCha
                                 url: 'https://trueclassictees.gorgias.help/en-US/care-instructions-78902',
                             },
                         },
-                        {type: StatType.Percent, value: 16},
-                        {type: StatType.Number, value: 12},
-                        {type: StatType.Number, value: 60},
+                        { type: StatType.Percent, value: 16 },
+                        { type: StatType.Number, value: 12 },
+                        { type: StatType.Number, value: 60 },
                     ],
                     [
                         {
@@ -1545,9 +1551,9 @@ export const selfServiceArticleRecommendationPerformance: Stat<TwoDimensionalCha
                                 url: 'https://trueclassictees.gorgias.help/en-US/loyalty-program-78905',
                             },
                         },
-                        {type: StatType.Percent, value: 14},
-                        {type: StatType.Number, value: 21},
-                        {type: StatType.Number, value: 126},
+                        { type: StatType.Percent, value: 14 },
+                        { type: StatType.Number, value: 21 },
+                        { type: StatType.Number, value: 126 },
                     ],
                 ],
             },
@@ -1567,7 +1573,7 @@ export const selfServiceArticleRecommendationPerformanceNoData: Stat<TwoDimensio
             data: {
                 axes: {
                     x: [
-                        {name: 'Article', type: StatType.TitleWithLink},
+                        { name: 'Article', type: StatType.TitleWithLink },
                         {
                             name: 'Automation rate',
                             type: StatType.ArticleRecommendationAutomationRate,
@@ -1606,10 +1612,13 @@ export const selfServiceProductsWithMostIssuesAndReturnRequests: Stat<TwoDimensi
             data: {
                 axes: {
                     x: [
-                        {name: 'Product', type: StatType.Product},
-                        {name: 'Total issues reported', type: StatType.Number},
-                        {name: 'Issues', type: StatType.Issues},
-                        {name: 'Return Requests', type: StatType.Number},
+                        { name: 'Product', type: StatType.Product },
+                        {
+                            name: 'Total issues reported',
+                            type: StatType.Number,
+                        },
+                        { name: 'Issues', type: StatType.Issues },
+                        { name: 'Return Requests', type: StatType.Number },
                     ],
                 },
                 lines: [
@@ -1622,7 +1631,7 @@ export const selfServiceProductsWithMostIssuesAndReturnRequests: Stat<TwoDimensi
                                 name: 'The Staple 6-Pack - L',
                             },
                         },
-                        {type: StatType.Number, value: 61},
+                        { type: StatType.Number, value: 61 },
                         {
                             type: StatType.Issues,
                             value: {
@@ -1631,7 +1640,7 @@ export const selfServiceProductsWithMostIssuesAndReturnRequests: Stat<TwoDimensi
                                 [ReportIssueReasons.REASON_EDIT_ORDER]: 1,
                             },
                         },
-                        {type: StatType.Number, value: 45},
+                        { type: StatType.Number, value: 45 },
                     ],
                     [
                         {
@@ -1642,7 +1651,7 @@ export const selfServiceProductsWithMostIssuesAndReturnRequests: Stat<TwoDimensi
                                 name: 'The Staple 6-Pack - XL',
                             },
                         },
-                        {type: StatType.Number, value: 59},
+                        { type: StatType.Number, value: 59 },
                         {
                             type: StatType.Issues,
                             value: {
@@ -1650,7 +1659,7 @@ export const selfServiceProductsWithMostIssuesAndReturnRequests: Stat<TwoDimensi
                                 [ReportIssueReasons.REASON_OTHER]: 29,
                             },
                         },
-                        {type: StatType.Number, value: 11},
+                        { type: StatType.Number, value: 11 },
                     ],
                 ],
             },
@@ -1670,10 +1679,13 @@ export const selfServiceProductsWithMostIssuesAndReturnRequestsNoData: Stat<TwoD
             data: {
                 axes: {
                     x: [
-                        {name: 'Product', type: StatType.Product},
-                        {name: 'Total issues reported', type: StatType.Number},
-                        {name: 'Issues', type: StatType.Issues},
-                        {name: 'Return Requests', type: StatType.Number},
+                        { name: 'Product', type: StatType.Product },
+                        {
+                            name: 'Total issues reported',
+                            type: StatType.Number,
+                        },
+                        { name: 'Issues', type: StatType.Issues },
+                        { name: 'Return Requests', type: StatType.Number },
                     ],
                 },
                 lines: [],

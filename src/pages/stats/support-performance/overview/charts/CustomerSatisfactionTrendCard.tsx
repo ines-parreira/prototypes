@@ -2,21 +2,21 @@ import React from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import useLocalStorage from 'hooks/useLocalStorage'
-import {ActivateCustomerSatisfactionSurveyTip} from 'pages/stats/ActivateCustomerSatisfactionSurveyTip'
-import {TrendCard} from 'pages/stats/common/components/TrendCard'
-import {DashboardChartProps} from 'pages/stats/custom-reports/types'
+import { ActivateCustomerSatisfactionSurveyTip } from 'pages/stats/ActivateCustomerSatisfactionSurveyTip'
+import { TrendCard } from 'pages/stats/common/components/TrendCard'
+import { DashboardChartProps } from 'pages/stats/custom-reports/types'
 import {
     OverviewMetric,
     OverviewMetricConfig,
     STATS_TIPS_VISIBILITY_KEY,
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
-import {SupportPerformanceTip} from 'pages/stats/SupportPerformanceTip'
-import {MetricName} from 'services/reporting/constants'
+import { SupportPerformanceTip } from 'pages/stats/SupportPerformanceTip'
+import { MetricName } from 'services/reporting/constants'
 import {
     currentAccountHasFeature,
     getSurveysSettingsJS,
 } from 'state/currentAccount/selectors'
-import {AccountFeature} from 'state/currentAccount/types'
+import { AccountFeature } from 'state/currentAccount/types'
 
 export const CustomerSatisfactionTrendCard = ({
     chartId,
@@ -26,7 +26,7 @@ export const CustomerSatisfactionTrendCard = ({
 
     const surveySettings = useAppSelector(getSurveysSettingsJS)
     const hasSatisfactionSurveyEnabled = useAppSelector<boolean>(
-        currentAccountHasFeature(AccountFeature.SatisfactionSurveys)
+        currentAccountHasFeature(AccountFeature.SatisfactionSurveys),
     )
     const hasSatisfactionSurveyEnabledAndConfigured =
         hasSatisfactionSurveyEnabled &&

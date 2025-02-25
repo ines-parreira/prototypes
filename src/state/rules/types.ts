@@ -1,5 +1,5 @@
 import esprima from 'esprima'
-import {Map} from 'immutable'
+import { Map } from 'immutable'
 
 export type RuleDraft = {
     id?: number

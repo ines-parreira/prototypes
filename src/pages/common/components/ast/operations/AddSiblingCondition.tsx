@@ -1,15 +1,16 @@
-import {List, Map} from 'immutable'
 import React from 'react'
+
+import { List, Map } from 'immutable'
 import {
-    UncontrolledButtonDropdown,
-    DropdownToggle,
-    DropdownMenu,
     DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+    UncontrolledButtonDropdown,
 } from 'reactstrap'
 
 import useHoverable from 'pages/common/hooks/useHoverable'
-import {RuleItemActions} from 'pages/settings/rules/types'
-import {RuleOperation} from 'state/rules/types'
+import { RuleItemActions } from 'pages/settings/rules/types'
+import { RuleOperation } from 'state/rules/types'
 
 type Props = {
     rule: Map<any, any>
@@ -55,14 +56,14 @@ const AddSiblingCondition: React.FC<Props> = ({
     parent,
     hoverableClassName,
 }) => {
-    const {setRef} = useHoverable()
+    const { setRef } = useHoverable()
 
     const handleClick = (operator: string) => {
         const actionNode = createActionNode(operator)
         actions.modifyCodeAST(
             parent,
             actionNode,
-            RuleOperation.UpdateLogicalOperator
+            RuleOperation.UpdateLogicalOperator,
         )
     }
 

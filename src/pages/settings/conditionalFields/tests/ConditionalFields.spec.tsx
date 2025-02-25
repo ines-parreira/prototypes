@@ -1,19 +1,20 @@
-import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
-import {DndProvider} from 'react-dnd'
-import {HTML5Backend} from 'react-dnd-html5-backend'
-import {Link} from 'react-router-dom'
 
-import {SegmentEvent, logEvent} from 'common/segment'
-import {useCustomFieldConditions} from 'custom-fields/hooks/queries/useCustomFieldConditions'
-import {customFieldCondition} from 'fixtures/customFieldCondition'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+import { Link } from 'react-router-dom'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { useCustomFieldConditions } from 'custom-fields/hooks/queries/useCustomFieldConditions'
+import { customFieldCondition } from 'fixtures/customFieldCondition'
 import useDebouncedValue from 'hooks/useDebouncedValue'
 import useUpdateCustomFieldConditions from 'pages/settings/conditionalFields/hooks/useUpdateCustomFieldConditions'
-import {renderWithStoreAndQueryClientProvider} from 'tests/renderWithStoreAndQueryClientProvider'
-import {assumeMock, getLastMockCall} from 'utils/testing'
+import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
+import { assumeMock, getLastMockCall } from 'utils/testing'
 
-import ConditionalFields, {MAX_CONDITIONS} from '../ConditionalFields'
+import ConditionalFields, { MAX_CONDITIONS } from '../ConditionalFields'
 
 jest.mock(
     'common/segment',
@@ -21,7 +22,7 @@ jest.mock(
         ({
             ...jest.requireActual('common/segment'),
             logEvent: jest.fn(),
-        }) as Record<string, unknown>
+        }) as Record<string, unknown>,
 )
 jest.mock(
     'react-router-dom',
@@ -29,13 +30,13 @@ jest.mock(
         ({
             ...jest.requireActual('react-router-dom'),
             Link: jest.fn(
-                ({children}: {children: React.ReactNode}) => children
+                ({ children }: { children: React.ReactNode }) => children,
             ),
-        }) as Record<string, unknown>
+        }) as Record<string, unknown>,
 )
 jest.mock('custom-fields/hooks/queries/useCustomFieldConditions')
 jest.mock(
-    'pages/settings/conditionalFields/hooks/useUpdateCustomFieldConditions'
+    'pages/settings/conditionalFields/hooks/useUpdateCustomFieldConditions',
 )
 jest.mock('hooks/useDebouncedValue')
 
@@ -44,7 +45,7 @@ const mockedLogEvent = assumeMock(logEvent)
 const mockedLink = assumeMock(Link)
 const useCustomFieldConditionsMock = assumeMock(useCustomFieldConditions)
 const useUpdateCustomFieldConditionsMock = assumeMock(
-    useUpdateCustomFieldConditions
+    useUpdateCustomFieldConditions,
 )
 
 const updateConditions = jest.fn()
@@ -69,7 +70,7 @@ describe('<ConditionalFields/>', () => {
         render(<ConditionalFields />)
 
         expect(
-            screen.getByText(/Get started with Conditional Fields/)
+            screen.getByText(/Get started with Conditional Fields/),
         ).toBeDefined()
         // expect(screen.queryByTestId('custom-fields-list')).toBeNull()
     })
@@ -82,21 +83,21 @@ describe('<ConditionalFields/>', () => {
         })
         expect(createConditionButton).toBeInTheDocument()
         getLastMockCall(mockedLink)[0].onClick?.(
-            {} as React.MouseEvent<HTMLAnchorElement, MouseEvent>
+            {} as React.MouseEvent<HTMLAnchorElement, MouseEvent>,
         )
         expect(mockedLogEvent).toHaveBeenCalledWith(
-            SegmentEvent.CustomFieldCreateConditionClicked
+            SegmentEvent.CustomFieldCreateConditionClicked,
         )
     })
 
     it('should disable the create button when max limit is reached and display an alert', () => {
         useCustomFieldConditionsMock.mockReturnValue({
             customFieldConditions: Array.from(
-                {length: MAX_CONDITIONS},
+                { length: MAX_CONDITIONS },
                 (_, i) => ({
                     ...customFieldCondition,
                     id: i,
-                })
+                }),
             ),
             isLoading: false,
             isError: false,
@@ -105,12 +106,12 @@ describe('<ConditionalFields/>', () => {
         renderWithStoreAndQueryClientProvider(
             <DndProvider backend={HTML5Backend}>
                 <ConditionalFields />
-            </DndProvider>
+            </DndProvider>,
         )
 
         expect(screen.getByText(/You can only have/)).toBeDefined()
         expect(
-            screen.getByRole('button', {name: 'Create Field'})
+            screen.getByRole('button', { name: 'Create Field' }),
         ).toBeAriaDisabled()
     })
 
@@ -125,7 +126,7 @@ describe('<ConditionalFields/>', () => {
         render(<ConditionalFields />)
         await userEvent.type(
             screen.getByPlaceholderText('Search condition...'),
-            'foo'
+            'foo',
         )
         await waitFor(() => {
             expect(useDebouncedValue).toHaveBeenLastCalledWith('foo', 300)
@@ -147,8 +148,8 @@ describe('<ConditionalFields/>', () => {
         expect(createConditionButton).toMatchObject({})
         expect(
             screen.getByText(
-                'Unexpected error happened when trying to load existing conditions. Please try again later.'
-            )
+                'Unexpected error happened when trying to load existing conditions. Please try again later.',
+            ),
         ).toBeInTheDocument()
     })
 
@@ -156,7 +157,7 @@ describe('<ConditionalFields/>', () => {
         'should update conditions on drag and drop',
         (initialSort: number[]) => {
             useCustomFieldConditionsMock.mockReturnValue({
-                customFieldConditions: Array.from({length: 3}, (_, i) => ({
+                customFieldConditions: Array.from({ length: 3 }, (_, i) => ({
                     ...customFieldCondition,
                     id: i + 1,
                     sort_order: initialSort[i],
@@ -168,7 +169,7 @@ describe('<ConditionalFields/>', () => {
             renderWithStoreAndQueryClientProvider(
                 <DndProvider backend={HTML5Backend}>
                     <ConditionalFields />
-                </DndProvider>
+                </DndProvider>,
             )
 
             // Drag the last row to the first row
@@ -187,11 +188,11 @@ describe('<ConditionalFields/>', () => {
             // The new order should have the last row at first
             expect(updateConditions).toHaveBeenCalledWith({
                 data: [
-                    {id: 3, sort_order: 1},
-                    {id: 1, sort_order: 2},
-                    {id: 2, sort_order: 3},
+                    { id: 3, sort_order: 1 },
+                    { id: 1, sort_order: 2 },
+                    { id: 2, sort_order: 3 },
                 ],
             })
-        }
+        },
     )
 })

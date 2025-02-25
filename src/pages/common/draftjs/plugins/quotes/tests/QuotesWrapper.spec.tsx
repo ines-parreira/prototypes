@@ -1,5 +1,6 @@
-import {render} from '@testing-library/react'
 import React from 'react'
+
+import { render } from '@testing-library/react'
 
 import QuotesWrapper, {
     QUOTES_WRAPPER_INNER_ELEMENT_CLASS_NAME_PREFIX,
@@ -7,7 +8,7 @@ import QuotesWrapper, {
 
 describe('<QuotesWrapper />', () => {
     it('should wrap the element in quote wrapper when element has the quote depth class name', () => {
-        const {container} = render(
+        const { container } = render(
             <QuotesWrapper>
                 <div
                     className={
@@ -16,13 +17,13 @@ describe('<QuotesWrapper />', () => {
                 >
                     Foo
                 </div>
-            </QuotesWrapper>
+            </QuotesWrapper>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should not wrap the element with malformed quote depth class name', () => {
-        const {container} = render(
+        const { container } = render(
             <QuotesWrapper>
                 <div
                     className={
@@ -31,22 +32,22 @@ describe('<QuotesWrapper />', () => {
                 >
                     Foo
                 </div>
-            </QuotesWrapper>
+            </QuotesWrapper>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should wrap element in the inner wrapper', () => {
-        const {container} = render(
+        const { container } = render(
             <QuotesWrapper innerWrapper={<section />}>
                 <div>Foo</div>
-            </QuotesWrapper>
+            </QuotesWrapper>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should wrap element in the inner and quote wrappers when element has the quote depth class name', () => {
-        const {container} = render(
+        const { container } = render(
             <QuotesWrapper innerWrapper={<section />}>
                 <div
                     className={
@@ -55,7 +56,7 @@ describe('<QuotesWrapper />', () => {
                 >
                     Foo
                 </div>
-            </QuotesWrapper>
+            </QuotesWrapper>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })

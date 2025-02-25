@@ -1,14 +1,14 @@
-import {CONTACT_FORM_ID_PARAM} from '../constants'
+import { CONTACT_FORM_ID_PARAM } from '../constants'
 
 const ID_PARAM_REG_EXP = new RegExp(`\:${CONTACT_FORM_ID_PARAM}`, 'g')
 
 export function insertContactFormIdParam(
     path: string,
-    contactFormId: number | string
+    contactFormId: number | string,
 ): string {
     if (!ID_PARAM_REG_EXP.test(path)) {
         throw new Error(
-            `Path "${path}" doesn't contain id param template (${CONTACT_FORM_ID_PARAM})`
+            `Path "${path}" doesn't contain id param template (${CONTACT_FORM_ID_PARAM})`,
         )
     }
 

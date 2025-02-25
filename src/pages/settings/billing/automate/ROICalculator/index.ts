@@ -1,1 +1,1 @@
-export {default} from './ROICalculator'
+export { default } from './ROICalculator'

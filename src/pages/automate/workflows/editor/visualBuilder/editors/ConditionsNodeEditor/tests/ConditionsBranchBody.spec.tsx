@@ -1,7 +1,8 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {ConditionsBranchBody} from '../ConditionsBranchBody'
+import { render, screen } from '@testing-library/react'
+
+import { ConditionsBranchBody } from '../ConditionsBranchBody'
 
 describe('<ConditionsBranchBody />', () => {
     it('should display error message', () => {
@@ -23,7 +24,7 @@ describe('<ConditionsBranchBody />', () => {
                 onConditionTypeChange={jest.fn()}
                 onConditionChange={jest.fn()}
                 errors="Error message"
-            />
+            />,
         )
 
         expect(screen.getByText('Error message')).toBeInTheDocument()
@@ -71,7 +72,7 @@ describe('<ConditionsBranchBody />', () => {
                 onVariableSelect={jest.fn()}
                 onConditionTypeChange={jest.fn()}
                 onConditionChange={jest.fn()}
-            />
+            />,
         )
 
         expect(screen.getByText('icon')).toBeInTheDocument()

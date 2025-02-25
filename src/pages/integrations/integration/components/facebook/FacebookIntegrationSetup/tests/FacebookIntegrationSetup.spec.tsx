@@ -1,10 +1,10 @@
-import {fireEvent, render} from '@testing-library/react'
+import React, { ComponentProps } from 'react'
 
-import {fromJS, Map, List} from 'immutable'
-import React, {ComponentProps} from 'react'
+import { fireEvent, render } from '@testing-library/react'
+import { fromJS, List, Map } from 'immutable'
 
-import {basicMonthlyHelpdeskPlan} from 'fixtures/productPrices'
-import {AccountFeature} from 'state/currentAccount/types'
+import { basicMonthlyHelpdeskPlan } from 'fixtures/productPrices'
+import { AccountFeature } from 'state/currentAccount/types'
 
 import {
     ADS_MANAGEMENT,
@@ -26,7 +26,7 @@ import {
     PAGES_SHOW_LIST,
     PERMISSIONS_PER_INTEGRATION_META_SETTING,
 } from '../../utils'
-import {FacebookIntegrationSetupContainer} from '../FacebookIntegrationSetup'
+import { FacebookIntegrationSetupContainer } from '../FacebookIntegrationSetup'
 
 const allPermissions = [
     PAGES_MANAGE_ADS,
@@ -77,38 +77,38 @@ describe('FacebookIntegrationSetup', () => {
                 name: 'My page',
                 about: 'A page about stuff',
                 picture: {
-                    data: {url: 'https://gorgias.io/page-image-link.png'},
+                    data: { url: 'https://gorgias.io/page-image-link.png' },
                 },
             },
         },
     ])
 
     it('should render an empty list because there is no integrations to display', () => {
-        const {queryByRole} = render(
-            <FacebookIntegrationSetupContainer {...minProps} />
+        const { queryByRole } = render(
+            <FacebookIntegrationSetupContainer {...minProps} />,
         )
 
         expect(queryByRole('img')).toBeNull()
     })
 
     it('should render integrations because there is available data and and it is not loading', () => {
-        const {getAllByRole} = render(
+        const { getAllByRole } = render(
             <FacebookIntegrationSetupContainer
                 {...minProps}
                 integrations={onboardingIntegrations}
-            />
+            />,
         )
 
         expect(getAllByRole('img')).not.toBeNull()
     })
 
     it('should render a loader because integrations are currently being fetched', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <FacebookIntegrationSetupContainer
                 {...minProps}
                 integrations={onboardingIntegrations}
-                pagination={fromJS({nb_pages: 2})}
-            />
+                pagination={fromJS({ nb_pages: 2 })}
+            />,
         )
 
         fireEvent.click(getByText('keyboard_arrow_right'))
@@ -122,14 +122,14 @@ describe('FacebookIntegrationSetup', () => {
             .setIn([0, 'meta', 'oauth', 'scope'], allPermissions)
             .setIn(
                 [0, 'meta', 'roles'],
-                [ADVERTISE_ROLE, ANALYZE_ROLE, MODERATE_ROLE].join(',')
+                [ADVERTISE_ROLE, ANALYZE_ROLE, MODERATE_ROLE].join(','),
             )
 
-        const {container, getAllByRole} = render(
+        const { container, getAllByRole } = render(
             <FacebookIntegrationSetupContainer
                 {...minProps}
                 integrations={integrations}
-            />
+            />,
         )
 
         fireEvent.click(getAllByRole('checkbox')[0])
@@ -138,16 +138,16 @@ describe('FacebookIntegrationSetup', () => {
     })
 
     it('should render the integration with canModerate disabled because there is no MODERATE_ROLE', () => {
-        const {container} = render(
+        const { container } = render(
             <FacebookIntegrationSetupContainer
                 {...minProps}
                 integrations={onboardingIntegrations
                     .setIn([0, 'meta', 'instagram', 'id'], 'foo')
                     .setIn(
                         [0, 'meta', 'roles'],
-                        [ADVERTISE_ROLE, ANALYZE_ROLE].join(',')
+                        [ADVERTISE_ROLE, ANALYZE_ROLE].join(','),
                     )}
-            />
+            />,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -158,7 +158,7 @@ describe('FacebookIntegrationSetup', () => {
             // Messenger enabled
             'messenger_enabled',
             PERMISSIONS_PER_INTEGRATION_META_SETTING['messenger_enabled'].join(
-                ','
+                ',',
             ),
             false,
         ],
@@ -189,7 +189,7 @@ describe('FacebookIntegrationSetup', () => {
             // Mentions enabled
             'mentions_enabled',
             PERMISSIONS_PER_INTEGRATION_META_SETTING['mentions_enabled'].join(
-                ','
+                ',',
             ),
             false,
         ],
@@ -312,7 +312,7 @@ describe('FacebookIntegrationSetup', () => {
                 .setIn([0, 'meta', 'instagram', 'id'], 'foo')
                 .setIn(
                     [0, 'meta', 'roles'],
-                    [ADVERTISE_ROLE, ANALYZE_ROLE, MODERATE_ROLE].join(',')
+                    [ADVERTISE_ROLE, ANALYZE_ROLE, MODERATE_ROLE].join(','),
                 )
                 .setIn([0, 'meta', 'oauth', 'scope'], permissions)
                 .setIn(
@@ -322,14 +322,14 @@ describe('FacebookIntegrationSetup', () => {
                         'instagram',
                         'instagram_direct_message_allowed',
                     ],
-                    true
+                    true,
                 )
 
-            const {getAllByRole, queryAllByRole} = render(
+            const { getAllByRole, queryAllByRole } = render(
                 <FacebookIntegrationSetupContainer
                     {...minProps}
                     integrations={integrations}
-                />
+                />,
             )
 
             if (isDisabled) {
@@ -337,12 +337,12 @@ describe('FacebookIntegrationSetup', () => {
             } else {
                 fireEvent.click(getAllByRole('checkbox')[0])
                 const channelCheckbox = document.getElementById(
-                    `1.${checkboxName}`
+                    `1.${checkboxName}`,
                 )
 
                 expect(channelCheckbox).not.toBeDisabled()
             }
-        }
+        },
     )
 
     it.each([
@@ -369,7 +369,7 @@ describe('FacebookIntegrationSetup', () => {
                 .setIn([0, 'meta', 'instagram', 'id'], 'foo')
                 .setIn(
                     [0, 'meta', 'roles'],
-                    [ADVERTISE_ROLE, ANALYZE_ROLE, MODERATE_ROLE].join(',')
+                    [ADVERTISE_ROLE, ANALYZE_ROLE, MODERATE_ROLE].join(','),
                 )
                 .setIn([0, 'meta', 'oauth', 'scope'], allPermissions)
                 .setIn(
@@ -379,7 +379,7 @@ describe('FacebookIntegrationSetup', () => {
                         'instagram',
                         'instagram_direct_message_allowed',
                     ],
-                    isIGAccountEligible
+                    isIGAccountEligible,
                 )
 
             const currentAccount: Map<any, any> = fromJS({
@@ -396,13 +396,13 @@ describe('FacebookIntegrationSetup', () => {
                 },
             }
 
-            const {container, getByText} = render(
+            const { container, getByText } = render(
                 <FacebookIntegrationSetupContainer
                     {...minProps}
                     integrations={integrations}
                     currentHelpdeskProduct={currentHelpdeskProduct}
                     currentAccount={currentAccount}
-                />
+                />,
             )
 
             if (!priceHasInstagramDmFeature) {
@@ -410,6 +410,6 @@ describe('FacebookIntegrationSetup', () => {
             } else {
                 expect(container.firstChild).toMatchSnapshot()
             }
-        }
+        },
     )
 })

@@ -1,37 +1,38 @@
-import {QueryClientProvider} from '@tanstack/react-query'
+import React, { ComponentProps } from 'react'
+
+import { QueryClientProvider } from '@tanstack/react-query'
 import {
-    render,
     fireEvent,
+    render,
     RenderResult,
-    waitFor,
     screen,
+    waitFor,
 } from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {
+    EMAIL_INTEGRATION_TYPE,
     GMAIL_INTEGRATION_TYPE,
     OUTLOOK_INTEGRATION_TYPE,
-    EMAIL_INTEGRATION_TYPE,
 } from 'constants/integration'
-import {integrationsState} from 'fixtures/integrations'
-import {IntegrationType} from 'models/integration/constants'
+import { integrationsState } from 'fixtures/integrations'
+import { IntegrationType } from 'models/integration/constants'
 import {
     OutboundVerificationStatusValue,
     OutboundVerificationType,
 } from 'models/integration/types'
-import {isBoolean} from 'pages/common/components/infobar/utils'
-import {EmailIntegrationUpdateContainer} from 'pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailIntegrationUpdate'
+import { isBoolean } from 'pages/common/components/infobar/utils'
+import { EmailIntegrationUpdateContainer } from 'pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailIntegrationUpdate'
 import {
     getOutboundEmailProviderSettingKey,
     isBaseEmailAddress,
 } from 'pages/integrations/integration/components/email/helpers'
-import {INTEGRATION_REMOVAL_CONFIGURATION_TEXT} from 'pages/integrations/integration/constants'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('pages/integrations/integration/components/email/helpers')
 
@@ -40,7 +41,7 @@ const isBaseEmailAddressMock = assumeMock(isBaseEmailAddress)
 const queryClient = mockQueryClient()
 const INTEGRATION_NAME = 'My Integration'
 const commonProps: ComponentProps<typeof EmailIntegrationUpdateContainer> = {
-    loading: fromJS({integration: false}),
+    loading: fromJS({ integration: false }),
     domain: 'test',
     forwardingEmailAddress: '',
     gmailRedirectUri: '',
@@ -52,10 +53,10 @@ const commonProps: ComponentProps<typeof EmailIntegrationUpdateContainer> = {
 
 describe('<EmailIntegrationUpdateContainer />', () => {
     const mockStore = configureMockStore([thunk])
-    let store = mockStore({integrations: fromJS(integrationsState)})
+    let store = mockStore({ integrations: fromJS(integrationsState) })
 
     beforeEach(() => {
-        store = mockStore({integrations: fromJS(integrationsState)})
+        store = mockStore({ integrations: fromJS(integrationsState) })
         isBaseEmailAddressMock.mockReturnValue(false)
     })
 
@@ -68,12 +69,12 @@ describe('<EmailIntegrationUpdateContainer />', () => {
                         {...props}
                     />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
     it.each([
         {
-            selector: ({getByRole}: RenderResult) =>
+            selector: ({ getByRole }: RenderResult) =>
                 getByRole('textbox', {
                     name: /display name required/i,
                 }),
@@ -81,7 +82,7 @@ describe('<EmailIntegrationUpdateContainer />', () => {
             finalValue: INTEGRATION_NAME,
         },
         {
-            selector: ({container}: RenderResult) =>
+            selector: ({ container }: RenderResult) =>
                 container.querySelector('#use_gmail_categories')!,
             newValue: true,
             finalValue: false,
@@ -112,8 +113,8 @@ describe('<EmailIntegrationUpdateContainer />', () => {
             }
 
             const helpers = renderWithStore(props)
-            const {getByRole} = helpers
-            const saveButton = getByRole('button', {name: 'Save changes'})
+            const { getByRole } = helpers
+            const saveButton = getByRole('button', { name: 'Save changes' })
 
             expect(saveButton).toBeAriaDisabled()
 
@@ -121,7 +122,7 @@ describe('<EmailIntegrationUpdateContainer />', () => {
                 fireEvent.click(selector.selector(helpers))
             } else {
                 fireEvent.change(selector.selector(helpers), {
-                    target: {value: selector.newValue},
+                    target: { value: selector.newValue },
                 })
             }
 
@@ -131,12 +132,12 @@ describe('<EmailIntegrationUpdateContainer />', () => {
                 fireEvent.click(selector.selector(helpers))
             } else {
                 fireEvent.change(selector.selector(helpers), {
-                    target: {value: selector.finalValue},
+                    target: { value: selector.finalValue },
                 })
             }
 
             expect(saveButton).toBeAriaDisabled()
-        }
+        },
     )
     it.each([IntegrationType.Gmail, IntegrationType.Outlook])(
         'should enable the submit button only if email deliverability setting changed [%s]',
@@ -157,7 +158,7 @@ describe('<EmailIntegrationUpdateContainer />', () => {
                         [getOutboundEmailProviderSettingKey(
                             integrationType as
                                 | IntegrationType.Gmail
-                                | IntegrationType.Outlook
+                                | IntegrationType.Outlook,
                         )]: true,
                         enable_outlook_sending: true,
                         enable_gmail_sending: true,
@@ -166,18 +167,18 @@ describe('<EmailIntegrationUpdateContainer />', () => {
             }
 
             const helpers = renderWithStore(props)
-            const {getByRole} = helpers
-            const saveButton = getByRole('button', {name: 'Save changes'})
+            const { getByRole } = helpers
+            const saveButton = getByRole('button', { name: 'Save changes' })
 
             await waitFor(() => {
                 expect(saveButton).toBeAriaDisabled()
             })
-        }
+        },
     )
 
     it.each([
         {
-            selector: ({getByRole}: RenderResult) =>
+            selector: ({ getByRole }: RenderResult) =>
                 getByRole('textbox', {
                     name: /display name required/i,
                 }),
@@ -203,8 +204,8 @@ describe('<EmailIntegrationUpdateContainer />', () => {
             }
 
             const helpers = renderWithStore(props)
-            const {getByRole} = helpers
-            const saveButton = getByRole('button', {name: 'Save changes'})
+            const { getByRole } = helpers
+            const saveButton = getByRole('button', { name: 'Save changes' })
 
             expect(saveButton).toBeAriaDisabled()
 
@@ -212,7 +213,7 @@ describe('<EmailIntegrationUpdateContainer />', () => {
                 fireEvent.click(selector.selector(helpers))
             } else {
                 fireEvent.change(selector.selector(helpers), {
-                    target: {value: selector.newValue},
+                    target: { value: selector.newValue },
                 })
             }
 
@@ -222,12 +223,12 @@ describe('<EmailIntegrationUpdateContainer />', () => {
                 fireEvent.click(selector.selector(helpers))
             } else {
                 fireEvent.change(selector.selector(helpers), {
-                    target: {value: selector.finalValue},
+                    target: { value: selector.finalValue },
                 })
             }
 
             expect(saveButton).toBeAriaDisabled()
-        }
+        },
     )
 
     it('should enable the submit button if form values change - integration has no signature [email]', () => {
@@ -243,11 +244,11 @@ describe('<EmailIntegrationUpdateContainer />', () => {
         }
 
         const helpers = renderWithStore(props)
-        const {getByRole} = helpers
+        const { getByRole } = helpers
         const displayNameInput = getByRole('textbox', {
             name: /display name required/i,
         })
-        const saveButton = getByRole('button', {name: 'Save changes'})
+        const saveButton = getByRole('button', { name: 'Save changes' })
 
         expect(saveButton).toBeAriaDisabled()
 
@@ -255,7 +256,7 @@ describe('<EmailIntegrationUpdateContainer />', () => {
             fireEvent.click(displayNameInput)
         } else {
             fireEvent.change(displayNameInput, {
-                target: {value: 'Some New Name'},
+                target: { value: 'Some New Name' },
             })
         }
 
@@ -265,7 +266,7 @@ describe('<EmailIntegrationUpdateContainer />', () => {
             fireEvent.click(displayNameInput)
         } else {
             fireEvent.change(displayNameInput, {
-                target: {value: INTEGRATION_NAME},
+                target: { value: INTEGRATION_NAME },
             })
         }
 
@@ -288,7 +289,7 @@ describe('<EmailIntegrationUpdateContainer />', () => {
             }),
         }
 
-        const {getByPlaceholderText, queryByText, container} =
+        const { getByPlaceholderText, queryByText, container } =
             renderWithStore(props)
 
         const displayNameInput = getByPlaceholderText('Test Support')
@@ -296,7 +297,7 @@ describe('<EmailIntegrationUpdateContainer />', () => {
         expect(queryByText('*')).toBeNull() // making sure that field is not required
 
         const displayNameInfoIcon = container.querySelector(
-            '#outlook-display-name-limitation-info-icon'
+            '#outlook-display-name-limitation-info-icon',
         )
         expect(displayNameInfoIcon).toBeInTheDocument()
 
@@ -309,7 +310,7 @@ describe('<EmailIntegrationUpdateContainer />', () => {
                 'change-a-user-name-and-email-address?view=o365-worldwide' +
                 '#watch-change-a-users-email-address-display-name-or-email-alias'
             expect(tooltip_.innerHTML).toContain(
-                `href="${expectedTooltipLink}"`
+                `href="${expectedTooltipLink}"`,
             )
         })
     })
@@ -328,7 +329,7 @@ describe('<EmailIntegrationUpdateContainer />', () => {
                 }),
             }
 
-            const {getByText, getByPlaceholderText, container} =
+            const { getByText, getByPlaceholderText, container } =
                 renderWithStore(props)
             const displayNameInput = getByPlaceholderText('Test Support')
             expect(displayNameInput).toBeEnabled()
@@ -336,10 +337,10 @@ describe('<EmailIntegrationUpdateContainer />', () => {
             // checking that display name field is required.
             expect(getByText('*')).toHaveAttribute('aria-label', 'required')
             const displayNameInfoIcon = container.querySelector(
-                '#outlook-display-name-limitation-info-icon'
+                '#outlook-display-name-limitation-info-icon',
             )
             expect(displayNameInfoIcon).not.toBeInTheDocument()
-        }
+        },
     )
 
     it('should check the warning message of removing the integration, it should contain the text related to saved filters', () => {
@@ -358,12 +359,12 @@ describe('<EmailIntegrationUpdateContainer />', () => {
             }),
         }
 
-        const {getByText, getByRole} = renderWithStore(props)
+        const { getByText, getByRole } = renderWithStore(props)
 
-        fireEvent.click(getByRole('button', {name: /Delete integration/i}))
+        fireEvent.click(getByRole('button', { name: /Delete integration/i }))
 
         expect(
-            getByText(INTEGRATION_REMOVAL_CONFIGURATION_TEXT)
+            getByText(INTEGRATION_REMOVAL_CONFIGURATION_TEXT),
         ).toBeInTheDocument()
     })
 
@@ -381,11 +382,11 @@ describe('<EmailIntegrationUpdateContainer />', () => {
             }),
         }
 
-        const {queryByText, getByText} = renderWithStore(props)
+        const { queryByText, getByText } = renderWithStore(props)
         expect(queryByText('Setup instructions')).not.toBeInTheDocument()
 
         expect(
-            getByText(/we recommend using your own company support address/)
+            getByText(/we recommend using your own company support address/),
         ).toBeInTheDocument()
     })
 })

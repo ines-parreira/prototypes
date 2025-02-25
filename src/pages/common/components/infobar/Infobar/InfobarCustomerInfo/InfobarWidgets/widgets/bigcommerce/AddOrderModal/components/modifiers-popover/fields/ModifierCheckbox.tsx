@@ -1,11 +1,13 @@
-import classnames from 'classnames'
 import React from 'react'
 
-import {BigCommerceProductCheckboxModifier} from 'models/integration/types'
+import classnames from 'classnames'
+
+import { BigCommerceProductCheckboxModifier } from 'models/integration/types'
 import CheckBox from 'pages/common/forms/CheckBox'
 
+import { FieldProps } from './types'
+
 import sharedCss from './Shared.less'
-import {FieldProps} from './types'
 
 export const ModifierCheckbox = ({
     modifier,
@@ -15,13 +17,13 @@ export const ModifierCheckbox = ({
 }: FieldProps<BigCommerceProductCheckboxModifier>) => {
     const findOptionIdByValue = (value: boolean) =>
         modifier.option_values.find(
-            ({value_data: {checked_value}}) => checked_value === value
+            ({ value_data: { checked_value } }) => checked_value === value,
         )!.id
 
     const findValueByOptionId = (findId?: number) =>
         Boolean(
-            modifier.option_values.find(({id}) => id === findId)?.value_data
-                .checked_value
+            modifier.option_values.find(({ id }) => id === findId)?.value_data
+                .checked_value,
         )
 
     const hasError = Boolean(error)

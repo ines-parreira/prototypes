@@ -1,9 +1,10 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {useCustomFieldDefinition} from 'custom-fields/hooks/queries/useCustomFieldDefinition'
-import {ticketInputFieldDefinition} from 'fixtures/customField'
-import {assumeMock} from 'utils/testing'
+import { render } from '@testing-library/react'
+
+import { useCustomFieldDefinition } from 'custom-fields/hooks/queries/useCustomFieldDefinition'
+import { ticketInputFieldDefinition } from 'fixtures/customField'
+import { assumeMock } from 'utils/testing'
 
 import CustomFieldInput from '../CustomFieldIdInput'
 
@@ -17,11 +18,11 @@ describe('<CustomFieldIdInput/>', () => {
             isLoading: false,
         } as any)
 
-        const {container} = render(
+        const { container } = render(
             <CustomFieldInput
                 customFieldId={ticketInputFieldDefinition.id}
                 onChange={jest.fn()}
-            />
+            />,
         )
         expect(container.firstChild).toMatchSnapshot()
     })

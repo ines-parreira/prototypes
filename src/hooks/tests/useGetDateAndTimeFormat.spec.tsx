@@ -1,15 +1,16 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {UserSettingType} from 'config/types/user'
+import { UserSettingType } from 'config/types/user'
 import {
+    DateAndTimeFormatting,
     DateFormatType,
     TimeFormatType,
-    DateAndTimeFormatting,
 } from 'constants/datetime'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 
@@ -31,16 +32,16 @@ describe('useGetDateAndTimeFormat', () => {
                 ],
             }),
         })
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useGetDateAndTimeFormat(
-                    DateAndTimeFormatting.CompactDateWithTime
+                    DateAndTimeFormatting.CompactDateWithTime,
                 ),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={store}>{children}</Provider>
                 ),
-            }
+            },
         )
         expect(result.current).toEqual('DD/MM/YYYY HH:mm')
     })
@@ -61,16 +62,16 @@ describe('useGetDateAndTimeFormat', () => {
                 ],
             }),
         })
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useGetDateAndTimeFormat(
-                    DateAndTimeFormatting.CompactDateWithTime
+                    DateAndTimeFormatting.CompactDateWithTime,
                 ),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={store}>{children}</Provider>
                 ),
-            }
+            },
         )
         expect(result.current).toEqual('MM/DD/YYYY hh:mm A')
     })

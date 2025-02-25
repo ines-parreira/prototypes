@@ -1,14 +1,15 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {account} from 'fixtures/account'
-import {billingState} from 'fixtures/billing'
-import {integrationsState} from 'fixtures/integrations'
-import {RootState, StoreDispatch} from 'state/types'
+import { account } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
+import { integrationsState } from 'fixtures/integrations'
+import { RootState, StoreDispatch } from 'state/types'
 
 import GorgiasChatIntegrationLanguages from '../GorgiasChatIntegrationLanguages'
 
@@ -22,7 +23,7 @@ jest.mock(
             updateDefaultLanguage: jest.fn(),
             deleteLanguage: jest.fn(),
         })),
-    })
+    }),
 )
 
 jest.mock('../../GorgiasChatIntegrationConnectedChannel', () => () => (
@@ -51,7 +52,7 @@ describe('GorgiasChatIntegrationLanguages', () => {
                     loading={fromJS({})}
                     integration={fromJS({})}
                 />
-            </Provider>
+            </Provider>,
         )
     })
 })

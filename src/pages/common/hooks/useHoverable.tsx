@@ -1,4 +1,4 @@
-import {useState, useEffect, Dispatch, SetStateAction} from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 
 export default function useHoverable(): {
     hovered: boolean
@@ -22,5 +22,5 @@ export default function useHoverable(): {
         }
     }, [element])
 
-    return {hovered, setRef}
+    return { hovered, setRef }
 }

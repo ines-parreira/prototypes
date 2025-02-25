@@ -1,13 +1,15 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
-import React, {memo} from 'react'
+import React, { memo } from 'react'
 
-import {MAX_HEADER_LENGTH} from 'config'
+import classnames from 'classnames'
+
+import { Label } from '@gorgias/merchant-ui-kit'
+
+import { MAX_HEADER_LENGTH } from 'config'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import {
-    Parameter,
     OnChangeAction,
+    Parameter,
     ParameterTypes,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 import CheckBox from 'pages/common/forms/CheckBox'
@@ -15,8 +17,9 @@ import InputField from 'pages/common/forms/input/InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import TextArea from 'pages/common/forms/TextArea'
 
+import { validateDropdownValues, validateHeaderName } from './validators'
+
 import css from './Parameter.less'
-import {validateDropdownValues, validateHeaderName} from './validators'
 
 type Props = {
     parameter: Parameter
@@ -69,7 +72,7 @@ function ParameterComponent({
                         ([label, key]) => ({
                             value: key,
                             label: label,
-                        })
+                        }),
                     )}
                 />
             </div>
@@ -166,7 +169,7 @@ function ParameterComponent({
                     onClick={() => {
                         onChange(
                             `${indexedPath}.mandatory`,
-                            !parameter.mandatory
+                            !parameter.mandatory,
                         )
                     }}
                 />

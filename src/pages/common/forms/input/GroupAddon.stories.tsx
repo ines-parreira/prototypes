@@ -1,5 +1,6 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { Meta, Story } from '@storybook/react'
 
 import Button from 'pages/common/components/button/Button'
 
@@ -59,6 +60,6 @@ const Template: Story<ComponentProps<typeof GroupAddon>> = (props) => {
 }
 
 export const Default = Template.bind({})
-Default.parameters = {controls: {include: ['className', 'isDisabled']}}
+Default.parameters = { controls: { include: ['className', 'isDisabled'] } }
 
 export default storyConfig

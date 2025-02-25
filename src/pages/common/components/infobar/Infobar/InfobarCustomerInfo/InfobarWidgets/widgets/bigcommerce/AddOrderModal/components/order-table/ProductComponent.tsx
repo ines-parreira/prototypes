@@ -1,16 +1,17 @@
+import React, { useCallback } from 'react'
+
 import classnames from 'classnames'
-import React, {useCallback} from 'react'
 
 import errorIcon from 'assets/img/icons/error.svg'
 import defaultImage from 'assets/img/presentationals/shopify-product-default-image.png'
 import {
     BigCommerceCartLineItem,
     BigCommerceCustomCartLineItem,
-    BigCommerceProduct,
     BigCommerceCustomProduct,
+    BigCommerceProduct,
     BigCommerceProductVariant,
 } from 'models/integration/types'
-import {ProductStockQuantity} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/ProductStockQuantity'
+import { ProductStockQuantity } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/ProductStockQuantity'
 import {
     isBigCommerceCartLineItem,
     isBigCommerceProduct,
@@ -50,7 +51,7 @@ export const Modifiers = ({
 
     const viewableModifiers = lineItem.options
         .map((option) => {
-            const modifier = (product.modifiers ?? []).find(({id}) => {
+            const modifier = (product.modifiers ?? []).find(({ id }) => {
                 if ('nameId' in option) {
                     return option.nameId === id
                 }
@@ -64,10 +65,10 @@ export const Modifiers = ({
 
             // Display checkbox value as name of the checkbox, instead of yes/no
             if (modifier.type === 'checkbox') {
-                return {id: modifier.id, value: modifier.display_name}
+                return { id: modifier.id, value: modifier.display_name }
             }
 
-            return {id: modifier.id, value: option.value}
+            return { id: modifier.id, value: option.value }
         })
         .filter(<T,>(value: T): value is NonNullable<T> => value !== null)
 
@@ -90,7 +91,7 @@ export const Modifiers = ({
 
 export const getVariant = (
     lineItem: BigCommerceCartLineItem | BigCommerceCustomCartLineItem,
-    product?: BigCommerceProduct | BigCommerceCustomProduct
+    product?: BigCommerceProduct | BigCommerceCustomProduct,
 ) => {
     if (
         !isBigCommerceCartLineItem(lineItem) ||
@@ -103,7 +104,7 @@ export const getVariant = (
     return (
         product.variants.find(
             (variant: BigCommerceProductVariant) =>
-                variant.id === lineItem.variant_id
+                variant.id === lineItem.variant_id,
         ) || null
     )
 }
@@ -175,7 +176,7 @@ export default function ProductComponent({
         }
 
         const isTracked = ['variant', 'product'].includes(
-            product.inventory_tracking
+            product.inventory_tracking,
         )
 
         if (!isTracked) {

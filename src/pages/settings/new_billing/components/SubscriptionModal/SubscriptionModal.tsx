@@ -1,10 +1,11 @@
-import React, {useCallback, useMemo, useState} from 'react'
-import {useHistory} from 'react-router-dom'
-import {Modal, ModalBody, ModalHeader} from 'reactstrap'
+import React, { useCallback, useMemo, useState } from 'react'
 
-import {useAppNode} from 'appNode'
+import { useHistory } from 'react-router-dom'
+import { Modal, ModalBody, ModalHeader } from 'reactstrap'
+
+import { useAppNode } from 'appNode'
 import useAppSelector from 'hooks/useAppSelector'
-import {Plan, ProductType} from 'models/billing/types'
+import { Plan, ProductType } from 'models/billing/types'
 import ContactSupportModal from 'pages/settings/new_billing/components/ContactSupportModal'
 import PlanSubscriptionDescription from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription'
 import SubscriptionModalFooter from 'pages/settings/new_billing/components/SubscriptionModal/SubscriptionModalFooter'
@@ -13,11 +14,11 @@ import {
     ENTERPRISE_PRICE_ID,
     ZAPIER_BILLING_HOOK,
 } from 'pages/settings/new_billing/constants'
-import {useCurrentPriceIds} from 'pages/settings/new_billing/hooks/useGetCurrentPriceIds'
-import {useUpdateSubscription} from 'pages/settings/new_billing/hooks/useUpdateSubscription'
-import {getCurrentHelpdeskCadence} from 'state/billing/selectors'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {getCurrentUser} from 'state/currentUser/selectors'
+import { useCurrentPriceIds } from 'pages/settings/new_billing/hooks/useGetCurrentPriceIds'
+import { useUpdateSubscription } from 'pages/settings/new_billing/hooks/useUpdateSubscription'
+import { getCurrentHelpdeskCadence } from 'state/billing/selectors'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { getCurrentUser } from 'state/currentUser/selectors'
 
 import css from './SubscriptionModal.less'
 
@@ -71,12 +72,12 @@ const SubscriptionModal = ({
     const from: string = currentUser.get('email')
     const domain: string = currentAccount.get('domain')
 
-    const {isLoading: isSubscriptionUpdating, handleSubscriptionUpdate} =
+    const { isLoading: isSubscriptionUpdating, handleSubscriptionUpdate } =
         useUpdateSubscription()
 
     const isEnterprisePlan = useMemo(
         () => selectedPlan?.price_id === ENTERPRISE_PRICE_ID,
-        [selectedPlan]
+        [selectedPlan],
     )
 
     const onConfirm = useCallback(async () => {
@@ -99,7 +100,7 @@ const SubscriptionModal = ({
 
     const confirmButtonLabel = useMemo(
         () => (isEnterprisePlan ? confirmEnterpriseLabel : confirmLabel),
-        [isEnterprisePlan, confirmEnterpriseLabel, confirmLabel]
+        [isEnterprisePlan, confirmEnterpriseLabel, confirmLabel],
     )
 
     const onConfirmEnterprise = useCallback(() => {
@@ -113,7 +114,7 @@ const SubscriptionModal = ({
 
     const onConfirmCallback = useMemo(
         () => (isEnterprisePlan ? onConfirmEnterprise : onConfirm),
-        [isEnterprisePlan, onConfirmEnterprise, onConfirm]
+        [isEnterprisePlan, onConfirmEnterprise, onConfirm],
     )
 
     const isDisabled = useMemo(() => {

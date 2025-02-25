@@ -1,9 +1,9 @@
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
+import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import useAppSelector from 'hooks/useAppSelector'
-import {useGetAgent} from 'models/agents/queries'
-import {useGetCustomer} from 'models/customer/queries'
-import {Customer} from 'models/customer/types'
-import {getTicketCustomer} from 'state/ticket/selectors'
+import { useGetAgent } from 'models/agents/queries'
+import { useGetCustomer } from 'models/customer/queries'
+import { Customer } from 'models/customer/types'
+import { getTicketCustomer } from 'state/ticket/selectors'
 
 export function useCustomerDetails({
     customerId,
@@ -37,7 +37,7 @@ export function useCustomerDetails({
 
 export function useAgentDetails(agentId: number) {
     const initialAgentData = window.GORGIAS_STATE?.agents?.all?.find(
-        (agent) => agent.id === agentId
+        (agent) => agent.id === agentId,
     )
 
     const agentResponse = useGetAgent(agentId, {

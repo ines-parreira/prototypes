@@ -1,12 +1,12 @@
-import {ComponentProps} from 'react'
+import { ComponentProps } from 'react'
 
-import {AlertBanner, AlertBannerTypes} from 'AlertBanners'
-import {EmailMigrationBannerStatus} from 'models/integration/types'
-import {getMoment, stringToDatetime} from 'utils/date'
+import { AlertBanner, AlertBannerTypes } from 'AlertBanners'
+import { EmailMigrationBannerStatus } from 'models/integration/types'
+import { getMoment, stringToDatetime } from 'utils/date'
 
 export const computeEmailMigrationStatusBanner = (
     migration: EmailMigrationBannerStatus,
-    onCTAClick: () => void
+    onCTAClick: () => void,
 ): ComponentProps<typeof AlertBanner> | null => {
     const now = getMoment()
     const dueDate = stringToDatetime(migration.due_at ?? '')

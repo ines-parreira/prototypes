@@ -1,12 +1,12 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {agents} from 'fixtures/agents'
-import {handleError} from 'hooks/agents/errorHandler'
-import {useGetAgent} from 'models/agents/queries'
-import {StoreDispatch} from 'state/types'
-import {assumeMock} from 'utils/testing'
+import { agents } from 'fixtures/agents'
+import { handleError } from 'hooks/agents/errorHandler'
+import { useGetAgent } from 'models/agents/queries'
+import { StoreDispatch } from 'state/types'
+import { assumeMock } from 'utils/testing'
 
-import {useGetAgentWithEffects} from '../useGetAgentWithEffect'
+import { useGetAgentWithEffects } from '../useGetAgentWithEffect'
 
 jest.mock('models/agents/queries')
 const useGetAgentMock = assumeMock(useGetAgent)
@@ -20,7 +20,7 @@ describe('useGetAgentWithEffects', () => {
     const setAgentState = jest.fn()
     const set2FA = jest.fn()
     const dispatch = jest.fn((fn: () => unknown) =>
-        fn()
+        fn(),
     ) as unknown as StoreDispatch
 
     const params = {
@@ -38,11 +38,13 @@ describe('useGetAgentWithEffects', () => {
                     data: agents[0],
                     isLoading: false,
                     error: undefined,
-                }) as ReturnType<typeof useGetAgent>
+                }) as ReturnType<typeof useGetAgent>,
         )
-        const {result} = renderHook(() => useGetAgentWithEffects(params))
+        const { result } = renderHook(() => useGetAgentWithEffects(params))
 
-        expect(useGetAgentMock).toHaveBeenNthCalledWith(1, 1, {enabled: isEdit})
+        expect(useGetAgentMock).toHaveBeenNthCalledWith(1, 1, {
+            enabled: isEdit,
+        })
         expect(result.current.isLoading).toBe(false)
         expect(result.current.rawData).toBe(agents[0])
     })
@@ -54,9 +56,9 @@ describe('useGetAgentWithEffects', () => {
                     data: undefined,
                     isLoading: false,
                     error: true,
-                }) as ReturnType<typeof useGetAgent>
+                }) as ReturnType<typeof useGetAgent>,
         )
-        const {result} = renderHook(() => useGetAgentWithEffects(params))
+        const { result } = renderHook(() => useGetAgentWithEffects(params))
 
         expect(handleErrorMock).toHaveBeenCalledTimes(1)
         expect(result.current.isLoading).toBe(false)
@@ -70,7 +72,7 @@ describe('useGetAgentWithEffects', () => {
                     data: agents[0],
                     isLoading: false,
                     error: false,
-                }) as ReturnType<typeof useGetAgent>
+                }) as ReturnType<typeof useGetAgent>,
         )
         renderHook(() => useGetAgentWithEffects(params))
         expect(setAgentState).toHaveBeenNthCalledWith(1, {

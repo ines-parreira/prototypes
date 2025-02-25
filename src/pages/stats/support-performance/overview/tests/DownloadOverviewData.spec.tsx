@@ -1,22 +1,21 @@
-import {fireEvent, render} from '@testing-library/react'
-
-import LD from 'launchdarkly-react-client-sdk'
-
 import React from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useDownloadOverViewData} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
-import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
-import {DownloadOverviewData} from 'pages/stats/support-performance/overview/DownloadOverviewData'
-import {saveZippedFiles} from 'utils/file'
-import {assumeMock} from 'utils/testing'
+import { fireEvent, render } from '@testing-library/react'
+import LD from 'launchdarkly-react-client-sdk'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useDownloadOverViewData } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
+import { DOWNLOAD_DATA_BUTTON_LABEL } from 'pages/stats/constants'
+import { DownloadOverviewData } from 'pages/stats/support-performance/overview/DownloadOverviewData'
+import { saveZippedFiles } from 'utils/file'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('common/segment')
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
 
 jest.mock(
-    'hooks/reporting/support-performance/overview/useDownloadOverviewData'
+    'hooks/reporting/support-performance/overview/useDownloadOverviewData',
 )
 const useDownloadOverViewDataMock = assumeMock(useDownloadOverViewData)
 jest.mock('utils/file')
@@ -36,14 +35,14 @@ describe('DownloadOverviewData', () => {
     })
 
     it('should send event to segment and call saveReport on download data button click', () => {
-        const {getByText} = render(<DownloadOverviewData />)
+        const { getByText } = render(<DownloadOverviewData />)
         fireEvent.click(getByText(DOWNLOAD_DATA_BUTTON_LABEL))
 
         expect(logEventMock).toHaveBeenCalledWith(
             SegmentEvent.StatDownloadClicked,
             expect.objectContaining({
                 name: 'all-metrics',
-            })
+            }),
         )
         expect(saveZippedFilesMock).toHaveBeenCalledWith({}, reportFileName)
     })

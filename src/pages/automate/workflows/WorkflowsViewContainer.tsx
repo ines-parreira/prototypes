@@ -1,19 +1,20 @@
-import React, {useCallback} from 'react'
-import {useHistory, useParams} from 'react-router-dom'
+import React, { useCallback } from 'react'
+
+import { useHistory, useParams } from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {ErrorBoundary} from 'pages/ErrorBoundary'
-import {getHasAutomate} from 'state/billing/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { ErrorBoundary } from 'pages/ErrorBoundary'
+import { getHasAutomate } from 'state/billing/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 import AutomatePaywallView from '../common/components/AutomatePaywallView'
-import {AutomateFeatures} from '../common/types'
+import { AutomateFeatures } from '../common/types'
 import WorkflowsView from './WorkflowsView'
 
 export default function WorkflowsViewContainer() {
-    const {shopName, shopType} = useParams<{
+    const { shopName, shopType } = useParams<{
         shopType: string
         shopName: string
     }>()
@@ -30,7 +31,7 @@ export default function WorkflowsViewContainer() {
         (templateSlug: string) => {
             history.push(`${newWorkflowUrl}?template=${templateSlug}`)
         },
-        [history, newWorkflowUrl]
+        [history, newWorkflowUrl],
     )
 
     const goToWorkflowTemplatesPage = useCallback(() => {
@@ -41,7 +42,7 @@ export default function WorkflowsViewContainer() {
         (workflowId: string) => {
             history.push(`${history.location.pathname}/edit/${workflowId}`)
         },
-        [history]
+        [history],
     )
 
     const notifyMerchant = useCallback(
@@ -55,10 +56,10 @@ export default function WorkflowsViewContainer() {
                         kind === 'success'
                             ? NotificationStatus.Success
                             : NotificationStatus.Error,
-                })
+                }),
             )
         },
-        [dispatch]
+        [dispatch],
     )
 
     const hasAutomate = useAppSelector(getHasAutomate)
@@ -70,7 +71,7 @@ export default function WorkflowsViewContainer() {
     }
 
     return (
-        <ErrorBoundary sentryTags={{section: 'workflows'}}>
+        <ErrorBoundary sentryTags={{ section: 'workflows' }}>
             <WorkflowsView
                 shopName={shopName}
                 shopType={shopType}

@@ -1,4 +1,3 @@
-import {fromJS, Map} from 'immutable'
 import React, {
     ChangeEvent,
     ComponentProps,
@@ -9,6 +8,8 @@ import React, {
     RefObject,
     SyntheticEvent,
 } from 'react'
+
+import { fromJS, Map } from 'immutable'
 import {
     Button,
     Form,
@@ -21,18 +22,17 @@ import {
     PopoverBody,
 } from 'reactstrap'
 
-import {getDiscountAmount} from 'business/shopify/discount'
-import {formatPrice} from 'business/shopify/number'
-import {logEvent, SegmentEvent} from 'common/segment'
+import { getDiscountAmount } from 'business/shopify/discount'
+import { formatPrice } from 'business/shopify/number'
+import { logEvent, SegmentEvent } from 'common/segment'
 import {
     AppliedDiscount,
     DiscountType,
 } from 'constants/integrations/types/shopify'
-import {getMoneySymbol} from 'utils/getMoneySymbol'
-import {focusElement} from 'utils/html'
-
+import { getMoneySymbol } from 'utils/getMoneySymbol'
+import { focusElement } from 'utils/html'
 import AmountInput from 'Widgets/modules/Shopify/modules/AmountInput'
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
+import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import css from './DiscountPopover.less'
 
@@ -77,9 +77,9 @@ export default class DiscountPopover extends PureComponent<Props, State> {
     }
 
     componentDidUpdate(prevProps: Props, prevState: State) {
-        const {actionName} = this.props
-        const {isOpen} = this.state
-        const {isOpen: wasOpen} = prevState
+        const { actionName } = this.props
+        const { isOpen } = this.state
+        const { isOpen: wasOpen } = prevState
 
         const onOpen = !wasOpen && isOpen
         const onClose = wasOpen && !isOpen
@@ -112,7 +112,7 @@ export default class DiscountPopover extends PureComponent<Props, State> {
     }
 
     _toggle = () => {
-        const {isOpen} = this.state
+        const { isOpen } = this.state
 
         this.setState({
             isOpen: !isOpen,
@@ -122,7 +122,7 @@ export default class DiscountPopover extends PureComponent<Props, State> {
     _onFixedAmountClicked = (event: MouseEvent) => {
         event.preventDefault()
 
-        const {discountValue} = this.state
+        const { discountValue } = this.state
 
         this.setState({
             type: DiscountType.FixedAmount,
@@ -133,7 +133,7 @@ export default class DiscountPopover extends PureComponent<Props, State> {
     _onPercentageClicked = (event: MouseEvent) => {
         event.preventDefault()
 
-        const {discountValue} = this.state
+        const { discountValue } = this.state
 
         this.setState({
             type: DiscountType.Percentage,
@@ -150,17 +150,17 @@ export default class DiscountPopover extends PureComponent<Props, State> {
     }
 
     _onDiscountValueChange = (discountValue: number) => {
-        this.setState({discountValue})
+        this.setState({ discountValue })
     }
 
     _onTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
         const title = event.target.value
-        this.setState({title})
+        this.setState({ title })
     }
 
     _onSubmit = (event: SyntheticEvent) => {
-        const {max, currencyCode, actionName, onChange} = this.props
-        const {title, type, discountValue} = this.state
+        const { max, currencyCode, actionName, onChange } = this.props
+        const { title, type, discountValue } = this.state
         const value = formatPrice(discountValue, currencyCode)
         event.preventDefault()
         this._toggle()
@@ -172,7 +172,7 @@ export default class DiscountPopover extends PureComponent<Props, State> {
             amount: formatPrice(
                 getDiscountAmount(max, type, value),
                 currencyCode,
-                true
+                true,
             ),
             currency_code: currencyCode,
         }
@@ -194,7 +194,7 @@ export default class DiscountPopover extends PureComponent<Props, State> {
     }
 
     _onRemove = () => {
-        const {actionName, onChange} = this.props
+        const { actionName, onChange } = this.props
 
         this._toggle()
         onChange(null)
@@ -221,7 +221,7 @@ export default class DiscountPopover extends PureComponent<Props, State> {
     }
 
     _onClose = () => {
-        const {actionName} = this.props
+        const { actionName } = this.props
 
         this._toggle()
 
@@ -252,7 +252,7 @@ export default class DiscountPopover extends PureComponent<Props, State> {
             max,
             container,
         } = this.props
-        const {isOpen, type, discountValue, title} = this.state
+        const { isOpen, type, discountValue, title } = this.state
         const discountValueMax = type === 'percentage' ? 100 : max
         const discountValueSymbol = type === 'percentage' ? '%' : null
 

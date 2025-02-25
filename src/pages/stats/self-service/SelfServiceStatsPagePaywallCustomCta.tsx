@@ -1,12 +1,12 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
-import {SegmentEvent} from 'common/segment'
+import { SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import AutomateSubscriptionButton from 'pages/settings/billing/automate/AutomateSubscriptionButton'
 import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
-import {getCurrentPlansByProduct} from 'state/billing/selectors'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {CurrentAccountState} from 'state/currentAccount/types'
+import { getCurrentPlansByProduct } from 'state/billing/selectors'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { CurrentAccountState } from 'state/currentAccount/types'
 
 const SelfServiceStatsPagePaywallCustomCta = () => {
     const [isAutomationModalOpened, setIsAutomationModalOpened] =
@@ -19,7 +19,7 @@ const SelfServiceStatsPagePaywallCustomCta = () => {
         props: {
             domain: account.get('domain'),
             current_prices: Object.values(currentProducts || {})?.map(
-                (product) => product.price_id
+                (product) => product.price_id,
             ),
             paywall_feature: 'automation_addon',
         },

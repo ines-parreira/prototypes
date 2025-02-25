@@ -1,1 +1,1 @@
-export {default as useViewPage} from './useViewPage'
+export { default as useViewPage } from './useViewPage'

@@ -1,11 +1,11 @@
-import {HandleTimeCubeWithJoins} from 'models/reporting/cubes/agentxp/HandleTimeCube'
-import {TicketQAScoreCubeWithJoins} from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
-import {ConvertOrderConversionCube} from 'models/reporting/cubes/ConvertOrderConversionCube'
-import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
-import {TicketSLACubeWithJoins} from 'models/reporting/cubes/sla/TicketSLACube'
-import {TicketTagsEnrichedCube} from 'models/reporting/cubes/TicketTagsEnrichedCube'
-import {VoiceCallCube} from 'models/reporting/cubes/VoiceCallCube'
-import {ReportingQuery} from 'models/reporting/types'
+import { HandleTimeCubeWithJoins } from 'models/reporting/cubes/agentxp/HandleTimeCube'
+import { TicketQAScoreCubeWithJoins } from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
+import { ConvertOrderConversionCube } from 'models/reporting/cubes/ConvertOrderConversionCube'
+import { HelpdeskMessageCubeWithJoins } from 'models/reporting/cubes/HelpdeskMessageCube'
+import { TicketSLACubeWithJoins } from 'models/reporting/cubes/sla/TicketSLACube'
+import { TicketTagsEnrichedCube } from 'models/reporting/cubes/TicketTagsEnrichedCube'
+import { VoiceCallCube } from 'models/reporting/cubes/VoiceCallCube'
+import { ReportingQuery } from 'models/reporting/types'
 
 export enum JobStatus {
     CancelRequested = 'cancel_requested',

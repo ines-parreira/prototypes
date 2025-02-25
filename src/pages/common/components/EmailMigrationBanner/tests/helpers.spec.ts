@@ -1,13 +1,13 @@
-import {AlertBannerTypes} from 'AlertBanners'
-import {EmailMigrationStatus} from 'models/integration/types'
+import { AlertBannerTypes } from 'AlertBanners'
+import { EmailMigrationStatus } from 'models/integration/types'
 import * as dateUtils from 'utils/date'
 
-import {computeEmailMigrationStatusBanner} from '../helpers'
+import { computeEmailMigrationStatusBanner } from '../helpers'
 
 describe('migration banner helpers', () => {
     describe('computeEmailMigrationStatusBanner', () => {
         jest.spyOn(dateUtils, 'getMoment').mockImplementation((): any =>
-            dateUtils.stringToDatetime('2023-01-10T00:00')
+            dateUtils.stringToDatetime('2023-01-10T00:00'),
         )
 
         it('should return null when status or due date are null', () => {
@@ -17,7 +17,7 @@ describe('migration banner helpers', () => {
                     due_at: null,
                     started_at: null,
                 },
-                () => {}
+                () => {},
             )
             expect(bannerSettings).toBeNull()
         })
@@ -29,14 +29,14 @@ describe('migration banner helpers', () => {
                     started_at: null,
                     due_at: '2023-01-31T00:00',
                 },
-                () => {}
+                () => {},
             )
 
             expect(
-                bannerSettings?.CTA?.text.includes('Start Migration')
+                bannerSettings?.CTA?.text.includes('Start Migration'),
             ).toBeTruthy()
             expect(
-                bannerSettings?.CTA?.text.includes('Continue Migration')
+                bannerSettings?.CTA?.text.includes('Continue Migration'),
             ).toBeFalsy()
         })
 
@@ -47,14 +47,14 @@ describe('migration banner helpers', () => {
                     started_at: '2023-01-02T00:00',
                     due_at: '2023-01-31T00:00',
                 },
-                () => {}
+                () => {},
             )
 
             expect(
-                bannerSettings?.CTA?.text.includes('Continue Migration')
+                bannerSettings?.CTA?.text.includes('Continue Migration'),
             ).toBeTruthy()
             expect(
-                bannerSettings?.CTA?.text.includes('Start Migration')
+                bannerSettings?.CTA?.text.includes('Start Migration'),
             ).toBeFalsy()
         })
 
@@ -65,14 +65,14 @@ describe('migration banner helpers', () => {
                     started_at: '2023-01-02T00:00',
                     due_at: '2023-01-31T00:00',
                 },
-                () => {}
+                () => {},
             )
 
             expect(
-                bannerSettings?.CTA?.text.includes('Continue Migration')
+                bannerSettings?.CTA?.text.includes('Continue Migration'),
             ).toBeTruthy()
             expect(
-                bannerSettings?.CTA?.text.includes('Start Migration')
+                bannerSettings?.CTA?.text.includes('Start Migration'),
             ).toBeFalsy()
         })
 
@@ -111,14 +111,14 @@ describe('migration banner helpers', () => {
                         started_at: migration.started_at,
                         due_at: migration.due_at,
                     },
-                    () => {}
+                    () => {},
                 )
 
                 expect(bannerSettings?.message).toBe(
-                    `<strong>Deadline missed:</strong> Please migrate your email integrations to our new provider to continue sending and receiving emails uninterrupted.`
+                    `<strong>Deadline missed:</strong> Please migrate your email integrations to our new provider to continue sending and receiving emails uninterrupted.`,
                 )
                 expect(bannerSettings?.type).toBe(AlertBannerTypes.Critical)
-            }
+            },
         )
 
         it('should display Finish Migration when it is past due date and migration is started', () => {
@@ -128,10 +128,10 @@ describe('migration banner helpers', () => {
                     started_at: '2023-01-31T00:00',
                     due_at: '2023-01-01T00:00',
                 },
-                () => {}
+                () => {},
             )
             expect(
-                bannerSettings?.CTA?.text.includes('Finish Migration')
+                bannerSettings?.CTA?.text.includes('Finish Migration'),
             ).toBeTruthy()
         })
 
@@ -142,10 +142,10 @@ describe('migration banner helpers', () => {
                     started_at: null,
                     due_at: '2023-01-01T00:00',
                 },
-                () => {}
+                () => {},
             )
             expect(
-                bannerSettings?.CTA?.text.includes('Start Migration')
+                bannerSettings?.CTA?.text.includes('Start Migration'),
             ).toBeTruthy()
         })
 
@@ -167,16 +167,16 @@ describe('migration banner helpers', () => {
                         started_at: migration.started_at,
                         due_at: '2023-02-20T00:00',
                     },
-                    () => {}
+                    () => {},
                 )
 
                 expect(
                     (bannerSettings?.message as string).startsWith(
-                        `<strong>Action required:</strong> We're moving to a new email provider to improve stability.`
-                    )
+                        `<strong>Action required:</strong> We're moving to a new email provider to improve stability.`,
+                    ),
                 ).toBeTruthy()
                 expect(bannerSettings?.type).toBe(AlertBannerTypes.Info)
-            }
+            },
         )
 
         it.each([
@@ -197,16 +197,16 @@ describe('migration banner helpers', () => {
                         started_at: migration.started_at,
                         due_at: '2023-01-18T00:00',
                     },
-                    () => {}
+                    () => {},
                 )
 
                 expect(
                     (bannerSettings?.message as string).startsWith(
-                        `<strong>Action required:</strong> You have <strong>less than 2 weeks</strong> left to migrate to our new email provider.`
-                    )
+                        `<strong>Action required:</strong> You have <strong>less than 2 weeks</strong> left to migrate to our new email provider.`,
+                    ),
                 ).toBeTruthy()
                 expect(bannerSettings?.type).toBe(AlertBannerTypes.Warning)
-            }
+            },
         )
 
         it.each([
@@ -227,16 +227,16 @@ describe('migration banner helpers', () => {
                         started_at: migration.started_at,
                         due_at: '2023-01-15T00:00',
                     },
-                    () => {}
+                    () => {},
                 )
 
                 expect(
                     (bannerSettings?.message as string).startsWith(
-                        `<strong>Action required:</strong> You have <strong>less than 1 week</strong> to migrate to our new email provider.`
-                    )
+                        `<strong>Action required:</strong> You have <strong>less than 1 week</strong> to migrate to our new email provider.`,
+                    ),
                 ).toBeTruthy()
                 expect(bannerSettings?.type).toBe(AlertBannerTypes.Critical)
-            }
+            },
         )
     })
 })

@@ -1,1 +1,1 @@
-export {default as ViewPanel} from './components/ViewPanel'
+export { default as ViewPanel } from './components/ViewPanel'

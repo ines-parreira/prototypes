@@ -1,11 +1,12 @@
-import {Map} from 'immutable'
-import _isEmpty from 'lodash/isEmpty'
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {useGetSelfServiceConfiguration} from 'models/selfServiceConfiguration/queries'
-import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
-import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
-import {toJS} from 'utils'
+import { Map } from 'immutable'
+import _isEmpty from 'lodash/isEmpty'
+
+import { useGetSelfServiceConfiguration } from 'models/selfServiceConfiguration/queries'
+import { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
+import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
+import { toJS } from 'utils'
 
 // TO DO: Merge with src/pages/integrations/integration/components/gorgias_chat/GorgiasChatCreationWizard/components/steps/hooks/useSelfServiceConfiguration.ts
 
@@ -15,16 +16,16 @@ type SelfServiceConfigurationResult = {
 }
 
 const useSelfServiceConfiguration = (
-    integration: Map<any, any>
+    integration: Map<any, any>,
 ): SelfServiceConfigurationResult => {
     const shopType = integration.get('type')
     const shopName =
         integration !== undefined
             ? getShopNameFromStoreIntegration(toJS(integration))
             : undefined
-    const {data: selfServiceConfiguration} = useGetSelfServiceConfiguration(
+    const { data: selfServiceConfiguration } = useGetSelfServiceConfiguration(
         shopType,
-        shopName
+        shopName,
     )
 
     const selfServiceConfigurationEnabled = useMemo(() => {

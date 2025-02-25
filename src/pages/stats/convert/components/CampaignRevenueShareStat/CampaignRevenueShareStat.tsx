@@ -3,16 +3,16 @@ import React from 'react'
 import useAppSelector from 'hooks/useAppSelector'
 import ChartCard from 'pages/stats/ChartCard'
 import LineChart from 'pages/stats/common/components/charts/LineChart/LineChart'
-import {DEFAULT_TIMEZONE} from 'pages/stats/convert/constants/components'
-import {useGetRevenueShareChart} from 'pages/stats/convert/hooks/stats/useGetRevenueShareChart'
-import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
-import {useGetNamespacedShopNameForStore} from 'pages/stats/convert/hooks/useGetNamespacedShopNameForStore'
-import {DashboardChartProps} from 'pages/stats/custom-reports/types'
+import { DEFAULT_TIMEZONE } from 'pages/stats/convert/constants/components'
+import { useGetRevenueShareChart } from 'pages/stats/convert/hooks/stats/useGetRevenueShareChart'
+import { useCampaignStatsFilters } from 'pages/stats/convert/hooks/useCampaignStatsFilters'
+import { useGetNamespacedShopNameForStore } from 'pages/stats/convert/hooks/useGetNamespacedShopNameForStore'
+import { DashboardChartProps } from 'pages/stats/custom-reports/types'
 import {
     renderTickLabelAsPercentage,
     renderTooltipLabelAsPercentage,
 } from 'pages/stats/utils'
-import {getTimezone} from 'state/currentUser/selectors'
+import { getTimezone } from 'state/currentUser/selectors'
 
 export const title = 'Total store revenue share influenced by campaigns'
 const yAxisLabel = 'Revenue share influenced by campaigns'
@@ -33,17 +33,17 @@ export const CampaignRevenueShareStat = ({
     const namespacedShopName =
         useGetNamespacedShopNameForStore(selectedIntegrations)
     const userTimezone = useAppSelector(
-        (state) => getTimezone(state) || DEFAULT_TIMEZONE
+        (state) => getTimezone(state) || DEFAULT_TIMEZONE,
     )
 
-    const {isFetching, isError, data} = useGetRevenueShareChart(
+    const { isFetching, isError, data } = useGetRevenueShareChart(
         namespacedShopName,
         selectedCampaignIds,
         selectedCampaignsOperator,
         selectedPeriod.start_datetime,
         selectedPeriod.end_datetime,
         userTimezone,
-        granularity
+        granularity,
     )
 
     const isLoading = isFetching || isError
@@ -51,7 +51,7 @@ export const CampaignRevenueShareStat = ({
     return (
         <ChartCard
             title={title}
-            hint={{title: hint}}
+            hint={{ title: hint }}
             chartId={chartId}
             dashboard={dashboard}
         >

@@ -1,15 +1,14 @@
-import {Meta, StoryFn} from '@storybook/react'
+import React, { ComponentProps } from 'react'
+
+import { Meta, StoryFn } from '@storybook/react'
 import moment from 'moment'
-import React, {ComponentProps} from 'react'
 
 import analyticsColorsModern from 'assets/css/new/stats/modern.json'
+import { ticketsCreatedDataItem } from 'fixtures/chart'
+import type { AnalyticsTheme } from 'pages/stats/common/theme'
 
-import {ticketsCreatedDataItem} from 'fixtures/chart'
-
-import type {AnalyticsTheme} from 'pages/stats/common/theme'
-
-import {ChartColors} from '../types'
-import {BarChart} from './BarChart'
+import { ChartColors } from '../types'
+import { BarChart } from './BarChart'
 
 const storyConfig: Meta = {
     title: 'Stats/BarChart',
@@ -17,9 +16,9 @@ const storyConfig: Meta = {
 }
 
 const Template: StoryFn<ComponentProps<typeof BarChart>> = (
-    props: ComponentProps<typeof BarChart>
+    props: ComponentProps<typeof BarChart>,
 ) => (
-    <div style={{height: '250px'}}>
+    <div style={{ height: '250px' }}>
         <BarChart {...props} />
     </div>
 )

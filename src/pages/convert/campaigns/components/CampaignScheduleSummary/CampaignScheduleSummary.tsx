@@ -1,14 +1,15 @@
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {DateTimeFormatType, DateTimeFormatMapper} from 'constants/datetime'
+import { DateTimeFormatMapper, DateTimeFormatType } from 'constants/datetime'
 import useAppSelector from 'hooks/useAppSelector'
-import {ScheduleSchema} from 'pages/convert/campaigns/types/CampaignSchedule'
-import {CampaignScheduleRuleValueEnum} from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
-import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
-import {formatDatetime, Datetime} from 'utils'
+import { ScheduleSchema } from 'pages/convert/campaigns/types/CampaignSchedule'
+import { CampaignScheduleRuleValueEnum } from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
+import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
+import { Datetime, formatDatetime } from 'utils'
+
+import { SCHEDULE_RULE_LABELS } from './constants'
 
 import css from './CampaignScheduleSummary.less'
-import {SCHEDULE_RULE_LABELS} from './constants'
 
 type Props = {
     scheduleConfiguration: ScheduleSchema
@@ -65,7 +66,9 @@ const customMessageTemplate = ({
     )
 }
 
-const CampaignScheduleSummary: React.FC<Props> = ({scheduleConfiguration}) => {
+const CampaignScheduleSummary: React.FC<Props> = ({
+    scheduleConfiguration,
+}) => {
     const businessHoursSettings = useAppSelector(getBusinessHoursSettings)
     const timezone = businessHoursSettings?.data?.timezone
     const dateLabel =
@@ -77,7 +80,7 @@ const CampaignScheduleSummary: React.FC<Props> = ({scheduleConfiguration}) => {
         return formatDatetime(
             scheduleConfiguration.start_datetime,
             dateLabel,
-            timezone
+            timezone,
         )
     }, [scheduleConfiguration.start_datetime, dateLabel, timezone])
 
@@ -88,7 +91,7 @@ const CampaignScheduleSummary: React.FC<Props> = ({scheduleConfiguration}) => {
         return formatDatetime(
             scheduleConfiguration.end_datetime,
             dateLabel,
-            timezone
+            timezone,
         )
     }, [scheduleConfiguration.end_datetime, dateLabel, timezone])
     let message

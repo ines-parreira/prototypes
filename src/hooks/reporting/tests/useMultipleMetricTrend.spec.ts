@@ -1,5 +1,5 @@
-import {UseQueryResult} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
+import { UseQueryResult } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
 
 import {
     fetchMultipleMetricsTrends,
@@ -9,9 +9,9 @@ import {
     AutomationDatasetCube,
     AutomationDatasetMeasure,
 } from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
-import {fetchPostReporting, usePostReporting} from 'models/reporting/queries'
-import {ReportingQuery} from 'models/reporting/types'
-import {assumeMock} from 'utils/testing'
+import { fetchPostReporting, usePostReporting } from 'models/reporting/queries'
+import { ReportingQuery } from 'models/reporting/types'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('models/reporting/queries')
 const usePostReportingMock = assumeMock(usePostReporting)
@@ -38,8 +38,8 @@ describe('MultipleMetricTrend', () => {
         })
 
         it('should return isFetching=false when no queries are fetching', () => {
-            const {result} = renderHook(() =>
-                useMultipleMetricsTrends(defaultQuery, defaultQuery)
+            const { result } = renderHook(() =>
+                useMultipleMetricsTrends(defaultQuery, defaultQuery),
             )
 
             expect(result.current.isFetching).toBe(false)
@@ -51,16 +51,16 @@ describe('MultipleMetricTrend', () => {
                 isFetching: true,
             })
 
-            const {result} = renderHook(() =>
-                useMultipleMetricsTrends(defaultQuery, defaultQuery)
+            const { result } = renderHook(() =>
+                useMultipleMetricsTrends(defaultQuery, defaultQuery),
             )
 
             expect(result.current.isFetching).toBe(true)
         })
 
         it('should return isError=false when no queries errored', () => {
-            const {result} = renderHook(() =>
-                useMultipleMetricsTrends(defaultQuery, defaultQuery)
+            const { result } = renderHook(() =>
+                useMultipleMetricsTrends(defaultQuery, defaultQuery),
             )
 
             expect(result.current.isError).toBe(false)
@@ -72,16 +72,16 @@ describe('MultipleMetricTrend', () => {
                 isError: true,
             } as UseQueryResult)
 
-            const {result} = renderHook(() =>
-                useMultipleMetricsTrends(defaultQuery, defaultQuery)
+            const { result } = renderHook(() =>
+                useMultipleMetricsTrends(defaultQuery, defaultQuery),
             )
 
             expect(result.current.isError).toBe(true)
         })
 
         it('should return empty data when the queries does not have data', () => {
-            const {result} = renderHook(() =>
-                useMultipleMetricsTrends(defaultQuery, defaultQuery)
+            const { result } = renderHook(() =>
+                useMultipleMetricsTrends(defaultQuery, defaultQuery),
             )
 
             expect(result.current.data).toEqual({
@@ -110,8 +110,8 @@ describe('MultipleMetricTrend', () => {
                 data: null,
             } as UseQueryResult)
 
-            const {result} = renderHook(() =>
-                useMultipleMetricsTrends(defaultQuery, defaultQuery)
+            const { result } = renderHook(() =>
+                useMultipleMetricsTrends(defaultQuery, defaultQuery),
             )
 
             expect(result.current.data).toEqual({
@@ -142,8 +142,8 @@ describe('MultipleMetricTrend', () => {
                 },
             } as UseQueryResult)
 
-            const {result} = renderHook(() =>
-                useMultipleMetricsTrends(defaultQuery, defaultQuery)
+            const { result } = renderHook(() =>
+                useMultipleMetricsTrends(defaultQuery, defaultQuery),
             )
 
             expect(result.current.data).toEqual({
@@ -194,7 +194,7 @@ describe('MultipleMetricTrend', () => {
             } as UseQueryResult)
 
             renderHook(() =>
-                useMultipleMetricsTrends(defaultQuery, prevPeriodQuery)
+                useMultipleMetricsTrends(defaultQuery, prevPeriodQuery),
             )
 
             const defaultSelect = usePostReportingMock.mock.calls[0][1]?.select
@@ -204,7 +204,7 @@ describe('MultipleMetricTrend', () => {
                 [defaultQuery],
                 expect.objectContaining({
                     select: defaultSelect,
-                })
+                }),
             )
             expect(defaultSelect?.(data)).toEqual({
                 [AutomationDatasetMeasure.AutomatedInteractions]: 10,
@@ -215,7 +215,7 @@ describe('MultipleMetricTrend', () => {
                 [prevPeriodQuery],
                 expect.objectContaining({
                     select: usePostReportingMock.mock.calls[1][1]?.select,
-                })
+                }),
             )
             expect(previousSelect?.(data)).toEqual({
                 [AutomationDatasetMeasure.AutomatedInteractions]: 10,
@@ -237,7 +237,7 @@ describe('MultipleMetricTrend', () => {
         it('should return isError=false when no queries errored', async () => {
             const result = await fetchMultipleMetricsTrends(
                 defaultQuery,
-                defaultQuery
+                defaultQuery,
             )
 
             expect(result.isError).toBe(false)
@@ -251,7 +251,7 @@ describe('MultipleMetricTrend', () => {
 
             const result = await fetchMultipleMetricsTrends(
                 defaultQuery,
-                defaultQuery
+                defaultQuery,
             )
 
             expect(result.isError).toBe(true)
@@ -260,7 +260,7 @@ describe('MultipleMetricTrend', () => {
         it('should return empty data when the queries does not have data', async () => {
             const result = await fetchMultipleMetricsTrends(
                 defaultQuery,
-                defaultQuery
+                defaultQuery,
             )
 
             expect(result.data).toEqual({
@@ -297,7 +297,7 @@ describe('MultipleMetricTrend', () => {
 
             const result = await fetchMultipleMetricsTrends(
                 defaultQuery,
-                defaultQuery
+                defaultQuery,
             )
 
             expect(result.data).toEqual({
@@ -339,7 +339,7 @@ describe('MultipleMetricTrend', () => {
 
             const result = await fetchMultipleMetricsTrends(
                 defaultQuery,
-                defaultQuery
+                defaultQuery,
             )
 
             expect(result.data).toEqual({

@@ -1,17 +1,19 @@
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {HelpCenter, HelpCenterTranslationSeoMeta} from 'models/helpCenter/types'
+import {
+    HelpCenter,
+    HelpCenterTranslationSeoMeta,
+} from 'models/helpCenter/types'
 import InputField from 'pages/common/forms/input/InputField'
 import TextArea from 'pages/common/forms/TextArea'
-import {useHelpCenterPreferencesSettings} from 'pages/settings/helpCenter/providers/HelpCenterPreferencesSettings'
+import { useHelpCenterPreferencesSettings } from 'pages/settings/helpCenter/providers/HelpCenterPreferencesSettings'
 import {
     getAbsoluteUrl,
     getHelpCenterDomain,
 } from 'pages/settings/helpCenter/utils/helpCenter.utils'
-
 import settingsCss from 'pages/settings/settings.less'
 
-import {SearchEnginePreview} from '../../../SearchEnginePreview'
+import { SearchEnginePreview } from '../../../SearchEnginePreview'
 
 import css from './SEO.less'
 
@@ -19,9 +21,9 @@ type Props = {
     helpCenter: HelpCenter
 }
 
-export const SEO: React.FC<Props> = ({helpCenter}: Props) => {
+export const SEO: React.FC<Props> = ({ helpCenter }: Props) => {
     const {
-        preferences: {seoMeta},
+        preferences: { seoMeta },
         updatePreferences,
     } = useHelpCenterPreferencesSettings()
 
@@ -66,7 +68,7 @@ export const SEO: React.FC<Props> = ({helpCenter}: Props) => {
                 caption="Help Center description is displayed in search engines to help people find it."
             />
             <SearchEnginePreview
-                baseUrl={getAbsoluteUrl({domain}, false)}
+                baseUrl={getAbsoluteUrl({ domain }, false)}
                 title={seoMeta.title || `${helpCenter.name} Help Center`}
                 description={
                     seoMeta.description ||

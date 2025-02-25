@@ -1,11 +1,11 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
-import {useParams} from 'react-router-dom'
+import { renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
+import { useParams } from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import history from 'pages/history'
-import {useSplitTicketView} from 'split-ticket-view-toggle'
+import { useSplitTicketView } from 'split-ticket-view-toggle'
 
 import useGoToNextTicket from '../useGoToNextTicket'
 import usePrevNextTicketNavigation from '../usePrevNextTicketNavigation'
@@ -36,17 +36,17 @@ describe('useGoToNextTicket', () => {
     beforeEach(() => {
         useAppSelectorMock.mockReturnValue(fromJS({}))
         useAppDispatchMock.mockReturnValue(jest.fn().mockReturnValue(true))
-        mockUseSplitTicketViewMock.mockReturnValue({isEnabled: false})
+        mockUseSplitTicketViewMock.mockReturnValue({ isEnabled: false })
         useParamsMock.mockReturnValue({})
         mockUsePrevNextTicketNavigation.mockReturnValue(jest.fn())
     })
 
     it('should return the old ticket navigation method and return isEnabled as true', async () => {
         mockUsePrevNextTicketNavigation.mockReturnValue(
-            mockUsePrevNextTicketNavigationFn
+            mockUsePrevNextTicketNavigationFn,
         )
 
-        const {result} = renderHook(() => useGoToNextTicket('123'))
+        const { result } = renderHook(() => useGoToNextTicket('123'))
         expect(result.current.goToTicket).toBeDefined()
         expect(result.current.isEnabled).toBe(true)
 
@@ -56,11 +56,11 @@ describe('useGoToNextTicket', () => {
 
     it('should return the old ticket navigation method and return isEnabled as false if ticket navigation is not available', () => {
         mockUsePrevNextTicketNavigation.mockReturnValue(
-            mockUsePrevNextTicketNavigationFn
+            mockUsePrevNextTicketNavigationFn,
         )
         useAppDispatchMock.mockReturnValue(jest.fn().mockReturnValue(false))
 
-        const {result} = renderHook(() => useGoToNextTicket('123'))
+        const { result } = renderHook(() => useGoToNextTicket('123'))
         expect(result.current.goToTicket).toBeDefined()
         expect(result.current.isEnabled).toBe(false)
     })
@@ -71,11 +71,11 @@ describe('useGoToNextTicket', () => {
             nextTicketId: 456,
         })
         mockUsePrevNextTicketNavigation.mockReturnValue(
-            mockUsePrevNextTicketNavigationFn
+            mockUsePrevNextTicketNavigationFn,
         )
-        useAppSelectorMock.mockReturnValue(fromJS({search: ''}))
+        useAppSelectorMock.mockReturnValue(fromJS({ search: '' }))
 
-        const {result} = renderHook(() => useGoToNextTicket('123'))
+        const { result } = renderHook(() => useGoToNextTicket('123'))
         expect(result.current.goToTicket).toBeDefined()
         expect(result.current.isEnabled).toBe(true)
 
@@ -88,9 +88,9 @@ describe('useGoToNextTicket', () => {
             isEnabled: true,
             nextTicketId: 456,
         })
-        useParamsMock.mockReturnValue({viewId: '123'})
+        useParamsMock.mockReturnValue({ viewId: '123' })
 
-        const {result} = renderHook(() => useGoToNextTicket('123'))
+        const { result } = renderHook(() => useGoToNextTicket('123'))
         expect(result.current.goToTicket).toBeDefined()
         expect(result.current.isEnabled).toBe(true)
 

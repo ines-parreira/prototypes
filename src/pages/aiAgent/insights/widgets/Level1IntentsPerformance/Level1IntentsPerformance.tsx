@@ -1,24 +1,23 @@
 import React from 'react'
 
-import {useParams} from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
-import {useAIAgentMetrics} from 'hooks/reporting/automate/useAIAgentInsightsDataset'
-import {useAIAgentUserId} from 'hooks/reporting/automate/useAIAgentUserId'
-import {useNewAutomateFilters} from 'hooks/reporting/automate/useNewAutomateFilters'
+import { useAIAgentMetrics } from 'hooks/reporting/automate/useAIAgentInsightsDataset'
+import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
+import { useNewAutomateFilters } from 'hooks/reporting/automate/useNewAutomateFilters'
 import useAppSelector from 'hooks/useAppSelector'
-import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import {useGetCustomTicketsFieldsDefinitionData} from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import PerformanceTip from 'pages/stats/PerformanceTip'
-import {getPageStatsFilters} from 'state/stats/selectors'
+import { getPageStatsFilters } from 'state/stats/selectors'
+import { AIInsightsMetric } from 'state/ui/stats/types'
 
-import {AIInsightsMetric} from 'state/ui/stats/types'
-
-import {IntentsPerformance} from '../IntentsPerformance/IntentsPerformance'
+import { IntentsPerformance } from '../IntentsPerformance/IntentsPerformance'
 
 const getPerformanceTipType = (
     top10P: number,
     avg: number,
-    value?: number | null
+    value?: number | null,
 ) => {
     if (value === null || value === undefined) return 'neutral'
     if (value > top10P) return 'success'
@@ -30,18 +29,18 @@ const getPerformanceTipType = (
 export const Level1IntentsPerformance = () => {
     const pageStatsFilters = useAppSelector(getPageStatsFilters)
 
-    const {shopName} = useParams<{
+    const { shopName } = useParams<{
         shopName: string
     }>()
 
-    const {userTimezone} = useNewAutomateFilters()
+    const { userTimezone } = useNewAutomateFilters()
     const aiAgentMetrics = useAIAgentMetrics(pageStatsFilters, userTimezone)
 
     const aiAgentUserId = useAIAgentUserId()
-    const {intentCustomFieldId, outcomeCustomFieldId} =
+    const { intentCustomFieldId, outcomeCustomFieldId } =
         useGetCustomTicketsFieldsDefinitionData()
 
-    const aiAgentNavigation = useAiAgentNavigation({shopName})
+    const aiAgentNavigation = useAiAgentNavigation({ shopName })
 
     return (
         <IntentsPerformance
@@ -143,7 +142,7 @@ export const Level1IntentsPerformance = () => {
                             type={getPerformanceTipType(
                                 4.7,
                                 4.2,
-                                aiAgentMetrics.aiAgentCSAT.data?.value
+                                aiAgentMetrics.aiAgentCSAT.data?.value,
                             )}
                         >
                             Take advantage of satisfied customers to ask nicely

@@ -1,13 +1,13 @@
-import {useCallback, useMemo} from 'react'
+import { useCallback, useMemo } from 'react'
 
-import {TicketChannel} from 'business/types/ticket'
+import { TicketChannel } from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
 import {
-    IntegrationType,
-    GorgiasChatIntegration,
     GorgiasChatCreationWizardStatus,
+    GorgiasChatIntegration,
+    IntegrationType,
 } from 'models/integration/types'
-import {getIntegrationsByType} from 'state/integrations/selectors'
+import { getIntegrationsByType } from 'state/integrations/selectors'
 
 import useSelfServiceStoreIntegration from './useSelfServiceStoreIntegration'
 
@@ -19,14 +19,14 @@ export type SelfServiceChatChannel = {
 const useSelfServiceChatChannels = (
     shopType: string,
     shopName: string,
-    includeDraft = false
+    includeDraft = false,
 ) => {
     const getChatIntegrations = useMemo(
         () =>
             getIntegrationsByType<GorgiasChatIntegration>(
-                IntegrationType.GorgiasChat
+                IntegrationType.GorgiasChat,
             ),
-        []
+        [],
     )
 
     const chatIntegrations = useAppSelector(getChatIntegrations)
@@ -38,7 +38,7 @@ const useSelfServiceChatChannels = (
             includeDraft ||
             integration.meta.wizard?.status !==
                 GorgiasChatCreationWizardStatus.Draft,
-        [includeDraft]
+        [includeDraft],
     )
 
     return useMemo<SelfServiceChatChannel[]>(
@@ -47,14 +47,14 @@ const useSelfServiceChatChannels = (
                 .filter(
                     (integration) =>
                         integration.meta.shop_integration_id ===
-                        storeIntegrationId
+                        storeIntegrationId,
                 )
                 .filter((integration) => matchesPublishStateFilter(integration))
                 .map((integration) => ({
                     type: TicketChannel.Chat,
                     value: integration,
                 })),
-        [chatIntegrations, matchesPublishStateFilter, storeIntegrationId]
+        [chatIntegrations, matchesPublishStateFilter, storeIntegrationId],
     )
 }
 

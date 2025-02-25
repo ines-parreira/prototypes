@@ -1,10 +1,10 @@
-import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
+import { HelpdeskMessageCubeWithJoins } from 'models/reporting/cubes/HelpdeskMessageCube'
 import {
     TicketSatisfactionSurveyDimension,
     TicketSatisfactionSurveyMeasure,
 } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
-import {ReportingFilterOperator, ReportingQuery} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import { ReportingFilterOperator, ReportingQuery } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
 import {
     statsFiltersToReportingFilters,
     TicketStatsFiltersMembers,
@@ -12,7 +12,7 @@ import {
 
 export const surveyScoresQueryFactory = (
     filters: StatsFilters,
-    timezone: string
+    timezone: string,
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
     measures: [TicketSatisfactionSurveyMeasure.ScoredSurveysCount],
     dimensions: [TicketSatisfactionSurveyDimension.SurveyScore],

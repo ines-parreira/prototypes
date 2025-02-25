@@ -1,8 +1,8 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationType} from 'models/integration/types'
-import {useStoreIntegration} from 'pages/integrations/integration/hooks/useStoreIntegration'
+import { IntegrationType } from 'models/integration/types'
+import { useStoreIntegration } from 'pages/integrations/integration/hooks/useStoreIntegration'
 
 import useShopifyCheckoutChatInstallation from '../useShopifyCheckoutChatInstallation'
 
@@ -28,7 +28,9 @@ describe('useShopifyCheckoutChatInstallation', () => {
     }
 
     beforeEach(() => {
-        useAppSelectorMock.mockReturnValue({installedOnShopifyCheckout: false})
+        useAppSelectorMock.mockReturnValue({
+            installedOnShopifyCheckout: false,
+        })
         useStoreIntegrationMock.mockReturnValue({
             storeIntegration: mockStoreIntegration,
             isConnectedToShopify: true,
@@ -37,7 +39,7 @@ describe('useShopifyCheckoutChatInstallation', () => {
 
     it('returns correct data when Shopify integration exists and chat is installed', () => {
         // Given
-        useAppSelectorMock.mockReturnValue({installedOnShopifyCheckout: true})
+        useAppSelectorMock.mockReturnValue({ installedOnShopifyCheckout: true })
 
         // When
         const result = useShopifyCheckoutChatInstallation(mockIntegration)

@@ -1,14 +1,14 @@
-import classNames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useMemo, useRef, useState} from 'react'
-import {ReactCountryFlag} from 'react-country-flag'
+import React, { useMemo, useRef, useState } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import classNames from 'classnames'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { ReactCountryFlag } from 'react-country-flag'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
@@ -18,6 +18,7 @@ import {
     LanguageCode,
     supportedLanguages,
 } from '../models/workflowConfiguration.types'
+
 import css from './WorkflowLanguageSelect.less'
 
 type Props = {
@@ -40,14 +41,18 @@ export default function WorkflowLanguageSelect({
 
     const sortedLanguages = useMemo(() => {
         let filteredLanguages = [
-            ...supportedLanguages.filter(({code}) => available.includes(code)),
-            ...supportedLanguages.filter(({code}) => !available.includes(code)),
+            ...supportedLanguages.filter(({ code }) =>
+                available.includes(code),
+            ),
+            ...supportedLanguages.filter(
+                ({ code }) => !available.includes(code),
+            ),
         ]
 
         if (!enableNewLanguages) {
             const unsupportedCodes = ['en-GB', 'fi-FI', 'ja-JP', 'pt-BR']
             filteredLanguages = filteredLanguages.filter(
-                ({code}) => !unsupportedCodes.includes(code)
+                ({ code }) => !unsupportedCodes.includes(code),
             )
         }
         return filteredLanguages
@@ -70,7 +75,7 @@ export default function WorkflowLanguageSelect({
                         className={css.countryFlag}
                     />
                     {
-                        supportedLanguages.find(({code}) => code === selected)
+                        supportedLanguages.find(({ code }) => code === selected)
                             ?.label
                     }
                 </div>
@@ -85,7 +90,7 @@ export default function WorkflowLanguageSelect({
                 value={selected}
             >
                 <DropdownBody className={css.dropdownBody}>
-                    {sortedLanguages.map(({code, label}) => (
+                    {sortedLanguages.map(({ code, label }) => (
                         <DropdownItem
                             key={code}
                             option={{
@@ -116,7 +121,7 @@ export default function WorkflowLanguageSelect({
                                                     e.stopPropagation()
                                                     setIsSelectOpen(false)
                                                     setLanguagePendingDeletionConfirmation(
-                                                        code
+                                                        code,
                                                     )
                                                 }}
                                                 size="small"
@@ -152,8 +157,8 @@ export default function WorkflowLanguageSelect({
                 <ModalHeader
                     title={`Delete ${
                         supportedLanguages.find(
-                            ({code}) =>
-                                code === languagePendingDeletionConfirmation
+                            ({ code }) =>
+                                code === languagePendingDeletionConfirmation,
                         )?.label ?? ''
                     }?`}
                 />

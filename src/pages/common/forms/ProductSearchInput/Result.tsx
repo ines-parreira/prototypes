@@ -1,15 +1,16 @@
-import {getSizedImageUrl} from '@shopify/theme-images'
-import classnames from 'classnames'
 import React from 'react'
 
+import { getSizedImageUrl } from '@shopify/theme-images'
+import classnames from 'classnames'
+
 import defaultImage from 'assets/img/presentationals/shopify-product-default-image.png'
-import {IntegrationType} from 'models/integration/constants'
-import {ProductStockQuantity} from 'pages/common/components/StockQuantity'
+import { IntegrationType } from 'models/integration/constants'
+import { ProductStockQuantity } from 'pages/common/components/StockQuantity'
 
 import css from './Result.less'
 
 export type Props = {
-    image: {src?: string; alt?: string; type?: IntegrationType} | null
+    image: { src?: string; alt?: string; type?: IntegrationType } | null
     title: string
     subtitle: string | null
     stock: {
@@ -24,7 +25,7 @@ export type Props = {
 }
 
 const getImageSrc = (
-    image: {src?: string; alt?: string; type?: IntegrationType} | null
+    image: { src?: string; alt?: string; type?: IntegrationType } | null,
 ) => {
     let imageSrc = image?.src
 

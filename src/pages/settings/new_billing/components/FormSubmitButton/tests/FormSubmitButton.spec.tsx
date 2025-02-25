@@ -1,20 +1,20 @@
-import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
-
 import React from 'react'
 
-import {Form} from 'core/forms'
-import {FormInputField} from 'pages/settings/new_billing/components/FormInputField/FormInputField'
-import {FormSubmitButton} from 'pages/settings/new_billing/components/FormSubmitButton/FormSubmitButton'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+
+import { Form } from 'core/forms'
+import { FormInputField } from 'pages/settings/new_billing/components/FormInputField/FormInputField'
+import { FormSubmitButton } from 'pages/settings/new_billing/components/FormSubmitButton/FormSubmitButton'
 
 describe('FormSubmitButton', () => {
     it('should render submit button', () => {
         render(
             <Form onValidSubmit={jest.fn()}>
                 <FormSubmitButton>Submit</FormSubmitButton>
-            </Form>
+            </Form>,
         )
 
-        expect(screen.getByRole('button', {name: 'Submit'})).toBeVisible()
+        expect(screen.getByRole('button', { name: 'Submit' })).toBeVisible()
     })
 
     it('should render submit button with loading state', async () => {
@@ -26,16 +26,16 @@ describe('FormSubmitButton', () => {
                     () =>
                         new Promise((resolve) => {
                             resolveSubmit = resolve
-                        })
+                        }),
                 )}
             >
                 <FormSubmitButton>Submit</FormSubmitButton>
-            </Form>
+            </Form>,
         )
 
         expect(screen.queryByText('Loading...')).not.toBeInTheDocument()
 
-        fireEvent.click(screen.getByRole('button', {name: 'Submit'}))
+        fireEvent.click(screen.getByRole('button', { name: 'Submit' }))
 
         await waitFor(() => {
             expect(screen.getByText('Loading...')).toBeVisible()
@@ -55,10 +55,10 @@ describe('FormSubmitButton', () => {
             <Form onValidSubmit={jest.fn()}>
                 <FormInputField
                     name="address"
-                    rules={{validate: () => 'Address is invalid'}}
+                    rules={{ validate: () => 'Address is invalid' }}
                 />
                 <FormSubmitButton />
-            </Form>
+            </Form>,
         )
 
         expect(screen.queryByText('Address is invalid')).not.toBeInTheDocument()

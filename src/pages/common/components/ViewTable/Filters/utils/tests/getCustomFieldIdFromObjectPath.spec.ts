@@ -6,7 +6,7 @@ describe('getCustomFieldIdFromObjectPath', () => {
     })
     it('should return the id from an object path', () => {
         expect(getCustomFieldIdFromObjectPath('custom_fields[123].value')).toBe(
-            123
+            123,
         )
     })
 })

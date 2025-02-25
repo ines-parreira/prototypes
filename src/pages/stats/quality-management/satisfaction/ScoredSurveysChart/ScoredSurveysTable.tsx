@@ -1,12 +1,14 @@
-import {Skeleton} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
 import React from 'react'
+
+import classNames from 'classnames'
+
+import { Skeleton } from '@gorgias/merchant-ui-kit'
 
 import {
     ScoredSurveyDataKey,
     ScoredSurveysData,
 } from 'hooks/reporting/quality-management/satisfaction/useScoredSurveys'
-import {opposite, OrderDirection} from 'models/api/types'
+import { opposite, OrderDirection } from 'models/api/types'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
@@ -38,14 +40,15 @@ export default function ScoredSurveysTable({
     tableState,
     handleSort,
 }: Props) {
-    const {orderBy, orderDirection} = tableState
+    const { orderBy, orderDirection } = tableState
 
     return (
         <div className={css.container}>
             <TableWrapper className={css.table}>
                 <TableHead>
                     {SCORED_SURVEYS_TABLE_COLUMNS.map((column) => {
-                        const {title, width, property, justifyContent} = column
+                        const { title, width, property, justifyContent } =
+                            column
                         return (
                             <HeaderCellProperty
                                 key={title}
@@ -70,8 +73,12 @@ export default function ScoredSurveysTable({
                             <TableBodyRow key={rowData.ticketId}>
                                 {SCORED_SURVEYS_TABLE_COLUMNS.map(
                                     (
-                                        {width, justifyContent, CellComponent},
-                                        index
+                                        {
+                                            width,
+                                            justifyContent,
+                                            CellComponent,
+                                        },
+                                        index,
                                     ) => (
                                         <CellComponent
                                             innerClassName={css.cellPadding}
@@ -80,7 +87,7 @@ export default function ScoredSurveysTable({
                                             justifyContent={justifyContent}
                                             {...rowData}
                                         />
-                                    )
+                                    ),
                                 )}
                             </TableBodyRow>
                         ))
@@ -94,9 +101,9 @@ export default function ScoredSurveysTable({
 export const TableBodySkeleton = () => {
     return (
         <>
-            {Array.from({length: SURVEYS_PER_PAGE}, (_, index) => (
+            {Array.from({ length: SURVEYS_PER_PAGE }, (_, index) => (
                 <TableBodyRow key={index}>
-                    {SCORED_SURVEYS_TABLE_COLUMNS.map(({title, width}) => (
+                    {SCORED_SURVEYS_TABLE_COLUMNS.map(({ title, width }) => (
                         <BodyCell
                             key={title}
                             width={width}

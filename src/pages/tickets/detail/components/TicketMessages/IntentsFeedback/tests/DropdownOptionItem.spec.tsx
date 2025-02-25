@@ -1,7 +1,8 @@
-import {render} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {DropdownOptionItem} from '../DropdownOptionItem'
+import { render } from '@testing-library/react'
+
+import { DropdownOptionItem } from '../DropdownOptionItem'
 
 const minProps: ComponentProps<typeof DropdownOptionItem> = {
     option: {
@@ -13,7 +14,7 @@ const minProps: ComponentProps<typeof DropdownOptionItem> = {
 
 describe('<DropdownnOptionItem/>', () => {
     it('should display the default dropdown option', () => {
-        const {container} = render(<DropdownOptionItem {...minProps} />)
+        const { container } = render(<DropdownOptionItem {...minProps} />)
         expect(container.firstChild).toMatchSnapshot()
     })
 })

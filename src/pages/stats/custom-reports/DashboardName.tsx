@@ -1,8 +1,8 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
 import InputField from 'pages/common/forms/input/InputField'
 import css from 'pages/stats/custom-reports/DashboardName.less'
-import {EmojiInput} from 'pages/stats/custom-reports/EmojiInput'
+import { EmojiInput } from 'pages/stats/custom-reports/EmojiInput'
 
 export type DashboardNameValue = {
     name: string
@@ -35,7 +35,7 @@ export const DashboardName = ({
                 placeholder="Add dashboard name"
                 value={value.name}
                 onChange={(nextValue) =>
-                    onChange({emoji: value.emoji, name: nextValue})
+                    onChange({ emoji: value.emoji, name: nextValue })
                 }
                 autoFocus={autoFocus}
                 onBlur={() => {
@@ -48,7 +48,7 @@ export const DashboardName = ({
                         name="emoji"
                         value={value.emoji}
                         onChange={(nextValue) =>
-                            onChange({name: value.name, emoji: nextValue})
+                            onChange({ name: value.name, emoji: nextValue })
                         }
                         className={css.emojiSelect}
                     />

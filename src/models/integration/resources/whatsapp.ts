@@ -1,6 +1,6 @@
 import {
-    WhatsAppMigrationProgress,
     WhatsAppCodeVerificationMethod,
+    WhatsAppMigrationProgress,
 } from 'models/integration/types'
 
 import client from '../../api/resources'
@@ -13,7 +13,7 @@ export const getMigrationProgress = async ({
     waba_id: string
 }): Promise<WhatsAppMigrationProgress> => {
     const res = await client.get<WhatsAppMigrationProgress>(
-        `/integrations/whatsapp/migration-progress?phone_number=${phone_number}&waba_id=${waba_id}`
+        `/integrations/whatsapp/migration-progress?phone_number=${phone_number}&waba_id=${waba_id}`,
     )
     return res.data
 }
@@ -22,9 +22,9 @@ export const startMigration = async (payload: {
     phone_number: string
     waba_id: string
 }): Promise<string> => {
-    const res = await client.post<{waba_phone_number_id: string}>(
+    const res = await client.post<{ waba_phone_number_id: string }>(
         `/integrations/whatsapp/migrate`,
-        payload
+        payload,
     )
     return res.data?.waba_phone_number_id
 }
@@ -49,7 +49,7 @@ export type WhatsAppRegistrationPayload = {
 }
 
 export const registerNumber = async (
-    payload: WhatsAppRegistrationPayload
+    payload: WhatsAppRegistrationPayload,
 ): Promise<void> => {
     await client.post(`/integrations/whatsapp/register`, payload)
 }

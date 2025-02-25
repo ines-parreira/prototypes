@@ -1,17 +1,17 @@
 import _omit from 'lodash/omit'
-import {ulid} from 'ulidx'
+import { ulid } from 'ulidx'
 
-import {removeLinksFromHtml} from 'utils/html'
+import { removeLinksFromHtml } from 'utils/html'
 
-import {Campaign, CampaignCreatePayload} from '../types/Campaign'
-import {CampaignVariant} from '../types/CampaignVariant'
-import {CampaignStatus} from '../types/enums/CampaignStatus.enum'
-import {createTriggerRule} from './createTriggerRule'
+import { Campaign, CampaignCreatePayload } from '../types/Campaign'
+import { CampaignVariant } from '../types/CampaignVariant'
+import { CampaignStatus } from '../types/enums/CampaignStatus.enum'
+import { createTriggerRule } from './createTriggerRule'
 
 export const createCampaignFromVariant = (
     campaign: Campaign,
     channelConnectionId: string | undefined,
-    variant: CampaignVariant | undefined
+    variant: CampaignVariant | undefined,
 ): CampaignCreatePayload => {
     if (!channelConnectionId) {
         throw new Error('Channel connection ID is required')

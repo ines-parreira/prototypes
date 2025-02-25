@@ -1,18 +1,19 @@
+import React, { useMemo, useRef } from 'react'
+
 import classnames from 'classnames'
-import React, {useMemo, useRef} from 'react'
-import {useDrag} from 'react-dnd'
+import { useDrag } from 'react-dnd'
 
 import navbarCss from 'assets/css/navbar.less'
-import {UserRole} from 'config/types/user'
+import { UserRole } from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
-import {View, ViewVisibility} from 'models/view/types'
-import {TicketNavbarElementType} from 'state/ui/ticketNavbar/types'
-
-import {hasRole} from 'utils'
+import { View, ViewVisibility } from 'models/view/types'
+import { TicketNavbarElementType } from 'state/ui/ticketNavbar/types'
+import { hasRole } from 'utils'
 
 import TicketNavbarDropTarget from './TicketNavbarDropTarget'
-import css from './TicketNavbarView.less'
 import TicketNavbarViewLink from './TicketNavbarViewLink'
+
+import css from './TicketNavbarView.less'
 
 type Props = {
     className?: string
@@ -20,7 +21,7 @@ type Props = {
     viewCount: number | undefined
 }
 
-const TicketNavbarView = ({className, view, viewCount}: Props) => {
+const TicketNavbarView = ({ className, view, viewCount }: Props) => {
     const wrapperRef = useRef<HTMLDivElement>(null)
     const currentUser = useAppSelector((state) => state.currentUser)
     const sections = useAppSelector((state) => state.entities.sections)
@@ -30,9 +31,9 @@ const TicketNavbarView = ({className, view, viewCount}: Props) => {
         () =>
             view.visibility === ViewVisibility.Private ||
             hasRole(currentUser, UserRole.Agent),
-        [currentUser, view]
+        [currentUser, view],
     )
-    const [{isDragging}, drag] = useDrag({
+    const [{ isDragging }, drag] = useDrag({
         item: {
             id: view.id,
             type: TicketNavbarElementType.View,

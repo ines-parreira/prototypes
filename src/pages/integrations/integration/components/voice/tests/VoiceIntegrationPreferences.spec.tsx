@@ -1,17 +1,18 @@
-import {RenderResult, render, screen} from '@testing-library/react'
 import React from 'react'
-import {BrowserRouter} from 'react-router-dom'
 
-import {useFlag} from 'core/flags'
-import {Form} from 'core/forms'
-import {integrationsState} from 'fixtures/integrations'
+import { render, RenderResult, screen } from '@testing-library/react'
+import { BrowserRouter } from 'react-router-dom'
+
+import { useFlag } from 'core/flags'
+import { Form } from 'core/forms'
+import { integrationsState } from 'fixtures/integrations'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {IntegrationType} from 'models/integration/constants'
-import {PhoneIntegration} from 'models/integration/types'
+import { IntegrationType } from 'models/integration/constants'
+import { PhoneIntegration } from 'models/integration/types'
 import VoiceIntegrationPreferences from 'pages/integrations/integration/components/voice/VoiceIntegrationPreferences'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
-import {getDefaultValues, useFormSubmit} from '../useVoicePreferencesForm'
+import { getDefaultValues, useFormSubmit } from '../useVoicePreferencesForm'
 
 jest.mock('@gorgias/api-client')
 
@@ -22,7 +23,7 @@ assumeMock(useAppDispatch).mockReturnValue(dispatchMock)
 jest.mock('state/notifications/actions')
 
 const phoneIntegration = integrationsState.integrations.find(
-    (integration) => integration.type === IntegrationType.Phone
+    (integration) => integration.type === IntegrationType.Phone,
 ) as unknown as PhoneIntegration
 
 jest.mock('../useVoicePreferencesForm')
@@ -56,18 +57,18 @@ describe('<VoiceIntegrationPreferences />', () => {
         render(
             <BrowserRouter>
                 <VoiceIntegrationPreferences {...props} />
-            </BrowserRouter>
+            </BrowserRouter>,
         )
 
     beforeEach(() => {
         useFlagMock.mockReturnValue(true)
-        useFormSubmitMock.mockReturnValue({onSubmit})
+        useFormSubmitMock.mockReturnValue({ onSubmit })
         getDefaultValuesMock.mockReturnValue('default-values' as any)
-        FormMock.mockImplementation(({children}) => <div>{children}</div>)
+        FormMock.mockImplementation(({ children }) => <div>{children}</div>)
     })
 
     it('should not render the component if integration is not a phone integration', () => {
-        const {container} = renderComponent({
+        const { container } = renderComponent({
             integration: {
                 ...phoneIntegration,
                 type: IntegrationType.Email,
@@ -81,7 +82,7 @@ describe('<VoiceIntegrationPreferences />', () => {
         renderComponent(props)
 
         expect(
-            screen.getByText('VoiceIntegrationPreferencesForm')
+            screen.getByText('VoiceIntegrationPreferencesForm'),
         ).toBeInTheDocument()
     })
 
@@ -98,7 +99,7 @@ describe('<VoiceIntegrationPreferences />', () => {
                     keepDefaultValues: false,
                 },
             }),
-            {}
+            {},
         )
     })
 })

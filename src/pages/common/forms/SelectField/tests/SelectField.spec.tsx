@@ -1,5 +1,8 @@
-import {render, screen, fireEvent} from '@testing-library/react'
-import React, {ComponentProps, LegacyRef, SyntheticEvent} from 'react'
+import React, { ComponentProps, LegacyRef, SyntheticEvent } from 'react'
+
+import { fireEvent, render, screen } from '@testing-library/react'
+
+import SelectField from '../SelectField'
 
 // refs are not passed by enzyme to popper.js
 // this mock might not be needed anymore
@@ -13,8 +16,6 @@ jest.mock('popper.js', () => {
         }
     }
 })
-
-import SelectField from '../SelectField'
 
 describe('SelectField', () => {
     const minProps = {
@@ -42,24 +43,24 @@ describe('SelectField', () => {
         },
     }
     const searchChangeEvent = {
-        target: {value: 'hello'},
+        target: { value: 'hello' },
     }
 
     it('should render a select input with default props', () => {
-        const {container} = render(<SelectField {...minProps} />)
+        const { container } = render(<SelectField {...minProps} />)
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render a select input with custom props', () => {
-        const {container} = render(<SelectField {...minProps} {...props} />)
+        const { container } = render(<SelectField {...minProps} {...props} />)
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should set the minWidth of the input according to the length of the longest label', () => {
-        const {getByRole} = render(
-            <SelectField {...minProps} {...props} fixedWidth />
+        const { getByRole } = render(
+            <SelectField {...minProps} {...props} fixedWidth />,
         )
         expect(getByRole('textbox')).toHaveStyle('min-width: 58px')
     })
@@ -75,8 +76,8 @@ describe('SelectField', () => {
                 label: 'World',
             },
         ]
-        const {getByRole, getByDisplayValue} = render(
-            <SelectField {...minProps} options={options} allowCustomValue />
+        const { getByRole, getByDisplayValue } = render(
+            <SelectField {...minProps} options={options} allowCustomValue />,
         )
 
         fireEvent.change(getByRole('textbox'), searchChangeEvent)
@@ -96,8 +97,8 @@ describe('SelectField', () => {
             },
         ]
 
-        const {getByRole, getByDisplayValue} = render(
-            <SelectField {...minProps} options={options} />
+        const { getByRole, getByDisplayValue } = render(
+            <SelectField {...minProps} options={options} />,
         )
 
         fireEvent.change(getByRole('textbox'), searchChangeEvent)
@@ -109,13 +110,13 @@ describe('SelectField', () => {
         const props = {
             ...minProps,
             options: [
-                {value: 'hello', label: 'Hello'},
-                {value: 'world', label: 'World'},
+                { value: 'hello', label: 'Hello' },
+                { value: 'world', label: 'World' },
             ],
         }
 
-        const {queryByText} = render(
-            <SelectField {...props} allowCustomValue />
+        const { queryByText } = render(
+            <SelectField {...props} allowCustomValue />,
         )
 
         fireEvent.change(screen.getByRole('textbox'), searchChangeEvent)
@@ -136,8 +137,8 @@ describe('SelectField', () => {
                 label: <b>Hello2</b>,
             },
         ]
-        const {getByText} = render(
-            <SelectField {...minProps} options={options} />
+        const { getByText } = render(
+            <SelectField {...minProps} options={options} />,
         )
 
         fireEvent.change(screen.getByRole('textbox'), searchChangeEvent)
@@ -146,14 +147,14 @@ describe('SelectField', () => {
     })
 
     it('should reset state on blur', () => {
-        const {getByRole, getByText} = render(
+        const { getByRole, getByText } = render(
             <SelectField
                 {...minProps}
                 {...props}
                 focusedPlaceholder="focused placeholder"
                 placeholder="unfocused placeholder"
                 value={undefined}
-            />
+            />,
         )
 
         fireEvent.focus(getByRole('textbox'))
@@ -192,7 +193,7 @@ describe('SelectField', () => {
                 {...props}
                 value={undefined}
                 onChange={onChangeSpy}
-            />
+            />,
         )
         fireEvent.click(screen.getByText('First'))
 
@@ -201,14 +202,14 @@ describe('SelectField', () => {
 
     it('should handle click on option (custom value allowed)', () => {
         const onChangeSpy = jest.fn()
-        const {getByRole} = render(
+        const { getByRole } = render(
             <SelectField
                 {...minProps}
                 {...props}
                 value={undefined}
                 onChange={onChangeSpy}
                 allowCustomValue
-            />
+            />,
         )
 
         fireEvent.change(getByRole('textbox'), searchChangeEvent)
@@ -221,87 +222,89 @@ describe('SelectField', () => {
         const addKeys = ['Enter', 'Tab']
 
         it('Escape', () => {
-            const {getByText} = render(<SelectField {...minProps} {...props} />)
+            const { getByText } = render(
+                <SelectField {...minProps} {...props} />,
+            )
             const input = screen.getByRole('textbox')
             fireEvent.click(getByText('First'))
             fireEvent.change(input, searchChangeEvent)
-            fireEvent.keyDown(input, {key: 'Escape'})
+            fireEvent.keyDown(input, { key: 'Escape' })
 
             expect(document.querySelector('.dropdown-menu')).toHaveAttribute(
                 'aria-hidden',
-                'true'
+                'true',
             )
         })
 
         it('ArrowUp/ArrowDown', () => {
-            const {container} = render(
-                <SelectField {...minProps} {...props} value={undefined} />
+            const { container } = render(
+                <SelectField {...minProps} {...props} value={undefined} />,
             )
             const input = screen.getByRole('textbox')
 
-            fireEvent.keyDown(input, {key: 'ArrowDown'})
+            fireEvent.keyDown(input, { key: 'ArrowDown' })
             expect(
-                container.querySelector('.option--focused')
+                container.querySelector('.option--focused'),
             ).toHaveTextContent('Second')
 
-            fireEvent.keyDown(input, {key: 'ArrowUp'})
+            fireEvent.keyDown(input, { key: 'ArrowUp' })
             expect(
-                container.querySelector('.option--focused')
+                container.querySelector('.option--focused'),
             ).toHaveTextContent('First')
 
-            fireEvent.keyDown(input, {key: 'ArrowUp'})
+            fireEvent.keyDown(input, { key: 'ArrowUp' })
             expect(
-                container.querySelector('.option--focused')
+                container.querySelector('.option--focused'),
             ).toHaveTextContent('First')
         })
 
         it('ArrowUp/ArrowDown (custom value allowed)', () => {
-            const {container} = render(
+            const { container } = render(
                 <SelectField
                     {...minProps}
                     {...props}
                     value={undefined}
                     allowCustomValue
-                />
+                />,
             )
 
             const input = screen.getByRole('textbox')
 
-            fireEvent.keyDown(input, {key: 'ArrowDown'})
+            fireEvent.keyDown(input, { key: 'ArrowDown' })
             expect(
-                container.querySelector('.option--focused')
+                container.querySelector('.option--focused'),
             ).toHaveTextContent('First')
 
-            fireEvent.keyDown(input, {key: 'ArrowDown'})
+            fireEvent.keyDown(input, { key: 'ArrowDown' })
             expect(
-                container.querySelector('.option--focused')
+                container.querySelector('.option--focused'),
             ).toHaveTextContent('Second')
 
-            fireEvent.keyDown(input, {key: 'ArrowUp'})
+            fireEvent.keyDown(input, { key: 'ArrowUp' })
             expect(
-                container.querySelector('.option--focused')
+                container.querySelector('.option--focused'),
             ).toHaveTextContent('First')
 
-            fireEvent.keyDown(input, {key: 'ArrowUp'})
+            fireEvent.keyDown(input, { key: 'ArrowUp' })
             expect(container.querySelector('.option--focused')).toBeNull()
         })
 
         it.each([addKeys])('should propagate custom value on %s key', (key) => {
             const onChangeSpy = jest.fn()
-            const {getByRole} = render(
+            const { getByRole } = render(
                 <SelectField
                     {...minProps}
                     {...props}
                     onChange={onChangeSpy}
                     allowCustomValue
-                />
+                />,
             )
             const input = getByRole('textbox')
 
             fireEvent.change(input, {
-                target: {value: 'custom value'},
+                target: { value: 'custom value' },
             })
-            fireEvent.keyDown(input, {key})
+            fireEvent.keyDown(input, { key })
 
             expect(onChangeSpy).toHaveBeenCalledWith('custom value')
         })
@@ -316,14 +319,14 @@ describe('SelectField', () => {
                         {...props}
                         value={undefined}
                         onChange={onChangeSpy}
-                    />
+                    />,
                 )
                 const input = screen.getByRole('textbox')
 
-                fireEvent.keyDown(input, {key})
+                fireEvent.keyDown(input, { key })
 
                 expect(onChangeSpy).toHaveBeenCalledWith(props.options[0].value)
-            }
+            },
         )
 
         it('Enter/Tab (disabled value)', () => {
@@ -344,17 +347,17 @@ describe('SelectField', () => {
                     value={undefined}
                     onChange={onChangeSpy}
                     allowCustomValue
-                />
+                />,
             )
             const input = screen.getByRole('textbox')
 
-            fireEvent.keyDown(input, {key: 'ArrowDown'})
-            fireEvent.keyDown(input, {key: 'Enter'})
+            fireEvent.keyDown(input, { key: 'ArrowDown' })
+            fireEvent.keyDown(input, { key: 'Enter' })
 
             expect(onChangeSpy).not.toHaveBeenCalled()
 
-            fireEvent.keyDown(input, {key: 'ArrowDown'})
-            fireEvent.keyDown(input, {key: 'Enter'})
+            fireEvent.keyDown(input, { key: 'ArrowDown' })
+            fireEvent.keyDown(input, { key: 'Enter' })
 
             expect(onChangeSpy).toHaveBeenCalledWith(props.options[0].value)
         })
@@ -373,43 +376,43 @@ describe('SelectField', () => {
                         {...props}
                         value={undefined}
                         ref={instanceRef}
-                    />
+                    />,
                 )
 
                 const stopPropagationSpy = jest.spyOn(
                     instanceRef.current!,
-                    '_stopPropagation'
+                    '_stopPropagation',
                 )
                 const input = screen.getByRole('textbox')
 
-                fireEvent.keyDown(input, {key})
+                fireEvent.keyDown(input, { key })
 
                 expect(stopPropagationSpy.mock.calls.length).toEqual(1)
-            }
+            },
         )
     })
 
     describe('select with headers, dividers and actions', () => {
         const options = [
-            {label: 'Group 1', isHeader: true},
-            {node: <span>Action 1</span>, isAction: true, onClick: jest.fn()},
-            {label: 'Bar', value: 'bar'},
-            {isDivider: true},
-            {label: 'Group 2', isHeader: true},
-            {label: 'Baz', value: 'baz'},
-            {isDivider: true},
-            {label: 'Group 3', isHeader: true},
-            {label: 'Lorem ipsum', value: 'loremipsum'},
-            {isDivider: true},
+            { label: 'Group 1', isHeader: true },
+            { node: <span>Action 1</span>, isAction: true, onClick: jest.fn() },
+            { label: 'Bar', value: 'bar' },
+            { isDivider: true },
+            { label: 'Group 2', isHeader: true },
+            { label: 'Baz', value: 'baz' },
+            { isDivider: true },
+            { label: 'Group 3', isHeader: true },
+            { label: 'Lorem ipsum', value: 'loremipsum' },
+            { isDivider: true },
         ] as ComponentProps<typeof SelectField>['options']
 
         it('should filter corresponding headers and dividers when search applied', () => {
-            const {queryByText} = render(
-                <SelectField {...minProps} options={options} />
+            const { queryByText } = render(
+                <SelectField {...minProps} options={options} />,
             )
 
             const input = screen.getByRole('textbox')
-            fireEvent.change(input, {target: {value: 'ba'}})
+            fireEvent.change(input, { target: { value: 'ba' } })
 
             expect(queryByText('Group 1')).toBeInTheDocument()
             expect(queryByText('Action 1')).toBeNull()
@@ -421,39 +424,39 @@ describe('SelectField', () => {
         })
 
         it('ArrowUp/ArrowDown should skip dividers and headers, but not actions', () => {
-            const {container} = render(
-                <SelectField {...minProps} options={options} />
+            const { container } = render(
+                <SelectField {...minProps} options={options} />,
             )
             const input = screen.getByRole('textbox')
 
-            fireEvent.keyDown(input, {key: 'ArrowDown'})
+            fireEvent.keyDown(input, { key: 'ArrowDown' })
             expect(
-                container.querySelector('.action--focused')
+                container.querySelector('.action--focused'),
             ).toBeInTheDocument()
 
-            fireEvent.keyDown(input, {key: 'ArrowDown'})
+            fireEvent.keyDown(input, { key: 'ArrowDown' })
             expect(
-                container.querySelector('.option--focused')
+                container.querySelector('.option--focused'),
             ).toHaveTextContent('Bar')
 
-            fireEvent.keyDown(input, {key: 'ArrowDown'})
+            fireEvent.keyDown(input, { key: 'ArrowDown' })
             expect(
-                container.querySelector('.option--focused')
+                container.querySelector('.option--focused'),
             ).toHaveTextContent('Baz')
 
-            fireEvent.keyDown(input, {key: 'ArrowUp'})
+            fireEvent.keyDown(input, { key: 'ArrowUp' })
             expect(
-                container.querySelector('.option--focused')
+                container.querySelector('.option--focused'),
             ).toHaveTextContent('Bar')
 
-            fireEvent.keyDown(input, {key: 'ArrowUp'})
+            fireEvent.keyDown(input, { key: 'ArrowUp' })
             expect(
-                container.querySelector('.action--focused')
+                container.querySelector('.action--focused'),
             ).toBeInTheDocument()
 
-            fireEvent.keyDown(input, {key: 'ArrowUp'})
+            fireEvent.keyDown(input, { key: 'ArrowUp' })
             expect(
-                container.querySelector('.action--focused')
+                container.querySelector('.action--focused'),
             ).toBeInTheDocument()
         })
 
@@ -462,13 +465,13 @@ describe('SelectField', () => {
             const onClickSpy = jest.fn()
 
             const optionsWithSpy = [
-                {label: 'Group 1', isHeader: true},
+                { label: 'Group 1', isHeader: true },
                 {
                     node: <span>Action 1</span>,
                     isAction: true,
                     onClick: onClickSpy,
                 },
-                {label: 'Bar', value: 'bar'},
+                { label: 'Bar', value: 'bar' },
             ] as ComponentProps<typeof SelectField>['options']
 
             render(
@@ -476,17 +479,17 @@ describe('SelectField', () => {
                     {...minProps}
                     options={optionsWithSpy}
                     onChange={onChangeSpy}
-                />
+                />,
             )
 
             const input = screen.getByRole('textbox')
 
-            fireEvent.keyDown(input, {key: 'Enter'})
+            fireEvent.keyDown(input, { key: 'Enter' })
 
             expect(onChangeSpy).not.toHaveBeenCalled()
 
-            fireEvent.keyDown(input, {key: 'ArrowDown'})
-            fireEvent.keyDown(input, {key: 'Enter'})
+            fireEvent.keyDown(input, { key: 'ArrowDown' })
+            fireEvent.keyDown(input, { key: 'Enter' })
 
             expect(onChangeSpy).not.toHaveBeenCalled()
             expect(onClickSpy).toHaveBeenCalled()
@@ -494,24 +497,24 @@ describe('SelectField', () => {
 
         it('should show a caption if it was passed through props', () => {
             const caption = 'Caption'
-            const {getByText} = render(
+            const { getByText } = render(
                 <SelectField
                     {...minProps}
                     options={options}
                     caption={caption}
-                />
+                />,
             )
             expect(getByText(caption)).toBeInTheDocument()
         })
 
         it('should show a custom icon if it was passed through props', () => {
             const icon = <span>Custom Icon</span>
-            const {getByText} = render(
+            const { getByText } = render(
                 <SelectField
                     {...minProps}
                     options={options}
                     customIcon={icon}
-                />
+                />,
             )
 
             expect(getByText('Custom Icon')).toBeInTheDocument()

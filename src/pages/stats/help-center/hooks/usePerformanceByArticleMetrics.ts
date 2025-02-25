@@ -1,8 +1,8 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {useMetric} from 'hooks/reporting/useMetric'
-import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
-import {useGetHelpCenterArticleList} from 'models/helpCenter/queries'
+import { useMetric } from 'hooks/reporting/useMetric'
+import { useMetricPerDimension } from 'hooks/reporting/useMetricPerDimension'
+import { useGetHelpCenterArticleList } from 'models/helpCenter/queries'
 import {
     HelpCenterTrackingEventDimensions,
     HelpCenterTrackingEventMeasures,
@@ -11,14 +11,14 @@ import {
     performanceByArticleCountQueryFactory,
     performanceByArticleQueryFactory,
 } from 'models/reporting/queryFactories/help-center/performanceByArticle'
-import {StatsFilters} from 'models/stat/types'
-import {notEmpty} from 'utils'
+import { StatsFilters } from 'models/stat/types'
+import { notEmpty } from 'utils'
 
 import {
     HelpCenterTableCell,
     TableCellType,
 } from '../components/HelpCenterStatsTable/HelpCenterStatsTable'
-import {getArticleUrl} from '../utils/helpcenterStats.utils'
+import { getArticleUrl } from '../utils/helpcenterStats.utils'
 
 export const usePerformanceByArticleMetrics = ({
     itemPerPage,
@@ -41,7 +41,7 @@ export const usePerformanceByArticleMetrics = ({
         offset: itemPerPage * (currentPage - 1),
     })
     const articleCountMetric = useMetric(
-        performanceByArticleCountQueryFactory(statsFilters, timezone)
+        performanceByArticleCountQueryFactory(statsFilters, timezone),
     )
 
     const total = articleCountMetric.data?.value ?? 0
@@ -54,7 +54,7 @@ export const usePerformanceByArticleMetrics = ({
         })
         .filter(notEmpty)
 
-    const {data: helpCenterArticlesData} = useGetHelpCenterArticleList(
+    const { data: helpCenterArticlesData } = useGetHelpCenterArticleList(
         helpCenterId,
         {
             version_status: 'latest_draft',
@@ -62,7 +62,7 @@ export const usePerformanceByArticleMetrics = ({
         },
         {
             enabled: articleIds !== undefined,
-        }
+        },
     )
 
     const helpCenterArticles = helpCenterArticlesData?.data
@@ -79,7 +79,7 @@ export const usePerformanceByArticleMetrics = ({
                 const articleSlug =
                     value[HelpCenterTrackingEventDimensions.ArticleSlug]
                 const articleId = Number(
-                    value[HelpCenterTrackingEventDimensions.ArticleId]
+                    value[HelpCenterTrackingEventDimensions.ArticleId],
                 )
                 const localeCode =
                     value[HelpCenterTrackingEventDimensions.LocaleCode]
@@ -92,11 +92,11 @@ export const usePerformanceByArticleMetrics = ({
                           })
                         : null
                 const articleViewCount = Number(
-                    value[HelpCenterTrackingEventMeasures.ArticleView]
+                    value[HelpCenterTrackingEventMeasures.ArticleView],
                 )
 
                 const helpCenterArticle = helpCenterArticles?.find(
-                    (article) => article.id === articleId
+                    (article) => article.id === articleId,
                 )
 
                 const articleTranslation = helpCenterArticle?.translation
@@ -147,7 +147,7 @@ export const usePerformanceByArticleMetrics = ({
                     },
                 ]
             }) ?? [],
-        [articleViewData.data?.allData, helpCenterArticles, helpCenterDomain]
+        [articleViewData.data?.allData, helpCenterArticles, helpCenterDomain],
     )
 
     return useMemo(
@@ -157,6 +157,11 @@ export const usePerformanceByArticleMetrics = ({
             isLoading:
                 articleCountMetric.isFetching || articleViewData.isFetching,
         }),
-        [data, total, articleCountMetric.isFetching, articleViewData.isFetching]
+        [
+            data,
+            total,
+            articleCountMetric.isFetching,
+            articleViewData.isFetching,
+        ],
     )
 }

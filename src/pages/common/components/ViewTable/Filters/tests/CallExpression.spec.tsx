@@ -1,14 +1,15 @@
-import {fireEvent, render, screen} from '@testing-library/react'
-import {CallExpression as ESCallExpression, LogicalExpression} from 'estree'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {CustomField} from 'custom-fields/types'
-import {view as viewFixture} from 'fixtures/views'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { CallExpression as ESCallExpression, LogicalExpression } from 'estree'
+import { fromJS } from 'immutable'
+
+import { CustomField } from 'custom-fields/types'
+import { view as viewFixture } from 'fixtures/views'
 import Right from 'pages/common/components/ViewTable/Filters/Right'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
-import {CallExpression} from '../CallExpression'
+import { CallExpression } from '../CallExpression'
 import useCustomFieldsFilters from '../hooks/useCustomFieldsFilters'
 
 jest.mock('state/views/actions')
@@ -23,7 +24,7 @@ const useCustomFieldsFiltersMock = assumeMock(useCustomFieldsFilters)
 jest.mock(
     '../Right',
     () =>
-        ({updateFieldFilter, index}: ComponentProps<typeof Right>) => (
+        ({ updateFieldFilter, index }: ComponentProps<typeof Right>) => (
             <div
                 onClick={() => {
                     updateFieldFilter(index, 'open')
@@ -31,7 +32,7 @@ jest.mock(
             >
                 Right
             </div>
-        )
+        ),
 )
 
 const callExpressionNode = {
@@ -126,13 +127,13 @@ describe('<CallExpression />', () => {
     })
 
     it('should update active view on remove field', () => {
-        const {getByText} = render(<CallExpression {...minProps} />)
+        const { getByText } = render(<CallExpression {...minProps} />)
         fireEvent.click(getByText('clear'))
         expect(removeConditionMock).toHaveBeenLastCalledWith(0)
     })
 
     it('should update active view on update field', () => {
-        const {getByText} = render(<CallExpression {...minProps} />)
+        const { getByText } = render(<CallExpression {...minProps} />)
         fireEvent.click(getByText('Right'))
         expect(updateFieldFilterMock).toHaveBeenLastCalledWith(0, 'open')
     })
@@ -141,14 +142,14 @@ describe('<CallExpression />', () => {
         render(<CallExpression {...minProps} />)
         const dropdown = screen.getByRole('combobox')
         fireEvent.focus(dropdown)
-        const neqOption = screen.getByRole('option', {name: 'is not'})
+        const neqOption = screen.getByRole('option', { name: 'is not' })
         fireEvent.click(neqOption)
 
         expect(updateOperatorMock).toHaveBeenLastCalledWith(0, 'neq')
     })
 
     it('should render parent node expression operator', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <CallExpression
                 {...minProps}
                 parentNode={{
@@ -158,14 +159,14 @@ describe('<CallExpression />', () => {
                     right: callExpressionNode,
                 }}
                 index={1}
-            />
+            />,
         )
         expect(getByText('And')).toBeInTheDocument()
     })
 
     it('should render system condition badge if respective field is absent', () => {
-        const {getByText} = render(
-            <CallExpression {...minProps} config={fromJS([])} />
+        const { getByText } = render(
+            <CallExpression {...minProps} config={fromJS([])} />,
         )
         expect(getByText('System condition')).toBeInTheDocument()
     })

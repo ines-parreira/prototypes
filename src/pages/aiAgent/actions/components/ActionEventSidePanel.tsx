@@ -1,25 +1,28 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { useMemo } from 'react'
+
 import classnames from 'classnames'
-import React, {useMemo} from 'react'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useKey from 'hooks/useKey'
 import Accordion from 'pages/common/components/accordion/Accordion'
 import IconButton from 'pages/common/components/button/IconButton'
-import {Drawer} from 'pages/common/components/Drawer'
+import { Drawer } from 'pages/common/components/Drawer'
 import ShortcutIcon from 'pages/common/components/ShortcutIcon/ShortcutIcon'
-import {Components} from 'rest_api/workflows_api/client.generated'
+import { Components } from 'rest_api/workflows_api/client.generated'
 
 import {
-    LlmTriggeredExecution,
     HTTPExecutionLogs,
+    LlmTriggeredExecution,
     TemplateConfiguration,
 } from '../types'
 import CollapsableVariables from './ActionEventsCollapsableVariables'
-import css from './ActionEventSidePanel.less'
 import ActionEventTitle from './ActionEventTitle'
 import ActionStepAccordionItem, {
     ActionStepAccordionItemProps,
 } from './ActionStepAccordionItem'
+
+import css from './ActionEventSidePanel.less'
 
 type Props = {
     actionConfiguration?: Components.Schemas.GetWfConfigurationResponseDto
@@ -46,7 +49,7 @@ export default function ActionEventSidePanel({
         return templateConfigurations?.find(
             (template) =>
                 template.internal_id ===
-                actionConfiguration?.template_internal_id
+                actionConfiguration?.template_internal_id,
         )
     }, [templateConfigurations, actionConfiguration])
 
@@ -62,7 +65,7 @@ export default function ActionEventSidePanel({
         if (!execution) return []
 
         for (const [stepId, value] of Object.entries(
-            execution.state.steps_state ?? {}
+            execution.state.steps_state ?? {},
         )) {
             arr.push({
                 ...value,
@@ -79,7 +82,7 @@ export default function ActionEventSidePanel({
             onClose()
         },
         undefined,
-        [onClose]
+        [onClose],
     )
 
     const closeButtonId = 'close-button'
@@ -89,7 +92,7 @@ export default function ActionEventSidePanel({
             steps.sort((a, b) => {
                 return new Date(a.at).getTime() - new Date(b.at).getTime()
             }),
-        [steps]
+        [steps],
     )
 
     return (
@@ -135,7 +138,7 @@ export default function ActionEventSidePanel({
                         <div
                             className={classnames(
                                 css.variablesItems,
-                                css.codeBlock
+                                css.codeBlock,
                             )}
                         >
                             <CollapsableVariables

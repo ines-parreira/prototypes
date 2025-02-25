@@ -1,13 +1,13 @@
-import {FilterComponentKey, FilterKey} from 'models/stat/types'
-import {AUTO_QA_FILTER_KEYS} from 'pages/stats/common/filters/constants'
+import { FilterComponentKey, FilterKey } from 'models/stat/types'
+import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
 import {
     ChartType,
     DataExportFormat,
     ReportConfig,
 } from 'pages/stats/custom-reports/types'
-import {BusiestTimesOfDaysTableChart} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysTableChart'
-import {STATS_ROUTES} from 'routes/constants'
-import {fetchAggregatedBusiestTimesOfDayReportData} from 'services/reporting/busiestTimesOfDaysReportingService'
+import { BusiestTimesOfDaysTableChart } from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysTableChart'
+import { STATS_ROUTES } from 'routes/constants'
+import { fetchAggregatedBusiestTimesOfDayReportData } from 'services/reporting/busiestTimesOfDaysReportingService'
 
 export const BUSIEST_TIME_OF_DAY_OPTIONAL_FILTERS = [
     FilterKey.Channels,

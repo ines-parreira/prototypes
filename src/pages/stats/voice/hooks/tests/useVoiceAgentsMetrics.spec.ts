@@ -1,10 +1,9 @@
-import {renderHook} from '@testing-library/react-hooks'
-
+import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment/moment'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {ReportingGranularity} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import { ReportingGranularity } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
 import {
     useAnsweredCallsMetricPerAgent,
     useAverageTalkTimeMetricPerAgent,
@@ -13,35 +12,35 @@ import {
     useOutboundCallsMetricPerAgent,
     useTotalCallsMetricPerAgent,
 } from 'pages/stats/voice/hooks/metricsPerDimension'
-import {useNewVoiceStatsFilters} from 'pages/stats/voice/hooks/useNewVoiceStatsFilters'
-import {useVoiceAgentsMetrics} from 'pages/stats/voice/hooks/useVoiceAgentsMetrics'
-import {formatReportingQueryDate} from 'utils/reporting'
-import {assumeMock} from 'utils/testing'
+import { useNewVoiceStatsFilters } from 'pages/stats/voice/hooks/useNewVoiceStatsFilters'
+import { useVoiceAgentsMetrics } from 'pages/stats/voice/hooks/useVoiceAgentsMetrics'
+import { formatReportingQueryDate } from 'utils/reporting'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/useAppSelector')
 const useAppSelectorMock = assumeMock(useAppSelector)
 jest.mock('pages/stats/voice/hooks/metricsPerDimension')
 const useTotalCallsMetricPerAgentMock = assumeMock(useTotalCallsMetricPerAgent)
 const useAnsweredCallsMetricPerAgentMock = assumeMock(
-    useAnsweredCallsMetricPerAgent
+    useAnsweredCallsMetricPerAgent,
 )
 const useMissedCallsMetricPerAgentMock = assumeMock(
-    useMissedCallsMetricPerAgent
+    useMissedCallsMetricPerAgent,
 )
 const useDeclinedCallsMetricPerAgentMock = assumeMock(
-    useDeclinedCallsMetricPerAgent
+    useDeclinedCallsMetricPerAgent,
 )
 const useOutboundCallsMetricPerAgentMock = assumeMock(
-    useOutboundCallsMetricPerAgent
+    useOutboundCallsMetricPerAgent,
 )
 const useAverageTalkTimeMetricPerAgentMock = assumeMock(
-    useAverageTalkTimeMetricPerAgent
+    useAverageTalkTimeMetricPerAgent,
 )
 
 jest.mock('pages/stats/voice/hooks/useNewVoiceStatsFilters')
 const useNewStatsFiltersMock = assumeMock(useNewVoiceStatsFilters)
 
-const agents = [{name: 'Guybrush Threepwood'}]
+const agents = [{ name: 'Guybrush Threepwood' }]
 const metricData = {
     isFetching: false,
     isError: false,
@@ -77,8 +76,8 @@ describe('useVoiceAgentsMetric', () => {
         useOutboundCallsMetricPerAgentMock.mockReturnValue(metricData)
         useAverageTalkTimeMetricPerAgentMock.mockReturnValue(metricData)
 
-        const {result} = renderHook(() =>
-            useVoiceAgentsMetrics(statsFilters, userTimezone)
+        const { result } = renderHook(() =>
+            useVoiceAgentsMetrics(statsFilters, userTimezone),
         )
 
         expect(result.current).toEqual({
@@ -99,27 +98,27 @@ describe('useVoiceAgentsMetric', () => {
 
         expect(useTotalCallsMetricPerAgentMock).toHaveBeenCalledWith(
             statsFilters,
-            userTimezone
+            userTimezone,
         )
         expect(useAnsweredCallsMetricPerAgentMock).toHaveBeenCalledWith(
             statsFilters,
-            userTimezone
+            userTimezone,
         )
         expect(useMissedCallsMetricPerAgentMock).toHaveBeenCalledWith(
             statsFilters,
-            userTimezone
+            userTimezone,
         )
         expect(useDeclinedCallsMetricPerAgentMock).toHaveBeenCalledWith(
             statsFilters,
-            userTimezone
+            userTimezone,
         )
         expect(useOutboundCallsMetricPerAgentMock).toHaveBeenCalledWith(
             statsFilters,
-            userTimezone
+            userTimezone,
         )
         expect(useAverageTalkTimeMetricPerAgentMock).toHaveBeenCalledWith(
             statsFilters,
-            userTimezone
+            userTimezone,
         )
     })
 })
@@ -140,8 +139,8 @@ describe('useVoiceAgentsMetric with the new filters', () => {
         useOutboundCallsMetricPerAgentMock.mockReturnValue(metricData)
         useAverageTalkTimeMetricPerAgentMock.mockReturnValue(metricData)
 
-        const {result} = renderHook(() =>
-            useVoiceAgentsMetrics(statsFilters, userTimezone)
+        const { result } = renderHook(() =>
+            useVoiceAgentsMetrics(statsFilters, userTimezone),
         )
 
         expect(result.current).toEqual({
@@ -162,27 +161,27 @@ describe('useVoiceAgentsMetric with the new filters', () => {
 
         expect(useTotalCallsMetricPerAgentMock).toHaveBeenCalledWith(
             statsFilters,
-            userTimezone
+            userTimezone,
         )
         expect(useAnsweredCallsMetricPerAgentMock).toHaveBeenCalledWith(
             statsFilters,
-            userTimezone
+            userTimezone,
         )
         expect(useMissedCallsMetricPerAgentMock).toHaveBeenCalledWith(
             statsFilters,
-            userTimezone
+            userTimezone,
         )
         expect(useDeclinedCallsMetricPerAgentMock).toHaveBeenCalledWith(
             statsFilters,
-            userTimezone
+            userTimezone,
         )
         expect(useOutboundCallsMetricPerAgentMock).toHaveBeenCalledWith(
             statsFilters,
-            userTimezone
+            userTimezone,
         )
         expect(useAverageTalkTimeMetricPerAgentMock).toHaveBeenCalledWith(
             statsFilters,
-            userTimezone
+            userTimezone,
         )
     })
 })

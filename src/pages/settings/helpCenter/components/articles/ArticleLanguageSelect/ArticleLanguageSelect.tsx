@@ -1,11 +1,13 @@
-import classnames from 'classnames'
-import React, {createRef, useMemo} from 'react'
+import React, { createRef, useMemo } from 'react'
 
-import {LocaleCode} from 'models/helpCenter/types'
-import {useOpenToggle} from 'pages/common/hooks/useOpenToggle'
+import classnames from 'classnames'
+
+import { LocaleCode } from 'models/helpCenter/types'
+import { useOpenToggle } from 'pages/common/hooks/useOpenToggle'
+
+import { ActionButton } from './components/ActionButton'
 
 import css from './ArticleLanguageSelect.less'
-import {ActionButton} from './components/ActionButton'
 
 export type ActionType = 'delete' | 'view' | 'create'
 
@@ -35,11 +37,11 @@ export const ArticleLanguageSelect = ({
     isDisabled = false,
 }: Props): JSX.Element => {
     const $ref = createRef<HTMLDivElement>()
-    const {isOpen, onOpen, onClose} = useOpenToggle($ref, false)
+    const { isOpen, onOpen, onClose } = useOpenToggle($ref, false)
 
     const selectedOption = useMemo(
         () => list.find((option) => option.value === selected) || null,
-        [selected, list]
+        [selected, list],
     )
 
     const handleOnSelect = (option: OptionItem) => {

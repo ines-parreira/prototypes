@@ -1,15 +1,16 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import MultiLevelSelect from 'custom-fields/components/MultiLevelSelect'
 import StealthInput from 'custom-fields/components/StealthInput'
-import {CustomField, CustomFieldPrediction} from 'custom-fields/types'
+import { CustomField, CustomFieldPrediction } from 'custom-fields/types'
 import {
+    ticketDropdownFieldDefinition,
     ticketInputFieldDefinition,
     ticketNumberFieldDefinition,
-    ticketDropdownFieldDefinition,
 } from 'fixtures/customField'
-import {assumeMock, getLastMockCall} from 'utils/testing'
+import { assumeMock, getLastMockCall } from 'utils/testing'
 
 import CustomFieldInput from '../CustomFieldInput'
 
@@ -40,7 +41,7 @@ describe('CustomFieldInput', () => {
                 <CustomFieldInput
                     {...defaultProps}
                     field={ticketInputFieldDefinition}
-                />
+                />,
             )
 
             expect(screen.getByText('stealth input')).toBeInTheDocument()
@@ -53,7 +54,7 @@ describe('CustomFieldInput', () => {
                         ticketInputFieldDefinition.definition.input_settings
                             .placeholder,
                 },
-                expect.any(Object)
+                expect.any(Object),
             )
         })
 
@@ -64,7 +65,7 @@ describe('CustomFieldInput', () => {
                     field={ticketInputFieldDefinition}
                     hasError={true}
                     isDisabled={true}
-                />
+                />,
             )
 
             expect(StealthInput).toHaveBeenCalledWith(
@@ -72,7 +73,7 @@ describe('CustomFieldInput', () => {
                     hasError: true,
                     isDisabled: true,
                 }),
-                expect.any(Object)
+                expect.any(Object),
             )
         })
 
@@ -91,14 +92,14 @@ describe('CustomFieldInput', () => {
                             },
                         },
                     }}
-                />
+                />,
             )
 
             expect(StealthInput).toHaveBeenCalledWith(
                 expect.objectContaining({
                     placeholder: 'placeholder',
                 }),
-                expect.any(Object)
+                expect.any(Object),
             )
         })
     })
@@ -110,7 +111,7 @@ describe('CustomFieldInput', () => {
                     {...defaultProps}
                     field={ticketNumberFieldDefinition}
                     value={3}
-                />
+                />,
             )
 
             expect(screen.getByText('stealth input')).toBeInTheDocument()
@@ -126,7 +127,7 @@ describe('CustomFieldInput', () => {
                         .max,
                     onChange: expect.any(Function),
                 },
-                expect.any(Object)
+                expect.any(Object),
             )
         })
 
@@ -136,20 +137,20 @@ describe('CustomFieldInput', () => {
                     {...defaultProps}
                     field={ticketNumberFieldDefinition}
                     value="3"
-                />
+                />,
             )
 
             expect(StealthInput).toHaveBeenCalledWith(
                 expect.objectContaining({
                     value: 3,
                 }),
-                expect.any(Object)
+                expect.any(Object),
             )
             expect(getLastMockCall(mockedStealthInput)[0].onChange!('4')).toBe(
-                4
+                4,
             )
             expect(
-                getLastMockCall(mockedStealthInput)[0].onChange!('meh')
+                getLastMockCall(mockedStealthInput)[0].onChange!('meh'),
             ).toBe(NaN)
         })
     })
@@ -161,8 +162,8 @@ describe('CustomFieldInput', () => {
                 <CustomFieldInput
                     {...defaultProps}
                     field={ticketDropdownFieldDefinition}
-                    dropdownAdditionalProps={{prediction}}
-                />
+                    dropdownAdditionalProps={{ prediction }}
+                />,
             )
 
             expect(screen.getByText('multiselect')).toBeInTheDocument()
@@ -180,12 +181,12 @@ describe('CustomFieldInput', () => {
                     allowMultiValues: undefined,
                     customDisplayValue: undefined,
                 },
-                expect.any(Object)
+                expect.any(Object),
             )
         })
 
         it('should pass specific props to MultiLevelSelect component', () => {
-            const mockPrediction = {predicted: 'foo'} as CustomFieldPrediction
+            const mockPrediction = { predicted: 'foo' } as CustomFieldPrediction
             render(
                 <CustomFieldInput
                     {...defaultProps}
@@ -196,7 +197,7 @@ describe('CustomFieldInput', () => {
                         prediction: mockPrediction,
                         customDisplayValue: jest.fn(),
                     }}
-                />
+                />,
             )
 
             expect(MultiLevelSelect).toHaveBeenCalledWith(
@@ -206,7 +207,7 @@ describe('CustomFieldInput', () => {
                     prediction: mockPrediction,
                     customDisplayValue: expect.any(Function),
                 }),
-                expect.any(Object)
+                expect.any(Object),
             )
         })
     })
@@ -226,7 +227,7 @@ describe('CustomFieldInput', () => {
                             },
                         } as unknown as CustomField
                     }
-                />
+                />,
             )
 
             expect(screen.getByText('Coming soon')).toBeInTheDocument()

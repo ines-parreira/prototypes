@@ -1,18 +1,17 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
+import { renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
+import { useLocation } from 'react-router-dom'
 
-import {useLocation} from 'react-router-dom'
-
-import {AlertBannerCTATypes, AlertBannerTypes} from 'AlertBanners'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useFlag} from 'core/flags'
+import { AlertBannerCTATypes, AlertBannerTypes } from 'AlertBanners'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
 import useAppSelector from 'hooks/useAppSelector'
 import * as helpers from 'pages/common/components/EmailMigrationBanner/helpers'
 import * as migrationBannerHook from 'pages/common/components/EmailMigrationBanner/hooks/useMigrationBannerStatus'
-import {getEmailMigrationStatus} from 'state/integrations/selectors'
-import {assumeMock} from 'utils/testing'
+import { getEmailMigrationStatus } from 'state/integrations/selectors'
+import { assumeMock } from 'utils/testing'
 
-import {useEmailMigrationBanner} from '../useEmailMigrationBanner'
+import { useEmailMigrationBanner } from '../useEmailMigrationBanner'
 
 jest.mock('core/flags')
 const mockUseFlag = useFlag as jest.Mock
@@ -29,7 +28,7 @@ jest.mock(
                 push: mockHistoryPush,
             }),
             useLocation: jest.fn(),
-        }) as Record<string, unknown>
+        }) as Record<string, unknown>,
 )
 const mockUseLocation = assumeMock(useLocation)
 
@@ -39,7 +38,7 @@ jest.mock('state/integrations/selectors', () => ({
 
 const mockFetchMigrationStatus = jest.fn()
 jest.spyOn(migrationBannerHook, 'default').mockImplementation(
-    () => mockFetchMigrationStatus
+    () => mockFetchMigrationStatus,
 )
 
 const mockedAddBanner = jest.fn()
@@ -54,14 +53,14 @@ jest.mock(
                 addBanner: mockedAddBanner,
                 removeBanner: mockedRemoveBanner,
             }),
-        }) as Record<string, unknown>
+        }) as Record<string, unknown>,
 )
 
 jest.mock('hooks/useAppSelector', () => jest.fn())
 
 const computeBannerSpy = jest.spyOn(
     helpers,
-    'computeEmailMigrationStatusBanner'
+    'computeEmailMigrationStatusBanner',
 )
 
 const useAppSelectorMock = assumeMock(useAppSelector)
@@ -78,7 +77,7 @@ const bannerConfigObj = {
     preventDismiss: true,
 }
 
-const bannerConfig = fromJS({...bannerConfigObj})
+const bannerConfig = fromJS({ ...bannerConfigObj })
 
 describe('useEmailMigrationBanner', () => {
     beforeEach(() => {
@@ -184,7 +183,7 @@ describe('useEmailMigrationBanner', () => {
             return null
         })
 
-        computeBannerSpy.mockReturnValue({...bannerConfigObj})
+        computeBannerSpy.mockReturnValue({ ...bannerConfigObj })
 
         renderHook(useEmailMigrationBanner)
 
@@ -243,7 +242,7 @@ describe('useEmailMigrationBanner', () => {
 
         computeBannerSpy.mockImplementation((status, onClick) => {
             capturedOnClick = onClick
-            return {...bannerConfigObj}
+            return { ...bannerConfigObj }
         })
 
         renderHook(useEmailMigrationBanner)
@@ -286,7 +285,7 @@ describe('useEmailMigrationBanner', () => {
         expect(mockedAddBanner).toHaveBeenCalledWith(
             expect.objectContaining({
                 message: '',
-            })
+            }),
         )
     })
 })

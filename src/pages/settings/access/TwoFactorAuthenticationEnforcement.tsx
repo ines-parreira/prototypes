@@ -1,11 +1,13 @@
-import {Label} from '@gorgias/merchant-ui-kit'
+import React, { useCallback, useState } from 'react'
+
 import classNames from 'classnames'
-import moment, {Moment} from 'moment'
-import React, {useCallback, useState} from 'react'
+import moment, { Moment } from 'moment'
+
+import { Label } from '@gorgias/merchant-ui-kit'
 
 import useAppSelector from 'hooks/useAppSelector'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
-import {DatePicker} from 'pages/common/forms/DatePicker'
+import { DatePicker } from 'pages/common/forms/DatePicker'
 import TextInput from 'pages/common/forms/input/TextInput'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import TwoFactorAuthenticationModal from 'pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationModal/TwoFactorAuthenticationModal'
@@ -25,7 +27,7 @@ import css from './TwoFactorAuthenticationEnforcement.less'
  */
 function setTimezone(
     enforcedDatetime: string | null,
-    timezone: string | null
+    timezone: string | null,
 ): moment.Moment | undefined {
     if (!enforcedDatetime) {
         return undefined
@@ -54,7 +56,7 @@ export default function TwoFactorAuthenticationEnforcement({
     const [twoFAModalVisible, set2FAModalVisible] = useState(false)
     const [isDatePickerOpen, setIsDatePickerOpen] = useState(false)
     const [twoFAEnforcement, setTwoFAEnforcement] = useState<string | null>(
-        null
+        null,
     )
 
     const has2FAEnabled = useAppSelector(has2FaEnabledSelector)
@@ -80,7 +82,7 @@ export default function TwoFactorAuthenticationEnforcement({
                 on2FAEnforced(strValue)
             }
         },
-        [on2FAEnforced, enforcementDatetime]
+        [on2FAEnforced, enforcementDatetime],
     )
 
     const handleToggle = useCallback(
@@ -91,10 +93,10 @@ export default function TwoFactorAuthenticationEnforcement({
             }
 
             set2FAEnforced(
-                value ? moment().add(TWO_FA_REQUIRED_AFTER_DAYS, 'days') : null
+                value ? moment().add(TWO_FA_REQUIRED_AFTER_DAYS, 'days') : null,
             )
         },
-        [has2FAEnabled, set2FAEnforced]
+        [has2FAEnabled, set2FAEnforced],
     )
 
     return (
@@ -136,7 +138,7 @@ export default function TwoFactorAuthenticationEnforcement({
                                     <i
                                         className={classNames(
                                             'material-icons',
-                                            css.warningIcon
+                                            css.warningIcon,
                                         )}
                                     >
                                         warning
@@ -164,12 +166,12 @@ export default function TwoFactorAuthenticationEnforcement({
                             }
                             confirmLabel="Confirm"
                             cancelLabel="Review"
-                            cancelButtonProps={{intent: 'secondary'}}
+                            cancelButtonProps={{ intent: 'secondary' }}
                             onConfirm={() => on2FAEnforced(twoFAEnforcement)}
                             onCancel={() => setIsDatePickerOpen(true)}
                             showCancelButton
                         >
-                            {({uid, onDisplayConfirmation, elementRef}) => (
+                            {({ uid, onDisplayConfirmation, elementRef }) => (
                                 <DatePicker
                                     initialSettings={{
                                         drops: 'auto',
@@ -179,7 +181,7 @@ export default function TwoFactorAuthenticationEnforcement({
                                     onSubmit={(value: Moment) =>
                                         set2FAEnforced(
                                             value,
-                                            onDisplayConfirmation
+                                            onDisplayConfirmation,
                                         )
                                     }
                                     onHide={() => setIsDatePickerOpen(false)}
@@ -190,7 +192,7 @@ export default function TwoFactorAuthenticationEnforcement({
                                             id="twoFAEnforcementDatetime"
                                             name="twoFAEnforcementDatetime"
                                             value={enforcementDatetime.format(
-                                                'L LT'
+                                                'L LT',
                                             )}
                                             isDisabled={disabled || loading}
                                             ref={elementRef}
@@ -214,7 +216,7 @@ export default function TwoFactorAuthenticationEnforcement({
                     onFinish={() => {
                         set2FAModalVisible(false)
                         set2FAEnforced(
-                            moment().add(TWO_FA_REQUIRED_AFTER_DAYS, 'days')
+                            moment().add(TWO_FA_REQUIRED_AFTER_DAYS, 'days'),
                         )
                     }}
                     initialBannerText="Set up two-factor authentication (2FA) for your own account. Once enabled, 2FA will be enforced for all helpdesk users."

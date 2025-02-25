@@ -2,27 +2,27 @@ import {
     fetchWorkloadPerChannelDistribution,
     fetchWorkloadPerChannelDistributionForPreviousPeriod,
 } from 'hooks/reporting/distributions'
-import {FilterKey} from 'models/stat/types'
+import { FilterKey } from 'models/stat/types'
 import {
     ChartType,
     DataExportFormat,
     ReportConfig,
 } from 'pages/stats/custom-reports/types'
-import {CustomerSatisfactionTrendCard} from 'pages/stats/support-performance/overview/charts/CustomerSatisfactionTrendCard'
-import {MedianResolutionTimeTrendCard} from 'pages/stats/support-performance/overview/charts/MedianResolutionTimeTrendCard'
-import {MedianFirstResponseTimeTrendCard} from 'pages/stats/support-performance/overview/charts/MedianResponseTimeTrendCard'
-import {MessagesPerTicketTrendCard} from 'pages/stats/support-performance/overview/charts/MessagesPerTicketTrendCard'
-import {MessagesSentGraph} from 'pages/stats/support-performance/overview/charts/MessagesSentGraph'
-import {MessagesSentTrendCard} from 'pages/stats/support-performance/overview/charts/MessagesSentTrendCard'
-import {OneTouchTicketsTrendCard} from 'pages/stats/support-performance/overview/charts/OneTouchTicketsTrendCard'
-import {OpenTicketsTrendCard} from 'pages/stats/support-performance/overview/charts/OpenTicketsTrendCard'
-import {TicketHandleTimeTrendCard} from 'pages/stats/support-performance/overview/charts/TicketHandleTimeTrendCard'
-import {TicketsClosedTrendCard} from 'pages/stats/support-performance/overview/charts/TicketsClosedTrendCard'
-import {TicketsCreatedTrendCard} from 'pages/stats/support-performance/overview/charts/TicketsCreatedTrendCard'
-import {TicketsCreatedVsClosedChart} from 'pages/stats/support-performance/overview/charts/TicketsCreatedVsClosedChart'
-import {TicketsRepliedGraph} from 'pages/stats/support-performance/overview/charts/TicketsRepliedGraph'
-import {TicketsRepliedTrendCard} from 'pages/stats/support-performance/overview/charts/TicketsRepliedTrendCard'
-import {WorkloadPerChannelChart} from 'pages/stats/support-performance/overview/charts/WorkloadPerChannelChart'
+import { CustomerSatisfactionTrendCard } from 'pages/stats/support-performance/overview/charts/CustomerSatisfactionTrendCard'
+import { MedianResolutionTimeTrendCard } from 'pages/stats/support-performance/overview/charts/MedianResolutionTimeTrendCard'
+import { MedianFirstResponseTimeTrendCard } from 'pages/stats/support-performance/overview/charts/MedianResponseTimeTrendCard'
+import { MessagesPerTicketTrendCard } from 'pages/stats/support-performance/overview/charts/MessagesPerTicketTrendCard'
+import { MessagesSentGraph } from 'pages/stats/support-performance/overview/charts/MessagesSentGraph'
+import { MessagesSentTrendCard } from 'pages/stats/support-performance/overview/charts/MessagesSentTrendCard'
+import { OneTouchTicketsTrendCard } from 'pages/stats/support-performance/overview/charts/OneTouchTicketsTrendCard'
+import { OpenTicketsTrendCard } from 'pages/stats/support-performance/overview/charts/OpenTicketsTrendCard'
+import { TicketHandleTimeTrendCard } from 'pages/stats/support-performance/overview/charts/TicketHandleTimeTrendCard'
+import { TicketsClosedTrendCard } from 'pages/stats/support-performance/overview/charts/TicketsClosedTrendCard'
+import { TicketsCreatedTrendCard } from 'pages/stats/support-performance/overview/charts/TicketsCreatedTrendCard'
+import { TicketsCreatedVsClosedChart } from 'pages/stats/support-performance/overview/charts/TicketsCreatedVsClosedChart'
+import { TicketsRepliedGraph } from 'pages/stats/support-performance/overview/charts/TicketsRepliedGraph'
+import { TicketsRepliedTrendCard } from 'pages/stats/support-performance/overview/charts/TicketsRepliedTrendCard'
+import { WorkloadPerChannelChart } from 'pages/stats/support-performance/overview/charts/WorkloadPerChannelChart'
 import {
     OverviewChartConfig,
     OverviewMetric,
@@ -31,7 +31,7 @@ import {
     TICKETS_CREATED_VS_CLOSED_HINT,
     WORKLOAD_BY_CHANNEL_HINT,
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
-import {STATS_ROUTES} from 'routes/constants'
+import { STATS_ROUTES } from 'routes/constants'
 import {
     TOTAL_WORKLOAD_BY_CHANNEL_LABEL,
     WORKLOAD_BY_CHANNEL_LABEL,

@@ -1,1 +1,1 @@
-export {default} from './components/OrderTable'
+export { default } from './components/OrderTable'

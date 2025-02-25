@@ -1,6 +1,6 @@
-import React, {ReactNode, useContext} from 'react'
+import React, { ReactNode, useContext } from 'react'
 
-import {EditionContext} from 'providers/infobar/EditionContext'
+import { EditionContext } from 'providers/infobar/EditionContext'
 
 import css from './CardHeaderYotpoBadge.less'
 
@@ -17,7 +17,7 @@ export function CardHeaderYotpoBadge({
     iconName,
     color = 'primary',
 }: Props) {
-    const {isEditing} = useContext(EditionContext)
+    const { isEditing } = useContext(EditionContext)
     if (isEditing) return null
     return (
         <span className={`${className || ``} ${css.container} ${color}`}>

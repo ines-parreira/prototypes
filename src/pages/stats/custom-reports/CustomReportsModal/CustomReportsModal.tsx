@@ -1,25 +1,25 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {useReportRestrictions} from 'hooks/reporting/custom-reports/useReportRestrictions'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { useReportRestrictions } from 'hooks/reporting/custom-reports/useReportRestrictions'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import {ChartsDefaultFrame} from 'pages/stats/custom-reports/ChartsDefaultFrame'
-import {REPORTS_CONFIG} from 'pages/stats/custom-reports/config'
-import {DASHBOARDS_DOCUMENTATION_URL} from 'pages/stats/custom-reports/constants'
+import { ChartsDefaultFrame } from 'pages/stats/custom-reports/ChartsDefaultFrame'
+import { REPORTS_CONFIG } from 'pages/stats/custom-reports/config'
+import { DASHBOARDS_DOCUMENTATION_URL } from 'pages/stats/custom-reports/constants'
 import css from 'pages/stats/custom-reports/CustomReportsModal/CustomReportsModal.less'
-import {ModalSearchBar} from 'pages/stats/custom-reports/CustomReportsModal/ModalSearchBar'
-import {SelectableCharts} from 'pages/stats/custom-reports/CustomReportsModal/SelectableCharts'
-import {SelectableReports} from 'pages/stats/custom-reports/CustomReportsModal/SelectableReports'
+import { ModalSearchBar } from 'pages/stats/custom-reports/CustomReportsModal/ModalSearchBar'
+import { SelectableCharts } from 'pages/stats/custom-reports/CustomReportsModal/SelectableCharts'
+import { SelectableReports } from 'pages/stats/custom-reports/CustomReportsModal/SelectableReports'
 import {
     CustomReportChild,
     ReportConfig,
     ReportsModalConfig,
 } from 'pages/stats/custom-reports/types'
-import {getChildrenIds} from 'pages/stats/custom-reports/utils'
+import { getChildrenIds } from 'pages/stats/custom-reports/utils'
 
 export const MODAL_TITLE = 'Select charts to display'
 export const GRAPH_DESCRIPTION =
@@ -74,22 +74,22 @@ const ChartsSelector = ({
     isLoading,
 }: ChartsSelectorProps) => {
     const [checkedCharts, setCheckedCharts] = useState(() =>
-        getChildrenIds(charts)
+        getChildrenIds(charts),
     )
 
     const [selectedReport, setSelectedReport] =
         useState<null | ReportConfig<string>>(null)
 
-    const {restrictionsMap} = useReportRestrictions()
+    const { restrictionsMap } = useReportRestrictions()
     const restrictedReports = REPORTS_CONFIG.map((section) => ({
         ...section,
         children: section.children.filter(
-            (report) => !Boolean(restrictionsMap[report.config.reportPath])
+            (report) => !Boolean(restrictionsMap[report.config.reportPath]),
         ),
     }))
 
     const [config, setConfig] = useState<ReportsModalConfig | null>(
-        restrictedReports
+        restrictedReports,
     )
 
     const handleAddCharts = () => {
@@ -142,7 +142,7 @@ const ChartsSelector = ({
     )
 }
 
-export type CustomReportsModalProps = {isOpen: boolean} & ChartsSelectorProps
+export type CustomReportsModalProps = { isOpen: boolean } & ChartsSelectorProps
 
 export const CustomReportsModal = ({
     charts = [],

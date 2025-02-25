@@ -1,4 +1,4 @@
-import {act, renderHook} from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react-hooks'
 import writeText from 'copy-to-clipboard'
 import noop from 'lodash/noop'
 
@@ -13,7 +13,7 @@ jest.mock('copy-to-clipboard', () =>
             throw new Error(input)
         }
         return true
-    })
+    }),
 )
 
 const consoleErrorSpy = jest

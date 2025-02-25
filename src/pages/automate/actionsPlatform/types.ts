@@ -1,5 +1,5 @@
-import {IntegrationType} from 'models/integration/constants'
-import {Paths} from 'rest_api/workflows_api/client.generated'
+import { IntegrationType } from 'models/integration/constants'
+import { Paths } from 'rest_api/workflows_api/client.generated'
 
 export type ActionTemplate =
     Awaited<Paths.WfConfigurationTemplateControllerList.Responses.$200>[number]

@@ -1,18 +1,19 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {billingState} from 'fixtures/billing'
-import {selfServiceConfiguration1} from 'fixtures/self_service_configurations'
+import { billingState } from 'fixtures/billing'
+import { selfServiceConfiguration1 } from 'fixtures/self_service_configurations'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
-import {RootState, StoreDispatch} from 'state/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {renderWithRouter} from 'utils/testing'
+import { useHelpCenterList } from 'pages/settings/helpCenter/hooks/useHelpCenterList'
+import { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { renderWithRouter } from 'utils/testing'
 
 import ArticleRecommendationViewContainer from '../ArticleRecommendationViewContainer'
 
@@ -25,7 +26,9 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const defaultState = {
     billing: fromJS(billingState),
     integrations: fromJS({
-        integrations: [{type: 'email', meta: {address: 'test@gorgias.com'}}],
+        integrations: [
+            { type: 'email', meta: { address: 'test@gorgias.com' } },
+        ],
     }),
     entities: {
         chatsApplicationAutomationSettings: {},
@@ -72,12 +75,12 @@ describe('<ArticleRecommendationPreview />', () => {
             {
                 path: `/app/automation/:shopType/:shopName/article-recommendation`,
                 route: '/app/automation/shopify/test-shop/article-recommendation',
-            }
+            },
         )
         expect(
             screen.getByText(
-                'Automate 60%+ of your support with AI and grow your brand'
-            )
+                'Automate 60%+ of your support with AI and grow your brand',
+            ),
         ).toBeInTheDocument()
     })
 })

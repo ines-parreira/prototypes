@@ -1,8 +1,9 @@
-import {screen, render, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {navigateBackToUserList} from 'pages/settings/users/Detail/constants'
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { navigateBackToUserList } from 'pages/settings/users/Detail/constants'
 import {
     DeleteModal,
     REMOVE_MESSAGE_ABOUT_SAVED_FILTERS,
@@ -25,13 +26,13 @@ describe('DeleteModal', () => {
     }
 
     it('should display or not according to `isModalOpen` prop', async () => {
-        const {rerender} = render(<DeleteModal {...props} />)
+        const { rerender } = render(<DeleteModal {...props} />)
         expect(screen.getByText(`Delete ${props.name}?`))
 
         rerender(<DeleteModal {...props} isModalOpen={false} />)
         await waitFor(() => {
             expect(
-                screen.queryByText(`Delete ${props.name}?`)
+                screen.queryByText(`Delete ${props.name}?`),
             ).not.toBeInTheDocument()
         })
     })
@@ -56,12 +57,12 @@ describe('DeleteModal', () => {
     })
 
     it('should setModalOpen when clicking delete button and display the warning message, it should contain text about "saved filters"', () => {
-        const {getByRole, getByText} = render(<DeleteModal {...props} />)
+        const { getByRole, getByText } = render(<DeleteModal {...props} />)
 
-        userEvent.click(getByRole('button', {name: /Delete User/i}))
+        userEvent.click(getByRole('button', { name: /Delete User/i }))
 
         expect(
-            getByText(new RegExp(REMOVE_MESSAGE_ABOUT_SAVED_FILTERS, 'i'))
+            getByText(new RegExp(REMOVE_MESSAGE_ABOUT_SAVED_FILTERS, 'i')),
         ).toBeInTheDocument()
     })
 })

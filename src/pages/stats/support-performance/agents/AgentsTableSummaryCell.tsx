@@ -1,8 +1,9 @@
-import {Skeleton} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
-import {StatsFilters} from 'models/stat/types'
-import {HintTooltip} from 'pages/stats/common/HintTooltip'
+import { Skeleton } from '@gorgias/merchant-ui-kit'
+
+import { StatsFilters } from 'models/stat/types'
+import { HintTooltip } from 'pages/stats/common/HintTooltip'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
@@ -12,7 +13,7 @@ import {
     averageTooltip,
     MetricQueryHook,
 } from 'pages/stats/support-performance/agents/AgentsTableConfig'
-import {AgentsTableColumn} from 'state/ui/stats/types'
+import { AgentsTableColumn } from 'state/ui/stats/types'
 
 export const AGENT_SUMMARY_CELL_LABEL = 'Average'
 
@@ -30,11 +31,11 @@ export const AgentsTableSummaryCell = ({
     }
     agentsLength: number
 }) => {
-    const {format, perAgent} = AgentsColumnConfig[column]
+    const { format, perAgent } = AgentsColumnConfig[column]
 
-    const {data, isFetching} = useMetric(
+    const { data, isFetching } = useMetric(
         statsFilters.cleanStatsFilters,
-        statsFilters.userTimezone
+        statsFilters.userTimezone,
     )
 
     const metricValue =
@@ -56,7 +57,7 @@ export const AgentsTableSummaryCell = ({
                 formatMetricValue(
                     metricValue,
                     format,
-                    NOT_AVAILABLE_PLACEHOLDER
+                    NOT_AVAILABLE_PLACEHOLDER,
                 )
             )}
         </>

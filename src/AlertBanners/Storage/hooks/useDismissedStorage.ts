@@ -1,25 +1,23 @@
-import {useCallback, useRef} from 'react'
+import { useCallback, useRef } from 'react'
 
 import useLocalStorage from 'hooks/useLocalStorage'
 
-import {BannerCategory} from '../../types'
-
-import {DISMISSED_BANNER_STORAGE_KEY} from '../constants'
-import {isBannerDismissed as isBannerDismissedInternal} from '../helpers/isBannerDismissed'
-import {AlertBannerStorage} from '../types'
-
-import {useStorageCleanup} from './useStorageCleanup'
-import {useStorageSync} from './useStorageSync'
+import { BannerCategory } from '../../types'
+import { DISMISSED_BANNER_STORAGE_KEY } from '../constants'
+import { isBannerDismissed as isBannerDismissedInternal } from '../helpers/isBannerDismissed'
+import { AlertBannerStorage } from '../types'
+import { useStorageCleanup } from './useStorageCleanup'
+import { useStorageSync } from './useStorageSync'
 
 export function useDismissedStorage(
     updateCurrentTabState: (
         category: BannerCategory,
-        instanceId: string
-    ) => void
+        instanceId: string,
+    ) => void,
 ) {
     const [storage, setStorage] = useLocalStorage<AlertBannerStorage>(
         DISMISSED_BANNER_STORAGE_KEY,
-        {}
+        {},
     )
 
     // This workaround makes isBannerDismissed stable across storage changes
@@ -32,7 +30,7 @@ export function useDismissedStorage(
     const isBannerDismissed = useCallback(
         (category: BannerCategory, instanceId: string) =>
             isBannerDismissedInternal(storageRef.current, category, instanceId),
-        []
+        [],
     )
 
     const setDismissed = useCallback(
@@ -52,8 +50,8 @@ export function useDismissedStorage(
                 return newStorage
             })
         },
-        [setStorage]
+        [setStorage],
     )
 
-    return {setDismissed, isBannerDismissed}
+    return { setDismissed, isBannerDismissed }
 }

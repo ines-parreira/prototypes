@@ -1,12 +1,13 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {fromJS, Map} from 'immutable'
-import React, {ComponentType} from 'react'
-import {act} from 'react-dom/test-utils'
-import {Provider} from 'react-redux'
+import React, { ComponentType } from 'react'
+
+import { renderHook } from '@testing-library/react-hooks'
+import { fromJS, Map } from 'immutable'
+import { act } from 'react-dom/test-utils'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import LocalForageManager from 'services/localForageManager/localForageManager'
-import {RootState, StoreDispatch} from 'state/types'
+import { RootState, StoreDispatch } from 'state/types'
 
 import useTicketDraft from '../useTicketDraft'
 
@@ -47,11 +48,11 @@ describe('useTicketDraft hook', () => {
 
     it('should save draft when ticket is new, draft does not exist yet and new ticket state is not empty', async () => {
         jest.spyOn(LocalForageManager, 'getTable').mockReturnValue(
-            mockGetTableObject
+            mockGetTableObject,
         )
 
-        const {waitForNextUpdate} = renderHook(() => useTicketDraft(true), {
-            wrapper: (({children}: {children: React.ReactNode}) => (
+        const { waitForNextUpdate } = renderHook(() => useTicketDraft(true), {
+            wrapper: (({ children }: { children: React.ReactNode }) => (
                 <Provider store={mockStore(defaultState)}>{children}</Provider>
             )) as unknown as ComponentType,
         })
@@ -63,11 +64,11 @@ describe('useTicketDraft hook', () => {
     it('should save draft when ticket is new, a draft exists and new ticket state is not empty', async () => {
         mockGetItem.mockResolvedValue(true)
         jest.spyOn(LocalForageManager, 'getTable').mockReturnValue(
-            mockGetTableObject
+            mockGetTableObject,
         )
 
-        const {waitForNextUpdate} = renderHook(() => useTicketDraft(true), {
-            wrapper: (({children}: {children: React.ReactNode}) => (
+        const { waitForNextUpdate } = renderHook(() => useTicketDraft(true), {
+            wrapper: (({ children }: { children: React.ReactNode }) => (
                 <Provider store={mockStore(defaultState)}>{children}</Provider>
             )) as unknown as ComponentType,
         })
@@ -79,7 +80,7 @@ describe('useTicketDraft hook', () => {
     it('should save draft when ticket is new, ticket form is filled then emptied', async () => {
         mockGetItem.mockResolvedValue(true)
         jest.spyOn(LocalForageManager, 'getTable').mockReturnValue(
-            mockGetTableObject
+            mockGetTableObject,
         )
 
         const wrapper = (({
@@ -89,12 +90,12 @@ describe('useTicketDraft hook', () => {
             children: React.ReactNode
             ticket: Map<any, any>
         }) => (
-            <Provider store={mockStore({...defaultState, ticket})}>
+            <Provider store={mockStore({ ...defaultState, ticket })}>
                 {children}
             </Provider>
         )) as unknown as ComponentType
 
-        const {rerender, waitForNextUpdate} = renderHook(
+        const { rerender, waitForNextUpdate } = renderHook(
             () => useTicketDraft(true),
             {
                 wrapper,
@@ -102,13 +103,13 @@ describe('useTicketDraft hook', () => {
                     ticket: fromJS({
                         ...defaultTicket,
                         subject: '',
-                        tags: [{name: 'during-business-hours'}],
+                        tags: [{ name: 'during-business-hours' }],
                     }),
                 },
-            }
+            },
         )
 
-        rerender({ticket: defaultState.ticket})
+        rerender({ ticket: defaultState.ticket })
 
         await act(async () => await waitForNextUpdate())
 

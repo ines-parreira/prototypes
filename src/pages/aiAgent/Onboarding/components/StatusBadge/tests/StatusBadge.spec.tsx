@@ -1,7 +1,8 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import StatusBadge, {StatusEnum} from '../StatusBadge'
+import { render, screen } from '@testing-library/react'
+
+import StatusBadge, { StatusEnum } from '../StatusBadge'
 
 describe('StatusBadge', () => {
     it('renders connected status', () => {

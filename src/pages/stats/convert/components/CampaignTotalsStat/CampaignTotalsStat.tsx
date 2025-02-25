@@ -4,9 +4,7 @@ import {
     CampaignsLegacyChart,
     CampaignsLegacyReportConfig,
 } from 'pages/stats/convert/campaigns/CampaignsLegacyReportConfig'
-
-import {CustomReportComponent} from 'pages/stats/custom-reports/CustomReportComponent'
-
+import { CustomReportComponent } from 'pages/stats/custom-reports/CustomReportComponent'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 
 const FIRST_ROW_SIZE = 6

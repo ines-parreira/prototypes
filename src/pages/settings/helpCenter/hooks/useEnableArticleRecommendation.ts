@@ -1,25 +1,23 @@
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {HelpCenter} from 'models/helpCenter/types'
-
-import {fetchSelfServiceConfigurationSSP} from 'models/selfServiceConfiguration/resources'
-
-import {useSelfServiceConfigurationUpdate} from 'pages/automate/common/hooks/useSelfServiceConfigurationUpdate'
-import {getHasAutomate} from 'state/billing/selectors'
-import {getHelpCenterList} from 'state/entities/helpCenter/helpCenters/selectors'
-import {getStoreIntegrations} from 'state/integrations/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { HelpCenter } from 'models/helpCenter/types'
+import { fetchSelfServiceConfigurationSSP } from 'models/selfServiceConfiguration/resources'
+import { useSelfServiceConfigurationUpdate } from 'pages/automate/common/hooks/useSelfServiceConfigurationUpdate'
+import { getHasAutomate } from 'state/billing/selectors'
+import { getHelpCenterList } from 'state/entities/helpCenter/helpCenters/selectors'
+import { getStoreIntegrations } from 'state/integrations/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 export const useEnableArticleRecommendation = () => {
     const helpCenterList = useAppSelector(getHelpCenterList).filter(
-        (helpCenter) => !helpCenter.deactivated_datetime
+        (helpCenter) => !helpCenter.deactivated_datetime,
     )
     const hasAutomate = useAppSelector(getHasAutomate)
     const storeIntegrations = useAppSelector(getStoreIntegrations)
     const dispatch = useAppDispatch()
 
-    const {handleSelfServiceConfigurationUpdate} =
+    const { handleSelfServiceConfigurationUpdate } =
         useSelfServiceConfigurationUpdate({
             handleNotify: (notification) => {
                 if (
@@ -30,7 +28,7 @@ export const useEnableArticleRecommendation = () => {
                         notify({
                             status: NotificationStatus.Error,
                             message: notification.message,
-                        })
+                        }),
                     )
                 }
             },
@@ -38,7 +36,7 @@ export const useEnableArticleRecommendation = () => {
 
     return async (newHelpCenter: HelpCenter) => {
         const hasHelpCenterWithSameStore = helpCenterList.find(
-            (helpCenter) => helpCenter.shop_name === newHelpCenter.shop_name
+            (helpCenter) => helpCenter.shop_name === newHelpCenter.shop_name,
         )
 
         if (
@@ -51,7 +49,7 @@ export const useEnableArticleRecommendation = () => {
 
         const storeIntegration = storeIntegrations.find(
             (storeIntegrations) =>
-                storeIntegrations.name === newHelpCenter.shop_name
+                storeIntegrations.name === newHelpCenter.shop_name,
         )
 
         if (!storeIntegration) {
@@ -61,7 +59,7 @@ export const useEnableArticleRecommendation = () => {
         try {
             const res = await fetchSelfServiceConfigurationSSP(
                 storeIntegration.name,
-                storeIntegration.type
+                storeIntegration.type,
             )
 
             if (res.articleRecommendationHelpCenterId) {
@@ -73,7 +71,7 @@ export const useEnableArticleRecommendation = () => {
                     draft.articleRecommendationHelpCenterId = newHelpCenter.id
                 },
                 {},
-                storeIntegration.id
+                storeIntegration.id,
             )
         } catch (err) {
             console.error(err)

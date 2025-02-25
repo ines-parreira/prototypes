@@ -1,4 +1,4 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
 import {
     fetchFilteredAutomatedInteractions,
@@ -9,20 +9,20 @@ import {
     formatData,
     useAutomationCostSavedTrend,
 } from 'hooks/reporting/automate/useAutomationCostSavedTrend'
-import {StatsFilters} from 'models/stat/types'
-import {useMoneySavedPerInteractionWithAutomate} from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
-import {assumeMock} from 'utils/testing'
+import { StatsFilters } from 'models/stat/types'
+import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/automate/automationTrends')
 jest.mock('pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate')
 const useFilteredAutomatedInteractionsMock = assumeMock(
-    useFilteredAutomatedInteractions
+    useFilteredAutomatedInteractions,
 )
 const useMoneySavedPerInteractionWithAutomateMock = assumeMock(
-    useMoneySavedPerInteractionWithAutomate
+    useMoneySavedPerInteractionWithAutomate,
 )
 const fetchFilteredAutomatedInteractionsMock = assumeMock(
-    fetchFilteredAutomatedInteractions
+    fetchFilteredAutomatedInteractions,
 )
 
 describe('AutomationCostSavedTrend', () => {
@@ -35,7 +35,7 @@ describe('AutomationCostSavedTrend', () => {
         },
     }
     const userTimezone = 'UTC'
-    const filteredAutomatedInteractions = {value: 2, prevValue: 4}
+    const filteredAutomatedInteractions = { value: 2, prevValue: 4 }
     const trendResponse = {
         data: filteredAutomatedInteractions,
         isFetching: false,
@@ -47,19 +47,19 @@ describe('AutomationCostSavedTrend', () => {
         beforeEach(() => {
             useFilteredAutomatedInteractionsMock.mockReturnValue(trendResponse)
             useMoneySavedPerInteractionWithAutomateMock.mockReturnValue(
-                moneySavedPerInteractionWithAutomate
+                moneySavedPerInteractionWithAutomate,
             )
         })
 
         it('should calculate and format trend', () => {
-            const {result} = renderHook(() =>
-                useAutomationCostSavedTrend(statsFilters, userTimezone)
+            const { result } = renderHook(() =>
+                useAutomationCostSavedTrend(statsFilters, userTimezone),
             )
 
             expect(result.current).toEqual({
                 data: formatData(
                     trendResponse,
-                    moneySavedPerInteractionWithAutomate
+                    moneySavedPerInteractionWithAutomate,
                 ),
                 isError: false,
                 isFetching: false,
@@ -76,8 +76,8 @@ describe('AutomationCostSavedTrend', () => {
                 isError: false,
             })
 
-            const {result} = renderHook(() =>
-                useAutomationCostSavedTrend(statsFilters, userTimezone)
+            const { result } = renderHook(() =>
+                useAutomationCostSavedTrend(statsFilters, userTimezone),
             )
 
             expect(result.current).toEqual({
@@ -94,7 +94,7 @@ describe('AutomationCostSavedTrend', () => {
     describe('fetchAutomationCostSavedTrend', () => {
         beforeEach(() => {
             fetchFilteredAutomatedInteractionsMock.mockResolvedValue(
-                trendResponse
+                trendResponse,
             )
         })
 
@@ -104,13 +104,13 @@ describe('AutomationCostSavedTrend', () => {
                 userTimezone,
                 undefined,
                 undefined,
-                moneySavedPerInteractionWithAutomate
+                moneySavedPerInteractionWithAutomate,
             )
 
             expect(result).toEqual({
                 data: formatData(
                     trendResponse,
-                    moneySavedPerInteractionWithAutomate
+                    moneySavedPerInteractionWithAutomate,
                 ),
                 isError: false,
                 isFetching: false,

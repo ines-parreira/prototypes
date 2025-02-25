@@ -1,1 +1,1 @@
-export {default as getTrackingLink} from './getTrackingLink'
+export { default as getTrackingLink } from './getTrackingLink'

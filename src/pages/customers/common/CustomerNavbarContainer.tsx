@@ -1,14 +1,14 @@
-import React, {useEffect} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {useParams} from 'react-router-dom'
+import React, { useEffect } from 'react'
 
-import {ActiveContent, Navbar} from 'common/navigation'
-import {UserSettingType} from 'config/types/user'
+import { connect, ConnectedProps } from 'react-redux'
+import { useParams } from 'react-router-dom'
+
+import { ActiveContent, Navbar } from 'common/navigation'
+import { UserSettingType } from 'config/types/user'
 
 import useSearch from '../../../hooks/useSearch'
-import {RootState} from '../../../state/types'
-import {fetchViews} from '../../../state/views/actions'
-
+import { RootState } from '../../../state/types'
+import { fetchViews } from '../../../state/views/actions'
 import CustomersNavbarView from './components/CustomersNavbarView'
 
 type OwnProps = {
@@ -19,8 +19,8 @@ export const CustomerNavbarContainer = ({
     fetchViews,
     isLoading,
 }: OwnProps & ConnectedProps<typeof connector>) => {
-    const {viewId} = useParams<{viewId?: string}>()
-    const {viewId: viewIdSearch} = useSearch<{viewId?: string}>()
+    const { viewId } = useParams<{ viewId?: string }>()
+    const { viewId: viewIdSearch } = useSearch<{ viewId?: string }>()
 
     useEffect(() => {
         void fetchViews(viewId || (viewIdSearch as string))
@@ -41,12 +41,12 @@ const connector = connect(
     (state: RootState) => ({
         isLoading: state.currentUser.getIn(
             ['_internal', 'loading', 'settings', 'customer-views'],
-            false
+            false,
         ),
     }),
     {
         fetchViews,
-    }
+    },
 )
 
 export default connector(CustomerNavbarContainer)

@@ -1,9 +1,10 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { Meta, Story } from '@storybook/react'
 
 import Accordion from 'pages/common/components/accordion/Accordion'
 
-import {StatefulAccordion} from './StatefulAccordion'
+import { StatefulAccordion } from './StatefulAccordion'
 
 const storyConfig: Meta = {
     title: 'Convert/Chat Campaigns/Accordion',

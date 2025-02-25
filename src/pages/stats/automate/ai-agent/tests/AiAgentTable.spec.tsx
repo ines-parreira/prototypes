@@ -1,16 +1,16 @@
 import React from 'react'
 
-import {User, UserRole} from 'config/types/user'
-import {agents} from 'fixtures/agents'
-import {useAIAgentUser} from 'hooks/reporting/automate/useAIAgentUserId'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {ReportingGranularity} from 'models/reporting/types'
-import {AiAgentTable} from 'pages/stats/automate/ai-agent/AiAgentTable'
-import {AgentsTable} from 'pages/stats/support-performance/agents/AgentsTable'
-import {AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS} from 'state/agents/constants'
-import {defaultStatsFilters} from 'state/stats/statsSlice'
-import {assumeMock, renderWithStore} from 'utils/testing'
+import { User, UserRole } from 'config/types/user'
+import { agents } from 'fixtures/agents'
+import { useAIAgentUser } from 'hooks/reporting/automate/useAIAgentUserId'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { ReportingGranularity } from 'models/reporting/types'
+import { AiAgentTable } from 'pages/stats/automate/ai-agent/AiAgentTable'
+import { AgentsTable } from 'pages/stats/support-performance/agents/AgentsTable'
+import { AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS } from 'state/agents/constants'
+import { defaultStatsFilters } from 'state/stats/statsSlice'
+import { assumeMock, renderWithStore } from 'utils/testing'
 
 jest.mock('pages/stats/support-performance/agents/AgentsTable')
 const AgentsTableMock = assumeMock(AgentsTable)
@@ -40,7 +40,7 @@ describe('AiAgentTable', () => {
         AgentsTableMock.mockImplementation(() => <div />)
         useAIAgentUserMock.mockReturnValue(aiAgent)
         useNewStatsFiltersMock.mockReturnValue(
-            statsFiltersWithUserTimezone as any
+            statsFiltersWithUserTimezone as any,
         )
     })
 
@@ -67,7 +67,7 @@ describe('AiAgentTable', () => {
                 },
                 withAverageRow: false,
             },
-            {}
+            {},
         )
     })
 
@@ -92,7 +92,7 @@ describe('AiAgentTable', () => {
                 },
                 withAverageRow: false,
             },
-            {}
+            {},
         )
     })
 })

@@ -1,28 +1,35 @@
 import 'tests/__mocks__/intersectionObserverMock'
 
-import {QueryClientProvider} from '@tanstack/react-query'
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {chatIntegrationFixtures} from 'fixtures/chat'
-import {bigCommerceIntegration, shopifyIntegration} from 'fixtures/integrations'
-import {proMonthlyHelpdeskPlan as mockedProMonthlyHelpdeskPlan} from 'fixtures/productPrices'
-import {selfServiceConfiguration1} from 'fixtures/self_service_configurations'
-import {createWorkflowConfigurationShallow} from 'fixtures/workflows'
+import { chatIntegrationFixtures } from 'fixtures/chat'
+import {
+    bigCommerceIntegration,
+    shopifyIntegration,
+} from 'fixtures/integrations'
+import { proMonthlyHelpdeskPlan as mockedProMonthlyHelpdeskPlan } from 'fixtures/productPrices'
+import { selfServiceConfiguration1 } from 'fixtures/self_service_configurations'
+import { createWorkflowConfigurationShallow } from 'fixtures/workflows'
 import {
     useGetHelpCenterArticleList,
     useGetHelpCenterList,
 } from 'models/helpCenter/queries'
-import {HelpCenter, HelpCenterCreationWizardStep} from 'models/helpCenter/types'
-import {Integration} from 'models/integration/types'
-import {useGetWorkflowConfigurations} from 'models/workflows/queries'
+import {
+    HelpCenter,
+    HelpCenterCreationWizardStep,
+} from 'models/helpCenter/types'
+import { Integration } from 'models/integration/types'
+import { useGetWorkflowConfigurations } from 'models/workflows/queries'
 import useHelpCenterAutomationSettings from 'pages/automate/common/hooks/useHelpCenterAutomationSettings'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import {WizardContext} from 'pages/common/components/wizard/Wizard'
+import { WizardContext } from 'pages/common/components/wizard/Wizard'
 import WizardStep from 'pages/common/components/wizard/WizardStep'
 import {
     HELP_CENTER_DEFAULT_LAYOUT,
@@ -31,12 +38,12 @@ import {
     NEXT_ACTION,
     PlatformType,
 } from 'pages/settings/helpCenter/constants'
-import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {SupportedLocalesProvider} from 'pages/settings/helpCenter/providers/SupportedLocales'
-import {StoreState} from 'state/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { SupportedLocalesProvider } from 'pages/settings/helpCenter/providers/SupportedLocales'
+import { StoreState } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import {useHelpCenterCreationWizard} from '../../../hooks/useHelpCenterCreationWizard'
+import { useHelpCenterCreationWizard } from '../../../hooks/useHelpCenterCreationWizard'
 import HelpCenterCreationWizardStepAutomate from '../HelpCenterCreationWizardStepAutomate'
 
 jest.mock('models/workflows/queries', () => ({
@@ -94,23 +101,23 @@ const defaultUseSelfServiceConfiguration = {
 
 const mockStore = configureMockStore([thunk])
 const mockedUseWorkflowConfigurations = jest.mocked(
-    useGetWorkflowConfigurations
+    useGetWorkflowConfigurations,
 )
 const mockUseHelpCenterCreationWizard = jest.mocked(useHelpCenterCreationWizard)
 const mockUseHelpCenterAutomationSettings = jest.mocked(
-    useHelpCenterAutomationSettings
+    useHelpCenterAutomationSettings,
 )
 const mockedUseSelfServiceConfiguration = jest.mocked(
-    useSelfServiceConfiguration
+    useSelfServiceConfiguration,
 )
 const mockedUseGetHelpCenterArticleList = jest.mocked(
-    useGetHelpCenterArticleList
+    useGetHelpCenterArticleList,
 )
 const mockedUseGetHelpCenterList = jest.mocked(useGetHelpCenterList)
 
 const renderComponent = (
     props: Partial<ComponentProps<typeof HelpCenterCreationWizardStepAutomate>>,
-    fixtures?: {integrations?: Integration[]; helpCenter?: HelpCenter}
+    fixtures?: { integrations?: Integration[]; helpCenter?: HelpCenter },
 ) => {
     const {
         integrations = [
@@ -121,17 +128,19 @@ const renderComponent = (
         helpCenter = helpCenterFixture,
     } = fixtures ?? {}
     const defaultStore = {
-        billing: fromJS({products: [mockedProMonthlyHelpdeskPlan]}),
-        integrations: fromJS({integrations}),
+        billing: fromJS({ products: [mockedProMonthlyHelpdeskPlan] }),
+        integrations: fromJS({ integrations }),
         entities: {
             contactForm: {
-                contactForms: {contactFormById: {}},
+                contactForms: { contactFormById: {} },
                 contactFormsAutomationSettings: {
                     automationSettingsByContactFormId: {},
                 },
             },
             helpCenter: {
-                helpCenters: {helpCentersById: {[helpCenter.id]: helpCenter}},
+                helpCenters: {
+                    helpCentersById: { [helpCenter.id]: helpCenter },
+                },
                 helpCentersAutomationSettings: {
                     automationSettingsByHelpCenterId: {},
                 },
@@ -169,7 +178,7 @@ const renderComponent = (
                     </WizardContext.Provider>
                 </SupportedLocalesProvider>
             </Provider>
-        </QueryClientProvider>
+        </QueryClientProvider>,
     )
 }
 
@@ -180,12 +189,12 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
             data: [],
         } as unknown as ReturnType<typeof useGetWorkflowConfigurations>)
         mockUseHelpCenterCreationWizard.mockReturnValue(
-            mockedUseHelpCenterWizardHook
+            mockedUseHelpCenterWizardHook,
         )
         mockUseHelpCenterAutomationSettings.mockReturnValue({
             isFetchPending: false,
             automationSettings: {
-                order_management: {enabled: false},
+                order_management: { enabled: false },
                 workflows: [],
             },
             handleHelpCenterAutomationSettingsUpdate:
@@ -194,7 +203,7 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
             handleHelpCenterAutomationSettingsFetch: jest.fn(),
         })
         mockedUseSelfServiceConfiguration.mockReturnValue(
-            defaultUseSelfServiceConfiguration
+            defaultUseSelfServiceConfiguration,
         )
         mockedUseGetHelpCenterArticleList.mockReturnValue({
             data: null,
@@ -217,12 +226,12 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
             ...helpCenterFixture,
             shop_name: null,
         }
-        renderComponent({}, {helpCenter})
+        renderComponent({}, { helpCenter })
 
         expect(screen.getByText('Connect a store')).toBeInTheDocument()
         expect(screen.queryByText('Order management')).not.toBeInTheDocument()
         expect(
-            screen.queryByText('Article Recommendation')
+            screen.queryByText('Article Recommendation'),
         ).not.toBeInTheDocument()
         expect(screen.queryByText('Flows')).not.toBeInTheDocument()
     })
@@ -233,12 +242,12 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
                 ...helpCenterFixture,
                 self_service_deactivated_datetime: null,
             }
-            renderComponent({helpCenter})
+            renderComponent({ helpCenter })
 
             expect(
                 screen.getByLabelText(
-                    'Allow customers to manage orders from my Help Center'
-                )
+                    'Allow customers to manage orders from my Help Center',
+                ),
             ).toBeChecked()
         })
         it('should render toggle on order management when order management is enabled', () => {
@@ -246,12 +255,12 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
                 ...helpCenterFixture,
                 self_service_deactivated_datetime: '2021-05-17T18:21:42.022Z',
             }
-            renderComponent({helpCenter})
+            renderComponent({ helpCenter })
 
             expect(
                 screen.getByLabelText(
-                    'Allow customers to manage orders from my Help Center'
-                )
+                    'Allow customers to manage orders from my Help Center',
+                ),
             ).not.toBeChecked()
         })
 
@@ -260,19 +269,19 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
                 ...helpCenterFixture,
                 self_service_deactivated_datetime: null,
             }
-            renderComponent({helpCenter})
+            renderComponent({ helpCenter })
 
             // userEvent not working here. I don't find the reason why
             fireEvent.click(
                 screen.getByLabelText(
-                    'Allow customers to manage orders from my Help Center'
-                )
+                    'Allow customers to manage orders from my Help Center',
+                ),
             )
 
             expect(
                 screen.getByLabelText(
-                    'Allow customers to manage orders from my Help Center'
-                )
+                    'Allow customers to manage orders from my Help Center',
+                ),
             ).not.toBeChecked()
         })
     })
@@ -289,16 +298,21 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
 
             renderComponent(
                 {},
-                {integrations: [shopifyIntegration, ...chatIntegrationFixtures]}
+                {
+                    integrations: [
+                        shopifyIntegration,
+                        ...chatIntegrationFixtures,
+                    ],
+                },
             )
 
             expect(
                 screen.getByLabelText(
-                    /Recommend articles from this Help Center in my Chat/i
-                )
+                    /Recommend articles from this Help Center in my Chat/i,
+                ),
             ).toBeChecked()
             expect(
-                screen.getByText('Article Recommendation')
+                screen.getByText('Article Recommendation'),
             ).toBeInTheDocument()
         })
 
@@ -313,18 +327,23 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
 
             renderComponent(
                 {},
-                {integrations: [shopifyIntegration, ...chatIntegrationFixtures]}
+                {
+                    integrations: [
+                        shopifyIntegration,
+                        ...chatIntegrationFixtures,
+                    ],
+                },
             )
 
             expect(
                 screen.getByLabelText(
-                    /Recommend articles from this Help Center in my Chat/i
-                )
+                    /Recommend articles from this Help Center in my Chat/i,
+                ),
             ).not.toBeChecked()
             expect(
                 screen.getByText(
-                    'You already have another Help Center used for article recommendations. By turning this setting on, articles will be surfaced in your chat from this Help Center instead.'
-                )
+                    'You already have another Help Center used for article recommendations. By turning this setting on, articles will be surfaced in your chat from this Help Center instead.',
+                ),
             ).toBeInTheDocument()
         })
 
@@ -345,13 +364,13 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
                         ...chatIntegrationFixtures,
                     ],
                     helpCenter: helpCenterFixture,
-                }
+                },
             )
 
             expect(
                 screen.getByLabelText(
-                    /Recommend articles from this Help Center in my Chat/i
-                )
+                    /Recommend articles from this Help Center in my Chat/i,
+                ),
             ).toBeChecked()
         })
 
@@ -360,11 +379,11 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
                 {},
                 {
                     integrations: [shopifyIntegration],
-                }
+                },
             )
 
             expect(
-                screen.queryByLabelText(/Article Recommendation/i)
+                screen.queryByLabelText(/Article Recommendation/i),
             ).not.toBeInTheDocument()
         })
 
@@ -392,7 +411,7 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
                 {},
                 {
                     integrations: chatIntegrationFixtures,
-                }
+                },
             )
 
             expect(screen.queryByText('Flows')).not.toBeInTheDocument()
@@ -415,7 +434,7 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
                         ...helpCenterFixture,
                         shop_name: shopifyIntegration.name,
                     },
-                }
+                },
             )
 
             expect(screen.queryByText('Flows')).not.toBeInTheDocument()
@@ -436,7 +455,7 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
                     workflowsEntrypoints: workflowConfigurations.map(
                         (config) => ({
                             workflow_id: config.id,
-                        })
+                        }),
                     ),
                 },
             })
@@ -452,7 +471,7 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
                         ...helpCenterFixture,
                         shop_name: shopifyIntegration.name,
                     },
-                }
+                },
             )
 
             expect(screen.getByText('Flows')).toBeInTheDocument()
@@ -475,7 +494,7 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
             await waitFor(() => expect(mockOnSave).toBeCalled())
             expect(mockOnSave).toHaveBeenCalledWith({
                 stepName: HelpCenterCreationWizardStep.Automate,
-                payload: {shopName: 'bigCommerce store'},
+                payload: { shopName: 'bigCommerce store' },
             })
         })
         it('should call handleSave when clicked finished', async () => {
@@ -487,7 +506,10 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
 
             await waitFor(() => expect(mockOnSave).toBeCalled())
             expect(mockOnSave).toHaveBeenCalledWith({
-                payload: {orderManagementEnabled: false, wizardCompleted: true},
+                payload: {
+                    orderManagementEnabled: false,
+                    wizardCompleted: true,
+                },
                 redirectTo: NEXT_ACTION.NEW_HELP_CENTER,
                 successModalParams: {
                     articlesCount: undefined,
@@ -512,13 +534,16 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
         })
 
         it('should article recomm should be disabled when no chat integrations', async () => {
-            renderComponent({}, {integrations: [shopifyIntegration]})
+            renderComponent({}, { integrations: [shopifyIntegration] })
 
             fireEvent.click(screen.getByText('Finish'))
 
             await waitFor(() => expect(mockOnSave).toBeCalled())
             expect(mockOnSave).toHaveBeenCalledWith({
-                payload: {orderManagementEnabled: false, wizardCompleted: true},
+                payload: {
+                    orderManagementEnabled: false,
+                    wizardCompleted: true,
+                },
                 redirectTo: NEXT_ACTION.NEW_HELP_CENTER,
                 successModalParams: {
                     articlesCount: undefined,

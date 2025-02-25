@@ -1,10 +1,11 @@
-import {render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import {Map} from 'immutable'
-import {noop} from 'lodash'
 import React from 'react'
 
-import {migrationProviders} from '../../fixtures/migration-providers'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { Map } from 'immutable'
+import { noop } from 'lodash'
+
+import { migrationProviders } from '../../fixtures/migration-providers'
 import MigrationCredentialsModal from './MigrationCredentialsModal'
 
 const provider = migrationProviders[0]
@@ -16,33 +17,33 @@ const credentials = {
 describe('<MigrationCredentialsModal />', () => {
     describe('snapshots', () => {
         test('basic', () => {
-            const {baseElement} = render(
+            const { baseElement } = render(
                 <MigrationCredentialsModal
                     isOpen
                     onClose={noop}
                     isLoading={false}
                     onSubmit={noop}
                     provider={provider}
-                />
+                />,
             )
 
             expect(baseElement).toMatchSnapshot()
         })
         test('loading', () => {
-            const {baseElement} = render(
+            const { baseElement } = render(
                 <MigrationCredentialsModal
                     isOpen
                     onClose={noop}
                     isLoading
                     onSubmit={noop}
                     provider={provider}
-                />
+                />,
             )
 
             expect(baseElement).toMatchSnapshot()
         })
         test('errors on fields', () => {
-            const {baseElement} = render(
+            const { baseElement } = render(
                 <MigrationCredentialsModal
                     isOpen
                     onClose={noop}
@@ -53,7 +54,7 @@ describe('<MigrationCredentialsModal />', () => {
                         email: ['This is not a valid email'],
                         api_key: ['The provided API key is outdated'],
                     })}
-                />
+                />,
             )
 
             expect(baseElement).toMatchSnapshot()
@@ -70,7 +71,7 @@ describe('<MigrationCredentialsModal />', () => {
                     isLoading={false}
                     onSubmit={submitHandler}
                     provider={provider}
-                />
+                />,
             )
 
             const emailInput = screen.getByLabelText(/Email/)
@@ -86,7 +87,7 @@ describe('<MigrationCredentialsModal />', () => {
                     // [API field name]: field value
                     email: credentials.email,
                     api_key: credentials.apiKey,
-                })
+                }),
             )
         })
         it('should not call sumbit handler when fields have no data', async () => {
@@ -99,7 +100,7 @@ describe('<MigrationCredentialsModal />', () => {
                     isLoading={false}
                     onSubmit={submitHandler}
                     provider={provider}
-                />
+                />,
             )
 
             const emailInput = screen.getByLabelText(/Email/)

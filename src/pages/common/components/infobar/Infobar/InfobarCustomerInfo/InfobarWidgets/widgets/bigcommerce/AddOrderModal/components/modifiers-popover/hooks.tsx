@@ -1,12 +1,12 @@
-import {useEffect, useState} from 'react'
+import { useEffect, useState } from 'react'
 
 import {
     BigCommerceCartLineItem,
     BigCommerceProductModifiers,
 } from 'models/integration/types'
 
-import {supportedBigCommerceModifierTypes} from './consts'
-import {ModifierErrors, ModifierValues} from './types'
+import { supportedBigCommerceModifierTypes } from './consts'
+import { ModifierErrors, ModifierValues } from './types'
 
 export const useModifierValues = ({
     modifiers,
@@ -20,13 +20,13 @@ export const useModifierValues = ({
     const [isInitialValidationDone, setIsInitialValidationDone] =
         useState(false)
 
-    const usableModifiers = modifiers.filter(({type}) =>
-        supportedBigCommerceModifierTypes.includes(type)
+    const usableModifiers = modifiers.filter(({ type }) =>
+        supportedBigCommerceModifierTypes.includes(type),
     )
 
     const [modifierValues, setModifierValues] = useState<ModifierValues>(() => {
         const valuesFromUsableModifiers = usableModifiers.reduce(
-            (accum, {id}) => {
+            (accum, { id }) => {
                 const option = lineItem?.options.find((option) => {
                     if ('nameId' in option) {
                         return option.nameId === id
@@ -44,24 +44,24 @@ export const useModifierValues = ({
 
                 return accum
             },
-            {} as ModifierValues
+            {} as ModifierValues,
         )
 
-        return {...valuesFromUsableModifiers, ...initialModifierValues}
+        return { ...valuesFromUsableModifiers, ...initialModifierValues }
     })
 
     const [modifierErrors, setModifierErrors] = useState<ModifierErrors>(
-        usableModifiers.reduce((accum, {id}) => {
+        usableModifiers.reduce((accum, { id }) => {
             accum[id] = undefined
 
             return accum
-        }, {} as ModifierErrors)
+        }, {} as ModifierErrors),
     )
 
     const handleSetValue = (modifierId: number, optionId: number) => {
         // Reset error if it was previously set
         if (modifierErrors[modifierId]) {
-            setModifierErrors({...modifierErrors, [modifierId]: undefined})
+            setModifierErrors({ ...modifierErrors, [modifierId]: undefined })
         }
 
         setModifierValues({
@@ -77,7 +77,7 @@ export const useModifierValues = ({
         const newModifierErrors = Object.entries(modifierValues).reduce(
             (accum, [modifierId, modifierValue]) => {
                 const modifier = modifiers.find(
-                    ({id}) => id.toString() === modifierId
+                    ({ id }) => id.toString() === modifierId,
                 )
 
                 // Should not happen, but defense programming just in case
@@ -89,8 +89,9 @@ export const useModifierValues = ({
                     modifierValue &&
                     modifier.type === 'checkbox' &&
                     modifier.required &&
-                    modifier.option_values.find(({id}) => id === modifierValue)
-                        ?.value_data.checked_value === false
+                    modifier.option_values.find(
+                        ({ id }) => id === modifierValue,
+                    )?.value_data.checked_value === false
 
                 // Value is required but not set
                 if (
@@ -107,11 +108,11 @@ export const useModifierValues = ({
 
                 return accum
             },
-            {} as ModifierErrors
+            {} as ModifierErrors,
         )
 
         const hasErrors = Object.values(newModifierErrors).some((value) =>
-            Boolean(value)
+            Boolean(value),
         )
 
         if (hasErrors) {
@@ -138,5 +139,5 @@ export const useModifierValues = ({
         modifierValues,
     ]) /* eslint-enable react-hooks/exhaustive-deps */
 
-    return {modifierValues, modifierErrors, handleSetValue, handleValidate}
+    return { modifierValues, modifierErrors, handleSetValue, handleValidate }
 }

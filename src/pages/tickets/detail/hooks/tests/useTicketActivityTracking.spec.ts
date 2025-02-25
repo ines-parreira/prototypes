@@ -1,7 +1,7 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
 import * as activityTracker from 'services/activityTracker'
-import {ActivityEvents} from 'services/activityTracker'
+import { ActivityEvents } from 'services/activityTracker'
 
 import useTicketActivityTracking from '../useTicketActivityTracking'
 
@@ -13,7 +13,7 @@ describe('useTicketActivityTracking', () => {
     it('should register activity tracker hooks when the ticketId is defined', () => {
         const mockRegisterActivityTrackerHooks = jest.spyOn(
             activityTracker,
-            'registerActivityTrackerHooks'
+            'registerActivityTrackerHooks',
         )
         const mockTicketId = 1
         const mockProperties = {
@@ -42,8 +42,8 @@ describe('useTicketActivityTracking', () => {
     it('should log an event when the ticketId is defined', () => {
         const mockTicketId = 1
 
-        const {unmount} = renderHook(() =>
-            useTicketActivityTracking(mockTicketId)
+        const { unmount } = renderHook(() =>
+            useTicketActivityTracking(mockTicketId),
         )
 
         expect(mockLogActivityEvent).toHaveBeenLastCalledWith(
@@ -51,7 +51,7 @@ describe('useTicketActivityTracking', () => {
             {
                 entityId: mockTicketId,
                 entityType: 'ticket',
-            }
+            },
         )
 
         unmount()
@@ -61,12 +61,14 @@ describe('useTicketActivityTracking', () => {
             {
                 entityId: mockTicketId,
                 entityType: 'ticket',
-            }
+            },
         )
     })
 
     it('should not log an event when the ticketId is undefined on mount', () => {
-        const {unmount} = renderHook(() => useTicketActivityTracking(undefined))
+        const { unmount } = renderHook(() =>
+            useTicketActivityTracking(undefined),
+        )
         expect(mockLogActivityEvent).not.toHaveBeenCalled()
 
         unmount()

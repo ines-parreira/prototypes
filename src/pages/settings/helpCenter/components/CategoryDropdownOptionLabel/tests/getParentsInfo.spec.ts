@@ -1,8 +1,8 @@
-import {keyBy as _keyBy} from 'lodash'
+import { keyBy as _keyBy } from 'lodash'
 
-import {getCategoriesFlatSorted} from 'pages/settings/helpCenter/fixtures/getCategoriesTreeFlatSorted.fixtures'
+import { getCategoriesFlatSorted } from 'pages/settings/helpCenter/fixtures/getCategoriesTreeFlatSorted.fixtures'
 
-import {getParentsInfo} from '../CategoryDropdownOptionLabel'
+import { getParentsInfo } from '../CategoryDropdownOptionLabel'
 
 describe('getParentsInfo()', () => {
     it('returns the parent trail', () => {
@@ -10,7 +10,7 @@ describe('getParentsInfo()', () => {
         const category = categoriesById['13']
 
         expect(getParentsInfo(category, categoriesById)).toEqual(
-            'Category 1 > Subcategory 1 1 > Subcategory 1 1 1'
+            'Category 1 > Subcategory 1 1 > Subcategory 1 1 1',
         )
     })
 
@@ -18,7 +18,7 @@ describe('getParentsInfo()', () => {
         const categoriesById = _keyBy(getCategoriesFlatSorted, 'id')
         const category = categoriesById['5']
         expect(getParentsInfo(category, categoriesById)).toEqual(
-            '< Top Level Category >'
+            '< Top Level Category >',
         )
     })
 })

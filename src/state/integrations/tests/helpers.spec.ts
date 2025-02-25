@@ -1,4 +1,4 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 import moment from 'moment-timezone'
 
 import {
@@ -6,17 +6,16 @@ import {
     GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY,
     GORGIAS_CHAT_LIVE_CHAT_OFFLINE,
 } from 'config/integrations/gorgias_chat'
-import {account} from 'fixtures/account'
-import {IntegrationType} from 'models/integration/constants'
-import {GorgiasChatStatusEnum} from 'models/integration/types'
-import {InstallationStatus} from 'rest_api/gorgias_chat_protected_api/types'
+import { account } from 'fixtures/account'
+import { IntegrationType } from 'models/integration/constants'
+import { GorgiasChatStatusEnum } from 'models/integration/types'
+import { InstallationStatus } from 'rest_api/gorgias_chat_protected_api/types'
 import {
     AccountSettingBusinessHours,
     AccountSettingType,
 } from 'state/currentAccount/types'
 
-import {isWellKnownEcomIntegrationIdMisMatch} from '../helpers'
-
+import { isWellKnownEcomIntegrationIdMisMatch } from '../helpers'
 import * as helpers from '../helpers'
 
 const neutralInstallationStatus: InstallationStatus = {
@@ -46,8 +45,8 @@ describe('integrations helpers', () => {
                 helpers.computeChatIntegrationStatus(
                     integrationState,
                     true,
-                    neutralInstallationStatus
-                )
+                    neutralInstallationStatus,
+                ),
             ).toEqual(GorgiasChatStatusEnum.HIDDEN)
         })
 
@@ -67,8 +66,8 @@ describe('integrations helpers', () => {
                 helpers.computeChatIntegrationStatus(
                     integrationState,
                     false,
-                    neutralInstallationStatus
-                )
+                    neutralInstallationStatus,
+                ),
             ).toEqual(GorgiasChatStatusEnum.HIDDEN_OUTSIDE_BUSINESS_HOURS)
         })
 
@@ -88,8 +87,8 @@ describe('integrations helpers', () => {
                 helpers.computeChatIntegrationStatus(
                     integrationState,
                     false,
-                    neutralInstallationStatus
-                )
+                    neutralInstallationStatus,
+                ),
             ).toEqual(GorgiasChatStatusEnum.OFFLINE)
         })
 
@@ -108,8 +107,8 @@ describe('integrations helpers', () => {
                 helpers.computeChatIntegrationStatus(
                     integrationState,
                     true,
-                    neutralInstallationStatus
-                )
+                    neutralInstallationStatus,
+                ),
             ).toEqual(GorgiasChatStatusEnum.OFFLINE)
         })
 
@@ -129,8 +128,8 @@ describe('integrations helpers', () => {
                 helpers.computeChatIntegrationStatus(
                     integrationState,
                     true,
-                    neutralInstallationStatus
-                )
+                    neutralInstallationStatus,
+                ),
             ).toEqual(GorgiasChatStatusEnum.ONLINE)
         })
 
@@ -150,8 +149,8 @@ describe('integrations helpers', () => {
                 helpers.computeChatIntegrationStatus(
                     integrationState,
                     true,
-                    neutralInstallationStatus
-                )
+                    neutralInstallationStatus,
+                ),
             ).toEqual(null)
         })
 
@@ -171,7 +170,7 @@ describe('integrations helpers', () => {
                 helpers.computeChatIntegrationStatus(integrationState, true, {
                     ...neutralInstallationStatus,
                     installed: false,
-                })
+                }),
             ).toEqual(GorgiasChatStatusEnum.NOT_INSTALLED)
         })
 
@@ -192,7 +191,7 @@ describe('integrations helpers', () => {
                 helpers.computeChatIntegrationStatus(integrationState, true, {
                     ...neutralInstallationStatus,
                     installed: false,
-                })
+                }),
             ).toEqual(GorgiasChatStatusEnum.NOT_INSTALLED)
         })
 
@@ -203,7 +202,7 @@ describe('integrations helpers', () => {
                     one_click_uninstallation_datetime: new Date(
                         2020,
                         1,
-                        1
+                        1,
                     ).toISOString(),
                     shopify_integration_ids: [],
                     preferences: {
@@ -218,7 +217,7 @@ describe('integrations helpers', () => {
                 helpers.computeChatIntegrationStatus(integrationState, true, {
                     ...neutralInstallationStatus,
                     installed: true,
-                })
+                }),
             ).toEqual(GorgiasChatStatusEnum.ONLINE)
         })
 
@@ -240,7 +239,7 @@ describe('integrations helpers', () => {
                 helpers.computeChatIntegrationStatus(integrationState, true, {
                     ...neutralInstallationStatus,
                     installed: false,
-                })
+                }),
             ).toEqual(GorgiasChatStatusEnum.ONLINE)
         })
 
@@ -262,7 +261,7 @@ describe('integrations helpers', () => {
                 helpers.computeChatIntegrationStatus(integrationState, true, {
                     ...neutralInstallationStatus,
                     installed: true,
-                })
+                }),
             ).toEqual(GorgiasChatStatusEnum.NOT_INSTALLED)
         })
     })
@@ -284,7 +283,7 @@ describe('integrations helpers', () => {
             } as AccountSettingBusinessHours
 
             expect(
-                helpers.isAccountDuringBusinessHours(businessHoursSettings)
+                helpers.isAccountDuringBusinessHours(businessHoursSettings),
             ).toEqual(false)
         })
 
@@ -300,13 +299,13 @@ describe('integrations helpers', () => {
         ])('for value %s should return %s', (dateString, expected) => {
             const fixedUtcDate = moment(dateString)
             jest.spyOn(moment, 'tz').mockImplementation((timezone) =>
-                fixedUtcDate.clone().tz(timezone)
+                fixedUtcDate.clone().tz(timezone),
             )
 
             const businessHoursSettings = account
                 .settings[0] as AccountSettingBusinessHours
             expect(
-                helpers.isAccountDuringBusinessHours(businessHoursSettings)
+                helpers.isAccountDuringBusinessHours(businessHoursSettings),
             ).toEqual(expected)
         })
     })
@@ -316,8 +315,8 @@ describe('integrations helpers', () => {
             expect(
                 isWellKnownEcomIntegrationIdMisMatch(
                     '',
-                    IntegrationType.Shopify
-                )
+                    IntegrationType.Shopify,
+                ),
             ).toBe(false)
         })
 
@@ -325,20 +324,20 @@ describe('integrations helpers', () => {
             expect(
                 isWellKnownEcomIntegrationIdMisMatch(
                     IntegrationType.Shopify,
-                    IntegrationType.Shopify
-                )
+                    IntegrationType.Shopify,
+                ),
             ).toBe(false)
             expect(
                 isWellKnownEcomIntegrationIdMisMatch(
                     IntegrationType.BigCommerce,
-                    IntegrationType.BigCommerce
-                )
+                    IntegrationType.BigCommerce,
+                ),
             ).toBe(false)
             expect(
                 isWellKnownEcomIntegrationIdMisMatch(
                     IntegrationType.Magento2,
-                    IntegrationType.Magento2
-                )
+                    IntegrationType.Magento2,
+                ),
             ).toBe(false)
         })
 
@@ -346,26 +345,26 @@ describe('integrations helpers', () => {
             expect(
                 isWellKnownEcomIntegrationIdMisMatch(
                     IntegrationType.Email,
-                    IntegrationType.BigCommerce
-                )
+                    IntegrationType.BigCommerce,
+                ),
             ).toBe(true)
             expect(
                 isWellKnownEcomIntegrationIdMisMatch(
                     IntegrationType.Phone,
-                    IntegrationType.Magento2
-                )
+                    IntegrationType.Magento2,
+                ),
             ).toBe(true)
             expect(
                 isWellKnownEcomIntegrationIdMisMatch(
                     IntegrationType.Gmail,
-                    IntegrationType.Shopify
-                )
+                    IntegrationType.Shopify,
+                ),
             ).toBe(true)
             expect(
                 isWellKnownEcomIntegrationIdMisMatch(
                     IntegrationType.Outlook,
-                    IntegrationType.Shopify
-                )
+                    IntegrationType.Shopify,
+                ),
             ).toBe(true)
         })
     })

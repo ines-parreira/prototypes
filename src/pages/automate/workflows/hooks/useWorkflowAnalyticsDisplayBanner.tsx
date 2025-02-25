@@ -1,5 +1,6 @@
+import { useEffect, useMemo, useState } from 'react'
+
 import moment from 'moment-timezone'
-import {useState, useEffect, useMemo} from 'react'
 
 interface UseWorkflowAnalyticsDisplayBannerProps {
     flowUpdateDatetime: string
@@ -32,7 +33,7 @@ const useWorkflowAnalyticsDisplayBanner = ({
 }: UseWorkflowAnalyticsDisplayBannerProps): WorkflowAnalyticsDisplayBanner => {
     const [banners, setBanners] =
         useState<Omit<WorkflowAnalyticsDisplayBanner, 'onClose'>>(
-            initialBannerState
+            initialBannerState,
         )
 
     const onClose = () => {
@@ -65,7 +66,7 @@ const useWorkflowAnalyticsDisplayBanner = ({
         }
     }, [flowUpdateDatetime, startDatetime, hasDataAvailable, previousRoute])
 
-    return useMemo(() => ({...banners, onClose}), [banners])
+    return useMemo(() => ({ ...banners, onClose }), [banners])
 }
 
 export default useWorkflowAnalyticsDisplayBanner

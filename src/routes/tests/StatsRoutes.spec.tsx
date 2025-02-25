@@ -1,59 +1,59 @@
-import {act, render} from '@testing-library/react'
-import {createBrowserHistory} from 'history'
-import {fromJS, Map} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
+import React, { ComponentType, PropsWithChildren, ReactNode } from 'react'
 
-import React, {ComponentType, PropsWithChildren, ReactNode} from 'react'
-import {Provider} from 'react-redux'
-import {MemoryRouter} from 'react-router-dom'
+import { act, render } from '@testing-library/react'
+import { createBrowserHistory } from 'history'
+import { fromJS, Map } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
+import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
-import {logPageChange} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {UserRole} from 'config/types/user'
-import {useFlag} from 'core/flags'
+import { logPageChange } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { UserRole } from 'config/types/user'
+import { useFlag } from 'core/flags'
 import * as billingFixtures from 'fixtures/billing'
 import {
     AUTOMATION_PRODUCT_ID,
     basicMonthlyAutomationPlan,
 } from 'fixtures/productPrices'
-import {RevenueAddonApiClientProvider} from 'pages/convert/common/hooks/useConvertApi'
-import {HelpCenterApiClientProvider} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import {SupportedLocalesProvider} from 'pages/settings/helpCenter/providers/SupportedLocales'
+import { RevenueAddonApiClientProvider } from 'pages/convert/common/hooks/useConvertApi'
+import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import { SupportedLocalesProvider } from 'pages/settings/helpCenter/providers/SupportedLocales'
 import AiAgentStatsFilters from 'pages/stats/automate/ai-agent/AiAgentStatsFilters'
 import AutomateStatsPaywall from 'pages/stats/automate/AutomateStatsPaywall'
 import AutomateIntents from 'pages/stats/AutomateIntents'
 import AutomateMacros from 'pages/stats/AutomateMacros'
-import {STATS_ROUTE_PREFIX} from 'pages/stats/common/components/constants'
+import { STATS_ROUTE_PREFIX } from 'pages/stats/common/components/constants'
 import StatsNavbarContainer from 'pages/stats/common/StatsNavbarContainer'
 import RevenueCampaignsStats from 'pages/stats/convert/pages/CampaignsStats'
 import CampaignStatsPaywallView from 'pages/stats/convert/pages/CampaignsStats/CampaignStatsPaywallView'
-import {CampaignStatsFilters} from 'pages/stats/convert/providers/CampaignStatsFilters'
-import {CustomReportPage} from 'pages/stats/custom-reports/CustomReportPage'
-import {CustomReports} from 'pages/stats/custom-reports/CustomReports'
+import { CampaignStatsFilters } from 'pages/stats/convert/providers/CampaignStatsFilters'
+import { CustomReportPage } from 'pages/stats/custom-reports/CustomReportPage'
+import { CustomReports } from 'pages/stats/custom-reports/CustomReports'
 import HelpCenterStats from 'pages/stats/help-center/pages/HelpCenterStats'
 import LiveAgents from 'pages/stats/LiveAgents'
 import LiveOverview from 'pages/stats/LiveOverview'
 import SatisfactionReport from 'pages/stats/quality-management/satisfaction/SatisfactionReport'
-import {ProtectedRoute} from 'pages/stats/report-chart-restrictions/ProtectedRoute'
+import { ProtectedRoute } from 'pages/stats/report-chart-restrictions/ProtectedRoute'
 import SelfServiceStatsPage from 'pages/stats/self-service/SelfServiceStatsPage'
-import {ServiceLevelAgreements} from 'pages/stats/sla/ServiceLevelAgreements'
+import { ServiceLevelAgreements } from 'pages/stats/sla/ServiceLevelAgreements'
 import SupportPerformanceAgentsReport from 'pages/stats/support-performance/agents/SupportPerformanceAgentsReport'
 import AutoQA from 'pages/stats/support-performance/auto-qa/AutoQA'
-import {BusiestTimesOfDays} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDays'
-import {ChannelsReport} from 'pages/stats/support-performance/channels/ChannelsReport'
+import { BusiestTimesOfDays } from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDays'
+import { ChannelsReport } from 'pages/stats/support-performance/channels/ChannelsReport'
 import SupportPerformanceOverviewReport from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReport'
 import SupportPerformanceRevenue from 'pages/stats/support-performance/revenue/SupportPerformanceRevenue'
 import SupportPerformanceSatisfaction from 'pages/stats/support-performance/satisfaction/SupportPerformanceSatisfaction'
-import {Tags} from 'pages/stats/ticket-insights/tags/Tags'
-import {SupportPerformanceTicketInsights} from 'pages/stats/ticket-insights/ticket-fields/SupportPerformanceTicketInsights'
+import { Tags } from 'pages/stats/ticket-insights/tags/Tags'
+import { SupportPerformanceTicketInsights } from 'pages/stats/ticket-insights/ticket-fields/SupportPerformanceTicketInsights'
 import LiveVoice from 'pages/stats/voice/pages/LiveVoice'
 import VoiceAgents from 'pages/stats/voice/pages/VoiceAgents'
 import VoiceOverview from 'pages/stats/voice/pages/VoiceOverview'
-import {STATS_ROUTES} from 'routes/constants'
-import {StatsRoutes} from 'routes/StatsRoutes'
-import {initialState} from 'state/billing/reducers'
-import {assumeMock} from 'utils/testing'
+import { STATS_ROUTES } from 'routes/constants'
+import { StatsRoutes } from 'routes/StatsRoutes'
+import { initialState } from 'state/billing/reducers'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('common/segment')
 const logPageMock = assumeMock(logPageChange)
@@ -68,21 +68,21 @@ jest.mock(
             content?: ComponentType<any>
             children?: ReactNode
         }) =>
-            Content ? <Content /> : children
+            Content ? <Content /> : children,
 )
 jest.mock('pages/PanelLayout', () => () => <div>PanelLayout</div>)
 
 jest.mock(
     'pages/stats/DefaultStatsFilters',
     () =>
-        ({children}: PropsWithChildren<any>) => {
+        ({ children }: PropsWithChildren<any>) => {
             return (
                 <>
                     <div>Default stats filters</div>
                     <>{children}</>
                 </>
             )
-        }
+        },
 )
 
 const mockHistory = createBrowserHistory()
@@ -104,14 +104,14 @@ const mockUseFlag = assumeMock(useFlag)
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual<Record<string, unknown>>('react-router-dom'),
-    Switch: ({children}: {children: React.ReactNode}) => children,
+    Switch: ({ children }: { children: React.ReactNode }) => children,
     Route: ({
         render,
         path,
     }: {
         path: string
         render: (data: any) => React.ReactNode
-    }) => (render ? render({match: {path}}) : null),
+    }) => (render ? render({ match: { path } }) : null),
     useLocation: () => ({
         pathname: '/app/settings',
         search: '',
@@ -137,24 +137,24 @@ const LiveAgentsMock = assumeMock(LiveAgents)
 jest.mock('pages/stats/voice/pages/LiveVoice')
 const LiveVoiceMock = assumeMock(LiveVoice)
 jest.mock(
-    'pages/stats/support-performance/overview/SupportPerformanceOverviewReport'
+    'pages/stats/support-performance/overview/SupportPerformanceOverviewReport',
 )
 const SupportPerformanceOverviewReportMock = assumeMock(
-    SupportPerformanceOverviewReport
+    SupportPerformanceOverviewReport,
 )
 jest.mock('pages/stats/custom-reports/CustomReports')
 const CustomReportsMock = assumeMock(CustomReports)
 jest.mock('pages/stats/custom-reports/CustomReportPage')
 const CustomReportPageMock = assumeMock(CustomReportPage)
 jest.mock(
-    'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDays'
+    'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDays',
 )
 const BusiestTimesOfDaysMock = assumeMock(BusiestTimesOfDays)
 jest.mock(
-    'pages/stats/ticket-insights/ticket-fields/SupportPerformanceTicketInsights'
+    'pages/stats/ticket-insights/ticket-fields/SupportPerformanceTicketInsights',
 )
 const SupportPerformanceTicketInsightsMock = assumeMock(
-    SupportPerformanceTicketInsights
+    SupportPerformanceTicketInsights,
 )
 jest.mock('pages/stats/ticket-insights/tags/Tags')
 const TagsMock = assumeMock(Tags)
@@ -165,16 +165,16 @@ const ChannelsReportMock = assumeMock(ChannelsReport)
 jest.mock('pages/stats/sla/ServiceLevelAgreements')
 const ServiceLevelAgreementsMock = assumeMock(ServiceLevelAgreements)
 jest.mock(
-    'pages/stats/support-performance/agents/SupportPerformanceAgentsReport'
+    'pages/stats/support-performance/agents/SupportPerformanceAgentsReport',
 )
 const SupportPerformanceAgentsReportMock = assumeMock(
-    SupportPerformanceAgentsReport
+    SupportPerformanceAgentsReport,
 )
 jest.mock(
-    'pages/stats/support-performance/satisfaction/SupportPerformanceSatisfaction'
+    'pages/stats/support-performance/satisfaction/SupportPerformanceSatisfaction',
 )
 const SupportPerformanceSatisfactionMock = assumeMock(
-    SupportPerformanceSatisfaction
+    SupportPerformanceSatisfaction,
 )
 jest.mock('pages/stats/support-performance/revenue/SupportPerformanceRevenue')
 const SupportPerformanceRevenueMock = assumeMock(SupportPerformanceRevenue)
@@ -207,7 +207,7 @@ jest.mock('pages/settings/helpCenter/providers/SupportedLocales')
 const SupportedLocalesProviderMock = assumeMock(SupportedLocalesProvider)
 jest.mock('pages/convert/common/hooks/useConvertApi')
 const RevenueAddonApiClientProviderMock = assumeMock(
-    RevenueAddonApiClientProvider
+    RevenueAddonApiClientProvider,
 )
 jest.mock('pages/stats/support-performance/auto-qa/AutoQA')
 const AutoQAMock = assumeMock(AutoQA)
@@ -226,7 +226,7 @@ describe('StatsRoutes', () => {
         CustomReportPageMock.mockImplementation(() => <div />)
         CustomReportsMock.mockImplementation(() => <div />)
         StatsNavbarContainerMock.mockImplementation(() => <div />)
-        ProtectedRouteMock.mockImplementation(({children}) => children)
+        ProtectedRouteMock.mockImplementation(({ children }) => children)
         SupportPerformanceOverviewReportMock.mockImplementation(() => <div />)
         LiveOverviewMock.mockImplementation(() => <div />)
         LiveAgentsMock.mockImplementation(() => <div />)
@@ -237,7 +237,7 @@ describe('StatsRoutes', () => {
         SupportPerformanceSatisfactionMock.mockImplementation(() => <div />)
         SupportPerformanceRevenueMock.mockImplementation(() => <div />)
         RevenueCampaignsStatsMock.mockImplementation(() => <div />)
-        CampaignStatsFiltersMock.mockImplementation(({children}) => (
+        CampaignStatsFiltersMock.mockImplementation(({ children }) => (
             <>{children}</>
         ))
         CampaignStatsPaywallViewMock.mockImplementation(() => <div />)
@@ -249,13 +249,13 @@ describe('StatsRoutes', () => {
         VoiceOverviewMock.mockImplementation(() => <div />)
         VoiceAgentsMock.mockImplementation(() => <div />)
         AiAgentStatsFiltersMock.mockImplementation(() => <div />)
-        RevenueAddonApiClientProviderMock.mockImplementation(({children}) => (
+        RevenueAddonApiClientProviderMock.mockImplementation(({ children }) => (
             <>{children}</>
         ))
-        HelpCenterApiClientProviderMock.mockImplementation(({children}) => (
+        HelpCenterApiClientProviderMock.mockImplementation(({ children }) => (
             <>{children}</>
         ))
-        SupportedLocalesProviderMock.mockImplementation(({children}) => (
+        SupportedLocalesProviderMock.mockImplementation(({ children }) => (
             <>{children}</>
         ))
     })
@@ -349,7 +349,7 @@ describe('StatsRoutes', () => {
             route: '/app/stats/automate-ai-agent',
             mock: VoiceAgentsMock,
         },
-    ])('should render %p page', ({route, mock}) => {
+    ])('should render %p page', ({ route, mock }) => {
         mockFlags({
             // SatisfactionMock
             [FeatureFlagKey.NewSatisfactionReport]: true,
@@ -364,13 +364,13 @@ describe('StatsRoutes', () => {
                 <MemoryRouter initialEntries={[route]}>
                     <StatsRoutes />
                 </MemoryRouter>
-            </Provider>
+            </Provider>,
         )
 
         expect(mock).toHaveBeenCalled()
         expect(ProtectedRouteMock).toHaveBeenCalledWith(
-            expect.objectContaining({path: route}),
-            {}
+            expect.objectContaining({ path: route }),
+            {},
         )
     })
 
@@ -379,7 +379,7 @@ describe('StatsRoutes', () => {
         (role) => {
             const state = {
                 currentUser: fromJS({
-                    role: {name: role},
+                    role: { name: role },
                 }) as Map<any, any>,
                 currentAccount: fromJS({
                     current_subscription: {
@@ -399,18 +399,18 @@ describe('StatsRoutes', () => {
                     <MemoryRouter initialEntries={[route]}>
                         <StatsRoutes />
                     </MemoryRouter>
-                </Provider>
+                </Provider>,
             )
 
             expect(AutoQAMock).toHaveBeenCalled()
-        }
+        },
     )
 
     it('should log page change after location change to a tracked page', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <StatsRoutes />
-            </Provider>
+            </Provider>,
         )
 
         act(() => mockHistory.push('/app/stats/live-overview'))

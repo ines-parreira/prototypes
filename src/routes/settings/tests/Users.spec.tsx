@@ -1,19 +1,20 @@
-import {render} from '@testing-library/react'
 import React from 'react'
-import {Route, useRouteMatch} from 'react-router-dom'
 
-import {PageSection} from 'config/pages'
-import {ADMIN_ROLE} from 'config/user'
+import { render } from '@testing-library/react'
+import { Route, useRouteMatch } from 'react-router-dom'
+
+import { PageSection } from 'config/pages'
+import { ADMIN_ROLE } from 'config/user'
 import AgentDetail from 'pages/settings/users/Detail'
 import AgentList from 'pages/settings/users/List'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
-import {renderAppSettings} from '../helpers/settingsRenderer'
-import {Users} from '../Users'
+import { renderAppSettings } from '../helpers/settingsRenderer'
+import { Users } from '../Users'
 
 jest.mock('react-router-dom', () => ({
     Route: jest.fn(() => <div>route</div>),
-    Switch: jest.fn(({children}) => <div>{children}</div>),
+    Switch: jest.fn(({ children }) => <div>{children}</div>),
     useRouteMatch: jest.fn(),
 }))
 
@@ -59,7 +60,7 @@ describe('Users', () => {
         ],
     ])(
         'should call renderer and Route with correct props',
-        ({callOrder, path, component}) => {
+        ({ callOrder, path, component }) => {
             render(<Users />)
 
             expect(mockedRenderAppSettings.mock.calls[callOrder]).toEqual([
@@ -76,6 +77,6 @@ describe('Users', () => {
                 },
                 {},
             ])
-        }
+        },
     )
 })

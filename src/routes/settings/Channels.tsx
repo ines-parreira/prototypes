@@ -1,18 +1,17 @@
 import React from 'react'
 
-import {Route, Switch, useRouteMatch} from 'react-router-dom'
+import { Route, Switch, useRouteMatch } from 'react-router-dom'
 
-import {PageSection} from 'config/pages'
-import {ADMIN_ROLE} from 'config/user'
-import {RevenueAddonApiClientProvider} from 'pages/convert/common/hooks/useConvertApi'
-
+import { PageSection } from 'config/pages'
+import { ADMIN_ROLE } from 'config/user'
+import { RevenueAddonApiClientProvider } from 'pages/convert/common/hooks/useConvertApi'
 import IntegrationDetail from 'pages/integrations/integration/Integration'
-import {HelpCenterApiClientProvider} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 
-import {renderAppSettings} from './helpers/settingsRenderer'
+import { renderAppSettings } from './helpers/settingsRenderer'
 
 export function Channels() {
-    const {path} = useRouteMatch()
+    const { path } = useRouteMatch()
 
     return (
         <HelpCenterApiClientProvider>

@@ -6,6 +6,6 @@ export enum CampaignTriggerDeviceTypeValueEnum {
 
 export function isDeviceTypeValue(value: string) {
     return Object.values(CampaignTriggerDeviceTypeValueEnum).includes(
-        value as CampaignTriggerDeviceTypeValueEnum
+        value as CampaignTriggerDeviceTypeValueEnum,
     )
 }

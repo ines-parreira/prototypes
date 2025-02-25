@@ -1,9 +1,10 @@
-import classnames from 'classnames'
 import React from 'react'
+
+import classnames from 'classnames'
 
 import css from './HelpCenterPreviewHomePage.less'
 
-const HomePageSection = ({title}: {title: string}) => {
+const HomePageSection = ({ title }: { title: string }) => {
     return (
         <div className={css.sectionHeader}>
             <span className={css.title}>{title}</span>
@@ -18,7 +19,7 @@ const HomePageSection = ({title}: {title: string}) => {
     )
 }
 
-const HomePageArticle = ({title}: {title: string}) => {
+const HomePageArticle = ({ title }: { title: string }) => {
     return (
         <li className={classnames(css.item, css.articleItem)}>
             <div className={css.itemArticleName}>{title}</div>
@@ -30,7 +31,7 @@ const HomePageArticle = ({title}: {title: string}) => {
     )
 }
 
-const HomePageCategory = ({title}: {title: string}) => {
+const HomePageCategory = ({ title }: { title: string }) => {
     return (
         <li className={css.item}>
             <div className={css.itemImage} />
@@ -55,7 +56,7 @@ const HelpCenterPreviewDefaultHomePage = ({
                     <i
                         className={classnames(
                             'material-icons',
-                            css.searchBarIcon
+                            css.searchBarIcon,
                         )}
                     >
                         search

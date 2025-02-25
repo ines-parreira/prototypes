@@ -1,1 +1,1 @@
-export {default} from './MigrationCredentialsModal'
+export { default } from './MigrationCredentialsModal'

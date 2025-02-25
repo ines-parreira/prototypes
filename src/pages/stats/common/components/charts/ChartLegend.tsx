@@ -1,9 +1,10 @@
-import {Chart} from 'chart.js'
-import classNames from 'classnames'
 import React from 'react'
 
+import { Chart } from 'chart.js'
+import classNames from 'classnames'
+
 import Legend from 'pages/stats/Legend'
-import {TwoDimensionalDataItem} from 'pages/stats/types'
+import { TwoDimensionalDataItem } from 'pages/stats/types'
 
 import css from './ChartLegend.less'
 
@@ -34,7 +35,7 @@ export const ChartLegend = ({
             className={classNames(css.legend, {
                 [css.legendOnLeft]: legendOnLeft,
             })}
-            items={data.map(({label, tooltip}, index) => ({
+            items={data.map(({ label, tooltip }, index) => ({
                 label,
                 tooltip,
                 color: chartColors(index),
@@ -45,7 +46,7 @@ export const ChartLegend = ({
                     onChange: () => {
                         chart?.setDatasetVisibility(
                             index,
-                            !chart.isDatasetVisible(index)
+                            !chart.isDatasetVisible(index),
                         )
                         setLinesVisibility((prevValue) => ({
                             ...prevValue,

@@ -1,14 +1,15 @@
-import classnames from 'classnames'
 import React, {
     ComponentProps,
     FocusEvent,
-    KeyboardEvent,
     ForwardedRef,
     forwardRef,
+    KeyboardEvent,
     useEffect,
     useImperativeHandle,
     useState,
 } from 'react'
+
+import classnames from 'classnames'
 
 import useEffectOnce from 'hooks/useEffectOnce'
 import css from 'pages/common/components/EditableTitle/EditableTitle.less'
@@ -42,10 +43,10 @@ const EditableTitle = (
         isRequired,
         ...props
     }: Props,
-    ref: ForwardedRef<HTMLInputElement>
+    ref: ForwardedRef<HTMLInputElement>,
 ) => {
     const [inputElement, setInputElement] = useState<HTMLInputElement | null>(
-        null
+        null,
     )
     useImperativeHandle(ref, () => inputElement!)
 
@@ -102,7 +103,7 @@ const EditableTitle = (
         onChange?.(value)
     }
 
-    const onBlur = ({target: {value}}: FocusEvent<HTMLInputElement>) => {
+    const onBlur = ({ target: { value } }: FocusEvent<HTMLInputElement>) => {
         setEditMode(false)
         update(value)
     }

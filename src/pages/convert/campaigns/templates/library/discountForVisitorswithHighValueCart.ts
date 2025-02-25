@@ -1,22 +1,22 @@
 // Offer 10% discount for visitors with high-value carts
-import {Map} from 'immutable'
-import {ulid} from 'ulidx'
+import { Map } from 'immutable'
+import { ulid } from 'ulidx'
 
 import {
-    WizardConfiguration,
     BannerType,
     TooltipActionType,
+    WizardConfiguration,
 } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
-import {CampaignStepsKeys} from 'pages/convert/campaigns/types/CampaignSteps'
-import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
-import {CampaignTriggerBusinessHoursValuesEnum} from 'pages/convert/campaigns/types/enums/CampaignTriggerBusinessHoursValues.enum'
-import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
-import {createTriggerRule} from 'pages/convert/campaigns/utils/createTriggerRule'
-import {assetsUrl} from 'utils'
+import { CampaignStepsKeys } from 'pages/convert/campaigns/types/CampaignSteps'
+import { CampaignStatus } from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
+import { CampaignTriggerBusinessHoursValuesEnum } from 'pages/convert/campaigns/types/enums/CampaignTriggerBusinessHoursValues.enum'
+import { CampaignTriggerOperator } from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
+import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import { createTriggerRule } from 'pages/convert/campaigns/utils/createTriggerRule'
+import { assetsUrl } from 'utils'
 
-import {CampaignConfigurationBuilder} from '../constructor'
-import {CampaignConfiguration, CampaignTemplate} from '../types'
+import { CampaignConfigurationBuilder } from '../constructor'
+import { CampaignConfiguration, CampaignTemplate } from '../types'
 
 export const DISCOUNT_CODE = 'FORYOU10'
 
@@ -27,7 +27,7 @@ export const DISCOUNT_HIGH_VALUE_CARTS: CampaignTemplate = {
         'Push your shoppers with carts above your average order value to check out',
     onboarding: false,
     preview: assetsUrl(
-        'img/campaigns/library/offer-10-discount-high-value-carts.png'
+        'img/campaigns/library/offer-10-discount-high-value-carts.png',
     ),
     getWizardConfiguration: (): WizardConfiguration => {
         return {
@@ -61,7 +61,7 @@ export const DISCOUNT_HIGH_VALUE_CARTS: CampaignTemplate = {
                 storeIntegration,
                 'percentage',
                 DISCOUNT_CODE,
-                0.05
+                0.05,
             )
         } catch {
             return Promise.resolve(false)
@@ -70,7 +70,7 @@ export const DISCOUNT_HIGH_VALUE_CARTS: CampaignTemplate = {
         return Promise.resolve(true)
     },
     getConfiguration: async (
-        storeIntegration: Map<string, any>
+        storeIntegration: Map<string, any>,
     ): Promise<CampaignConfiguration> => {
         const shopDomain = storeIntegration.getIn([
             'meta',
@@ -118,7 +118,7 @@ export const DISCOUNT_HIGH_VALUE_CARTS: CampaignTemplate = {
                     delay: 15000,
                     noReply: true,
                 },
-            }
+            },
         )
 
         return Promise.resolve(builder.build())

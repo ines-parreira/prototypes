@@ -1,12 +1,12 @@
-import {waitFor} from '@testing-library/react'
-import {renderHook} from '@testing-library/react-hooks'
+import { waitFor } from '@testing-library/react'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {TicketChannel} from 'business/types/ticket'
-import {agents} from 'fixtures/agents'
-import {integrationsState} from 'fixtures/integrations'
-import {useDistributionTrendReportData} from 'hooks/reporting/common/useDistributionTrendReportData'
-import {LegacyStatsFilters} from 'models/stat/types'
-import {formatMetricValue} from 'pages/stats/common/utils'
+import { TicketChannel } from 'business/types/ticket'
+import { agents } from 'fixtures/agents'
+import { integrationsState } from 'fixtures/integrations'
+import { useDistributionTrendReportData } from 'hooks/reporting/common/useDistributionTrendReportData'
+import { LegacyStatsFilters } from 'models/stat/types'
+import { formatMetricValue } from 'pages/stats/common/utils'
 
 describe('useDistributionTrendReportData', () => {
     const defaultStatsFilters: LegacyStatsFilters = {
@@ -44,20 +44,20 @@ describe('useDistributionTrendReportData', () => {
         const distributionsConfig = {
             fetchCurrentDistribution: jest
                 .fn()
-                .mockResolvedValue({data: workloadData}),
+                .mockResolvedValue({ data: workloadData }),
             fetchPreviousDistribution: jest
                 .fn()
-                .mockResolvedValue({data: workloadPreviousData}),
+                .mockResolvedValue({ data: workloadPreviousData }),
             labelPrefix,
             metricFormat: 'decimal' as const,
         }
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useDistributionTrendReportData(
                 defaultStatsFilters,
                 'UTC',
-                distributionsConfig
-            )
+                distributionsConfig,
+            ),
         )
 
         await waitFor(() => {
@@ -73,7 +73,7 @@ describe('useDistributionTrendReportData', () => {
                         label: `${labelPrefix} - ${facebookResult.label}`,
                         value: formatMetricValue(facebookResult.value),
                         prevValue: formatMetricValue(
-                            facebookPreviousResult.value
+                            facebookPreviousResult.value,
                         ),
                     },
                 ],
@@ -85,18 +85,20 @@ describe('useDistributionTrendReportData', () => {
         const distributionsConfig = {
             fetchCurrentDistribution: jest
                 .fn()
-                .mockResolvedValue({data: workloadData}),
-            fetchPreviousDistribution: jest.fn().mockResolvedValue({data: []}),
+                .mockResolvedValue({ data: workloadData }),
+            fetchPreviousDistribution: jest
+                .fn()
+                .mockResolvedValue({ data: [] }),
             labelPrefix,
             metricFormat: 'decimal' as const,
         }
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useDistributionTrendReportData(
                 defaultStatsFilters,
                 'UTC',
-                distributionsConfig
-            )
+                distributionsConfig,
+            ),
         )
 
         await waitFor(() => {
@@ -125,12 +127,12 @@ describe('useDistributionTrendReportData', () => {
             labelPrefix,
             metricFormat: 'decimal' as const,
         }
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useDistributionTrendReportData(
                 defaultStatsFilters,
                 'UTC',
-                distributionsConfig
-            )
+                distributionsConfig,
+            ),
         )
 
         await waitFor(() => {
@@ -142,12 +144,12 @@ describe('useDistributionTrendReportData', () => {
     })
 
     it('should return empty data when no fetch config provided', async () => {
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useDistributionTrendReportData(
                 defaultStatsFilters,
                 'UTC',
-                undefined
-            )
+                undefined,
+            ),
         )
 
         await waitFor(() => {

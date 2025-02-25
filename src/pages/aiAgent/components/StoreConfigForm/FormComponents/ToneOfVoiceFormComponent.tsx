@@ -1,10 +1,12 @@
-import {Label} from '@gorgias/merchant-ui-kit'
+import React, { useState } from 'react'
+
 import classNames from 'classnames'
-import React, {useState} from 'react'
+
+import { Label } from '@gorgias/merchant-ui-kit'
 
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {Value} from 'pages/common/forms/SelectField/types'
+import { Value } from 'pages/common/forms/SelectField/types'
 import TextArea from 'pages/common/forms/TextArea'
 
 import {
@@ -12,7 +14,8 @@ import {
     INITIAL_FORM_VALUES,
     ToneOfVoice,
 } from '../../../constants'
-import {FormValues, UpdateValue} from '../../../types'
+import { FormValues, UpdateValue } from '../../../types'
+
 import css from './ToneOfVoiceFormComponent.less'
 
 type ToneOfVoiceFormComponentProps = {
@@ -24,7 +27,7 @@ type ToneOfVoiceFormComponentProps = {
 }
 
 export const ToneOfVoiceFormComponent = (
-    props: ToneOfVoiceFormComponentProps
+    props: ToneOfVoiceFormComponentProps,
 ) => {
     const shouldFocusTextArea = React.useRef(false)
     const {
@@ -46,7 +49,7 @@ export const ToneOfVoiceFormComponent = (
             ) {
                 updateValue(
                     'customToneOfVoiceGuidance',
-                    INITIAL_FORM_VALUES.customToneOfVoiceGuidance
+                    INITIAL_FORM_VALUES.customToneOfVoiceGuidance,
                 )
             }
             shouldFocusTextArea.current = true
@@ -127,7 +130,7 @@ export const ToneOfVoiceFormComponent = (
                             INITIAL_FORM_VALUES.customToneOfVoiceGuidance
                         }
                         onChange={handleCustomToneOfVoiceChange}
-                        style={{minHeight: '104px'}}
+                        style={{ minHeight: '104px' }}
                         autoFocus={shouldFocusTextArea.current}
                         error={
                             !isCustomToneOfVoiceValid

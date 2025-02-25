@@ -1,5 +1,6 @@
-import {useGetUser} from '@gorgias/api-queries'
 import React from 'react'
+
+import { useGetUser } from '@gorgias/api-queries'
 
 import Avatar from 'pages/common/components/Avatar/Avatar'
 
@@ -7,9 +8,9 @@ type Props = {
     userId: number
 }
 
-export default function DimensionUser({userId}: Props) {
-    const {data, isError, isLoading} = useGetUser<{data: {name: string}}>(
-        userId
+export default function DimensionUser({ userId }: Props) {
+    const { data, isError, isLoading } = useGetUser<{ data: { name: string } }>(
+        userId,
     )
 
     if (isLoading) return <>Loading...</>

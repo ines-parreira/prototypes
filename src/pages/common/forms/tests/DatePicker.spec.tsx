@@ -1,13 +1,14 @@
-import {fireEvent, render, waitFor} from '@testing-library/react'
-import {Options} from 'daterangepicker'
-import moment from 'moment-timezone'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {THEME_NAME} from 'core/theme'
+import { fireEvent, render, waitFor } from '@testing-library/react'
+import { Options } from 'daterangepicker'
+import moment from 'moment-timezone'
+
+import { THEME_NAME } from 'core/theme'
 import DatePicker from 'pages/common/forms/DatePicker'
 
 jest.mock('core/theme/useTheme.ts', () => {
-    const {THEME_NAME, themeTokenMap} =
+    const { THEME_NAME, themeTokenMap } =
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         require('core/theme') as typeof import('core/theme')
 
@@ -52,7 +53,7 @@ describe('DatePicker', () => {
     })
 
     it('should render a date range picker', () => {
-        const {baseElement} = render(
+        const { baseElement } = render(
             <DatePicker
                 {...minProps}
                 isOpen={true}
@@ -63,25 +64,25 @@ describe('DatePicker', () => {
                 }}
             >
                 <button>Select a date</button>
-            </DatePicker>
+            </DatePicker>,
         )
 
         expect(baseElement).toMatchSnapshot()
     })
 
     it('should display the opened date picker', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <DatePicker
                 {...minProps}
                 isOpen={true}
-                initialSettings={{showDropdowns: false}}
+                initialSettings={{ showDropdowns: false }}
             >
                 <button>Select a date</button>
-            </DatePicker>
+            </DatePicker>,
         )
 
         const [dateRangePickerElement] = document.getElementsByClassName(
-            'daterangepicker'
+            'daterangepicker',
         ) as unknown as HTMLDivElement[]
 
         expect(dateRangePickerElement.classList).toContain('displayed')
@@ -91,10 +92,10 @@ describe('DatePicker', () => {
 
     it('should open the date range picker on trigger element click', async () => {
         const showSpy = jest.fn()
-        const {getByText} = render(
+        const { getByText } = render(
             <DatePicker {...minProps} toggle={showSpy}>
                 <button>Select a date</button>
-            </DatePicker>
+            </DatePicker>,
         )
 
         fireEvent.click(getByText('Select a date'))
@@ -107,10 +108,10 @@ describe('DatePicker', () => {
         document.body.appendChild(externalText)
 
         const toggleSpy = jest.fn()
-        const {getByText} = render(
+        const { getByText } = render(
             <DatePicker {...minProps} isOpen toggle={toggleSpy}>
                 <button>Select a date</button>
-            </DatePicker>
+            </DatePicker>,
         )
 
         fireEvent.click(getByText(externalText.textContent))
@@ -119,10 +120,10 @@ describe('DatePicker', () => {
 
     it('should call onSubmit with expected date when selecting a date', () => {
         const onSubmit = jest.fn()
-        const {getByText} = render(
+        const { getByText } = render(
             <DatePicker {...minProps} isOpen={true} onSubmit={onSubmit}>
                 <button>Select a date</button>
-            </DatePicker>
+            </DatePicker>,
         )
 
         fireEvent.click(getByText('Apply'))
@@ -132,7 +133,7 @@ describe('DatePicker', () => {
 
     it('should call onSubmit with expected range when selecting a range of date', () => {
         const onSubmit = jest.fn()
-        const {getByText} = render(
+        const { getByText } = render(
             <DatePicker
                 {...minProps}
                 isOpen={true}
@@ -145,7 +146,7 @@ describe('DatePicker', () => {
                 }}
             >
                 <button>Select a date</button>
-            </DatePicker>
+            </DatePicker>,
         )
 
         fireEvent.click(getByText('Apply'))
@@ -157,15 +158,15 @@ describe('DatePicker', () => {
         render(
             <DatePicker {...minProps} isOpen={true}>
                 <button>Select a date</button>
-            </DatePicker>
+            </DatePicker>,
         )
 
         const [dateRangePickerElement] = document.getElementsByClassName(
-            'daterangepicker'
+            'daterangepicker',
         ) as unknown as HTMLDivElement[]
 
         expect(
-            dateRangePickerElement.classList.contains(THEME_NAME.Classic)
+            dateRangePickerElement.classList.contains(THEME_NAME.Classic),
         ).toBe(true)
     })
 
@@ -175,14 +176,14 @@ describe('DatePicker', () => {
                 {...minProps}
                 isOpen={true}
                 toggle={jest.fn()}
-                initialSettings={{ranges}}
+                initialSettings={{ ranges }}
             >
                 <button>Select a date</button>
-            </DatePicker>
+            </DatePicker>,
         )
         const datePickerElement = document.querySelector('.datepicker')
         const expectedResult = listOfV2Classes.some((className) =>
-            datePickerElement?.classList.contains(className)
+            datePickerElement?.classList.contains(className),
         )
 
         expect(expectedResult).toBe(false)
@@ -194,18 +195,18 @@ describe('DatePicker', () => {
                 {...minProps}
                 isOpen={true}
                 toggle={jest.fn()}
-                initialSettings={{ranges}}
+                initialSettings={{ ranges }}
                 pickerV2Styles={true}
                 rangesOnLeft={true}
                 actionButtonsOnTheBottom={true}
                 rangeDatesInFooter={true}
             >
                 <button>Select a date</button>
-            </DatePicker>
+            </DatePicker>,
         )
         const datePickerElement = document.querySelector('.datepicker')
         const expectedResult = listOfV2Classes.every((className) =>
-            datePickerElement?.classList.contains(className)
+            datePickerElement?.classList.contains(className),
         )
 
         expect(expectedResult).toBe(false)
@@ -217,19 +218,19 @@ describe('DatePicker', () => {
                 {...minProps}
                 isOpen={true}
                 toggle={jest.fn()}
-                initialSettings={{ranges}}
+                initialSettings={{ ranges }}
                 actionButtonsOnTheBottom={false}
                 rangeDatesInFooter={true}
             >
                 <button>Select a date</button>
-            </DatePicker>
+            </DatePicker>,
         )
         const datePickerElement = document.querySelector('.datepicker')
 
         expect(
             [...(datePickerElement?.classList || [])].includes(
-                '.range-dates-in-footer'
-            )
+                '.range-dates-in-footer',
+            ),
         ).toBe(false)
     })
 
@@ -239,18 +240,18 @@ describe('DatePicker', () => {
                 {...minProps}
                 isOpen={true}
                 toggle={jest.fn()}
-                initialSettings={{ranges}}
+                initialSettings={{ ranges }}
                 actionButtonsOnTheBottom={true}
             >
                 <button>Select a date</button>
-            </DatePicker>
+            </DatePicker>,
         )
         const datePickerElement = document.querySelector('.datepicker')
 
         expect(
             [...(datePickerElement?.classList || [])].includes(
-                '.action-buttons-on-the-bottom'
-            )
+                '.action-buttons-on-the-bottom',
+            ),
         ).toBe(false)
     })
 
@@ -262,12 +263,12 @@ describe('DatePicker', () => {
                 {...minProps}
                 isOpen={true}
                 toggle={jest.fn()}
-                initialSettings={{ranges: ranges}}
+                initialSettings={{ ranges: ranges }}
                 showRangesLabel={true}
                 rangesLabel="Snooze Ranges"
             >
                 <button>Select a date</button>
-            </DatePicker>
+            </DatePicker>,
         )
 
         const rangesListElement = document.querySelector('.ranges ul')
@@ -282,12 +283,12 @@ describe('DatePicker', () => {
                 {...minProps}
                 isOpen={true}
                 toggle={jest.fn()}
-                initialSettings={{ranges: ranges}}
+                initialSettings={{ ranges: ranges }}
                 rangesLabel="Snooze Ranges"
                 showRangesLabel={false}
             >
                 <button>Select a date</button>
-            </DatePicker>
+            </DatePicker>,
         )
 
         const rangesListElement = document.querySelector('.ranges ul')
@@ -299,15 +300,15 @@ describe('DatePicker', () => {
     it('shoud respect user timezone', () => {
         const mockDate = new Date('2024-09-09T23:59:59.000Z')
         global.Date.now = jest.fn(() => mockDate.getTime())
-        const {getByText} = render(
+        const { getByText } = render(
             <DatePicker
                 {...minProps}
                 isOpen={true}
-                initialSettings={{showDropdowns: false}}
+                initialSettings={{ showDropdowns: false }}
                 userTimezone={'utc'}
             >
                 <button>Select a date</button>
-            </DatePicker>
+            </DatePicker>,
         )
 
         expect(getByText('Sep 2024')).toBeTruthy()

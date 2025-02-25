@@ -1,8 +1,8 @@
-import {fromJS, List} from 'immutable'
+import { fromJS, List } from 'immutable'
 
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
 
-import {initialState} from '../reducers'
+import { initialState } from '../reducers'
 import * as selectors from '../selectors'
 
 describe('new message selectors', () => {
@@ -18,7 +18,7 @@ describe('new message selectors', () => {
         it('should detect forwarded message', () => {
             state.newMessage = state.newMessage.setIn(
                 ['newMessage', 'source', 'extra', 'forward'],
-                true
+                true,
             )
             expect(selectors.isForward(state)).toEqual(true)
         })
@@ -26,7 +26,7 @@ describe('new message selectors', () => {
         it('should not detect forwarded message', () => {
             state.newMessage = state.newMessage.setIn(
                 ['newMessage', 'source', 'type'],
-                'email'
+                'email',
             )
             expect(selectors.isForward(state)).toEqual(false)
         })
@@ -40,7 +40,7 @@ describe('new message selectors', () => {
         it('should return false when body_text has only whitespace chars', () => {
             state.newMessage = state.newMessage.setIn(
                 ['newMessage', 'body_text'],
-                '  \n\t'
+                '  \n\t',
             )
             expect(selectors.hasContent(state)).toEqual(false)
         })
@@ -48,7 +48,7 @@ describe('new message selectors', () => {
         it('should return true when body_text has non-whitespace chars', () => {
             state.newMessage = state.newMessage.setIn(
                 ['newMessage', 'body_text'],
-                'Hello World'
+                'Hello World',
             )
             expect(selectors.hasContent(state)).toEqual(true)
         })
@@ -56,7 +56,7 @@ describe('new message selectors', () => {
         it('should return true when message is forwarded', () => {
             state.newMessage = state.newMessage.setIn(
                 ['newMessage', 'source', 'extra', 'forward'],
-                true
+                true,
             )
             expect(selectors.hasContent(state)).toEqual(true)
         })
@@ -64,7 +64,7 @@ describe('new message selectors', () => {
         it('should return true when attachments are set', () => {
             state.newMessage = state.newMessage.setIn(
                 ['newMessage', 'attachments'],
-                List([{}])
+                List([{}]),
             )
 
             expect(selectors.hasContent(state)).toEqual(true)
@@ -90,7 +90,7 @@ describe('new message selectors', () => {
 
         beforeEach(() => {
             state = {
-                currentUser: fromJS({first_name: 'Steve'}),
+                currentUser: fromJS({ first_name: 'Steve' }),
                 integrations: integrationsState,
                 newMessage: initialState,
                 ticket: fromJS({}),
@@ -100,7 +100,7 @@ describe('new message selectors', () => {
         it('should return a rendered signature (email address)', () => {
             state.newMessage = state.newMessage.setIn(
                 ['newMessage', 'source', 'from'],
-                fromJS({address: emailAddress})
+                fromJS({ address: emailAddress }),
             )
 
             expect(selectors.getNewMessageSignature(state)).toMatchSnapshot()
@@ -109,11 +109,11 @@ describe('new message selectors', () => {
         it('should not return a signature (chat message)', () => {
             state.newMessage = state.newMessage.setIn(
                 ['newMessage', 'source', 'type'],
-                'chat'
+                'chat',
             )
 
             expect(selectors.getNewMessageSignature(state)).toEqualImmutable(
-                fromJS({})
+                fromJS({}),
             )
         })
 
@@ -121,12 +121,12 @@ describe('new message selectors', () => {
             state.newMessage = state.newMessage
                 .setIn(
                     ['newMessage', 'source', 'from'],
-                    fromJS({address: 'unknown@acme.gorgias.io'})
+                    fromJS({ address: 'unknown@acme.gorgias.io' }),
                 )
                 .setIn(['newMessage', 'source', 'type'], 'email')
 
             expect(selectors.getNewMessageSignature(state)).toEqualImmutable(
-                fromJS({})
+                fromJS({}),
             )
         })
     })
@@ -139,14 +139,14 @@ describe('new message selectors', () => {
         })
 
         it('should return the attachments of the new message', () => {
-            const attachments = fromJS([{url: 'foo'}, {url: 'bar'}])
+            const attachments = fromJS([{ url: 'foo' }, { url: 'bar' }])
             state.newMessage = state.newMessage.setIn(
                 ['newMessage', 'attachments'],
-                attachments
+                attachments,
             )
 
             expect(selectors.getNewMessageAttachments(state)).toEqualImmutable(
-                attachments
+                attachments,
             )
         })
 
@@ -154,11 +154,11 @@ describe('new message selectors', () => {
             const attachments = null
             state.newMessage = state.newMessage.setIn(
                 ['newMessage', 'attachments'],
-                attachments
+                attachments,
             )
 
             expect(selectors.getNewMessageAttachments(state)).toEqualImmutable(
-                fromJS([])
+                fromJS([]),
             )
         })
     })
@@ -170,16 +170,16 @@ describe('new message selectors', () => {
                     newMessage: {
                         source: {
                             to: [
-                                {address: 'to1@to.com'},
-                                {address: 'to2@to.com'},
+                                { address: 'to1@to.com' },
+                                { address: 'to2@to.com' },
                             ],
                             cc: [
-                                {address: 'cc1@cc.com'},
-                                {address: 'cc2@cc.com'},
+                                { address: 'cc1@cc.com' },
+                                { address: 'cc2@cc.com' },
                             ],
                             bcc: [
-                                {address: 'bcc1@bcc.com'},
-                                {address: 'bcc2@bcc.com'},
+                                { address: 'bcc1@bcc.com' },
+                                { address: 'bcc2@bcc.com' },
                             ],
                         },
                     },
@@ -194,7 +194,7 @@ describe('new message selectors', () => {
         it('should return the emailExtraAdded of the new message state', () => {
             state.newMessage = state.newMessage.setIn(
                 ['state', 'emailExtraAdded'],
-                true
+                true,
             )
             expect(selectors.isNewMessageEmailExtraAdded(state)).toBe(true)
         })
@@ -223,7 +223,7 @@ describe('new message selectors', () => {
                             isPublic: boolean,
                             hasContent: boolean,
                             getHasContentlessAction: boolean,
-                            hasValidExternalTemplate: boolean
+                            hasValidExternalTemplate: boolean,
                         ) => boolean
                     }
                 ).resultFunc
@@ -236,8 +236,8 @@ describe('new message selectors', () => {
                             isPublic,
                             false,
                             false,
-                            false
-                        )
+                            false,
+                        ),
                     ).toBe(false)
                 })
 
@@ -250,8 +250,8 @@ describe('new message selectors', () => {
                             isPublic,
                             true,
                             false,
-                            false
-                        )
+                            false,
+                        ),
                     ).toBe(expectedResult)
                 })
 
@@ -264,8 +264,8 @@ describe('new message selectors', () => {
                             isPublic,
                             false,
                             true,
-                            false
-                        )
+                            false,
+                        ),
                     ).toBe(expectedResult)
                 })
             })
@@ -286,7 +286,7 @@ describe('new message selectors', () => {
 
             state.newMessage = state.newMessage.setIn(
                 ['state', 'inserted_discounts'],
-                discounts
+                discounts,
             )
             expect(selectors.getNewMessageDiscountCodes(state)).toBe(discounts)
         })

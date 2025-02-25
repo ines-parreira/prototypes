@@ -1,10 +1,10 @@
-import {Map} from 'immutable'
+import { Map } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationType} from 'models/integration/types'
-import {useStoreIntegration} from 'pages/integrations/integration/hooks/useStoreIntegration'
-import {Tab} from 'pages/integrations/integration/types'
-import {getChatInstallationStatus} from 'state/entities/chatInstallationStatus/selectors'
+import { IntegrationType } from 'models/integration/types'
+import { useStoreIntegration } from 'pages/integrations/integration/hooks/useStoreIntegration'
+import { Tab } from 'pages/integrations/integration/types'
+import { getChatInstallationStatus } from 'state/entities/chatInstallationStatus/selectors'
 
 export const SHOPIFY_CHECKOUT_BANNER_TABS = [
     Tab.QuickReplies,
@@ -27,12 +27,13 @@ export const SHOPIFY_CHECKOUT_BANNER_TABS = [
  */
 export const useShouldShowShopifyCheckoutChatBanner = (
     integration: Map<any, any>,
-    tab?: Tab
+    tab?: Tab,
 ): boolean => {
     const integrationType = integration.get('type')
-    const {isConnected, isConnectedToShopify} = useStoreIntegration(integration)
-    const {installedOnShopifyCheckout} = useAppSelector(
-        getChatInstallationStatus
+    const { isConnected, isConnectedToShopify } =
+        useStoreIntegration(integration)
+    const { installedOnShopifyCheckout } = useAppSelector(
+        getChatInstallationStatus,
     )
 
     if (

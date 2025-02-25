@@ -1,11 +1,11 @@
-import {screen, waitFor} from '@testing-library/react'
-import MockAdapter from 'axios-mock-adapter'
-
 import React from 'react'
 
+import { screen, waitFor } from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
+
 import client from 'models/api/resources'
-import {BillingInformationSection} from 'pages/settings/new_billing/views/PaymentInformationView/components/BillingInformationSection'
-import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
+import { BillingInformationSection } from 'pages/settings/new_billing/views/PaymentInformationView/components/BillingInformationSection'
+import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 const mockedServer = new MockAdapter(client)
 

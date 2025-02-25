@@ -1,4 +1,3 @@
-import {fromJS, Map} from 'immutable'
 import React, {
     createContext,
     FunctionComponent,
@@ -7,36 +6,38 @@ import React, {
     useMemo,
 } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {shopifyAdminBaseUrl} from 'config/integrations/shopify'
+import { fromJS, Map } from 'immutable'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { shopifyAdminBaseUrl } from 'config/integrations/shopify'
 import {
-    FulfillmentStatus,
     FinancialStatus,
+    FulfillmentStatus,
 } from 'constants/integrations/types/shopify'
 import useAppSelector from 'hooks/useAppSelector'
 import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
-import {InfobarAction} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
+import { InfobarAction } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-import {EditionContext} from 'providers/infobar/EditionContext'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-
+import { EditionContext } from 'providers/infobar/EditionContext'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import DraftOrderModal from 'Widgets/modules/Shopify/modules/DraftOrderModal'
 import {
-    OrderStatus,
     OrderMetafields,
+    OrderStatus,
 } from 'Widgets/modules/Shopify/modules/Order'
 import CancelOrderModal from 'Widgets/modules/Shopify/modules/Order/modules/CancelOrderModal'
 import EditOrderModal from 'Widgets/modules/Shopify/modules/Order/modules/EditOrderModal'
 import RefundOrderModal from 'Widgets/modules/Shopify/modules/Order/modules/RefundOrderModal'
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
-import {CardCustomization} from 'Widgets/modules/Template/modules/Card/types'
-import {CopyButton, StaticField} from 'Widgets/modules/Template/modules/Field'
+import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
+import { CardCustomization } from 'Widgets/modules/Template/modules/Card/types'
+import { CopyButton, StaticField } from 'Widgets/modules/Template/modules/Field'
 
-import {CustomizationContext} from '../../Template'
-import {ShopifyContext} from '../contexts/ShopifyContext'
-import {getShopifyResourceIds} from '../helpers/getShopifyResourceIds'
+import { CustomizationContext } from '../../Template'
+import { ShopifyContext } from '../contexts/ShopifyContext'
+import { getShopifyResourceIds } from '../helpers/getShopifyResourceIds'
+
 import css from './Order.less'
 
 export const OrderContext = createContext<{
@@ -66,10 +67,10 @@ type AfterTitleProps = {
     source: Map<string, string | number | boolean>
 }
 
-export function AfterTitle({isEditing, source}: AfterTitleProps) {
+export function AfterTitle({ isEditing, source }: AfterTitleProps) {
     const context = useContext(OrderContext)
-    const {integrationId} = context
-    const {hideActionsForCustomer = false} =
+    const { integrationId } = context
+    const { hideActionsForCustomer = false } =
         useContext(CustomizationContext) || {}
 
     if (isEditing) {
@@ -101,9 +102,9 @@ export function AfterTitle({isEditing, source}: AfterTitleProps) {
                         value: ShopifyActionType.DuplicateOrder,
                         label: 'Duplicate',
                         parameters: [
-                            {name: 'order_id', type: 'hidden'},
-                            {name: 'draft_order_id', type: 'hidden'},
-                            {name: 'payment_pending', type: 'hidden'},
+                            { name: 'order_id', type: 'hidden' },
+                            { name: 'draft_order_id', type: 'hidden' },
+                            { name: 'payment_pending', type: 'hidden' },
                         ],
                     },
                 ],
@@ -133,8 +134,8 @@ export function AfterTitle({isEditing, source}: AfterTitleProps) {
                         value: ShopifyActionType.RefundOrder,
                         label: 'Refund order',
                         parameters: [
-                            {name: 'order_id', type: 'hidden'},
-                            {name: 'payload', type: 'hidden'},
+                            { name: 'order_id', type: 'hidden' },
+                            { name: 'payload', type: 'hidden' },
                         ],
                     },
                 ],
@@ -154,8 +155,8 @@ export function AfterTitle({isEditing, source}: AfterTitleProps) {
                         value: ShopifyActionType.CancelOrder,
                         label: 'Cancel order',
                         parameters: [
-                            {name: 'order_id', type: 'hidden'},
-                            {name: 'payload', type: 'hidden'},
+                            { name: 'order_id', type: 'hidden' },
+                            { name: 'payload', type: 'hidden' },
                         ],
                     },
                 ],
@@ -175,9 +176,9 @@ export function AfterTitle({isEditing, source}: AfterTitleProps) {
                         value: ShopifyActionType.EditOrder,
                         label: 'Edit',
                         parameters: [
-                            {name: 'edited_order_id', type: 'hidden'},
-                            {name: 'note', type: 'hidden'},
-                            {name: 'notify', type: 'hidden'},
+                            { name: 'edited_order_id', type: 'hidden' },
+                            { name: 'note', type: 'hidden' },
+                            { name: 'notify', type: 'hidden' },
                         ],
                     },
                 ],
@@ -217,7 +218,7 @@ export function AfterTitle({isEditing, source}: AfterTitleProps) {
 
         // remove removed actions from list of available actions
         return actions.filter(
-            (action: InfobarAction) => !removed.includes(action.key)
+            (action: InfobarAction) => !removed.includes(action.key),
         )
     }
 
@@ -256,11 +257,11 @@ type TitleWrapperProps = {
     children?: ReactNode
     source: Map<any, any>
 }
-function TitleWrapper({children, source}: TitleWrapperProps) {
-    const {isEditing} = useContext(EditionContext)
+function TitleWrapper({ children, source }: TitleWrapperProps) {
+    const { isEditing } = useContext(EditionContext)
     const currentAccount = useAppSelector(getCurrentAccountState)
-    const {integration} = useContext(IntegrationContext)
-    const {isOrderCancelled} = useContext(OrderContext)
+    const { integration } = useContext(IntegrationContext)
+    const { isOrderCancelled } = useContext(OrderContext)
     const shopName: string = integration.getIn(['meta', 'shop_name']) as string
 
     return (
@@ -305,15 +306,15 @@ function TitleWrapper({children, source}: TitleWrapperProps) {
     )
 }
 
-export const Wrapper: FunctionComponent<{source: Map<string, any>}> = ({
+export const Wrapper: FunctionComponent<{ source: Map<string, any> }> = ({
     source: order = fromJS({}) as Map<string, any>,
     children,
 }) => {
-    const {integration, integrationId} = useContext(IntegrationContext)
+    const { integration, integrationId } = useContext(IntegrationContext)
 
     const isCancelled = !!order.get('cancelled_at')
     const isRefunded = ['refunded', 'voided'].includes(
-        order.get('financial_status')
+        order.get('financial_status'),
     )
     const isFulfilled = order.get('fulfillment_status') === 'fulfilled'
     const isPartiallyFulfilled = order.get('fulfillment_status') === 'partial'
@@ -321,7 +322,7 @@ export const Wrapper: FunctionComponent<{source: Map<string, any>}> = ({
     const createdDate = order.get('created_at')
     const orderAge = new Date().getTime() - new Date(createdDate).getTime()
     const isOldOrder = Math.round(orderAge / (1000 * 3600 * 24)) >= 60
-    const {target_id, customer_id} = getShopifyResourceIds(order.toJS())
+    const { target_id, customer_id } = getShopifyResourceIds(order.toJS())
     const shopifyContextData = useMemo(
         () => ({
             data_source: 'Order' as const,
@@ -330,7 +331,7 @@ export const Wrapper: FunctionComponent<{source: Map<string, any>}> = ({
                 customer_id,
             },
         }),
-        [target_id, customer_id]
+        [target_id, customer_id],
     )
     return (
         <ShopifyContext.Provider value={shopifyContextData}>
@@ -357,7 +358,7 @@ type AfterContentProps = {
     isEditing: boolean
 }
 
-export function AfterContent({isEditing}: AfterContentProps) {
+export function AfterContent({ isEditing }: AfterContentProps) {
     const orderContext = useContext(OrderContext)
     const integrationContext = useContext(IntegrationContext)
     return !isEditing ? (

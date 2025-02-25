@@ -1,6 +1,7 @@
-import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
-import {act, renderHook} from '@testing-library/react-hooks'
 import React from 'react'
+
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { act, renderHook } from '@testing-library/react-hooks'
 
 import {
     useCreateFileIngestion,
@@ -8,7 +9,7 @@ import {
     useGetFileIngestion,
 } from 'models/helpCenter/queries'
 
-import {useFileIngestion} from '../useFileIngestion'
+import { useFileIngestion } from '../useFileIngestion'
 
 jest.mock('models/helpCenter/queries', () => ({
     helpCenterKeys: {
@@ -25,7 +26,7 @@ const mockOnSuccess = jest.fn()
 const mockOnFailure = jest.fn()
 
 const mockCreateFileIngestion = jest.fn().mockResolvedValue({
-    data: {id: 5},
+    data: { id: 5 },
 })
 
 const mockDeleteFileIngestion = jest.fn().mockResolvedValue(null)
@@ -38,7 +39,7 @@ const renderUseFileIngestion = (isLoading = false) => {
         mutateAsync: mockDeleteFileIngestion,
     })
     ;(useGetFileIngestion as jest.Mock).mockReturnValue({
-        data: {data: []},
+        data: { data: [] },
         isLoading,
     })
 
@@ -50,18 +51,18 @@ const renderUseFileIngestion = (isLoading = false) => {
                 onFailure: mockOnFailure,
             }),
         {
-            wrapper: ({children}) => (
+            wrapper: ({ children }) => (
                 <QueryClientProvider client={queryClient}>
                     {children}
                 </QueryClientProvider>
             ),
-        }
+        },
     )
 }
 
 describe('useFileIngestion', () => {
     it('should initialize with default state', () => {
-        const {result} = renderUseFileIngestion()
+        const { result } = renderUseFileIngestion()
 
         expect(result.current.ingestedFiles).toEqual([])
         expect(result.current.isIngesting).toBe(false)
@@ -69,12 +70,12 @@ describe('useFileIngestion', () => {
     })
 
     it('should return a loading state', () => {
-        const {result} = renderUseFileIngestion(true)
+        const { result } = renderUseFileIngestion(true)
         expect(result.current.isLoading).toEqual(true)
     })
 
     it('should handle ingestFile correctly', async () => {
-        const {result, rerender} = renderUseFileIngestion()
+        const { result, rerender } = renderUseFileIngestion()
 
         const fileData = {
             filename: 'new-file.pdf',
@@ -89,14 +90,16 @@ describe('useFileIngestion', () => {
 
         expect(mockCreateFileIngestion).toHaveBeenCalledWith([
             undefined,
-            {help_center_id: 1},
+            { help_center_id: 1 },
             fileData,
         ])
 
         expect(result.current.isIngesting).toBe(true)
         ;(useGetFileIngestion as jest.Mock).mockReturnValue({
             data: {
-                data: [{id: 5, filename: 'new-file.pdf', status: 'SUCCESSFUL'}],
+                data: [
+                    { id: 5, filename: 'new-file.pdf', status: 'SUCCESSFUL' },
+                ],
             },
         })
 
@@ -107,7 +110,7 @@ describe('useFileIngestion', () => {
     })
 
     it('should handle ingestFile failure correctly', async () => {
-        const {result, rerender} = renderUseFileIngestion()
+        const { result, rerender } = renderUseFileIngestion()
 
         const fileData = {
             filename: 'new-file.pdf',
@@ -122,14 +125,14 @@ describe('useFileIngestion', () => {
 
         expect(mockCreateFileIngestion).toHaveBeenCalledWith([
             undefined,
-            {help_center_id: 1},
+            { help_center_id: 1 },
             fileData,
         ])
 
         expect(result.current.isIngesting).toBe(true)
         ;(useGetFileIngestion as jest.Mock).mockReturnValue({
             data: {
-                data: [{id: 5, filename: 'new-file.pdf', status: 'FAILED'}],
+                data: [{ id: 5, filename: 'new-file.pdf', status: 'FAILED' }],
             },
         })
 
@@ -140,7 +143,7 @@ describe('useFileIngestion', () => {
     })
 
     it('should handle deleteFile correctly', async () => {
-        const {result} = renderUseFileIngestion()
+        const { result } = renderUseFileIngestion()
 
         await act(async () => {
             await result.current.deleteIngestedFile(5)
@@ -148,7 +151,7 @@ describe('useFileIngestion', () => {
 
         expect(mockDeleteFileIngestion).toHaveBeenCalledWith([
             undefined,
-            {help_center_id: 1, file_ingestion_id: 5},
+            { help_center_id: 1, file_ingestion_id: 5 },
         ])
     })
 })

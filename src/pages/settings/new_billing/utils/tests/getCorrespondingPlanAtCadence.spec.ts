@@ -2,8 +2,8 @@ import {
     basicMonthlyHelpdeskPlan,
     basicYearlyHelpdeskPlan,
 } from 'fixtures/productPrices'
-import {Cadence} from 'models/billing/types'
-import {getCorrespondingPlanAtCadence} from 'pages/settings/new_billing/utils/getCorrespondingPlanAtCadence'
+import { Cadence } from 'models/billing/types'
+import { getCorrespondingPlanAtCadence } from 'pages/settings/new_billing/utils/getCorrespondingPlanAtCadence'
 
 describe('getCorrespondingPlanAtInterval', () => {
     it('should return the plan for the given cadence if it exists', () => {

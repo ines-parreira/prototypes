@@ -1,22 +1,23 @@
-import {produce} from 'immer'
-import {Reducer} from 'react'
+import { Reducer } from 'react'
+
+import { produce } from 'immer'
 
 import {
-    BigCommerceRefundOrderState,
     BigCommerceRefundableItemType,
     BigCommerceRefundItemsPayloadComponent,
+    BigCommerceRefundOrderState,
     GiftWrappingItemRefundData,
     HandlingItemRefundData,
     ProductItemRefundData,
     ShippingItemRefundData,
 } from 'models/integration/types'
 
-import {defaultBigCommerceRefundType} from './consts'
+import { defaultBigCommerceRefundType } from './consts'
 import {
     BIGCOMMERCE_REFUND_ACTION_TYPE,
     BigCommerceRefundActionType,
 } from './types'
-import {formatPrice} from './utils'
+import { formatPrice } from './utils'
 
 export const initialBigCommerceRefundOrderState: BigCommerceRefundOrderState = {
     refundData: {
@@ -130,7 +131,7 @@ export const bigcommerceRefundOrderReducer: Reducer<
                                 quantity: refundData.available_quantity,
                             })
                         }
-                    }
+                    },
                 )
                 Object.entries(giftWrappingRefundData).forEach(
                     ([refundedProductId, refundData]: [
@@ -145,7 +146,7 @@ export const bigcommerceRefundOrderReducer: Reducer<
                                 quantity: refundData.available_quantity,
                             })
                         }
-                    }
+                    },
                 )
             }
             return {
@@ -171,16 +172,16 @@ export const bigcommerceRefundOrderReducer: Reducer<
                                 draft.refundItemsPayload.items =
                                     draft.refundItemsPayload.items.filter(
                                         (
-                                            item: BigCommerceRefundItemsPayloadComponent
+                                            item: BigCommerceRefundItemsPayloadComponent,
                                         ) =>
                                             !(
                                                 item.item_id ===
                                                     parseFloat(
-                                                        refundedShippingId
+                                                        refundedShippingId,
                                                     ) &&
                                                 item.item_type ===
                                                     BigCommerceRefundableItemType.shipping
-                                            )
+                                            ),
                                     )
                             }
                         } else {
@@ -190,12 +191,12 @@ export const bigcommerceRefundOrderReducer: Reducer<
                                         BigCommerceRefundableItemType.shipping,
                                     item_id: parseFloat(refundedShippingId),
                                     amount: formatPrice(
-                                        refundData.available_amount
+                                        refundData.available_amount,
                                     ),
                                 })
                             }
                         }
-                    }
+                    },
                 )
                 return draft
             })
@@ -216,16 +217,16 @@ export const bigcommerceRefundOrderReducer: Reducer<
                                 draft.refundItemsPayload.items =
                                     draft.refundItemsPayload.items.filter(
                                         (
-                                            item: BigCommerceRefundItemsPayloadComponent
+                                            item: BigCommerceRefundItemsPayloadComponent,
                                         ) =>
                                             !(
                                                 item.item_id ===
                                                     parseFloat(
-                                                        refundedShippingId
+                                                        refundedShippingId,
                                                     ) &&
                                                 item.item_type ===
                                                     BigCommerceRefundableItemType.handling
-                                            )
+                                            ),
                                     )
                             }
                         } else {
@@ -235,12 +236,12 @@ export const bigcommerceRefundOrderReducer: Reducer<
                                         BigCommerceRefundableItemType.handling,
                                     item_id: parseFloat(refundedShippingId),
                                     amount: formatPrice(
-                                        refundData.available_amount
+                                        refundData.available_amount,
                                     ),
                                 })
                             }
                         }
-                    }
+                    },
                 )
                 return draft
             })

@@ -1,4 +1,4 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
 import {
     MAGENTO2_INTEGRATION_TYPE,
@@ -16,12 +16,12 @@ import useIsManualInstallationMethodRequired from '../useIsManualInstallationMet
 
 const useGetChatInstallationStatusSpy = jest.spyOn(
     useGetChatInstallationStatus,
-    'default'
+    'default',
 )
 
 const useShopifyThemeAppExtensionSpy = jest.spyOn(
     useShopifyThemeAppExtension,
-    'default'
+    'default',
 )
 
 describe('useIsManualInstallationMethodRequired', () => {
@@ -46,11 +46,11 @@ describe('useIsManualInstallationMethodRequired', () => {
             method: null,
         })
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useIsManualInstallationMethodRequired(chatIntegration, {
                 // @ts-ignore
                 type: MAGENTO2_INTEGRATION_TYPE,
-            })
+            }),
         )
 
         expect(result.current).toBe(true)
@@ -62,11 +62,11 @@ describe('useIsManualInstallationMethodRequired', () => {
             method: GorgiasChatInstallationMethod.ScriptTag,
         })
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useIsManualInstallationMethodRequired(
                 chatIntegration,
-                shopifyIntegration
-            )
+                shopifyIntegration,
+            ),
         )
 
         expect(result.current).toBe(true)
@@ -78,11 +78,11 @@ describe('useIsManualInstallationMethodRequired', () => {
             method: null,
         })
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useIsManualInstallationMethodRequired(
                 chatIntegration,
-                shopifyIntegration
-            )
+                shopifyIntegration,
+            ),
         )
 
         expect(result.current).toBe(true)
@@ -94,11 +94,11 @@ describe('useIsManualInstallationMethodRequired', () => {
             method: GorgiasChatInstallationMethod.ThemeAppExtension,
         })
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useIsManualInstallationMethodRequired(
                 chatIntegration,
-                shopifyIntegration
-            )
+                shopifyIntegration,
+            ),
         )
 
         expect(result.current).toBe(true)
@@ -114,11 +114,11 @@ describe('useIsManualInstallationMethodRequired', () => {
             isLoaded: true,
         })
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useIsManualInstallationMethodRequired(
                 chatIntegration,
-                shopifyIntegration
-            )
+                shopifyIntegration,
+            ),
         )
 
         expect(result.current).toBe(false)
@@ -130,11 +130,11 @@ describe('useIsManualInstallationMethodRequired', () => {
             method: GorgiasChatInstallationMethod.ScriptTag,
         })
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useIsManualInstallationMethodRequired(
                 chatIntegration,
-                shopifyIntegration
-            )
+                shopifyIntegration,
+            ),
         )
 
         expect(result.current).toBe(false)

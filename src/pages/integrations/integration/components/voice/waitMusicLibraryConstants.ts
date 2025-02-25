@@ -1,4 +1,4 @@
-import {UpdateWaitMusicLibrary, WaitMusicType} from '@gorgias/api-queries'
+import { UpdateWaitMusicLibrary, WaitMusicType } from '@gorgias/api-queries'
 
 const EUROPEAN_COUNTRY_CODES = [
     'AL',

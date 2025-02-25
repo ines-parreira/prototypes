@@ -1,7 +1,7 @@
 // g/integrations/sms/schemas.py
-import {IntegrationType} from '../constants'
-import type {Integration} from './'
-import type {IntegrationBase} from './base'
+import { IntegrationType } from '../constants'
+import type { Integration } from './'
+import type { IntegrationBase } from './base'
 
 export type SmsIntegration = IntegrationBase & {
     type: IntegrationType.Sms
@@ -14,5 +14,5 @@ export type SmsIntegrationMeta = {
 }
 
 export const isSmsIntegration = (
-    integration: Maybe<Integration>
+    integration: Maybe<Integration>,
 ): integration is SmsIntegration => integration?.type === IntegrationType.Sms

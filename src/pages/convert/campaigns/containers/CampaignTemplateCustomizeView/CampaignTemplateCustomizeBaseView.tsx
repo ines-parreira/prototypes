@@ -1,41 +1,40 @@
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+
 import classnames from 'classnames'
-import {Map} from 'immutable'
-import React, {useCallback, useEffect, useMemo, useState, useRef} from 'react'
+import { Map } from 'immutable'
+import { Link, useParams } from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
-import {Link, useParams} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
-
-import {getPrimaryLanguageFromChatConfig} from 'config/integrations/gorgias_chat'
+import { getPrimaryLanguageFromChatConfig } from 'config/integrations/gorgias_chat'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {useListCampaigns} from 'models/convert/campaign/queries'
+import { useListCampaigns } from 'models/convert/campaign/queries'
 import {
     CampaignListOptions as CampaignListOptionsParams,
     CampaignUpdatePayload,
 } from 'models/convert/campaign/types'
-import {GorgiasChatIntegration} from 'models/integration/types'
+import { GorgiasChatIntegration } from 'models/integration/types'
 import PageHeader from 'pages/common/components/PageHeader'
-
-import {useCreateCampaign} from 'pages/convert/campaigns/hooks/useCreateCampaign'
-import {useUpdateCampaign} from 'pages/convert/campaigns/hooks/useUpdateCampaign'
-import {CampaignDetailsForm} from 'pages/convert/campaigns/providers/CampaignDetailsForm'
-import {CAMPAIGN_TEMPLATES} from 'pages/convert/campaigns/templates'
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
-import {WizardConfiguration} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
-import {chatIsShopifyStore} from 'pages/convert/campaigns/utils/chatIsShopifyStore'
-import {HeaderReturnButton} from 'pages/convert/common/components/HeaderReturnButton'
+import { useCreateCampaign } from 'pages/convert/campaigns/hooks/useCreateCampaign'
+import { useUpdateCampaign } from 'pages/convert/campaigns/hooks/useUpdateCampaign'
+import { CampaignDetailsForm } from 'pages/convert/campaigns/providers/CampaignDetailsForm'
+import { CAMPAIGN_TEMPLATES } from 'pages/convert/campaigns/templates'
+import { Campaign } from 'pages/convert/campaigns/types/Campaign'
+import { WizardConfiguration } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
+import { chatIsShopifyStore } from 'pages/convert/campaigns/utils/chatIsShopifyStore'
+import { HeaderReturnButton } from 'pages/convert/common/components/HeaderReturnButton'
 import {
     CONVERT_ROUTE_PARAM_NAME,
     CONVERT_ROUTE_TEMPLATE_PARAM_NAME,
 } from 'pages/convert/common/constants'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import {ConvertRouteTemplateParams} from 'pages/convert/common/types'
+import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import { ConvertRouteTemplateParams } from 'pages/convert/common/types'
 import history from 'pages/history'
-import {getHumanAgentsJS} from 'state/agents/selectors'
-import {getIntegrationById} from 'state/integrations/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {toJS} from 'utils'
+import { getHumanAgentsJS } from 'state/agents/selectors'
+import { getIntegrationById } from 'state/integrations/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { toJS } from 'utils'
 
 type OwnProps = {
     backUrl: string
@@ -62,19 +61,19 @@ const CampaignTemplateCustomizeBaseView = ({
 
     const chatIntegrationId = parseInt(integrationId || '')
     const chatIntegration = useAppSelector(
-        getIntegrationById(chatIntegrationId)
+        getIntegrationById(chatIntegrationId),
     )
     const gorgiasChatIntegration =
         chatIntegration.toJS() as GorgiasChatIntegration
 
     const storeIntegration = useAppSelector(
         getIntegrationById(
-            chatIntegration.getIn(['meta', 'shop_integration_id'])
-        )
+            chatIntegration.getIn(['meta', 'shop_integration_id']),
+        ),
     )
 
-    const {channelConnection, isLoading} = useGetOrCreateChannelConnection(
-        gorgiasChatIntegration
+    const { channelConnection, isLoading } = useGetOrCreateChannelConnection(
+        gorgiasChatIntegration,
     )
 
     const defaultLanguage = useMemo<string>(() => {
@@ -88,15 +87,13 @@ const CampaignTemplateCustomizeBaseView = ({
                       channelConnectionId: channelConnection?.id,
                   }
                 : {}) as CampaignListOptionsParams,
-        [channelConnection]
+        [channelConnection],
     )
 
-    const {data: campaigns, isLoading: areCampaignsLoading} = useListCampaigns(
-        campaignListOptions,
-        {
+    const { data: campaigns, isLoading: areCampaignsLoading } =
+        useListCampaigns(campaignListOptions, {
             enabled: !!campaignListOptions.channelConnectionId,
-        }
-    )
+        })
 
     useEffect(() => {
         if (!ref.current) {
@@ -116,7 +113,7 @@ const CampaignTemplateCustomizeBaseView = ({
         if (template) {
             if (Array.isArray(campaigns)) {
                 const campaign = campaigns.find(
-                    (c) => c.template_id === template.slug
+                    (c) => c.template_id === template.slug,
                 )
 
                 if (campaign) {
@@ -140,7 +137,7 @@ const CampaignTemplateCustomizeBaseView = ({
                             status: NotificationStatus.Error,
                             message:
                                 'Failed to load template. Please try again in a few seconds.',
-                        })
+                        }),
                     )
                 })
         }
@@ -160,8 +157,8 @@ const CampaignTemplateCustomizeBaseView = ({
         return {} as WizardConfiguration
     }, [template])
 
-    const {mutateAsync: createCampaign} = useCreateCampaign()
-    const {mutateAsync: updateCampaign} = useUpdateCampaign()
+    const { mutateAsync: createCampaign } = useCreateCampaign()
+    const { mutateAsync: updateCampaign } = useUpdateCampaign()
 
     const handleCreateCampaign = useCallback(
         async (campaign: Map<any, any>) => {
@@ -177,7 +174,7 @@ const CampaignTemplateCustomizeBaseView = ({
                 if (template && template.postSave) {
                     const isSuccess = await template.postSave(
                         storeIntegration,
-                        chatIntegration
+                        chatIntegration,
                     )
                     if (!isSuccess) {
                         void dispatch(
@@ -185,7 +182,7 @@ const CampaignTemplateCustomizeBaseView = ({
                                 status: NotificationStatus.Error,
                                 message:
                                     'Failed to create discount code. Please try again in a few seconds.',
-                            })
+                            }),
                         )
                     }
                 }
@@ -202,7 +199,7 @@ const CampaignTemplateCustomizeBaseView = ({
             chatIntegration,
             template,
             dispatch,
-        ]
+        ],
     )
 
     const handleUpdateCampaign = useCallback(
@@ -220,7 +217,7 @@ const CampaignTemplateCustomizeBaseView = ({
                 history.push(backUrl)
             }
         },
-        [channelConnection, updateCampaign, backUrl]
+        [channelConnection, updateCampaign, backUrl],
     )
 
     return (

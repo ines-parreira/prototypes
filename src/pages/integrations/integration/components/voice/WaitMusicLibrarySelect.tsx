@@ -1,5 +1,6 @@
-import {UpdateWaitMusicLibrary} from '@gorgias/api-queries'
-import React, {useRef, useState} from 'react'
+import React, { useRef, useState } from 'react'
+
+import { UpdateWaitMusicLibrary } from '@gorgias/api-queries'
 
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
@@ -15,6 +16,7 @@ import {
     RINGTONE_AUDIO_FILE_PATHS,
     STATIC_WAIT_MUSIC_LIBRARY,
 } from './waitMusicLibraryConstants'
+
 import css from './WaitMusicLibrarySelect.less'
 
 type Props = {
@@ -30,7 +32,7 @@ const WaitMusicLibrarySelect = ({
 }: Props) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
     const [activeAudioPlayer, setActiveAudioPlayer] = useState<string | null>(
-        null
+        null,
     )
 
     const targetRef = useRef<HTMLDivElement>(null)
@@ -43,8 +45,8 @@ const WaitMusicLibrarySelect = ({
             audio_file_path:
                 RINGTONE_AUDIO_FILE_PATHS.find((RINGTONE_AUDIO_FILE_PATHS) =>
                     RINGTONE_AUDIO_FILE_PATHS.countries.includes(
-                        integrationCountry
-                    )
+                        integrationCountry,
+                    ),
                 )?.audioFilePath ??
                 RINGTONE_AUDIO_FILE_PATHS[
                     DEFAULT_RINGTONE_AUDIO_FILE_PATHS_INDEX

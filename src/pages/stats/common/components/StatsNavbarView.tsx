@@ -1,24 +1,26 @@
-import {Badge} from '@gorgias/merchant-ui-kit'
+import React, { useMemo } from 'react'
+
 import classNames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useMemo} from 'react'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { Badge } from '@gorgias/merchant-ui-kit'
 
 import cssNavbar from 'assets/css/navbar.less'
-import {FeatureFlagKey} from 'config/featureFlags'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
 import NavbarBlock from 'pages/common/components/navbar/NavbarBlock'
 import NavbarLink, {
     NavbarLinkProps,
 } from 'pages/common/components/navbar/NavbarLink'
 import ConvertStatsNavbar from 'pages/convert/common/components/ConvertStatsNavbar'
-import {STATS_ROUTE_PREFIX} from 'pages/stats/common/components/constants'
-import {DashboardsNavbarBlock} from 'pages/stats/custom-reports/DashboardsNavbarBlock/DashboardsNavbarBlock'
+import { STATS_ROUTE_PREFIX } from 'pages/stats/common/components/constants'
+import { DashboardsNavbarBlock } from 'pages/stats/custom-reports/DashboardsNavbarBlock/DashboardsNavbarBlock'
 import AutomateStatsNavbar from 'pages/stats/self-service/AutomateStatsNavbar'
 import VoiceStatsNavbarItem from 'pages/stats/voice/components/VoiceStatsNavbar/VoiceStatsNavbarItem'
-import {STATS_ROUTES} from 'routes/constants'
-import {getHasAutomate} from 'state/billing/selectors'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {isTeamLead} from 'utils'
+import { STATS_ROUTES } from 'routes/constants'
+import { getHasAutomate } from 'state/billing/selectors'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { isTeamLead } from 'utils'
 
 const COMMON_NAV_LINK_PROPS: Partial<NavbarLinkProps> = {
     exact: true,
@@ -45,7 +47,7 @@ export default function StatsNavbarView() {
 
     const isAutoQANavLinkAvailable = useMemo(
         () => isTeamLeadOrAdmin && hasAutomate,
-        [hasAutomate, isTeamLeadOrAdmin]
+        [hasAutomate, isTeamLeadOrAdmin],
     )
 
     return (
@@ -55,7 +57,7 @@ export default function StatsNavbarView() {
                     <div
                         className={classNames(
                             cssNavbar['link-wrapper'],
-                            cssNavbar.isNested
+                            cssNavbar.isNested,
                         )}
                     >
                         <NavbarLink
@@ -68,7 +70,7 @@ export default function StatsNavbarView() {
                     <div
                         className={classNames(
                             cssNavbar['link-wrapper'],
-                            cssNavbar.isNested
+                            cssNavbar.isNested,
                         )}
                     >
                         <NavbarLink
@@ -97,7 +99,7 @@ export default function StatsNavbarView() {
                     <div
                         className={classNames(
                             cssNavbar['link-wrapper'],
-                            cssNavbar.isNested
+                            cssNavbar.isNested,
                         )}
                     >
                         <NavbarLink
@@ -110,7 +112,7 @@ export default function StatsNavbarView() {
                     <div
                         className={classNames(
                             cssNavbar['link-wrapper'],
-                            cssNavbar.isNested
+                            cssNavbar.isNested,
                         )}
                     >
                         <NavbarLink
@@ -124,7 +126,7 @@ export default function StatsNavbarView() {
                     <div
                         className={classNames(
                             cssNavbar['link-wrapper'],
-                            cssNavbar.isNested
+                            cssNavbar.isNested,
                         )}
                         data-candu-id="statistics-link-busiest-times-of-days"
                     >
@@ -138,7 +140,7 @@ export default function StatsNavbarView() {
                     <div
                         className={classNames(
                             cssNavbar['link-wrapper'],
-                            cssNavbar.isNested
+                            cssNavbar.isNested,
                         )}
                     >
                         <NavbarLink
@@ -152,7 +154,7 @@ export default function StatsNavbarView() {
                     <div
                         className={classNames(
                             cssNavbar['link-wrapper'],
-                            cssNavbar.isNested
+                            cssNavbar.isNested,
                         )}
                     >
                         <NavbarLink
@@ -165,7 +167,7 @@ export default function StatsNavbarView() {
                     <div
                         className={classNames(
                             cssNavbar['link-wrapper'],
-                            cssNavbar.isNested
+                            cssNavbar.isNested,
                         )}
                     >
                         <NavbarLink
@@ -179,7 +181,7 @@ export default function StatsNavbarView() {
                         <div
                             className={classNames(
                                 cssNavbar['link-wrapper'],
-                                cssNavbar.isNested
+                                cssNavbar.isNested,
                             )}
                             data-candu-id="statistics-link-help-center"
                         >
@@ -194,7 +196,7 @@ export default function StatsNavbarView() {
                     <div
                         className={classNames(
                             cssNavbar['link-wrapper'],
-                            cssNavbar.isNested
+                            cssNavbar.isNested,
                         )}
                     >
                         <NavbarLink
@@ -216,7 +218,7 @@ export default function StatsNavbarView() {
                     <div
                         className={classNames(
                             cssNavbar['link-wrapper'],
-                            cssNavbar.isNested
+                            cssNavbar.isNested,
                         )}
                     >
                         <NavbarLink
@@ -230,7 +232,7 @@ export default function StatsNavbarView() {
                     <div
                         className={classNames(
                             cssNavbar['link-wrapper'],
-                            cssNavbar.isNested
+                            cssNavbar.isNested,
                         )}
                     >
                         <NavbarLink
@@ -244,7 +246,7 @@ export default function StatsNavbarView() {
                     <div
                         className={classNames(
                             cssNavbar['link-wrapper'],
-                            cssNavbar.isNested
+                            cssNavbar.isNested,
                         )}
                     >
                         <NavbarLink
@@ -257,7 +259,7 @@ export default function StatsNavbarView() {
                     <div
                         className={classNames(
                             cssNavbar['link-wrapper'],
-                            cssNavbar.isNested
+                            cssNavbar.isNested,
                         )}
                     >
                         <NavbarLink
@@ -279,7 +281,7 @@ export default function StatsNavbarView() {
                         <div
                             className={classNames(
                                 cssNavbar['link-wrapper'],
-                                cssNavbar.isNested
+                                cssNavbar.isNested,
                             )}
                         >
                             <NavbarLink
@@ -326,7 +328,7 @@ export default function StatsNavbarView() {
     )
 }
 
-function AutoQANavBarLink({isAvailable}: AutoQANavBarLinkProps) {
+function AutoQANavBarLink({ isAvailable }: AutoQANavBarLinkProps) {
     if (!isAvailable) {
         return null
     }
@@ -335,7 +337,7 @@ function AutoQANavBarLink({isAvailable}: AutoQANavBarLinkProps) {
         <div
             className={classNames(
                 cssNavbar['link-wrapper'],
-                cssNavbar.isNested
+                cssNavbar.isNested,
             )}
         >
             <NavbarLink

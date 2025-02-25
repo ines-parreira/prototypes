@@ -1,27 +1,28 @@
+import React, { Component } from 'react'
+
 import classnames from 'classnames'
-import {fromJS, List} from 'immutable'
-import React, {Component} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {Link} from 'react-router-dom'
-import {Col, Form, Label, Row} from 'reactstrap'
+import { fromJS, List } from 'immutable'
+import { connect, ConnectedProps } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { Col, Form, Label, Row } from 'reactstrap'
 
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
-import {submitSetting} from 'state/currentAccount/actions'
-import {DEPRECATED_getBusinessHoursSettings} from 'state/currentAccount/selectors'
+import { submitSetting } from 'state/currentAccount/actions'
+import { DEPRECATED_getBusinessHoursSettings } from 'state/currentAccount/selectors'
 import {
     AccountSettingBusinessHours,
     AccountSettingType,
 } from 'state/currentAccount/types'
-import {RootState} from 'state/types'
-import {getMomentTimezoneNames} from 'utils/date'
+import { RootState } from 'state/types'
+import { getMomentTimezoneNames } from 'utils/date'
+
+import BusinessHoursForm from './BusinessHoursForm'
+import { DEFAULT_BUSINESS_HOUR, MAX_BUSINESS_HOURS } from './constants'
 
 import settingsCss from '../settings.less'
-
 import css from './BusinessHours.less'
-import BusinessHoursForm from './BusinessHoursForm'
-import {DEFAULT_BUSINESS_HOUR, MAX_BUSINESS_HOURS} from './constants'
 
 type Props = ConnectedProps<typeof connector>
 
@@ -39,7 +40,7 @@ export class BusinessHoursContainer extends Component<Props, State> {
     }
 
     componentDidMount() {
-        const {businessHoursSettings} = this.props
+        const { businessHoursSettings } = this.props
 
         if (!businessHoursSettings.isEmpty()) {
             this.setState({
@@ -51,10 +52,10 @@ export class BusinessHoursContainer extends Component<Props, State> {
 
     _onSubmit = async (evt: Event) => {
         evt.preventDefault()
-        this.setState({loading: true})
+        this.setState({ loading: true })
 
-        const {businessHoursSettings} = this.props
-        const {timezone, items} = this.state
+        const { businessHoursSettings } = this.props
+        const { timezone, items } = this.state
 
         const setting: AccountSettingBusinessHours = {
             id: businessHoursSettings.get('id'),
@@ -71,20 +72,20 @@ export class BusinessHoursContainer extends Component<Props, State> {
             // pass
         }
 
-        return this.setState({loading: false})
+        return this.setState({ loading: false })
     }
 
     _addBusinessHours = () => {
-        const {items} = this.state
+        const { items } = this.state
         if (items.size >= MAX_BUSINESS_HOURS) {
             return
         }
 
-        this.setState({items: items.push(fromJS(DEFAULT_BUSINESS_HOUR))})
+        this.setState({ items: items.push(fromJS(DEFAULT_BUSINESS_HOUR)) })
     }
 
     render() {
-        const {items} = this.state
+        const { items } = this.state
 
         return (
             <div className="full-width">
@@ -94,7 +95,7 @@ export class BusinessHoursContainer extends Component<Props, State> {
                     <div
                         className={classnames(
                             'body-regular',
-                            settingsCss.contentWrapper
+                            settingsCss.contentWrapper,
                         )}
                     >
                         <div className={settingsCss.mb32}>
@@ -119,13 +120,13 @@ export class BusinessHoursContainer extends Component<Props, State> {
                                     <div
                                         className={classnames(
                                             settingsCss.inputField,
-                                            settingsCss.mb32
+                                            settingsCss.mb32,
                                         )}
                                     >
                                         <Label
                                             className={classnames(
                                                 'control-label',
-                                                css.businessHoursLabelWrapper
+                                                css.businessHoursLabelWrapper,
                                             )}
                                         >
                                             Business hours
@@ -135,7 +136,7 @@ export class BusinessHoursContainer extends Component<Props, State> {
                                                 key={idx}
                                                 className={classnames(
                                                     'flex',
-                                                    settingsCss.mb24
+                                                    settingsCss.mb24,
                                                 )}
                                             >
                                                 <BusinessHoursForm
@@ -144,7 +145,7 @@ export class BusinessHoursContainer extends Component<Props, State> {
                                                         this.setState({
                                                             items: items.set(
                                                                 idx!,
-                                                                data
+                                                                data,
                                                             ),
                                                         })
                                                     }
@@ -154,7 +155,7 @@ export class BusinessHoursContainer extends Component<Props, State> {
                                                     onClick={() =>
                                                         this.setState({
                                                             items: items.delete(
-                                                                idx!
+                                                                idx!,
                                                             ),
                                                         })
                                                     }
@@ -180,11 +181,11 @@ export class BusinessHoursContainer extends Component<Props, State> {
                                         label="Time zone"
                                         value={this.state.timezone}
                                         onChange={(timezone) =>
-                                            this.setState({timezone})
+                                            this.setState({ timezone })
                                         }
                                         className={classnames(
                                             settingsCss.inputField,
-                                            settingsCss.mb40
+                                            settingsCss.mb40,
                                         )}
                                     >
                                         {getMomentTimezoneNames().map(
@@ -192,7 +193,7 @@ export class BusinessHoursContainer extends Component<Props, State> {
                                                 <option key={name} value={name}>
                                                     {name}
                                                 </option>
-                                            )
+                                            ),
                                         )}
                                     </DEPRECATED_InputField>
                                 </Col>
@@ -219,7 +220,7 @@ const connector = connect(
     }),
     {
         submitSetting,
-    }
+    },
 )
 
 export default connector(BusinessHoursContainer)

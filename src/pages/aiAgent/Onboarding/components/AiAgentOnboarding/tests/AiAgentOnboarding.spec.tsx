@@ -1,25 +1,27 @@
-import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
-import {fireEvent, screen, waitFor} from '@testing-library/react'
-import {createMemoryHistory} from 'history'
-import {fromJS, Map} from 'immutable'
-import LD from 'launchdarkly-react-client-sdk'
 import React from 'react'
+
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { createMemoryHistory } from 'history'
+import { fromJS, Map } from 'immutable'
+import LD from 'launchdarkly-react-client-sdk'
+
 import '@testing-library/jest-dom/extend-expect'
-import {Provider} from 'react-redux'
+
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {account} from 'fixtures/account'
-import {billingState} from 'fixtures/billing'
-import {chatIntegrationFixtures} from 'fixtures/chat'
-import {integrationsState, shopifyIntegration} from 'fixtures/integrations'
-import {AiAgentOnboarding} from 'pages/aiAgent/Onboarding/components/AiAgentOnboarding/AiAgentOnboarding'
-import {WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
-import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
-import {useEmailIntegrations} from 'pages/settings/contactForm/hooks/useEmailIntegrations'
-
-import {RootState, StoreDispatch} from 'state/types'
-import {renderWithRouter} from 'utils/testing'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { account } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
+import { chatIntegrationFixtures } from 'fixtures/chat'
+import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
+import { AiAgentOnboarding } from 'pages/aiAgent/Onboarding/components/AiAgentOnboarding/AiAgentOnboarding'
+import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
+import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
+import { useEmailIntegrations } from 'pages/settings/contactForm/hooks/useEmailIntegrations'
+import { RootState, StoreDispatch } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 
@@ -44,10 +46,10 @@ jest.mock(
     'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview',
     () => ({
         __esModule: true,
-        default: ({children}: {children: React.ReactNode}) => (
+        default: ({ children }: { children: React.ReactNode }) => (
             <div>{children}</div>
         ),
-    })
+    }),
 )
 
 jest.mock(
@@ -55,7 +57,7 @@ jest.mock(
     () => ({
         __esModule: true,
         default: () => <div>AI Agent Preview</div>,
-    })
+    }),
 )
 
 const mockUseShopifyIntegrationAndScope =
@@ -66,7 +68,7 @@ const queryClient = new QueryClient()
 const history = createMemoryHistory()
 
 const renderComponent = (
-    initialRoute = '/app/ai-agent/onboarding/skillset'
+    initialRoute = '/app/ai-agent/onboarding/skillset',
 ) => {
     history.push(initialRoute)
 
@@ -76,7 +78,7 @@ const renderComponent = (
                 <AiAgentOnboarding />
             </Provider>
         </QueryClientProvider>,
-        {history, path: '/app/ai-agent/onboarding/:step'}
+        { history, path: '/app/ai-agent/onboarding/:step' },
     )
 }
 
@@ -109,7 +111,7 @@ describe('AiAgentOnboarding', () => {
         jest.runAllTimers()
 
         expect(
-            screen.getByText('Welcome to Conversational AI!')
+            screen.getByText('Welcome to Conversational AI!'),
         ).toBeInTheDocument()
     })
 
@@ -123,7 +125,7 @@ describe('AiAgentOnboarding', () => {
         jest.runAllTimers()
 
         expect(history.location.pathname).toEqual(
-            '/app/automation/shopify/undefined/ai-agent'
+            '/app/automation/shopify/undefined/ai-agent',
         )
     })
 
@@ -140,7 +142,7 @@ describe('AiAgentOnboarding', () => {
 
         await waitFor(() => {
             expect(history.location.pathname).toContain(
-                WizardStepEnum.KNOWLEDGE
+                WizardStepEnum.KNOWLEDGE,
             )
         })
     })
@@ -158,7 +160,7 @@ describe('AiAgentOnboarding', () => {
 
         await waitFor(() => {
             expect(history.location.pathname).toContain(
-                WizardStepEnum.SALES_PERSONALITY
+                WizardStepEnum.SALES_PERSONALITY,
             )
         })
     })

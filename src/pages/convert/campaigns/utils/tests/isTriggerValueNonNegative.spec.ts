@@ -1,4 +1,4 @@
-import {isTriggerValueNonNegative} from 'pages/convert/campaigns/utils/isTriggerValueNonNegative'
+import { isTriggerValueNonNegative } from 'pages/convert/campaigns/utils/isTriggerValueNonNegative'
 
 describe('isTriggerValueNonNegative', () => {
     it.each([
@@ -13,6 +13,6 @@ describe('isTriggerValueNonNegative', () => {
         'for value %s should return %s',
         (value: string | number, expected: boolean) => {
             expect(isTriggerValueNonNegative(value)).toBe(expected)
-        }
+        },
     )
 })

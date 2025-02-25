@@ -1,24 +1,23 @@
-import {renderHook} from '@testing-library/react-hooks'
-
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { renderHook } from '@testing-library/react-hooks'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {useCustomFieldsTicketCount} from 'hooks/reporting/metricsPerCustomField'
-
-import {ReportingMetricItem} from 'hooks/reporting/useMetricPerDimension'
-import {useTicketsDistribution} from 'hooks/reporting/useTicketsDistribution'
-import {Cubes} from 'models/reporting/cubes'
+import { useCustomFieldsTicketCount } from 'hooks/reporting/metricsPerCustomField'
+import { ReportingMetricItem } from 'hooks/reporting/useMetricPerDimension'
+import { useTicketsDistribution } from 'hooks/reporting/useTicketsDistribution'
+import { Cubes } from 'models/reporting/cubes'
 import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMeasure,
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
-import {initialState} from 'state/stats/statsSlice'
-import {RootState} from 'state/types'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
-import {ticketInsightsSlice} from 'state/ui/stats/ticketInsightsSlice'
-import {assumeMock} from 'utils/testing'
+import { initialState } from 'state/stats/statsSlice'
+import { RootState } from 'state/types'
+import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
+import { ticketInsightsSlice } from 'state/ui/stats/ticketInsightsSlice'
+import { assumeMock } from 'utils/testing'
 
 const mockStore = configureMockStore([thunk])
 
@@ -30,7 +29,7 @@ const transformData = (
     totalValue: number,
     maxValue: number,
     ticketCountField: string = TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
-    customFieldDimension: string = TicketCustomFieldsDimension.TicketCustomFieldsValueString
+    customFieldDimension: string = TicketCustomFieldsDimension.TicketCustomFieldsValueString,
 ) => ({
     category: data[customFieldDimension],
     value: Number(data[ticketCountField]),
@@ -44,7 +43,7 @@ describe('useTicketsDistribution', () => {
         ui: {
             stats: {
                 [ticketInsightsSlice.name]: {
-                    selectedCustomField: {id: 2},
+                    selectedCustomField: { id: 2 },
                 },
                 filters: uiStatsInitialState,
             },
@@ -69,14 +68,14 @@ describe('useTicketsDistribution', () => {
 
     beforeEach(() => {
         useCustomFieldsTicketCountMock.mockReturnValue({
-            data: {allData},
+            data: { allData },
             isFetching: false,
         } as any)
     })
 
     it('should return tickets distribution', () => {
-        const {result} = renderHook(() => useTicketsDistribution(), {
-            wrapper: ({children}) => (
+        const { result } = renderHook(() => useTicketsDistribution(), {
+            wrapper: ({ children }) => (
                 <Provider store={mockStore(defaultState)}>{children}</Provider>
             ),
         })
@@ -88,7 +87,7 @@ describe('useTicketsDistribution', () => {
             outsideTopTotalGaugePercentage: 0,
             ticketsCountTotal,
             topData: allData.map((item) =>
-                transformData(item, ticketsCountTotal, maxTicketCount)
+                transformData(item, ticketsCountTotal, maxTicketCount),
             ),
         })
     })
@@ -102,11 +101,11 @@ describe('useTicketsDistribution', () => {
         }))
 
         useCustomFieldsTicketCountMock.mockReturnValue({
-            data: {allData},
+            data: { allData },
             isFetching: false,
         } as any)
-        const {result} = renderHook(() => useTicketsDistribution(), {
-            wrapper: ({children}) => (
+        const { result } = renderHook(() => useTicketsDistribution(), {
+            wrapper: ({ children }) => (
                 <Provider store={mockStore(defaultState)}>{children}</Provider>
             ),
         })
@@ -121,7 +120,7 @@ describe('useTicketsDistribution', () => {
             topData: allData
                 .slice(0, 10)
                 .map((item) =>
-                    transformData(item, ticketsCountTotal, maxTicketCount)
+                    transformData(item, ticketsCountTotal, maxTicketCount),
                 ),
         })
     })

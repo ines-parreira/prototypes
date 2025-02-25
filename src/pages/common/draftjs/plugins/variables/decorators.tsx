@@ -1,14 +1,14 @@
-import classnames from 'classnames'
-import {ContentBlock, ContentState} from 'draft-js'
-import React, {ReactNode, SyntheticEvent} from 'react'
+import React, { ReactNode, SyntheticEvent } from 'react'
 
-import {IntegrationType} from 'models/integration/constants'
-import {Variable} from 'tickets/common/config'
+import classnames from 'classnames'
+import { ContentBlock, ContentState } from 'draft-js'
+
+import { IntegrationType } from 'models/integration/constants'
+import { Variable } from 'tickets/common/config'
 
 import * as integrationsHelpers from '../../../../../state/integrations/helpers'
-import {DecoratorComponentProps, DecoratorStrategyCallback} from '../types'
-
-import {setVariableEditable} from './utils'
+import { DecoratorComponentProps, DecoratorStrategyCallback } from '../types'
+import { setVariableEditable } from './utils'
 
 type Entity = Variable & {
     immutable: boolean
@@ -16,7 +16,7 @@ type Entity = Variable & {
 }
 
 const placeholderRender = (entity: Entity): ReactNode => {
-    const {fullName, type, integration} = entity
+    const { fullName, type, integration } = entity
     const entityIsIntegration = type && integration
 
     if (entityIsIntegration) {
@@ -26,7 +26,7 @@ const placeholderRender = (entity: Entity): ReactNode => {
                     alt="integration icon"
                     className="badge-variable-icon"
                     src={integrationsHelpers.getIconFromType(
-                        type as IntegrationType
+                        type as IntegrationType,
                     )}
                 />
                 {fullName}
@@ -54,7 +54,7 @@ export const variable = {
     strategy: (
         contentBlock: ContentBlock,
         callback: DecoratorStrategyCallback,
-        contentState: ContentState
+        contentState: ContentState,
     ) => {
         contentBlock.findEntityRanges((character) => {
             const entityKey = character.getEntity()
@@ -65,15 +65,15 @@ export const variable = {
         }, callback)
     },
     component: (props: DecoratorComponentProps) => {
-        const {contentState, entityKey, children} = props
+        const { contentState, entityKey, children } = props
         const entity: Entity = contentState.getEntity(entityKey).getData()
-        const {fullName, type, integration, immutable} = entity
+        const { fullName, type, integration, immutable } = entity
         const entityIsIntegration = type && integration
         let title = fullName as string
 
         if (entityIsIntegration) {
             const config = integrationsHelpers.getIntegrationConfig(
-                type as IntegrationType
+                type as IntegrationType,
             )
             title = `${config!.title}: ${title}`
         }
@@ -98,7 +98,7 @@ export const variable = {
                 <div
                     className={classnames(
                         'badge-variable',
-                        `badge-variable-type-${type}`
+                        `badge-variable-type-${type}`,
                     )}
                     contentEditable={false}
                 >

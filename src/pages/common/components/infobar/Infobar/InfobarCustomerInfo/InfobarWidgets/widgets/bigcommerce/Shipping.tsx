@@ -1,10 +1,10 @@
-import {Map} from 'immutable'
-import React, {useContext} from 'react'
+import React, { useContext } from 'react'
 
-import {getTrackingLink} from 'common/tracking'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import { Map } from 'immutable'
 
-import {CardCustomization} from 'Widgets/modules/Template/modules/Card/types'
+import { getTrackingLink } from 'common/tracking'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
+import { CardCustomization } from 'Widgets/modules/Template/modules/Card/types'
 import StaticField from 'Widgets/modules/Template/modules/Field/components/StaticField'
 
 export const shippingCustomization: CardCustomization = {
@@ -16,8 +16,8 @@ type AfterTitleProps = {
     source: Map<any, any>
 }
 
-export function AfterTitle({isEditing, source}: AfterTitleProps) {
-    const {integrationId} = useContext(IntegrationContext)
+export function AfterTitle({ isEditing, source }: AfterTitleProps) {
+    const { integrationId } = useContext(IntegrationContext)
 
     if (isEditing || !integrationId) {
         return null

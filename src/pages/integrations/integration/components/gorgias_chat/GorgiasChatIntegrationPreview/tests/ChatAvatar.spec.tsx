@@ -1,9 +1,9 @@
-import {render} from '@testing-library/react'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { render } from '@testing-library/react'
+import { mockFlags } from 'jest-launchdarkly-mock'
 
+import { FeatureFlagKey } from 'config/featureFlags'
 import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
@@ -45,14 +45,14 @@ describe('<ChatAvatar />', () => {
         ],
         ['chat title initials', GorgiasChatAvatarNameType.CHAT_TITLE, 'CT'],
     ])('should display %s', (_, nameType, initials) => {
-        const {container} = render(
+        const { container } = render(
             <ChatAvatar
                 {...minProps}
                 avatar={{
                     imageType: GorgiasChatAvatarImageType.AGENT_INITIALS,
                     nameType,
                 }}
-            />
+            />,
         )
 
         expect(container.textContent).toBe(initials)
@@ -71,7 +71,7 @@ describe('<ChatAvatar />', () => {
         ],
     ])('should display %s', (_, imageType, avatarUrl) => {
         const {
-            container: {firstChild},
+            container: { firstChild },
         } = render(
             <ChatAvatar
                 {...minProps}
@@ -81,17 +81,17 @@ describe('<ChatAvatar />', () => {
                         GorgiasChatAvatarNameType.AGENT_FIRST_LAST_NAME_INITIAL,
                     companyLogoUrl,
                 }}
-            />
+            />,
         )
 
         expect(firstChild?.firstChild).toHaveStyle(
-            `background-image: url(${avatarUrl})`
+            `background-image: url(${avatarUrl})`,
         )
     })
 
     it('should display no image', () => {
         const {
-            container: {firstChild},
+            container: { firstChild },
         } = render(
             <ChatAvatar
                 {...minProps}
@@ -100,7 +100,7 @@ describe('<ChatAvatar />', () => {
                     nameType:
                         GorgiasChatAvatarNameType.AGENT_FIRST_LAST_NAME_INITIAL,
                 }}
-            />
+            />,
         )
 
         expect(firstChild).toMatchSnapshot()
@@ -108,7 +108,7 @@ describe('<ChatAvatar />', () => {
 
     it('should display placeholder image', () => {
         const {
-            container: {firstChild},
+            container: { firstChild },
         } = render(
             <ChatAvatar
                 {...minProps}
@@ -119,7 +119,7 @@ describe('<ChatAvatar />', () => {
                     companyLogoUrl,
                 }}
                 showPlaceholderAvatar
-            />
+            />,
         )
 
         expect(firstChild).toMatchSnapshot()

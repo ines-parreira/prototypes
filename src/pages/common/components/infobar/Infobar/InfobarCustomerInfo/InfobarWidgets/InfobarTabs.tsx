@@ -1,7 +1,8 @@
 import React from 'react'
-import {Nav, Navbar, NavItem, NavLink} from 'reactstrap'
 
-import {getWidgetId} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
+import { Nav, Navbar, NavItem, NavLink } from 'reactstrap'
+
+import { getWidgetId } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/helpers'
 
 import css from './InfobarTabs.less'
 
@@ -9,7 +10,7 @@ type Props = {
     widgetNames: string[]
 }
 
-export function InfobarTabs({widgetNames}: Props) {
+export function InfobarTabs({ widgetNames }: Props) {
     const tabs: Set<string> = new Set(widgetNames)
 
     if (tabs.size < 2) {

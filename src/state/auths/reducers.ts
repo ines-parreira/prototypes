@@ -1,15 +1,14 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
-import {GorgiasAction} from '../types'
-
+import { GorgiasAction } from '../types'
 import * as constants from './constants'
-import {AuthsState, AuthItem} from './types'
+import { AuthItem, AuthsState } from './types'
 
 export const initialState: AuthsState = fromJS([])
 
 export default function reducer(
     state: AuthsState = initialState,
-    action: GorgiasAction
+    action: GorgiasAction,
 ): AuthsState {
     switch (action.type) {
         case constants.FETCH_USER_AUTHS_SUCCESS: {
@@ -19,7 +18,7 @@ export default function reducer(
         case constants.RESET_API_KEY_SUCCESS: {
             return state.set(
                 state.findIndex((auth: AuthItem) => auth.type === 'api_key'),
-                fromJS(action.resp)
+                fromJS(action.resp),
             )
         }
 

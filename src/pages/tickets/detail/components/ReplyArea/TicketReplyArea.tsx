@@ -1,14 +1,16 @@
-import {Macro} from '@gorgias/api-queries'
-import classnames from 'classnames'
-import {ContentState, EditorState} from 'draft-js'
-import {fromJS, List, Map} from 'immutable'
-import React, {Component, KeyboardEvent as KeyboardEventReact} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
+import React, { Component, KeyboardEvent as KeyboardEventReact } from 'react'
 
-import {clearMacroBeforeApply} from 'business/macro'
-import {logEvent, SegmentEvent} from 'common/segment'
-import {MacrosProperties} from 'models/macro/types'
-import {MacroActionName} from 'models/macroAction/types'
+import classnames from 'classnames'
+import { ContentState, EditorState } from 'draft-js'
+import { fromJS, List, Map } from 'immutable'
+import { connect, ConnectedProps } from 'react-redux'
+
+import { Macro } from '@gorgias/api-queries'
+
+import { clearMacroBeforeApply } from 'business/macro'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { MacrosProperties } from 'models/macro/types'
+import { MacroActionName } from 'models/macroAction/types'
 import RichField from 'pages/common/forms/RichField/RichField'
 import {
     getCurrentMacro,
@@ -16,24 +18,24 @@ import {
 } from 'pages/tickets/common/macros/utils'
 import PrefillMacroAlert from 'pages/tickets/detail/components/ReplyArea/PrefillMacroAlert'
 import shortcutManager from 'services/shortcutManager/index'
-import {getPreferences} from 'state/currentUser/selectors'
-import {getNewMessageType, isCacheAdded} from 'state/newMessage/selectors'
-import {TopRankMacroState} from 'state/newMessage/ticketReplyCache'
-import {notify} from 'state/notifications/actions'
-import {applyMacro, clearAppliedMacro} from 'state/ticket/actions'
+import { getPreferences } from 'state/currentUser/selectors'
+import { getNewMessageType, isCacheAdded } from 'state/newMessage/selectors'
+import { TopRankMacroState } from 'state/newMessage/ticketReplyCache'
+import { notify } from 'state/notifications/actions'
+import { applyMacro, clearAppliedMacro } from 'state/ticket/actions'
 import {
     DEPRECATED_getTicket,
     getAppliedMacro,
-    getTopRankMacroState,
     getInTicketSuggestionState,
+    getTopRankMacroState,
 } from 'state/ticket/selectors'
-import {RootState} from 'state/types'
-
-import {nestedReplace} from 'tickets/common/utils'
+import { RootState } from 'state/types'
+import { nestedReplace } from 'tickets/common/utils'
 
 import TicketMacros from './TicketMacros'
 import TicketMacrosSearch from './TicketMacrosSearch'
 import TicketReply from './TicketReply'
+
 import css from './TicketReplyArea.less'
 
 const CONTENT_STATE_PATH = ['state', 'contentState']
@@ -81,7 +83,7 @@ export class TicketReplyArea extends Component<Props, State> {
 
     applyTopRankMacro(
         macro: Map<any, any> | null,
-        state: TopRankMacroState['state']
+        state: TopRankMacroState['state'],
     ) {
         if (!macro) return
         void this.props.applyMacro(
@@ -91,7 +93,7 @@ export class TicketReplyArea extends Component<Props, State> {
             {
                 macroId: macro.get('id'),
                 state: state,
-            }
+            },
         )
         logEvent(SegmentEvent.TopRankMacro, {
             action: state === 'pending' ? 'applied' : state,
@@ -110,7 +112,7 @@ export class TicketReplyArea extends Component<Props, State> {
         }
 
         if (this.props.topRankMacroState?.state === 'pending') {
-            this.setState({topRankMacro: this.props.appliedMacro})
+            this.setState({ topRankMacro: this.props.appliedMacro })
             return
         }
 
@@ -124,7 +126,7 @@ export class TicketReplyArea extends Component<Props, State> {
             (macro) =>
                 macro.relevance_rank === 1 &&
                 macro.score &&
-                macro.score > PREFILL_TOP_MACRO_SCORE_THRESHOLD
+                macro.score > PREFILL_TOP_MACRO_SCORE_THRESHOLD,
         )
         if (!foundTopRankMacro) return
 
@@ -146,13 +148,13 @@ export class TicketReplyArea extends Component<Props, State> {
                 Map<string, any>
             >
         )?.some(
-            (action) => action?.get('name') !== MacroActionName.SetResponseText
+            (action) => action?.get('name') !== MacroActionName.SetResponseText,
         )
 
         if (hasMacroActions) return
 
         const contentState = this.props.newMessage.getIn(
-            CONTENT_STATE_PATH
+            CONTENT_STATE_PATH,
         ) as ContentState
 
         if (contentState?.hasText()) return
@@ -170,23 +172,23 @@ export class TicketReplyArea extends Component<Props, State> {
                             nestedReplace(
                                 args,
                                 this.props.currentTicket,
-                                this.props.currentUser
-                            ) as List<any>
+                                this.props.currentUser,
+                            ) as List<any>,
                     )
                 })
-            }
+            },
         )
 
-        this.setState({topRankMacro: renderedTopRankMacro})
+        this.setState({ topRankMacro: renderedTopRankMacro })
     }
 
     acceptTopRankMacro = () => {
-        this.setState({topRankMacro: null})
+        this.setState({ topRankMacro: null })
         this.applyTopRankMacro(this.props.appliedMacro, 'accepted')
     }
 
     rejectTopRankMacro = () => {
-        this.setState({topRankMacro: null})
+        this.setState({ topRankMacro: null })
         this.applyTopRankMacro(this.props.appliedMacro, 'rejected')
 
         const editorState = this.richArea?.state.editorState
@@ -199,14 +201,14 @@ export class TicketReplyArea extends Component<Props, State> {
     }
 
     componentDidUpdate = (prevProps: Props, prevState: State) => {
-        const {isMacrosLoading, macros} = this.props
-        const {shouldFocusEditor} = this.state
+        const { isMacrosLoading, macros } = this.props
+        const { shouldFocusEditor } = this.state
 
         if (isMacrosLoading && !prevProps.isMacrosLoading) {
             this.setState({
                 selectedMacroId: getDefaultSelectedMacroId(
                     macros,
-                    this.state.selectedMacroId
+                    this.state.selectedMacroId,
                 ),
             })
             this.checkTopRankMacro()
@@ -237,7 +239,7 @@ export class TicketReplyArea extends Component<Props, State> {
             this.hideMacros()
 
         if (shouldFocusEditor && !prevState.shouldFocusEditor) {
-            this.setState({shouldFocusEditor: false})
+            this.setState({ shouldFocusEditor: false })
             if (this.richArea) {
                 this.richArea.focusEditor()
             }
@@ -250,7 +252,7 @@ export class TicketReplyArea extends Component<Props, State> {
                     | undefined
             )?.find(
                 (action) =>
-                    action?.get('name') === MacroActionName.SetResponseText
+                    action?.get('name') === MacroActionName.SetResponseText,
             )
 
             const macroBodyText = macroResponseText?.getIn([
@@ -259,7 +261,7 @@ export class TicketReplyArea extends Component<Props, State> {
             ]) as string | undefined
 
             const contentState = ContentState.createFromText(
-                macroBodyText ?? ''
+                macroBodyText ?? '',
             )
 
             const newMessageBodyText: string | undefined =
@@ -283,7 +285,7 @@ export class TicketReplyArea extends Component<Props, State> {
         const showQuickReply = this.props.preferences
             ? (this.props.preferences.getIn(
                   ['data', 'show_macros_suggestions'],
-                  true
+                  true,
               ) as boolean)
             : true
 
@@ -300,7 +302,7 @@ export class TicketReplyArea extends Component<Props, State> {
     showMacrosDefault = () => {
         // show macros depending on the show_macros preference
         const nextContextState = this.props.newMessage.getIn(
-            CONTENT_STATE_PATH
+            CONTENT_STATE_PATH,
         ) as ContentState
         const editorFocused = this.richArea && this.richArea.isFocused()
 
@@ -324,7 +326,7 @@ export class TicketReplyArea extends Component<Props, State> {
                 Map<string, any>
             >
         )?.some(
-            (action) => action?.get('name') !== MacroActionName.SetResponseText
+            (action) => action?.get('name') !== MacroActionName.SetResponseText,
         )
 
         if (preferences) {
@@ -352,7 +354,7 @@ export class TicketReplyArea extends Component<Props, State> {
     }
 
     setSelectedMacroId = (macro: Macro) =>
-        this.setState({selectedMacroId: macro.id!})
+        this.setState({ selectedMacroId: macro.id! })
 
     bindKeys() {
         shortcutManager.bind('TicketDetailContainer', {
@@ -383,7 +385,7 @@ export class TicketReplyArea extends Component<Props, State> {
                 action: (e) => {
                     e.preventDefault()
                     if (this.shouldDisplayQuickReply()) {
-                        const {macros} = this.props
+                        const { macros } = this.props
                         const macroIdx =
                             parseInt((e as KeyboardEvent).code.slice(-1)) - 1
                         if (macros.length > macroIdx) {
@@ -396,11 +398,11 @@ export class TicketReplyArea extends Component<Props, State> {
     }
 
     handleSearchKeyDown = (e: KeyboardEventReact) => {
-        const {macros} = this.props
-        const {selectedMacroId} = this.state
+        const { macros } = this.props
+        const { selectedMacroId } = this.state
 
         const selectedMacroIndex = macros.findIndex(
-            (macro) => macro.id === selectedMacroId
+            (macro) => macro.id === selectedMacroId,
         )
 
         if (e.key === 'Escape' || e.key === 'Tab') {
@@ -412,7 +414,7 @@ export class TicketReplyArea extends Component<Props, State> {
             const nextId = macros[selectedMacroIndex + 1]?.id
             if (nextId) {
                 e.preventDefault()
-                this.setState({selectedMacroId: nextId})
+                this.setState({ selectedMacroId: nextId })
             }
         }
 
@@ -420,7 +422,7 @@ export class TicketReplyArea extends Component<Props, State> {
             const nextId = macros[selectedMacroIndex - 1]?.id
             if (nextId) {
                 e.preventDefault()
-                this.setState({selectedMacroId: nextId})
+                this.setState({ selectedMacroId: nextId })
             }
         }
 
@@ -443,11 +445,11 @@ export class TicketReplyArea extends Component<Props, State> {
 
     hideMacrosAndFocusEditor = () => {
         this.hideMacros()
-        this.setState({shouldFocusEditor: true})
+        this.setState({ shouldFocusEditor: true })
     }
 
     handleApplyMacro = (macro: Macro) => {
-        const {applyMacro, currentTicket, newMessageType, notify} = this.props
+        const { applyMacro, currentTicket, newMessageType, notify } = this.props
 
         const clearingResult = clearMacroBeforeApply(newMessageType, macro)
         if (clearingResult.notification) {
@@ -463,7 +465,7 @@ export class TicketReplyArea extends Component<Props, State> {
     }
 
     render() {
-        const {selectedMacroId} = this.state
+        const { selectedMacroId } = this.state
         const {
             currentTicket,
             filters,
@@ -507,7 +509,7 @@ export class TicketReplyArea extends Component<Props, State> {
                         <div
                             className={classnames(
                                 css.replyAreaAlertMessage,
-                                'alert-warning'
+                                'alert-warning',
                             )}
                         >
                             <span>
@@ -583,7 +585,7 @@ const connector = connect(
         applyMacro,
         clearAppliedMacro,
         notify,
-    }
+    },
 )
 
 export default connector(TicketReplyArea)

@@ -1,36 +1,40 @@
-import {JobType} from '@gorgias/api-queries'
-import axios, {CancelToken, AxiosError} from 'axios'
-import {fromJS, List, Map} from 'immutable'
+import axios, { AxiosError, CancelToken } from 'axios'
+import { fromJS, List, Map } from 'immutable'
 import _chunk from 'lodash/chunk'
-import {Moment} from 'moment'
-import {notify as updateNotification} from 'reapop'
-import {UpsertNotificationAction} from 'reapop/dist/reducers/notifications/actions'
+import { Moment } from 'moment'
+import { notify as updateNotification } from 'reapop'
+import { UpsertNotificationAction } from 'reapop/dist/reducers/notifications/actions'
+
+import { JobType } from '@gorgias/api-queries'
 
 import * as viewsConfig from 'config/views'
-import {SearchRank} from 'hooks/useSearchRankScenario'
+import { SearchRank } from 'hooks/useSearchRankScenario'
 import client from 'models/api/resources'
-import {OrderDirection, ApiListResponseLegacyPagination} from 'models/api/types'
-import {searchCustomersWithHighlights} from 'models/customer/resources'
-import {JOBS_PATH} from 'models/job/resources'
-import {Job} from 'models/job/types'
-import {search, SEARCH_ENGINE_HEADER} from 'models/search/resources'
+import {
+    ApiListResponseLegacyPagination,
+    OrderDirection,
+} from 'models/api/types'
+import { searchCustomersWithHighlights } from 'models/customer/resources'
+import { JOBS_PATH } from 'models/job/resources'
+import { Job } from 'models/job/types'
+import { search, SEARCH_ENGINE_HEADER } from 'models/search/resources'
 import {
     CUSTOMER_SEARCH_ORDERING,
     SearchEngine,
     SearchType,
     TicketSearchOptions,
 } from 'models/search/types'
-import {searchTicketsWithHighlights} from 'models/ticket/resources'
-import {Ticket} from 'models/ticket/types'
-import {fetchViewsPaginated} from 'models/view/resources'
-import {View, ViewType} from 'models/view/types'
+import { searchTicketsWithHighlights } from 'models/ticket/resources'
+import { Ticket } from 'models/ticket/types'
+import { fetchViewsPaginated } from 'models/view/resources'
+import { View, ViewType } from 'models/view/types'
 import history from 'pages/history'
 import GorgiasApi from 'services/gorgiasApi'
 import socketManager from 'services/socketManager/socketManager'
-import {SocketEventType, JoinEventType} from 'services/socketManager/types'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus, Notification} from 'state/notifications/types'
-import {StoreDispatch, RootState} from 'state/types'
+import { JoinEventType, SocketEventType } from 'services/socketManager/types'
+import { notify } from 'state/notifications/actions'
+import { Notification, NotificationStatus } from 'state/notifications/types'
+import { RootState, StoreDispatch } from 'state/types'
 import * as types from 'state/views/constants'
 import * as viewsSelectors from 'state/views/selectors'
 import {
@@ -40,15 +44,15 @@ import {
     ViewImmutable,
     ViewNavDirection,
 } from 'state/views/types'
-import {activeViewUrl} from 'state/views/utils'
+import { activeViewUrl } from 'state/views/utils'
 import {
     getHashOfObj,
     getPluralObjectName,
     isCurrentlyOnTicket,
     isCurrentlyOnView,
 } from 'utils'
-import {getMoment} from 'utils/date'
-import {buildJobMessage} from 'utils/notificationUtils'
+import { getMoment } from 'utils/date'
+import { buildJobMessage } from 'utils/notificationUtils'
 
 export const setViewActive =
     (view: ViewImmutable) =>
@@ -121,7 +125,7 @@ export const removeFieldFilter = (index: number) => ({
 // update a filter value
 export const updateFieldFilter = (
     index: number,
-    value: string | number | boolean | Array<any> | undefined
+    value: string | number | boolean | Array<any> | undefined,
 ) => ({
     type: types.UPDATE_VIEW_FIELD_FILTER,
     index,
@@ -132,7 +136,7 @@ export const updateFieldFilter = (
 export const updateCustomFieldFilterId = (
     index: number,
     customFieldId: number,
-    customFieldOperator: string
+    customFieldOperator: string,
 ) => ({
     type: types.UPDATE_VIEW_CUSTOM_FIELD_FILTER_ID,
     index,
@@ -150,7 +154,7 @@ export const updateFieldFilterOperator = (index: number, operator: string) => ({
 export function fieldEnumSearch(
     field: Map<any, any>,
     query: string,
-    cancelToken?: CancelToken
+    cancelToken?: CancelToken,
 ) {
     return (): Promise<Maybe<List<any>>> => {
         const data = (field.get('filter') as Map<any, any>).toJS() as Record<
@@ -169,7 +173,7 @@ export function fieldEnumSearch(
             },
             (error: AxiosError) => {
                 return Promise.reject(error)
-            }
+            },
         )
     }
 }
@@ -195,7 +199,7 @@ export function fetchViews(currentViewId: string) {
             for await (const page of generator) {
                 result = result.concat(page)
             }
-            dispatch(fetchViewsSuccess({data: result}, currentViewId))
+            dispatch(fetchViewsSuccess({ data: result }, currentViewId))
         } catch (error) {
             dispatch({
                 type: types.FETCH_VIEW_LIST_ERROR,
@@ -207,8 +211,8 @@ export function fetchViews(currentViewId: string) {
 }
 
 export function fetchViewsSuccess(
-    data: {data: View[]},
-    currentViewId?: string
+    data: { data: View[] },
+    currentViewId?: string,
 ) {
     return (dispatch: StoreDispatch) => {
         dispatch({
@@ -250,12 +254,12 @@ export function submitView(view: ViewImmutable) {
                     .delete('visibility')
                     .delete('shared_with_teams')
                     .delete('shared_with_users')
-                    .toJS()
+                    .toJS(),
             )
         } else {
             promise = client.post<View>(
                 '/api/views/',
-                viewToSend.delete('id').toJS()
+                viewToSend.delete('id').toJS(),
             )
         }
 
@@ -272,8 +276,8 @@ export function submitView(view: ViewImmutable) {
 
                         history.push(
                             `/app/${objectName}/${resp.id}/${encodeURIComponent(
-                                resp.slug
-                            )}`
+                                resp.slug,
+                            )}`,
                         )
                     }
                     return Promise.resolve(resp)
@@ -286,7 +290,7 @@ export function submitView(view: ViewImmutable) {
                         error,
                         reason: 'Failed to submit view. Please try again',
                     })
-                }
+                },
             )
     }
 }
@@ -294,7 +298,7 @@ export function submitView(view: ViewImmutable) {
 export function deleteView(view: ViewImmutable) {
     return (
         dispatch: StoreDispatch,
-        getState: () => RootState
+        getState: () => RootState,
     ): Promise<ReturnType<StoreDispatch>> => {
         const vType: ViewType = view.get('type', ViewType.TicketList)
         const otherViewsOfType = (
@@ -302,7 +306,7 @@ export function deleteView(view: ViewImmutable) {
         ).filter(
             (v: Map<any, any>) =>
                 v.get('type', ViewType.TicketList) === vType &&
-                v.get('id') !== view.get('id')
+                v.get('id') !== view.get('id'),
         ) as List<any>
 
         if (otherViewsOfType.size === 0) {
@@ -312,7 +316,7 @@ export function deleteView(view: ViewImmutable) {
                     title: 'This view cannot be deleted',
                     message:
                         'This is your last view, it needs to exist in order for the helpdesk to function correctly.',
-                })
+                }),
             )
         }
 
@@ -333,7 +337,7 @@ export function deleteView(view: ViewImmutable) {
                         view.get('name') as string
                     }`,
                 })
-            }
+            },
         )
     }
 }
@@ -351,7 +355,7 @@ export const deleteViewSuccess =
         if (state.getIn(['active', 'id']) === viewId) {
             const destinationView = (state.get('items') as List<any>).find(
                 (v: Map<any, any>) =>
-                    v.get('type') === state.getIn(['active', 'type'])
+                    v.get('type') === state.getIn(['active', 'type']),
             ) as Map<any, any>
             dispatch(setViewActive(destinationView))
         }
@@ -363,13 +367,13 @@ export function fetchViewItems(
     isPolling: Maybe<boolean> = false,
     searchRank?: SearchRank | null,
     params?: FetchViewItemsOptions & TicketSearchOptions,
-    cancelToken?: CancelToken
+    cancelToken?: CancelToken,
 ) {
     return async (
         dispatch: StoreDispatch,
-        getState: () => RootState
+        getState: () => RootState,
     ): Promise<ReturnType<StoreDispatch>> => {
-        const options = cancelToken ? {cancelToken} : {}
+        const options = cancelToken ? { cancelToken } : {}
         let state = getState()
         const activeView = viewsSelectors.getActiveView(state)
         const activeViewType = activeView.get('type')
@@ -403,7 +407,7 @@ export function fetchViewItems(
         }
 
         const filtersHash = getHashOfObj(
-            viewsSelectors.getActiveViewFilters(state)
+            viewsSelectors.getActiveViewFilters(state),
         )
         let promise
 
@@ -459,8 +463,8 @@ export function fetchViewItems(
                 url,
                 {
                     ...options,
-                    headers: {'x-gorgias-search-engine': 'ES'},
-                }
+                    headers: { 'x-gorgias-search-engine': 'ES' },
+                },
             )
         }
 
@@ -524,7 +528,7 @@ export function fetchViewItems(
                         viewConfig.get('plural') as string
                     }`,
                 }) as unknown as Promise<ReturnType<StoreDispatch>>
-            }
+            },
         )
     }
 }
@@ -546,7 +550,7 @@ export function toggleIdInSelectedItemsIds(id: number) {
 export function createJob(
     view: Map<any, any>,
     jobType: JobType,
-    jobPartialParams: Record<string, unknown>
+    jobPartialParams: Record<string, unknown>,
 ) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         let requestPayload: {
@@ -572,7 +576,7 @@ export function createJob(
                             .remove('uri')
                             .toJS(),
                     },
-                    jobPartialParams
+                    jobPartialParams,
                 ),
             }
         } else {
@@ -581,8 +585,8 @@ export function createJob(
                 scheduled_datetime: getMoment().add(15, 'second'),
                 params: Object.assign(
                     {},
-                    {view_id: view.get('id')},
-                    jobPartialParams
+                    { view_id: view.get('id') },
+                    jobPartialParams,
                 ),
             }
         }
@@ -596,10 +600,10 @@ export function createJob(
                     jobType,
                     true,
                     viewsConfig.getConfigByType(view.get('type')).get('plural'),
-                    jobPartialParams
+                    jobPartialParams,
                 ),
                 buttons: [],
-            })
+            }),
         ) as unknown as UpsertNotificationAction
 
         return client
@@ -627,14 +631,14 @@ export function createJob(
                                                 'The job has been canceled.'
                                             return dispatch(
                                                 notify(
-                                                    notification.payload as Notification
-                                                )
+                                                    notification.payload as Notification,
+                                                ),
                                             )
                                         },
                                         (
                                             error: AxiosError<{
-                                                error: {msg: string}
-                                            }>
+                                                error: { msg: string }
+                                            }>,
                                         ) => {
                                             notification.payload.status =
                                                 NotificationStatus.Error
@@ -642,19 +646,19 @@ export function createJob(
                                                 error.response?.data.error.msg
                                             return dispatch(
                                                 notify(
-                                                    notification.payload as Notification
-                                                )
+                                                    notification.payload as Notification,
+                                                ),
                                             )
-                                        }
+                                        },
                                     )
                             },
                         },
                     ]
                     return dispatch(
-                        updateNotification(notification.payload)
+                        updateNotification(notification.payload),
                     ) as unknown as Promise<ReturnType<StoreDispatch>>
                 },
-                (error: AxiosError<{error: {msg: string}}>) => {
+                (error: AxiosError<{ error: { msg: string } }>) => {
                     notification.payload.status = NotificationStatus.Error
                     if (error.response?.status === 403) {
                         notification.payload.message =
@@ -669,7 +673,7 @@ export function createJob(
                     }
                     dispatch(updateNotification(notification.payload))
                     throw error
-                }
+                },
             )
     }
 }
@@ -696,7 +700,7 @@ export const fetchActiveViewTickets =
     () =>
     (
         dispatch: StoreDispatch,
-        getState: () => RootState
+        getState: () => RootState,
     ): Maybe<Promise<ReturnType<StoreDispatch>>> => {
         const state = getState()
         const shouldFetchActiveViewTickets =
@@ -713,7 +717,7 @@ export const fetchVisibleViewsCounts =
             viewsSelectors
                 .getViewIdsOrderedByCollapsedSections()(state)
                 .toJS() as number[],
-            10
+            10,
         )
 
         function sendNextChunk(chunks: number[][]) {
@@ -739,7 +743,7 @@ export const fetchRecentViewsCounts =
         const viewIds = viewsSelectors.getExpiredViewsCounts()(getState())
         if (viewIds.length) {
             dispatch(updateRecentViews(viewIds))
-            socketManager.send(SocketEventType.ViewsCountExpired, {viewIds})
+            socketManager.send(SocketEventType.ViewsCountExpired, { viewIds })
         }
     }
 
@@ -764,5 +768,5 @@ export const goToActiveView =
 
         history.push(newUrl)
 
-        dispatch({type: types.GOTO_ACTIVE_VIEW})
+        dispatch({ type: types.GOTO_ACTIVE_VIEW })
     }

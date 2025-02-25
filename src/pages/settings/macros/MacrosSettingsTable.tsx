@@ -1,16 +1,18 @@
-import {ListMacrosParams, Macro} from '@gorgias/api-queries'
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
-import React, {ComponentProps, useCallback, useMemo} from 'react'
-import {useRouteMatch} from 'react-router-dom'
+import React, { ComponentProps, useCallback, useMemo } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {DateAndTimeFormatting} from 'constants/datetime'
-import {useFlag} from 'core/flags'
-import {useBulkArchiveMacros, useBulkUnarchiveMacros} from 'hooks/macros'
+import { useRouteMatch } from 'react-router-dom'
+
+import { ListMacrosParams, Macro } from '@gorgias/api-queries'
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { DateAndTimeFormatting } from 'constants/datetime'
+import { useFlag } from 'core/flags'
+import { useBulkArchiveMacros, useBulkUnarchiveMacros } from 'hooks/macros'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
-import {OrderDirection} from 'models/api/types'
-import {MacroSortableProperties} from 'models/macro/types'
+import { OrderDirection } from 'models/api/types'
+import { MacroSortableProperties } from 'models/macro/types'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
@@ -21,7 +23,8 @@ import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import CheckBoxField from 'pages/common/forms/CheckBoxField'
 
-import {MacrosSettingsItem} from './MacrosSettingsItem'
+import { MacrosSettingsItem } from './MacrosSettingsItem'
+
 import css from './MacrosSettingsTable.less'
 
 type Props = {
@@ -29,7 +32,7 @@ type Props = {
     macros?: Macro[]
     onSortOptionsChange: (
         orderBy: MacroSortableProperties,
-        orderDir: OrderDirection
+        orderDir: OrderDirection,
     ) => void
     options: ListMacrosParams
 } & Pick<
@@ -57,26 +60,26 @@ export function MacrosSettingsTable({
 
     const selectedMacrosLength = useMemo(
         () => selectedMacrosIds.length,
-        [selectedMacrosIds]
+        [selectedMacrosIds],
     )
     const isAllSelected = useMemo(
         () =>
             !isLoading &&
             !!selectedMacrosLength &&
             selectedMacrosLength === macros?.length,
-        [isLoading, macros?.length, selectedMacrosLength]
+        [isLoading, macros?.length, selectedMacrosLength],
     )
     const orderByValue = useMemo(
         () => options.order_by?.split(':')[0],
-        [options.order_by]
+        [options.order_by],
     )
     const orderDirValue = useMemo(
         () => options.order_by?.split(':')[1] as OrderDirection,
-        [options.order_by]
+        [options.order_by],
     )
     const hasAgentPrivileges = useHasAgentPrivileges()
     const datetimeFormat = useGetDateAndTimeFormat(
-        DateAndTimeFormatting.CompactDate
+        DateAndTimeFormatting.CompactDate,
     )
 
     const defaultDescendingSort = [
@@ -93,19 +96,19 @@ export function MacrosSettingsTable({
                     : OrderDirection.Asc
                 : defaultDescendingSort.includes(orderBy)
                   ? OrderDirection.Desc
-                  : OrderDirection.Asc
+                  : OrderDirection.Asc,
         )
     }
 
-    const {mutateAsync: bulkUnarchiveMacros} = useBulkUnarchiveMacros()
-    const {mutateAsync: bulkArchiveMacros} = useBulkArchiveMacros(macros)
+    const { mutateAsync: bulkUnarchiveMacros } = useBulkUnarchiveMacros()
+    const { mutateAsync: bulkArchiveMacros } = useBulkArchiveMacros(macros)
 
     const onBulkArchiveOrUnarchive = async () => {
         try {
             if (isArchiveTab) {
-                await bulkUnarchiveMacros({data: {ids: selectedMacrosIds}})
+                await bulkUnarchiveMacros({ data: { ids: selectedMacrosIds } })
             } else {
-                await bulkArchiveMacros({data: {ids: selectedMacrosIds}})
+                await bulkArchiveMacros({ data: { ids: selectedMacrosIds } })
             }
         } finally {
             setSelectedMacrosIds([])
@@ -117,20 +120,22 @@ export function MacrosSettingsTable({
             !!selectedMacrosLength
                 ? `${selectedMacrosLength} macro${selectedMacrosLength > 1 ? 's' : ''} selected`
                 : 'No macros selected',
-        [selectedMacrosLength]
+        [selectedMacrosLength],
     )
 
     const onChange = useCallback(
         () =>
             !!selectedMacrosLength
                 ? setSelectedMacrosIds([])
-                : setSelectedMacrosIds(macros ? macros.map(({id}) => id!) : []),
-        [macros, selectedMacrosLength, setSelectedMacrosIds]
+                : setSelectedMacrosIds(
+                      macros ? macros.map(({ id }) => id!) : [],
+                  ),
+        [macros, selectedMacrosLength, setSelectedMacrosIds],
     )
 
     const isDisabled = useMemo(
         () => isLoading || (!isAllSelected && !selectedMacrosLength),
-        [isAllSelected, isLoading, selectedMacrosLength]
+        [isAllSelected, isLoading, selectedMacrosLength],
     )
 
     return (
@@ -162,7 +167,7 @@ export function MacrosSettingsTable({
                             }
                             onClick={() =>
                                 handleSortChange(
-                                    MacroSortableProperties.Language
+                                    MacroSortableProperties.Language,
                                 )
                             }
                             title="Language"
@@ -187,7 +192,7 @@ export function MacrosSettingsTable({
                             }
                             onClick={() =>
                                 handleSortChange(
-                                    MacroSortableProperties.UpdatedDatetime
+                                    MacroSortableProperties.UpdatedDatetime,
                                 )
                             }
                             title="Last updated"

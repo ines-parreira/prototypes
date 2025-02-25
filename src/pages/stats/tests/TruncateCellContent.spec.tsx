@@ -1,12 +1,13 @@
-import {render, screen} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {TruncateCellContent} from 'pages/stats/TruncateCellContent'
+import { render, screen } from '@testing-library/react'
+
+import { TruncateCellContent } from 'pages/stats/TruncateCellContent'
 
 jest.mock('react', () => {
     return {
         ...jest.requireActual<typeof React>('react'),
-        useRef: jest.fn().mockReturnValue({current: null}),
+        useRef: jest.fn().mockReturnValue({ current: null }),
     }
 })
 
@@ -31,7 +32,7 @@ describe('<TruncateCellContent />', () => {
     it('should render truncated text from the right when adding isRTL', () => {
         jest.spyOn(React, 'useRef').mockReturnValue({
             get current() {
-                return {offsetWidth: 1, scrollWidth: 2}
+                return { offsetWidth: 1, scrollWidth: 2 }
             },
 
             set current(_value) {
@@ -47,7 +48,7 @@ describe('<TruncateCellContent />', () => {
     it('should not truncate the text when offsetWidth is smaller than scrollWidth', () => {
         jest.spyOn(React, 'useRef').mockReturnValue({
             get current() {
-                return {offsetWidth: 2, scrollWidth: 1}
+                return { offsetWidth: 2, scrollWidth: 1 }
             },
             set current(_value) {
                 // empty function

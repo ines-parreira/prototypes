@@ -1,10 +1,11 @@
+import React from 'react'
+
 import {
     CountryCallingCode,
     CountryCode,
     getCountryCallingCode,
     isSupportedCountry,
 } from 'libphonenumber-js'
-import React from 'react'
 
 export type Country = {
     value: CountryCode
@@ -20,7 +21,7 @@ export type PhoneCallingCodeOption = {
 
 export const getCountryCountryCallingCodeSelectOptions = (
     supportedCountryCodes: Country[],
-    allowedCountryCodes?: CountryCode[]
+    allowedCountryCodes?: CountryCode[],
 ): PhoneCallingCodeOption[] => {
     if (allowedCountryCodes) {
         return supportedCountryCodes
@@ -33,7 +34,7 @@ export const getCountryCountryCallingCodeSelectOptions = (
 }
 
 export const countryCountryCallingCodeToSelectOption = (
-    country: Country
+    country: Country,
 ): PhoneCallingCodeOption => ({
     id: country.value,
     label: (
@@ -50,7 +51,7 @@ export const countryCountryCallingCodeToSelectOption = (
 
 // NOTE. This is a workaround to support some unhandled countries from `libphonenumber-js`.
 export const getCountryCallingCodeFixed = (
-    countryCode: CountryCode
+    countryCode: CountryCode,
 ): CountryCallingCode => {
     // Source: https://en.wikipedia.org/wiki/List_of_country_calling_codes
     switch (countryCode as string) {

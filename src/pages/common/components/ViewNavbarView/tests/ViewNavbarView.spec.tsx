@@ -1,13 +1,14 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {UserSettingType} from 'config/types/user'
-import {view} from 'fixtures/views'
-import {ViewType} from 'models/view/types'
-import {RootState} from 'state/types'
+import { UserSettingType } from 'config/types/user'
+import { view } from 'fixtures/views'
+import { ViewType } from 'models/view/types'
+import { RootState } from 'state/types'
 
 import ViewNavbarView from '../ViewNavbarView'
 
@@ -26,14 +27,14 @@ describe('<ViewNavbarView />', () => {
     }
 
     it('should render view navbar', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={mockStore(defaultState)}>
                 <ViewNavbarView
                     settingType={UserSettingType.CutomerViews}
                     viewType={ViewType.CustomerList}
                     isLoading={false}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(getByText(/view_list/)).toBeInTheDocument()
@@ -41,7 +42,7 @@ describe('<ViewNavbarView />', () => {
     })
 
     it('should render view count', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider
                 store={mockStore({
                     views: fromJS({
@@ -58,7 +59,7 @@ describe('<ViewNavbarView />', () => {
                     viewType={ViewType.CustomerList}
                     isLoading={false}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(getByText(/888/)).toBeInTheDocument()

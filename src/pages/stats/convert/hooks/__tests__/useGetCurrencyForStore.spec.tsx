@@ -1,12 +1,13 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
-import React, {ComponentType} from 'react'
-import {Provider} from 'react-redux'
-import {createStore} from 'redux'
+import React, { ComponentType } from 'react'
 
-import {IntegrationType} from 'models/integration/types'
-import {useGetCurrencyForStore} from 'pages/stats/convert/hooks/useGetCurrencyForStore'
-import {RootState} from 'state/types'
+import { renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import { createStore } from 'redux'
+
+import { IntegrationType } from 'models/integration/types'
+import { useGetCurrencyForStore } from 'pages/stats/convert/hooks/useGetCurrencyForStore'
+import { RootState } from 'state/types'
 
 const defaultState = {
     integrations: fromJS({
@@ -34,16 +35,16 @@ describe('useGetCurrencyForStore', () => {
         it('returns correct currency', () => {
             const store = createStore(
                 (state) => state as RootState,
-                defaultState
+                defaultState,
             )
             const hookOptions = {
-                wrapper: (({children}) => (
+                wrapper: (({ children }) => (
                     <Provider store={store}>{children}</Provider>
                 )) as ComponentType,
             }
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () => useGetCurrencyForStore([2]),
-                hookOptions
+                hookOptions,
             )
 
             expect(result.current).toStrictEqual('JPY')
@@ -52,16 +53,16 @@ describe('useGetCurrencyForStore', () => {
         it('returns only first currency', () => {
             const store = createStore(
                 (state) => state as RootState,
-                defaultState
+                defaultState,
             )
             const hookOptions = {
-                wrapper: (({children}) => (
+                wrapper: (({ children }) => (
                     <Provider store={store}>{children}</Provider>
                 )) as ComponentType,
             }
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () => useGetCurrencyForStore([1, 2]),
-                hookOptions
+                hookOptions,
             )
 
             expect(result.current).toStrictEqual('EUR')
@@ -70,16 +71,16 @@ describe('useGetCurrencyForStore', () => {
         it('returns default currency USD when wrong integrations selected', () => {
             const store = createStore(
                 (state) => state as RootState,
-                defaultState
+                defaultState,
             )
             const hookOptions = {
-                wrapper: (({children}) => (
+                wrapper: (({ children }) => (
                     <Provider store={store}>{children}</Provider>
                 )) as ComponentType,
             }
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () => useGetCurrencyForStore([100, 200]),
-                hookOptions
+                hookOptions,
             )
 
             expect(result.current).toStrictEqual('USD')
@@ -88,16 +89,16 @@ describe('useGetCurrencyForStore', () => {
         it('returns default currency USD when no integrations selected', () => {
             const store = createStore(
                 (state) => state as RootState,
-                defaultState
+                defaultState,
             )
             const hookOptions = {
-                wrapper: (({children}) => (
+                wrapper: (({ children }) => (
                     <Provider store={store}>{children}</Provider>
                 )) as ComponentType,
             }
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () => useGetCurrencyForStore([]),
-                hookOptions
+                hookOptions,
             )
 
             expect(result.current).toStrictEqual('USD')
@@ -113,13 +114,13 @@ describe('useGetCurrencyForStore', () => {
                 }),
             })
             const hookOptions = {
-                wrapper: (({children}) => (
+                wrapper: (({ children }) => (
                     <Provider store={store}>{children}</Provider>
                 )) as ComponentType,
             }
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () => useGetCurrencyForStore([1, 2]),
-                hookOptions
+                hookOptions,
             )
 
             expect(result.current).toStrictEqual('USD')

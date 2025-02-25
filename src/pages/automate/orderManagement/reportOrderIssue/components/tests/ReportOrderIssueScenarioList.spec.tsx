@@ -1,8 +1,9 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
 import * as ReactRouterDom from 'react-router-dom'
 
-import {SelfServiceReportIssueCase} from 'models/selfServiceConfiguration/types'
+import { SelfServiceReportIssueCase } from 'models/selfServiceConfiguration/types'
 
 import ReportOrderIssueScenarioList from '../ReportOrderIssueScenarioList'
 
@@ -20,7 +21,7 @@ jest.mock(
                 push: mockHistoryPush,
                 goBack: mockHistoryGoBack,
             }),
-        }) as Record<string, any>
+        }) as Record<string, any>,
 )
 jest.mock('pages/common/hooks/useReorderDnD', () => {
     return {
@@ -82,14 +83,14 @@ describe('<ReportOrderIssueScenarioList />', () => {
         ],
     }
     it('should render component', () => {
-        useLocationSpy.mockReturnValue({key: 'abc'} as any)
+        useLocationSpy.mockReturnValue({ key: 'abc' } as any)
 
         render(
             <ReportOrderIssueScenarioList
                 items={[item as SelfServiceReportIssueCase]}
                 onHasHoveredItemChange={jest.fn()}
                 onReorder={jest.fn()}
-            />
+            />,
         )
         expect(screen.getByText(item.description)).toBeInTheDocument()
     })

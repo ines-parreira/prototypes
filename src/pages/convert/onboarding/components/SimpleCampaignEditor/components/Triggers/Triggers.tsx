@@ -1,9 +1,9 @@
 import React from 'react'
 
-import {TRIGGERS_CONFIG} from 'pages/convert/campaigns/constants/triggers'
-import {CampaignTrigger} from 'pages/convert/campaigns/types/CampaignTrigger'
-import {CampaignTriggerDeviceTypeValueEnum} from 'pages/convert/campaigns/types/enums/CampaignTriggerDeviceTypeValue.enum'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import { TRIGGERS_CONFIG } from 'pages/convert/campaigns/constants/triggers'
+import { CampaignTrigger } from 'pages/convert/campaigns/types/CampaignTrigger'
+import { CampaignTriggerDeviceTypeValueEnum } from 'pages/convert/campaigns/types/enums/CampaignTriggerDeviceTypeValue.enum'
+import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 
 import css from './Triggers.less'
 
@@ -31,7 +31,7 @@ const getDesktopTriggerLabel = (trigger: CampaignTrigger): string => {
     }
 }
 
-const Triggers: React.FC<Props> = ({triggers, campaignMeta}) => {
+const Triggers: React.FC<Props> = ({ triggers, campaignMeta }) => {
     return (
         <ul className={css.triggersList}>
             {triggers &&

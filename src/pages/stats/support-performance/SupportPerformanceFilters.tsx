@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
+import { useCleanStatsFiltersWithLogicalOperators } from 'hooks/reporting/useCleanStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import DEPRECATED_AgentsStatsFilter from 'pages/stats/common/filters/DEPRECATED_AgentsStatsFilter'
 import DEPRECATED_ChannelsStatsFilter from 'pages/stats/common/filters/DEPRECATED_ChannelsStatsFilter'
@@ -19,15 +19,15 @@ export const SupportPerformanceFilters = ({
     hidden?: boolean
 }) => {
     const pageStatsFiltersWithLogicalOperators = useAppSelector(
-        getPageStatsFiltersWithLogicalOperators
+        getPageStatsFiltersWithLogicalOperators,
     )
     useCleanStatsFiltersWithLogicalOperators(
-        pageStatsFiltersWithLogicalOperators
+        pageStatsFiltersWithLogicalOperators,
     )
 
     const pageStatsFilters = useAppSelector(getPageStatsFilters)
     const messagingIntegrations = useAppSelector(
-        getStatsMessagingAndAppIntegrations
+        getStatsMessagingAndAppIntegrations,
     )
 
     return !hidden ? (

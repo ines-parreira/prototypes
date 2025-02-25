@@ -1,1 +1,1 @@
-export {default} from './components/Magento2'
+export { default } from './components/Magento2'

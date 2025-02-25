@@ -1,7 +1,8 @@
-import {ObjectType} from '@gorgias/api-queries'
-import {useQueryClient} from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 
-import {isCustomFieldValueEmpty} from 'custom-fields/helpers/isCustomFieldValueEmpty'
+import { ObjectType } from '@gorgias/api-queries'
+
+import { isCustomFieldValueEmpty } from 'custom-fields/helpers/isCustomFieldValueEmpty'
 import {
     customFieldValueKeys,
     useDeleteCustomFieldValue,
@@ -12,12 +13,12 @@ import {
     updateCustomFieldValue,
 } from 'custom-fields/resources'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {isGorgiasApiError} from 'models/api/types'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {StoreDispatch} from 'state/types'
-import {MutationOverrides} from 'types/query'
-import {errorToChildren} from 'utils'
+import { isGorgiasApiError } from 'models/api/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { StoreDispatch } from 'state/types'
+import { MutationOverrides } from 'types/query'
+import { errorToChildren } from 'utils'
 
 const createOnErrorHandler =
     (dispatch: StoreDispatch) => (error: Record<string, unknown>) => {
@@ -29,7 +30,7 @@ const createOnErrorHandler =
                 message: errorToChildren(error) || undefined,
                 allowHTML: true,
                 status: NotificationStatus.Error,
-            })
+            }),
         )
     }
 
@@ -41,7 +42,7 @@ export const useUpdateOrDeleteCustomerFieldValue = (
         typeof updateCustomFieldValue & typeof deleteCustomFieldValue,
         true
     > = {},
-    {isDisabled = false} = {}
+    { isDisabled = false } = {},
 ) => {
     const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
@@ -49,12 +50,12 @@ export const useUpdateOrDeleteCustomerFieldValue = (
     const overrides = {
         onSuccess: (
             data: unknown,
-            params: [{fieldType: ObjectType; holderId: number}]
+            params: [{ fieldType: ObjectType; holderId: number }],
         ) => {
             void queryClient.invalidateQueries({
                 queryKey: customFieldValueKeys.objectType(
                     params[0].fieldType,
-                    params[0].holderId
+                    params[0].holderId,
                 ),
             })
         },
@@ -70,14 +71,14 @@ export const useUpdateOrDeleteCustomerFieldValue = (
         },
     }
 
-    const {mutate: updateMutate} = useUpdateCustomFieldValue(overrides)
-    const {mutate: deleteMutate} = useDeleteCustomFieldValue(overrides)
+    const { mutate: updateMutate } = useUpdateCustomFieldValue(overrides)
+    const { mutate: deleteMutate } = useDeleteCustomFieldValue(overrides)
 
     return {
         mutate: function mutate(
             params:
                 | Parameters<typeof updateCustomFieldValue>
-                | Parameters<typeof deleteCustomFieldValue>
+                | Parameters<typeof deleteCustomFieldValue>,
         ): unknown {
             if (isDisabled) return
             if (

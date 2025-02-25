@@ -1,10 +1,11 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {assumeMock} from 'utils/testing'
+import { render, screen } from '@testing-library/react'
+
+import { assumeMock } from 'utils/testing'
 
 import Avatar from '../Avatar'
-import {getAvatarFromCache, getAvatar, getInitials} from '../utils'
+import { getAvatar, getAvatarFromCache, getInitials } from '../utils'
 
 jest.mock('../utils')
 const getAvatarMock = assumeMock(getAvatar)
@@ -21,7 +22,7 @@ describe('Avatar component', () => {
     })
 
     it('should render default with no props', () => {
-        const {container} = render(<Avatar />)
+        const { container } = render(<Avatar />)
         expect(container.firstChild).toMatchSnapshot()
     })
 
@@ -34,7 +35,7 @@ describe('Avatar component', () => {
     it('should have custom url avatar', () => {
         render(<Avatar url="/marie/curie" />)
         expect(screen.getByAltText('avatar').getAttribute('src')).toBe(
-            '/marie/curie'
+            '/marie/curie',
         )
     })
 
@@ -47,7 +48,7 @@ describe('Avatar component', () => {
         getAvatarFromCacheMock.mockReturnValue(gravatarUrl)
         render(<Avatar email="alex@gorgias.io" />)
         expect(screen.getByAltText('avatar').getAttribute('src')).toBe(
-            gravatarUrl
+            gravatarUrl,
         )
     })
 })

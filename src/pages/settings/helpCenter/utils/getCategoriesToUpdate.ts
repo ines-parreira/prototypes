@@ -1,7 +1,7 @@
-import {cloneDeep as _cloneDeep} from 'lodash'
+import { cloneDeep as _cloneDeep } from 'lodash'
 
-import {Category, CategoryTranslation} from 'models/helpCenter/types'
-import {isNonRootCategory} from 'state/entities/helpCenter/categories'
+import { Category, CategoryTranslation } from 'models/helpCenter/types'
+import { isNonRootCategory } from 'state/entities/helpCenter/categories'
 
 type Props = {
     categories: Record<string, Category>
@@ -38,7 +38,7 @@ export const getCategoriesToUpdate = ({
 
         const previousParentChildren = removeElementFromArray(
             previousParent.children,
-            categoryId
+            categoryId,
         )
 
         categoriesToUpdate.push({

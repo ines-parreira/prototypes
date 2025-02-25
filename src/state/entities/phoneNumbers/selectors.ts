@@ -1,8 +1,8 @@
-import {createSelector} from 'reselect'
+import { createSelector } from 'reselect'
 
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
 
-import {NewPhoneNumbersState, PhoneNumbersState} from './types'
+import { NewPhoneNumbersState, PhoneNumbersState } from './types'
 
 export const getPhoneNumbers = (state: RootState): PhoneNumbersState =>
     state.entities?.phoneNumbers || {}
@@ -19,6 +19,6 @@ export const getNewPhoneNumber = (id: number) =>
 export const getNewPhoneNumberByNumber = (number: string) =>
     createSelector(getNewPhoneNumbers, (phoneNumbers) =>
         Object.values(phoneNumbers).find(
-            (phoneNumber) => phoneNumber.phone_number === number
-        )
+            (phoneNumber) => phoneNumber.phone_number === number,
+        ),
     )

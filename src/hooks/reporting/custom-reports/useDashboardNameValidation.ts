@@ -6,7 +6,7 @@ import {
 const validateDashboardName = (
     name: string,
     dashboards: AnalyticsCustomReport[],
-    initialName?: string
+    initialName?: string,
 ) => {
     const trimmedName = name.trim()
 
@@ -19,7 +19,7 @@ const validateDashboardName = (
     }
 
     const isUnique = dashboards.every(
-        (dashboard) => dashboard.name !== trimmedName
+        (dashboard) => dashboard.name !== trimmedName,
     )
     if (!isUnique) {
         return `${trimmedName} already exists. Please create a unique name to save.`
@@ -41,16 +41,16 @@ type ValidationResult =
       }
 
 export function useDashboardNameValidation(name: string, initialName?: string) {
-    const {data} = useListAnalyticsCustomReports()
+    const { data } = useListAnalyticsCustomReports()
 
     const error = validateDashboardName(
         name,
         data?.data.data || [],
-        initialName
+        initialName,
     )
 
     const isValid = !error
     const isInvalid = Boolean(error)
 
-    return {error, isValid, isInvalid} as ValidationResult
+    return { error, isValid, isInvalid } as ValidationResult
 }

@@ -1,10 +1,10 @@
-import {act, renderHook} from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react-hooks'
 
-import {useOnToggleUnread} from '../useOnToggleUnread'
+import { useOnToggleUnread } from '../useOnToggleUnread'
 
 describe('useOnToggleUnread', () => {
     it('should return a function to register a function as well as the registered function', () => {
-        const {result} = renderHook(() => useOnToggleUnread())
+        const { result } = renderHook(() => useOnToggleUnread())
         expect(result.current).toEqual({
             registerOnToggleUnread: expect.any(Function),
         })

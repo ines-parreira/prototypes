@@ -1,4 +1,4 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
 import {
     fetchTicketsCreatedMetric,
@@ -9,25 +9,24 @@ import {
     fetchCreatedTicketsMetricPerChannel,
     useCreatedTicketsMetricPerChannel,
 } from 'hooks/reporting/support-performance/channels/metricsPerChannel'
-import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
-import {OrderDirection} from 'models/api/types'
-import {TicketMeasure} from 'models/reporting/cubes/TicketCube'
-import {StatsFilters} from 'models/stat/types'
-
-import {calculatePercentage} from 'utils/reporting'
+import { MetricWithDecile } from 'hooks/reporting/useMetricPerDimension'
+import { OrderDirection } from 'models/api/types'
+import { TicketMeasure } from 'models/reporting/cubes/TicketCube'
+import { StatsFilters } from 'models/stat/types'
+import { calculatePercentage } from 'utils/reporting'
 
 const ticketCountField = TicketMeasure.TicketCount
 
 const formatResult = (
     createdTicketsPerChannel: MetricWithDecile,
-    allCreatedTickets: Metric
+    allCreatedTickets: Metric,
 ) => {
     let metricValue = null
 
     if (createdTicketsPerChannel.data?.value && allCreatedTickets.data?.value) {
         metricValue = calculatePercentage(
             createdTicketsPerChannel.data.value,
-            allCreatedTickets.data?.value
+            allCreatedTickets.data?.value,
         )
     }
 
@@ -43,8 +42,8 @@ const formatResult = (
                     ? String(
                           calculatePercentage(
                               Number(item[ticketCountField]),
-                              allCreatedTickets.data.value
-                          )
+                              allCreatedTickets.data.value,
+                          ),
                       )
                     : item[ticketCountField],
         })),
@@ -55,19 +54,19 @@ export const usePercentageOfCreatedTicketsMetricPerChannel = (
     statsFilters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
-    channel?: string
+    channel?: string,
 ): MetricWithDecile => {
     const createdTicketsPerChannel = useCreatedTicketsMetricPerChannel(
         statsFilters,
         timezone,
         sorting,
-        channel
+        channel,
     )
     const allCreatedTickets = useTicketsCreatedMetric(statsFilters, timezone)
 
     const data = useMemo(
         () => formatResult(createdTicketsPerChannel, allCreatedTickets),
-        [allCreatedTickets, createdTicketsPerChannel]
+        [allCreatedTickets, createdTicketsPerChannel],
     )
 
     return {
@@ -82,14 +81,14 @@ export const fetchPercentageOfCreatedTicketsMetricPerChannel = async (
     statsFilters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
-    channel?: string
+    channel?: string,
 ): Promise<MetricWithDecile> => {
     return Promise.all([
         fetchCreatedTicketsMetricPerChannel(
             statsFilters,
             timezone,
             sorting,
-            channel
+            channel,
         ),
         fetchTicketsCreatedMetric(statsFilters, timezone),
     ])

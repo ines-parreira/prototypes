@@ -1,23 +1,24 @@
 import 'tests/__mocks__/intersectionObserverMock'
 
-import {QueryClientProvider} from '@tanstack/react-query'
-import {screen} from '@testing-library/react'
+import React, { ComponentProps } from 'react'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {AiAgentOnboardingWizardStep} from 'models/aiAgent/types'
+import { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
 import Wizard from 'pages/common/components/wizard/Wizard'
-import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock, renderWithRouter} from 'utils/testing'
+import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock, renderWithRouter } from 'utils/testing'
 
-import {WIZARD_BUTTON_ACTIONS} from '../../constants'
-import {getStoreConfigurationFormValuesFixture} from '../../fixtures/onboardingWizard.fixture'
+import { WIZARD_BUTTON_ACTIONS } from '../../constants'
+import { getStoreConfigurationFormValuesFixture } from '../../fixtures/onboardingWizard.fixture'
 import AiAgentOnboardingWizardStepEducation from '../AiAgentOnboardingWizardEducation'
-import {useAiAgentOnboardingWizard} from '../hooks/useAiAgentOnboardingWizard'
+import { useAiAgentOnboardingWizard } from '../hooks/useAiAgentOnboardingWizard'
 
 jest.mock('../hooks/useAiAgentOnboardingWizard')
 const mockUseAiAgentOnboardingWizard = assumeMock(useAiAgentOnboardingWizard)
@@ -45,7 +46,7 @@ const defaultProps = {
 }
 
 const renderComponent = (
-    props: Partial<ComponentProps<typeof AiAgentOnboardingWizardStepEducation>>
+    props: Partial<ComponentProps<typeof AiAgentOnboardingWizardStepEducation>>,
 ) => {
     const currentProps = {
         ...defaultProps,
@@ -58,14 +59,14 @@ const renderComponent = (
                     <AiAgentOnboardingWizardStepEducation {...currentProps} />
                 </Wizard>
             </QueryClientProvider>
-        </Provider>
+        </Provider>,
     )
 }
 
 describe('<AiAgentOnboardingWizardEducation />', () => {
     beforeEach(() => {
         mockUseAiAgentOnboardingWizard.mockReturnValue(
-            mockedUseAiAgentOnboardingWizard
+            mockedUseAiAgentOnboardingWizard,
         )
     })
 
@@ -83,7 +84,7 @@ describe('<AiAgentOnboardingWizardEducation />', () => {
         userEvent.click(screen.getByText('Cancel'))
 
         expect(
-            mockedUseAiAgentOnboardingWizard.handleSave
+            mockedUseAiAgentOnboardingWizard.handleSave,
         ).toHaveBeenCalledWith({
             redirectTo: WIZARD_BUTTON_ACTIONS.CANCEL,
         })
@@ -95,7 +96,7 @@ describe('<AiAgentOnboardingWizardEducation />', () => {
         userEvent.click(screen.getByText('Next'))
 
         expect(
-            mockedUseAiAgentOnboardingWizard.handleSave
+            mockedUseAiAgentOnboardingWizard.handleSave,
         ).toHaveBeenCalledWith({
             redirectTo: WIZARD_BUTTON_ACTIONS.NEXT_STEP,
             stepName: AiAgentOnboardingWizardStep.Personalize,

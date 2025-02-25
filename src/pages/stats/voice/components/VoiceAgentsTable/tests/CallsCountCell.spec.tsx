@@ -1,28 +1,29 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {render} from '@testing-library/react'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { render } from '@testing-library/react'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {User} from 'config/types/user'
-import {agents} from 'fixtures/agents'
-import {LegacyStatsFilters} from 'models/stat/types'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { User } from 'config/types/user'
+import { agents } from 'fixtures/agents'
+import { LegacyStatsFilters } from 'models/stat/types'
 import * as DrillDownModalTrigger from 'pages/stats/DrillDownModalTrigger'
-import {useTotalCallsMetricPerAgent} from 'pages/stats/voice/hooks/metricsPerDimension'
-import {RootState, StoreDispatch} from 'state/types'
-import {initialState as agentPerformanceInitialState} from 'state/ui/stats/agentPerformanceSlice'
-import {AGENT_PERFORMANCE_SLICE_NAME} from 'state/ui/stats/constants'
-import {VoiceAgentsMetric} from 'state/ui/stats/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { useTotalCallsMetricPerAgent } from 'pages/stats/voice/hooks/metricsPerDimension'
+import { RootState, StoreDispatch } from 'state/types'
+import { initialState as agentPerformanceInitialState } from 'state/ui/stats/agentPerformanceSlice'
+import { AGENT_PERFORMANCE_SLICE_NAME } from 'state/ui/stats/constants'
+import { VoiceAgentsMetric } from 'state/ui/stats/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import CallsCountCell from '../CallsCountCell'
 
 const DrillDownModalTriggerSpy = jest.spyOn(
     DrillDownModalTrigger,
-    'DrillDownModalTrigger'
+    'DrillDownModalTrigger',
 )
 
 const queryClient = mockQueryClient()
@@ -36,7 +37,7 @@ const defaultMetricData = {
 const renderComponent = (
     mockUseMetric: typeof useTotalCallsMetricPerAgent,
     metricData: typeof defaultMetricData | null = defaultMetricData,
-    isDrillDownEnabled?: boolean
+    isDrillDownEnabled?: boolean,
 ) => {
     const statsFilters: LegacyStatsFilters = {
         period: {
@@ -79,7 +80,7 @@ const renderComponent = (
                     isDrillDownEnabled={isDrillDownEnabled}
                 />
             </Provider>
-        </QueryClientProvider>
+        </QueryClientProvider>,
     )
 }
 
@@ -88,16 +89,16 @@ describe('CallsCountCell', () => {
         const useMetricMock = jest.fn().mockReturnValue({
             isFetching: false,
             isError: false,
-            data: {value: null, decile: null, allData: []},
+            data: { value: null, decile: null, allData: [] },
         })
 
-        const {getByText} = renderComponent(useMetricMock)
+        const { getByText } = renderComponent(useMetricMock)
         expect(getByText('-')).toBeInTheDocument()
         expect(DrillDownModalTriggerSpy).toHaveBeenLastCalledWith(
             expect.objectContaining({
                 enabled: false,
             }),
-            {}
+            {},
         )
     })
 
@@ -105,10 +106,10 @@ describe('CallsCountCell', () => {
         const useMetricMock = jest.fn().mockReturnValue({
             isFetching: false,
             isError: false,
-            data: {value: 12, decile: null, allData: []},
+            data: { value: 12, decile: null, allData: [] },
         })
 
-        const {getByText} = renderComponent(useMetricMock)
+        const { getByText } = renderComponent(useMetricMock)
         expect(getByText('12')).toBeInTheDocument()
     })
 
@@ -116,12 +117,12 @@ describe('CallsCountCell', () => {
         const useMetricMock = jest.fn().mockReturnValue({
             isFetching: true,
             isError: false,
-            data: {value: 125, decile: null, allData: []},
+            data: { value: 125, decile: null, allData: [] },
         })
 
-        const {container} = renderComponent(useMetricMock)
+        const { container } = renderComponent(useMetricMock)
         expect(
-            container.getElementsByClassName('react-loading-skeleton')
+            container.getElementsByClassName('react-loading-skeleton'),
         ).toHaveLength(1)
     })
 
@@ -129,7 +130,7 @@ describe('CallsCountCell', () => {
         const useMetricMock = jest.fn().mockReturnValue({
             isFetching: false,
             isError: false,
-            data: {value: 12, decile: null, allData: []},
+            data: { value: 12, decile: null, allData: [] },
         })
 
         renderComponent(useMetricMock)
@@ -138,7 +139,7 @@ describe('CallsCountCell', () => {
             expect.objectContaining({
                 enabled: true,
             }),
-            {}
+            {},
         )
     })
 
@@ -146,7 +147,7 @@ describe('CallsCountCell', () => {
         const useMetricMock = jest.fn().mockReturnValue({
             isFetching: false,
             isError: false,
-            data: {value: 12, decile: null, allData: []},
+            data: { value: 12, decile: null, allData: [] },
         })
 
         renderComponent(useMetricMock, defaultMetricData, false)
@@ -155,7 +156,7 @@ describe('CallsCountCell', () => {
             expect.objectContaining({
                 enabled: false,
             }),
-            {}
+            {},
         )
     })
 
@@ -163,10 +164,10 @@ describe('CallsCountCell', () => {
         const useMetricMock = jest.fn().mockReturnValue({
             isFetching: false,
             isError: false,
-            data: {value: 12, decile: null, allData: []},
+            data: { value: 12, decile: null, allData: [] },
         })
 
-        const {queryByText} = renderComponent(useMetricMock, null, false)
+        const { queryByText } = renderComponent(useMetricMock, null, false)
 
         expect(queryByText('12')).toBeInTheDocument()
         expect(DrillDownModalTriggerSpy).not.toHaveBeenCalled()
@@ -184,10 +185,10 @@ describe('CallsCountCell with the new filters', () => {
         const useMetricMock = jest.fn().mockReturnValue({
             isFetching: false,
             isError: false,
-            data: {value: 12, decile: null, allData: []},
+            data: { value: 12, decile: null, allData: [] },
         })
 
-        const {getByText} = renderComponent(useMetricMock)
+        const { getByText } = renderComponent(useMetricMock)
         expect(getByText('12')).toBeInTheDocument()
     })
 })

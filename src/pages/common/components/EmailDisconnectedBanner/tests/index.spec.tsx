@@ -1,13 +1,14 @@
-import {Location} from '@sentry/react/types/types'
-import {cleanup, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import {List, fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
-import {MemoryRouter, Route} from 'react-router-dom'
+
+import { Location } from '@sentry/react/types/types'
+import { cleanup, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { fromJS, List } from 'immutable'
+import { Provider } from 'react-redux'
+import { MemoryRouter, Route } from 'react-router-dom'
 
 import * as useAppSelector from 'hooks/useAppSelector'
-import {mockStore, renderWithRouter} from 'utils/testing'
+import { mockStore, renderWithRouter } from 'utils/testing'
 
 import EmailDisconnectedBanner from '..'
 
@@ -22,14 +23,14 @@ describe('EmailMigrationBanner', () => {
                     <EmailDisconnectedBanner />
                     <Route
                         path="*"
-                        render={({location}) => {
+                        render={({ location }) => {
                             testLocation = location
                             return null
                         }}
                     />
                 </MemoryRouter>
             </Provider>,
-            {route}
+            { route },
         )
     afterEach(cleanup)
 
@@ -50,7 +51,7 @@ describe('EmailMigrationBanner', () => {
                     verified: true,
                     isDeactivated: true,
                 },
-            ])
+            ]),
         )
         renderComponent()
         expect(screen.getByText('test@gorgias.com')).toBeVisible()
@@ -68,7 +69,7 @@ describe('EmailMigrationBanner', () => {
                     verified: true,
                     isDeactivated: true,
                 },
-            ])
+            ]),
         )
         renderComponent('/app/settings/channels/email')
         expect(screen.queryByText('test@gorgias.com')).toBeNull()
@@ -86,7 +87,7 @@ describe('EmailMigrationBanner', () => {
                     verified: true,
                     isDeactivated: true,
                 },
-            ])
+            ]),
         )
 
         renderComponent()

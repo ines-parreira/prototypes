@@ -1,24 +1,25 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {render, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
-import configureMockStore, {MockStore} from 'redux-mock-store'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { render, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import configureMockStore, { MockStore } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {AttachmentEnum} from 'common/types'
-import {useModalManager, useModalManagerApi} from 'hooks/useModalManager'
+import { AttachmentEnum } from 'common/types'
+import { useModalManager, useModalManagerApi } from 'hooks/useModalManager'
 import {
     useCreateDiscountOffer,
     useGetDiscountOffer,
     useUpdateDiscountOffer,
 } from 'models/convert/discountOffer/queries'
-import {UniqueDiscountOffer} from 'models/convert/discountOffer/types'
-import {UNIQUE_DISCOUNT_MODAL_NAME} from 'models/discountCodes/constants'
-import {testIds} from 'pages/tickets/detail/components/ReplyArea/DiscountOfferTicketAttachment/utils'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { UniqueDiscountOffer } from 'models/convert/discountOffer/types'
+import { UNIQUE_DISCOUNT_MODAL_NAME } from 'models/discountCodes/constants'
+import { testIds } from 'pages/tickets/detail/components/ReplyArea/DiscountOfferTicketAttachment/utils'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 import {
     DiscountOfferTicketAttachment,
@@ -58,7 +59,7 @@ describe('<DiscountOfferTicketAttachment />', () => {
             integrations: [
                 {
                     id: '3',
-                    meta: {currency: 'USD'},
+                    meta: { currency: 'USD' },
                 },
             ],
         }),
@@ -79,14 +80,14 @@ describe('<DiscountOfferTicketAttachment />', () => {
     })
 
     it('does not render edit icon if discount does not exist', async () => {
-        useGetDiscountOfferMock.mockReturnValue({data: undefined} as any)
+        useGetDiscountOfferMock.mockReturnValue({ data: undefined } as any)
 
-        const {getByTestId, queryByTestId} = render(
+        const { getByTestId, queryByTestId } = render(
             <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
                     <DiscountOfferTicketAttachment {...props} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         userEvent.hover(getByTestId(testIds.wrapper))
@@ -107,12 +108,12 @@ describe('<DiscountOfferTicketAttachment />', () => {
             data: mockDiscountResponse,
         } as any)
 
-        const {getByTestId, queryByTestId} = render(
+        const { getByTestId, queryByTestId } = render(
             <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
                     <DiscountOfferTicketAttachment {...props} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         userEvent.hover(getByTestId(testIds.wrapper))
@@ -134,19 +135,19 @@ describe('<DiscountOfferTicketAttachment />', () => {
             data: mockDiscountResponse,
         } as any)
 
-        const {getByTestId} = render(
+        const { getByTestId } = render(
             <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
                     <DiscountOfferTicketAttachment {...props} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         userEvent.hover(getByTestId(testIds.wrapper))
 
         await waitFor(() => {
             expect(getByTestId(testIds.summary).textContent).toContain(
-                '$20 off'
+                '$20 off',
             )
         })
     })
@@ -163,12 +164,12 @@ describe('<DiscountOfferTicketAttachment />', () => {
             data: mockDiscountResponse,
         } as any)
 
-        const {getByTestId} = render(
+        const { getByTestId } = render(
             <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
                     <DiscountOfferTicketAttachment {...props} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         userEvent.hover(getByTestId(testIds.wrapper))
@@ -190,12 +191,12 @@ describe('<DiscountOfferTicketAttachment />', () => {
             data: mockDiscountResponse,
         } as any)
 
-        const {getByTestId} = render(
+        const { getByTestId } = render(
             <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
                     <DiscountOfferTicketAttachment {...props} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         userEvent.hover(getByTestId(testIds.wrapper))
@@ -205,7 +206,7 @@ describe('<DiscountOfferTicketAttachment />', () => {
             expect(openModalMock).toHaveBeenCalledWith(
                 UNIQUE_DISCOUNT_MODAL_NAME,
                 false,
-                mockDiscountResponse
+                mockDiscountResponse,
             )
         })
     })
@@ -214,7 +215,7 @@ describe('<DiscountOfferTicketAttachment />', () => {
             data: undefined,
         } as any)
 
-        const {getByTestId} = render(
+        const { getByTestId } = render(
             <Provider store={store}>
                 <QueryClientProvider client={queryClient}>
                     <DiscountOfferTicketAttachment
@@ -229,12 +230,12 @@ describe('<DiscountOfferTicketAttachment />', () => {
                         }}
                     />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         await waitFor(() => {
             expect(getByTestId(testIds.summary).textContent).toContain(
-                'Test-ABCD'
+                'Test-ABCD',
             )
         })
     })

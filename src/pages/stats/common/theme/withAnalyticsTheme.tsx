@@ -1,11 +1,10 @@
-import React, {ComponentType, useMemo} from 'react'
+import React, { ComponentType, useMemo } from 'react'
 
 import analyticsColorsDark from 'assets/css/new/stats/dark.json'
 import analyticsColorsLight from 'assets/css/new/stats/light.json'
 import analyticsColorsModern from 'assets/css/new/stats/modern.json'
-
-import {THEME_NAME, useTheme} from 'core/theme'
-import type {ThemeName} from 'core/theme'
+import { THEME_NAME, useTheme } from 'core/theme'
+import type { ThemeName } from 'core/theme'
 
 interface ThemeColorValue {
     value: string
@@ -47,7 +46,7 @@ const AnalyticsColorTokens: Record<ThemeName, AnalyticsTheme> = {
 }
 
 export default function withAnalyticsTheme<P extends object>(
-    Component: ComponentType<P>
+    Component: ComponentType<P>,
 ) {
     return (props: P) => {
         const theme = useTheme()
@@ -56,7 +55,7 @@ export default function withAnalyticsTheme<P extends object>(
                 ...theme.tokens,
                 ...AnalyticsColorTokens[theme.resolvedName],
             }),
-            [theme]
+            [theme],
         )
 
         return <Component {...props} colorTokens={colorTokens} />

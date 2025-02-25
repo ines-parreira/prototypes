@@ -1,26 +1,27 @@
+import React, { useCallback, useMemo, useState } from 'react'
+
 import classnames from 'classnames'
-import React, {useState, useMemo, useCallback} from 'react'
-import {useParams} from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {useListABTests} from 'models/convert/abTest/queries'
+import { useListABTests } from 'models/convert/abTest/queries'
 import {
     ABTest,
     ABTestListOptions as ABTestListOptionsParams,
 } from 'models/convert/abTest/types'
 import Button from 'pages/common/components/button/Button'
 import UpdateReportLinkModal from 'pages/convert/abTests/components/UpdateReportLinkModal'
-import {useUpdateABTest} from 'pages/convert/abTests/hooks/useUpdateABTest'
-import {CONVERT_ROUTE_PARAM_NAME} from 'pages/convert/common/constants'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import {ConvertRouteParams} from 'pages/convert/common/types'
-import {getIntegrationById} from 'state/integrations/selectors'
-import {toJS} from 'utils'
+import { useUpdateABTest } from 'pages/convert/abTests/hooks/useUpdateABTest'
+import { CONVERT_ROUTE_PARAM_NAME } from 'pages/convert/common/constants'
+import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import { ConvertRouteParams } from 'pages/convert/common/types'
+import { getIntegrationById } from 'state/integrations/selectors'
+import { toJS } from 'utils'
 
 import css from './UpdateABTestView.less'
 
 const UpdateABTestView = () => {
-    const {[CONVERT_ROUTE_PARAM_NAME]: integrationId} =
+    const { [CONVERT_ROUTE_PARAM_NAME]: integrationId } =
         useParams<ConvertRouteParams>()
 
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState<boolean>(false)
@@ -28,10 +29,10 @@ const UpdateABTestView = () => {
     const chatIntegrationId = parseInt(integrationId)
     const integration = useAppSelector(getIntegrationById(chatIntegrationId))
 
-    const {channelConnection, isLoading: isChannelConnectionLoading} =
+    const { channelConnection, isLoading: isChannelConnectionLoading } =
         useGetOrCreateChannelConnection(toJS(integration))
 
-    const {mutateAsync: updateABTest} = useUpdateABTest()
+    const { mutateAsync: updateABTest } = useUpdateABTest()
 
     const abTestListOptions = useMemo(() => {
         const channelConnectionId = channelConnection?.id
@@ -41,11 +42,11 @@ const UpdateABTestView = () => {
         } as ABTestListOptionsParams
     }, [channelConnection])
 
-    const {data: abTests, isLoading: areABTestLoading} = useListABTests(
+    const { data: abTests, isLoading: areABTestLoading } = useListABTests(
         abTestListOptions,
         {
             enabled: !!channelConnection && !!abTestListOptions,
-        }
+        },
     )
 
     const abTest = useMemo<ABTest | undefined>(() => {
@@ -69,7 +70,7 @@ const UpdateABTestView = () => {
                 data,
             ])
         },
-        [abTests, updateABTest]
+        [abTests, updateABTest],
     )
 
     const updateObject = async (data: any) => {

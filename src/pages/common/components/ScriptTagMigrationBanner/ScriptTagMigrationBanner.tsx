@@ -1,16 +1,16 @@
-import classNames from 'classnames'
-
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
-import {Link} from 'react-router-dom'
 
-import {AlertBanner, AlertBannerTypes} from 'AlertBanners'
-import {FeatureFlagKey} from 'config/featureFlags'
+import classNames from 'classnames'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { Link } from 'react-router-dom'
+
+import { AlertBanner, AlertBannerTypes } from 'AlertBanners'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationType} from 'models/integration/constants'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {makeGetRedirectUri} from 'state/integrations/selectors'
-import {isAdmin} from 'utils'
+import { IntegrationType } from 'models/integration/constants'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { makeGetRedirectUri } from 'state/integrations/selectors'
+import { isAdmin } from 'utils'
 
 import useStoresRequiringScriptTagMigration from './hooks/useStoresRequiringScriptTagMigration'
 
@@ -40,12 +40,13 @@ const ScriptTagMigrationBanner = () => {
 
     const storesRequiringPermissionUpdates =
         storesRequiringScriptTagMigration.filter(
-            ({storeRequiresPermissionUpdates}) => storeRequiresPermissionUpdates
+            ({ storeRequiresPermissionUpdates }) =>
+                storeRequiresPermissionUpdates,
         )
 
     const gorgiasChatsRequiringReinstall =
         storesRequiringScriptTagMigration.filter(
-            ({gorgiasChatRequiresReinstall}) => gorgiasChatRequiresReinstall
+            ({ gorgiasChatRequiresReinstall }) => gorgiasChatRequiresReinstall,
         )
 
     const redirectUri = getRedirectUri(IntegrationType.Shopify)
@@ -74,7 +75,7 @@ const ScriptTagMigrationBanner = () => {
             ? '/app/settings/channels/gorgias_chat'
             : `/app/settings/channels/gorgias_chat/${
                   gorgiasChatsRequiringReinstall[0]?.gorgiasChatIntegration?.get(
-                      'id'
+                      'id',
                   ) as string
               }/installation`
 

@@ -1,8 +1,9 @@
-import {act, screen, fireEvent, waitFor, within} from '@testing-library/react'
-import _noop from 'lodash/noop'
 import React from 'react'
 
-import {renderWithDnD} from 'utils/testing'
+import { act, fireEvent, screen, waitFor, within } from '@testing-library/react'
+import _noop from 'lodash/noop'
+
+import { renderWithDnD } from 'utils/testing'
 
 import AccordionBody from '../AccordionBody'
 import SortableAccordion from '../SortableAccordion'
@@ -11,7 +12,7 @@ import SortableAccordionItem from '../SortableAccordionItem'
 
 describe('<SortableAccordion />', () => {
     it('should render sortable accordion component', () => {
-        const {container} = renderWithDnD(
+        const { container } = renderWithDnD(
             <SortableAccordion onReorder={_noop}>
                 <SortableAccordionItem id="1">
                     <SortableAccordionHeader>Header 1</SortableAccordionHeader>
@@ -29,7 +30,7 @@ describe('<SortableAccordion />', () => {
                         lobortis eget.
                     </AccordionBody>
                 </SortableAccordionItem>
-            </SortableAccordion>
+            </SortableAccordion>,
         )
 
         expect(container).toMatchSnapshot()
@@ -48,14 +49,14 @@ describe('<SortableAccordion />', () => {
                     <SortableAccordionHeader>Header 2</SortableAccordionHeader>
                     <AccordionBody>Body 2</AccordionBody>
                 </SortableAccordionItem>
-            </SortableAccordion>
+            </SortableAccordion>,
         )
 
         const accordionItem = screen.getByText('Header 1').parentElement!
 
         act(() => {
             const dragHandle = within(
-                screen.getByText('Header 2').parentElement!
+                screen.getByText('Header 2').parentElement!,
             ).getByText('drag_indicator')
 
             fireEvent.dragStart(dragHandle)
@@ -84,7 +85,7 @@ describe('<SortableAccordion />', () => {
                     <SortableAccordionHeader>Header 2</SortableAccordionHeader>
                     <AccordionBody>Body 2</AccordionBody>
                 </SortableAccordionItem>
-            </SortableAccordion>
+            </SortableAccordion>,
         )
 
         const accordionItem1 = screen.getByText('Header 1').parentElement!

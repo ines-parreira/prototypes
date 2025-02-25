@@ -1,33 +1,34 @@
-import {fireEvent, render, within, screen} from '@testing-library/react'
 import React from 'react'
+
+import { fireEvent, render, screen, within } from '@testing-library/react'
 
 import {
     CommonReasonLabel,
     HelpdeskPrimaryReasonLabel,
 } from 'pages/settings/new_billing/components/CancelProductModal/constants'
-import {DEFAULT_STATE} from 'pages/settings/new_billing/components/CancelProductModal/reducers'
-import {HELPDESK_CANCELLATION_SCENARIO} from 'pages/settings/new_billing/components/CancelProductModal/scenarios'
-import {CancellationReasonsActionType} from 'pages/settings/new_billing/components/CancelProductModal/types'
+import { DEFAULT_STATE } from 'pages/settings/new_billing/components/CancelProductModal/reducers'
+import { HELPDESK_CANCELLATION_SCENARIO } from 'pages/settings/new_billing/components/CancelProductModal/scenarios'
+import { CancellationReasonsActionType } from 'pages/settings/new_billing/components/CancelProductModal/types'
 
 import CancellationReasons from '../CancellationReasons'
 
 describe('CancellationReasons - Helpdesk', () => {
     it('renders with no reasons selected', () => {
-        const {container, getByText, getByRole} = render(
+        const { container, getByText, getByRole } = render(
             <CancellationReasons
                 reasons={HELPDESK_CANCELLATION_SCENARIO.reasons}
                 reasonsState={DEFAULT_STATE}
                 dispatchCancellationReasonsAction={jest.fn() as any}
-            />
+            />,
         )
 
         const opinionElement = getByText(
-            'Your opinion means a lot to us. Please tell us why you are cancelling your plan.'
+            'Your opinion means a lot to us. Please tell us why you are cancelling your plan.',
         )
         expect(opinionElement).toBeInTheDocument()
 
         const instructionElement = container.querySelector(
-            'div[class=instruction]'
+            'div[class=instruction]',
         )
         expect(instructionElement).toHaveTextContent('Cancellation reason*')
 
@@ -43,25 +44,25 @@ describe('CancellationReasons - Helpdesk', () => {
             primaryReason: {
                 label: HelpdeskPrimaryReasonLabel.DoesNotFitMyNeeds,
             },
-            secondaryReason: {label: CommonReasonLabel.Other},
-            otherReason: {label: 'Other reason provided by agent.'},
+            secondaryReason: { label: CommonReasonLabel.Other },
+            otherReason: { label: 'Other reason provided by agent.' },
             completed: true,
         }
 
-        const {container, getByText, getByRole} = render(
+        const { container, getByText, getByRole } = render(
             <CancellationReasons
                 reasons={HELPDESK_CANCELLATION_SCENARIO.reasons}
                 reasonsState={state}
                 dispatchCancellationReasonsAction={jest.fn() as any}
-            />
+            />,
         )
         const opinionElement = getByText(
-            'Your opinion means a lot to us. Please tell us why you are cancelling your plan.'
+            'Your opinion means a lot to us. Please tell us why you are cancelling your plan.',
         )
         expect(opinionElement).toBeInTheDocument()
 
         const instructionElement = container.querySelector(
-            'div[class=instruction]'
+            'div[class=instruction]',
         )
         expect(instructionElement).toHaveTextContent('Cancellation reason*')
 
@@ -69,19 +70,19 @@ describe('CancellationReasons - Helpdesk', () => {
         expect(selectorElement).toHaveTextContent(state.primaryReason.label)
 
         const secondaryReasons = screen.getByText(
-            'Could you please share more?'
+            'Could you please share more?',
         )
         const secondaryReasonsValue = screen.getByLabelText(
-            state.secondaryReason.label
+            state.secondaryReason.label,
         )
         expect(secondaryReasons).toBeInTheDocument()
         expect(secondaryReasonsValue).toBeChecked()
 
         const otherReason = screen.getByText(
-            'Please share any additional details'
+            'Please share any additional details',
         )
         const otherReasonValue = screen.getByDisplayValue(
-            state.otherReason.label
+            state.otherReason.label,
         )
         expect(otherReason).toBeInTheDocument()
         expect(otherReasonValue).toBeInTheDocument()
@@ -91,7 +92,7 @@ describe('CancellationReasons - Helpdesk', () => {
         const mockDispatch = jest.fn()
         const state = {
             ...DEFAULT_STATE,
-            primaryReason: {label: CommonReasonLabel.Other},
+            primaryReason: { label: CommonReasonLabel.Other },
         }
 
         render(
@@ -101,11 +102,11 @@ describe('CancellationReasons - Helpdesk', () => {
                     reasonsState={state}
                     dispatchCancellationReasonsAction={mockDispatch}
                 />
-            </div>
+            </div>,
         )
 
         expect(
-            screen.getByText('Please share any additional details')
+            screen.getByText('Please share any additional details'),
         ).toBeInTheDocument()
     })
 
@@ -113,17 +114,17 @@ describe('CancellationReasons - Helpdesk', () => {
         const mockDispatch = jest.fn()
         const state = {
             ...DEFAULT_STATE,
-            primaryReason: {label: CommonReasonLabel.IPreferNotToSay},
+            primaryReason: { label: CommonReasonLabel.IPreferNotToSay },
         }
 
-        const {container} = render(
+        const { container } = render(
             <div>
                 <CancellationReasons
                     reasons={HELPDESK_CANCELLATION_SCENARIO.reasons}
                     reasonsState={state}
                     dispatchCancellationReasonsAction={mockDispatch}
                 />
-            </div>
+            </div>,
         )
 
         // No secondary reasons rendered
@@ -135,14 +136,14 @@ describe('CancellationReasons - Helpdesk', () => {
 
     it('handles the change of primary reason', () => {
         const mockDispatch = jest.fn()
-        const {getByText} = render(
+        const { getByText } = render(
             <div>
                 <CancellationReasons
                     reasons={HELPDESK_CANCELLATION_SCENARIO.reasons}
                     reasonsState={DEFAULT_STATE}
                     dispatchCancellationReasonsAction={mockDispatch}
                 />
-            </div>
+            </div>,
         )
 
         const selectorElement = getByText('Select reason...')
@@ -164,7 +165,7 @@ describe('CancellationReasons - Helpdesk', () => {
         const secondaryReason =
             HELPDESK_CANCELLATION_SCENARIO.reasons[0].secondaryReasons[0]
 
-        const {getByText} = render(
+        const { getByText } = render(
             <div>
                 <CancellationReasons
                     reasons={HELPDESK_CANCELLATION_SCENARIO.reasons}
@@ -174,21 +175,21 @@ describe('CancellationReasons - Helpdesk', () => {
                     }}
                     dispatchCancellationReasonsAction={mockDispatch}
                 />
-            </div>
+            </div>,
         )
 
         fireEvent.click(getByText(secondaryReason.label))
         expect(mockDispatch).toHaveBeenCalledWith({
             type: CancellationReasonsActionType.SecondaryReasonSelected,
-            secondaryReason: {label: secondaryReason.label},
+            secondaryReason: { label: secondaryReason.label },
         })
     })
 
     it('handles the change of other reason', () => {
         const mockDispatch = jest.fn()
-        const primaryReason = {label: CommonReasonLabel.Other}
+        const primaryReason = { label: CommonReasonLabel.Other }
 
-        const {container} = render(
+        const { container } = render(
             <div>
                 <CancellationReasons
                     reasons={HELPDESK_CANCELLATION_SCENARIO.reasons}
@@ -198,12 +199,12 @@ describe('CancellationReasons - Helpdesk', () => {
                     }}
                     dispatchCancellationReasonsAction={mockDispatch}
                 />
-            </div>
+            </div>,
         )
 
-        const newOtherReason = {label: 'New reason'}
+        const newOtherReason = { label: 'New reason' }
         const textArea = container.querySelector('textarea') as Element
-        fireEvent.change(textArea, {target: {value: newOtherReason.label}})
+        fireEvent.change(textArea, { target: { value: newOtherReason.label } })
         expect(mockDispatch).toHaveBeenCalledWith({
             type: CancellationReasonsActionType.OtherReasonUpdated,
             otherReason: newOtherReason,
@@ -220,17 +221,17 @@ describe('CancellationReasons - Helpdesk', () => {
                         primaryReason: {
                             label: HelpdeskPrimaryReasonLabel.DoesNotFitMyNeeds,
                         },
-                        secondaryReason: {label: CommonReasonLabel.Other},
+                        secondaryReason: { label: CommonReasonLabel.Other },
                     }}
                     dispatchCancellationReasonsAction={jest.fn() as any}
                 />
-            </div>
+            </div>,
         )
 
         expect(
             within(
-                screen.getByText('Please share any additional details')
-            ).getByText('*')
+                screen.getByText('Please share any additional details'),
+            ).getByText('*'),
         ).toBeVisible()
     })
 })

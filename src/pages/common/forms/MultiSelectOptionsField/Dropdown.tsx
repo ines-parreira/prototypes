@@ -1,14 +1,16 @@
+import React, { ComponentType, useState } from 'react'
+
 import classnames from 'classnames'
 import _isEqual from 'lodash/isEqual'
 import _max from 'lodash/max'
 import _min from 'lodash/min'
-import React, {ComponentType, useState} from 'react'
-import {DropdownMenu, DropdownToggle, UncontrolledDropdown} from 'reactstrap'
+import { DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap'
 
-import css from './Dropdown.less'
 import Input from './Input'
 import Menu from './Menu'
-import {Option} from './types'
+import { Option } from './types'
+
+import css from './Dropdown.less'
 
 type Props = {
     placeholder: string
@@ -21,7 +23,7 @@ type Props = {
     onBlur: () => void
     onSelect: (option: Option) => void
     onDelete: () => void
-    menu?: ComponentType<{className?: string}>
+    menu?: ComponentType<{ className?: string }>
     isCompact?: boolean
 }
 
@@ -76,7 +78,7 @@ export default function Dropdown(props: Props) {
                 'multiSelectOptionField-dropdown',
                 {
                     [css.compact]: isCompact,
-                }
+                },
             )}
         >
             <UncontrolledDropdown

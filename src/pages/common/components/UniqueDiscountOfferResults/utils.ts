@@ -1,7 +1,7 @@
-import {Map} from 'immutable'
+import { Map } from 'immutable'
 
-import {UniqueDiscountOfferTypeEnum} from 'models/convert/discountOffer/types'
-import {getMoneySymbol} from 'utils/getMoneySymbol'
+import { UniqueDiscountOfferTypeEnum } from 'models/convert/discountOffer/types'
+import { getMoneySymbol } from 'utils/getMoneySymbol'
 
 // TODO: Revisit the summary text
 // We have to compute the offer summary everytime because this field is not part of the
@@ -9,13 +9,13 @@ import {getMoneySymbol} from 'utils/getMoneySymbol'
 export const computeDiscountOfferSummary = (
     type: UniqueDiscountOfferTypeEnum,
     value?: string | number | null,
-    integration?: Map<string, string>
+    integration?: Map<string, string>,
 ): string => {
     switch (type) {
         case 'fixed': {
             if (!integration || integration.isEmpty()) return ''
             const currencySymbol = getMoneySymbol(
-                integration.getIn(['meta', 'currency'])
+                integration.getIn(['meta', 'currency']),
             )
             return value ? `${currencySymbol}${value} off` : ''
         }

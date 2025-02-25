@@ -1,8 +1,8 @@
 import _isNil from 'lodash/isNil'
 import _omit from 'lodash/omit'
-import {ulid} from 'ulidx'
+import { ulid } from 'ulidx'
 
-import {getFallibleNodeSuccessConditions} from '../hooks/useVisualBuilderGraphReducer/utils'
+import { getFallibleNodeSuccessConditions } from '../hooks/useVisualBuilderGraphReducer/utils'
 import {
     buildEdgeCommonProperties,
     buildNodeCommonProperties,
@@ -13,6 +13,7 @@ import {
     CancelSubscriptionNodeType,
     ChannelTriggerNodeType,
     ConditionsNodeType,
+    CreateDiscountCodeNodeType,
     EndNodeType,
     FileUploadNodeType,
     HttpRequestNodeType,
@@ -21,8 +22,12 @@ import {
     OrderLineItemSelectionNodeType,
     OrderSelectionNodeType,
     RefundOrderNodeType,
+    RefundShippingCostsNodeType,
     RemoveItemNodeType,
-    CreateDiscountCodeNodeType,
+    ReplaceItemNodeType,
+    ReshipForFreeNodeType,
+    ReusableLLMPromptCallNodeType,
+    ReusableLLMPromptTriggerNodeType,
     ShopperAuthenticationNodeType,
     SkipChargeNodeType,
     TextReplyNodeType,
@@ -30,12 +35,7 @@ import {
     VisualBuilderEdge,
     VisualBuilderGraph,
     VisualBuilderNode,
-    ReshipForFreeNodeType,
-    RefundShippingCostsNodeType,
-    ReplaceItemNodeType,
-    ReusableLLMPromptTriggerNodeType,
     VisualBuilderTriggerNode,
-    ReusableLLMPromptCallNodeType,
 } from './visualBuilderGraph.types'
 import {
     MessageContent,
@@ -65,25 +65,30 @@ export function walkWorkflowConfigurationGraph(
             nextSteps: WorkflowStep[]
             incomingTransition: WorkflowTransition | undefined
             outgoingTransitions: WorkflowTransition[]
-        }
-    ) => void
+        },
+    ) => void,
 ) {
     const step = c.steps.find((s) => s.id === currentStepId)
     if (!step) return
     const incomingTransition = c.transitions.find(
-        (t) => t.to_step_id === currentStepId
+        (t) => t.to_step_id === currentStepId,
     )
     const previousStep = incomingTransition
         ? c.steps.find((s) => s.id === incomingTransition.from_step_id)
         : undefined
     const outgoingTransitions = c.transitions.filter(
-        (t) => t.from_step_id === currentStepId
+        (t) => t.from_step_id === currentStepId,
     )
     const nextSteps = outgoingTransitions.reduce(
         (acc, t) => [...acc, ...c.steps.filter((s) => s.id === t.to_step_id)],
-        [] as WorkflowStep[]
+        [] as WorkflowStep[],
     )
-    f(step, {previousStep, incomingTransition, outgoingTransitions, nextSteps})
+    f(step, {
+        previousStep,
+        incomingTransition,
+        outgoingTransitions,
+        nextSteps,
+    })
     if (outgoingTransitions.length === 0) return
     for (const outgoingTransition of outgoingTransitions) {
         walkWorkflowConfigurationGraph(c, outgoingTransition.to_step_id, f)
@@ -91,7 +96,7 @@ export function walkWorkflowConfigurationGraph(
 }
 
 function injectTkeysInContentIfNotExist(content: MessageContent) {
-    const {html_tkey, text_tkey, ...rest} = content
+    const { html_tkey, text_tkey, ...rest } = content
     return {
         html_tkey: html_tkey || ulid(),
         text_tkey: text_tkey || ulid(),
@@ -100,10 +105,10 @@ function injectTkeysInContentIfNotExist(content: MessageContent) {
 }
 
 function injectTkeysInChoicesIfNotExist(
-    choices: MultipleChoicesNodeType['data']['choices']
+    choices: MultipleChoicesNodeType['data']['choices'],
 ) {
     return choices.map((c) => {
-        const {label_tkey, ...rest} = c
+        const { label_tkey, ...rest } = c
         return {
             label_tkey: label_tkey || ulid(),
             ...rest,
@@ -112,7 +117,7 @@ function injectTkeysInChoicesIfNotExist(
 }
 
 export function getTriggerNode(
-    c: WorkflowConfiguration
+    c: WorkflowConfiguration,
 ):
     | ChannelTriggerNodeType
     | LLMPromptTriggerNodeType
@@ -152,16 +157,16 @@ export function getTriggerNode(
                     ...trigger.settings.object_inputs
                         .filter(
                             (
-                                input
+                                input,
                             ): input is Extract<
                                 Extract<
                                     NonNullable<
                                         WorkflowConfiguration['triggers']
                                     >[number],
-                                    {kind: 'llm-prompt'}
+                                    { kind: 'llm-prompt' }
                                 >['settings']['object_inputs'][number],
-                                {kind: 'product'}
-                            > => input.kind === 'product'
+                                { kind: 'product' }
+                            > => input.kind === 'product',
                         )
                         .map((input) => _omit(input, ['integration_id'])),
                 ],
@@ -200,16 +205,16 @@ export function getTriggerNode(
                     ...trigger.settings.custom_inputs,
                     ...trigger.settings.object_inputs.filter(
                         (
-                            input
+                            input,
                         ): input is Extract<
                             Extract<
                                 NonNullable<
                                     WorkflowConfiguration['triggers']
                                 >[number],
-                                {kind: 'reusable-llm-prompt'}
+                                { kind: 'reusable-llm-prompt' }
                             >['settings']['object_inputs'][number],
-                            {kind: 'product'}
-                        > => input.kind === 'product'
+                            { kind: 'product' }
+                        > => input.kind === 'product',
                     ),
                 ],
                 conditionsType,
@@ -262,7 +267,7 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph<
     }
 
     walkWorkflowConfigurationGraph(c, c.initial_step_id, (step, context) => {
-        const {previousStep, incomingTransition} = context
+        const { previousStep, incomingTransition } = context
 
         if (step.kind === 'message') {
             const n: AutomatedMessageNodeType = {
@@ -271,7 +276,7 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph<
                 type: 'automated_message',
                 data: {
                     content: injectTkeysInContentIfNotExist(
-                        step.settings.message.content
+                        step.settings.message.content,
                     ),
                 },
             }
@@ -284,10 +289,10 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph<
                 type: 'multiple_choices',
                 data: {
                     content: injectTkeysInContentIfNotExist(
-                        step.settings.message.content
+                        step.settings.message.content,
                     ),
                     choices: injectTkeysInChoicesIfNotExist(
-                        step.settings.choices
+                        step.settings.choices,
                     ),
                 },
             }
@@ -300,7 +305,7 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph<
                 type: 'text_reply',
                 data: {
                     content: injectTkeysInContentIfNotExist(
-                        step.settings.message.content
+                        step.settings.message.content,
                     ),
                 },
             }
@@ -313,7 +318,7 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph<
                 type: 'file_upload',
                 data: {
                     content: injectTkeysInContentIfNotExist(
-                        step.settings.message.content
+                        step.settings.message.content,
                     ),
                 },
             }
@@ -326,7 +331,7 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph<
                 type: 'order_selection',
                 data: {
                     content: injectTkeysInContentIfNotExist(
-                        step.settings.message.content
+                        step.settings.message.content,
                     ),
                 },
             }
@@ -415,8 +420,8 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph<
             const variablesOutputPaths = new Set(
                 step.settings.variables.map(
                     (variable) =>
-                        `steps_state.${step.id}.content.${variable.id}`
-                )
+                        `steps_state.${step.id}.content.${variable.id}`,
+                ),
             )
 
             const n: HttpRequestNodeType = {
@@ -429,8 +434,8 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph<
                     method: step.settings.method,
                     oauth2TokenSettings: step.settings.oauth2_token_settings,
                     headers: Object.entries(
-                        _omit(step.settings.headers ?? {}, 'content-type')
-                    ).map(([name, value]) => ({name, value})),
+                        _omit(step.settings.headers ?? {}, 'content-type'),
+                    ).map(([name, value]) => ({ name, value })),
                     json:
                         bodyContentType === 'application/json'
                             ? (step.settings.body ?? null)
@@ -439,9 +444,9 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph<
                         bodyContentType === 'application/x-www-form-urlencoded'
                             ? Array.from(
                                   new URLSearchParams(
-                                      step.settings.body ?? undefined
-                                  ).entries()
-                              ).map(([key, value]) => ({key, value}))
+                                      step.settings.body ?? undefined,
+                                  ).entries(),
+                              ).map(([key, value]) => ({ key, value }))
                             : null,
                     bodyContentType: bodyContentType ?? null,
                     variables: step.settings.variables.map((variable) => ({
@@ -452,7 +457,7 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph<
                         ? {
                               outputs: trigger.settings.outputs.filter(
                                   (output) =>
-                                      variablesOutputPaths.has(output.path)
+                                      variablesOutputPaths.has(output.path),
                               ),
                           }
                         : {}),
@@ -460,7 +465,7 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph<
                         ? {
                               outputs: trigger.settings.outputs
                                   .filter((output) =>
-                                      variablesOutputPaths.has(output.path)
+                                      variablesOutputPaths.has(output.path),
                                   )
                                   .map((output) => ({
                                       id: output.id,
@@ -689,13 +694,13 @@ export function transformWorkflowConfigurationIntoVisualBuilderGraph<
                 target: n.id,
                 data: {
                     ...(!_isNil(incomingTransition?.event)
-                        ? {event: incomingTransition.event}
+                        ? { event: incomingTransition.event }
                         : undefined),
                     ...(!_isNil(incomingTransition?.name)
-                        ? {name: incomingTransition.name}
+                        ? { name: incomingTransition.name }
                         : undefined),
                     ...(!_isNil(incomingTransition?.conditions)
-                        ? {conditions: incomingTransition.conditions}
+                        ? { conditions: incomingTransition.conditions }
                         : undefined),
                 },
             })
@@ -770,7 +775,7 @@ export class WorkflowConfigurationBuilder {
     }
 
     insertChoicesStepAndSelect(
-        message: WorkflowStepChoices['settings']['message']
+        message: WorkflowStepChoices['settings']['message'],
     ) {
         const step: WorkflowStepChoices = {
             id: ulid(),
@@ -790,7 +795,7 @@ export class WorkflowConfigurationBuilder {
     }
 
     insertReusableLLMPromptCallAndSelect(
-        settings: WorkflowStepReusableLLMPromptCall['settings']
+        settings: WorkflowStepReusableLLMPromptCall['settings'],
     ) {
         const step: WorkflowStepReusableLLMPromptCall = {
             id: ulid(),
@@ -808,11 +813,11 @@ export class WorkflowConfigurationBuilder {
 
     private insertChoiceAndStepTargetAndSelect(
         choiceLabel: string,
-        step: WorkflowStep
+        step: WorkflowStep,
     ): ChoiceEventId {
         if (this._selection?.kind !== 'choices')
             throw new Error(
-                `${step.kind} step can only be inserted after choices step`
+                `${step.kind} step can only be inserted after choices step`,
             )
         const choiceEventId = ulid()
         this._selection.settings.choices.push({
@@ -825,7 +830,7 @@ export class WorkflowConfigurationBuilder {
             id: ulid(),
             from_step_id: this._selection.id,
             to_step_id: step.id,
-            event: {id: choiceEventId, kind: 'choices'},
+            event: { id: choiceEventId, kind: 'choices' },
         }
         this.data.transitions.push(transition)
         this._selection = step
@@ -834,7 +839,7 @@ export class WorkflowConfigurationBuilder {
 
     insertChoiceAndChoicesStepAndSelect(
         choiceLabel: string,
-        message: WorkflowStepChoices['settings']['message']
+        message: WorkflowStepChoices['settings']['message'],
     ): ChoiceEventId {
         const step: WorkflowStepChoices = {
             id: ulid(),
@@ -849,7 +854,7 @@ export class WorkflowConfigurationBuilder {
 
     insertChoiceAndMessageStepAndSelect(
         choiceLabel: string,
-        message: WorkflowStepMessage['settings']['message']
+        message: WorkflowStepMessage['settings']['message'],
     ): ChoiceEventId {
         const step: WorkflowStepMessage = {
             id: ulid(),
@@ -863,7 +868,7 @@ export class WorkflowConfigurationBuilder {
 
     insertChoiceAndTextInputStepAndSelect(
         choiceLabel: string,
-        settings: WorkflowStepTextInput['settings']
+        settings: WorkflowStepTextInput['settings'],
     ): ChoiceEventId {
         const step: WorkflowStepTextInput = {
             id: ulid(),
@@ -876,7 +881,7 @@ export class WorkflowConfigurationBuilder {
     private insertConditionsAndStepTargetAndSelect(
         step: WorkflowStep,
         conditionName: string,
-        conditions?: WorkflowTransition['conditions']
+        conditions?: WorkflowTransition['conditions'],
     ) {
         if (
             this._selection?.kind !== 'conditions' &&
@@ -884,7 +889,7 @@ export class WorkflowConfigurationBuilder {
             this._selection?.kind !== 'reusable-llm-prompt-call'
         )
             throw new Error(
-                `${step.kind} step can only be inserted after conditions, http-request or reusable-llm-prompt-call step`
+                `${step.kind} step can only be inserted after conditions, http-request or reusable-llm-prompt-call step`,
             )
         this.data.steps.push(step)
         const transition: WorkflowTransition = {
@@ -900,7 +905,7 @@ export class WorkflowConfigurationBuilder {
 
     insertHttpRequestConditionAndHandOverStepAndSelect(
         type: 'error' | 'success',
-        settings: WorkflowStepHandover['settings'] = {}
+        settings: WorkflowStepHandover['settings'] = {},
     ) {
         const step: WorkflowStepHandover = {
             id: ulid(),
@@ -913,13 +918,13 @@ export class WorkflowConfigurationBuilder {
             label,
             type === 'success'
                 ? getFallibleNodeSuccessConditions(this._selection.id)
-                : undefined
+                : undefined,
         )
     }
 
     insertHttpRequestConditionAndHttpRequestStepAndSelect(
         type: 'error' | 'success',
-        settings: WorkflowStepHttpRequest['settings']
+        settings: WorkflowStepHttpRequest['settings'],
     ) {
         const step: WorkflowStepHttpRequest = {
             id: ulid(),
@@ -932,13 +937,13 @@ export class WorkflowConfigurationBuilder {
             label,
             type === 'success'
                 ? getFallibleNodeSuccessConditions(this._selection.id)
-                : undefined
+                : undefined,
         )
     }
 
     insertHttpRequestConditionAndMultipleChoiceStepAndSelect(
         type: 'error' | 'success',
-        message: WorkflowStepChoices['settings']['message']
+        message: WorkflowStepChoices['settings']['message'],
     ) {
         const step: WorkflowStepChoices = {
             id: ulid(),
@@ -954,13 +959,13 @@ export class WorkflowConfigurationBuilder {
             label,
             type === 'success'
                 ? getFallibleNodeSuccessConditions(this._selection.id)
-                : undefined
+                : undefined,
         )
     }
 
     insertHttpRequestConditionAndMessageStepAndSelect(
         type: 'error' | 'success',
-        message: WorkflowStepMessage['settings']['message']
+        message: WorkflowStepMessage['settings']['message'],
     ) {
         const step: WorkflowStepMessage = {
             id: ulid(),
@@ -975,13 +980,13 @@ export class WorkflowConfigurationBuilder {
             label,
             type === 'success'
                 ? getFallibleNodeSuccessConditions(this._selection.id)
-                : undefined
+                : undefined,
         )
     }
 
     insertHttpRequestConditionAndEndStepAndSelect(
         type: 'error' | 'success',
-        settings?: WorkflowStepEnd['settings']
+        settings?: WorkflowStepEnd['settings'],
     ) {
         const step: WorkflowStepEnd = {
             id: ulid(),
@@ -994,13 +999,13 @@ export class WorkflowConfigurationBuilder {
             label,
             type === 'success'
                 ? getFallibleNodeSuccessConditions(this._selection.id)
-                : undefined
+                : undefined,
         )
     }
 
     insertReusableLLMPromptCallConditionAndEndStepAndSelect(
         type: 'error' | 'success',
-        settings?: WorkflowStepEnd['settings']
+        settings?: WorkflowStepEnd['settings'],
     ) {
         const step: WorkflowStepEnd = {
             id: ulid(),
@@ -1013,13 +1018,13 @@ export class WorkflowConfigurationBuilder {
             label,
             type === 'success'
                 ? getFallibleNodeSuccessConditions(this._selection.id)
-                : undefined
+                : undefined,
         )
     }
 
     insertChoiceAndAttachmentsInputStepAndSelect(
         choiceLabel: string,
-        settings: WorkflowStepAttachmentsInput['settings']
+        settings: WorkflowStepAttachmentsInput['settings'],
     ): ChoiceEventId {
         const step: WorkflowStepAttachmentsInput = {
             id: ulid(),
@@ -1031,7 +1036,7 @@ export class WorkflowConfigurationBuilder {
 
     insertChoiceAndHandoverStepAndSelect(
         choiceLabel: string,
-        handoverSettings: WorkflowStepHandover['settings'] = {}
+        handoverSettings: WorkflowStepHandover['settings'] = {},
     ): ChoiceEventId {
         const step: WorkflowStepHandover = {
             id: ulid(),
@@ -1043,7 +1048,7 @@ export class WorkflowConfigurationBuilder {
 
     insertChoiceAndShopperAuthenticationStepAndSelect(
         choiceLabel: string,
-        shopperAuthenticationSettings: WorkflowStepShopperAuthentication['settings']
+        shopperAuthenticationSettings: WorkflowStepShopperAuthentication['settings'],
     ): ChoiceEventId {
         const step: WorkflowStepShopperAuthentication = {
             id: ulid(),
@@ -1054,7 +1059,7 @@ export class WorkflowConfigurationBuilder {
     }
 
     insertShopperAuthenticationStepAndSelect(
-        settings: WorkflowStepShopperAuthentication['settings']
+        settings: WorkflowStepShopperAuthentication['settings'],
     ) {
         const step: WorkflowStepShopperAuthentication = {
             id: ulid(),
@@ -1100,7 +1105,7 @@ export class WorkflowConfigurationBuilder {
     }
 
     insertAttachmentsInputStepAndSelect(
-        settings: WorkflowStepAttachmentsInput['settings']
+        settings: WorkflowStepAttachmentsInput['settings'],
     ) {
         const step: WorkflowStepAttachmentsInput = {
             id: ulid(),
@@ -1118,7 +1123,7 @@ export class WorkflowConfigurationBuilder {
 
     insertMessageStepAndSelect(
         message: WorkflowStepMessage['settings']['message'],
-        conditions?: WorkflowTransition['conditions']
+        conditions?: WorkflowTransition['conditions'],
     ) {
         const step: WorkflowStepMessage = {
             id: ulid(),
@@ -1138,7 +1143,7 @@ export class WorkflowConfigurationBuilder {
     }
 
     insertOrderSelectionStepAndSelect(
-        settings: WorkflowStepOrderSelection['settings']
+        settings: WorkflowStepOrderSelection['settings'],
     ) {
         const step: WorkflowStepOrderSelection = {
             id: ulid(),
@@ -1155,7 +1160,7 @@ export class WorkflowConfigurationBuilder {
     }
 
     insertHttpRequestStepAndSelect(
-        settings: WorkflowStepHttpRequest['settings']
+        settings: WorkflowStepHttpRequest['settings'],
     ) {
         const step: WorkflowStepHttpRequest = {
             id: ulid(),
@@ -1172,7 +1177,7 @@ export class WorkflowConfigurationBuilder {
     }
 
     insertHandoverStepAndSelect(
-        settings: WorkflowStepHandover['settings'] = {}
+        settings: WorkflowStepHandover['settings'] = {},
     ) {
         const step: WorkflowStepHandover = {
             id: ulid(),
@@ -1204,7 +1209,7 @@ export class WorkflowConfigurationBuilder {
 
     selectParentStep() {
         const parentStepId = this.data.transitions.find(
-            (t) => t.to_step_id === this._selection.id
+            (t) => t.to_step_id === this._selection.id,
         )?.from_step_id
         if (!parentStepId) throw new Error('no parent step found')
         const parentStep = this.data.steps.find((s) => s.id === parentStepId)
@@ -1221,7 +1226,7 @@ export class WorkflowConfigurationBuilder {
 
     selectInitialStep() {
         const step = this.data.steps.find(
-            (s) => s.id === this.data.initial_step_id
+            (s) => s.id === this.data.initial_step_id,
         )
         if (!step) throw new Error('initial step missing')
         this._selection = step

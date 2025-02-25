@@ -1,9 +1,9 @@
-import {RawDraftContentState, SelectionState} from 'draft-js'
-import {fromJS, Map} from 'immutable'
+import { RawDraftContentState, SelectionState } from 'draft-js'
+import { fromJS, Map } from 'immutable'
 
-import {DiscountCode} from 'models/discountCodes/types'
+import { DiscountCode } from 'models/discountCodes/types'
 
-import {tryLocalStorage} from '../../services/common/utils'
+import { tryLocalStorage } from '../../services/common/utils'
 
 export interface TopRankMacroState {
     state: 'accepted' | 'pending' | 'rejected'
@@ -116,7 +116,7 @@ export class TicketReplyCache {
      */
     set(
         ticketId = 'new',
-        ticketDetails: Partial<RawCachedTicket> | Map<string, unknown>
+        ticketDetails: Partial<RawCachedTicket> | Map<string, unknown>,
     ) {
         // always use strings for ids
         const id = String(ticketId)
@@ -145,7 +145,7 @@ export class TicketReplyCache {
         tryLocalStorage(() => {
             this.storage.setItem(
                 `${CACHE_KEY_PREFIX}${id}${CACHE_KEY_SEPARATOR}${timestamp}`,
-                JSON.stringify(ticket.toJS())
+                JSON.stringify(ticket.toJS()),
             )
         })
     }
@@ -167,7 +167,7 @@ export class TicketReplyCache {
             if (this._id(key) === id) {
                 try {
                     return fromJS(
-                        JSON.parse(this.storage.getItem(key) || '')
+                        JSON.parse(this.storage.getItem(key) || ''),
                     ) as Map<any, any>
                 } catch {
                     console.error('Failed to fetch item from local storage')

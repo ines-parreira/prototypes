@@ -1,4 +1,4 @@
-import {getCategoryDndType} from '../getCategoryDndType'
+import { getCategoryDndType } from '../getCategoryDndType'
 
 describe('getCategoryDndType', () => {
     it('should return DndType based on category id', () => {

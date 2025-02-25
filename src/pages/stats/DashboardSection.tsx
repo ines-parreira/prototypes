@@ -1,7 +1,9 @@
+import React, { ReactNode } from 'react'
+
 import classnames from 'classnames'
-import React, {ReactNode} from 'react'
 
 import DashboardGrid from './DashboardGrid'
+
 import css from './DashboardSection.less'
 
 type Props = {
@@ -11,7 +13,7 @@ type Props = {
     titleExtra?: ReactNode
 }
 
-export const DashboardSectionWrapper = ({children, className}: Props) => {
+export const DashboardSectionWrapper = ({ children, className }: Props) => {
     return <div className={classnames(css.wrapper, className)}>{children}</div>
 }
 
@@ -28,7 +30,7 @@ export default function DashboardSection({
                     <div
                         className={classnames(
                             css.titleText,
-                            'heading-page-semibold'
+                            'heading-page-semibold',
                         )}
                     >
                         {title}

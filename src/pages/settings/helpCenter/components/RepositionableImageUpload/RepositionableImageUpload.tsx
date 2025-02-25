@@ -1,15 +1,20 @@
-import React, {FunctionComponent, MouseEvent, useEffect, useState} from 'react'
+import React, {
+    FunctionComponent,
+    MouseEvent,
+    useEffect,
+    useState,
+} from 'react'
 
 import {
-    Title,
-    DropZone,
     DropText,
+    DropZone,
     HelpText,
+    Title,
 } from '../../../../common/components/ImageUpload'
-import {ImageUploadProps, useLocalImage} from '../ImageUpload'
+import { ImageUploadProps, useLocalImage } from '../ImageUpload'
+import { DraggablePreviewImage } from './components/DraggablePreviewImage'
 
 import imageUploadCss from '../ImageUpload/ImageUpload.less'
-import {DraggablePreviewImage} from './components/DraggablePreviewImage'
 import css from './RepositionableImageUpload.less'
 
 export type RepositionableImageUploadProps = ImageUploadProps & {
@@ -41,8 +46,8 @@ export const RepositionableImageUpload: FunctionComponent<
         useState(false)
     const [showActionButtons, setShowActionButtons] = useState(false)
 
-    const {handleOnChangeFile, handleOnDropFile, handleOnRemoveFile} =
-        useLocalImage({file, onChangeFile, isTouched})
+    const { handleOnChangeFile, handleOnDropFile, handleOnRemoveFile } =
+        useLocalImage({ file, onChangeFile, isTouched })
     const [offset, setOffset] = useState(verticalOffset)
 
     useEffect(() => {
@@ -81,7 +86,7 @@ export const RepositionableImageUpload: FunctionComponent<
     return (
         <div className={imageUploadCss.container}>
             {title && (
-                <Title help={info} Tooltip={{style: {width: 180}}}>
+                <Title help={info} Tooltip={{ style: { width: 180 } }}>
                     {title}
                 </Title>
             )}

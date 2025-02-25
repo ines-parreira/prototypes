@@ -2,10 +2,9 @@ import {
     buildRuleEngineData,
     buildRuleEngineRoutes,
 } from 'pages/aiAgent/Overview/hooks/pendingTasks/tasks/tests/utils'
+import { ShopifyPermissionsDataFixture } from 'pages/aiAgent/Overview/hooks/pendingTasks/tests/ShopifyPermissionsData.fixture'
 
-import {ShopifyPermissionsDataFixture} from 'pages/aiAgent/Overview/hooks/pendingTasks/tests/ShopifyPermissionsData.fixture'
-
-import {UpdateShopifyPermissionsTask} from '../UpdateShopifyPermissions.task'
+import { UpdateShopifyPermissionsTask } from '../UpdateShopifyPermissions.task'
 
 describe('UpdateShopifyPermissionsTask', () => {
     it('should display the task if Shopify permissions are required', () => {
@@ -16,7 +15,7 @@ describe('UpdateShopifyPermissionsTask', () => {
                     .withMissingRequiredPermission()
                     .build(),
             }),
-            buildRuleEngineRoutes()
+            buildRuleEngineRoutes(),
         )
 
         expect(task.display).toBe(true)
@@ -30,7 +29,7 @@ describe('UpdateShopifyPermissionsTask', () => {
                     .withHasRequiredPermission()
                     .build(),
             }),
-            buildRuleEngineRoutes()
+            buildRuleEngineRoutes(),
         )
 
         expect(task.display).toBe(false)
@@ -44,7 +43,7 @@ describe('UpdateShopifyPermissionsTask', () => {
                     .withHasRequiredPermission()
                     .build(),
             }),
-            buildRuleEngineRoutes()
+            buildRuleEngineRoutes(),
         )
 
         expect(task.featureUrl).toBe('/api/integrations/123/sync_permissions')

@@ -1,30 +1,29 @@
+import React, { memo, useEffect, useMemo, useState } from 'react'
+
 import classnames from 'classnames'
-
-import {EditorState} from 'draft-js'
-
+import { EditorState } from 'draft-js'
 import objectHash from 'object-hash'
-import React, {memo, useEffect, useMemo, useState} from 'react'
 
-import {UploadType} from 'common/types'
-import {User} from 'config/types/user'
+import { UploadType } from 'common/types'
+import { User } from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
-import {ProductCardAttachment} from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
-import {ActionName} from 'pages/common/draftjs/plugins/toolbar/types'
-import {RichFieldEditorPlacement} from 'pages/common/forms/RichField/enums'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
+import { ProductCardAttachment } from 'pages/common/draftjs/plugins/toolbar/components/AddProductLink'
+import { ActionName } from 'pages/common/draftjs/plugins/toolbar/types'
+import { RichFieldEditorPlacement } from 'pages/common/forms/RichField/enums'
 import RichField from 'pages/common/forms/RichField/RichField'
 import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {Option, Value} from 'pages/common/forms/SelectField/types'
-import {AgentLabel} from 'pages/common/utils/labels'
-import {AICopyAssistant} from 'pages/convert/campaigns/components/AICopyAssistant/AICopyAssistant'
+import { Option, Value } from 'pages/common/forms/SelectField/types'
+import { AgentLabel } from 'pages/common/utils/labels'
+import { AICopyAssistant } from 'pages/convert/campaigns/components/AICopyAssistant/AICopyAssistant'
 import AddContactCaptureForm from 'pages/convert/campaigns/components/ContactCaptureForm/AddContactCaptureForm'
-import {handleContactFormSubmitted} from 'pages/convert/campaigns/components/ContactCaptureForm/utils'
+import { handleContactFormSubmitted } from 'pages/convert/campaigns/components/ContactCaptureForm/utils'
 import ConvertInfoBanner from 'pages/convert/campaigns/components/ConvertInfoBanner'
-import {useIntegrationContext} from 'pages/convert/campaigns/containers/IntegrationProvider'
-import {useCampaignDetailsContext} from 'pages/convert/campaigns/hooks/useCampaignDetailsContext'
-import {useCampaignFormContext} from 'pages/convert/campaigns/hooks/useCampaignFormContext'
+import { useIntegrationContext } from 'pages/convert/campaigns/containers/IntegrationProvider'
+import { useCampaignDetailsContext } from 'pages/convert/campaigns/hooks/useCampaignDetailsContext'
+import { useCampaignFormContext } from 'pages/convert/campaigns/hooks/useCampaignFormContext'
 import {
     attachmentIsDiscountOffer,
     attachmentIsProduct,
@@ -32,17 +31,14 @@ import {
     AttachmentType,
     CampaignFormExtra,
 } from 'pages/convert/campaigns/types/CampaignAttachment'
-import {CampaignStepsKeys} from 'pages/convert/campaigns/types/CampaignSteps'
-
-import {checkShopifyProductAvailabity} from 'pages/convert/campaigns/utils/checkProductAvailability'
-import {transformAttachmentsToContactCaptureForms} from 'pages/convert/campaigns/utils/transformAttachmentsToContactCaptureForms'
+import { CampaignStepsKeys } from 'pages/convert/campaigns/types/CampaignSteps'
+import { checkShopifyProductAvailabity } from 'pages/convert/campaigns/utils/checkProductAvailability'
+import { transformAttachmentsToContactCaptureForms } from 'pages/convert/campaigns/utils/transformAttachmentsToContactCaptureForms'
 import useCanAddContactFormFlag from 'pages/convert/common/hooks/useContactFormFlag'
 import TicketAttachments from 'pages/tickets/detail/components/ReplyArea/TicketAttachments'
-
-import {getNewMessageAttachments} from 'state/newMessage/selectors'
-
-import {getTicketState} from 'state/ticket/selectors'
-import {toJS} from 'utils'
+import { getNewMessageAttachments } from 'state/newMessage/selectors'
+import { getTicketState } from 'state/ticket/selectors'
+import { toJS } from 'utils'
 
 import css from './CampaignMessage.less'
 
@@ -88,8 +84,8 @@ export const CampaignMessage = memo(
     }: Props): JSX.Element => {
         const dispatch = useAppDispatch()
         const ticket = useAppSelector(getTicketState)
-        const {shopifyIntegration} = useIntegrationContext()
-        const {getStepConfiguration, getTourConfiguration} =
+        const { shopifyIntegration } = useIntegrationContext()
+        const { getStepConfiguration, getTourConfiguration } =
             useCampaignFormContext()
         const stepConfiguration = useMemo(() => {
             return getStepConfiguration(CampaignStepsKeys.Message)
@@ -149,7 +145,7 @@ export const CampaignMessage = memo(
                 html,
                 text,
             }),
-            [html, text]
+            [html, text],
         )
 
         // Discount offer can be attached if it is convert subscriber and there is no other offer attached
@@ -177,7 +173,7 @@ export const CampaignMessage = memo(
 
             const attachmentsJS: AttachmentType[] = attachments.toJS()
             const anyAttachmentIsProduct = attachmentsJS.some((att) =>
-                attachmentIsProduct(att)
+                attachmentIsProduct(att),
             )
             if (!anyAttachmentIsProduct) {
                 if (showWarningOutOfStock) {
@@ -188,7 +184,7 @@ export const CampaignMessage = memo(
             }
 
             const product = attachmentsJS.find((att) =>
-                attachmentIsProduct(att)
+                attachmentIsProduct(att),
             ) as ProductCardAttachment | undefined
 
             const productId = product?.extra?.product_id
@@ -204,7 +200,7 @@ export const CampaignMessage = memo(
             if (shopifyIntegration?.id && productId) {
                 checkShopifyProductAvailabity(shopifyIntegration.id, productId)
                     .then((isAvailable) =>
-                        setshowWarningOutOfStock(!isAvailable)
+                        setshowWarningOutOfStock(!isAvailable),
                     )
                     .catch(console.error)
             }
@@ -216,7 +212,8 @@ export const CampaignMessage = memo(
             attachments,
             shopifyIntegration?.id,
         ])
-        const {campaign, triggers, updateCampaign} = useCampaignDetailsContext()
+        const { campaign, triggers, updateCampaign } =
+            useCampaignDetailsContext()
         const canAddContactForm =
             useCanAddContactFormFlag() &&
             !campaign.is_light &&
@@ -241,7 +238,7 @@ export const CampaignMessage = memo(
             }
 
             const productAttachments = attachments.filter((att) =>
-                attachmentIsProduct(toJS(att))
+                attachmentIsProduct(toJS(att)),
             )
             if (
                 productAttachments.size < 5 &&
@@ -262,23 +259,23 @@ export const CampaignMessage = memo(
 
         const contactFormAttachment = useMemo(
             () => transformAttachmentsToContactCaptureForms(attachments)[0],
-            [attachments]
+            [attachments],
         )
         const contactFormButtonEnabled = useMemo(
             () => !contactFormAttachment,
-            [contactFormAttachment]
+            [contactFormAttachment],
         )
         const [isContactFormOpen, onContactFormOpenChange] = useState(false)
         const onContactFormSubmit = (
             newAttachmentExtra: CampaignFormExtra,
-            isEditing: boolean
+            isEditing: boolean,
         ) => {
             handleContactFormSubmitted(
                 dispatch,
                 attachments,
                 newAttachmentExtra,
                 ticket,
-                false
+                false,
             )
             if (!isEditing) {
                 updateCampaign('noReply', true)
@@ -405,5 +402,5 @@ export const CampaignMessage = memo(
                 </div>
             </div>
         )
-    }
+    },
 )

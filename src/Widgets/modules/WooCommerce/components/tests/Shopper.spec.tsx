@@ -1,11 +1,11 @@
-import {render} from '@testing-library/react'
-
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {EcommerceStore} from 'models/customerEcommerceData/types'
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
 
-import {shopperCustomization} from '../Shopper'
+import { EcommerceStore } from 'models/customerEcommerceData/types'
+
+import { shopperCustomization } from '../Shopper'
 
 const ecomStore: EcommerceStore = {
     deleted_datetime: null,
@@ -36,10 +36,10 @@ describe('Shopper card', () => {
     describe('<TitleWrapper/>', () => {
         const TitleWrapper = shopperCustomization.TitleWrapper!
         it('should render it children, plus woocommerce logo and title', () => {
-            const {container} = render(
-                <TitleWrapper source={fromJS({external_id: '1234'})}>
+            const { container } = render(
+                <TitleWrapper source={fromJS({ external_id: '1234' })}>
                     Shopper
-                </TitleWrapper>
+                </TitleWrapper>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -47,10 +47,10 @@ describe('Shopper card', () => {
 
         it('should not render because the store is missing', () => {
             mockEcomStore = undefined
-            const {container} = render(
-                <TitleWrapper source={fromJS({external_id: '1234'})}>
+            const { container } = render(
+                <TitleWrapper source={fromJS({ external_id: '1234' })}>
                     Shopper
-                </TitleWrapper>
+                </TitleWrapper>,
             )
 
             expect(container.firstChild).toBeNull()

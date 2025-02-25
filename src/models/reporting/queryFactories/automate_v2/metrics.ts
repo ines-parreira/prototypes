@@ -1,4 +1,4 @@
-import {AutomationDatasetMeasure} from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
+import { AutomationDatasetMeasure } from 'models/reporting/cubes/automate_v2/AutomationDatasetCube'
 import {
     BillableTicketDatasetCube,
     BillableTicketDatasetDimension,
@@ -9,12 +9,12 @@ import {
     automationDatasetDefaultFilters,
     billableTicketDatasetDefaultFilters,
 } from 'models/reporting/queryFactories/automate_v2/filters'
-import {ReportingFilterOperator, ReportingQuery} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import { ReportingFilterOperator, ReportingQuery } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
 
 export const automationDatasetQueryFactory = (
     filters: StatsFilters,
-    timezone: string
+    timezone: string,
 ) => ({
     measures: [
         AutomationDatasetMeasure.AutomatedInteractions,
@@ -30,7 +30,7 @@ export const automationDatasetQueryFactory = (
 
 export const billableTicketDatasetQueryFactory = (
     filters: StatsFilters,
-    timezone: string
+    timezone: string,
 ): ReportingQuery<BillableTicketDatasetCube> => ({
     measures: [
         BillableTicketDatasetMeasure.BillableTicketCount,
@@ -45,7 +45,7 @@ export const billableTicketDatasetQueryFactory = (
 export const billableTicketDatasetExcludingAIAgentQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    aiAgentUserId?: string
+    aiAgentUserId?: string,
 ): ReportingQuery<BillableTicketDatasetCube> => ({
     measures: [
         BillableTicketDatasetMeasure.BillableTicketCount,
@@ -71,7 +71,7 @@ export const billableTicketDatasetExcludingAIAgentQueryFactory = (
 export const billableTicketDatasetResolvedByAIAgentQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    aiAgentUserId?: string
+    aiAgentUserId?: string,
 ): ReportingQuery<BillableTicketDatasetCube> => ({
     measures: [
         BillableTicketDatasetMeasure.BillableTicketCount,

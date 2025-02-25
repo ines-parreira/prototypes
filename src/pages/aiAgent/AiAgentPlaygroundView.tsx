@@ -1,37 +1,40 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
-import {isAxiosError} from 'axios'
-import React, {useEffect, useState} from 'react'
-import {Redirect} from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
 
-import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
+import { isAxiosError } from 'axios'
+import { Redirect } from 'react-router-dom'
+
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+
+import { AI_AGENT_SENTRY_TEAM } from 'common/const/sentryTeamNames'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     useGetAccountConfiguration,
     useGetStoreConfigurationPure,
 } from 'models/aiAgent/queries'
-import {AccountConfigurationWithHttpIntegration} from 'models/aiAgent/types'
+import { AccountConfigurationWithHttpIntegration } from 'models/aiAgent/types'
 import history from 'pages/history'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {reportError} from 'utils/errors'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { reportError } from 'utils/errors'
+
+import { PlaygroundChat } from './components/PlaygroundChat/PlaygroundChat'
+import { CheckPlaygroundPrerequisites } from './components/PlaygroundPrerequisites/PlaygroundPrerequisites'
+import { MissingKnowledgeSourceAlert } from './components/PlaygroundPrerequisites/PlaygroundPrerequisitesAlerts'
+import { useAiAgentNavigation } from './hooks/useAiAgentNavigation'
+import { useGetOrCreateSnippetHelpCenter } from './hooks/useGetOrCreateSnippetHelpCenter'
 
 import css from './AiAgentMainViewContainer.less'
-import {PlaygroundChat} from './components/PlaygroundChat/PlaygroundChat'
-import {CheckPlaygroundPrerequisites} from './components/PlaygroundPrerequisites/PlaygroundPrerequisites'
-import {MissingKnowledgeSourceAlert} from './components/PlaygroundPrerequisites/PlaygroundPrerequisitesAlerts'
-import {useAiAgentNavigation} from './hooks/useAiAgentNavigation'
-import {useGetOrCreateSnippetHelpCenter} from './hooks/useGetOrCreateSnippetHelpCenter'
 
 type Props = {
     shopName: string
 }
 
-export const AiAgentPlaygroundView = ({shopName}: Props) => {
+export const AiAgentPlaygroundView = ({ shopName }: Props) => {
     const dispatch = useAppDispatch()
-    const {routes} = useAiAgentNavigation({shopName})
+    const { routes } = useAiAgentNavigation({ shopName })
 
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
@@ -53,7 +56,7 @@ export const AiAgentPlaygroundView = ({shopName}: Props) => {
             accountDomain,
             storeName: shopName,
         },
-        {retry: 1, refetchOnWindowFocus: false}
+        { retry: 1, refetchOnWindowFocus: false },
     )
 
     const {
@@ -65,11 +68,13 @@ export const AiAgentPlaygroundView = ({shopName}: Props) => {
         refetchOnWindowFocus: false,
     })
 
-    const {helpCenter: snippetHelpCenter, isLoading: snippetHelpCenterLoading} =
-        useGetOrCreateSnippetHelpCenter({
-            accountDomain,
-            shopName,
-        })
+    const {
+        helpCenter: snippetHelpCenter,
+        isLoading: snippetHelpCenterLoading,
+    } = useGetOrCreateSnippetHelpCenter({
+        accountDomain,
+        shopName,
+    })
 
     useEffect(() => {
         if (storeFetchError) {
@@ -84,10 +89,10 @@ export const AiAgentPlaygroundView = ({shopName}: Props) => {
                         message:
                             'There was an error initializing the AI Agent Test mode',
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
                 reportError(storeFetchError, {
-                    tags: {team: AI_AGENT_SENTRY_TEAM},
+                    tags: { team: AI_AGENT_SENTRY_TEAM },
                     extra: {
                         context:
                             'Error fetching store configuration for AI Agent Playground',
@@ -115,7 +120,7 @@ export const AiAgentPlaygroundView = ({shopName}: Props) => {
             accountFetchError.response?.status !== 404)
     ) {
         reportError(accountFetchError, {
-            tags: {team: AI_AGENT_SENTRY_TEAM},
+            tags: { team: AI_AGENT_SENTRY_TEAM },
             extra: {
                 context:
                     'Error fetching account configuration for AI Agent Playground',
@@ -130,13 +135,13 @@ export const AiAgentPlaygroundView = ({shopName}: Props) => {
                 message:
                     'There was an error initializing the AI Agent Test mode',
                 status: NotificationStatus.Error,
-            })
+            }),
         )
 
         const error = `Missing http integration for account ${accountData.data.accountConfiguration.gorgiasDomain}`
 
         reportError(new Error(error), {
-            tags: {team: AI_AGENT_SENTRY_TEAM},
+            tags: { team: AI_AGENT_SENTRY_TEAM },
             extra: {
                 context: error,
             },

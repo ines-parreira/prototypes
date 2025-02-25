@@ -1,8 +1,10 @@
-import {useGetVoiceCallRecordingTranscription} from '@gorgias/api-queries'
-import {fireEvent, render} from '@testing-library/react'
 import React from 'react'
 
-import {VoiceCallRecordingType} from 'models/voiceCall/types'
+import { fireEvent, render } from '@testing-library/react'
+
+import { useGetVoiceCallRecordingTranscription } from '@gorgias/api-queries'
+
+import { VoiceCallRecordingType } from 'models/voiceCall/types'
 
 import TranscriptionData from '../TranscriptionData'
 
@@ -13,16 +15,16 @@ const mockUseGetVoiceCallRecordingTranscription =
 jest.mock(
     'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel',
     () =>
-        ({agentId}: {agentId: number}) => (
+        ({ agentId }: { agentId: number }) => (
             <div>VoiceCallAgentLabel {agentId}</div>
-        )
+        ),
 )
 jest.mock(
     'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel',
     () =>
-        ({customerId}: {customerId: number}) => (
+        ({ customerId }: { customerId: number }) => (
             <div>VoiceCallCustomerLabel {customerId}</div>
-        )
+        ),
 )
 
 describe('TranscriptionData', () => {
@@ -128,7 +130,7 @@ describe('TranscriptionData', () => {
 
     const renderComponent = (recordingType: VoiceCallRecordingType) => {
         return render(
-            <TranscriptionData recordingType={recordingType} recordingId={1} />
+            <TranscriptionData recordingType={recordingType} recordingId={1} />,
         )
     }
 
@@ -140,14 +142,14 @@ describe('TranscriptionData', () => {
             refetch: jest.fn(),
         })
 
-        const {getByText, queryByText} = renderComponent(
-            VoiceCallRecordingType.Voicemail
+        const { getByText, queryByText } = renderComponent(
+            VoiceCallRecordingType.Voicemail,
         )
 
         expect(getByText('Speaker 1')).toBeInTheDocument()
         expect(getByText('00:01')).toBeInTheDocument()
         expect(
-            getByText(voicemailTranscription.transcription[0].transcript)
+            getByText(voicemailTranscription.transcription[0].transcript),
         ).toBeInTheDocument()
         expect(queryByText('Show More')).not.toBeInTheDocument()
         expect(queryByText('Show Less')).not.toBeInTheDocument()
@@ -173,14 +175,14 @@ describe('TranscriptionData', () => {
             refetch: jest.fn(),
         })
 
-        const {getByText, queryByText} = renderComponent(
-            VoiceCallRecordingType.Voicemail
+        const { getByText, queryByText } = renderComponent(
+            VoiceCallRecordingType.Voicemail,
         )
 
         expect(getByText('VoiceCallCustomerLabel 123')).toBeInTheDocument()
         expect(getByText('00:01')).toBeInTheDocument()
         expect(
-            getByText(voicemailTranscription.transcription[0].transcript)
+            getByText(voicemailTranscription.transcription[0].transcript),
         ).toBeInTheDocument()
         expect(queryByText('Show More')).not.toBeInTheDocument()
         expect(queryByText('Show Less')).not.toBeInTheDocument()
@@ -194,11 +196,11 @@ describe('TranscriptionData', () => {
             refetch: jest.fn(),
         })
 
-        const {getByText} = renderComponent(VoiceCallRecordingType.Voicemail)
+        const { getByText } = renderComponent(VoiceCallRecordingType.Voicemail)
         expect(
             getByText(
-                "We're currently loading the voicemail transcription. This may take a few moments."
-            )
+                "We're currently loading the voicemail transcription. This may take a few moments.",
+            ),
         ).toBeInTheDocument()
     })
 
@@ -211,9 +213,9 @@ describe('TranscriptionData', () => {
             refetch: mockRefetch,
         })
 
-        const {getByText} = renderComponent(VoiceCallRecordingType.Voicemail)
+        const { getByText } = renderComponent(VoiceCallRecordingType.Voicemail)
         expect(
-            getByText('Unable to load voicemail transcription.')
+            getByText('Unable to load voicemail transcription.'),
         ).toBeInTheDocument()
         expect(getByText('Try again')).toBeInTheDocument()
         fireEvent.click(getByText('Try again'))
@@ -232,11 +234,11 @@ describe('TranscriptionData', () => {
             refetch: mockRefetch,
         })
 
-        const {getByText, queryByText} = renderComponent(
-            VoiceCallRecordingType.Voicemail
+        const { getByText, queryByText } = renderComponent(
+            VoiceCallRecordingType.Voicemail,
         )
         expect(
-            getByText('Unable to load voicemail transcription.')
+            getByText('Unable to load voicemail transcription.'),
         ).toBeInTheDocument()
         expect(queryByText('Try again')).not.toBeInTheDocument()
     })
@@ -249,8 +251,8 @@ describe('TranscriptionData', () => {
             refetch: jest.fn(),
         })
 
-        const {getByText, getAllByText} = renderComponent(
-            VoiceCallRecordingType.Recording
+        const { getByText, getAllByText } = renderComponent(
+            VoiceCallRecordingType.Recording,
         )
 
         expect(getAllByText('Speaker 1')).toHaveLength(4)
@@ -295,8 +297,8 @@ describe('TranscriptionData', () => {
             refetch: jest.fn(),
         })
 
-        const {getByText, getAllByText} = renderComponent(
-            VoiceCallRecordingType.Recording
+        const { getByText, getAllByText } = renderComponent(
+            VoiceCallRecordingType.Recording,
         )
 
         expect(getAllByText('VoiceCallAgentLabel 1')).toHaveLength(4)
@@ -318,11 +320,11 @@ describe('TranscriptionData', () => {
             refetch: jest.fn(),
         })
 
-        const {getByText} = renderComponent(VoiceCallRecordingType.Recording)
+        const { getByText } = renderComponent(VoiceCallRecordingType.Recording)
         expect(
             getByText(
-                "We're currently loading the call transcription. This may take a few moments."
-            )
+                "We're currently loading the call transcription. This may take a few moments.",
+            ),
         ).toBeInTheDocument()
     })
 
@@ -335,9 +337,9 @@ describe('TranscriptionData', () => {
             refetch: mockRefetch,
         })
 
-        const {getByText} = renderComponent(VoiceCallRecordingType.Recording)
+        const { getByText } = renderComponent(VoiceCallRecordingType.Recording)
         expect(
-            getByText('Unable to load call transcription.')
+            getByText('Unable to load call transcription.'),
         ).toBeInTheDocument()
         expect(getByText('Try again')).toBeInTheDocument()
 
@@ -357,11 +359,11 @@ describe('TranscriptionData', () => {
             refetch: mockRefetch,
         })
 
-        const {getByText, queryByText} = renderComponent(
-            VoiceCallRecordingType.Recording
+        const { getByText, queryByText } = renderComponent(
+            VoiceCallRecordingType.Recording,
         )
         expect(
-            getByText('Unable to load call transcription.')
+            getByText('Unable to load call transcription.'),
         ).toBeInTheDocument()
         expect(queryByText('Try again')).not.toBeInTheDocument()
     })
@@ -378,11 +380,11 @@ describe('TranscriptionData', () => {
             refetch: mockRefetch,
         })
 
-        const {getByText} = renderComponent(VoiceCallRecordingType.Recording)
+        const { getByText } = renderComponent(VoiceCallRecordingType.Recording)
         expect(
             getByText(
-                'Audio quality of this call was too poor to generate an accurate transcription. Please check your microphone and internet quality to ensure clear audio.'
-            )
+                'Audio quality of this call was too poor to generate an accurate transcription. Please check your microphone and internet quality to ensure clear audio.',
+            ),
         ).toBeInTheDocument()
     })
 
@@ -398,7 +400,9 @@ describe('TranscriptionData', () => {
             refetch: mockRefetch,
         })
 
-        const {getAllByText} = renderComponent(VoiceCallRecordingType.Recording)
+        const { getAllByText } = renderComponent(
+            VoiceCallRecordingType.Recording,
+        )
         expect(getAllByText('Speaker undefined')).toHaveLength(7)
     })
 })

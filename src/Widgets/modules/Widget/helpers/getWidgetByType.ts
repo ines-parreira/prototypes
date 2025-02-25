@@ -1,8 +1,7 @@
-import {IntegrationType} from '@gorgias/api-types'
+import { IntegrationType } from '@gorgias/api-types'
 
-import {WOOCOMMERCE_WIDGET_TYPE} from 'state/widgets/constants'
-import {WidgetType} from 'state/widgets/types'
-
+import { WOOCOMMERCE_WIDGET_TYPE } from 'state/widgets/constants'
+import { WidgetType } from 'state/widgets/types'
 import BigCommerceWidget from 'Widgets/modules/BigCommerce/'
 import HttpWidget from 'Widgets/modules/Http/'
 import Magento2Widget from 'Widgets/modules/Magento2'
@@ -12,7 +11,7 @@ import SmileWidget from 'Widgets/modules/Smile'
 import WooCommerce from 'Widgets/modules/WooCommerce'
 import YotpoWidget from 'Widgets/modules/Yotpo'
 
-import {WidgetProps} from '../types'
+import { WidgetProps } from '../types'
 
 const widgetByType: {
     [T in WidgetType]?: (args: WidgetProps) => React.JSX.Element

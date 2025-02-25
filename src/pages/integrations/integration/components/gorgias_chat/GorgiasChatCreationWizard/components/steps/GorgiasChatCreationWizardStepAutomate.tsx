@@ -1,38 +1,39 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import {Map, fromJS} from 'immutable'
-import React, {useMemo, useState} from 'react'
+import React, { useMemo, useState } from 'react'
 
-import {SegmentEvent} from 'common/segment'
+import { fromJS, Map } from 'immutable'
+
+import { Label } from '@gorgias/merchant-ui-kit'
+
+import { SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {upsertChatApplicationAutomationSettings} from 'models/chatApplicationAutomationSettings/resources'
-import {ChatApplicationAutomationSettings} from 'models/chatApplicationAutomationSettings/types'
+import { upsertChatApplicationAutomationSettings } from 'models/chatApplicationAutomationSettings/resources'
+import { ChatApplicationAutomationSettings } from 'models/chatApplicationAutomationSettings/types'
 import {
     GorgiasChatCreationWizardSteps,
     GorgiasChatIntegration,
     IntegrationFromType,
     IntegrationType,
 } from 'models/integration/types'
-import {useGetSelfServiceConfiguration} from 'models/selfServiceConfiguration/queries'
-import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
+import { useGetSelfServiceConfiguration } from 'models/selfServiceConfiguration/queries'
+import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import HelpCenterSelect from 'pages/automate/common/components/HelpCenterSelect'
 import SelfServiceChatIntegrationHomePage from 'pages/automate/common/components/preview/SelfServiceChatIntegrationHomePage'
 import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'
-import {useSelfServiceConfigurationUpdate} from 'pages/automate/common/hooks/useSelfServiceConfigurationUpdate'
+import { useSelfServiceConfigurationUpdate } from 'pages/automate/common/hooks/useSelfServiceConfigurationUpdate'
 import Button from 'pages/common/components/button/Button'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 import ToggleInput from 'pages/common/forms/ToggleInput'
-
 import history from 'pages/history'
-import {chatApplicationAutomationSettingsUpdated} from 'state/entities/chatsApplicationAutomationSettings/actions'
-import {getChatsApplicationAutomationSettings} from 'state/entities/chatsApplicationAutomationSettings/selectors'
-import {updateOrCreateIntegration} from 'state/integrations/actions'
-import {getIntegrationsByTypes} from 'state/integrations/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { chatApplicationAutomationSettingsUpdated } from 'state/entities/chatsApplicationAutomationSettings/actions'
+import { getChatsApplicationAutomationSettings } from 'state/entities/chatsApplicationAutomationSettings/selectors'
+import { updateOrCreateIntegration } from 'state/integrations/actions'
+import { getIntegrationsByTypes } from 'state/integrations/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
-import {StoreNameDropdown} from '../../../GorgiasChatIntegrationAppearance/StoreNameDropdown'
+import { StoreNameDropdown } from '../../../GorgiasChatIntegrationAppearance/StoreNameDropdown'
 import useHelpCenterOfShop from '../../../hooks/useHelpCenterOfShop'
 import useThemeAppExtensionInstallation from '../../../hooks/useThemeAppExtensionInstallation'
 import useLogWizardEvent from '../../hooks/useLogWizardEvent'
@@ -64,7 +65,7 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
 
     const dispatch = useAppDispatch()
 
-    const {goToNextStep, goToPreviousStep} = useNavigateWizardSteps()
+    const { goToNextStep, goToPreviousStep } = useNavigateWizardSteps()
 
     const [hasSubmitted, setHasSubmitted] = useState(false)
 
@@ -94,14 +95,14 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
         : undefined
 
     const applicationsAutomationSettings = useAppSelector(
-        getChatsApplicationAutomationSettings
+        getChatsApplicationAutomationSettings,
     )
 
     const automationSettings: ChatApplicationAutomationSettings | undefined =
         appId ? applicationsAutomationSettings[appId] : undefined
 
     const gorgiasChatIntegrations = useAppSelector(
-        getIntegrationsByTypes([IntegrationType.GorgiasChat])
+        getIntegrationsByTypes([IntegrationType.GorgiasChat]),
     )
 
     const storeIntegrations = useAppSelector(
@@ -109,7 +110,7 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
             IntegrationType.Shopify,
             IntegrationType.BigCommerce,
             IntegrationType.Magento2,
-        ])
+        ]),
     )
 
     const storeIntegration =
@@ -117,15 +118,15 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
         storeIntegrations.find(
             (storeIntegration) =>
                 storeIntegration.id ===
-                gorgiasChatIntegration?.meta.shop_integration_id
+                gorgiasChatIntegration?.meta.shop_integration_id,
         )
 
     const isStoreOfShopifyType =
         storeIntegration?.type === IntegrationType.Shopify
 
-    const {shouldUseThemeAppExtensionInstallation} =
+    const { shouldUseThemeAppExtensionInstallation } =
         useThemeAppExtensionInstallation(
-            isStoreOfShopifyType ? storeIntegration : undefined
+            isStoreOfShopifyType ? storeIntegration : undefined,
         )
 
     const shopName = storeIntegration
@@ -137,14 +138,14 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
         isLoading: isLoadingSelfServiceConfiguration,
     } = useGetSelfServiceConfiguration(shopName, storeIntegration?.type)
 
-    const {isLoadingHelpCenters, helpCenters} = useHelpCenterOfShop(
+    const { isLoadingHelpCenters, helpCenters } = useHelpCenterOfShop(
         storeIntegration?.name,
-        storeIntegration?.type
+        storeIntegration?.type,
     )
 
     const activeHelpCenters = helpCenters.filter(
-        ({deactivated_datetime, deleted_datetime}) =>
-            !deactivated_datetime && !deleted_datetime
+        ({ deactivated_datetime, deleted_datetime }) =>
+            !deactivated_datetime && !deleted_datetime,
     )
 
     const hasActiveHelpCenter = !!activeHelpCenters.length
@@ -175,7 +176,7 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
         currentIsArticleRecommendationEnabled === undefined &&
         currentIsOrderManagementEnabled === undefined
 
-    const {handleSelfServiceConfigurationUpdate} =
+    const { handleSelfServiceConfigurationUpdate } =
         useSelfServiceConfigurationUpdate({
             handleNotify: (notification) => {
                 if (
@@ -186,7 +187,7 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
                         notify({
                             status: NotificationStatus.Error,
                             message: notification.message,
-                        })
+                        }),
                     )
                 }
             },
@@ -197,8 +198,8 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
             articleRecommendation: {
                 enabled: isArticleRecommendationEnabled,
             },
-            orderManagement: {enabled: isOrderManagementEnabled},
-            workflows: {enabled: !!automationSettings?.workflows?.enabled},
+            orderManagement: { enabled: isOrderManagementEnabled },
+            workflows: { enabled: !!automationSettings?.workflows?.enabled },
         })
 
         void dispatch(chatApplicationAutomationSettingsUpdated(res))
@@ -225,7 +226,7 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
                 }
             },
             {},
-            storeIntegration.id
+            storeIntegration.id,
         )
     }
 
@@ -251,21 +252,21 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
                     ['wizard', 'step'],
                     shouldGoToNextStep
                         ? GorgiasChatCreationWizardSteps.Installation
-                        : GorgiasChatCreationWizardSteps.Automate
+                        : GorgiasChatCreationWizardSteps.Automate,
                 )
                 .set(
                     'shop_name',
                     storeIntegration
                         ? getShopNameFromStoreIntegration(storeIntegration)
-                        : null
+                        : null,
                 )
                 .set(
                     'shop_type',
-                    storeIntegration ? storeIntegration.type : null
+                    storeIntegration ? storeIntegration.type : null,
                 )
                 .set(
                     'shop_integration_id',
-                    storeIntegration ? storeIntegration.id : null
+                    storeIntegration ? storeIntegration.id : null,
                 )
                 .toJS(),
         }
@@ -280,7 +281,7 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
                 {
                     isOrderManagementEnabled,
                     isArticleRecommendationEnabled,
-                }
+                },
             )
 
             shouldGoToNextStep && goToNextStep()
@@ -299,8 +300,8 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
                     }
                 },
                 shouldGoToNextStep,
-                'Changes saved'
-            )
+                'Changes saved',
+            ),
         )
     }
 
@@ -308,7 +309,7 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
         return {
             selfServiceConfiguration: selfServiceConfiguration && {
                 ...selfServiceConfiguration,
-                trackOrderPolicy: {enabled: isOrderManagementEnabled},
+                trackOrderPolicy: { enabled: isOrderManagementEnabled },
                 reportIssuePolicy: {
                     ...selfServiceConfiguration.reportIssuePolicy,
                     enabled: false,
@@ -370,7 +371,7 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
                             onClick={() =>
                                 onSave(false, true).then(() => {
                                     history.push(
-                                        '/app/settings/channels/gorgias_chat'
+                                        '/app/settings/channels/gorgias_chat',
                                     )
                                 })
                             }
@@ -415,14 +416,14 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
                                 null
                             }
                             gorgiasChatIntegrations={fromJS(
-                                gorgiasChatIntegrations
+                                gorgiasChatIntegrations,
                             )}
                             storeIntegrations={fromJS(storeIntegrations)}
                             onChange={(storeIntegrationId: number) => {
                                 const storeIntegration = storeIntegrations.find(
                                     (storeIntegration) =>
                                         storeIntegration?.id ===
-                                        storeIntegrationId
+                                        storeIntegrationId,
                                 )!
 
                                 setCurrentStoreIntegration(storeIntegration)
@@ -480,7 +481,7 @@ const GorgiasChatCreationWizardStepAutomate: React.FC<Props> = ({
                                         <HelpCenterSelect
                                             setHelpCenterId={setHelpCenterId}
                                             helpCenter={activeHelpCenters.find(
-                                                ({id}) => helpCenterId === id
+                                                ({ id }) => helpCenterId === id,
                                             )}
                                             helpCenters={activeHelpCenters}
                                         />

@@ -2,7 +2,7 @@ import {
     AI_AGENT_CUSTOM_TONE_OF_VOICE_TICKET,
     PLAYGROUND_CUSTOMER_MOCK,
 } from '../../constants'
-import {createCustomToneOfVoicePreviewBody} from '../custom-tone-of-voice-preview.utils'
+import { createCustomToneOfVoicePreviewBody } from '../custom-tone-of-voice-preview.utils'
 
 const mockInput = {
     gorgiasDomain: 'example.gorgias.com',

@@ -1,4 +1,3 @@
-import classnames from 'classnames'
 import React, {
     ForwardedRef,
     forwardRef,
@@ -12,10 +11,12 @@ import React, {
     useState,
 } from 'react'
 
+import classnames from 'classnames'
+
 import useEffectOnce from 'hooks/useEffectOnce'
 import usePrevious from 'hooks/usePrevious'
 
-import {DropdownContext} from './Dropdown'
+import { DropdownContext } from './Dropdown'
 
 import css from './DropdownSection.less'
 
@@ -28,17 +29,17 @@ function isValidSection(element?: Element | null): boolean {
 }
 
 const DropdownSection = (
-    {children, className, title, ...other}: Props,
-    ref: ForwardedRef<HTMLDivElement>
+    { children, className, title, ...other }: Props,
+    ref: ForwardedRef<HTMLDivElement>,
 ) => {
     const dropdownContext = useContext(DropdownContext)
 
     if (!dropdownContext) {
         throw new Error(
-            'DropdownSection must be used within a DropdownContext.Provider'
+            'DropdownSection must be used within a DropdownContext.Provider',
         )
     }
-    const {query} = dropdownContext
+    const { query } = dropdownContext
     const elementRef = useRef<HTMLDivElement>(null)
     useImperativeHandle(ref, () => elementRef.current!)
     const previousQuery = usePrevious(query)

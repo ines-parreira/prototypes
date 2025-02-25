@@ -1,17 +1,20 @@
+import React, { useEffect, useState } from 'react'
+
+import classnames from 'classnames'
+
 import {
     useGetVoiceCallRecordingTranscription,
     VoiceCallRecordingTranscriptionSpeakersItem,
     VoiceCallRecordingTranscriptionTranscriptionItem,
 } from '@gorgias/api-queries'
-import classnames from 'classnames'
-import React, {useState, useEffect} from 'react'
 
-import {VoiceCallRecordingType} from 'models/voiceCall/types'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import { VoiceCallRecordingType } from 'models/voiceCall/types'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 
-import css from './TranscriptionData.less'
 import TranscriptionReply from './TranscriptionReply'
+
+import css from './TranscriptionData.less'
 
 type Props = {
     recordingType: VoiceCallRecordingType
@@ -19,7 +22,10 @@ type Props = {
 }
 const DEFAULT_REPLY_COUNT = 7
 
-export default function TranscriptionData({recordingId, recordingType}: Props) {
+export default function TranscriptionData({
+    recordingId,
+    recordingType,
+}: Props) {
     const [showMore, setShowMore] = useState(true)
     const [speakerMapping, setSpeakerMapping] = useState<
         Record<string, VoiceCallRecordingTranscriptionSpeakersItem>
@@ -28,7 +34,7 @@ export default function TranscriptionData({recordingId, recordingType}: Props) {
         readonly VoiceCallRecordingTranscriptionTranscriptionItem[]
     >([])
 
-    const {data, isLoading, isError, refetch} =
+    const { data, isLoading, isError, refetch } =
         useGetVoiceCallRecordingTranscription(recordingId, {
             query: {
                 select: (data) => data.data,
@@ -39,7 +45,7 @@ export default function TranscriptionData({recordingId, recordingType}: Props) {
         if (!data) {
             return
         }
-        const {speakers, transcription} = data
+        const { speakers, transcription } = data
         if (speakers.length > 0) {
             setSpeakerMapping(
                 speakers.reduce(
@@ -47,8 +53,8 @@ export default function TranscriptionData({recordingId, recordingType}: Props) {
                         ...acc,
                         [`${item.channel}-${item.speaker}`]: item,
                     }),
-                    {}
-                )
+                    {},
+                ),
             )
         }
 
@@ -56,7 +62,7 @@ export default function TranscriptionData({recordingId, recordingType}: Props) {
             setDisplayedData(
                 showMore
                     ? transcription.slice(0, DEFAULT_REPLY_COUNT)
-                    : transcription
+                    : transcription,
             )
         }
     }, [data, setDisplayedData, showMore])

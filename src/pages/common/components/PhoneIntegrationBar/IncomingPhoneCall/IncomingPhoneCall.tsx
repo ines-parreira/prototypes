@@ -1,23 +1,23 @@
-import {Call} from '@twilio/voice-sdk'
+import React, { SyntheticEvent, useCallback, useRef } from 'react'
+
+import { Call } from '@twilio/voice-sdk'
 import classNames from 'classnames'
 import moment from 'moment'
-import React, {SyntheticEvent, useCallback, useRef} from 'react'
-import {useHistory, useLocation} from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 
-import {AlertBanner, AlertBannerTypes} from 'AlertBanners'
-import {declineCall} from 'hooks/integrations/phone/api'
-import {useNow} from 'hooks/useNow'
+import { AlertBanner, AlertBannerTypes } from 'AlertBanners'
+import { declineCall } from 'hooks/integrations/phone/api'
+import { useNow } from 'hooks/useNow'
 import Button from 'pages/common/components/button/Button'
-
 import useMicrophonePermissions from 'pages/integrations/integration/components/voice/useMicrophonePermissions'
 
 import VoiceCallAgentLabel from '../../VoiceCallAgentLabel/VoiceCallAgentLabel'
-import {MICROPHONE_PERMISSION_REQUIRED_MESSAGE} from '../constants'
-import {useConnectionParameters} from '../hooks'
+import { MICROPHONE_PERMISSION_REQUIRED_MESSAGE } from '../constants'
+import { useConnectionParameters } from '../hooks'
 import PhoneCustomerName from '../PhoneCustomerName/PhoneCustomerName'
-
 import PhoneInfobarWrapper from '../PhoneInfobarWrapper/PhoneInfobarWrapper'
 import PhoneIntegrationName from '../PhoneIntegrationName/PhoneIntegrationName'
+
 import css from './IncomingPhoneCall.less'
 
 type Props = {
@@ -31,7 +31,7 @@ export default function IncomingPhoneCall({
 }: Props): JSX.Element {
     const history = useHistory()
     const location = useLocation()
-    const {permissionDenied} = useMicrophonePermissions(1000)
+    const { permissionDenied } = useMicrophonePermissions(1000)
 
     const {
         integrationId,
@@ -46,7 +46,7 @@ export default function IncomingPhoneCall({
 
     const openTicket = useCallback(() => {
         const isWhatsAppMigrationPage = location.pathname.startsWith(
-            '/app/settings/integrations/whatsapp/migration'
+            '/app/settings/integrations/whatsapp/migration',
         )
         if (ticketId && !isWhatsAppMigrationPage) {
             history.push(`/app/ticket/${ticketId}`)

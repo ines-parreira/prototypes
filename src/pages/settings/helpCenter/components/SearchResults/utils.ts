@@ -1,8 +1,8 @@
-import {Article, Category, LocaleCode} from 'models/helpCenter/types'
-import {isNonRootCategory} from 'state/entities/helpCenter/categories'
+import { Article, Category, LocaleCode } from 'models/helpCenter/types'
+import { isNonRootCategory } from 'state/entities/helpCenter/categories'
 
-import {MAX_CATEGORY_DEPTH} from '../../constants'
-import {FlatAlgoliaSearchResults} from '../../providers/SearchContext'
+import { MAX_CATEGORY_DEPTH } from '../../constants'
+import { FlatAlgoliaSearchResults } from '../../providers/SearchContext'
 import {
     AlgoliaHit,
     EntitiesArticleRecord,
@@ -12,17 +12,17 @@ import {
     NestedParentCategory,
 } from '../../types/algolia'
 import {
+    isLoading,
     isSearchResultArticle,
     isSearchResultCategory,
-    isLoading,
-    SearchResultsTree,
     SearchResult,
     SearchResultCategory,
+    SearchResultsTree,
 } from './types'
 
 const createCategorySearchResultById = (
     id: number,
-    categoriesById: Record<string, Category>
+    categoriesById: Record<string, Category>,
 ): SearchResultCategory => {
     const category = categoriesById[id.toString()] ?? 'loading'
 
@@ -30,7 +30,7 @@ const createCategorySearchResultById = (
         // this should never happen, it is just a safeguard
         // we need a translation to display a category, and the root category has none as it is invisible
         throw new Error(
-            'the root category cannot be made into a search result!'
+            'the root category cannot be made into a search result!',
         )
     }
 
@@ -46,26 +46,26 @@ const createCategorySearchResultById = (
 const newSearchResultFromAlgolia = (
     algoliaHit: AlgoliaHit<EntitiesArticleRecord | EntitiesCategoryRecord>,
     categoriesById: Record<string, Category>,
-    articlesById: Record<string, Article>
+    articlesById: Record<string, Article>,
 ): SearchResult => {
     if (isArticleAlgoliaHit(algoliaHit)) {
         return {
             type: 'article',
             id: algoliaHit.id,
             article: articlesById[algoliaHit.id.toString()] ?? 'loading',
-            algoliaHits: {[algoliaHit.locale]: algoliaHit},
+            algoliaHits: { [algoliaHit.locale]: algoliaHit },
         }
     }
 
     return {
         ...createCategorySearchResultById(algoliaHit.id, categoriesById),
-        algoliaHits: {[algoliaHit.locale]: algoliaHit},
+        algoliaHits: { [algoliaHit.locale]: algoliaHit },
     }
 }
 
 const getNthParent = (
     hit: AlgoliaHit<EntitiesArticleRecord | EntitiesCategoryRecord>,
-    parentDepth: number
+    parentDepth: number,
 ): NestedParentCategory => {
     // the `as unknown as Record<string, NestedParentCategory>` hack
     // is the only way to get parent_category_X programmatically,
@@ -78,7 +78,7 @@ const getNthParent = (
 }
 
 const getMissingEntitiesFromList = (
-    results: SearchResult[]
+    results: SearchResult[],
 ): {
     missingArticlesIds: Set<number>
     missingCategoriesIds: Set<number>
@@ -97,11 +97,11 @@ const getMissingEntitiesFromList = (
             const missingChildren = getMissingEntitiesFromList(result.children)
 
             missingChildren.missingCategoriesIds.forEach((categoryId) =>
-                missingCategoriesIds.add(categoryId)
+                missingCategoriesIds.add(categoryId),
             )
 
             missingChildren.missingArticlesIds.forEach((articleId) =>
-                missingArticlesIds.add(articleId)
+                missingArticlesIds.add(articleId),
             )
         }
     }
@@ -113,12 +113,12 @@ const getMissingEntitiesFromList = (
 }
 
 export const getMissingEntities = (
-    resultsTree: SearchResultsTree
+    resultsTree: SearchResultsTree,
 ): {
     missingArticlesIds: Set<number>
     missingCategoriesIds: Set<number>
 } => {
-    const {missingArticlesIds, missingCategoriesIds} =
+    const { missingArticlesIds, missingCategoriesIds } =
         getMissingEntitiesFromList(resultsTree.categorized)
 
     for (const article of resultsTree.uncategorized) {
@@ -136,7 +136,7 @@ export const getMissingEntities = (
 export const searchResultsTreeFromAlgolia = (
     flatAlgoliaSearchResults: FlatAlgoliaSearchResults,
     categoriesById: Record<string, Category>,
-    articlesById: Record<string, Article>
+    articlesById: Record<string, Article>,
 ): SearchResultsTree => {
     const allResults: Array<SearchResult> = []
 
@@ -157,13 +157,13 @@ export const searchResultsTreeFromAlgolia = (
             let parentInResults = resultsDepthNth.find(
                 (result): result is SearchResultCategory =>
                     isSearchResultCategory(result) &&
-                    result.id === parentBreadcrumbNth.id
+                    result.id === parentBreadcrumbNth.id,
             )
 
             if (parentInResults === undefined) {
                 parentInResults = createCategorySearchResultById(
                     parentBreadcrumbNth.id,
-                    categoriesById
+                    categoriesById,
                 )
 
                 resultsDepthNth.push(parentInResults)
@@ -173,14 +173,14 @@ export const searchResultsTreeFromAlgolia = (
         }
 
         const existingSearchResult = resultsDepthNth.find(
-            ({id, type}) => type === algoliaHit.type && id === algoliaHit.id
+            ({ id, type }) => type === algoliaHit.type && id === algoliaHit.id,
         )
 
         if (existingSearchResult === undefined) {
             const searchResult = newSearchResultFromAlgolia(
                 algoliaHit,
                 categoriesById,
-                articlesById
+                articlesById,
             )
 
             resultsDepthNth.push(searchResult)
@@ -209,7 +209,7 @@ export const searchResultsTreeFromAlgolia = (
 
 export const isResultOrAncestorUnlisted = (
     result: SearchResult,
-    locale: LocaleCode
+    locale: LocaleCode,
 ) => {
     const hit = result.algoliaHits[locale]
     if (hit === undefined) {

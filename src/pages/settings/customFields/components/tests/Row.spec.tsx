@@ -1,15 +1,16 @@
-import {render, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {useUpdateCustomFieldArchiveStatus} from 'custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus'
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { useUpdateCustomFieldArchiveStatus } from 'custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus'
 import {
     aiManagedTicketInputFieldDefinition,
     ticketInputFieldDefinition,
 } from 'fixtures/customField'
-import {TableBodyRowDraggable} from 'pages/common/components/table/TableBodyRowDraggable'
-import {assumeMock} from 'utils/testing'
+import { TableBodyRowDraggable } from 'pages/common/components/table/TableBodyRowDraggable'
+import { assumeMock } from 'utils/testing'
 
 import Row from '../Row'
 
@@ -19,21 +20,21 @@ jest.mock(
         ({
             ...jest.requireActual('common/segment'),
             logEvent: jest.fn(),
-        }) as Record<string, unknown>
+        }) as Record<string, unknown>,
 )
 jest.mock(
     'pages/common/utils/DatetimeLabel',
     () =>
-        ({dateTime}: {dateTime: string}) => (
+        ({ dateTime }: { dateTime: string }) => (
             <div data-testid="DatetimeLabel">{dateTime}</div>
-        )
+        ),
 )
 
 jest.mock('custom-fields/hooks/queries/useUpdateCustomFieldArchiveStatus')
 jest.mock('pages/common/components/table/TableBodyRowDraggable')
 
 const useUpdateCustomFieldArchiveStatusMock = assumeMock(
-    useUpdateCustomFieldArchiveStatus
+    useUpdateCustomFieldArchiveStatus,
 )
 const TableBodyRowDraggableMock = assumeMock(TableBodyRowDraggable)
 const mockedLogEvent = assumeMock(logEvent)
@@ -50,7 +51,7 @@ const defaultProps = {
 
 describe('<Row />', () => {
     beforeEach(() => {
-        TableBodyRowDraggableMock.mockImplementation(({children}) => (
+        TableBodyRowDraggableMock.mockImplementation(({ children }) => (
             <tr>{children}</tr>
         ))
         useUpdateCustomFieldArchiveStatusMock.mockImplementation(() => {
@@ -74,7 +75,7 @@ describe('<Row />', () => {
                     <tbody>
                         <Row {...props} />
                     </tbody>
-                </table>
+                </table>,
             )
 
             expect(TableBodyRowDraggableMock).toHaveBeenCalledWith(
@@ -89,9 +90,9 @@ describe('<Row />', () => {
                         type: 'custom-fields-row',
                     },
                 }),
-                {}
+                {},
             )
-        }
+        },
     )
 
     it('should render correctly the required badge', () => {
@@ -108,7 +109,7 @@ describe('<Row />', () => {
                 <tbody>
                     <Row {...props} />
                 </tbody>
-            </table>
+            </table>,
         )
         expect(screen.getByText('REQUIRED')).toBeInTheDocument()
     })
@@ -124,13 +125,13 @@ describe('<Row />', () => {
                 <tbody>
                     <Row {...props} />
                 </tbody>
-            </table>
+            </table>,
         )
 
         userEvent.hover(screen.getByText('info'))
         await waitFor(() => {
             expect(
-                screen.getByText(/is a Gorgias AI managed/)
+                screen.getByText(/is a Gorgias AI managed/),
             ).toBeInTheDocument()
         })
     })
@@ -146,21 +147,21 @@ describe('<Row />', () => {
                 },
             }
 
-            const {queryByTitle} = render(
+            const { queryByTitle } = render(
                 <table>
                     <tbody>
                         <Row {...props} />
                     </tbody>
-                </table>
+                </table>,
             )
 
             ticketFieldDefinition.managed_type === 'ai_intent'
                 ? expect(queryByTitle('Archive')).toHaveAttribute(
                       'aria-disabled',
-                      'true'
+                      'true',
                   )
                 : expect(queryByTitle('Archive')).toBeInTheDocument()
-        }
+        },
     )
 
     it.each([ticketInputFieldDefinition, aiManagedTicketInputFieldDefinition])(
@@ -174,22 +175,22 @@ describe('<Row />', () => {
                 },
             }
 
-            const {queryByTitle} = render(
+            const { queryByTitle } = render(
                 <table>
                     <tbody>
                         <Row {...props} />
                     </tbody>
-                </table>
+                </table>,
             )
 
             expect(queryByTitle('Archive')).not.toBeInTheDocument()
             ticketFieldDefinition.managed_type === 'ai_intent'
                 ? expect(queryByTitle('Unarchive')).toHaveAttribute(
                       'aria-disabled',
-                      'true'
+                      'true',
                   )
                 : expect(queryByTitle('Unarchive')).toBeInTheDocument()
-        }
+        },
     )
 
     it('should archive correctly', async () => {
@@ -201,12 +202,12 @@ describe('<Row />', () => {
             },
         }
 
-        const {findByTitle, findByText} = render(
+        const { findByTitle, findByText } = render(
             <table>
                 <tbody>
                     <Row {...props} />
                 </tbody>
-            </table>
+            </table>,
         )
 
         expect(screen.getByTitle('Archive'))
@@ -221,8 +222,8 @@ describe('<Row />', () => {
         await waitFor(() => {
             expect(
                 screen.queryByText(
-                    'Are you sure you want to archive this field?'
-                )
+                    'Are you sure you want to archive this field?',
+                ),
             ).not.toBeInTheDocument()
         })
 
@@ -232,21 +233,21 @@ describe('<Row />', () => {
         await waitFor(() => {
             expect(
                 screen.queryByText(
-                    'Are you sure you want to archive this field?'
-                )
+                    'Are you sure you want to archive this field?',
+                ),
             ).not.toBeInTheDocument()
         })
 
         expect(useUpdateCustomFieldArchiveStatusMock).toHaveBeenCalledWith(
             ticketInputFieldDefinition.id,
-            ticketInputFieldDefinition.object_type
+            ticketInputFieldDefinition.object_type,
         )
         expect(updateMutateMock).toHaveBeenCalledWith(true)
         expect(mockedLogEvent).toHaveBeenCalledWith(
             SegmentEvent.CustomFieldArchivedFieldClicked,
             {
                 objectType: ticketInputFieldDefinition.object_type,
-            }
+            },
         )
     })
 
@@ -259,12 +260,12 @@ describe('<Row />', () => {
             },
         }
 
-        const {findByTitle} = render(
+        const { findByTitle } = render(
             <table>
                 <tbody>
                     <Row {...props} />
                 </tbody>
-            </table>
+            </table>,
         )
         expect(screen.queryByLabelText('Archive')).not.toBeInTheDocument()
         expect(screen.getByTitle('Unarchive'))
@@ -274,13 +275,13 @@ describe('<Row />', () => {
 
         expect(useUpdateCustomFieldArchiveStatusMock).toHaveBeenCalledWith(
             ticketInputFieldDefinition.id,
-            ticketInputFieldDefinition.object_type
+            ticketInputFieldDefinition.object_type,
         )
         await waitFor(
             () => {
                 expect(updateMutateMock).toHaveBeenCalledWith(false)
             },
-            {interval: 500}
+            { interval: 500 },
         )
     })
 })

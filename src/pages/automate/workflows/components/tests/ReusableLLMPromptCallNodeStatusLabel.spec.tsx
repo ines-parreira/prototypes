@@ -1,5 +1,6 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import ReusableLLMPromptCallNodeStatusLabel from '../ReusableLLMPromptCallNodeStatusLabel'
 
@@ -9,10 +10,10 @@ describe('ReusableLLMPromptCallNodeStatusLabel', () => {
             <ReusableLLMPromptCallNodeStatusLabel
                 hasMissingCredentials={true}
                 hasMissingValues={true}
-            />
+            />,
         )
         expect(
-            screen.getByText('Authentication and values required')
+            screen.getByText('Authentication and values required'),
         ).toBeInTheDocument()
     })
 
@@ -21,7 +22,7 @@ describe('ReusableLLMPromptCallNodeStatusLabel', () => {
             <ReusableLLMPromptCallNodeStatusLabel
                 hasMissingCredentials={true}
                 hasMissingValues={false}
-            />
+            />,
         )
         expect(screen.getByText('Authentication required')).toBeInTheDocument()
     })
@@ -31,7 +32,7 @@ describe('ReusableLLMPromptCallNodeStatusLabel', () => {
             <ReusableLLMPromptCallNodeStatusLabel
                 hasMissingCredentials={false}
                 hasMissingValues={true}
-            />
+            />,
         )
         expect(screen.getByText('Values required')).toBeInTheDocument()
     })
@@ -41,10 +42,10 @@ describe('ReusableLLMPromptCallNodeStatusLabel', () => {
             <ReusableLLMPromptCallNodeStatusLabel
                 hasCredentials={true}
                 hasAllValues={true}
-            />
+            />,
         )
         expect(
-            screen.getByText('Edit authentication and values')
+            screen.getByText('Edit authentication and values'),
         ).toBeInTheDocument()
     })
 
@@ -53,7 +54,7 @@ describe('ReusableLLMPromptCallNodeStatusLabel', () => {
             <ReusableLLMPromptCallNodeStatusLabel
                 hasCredentials={true}
                 hasAllValues={false}
-            />
+            />,
         )
         expect(screen.getByText('Edit authentication')).toBeInTheDocument()
     })
@@ -63,13 +64,13 @@ describe('ReusableLLMPromptCallNodeStatusLabel', () => {
             <ReusableLLMPromptCallNodeStatusLabel
                 hasCredentials={false}
                 hasAllValues={true}
-            />
+            />,
         )
         expect(screen.getByText('Edit values')).toBeInTheDocument()
     })
 
     it('renders nothing when no props are provided', () => {
-        const {container} = render(<ReusableLLMPromptCallNodeStatusLabel />)
+        const { container } = render(<ReusableLLMPromptCallNodeStatusLabel />)
         expect(container).toBeEmptyDOMElement()
     })
 })

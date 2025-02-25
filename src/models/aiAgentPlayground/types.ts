@@ -1,5 +1,5 @@
-import {PlaygroundChannels} from 'pages/aiAgent/components/PlaygroundChat/PlaygroundChat.types'
-import {TicketCustomer} from 'pages/aiAgent/utils/playground-ticket.util'
+import { PlaygroundChannels } from 'pages/aiAgent/components/PlaygroundChat/PlaygroundChat.types'
+import { TicketCustomer } from 'pages/aiAgent/utils/playground-ticket.util'
 
 export type CreatePlaygroundMessage = {
     bodyText: string
@@ -113,7 +113,7 @@ export enum PlaygroundPromptType {
 }
 
 export const isApiEligiblePlaygroundMessage = (
-    message: PlaygroundMessage
+    message: PlaygroundMessage,
 ): message is PlaygroundTextMessage | PlaygroundPromptMessage =>
     message.type === MessageType.MESSAGE || message.type === MessageType.PROMPT
 
@@ -192,7 +192,7 @@ export type AiAgentResponse = {
     postProcessing: {
         internalNote: string
         htmlReply: string | null
-        chatTicketMessageMeta?: {ai_agent_message_type?: AiAgentMessageType}
+        chatTicketMessageMeta?: { ai_agent_message_type?: AiAgentMessageType }
     }
     _action_serialized_state: unknown
 }

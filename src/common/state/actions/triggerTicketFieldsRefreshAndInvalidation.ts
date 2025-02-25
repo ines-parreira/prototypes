@@ -1,18 +1,18 @@
-import {listCustomFieldConditions} from '@gorgias/api-client'
-import {queryKeys} from '@gorgias/api-queries'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
+import { listCustomFieldConditions } from '@gorgias/api-client'
+import { queryKeys } from '@gorgias/api-queries'
 
-import {appQueryClient} from 'api/queryClient'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {OBJECT_TYPES} from 'custom-fields/constants'
-import {evaluateCustomFieldsConditions} from 'custom-fields/helpers/evaluateCustomFieldsConditions'
-import {customFieldDefinitionKeys} from 'custom-fields/hooks/queries/queries'
-import {getCustomFields} from 'custom-fields/resources'
-import {CustomFieldConditionsEvaluationResults} from 'custom-fields/types'
-import {getTicketFieldState, getTicket} from 'state/ticket/selectors'
-import {RootState, StoreDispatch} from 'state/types'
-import {getInvalidTicketFieldIds} from 'utils/customFields'
+import { appQueryClient } from 'api/queryClient'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { OBJECT_TYPES } from 'custom-fields/constants'
+import { evaluateCustomFieldsConditions } from 'custom-fields/helpers/evaluateCustomFieldsConditions'
+import { customFieldDefinitionKeys } from 'custom-fields/hooks/queries/queries'
+import { getCustomFields } from 'custom-fields/resources'
+import { CustomFieldConditionsEvaluationResults } from 'custom-fields/types'
+import { getTicket, getTicketFieldState } from 'state/ticket/selectors'
+import { RootState, StoreDispatch } from 'state/types'
+import { getInvalidTicketFieldIds } from 'utils/customFields'
 
 import setInvalidCustomFieldsToErrored from './setInvalidCustomFieldsToErrored'
 
@@ -41,7 +41,7 @@ export default function triggerTicketFieldsRefreshAndInvalidation() {
             customFieldsEvaluatedConditions = evaluateCustomFieldsConditions(
                 refetchedCustomFieldConditions,
                 OBJECT_TYPES.TICKET,
-                getTicket(currentState)
+                getTicket(currentState),
             )
         } else {
             customFieldsEvaluatedConditions = {}
@@ -57,7 +57,7 @@ export default function triggerTicketFieldsRefreshAndInvalidation() {
                 customFieldDefinitionKeys.list({
                     archived: false,
                     object_type: OBJECT_TYPES.TICKET,
-                })
+                }),
             )?.data?.data || []
 
         const invalidFields = getInvalidTicketFieldIds({

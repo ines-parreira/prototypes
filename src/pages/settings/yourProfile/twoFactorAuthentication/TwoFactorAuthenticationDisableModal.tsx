@@ -1,19 +1,20 @@
-import {AxiosError} from 'axios'
-import React, {ReactNode, useCallback, useState} from 'react'
+import React, { ReactNode, useCallback, useState } from 'react'
 
-import {User} from 'config/types/user'
+import { AxiosError } from 'axios'
+
+import { User } from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {deleteTwoFASecret} from 'models/twoFactorAuthentication/resources'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import { deleteTwoFASecret } from 'models/twoFactorAuthentication/resources'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import DEPRECATED_Modal from 'pages/common/components/DEPRECATED_Modal'
 import css from 'pages/common/components/PrivateReplyToFBComment/PrivateReplyModal/PrivateReplyModal.less'
 import InputField from 'pages/common/forms/DEPRECATED_InputField'
-import {update2FAEnabled} from 'state/currentUser/actions'
-import {hasPassword as hasPasswordSelector} from 'state/currentUser/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { update2FAEnabled } from 'state/currentUser/actions'
+import { hasPassword as hasPasswordSelector } from 'state/currentUser/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 export type OwnProps = {
     user?: User
@@ -52,7 +53,7 @@ export default function TwoFactorAuthenticationDisableModal({
                 await deleteTwoFASecret(
                     undefined,
                     verificationCode,
-                    userPassword
+                    userPassword,
                 )
                 void dispatch(update2FAEnabled(false))
             } else {
@@ -62,13 +63,13 @@ export default function TwoFactorAuthenticationDisableModal({
                         status: NotificationStatus.Success,
                         message: `Two-Factor Authentication token has been reset for <b>${user.name}</b>.`,
                         allowHTML: true,
-                    })
+                    }),
                 )
             }
 
             onSuccess()
         } catch (error) {
-            const {response} = error as AxiosError<{error: {msg: string}}>
+            const { response } = error as AxiosError<{ error: { msg: string } }>
             if (response) {
                 setErrorText(response.data.error.msg)
             }
@@ -83,7 +84,7 @@ export default function TwoFactorAuthenticationDisableModal({
             isOpen={isOpen}
             header={title}
             onClose={onClose}
-            style={{maxWidth: '600px'}}
+            style={{ maxWidth: '600px' }}
             footerClassName={css.modalFooter}
             footer={
                 <>

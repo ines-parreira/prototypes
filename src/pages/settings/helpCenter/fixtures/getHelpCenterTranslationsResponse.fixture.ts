@@ -1,4 +1,4 @@
-import {Components} from 'rest_api/help_center_api/client.generated'
+import { Components } from 'rest_api/help_center_api/client.generated'
 
 export const getHelpCenterTranslationsResponseFixture: Components.Schemas.HelpCenterTranslationsListPageDto =
     {
@@ -12,7 +12,7 @@ export const getHelpCenterTranslationsResponseFixture: Components.Schemas.HelpCe
                 banner_image_url:
                     'https://i.picsum.photos/id/36/1440/316.jpg?hmac=yA9HAWLxyHZGQz-6Ywx2IlE2lETzlJOIoQLL0t6-9mU',
                 banner_image_vertical_offset: 0,
-                seo_meta: {title: null, description: null},
+                seo_meta: { title: null, description: null },
                 contact_info: {
                     email: {
                         deactivated_datetime: null,
@@ -53,7 +53,7 @@ export const getHelpCenterTranslationsResponseFixture: Components.Schemas.HelpCe
                 banner_text: 'Bonjour, comment puis-je vous aider ?',
                 banner_image_url: null,
                 banner_image_vertical_offset: 0,
-                seo_meta: {title: null, description: null},
+                seo_meta: { title: null, description: null },
                 contact_info: {
                     email: {
                         deactivated_datetime: '2022-02-04T14:20:23.000Z',

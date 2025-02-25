@@ -1,9 +1,9 @@
-import {fromJS, Map, List} from 'immutable'
-import {createSelector} from 'reselect'
+import { fromJS, List, Map } from 'immutable'
+import { createSelector } from 'reselect'
 
-import {getCurrentAccountState} from '../currentAccount/selectors'
-import {getCurrentUser} from '../currentUser/selectors'
-import {DEPRECATED_getTicket, getCustomerMessages} from '../ticket/selectors'
+import { getCurrentAccountState } from '../currentAccount/selectors'
+import { getCurrentUser } from '../currentUser/selectors'
+import { DEPRECATED_getTicket, getCustomerMessages } from '../ticket/selectors'
 
 export const getContext = createSelector(
     getCurrentUser,
@@ -17,7 +17,7 @@ export const getContext = createSelector(
                 (
                     customerMessages.sortBy(
                         (message: Map<any, any>) =>
-                            message.get('created_datetime') as string
+                            message.get('created_datetime') as string,
                     ) as List<any>
                 ).last() as Map<any, any>
             ).get('id') as number
@@ -78,11 +78,11 @@ export const getContext = createSelector(
                                         product_names: (
                                             (
                                                 lastOrder.get(
-                                                    'line_items'
+                                                    'line_items',
                                                 ) as List<any>
                                             ).map(
                                                 (item: Map<any, any>) =>
-                                                    item.get('name') as string
+                                                    item.get('name') as string,
                                             ) as List<any>
                                         ).toJS(),
                                     },
@@ -95,5 +95,5 @@ export const getContext = createSelector(
         }
 
         return context
-    }
+    },
 )

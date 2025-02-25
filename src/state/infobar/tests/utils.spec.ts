@@ -1,4 +1,4 @@
-import {actionButtonHashForData} from '../utils'
+import { actionButtonHashForData } from '../utils'
 
 describe('actionButtonHashForData', () => {
     it('should hash payload', () => {

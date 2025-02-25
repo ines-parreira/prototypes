@@ -1,4 +1,4 @@
-import {getAbsoluteUrl} from 'pages/settings/helpCenter/utils/helpCenter.utils'
+import { getAbsoluteUrl } from 'pages/settings/helpCenter/utils/helpCenter.utils'
 
 export const getArticleUrl = ({
     slug,
@@ -9,7 +9,7 @@ export const getArticleUrl = ({
     domain: string
     locale: string
 }) => {
-    const url = getAbsoluteUrl({domain, locale})
+    const url = getAbsoluteUrl({ domain, locale })
 
     return `${url}${slug}`
 }

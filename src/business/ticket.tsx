@@ -1,23 +1,22 @@
-import React, {ReactNode} from 'react'
-import {Link} from 'react-router-dom'
+import React, { ReactNode } from 'react'
 
-import {Sender} from 'hooks/useOutboundChannels'
-import {getReconnectUrl} from 'pages/tickets/detail/components/ReplyArea/MessageSourceFields/components/SenderSelectField/utils'
+import { Link } from 'react-router-dom'
 
-import {isNewChannel} from 'services/channels'
+import { Sender } from 'hooks/useOutboundChannels'
+import { getReconnectUrl } from 'pages/tickets/detail/components/ReplyArea/MessageSourceFields/components/SenderSelectField/utils'
+import { isNewChannel } from 'services/channels'
 
-import {NotificationStatus} from '../state/notifications/types'
-
-import {humanize} from './format'
-import {Notification} from './types/notification'
-import {TicketMessageSourceType} from './types/ticket'
+import { NotificationStatus } from '../state/notifications/types'
+import { humanize } from './format'
+import { Notification } from './types/notification'
+import { TicketMessageSourceType } from './types/ticket'
 
 export function canReply(
     sender: Maybe<Sender>,
     messageType: TicketMessageSourceType,
     attachmentCount: number,
-    replyOptions?: Maybe<Map<string, any>>
-): Maybe<{message: ReactNode; status: NotificationStatus.Warning}> {
+    replyOptions?: Maybe<Map<string, any>>,
+): Maybe<{ message: ReactNode; status: NotificationStatus.Warning }> {
     const explicitReason = replyOptions?.get('reason')
 
     if (!!explicitReason) {
@@ -91,7 +90,7 @@ export function canReply(
         return {
             message:
                 `When using ${humanize(
-                    messageType
+                    messageType,
                 )}, you can either send a text message, or an image attachment, ` +
                 'but not both at the same time. If you want to write a message, remove the attachment first.',
             status: NotificationStatus.Warning,
@@ -105,7 +104,7 @@ export function canReply(
 export function canAddAttachments(
     messageType: TicketMessageSourceType,
     newMessage: string,
-    attachmentCount: number
+    attachmentCount: number,
 ): Maybe<Notification> {
     const messagePlusAttachmentInvalidSources = [
         TicketMessageSourceType.InstagramDirectMessage,
@@ -121,7 +120,7 @@ export function canAddAttachments(
         return {
             message:
                 `When using ${humanize(
-                    messageType
+                    messageType,
                 )}, you can either send a text message, or an image attachment, ` +
                 'but not both at the same time.',
             status: NotificationStatus.Warning,
@@ -151,14 +150,14 @@ export function canAddAttachments(
         if (maxAttachmentsCount === 1) {
             return {
                 message: `When using ${humanize(
-                    messageType
+                    messageType,
                 )}, you can only send attachments one by one.`,
                 status: NotificationStatus.Warning,
             }
         } else if (maxAttachmentsCount === 0) {
             return {
                 message: `When using ${humanize(
-                    messageType
+                    messageType,
                 )}, you can not send attachments.`,
                 status: NotificationStatus.Warning,
             }
@@ -167,7 +166,7 @@ export function canAddAttachments(
         maxAttachmentsCount = maxAttachmentsCount || 0
         return {
             message: `When using ${humanize(
-                messageType
+                messageType,
             )}, you can add a maximum of ${maxAttachmentsCount} attachments.`,
             status: NotificationStatus.Warning,
         }

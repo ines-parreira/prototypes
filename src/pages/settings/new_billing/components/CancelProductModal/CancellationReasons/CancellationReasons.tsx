@@ -1,6 +1,6 @@
-import React, {Dispatch} from 'react'
+import React, { Dispatch } from 'react'
 
-import {CommonReasonLabel} from '../constants'
+import { CommonReasonLabel } from '../constants'
 import {
     CANCELLATION_REASONS_ACTION_TYPE,
     CancellationReason,
@@ -11,8 +11,9 @@ import Instruction from '../UI/Instruction'
 import OtherReason from '../UI/OtherReason'
 import PrimaryReasons from '../UI/PrimaryReasons'
 import SecondaryReasons from '../UI/SecondaryReasons'
+import { findSecondaryReasonsByPrimaryReason } from './helpers'
+
 import css from './CancellationReasons.less'
-import {findSecondaryReasonsByPrimaryReason} from './helpers'
 
 export type Props = {
     reasons: CancellationReason[]
@@ -20,23 +21,23 @@ export type Props = {
     reasonsState: CancellationReasonsState
 }
 const CancellationReasons = (props: Props) => {
-    const {reasons, dispatchCancellationReasonsAction, reasonsState} = props
+    const { reasons, dispatchCancellationReasonsAction, reasonsState } = props
     const selectPrimaryReason = (primaryReason: string) => {
         dispatchCancellationReasonsAction({
             type: CancellationReasonsActionType.PrimaryReasonSelected,
-            primaryReason: {label: primaryReason},
+            primaryReason: { label: primaryReason },
         })
     }
     const updateOtherReason = (nextValue: string) => {
         dispatchCancellationReasonsAction({
             type: CancellationReasonsActionType.OtherReasonUpdated,
-            otherReason: {label: nextValue},
+            otherReason: { label: nextValue },
         })
     }
     const selectSecondaryReason = (secondaryReason: string) => {
         dispatchCancellationReasonsAction({
             type: CancellationReasonsActionType.SecondaryReasonSelected,
-            secondaryReason: {label: secondaryReason},
+            secondaryReason: { label: secondaryReason },
         })
     }
     const renderOtherReason = () => {
@@ -67,7 +68,7 @@ const CancellationReasons = (props: Props) => {
                 <Instruction isRequired>Cancellation reason</Instruction>
                 <PrimaryReasons
                     reasons={reasons.map(
-                        (reason) => reason.primaryReason.label
+                        (reason) => reason.primaryReason.label,
                     )}
                     currentReason={reasonsState.primaryReason?.label || null}
                     handlePrimaryReasonSelection={selectPrimaryReason}
@@ -81,7 +82,7 @@ const CancellationReasons = (props: Props) => {
                     <SecondaryReasons
                         secondaryReasons={findSecondaryReasonsByPrimaryReason(
                             reasonsState.primaryReason,
-                            reasons
+                            reasons,
                         ).map((reason) => reason.label)}
                         currentReason={
                             reasonsState.secondaryReason?.label || null

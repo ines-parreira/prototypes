@@ -1,16 +1,17 @@
-import {sortBy, reverse} from 'lodash'
-import React, {useState, useCallback, useMemo} from 'react'
-import {Container} from 'reactstrap'
+import React, { useCallback, useMemo, useState } from 'react'
+
+import { reverse, sortBy } from 'lodash'
+import { Container } from 'reactstrap'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {OrderDirection} from 'models/api/types'
+import { OrderDirection } from 'models/api/types'
 import {
-    PhoneIntegration,
     IntegrationType,
+    PhoneIntegration,
     SmsIntegration,
     WhatsAppIntegration,
 } from 'models/integration/types'
-import {NewPhoneNumber} from 'models/phoneNumber/types'
+import { NewPhoneNumber } from 'models/phoneNumber/types'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
@@ -23,9 +24,9 @@ import ForwardIcon from 'pages/integrations/common/components/ForwardIcon'
 import PhoneNumberTitle from 'pages/phoneNumbers/PhoneNumberTitle'
 import SettingsContent from 'pages/settings/SettingsContent'
 import SettingsPageContainer from 'pages/settings/SettingsPageContainer'
-import {getNewPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
-import {getIntegrationConfig} from 'state/integrations/helpers'
-import {getIntegrationsByType} from 'state/integrations/selectors'
+import { getNewPhoneNumbers } from 'state/entities/phoneNumbers/selectors'
+import { getIntegrationConfig } from 'state/integrations/helpers'
+import { getIntegrationsByType } from 'state/integrations/selectors'
 
 import css from './PhoneIntegrationsList.less'
 
@@ -48,7 +49,7 @@ export default function PhoneIntegrationsList({
             getIntegrationsByType<
                 PhoneIntegration | SmsIntegration | WhatsAppIntegration
             >(type),
-        [type]
+        [type],
     )
 
     const integrations = useAppSelector(getIntegrations)
@@ -63,7 +64,7 @@ export default function PhoneIntegrationsList({
                     integration:
                         | PhoneIntegration
                         | SmsIntegration
-                        | WhatsAppIntegration
+                        | WhatsAppIntegration,
                 ) => {
                     const phoneNumber =
                         phoneNumbers[integration.meta?.phone_number_id]
@@ -75,14 +76,14 @@ export default function PhoneIntegrationsList({
                         },
                     ]
                 },
-                []
+                [],
             ),
-        [integrations, phoneNumbers]
+        [integrations, phoneNumbers],
     )
 
     const [orderBy, setOrderBy] = useState<string>('integration.id')
     const [orderDirection, setOrderDirection] = useState<OrderDirection>(
-        OrderDirection.Desc
+        OrderDirection.Desc,
     )
 
     const sortedRows = useMemo(
@@ -90,7 +91,7 @@ export default function PhoneIntegrationsList({
             orderDirection === OrderDirection.Asc
                 ? sortBy(rows, orderBy)
                 : reverse(sortBy(rows, orderBy)),
-        [rows, orderBy, orderDirection]
+        [rows, orderBy, orderDirection],
     )
 
     const setSortOptions = useCallback(
@@ -99,14 +100,14 @@ export default function PhoneIntegrationsList({
                 setOrderDirection(
                     orderDirection === OrderDirection.Asc
                         ? OrderDirection.Desc
-                        : OrderDirection.Asc
+                        : OrderDirection.Asc,
                 )
             } else {
                 setOrderBy(column)
                 setOrderDirection(OrderDirection.Asc)
             }
         },
-        [setOrderBy, setOrderDirection, orderBy, orderDirection]
+        [setOrderBy, setOrderDirection, orderBy, orderDirection],
     )
 
     if (!sortedRows.length) {
@@ -144,7 +145,7 @@ export default function PhoneIntegrationsList({
                 <TableBody>
                     {sortedRows.map((row) => {
                         const {
-                            integration: {id, type, name, meta},
+                            integration: { id, type, name, meta },
                             phoneNumber,
                         } = row
                         const detailsLink =

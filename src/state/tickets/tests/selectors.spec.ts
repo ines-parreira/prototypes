@@ -1,8 +1,8 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
 
-import {initialState} from '../reducers'
+import { initialState } from '../reducers'
 import * as selectors from '../selectors'
 
 describe('selectors', () => {
@@ -12,26 +12,26 @@ describe('selectors', () => {
         beforeEach(() => {
             state = {
                 tickets: initialState.mergeDeep({
-                    items: [{id: 1}],
+                    items: [{ id: 1 }],
                 }),
             } as RootState
         })
 
         it('getTicketsState', () => {
             expect(selectors.getTicketsState(state)).toEqualImmutable(
-                state.tickets
+                state.tickets,
             )
             expect(selectors.getTicketsState({} as RootState)).toEqualImmutable(
-                fromJS({})
+                fromJS({}),
             )
         })
 
         it('getTickets', () => {
             expect(selectors.getTickets(state)).toEqualImmutable(
-                state.tickets.get('items')
+                state.tickets.get('items'),
             )
             expect(selectors.getTickets({} as RootState)).toEqualImmutable(
-                fromJS([])
+                fromJS([]),
             )
         })
 
@@ -47,7 +47,7 @@ describe('selectors', () => {
             it('should get cursor value', () => {
                 const cursor = '2018-03-07T00:42:49.336025'
                 const newState = {
-                    tickets: fromJS({cursor}),
+                    tickets: fromJS({ cursor }),
                 } as RootState
                 expect(selectors.getCursor(newState)).toEqual(cursor)
             })

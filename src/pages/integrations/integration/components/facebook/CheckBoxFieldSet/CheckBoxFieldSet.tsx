@@ -1,7 +1,8 @@
-import classNames from 'classnames'
-import React, {ReactNode} from 'react'
+import React, { ReactNode } from 'react'
 
-import CheckBox, {Props as CheckBoxProps} from 'pages/common/forms/CheckBox'
+import classNames from 'classnames'
+
+import CheckBox, { Props as CheckBoxProps } from 'pages/common/forms/CheckBox'
 
 type CheckBoxItem = CheckBoxProps & {
     additionalContent?: ReactNode
@@ -15,14 +16,14 @@ export type Props = {
 }
 
 export default function CheckBoxFieldSet(props: Props) {
-    const {title, subtitle, checkboxes, className} = props
+    const { title, subtitle, checkboxes, className } = props
 
     return (
         <div className={className}>
             {typeof title === 'string' ? <h4>{title}</h4> : title}
             {subtitle && <p>{subtitle}</p>}
             {checkboxes.map(
-                ({children, additionalContent, ...rest}: CheckBoxItem) => (
+                ({ children, additionalContent, ...rest }: CheckBoxItem) => (
                     <div key={rest.name} className="d-flex align-items-start">
                         <CheckBox
                             className={classNames('mb-2', rest.className)}
@@ -32,7 +33,7 @@ export default function CheckBoxFieldSet(props: Props) {
                         </CheckBox>
                         {additionalContent}
                     </div>
-                )
+                ),
             )}
         </div>
     )

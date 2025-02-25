@@ -1,1 +1,1 @@
-export {default} from './ABGroupPage'
+export { default } from './ABGroupPage'

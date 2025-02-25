@@ -1,11 +1,11 @@
-import {AnalyticsCustomReport} from 'models/stat/types'
+import { AnalyticsCustomReport } from 'models/stat/types'
 import {
     createCustomReport,
-    updateCustomReport,
-    duplicateCustomReport,
-    removeCustomReport,
     customReportsSlice,
     CustomReportsSliceState,
+    duplicateCustomReport,
+    removeCustomReport,
+    updateCustomReport,
 } from 'state/ui/stats/customReportsSlice'
 
 describe('customReportsSlice', () => {
@@ -26,7 +26,7 @@ describe('customReportsSlice', () => {
         it('should add a new custom report to the state', () => {
             const newState = customReportsSlice.reducer(
                 initialState,
-                createCustomReport(sampleCustomReport)
+                createCustomReport(sampleCustomReport),
             )
             expect(newState.customReports).toEqual(sampleCustomReport)
         })
@@ -43,7 +43,7 @@ describe('customReportsSlice', () => {
             }
             const newState = customReportsSlice.reducer(
                 stateWithReport,
-                updateCustomReport({id: 1, updatedReport})
+                updateCustomReport({ id: 1, updatedReport }),
             )
             expect(newState.customReports).toEqual(updatedReport)
         })
@@ -55,7 +55,7 @@ describe('customReportsSlice', () => {
             }
             const newState = customReportsSlice.reducer(
                 initialState,
-                updateCustomReport({id: 2, updatedReport})
+                updateCustomReport({ id: 2, updatedReport }),
             )
             expect(newState.customReports).toEqual(null)
         })
@@ -68,7 +68,7 @@ describe('customReportsSlice', () => {
             }
             const newState = customReportsSlice.reducer(
                 stateWithReport,
-                duplicateCustomReport(1)
+                duplicateCustomReport(1),
             )
             expect(newState.customReports?.id).toEqual(2)
         })
@@ -76,7 +76,7 @@ describe('customReportsSlice', () => {
         it('should not duplicate if the report does not exist', () => {
             const newState = customReportsSlice.reducer(
                 initialState,
-                duplicateCustomReport(2)
+                duplicateCustomReport(2),
             )
             expect(newState.customReports).toEqual(null)
         })
@@ -89,7 +89,7 @@ describe('customReportsSlice', () => {
             }
             const newState = customReportsSlice.reducer(
                 stateWithReport,
-                removeCustomReport(1)
+                removeCustomReport(1),
             )
             expect(newState.customReports).toEqual(null)
         })
@@ -97,7 +97,7 @@ describe('customReportsSlice', () => {
         it('should not remove if the report does not exist', () => {
             const newState = customReportsSlice.reducer(
                 initialState,
-                removeCustomReport(2)
+                removeCustomReport(2),
             )
             expect(newState.customReports).toEqual(null)
         })

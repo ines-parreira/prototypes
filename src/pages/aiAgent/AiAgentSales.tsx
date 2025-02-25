@@ -1,7 +1,8 @@
 import React from 'react'
 
+import { SalesSettings } from './components/SalesSettings/SalesSettings'
+
 import css from './AiAgentSales.less'
-import {SalesSettings} from './components/SalesSettings/SalesSettings'
 
 export const AiAgentSales = () => {
     return (

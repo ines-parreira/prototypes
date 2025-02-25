@@ -1,10 +1,10 @@
-import React, {useMemo} from 'react'
-import {useRouteMatch} from 'react-router-dom'
+import React, { useMemo } from 'react'
 
-import {globalNavigationPanel} from 'common/navigation'
-import {useDesktopOnlyShowGlobalNavFeatureFlag} from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
+import { useRouteMatch } from 'react-router-dom'
 
-import {PanelLayoutConfig} from 'pages/PanelLayout'
+import { globalNavigationPanel } from 'common/navigation'
+import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
+import { PanelLayoutConfig } from 'pages/PanelLayout'
 import TicketNavbar from 'pages/tickets/navbar/TicketNavbar'
 import DefaultViewFallback from 'split-ticket-view/components/DefaultViewFallback'
 import {
@@ -12,12 +12,12 @@ import {
     DEFAULT_TICKET_PANEL_WIDTH,
     LayoutKeys,
 } from 'split-ticket-view/constants'
-import {EmptyTicket} from 'ticket-page'
+import { EmptyTicket } from 'ticket-page'
 
 export default function useSplitViewPage() {
     const showGlobalNav = useDesktopOnlyShowGlobalNavFeatureFlag()
 
-    const match = useRouteMatch<{viewId?: string}>('/app/views/:viewId?')
+    const match = useRouteMatch<{ viewId?: string }>('/app/views/:viewId?')
     const viewId = match?.params.viewId
 
     const config = useMemo(
@@ -43,8 +43,8 @@ export default function useSplitViewPage() {
                 panelConfig: [Infinity, 100, Infinity],
             },
         ],
-        [showGlobalNav, viewId]
+        [showGlobalNav, viewId],
     )
 
-    return useMemo(() => ({config, layoutKey: LayoutKeys.VIEW}), [config])
+    return useMemo(() => ({ config, layoutKey: LayoutKeys.VIEW }), [config])
 }

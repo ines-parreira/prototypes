@@ -1,21 +1,20 @@
-import {RequirementType} from '@gorgias/api-queries'
+import { renderHook } from '@testing-library/react-hooks'
+import { Map as mockMap } from 'immutable'
+
+import { RequirementType } from '@gorgias/api-queries'
 import {
     ExpressionFieldSource,
-    TicketStatus,
-    ExpressionOperator,
     ExpressionFieldType,
+    ExpressionOperator,
+    TicketStatus,
 } from '@gorgias/api-types'
-import {renderHook} from '@testing-library/react-hooks'
-
-import {Map as mockMap} from 'immutable'
 
 import useFlag from 'core/flags/hooks/useFlag'
-
-import {useCustomFieldConditions} from 'custom-fields/hooks/queries/useCustomFieldConditions'
-import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import {ticketInputFieldDefinition as mockTicketInputFieldDefinition} from 'fixtures/customField'
-import {customFieldCondition} from 'fixtures/customFieldCondition'
-import {setCustomFieldValueAction as mockSetCustomFieldValueAction} from 'fixtures/macro'
+import { useCustomFieldConditions } from 'custom-fields/hooks/queries/useCustomFieldConditions'
+import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import { ticketInputFieldDefinition as mockTicketInputFieldDefinition } from 'fixtures/customField'
+import { customFieldCondition } from 'fixtures/customFieldCondition'
+import { setCustomFieldValueAction as mockSetCustomFieldValueAction } from 'fixtures/macro'
 import {
     setHasAttemptedToCloseTicket,
     triggerTicketFieldsErrors,
@@ -25,9 +24,9 @@ import {
     getTicket,
     getTicketFieldState,
 } from 'state/ticket/selectors'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
-import {useTicketFieldsCheck} from '../useTicketFieldsCheck'
+import { useTicketFieldsCheck } from '../useTicketFieldsCheck'
 
 const TICKET_ID = 1
 
@@ -131,14 +130,14 @@ function mockValidData() {
                     },
                 },
             ],
-        })
+        }),
     )
     mockedGetTicketFieldState.mockImplementation(() => ticketFieldsState)
     mockedGetTicket.mockReturnValue(
         jest.fn(() => ({
             status: 'open',
             custom_fields: ticketFieldsState,
-        })) as any
+        })) as any,
     )
 }
 
@@ -169,23 +168,23 @@ describe('useTicketFieldsCheck', () => {
 
     it('should return false if no ticket field is invalid', () => {
         mockValidData()
-        const {result} = renderHook(() => useTicketFieldsCheck(TICKET_ID))
+        const { result } = renderHook(() => useTicketFieldsCheck(TICKET_ID))
         expect(mockedDispatch).not.toHaveBeenCalled()
         expect(
-            result.current.checkTicketFieldErrors({includeMacro: true})
+            result.current.checkTicketFieldErrors({ includeMacro: true }),
         ).toEqual(false)
     })
 
     it('should return ignore macro data if include macro is not set', () => {
         mockValidData()
-        const {result} = renderHook(() => useTicketFieldsCheck(TICKET_ID))
+        const { result } = renderHook(() => useTicketFieldsCheck(TICKET_ID))
         expect(mockedDispatch).not.toHaveBeenCalled()
         expect(result.current.checkTicketFieldErrors()).toEqual(true)
     })
 
     it('should return true if at least on ticket field is invalid and dispatch an action', () => {
         mockInvalidData()
-        const {result} = renderHook(() => useTicketFieldsCheck(TICKET_ID))
+        const { result } = renderHook(() => useTicketFieldsCheck(TICKET_ID))
         expect(result.current.checkTicketFieldErrors()).toEqual(true)
         expect(mockedTriggerTicketFieldsErrors).toHaveBeenCalledWith([
             mockTicketInputFieldDefinition.id,
@@ -204,13 +203,13 @@ describe('useTicketFieldsCheck', () => {
                         data: [mockTicketInputFieldDefinition],
                     },
                     isLoading: true,
-                }) as unknown as ReturnType<typeof useCustomFieldDefinitions>
+                }) as unknown as ReturnType<typeof useCustomFieldDefinitions>,
         )
 
-        const {result} = renderHook(() => useTicketFieldsCheck(TICKET_ID))
+        const { result } = renderHook(() => useTicketFieldsCheck(TICKET_ID))
 
         expect(
-            result.current.checkTicketFieldErrors({includeMacro: true})
+            result.current.checkTicketFieldErrors({ includeMacro: true }),
         ).toEqual(false)
         expect(mockedDispatch).toHaveBeenCalledTimes(1)
         expect(setHasAttemptedToCloseTicket).toHaveBeenCalledWith(false)
@@ -225,13 +224,13 @@ describe('useTicketFieldsCheck', () => {
                         data: [mockTicketInputFieldDefinition],
                     },
                     isLoading: false,
-                }) as unknown as ReturnType<typeof useCustomFieldDefinitions>
+                }) as unknown as ReturnType<typeof useCustomFieldDefinitions>,
         )
 
-        const {result} = renderHook(() => useTicketFieldsCheck(TICKET_ID))
+        const { result } = renderHook(() => useTicketFieldsCheck(TICKET_ID))
 
         expect(
-            result.current.checkTicketFieldErrors({includeMacro: true})
+            result.current.checkTicketFieldErrors({ includeMacro: true }),
         ).toEqual(false)
         expect(mockedDispatch).toHaveBeenCalledTimes(1)
         expect(setHasAttemptedToCloseTicket).toHaveBeenCalledWith(false)
@@ -253,7 +252,7 @@ describe('useTicketFieldsCheck', () => {
                         isLoading: false,
                     }) as unknown as ReturnType<
                         typeof useCustomFieldDefinitions
-                    >
+                    >,
             )
 
             mockedGetTicket.mockReturnValue({
@@ -279,10 +278,10 @@ describe('useTicketFieldsCheck', () => {
                 isError: false,
             })
 
-            const {result} = renderHook(() => useTicketFieldsCheck(TICKET_ID))
+            const { result } = renderHook(() => useTicketFieldsCheck(TICKET_ID))
 
             expect(result.current.checkTicketFieldErrors()).toEqual(isEnabled)
-        }
+        },
     )
 
     it('should return false if there is a conditional ticket field that was evaluated as required, but macro fills it up', () => {
@@ -296,7 +295,7 @@ describe('useTicketFieldsCheck', () => {
                         ],
                     },
                     isLoading: false,
-                }) as unknown as ReturnType<typeof useCustomFieldDefinitions>
+                }) as unknown as ReturnType<typeof useCustomFieldDefinitions>,
         )
 
         mockedGetTicket.mockReturnValue({
@@ -333,13 +332,13 @@ describe('useTicketFieldsCheck', () => {
                         },
                     },
                 ],
-            })
+            }),
         )
 
-        const {result} = renderHook(() => useTicketFieldsCheck(TICKET_ID))
+        const { result } = renderHook(() => useTicketFieldsCheck(TICKET_ID))
 
         expect(
-            result.current.checkTicketFieldErrors({includeMacro: true})
+            result.current.checkTicketFieldErrors({ includeMacro: true }),
         ).toEqual(false)
     })
 })

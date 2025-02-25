@@ -1,4 +1,4 @@
-import {AiAgentPlaygroundExecutionsData} from '../useFetchAiAgentPlaygroundExecutionsData'
+import { AiAgentPlaygroundExecutionsData } from '../useFetchAiAgentPlaygroundExecutionsData'
 
 type AllKeys = keyof AiAgentPlaygroundExecutionsDataFixture
 type ConfiguredAiAgentPlaygroundExecutionsDataFixture<
@@ -26,12 +26,12 @@ export class AiAgentPlaygroundExecutionsDataFixture {
     }
 
     withoutExecution() {
-        this.aiAgentPlaygroundExecutionsData = {count: 0}
+        this.aiAgentPlaygroundExecutionsData = { count: 0 }
         return this as AiAgentPlaygroundExecutionsDataFixtureFullyConfigured
     }
 
     withExecutionsCount(count: number) {
-        this.aiAgentPlaygroundExecutionsData = {count}
+        this.aiAgentPlaygroundExecutionsData = { count }
         return this as AiAgentPlaygroundExecutionsDataFixtureFullyConfigured
     }
 

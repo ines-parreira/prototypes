@@ -1,8 +1,8 @@
-import {fromJS, List} from 'immutable'
+import { fromJS, List } from 'immutable'
 
-import {BigCommerceActionType} from 'models/integration/types'
+import { BigCommerceActionType } from 'models/integration/types'
 
-import {eventMaker} from './types'
+import { eventMaker } from './types'
 
 const bigCommerceEvent = ({
     integration,
@@ -17,7 +17,7 @@ const bigCommerceEvent = ({
         const allOrders = draftOrders.concat(orders)
         return (allOrders.find(
             (order: Map<any, any>) =>
-                (order.get('cart_id') as string) === checkoutId
+                (order.get('cart_id') as string) === checkoutId,
         ) || fromJS({})) as Map<any, any>
     }
 

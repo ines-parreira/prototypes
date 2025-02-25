@@ -1,12 +1,13 @@
-import classNames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import classNames from 'classnames'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationType} from 'models/integration/constants'
-import {ShopifyIntegration} from 'models/integration/types'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import { IntegrationType } from 'models/integration/constants'
+import { ShopifyIntegration } from 'models/integration/types'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import {
     getIntegrationByIdAndType,
     makeGetRedirectUri,
@@ -27,7 +28,7 @@ export const InventoryScopeMissingBanner = ({
         useFlags()[FeatureFlagKey.ShopifyInventoryItemScopeBanner]
     const getRedirectUri = useAppSelector(makeGetRedirectUri)
     const shopIntegration: ShopifyIntegration | undefined = useAppSelector(
-        getIntegrationByIdAndType(shopIntegrationId, IntegrationType.Shopify)
+        getIntegrationByIdAndType(shopIntegrationId, IntegrationType.Shopify),
     )
 
     const isMissingInventoryScope =
@@ -50,7 +51,7 @@ export const InventoryScopeMissingBanner = ({
                             className="mr-3"
                             href={redirectUriTemplate.replace(
                                 '{shop_name}',
-                                shopName
+                                shopName,
                             )}
                         >
                             Update Permissions

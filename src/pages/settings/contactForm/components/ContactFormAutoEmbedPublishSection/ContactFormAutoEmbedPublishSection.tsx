@@ -1,9 +1,10 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {ContactForm, ContactFormPageEmbedment} from 'models/contactForm/types'
-import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { ContactForm, ContactFormPageEmbedment } from 'models/contactForm/types'
+import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 
 import ContactFormAutoEmbedCard from '../ContactFormAutoEmbedCard'
 
@@ -15,15 +16,15 @@ export type ContactFormAutoEmbedPublishSectionProps = {
 }
 
 const ContactFormAutoEmbedPublishSection = (
-    props: ContactFormAutoEmbedPublishSectionProps
+    props: ContactFormAutoEmbedPublishSectionProps,
 ) => {
-    const {contactFormShopName, contactFormId, pageEmbedments} = props
+    const { contactFormShopName, contactFormId, pageEmbedments } = props
 
     const isAutoEmbedFlagActive =
         useFlags()[FeatureFlagKey.ContactFormAutoEmbed] ?? false
 
-    const {integrationId, needScopeUpdate} = useShopifyIntegrationAndScope(
-        contactFormShopName ?? ''
+    const { integrationId, needScopeUpdate } = useShopifyIntegrationAndScope(
+        contactFormShopName ?? '',
     )
 
     // hide this entire section if the flag is not active

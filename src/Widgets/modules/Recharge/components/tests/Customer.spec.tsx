@@ -1,26 +1,27 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 
-import {TitleWrapper} from '../Customer'
+import { TitleWrapper } from '../Customer'
 
 const mockStore = configureMockStore([thunk])
 const store = mockStore({})
 
 const integrationContextData = {
-    integration: fromJS({meta: {store_name: 'mystore'}}),
+    integration: fromJS({ meta: { store_name: 'mystore' } }),
     integrationId: 1,
 }
 
 describe('Customer', () => {
     describe('TitleWrapper', () => {
         it('should render default link because no custom link is set', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <IntegrationContext.Provider value={integrationContextData}>
                         <TitleWrapper
@@ -32,14 +33,14 @@ describe('Customer', () => {
                             isEditing={false}
                         />{' '}
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(container).toMatchSnapshot()
         })
 
         it('should render custom link because it is set', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <IntegrationContext.Provider value={integrationContextData}>
                         <TitleWrapper
@@ -48,12 +49,12 @@ describe('Customer', () => {
                                 hash: 'a8s4d86as54d',
                             })}
                             template={fromJS({
-                                meta: {link: 'https://gorgias.io/{{hash}}/'},
+                                meta: { link: 'https://gorgias.io/{{hash}}/' },
                             })}
                             isEditing={false}
                         />{' '}
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(container).toMatchSnapshot()

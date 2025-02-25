@@ -1,4 +1,5 @@
-import _noop from 'lodash/noop'
-import {createContext} from 'react'
+import { createContext } from 'react'
 
-export default createContext({setFocus: _noop})
+import _noop from 'lodash/noop'
+
+export default createContext({ setFocus: _noop })

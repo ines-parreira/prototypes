@@ -1,18 +1,19 @@
+import React, { useMemo, useState } from 'react'
+
 import classNames from 'classnames'
-import {produce} from 'immer'
+import { produce } from 'immer'
 import _isEqual from 'lodash/isEqual'
-import React, {useMemo, useState} from 'react'
 
 import navbarPreview from 'assets/img/presentationals/navbar_settings.png'
-import {logEvent, SegmentEvent} from 'common/segment'
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import CheckBox from 'pages/common/forms/CheckBox'
 import settingsCss from 'pages/settings/settings.less'
-import {submitSetting} from 'state/currentAccount/actions'
-import {getViewsVisibilitySettings} from 'state/currentAccount/selectors'
+import { submitSetting } from 'state/currentAccount/actions'
+import { getViewsVisibilitySettings } from 'state/currentAccount/selectors'
 import {
     AccountSettingType,
     AccountSettingViewsVisibility,
@@ -33,10 +34,10 @@ type SystemView = {
 const SidebarSettings = () => {
     const dispatch = useAppDispatch()
     const systemTopViews = useAppSelector(
-        getTopSystemTicketNavbarWithHiddenElements
+        getTopSystemTicketNavbarWithHiddenElements,
     )
     const systemBottomViews = useAppSelector(
-        getBottomSystemTicketNavbarWithHiddenElements
+        getBottomSystemTicketNavbarWithHiddenElements,
     )
     const viewVisibilitySetting = useAppSelector(getViewsVisibilitySettings)
 
@@ -93,8 +94,8 @@ const SidebarSettings = () => {
         await dispatch(
             submitSetting({
                 ...settings,
-                data: {hidden_views: hiddenViews},
-            } as AccountSettingViewsVisibility)
+                data: { hidden_views: hiddenViews },
+            } as AccountSettingViewsVisibility),
         )
         setSaving(false)
     }
@@ -108,7 +109,7 @@ const SidebarSettings = () => {
                     className={classNames(
                         settingsCss.contentWrapper,
                         settingsCss.pageContainer,
-                        css.contentWrapper
+                        css.contentWrapper,
                     )}
                 >
                     <div className={css.infoContent}>
@@ -120,7 +121,7 @@ const SidebarSettings = () => {
                         <div
                             className={classNames(
                                 settingsCss.mb24,
-                                css.infoText
+                                css.infoText,
                             )}
                         >
                             Choose which Views you want visible in the Ticket

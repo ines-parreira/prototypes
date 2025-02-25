@@ -1,40 +1,41 @@
-import {useQueryClient} from '@tanstack/react-query'
-import {useCallback, useEffect, useState} from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { useQueryClient } from '@tanstack/react-query'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     AIArticle,
     ArticleTemplateReviewAction,
     LocaleCode,
 } from 'models/helpCenter/types'
-import {useCreateAIArticle} from 'pages/settings/helpCenter/hooks/useCreateAIArticle'
-import {useGetAIArticles} from 'pages/settings/helpCenter/hooks/useGetAIArticles'
+import { useCreateAIArticle } from 'pages/settings/helpCenter/hooks/useCreateAIArticle'
+import { useGetAIArticles } from 'pages/settings/helpCenter/hooks/useGetAIArticles'
 import {
     aiArticleKeys,
     useUpsertArticleTemplateReview,
 } from 'pages/settings/helpCenter/queries'
-import {ArticleOrigin} from 'pages/settings/helpCenter/types/articleOrigin.enum'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { ArticleOrigin } from 'pages/settings/helpCenter/types/articleOrigin.enum'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 export const useTopQuestionsArticles = (
     storeIntegrationId: number,
     helpCenterId: number,
-    locale: LocaleCode
+    locale: LocaleCode,
 ) => {
     const appDispatch = useAppDispatch()
     const queryClient = useQueryClient()
 
-    const {fetchedArticles, isLoading} = useGetAIArticles({
+    const { fetchedArticles, isLoading } = useGetAIArticles({
         helpCenterId,
         storeIntegrationId,
         locale,
     })
 
-    const {createArticle: createArticleMutation} = useCreateAIArticle(
+    const { createArticle: createArticleMutation } = useCreateAIArticle(
         helpCenterId,
-        locale
+        locale,
     )
 
     const [articles, setArticles] = useState<AIArticle[]>([])
@@ -52,8 +53,8 @@ export const useTopQuestionsArticles = (
                 queryClient.invalidateQueries(
                     aiArticleKeys.listWithStore(
                         helpCenterId,
-                        storeIntegrationId
-                    )
+                        storeIntegrationId,
+                    ),
                 ),
             ]),
     })
@@ -62,7 +63,7 @@ export const useTopQuestionsArticles = (
         (
             templateKey: string,
             action: ArticleTemplateReviewAction,
-            reason?: string
+            reason?: string,
         ) => {
             setArticles((prevArticles) =>
                 prevArticles.map((article) =>
@@ -80,11 +81,11 @@ export const useTopQuestionsArticles = (
                                   },
                               ],
                           }
-                        : article
-                )
+                        : article,
+                ),
             )
         },
-        [setArticles, helpCenterId]
+        [setArticles, helpCenterId],
     )
 
     const dismissArticle = useCallback(
@@ -94,7 +95,7 @@ export const useTopQuestionsArticles = (
             try {
                 await reviewArticle.mutateAsync([
                     undefined,
-                    {help_center_id: helpCenterId},
+                    { help_center_id: helpCenterId },
                     {
                         action: 'dismissFromTopQuestions',
                         template_key: templateKey,
@@ -107,24 +108,24 @@ export const useTopQuestionsArticles = (
                     notify({
                         message: `An unexpected error occurred. Please try again later.`,
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
             }
         },
-        [reviewArticle, helpCenterId, updateReviewLocally, appDispatch]
+        [reviewArticle, helpCenterId, updateReviewLocally, appDispatch],
     )
 
     const createArticle = useCallback(
         async (templateKey: string, origin: ArticleOrigin): Promise<void> => {
             const articleTemplate = articles.find(
-                ({key}) => key === templateKey
+                ({ key }) => key === templateKey,
             )
 
             if (!articleTemplate) {
                 return
             }
 
-            let createdArticle: {data: {id: number}} | null
+            let createdArticle: { data: { id: number } } | null
 
             try {
                 createdArticle = await createArticleMutation({
@@ -139,7 +140,7 @@ export const useTopQuestionsArticles = (
                     notify({
                         message: `Article could not be created. Please try again later`,
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
 
                 return
@@ -151,7 +152,7 @@ export const useTopQuestionsArticles = (
 
             await reviewArticle.mutateAsync([
                 undefined,
-                {help_center_id: helpCenterId},
+                { help_center_id: helpCenterId },
                 {
                     action: 'saveAsDraft',
                     template_key: templateKey,
@@ -163,7 +164,7 @@ export const useTopQuestionsArticles = (
             window.open(
                 `/app/settings/help-center/${helpCenterId}/articles?article_id=${createdArticle.data.id}`,
                 '_blank',
-                'noopener'
+                'noopener',
             )
         },
         [
@@ -173,7 +174,7 @@ export const useTopQuestionsArticles = (
             helpCenterId,
             updateReviewLocally,
             appDispatch,
-        ]
+        ],
     )
 
     return {

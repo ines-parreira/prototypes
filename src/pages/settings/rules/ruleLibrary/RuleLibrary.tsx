@@ -1,12 +1,13 @@
-import classnames from 'classnames'
-import React, {useCallback, useEffect, useState} from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
-import {RuleRecipe} from 'models/ruleRecipe/types'
-import {ManagedRule, Rule, RuleType} from 'state/rules/types'
+import classnames from 'classnames'
+
+import { RuleRecipe } from 'models/ruleRecipe/types'
+import { ManagedRule, Rule, RuleType } from 'state/rules/types'
 
 import RuleRecipeCard from './components/RuleRecipeCard'
+import { RuleTemplateRecipeSlugs } from './constants'
 
-import {RuleTemplateRecipeSlugs} from './constants'
 import css from './RuleLibrary.less'
 
 export type Props = {
@@ -64,7 +65,7 @@ export function RuleLibrary({
                             (recipe.slug !==
                                 RuleTemplateRecipeSlugs.AutoTagAiIgnore ||
                                 recipe.slug ===
-                                    RuleTemplateRecipeSlugs.AutoTagAiIgnore)
+                                    RuleTemplateRecipeSlugs.AutoTagAiIgnore),
                     )
                     .map((recipe) => (
                         <RuleRecipeCard

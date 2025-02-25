@@ -1,30 +1,31 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {SETTING_TYPE_BUSINESS_HOURS} from '../../../../state/currentAccount/constants'
-import BusinessHours, {BusinessHoursContainer} from '../BusinessHours'
+import { SETTING_TYPE_BUSINESS_HOURS } from '../../../../state/currentAccount/constants'
+import BusinessHours, { BusinessHoursContainer } from '../BusinessHours'
 
 const mockStore = configureMockStore([thunk])
 
 describe('BusinessHours component', () => {
     it('should render default values', () => {
         const mockSubmitSetting = jest.fn()
-        const {container} = render(
+        const { container } = render(
             <BusinessHoursContainer
                 submitSetting={mockSubmitSetting}
                 businessHoursSettings={fromJS({})}
-            />
+            />,
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render values from state', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider
                 store={mockStore({
                     currentAccount: fromJS({
@@ -52,7 +53,7 @@ describe('BusinessHours component', () => {
                 })}
             >
                 <BusinessHours />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toMatchSnapshot()

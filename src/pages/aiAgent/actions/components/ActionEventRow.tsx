@@ -1,16 +1,17 @@
+import React from 'react'
+
 import classnames from 'classnames'
 import moment from 'moment'
-import React from 'react'
-import {useHistory} from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 import Button from 'pages/common/components/button/Button'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 
-import {LlmTriggeredExecution} from '../types'
+import { LlmTriggeredExecution } from '../types'
+import ActionStatus from './ActionsStatus'
 
 import css from './ActionEventRow.less'
-import ActionStatus from './ActionsStatus'
 
 type Props = {
     execution: LlmTriggeredExecution
@@ -18,7 +19,7 @@ type Props = {
     isSelected: boolean
 }
 
-export default function ActionsRow({execution, onClick, isSelected}: Props) {
+export default function ActionsRow({ execution, onClick, isSelected }: Props) {
     const history = useHistory()
 
     const handleTicketClick = () => {

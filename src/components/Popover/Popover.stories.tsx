@@ -1,5 +1,6 @@
-import {Meta, StoryFn} from '@storybook/react'
-import React, {ComponentProps, useRef, useState} from 'react'
+import React, { ComponentProps, useRef, useState } from 'react'
+
+import { Meta, StoryFn } from '@storybook/react'
 
 import Button from 'pages/common/components/button/Button'
 
@@ -11,7 +12,7 @@ const storyConfig: Meta = {
     argTypes: {
         footer: {
             description: 'Custom footer',
-            control: {type: 'text'},
+            control: { type: 'text' },
         },
     },
 }
@@ -46,6 +47,6 @@ const defaultProps: Partial<ComponentProps<typeof Popover>> = {
 }
 
 export const DefaultPopover = Template.bind({})
-DefaultPopover.args = {...defaultProps}
+DefaultPopover.args = { ...defaultProps }
 
 export default storyConfig

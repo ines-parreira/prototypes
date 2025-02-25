@@ -1,15 +1,16 @@
-import {Meta, StoryFn} from '@storybook/react'
-import {QueryClientProvider} from '@tanstack/react-query'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { Meta, StoryFn } from '@storybook/react'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {appQueryClient} from 'api/queryClient'
-import {channels} from 'fixtures/channels'
-import {channelsQueryKeys} from 'models/channel/queries'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {ChannelsFilter} from 'pages/stats/common/filters/ChannelsFilter'
+import { appQueryClient } from 'api/queryClient'
+import { channels } from 'fixtures/channels'
+import { channelsQueryKeys } from 'models/channel/queries'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { ChannelsFilter } from 'pages/stats/common/filters/ChannelsFilter'
 
 const defaultState = {}
 
@@ -19,7 +20,7 @@ const storyConfig: Meta = {
 }
 
 const Template: StoryFn<ComponentProps<typeof ChannelsFilter>> = (props) => {
-    appQueryClient.setQueryData(channelsQueryKeys.list(), {data: channels})
+    appQueryClient.setQueryData(channelsQueryKeys.list(), { data: channels })
     return (
         <QueryClientProvider client={appQueryClient}>
             <Provider store={configureMockStore([thunk])(defaultState)}>

@@ -1,13 +1,13 @@
-import {render, screen} from '@testing-library/react'
-
 import React from 'react'
 
-import {TaxIdRows} from 'pages/settings/new_billing/views/PaymentInformationView/components/TaxIdRows'
-import {TaxIdType, TaxIdVerificationStatus} from 'state/billing/types'
+import { render, screen } from '@testing-library/react'
+
+import { TaxIdRows } from 'pages/settings/new_billing/views/PaymentInformationView/components/TaxIdRows'
+import { TaxIdType, TaxIdVerificationStatus } from 'state/billing/types'
 
 describe('TaxIdRows', () => {
     it('should render Sales Tax ID row when country is empty string', () => {
-        render(<TaxIdRows taxIDs={undefined} address={{country: ''}} />)
+        render(<TaxIdRows taxIDs={undefined} address={{ country: '' }} />)
         expect(screen.getByText('Sales Tax ID:')).toBeVisible()
     })
 
@@ -17,7 +17,7 @@ describe('TaxIdRows', () => {
     })
 
     it('should render Sales Tax ID row when country is null', () => {
-        render(<TaxIdRows taxIDs={undefined} address={{country: null}} />)
+        render(<TaxIdRows taxIDs={undefined} address={{ country: null }} />)
         expect(screen.getByText('Sales Tax ID:')).toBeVisible()
     })
 
@@ -31,8 +31,8 @@ describe('TaxIdRows', () => {
                         verification: TaxIdVerificationStatus.Pending,
                     },
                 }}
-                address={{country: 'CA'}}
-            />
+                address={{ country: 'CA' }}
+            />,
         )
         expect(screen.getByText('GST/HST ID:')).toBeVisible()
         expect(screen.getByText('123456789RT0002')).toBeVisible()
@@ -53,8 +53,8 @@ describe('TaxIdRows', () => {
                         verification: TaxIdVerificationStatus.Pending,
                     },
                 }}
-                address={{country: 'CA', state: 'QC'}}
-            />
+                address={{ country: 'CA', state: 'QC' }}
+            />,
         )
         expect(screen.getByText('GST/HST ID:')).toBeVisible()
         expect(screen.getByText('123456789RT0002')).toBeVisible()
@@ -78,8 +78,8 @@ describe('TaxIdRows', () => {
                         verification: TaxIdVerificationStatus.Pending,
                     },
                 }}
-                address={{country: 'CA', state: 'BC'}}
-            />
+                address={{ country: 'CA', state: 'BC' }}
+            />,
         )
         expect(screen.getByText('GST/HST ID:')).toBeVisible()
         expect(screen.getByText('123456789RT0002')).toBeVisible()
@@ -103,8 +103,8 @@ describe('TaxIdRows', () => {
                         verification: TaxIdVerificationStatus.Pending,
                     },
                 }}
-                address={{country: 'CA', state: 'MB'}}
-            />
+                address={{ country: 'CA', state: 'MB' }}
+            />,
         )
 
         expect(screen.getByText('GST/HST ID:')).toBeVisible()
@@ -129,8 +129,8 @@ describe('TaxIdRows', () => {
                         verification: TaxIdVerificationStatus.Pending,
                     },
                 }}
-                address={{country: 'CA', state: 'SK'}}
-            />
+                address={{ country: 'CA', state: 'SK' }}
+            />,
         )
 
         expect(screen.getByText('GST/HST ID:')).toBeVisible()
@@ -150,8 +150,8 @@ describe('TaxIdRows', () => {
                         verification: TaxIdVerificationStatus.Pending,
                     },
                 }}
-                address={{country: 'AU'}}
-            />
+                address={{ country: 'AU' }}
+            />,
         )
         expect(screen.getByText('ABN:')).toBeVisible()
         expect(screen.getByText('12345678912')).toBeVisible()
@@ -167,16 +167,16 @@ describe('TaxIdRows', () => {
                         verification: TaxIdVerificationStatus.Pending,
                     },
                 }}
-                address={{country: 'FR'}}
-            />
+                address={{ country: 'FR' }}
+            />,
         )
         expect(screen.getByText('VAT Number:')).toBeVisible()
         expect(screen.getByText('FRAB123456789')).toBeVisible()
     })
 
     it('should render nothing for unsupported country', () => {
-        const {container} = render(
-            <TaxIdRows taxIDs={{}} address={{country: 'US'}} />
+        const { container } = render(
+            <TaxIdRows taxIDs={{}} address={{ country: 'US' }} />,
         )
         expect(container).toBeEmptyDOMElement()
     })

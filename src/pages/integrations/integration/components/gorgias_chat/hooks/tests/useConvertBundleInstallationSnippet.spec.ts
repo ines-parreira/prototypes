@@ -1,8 +1,8 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
 import * as environment from 'utils/environment'
 
-import {useConvertBundleInstallationSnippet} from '../useConvertBundleInstallationSnippet'
+import { useConvertBundleInstallationSnippet } from '../useConvertBundleInstallationSnippet'
 
 describe('getConvertBundleInstallationSnippet', () => {
     afterEach(() => {
@@ -11,26 +11,32 @@ describe('getConvertBundleInstallationSnippet', () => {
 
     it('should return production bundle URL when in production', () => {
         jest.spyOn(environment, 'isProduction').mockReturnValue(true)
-        const {result} = renderHook(() => useConvertBundleInstallationSnippet())
+        const { result } = renderHook(() =>
+            useConvertBundleInstallationSnippet(),
+        )
         expect(result.current).toContain(
-            `<script src="${process.env.CONVERT_BUNDLE_PRODUCTION_URL ?? 'https://bundle.dyn-rev.app/loader.js'}" async></script>`
+            `<script src="${process.env.CONVERT_BUNDLE_PRODUCTION_URL ?? 'https://bundle.dyn-rev.app/loader.js'}" async></script>`,
         )
     })
 
     it('should return staging bundle URL when in staging', () => {
         jest.spyOn(environment, 'isStaging').mockReturnValue(true)
-        const {result} = renderHook(() => useConvertBundleInstallationSnippet())
+        const { result } = renderHook(() =>
+            useConvertBundleInstallationSnippet(),
+        )
         expect(result.current).toContain(
-            `<script src="${process.env.CONVERT_BUNDLE_STAGING_URL ?? 'https://bundle-staging.dyn-rev.app/loader.js'}" async></script>`
+            `<script src="${process.env.CONVERT_BUNDLE_STAGING_URL ?? 'https://bundle-staging.dyn-rev.app/loader.js'}" async></script>`,
         )
     })
 
     it('should return development bundle URL when not in production or staging', () => {
         jest.spyOn(environment, 'isProduction').mockReturnValue(false)
         jest.spyOn(environment, 'isStaging').mockReturnValue(false)
-        const {result} = renderHook(() => useConvertBundleInstallationSnippet())
+        const { result } = renderHook(() =>
+            useConvertBundleInstallationSnippet(),
+        )
         expect(result.current).toContain(
-            `<script src="${process.env.CONVERT_BUNDLE_DEVELOPMENT_URL ?? 'https://bundle-<your-name>.eu.ngrok.io/loader.js'}" async></script>`
+            `<script src="${process.env.CONVERT_BUNDLE_DEVELOPMENT_URL ?? 'https://bundle-<your-name>.eu.ngrok.io/loader.js'}" async></script>`,
         )
     })
 })

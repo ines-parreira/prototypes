@@ -1,4 +1,5 @@
-import React, {ComponentProps, useEffect, useMemo, useState} from 'react'
+import React, { ComponentProps, useEffect, useMemo, useState } from 'react'
+
 import {
     DropdownItem,
     DropdownMenu,
@@ -7,15 +8,15 @@ import {
 } from 'reactstrap'
 
 import {
+    TIMEDELTA_OPERATOR_DEFAULT_QUANTITY,
     TIMEDELTA_OPERATOR_DEFAULT_UNIT,
     TIMEDELTA_OPERATOR_DEFAULT_VALUE,
-    TIMEDELTA_OPERATOR_DEFAULT_QUANTITY,
 } from 'config'
 import useUpdateEffect from 'hooks/useUpdateEffect'
 import Button from 'pages/common/components/button/Button'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import NumberInput from 'pages/common/forms/input/NumberInput'
-import {reportError} from 'utils/errors'
+import { reportError } from 'utils/errors'
 
 import css from './TimedeltaPicker.less'
 
@@ -32,10 +33,10 @@ type Props = {
 } & Omit<ComponentProps<typeof NumberInput>, 'onChange' | 'value'>
 
 const UNITS = [
-    {label: 'minute(s) ago', value: 'm'},
-    {label: 'hour(s) ago', value: 'h'},
-    {label: 'day(s) ago', value: 'd'},
-    {label: 'week(s) ago', value: 'w'},
+    { label: 'minute(s) ago', value: 'm' },
+    { label: 'hour(s) ago', value: 'h' },
+    { label: 'day(s) ago', value: 'd' },
+    { label: 'week(s) ago', value: 'w' },
 ]
 
 const TimedeltaPicker = ({
@@ -53,7 +54,7 @@ const TimedeltaPicker = ({
         setQuantity(
             isNaN(deducedQuantity)
                 ? TIMEDELTA_OPERATOR_DEFAULT_QUANTITY
-                : deducedQuantity
+                : deducedQuantity,
         )
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
@@ -72,15 +73,15 @@ const TimedeltaPicker = ({
 
     const unitLabel = useMemo(
         () => units.find((u) => u.value === unit)?.label,
-        [unit, units]
+        [unit, units],
     )
 
     useEffect(() => {
         if (min < 0) {
             reportError(
                 new Error(
-                    `Invalid min provided to TimedeltaPicker: ${min}, "min" should be positive.`
-                )
+                    `Invalid min provided to TimedeltaPicker: ${min}, "min" should be positive.`,
+                ),
             )
         }
     }, [min])

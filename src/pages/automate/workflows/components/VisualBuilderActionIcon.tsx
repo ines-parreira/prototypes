@@ -4,7 +4,8 @@ import {
     colorByVisualBuilderNodeType,
     iconByVisualBuilderNodeType,
 } from '../constants'
-import {VisualBuilderNode} from '../models/visualBuilderGraph.types'
+import { VisualBuilderNode } from '../models/visualBuilderGraph.types'
+
 import css from './VisualBuilderActionIcon.less'
 
 type Props = {
@@ -22,7 +23,7 @@ type Props = {
         | 'app'
 }
 
-export default function VisualBuilderActionIcon({nodeType}: Props) {
+export default function VisualBuilderActionIcon({ nodeType }: Props) {
     return (
         <div
             className={css.visualBuilderActionIcon}

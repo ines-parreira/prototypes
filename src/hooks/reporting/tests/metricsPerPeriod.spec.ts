@@ -1,14 +1,14 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment/moment'
 
-import {TicketChannel} from 'business/types/ticket'
-import {useTagsTicketCount} from 'hooks/reporting/metricsPerPeriod'
-import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
-import {OrderDirection} from 'models/api/types'
-import {tagsTicketCountQueryFactory} from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
-import {LegacyStatsFilters} from 'models/stat/types'
-import {getPreviousPeriod} from 'utils/reporting'
-import {assumeMock} from 'utils/testing'
+import { TicketChannel } from 'business/types/ticket'
+import { useTagsTicketCount } from 'hooks/reporting/metricsPerPeriod'
+import { useMetricPerDimension } from 'hooks/reporting/useMetricPerDimension'
+import { OrderDirection } from 'models/api/types'
+import { tagsTicketCountQueryFactory } from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
+import { LegacyStatsFilters } from 'models/stat/types'
+import { getPreviousPeriod } from 'utils/reporting'
+import { assumeMock } from 'utils/testing'
 
 const periodStart = moment()
 const periodEnd = periodStart.add(7, 'days')
@@ -32,7 +32,7 @@ describe('useTagsTicketCount', () => {
         renderHook(() => useTagsTicketCount(statsFilters, timezone, sorting))
 
         expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
-            tagsTicketCountQueryFactory(statsFilters, timezone, sorting)
+            tagsTicketCountQueryFactory(statsFilters, timezone, sorting),
         )
 
         expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
@@ -42,14 +42,14 @@ describe('useTagsTicketCount', () => {
                     period: getPreviousPeriod(statsFilters.period),
                 },
                 timezone,
-                sorting
-            )
+                sorting,
+            ),
         )
     })
 
     it('should test the returned result of useTagsTicketCount', () => {
         const responseMock = {
-            data: {allData: [], value: null, decile: null},
+            data: { allData: [], value: null, decile: null },
             isFetching: false,
             isError: false,
         }
@@ -60,7 +60,7 @@ describe('useTagsTicketCount', () => {
         const result = useTagsTicketCount(statsFilters, timezone, sorting)
 
         expect(result).toStrictEqual({
-            data: {prevValue: [], value: []},
+            data: { prevValue: [], value: [] },
             isError: responseMock.isError,
             isFetching: responseMock.isFetching,
         })
@@ -68,7 +68,7 @@ describe('useTagsTicketCount', () => {
 
     it('should return isError:true', () => {
         const errorMock = {
-            data: {allData: [], value: null, decile: null},
+            data: { allData: [], value: null, decile: null },
             isFetching: false,
             isError: true,
         }
@@ -79,7 +79,7 @@ describe('useTagsTicketCount', () => {
         const result = useTagsTicketCount(statsFilters, timezone, sorting)
 
         expect(result).toStrictEqual({
-            data: {prevValue: [], value: []},
+            data: { prevValue: [], value: [] },
             isError: errorMock.isError,
             isFetching: errorMock.isFetching,
         })

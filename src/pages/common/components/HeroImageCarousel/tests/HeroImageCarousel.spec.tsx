@@ -1,7 +1,8 @@
-import {fireEvent, render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {assetsUrl} from 'utils'
+import { fireEvent, render, screen } from '@testing-library/react'
+
+import { assetsUrl } from 'utils'
 
 import HeroImageCarousel from '../HeroImageCarousel'
 
@@ -17,16 +18,16 @@ describe('<HeroImageCarousel />', () => {
                 imageUrl: assetsUrl('/img/slide2.png'),
             },
         ]
-        const {container, queryByText} = render(
+        const { container, queryByText } = render(
             <HeroImageCarousel
                 slides={slidesData}
                 singleSlideButtonTitle={buttonLabel}
-            />
+            />,
         )
         const imgs = container.querySelectorAll('img')
         expect(imgs.length).toBe(slidesData.length)
         expect(container.querySelectorAll('.slideDot div').length).toBe(
-            slidesData.length
+            slidesData.length,
         )
         imgs.forEach((img, i) => {
             expect(img.src).toBe('http://localhost' + slidesData[i].imageUrl)
@@ -46,16 +47,16 @@ describe('<HeroImageCarousel />', () => {
                 description: 'description 2',
             },
         ]
-        const {container, getByText, queryByText} = render(
+        const { container, getByText, queryByText } = render(
             <HeroImageCarousel
                 slides={slidesData}
                 singleSlideButtonTitle={buttonLabel}
-            />
+            />,
         )
         const imgs = container.querySelectorAll('img')
         expect(imgs.length).toBe(slidesData.length)
         expect(container.querySelectorAll('.slideDot div').length).toBe(
-            slidesData.length
+            slidesData.length,
         )
         imgs.forEach((img, i) => {
             expect(img.src).toBe('http://localhost' + slidesData[i].imageUrl)
@@ -76,15 +77,15 @@ describe('<HeroImageCarousel />', () => {
                 header: 'header 2',
             },
         ]
-        const {container, getByText, queryByText} = render(
+        const { container, getByText, queryByText } = render(
             <HeroImageCarousel
                 slides={slidesData}
                 singleSlideButtonTitle={buttonLabel}
-            />
+            />,
         )
         const imgs = container.querySelectorAll('img')
         expect(container.querySelectorAll('.slideDot div').length).toBe(
-            slidesData.length
+            slidesData.length,
         )
         expect(imgs.length).toBe(slidesData.length)
         imgs.forEach((img, i) => {
@@ -110,16 +111,16 @@ describe('<HeroImageCarousel />', () => {
                 footerButton: 'footerButton 2',
             },
         ]
-        const {container, getByText, queryByText} = render(
+        const { container, getByText, queryByText } = render(
             <HeroImageCarousel
                 slides={slidesData}
                 singleSlideButtonTitle={buttonLabel}
                 onClose={() => {}}
-            />
+            />,
         )
         const imgs = container.querySelectorAll('img')
         expect(container.querySelectorAll('.slideDot div').length).toBe(
-            slidesData.length
+            slidesData.length,
         )
         expect(imgs.length).toBe(slidesData.length)
         imgs.forEach((img, i) => {
@@ -140,12 +141,12 @@ describe('<HeroImageCarousel />', () => {
             },
         ]
         const buttonClick = jest.fn()
-        const {container, getByText} = render(
+        const { container, getByText } = render(
             <HeroImageCarousel
                 slides={slidesData}
                 singleSlideButtonTitle={buttonLabel}
                 onSingleSlideButtonTitleClick={buttonClick}
-            />
+            />,
         )
         const imgs = container.querySelectorAll('img')
         expect(container.querySelectorAll('.slideDot div').length).toBe(0)
@@ -186,7 +187,7 @@ describe('<HeroImageCarousel />', () => {
             <HeroImageCarousel
                 slides={slidesData}
                 singleSlideButtonTitle={buttonLabel}
-            />
+            />,
         )
         const button = screen.queryByText(buttonLabel)
         expect(button).toBeInTheDocument()

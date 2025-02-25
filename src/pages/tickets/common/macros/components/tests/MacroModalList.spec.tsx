@@ -1,13 +1,15 @@
-import {Macro, MacroAction} from '@gorgias/api-queries'
-import {render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { Macro, MacroAction } from '@gorgias/api-queries'
+
 import shortcutManager from 'services/shortcutManager'
-import {makeExecuteKeyboardAction} from 'utils/testing'
+import { makeExecuteKeyboardAction } from 'utils/testing'
 
 import MacroModalList from '../MacroModalList'
 
@@ -28,12 +30,12 @@ jest.mock('pages/common/components/MacroFilters/MacroFilters', () => () => (
 
 describe('<MacroModalList />', () => {
     const macros = [
-        {id: 1, name: 'Pizza Pepperoni', relevance_rank: 1},
-        {id: 2, name: 'Pizza Capricciosa'},
+        { id: 1, name: 'Pizza Pepperoni', relevance_rank: 1 },
+        { id: 2, name: 'Pizza Capricciosa' },
         {
             id: 3,
             name: 'Pizza Margherita',
-            actions: [{name: 'http'} as MacroAction],
+            actions: [{ name: 'http' } as MacroAction],
         },
     ]
 
@@ -50,15 +52,15 @@ describe('<MacroModalList />', () => {
         render(
             <Provider store={mockStore({})}>
                 <MacroModalList {...props} />
-            </Provider>
+            </Provider>,
         )
 
         expect(shortcutManagerMock.bind).toHaveBeenCalled()
 
         expect(
             screen.getByPlaceholderText(
-                'Search macros by name, tags or body...'
-            )
+                'Search macros by name, tags or body...',
+            ),
         ).toBeInTheDocument()
         expect(screen.getByText('MacroFiltersMock')).toBeInTheDocument()
         expect(screen.getByText(macros[0].name)).toBeInTheDocument()
@@ -70,21 +72,21 @@ describe('<MacroModalList />', () => {
         render(
             <Provider store={mockStore({})}>
                 <MacroModalList {...props} areExternalActionsDisabled />
-            </Provider>
+            </Provider>,
         )
         expect(shortcutManagerMock.bind).toHaveBeenCalled()
 
         makeExecuteKeyboardAction(
             shortcutManagerMock,
             shortcutEventMock,
-            'MacroModal'
+            'MacroModal',
         )('GO_NEXT_MACRO')
         expect(props.handleClickItem).toHaveBeenLastCalledWith(macros[1].id)
 
         makeExecuteKeyboardAction(
             shortcutManagerMock,
             shortcutEventMock,
-            'MacroModal'
+            'MacroModal',
         )('GO_NEXT_MACRO')
         // skip macro id 3 i.e. macros[2]
         expect(props.handleClickItem).toHaveBeenLastCalledWith(macros[0].id)
@@ -92,14 +94,14 @@ describe('<MacroModalList />', () => {
         makeExecuteKeyboardAction(
             shortcutManagerMock,
             shortcutEventMock,
-            'MacroModal'
+            'MacroModal',
         )('GO_NEXT_MACRO')
         expect(props.handleClickItem).toHaveBeenLastCalledWith(macros[1].id)
 
         makeExecuteKeyboardAction(
             shortcutManagerMock,
             shortcutEventMock,
-            'MacroModal'
+            'MacroModal',
         )('GO_PREV_MACRO')
         expect(props.handleClickItem).toHaveBeenLastCalledWith(macros[0].id)
     })
@@ -112,7 +114,7 @@ describe('<MacroModalList />', () => {
                     searchResults={fromJS([])}
                     currentMacro={fromJS({})}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(shortcutManagerMock.bind).not.toHaveBeenCalled()
@@ -120,12 +122,12 @@ describe('<MacroModalList />', () => {
 
     it('should not bind keyboard shortcuts when all macros are disabled', () => {
         const macros = [
-            {id: 1, name: 'Pizza Pepperoni', actions: [{name: 'http'}]},
-            {id: 2, name: 'Pizza Capricciosa', actions: [{name: 'http'}]},
+            { id: 1, name: 'Pizza Pepperoni', actions: [{ name: 'http' }] },
+            { id: 2, name: 'Pizza Capricciosa', actions: [{ name: 'http' }] },
             {
                 id: 3,
                 name: 'Pizza Margherita',
-                actions: [{name: 'http'}],
+                actions: [{ name: 'http' }],
             },
         ] as Macro[]
         render(
@@ -136,7 +138,7 @@ describe('<MacroModalList />', () => {
                     searchResults={macros}
                     currentMacro={macros[0]}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(shortcutManagerMock.bind).not.toHaveBeenCalled()

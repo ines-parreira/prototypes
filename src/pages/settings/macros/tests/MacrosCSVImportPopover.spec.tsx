@@ -1,16 +1,17 @@
-import {fireEvent, render, waitFor, screen} from '@testing-library/react'
-import MockAdapter from 'axios-mock-adapter'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {uploadFiles} from 'common/utils'
+import { uploadFiles } from 'common/utils'
 import client from 'models/api/resources'
-import {createJob} from 'models/job/resources'
-import {saveFileAsDownloaded} from 'utils/file'
+import { createJob } from 'models/job/resources'
+import { saveFileAsDownloaded } from 'utils/file'
 
-import {MacrosCSVImportPopover} from '../MacrosCSVImportPopover'
+import { MacrosCSVImportPopover } from '../MacrosCSVImportPopover'
 
 jest.mock('utils/file')
 
@@ -19,7 +20,7 @@ jest.mock('common/utils', () => {
     return {
         ...original,
         uploadFiles: jest.fn(() =>
-            Promise.resolve([{url: 'https://example.com/file1.csv'}])
+            Promise.resolve([{ url: 'https://example.com/file1.csv' }]),
         ),
     }
 })
@@ -40,19 +41,19 @@ describe('<MacrosCSVImportPopover/>', () => {
     }
 
     it.each([false, true])('should render', (isOpen) => {
-        const {baseElement} = render(
+        const { baseElement } = render(
             <Provider store={defaultStore}>
-                <MacrosCSVImportPopover {...{...minProps, isOpen}} />
-            </Provider>
+                <MacrosCSVImportPopover {...{ ...minProps, isOpen }} />
+            </Provider>,
         )
         expect(baseElement).toMatchSnapshot()
     })
 
     it('should close when cancel clicked', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={defaultStore}>
                 <MacrosCSVImportPopover {...minProps} />
-            </Provider>
+            </Provider>,
         )
         fireEvent.click(getByText('×'))
         expect(onClose).toHaveBeenCalled()
@@ -61,10 +62,10 @@ describe('<MacrosCSVImportPopover/>', () => {
     it('should download template when clicked', async () => {
         mockedServer.onGet('/api/macros/import/template/').reply(200, {})
 
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={defaultStore}>
                 <MacrosCSVImportPopover {...minProps} />
-            </Provider>
+            </Provider>,
         )
         fireEvent.click(getByText('download this CSV template'))
         await waitFor(() => expect(saveFileAsDownloaded).toHaveBeenCalled())
@@ -77,10 +78,10 @@ describe('<MacrosCSVImportPopover/>', () => {
                     type: 'text/csv',
                 }),
         }
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={defaultStore}>
                 <MacrosCSVImportPopover {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
         const dropZone = getByText('Drop your CSV here, or')
@@ -90,7 +91,7 @@ describe('<MacrosCSVImportPopover/>', () => {
                     items: [dummyFile],
                     files: [dummyFile],
                 },
-            })
+            }),
         )
 
         expect(screen.getByText('Import File')).toBeTruthy()
@@ -103,10 +104,10 @@ describe('<MacrosCSVImportPopover/>', () => {
                     type: 'text/csv',
                 }),
         }
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={defaultStore}>
                 <MacrosCSVImportPopover {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
         const dropZone = getByText('Drop your CSV here, or')
@@ -116,7 +117,7 @@ describe('<MacrosCSVImportPopover/>', () => {
                     items: [dummyFile],
                     files: [dummyFile],
                 },
-            })
+            }),
         )
 
         await waitFor(() => fireEvent.click(screen.getByText('Import File')))

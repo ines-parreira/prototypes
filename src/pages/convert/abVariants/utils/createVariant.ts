@@ -1,11 +1,11 @@
-import {ulid} from 'ulidx'
+import { ulid } from 'ulidx'
 
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
-import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
+import { Campaign } from 'pages/convert/campaigns/types/Campaign'
+import { CampaignVariant } from 'pages/convert/campaigns/types/CampaignVariant'
 
 export const createVariant = (
     currentVariants: CampaignVariant[],
-    data: Campaign
+    data: Campaign,
 ): [string | undefined, CampaignVariant[]] => {
     const variants = [...currentVariants]
     const variantIdx = variants.findIndex((item) => !item.id)

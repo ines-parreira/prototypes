@@ -1,24 +1,24 @@
-import {useQueryClient} from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
-    useUpsertStoreWorkflowsConfiguration,
     storeWorkflowsConfigurationDefinitionKeys,
+    useUpsertStoreWorkflowsConfiguration,
     workflowsConfigurationDefinitionKeys,
 } from 'models/workflows/queries'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 import {
     StoresWorkflowConfiguration,
     StoreWorkflowsConfiguration,
 } from '../types'
-import {handleError} from './errorHandler'
+import { handleError } from './errorHandler'
 
 export default function useUpsertAction(
     actionType: 'create' | 'update',
     storeName: string,
-    storeType: string
+    storeType: string,
 ) {
     const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
@@ -40,7 +40,7 @@ export default function useUpsertAction(
 
             const previousStoreWorkflowConfiguration =
                 queryClient.getQueryData<StoresWorkflowConfiguration>(
-                    storeWorkflowsConfigurationQueryKey
+                    storeWorkflowsConfigurationQueryKey,
                 ) ?? []
 
             // Optimistically update the cache
@@ -52,7 +52,7 @@ export default function useUpsertAction(
                             return data
                         }
                         return action
-                    })
+                    }),
                 )
             }
 
@@ -60,10 +60,10 @@ export default function useUpsertAction(
                 previousStoreWorkflowConfiguration,
             }
         },
-        onSuccess: ({data}) => {
+        onSuccess: ({ data }) => {
             const previousStoreWorkflowConfiguration =
                 queryClient.getQueryData<StoresWorkflowConfiguration>(
-                    storeWorkflowsConfigurationQueryKey
+                    storeWorkflowsConfigurationQueryKey,
                 ) ?? []
 
             const workflowConfigurationQueryKey =
@@ -84,7 +84,7 @@ export default function useUpsertAction(
                         actionType === 'create'
                             ? 'Successfully created Action'
                             : 'Successfully updated Action',
-                })
+                }),
             )
         },
         onError: (error, _, context) => {
@@ -95,7 +95,7 @@ export default function useUpsertAction(
             handleError(error, errorMessage, dispatch)
             queryClient.setQueryData(
                 storeWorkflowsConfigurationQueryKey,
-                context?.previousStoreWorkflowConfiguration
+                context?.previousStoreWorkflowConfiguration,
             )
         },
     })

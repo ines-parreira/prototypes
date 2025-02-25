@@ -1,7 +1,7 @@
 import React from 'react'
 
 import useCurrentHelpCenter from '../../hooks/useCurrentHelpCenter'
-import {useHelpCenterTranslation} from '../../providers/HelpCenterTranslation'
+import { useHelpCenterTranslation } from '../../providers/HelpCenterTranslation'
 import HelpCenterPageWrapper from '../HelpCenterPageWrapper'
 import ChatApplication from './components/ChatApplication'
 import ContactFormInfoSection from './components/ContactFormInfoSection'
@@ -12,7 +12,7 @@ import css from './HelpCenterContactView.less'
 
 const HelpCenterContactView: React.FC = () => {
     const helpCenter = useCurrentHelpCenter()
-    const {isDirty, updateHelpCenter} = useHelpCenterTranslation()
+    const { isDirty, updateHelpCenter } = useHelpCenterTranslation()
 
     return (
         <HelpCenterPageWrapper

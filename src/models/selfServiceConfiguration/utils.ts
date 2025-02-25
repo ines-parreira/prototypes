@@ -1,7 +1,7 @@
-import {IntegrationType, StoreIntegration} from 'models/integration/types'
+import { IntegrationType, StoreIntegration } from 'models/integration/types'
 
 export const getShopNameFromStoreIntegration = (
-    integration: StoreIntegration
+    integration: StoreIntegration,
 ) => {
     switch (integration.type) {
         case IntegrationType.BigCommerce:
@@ -14,7 +14,7 @@ export const getShopNameFromStoreIntegration = (
 }
 
 export const getShopDomainFromStoreIntegration = (
-    integration: StoreIntegration
+    integration: StoreIntegration,
 ) => {
     switch (integration.type) {
         case IntegrationType.BigCommerce:
@@ -29,7 +29,7 @@ export const getShopDomainFromStoreIntegration = (
 }
 
 export const getShopUrlFromStoreIntegration = (
-    integration: StoreIntegration
+    integration: StoreIntegration,
 ) => {
     const domain = getShopDomainFromStoreIntegration(integration)
 

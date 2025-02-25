@@ -1,14 +1,14 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
 import useAgentsViewing from 'hooks/realtime/useAgentsViewing'
-import {agentsViewingMessage} from 'state/views/utils'
+import { agentsViewingMessage } from 'state/views/utils'
 
 export default function useIsTicketViewed(ticketId: number) {
-    const {agentsViewing} = useAgentsViewing(ticketId)
+    const { agentsViewing } = useAgentsViewing(ticketId)
 
     const agentViewingMessage = useMemo(
         () => agentsViewingMessage(agentsViewing),
-        [agentsViewing]
+        [agentsViewing],
     )
 
     return useMemo(
@@ -16,6 +16,6 @@ export default function useIsTicketViewed(ticketId: number) {
             isTicketViewed: agentsViewing.length > 0,
             agentViewingMessage,
         }),
-        [agentsViewing, agentViewingMessage]
+        [agentsViewing, agentViewingMessage],
     )
 }

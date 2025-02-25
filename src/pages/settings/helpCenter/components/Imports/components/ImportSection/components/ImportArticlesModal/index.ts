@@ -1,1 +1,1 @@
-export {default} from './ImportArticlesModal'
+export { default } from './ImportArticlesModal'

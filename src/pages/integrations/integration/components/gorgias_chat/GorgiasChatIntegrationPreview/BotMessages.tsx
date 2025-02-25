@@ -1,5 +1,6 @@
+import React, { useContext } from 'react'
+
 import classnames from 'classnames'
-import React, {useContext} from 'react'
 
 import {
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
@@ -7,9 +8,10 @@ import {
 } from 'config/integrations/gorgias_chat'
 import Avatar from 'gorgias-design-system/Avatar/Avatar'
 
-import {ChatIntegrationPreviewContext} from '.'
-import previewCss from './ChatIntegrationPreview.less'
+import { ChatIntegrationPreviewContext } from '.'
 import ChatTitle from './ChatTitle'
+
+import previewCss from './ChatIntegrationPreview.less'
 
 type Props = {
     className?: string
@@ -25,7 +27,9 @@ const BotMessages: React.FC<Props> = ({
     messages,
     language,
 }) => {
-    const {displayBotLabel, avatar} = useContext(ChatIntegrationPreviewContext)
+    const { displayBotLabel, avatar } = useContext(
+        ChatIntegrationPreviewContext,
+    )
 
     const companyLogoUrl = avatar?.companyLogoUrl
 

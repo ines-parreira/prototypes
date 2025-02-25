@@ -1,16 +1,17 @@
-import React, {memo} from 'react'
-import {NodeProps} from 'reactflow'
+import React, { memo } from 'react'
+
+import { NodeProps } from 'reactflow'
 
 import VisualBuilderActionTag from 'pages/automate/workflows/components/VisualBuilderActionTag'
 import {
     useVisualBuilderNodeProps,
     VisualBuilderNodeProps,
 } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
-import {RefundOrderNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { RefundOrderNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 import EdgeBlock from '../components/EdgeBlock'
 import NodeDeleteIcon from '../components/NodeDeleteIcon'
-import {defaultNodeNames} from './constants'
+import { defaultNodeNames } from './constants'
 import VisualBuilderNode from './VisualBuilderNode'
 import VisualBuilderNodeContent from './VisualBuilderNodeContent'
 
@@ -41,7 +42,7 @@ const RefundOrderNode = memo(function RefundOrderNode({
 })
 
 export default function RefundOrderNodeWrapper(
-    node: NodeProps<RefundOrderNodeType['data']>
+    node: NodeProps<RefundOrderNodeType['data']>,
 ) {
     const commonProps = useVisualBuilderNodeProps(node)
 

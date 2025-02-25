@@ -1,13 +1,14 @@
-import {screen, render} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {User, UserRole} from 'config/types/user'
-import TwoFactorAuthenticationDisableModal from 'pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationDisableModal'
-import {assumeMock} from 'utils/testing'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
-import {OwnershipModal} from '../OwnershipModal'
-import {Statuses} from '../Statuses'
+import { User, UserRole } from 'config/types/user'
+import TwoFactorAuthenticationDisableModal from 'pages/settings/yourProfile/twoFactorAuthentication/TwoFactorAuthenticationDisableModal'
+import { assumeMock } from 'utils/testing'
+
+import { OwnershipModal } from '../OwnershipModal'
+import { Statuses } from '../Statuses'
 
 jest.mock('../OwnershipModal', () => ({
     OwnershipModal: jest.fn(() => <div>OwnershipModal</div>),
@@ -18,12 +19,12 @@ jest.mock(
     () => ({
         __esModule: true,
         default: jest.fn(() => <div>TwoFactorAuthenticationDisableModal</div>),
-    })
+    }),
 )
 
 const mockedOwnershipModal = assumeMock(OwnershipModal)
 const mockedTwoFactorAuthenticationDisableModal = assumeMock(
-    TwoFactorAuthenticationDisableModal
+    TwoFactorAuthenticationDisableModal,
 )
 
 const props = {
@@ -33,7 +34,7 @@ const props = {
     rawData: {
         email: '',
         name: 'M. Love',
-        role: {name: UserRole.Admin},
+        role: { name: UserRole.Admin },
     } as User,
     isAccountOwner: true,
     isViewingAccountOwner: false,
@@ -41,7 +42,7 @@ const props = {
 
 describe('Statuses', () => {
     it('should toggle the correct statues / actions according to props', () => {
-        const {rerender} = render(<Statuses {...props} />)
+        const { rerender } = render(<Statuses {...props} />)
 
         expect(screen.getByText('2FA Disabled'))
         expect(screen.queryByText('Reset 2FA Token')).not.toBeInTheDocument()
@@ -53,7 +54,7 @@ describe('Statuses', () => {
         expect(screen.queryByText('Reset 2FA Token')).toBeInTheDocument()
         expect(screen.queryByText('Account Owner')).toBeInTheDocument()
         expect(
-            screen.queryByText('Set as Account Owner')
+            screen.queryByText('Set as Account Owner'),
         ).not.toBeInTheDocument()
     })
 
@@ -68,7 +69,7 @@ describe('Statuses', () => {
                 isModalOpen: true,
                 setModalOpen: expect.any(Function),
             },
-            {}
+            {},
         )
     })
 
@@ -77,7 +78,10 @@ describe('Statuses', () => {
 
         userEvent.click(screen.getByText('Reset 2FA Token'))
         expect(
-            mockedTwoFactorAuthenticationDisableModal
-        ).toHaveBeenLastCalledWith(expect.objectContaining({isOpen: true}), {})
+            mockedTwoFactorAuthenticationDisableModal,
+        ).toHaveBeenLastCalledWith(
+            expect.objectContaining({ isOpen: true }),
+            {},
+        )
     })
 })

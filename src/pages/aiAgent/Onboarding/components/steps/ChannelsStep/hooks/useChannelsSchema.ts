@@ -1,5 +1,6 @@
-import {useMemo} from 'react'
-import {z} from 'zod'
+import { useMemo } from 'react'
+
+import { z } from 'zod'
 
 // ✅ Define the form values type
 export type ChannelsFormValues = {
@@ -66,6 +67,6 @@ export const useChannelsSchema = (createNewChat: boolean) => {
                         })
                     }
                 }),
-        [createNewChat]
+        [createNewChat],
     )
 }

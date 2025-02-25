@@ -1,4 +1,4 @@
-import {extractLinksFromText} from '../extractLinksFromText'
+import { extractLinksFromText } from '../extractLinksFromText'
 
 const HTML_WITH_NO_ANCHORS = `<div>Use code <strong><u>FREE_SHIPPING</u> </strong>and <strong>get 5% off your purchase of $300 </strong>or more.</div>`
 

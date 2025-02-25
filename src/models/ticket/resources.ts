@@ -1,28 +1,29 @@
-import {searchTickets as apiSearchTickets} from '@gorgias/api-client'
-import {stringify} from 'qs'
+import { stringify } from 'qs'
+
+import { searchTickets as apiSearchTickets } from '@gorgias/api-client'
 
 import client from 'models/api/resources'
 import {
-    ApiPaginationParams,
     ApiListResponseCursorPagination,
+    ApiPaginationParams,
 } from 'models/api/types'
-import {deepMapKeysToSnakeCase} from 'models/api/utils'
+import { deepMapKeysToSnakeCase } from 'models/api/utils'
 import {
     PickedTicketWithHighlights,
     TicketSearchOptions,
     TicketWithHighlightsResponse,
 } from 'models/search/types'
-import {mergeEntitiesWithHighlights} from 'models/search/utils'
-import {Ticket} from 'models/ticket/types'
+import { mergeEntitiesWithHighlights } from 'models/search/utils'
+import { Ticket } from 'models/ticket/types'
 
 export const fetchTicketsByTicketIds = async (ticketIds: number[]) => {
     const res = await client.get<ApiListResponseCursorPagination<Ticket[]>>(
         '/api/tickets',
         {
-            params: {ticket_ids: ticketIds},
+            params: { ticket_ids: ticketIds },
             paramsSerializer: (params) =>
-                stringify(params, {arrayFormat: 'repeat'}),
-        }
+                stringify(params, { arrayFormat: 'repeat' }),
+        },
     )
 
     return res.data.data
@@ -30,10 +31,10 @@ export const fetchTicketsByTicketIds = async (ticketIds: number[]) => {
 
 export const fetchTicketsByRuleId = async (
     ruleId: number,
-    params: ApiPaginationParams
+    params: ApiPaginationParams,
 ): Promise<ApiListResponseCursorPagination<Ticket[]>> => {
     const res = await client.get('/api/tickets', {
-        params: {...params, rule_id: ruleId},
+        params: { ...params, rule_id: ruleId },
     })
     return res.data as ApiListResponseCursorPagination<Ticket[]>
 }
@@ -55,26 +56,26 @@ export const searchTickets = async ({
         {
             ...deepMapKeysToSnakeCase({
                 ...rest,
-                ...(cursor ? {cursor} : {}),
-                ...(withHighlights === true ? {withHighlights: true} : {}),
-                ...(trackTotalHits === true ? {trackTotalHits: true} : {}),
+                ...(cursor ? { cursor } : {}),
+                ...(withHighlights === true ? { withHighlights: true } : {}),
+                ...(trackTotalHits === true ? { trackTotalHits: true } : {}),
             }),
         },
         {
-            ...(cancelToken ? {cancelToken} : {}),
-        }
+            ...(cancelToken ? { cancelToken } : {}),
+        },
     )
 }
 
 export const searchTicketsWithHighlights = (
-    options: Omit<TicketSearchOptions, 'withHighlights'>
+    options: Omit<TicketSearchOptions, 'withHighlights'>,
 ) =>
-    searchTickets({...options, withHighlights: true}).then((resp) => ({
+    searchTickets({ ...options, withHighlights: true }).then((resp) => ({
         ...resp,
         data: {
             ...resp.data,
             data: (resp.data?.data as TicketWithHighlightsResponse[]).map(
-                mergeEntitiesWithHighlights
+                mergeEntitiesWithHighlights,
             ) as PickedTicketWithHighlights[],
         },
     }))

@@ -1,21 +1,23 @@
-import React, {useState} from 'react'
-import {Popover, PopoverBody} from 'reactstrap'
+import React, { useState } from 'react'
 
-import {useAppNode} from 'appNode'
+import { Popover, PopoverBody } from 'reactstrap'
+
+import { useAppNode } from 'appNode'
 import Button from 'pages/common/components/button/Button'
-import {sanitizeHtmlDefault} from 'utils/html'
+import { sanitizeHtmlDefault } from 'utils/html'
+
+import { PlaygroundAction } from './types'
 
 import css from './PlaygroundActionsItem.less'
-import {PlaygroundAction} from './types'
 
 type Props = {
     action: PlaygroundAction
 }
 
-export const PlaygroundActionsItem = ({action}: Props) => {
+export const PlaygroundActionsItem = ({ action }: Props) => {
     const appNode = useAppNode()
     const [isPreviewOpen, setIsPreviewOpen] = useState(false)
-    const {label, content, id, onClick} = action
+    const { label, content, id, onClick } = action
 
     return (
         <>

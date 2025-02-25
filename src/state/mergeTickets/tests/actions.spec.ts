@@ -1,15 +1,15 @@
 import MockAdapter from 'axios-mock-adapter'
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {BASE_VIEW_ID} from 'constants/view'
+import { BASE_VIEW_ID } from 'constants/view'
 import client from 'models/api/resources'
-import {searchTickets as modelSearchTickets} from 'models/ticket/resources'
-import {Ticket} from 'models/ticket/types'
-import {StoreDispatch} from 'state/types'
-import {getLDClient} from 'utils/launchDarkly'
+import { searchTickets as modelSearchTickets } from 'models/ticket/resources'
+import { Ticket } from 'models/ticket/types'
+import { StoreDispatch } from 'state/types'
+import { getLDClient } from 'utils/launchDarkly'
 
-import {mergeTickets, searchTickets} from '../actions'
+import { mergeTickets, searchTickets } from '../actions'
 
 jest.mock('models/ticket/resources', () => ({
     searchTickets: jest.fn(),
@@ -21,7 +21,7 @@ jest.mock('utils/launchDarkly', () => ({
 type MockedRootState = Record<string, unknown>
 const middlewares = [thunk]
 const mockStore = configureMockStore<MockedRootState, StoreDispatch>(
-    middlewares
+    middlewares,
 )
 
 const mockGetLDClient = getLDClient as jest.Mock
@@ -91,13 +91,13 @@ describe('mergeTickets actions', () => {
         it('should dispatch an error notification if the search failed', () => {
             mockServer
                 .onPut(`/api/views/${BASE_VIEW_ID}/items/`)
-                .reply(500, {error: 'this does not work'})
+                .reply(500, { error: 'this does not work' })
 
             return store.dispatch(searchTickets('foo', 1, null)).then(
                 () => null,
                 () => {
                     expect(store.getActions()).toMatchSnapshot()
-                }
+                },
             )
         })
 
@@ -137,7 +137,7 @@ describe('mergeTickets actions', () => {
 
                 mockServer
                     .onPut(
-                        `/api/tickets/merge?target_id=${targetTicketId}&source_id=${sourceTicketId}`
+                        `/api/tickets/merge?target_id=${targetTicketId}&source_id=${sourceTicketId}`,
                     )
                     .reply(200, {
                         id: 2,
@@ -148,13 +148,13 @@ describe('mergeTickets actions', () => {
                     .dispatch(
                         mergeTickets(sourceTicketId, targetTicketId, {
                             subject,
-                        } as Ticket)
+                        } as Ticket),
                     )
                     .then((data) => {
                         expect(store.getActions()).toMatchSnapshot()
                         expect(data).toMatchSnapshot()
                     })
-            }
+            },
         )
 
         it(
@@ -167,7 +167,7 @@ describe('mergeTickets actions', () => {
 
                 mockServer
                     .onPut(
-                        `/api/tickets/merge?target_id=${targetTicketId}&source_id=${sourceTicketId}`
+                        `/api/tickets/merge?target_id=${targetTicketId}&source_id=${sourceTicketId}`,
                     )
                     .reply(500, {
                         error: 'this does not work',
@@ -177,16 +177,16 @@ describe('mergeTickets actions', () => {
                     .dispatch(
                         mergeTickets(sourceTicketId, targetTicketId, {
                             subject,
-                        } as Ticket)
+                        } as Ticket),
                     )
                     .then(
                         () => null,
                         (data) => {
                             expect(store.getActions()).toMatchSnapshot()
                             expect(data).toMatchSnapshot()
-                        }
+                        },
                     )
-            }
+            },
         )
     })
 })

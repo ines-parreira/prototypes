@@ -1,15 +1,15 @@
-import {useMutation, useQuery, UseQueryOptions} from '@tanstack/react-query'
+import { useMutation, useQuery, UseQueryOptions } from '@tanstack/react-query'
 
-import {CONVERT_DEFAULT_OPTIONS} from 'models/convert/constants'
-import {useConvertApi} from 'pages/convert/common/hooks/useConvertApi'
-import {MutationOverrides} from 'types/query'
+import { CONVERT_DEFAULT_OPTIONS } from 'models/convert/constants'
+import { useConvertApi } from 'pages/convert/common/hooks/useConvertApi'
+import { MutationOverrides } from 'types/query'
 
 import {
-    getDiscountOffers,
     createDiscountOffer,
-    updateDiscountOffer,
     deleteDiscountOffer,
     getDiscountOffer,
+    getDiscountOffers,
+    updateDiscountOffer,
 } from './resources'
 import {
     UniqueDiscountListParams,
@@ -33,9 +33,9 @@ export const useListDiscountOffers = (
         Awaited<ReturnType<typeof getDiscountOffers>>,
         unknown,
         UniqueDiscountOffer[]
-    >
+    >,
 ) => {
-    const {client: convertClient} = useConvertApi()
+    const { client: convertClient } = useConvertApi()
 
     return useQuery({
         queryKey: uniqueDiscountOfferKeys.list(params),
@@ -48,9 +48,9 @@ export const useListDiscountOffers = (
 }
 
 export const useCreateDiscountOffer = (
-    overrides?: MutationOverrides<typeof createDiscountOffer>
+    overrides?: MutationOverrides<typeof createDiscountOffer>,
 ) => {
-    const {client: convertClient} = useConvertApi()
+    const { client: convertClient } = useConvertApi()
 
     return useMutation({
         mutationFn: ([client = convertClient, data]) =>
@@ -61,9 +61,9 @@ export const useCreateDiscountOffer = (
 }
 
 export const useUpdateDiscountOffer = (
-    overrides?: MutationOverrides<typeof updateDiscountOffer>
+    overrides?: MutationOverrides<typeof updateDiscountOffer>,
 ) => {
-    const {client: convertClient} = useConvertApi()
+    const { client: convertClient } = useConvertApi()
 
     return useMutation({
         mutationFn: ([client = convertClient, params, data]) =>
@@ -74,9 +74,9 @@ export const useUpdateDiscountOffer = (
 }
 
 export const useDeleteDiscountOffer = (
-    overrides?: MutationOverrides<typeof deleteDiscountOffer>
+    overrides?: MutationOverrides<typeof deleteDiscountOffer>,
 ) => {
-    const {client: convertClient} = useConvertApi()
+    const { client: convertClient } = useConvertApi()
 
     return useMutation({
         mutationFn: ([client = convertClient, params]) =>
@@ -92,9 +92,9 @@ export const useGetDiscountOffer = (
         Awaited<ReturnType<typeof getDiscountOffer>>,
         unknown,
         UniqueDiscountOffer
-    >
+    >,
 ) => {
-    const {client: convertClient} = useConvertApi()
+    const { client: convertClient } = useConvertApi()
 
     return useQuery({
         queryKey: uniqueDiscountOfferKeys.detail(params),

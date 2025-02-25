@@ -1,4 +1,4 @@
-import {SYSTEM_SOURCE_TYPES} from 'tickets/common/config'
+import { SYSTEM_SOURCE_TYPES } from 'tickets/common/config'
 
 import isSystemType from '../isSystemType'
 

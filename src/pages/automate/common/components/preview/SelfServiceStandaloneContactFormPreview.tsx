@@ -1,12 +1,12 @@
-import React, {memo} from 'react'
-import {Route, useLocation} from 'react-router-dom'
+import React, { memo } from 'react'
 
-import {ContactForm} from 'models/contactForm/types'
+import { Route, useLocation } from 'react-router-dom'
+
+import { ContactForm } from 'models/contactForm/types'
 import StandaloneContactFormPreview from 'pages/settings/contactForm/components/StandaloneContactFormPreview/StandaloneContactFormPreview'
+import { ContactFormDisplayMode } from 'pages/settings/contactForm/types/formDisplayMode.enum'
 
-import {ContactFormDisplayMode} from 'pages/settings/contactForm/types/formDisplayMode.enum'
-
-import {SELF_SERVICE_PREVIEW_ROUTES} from './constants'
+import { SELF_SERVICE_PREVIEW_ROUTES } from './constants'
 import SelfServiceStandaloneContactFormHomePage from './SelfServiceStandaloneContactFormHomePage'
 
 type Props = {
@@ -14,7 +14,7 @@ type Props = {
 }
 
 const SelfServiceStandaloneContactFormPreview = (props: Props) => {
-    const {contactForm} = props
+    const { contactForm } = props
     const location = useLocation()
     const isFormHidden =
         contactForm.form_display_mode ===

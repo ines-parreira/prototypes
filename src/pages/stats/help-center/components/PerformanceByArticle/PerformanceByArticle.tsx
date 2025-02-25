@@ -1,13 +1,13 @@
 import React from 'react'
 
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
 import ChartCard from 'pages/stats/ChartCard'
-import {DashboardChartProps} from 'pages/stats/custom-reports/types'
+import { DashboardChartProps } from 'pages/stats/custom-reports/types'
 import HelpCenterStatsTable, {
     TableCellType,
 } from 'pages/stats/help-center/components/HelpCenterStatsTable/HelpCenterStatsTable'
-import {usePerformanceByArticleMetrics} from 'pages/stats/help-center/hooks/usePerformanceByArticleMetrics'
-import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
+import { usePerformanceByArticleMetrics } from 'pages/stats/help-center/hooks/usePerformanceByArticleMetrics'
+import { NoDataAvailable } from 'pages/stats/NoDataAvailable'
 
 const columns = [
     {
@@ -59,7 +59,7 @@ export const PerformanceByArticle = ({
     dashboard,
     chartId,
 }: Props) => {
-    const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone } = useNewStatsFilters()
     const [currentPage, setCurrentPage] = React.useState(1)
 
     const onPageChange = (page: number) => {
@@ -68,7 +68,7 @@ export const PerformanceByArticle = ({
         }
     }
 
-    const {data, total, isLoading} = usePerformanceByArticleMetrics({
+    const { data, total, isLoading } = usePerformanceByArticleMetrics({
         itemPerPage: ITEMS_PER_PAGE,
         timezone: userTimezone,
         currentPage,
@@ -90,7 +90,7 @@ export const PerformanceByArticle = ({
                 <NoDataAvailable
                     title="No data available"
                     description="Try adjusting filters to get results."
-                    style={{height: 1156}}
+                    style={{ height: 1156 }}
                 />
             ) : (
                 <HelpCenterStatsTable

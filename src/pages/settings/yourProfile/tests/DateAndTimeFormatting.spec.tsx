@@ -1,7 +1,11 @@
-import {render, fireEvent} from '@testing-library/react'
 import React from 'react'
 
-import {DateFormattingSetting, TimeFormattingSetting} from 'models/agents/types'
+import { fireEvent, render } from '@testing-library/react'
+
+import {
+    DateFormattingSetting,
+    TimeFormattingSetting,
+} from 'models/agents/types'
 import DateAndTimeFormatting from 'pages/settings/yourProfile/components/DateAndTimeFormatting'
 
 describe('DateAndTimeFormatting', () => {
@@ -33,18 +37,18 @@ describe('DateAndTimeFormatting', () => {
             currentTimeFormat,
             newDateFormat,
             newDateFormatLabel,
-            newTimeFormat
+            newTimeFormat,
         ) => {
             const onSelectDateFormatMock = jest.fn()
             const onSelectTimeFormatMock = jest.fn()
 
-            const {getByText, getByLabelText} = render(
+            const { getByText, getByLabelText } = render(
                 <DateAndTimeFormatting
                     dateFormat={currentDateFormat}
                     timeFormat={currentTimeFormat}
                     onSelectDateFormat={onSelectDateFormatMock}
                     onSelectTimeFormat={onSelectTimeFormatMock}
-                />
+                />,
             )
 
             // Check if the Date format and Time format labels are present
@@ -58,6 +62,6 @@ describe('DateAndTimeFormatting', () => {
             // Check if onSelect functions are called
             expect(onSelectDateFormatMock).toHaveBeenCalledWith(newDateFormat)
             expect(onSelectTimeFormatMock).toHaveBeenCalledWith(newTimeFormat)
-        }
+        },
     )
 })

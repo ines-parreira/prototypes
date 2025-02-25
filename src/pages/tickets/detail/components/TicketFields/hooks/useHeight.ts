@@ -1,9 +1,9 @@
 import {
     RefObject,
+    useCallback,
     useEffect,
     useLayoutEffect,
     useMemo,
-    useCallback,
     useState,
 } from 'react'
 
@@ -13,7 +13,7 @@ export const MAX_HEIGHT = 500
 const useHeight = (
     ref: RefObject<HTMLElement>,
     amountOfTicketFieldsToRender: number,
-    isExpanded: boolean
+    isExpanded: boolean,
 ) => {
     const [maxHeight, setMaxHeight] = useState<number>()
     const [last, setLast] = useState<DOMRect>()
@@ -32,7 +32,7 @@ const useHeight = (
                   ? MAX_HEIGHT
                   : scrollHeight
         },
-        [ref]
+        [ref],
     )
 
     useEffect(() => {
@@ -55,7 +55,7 @@ const useHeight = (
 
                 setLast(boundingRect)
             }),
-        [recalculateMaxHeight, last?.height, last?.width, isExpanded, ref]
+        [recalculateMaxHeight, last?.height, last?.width, isExpanded, ref],
     )
 
     useLayoutEffect(() => {

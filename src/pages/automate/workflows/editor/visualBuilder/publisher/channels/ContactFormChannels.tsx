@@ -1,11 +1,11 @@
-import React, {useCallback, useMemo} from 'react'
+import React, { useCallback, useMemo } from 'react'
 
-import {TicketChannel} from 'business/types/ticket'
-import {ContactFormAutomationSettings} from 'models/contactForm/types'
+import { TicketChannel } from 'business/types/ticket'
+import { ContactFormAutomationSettings } from 'models/contactForm/types'
 import useContactFormsAutomationSettings from 'pages/automate/common/hooks/useContactFormsAutomationSettings'
-import {SelfServiceChannelType} from 'pages/automate/common/hooks/useSelfServiceChannels'
-import {SelfServiceStandaloneContactFormChannel} from 'pages/automate/common/hooks/useSelfServiceStandaloneContactFormChannels'
-import {WorkflowConfiguration} from 'pages/automate/workflows/models/workflowConfiguration.types'
+import { SelfServiceChannelType } from 'pages/automate/common/hooks/useSelfServiceChannels'
+import { SelfServiceStandaloneContactFormChannel } from 'pages/automate/common/hooks/useSelfServiceStandaloneContactFormChannels'
+import { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
 
 import ChannelBlock from '../helper/ChannelBlock'
 import useOnlySupportedChannels from '../helper/useOnlySupportedChannels'
@@ -26,7 +26,7 @@ const ChannelItem = ({
     applicationAutomationSettings: ContactFormAutomationSettings
     handleContactFormAutomationSettingsUpdate: (
         contactFormId: number,
-        chatApplicationAutomationSettings: Partial<ContactFormAutomationSettings>
+        chatApplicationAutomationSettings: Partial<ContactFormAutomationSettings>,
     ) => Promise<void>
 }) => {
     const workflows = applicationAutomationSettings?.workflows || []
@@ -42,7 +42,7 @@ const ChannelItem = ({
             applicationAutomationSettings,
             channel.value.id,
             handleContactFormAutomationSettingsUpdate,
-        ]
+        ],
     )
     return (
         <ChannelToggle
@@ -65,7 +65,7 @@ const ContactFormChannels = ({
 }) => {
     const onlySupportedChannels = useOnlySupportedChannels(
         configuration,
-        TicketChannel.ContactForm
+        TicketChannel.ContactForm,
     )
     const appIds = useMemo(() => {
         return standaloneContactFormsChannels.map((channel) => channel.value.id)

@@ -3,16 +3,16 @@ import {
     StoreConfiguration,
 } from 'models/aiAgent/types'
 
-import {FormValues} from '../../types'
+import { FormValues } from '../../types'
 
 export function isAiAgentOnboardingWizardStep(
-    value: any
+    value: any,
 ): value is AiAgentOnboardingWizardStep {
     return Object.values(AiAgentOnboardingWizardStep).includes(value)
 }
 
 export const getFormValuesFromStoreConfiguration = (
-    storeConfig: StoreConfiguration
+    storeConfig: StoreConfiguration,
 ): FormValues => ({
     deactivatedDatetime: storeConfig.deactivatedDatetime,
     chatChannelDeactivatedDatetime: storeConfig.chatChannelDeactivatedDatetime,

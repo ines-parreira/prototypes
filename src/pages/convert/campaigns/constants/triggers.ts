@@ -1,8 +1,8 @@
-import {CampaignTriggerBusinessHoursValuesEnum} from '../types/enums/CampaignTriggerBusinessHoursValues.enum'
-import {CampaignTriggerDeviceTypeValueEnum} from '../types/enums/CampaignTriggerDeviceTypeValue.enum'
-import {CampaignTriggerOperator} from '../types/enums/CampaignTriggerOperator.enum'
-import {CampaignTriggerType} from '../types/enums/CampaignTriggerType.enum'
-import {TriggerConfig} from '../types/TriggerConfig'
+import { CampaignTriggerBusinessHoursValuesEnum } from '../types/enums/CampaignTriggerBusinessHoursValues.enum'
+import { CampaignTriggerDeviceTypeValueEnum } from '../types/enums/CampaignTriggerDeviceTypeValue.enum'
+import { CampaignTriggerOperator } from '../types/enums/CampaignTriggerOperator.enum'
+import { CampaignTriggerType } from '../types/enums/CampaignTriggerType.enum'
+import { TriggerConfig } from '../types/TriggerConfig'
 
 export const CONVERT_LIGHT_TRIGGERS = [
     CampaignTriggerType.CurrentUrl,

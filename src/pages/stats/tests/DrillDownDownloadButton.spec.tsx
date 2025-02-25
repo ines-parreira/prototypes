@@ -1,23 +1,23 @@
-import {fireEvent, render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {UserRole} from 'config/types/user'
-import {agents} from 'fixtures/agents'
-import {user} from 'fixtures/users'
-import {useRunningJobs} from 'jobs'
-import {ReportingGranularity} from 'models/reporting/types'
-
+import { UserRole } from 'config/types/user'
+import { agents } from 'fixtures/agents'
+import { user } from 'fixtures/users'
+import { useRunningJobs } from 'jobs'
+import { ReportingGranularity } from 'models/reporting/types'
 import {
-    DrillDownDownloadButton,
-    DOWNLOAD_REQUESTED_LABEL,
     DOWNLOAD_LOADING_LABEL,
+    DOWNLOAD_REQUESTED_LABEL,
+    DrillDownDownloadButton,
     TOTAL_OBJECTS_COUNT_PLACEHOLDER,
 } from 'pages/stats/DrillDownDownloadButton'
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
 import {
     AgentsMetrics,
     drillDownSlice,
@@ -25,20 +25,20 @@ import {
     initialState,
 } from 'state/ui/stats/drillDownSlice'
 import {
-    getCleanStatsFiltersWithTimezone,
     getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
+    getCleanStatsFiltersWithTimezone,
 } from 'state/ui/stats/selectors'
-import {AgentsTableColumn} from 'state/ui/stats/types'
-import {assumeMock, renderWithStore} from 'utils/testing'
+import { AgentsTableColumn } from 'state/ui/stats/types'
+import { assumeMock, renderWithStore } from 'utils/testing'
 
 const mockStore = configureMockStore([thunk])
 
 jest.mock('state/ui/stats/selectors')
 const getCleanStatsFiltersWithTimezoneMock = assumeMock(
-    getCleanStatsFiltersWithTimezone
+    getCleanStatsFiltersWithTimezone,
 )
 const getCleanStatsFiltersWithLogicalOperatorsWithTimezoneMock = assumeMock(
-    getCleanStatsFiltersWithLogicalOperatorsWithTimezone
+    getCleanStatsFiltersWithLogicalOperatorsWithTimezone,
 )
 
 jest.mock('jobs/useRunningJobs')
@@ -63,7 +63,7 @@ describe('<DrillDownDownloadButton />', () => {
                 userTimezone: 'someTimezone',
                 cleanStatsFilters,
                 granularity: ReportingGranularity.Day,
-            }
+            },
         )
 
         mockUseRunningJobs.mockReturnValue({
@@ -93,7 +93,7 @@ describe('<DrillDownDownloadButton />', () => {
                     metricData={metricData}
                     objectType={objectType}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByRole('button')).toBeInTheDocument()
@@ -103,7 +103,7 @@ describe('<DrillDownDownloadButton />', () => {
         const state = {
             currentUser: fromJS({
                 ...agents[0],
-                role: {name: UserRole.ObserverAgent},
+                role: { name: UserRole.ObserverAgent },
             }),
             ui: {
                 stats: {
@@ -117,7 +117,7 @@ describe('<DrillDownDownloadButton />', () => {
                 metricData={metricData}
                 objectType={objectType}
             />,
-            state
+            state,
         )
 
         expect(screen.getByRole('button')).toBeAriaDisabled()
@@ -127,10 +127,10 @@ describe('<DrillDownDownloadButton />', () => {
         const state = {
             currentUser: fromJS({
                 ...agents[0],
-                role: {name: UserRole.Admin},
+                role: { name: UserRole.Admin },
             }),
             ui: {
-                stats: {[drillDownSlice.name]: initialState},
+                stats: { [drillDownSlice.name]: initialState },
             },
         } as RootState
         mockUseRunningJobs.mockReturnValue({
@@ -143,19 +143,19 @@ describe('<DrillDownDownloadButton />', () => {
                 metricData={metricData}
                 objectType={objectType}
             />,
-            state
+            state,
         )
 
         expect(screen.getByRole('button')).toBeAriaDisabled()
     })
 
     it('should dispatch export action', () => {
-        const {store} = renderWithStore(
+        const { store } = renderWithStore(
             <DrillDownDownloadButton
                 metricData={metricData}
                 objectType={objectType}
             />,
-            defaultState
+            defaultState,
         )
 
         fireEvent.click(screen.getByRole('button'))
@@ -163,7 +163,7 @@ describe('<DrillDownDownloadButton />', () => {
         expect(store.getActions()).toContainEqual(
             expect.objectContaining({
                 type: `${EXPORT_DRILL_DOWN_JOB_ACTION}/pending`,
-            })
+            }),
         )
     })
 
@@ -189,7 +189,7 @@ describe('<DrillDownDownloadButton />', () => {
                 metricData={metricData}
                 objectType={objectType}
             />,
-            state
+            state,
         )
         fireEvent.click(screen.getByRole('button'))
 
@@ -218,7 +218,7 @@ describe('<DrillDownDownloadButton />', () => {
                 metricData={metricData}
                 objectType={objectType}
             />,
-            state
+            state,
         )
 
         expect(screen.getByText(DOWNLOAD_LOADING_LABEL)).toBeInTheDocument()
@@ -246,13 +246,13 @@ describe('<DrillDownDownloadButton />', () => {
                 metricData={metricData}
                 objectType={objectType}
             />,
-            state
+            state,
         )
 
         expect(
             screen.getByText(
-                `Download ${TOTAL_OBJECTS_COUNT_PLACEHOLDER} tickets`
-            )
+                `Download ${TOTAL_OBJECTS_COUNT_PLACEHOLDER} tickets`,
+            ),
         ).toBeInTheDocument()
     })
 })

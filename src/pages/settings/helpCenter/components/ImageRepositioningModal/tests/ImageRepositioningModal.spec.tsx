@@ -1,7 +1,8 @@
-import {fireEvent, render} from '@testing-library/react'
-import React, {createRef} from 'react'
+import React, { createRef } from 'react'
 
-import {ImageRepositioningModal} from '../ImageRepositioningModal'
+import { fireEvent, render } from '@testing-library/react'
+
+import { ImageRepositioningModal } from '../ImageRepositioningModal'
 
 describe('<ImageRepositioningModal />', () => {
     const closeModalFn = jest.fn()
@@ -27,7 +28,7 @@ describe('<ImageRepositioningModal />', () => {
     })
 
     it('should call OnSubmit', () => {
-        const {getByText} = render(<ImageRepositioningModal {...baseProps} />)
+        const { getByText } = render(<ImageRepositioningModal {...baseProps} />)
 
         const saveButton = getByText('Save Image')
         fireEvent.click(saveButton)
@@ -36,7 +37,7 @@ describe('<ImageRepositioningModal />', () => {
     })
 
     it('should call OnSubmit with batch mode', () => {
-        const {getByText} = render(<ImageRepositioningModal {...baseProps} />)
+        const { getByText } = render(<ImageRepositioningModal {...baseProps} />)
 
         const batchApplyButton = getByText('Apply image to all languages')
         fireEvent.click(batchApplyButton)
@@ -48,7 +49,7 @@ describe('<ImageRepositioningModal />', () => {
     })
 
     it('should call onCloseModal', () => {
-        const {getByText} = render(<ImageRepositioningModal {...baseProps} />)
+        const { getByText } = render(<ImageRepositioningModal {...baseProps} />)
 
         const cancelButton = getByText('Cancel')
         fireEvent.click(cancelButton)

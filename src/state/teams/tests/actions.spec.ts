@@ -1,8 +1,8 @@
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {teams} from 'fixtures/teams'
-import {RootState, StoreDispatch} from 'state/types'
+import { teams } from 'fixtures/teams'
+import { RootState, StoreDispatch } from 'state/types'
 
 import {
     deleteTeamSuccess,
@@ -18,7 +18,7 @@ describe('teams actions', () => {
 
     it('fetchTeamMembersSuccess should return an action to fetch team members', () => {
         const store = mockStore({})
-        const team = {id: teams[0].id, members: teams[0].members}
+        const team = { id: teams[0].id, members: teams[0].members }
 
         store.dispatch(fetchTeamMembersSuccess(team))
         expect(store.getActions()).toMatchSnapshot()

@@ -1,6 +1,6 @@
-import React, {useEffect, useRef} from 'react'
+import React, { useEffect, useRef } from 'react'
 
-import {ACEProps, EditorProps} from './types'
+import { ACEProps, EditorProps } from './types'
 import withACEEditor from './withACEEditor'
 
 /* eslint-disable @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return */
@@ -19,7 +19,7 @@ const ReactAce = ({
     editor,
     setEditor,
     ...props
-}: EditorProps & ACEProps & {ace: any}) => {
+}: EditorProps & ACEProps & { ace: any }) => {
     const editorRef = useRef<HTMLDivElement>(null)
 
     // Init the editor object
@@ -68,7 +68,7 @@ const ReactAce = ({
         editor.renderer.updateFontSize()
         editor.setValue(
             defaultValue === undefined ? value : defaultValue,
-            cursorStart
+            cursorStart,
         )
         editor.renderer.setShowGutter(showGutter)
         editor.$blockScrolling = Infinity
@@ -83,8 +83,8 @@ const ReactAce = ({
                             acc ||
                             (annotation.type === 'error' &&
                                 new RegExp(cur, 'gi').test(annotation.text)),
-                        false
-                    )
+                        false,
+                    ),
             )
             editor.$onChangeAnnotation()
         })
@@ -146,7 +146,7 @@ const ReactAce = ({
         }
     }
 
-    return <div ref={editorRef} id={name} style={{width, height}}></div>
+    return <div ref={editorRef} id={name} style={{ width, height }}></div>
 }
 
 export default withACEEditor(ReactAce)

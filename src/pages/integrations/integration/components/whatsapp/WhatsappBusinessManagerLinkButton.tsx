@@ -10,7 +10,7 @@ export default function WhatsappBusinessManagerLinkButton() {
                 window
                     .open(
                         'https://business.facebook.com/wa/manage/message-templates/',
-                        '_blank'
+                        '_blank',
                     )!
                     .focus()
             }

@@ -1,18 +1,18 @@
-import {EnhancedStore} from '@reduxjs/toolkit'
-import {fromJS} from 'immutable'
-import {dismissNotification} from 'reapop'
+import { EnhancedStore } from '@reduxjs/toolkit'
+import { fromJS } from 'immutable'
+import { dismissNotification } from 'reapop'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {store as reduxStore} from 'common/store'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { store as reduxStore } from 'common/store'
 import history from 'pages/history'
 import {
     newMessageResetFromMessage,
     sendTicketMessage,
 } from 'state/newMessage/actions'
-import {NewMessage, ReplyAreaState} from 'state/newMessage/types'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {applyMacro, messageDeleted} from 'state/ticket/actions'
+import { NewMessage, ReplyAreaState } from 'state/newMessage/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { applyMacro, messageDeleted } from 'state/ticket/actions'
 
 //$TsFixMe remove once init.js is migrated
 const typeSafeReduxStore = reduxStore as EnhancedStore
@@ -54,7 +54,7 @@ export class PendingMessageManager {
     }
 
     sendMessage = (sendMessageArgs: SendMessageArgs) => {
-        const {messageId, messageToSend, action, resetMessage, ticketId} =
+        const { messageId, messageToSend, action, resetMessage, ticketId } =
             sendMessageArgs
 
         this.skipExistingTimer()
@@ -72,7 +72,7 @@ export class PendingMessageManager {
                     },
                 ],
                 //$TsFixMe remove casting on init.js migration
-            }) as any
+            }) as any,
         )
         this.pendingSendMessagesArgs = sendMessageArgs
         this.listenUnloadEvent()
@@ -84,8 +84,8 @@ export class PendingMessageManager {
                     messageToSend,
                     action,
                     resetMessage,
-                    ticketId
-                ) as any
+                    ticketId,
+                ) as any,
             )
             this.dismissUnloadListener()
             this.timeoutId = null
@@ -102,7 +102,7 @@ export class PendingMessageManager {
 
     undoMessage = () => {
         if (this.timeoutId && this.pendingSendMessagesArgs) {
-            const {messageId, messageToSend, ticketId, replyAreaState} =
+            const { messageId, messageToSend, ticketId, replyAreaState } =
                 this.pendingSendMessagesArgs
 
             logEvent(SegmentEvent.UndoSentMessage, {
@@ -116,16 +116,16 @@ export class PendingMessageManager {
                     newMessageResetFromMessage({
                         replyAreaState,
                         newMessage: messageToSend,
-                    })
+                    }),
                 )
                 if (messageToSend.actions) {
-                    const macro = fromJS({actions: messageToSend.actions})
+                    const macro = fromJS({ actions: messageToSend.actions })
                     typeSafeReduxStore.dispatch(
                         applyMacro(
                             macro,
                             parseInt(ticketId as any),
-                            false
-                        ) as any
+                            false,
+                        ) as any,
                     )
                 }
             }, 0)
@@ -135,7 +135,7 @@ export class PendingMessageManager {
 
     skipExistingTimer = () => {
         if (this.timeoutId && this.pendingSendMessagesArgs) {
-            const {messageId, messageToSend, action, resetMessage, ticketId} =
+            const { messageId, messageToSend, action, resetMessage, ticketId } =
                 this.pendingSendMessagesArgs
 
             typeSafeReduxStore.dispatch(dismissNotification(String(messageId)))
@@ -146,8 +146,8 @@ export class PendingMessageManager {
                     messageToSend,
                     action,
                     resetMessage,
-                    ticketId
-                ) as any
+                    ticketId,
+                ) as any,
             )
             this.clearMessage()
         }
@@ -155,5 +155,5 @@ export class PendingMessageManager {
 }
 
 export default new PendingMessageManager(
-    "Are you sure? Your message won't be sent"
+    "Are you sure? Your message won't be sent",
 )

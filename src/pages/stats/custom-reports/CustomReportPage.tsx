@@ -1,35 +1,37 @@
-import {useGetAnalyticsCustomReport} from '@gorgias/api-queries'
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
-import React, {useCallback, useState} from 'react'
-import {useParams} from 'react-router-dom'
+import React, { useCallback, useState } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {useCustomReportActions} from 'hooks/reporting/custom-reports/useCustomReportActions'
-import {useDashboardNameValidation} from 'hooks/reporting/custom-reports/useDashboardNameValidation'
-import {useUpdateDashboardCache} from 'hooks/reporting/custom-reports/useUpdateDashboardCache'
+import { useParams } from 'react-router-dom'
+
+import { useGetAnalyticsCustomReport } from '@gorgias/api-queries'
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { useCustomReportActions } from 'hooks/reporting/custom-reports/useCustomReportActions'
+import { useDashboardNameValidation } from 'hooks/reporting/custom-reports/useDashboardNameValidation'
+import { useUpdateDashboardCache } from 'hooks/reporting/custom-reports/useUpdateDashboardCache'
 import useAppSelector from 'hooks/useAppSelector'
-import {CreateCustomReport} from 'pages/stats/custom-reports/CreateCustomReport/CreateCustomReport'
-import {CustomReport} from 'pages/stats/custom-reports/CustomReport'
-import {CustomReportActionButton} from 'pages/stats/custom-reports/CustomReportActionButton'
-import {CustomReportsModal} from 'pages/stats/custom-reports/CustomReportsModal/CustomReportsModal'
-import {DashboardName} from 'pages/stats/custom-reports/DashboardName'
-import {CustomReportSchema} from 'pages/stats/custom-reports/types'
-import {customReportFromApi} from 'pages/stats/custom-reports/utils'
+import { CreateCustomReport } from 'pages/stats/custom-reports/CreateCustomReport/CreateCustomReport'
+import { CustomReport } from 'pages/stats/custom-reports/CustomReport'
+import { CustomReportActionButton } from 'pages/stats/custom-reports/CustomReportActionButton'
+import { CustomReportsModal } from 'pages/stats/custom-reports/CustomReportsModal/CustomReportsModal'
+import { DashboardName } from 'pages/stats/custom-reports/DashboardName'
+import { CustomReportSchema } from 'pages/stats/custom-reports/types'
+import { customReportFromApi } from 'pages/stats/custom-reports/utils'
 import StatsPage, {
     StatsPageContent,
     StatsPageHeader,
     StatsPageWrapper,
 } from 'pages/stats/StatsPage'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {isTeamLead} from 'utils'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { isTeamLead } from 'utils'
 
 export const CUSTOM_REPORT_SCHEMA_ERROR = 'Custom report schema error'
 export const CUSTOM_REPORT_ID_CTA = 'Actions'
 
 export const CustomReportPage = () => {
-    const {id} = useParams<{id: string}>()
+    const { id } = useParams<{ id: string }>()
 
-    const {data, isLoading, isError} = useGetAnalyticsCustomReport(Number(id))
+    const { data, isLoading, isError } = useGetAnalyticsCustomReport(Number(id))
 
     const dashboard = customReportFromApi(data?.data)
 
@@ -52,14 +54,14 @@ export const CustomReportPage = () => {
     return <DashboardPage key={dashboard.id} dashboard={dashboard} />
 }
 
-const DashboardPage = ({dashboard}: {dashboard: CustomReportSchema}) => {
+const DashboardPage = ({ dashboard }: { dashboard: CustomReportSchema }) => {
     const currentUser = useAppSelector(getCurrentUser)
     const isCurrentUserTeamLead = isTeamLead(currentUser)
 
     const [isOpen, setIsOpen] = useState(false)
     const closeModal = useCallback(() => setIsOpen(false), [])
 
-    const {updateDashboardHandler, isUpdateMutationLoading} =
+    const { updateDashboardHandler, isUpdateMutationLoading } =
         useCustomReportActions()
 
     const updateDashboardCache = useUpdateDashboardCache(dashboard.id)
@@ -79,7 +81,7 @@ const DashboardPage = ({dashboard}: {dashboard: CustomReportSchema}) => {
 
     const successMessage = `Successfully updated ${details.name}`
 
-    const {error} = useDashboardNameValidation(details.name, dashboard.name)
+    const { error } = useDashboardNameValidation(details.name, dashboard.name)
 
     const handleUpdateName = () =>
         updateDashboardHandler({
@@ -96,7 +98,7 @@ const DashboardPage = ({dashboard}: {dashboard: CustomReportSchema}) => {
     }
 
     const handleMoveChartsEnd = () =>
-        updateDashboardHandler({dashboard, successMessage})
+        updateDashboardHandler({ dashboard, successMessage })
 
     const handleActionButtonClick = (isOpen: boolean) => {
         setIsOpen(isOpen)

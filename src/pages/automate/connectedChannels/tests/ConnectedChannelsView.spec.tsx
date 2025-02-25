@@ -1,30 +1,31 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-import {screen, fireEvent, waitFor} from '@testing-library/react'
-import {createMemoryHistory} from 'history'
-import {fromJS} from 'immutable'
-import {keyBy} from 'lodash'
 import React from 'react'
-import {act} from 'react-dom/test-utils'
-import {Provider} from 'react-redux'
-import {Router} from 'react-router-dom'
+
+import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { createMemoryHistory } from 'history'
+import { fromJS } from 'immutable'
+import { keyBy } from 'lodash'
+import { act } from 'react-dom/test-utils'
+import { Provider } from 'react-redux'
+import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {billingState} from 'fixtures/billing'
-import {selfServiceConfiguration1 as mockSelfServiceConfiguration} from 'fixtures/self_service_configurations'
+import { billingState } from 'fixtures/billing'
+import { selfServiceConfiguration1 as mockSelfServiceConfiguration } from 'fixtures/self_service_configurations'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import useHelpCentersAutomationSettings from 'pages/automate/common/hooks/useHelpCentersAutomationSettings'
 import useSelfServiceChannels from 'pages/automate/common/hooks/useSelfServiceChannels'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
-import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {RootState} from 'state/types'
-import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
+import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
+import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { RootState } from 'state/types'
+import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
-import {initialState as articlesState} from '../../../../state/entities/helpCenter/articles'
-import {initialState as categoriesState} from '../../../../state/entities/helpCenter/categories'
-import {useDisplayAiAgentMovedBanner} from '../../common/hooks/useDisplayAiAgentMovedBanner'
-import {ConnectedChannelsView} from '../ConnectedChannelsView'
+import { initialState as articlesState } from '../../../../state/entities/helpCenter/articles'
+import { initialState as categoriesState } from '../../../../state/entities/helpCenter/categories'
+import { useDisplayAiAgentMovedBanner } from '../../common/hooks/useDisplayAiAgentMovedBanner'
+import { ConnectedChannelsView } from '../ConnectedChannelsView'
 
 const mockChannels = [
     {
@@ -131,7 +132,7 @@ const mockedStore = mockStore({
                 automationSettingsByContactFormId: {
                     [contactForm.id]: {
                         workflows: [],
-                        order_management: {enabled: false},
+                        order_management: { enabled: false },
                     },
                 },
             },
@@ -238,7 +239,7 @@ jest.mock(
         ConnectedChannelsEmptyView: jest.fn(() => (
             <div>ConnectedChannelsEmptyView</div>
         )),
-    })
+    }),
 )
 
 jest.mock(
@@ -252,7 +253,7 @@ jest.mock(
                 },
             },
         ],
-    })
+    }),
 )
 
 jest.mock(
@@ -266,7 +267,7 @@ jest.mock(
                 },
             },
         ],
-    })
+    }),
 )
 
 jest.mock('../../common/hooks/useDisplayAiAgentMovedBanner', () => ({
@@ -277,13 +278,13 @@ jest.mock('../../common/components/AiAgentMovedBanner', () => ({
     AiAgentMovedBanner: () => <div>AI Agent Moved Banner</div>,
 }))
 
-const renderWithRouter = (ui: React.ReactElement, {route = '/'} = {}) => {
-    const history = createMemoryHistory({initialEntries: [route]})
+const renderWithRouter = (ui: React.ReactElement, { route = '/' } = {}) => {
+    const history = createMemoryHistory({ initialEntries: [route] })
     return {
         ...renderWithQueryClientProvider(
             <Provider store={mockedStore}>
                 <Router history={history}>{ui}</Router>
-            </Provider>
+            </Provider>,
         ),
         history,
     }
@@ -380,9 +381,9 @@ describe('ConnectedChannelsView', () => {
     })
 
     it('should change the route to chat when clicking on a channel', async () => {
-        const {history} = renderWithRouter(<ConnectedChannelsView />)
+        const { history } = renderWithRouter(<ConnectedChannelsView />)
 
-        const chatChannel = screen.getByRole('link', {name: /chat/i})
+        const chatChannel = screen.getByRole('link', { name: /chat/i })
         expect(chatChannel).toBeInTheDocument()
         // Check if the component corresponding to the route is rendered
 
@@ -390,13 +391,13 @@ describe('ConnectedChannelsView', () => {
             fireEvent.click(chatChannel)
             await waitFor(() => {
                 expect(history.location.pathname).toBe(
-                    '/app/automation/shopType/shopName/connected-channels'
+                    '/app/automation/shopType/shopName/connected-channels',
                 )
 
                 expect(
                     screen.getAllByText(
-                        'Display up to 6 Flows on your Chat to proactively resolve top customer requests.'
-                    )
+                        'Display up to 6 Flows on your Chat to proactively resolve top customer requests.',
+                    ),
                 ).toHaveLength(1)
                 expect(screen.getByText(/chat_bubble/i)).toBeInTheDocument()
             })
@@ -405,7 +406,7 @@ describe('ConnectedChannelsView', () => {
     })
 
     it('should change the route to help center when clicking on a channel', async () => {
-        const {history} = renderWithRouter(<ConnectedChannelsView />)
+        const { history } = renderWithRouter(<ConnectedChannelsView />)
 
         const helpCenterChannel = screen.getByRole('link', {
             name: /help center/i,
@@ -417,13 +418,13 @@ describe('ConnectedChannelsView', () => {
 
             await waitFor(() => {
                 expect(history.location.pathname).toBe(
-                    '/app/automation/shopType/shopName/connected-channels/help-center'
+                    '/app/automation/shopType/shopName/connected-channels/help-center',
                 )
 
                 expect(
                     screen.getByText(
-                        'Display up to 6 Flows on your Help Center to proactively resolve top customer requests.'
-                    )
+                        'Display up to 6 Flows on your Help Center to proactively resolve top customer requests.',
+                    ),
                 ).toBeInTheDocument()
                 expect(screen.getByText(/live_help/i)).toBeInTheDocument()
             })
@@ -431,7 +432,7 @@ describe('ConnectedChannelsView', () => {
     })
 
     it('should change the route to contact form when clicking on a channel', async () => {
-        const {history} = renderWithRouter(<ConnectedChannelsView />)
+        const { history } = renderWithRouter(<ConnectedChannelsView />)
 
         const contactFormChannel = screen.getByRole('link', {
             name: /contact form/i,
@@ -443,25 +444,25 @@ describe('ConnectedChannelsView', () => {
 
             await waitFor(() => {
                 expect(history.location.pathname).toBe(
-                    '/app/automation/shopType/shopName/connected-channels/contact-form'
+                    '/app/automation/shopType/shopName/connected-channels/contact-form',
                 )
 
                 expect(
-                    screen.getByText(/Enable Order Management/i)
+                    screen.getByText(/Enable Order Management/i),
                 ).toBeInTheDocument()
                 expect(
                     screen.getByText(
-                        'Display up to 6 Flows on your Contact Form to proactively resolve top customer requests.'
-                    )
+                        'Display up to 6 Flows on your Contact Form to proactively resolve top customer requests.',
+                    ),
                 ).toBeInTheDocument()
                 expect(
-                    screen.getByText(/Currently viewing/i)
+                    screen.getByText(/Currently viewing/i),
                 ).toBeInTheDocument()
             })
         })
     })
     it('should change the route to email when clicking on a channel', async () => {
-        const {history} = renderWithRouter(<ConnectedChannelsView />)
+        const { history } = renderWithRouter(<ConnectedChannelsView />)
 
         const contactFormChannel = screen.getByRole('link', {
             name: /email/i,
@@ -473,7 +474,7 @@ describe('ConnectedChannelsView', () => {
 
             await waitFor(() => {
                 expect(history.location.pathname).toBe(
-                    '/app/automation/shopType/shopName/connected-channels/email'
+                    '/app/automation/shopType/shopName/connected-channels/email',
                 )
 
                 expect(screen.getByText(/email/i)).toBeInTheDocument()
@@ -495,7 +496,7 @@ describe('ConnectedChannelsView', () => {
         renderWithRouter(<ConnectedChannelsView />)
 
         expect(
-            screen.queryByText('AI Agent Moved Banner')
+            screen.queryByText('AI Agent Moved Banner'),
         ).not.toBeInTheDocument()
     })
 })

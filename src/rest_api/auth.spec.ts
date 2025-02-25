@@ -1,12 +1,12 @@
 import MockAdapter from 'axios-mock-adapter'
 
-import {getAccessToken, isValidAccessToken} from './auth'
-import {helpCenterAPI} from './help_center_api/client'
+import { getAccessToken, isValidAccessToken } from './auth'
+import { helpCenterAPI } from './help_center_api/client'
 
 const generateTokenFromExpiry = (exp: number) =>
     `header.${btoa(
         // Adding a random id to make sure token is different on each time is generated
-        JSON.stringify({exp, randomId: Math.random().toString(16)})
+        JSON.stringify({ exp, randomId: Math.random().toString(16) }),
     )}.signature`
 const nowInSeconds = () => Math.floor(Date.now() / 1000)
 

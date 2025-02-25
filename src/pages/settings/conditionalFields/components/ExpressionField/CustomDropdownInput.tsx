@@ -1,6 +1,6 @@
-import React, {forwardRef} from 'react'
+import React, { forwardRef } from 'react'
 
-import {CustomInputProps} from 'custom-fields/components/MultiLevelSelect/types'
+import { CustomInputProps } from 'custom-fields/components/MultiLevelSelect/types'
 import TextInput from 'pages/common/forms/input/TextInput'
 
 import css from './CustomDropdownInput.less'
@@ -8,7 +8,7 @@ import css from './CustomDropdownInput.less'
 export const CustomDropdownInput = forwardRef<
     HTMLInputElement,
     CustomInputProps
->(({isOpen, ...props}, ref) => {
+>(({ isOpen, ...props }, ref) => {
     return (
         <TextInput
             {...props}

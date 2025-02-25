@@ -1,11 +1,11 @@
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {LocaleCode} from 'models/helpCenter/types'
+import { LocaleCode } from 'models/helpCenter/types'
 
-import {GuidanceForm} from './components/GuidanceForm/GuidanceForm'
-import {useGuidanceArticleMutation} from './hooks/useGuidanceArticleMutation'
-import {GuidanceFormFields, GuidanceTemplate} from './types'
-import {mapGuidanceFormFieldsToGuidanceArticle} from './utils/guidance.utils'
+import { GuidanceForm } from './components/GuidanceForm/GuidanceForm'
+import { useGuidanceArticleMutation } from './hooks/useGuidanceArticleMutation'
+import { GuidanceFormFields, GuidanceTemplate } from './types'
+import { mapGuidanceFormFieldsToGuidanceArticle } from './utils/guidance.utils'
 
 type Props = {
     shopName: string
@@ -20,7 +20,7 @@ export const AiAgentGuidanceTemplateNewView = ({
     guidanceHelpCenterId,
     locale,
 }: Props) => {
-    const {createGuidanceArticle, isGuidanceArticleUpdating} =
+    const { createGuidanceArticle, isGuidanceArticleUpdating } =
         useGuidanceArticleMutation({
             guidanceHelpCenterId,
         })
@@ -30,8 +30,8 @@ export const AiAgentGuidanceTemplateNewView = ({
             mapGuidanceFormFieldsToGuidanceArticle(
                 guidanceFormFields,
                 locale,
-                `template_guidance_${guidanceTemplate.id}`
-            )
+                `template_guidance_${guidanceTemplate.id}`,
+            ),
         )
     }
 
@@ -41,7 +41,7 @@ export const AiAgentGuidanceTemplateNewView = ({
             content: guidanceTemplate.content,
             isVisible: true,
         }),
-        [guidanceTemplate]
+        [guidanceTemplate],
     )
 
     return (

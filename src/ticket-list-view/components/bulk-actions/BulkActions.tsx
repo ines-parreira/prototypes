@@ -1,14 +1,16 @@
-import {JobType} from '@gorgias/api-queries'
-import React, {useCallback, useMemo} from 'react'
+import React, { useCallback, useMemo } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {Update, useBulkAction} from 'jobs'
+import { JobType } from '@gorgias/api-queries'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { Update, useBulkAction } from 'jobs'
 
 import AssignUser from './AssignUser'
 import CloseTickets from './CloseTickets'
 import MoreActions from './MoreActions'
+import { Action, Job } from './types'
+
 import css from './style.less'
-import {Action, Job} from './types'
 
 export default function BulkActions({
     hasSelectedAll,
@@ -26,18 +28,18 @@ export default function BulkActions({
             Object.entries(selectedTickets).reduce<number[]>(
                 (ids, [id, isSelected]) =>
                     isSelected ? [...ids, parseInt(id)] : ids,
-                []
+                [],
             ),
-        [selectedTickets]
+        [selectedTickets],
     )
     const isDisabled = useMemo(
         () => !hasSelectedAll && !ticketIds.length,
-        [hasSelectedAll, ticketIds]
+        [hasSelectedAll, ticketIds],
     )
 
-    const {createJob, isLoading} = useBulkAction(
+    const { createJob, isLoading } = useBulkAction(
         hasSelectedAll ? 'view' : 'ticket',
-        ticketIds
+        ticketIds,
     )
 
     const launchJob = useCallback(
@@ -46,7 +48,7 @@ export default function BulkActions({
             params?: {
                 updates: XOR<Update>
             },
-            action?: Action
+            action?: Action,
         ) => {
             await createJob(job.type!, params)
             const [entry] = Object.entries(params?.updates ?? {})
@@ -64,7 +66,7 @@ export default function BulkActions({
             })
             onComplete(action)
         },
-        [createJob, onComplete]
+        [createJob, onComplete],
     )
 
     return (
@@ -73,8 +75,8 @@ export default function BulkActions({
                 isDisabled={isLoading || isDisabled}
                 onClick={() =>
                     launchJob(
-                        {type: JobType.UpdateTicket, event: 'status'},
-                        {updates: {status: 'closed'}}
+                        { type: JobType.UpdateTicket, event: 'status' },
+                        { updates: { status: 'closed' } },
                     )
                 }
             />
@@ -82,7 +84,7 @@ export default function BulkActions({
                 isDisabled={isLoading || isDisabled}
                 onClick={(agent) =>
                     launchJob(
-                        {type: JobType.UpdateTicket, event: 'assignee_user'},
+                        { type: JobType.UpdateTicket, event: 'assignee_user' },
                         {
                             updates: {
                                 assignee_user: agent
@@ -92,7 +94,7 @@ export default function BulkActions({
                                       }
                                     : null,
                             },
-                        }
+                        },
                     )
                 }
             />

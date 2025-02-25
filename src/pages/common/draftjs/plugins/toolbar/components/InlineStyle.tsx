@@ -1,8 +1,8 @@
-import {RichUtils} from 'draft-js'
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {ActionInjectedProps} from '../types'
+import { RichUtils } from 'draft-js'
 
+import { ActionInjectedProps } from '../types'
 import Button from './Button'
 
 type Props = {

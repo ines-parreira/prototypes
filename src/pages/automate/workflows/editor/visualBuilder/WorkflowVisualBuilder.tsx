@@ -1,8 +1,8 @@
 import 'reactflow/dist/style.css'
 
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
+import React, { Dispatch, PropsWithChildren, useCallback, useMemo } from 'react'
+
 import classNames from 'classnames'
-import React, {Dispatch, PropsWithChildren, useCallback, useMemo} from 'react'
 import {
     ControlButton,
     Controls,
@@ -15,21 +15,22 @@ import {
     useReactFlow,
 } from 'reactflow'
 
-import {gorgiasColors} from 'gorgias-design-system/styles'
-import {useSearchParam} from 'hooks/useSearchParam'
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+
+import { gorgiasColors } from 'gorgias-design-system/styles'
+import { useSearchParam } from 'hooks/useSearchParam'
 import FitViewIcon from 'pages/automate/common/components/FitViewIcon'
 
-import {withVisualBuilderContext} from '../../hooks/useVisualBuilder'
-import {VisualBuilderGraphAction} from '../../hooks/useVisualBuilderGraphReducer'
-import {useWorkflowEditorContext} from '../../hooks/useWorkflowEditor'
+import { withVisualBuilderContext } from '../../hooks/useVisualBuilder'
+import { VisualBuilderGraphAction } from '../../hooks/useVisualBuilderGraphReducer'
+import { useWorkflowEditorContext } from '../../hooks/useWorkflowEditor'
 import {
     ChannelTriggerNodeType,
     VisualBuilderGraph,
 } from '../../models/visualBuilderGraph.types'
-import {VisualBuilderBackground} from './components/VisualBuilderBackground'
-
+import { VisualBuilderBackground } from './components/VisualBuilderBackground'
 import CustomEdge from './CustomEdge'
-import {TestFlowEditor} from './editors/TestFlowEditor'
+import { TestFlowEditor } from './editors/TestFlowEditor'
 import NodeEditorDrawer from './NodeEditorDrawer'
 import AutomatedMessageNode from './nodes/AutomatedMessageNode'
 import ChannelTriggerNode from './nodes/ChannelTriggerNode'
@@ -42,8 +43,8 @@ import OrderLineItemSelectionNode from './nodes/OrderLineItemSelectionNode'
 import OrderSelectionNode from './nodes/OrderSelectionNode'
 import ShopperAuthenticationNode from './nodes/ShopperAuthenticationNode'
 import TextReplyNode from './nodes/TextReplyNode'
-
 import WorkflowsPublisher from './publisher/WorkflowsPublisher'
+
 import css from './WorkflowVisualBuilder.less'
 
 const nodeTypes = {
@@ -70,7 +71,7 @@ interface Props {
     dispatch: Dispatch<VisualBuilderGraphAction>
 }
 
-export function WorkflowVisualBuilderWrapped({isNew}: Props) {
+export function WorkflowVisualBuilderWrapped({ isNew }: Props) {
     const {
         isFetchPending,
         visualBuilderGraph,
@@ -84,12 +85,12 @@ export function WorkflowVisualBuilderWrapped({isNew}: Props) {
 
     const visualBuilderNodeEditing = visualBuilderGraph.nodeEditingId
         ? visualBuilderGraph.nodes.find(
-              (n) => n.id === visualBuilderGraph.nodeEditingId
+              (n) => n.id === visualBuilderGraph.nodeEditingId,
           )
         : null
 
     const onDrawerEditorClose = useCallback(() => {
-        dispatch({type: 'CLOSE_EDITOR'})
+        dispatch({ type: 'CLOSE_EDITOR' })
     }, [dispatch])
 
     const onDrawerTestEditorClose = useCallback(() => {
@@ -103,7 +104,7 @@ export function WorkflowVisualBuilderWrapped({isNew}: Props) {
                 nodeId: node.id,
             })
         },
-        [dispatch]
+        [dispatch],
     )
 
     const areNodesInitialized = useNodesInitialized()
@@ -113,7 +114,7 @@ export function WorkflowVisualBuilderWrapped({isNew}: Props) {
 
     const hasNodeWithShopperAuthentication = useMemo(() => {
         return visualBuilderGraph.nodes.some(
-            (n) => n.type === 'shopper_authentication'
+            (n) => n.type === 'shopper_authentication',
         )
     }, [visualBuilderGraph.nodes])
 
@@ -124,7 +125,7 @@ export function WorkflowVisualBuilderWrapped({isNew}: Props) {
                 instance.zoomTo(zoomLevel)
             }
         },
-        [searchParams]
+        [searchParams],
     )
 
     const onPanelMove = useCallback(() => {
@@ -192,7 +193,9 @@ export function WorkflowVisualBuilderWrapped({isNew}: Props) {
                                 showFitView={false}
                                 showInteractive={false}
                                 position="top-left"
-                                style={!isDegradedMode ? {left: 200 + 15} : {}}
+                                style={
+                                    !isDegradedMode ? { left: 200 + 15 } : {}
+                                }
                             >
                                 <ControlButton
                                     aria-label="fit view"
@@ -235,5 +238,5 @@ function withProviders<T>(Component: React.FC<T>): React.FC<T> {
 }
 
 export default withProviders(
-    withVisualBuilderContext(WorkflowVisualBuilderWrapped)
+    withVisualBuilderContext(WorkflowVisualBuilderWrapped),
 )

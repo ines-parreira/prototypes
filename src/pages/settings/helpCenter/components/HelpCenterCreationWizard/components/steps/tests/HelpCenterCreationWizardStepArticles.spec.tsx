@@ -1,10 +1,11 @@
 import 'tests/__mocks__/intersectionObserverMock'
 import 'tests/__mocks__/editionManagerContextMock'
 
-import {screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -23,16 +24,16 @@ import {
     HelpCenterUiBasicsFixture,
 } from 'pages/settings/helpCenter/fixtures/wizard.fixture'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
-import {renderWithRouter} from 'utils/testing'
+import { renderWithRouter } from 'utils/testing'
 
-import {useGetHelpCenterArticles} from '../../../hooks/useGetHelpCenterArticles'
-import {useHelpCenterArticlesForm} from '../../../hooks/useHelpCenterArticlesForm'
-import {useHelpCenterCreationWizard} from '../../../hooks/useHelpCenterCreationWizard'
+import { useGetHelpCenterArticles } from '../../../hooks/useGetHelpCenterArticles'
+import { useHelpCenterArticlesForm } from '../../../hooks/useHelpCenterArticlesForm'
+import { useHelpCenterCreationWizard } from '../../../hooks/useHelpCenterCreationWizard'
 import HelpCenterCreationWizardStepArticles from '../HelpCenterCreationWizardStepArticles'
 
 jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
 ;(useCurrentHelpCenter as jest.Mock).mockReturnValue(
-    HelpCenterApiArticlesFixture
+    HelpCenterApiArticlesFixture,
 )
 
 jest.mock('../../../hooks/useHelpCenterCreationWizard', () => ({
@@ -97,20 +98,20 @@ const renderComponent = (fixtures?: {
                     automateType={automateType}
                 />
             </Wizard>
-        </Provider>
+        </Provider>,
     )
 }
 
 describe('<HelpCenterCreationWizardStepAutomate />', () => {
     beforeEach(() => {
         mockUseHelpCenterArticlesForm.mockReturnValue(
-            mockedUseHelpCenterArticlesForm
+            mockedUseHelpCenterArticlesForm,
         )
         mockUseHelpCenterCreationWizard.mockReturnValue(
-            mockedUseHelpCenterCreationWizard
+            mockedUseHelpCenterCreationWizard,
         )
         mockUseGetHelpCenterArticles.mockReturnValue(
-            mockedUseGetHelpCenterArticles
+            mockedUseGetHelpCenterArticles,
         )
     })
     it('should render  categories for article templates', () => {
@@ -130,7 +131,7 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
             })
 
             const saveAndCustomizeLater = screen.getByText(
-                'Save & Customize Later'
+                'Save & Customize Later',
             )
             const backButton = screen.getByText('Back')
             const nextButton = screen.getByText('Next')
@@ -141,10 +142,12 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
         })
 
         it('should render actions for non-automate account', () => {
-            renderComponent({automateType: HelpCenterAutomateType.NON_AUTOMATE})
+            renderComponent({
+                automateType: HelpCenterAutomateType.NON_AUTOMATE,
+            })
 
             const saveAndCustomizeLater = screen.getByText(
-                'Save & Customize Later'
+                'Save & Customize Later',
             )
             const finishButton = screen.getByText('Finish')
 
@@ -158,7 +161,7 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
             })
 
             const saveAndCustomizeLater = screen.getByText(
-                'Save & Customize Later'
+                'Save & Customize Later',
             )
             const finishButton = screen.getByText('Finish')
 
@@ -170,13 +173,13 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
             renderComponent()
 
             const saveAndCustomizeLater = screen.getByText(
-                'Save & Customize Later'
+                'Save & Customize Later',
             )
 
             userEvent.click(saveAndCustomizeLater)
 
             expect(
-                mockedUseHelpCenterArticlesForm.handleNavigationSave
+                mockedUseHelpCenterArticlesForm.handleNavigationSave,
             ).toHaveBeenCalled()
         })
 
@@ -188,7 +191,7 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
             userEvent.click(nextButton)
 
             expect(
-                mockedUseHelpCenterArticlesForm.handleNavigationSave
+                mockedUseHelpCenterArticlesForm.handleNavigationSave,
             ).toHaveBeenCalled()
         })
 
@@ -202,7 +205,7 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
             userEvent.click(finishButton)
 
             expect(
-                mockedUseHelpCenterArticlesForm.handleNavigationSave
+                mockedUseHelpCenterArticlesForm.handleNavigationSave,
             ).toHaveBeenCalled()
         })
 
@@ -214,7 +217,7 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
             userEvent.click(backButton)
 
             expect(
-                mockedUseHelpCenterCreationWizard.handleAction
+                mockedUseHelpCenterCreationWizard.handleAction,
             ).toHaveBeenCalled()
         })
     })
@@ -225,8 +228,8 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
 
             await waitFor(() =>
                 expect(
-                    screen.getByText('How to cancel order')
-                ).toBeInTheDocument()
+                    screen.getByText('How to cancel order'),
+                ).toBeInTheDocument(),
             )
 
             const selectRow = screen.getByText('How to cancel order')
@@ -248,7 +251,7 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
             userEvent.click(discardButton)
 
             expect(
-                mockedUseHelpCenterArticlesForm.handleEditorClose
+                mockedUseHelpCenterArticlesForm.handleEditorClose,
             ).toHaveBeenCalled()
         })
 
@@ -267,10 +270,10 @@ describe('<HelpCenterCreationWizardStepAutomate />', () => {
             userEvent.click(savedButton)
 
             expect(
-                mockedUseHelpCenterArticlesForm.handleEditorSave
+                mockedUseHelpCenterArticlesForm.handleEditorSave,
             ).toHaveBeenCalledWith(
                 'How to cancel order from store',
-                '<h1>How to cancel order</h1>'
+                '<h1>How to cancel order</h1>',
             )
         })
 

@@ -1,14 +1,15 @@
-import {render, fireEvent} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {DAYS_OPTIONS} from 'pages/convert/campaigns/components/CampaignCustomSchedule/contants'
+import { fireEvent, render } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { DAYS_OPTIONS } from 'pages/convert/campaigns/components/CampaignCustomSchedule/contants'
 
 import CustomScheduleForm from '../CustomScheduleForm'
 
 describe('<CustomScheduleForm />', () => {
     it('should render', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <CustomScheduleForm
                 onChange={jest.fn()}
                 options={DAYS_OPTIONS}
@@ -17,7 +18,7 @@ describe('<CustomScheduleForm />', () => {
                     from_time: '09:00',
                     to_time: '18:00',
                 }}
-            />
+            />,
         )
 
         expect(getByText('Monday')).toBeInTheDocument()
@@ -26,7 +27,7 @@ describe('<CustomScheduleForm />', () => {
     it('should call onChange with the passed data merged with the new data', () => {
         const onChangeSpy = jest.fn()
 
-        const {getByText, container} = render(
+        const { getByText, container } = render(
             <CustomScheduleForm
                 onChange={onChangeSpy}
                 options={DAYS_OPTIONS}
@@ -35,7 +36,7 @@ describe('<CustomScheduleForm />', () => {
                     from_time: '09:00',
                     to_time: '18:00',
                 }}
-            />
+            />,
         )
 
         userEvent.click(getByText('Monday'))
@@ -49,15 +50,15 @@ describe('<CustomScheduleForm />', () => {
         })
 
         const fromInputEl = container.querySelector(
-            'input[name="fromTime"]'
+            'input[name="fromTime"]',
         ) as Element
         const toInputEl = container.querySelector(
-            'input[name="toTime"]'
+            'input[name="toTime"]',
         ) as Element
 
         onChangeSpy.mockReset()
 
-        fireEvent.change(fromInputEl, {target: {value: '10:00'}})
+        fireEvent.change(fromInputEl, { target: { value: '10:00' } })
 
         expect(onChangeSpy).toHaveBeenCalledWith({
             days: '1', // Inital state
@@ -67,7 +68,7 @@ describe('<CustomScheduleForm />', () => {
 
         onChangeSpy.mockReset()
 
-        fireEvent.change(toInputEl, {target: {value: '12:00'}})
+        fireEvent.change(toInputEl, { target: { value: '12:00' } })
 
         expect(onChangeSpy).toHaveBeenCalledWith({
             days: '1',

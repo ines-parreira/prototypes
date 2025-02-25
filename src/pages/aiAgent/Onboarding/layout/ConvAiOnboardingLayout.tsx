@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react'
+import React, { ReactNode } from 'react'
 
 import OnboardingProgressTracker from 'pages/aiAgent/Onboarding/components/common/OnboardingProgressTracker/OnboardingProgressTracker'
 import GorgiasLogoExtendedIcon from 'pages/aiAgent/Onboarding/layout/GorgiasLogoExtended'
@@ -6,7 +6,7 @@ import IconButton from 'pages/common/components/button/IconButton'
 
 import css from './ConvAiOnboardingLayout.less'
 
-const CloseButton: React.FC<{onClose: () => void}> = ({onClose}) => {
+const CloseButton: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     return (
         <IconButton
             fillStyle="fill"
@@ -19,7 +19,7 @@ const CloseButton: React.FC<{onClose: () => void}> = ({onClose}) => {
     )
 }
 
-export const OnboardingHeader: React.FC<{onClose: () => void}> = ({
+export const OnboardingHeader: React.FC<{ onClose: () => void }> = ({
     onClose,
 }) => {
     return (
@@ -30,11 +30,11 @@ export const OnboardingHeader: React.FC<{onClose: () => void}> = ({
     )
 }
 
-export const OnboardingBody: React.FC = ({children}) => {
+export const OnboardingBody: React.FC = ({ children }) => {
     return <div className={css.onboardingBody}>{children}</div>
 }
 
-export const LoadingPulserIcon: React.FC<{icon: string | JSX.Element}> = ({
+export const LoadingPulserIcon: React.FC<{ icon: string | JSX.Element }> = ({
     icon,
 }) => {
     return (
@@ -56,7 +56,7 @@ export const OnboardingPreviewContainer: React.FC<{
     isLoading: boolean
     icon: string | JSX.Element
     caption?: string
-}> = ({children, isLoading, icon, caption}) => {
+}> = ({ children, isLoading, icon, caption }) => {
     return (
         <div className={css.onboardingPreviewContainerWrapper}>
             <div className={css.onboardingPreviewContainer}>
@@ -109,6 +109,6 @@ export const OnboardingContentContainer: React.FC<{
 
 export const ConvAiOnboardingLayout: React.FC<{
     children: ReactNode
-}> = ({children}) => {
+}> = ({ children }) => {
     return <div className={css.onboardingLayout}>{children}</div>
 }

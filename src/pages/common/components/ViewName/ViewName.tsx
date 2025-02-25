@@ -7,7 +7,7 @@ type Props = {
     emoji?: string
 }
 
-const ViewName = ({viewName = '', emoji}: Props) => {
+const ViewName = ({ viewName = '', emoji }: Props) => {
     return (
         <span>
             {typeof emoji === 'string' && (

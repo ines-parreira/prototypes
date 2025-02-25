@@ -1,14 +1,15 @@
-import {fireEvent, render, waitFor} from '@testing-library/react'
-import MockAdapter from 'axios-mock-adapter'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render, waitFor } from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import client from 'models/api/resources'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {RootState, StoreDispatch} from 'state/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { RootState, StoreDispatch } from 'state/types'
 
 import CreditShopifyBillingIntegration from '../CreditShopifyBillingIntegration'
 
@@ -26,26 +27,26 @@ describe('<CreditShopifyBillingIntegration />', () => {
     })
 
     it('should render the form', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <CreditShopifyBillingIntegration />
-            </Provider>
+            </Provider>,
         )
         expect(container).toMatchSnapshot()
     })
 
     it('should submit the form', async () => {
-        const {getByText, getByLabelText} = render(
+        const { getByText, getByLabelText } = render(
             <Provider store={store}>
                 <CreditShopifyBillingIntegration />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.change(getByLabelText('Description'), {
-            target: {value: 'One month free of charge for a loyal customer'},
+            target: { value: 'One month free of charge for a loyal customer' },
         })
         fireEvent.change(getByLabelText('Credit amount'), {
-            target: {value: '360.49'},
+            target: { value: '360.49' },
         })
 
         fireEvent.click(getByText('Add credit'))
@@ -59,7 +60,7 @@ describe('<CreditShopifyBillingIntegration />', () => {
                     description:
                         'One month free of charge for a loyal customer',
                 },
-            })
+            }),
         )
 
         await waitFor(() => {
@@ -71,17 +72,17 @@ describe('<CreditShopifyBillingIntegration />', () => {
     })
 
     it('should disable the submit button when form is not valid', async () => {
-        const {getByRole, getByLabelText} = render(
+        const { getByRole, getByLabelText } = render(
             <Provider store={store}>
                 <CreditShopifyBillingIntegration />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.change(getByLabelText('Description'), {
-            target: {value: 'One month free of charge for a loyal customer'},
+            target: { value: 'One month free of charge for a loyal customer' },
         })
 
-        const button = getByRole('button', {name: 'Add credit'})
+        const button = getByRole('button', { name: 'Add credit' })
 
         expect(button).toHaveProperty('disabled')
 
@@ -94,20 +95,20 @@ describe('<CreditShopifyBillingIntegration />', () => {
     it('should fail the request by rendering a notification', async () => {
         const errorMessage = 'No es possible'
         mockedServer.onPost('/api/integrations/shopify/tasks').reply(400, {
-            error: {msg: errorMessage},
+            error: { msg: errorMessage },
         })
 
-        const {getByText, getByLabelText} = render(
+        const { getByText, getByLabelText } = render(
             <Provider store={store}>
                 <CreditShopifyBillingIntegration />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.change(getByLabelText('Description'), {
-            target: {value: 'One month free of charge for a loyal customer'},
+            target: { value: 'One month free of charge for a loyal customer' },
         })
         fireEvent.change(getByLabelText('Credit amount'), {
-            target: {value: '360'},
+            target: { value: '360' },
         })
 
         fireEvent.click(getByText('Add credit'))

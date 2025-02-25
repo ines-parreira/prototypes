@@ -1,11 +1,10 @@
-import {Label, Tooltip} from '@gorgias/merchant-ui-kit'
-import React, {forwardRef, useImperativeHandle, useState} from 'react'
+import React, { forwardRef, useImperativeHandle, useState } from 'react'
+
+import { Label, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-
-import {createAccountSetting, updateAccountSetting} from 'models/account'
-
+import { createAccountSetting, updateAccountSetting } from 'models/account'
 import css from 'pages/automate/common/components/AutomateExploreDataModal.less'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
@@ -14,15 +13,14 @@ import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import InputField from 'pages/common/forms/input/InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {formatValue} from 'pages/settings/billing/automate/ROICalculator/utils'
-import {HintTooltip} from 'pages/stats/common/HintTooltip'
-
-import {formatMetricValue} from 'pages/stats/common/utils'
-import {submitSettingSuccess} from 'state/currentAccount/actions'
-import {getAgentCostsSettings} from 'state/currentAccount/selectors'
+import { formatValue } from 'pages/settings/billing/automate/ROICalculator/utils'
+import { HintTooltip } from 'pages/stats/common/HintTooltip'
+import { formatMetricValue } from 'pages/stats/common/utils'
+import { submitSettingSuccess } from 'state/currentAccount/actions'
+import { getAgentCostsSettings } from 'state/currentAccount/selectors'
 import {
-    AccountSettingAgentCostType,
     AccountSettingAgentCosts,
+    AccountSettingAgentCostType,
     AccountSettingType,
 } from 'state/currentAccount/types'
 
@@ -45,8 +43,8 @@ const agentCostTypeOptions: {
     label: string
     value: AccountSettingAgentCostType
 }[] = [
-    {label: 'Annual Salary', value: 'yearly'},
-    {label: 'Hourly Rate', value: 'hourly'},
+    { label: 'Annual Salary', value: 'yearly' },
+    { label: 'Hourly Rate', value: 'hourly' },
 ]
 
 type Props = {
@@ -73,7 +71,7 @@ const AutomateExploreDataModal = forwardRef<
             ticketHandleTime,
             hasAgentCosts,
         },
-        ref
+        ref,
     ) => {
         const defaultAgentHourlyRate = (
             defaultAgentCostPerTicket * defaultHourlyRateMultiplier
@@ -83,7 +81,7 @@ const AutomateExploreDataModal = forwardRef<
         })
         const defaultAgentAnnualSalary = (
             defaultAgentCostPerTicket * defaultAnnualSalaryMultiplier
-        ).toLocaleString(undefined, {maximumFractionDigits: 2})
+        ).toLocaleString(undefined, { maximumFractionDigits: 2 })
 
         const dispatch = useAppDispatch()
         const agentCosts = useAppSelector(getAgentCostsSettings)
@@ -95,18 +93,18 @@ const AutomateExploreDataModal = forwardRef<
         const [ticketPerHour, setTicketPerHour] = useState<string>(
             agentCosts?.data.agent_ticket_per_hour
                 ? String(agentCosts?.data.agent_ticket_per_hour)
-                : '5'
+                : '5',
         )
 
         const [costPerTicket, setCostPerTicket] = useState<number | undefined>(
-            agentCosts?.data.agent_cost_per_ticket
+            agentCosts?.data.agent_cost_per_ticket,
         )
 
         const [costType, setCostType] = useState<AccountSettingAgentCostType>(
-            agentCosts?.data.agent_cost_type || 'hourly'
+            agentCosts?.data.agent_cost_type || 'hourly',
         )
 
-        const {hourlyRateMultiplier, annualSalaryMultiplier} =
+        const { hourlyRateMultiplier, annualSalaryMultiplier } =
             getMultipliers(ticketPerHour)
 
         const hourlyCostValue = costPerTicket
@@ -120,7 +118,7 @@ const AutomateExploreDataModal = forwardRef<
                   undefined,
                   {
                       maximumFractionDigits: 2,
-                  }
+                  },
               )
             : defaultAgentAnnualSalary
 
@@ -129,7 +127,7 @@ const AutomateExploreDataModal = forwardRef<
                 ? '****'
                 : agentCosts?.data.agent_cost_type === 'yearly'
                   ? annualSalaryCostValue
-                  : hourlyCostValue
+                  : hourlyCostValue,
         )
 
         const [initialValues, setInitialValues] = useState({
@@ -145,7 +143,7 @@ const AutomateExploreDataModal = forwardRef<
                     ? '****'
                     : val === 'yearly'
                       ? annualSalaryCostValue
-                      : hourlyCostValue
+                      : hourlyCostValue,
             )
         }
 
@@ -161,7 +159,7 @@ const AutomateExploreDataModal = forwardRef<
                     })
                 },
             }),
-            [costType, costPerTicket, ticketPerHour]
+            [costType, costPerTicket, ticketPerHour],
         )
 
         const onClose = () => {
@@ -244,7 +242,7 @@ const AutomateExploreDataModal = forwardRef<
                                     value={costType}
                                     onChange={(val) =>
                                         onCostTypeChange(
-                                            val as AccountSettingAgentCostType
+                                            val as AccountSettingAgentCostType,
                                         )
                                     }
                                     options={agentCostTypeOptions}
@@ -264,11 +262,11 @@ const AutomateExploreDataModal = forwardRef<
                                         setCostValue(formatValue(val))
                                         setCostPerTicket(
                                             parseFloat(
-                                                val.replace(/[^0-9.]/g, '')
+                                                val.replace(/[^0-9.]/g, ''),
                                             ) /
                                                 (costType === 'hourly'
                                                     ? hourlyRateMultiplier
-                                                    : annualSalaryMultiplier)
+                                                    : annualSalaryMultiplier),
                                         )
                                     }}
                                     step="0.01"
@@ -290,10 +288,10 @@ const AutomateExploreDataModal = forwardRef<
                                     onChange={(val) => {
                                         const ticketPerHour = val.replace(
                                             /[^0-9.]/g,
-                                            ''
+                                            '',
                                         )
                                         const costValueFloat = parseFloat(
-                                            costValue.replace(/[^0-9.]/g, '')
+                                            costValue.replace(/[^0-9.]/g, ''),
                                         )
 
                                         const {
@@ -306,7 +304,7 @@ const AutomateExploreDataModal = forwardRef<
                                             costValueFloat /
                                                 (costType === 'hourly'
                                                     ? hourlyRateMultiplier
-                                                    : annualSalaryMultiplier)
+                                                    : annualSalaryMultiplier),
                                         )
                                     }}
                                     aria-label="Tickets closed per hour"
@@ -364,7 +362,7 @@ const AutomateExploreDataModal = forwardRef<
                                         resolutionTime
                                             ? formatMetricValue(
                                                   resolutionTime,
-                                                  'duration'
+                                                  'duration',
                                               )
                                             : '0h 0m'
                                     }
@@ -397,7 +395,7 @@ const AutomateExploreDataModal = forwardRef<
                                         firstResponseTime
                                             ? formatMetricValue(
                                                   firstResponseTime,
-                                                  'duration'
+                                                  'duration',
                                               )
                                             : '0h 0m'
                                     }
@@ -433,7 +431,7 @@ const AutomateExploreDataModal = forwardRef<
                                     resolutionTime
                                         ? formatMetricValue(
                                               ticketHandleTime,
-                                              'duration'
+                                              'duration',
                                           )
                                         : '0h 0m'
                                 }
@@ -462,7 +460,7 @@ const AutomateExploreDataModal = forwardRef<
                 </ModalActionsFooter>
             </Modal>
         )
-    }
+    },
 )
 
 export default AutomateExploreDataModal

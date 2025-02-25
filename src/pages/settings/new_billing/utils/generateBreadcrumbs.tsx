@@ -1,11 +1,12 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
-import {BILLING_BASE_PATH} from '../constants'
+import { Link } from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
+
+import { BILLING_BASE_PATH } from '../constants'
 
 export const generateBreadcrumbs = (
-    breadcrumbItems: (JSX.Element | string)[]
+    breadcrumbItems: (JSX.Element | string)[],
 ) => {
     return (
         <Breadcrumb>

@@ -1,7 +1,8 @@
-import {render, screen, waitFor} from '@testing-library/react'
+import React from 'react'
+
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import _times from 'lodash/times'
-import React from 'react'
 
 import FilterValue, {
     getTooltipLabels,
@@ -20,7 +21,7 @@ describe('FilterValue', () => {
                 optionsLabels={[]}
                 logicalOperator={null}
                 onChange={jest.fn()}
-            />
+            />,
         )
     })
 
@@ -31,7 +32,7 @@ describe('FilterValue', () => {
                 optionsLabels={optionsLabels}
                 logicalOperator={null}
                 onChange={jest.fn()}
-            />
+            />,
         )
 
         expect(screen.getByText(optionsLabels.join(', '))).toBeInTheDocument()
@@ -44,7 +45,7 @@ describe('FilterValue', () => {
                 optionsLabels={['value1']}
                 logicalOperator={null}
                 onChange={onChangeMock}
-            />
+            />,
         )
 
         const filterValueElement = screen.getByText('value1')
@@ -61,7 +62,7 @@ describe('FilterValue', () => {
                 logicalOperator={null}
                 onChange={jest.fn()}
                 onRemove={onRemoveMock}
-            />
+            />,
         )
 
         const removeButton = screen.getByText('close')
@@ -79,7 +80,7 @@ describe('FilterValue', () => {
                 onChange={jest.fn()}
                 onRemove={onRemoveMock}
                 isDisabled
-            />
+            />,
         )
 
         const removeButton = screen.getByText('close')
@@ -94,7 +95,7 @@ describe('FilterValue', () => {
                 optionsLabels={['value1']}
                 logicalOperator={LogicalOperatorEnum.NOT_ONE_OF}
                 onChange={jest.fn()}
-            />
+            />,
         )
 
         expect(screen.queryByTestId('logical-operator')).toBeInTheDocument()
@@ -107,7 +108,7 @@ describe('FilterValue', () => {
                 logicalOperator={null}
                 onChange={jest.fn()}
                 trailIcon={false}
-            />
+            />,
         )
 
         expect(screen.queryByText('close')).not.toBeInTheDocument()
@@ -125,14 +126,14 @@ describe('FilterValue', () => {
                 logicalOperator={null}
                 onChange={jest.fn()}
                 trailIcon={false}
-            />
+            />,
         )
 
         const filterValueElement = screen.getByText('value1')
         userEvent.hover(filterValueElement)
 
         await waitFor(() =>
-            expect(screen.getByRole('tooltip')).toBeInTheDocument()
+            expect(screen.getByRole('tooltip')).toBeInTheDocument(),
         )
     })
 
@@ -148,7 +149,7 @@ describe('FilterValue', () => {
                 optionsLabels={[valueLabel]}
                 logicalOperator={null}
                 onChange={jest.fn()}
-            />
+            />,
         )
 
         const removeButton = screen.getByText('close')

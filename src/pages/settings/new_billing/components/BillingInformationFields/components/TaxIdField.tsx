@@ -1,15 +1,15 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
 import React from 'react'
 
-import {FieldValues, Path} from 'react-hook-form'
+import classNames from 'classnames'
+import { FieldValues, Path } from 'react-hook-form'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import {
     FormInputField,
     IFormInputFieldProps,
 } from 'pages/settings/new_billing/components/FormInputField/FormInputField'
-
-import {TaxIdType} from 'state/billing/types'
+import { TaxIdType } from 'state/billing/types'
 
 import css from './TaxIdField.less'
 
@@ -60,7 +60,7 @@ export function TaxIdField<
                         id={`${type}-tooltip`}
                         className={classNames(
                             'material-icons-outlined',
-                            css.tooltipIcon
+                            css.tooltipIcon,
                         )}
                     >
                         info

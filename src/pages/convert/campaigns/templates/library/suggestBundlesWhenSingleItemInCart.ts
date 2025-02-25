@@ -1,22 +1,21 @@
 // Suggest bundles when a single item is in cart
-
-import {ulid} from 'ulidx'
+import { ulid } from 'ulidx'
 
 import {
-    WizardConfiguration,
     BannerType,
     TooltipActionType,
+    WizardConfiguration,
 } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
-import {CampaignStepsKeys} from 'pages/convert/campaigns/types/CampaignSteps'
-import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
-import {CampaignTriggerBusinessHoursValuesEnum} from 'pages/convert/campaigns/types/enums/CampaignTriggerBusinessHoursValues.enum'
-import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
-import {createTriggerRule} from 'pages/convert/campaigns/utils/createTriggerRule'
-import {assetsUrl} from 'utils'
+import { CampaignStepsKeys } from 'pages/convert/campaigns/types/CampaignSteps'
+import { CampaignStatus } from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
+import { CampaignTriggerBusinessHoursValuesEnum } from 'pages/convert/campaigns/types/enums/CampaignTriggerBusinessHoursValues.enum'
+import { CampaignTriggerOperator } from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
+import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import { createTriggerRule } from 'pages/convert/campaigns/utils/createTriggerRule'
+import { assetsUrl } from 'utils'
 
-import {CampaignConfigurationBuilder} from '../constructor'
-import {CampaignConfiguration, CampaignTemplate} from '../types'
+import { CampaignConfigurationBuilder } from '../constructor'
+import { CampaignConfiguration, CampaignTemplate } from '../types'
 
 export const SUGGEST_BUNDLES_WHEN_SINGLE_PRODUCT_IN_CARD: CampaignTemplate = {
     slug: 'suggest-bundles-when-single-item',
@@ -25,7 +24,7 @@ export const SUGGEST_BUNDLES_WHEN_SINGLE_PRODUCT_IN_CARD: CampaignTemplate = {
         'Promote your bundle offer and highlight the saved amount, to increase your shoppers’ cart value',
     onboarding: false,
     preview: assetsUrl(
-        'img/campaigns/library/suggest-bundles-when-single-item.png'
+        'img/campaigns/library/suggest-bundles-when-single-item.png',
     ),
     getWizardConfiguration: (): WizardConfiguration => {
         return {
@@ -98,7 +97,7 @@ export const SUGGEST_BUNDLES_WHEN_SINGLE_PRODUCT_IN_CARD: CampaignTemplate = {
                     delay: 5000,
                     noReply: true,
                 },
-            }
+            },
         )
 
         return Promise.resolve(builder.build())

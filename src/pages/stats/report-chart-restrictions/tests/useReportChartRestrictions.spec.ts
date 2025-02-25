@@ -1,14 +1,14 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
+import { renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
 
-import {UserRole} from 'config/types/user'
-import {useReportRestrictions} from 'hooks/reporting/custom-reports/useReportRestrictions'
+import { UserRole } from 'config/types/user'
+import { useReportRestrictions } from 'hooks/reporting/custom-reports/useReportRestrictions'
 import useAppSelector from 'hooks/useAppSelector'
-import {STATS_ROUTE_PREFIX} from 'pages/stats/common/components/constants'
-import {getReportConfig} from 'pages/stats/custom-reports/config'
-import {ReportsIDs} from 'pages/stats/custom-reports/constants'
-import {HelpCenterChart} from 'pages/stats/help-center/components/HelpCenterReport/HelpCenterReportConfig'
-import {SatisfactionChart} from 'pages/stats/quality-management/satisfaction/SatisfactionReportConfig'
+import { STATS_ROUTE_PREFIX } from 'pages/stats/common/components/constants'
+import { getReportConfig } from 'pages/stats/custom-reports/config'
+import { ReportsIDs } from 'pages/stats/custom-reports/constants'
+import { HelpCenterChart } from 'pages/stats/help-center/components/HelpCenterReport/HelpCenterReportConfig'
+import { SatisfactionChart } from 'pages/stats/quality-management/satisfaction/SatisfactionReportConfig'
 import * as constants from 'pages/stats/report-chart-restrictions/config'
 import {
     RestrictedComponentType,
@@ -20,10 +20,10 @@ import {
     getUserReportsRestrictions,
     useReportChartRestrictions,
 } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
-import {AutoQAReportConfig} from 'pages/stats/support-performance/auto-qa/AutoQAReportConfig'
-import {OverviewChart} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
-import {STATS_ROUTES} from 'routes/constants'
-import {assumeMock} from 'utils/testing'
+import { AutoQAReportConfig } from 'pages/stats/support-performance/auto-qa/AutoQAReportConfig'
+import { OverviewChart } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
+import { STATS_ROUTES } from 'routes/constants'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('state/currentAccount/selectors')
 jest.mock('state/currentUser/selectors')
@@ -71,12 +71,12 @@ const currentConfig = RBAC_RESTRICTIONS_MOCK[restrictedAccountId]
 const permittedUser = fromJS({
     id: permittedAccountId,
     name: 'John Doe',
-    role: {name: UserRole.Admin},
+    role: { name: UserRole.Admin },
 })
 const restrictedUser = fromJS({
     id: restrictedAccountId,
     name: 'John Doe',
-    role: {name: UserRole.LiteAgent},
+    role: { name: UserRole.LiteAgent },
 })
 
 describe('getAccountRestrictions', () => {
@@ -84,7 +84,7 @@ describe('getAccountRestrictions', () => {
         jest.replaceProperty(
             constants,
             'RBAC_RESTRICTIONS',
-            RBAC_RESTRICTIONS_MOCK as any
+            RBAC_RESTRICTIONS_MOCK as any,
         )
     })
 
@@ -94,7 +94,7 @@ describe('getAccountRestrictions', () => {
 
     it('should return a configuration list for a restricted account', () => {
         expect(getAccountRestrictions(restrictedAccountId)).toEqual(
-            RBAC_RESTRICTIONS_MOCK[restrictedAccountId]
+            RBAC_RESTRICTIONS_MOCK[restrictedAccountId],
         )
     })
 })
@@ -104,7 +104,7 @@ describe('getUserReportsRestrictions', () => {
         jest.replaceProperty(
             constants,
             'RBAC_RESTRICTIONS',
-            RBAC_RESTRICTIONS_MOCK as any
+            RBAC_RESTRICTIONS_MOCK as any,
         )
     })
 
@@ -112,8 +112,8 @@ describe('getUserReportsRestrictions', () => {
         expect(
             getUserReportsRestrictions(
                 permittedUser,
-                getAccountRestrictions(permittedAccountId)
-            )
+                getAccountRestrictions(permittedAccountId),
+            ),
         ).toEqual([])
     })
 
@@ -121,8 +121,8 @@ describe('getUserReportsRestrictions', () => {
         expect(
             getUserReportsRestrictions(
                 restrictedUser,
-                getAccountRestrictions(restrictedAccountId)
-            )
+                getAccountRestrictions(restrictedAccountId),
+            ),
         ).toEqual([currentConfig[1], currentConfig[2]])
     })
 })
@@ -132,7 +132,7 @@ describe('getUserChartsRestrictions', () => {
         jest.replaceProperty(
             constants,
             'RBAC_RESTRICTIONS',
-            RBAC_RESTRICTIONS_MOCK as any
+            RBAC_RESTRICTIONS_MOCK as any,
         )
     })
 
@@ -140,8 +140,8 @@ describe('getUserChartsRestrictions', () => {
         expect(
             getUserChartsRestrictions(
                 permittedUser,
-                getAccountRestrictions(permittedAccountId)
-            )
+                getAccountRestrictions(permittedAccountId),
+            ),
         ).toEqual([])
     })
 
@@ -149,8 +149,8 @@ describe('getUserChartsRestrictions', () => {
         expect(
             getUserChartsRestrictions(
                 restrictedUser,
-                getAccountRestrictions(restrictedAccountId)
-            )
+                getAccountRestrictions(restrictedAccountId),
+            ),
         ).toEqual([currentConfig[0], currentConfig[3]])
     })
 })
@@ -160,9 +160,9 @@ describe('useReportChartRestrictions', () => {
         jest.replaceProperty(
             constants,
             'RBAC_RESTRICTIONS',
-            RBAC_RESTRICTIONS_MOCK as any
+            RBAC_RESTRICTIONS_MOCK as any,
         )
-        useReportRestrictionsMock.mockReturnValue({restrictionsMap: {}})
+        useReportRestrictionsMock.mockReturnValue({ restrictionsMap: {} })
     })
 
     describe('isRouteRestrictedToCurrentUser', () => {
@@ -173,26 +173,26 @@ describe('useReportChartRestrictions', () => {
         })
 
         it('should return true for a restricted route', () => {
-            const {result} = renderHook(() => useReportChartRestrictions())
+            const { result } = renderHook(() => useReportChartRestrictions())
 
             expect(
                 result.current.isRouteRestrictedToCurrentUser(
-                    `${STATS_ROUTE_PREFIX}${STATS_ROUTES.SUPPORT_PERFORMANCE_AGENTS}`
-                )
+                    `${STATS_ROUTE_PREFIX}${STATS_ROUTES.SUPPORT_PERFORMANCE_AGENTS}`,
+                ),
             ).toEqual(true)
         })
 
         it('should return false for other routes', () => {
-            const {result} = renderHook(() => useReportChartRestrictions())
+            const { result } = renderHook(() => useReportChartRestrictions())
 
             expect(
                 result.current.isRouteRestrictedToCurrentUser(
-                    'wrong-performance-path'
-                )
+                    'wrong-performance-path',
+                ),
             ).toEqual(false)
 
             expect(
-                result.current.isRouteRestrictedToCurrentUser('support')
+                result.current.isRouteRestrictedToCurrentUser('support'),
             ).toEqual(false)
         })
 
@@ -211,13 +211,13 @@ describe('useReportChartRestrictions', () => {
                 ],
             } as any)
 
-            const {result} = renderHook(() => useReportChartRestrictions())
+            const { result } = renderHook(() => useReportChartRestrictions())
 
             expect(
                 result.current.isRouteRestrictedToCurrentUser(
                     STATS_ROUTES.SUPPORT_PERFORMANCE_AGENTS,
-                    true
-                )
+                    true,
+                ),
             ).toEqual(false)
         })
     })
@@ -237,10 +237,10 @@ describe('useReportChartRestrictions', () => {
                 .mockReturnValueOnce(restrictedAccountId)
                 .mockReturnValueOnce(restrictedUser)
 
-            const {result} = renderHook(() => useReportChartRestrictions())
+            const { result } = renderHook(() => useReportChartRestrictions())
 
             expect(
-                result.current.isChartRestrictedToCurrentUser(chartId)
+                result.current.isChartRestrictedToCurrentUser(chartId),
             ).toEqual(true)
         })
 
@@ -249,10 +249,10 @@ describe('useReportChartRestrictions', () => {
                 .mockReturnValueOnce(restrictedAccountId)
                 .mockReturnValueOnce(restrictedUser)
 
-            const {result} = renderHook(() => useReportChartRestrictions())
+            const { result } = renderHook(() => useReportChartRestrictions())
 
             expect(
-                result.current.isChartRestrictedToCurrentUser(permittedChartId)
+                result.current.isChartRestrictedToCurrentUser(permittedChartId),
             ).toEqual(false)
         })
 
@@ -261,11 +261,11 @@ describe('useReportChartRestrictions', () => {
                 .mockReturnValueOnce(restrictedAccountId)
                 .mockReturnValueOnce(restrictedUser)
 
-            const {result} = renderHook(() => useReportChartRestrictions())
+            const { result } = renderHook(() => useReportChartRestrictions())
             expect(
                 result.current.isChartRestrictedToCurrentUser(
-                    nonExistentChartId
-                )
+                    nonExistentChartId,
+                ),
             ).toEqual(false)
         })
 
@@ -287,10 +287,10 @@ describe('useReportChartRestrictions', () => {
                 .mockReturnValueOnce(restrictedAccountId)
                 .mockReturnValueOnce(restrictedUser)
 
-            const {result} = renderHook(() => useReportChartRestrictions())
+            const { result } = renderHook(() => useReportChartRestrictions())
 
             expect(
-                result.current.isChartRestrictedToCurrentUser(chartId)
+                result.current.isChartRestrictedToCurrentUser(chartId),
             ).toEqual(true)
         })
     })

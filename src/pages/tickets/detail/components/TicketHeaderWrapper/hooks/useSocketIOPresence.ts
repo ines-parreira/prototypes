@@ -1,6 +1,8 @@
-import {User} from '@gorgias/api-queries'
-import {fromJS} from 'immutable'
-import {useMemo} from 'react'
+import { useMemo } from 'react'
+
+import { fromJS } from 'immutable'
+
+import { User } from '@gorgias/api-queries'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -8,25 +10,25 @@ import {
     getOtherAgentsTypingOnTicket,
 } from 'state/agents/selectors'
 
-import {TicketPresenceState} from './useCollisionDetection'
+import { TicketPresenceState } from './useCollisionDetection'
 
 export default function useSocketIOPresence(): TicketPresenceState {
     const agentsViewing =
         useAppSelector((state) =>
-            getOtherAgentsOnTicket(state.ticket.get('id'))(state)
+            getOtherAgentsOnTicket(state.ticket.get('id'))(state),
         ) || fromJS([])
     const agentsTyping =
         useAppSelector((state) =>
-            getOtherAgentsTypingOnTicket(state.ticket.get('id'))(state)
+            getOtherAgentsTypingOnTicket(state.ticket.get('id'))(state),
         ) || fromJS([])
 
     const agentsViewingNotTyping = useMemo(
         () => agentsViewing.filter((userId) => !agentsTyping.contains(userId)),
-        [agentsViewing, agentsTyping]
+        [agentsViewing, agentsTyping],
     )
     const hasBoth = useMemo(
         () => agentsTyping.size > 0 && agentsViewingNotTyping.size > 0,
-        [agentsTyping, agentsViewingNotTyping]
+        [agentsTyping, agentsViewingNotTyping],
     )
 
     return useMemo(
@@ -36,6 +38,6 @@ export default function useSocketIOPresence(): TicketPresenceState {
             agentsTyping: agentsTyping.toJS() as User[],
             hasBoth,
         }),
-        [agentsViewing, agentsViewingNotTyping, agentsTyping, hasBoth]
+        [agentsViewing, agentsViewingNotTyping, agentsTyping, hasBoth],
     )
 }

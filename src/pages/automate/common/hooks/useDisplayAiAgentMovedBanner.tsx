@@ -1,11 +1,10 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { useLocation } from 'react-router-dom'
 
-import {useLocation} from 'react-router-dom'
-
-import {AlertBannerTypes, BannerCategories, ContextBanner} from 'AlertBanners'
-import {FeatureFlagKey} from 'config/featureFlags'
+import { AlertBannerTypes, BannerCategories, ContextBanner } from 'AlertBanners'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
-import {getHasAutomate} from 'state/billing/selectors'
+import { getHasAutomate } from 'state/billing/selectors'
 
 export const banner: ContextBanner = {
     category: BannerCategories.TMP_AI_AGENT_MOVED,

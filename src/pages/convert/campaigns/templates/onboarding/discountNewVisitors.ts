@@ -1,20 +1,20 @@
-import {Map} from 'immutable'
-import {ulid} from 'ulidx'
+import { Map } from 'immutable'
+import { ulid } from 'ulidx'
 
 import {
     TooltipActionType,
     WizardConfiguration,
 } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
-import {CampaignStepsKeys} from 'pages/convert/campaigns/types/CampaignSteps'
-import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
-import {CampaignTriggerBusinessHoursValuesEnum} from 'pages/convert/campaigns/types/enums/CampaignTriggerBusinessHoursValues.enum'
-import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
-import {createTriggerRule} from 'pages/convert/campaigns/utils/createTriggerRule'
-import {assetsUrl} from 'utils'
-import {PlanName} from 'utils/paywalls'
+import { CampaignStepsKeys } from 'pages/convert/campaigns/types/CampaignSteps'
+import { CampaignStatus } from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
+import { CampaignTriggerBusinessHoursValuesEnum } from 'pages/convert/campaigns/types/enums/CampaignTriggerBusinessHoursValues.enum'
+import { CampaignTriggerOperator } from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
+import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import { createTriggerRule } from 'pages/convert/campaigns/utils/createTriggerRule'
+import { assetsUrl } from 'utils'
+import { PlanName } from 'utils/paywalls'
 
-import {CampaignConfigurationBuilder} from '../constructor'
+import { CampaignConfigurationBuilder } from '../constructor'
 import {
     CampaignConfiguration,
     CampaignTemplate,
@@ -52,7 +52,7 @@ export const DISCOUNT_NEW_VISITORS: CampaignTemplate = {
                 storeIntegration,
                 'percentage',
                 DISCOUNT_CODE,
-                0.05
+                0.05,
             )
         } catch {
             return Promise.resolve(false)
@@ -60,7 +60,7 @@ export const DISCOUNT_NEW_VISITORS: CampaignTemplate = {
         return Promise.resolve(true)
     },
     getConfiguration: async (
-        storeIntegration: Map<string, any>
+        storeIntegration: Map<string, any>,
     ): Promise<CampaignConfiguration> => {
         const shopName = storeIntegration.getIn([
             'meta',
@@ -107,7 +107,7 @@ export const DISCOUNT_NEW_VISITORS: CampaignTemplate = {
                 meta: {
                     noReply: true,
                 },
-            }
+            },
         )
 
         return Promise.resolve(builder.build())

@@ -1,13 +1,13 @@
-import {useCallback, useEffect, useMemo, useState} from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import type {
     MouseEvent as MouseEventReact,
     RefObject,
     TouchEvent as TouchEventReact,
 } from 'react'
 
-import {useSavedSizes} from 'core/layout/panels'
-import {clamp} from 'panels'
-import {isTouchEvent} from 'utils'
+import { useSavedSizes } from 'core/layout/panels'
+import { clamp } from 'panels'
+import { isTouchEvent } from 'utils'
 
 export const DEFAULT_WIDTH = 238
 export const MIN_WIDTH = 200
@@ -19,10 +19,10 @@ type State = {
 }
 
 export default function useNavbarResize(
-    navbarRef: RefObject<HTMLDivElement | null>
+    navbarRef: RefObject<HTMLDivElement | null>,
 ) {
     const [savedSizes, persistSizes] = useSavedSizes()
-    const [{isResizing, width}, setState] = useState<State>({
+    const [{ isResizing, width }, setState] = useState<State>({
         isResizing: false,
         width: savedSizes.current.navigation || DEFAULT_WIDTH,
     })
@@ -33,9 +33,9 @@ export default function useNavbarResize(
             if (!isTouchEvent(event) && event.button === 2) {
                 return
             }
-            setState((s) => ({...s, isResizing: true}))
+            setState((s) => ({ ...s, isResizing: true }))
         },
-        []
+        [],
     )
 
     const handleResize = useCallback(
@@ -53,15 +53,15 @@ export default function useNavbarResize(
             }
 
             const newWidth = clamp(navbarWidth, MIN_WIDTH, MAX_WIDTH)
-            setState((s) => ({...s, width: newWidth}))
+            setState((s) => ({ ...s, width: newWidth }))
         },
-        [navbarRef]
+        [navbarRef],
     )
 
     const handleStopResize = useCallback(() => {
         setState((s) => {
-            persistSizes({navigation: s.width})
-            return {...s, isResizing: false}
+            persistSizes({ navigation: s.width })
+            return { ...s, isResizing: false }
         })
     }, [persistSizes])
 
@@ -87,6 +87,6 @@ export default function useNavbarResize(
             isResizing,
             width,
         }),
-        [handleStartResize, isResizing, width]
+        [handleStartResize, isResizing, width],
     )
 }

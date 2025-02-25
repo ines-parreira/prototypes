@@ -1,25 +1,25 @@
+import React, { ReactNode, useEffect, useState } from 'react'
+
 import classnames from 'classnames'
-import React, {ReactNode, useEffect, useState} from 'react'
-import {Table} from 'reactstrap'
+import { Table } from 'reactstrap'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
 import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 
-import {activateRule, reorderRules} from '../../../../models/rule/resources'
+import { activateRule, reorderRules } from '../../../../models/rule/resources'
 import {
     rulesReordered,
     ruleUpdated,
 } from '../../../../state/entities/rules/actions'
-import {notify} from '../../../../state/notifications/actions'
-import {NotificationStatus} from '../../../../state/notifications/types'
+import { notify } from '../../../../state/notifications/actions'
+import { NotificationStatus } from '../../../../state/notifications/types'
 import {
     Rule,
     RuleLimitStatus,
     RulePriority,
 } from '../../../../state/rules/types'
 import ReactSortable from '../../../common/components/dragging/ReactSortable'
-
 import RuleRow from './components/RuleRow'
 
 import css from './RulesList.less'
@@ -46,14 +46,14 @@ export function RulesList({
                 ({
                     id: parseInt(id),
                     priority: orders.length - index,
-                }) as RulePriority
+                }) as RulePriority,
         )
         const oldPriorities = rules.map(
             (rule) =>
                 ({
                     id: rule.id,
                     priority: rule.priority,
-                }) as RulePriority
+                }) as RulePriority,
         )
         try {
             await reorderRules(priorities)
@@ -63,7 +63,7 @@ export function RulesList({
                 notify({
                     message: 'Failed to reorder rules',
                     status: NotificationStatus.Error,
-                })
+                }),
             )
             rulesReordered(oldPriorities)
         }
@@ -76,7 +76,7 @@ export function RulesList({
     const [filteredRules, setFilteredRules] = useState(rules)
     const filterRules = (ruleList: Rule[], searchTerm: string) =>
         ruleList.filter((rule) =>
-            rule.name.toLowerCase().includes(searchTerm.toLowerCase())
+            rule.name.toLowerCase().includes(searchTerm.toLowerCase()),
         )
 
     useEffect(() => {
@@ -91,14 +91,14 @@ export function RulesList({
                 notify({
                     status: NotificationStatus.Success,
                     message: 'Rule activated successfully',
-                })
+                }),
             )
         } catch {
             void dispatch(
                 notify({
                     status: NotificationStatus.Error,
                     message: 'Unable to activate rule',
-                })
+                }),
             )
         }
     }
@@ -108,7 +108,7 @@ export function RulesList({
         setManagedRuleUpgradeID(undefined)
     }
 
-    const TableBodyComponent = ({children}: {children: ReactNode}) => {
+    const TableBodyComponent = ({ children }: { children: ReactNode }) => {
         if (!hasAgentPrivileges) {
             return <tbody>{children}</tbody>
         }
@@ -140,7 +140,7 @@ export function RulesList({
                                 <i
                                     className={classnames(
                                         'material-icons',
-                                        css.arrowIcon
+                                        css.arrowIcon,
                                     )}
                                 >
                                     arrow_downward
@@ -151,7 +151,7 @@ export function RulesList({
                                     className={classnames(
                                         'd-flex',
                                         'align-items-center',
-                                        css.rulesHeader
+                                        css.rulesHeader,
                                     )}
                                 >
                                     <span>
@@ -187,7 +187,7 @@ export function RulesList({
                                         rule.deactivated_datetime &&
                                         rule.type === 'managed' &&
                                         !rule.name.includes('[Auto Close]')
-                                    )
+                                    ),
                             )
                             .map((rule) => (
                                 <RuleRow

@@ -1,4 +1,4 @@
-import {Macro} from '@gorgias/api-queries'
+import { Macro } from '@gorgias/api-queries'
 
 import {
     MacroAction,
@@ -6,8 +6,8 @@ import {
     MacroActionType,
 } from 'models/macroAction/types'
 
-import {clearMacroBeforeApply} from '../macro'
-import {TicketMessageSourceType} from '../types/ticket'
+import { clearMacroBeforeApply } from '../macro'
+import { TicketMessageSourceType } from '../types/ticket'
 
 describe('Business', () => {
     describe('macro', () => {
@@ -55,17 +55,17 @@ describe('Business', () => {
                 // When
                 const result = clearMacroBeforeApply(
                     TicketMessageSourceType.Chat,
-                    macro
+                    macro,
                 )
 
                 // Then
                 expect(result.notification?.message).toEqual(
                     'We have removed the attachments from this message, because you cannot send multiple ' +
-                        'attachments at the same time on Chat.'
+                        'attachments at the same time on Chat.',
                 )
                 expect(result.macro.actions?.length).toEqual(1)
                 expect(result.macro.actions?.[0].name).toEqual(
-                    'setResponseText'
+                    'setResponseText',
                 )
             })
 
@@ -75,7 +75,7 @@ describe('Business', () => {
                 // When
                 const result = clearMacroBeforeApply(
                     TicketMessageSourceType.Chat,
-                    macro
+                    macro,
                 )
 
                 // Then

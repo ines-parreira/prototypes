@@ -1,19 +1,20 @@
-import {act, render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
+import { act, render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
 import * as segment from 'common/segment'
-import {DOWNLOAD_DATA_BUTTON_LABEL} from 'pages/stats/constants'
-import {BusiestTimesOfDaysDownloadDataButton} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysDownloadDataButton'
-import {useAggregatedBusiestTimesOfDayReportData} from 'services/reporting/busiestTimesOfDaysReportingService'
-import {saveZippedFiles} from 'utils/file'
-import {assumeMock} from 'utils/testing'
+import { DOWNLOAD_DATA_BUTTON_LABEL } from 'pages/stats/constants'
+import { BusiestTimesOfDaysDownloadDataButton } from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysDownloadDataButton'
+import { useAggregatedBusiestTimesOfDayReportData } from 'services/reporting/busiestTimesOfDaysReportingService'
+import { saveZippedFiles } from 'utils/file'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('utils/file')
 const saveZippedFilesMock = assumeMock(saveZippedFiles)
 jest.mock('services/reporting/busiestTimesOfDaysReportingService')
 const useAggregatedBusiestTimesOfDayReportDataMock = assumeMock(
-    useAggregatedBusiestTimesOfDayReportData
+    useAggregatedBusiestTimesOfDayReportData,
 )
 
 describe('BusiestTimesOfDaysDownloadDataButton', () => {
@@ -34,11 +35,11 @@ describe('BusiestTimesOfDaysDownloadDataButton', () => {
         const querySpy = jest.fn()
 
         render(
-            <BusiestTimesOfDaysDownloadDataButton useMetricQuery={querySpy} />
+            <BusiestTimesOfDaysDownloadDataButton useMetricQuery={querySpy} />,
         )
 
         expect(
-            useAggregatedBusiestTimesOfDayReportDataMock
+            useAggregatedBusiestTimesOfDayReportDataMock,
         ).toHaveBeenCalledWith(querySpy)
     })
 
@@ -47,7 +48,7 @@ describe('BusiestTimesOfDaysDownloadDataButton', () => {
         const logEventSpy = jest.spyOn(segment, 'logEvent')
 
         render(
-            <BusiestTimesOfDaysDownloadDataButton useMetricQuery={querySpy} />
+            <BusiestTimesOfDaysDownloadDataButton useMetricQuery={querySpy} />,
         )
         const button = screen.getByText(DOWNLOAD_DATA_BUTTON_LABEL)
         act(() => {
@@ -57,7 +58,7 @@ describe('BusiestTimesOfDaysDownloadDataButton', () => {
         expect(logEventSpy).toHaveBeenCalled()
         expect(saveZippedFilesMock).toHaveBeenCalledWith(
             reportData.files,
-            fileName
+            fileName,
         )
     })
 })

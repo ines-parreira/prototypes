@@ -1,1 +1,1 @@
-export {default} from './HelpCenterPageWrapper'
+export { default } from './HelpCenterPageWrapper'

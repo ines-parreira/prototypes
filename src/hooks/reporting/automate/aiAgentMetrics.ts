@@ -1,6 +1,6 @@
-import {CustomField} from 'custom-fields/types'
-import {OrderDirection} from 'models/api/types'
-import {TicketDimension} from 'models/reporting/cubes/TicketCube'
+import { CustomField } from 'custom-fields/types'
+import { OrderDirection } from 'models/api/types'
+import { TicketDimension } from 'models/reporting/cubes/TicketCube'
 import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMember,
@@ -10,13 +10,15 @@ import {
     recommendedResourceQueryFactory,
 } from 'models/reporting/queryFactories/ai-agent-insights/metrics'
 import {
-    customFieldsTicketTotalCountQueryFactory,
-    customFieldsTicketFactory,
     customFieldsTicketCountQueryFactory,
+    customFieldsTicketFactory,
+    customFieldsTicketTotalCountQueryFactory,
 } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
-import {ReportingFilter, ReportingFilterOperator} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
-
+import {
+    ReportingFilter,
+    ReportingFilterOperator,
+} from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
 import {
     formatReportingQueryDate,
     NotSpamNorTrashedTicketsFilter,
@@ -24,26 +26,26 @@ import {
     TicketStatsFiltersMembers,
 } from 'utils/reporting'
 
-import {useMetric} from '../useMetric'
-import {useMetricPerDimension} from '../useMetricPerDimension'
+import { useMetric } from '../useMetric'
+import { useMetricPerDimension } from '../useMetricPerDimension'
 import {
-    CUSTOM_FIELD_AI_AGENT_HANDOVER,
     CUSTOM_FIELD_AI_AGENT_CLOSE,
+    CUSTOM_FIELD_AI_AGENT_HANDOVER,
 } from './types'
 
 export const useTotalAiAgentTicketsByCustomField = (
     filters: StatsFilters,
     timezone: string,
     customField: CustomField | undefined,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ) =>
     useMetric(
         customFieldsTicketTotalCountQueryFactory(
             filters,
             timezone,
             String(customField?.id || -1),
-            sorting
-        )
+            sorting,
+        ),
     )
 
 export const useAiAgenTickets = (
@@ -54,7 +56,7 @@ export const useAiAgenTickets = (
     customFieldFilter?:
         | typeof CUSTOM_FIELD_AI_AGENT_HANDOVER
         | typeof CUSTOM_FIELD_AI_AGENT_CLOSE,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ) =>
     useMetricPerDimension(
         customFieldsTicketFactory(
@@ -68,8 +70,8 @@ export const useAiAgenTickets = (
                       values: [customFieldFilter],
                   }
                 : undefined,
-            sorting
-        )
+            sorting,
+        ),
     )
 
 export const useAiAgentTicketCountPerIntent = (
@@ -78,7 +80,7 @@ export const useAiAgentTicketCountPerIntent = (
     customField: CustomField | undefined,
     ticketIds?: string[] | undefined,
     sorting?: OrderDirection,
-    customFieldValue?: string
+    customFieldValue?: string,
 ) => {
     const additionalFilters: ReportingFilter[] = []
     if (ticketIds && ticketIds.length) {
@@ -103,8 +105,8 @@ export const useAiAgentTicketCountPerIntent = (
             timezone,
             String(customField?.id || -1),
             sorting,
-            additionalFilters
-        )
+            additionalFilters,
+        ),
     )
 }
 
@@ -114,7 +116,7 @@ export const useCustomerSatisfactionMetricPerIntentLevel = (
     customField: CustomField | undefined,
     sorting?: OrderDirection,
     customFieldValue?: string,
-    assigneeUserId?: string
+    assigneeUserId?: string,
 ) => {
     return useMetricPerDimension(
         customerSatisfactionPerIntentLevelQueryFactory(
@@ -123,8 +125,8 @@ export const useCustomerSatisfactionMetricPerIntentLevel = (
             sorting,
             customField?.id,
             customFieldValue,
-            assigneeUserId
-        )
+            assigneeUserId,
+        ),
     )
 }
 
@@ -133,7 +135,7 @@ export const useAIAgentTicketsWithIntent = (
     timezone: string,
     customFieldId: string | null,
     sorting?: OrderDirection,
-    intentId?: string
+    intentId?: string,
 ) => {
     return useMetricPerDimension({
         measures: [],
@@ -160,7 +162,7 @@ export const useAIAgentTicketsWithIntent = (
             ...NotSpamNorTrashedTicketsFilter,
             ...statsFiltersToReportingFilters(
                 TicketStatsFiltersMembers,
-                filters
+                filters,
             ),
             {
                 member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldUpdatedDatetime,
@@ -189,11 +191,11 @@ export const useAIAgentResourcePerTicket = (
     timezone: string,
     ticketIds: string[],
     sorting?: OrderDirection,
-    enabled?: boolean
+    enabled?: boolean,
 ) => {
     return useMetricPerDimension(
         recommendedResourceQueryFactory(filters, timezone, ticketIds, sorting),
         undefined,
-        enabled
+        enabled,
     )
 }

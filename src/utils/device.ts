@@ -1,5 +1,5 @@
-import {Device} from '@twilio/voice-sdk'
-import {UAParser} from 'ua-parser-js'
+import { Device } from '@twilio/voice-sdk'
+import { UAParser } from 'ua-parser-js'
 
 import * as utils from './device'
 

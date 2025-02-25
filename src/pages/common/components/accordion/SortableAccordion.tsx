@@ -1,15 +1,16 @@
-import _isEqual from 'lodash/isEqual'
 import React, {
     Children,
     cloneElement,
     isValidElement,
     ReactComponentElement,
     useMemo,
-    useState,
     useRef,
+    useState,
 } from 'react'
 
-import Accordion, {AccordionProps} from './Accordion'
+import _isEqual from 'lodash/isEqual'
+
+import Accordion, { AccordionProps } from './Accordion'
 import SortableAccordionContext, {
     SortableAccordionContextType,
 } from './SortableAccordionContext'
@@ -26,7 +27,7 @@ type SortableAccordionItemComponent = ReactComponentElement<
 >
 
 const isSortableAccordionItem = (
-    item: Parameters<typeof isValidElement>[0]
+    item: Parameters<typeof isValidElement>[0],
 ): item is SortableAccordionItemComponent => {
     return isValidElement(item)
 }
@@ -42,12 +43,12 @@ const SortableAccordion = <T extends string | string[] | null>({
 
     const itemsById = items.reduce<
         Record<string, SortableAccordionItemComponent>
-    >((acc, item) => ({...acc, [item.props.id]: item}), {})
+    >((acc, item) => ({ ...acc, [item.props.id]: item }), {})
 
     const nextOrderedItems = items.map((item) => item.props.id)
     const orderedItems = useRef(nextOrderedItems)
     const [dirtyOrderedItems, setDirtyOrderedItems] = useState(
-        orderedItems.current
+        orderedItems.current,
     )
 
     if (!_isEqual(orderedItems.current, nextOrderedItems)) {
@@ -84,7 +85,7 @@ const SortableAccordion = <T extends string | string[] | null>({
                 }
             },
         }),
-        [type, isDisabled, onReorder, dirtyOrderedItems]
+        [type, isDisabled, onReorder, dirtyOrderedItems],
     )
 
     return (
@@ -92,7 +93,7 @@ const SortableAccordion = <T extends string | string[] | null>({
             <SortableAccordionContext.Provider value={sortableAccordionContext}>
                 {dirtyOrderedItems
                     .filter((id) => id in itemsById)
-                    .map((id, index) => cloneElement(itemsById[id], {index}))}
+                    .map((id, index) => cloneElement(itemsById[id], { index }))}
             </SortableAccordionContext.Provider>
         </Accordion>
     )

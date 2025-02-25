@@ -1,5 +1,6 @@
+import { DependencyList, useMemo } from 'react'
+
 import noop from 'lodash/noop'
-import {DependencyList, useMemo} from 'react'
 
 import useEvent from './useEvent'
 
@@ -26,9 +27,9 @@ export default function useKey(
     key: KeyFilter,
     fn: Handler = noop,
     opts: UseKeyOptions = {},
-    deps: DependencyList = [key]
+    deps: DependencyList = [key],
 ) {
-    const {event = 'keydown', target, options} = opts
+    const { event = 'keydown', target, options } = opts
     const useMemoHandler = useMemo(() => {
         const predicate: KeyPredicate = createKeyPredicate(key)
         const handler: Handler = (handlerEvent) => {

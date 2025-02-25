@@ -1,4 +1,4 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
 import {
     fetchMessagesSentMetric,
@@ -10,9 +10,8 @@ import {
     fetchMessagesSentPerHour,
     useMessagesSentPerHour,
 } from 'hooks/reporting/useMessagesSentPerHour'
-import {LegacyStatsFilters} from 'models/stat/types'
-
-import {assumeMock} from 'utils/testing'
+import { LegacyStatsFilters } from 'models/stat/types'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/metrics')
 const useMessagesSentMetricMock = assumeMock(useMessagesSentMetric)
@@ -52,14 +51,14 @@ describe('MessagesSentPerHourPerAgent.ts', () => {
     describe('useMessagesSentPerHour', () => {
         beforeEach(() => {
             useMessagesSentMetricMock.mockReturnValue(
-                useMessagesSentMetricReturnValue
+                useMessagesSentMetricReturnValue,
             )
             useOnlineTimeMock.mockReturnValue(useOnlineTimeReturnValue)
         })
 
         it('should calculate the metric from messages sent and online time', () => {
-            const {result} = renderHook(() =>
-                useMessagesSentPerHour(statsFilters, timeZone)
+            const { result } = renderHook(() =>
+                useMessagesSentPerHour(statsFilters, timeZone),
             )
 
             expect(result.current).toEqual({
@@ -79,14 +78,14 @@ describe('MessagesSentPerHourPerAgent.ts', () => {
                     period: statsFilters.period,
                     agents: statsFilters.agents,
                 },
-                timeZone
+                timeZone,
             )
             expect(useOnlineTimeMock).toHaveBeenCalledWith(
                 {
                     period: statsFilters.period,
                     agents: statsFilters.agents,
                 },
-                timeZone
+                timeZone,
             )
         })
 
@@ -96,20 +95,20 @@ describe('MessagesSentPerHourPerAgent.ts', () => {
             }
 
             renderHook(() =>
-                useMessagesSentPerHour(statsFiltersWithoutAgents, timeZone)
+                useMessagesSentPerHour(statsFiltersWithoutAgents, timeZone),
             )
 
             expect(useMessagesSentMetricMock).toHaveBeenCalledWith(
                 {
                     period: statsFilters.period,
                 },
-                timeZone
+                timeZone,
             )
             expect(useOnlineTimeMock).toHaveBeenCalledWith(
                 {
                     period: statsFilters.period,
                 },
-                timeZone
+                timeZone,
             )
         })
 
@@ -123,8 +122,8 @@ describe('MessagesSentPerHourPerAgent.ts', () => {
                 data: undefined,
             })
 
-            const {result} = renderHook(() =>
-                useMessagesSentPerHour(statsFilters, timeZone)
+            const { result } = renderHook(() =>
+                useMessagesSentPerHour(statsFilters, timeZone),
             )
 
             expect(result.current).toEqual({
@@ -140,7 +139,7 @@ describe('MessagesSentPerHourPerAgent.ts', () => {
     describe('fetchMessagesSentPerHour', () => {
         beforeEach(() => {
             fetchMessagesSentMetricMock.mockResolvedValue(
-                useMessagesSentMetricReturnValue
+                useMessagesSentMetricReturnValue,
             )
             fetchOnlineTimeMock.mockResolvedValue(useOnlineTimeReturnValue)
         })
@@ -148,7 +147,7 @@ describe('MessagesSentPerHourPerAgent.ts', () => {
         it('should calculate the metric from messages sent and online time', async () => {
             const result = await fetchMessagesSentPerHour(
                 statsFilters,
-                timeZone
+                timeZone,
             )
 
             expect(result).toEqual({
@@ -168,14 +167,14 @@ describe('MessagesSentPerHourPerAgent.ts', () => {
                     period: statsFilters.period,
                     agents: statsFilters.agents,
                 },
-                timeZone
+                timeZone,
             )
             expect(fetchOnlineTimeMock).toHaveBeenCalledWith(
                 {
                     period: statsFilters.period,
                     agents: statsFilters.agents,
                 },
-                timeZone
+                timeZone,
             )
         })
 
@@ -190,13 +189,13 @@ describe('MessagesSentPerHourPerAgent.ts', () => {
                 {
                     period: statsFilters.period,
                 },
-                timeZone
+                timeZone,
             )
             expect(fetchOnlineTimeMock).toHaveBeenCalledWith(
                 {
                     period: statsFilters.period,
                 },
-                timeZone
+                timeZone,
             )
         })
 
@@ -212,7 +211,7 @@ describe('MessagesSentPerHourPerAgent.ts', () => {
 
             const result = await fetchMessagesSentPerHour(
                 statsFilters,
-                timeZone
+                timeZone,
             )
 
             expect(result).toEqual({
@@ -236,7 +235,7 @@ describe('MessagesSentPerHourPerAgent.ts', () => {
 
             const result = await fetchMessagesSentPerHour(
                 statsFilters,
-                timeZone
+                timeZone,
             )
 
             expect(result).toEqual({

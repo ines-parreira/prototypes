@@ -1,10 +1,11 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {basicMonthlyHelpdeskPlan} from 'fixtures/productPrices'
-import {Cadence, ProductType} from 'models/billing/types'
+import { render, screen } from '@testing-library/react'
 
-import SummaryItem, {SummaryItemProps} from '../SummaryItem'
+import { basicMonthlyHelpdeskPlan } from 'fixtures/productPrices'
+import { Cadence, ProductType } from 'models/billing/types'
+
+import SummaryItem, { SummaryItemProps } from '../SummaryItem'
 
 describe('SummaryItem', () => {
     const props: SummaryItemProps = {
@@ -40,18 +41,18 @@ describe('SummaryItem', () => {
     }
 
     it('returns null when selectedPlan.isSelected is false', () => {
-        const {container} = render(
+        const { container } = render(
             <SummaryItem
                 {...props}
                 selectedPlans={{
-                    helpdesk: {isSelected: false},
-                    automation: {isSelected: false},
-                    voice: {isSelected: false},
-                    sms: {isSelected: false},
-                    convert: {isSelected: false},
+                    helpdesk: { isSelected: false },
+                    automation: { isSelected: false },
+                    voice: { isSelected: false },
+                    sms: { isSelected: false },
+                    convert: { isSelected: false },
                 }}
                 currentPlan={undefined}
-            />
+            />,
         )
 
         expect(container.firstChild).toBeNull()
@@ -62,13 +63,13 @@ describe('SummaryItem', () => {
 
         expect(screen.getByText('Helpdesk')).toBeInTheDocument()
         expect(
-            screen.getByText('Basic - 300 tickets/month')
+            screen.getByText('Basic - 300 tickets/month'),
         ).toBeInTheDocument()
     })
 
     it('does not display old plan when product.price_id matches selected plan', () => {
         render(
-            <SummaryItem {...props} currentPlan={basicMonthlyHelpdeskPlan} />
+            <SummaryItem {...props} currentPlan={basicMonthlyHelpdeskPlan} />,
         )
 
         expect(screen.queryByLabelText('Old price')).not.toBeInTheDocument()
@@ -82,7 +83,7 @@ describe('SummaryItem', () => {
                     ...basicMonthlyHelpdeskPlan,
                     price_id: 'different_price_id',
                 }}
-            />
+            />,
         )
 
         // Replace '50' with the expected old price you want to display

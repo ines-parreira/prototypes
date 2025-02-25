@@ -1,20 +1,20 @@
-import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 
 import {
     helpCenterCreated,
     helpCenterDeleted,
     helpCenterFetched,
-    helpCenterUpdated,
     helpCentersFetched,
+    helpCenterUpdated,
 } from '../actions'
-import reducer, {initialState} from '../reducer'
+import reducer, { initialState } from '../reducer'
 
 describe('helpCenters reducer', () => {
     describe('createHelpCenter action', () => {
         it('should add a new help center to the state', () => {
             const newState = reducer(
                 initialState,
-                helpCenterCreated(getHelpCentersResponseFixture.data[0])
+                helpCenterCreated(getHelpCentersResponseFixture.data[0]),
             )
             expect(newState).toMatchSnapshot()
         })
@@ -29,7 +29,7 @@ describe('helpCenters reducer', () => {
                         '2': getHelpCentersResponseFixture.data[1],
                     },
                 },
-                helpCenterDeleted(1)
+                helpCenterDeleted(1),
             )
             expect(newState).toMatchSnapshot()
         })
@@ -39,7 +39,7 @@ describe('helpCenters reducer', () => {
         it('should add a new help center to the state', () => {
             const newState = reducer(
                 initialState,
-                helpCenterFetched(getHelpCentersResponseFixture.data[0])
+                helpCenterFetched(getHelpCentersResponseFixture.data[0]),
             )
             expect(newState).toMatchSnapshot()
         })
@@ -59,7 +59,7 @@ describe('helpCenters reducer', () => {
                     },
                 },
 
-                helpCenterUpdated(updatedHelpCenterMock)
+                helpCenterUpdated(updatedHelpCenterMock),
             )
             expect(newState).toMatchSnapshot()
         })
@@ -69,7 +69,7 @@ describe('helpCenters reducer', () => {
         it('should add the help centers to the state', () => {
             const newState = reducer(
                 initialState,
-                helpCentersFetched(getHelpCentersResponseFixture.data)
+                helpCentersFetched(getHelpCentersResponseFixture.data),
             )
             expect(newState).toMatchSnapshot()
         })

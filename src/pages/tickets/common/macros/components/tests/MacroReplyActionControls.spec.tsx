@@ -1,12 +1,11 @@
-import {render} from '@testing-library/react'
-import _noop from 'lodash/noop'
 import React from 'react'
 
-import {Provider} from 'react-redux'
-
+import { render } from '@testing-library/react'
+import _noop from 'lodash/noop'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {RootState, StoreDispatch} from 'state/types'
+import { RootState, StoreDispatch } from 'state/types'
 
 import MacroReplyActionControls from '../MacroReplyActionControls'
 
@@ -21,34 +20,34 @@ const renderMacroReplyActionControls = ({
     render(
         <Provider store={store}>
             <MacroReplyActionControls fields={fields} onChange={onChange} />
-        </Provider>
+        </Provider>,
     )
 
 describe('MacroReplyActionControls', () => {
     it('should render "Current client" placeholder', () => {
-        const {container} = renderMacroReplyActionControls()
+        const { container } = renderMacroReplyActionControls()
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render Cc but not Bcc', () => {
-        const {container} = renderMacroReplyActionControls({
-            fields: {cc: 'test@gorgias.com'},
+        const { container } = renderMacroReplyActionControls({
+            fields: { cc: 'test@gorgias.com' },
         })
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render Bcc but not Cc', () => {
-        const {container} = renderMacroReplyActionControls({
-            fields: {bcc: 'test@gorgias.com'},
+        const { container } = renderMacroReplyActionControls({
+            fields: { bcc: 'test@gorgias.com' },
         })
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render To field', () => {
-        const {container} = renderMacroReplyActionControls({
+        const { container } = renderMacroReplyActionControls({
             fields: {
                 to: 'test@gorgias.com,test@gorgias.com',
             },

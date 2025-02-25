@@ -1,18 +1,17 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import React, {PropsWithChildren} from 'react'
+import React, { PropsWithChildren } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useId from 'hooks/useId'
-import {hintTooltipDelay} from 'pages/stats/common/constants'
+import { hintTooltipDelay } from 'pages/stats/common/constants'
 import css from 'pages/stats/DrillDownModalTrigger.less'
 import {
     DrillDownMetric,
     setMetricData,
     setShouldUseNewFilterData,
 } from 'state/ui/stats/drillDownSlice'
-
 import {
     ConvertMetric,
     VoiceAgentsMetric,
@@ -64,7 +63,7 @@ export const DrillDownModalTrigger = ({
         if (useNewFilterData) {
             dispatch(setShouldUseNewFilterData(true))
         }
-        logEvent(segmentEventName, {metric: metricData.metricName})
+        logEvent(segmentEventName, { metric: metricData.metricName })
     }
 
     const targetId = `${TRIGGER_ID}-${useId()}`

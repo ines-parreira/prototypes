@@ -1,7 +1,7 @@
 // g/integrations/sms/schemas.py
-import {IntegrationType} from '../constants'
-import type {Integration} from './'
-import type {IntegrationBase} from './base'
+import { IntegrationType } from '../constants'
+import type { Integration } from './'
+import type { IntegrationBase } from './base'
 
 export type WhatsAppIntegration = IntegrationBase & {
     type: IntegrationType.WhatsApp
@@ -17,7 +17,7 @@ export type WhatsAppIntegrationMeta = {
 }
 
 export const isWhatsAppIntegration = (
-    integration: Maybe<Integration>
+    integration: Maybe<Integration>,
 ): integration is WhatsAppIntegration =>
     integration?.type === IntegrationType.WhatsApp
 

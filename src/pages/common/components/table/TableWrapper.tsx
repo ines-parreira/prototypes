@@ -1,5 +1,6 @@
+import React, { HTMLProps, ReactNode } from 'react'
+
 import classnames from 'classnames'
-import React, {HTMLProps, ReactNode} from 'react'
 
 import css from 'pages/common/components/table/TableWrapper.less'
 

@@ -1,11 +1,11 @@
-import React, {ReactNode} from 'react'
+import React, { ReactNode } from 'react'
 
-import {SegmentEvent} from 'common/segment'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-import {useGridSize} from 'hooks/useGridSize'
+import { SegmentEvent } from 'common/segment'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { MetricTrend } from 'hooks/reporting/useMetricTrend'
+import { useGridSize } from 'hooks/useGridSize'
 import useLocalStorage from 'hooks/useLocalStorage'
-import type {Period} from 'models/stat/types'
+import type { Period } from 'models/stat/types'
 import BigNumberMetric from 'pages/stats/BigNumberMetric'
 import TrendBadge from 'pages/stats/common/components/TrendBadge'
 import {
@@ -15,16 +15,19 @@ import {
 } from 'pages/stats/common/utils'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
-import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
+import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
 import MetricCard from 'pages/stats/MetricCard'
 import {
     OverviewMetric,
     STATS_TIPS_VISIBILITY_KEY,
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
 import TipsToggle from 'pages/stats/TipsToggle'
-import {TooltipData} from 'pages/stats/types'
-import {getBadgeTooltipForPreviousPeriod} from 'pages/stats/utils'
-import {AIInsightsMetrics, DrillDownMetric} from 'state/ui/stats/drillDownSlice'
+import { TooltipData } from 'pages/stats/types'
+import { getBadgeTooltipForPreviousPeriod } from 'pages/stats/utils'
+import {
+    AIInsightsMetrics,
+    DrillDownMetric,
+} from 'state/ui/stats/drillDownSlice'
 import {
     AIInsightsMetric,
     AutoQAMetric,
@@ -63,19 +66,19 @@ export const IntentsPerformance = ({
     period,
     metrics,
 }: IntentsPerformanceProps) => {
-    const {isAnalyticsNewFilters} = useNewStatsFilters()
+    const { isAnalyticsNewFilters } = useNewStatsFilters()
     const getGridCellSize = useGridSize()
 
     const [areTipsVisible, setAreTipsVisible] = useLocalStorage(
         STATS_TIPS_VISIBILITY_KEY,
-        false
+        false,
     )
 
     const metricsConfig = metrics.map((metric) => {
         const formattedMetric = formatMetricValue(
             metric.trend.data?.value,
             metric.metricFormat,
-            NOT_AVAILABLE_PLACEHOLDER
+            NOT_AVAILABLE_PLACEHOLDER,
         )
 
         const hasNoData =
@@ -137,7 +140,7 @@ export const IntentsPerformance = ({
                                         prevValue={config.trend.data?.prevValue}
                                         tooltipData={{
                                             period: getBadgeTooltipForPreviousPeriod(
-                                                period
+                                                period,
                                             ),
                                         }}
                                         metricFormat={config.metricFormat}

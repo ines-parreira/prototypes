@@ -1,7 +1,8 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {GuidanceTopRecommendations} from './GuidanceTopRecommendations'
+import { render, screen } from '@testing-library/react'
+
+import { GuidanceTopRecommendations } from './GuidanceTopRecommendations'
 
 describe('<GuidanceTopRecommendations />', () => {
     it('should display content', () => {
@@ -21,7 +22,7 @@ describe('<GuidanceTopRecommendations />', () => {
         render(<GuidanceTopRecommendations {...props} />)
 
         expect(
-            screen.getByText('Top recommendations based on your tickets')
+            screen.getByText('Top recommendations based on your tickets'),
         ).toBeInTheDocument()
     })
 })

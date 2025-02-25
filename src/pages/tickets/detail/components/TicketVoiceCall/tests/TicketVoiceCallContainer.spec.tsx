@@ -1,15 +1,16 @@
-import {render, fireEvent, RenderResult} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {User} from 'config/types/user'
-import {VoiceCall, VoiceCallRecordingType} from 'models/voiceCall/types'
-import {useVoiceRecordingsContext} from 'pages/common/hooks/useVoiceRecordingsContext'
-import {assumeMock} from 'utils/testing'
+import { fireEvent, render, RenderResult } from '@testing-library/react'
+
+import { User } from 'config/types/user'
+import { VoiceCall, VoiceCallRecordingType } from 'models/voiceCall/types'
+import { useVoiceRecordingsContext } from 'pages/common/hooks/useVoiceRecordingsContext'
+import { assumeMock } from 'utils/testing'
 
 import TicketVoiceCallContainer from '../TicketVoiceCallContainer'
 
 const header = <div>Header</div>
-const user = {name: 'John Doe'} as User
+const user = { name: 'John Doe' } as User
 const callStatus = 'Call Status'
 const dateTime = '2022-01-01T00:00:00.000Z'
 const voiceCall = {
@@ -21,10 +22,10 @@ const icon = 'phone'
 jest.mock(
     '../TicketVoiceCallAudios',
     () =>
-        ({type}: {type: VoiceCallRecordingType}) => <div>Audio {type}</div>
+        ({ type }: { type: VoiceCallRecordingType }) => <div>Audio {type}</div>,
 )
 jest.mock('../VoiceCallTranscription', () => {
-    return ({type}: {audio: any; type: VoiceCallRecordingType}) => (
+    return ({ type }: { audio: any; type: VoiceCallRecordingType }) => (
         <div>Audio {type}</div>
     )
 })
@@ -34,7 +35,9 @@ jest.mock('../TicketVoiceCallDuration', () => () => <div>Duration</div>)
 jest.mock(
     'pages/common/utils/DatetimeLabel',
     () =>
-        ({dateTime}: {dateTime: string}) => <div>DatetimeLabel {dateTime}</div>
+        ({ dateTime }: { dateTime: string }) => (
+            <div>DatetimeLabel {dateTime}</div>
+        ),
 )
 
 jest.mock('pages/common/components/Avatar/Avatar', () => () => (
@@ -46,7 +49,7 @@ jest.mock('pages/common/hooks/useVoiceRecordingsContext')
 const mockedUseVoiceRecordingsContext = assumeMock(useVoiceRecordingsContext)
 
 const renderComponent = (
-    props: Partial<ComponentProps<typeof TicketVoiceCallContainer>>
+    props: Partial<ComponentProps<typeof TicketVoiceCallContainer>>,
 ): RenderResult => {
     return render(
         <TicketVoiceCallContainer
@@ -61,7 +64,7 @@ const renderComponent = (
                 to: 'Jane Doe',
             }}
             {...props}
-        />
+        />,
     )
 }
 
@@ -77,7 +80,7 @@ describe('TicketVoiceCallContainer', () => {
     })
 
     it('renders the component with all props', () => {
-        const {getByText} = renderComponent({
+        const { getByText } = renderComponent({
             voiceCall: {
                 ...voiceCall,
                 has_call_recording: true,
@@ -97,7 +100,7 @@ describe('TicketVoiceCallContainer', () => {
         expect(getByText('Avatar')).toBeInTheDocument()
         expect(getByText('Call Status')).toBeInTheDocument()
         expect(
-            getByText('DatetimeLabel 2022-01-01T00:00:00.000Z')
+            getByText('DatetimeLabel 2022-01-01T00:00:00.000Z'),
         ).toBeInTheDocument()
         expect(getByText('Duration')).toBeInTheDocument()
         expect(getByText('Call Recording')).toBeInTheDocument()
@@ -106,7 +109,7 @@ describe('TicketVoiceCallContainer', () => {
     })
 
     it('renders does not render summary if null', () => {
-        const {queryByText} = renderComponent({
+        const { queryByText } = renderComponent({
             voiceCall,
         })
 
@@ -114,8 +117,8 @@ describe('TicketVoiceCallContainer', () => {
     })
 
     it('renders the component without call recording or voicemail', () => {
-        const {queryByText} = renderComponent({
-            voiceCall: {...voiceCall, has_call_recording: false},
+        const { queryByText } = renderComponent({
+            voiceCall: { ...voiceCall, has_call_recording: false },
         })
 
         expect(queryByText('Call Recording')).not.toBeInTheDocument()
@@ -123,7 +126,7 @@ describe('TicketVoiceCallContainer', () => {
     })
 
     it('properly collapses audio voicemail', () => {
-        const {getByText} = renderComponent({
+        const { getByText } = renderComponent({
             voiceCall: {
                 ...voiceCall,
                 has_voicemail: true,
@@ -135,7 +138,7 @@ describe('TicketVoiceCallContainer', () => {
     })
 
     it('properly collapses audio call recording', () => {
-        const {getByText} = renderComponent({
+        const { getByText } = renderComponent({
             voiceCall: {
                 ...voiceCall,
                 has_call_recording: true,

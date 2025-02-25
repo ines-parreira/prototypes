@@ -1,17 +1,18 @@
-import {fireEvent, render, screen} from '@testing-library/react'
-import moment from 'moment-timezone'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render, screen } from '@testing-library/react'
+import moment from 'moment-timezone'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {DateTimeFormatMapper, DateTimeFormatType} from 'constants/datetime'
-import {PeriodFilter} from 'pages/stats/common/filters/PeriodFilter'
-import {getNewSetOfRanges} from 'pages/stats/constants'
-import {initialState, mergeStatsFilters} from 'state/stats/statsSlice'
-import {RootState} from 'state/types'
-import {formatDatetime} from 'utils'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { DateTimeFormatMapper, DateTimeFormatType } from 'constants/datetime'
+import { PeriodFilter } from 'pages/stats/common/filters/PeriodFilter'
+import { getNewSetOfRanges } from 'pages/stats/constants'
+import { initialState, mergeStatsFilters } from 'state/stats/statsSlice'
+import { RootState } from 'state/types'
+import { formatDatetime } from 'utils'
 
 const RENDERED_ATTRIBUTE_NAME = 'data-range-key'
 
@@ -40,12 +41,12 @@ describe('PeriodStatsFilter', () => {
         const formattedStartDate = moment(startDateTime).format(
             DateTimeFormatMapper[
                 DateTimeFormatType.SHORT_DATE_WITH_YEAR_EN_US
-            ] as string
+            ] as string,
         )
         const formattedEndDate = moment(endDateTime).format(
             DateTimeFormatMapper[
                 DateTimeFormatType.SHORT_DATE_WITH_YEAR_EN_US
-            ] as string
+            ] as string,
         )
 
         render(
@@ -56,17 +57,17 @@ describe('PeriodStatsFilter', () => {
                         end_datetime: endDateTime,
                     }}
                 />
-            </Provider>
+            </Provider>,
         )
         expect(screen.getByText('Date')).toBeInTheDocument()
         expect(
-            screen.getByText(`${formattedStartDate} - ${formattedEndDate}`)
+            screen.getByText(`${formattedStartDate} - ${formattedEndDate}`),
         ).toBeInTheDocument()
     })
 
     it('should merge stats filters on period change', () => {
         const store = mockStore(defaultState)
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <PeriodFilter
                     value={{
@@ -74,7 +75,7 @@ describe('PeriodStatsFilter', () => {
                         end_datetime: '2021-05-03T19:22:43.000Z',
                     }}
                 />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(getByText('Today'))
@@ -85,7 +86,7 @@ describe('PeriodStatsFilter', () => {
                     start_datetime: '2017-02-14T00:00:00Z',
                     end_datetime: '2017-02-14T23:59:59Z',
                 },
-            })
+            }),
         )
     })
 
@@ -95,10 +96,10 @@ describe('PeriodStatsFilter', () => {
             start_datetime: '2021-05-02T19:22:43.000Z',
             end_datetime: '2021-05-03T19:22:43.000Z',
         }
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <PeriodFilter value={value} />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(
@@ -107,12 +108,12 @@ describe('PeriodStatsFilter', () => {
                     value.start_datetime,
                     DateTimeFormatMapper[
                         DateTimeFormatType.SHORT_DATE_WITH_YEAR_EN_US
-                    ]
+                    ],
                 ).toString(),
                 {
                     exact: false,
-                }
-            )
+                },
+            ),
         )
 
         expect(logEvent).toHaveBeenCalledWith(
@@ -121,7 +122,7 @@ describe('PeriodStatsFilter', () => {
                 eventDate: moment().format(),
                 startDate: value.start_datetime,
                 endDate: value.end_datetime,
-            }
+            },
         )
     })
 
@@ -134,7 +135,7 @@ describe('PeriodStatsFilter', () => {
         render(
             <Provider store={store}>
                 <PeriodFilter value={value} />
-            </Provider>
+            </Provider>,
         )
 
         expect(store.getActions()).toContainEqual(
@@ -143,7 +144,7 @@ describe('PeriodStatsFilter', () => {
                     start_datetime: '2020-05-02T00:00:00Z',
                     end_datetime: '2020-07-31T23:59:59Z',
                 },
-            })
+            }),
         )
     })
 
@@ -157,12 +158,12 @@ describe('PeriodStatsFilter', () => {
         render(
             <Provider store={store}>
                 <PeriodFilter value={value} />
-            </Provider>
+            </Provider>,
         )
 
         const newRangesKeys = Object.keys(getNewSetOfRanges())
         const allRangesRenderedAttributes = Array.from(
-            document.querySelectorAll(`[${RENDERED_ATTRIBUTE_NAME}]`)
+            document.querySelectorAll(`[${RENDERED_ATTRIBUTE_NAME}]`),
         ).map((e) => e.getAttribute(RENDERED_ATTRIBUTE_NAME))
 
         expect(allRangesRenderedAttributes).toEqual(newRangesKeys)

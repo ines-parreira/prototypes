@@ -1,4 +1,4 @@
-import {UseQueryOptions, useQuery} from '@tanstack/react-query'
+import { useQuery, UseQueryOptions } from '@tanstack/react-query'
 
 import {
     listVoiceCallEvents,
@@ -28,11 +28,11 @@ export type UseListVoiceCalls = Awaited<ReturnType<typeof listVoiceCalls>>
 
 export const useListVoiceCalls = (
     params?: ListVoiceCallsParams,
-    overrides?: UseQueryOptions<Awaited<ReturnType<typeof listVoiceCalls>>>
+    overrides?: UseQueryOptions<Awaited<ReturnType<typeof listVoiceCalls>>>,
 ) => {
     return useQuery({
         queryKey: voiceCallsKeys.list(params),
-        queryFn: () => listVoiceCalls({...params, limit: 100}),
+        queryFn: () => listVoiceCalls({ ...params, limit: 100 }),
         ...overrides,
     })
 }
@@ -41,7 +41,7 @@ export const useListRecordings = (
     params?: ListCallRecordingsParams,
     overrides?: UseQueryOptions<
         Awaited<ReturnType<typeof listVoiceCallRecordings>>
-    >
+    >,
 ) => {
     return useQuery({
         queryKey: voiceCallsKeys.listRecordings(params),
@@ -52,7 +52,9 @@ export const useListRecordings = (
 
 export const useListVoiceCallEvents = (
     params?: ListCallEventsParams,
-    overrides?: UseQueryOptions<Awaited<ReturnType<typeof listVoiceCallEvents>>>
+    overrides?: UseQueryOptions<
+        Awaited<ReturnType<typeof listVoiceCallEvents>>
+    >,
 ) => {
     return useQuery({
         queryKey: voiceCallsKeys.listEvents(params),

@@ -1,5 +1,5 @@
-import {OrderDirection} from 'models/api/types'
-import {RootState} from 'state/types'
+import { OrderDirection } from 'models/api/types'
+import { RootState } from 'state/types'
 import {
     getCustomFieldsOrder,
     getHeatmapMode,
@@ -13,7 +13,7 @@ import {
     toggleHeatmapMode,
     toggleValueMode,
 } from 'state/ui/stats/ticketInsightsSlice'
-import {ValueMode} from 'state/ui/stats/types'
+import { ValueMode } from 'state/ui/stats/types'
 
 describe('ticketInsightsSlice', () => {
     const fieldId = 123
@@ -32,7 +32,7 @@ describe('ticketInsightsSlice', () => {
                     id: fieldId,
                     label: fieldLabel,
                     isLoading: false,
-                })
+                }),
             )
 
             expect(newState.selectedCustomField.id).toEqual(fieldId)
@@ -43,7 +43,7 @@ describe('ticketInsightsSlice', () => {
             const sortingColumn: TicketInsightsOrder['column'] = 'total'
             const newState = ticketInsightsSlice.reducer(
                 initialState,
-                setOrder({column: sortingColumn})
+                setOrder({ column: sortingColumn }),
             )
 
             expect(newState.order).toEqual({
@@ -55,7 +55,7 @@ describe('ticketInsightsSlice', () => {
         it('should toggle value mode', () => {
             const newState = ticketInsightsSlice.reducer(
                 initialState,
-                toggleValueMode()
+                toggleValueMode(),
             )
 
             expect(newState.valueMode).not.toEqual(initialState.valueMode)
@@ -65,7 +65,7 @@ describe('ticketInsightsSlice', () => {
         it('should toggle heatmap mode', () => {
             const newState = ticketInsightsSlice.reducer(
                 initialState,
-                toggleHeatmapMode()
+                toggleHeatmapMode(),
             )
 
             expect(newState.heatmapMode).toEqual(!initialState.heatmapMode)
@@ -73,7 +73,7 @@ describe('ticketInsightsSlice', () => {
     })
 
     describe('selectors', () => {
-        const order = {column: 'label', direction: OrderDirection.Asc}
+        const order = { column: 'label', direction: OrderDirection.Asc }
         const valueMode = ValueMode.TotalCount
         const isHeatmapMode = true
         const state = {

@@ -1,5 +1,5 @@
-import {EditorState, SelectionState, DraftEntityMutability} from 'draft-js'
-import {Map} from 'immutable'
+import { DraftEntityMutability, EditorState, SelectionState } from 'draft-js'
+import { Map } from 'immutable'
 
 import {
     createEntityAndApplyToFirstBlockRange,
@@ -22,7 +22,7 @@ describe('draftTestUtils', () => {
             const newState = typeText(plugin.getEditorState(), 'foo')
             plugin.setEditorState(newState)
             expect(
-                plugin.getEditorState().getCurrentContent().getPlainText()
+                plugin.getEditorState().getCurrentContent().getPlainText(),
             ).toBe('foo')
         })
     })
@@ -72,7 +72,7 @@ describe('draftTestUtils', () => {
                 state
                     .getSelection()
                     .set('anchorOffset', 0)
-                    .set('focusOffset', 0) as SelectionState
+                    .set('focusOffset', 0) as SelectionState,
             )
 
             state = pressBackspace(state)
@@ -103,7 +103,7 @@ describe('draftTestUtils', () => {
                     .set('anchorOffset', 0)
                     .set('anchorKey', firstBlockKey)
                     .set('focusOffset', 0)
-                    .set('focusKey', firstBlockKey) as SelectionState
+                    .set('focusKey', firstBlockKey) as SelectionState,
             )
             expect(pressBackspace(state)).toBe(state)
         })
@@ -117,7 +117,7 @@ describe('draftTestUtils', () => {
                 state
                     .getSelection()
                     .set('anchorOffset', 1)
-                    .set('focusOffset', 5) as SelectionState
+                    .set('focusOffset', 5) as SelectionState,
             )
 
             state = pressBackspace(state)
@@ -138,13 +138,13 @@ describe('draftTestUtils', () => {
                     .set('anchorOffset', 1)
                     .set(
                         'anchorKey',
-                        state.getCurrentContent().getFirstBlock().getKey()
+                        state.getCurrentContent().getFirstBlock().getKey(),
                     )
                     .set('focusOffset', 1)
                     .set(
                         'focusKey',
-                        state.getCurrentContent().getLastBlock().getKey()
-                    ) as SelectionState
+                        state.getCurrentContent().getLastBlock().getKey(),
+                    ) as SelectionState,
             )
 
             state = pressBackspace(state)
@@ -175,11 +175,11 @@ describe('draftTestUtils', () => {
                 .createEntity(
                     fooEntity.type,
                     fooEntity.mutability,
-                    fooEntity.data
+                    fooEntity.data,
                 )
             let lastEntity = getLastCreatedEntity(state.getCurrentContent())
             expect((lastEntity as unknown as Map<any, any>).toJS()).toEqual(
-                fooEntity
+                fooEntity,
             )
 
             const barEntity = {
@@ -194,11 +194,11 @@ describe('draftTestUtils', () => {
                 .createEntity(
                     barEntity.type,
                     barEntity.mutability as DraftEntityMutability,
-                    barEntity.data
+                    barEntity.data,
                 )
             lastEntity = getLastCreatedEntity(state.getCurrentContent())
             expect((lastEntity as unknown as Map<any, any>).toJS()).toEqual(
-                barEntity
+                barEntity,
             )
         })
     })
@@ -207,7 +207,7 @@ describe('draftTestUtils', () => {
         it('should return null for empty state', () => {
             const state = EditorState.createEmpty()
             expect(
-                getLastCreatedEntityRange(state.getCurrentContent())
+                getLastCreatedEntityRange(state.getCurrentContent()),
             ).toBeNull()
         })
 
@@ -215,9 +215,9 @@ describe('draftTestUtils', () => {
             const state = EditorState.createEmpty()
             state
                 .getCurrentContent()
-                .createEntity('foo', 'IMMUTABLE', {foo: 'bar'})
+                .createEntity('foo', 'IMMUTABLE', { foo: 'bar' })
             expect(
-                getLastCreatedEntityRange(state.getCurrentContent())
+                getLastCreatedEntityRange(state.getCurrentContent()),
             ).toBeNull()
         })
 
@@ -233,11 +233,11 @@ describe('draftTestUtils', () => {
                     mutability: 'IMMUTABLE',
                     data: {},
                 },
-                range
+                range,
             )
 
             expect(
-                getLastCreatedEntityRange(state.getCurrentContent())
+                getLastCreatedEntityRange(state.getCurrentContent()),
             ).toEqual(range)
         })
     })
@@ -280,7 +280,7 @@ describe('draftTestUtils', () => {
             state = typeText(state, 'foobar')
             state = splitFirstBlock(state, 3)
             expect(
-                debugBlockMap(state.getCurrentContent().getBlockMap())
+                debugBlockMap(state.getCurrentContent().getBlockMap()),
             ).toEqual({
                 [state.getCurrentContent().getFirstBlock().getKey()]: 'foo',
                 [state.getCurrentContent().getLastBlock().getKey()]: 'bar',
@@ -308,7 +308,7 @@ describe('draftTestUtils', () => {
                 .createEntity(
                     fooEntity.type,
                     fooEntity.mutability,
-                    fooEntity.data
+                    fooEntity.data,
                 )
             expect(debugLastAppliedEntity(state.getCurrentContent())).toBeNull()
         })
@@ -341,7 +341,7 @@ describe('draftTestUtils', () => {
             expect(debug).toHaveProperty('text', '')
             expect(debug).toHaveProperty(
                 'selection',
-                debugSelection(state.getSelection())
+                debugSelection(state.getSelection()),
             )
             expect(debug).toHaveProperty('lastAppliedEntity', null)
             expect(debug).toHaveProperty('blocks')

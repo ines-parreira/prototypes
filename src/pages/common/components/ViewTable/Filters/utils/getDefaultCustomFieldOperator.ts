@@ -1,11 +1,11 @@
-import {CustomField} from 'custom-fields/types'
-import {Schemas} from 'types'
+import { CustomField } from 'custom-fields/types'
+import { Schemas } from 'types'
 
 import getCustomFieldOperators from './getCustomFieldOperators'
 
 export default function getDefaultCustomFieldOperator(
     schemas: Schemas,
-    customField?: CustomField
+    customField?: CustomField,
 ) {
     const operators = getCustomFieldOperators(schemas, customField)
 

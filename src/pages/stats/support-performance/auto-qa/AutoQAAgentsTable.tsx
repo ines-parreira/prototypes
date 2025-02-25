@@ -1,35 +1,35 @@
+import React, { FunctionComponent, UIEventHandler, useState } from 'react'
+
 import classNames from 'classnames'
-import React, {FunctionComponent, UIEventHandler, useState} from 'react'
 // eslint-disable-next-line no-restricted-imports
-import {useDispatch} from 'react-redux'
+import { useDispatch } from 'react-redux'
 
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-
-import {useAutoQAAgentsSortingQuery} from 'hooks/reporting/useAutoQAAgentsSortingQuery'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useAutoQAAgentsSortingQuery } from 'hooks/reporting/useAutoQAAgentsSortingQuery'
 import useAppSelector from 'hooks/useAppSelector'
 import useMeasure from 'hooks/useMeasure'
-import {StatsFilters} from 'models/stat/types'
-import {NumberedPagination} from 'pages/common/components/Paginations'
+import { StatsFilters } from 'models/stat/types'
+import { NumberedPagination } from 'pages/common/components/Paginations'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import css from 'pages/stats/AnalyticsTable.less'
-import {AgentNameCellContent} from 'pages/stats/support-performance/agents/AgentNameCellContent'
+import { AgentNameCellContent } from 'pages/stats/support-performance/agents/AgentNameCellContent'
 import {
     AgentsCellContent,
     AgentsCellContentProps,
 } from 'pages/stats/support-performance/agents/AgentsCellContent'
-import {AgentsHeaderCellContent} from 'pages/stats/support-performance/agents/AgentsHeaderCellContent'
+import { AgentsHeaderCellContent } from 'pages/stats/support-performance/agents/AgentsHeaderCellContent'
 import {
-    TableLabels,
-    getColumnWidth,
-    getColumnAlignment,
-    AutoQAAgentsColumnConfig,
-    getQuery,
-    getDrillDownMetricData,
-    AutoQAAgentsTableColumn,
     AUTO_QA_AGENTS_TABLE_DIMENSIONS_COLUMNS_ORDER,
+    AutoQAAgentsColumnConfig,
+    AutoQAAgentsTableColumn,
+    getColumnAlignment,
+    getColumnWidth,
+    getDrillDownMetricData,
+    getQuery,
+    TableLabels,
 } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
 import {
     getHeatmapMode,
@@ -39,7 +39,7 @@ import {
 } from 'state/ui/stats/autoQAAgentPerformanceSlice'
 
 export const getTableCell = (
-    column: AutoQAAgentsTableColumn
+    column: AutoQAAgentsTableColumn,
 ): FunctionComponent<AgentsCellContentProps> => {
     if (column === AutoQAAgentsTableColumn.AgentName) {
         return AgentNameCellContent
@@ -52,7 +52,7 @@ const getSortingQuery = (
     statsFilters: {
         cleanStatsFilters: StatsFilters
         userTimezone: string
-    }
+    },
 ) => {
     const query = getQuery(column)
 
@@ -74,7 +74,7 @@ export const AutoQAAgentsTable = () => {
         dispatch(pageSet(page))
     }
 
-    const [ref, {width}] = useMeasure<HTMLDivElement>()
+    const [ref, { width }] = useMeasure<HTMLDivElement>()
     const [isTableScrolled, setIsTableScrolled] = useState(false)
     const handleScroll: UIEventHandler<HTMLDivElement> = (event) => {
         if (event.currentTarget.scrollLeft > 0) {
@@ -87,7 +87,7 @@ export const AutoQAAgentsTable = () => {
     return (
         <>
             <div ref={ref} className={css.container} onScroll={handleScroll}>
-                <TableWrapper className={css.table} style={{width}}>
+                <TableWrapper className={css.table} style={{ width }}>
                     <TableHead>
                         {AUTO_QA_AGENTS_TABLE_DIMENSIONS_COLUMNS_ORDER.map(
                             (column, index) => (
@@ -97,7 +97,7 @@ export const AutoQAAgentsTable = () => {
                                     hint={AutoQAAgentsColumnConfig[column].hint}
                                     useSortingQuery={getSortingQuery(
                                         column,
-                                        statsFilters
+                                        statsFilters,
                                     )}
                                     width={getColumnWidth(column)}
                                     justifyContent={getColumnAlignment(column)}
@@ -106,7 +106,7 @@ export const AutoQAAgentsTable = () => {
                                             index === 0 && isTableScrolled,
                                     })}
                                 ></AgentsHeaderCellContent>
-                            )
+                            ),
                         )}
                     </TableHead>
                     <TableBody>
@@ -128,7 +128,7 @@ export const AutoQAAgentsTable = () => {
                                                     drillDownMetricData:
                                                         getDrillDownMetricData(
                                                             column,
-                                                            agent
+                                                            agent,
                                                         ),
                                                     statsFilters: statsFilters,
                                                     isHeatmapMode:
@@ -137,11 +137,11 @@ export const AutoQAAgentsTable = () => {
                                                         isSortingLoading,
                                                     bodyCellProps: {
                                                         width: getColumnWidth(
-                                                            column
+                                                            column,
                                                         ),
                                                         justifyContent:
                                                             getColumnAlignment(
-                                                                column
+                                                                column,
                                                             ),
                                                         className: classNames(
                                                             css.BodyCell,
@@ -150,15 +150,15 @@ export const AutoQAAgentsTable = () => {
                                                                     column ===
                                                                         AutoQAAgentsTableColumn.AgentName &&
                                                                     isTableScrolled,
-                                                            }
+                                                            },
                                                         ),
                                                         innerClassName:
                                                             css.BodyCellContent,
                                                     },
-                                                }
+                                                },
                                             )}
                                         </React.Fragment>
-                                    )
+                                    ),
                                 )}
                             </TableBodyRow>
                         ))}

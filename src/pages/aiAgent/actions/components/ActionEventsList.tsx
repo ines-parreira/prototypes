@@ -1,17 +1,20 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
+import React, { useEffect } from 'react'
+
 import classNames from 'classnames'
-import React, {useEffect} from 'react'
+
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
 
 import useOrderBy from 'hooks/useOrderBy'
-import {OrderDirection} from 'models/api/types'
+import { OrderDirection } from 'models/api/types'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 
-import {LlmTriggeredExecution} from '../types'
+import { LlmTriggeredExecution } from '../types'
 import ActionEventRow from './ActionEventRow'
+
 import css from './ActionEventsList.less'
 
 type Props = {
@@ -29,9 +32,9 @@ export default function ActionEventsList({
     onSelectedExecutionIdChange,
     selectedExecutionId,
 }: Props) {
-    const {orderDirection, orderBy, toggleOrderBy} = useOrderBy<'updated'>(
+    const { orderDirection, orderBy, toggleOrderBy } = useOrderBy<'updated'>(
         'updated',
-        OrderDirection.Desc
+        OrderDirection.Desc,
     )
 
     const hasNoData = !isLoading && !executions?.length

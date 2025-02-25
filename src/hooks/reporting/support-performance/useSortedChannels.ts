@@ -1,18 +1,18 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {OrderDirection} from 'models/api/types'
-import {Channel, getChannels} from 'services/channels'
-import {ChannelsSlice, getChannelsSorting} from 'state/ui/stats/channelsSlice'
-import {ChannelsTableColumns} from 'state/ui/stats/types'
+import { OrderDirection } from 'models/api/types'
+import { Channel, getChannels } from 'services/channels'
+import { ChannelsSlice, getChannelsSorting } from 'state/ui/stats/channelsSlice'
+import { ChannelsTableColumns } from 'state/ui/stats/types'
 
 const sortBySlugCustomOrderedWithEmptyLast =
     (order: string[]) =>
     (
-        a: {slug: string},
+        a: { slug: string },
         b: {
             slug: string
-        }
+        },
     ) => {
         const aIndex = order.indexOf(a.slug)
         const bIndex = order.indexOf(b.slug)
@@ -30,7 +30,7 @@ const sortBySlugCustomOrderedWithEmptyLast =
 
 export const sortChannels = (
     channels: Channel[],
-    sorting: ChannelsSlice['sorting']
+    sorting: ChannelsSlice['sorting'],
 ) => {
     const sortedChannels = [...channels]
     if (sorting.field === ChannelsTableColumns.Channel) {
@@ -41,7 +41,7 @@ export const sortChannels = (
 
     if (sorting.lastSortingMetric !== null) {
         return sortedChannels.sort(
-            sortBySlugCustomOrderedWithEmptyLast(sorting.lastSortingMetric)
+            sortBySlugCustomOrderedWithEmptyLast(sorting.lastSortingMetric),
         )
     }
     return sortedChannels

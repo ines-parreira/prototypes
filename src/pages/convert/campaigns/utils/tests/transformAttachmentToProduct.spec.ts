@@ -1,6 +1,6 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
-import {transformAttachmentToProduct} from '../transformAttachmentToProduct'
+import { transformAttachmentToProduct } from '../transformAttachmentToProduct'
 
 const EMPTY_ATTACHMENTS = fromJS([])
 const ATTACHMENTS = fromJS([
@@ -46,7 +46,7 @@ describe('transformAttachmentToProduct()', () => {
         expect(
             transformAttachmentToProduct(ATTACHMENTS, {
                 currency: 'GBP',
-            })
+            }),
         ).toMatchSnapshot()
     })
 })

@@ -1,8 +1,8 @@
-import React, {useState, FormEvent} from 'react'
+import React, { FormEvent, useState } from 'react'
 
 import isUrl from 'validator/lib/isURL'
 
-import {ABTest} from 'models/convert/abTest/types'
+import { ABTest } from 'models/convert/abTest/types'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
@@ -24,7 +24,7 @@ const UpdateReportLinkModal: React.FC<Props> = ({
 }) => {
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [reportLink, setReportLink] = useState<string>(
-        abTest?.report_link ?? ''
+        abTest?.report_link ?? '',
     )
     const [error, setError] = useState<boolean>(false)
 

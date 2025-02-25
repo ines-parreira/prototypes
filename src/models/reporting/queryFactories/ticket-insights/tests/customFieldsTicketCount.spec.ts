@@ -1,5 +1,8 @@
-import {OrderDirection} from 'models/api/types'
-import {TicketDimension, TicketMember} from 'models/reporting/cubes/TicketCube'
+import { OrderDirection } from 'models/api/types'
+import {
+    TicketDimension,
+    TicketMember,
+} from 'models/reporting/cubes/TicketCube'
 import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMeasure,
@@ -11,10 +14,10 @@ import {
     customFieldsTicketCountQueryFactory,
     customFieldsTicketTotalCountQueryFactory,
 } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
-import {injectDrillDownCustomFieldId} from 'models/reporting/queryFactories/utils'
-import {ReportingFilterOperator} from 'models/reporting/types'
-import {FilterKey, StatsFilters} from 'models/stat/types'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import { injectDrillDownCustomFieldId } from 'models/reporting/queryFactories/utils'
+import { ReportingFilterOperator } from 'models/reporting/types'
+import { FilterKey, StatsFilters } from 'models/stat/types'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import {
     DRILLDOWN_QUERY_LIMIT,
     formatReportingQueryDate,
@@ -42,7 +45,7 @@ describe('customFieldsTicketCountQueryFactory', () => {
             const query = customFieldsTicketCountQueryFactory(
                 statsFilters,
                 timezone,
-                customFieldId
+                customFieldId,
             )
 
             expect(query).toEqual({
@@ -58,7 +61,7 @@ describe('customFieldsTicketCountQueryFactory', () => {
                     ...NotSpamNorTrashedTicketsFilter,
                     ...statsFiltersToReportingFilters(
                         TicketStatsFiltersMembers,
-                        statsFilters
+                        statsFilters,
                     ),
                     {
                         member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
@@ -70,10 +73,10 @@ describe('customFieldsTicketCountQueryFactory', () => {
                         operator: ReportingFilterOperator.InDateRange,
                         values: [
                             formatReportingQueryDate(
-                                statsFilters.period.start_datetime
+                                statsFilters.period.start_datetime,
                             ),
                             formatReportingQueryDate(
-                                statsFilters.period.end_datetime
+                                statsFilters.period.end_datetime,
                             ),
                         ],
                     },
@@ -86,7 +89,7 @@ describe('customFieldsTicketCountQueryFactory', () => {
                 statsFilters,
                 timezone,
                 customFieldId,
-                sorting
+                sorting,
             )
 
             expect(query).toEqual({
@@ -102,7 +105,7 @@ describe('customFieldsTicketCountQueryFactory', () => {
                     ...NotSpamNorTrashedTicketsFilter,
                     ...statsFiltersToReportingFilters(
                         TicketStatsFiltersMembers,
-                        statsFilters
+                        statsFilters,
                     ),
                     {
                         member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
@@ -114,10 +117,10 @@ describe('customFieldsTicketCountQueryFactory', () => {
                         operator: ReportingFilterOperator.InDateRange,
                         values: [
                             formatReportingQueryDate(
-                                statsFilters.period.start_datetime
+                                statsFilters.period.start_datetime,
                             ),
                             formatReportingQueryDate(
-                                statsFilters.period.end_datetime
+                                statsFilters.period.end_datetime,
                             ),
                         ],
                     },
@@ -139,14 +142,14 @@ describe('customFieldsTicketCountQueryFactory', () => {
                 timezone,
                 customFieldId,
                 null,
-                statsFilters.period
+                statsFilters.period,
             )
 
             expect(query).toEqual({
                 ...customFieldsTicketCountQueryFactory(
                     statsFilters,
                     timezone,
-                    customFieldId
+                    customFieldId,
                 ),
 
                 measures: [],
@@ -155,7 +158,7 @@ describe('customFieldsTicketCountQueryFactory', () => {
                     ...customFieldsTicketCountQueryFactory(
                         statsFilters,
                         timezone,
-                        customFieldId
+                        customFieldId,
                     ).filters,
                     TicketDrillDownFilter,
                 ],
@@ -174,20 +177,20 @@ describe('customFieldsTicketCountQueryFactory', () => {
                 timezone,
                 customFieldId,
                 customFieldsValueStrings,
-                statsFilters.period
+                statsFilters.period,
             )
             const filtersWithDrillDownCustomField =
                 injectDrillDownCustomFieldId(
                     statsFilters,
                     Number(customFieldId),
-                    customFieldsValueStrings
+                    customFieldsValueStrings,
                 )
 
             expect(query).toEqual({
                 ...customFieldsTicketCountQueryFactory(
                     filtersWithDrillDownCustomField,
                     timezone,
-                    customFieldId
+                    customFieldId,
                 ),
                 measures: [],
                 dimensions: [TicketDimension.TicketId],
@@ -195,7 +198,7 @@ describe('customFieldsTicketCountQueryFactory', () => {
                     ...customFieldsTicketCountQueryFactory(
                         filtersWithDrillDownCustomField,
                         timezone,
-                        customFieldId
+                        customFieldId,
                     ).filters,
                     TicketDrillDownFilter,
                 ],
@@ -252,7 +255,7 @@ describe('customFieldsTicketCountQueryFactory', () => {
                 timezone,
                 customFieldId,
                 customFieldsValueStrings,
-                statsFilters.period
+                statsFilters.period,
             )
 
             expect(query.filters).toContainEqual(
@@ -261,12 +264,12 @@ describe('customFieldsTicketCountQueryFactory', () => {
                     operator: ReportingFilterOperator.Equals,
                     values: expect.arrayContaining([
                         ...customFieldsValueStrings.map(
-                            (v) => `${customFieldId}::${v}`
+                            (v) => `${customFieldId}::${v}`,
                         ),
                         ...includedCustomFields,
                         ...moreIncludedCustomFields,
                     ]),
-                })
+                }),
             )
 
             expect(query.filters).toContainEqual(
@@ -274,7 +277,7 @@ describe('customFieldsTicketCountQueryFactory', () => {
                     member: TicketMember.CustomFieldToExclude,
                     operator: ReportingFilterOperator.NotEquals,
                     values: expect.arrayContaining(excludedCustomFields),
-                })
+                }),
             )
         })
 
@@ -327,7 +330,7 @@ describe('customFieldsTicketCountQueryFactory', () => {
                 timezone,
                 customFieldId,
                 customFieldsValueStrings,
-                statsFilters.period
+                statsFilters.period,
             )
 
             expect(query.filters).toContainEqual(
@@ -336,11 +339,11 @@ describe('customFieldsTicketCountQueryFactory', () => {
                     operator: ReportingFilterOperator.Equals,
                     values: expect.arrayContaining([
                         ...customFieldsValueStrings.map(
-                            (v) => `${customFieldId}::${v}`
+                            (v) => `${customFieldId}::${v}`,
                         ),
                         ...moreIncludedCustomFields,
                     ]),
-                })
+                }),
             )
             expect(query.filters).toContainEqual(
                 expect.objectContaining({
@@ -349,7 +352,7 @@ describe('customFieldsTicketCountQueryFactory', () => {
                     values: expect.not.arrayContaining([
                         ...uiFilterCustomFields,
                     ]),
-                })
+                }),
             )
 
             expect(query.filters).toContainEqual(
@@ -357,7 +360,7 @@ describe('customFieldsTicketCountQueryFactory', () => {
                     member: TicketMember.CustomFieldToExclude,
                     operator: ReportingFilterOperator.NotEquals,
                     values: expect.arrayContaining(excludedCustomFields),
-                })
+                }),
             )
         })
     })
@@ -367,7 +370,7 @@ describe('customFieldsTicketCountQueryFactory', () => {
             const query = customFieldsTicketTotalCountQueryFactory(
                 statsFilters,
                 timezone,
-                customFieldId
+                customFieldId,
             )
 
             expect(query).toEqual({
@@ -381,7 +384,7 @@ describe('customFieldsTicketCountQueryFactory', () => {
                     ...NotSpamNorTrashedTicketsFilter,
                     ...statsFiltersToReportingFilters(
                         TicketStatsFiltersMembers,
-                        statsFilters
+                        statsFilters,
                     ),
                     {
                         member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
@@ -393,10 +396,10 @@ describe('customFieldsTicketCountQueryFactory', () => {
                         operator: ReportingFilterOperator.InDateRange,
                         values: [
                             formatReportingQueryDate(
-                                statsFilters.period.start_datetime
+                                statsFilters.period.start_datetime,
                             ),
                             formatReportingQueryDate(
-                                statsFilters.period.end_datetime
+                                statsFilters.period.end_datetime,
                             ),
                         ],
                     },
@@ -409,7 +412,7 @@ describe('customFieldsTicketCountQueryFactory', () => {
                 statsFilters,
                 timezone,
                 customFieldId,
-                sorting
+                sorting,
             )
 
             expect(query).toEqual({
@@ -423,7 +426,7 @@ describe('customFieldsTicketCountQueryFactory', () => {
                     ...NotSpamNorTrashedTicketsFilter,
                     ...statsFiltersToReportingFilters(
                         TicketStatsFiltersMembers,
-                        statsFilters
+                        statsFilters,
                     ),
                     {
                         member: TicketCustomFieldsMember.TicketCustomFieldsCustomFieldId,
@@ -435,10 +438,10 @@ describe('customFieldsTicketCountQueryFactory', () => {
                         operator: ReportingFilterOperator.InDateRange,
                         values: [
                             formatReportingQueryDate(
-                                statsFilters.period.start_datetime
+                                statsFilters.period.start_datetime,
                             ),
                             formatReportingQueryDate(
-                                statsFilters.period.end_datetime
+                                statsFilters.period.end_datetime,
                             ),
                         ],
                     },
@@ -475,7 +478,7 @@ describe('customFieldsTicketCountQueryFactory', () => {
                     mockCustomFieldId,
                     mockCustomFieldsValueStrings,
                     mockCustomFieldPeriod,
-                    mockSorting
+                    mockSorting,
                 )
 
             expect(query).toEqual({
@@ -540,17 +543,17 @@ describe('customFieldsTicketCountQueryFactory', () => {
                     mockCustomFieldId,
                     null,
                     mockCustomFieldPeriod,
-                    mockSorting
+                    mockSorting,
                 )
 
             const filtersWithoutCustomFieldValueStrings = query.filters.filter(
                 (filter) =>
                     filter.member !==
-                    'TicketCustomFieldsMember.TicketCustomFieldsValueString'
+                    'TicketCustomFieldsMember.TicketCustomFieldsValueString',
             )
 
             expect(filtersWithoutCustomFieldValueStrings).toHaveLength(
-                query.filters.length
+                query.filters.length,
             )
         })
 
@@ -561,7 +564,7 @@ describe('customFieldsTicketCountQueryFactory', () => {
                     mockTimezone,
                     mockCustomFieldId,
                     mockCustomFieldsValueStrings,
-                    mockCustomFieldPeriod
+                    mockCustomFieldPeriod,
                 )
 
             expect(query.order).toEqual([

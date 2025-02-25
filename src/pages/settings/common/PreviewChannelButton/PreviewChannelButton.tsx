@@ -1,9 +1,10 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {TicketChannel} from 'business/types/ticket'
-import {logEvent, SegmentEvent} from 'common/segment'
-import {SelfServiceChannel} from 'pages/automate/common/hooks/useSelfServiceChannels'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { TicketChannel } from 'business/types/ticket'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
 import Button from 'pages/common/components/button/Button'
 
 import styles from './PreviewChannelButton.less'
@@ -34,7 +35,7 @@ const DisableMessage = ({
     )
 }
 
-const DisableChatMessage = ({id}: {id: number}) => (
+const DisableChatMessage = ({ id }: { id: number }) => (
     <span>
         Your chat must be{' '}
         <a href={`/app/settings/channels/gorgias_chat/${id}/installation`}>

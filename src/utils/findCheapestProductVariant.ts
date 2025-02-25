@@ -1,12 +1,12 @@
-import {Product} from 'constants/integrations/types/shopify'
+import { Product } from 'constants/integrations/types/shopify'
 
 export const findCheapestProductVariant = (
-    product: Product
+    product: Product,
 ): Product['variants'][number] =>
     product.variants.reduce(
         (cheapest, current) =>
             parseFloat(current.price) < parseFloat(cheapest.price)
                 ? current
                 : cheapest,
-        product.variants[0]
+        product.variants[0],
     )

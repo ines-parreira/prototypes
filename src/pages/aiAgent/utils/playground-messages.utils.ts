@@ -1,20 +1,20 @@
-import {StoreConfiguration} from 'models/aiAgent/types'
+import { StoreConfiguration } from 'models/aiAgent/types'
 import {
-    MessageType,
+    AiAgentMessageType,
     AiAgentResponse,
-    TicketOutcome,
-    PlaygroundMessage,
     CreatePlaygroundMessage,
     isApiEligiblePlaygroundMessage,
-    PlaygroundTextMessage,
+    MessageType,
+    PlaygroundMessage,
     PlaygroundPromptMessage,
-    AiAgentMessageType,
     PlaygroundPromptType,
+    PlaygroundTextMessage,
+    TicketOutcome,
 } from 'models/aiAgentPlayground/types'
 
 import {
-    PlaygroundFormValues,
     PlaygroundChannels,
+    PlaygroundFormValues,
 } from '../components/PlaygroundChat/PlaygroundChat.types'
 import {
     AI_AGENT_SENDER,
@@ -27,7 +27,7 @@ import {
 
 export const getPlaygroundMessageMeta = (
     message: PlaygroundMessage,
-    firstShopperMessage = false
+    firstShopperMessage = false,
 ) => {
     if (firstShopperMessage) {
         return {
@@ -55,7 +55,7 @@ export const getPlaygroundMessageMeta = (
 
 export const mapPlaygroundMessagesToServerMessages = (
     messages: PlaygroundMessage[],
-    channel: PlaygroundChannels
+    channel: PlaygroundChannels,
 ): CreatePlaygroundMessage[] => {
     return messages
         .slice(1) // remove initial message
@@ -68,14 +68,14 @@ export const mapPlaygroundMessagesToServerMessages = (
                 // We should annotate the first message as an entry message
                 meta: getPlaygroundMessageMeta(
                     m,
-                    channel === 'chat' && index === 0
+                    channel === 'chat' && index === 0,
                 ),
             }
         })
 }
 
 export const mapPlaygroundFormValuesToMessage = (
-    formValues: PlaygroundFormValues
+    formValues: PlaygroundFormValues,
 ): PlaygroundTextMessage => {
     return {
         sender: formValues.customer.name ?? formValues.customer.email,
@@ -87,7 +87,7 @@ export const mapPlaygroundFormValuesToMessage = (
 
 export const mapPlaygroundPromptToMessage = (
     prompt: PlaygroundPromptType,
-    sender?: string
+    sender?: string,
 ): PlaygroundPromptMessage => {
     return {
         sender: sender ?? CustomerHttpIntegrationDataMock.name,
@@ -107,7 +107,7 @@ export const shouldDisplayActions = (aiAgentResponse: AiAgentResponse) => {
 }
 
 export const getLastShopperMessage = (
-    messages: (PlaygroundTextMessage | PlaygroundPromptMessage)[]
+    messages: (PlaygroundTextMessage | PlaygroundPromptMessage)[],
 ): PlaygroundTextMessage | PlaygroundPromptMessage => {
     return (
         [...messages].reverse().find((m) => m.sender !== AI_AGENT_SENDER) ??
@@ -117,7 +117,7 @@ export const getLastShopperMessage = (
 
 export const shouldAiAgentResponseDisplay = (
     aiAgentResponse: AiAgentResponse,
-    storeData: StoreConfiguration
+    storeData: StoreConfiguration,
 ) => {
     const isHandover =
         aiAgentResponse.generate.output.outcome === TicketOutcome.HANDOVER
@@ -132,7 +132,7 @@ export const shouldAiAgentResponseDisplay = (
 
 export const getPlaygroundInitialMessage = (
     channel: PlaygroundChannels,
-    currentUserFirstName?: string
+    currentUserFirstName?: string,
 ) => {
     switch (channel) {
         case 'chat':

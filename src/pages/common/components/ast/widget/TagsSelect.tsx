@@ -1,18 +1,19 @@
-import {CancelToken} from 'axios'
+import React, { useMemo, useState } from 'react'
+
+import { CancelToken } from 'axios'
 import _isString from 'lodash/isString'
-import React, {useMemo, useState} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
-import {createTag, fetchTags} from 'models/tag/resources'
-import {TagDraft} from 'models/tag/types'
+import { createTag, fetchTags } from 'models/tag/resources'
+import { TagDraft } from 'models/tag/types'
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
-import type {Option} from 'pages/common/forms/MultiSelectOptionsField/types'
-import {tagsFetched, tagCreated} from 'state/entities/tags/actions'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import type { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
+import { tagCreated, tagsFetched } from 'state/entities/tags/actions'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 import SelectField from '../../../forms/SelectField/SelectField'
 import TagDropdownMenu from '../../TagDropdownMenu/TagDropdownMenu'
@@ -34,8 +35,8 @@ export const TagsSelectContainer = ({
 }: Props) => {
     const tags = useAppSelector((state) =>
         Object.values(state.entities.tags).filter(
-            (tag) => !tag.deleted_datetime
-        )
+            (tag) => !tag.deleted_datetime,
+        ),
     )
     const dispatch = useAppDispatch()
     const [searchTerm, setSearchTerm] = useState('')
@@ -53,10 +54,10 @@ export const TagsSelectContainer = ({
                     }
                 })
                 .filter((tag) =>
-                    searchTerm !== '' ? tag.value.includes(searchTerm) : true
+                    searchTerm !== '' ? tag.value.includes(searchTerm) : true,
                 )
                 .slice(0, 30),
-        [tags, searchTerm]
+        [tags, searchTerm],
     )
 
     const handleCreateTag = async (tag: TagDraft) => {
@@ -68,7 +69,7 @@ export const TagsSelectContainer = ({
                 notify({
                     message: 'Could not create tag',
                     status: NotificationStatus.Error,
-                })
+                }),
             )
         }
     }
@@ -78,8 +79,8 @@ export const TagsSelectContainer = ({
             setIsLoading(true)
             try {
                 const searchResults = await fetchTags(
-                    {search: val},
-                    {cancelToken}
+                    { search: val },
+                    { cancelToken },
                 )
                 dispatch(tagsFetched(searchResults.data.data))
             } catch {
@@ -87,23 +88,23 @@ export const TagsSelectContainer = ({
                     notify({
                         message: 'Could not create tag',
                         status: NotificationStatus.Error,
-                    })
+                    }),
                 )
             } finally {
                 setIsLoading(false)
             }
-        }
+        },
     )
 
     const existingTagNames = useMemo(() => tags.map((tag) => tag.name), [tags])
 
     const onMultiChange = (tags: Option[] | string[]) => {
         const formattedTags = tags.map((tag) =>
-            typeof tag === 'string' ? tag : tag.label
+            typeof tag === 'string' ? tag : tag.label,
         )
         formattedTags.forEach((newTag) => {
             if (!existingTagNames.includes(newTag)) {
-                void handleCreateTag({name: newTag})
+                void handleCreateTag({ name: newTag })
             }
         })
 
@@ -112,7 +113,7 @@ export const TagsSelectContainer = ({
     }
     const _onChange = (newTag: string) => {
         if (!existingTagNames.includes(newTag)) {
-            void handleCreateTag({name: newTag})
+            void handleCreateTag({ name: newTag })
         }
 
         setSearchTerm('')
@@ -123,14 +124,14 @@ export const TagsSelectContainer = ({
         () => {
             if (!searchTerm) return
             const matchingTags = existingTagNames.filter(
-                (tag) => tag === searchTerm
+                (tag) => tag === searchTerm,
             )
             if (matchingTags.length === 0) {
                 void handleSearchTags(searchTerm)
             }
         },
         [searchTerm],
-        200
+        200,
     )
 
     const values = useMemo(() => {
@@ -144,10 +145,10 @@ export const TagsSelectContainer = ({
                         ({
                             label: value,
                             value,
-                        }) as Option
+                        }) as Option,
                 )
         }
-        return value.map((val) => ({label: val, value: val}))
+        return value.map((val) => ({ label: val, value: val }))
     }, [multiple, value])
 
     return multiple ? (

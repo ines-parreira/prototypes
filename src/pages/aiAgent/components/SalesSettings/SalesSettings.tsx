@@ -1,21 +1,21 @@
-import {zodResolver} from '@hookform/resolvers/zod'
-
 import React from 'react'
-import {FormProvider, useForm} from 'react-hook-form'
-import {z} from 'zod'
+
+import { zodResolver } from '@hookform/resolvers/zod'
+import { FormProvider, useForm } from 'react-hook-form'
+import { z } from 'zod'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {SalesSettingsData} from 'models/aiAgent/types'
-import {DiscountStrategy} from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
-import {PersuasionLevel} from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
-import {useAiAgentStoreConfigurationContext} from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
-import {formatDiscountMax} from 'pages/aiAgent/utils/sales-discount.utils'
+import { SalesSettingsData } from 'models/aiAgent/types'
+import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
+import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
+import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
+import { formatDiscountMax } from 'pages/aiAgent/utils/sales-discount.utils'
 import Alert from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import IconInput from 'pages/common/forms/input/IconInput'
 import InputField from 'pages/common/forms/input/InputField'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 import css from './SalesSettings.less'
 
@@ -43,12 +43,12 @@ const salesSchema = z
         {
             message: 'Must be a number between 1 and 100',
             path: ['salesDiscountMax'],
-        }
+        },
     )
 
 export const SalesSettings = () => {
     const dispatch = useAppDispatch()
-    const {storeConfiguration, updateStoreConfiguration} =
+    const { storeConfiguration, updateStoreConfiguration } =
         useAiAgentStoreConfigurationContext()
 
     const methods = useForm<SalesSettingsData>({
@@ -60,7 +60,7 @@ export const SalesSettings = () => {
                 storeConfiguration?.salesDiscountStrategyLevel ??
                 DiscountStrategy.Balanced,
             salesDiscountMax: formatDiscountMax(
-                (storeConfiguration?.salesDiscountMax ?? 0) * 100
+                (storeConfiguration?.salesDiscountMax ?? 0) * 100,
             ),
         },
         mode: 'onChange',
@@ -72,7 +72,7 @@ export const SalesSettings = () => {
         handleSubmit,
         setValue,
         reset,
-        formState: {errors},
+        formState: { errors },
     } = methods
 
     const salesPersuasionLevel = watch('salesPersuasionLevel')
@@ -96,7 +96,7 @@ export const SalesSettings = () => {
                 notify({
                     status: NotificationStatus.Error,
                     message: 'Failed to save sales configuration state',
-                })
+                }),
             )
         }
     }
@@ -121,7 +121,7 @@ export const SalesSettings = () => {
                     onChange={(e) =>
                         setValue(
                             'salesDiscountStrategyLevel',
-                            e.target.value as DiscountStrategy
+                            e.target.value as DiscountStrategy,
                         )
                     }
                 />
@@ -140,7 +140,7 @@ export const SalesSettings = () => {
                             {
                                 shouldValidate: true,
                                 shouldDirty: true,
-                            }
+                            },
                         )
                     }}
                     suffix={<IconInput icon="percent" />}

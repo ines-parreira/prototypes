@@ -1,14 +1,14 @@
-import React, {useState, useMemo, useEffect} from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 
-import {getContrastColor} from 'gorgias-design-system/utils'
+import { getContrastColor } from 'gorgias-design-system/utils'
 import {
     ContactFormField,
     ContactFormFieldType,
     ContactFormStep,
 } from 'pages/convert/campaigns/types/CampaignAttachment'
 
-import {EmailCaptureField} from './EmailCaptureField'
-import {SubmitButton, Disclaimer} from './styled'
+import { EmailCaptureField } from './EmailCaptureField'
+import { Disclaimer, SubmitButton } from './styled'
 
 const DEFAULT_COLOR = '#0097ff'
 
@@ -28,7 +28,7 @@ export const ContactCaptureStep: React.FC<ContactCaptureStepProps> = ({
     mainColor,
 }) => {
     const [policyAccepted, setPolicyAccepted] = useState(
-        disclaimerDefaultAccepted || !disclaimer
+        disclaimerDefaultAccepted || !disclaimer,
     )
     const [isSubmitted, setIsSubmitted] = useState(false)
     const [data, setData] = useState<Record<string, any>>({})

@@ -1,5 +1,3 @@
-import classnames from 'classnames'
-import {stringify} from 'qs'
 import React, {
     KeyboardEvent,
     MouseEvent,
@@ -7,33 +5,35 @@ import React, {
     useEffect,
     useRef,
 } from 'react'
-import {useLocation} from 'react-router-dom'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import classnames from 'classnames'
+import { stringify } from 'qs'
+import { useLocation } from 'react-router-dom'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import useUnmount from 'hooks/useUnmount'
 import useUpdateEffect from 'hooks/useUpdateEffect'
-import {ViewType} from 'models/view/types'
+import { ViewType } from 'models/view/types'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import Search from 'pages/common/components/Search'
-
 import ShortcutIcon from 'pages/common/components/ShortcutIcon/ShortcutIcon'
 import {
+    CALLS_LABEL,
     CUSTOMERS_LABEL,
     TICKETS_LABEL,
-    CALLS_LABEL,
 } from 'pages/common/components/Spotlight/constants'
 import css from 'pages/common/components/Spotlight/SpotlightModal.less'
-import {SpotlightModalContent} from 'pages/common/components/Spotlight/SpotlightModalContent'
-import {Tabs, useSearch} from 'pages/common/components/Spotlight/useSearch'
+import { SpotlightModalContent } from 'pages/common/components/Spotlight/SpotlightModalContent'
+import { Tabs, useSearch } from 'pages/common/components/Spotlight/useSearch'
 import TabNavigator from 'pages/common/components/TabNavigator/TabNavigator'
 import history from 'pages/history'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {isMacOs} from 'utils/platform'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { isMacOs } from 'utils/platform'
 
 type Props = {
     isOpen: boolean
@@ -45,10 +45,10 @@ export const TICKETS_ADVANCED_SEARCH_PATH = '/app/tickets/search'
 export const CUSTOMERS_ADVANCED_SEARCH_PATH = '/app/customers/search'
 
 const navigatorTabsWithFederatedSearch = [
-    {label: FEDERATED_SEARCH_TAB_LABEL, value: Tabs.All},
-    {label: TICKETS_LABEL, value: Tabs.Tickets},
-    {label: CALLS_LABEL, value: Tabs.Calls},
-    {label: CUSTOMERS_LABEL, value: Tabs.Customers},
+    { label: FEDERATED_SEARCH_TAB_LABEL, value: Tabs.All },
+    { label: TICKETS_LABEL, value: Tabs.Tickets },
+    { label: CALLS_LABEL, value: Tabs.Calls },
+    { label: CUSTOMERS_LABEL, value: Tabs.Customers },
 ]
 
 const viewToTabMap: Record<ViewType, Tabs> = {
@@ -66,8 +66,8 @@ const viewToAdvancedSearchPath: Record<
     [ViewType.CustomerList]: CUSTOMERS_ADVANCED_SEARCH_PATH,
 }
 
-const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
-    const {pathname} = useLocation()
+const SpotlightModal = ({ isOpen, onCloseModal }: Props) => {
+    const { pathname } = useLocation()
     const currentUser = useAppSelector(getCurrentUser)
 
     const modalBodyRef = useRef<HTMLDivElement>(null)
@@ -194,12 +194,12 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
 
             setSelectedIndex(parseInt(index))
         },
-        [setSelectedIndex]
+        [setSelectedIndex],
     )
 
     const logRecentlyAccessedSegmentEvent = useCallback(
         (
-            type: 'spotlight-ticket' | 'spotlight-customer' | 'spotlight-call'
+            type: 'spotlight-ticket' | 'spotlight-customer' | 'spotlight-call',
         ) => {
             if (!hasSearched) {
                 logEvent(SegmentEvent.RecentItemAccessed, {
@@ -208,11 +208,11 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
                 })
             }
         },
-        [hasSearched, currentUser]
+        [hasSearched, currentUser],
     )
 
     const tabs = navigatorTabsWithFederatedSearch.filter(
-        (tab) => showCallsTab || tab.value !== Tabs.Calls
+        (tab) => showCallsTab || tab.value !== Tabs.Calls,
     )
 
     return (
@@ -229,7 +229,7 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
                 className={css.searchInput}
                 textInputClassName={classnames(
                     css.textInput,
-                    'shortcuts-enable'
+                    'shortcuts-enable',
                 )}
                 value={searchQuery}
                 onChange={handleSearchInput}
@@ -288,7 +288,7 @@ const SpotlightModal = ({isOpen, onCloseModal}: Props) => {
                         onClick={() => {
                             goToAdvancedSearch()
                             logEvent(
-                                SegmentEvent.GlobalSearchAdvancedButtonClick
+                                SegmentEvent.GlobalSearchAdvancedButtonClick,
                             )
                         }}
                     >

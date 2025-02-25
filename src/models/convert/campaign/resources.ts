@@ -1,5 +1,5 @@
-import {deepMapKeysToSnakeCase} from 'models/api/utils'
-import {RevenueAddonClient} from 'rest_api/revenue_addon_api/client'
+import { deepMapKeysToSnakeCase } from 'models/api/utils'
+import { RevenueAddonClient } from 'rest_api/revenue_addon_api/client'
 
 import {
     CampaignCreatePayload,
@@ -12,7 +12,7 @@ import {
 
 export const getCampaign = async (
     client: RevenueAddonClient | undefined,
-    params: CampaignParams
+    params: CampaignParams,
 ) => {
     if (!client) return null
 
@@ -21,7 +21,7 @@ export const getCampaign = async (
 
 export const listCampaigns = async (
     client: RevenueAddonClient | undefined,
-    options: CampaignListOptions
+    options: CampaignListOptions,
 ) => {
     if (!client) return null
 
@@ -32,7 +32,7 @@ export const listCampaigns = async (
 
 export const createCampaign = async (
     client: RevenueAddonClient | undefined,
-    data: CampaignCreatePayload
+    data: CampaignCreatePayload,
 ) => {
     if (!client) return null
 
@@ -42,7 +42,7 @@ export const createCampaign = async (
 export const updateCampaign = async (
     client: RevenueAddonClient | undefined,
     params: CampaignParams,
-    data: CampaignUpdatePayload
+    data: CampaignUpdatePayload,
 ) => {
     if (!client) return null
 
@@ -51,7 +51,7 @@ export const updateCampaign = async (
 
 export const deleteCampaign = async (
     client: RevenueAddonClient | undefined,
-    params: CampaignParams
+    params: CampaignParams,
 ) => {
     if (!client) return null
 
@@ -60,7 +60,7 @@ export const deleteCampaign = async (
 
 export const suggestCampaignCopy = async (
     client: RevenueAddonClient | undefined,
-    data: CampaignSuggestCopyPayload
+    data: CampaignSuggestCopyPayload,
 ) => {
     if (!client) return null
 

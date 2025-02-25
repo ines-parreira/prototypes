@@ -1,7 +1,8 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {ArrowPagination} from './ArrowPagination'
+import { Meta, Story } from '@storybook/react'
+
+import { ArrowPagination } from './ArrowPagination'
 
 const storyConfig: Meta = {
     title: 'Navigation/Pagination/ArrowPagination',
@@ -47,7 +48,7 @@ const storyConfig: Meta = {
 }
 
 const DefaultTemplate: Story<ComponentProps<typeof ArrowPagination>> = (
-    props
+    props,
 ) => <ArrowPagination {...props} />
 
 export const Default = DefaultTemplate.bind({})

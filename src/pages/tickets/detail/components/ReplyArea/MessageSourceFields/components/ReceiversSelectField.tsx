@@ -1,29 +1,29 @@
-import {CancelToken} from 'axios'
-import {isValidPhoneNumber} from 'libphonenumber-js'
-import _debounce from 'lodash/debounce'
-import React, {ForwardedRef, forwardRef} from 'react'
+import React, { ForwardedRef, forwardRef } from 'react'
 
-import {TicketMessageSourceType} from 'business/types/ticket'
+import { CancelToken } from 'axios'
+import { isValidPhoneNumber } from 'libphonenumber-js'
+import _debounce from 'lodash/debounce'
+
+import { TicketMessageSourceType } from 'business/types/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import useSearchRankScenario, {
     SearchRankSource,
 } from 'hooks/useSearchRankScenario'
-import {SearchResponse, SearchType} from 'models/search/types'
-import {updatePotentialCustomers} from 'state/newMessage/actions'
+import { SearchResponse, SearchType } from 'models/search/types'
+import { updatePotentialCustomers } from 'state/newMessage/actions'
 import {
-    receiversValueFromState,
-    receiversStateFromValue,
     Receiver,
     Receivers,
+    receiversStateFromValue,
+    receiversValueFromState,
     ReceiverValue,
 } from 'state/ticket/utils'
-
 import {
     getValuePropFromSourceType,
     isPhoneBasedSource,
 } from 'tickets/common/utils'
-import {isEmail} from 'utils'
+import { isEmail } from 'utils'
 
 import MultiSelectAsyncField from './MultiSelectAsyncField/MultiSelectAsyncField'
 
@@ -49,7 +49,7 @@ const ReceiversSelectField = function ReceiversSelectField(
         placeholder,
         disableSearch,
     }: Props,
-    ref: ForwardedRef<MultiSelectAsyncField>
+    ref: ForwardedRef<MultiSelectAsyncField>,
 ) {
     const dispatch = useAppDispatch()
     const valueProp = getValuePropFromSourceType(sourceType) // the property to display from the object
@@ -65,18 +65,23 @@ const ReceiversSelectField = function ReceiversSelectField(
         (cancelToken: CancelToken) =>
             async (queryText: string, searchType: SearchType) =>
                 await dispatch(
-                    updatePotentialCustomers(queryText, searchType, cancelToken)
-                )
+                    updatePotentialCustomers(
+                        queryText,
+                        searchType,
+                        cancelToken,
+                    ),
+                ),
     )
 
     const searchRank = useSearchRankScenario(searchRankSource)
 
     const valueFromState = (options: Receiver[]) =>
-        receiversValueFromState({to: options}, sourceType).to
+        receiversValueFromState({ to: options }, sourceType).to
 
     const handleOnChange = (value: ReceiverValue[]) => {
         onChange(
-            (receiversStateFromValue({to: value}, sourceType) as Receivers).to
+            (receiversStateFromValue({ to: value }, sourceType) as Receivers)
+                .to,
         )
     }
 
@@ -106,7 +111,7 @@ const ReceiversSelectField = function ReceiversSelectField(
 
             const resp = (await cancellableUpdatePotentialCustomers(
                 queryText,
-                searchType
+                searchType,
             )) as SearchResponse<Receiver>
             if (!resp?.data) {
                 return
@@ -121,7 +126,7 @@ const ReceiversSelectField = function ReceiversSelectField(
                 callback(valueFromState(resp.data))
             }
         },
-        300
+        300,
     )
 
     const _placeholder =

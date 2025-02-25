@@ -1,5 +1,6 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps, useCallback, useRef, useState} from 'react'
+import React, { ComponentProps, useCallback, useRef, useState } from 'react'
+
+import { Meta, Story } from '@storybook/react'
 
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import useDelayedAsyncFn from 'hooks/useDelayedAsyncFn'
@@ -7,7 +8,7 @@ import useEffectOnce from 'hooks/useEffectOnce'
 import usePrevious from 'hooks/usePrevious'
 import Button from 'pages/common/components/button/Button'
 
-import Dropdown, {DropdownContext} from './Dropdown'
+import Dropdown, { DropdownContext } from './Dropdown'
 import DropdownBody from './DropdownBody'
 import DropdownItem from './DropdownItem'
 import DropdownSearch from './DropdownSearch'
@@ -17,7 +18,7 @@ const storyConfig: Meta = {
     component: Dropdown,
     argTypes: {
         value: {
-            control: {type: null},
+            control: { type: null },
         },
     },
 }
@@ -31,7 +32,7 @@ const DefaultTemplate: Story<ComponentProps<typeof Dropdown>> = (props) => {
     })
 
     return (
-        <div id="default-container" style={{height: '400px'}}>
+        <div id="default-container" style={{ height: '400px' }}>
             <div
                 ref={targetRef}
                 style={{
@@ -56,8 +57,8 @@ const DefaultTemplate: Story<ComponentProps<typeof Dropdown>> = (props) => {
 }
 
 const ExampleTemplate: Story<
-    {options: string[]} & ComponentProps<typeof Dropdown>
-> = ({options, ...other}) => {
+    { options: string[] } & ComponentProps<typeof Dropdown>
+> = ({ options, ...other }) => {
     const [isOpen, setIsOpen] = useState(false)
     const buttonRef = useRef<HTMLButtonElement>(null)
     const [value, setValue] = useState<string | number | boolean>()
@@ -106,15 +107,15 @@ const ExampleTemplate: Story<
 }
 
 const AsyncTemplate: Story<
-    {options: string[]} & ComponentProps<typeof Dropdown>
-> = ({options, ...other}) => {
+    { options: string[] } & ComponentProps<typeof Dropdown>
+> = ({ options, ...other }) => {
     const [isOpen, setIsOpen] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [query, setQuery] = useState('')
     const previousQuery = usePrevious(query)
     const buttonRef = useRef<HTMLButtonElement>(null)
 
-    const [{loading: isAsyncLoading}, handleSearch] = useDelayedAsyncFn(
+    const [{ loading: isAsyncLoading }, handleSearch] = useDelayedAsyncFn(
         async (value: string) => {
             await new Promise((resolve) => {
                 setTimeout(() => {
@@ -124,7 +125,7 @@ const AsyncTemplate: Story<
             })
         },
         [],
-        0
+        0,
     )
 
     useDebouncedEffect(
@@ -134,7 +135,7 @@ const AsyncTemplate: Story<
             }
         },
         [handleSearch, previousQuery, query],
-        300
+        300,
     )
 
     const handleChange = useCallback((value: string) => {
@@ -172,14 +173,14 @@ const AsyncTemplate: Story<
                                         option
                                             .toLowerCase()
                                             .includes(
-                                                context.query.toLocaleLowerCase()
+                                                context.query.toLocaleLowerCase(),
                                             ) && (
                                             <div key={option}>
                                                 {context.getHighlightedLabel(
-                                                    option
+                                                    option,
                                                 )}
                                             </div>
-                                        )
+                                        ),
                                 )}
                             </DropdownBody>
                         )
@@ -207,7 +208,7 @@ const options = ['Foo', 'Bar', 'Baz']
 
 export const Example = ExampleTemplate.bind({})
 Example.parameters = {
-    controls: {include: ['options', 'placement', 'isMultiple']},
+    controls: { include: ['options', 'placement', 'isMultiple'] },
 }
 Example.args = {
     options,
@@ -216,7 +217,7 @@ Example.args = {
 
 export const AsyncExample = AsyncTemplate.bind({})
 AsyncExample.parameters = {
-    controls: {include: ['options', 'placement']},
+    controls: { include: ['options', 'placement'] },
 }
 AsyncExample.args = {
     options,

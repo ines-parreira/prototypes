@@ -4,7 +4,7 @@ type Props = {
     params?: Record<string, string>
 }
 
-export default function Params({params}: Props) {
+export default function Params({ params }: Props) {
     if (!params) {
         return null
     }

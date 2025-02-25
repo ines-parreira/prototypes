@@ -1,4 +1,4 @@
-import {QueryKey} from '@tanstack/react-query'
+import { QueryKey } from '@tanstack/react-query'
 
 import * as constants from './constants'
 

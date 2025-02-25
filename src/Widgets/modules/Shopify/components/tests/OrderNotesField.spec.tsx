@@ -1,15 +1,16 @@
-import {render, screen, fireEvent, waitFor} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import {executeAction} from 'state/infobar/actions'
-import {ShopifyContext} from 'Widgets/modules/Shopify/contexts/ShopifyContext'
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import {OrderNotesField} from '../OrderNotesField'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
+import { executeAction } from 'state/infobar/actions'
+import { ShopifyContext } from 'Widgets/modules/Shopify/contexts/ShopifyContext'
+import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
+
+import { OrderNotesField } from '../OrderNotesField'
 
 // Mock the dependencies
 jest.mock('common/segment', () => ({
@@ -40,7 +41,7 @@ describe('OrderNotesField', () => {
         return render(
             <IntegrationContext.Provider
                 value={{
-                    integration: fromJS({id: integrationId}),
+                    integration: fromJS({ id: integrationId }),
                     integrationId: integrationId,
                 }}
             >
@@ -55,43 +56,43 @@ describe('OrderNotesField', () => {
                 >
                     <OrderNotesField source={source} />
                 </ShopifyContext.Provider>
-            </IntegrationContext.Provider>
+            </IntegrationContext.Provider>,
         )
     }
 
     it('renders correctly with the initial source value', () => {
-        const {getByPlaceholderText} = renderComponent('Initial note')
+        const { getByPlaceholderText } = renderComponent('Initial note')
 
         const textArea = getByPlaceholderText(
-            'Add note...'
+            'Add note...',
         ) as HTMLTextAreaElement
 
         expect(textArea.value).toBe('Initial note')
     })
 
     it('updates the value when the user types into the text area', () => {
-        const {getByPlaceholderText} = renderComponent('Initial note')
+        const { getByPlaceholderText } = renderComponent('Initial note')
 
         const textArea = getByPlaceholderText(
-            'Add note...'
+            'Add note...',
         ) as HTMLTextAreaElement
 
         // Simulate typing a new note
-        fireEvent.change(textArea, {target: {value: 'Updated note'}})
+        fireEvent.change(textArea, { target: { value: 'Updated note' } })
 
         // Check if the value has been updated
         expect(textArea.value).toBe('Updated note')
     })
 
     it('calls submitChanges when the value changes and the input is blurred', async () => {
-        const {getByPlaceholderText} = renderComponent('Initial note')
+        const { getByPlaceholderText } = renderComponent('Initial note')
 
         const textArea = getByPlaceholderText(
-            'Add note...'
+            'Add note...',
         ) as HTMLTextAreaElement
 
         // Simulate changing the value
-        fireEvent.change(textArea, {target: {value: 'Updated note'}})
+        fireEvent.change(textArea, { target: { value: 'Updated note' } })
 
         await waitFor(() => {
             expect(textArea.value).toBe('Updated note')
@@ -110,16 +111,16 @@ describe('OrderNotesField', () => {
                         note: 'Updated note',
                         order_id: orderId,
                     },
-                })
+                }),
             )
         })
     })
 
     it('does not call submitChanges if the value has not changed', () => {
-        const {getByPlaceholderText} = renderComponent('Initial note')
+        const { getByPlaceholderText } = renderComponent('Initial note')
 
         const textArea = getByPlaceholderText(
-            'Add note...'
+            'Add note...',
         ) as HTMLTextAreaElement
 
         // Simulate the blur event without changing the value
@@ -130,10 +131,10 @@ describe('OrderNotesField', () => {
     })
 
     it('auto-resizes the text area when the value changes', () => {
-        const {getByPlaceholderText} = renderComponent('Initial note')
+        const { getByPlaceholderText } = renderComponent('Initial note')
 
         const textArea = getByPlaceholderText(
-            'Add note...'
+            'Add note...',
         ) as HTMLTextAreaElement
 
         // Mock scrollHeight to simulate auto-resize behavior
@@ -143,7 +144,7 @@ describe('OrderNotesField', () => {
         })
 
         // Simulate changing the value
-        fireEvent.change(textArea, {target: {value: 'Updated note'}})
+        fireEvent.change(textArea, { target: { value: 'Updated note' } })
 
         // Check if the height of the text area has been updated
         expect(textArea.style.height).toBe('100px')

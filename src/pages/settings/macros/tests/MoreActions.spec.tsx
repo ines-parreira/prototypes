@@ -1,12 +1,14 @@
-import {Macro} from '@gorgias/api-queries'
-import {render, screen} from '@testing-library/react'
 import React from 'react'
-import {useRouteMatch} from 'react-router-dom'
 
-import {macros as macrosFixtures} from 'fixtures/macro'
-import {useBulkArchiveMacros, useBulkUnarchiveMacros} from 'hooks/macros'
-import {MacrosState} from 'state/entities/macros/types'
-import {assumeMock} from 'utils/testing'
+import { render, screen } from '@testing-library/react'
+import { useRouteMatch } from 'react-router-dom'
+
+import { Macro } from '@gorgias/api-queries'
+
+import { macros as macrosFixtures } from 'fixtures/macro'
+import { useBulkArchiveMacros, useBulkUnarchiveMacros } from 'hooks/macros'
+import { MacrosState } from 'state/entities/macros/types'
+import { assumeMock } from 'utils/testing'
 
 import MoreActions from '../MoreActions'
 
@@ -21,10 +23,10 @@ jest.mock(
             ...jest.requireActual('react-router-dom'),
             useRouteMatch: jest.fn(),
             Link: jest.fn(
-                ({children}: {children: React.ReactNode}) => children
+                ({ children }: { children: React.ReactNode }) => children,
             ),
-            NavLink: ({children}: {children: React.ReactNode}) => children,
-        }) as Record<string, unknown>
+            NavLink: ({ children }: { children: React.ReactNode }) => children,
+        }) as Record<string, unknown>,
 )
 const mockUseRouteMatch = useRouteMatch as jest.Mock
 const mockMutateBulkArchive = jest.fn()
@@ -48,7 +50,7 @@ describe('<MoreActions />', () => {
             ...acc,
             [macro.id!]: macro,
         }),
-        {}
+        {},
     )
 
     const props = {
@@ -65,7 +67,7 @@ describe('<MoreActions />', () => {
 
         expect(screen.getByLabelText('Archive macro')).toBeAriaDisabled()
         expect(
-            screen.getByLabelText('More actions on macro')
+            screen.getByLabelText('More actions on macro'),
         ).toBeAriaDisabled()
     })
 
@@ -77,9 +79,9 @@ describe('<MoreActions />', () => {
         expect(screen.getByLabelText('Archive macro')).toBeAriaEnabled()
         expect(mockMutateBulkArchive).toHaveBeenCalledWith(
             {
-                data: {ids: [props.macro.id]},
+                data: { ids: [props.macro.id] },
             },
-            {onSettled: expect.any(Function)}
+            { onSettled: expect.any(Function) },
         )
         ;(
             mockMutateBulkArchive.mock.calls[0] as {
@@ -88,7 +90,7 @@ describe('<MoreActions />', () => {
         )[1].onSettled({
             data: {
                 data: {
-                    data: [{id: 1, status: 'archived'}],
+                    data: [{ id: 1, status: 'archived' }],
                 },
             },
         })
@@ -104,9 +106,9 @@ describe('<MoreActions />', () => {
         expect(screen.getByLabelText('Archive macro')).toBeAriaEnabled()
         expect(mockMutateBulkArchive).toHaveBeenCalledWith(
             {
-                data: {ids: [props.macro.id]},
+                data: { ids: [props.macro.id] },
             },
-            {onSettled: expect.any(Function)}
+            { onSettled: expect.any(Function) },
         )
         const msg = 'error title'
         ;(
@@ -122,7 +124,7 @@ describe('<MoreActions />', () => {
                             status: 'macro_used',
                             error: {
                                 msg,
-                                data: {rules: ['rule using the macro']},
+                                data: { rules: ['rule using the macro'] },
                             },
                         },
                     ],
@@ -140,11 +142,11 @@ describe('<MoreActions />', () => {
 
         expect(mockMutateBulkUnarchive).toHaveBeenCalledWith(
             {
-                data: {ids: [props.macro.id]},
+                data: { ids: [props.macro.id] },
             },
             {
                 onSettled: expect.any(Function),
-            }
+            },
         )
         const mockCalls = (
             mockMutateBulkUnarchive.mock.calls[0] as {

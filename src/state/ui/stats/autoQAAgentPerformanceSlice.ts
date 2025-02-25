@@ -1,23 +1,22 @@
-import {createSelector, createSlice, PayloadAction} from '@reduxjs/toolkit'
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import _intersectionBy from 'lodash/intersectionBy'
 
-import {User} from 'config/types/user'
-import {ReportingMetricItem} from 'hooks/reporting/useMetricPerDimension'
-import {OrderDirection} from 'models/api/types'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-import {isMetricForAgent} from 'pages/stats/common/utils'
-import {agentIdFields} from 'pages/stats/support-performance/agents/AgentsTableConfig'
-import {AutoQAAgentsTableColumn} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
-import {getHumanAndAutomationBotAgentsJS} from 'state/agents/selectors'
-
-import {RootState} from 'state/types'
+import { User } from 'config/types/user'
+import { ReportingMetricItem } from 'hooks/reporting/useMetricPerDimension'
+import { OrderDirection } from 'models/api/types'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
+import { isMetricForAgent } from 'pages/stats/common/utils'
+import { agentIdFields } from 'pages/stats/support-performance/agents/AgentsTableConfig'
+import { AutoQAAgentsTableColumn } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
+import { getHumanAndAutomationBotAgentsJS } from 'state/agents/selectors'
+import { RootState } from 'state/types'
 import {
     AgentPerformanceSorting,
     AgentPerformanceState,
 } from 'state/ui/stats/agentPerformanceSlice'
-import {AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME} from 'state/ui/stats/constants'
-import {getCleanStatsFilters} from 'state/ui/stats/selectors'
-import {getSortByName} from 'utils/getSortByName'
+import { AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME } from 'state/ui/stats/constants'
+import { getCleanStatsFilters } from 'state/ui/stats/selectors'
+import { getSortByName } from 'utils/getSortByName'
 
 export const initialState: AgentPerformanceState<AutoQAAgentsTableColumn> = {
     sorting: {
@@ -41,7 +40,7 @@ export const autoQAAgentPerformanceSlice = createSlice({
             state,
             action: PayloadAction<
                 AgentPerformanceSorting<AutoQAAgentsTableColumn>
-            >
+            >,
         ) {
             state.sorting.field = action.payload.field
             state.sorting.direction = action.payload.direction
@@ -54,7 +53,7 @@ export const autoQAAgentPerformanceSlice = createSlice({
         },
         sortingLoaded(
             state,
-            action: PayloadAction<Maybe<ReportingMetricItem[]>>
+            action: PayloadAction<Maybe<ReportingMetricItem[]>>,
         ) {
             state.sorting.isLoading = false
             state.sorting.lastSortingMetric = action.payload
@@ -86,22 +85,22 @@ const getSliceState = (state: RootState) =>
 
 export const getAgentSorting = createSelector(
     getSliceState,
-    (state) => state.sorting
+    (state) => state.sorting,
 )
 
 export const isSortingMetricLoading = createSelector(
     getSliceState,
-    (state) => state.sorting.isLoading
+    (state) => state.sorting.isLoading,
 )
 
 export const getAgentsPagination = createSelector(
     getSliceState,
-    (state) => state.pagination
+    (state) => state.pagination,
 )
 
 export const getHeatmapMode = createSelector(
     getSliceState,
-    (state) => state.heatmapMode
+    (state) => state.heatmapMode,
 )
 
 export const getFilteredAgents = createSelector(
@@ -115,7 +114,7 @@ export const getFilteredAgents = createSelector(
         ) {
             if (filters.agents.operator === LogicalOperatorEnum.NOT_ONE_OF) {
                 return agents.filter(
-                    (agent) => !filters.agents?.values.includes(agent.id)
+                    (agent) => !filters.agents?.values.includes(agent.id),
                 )
             }
             return _intersectionBy(
@@ -123,17 +122,17 @@ export const getFilteredAgents = createSelector(
                 filters.agents.values.map((agentId: number) => ({
                     id: agentId,
                 })),
-                'id'
+                'id',
             )
         }
         return agents
-    }
+    },
 )
 
 export const getSortedAutoQAAgents = createSelector(
     getFilteredAgents,
     getAgentSorting,
-    (agentsList, {direction, field, lastSortingMetric}) => {
+    (agentsList, { direction, field, lastSortingMetric }) => {
         const agents = agentsList
         const metricName =
             field !== AutoQAAgentsTableColumn.AgentName ? field : null
@@ -143,7 +142,7 @@ export const getSortedAutoQAAgents = createSelector(
             const noDataAgents: User[] = []
             agents.forEach((agent) => {
                 const agentIndex = lastSortingMetric.findIndex((metric) =>
-                    isMetricForAgent(metric, agent.id, agentIdFields)
+                    isMetricForAgent(metric, agent.id, agentIdFields),
                 )
                 if (agentIndex >= 0) {
                     sortedAgents[agentIndex] = agent
@@ -160,13 +159,13 @@ export const getSortedAutoQAAgents = createSelector(
         return direction === OrderDirection.Asc
             ? sortedAgents
             : [...sortedAgents].reverse()
-    }
+    },
 )
 
 export const getPaginatedAutoQAAgents = createSelector(
     getSortedAutoQAAgents,
     getAgentsPagination,
-    (agents, {currentPage, perPage}) => {
+    (agents, { currentPage, perPage }) => {
         const startingItem = (currentPage - 1) * perPage
         const lastItem = Math.min(startingItem + perPage, agents.length)
         return {
@@ -175,5 +174,5 @@ export const getPaginatedAutoQAAgents = createSelector(
             currentPage,
             perPage,
         }
-    }
+    },
 )

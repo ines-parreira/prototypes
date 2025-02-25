@@ -1,7 +1,7 @@
 import {
-    getTimezoneAbbreviation,
     convertDaysToName,
     formatBusinessHoursByLocale,
+    getTimezoneAbbreviation,
 } from '../formatting.utils'
 
 jest.mock('moment', () => (date?: string, params?: string) => {

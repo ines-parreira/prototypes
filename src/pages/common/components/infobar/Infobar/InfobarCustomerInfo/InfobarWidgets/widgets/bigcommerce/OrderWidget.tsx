@@ -1,36 +1,39 @@
-import {Tooltip, Badge, ColorType} from '@gorgias/merchant-ui-kit'
+import React, { ReactNode, useContext, useState } from 'react'
+
 import classNames from 'classnames'
 import copy from 'copy-to-clipboard'
-import {Map} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {ReactNode, useContext, useState} from 'react'
+import { Map } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {FeatureFlagKey} from 'config/featureFlags'
+import { Badge, ColorType, Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {getBigCommerceDraftOrderUrl} from 'models/integration/resources/bigcommerce'
-import {BigCommerceActionType} from 'models/integration/types/index'
+import { getBigCommerceDraftOrderUrl } from 'models/integration/resources/bigcommerce'
+import { BigCommerceActionType } from 'models/integration/types/index'
 import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
-import {InfobarAction} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
+import { InfobarAction } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {getCustomersState} from 'state/customers/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {StoreDispatch} from 'state/types'
-import {humanizeString} from 'utils'
-import {CardCustomization} from 'Widgets/modules/Template/modules/Card/types'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { getCustomersState } from 'state/customers/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { StoreDispatch } from 'state/types'
+import { humanizeString } from 'utils'
+import { CardCustomization } from 'Widgets/modules/Template/modules/Card/types'
 import StaticField from 'Widgets/modules/Template/modules/Field/components/StaticField'
 
 import OrderModalRenderWrapper from './AddOrderModal/OrderModal'
-import {CustomStaticField} from './CustomStaticField'
-import css from './OrderWidget.less'
+import { CustomStaticField } from './CustomStaticField'
 import RefundOrderModalRenderWrapper from './RefundOrderModal/RefundOrderModal'
-import {isOrderFullyRefunded} from './RefundOrderModal/utils'
+import { isOrderFullyRefunded } from './RefundOrderModal/utils'
+
+import css from './OrderWidget.less'
 
 export const orderCustomization: CardCustomization = {
     AfterTitle,
@@ -67,7 +70,7 @@ async function generateDraftOrderUrl({
         notify({
             status: NotificationStatus.Success,
             title: 'New URL has been successfully generated.',
-        })
+        }),
     )
     setDraftOrderUrl(draftOrderUrl)
     copy(draftOrderUrl)
@@ -113,13 +116,13 @@ type AfterTitleProps = {
     source: Map<any, any>
 }
 
-export function AfterTitle({isEditing, source}: AfterTitleProps) {
+export function AfterTitle({ isEditing, source }: AfterTitleProps) {
     const dispatch = useAppDispatch()
-    const {integrationId} = useContext(IntegrationContext)
+    const { integrationId } = useContext(IntegrationContext)
     const bigcommerceRefundOrderAccessFlags =
         useFlags()[FeatureFlagKey.BigCommerceRefundOrder]
     const [draftOrderUrl, setDraftOrderUrl] = useState(
-        source.get('draft_order_url') || ''
+        source.get('draft_order_url') || '',
     )
     const [isRefreshCooldown, setIsRefreshCooldown] = useState(false)
     const [isLoadingGenerate, setIsLoadingGenerate] = useState(false)
@@ -148,8 +151,11 @@ export function AfterTitle({isEditing, source}: AfterTitleProps) {
                         value: BigCommerceActionType.DuplicateOrder,
                         label: 'Duplicate',
                         parameters: [
-                            {name: 'bigcommerce_checkout_id', type: 'hidden'},
-                            {name: 'bigcommerce_order_payload', type: 'hidden'},
+                            { name: 'bigcommerce_checkout_id', type: 'hidden' },
+                            {
+                                name: 'bigcommerce_order_payload',
+                                type: 'hidden',
+                            },
                             {
                                 name: 'bigcommerce_draft_order_url',
                                 type: 'hidden',
@@ -178,8 +184,8 @@ export function AfterTitle({isEditing, source}: AfterTitleProps) {
                         value: BigCommerceActionType.RefundOrder,
                         label: 'Refund',
                         parameters: [
-                            {name: 'order_id', type: 'hidden'},
-                            {name: 'payload', type: 'hidden'},
+                            { name: 'order_id', type: 'hidden' },
+                            { name: 'payload', type: 'hidden' },
                         ],
                     },
                 ],
@@ -206,7 +212,7 @@ export function AfterTitle({isEditing, source}: AfterTitleProps) {
 
         // remove removed actions from list of available actions
         return actions.filter(
-            (action: InfobarAction) => !removed.includes(action.key)
+            (action: InfobarAction) => !removed.includes(action.key),
         )
     }
 
@@ -229,7 +235,7 @@ export function AfterTitle({isEditing, source}: AfterTitleProps) {
                                         notify({
                                             status: NotificationStatus.Success,
                                             title: 'Order URL copied to clipboard.',
-                                        })
+                                        }),
                                     )
                                 }}
                             />
@@ -249,7 +255,7 @@ export function AfterTitle({isEditing, source}: AfterTitleProps) {
                                     tooltipMessage="URL has been generated"
                                     className={classNames(
                                         css.icon,
-                                        css.checkIcon
+                                        css.checkIcon,
                                     )}
                                 />
                             )}
@@ -316,9 +322,9 @@ type TitleWrapperProps = {
     template: Map<any, any>
 }
 
-export function TitleWrapper({children, source}: TitleWrapperProps) {
+export function TitleWrapper({ children, source }: TitleWrapperProps) {
     const currentAccount = useAppSelector(getCurrentAccountState)
-    const {integration} = useContext(IntegrationContext)
+    const { integration } = useContext(IntegrationContext)
     const storeHash = integration.getIn(['meta', 'store_hash']) as string
 
     const orderId = (source.get('id') || '') as string

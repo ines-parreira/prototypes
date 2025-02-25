@@ -1,11 +1,12 @@
-import {act, fireEvent, screen} from '@testing-library/react'
-import {createMemoryHistory} from 'history'
 import React from 'react'
 
-import {IntegrationType} from 'models/integration/constants'
-import {flushPromises, renderWithRouter} from 'utils/testing'
+import { act, fireEvent, screen } from '@testing-library/react'
+import { createMemoryHistory } from 'history'
 
-import {App} from '../../types'
+import { IntegrationType } from 'models/integration/constants'
+import { flushPromises, renderWithRouter } from 'utils/testing'
+
+import { App } from '../../types'
 import ActionsPlatformAppForm from '../ActionsPlatformAppForm'
 
 describe('<ActionsPlatformAppForm />', () => {
@@ -18,7 +19,7 @@ describe('<ActionsPlatformAppForm />', () => {
 
     it('should render a form with name, auth method & instructions URL', () => {
         renderWithRouter(
-            <ActionsPlatformAppForm apps={[app]} onSubmit={jest.fn()} />
+            <ActionsPlatformAppForm apps={[app]} onSubmit={jest.fn()} />,
         )
 
         expect(screen.getByText('App')).toBeInTheDocument()
@@ -33,7 +34,7 @@ describe('<ActionsPlatformAppForm />', () => {
 
         renderWithRouter(
             <ActionsPlatformAppForm apps={[app]} onSubmit={jest.fn()} />,
-            {history}
+            { history },
         )
 
         act(() => {
@@ -41,13 +42,13 @@ describe('<ActionsPlatformAppForm />', () => {
         })
 
         expect(historyPushSpy).toHaveBeenCalledWith(
-            '/app/automation/actions-platform/apps'
+            '/app/automation/actions-platform/apps',
         )
     })
 
     it('should render create button if actions app is new', () => {
         renderWithRouter(
-            <ActionsPlatformAppForm apps={[app]} onSubmit={jest.fn()} />
+            <ActionsPlatformAppForm apps={[app]} onSubmit={jest.fn()} />,
         )
 
         expect(screen.getByText('Create App settings')).toBeInTheDocument()
@@ -65,7 +66,7 @@ describe('<ActionsPlatformAppForm />', () => {
                 }}
                 apps={[app]}
                 onSubmit={jest.fn()}
-            />
+            />,
         )
 
         expect(screen.getByText('Save Changes')).toBeInTheDocument()
@@ -83,11 +84,11 @@ describe('<ActionsPlatformAppForm />', () => {
                 }}
                 apps={[app]}
                 onSubmit={jest.fn()}
-            />
+            />,
         )
 
         expect(
-            screen.getByRole('button', {name: 'Save Changes'})
+            screen.getByRole('button', { name: 'Save Changes' }),
         ).toBeAriaDisabled()
     })
 
@@ -103,13 +104,13 @@ describe('<ActionsPlatformAppForm />', () => {
                 }}
                 apps={[app]}
                 onSubmit={jest.fn()}
-            />
+            />,
         )
 
         expect(
             screen.getByRole('button', {
                 name: 'Cancel',
-            })
+            }),
         ).toBeAriaDisabled()
     })
 
@@ -125,11 +126,11 @@ describe('<ActionsPlatformAppForm />', () => {
                 }}
                 apps={[app]}
                 onSubmit={jest.fn()}
-            />
+            />,
         )
 
         expect(
-            screen.getByText('Test App').closest('[role="combobox"]')
+            screen.getByText('Test App').closest('[role="combobox"]'),
         ).toHaveAttribute('tabindex', '-1')
     })
 
@@ -145,11 +146,11 @@ describe('<ActionsPlatformAppForm />', () => {
                 }}
                 apps={[app]}
                 onSubmit={jest.fn()}
-            />
+            />,
         )
 
         expect(
-            screen.getByText('API key').closest('[role="combobox"]')
+            screen.getByText('API key').closest('[role="combobox"]'),
         ).toHaveAttribute('tabindex', '-1')
     })
 
@@ -157,7 +158,7 @@ describe('<ActionsPlatformAppForm />', () => {
         const mockOnSubmit = jest.fn()
 
         renderWithRouter(
-            <ActionsPlatformAppForm apps={[app]} onSubmit={mockOnSubmit} />
+            <ActionsPlatformAppForm apps={[app]} onSubmit={mockOnSubmit} />,
         )
 
         act(() => {
@@ -172,8 +173,8 @@ describe('<ActionsPlatformAppForm />', () => {
             fireEvent.change(
                 screen.getByPlaceholderText('https://link.gorgias.com/xyz'),
                 {
-                    target: {value: 'https://example.com'},
-                }
+                    target: { value: 'https://example.com' },
+                },
             )
         })
 
@@ -207,12 +208,12 @@ describe('<ActionsPlatformAppForm />', () => {
                 apps={[app]}
                 onSubmit={mockOnSubmit}
                 isSubmitting
-            />
+            />,
         )
 
         act(() => {
             fireEvent.change(screen.getByDisplayValue('https://example.com'), {
-                target: {value: 'https://example2.com'},
+                target: { value: 'https://example2.com' },
             })
         })
 
@@ -238,11 +239,11 @@ describe('<ActionsPlatformAppForm />', () => {
                 }}
                 apps={[app]}
                 onSubmit={jest.fn()}
-            />
+            />,
         )
 
         expect(
-            screen.getByText('Refresh token endpoint URL')
+            screen.getByText('Refresh token endpoint URL'),
         ).toBeInTheDocument()
     })
 
@@ -258,16 +259,16 @@ describe('<ActionsPlatformAppForm />', () => {
                 }}
                 apps={[app]}
                 onSubmit={jest.fn()}
-            />
+            />,
         )
         act(() => {
             fireEvent.change(screen.getByDisplayValue('https://example.com'), {
-                target: {value: 'https://example2.com'},
+                target: { value: 'https://example2.com' },
             })
         })
 
         expect(
-            screen.queryByText('Token refresh endpoint')
+            screen.queryByText('Token refresh endpoint'),
         ).not.toBeInTheDocument()
     })
 
@@ -286,11 +287,11 @@ describe('<ActionsPlatformAppForm />', () => {
                 }}
                 apps={[app]}
                 onSubmit={mockOnSubmit}
-            />
+            />,
         )
         act(() => {
             fireEvent.change(screen.getByDisplayValue('https://example.com'), {
-                target: {value: 'https://example2.com'},
+                target: { value: 'https://example2.com' },
             })
         })
         await flushPromises()
@@ -324,11 +325,11 @@ describe('<ActionsPlatformAppForm />', () => {
                 }}
                 apps={[app]}
                 onSubmit={mockOnSubmit}
-            />
+            />,
         )
         act(() => {
             fireEvent.change(screen.getByDisplayValue('https://example.com'), {
-                target: {value: 'invalid_url'},
+                target: { value: 'invalid_url' },
             })
         })
         await flushPromises()
@@ -355,11 +356,11 @@ describe('<ActionsPlatformAppForm />', () => {
                 }}
                 apps={[app]}
                 onSubmit={mockOnSubmit}
-            />
+            />,
         )
         act(() => {
             fireEvent.change(screen.getByDisplayValue('https://example.com'), {
-                target: {value: ''},
+                target: { value: '' },
             })
         })
         await flushPromises()
@@ -385,18 +386,18 @@ describe('<ActionsPlatformAppForm />', () => {
                 }}
                 apps={[]}
                 onSubmit={mockOnSubmit}
-            />
+            />,
         )
 
         act(() => {
             fireEvent.change(screen.getByLabelText('Input label'), {
-                target: {value: 'Test API Key Label'},
+                target: { value: 'Test API Key Label' },
             })
         })
 
         act(() => {
             fireEvent.change(screen.getByLabelText('Instructions URL text'), {
-                target: {value: 'Test Instructions URL text'},
+                target: { value: 'Test Instructions URL text' },
             })
         })
 
@@ -432,12 +433,12 @@ describe('<ActionsPlatformAppForm />', () => {
                 }}
                 apps={[]}
                 onSubmit={mockOnSubmit}
-            />
+            />,
         )
 
         act(() => {
             fireEvent.change(screen.getByLabelText('Instructions URL text'), {
-                target: {value: 'Test Instructions URL text'},
+                target: { value: 'Test Instructions URL text' },
             })
         })
 
@@ -471,7 +472,7 @@ describe('<ActionsPlatformAppForm />', () => {
                 }}
                 apps={[app]}
                 onSubmit={mock}
-            />
+            />,
         )
 
         act(() => {

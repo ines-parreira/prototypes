@@ -1,14 +1,14 @@
-import {act, render} from '@testing-library/react'
-import MockAdapter from 'axios-mock-adapter'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { act, render } from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {phoneNumbers} from 'fixtures/phoneNumber'
+import { phoneNumbers } from 'fixtures/phoneNumber'
 import client from 'models/api/resources'
-import {RootState, StoreDispatch} from 'state/types'
-
-import {flushPromises} from 'utils/testing'
+import { RootState, StoreDispatch } from 'state/types'
+import { flushPromises } from 'utils/testing'
 
 import PhoneNumberListContainer from '../PhoneNumbersListContainer'
 
@@ -17,8 +17,8 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({
     entities: {
         phoneNumbers: phoneNumbers.reduce(
-            (acc, number) => ({...acc, [number.id]: number}),
-            {}
+            (acc, number) => ({ ...acc, [number.id]: number }),
+            {},
         ),
     },
 } as RootState)
@@ -39,20 +39,20 @@ describe('<PhoneNumberListContainer />', () => {
 
     describe('render()', () => {
         it('should render with a number', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <PhoneNumberListContainer />
-                </Provider>
+                </Provider>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render Candu selector without numbers', async () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={storeNoNumbers}>
                     <PhoneNumberListContainer />
-                </Provider>
+                </Provider>,
             )
 
             await act(async () => {

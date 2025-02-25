@@ -1,13 +1,13 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {useRouteMatch} from 'react-router-dom'
+import { renderHook } from '@testing-library/react-hooks'
+import { useRouteMatch } from 'react-router-dom'
 
-import {useFlag} from 'core/flags'
-import {useAiAgentNavigation} from 'pages/aiAgent/hooks/useAiAgentNavigation'
-import {assumeMock} from 'utils/testing'
+import { useFlag } from 'core/flags'
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { assumeMock } from 'utils/testing'
 
-import {useAiAgentHeaderNavbarItems} from '../useAiAgentHeaderNavbarItems'
+import { useAiAgentHeaderNavbarItems } from '../useAiAgentHeaderNavbarItems'
 
-jest.mock('react-router-dom', () => ({useRouteMatch: jest.fn()}))
+jest.mock('react-router-dom', () => ({ useRouteMatch: jest.fn() }))
 const mockUseRouteMatch = assumeMock(useRouteMatch)
 jest.mock('core/flags')
 const mockUseFlag = assumeMock(useFlag)
@@ -59,8 +59,8 @@ describe('useAiAgentHeaderNavbarItems', () => {
     it('should return navigationItems when standalone menu is disabled', () => {
         mockUseFlag.mockReturnValue(false)
 
-        const {result} = renderHook(() =>
-            useAiAgentHeaderNavbarItems('shopName')
+        const { result } = renderHook(() =>
+            useAiAgentHeaderNavbarItems('shopName'),
         )
 
         expect(result.current).toEqual(navigationItems)
@@ -69,8 +69,8 @@ describe('useAiAgentHeaderNavbarItems', () => {
     it("should return current navigation item's items when standalone menu is enabled", () => {
         mockUseFlag.mockReturnValue(true)
 
-        const {result} = renderHook(() =>
-            useAiAgentHeaderNavbarItems('shopName')
+        const { result } = renderHook(() =>
+            useAiAgentHeaderNavbarItems('shopName'),
         )
 
         expect(result.current).toEqual(item1SubItems)
@@ -85,8 +85,8 @@ describe('useAiAgentHeaderNavbarItems', () => {
             isExact: true,
         })
 
-        const {result} = renderHook(() =>
-            useAiAgentHeaderNavbarItems('shopName')
+        const { result } = renderHook(() =>
+            useAiAgentHeaderNavbarItems('shopName'),
         )
 
         expect(result.current).toEqual(item1SubItems)

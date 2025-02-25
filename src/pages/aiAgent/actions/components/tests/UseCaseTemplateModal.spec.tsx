@@ -1,19 +1,19 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {act, fireEvent, screen} from '@testing-library/react'
-import {createMemoryHistory} from 'history'
 import React from 'react'
 
-import {ulid} from 'ulidx'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { act, fireEvent, screen } from '@testing-library/react'
+import { createMemoryHistory } from 'history'
+import { ulid } from 'ulidx'
 
-import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
+import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
 import useUpsertAction from 'pages/aiAgent/actions/hooks/useUpsertAction'
-import {useAiAgentOnboardingNotification} from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
+import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import useGetIsActionStepEnabled from 'pages/automate/actionsPlatform/hooks/useGetIsActionStepEnabled'
-import {ActionTemplate} from 'pages/automate/actionsPlatform/types'
-import {WorkflowConfigurationBuilder} from 'pages/automate/workflows/models/workflowConfiguration.model'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {renderWithRouter} from 'utils/testing'
+import { ActionTemplate } from 'pages/automate/actionsPlatform/types'
+import { WorkflowConfigurationBuilder } from 'pages/automate/workflows/models/workflowConfiguration.model'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { renderWithRouter } from 'utils/testing'
 
 import UseCaseTemplateModal from '../UseCaseTemplateModal'
 
@@ -30,11 +30,11 @@ const queryClient = mockQueryClient()
 const mockUseApps = jest.mocked(useApps)
 const mockUseUpsertAction = jest.mocked(useUpsertAction)
 const mockUseGetWorkflowConfigurationTemplates = jest.mocked(
-    useGetWorkflowConfigurationTemplates
+    useGetWorkflowConfigurationTemplates,
 )
 const mockUseGetIsActionStepEnabled = jest.mocked(useGetIsActionStepEnabled)
 const mockUseAiAgentOnboardingNotification = jest.mocked(
-    useAiAgentOnboardingNotification
+    useAiAgentOnboardingNotification,
 )
 
 const b = new WorkflowConfigurationBuilder({
@@ -177,7 +177,7 @@ describe('<UseCaseTemplateModal />', () => {
                     id: 'someid1',
                     internal_id: 'someid1',
                     name: 'test1',
-                    apps: [{type: 'shopify'}],
+                    apps: [{ type: 'shopify' }],
                     entrypoints: [
                         {
                             kind: 'reusable-llm-prompt-call-step',
@@ -204,7 +204,7 @@ describe('<UseCaseTemplateModal />', () => {
                     id: 'someid2',
                     internal_id: 'someid2',
                     name: 'test2',
-                    apps: [{type: 'app', app_id: 'someapp'}],
+                    apps: [{ type: 'app', app_id: 'someapp' }],
                     entrypoints: [
                         {
                             kind: 'reusable-llm-prompt-call-step',
@@ -231,10 +231,10 @@ describe('<UseCaseTemplateModal />', () => {
             isInitialLoading: false,
         } as unknown as ReturnType<typeof useGetWorkflowConfigurationTemplates>)
         mockUseGetIsActionStepEnabled.mockReturnValue(
-            jest.fn().mockReturnValue(true)
+            jest.fn().mockReturnValue(true),
         )
         mockUseAiAgentOnboardingNotification.mockReturnValue(
-            defaultUseAiAgentOnboardingNotification
+            defaultUseAiAgentOnboardingNotification,
         )
     })
 
@@ -242,13 +242,13 @@ describe('<UseCaseTemplateModal />', () => {
         renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <UseCaseTemplateModal onClose={jest.fn()} template={template} />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(
             screen.getByText(
-                'First, select the apps you need to perform this Action'
-            )
+                'First, select the apps you need to perform this Action',
+            ),
         ).toBeInTheDocument()
     })
 
@@ -256,7 +256,7 @@ describe('<UseCaseTemplateModal />', () => {
         renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <UseCaseTemplateModal onClose={jest.fn()} template={template} />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(screen.getByText('Shopify')).toBeInTheDocument()
@@ -267,11 +267,11 @@ describe('<UseCaseTemplateModal />', () => {
         renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <UseCaseTemplateModal onClose={jest.fn()} template={template} />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(
-            screen.getByRole('button', {name: /Continue/})
+            screen.getByRole('button', { name: /Continue/ }),
         ).toBeAriaDisabled()
     })
 
@@ -284,7 +284,7 @@ describe('<UseCaseTemplateModal />', () => {
                     onClose={mockOnClose}
                     template={template}
                 />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         act(() => {
@@ -298,7 +298,7 @@ describe('<UseCaseTemplateModal />', () => {
         renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <UseCaseTemplateModal onClose={jest.fn()} template={template} />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         act(() => {
@@ -310,18 +310,18 @@ describe('<UseCaseTemplateModal />', () => {
         })
 
         expect(
-            screen.getByText('AI Agent will perform the following steps')
+            screen.getByText('AI Agent will perform the following steps'),
         ).toBeInTheDocument()
         expect(screen.getByText('test1 in Shopify')).toBeInTheDocument()
         expect(screen.getByText('Action conditions')).toBeInTheDocument()
         expect(screen.getByText('Order status is not open')).toBeInTheDocument()
         expect(
-            screen.getByText('Order total amount (<) is less than 10')
+            screen.getByText('Order total amount (<) is less than 10'),
         ).toBeInTheDocument()
         expect(
             screen.getByText(
-                'AI Agent will always ask for customer confirmation before performing the Action'
-            )
+                'AI Agent will always ask for customer confirmation before performing the Action',
+            ),
         ).toBeInTheDocument()
     })
 
@@ -341,7 +341,7 @@ describe('<UseCaseTemplateModal />', () => {
             {
                 path: '/app/automation/:shopType/:shopName/ai-agent/actions',
                 route: `/app/automation/shopify/acme/ai-agent/actions`,
-            }
+            },
         )
 
         act(() => {
@@ -363,7 +363,7 @@ describe('<UseCaseTemplateModal />', () => {
                 store_type: 'shopify',
             },
             expect.objectContaining({
-                apps: [{type: 'shopify'}],
+                apps: [{ type: 'shopify' }],
                 entrypoints: template.entrypoints,
                 triggers: template.triggers,
                 name: template.name,
@@ -420,11 +420,11 @@ describe('<UseCaseTemplateModal />', () => {
                 path: '/app/automation/:shopType/:shopName/ai-agent/actions',
                 route: `/app/automation/shopify/acme/ai-agent/actions`,
                 history,
-            }
+            },
         )
 
         expect(historyPushSpy).toHaveBeenCalledWith(
-            '/app/automation/shopify/acme/ai-agent/actions'
+            '/app/automation/shopify/acme/ai-agent/actions',
         )
     })
 
@@ -442,7 +442,7 @@ describe('<UseCaseTemplateModal />', () => {
                 path: '/app/automation/:shopType/:shopName/ai-agent/actions',
                 route: `/app/automation/shopify/acme/ai-agent/actions`,
                 history,
-            }
+            },
         )
 
         act(() => {
@@ -460,7 +460,7 @@ describe('<UseCaseTemplateModal />', () => {
         expect(historyPushSpy).toHaveBeenCalledWith(
             '/app/automation/shopify/acme/ai-agent/actions/new',
             expect.objectContaining({
-                apps: [{type: 'shopify'}],
+                apps: [{ type: 'shopify' }],
                 entrypoints: template.entrypoints,
                 triggers: template.triggers,
                 name: template.name,
@@ -493,7 +493,7 @@ describe('<UseCaseTemplateModal />', () => {
                         },
                     }),
                 ],
-            })
+            }),
         )
     })
 
@@ -505,7 +505,7 @@ describe('<UseCaseTemplateModal />', () => {
             {
                 path: '/app/automation/:shopType/:shopName/ai-agent/actions',
                 route: `/app/automation/shopify/acme/ai-agent/actions`,
-            }
+            },
         )
 
         act(() => {
@@ -518,8 +518,8 @@ describe('<UseCaseTemplateModal />', () => {
 
         expect(
             screen.queryByText(
-                'First, select the apps you need to perform this Action'
-            )
+                'First, select the apps you need to perform this Action',
+            ),
         ).not.toBeInTheDocument()
 
         act(() => {
@@ -528,8 +528,8 @@ describe('<UseCaseTemplateModal />', () => {
 
         expect(
             screen.getByText(
-                'First, select the apps you need to perform this Action'
-            )
+                'First, select the apps you need to perform this Action',
+            ),
         ).toBeInTheDocument()
     })
 
@@ -547,7 +547,7 @@ describe('<UseCaseTemplateModal />', () => {
                 path: '/app/automation/:shopType/:shopName/ai-agent/actions',
                 route: `/app/automation/shopify/acme/ai-agent/actions`,
                 history,
-            }
+            },
         )
 
         act(() => {
@@ -561,7 +561,7 @@ describe('<UseCaseTemplateModal />', () => {
         expect(historyPushSpy).toHaveBeenCalledWith(
             '/app/automation/shopify/acme/ai-agent/actions/new',
             expect.objectContaining({
-                apps: [{type: 'app', app_id: 'someapp'}],
+                apps: [{ type: 'app', app_id: 'someapp' }],
                 entrypoints: template.entrypoints,
                 triggers: template.triggers,
                 name: template.name,
@@ -594,7 +594,7 @@ describe('<UseCaseTemplateModal />', () => {
                         },
                     }),
                 ],
-            })
+            }),
         )
     })
 
@@ -611,13 +611,13 @@ describe('<UseCaseTemplateModal />', () => {
             })
 
         mockUseGetIsActionStepEnabled.mockReturnValue(
-            mockGetIsActionStepEnabled
+            mockGetIsActionStepEnabled,
         )
 
         renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <UseCaseTemplateModal onClose={jest.fn()} template={template} />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(screen.getByText('Shopify')).toBeInTheDocument()
@@ -634,7 +634,7 @@ describe('<UseCaseTemplateModal />', () => {
         renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <UseCaseTemplateModal onClose={jest.fn()} template={template} />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         act(() => {
@@ -650,7 +650,7 @@ describe('<UseCaseTemplateModal />', () => {
         })
 
         expect(
-            defaultUseAiAgentOnboardingNotification.handleOnTriggerActivateAiAgentNotification
+            defaultUseAiAgentOnboardingNotification.handleOnTriggerActivateAiAgentNotification,
         ).toHaveBeenCalled()
     })
 
@@ -664,7 +664,7 @@ describe('<UseCaseTemplateModal />', () => {
         renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <UseCaseTemplateModal onClose={jest.fn()} template={template} />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         act(() => {
@@ -680,7 +680,7 @@ describe('<UseCaseTemplateModal />', () => {
         })
 
         expect(
-            defaultUseAiAgentOnboardingNotification.handleOnTriggerActivateAiAgentNotification
+            defaultUseAiAgentOnboardingNotification.handleOnTriggerActivateAiAgentNotification,
         ).not.toHaveBeenCalled()
     })
 
@@ -693,7 +693,7 @@ describe('<UseCaseTemplateModal />', () => {
         renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <UseCaseTemplateModal onClose={jest.fn()} template={template} />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         act(() => {
@@ -705,7 +705,7 @@ describe('<UseCaseTemplateModal />', () => {
         })
 
         expect(
-            screen.getByRole('button', {name: 'Create and enable'})
+            screen.getByRole('button', { name: 'Create and enable' }),
         ).toBeAriaDisabled()
     })
 })

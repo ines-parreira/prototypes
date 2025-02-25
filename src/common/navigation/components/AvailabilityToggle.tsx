@@ -1,15 +1,16 @@
-import cn from 'classnames'
-import React, {useCallback} from 'react'
+import React, { useCallback } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import cn from 'classnames'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import ToggleInput from 'pages/common/forms/ToggleInput'
-import {submitSetting} from 'state/currentUser/actions'
+import { submitSetting } from 'state/currentUser/actions'
 import {
+    isAvailable as getIsAvailable,
     getIsPreferencesLoading,
     getPreferences,
-    isAvailable as getIsAvailable,
 } from 'state/currentUser/selectors'
 
 import css from './UserMenu.less'
@@ -23,9 +24,9 @@ export default function AvailabilityToggle() {
     const updateAvailability = useCallback(() => {
         const newPreferences = currentUserPreferences.updateIn(
             ['data', 'available'],
-            (status) => !status
+            (status) => !status,
         )
-        logEvent(SegmentEvent.MenuUserLinkClicked, {link: 'available-on-off'})
+        logEvent(SegmentEvent.MenuUserLinkClicked, { link: 'available-on-off' })
         void dispatch(submitSetting(newPreferences.toJS(), false))
     }, [currentUserPreferences, dispatch])
 
@@ -33,7 +34,7 @@ export default function AvailabilityToggle() {
         <button
             className={cn(
                 css['dropdown-item-user-menu'],
-                css.availabilityToggle
+                css.availabilityToggle,
             )}
             onClick={updateAvailability}
         >

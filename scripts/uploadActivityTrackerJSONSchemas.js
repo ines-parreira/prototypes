@@ -68,26 +68,26 @@ const buildUrls = (username, password, cluster) => {
     const apicurioURl = buildApicurioUrl(
         username,
         password,
-        cluster && buildApicurioHostname(cluster)
+        cluster && buildApicurioHostname(cluster),
     )
     const apicurioRuleUrl = buildApicurioRuleUrl(
         username,
         password,
-        cluster && buildApicurioHostname(cluster)
+        cluster && buildApicurioHostname(cluster),
     )
 
-    return {apicurioURl, apicurioRuleUrl}
+    return { apicurioURl, apicurioRuleUrl }
 }
 
 // currently the description is in the format of "version ### description"
 const parseDescription = (text) => {
     const [version, description] = text.split('###')
 
-    return {version, description}
+    return { version, description }
 }
 
 const promptCredentials = async (cluster) => {
-    const {username, password} = await inquirer.prompt([
+    const { username, password } = await inquirer.prompt([
         {
             type: 'input',
             name: 'username',
@@ -100,7 +100,7 @@ const promptCredentials = async (cluster) => {
         },
     ])
 
-    return {username, password}
+    return { username, password }
 }
 
 const validateCredentials = (username, password) => {
@@ -111,7 +111,7 @@ const validateCredentials = (username, password) => {
 }
 
 const main = async () => {
-    const {releaseName} = await inquirer.prompt([
+    const { releaseName } = await inquirer.prompt([
         {
             type: 'list',
             name: 'releaseName',
@@ -122,7 +122,7 @@ const main = async () => {
 
     if (!releaseName) {
         signale.fatal(
-            'Please provide an environment type (development | staging | production)!'
+            'Please provide an environment type (development | staging | production)!',
         )
         process.exit(1)
     }
@@ -142,7 +142,7 @@ const main = async () => {
                 for (const [index, file] of JSONFiles.entries()) {
                     const jsonSchema = require(SCHEMAS_DIR + '/' + file)
                     const schemaDescription = Object.values(
-                        JSON.parse(JSON.stringify(jsonSchema)).definitions
+                        JSON.parse(JSON.stringify(jsonSchema)).definitions,
                     )[0].description
                     const schemaName = file.split('.schema.json')[0]
                     const sharedContentTypeHeaders = {
@@ -162,24 +162,23 @@ const main = async () => {
                         signale.pending(
                             `Uploading schema ${index + 1}/${
                                 JSONFiles.length
-                            } to ${apicurioUrl}`
+                            } to ${apicurioUrl}`,
                         )
                         await axios.post(
                             apicurioUrl,
                             JSON.parse(JSON.stringify(jsonSchema)),
-                            {headers}
+                            { headers },
                         )
 
                         const ruleUrl = apicurioRuleUrl.replace(
                             ARTIFACT_PLACEHOLDER,
-                            schemaName
+                            schemaName,
                         )
 
                         // check compatibility and validity rules
                         signale.pending('Checking schema rules...')
-                        const {data: schemaRules = []} = await axios.get(
-                            ruleUrl
-                        )
+                        const { data: schemaRules = [] } =
+                            await axios.get(ruleUrl)
 
                         if (
                             !schemaRules.includes(SchemaRuleType.COMPATIBILITY)
@@ -187,7 +186,7 @@ const main = async () => {
                             signale.pending(
                                 `Updating compatibility rule ${index + 1}/${
                                     JSONFiles.length
-                                }`
+                                }`,
                             )
 
                             // update compatibility rule
@@ -197,7 +196,7 @@ const main = async () => {
                                     type: 'COMPATIBILITY',
                                     config: 'BACKWARD_TRANSITIVE',
                                 },
-                                {headers: sharedContentTypeHeaders}
+                                { headers: sharedContentTypeHeaders },
                             )
                         }
 
@@ -206,7 +205,7 @@ const main = async () => {
                             signale.pending(
                                 `Updating validity rule ${index + 1}/${
                                     JSONFiles.length
-                                }`
+                                }`,
                             )
                             await axios.post(
                                 ruleUrl,
@@ -214,13 +213,13 @@ const main = async () => {
                                     type: 'VALIDITY',
                                     config: 'FULL',
                                 },
-                                {headers: sharedContentTypeHeaders}
+                                { headers: sharedContentTypeHeaders },
                             )
                         }
 
                         if (
                             schemaRules.includes(
-                                SchemaRuleType.COMPATIBILITY
+                                SchemaRuleType.COMPATIBILITY,
                             ) &&
                             schemaRules.includes(SchemaRuleType.VALIDITY)
                         ) {
@@ -230,7 +229,7 @@ const main = async () => {
                         signale.success(
                             `Schema ${index + 1}/${
                                 JSONFiles.length
-                            } uploaded / updated successfully !`
+                            } uploaded / updated successfully !`,
                         )
                         successCount++
                     } catch (err) {
@@ -252,7 +251,7 @@ const main = async () => {
                     })
                 } else {
                     signale.complete(
-                        'All schemas uploaded / updated successfully !'
+                        'All schemas uploaded / updated successfully !',
                     )
                 }
 
@@ -262,31 +261,31 @@ const main = async () => {
     }
 
     if (releaseName === RELEASE_TYPE.DEVELOPMENT) {
-        const {apicurioURl, apicurioRuleUrl} = buildUrls()
+        const { apicurioURl, apicurioRuleUrl } = buildUrls()
         await readAndSubmitSchemas(apicurioURl, apicurioRuleUrl)
     }
 
     if (releaseName === RELEASE_TYPE.STAGING) {
-        const {username, password} = await promptCredentials(
-            RELEASE_TYPE.STAGING
+        const { username, password } = await promptCredentials(
+            RELEASE_TYPE.STAGING,
         )
         validateCredentials(username, password)
 
         const apicurioURl = buildApicurioUrl(
             username,
             password,
-            buildApicurioHostname(STAGING_CLUSTER, true)
+            buildApicurioHostname(STAGING_CLUSTER, true),
         )
         const apicurioRuleUrl = buildApicurioRuleUrl(
             username,
             password,
-            buildApicurioHostname(STAGING_CLUSTER, true)
+            buildApicurioHostname(STAGING_CLUSTER, true),
         )
         await readAndSubmitSchemas(apicurioURl, apicurioRuleUrl)
     }
 
     if (releaseName === RELEASE_TYPE.PRODUCTION) {
-        const {clusterChoice} = await inquirer.prompt([
+        const { clusterChoice } = await inquirer.prompt([
             {
                 type: 'list',
                 name: 'clusterChoice',
@@ -297,25 +296,26 @@ const main = async () => {
 
         if (clusterChoice === 'all') {
             for (const cluster of CLUSTER_LIST) {
-                const {username, password} = await promptCredentials(cluster)
+                const { username, password } = await promptCredentials(cluster)
                 validateCredentials(username, password)
 
-                const {apicurioURl, apicurioRuleUrl} = buildUrls(
+                const { apicurioURl, apicurioRuleUrl } = buildUrls(
                     username,
                     password,
-                    cluster
+                    cluster,
                 )
                 await readAndSubmitSchemas(apicurioURl, apicurioRuleUrl)
             }
             signale.success('All clusters updated !')
         } else {
-            const {username, password} = await promptCredentials(clusterChoice)
+            const { username, password } =
+                await promptCredentials(clusterChoice)
             validateCredentials(username, password)
 
-            const {apicurioURl, apicurioRuleUrl} = buildUrls(
+            const { apicurioURl, apicurioRuleUrl } = buildUrls(
                 username,
                 password,
-                clusterChoice
+                clusterChoice,
             )
             await readAndSubmitSchemas(apicurioURl, apicurioRuleUrl)
         }

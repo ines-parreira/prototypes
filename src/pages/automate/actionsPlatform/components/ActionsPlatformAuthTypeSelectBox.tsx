@@ -1,5 +1,6 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import React, {useRef, useState} from 'react'
+import React, { useRef, useState } from 'react'
+
+import { Label } from '@gorgias/merchant-ui-kit'
 
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
@@ -8,8 +9,8 @@ import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 
-import {AUTH_TYPE_LABEL_BY_TYPE, DISABLED_AUTH_TYPES} from '../constants'
-import {ActionsApp} from '../types'
+import { AUTH_TYPE_LABEL_BY_TYPE, DISABLED_AUTH_TYPES } from '../constants'
+import { ActionsApp } from '../types'
 
 import css from './ActionsPlatformAuthTypeSelectBox.less'
 
@@ -65,7 +66,7 @@ const ActionsPlatformAuthTypeSelectBox = ({
                                         onClick={onChange}
                                         shouldCloseOnSelect
                                         isDisabled={DISABLED_AUTH_TYPES.includes(
-                                            value
+                                            value,
                                         )}
                                     />
                                 ))}

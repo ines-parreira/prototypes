@@ -1,14 +1,15 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
 
 import {
-    stats as statsConfig,
     RESOLUTION_TIME,
+    stats as statsConfig,
 } from '../../../../../../config/stats'
-import {LineStatContainer} from '../LineStat'
+import { LineStatContainer } from '../LineStat'
 
-jest.mock('react-chartjs-2', () => ({Line: () => <canvas />}))
+jest.mock('react-chartjs-2', () => ({ Line: () => <canvas /> }))
 
 const minProps = {
     name: 'stat_name',
@@ -45,7 +46,7 @@ const minProps = {
 
 describe('LineStat', () => {
     it('should render a line chart', () => {
-        const {container} = render(<LineStatContainer {...minProps} />)
+        const { container } = render(<LineStatContainer {...minProps} />)
         expect(container.firstChild).toMatchSnapshot()
     })
 })

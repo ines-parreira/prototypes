@@ -1,23 +1,22 @@
 import React from 'react'
 
-import {Route, Switch, useRouteMatch} from 'react-router-dom'
+import { Route, Switch, useRouteMatch } from 'react-router-dom'
 
-import {NotificationsSettings} from 'common/notifications'
-import {PageSection} from 'config/pages'
+import { NotificationsSettings } from 'common/notifications'
+import { PageSection } from 'config/pages'
 import {
-    PaywallConfig,
     paywallConfigs as defaultPaywallConfigs,
+    PaywallConfig,
 } from 'config/paywalls'
-
-import {ADMIN_ROLE, AGENT_ROLE} from 'config/user'
-import {OBJECT_TYPES} from 'custom-fields/constants'
+import { ADMIN_ROLE, AGENT_ROLE } from 'config/user'
+import { OBJECT_TYPES } from 'custom-fields/constants'
 import IntegrationDetail from 'pages/integrations/integration/Integration'
 import Access from 'pages/settings/access/Access'
 import APIView from 'pages/settings/api/APIView'
 import UserAuditList from 'pages/settings/audit/UserAuditList'
 import AutoMergeSettings from 'pages/settings/autoMerge/AutoMergeSettings'
 import BusinessHours from 'pages/settings/businessHours/BusinessHours'
-import {HelpCenterApiClientProvider} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import SatisfactionSurveyView from 'pages/settings/satisfactionSurveys/SatisfactionSurveyView'
 import SidebarSettings from 'pages/settings/sidebar/SidebarSettings'
 import ManageTags from 'pages/settings/tags/ManageTags'
@@ -28,28 +27,28 @@ import {
     CUSTOM_FIELD_CONDITIONS_ROUTE,
     CUSTOM_FIELD_ROUTES,
 } from 'routes/constants'
-import {AccountFeature} from 'state/currentAccount/types'
-import {assetsUrl} from 'utils'
+import { AccountFeature } from 'state/currentAccount/types'
+import { assetsUrl } from 'utils'
 
-import {Billing} from './Billing'
-import {Channels} from './Channels'
-import {ConditionalFields} from './ConditionalFields'
-import {ContactForm} from './ContactForm'
-import {Convert} from './Convert'
-import {CustomFields} from './CustomFields'
-import {HelpCenter} from './HelpCenter'
-import {renderAppSettings} from './helpers/settingsRenderer'
-import {Import} from './Import'
-import {Integrations} from './Integrations'
-import {Macros} from './Macros'
-import {PhoneNumbers} from './PhoneNumbers'
-import {Rules} from './Rules'
-import {SLA} from './SLA'
-import {Teams} from './Teams'
-import {Users} from './Users'
+import { Billing } from './Billing'
+import { Channels } from './Channels'
+import { ConditionalFields } from './ConditionalFields'
+import { ContactForm } from './ContactForm'
+import { Convert } from './Convert'
+import { CustomFields } from './CustomFields'
+import { HelpCenter } from './HelpCenter'
+import { renderAppSettings } from './helpers/settingsRenderer'
+import { Import } from './Import'
+import { Integrations } from './Integrations'
+import { Macros } from './Macros'
+import { PhoneNumbers } from './PhoneNumbers'
+import { Rules } from './Rules'
+import { SLA } from './SLA'
+import { Teams } from './Teams'
+import { Users } from './Users'
 
 export function SettingRoutes() {
-    const {path} = useRouteMatch()
+    const { path } = useRouteMatch()
 
     return (
         <Switch>
@@ -175,7 +174,7 @@ export function SettingRoutes() {
                                         AccountFeature.SatisfactionSurveys
                                     ],
                                     preview: assetsUrl(
-                                        '/img/paywalls/screens/satisfaction-surveys-settings.png'
+                                        '/img/paywalls/screens/satisfaction-surveys-settings.png',
                                     ),
                                 } as PaywallConfig,
                             },

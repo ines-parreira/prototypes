@@ -1,16 +1,17 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {renderHook, act} from '@testing-library/react-hooks'
 import React from 'react'
 
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
-import {channelConnectionId} from 'fixtures/channelConnection'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { act, renderHook } from '@testing-library/react-hooks'
+
+import { axiosSuccessResponse } from 'fixtures/axiosResponse'
+import { channelConnectionId } from 'fixtures/channelConnection'
 import * as queries from 'models/convert/settings/queries'
 import {
-    updateSettings,
     getSettingsList,
+    updateSettings,
 } from 'models/convert/settings/resources'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('pages/convert/common/hooks/useConvertApi', () => ({
     useConvertApi: jest.fn(() => ({
@@ -27,7 +28,7 @@ const mockedResources = {
 
 const queryClient = mockQueryClient()
 
-const wrapper = ({children}: any) => (
+const wrapper = ({ children }: any) => (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 )
 
@@ -45,64 +46,64 @@ describe('Convert settings queries', () => {
     describe('useGetSettingsList', () => {
         it('should return correct data on success', async () => {
             mockedResources.mockGetSettingList.mockResolvedValueOnce({
-                data: [{type: 'setting_type', data: {foo: 'bar'}}],
+                data: [{ type: 'setting_type', data: { foo: 'bar' } }],
             } as any)
 
-            const {result, waitFor} = renderHook(
+            const { result, waitFor } = renderHook(
                 () =>
                     queries.useGetSettingsList(
                         {
                             channel_connection_id: channelConnectionId,
                         },
-                        testOverrides
+                        testOverrides,
                     ),
                 {
                     wrapper,
-                }
+                },
             )
             await waitFor(() => expect(result.current.isSuccess).toBe(true))
             expect(result.current.data).toStrictEqual([
-                {type: 'setting_type', data: {foo: 'bar'}},
+                { type: 'setting_type', data: { foo: 'bar' } },
             ])
         })
 
         it('should return expected error on failure', async () => {
             mockedResources.mockGetSettingList.mockRejectedValueOnce(
-                Error('test error')
+                Error('test error'),
             )
-            const {result, waitFor} = renderHook(
+            const { result, waitFor } = renderHook(
                 () =>
                     queries.useGetSettingsList(
                         {
                             channel_connection_id: channelConnectionId,
                         },
-                        testOverrides
+                        testOverrides,
                     ),
                 {
                     wrapper,
-                }
+                },
             )
             await waitFor(() => expect(result.current.isError).toBe(true))
             expect(result.current.error).toStrictEqual(Error('test error'))
         })
 
         it('should respect the enabled setting', async () => {
-            const {waitFor} = renderHook(
+            const { waitFor } = renderHook(
                 () =>
                     queries.useGetSettingsList(
                         {
                             channel_connection_id: channelConnectionId,
                         },
-                        {...testOverrides, enabled: false}
+                        { ...testOverrides, enabled: false },
                     ),
                 {
                     wrapper,
-                }
+                },
             )
             await waitFor(() =>
                 expect(
-                    mockedResources.mockGetSettingList
-                ).not.toHaveBeenCalled()
+                    mockedResources.mockGetSettingList,
+                ).not.toHaveBeenCalled(),
             )
         })
     })
@@ -110,17 +111,17 @@ describe('Convert settings queries', () => {
     describe('useUpdateSetting', () => {
         it('return correct data on success', async () => {
             mockedResources.mockUpdateSettings.mockResolvedValueOnce(
-                axiosSuccessResponse({type: 'test', data: {foo: 1}}) as any
+                axiosSuccessResponse({ type: 'test', data: { foo: 1 } }) as any,
             )
-            const {result, waitFor} = renderHook(
+            const { result, waitFor } = renderHook(
                 () => queries.useUpdateSetting(),
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
                             {children}
                         </QueryClientProvider>
                     ),
-                }
+                },
             )
             act(() => {
                 result.current.mutate([
@@ -134,7 +135,7 @@ describe('Convert settings queries', () => {
             })
             expect(result.current.data?.data).toEqual({
                 type: 'test',
-                data: {foo: 1},
+                data: { foo: 1 },
             })
         })
     })

@@ -1,8 +1,9 @@
-import {fireEvent, render} from '@testing-library/react'
 import React from 'react'
-import {act} from 'react-dom/test-utils'
 
-import {AdvancedTriggersSelect} from '../AdvancedTriggersSelect'
+import { fireEvent, render } from '@testing-library/react'
+import { act } from 'react-dom/test-utils'
+
+import { AdvancedTriggersSelect } from '../AdvancedTriggersSelect'
 
 jest.mock('pages/convert/common/components/ConvertSubscriptionModal', () => {
     return jest.fn(() => {
@@ -14,8 +15,8 @@ describe('<AdvancedTriggersSelect />', () => {
     it('triggers the onClick with the right trigger key', () => {
         const onClickFn = jest.fn()
 
-        const {getByText} = render(
-            <AdvancedTriggersSelect onClick={onClickFn} />
+        const { getByText } = render(
+            <AdvancedTriggersSelect onClick={onClickFn} />,
         )
 
         const buttonEl = getByText('Add condition')
@@ -34,8 +35,8 @@ describe('<AdvancedTriggersSelect />', () => {
     it('renders the legacy triggers', () => {
         const onClickFn = jest.fn()
 
-        const {getByText} = render(
-            <AdvancedTriggersSelect onClick={onClickFn} />
+        const { getByText } = render(
+            <AdvancedTriggersSelect onClick={onClickFn} />,
         )
 
         const buttonEl = getByText('Add condition')
@@ -51,8 +52,8 @@ describe('<AdvancedTriggersSelect />', () => {
     it('renders the legacy and revenue triggers', () => {
         const onClickFn = jest.fn()
 
-        const {getByText} = render(
-            <AdvancedTriggersSelect isConvertSubscriber onClick={onClickFn} />
+        const { getByText } = render(
+            <AdvancedTriggersSelect isConvertSubscriber onClick={onClickFn} />,
         )
 
         const buttonEl = getByText('Add condition')
@@ -69,12 +70,12 @@ describe('<AdvancedTriggersSelect />', () => {
     it('renders options for upsell when is Shopify non-subscriber', () => {
         const onClickFn = jest.fn()
 
-        const {getByText} = render(
+        const { getByText } = render(
             <AdvancedTriggersSelect
                 isLightCampaign
                 isShopifyStore
                 onClick={onClickFn}
-            />
+            />,
         )
 
         const buttonEl = getByText('Add condition')
@@ -106,13 +107,13 @@ describe('<AdvancedTriggersSelect />', () => {
     it('does not render upsell option for subscribers', () => {
         const onClickFn = jest.fn()
 
-        const {getByText, queryByText} = render(
+        const { getByText, queryByText } = render(
             <AdvancedTriggersSelect
                 isConvertSubscriber
                 isShopifyStore
                 isLightCampaign
                 onClick={onClickFn}
-            />
+            />,
         )
 
         const buttonEl = getByText('Add condition')
@@ -127,12 +128,12 @@ describe('<AdvancedTriggersSelect />', () => {
     it('does not render upsell option when is not Shopify', () => {
         const onClickFn = jest.fn()
 
-        const {getByText, queryByText} = render(
+        const { getByText, queryByText } = render(
             <AdvancedTriggersSelect
                 isConvertSubscriber
                 isLightCampaign
                 onClick={onClickFn}
-            />
+            />,
         )
 
         const buttonEl = getByText('Add condition')

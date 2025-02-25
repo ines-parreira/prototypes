@@ -1,6 +1,8 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { ComponentProps, ReactNode } from 'react'
+
 import classnames from 'classnames'
-import React, {ComponentProps, ReactNode} from 'react'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useId from 'hooks/useId'
 

@@ -1,12 +1,12 @@
 export default function getElementWrapInfo(
     children: HTMLCollection,
-    totalWidth: number
+    totalWidth: number,
 ) {
     const firstRect = children[0].getBoundingClientRect()
     const last = children[children.length - 1]
 
     const tagsChildren = Array.from(children).filter(
-        (child) => child.tagName === 'DIV'
+        (child) => child.tagName === 'DIV',
     )
     const sortedElements = tagsChildren.sort((a, b) => {
         const first = (a.textContent as string).toLowerCase()

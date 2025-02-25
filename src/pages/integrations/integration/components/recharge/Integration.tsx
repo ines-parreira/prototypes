@@ -1,13 +1,13 @@
-import classnames from 'classnames'
-import {List, Map} from 'immutable'
-
 import React from 'react'
-import {useRouteMatch} from 'react-router-dom'
-import {Col, Container, Label, Row} from 'reactstrap'
+
+import classnames from 'classnames'
+import { List, Map } from 'immutable'
+import { useRouteMatch } from 'react-router-dom'
+import { Col, Container, Label, Row } from 'reactstrap'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {IntegrationType} from 'models/integration/constants'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import { IntegrationType } from 'models/integration/constants'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import LinkAlert from 'pages/common/components/Alert/LinkAlert'
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
@@ -15,10 +15,10 @@ import Loader from 'pages/common/components/Loader/Loader'
 import GroupAddon from 'pages/common/forms/input/GroupAddon'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import TextInput from 'pages/common/forms/input/TextInput'
-import {INTEGRATION_REMOVAL_CONFIGURATION_TEXT} from 'pages/integrations/integration/constants'
+import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 import useQueryNotify from 'pages/integrations/integration/hooks/useQueryNotify'
 import settingsCss from 'pages/settings/settings.less'
-import {deleteIntegration} from 'state/integrations/actions'
+import { deleteIntegration } from 'state/integrations/actions'
 import * as integrationHelpers from 'state/integrations/helpers'
 
 import css from './Integration.less'
@@ -38,7 +38,7 @@ export default function Integration({
 }: Props) {
     const dispatch = useAppDispatch()
     useQueryNotify()
-    const match = useRouteMatch<{integrationId: string}>()
+    const match = useRouteMatch<{ integrationId: string }>()
     const isUpdate = match.params.integrationId !== 'new'
     const isSubmitting = loading.get('updateIntegration')
     const isActive = !integration.get('deactivated_datetime')
@@ -54,7 +54,7 @@ export default function Integration({
         window.location.href = redirectUri
             .concat('?store_name=')
             .concat(
-                shopifyShopName || integration.getIn(['meta', 'store_name'])
+                shopifyShopName || integration.getIn(['meta', 'store_name']),
             )
     }
 
@@ -148,12 +148,12 @@ export default function Integration({
                                                     integration!.getIn([
                                                         'meta',
                                                         'shop_name',
-                                                    ])
+                                                    ]),
                                                 )
                                             }
                                             className={classnames(
                                                 css.installButton,
-                                                'mb-2'
+                                                'mb-2',
                                             )}
                                             intent="secondary"
                                         >
@@ -161,7 +161,7 @@ export default function Integration({
                                                 alt="shopify logo"
                                                 className={css.shopifyLogo}
                                                 src={integrationHelpers.getIconFromType(
-                                                    IntegrationType.Shopify
+                                                    IntegrationType.Shopify,
                                                 )}
                                             />
                                             Install Recharge for{' '}

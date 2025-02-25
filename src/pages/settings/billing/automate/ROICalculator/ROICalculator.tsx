@@ -1,7 +1,9 @@
-import {Label, Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
+
 import classNames from 'classnames'
 import moment from 'moment'
-import React, {useEffect, useMemo, useRef, useState} from 'react'
+
+import { Label, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import {
     useClosedTicketsTrend,
@@ -10,19 +12,18 @@ import {
     useTicketHandleTimeTrend,
 } from 'hooks/reporting/metricTrends'
 import useAppSelector from 'hooks/useAppSelector'
-import {Cadence} from 'models/billing/types'
-import {useGetCostPerAutomatedInteraction} from 'pages/automate/common/hooks/useGetCostPerAutomatedInteraction'
-import {useGetCostPerBillableTicket} from 'pages/automate/common/hooks/useGetCostPerBillableTicket'
+import { Cadence } from 'models/billing/types'
+import { useGetCostPerAutomatedInteraction } from 'pages/automate/common/hooks/useGetCostPerAutomatedInteraction'
+import { useGetCostPerBillableTicket } from 'pages/automate/common/hooks/useGetCostPerBillableTicket'
 import InputField from 'pages/common/forms/input/InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {HintTooltip} from 'pages/stats/common/HintTooltip'
-import {formatCurrency, formatMetricValue} from 'pages/stats/common/utils'
-import {DEFAULT_TIMEZONE} from 'pages/stats/constants'
-import {getAvailableAutomatePlans} from 'state/billing/selectors'
-import {getTimezone} from 'state/currentUser/selectors'
+import { HintTooltip } from 'pages/stats/common/HintTooltip'
+import { formatCurrency, formatMetricValue } from 'pages/stats/common/utils'
+import { DEFAULT_TIMEZONE } from 'pages/stats/constants'
+import { getAvailableAutomatePlans } from 'state/billing/selectors'
+import { getTimezone } from 'state/currentUser/selectors'
 
-import {SUPPORT_METRICS_TYPES, SALARY_TYPES} from './constants'
-import css from './ROICalculator.less'
+import { SALARY_TYPES, SUPPORT_METRICS_TYPES } from './constants'
 import {
     convertSecondsToHours,
     convertSecondsToMinutes,
@@ -33,6 +34,8 @@ import {
     getFirstResponseTimeWithAutomate,
     getResolutionTimeWithAutomate,
 } from './utils'
+
+import css from './ROICalculator.less'
 
 const isFiniteAndPositive = (value: number) => isFinite(value) && value > 0
 
@@ -58,21 +61,21 @@ const ROICalculator = () => {
     }, [])
 
     const userTimezone = useAppSelector(
-        (state) => getTimezone(state) || DEFAULT_TIMEZONE
+        (state) => getTimezone(state) || DEFAULT_TIMEZONE,
     )
 
     const resolutionTimeTrend = useMedianResolutionTimeTrend(
         filters,
-        userTimezone
+        userTimezone,
     )
     const firstResponseTimeTrend = useMedianFirstResponseTimeTrend(
         filters,
-        userTimezone
+        userTimezone,
     )
 
     const ticketHandleTimeTrend = useTicketHandleTimeTrend(
         filters,
-        userTimezone
+        userTimezone,
     )
 
     const ticketsClosedTrend = useClosedTicketsTrend(filters, userTimezone)
@@ -89,10 +92,10 @@ const ROICalculator = () => {
     const [salaryValue, setSalaryValue] = useState('15.5')
 
     const [resolutionTime, setResolutionTime] = useState<number | string>(
-        '4hrs'
+        '4hrs',
     )
     const [firstResponseTime, setFirstResponseTime] = useState<number | string>(
-        '12hrs'
+        '12hrs',
     )
 
     const [isMetricsDisabled, setIsMetricsDisabled] = useState(false)
@@ -105,12 +108,12 @@ const ROICalculator = () => {
         string | number
     >('(X)')
     const [costWithAutomate, setCostWithAutomate] = useState<string | number>(
-        '(X)'
+        '(X)',
     )
 
     const closedTickets = useMemo(
         () => ticketsClosedTrend.data?.value || 0,
-        [ticketsClosedTrend.data?.value]
+        [ticketsClosedTrend.data?.value],
     )
 
     const [numberOfTickets, setNumberOfTickets] = useState(0)
@@ -118,7 +121,7 @@ const ROICalculator = () => {
     const [ticketsClosedPerHour, setTicketsClosedPerHour] = useState('5')
 
     const [ticketHandleTime, setTicketHandleTime] = useState<string | number>(
-        '2m'
+        '2m',
     )
 
     const [savedInPercentage, setSavedInPercentage] = useState('0%')
@@ -135,7 +138,7 @@ const ROICalculator = () => {
         setResolutionTime(
             `${
                 convertSecondsToHours(resolutionTimeTrend.data?.value) || '4'
-            }hrs`
+            }hrs`,
         )
 
         if (resolutionTimeTrend.data?.value) {
@@ -149,7 +152,7 @@ const ROICalculator = () => {
             `${
                 convertSecondsToHours(firstResponseTimeTrend.data?.value) ||
                 '12'
-            }hrs`
+            }hrs`,
         )
 
         if (firstResponseTimeTrend.data?.value) {
@@ -163,7 +166,7 @@ const ROICalculator = () => {
             `${
                 convertSecondsToMinutes(ticketHandleTimeTrend.data?.value) ||
                 '2'
-            }m`
+            }m`,
         )
     }, [ticketHandleTimeTrend.data?.value])
 
@@ -209,16 +212,16 @@ const ROICalculator = () => {
         setNumberOfTickets(numberOfTickets)
 
         const availableAutomateMonthlyPlans = availableAutomatePlans.filter(
-            (plan) => plan.cadence === Cadence.Month
+            (plan) => plan.cadence === Cadence.Month,
         )
 
         const automateSubscriptionPrice = getAutomateSubscriptionPrice(
             availableAutomateMonthlyPlans,
-            numberOfTickets
+            numberOfTickets,
         )
 
         const costWithoutAutomate = Math.round(
-            numberOfTickets * (agentCostPerTicket + costPerBillableTicket)
+            numberOfTickets * (agentCostPerTicket + costPerBillableTicket),
         )
 
         const costWithAutomate = Math.round(
@@ -228,24 +231,24 @@ const ROICalculator = () => {
                     numberOfTickets *
                     (agentCostPerTicket +
                         costPerBillableTicket -
-                        costPerAutomatedInteraction)
+                        costPerAutomatedInteraction),
         )
 
         setCostWithoutAutomate(
-            isFiniteAndPositive(costWithoutAutomate) ? costWithoutAutomate : 0
+            isFiniteAndPositive(costWithoutAutomate) ? costWithoutAutomate : 0,
         )
 
         setCostWithAutomate(
-            isFiniteAndPositive(costWithAutomate) ? costWithAutomate : 0
+            isFiniteAndPositive(costWithAutomate) ? costWithAutomate : 0,
         )
 
         if (costWithoutAutomate > 0) {
             const saved = Math.round(
-                (1 - costWithAutomate / costWithoutAutomate) * 100
+                (1 - costWithAutomate / costWithoutAutomate) * 100,
             )
 
             setSavedInPercentage(
-                isFiniteAndPositive(saved) ? `${saved}%` : '0%'
+                isFiniteAndPositive(saved) ? `${saved}%` : '0%',
             )
         }
     }, [
@@ -357,7 +360,7 @@ const ROICalculator = () => {
                         <InputField
                             className={classNames(
                                 css.inputField,
-                                css.resolutionTime
+                                css.resolutionTime,
                             )}
                             value={resolutionTime}
                             isDisabled={isResolutionTimeDisabled}
@@ -372,7 +375,7 @@ const ROICalculator = () => {
                                 formatOnBlur(
                                     setResolutionTime,
                                     resolutionTime,
-                                    'hrs'
+                                    'hrs',
                                 )
                             }
                             aria-label="Resolution time"
@@ -408,14 +411,14 @@ const ROICalculator = () => {
                             onFocus={() => {
                                 formatOnFocus(
                                     setFirstResponseTime,
-                                    firstResponseTime
+                                    firstResponseTime,
                                 )
                             }}
                             onBlur={() => {
                                 formatOnBlur(
                                     setFirstResponseTime,
                                     firstResponseTime,
-                                    'hrs'
+                                    'hrs',
                                 )
                             }}
                             aria-label="First response time"
@@ -437,14 +440,14 @@ const ROICalculator = () => {
                             onFocus={() =>
                                 formatOnFocus(
                                     setTicketHandleTime,
-                                    ticketHandleTime
+                                    ticketHandleTime,
                                 )
                             }
                             onBlur={() =>
                                 formatOnBlur(
                                     setTicketHandleTime,
                                     ticketHandleTime,
-                                    'm'
+                                    'm',
                                 )
                             }
                             isDisabled={!!ticketHandleTimeTrend.data?.value}
@@ -467,12 +470,12 @@ const ROICalculator = () => {
                             <div
                                 className={classNames(
                                     css.automateCost,
-                                    css.withoutAutomateCost
+                                    css.withoutAutomateCost,
                                 )}
                             >
                                 {formatCurrency(
                                     Number(costWithoutAutomate) || 0,
-                                    'usd'
+                                    'usd',
                                 )}
                             </div>
                         </div>
@@ -483,12 +486,12 @@ const ROICalculator = () => {
                             <div
                                 className={classNames(
                                     css.automateCost,
-                                    css.withAutomateCost
+                                    css.withAutomateCost,
                                 )}
                             >
                                 {formatCurrency(
                                     Number(costWithAutomate) || 0,
-                                    'usd'
+                                    'usd',
                                 )}
                             </div>
                         </div>
@@ -514,7 +517,7 @@ const ROICalculator = () => {
                             <div className={css.reduceTime}>
                                 to{' '}
                                 {getFirstResponseTimeWithAutomate(
-                                    firstResponseTime
+                                    firstResponseTime,
                                 )}
                                 hrs
                             </div>

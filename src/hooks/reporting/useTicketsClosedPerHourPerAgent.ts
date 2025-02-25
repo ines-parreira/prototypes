@@ -1,4 +1,4 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
 import {
     fetchClosedTicketsMetricPerAgent,
@@ -6,7 +6,7 @@ import {
     useClosedTicketsMetricPerAgent,
     useOnlineTimePerAgent,
 } from 'hooks/reporting/metricsPerAgent'
-import {calculateDecile} from 'hooks/reporting/ticket-insights/useCustomFieldsTicketCountPerCustomFields'
+import { calculateDecile } from 'hooks/reporting/ticket-insights/useCustomFieldsTicketCountPerCustomFields'
 import {
     calculateMetricPerHour,
     periodAndAgentOnlyFilters,
@@ -15,14 +15,17 @@ import {
     MetricWithDecile,
     MetricWithDecileFetch,
 } from 'hooks/reporting/useMetricPerDimension'
-import {OrderDirection} from 'models/api/types'
+import { OrderDirection } from 'models/api/types'
 import {
     AgentTimeTrackingDimension,
     AgentTimeTrackingMeasure,
 } from 'models/reporting/cubes/agentxp/AgentTimeTrackingCube'
-import {TicketDimension, TicketMeasure} from 'models/reporting/cubes/TicketCube'
-import {StatsFilters} from 'models/stat/types'
-import {matchAndCalculateAllEntries, sortAllData} from 'utils/reporting'
+import {
+    TicketDimension,
+    TicketMeasure,
+} from 'models/reporting/cubes/TicketCube'
+import { StatsFilters } from 'models/stat/types'
+import { matchAndCalculateAllEntries, sortAllData } from 'utils/reporting'
 
 const assigneeUserId = TicketDimension.AssigneeUserId
 const userIdField = AgentTimeTrackingDimension.UserId
@@ -32,14 +35,14 @@ const onlineTimeField = AgentTimeTrackingMeasure.OnlineTime
 const formatResult = (
     closedTickets: MetricWithDecile,
     onlineTime: MetricWithDecile,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ): MetricWithDecile['data'] => {
     let metricValue: number | null = null
 
     if (closedTickets.data?.value && onlineTime.data?.value) {
         metricValue = calculateMetricPerHour(
             closedTickets.data.value,
-            onlineTime.data.value
+            onlineTime.data.value,
         )
     }
     const data =
@@ -51,14 +54,14 @@ const formatResult = (
                   assigneeUserId,
                   userIdField,
                   ticketCountField,
-                  onlineTimeField
+                  onlineTimeField,
               )
             : []
 
     const sortedData = sortAllData(data, ticketCountField, sorting)
 
     const maxValue = Math.max(
-        ...sortedData.map((item) => Number(item[ticketCountField]))
+        ...sortedData.map((item) => Number(item[ticketCountField])),
     )
 
     return {
@@ -72,24 +75,24 @@ export const useTicketsClosedPerHourPerAgent = (
     statsFilters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
-    agentAssigneeId?: string
+    agentAssigneeId?: string,
 ): MetricWithDecile => {
     const closedTickets = useClosedTicketsMetricPerAgent(
         periodAndAgentOnlyFilters(statsFilters),
         timezone,
         sorting,
-        String(agentAssigneeId)
+        String(agentAssigneeId),
     )
     const onlineTime = useOnlineTimePerAgent(
         periodAndAgentOnlyFilters(statsFilters),
         timezone,
         sorting,
-        String(agentAssigneeId)
+        String(agentAssigneeId),
     )
 
     const data = useMemo(
         () => formatResult(closedTickets, onlineTime, sorting),
-        [closedTickets, onlineTime, sorting]
+        [closedTickets, onlineTime, sorting],
     )
 
     return {
@@ -103,20 +106,20 @@ export const fetchTicketsClosedPerHourPerAgent: MetricWithDecileFetch = async (
     statsFilters: StatsFilters,
     timezone: string,
     sorting?: OrderDirection,
-    agentAssigneeId?: string
+    agentAssigneeId?: string,
 ): Promise<MetricWithDecile> => {
     return Promise.all([
         fetchClosedTicketsMetricPerAgent(
             periodAndAgentOnlyFilters(statsFilters),
             timezone,
             sorting,
-            agentAssigneeId
+            agentAssigneeId,
         ),
         fetchOnlineTimePerAgent(
             periodAndAgentOnlyFilters(statsFilters),
             timezone,
             sorting,
-            agentAssigneeId
+            agentAssigneeId,
         ),
     ])
         .then(([closedTickets, onlineTime]) => ({
@@ -124,5 +127,5 @@ export const fetchTicketsClosedPerHourPerAgent: MetricWithDecileFetch = async (
             isError: false,
             data: formatResult(closedTickets, onlineTime, sorting),
         }))
-        .catch(() => ({isError: true, isFetching: false, data: null}))
+        .catch(() => ({ isError: true, isFetching: false, data: null }))
 }

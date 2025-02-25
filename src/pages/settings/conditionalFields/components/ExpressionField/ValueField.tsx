@@ -1,20 +1,21 @@
-import {CustomFieldConditionExpressionValues} from '@gorgias/api-queries'
-import {SelectField} from '@gorgias/merchant-ui-kit'
-import React, {ReactNode, forwardRef} from 'react'
+import React, { forwardRef, ReactNode } from 'react'
+
+import { CustomFieldConditionExpressionValues } from '@gorgias/api-queries'
+import { SelectField } from '@gorgias/merchant-ui-kit'
 
 import MultiLevelSelect from 'custom-fields/components/MultiLevelSelect'
-import {getStealthLabel} from 'custom-fields/components/MultiLevelSelect/helpers/getLabels'
+import { getStealthLabel } from 'custom-fields/components/MultiLevelSelect/helpers/getLabels'
 import {
     isDropdownInput,
     isNumberInput,
     isTextInput,
 } from 'custom-fields/helpers/typeGuards'
-import {CustomField} from 'custom-fields/types'
+import { CustomField } from 'custom-fields/types'
 import Caption from 'pages/common/forms/Caption/Caption'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import TextInput from 'pages/common/forms/input/TextInput'
 
-import {CustomDropdownInput} from './CustomDropdownInput'
+import { CustomDropdownInput } from './CustomDropdownInput'
 
 type ValueFieldProps = {
     pickedDefinition?: CustomField
@@ -34,7 +35,7 @@ export const ValueField = forwardRef(function ValueField(
         index,
         error,
     }: ValueFieldProps,
-    __ref
+    __ref,
 ) {
     let Input: ReactNode = null
     if (!pickedDefinition) {

@@ -1,7 +1,8 @@
-import {TooltipLabelStyle, TooltipModel} from 'chart.js'
 import React from 'react'
 
-import {formatPercentage} from 'pages/common/utils/numbers'
+import { TooltipLabelStyle, TooltipModel } from 'chart.js'
+
+import { formatPercentage } from 'pages/common/utils/numbers'
 
 import css from './DonutChartTooltip.less'
 
@@ -11,7 +12,7 @@ type Props = {
 }
 
 export const DonutChartTooltip = ({
-    tooltip: {labelColors, dataPoints},
+    tooltip: { labelColors, dataPoints },
     total,
 }: Props) => {
     return (

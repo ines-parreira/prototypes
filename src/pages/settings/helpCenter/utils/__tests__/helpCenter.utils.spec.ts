@@ -1,20 +1,20 @@
-import {ShopifyIntegration, StoreIntegration} from 'models/integration/types'
+import { ShopifyIntegration, StoreIntegration } from 'models/integration/types'
 
-import {getSingleCustomDomainResponseFixture} from '../../fixtures/getCustomDomainsResponse.fixture'
-import {getSingleHelpCenterResponseFixture} from '../../fixtures/getHelpCentersResponse.fixture'
+import { getSingleCustomDomainResponseFixture } from '../../fixtures/getCustomDomainsResponse.fixture'
+import { getSingleHelpCenterResponseFixture } from '../../fixtures/getHelpCentersResponse.fixture'
 import {
     getAbsoluteUrl,
-    getHomePageItemHashUrl,
     getArticleUrl,
     getCategoryUrl,
     getHelpCenterDomain,
+    getHomePageItemHashUrl,
     getNewArticleTranslation,
     getNewHelpCenterTranslation,
+    getValidStoreIntegrationId,
     removeAccents,
     removeEmojis,
     replaceUploadUrls,
     slugify,
-    getValidStoreIntegrationId,
 } from '../helpCenter.utils'
 
 describe('getNewArticleTranslation()', () => {
@@ -67,15 +67,15 @@ describe('slugify()', () => {
     describe('it removes unauthorized characters and trailing whitespace', () => {
         expect(
             slugify(
-                "¡¿ titleª *oneº*; title two, title $ #'three' / four. Title five ?! "
-            )
+                "¡¿ titleª *oneº*; title two, title $ #'three' / four. Title five ?! ",
+            ),
         ).toEqual('title-one-title-two-title-dollar-three--four-title-five')
     })
 
     // * read more: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURI#description
     describe('it does not encode reserved characters and replace problematic ones', () => {
         expect(slugify(`@ & = + $ - _ ~ ( ) #`)).toEqual(
-            `@-and-=-+-dollar---_-~-(-)`
+            `@-and-=-+-dollar---_-~-(-)`,
         )
     })
 
@@ -90,38 +90,38 @@ describe('slugify()', () => {
 
 describe('getAbsoluteUrl()', () => {
     it(`returns a valid absolute URL for domain 'gorgias.com'`, () => {
-        expect(getAbsoluteUrl({domain: 'gorgias.com'})).toEqual(
-            'http://gorgias.com/'
+        expect(getAbsoluteUrl({ domain: 'gorgias.com' })).toEqual(
+            'http://gorgias.com/',
         )
     })
 
     it(`returns a valid absolute URL for domain 'www.gorgias.com'`, () => {
-        expect(getAbsoluteUrl({domain: 'www.gorgias.com'}, false)).toEqual(
-            'http://www.gorgias.com'
+        expect(getAbsoluteUrl({ domain: 'www.gorgias.com' }, false)).toEqual(
+            'http://www.gorgias.com',
         )
     })
 
     it(`returns a valid absolute URL for domain 'http://gorgias.com'`, () => {
-        expect(getAbsoluteUrl({domain: 'http://gorgias.com'}, false)).toEqual(
-            'http://gorgias.com'
+        expect(getAbsoluteUrl({ domain: 'http://gorgias.com' }, false)).toEqual(
+            'http://gorgias.com',
         )
     })
 
     it(`returns a valid absolute URL for domain 'https://gorgias.com'`, () => {
-        expect(getAbsoluteUrl({domain: 'https://gorgias.com'}, false)).toEqual(
-            'https://gorgias.com'
-        )
+        expect(
+            getAbsoluteUrl({ domain: 'https://gorgias.com' }, false),
+        ).toEqual('https://gorgias.com')
     })
 
     it(`returns a valid absolute URL for domain 'acme.gorgias.help' and locale 'fr-FR'`, () => {
         expect(
-            getAbsoluteUrl({domain: 'acme.gorgias.help', locale: 'fr-FR'})
+            getAbsoluteUrl({ domain: 'acme.gorgias.help', locale: 'fr-FR' }),
         ).toEqual('http://acme.gorgias.help/fr-FR/')
     })
 
     it(`returns a valid absolute URL for domain 'gorgias.com' wtih query param`, () => {
         expect(
-            getAbsoluteUrl({domain: 'gorgias.com', queryString: 'hello=1'})
+            getAbsoluteUrl({ domain: 'gorgias.com', queryString: 'hello=1' }),
         ).toEqual('http://gorgias.com/?hello=1')
     })
 })
@@ -129,7 +129,7 @@ describe('getAbsoluteUrl()', () => {
 describe('getHelpCenterDomain()', () => {
     it(`returns the help center's preferred domain`, () => {
         expect(getHelpCenterDomain(getSingleHelpCenterResponseFixture)).toEqual(
-            'acme.gorgias.docker:4000'
+            'acme.gorgias.docker:4000',
         )
     })
 
@@ -138,7 +138,7 @@ describe('getHelpCenterDomain()', () => {
             getHelpCenterDomain({
                 ...getSingleHelpCenterResponseFixture,
                 customDomain: getSingleCustomDomainResponseFixture,
-            })
+            }),
         ).toEqual('chuck-norris.com')
     })
 })
@@ -153,7 +153,7 @@ describe('getArticleUrl()', () => {
                 articleId: 2,
                 unlistedId: '12345678901234567890123456789012',
                 isUnlisted: false,
-            })
+            }),
         ).toEqual('http://acme.gorgias.rehab/en-US/great-article-2')
     })
     it(`returns an absolute unlisted article URL`, () => {
@@ -165,9 +165,9 @@ describe('getArticleUrl()', () => {
                 articleId: 2,
                 unlistedId: '12345678901234567890123456789012',
                 isUnlisted: true,
-            })
+            }),
         ).toEqual(
-            'http://acme.gorgias.rehab/en-US/2-12345678901234567890123456789012'
+            'http://acme.gorgias.rehab/en-US/2-12345678901234567890123456789012',
         )
     })
 })
@@ -182,7 +182,7 @@ describe('getCategoryUrl()', () => {
                 categoryId: 4,
                 unlistedId: '12345678901234567890123456789012',
                 isUnlisted: false,
-            })
+            }),
         ).toEqual('http://acme.gorgias.rehab/en-US/articles/orders-4')
     })
     it(`returns an absolute unlisted category URL`, () => {
@@ -194,9 +194,9 @@ describe('getCategoryUrl()', () => {
                 categoryId: 4,
                 unlistedId: '12345678901234567890123456789012',
                 isUnlisted: true,
-            })
+            }),
         ).toEqual(
-            'http://acme.gorgias.rehab/en-US/articles/4-12345678901234567890123456789012'
+            'http://acme.gorgias.rehab/en-US/articles/4-12345678901234567890123456789012',
         )
     })
 })
@@ -210,7 +210,7 @@ describe('getHomePageItemHashUrl()', () => {
                 locale: 'en-US',
                 itemId: 2,
                 isUnlisted: false,
-            })
+            }),
         ).toEqual('http://acme.gorgias.rehab/en-US#article-2')
     })
 
@@ -222,7 +222,7 @@ describe('getHomePageItemHashUrl()', () => {
                 locale: 'en-US',
                 itemId: 4,
                 isUnlisted: false,
-            })
+            }),
         ).toEqual('http://acme.gorgias.rehab/en-US#category-4')
     })
 })
@@ -268,7 +268,10 @@ describe('getValidStoreIntegrationId', () => {
         const allStoreIntegrations = [] as unknown as StoreIntegration[]
         const helpCenterShopName = 'My Shop'
         expect(
-            getValidStoreIntegrationId(allStoreIntegrations, helpCenterShopName)
+            getValidStoreIntegrationId(
+                allStoreIntegrations,
+                helpCenterShopName,
+            ),
         ).toBeNull()
     })
 
@@ -276,7 +279,10 @@ describe('getValidStoreIntegrationId', () => {
         const allStoreIntegrations = null as unknown as StoreIntegration[]
         const helpCenterShopName = 'My Shop'
         expect(
-            getValidStoreIntegrationId(allStoreIntegrations, helpCenterShopName)
+            getValidStoreIntegrationId(
+                allStoreIntegrations,
+                helpCenterShopName,
+            ),
         ).toBeNull()
     })
 
@@ -284,33 +290,41 @@ describe('getValidStoreIntegrationId', () => {
         const allStoreIntegrations = undefined as unknown as StoreIntegration[]
         const helpCenterShopName = 'My Shop'
         expect(
-            getValidStoreIntegrationId(allStoreIntegrations, helpCenterShopName)
+            getValidStoreIntegrationId(
+                allStoreIntegrations,
+                helpCenterShopName,
+            ),
         ).toBeNull()
     })
 
     it('should return the default storeIntegration id if there is only one store integrations', () => {
-        const allStoreIntegrations = [{id: 1}] as unknown as StoreIntegration[]
+        const allStoreIntegrations = [
+            { id: 1 },
+        ] as unknown as StoreIntegration[]
         expect(getValidStoreIntegrationId(allStoreIntegrations, null)).toBe(1)
     })
 
     it('should return the id of the storeIntegration with the match shopName if there are multiple integrations', () => {
         const allStoreIntegrations = [
-            {id: 1, name: 'Test Shop'},
-            {id: 2, name: 'My Shop'},
+            { id: 1, name: 'Test Shop' },
+            { id: 2, name: 'My Shop' },
         ] as unknown as ShopifyIntegration[]
         const helpCenterShopName = 'My Shop'
         expect(
-            getValidStoreIntegrationId(allStoreIntegrations, helpCenterShopName)
+            getValidStoreIntegrationId(
+                allStoreIntegrations,
+                helpCenterShopName,
+            ),
         ).toBe(2)
     })
 
     it('should return null if there are multiple integrations but helpCenterShopName is null', () => {
         const allStoreIntegrations = [
-            {id: 1},
-            {id: 2},
+            { id: 1 },
+            { id: 2 },
         ] as unknown as ShopifyIntegration[]
         expect(
-            getValidStoreIntegrationId(allStoreIntegrations, null)
+            getValidStoreIntegrationId(allStoreIntegrations, null),
         ).toBeNull()
     })
 })

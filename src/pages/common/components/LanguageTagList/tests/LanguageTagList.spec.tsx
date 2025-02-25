@@ -1,12 +1,12 @@
-import {render, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {Locale, LocaleCode} from 'models/helpCenter/types'
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
-import {getLocalesResponseFixture} from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
+import { Locale, LocaleCode } from 'models/helpCenter/types'
+import { getLocalesResponseFixture } from 'pages/settings/helpCenter/fixtures/getLocalesResponse.fixtures'
 
-import {LanguageTagList} from '../LanguageTagList'
+import { LanguageTagList } from '../LanguageTagList'
 
 const DEFAULT_SUFFIX = '(Default)'
 const LOCALE = {
@@ -22,23 +22,23 @@ const LOCALE = {
  */
 describe('<LanguageTagList />', () => {
     it('renders nothing if list is empty', () => {
-        const {container} = render(
+        const { container } = render(
             <LanguageTagList
                 id="1"
                 defaultLanguage={LOCALE}
                 languageList={[]}
-            />
+            />,
         )
         expect(container.firstChild).toBeNull()
     })
 
     it('renders nothing if defaultLanguage is missing', () => {
-        const {container} = render(
+        const { container } = render(
             <LanguageTagList
                 id="1"
                 defaultLanguage={undefined as unknown as Locale}
                 languageList={[]}
-            />
+            />,
         )
         expect(container.firstChild).toBeNull()
     })
@@ -49,11 +49,11 @@ describe('<LanguageTagList />', () => {
                 id="1"
                 defaultLanguage={LOCALE}
                 languageList={[...getLocalesResponseFixture, LOCALE]}
-            />
+            />,
         )
 
         expect(
-            screen.getByText(`${LOCALE.name} ${DEFAULT_SUFFIX}`)
+            screen.getByText(`${LOCALE.name} ${DEFAULT_SUFFIX}`),
         ).toBeInTheDocument()
     })
 
@@ -63,11 +63,11 @@ describe('<LanguageTagList />', () => {
                 id="1"
                 defaultLanguage={LOCALE}
                 languageList={[LOCALE]}
-            />
+            />,
         )
 
         expect(
-            screen.getByText(`${LOCALE.name} ${DEFAULT_SUFFIX}`)
+            screen.getByText(`${LOCALE.name} ${DEFAULT_SUFFIX}`),
         ).toBeInTheDocument()
     })
 
@@ -82,7 +82,7 @@ describe('<LanguageTagList />', () => {
                     defaultLanguage={LOCALE}
                     languageList={fewerLocales}
                     displayLimit={displayLimit}
-                />
+                />,
             )
 
             const reversedLocales = [...fewerLocales].reverse()
@@ -102,7 +102,7 @@ describe('<LanguageTagList />', () => {
                     defaultLanguage={LOCALE}
                     languageList={fewerLocales}
                     displayLimit={displayLimit}
-                />
+                />,
             )
 
             expect(screen.queryByText(/\+\d+ more/)).not.toBeInTheDocument()
@@ -120,7 +120,7 @@ describe('<LanguageTagList />', () => {
                     defaultLanguage={LOCALE}
                     languageList={allLocales}
                     displayLimit={displayLimit}
-                />
+                />,
             )
 
             const hiddenCount = allLocales.length - displayLimit
@@ -131,23 +131,23 @@ describe('<LanguageTagList />', () => {
         })
 
         it('displays correct number of tags', () => {
-            const {container} = render(
+            const { container } = render(
                 <LanguageTagList
                     id="1"
                     defaultLanguage={LOCALE}
                     languageList={allLocales}
                     displayLimit={displayLimit}
-                />
+                />,
             )
 
             const displayedTags = container.querySelectorAll(
-                '[data-testid^="displayed-tag-"]'
+                '[data-testid^="displayed-tag-"]',
             )
 
             const hiddenTags = container.querySelectorAll('[id^=badge-]')
 
             expect(displayedTags.length + hiddenTags.length).toBe(
-                displayLimit + 1
+                displayLimit + 1,
             ) // displayLimit + +N tag
         })
 
@@ -160,13 +160,13 @@ describe('<LanguageTagList />', () => {
                     defaultLanguage={DEFAULT_LANGUAGE}
                     languageList={allLocales}
                     displayLimit={displayLimit}
-                />
+                />,
             )
 
             const localesWithDefaultAtBack = [...allLocales]
 
             const displayedLanguages = localesWithDefaultAtBack.slice(
-                -1 * displayLimit
+                -1 * displayLimit,
             )
 
             displayedLanguages.reverse().forEach((locale) => {
@@ -185,28 +185,28 @@ describe('<LanguageTagList />', () => {
                     defaultLanguage={LOCALE}
                     languageList={allLocales}
                     displayLimit={displayLimit}
-                />
+                />,
             )
 
             const localesWithDefaultAtBack = [...allLocales]
             const defaultIndex = localesWithDefaultAtBack.findIndex(
-                (locale) => locale.code === LOCALE.code
+                (locale) => locale.code === LOCALE.code,
             )
             if (defaultIndex !== -1) {
                 const [defaultLocale] = localesWithDefaultAtBack.splice(
                     defaultIndex,
-                    1
+                    1,
                 )
                 localesWithDefaultAtBack.push(defaultLocale)
             }
 
             const hiddenLanguages = localesWithDefaultAtBack.slice(
                 0,
-                -1 * displayLimit
+                -1 * displayLimit,
             )
 
             const moreLangsTag = screen.getByText(
-                `+${hiddenLanguages.length} more`
+                `+${hiddenLanguages.length} more`,
             )
 
             userEvent.hover(moreLangsTag)
@@ -215,13 +215,13 @@ describe('<LanguageTagList />', () => {
             await waitFor(() => {
                 // Verify tooltip becomes visible and contains correct languages
                 const tooltipContainer = screen.getByTestId(
-                    'language-tag-tooltip'
+                    'language-tag-tooltip',
                 )
                 expect(tooltipContainer).toBeVisible()
 
                 hiddenLanguages.forEach((locale) => {
                     expect(tooltipContainer).toContainElement(
-                        screen.getByText(locale.name)
+                        screen.getByText(locale.name),
                     )
                 })
             })

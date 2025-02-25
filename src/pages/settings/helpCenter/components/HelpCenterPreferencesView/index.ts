@@ -1,1 +1,1 @@
-export {default} from './HelpCenterPreferencesView'
+export { default } from './HelpCenterPreferencesView'

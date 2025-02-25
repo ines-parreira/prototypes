@@ -1,10 +1,11 @@
-import {Meta, StoryFn} from '@storybook/react'
-import {flatMap} from 'lodash'
-import React, {ComponentProps, useMemo, useState} from 'react'
+import React, { ComponentProps, useMemo, useState } from 'react'
 
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
+import { Meta, StoryFn } from '@storybook/react'
+import { flatMap } from 'lodash'
+
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
 import Filter from 'pages/stats/common/components/Filter/Filter'
-import {DropdownOption} from 'pages/stats/types'
+import { DropdownOption } from 'pages/stats/types'
 
 const storyConfig: Meta = {
     title: 'Stats/Filter',
@@ -16,12 +17,12 @@ const Template: StoryFn<ComponentProps<typeof Filter>> = (props) => {
 
     const [selectedLogicalOperator, setSelectedLogicalOperator] =
         useState<LogicalOperatorEnum | null>(
-            props.selectedLogicalOperator || null
+            props.selectedLogicalOperator || null,
         )
 
     const allValues = useMemo(
         () => flatMap(props.filterOptionGroups, (option) => option.options),
-        [props.filterOptionGroups]
+        [props.filterOptionGroups],
     )
 
     const onChangeOption = (option: DropdownOption) => {
@@ -63,9 +64,9 @@ const Template: StoryFn<ComponentProps<typeof Filter>> = (props) => {
 const defaultFilterOptionGroups = [
     {
         options: [
-            {label: 'Tag value1', value: 'tag1'},
-            {label: 'Tag value2', value: 'tag2'},
-            {label: 'Tag value3', value: 'tag3'},
+            { label: 'Tag value1', value: 'tag1' },
+            { label: 'Tag value2', value: 'tag2' },
+            { label: 'Tag value3', value: 'tag3' },
         ],
     },
 ]
@@ -141,17 +142,17 @@ FilterWithMultipleSections.args = {
         {
             title: 'Section 1',
             options: [
-                {label: 'Tag value1', value: 'tag1'},
-                {label: 'Tag value2', value: 'tag2'},
-                {label: 'Tag value3', value: 'tag3'},
+                { label: 'Tag value1', value: 'tag1' },
+                { label: 'Tag value2', value: 'tag2' },
+                { label: 'Tag value3', value: 'tag3' },
             ],
         },
         {
             title: 'Section 2',
             options: [
-                {label: 'Tag value4', value: 'tag4'},
-                {label: 'Tag value5', value: 'tag5'},
-                {label: 'Tag value6', value: 'tag6'},
+                { label: 'Tag value4', value: 'tag4' },
+                { label: 'Tag value5', value: 'tag5' },
+                { label: 'Tag value6', value: 'tag6' },
             ],
         },
     ],
@@ -167,7 +168,7 @@ FilterWithSingleSelect.args = {
 export const FilterWithWarning = Template.bind({})
 FilterWithWarning.args = {
     ...defaultProps,
-    filterErrors: {warningType: 'non-existent'},
+    filterErrors: { warningType: 'non-existent' },
 }
 
 export default storyConfig

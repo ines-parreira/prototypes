@@ -1,7 +1,8 @@
-import classnames from 'classnames'
-import React, {ReactNode, useContext} from 'react'
+import React, { ReactNode, useContext } from 'react'
 
-import {ModalContext} from './Modal'
+import classnames from 'classnames'
+
+import { ModalContext } from './Modal'
 
 import css from './ModalHeader.less'
 
@@ -12,8 +13,13 @@ type Props = {
     forceCloseButton?: boolean
 }
 
-const ModalHeader = ({className, subtitle, title, forceCloseButton}: Props) => {
-    const {labelId, onClose, isClosable} = useContext(ModalContext)
+const ModalHeader = ({
+    className,
+    subtitle,
+    title,
+    forceCloseButton,
+}: Props) => {
+    const { labelId, onClose, isClosable } = useContext(ModalContext)
 
     return (
         <div className={classnames(css.wrapper, className)}>

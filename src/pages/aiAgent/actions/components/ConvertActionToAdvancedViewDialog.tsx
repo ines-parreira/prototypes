@@ -1,7 +1,8 @@
-import classNames from 'classnames'
 import React from 'react'
 
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import classNames from 'classnames'
+
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
@@ -35,7 +36,7 @@ export const ConvertActionToAdvancedViewDialog = ({
                             <i
                                 className={classNames(
                                     'material-icons',
-                                    css.modalBodyListIcon
+                                    css.modalBodyListIcon,
                                 )}
                             >
                                 check
@@ -47,7 +48,7 @@ export const ConvertActionToAdvancedViewDialog = ({
                             <i
                                 className={classNames(
                                     'material-icons',
-                                    css.modalBodyListIcon
+                                    css.modalBodyListIcon,
                                 )}
                             >
                                 check
@@ -59,7 +60,7 @@ export const ConvertActionToAdvancedViewDialog = ({
                             <i
                                 className={classNames(
                                     'material-icons',
-                                    css.modalBodyListIcon
+                                    css.modalBodyListIcon,
                                 )}
                             >
                                 check

@@ -1,21 +1,22 @@
-import classNames from 'classnames'
 import React from 'react'
-import {Link} from 'react-router-dom'
+
+import classNames from 'classnames'
+import { Link } from 'react-router-dom'
 
 import {
+    type AchDebitBankAccount,
     BillingState,
     type CreditCard,
-    type AchDebitBankAccount,
 } from 'models/billing/types'
 import Loader from 'pages/common/components/Loader/Loader'
-
-import {useBillingStateWithSideEffects} from 'pages/settings/new_billing/hooks/useBillingStateWithSideEffects'
-import {isCardExpired} from 'pages/settings/new_billing/utils/isCardExpired'
+import { useBillingStateWithSideEffects } from 'pages/settings/new_billing/hooks/useBillingStateWithSideEffects'
+import { isCardExpired } from 'pages/settings/new_billing/utils/isCardExpired'
 
 import {
     ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
     BILLING_PAYMENT_CARD_PATH,
 } from '../../constants'
+
 import css from './SummaryPaymentSection.less'
 
 type Props = React.DetailedHTMLProps<
@@ -35,7 +36,7 @@ export const NewSummaryPaymentSection = (props: Props) => {
         </div>
     )
 }
-function PaymentState({billingState}: {billingState: BillingState}) {
+function PaymentState({ billingState }: { billingState: BillingState }) {
     const {
         credit_card: creditCard,
         shopify_billing: shopifyBilling,
@@ -68,14 +69,14 @@ function PaymentState({billingState}: {billingState: BillingState}) {
     return <NoPaymentMethod />
 }
 
-const CreditCard = ({creditCard}: {creditCard: CreditCard}) =>
+const CreditCard = ({ creditCard }: { creditCard: CreditCard }) =>
     isCardExpired(creditCard) ? (
         <CreditCardExpired creditCard={creditCard} />
     ) : (
         <CreditCardValid creditCard={creditCard} />
     )
 
-const CreditCardExpired = ({creditCard}: {creditCard: CreditCard}) => (
+const CreditCardExpired = ({ creditCard }: { creditCard: CreditCard }) => (
     <>
         <div className={css.method}>
             <i className={classNames('material-icons', css.warningIcon)}>
@@ -88,7 +89,7 @@ const CreditCardExpired = ({creditCard}: {creditCard: CreditCard}) => (
     </>
 )
 
-const CreditCardValid = ({creditCard}: {creditCard: CreditCard}) => (
+const CreditCardValid = ({ creditCard }: { creditCard: CreditCard }) => (
     <>
         <div className={css.method}>
             <i className={classNames('material-icons', css.cardIcon)}>
@@ -114,7 +115,7 @@ const ShopfyBilling = ({
         <ShopifyBillingActive subscriptionId={subscriptionId} />
     )
 
-const ShopifyBillingInactive = ({isTrialing}: {isTrialing: boolean}) => (
+const ShopifyBillingInactive = ({ isTrialing }: { isTrialing: boolean }) => (
     <>
         <div className={css.method}>
             <i className={classNames('material-icons', css.warningIcon)}>
@@ -133,7 +134,11 @@ const ShopifyBillingInactive = ({isTrialing}: {isTrialing: boolean}) => (
     </>
 )
 
-const ShopifyBillingActive = ({subscriptionId}: {subscriptionId: string}) => (
+const ShopifyBillingActive = ({
+    subscriptionId,
+}: {
+    subscriptionId: string
+}) => (
     <>
         <div className={css.method}>
             <i className={classNames('material-icons', css.successIcon)}>
@@ -145,7 +150,7 @@ const ShopifyBillingActive = ({subscriptionId}: {subscriptionId: string}) => (
     </>
 )
 
-const ACHDebit = ({achDebit}: {achDebit: AchDebitBankAccount}) => (
+const ACHDebit = ({ achDebit }: { achDebit: AchDebitBankAccount }) => (
     <>
         <div className={css.method}>
             Bank transfer (ACH debit) from account{' '}

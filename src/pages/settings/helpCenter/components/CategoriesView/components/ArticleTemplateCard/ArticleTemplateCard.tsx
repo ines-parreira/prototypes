@@ -1,14 +1,15 @@
-import classNames from 'classnames'
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
-import {SegmentEvent, logEvent} from 'common/segment'
-import {ArticleTemplate} from 'models/helpCenter/types'
+import classNames from 'classnames'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { ArticleTemplate } from 'models/helpCenter/types'
 import Button from 'pages/common/components/button/Button'
 
-import {ArticleTemplateModal} from '../ArticleTemplateModal/ArticleTemplateModal'
+import { ArticleTemplateModal } from '../ArticleTemplateModal/ArticleTemplateModal'
+import { ARTICLE_TEMPLATE_CATEGORIES } from './constants'
 
 import css from './ArticleTemplateCard.less'
-import {ARTICLE_TEMPLATE_CATEGORIES} from './constants'
 
 type Props = {
     template: ArticleTemplate
@@ -33,7 +34,7 @@ const ArticleTemplateCard = ({
         setModalOpen(false)
     }
 
-    const style = {order: Math.floor(-1 * template.score * Math.pow(10, 5))} // we multiply by -1 to reverse the order
+    const style = { order: Math.floor(-1 * template.score * Math.pow(10, 5)) } // we multiply by -1 to reverse the order
     const categoryStyle = ARTICLE_TEMPLATE_CATEGORIES[template.category].style
     const categoryLabel = ARTICLE_TEMPLATE_CATEGORIES[template.category].label
 

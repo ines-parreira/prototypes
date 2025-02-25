@@ -1,34 +1,34 @@
-import {fromJS} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
+import React, { ComponentProps } from 'react'
 
-import React, {ComponentProps} from 'react'
+import { fromJS } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {billingState} from 'fixtures/billing'
-import {FiltersPanelWrapper} from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
-import {AverageScorePerDimensionTrendChart} from 'pages/stats/quality-management/satisfaction/AverageScorePerDimensionTrendChart/AverageScorePerDimensionTrendChart'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { billingState } from 'fixtures/billing'
+import { FiltersPanelWrapper } from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
+import { AverageScorePerDimensionTrendChart } from 'pages/stats/quality-management/satisfaction/AverageScorePerDimensionTrendChart/AverageScorePerDimensionTrendChart'
 import AverageSurveyScoreDonutChart from 'pages/stats/quality-management/satisfaction/AverageSurveyScoreDonutChart/AverageSurveyScoreDonutChart'
 import CommentHighlightsChart from 'pages/stats/quality-management/satisfaction/CommentHighlightsChart/CommentHighlightsChart'
-import {ResponseRateTrendCard} from 'pages/stats/quality-management/satisfaction/ResponseRateTrendCard'
-import {SatisfactionDownloadDataButton} from 'pages/stats/quality-management/satisfaction/SatisfactionDownloadDataButton'
+import { ResponseRateTrendCard } from 'pages/stats/quality-management/satisfaction/ResponseRateTrendCard'
+import { SatisfactionDownloadDataButton } from 'pages/stats/quality-management/satisfaction/SatisfactionDownloadDataButton'
 import SatisfactionReport from 'pages/stats/quality-management/satisfaction/SatisfactionReport'
 import {
     SATISFACTION_OPTIONAL_FILTERS,
     SATISFACTION_TITLE,
 } from 'pages/stats/quality-management/satisfaction/SatisfactionReportConfig'
-import {SatisfactionScoreTrendCard} from 'pages/stats/quality-management/satisfaction/SatisfactionScoreTrendCard'
+import { SatisfactionScoreTrendCard } from 'pages/stats/quality-management/satisfaction/SatisfactionScoreTrendCard'
 import ScoredSurveyChart from 'pages/stats/quality-management/satisfaction/ScoredSurveysChart/ScoredSurveysChart'
-import {SurveysSentTrendCard} from 'pages/stats/quality-management/satisfaction/SurveysSentTrendCard'
-import {defaultStatsFilters} from 'state/stats/statsSlice'
-import {fromLegacyStatsFilters} from 'state/stats/utils'
-import {RootState} from 'state/types'
-import {drillDownSlice, initialState} from 'state/ui/stats/drillDownSlice'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
+import { SurveysSentTrendCard } from 'pages/stats/quality-management/satisfaction/SurveysSentTrendCard'
+import { defaultStatsFilters } from 'state/stats/statsSlice'
+import { fromLegacyStatsFilters } from 'state/stats/utils'
+import { RootState } from 'state/types'
+import { drillDownSlice, initialState } from 'state/ui/stats/drillDownSlice'
+import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
 import {
-    qualityManagementSlice,
     initialState as qmInitialState,
+    qualityManagementSlice,
 } from 'state/ui/stats/qualityManagementSlice'
-import {assumeMock, renderWithStore} from 'utils/testing'
+import { assumeMock, renderWithStore } from 'utils/testing'
 
 const componentMock = () => <div />
 
@@ -38,14 +38,14 @@ jest.mock(
         return props.optionalFilters?.map((optionalFilter) => (
             <div key={optionalFilter}>{optionalFilter}</div>
         ))
-    }
+    },
 )
 jest.mock('pages/stats/support-performance/SupportPerformanceFilters', () => ({
     SupportPerformanceFilters: () => <div />,
 }))
 
 jest.mock(
-    'pages/stats/quality-management/satisfaction/SatisfactionScoreTrendCard'
+    'pages/stats/quality-management/satisfaction/SatisfactionScoreTrendCard',
 )
 const SatisfactionScoreTrendCardMock = assumeMock(SatisfactionScoreTrendCard)
 
@@ -55,36 +55,36 @@ const ResponseRateTrendCardMock = assumeMock(ResponseRateTrendCard)
 jest.mock('pages/stats/quality-management/satisfaction/SurveysSentTrendCard')
 const SurveysSentTrendCardMock = assumeMock(SurveysSentTrendCard)
 jest.mock(
-    'pages/stats/quality-management/satisfaction/SatisfactionDownloadDataButton'
+    'pages/stats/quality-management/satisfaction/SatisfactionDownloadDataButton',
 )
 jest.mock(
-    'pages/stats/quality-management/satisfaction/AverageScorePerDimensionTrendChart/AverageScorePerDimensionTrendChart'
+    'pages/stats/quality-management/satisfaction/AverageScorePerDimensionTrendChart/AverageScorePerDimensionTrendChart',
 )
 const SatisfactionDownloadDataButtonMock = assumeMock(
-    SatisfactionDownloadDataButton
+    SatisfactionDownloadDataButton,
 )
 const AverageScorePerDimensionTrendChartMock = assumeMock(
-    AverageScorePerDimensionTrendChart
+    AverageScorePerDimensionTrendChart,
 )
 
 jest.mock(
-    'hooks/reporting/quality-management/satisfaction/useSatisfactionMetrics'
+    'hooks/reporting/quality-management/satisfaction/useSatisfactionMetrics',
 )
 
 jest.mock(
-    'pages/stats/quality-management/satisfaction/AverageSurveyScoreDonutChart/AverageSurveyScoreDonutChart'
+    'pages/stats/quality-management/satisfaction/AverageSurveyScoreDonutChart/AverageSurveyScoreDonutChart',
 )
 const AverageSurveyScoreDonutChartMock = assumeMock(
-    AverageSurveyScoreDonutChart
+    AverageSurveyScoreDonutChart,
 )
 
 jest.mock(
-    'pages/stats/quality-management/satisfaction/CommentHighlightsChart/CommentHighlightsChart'
+    'pages/stats/quality-management/satisfaction/CommentHighlightsChart/CommentHighlightsChart',
 )
 const CommentHighlightsChartMock = assumeMock(CommentHighlightsChart)
 
 jest.mock(
-    'pages/stats/quality-management/satisfaction/ScoredSurveysChart/ScoredSurveysChart'
+    'pages/stats/quality-management/satisfaction/ScoredSurveysChart/ScoredSurveysChart',
 )
 const ScoredSurveyChartMock = assumeMock(ScoredSurveyChart)
 
@@ -119,9 +119,9 @@ describe('<Satisfaction>', () => {
     })
 
     it('should render new satisfaction report page', () => {
-        const {getByText} = renderWithStore(
+        const { getByText } = renderWithStore(
             <SatisfactionReport />,
-            defaultState
+            defaultState,
         )
 
         expect(getByText(SATISFACTION_TITLE)).toBeInTheDocument()
@@ -135,9 +135,9 @@ describe('<Satisfaction>', () => {
     })
 
     it('should contain filters panel component', () => {
-        const {getByText} = renderWithStore(
+        const { getByText } = renderWithStore(
             <SatisfactionReport />,
-            defaultState
+            defaultState,
         )
 
         SATISFACTION_OPTIONAL_FILTERS.forEach((optionalFilter) => {

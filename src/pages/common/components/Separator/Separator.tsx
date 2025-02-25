@@ -1,5 +1,6 @@
-import classNames from 'classnames'
 import React from 'react'
+
+import classNames from 'classnames'
 
 import styles from './Separator.less'
 
@@ -20,7 +21,7 @@ export function Separator({
                 styles.component,
                 styles[direction],
                 variant === 'dashed' && styles.dashed,
-                className
+                className,
             )}
         />
     )

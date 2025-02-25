@@ -1,15 +1,16 @@
-import {screen, render} from '@testing-library/react'
 import React from 'react'
 
-import {getIntegrationConfig} from 'state/integrations/helpers'
-import {assumeMock} from 'utils/testing'
+import { render, screen } from '@testing-library/react'
+
+import { getIntegrationConfig } from 'state/integrations/helpers'
+import { assumeMock } from 'utils/testing'
 
 import VoicePaywall from './VoicePaywall'
 
 jest.mock('state/integrations/helpers')
 jest.mock(
     'pages/common/components/HeroImageCarousel/HeroImageCarousel',
-    () => () => <div>HeroImageCarousel</div>
+    () => () => <div>HeroImageCarousel</div>,
 )
 
 const getIntegrationConfigMock = assumeMock(getIntegrationConfig)
@@ -32,11 +33,11 @@ describe('VoicePaywall', () => {
         expect(screen.getByText('Learn more')).toBeInTheDocument()
         expect(screen.getByText('How to set up').closest('a')).toHaveAttribute(
             'href',
-            'setupGuide'
+            'setupGuide',
         )
         expect(screen.getByText('Pricing').closest('a')).toHaveAttribute(
             'href',
-            'pricingLink'
+            'pricingLink',
         )
         expect(screen.getByText('HeroImageCarousel')).toBeInTheDocument()
 
@@ -59,11 +60,11 @@ describe('VoicePaywall', () => {
 
         expect(screen.getByText('How to set up').closest('a')).toHaveAttribute(
             'href',
-            ''
+            '',
         )
         expect(screen.getByText('Pricing').closest('a')).toHaveAttribute(
             'href',
-            ''
+            '',
         )
     })
 })

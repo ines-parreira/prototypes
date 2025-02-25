@@ -1,6 +1,6 @@
-import {isEqual, isObject, cloneDeep} from 'lodash'
+import { cloneDeep, isEqual, isObject } from 'lodash'
 
-import {TextsPerLanguage} from 'rest_api/gorgias_chat_protected_api/types'
+import { TextsPerLanguage } from 'rest_api/gorgias_chat_protected_api/types'
 
 const removeUndefinedProperties = (obj: any): any => {
     return Object.entries(obj).reduce(
@@ -12,7 +12,7 @@ const removeUndefinedProperties = (obj: any): any => {
             }
             return acc
         },
-        {} as Record<string, any>
+        {} as Record<string, any>,
     )
 }
 
@@ -39,11 +39,11 @@ is equal to
  */
 const isEqualTextsPerLanguage = (
     draft: TextsPerLanguage,
-    reference: TextsPerLanguage
+    reference: TextsPerLanguage,
 ) => {
     return isEqual(
         removeUndefinedProperties(cloneDeep(draft)),
-        removeUndefinedProperties(cloneDeep(reference))
+        removeUndefinedProperties(cloneDeep(reference)),
     )
 }
 

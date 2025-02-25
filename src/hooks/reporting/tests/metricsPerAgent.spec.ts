@@ -1,49 +1,46 @@
-import {renderHook} from '@testing-library/react-hooks'
-
+import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment/moment'
 
-import {TicketChannel} from 'business/types/ticket'
+import { TicketChannel } from 'business/types/ticket'
 import {
+    fetchClosedTicketsMetricPerAgent,
+    fetchCustomerSatisfactionMetricPerAgent,
+    fetchMedianFirstResponseTimeMetricPerAgent,
+    fetchMedianResolutionTimeMetricPerAgent,
+    fetchMessagesSentMetricPerAgent,
+    fetchOneTouchTicketsMetricPerAgent,
+    fetchOnlineTimePerAgent,
+    fetchTicketAverageHandleTimePerAgent,
+    fetchTicketsRepliedMetricPerAgent,
+    fetchZeroTouchTicketsMetricPerAgent,
     useClosedTicketsMetricPerAgent,
     useCustomerSatisfactionMetricPerAgent,
     useMedianFirstResponseTimeMetricPerAgent,
-    useMessagesSentMetricPerAgent,
     useMedianResolutionTimeMetricPerAgent,
-    useTicketsRepliedMetricPerAgent,
+    useMessagesSentMetricPerAgent,
     useOneTouchTicketsMetricPerAgent,
-    useZeroTouchTicketsMetricPerAgent,
     useOnlineTimePerAgent,
     useTicketAverageHandleTimePerAgent,
-    fetchOneTouchTicketsMetricPerAgent,
-    fetchZeroTouchTicketsMetricPerAgent,
-    fetchTicketAverageHandleTimePerAgent,
-    fetchOnlineTimePerAgent,
-    fetchCustomerSatisfactionMetricPerAgent,
-    fetchMedianResolutionTimeMetricPerAgent,
-    fetchMessagesSentMetricPerAgent,
-    fetchClosedTicketsMetricPerAgent,
-    fetchTicketsRepliedMetricPerAgent,
-    fetchMedianFirstResponseTimeMetricPerAgent,
+    useTicketsRepliedMetricPerAgent,
+    useZeroTouchTicketsMetricPerAgent,
 } from 'hooks/reporting/metricsPerAgent'
 import {
     fetchMetricPerDimension,
     useMetricPerDimension,
 } from 'hooks/reporting/useMetricPerDimension'
-import {OrderDirection} from 'models/api/types'
-import {onlineTimePerAgentQueryFactory} from 'models/reporting/queryFactories/agentxp/onlineTime'
-import {ticketAverageHandleTimePerAgentQueryFactory} from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
-import {closedTicketsPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
-import {customerSatisfactionMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
-import {medianFirstResponseTimeMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
-import {medianResolutionTimeMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
-import {messagesSentMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
-import {oneTouchTicketsPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
-import {ticketsRepliedMetricPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
-import {zeroTouchTicketsPerAgentQueryFactory} from 'models/reporting/queryFactories/support-performance/zeroTouchTickets'
-
-import {LegacyStatsFilters} from 'models/stat/types'
-
-import {assumeMock} from 'utils/testing'
+import { OrderDirection } from 'models/api/types'
+import { onlineTimePerAgentQueryFactory } from 'models/reporting/queryFactories/agentxp/onlineTime'
+import { ticketAverageHandleTimePerAgentQueryFactory } from 'models/reporting/queryFactories/agentxp/ticketHandleTime'
+import { closedTicketsPerAgentQueryFactory } from 'models/reporting/queryFactories/support-performance/closedTickets'
+import { customerSatisfactionMetricPerAgentQueryFactory } from 'models/reporting/queryFactories/support-performance/customerSatisfaction'
+import { medianFirstResponseTimeMetricPerAgentQueryFactory } from 'models/reporting/queryFactories/support-performance/medianFirstResponseTime'
+import { medianResolutionTimeMetricPerAgentQueryFactory } from 'models/reporting/queryFactories/support-performance/medianResolutionTime'
+import { messagesSentMetricPerAgentQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesSent'
+import { oneTouchTicketsPerAgentQueryFactory } from 'models/reporting/queryFactories/support-performance/oneTouchTickets'
+import { ticketsRepliedMetricPerAgentQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsReplied'
+import { zeroTouchTicketsPerAgentQueryFactory } from 'models/reporting/queryFactories/support-performance/zeroTouchTickets'
+import { LegacyStatsFilters } from 'models/stat/types'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/useMetricPerDimension')
 const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
@@ -122,14 +119,14 @@ describe('metricsPerAgent', () => {
             (_, useFn, queryFactory) => {
                 renderHook(
                     () => useFn(statsFilters, timezone, sorting, agentId),
-                    {}
+                    {},
                 )
 
                 expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
                     queryFactory(statsFilters, timezone, sorting),
-                    agentId
+                    agentId,
                 )
-            }
+            },
         )
 
         it.each([
@@ -190,9 +187,9 @@ describe('metricsPerAgent', () => {
 
                 expect(fetchMetricPerDimensionMock).toHaveBeenCalledWith(
                     queryFactory(statsFilters, timezone, sorting),
-                    agentId
+                    agentId,
                 )
-            }
+            },
         )
     })
 })

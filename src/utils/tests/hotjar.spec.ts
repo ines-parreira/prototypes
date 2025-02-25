@@ -1,6 +1,6 @@
-import {account} from 'fixtures/account'
-import {user} from 'fixtures/users'
-import {InitHotjarParams, identifyUser} from 'utils/hotjar'
+import { account } from 'fixtures/account'
+import { user } from 'fixtures/users'
+import { identifyUser, InitHotjarParams } from 'utils/hotjar'
 
 window.hj = jest.fn()
 
@@ -25,7 +25,7 @@ describe('hotjar', () => {
                     domain: account.domain,
                     clientVersion,
                     serverVersion,
-                }
+                },
             )
         })
     })

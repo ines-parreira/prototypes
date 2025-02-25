@@ -1,10 +1,10 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
 import useHasCanduContent from '../useHasCanduContent'
 
 describe('useHasCanduContent', () => {
     it('should return false if Candu does not have content', () => {
-        const {result} = renderHook(() => useHasCanduContent(''))
+        const { result } = renderHook(() => useHasCanduContent(''))
 
         expect(result.current.hasCanduContent).toBeFalsy()
     })
@@ -18,12 +18,12 @@ describe('useHasCanduContent', () => {
         const imgElement = document.createElement('img')
         imgElement.dataset.canduContentId = 'xxx'
         canduRoot.appendChild(imgElement)
-        canduNodes.set(canduRoot, {shadowChild: canduRoot})
+        canduNodes.set(canduRoot, { shadowChild: canduRoot })
         window.Candu = {
             elementCanduRootMap: canduNodes,
             init: jest.fn(),
         }
-        const {result} = renderHook(() => useHasCanduContent(id))
+        const { result } = renderHook(() => useHasCanduContent(id))
 
         expect(result.current.hasCanduContent).toBeTruthy()
     })
@@ -34,12 +34,12 @@ describe('useHasCanduContent', () => {
         const canduNodes = new Map()
         const canduRoot = document.createElement('div')
         canduRoot.dataset.canduId = id
-        canduNodes.set(canduRoot, {shadowChild: canduRoot})
+        canduNodes.set(canduRoot, { shadowChild: canduRoot })
         window.Candu = {
             elementCanduRootMap: canduNodes,
             init: jest.fn(),
         }
-        const {result} = renderHook(() => useHasCanduContent(id))
+        const { result } = renderHook(() => useHasCanduContent(id))
 
         expect(result.current.hasCanduContent).toBeFalsy()
     })

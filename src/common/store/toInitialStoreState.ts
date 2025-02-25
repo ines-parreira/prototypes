@@ -1,10 +1,11 @@
-import {Tag} from '@gorgias/api-queries'
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
-import {NewPhoneNumber, OldPhoneNumber} from 'models/phoneNumber/types'
-import {View} from 'models/view/types'
-import {recentViewsStorage} from 'state/views/utils'
-import {GorgiasInitialState, InitialRootState} from 'types'
+import { Tag } from '@gorgias/api-queries'
+
+import { NewPhoneNumber, OldPhoneNumber } from 'models/phoneNumber/types'
+import { View } from 'models/view/types'
+import { recentViewsStorage } from 'state/views/utils'
+import { GorgiasInitialState, InitialRootState } from 'types'
 
 export default function toInitialStoreState(initialState: GorgiasInitialState) {
     const nextState: Record<string, any> = {
@@ -21,40 +22,40 @@ export default function toInitialStoreState(initialState: GorgiasInitialState) {
     ;(Object.keys(nextState) as (keyof GorgiasInitialState)[]).forEach(
         (key) => {
             nextState[key] = fromJS(nextState[key])
-        }
+        },
     )
 
     const tags = initialState.tags?.items.reduce(
-        (acc: {[key: string]: Tag}, tag) => {
+        (acc: { [key: string]: Tag }, tag) => {
             acc[tag.id] = tag as Tag
             return acc
         },
-        {}
+        {},
     )
 
     const views = initialState.views?.items.reduce(
-        (acc: {[key: string]: View}, view) => {
+        (acc: { [key: string]: View }, view) => {
             acc[view.id] = view
             return acc
         },
-        {}
+        {},
     )
 
     const phoneNumbers = initialState.phoneNumbers?.reduce(
-        (acc: {[key: number]: OldPhoneNumber}, phoneNumber) => {
+        (acc: { [key: number]: OldPhoneNumber }, phoneNumber) => {
             acc[phoneNumber.id] = phoneNumber
             return acc
         },
-        {}
+        {},
     )
     delete nextState.phoneNumbers
 
     const newPhoneNumbers = initialState.newPhoneNumbers?.reduce(
-        (acc: {[key: number]: NewPhoneNumber}, phoneNumber) => {
+        (acc: { [key: number]: NewPhoneNumber }, phoneNumber) => {
             acc[phoneNumber.id] = phoneNumber
             return acc
         },
-        {}
+        {},
     )
     delete nextState.newPhoneNumbers
 

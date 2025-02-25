@@ -1,12 +1,13 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {renderHook, act} from '@testing-library/react-hooks'
 import React from 'react'
 
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
-import {campaign, campaignId} from 'fixtures/campaign'
-import {channelConnectionId} from 'fixtures/channelConnection'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { act, renderHook } from '@testing-library/react-hooks'
+
+import { axiosSuccessResponse } from 'fixtures/axiosResponse'
+import { campaign, campaignId } from 'fixtures/campaign'
+import { channelConnectionId } from 'fixtures/channelConnection'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 import * as queries from '../queries'
 import * as resources from '../resources'
@@ -42,7 +43,7 @@ const mockedResources = {
 
 const queryClient = mockQueryClient()
 
-const wrapper = ({children}: any) => (
+const wrapper = ({ children }: any) => (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 )
 
@@ -62,14 +63,14 @@ describe('Campaign queries', () => {
             mockedResources.mockGetCampaign.mockResolvedValueOnce({
                 data: campaign,
             } as any)
-            const {result, waitFor} = renderHook(
+            const { result, waitFor } = renderHook(
                 () =>
                     queries.useGetCampaign({
                         campaign_id: campaignId,
                     }),
                 {
                     wrapper,
-                }
+                },
             )
             await waitFor(() => expect(result.current.isSuccess).toBe(true))
             expect(result.current.data).toStrictEqual(campaign)
@@ -77,39 +78,39 @@ describe('Campaign queries', () => {
 
         it('should return expected error on failure', async () => {
             mockedResources.mockGetCampaign.mockRejectedValueOnce(
-                Error('test error')
+                Error('test error'),
             )
-            const {result, waitFor} = renderHook(
+            const { result, waitFor } = renderHook(
                 () =>
                     queries.useGetCampaign(
                         {
                             campaign_id: campaignId,
                         },
-                        testOverrides
+                        testOverrides,
                     ),
                 {
                     wrapper,
-                }
+                },
             )
             await waitFor(() => expect(result.current.isError).toBe(true))
             expect(result.current.error).toStrictEqual(Error('test error'))
         })
 
         it('should respect the enabled setting', async () => {
-            const {waitFor} = renderHook(
+            const { waitFor } = renderHook(
                 () =>
                     queries.useGetCampaign(
                         {
                             campaign_id: campaignId,
                         },
-                        {...testOverrides, enabled: false}
+                        { ...testOverrides, enabled: false },
                     ),
                 {
                     wrapper,
-                }
+                },
             )
             await waitFor(() =>
-                expect(mockedResources.mockGetCampaign).not.toHaveBeenCalled()
+                expect(mockedResources.mockGetCampaign).not.toHaveBeenCalled(),
             )
         })
     })
@@ -119,14 +120,14 @@ describe('Campaign queries', () => {
             mockedResources.mockListCampaigns.mockResolvedValueOnce({
                 data: [campaign],
             } as any)
-            const {result, waitFor} = renderHook(
+            const { result, waitFor } = renderHook(
                 () =>
                     queries.useListCampaigns({
                         channelConnectionId: channelConnectionId,
                     }),
                 {
                     wrapper,
-                }
+                },
             )
             await waitFor(() => expect(result.current.isSuccess).toBe(true))
             expect(result.current.data).toStrictEqual([campaign])
@@ -134,39 +135,41 @@ describe('Campaign queries', () => {
 
         it('should return expected error on failure', async () => {
             mockedResources.mockListCampaigns.mockRejectedValueOnce(
-                Error('test error')
+                Error('test error'),
             )
-            const {result, waitFor} = renderHook(
+            const { result, waitFor } = renderHook(
                 () =>
                     queries.useListCampaigns(
                         {
                             channelConnectionId: channelConnectionId,
                         },
-                        testOverrides
+                        testOverrides,
                     ),
                 {
                     wrapper,
-                }
+                },
             )
             await waitFor(() => expect(result.current.isError).toBe(true))
             expect(result.current.error).toStrictEqual(Error('test error'))
         })
 
         it('should respect the enabled setting', async () => {
-            const {waitFor} = renderHook(
+            const { waitFor } = renderHook(
                 () =>
                     queries.useListCampaigns(
                         {
                             channelConnectionId: channelConnectionId,
                         },
-                        {...testOverrides, enabled: false}
+                        { ...testOverrides, enabled: false },
                     ),
                 {
                     wrapper,
-                }
+                },
             )
             await waitFor(() =>
-                expect(mockedResources.mockListCampaigns).not.toHaveBeenCalled()
+                expect(
+                    mockedResources.mockListCampaigns,
+                ).not.toHaveBeenCalled(),
             )
         })
     })
@@ -200,10 +203,10 @@ describe('Campaign queries', () => {
             '%s return correct data on success',
             async (hook, mockedResource, param, returnedData) => {
                 mockedResources[mockedResource].mockResolvedValueOnce(
-                    axiosSuccessResponse(returnedData) as any
+                    axiosSuccessResponse(returnedData) as any,
                 )
-                const {result, waitFor} = renderHook(() => queries[hook](), {
-                    wrapper: ({children}) => (
+                const { result, waitFor } = renderHook(() => queries[hook](), {
+                    wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
                             {children}
                         </QueryClientProvider>
@@ -218,7 +221,7 @@ describe('Campaign queries', () => {
                     expect(result.current.isSuccess).toBe(true)
                 })
                 expect(result.current.data?.data).toEqual(returnedData)
-            }
+            },
         )
     })
 })

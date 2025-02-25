@@ -1,10 +1,10 @@
-import {fromJS, List} from 'immutable'
-import React, {Component} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
+import React, { Component } from 'react'
+
+import { fromJS, List } from 'immutable'
+import { connect, ConnectedProps } from 'react-redux'
 
 import * as selectors from '../../../../../state/teams/selectors'
-import {RootState} from '../../../../../state/types'
-
+import { RootState } from '../../../../../state/types'
 import Select from './ReactSelect'
 
 type OwnProps = {
@@ -22,7 +22,7 @@ export class AssigneeTeamSelectContainer extends Component<Props> {
     }
 
     render() {
-        const {teams, value, onChange, className, allowUnassign} = this.props
+        const { teams, value, onChange, className, allowUnassign } = this.props
         let options: List<any> = fromJS(
             allowUnassign
                 ? [
@@ -36,7 +36,7 @@ export class AssigneeTeamSelectContainer extends Component<Props> {
                           ),
                       },
                   ]
-                : []
+                : [],
         )
 
         teams.forEach((team) => {

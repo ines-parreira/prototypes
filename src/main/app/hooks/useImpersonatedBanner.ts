@@ -1,11 +1,11 @@
-import {AlertBannerTypes, BannerCategories, useBanners} from 'AlertBanners'
+import { AlertBannerTypes, BannerCategories, useBanners } from 'AlertBanners'
 import useAppSelector from 'hooks/useAppSelector'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {getEnvironment} from 'utils/environment'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { getEnvironment } from 'utils/environment'
 
 export function useImpersonatedBanner() {
-    const {addBanner} = useBanners()
+    const { addBanner } = useBanners()
     const currentUser = useAppSelector(getCurrentUser)
     const currentAccount = useAppSelector(getCurrentAccountState)
 

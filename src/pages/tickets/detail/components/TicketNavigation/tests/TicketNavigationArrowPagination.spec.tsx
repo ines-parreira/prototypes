@@ -1,11 +1,13 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import {render, screen, fireEvent} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { fireEvent, render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {useSplitTicketView} from 'split-ticket-view-toggle'
+import { useSplitTicketView } from 'split-ticket-view-toggle'
 import * as ticketActions from 'state/ticket/actions'
 
 import useGoToNextTicket from '../hooks/useGoToNextTicket'
@@ -21,7 +23,7 @@ const useAppSelectorMock = useAppSelector as jest.Mock
 jest.mock('@gorgias/merchant-ui-kit', () => {
     return {
         ...jest.requireActual('@gorgias/merchant-ui-kit'),
-        Tooltip: ({children}: ComponentProps<typeof Tooltip>) => {
+        Tooltip: ({ children }: ComponentProps<typeof Tooltip>) => {
             return <div aria-label="tooltip mock">{children}</div>
         },
     } as Record<string, unknown>
@@ -42,13 +44,13 @@ describe('TicketNavigationArrowPagination', () => {
 
     const isTicketNavigationAvailableMock = jest.spyOn(
         ticketActions,
-        'isTicketNavigationAvailable'
+        'isTicketNavigationAvailable',
     )
 
     beforeEach(() => {
         useAppSelectorMock.mockReturnValue(fromJS({}))
         useAppDispatchMock.mockReturnValue(jest.fn())
-        useSplitTicketViewMock.mockReturnValue({isEnabled: false})
+        useSplitTicketViewMock.mockReturnValue({ isEnabled: false })
 
         mockUseGoToPreviousTicket.mockReturnValue({
             goToTicket: mockGoToPreviousTicket,
@@ -69,12 +71,12 @@ describe('TicketNavigationArrowPagination', () => {
         const nextArrow = screen.getByText('keyboard_arrow_right')
 
         expect(prevArrow.parentElement?.id).toEqual(
-            'pagination-item-arrow-previous'
+            'pagination-item-arrow-previous',
         )
         expect(screen.getByText('Previous ticket')).toBeInTheDocument()
 
         expect(nextArrow.parentElement?.id).toEqual(
-            'pagination-item-arrow-next'
+            'pagination-item-arrow-next',
         )
         expect(screen.getByText('Next ticket')).toBeInTheDocument()
 
@@ -103,7 +105,7 @@ describe('TicketNavigationArrowPagination', () => {
     })
 
     it('should render without PREV & NEXT buttons when DTP is enabled', () => {
-        useSplitTicketViewMock.mockReturnValue({isEnabled: true})
+        useSplitTicketViewMock.mockReturnValue({ isEnabled: true })
         mockUseGoToPreviousTicket.mockReturnValue({
             isDisabled: true,
         })
@@ -126,9 +128,9 @@ describe('TicketNavigationArrowPagination', () => {
         // refactor this test when isTicketNavigationAvailable is moved to a selector
         // https://linear.app/gorgias/issue/HDKXP-1776/move-isviewactive-and-isticketnavigationavailable-to
         const mockDispatch = jest.fn()
-        useSplitTicketViewMock.mockReturnValue({isEnabled: true})
+        useSplitTicketViewMock.mockReturnValue({ isEnabled: true })
         useAppDispatchMock.mockImplementation(() => mockDispatch)
-        useAppSelectorMock.mockReturnValue(fromJS({search: ''}))
+        useAppSelectorMock.mockReturnValue(fromJS({ search: '' }))
 
         render(<TicketNavigationArrowPagination ticketId={ticketId} />)
 

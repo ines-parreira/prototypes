@@ -1,16 +1,18 @@
-import {Skeleton} from '@gorgias/merchant-ui-kit'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useWorkloadPerChannelDistribution} from 'hooks/reporting/distributions'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { Skeleton } from '@gorgias/merchant-ui-kit'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useWorkloadPerChannelDistribution } from 'hooks/reporting/distributions'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
 import IconButton from 'pages/common/components/button/IconButton'
 import ChartCard from 'pages/stats/ChartCard'
-import {DashboardChartProps} from 'pages/stats/custom-reports/types'
+import { DashboardChartProps } from 'pages/stats/custom-reports/types'
 import GaugeChart from 'pages/stats/GaugeChart'
-import {WORKLOAD_BY_CHANNEL_HINT} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
-import {TOTAL_WORKLOAD_BY_CHANNEL_LABEL} from 'services/reporting/constants'
+import { WORKLOAD_BY_CHANNEL_HINT } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
+import { TOTAL_WORKLOAD_BY_CHANNEL_LABEL } from 'services/reporting/constants'
 
 export const WorkloadPerChannelChart = ({
     chartId,
@@ -22,22 +24,22 @@ export const WorkloadPerChannelChart = ({
     const [enabled, setEnabled] = useState(
         isDeferredLoadingEnabled === undefined
             ? false
-            : !isDeferredLoadingEnabled
+            : !isDeferredLoadingEnabled,
     )
     useEffect(() => {
         setEnabled(
             isDeferredLoadingEnabled === undefined
                 ? false
-                : !isDeferredLoadingEnabled
+                : !isDeferredLoadingEnabled,
         )
     }, [isDeferredLoadingEnabled])
 
-    const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone } = useNewStatsFilters()
 
     const workloadPerChannel = useWorkloadPerChannelDistribution(
         cleanStatsFilters,
         userTimezone,
-        enabled
+        enabled,
     )
 
     useEffect(() => {

@@ -1,4 +1,4 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
 import {
     fetchSatisfiedOrBreachedTicketsTimeSeries,
@@ -8,10 +8,10 @@ import {
     fetchTimeSeriesPerDimension,
     useTimeSeriesPerDimension,
 } from 'hooks/reporting/useTimeSeries'
-import {satisfiedOrBreachedTicketsTimeSeriesQueryFactory} from 'models/reporting/queryFactories/sla/satisfiedOrBreachedTickets'
-import {ReportingGranularity} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
-import {assumeMock} from 'utils/testing'
+import { satisfiedOrBreachedTicketsTimeSeriesQueryFactory } from 'models/reporting/queryFactories/sla/satisfiedOrBreachedTickets'
+import { ReportingGranularity } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/useTimeSeries')
 const useTimeSeriesPerDimensionMock = assumeMock(useTimeSeriesPerDimension)
@@ -35,16 +35,16 @@ describe('satisfiedOrBreachedTicketsTimeSeries', () => {
                 useSatisfiedOrBreachedTicketsTimeSeries(
                     filters,
                     timeZone,
-                    granularity
-                )
+                    granularity,
+                ),
             )
 
             expect(useTimeSeriesPerDimensionMock).toHaveBeenCalledWith(
                 satisfiedOrBreachedTicketsTimeSeriesQueryFactory(
                     filters,
                     timeZone,
-                    granularity
-                )
+                    granularity,
+                ),
             )
         })
     })
@@ -65,15 +65,15 @@ describe('satisfiedOrBreachedTicketsTimeSeries', () => {
             await fetchSatisfiedOrBreachedTicketsTimeSeries(
                 filters,
                 timeZone,
-                granularity
+                granularity,
             )
 
             expect(fetchTimeSeriesPerDimensionMock).toHaveBeenCalledWith(
                 satisfiedOrBreachedTicketsTimeSeriesQueryFactory(
                     filters,
                     timeZone,
-                    granularity
-                )
+                    granularity,
+                ),
             )
         })
     })

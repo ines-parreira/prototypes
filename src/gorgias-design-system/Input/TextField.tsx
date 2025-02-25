@@ -1,7 +1,8 @@
-import styled from '@emotion/styled'
-import React, {ChangeEvent, useCallback, useEffect, useState} from 'react'
+import React, { ChangeEvent, useCallback, useEffect, useState } from 'react'
 
-import {gorgiasColors} from 'gorgias-design-system/styles'
+import styled from '@emotion/styled'
+
+import { gorgiasColors } from 'gorgias-design-system/styles'
 
 import Caption from './Caption'
 import Label from './Label'
@@ -86,9 +87,9 @@ const StyledIcon = styled.div<IconProps>`
         fill: var(--icon-fill, ${gorgiasColors.neutralGrey4});
     }
 
-    ${({isAlternative}) => (isAlternative ? `top: 10px;` : '')}
+    ${({ isAlternative }) => (isAlternative ? `top: 10px;` : '')}
 
-    ${({isLeadIcon}) => (isLeadIcon ? `left: 12px;` : `right: 12px;`)}
+    ${({ isLeadIcon }) => (isLeadIcon ? `left: 12px;` : `right: 12px;`)}
 `
 
 const StyledTextField = styled.input<ExtendedTextFieldProps>`
@@ -104,9 +105,9 @@ const StyledTextField = styled.input<ExtendedTextFieldProps>`
     color: var(--textfield-color, ${gorgiasColors.dark});
     background-color: var(--textfield-background-color, ${gorgiasColors.white});
 
-    ${({hasLeadIcon}) => (hasLeadIcon ? `padding-left: 48px;` : ``)};
-    ${({hasTrailIcon}) => (hasTrailIcon ? `padding-right: 48px;` : ``)};
-    ${({isAlternative}) =>
+    ${({ hasLeadIcon }) => (hasLeadIcon ? `padding-left: 48px;` : ``)};
+    ${({ hasTrailIcon }) => (hasTrailIcon ? `padding-right: 48px;` : ``)};
+    ${({ isAlternative }) =>
         isAlternative
             ? `
                 height: 44px;
@@ -118,7 +119,7 @@ const StyledTextField = styled.input<ExtendedTextFieldProps>`
                 --textfield-border-color-focus: ${gorgiasColors.neutralGrey2};
                 `
             : ''}
-    ${({isFilled}) =>
+    ${({ isFilled }) =>
         isFilled
             ? `
                 &:not(:placeholder-shown):not(:focus){
@@ -180,7 +181,7 @@ const StyledTextField = styled.input<ExtendedTextFieldProps>`
 /**
  * Form input that allows users to type information. Used for short information collection.
  */
-const TextField: React.FC<TextFieldProps> = ({...args}) => {
+const TextField: React.FC<TextFieldProps> = ({ ...args }) => {
     const {
         caption,
         disabled,
@@ -208,7 +209,7 @@ const TextField: React.FC<TextFieldProps> = ({...args}) => {
             setInnerValue(value)
             onChange && onChange(value)
         },
-        [setInnerValue, onChange]
+        [setInnerValue, onChange],
     )
 
     const onTextFieldChange = (ev: ChangeEvent<HTMLInputElement>) => {

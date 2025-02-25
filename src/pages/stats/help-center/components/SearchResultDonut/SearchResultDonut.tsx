@@ -1,22 +1,22 @@
 import React from 'react'
 
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
 import ChartCard from 'pages/stats/ChartCard'
 import DonutChart from 'pages/stats/common/components/charts/DonutChart/DonutChart'
-import {DashboardChartProps} from 'pages/stats/custom-reports/types'
+import { DashboardChartProps } from 'pages/stats/custom-reports/types'
 import css from 'pages/stats/help-center/components/SearchResultDonut/SearchResultDonut.less'
 import {
     SEARCH_RESULTS_DONUT_TITLE,
     SEARCH_RESULTS_DONUT_TOOLTIP,
 } from 'pages/stats/help-center/HelpCenterMetricsConfig'
-import {useSearchResultRange} from 'pages/stats/help-center/hooks/useSearchResultRange'
-import {NoDataAvailable} from 'pages/stats/NoDataAvailable'
+import { useSearchResultRange } from 'pages/stats/help-center/hooks/useSearchResultRange'
+import { NoDataAvailable } from 'pages/stats/NoDataAvailable'
 
-const SearchResultDonut = ({chartId, dashboard}: DashboardChartProps) => {
-    const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
-    const {data, isLoading} = useSearchResultRange(
+const SearchResultDonut = ({ chartId, dashboard }: DashboardChartProps) => {
+    const { cleanStatsFilters, userTimezone } = useNewStatsFilters()
+    const { data, isLoading } = useSearchResultRange(
         cleanStatsFilters,
-        userTimezone
+        userTimezone,
     )
 
     return (
@@ -31,7 +31,7 @@ const SearchResultDonut = ({chartId, dashboard}: DashboardChartProps) => {
                 <NoDataAvailable
                     title="No data available"
                     description="Try adjusting filters to get results."
-                    style={{height: '100%'}}
+                    style={{ height: '100%' }}
                 />
             ) : (
                 <DonutChart

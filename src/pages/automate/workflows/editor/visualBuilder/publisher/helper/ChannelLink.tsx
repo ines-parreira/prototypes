@@ -1,5 +1,6 @@
 import React from 'react'
-import {Link, useParams} from 'react-router-dom'
+
+import { Link, useParams } from 'react-router-dom'
 
 const ChannelsLink = ({
     linkText,
@@ -10,7 +11,7 @@ const ChannelsLink = ({
     type?: string
     id?: number
 }) => {
-    const {shopType, shopName} = useParams<{
+    const { shopType, shopName } = useParams<{
         shopType: string
         shopName: string
     }>()

@@ -1,20 +1,21 @@
-import {fireEvent, render} from '@testing-library/react'
-import React, {ContextType, useRef} from 'react'
+import React, { ContextType, useRef } from 'react'
 
-import {DropdownContext} from '../Dropdown'
-import DropdownItem, {Props as DropdownItemProps} from '../DropdownItem'
+import { fireEvent, render } from '@testing-library/react'
+
+import { DropdownContext } from '../Dropdown'
+import DropdownItem, { Props as DropdownItemProps } from '../DropdownItem'
 
 jest.mock('react', () => ({
     ...jest.requireActual<typeof React>('react'),
-    useRef: jest.fn().mockReturnValue({current: null}),
+    useRef: jest.fn().mockReturnValue({ current: null }),
 }))
 ;(useRef as jest.Mock).mockImplementation(
-    jest.requireActual<typeof React>('react')['useRef']
+    jest.requireActual<typeof React>('react')['useRef'],
 )
 
 const minProps = {
     onClick: jest.fn(),
-    option: {label: 'Foo', value: 'foo'},
+    option: { label: 'Foo', value: 'foo' },
 }
 
 const mockContext: ContextType<typeof DropdownContext> = {
@@ -28,7 +29,7 @@ const mockContext: ContextType<typeof DropdownContext> = {
 
 const MockedComponent = (
     props: DropdownItemProps<string>,
-    context: ContextType<typeof DropdownContext>
+    context: ContextType<typeof DropdownContext>,
 ) => {
     return (
         <DropdownContext.Provider value={context}>
@@ -39,27 +40,27 @@ const MockedComponent = (
 
 describe('<DropdownItem />', () => {
     it('should render', () => {
-        const {container} = render(MockedComponent(minProps, mockContext))
+        const { container } = render(MockedComponent(minProps, mockContext))
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should not render if the item value is not contained in the context query', () => {
-        const {container} = render(
-            MockedComponent(minProps, {...mockContext, query: 'bar'})
+        const { container } = render(
+            MockedComponent(minProps, { ...mockContext, query: 'bar' }),
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render with result of getHighlightedLabel', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             MockedComponent(minProps, {
                 ...mockContext,
                 getHighlightedLabel: jest
                     .fn()
                     .mockImplementation(() => 'highlight'),
-            })
+            }),
         )
 
         expect(getByText(/highlight/)).toBeInTheDocument()
@@ -67,17 +68,17 @@ describe('<DropdownItem />', () => {
 
     it('should render with custom children passed', () => {
         const childrenMock = 'FooChildren'
-        const {getByText} = render(
+        const { getByText } = render(
             <DropdownContext.Provider value={mockContext}>
                 <DropdownItem {...minProps}>{childrenMock}</DropdownItem>
-            </DropdownContext.Provider>
+            </DropdownContext.Provider>,
         )
 
         expect(getByText(childrenMock)).toBeInTheDocument()
     })
 
     it('should render with custom children function passed', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <DropdownContext.Provider
                 value={{
                     ...mockContext,
@@ -89,63 +90,63 @@ describe('<DropdownItem />', () => {
                 <DropdownItem {...minProps}>
                     {(highlightedLabel: string) => `custom ${highlightedLabel}`}
                 </DropdownItem>
-            </DropdownContext.Provider>
+            </DropdownContext.Provider>,
         )
 
         expect(getByText(/custom highlight/)).toBeTruthy()
     })
 
     it('should render with custom children passed that are neither a string nor a function', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <DropdownContext.Provider value={mockContext}>
                 <DropdownItem {...minProps}>{Number(88)}</DropdownItem>
-            </DropdownContext.Provider>
+            </DropdownContext.Provider>,
         )
 
         expect(getByText(Number(88))).toBeInTheDocument()
     })
 
     it('should render with any HTML tag passed as tag', () => {
-        const {container} = render(
-            MockedComponent({...minProps, tag: 'div'}, mockContext)
+        const { container } = render(
+            MockedComponent({ ...minProps, tag: 'div' }, mockContext),
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render when selected', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             MockedComponent(minProps, {
                 ...mockContext,
                 value: minProps.option.value,
-            })
+            }),
         )
 
         expect(getByText('done')).toBeInTheDocument()
     })
 
     it('should render when selected and multiple selection is enabled', () => {
-        const {container} = render(
+        const { container } = render(
             MockedComponent(minProps, {
                 ...mockContext,
                 value: minProps.option.value,
                 isMultiple: true,
-            })
+            }),
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should call onClick when clicked and pass the option value', () => {
-        const {container} = render(MockedComponent(minProps, mockContext))
+        const { container } = render(MockedComponent(minProps, mockContext))
 
         fireEvent.click(container.firstChild!)
         expect(minProps.onClick).toHaveBeenCalledWith(minProps.option.value)
     })
 
     it('should not call onClick when it is disabled', () => {
-        const {container} = render(
-            MockedComponent({...minProps, isDisabled: true}, mockContext)
+        const { container } = render(
+            MockedComponent({ ...minProps, isDisabled: true }, mockContext),
         )
 
         fireEvent.click(container.firstChild!)
@@ -153,11 +154,11 @@ describe('<DropdownItem />', () => {
     })
 
     it('should call the context toggle when clicked and when shouldCloseOnSelect is passed', () => {
-        const {container} = render(
+        const { container } = render(
             MockedComponent(
-                {...minProps, shouldCloseOnSelect: true},
-                mockContext
-            )
+                { ...minProps, shouldCloseOnSelect: true },
+                mockContext,
+            ),
         )
 
         fireEvent.click(container.firstChild!)
@@ -165,95 +166,95 @@ describe('<DropdownItem />', () => {
     })
 
     it('should call onClick when enter key is pressed and pass the option value', () => {
-        const {container} = render(MockedComponent(minProps, mockContext))
+        const { container } = render(MockedComponent(minProps, mockContext))
 
-        fireEvent.keyDown(container.firstChild!, {key: 'Enter'})
+        fireEvent.keyDown(container.firstChild!, { key: 'Enter' })
         expect(minProps.onClick).toHaveBeenCalledWith(minProps.option.value)
     })
 
     it('should not call onClick when when enter key is pressed if it is disabled', () => {
-        const {container} = render(
-            MockedComponent({...minProps, isDisabled: true}, mockContext)
+        const { container } = render(
+            MockedComponent({ ...minProps, isDisabled: true }, mockContext),
         )
 
-        fireEvent.keyDown(container.firstChild!, {key: 'Enter'})
+        fireEvent.keyDown(container.firstChild!, { key: 'Enter' })
         expect(minProps.onClick).not.toHaveBeenCalled()
     })
 
     it('should call the context toggle when enter key is pressed and when shouldCloseOnSelect is passed', () => {
-        const {container} = render(
+        const { container } = render(
             MockedComponent(
-                {...minProps, shouldCloseOnSelect: true},
-                mockContext
-            )
+                { ...minProps, shouldCloseOnSelect: true },
+                mockContext,
+            ),
         )
 
-        fireEvent.keyDown(container.firstChild!, {key: 'Enter'})
+        fireEvent.keyDown(container.firstChild!, { key: 'Enter' })
         expect(mockContext.onToggle).toHaveBeenCalledWith(false)
     })
 
     it('should allow keyboard navigation', () => {
-        const {container} = render(
+        const { container } = render(
             <DropdownContext.Provider value={mockContext}>
                 <DropdownItem {...minProps} />
                 <DropdownItem
                     {...minProps}
-                    option={{label: 'Bar', value: 'bar'}}
+                    option={{ label: 'Bar', value: 'bar' }}
                 />
-            </DropdownContext.Provider>
+            </DropdownContext.Provider>,
         )
 
-        fireEvent.keyDown(container.firstChild!, {key: 'ArrowDown'})
+        fireEvent.keyDown(container.firstChild!, { key: 'ArrowDown' })
         expect(container.lastChild).toHaveFocus()
-        fireEvent.keyDown(container.lastChild!, {key: 'ArrowUp'})
+        fireEvent.keyDown(container.lastChild!, { key: 'ArrowUp' })
         expect(container.firstChild).toHaveFocus()
-        fireEvent.keyDown(container.firstChild!, {key: 'ArrowUp'})
+        fireEvent.keyDown(container.firstChild!, { key: 'ArrowUp' })
         expect(container.lastChild).toHaveFocus()
-        fireEvent.keyDown(container.lastChild!, {key: 'ArrowUp'})
+        fireEvent.keyDown(container.lastChild!, { key: 'ArrowUp' })
         expect(container.firstChild).toHaveFocus()
     })
 
     it('should early exit if onKeyDown callback is provided', () => {
         const onKeyDown = jest.fn()
-        const {getByText} = render(
+        const { getByText } = render(
             <DropdownContext.Provider value={mockContext}>
                 <DropdownItem {...minProps} />
                 <DropdownItem
                     {...minProps}
-                    option={{label: 'Bar', value: 'bar'}}
+                    option={{ label: 'Bar', value: 'bar' }}
                     onKeyDown={onKeyDown}
                 />
-            </DropdownContext.Provider>
+            </DropdownContext.Provider>,
         )
 
-        fireEvent.keyDown(getByText(/Foo/), {key: 'ArrowDown'})
+        fireEvent.keyDown(getByText(/Foo/), { key: 'ArrowDown' })
         expect(getByText(/Bar/)).toHaveFocus()
-        fireEvent.keyDown(getByText(/Bar/), {key: 'ArrowDown'})
+        fireEvent.keyDown(getByText(/Bar/), { key: 'ArrowDown' })
         expect(onKeyDown).toHaveBeenCalled()
         expect(getByText(/Foo/)).not.toHaveFocus()
     })
 
     it('should render a selection icon', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             MockedComponent(
-                {...minProps, option: {value: 'x', label: 'x'}},
-                {...mockContext, value: 'x'}
-            )
+                { ...minProps, option: { value: 'x', label: 'x' } },
+                { ...mockContext, value: 'x' },
+            ),
         )
 
         expect(getByText('done')).toBeInTheDocument()
     })
 
     it('should not render the selection icon when disabled', () => {
-        const {queryByText} = render(
+        const { queryByText } = render(
             MockedComponent(
                 {
                     ...minProps,
-                    option: {value: 'x', label: 'x'},
+                    option: { value: 'x', label: 'x' },
                     isDisabled: true,
                 },
-                {...mockContext, value: 'x'}
-            )
+                { ...mockContext, value: 'x' },
+            ),
         )
 
         expect(queryByText('done')).not.toBeInTheDocument()
@@ -262,21 +263,21 @@ describe('<DropdownItem />', () => {
     it('should add a title attribute when overflowing from container', () => {
         ;(useRef as jest.Mock).mockImplementation(() => ({
             get current() {
-                return {offsetWidth: 100, scrollWidth: 120}
+                return { offsetWidth: 100, scrollWidth: 120 }
             },
 
             set current(_value) {},
         }))
 
         const label = 'A very long item overflowing'
-        const {container} = render(
+        const { container } = render(
             MockedComponent(
                 {
                     ...minProps,
-                    option: {value: 'x', label},
+                    option: { value: 'x', label },
                 },
-                mockContext
-            )
+                mockContext,
+            ),
         )
 
         expect(container.firstChild).toHaveAttribute('title', label)

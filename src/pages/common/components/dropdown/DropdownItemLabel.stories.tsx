@@ -1,6 +1,7 @@
-import {Meta, Story} from '@storybook/react'
+import React, { ComponentProps, useRef, useState } from 'react'
+
+import { Meta, Story } from '@storybook/react'
 import _noop from 'lodash/noop'
-import React, {ComponentProps, useRef, useState} from 'react'
 
 import Button from 'pages/common/components/button/Button'
 
@@ -15,11 +16,11 @@ const storyConfig: Meta = {
 }
 
 const DefaultTemplate: Story<ComponentProps<typeof DropdownItemLabel>> = (
-    props
+    props,
 ) => <DropdownItemLabel {...props} />
 
 const ExampleTemplate: Story<ComponentProps<typeof DropdownItemLabel>> = (
-    props
+    props,
 ) => {
     const [isOpen, setIsOpen] = useState(false)
     const buttonRef = useRef<HTMLButtonElement>(null)
@@ -68,7 +69,7 @@ const defaultProps = {
     suffix: (
         <i
             className="material-icons"
-            style={{color: '#99A5B6', lineHeight: '37px'}}
+            style={{ color: '#99A5B6', lineHeight: '37px' }}
         >
             chevron_right
         </i>

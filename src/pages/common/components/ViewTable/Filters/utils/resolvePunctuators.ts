@@ -1,8 +1,8 @@
-import {Expression} from 'estree'
+import { Expression } from 'estree'
 
 export default function resolvePunctuators(
     type: Expression['type'],
-    string: string
+    string: string,
 ): string {
     switch (type) {
         case 'Identifier':

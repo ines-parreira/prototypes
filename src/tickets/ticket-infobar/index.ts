@@ -1,1 +1,1 @@
-export {default as TicketInfobarPanel} from './components/TicketInfobarPanel'
+export { default as TicketInfobarPanel } from './components/TicketInfobarPanel'

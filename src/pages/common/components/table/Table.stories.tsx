@@ -1,8 +1,9 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {OrderDirection} from 'models/api/types'
-import {DistributionCategoryCell} from 'pages/stats/DistributionCategoryCell'
+import { Meta, Story } from '@storybook/react'
+
+import { OrderDirection } from 'models/api/types'
+import { DistributionCategoryCell } from 'pages/stats/DistributionCategoryCell'
 import GaugeAddon from 'pages/stats/GaugeAddon'
 
 import BodyCell from './cells/BodyCell'
@@ -40,7 +41,7 @@ const storyConfig: Meta = {
     title: 'General/Table/Example',
     component: TableWrapper,
     parameters: {
-        chromatic: {disableSnapshot: false},
+        chromatic: { disableSnapshot: false },
     },
 }
 
@@ -48,7 +49,7 @@ const SimpleTable: Story<ComponentProps<typeof TableWrapper>> = (props) => (
     <TableWrapper {...props}>
         <TableHead>
             {tableColumns.map((column) => (
-                <HeaderCell key={column.key} style={{width: '25%'}}>
+                <HeaderCell key={column.key} style={{ width: '25%' }}>
                     {column.title}
                 </HeaderCell>
             ))}
@@ -66,7 +67,7 @@ const SimpleTable: Story<ComponentProps<typeof TableWrapper>> = (props) => (
 )
 
 const HeaderCellPropertyTable: Story<ComponentProps<typeof TableWrapper>> = (
-    props
+    props,
 ) => (
     <TableWrapper {...props}>
         <TableHead>
@@ -81,7 +82,7 @@ const HeaderCellPropertyTable: Story<ComponentProps<typeof TableWrapper>> = (
                     }
                     isOrderedBy
                     tooltip="Test tooltip data"
-                    style={{width: '25%'}}
+                    style={{ width: '25%' }}
                 />
             ))}
         </TableHead>
@@ -101,7 +102,7 @@ const TableWithGauges: Story<ComponentProps<typeof TableWrapper>> = (props) => (
     <TableWrapper {...props}>
         <TableHead>
             {tableColumns.map((column) => (
-                <HeaderCell key={column.key} style={{width: '25%'}}>
+                <HeaderCell key={column.key} style={{ width: '25%' }}>
                     {column.title}
                 </HeaderCell>
             ))}

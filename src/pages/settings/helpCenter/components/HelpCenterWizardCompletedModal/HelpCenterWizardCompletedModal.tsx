@@ -1,6 +1,6 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
-import {useSearchParam} from 'hooks/useSearchParam'
+import { useSearchParam } from 'hooks/useSearchParam'
 import SuccessModal, {
     SuccessModalIcon,
 } from 'pages/common/components/SuccessModal/SuccessModal'
@@ -10,6 +10,7 @@ import {
     HELP_CENTER_WIZARD_COMPLETED_STATE,
     isHelpCenterWizardCompletedState,
 } from '../../constants'
+
 import css from './HelpCenterWizardCompletedModal.less'
 
 const getModalParams = (state?: HELP_CENTER_WIZARD_COMPLETED_STATE) => {
@@ -37,7 +38,7 @@ const getModalParams = (state?: HELP_CENTER_WIZARD_COMPLETED_STATE) => {
 
 const HelpCenterWizardCompletedModal = () => {
     const [value, setSearchParam] = useSearchParam(
-        HELP_CENTER_WIZARD_COMPLETED_QUERY_KEY
+        HELP_CENTER_WIZARD_COMPLETED_QUERY_KEY,
     )
     const modalState = isHelpCenterWizardCompletedState(value)
         ? value

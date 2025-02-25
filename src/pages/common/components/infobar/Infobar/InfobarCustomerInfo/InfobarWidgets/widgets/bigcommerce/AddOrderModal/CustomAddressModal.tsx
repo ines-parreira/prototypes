@@ -1,7 +1,8 @@
+import React, { useState } from 'react'
+
 import classNames from 'classnames'
-import {CountryCode} from 'libphonenumber-js'
-import React, {useState} from 'react'
-import {Form} from 'reactstrap'
+import { CountryCode } from 'libphonenumber-js'
+import { Form } from 'reactstrap'
 
 import {
     BigCommerceCustomerAddress,
@@ -13,23 +14,23 @@ import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
-
 import CheckBox from 'pages/common/forms/CheckBox'
 import CountryInput from 'pages/common/forms/CountryInput/CountryInput'
-import {getCountryLabel} from 'pages/common/forms/CountryInput/utils'
+import { getCountryLabel } from 'pages/common/forms/CountryInput/utils'
 import InputField from 'pages/common/forms/input/InputField'
 import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
 import ProvinceInput from 'pages/common/forms/ProvinceInput/ProvinceInput'
 
+import { createCustomAddress } from './utils'
+
 import cssAddressesDropdown from './AddressesDropdown.less'
 import cssOrderModal from './OrderModal.less'
-import {createCustomAddress} from './utils'
 
 type Props = {
     onAddCustomAddress: (
         newSelectedAddress: BigCommerceCustomerAddress,
         addressType: 'billing' | 'shipping',
-        customerEmail: Maybe<string>
+        customerEmail: Maybe<string>,
     ) => void
     addressType: 'billing' | 'shipping'
     currencyCode: string
@@ -167,7 +168,8 @@ export function CustomAddressModal({
             onClose()
         }
     }
-    const onChange = (changes: any) => setFormState({...formState, ...changes})
+    const onChange = (changes: any) =>
+        setFormState({ ...formState, ...changes })
 
     return (
         <>
@@ -193,7 +195,7 @@ export function CustomAddressModal({
                     <div
                         className={classNames(
                             cssOrderModal.wrapper,
-                            cssOrderModal.scrollable
+                            cssOrderModal.scrollable,
                         )}
                     >
                         <Form onSubmit={handleAddCustomAddress}>
@@ -203,7 +205,9 @@ export function CustomAddressModal({
                                 className="mb-2"
                                 value={formState.firstName}
                                 isRequired
-                                onChange={(firstName) => onChange({firstName})}
+                                onChange={(firstName) =>
+                                    onChange({ firstName })
+                                }
                                 hasError={
                                     performedValidation && !formState.firstName
                                 }
@@ -215,7 +219,7 @@ export function CustomAddressModal({
                                 className="mb-2"
                                 value={formState.lastName}
                                 isRequired
-                                onChange={(lastName) => onChange({lastName})}
+                                onChange={(lastName) => onChange({ lastName })}
                                 hasError={
                                     performedValidation && !formState.lastName
                                 }
@@ -226,13 +230,13 @@ export function CustomAddressModal({
                                 label="Company"
                                 className="mb-2"
                                 value={formState.company}
-                                onChange={(company) => onChange({company})}
+                                onChange={(company) => onChange({ company })}
                                 data-1p-ignore
                             />
                             <PhoneNumberInput
                                 label="Phone"
                                 value={formState.phone}
-                                onChange={(phone) => onChange({phone})}
+                                onChange={(phone) => onChange({ phone })}
                                 data-1p-ignore
                             />
                             <InputField
@@ -240,11 +244,11 @@ export function CustomAddressModal({
                                 label="Address 1"
                                 className={classNames(
                                     'mb-2',
-                                    cssAddressesDropdown.topPadded
+                                    cssAddressesDropdown.topPadded,
                                 )}
                                 value={formState.address1}
                                 isRequired
-                                onChange={(address1) => onChange({address1})}
+                                onChange={(address1) => onChange({ address1 })}
                                 hasError={
                                     performedValidation && !formState.address1
                                 }
@@ -255,7 +259,7 @@ export function CustomAddressModal({
                                 label="Address 2"
                                 className="mb-2"
                                 value={formState.address2}
-                                onChange={(address2) => onChange({address2})}
+                                onChange={(address2) => onChange({ address2 })}
                                 data-1p-ignore
                             />
                             <InputField
@@ -264,7 +268,7 @@ export function CustomAddressModal({
                                 className="mb-2"
                                 value={formState.city}
                                 isRequired
-                                onChange={(city) => onChange({city})}
+                                onChange={(city) => onChange({ city })}
                                 hasError={
                                     performedValidation && !formState.city
                                 }
@@ -288,7 +292,7 @@ export function CustomAddressModal({
                                 name="stateOrProvince"
                                 country={formState.country}
                                 onChange={(stateOrProvince) =>
-                                    onChange({stateOrProvince})
+                                    onChange({ stateOrProvince })
                                 }
                                 hasError={
                                     performedValidation &&
@@ -310,7 +314,7 @@ export function CustomAddressModal({
                                 value={formState.postalCode}
                                 isRequired
                                 onChange={(postalCode) =>
-                                    onChange({postalCode})
+                                    onChange({ postalCode })
                                 }
                                 hasError={
                                     performedValidation &&
@@ -324,7 +328,7 @@ export function CustomAddressModal({
                                 className="mt-3 mb-3"
                                 onChange={() => {
                                     setSaveToCustomersAddressBook(
-                                        !saveToCustomersAddressBook
+                                        !saveToCustomersAddressBook,
                                     )
                                 }}
                             >

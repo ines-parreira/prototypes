@@ -1,6 +1,6 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
-import {AppOAuthPermission} from 'config/oauthPermissions'
+import { AppOAuthPermission } from 'config/oauthPermissions'
 import Button from 'pages/common/components/button/Button'
 
 import AppPermission from './AppPermission'
@@ -9,7 +9,7 @@ interface Props {
     permissions: AppOAuthPermission[]
 }
 
-export default function AppPermissions({permissions}: Props) {
+export default function AppPermissions({ permissions }: Props) {
     const [showAll, setShowAll] = useState(false)
 
     if (permissions.length === 0) {

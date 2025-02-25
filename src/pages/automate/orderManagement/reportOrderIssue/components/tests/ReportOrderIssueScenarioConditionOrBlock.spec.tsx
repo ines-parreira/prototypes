@@ -1,7 +1,8 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {ReportIssueVariable} from 'models/selfServiceConfiguration/types'
+import { render, screen } from '@testing-library/react'
+
+import { ReportIssueVariable } from 'models/selfServiceConfiguration/types'
 
 import ReportOrderIssueScenarioItem from '../ReportOrderIssueScenarioConditionOrBlock'
 
@@ -15,13 +16,13 @@ describe('<ReportOrderIssueScenarioItem />', () => {
                     or: [
                         {
                             '===': [
-                                {var: ReportIssueVariable.FINANCIAL_STATUS},
+                                { var: ReportIssueVariable.FINANCIAL_STATUS },
                                 null,
                             ],
                         },
                     ],
                 }}
-            />
+            />,
         )
 
         expect(screen.getByText('financial status')).toBeInTheDocument()

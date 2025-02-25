@@ -1,19 +1,20 @@
-import {fireEvent, render} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
-import {DeepPartial} from 'redux'
+
+import { fireEvent, render } from '@testing-library/react'
+import { Provider } from 'react-redux'
+import { DeepPartial } from 'redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {initialState as helpCenterState} from 'state/entities/helpCenter/reducer'
-import {RootState, StoreDispatch} from 'state/types'
-import {initialState as uiState} from 'state/ui/helpCenter/reducer'
+import { initialState as helpCenterState } from 'state/entities/helpCenter/reducer'
+import { RootState, StoreDispatch } from 'state/types'
+import { initialState as uiState } from 'state/ui/helpCenter/reducer'
 
-import {LocaleCode} from '../../../../../../models/helpCenter/types'
-import {getSingleArticleEnglish} from '../../../fixtures/getArticlesResponse.fixture'
-import {getLocalesResponseFixture} from '../../../fixtures/getLocalesResponse.fixtures'
-import {useSupportedLocales} from '../../../providers/SupportedLocales'
-import {getArticleUrl} from '../../../utils/helpCenter.utils'
+import { LocaleCode } from '../../../../../../models/helpCenter/types'
+import { getSingleArticleEnglish } from '../../../fixtures/getArticlesResponse.fixture'
+import { getLocalesResponseFixture } from '../../../fixtures/getLocalesResponse.fixtures'
+import { useSupportedLocales } from '../../../providers/SupportedLocales'
+import { getArticleUrl } from '../../../utils/helpCenter.utils'
 import useCategoriesOptions from '../ArticleCategorySelect/hooks/useCategoriesOptions'
 import HelpCenterEditModalHeader, {
     Props as HelpCenterEditModalHeaderProps,
@@ -39,12 +40,12 @@ const defaultState: DeepPartial<RootState> = {
     entities: {
         helpCenter: helpCenterState,
     },
-    ui: {helpCenter: uiState},
+    ui: { helpCenter: uiState },
 }
 
 jest.mock('../../../providers/EditionManagerContext', () => {
     const module: Record<string, unknown> = jest.requireActual(
-        '../../../providers/EditionManagerContext'
+        '../../../providers/EditionManagerContext',
     )
 
     return {
@@ -68,13 +69,13 @@ jest.mock('../../../providers/SupportedLocales')
 
 jest.mock('../ArticleCategorySelect/hooks/useCategoriesOptions')
 ;(useCategoriesOptions as jest.Mock).mockImplementation(() => [
-    {label: '- No category -', value: 'null'},
-    {label: 'Orders', value: 1},
-    {label: 'Pricing', value: 2},
+    { label: '- No category -', value: 'null' },
+    { label: 'Orders', value: 1 },
+    { label: 'Pricing', value: 2 },
 ])
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
-    useAbilityChecker: () => ({isPassingRulesCheck: () => true}),
+    useAbilityChecker: () => ({ isPassingRulesCheck: () => true }),
 }))
 
 describe('<HelpCenterEditModalHeader />', () => {
@@ -98,34 +99,34 @@ describe('<HelpCenterEditModalHeader />', () => {
     }
 
     it('should display the component correctly - without the category selector', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <HelpCenterEditModalHeader {...props} />
-            </Provider>
+            </Provider>,
         )
         expect(container).toMatchSnapshot('without the category selector')
     })
 
     it('should display the component correctly - with the category selector', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <HelpCenterEditModalHeader
                     {...props}
                     showCategorySelect={true}
                 />
-            </Provider>
+            </Provider>,
         )
         expect(container).toMatchSnapshot('with the category selector')
     })
 
     it('should render an input when onEditTitle is defined', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <HelpCenterEditModalHeader
                     {...props}
                     onTitleChange={() => null}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(container).toMatchSnapshot()
@@ -139,13 +140,13 @@ describe('<HelpCenterEditModalHeader />', () => {
                 onDelete: mockedOnDelete,
             },
         }
-        const {getByRole} = render(
+        const { getByRole } = render(
             <Provider store={mockStore(defaultState)}>
                 <HelpCenterEditModalHeader {...propsWithPublishedArticle} />
-            </Provider>
+            </Provider>,
         )
 
-        const previewBtn = getByRole('button', {name: /preview article/i})
+        const previewBtn = getByRole('button', { name: /preview article/i })
         fireEvent.click(previewBtn)
 
         const articleUrl = getArticleUrl({
@@ -162,62 +163,62 @@ describe('<HelpCenterEditModalHeader />', () => {
 
     describe('resize modal buttons', () => {
         it('should not have a fullscreen button when the resize callback is not in props', () => {
-            const {queryByRole} = render(
+            const { queryByRole } = render(
                 <Provider store={mockStore(defaultState)}>
                     <HelpCenterEditModalHeader {...props} />
-                </Provider>
+                </Provider>,
             )
 
-            const fullscreenBtn = queryByRole('button', {name: /fullscreen/i})
+            const fullscreenBtn = queryByRole('button', { name: /fullscreen/i })
 
             expect(fullscreenBtn).toBeNull()
         })
 
         it('should have a fullscreen button when the resize callback is in props', () => {
-            const {getByRole} = render(
+            const { getByRole } = render(
                 <Provider store={mockStore(defaultState)}>
                     <HelpCenterEditModalHeader
                         {...props}
                         onResize={mockedOnResize}
                     />
-                </Provider>
+                </Provider>,
             )
 
-            const fullscreenBtn = getByRole('button', {name: /fullscreen/i})
+            const fullscreenBtn = getByRole('button', { name: /fullscreen/i })
             fireEvent.click(fullscreenBtn)
 
             expect(mockedOnResize).toHaveBeenCalledTimes(1)
         })
 
         it('should have a halfscreen button when the resize callback is in props and isFullscreen is true', () => {
-            const {getByRole} = render(
+            const { getByRole } = render(
                 <Provider store={mockStore(defaultState)}>
                     <HelpCenterEditModalHeader
                         {...props}
                         onResize={mockedOnResize}
                         isFullscreen={true}
                     />
-                </Provider>
+                </Provider>,
             )
 
-            const halfScreenBtn = getByRole('button', {name: /halfscreen/i})
+            const halfScreenBtn = getByRole('button', { name: /halfscreen/i })
             fireEvent.click(halfScreenBtn)
 
             expect(mockedOnResize).toHaveBeenCalledTimes(1)
         })
 
         it('should show the UNSAVED editing state when content is modified', async () => {
-            const {findByText} = render(
+            const { findByText } = render(
                 <Provider store={mockStore(defaultState)}>
                     <HelpCenterEditModalHeader {...props} />
-                </Provider>
+                </Provider>,
             )
 
             await findByText('UNSAVED')
         })
 
         it('should show the UNSAVED editing state for new, unsaved articles', async () => {
-            const {findByText} = render(
+            const { findByText } = render(
                 <Provider store={mockStore(defaultState)}>
                     <HelpCenterEditModalHeader
                         {...props}
@@ -226,14 +227,14 @@ describe('<HelpCenterEditModalHeader />', () => {
                             onCreate: mockedOnCreate,
                         }}
                     />
-                </Provider>
+                </Provider>,
             )
 
             await findByText('UNSAVED')
         })
 
         it('should show the PUBLISHED editing state', async () => {
-            const {findByText} = render(
+            const { findByText } = render(
                 <Provider store={mockStore(defaultState)}>
                     <HelpCenterEditModalHeader
                         {...props}
@@ -242,14 +243,14 @@ describe('<HelpCenterEditModalHeader />', () => {
                             onDelete: mockedOnDelete,
                         }}
                     />
-                </Provider>
+                </Provider>,
             )
 
             await findByText('PUBLISHED')
         })
 
         it('should show the SAVED editing state', async () => {
-            const {findByText} = render(
+            const { findByText } = render(
                 <Provider store={mockStore(defaultState)}>
                     <HelpCenterEditModalHeader
                         {...props}
@@ -259,7 +260,7 @@ describe('<HelpCenterEditModalHeader />', () => {
                             onPublish: mockedOnPublish,
                         }}
                     />
-                </Provider>
+                </Provider>,
             )
 
             await findByText('SAVED')

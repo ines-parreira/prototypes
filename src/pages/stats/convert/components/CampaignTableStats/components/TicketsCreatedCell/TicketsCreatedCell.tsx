@@ -1,13 +1,12 @@
+import React, { MouseEventHandler } from 'react'
+
 import _kebabCase from 'lodash/kebabCase'
-import React, {MouseEventHandler} from 'react'
 
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import history from 'pages/history'
-import {formatNumber} from 'pages/stats/common/utils'
-
-import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
-
-import {CampaignTableContentCell} from 'pages/stats/convert/types/CampaignTableContentCell'
+import { formatNumber } from 'pages/stats/common/utils'
+import { useCampaignStatsFilters } from 'pages/stats/convert/hooks/useCampaignStatsFilters'
+import { CampaignTableContentCell } from 'pages/stats/convert/types/CampaignTableContentCell'
 
 type Props = {
     cell: CampaignTableContentCell
@@ -15,8 +14,8 @@ type Props = {
     isHighlighted?: boolean
 }
 
-export const TicketsCreatedCell = ({cell, data, ...props}: Props) => {
-    const {selectedPeriod} = useCampaignStatsFilters()
+export const TicketsCreatedCell = ({ cell, data, ...props }: Props) => {
+    const { selectedPeriod } = useCampaignStatsFilters()
     const startDate = new Date(selectedPeriod.start_datetime).toISOString()
     const endDate = new Date(selectedPeriod.end_datetime).toISOString()
     const viewName = `Tickets created by campaign "${cell.campaign.name}"`

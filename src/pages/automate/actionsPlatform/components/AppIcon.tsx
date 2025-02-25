@@ -7,7 +7,7 @@ type Props = {
     name?: string
 }
 
-const AppIcon = ({icon, name}: Props) => {
+const AppIcon = ({ icon, name }: Props) => {
     return <img src={icon} alt={name} className={css.container} title={name} />
 }
 

@@ -1,15 +1,15 @@
-import {render, screen} from '@testing-library/react'
-import LD from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
-import {Provider} from 'react-redux'
-import {MemoryRouter, Route} from 'react-router-dom'
+import { render, screen } from '@testing-library/react'
+import LD from 'launchdarkly-react-client-sdk'
+import { Provider } from 'react-redux'
+import { MemoryRouter, Route } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
-import {RootState, StoreDispatch} from 'state/types'
-import {getStateWithHelpdeskPlan} from 'utils/paywallTesting'
+import { RootState, StoreDispatch } from 'state/types'
+import { getStateWithHelpdeskPlan } from 'utils/paywallTesting'
 
 import ClickTrackingPaywallView from '../../ClickTrackingPaywallView'
 import ClickTrackingSettingsView from '../ClickTrackingSettingsView'
@@ -18,7 +18,7 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 const store = mockStore(getStateWithHelpdeskPlan())
 
-const ReduxProvider = ({children}: {children?: React.ReactNode}) => (
+const ReduxProvider = ({ children }: { children?: React.ReactNode }) => (
     <Provider store={store}>{children}</Provider>
 )
 
@@ -50,7 +50,7 @@ describe('<ClickTrackingSettingsView />', () => {
     it('should not render if the account does not have the feature flag', () => {
         jest.spyOn(
             isConvertSubscriberHook,
-            'useIsConvertSubscriber'
+            'useIsConvertSubscriber',
         ).mockImplementation(() => false)
         jest.spyOn(LD, 'useFlags').mockImplementation(() => ({}))
 
@@ -62,13 +62,13 @@ describe('<ClickTrackingSettingsView />', () => {
                     </Route>
                     <ClickTrackingSettingsView />
                 </ReduxProvider>
-            </MemoryRouter>
+            </MemoryRouter>,
         )
 
         expect(
             screen.queryByText(
-                /With the Gorgias click tracking service you can now track clicks/
-            )
+                /With the Gorgias click tracking service you can now track clicks/,
+            ),
         ).not.toBeInTheDocument()
         expect(screen.getByText('Book Demo')).toBeInTheDocument()
     })
@@ -76,7 +76,7 @@ describe('<ClickTrackingSettingsView />', () => {
     it('should render if the account has the feature flag', () => {
         jest.spyOn(
             isConvertSubscriberHook,
-            'useIsConvertSubscriber'
+            'useIsConvertSubscriber',
         ).mockImplementation(() => true)
 
         render(<ClickTrackingSettingsView />, {
@@ -85,8 +85,8 @@ describe('<ClickTrackingSettingsView />', () => {
 
         expect(
             screen.getByText(
-                /With the Gorgias click tracking service you can now track clicks/
-            )
+                /With the Gorgias click tracking service you can now track clicks/,
+            ),
         ).toBeInTheDocument()
     })
 })

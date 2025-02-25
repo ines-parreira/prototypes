@@ -1,7 +1,7 @@
 export const createImageFetchMock = () => {
     const srcSet = Object.getOwnPropertyDescriptor(
         global.Image.prototype,
-        'src'
+        'src',
     )
     return {
         mock: (load: () => Promise<unknown>) => {
@@ -9,10 +9,10 @@ export const createImageFetchMock = () => {
                 set() {
                     load()
                         .then(() => {
-                            ;(this as {onload: () => void}).onload()
+                            ;(this as { onload: () => void }).onload()
                         })
                         .catch(() => {
-                            ;(this as {onerror: () => void}).onerror()
+                            ;(this as { onerror: () => void }).onerror()
                         })
                 },
             })

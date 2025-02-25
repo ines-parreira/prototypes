@@ -1,11 +1,10 @@
 import memoize from 'memoize-one'
-import OpenAPIClientAxios, {Document} from 'openapi-client-axios'
+import OpenAPIClientAxios, { Document } from 'openapi-client-axios'
 
-import {isProduction, isStaging} from 'utils/environment'
-
+import { isProduction, isStaging } from 'utils/environment'
 import gorgiasAppsAuthInterceptor from 'utils/gorgiasAppsAuth'
 
-import {Client} from './client.generated'
+import { Client } from './client.generated'
 import OpenAPIDoc from './ssp-api.openapi.json'
 
 function getGorgiasSSPBaseURL(): string {
@@ -29,7 +28,7 @@ async function buildGorgiasSSPApiClient() {
 
     const api = new OpenAPIClientAxios({
         definition: OpenAPIDoc as Document,
-        withServer: {url: getGorgiasSSPBaseURL()},
+        withServer: { url: getGorgiasSSPBaseURL() },
     })
     apiClient = await api.init<Client>()
     apiClient.interceptors.request.use(gorgiasAppsAuthInterceptor as any)

@@ -1,9 +1,11 @@
+import React, { MouseEvent } from 'react'
+
 import classnames from 'classnames'
-import React, {MouseEvent} from 'react'
-import {Badge} from 'reactstrap'
+import { Badge } from 'reactstrap'
+
+import { Option } from './types'
 
 import css from './Tag.less'
-import {Option} from './types'
 
 const SPACE_SYMBOL = `␣`
 

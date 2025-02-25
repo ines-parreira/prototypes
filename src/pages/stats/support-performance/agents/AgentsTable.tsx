@@ -1,29 +1,29 @@
+import React, { FunctionComponent, UIEventHandler, useState } from 'react'
+
 import classNames from 'classnames'
-import React, {FunctionComponent, UIEventHandler, useState} from 'react'
 // eslint-disable-next-line no-restricted-imports
-import {useDispatch} from 'react-redux'
+import { useDispatch } from 'react-redux'
 
-import {User} from 'config/types/user'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-
-import {useAgentsSortingQuery} from 'hooks/reporting/useAgentsSortingQuery'
-import {useAgentsTableConfigSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
+import { User } from 'config/types/user'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useAgentsSortingQuery } from 'hooks/reporting/useAgentsSortingQuery'
+import { useAgentsTableConfigSetting } from 'hooks/reporting/useAgentsTableConfigSetting'
 import useAppSelector from 'hooks/useAppSelector'
 import useMeasure from 'hooks/useMeasure'
-import {StatsFilters} from 'models/stat/types'
-import {NumberedPagination} from 'pages/common/components/Paginations'
+import { StatsFilters } from 'models/stat/types'
+import { NumberedPagination } from 'pages/common/components/Paginations'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import css from 'pages/stats/AnalyticsTable.less'
-import {AgentNameCellContent} from 'pages/stats/support-performance/agents/AgentNameCellContent'
+import { AgentNameCellContent } from 'pages/stats/support-performance/agents/AgentNameCellContent'
 import {
     AgentsCellContent,
     AgentsCellContentProps,
 } from 'pages/stats/support-performance/agents/AgentsCellContent'
-import {AgentsHeaderCellContent} from 'pages/stats/support-performance/agents/AgentsHeaderCellContent'
+import { AgentsHeaderCellContent } from 'pages/stats/support-performance/agents/AgentsHeaderCellContent'
 import {
     AgentsColumnConfig,
     getColumnAlignment,
@@ -33,17 +33,17 @@ import {
     getSummaryQuery,
     TableLabels,
 } from 'pages/stats/support-performance/agents/AgentsTableConfig'
-import {AgentsTableSummaryCell} from 'pages/stats/support-performance/agents/AgentsTableSummaryCell'
+import { AgentsTableSummaryCell } from 'pages/stats/support-performance/agents/AgentsTableSummaryCell'
 import {
     getHeatmapMode,
     getPaginatedAgents,
     isSortingMetricLoading,
     pageSet,
 } from 'state/ui/stats/agentPerformanceSlice'
-import {AgentsTableColumn} from 'state/ui/stats/types'
+import { AgentsTableColumn } from 'state/ui/stats/types'
 
 export const getTableCell = (
-    column: AgentsTableColumn
+    column: AgentsTableColumn,
 ): FunctionComponent<AgentsCellContentProps> => {
     if (column === AgentsTableColumn.AgentName) {
         return AgentNameCellContent
@@ -56,7 +56,7 @@ const getSortingQuery = (
     statsFilters: {
         cleanStatsFilters: StatsFilters
         userTimezone: string
-    }
+    },
 ) => {
     const query = getQuery(column)
 
@@ -86,13 +86,13 @@ export const AgentsTable = ({
     isHeatmapMode = false,
 }: Props) => {
     const dispatch = useDispatch()
-    const {columnsOrder} = useAgentsTableConfigSetting()
-    const {currentPage, perPage, agents, allAgents} = paginatedAgents
+    const { columnsOrder } = useAgentsTableConfigSetting()
+    const { currentPage, perPage, agents, allAgents } = paginatedAgents
     const onPageChangeCallback = (page: number) => {
         dispatch(pageSet(page))
     }
 
-    const [ref, {width}] = useMeasure<HTMLDivElement>()
+    const [ref, { width }] = useMeasure<HTMLDivElement>()
     const [isTableScrolled, setIsTableScrolled] = useState(false)
     const handleScroll: UIEventHandler<HTMLDivElement> = (event) => {
         if (event.currentTarget.scrollLeft > 0) {
@@ -106,7 +106,7 @@ export const AgentsTable = ({
     return (
         <>
             <div ref={ref} className={css.container} onScroll={handleScroll}>
-                <TableWrapper className={css.table} style={{width}}>
+                <TableWrapper className={css.table} style={{ width }}>
                     <TableHead>
                         {columnsOrder.map((column, index) => (
                             <AgentsHeaderCellContent
@@ -115,7 +115,7 @@ export const AgentsTable = ({
                                 hint={AgentsColumnConfig[column].hint}
                                 useSortingQuery={getSortingQuery(
                                     column,
-                                    statsFilters
+                                    statsFilters,
                                 )}
                                 width={getColumnWidth(column)} //TODO: consider introducing common props per cell type (header, average, body)
                                 justifyContent={getColumnAlignment(column)}
@@ -135,7 +135,7 @@ export const AgentsTable = ({
                                         width={getColumnWidth(column)}
                                         isHighlighted
                                         justifyContent={getColumnAlignment(
-                                            column
+                                            column,
                                         )}
                                         className={classNames(css.BodyCell, {
                                             [css.withShadow]:
@@ -173,18 +173,18 @@ export const AgentsTable = ({
                                                 drillDownMetricData:
                                                     getDrillDownMetricData(
                                                         column,
-                                                        agent
+                                                        agent,
                                                     ),
                                                 isHeatmapMode: isHeatmapMode,
                                                 isSortingMetricLoading:
                                                     isSortingLoading,
                                                 bodyCellProps: {
                                                     width: getColumnWidth(
-                                                        column
+                                                        column,
                                                     ),
                                                     justifyContent:
                                                         getColumnAlignment(
-                                                            column
+                                                            column,
                                                         ),
                                                     className: classNames(
                                                         css.BodyCell,
@@ -193,12 +193,12 @@ export const AgentsTable = ({
                                                                 column ===
                                                                     AgentsTableColumn.AgentName &&
                                                                 isTableScrolled,
-                                                        }
+                                                        },
                                                     ),
                                                     innerClassName:
                                                         css.BodyCellContent,
                                                 },
-                                            }
+                                            },
                                         )}
                                     </React.Fragment>
                                 ))}

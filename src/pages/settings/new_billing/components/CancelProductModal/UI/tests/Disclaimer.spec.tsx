@@ -1,13 +1,14 @@
-import {render} from '@testing-library/react'
 import React from 'react'
+
+import { render } from '@testing-library/react'
 
 import Disclaimer from '../Disclaimer'
 
 describe('Disclaimer', () => {
     it('renders the disclaimer', () => {
         const mockOnChange = jest.fn()
-        const {getByRole} = render(
-            <Disclaimer agreementChecked={false} onChange={mockOnChange} />
+        const { getByRole } = render(
+            <Disclaimer agreementChecked={false} onChange={mockOnChange} />,
         )
 
         const masterSubscriptionAgreementLinkElement = getByRole('link', {
@@ -16,7 +17,7 @@ describe('Disclaimer', () => {
         expect(masterSubscriptionAgreementLinkElement).toBeInTheDocument()
         expect(masterSubscriptionAgreementLinkElement).toHaveAttribute(
             'href',
-            'https://www.gorgias.com/legal/master-subscription-agreement'
+            'https://www.gorgias.com/legal/master-subscription-agreement',
         )
 
         const checkboxElement = getByRole('checkbox', {

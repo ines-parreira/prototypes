@@ -1,15 +1,16 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
+
+import { Link } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {VOICEMAIL_DEFAULT_VOICE_MESSAGE} from 'models/integration/constants'
+import { VOICEMAIL_DEFAULT_VOICE_MESSAGE } from 'models/integration/constants'
 import {
     PhoneIntegrationVoicemailOutsideBusinessHoursSettings,
     VoiceMessage,
 } from 'models/integration/types'
 import CheckBox from 'pages/common/forms/CheckBox'
 import VoiceMessageField from 'pages/integrations/integration/components/voice/VoiceMessageField'
-import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
+import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
 
 import css from './VoiceIntegrationVoicemail.less'
 

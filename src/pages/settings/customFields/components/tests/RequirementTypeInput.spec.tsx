@@ -1,6 +1,7 @@
-import {render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import RequirementTypeInput from '../RequirementTypeInput'
 
@@ -10,7 +11,7 @@ describe('<RequirementTypeInput/>', () => {
         render(<RequirementTypeInput value="visible" onChange={onChange} />)
 
         userEvent.click(
-            screen.getByLabelText('Always required', {selector: 'input'})
+            screen.getByLabelText('Always required', { selector: 'input' }),
         )
 
         expect(onChange).toHaveBeenCalledTimes(1)

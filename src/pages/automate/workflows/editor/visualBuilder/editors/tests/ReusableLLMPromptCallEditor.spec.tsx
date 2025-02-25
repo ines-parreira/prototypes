@@ -1,15 +1,15 @@
-import {act, fireEvent, screen} from '@testing-library/react'
-
 import React from 'react'
 
-import {useGetWorkflowConfigurationTemplate} from 'models/workflows/queries'
+import { act, fireEvent, screen } from '@testing-library/react'
+
+import { useGetWorkflowConfigurationTemplate } from 'models/workflows/queries'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import useGetAppFromTemplateApp from 'pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp'
 import NodeEditorDrawerContext from 'pages/automate/workflows/editor/visualBuilder/NodeEditorDrawerContext'
-import {VisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
-import {buildNodeCommonProperties} from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import {ReusableLLMPromptCallNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
+import { VisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
+import { buildNodeCommonProperties } from 'pages/automate/workflows/models/visualBuilderGraph.model'
+import { ReusableLLMPromptCallNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import ReusableLLMPromptCallEditor from '../ReusableLLMPromptCallEditor'
 
@@ -18,7 +18,7 @@ jest.mock('pages/automate/actionsPlatform/hooks/useApps')
 jest.mock('pages/automate/actionsPlatform/hooks/useGetAppFromTemplateApp')
 
 const mockUseGetWorkflowConfigurationTemplate = jest.mocked(
-    useGetWorkflowConfigurationTemplate
+    useGetWorkflowConfigurationTemplate,
 )
 const mockUseApps = jest.mocked(useApps)
 const mockUseGetAppFromTemplateApp = jest.mocked(useGetAppFromTemplateApp)
@@ -107,7 +107,7 @@ describe('<ReusableLLMPromptCallEditor />', () => {
                 type: 'app',
                 name: 'some app',
                 icon: 'https://ok.com/1.png',
-            })
+            }),
         )
 
         const nodeInEdition: ReusableLLMPromptCallNodeType = {
@@ -197,25 +197,27 @@ describe('<ReusableLLMPromptCallEditor />', () => {
                     isNew: false,
                 }}
             >
-                <NodeEditorDrawerContext.Provider value={{onClose: jest.fn()}}>
+                <NodeEditorDrawerContext.Provider
+                    value={{ onClose: jest.fn() }}
+                >
                     <ReusableLLMPromptCallEditor
                         nodeInEdition={nodeInEdition}
                     />
                 </NodeEditorDrawerContext.Provider>
-            </VisualBuilderContext.Provider>
+            </VisualBuilderContext.Provider>,
         )
 
         expect(screen.getByText('Action step in some app')).toBeInTheDocument()
         expect(
             screen.getByText(
-                'This step requires an active some app account. Enter the API key from your some app account.'
-            )
+                'This step requires an active some app account. Enter the API key from your some app account.',
+            ),
         ).toBeInTheDocument()
         expect(
-            screen.getByText('This step requires additional values.')
+            screen.getByText('This step requires additional values.'),
         ).toBeInTheDocument()
         expect(
-            screen.getByText('Find your API key in some app')
+            screen.getByText('Find your API key in some app'),
         ).toBeInTheDocument()
 
         act(() => {
@@ -232,7 +234,7 @@ describe('<ReusableLLMPromptCallEditor />', () => {
 
         act(() => {
             fireEvent.change(screen.getByDisplayValue('some api key'), {
-                target: {value: 'new some api key'},
+                target: { value: 'new some api key' },
             })
         })
 
@@ -244,7 +246,7 @@ describe('<ReusableLLMPromptCallEditor />', () => {
 
         act(() => {
             fireEvent.change(screen.getByDisplayValue('value1'), {
-                target: {value: 'new value1'},
+                target: { value: 'new value1' },
             })
         })
 
@@ -256,7 +258,7 @@ describe('<ReusableLLMPromptCallEditor />', () => {
         })
 
         expect(mockUseGetWorkflowConfigurationTemplate).toHaveBeenCalledWith(
-            'configuration_id1'
+            'configuration_id1',
         )
     })
 
@@ -314,7 +316,7 @@ describe('<ReusableLLMPromptCallEditor />', () => {
                 type: 'app',
                 name: 'some app',
                 icon: 'https://ok.com/1.png',
-            })
+            }),
         )
 
         const nodeInEdition: ReusableLLMPromptCallNodeType = {
@@ -402,22 +404,24 @@ describe('<ReusableLLMPromptCallEditor />', () => {
                     isNew: false,
                 }}
             >
-                <NodeEditorDrawerContext.Provider value={{onClose: jest.fn()}}>
+                <NodeEditorDrawerContext.Provider
+                    value={{ onClose: jest.fn() }}
+                >
                     <ReusableLLMPromptCallEditor
                         nodeInEdition={nodeInEdition}
                     />
                 </NodeEditorDrawerContext.Provider>
-            </VisualBuilderContext.Provider>
+            </VisualBuilderContext.Provider>,
         )
 
         expect(screen.getByText('Action step in some app')).toBeInTheDocument()
         expect(
             screen.getByText(
-                'This step requires an active some app account. Enter the refresh token from your some app account.'
-            )
+                'This step requires an active some app account. Enter the refresh token from your some app account.',
+            ),
         ).toBeInTheDocument()
         expect(
-            screen.getByText('Find your refresh token in some app')
+            screen.getByText('Find your refresh token in some app'),
         ).toBeInTheDocument()
 
         act(() => {
@@ -434,7 +438,7 @@ describe('<ReusableLLMPromptCallEditor />', () => {
 
         act(() => {
             fireEvent.change(screen.getByDisplayValue('some refresh token'), {
-                target: {value: 'new some refresh token'},
+                target: { value: 'new some refresh token' },
             })
         })
 

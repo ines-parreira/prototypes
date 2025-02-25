@@ -1,10 +1,10 @@
-import {Call} from '@twilio/voice-sdk'
+import { Call } from '@twilio/voice-sdk'
 
 import {
     mockIncomingCall,
     mockOutgoingCall,
 } from '../../../../../tests/twilioMocks'
-import {useConnectionParameters} from '../hooks'
+import { useConnectionParameters } from '../hooks'
 
 describe('useConnectionParameters()', () => {
     it('should return parameters for an incoming call', () => {

@@ -1,10 +1,9 @@
-import React, {ComponentProps, useCallback, useMemo} from 'react'
+import React, { ComponentProps, useCallback, useMemo } from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {LegacyStatsFilters} from 'models/stat/types'
-
+import { LegacyStatsFilters } from 'models/stat/types'
 import SelectFilter from 'pages/stats/common/SelectFilter'
-import {mergeStatsFilters} from 'state/stats/statsSlice'
+import { mergeStatsFilters } from 'state/stats/statsSlice'
 
 type Props = {
     value: LegacyStatsFilters['score']
@@ -31,29 +30,32 @@ export function DEPRECATED_ScoreStatsFilter({
     const dispatch = useAppDispatch()
 
     const scores = useMemo(() => {
-        return Array.from({length: maxValue - minValue + 1}, (value, index) => {
-            const scoreValue = isDescending
-                ? maxValue - index
-                : index + minValue
-            return {
-                value: scoreValue.toString(),
-                label:
-                    Array(minValue + scoreValue - 1)
-                        .fill('★')
-                        .join('') +
-                    Array(maxValue - scoreValue)
-                        .fill('☆')
-                        .join(''),
-            }
-        })
+        return Array.from(
+            { length: maxValue - minValue + 1 },
+            (value, index) => {
+                const scoreValue = isDescending
+                    ? maxValue - index
+                    : index + minValue
+                return {
+                    value: scoreValue.toString(),
+                    label:
+                        Array(minValue + scoreValue - 1)
+                            .fill('★')
+                            .join('') +
+                        Array(maxValue - scoreValue)
+                            .fill('☆')
+                            .join(''),
+                }
+            },
+        )
     }, [minValue, maxValue, isDescending])
 
     const handleFilterChange: ComponentProps<typeof SelectFilter>['onChange'] =
         useCallback(
             (values) => {
-                dispatch(mergeStatsFilters({score: values as string[]}))
+                dispatch(mergeStatsFilters({ score: values as string[] }))
             },
-            [dispatch]
+            [dispatch],
         )
 
     return (

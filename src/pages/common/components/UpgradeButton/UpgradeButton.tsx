@@ -1,9 +1,10 @@
-import classnames from 'classnames'
-import React, {useMemo} from 'react'
-import {Link} from 'react-router-dom'
+import React, { useMemo } from 'react'
 
-import {logEvent, SegmentEventToSend} from 'common/segment'
-import Button, {type ButtonProps} from 'pages/common/components/button/Button'
+import classnames from 'classnames'
+import { Link } from 'react-router-dom'
+
+import { logEvent, SegmentEventToSend } from 'common/segment'
+import Button, { type ButtonProps } from 'pages/common/components/button/Button'
 import ButtonIconLabel, {
     ButtonIconPosition,
 } from 'pages/common/components/button/ButtonIconLabel'
@@ -37,7 +38,7 @@ const UpgradeButton = ({
             ) : (
                 label
             ),
-        [hasIcon, label, position]
+        [hasIcon, label, position],
     )
 
     const pathname = '/app/settings/billing'
@@ -48,7 +49,7 @@ const UpgradeButton = ({
                 className={classnames(
                     'd-flex',
                     'align-items-center',
-                    css.upgradeLink
+                    css.upgradeLink,
                 )}
             >
                 {onClick ? (
@@ -58,7 +59,7 @@ const UpgradeButton = ({
                             !!segmentEventToSend &&
                                 logEvent(
                                     segmentEventToSend.name,
-                                    segmentEventToSend.props
+                                    segmentEventToSend.props,
                                 )
                             onClick(e)
                         }}
@@ -67,14 +68,14 @@ const UpgradeButton = ({
                     </Button>
                 ) : (
                     // TODO[COR-1569]: There should be a single source of truth for the state
-                    <Link to={{pathname, state}}>
+                    <Link to={{ pathname, state }}>
                         <Button
                             {...other}
                             onClick={() =>
                                 !!segmentEventToSend &&
                                 logEvent(
                                     segmentEventToSend.name,
-                                    segmentEventToSend.props
+                                    segmentEventToSend.props,
                                 )
                             }
                         >

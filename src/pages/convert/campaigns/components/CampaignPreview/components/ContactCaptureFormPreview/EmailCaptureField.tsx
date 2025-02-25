@@ -1,10 +1,12 @@
-import classnames from 'classnames'
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
-import {ContactFormField} from 'pages/convert/campaigns/types/CampaignAttachment'
+import classnames from 'classnames'
+
+import { ContactFormField } from 'pages/convert/campaigns/types/CampaignAttachment'
+
+import { ErrorMessage, MailInput } from './styled'
 
 import css from './CampaignCaptureFormPreview.less'
-import {MailInput, ErrorMessage} from './styled'
 
 const USER_EMAIL_MAX_LENGTH = 320
 const EMAIL_REGEX = `^[a-zA-Z0-9_\\-\\+\\.]+@([a-zA-Z0-9_][a-zA-Z0-9_\\-]+\\.)+(?!(?:con|cin|cim|comd|couk|ul|netk|coml|comok)$)[a-zA-Z0-9\\-]{1,63}$`
@@ -51,7 +53,7 @@ export const EmailCaptureField: React.FC<EmailCaptureFieldProps> = ({
                 maxLength={USER_EMAIL_MAX_LENGTH}
                 required={field.required}
                 pattern={EMAIL_REGEX}
-                className={classnames({[css.errorState]: !!errorMessage})}
+                className={classnames({ [css.errorState]: !!errorMessage })}
             />
             {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
         </>

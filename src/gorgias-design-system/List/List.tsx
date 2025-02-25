@@ -1,7 +1,8 @@
-import styled from '@emotion/styled'
-import React, {HTMLAttributes} from 'react'
+import React, { HTMLAttributes } from 'react'
 
-import {gorgiasColors} from 'gorgias-design-system/styles'
+import styled from '@emotion/styled'
+
+import { gorgiasColors } from 'gorgias-design-system/styles'
 
 type ListProps = {
     /**
@@ -17,7 +18,7 @@ const StyledList = styled.div<ListProps>`
 
     background: ${gorgiasColors.neutralGrey0};
 
-    ${({shouldDisplayShadow}) =>
+    ${({ shouldDisplayShadow }) =>
         shouldDisplayShadow
             ? `box-shadow: 1px 1px 8px 0px rgba(22, 22, 22, 0.05);`
             : ''}
@@ -31,7 +32,7 @@ const List: React.FC<HTMLAttributes<HTMLDivElement> & ListProps> = ({
     children,
     ...props
 }) => {
-    const {shouldDisplayShadow = true} = props
+    const { shouldDisplayShadow = true } = props
 
     return (
         <StyledList

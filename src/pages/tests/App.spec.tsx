@@ -1,11 +1,11 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {Provider} from 'react-redux'
+import { render } from '@testing-library/react'
+import { Provider } from 'react-redux'
 
-import {NavBarProvider} from 'common/navigation/components/NavBarProvider'
-import {store} from 'common/store'
-import {useFlag} from 'core/flags'
+import { NavBarProvider } from 'common/navigation/components/NavBarProvider'
+import { store } from 'common/store'
+import { useFlag } from 'core/flags'
 import useIsMobileResolution from 'hooks/useIsMobileResolution/useIsMobileResolution'
 
 import App from '../App'
@@ -28,7 +28,7 @@ describe('App Navbar rendering', () => {
         return render(
             <Provider store={store}>
                 <NavBarProvider>{component}</NavBarProvider>
-            </Provider>
+            </Provider>,
         )
     }
 
@@ -36,16 +36,16 @@ describe('App Navbar rendering', () => {
         mockUseFlag.mockReturnValue(true)
         mockUseIsMobileResolution.mockReturnValue(false)
 
-        const {getByTestId, container} = renderWithContext(
-            <App navbar={MockNavbar} />
+        const { getByTestId, container } = renderWithContext(
+            <App navbar={MockNavbar} />,
         )
 
         expect(getByTestId('global-navigation')).toBeInTheDocument()
         expect(getByTestId('navbar')).toBeInTheDocument()
         expect(
             container.querySelector(
-                '[data-name="navbar-collapsible-container"]'
-            )
+                '[data-name="navbar-collapsible-container"]',
+            ),
         ).not.toBeInTheDocument()
     })
 
@@ -53,15 +53,15 @@ describe('App Navbar rendering', () => {
         mockUseFlag.mockReturnValue(false)
         mockUseIsMobileResolution.mockReturnValue(false)
 
-        const {queryByTestId, getByTestId, container} = renderWithContext(
-            <App navbar={MockNavbar} />
+        const { queryByTestId, getByTestId, container } = renderWithContext(
+            <App navbar={MockNavbar} />,
         )
 
         expect(queryByTestId('global-navigation')).not.toBeInTheDocument()
         expect(
             container.querySelector(
-                '[data-name="navbar-collapsible-container"]'
-            )
+                '[data-name="navbar-collapsible-container"]',
+            ),
         ).not.toBeInTheDocument()
         expect(getByTestId('navbar')).toBeInTheDocument()
     })
@@ -70,15 +70,15 @@ describe('App Navbar rendering', () => {
         mockUseFlag.mockReturnValue(true)
         mockUseIsMobileResolution.mockReturnValue(true)
 
-        const {queryByTestId, getByTestId, container} = renderWithContext(
-            <App navbar={MockNavbar} />
+        const { queryByTestId, getByTestId, container } = renderWithContext(
+            <App navbar={MockNavbar} />,
         )
 
         expect(queryByTestId('global-navigation')).not.toBeInTheDocument()
         expect(
             container.querySelector(
-                '[data-name="navbar-collapsible-container"]'
-            )
+                '[data-name="navbar-collapsible-container"]',
+            ),
         ).not.toBeInTheDocument()
         expect(getByTestId('navbar')).toBeInTheDocument()
     })
@@ -87,10 +87,10 @@ describe('App Navbar rendering', () => {
         mockUseFlag.mockReturnValue(true)
         mockUseIsMobileResolution.mockReturnValue(false)
 
-        const {container} = renderWithContext(<App />)
+        const { container } = renderWithContext(<App />)
 
         expect(
-            container.querySelector('[data-name="navbar-container"]')
+            container.querySelector('[data-name="navbar-container"]'),
         ).not.toBeInTheDocument()
     })
 })

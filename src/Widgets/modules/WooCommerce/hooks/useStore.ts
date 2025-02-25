@@ -1,16 +1,17 @@
-import {Map} from 'immutable'
-import {useContext} from 'react'
+import { useContext } from 'react'
+
+import { Map } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {Customer} from 'models/customer/types'
-import {CustomerEcommerceData} from 'models/customerEcommerceData/types'
-import {EcommerceIntegrationMeta} from 'models/integration/types'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import {getCustomersState} from 'state/customers/selectors'
-import {getTicketState} from 'state/ticket/selectors'
+import { Customer } from 'models/customer/types'
+import { CustomerEcommerceData } from 'models/customerEcommerceData/types'
+import { EcommerceIntegrationMeta } from 'models/integration/types'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
+import { getCustomersState } from 'state/customers/selectors'
+import { getTicketState } from 'state/ticket/selectors'
 
 export function useStore() {
-    const {integration} = useContext(IntegrationContext)
+    const { integration } = useContext(IntegrationContext)
     const customerState: Map<any, any> | undefined =
         useAppSelector(getCustomersState).get('active')
     const ticketState: Map<any, any> | undefined =

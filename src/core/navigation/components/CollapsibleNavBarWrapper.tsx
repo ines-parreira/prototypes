@@ -1,16 +1,16 @@
 import React from 'react'
-import type {ReactNode} from 'react'
+import type { ReactNode } from 'react'
 
-import {CollapsibleNavbarContainer} from 'common/navigation/components/CollapsibleNavbarContainer'
-import {NavBarDisplayMode} from 'common/navigation/hooks/useNavBar/context'
-import {useNavBar} from 'common/navigation/hooks/useNavBar/useNavBar'
+import { CollapsibleNavbarContainer } from 'common/navigation/components/CollapsibleNavbarContainer'
+import { NavBarDisplayMode } from 'common/navigation/hooks/useNavBar/context'
+import { useNavBar } from 'common/navigation/hooks/useNavBar/useNavBar'
 
 type Props = {
     children: ReactNode
 }
 
-export function CollapsibleNavBarWrapper({children}: Props) {
-    const {navBarDisplay, onNavHover, onNavLeave} = useNavBar()
+export function CollapsibleNavBarWrapper({ children }: Props) {
+    const { navBarDisplay, onNavHover, onNavLeave } = useNavBar()
 
     if (navBarDisplay === NavBarDisplayMode.Open) {
         return (
@@ -19,7 +19,7 @@ export function CollapsibleNavBarWrapper({children}: Props) {
                 onMouseOver={onNavHover}
                 onFocus={onNavHover}
                 onMouseLeave={onNavLeave}
-                style={{height: '100%'}}
+                style={{ height: '100%' }}
             >
                 {children}
             </div>

@@ -1,9 +1,10 @@
-import {screen} from '@testing-library/react'
 import React from 'react'
 
-import {renderWithRouter} from 'utils/testing'
+import { screen } from '@testing-library/react'
 
-import {LlmTriggeredExecution} from '../../types'
+import { renderWithRouter } from 'utils/testing'
+
+import { LlmTriggeredExecution } from '../../types'
 import ActionEventsList from '../ActionEventsList'
 
 describe('<ActionEventsList />', () => {
@@ -28,9 +29,11 @@ describe('<ActionEventsList />', () => {
                 onSelectedExecutionIdChange={jest.fn()}
                 selectedExecutionId={null}
                 executions={[execution]}
-            />
+            />,
         )
 
-        expect(screen.getByText('Today at', {exact: false})).toBeInTheDocument()
+        expect(
+            screen.getByText('Today at', { exact: false }),
+        ).toBeInTheDocument()
     })
 })

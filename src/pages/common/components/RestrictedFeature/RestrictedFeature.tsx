@@ -1,7 +1,8 @@
-import React, {ReactNode, Component, ComponentProps} from 'react'
+import React, { Component, ComponentProps, ReactNode } from 'react'
+
 import Lightbox from 'react-images'
 
-import {AlertType} from '../Alert/Alert'
+import { AlertType } from '../Alert/Alert'
 import LinkAlert from '../Alert/LinkAlert'
 import Carousel from './Carousel'
 
@@ -37,7 +38,7 @@ export default class RestrictedFeature extends Component<Props, State> {
     }
 
     _gotoImage = (index: number) => {
-        this.setState({currentImage: index})
+        this.setState({ currentImage: index })
     }
 
     render() {
@@ -62,7 +63,7 @@ export default class RestrictedFeature extends Component<Props, State> {
                 <p>{info}</p>
                 <Carousel
                     imagesUrl={imagesURL}
-                    onImageClick={({index}: {index: number}) =>
+                    onImageClick={({ index }: { index: number }) =>
                         this._toggleLightbox(index)
                     }
                 />

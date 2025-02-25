@@ -1,10 +1,11 @@
-import {render} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { render } from '@testing-library/react'
 
 import * as ticketFixtures from 'fixtures/ticket'
 import * as widgetsFixtures from 'fixtures/widgets'
-import {CardTemplate, ListTemplate, Source} from 'models/widget/types'
-import {assumeMock} from 'utils/testing'
+import { CardTemplate, ListTemplate, Source } from 'models/widget/types'
+import { assumeMock } from 'utils/testing'
 
 import List from '../List'
 import UIList from '../views/List'
@@ -14,16 +15,16 @@ const CHILDREN_TEST_ID = 'childrennnn'
 jest.mock('../views/List')
 const mockedList = assumeMock(UIList)
 mockedList.mockImplementation(
-    ({children, listItems = []}: Partial<ComponentProps<typeof UIList>>) => (
+    ({ children, listItems = [] }: Partial<ComponentProps<typeof UIList>>) => (
         <>List {children?.(listItems)}</>
-    )
+    ),
 )
 
 describe('List', () => {
     const source = (
         ticketFixtures.ticket.customer!.integrations as Record<
             string,
-            {orders: unknown}
+            { orders: unknown }
         >
     )['5'].orders as Source[]
 
@@ -54,7 +55,7 @@ describe('List', () => {
     })
 
     it('should call List with the correct props', () => {
-        const {rerender} = render(<List {...minProps} />)
+        const { rerender } = render(<List {...minProps} />)
 
         expect(mockedList).toHaveBeenNthCalledWith(
             1,
@@ -66,7 +67,7 @@ describe('List', () => {
                 orderBy: undefined,
                 isEditing: minProps.isEditing,
             }),
-            {}
+            {},
         )
 
         const templateVariation = {
@@ -81,11 +82,15 @@ describe('List', () => {
                 },
                 ...template.widgets.slice(1),
             ],
-            meta: {...template.meta, orderBy: '+name'},
+            meta: { ...template.meta, orderBy: '+name' },
         } as ListTemplate
 
         rerender(
-            <List {...minProps} isEditing={true} template={templateVariation} />
+            <List
+                {...minProps}
+                isEditing={true}
+                template={templateVariation}
+            />,
         )
 
         expect(mockedList).toHaveBeenNthCalledWith(
@@ -98,7 +103,7 @@ describe('List', () => {
                     direction: 'ASC',
                 },
             }),
-            {}
+            {},
         )
     })
 })

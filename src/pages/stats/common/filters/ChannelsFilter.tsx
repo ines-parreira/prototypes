@@ -1,9 +1,10 @@
+import React, { useCallback } from 'react'
+
 import isString from 'lodash/isString'
 import noop from 'lodash/noop'
-import React, {useCallback} from 'react'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 
-import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
+import { FilterKey, StatsFiltersWithLogicalOperator } from 'models/stat/types'
 import Filter from 'pages/stats/common/components/Filter'
 import {
     LogicalOperatorEnum,
@@ -22,7 +23,7 @@ import {
     OptionalFilterProps,
     RemovableFilter,
 } from 'pages/stats/common/filters/types'
-import {DropdownOption} from 'pages/stats/types'
+import { DropdownOption } from 'pages/stats/types'
 import {
     Channel,
     ChannelIdentifier,
@@ -33,9 +34,9 @@ import {
     getPageStatsFiltersWithLogicalOperators,
     getSavedFiltersWithLogicalOperators,
 } from 'state/stats/selectors'
-import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
-import {RootState} from 'state/types'
-import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
+import { mergeStatsFiltersWithLogicalOperator } from 'state/stats/statsSlice'
+import { RootState } from 'state/types'
+import { statFiltersClean, statFiltersDirty } from 'state/ui/stats/actions'
 import {
     removeFilterFromSavedFilterDraft,
     upsertSavedFilterFilter,
@@ -48,7 +49,7 @@ type Props = {
         value: Exclude<
             StatsFiltersWithLogicalOperator[FilterKey.Channels],
             undefined
-        >
+        >,
     ) => void
     dispatchRemove: () => void
     dispatchStatFiltersDirty?: () => void
@@ -74,7 +75,7 @@ export function ChannelsFilter({
     const getSelectedChannels = () => {
         return channels
             .filter((channel: Channel) => value.values.includes(channel.slug))
-            .map((channel) => ({label: channel.name, value: channel.id}))
+            .map((channel) => ({ label: channel.name, value: channel.id }))
     }
 
     const channelOptionGroups = () => {
@@ -94,7 +95,7 @@ export function ChannelsFilter({
         if (channel) {
             if (value.values.includes(channel.slug)) {
                 handleFilterValuesChange(
-                    value.values.filter((slug) => slug !== channel.slug)
+                    value.values.filter((slug) => slug !== channel.slug),
                 )
             } else {
                 handleFilterValuesChange([...value.values, channel.slug])
@@ -115,7 +116,7 @@ export function ChannelsFilter({
                 operator: value.operator,
             })
         },
-        [dispatchUpdate, value.operator]
+        [dispatchUpdate, value.operator],
     )
 
     const handleFilterOperatorChange = useCallback(
@@ -125,7 +126,7 @@ export function ChannelsFilter({
                 operator: operator,
             })
         },
-        [dispatchUpdate, value.values]
+        [dispatchUpdate, value.values],
     )
 
     const handleDropdownOpen = () => {
@@ -134,7 +135,7 @@ export function ChannelsFilter({
     const handleDropdownClosed = () => {
         logSegmentEvent(
             FilterKey.Channels,
-            LogicalOperatorLabel[value.operator]
+            LogicalOperatorLabel[value.operator],
         )
         dispatchStatFiltersClean()
     }
@@ -142,7 +143,7 @@ export function ChannelsFilter({
     return (
         <Filter
             filterName={FilterLabels[FilterKey.Channels]}
-            filterErrors={{warningType}}
+            filterErrors={{ warningType }}
             selectedOptions={getSelectedChannels()}
             selectedLogicalOperator={value.operator}
             logicalOperators={channelsFilterLogicalOperators}
@@ -184,7 +185,7 @@ export const ChannelsFilterWithState = connect(
             }),
         dispatchStatFiltersDirty: statFiltersDirty,
         dispatchStatFiltersClean: statFiltersClean,
-    }
+    },
 )(ChannelsFilter)
 
 export const ChannelsFilterWithSavedState = connect(
@@ -202,5 +203,5 @@ export const ChannelsFilterWithSavedState = connect(
             removeFilterFromSavedFilterDraft({
                 filterKey: FilterKey.Channels,
             }),
-    }
+    },
 )(ChannelsFilter)

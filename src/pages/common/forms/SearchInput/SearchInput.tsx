@@ -1,23 +1,31 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, {
+    ChangeEvent,
+    Component,
+    ComponentType,
+    KeyboardEvent,
+    ReactNode,
+} from 'react'
+
 import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
 import _noop from 'lodash/noop'
-import React, {
-    ComponentType,
-    Component,
-    ReactNode,
-    ChangeEvent,
-    KeyboardEvent,
-} from 'react'
-import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
+import {
+    Dropdown,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+} from 'reactstrap'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import Button from 'pages/common/components/button/Button'
 import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'
-import GorgiasApi, {SearchResultType} from 'services/gorgiasApi'
+import GorgiasApi, { SearchResultType } from 'services/gorgiasApi'
+
+import { SearchInputResultProps, SearchInputSubResultProps } from './types'
 
 import css from './SearchInput.less'
-import {SearchInputResultProps, SearchInputSubResultProps} from './types'
 
 export type Props<ResultType, SubResultType> = {
     endpoint: string
@@ -90,7 +98,7 @@ export default class SearchInput<
     _gorgiasApi = new GorgiasApi()
 
     componentDidMount() {
-        const {autoFocus} = this.props
+        const { autoFocus } = this.props
 
         if (autoFocus && this._inputElement) {
             setTimeout(() => this._inputElement?.focus(), 0)
@@ -108,8 +116,8 @@ export default class SearchInput<
     }
 
     _toggle = () => {
-        const {isOpen} = this.state
-        this.setState({isOpen: !isOpen})
+        const { isOpen } = this.state
+        this.setState({ isOpen: !isOpen })
     }
 
     _onChange = (value: string) => {
@@ -122,38 +130,38 @@ export default class SearchInput<
     }
 
     _onKeyDown = (event: KeyboardEvent) => {
-        const {results, subResults} = this.state
+        const { results, subResults } = this.state
         const items = subResults.length ? subResults : results
 
         switch (event.key) {
             case 'ArrowDown': {
-                const {hoveredIndex: currentIndex} = this.state
+                const { hoveredIndex: currentIndex } = this.state
 
                 let newIndex = currentIndex + 1
                 if (newIndex >= items.length) {
                     newIndex = 0
                 }
 
-                this.setState({hoveredIndex: newIndex, isOpen: true})
+                this.setState({ hoveredIndex: newIndex, isOpen: true })
                 this._scrollToItem(newIndex)
                 event.preventDefault()
                 break
             }
             case 'ArrowUp': {
-                const {hoveredIndex: currentIndex} = this.state
+                const { hoveredIndex: currentIndex } = this.state
 
                 let newIndex = currentIndex - 1
                 if (newIndex < 0) {
                     newIndex = items.length - 1
                 }
 
-                this.setState({hoveredIndex: newIndex, isOpen: true})
+                this.setState({ hoveredIndex: newIndex, isOpen: true })
                 this._scrollToItem(newIndex)
                 event.preventDefault()
                 break
             }
             case 'Enter': {
-                const {hoveredIndex} = this.state
+                const { hoveredIndex } = this.state
 
                 if (hoveredIndex !== -1) {
                     if (subResults.length) {
@@ -168,7 +176,7 @@ export default class SearchInput<
                 if (subResults.length) {
                     this._onBackClicked()
                 } else {
-                    this.setState({isOpen: false})
+                    this.setState({ isOpen: false })
                 }
                 break
             }
@@ -179,8 +187,8 @@ export default class SearchInput<
 
     _onFocus = (event: ChangeEvent<HTMLInputElement>) => {
         const filter = event.target.value
-        const {searchOnFocus} = this.props
-        const {results} = this.state
+        const { searchOnFocus } = this.props
+        const { results } = this.state
 
         if (searchOnFocus && !results.length) {
             void this._fetchResults(filter)
@@ -200,7 +208,7 @@ export default class SearchInput<
         }
 
         const item = dropdownMenu.querySelector<HTMLDivElement>(
-            `.dropdown-item:nth-of-type(${index + 1})`
+            `.dropdown-item:nth-of-type(${index + 1})`,
         )
         if (!item) {
             return
@@ -218,19 +226,19 @@ export default class SearchInput<
 
     _fetchResults = _debounce(async (filter: string) => {
         try {
-            this.setState({isLoading: true})
+            this.setState({ isLoading: true })
             this._gorgiasApi.cancelPendingRequests(true)
-            const {endpoint} = this.props
+            const { endpoint } = this.props
             const results = (await this._gorgiasApi.search(
                 endpoint,
-                filter
+                filter,
             )) as ResultType[]
-            this.setState({results})
+            this.setState({ results })
         } catch (error) {
-            this.setState({results: []})
+            this.setState({ results: [] })
             console.error(error)
         } finally {
-            this.setState({isLoading: false})
+            this.setState({ isLoading: false })
         }
     }, 200)
 
@@ -243,8 +251,8 @@ export default class SearchInput<
     }
 
     _onResultClicked(index: number) {
-        const {onResultClicked} = this.props
-        const {results} = this.state
+        const { onResultClicked } = this.props
+        const { results } = this.state
         const result = results[index]
         const subResults = onResultClicked(result) || []
 
@@ -257,8 +265,8 @@ export default class SearchInput<
     }
 
     _onSubResultClicked(index: number) {
-        const {onSubResultClicked} = this.props
-        const {clickedResult, subResults} = this.state
+        const { onSubResultClicked } = this.props
+        const { clickedResult, subResults } = this.state
         const subResult = subResults[index]
 
         this.setState({
@@ -280,7 +288,7 @@ export default class SearchInput<
             subResultLabel,
             subResultLabelPlural,
         } = this.props
-        const {results, subResults} = this.state
+        const { results, subResults } = this.state
 
         return (
             <DropdownItem header className={css.header}>
@@ -315,18 +323,18 @@ export default class SearchInput<
             renderResultsAppendix,
             renderResultItemProps,
         } = this.props
-        const {results, hoveredIndex} = this.state
+        const { results, hoveredIndex } = this.state
 
         let dropdownItems = results.length
             ? results.map((result, index) => {
-                  const itemProps = renderResultItemProps?.({result})
+                  const itemProps = renderResultItemProps?.({ result })
                   const disabled = itemProps?.disabled
 
                   return (
                       <DropdownItem
                           key={`result-${result.id}`}
                           onMouseEnter={() =>
-                              this.setState({hoveredIndex: index})
+                              this.setState({ hoveredIndex: index })
                           }
                           onClick={() =>
                               !disabled
@@ -359,10 +367,10 @@ export default class SearchInput<
         if (renderResultsAppendix) {
             dropdownItems = dropdownItems.concat(
                 renderResultsAppendix({
-                    onMouseOver: () => this.setState({hoveredIndex: -1}),
+                    onMouseOver: () => this.setState({ hoveredIndex: -1 }),
                     onMouseClick: () =>
-                        this.setState({...this.state, isOpen: false}),
-                })
+                        this.setState({ ...this.state, isOpen: false }),
+                }),
             )
         }
 
@@ -370,14 +378,16 @@ export default class SearchInput<
     }
 
     _renderSubResults() {
-        const {renderSubResult: SubResult} = this.props
-        const {hoveredIndex, clickedResult, subResults} = this.state
+        const { renderSubResult: SubResult } = this.props
+        const { hoveredIndex, clickedResult, subResults } = this.state
 
         return subResults.length && clickedResult && SubResult
             ? subResults.map<ReactNode>((subResult: SubResultType, index) => (
                   <DropdownItem
                       key={`sub-result-${subResult.id}`}
-                      onMouseEnter={() => this.setState({hoveredIndex: index})}
+                      onMouseEnter={() =>
+                          this.setState({ hoveredIndex: index })
+                      }
                       onClick={() => this._onSubResultClicked(index)}
                       className={classnames(css.dropdownItem, {
                           [css.hoveredDropdownItem]: hoveredIndex === index,
@@ -391,8 +401,8 @@ export default class SearchInput<
     }
 
     render() {
-        const {className, placeholder, renderSubResult, hasError} = this.props
-        const {filter, isLoading, isOpen, subResults} = this.state
+        const { className, placeholder, renderSubResult, hasError } = this.props
+        const { filter, isLoading, isOpen, subResults } = this.state
 
         return (
             <Dropdown

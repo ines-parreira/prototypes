@@ -1,15 +1,15 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {useTagsTicketCount} from 'hooks/reporting/metricsPerPeriod'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useTagsTicketCount } from 'hooks/reporting/metricsPerPeriod'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
-import {OrderDirection} from 'models/api/types'
+import { OrderDirection } from 'models/api/types'
 import {
     TicketTagsEnrichedDimension,
     TicketTagsEnrichedMeasure,
 } from 'models/reporting/cubes/TicketTagsEnrichedCube'
-import {getEntitiesTags} from 'state/entities/tags/selectors'
-import {calculatePercentage} from 'utils/reporting'
+import { getEntitiesTags } from 'state/entities/tags/selectors'
+import { calculatePercentage } from 'utils/reporting'
 
 const ticketCountField = TicketTagsEnrichedMeasure.TicketCount
 const tagsDimension = TicketTagsEnrichedDimension.TagId
@@ -21,7 +21,7 @@ type ItemType = {
 function getValuesUptoTopAmount(
     value: Array<ItemType>,
     minAmount: number,
-    topAmount: number
+    topAmount: number,
 ) {
     return value.slice(minAmount, topAmount)
 }
@@ -37,13 +37,13 @@ function getTicketCount(value?: ItemType) {
 }
 
 export const useTagsDistribution = (topAmount = 10) => {
-    const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone } = useNewStatsFilters()
     const tags = useAppSelector(getEntitiesTags)
 
-    const {data, isFetching} = useTagsTicketCount(
+    const { data, isFetching } = useTagsTicketCount(
         cleanStatsFilters,
         userTimezone,
-        OrderDirection.Desc
+        OrderDirection.Desc,
     )
 
     const currentTopData = getValuesUptoTopAmount(data.value, 0, topAmount)
@@ -51,9 +51,9 @@ export const useTagsDistribution = (topAmount = 10) => {
     const topDataMaxValue = useMemo(
         () =>
             Math.max(
-                ...currentTopData.map((item) => Number(item[ticketCountField]))
+                ...currentTopData.map((item) => Number(item[ticketCountField])),
             ),
-        [currentTopData]
+        [currentTopData],
     )
 
     if (!currentTopData.length) {
@@ -68,14 +68,14 @@ export const useTagsDistribution = (topAmount = 10) => {
     const ticketsCountTotal = getTotalCount(data.value)
 
     const outsideTopTotal = getTotalCount(
-        getValuesUptoTopAmount(data.value, topAmount, data.value.length)
+        getValuesUptoTopAmount(data.value, topAmount, data.value.length),
     )
 
     return {
         isFetching,
         data: currentTopData.map((item) => {
             const previousItem = previousTopData.find(
-                (ptd) => ptd[tagsDimension] === item[tagsDimension]
+                (ptd) => ptd[tagsDimension] === item[tagsDimension],
             )
             const tagKey = item[tagsDimension] || ''
             return {
@@ -83,15 +83,15 @@ export const useTagsDistribution = (topAmount = 10) => {
                 value: getTicketCount(item),
                 valueInPercentage: calculatePercentage(
                     getTicketCount(item),
-                    ticketsCountTotal
+                    ticketsCountTotal,
                 ),
                 previousValueInPercentage: calculatePercentage(
                     getTicketCount(previousItem),
-                    ticketsCountTotal
+                    ticketsCountTotal,
                 ),
                 gaugePercentage: calculatePercentage(
                     getTicketCount(item),
-                    Math.max(topDataMaxValue, outsideTopTotal)
+                    Math.max(topDataMaxValue, outsideTopTotal),
                 ),
                 name: tags[tagKey]?.name ?? tagKey,
             }

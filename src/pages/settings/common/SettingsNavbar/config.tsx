@@ -1,19 +1,19 @@
-import {Badge} from '@gorgias/merchant-ui-kit'
 import React from 'react'
 
-import cssNavbar from 'assets/css/navbar.less'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {ADMIN_ROLE, AGENT_ROLE} from 'config/user'
-import {OBJECT_TYPES} from 'custom-fields/constants'
-import {IntegrationType} from 'models/integration/types'
-import {CONTACT_FORM_PAGE_TITLE} from 'pages/settings/contactForm/constants'
+import { Badge } from '@gorgias/merchant-ui-kit'
 
+import cssNavbar from 'assets/css/navbar.less'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { ADMIN_ROLE, AGENT_ROLE } from 'config/user'
+import { OBJECT_TYPES } from 'custom-fields/constants'
+import { IntegrationType } from 'models/integration/types'
+import { CONTACT_FORM_PAGE_TITLE } from 'pages/settings/contactForm/constants'
 import {
     CUSTOM_FIELD_CONDITIONS_ROUTE,
     CUSTOM_FIELD_ROUTES,
 } from 'routes/constants'
 
-import {Category} from './types'
+import { Category } from './types'
 
 export const NavbarConfig: Category[] = [
     {

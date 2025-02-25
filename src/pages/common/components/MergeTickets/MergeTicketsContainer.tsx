@@ -1,8 +1,9 @@
-import {fromJS, Map, List} from 'immutable'
 import React from 'react'
-import {connect, ConnectedProps} from 'react-redux'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { fromJS, List, Map } from 'immutable'
+import { connect, ConnectedProps } from 'react-redux'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import goToTicket from 'common/utils/goToTicket'
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
@@ -11,7 +12,7 @@ import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import shortcutManager from 'services/shortcutManager/shortcutManager'
-import {mergeTickets} from 'state/mergeTickets/actions'
+import { mergeTickets } from 'state/mergeTickets/actions'
 
 import BuildFinalTicket from './BuildFinalTicket'
 import SelectTargetTicket from './SelectTargetTicket'
@@ -55,7 +56,7 @@ class MergeTicketsContainer extends React.Component<Props, State> {
     }
 
     _updateTargetTicket = (targetTicket: Map<any, any>) => {
-        const {sourceTicket} = this.props
+        const { sourceTicket } = this.props
 
         let finalTicket = fromJS({}) as Map<any, any>
 
@@ -74,24 +75,24 @@ class MergeTicketsContainer extends React.Component<Props, State> {
         finalTicket = finalTicket.update(
             'customer',
             (customer: Map<any, any>) =>
-                fromJS({id: customer.get('id')}) as Map<any, any>
+                fromJS({ id: customer.get('id') }) as Map<any, any>,
         )
         if (finalTicket.get('assignee_user')) {
             finalTicket = finalTicket.update(
                 'assignee_user',
                 (assignee: Map<any, any>) =>
-                    fromJS({id: assignee.get('id')}) as Map<any, any>
+                    fromJS({ id: assignee.get('id') }) as Map<any, any>,
             )
         }
 
-        this.setState({targetTicket, finalTicket})
+        this.setState({ targetTicket, finalTicket })
     }
 
     _handleSubmit = () => {
-        this.setState({isLoading: true})
+        this.setState({ isLoading: true })
 
-        const {sourceTicket} = this.props
-        const {targetTicket, finalTicket} = this.state
+        const { sourceTicket } = this.props
+        const { targetTicket, finalTicket } = this.state
 
         if (!sourceTicket || !targetTicket || !finalTicket) {
             return
@@ -101,19 +102,19 @@ class MergeTicketsContainer extends React.Component<Props, State> {
             .mergeTickets(
                 sourceTicket.get('id'),
                 (targetTicket as unknown as Map<any, any>).get('id'),
-                (finalTicket as unknown as Map<any, any>).toJS()
+                (finalTicket as unknown as Map<any, any>).toJS(),
             )
             .then((data) => {
-                const ticketId = (data as {id: string}).id
+                const ticketId = (data as { id: string }).id
 
                 goToTicket(ticketId)
             })
-            .catch(() => this.setState({isLoading: false}))
+            .catch(() => this.setState({ isLoading: false }))
     }
 
     render() {
-        const {sourceTicket, isOpen} = this.props
-        const {targetTicket, finalTicket, isLoading} = this.state
+        const { sourceTicket, isOpen } = this.props
+        const { targetTicket, finalTicket, isLoading } = this.state
 
         let content = (
             <BuildFinalTicket
@@ -121,7 +122,7 @@ class MergeTicketsContainer extends React.Component<Props, State> {
                 targetTicket={targetTicket as unknown as Map<any, any>}
                 finalTicket={finalTicket as unknown as Map<any, any>}
                 updateFinalTicket={(finalTicket) =>
-                    this.setState({finalTicket})
+                    this.setState({ finalTicket })
                 }
             />
         )
@@ -141,7 +142,7 @@ class MergeTicketsContainer extends React.Component<Props, State> {
                 isOpen={isOpen}
                 onClose={() => {
                     this.props.toggleModal()
-                    this.setState({targetTicket: null})
+                    this.setState({ targetTicket: null })
                 }}
                 size="huge"
             >
@@ -153,7 +154,7 @@ class MergeTicketsContainer extends React.Component<Props, State> {
                             <Button
                                 color="secondary"
                                 onClick={() =>
-                                    this.setState({targetTicket: null})
+                                    this.setState({ targetTicket: null })
                                 }
                                 isDisabled={isLoading}
                                 leadingIcon="arrow_back"

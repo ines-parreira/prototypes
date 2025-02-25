@@ -1,15 +1,14 @@
-import {produce} from 'immer'
+import { produce } from 'immer'
+import { ulid } from 'ulidx'
 
-import {ulid} from 'ulidx'
-
-import {buildEdgeCommonProperties} from '../../models/visualBuilderGraph.model'
+import { buildEdgeCommonProperties } from '../../models/visualBuilderGraph.model'
 import {
+    EndNodeType,
     ReusableLLMPromptCallNodeType,
     VisualBuilderGraph,
     VisualBuilderNode,
-    EndNodeType,
 } from '../../models/visualBuilderGraph.types'
-import {WorkflowConfiguration} from '../../models/workflowConfiguration.types'
+import { WorkflowConfiguration } from '../../models/workflowConfiguration.types'
 import {
     buildEndNode,
     buildReusableLLMPromptCallNode,
@@ -25,11 +24,11 @@ export type VisualBuilderReusableLLMPromptCallAction =
           configurationInternalId: ReusableLLMPromptCallNodeType['data']['configuration_internal_id']
           trigger: Extract<
               NonNullable<WorkflowConfiguration['triggers']>[number],
-              {kind: 'reusable-llm-prompt'}
+              { kind: 'reusable-llm-prompt' }
           >['settings']
           entrypoint: Extract<
               NonNullable<WorkflowConfiguration['entrypoints']>[number],
-              {kind: 'reusable-llm-prompt-call-step'}
+              { kind: 'reusable-llm-prompt-call-step' }
           >['settings']
           app: NonNullable<WorkflowConfiguration['apps']>[number]
           values: WorkflowConfiguration['values']
@@ -60,13 +59,13 @@ export function isVisualBuilderReusableLLMPromptCallAction(action: {
     type: string
 }): action is VisualBuilderReusableLLMPromptCallAction {
     return Object.keys(visualBuilderReusableLLMPromptCallActionTypes).includes(
-        action.type
+        action.type,
     )
 }
 
 export function reusableLLMPromptCallReducer(
     graph: VisualBuilderGraph,
-    action: VisualBuilderReusableLLMPromptCallAction
+    action: VisualBuilderReusableLLMPromptCallAction,
 ): VisualBuilderGraph {
     switch (action.type) {
         case 'INSERT_REUSABLE_LLM_PROMPT_CALL_NODE':
@@ -79,15 +78,15 @@ export function reusableLLMPromptCallReducer(
                     action.entrypoint,
                     action.app,
                     action.values,
-                    action.beforeNodeId
-                )
+                    action.beforeNodeId,
+                ),
             )
         case 'SET_REUSABLE_LLM_PROMPT_CALL_VALUE':
             return produce(graph, (draft) => {
                 const node = draft.nodes.find(
                     (n): n is ReusableLLMPromptCallNodeType =>
                         n.id === action.reusableLLMPromptCallNodeId &&
-                        n.type === 'reusable_llm_prompt_call'
+                        n.type === 'reusable_llm_prompt_call',
                 )
 
                 if (node) {
@@ -105,15 +104,15 @@ function insertReusableLLMPromptCall(
     configurationInternalId: ReusableLLMPromptCallNodeType['data']['configuration_internal_id'],
     trigger: Extract<
         NonNullable<WorkflowConfiguration['triggers']>[number],
-        {kind: 'reusable-llm-prompt'}
+        { kind: 'reusable-llm-prompt' }
     >['settings'],
     entrypoint: Extract<
         NonNullable<WorkflowConfiguration['entrypoints']>[number],
-        {kind: 'reusable-llm-prompt-call-step'}
+        { kind: 'reusable-llm-prompt-call-step' }
     >['settings'],
     app: NonNullable<WorkflowConfiguration['apps']>[number],
     values: WorkflowConfiguration['values'],
-    beforeNodeId: string
+    beforeNodeId: string,
 ) {
     return produce(graph, (draft) => {
         const edge = draft.edges.find((e) => e.target === beforeNodeId)
@@ -137,10 +136,10 @@ function insertReusableLLMPromptCall(
             !draft.apps.find((a) =>
                 a.type === 'app'
                     ? a.type === app.type && a.app_id === app.app_id
-                    : a.type === app.type
+                    : a.type === app.type,
             )
         ) {
-            draft.apps.push({...app})
+            draft.apps.push({ ...app })
         }
 
         if (entrypoint.requires_confirmation) {
@@ -196,7 +195,7 @@ function insertReusableLLMPromptCall(
                                     input.instructions &&
                                 triggerInput.kind === input.kind
                             )
-                        }
+                        },
                     )
 
                     if (!triggerInput) {
@@ -226,7 +225,7 @@ function insertReusableLLMPromptCall(
                 data: {
                     name: 'Success',
                     conditions: getFallibleNodeSuccessConditions(
-                        reusableLLMPromptCallNode.id
+                        reusableLLMPromptCallNode.id,
                     ),
                 },
             },
@@ -237,7 +236,7 @@ function insertReusableLLMPromptCall(
                 data: {
                     name: 'Error',
                 },
-            }
+            },
         )
 
         if (
@@ -253,12 +252,12 @@ function insertReusableLLMPromptCall(
 
 export function reorderNodes(
     graph: VisualBuilderGraph,
-    nodeIds: string[]
+    nodeIds: string[],
 ): VisualBuilderGraph {
     const orderedNodes = nodeIds
         .map((id) => {
             const node = graph.nodes.find(
-                (n) => n.id === id && n.type === 'reusable_llm_prompt_call'
+                (n) => n.id === id && n.type === 'reusable_llm_prompt_call',
             )
             if (!node) return undefined
 
@@ -268,27 +267,27 @@ export function reorderNodes(
                         e.source === id &&
                         e.target === n.id &&
                         n.type === 'end' &&
-                        n.data.action === 'end-failure'
-                )
+                        n.data.action === 'end-failure',
+                ),
             )
             return errorNode ? [node, errorNode] : [node]
         })
         .filter(
             (
-                nodes
+                nodes,
             ): nodes is [
                 ReusableLLMPromptCallNodeType,
                 ...VisualBuilderNode[],
             ] =>
                 Array.isArray(nodes) &&
-                nodes[0]?.type === 'reusable_llm_prompt_call'
+                nodes[0]?.type === 'reusable_llm_prompt_call',
         )
         .reduce<VisualBuilderNode[]>((acc, nodes) => [...acc, ...nodes], [])
 
     const triggerNode = graph.nodes[0]
     const endNode = graph.nodes.find(
         (node): node is EndNodeType =>
-            node.type === 'end' && node.data.action === 'end-success'
+            node.type === 'end' && node.data.action === 'end-success',
     )
 
     if (!triggerNode || !endNode || !orderedNodes.length) return graph
@@ -305,7 +304,7 @@ export function reorderNodes(
         if (node.type === 'reusable_llm_prompt_call') {
             const nextActionNode = orderedNodes.find(
                 (n: VisualBuilderNode, index: number) =>
-                    index > i && n.type === 'reusable_llm_prompt_call'
+                    index > i && n.type === 'reusable_llm_prompt_call',
             )
             const errorNode = orderedNodes[i + 1]
 
@@ -324,7 +323,7 @@ export function reorderNodes(
                     ...buildEdgeCommonProperties(),
                     source: node.id,
                     target: errorNode.id,
-                    data: {name: 'Error'},
+                    data: { name: 'Error' },
                 })
             }
         }

@@ -1,18 +1,18 @@
-import {fromJS, List, Map} from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 import _cloneDeep from 'lodash/cloneDeep'
 import _values from 'lodash/values'
 
-import {DEFAULT_SOURCE_PATHS} from 'config'
+import { DEFAULT_SOURCE_PATHS } from 'config'
 
-import {STANDALONE_WIDGET_TYPE} from './constants'
-import {WidgetEnvironment} from './types'
+import { STANDALONE_WIDGET_TYPE } from './constants'
+import { WidgetEnvironment } from './types'
 
 /**
  * Return item from items list where context matches
  */
 export function itemsWithContext(
     items: List<any> = fromJS([]),
-    context: WidgetEnvironment
+    context: WidgetEnvironment,
 ): List<any> {
     // TODO(customers-migration): update this line when we migrated widgets with a `user` context
     return items.filter((w: Map<any, any>) => {
@@ -25,7 +25,7 @@ export function itemsWithContext(
 
 export function itemsWithoutContext(
     items: List<any> = fromJS([]),
-    context: WidgetEnvironment
+    context: WidgetEnvironment,
 ): List<any> {
     // TODO(customers-migration): update this line when we migrated widgets with a `user` context
     return items.filter((w: Map<any, any>) => {
@@ -41,7 +41,7 @@ export function itemsWithoutContext(
  */
 export function getSourcePathFromContext(
     context: WidgetEnvironment,
-    type = ''
+    type = '',
 ) {
     // Using _cloneDeep so that we don't mess with the `DEFAULT_SOURCE_PATHS`
     // object. We only want that object to act as a CONSTANT and have
@@ -54,7 +54,7 @@ export function getSourcePathFromContext(
         return _cloneDeep(
             DEFAULT_SOURCE_PATHS[WidgetEnvironment.Ticket][
                 STANDALONE_WIDGET_TYPE
-            ]
+            ],
         )
     }
 
@@ -76,7 +76,7 @@ export function getSourcePathFromContext(
 export function itemsWithUpdatedWidgets(
     items: List<any> = fromJS([]),
     context: WidgetEnvironment,
-    newWidgets: List<any>
+    newWidgets: List<any>,
 ): List<any> {
     const otherWidgets = itemsWithoutContext(items, context)
     return otherWidgets.merge(fromJS(newWidgets))
@@ -84,6 +84,6 @@ export function itemsWithUpdatedWidgets(
 
 export function reorderWidgets(items: List<any> = fromJS([])): List<any> {
     return items.map((item: Map<any, any>, i) =>
-        item.set('order', i)
+        item.set('order', i),
     ) as List<any>
 }

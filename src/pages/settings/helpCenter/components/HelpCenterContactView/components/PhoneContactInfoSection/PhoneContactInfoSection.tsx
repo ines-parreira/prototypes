@@ -1,27 +1,29 @@
+import React, { useState } from 'react'
+
 import classnames from 'classnames'
 import parsePhoneNumber from 'libphonenumber-js'
-import React, {useState} from 'react'
 
-import {PhoneContactInfoDto} from 'models/helpCenter/types'
+import { PhoneContactInfoDto } from 'models/helpCenter/types'
 import TextArea from 'pages/common/forms/TextArea'
 import ToggleInput from 'pages/common/forms/ToggleInput'
-import {useHelpCenterTranslation} from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
+import { useHelpCenterTranslation } from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
 import settingsCss from 'pages/settings/settings.less'
 
-import {MAX_DESCRIPTION_LENGTH} from '../../constants'
-import helpCenterContactViewCss from '../../HelpCenterContactView.less'
+import { MAX_DESCRIPTION_LENGTH } from '../../constants'
 import ContactCard from '../ContactCard'
-import css from './PhoneContactInfoSection.less'
 import PhoneNumbersForm from './PhoneNumbersForm'
+
+import helpCenterContactViewCss from '../../HelpCenterContactView.less'
+import css from './PhoneContactInfoSection.less'
 
 const PhoneContactInfoSection: React.FC = () => {
     const [isDescriptionTooLong, setIsDescriptionTooLong] = useState(false)
     const {
-        translation: {contactInfo},
+        translation: { contactInfo },
         updateTranslation,
     } = useHelpCenterTranslation()
 
-    const {description, enabled, phone_numbers} = contactInfo.phone
+    const { description, enabled, phone_numbers } = contactInfo.phone
 
     const handleChange = (key: keyof PhoneContactInfoDto) => (value: any) => {
         updateTranslation({
@@ -64,7 +66,7 @@ const PhoneContactInfoSection: React.FC = () => {
                         if (value.length > MAX_DESCRIPTION_LENGTH) {
                             setIsDescriptionTooLong(true)
                             handleChange('description')(
-                                value.substring(0, MAX_DESCRIPTION_LENGTH)
+                                value.substring(0, MAX_DESCRIPTION_LENGTH),
                             )
                             return
                         }
@@ -103,7 +105,7 @@ const PhoneContactInfoSection: React.FC = () => {
                                 : ''}
                             &nbsp;
                             {parsePhoneNumber(
-                                phoneNumber.phone_number
+                                phoneNumber.phone_number,
                             )?.formatInternational() ||
                                 phoneNumber.phone_number}
                         </div>

@@ -1,4 +1,4 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
 import useTitle from '../useTitle'
 
@@ -24,7 +24,7 @@ describe('useTitle hook', () => {
 
     it('should not fallback to default title when switching from one title to another', () => {
         jest.spyOn(global, 'clearTimeout')
-        const {unmount} = renderHook(() => useTitle('test'))
+        const { unmount } = renderHook(() => useTitle('test'))
         expect(document.title).toEqual('test')
         expect(global.clearTimeout).toHaveBeenCalledTimes(1)
         unmount()

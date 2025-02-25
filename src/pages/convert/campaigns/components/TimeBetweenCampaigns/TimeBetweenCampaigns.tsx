@@ -1,21 +1,21 @@
+import React, { useEffect, useState } from 'react'
+
 import moment from 'moment'
-import React, {useEffect, useState} from 'react'
 
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import NumberInput from 'pages/common/forms/input/NumberInput'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import ToggleInput from 'pages/common/forms/ToggleInput'
-
-import {MinimumTimeBetweenCampaigns} from 'pages/convert/campaigns/types/CampaignMeta'
+import { MinimumTimeBetweenCampaigns } from 'pages/convert/campaigns/types/CampaignMeta'
 
 import {
-    SELECT_OPTIONS,
-    DEFAULT_TIME,
-    DEFAULT_TIME_UNIT,
     DEFAULT_DESCRIPTION,
     DEFAULT_LABEL,
+    DEFAULT_TIME,
+    DEFAULT_TIME_UNIT,
     MINUTES_UNITS,
     SECONDS_UNITS,
+    SELECT_OPTIONS,
 } from './constants'
 
 import css from './TimeBetweenCampaigns.less'
@@ -45,10 +45,10 @@ export const TimeBetweenCampaigns: React.FC<Props> = ({
 }): JSX.Element => {
     const [isEnabled, setEnabled] = useState<boolean>(!!config?.value)
     const [internalValue, setInternalValue] = useState<number | undefined>(
-        config?.value ?? defaultValue
+        config?.value ?? defaultValue,
     )
     const [internalUnitValue, setInternalUnitValue] = useState(
-        config?.unit ?? DEFAULT_TIME_UNIT
+        config?.unit ?? DEFAULT_TIME_UNIT,
     )
 
     const [min, setMin] = useState(minValue)
@@ -67,7 +67,7 @@ export const TimeBetweenCampaigns: React.FC<Props> = ({
             value,
             min,
             max,
-            internalUnitValue
+            internalUnitValue,
         )
 
         onValidationChange?.(isValid)
@@ -117,7 +117,7 @@ export const TimeBetweenCampaigns: React.FC<Props> = ({
             newInternalValue,
             newMin,
             newMax,
-            newUnitValue
+            newUnitValue,
         )
 
         onValidationChange?.(isValid)
@@ -134,7 +134,7 @@ export const TimeBetweenCampaigns: React.FC<Props> = ({
         value: number | undefined,
         minValue: number,
         maxValue: number,
-        unit: string
+        unit: string,
     ): boolean => {
         if (value === undefined) {
             return false
@@ -144,7 +144,7 @@ export const TimeBetweenCampaigns: React.FC<Props> = ({
             setErrorMessage(
                 `Value should be between ${min} and ${max} ${
                     unit === MINUTES_UNITS ? 'minutes' : 'seconds'
-                }`
+                }`,
             )
             return false
         }
@@ -156,7 +156,7 @@ export const TimeBetweenCampaigns: React.FC<Props> = ({
     const updateCampaignState = (
         isEnabled: boolean,
         value: number | undefined,
-        unit: string
+        unit: string,
     ) => {
         onChange(
             isEnabled && value
@@ -164,7 +164,7 @@ export const TimeBetweenCampaigns: React.FC<Props> = ({
                       value: value,
                       unit: unit,
                   } as MinimumTimeBetweenCampaigns)
-                : null
+                : null,
         )
     }
 

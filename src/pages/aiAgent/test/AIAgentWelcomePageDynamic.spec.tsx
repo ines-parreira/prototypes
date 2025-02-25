@@ -1,18 +1,17 @@
-import {render, screen} from '@testing-library/react'
-
 import React from 'react'
 
-import {ShopifyIntegration} from 'models/integration/types'
-import {READ_FULFILLMENTS_PERMISSION} from 'pages/aiAgent/utils/shopify-integration.utils'
-import {useHasEmailToStoreConnection} from 'pages/automate/common/components/TopQuestions/useHasEmailToStoreConnection'
-import {useHelpCentersArticleCount} from 'pages/automate/common/hooks/useHelpCentersArticleCount'
+import { render, screen } from '@testing-library/react'
+
+import { ShopifyIntegration } from 'models/integration/types'
+import { READ_FULFILLMENTS_PERMISSION } from 'pages/aiAgent/utils/shopify-integration.utils'
+import { useHasEmailToStoreConnection } from 'pages/automate/common/components/TopQuestions/useHasEmailToStoreConnection'
+import { useHelpCentersArticleCount } from 'pages/automate/common/hooks/useHelpCentersArticleCount'
 import useSelfServiceStoreIntegration from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
+import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
+import { useHelpCenterList } from 'pages/settings/helpCenter/hooks/useHelpCenterList'
 
-import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
-import {useHelpCenterList} from 'pages/settings/helpCenter/hooks/useHelpCenterList'
-
-import {AIAgentWelcomePageDynamic} from '../AIAgentWelcomePageDynamic'
-import {AIAgentWelcomePageView} from '../components/AIAgentWelcomePageView/AIAgentWelcomePageView'
+import { AIAgentWelcomePageDynamic } from '../AIAgentWelcomePageDynamic'
+import { AIAgentWelcomePageView } from '../components/AIAgentWelcomePageView/AIAgentWelcomePageView'
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterList', () => ({
     useHelpCenterList: jest.fn(),
@@ -26,11 +25,11 @@ jest.mock(
         AIAgentWelcomePageView: jest.fn(() => (
             <div>ai-agent-welcome-page-view-component-mock</div>
         )),
-    })
+    }),
 )
 
 jest.mock(
-    'pages/automate/common/components/TopQuestions/useHasEmailToStoreConnection'
+    'pages/automate/common/components/TopQuestions/useHasEmailToStoreConnection',
 )
 
 jest.mock('pages/automate/common/hooks/useSelfServiceStoreIntegration', () => ({
@@ -52,8 +51,8 @@ describe('<AIAgentWelcomePageDynamic />', () => {
         isShopifyPermissionUpdated = false,
     }: {
         storeIntegrationId?: number
-        helpCenters?: Array<{id: number; shop_name: string}>
-        helpCentersArticleCount?: Array<{helpCenterId: number; count: number}>
+        helpCenters?: Array<{ id: number; shop_name: string }>
+        helpCentersArticleCount?: Array<{ helpCenterId: number; count: number }>
         isEmailConnectionLoading?: boolean
         isHelpCentersLoading?: boolean
         isHas20ArticlesLoading?: boolean
@@ -70,7 +69,7 @@ describe('<AIAgentWelcomePageDynamic />', () => {
             helpCenters: helpCenters,
         })
         ;(useHelpCentersArticleCount as jest.Mock).mockReturnValue(
-            isHas20ArticlesLoading ? undefined : helpCentersArticleCount
+            isHas20ArticlesLoading ? undefined : helpCentersArticleCount,
         )
         ;(useHasEmailToStoreConnection as jest.Mock).mockReturnValue({
             isLoading: isHasEmailToStoreConnectionLoading,
@@ -133,7 +132,7 @@ describe('<AIAgentWelcomePageDynamic />', () => {
 
     const renderAndAssert = (
         props: any = baseDynamicProps,
-        shopName: string = 'my-shop'
+        shopName: string = 'my-shop',
     ) => {
         render(
             <AIAgentWelcomePageDynamic
@@ -141,11 +140,11 @@ describe('<AIAgentWelcomePageDynamic />', () => {
                 accountDomain="my-account-domain"
                 shopType="shopify"
                 shopName={shopName}
-            />
+            />,
         )
 
         expect(
-            screen.getByText('ai-agent-welcome-page-view-component-mock')
+            screen.getByText('ai-agent-welcome-page-view-component-mock'),
         ).toBeInTheDocument()
 
         expect(AIAgentWelcomePageView).toHaveBeenCalledWith(props, {})
@@ -154,7 +153,7 @@ describe('<AIAgentWelcomePageDynamic />', () => {
 
     const renderAndAssertOnboardingWizard = (
         props: any = baseOnboardingWizardProps,
-        shopName: string = 'my-shop'
+        shopName: string = 'my-shop',
     ) => {
         render(
             <AIAgentWelcomePageDynamic
@@ -162,11 +161,11 @@ describe('<AIAgentWelcomePageDynamic />', () => {
                 accountDomain="my-account-domain"
                 shopType="shopify"
                 shopName={shopName}
-            />
+            />,
         )
 
         expect(
-            screen.getByText('ai-agent-welcome-page-view-component-mock')
+            screen.getByText('ai-agent-welcome-page-view-component-mock'),
         ).toBeInTheDocument()
 
         expect(AIAgentWelcomePageView).toHaveBeenCalledWith(props, {})
@@ -185,7 +184,10 @@ describe('<AIAgentWelcomePageDynamic />', () => {
             hasEmailToStoreConnection: true,
         })
 
-        renderAndAssert({...baseDynamicProps, emailConnected: {checked: true}})
+        renderAndAssert({
+            ...baseDynamicProps,
+            emailConnected: { checked: true },
+        })
 
         expect(useHasEmailToStoreConnection).toBeCalledWith(6)
     })
@@ -194,24 +196,24 @@ describe('<AIAgentWelcomePageDynamic />', () => {
         setupMocks({
             hasEmailToStoreConnection: true,
             helpCenters: [
-                {id: 3, shop_name: 'my-test-store'},
-                {id: 4, shop_name: 'my-other-store'},
+                { id: 3, shop_name: 'my-test-store' },
+                { id: 4, shop_name: 'my-other-store' },
             ],
-            helpCentersArticleCount: [{helpCenterId: 3, count: 5}],
+            helpCentersArticleCount: [{ helpCenterId: 3, count: 5 }],
         })
 
         renderAndAssert(
             {
                 ...baseDynamicProps,
                 shopName: 'my-test-store',
-                emailConnected: {checked: true},
-                helpCenterCreated: {checked: true},
+                emailConnected: { checked: true },
+                helpCenterCreated: { checked: true },
                 helpCenter20Articles: {
                     checked: false,
                     link: '/app/settings/help-center/3/ai-library',
                 },
             },
-            'my-test-store'
+            'my-test-store',
         )
     })
 
@@ -219,13 +221,13 @@ describe('<AIAgentWelcomePageDynamic />', () => {
         setupMocks({
             hasEmailToStoreConnection: true,
             helpCenters: [
-                {id: 3, shop_name: 'my-test-store'},
-                {id: 4, shop_name: 'my-other-store'},
-                {id: 5, shop_name: 'my-test-store'},
+                { id: 3, shop_name: 'my-test-store' },
+                { id: 4, shop_name: 'my-other-store' },
+                { id: 5, shop_name: 'my-test-store' },
             ],
             helpCentersArticleCount: [
-                {helpCenterId: 3, count: 5},
-                {helpCenterId: 5, count: 2},
+                { helpCenterId: 3, count: 5 },
+                { helpCenterId: 5, count: 2 },
             ],
         })
 
@@ -233,14 +235,14 @@ describe('<AIAgentWelcomePageDynamic />', () => {
             {
                 ...baseDynamicProps,
                 shopName: 'my-test-store',
-                emailConnected: {checked: true},
-                helpCenterCreated: {checked: true},
+                emailConnected: { checked: true },
+                helpCenterCreated: { checked: true },
                 helpCenter20Articles: {
                     checked: false,
                     link: '/app/settings/help-center',
                 },
             },
-            'my-test-store'
+            'my-test-store',
         )
     })
 
@@ -248,14 +250,14 @@ describe('<AIAgentWelcomePageDynamic />', () => {
         setupMocks({
             hasEmailToStoreConnection: true,
             helpCenters: [
-                {id: 3, shop_name: 'my-test-store'},
-                {id: 4, shop_name: 'my-other-store'},
+                { id: 3, shop_name: 'my-test-store' },
+                { id: 4, shop_name: 'my-other-store' },
             ],
         })
 
         renderAndAssert({
             ...baseDynamicProps,
-            emailConnected: {checked: true},
+            emailConnected: { checked: true },
         })
     })
 
@@ -263,41 +265,41 @@ describe('<AIAgentWelcomePageDynamic />', () => {
         setupMocks({
             hasEmailToStoreConnection: true,
             helpCenters: [
-                {id: 3, shop_name: 'my-test-store'},
-                {id: 4, shop_name: 'my-other-store'},
+                { id: 3, shop_name: 'my-test-store' },
+                { id: 4, shop_name: 'my-other-store' },
             ],
-            helpCentersArticleCount: [{helpCenterId: 3, count: 25}],
+            helpCentersArticleCount: [{ helpCenterId: 3, count: 25 }],
         })
 
         renderAndAssert(
             {
                 ...baseDynamicProps,
                 shopName: 'my-test-store',
-                emailConnected: {checked: true},
-                helpCenterCreated: {checked: true},
-                helpCenter20Articles: {checked: true},
+                emailConnected: { checked: true },
+                helpCenterCreated: { checked: true },
+                helpCenter20Articles: { checked: true },
             },
-            'my-test-store'
+            'my-test-store',
         )
     })
 
     it('should render the welcome page view in loading state if the email to store connection is still loading', () => {
-        setupMocks({isHasEmailToStoreConnectionLoading: true})
+        setupMocks({ isHasEmailToStoreConnectionLoading: true })
         renderAndAssert(baseLoadingProps)
     })
 
     it('should render the welcome page view in loading state if the help centers are still loading', () => {
-        setupMocks({isHelpCentersLoading: true})
+        setupMocks({ isHelpCentersLoading: true })
         renderAndAssert(
-            {...baseLoadingProps, shopName: 'my-second-test-store'},
-            'my-second-test-store'
+            { ...baseLoadingProps, shopName: 'my-second-test-store' },
+            'my-second-test-store',
         )
     })
 
     it('should render the welcome page view in loading state while checking if any help center has 20+ articles', () => {
         setupMocks({
             hasEmailToStoreConnection: true,
-            helpCenters: [{id: 8, shop_name: 'my-shop'}],
+            helpCenters: [{ id: 8, shop_name: 'my-shop' }],
             isHas20ArticlesLoading: true,
         })
 
@@ -311,10 +313,10 @@ describe('<AIAgentWelcomePageDynamic />', () => {
     })
 
     it('should render the welcome page view for onboarding wizard with correct props when shopify permission updated', () => {
-        setupMocks({isShopifyPermissionUpdated: true})
+        setupMocks({ isShopifyPermissionUpdated: true })
         renderAndAssertOnboardingWizard({
             ...baseOnboardingWizardProps,
-            shopifyPermissionUpdated: {checked: true},
+            shopifyPermissionUpdated: { checked: true },
         })
         expect(useShopifyIntegrationAndScope).toBeCalled()
     })

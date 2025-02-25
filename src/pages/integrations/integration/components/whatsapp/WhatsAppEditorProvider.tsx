@@ -1,29 +1,30 @@
-import {EditorState} from 'draft-js'
-import {fromJS} from 'immutable'
-import React, {useCallback, useEffect, useMemo, useState} from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
-import {TicketChannel} from 'business/types/ticket'
+import { EditorState } from 'draft-js'
+import { fromJS } from 'immutable'
+
+import { TicketChannel } from 'business/types/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {WhatsAppMessageTemplate} from 'models/whatsAppMessageTemplates/types'
-import {TemplateTypeFilterOption} from 'pages/tickets/detail/components/ReplyArea/types'
-import {setNewMessageActions, setResponseText} from 'state/newMessage/actions'
+import { WhatsAppMessageTemplate } from 'models/whatsAppMessageTemplates/types'
+import { TemplateTypeFilterOption } from 'pages/tickets/detail/components/ReplyArea/types'
+import { setNewMessageActions, setResponseText } from 'state/newMessage/actions'
 import {
     getNewMessageActions,
+    getNewMessageChannel,
     getNewMessageExternalTemplateAction,
     isNewMessagePublic,
-    getNewMessageChannel,
 } from 'state/newMessage/selectors'
-import {clearAppliedMacro} from 'state/ticket/actions'
-import {getCustomerMessages, getTicket} from 'state/ticket/selectors'
-import {mergeActionsJS} from 'state/ticket/utils'
+import { clearAppliedMacro } from 'state/ticket/actions'
+import { getCustomerMessages, getTicket } from 'state/ticket/selectors'
+import { mergeActionsJS } from 'state/ticket/utils'
 
 import {
-    createApplyExternalTemplateAction,
     isWhatsAppWindowOpen as checkIsWhatsAppWindowOpen,
+    createApplyExternalTemplateAction,
 } from './utils'
-import {Context} from './WhatsAppEditorContext'
-import {WhatsAppMessageTemplateSearchFilters} from './WhatsAppMessageTemplateSearch'
+import { Context } from './WhatsAppEditorContext'
+import { WhatsAppMessageTemplateSearchFilters } from './WhatsAppMessageTemplateSearch'
 
 export default function WhatsAppEditorProvider({
     children,
@@ -47,13 +48,13 @@ export default function WhatsAppEditorProvider({
     const customerMessagesList = useAppSelector(getCustomerMessages)
     const currentActions = useAppSelector(getNewMessageActions)
     const externalTemplateAction = useAppSelector(
-        getNewMessageExternalTemplateAction
+        getNewMessageExternalTemplateAction,
     )
     const selectedTemplate = externalTemplateAction?.arguments?.template
 
     const isWhatsAppWindowOpen = useMemo(
         () => checkIsWhatsAppWindowOpen(customerMessagesList.toJS()),
-        [customerMessagesList]
+        [customerMessagesList],
     )
 
     const dispatch = useAppDispatch()
@@ -65,8 +66,8 @@ export default function WhatsAppEditorProvider({
                 fromJS({
                     contentState: editorState.getCurrentContent(),
                     selectionState: editorState.getSelection(),
-                })
-            )
+                }),
+            ),
         )
         dispatch(clearAppliedMacro(ticket.id ?? 'new'))
         dispatch(setNewMessageActions())

@@ -1,17 +1,17 @@
-import {OrderDirection} from 'models/api/types'
-import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
+import { OrderDirection } from 'models/api/types'
+import { HelpdeskMessageCubeWithJoins } from 'models/reporting/cubes/HelpdeskMessageCube'
 import {
     TicketDimension,
     TicketMeasure,
     TicketSegment,
 } from 'models/reporting/cubes/TicketCube'
-import {CHANNEL_DIMENSION} from 'models/reporting/queryFactories/support-performance/constants'
+import { CHANNEL_DIMENSION } from 'models/reporting/queryFactories/support-performance/constants'
 import {
     ReportingGranularity,
     ReportingQuery,
     TimeSeriesQuery,
 } from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import { StatsFilters } from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     getFilterDateRange,
@@ -25,7 +25,7 @@ import {
 export const closedTicketsQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => ({
     measures: [TicketMeasure.TicketCount],
     dimensions: [],
@@ -45,7 +45,7 @@ export const closedTicketsQueryFactory = (
 export const closedTicketsTimeSeriesQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    granularity: ReportingGranularity
+    granularity: ReportingGranularity,
 ): TimeSeriesQuery<HelpdeskMessageCubeWithJoins> => ({
     ...closedTicketsQueryFactory(filters, timezone),
     timeDimensions: [
@@ -60,18 +60,18 @@ export const closedTicketsTimeSeriesQueryFactory = (
 
 export const closedTicketsPerAgentQueryFactory = perDimensionQueryFactory(
     closedTicketsQueryFactory,
-    TicketDimension.AssigneeUserId
+    TicketDimension.AssigneeUserId,
 )
 
 export const closedTicketsPerChannelQueryFactory = perDimensionQueryFactory(
     closedTicketsQueryFactory,
-    CHANNEL_DIMENSION
+    CHANNEL_DIMENSION,
 )
 
 export const closedTicketsPerTicketDrillDownQueryFactory = (
     filters: StatsFilters,
     timezone: string,
-    sorting?: OrderDirection
+    sorting?: OrderDirection,
 ): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
     const baseQuery = closedTicketsPerAgentQueryFactory(filters, timezone)
     return {

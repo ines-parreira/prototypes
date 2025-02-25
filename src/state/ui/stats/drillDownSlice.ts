@@ -1,8 +1,9 @@
-import {queryKeys} from '@gorgias/api-queries'
-import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import {appQueryClient} from 'api/queryClient'
-import {createJob} from 'models/job/resources'
+import { queryKeys } from '@gorgias/api-queries'
+
+import { appQueryClient } from 'api/queryClient'
+import { createJob } from 'models/job/resources'
 import {
     ConvertJobContext,
     DrillDownReportingQuery,
@@ -10,13 +11,13 @@ import {
     JobContext,
     JobType,
 } from 'models/job/types'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-import {MetricValueFormat} from 'pages/stats/common/utils'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
+import { MetricValueFormat } from 'pages/stats/common/utils'
 import {
     CSAT_SCORE,
     SatisfactionMetricConfig as SatisfactionTrendCardConfig,
 } from 'pages/stats/quality-management/satisfaction/SatisfactionMetricsConfig'
-import {SLA_STATUS_COLUMN_LABEL} from 'pages/stats/sla/SlaConfig'
+import { SLA_STATUS_COLUMN_LABEL } from 'pages/stats/sla/SlaConfig'
 import {
     AgentsColumnConfig,
     TableLabels,
@@ -25,7 +26,7 @@ import {
     AutoQAAgentsColumnConfig,
     AutoQAAgentsTableColumn,
 } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
-import {TrendCardConfig} from 'pages/stats/support-performance/auto-qa/AutoQAMetricsConfig'
+import { TrendCardConfig } from 'pages/stats/support-performance/auto-qa/AutoQAMetricsConfig'
 import {
     ChannelColumnConfig,
     ChannelsTableLabels,
@@ -34,10 +35,10 @@ import {
     OverviewMetric,
     OverviewMetricConfig,
 } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewConfig'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {RootState, StoreDispatch} from 'state/types'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { RootState, StoreDispatch } from 'state/types'
 import {
     AgentsTableColumn,
     AIInsightsMetric,
@@ -276,12 +277,12 @@ export type CreateExportDrillDownJobParams = {
 export const createExportDrillDownJob = createAsyncThunk<
     Job,
     CreateExportDrillDownJobParams,
-    {dispatch: StoreDispatch; state: RootState}
+    { dispatch: StoreDispatch; state: RootState }
 >(
     EXPORT_DRILL_DOWN_JOB_ACTION,
     async (
-        {query, jobType, context},
-        {dispatch, getState, rejectWithValue}
+        { query, jobType, context },
+        { dispatch, getState, rejectWithValue },
     ) => {
         const currentUser = getCurrentUser(getState())
         const currentUserEmail = String(currentUser.get('email'))
@@ -289,7 +290,7 @@ export const createExportDrillDownJob = createAsyncThunk<
         try {
             const response = await createJob({
                 type: jobType,
-                params: {reporting_query: query, context: context},
+                params: { reporting_query: query, context: context },
             })
             void dispatch(notifyAboutExportSuccess(jobType, currentUserEmail))
 
@@ -301,7 +302,7 @@ export const createExportDrillDownJob = createAsyncThunk<
                 queryKey: queryKeys['jobs']['listJobs'](),
             })
         }
-    }
+    },
 )
 
 export const drillDownSlice = createSlice({
@@ -363,7 +364,7 @@ export const getIsNewFilter = (state: RootState) =>
     state.ui.stats[drillDownSlice.name].isNewFilter
 
 export const getDrillDownMetricColumn = (
-    state: RootState
+    state: RootState,
 ): {
     metricTitle: string
     showMetric: boolean
@@ -493,7 +494,7 @@ const getConfirmationText = (jobType: JobType) => {
 
 export const notifyAboutExportSuccess = (
     jobType: JobType,
-    currentUserEmail: string
+    currentUserEmail: string,
 ) => {
     const confirmationText = getConfirmationText(jobType)
 

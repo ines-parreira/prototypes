@@ -1,14 +1,14 @@
 import {
     automationRate,
-    decreaseInFirstResponseTime,
+    automationRateUnfilteredDenominator,
     averageResolutionTimeWithAutomation,
-    decreaseInResolutionTime,
-    workflowEndStepDropoff,
-    workflowEndStepAutomatedInteractions,
     calculateRate,
     calculateSumOfAutomatedInteractions,
     calculateSumOfDropoff,
-    automationRateUnfilteredDenominator,
+    decreaseInFirstResponseTime,
+    decreaseInResolutionTime,
+    workflowEndStepAutomatedInteractions,
+    workflowEndStepDropoff,
 } from '../automateStatsFormulae'
 
 describe('Metrics Calculation Functions', () => {
@@ -43,7 +43,7 @@ describe('Metrics Calculation Functions', () => {
                     allAutomatedInteractions: null,
                     allAutomatedInteractionsByAutoResponders: 5,
                     billableTicketsCount: 5,
-                })
+                }),
             ).toBe(0)
 
             expect(
@@ -52,7 +52,7 @@ describe('Metrics Calculation Functions', () => {
                     allAutomatedInteractions: 10,
                     allAutomatedInteractionsByAutoResponders: 5,
                     billableTicketsCount: 5,
-                })
+                }),
             ).toBe(0)
 
             expect(
@@ -61,7 +61,7 @@ describe('Metrics Calculation Functions', () => {
                     allAutomatedInteractions: 10,
                     allAutomatedInteractionsByAutoResponders: null,
                     billableTicketsCount: 5,
-                })
+                }),
             ).toBe(0)
 
             expect(
@@ -70,7 +70,7 @@ describe('Metrics Calculation Functions', () => {
                     allAutomatedInteractions: 10,
                     allAutomatedInteractionsByAutoResponders: 5,
                     billableTicketsCount: null,
-                })
+                }),
             ).toBe(0)
 
             expect(
@@ -79,7 +79,7 @@ describe('Metrics Calculation Functions', () => {
                     allAutomatedInteractions: null,
                     allAutomatedInteractionsByAutoResponders: null,
                     billableTicketsCount: null,
-                })
+                }),
             ).toBe(0)
         })
 
@@ -90,7 +90,7 @@ describe('Metrics Calculation Functions', () => {
                     allAutomatedInteractions: 20,
                     allAutomatedInteractionsByAutoResponders: 2,
                     billableTicketsCount: 0,
-                })
+                }),
             ).toBe(1)
 
             expect(
@@ -99,7 +99,7 @@ describe('Metrics Calculation Functions', () => {
                     allAutomatedInteractions: 25,
                     allAutomatedInteractionsByAutoResponders: 5,
                     billableTicketsCount: 10,
-                })
+                }),
             ).toBe(0.5)
         })
     })
@@ -119,7 +119,7 @@ describe('Metrics Calculation Functions', () => {
         it('should calculate decrease in first response time correctly', () => {
             expect(decreaseInFirstResponseTime(10, 5, 200, 200)).toBeCloseTo(
                 26.666,
-                2
+                2,
             )
             expect(decreaseInFirstResponseTime(0, 2, 5, 5)).toBe(0)
             expect(decreaseInFirstResponseTime(0, 0, 0, 0)).toBeCloseTo(0)
@@ -133,10 +133,10 @@ describe('Metrics Calculation Functions', () => {
     describe('resolutionTime Function', () => {
         it('should calculate resolution time correctly', () => {
             expect(
-                averageResolutionTimeWithAutomation(100, 5, 50, 0)
+                averageResolutionTimeWithAutomation(100, 5, 50, 0),
             ).toBeCloseTo(1.818, 3)
             expect(
-                averageResolutionTimeWithAutomation(100, 5, 0, 0)
+                averageResolutionTimeWithAutomation(100, 5, 0, 0),
             ).toBeCloseTo(20)
         })
     })
@@ -155,7 +155,7 @@ describe('Metrics Calculation Functions', () => {
         it('should calculate decrease in resolution time correctly', () => {
             expect(decreaseInResolutionTime(10, 5, 500, 0)).toBeCloseTo(
                 66.6666,
-                3
+                3,
             )
             expect(decreaseInResolutionTime(0, 5, 500, 0)).toBeCloseTo(0)
             expect(decreaseInResolutionTime(0, 0, 0, 0)).toBeCloseTo(0)
@@ -164,7 +164,7 @@ describe('Metrics Calculation Functions', () => {
         it('calculates decrease in resolution time correctly when totalResolutionTimeResolvedByAIAgent is 0', () => {
             expect(decreaseInResolutionTime(10, 5, 500, null)).toBeCloseTo(
                 66.6666,
-                3
+                3,
             )
         })
 
@@ -207,26 +207,26 @@ describe('Metrics Calculation Functions', () => {
         it('should calculate sum of dropoff', () => {
             expect(
                 calculateSumOfDropoff({
-                    '1': {dropoff: 2} as any,
-                    '2': {dropoff: 6} as any,
-                    '3': {dropoff: 2} as any,
-                    '4': {dropoff: undefined} as any,
-                    '5': {dropoff: null} as any,
+                    '1': { dropoff: 2 } as any,
+                    '2': { dropoff: 6 } as any,
+                    '3': { dropoff: 2 } as any,
+                    '4': { dropoff: undefined } as any,
+                    '5': { dropoff: null } as any,
                     '6': {} as any,
-                })
+                }),
             ).toBe(10)
         })
 
         it('should calculate sum of automated interactions', () => {
             expect(
                 calculateSumOfAutomatedInteractions({
-                    '1': {automatedInteractions: 2} as any,
-                    '2': {automatedInteractions: 6} as any,
-                    '3': {automatedInteractions: 2} as any,
-                    '4': {automatedInteractions: undefined} as any,
-                    '5': {automatedInteractions: null} as any,
+                    '1': { automatedInteractions: 2 } as any,
+                    '2': { automatedInteractions: 6 } as any,
+                    '3': { automatedInteractions: 2 } as any,
+                    '4': { automatedInteractions: undefined } as any,
+                    '5': { automatedInteractions: null } as any,
                     '6': {} as any,
-                })
+                }),
             ).toBe(10)
         })
     })

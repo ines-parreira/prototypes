@@ -1,14 +1,14 @@
 import React from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {DownloadDataButton} from 'pages/stats/support-performance/components/DownloadDataButton'
-import {useAutoQAReportData} from 'services/reporting/autoQAReportingService'
-import {saveZippedFiles} from 'utils/file'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { DownloadDataButton } from 'pages/stats/support-performance/components/DownloadDataButton'
+import { useAutoQAReportData } from 'services/reporting/autoQAReportingService'
+import { saveZippedFiles } from 'utils/file'
 
 const DOWNLOAD_BUTTON_TITLE = 'AutoQA Report Data'
 
 export const AutoQADownloadDataButton = () => {
-    const {files, fileName, isLoading} = useAutoQAReportData()
+    const { files, fileName, isLoading } = useAutoQAReportData()
 
     return (
         <DownloadDataButton

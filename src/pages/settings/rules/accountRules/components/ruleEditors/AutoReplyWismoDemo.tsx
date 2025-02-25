@@ -1,19 +1,20 @@
-import classnames from 'classnames'
-import _noop from 'lodash/noop'
 import React from 'react'
 
-import {THEME_NAME} from 'core/theme'
-import RichField from 'pages/common/forms/RichField/RichField'
-import {FakeOrderTracking} from 'pages/settings/rules/components/FakeOrderTracking'
-import {AutoReplyWismoSettings} from 'state/rules/types'
+import classnames from 'classnames'
+import _noop from 'lodash/noop'
 
-import {ManagedRuleDetailProps} from './ManagedRuleEditor'
+import { THEME_NAME } from 'core/theme'
+import RichField from 'pages/common/forms/RichField/RichField'
+import { FakeOrderTracking } from 'pages/settings/rules/components/FakeOrderTracking'
+import { AutoReplyWismoSettings } from 'state/rules/types'
+
+import { ManagedRuleDetailProps } from './ManagedRuleEditor'
 
 import css from './ManagedRuleEditor.less'
 
 type Props = Pick<ManagedRuleDetailProps<AutoReplyWismoSettings>, 'settings'>
 
-export const AutoReplyWismoDemo = ({settings}: Props) => (
+export const AutoReplyWismoDemo = ({ settings }: Props) => (
     <div className={classnames(css.demo, css.autoReplyWismo)}>
         <div className={css.topbar}>
             <div className={css.circle} />

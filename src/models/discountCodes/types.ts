@@ -1,4 +1,4 @@
-import {UniqueDiscountOffer} from 'models/convert/discountOffer/types'
+import { UniqueDiscountOffer } from 'models/convert/discountOffer/types'
 
 export type DiscountCode = {
     id: number
@@ -9,12 +9,12 @@ export type DiscountCode = {
 }
 
 export const discountCodeIsGeneric = (
-    discount: DiscountCode | UniqueDiscountOffer
+    discount: DiscountCode | UniqueDiscountOffer,
 ): discount is DiscountCode => {
     return !!(discount as DiscountCode)?.code
 }
 export const discountCodeIsUnique = (
-    discount: DiscountCode | UniqueDiscountOffer
+    discount: DiscountCode | UniqueDiscountOffer,
 ): discount is UniqueDiscountOffer => {
     return !!(discount as UniqueDiscountOffer)?.prefix
 }

@@ -1,12 +1,12 @@
-import React, {ReactNode, useEffect, useMemo} from 'react'
+import React, { ReactNode, useEffect, useMemo } from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationType} from 'models/integration/constants'
-import {useGetStoreApps} from 'models/workflows/queries'
-import {getIntegrationsByTypes} from 'state/integrations/selectors'
+import { IntegrationType } from 'models/integration/constants'
+import { useGetStoreApps } from 'models/workflows/queries'
+import { getIntegrationsByTypes } from 'state/integrations/selectors'
 
 import useAddStoreApp from '../hooks/useAddStoreApp'
-import StoreAppsContext, {StoreAppsContextType} from './StoreAppsContext'
+import StoreAppsContext, { StoreAppsContextType } from './StoreAppsContext'
 
 type Props = {
     storeName: string
@@ -14,13 +14,13 @@ type Props = {
     children?: ReactNode
 }
 
-const StoreAppsProvider = ({storeName, storeType, children}: Props) => {
-    const {data: storeApps = [], isInitialLoading: isStoreAppsLoading} =
-        useGetStoreApps({storeName, storeType})
+const StoreAppsProvider = ({ storeName, storeType, children }: Props) => {
+    const { data: storeApps = [], isInitialLoading: isStoreAppsLoading } =
+        useGetStoreApps({ storeName, storeType })
 
     const getRechargeIntegrations = useMemo(
         () => getIntegrationsByTypes([IntegrationType.Recharge]),
-        []
+        [],
     )
 
     const rechargeIntegrations = useAppSelector(getRechargeIntegrations)
@@ -34,7 +34,7 @@ const StoreAppsProvider = ({storeName, storeType, children}: Props) => {
                     integration.meta.oauth.status === 'success'
                 )
             }),
-        [rechargeIntegrations, storeName]
+        [rechargeIntegrations, storeName],
     )
 
     const addStoreApp = useAddStoreApp({
@@ -47,7 +47,7 @@ const StoreAppsProvider = ({storeName, storeType, children}: Props) => {
         () =>
             storeApps.find((storeApp) => storeApp.type === 'recharge')
                 ?.integration_id,
-        [storeApps]
+        [storeApps],
     )
     const rechargeIntegrationId = rechargeIntegration?.id
 
@@ -55,7 +55,7 @@ const StoreAppsProvider = ({storeName, storeType, children}: Props) => {
         () => ({
             recharge: remoteRechargeIntegrationId ?? rechargeIntegrationId,
         }),
-        [remoteRechargeIntegrationId, rechargeIntegrationId]
+        [remoteRechargeIntegrationId, rechargeIntegrationId],
     )
 
     useEffect(() => {

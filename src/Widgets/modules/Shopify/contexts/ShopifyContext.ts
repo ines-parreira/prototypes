@@ -1,4 +1,4 @@
-import {createContext} from 'react'
+import { createContext } from 'react'
 
 export type ShopifyContextType = {
     data_source: 'Order' | 'Customer' | null
@@ -18,5 +18,5 @@ export const defaultShopifyContextValue: Readonly<ShopifyContextType> =
     })
 
 export const ShopifyContext = createContext<ShopifyContextType>(
-    defaultShopifyContextValue
+    defaultShopifyContextValue,
 )

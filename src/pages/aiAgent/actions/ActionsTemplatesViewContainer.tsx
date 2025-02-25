@@ -1,10 +1,10 @@
 import React from 'react'
 
-import {Redirect} from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {ErrorBoundary} from 'pages/ErrorBoundary'
-import {getHasAutomate} from 'state/billing/selectors'
+import { ErrorBoundary } from 'pages/ErrorBoundary'
+import { getHasAutomate } from 'state/billing/selectors'
 
 import ActionTemplatesView from './ActionTemplatesView'
 
@@ -16,7 +16,7 @@ const ActionsTemplatesViewContainer = () => {
     }
 
     return (
-        <ErrorBoundary sentryTags={{section: 'actions-templates'}}>
+        <ErrorBoundary sentryTags={{ section: 'actions-templates' }}>
             <ActionTemplatesView />
         </ErrorBoundary>
     )

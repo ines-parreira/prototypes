@@ -1,23 +1,23 @@
-import {render, waitFor} from '@testing-library/react'
-
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
-import routerDom, {BrowserRouter, useParams} from 'react-router-dom'
+
+import { render, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import routerDom, { BrowserRouter, useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
-import {campaign} from 'fixtures/campaign'
-import {channelConnection} from 'fixtures/channelConnection'
-import {utmConfiguration} from 'fixtures/utmConfiguration'
-import {useListCampaigns} from 'models/convert/campaign/queries'
+import { campaign } from 'fixtures/campaign'
+import { channelConnection } from 'fixtures/channelConnection'
+import { utmConfiguration } from 'fixtures/utmConfiguration'
+import { useListCampaigns } from 'models/convert/campaign/queries'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
-import {useCreateCampaign} from 'pages/convert/campaigns/hooks/useCreateCampaign'
-import {useUpdateCampaign} from 'pages/convert/campaigns/hooks/useUpdateCampaign'
-import {useUtm} from 'pages/convert/campaigns/hooks/useUtm'
-import {CART_ABANDONMENT} from 'pages/convert/campaigns/templates/onboarding/cartAbandonment'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import {useConvertGeneralSettings} from 'pages/stats/convert/hooks/useConvertGeneralSettings'
-import {assumeMock} from 'utils/testing'
+import { useCreateCampaign } from 'pages/convert/campaigns/hooks/useCreateCampaign'
+import { useUpdateCampaign } from 'pages/convert/campaigns/hooks/useUpdateCampaign'
+import { useUtm } from 'pages/convert/campaigns/hooks/useUtm'
+import { CART_ABANDONMENT } from 'pages/convert/campaigns/templates/onboarding/cartAbandonment'
+import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import { useConvertGeneralSettings } from 'pages/stats/convert/hooks/useConvertGeneralSettings'
+import { assumeMock } from 'utils/testing'
 
 import CampaignTemplateCustomizeRecommendationsView from '../CampaignTemplateCustomizeRecommendationsView'
 
@@ -33,7 +33,7 @@ const mockUseConvertGeneralSettings = assumeMock(useConvertGeneralSettings)
 
 jest.mock('pages/convert/common/hooks/useGetOrCreateChannelConnection')
 const useGetOrCreateChannelConnectionMock = assumeMock(
-    useGetOrCreateChannelConnection
+    useGetOrCreateChannelConnection,
 )
 
 jest.mock('models/convert/campaign/queries')
@@ -62,7 +62,7 @@ const useUtmMock = assumeMock(useUtm)
 
 const defaultState = {
     integrations: fromJS({
-        integrations: [{id: 123, type: 'gorgias_chat', meta: {}}],
+        integrations: [{ id: 123, type: 'gorgias_chat', meta: {} }],
     }),
 }
 
@@ -89,14 +89,14 @@ describe('CampaignTemplateCustomizeView', () => {
         mockUseConvertGeneralSettings.mockReturnValue({
             emailDisclaimer: {
                 enabled: true,
-                disclaimer: {en: 'foo'},
+                disclaimer: { en: 'foo' },
                 disclaimer_default_accepted: true,
             },
             isLoading: false,
         })
         jest.spyOn(
             isConvertSubscriberHook,
-            'useIsConvertSubscriber'
+            'useIsConvertSubscriber',
         ).mockImplementation(() => true)
         useUtmMock.mockReturnValue(utmConfiguration)
 
@@ -109,12 +109,12 @@ describe('CampaignTemplateCustomizeView', () => {
             templateSlug: CART_ABANDONMENT.slug,
         })
 
-        const {getByText} = render(
+        const { getByText } = render(
             <BrowserRouter>
                 <Provider store={mockStore(defaultState)}>
                     <CampaignTemplateCustomizeRecommendationsView />
                 </Provider>
-            </BrowserRouter>
+            </BrowserRouter>,
         )
 
         await waitFor(() => {

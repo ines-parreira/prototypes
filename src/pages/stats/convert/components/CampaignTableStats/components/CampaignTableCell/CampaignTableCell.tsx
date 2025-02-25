@@ -1,29 +1,31 @@
-import {Skeleton} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
-import React, {useMemo} from 'react'
-import {Link} from 'react-router-dom'
+import React, { useMemo } from 'react'
 
-import Badge, {BadgeColor} from 'gorgias-design-system/Badge/Badge'
-import {InferredCampaignStatus} from 'models/convert/campaign/types'
+import classNames from 'classnames'
+import { Link } from 'react-router-dom'
+
+import { Skeleton } from '@gorgias/merchant-ui-kit'
+
+import Badge, { BadgeColor } from 'gorgias-design-system/Badge/Badge'
+import { InferredCampaignStatus } from 'models/convert/campaign/types'
 import IconButton from 'pages/common/components/button/IconButton'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
-import {formatPercentage} from 'pages/common/utils/numbers'
-
+import { formatPercentage } from 'pages/common/utils/numbers'
 import {
     abVariantControlVariantUrl,
     abVariantEditorUrl,
     abVariantsUrl,
 } from 'pages/convert/abVariants/urls'
-import {formatNumber} from 'pages/stats/common/utils'
-import {OrdersCell} from 'pages/stats/convert/components/CampaignTableStats/components/OrdersCell'
-import {CampaignTableColumn} from 'pages/stats/convert/types/CampaignTableColumn'
-import {CampaignTableContentCell} from 'pages/stats/convert/types/CampaignTableContentCell'
-import {CampaignTableKeys} from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
-import {CampaignTableValueFormat} from 'pages/stats/convert/types/enums/CampaignTableValueFormat.enum'
+import { formatNumber } from 'pages/stats/common/utils'
+import { OrdersCell } from 'pages/stats/convert/components/CampaignTableStats/components/OrdersCell'
+import { CampaignTableColumn } from 'pages/stats/convert/types/CampaignTableColumn'
+import { CampaignTableContentCell } from 'pages/stats/convert/types/CampaignTableContentCell'
+import { CampaignTableKeys } from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
+import { CampaignTableValueFormat } from 'pages/stats/convert/types/enums/CampaignTableValueFormat.enum'
+
+import { TicketsCreatedCell } from '../TicketsCreatedCell'
 
 import css from '../../CampaignTableStats.less'
-import {TicketsCreatedCell} from '../TicketsCreatedCell'
 
 type Props = {
     column: CampaignTableColumn
@@ -69,7 +71,7 @@ export const CampaignTableCell = ({
     if (isLoading) {
         return (
             <BodyCell {...bodyCellProps}>
-                <div style={{width: '100%'}}>
+                <div style={{ width: '100%' }}>
                     <Skeleton count={1} width="100%" />
                 </div>
             </BodyCell>
@@ -102,7 +104,7 @@ export const CampaignTableCell = ({
                             css.variantName,
                             {
                                 [css.withShadow]: isTableScrolled,
-                            }
+                            },
                         )}
                     >
                         <Link
@@ -110,12 +112,12 @@ export const CampaignTableCell = ({
                                 variantId === cell.campaign.id
                                     ? abVariantControlVariantUrl(
                                           cell.chatIntegration.id.toString(),
-                                          cell.campaign.id
+                                          cell.campaign.id,
                                       )
                                     : abVariantEditorUrl(
                                           cell.chatIntegration.id.toString(),
                                           cell.campaign.id,
-                                          variantId
+                                          variantId,
                                       )
                             }
                         >
@@ -128,7 +130,7 @@ export const CampaignTableCell = ({
             const url = cell.campaign.ab_group
                 ? abVariantsUrl(
                       cell.chatIntegration.id.toString(),
-                      cell.campaign.id
+                      cell.campaign.id,
                   )
                 : `/app/convert/${cell.chatIntegration.id}/campaigns/${cell.campaign.id}`
             return (

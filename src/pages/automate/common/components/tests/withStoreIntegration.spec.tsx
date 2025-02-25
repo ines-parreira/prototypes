@@ -1,14 +1,15 @@
-import {render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {billingState} from 'fixtures/billing'
-import {IntegrationType} from 'models/integration/constants'
+import { billingState } from 'fixtures/billing'
+import { IntegrationType } from 'models/integration/constants'
 import withStoreIntegrations from 'pages/automate/common/utils/withStoreIntegrations'
-import {RootState, StoreDispatch} from 'state/types'
+import { RootState, StoreDispatch } from 'state/types'
 
 const AnyComponent = () => <div>Just a component...</div>
 
@@ -43,16 +44,16 @@ describe('withStoreIntegrations', () => {
                 })}
             >
                 <AaoComponent />
-            </Provider>
+            </Provider>,
         )
         expect(
-            screen.queryByText(/Just a component.../)
+            screen.queryByText(/Just a component.../),
         ).not.toBeInTheDocument()
         expect(screen.getByText('Hello')).toBeInTheDocument()
         expect(
             screen.getByText(
-                'Connect Shopify, Magento or BigCommerce stores to start using Automate!'
-            )
+                'Connect Shopify, Magento or BigCommerce stores to start using Automate!',
+            ),
         ).toBeInTheDocument()
     })
 
@@ -71,7 +72,7 @@ describe('withStoreIntegrations', () => {
                 })}
             >
                 <AaoComponent />
-            </Provider>
+            </Provider>,
         )
         expect(screen.getByText(/Just a component.../)).toBeInTheDocument()
     })

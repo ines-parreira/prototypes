@@ -1,9 +1,9 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {Panels} from 'core/layout/panels'
+import { render, screen } from '@testing-library/react'
 
-import {SplitTicketViewProvider} from 'split-ticket-view-toggle'
+import { Panels } from 'core/layout/panels'
+import { SplitTicketViewProvider } from 'split-ticket-view-toggle'
 
 import TicketDetailPanel from '../TicketDetailPanel'
 
@@ -18,7 +18,7 @@ describe('TicketDetailPanel', () => {
                 <Panels size={1000}>
                     <TicketDetailPanel />
                 </Panels>
-            </SplitTicketViewProvider>
+            </SplitTicketViewProvider>,
         )
         expect(screen.getByText('TicketWrapper')).toBeInTheDocument()
     })

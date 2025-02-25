@@ -1,10 +1,10 @@
+import React, { ReactNode } from 'react'
+
 import classNames from 'classnames'
-import React, {ReactNode} from 'react'
+import { Button } from 'reactstrap'
 
-import {Button} from 'reactstrap'
-
-import {DeleteTriggerFn} from '../../types/AdvancedTriggerBaseProps'
-import {CampaignTrigger} from '../../types/CampaignTrigger'
+import { DeleteTriggerFn } from '../../types/AdvancedTriggerBaseProps'
+import { CampaignTrigger } from '../../types/CampaignTrigger'
 
 import css from './style.less'
 

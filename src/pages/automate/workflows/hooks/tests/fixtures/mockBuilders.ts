@@ -1,4 +1,4 @@
-import {useSelfServiceConfigurationUpdate} from 'pages/automate/common/hooks/useSelfServiceConfigurationUpdate'
+import { useSelfServiceConfigurationUpdate } from 'pages/automate/common/hooks/useSelfServiceConfigurationUpdate'
 
 export const mockSelfServiceConfigurationUpdate: ReturnType<
     typeof useSelfServiceConfigurationUpdate
@@ -8,7 +8,7 @@ export const mockSelfServiceConfigurationUpdate: ReturnType<
 } as const
 
 export function useSelfServiceConfigurationUpdateMockSetter(
-    overrides: Partial<ReturnType<typeof useSelfServiceConfigurationUpdate>>
+    overrides: Partial<ReturnType<typeof useSelfServiceConfigurationUpdate>>,
 ) {
     ;(
         useSelfServiceConfigurationUpdate as jest.MockedFn<

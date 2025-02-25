@@ -1,17 +1,18 @@
-import {RequirementType} from '@gorgias/api-queries'
+import React, { useMemo } from 'react'
+
+import { RequirementType } from '@gorgias/api-queries'
 import {
     SelectField,
     type SelectFieldTriggerProps,
 } from '@gorgias/merchant-ui-kit'
-import React, {useMemo} from 'react'
 
-import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {
     CustomField,
     CustomFieldObjectTypes,
     isCustomFieldAIManagedType,
 } from 'custom-fields/types'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 
 const SelectTrigger = ({
@@ -56,25 +57,25 @@ export default function CustomFieldSelectButton({
     onSelect,
     isDisabled,
 }: CustomFieldSelectButtonProps) {
-    const {data: {data: customFields = []} = {}, isLoading} =
+    const { data: { data: customFields = [] } = {}, isLoading } =
         useCustomFieldDefinitions(
             {
                 archived: false,
                 object_type: objectType,
             },
-            {refetchOnWindowFocus: 'always'}
+            { refetchOnWindowFocus: 'always' },
         )
 
     const options = useMemo(
         () =>
             customFields
                 .filter(
-                    ({managed_type}) =>
-                        !isCustomFieldAIManagedType(managed_type)
+                    ({ managed_type }) =>
+                        !isCustomFieldAIManagedType(managed_type),
                 )
-                .filter(({id}) => !ignoreIds?.includes(id)),
+                .filter(({ id }) => !ignoreIds?.includes(id)),
 
-        [customFields, ignoreIds]
+        [customFields, ignoreIds],
     )
 
     if (isLoading) {

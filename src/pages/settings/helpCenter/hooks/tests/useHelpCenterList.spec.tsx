@@ -1,8 +1,8 @@
-import {waitFor} from '@testing-library/react'
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
-import {Provider} from 'react-redux'
 
+import { waitFor } from '@testing-library/react'
+import { renderHook } from '@testing-library/react-hooks'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -10,10 +10,10 @@ import {
     getHelpCenterFAQList,
     helpCentersFetched,
 } from 'state/entities/helpCenter/helpCenters'
-import {RootState, StoreDispatch} from 'state/types'
-import {initialState as uiState} from 'state/ui/helpCenter/reducer'
+import { RootState, StoreDispatch } from 'state/types'
+import { initialState as uiState } from 'state/ui/helpCenter/reducer'
 
-import {useHelpCenterList} from '../useHelpCenterList'
+import { useHelpCenterList } from '../useHelpCenterList'
 
 jest.mock('../useHelpCenterApi', () => {
     return {
@@ -48,7 +48,7 @@ const defaultState: Partial<RootState> = {
     entities: {
         helpCenter: {},
     } as any,
-    ui: {helpCenter: uiState} as any,
+    ui: { helpCenter: uiState } as any,
 }
 
 // TODO: This should be extracted in a tests utils folder
@@ -60,14 +60,14 @@ const dependencyWrapper: React.ComponentType<any> = ({
 
 describe('useHelpCenterList', () => {
     it('finishes loading once the requests are done', async () => {
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useHelpCenterList({
                     per_page: 5,
                 }),
             {
                 wrapper: dependencyWrapper,
-            }
+            },
         )
         expect(result.current.isLoading).toBeTruthy()
         expect(result.current.hasMore).toEqual(true)
@@ -85,7 +85,7 @@ describe('useHelpCenterList', () => {
                 }),
             {
                 wrapper: dependencyWrapper,
-            }
+            },
         )
         await waitFor(() => {
             expect(helpCentersFetched).toHaveBeenCalled()
@@ -100,7 +100,7 @@ describe('useHelpCenterList', () => {
                 }),
             {
                 wrapper: dependencyWrapper,
-            }
+            },
         )
         expect(getHelpCenterFAQList).toHaveBeenCalled()
     })

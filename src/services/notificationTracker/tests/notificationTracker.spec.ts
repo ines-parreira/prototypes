@@ -1,10 +1,11 @@
+import { waitFor } from '@testing-library/react'
+
 import EventTracker from '@gorgias/event-tracker-api'
-import {waitFor} from '@testing-library/react'
 
-import {UserRole} from 'config/types/user'
-import {GorgiasInitialState} from 'types'
+import { UserRole } from 'config/types/user'
+import { GorgiasInitialState } from 'types'
 
-import {NotificationEvent} from '../constants'
+import { NotificationEvent } from '../constants'
 
 jest.mock('../utils', () => {
     return {
@@ -15,12 +16,12 @@ jest.mock('../utils', () => {
 })
 
 window.GORGIAS_STATE = {
-    currentAccount: {id: 123},
+    currentAccount: { id: 123 },
     agents: {
         all: [
-            {id: 3, role: {name: UserRole.Admin}},
-            {id: 2, role: {name: UserRole.Agent}},
-            {id: 1, role: {name: UserRole.Admin}},
+            { id: 3, role: { name: UserRole.Admin } },
+            { id: 2, role: { name: UserRole.Agent } },
+            { id: 1, role: { name: UserRole.Admin } },
         ],
     },
 } as GorgiasInitialState

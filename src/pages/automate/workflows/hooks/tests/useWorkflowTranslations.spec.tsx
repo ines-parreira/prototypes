@@ -1,23 +1,23 @@
-import {strict as assert} from 'assert'
+import React, { ReactChildren } from 'react'
 
-import {QueryClientProvider} from '@tanstack/react-query'
-import {act, renderHook} from '@testing-library/react-hooks'
-import React, {ReactChildren} from 'react'
-import {ulid} from 'ulidx'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { act, renderHook } from '@testing-library/react-hooks'
+import { strict as assert } from 'assert'
+import { ulid } from 'ulidx'
 
 import {
-    useFetchWorkflowConfigurationTranslations,
     useDeleteWorkflowConfigurationTranslations,
+    useFetchWorkflowConfigurationTranslations,
     useUpsertWorkflowConfigurationTranslations,
 } from 'models/workflows/queries'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import {VisualBuilderGraph} from '../../models/visualBuilderGraph.types'
+import { VisualBuilderGraph } from '../../models/visualBuilderGraph.types'
 import {
     transformWorkflowConfigurationIntoVisualBuilderGraph,
     WorkflowConfigurationBuilder,
 } from '../../models/workflowConfiguration.model'
-import {LanguageCode} from '../../models/workflowConfiguration.types'
+import { LanguageCode } from '../../models/workflowConfiguration.types'
 import useWorkflowTranslations from '../useWorkflowTranslations'
 
 let mockStore: Record<string, Record<string, string>> = {}
@@ -29,30 +29,30 @@ jest.mock('models/workflows/queries', () => ({
 }))
 
 const mockedUseFetchWorkflowConfigurationTranslations = jest.mocked(
-    useFetchWorkflowConfigurationTranslations
+    useFetchWorkflowConfigurationTranslations,
 )
 const mockedUseDeleteWorkflowConfigurationTranslations = jest.mocked(
-    useDeleteWorkflowConfigurationTranslations
+    useDeleteWorkflowConfigurationTranslations,
 )
 const mocedkUseUpsertWorkflowConfigurationTranslations = jest.mocked(
-    useUpsertWorkflowConfigurationTranslations
+    useUpsertWorkflowConfigurationTranslations,
 )
 
 function updateMock() {
     mocedkUseUpsertWorkflowConfigurationTranslations.mockReturnValue({
-        mutateAsync: ([{lang}, translations]: [
-            {lang: string},
+        mutateAsync: ([{ lang }, translations]: [
+            { lang: string },
             Record<string, string>,
         ]) => {
             mockStore[lang] = translations
-            return Promise.resolve({data: translations})
+            return Promise.resolve({ data: translations })
         },
     } as unknown as ReturnType<
         typeof useUpsertWorkflowConfigurationTranslations
     >)
     mockedUseFetchWorkflowConfigurationTranslations.mockReturnValue({
-        mutateAsync: ([{lang}]: [{lang: string}]) => {
-            return Promise.resolve({data: mockStore[lang]})
+        mutateAsync: ([{ lang }]: [{ lang: string }]) => {
+            return Promise.resolve({ data: mockStore[lang] })
         },
     } as unknown as ReturnType<
         typeof useFetchWorkflowConfigurationTranslations
@@ -67,7 +67,7 @@ function updateMock() {
 const queryClient = mockQueryClient()
 
 const renderHookOptions = {
-    wrapper: ({children}: {children: ReactChildren}) => (
+    wrapper: ({ children }: { children: ReactChildren }) => (
         <QueryClientProvider client={queryClient}>
             {children}
         </QueryClientProvider>
@@ -107,23 +107,23 @@ describe('useWorkflowTranslations', () => {
     })
 
     it('loads translations', async () => {
-        const {result, waitForNextUpdate} = renderHook(
+        const { result, waitForNextUpdate } = renderHook(
             () => useWorkflowTranslations('id', ['en-US'], false, true),
-            renderHookOptions
+            renderHookOptions,
         )
         await waitForNextUpdate()
         expect(result.current).toEqual(
             expect.objectContaining({
                 currentLanguage: 'en-US',
                 areTranslationsDirty: false,
-            })
+            }),
         )
     })
 
     it('switch language then discard changes', async () => {
-        const {result, waitForNextUpdate} = renderHook(
+        const { result, waitForNextUpdate } = renderHook(
             () => useWorkflowTranslations('id', ['en-US'], false, true),
-            renderHookOptions
+            renderHookOptions,
         )
         await waitForNextUpdate()
 
@@ -132,13 +132,13 @@ describe('useWorkflowTranslations', () => {
         })
         expect(
             graph.nodes[0].type === 'channel_trigger' &&
-                graph.nodes[0].data.label === ''
+                graph.nodes[0].data.label === '',
         ).toBeTruthy()
         expect(result.current).toEqual(
             expect.objectContaining({
                 currentLanguage: 'fr-FR',
                 areTranslationsDirty: true,
-            })
+            }),
         )
         // discard
         act(() => {
@@ -148,18 +148,18 @@ describe('useWorkflowTranslations', () => {
             expect.objectContaining({
                 currentLanguage: 'en-US',
                 areTranslationsDirty: false,
-            })
+            }),
         )
     })
 
     it('saves translations', async () => {
-        const {result, waitForNextUpdate, rerender} = renderHook(
+        const { result, waitForNextUpdate, rerender } = renderHook(
             (availableLanguages: LanguageCode[]) =>
                 useWorkflowTranslations('id', availableLanguages, false, true),
             {
                 initialProps: ['en-US'] as LanguageCode[],
                 ...renderHookOptions,
-            } as any
+            } as any,
         )
         await waitForNextUpdate()
         act(() => {
@@ -179,23 +179,23 @@ describe('useWorkflowTranslations', () => {
             expect.objectContaining({
                 currentLanguage: 'fr-FR',
                 areTranslationsDirty: false,
-            })
+            }),
         )
         expect(mockStore['fr-FR']).toEqual(
             expect.objectContaining({
                 [graphTriggerLabelTkey]: 'french text',
-            })
+            }),
         )
     })
 
     it('removes stale translations', async () => {
-        const {result, waitForNextUpdate, rerender} = renderHook(
+        const { result, waitForNextUpdate, rerender } = renderHook(
             (availableLanguages: LanguageCode[]) =>
                 useWorkflowTranslations('id', availableLanguages, false, true),
             {
                 ...renderHookOptions,
                 initialProps: ['en-US'] as LanguageCode[],
-            } as any
+            } as any,
         )
         await waitForNextUpdate()
         act(() => {

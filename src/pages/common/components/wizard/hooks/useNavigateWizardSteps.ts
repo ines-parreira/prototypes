@@ -1,6 +1,6 @@
-import {useContext} from 'react'
+import { useContext } from 'react'
 
-import {WizardContext} from '../Wizard'
+import { WizardContext } from '../Wizard'
 
 const useNavigateWizardSteps = () => {
     const wizardContext = useContext(WizardContext)

@@ -1,15 +1,15 @@
-import {campaign} from 'fixtures/campaign'
-import {shopifyIntegration} from 'fixtures/integrations'
-import {CampaignPreview} from 'models/convert/campaign/types'
-import {ReportingGranularity} from 'models/reporting/types'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-import {exampleResponseData} from 'pages/stats/convert/components/DownloadOverviewData/__tests__/DownloadOverviewData.spec'
+import { campaign } from 'fixtures/campaign'
+import { shopifyIntegration } from 'fixtures/integrations'
+import { CampaignPreview } from 'models/convert/campaign/types'
+import { ReportingGranularity } from 'models/reporting/types'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
+import { exampleResponseData } from 'pages/stats/convert/components/DownloadOverviewData/__tests__/DownloadOverviewData.spec'
 import {
     CampaignReportContext,
     fetchCampaignReportData,
 } from 'pages/stats/convert/components/DownloadOverviewData/GenerateReportService'
-import {fetchGetTableStat} from 'pages/stats/convert/hooks/stats/useGetTableStat'
-import {assumeMock} from 'utils/testing'
+import { fetchGetTableStat } from 'pages/stats/convert/hooks/stats/useGetTableStat'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('pages/stats/convert/hooks/stats/useGetTableStat')
 const fetchGetTableStatMock = assumeMock(fetchGetTableStat)
@@ -50,11 +50,11 @@ describe('GenerateReportService', () => {
                 granularity,
                 {
                     campaignsReportContext,
-                }
+                },
             )
 
             expect(result).toEqual({
-                files: {'performance-2024-09-23.csv': mockedCSV},
+                files: { 'performance-2024-09-23.csv': mockedCSV },
                 fileName: 'campaign-performance-2024-09-23',
                 isLoading: false,
             })

@@ -1,6 +1,7 @@
-import {render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import ToolbarProvider from '../../ToolbarProvider'
 import WorkflowVariableDropdown from '../WorkflowVariableDropdown'
@@ -36,7 +37,7 @@ describe('<WorkflowVariableDropdown />', () => {
                     isOpen
                     onToggle={jest.fn()}
                 />
-            </ToolbarProvider>
+            </ToolbarProvider>,
         )
 
         expect(screen.getByText('No variables available')).toBeInTheDocument()
@@ -80,7 +81,7 @@ describe('<WorkflowVariableDropdown />', () => {
                     isOpen
                     onToggle={jest.fn()}
                 />
-            </ToolbarProvider>
+            </ToolbarProvider>,
         )
 
         expect(screen.getByText('File upload')).toBeInTheDocument()
@@ -126,14 +127,14 @@ describe('<WorkflowVariableDropdown />', () => {
                         isOpen
                         onToggle={jest.fn()}
                     />
-                </ToolbarProvider>
+                </ToolbarProvider>,
             )
 
             await userEvent.type(
                 screen.getByPlaceholderText('Search for a variable'),
                 // Start to type in File, which will hide HTTP request
                 'Fi',
-                {delay: 200}
+                { delay: 200 },
             )
 
             expect(screen.getByText('File upload')).toBeInTheDocument()
@@ -141,7 +142,7 @@ describe('<WorkflowVariableDropdown />', () => {
         })
 
         test('should clear searches when dropdown closed', async () => {
-            const {rerender} = render(
+            const { rerender } = render(
                 <ToolbarProvider
                     workflowVariables={[
                         {
@@ -178,14 +179,14 @@ describe('<WorkflowVariableDropdown />', () => {
                         isOpen
                         onToggle={jest.fn()}
                     />
-                </ToolbarProvider>
+                </ToolbarProvider>,
             )
 
             await userEvent.type(
                 screen.getByPlaceholderText('Search for a variable'),
                 // Start to type in File, which will hide HTTP request
                 'Fi',
-                {delay: 200}
+                { delay: 200 },
             )
 
             expect(screen.getByText('File upload')).toBeInTheDocument()
@@ -228,7 +229,7 @@ describe('<WorkflowVariableDropdown />', () => {
                         isOpen={false}
                         onToggle={jest.fn()}
                     />
-                </ToolbarProvider>
+                </ToolbarProvider>,
             )
 
             rerender(
@@ -268,7 +269,7 @@ describe('<WorkflowVariableDropdown />', () => {
                         isOpen
                         onToggle={jest.fn()}
                     />
-                </ToolbarProvider>
+                </ToolbarProvider>,
             )
 
             expect(screen.getByText('File upload')).toBeInTheDocument()

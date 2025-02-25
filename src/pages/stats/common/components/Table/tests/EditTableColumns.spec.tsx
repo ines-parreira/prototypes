@@ -1,15 +1,15 @@
-import {act, fireEvent, render, screen} from '@testing-library/react'
-import {createDragDropManager} from 'dnd-core'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {DndProvider} from 'react-dnd'
-import {HTML5Backend} from 'react-dnd-html5-backend'
-import {Provider} from 'react-redux'
+
+import { act, fireEvent, render, screen } from '@testing-library/react'
+import { createDragDropManager } from 'dnd-core'
+import { fromJS } from 'immutable'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {useAgentTableSetting} from 'hooks/reporting/useAgentsTableConfigSetting'
-
+import { useAgentTableSetting } from 'hooks/reporting/useAgentsTableConfigSetting'
 import {
     EditTableColumns,
     SAVE_BUTTON_TEXT,
@@ -22,16 +22,16 @@ import {
     TableLabels,
 } from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import * as currentAccount from 'state/currentAccount/actions'
-import {getAgentsTableConfigSettingsJS} from 'state/currentAccount/selectors'
-import {AccountSettingType} from 'state/currentAccount/types'
-import {RootState, StoreDispatch} from 'state/types'
-import {AgentsTableColumn} from 'state/ui/stats/types'
+import { getAgentsTableConfigSettingsJS } from 'state/currentAccount/selectors'
+import { AccountSettingType } from 'state/currentAccount/types'
+import { RootState, StoreDispatch } from 'state/types'
+import { AgentsTableColumn } from 'state/ui/stats/types'
 
 const manager = createDragDropManager(HTML5Backend, undefined, undefined)
 
 const submitSettingSpy = jest.spyOn(
     currentAccount,
-    'submitAgentTableConfigView'
+    'submitAgentTableConfigView',
 )
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -62,7 +62,7 @@ describe('<AgentsEditColumns>', () => {
                 <DndProvider manager={manager}>
                     <EditTableColumns {...defaultProps} />
                 </DndProvider>
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText(TOGGLE_LABEL)).toBeInTheDocument()
@@ -74,7 +74,7 @@ describe('<AgentsEditColumns>', () => {
                 <DndProvider manager={manager}>
                     <EditTableColumns {...defaultProps} />
                 </DndProvider>
-            </Provider>
+            </Provider>,
         )
 
         act(() => {
@@ -90,7 +90,7 @@ describe('<AgentsEditColumns>', () => {
                 <DndProvider manager={manager}>
                     <EditTableColumns {...defaultProps} />
                 </DndProvider>
-            </Provider>
+            </Provider>,
         )
 
         const element = screen.getByText(columnTitle)
@@ -109,7 +109,7 @@ describe('<AgentsEditColumns>', () => {
                 <DndProvider manager={manager}>
                     <EditTableColumns {...defaultProps} />
                 </DndProvider>
-            </Provider>
+            </Provider>,
         )
 
         const element = screen.getByText(columnTitle)
@@ -163,7 +163,7 @@ describe('<AgentsEditColumns>', () => {
                 <DndProvider manager={manager}>
                     <EditTableColumns {...defaultProps} />
                 </DndProvider>
-            </Provider>
+            </Provider>,
         )
 
         const element = screen.getByText(columnTitle)
@@ -219,12 +219,12 @@ describe('<AgentsEditColumns>', () => {
             }),
         }
 
-        const {rerender} = render(
+        const { rerender } = render(
             <Provider store={mockStore(state)}>
                 <DndProvider manager={manager}>
                     <EditTableColumns {...props} />
                 </DndProvider>
-            </Provider>
+            </Provider>,
         )
 
         const updatedActiveView = {
@@ -236,7 +236,7 @@ describe('<AgentsEditColumns>', () => {
             ],
         }
 
-        const options = screen.getAllByRole('checkbox', {hidden: true})
+        const options = screen.getAllByRole('checkbox', { hidden: true })
         expect(options.length).toBe(activeView.metrics.length)
 
         rerender(
@@ -250,7 +250,7 @@ describe('<AgentsEditColumns>', () => {
                         })}
                     />
                 </DndProvider>
-            </Provider>
+            </Provider>,
         )
 
         const optionsAfterUpdate = screen.getAllByRole('checkbox', {
@@ -265,14 +265,14 @@ describe('<AgentsEditColumns>', () => {
                 <DndProvider manager={manager}>
                     <EditTableColumns {...defaultProps} />
                 </DndProvider>
-            </Provider>
+            </Provider>,
         )
 
         const items = document.getElementsByClassName('dropdown-item')
 
         agentPerformanceTableActiveView.metrics.forEach((column, index) => {
             expect(items[index]).toHaveTextContent(
-                new RegExp(TableLabels[column.id])
+                new RegExp(TableLabels[column.id]),
             )
         })
     })
@@ -288,7 +288,7 @@ describe('<AgentsEditColumns>', () => {
                 <DndProvider manager={manager}>
                     <EditTableColumns {...defaultProps} />
                 </DndProvider>
-            </Provider>
+            </Provider>,
         )
 
         const optionItem = screen.getByLabelText(firstOrderableItemLabel)
@@ -304,7 +304,7 @@ describe('<AgentsEditColumns>', () => {
         const allItems = document.getElementsByClassName('dropdown-item')
         expect(allItems[1]).toHaveTextContent(new RegExp(lastItemLabel))
         expect(allItems[2]).toHaveTextContent(
-            new RegExp(firstOrderableItemLabel)
+            new RegExp(firstOrderableItemLabel),
         )
         expect(screen.getByText(SAVE_BUTTON_TEXT)).toBeEnabled()
     })

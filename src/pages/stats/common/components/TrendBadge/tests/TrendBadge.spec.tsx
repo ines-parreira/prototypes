@@ -1,12 +1,12 @@
-import {act, render, screen} from '@testing-library/react'
-
-import userEvent from '@testing-library/user-event'
 import React from 'react'
+
+import { act, render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import TrendBadge, {
     DEFAULT_BADGE_TEXT,
 } from 'pages/stats/common/components/TrendBadge/TrendBadge'
-import {formatMetricValue} from 'pages/stats/common/utils'
+import { formatMetricValue } from 'pages/stats/common/utils'
 
 jest.mock(
     '@gorgias/merchant-ui-kit',
@@ -14,7 +14,7 @@ jest.mock(
         ({
             ...jest.requireActual('@gorgias/merchant-ui-kit'),
             Skeleton: () => <div data-testid="skeleton" />,
-        }) as typeof import('@gorgias/merchant-ui-kit')
+        }) as typeof import('@gorgias/merchant-ui-kit'),
 )
 
 describe('<TrendBadge />', () => {
@@ -25,7 +25,7 @@ describe('<TrendBadge />', () => {
     })
 
     it('should render the loading skeleton', () => {
-        const {getAllByTestId} = render(<TrendBadge isLoading />)
+        const { getAllByTestId } = render(<TrendBadge isLoading />)
 
         expect(getAllByTestId('skeleton')).toHaveLength(1)
     })
@@ -34,8 +34,8 @@ describe('<TrendBadge />', () => {
         const value = 2.3
         const prevValue = 0
 
-        const {container} = render(
-            <TrendBadge value={value} prevValue={prevValue} />
+        const { container } = render(
+            <TrendBadge value={value} prevValue={prevValue} />,
         )
 
         expect(container.firstChild).not.toBe(null)
@@ -43,44 +43,44 @@ describe('<TrendBadge />', () => {
     })
 
     it('should render with positive color when more-is-better', () => {
-        const {container} = render(
-            <TrendBadge interpretAs="more-is-better" value={2} prevValue={1} />
+        const { container } = render(
+            <TrendBadge interpretAs="more-is-better" value={2} prevValue={1} />,
         )
 
         expect(container.firstChild).toHaveClass('positive')
     })
 
     it('should render with negative color when less-is-better', () => {
-        const {container} = render(
-            <TrendBadge interpretAs="less-is-better" value={2} prevValue={1} />
+        const { container } = render(
+            <TrendBadge interpretAs="less-is-better" value={2} prevValue={1} />,
         )
 
         expect(container.firstChild).toHaveClass('negative')
     })
 
     it('should render with negative color when more-is-better', () => {
-        const {container} = render(
-            <TrendBadge interpretAs="more-is-better" value={1} prevValue={2} />
+        const { container } = render(
+            <TrendBadge interpretAs="more-is-better" value={1} prevValue={2} />,
         )
         expect(container.firstChild).toHaveClass('negative')
     })
     it('should render with positive color when less-is-better', () => {
-        const {container} = render(
-            <TrendBadge interpretAs="less-is-better" value={1} prevValue={2} />
+        const { container } = render(
+            <TrendBadge interpretAs="less-is-better" value={1} prevValue={2} />,
         )
         expect(container.firstChild).toHaveClass('positive')
     })
 
     it('should render with unchanged color when less-is-better', () => {
-        const {container} = render(
-            <TrendBadge interpretAs="less-is-better" value={0} prevValue={0} />
+        const { container } = render(
+            <TrendBadge interpretAs="less-is-better" value={0} prevValue={0} />,
         )
         expect(container.firstChild).toHaveClass('unchanged')
     })
 
     it('should render with unchanged color when more-is-better', () => {
-        const {container} = render(
-            <TrendBadge interpretAs="more-is-better" value={0} prevValue={0} />
+        const { container } = render(
+            <TrendBadge interpretAs="more-is-better" value={0} prevValue={0} />,
         )
 
         expect(container.firstChild).toHaveClass('unchanged')
@@ -90,7 +90,7 @@ describe('<TrendBadge />', () => {
         const badgeClass = 'badge'
         const value = 5
         const prevValue = 10
-        const tooltipData = {period: 'random text'}
+        const tooltipData = { period: 'random text' }
         const tooltipResultingText = `Vs. ${formatMetricValue(prevValue)} on ${
             tooltipData.period
         }`
@@ -102,7 +102,7 @@ describe('<TrendBadge />', () => {
                 value={value}
                 prevValue={prevValue}
                 tooltipData={tooltipData}
-            />
+            />,
         )
         const badge = document.querySelector(`[class*=${badgeClass}]`)
 
@@ -111,7 +111,7 @@ describe('<TrendBadge />', () => {
         })
 
         expect(await screen.findByRole('tooltip')).toHaveTextContent(
-            tooltipResultingText
+            tooltipResultingText,
         )
     })
 })

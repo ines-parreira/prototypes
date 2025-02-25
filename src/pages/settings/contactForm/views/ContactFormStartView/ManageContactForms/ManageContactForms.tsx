@@ -1,7 +1,8 @@
 import React from 'react'
-import {useHistory} from 'react-router-dom'
 
-import {ContactForm} from 'models/contactForm/types'
+import { useHistory } from 'react-router-dom'
+
+import { ContactForm } from 'models/contactForm/types'
 import Button from 'pages/common/components/button/Button'
 import InfiniteScroll from 'pages/common/components/InfiniteScroll/InfiniteScroll'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
@@ -14,10 +15,11 @@ import {
     CONTACT_FORM_CUSTOMIZATION_PATH,
 } from 'pages/settings/contactForm/constants'
 import contactFormCss from 'pages/settings/contactForm/contactForm.less'
-import {insertContactFormIdParam} from 'pages/settings/contactForm/utils/navigation'
+import { insertContactFormIdParam } from 'pages/settings/contactForm/utils/navigation'
 import settingsCss from 'pages/settings/settings.less'
 
-import {ContactFormTableRow} from './ContactFormTableRow'
+import { ContactFormTableRow } from './ContactFormTableRow'
+
 import css from './ManageContactForms.less'
 
 export type Props = {
@@ -38,7 +40,7 @@ const ManageContactForms = ({
         history.push(CONTACT_FORM_CREATE_PATH)
     const navigateToContactFormCustomization = (id: number) =>
         history.push(
-            insertContactFormIdParam(CONTACT_FORM_CUSTOMIZATION_PATH, id)
+            insertContactFormIdParam(CONTACT_FORM_CUSTOMIZATION_PATH, id),
         )
 
     if (!isLoading && contactForms.length === 0) {
@@ -68,11 +70,11 @@ const ManageContactForms = ({
                     <TableWrapper>
                         <TableHead className={css.contactFormsTableHead}>
                             <HeaderCellProperty
-                                style={{width: '35%'}}
+                                style={{ width: '35%' }}
                                 title="Form Name"
                             />
                             <HeaderCellProperty
-                                style={{width: '20%'}}
+                                style={{ width: '20%' }}
                                 title="Store"
                             />
                             <HeaderCellProperty title="Language" />
@@ -85,7 +87,7 @@ const ManageContactForms = ({
                                     form={form}
                                     onClick={() => {
                                         navigateToContactFormCustomization(
-                                            form.id
+                                            form.id,
                                         )
                                     }}
                                 />

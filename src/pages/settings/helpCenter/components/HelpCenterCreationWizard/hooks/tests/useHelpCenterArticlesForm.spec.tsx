@@ -1,17 +1,17 @@
 import 'tests/__mocks__/editionManagerContextMock'
 
-import {waitFor} from '@testing-library/react'
-import {renderHook, act} from '@testing-library/react-hooks/dom'
+import { waitFor } from '@testing-library/react'
+import { act, renderHook } from '@testing-library/react-hooks/dom'
 
 import {
     ArticleTemplateType,
     HelpCenterArticleItem,
 } from 'models/helpCenter/types'
-import {AIArticlesGroupedFixture} from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
-import {ArticleTemplatesGroupedByCategoryFixture} from 'pages/settings/helpCenter/fixtures/articleTemplate.fixture'
-import {HelpCenterApiArticlesFixture} from 'pages/settings/helpCenter/fixtures/wizard.fixture'
+import { AIArticlesGroupedFixture } from 'pages/settings/helpCenter/fixtures/aiArticles.fixture'
+import { ArticleTemplatesGroupedByCategoryFixture } from 'pages/settings/helpCenter/fixtures/articleTemplate.fixture'
+import { HelpCenterApiArticlesFixture } from 'pages/settings/helpCenter/fixtures/wizard.fixture'
 
-import {useHelpCenterArticlesForm} from '../useHelpCenterArticlesForm'
+import { useHelpCenterArticlesForm } from '../useHelpCenterArticlesForm'
 
 const mockedCreateArticleMutateAsync = jest.fn()
 const mockedCreateArticleTranslationMutateAsync = jest.fn()
@@ -42,8 +42,8 @@ describe('useHelpCenterArticlesForm', () => {
 
     describe('ui state', () => {
         it('should initialize with default values', () => {
-            const {result} = renderHook(() =>
-                useHelpCenterArticlesForm(helpCenter, articles)
+            const { result } = renderHook(() =>
+                useHelpCenterArticlesForm(helpCenter, articles),
             )
 
             expect(result.current.articles).toEqual(articles)
@@ -51,8 +51,8 @@ describe('useHelpCenterArticlesForm', () => {
         })
 
         it('should handle article selection', () => {
-            const {result} = renderHook(() =>
-                useHelpCenterArticlesForm(helpCenter, articles)
+            const { result } = renderHook(() =>
+                useHelpCenterArticlesForm(helpCenter, articles),
             )
 
             act(() => {
@@ -60,13 +60,13 @@ describe('useHelpCenterArticlesForm', () => {
             })
 
             expect(result.current.articles.orderManagement[0].isSelected).toBe(
-                true
+                true,
             )
         })
 
         it('should handle article edit', () => {
-            const {result} = renderHook(() =>
-                useHelpCenterArticlesForm(helpCenter, articles)
+            const { result } = renderHook(() =>
+                useHelpCenterArticlesForm(helpCenter, articles),
             )
 
             act(() => {
@@ -80,8 +80,8 @@ describe('useHelpCenterArticlesForm', () => {
         })
 
         it('should handle editor close', () => {
-            const {result} = renderHook(() =>
-                useHelpCenterArticlesForm(helpCenter, articles)
+            const { result } = renderHook(() =>
+                useHelpCenterArticlesForm(helpCenter, articles),
             )
 
             act(() => {
@@ -92,8 +92,8 @@ describe('useHelpCenterArticlesForm', () => {
         })
 
         it('should handle editor ready', () => {
-            const {result} = renderHook(() =>
-                useHelpCenterArticlesForm(helpCenter, articles)
+            const { result } = renderHook(() =>
+                useHelpCenterArticlesForm(helpCenter, articles),
             )
 
             const content = '<p>><strong>Test</strong></p>'
@@ -113,8 +113,8 @@ describe('useHelpCenterArticlesForm', () => {
         })
 
         it('should handle article hover', () => {
-            const {result} = renderHook(() =>
-                useHelpCenterArticlesForm(helpCenter, articles)
+            const { result } = renderHook(() =>
+                useHelpCenterArticlesForm(helpCenter, articles),
             )
 
             act(() => {
@@ -122,15 +122,15 @@ describe('useHelpCenterArticlesForm', () => {
             })
 
             expect(result.current.hoveredArticle).toBe(
-                articles['orderManagement'][0]
+                articles['orderManagement'][0],
             )
         })
     })
 
     describe('endpoints calls', () => {
         it('should call create an article mock', async () => {
-            const {result} = renderHook(() =>
-                useHelpCenterArticlesForm(helpCenter, articles)
+            const { result } = renderHook(() =>
+                useHelpCenterArticlesForm(helpCenter, articles),
             )
 
             act(() => {
@@ -140,7 +140,7 @@ describe('useHelpCenterArticlesForm', () => {
             act(() => {
                 result.current.handleEditorSave(
                     'How do I cancel my order <updated>?',
-                    '<p>><strong>Test</strong></p>'
+                    '<p>><strong>Test</strong></p>',
                 )
             })
 
@@ -168,8 +168,8 @@ describe('useHelpCenterArticlesForm', () => {
                     },
                 ],
             }
-            const {result} = renderHook(() =>
-                useHelpCenterArticlesForm(helpCenter, articlesWithTranslations)
+            const { result } = renderHook(() =>
+                useHelpCenterArticlesForm(helpCenter, articlesWithTranslations),
             )
 
             act(() => {
@@ -179,13 +179,13 @@ describe('useHelpCenterArticlesForm', () => {
             act(() => {
                 result.current.handleEditorSave(
                     'How do I cancel my order <updated>?',
-                    '<p>><strong>Test</strong></p>'
+                    '<p>><strong>Test</strong></p>',
                 )
             })
 
             await waitFor(() => {
                 expect(
-                    mockedCreateArticleTranslationMutateAsync
+                    mockedCreateArticleTranslationMutateAsync,
                 ).toHaveBeenCalled()
             })
         })
@@ -208,8 +208,8 @@ describe('useHelpCenterArticlesForm', () => {
                     },
                 ],
             }
-            const {result} = renderHook(() =>
-                useHelpCenterArticlesForm(helpCenter, articlesWithTranslations)
+            const { result } = renderHook(() =>
+                useHelpCenterArticlesForm(helpCenter, articlesWithTranslations),
             )
 
             act(() => {
@@ -219,20 +219,20 @@ describe('useHelpCenterArticlesForm', () => {
             act(() => {
                 result.current.handleEditorSave(
                     'How do I cancel my order <updated>?',
-                    '<p>><strong>Test</strong></p>'
+                    '<p>><strong>Test</strong></p>',
                 )
             })
 
             await waitFor(() => {
                 expect(
-                    mockedUpdateArticleTranslationMutateAsync
+                    mockedUpdateArticleTranslationMutateAsync,
                 ).toHaveBeenCalled()
             })
         })
 
         it('should not update articles if key not found', async () => {
-            const {result} = renderHook(() =>
-                useHelpCenterArticlesForm(helpCenter, articles)
+            const { result } = renderHook(() =>
+                useHelpCenterArticlesForm(helpCenter, articles),
             )
 
             act(() => {
@@ -242,7 +242,7 @@ describe('useHelpCenterArticlesForm', () => {
             act(() => {
                 result.current.handleEditorSave(
                     'How do I cancel my order <updated>?',
-                    '<p>><strong>Test</strong></p>'
+                    '<p>><strong>Test</strong></p>',
                 )
             })
 
@@ -254,8 +254,8 @@ describe('useHelpCenterArticlesForm', () => {
 
         describe('handle navigation for article templates', () => {
             it('should SELECTED + NOT EDITED => DRAFT article', async () => {
-                const {result} = renderHook(() =>
-                    useHelpCenterArticlesForm(helpCenter, articles)
+                const { result } = renderHook(() =>
+                    useHelpCenterArticlesForm(helpCenter, articles),
                 )
 
                 act(() => {
@@ -270,13 +270,13 @@ describe('useHelpCenterArticlesForm', () => {
                     expect(mockedCreateArticleMutateAsync).toHaveBeenCalledWith(
                         [
                             undefined,
-                            {help_center_id: 1},
+                            { help_center_id: 1 },
                             expect.objectContaining({
                                 translation: expect.objectContaining({
                                     is_current: false,
                                 }),
                             }),
-                        ]
+                        ],
                     )
                 })
             })
@@ -292,8 +292,8 @@ describe('useHelpCenterArticlesForm', () => {
                         },
                     ],
                 }
-                const {result} = renderHook(() =>
-                    useHelpCenterArticlesForm(helpCenter, mockedArticles)
+                const { result } = renderHook(() =>
+                    useHelpCenterArticlesForm(helpCenter, mockedArticles),
                 )
 
                 await act(async () => {
@@ -302,7 +302,7 @@ describe('useHelpCenterArticlesForm', () => {
 
                 await waitFor(() => {
                     expect(
-                        mockedUpdateArticleTranslationMutateAsync
+                        mockedUpdateArticleTranslationMutateAsync,
                     ).toHaveBeenCalledWith([
                         undefined,
                         expect.objectContaining({
@@ -326,8 +326,8 @@ describe('useHelpCenterArticlesForm', () => {
                     ],
                 }
 
-                const {result} = renderHook(() =>
-                    useHelpCenterArticlesForm(helpCenter, mockedArticles)
+                const { result } = renderHook(() =>
+                    useHelpCenterArticlesForm(helpCenter, mockedArticles),
                 )
 
                 act(() => {
@@ -337,7 +337,7 @@ describe('useHelpCenterArticlesForm', () => {
                 await waitFor(() => {
                     expect(
                         result.current.articles['shippingAndDelivery'][0]
-                            .isSelected
+                            .isSelected,
                     ).toBeFalsy()
                 })
 
@@ -347,7 +347,7 @@ describe('useHelpCenterArticlesForm', () => {
 
                 await waitFor(() => {
                     expect(
-                        mockedUpdateArticleTranslationMutateAsync
+                        mockedUpdateArticleTranslationMutateAsync,
                     ).toHaveBeenCalledWith([
                         undefined,
                         expect.objectContaining({
@@ -361,8 +361,8 @@ describe('useHelpCenterArticlesForm', () => {
             })
 
             it('should UNSELECTED + NOT EDITED => NO article', async () => {
-                const {result} = renderHook(() =>
-                    useHelpCenterArticlesForm(helpCenter, articles)
+                const { result } = renderHook(() =>
+                    useHelpCenterArticlesForm(helpCenter, articles),
                 )
 
                 await act(async () => {
@@ -371,13 +371,13 @@ describe('useHelpCenterArticlesForm', () => {
 
                 await waitFor(() => {
                     expect(
-                        mockedCreateArticleMutateAsync
+                        mockedCreateArticleMutateAsync,
                     ).not.toHaveBeenCalled()
                     expect(
-                        mockedCreateArticleTranslationMutateAsync
+                        mockedCreateArticleTranslationMutateAsync,
                     ).not.toHaveBeenCalled()
                     expect(
-                        mockedUpdateArticleTranslationMutateAsync
+                        mockedUpdateArticleTranslationMutateAsync,
                     ).not.toHaveBeenCalled()
                 })
             })
@@ -385,8 +385,8 @@ describe('useHelpCenterArticlesForm', () => {
 
         describe('handle navigation for AI templates', () => {
             it('should SELECTED + NOT EDITED => PUBLISHED article', async () => {
-                const {result} = renderHook(() =>
-                    useHelpCenterArticlesForm(helpCenter, aiArticles)
+                const { result } = renderHook(() =>
+                    useHelpCenterArticlesForm(helpCenter, aiArticles),
                 )
 
                 act(() => {
@@ -401,13 +401,13 @@ describe('useHelpCenterArticlesForm', () => {
                     expect(mockedCreateArticleMutateAsync).toHaveBeenCalledWith(
                         [
                             undefined,
-                            {help_center_id: 1},
+                            { help_center_id: 1 },
                             expect.objectContaining({
                                 translation: expect.objectContaining({
                                     is_current: true,
                                 }),
                             }),
-                        ]
+                        ],
                     )
                 })
             })
@@ -423,8 +423,8 @@ describe('useHelpCenterArticlesForm', () => {
                         },
                     ],
                 }
-                const {result} = renderHook(() =>
-                    useHelpCenterArticlesForm(helpCenter, mockedAiArticles)
+                const { result } = renderHook(() =>
+                    useHelpCenterArticlesForm(helpCenter, mockedAiArticles),
                 )
 
                 await act(async () => {
@@ -433,7 +433,7 @@ describe('useHelpCenterArticlesForm', () => {
 
                 await waitFor(() => {
                     expect(
-                        mockedUpdateArticleTranslationMutateAsync
+                        mockedUpdateArticleTranslationMutateAsync,
                     ).toHaveBeenCalledWith([
                         undefined,
                         expect.objectContaining({
@@ -457,8 +457,8 @@ describe('useHelpCenterArticlesForm', () => {
                     ],
                 }
 
-                const {result} = renderHook(() =>
-                    useHelpCenterArticlesForm(helpCenter, mockedAiArticles)
+                const { result } = renderHook(() =>
+                    useHelpCenterArticlesForm(helpCenter, mockedAiArticles),
                 )
 
                 act(() => {
@@ -467,7 +467,7 @@ describe('useHelpCenterArticlesForm', () => {
 
                 await waitFor(() => {
                     expect(
-                        result.current.articles['ai'][0].isSelected
+                        result.current.articles['ai'][0].isSelected,
                     ).toBeFalsy()
                 })
 
@@ -477,7 +477,7 @@ describe('useHelpCenterArticlesForm', () => {
 
                 await waitFor(() => {
                     expect(
-                        mockedUpdateArticleTranslationMutateAsync
+                        mockedUpdateArticleTranslationMutateAsync,
                     ).toHaveBeenCalledWith([
                         undefined,
                         expect.objectContaining({
@@ -491,8 +491,8 @@ describe('useHelpCenterArticlesForm', () => {
             })
 
             it('should UNSELECTED + NOT EDITED => NO article', async () => {
-                const {result} = renderHook(() =>
-                    useHelpCenterArticlesForm(helpCenter, aiArticles)
+                const { result } = renderHook(() =>
+                    useHelpCenterArticlesForm(helpCenter, aiArticles),
                 )
 
                 await act(async () => {
@@ -501,13 +501,13 @@ describe('useHelpCenterArticlesForm', () => {
 
                 await waitFor(() => {
                     expect(
-                        mockedCreateArticleMutateAsync
+                        mockedCreateArticleMutateAsync,
                     ).not.toHaveBeenCalled()
                     expect(
-                        mockedCreateArticleTranslationMutateAsync
+                        mockedCreateArticleTranslationMutateAsync,
                     ).not.toHaveBeenCalled()
                     expect(
-                        mockedUpdateArticleTranslationMutateAsync
+                        mockedUpdateArticleTranslationMutateAsync,
                     ).not.toHaveBeenCalled()
                 })
             })

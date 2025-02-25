@@ -1,10 +1,11 @@
-import {act} from '@testing-library/react'
+import React, { forwardRef } from 'react'
+
+import { act } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import React, {forwardRef} from 'react'
 
 import useConditionalShortcuts from 'hooks/useConditionalShortcuts'
 import CreateTicketButton from 'pages/common/components/CreateTicket/CreateTicketButton'
-import {flushPromises, renderWithRouter} from 'utils/testing'
+import { flushPromises, renderWithRouter } from 'utils/testing'
 
 import useHandleTicketDraft from '../useHandleTicketDraft'
 
@@ -23,8 +24,8 @@ describe('<CreateTicketButton />', () => {
     })
 
     it('should render draft dropdown when there is a draft', () => {
-        const {getByText, queryByText} = renderWithRouter(
-            <CreateTicketButton />
+        const { getByText, queryByText } = renderWithRouter(
+            <CreateTicketButton />,
         )
 
         const createTicketButton = getByText('Create ticket')
@@ -40,8 +41,8 @@ describe('<CreateTicketButton />', () => {
             onResumeDraft: jest.fn(),
             onDiscardDraft: jest.fn(),
         })
-        const {getByText, queryByText} = renderWithRouter(
-            <CreateTicketButton />
+        const { getByText, queryByText } = renderWithRouter(
+            <CreateTicketButton />,
         )
 
         const createTicketButton = getByText('Create ticket')
@@ -49,13 +50,13 @@ describe('<CreateTicketButton />', () => {
 
         expect(queryByText('Resume draft')).not.toBeInTheDocument()
         expect(
-            queryByText('Discard and create new ticket')
+            queryByText('Discard and create new ticket'),
         ).not.toBeInTheDocument()
     })
 
     it('should allow passing a custom trigger', async () => {
-        const {getByText} = renderWithRouter(
-            <CreateTicketButton trigger={<button>Custom trigger</button>} />
+        const { getByText } = renderWithRouter(
+            <CreateTicketButton trigger={<button>Custom trigger</button>} />,
         )
         await act(flushPromises)
 
@@ -67,8 +68,8 @@ describe('<CreateTicketButton />', () => {
             <button>{JSON.stringify(ref)}</button>
         ))
 
-        const {getByText} = renderWithRouter(
-            <CreateTicketButton trigger={<CustomTrigger />} />
+        const { getByText } = renderWithRouter(
+            <CreateTicketButton trigger={<CustomTrigger />} />,
         )
         await act(flushPromises)
 
@@ -84,7 +85,7 @@ describe('<CreateTicketButton />', () => {
                 CREATE_TICKET: {
                     action: expect.any(Function),
                 },
-            })
+            }),
         )
     })
 
@@ -97,19 +98,19 @@ describe('<CreateTicketButton />', () => {
                 CREATE_TICKET: {
                     action: expect.any(Function),
                 },
-            })
+            }),
         )
     })
 
     describe('custom link and button props', () => {
         it('should display for existing draft', () => {
-            const {getByText, getByRole} = renderWithRouter(
+            const { getByText, getByRole } = renderWithRouter(
                 <CreateTicketButton
-                    buttonProps={{intent: 'secondary'}}
+                    buttonProps={{ intent: 'secondary' }}
                     to={{
                         pathname: `/custom/path`,
                     }}
-                />
+                />,
             )
 
             const buttonClasses = getByRole('button', {
@@ -130,13 +131,13 @@ describe('<CreateTicketButton />', () => {
                 onDiscardDraft: jest.fn(),
             })
 
-            const {getByRole} = renderWithRouter(
+            const { getByRole } = renderWithRouter(
                 <CreateTicketButton
-                    buttonProps={{intent: 'secondary'}}
+                    buttonProps={{ intent: 'secondary' }}
                     to={{
                         pathname: `/custom/path`,
                     }}
-                />
+                />,
             )
 
             const buttonClasses = getByRole('button', {

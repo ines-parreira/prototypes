@@ -1,13 +1,14 @@
-import {render} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { render } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {setOpenStatusAction, setTextAction} from 'fixtures/macro'
-import {RootState, StoreDispatch} from 'state/types'
+import { setOpenStatusAction, setTextAction } from 'fixtures/macro'
+import { RootState, StoreDispatch } from 'state/types'
 
-import {ActionPreviews} from '../ActionPreviews'
+import { ActionPreviews } from '../ActionPreviews'
 
 jest.mock('draft-js/lib/generateRandomKey', () => () => '42')
 
@@ -33,10 +34,10 @@ describe('<ActionPreviews />', () => {
             [setTextAction, setOpenStatusAction],
         ],
     ])('should render %s ', (_, actions) => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <ActionPreviews {...minProps} actions={actions} />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })

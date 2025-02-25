@@ -1,16 +1,17 @@
-import {screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {SegmentEvent, logEvent} from 'common/segment'
-import {integrationsState} from 'fixtures/integrations'
-import {Integration} from 'models/integration/types'
+import { screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { fromJS } from 'immutable'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { integrationsState } from 'fixtures/integrations'
+import { Integration } from 'models/integration/types'
 import {
     withDefaultLogicalOperator,
     withLogicalOperator,
 } from 'models/reporting/queryFactories/utils'
-import {FilterKey} from 'models/stat/types'
+import { FilterKey } from 'models/stat/types'
 import {
     FILTER_DESELECT_ALL_LABEL,
     FILTER_SELECT_ALL_LABEL,
@@ -18,8 +19,8 @@ import {
     LogicalOperatorEnum,
     LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'
-import {FilterLabels} from 'pages/stats/common/filters/constants'
-import {emptyFilter} from 'pages/stats/common/filters/helpers'
+import { FilterLabels } from 'pages/stats/common/filters/constants'
+import { emptyFilter } from 'pages/stats/common/filters/helpers'
 import {
     IntegrationsFilter,
     IntegrationsFilterWithSavedState,
@@ -27,13 +28,13 @@ import {
     PhoneIntegrationsFilterWithState,
 } from 'pages/stats/common/filters/IntegrationsFilter'
 import * as statsSlice from 'state/stats/statsSlice'
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
 import * as filtersSlice from 'state/ui/stats/filtersSlice'
-import {renderWithStore} from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 jest.mock('common/segment', () => ({
     logEvent: jest.fn(),
-    SegmentEvent: {StatFilterSelected: 'stat-filter-selected'},
+    SegmentEvent: { StatFilterSelected: 'stat-filter-selected' },
 }))
 
 const clearFilterIcon = 'close'
@@ -64,20 +65,20 @@ const renderComponent = () =>
             dispatchStatFiltersDirty={dispatchStatFiltersDirty}
             dispatchStatFiltersClean={dispatchStatFiltersClean}
         />,
-        defaultState
+        defaultState,
     )
 
 describe('IntegrationsFilter', () => {
     const isOneOfRegex = new RegExp(
         `${LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF]}`,
-        'i'
+        'i',
     )
 
     it('should render IntegrationsFilter component', () => {
         renderComponent()
 
         expect(
-            screen.getByText(FilterLabels[FilterKey.Integrations])
+            screen.getByText(FilterLabels[FilterKey.Integrations]),
         ).toBeInTheDocument()
     })
 
@@ -91,11 +92,11 @@ describe('IntegrationsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState
+            defaultState,
         )
 
         expect(
-            screen.getByText(FilterLabels[FilterKey.Integrations])
+            screen.getByText(FilterLabels[FilterKey.Integrations]),
         ).toBeInTheDocument()
     })
 
@@ -115,11 +116,11 @@ describe('IntegrationsFilter', () => {
         userEvent.click(screen.getByText(integrations[1].name))
 
         expect(dispatchUpdate).toHaveBeenCalledWith(
-            withDefaultLogicalOperator([integrations[0].id])
+            withDefaultLogicalOperator([integrations[0].id]),
         )
 
         expect(dispatchUpdate).toHaveBeenCalledWith(
-            withDefaultLogicalOperator([integrations[1].id])
+            withDefaultLogicalOperator([integrations[1].id]),
         )
     })
 
@@ -133,32 +134,34 @@ describe('IntegrationsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState
+            defaultState,
         )
 
         userEvent.click(
-            screen.getByText(LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF])
+            screen.getByText(LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF]),
         )
         userEvent.click(
-            screen.getByRole('option', {name: new RegExp(integrations[0].name)})
+            screen.getByRole('option', {
+                name: new RegExp(integrations[0].name),
+            }),
         )
 
         expect(dispatchUpdate).toHaveBeenCalledWith(
-            withDefaultLogicalOperator([])
+            withDefaultLogicalOperator([]),
         )
     })
 
     it('should dispatch mergeStatsFilters action on selecting all integrations and deselecting all integrations', () => {
-        const {rerender} = renderComponent()
+        const { rerender } = renderComponent()
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
 
         const allAvailableIntegrationsIds = integrations.map(
-            (integration) => integration.id
+            (integration) => integration.id,
         )
 
         expect(dispatchUpdate).toHaveBeenCalledWith(
-            withDefaultLogicalOperator(allAvailableIntegrationsIds)
+            withDefaultLogicalOperator(allAvailableIntegrationsIds),
         )
 
         rerender(
@@ -169,22 +172,22 @@ describe('IntegrationsFilter', () => {
                 dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
-            />
+            />,
         )
 
         userEvent.click(screen.getByText(isOneOfRegex))
         userEvent.click(screen.getByText(FILTER_DESELECT_ALL_LABEL))
 
         expect(dispatchUpdate).toHaveBeenCalledWith(
-            withDefaultLogicalOperator([])
+            withDefaultLogicalOperator([]),
         )
     })
 
     it('should dispatch mergeStatsFilters action on deselecting one of the integrations', () => {
-        const {rerender} = renderComponent()
+        const { rerender } = renderComponent()
 
         const allAvailableIntegrationsIds = integrations.map(
-            (integration) => integration.id
+            (integration) => integration.id,
         )
 
         rerender(
@@ -195,7 +198,7 @@ describe('IntegrationsFilter', () => {
                 dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
-            />
+            />,
         )
 
         userEvent.click(screen.getByText(isOneOfRegex))
@@ -204,17 +207,17 @@ describe('IntegrationsFilter', () => {
         expect(dispatchUpdate).toHaveBeenCalledWith(
             withDefaultLogicalOperator(
                 allAvailableIntegrationsIds.filter(
-                    (channel) => channel !== integrations[0].id
-                )
-            )
+                    (channel) => channel !== integrations[0].id,
+                ),
+            ),
         )
     })
 
     it('should dispatch mergeStatsFilters action on deselecting all integrations when filters dropdown is closed', () => {
-        const {rerender} = renderComponent()
+        const { rerender } = renderComponent()
 
         const allAvailableIntegrationsIds = integrations.map(
-            (integration) => integration.id
+            (integration) => integration.id,
         )
 
         rerender(
@@ -225,7 +228,7 @@ describe('IntegrationsFilter', () => {
                 dispatchRemove={dispatchRemove}
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
-            />
+            />,
         )
 
         userEvent.click(screen.getByText(new RegExp(clearFilterIcon, 'i')))
@@ -239,13 +242,13 @@ describe('IntegrationsFilter', () => {
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
 
         const isOneOfRadioLabel = screen.getByLabelText(
-            new RegExp(LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF], 'i')
+            new RegExp(LogicalOperatorLabel[LogicalOperatorEnum.ONE_OF], 'i'),
         )
         const isNotOneOfRadioLabel = screen.getByLabelText(
             new RegExp(
                 LogicalOperatorLabel[LogicalOperatorEnum.NOT_ONE_OF],
-                'i'
-            )
+                'i',
+            ),
         )
 
         userEvent.click(isNotOneOfRadioLabel)
@@ -264,7 +267,7 @@ describe('IntegrationsFilter', () => {
     })
 
     it('should dispatch cleanFilters action and call segment analytics log event on filter dropdown close', () => {
-        const {rerenderComponent} = renderComponent()
+        const { rerenderComponent } = renderComponent()
 
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
         userEvent.click(screen.getByText(integrations[0].name))
@@ -279,7 +282,7 @@ describe('IntegrationsFilter', () => {
                 dispatchStatFiltersDirty={dispatchStatFiltersDirty}
                 dispatchStatFiltersClean={dispatchStatFiltersClean}
             />,
-            defaultState
+            defaultState,
         )
 
         expect(dispatchStatFiltersClean).toHaveBeenCalledWith()
@@ -296,7 +299,7 @@ describe('IntegrationsFilter', () => {
         it('should render IntegrationsFilterWithState component', () => {
             const spy = jest.spyOn(
                 statsSlice,
-                'mergeStatsFiltersWithLogicalOperator'
+                'mergeStatsFiltersWithLogicalOperator',
             )
 
             const stateWithIntegrations = {
@@ -308,13 +311,13 @@ describe('IntegrationsFilter', () => {
 
             renderWithStore(
                 <IntegrationsFilterWithState />,
-                stateWithIntegrations
+                stateWithIntegrations,
             )
             userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
             userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
 
             expect(
-                screen.getByText(FilterLabels[FilterKey.Integrations])
+                screen.getByText(FilterLabels[FilterKey.Integrations]),
             ).toBeInTheDocument()
             expect(spy).toHaveBeenCalled()
 
@@ -330,7 +333,7 @@ describe('IntegrationsFilter', () => {
             const spy = jest.spyOn(filtersSlice, 'upsertSavedFilterFilter')
             const removeSpy = jest.spyOn(
                 filtersSlice,
-                'removeFilterFromSavedFilterDraft'
+                'removeFilterFromSavedFilterDraft',
             )
             const stateWithIntegrations = {
                 ...defaultState,
@@ -340,13 +343,13 @@ describe('IntegrationsFilter', () => {
             }
             renderWithStore(
                 <IntegrationsFilterWithSavedState />,
-                stateWithIntegrations
+                stateWithIntegrations,
             )
             userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
             userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
 
             expect(
-                screen.getByText(FilterLabels[FilterKey.Integrations])
+                screen.getByText(FilterLabels[FilterKey.Integrations]),
             ).toBeInTheDocument()
             expect(spy).toHaveBeenCalled()
 
@@ -361,7 +364,7 @@ describe('IntegrationsFilter', () => {
         it('should render IntegrationsFilterWithState component', () => {
             const spy = jest.spyOn(
                 statsSlice,
-                'mergeStatsFiltersWithLogicalOperator'
+                'mergeStatsFiltersWithLogicalOperator',
             )
 
             const stateWithIntegrations = {
@@ -373,13 +376,13 @@ describe('IntegrationsFilter', () => {
 
             renderWithStore(
                 <PhoneIntegrationsFilterWithState />,
-                stateWithIntegrations
+                stateWithIntegrations,
             )
             userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
             userEvent.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
 
             expect(
-                screen.getByText(FilterLabels[FilterKey.Integrations])
+                screen.getByText(FilterLabels[FilterKey.Integrations]),
             ).toBeInTheDocument()
             expect(spy).toHaveBeenCalled()
 

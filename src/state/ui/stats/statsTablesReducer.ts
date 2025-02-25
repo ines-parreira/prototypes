@@ -1,4 +1,4 @@
-import {combineReducers} from 'redux'
+import { combineReducers } from 'redux'
 
 import {
     agentPerformanceSlice,
@@ -14,8 +14,8 @@ import {
     INTENT_SLICE_NAME,
 } from 'state/ui/stats/constants'
 import {
-    intentSlice,
     initialState as intentInitialState,
+    intentSlice,
 } from 'state/ui/stats/insightsSlice'
 
 export const initialState = {

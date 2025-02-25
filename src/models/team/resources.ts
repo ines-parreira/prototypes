@@ -1,9 +1,9 @@
-import {AxiosRequestConfig, AxiosResponse} from 'axios'
-import {Set} from 'immutable'
+import { AxiosRequestConfig, AxiosResponse } from 'axios'
+import { Set } from 'immutable'
 
 import client from 'models/api/resources'
-import {ApiListResponseCursorPagination} from 'models/api/types'
-import {deepMapKeysToSnakeCase} from 'models/api/utils'
+import { ApiListResponseCursorPagination } from 'models/api/types'
+import { deepMapKeysToSnakeCase } from 'models/api/utils'
 
 import {
     FetchTeamMembersOptions,
@@ -16,11 +16,11 @@ import {
 
 export const fetchTeams = async (
     options: FetchTeamsOptions = {},
-    config: AxiosRequestConfig = {}
+    config: AxiosRequestConfig = {},
 ) => {
     const params: Record<string, unknown> = deepMapKeysToSnakeCase({
         ...options,
-        ...(!options.limit ? {limit: 30} : {}),
+        ...(!options.limit ? { limit: 30 } : {}),
     })
 
     return await client.get<ApiListResponseCursorPagination<Team[]>>(
@@ -28,7 +28,7 @@ export const fetchTeams = async (
         {
             params,
             ...config,
-        }
+        },
     )
 }
 
@@ -54,11 +54,11 @@ export const deleteTeam = async (id: number): Promise<AxiosResponse> => {
 
 export const fetchTeamMembers = async (
     options: FetchTeamMembersOptions,
-    config: AxiosRequestConfig = {}
+    config: AxiosRequestConfig = {},
 ) => {
-    const {id, ...params} = deepMapKeysToSnakeCase({
+    const { id, ...params } = deepMapKeysToSnakeCase({
         ...options,
-        ...(!options.limit ? {limit: 30} : {}),
+        ...(!options.limit ? { limit: 30 } : {}),
     })
 
     return await client.get<ApiListResponseCursorPagination<Member[]>>(
@@ -66,7 +66,7 @@ export const fetchTeamMembers = async (
         {
             params,
             ...config,
-        }
+        },
     )
 }
 
@@ -75,27 +75,27 @@ export const addTeamMember = async (teamId: number, memberId: number) => {
         `/api/teams/${teamId}/members/`,
         {
             id: memberId,
-        }
+        },
     )
     return res.data
 }
 
 export const deleteTeamMember = async (teamId: number, memberId: number) => {
     const res = await client.delete<MemberAddedTeam>(
-        `/api/teams/${teamId}/members/${memberId}/`
+        `/api/teams/${teamId}/members/${memberId}/`,
     )
     return res.data
 }
 
 export const deleteTeamMembers = async (
     teamId: number,
-    membersIds: Set<number>
+    membersIds: Set<number>,
 ) => {
     const res = await client.delete<MemberAddedTeam>(
         `/api/teams/${teamId}/members/`,
         {
-            data: {ids: membersIds},
-        }
+            data: { ids: membersIds },
+        },
     )
     return res.data
 }

@@ -1,8 +1,7 @@
 import React from 'react'
 
-import {TaxIdField} from 'pages/settings/new_billing/components/BillingInformationFields/components/TaxIdField'
-
-import {TaxIdType} from 'state/billing/types'
+import { TaxIdField } from 'pages/settings/new_billing/components/BillingInformationFields/components/TaxIdField'
+import { TaxIdType } from 'state/billing/types'
 
 export const GSTHSTField: React.FC = () => {
     return (

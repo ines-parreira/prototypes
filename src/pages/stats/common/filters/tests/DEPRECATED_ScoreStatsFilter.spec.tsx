@@ -1,12 +1,13 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render, screen } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {DEPRECATED_ScoreStatsFilter} from 'pages/stats/common/filters/DEPRECATED_ScoreStatsFilter'
-import {initialState} from 'state/stats/statsSlice'
-import {RootState} from 'state/types'
+import { DEPRECATED_ScoreStatsFilter } from 'pages/stats/common/filters/DEPRECATED_ScoreStatsFilter'
+import { initialState } from 'state/stats/statsSlice'
+import { RootState } from 'state/types'
 
 const mockStore = configureMockStore([thunk])
 
@@ -16,7 +17,7 @@ describe('DEPRECATED_ScoreStatsFilter', () => {
     } as RootState
 
     it('should render score stats filter', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={mockStore(defaultState)}>
                 <DEPRECATED_ScoreStatsFilter
                     value={[]}
@@ -24,7 +25,7 @@ describe('DEPRECATED_ScoreStatsFilter', () => {
                     maxValue={5}
                     isDescending={false}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(getByText('All scores')).toBeInTheDocument()
@@ -39,7 +40,7 @@ describe('DEPRECATED_ScoreStatsFilter', () => {
                     maxValue={3}
                     isDescending={true}
                 />
-            </Provider>
+            </Provider>,
         )
 
         const starElements = screen.getAllByText(/[★☆]+/)
@@ -47,11 +48,11 @@ describe('DEPRECATED_ScoreStatsFilter', () => {
         const ratings = starElements.map((element) => element.textContent)
 
         const starCounts = ratings.map(
-            (rating) => (rating?.match(/★/g) || []).length
+            (rating) => (rating?.match(/★/g) || []).length,
         )
 
         const isDescending = starCounts.every(
-            (count, index) => index === 0 || count <= starCounts[index - 1]
+            (count, index) => index === 0 || count <= starCounts[index - 1],
         )
 
         expect(isDescending).toBe(true)

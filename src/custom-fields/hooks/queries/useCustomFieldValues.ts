@@ -1,8 +1,8 @@
-import {useGetCustomFieldValues} from 'custom-fields/hooks/queries/queries'
-import {CustomFieldObjectTypes} from 'custom-fields/types'
+import { useGetCustomFieldValues } from 'custom-fields/hooks/queries/queries'
+import { CustomFieldObjectTypes } from 'custom-fields/types'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 export const STALE_TIME_MS = 60 * 60 * 1000 // 1 hour
 
@@ -19,7 +19,7 @@ export const useCustomFieldValues = (params: {
                 notify({
                     message: 'Failed to fetch ticket custom fields list',
                     status: NotificationStatus.Error,
-                })
+                }),
             )
         },
     })

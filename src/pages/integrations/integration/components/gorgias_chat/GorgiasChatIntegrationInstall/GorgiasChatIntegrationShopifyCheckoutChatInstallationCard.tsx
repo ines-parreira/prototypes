@@ -1,5 +1,6 @@
-import {Map} from 'immutable'
 import React from 'react'
+
+import { Map } from 'immutable'
 
 import LinkButton from 'pages/common/components/button/LinkButton'
 
@@ -58,7 +59,7 @@ const GorgiasChatIntegrationShopifyCheckoutChatInstallationCard = ({
     integration,
     isOneClickInstallation,
 }: Props) => {
-    const {installedOnShopifyCheckout, shopifyCheckoutChatInstallationUrl} =
+    const { installedOnShopifyCheckout, shopifyCheckoutChatInstallationUrl } =
         useShopifyCheckoutChatInstallation(integration)
 
     return (
@@ -69,7 +70,7 @@ const GorgiasChatIntegrationShopifyCheckoutChatInstallationCard = ({
                         <div className={css.installedIcon}>
                             <i
                                 className="material-icons text-success"
-                                style={{fontSize: 24}}
+                                style={{ fontSize: 24 }}
                             >
                                 check_circle
                             </i>
@@ -103,7 +104,7 @@ const GorgiasChatIntegrationShopifyCheckoutChatInstallationCard = ({
                                 <div className={css.externalIcon}>
                                     <i
                                         className="material-icons"
-                                        style={{fontSize: 24}}
+                                        style={{ fontSize: 24 }}
                                     >
                                         open_in_new
                                     </i>

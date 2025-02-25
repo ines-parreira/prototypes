@@ -1,9 +1,10 @@
-import {Map} from 'immutable'
 import React from 'react'
 
-import {IntegrationType} from 'models/integration/constants'
-import {getIconFromType} from 'state/integrations/helpers'
-import {getActionTemplate} from 'utils'
+import { Map } from 'immutable'
+
+import { IntegrationType } from 'models/integration/constants'
+import { getIconFromType } from 'state/integrations/helpers'
+import { getActionTemplate } from 'utils'
 
 type Props = {
     action: Map<string, any>
@@ -12,7 +13,7 @@ type Props = {
 
 class IntegrationAction extends React.Component<Props> {
     render() {
-        const {action} = this.props
+        const { action } = this.props
 
         const template = getActionTemplate(action.get('name'))
         const integrationType = template!.integrationType as IntegrationType
@@ -23,7 +24,7 @@ class IntegrationAction extends React.Component<Props> {
                     alt={`${integrationType} logo`}
                     role="presentation"
                     src={getIconFromType(integrationType)}
-                    style={{maxWidth: '30px'}}
+                    style={{ maxWidth: '30px' }}
                     className="mr-2"
                 />
 

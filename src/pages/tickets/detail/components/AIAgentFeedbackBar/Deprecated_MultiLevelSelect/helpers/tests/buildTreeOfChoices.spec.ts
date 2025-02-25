@@ -1,5 +1,5 @@
-import {CHOICE_VALUES_SYMBOL} from '../../constants'
-import {buildTreeOfChoices} from '../buildTreeOfChoices'
+import { CHOICE_VALUES_SYMBOL } from '../../constants'
+import { buildTreeOfChoices } from '../buildTreeOfChoices'
 
 describe('buildTreeOfChoices', () => {
     it('should return a tree of choices for strings', () => {
@@ -12,7 +12,7 @@ describe('buildTreeOfChoices', () => {
                 'Warranty & Damage::Broken::In Window::left',
                 'Warranty & Damage::Broken::Outside Window',
                 'Warranty & Damage::Question',
-            ])
+            ]),
         ).toMatchInlineSnapshot(`
             {
               "Fulfilment": {
@@ -51,15 +51,15 @@ describe('buildTreeOfChoices', () => {
     it.each([
         [
             ['101', '420', '1337'],
-            {[CHOICE_VALUES_SYMBOL]: new Set(['101', '420', '1337'])},
+            { [CHOICE_VALUES_SYMBOL]: new Set(['101', '420', '1337']) },
         ],
     ])(
         'should return a flat structure for numbers and booleans',
         (
             input: Parameters<typeof buildTreeOfChoices>[0],
-            output: ReturnType<typeof buildTreeOfChoices>
+            output: ReturnType<typeof buildTreeOfChoices>,
         ) => {
             expect(buildTreeOfChoices(input)).toEqual(output)
-        }
+        },
     )
 })

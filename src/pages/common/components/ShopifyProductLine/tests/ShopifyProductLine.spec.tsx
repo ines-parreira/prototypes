@@ -1,21 +1,21 @@
-import {fireEvent, render, waitFor, screen} from '@testing-library/react'
-import MockAdapter from 'axios-mock-adapter'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {Provider} from 'react-redux'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {Product} from 'constants/integrations/types/shopify'
-import {IntegrationDataItem} from 'models/integration/types'
+import { Product } from 'constants/integrations/types/shopify'
+import { IntegrationDataItem } from 'models/integration/types'
+import { RichFieldEditorPlacement } from 'pages/common/forms/RichField/enums'
 
-import {RichFieldEditorPlacement} from 'pages/common/forms/RichField/enums'
-
-import {PRODUCTS_PER_PAGE} from '../../../../../constants/integration'
-import {shopifyProductResult} from '../../../../../fixtures/shopify'
+import { PRODUCTS_PER_PAGE } from '../../../../../constants/integration'
+import { shopifyProductResult } from '../../../../../fixtures/shopify'
 import client from '../../../../../models/api/resources'
 import ShopifyProductLine from '../ShopifyProductLine'
+
 import css from '../ShopifyProductLine.less'
 
 const minProps = {
@@ -42,10 +42,10 @@ describe('<ShopifyProductLine/>', () => {
     })
 
     it('should render the product picker', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <ShopifyProductLine {...minProps} />
-            </Provider>
+            </Provider>,
         )
         expect(container).toMatchSnapshot()
     })
@@ -53,12 +53,12 @@ describe('<ShopifyProductLine/>', () => {
     it('should render the product picker with products', async () => {
         mockServer
             .onGet('/api/integrations/1/product/')
-            .reply(200, {data: shopifyProductResult()})
+            .reply(200, { data: shopifyProductResult() })
 
-        const {container, getByText} = render(
+        const { container, getByText } = render(
             <Provider store={store}>
                 <ShopifyProductLine {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
         await waitFor(() => {
@@ -70,12 +70,12 @@ describe('<ShopifyProductLine/>', () => {
     it('should render the variants picker of a product', async () => {
         mockServer
             .onGet('/api/integrations/1/product/')
-            .reply(200, {data: shopifyProductResult()})
+            .reply(200, { data: shopifyProductResult() })
 
-        const {container, getByText} = render(
+        const { container, getByText } = render(
             <Provider store={store}>
                 <ShopifyProductLine {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
         await waitFor(() => {
@@ -91,12 +91,12 @@ describe('<ShopifyProductLine/>', () => {
     it('should not render the variants picker of a product when it is disabled', async () => {
         mockServer
             .onGet('/api/integrations/1/product/')
-            .reply(200, {data: shopifyProductResult()})
+            .reply(200, { data: shopifyProductResult() })
 
-        const {container, getByText} = render(
+        const { container, getByText } = render(
             <Provider store={store}>
                 <ShopifyProductLine disableVariantStep={true} {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
         await waitFor(() => {
@@ -109,23 +109,23 @@ describe('<ShopifyProductLine/>', () => {
 
     it('should render "{PRODUCTS_PER_PAGE}+ PRODUCTS" count in the variants picker of a product', async () => {
         const shopifyProducts = Array(PRODUCTS_PER_PAGE).fill(
-            shopifyProductResult()[0]
+            shopifyProductResult()[0],
         )
         mockServer.onGet('/api/integrations/1/product/').reply(200, {
             data: shopifyProducts,
         })
 
-        const {container, getByText} = render(
+        const { container, getByText } = render(
             <span className={css.resultTotal}>
                 {shopifyProducts.length}
                 {shopifyProducts.length >= PRODUCTS_PER_PAGE ? '+' : ''}
                 {' PRODUCTS'}
-            </span>
+            </span>,
         )
 
         await waitFor(() => {
             expect(
-                getByText(PRODUCTS_PER_PAGE.toString() + '+ PRODUCTS')
+                getByText(PRODUCTS_PER_PAGE.toString() + '+ PRODUCTS'),
             ).toBeDefined()
             expect(container).toMatchSnapshot()
         })
@@ -134,33 +134,35 @@ describe('<ShopifyProductLine/>', () => {
     it('should render the product automations', async () => {
         mockServer
             .onGet('/api/integrations/1/product/')
-            .reply(200, {data: shopifyProductResult()})
+            .reply(200, { data: shopifyProductResult() })
 
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <ShopifyProductLine
                     {...minProps}
                     canAddProductAutomations={true}
                 />
-            </Provider>
+            </Provider>,
         )
 
         await waitFor(() => {
-            expect(getByText('Automations', {exact: false})).toBeInTheDocument()
+            expect(
+                getByText('Automations', { exact: false }),
+            ).toBeInTheDocument()
         })
 
         getByText('Product Recommendation').click()
         expect(getByText('Similar Browsed Products')).toBeInTheDocument()
 
         getByText('Back').click()
-        expect(getByText('Automations', {exact: false})).toBeInTheDocument()
+        expect(getByText('Automations', { exact: false })).toBeInTheDocument()
     })
 
     it('should render the products header in Convert design', async () => {
         const products = shopifyProductResult()
         mockServer
             .onGet('/api/integrations/1/product/')
-            .reply(200, {data: products})
+            .reply(200, { data: products })
 
         render(
             <Provider store={store}>
@@ -168,12 +170,14 @@ describe('<ShopifyProductLine/>', () => {
                     {...minProps}
                     placementType={RichFieldEditorPlacement.ConvertDetail}
                 />
-            </Provider>
+            </Provider>,
         )
 
         await waitFor(() => {
             expect(
-                screen.getByText(`${products.length} Products`, {exact: false})
+                screen.getByText(`${products.length} Products`, {
+                    exact: false,
+                }),
             ).toBeInTheDocument()
         })
 
@@ -191,17 +195,17 @@ describe('<ShopifyProductLine/>', () => {
             data: products,
         })
 
-        const {getByText, queryByText} = render(
+        const { getByText, queryByText } = render(
             <Provider store={store}>
                 <ShopifyProductLine {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
         await waitFor(() => {
             expect(
                 screen.getByText(`${products.length - 1} Products`, {
                     exact: false,
-                })
+                }),
             ).toBeInTheDocument()
 
             expect(queryByText(/Black shirt/i)).not.toBeInTheDocument()
@@ -216,10 +220,10 @@ describe('<ShopifyProductLine/>', () => {
             data: [shopifyProduct],
         })
 
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <ShopifyProductLine {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
         await waitFor(() => {
@@ -256,10 +260,10 @@ describe('<ShopifyProductLine/>', () => {
             data: [shopifyProduct],
         })
 
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <ShopifyProductLine {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
         await waitFor(() => {

@@ -1,11 +1,11 @@
-import {parsePhoneNumber} from 'libphonenumber-js'
+import { parsePhoneNumber } from 'libphonenumber-js'
 
-import {useOutboundCall} from 'hooks/integrations/phone/useOutboundCall'
+import { useOutboundCall } from 'hooks/integrations/phone/useOutboundCall'
 import useAppSelector from 'hooks/useAppSelector'
-import {PhoneIntegration} from 'models/integration/types'
-import {UserSearchResult} from 'models/search/types'
-import {getCurrentUserId} from 'state/currentUser/selectors'
-import {getTicket} from 'state/ticket/selectors'
+import { PhoneIntegration } from 'models/integration/types'
+import { UserSearchResult } from 'models/search/types'
+import { getCurrentUserId } from 'state/currentUser/selectors'
+import { getTicket } from 'state/ticket/selectors'
 
 import usePhoneNumbers from './usePhoneNumbers'
 
@@ -20,11 +20,11 @@ export default function useDialerOutboundCall({
 }) {
     const makeOutboundCall = useOutboundCall()
     const currentAgentId = useAppSelector(getCurrentUserId)
-    const {getPhoneNumberById} = usePhoneNumbers()
+    const { getPhoneNumberById } = usePhoneNumbers()
     const ticket = useAppSelector(getTicket)
 
     const selectedIntegrationPhoneNumber = getPhoneNumberById(
-        selectedIntegration.meta.phone_number_id
+        selectedIntegration.meta.phone_number_id,
     )
 
     const makeCall = () => {

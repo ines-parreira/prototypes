@@ -1,19 +1,22 @@
+import React, { useCallback, useMemo } from 'react'
+
 import _noop from 'lodash/noop'
-import React, {useCallback, useMemo} from 'react'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { FilterKey, StatsFiltersWithLogicalOperator } from 'models/stat/types'
 import Filter from 'pages/stats/common/components/Filter'
-import {FilterLabels} from 'pages/stats/common/filters/constants'
-import {emptyFilter, logSegmentEvent} from 'pages/stats/common/filters/helpers'
-import {DropdownOption} from 'pages/stats/types'
-
-import {getHelpCenterFAQList} from 'state/entities/helpCenter/helpCenters'
-import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
-import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
-import {RootState} from 'state/types'
+import { FilterLabels } from 'pages/stats/common/filters/constants'
+import {
+    emptyFilter,
+    logSegmentEvent,
+} from 'pages/stats/common/filters/helpers'
+import { DropdownOption } from 'pages/stats/types'
+import { getHelpCenterFAQList } from 'state/entities/helpCenter/helpCenters'
+import { getPageStatsFiltersWithLogicalOperators } from 'state/stats/selectors'
+import { mergeStatsFiltersWithLogicalOperator } from 'state/stats/statsSlice'
+import { RootState } from 'state/types'
 
 type Props = {
     value: StatsFiltersWithLogicalOperator[FilterKey.HelpCenters]
@@ -21,34 +24,34 @@ type Props = {
         value: Exclude<
             StatsFiltersWithLogicalOperator[FilterKey.HelpCenters],
             undefined
-        >
+        >,
     ) => void
 }
 
-const HelpCenterFilter = ({value = emptyFilter, dispatchUpdate}: Props) => {
+const HelpCenterFilter = ({ value = emptyFilter, dispatchUpdate }: Props) => {
     const helpCenters = useAppSelector(getHelpCenterFAQList)
     const handleFilterChange = useCallback(
         (values: number[]) => {
             dispatchUpdate(withDefaultLogicalOperator(values))
         },
-        [dispatchUpdate]
+        [dispatchUpdate],
     )
     const filterItems = useMemo(
         () => [
             {
-                options: helpCenters.map(({id, name}) => ({
+                options: helpCenters.map(({ id, name }) => ({
                     label: name,
                     value: `${id}`,
                 })),
             },
         ],
-        [helpCenters]
+        [helpCenters],
     )
 
     const selectedHelpCenterItems = useMemo(() => {
-        const helpCenter = helpCenters.find(({id}) => id === value?.values[0])
+        const helpCenter = helpCenters.find(({ id }) => id === value?.values[0])
         if (!helpCenter) return []
-        return [{label: helpCenter.name, value: `${helpCenter.id}`}]
+        return [{ label: helpCenter.name, value: `${helpCenter.id}` }]
     }, [helpCenters, value])
 
     const onOptionChange = (opt: DropdownOption) => {
@@ -92,5 +95,5 @@ export const HelpCenterFilterWithState = connect(
             mergeStatsFiltersWithLogicalOperator({
                 helpCenters: filter,
             }),
-    }
+    },
 )(HelpCenterFilter)

@@ -1,19 +1,20 @@
-import classnames from 'classnames'
 import React, {
-    useRef,
-    useContext,
     createContext,
-    ReactNode,
-    FunctionComponent,
     CSSProperties,
-    useEffect,
-    useState,
+    FunctionComponent,
+    ReactNode,
     useCallback,
+    useContext,
+    useEffect,
+    useRef,
+    useState,
 } from 'react'
+
+import classnames from 'classnames'
 
 import useId from 'hooks/useId'
 
-export const ErrorsCollector: React.FC = ({children}) => {
+export const ErrorsCollector: React.FC = ({ children }) => {
     const currentErrors = useRef<Set<string>>(new Set())
     const [errors, setErrors] = useState<Set<string>>(currentErrors.current)
 
@@ -28,7 +29,7 @@ export const ErrorsCollector: React.FC = ({children}) => {
     }, [])
 
     return (
-        <ErrorsContext.Provider value={{errors, addError, removeError}}>
+        <ErrorsContext.Provider value={{ errors, addError, removeError }}>
             {children}
         </ErrorsContext.Provider>
     )
@@ -63,7 +64,7 @@ export default function Errors({
     ...rest
 }: Props) {
     const id = useId()
-    const {addError, removeError} = useContext(ErrorsContext)
+    const { addError, removeError } = useContext(ErrorsContext)
 
     useEffect(() => {
         addError(id)
@@ -83,7 +84,7 @@ export default function Errors({
             <Tag
                 className={classnames(
                     'd-inline-block text-danger ml-2',
-                    className
+                    className,
                 )}
                 {...rest}
             >

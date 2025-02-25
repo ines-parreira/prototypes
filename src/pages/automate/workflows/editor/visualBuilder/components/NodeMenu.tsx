@@ -1,7 +1,3 @@
-import _ from 'lodash'
-import _isNil from 'lodash/isNil'
-import _keyBy from 'lodash/keyBy'
-
 import React, {
     Dispatch,
     forwardRef,
@@ -14,17 +10,21 @@ import React, {
     useState,
 } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useFlag} from 'core/flags'
-import {useGetWorkflowConfigurationTemplates} from 'models/workflows/queries'
-import {useStoreAppsContext} from 'pages/aiAgent/actions/providers/StoreAppsContext'
+import _ from 'lodash'
+import _isNil from 'lodash/isNil'
+import _keyBy from 'lodash/keyBy'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
+import { useGetWorkflowConfigurationTemplates } from 'models/workflows/queries'
+import { useStoreAppsContext } from 'pages/aiAgent/actions/providers/StoreAppsContext'
 import AppIcon from 'pages/automate/actionsPlatform/components/AppIcon'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import useEnabledActionStepsByApp from 'pages/automate/actionsPlatform/hooks/useEnabledActionStepsByApp'
-import {useSelfServiceStoreIntegrationContext} from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
+import { useSelfServiceStoreIntegrationContext } from 'pages/automate/common/hooks/useSelfServiceStoreIntegration'
 import VisualBuilderActionIcon from 'pages/automate/workflows/components/VisualBuilderActionIcon'
-import {labelByVisualBuilderNodeType} from 'pages/automate/workflows/constants'
-import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
+import { labelByVisualBuilderNodeType } from 'pages/automate/workflows/constants'
+import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {
     getChannelName,
     useWorkflowChannelSupportContext,
@@ -33,7 +33,7 @@ import {
     hasParentNodeInPath,
     isNodeUniquePerPath,
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import {WorkflowConfiguration} from 'pages/automate/workflows/models/workflowConfiguration.types'
+import { WorkflowConfiguration } from 'pages/automate/workflows/models/workflowConfiguration.types'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
@@ -41,6 +41,7 @@ import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
 import MenuCategoryItem from './MenuCategoryItem'
 import MenuItem from './MenuItem'
 import MenuSkeletonItem from './MenuSkeletonItem'
+
 import css from './NodeMenu.less'
 
 const MultipleChoicesMenuItem = ({
@@ -50,7 +51,7 @@ const MultipleChoicesMenuItem = ({
     nodeId: string
     floatingRef?: HTMLElement | null
 }) => {
-    const {dispatch} = useVisualBuilderContext()
+    const { dispatch } = useVisualBuilderContext()
 
     return (
         <MenuItem
@@ -75,7 +76,7 @@ const TextReplyMenuItem = ({
     nodeId: string
     floatingRef?: HTMLElement | null
 }) => {
-    const {dispatch, visualBuilderGraph} = useVisualBuilderContext()
+    const { dispatch, visualBuilderGraph } = useVisualBuilderContext()
     const {
         isStepUnsupportedInAllChannels,
         getUnsupportedConnectedChannels,
@@ -88,7 +89,7 @@ const TextReplyMenuItem = ({
 
     const unsupportedConnectedChannels = getUnsupportedConnectedChannels(
         visualBuilderGraph.id,
-        'text_reply'
+        'text_reply',
     )
     const supportedChannels = getSupportedChannels('text_reply')
 
@@ -97,7 +98,7 @@ const TextReplyMenuItem = ({
             ? ` This step is currently only supported in ${supportedChannels
                   .map(getChannelName)
                   .join(
-                      ' and '
+                      ' and ',
                   )}. Disable the flow in other channels to use this step.`
             : undefined
 
@@ -125,7 +126,7 @@ const FileUploadMenuItem = ({
     nodeId: string
     floatingRef?: HTMLElement | null
 }) => {
-    const {dispatch, visualBuilderGraph} = useVisualBuilderContext()
+    const { dispatch, visualBuilderGraph } = useVisualBuilderContext()
     const {
         isStepUnsupportedInAllChannels,
         getUnsupportedConnectedChannels,
@@ -138,7 +139,7 @@ const FileUploadMenuItem = ({
 
     const unsupportedConnectedChannels = getUnsupportedConnectedChannels(
         visualBuilderGraph.id,
-        'file_upload'
+        'file_upload',
     )
     const supportedChannels = getSupportedChannels('file_upload')
 
@@ -147,7 +148,7 @@ const FileUploadMenuItem = ({
             ? ` This step is currently only supported in ${supportedChannels
                   .map(getChannelName)
                   .join(
-                      ' and '
+                      ' and ',
                   )}. Disable the flow in other channels to use this step.`
             : undefined
 
@@ -175,7 +176,7 @@ const AutomatedMessageMenuItem = ({
     nodeId: string
     floatingRef?: HTMLElement | null
 }) => {
-    const {dispatch} = useVisualBuilderContext()
+    const { dispatch } = useVisualBuilderContext()
 
     return (
         <MenuItem
@@ -201,7 +202,7 @@ const ShopperAuthenticationMenuItem = ({
     floatingRef?: HTMLElement | null
 }) => {
     const storeIntegration = useSelfServiceStoreIntegrationContext()
-    const {dispatch, visualBuilderGraph} = useVisualBuilderContext()
+    const { dispatch, visualBuilderGraph } = useVisualBuilderContext()
     const {
         isStepUnsupportedInAllChannels,
         getUnsupportedConnectedChannels,
@@ -214,7 +215,7 @@ const ShopperAuthenticationMenuItem = ({
 
     const unsupportedConnectedChannels = getUnsupportedConnectedChannels(
         visualBuilderGraph.id,
-        'shopper_authentication'
+        'shopper_authentication',
     )
     const supportedChannels = getSupportedChannels('shopper_authentication')
 
@@ -223,7 +224,7 @@ const ShopperAuthenticationMenuItem = ({
             ? ` This step is currently only supported in ${supportedChannels
                   .map(getChannelName)
                   .join(
-                      ' and '
+                      ' and ',
                   )}. Disable the flow in other channels to use this step.`
             : undefined
 
@@ -243,7 +244,7 @@ const ShopperAuthenticationMenuItem = ({
                 !isNodeUniquePerPath(
                     'shopper_authentication',
                     visualBuilderGraph,
-                    nodeId
+                    nodeId,
                 )
                     ? 'This step can only be used once per path in a Flow.'
                     : disabledText
@@ -260,7 +261,7 @@ const OrderSelectionMenuItem = ({
     nodeId: string
     floatingRef?: HTMLElement | null
 }) => {
-    const {dispatch, visualBuilderGraph} = useVisualBuilderContext()
+    const { dispatch, visualBuilderGraph } = useVisualBuilderContext()
     const {
         isStepUnsupportedInAllChannels,
         getUnsupportedConnectedChannels,
@@ -273,7 +274,7 @@ const OrderSelectionMenuItem = ({
 
     const unsupportedConnectedChannels = getUnsupportedConnectedChannels(
         visualBuilderGraph.id,
-        'order_selection'
+        'order_selection',
     )
     const supportedChannels = getSupportedChannels('order_selection')
 
@@ -282,7 +283,7 @@ const OrderSelectionMenuItem = ({
             ? ` This step is currently only supported in ${supportedChannels
                   .map(getChannelName)
                   .join(
-                      ' and '
+                      ' and ',
                   )}. Disable the flow in other channels to use this step.`
             : undefined
 
@@ -301,7 +302,7 @@ const OrderSelectionMenuItem = ({
                 !hasParentNodeInPath(
                     'shopper_authentication',
                     visualBuilderGraph,
-                    nodeId
+                    nodeId,
                 )
                     ? 'Add a Customer login step first in order to use this step.'
                     : disabledText
@@ -318,7 +319,7 @@ const OrderLineItemSelectionMenuItem = ({
     nodeId: string
     floatingRef?: HTMLElement | null
 }) => {
-    const {dispatch, visualBuilderGraph} = useVisualBuilderContext()
+    const { dispatch, visualBuilderGraph } = useVisualBuilderContext()
     const {
         isStepUnsupportedInAllChannels,
         getUnsupportedConnectedChannels,
@@ -331,7 +332,7 @@ const OrderLineItemSelectionMenuItem = ({
 
     const unsupportedConnectedChannels = getUnsupportedConnectedChannels(
         visualBuilderGraph.id,
-        'order_line_item_selection'
+        'order_line_item_selection',
     )
     const supportedChannels = getSupportedChannels('order_line_item_selection')
 
@@ -340,7 +341,7 @@ const OrderLineItemSelectionMenuItem = ({
             ? ` This step is currently only supported in ${supportedChannels
                   .map(getChannelName)
                   .join(
-                      ' and '
+                      ' and ',
                   )}. Disable the flow in other channels to use this step.`
             : undefined
 
@@ -361,7 +362,7 @@ const OrderLineItemSelectionMenuItem = ({
                 !hasParentNodeInPath(
                     'order_selection',
                     visualBuilderGraph,
-                    nodeId
+                    nodeId,
                 )
                     ? 'Add an Order selection step first in order to use this step.'
                     : disabledText
@@ -380,7 +381,7 @@ const HttpRequestMenuItem = ({
     floatingRef?: HTMLElement | null
     description?: string
 }) => {
-    const {dispatch} = useVisualBuilderContext()
+    const { dispatch } = useVisualBuilderContext()
 
     return (
         <MenuItem
@@ -409,7 +410,7 @@ const ConditionsMenuItem = ({
     disabledText?: string
     description?: string
 }) => {
-    const {dispatch} = useVisualBuilderContext()
+    const { dispatch } = useVisualBuilderContext()
 
     return (
         <MenuItem
@@ -435,7 +436,7 @@ const ChannelTriggerConditionsMenuItem = ({
     nodeId: string
     floatingRef?: HTMLElement | null
 }) => {
-    const {visualBuilderGraph} = useVisualBuilderContext()
+    const { visualBuilderGraph } = useVisualBuilderContext()
 
     return (
         <ConditionsMenuItem
@@ -445,12 +446,12 @@ const ChannelTriggerConditionsMenuItem = ({
                 !hasParentNodeInPath(
                     'shopper_authentication',
                     visualBuilderGraph,
-                    nodeId
+                    nodeId,
                 ) &&
                 !hasParentNodeInPath(
                     'http_request',
                     visualBuilderGraph,
-                    nodeId
+                    nodeId,
                 ) &&
                 !hasParentNodeInPath('text_reply', visualBuilderGraph, nodeId)
                     ? 'Conditions rely on variables from other steps such as Customer login, Collect text reply, Order selection and HTTP requests.'
@@ -475,7 +476,7 @@ const CancelOrderMenuItem = ({
     orderExternalId: string
     integrationId: string
 }) => {
-    const {dispatch} = useVisualBuilderContext()
+    const { dispatch } = useVisualBuilderContext()
 
     return (
         <MenuItem
@@ -508,7 +509,7 @@ const RefundOrderMenuItem = ({
     orderExternalId: string
     integrationId: string
 }) => {
-    const {dispatch} = useVisualBuilderContext()
+    const { dispatch } = useVisualBuilderContext()
 
     return (
         <MenuItem
@@ -541,7 +542,7 @@ const UpdateShippingAddressMenuItem = ({
     orderExternalId: string
     integrationId: string
 }) => {
-    const {dispatch} = useVisualBuilderContext()
+    const { dispatch } = useVisualBuilderContext()
 
     return (
         <MenuItem
@@ -576,7 +577,7 @@ const RemoveItemMenuItem = ({
     orderExternalId: string
     integrationId: string
 }) => {
-    const {dispatch} = useVisualBuilderContext()
+    const { dispatch } = useVisualBuilderContext()
 
     return (
         <MenuItem
@@ -608,7 +609,7 @@ const ReplaceItemMenuItem = ({
     orderExternalId: string
     integrationId: string
 }) => {
-    const {dispatch} = useVisualBuilderContext()
+    const { dispatch } = useVisualBuilderContext()
 
     return (
         <MenuItem
@@ -639,7 +640,7 @@ const CreateDiscountCodeMenuItem = ({
     customerId: string
     integrationId: string
 }) => {
-    const {dispatch} = useVisualBuilderContext()
+    const { dispatch } = useVisualBuilderContext()
     return (
         <MenuItem
             label={labelByVisualBuilderNodeType.create_discount_code}
@@ -670,7 +671,7 @@ const ReshipForFreeMenuItem = ({
     orderExternalId: string
     integrationId: string
 }) => {
-    const {dispatch} = useVisualBuilderContext()
+    const { dispatch } = useVisualBuilderContext()
 
     return (
         <MenuItem
@@ -704,7 +705,7 @@ const RefundShippingCostsMenuItem = ({
     orderExternalId: string
     integrationId: string
 }) => {
-    const {dispatch} = useVisualBuilderContext()
+    const { dispatch } = useVisualBuilderContext()
 
     return (
         <MenuItem
@@ -735,7 +736,7 @@ const CancelSubscriptionMenuItem = ({
     customerId: string
     integrationId: string
 }) => {
-    const {dispatch} = useVisualBuilderContext()
+    const { dispatch } = useVisualBuilderContext()
 
     return (
         <MenuItem
@@ -765,7 +766,7 @@ const SkipChargeMenuItem = ({
     customerId: string
     integrationId: string
 }) => {
-    const {dispatch} = useVisualBuilderContext()
+    const { dispatch } = useVisualBuilderContext()
 
     return (
         <MenuItem
@@ -791,7 +792,7 @@ const LLMPromptTemplateShopifyMenuItems = ({
     nodeId: string
     floatingRef?: HTMLElement | null
 }) => {
-    const {visualBuilderGraph} = useVisualBuilderContext()
+    const { visualBuilderGraph } = useVisualBuilderContext()
 
     if (!visualBuilderGraph.apps?.some((app) => app.type === 'shopify')) {
         return null
@@ -865,7 +866,7 @@ const LLMPromptTemplateRechargeMenuItems = ({
     nodeId: string
     floatingRef?: HTMLElement | null
 }) => {
-    const {visualBuilderGraph} = useVisualBuilderContext()
+    const { visualBuilderGraph } = useVisualBuilderContext()
 
     if (!visualBuilderGraph.apps?.some((app) => app.type === 'recharge')) {
         return null
@@ -907,16 +908,16 @@ const ReusableLLMPromptCallMenuItem = ({
     configurationInternalId: string
     trigger: Extract<
         NonNullable<WorkflowConfiguration['triggers']>[number],
-        {kind: 'reusable-llm-prompt'}
+        { kind: 'reusable-llm-prompt' }
     >['settings']
     entrypoint: Extract<
         NonNullable<WorkflowConfiguration['entrypoints']>[number],
-        {kind: 'reusable-llm-prompt-call-step'}
+        { kind: 'reusable-llm-prompt-call-step' }
     >['settings']
     app: NonNullable<WorkflowConfiguration['apps']>[number]
     values: WorkflowConfiguration['values']
 }) => {
-    const {dispatch} = useVisualBuilderContext()
+    const { dispatch } = useVisualBuilderContext()
 
     return (
         <MenuItem
@@ -945,13 +946,13 @@ const AppMenuCategoryItems = ({
     nodeId: string
     setMenuItems: Dispatch<SetStateAction<ReactNode>>
 }) => {
-    const {visualBuilderGraph} = useVisualBuilderContext()
-    const {data: steps = []} = useGetWorkflowConfigurationTemplates({
+    const { visualBuilderGraph } = useVisualBuilderContext()
+    const { data: steps = [] } = useGetWorkflowConfigurationTemplates({
         triggers: ['reusable-llm-prompt'],
     })
 
-    const {apps} = useApps()
-    const {recharge: rechargeIntegration} = useStoreAppsContext()
+    const { apps } = useApps()
+    const { recharge: rechargeIntegration } = useStoreAppsContext()
 
     const appsById = _keyBy(apps, 'id')
 
@@ -1018,7 +1019,7 @@ const AppMenuCategoryItems = ({
                                         {steps
                                             .map((step) =>
                                                 _.isEmpty(
-                                                    step.triggers[0].settings
+                                                    step.triggers[0].settings,
                                                 ) ? null : (
                                                     <ReusableLLMPromptCallMenuItem
                                                         key={step.id}
@@ -1054,7 +1055,7 @@ const AppMenuCategoryItems = ({
                                                         app={step.apps[0]}
                                                         values={step.values}
                                                     />
-                                                )
+                                                ),
                                             )
                                             .filter(Boolean)}
                                     </DropdownBody>
@@ -1069,14 +1070,14 @@ const AppMenuCategoryItems = ({
 }
 
 function useMenuItems(nodeId: string, floatingRef?: HTMLElement | null) {
-    const {visualBuilderGraph} = useVisualBuilderContext()
+    const { visualBuilderGraph } = useVisualBuilderContext()
 
     const triggerNode = visualBuilderGraph.nodes[0]
 
     const [menuItems, setMenuItems] = useState<ReactNode>(null)
 
     const isSimplifiedStepBuilderEnabled = useFlag(
-        FeatureFlagKey.SimplifiedStepBuilder
+        FeatureFlagKey.SimplifiedStepBuilder,
     )
 
     const initialMenuItems = useMemo<ReactNode>(() => {
@@ -1216,8 +1217,8 @@ type Props = {
 }
 
 const NodeMenu = (
-    {nodeId, isOpen, onToggle, target, floatingRef, placement}: Props,
-    ref: Ref<HTMLElement> | null | undefined
+    { nodeId, isOpen, onToggle, target, floatingRef, placement }: Props,
+    ref: Ref<HTMLElement> | null | undefined,
 ) => {
     const menuItems = useMenuItems(nodeId, floatingRef)
 

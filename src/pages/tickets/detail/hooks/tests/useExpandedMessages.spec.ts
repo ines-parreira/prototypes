@@ -1,15 +1,15 @@
-import {act, renderHook} from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react-hooks'
 
 import useExpandedMessages from '../useExpandedMessages'
 
 describe('useExpandedMessages', () => {
     it('should return an empty array of messages initially', () => {
-        const {result} = renderHook(() => useExpandedMessages())
+        const { result } = renderHook(() => useExpandedMessages())
         expect(result.current).toEqual([[], expect.any(Function)])
     })
 
     it('should toggle messages on', () => {
-        const {result} = renderHook(() => useExpandedMessages())
+        const { result } = renderHook(() => useExpandedMessages())
         act(() => {
             result.current[1](1)
         })
@@ -17,7 +17,7 @@ describe('useExpandedMessages', () => {
     })
 
     it('should toggle messages off', () => {
-        const {result} = renderHook(() => useExpandedMessages())
+        const { result } = renderHook(() => useExpandedMessages())
         act(() => {
             result.current[1](1)
         })

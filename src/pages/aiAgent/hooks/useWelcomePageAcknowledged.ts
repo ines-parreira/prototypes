@@ -1,4 +1,4 @@
-import {useGetWelcomePageAcknowledged} from 'models/aiAgent/queries'
+import { useGetWelcomePageAcknowledged } from 'models/aiAgent/queries'
 
 export const useWelcomePageAcknowledged = ({
     accountDomain,
@@ -7,13 +7,13 @@ export const useWelcomePageAcknowledged = ({
     accountDomain: string
     shopName: string
 }) => {
-    const {isLoading, data} = useGetWelcomePageAcknowledged(
+    const { isLoading, data } = useGetWelcomePageAcknowledged(
         accountDomain,
         shopName,
         {
             retry: 1,
             refetchOnWindowFocus: false,
-        }
+        },
     )
 
     return {

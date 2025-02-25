@@ -1,23 +1,24 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
 
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
-import {channelConnection} from 'fixtures/channelConnection'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
+
+import { axiosSuccessResponse } from 'fixtures/axiosResponse'
+import { channelConnection } from 'fixtures/channelConnection'
 import {
     channelConnectionKeys,
     useUpdateChannelConnection as usePureUpdateChannelConnection,
 } from 'models/convert/channelConnection/queries'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
-import {useUpdateChannelConnection} from '../useUpdateChannelConnection'
+import { useUpdateChannelConnection } from '../useUpdateChannelConnection'
 
 const queryClient = mockQueryClient()
 
 jest.mock('models/convert/channelConnection/queries')
 const usePureUpdateChannelConnectionMock = assumeMock(
-    usePureUpdateChannelConnection
+    usePureUpdateChannelConnection,
 )
 
 describe('useUpdateChannelConnection', () => {
@@ -28,7 +29,7 @@ describe('useUpdateChannelConnection', () => {
     it('should invalidate lists queries', () => {
         const invalidateQueryMock = jest.spyOn(queryClient, 'invalidateQueries')
         renderHook(() => useUpdateChannelConnection(), {
-            wrapper: ({children}) => (
+            wrapper: ({ children }) => (
                 <QueryClientProvider client={queryClient}>
                     {children}
                 </QueryClientProvider>
@@ -38,10 +39,10 @@ describe('useUpdateChannelConnection', () => {
             axiosSuccessResponse(channelConnection as any),
             [
                 undefined,
-                {channel_connection_id: channelConnection.id},
+                { channel_connection_id: channelConnection.id },
                 channelConnection as any,
             ],
-            undefined
+            undefined,
         )
 
         expect(invalidateQueryMock).toHaveBeenLastCalledWith({

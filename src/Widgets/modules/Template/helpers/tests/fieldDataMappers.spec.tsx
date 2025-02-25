@@ -1,15 +1,16 @@
-import {Badge} from '@gorgias/merchant-ui-kit'
-import {screen, render} from '@testing-library/react'
-import {fromJS} from 'immutable'
+import React, { ReactElement, ReactNode } from 'react'
+
+import { render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
 import moment from 'moment'
-import React, {ReactElement, ReactNode} from 'react'
+
+import { Badge } from '@gorgias/merchant-ui-kit'
 
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
-import {assumeMock, getLastMockCall} from 'utils/testing'
+import { assumeMock, getLastMockCall } from 'utils/testing'
+import { FALLBACK_VALUE } from 'Widgets/modules/Template/modules/Field'
 
-import {FALLBACK_VALUE} from 'Widgets/modules/Template/modules/Field'
-
-import {getStringFromData, getValueFromData} from '../fieldDataMappers'
+import { getStringFromData, getValueFromData } from '../fieldDataMappers'
 
 jest.mock('pages/common/utils/DatetimeLabel', () => {
     return jest.fn(() => null)
@@ -18,7 +19,7 @@ jest.mock('@gorgias/merchant-ui-kit', () => {
     return {
         __esModule: true,
         ...jest.requireActual('@gorgias/merchant-ui-kit'),
-        Badge: jest.fn(({children}: {children: ReactNode}) => children),
+        Badge: jest.fn(({ children }: { children: ReactNode }) => children),
     } as Record<string, unknown>
 })
 jest.mock('pages/common/components/StarRating', () => {
@@ -48,7 +49,7 @@ describe('getValueFromData()', () => {
 
         const year = `${currentYear - expectedAge}-01-01`
         expect(getValueFromData(`${year} 00:05:00`, 'age')).toBe(
-            `${expectedAge} (${year})`
+            `${expectedAge} (${year})`,
         )
     })
 
@@ -61,7 +62,7 @@ describe('getValueFromData()', () => {
         render(<>{getValueFromData('https://gorgias.io', 'url')}</>)
         expect(document.querySelector('a')).toHaveAttribute(
             'href',
-            'https://gorgias.io'
+            'https://gorgias.io',
         )
     })
 
@@ -74,7 +75,7 @@ describe('getValueFromData()', () => {
         render(<>{getValueFromData('developers@gorgias.io', 'email')}</>)
         expect(document.querySelector('a')).toHaveAttribute(
             'href',
-            'mailto:developers@gorgias.io'
+            'mailto:developers@gorgias.io',
         )
     })
 
@@ -112,14 +113,14 @@ describe('getValueFromData()', () => {
         (data, type, expected) => {
             render(<>{getValueFromData(data, type)}</>)
             expect(screen.getByText(new RegExp(expected))).toBeInTheDocument()
-        }
+        },
     )
     it.each(defaultValues)(
         'given %p and %p as arguments, returns default value',
         (data, type, expected) => {
             render(<>{getValueFromData(data, type)}</>)
             expect(screen.getByText(new RegExp(expected))).toBeInTheDocument()
-        }
+        },
     )
     it('should return the default value when passed an empty value', () => {
         expect(getValueFromData(undefined)).toEqual(FALLBACK_VALUE)
@@ -135,7 +136,7 @@ describe('getValueFromData()', () => {
                 type: 'success',
                 children: 'True',
             })
-        }
+        },
     )
 
     it.each([[false], ['false'], ['0'], [0]])(
@@ -146,29 +147,31 @@ describe('getValueFromData()', () => {
                 type: 'error',
                 children: 'False',
             })
-        }
+        },
     )
 
     it('should return default value when passer undefined, null or an object', () => {
-        expect(getValueFromData({key: 'value'})).toBe(FALLBACK_VALUE)
+        expect(getValueFromData({ key: 'value' })).toBe(FALLBACK_VALUE)
         expect(getValueFromData(undefined)).toBe(FALLBACK_VALUE)
         expect(getValueFromData(null)).toBe(FALLBACK_VALUE)
     })
 
     it('should work when passed an immutable object', () => {
-        expect(getValueFromData(fromJS({key: 'value'}))).toBe(FALLBACK_VALUE)
+        expect(getValueFromData(fromJS({ key: 'value' }))).toBe(FALLBACK_VALUE)
     })
 
     describe('array', () => {
         it('should return a comma-separated list of rendered values because passed data is an array', () => {
             render(getValueFromData([123, 'test', true, null]) as ReactElement)
             expect(
-                screen.getByText(/123.*,.*test.*,.*true.*,.*-/)
+                screen.getByText(/123.*,.*test.*,.*true.*,.*-/),
             ).toBeInTheDocument()
         })
 
         it('should return "Undetermined value" when passed an array of objects', () => {
-            expect(getValueFromData([{foo: 'bar'}])).toBe('Undetermined value')
+            expect(getValueFromData([{ foo: 'bar' }])).toBe(
+                'Undetermined value',
+            )
         })
 
         it('should return the default value when passed an empty array ', () => {
@@ -200,13 +203,13 @@ describe('getStringFromData()', () => {
 
     it('should return a formatted datetime label because passed type is `date`', () => {
         expect(getStringFromData('2017-12-14T16:34', 'date')).toBe(
-            '2017-12-14T16:34:00Z'
+            '2017-12-14T16:34:00Z',
         )
     })
 
     it('should return a formatted datetime label because passed type is `date`', () => {
         expect(getStringFromData(1513269240000, 'date')).toBe(
-            '2017-12-14T16:34:00Z'
+            '2017-12-14T16:34:00Z',
         )
     })
 
@@ -216,7 +219,7 @@ describe('getStringFromData()', () => {
 
         const year = `${currentYear - expectedAge}-01-01`
         expect(getStringFromData(`${year} 00:05:00`, 'age')).toEqual(
-            `${expectedAge} (${year})`
+            `${expectedAge} (${year})`,
         )
     })
 
@@ -225,7 +228,7 @@ describe('getStringFromData()', () => {
         const age = moment().diff(moment(timestamp), 'years')
 
         expect(getStringFromData(1513269240000, 'age')).toBe(
-            `${age} (2017-12-14)`
+            `${age} (2017-12-14)`,
         )
     })
 
@@ -235,7 +238,7 @@ describe('getStringFromData()', () => {
 
     it('should return the url because passed type is `url` and passed data is an url', () => {
         expect(getStringFromData('https://gorgias.io', 'url')).toBe(
-            'https://gorgias.io'
+            'https://gorgias.io',
         )
     })
 
@@ -247,7 +250,7 @@ describe('getStringFromData()', () => {
 
     it('should return the emai because passed type is `email` and passed data is an email address', () => {
         expect(getStringFromData('developers@gorgias.io', 'email')).toBe(
-            'developers@gorgias.io'
+            'developers@gorgias.io',
         )
     })
 
@@ -292,7 +295,7 @@ describe('getStringFromData()', () => {
         'given %p and %p as arguments, returns correct value',
         (data, type, expected) => {
             expect(getStringFromData(data, type)).toBe(expected)
-        }
+        },
     )
 
     const defaultValues = [
@@ -306,6 +309,6 @@ describe('getStringFromData()', () => {
         'given %p and %p as arguments, returns default value',
         (data, type) => {
             expect(getStringFromData(data, type)).toBeNull()
-        }
+        },
     )
 })

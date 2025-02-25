@@ -1,11 +1,12 @@
-import {fireEvent, render} from '@testing-library/react'
-import {List} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render } from '@testing-library/react'
+import { List } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {integrationsStateWithShopify} from 'fixtures/integrations'
+import { integrationsStateWithShopify } from 'fixtures/integrations'
 
 import * as ToolbarContext from '../../ToolbarContext'
 import ToolbarProvider from '../../ToolbarProvider'
@@ -26,37 +27,37 @@ describe('<AddProductLink/>', () => {
     })
 
     it('should not render when the popover is closed', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <ToolbarProvider
                     shopifyIntegrations={
                         integrationsStateWithShopify.get(
-                            'integrations'
+                            'integrations',
                         ) as List<any>
                     }
                 >
                     <AddProductLink {...minProps} />
                 </ToolbarProvider>
             </Provider>,
-            {container: document.body}
+            { container: document.body },
         )
         expect(container).toMatchSnapshot()
     })
 
     it('should render the product picker when the popover is clicked and only one integration', () => {
-        const {getByText, container, unmount} = render(
+        const { getByText, container, unmount } = render(
             <Provider store={store}>
                 <ToolbarProvider
                     shopifyIntegrations={
                         integrationsStateWithShopify.get(
-                            'integrations'
+                            'integrations',
                         ) as List<any>
                     }
                 >
                     <AddProductLink {...minProps} />
                 </ToolbarProvider>
             </Provider>,
-            {container: document.body}
+            { container: document.body },
         )
         fireEvent.click(getByText(/shopify/i))
         expect(container).toMatchSnapshot()
@@ -65,10 +66,10 @@ describe('<AddProductLink/>', () => {
 
     it('should render the store picker because of multiple integrations', () => {
         let integrations = integrationsStateWithShopify.get(
-            'integrations'
+            'integrations',
         ) as List<any>
         integrations = integrations.push(integrations.toArray()[0])
-        const {getByText, container, unmount} = render(
+        const { getByText, container, unmount } = render(
             <Provider store={store}>
                 <ToolbarProvider shopifyIntegrations={integrations}>
                     <AddProductLink
@@ -77,7 +78,7 @@ describe('<AddProductLink/>', () => {
                     />
                 </ToolbarProvider>
             </Provider>,
-            {container: document.body}
+            { container: document.body },
         )
         fireEvent.click(getByText(/shopify/i))
         expect(container).toMatchSnapshot()
@@ -86,27 +87,27 @@ describe('<AddProductLink/>', () => {
 
     it('should render the selected integration automatically if a currentShopifyIntegration is provided', () => {
         let integrations = integrationsStateWithShopify.get(
-            'integrations'
+            'integrations',
         ) as List<any>
         integrations = integrations.push(integrations.toArray()[0])
         const currentShopifyIntegration = integrations.toArray()[0]
         const originalImplementation = ToolbarContext.useToolbarContext
         const mockToolbarContext = jest.spyOn(
             ToolbarContext,
-            'useToolbarContext'
+            'useToolbarContext',
         )
         mockToolbarContext.mockImplementation(() => ({
             ...originalImplementation(),
             currentShopifyIntegration,
             shopifyIntegrations: integrations,
         }))
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <AddProductLink
                     getEditorState={minProps.getEditorState}
                     setEditorState={minProps.setEditorState}
                 />
-            </Provider>
+            </Provider>,
         )
         fireEvent.click(getByText(/shopify/i))
 
@@ -119,12 +120,12 @@ describe('<AddProductLink/>', () => {
     it('should render the product automations when single integration and is allowed to show it', () => {
         const onAddProductAutomationAttachmentMock = jest.fn()
 
-        const {getByText, unmount} = render(
+        const { getByText, unmount } = render(
             <Provider store={store}>
                 <ToolbarProvider
                     shopifyIntegrations={
                         integrationsStateWithShopify.get(
-                            'integrations'
+                            'integrations',
                         ) as List<any>
                     }
                     canAddProductAutomations
@@ -135,7 +136,7 @@ describe('<AddProductLink/>', () => {
                     <AddProductLink {...minProps} />
                 </ToolbarProvider>
             </Provider>,
-            {container: document.body}
+            { container: document.body },
         )
 
         fireEvent.click(getByText(/shopify/i))
@@ -150,7 +151,7 @@ describe('<AddProductLink/>', () => {
         expect(onAddProductAutomationAttachmentMock).toHaveBeenCalledWith(
             expect.objectContaining({
                 name: 'Similar Browsed Products',
-            })
+            }),
         )
 
         unmount()

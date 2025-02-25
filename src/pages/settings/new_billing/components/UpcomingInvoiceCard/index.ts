@@ -1,2 +1,2 @@
-export {default} from './UpcomingInvoiceCard'
+export { default } from './UpcomingInvoiceCard'
 export * from './UpcomingInvoiceCard'

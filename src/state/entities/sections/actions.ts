@@ -1,12 +1,11 @@
-import {createAction} from '@reduxjs/toolkit'
+import { createAction } from '@reduxjs/toolkit'
 
-import {Section} from '../../../models/section/types'
-
+import { Section } from '../../../models/section/types'
 import {
-    SECTIONS_FETCHED,
     SECTION_CREATED,
     SECTION_DELETED,
     SECTION_UPDATED,
+    SECTIONS_FETCHED,
 } from './constants'
 
 export const sectionsFetched = createAction<Section[]>(SECTIONS_FETCHED)

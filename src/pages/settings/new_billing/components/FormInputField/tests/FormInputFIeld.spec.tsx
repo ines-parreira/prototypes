@@ -1,10 +1,10 @@
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-
 import React from 'react'
 
-import {Form} from 'core/forms'
-import {FormInputField} from 'pages/settings/new_billing/components/FormInputField/FormInputField'
-import {FormSubmitButton} from 'pages/settings/new_billing/components/FormSubmitButton/FormSubmitButton'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+
+import { Form } from 'core/forms'
+import { FormInputField } from 'pages/settings/new_billing/components/FormInputField/FormInputField'
+import { FormSubmitButton } from 'pages/settings/new_billing/components/FormSubmitButton/FormSubmitButton'
 
 describe('FormInputField', () => {
     it('should input field content in the form data as expected', async () => {
@@ -14,12 +14,12 @@ describe('FormInputField', () => {
             <Form onValidSubmit={handleValidSubmit}>
                 <FormInputField name="fieldName" />
                 <FormSubmitButton />
-            </Form>
+            </Form>,
         )
 
         const input = screen.getByRole('textbox')
 
-        fireEvent.change(input, {target: {value: 'fieldContent'}})
+        fireEvent.change(input, { target: { value: 'fieldContent' } })
 
         fireEvent.click(screen.getByRole('button'))
 
@@ -28,7 +28,7 @@ describe('FormInputField', () => {
                 {
                     fieldName: 'fieldContent',
                 },
-                expect.any(Object)
+                expect.any(Object),
             )
         })
     })
@@ -38,15 +38,15 @@ describe('FormInputField', () => {
             <Form onValidSubmit={jest.fn()}>
                 <FormInputField
                     name="fieldName"
-                    rules={{required: 'Field is required'}}
+                    rules={{ required: 'Field is required' }}
                 />
                 <FormSubmitButton />
-            </Form>
+            </Form>,
         )
 
         const input = screen.getByRole('textbox')
 
-        fireEvent.change(input, {target: {value: ''}})
+        fireEvent.change(input, { target: { value: '' } })
 
         // Tries to submit the form to trigger validation
         fireEvent.click(screen.getByRole('button'))
@@ -60,7 +60,7 @@ describe('FormInputField', () => {
         render(
             <Form onValidSubmit={jest.fn()} disabled>
                 <FormInputField name="fieldName" />
-            </Form>
+            </Form>,
         )
 
         const input = screen.getByRole('textbox')

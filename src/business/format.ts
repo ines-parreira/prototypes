@@ -6,6 +6,6 @@ export function humanize(text: string): string {
         _trim(text, '.-_')
             .replace(/([A-Z])/g, ' $1')
             .replace(/[-_.\s]+/g, ' ')
-            .toLowerCase()
+            .toLowerCase(),
     )
 }

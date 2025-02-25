@@ -1,19 +1,18 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { useCallback, useMemo, useState } from 'react'
+
 import classnames from 'classnames'
-import React, {useCallback, useMemo, useState} from 'react'
 
-import {useDismissFlag} from 'hooks/useDismissFlag'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
+import { useDismissFlag } from 'hooks/useDismissFlag'
 import useLocalStorage from 'hooks/useLocalStorage'
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-
 import CreateABTestInfoModal from 'pages/convert/abVariants/components/CreateABTestInfoModal'
-import {ABVariantModalType} from 'pages/convert/abVariants/types/enums'
+import { ABVariantModalType } from 'pages/convert/abVariants/types/enums'
 import LightCampaignModal from 'pages/convert/campaigns/components/LightCampaignModal/LightCampaignModal'
-import {useCampaignFormContext} from 'pages/convert/campaigns/hooks/useCampaignFormContext'
-
-import {LightCampaignModalType} from 'pages/convert/campaigns/types/enums/LightCampaignModalType'
+import { useCampaignFormContext } from 'pages/convert/campaigns/hooks/useCampaignFormContext'
+import { LightCampaignModalType } from 'pages/convert/campaigns/types/enums/LightCampaignModalType'
 
 import css from './style.less'
 
@@ -57,15 +56,15 @@ export const CampaignFooter = ({
 }: Props): JSX.Element => {
     const [isLightModalOpen, setIsLightModalOpen] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false)
-    const {configuration} = useCampaignFormContext()
+    const { configuration } = useCampaignFormContext()
 
     const storageAbVariantModalKey = useMemo(() => {
         return `convert:abVariant:${ABVariantModalType.CreateABGroup}`
     }, [])
 
-    const {isDismissed, dismiss} = useDismissFlag(
+    const { isDismissed, dismiss } = useDismissFlag(
         storageAbVariantModalKey,
-        true
+        true,
     )
 
     const storageKey = useMemo(() => {
@@ -73,7 +72,7 @@ export const CampaignFooter = ({
     }, [integrationId])
     const [lightModalDismissed, setLightModalDismissed] = useLocalStorage(
         storageKey,
-        false
+        false,
     )
 
     const onCreate = useCallback(
@@ -82,7 +81,7 @@ export const CampaignFooter = ({
                 onSave(activate)
             }
         },
-        [onSave, isCreateDisabled]
+        [onSave, isCreateDisabled],
     )
 
     const openModal = () => {

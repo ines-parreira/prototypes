@@ -1,15 +1,17 @@
-import classNames from 'classnames'
 import React from 'react'
+
+import classNames from 'classnames'
 
 import {
     VoiceCall,
-    VoiceCallRecordingErrorCode,
     VoiceCallRecording,
+    VoiceCallRecordingErrorCode,
     VoiceCallRecordingType,
 } from 'models/voiceCall/types'
 import VoiceCallAgentLabel from 'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel'
 
 import DownloadableDeletableRecording from '../PhoneEvent/DownloadableDeletableRecording'
+
 import css from './TicketVoiceCallContainer.less'
 
 type Props = {
@@ -18,7 +20,7 @@ type Props = {
     voiceCall: VoiceCall
 }
 
-export default function VoiceCallAudio({audio, type, voiceCall}: Props) {
+export default function VoiceCallAudio({ audio, type, voiceCall }: Props) {
     if (!!audio.deleted_datetime) {
         return (
             <div

@@ -1,7 +1,7 @@
-import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
+import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
 
 export default function isPhoneBasedSource(
-    sourceType: TicketMessageSourceType | TicketChannel
+    sourceType: TicketMessageSourceType | TicketChannel,
 ): boolean {
     return [
         TicketMessageSourceType.Phone,

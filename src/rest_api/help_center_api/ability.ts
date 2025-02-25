@@ -1,4 +1,4 @@
-import {Ability, AbilityClass, RawRuleOf} from '@casl/ability'
+import { Ability, AbilityClass, RawRuleOf } from '@casl/ability'
 
 type Actions = 'manage' | 'create' | 'read' | 'update' | 'delete'
 type Subjects = 'HelpCenterEntity' | 'CategoryEntity' | 'ArticleEntity' | 'all' // FIXME: use the help center types

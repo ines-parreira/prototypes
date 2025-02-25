@@ -1,28 +1,30 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import React, {useEffect, useMemo, useState} from 'react'
-import {Link, NavLink, Route, Switch, useHistory} from 'react-router-dom'
+import React, { useEffect, useMemo, useState } from 'react'
 
-import {AlertBanner, AlertBannerTypes} from 'AlertBanners'
+import { Link, NavLink, Route, Switch, useHistory } from 'react-router-dom'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { AlertBanner, AlertBannerTypes } from 'AlertBanners'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {PRODUCT_BANNER_KEY} from 'hooks/useProductBannerStorage'
+import { PRODUCT_BANNER_KEY } from 'hooks/useProductBannerStorage'
 import Button from 'pages/common/components/button/Button'
 import PageHeader from 'pages/common/components/PageHeader'
 import Detail from 'pages/common/components/ProductDetail'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
-import {changeHelpCenterId} from 'state/ui/helpCenter'
+import { changeHelpCenterId } from 'state/ui/helpCenter'
 
 import {
-    HELP_CENTER_MAX_CREATION,
     HELP_CENTER_BASE_PATH,
+    HELP_CENTER_MAX_CREATION,
     HELP_CENTERS_PER_PAGE,
 } from '../../constants'
-import {useAbilityChecker} from '../../hooks/useHelpCenterApi'
-import {useHelpCenterList} from '../../hooks/useHelpCenterList'
-import {useStandaloneHelpCenterAfterDismiss} from '../../hooks/useStandaloneHelpCenterAfterDismiss'
-
-import {ABOUT_PAGE} from './constants'
-import css from './HelpCenterStartView.less'
+import { useAbilityChecker } from '../../hooks/useHelpCenterApi'
+import { useHelpCenterList } from '../../hooks/useHelpCenterList'
+import { useStandaloneHelpCenterAfterDismiss } from '../../hooks/useStandaloneHelpCenterAfterDismiss'
+import { ABOUT_PAGE } from './constants'
 import ManageHelpCenters from './ManageHelpCenters'
+
+import css from './HelpCenterStartView.less'
 
 const HelpCenterStartView: React.FC = () => {
     const dispatch = useAppDispatch()
@@ -38,10 +40,10 @@ const HelpCenterStartView: React.FC = () => {
 
     const standaloneHelpCenters = useStandaloneHelpCenterAfterDismiss(
         helpCenterList,
-        PRODUCT_BANNER_KEY.HELP_CENTER_STANDALONE_SSP
+        PRODUCT_BANNER_KEY.HELP_CENTER_STANDALONE_SSP,
     )
 
-    const {isPassingRulesCheck} = useAbilityChecker()
+    const { isPassingRulesCheck } = useAbilityChecker()
 
     const [bannerNotificationDismissed, setBannerNotificationDismissed] =
         useState(false)
@@ -49,10 +51,10 @@ const HelpCenterStartView: React.FC = () => {
     const showBanner = useMemo(
         () =>
             !bannerNotificationDismissed &&
-            isPassingRulesCheck(({can}) =>
-                can('create', 'HelpCenterEntity')
+            isPassingRulesCheck(({ can }) =>
+                can('create', 'HelpCenterEntity'),
             ) === false,
-        [isPassingRulesCheck, bannerNotificationDismissed]
+        [isPassingRulesCheck, bannerNotificationDismissed],
     )
 
     useEffect(() => {
@@ -66,7 +68,7 @@ const HelpCenterStartView: React.FC = () => {
     const isHelpCenterLimitReached =
         helpCenterList.length >= HELP_CENTER_MAX_CREATION
 
-    const {pathManage, pathAbout, navAbout, navManage} = useMemo(() => {
+    const { pathManage, pathAbout, navAbout, navManage } = useMemo(() => {
         const isDefaultPageAbout = !isLoading && helpCenterList.length === 0
 
         const pathAbout = isDefaultPageAbout
@@ -91,7 +93,7 @@ const HelpCenterStartView: React.FC = () => {
         }
     }, [helpCenterList, isLoading])
 
-    const detailsProps = {...ABOUT_PAGE}
+    const detailsProps = { ...ABOUT_PAGE }
     detailsProps.infocard.CTA = (
         <Link to={`${HELP_CENTER_BASE_PATH}/new`}>
             <Button className="full-width">Create Help Center</Button>
@@ -106,8 +108,8 @@ const HelpCenterStartView: React.FC = () => {
                         <Button
                             id="add-new-help-center-button"
                             isDisabled={
-                                isPassingRulesCheck(({can}) =>
-                                    can('create', 'HelpCenterEntity')
+                                isPassingRulesCheck(({ can }) =>
+                                    can('create', 'HelpCenterEntity'),
                                 )
                                     ? isHelpCenterLimitReached
                                     : true
@@ -163,8 +165,8 @@ const HelpCenterStartView: React.FC = () => {
                         hasMore={hasMore}
                         fetchMore={fetchMore}
                         isButtonDisabled={
-                            isPassingRulesCheck(({can}) =>
-                                can('create', 'HelpCenterEntity')
+                            isPassingRulesCheck(({ can }) =>
+                                can('create', 'HelpCenterEntity'),
                             )
                                 ? isHelpCenterLimitReached
                                 : true

@@ -1,25 +1,24 @@
+import React, { useEffect, useMemo, useState } from 'react'
+
 import _debounce from 'lodash/debounce'
-import React, {useEffect, useMemo, useState} from 'react'
 
-import {useProductsFromShopifyIntegration} from 'models/integration/queries'
-
+import { useProductsFromShopifyIntegration } from 'models/integration/queries'
 import Button from 'pages/common/components/button/Button'
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
-import {Option} from 'pages/common/forms/MultiSelectOptionsField/types'
+import { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {Value} from 'pages/common/forms/SelectField/types'
+import { Value } from 'pages/common/forms/SelectField/types'
 
-import {useIntegrationContext} from '../../containers/IntegrationProvider'
-
-import {AdvancedTriggerBaseProps} from '../../types/AdvancedTriggerBaseProps'
+import { useIntegrationContext } from '../../containers/IntegrationProvider'
+import { AdvancedTriggerBaseProps } from '../../types/AdvancedTriggerBaseProps'
 import {
-    PurchasedProductValue,
     isPurchasedProductValue,
+    PurchasedProductValue,
 } from '../../types/CampaignValue'
+import { CampaignTriggerOperator } from '../../types/enums/CampaignTriggerOperator.enum'
+import { convertTriggerOperatorsToSelectOptions } from '../../utils/convertTriggerOperatorsToSelectOptions'
+import { handleTriggerOperatorChange } from '../../utils/handleTriggerOperatorChange'
 
-import {CampaignTriggerOperator} from '../../types/enums/CampaignTriggerOperator.enum'
-import {convertTriggerOperatorsToSelectOptions} from '../../utils/convertTriggerOperatorsToSelectOptions'
-import {handleTriggerOperatorChange} from '../../utils/handleTriggerOperatorChange'
 import css from './style.less'
 
 type Props = AdvancedTriggerBaseProps
@@ -30,15 +29,15 @@ export const OrderedProductsTriggers = ({
     onUpdateTrigger,
 }: Props) => {
     const [innerOperator, setInnerOperator] = useState<CampaignTriggerOperator>(
-        trigger.operator
+        trigger.operator,
     )
     const [innerValue, setInnerValue] = useState<Option[]>([])
     const [innerFilter, setInnerFilter] = useState<string>()
-    const {shopifyIntegration} = useIntegrationContext()
+    const { shopifyIntegration } = useIntegrationContext()
 
     const x = useProductsFromShopifyIntegration(
         shopifyIntegration?.id ?? -1,
-        innerFilter
+        innerFilter,
     )
 
     const handleChangeOperator = (operator: Value) =>
@@ -47,7 +46,7 @@ export const OrderedProductsTriggers = ({
             id,
             trigger,
             setInnerOperator,
-            onUpdateTrigger
+            onUpdateTrigger,
         )
 
     const handleChangeValue = (value: Option[]) => {
@@ -84,7 +83,7 @@ export const OrderedProductsTriggers = ({
         const isValidValue =
             Array.isArray(trigger.value) &&
             trigger.value.every((item) =>
-                isPurchasedProductValue(item as PurchasedProductValue)
+                isPurchasedProductValue(item as PurchasedProductValue),
             )
 
         if (isValidValue) {

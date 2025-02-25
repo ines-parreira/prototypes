@@ -1,23 +1,24 @@
-import {render} from '@testing-library/react'
 import React from 'react'
-import {Redirect, Route, useRouteMatch} from 'react-router-dom'
 
-import {PageSection} from 'config/pages'
-import {ADMIN_ROLE} from 'config/user'
-import {CustomFieldObjectTypes} from 'custom-fields/types'
+import { render } from '@testing-library/react'
+import { Redirect, Route, useRouteMatch } from 'react-router-dom'
+
+import { PageSection } from 'config/pages'
+import { ADMIN_ROLE } from 'config/user'
+import { CustomFieldObjectTypes } from 'custom-fields/types'
 import AddCustomField from 'pages/settings/customFields/AddCustomField'
 import CustomFieldsComponent from 'pages/settings/customFields/CustomFields'
 import EditCustomField from 'pages/settings/customFields/EditCustomField'
-import {CUSTOM_FIELD_ROUTES} from 'routes/constants'
-import {assumeMock} from 'utils/testing'
+import { CUSTOM_FIELD_ROUTES } from 'routes/constants'
+import { assumeMock } from 'utils/testing'
 
-import {CustomFields} from '../CustomFields'
-import {renderAppSettings} from '../helpers/settingsRenderer'
+import { CustomFields } from '../CustomFields'
+import { renderAppSettings } from '../helpers/settingsRenderer'
 
 jest.mock('react-router-dom', () => ({
     Redirect: jest.fn(() => <div>Redirect</div>),
     Route: jest.fn(() => <div>route</div>),
-    Switch: jest.fn(({children}) => <div>{children}</div>),
+    Switch: jest.fn(({ children }) => <div>{children}</div>),
     useRouteMatch: jest.fn(),
 }))
 jest.mock('pages/common/components/NoMatch', () => () => <div>404</div>)
@@ -148,7 +149,7 @@ describe('CustomFields', () => {
             render(
                 <CustomFields
                     objectType={objectType as CustomFieldObjectTypes}
-                />
+                />,
             )
 
             expect(mockedRenderAppSettings.mock.calls[callOrder]).toEqual([
@@ -168,6 +169,6 @@ describe('CustomFields', () => {
                 },
                 {},
             ])
-        }
+        },
     )
 })

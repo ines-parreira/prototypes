@@ -1,13 +1,13 @@
 import {
     CustomFieldCondition,
-    useListCustomFieldConditions,
     queryKeys,
+    useListCustomFieldConditions,
 } from '@gorgias/api-queries'
 
-import {CustomFieldObjectTypes} from 'custom-fields/types'
+import { CustomFieldObjectTypes } from 'custom-fields/types'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 export const STALE_TIME_MS = 60 * 60 * 1000 // 1 hour
 export const MAX_CONDITIONS = 100 // The limit of conditions is 70, so we get the maximum of what API returns by default
@@ -32,7 +32,7 @@ export const useCustomFieldConditions = ({
     const dispatch = useAppDispatch()
 
     const {
-        data: {data: {data: customFieldConditions = []} = {}} = {},
+        data: { data: { data: customFieldConditions = [] } = {} } = {},
         isLoading,
         isError,
     } = useListCustomFieldConditions({
@@ -50,7 +50,7 @@ export const useCustomFieldConditions = ({
                 {
                     object_type: objectType,
                     include_deactivated: includeDeactivated,
-                }
+                },
             ),
             enabled: enabled,
         },
@@ -61,9 +61,9 @@ export const useCustomFieldConditions = ({
             notify({
                 message: 'Failed to fetch ticket custom fields conditions',
                 status: NotificationStatus.Error,
-            })
+            }),
         )
     }
 
-    return {customFieldConditions, isLoading, isError}
+    return { customFieldConditions, isLoading, isError }
 }

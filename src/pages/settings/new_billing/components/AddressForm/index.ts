@@ -1,1 +1,1 @@
-export {default} from './AddressForm'
+export { default } from './AddressForm'

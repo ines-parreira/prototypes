@@ -1,8 +1,8 @@
 // g/integrations/yotpo/schemas.py
-import {IntegrationType} from '../constants'
-import type {Integration} from './'
-import type {IntegrationBase} from './base'
-import type {OAuth2} from './misc'
+import { IntegrationType } from '../constants'
+import type { Integration } from './'
+import type { IntegrationBase } from './base'
+import type { OAuth2 } from './misc'
 
 export type YotpoIntegration = IntegrationBase & {
     type: IntegrationType.Yotpo
@@ -19,6 +19,6 @@ export type YotpoIntegrationMeta = {
 }
 
 export const isYotpoIntegration = (
-    integration: Maybe<Integration>
+    integration: Maybe<Integration>,
 ): integration is YotpoIntegration =>
     integration?.type === IntegrationType.Yotpo

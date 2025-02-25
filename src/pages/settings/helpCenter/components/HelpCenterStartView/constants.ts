@@ -1,4 +1,4 @@
-import {ProductDetail} from 'pages/common/components/ProductDetail/types'
+import { ProductDetail } from 'pages/common/components/ProductDetail/types'
 
 export const ABOUT_PAGE: ProductDetail = {
     title: 'Help Center',

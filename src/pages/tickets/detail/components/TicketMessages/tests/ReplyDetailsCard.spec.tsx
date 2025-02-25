@@ -1,13 +1,15 @@
-import {useGetTicketMessage} from '@gorgias/api-queries'
-import {QueryClientProvider} from '@tanstack/react-query'
-import {render} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { render } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
+import { useGetTicketMessage } from '@gorgias/api-queries'
+
 import ReplyDetailsCard from 'pages/tickets/detail/components/TicketMessages/ReplyDetailsCard'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 const queryClient = mockQueryClient()
 const mockStore = configureMockStore()
@@ -30,24 +32,24 @@ describe('ReplyDetailsCard', () => {
         render(
             <QueryClientProvider client={queryClient}>
                 <ReplyDetailsCard reply={reply} />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(mockUseGetTicketMessage).toHaveBeenCalledWith(1, 2, {
-            query: {refetchInterval: false, refetchOnWindowFocus: false},
+            query: { refetchInterval: false, refetchOnWindowFocus: false },
         })
     })
 
     it('should not render if the details are not complete', () => {
         mockUseGetTicketMessage.mockReturnValue({
             isSuccess: true,
-            data: {data: {body_text: 'reply body text'}},
+            data: { data: { body_text: 'reply body text' } },
         } as ReturnType<typeof useGetTicketMessage>)
 
-        const {queryByText} = render(
+        const { queryByText } = render(
             <QueryClientProvider client={queryClient}>
                 <ReplyDetailsCard reply={reply} />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(queryByText('reply body text')).not.toBeInTheDocument()
@@ -71,7 +73,7 @@ describe('ReplyDetailsCard', () => {
             },
         } as ReturnType<typeof useGetTicketMessage>)
 
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider
                 store={mockStore({
                     entities: {
@@ -82,7 +84,7 @@ describe('ReplyDetailsCard', () => {
                 <QueryClientProvider client={queryClient}>
                     <ReplyDetailsCard reply={reply} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
 
         expect(getByText('reply body text')).toBeInTheDocument()

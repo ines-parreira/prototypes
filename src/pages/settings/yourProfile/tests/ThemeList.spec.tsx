@@ -1,19 +1,23 @@
-import {render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {THEME_CONFIGS, THEME_NAME} from 'core/theme'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { THEME_CONFIGS, THEME_NAME } from 'core/theme'
 import ThemeList from 'pages/settings/yourProfile/components/ThemeList'
 
 describe('ThemeList', () => {
     it('should render all themes', () => {
-        const {getByText} = render(
-            <ThemeList savedTheme={THEME_NAME.Dark} onChangeTheme={jest.fn()} />
+        const { getByText } = render(
+            <ThemeList
+                savedTheme={THEME_NAME.Dark}
+                onChangeTheme={jest.fn()}
+            />,
         )
 
         THEME_CONFIGS.forEach((themeConfig) => {
             expect(
-                getByText(themeConfig.settingsLabel || themeConfig.label)
+                getByText(themeConfig.settingsLabel || themeConfig.label),
             ).toBeInTheDocument()
             expect(getByText(themeConfig.icon)).toBeInTheDocument()
         })
@@ -26,7 +30,7 @@ describe('ThemeList', () => {
             <ThemeList
                 savedTheme={THEME_NAME.Dark}
                 onChangeTheme={onChangeThemeSpy}
-            />
+            />,
         )
 
         expect(screen.getAllByRole('radio').length).toBe(4)

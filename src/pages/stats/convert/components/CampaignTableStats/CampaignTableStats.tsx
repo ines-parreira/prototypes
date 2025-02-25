@@ -1,9 +1,9 @@
-import React, {UIEventHandler, useCallback, useState, useMemo} from 'react'
-import {Link} from 'react-router-dom'
+import React, { UIEventHandler, useCallback, useMemo, useState } from 'react'
+
+import { Link } from 'react-router-dom'
 
 import useMeasure from 'hooks/useMeasure'
-import {opposite, OrderDirection} from 'models/api/types'
-
+import { opposite, OrderDirection } from 'models/api/types'
 import Navigation from 'pages/common/components/Navigation/Navigation'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
@@ -11,23 +11,21 @@ import TableBody from 'pages/common/components/table/TableBody'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
+import { generateVariantName } from 'pages/convert/abVariants/utils/generateVariantName'
+import { CampaignVariant } from 'pages/convert/campaigns/types/CampaignVariant'
+import { useIsConvertPerformanceViewEnabled } from 'pages/convert/common/hooks/useIsConvertPerformanceViewEnabled'
+import { ITEMS_PER_PAGE } from 'pages/stats/convert/constants/campaignPerformanceTable'
+import { useCampaignPerformanceTableSetting } from 'pages/stats/convert/hooks/useCampaignPerformanceTableSetting'
+import { useSortedAndPaginatedTableRows } from 'pages/stats/convert/hooks/useSortedAndPaginatedTableRows'
+import { CampaignTableColumn } from 'pages/stats/convert/types/CampaignTableColumn'
+import { CampaignTableContentCell } from 'pages/stats/convert/types/CampaignTableContentCell'
+import { CampaignTableKeys } from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
+import { getDataFromTableCell } from 'pages/stats/convert/utils/getDataFromTableCell'
 
-import {generateVariantName} from 'pages/convert/abVariants/utils/generateVariantName'
-import {CampaignVariant} from 'pages/convert/campaigns/types/CampaignVariant'
-import {useIsConvertPerformanceViewEnabled} from 'pages/convert/common/hooks/useIsConvertPerformanceViewEnabled'
-import {ITEMS_PER_PAGE} from 'pages/stats/convert/constants/campaignPerformanceTable'
-import {useCampaignPerformanceTableSetting} from 'pages/stats/convert/hooks/useCampaignPerformanceTableSetting'
-
-import {useSortedAndPaginatedTableRows} from 'pages/stats/convert/hooks/useSortedAndPaginatedTableRows'
-import {CampaignTableColumn} from 'pages/stats/convert/types/CampaignTableColumn'
-import {CampaignTableContentCell} from 'pages/stats/convert/types/CampaignTableContentCell'
-import {CampaignTableKeys} from 'pages/stats/convert/types/enums/CampaignTableKeys.enum'
-
-import {getDataFromTableCell} from 'pages/stats/convert/utils/getDataFromTableCell'
+import { CampaignTableCell } from './components/CampaignTableCell'
+import { CampaignPerformanceConfig } from './constants'
 
 import css from './CampaignTableStats.less'
-import {CampaignTableCell} from './components/CampaignTableCell'
-import {CampaignPerformanceConfig} from './constants'
 
 type Props = {
     chatIntegrationId?: number
@@ -46,16 +44,16 @@ export const CampaignTableStats = ({
     onClickNextPage,
     onClickPrevPage,
 }: Props) => {
-    const [ref, {width}] = useMeasure<HTMLDivElement>()
+    const [ref, { width }] = useMeasure<HTMLDivElement>()
     const isConvertPerformanceViewEnabled = useIsConvertPerformanceViewEnabled()
-    const {isLoading: isLoadingConfiguration, columnsOrder: selectedColumns} =
+    const { isLoading: isLoadingConfiguration, columnsOrder: selectedColumns } =
         useCampaignPerformanceTableSetting()
     const [isTableScrolled, setIsTableScrolled] = useState(false)
     const [orderKey, setOrderKey] = useState<CampaignTableKeys>(
-        CampaignTableKeys.TotalRevenue
+        CampaignTableKeys.TotalRevenue,
     )
     const [orderDirection, setOrderDirection] = useState<OrderDirection>(
-        OrderDirection.Desc
+        OrderDirection.Desc,
     )
 
     const columnsOrder: CampaignTableKeys[] = useMemo(() => {
@@ -83,14 +81,14 @@ export const CampaignTableStats = ({
                 setOrderDirection((direction) =>
                     direction === OrderDirection.Asc
                         ? OrderDirection.Desc
-                        : OrderDirection.Asc
+                        : OrderDirection.Asc,
                 )
             } else {
                 setOrderKey(key)
                 setOrderDirection(OrderDirection.Asc)
             }
         },
-        [orderKey]
+        [orderKey],
     )
 
     const renderHeaderCells = useCallback(
@@ -119,7 +117,7 @@ export const CampaignTableStats = ({
                 />
             )
         },
-        [handleClickHeaderCell, orderDirection, orderKey, isTableScrolled]
+        [handleClickHeaderCell, orderDirection, orderKey, isTableScrolled],
     )
 
     const renderCells = useCallback(
@@ -127,7 +125,7 @@ export const CampaignTableStats = ({
             column: CampaignTableColumn,
             cell: CampaignTableContentCell,
             variantName?: string,
-            variant?: CampaignVariant
+            variant?: CampaignVariant,
         ) => {
             const variantId = variantName
                 ? variant
@@ -149,7 +147,7 @@ export const CampaignTableStats = ({
                 />
             )
         },
-        [isLoading, isTableScrolled, variantToggleState]
+        [isLoading, isTableScrolled, variantToggleState],
     )
 
     const renderRows = useCallback(
@@ -158,7 +156,10 @@ export const CampaignTableStats = ({
                 <>
                     <TableBodyRow key={index}>
                         {columnsOrder.map((column) =>
-                            renderCells(CampaignPerformanceConfig[column], cell)
+                            renderCells(
+                                CampaignPerformanceConfig[column],
+                                cell,
+                            ),
                         )}
                     </TableBodyRow>
                     {variantToggleState[cell.campaign.id] && (
@@ -168,8 +169,8 @@ export const CampaignTableStats = ({
                                     renderCells(
                                         CampaignPerformanceConfig[column],
                                         cell,
-                                        'Control Variant'
-                                    )
+                                        'Control Variant',
+                                    ),
                                 )}
                             </TableBodyRow>
                             {(cell.campaign.variants ?? []).map(
@@ -184,18 +185,18 @@ export const CampaignTableStats = ({
                                                 ],
                                                 cell,
                                                 generateVariantName(variantIdx),
-                                                variant
-                                            )
+                                                variant,
+                                            ),
                                         )}
                                     </TableBodyRow>
-                                )
+                                ),
                             )}
                         </>
                     )}
                 </>
             )
         },
-        [renderCells, variantToggleState, columnsOrder]
+        [renderCells, variantToggleState, columnsOrder],
     )
 
     const renderTableBody = useCallback(() => {
@@ -212,7 +213,7 @@ export const CampaignTableStats = ({
                             Start by
                             <Link
                                 to={url}
-                                style={{marginLeft: 3, marginRight: 3}}
+                                style={{ marginLeft: 3, marginRight: 3 }}
                             >
                                 creating
                             </Link>
@@ -256,10 +257,12 @@ export const CampaignTableStats = ({
     return (
         <>
             <div ref={ref} className={css.container} onScroll={handleScroll}>
-                <TableWrapper className={css.table} style={{width}}>
+                <TableWrapper className={css.table} style={{ width }}>
                     <TableHead className={css.header}>
                         {columnsOrder.map((column) =>
-                            renderHeaderCells(CampaignPerformanceConfig[column])
+                            renderHeaderCells(
+                                CampaignPerformanceConfig[column],
+                            ),
                         )}
                     </TableHead>
                     <TableBody>{renderTableBody()}</TableBody>

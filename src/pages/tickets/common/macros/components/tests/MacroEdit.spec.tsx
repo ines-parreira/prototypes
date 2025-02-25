@@ -1,13 +1,14 @@
-import {fireEvent, render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { fireEvent, render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {integrationsState} from 'fixtures/integrations'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { integrationsState } from 'fixtures/integrations'
 import {
     addInternalNoteAction,
     setOpenStatusAction,
@@ -15,28 +16,28 @@ import {
     setTextAction,
     snoozeTicketAction,
 } from 'fixtures/macro'
-import {IntegrationType} from 'models/integration/types'
-import {MacroActionName} from 'models/macroAction/types'
-import {Attachment} from 'models/ticket/types'
+import { IntegrationType } from 'models/integration/types'
+import { MacroActionName } from 'models/macroAction/types'
+import { Attachment } from 'models/ticket/types'
 
 import MacroEdit from '../MacroEdit'
 
 jest.mock(
     'pages/tickets/detail/components/TicketDetails/TicketTags',
-    () => () => 'TicketTagsMock'
+    () => () => 'TicketTagsMock',
 )
 
 jest.mock(
     'pages/common/forms/FileField',
     () =>
-        ({onChange}: {onChange: (files: Attachment[]) => void}) => (
+        ({ onChange }: { onChange: (files: Attachment[]) => void }) => (
             <input
                 onClick={() =>
-                    onChange([{name: 'attachement name'} as Attachment])
+                    onChange([{ name: 'attachement name' } as Attachment])
                 }
                 value="FileFieldMock"
             />
-        )
+        ),
 )
 
 const mockStore = configureMockStore([thunk])
@@ -44,7 +45,7 @@ const mockStore = configureMockStore([thunk])
 // To avoid snapshoting all languages
 jest.mock('constants/languages', () => {
     const module: Record<string, unknown> = jest.requireActual(
-        'constants/languages'
+        'constants/languages',
     )
     return {
         ...module,
@@ -136,7 +137,7 @@ describe('MacroEdit component', () => {
     const defaultProps = {
         actions: fromJS([]),
         agents: fromJS({}),
-        currentMacro: {id: 1},
+        currentMacro: { id: 1 },
         name: 'Pizza Pepperoni',
         setActions: jest.fn(),
         setName: jest.fn(),
@@ -144,30 +145,30 @@ describe('MacroEdit component', () => {
     } as any as ComponentProps<typeof MacroEdit>
 
     it('should render the macro edit form', () => {
-        const {container} = render(
-            <Provider store={mockStore({integrations: fromJS(state)})}>
+        const { container } = render(
+            <Provider store={mockStore({ integrations: fromJS(state) })}>
                 <MacroEdit {...defaultProps} />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should change name input value', () => {
         render(
-            <Provider store={mockStore({integrations: fromJS(state)})}>
+            <Provider store={mockStore({ integrations: fromJS(state) })}>
                 <MacroEdit {...defaultProps} name="Pizza Capricciosa" />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.change(screen.getByDisplayValue('Pizza Capricciosa'), {
-            target: {value: 'Pizza 4 formaggi'},
+            target: { value: 'Pizza 4 formaggi' },
         })
         expect(defaultProps.setName).toHaveBeenCalledWith('Pizza 4 formaggi')
     })
 
     it('should convert forwardByEmail to setResponseText', () => {
         render(
-            <Provider store={mockStore({integrations: fromJS(state)})}>
+            <Provider store={mockStore({ integrations: fromJS(state) })}>
                 <MacroEdit
                     {...defaultProps}
                     actions={fromJS([
@@ -180,7 +181,7 @@ describe('MacroEdit component', () => {
                         },
                     ])}
                 />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(screen.getByText('Response text'))
@@ -192,13 +193,13 @@ describe('MacroEdit component', () => {
                     name: MacroActionName.SetResponseText,
                     title: 'Add response text',
                 },
-            ])
+            ]),
         )
     })
 
     it('should convert forwardByEmail to addInternalNote', () => {
         render(
-            <Provider store={mockStore({integrations: fromJS(state)})}>
+            <Provider store={mockStore({ integrations: fromJS(state) })}>
                 <MacroEdit
                     {...defaultProps}
                     actions={fromJS([
@@ -212,7 +213,7 @@ describe('MacroEdit component', () => {
                         },
                     ])}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('test body')).toBeInTheDocument()
@@ -220,26 +221,26 @@ describe('MacroEdit component', () => {
 
     it('should remove tags action', () => {
         render(
-            <Provider store={mockStore({integrations: fromJS(state)})}>
+            <Provider store={mockStore({ integrations: fromJS(state) })}>
                 <MacroEdit
                     {...defaultProps}
                     actions={fromJS([removeTagAction])}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('Remove tags from ticket')).toBeInTheDocument()
     })
 
     it('should add tags action', () => {
-        const {rerender} = render(
-            <Provider store={mockStore({integrations: fromJS(state)})}>
+        const { rerender } = render(
+            <Provider store={mockStore({ integrations: fromJS(state) })}>
                 <MacroEdit {...defaultProps} />
-            </Provider>
+            </Provider>,
         )
 
         rerender(
-            <Provider store={mockStore({integrations: fromJS(state)})}>
+            <Provider store={mockStore({ integrations: fromJS(state) })}>
                 <MacroEdit
                     {...defaultProps}
                     actions={fromJS([
@@ -249,7 +250,7 @@ describe('MacroEdit component', () => {
                         },
                     ])}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('Add tags to ticket')).toBeInTheDocument()
@@ -263,9 +264,9 @@ describe('MacroEdit component', () => {
             },
         }
         render(
-            <Provider store={mockStore({integrations: fromJS(state)})}>
+            <Provider store={mockStore({ integrations: fromJS(state) })}>
                 <MacroEdit {...defaultProps} actions={fromJS([action])} />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(screen.getByDisplayValue('FileFieldMock'))
@@ -274,10 +275,10 @@ describe('MacroEdit component', () => {
                 {
                     ...action,
                     arguments: {
-                        attachments: fromJS([{name: 'attachement name'}]),
+                        attachments: fromJS([{ name: 'attachement name' }]),
                     },
                 },
-            ])
+            ]),
         )
     })
 
@@ -285,13 +286,13 @@ describe('MacroEdit component', () => {
         const action = {
             name: MacroActionName.AddAttachments,
             arguments: {
-                attachments: [{name: 'attachement name', content_type: ''}],
+                attachments: [{ name: 'attachement name', content_type: '' }],
             },
         }
         render(
-            <Provider store={mockStore({integrations: fromJS(state)})}>
+            <Provider store={mockStore({ integrations: fromJS(state) })}>
                 <MacroEdit {...defaultProps} actions={fromJS([action])} />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(screen.getAllByText('close')[1])
@@ -303,7 +304,7 @@ describe('MacroEdit component', () => {
                         attachments: fromJS([]),
                     },
                 },
-            ])
+            ]),
         )
     })
 
@@ -314,13 +315,13 @@ describe('MacroEdit component', () => {
             arguments: {},
         }
         render(
-            <Provider store={mockStore({integrations: fromJS(state)})}>
+            <Provider store={mockStore({ integrations: fromJS(state) })}>
                 <MacroEdit {...defaultProps} actions={fromJS([action])} />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.change(screen.getByDisplayValue('http action title'), {
-            target: {value: 'new title'},
+            target: { value: 'new title' },
         })
         expect(defaultProps.setActions).toHaveBeenCalledWith(
             fromJS([
@@ -328,13 +329,13 @@ describe('MacroEdit component', () => {
                     ...action,
                     title: 'new title',
                 },
-            ])
+            ]),
         )
     })
 
     it('should remove action', () => {
         render(
-            <Provider store={mockStore({integrations: fromJS(state)})}>
+            <Provider store={mockStore({ integrations: fromJS(state) })}>
                 <MacroEdit
                     {...defaultProps}
                     actions={fromJS([
@@ -344,7 +345,7 @@ describe('MacroEdit component', () => {
                         },
                     ])}
                 />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(screen.getByText('close'))
@@ -353,12 +354,12 @@ describe('MacroEdit component', () => {
 
     it('should set status action', () => {
         render(
-            <Provider store={mockStore({integrations: fromJS(state)})}>
+            <Provider store={mockStore({ integrations: fromJS(state) })}>
                 <MacroEdit
                     {...defaultProps}
                     actions={fromJS([setOpenStatusAction])}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText(setOpenStatusAction.title)).toBeInTheDocument()
@@ -366,12 +367,12 @@ describe('MacroEdit component', () => {
 
     it('should set response text', () => {
         render(
-            <Provider store={mockStore({integrations: fromJS(state)})}>
+            <Provider store={mockStore({ integrations: fromJS(state) })}>
                 <MacroEdit
                     {...defaultProps}
                     actions={fromJS([setTextAction])}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getAllByText('Response text')).toHaveLength(2)
@@ -379,12 +380,12 @@ describe('MacroEdit component', () => {
 
     it('should add inernal note action', () => {
         render(
-            <Provider store={mockStore({integrations: fromJS(state)})}>
+            <Provider store={mockStore({ integrations: fromJS(state) })}>
                 <MacroEdit
                     {...defaultProps}
                     actions={fromJS([addInternalNoteAction])}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getAllByText('Internal note')).toHaveLength(3)
@@ -392,9 +393,9 @@ describe('MacroEdit component', () => {
 
     it('should set user assignee action', () => {
         render(
-            <Provider store={mockStore({integrations: fromJS(state)})}>
+            <Provider store={mockStore({ integrations: fromJS(state) })}>
                 <MacroEdit {...defaultProps} actions={fromJS([setAssignee])} />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('Set user assignee')).toBeInTheDocument()
@@ -402,12 +403,12 @@ describe('MacroEdit component', () => {
 
     it('should set team assignee action', () => {
         render(
-            <Provider store={mockStore({integrations: fromJS(state)})}>
+            <Provider store={mockStore({ integrations: fromJS(state) })}>
                 <MacroEdit
                     {...defaultProps}
                     actions={fromJS([setTeamAssignee])}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('Set team assignee')).toBeInTheDocument()
@@ -415,12 +416,12 @@ describe('MacroEdit component', () => {
 
     it('should set subject action', () => {
         render(
-            <Provider store={mockStore({integrations: fromJS(state)})}>
+            <Provider store={mockStore({ integrations: fromJS(state) })}>
                 <MacroEdit
                     {...defaultProps}
                     actions={fromJS([setSubjectAction])}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('Set ticket subject')).toBeInTheDocument()
@@ -428,12 +429,12 @@ describe('MacroEdit component', () => {
 
     it('should set snooze action', () => {
         render(
-            <Provider store={mockStore({integrations: fromJS(state)})}>
+            <Provider store={mockStore({ integrations: fromJS(state) })}>
                 <MacroEdit
                     {...defaultProps}
                     actions={fromJS([snoozeTicketAction])}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('Snooze for')).toBeInTheDocument()

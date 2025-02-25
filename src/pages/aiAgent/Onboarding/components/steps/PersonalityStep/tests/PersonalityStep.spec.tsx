@@ -1,30 +1,29 @@
 import '@testing-library/jest-dom/extend-expect'
-import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
-import {fireEvent, screen, waitFor} from '@testing-library/react'
 
-import {createMemoryHistory} from 'history'
-import {fromJS, Map} from 'immutable'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {Provider} from 'react-redux'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { createMemoryHistory } from 'history'
+import { fromJS, Map } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {account} from 'fixtures/account'
-import {billingState} from 'fixtures/billing'
-import {chatIntegrationFixtures} from 'fixtures/chat'
-import {shopifyIntegration, integrationsState} from 'fixtures/integrations'
+import { account } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
+import { chatIntegrationFixtures } from 'fixtures/chat'
+import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
 import {
     getOnboardingData,
     updateOnboardingData,
 } from 'models/aiAgent/resources/configuration'
-import {DiscountStrategy} from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
-import {PersonalityStep} from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersonalityStep'
-import {PersuasionLevel} from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
-import {StepProps} from 'pages/aiAgent/Onboarding/components/steps/types'
-
-import {AiAgentScopes, WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
-import {RootState, StoreDispatch} from 'state/types'
-import {renderWithRouter} from 'utils/testing'
+import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
+import { PersonalityStep } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersonalityStep'
+import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
+import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
+import { AiAgentScopes, WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
+import { RootState, StoreDispatch } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
 jest.mock('models/aiAgent/resources/configuration', () => ({
     getOnboardingData: jest.fn(),
@@ -73,7 +72,7 @@ const defaultProps: StepProps = {
 }
 
 const renderComponent = (
-    props: ComponentProps<typeof PersonalityStep> = defaultProps
+    props: ComponentProps<typeof PersonalityStep> = defaultProps,
 ) => {
     renderWithRouter(
         <QueryClientProvider client={queryClient}>
@@ -85,7 +84,7 @@ const renderComponent = (
             history,
             path: '/app/ai-agent/:shopType/:shopName/onboarding/:step',
             route: `/app/ai-agent/shopify/${shopifyIntegration.meta.shop_name}/onboarding/${WizardStepEnum.SALES_PERSONALITY}`,
-        }
+        },
     )
 }
 
@@ -103,14 +102,14 @@ describe('PersonalityStep - With prepopulated data', () => {
                     scopes: [AiAgentScopes.SALES],
                     shopName: shopifyIntegration.meta.shop_name,
                 },
-            ])
+            ]),
         )
 
         // // ✅ Mock updateOnboardingData function
         mockUpdateOnboardingData.mockResolvedValue(
             Promise.resolve({
                 success: true,
-            })
+            }),
         )
 
         jest.useFakeTimers()
@@ -127,7 +126,7 @@ describe('PersonalityStep - With prepopulated data', () => {
 
         await waitFor(() => {
             expect(
-                screen.queryByText(/Maximum Discount Percentage/)
+                screen.queryByText(/Maximum Discount Percentage/),
             ).toBeInTheDocument()
         })
 
@@ -152,14 +151,14 @@ describe('PersonalityStep - Empty state', () => {
                     scopes: [AiAgentScopes.SALES],
                     shopName: shopifyIntegration.meta.shop_name,
                 },
-            ])
+            ]),
         )
 
         // // ✅ Mock updateOnboardingData function
         mockUpdateOnboardingData.mockResolvedValue(
             Promise.resolve({
                 success: true,
-            })
+            }),
         )
 
         jest.useFakeTimers()
@@ -178,17 +177,17 @@ describe('PersonalityStep - Empty state', () => {
         expect(
             screen.getByRole('heading', {
                 name: /Let's define the sales skills for your AI Agent/i,
-            })
+            }),
         ).toBeInTheDocument()
         expect(
             screen.getByText(
-                'Strikes a balance between educating the customer and encouraging them to make a purchase.'
-            )
+                'Strikes a balance between educating the customer and encouraging them to make a purchase.',
+            ),
         ).toBeInTheDocument()
         expect(
             screen.getByText(
-                'The Sales AI Agent offers discounts at a level optimized for both conversions and profit.'
-            )
+                'The Sales AI Agent offers discounts at a level optimized for both conversions and profit.',
+            ),
         ).toBeInTheDocument()
     })
 
@@ -205,8 +204,8 @@ describe('PersonalityStep - Empty state', () => {
 
             expect(
                 screen.getByText(
-                    'Prioritizes driving the sale with a strong focus on persuasion and urgency.'
-                )
+                    'Prioritizes driving the sale with a strong focus on persuasion and urgency.',
+                ),
             ).toBeInTheDocument()
         })
     })
@@ -224,8 +223,8 @@ describe('PersonalityStep - Empty state', () => {
 
             expect(
                 screen.getByText(
-                    'The Sales AI Agent frequently uses discounts to maximize sales, prioritizing conversions over margins.'
-                )
+                    'The Sales AI Agent frequently uses discounts to maximize sales, prioritizing conversions over margins.',
+                ),
             ).toBeInTheDocument()
         })
     })
@@ -243,8 +242,8 @@ describe('PersonalityStep - Empty state', () => {
 
             expect(
                 screen.getByText(
-                    'The Sales AI Agent will not offer any discounts under any circumstances.'
-                )
+                    'The Sales AI Agent will not offer any discounts under any circumstances.',
+                ),
             ).toBeInTheDocument()
         })
 
@@ -261,13 +260,13 @@ describe('PersonalityStep - Empty state', () => {
 
         await waitFor(() => {
             const maxDiscountInput = screen.getByLabelText<HTMLInputElement>(
-                /Maximum Discount Percentage/
+                /Maximum Discount Percentage/,
             )
-            fireEvent.change(maxDiscountInput, {target: {value: '10'}})
+            fireEvent.change(maxDiscountInput, { target: { value: '10' } })
             expect(maxDiscountInput.value).toBe('10')
 
             expect(
-                screen.queryByText(/Must be a number between 1 and 100/i)
+                screen.queryByText(/Must be a number between 1 and 100/i),
             ).not.toBeInTheDocument()
         })
     })
@@ -277,15 +276,15 @@ describe('PersonalityStep - Empty state', () => {
 
         await waitFor(() => {
             const maxDiscountInput = screen.getByLabelText<HTMLInputElement>(
-                /Maximum Discount Percentage/
+                /Maximum Discount Percentage/,
             )
-            fireEvent.change(maxDiscountInput, {target: {value: '0'}})
+            fireEvent.change(maxDiscountInput, { target: { value: '0' } })
             expect(maxDiscountInput.value).toBe('0')
 
             fireEvent.click(screen.getByText(/Next/i))
 
             expect(
-                screen.queryByText(/Must be a number between 1 and 100/i)
+                screen.queryByText(/Must be a number between 1 and 100/i),
             ).toBeInTheDocument()
         })
     })
@@ -295,13 +294,13 @@ describe('PersonalityStep - Empty state', () => {
 
         await waitFor(() => {
             const maxDiscountInput = screen.getByLabelText<HTMLInputElement>(
-                /Maximum Discount Percentage/
+                /Maximum Discount Percentage/,
             )
-            fireEvent.change(maxDiscountInput, {target: {value: '101'}})
+            fireEvent.change(maxDiscountInput, { target: { value: '101' } })
             expect(maxDiscountInput.value).toBe('101')
 
             expect(
-                screen.queryByText(/Must be a number between 1 and 100/i)
+                screen.queryByText(/Must be a number between 1 and 100/i),
             ).toBeInTheDocument()
         })
     })
@@ -311,7 +310,7 @@ describe('PersonalityStep - Empty state', () => {
 
         await waitFor(() => {
             expect(
-                screen.queryByText(/Maximum Discount Percentage/)
+                screen.queryByText(/Maximum Discount Percentage/),
             ).toBeInTheDocument()
         })
 
@@ -319,7 +318,7 @@ describe('PersonalityStep - Empty state', () => {
 
         await waitFor(() => {
             expect(goToStep).toHaveBeenCalledWith(
-                WizardStepEnum.PERSONALITY_PREVIEW
+                WizardStepEnum.PERSONALITY_PREVIEW,
             )
         })
     })
@@ -329,15 +328,15 @@ describe('PersonalityStep - Empty state', () => {
 
         await waitFor(() => {
             expect(
-                screen.queryByText(/Maximum Discount Percentage/)
+                screen.queryByText(/Maximum Discount Percentage/),
             ).toBeInTheDocument()
         })
 
         await waitFor(() => {
             const maxDiscountInput = screen.getByLabelText<HTMLInputElement>(
-                /Maximum Discount Percentage/
+                /Maximum Discount Percentage/,
             )
-            fireEvent.change(maxDiscountInput, {target: {value: '90'}})
+            fireEvent.change(maxDiscountInput, { target: { value: '90' } })
             expect(maxDiscountInput.value).toBe('90')
         })
 

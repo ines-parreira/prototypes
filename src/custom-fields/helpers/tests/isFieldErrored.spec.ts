@@ -1,16 +1,19 @@
-import {RequirementType, ExpressionFieldType} from '@gorgias/api-types'
+import { ExpressionFieldType, RequirementType } from '@gorgias/api-types'
 
-import {ticketInputFieldDefinition} from 'fixtures/customField'
+import { ticketInputFieldDefinition } from 'fixtures/customField'
 
-import {isFieldErrored} from '../isFieldErrored'
+import { isFieldErrored } from '../isFieldErrored'
 
 describe('isFieldErrored', () => {
-    const fieldStateWithValue = {id: 1, value: 'ok'}
+    const fieldStateWithValue = { id: 1, value: 'ok' }
     const fieldStateWithoutValue = {
         ...fieldStateWithValue,
         value: undefined,
     }
-    const requiredCustomField = {...ticketInputFieldDefinition, required: true}
+    const requiredCustomField = {
+        ...ticketInputFieldDefinition,
+        required: true,
+    }
     const conditionalCustomField = {
         ...ticketInputFieldDefinition,
         id: 100,

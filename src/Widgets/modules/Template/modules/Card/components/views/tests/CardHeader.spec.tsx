@@ -1,11 +1,11 @@
-import {act, fireEvent, render, screen, waitFor} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {assumeMock, getLastMockCall} from 'utils/testing'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+
+import { assumeMock, getLastMockCall } from 'utils/testing'
 
 import CardEditForm from '../CardEditForm'
-
-import CardHeader, {DELETE_BUTTON_TEXT, EDIT_BUTTON_TEXT} from '../CardHeader'
+import CardHeader, { DELETE_BUTTON_TEXT, EDIT_BUTTON_TEXT } from '../CardHeader'
 
 const CARD_HEADER_ICON_TEST_ID = 'card-header-icon'
 jest.mock('../CardHeaderIcon', () => ({
@@ -20,7 +20,7 @@ const CARD_EDIT_FORM_TEST_ID = 'card-edit-form'
 jest.mock('../CardEditForm', () =>
     jest.fn(() => {
         return <span data-testid={CARD_EDIT_FORM_TEST_ID}>field edit form</span>
-    })
+    }),
 )
 const CardEditFormMock = assumeMock(CardEditForm)
 
@@ -70,11 +70,14 @@ describe('Card', () => {
 
         it('should display a dynamic link when provided if there is no title wrapper', () => {
             render(
-                <CardHeader {...defaultProps} renderTitleWrapper={() => null} />
+                <CardHeader
+                    {...defaultProps}
+                    renderTitleWrapper={() => null}
+                />,
             )
 
             expect(
-                screen.getByText(displayedTitle).closest('a')
+                screen.getByText(displayedTitle).closest('a'),
             ).toHaveProperty('href', 'http://www.foo.bar/')
         })
 
@@ -83,8 +86,8 @@ describe('Card', () => {
                 <CardHeader
                     {...defaultProps}
                     renderTitleWrapper={() => null}
-                    cardData={{...defaultProps.cardData, color: 'red'}}
-                />
+                    cardData={{ ...defaultProps.cardData, color: 'red' }}
+                />,
             )
 
             expect(document.querySelector('.colorTile')).toBeDefined()
@@ -95,8 +98,8 @@ describe('Card', () => {
                 <CardHeader
                     {...defaultProps}
                     renderTitleWrapper={() => null}
-                    cardData={{...defaultProps.cardData, pictureUrl: 'woah?'}}
-                />
+                    cardData={{ ...defaultProps.cardData, pictureUrl: 'woah?' }}
+                />,
             )
 
             expect(screen.getByTestId(CARD_HEADER_ICON_TEST_ID))
@@ -129,8 +132,8 @@ describe('Card', () => {
             render(
                 <CardHeader
                     {...defaultProps}
-                    cardData={{...defaultProps.cardData, displayCard: false}}
-                />
+                    cardData={{ ...defaultProps.cardData, displayCard: false }}
+                />,
             )
 
             expect(screen.getByText('Hidden card')).toBeInTheDocument()
@@ -143,15 +146,15 @@ describe('Card', () => {
 
             await waitFor(() =>
                 expect(
-                    screen.queryByTestId(CARD_EDIT_FORM_TEST_ID)
-                ).toBeInTheDocument()
+                    screen.queryByTestId(CARD_EDIT_FORM_TEST_ID),
+                ).toBeInTheDocument(),
             )
 
             expect(defaultProps.onEditionStart).toHaveBeenCalledTimes(1)
         })
 
         it('should call `onDelete` on delete button click', () => {
-            const {getByText} = render(<CardHeader {...defaultProps} />)
+            const { getByText } = render(<CardHeader {...defaultProps} />)
 
             fireEvent.click(getByText(DELETE_BUTTON_TEXT))
 
@@ -159,7 +162,7 @@ describe('Card', () => {
         })
 
         it('should pass data, orderByOptions and hiddenFields to the edition form', () => {
-            const {getByText} = render(<CardHeader {...defaultProps} />)
+            const { getByText } = render(<CardHeader {...defaultProps} />)
 
             fireEvent.click(getByText(EDIT_BUTTON_TEXT))
 
@@ -169,7 +172,7 @@ describe('Card', () => {
                     orderByOptions: defaultProps.orderByOptions,
                     hiddenFields: defaultProps.editionHiddenFields,
                 }),
-                expect.anything()
+                expect.anything(),
             )
         })
 
@@ -182,29 +185,29 @@ describe('Card', () => {
 
             await waitFor(() =>
                 expect(
-                    screen.queryByTestId(CARD_EDIT_FORM_TEST_ID)
-                ).not.toBeInTheDocument()
+                    screen.queryByTestId(CARD_EDIT_FORM_TEST_ID),
+                ).not.toBeInTheDocument(),
             )
             expect(defaultProps.onEditionStop).toHaveBeenCalledTimes(1)
         })
 
         it('should hide edit form and call `onEditionStop` when clicking outside of the popover', async () => {
-            const {container} = render(<CardHeader {...defaultProps} />)
+            const { container } = render(<CardHeader {...defaultProps} />)
 
             fireEvent.click(screen.getByText(EDIT_BUTTON_TEXT))
 
             await waitFor(() =>
                 expect(
-                    screen.queryByTestId(CARD_EDIT_FORM_TEST_ID)
-                ).toBeInTheDocument()
+                    screen.queryByTestId(CARD_EDIT_FORM_TEST_ID),
+                ).toBeInTheDocument(),
             )
 
             fireEvent.click(container)
 
             await waitFor(() =>
                 expect(
-                    screen.queryByTestId(CARD_EDIT_FORM_TEST_ID)
-                ).not.toBeInTheDocument()
+                    screen.queryByTestId(CARD_EDIT_FORM_TEST_ID),
+                ).not.toBeInTheDocument(),
             )
             expect(defaultProps.onEditionStop).toHaveBeenCalledTimes(1)
         })
@@ -216,26 +219,27 @@ describe('Card', () => {
 
             act(() =>
                 getLastMockCall(CardEditFormMock)[0].onSubmit(
-                    defaultProps.cardData
-                )
+                    defaultProps.cardData,
+                ),
             )
 
             await waitFor(() =>
                 expect(
-                    screen.queryByTestId(CARD_EDIT_FORM_TEST_ID)
-                ).not.toBeInTheDocument()
+                    screen.queryByTestId(CARD_EDIT_FORM_TEST_ID),
+                ).not.toBeInTheDocument(),
             )
 
             expect(defaultProps.onSubmit).toHaveBeenNthCalledWith(
                 1,
-                defaultProps.cardData
+                defaultProps.cardData,
             )
             expect(defaultProps.onEditionStop).toHaveBeenCalledTimes(1)
             expect(
-                (defaultProps.onSubmit as jest.Mock).mock.invocationCallOrder[0]
+                (defaultProps.onSubmit as jest.Mock).mock
+                    .invocationCallOrder[0],
             ).toBeLessThan(
                 (defaultProps.onEditionStop as jest.Mock).mock
-                    .invocationCallOrder[0]
+                    .invocationCallOrder[0],
             )
         })
     })

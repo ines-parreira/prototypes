@@ -1,44 +1,43 @@
-import {Metric} from 'hooks/reporting/metrics'
+import { Metric } from 'hooks/reporting/metrics'
 import {
     fetchSatisfiedOrBreachedTicketsInPolicyPerStatusTrend,
     useSatisfiedOrBreachedTicketsInPolicyPerStatus,
     useSatisfiedOrBreachedTicketsInPolicyPerStatusTrend,
 } from 'hooks/reporting/sla/useSatisfiedOrBreachedTicketsInPolicyPerStatus'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-import {TicketSLAStatus} from 'models/reporting/cubes/sla/TicketSLACube'
-import {StatsFilters} from 'models/stat/types'
-
-import {calculatePercentage} from 'utils/reporting'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { MetricTrend } from 'hooks/reporting/useMetricTrend'
+import { TicketSLAStatus } from 'models/reporting/cubes/sla/TicketSLACube'
+import { StatsFilters } from 'models/stat/types'
+import { calculatePercentage } from 'utils/reporting'
 
 const getSlaAchievementRate = (
     satisfiedSlaTickets: number | null | undefined,
-    breachedSlaTickets: number | null | undefined
+    breachedSlaTickets: number | null | undefined,
 ) =>
     calculatePercentage(
         satisfiedSlaTickets ?? 0,
-        (satisfiedSlaTickets ?? 0) + (breachedSlaTickets ?? 0)
+        (satisfiedSlaTickets ?? 0) + (breachedSlaTickets ?? 0),
     )
 
 export const useTicketSlaAchievementRate = (): Metric => {
-    const {cleanStatsFilters, userTimezone} = useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone } = useNewStatsFilters()
 
     const satisfiedSlaTickets = useSatisfiedOrBreachedTicketsInPolicyPerStatus(
         cleanStatsFilters,
         userTimezone,
         undefined,
-        TicketSLAStatus.Satisfied
+        TicketSLAStatus.Satisfied,
     )
     const breachedSlaTickets = useSatisfiedOrBreachedTicketsInPolicyPerStatus(
         cleanStatsFilters,
         userTimezone,
         undefined,
-        TicketSLAStatus.Breached
+        TicketSLAStatus.Breached,
     )
 
     const slaAchievementRate = getSlaAchievementRate(
         satisfiedSlaTickets.data?.value,
-        breachedSlaTickets.data?.value
+        breachedSlaTickets.data?.value,
     )
 
     return {
@@ -53,31 +52,31 @@ export const useTicketSlaAchievementRate = (): Metric => {
 
 export const useTicketSlaAchievementRateTrend = (
     cleanStatsFilters: StatsFilters,
-    userTimezone: string
+    userTimezone: string,
 ): MetricTrend => {
     const satisfiedSlaTicketsTrend =
         useSatisfiedOrBreachedTicketsInPolicyPerStatusTrend(
             cleanStatsFilters,
             userTimezone,
             undefined,
-            TicketSLAStatus.Satisfied
+            TicketSLAStatus.Satisfied,
         )
     const breachedSlaTicketsTrend =
         useSatisfiedOrBreachedTicketsInPolicyPerStatusTrend(
             cleanStatsFilters,
             userTimezone,
             undefined,
-            TicketSLAStatus.Breached
+            TicketSLAStatus.Breached,
         )
 
     const slaAchievementRate = getSlaAchievementRate(
         satisfiedSlaTicketsTrend.data?.value,
-        breachedSlaTicketsTrend.data?.value
+        breachedSlaTicketsTrend.data?.value,
     )
 
     const slaAchievementRatePreviousPeriod = getSlaAchievementRate(
         satisfiedSlaTicketsTrend.data?.prevValue,
-        breachedSlaTicketsTrend.data?.prevValue
+        breachedSlaTicketsTrend.data?.prevValue,
     )
 
     return {
@@ -95,31 +94,31 @@ export const useTicketSlaAchievementRateTrend = (
 
 export const fetchTicketSlaAchievementRateTrend = async (
     cleanStatsFilters: StatsFilters,
-    userTimezone: string
+    userTimezone: string,
 ): Promise<MetricTrend> => {
     const satisfiedSlaTicketsTrend =
         await fetchSatisfiedOrBreachedTicketsInPolicyPerStatusTrend(
             cleanStatsFilters,
             userTimezone,
             undefined,
-            TicketSLAStatus.Satisfied
+            TicketSLAStatus.Satisfied,
         )
     const breachedSlaTicketsTrend =
         await fetchSatisfiedOrBreachedTicketsInPolicyPerStatusTrend(
             cleanStatsFilters,
             userTimezone,
             undefined,
-            TicketSLAStatus.Breached
+            TicketSLAStatus.Breached,
         )
 
     const slaAchievementRate = getSlaAchievementRate(
         satisfiedSlaTicketsTrend.data?.value,
-        breachedSlaTicketsTrend.data?.value
+        breachedSlaTicketsTrend.data?.value,
     )
 
     const slaAchievementRatePreviousPeriod = getSlaAchievementRate(
         satisfiedSlaTicketsTrend.data?.prevValue,
-        breachedSlaTicketsTrend.data?.prevValue
+        breachedSlaTicketsTrend.data?.prevValue,
     )
 
     return {

@@ -1,15 +1,16 @@
-import {render, screen} from '@testing-library/react'
-import {Map, fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render, screen } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {billingState} from 'fixtures/billing'
-import {GorgiasChatMinimumSnippetVersion} from 'models/integration/types'
-import {RootState} from 'state/types'
+import { billingState } from 'fixtures/billing'
+import { GorgiasChatMinimumSnippetVersion } from 'models/integration/types'
+import { RootState } from 'state/types'
 
-import {GorgiasAutomateChatIntegration} from '../GorgiasAutomateChatIntegration'
+import { GorgiasAutomateChatIntegration } from '../GorgiasAutomateChatIntegration'
 
 jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => {
     return jest.fn(() => [
@@ -45,7 +46,7 @@ jest.mock(
                 <span>{channelId}</span>
             </div>
         ),
-    })
+    }),
 )
 
 const mockStore = configureMockStore([thunk])
@@ -80,7 +81,7 @@ describe('GorgiasAutomateChatIntegration', () => {
                         name: 'integrationName',
                     })}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('shopType')).toBeInTheDocument()

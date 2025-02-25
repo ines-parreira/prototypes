@@ -1,34 +1,36 @@
-import {useQueryClient} from '@tanstack/react-query'
-import {Draft} from 'immer'
-import {useCallback, useEffect} from 'react'
+import { useCallback, useEffect } from 'react'
+
+import { useQueryClient } from '@tanstack/react-query'
+import { Draft } from 'immer'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-
 import useAppSelector from 'hooks/useAppSelector'
 import {
     selfServiceConfigurationKeys,
     useGetSelfServiceConfiguration,
 } from 'models/selfServiceConfiguration/queries'
-import {updateSelfServiceConfigurationSSP} from 'models/selfServiceConfiguration/resources'
-import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
+import { updateSelfServiceConfigurationSSP } from 'models/selfServiceConfiguration/resources'
+import { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
+import { getHasAutomate } from 'state/billing/selectors'
+import { notify } from 'state/notifications/actions'
+import {
+    AlertNotification,
+    NotificationStatus,
+} from 'state/notifications/types'
 
-import {getHasAutomate} from 'state/billing/selectors'
-import {notify} from 'state/notifications/actions'
-import {AlertNotification, NotificationStatus} from 'state/notifications/types'
-
-import {useSelfServiceConfigurationUpdate} from './useSelfServiceConfigurationUpdate'
+import { useSelfServiceConfigurationUpdate } from './useSelfServiceConfigurationUpdate'
 import useSelfServiceStoreIntegration from './useSelfServiceStoreIntegration'
 
 const useSelfServiceConfiguration = (
     shopType: string,
     shopName: string,
-    notificationHandler?: (notification: AlertNotification) => void
+    notificationHandler?: (notification: AlertNotification) => void,
 ) => {
     const dispatch = useAppDispatch()
     const hasAutomate = useAppSelector(getHasAutomate)
     const queryClient = useQueryClient()
 
-    const {data: selfServiceConfiguration, isLoading: isFetchPending} =
+    const { data: selfServiceConfiguration, isLoading: isFetchPending } =
         useGetSelfServiceConfiguration(shopType, shopName)
 
     useEffect(() => {
@@ -40,7 +42,7 @@ const useSelfServiceConfiguration = (
                 .then((res) => {
                     queryClient.setQueryData(
                         selfServiceConfigurationKeys.detail(shopName, shopType),
-                        res
+                        res,
                     )
                 })
                 .catch(console.error)
@@ -57,7 +59,7 @@ const useSelfServiceConfiguration = (
                 void dispatch(notify(notif))
             }
         },
-        [notificationHandler, dispatch]
+        [notificationHandler, dispatch],
     )
 
     const {
@@ -69,9 +71,9 @@ const useSelfServiceConfiguration = (
     const handleSelfServiceConfigurationUpdate = useCallback(
         async (
             patchSelfServiceConfiguration: (
-                draft: Draft<SelfServiceConfiguration>
+                draft: Draft<SelfServiceConfiguration>,
             ) => void,
-            messages: {success?: string; error?: string} = {}
+            messages: { success?: string; error?: string } = {},
         ) => {
             if (!storeIntegrationId) {
                 return
@@ -80,10 +82,10 @@ const useSelfServiceConfiguration = (
             await handleConfigurationUpdate(
                 patchSelfServiceConfiguration,
                 messages,
-                storeIntegrationId
+                storeIntegrationId,
             )
         },
-        [handleConfigurationUpdate, storeIntegrationId]
+        [handleConfigurationUpdate, storeIntegrationId],
     )
 
     useEffect(() => {

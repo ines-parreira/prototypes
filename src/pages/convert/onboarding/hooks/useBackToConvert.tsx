@@ -1,4 +1,4 @@
-import {useCallback} from 'react'
+import { useCallback } from 'react'
 
 import useSessionStorage from 'hooks/useSessionStorage'
 
@@ -10,7 +10,7 @@ export function useBackToConvert() {
     const [backIntegrationId, setState] = useSessionStorage<string>(
         BACK_TO_CONVERT_ONBOARDING_KEY,
         EMPTY_VALUE,
-        true
+        true,
     )
 
     const setBackIntegrationId = useCallback(
@@ -26,7 +26,7 @@ export function useBackToConvert() {
 
             setState(idString)
         },
-        [setState]
+        [setState],
     )
 
     const removeBackIntegrationId = useCallback(() => {
@@ -39,5 +39,5 @@ export function useBackToConvert() {
         setState(EMPTY_VALUE)
     }, [setState])
 
-    return {backIntegrationId, setBackIntegrationId, removeBackIntegrationId}
+    return { backIntegrationId, setBackIntegrationId, removeBackIntegrationId }
 }

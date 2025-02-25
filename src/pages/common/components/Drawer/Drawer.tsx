@@ -1,7 +1,8 @@
+import React, { HTMLAttributes, useEffect, useState } from 'react'
+
 import classNames from 'classnames'
-import React, {HTMLAttributes, useEffect, useState} from 'react'
 import ReactDOM from 'react-dom'
-import {Container} from 'reactstrap'
+import { Container } from 'reactstrap'
 
 import Loader from '../Loader/Loader'
 
@@ -12,25 +13,25 @@ type CommonProps = {
     className?: string
 }
 
-const Header = ({children, className, ...props}: CommonProps) => (
+const Header = ({ children, className, ...props }: CommonProps) => (
     <header className={classNames(css.header, className)} {...props}>
         {children}
     </header>
 )
 
-const HeaderActions = ({children, className, ...props}: CommonProps) => (
+const HeaderActions = ({ children, className, ...props }: CommonProps) => (
     <div className={classNames(css['header-actions'], className)} {...props}>
         {children}
     </div>
 )
 
-const Footer = ({children, className, ...props}: CommonProps) => (
+const Footer = ({ children, className, ...props }: CommonProps) => (
     <header className={classNames(css.footer, className)} {...props}>
         {children}
     </header>
 )
 
-const Content = ({children, className, ...props}: CommonProps) => (
+const Content = ({ children, className, ...props }: CommonProps) => (
     <div className={classNames(css.content, className)} {...props}>
         {children}
     </div>
@@ -64,7 +65,7 @@ const Drawer = ({
 }: Props): JSX.Element => {
     const [zIndexOpen, zIndexClosed] = containerZIndices
     const [containerZIndex, setContainerZIndex] = useState(
-        open ? zIndexOpen : zIndexClosed
+        open ? zIndexOpen : zIndexClosed,
     )
     const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null)
 
@@ -115,9 +116,9 @@ const Drawer = ({
                         [css.opened]: open,
                         opened: open,
                     },
-                    className
+                    className,
                 )}
-                {...(!open ? {inert: ''} : {})}
+                {...(!open ? { inert: '' } : {})}
             >
                 {isLoading ? (
                     <Container fluid className="page-container">
@@ -138,4 +139,4 @@ Drawer.HeaderActions = HeaderActions
 Drawer.Footer = Footer
 Drawer.Content = Content
 
-export {Drawer}
+export { Drawer }

@@ -1,4 +1,4 @@
-import {createContext, useContext} from 'react'
+import { createContext, useContext } from 'react'
 
 import {
     PolicyKey,
@@ -17,7 +17,7 @@ export type SelfServicePreviewContextType = {
     reportOrderIssueReason?: ReportIssueCaseReason
     hoveredReportOrderIssueReason?: Maybe<ReportIssueCaseReason['reasonKey']>
     isArticleRecommendationEnabled?: boolean
-    workflowsEntrypoints?: {workflow_id: string; enabled: boolean}[]
+    workflowsEntrypoints?: { workflow_id: string; enabled: boolean }[]
 }
 
 const SelfServicePreviewContext = createContext<
@@ -29,7 +29,7 @@ export const useSelfServicePreviewContext = () => {
 
     if (!selfServicePreviewContext) {
         throw new Error(
-            'SelfServicePreview context is undefined, please verify you are calling useSelfServicePreviewContext() as child of a <SelfServicePreviewContext.Provider>'
+            'SelfServicePreview context is undefined, please verify you are calling useSelfServicePreviewContext() as child of a <SelfServicePreviewContext.Provider>',
         )
     }
 

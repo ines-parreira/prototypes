@@ -1,12 +1,13 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {act, renderHook} from '@testing-library/react-hooks'
-import MockAdapter from 'axios-mock-adapter'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { act, renderHook } from '@testing-library/react-hooks'
+import MockAdapter from 'axios-mock-adapter'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {OBJECT_TYPES} from 'custom-fields/constants'
+import { OBJECT_TYPES } from 'custom-fields/constants'
 import {
     useCreateCustomField,
     useDeleteCustomFieldValue,
@@ -14,15 +15,15 @@ import {
     useGetCustomFieldDefinitions,
     useGetCustomFieldValues,
     useUpdateCustomField,
-    useUpdateCustomFieldValue,
     useUpdateCustomFields,
+    useUpdateCustomFieldValue,
     useUpdatePartialCustomField,
 } from 'custom-fields/hooks/queries/queries'
-import {CustomFieldInput, PartialCustomFieldWithId} from 'custom-fields/types'
-import {apiListCursorPaginationResponse} from 'fixtures/axiosResponse'
-import {ticketInputFieldDefinition} from 'fixtures/customField'
+import { CustomFieldInput, PartialCustomFieldWithId } from 'custom-fields/types'
+import { apiListCursorPaginationResponse } from 'fixtures/axiosResponse'
+import { ticketInputFieldDefinition } from 'fixtures/customField'
 import client from 'models/api/resources'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 const mockedServer = new MockAdapter(client)
 const queryClient = mockQueryClient()
@@ -41,19 +42,19 @@ describe('queries.spec.tsx', () => {
         it('should succeed and return proper data', async () => {
             const mockStore = configureMockStore([thunk])()
             mockedServer.onGet('/api/custom-fields/').reply(200, response)
-            const {result, waitFor} = renderHook(
+            const { result, waitFor } = renderHook(
                 () =>
                     useGetCustomFieldDefinitions({
                         archived: false,
                         object_type: 'Ticket',
                     }),
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
                             <Provider store={mockStore}>{children}</Provider>
                         </QueryClientProvider>
                     ),
-                }
+                },
             )
 
             await waitFor(() => expect(result.current.isSuccess).toBe(true))
@@ -65,20 +66,20 @@ describe('queries.spec.tsx', () => {
             const mockStore = configureMockStore([thunk])()
             mockedServer
                 .onGet('/api/custom-fields')
-                .reply(404, {message: 'error'})
-            const {result, waitFor} = renderHook(
+                .reply(404, { message: 'error' })
+            const { result, waitFor } = renderHook(
                 () =>
                     useGetCustomFieldDefinitions({
                         archived: false,
                         object_type: 'Ticket',
                     }),
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
                             <Provider store={mockStore}>{children}</Provider>
                         </QueryClientProvider>
                     ),
-                }
+                },
             )
 
             await waitFor(() => {
@@ -94,21 +95,21 @@ describe('queries.spec.tsx', () => {
             mockedServer
                 .onGet('/api/custom-fields/123')
                 .reply(200, ticketInputFieldDefinition)
-            const {result, waitFor} = renderHook(
+            const { result, waitFor } = renderHook(
                 () => useGetCustomFieldDefinition(123),
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
                             <Provider store={mockStore}>{children}</Provider>
                         </QueryClientProvider>
                     ),
-                }
+                },
             )
 
             await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
             expect(result.current.data?.data).toStrictEqual(
-                ticketInputFieldDefinition
+                ticketInputFieldDefinition,
             )
         })
 
@@ -116,17 +117,17 @@ describe('queries.spec.tsx', () => {
             const mockStore = configureMockStore([thunk])()
             mockedServer
                 .onGet('/api/custom-fields/123')
-                .reply(404, {message: 'error'})
+                .reply(404, { message: 'error' })
 
-            const {result, waitFor} = renderHook(
+            const { result, waitFor } = renderHook(
                 () => useGetCustomFieldDefinition(123),
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
                             <Provider store={mockStore}>{children}</Provider>
                         </QueryClientProvider>
                     ),
-                }
+                },
             )
 
             await waitFor(() => {
@@ -144,13 +145,16 @@ describe('queries.spec.tsx', () => {
                 .onPost(`/api/custom-fields`)
                 .reply(200, ticketInputFieldDefinition)
 
-            const {result, waitFor} = renderHook(() => useCreateCustomField(), {
-                wrapper: ({children}) => (
-                    <QueryClientProvider client={queryClient}>
-                        <Provider store={mockStore}>{children}</Provider>
-                    </QueryClientProvider>
-                ),
-            })
+            const { result, waitFor } = renderHook(
+                () => useCreateCustomField(),
+                {
+                    wrapper: ({ children }) => (
+                        <QueryClientProvider client={queryClient}>
+                            <Provider store={mockStore}>{children}</Provider>
+                        </QueryClientProvider>
+                    ),
+                },
+            )
 
             const dataToMutate: CustomFieldInput = ticketInputFieldDefinition
 
@@ -162,7 +166,7 @@ describe('queries.spec.tsx', () => {
                 expect(result.current.isSuccess).toBe(true)
             })
             expect(result.current.data?.data).toEqual(
-                ticketInputFieldDefinition
+                ticketInputFieldDefinition,
             )
         })
     })
@@ -175,13 +179,16 @@ describe('queries.spec.tsx', () => {
                 .onPut(`/api/custom-fields/${ticketInputFieldDefinition.id}`)
                 .reply(200, ticketInputFieldDefinition)
 
-            const {result, waitFor} = renderHook(() => useUpdateCustomField(), {
-                wrapper: ({children}) => (
-                    <QueryClientProvider client={queryClient}>
-                        <Provider store={mockStore}>{children}</Provider>
-                    </QueryClientProvider>
-                ),
-            })
+            const { result, waitFor } = renderHook(
+                () => useUpdateCustomField(),
+                {
+                    wrapper: ({ children }) => (
+                        <QueryClientProvider client={queryClient}>
+                            <Provider store={mockStore}>{children}</Provider>
+                        </QueryClientProvider>
+                    ),
+                },
+            )
 
             const dataToMutate: CustomFieldInput = ticketInputFieldDefinition
 
@@ -196,7 +203,7 @@ describe('queries.spec.tsx', () => {
                 expect(result.current.isSuccess).toBe(true)
             })
             expect(result.current.data?.data).toEqual(
-                ticketInputFieldDefinition
+                ticketInputFieldDefinition,
             )
         })
     })
@@ -209,19 +216,19 @@ describe('queries.spec.tsx', () => {
                 .onPut(`/api/custom-fields`)
                 .reply(200, [ticketInputFieldDefinition])
 
-            const {result, waitFor} = renderHook(
+            const { result, waitFor } = renderHook(
                 () => useUpdateCustomFields(),
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
                             <Provider store={mockStore}>{children}</Provider>
                         </QueryClientProvider>
                     ),
-                }
+                },
             )
 
             const dataToMutate: PartialCustomFieldWithId[] = [
-                {id: 1, priority: 1},
+                { id: 1, priority: 1 },
             ]
 
             act(() => {
@@ -245,21 +252,21 @@ describe('queries.spec.tsx', () => {
                 .onPut(`/api/custom-fields/${ticketInputFieldDefinition.id}`)
                 .reply(200, ticketInputFieldDefinition)
 
-            const {result, waitFor} = renderHook(
+            const { result, waitFor } = renderHook(
                 () => useUpdatePartialCustomField(),
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
                             <Provider store={mockStore}>{children}</Provider>
                         </QueryClientProvider>
                     ),
-                }
+                },
             )
 
             act(() => {
                 result.current.mutate([
                     ticketInputFieldDefinition.id,
-                    {deactivated_datetime: null},
+                    { deactivated_datetime: null },
                 ])
             })
 
@@ -267,7 +274,7 @@ describe('queries.spec.tsx', () => {
                 expect(result.current.isSuccess).toBe(true)
             })
             expect(result.current.data?.data).toEqual(
-                ticketInputFieldDefinition
+                ticketInputFieldDefinition,
             )
         })
     })
@@ -278,23 +285,25 @@ describe('queries.spec.tsx', () => {
 
             mockedServer
                 .onGet(
-                    `/api/tickets/${ticketInputFieldDefinition.id}/custom-fields`
+                    `/api/tickets/${ticketInputFieldDefinition.id}/custom-fields`,
                 )
-                .reply(200, [{field: ticketInputFieldDefinition, value: 'ok'}])
+                .reply(200, [
+                    { field: ticketInputFieldDefinition, value: 'ok' },
+                ])
 
-            const {result, waitFor} = renderHook(
+            const { result, waitFor } = renderHook(
                 () =>
                     useGetCustomFieldValues({
                         holderId: ticketInputFieldDefinition.id,
                         object_type: OBJECT_TYPES.TICKET,
                     }),
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
                             <Provider store={mockStore}>{children}</Provider>
                         </QueryClientProvider>
                     ),
-                }
+                },
             )
 
             await waitFor(() => {
@@ -313,23 +322,25 @@ describe('queries.spec.tsx', () => {
 
             mockedServer
                 .onGet(
-                    `/api/customers/${ticketInputFieldDefinition.id}/custom-fields`
+                    `/api/customers/${ticketInputFieldDefinition.id}/custom-fields`,
                 )
-                .reply(200, [{field: ticketInputFieldDefinition, value: 'ok'}])
+                .reply(200, [
+                    { field: ticketInputFieldDefinition, value: 'ok' },
+                ])
 
-            const {result, waitFor} = renderHook(
+            const { result, waitFor } = renderHook(
                 () =>
                     useGetCustomFieldValues({
                         holderId: ticketInputFieldDefinition.id,
                         object_type: OBJECT_TYPES.CUSTOMER,
                     }),
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
                             <Provider store={mockStore}>{children}</Provider>
                         </QueryClientProvider>
                     ),
-                }
+                },
             )
 
             await waitFor(() => {
@@ -342,23 +353,23 @@ describe('queries.spec.tsx', () => {
 
             mockedServer
                 .onGet(
-                    `/api/tickets/${ticketInputFieldDefinition.id}/custom-fields`
+                    `/api/tickets/${ticketInputFieldDefinition.id}/custom-fields`,
                 )
-                .reply(404, {message: 'error'})
+                .reply(404, { message: 'error' })
 
-            const {result, waitFor} = renderHook(
+            const { result, waitFor } = renderHook(
                 () =>
                     useGetCustomFieldValues({
                         holderId: ticketInputFieldDefinition.id,
                         object_type: OBJECT_TYPES.TICKET,
                     }),
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
                             <Provider store={mockStore}>{children}</Provider>
                         </QueryClientProvider>
                     ),
-                }
+                },
             )
 
             await waitFor(() => {
@@ -377,22 +388,22 @@ describe('queries.spec.tsx', () => {
 
             mockedServer
                 .onPut(
-                    `/api/tickets/${ticketId}/custom-fields/${ticketInputFieldDefinition.id}`
+                    `/api/tickets/${ticketId}/custom-fields/${ticketInputFieldDefinition.id}`,
                 )
                 .reply(200, {
                     field: ticketInputFieldDefinition,
                     value: fieldValue,
                 })
 
-            const {result, waitFor} = renderHook(
+            const { result, waitFor } = renderHook(
                 () => useUpdateCustomFieldValue(),
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
                             <Provider store={mockStore}>{children}</Provider>
                         </QueryClientProvider>
                     ),
-                }
+                },
             )
 
             act(() => {
@@ -421,19 +432,19 @@ describe('queries.spec.tsx', () => {
 
             mockedServer
                 .onDelete(
-                    `/api/tickets/${ticketId}/custom-fields/${ticketInputFieldDefinition.id}`
+                    `/api/tickets/${ticketId}/custom-fields/${ticketInputFieldDefinition.id}`,
                 )
                 .reply(204)
 
-            const {result, waitFor} = renderHook(
+            const { result, waitFor } = renderHook(
                 () => useDeleteCustomFieldValue(),
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <QueryClientProvider client={queryClient}>
                             <Provider store={mockStore}>{children}</Provider>
                         </QueryClientProvider>
                     ),
-                }
+                },
             )
 
             act(() => {

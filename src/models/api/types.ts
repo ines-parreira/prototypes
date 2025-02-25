@@ -1,5 +1,6 @@
-import {CursorPaginationMeta} from '@gorgias/api-queries'
-import axios, {AxiosError} from 'axios'
+import axios, { AxiosError } from 'axios'
+
+import { CursorPaginationMeta } from '@gorgias/api-queries'
 
 export enum ContentType {
     Json = 'application/json',
@@ -79,18 +80,18 @@ export type GorgiasApiResponseDataError<T = unknown> = {
 }
 
 const isGorgiasApiResponseDataError = (
-    data: Record<string, unknown> | undefined
+    data: Record<string, unknown> | undefined,
 ): data is GorgiasApiResponseDataError => {
-    const {error} = data || {}
+    const { error } = data || {}
     if (typeof error !== 'object' || !error || Array.isArray(error)) {
         return false
     }
-    const {msg} = error as {msg: unknown}
+    const { msg } = error as { msg: unknown }
     return typeof msg === 'string'
 }
 
 export const isGorgiasApiError = (
-    error: unknown
+    error: unknown,
 ): error is GorgiasApiError<unknown> => {
     return (
         axios.isAxiosError(error) &&

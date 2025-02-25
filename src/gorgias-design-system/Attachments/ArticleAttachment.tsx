@@ -1,9 +1,10 @@
-import {useTheme} from '@emotion/react'
-import styled from '@emotion/styled'
 import React from 'react'
 
-import {gorgiasColors} from 'gorgias-design-system/styles'
-import {ChatTheme} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview'
+import { useTheme } from '@emotion/react'
+import styled from '@emotion/styled'
+
+import { gorgiasColors } from 'gorgias-design-system/styles'
+import { ChatTheme } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview'
 
 export interface ArticleAttachmentProps
     extends React.HTMLAttributes<HTMLElement> {
@@ -70,7 +71,7 @@ const StyledDescription = styled.span`
     overflow: hidden;
 `
 
-const StyledLeadIcon = styled.div<{theme: ChatTheme}>`
+const StyledLeadIcon = styled.div<{ theme: ChatTheme }>`
     width: 24px;
     height: 24px;
     display: flex;
@@ -83,7 +84,7 @@ const StyledLeadIcon = styled.div<{theme: ChatTheme}>`
         height: 18px;
 
         .withFill {
-            fill: ${({theme}) => theme?.mainColor};
+            fill: ${({ theme }) => theme?.mainColor};
         }
     }
 `

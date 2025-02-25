@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
 import {
@@ -6,10 +6,10 @@ import {
     IntegrationType,
     StoreIntegration,
 } from 'models/integration/types'
-import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
-import {Option} from 'pages/common/forms/SelectField/types'
-import {getIconFromType} from 'state/integrations/helpers'
-import {getIntegrationsByTypes} from 'state/integrations/selectors'
+import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
+import { Option } from 'pages/common/forms/SelectField/types'
+import { getIconFromType } from 'state/integrations/helpers'
+import { getIntegrationsByTypes } from 'state/integrations/selectors'
 
 export type CssClasses = {
     option: string
@@ -21,7 +21,7 @@ const optionLabel = (
     shopName: JSX.Element | string,
     shopType: IntegrationType,
     connectedChats: number,
-    css: CssClasses
+    css: CssClasses,
 ) => {
     const connectedChatsString = `${connectedChats} connected chat${
         connectedChats > 1 ? 's' : ''
@@ -54,11 +54,11 @@ export function useStoreWithChatConnectionsOptions(css: CssClasses) {
             IntegrationType.Shopify,
             IntegrationType.BigCommerce,
             IntegrationType.Magento2,
-        ])
+        ]),
     )
 
     const chatIntegrations = useAppSelector(
-        getIntegrationsByTypes([IntegrationType.GorgiasChat])
+        getIntegrationsByTypes([IntegrationType.GorgiasChat]),
     )
 
     const shopsOptions: Option[] = useMemo(() => {
@@ -75,7 +75,7 @@ export function useStoreWithChatConnectionsOptions(css: CssClasses) {
                             chatShopName ===
                             getShopNameFromStoreIntegration(integration)
                         )
-                    }
+                    },
                 ).length
 
                 return {
@@ -83,7 +83,7 @@ export function useStoreWithChatConnectionsOptions(css: CssClasses) {
                     label: optionLabel(shopName, shopType, connectedChats, css),
                     text: shopName,
                 }
-            }
+            },
         )
         return options
     }, [chatIntegrations, eCommerceIntegrations, css])

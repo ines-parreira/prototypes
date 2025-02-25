@@ -1,21 +1,22 @@
-import {cleanup, render, screen, waitFor} from '@testing-library/react'
-import {merge} from 'lodash'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { cleanup, render, screen, waitFor } from '@testing-library/react'
+import { merge } from 'lodash'
+import { Provider } from 'react-redux'
 import createMockStore from 'redux-mock-store'
 
-import {entitiesInitialState} from 'fixtures/entities'
-import {integrationsState} from 'fixtures/integrations'
+import { entitiesInitialState } from 'fixtures/entities'
+import { integrationsState } from 'fixtures/integrations'
 import {
     EmailIntegration,
     OutboundVerificationStatusValue,
 } from 'models/integration/types'
-import {getVerification} from 'models/singleSenderVerification/resources'
+import { getVerification } from 'models/singleSenderVerification/resources'
 import {
     SenderVerification,
     VerificationStatus,
 } from 'models/singleSenderVerification/types'
-import {RootState, StoreDispatch} from 'state/types'
+import { RootState, StoreDispatch } from 'state/types'
 
 import SingleSenderVerification, {
     Props,
@@ -28,7 +29,7 @@ const mockStore = createMockStore<RootState, StoreDispatch>()
 const emailAddress = 'sendgrid@gorgias.io'
 
 const integration = integrationsState.integrations.find(
-    (integration) => integration.meta.address === emailAddress
+    (integration) => integration.meta.address === emailAddress,
 ) as unknown as EmailIntegration
 
 const mockVerification: Partial<SenderVerification> = {
@@ -45,7 +46,7 @@ describe('SingleSenderVerification', () => {
 
     const renderComponent = (
         props?: Partial<Props>,
-        singleSenderState = {}
+        singleSenderState = {},
     ) => {
         cleanup()
         return render(
@@ -62,7 +63,7 @@ describe('SingleSenderVerification', () => {
                     integration={integration}
                     {...props}
                 />
-            </Provider>
+            </Provider>,
         )
     }
 
@@ -94,7 +95,7 @@ describe('SingleSenderVerification', () => {
         })
 
         expect(
-            await screen.findByTestId('create-verification-step')
+            await screen.findByTestId('create-verification-step'),
         ).toBeTruthy()
         expect(screen.queryByTestId('verification-email-sent-step')).toBeFalsy()
         expect(screen.queryByTestId('verification-confirmed-step')).toBeFalsy()
@@ -121,17 +122,17 @@ describe('SingleSenderVerification', () => {
                         ...mockVerification,
                         status: VerificationStatus.EmailSent,
                     },
-                }
+                },
             )
 
             expect(
-                await screen.findByTestId('verification-email-sent-step')
+                await screen.findByTestId('verification-email-sent-step'),
             ).toBeTruthy()
             expect(screen.queryByTestId('create-verification-step')).toBeFalsy()
             expect(
-                screen.queryByTestId('verification-confirmed-step')
+                screen.queryByTestId('verification-confirmed-step'),
             ).toBeFalsy()
-        }
+        },
     )
 
     it('Should display "Verification confirmed" step when the verification is confirmed', async () => {
@@ -151,11 +152,11 @@ describe('SingleSenderVerification', () => {
                     ...mockVerification,
                     status: VerificationStatus.Verified,
                 },
-            }
+            },
         )
 
         expect(
-            await screen.findByTestId('verification-confirmed-step')
+            await screen.findByTestId('verification-confirmed-step'),
         ).toBeTruthy()
         expect(screen.queryByTestId('create-verification-step')).toBeFalsy()
         expect(screen.queryByTestId('verification-email-sent-step')).toBeFalsy()
@@ -181,6 +182,6 @@ describe('SingleSenderVerification', () => {
             await waitFor(() => {
                 expect(getVerification).toHaveBeenCalled()
             })
-        }
+        },
     )
 })

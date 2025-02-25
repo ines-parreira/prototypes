@@ -1,17 +1,17 @@
-import {screen} from '@testing-library/react'
 import React from 'react'
 
-import {useTagsDistribution} from 'hooks/reporting/support-performance/useTagsDistribution'
+import { screen } from '@testing-library/react'
+
+import { useTagsDistribution } from 'hooks/reporting/support-performance/useTagsDistribution'
 import {
     TicketInsightsTagsMetric,
     TicketInsightsTagsMetricConfig,
 } from 'pages/stats/ticket-insights/tags/TagsMetricConfig'
-import {TopUsedTagsChart} from 'pages/stats/ticket-insights/tags/TopUsedTagsChart'
-
-import {initialState} from 'state/stats/statsSlice'
-import {RootState} from 'state/types'
-import {initialState as uiFiltersInitialState} from 'state/ui/stats/filtersSlice'
-import {assumeMock, renderWithStore} from 'utils/testing'
+import { TopUsedTagsChart } from 'pages/stats/ticket-insights/tags/TopUsedTagsChart'
+import { initialState } from 'state/stats/statsSlice'
+import { RootState } from 'state/types'
+import { initialState as uiFiltersInitialState } from 'state/ui/stats/filtersSlice'
+import { assumeMock, renderWithStore } from 'utils/testing'
 
 jest.mock('hooks/reporting/support-performance/useTagsDistribution')
 const useTagsDistributionMock = assumeMock(useTagsDistribution)
@@ -49,7 +49,7 @@ const useTagsDistributionReturnValue = {
 const mockStore = {
     stats: initialState,
     ui: {
-        stats: {filters: uiFiltersInitialState},
+        stats: { filters: uiFiltersInitialState },
     },
 } as RootState
 
@@ -66,8 +66,8 @@ describe('<TopUsedTagsChart/>', () => {
             screen.getByText(
                 TicketInsightsTagsMetricConfig[
                     TicketInsightsTagsMetric.TopUsedTagsChart
-                ].title
-            )
+                ].title,
+            ),
         ).toBeInTheDocument()
     })
 
@@ -76,10 +76,10 @@ describe('<TopUsedTagsChart/>', () => {
             data: [],
             isFetching: true,
         })
-        const {container} = renderWithStore(<TopUsedTagsChart />, mockStore)
+        const { container } = renderWithStore(<TopUsedTagsChart />, mockStore)
         expect(screen.getByRole('table')).toBeInTheDocument()
         expect(
-            container.getElementsByClassName('react-loading-skeleton')
+            container.getElementsByClassName('react-loading-skeleton'),
         ).not.toHaveLength(0)
     })
 
@@ -107,7 +107,7 @@ describe('<TopUsedTagsChart/>', () => {
             expect(screen.getByText(value.name)).toBeInTheDocument()
             expect(screen.getByText(value.value)).toBeInTheDocument()
             expect(
-                screen.getByText(`${value.gaugePercentage}%`)
+                screen.getByText(`${value.gaugePercentage}%`),
             ).toBeInTheDocument()
         })
     })

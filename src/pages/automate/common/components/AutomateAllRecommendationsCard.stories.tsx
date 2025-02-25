@@ -1,14 +1,15 @@
-import {Meta, StoryFn, StoryObj} from '@storybook/react'
-import {QueryClientProvider} from '@tanstack/react-query'
-import {fromJS, Map} from 'immutable'
-import React, {ComponentProps, useState} from 'react'
-import {Provider} from 'react-redux'
-import {BrowserRouter} from 'react-router-dom'
+import React, { ComponentProps, useState } from 'react'
+
+import { Meta, StoryFn, StoryObj } from '@storybook/react'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fromJS, Map } from 'immutable'
+import { Provider } from 'react-redux'
+import { BrowserRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
-import {appQueryClient} from 'api/queryClient'
-import {billingState} from 'fixtures/billing'
-import {HELP_CENTER_DEFAULT_LAYOUT} from 'pages/settings/helpCenter/constants'
+import { appQueryClient } from 'api/queryClient'
+import { billingState } from 'fixtures/billing'
+import { HELP_CENTER_DEFAULT_LAYOUT } from 'pages/settings/helpCenter/constants'
 
 import {
     AIArticleRecommendationItem,
@@ -46,9 +47,9 @@ const meta: Meta<typeof AutomateAllRecommendationsCard> = {
     title: 'Automate/AllRecommendationsCard',
     component: AutomateAllRecommendationsCard,
     argTypes: {
-        paginatedItems: {control: 'object'},
-        isLoading: {control: 'boolean'},
-        itemsCount: {control: 'number'},
+        paginatedItems: { control: 'object' },
+        isLoading: { control: 'boolean' },
+        itemsCount: { control: 'number' },
         statusFilter: {
             control: {
                 type: 'select',
@@ -59,7 +60,7 @@ const meta: Meta<typeof AutomateAllRecommendationsCard> = {
                 ],
             },
         },
-        currentPage: {control: 'number'},
+        currentPage: { control: 'number' },
     },
     decorators: [
         (story) => (
@@ -80,7 +81,7 @@ const Template: StoryFn<
     ComponentProps<typeof AutomateAllRecommendationsCard>
 > = (args) => {
     const [statusFilter, setStatusFilter] = useState(
-        AllRecommendationsStatus.All
+        AllRecommendationsStatus.All,
     )
     const [currentPage, setCurrentPage] = useState(1)
 

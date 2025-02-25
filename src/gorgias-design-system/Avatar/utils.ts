@@ -1,6 +1,6 @@
 export function getInitials(
     name: string,
-    useFirstInitialOnly?: boolean
+    useFirstInitialOnly?: boolean,
 ): string {
     const splitName = name.split(' ').filter((text) => text.length > 0)
 

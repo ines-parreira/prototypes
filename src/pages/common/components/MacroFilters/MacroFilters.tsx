@@ -1,12 +1,12 @@
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {ISO639English} from 'constants/languages'
+import { ISO639English } from 'constants/languages'
 import useAppSelector from 'hooks/useAppSelector'
-import {MacrosProperties} from 'models/macro/types'
+import { MacrosProperties } from 'models/macro/types'
 import SelectFilter from 'pages/stats/common/SelectFilter'
 import TemplateTypeFilterDropdown from 'pages/tickets/detail/components/ReplyArea/TemplateTypeFilterDropdown'
-import {TemplateTypeFilterOption} from 'pages/tickets/detail/components/ReplyArea/types'
-import {getMacroParametersOptions} from 'state/macro/selectors'
+import { TemplateTypeFilterOption } from 'pages/tickets/detail/components/ReplyArea/types'
+import { getMacroParametersOptions } from 'state/macro/selectors'
 
 type Props = {
     tagDropdownMenuProps?: ComponentProps<
@@ -24,7 +24,7 @@ const MacroFilters = ({
     size,
 }: Props) => {
     const properties: MacrosProperties = useAppSelector(
-        getMacroParametersOptions
+        getMacroParametersOptions,
     ).toJS()
 
     return (

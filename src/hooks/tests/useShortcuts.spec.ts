@@ -1,4 +1,4 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 import _noop from 'lodash/noop'
 
 import useConditionalShortcuts from '../useConditionalShortcuts'
@@ -9,7 +9,7 @@ jest.mock('../useConditionalShortcuts', () => jest.fn())
 describe('useShortcuts', () => {
     const component = 'MyComponent'
     const actions = {
-        MY_SHORTCUT: {action: _noop},
+        MY_SHORTCUT: { action: _noop },
     }
 
     beforeEach(() => {
@@ -22,7 +22,7 @@ describe('useShortcuts', () => {
         expect(useConditionalShortcuts).toHaveBeenCalledWith(
             true,
             component,
-            actions
+            actions,
         )
     })
 })

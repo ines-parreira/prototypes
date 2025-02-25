@@ -1,17 +1,16 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
 import {
-    useScriptTagMigrationBanner,
+    useEmailDisconnectedBanner,
     useEmailDomainVerificationBanner,
     useEmailMigrationBanner,
-    useEmailDisconnectedBanner,
+    useScriptTagMigrationBanner,
 } from '../banners'
-
-import {useAccountNotVerifiedBanner} from '../useAccountNotVerifiedBanner'
-import {useImpersonatedBanner} from '../useImpersonatedBanner'
-import {useSetBanners} from '../useSetBanners'
-import {useStatusPageManager} from '../useStatusPageManager'
-import {useUsageBanner} from '../useUsageBanner'
+import { useAccountNotVerifiedBanner } from '../useAccountNotVerifiedBanner'
+import { useImpersonatedBanner } from '../useImpersonatedBanner'
+import { useSetBanners } from '../useSetBanners'
+import { useStatusPageManager } from '../useStatusPageManager'
+import { useUsageBanner } from '../useUsageBanner'
 
 jest.mock('../useAccountNotVerifiedBanner', () => ({
     useAccountNotVerifiedBanner: jest.fn(),

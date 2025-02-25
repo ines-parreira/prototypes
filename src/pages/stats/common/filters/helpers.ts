@@ -1,11 +1,9 @@
-import isArray from 'lodash/isArray'
+import { ComponentProps } from 'react'
 
+import isArray from 'lodash/isArray'
 import isFunction from 'lodash/isFunction'
 
-import {ComponentProps} from 'react'
-
-import {logEvent, SegmentEvent} from 'common/segment'
-
+import { logEvent, SegmentEvent } from 'common/segment'
 import {
     CleanFilterComponentKeys,
     CustomFieldFilter,
@@ -19,21 +17,20 @@ import {
     StaticFilter,
     TagFilterInstanceId,
 } from 'models/stat/types'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-import {OptionGroup} from 'pages/stats/common/filters/AddFilterButton'
-import {ChannelsFilterWithState} from 'pages/stats/common/filters/ChannelsFilter'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
+import { OptionGroup } from 'pages/stats/common/filters/AddFilterButton'
+import { ChannelsFilterWithState } from 'pages/stats/common/filters/ChannelsFilter'
 import {
     AUTO_QA_FILTER_KEYS,
     FilterLabels,
 } from 'pages/stats/common/filters/constants'
-import {ActiveFilter} from 'pages/stats/common/filters/FiltersPanel'
-import {PeriodFilterWithState} from 'pages/stats/common/filters/PeriodFilter'
-
-import {Channel, ChannelIdentifier, toChannels} from 'services/channels'
+import { ActiveFilter } from 'pages/stats/common/filters/FiltersPanel'
+import { PeriodFilterWithState } from 'pages/stats/common/filters/PeriodFilter'
+import { Channel, ChannelIdentifier, toChannels } from 'services/channels'
 
 export function filterChannels(
     channels: Channel[],
-    filter?: ChannelIdentifier[] | ((channel: Channel) => boolean)
+    filter?: ChannelIdentifier[] | ((channel: Channel) => boolean),
 ): Channel[] {
     if (isArray(filter)) {
         return toChannels(filter)
@@ -52,7 +49,7 @@ export const emptyFilter = {
 }
 
 export const emptyCustomFieldFilter = (
-    customFieldId: number
+    customFieldId: number,
 ): CustomFieldFilter => ({
     customFieldId,
     operator: LogicalOperatorEnum.ONE_OF,
@@ -60,7 +57,7 @@ export const emptyCustomFieldFilter = (
 })
 
 export const filterKeyToStateKeyMapper = (
-    key: StateOnlyFilterKeys | CleanFilterComponentKeys
+    key: StateOnlyFilterKeys | CleanFilterComponentKeys,
 ) => {
     switch (key) {
         case FilterComponentKey.Store:
@@ -74,7 +71,7 @@ export const filterKeyToStateKeyMapper = (
 }
 
 export const getFilteredFilterComponentKeys = (
-    keys: (FilterKey | FilterComponentKey)[]
+    keys: (FilterKey | FilterComponentKey)[],
 ) =>
     keys.reduce<(FilterKey | CleanFilterComponentKeys)[]>((acc, key) => {
         if (key === FilterComponentKey.BusiestTimesMetricSelectFilter) {
@@ -85,7 +82,7 @@ export const getFilteredFilterComponentKeys = (
 
 export const logSegmentEvent = (
     filterName: string,
-    logicalOperator: string | null
+    logicalOperator: string | null,
 ) => {
     logEvent(SegmentEvent.StatFilterSelected, {
         name: filterName,
@@ -100,7 +97,7 @@ export const getFilterSettings = (
     settings?: {
         [FilterKey.Period]?: ComponentProps<typeof PeriodFilterWithState>
         [FilterKey.Channels]?: ComponentProps<typeof ChannelsFilterWithState>
-    }
+    },
 ) => {
     switch (filterKey) {
         case FilterKey.Period:
@@ -113,7 +110,7 @@ export const getFilterSettings = (
 }
 
 export const toApiFormatted = (
-    savedFilters: SavedFilterSupportedFilters[]
+    savedFilters: SavedFilterSupportedFilters[],
 ): SavedFilterAPISupportedFilters[] => {
     return savedFilters
         .map((filter) => {
@@ -133,7 +130,7 @@ export const toApiFormatted = (
                     ...filter,
                     values: filter.values
                         .filter((f) => f.values.length > 0)
-                        .map(({values, operator}) => ({values, operator})),
+                        .map(({ values, operator }) => ({ values, operator })),
                 }
             }
             return filter
@@ -160,7 +157,7 @@ type FilterOption = {
 }
 
 const getIfTicketFieldsFilters = (
-    filter: FilterOption
+    filter: FilterOption,
 ): FilterOption | undefined =>
     'type' in filter &&
     filter.type !== undefined &&
@@ -185,7 +182,7 @@ export const TICKET_FIELDS_FILTERS_LABEL = 'Ticket Fields filters'
 export const QUALITY_MANAGEMENT_FILTERS_LABEL = 'Quality Management filters'
 
 export const activeFiltersToOptions = (
-    activeFilters: ActiveFilter[]
+    activeFilters: ActiveFilter[],
 ): OptionGroup[] =>
     activeFilters
         .filter((filter) => !filter.active)
@@ -193,7 +190,7 @@ export const activeFiltersToOptions = (
             if (filter.type === FilterKey.Tags) {
                 if (
                     filters.find(
-                        (addedFilter) => addedFilter.type === FilterKey.Tags
+                        (addedFilter) => addedFilter.type === FilterKey.Tags,
                     )
                 ) {
                     return filters
@@ -219,13 +216,13 @@ export const activeFiltersToOptions = (
         .reduce<OptionGroup[]>((optionGroups, filter) => {
             const updatedOptionGroups = []
             const standardFilters = optionGroups.find(
-                (group) => group.title === STANDARD_FILTERS_LABEL
+                (group) => group.title === STANDARD_FILTERS_LABEL,
             )
             const ticketFieldsFilters = optionGroups.find(
-                (group) => group.title === TICKET_FIELDS_FILTERS_LABEL
+                (group) => group.title === TICKET_FIELDS_FILTERS_LABEL,
             )
             const qaFilters = optionGroups.find(
-                (group) => group.title === QUALITY_MANAGEMENT_FILTERS_LABEL
+                (group) => group.title === QUALITY_MANAGEMENT_FILTERS_LABEL,
             )
 
             const newStandardFilter = getIfStandardFilter(filter)
@@ -270,7 +267,7 @@ export const activeFiltersToOptions = (
         })
 
 export const fromApiFormatted = (
-    savedFilterFromAPI: SavedFilterAPI
+    savedFilterFromAPI: SavedFilterAPI,
 ): SavedFilter => {
     return {
         id: savedFilterFromAPI.id,

@@ -1,18 +1,19 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
 
 import CustomFieldIdInput from 'pages/common/components/ast/widget/CustomFieldIdInput'
 import CustomFieldSelect from 'pages/common/components/ast/widget/CustomFieldSelect'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
 import SetCustomFieldAction from '../SetCustomFieldValueAction'
 
 jest.mock('pages/common/components/ast/widget/CustomFieldSelect', () =>
-    jest.fn(() => <div>CustomFieldSelect</div>)
+    jest.fn(() => <div>CustomFieldSelect</div>),
 )
 jest.mock('pages/common/components/ast/widget/CustomFieldIdInput', () =>
-    jest.fn(() => <div>CustomFieldIdInput</div>)
+    jest.fn(() => <div>CustomFieldIdInput</div>),
 )
 
 const mockCustomFieldSelect = assumeMock(CustomFieldSelect)
@@ -40,7 +41,7 @@ describe('<SetCustomFieldAction/>', () => {
                 action={fromJS(action1)}
                 actions={fromJS([action1, action2])}
                 updateActionArgs={updateActionsArgs}
-            />
+            />,
         )
         expect(mockCustomFieldSelect).toHaveBeenCalledTimes(1)
         expect(mockCustomFieldSelect.mock.calls[0][0].idsAlreadySet).toEqual([
@@ -51,14 +52,14 @@ describe('<SetCustomFieldAction/>', () => {
         expect(updateActionsArgs).toHaveBeenNthCalledWith(
             1,
             index,
-            fromJS({...action1.arguments, custom_field_id: 2})
+            fromJS({ ...action1.arguments, custom_field_id: 2 }),
         )
         expect(mockCustomFieldIdInput).toHaveBeenCalledTimes(1)
         mockCustomFieldIdInput.mock.calls[0][0]?.onChange?.('new')
         expect(updateActionsArgs).toHaveBeenNthCalledWith(
             2,
             index,
-            fromJS({...action1.arguments, value: 'new'})
+            fromJS({ ...action1.arguments, value: 'new' }),
         )
     })
 })

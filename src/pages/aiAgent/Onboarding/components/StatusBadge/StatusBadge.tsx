@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
 import Badge from 'gorgias-design-system/Badge/Badge'
 
@@ -13,7 +13,7 @@ type Props = {
     status: StatusEnum
 }
 
-const StatusBadge: React.FC<Props> = ({status}) => {
+const StatusBadge: React.FC<Props> = ({ status }) => {
     const badgeColor = useMemo(() => {
         switch (status) {
             case StatusEnum.Connected:
@@ -27,4 +27,4 @@ const StatusBadge: React.FC<Props> = ({status}) => {
 }
 
 export default StatusBadge
-export {Props as StatusBadgeProps, StatusEnum}
+export { Props as StatusBadgeProps, StatusEnum }

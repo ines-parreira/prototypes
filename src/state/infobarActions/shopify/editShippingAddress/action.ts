@@ -1,15 +1,13 @@
 import axios from 'axios'
-import type {Map} from 'immutable'
-
+import type { Map } from 'immutable'
 import _debounce from 'lodash/debounce'
 
 import GorgiasApi from '../../../../services/gorgiasApi'
-import {StoreDispatch} from '../../../types'
-import {onApiError} from '../../../utils'
+import { StoreDispatch } from '../../../types'
+import { onApiError } from '../../../utils'
+import { SET_ADDRESSES, SET_INITIAL_STATE, SET_LOADING } from './constants'
 
-import {SET_LOADING, SET_ADDRESSES, SET_INITIAL_STATE} from './constants'
-
-const _apiInstances: {[key: string]: GorgiasApi} = {}
+const _apiInstances: { [key: string]: GorgiasApi } = {}
 const getApiInstance = (key: string) => () => {
     if (!_apiInstances[key]) {
         _apiInstances[key] = new GorgiasApi()
@@ -47,7 +45,7 @@ export const onInit =
 
             const addresses = await api.getShippingAddressList(
                 integrationId,
-                customerId
+                customerId,
             )
             dispatch(setAddresses(addresses))
         } catch (error) {
@@ -59,8 +57,8 @@ export const onInit =
                 onApiError(
                     error,
                     'Error while feching edit addresses',
-                    setLoading(false)
-                )
+                    setLoading(false),
+                ),
             )
         } finally {
             dispatch(setLoading(false))
@@ -74,5 +72,5 @@ export const onReset = () => (dispatch: StoreDispatch) => resetState(dispatch)
 
 export const resetState = _debounce(
     (dispatch: StoreDispatch) => dispatch(setInitialState()),
-    250
+    250,
 )

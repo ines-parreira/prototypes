@@ -1,8 +1,9 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {NavBarProvider} from 'common/navigation/components/NavBarProvider'
-import {Panels} from 'core/layout/panels'
+import { render, screen } from '@testing-library/react'
+
+import { NavBarProvider } from 'common/navigation/components/NavBarProvider'
+import { Panels } from 'core/layout/panels'
 
 import TicketsNavbarPanel from '../TicketsNavbarPanel'
 
@@ -17,7 +18,7 @@ describe('TicketsNavbarPanel', () => {
                 <Panels size={1000}>
                     <TicketsNavbarPanel />
                 </Panels>
-            </NavBarProvider>
+            </NavBarProvider>,
         )
         expect(screen.getByText('TicketNavbar')).toBeInTheDocument()
     })

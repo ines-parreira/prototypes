@@ -1,5 +1,4 @@
-import {TooltipItem} from 'chart.js'
-
+import { TooltipItem } from 'chart.js'
 import moment from 'moment'
 
 import {
@@ -7,61 +6,63 @@ import {
     emptyMetric,
     totalTicketsMetric,
 } from 'fixtures/aiAgentInsights'
-import {AutomateStatsMeasureLabelMap} from 'hooks/reporting/automate/automateStatsMeasureLabelMap'
-import {CUSTOM_FIELD_COUNT, TICKET_COUNT} from 'hooks/reporting/automate/types'
-
+import { AutomateStatsMeasureLabelMap } from 'hooks/reporting/automate/automateStatsMeasureLabelMap'
 import {
-    addZeroValueTimeSeriesForGreyArea,
-    mergeAutomateDataByEventType,
-    automatePercentLabel,
-    AutomateEventType,
-    renderAutomateXTickLabel,
-    renderAutomateTooltipLabel,
-    sortByAutomateFeatureLabels,
-    automateInteractionsByEventTypeToTimeSeries,
+    CUSTOM_FIELD_COUNT,
+    TICKET_COUNT,
+} from 'hooks/reporting/automate/types'
+import {
     addNonExistingEventTypesForGraph,
+    addZeroValueTimeSeriesForGreyArea,
+    AutomateEventType,
+    automateInteractionsByEventTypeToTimeSeries,
+    automatePercentLabel,
+    calculateAiAgentKnowledgeResourcePerIntent,
     calculateGreyArea,
-    sortAllData,
     enrichWithAutomationOpportunity,
     enrichWithSuccessRate,
-    calculateAiAgentKnowledgeResourcePerIntent,
-    getIntentByLevel,
     filterMetricDataByIntentLevel,
     getGreyAreaAndChartParam,
+    getIntentByLevel,
+    mergeAutomateDataByEventType,
+    renderAutomateTooltipLabel,
+    renderAutomateXTickLabel,
+    sortAllData,
+    sortByAutomateFeatureLabels,
 } from 'hooks/reporting/automate/utils'
-import {QueryReturnType} from 'hooks/reporting/useMetricPerDimension'
-import {TimeSeriesDataItem} from 'hooks/reporting/useTimeSeries'
-import {BREAKDOWN_FIELD} from 'hooks/reporting/withBreakdown'
-import {OrderDirection} from 'models/api/types'
-import {Cubes} from 'models/reporting/cubes'
-import {AutomationBillingEventMeasure} from 'models/reporting/cubes/automate/AutomationBillingEventCube'
+import { QueryReturnType } from 'hooks/reporting/useMetricPerDimension'
+import { TimeSeriesDataItem } from 'hooks/reporting/useTimeSeries'
+import { BREAKDOWN_FIELD } from 'hooks/reporting/withBreakdown'
+import { OrderDirection } from 'models/api/types'
+import { Cubes } from 'models/reporting/cubes'
+import { AutomationBillingEventMeasure } from 'models/reporting/cubes/automate/AutomationBillingEventCube'
 import {
     RecommendedResourcesDimension,
     RecommendedResourcesMeasure,
 } from 'models/reporting/cubes/automate_v2/RecommendedResourcesCube'
-import {TicketDimension} from 'models/reporting/cubes/TicketCube'
+import { TicketDimension } from 'models/reporting/cubes/TicketCube'
 import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMeasure,
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
-import {ReportingGranularity} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
-import {IntentTableColumn} from 'pages/aiAgent/insights/IntentTableWidget/types'
-import {SHORT_FORMAT} from 'pages/stats/common/utils'
+import { ReportingGranularity } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
+import { IntentTableColumn } from 'pages/aiAgent/insights/IntentTableWidget/types'
+import { SHORT_FORMAT } from 'pages/stats/common/utils'
 
 describe('mergeAutomateDataByEventType', () => {
     it('should merge interactions data by event type correctly', () => {
         const interactionsDataByEventType = {
             eventType1: [
                 [
-                    {dateTime: '2024-03-20T12:00:00', value: 10},
-                    {dateTime: '2024-03-20T12:15:00', value: 15},
+                    { dateTime: '2024-03-20T12:00:00', value: 10 },
+                    { dateTime: '2024-03-20T12:15:00', value: 15 },
                 ],
             ],
             eventType2: [
                 [
-                    {dateTime: '2024-03-20T12:00:00', value: 5},
-                    {dateTime: '2024-03-20T12:15:00', value: 8},
+                    { dateTime: '2024-03-20T12:00:00', value: 5 },
+                    { dateTime: '2024-03-20T12:15:00', value: 8 },
                 ],
             ],
         }
@@ -70,8 +71,8 @@ describe('mergeAutomateDataByEventType', () => {
         const expectedResult = {
             eventType1: [
                 [
-                    {dateTime: '2024-03-20T12:00:00', value: 15},
-                    {dateTime: '2024-03-20T12:15:00', value: 23},
+                    { dateTime: '2024-03-20T12:00:00', value: 15 },
+                    { dateTime: '2024-03-20T12:15:00', value: 23 },
                 ],
             ],
         }
@@ -79,25 +80,25 @@ describe('mergeAutomateDataByEventType', () => {
         expect(
             mergeAutomateDataByEventType(
                 interactionsDataByEventType,
-                eventTypesToMerge
-            )
+                eventTypesToMerge,
+            ),
         ).toEqual(expectedResult)
     })
 
     it('should return unchanged data if no event types to merge', () => {
         const interactionsDataByEventType = {
             eventType1: [
-                [{dateTime: '2024-03-20T12:00:00', value: 10}],
-                [{dateTime: '2024-03-20T12:15:00', value: 15}],
+                [{ dateTime: '2024-03-20T12:00:00', value: 10 }],
+                [{ dateTime: '2024-03-20T12:15:00', value: 15 }],
             ],
             eventType2: [
-                [{dateTime: '2024-03-20T12:00:00', value: 5}],
-                [{dateTime: '2024-03-20T12:15:00', value: 8}],
+                [{ dateTime: '2024-03-20T12:00:00', value: 5 }],
+                [{ dateTime: '2024-03-20T12:15:00', value: 8 }],
             ],
         }
 
         expect(
-            mergeAutomateDataByEventType(interactionsDataByEventType, [])
+            mergeAutomateDataByEventType(interactionsDataByEventType, []),
         ).toEqual(interactionsDataByEventType)
     })
 
@@ -110,22 +111,25 @@ describe('mergeAutomateDataByEventType', () => {
         expect(
             mergeAutomateDataByEventType(
                 interactionsDataByEventType,
-                eventTypesToMerge
-            )
+                eventTypesToMerge,
+            ),
         ).toEqual(expectedResult)
     })
 })
 
 describe('addZeroValueTimeSeriesForGreyArea', () => {
-    const showGreyArea = {from: moment('2024-03-15'), to: moment('2024-03-20')}
+    const showGreyArea = {
+        from: moment('2024-03-15'),
+        to: moment('2024-03-20'),
+    }
 
     it('should add zero value time series data for each dateTime in showGreyArea', () => {
         const timeSeries = [
             {
                 label: 'series1',
                 values: [
-                    {x: moment('2024-03-10').format(SHORT_FORMAT), y: 10},
-                    {x: moment('2024-03-25').format(SHORT_FORMAT), y: 20},
+                    { x: moment('2024-03-10').format(SHORT_FORMAT), y: 10 },
+                    { x: moment('2024-03-25').format(SHORT_FORMAT), y: 20 },
                 ],
             },
         ]
@@ -133,20 +137,20 @@ describe('addZeroValueTimeSeriesForGreyArea', () => {
             {
                 label: 'series1',
                 values: [
-                    {x: moment('2024-03-10').format(SHORT_FORMAT), y: 10},
-                    {x: moment('2024-03-15').format(SHORT_FORMAT), y: 0},
-                    {x: moment('2024-03-16').format(SHORT_FORMAT), y: 0},
-                    {x: moment('2024-03-17').format(SHORT_FORMAT), y: 0},
-                    {x: moment('2024-03-18').format(SHORT_FORMAT), y: 0},
-                    {x: moment('2024-03-19').format(SHORT_FORMAT), y: 0},
-                    {x: moment('2024-03-20').format(SHORT_FORMAT), y: 0},
-                    {x: moment('2024-03-25').format(SHORT_FORMAT), y: 20},
+                    { x: moment('2024-03-10').format(SHORT_FORMAT), y: 10 },
+                    { x: moment('2024-03-15').format(SHORT_FORMAT), y: 0 },
+                    { x: moment('2024-03-16').format(SHORT_FORMAT), y: 0 },
+                    { x: moment('2024-03-17').format(SHORT_FORMAT), y: 0 },
+                    { x: moment('2024-03-18').format(SHORT_FORMAT), y: 0 },
+                    { x: moment('2024-03-19').format(SHORT_FORMAT), y: 0 },
+                    { x: moment('2024-03-20').format(SHORT_FORMAT), y: 0 },
+                    { x: moment('2024-03-25').format(SHORT_FORMAT), y: 20 },
                 ],
             },
         ]
         const result = addZeroValueTimeSeriesForGreyArea(
             showGreyArea,
-            timeSeries
+            timeSeries,
         )
         expect(result).toEqual(expectedOutput)
     })
@@ -164,7 +168,7 @@ describe('addZeroValueTimeSeriesForGreyArea', () => {
         ]
         const result = addZeroValueTimeSeriesForGreyArea(
             showGreyArea,
-            timeSeries
+            timeSeries,
         )
         expect(result).toEqual(timeSeries)
     })
@@ -173,9 +177,9 @@ describe('addZeroValueTimeSeriesForGreyArea', () => {
             {
                 label: 'series1',
                 values: [
-                    {x: moment('2024-03-15').format(SHORT_FORMAT), y: 10},
-                    {x: moment('2024-03-16').format(SHORT_FORMAT), y: 20},
-                    {x: moment('2024-03-18').format(SHORT_FORMAT), y: 30},
+                    { x: moment('2024-03-15').format(SHORT_FORMAT), y: 10 },
+                    { x: moment('2024-03-16').format(SHORT_FORMAT), y: 20 },
+                    { x: moment('2024-03-18').format(SHORT_FORMAT), y: 30 },
                 ],
             },
         ]
@@ -183,18 +187,18 @@ describe('addZeroValueTimeSeriesForGreyArea', () => {
             {
                 label: 'series1',
                 values: [
-                    {x: moment('2024-03-15').format(SHORT_FORMAT), y: 10}, // Existing date, should not change
-                    {x: moment('2024-03-16').format(SHORT_FORMAT), y: 20}, // Existing date, should not change
-                    {x: moment('2024-03-17').format(SHORT_FORMAT), y: 0}, // New date
-                    {x: moment('2024-03-18').format(SHORT_FORMAT), y: 30}, // Existing date, should not change
-                    {x: moment('2024-03-19').format(SHORT_FORMAT), y: 0}, // New date
-                    {x: moment('2024-03-20').format(SHORT_FORMAT), y: 0}, // New date
+                    { x: moment('2024-03-15').format(SHORT_FORMAT), y: 10 }, // Existing date, should not change
+                    { x: moment('2024-03-16').format(SHORT_FORMAT), y: 20 }, // Existing date, should not change
+                    { x: moment('2024-03-17').format(SHORT_FORMAT), y: 0 }, // New date
+                    { x: moment('2024-03-18').format(SHORT_FORMAT), y: 30 }, // Existing date, should not change
+                    { x: moment('2024-03-19').format(SHORT_FORMAT), y: 0 }, // New date
+                    { x: moment('2024-03-20').format(SHORT_FORMAT), y: 0 }, // New date
                 ],
             },
         ]
         const result = addZeroValueTimeSeriesForGreyArea(
             showGreyArea,
-            timeSeries
+            timeSeries,
         )
         expect(result).toEqual(expectedOutput)
     })
@@ -350,7 +354,7 @@ describe('addNonExistingEventTypesForGraph', () => {
         const result = addNonExistingEventTypesForGraph(
             interactionsDataByEventType,
             filter,
-            granularity
+            granularity,
         )
         Object.values(AutomateEventType).forEach((eventType) => {
             expect(result).toHaveProperty(eventType)
@@ -380,7 +384,7 @@ describe('addNonExistingEventTypesForGraph', () => {
         const result = addNonExistingEventTypesForGraph(
             interactionsDataByEventType,
             filter,
-            granularity
+            granularity,
         )
 
         Object.values(AutomateEventType).forEach((eventType) => {
@@ -428,7 +432,7 @@ describe('addNonExistingEventTypesForGraph', () => {
         const result = addNonExistingEventTypesForGraph(
             interactionsDataByEventType,
             filter,
-            granularity
+            granularity,
         )
 
         Object.values(AutomateEventType).forEach((eventType) => {
@@ -462,7 +466,7 @@ describe('renderAutomateXTickLabel', () => {
         const result = renderAutomateXTickLabel.call(
             scaleMock as any,
             validDate,
-            0
+            0,
         )
         expect(result).toBe(moment(validDate, SHORT_FORMAT).format('MMM D'))
     })
@@ -474,7 +478,7 @@ describe('renderAutomateXTickLabel', () => {
         const result = renderAutomateXTickLabel.call(
             scaleMock as any,
             invalidDate,
-            0
+            0,
         )
 
         expect(result).toBe(invalidDate)
@@ -484,7 +488,7 @@ describe('renderAutomateTooltipLabel', () => {
     test('renders tooltip label without percentage', () => {
         const tooltipItem = {
             raw: 10,
-            dataset: {label: 'Dataset Label'},
+            dataset: { label: 'Dataset Label' },
         } as TooltipItem<'line'>
         const expectedLabel = 'Dataset Label:  10'
 
@@ -496,7 +500,7 @@ describe('renderAutomateTooltipLabel', () => {
     test('renders tooltip label with percentage', () => {
         const tooltipItem = {
             raw: 0.1,
-            dataset: {label: 'Dataset Label'},
+            dataset: { label: 'Dataset Label' },
         } as TooltipItem<'line'>
         const expectedLabel = 'Dataset Label:  10%'
 
@@ -508,7 +512,7 @@ describe('renderAutomateTooltipLabel', () => {
     test('renders tooltip label with no dataset label', () => {
         const tooltipItem = {
             raw: 0.1,
-            dataset: {label: undefined},
+            dataset: { label: undefined },
         } as TooltipItem<'line'>
         const expectedLabel = ':  10%'
 
@@ -523,21 +527,21 @@ describe('sortByAutomateFeatureLabels', () => {
 
     test('sorts labels in ascending order', () => {
         const unsortedLabels = [
-            {label: labels[3]}, // Random order
-            {label: labels[1]},
-            {label: labels[0]},
-            {label: labels[2]},
+            { label: labels[3] }, // Random order
+            { label: labels[1] },
+            { label: labels[0] },
+            { label: labels[2] },
         ]
 
         const expectedOrder = [
-            {label: labels[0]},
-            {label: labels[1]},
-            {label: labels[2]},
-            {label: labels[3]},
+            { label: labels[0] },
+            { label: labels[1] },
+            { label: labels[2] },
+            { label: labels[3] },
         ]
 
         const sortedLabels = unsortedLabels.sort(
-            sortByAutomateFeatureLabels(automateStatsMeasureLabelMap)
+            sortByAutomateFeatureLabels(automateStatsMeasureLabelMap),
         )
 
         expect(sortedLabels).toEqual(expectedOrder)
@@ -545,15 +549,15 @@ describe('sortByAutomateFeatureLabels', () => {
 
     test('No sorting will be applied as it is sorted', () => {
         const sortedLabels = [
-            {label: labels[0]},
-            {label: labels[1]},
-            {label: labels[2]},
-            {label: labels[3]},
+            { label: labels[0] },
+            { label: labels[1] },
+            { label: labels[2] },
+            { label: labels[3] },
         ]
         expect(
             sortedLabels.sort(
-                sortByAutomateFeatureLabels(automateStatsMeasureLabelMap)
-            )
+                sortByAutomateFeatureLabels(automateStatsMeasureLabelMap),
+            ),
         ).toEqual(sortedLabels)
     })
 })
@@ -566,10 +570,10 @@ describe('automateInteractionsByEventTypeToTimeSeries', () => {
             TimeSeriesDataItem[][]
         > = {
             [AutomateEventType.TRACK_ORDER]: [
-                [{dateTime: '2024-03-25T12:00:00', value: 5}],
+                [{ dateTime: '2024-03-25T12:00:00', value: 5 }],
             ],
             [AutomateEventType.QUICK_RESPONSE_STARTED]: [
-                [{dateTime: '2024-03-25T12:00:00', value: 10}],
+                [{ dateTime: '2024-03-25T12:00:00', value: 10 }],
             ],
         }
         const statsFilters: StatsFilters = {
@@ -584,23 +588,23 @@ describe('automateInteractionsByEventTypeToTimeSeries', () => {
         const result = automateInteractionsByEventTypeToTimeSeries(
             statsFilters,
             granularity,
-            interactionsDataByEventType
+            interactionsDataByEventType,
         )
 
         // Check if data is converted properly
         expect(result.length).toBe(
-            Object.keys(automateStatsMeasureLabelMap).length
+            Object.keys(automateStatsMeasureLabelMap).length,
         )
 
         // Hour granularrity to 24 items
         expect(result[2].length).toBe(24)
 
         expect(result[0][0].label).toBe(
-            AutomationBillingEventMeasure.AutomatedInteractionsByTrackOrder
+            AutomationBillingEventMeasure.AutomatedInteractionsByTrackOrder,
         )
         expect(result[0][0].value).toBe(5)
         expect(result[1][0].label).toBe(
-            AutomationBillingEventMeasure.AutomatedInteractionsByQuickResponse
+            AutomationBillingEventMeasure.AutomatedInteractionsByQuickResponse,
         )
         expect(result[1][0].value).toBe(10)
     })
@@ -609,7 +613,7 @@ describe('automateInteractionsByEventTypeToTimeSeries', () => {
             string,
             TimeSeriesDataItem[][]
         > = {
-            ['Others']: [[{dateTime: '2024-03-25T12:00:00', value: 5}]],
+            ['Others']: [[{ dateTime: '2024-03-25T12:00:00', value: 5 }]],
         }
         const statsFilters: StatsFilters = {
             period: {
@@ -623,7 +627,7 @@ describe('automateInteractionsByEventTypeToTimeSeries', () => {
         const result = automateInteractionsByEventTypeToTimeSeries(
             statsFilters,
             granularity,
-            interactionsDataByEventType
+            interactionsDataByEventType,
         )
 
         // Check if data is converted properly
@@ -662,7 +666,7 @@ describe('sortAllData', () => {
         const result = sortAllData(
             mockDataWithAutomationOpportunity,
             'automationOpportunity',
-            OrderDirection.Asc
+            OrderDirection.Asc,
         )
         expect(result).toEqual([
             {
@@ -690,7 +694,7 @@ describe('sortAllData', () => {
         const result = sortAllData(
             mockDataWithAutomationOpportunity,
             'automationOpportunity',
-            OrderDirection.Desc
+            OrderDirection.Desc,
         )
         expect(result).toEqual([
             {
@@ -719,7 +723,7 @@ describe('sortAllData', () => {
         const result = sortAllData(
             [],
             'automationOpportunity',
-            OrderDirection.Asc
+            OrderDirection.Asc,
         )
         expect(result).toEqual([])
     })
@@ -730,7 +734,7 @@ describe('enrichWithAutomationOpportunity', () => {
         const result = enrichWithAutomationOpportunity(
             customFieldsMetric,
             '5',
-            TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount
+            TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
         )
         expect(result).toEqual([
             {
@@ -759,7 +763,7 @@ describe('enrichWithAutomationOpportunity', () => {
             customFieldsMetric,
             '5',
             TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
-            OrderDirection.Asc
+            OrderDirection.Asc,
         )
         expect(result).toEqual([
             {
@@ -787,7 +791,7 @@ describe('enrichWithAutomationOpportunity', () => {
         const result = enrichWithAutomationOpportunity(
             emptyMetric,
             '5',
-            TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount
+            TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
         )
         expect(result).toEqual([])
     })
@@ -798,7 +802,7 @@ describe('enrichWithSuccessRate', () => {
         const result = enrichWithSuccessRate(
             customFieldsMetric,
             totalTicketsMetric,
-            TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount
+            TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
         )
         expect(result).toEqual([
             {
@@ -827,7 +831,7 @@ describe('enrichWithSuccessRate', () => {
             customFieldsMetric,
             totalTicketsMetric,
             TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
-            OrderDirection.Desc
+            OrderDirection.Desc,
         )
         expect(result).toEqual([
             {
@@ -855,7 +859,7 @@ describe('enrichWithSuccessRate', () => {
         const result = enrichWithSuccessRate(
             customFieldsMetric,
             emptyMetric,
-            TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount
+            TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
         )
         expect(result).toEqual([])
     })
@@ -892,12 +896,18 @@ describe('calculateAiAgentKnowledgeResourcePerIntent', () => {
 
         const result = calculateAiAgentKnowledgeResourcePerIntent(
             aiAgentTicketsWithIntentData,
-            resourcePerTicketIdData
+            resourcePerTicketIdData,
         )
 
         expect(result).toEqual([
-            {'TicketCustomFieldsEnriched.valueString': 'intentA', resources: 5},
-            {'TicketCustomFieldsEnriched.valueString': 'intentB', resources: 3},
+            {
+                'TicketCustomFieldsEnriched.valueString': 'intentA',
+                resources: 5,
+            },
+            {
+                'TicketCustomFieldsEnriched.valueString': 'intentB',
+                resources: 3,
+            },
         ])
     })
 
@@ -907,7 +917,7 @@ describe('calculateAiAgentKnowledgeResourcePerIntent', () => {
 
         const result = calculateAiAgentKnowledgeResourcePerIntent(
             aiAgentTicketsWithIntentData,
-            resourcePerTicketIdData
+            resourcePerTicketIdData,
         )
 
         expect(result).toEqual([])
@@ -925,11 +935,14 @@ describe('calculateAiAgentKnowledgeResourcePerIntent', () => {
 
         const result = calculateAiAgentKnowledgeResourcePerIntent(
             aiAgentTicketsWithIntentData,
-            resourcePerTicketIdData
+            resourcePerTicketIdData,
         )
 
         expect(result).toEqual([
-            {'TicketCustomFieldsEnriched.valueString': 'intentA', resources: 0},
+            {
+                'TicketCustomFieldsEnriched.valueString': 'intentA',
+                resources: 0,
+            },
         ])
     })
 
@@ -963,11 +976,14 @@ describe('calculateAiAgentKnowledgeResourcePerIntent', () => {
 
         const result = calculateAiAgentKnowledgeResourcePerIntent(
             aiAgentTicketsWithIntentData,
-            resourcePerTicketIdData
+            resourcePerTicketIdData,
         )
 
         expect(result).toEqual([
-            {'TicketCustomFieldsEnriched.valueString': 'intentA', resources: 8},
+            {
+                'TicketCustomFieldsEnriched.valueString': 'intentA',
+                resources: 8,
+            },
         ])
     })
 
@@ -990,7 +1006,7 @@ describe('calculateAiAgentKnowledgeResourcePerIntent', () => {
 
         const result = calculateAiAgentKnowledgeResourcePerIntent(
             aiAgentTicketsWithIntentData,
-            resourcePerTicketIdData
+            resourcePerTicketIdData,
         )
 
         expect(result).toEqual([])
@@ -1030,9 +1046,9 @@ describe('getIntentByLevel', () => {
 
 describe('filterMetricDataByIntentLevel', () => {
     const metricData = [
-        {intent: 'intent1', value: 10, total: 5},
-        {intent: 'intent2', value: 20, total: 10},
-        {intent: 'intent1', value: 30, total: 15},
+        { intent: 'intent1', value: 10, total: 5 },
+        { intent: 'intent2', value: 20, total: 10 },
+        { intent: 'intent1', value: 30, total: 15 },
     ]
 
     it('should calculate Automation Opportunities correctly', () => {
@@ -1047,8 +1063,8 @@ describe('filterMetricDataByIntentLevel', () => {
         })
 
         expect(result).toEqual([
-            {intent: 'intent1', result: 2.6666666666666665},
-            {intent: 'intent2', result: 2},
+            { intent: 'intent1', result: 2.6666666666666665 },
+            { intent: 'intent2', result: 2 },
         ])
     })
 
@@ -1063,8 +1079,8 @@ describe('filterMetricDataByIntentLevel', () => {
         })
 
         expect(result).toEqual([
-            {intent: 'intent1', result: 40},
-            {intent: 'intent2', result: 20},
+            { intent: 'intent1', result: 40 },
+            { intent: 'intent2', result: 20 },
         ])
     })
 
@@ -1080,8 +1096,8 @@ describe('filterMetricDataByIntentLevel', () => {
         })
 
         expect(result).toEqual([
-            {intent: 'intent1', result: 2},
-            {intent: 'intent2', result: 2},
+            { intent: 'intent1', result: 2 },
+            { intent: 'intent2', result: 2 },
         ])
     })
 
@@ -1097,8 +1113,8 @@ describe('filterMetricDataByIntentLevel', () => {
         })
 
         expect(result).toEqual([
-            {intent: 'intent1', result: 25},
-            {intent: 'intent2', result: 20},
+            { intent: 'intent1', result: 25 },
+            { intent: 'intent2', result: 20 },
         ])
     })
 
@@ -1113,8 +1129,8 @@ describe('filterMetricDataByIntentLevel', () => {
         })
 
         expect(result).toEqual([
-            {intent: 'intent1', result: 40},
-            {intent: 'intent2', result: 20},
+            { intent: 'intent1', result: 40 },
+            { intent: 'intent2', result: 20 },
         ])
     })
 })

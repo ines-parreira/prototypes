@@ -1,5 +1,6 @@
-import {produce} from 'immer'
-import {useCallback} from 'react'
+import { useCallback } from 'react'
+
+import { produce } from 'immer'
 
 import {
     getCancelSubscriptionNodeTouched,
@@ -12,7 +13,7 @@ import {
     getSkipChargeNodeTouched,
     getUpdateShippingAddressNodeTouched,
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import {VisualBuilderGraph} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { VisualBuilderGraph } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 const useTouchActionTemplateGraph = () => {
     return useCallback((graph: VisualBuilderGraph) => {
@@ -30,7 +31,7 @@ const useTouchActionTemplateGraph = () => {
                     case 'conditions':
                         node.data.touched = getConditionsNodeTouched(
                             draft.edges,
-                            node
+                            node,
                         )
                         break
                     case 'reusable_llm_prompt_call':

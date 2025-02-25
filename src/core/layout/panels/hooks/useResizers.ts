@@ -1,13 +1,13 @@
-import {useMemo} from 'react'
-import type {MouseEvent} from 'react'
+import { useMemo } from 'react'
+import type { MouseEvent } from 'react'
 
 import shouldCreateResizer from '../helpers/shouldCreateResizer'
-import type {PanelConfig} from '../types'
+import type { PanelConfig } from '../types'
 
 export default function useResizers(
     createResizer: (i: number) => (e: MouseEvent) => void,
     configs: Record<string, PanelConfig>,
-    order: string[]
+    order: string[],
 ) {
     return useMemo(
         () =>
@@ -18,8 +18,8 @@ export default function useResizers(
                         ? createResizer(i)
                         : undefined,
                 }),
-                {} as Record<string, ((e: MouseEvent) => void) | undefined>
+                {} as Record<string, ((e: MouseEvent) => void) | undefined>,
             ),
-        [createResizer, configs, order]
+        [createResizer, configs, order],
     )
 }

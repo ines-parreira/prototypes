@@ -1,34 +1,38 @@
-import noop from 'lodash/noop'
-import React, {useCallback} from 'react'
-import {connect} from 'react-redux'
+import React, { useCallback } from 'react'
 
-import {Integration} from 'models/integration/types'
-import {FilterKey, StatsFiltersWithLogicalOperator} from 'models/stat/types'
+import noop from 'lodash/noop'
+import { connect } from 'react-redux'
+
+import { Integration } from 'models/integration/types'
+import { FilterKey, StatsFiltersWithLogicalOperator } from 'models/stat/types'
 import Filter from 'pages/stats/common/components/Filter'
 import {
     LogicalOperatorEnum,
     LogicalOperatorLabel,
 } from 'pages/stats/common/components/Filter/constants'
 import {
-    integrationsFilterLogicalOperators,
     FilterLabels,
+    integrationsFilterLogicalOperators,
 } from 'pages/stats/common/filters/constants'
-import {getIntegrationIcon} from 'pages/stats/common/filters/DEPRECATED_IntegrationsStatsFilter'
-import {emptyFilter, logSegmentEvent} from 'pages/stats/common/filters/helpers'
+import { getIntegrationIcon } from 'pages/stats/common/filters/DEPRECATED_IntegrationsStatsFilter'
+import {
+    emptyFilter,
+    logSegmentEvent,
+} from 'pages/stats/common/filters/helpers'
 import {
     OptionalFilterProps,
     RemovableFilter,
 } from 'pages/stats/common/filters/types'
-import {DropdownOption} from 'pages/stats/types'
-import {getPhoneIntegrations} from 'state/integrations/selectors'
+import { DropdownOption } from 'pages/stats/types'
+import { getPhoneIntegrations } from 'state/integrations/selectors'
 import {
     getPageStatsFiltersWithLogicalOperators,
     getSavedFiltersWithLogicalOperators,
     getStatsMessagingAndAppIntegrations,
 } from 'state/stats/selectors'
-import {mergeStatsFiltersWithLogicalOperator} from 'state/stats/statsSlice'
-import {RootState} from 'state/types'
-import {statFiltersClean, statFiltersDirty} from 'state/ui/stats/actions'
+import { mergeStatsFiltersWithLogicalOperator } from 'state/stats/statsSlice'
+import { RootState } from 'state/types'
+import { statFiltersClean, statFiltersDirty } from 'state/ui/stats/actions'
 import {
     removeFilterFromSavedFilterDraft,
     upsertSavedFilterFilter,
@@ -41,7 +45,7 @@ type Props = {
         value: Exclude<
             StatsFiltersWithLogicalOperator[FilterKey.Integrations],
             undefined
-        >
+        >,
     ) => void
     dispatchRemove: () => void
     dispatchStatFiltersDirty?: () => void
@@ -90,7 +94,7 @@ export function IntegrationsFilter({
                 operator: value.operator,
             })
         },
-        [dispatchUpdate, value.operator]
+        [dispatchUpdate, value.operator],
     )
 
     const handleFilterOperatorChange = useCallback(
@@ -100,14 +104,14 @@ export function IntegrationsFilter({
                 operator: operator,
             })
         },
-        [dispatchUpdate, value.values]
+        [dispatchUpdate, value.values],
     )
 
     const onOptionChange = (opt: DropdownOption) => {
         const id = Number(opt.value)
         if (value.values.includes(id)) {
             handleFilterValuesChange(
-                value.values.filter((integrationId) => integrationId !== id)
+                value.values.filter((integrationId) => integrationId !== id),
             )
         } else {
             handleFilterValuesChange([...value.values, id])
@@ -120,7 +124,7 @@ export function IntegrationsFilter({
     const handleDropdownClosed = () => {
         logSegmentEvent(
             FilterKey.Integrations,
-            LogicalOperatorLabel[value.operator]
+            LogicalOperatorLabel[value.operator],
         )
         dispatchStatFiltersClean()
     }
@@ -128,7 +132,7 @@ export function IntegrationsFilter({
     return (
         <Filter
             filterName={FilterLabels[FilterKey.Integrations]}
-            filterErrors={{warningType}}
+            filterErrors={{ warningType }}
             selectedOptions={getSelectedIntegrations()}
             selectedLogicalOperator={value.operator}
             logicalOperators={integrationsFilterLogicalOperators}
@@ -136,7 +140,7 @@ export function IntegrationsFilter({
             onChangeOption={onOptionChange}
             onSelectAll={() => {
                 handleFilterValuesChange(
-                    integrations.map((integration) => integration.id)
+                    integrations.map((integration) => integration.id),
                 )
             }}
             onRemoveAll={() => {
@@ -173,7 +177,7 @@ export const IntegrationsFilterWithState = connect(
             }),
         dispatchStatFiltersDirty: statFiltersDirty,
         dispatchStatFiltersClean: statFiltersClean,
-    }
+    },
 )(IntegrationsFilter)
 
 export const PhoneIntegrationsFilterWithState = connect(
@@ -194,7 +198,7 @@ export const PhoneIntegrationsFilterWithState = connect(
             }),
         dispatchStatFiltersDirty: statFiltersDirty,
         dispatchStatFiltersClean: statFiltersClean,
-    }
+    },
 )(IntegrationsFilter)
 
 export const IntegrationsFilterWithSavedState = connect(
@@ -215,5 +219,5 @@ export const IntegrationsFilterWithSavedState = connect(
             removeFilterFromSavedFilterDraft({
                 filterKey: FilterKey.Integrations,
             }),
-    }
+    },
 )(IntegrationsFilter)

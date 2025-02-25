@@ -1,9 +1,10 @@
-import {render, fireEvent} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {GroupPositionContext} from 'pages/common/components/layout/Group'
+import { fireEvent, render } from '@testing-library/react'
 
-import SelectInputBox, {SelectInputBoxContext} from '../SelectInputBox'
+import { GroupPositionContext } from 'pages/common/components/layout/Group'
+
+import SelectInputBox, { SelectInputBoxContext } from '../SelectInputBox'
 
 describe('<SelectInputBox />', () => {
     const defaultProps: ComponentProps<typeof SelectInputBox> = {
@@ -13,31 +14,35 @@ describe('<SelectInputBox />', () => {
     }
 
     it('should render a select input box', () => {
-        const {container} = render(<SelectInputBox {...defaultProps} />)
+        const { container } = render(<SelectInputBox {...defaultProps} />)
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render a label array', () => {
         const label = ['foo', 'bar']
-        const {getByText} = render(
-            <SelectInputBox {...defaultProps} label={label} />
+        const { getByText } = render(
+            <SelectInputBox {...defaultProps} label={label} />,
         )
 
         expect(getByText(label.join(', '))).toBeTruthy()
     })
 
     it('should render a placeholder when no value is passed', () => {
-        const {getByText} = render(
-            <SelectInputBox {...defaultProps} label={null} />
+        const { getByText } = render(
+            <SelectInputBox {...defaultProps} label={null} />,
         )
 
         expect(getByText(defaultProps.placeholder!)).toBeTruthy()
     })
 
     it('should render a prefix and a suffix', () => {
-        const {container} = render(
-            <SelectInputBox {...defaultProps} prefix="prefix" suffix="suffix" />
+        const { container } = render(
+            <SelectInputBox
+                {...defaultProps}
+                prefix="prefix"
+                suffix="suffix"
+            />,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -50,7 +55,7 @@ describe('<SelectInputBox />', () => {
     })
 
     it('should call onToggle when the focus status change', () => {
-        const {getByText} = render(<SelectInputBox {...defaultProps} />)
+        const { getByText } = render(<SelectInputBox {...defaultProps} />)
         const inputElement = getByText(defaultProps.label as string)
 
         fireEvent.focus(inputElement)
@@ -60,8 +65,8 @@ describe('<SelectInputBox />', () => {
     })
 
     it('should not call onToggle when the input is disabled', () => {
-        const {getByText} = render(
-            <SelectInputBox {...defaultProps} isDisabled />
+        const { getByText } = render(
+            <SelectInputBox {...defaultProps} isDisabled />,
         )
         const inputElement = getByText(defaultProps.label as string)
 
@@ -70,7 +75,7 @@ describe('<SelectInputBox />', () => {
     })
 
     it('should call onToggle when the input is focused and we press the escape key', () => {
-        const {getByText} = render(<SelectInputBox {...defaultProps} />)
+        const { getByText } = render(<SelectInputBox {...defaultProps} />)
         const inputElement = getByText(defaultProps.label as string)
 
         fireEvent.focus(inputElement)
@@ -83,7 +88,7 @@ describe('<SelectInputBox />', () => {
     })
 
     it('should call onToggle when the component is blurred through context', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <SelectInputBox {...defaultProps}>
                 <SelectInputBoxContext.Consumer>
                     {(context) => (
@@ -96,7 +101,7 @@ describe('<SelectInputBox />', () => {
                         </div>
                     )}
                 </SelectInputBoxContext.Consumer>
-            </SelectInputBox>
+            </SelectInputBox>,
         )
 
         fireEvent.focus(getByText(defaultProps.label as string))
@@ -105,19 +110,19 @@ describe('<SelectInputBox />', () => {
     })
 
     it('should render with a left margin of 1px', () => {
-        const {container} = render(
+        const { container } = render(
             <GroupPositionContext.Provider value={'left'}>
                 <SelectInputBox {...defaultProps} label={null} />
-            </GroupPositionContext.Provider>
+            </GroupPositionContext.Provider>,
         )
         expect(container.getElementsByClassName('leftMargin').length).toBe(1)
     })
 
     it('should render without a left margin of 1px', () => {
-        const {container} = render(
+        const { container } = render(
             <GroupPositionContext.Provider value={'middle'}>
                 <SelectInputBox {...defaultProps} label={null} />
-            </GroupPositionContext.Provider>
+            </GroupPositionContext.Provider>,
         )
         expect(container.getElementsByClassName('leftMargin').length).toBe(0)
     })

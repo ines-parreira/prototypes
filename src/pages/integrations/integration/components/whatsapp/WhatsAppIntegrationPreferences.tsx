@@ -1,25 +1,25 @@
-import classnames from 'classnames'
-import {fromJS} from 'immutable'
+import React, { useEffect, useState } from 'react'
 
-import React, {useEffect, useState} from 'react'
-import {Link} from 'react-router-dom'
-import {Col, Container, Form, FormGroup, Label, Row} from 'reactstrap'
+import classnames from 'classnames'
+import { fromJS } from 'immutable'
+import { Link } from 'react-router-dom'
+import { Col, Container, Form, FormGroup, Label, Row } from 'reactstrap'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
 import {
-    WhatsAppIntegration,
     isWhatsAppIntegration,
+    WhatsAppIntegration,
 } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import EmojiTextInput from 'pages/common/forms/EmojiTextInput/EmojiTextInput'
 import css from 'pages/integrations/integration/components/whatsapp/WhatsAppIntegrationPreferences.less'
-import {INTEGRATION_REMOVAL_CONFIGURATION_TEXT} from 'pages/integrations/integration/constants'
+import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 import PhoneNumberTitle from 'pages/phoneNumbers/PhoneNumberTitle'
 import settingsCss from 'pages/settings/settings.less'
-import {getNewPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
+import { getNewPhoneNumbers } from 'state/entities/phoneNumbers/selectors'
 import {
     deleteIntegration,
     updateOrCreateIntegration,
@@ -40,7 +40,7 @@ export default function WhatsAppIntegrationPreferences({
     const phoneNumber = phoneNumbers[phoneNumberId]
     const dispatch = useAppDispatch()
 
-    const [{loading: isLoading}, handleSubmit] = useAsyncFn(
+    const [{ loading: isLoading }, handleSubmit] = useAsyncFn(
         async (event: React.FormEvent) => {
             event.preventDefault()
             await dispatch(
@@ -51,14 +51,14 @@ export default function WhatsAppIntegrationPreferences({
                         meta: {
                             emoji,
                         },
-                    })
-                )
+                    }),
+                ),
             )
         },
-        [integration, title, emoji, dispatch]
+        [integration, title, emoji, dispatch],
     )
 
-    const [{loading: isDeleting}, handleDelete] = useAsyncFn(async () => {
+    const [{ loading: isDeleting }, handleDelete] = useAsyncFn(async () => {
         await dispatch(deleteIntegration(fromJS(integration)))
     }, [integration, dispatch])
 
@@ -66,7 +66,7 @@ export default function WhatsAppIntegrationPreferences({
         if (!isWhatsAppIntegration(integration) || isInitialized) {
             return
         }
-        const {meta} = integration
+        const { meta } = integration
 
         setTitle(integration.name)
         setEmoji(meta.emoji ?? null)
@@ -103,7 +103,7 @@ export default function WhatsAppIntegrationPreferences({
                                     className={classnames(
                                         css.appRow,
                                         'ml-1',
-                                        'mr-1'
+                                        'mr-1',
                                     )}
                                 >
                                     <Col lg={8} className="pl-0">

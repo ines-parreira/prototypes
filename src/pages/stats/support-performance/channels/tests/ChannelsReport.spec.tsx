@@ -1,27 +1,28 @@
-import {fromJS} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {account} from 'fixtures/account'
-import {billingState} from 'fixtures/billing'
+import { fromJS } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { account } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
 import {
     AUTOMATION_PRODUCT_ID,
     basicYearlyAutomationPlan,
     basicYearlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
-import {AUTO_QA_FILTER_KEYS} from 'pages/stats/common/filters/constants'
+import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
-import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
-import {ChannelsReport} from 'pages/stats/support-performance/channels/ChannelsReport'
+import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
+import { ChannelsReport } from 'pages/stats/support-performance/channels/ChannelsReport'
 import {
     CHANNEL_REPORT_OPTIONAL_FILTERS,
     CHANNELS_REPORT_PAGE_TITLE,
 } from 'pages/stats/support-performance/channels/ChannelsReportConfig'
-import {RootState} from 'state/types'
-import {channelsSlice, initialState} from 'state/ui/stats/channelsSlice'
-import {renderWithStore} from 'utils/testing'
+import { RootState } from 'state/types'
+import { channelsSlice, initialState } from 'state/ui/stats/channelsSlice'
+import { renderWithStore } from 'utils/testing'
 
 const componentMock = () => <div />
 const defaultFiltersText = 'default_filters'
@@ -35,7 +36,7 @@ jest.mock('pages/stats/DrillDownModalTrigger.tsx', () => ({
     }: ComponentProps<typeof DrillDownModalTrigger>) => children,
 }))
 jest.mock('pages/stats/support-performance/SupportPerformanceFilters', () => ({
-    SupportPerformanceFilters: ({hidden = false}: {hidden: boolean}) =>
+    SupportPerformanceFilters: ({ hidden = false }: { hidden: boolean }) =>
         hidden ? null : <div>{defaultFiltersText}</div>,
 }))
 jest.mock(
@@ -44,19 +45,19 @@ jest.mock(
         return props.optionalFilters?.map((optionalFilter) => (
             <div key={optionalFilter}>{optionalFilter}</div>
         ))
-    }
+    },
 )
 jest.mock(
     'pages/stats/support-performance/channels/ChannelsDownloadDataButton',
     () => ({
         ChannelsDownloadDataButton: componentMock,
-    })
+    }),
 )
 jest.mock(
     'pages/stats/support-performance/channels/ChannelsHeaderCellContent',
     () => ({
         ChannelsHeaderCellContent: componentMock,
-    })
+    }),
 )
 jest.mock('pages/stats/support-performance/channels/ChannelsTable', () => ({
     ChannelsTable: componentMock,
@@ -65,7 +66,7 @@ jest.mock('pages/stats/support-performance/channels/ChannelsTable', () => ({
 describe('ChannelsReport', () => {
     const defaultState = {
         ui: {
-            stats: {[channelsSlice.name]: initialState},
+            stats: { [channelsSlice.name]: initialState },
         },
         billing: fromJS(billingState),
     } as RootState
@@ -77,15 +78,15 @@ describe('ChannelsReport', () => {
     })
 
     it('should render channels report component', () => {
-        const {getByText} = renderWithStore(<ChannelsReport />, defaultState)
+        const { getByText } = renderWithStore(<ChannelsReport />, defaultState)
 
         expect(getByText(CHANNELS_REPORT_PAGE_TITLE)).toBeInTheDocument()
     })
 
     it('should render channels report component with default filters', () => {
-        const {getByText, queryByText} = renderWithStore(
+        const { getByText, queryByText } = renderWithStore(
             <ChannelsReport />,
-            defaultState
+            defaultState,
         )
 
         expect(getByText(defaultFiltersText)).toBeInTheDocument()
@@ -98,9 +99,9 @@ describe('ChannelsReport', () => {
         mockFlags({
             [FeatureFlagKey.AnalyticsNewFilters]: true,
         })
-        const {getByText, queryByText} = renderWithStore(
+        const { getByText, queryByText } = renderWithStore(
             <ChannelsReport />,
-            defaultState
+            defaultState,
         )
 
         expect(queryByText(defaultFiltersText)).not.toBeInTheDocument()
@@ -117,7 +118,7 @@ describe('ChannelsReport', () => {
             ...CHANNEL_REPORT_OPTIONAL_FILTERS,
         ]
 
-        const {getByText} = renderWithStore(<ChannelsReport />, defaultState)
+        const { getByText } = renderWithStore(<ChannelsReport />, defaultState)
 
         extendedChannelsReportFilters.forEach((optionalFilter) => {
             expect(getByText(optionalFilter)).toBeInTheDocument()
@@ -147,7 +148,7 @@ describe('ChannelsReport', () => {
             ...AUTO_QA_FILTER_KEYS,
         ]
 
-        const {getByText} = renderWithStore(<ChannelsReport />, state)
+        const { getByText } = renderWithStore(<ChannelsReport />, state)
 
         extendedChannelsReportFilters.forEach((optionalFilter) => {
             expect(getByText(optionalFilter)).toBeInTheDocument()

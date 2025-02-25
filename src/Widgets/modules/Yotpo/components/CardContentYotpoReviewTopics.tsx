@@ -1,5 +1,6 @@
-import {Badge} from '@gorgias/merchant-ui-kit'
-import React, {ReactNode} from 'react'
+import React, { ReactNode } from 'react'
+
+import { Badge } from '@gorgias/merchant-ui-kit'
 
 import css from './CardContentYotpoReviewTopics.less'
 
@@ -7,7 +8,7 @@ type Props = {
     children?: Record<string, ReactNode> | null
 }
 
-export function CardContentYotpoReviewTopics({children}: Props) {
+export function CardContentYotpoReviewTopics({ children }: Props) {
     const topics: ReactNode[] = []
 
     if (children) {
@@ -15,7 +16,7 @@ export function CardContentYotpoReviewTopics({children}: Props) {
             topics.push(
                 <Badge key={key} className={css.topic} type={'light'}>
                     {children[key]}
-                </Badge>
+                </Badge>,
             )
         })
     }

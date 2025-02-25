@@ -1,4 +1,4 @@
-import {CampaignsTotalsMetricNames} from 'pages/stats/convert/services/constants'
+import { CampaignsTotalsMetricNames } from 'pages/stats/convert/services/constants'
 
 export type CampaignStat = number[]
 

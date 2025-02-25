@@ -1,5 +1,6 @@
+import React, { useState } from 'react'
+
 import classNames from 'classnames'
-import React, {useState} from 'react'
 
 import bigcommerceLineItemRowCss from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/components/order-table/OrderLineItemRow.less'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
@@ -66,7 +67,7 @@ export function RefundableAmountComponent({
                 {hasDiscount && fullPrice && (
                     <div
                         className={classNames(
-                            bigcommerceLineItemRowCss.striked
+                            bigcommerceLineItemRowCss.striked,
                         )}
                     >
                         <Amount
@@ -113,7 +114,7 @@ export function RefundableAmountComponent({
                         onChange={() => {
                             setIsAmountRefunded(!isAmountRefunded)
                             setAmountToRefund(
-                                isAmountRefunded ? 0 : availableAmount
+                                isAmountRefunded ? 0 : availableAmount,
                             )
                         }}
                         isDisabled={!availableAmount || isLoading}
@@ -127,7 +128,7 @@ export function RefundableAmountComponent({
                         {
                             [bigcommerceLineItemRowCss.isDisabled]:
                                 !availableAmount || !amountToRefund,
-                        }
+                        },
                     )}
                 >
                     <Amount

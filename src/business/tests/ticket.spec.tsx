@@ -1,11 +1,12 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
+
+import { Link } from 'react-router-dom'
 
 import * as channelsService from 'services/channels'
-import {NotificationStatus} from 'state/notifications/types'
+import { NotificationStatus } from 'state/notifications/types'
 
-import {canAddAttachments, canReply} from '../ticket'
-import {TicketMessageSourceType} from '../types/ticket'
+import { canAddAttachments, canReply } from '../ticket'
+import { TicketMessageSourceType } from '../types/ticket'
 
 describe('Business', () => {
     describe('ticket', () => {
@@ -24,12 +25,12 @@ describe('Business', () => {
                 const result = canAddAttachments(
                     messageType,
                     newMessage,
-                    attachmentCount
+                    attachmentCount,
                 )
 
                 // Then
                 expect(result?.message).toEqual(
-                    'When using Instagram direct message, you can either send a text message, or an image attachment, but not both at the same time.'
+                    'When using Instagram direct message, you can either send a text message, or an image attachment, but not both at the same time.',
                 )
             })
 
@@ -43,7 +44,7 @@ describe('Business', () => {
                 const result = canAddAttachments(
                     messageType,
                     newMessage,
-                    attachmentCount
+                    attachmentCount,
                 )
 
                 // Then
@@ -60,12 +61,12 @@ describe('Business', () => {
                 const result = canAddAttachments(
                     messageType,
                     newMessage,
-                    attachmentCount
+                    attachmentCount,
                 )
 
                 // Then
                 expect(result?.message).toEqual(
-                    'When using Instagram comment, you can not send attachments.'
+                    'When using Instagram comment, you can not send attachments.',
                 )
             })
 
@@ -79,12 +80,12 @@ describe('Business', () => {
                 const result = canAddAttachments(
                     messageType,
                     newMessage,
-                    attachmentCount
+                    attachmentCount,
                 )
 
                 // Then
                 expect(result?.message).toEqual(
-                    'When using Instagram mention comment, you can not send attachments.'
+                    'When using Instagram mention comment, you can not send attachments.',
                 )
             })
 
@@ -102,12 +103,12 @@ describe('Business', () => {
                     const result = canAddAttachments(
                         messageType,
                         newMessage,
-                        attachmentCount
+                        attachmentCount,
                     )
 
                     // Then
                     expect(result?.message).toEqual(
-                        'When using Facebook comment, you can only send attachments one by one.'
+                        'When using Facebook comment, you can only send attachments one by one.',
                     )
                 })
 
@@ -119,12 +120,12 @@ describe('Business', () => {
                     const result = canAddAttachments(
                         messageType,
                         newMessage,
-                        attachmentCount
+                        attachmentCount,
                     )
 
                     // Then
                     expect(result?.message).toEqual(
-                        'When using Instagram direct message, you can only send attachments one by one.'
+                        'When using Instagram direct message, you can only send attachments one by one.',
                     )
                 })
             })
@@ -138,7 +139,7 @@ describe('Business', () => {
                 const result = canAddAttachments(
                     messageType,
                     newMessage,
-                    attachmentCount
+                    attachmentCount,
                 )
 
                 // Then
@@ -154,7 +155,7 @@ describe('Business', () => {
                 const result = canAddAttachments(
                     messageType,
                     newMessage,
-                    attachmentCount
+                    attachmentCount,
                 )
 
                 // Then
@@ -171,12 +172,12 @@ describe('Business', () => {
                     const result = canAddAttachments(
                         messageType,
                         newMessage,
-                        attachmentCount
+                        attachmentCount,
                     )
 
                     // Then
                     expect(result?.message).toEqual(
-                        `When using Twitter tweet, you can add a maximum of 4 attachments.`
+                        `When using Twitter tweet, you can add a maximum of 4 attachments.`,
                     )
                 })
 
@@ -189,12 +190,12 @@ describe('Business', () => {
                     const result = canAddAttachments(
                         messageType,
                         newMessage,
-                        attachmentCount
+                        attachmentCount,
                     )
 
                     // Then
                     expect(result?.message).toEqual(
-                        `When using Twitter direct message, you can only send attachments one by one.`
+                        `When using Twitter direct message, you can only send attachments one by one.`,
                     )
                 })
             })
@@ -206,7 +207,7 @@ describe('Business', () => {
 
                 replyOptions.set(
                     'reason',
-                    'reply blocked for an explicit reason'
+                    'reply blocked for an explicit reason',
                 )
 
                 expect(
@@ -214,8 +215,8 @@ describe('Business', () => {
                         undefined,
                         TicketMessageSourceType.Email,
                         0,
-                        replyOptions
-                    )
+                        replyOptions,
+                    ),
                 ).toEqual({
                     message: 'reply blocked for an explicit reason',
                     status: NotificationStatus.Warning,
@@ -233,8 +234,8 @@ describe('Business', () => {
                             displayName: 'Acme Support',
                         },
                         TicketMessageSourceType.Email,
-                        0
-                    )
+                        0,
+                    ),
                 ).toEqual({
                     message: (
                         <>
@@ -266,8 +267,8 @@ describe('Business', () => {
                             isDeactivated: true,
                         },
                         TicketMessageSourceType.Email,
-                        0
-                    )
+                        0,
+                    ),
                 ).toEqual({
                     message: (
                         <>
@@ -302,8 +303,8 @@ describe('Business', () => {
                             displayName: 'Acme',
                         },
                         TicketMessageSourceType.InstagramDirectMessage,
-                        1
-                    )
+                        1,
+                    ),
                 ).toEqual({
                     message:
                         'When using Instagram direct message, you can either send a text message, ' +
@@ -324,8 +325,8 @@ describe('Business', () => {
                             displayName: 'Acme',
                         },
                         TicketMessageSourceType.WhatsAppMessage,
-                        1
-                    )
+                        1,
+                    ),
                 ).toEqual({
                     message:
                         'When using Whatsapp message, you can either send a text message, ' +
@@ -337,15 +338,15 @@ describe('Business', () => {
 
             it('should not allow reply when integration is not available', () => {
                 jest.spyOn(channelsService, 'isNewChannel').mockReturnValue(
-                    true
+                    true,
                 )
 
                 expect(
                     canReply(
                         undefined,
                         'tiktok-shop' as TicketMessageSourceType,
-                        0
-                    )
+                        0,
+                    ),
                 ).toEqual({
                     message: (
                         <>

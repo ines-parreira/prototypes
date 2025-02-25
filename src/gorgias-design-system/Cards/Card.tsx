@@ -1,11 +1,11 @@
-import {useTheme} from '@emotion/react'
+import React, { HTMLAttributes } from 'react'
+
+import { useTheme } from '@emotion/react'
 import styled from '@emotion/styled'
-import React, {HTMLAttributes} from 'react'
 
-import {gorgiasColors} from 'gorgias-design-system/styles'
-import {setLightness} from 'gorgias-design-system/utils'
-
-import {ChatTheme} from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview'
+import { gorgiasColors } from 'gorgias-design-system/styles'
+import { setLightness } from 'gorgias-design-system/utils'
+import { ChatTheme } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview'
 
 const StyledTrailIcon = styled.div`
     margin-left: auto;
@@ -16,9 +16,9 @@ const StyledTrailIcon = styled.div`
     }
 `
 
-const StyledLeadIcon = styled.div<{theme: ChatTheme}>`
+const StyledLeadIcon = styled.div<{ theme: ChatTheme }>`
     border-radius: 4px;
-    background: ${({theme}) => setLightness(theme?.mainColor)};
+    background: ${({ theme }) => setLightness(theme?.mainColor)};
 
     min-width: 44px;
     width: 44px;
@@ -52,7 +52,7 @@ const StyledCardContent = styled.div`
     gap: 4px;
 `
 
-const StyledCardContainer = styled.div<{theme: ChatTheme}>`
+const StyledCardContainer = styled.div<{ theme: ChatTheme }>`
     width: 100%;
     cursor: pointer;
 
@@ -68,7 +68,7 @@ const StyledCardContainer = styled.div<{theme: ChatTheme}>`
 
     svg {
         .withFill {
-            fill: ${({theme}) => theme?.mainColor};
+            fill: ${({ theme }) => theme?.mainColor};
         }
     }
 `

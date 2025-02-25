@@ -1,6 +1,6 @@
-import {AiAgentPlaygroundExecutionsDataFixture} from '../../tests/AiAgentPlaygroundExecutionsData.fixture'
-import {TestAIAgentTask} from '../TestAIAgent.task'
-import {buildRuleEngineData, buildRuleEngineRoutes} from './utils'
+import { AiAgentPlaygroundExecutionsDataFixture } from '../../tests/AiAgentPlaygroundExecutionsData.fixture'
+import { TestAIAgentTask } from '../TestAIAgent.task'
+import { buildRuleEngineData, buildRuleEngineRoutes } from './utils'
 
 describe('TestAIAgent', () => {
     it('should display the task if no playground executions', () => {
@@ -13,7 +13,7 @@ describe('TestAIAgent', () => {
             buildRuleEngineData({
                 aiAgentPlaygroundExecutions,
             }),
-            buildRuleEngineRoutes()
+            buildRuleEngineRoutes(),
         )
         expect(task.display).toBe(true)
     })
@@ -28,7 +28,7 @@ describe('TestAIAgent', () => {
             buildRuleEngineData({
                 aiAgentPlaygroundExecutions,
             }),
-            buildRuleEngineRoutes()
+            buildRuleEngineRoutes(),
         )
         expect(task.display).toBe(false)
     })

@@ -1,13 +1,13 @@
-import {Macro} from '@gorgias/api-queries'
+import { Macro } from '@gorgias/api-queries'
 
-import {isFieldErrored} from 'custom-fields/helpers/isFieldErrored'
+import { isFieldErrored } from 'custom-fields/helpers/isFieldErrored'
 import {
     CustomField,
+    CustomFieldConditionsEvaluationResults,
     CustomFields,
     CustomFieldState,
-    CustomFieldConditionsEvaluationResults,
 } from 'custom-fields/types'
-import {MacroAction, MacroActionName} from 'models/macroAction/types'
+import { MacroAction, MacroActionName } from 'models/macroAction/types'
 
 export function getInvalidTicketFieldIds({
     fieldsState,
@@ -42,7 +42,7 @@ export function mergeFieldsStateWithMacroValues({
     fieldsState: CustomFields
     appliedMacro: Macro
 }) {
-    const ticketFieldsWithMacro: CustomFields = {...fieldsState}
+    const ticketFieldsWithMacro: CustomFields = { ...fieldsState }
 
     ;(appliedMacro.actions as MacroAction[])?.forEach((action) => {
         if (

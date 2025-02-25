@@ -1,22 +1,23 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {OBJECT_TYPE_SETTINGS, OBJECT_TYPES} from 'custom-fields/constants'
+import { OBJECT_TYPE_SETTINGS, OBJECT_TYPES } from 'custom-fields/constants'
 import {
     customFieldDefinitionKeys,
     useUpdateCustomField,
 } from 'custom-fields/hooks/queries/queries'
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
-import {ticketDropdownFieldDefinition} from 'fixtures/customField'
-import {NotificationStatus} from 'state/notifications/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { axiosSuccessResponse } from 'fixtures/axiosResponse'
+import { ticketDropdownFieldDefinition } from 'fixtures/customField'
+import { NotificationStatus } from 'state/notifications/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
-import {useUpdateCustomFieldDefinition} from '../useUpdateCustomFieldDefinition'
+import { useUpdateCustomFieldDefinition } from '../useUpdateCustomFieldDefinition'
 
 const queryClient = mockQueryClient()
 
@@ -36,7 +37,7 @@ describe('useUpdateCustomFieldDefinition', () => {
         (objectType) => {
             const invalidateQueryMock = jest.spyOn(
                 queryClient,
-                'invalidateQueries'
+                'invalidateQueries',
             )
             const fieldDefinition = {
                 ...ticketDropdownFieldDefinition,
@@ -44,7 +45,7 @@ describe('useUpdateCustomFieldDefinition', () => {
             }
 
             renderHook(() => useUpdateCustomFieldDefinition(), {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         <Provider store={mockStore}>{children}</Provider>
                     </QueryClientProvider>
@@ -54,7 +55,7 @@ describe('useUpdateCustomFieldDefinition', () => {
             useUpdateCustomFieldMock.mock.calls[0][0]?.onSuccess!(
                 axiosSuccessResponse(fieldDefinition),
                 [fieldDefinition.id, fieldDefinition],
-                undefined
+                undefined,
             )
             expect(invalidateQueryMock).toHaveBeenLastCalledWith({
                 queryKey: customFieldDefinitionKeys.all(),
@@ -68,12 +69,12 @@ describe('useUpdateCustomFieldDefinition', () => {
                     },
                 },
             ])
-        }
+        },
     )
 
     it('should dispatch failure notification on error', () => {
         renderHook(() => useUpdateCustomFieldDefinition(), {
-            wrapper: ({children}) => (
+            wrapper: ({ children }) => (
                 <QueryClientProvider client={queryClient}>
                     <Provider store={mockStore}>{children}</Provider>
                 </QueryClientProvider>
@@ -83,7 +84,7 @@ describe('useUpdateCustomFieldDefinition', () => {
         useUpdateCustomFieldMock.mock.calls[0][0]?.onError!(
             {},
             [ticketDropdownFieldDefinition.id, ticketDropdownFieldDefinition],
-            undefined
+            undefined,
         )
 
         expect(mockStore.getActions()).toMatchObject([

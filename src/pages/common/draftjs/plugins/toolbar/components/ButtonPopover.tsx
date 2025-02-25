@@ -1,19 +1,21 @@
 import React, {
+    MouseEvent,
     ReactNode,
     useCallback,
     useEffect,
     useRef,
     useState,
-    MouseEvent,
 } from 'react'
-import {Popover} from 'reactstrap'
 
-import {useAppNode} from 'appNode'
-import {ModalContext} from 'pages/common/components/modal/Modal'
+import { Popover } from 'reactstrap'
+
+import { useAppNode } from 'appNode'
+import { ModalContext } from 'pages/common/components/modal/Modal'
 
 import Button from './Button'
-import css from './ButtonPopover.less'
 import TourTooltip from './TourTooltip'
+
+import css from './ButtonPopover.less'
 
 type TourType = {
     text: string
@@ -46,7 +48,7 @@ export default function ButtonPopover({
     toggleGuard,
 }: Props) {
     const [isTourOpen, setIsTourOpen] = useState<boolean>(
-        tour ? !!tour.text : false
+        tour ? !!tour.text : false,
     )
 
     const handleButtonToggle = useCallback(() => {

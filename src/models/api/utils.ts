@@ -11,10 +11,10 @@ const deepMapKeys = (formatter: (value: string) => string) => {
                     (acc, key) => ({
                         ...acc,
                         [formatter(key)]: format(
-                            (params as Record<string, unknown>)[key]
+                            (params as Record<string, unknown>)[key],
                         ),
                     }),
-                    {}
+                    {},
                 )
     }
     /* eslint-enable */
@@ -32,5 +32,5 @@ export type SnakeCaseObject<T extends Record<string, unknown>> = {
 }
 
 export const deepMapKeysToSnakeCase: <T extends Record<string, unknown>>(
-    value: T
+    value: T,
 ) => SnakeCaseObject<T> = deepMapKeys(_snakeCase)

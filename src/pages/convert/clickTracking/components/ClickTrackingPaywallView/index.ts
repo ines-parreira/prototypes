@@ -1,1 +1,1 @@
-export {default} from './ClickTrackingPaywallView'
+export { default } from './ClickTrackingPaywallView'

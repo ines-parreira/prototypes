@@ -1,18 +1,19 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {Country, countriesRequiringState} from 'config/countries'
+import { Label } from '@gorgias/merchant-ui-kit'
+
+import { countriesRequiringState, Country } from 'config/countries'
 import InputField from 'pages/common/forms/input/InputField'
 import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
-import {BillingContact} from 'state/billing/types'
+import { BillingContact } from 'state/billing/types'
 
 import CountriesDropdown from '../../components/CountriesDropdown/CountriesDropdown'
-
 import {
     emailError,
     emptyError,
     validatePostalCode,
 } from '../../utils/validations'
+
 import css from './AddressForm.less'
 
 type AddressFormProps = {
@@ -20,14 +21,17 @@ type AddressFormProps = {
     setBillingContact: (value: React.SetStateAction<BillingContact>) => void
 }
 
-const AddressForm = ({billingContact, setBillingContact}: AddressFormProps) => {
+const AddressForm = ({
+    billingContact,
+    setBillingContact,
+}: AddressFormProps) => {
     const isStateRequired = useMemo(
         () =>
             billingContact &&
             countriesRequiringState.includes(
-                billingContact.shipping.address.country
+                billingContact.shipping.address.country,
             ),
-        [billingContact]
+        [billingContact],
     )
 
     return (
@@ -43,7 +47,7 @@ const AddressForm = ({billingContact, setBillingContact}: AddressFormProps) => {
                         label="Email"
                         name="email"
                         onChange={(email) =>
-                            setBillingContact((prev) => ({...prev, email}))
+                            setBillingContact((prev) => ({ ...prev, email }))
                         }
                         placeholder="your@email.com"
                         isRequired
@@ -60,7 +64,7 @@ const AddressForm = ({billingContact, setBillingContact}: AddressFormProps) => {
                         onChange={(name) =>
                             setBillingContact((prev) => ({
                                 ...prev,
-                                shipping: {...prev.shipping, name},
+                                shipping: { ...prev.shipping, name },
                             }))
                         }
                         placeholder="e.g. Gorgias"
@@ -73,7 +77,7 @@ const AddressForm = ({billingContact, setBillingContact}: AddressFormProps) => {
                             onChange={(phone) =>
                                 setBillingContact((prev) => ({
                                     ...prev,
-                                    shipping: {...prev.shipping, phone},
+                                    shipping: { ...prev.shipping, phone },
                                 }))
                             }
                             placeholder="415 859 3010"
@@ -102,7 +106,7 @@ const AddressForm = ({billingContact, setBillingContact}: AddressFormProps) => {
                         isRequired
                         error={emptyError(
                             billingContact.shipping.address.line1,
-                            'Street address'
+                            'Street address',
                         )}
                         value={billingContact.shipping.address.line1}
                     />
@@ -156,7 +160,7 @@ const AddressForm = ({billingContact, setBillingContact}: AddressFormProps) => {
                             }}
                             error={emptyError(
                                 billingContact.shipping.address.country,
-                                'Country'
+                                'Country',
                             )}
                         />
                     </div>
@@ -180,7 +184,7 @@ const AddressForm = ({billingContact, setBillingContact}: AddressFormProps) => {
                         isRequired
                         error={validatePostalCode(
                             billingContact.shipping.address.postal_code,
-                            billingContact.shipping.address.country
+                            billingContact.shipping.address.country,
                         )}
                         value={billingContact.shipping.address.postal_code}
                     />
@@ -206,7 +210,7 @@ const AddressForm = ({billingContact, setBillingContact}: AddressFormProps) => {
                         isRequired
                         error={emptyError(
                             billingContact.shipping.address.city,
-                            'City'
+                            'City',
                         )}
                         value={billingContact.shipping.address.city}
                     />

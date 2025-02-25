@@ -1,11 +1,15 @@
-import crypto from 'crypto'
+import {
+    MouseEvent as MouseEventReact,
+    SyntheticEvent,
+    TouchEvent as TouchEventReact,
+} from 'react'
 
-import {EditorState, Modifier} from 'draft-js'
+import crypto from 'crypto'
+import { EditorState, Modifier } from 'draft-js'
 import escodegen from 'escodegen'
 import * as esprima from 'esprima'
 import htmlparser from 'htmlparser2'
-import Immutable, {fromJS, Iterable, List, Map} from 'immutable'
-
+import Immutable, { fromJS, Iterable, List, Map } from 'immutable'
 import _filter from 'lodash/filter'
 import _get from 'lodash/get'
 import _has from 'lodash/has'
@@ -17,14 +21,9 @@ import _startCase from 'lodash/startCase'
 import _trim from 'lodash/trim'
 import _upperFirst from 'lodash/upperFirst'
 import md5 from 'md5'
-import moment, {Moment} from 'moment-timezone'
-import {isMoment} from 'moment/moment'
-import {
-    MouseEvent as MouseEventReact,
-    SyntheticEvent,
-    TouchEvent as TouchEventReact,
-} from 'react'
-import {Route} from 'react-router-dom'
+import moment, { Moment } from 'moment-timezone'
+import { isMoment } from 'moment/moment'
+import { Route } from 'react-router-dom'
 import {
     createSelector,
     createSelectorCreator,
@@ -33,27 +32,27 @@ import {
 } from 'reselect'
 import URLSafeBase64 from 'urlsafe-base64'
 
-import {fromAST, isImmutable, isPrivateAsset} from 'common/utils'
-import {TicketEvent} from 'models/ticket/types'
-import {VoiceCall} from 'models/voiceCall/types'
+import { fromAST, isImmutable, isPrivateAsset } from 'common/utils'
+import { TicketEvent } from 'models/ticket/types'
+import { VoiceCall } from 'models/voiceCall/types'
 
-import {humanize} from './business/format'
-import {TicketChannel} from './business/types/ticket'
-import {ACTION_TEMPLATES} from './config'
-import {UserRole} from './config/types/user'
-import {USER_ROLES_ORDERED_BY_PRIVILEGES} from './config/user'
-import {DateTimeResultFormatType} from './constants/datetime'
-import {GorgiasApiResponseDataError} from './models/api/types'
+import { humanize } from './business/format'
+import { TicketChannel } from './business/types/ticket'
+import { ACTION_TEMPLATES } from './config'
+import { UserRole } from './config/types/user'
+import { USER_ROLES_ORDERED_BY_PRIVILEGES } from './config/user'
+import { DateTimeResultFormatType } from './constants/datetime'
+import { GorgiasApiResponseDataError } from './models/api/types'
 import {
     AlertNotification,
     NotificationStatus,
 } from './state/notifications/types'
-import {RootState} from './state/types'
-import {ViewsState} from './state/views/types'
-import {NonEmptyArray, Schemas} from './types'
-import {envVars, isProduction, isStaging} from './utils/environment'
-import {sanitizeHtmlDefault} from './utils/html'
-import {linkify} from './utils/linkify'
+import { RootState } from './state/types'
+import { ViewsState } from './state/views/types'
+import { NonEmptyArray, Schemas } from './types'
+import { envVars, isProduction, isStaging } from './utils/environment'
+import { sanitizeHtmlDefault } from './utils/html'
+import { linkify } from './utils/linkify'
 
 export type Message = {
     id: number
@@ -63,7 +62,7 @@ type Property = {
     type: string
     format: 'email'
     meta: Record<string, unknown>
-    items: {$ref: Record<string, unknown>}
+    items: { $ref: Record<string, unknown> }
     $ref?: string
 }
 export type SystemMessage = [NotificationStatus, string]
@@ -115,7 +114,7 @@ export function isDomain(string: string): string is string {
     }
 
     return /^(((?!-))(xn--)?[a-z0-9][a-z0-9-_]{0,61}[a-z0-9]{0,1}\.){1,}([a-z]{2,})$/i.test(
-        string
+        string,
     )
 }
 
@@ -152,7 +151,7 @@ export function isEmailList(string?: string | null, delimiter = ','): boolean {
 export function formatDatetime(
     datetime: Datetime,
     format: DateTimeResultFormatType,
-    timezone?: string | null
+    timezone?: string | null,
 ): Datetime {
     try {
         let momentDate = isMoment(datetime) ? datetime : moment.utc(datetime)
@@ -183,7 +182,7 @@ export function getAST(code: string): esprima.Program {
     if (!_isString(code)) {
         console.error('Not a string:', code)
     }
-    return esprima.parseScript(code, {loc: true})
+    return esprima.parseScript(code, { loc: true })
 }
 
 export function getFirstExpressionOfAST(ast: esprima.Program) {
@@ -211,7 +210,7 @@ export function getCode(ast: esprima.Program): string {
  */
 export function getLastMessage(
     messages: Array<Message>,
-    options: any = null
+    options: any = null,
 ): Maybe<Message> {
     if (!messages || !messages.length) {
         return
@@ -219,7 +218,7 @@ export function getLastMessage(
 
     // most recent message sorted to first element of array
     return _filter(messages, options).sort((a, b) =>
-        compare(b.created_datetime, a.created_datetime)
+        compare(b.created_datetime, a.created_datetime),
     )[0]
 }
 
@@ -229,13 +228,13 @@ export function getLastEvent(events: Array<TicketEvent>): Maybe<TicketEvent> {
     }
 
     return events.sort((a, b) =>
-        compare(b.created_datetime, a.created_datetime)
+        compare(b.created_datetime, a.created_datetime),
     )[0]
 }
 
 export function isLastItemInTicketAVoiceCall(
     lastMessage: Maybe<Map<any, any>>,
-    lastVoiceCall: Maybe<VoiceCall>
+    lastVoiceCall: Maybe<VoiceCall>,
 ): boolean {
     if (!lastVoiceCall) {
         return false
@@ -261,7 +260,7 @@ export function resolvePropertyName(name = ''): string {
 export function findProperty(
     field: string,
     schemas: Schemas,
-    alwaysRef = false
+    alwaysRef = false,
 ): Maybe<Property> {
     const parts = field.split('.')
     const firstPart = resolvePropertyName(_upperFirst(parts.shift()))
@@ -301,7 +300,7 @@ export function findProperty(
 
 export function getDefaultOperator(
     field: string,
-    schemas: Schemas
+    schemas: Schemas,
 ): Maybe<string> {
     const prop: Maybe<Record<string, unknown>> = findProperty(field, schemas)
 
@@ -315,7 +314,7 @@ export function getDefaultOperator(
             (prop.meta as Record<string, unknown>).operators as Record<
                 string,
                 unknown
-            >
+            >,
         )
 
         if (operators.length) {
@@ -323,7 +322,7 @@ export function getDefaultOperator(
                 return operators.find(
                     (operatorName) =>
                         operatorName ===
-                        (prop.meta as Record<string, unknown>).defaultOperator
+                        (prop.meta as Record<string, unknown>).defaultOperator,
                 )
             }
             return operators[0]
@@ -340,7 +339,7 @@ export function getDefaultOperator(
                 if (
                     _has(
                         (prop.meta as Record<string, unknown>).operators,
-                        'containsAll'
+                        'containsAll',
                     )
                 ) {
                     return 'containsAll'
@@ -354,13 +353,13 @@ export function getDefaultOperator(
 
 export function resolveLiteral(
     value: Record<string, unknown> | string,
-    path: string
+    path: string,
 ): string {
     switch (typeof value) {
         case 'object':
             return resolveLiteral(
                 value[path.split('.').reverse()[0]] as any,
-                path
+                path,
             )
         default:
             return value
@@ -373,12 +372,12 @@ export function compactInteger(input: number, digits = 0): string {
     }
 
     const si = [
-        {value: 1e18, symbol: 'E'},
-        {value: 1e15, symbol: 'P'},
-        {value: 1e12, symbol: 'T'},
-        {value: 1e9, symbol: 'G'},
-        {value: 1e6, symbol: 'M'},
-        {value: 1e3, symbol: 'k'},
+        { value: 1e18, symbol: 'E' },
+        { value: 1e15, symbol: 'P' },
+        { value: 1e12, symbol: 'T' },
+        { value: 1e9, symbol: 'G' },
+        { value: 1e6, symbol: 'M' },
+        { value: 1e3, symbol: 'k' },
     ]
     const rx = /\.0+$|(\.[0-9]*[1-9])0+$/
 
@@ -422,7 +421,7 @@ export const replaceAttachmentURLToExternalSource = (url: string) => {
 export const replaceAttachmentURL = (
     url: string,
     format?: string,
-    isInternalSource?: boolean
+    isInternalSource?: boolean,
 ) => {
     const ATTACHMENT_PATH = 'api/attachment/download'
     const accountDomain = window.GORGIAS_STATE.currentAccount.domain
@@ -443,11 +442,11 @@ export const replaceAttachmentURL = (
         return isInternalSource
             ? url.replace(
                   `//${accountDomain}.gorgias.${tld}/${ATTACHMENT_PATH}`,
-                  '//uploads.gorgias.io'
+                  '//uploads.gorgias.io',
               )
             : url.replace(
                   '//uploads.gorgias.io',
-                  `//${accountDomain}.gorgias.${tld}/${ATTACHMENT_PATH}`
+                  `//${accountDomain}.gorgias.${tld}/${ATTACHMENT_PATH}`,
               ) + formatParam
     }
 
@@ -455,22 +454,22 @@ export const replaceAttachmentURL = (
         return isInternalSource
             ? url.replace(
                   `//${accountDomain}.gorgias.xyz/${ATTACHMENT_PATH}`,
-                  '//uploads.gorgias.xyz'
+                  '//uploads.gorgias.xyz',
               )
             : url.replace(
                   '//uploads.gorgias.xyz',
-                  `//${accountDomain}.gorgias.xyz/${ATTACHMENT_PATH}`
+                  `//${accountDomain}.gorgias.xyz/${ATTACHMENT_PATH}`,
               ) + formatParam
     }
 
     return isInternalSource
         ? url.replace(
               `http://${accountDomain}.gorgias.docker/${ATTACHMENT_PATH}`,
-              'https://uploads.gorgi.us/development'
+              'https://uploads.gorgi.us/development',
           )
         : url.replace(
               'https://uploads.gorgi.us/development',
-              `http://${accountDomain}.gorgias.docker/${ATTACHMENT_PATH}`
+              `http://${accountDomain}.gorgias.docker/${ATTACHMENT_PATH}`,
           ) + formatParam
 }
 
@@ -487,7 +486,7 @@ const _proxyImageSignedURL = (url: string): string => {
             crypto
                 .createHmac('sha256', window.IMAGE_PROXY_SIGN_KEY)
                 .update(url)
-                .digest()
+                .digest(),
         )
     )
 }
@@ -504,13 +503,13 @@ export const proxifyURL = (urlStr: string, format = 'cw-1'): string => {
     const url = new URL(urlStr)
     const escapedURL = `${url.origin}${url.pathname}${url.search}`
     return `${window.IMAGE_PROXY_URL}${format},${_proxyImageSignedURL(
-        escapedURL
+        escapedURL,
     )}/${escapedURL}`
 }
 
 const proxifyImage = (
     attributes: Record<string, unknown>,
-    imageFormat: string
+    imageFormat: string,
 ) => {
     let v: string
     try {
@@ -566,13 +565,13 @@ export const parseMedia = (html: string, imageFormat = '1000x'): string => {
                     name === 'img' &&
                     k === 'src' &&
                     (attributes.src as string).indexOf(
-                        window.IMAGE_PROXY_URL
+                        window.IMAGE_PROXY_URL,
                     ) === -1
                 ) {
                     if (isPrivateAsset(attributes.src as string)) {
                         v = replaceAttachmentURL(
                             attributes.src as string,
-                            imageFormat
+                            imageFormat,
                         )
                     } else {
                         v = proxifyImage(attributes, imageFormat) as string
@@ -617,7 +616,7 @@ export function slugify(string: string): string {
     }
 
     return encodeURIComponent(
-        string.toLowerCase().trim().replace(/\//gi, '').replace(/[ ]/g, '-')
+        string.toLowerCase().trim().replace(/\//gi, '').replace(/[ ]/g, '-'),
     )
 }
 
@@ -626,7 +625,7 @@ export function slugify(string: string): string {
  */
 export function insertText(
     editorState: EditorState,
-    text: string
+    text: string,
 ): EditorState {
     const selection = editorState.getSelection()
     const contentState = editorState.getCurrentContent()
@@ -640,13 +639,13 @@ export function insertText(
 export function insertLink(
     editorState: EditorState,
     url: string,
-    text?: string
+    text?: string,
 ): EditorState {
     const parsedUrl = linkify.match(url)?.[0]?.url || url
 
     let contentState = editorState
         .getCurrentContent()
-        .createEntity('link', 'MUTABLE', {url: parsedUrl})
+        .createEntity('link', 'MUTABLE', { url: parsedUrl })
     const selection = editorState.getSelection()
     const entityKey = contentState.getLastCreatedEntityKey()
 
@@ -655,7 +654,7 @@ export function insertLink(
         selection,
         text || url,
         undefined,
-        entityKey
+        entityKey,
     )
     return EditorState.push(editorState, contentState, 'apply-entity')
 }
@@ -670,14 +669,14 @@ export const toJS = <T>(
         | Iterable<any, any>
         | void
         | Map<any, any>
-        | List<any>
+        | List<any>,
 ) => (isImmutable(object) ? (object as Iterable<any, any>).toJS() : object) as T
 
 /**
  * Return field path
  */
 export const fieldPath = (
-    field: Record<string, unknown> | Iterable<any, any> = {}
+    field: Record<string, unknown> | Iterable<any, any> = {},
 ): string => {
     const formattedField = toJS<Record<string, unknown>>(field)
     return (formattedField.path || formattedField.name) as string
@@ -715,9 +714,9 @@ export function hasRole(user: Map<any, any>, requiredRole: UserRole): boolean {
  * Return true if user is currently on ticket of passed ticket id, based on url
  */
 export const isCurrentlyOnTicket = (
-    ticketId?: Maybe<string | number>
+    ticketId?: Maybe<string | number>,
 ): boolean => {
-    const {pathname} = window.location
+    const { pathname } = window.location
     let matchUrl = '/app/ticket/'
 
     if (ticketId) {
@@ -740,7 +739,7 @@ export const isCurrentlyOnTicket = (
  */
 export const isCurrentlyOnView = (
     viewId = '',
-    viewsState: ViewsState = fromJS({})
+    viewsState: ViewsState = fromJS({}),
 ): boolean => {
     const prefix = [
         '/app/tickets',
@@ -835,7 +834,7 @@ export function getActionTemplate(actionName: string) {
 
 export const createImmutableSelector = createSelectorCreator(
     defaultMemoize,
-    Immutable.is
+    Immutable.is,
 ) as typeof createSelector
 
 /**
@@ -894,15 +893,15 @@ export const subdomain = (url: string): string => {
     return _last(split.split('://')) as string
 }
 
-type ValidationErrors = string | string[] | {[key: string]: ValidationErrors}
+type ValidationErrors = string | string[] | { [key: string]: ValidationErrors }
 
 function flattenErrors(
-    errors: ValidationErrors
-): {key: string; value: string}[] {
+    errors: ValidationErrors,
+): { key: string; value: string }[] {
     return Object.entries(errors).reduce(
-        (acc: {key: string; value: string}[], [key, currentValue]) => {
+        (acc: { key: string; value: string }[], [key, currentValue]) => {
             if (typeof currentValue === 'string') {
-                acc.push({key, value: currentValue})
+                acc.push({ key, value: currentValue })
                 return acc
             }
 
@@ -918,15 +917,15 @@ function flattenErrors(
 
             return [...acc, ...flattenErrors(currentValue)]
         },
-        []
+        [],
     )
 }
 
 export const errorToChildren = (incomingError: unknown): string | null => {
     const error = _get(incomingError, 'response.data.error', {}) as
         | GorgiasApiResponseDataError
-        | {data: never}
-    const {data} = error
+        | { data: never }
+    const { data } = error
     const hasErrors = !!data
 
     if (!hasErrors) {
@@ -936,8 +935,10 @@ export const errorToChildren = (incomingError: unknown): string | null => {
     return `
         <ul className="m-0">
             ${flattenErrors(data as ValidationErrors)
-                .map(({key, value}) =>
-                    sanitizeHtmlDefault(`<li>${_startCase(key)}: ${value}</li>`)
+                .map(({ key, value }) =>
+                    sanitizeHtmlDefault(
+                        `<li>${_startCase(key)}: ${value}</li>`,
+                    ),
                 )
                 .join('')}
         </ul>
@@ -949,7 +950,7 @@ export const errorToChildren = (incomingError: unknown): string | null => {
  */
 export const validateWebhookURLToPattern = (
     val: string,
-    allowWebPorts = false
+    allowWebPorts = false,
 ) => {
     if (validateWebhookURL(val, allowWebPorts)) {
         // Will look for "a" after the end of the string -> impossible
@@ -963,7 +964,7 @@ export const validateWebhookURLToPattern = (
  */
 export const validateWebhookURL = (
     val: string,
-    allowWebPorts = false
+    allowWebPorts = false,
 ): Maybe<string> => {
     const rules = [
         {
@@ -1017,7 +1018,9 @@ export const validateWebhookURL = (
     if (val) {
         const url = val.toLowerCase().split('?')[0] // query could create false positive in regexp
         error = rules.find((rule) =>
-            rule.test instanceof Function ? rule.test(url) : rule.test.test(url)
+            rule.test instanceof Function
+                ? rule.test(url)
+                : rule.test.test(url),
         )?.message
     }
 
@@ -1028,7 +1031,7 @@ export const validateWebhookURL = (
  * Get the display name of a language from its locale name
  */
 export const getLanguageDisplayName = (
-    locale: Maybe<string>
+    locale: Maybe<string>,
 ): string | null => {
     if (!locale) {
         return null
@@ -1068,7 +1071,7 @@ export const openChat = (e: SyntheticEvent) => {
 }
 
 export const transformSystemMessagesToNotifications = (
-    systemMessages: Array<SystemMessage>
+    systemMessages: Array<SystemMessage>,
 ): Array<AlertNotification> => {
     return systemMessages.map((systemMessage) => ({
         status: Object.values(NotificationStatus).includes(systemMessage[0])
@@ -1134,7 +1137,7 @@ export const toRGBA = (color: string, alpha = 1): string => {
 }
 
 export const makeGetPlainJS = <T = unknown, S = RootState>(
-    selector: Selector<S, Iterable<any, any>>
+    selector: Selector<S, Iterable<any, any>>,
 ) => createSelector(selector, (data: Iterable<any, any>) => data.toJS() as T)
 
 export const getIconFromUrl = (url: string): string => {
@@ -1202,7 +1205,7 @@ export function isNotEmptyArray<T>(arr: T[]): arr is NonEmptyArray<T> {
  */
 export function canAddVideoPlayer(
     newMessageChannel: TicketChannel,
-    isNewMessagePublic: boolean
+    isNewMessagePublic: boolean,
 ): boolean {
     return (
         // If currently writting a chat ticket message.
@@ -1236,7 +1239,7 @@ export function castGorgiasVideosForUnsupportedSources({
     return supportHyperLinks
         ? html.replace(
               regexVideoDraftJsFigure,
-              '<div><a href="$1">$1</a></div>'
+              '<div><a href="$1">$1</a></div>',
           )
         : html.replace(regexVideoDraftJsFigure, '<div>$1</div>')
 }
@@ -1250,7 +1253,7 @@ export function extractGorgiasVideoDivFromHtmlContent(html: string): {
 } {
     const regex = new RegExp(
         '<div class="gorgias-video-container" data-video-src="(.+?)".+?></div>',
-        'g'
+        'g',
     )
 
     const urls = []
@@ -1265,7 +1268,7 @@ export function extractGorgiasVideoDivFromHtmlContent(html: string): {
     // This is an unwanted extra space produced by draftjs editor because there will be an empty line below the video when content ends by a video.
     if (
         html.match(
-            /<div class="gorgias-video-container" data-video-src=".+?".+?>(<\/div><div><br.{0,2}><\/div>)$/
+            /<div class="gorgias-video-container" data-video-src=".+?".+?>(<\/div><div><br.{0,2}><\/div>)$/,
         )
     ) {
         htmlCleaned = htmlCleaned.replace(/<div><br.{0,2}><\/div>$/, '')
@@ -1303,7 +1306,7 @@ export function fixVideoUrlForReactPlayer(url: string) {
  */
 export function includes<TPossibilities extends TValue, TValue>(
     possibilities: readonly TPossibilities[],
-    value: TValue
+    value: TValue,
 ): value is TPossibilities {
     // @ts-expect-error - The default `includes` method wants the value to be the exact type as the array
     return possibilities.includes(value)
@@ -1317,7 +1320,7 @@ export function generateTicketMessagesId(index: number) {
 }
 
 export function isTouchEvent(
-    event: MouseEvent | TouchEvent | MouseEventReact | TouchEventReact
+    event: MouseEvent | TouchEvent | MouseEventReact | TouchEventReact,
 ): event is TouchEvent | TouchEventReact {
     return 'touches' in event
 }

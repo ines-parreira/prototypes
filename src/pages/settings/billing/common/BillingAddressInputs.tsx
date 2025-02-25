@@ -1,6 +1,7 @@
+import React, { useMemo } from 'react'
+
 import classnames from 'classnames'
-import {produce} from 'immer'
-import React, {useMemo} from 'react'
+import { produce } from 'immer'
 
 import {
     countriesRequiringState,
@@ -8,9 +9,9 @@ import {
 } from 'config/countries'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import InputField from 'pages/common/forms/input/InputField'
-import {SelectableOption} from 'pages/common/forms/SelectField/types'
+import { SelectableOption } from 'pages/common/forms/SelectField/types'
 import settingsCss from 'pages/settings/settings.less'
-import {BillingContact} from 'state/billing/types'
+import { BillingContact } from 'state/billing/types'
 
 import css from './BillingAddressInputs.less'
 
@@ -21,10 +22,10 @@ type Props = {
     value: BillingContact
 }
 
-export default function BillingAddressInputs({onChange, value}: Props) {
+export default function BillingAddressInputs({ onChange, value }: Props) {
     const isStateRequired = useMemo(
         () => countriesRequiringState.includes(value.shipping.address.country),
-        [value]
+        [value],
     )
     const handleFormChange = (cb: (nextForm: BillingContact) => void) => {
         onChange(produce(value, cb))
@@ -120,7 +121,7 @@ export default function BillingAddressInputs({onChange, value}: Props) {
                     value={value.shipping.address.country}
                 >
                     <option value="">-</option>
-                    {countries.map(({label, value}) => (
+                    {countries.map(({ label, value }) => (
                         <option key={value} value={value}>
                             {label}
                         </option>

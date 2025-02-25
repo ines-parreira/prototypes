@@ -1,12 +1,12 @@
-import {CreateStoreConfigurationPayload} from 'models/aiAgent/types'
+import { CreateStoreConfigurationPayload } from 'models/aiAgent/types'
 
-import {ToneOfVoice} from '../../constants'
-import {ValidFormValues} from '../../types'
-import {filterNonNull} from '../../util'
+import { ToneOfVoice } from '../../constants'
+import { ValidFormValues } from '../../types'
+import { filterNonNull } from '../../util'
 
 export const getStoreConfigurationFromFormValues = (
     storeName: string,
-    formValues: ValidFormValues
+    formValues: ValidFormValues,
 ): CreateStoreConfigurationPayload => {
     const {
         helpCenterId,

@@ -1,17 +1,16 @@
 //Offer a chat with your team to find the best fit
+import { ulid } from 'ulidx'
 
-import {ulid} from 'ulidx'
+import { WizardConfiguration } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
+import { CampaignStepsKeys } from 'pages/convert/campaigns/types/CampaignSteps'
+import { CampaignStatus } from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
+import { CampaignTriggerOperator } from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
+import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import { createTriggerRule } from 'pages/convert/campaigns/utils/createTriggerRule'
+import { assetsUrl } from 'utils'
 
-import {WizardConfiguration} from 'pages/convert/campaigns/types/CampaignFormConfiguration'
-import {CampaignStepsKeys} from 'pages/convert/campaigns/types/CampaignSteps'
-import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
-import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
-import {createTriggerRule} from 'pages/convert/campaigns/utils/createTriggerRule'
-import {assetsUrl} from 'utils'
-
-import {CampaignConfigurationBuilder} from '../constructor'
-import {CampaignConfiguration, CampaignTemplate} from '../types'
+import { CampaignConfigurationBuilder } from '../constructor'
+import { CampaignConfiguration, CampaignTemplate } from '../types'
 
 export const OFFER_CHAT_WITH_TEAM_TO_FIND_BEST_FIT: CampaignTemplate = {
     slug: 'offer-chat-with-team-to-find-best-fit',
@@ -20,7 +19,7 @@ export const OFFER_CHAT_WITH_TEAM_TO_FIND_BEST_FIT: CampaignTemplate = {
         'Remove purchase objections from visitors who are hesitating more than 15 seconds on a product page',
     onboarding: false,
     preview: assetsUrl(
-        'img/campaigns/library/offer-chat-with-team-to-find-best-fit.png'
+        'img/campaigns/library/offer-chat-with-team-to-find-best-fit.png',
     ),
     getWizardConfiguration: (): WizardConfiguration => {
         return {
@@ -56,7 +55,7 @@ export const OFFER_CHAT_WITH_TEAM_TO_FIND_BEST_FIT: CampaignTemplate = {
                 status: CampaignStatus.Inactive,
                 triggers: triggers,
                 trigger_rule: createTriggerRule(triggers),
-            }
+            },
         )
 
         return Promise.resolve(builder.build())

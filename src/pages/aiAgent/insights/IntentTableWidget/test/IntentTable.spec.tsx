@@ -1,32 +1,29 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {render, screen, fireEvent} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
 
-import {MemoryRouter} from 'react-router-dom'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { Provider } from 'react-redux'
+import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
-
 import thunk from 'redux-thunk'
 
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
 import {
     IntentTable,
-    LoadingTableRows,
     IntentTableWithDefaultState,
+    LoadingTableRows,
 } from 'pages/aiAgent/insights/IntentTableWidget/IntentTable'
-import {TableLabels} from 'pages/aiAgent/insights/IntentTableWidget/IntentTableConfig'
+import { TableLabels } from 'pages/aiAgent/insights/IntentTableWidget/IntentTableConfig'
 import {
     IntentTableColumn,
     PaginatedIntents,
 } from 'pages/aiAgent/insights/IntentTableWidget/types'
 import TableBody from 'pages/common/components/table/TableBody'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
-import {pageSet} from 'state/ui/stats/insightsSlice'
-
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-
-import {assumeMock} from 'utils/testing'
+import { pageSet } from 'state/ui/stats/insightsSlice'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/useAppSelector')
 const useAppSelectorMock = jest.mocked(useAppSelector)
@@ -103,12 +100,12 @@ const userTimezone = 'UTC'
 
 const renderWithProvider = (
     ui: React.ReactElement,
-    store: ReturnType<typeof mockStore>
+    store: ReturnType<typeof mockStore>,
 ) =>
     render(
         <QueryClientProvider client={queryClient}>
             <Provider store={store}>{ui}</Provider>
-        </QueryClientProvider>
+        </QueryClientProvider>,
     )
 
 describe('Intent Table components', () => {
@@ -124,16 +121,16 @@ describe('Intent Table components', () => {
             const store = mockStore(initialState)
             renderWithProvider(
                 <IntentTable paginatedIntents={defaultPaginatedIntents} />,
-                store
+                store,
             )
 
             expect(
-                screen.getByText(TableLabels[IntentTableColumn.IntentName])
+                screen.getByText(TableLabels[IntentTableColumn.IntentName]),
             ).toBeInTheDocument()
             expect(
                 screen.getByText(
-                    TableLabels[IntentTableColumn.AutomationOpportunities]
-                )
+                    TableLabels[IntentTableColumn.AutomationOpportunities],
+                ),
             ).toBeInTheDocument()
 
             expect(screen.getByText('order/track')).toBeInTheDocument()
@@ -149,14 +146,14 @@ describe('Intent Table components', () => {
                 ...initialState,
                 ui: {
                     stats: {
-                        insightsSlice: {paginatedIntents: paginatedIntents},
+                        insightsSlice: { paginatedIntents: paginatedIntents },
                     },
                 },
             })
 
             renderWithProvider(
                 <IntentTable paginatedIntents={paginatedIntents} />,
-                store
+                store,
             )
 
             fireEvent.click(screen.getByText('2'))
@@ -174,14 +171,14 @@ describe('Intent Table components', () => {
                 ...initialState,
                 ui: {
                     stats: {
-                        insightsSlice: {paginatedIntents: paginatedIntents},
+                        insightsSlice: { paginatedIntents: paginatedIntents },
                     },
                 },
             })
 
             renderWithProvider(
                 <IntentTable paginatedIntents={paginatedIntents} />,
-                store
+                store,
             )
 
             expect(screen.queryByText('1')).toBeNull()
@@ -197,9 +194,9 @@ describe('Intent Table components', () => {
                             <LoadingTableRows />
                         </TableBody>
                     </TableWrapper>
-                </MemoryRouter>
+                </MemoryRouter>,
             )
-            const rows = await screen.findAllByRole('cell', {hidden: true})
+            const rows = await screen.findAllByRole('cell', { hidden: true })
             expect(rows.length).toBe(4 * Object.keys(IntentTableColumn).length) // For rows with 6 columns
         })
     })
@@ -234,12 +231,12 @@ describe('Intent Table components', () => {
 
             renderWithProvider(
                 <IntentTableWithDefaultState tableTitle="Test Table" />,
-                store
+                store,
             )
 
             expect(screen.getByText('No data available')).toBeInTheDocument()
             expect(
-                screen.getByText('Try adjusting filters to get results.')
+                screen.getByText('Try adjusting filters to get results.'),
             ).toBeInTheDocument()
         })
 
@@ -273,7 +270,7 @@ describe('Intent Table components', () => {
 
             renderWithProvider(
                 <IntentTableWithDefaultState tableTitle="Test Table" />,
-                store
+                store,
             )
 
             expect(screen.queryByText('1')).toBeNull()

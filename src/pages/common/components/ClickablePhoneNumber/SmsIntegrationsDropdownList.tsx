@@ -1,15 +1,16 @@
-import parsePhoneNumber from 'libphonenumber-js'
-import React, {useCallback} from 'react'
-import {DropdownItem} from 'reactstrap'
+import React, { useCallback } from 'react'
 
-import {TicketMessageSourceType} from 'business/types/ticket'
+import parsePhoneNumber from 'libphonenumber-js'
+import { DropdownItem } from 'reactstrap'
+
+import { TicketMessageSourceType } from 'business/types/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import {SmsIntegration} from 'models/integration/types'
-import {NewPhoneNumber} from 'models/phoneNumber/types'
+import { SmsIntegration } from 'models/integration/types'
+import { NewPhoneNumber } from 'models/phoneNumber/types'
 import history from 'pages/history'
-import {fetchCustomer} from 'state/customers/actions'
-import {getNewPhoneNumbers} from 'state/entities/phoneNumbers/selectors'
+import { fetchCustomer } from 'state/customers/actions'
+import { getNewPhoneNumbers } from 'state/entities/phoneNumbers/selectors'
 
 type Props = {
     address: string
@@ -39,7 +40,7 @@ const SmsIntegrationsDropdownList = ({
                 },
             })
         },
-        [customerId, customerName, toAddress, dispatch]
+        [customerId, customerName, toAddress, dispatch],
     )
 
     return (

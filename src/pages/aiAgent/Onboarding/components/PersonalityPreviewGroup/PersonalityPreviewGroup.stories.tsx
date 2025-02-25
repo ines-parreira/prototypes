@@ -1,8 +1,9 @@
-import {Meta, StoryFn} from '@storybook/react'
-import React, {ComponentProps, useState} from 'react'
+import React, { ComponentProps, useState } from 'react'
 
-import {getPreviewsForPreviewType, PreviewId} from './constants'
-import {PersonalityPreviewGroup} from './PersonalityPreviewGroup'
+import { Meta, StoryFn } from '@storybook/react'
+
+import { getPreviewsForPreviewType, PreviewId } from './constants'
+import { PersonalityPreviewGroup } from './PersonalityPreviewGroup'
 
 const storyConfig: Meta<typeof PersonalityPreviewGroup> = {
     title: 'AI Agent/Onboarding/PersonalityPreviewGroup',
@@ -10,7 +11,7 @@ const storyConfig: Meta<typeof PersonalityPreviewGroup> = {
 }
 
 const Template: StoryFn<ComponentProps<typeof PersonalityPreviewGroup>> = (
-    args
+    args,
 ) => {
     const [selectedPreviewId, setSelectedPreviewId] = useState<
         PreviewId | undefined
@@ -19,7 +20,7 @@ const Template: StoryFn<ComponentProps<typeof PersonalityPreviewGroup>> = (
         <PersonalityPreviewGroup
             {...args}
             selectedPreviewId={selectedPreviewId}
-            onPreviewSelect={({id}) => setSelectedPreviewId(id)}
+            onPreviewSelect={({ id }) => setSelectedPreviewId(id)}
         />
     )
 }

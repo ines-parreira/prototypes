@@ -5,7 +5,7 @@ import {
     SET_FACEBOOK_ADS_LOADING,
     UPDATE_ACTIVE_FACEBOOK_AD,
 } from './constants'
-import {Internals} from './types'
+import { Internals } from './types'
 
 export const setFacebookAdsLoading = (loading: boolean) => ({
     type: SET_FACEBOOK_ADS_LOADING,
@@ -30,8 +30,8 @@ export const removeFacebookAdsLoadingAd = (adId: string) => ({
 export const updateFacebookAdsActiveAd = (
     integrationId: number,
     id: string,
-    isActive: boolean
+    isActive: boolean,
 ) => ({
     type: UPDATE_ACTIVE_FACEBOOK_AD,
-    payload: {integrationId, id, isActive},
+    payload: { integrationId, id, isActive },
 })

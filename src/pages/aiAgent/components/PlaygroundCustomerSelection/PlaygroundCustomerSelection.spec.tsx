@@ -1,14 +1,15 @@
-import {render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {useSearchCustomer} from 'models/aiAgent/queries'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { useSearchCustomer } from 'models/aiAgent/queries'
 
 import {
     CustomerHttpIntegrationDataMock,
     DEFAULT_PLAYGROUND_CUSTOMER,
 } from '../../constants'
-import {PlaygroundCustomerSelection} from './PlaygroundCustomerSelection'
+import { PlaygroundCustomerSelection } from './PlaygroundCustomerSelection'
 
 jest.mock('models/aiAgent/queries', () => ({
     useSearchCustomer: jest.fn(),
@@ -17,7 +18,7 @@ const mockUseSearchCustomer = jest.mocked(useSearchCustomer)
 
 const mockOnCustomerEmailChange = jest.fn()
 const renderComponent = (
-    props?: Partial<ComponentProps<typeof PlaygroundCustomerSelection>>
+    props?: Partial<ComponentProps<typeof PlaygroundCustomerSelection>>,
 ) => {
     return render(
         <PlaygroundCustomerSelection
@@ -25,7 +26,7 @@ const renderComponent = (
             customer={DEFAULT_PLAYGROUND_CUSTOMER}
             isDisabled={false}
             {...props}
-        />
+        />,
     )
 }
 
@@ -38,7 +39,7 @@ describe('PlaygroundCustomerSelection', () => {
             isRefetching: false,
             isRefetchError: false,
             data: {
-                data: {data: []},
+                data: { data: [] },
             },
             refetch: jest.fn(),
         } as unknown as ReturnType<typeof useSearchCustomer>)
@@ -64,7 +65,7 @@ describe('PlaygroundCustomerSelection', () => {
         const existingCustomerOption = screen.getByText('Existing customer')
         userEvent.click(existingCustomerOption)
         expect(mockOnCustomerEmailChange).toHaveBeenCalledWith(
-            DEFAULT_PLAYGROUND_CUSTOMER
+            DEFAULT_PLAYGROUND_CUSTOMER,
         )
     })
 

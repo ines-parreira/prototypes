@@ -1,1 +1,1 @@
-export {default} from './components/OrderForm'
+export { default } from './components/OrderForm'

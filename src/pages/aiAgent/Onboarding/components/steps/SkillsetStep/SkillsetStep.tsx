@@ -1,32 +1,31 @@
-import {isEqual} from 'lodash'
-import React, {FC, useMemo, useCallback} from 'react'
-import {FormProvider, useForm} from 'react-hook-form'
-import {useParams} from 'react-router-dom'
+import React, { FC, useCallback, useMemo } from 'react'
+
+import { isEqual } from 'lodash'
+import { FormProvider, useForm } from 'react-hook-form'
+import { useParams } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import AiAgentChatConversation from 'pages/aiAgent/Onboarding/components/AiAgentChatConversation/AiAgentChatConversation'
 import Goals from 'pages/aiAgent/Onboarding/components/Goals/Goals'
 import MainTitle from 'pages/aiAgent/Onboarding/components/MainTitle/MainTitle'
-import {StepProps} from 'pages/aiAgent/Onboarding/components/steps/types'
-import {useCreateOnboarding} from 'pages/aiAgent/Onboarding/hooks/useCreateOnboarding'
-import {useGetOnboardingData} from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
-import {useSteps} from 'pages/aiAgent/Onboarding/hooks/useSteps'
-import {useUpdateOnboarding} from 'pages/aiAgent/Onboarding/hooks/useUpdateOnboarding'
+import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
+import { useCreateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useCreateOnboarding'
+import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
+import { useSteps } from 'pages/aiAgent/Onboarding/hooks/useSteps'
+import { useUpdateOnboarding } from 'pages/aiAgent/Onboarding/hooks/useUpdateOnboarding'
 import {
     LoadingPulserIcon,
     OnboardingBody,
     OnboardingContentContainer,
     OnboardingPreviewContainer,
 } from 'pages/aiAgent/Onboarding/layout/ConvAiOnboardingLayout'
-
 import {
-    chatPreviewSettings,
     agentChatConversationSettings,
+    chatPreviewSettings,
 } from 'pages/aiAgent/Onboarding/settings'
-import {AiAgentScopes, WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
+import { AiAgentScopes, WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
 import ChatIntegrationPreview from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationPreview/ChatIntegrationPreview'
-
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import css from './SkillsetStep.less'
 
@@ -39,10 +38,10 @@ export const SkillsetStep: FC<StepProps> = ({
     totalSteps,
     goToStep,
 }) => {
-    const {shopName} = useParams<{shopName: string}>()
-    const {validSteps} = useSteps({shopName})
+    const { shopName } = useParams<{ shopName: string }>()
+    const { validSteps } = useSteps({ shopName })
 
-    const {data, isLoading: isLoadingOnboardingData} =
+    const { data, isLoading: isLoadingOnboardingData } =
         useGetOnboardingData(shopName)
 
     const {
@@ -64,17 +63,17 @@ export const SkillsetStep: FC<StepProps> = ({
 
     // Form initialization
     const methods = useForm<SkillsetFormValues>({
-        values: {scopes: data?.scopes ?? []},
+        values: { scopes: data?.scopes ?? [] },
     })
 
-    const {watch, setValue} = methods
+    const { watch, setValue } = methods
     const selectedScope = watch('scopes')
 
     const onSkillsetChange = useCallback(
         (newSkillset: AiAgentScopes[]) => {
             setValue('scopes', newSkillset)
         },
-        [setValue]
+        [setValue],
     )
 
     const onNextStep = useCallback(() => {
@@ -99,7 +98,7 @@ export const SkillsetStep: FC<StepProps> = ({
                         scopes: selectedScope,
                     },
                 },
-                {onSuccess: onNextStep}
+                { onSuccess: onNextStep },
             )
         } else {
             // Create onboarding
@@ -109,7 +108,7 @@ export const SkillsetStep: FC<StepProps> = ({
                     scopes: selectedScope,
                     gorgiasDomain: accountDomain,
                 },
-                {onSuccess: onNextStep}
+                { onSuccess: onNextStep },
             )
         }
     }, [

@@ -1,16 +1,16 @@
-import {fireEvent, render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {agents} from 'fixtures/agents'
-import {teams} from 'fixtures/teams'
+import { agents } from 'fixtures/agents'
+import { teams } from 'fixtures/teams'
 import DEPRECATED_AgentsStatsFilter from 'pages/stats/common/filters/DEPRECATED_AgentsStatsFilter'
-import {initialState, mergeStatsFilters} from 'state/stats/statsSlice'
-
-import {RootState} from 'state/types'
+import { initialState, mergeStatsFilters } from 'state/stats/statsSlice'
+import { RootState } from 'state/types'
 
 const mockStore = configureMockStore([thunk])
 
@@ -26,28 +26,28 @@ describe('DEPRECATED_AgentsStatsFilter', () => {
     } as RootState
 
     it('should render agents stats filter', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <DEPRECATED_AgentsStatsFilter
                     value={[agents[0].id, teams[0].id]}
                 />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should merge stats filters on item select', () => {
         const store = mockStore(defaultState)
-        const {getByLabelText} = render(
+        const { getByLabelText } = render(
             <Provider store={store}>
                 <DEPRECATED_AgentsStatsFilter value={[]} />
-            </Provider>
+            </Provider>,
         )
 
         fireEvent.click(getByLabelText(agents[0].name))
 
         expect(store.getActions()).toContainEqual(
-            mergeStatsFilters({agents: [agents[0].id]})
+            mergeStatsFilters({ agents: [agents[0].id] }),
         )
     })
 })

@@ -1,13 +1,13 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
+import { renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationType, Integration} from 'models/integration/types'
-import {StoreState} from 'state/types'
+import { Integration, IntegrationType } from 'models/integration/types'
+import { StoreState } from 'state/types'
 
 import {
-    useStoreWithChatConnectionsOptions,
     CssClasses,
+    useStoreWithChatConnectionsOptions,
 } from '../useStoreWithChatConnectionsOptions'
 
 jest.mock('hooks/useAppSelector', () => jest.fn())
@@ -25,31 +25,31 @@ describe('useStoreWithChatConnectionsOptions', () => {
             id: 1,
             name: 'Shop1',
             type: IntegrationType.Shopify,
-            meta: {shop_name: 'Shop1'},
+            meta: { shop_name: 'Shop1' },
         },
         {
             id: 2,
             name: 'Shop2',
             type: IntegrationType.BigCommerce,
-            meta: {store_hash: 'Shop2'},
+            meta: { store_hash: 'Shop2' },
         },
         {
             id: 1,
             name: 'Chat1',
             type: IntegrationType.GorgiasChat,
-            meta: {shop_name: 'Shop1'},
+            meta: { shop_name: 'Shop1' },
         },
         {
             id: 2,
             name: 'Chat2',
             type: IntegrationType.GorgiasChat,
-            meta: {shop_name: 'Shop1'},
+            meta: { shop_name: 'Shop1' },
         },
         {
             id: 3,
             name: 'Chat3',
             type: IntegrationType.GorgiasChat,
-            meta: {shop_name: 'Shop2'},
+            meta: { shop_name: 'Shop2' },
         },
     ] as unknown as Integration[]
 
@@ -57,14 +57,14 @@ describe('useStoreWithChatConnectionsOptions', () => {
         jest.resetAllMocks()
         mockAppSelector.mockImplementation((selector) =>
             selector({
-                integrations: fromJS({integrations: mockIntegrations}),
-            } as unknown as StoreState)
+                integrations: fromJS({ integrations: mockIntegrations }),
+            } as unknown as StoreState),
         )
     })
 
     it('should return the correct options with connected chats count', () => {
-        const {result} = renderHook(() =>
-            useStoreWithChatConnectionsOptions(mockCssClasses)
+        const { result } = renderHook(() =>
+            useStoreWithChatConnectionsOptions(mockCssClasses),
         )
 
         expect(result.current).toMatchInlineSnapshot(`
@@ -125,11 +125,11 @@ describe('useStoreWithChatConnectionsOptions', () => {
                 integrations: fromJS({
                     integrations: mockIntegrations.slice(0, 2),
                 }),
-            } as unknown as StoreState)
+            } as unknown as StoreState),
         )
 
-        const {result} = renderHook(() =>
-            useStoreWithChatConnectionsOptions(mockCssClasses)
+        const { result } = renderHook(() =>
+            useStoreWithChatConnectionsOptions(mockCssClasses),
         )
 
         expect(result.current).toMatchInlineSnapshot(`

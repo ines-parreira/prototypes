@@ -1,33 +1,34 @@
+import React from 'react'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { render, screen, waitFor } from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+
 import {
     ExpressionFieldSource,
     ExpressionFieldType,
     ExpressionOperator,
-    TicketStatus,
     RequirementType,
+    TicketStatus,
 } from '@gorgias/api-types'
-import {QueryClientProvider} from '@tanstack/react-query'
-import {render, screen, waitFor} from '@testing-library/react'
-import MockAdapter from 'axios-mock-adapter'
-import {fromJS} from 'immutable'
-import React from 'react'
-import {Provider} from 'react-redux'
-import configureMockStore from 'redux-mock-store'
 
 import useFlag from 'core/flags/hooks/useFlag'
-import {useCustomFieldConditions} from 'custom-fields/hooks/queries/useCustomFieldConditions'
-import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import { useCustomFieldConditions } from 'custom-fields/hooks/queries/useCustomFieldConditions'
+import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {
     ticketDropdownFieldDefinition,
     ticketInputFieldDefinition,
 } from 'fixtures/customField'
-import {customFieldCondition} from 'fixtures/customFieldCondition'
+import { customFieldCondition } from 'fixtures/customFieldCondition'
 import useHasWrapped from 'hooks/useHasWrapped'
 import client from 'models/api/resources'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
-import {assumeMock} from 'utils/testing'
-
-import {MAX_HEIGHT} from '../hooks/useHeight'
+import { MAX_HEIGHT } from '../hooks/useHeight'
 import TicketFields from '../TicketFields'
 
 jest.mock('custom-fields/hooks/queries/useCustomFieldConditions', () => ({
@@ -38,7 +39,7 @@ jest.mock('custom-fields/hooks/queries/useCustomFieldConditions', () => ({
 }))
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions', () => ({
     useCustomFieldDefinitions: jest.fn(() => ({
-        data: {data: []},
+        data: { data: [] },
         isLoading: false,
     })),
 }))
@@ -50,7 +51,7 @@ jest.mock(
         __esModule: true,
         default: () => 500,
         MAX_HEIGHT: 500,
-    })
+    }),
 )
 
 const mockedUseCustomFieldConditions = assumeMock(useCustomFieldConditions)
@@ -71,10 +72,10 @@ describe('<TicketFields />', () => {
         label: 'Conditional field',
     }
     const makeOnOpenAndAnotherFieldSetCustomFieldCondition = (
-        type: ExpressionFieldType
+        type: ExpressionFieldType,
     ) => ({
         ...customFieldCondition,
-        requirements: [{type: type, field_id: conditionalTicketField.id}],
+        requirements: [{ type: type, field_id: conditionalTicketField.id }],
         expression: [
             {
                 field: 'status',
@@ -119,18 +120,18 @@ describe('<TicketFields />', () => {
         queryClient.clear()
         mockedUseFlag.mockReturnValue(true)
         mockedUseHasWrapped.mockReturnValue([
-            {current: document.createElement('div')},
+            { current: document.createElement('div') },
             true,
         ])
     })
 
     it('should not render if there is no custom field definition', () => {
-        const {container} = render(
+        const { container } = render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={store}>
                     <TicketFields />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
         expect(container.firstChild).toBeNull()
     })
@@ -151,11 +152,11 @@ describe('<TicketFields />', () => {
                 <Provider store={store}>
                     <TicketFields />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
         await waitFor(() => {
             expect(
-                screen.getByText(RegExp(ticketInputFieldDefinition.label))
+                screen.getByText(RegExp(ticketInputFieldDefinition.label)),
             ).toBeDefined()
         })
     })
@@ -198,17 +199,17 @@ describe('<TicketFields />', () => {
                     <Provider store={store}>
                         <TicketFields />
                     </Provider>
-                </QueryClientProvider>
+                </QueryClientProvider>,
             )
             await waitFor(() => {
                 expect(
-                    screen.getByText(RegExp(ticketInputFieldDefinition.label))
+                    screen.getByText(RegExp(ticketInputFieldDefinition.label)),
                 ).toBeDefined()
                 expect(
-                    screen.getByText(RegExp(conditionalTicketField.label))
+                    screen.getByText(RegExp(conditionalTicketField.label)),
                 ).toBeDefined()
             })
-        }
+        },
     )
 
     it.each([ExpressionFieldType.Required, ExpressionFieldType.Visible])(
@@ -231,17 +232,17 @@ describe('<TicketFields />', () => {
                     <Provider store={store}>
                         <TicketFields />
                     </Provider>
-                </QueryClientProvider>
+                </QueryClientProvider>,
             )
             await waitFor(() => {
                 expect(
-                    screen.getByText(RegExp(ticketInputFieldDefinition.label))
+                    screen.getByText(RegExp(ticketInputFieldDefinition.label)),
                 ).toBeDefined()
                 expect(
-                    screen.queryByText(RegExp(conditionalTicketField.label))
+                    screen.queryByText(RegExp(conditionalTicketField.label)),
                 ).not.toBeInTheDocument()
             })
-        }
+        },
     )
 
     it('should render all fields if feature flag is off', async () => {
@@ -258,14 +259,14 @@ describe('<TicketFields />', () => {
                 <Provider store={store}>
                     <TicketFields />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
         await waitFor(() => {
             expect(
-                screen.getByText(RegExp(ticketInputFieldDefinition.label))
+                screen.getByText(RegExp(ticketInputFieldDefinition.label)),
             ).toBeDefined()
             expect(
-                screen.queryByText(RegExp(conditionalTicketField.label))
+                screen.queryByText(RegExp(conditionalTicketField.label)),
             ).toBeDefined()
         })
     })
@@ -278,7 +279,7 @@ describe('<TicketFields />', () => {
             isLoading: false,
         } as any)
         mockedUseHasWrapped.mockReturnValue([
-            {current: document.createElement('div')},
+            { current: document.createElement('div') },
             false,
         ])
         render(
@@ -286,7 +287,7 @@ describe('<TicketFields />', () => {
                 <Provider store={store}>
                     <TicketFields />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
         const showMoreButton = screen.queryByText('Show more')
         expect(showMoreButton).not.toBeInTheDocument()
@@ -294,12 +295,12 @@ describe('<TicketFields />', () => {
 
     it('should render fields container as scrollable if scroll height is higher than MAX_HEIGHT', async () => {
         mockedUseHasWrapped.mockReturnValue([
-            {current: document.createElement('div')},
+            { current: document.createElement('div') },
             true,
         ])
         mockedUseCustomFieldDefinitions.mockReturnValue({
             data: {
-                data: Array.from({length: 30}, (_, index) => ({
+                data: Array.from({ length: 30 }, (_, index) => ({
                     ...ticketInputFieldDefinition,
                     id: 1001 + index,
                     label: `Input field ${index + 1}`,
@@ -313,7 +314,7 @@ describe('<TicketFields />', () => {
                 <Provider store={store}>
                     <TicketFields />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
         Object.defineProperty(
             screen.getByTestId('fields-container'),
@@ -321,7 +322,7 @@ describe('<TicketFields />', () => {
             {
                 configurable: true,
                 value: MAX_HEIGHT + 1,
-            }
+            },
         )
         const showMoreButton = screen.getByText('Show more')
         showMoreButton.click()

@@ -1,9 +1,9 @@
-import {CustomFieldValue} from 'custom-fields/types'
+import { CustomFieldValue } from 'custom-fields/types'
 
-import {isCustomFieldValueEmpty} from './isCustomFieldValueEmpty'
+import { isCustomFieldValueEmpty } from './isCustomFieldValueEmpty'
 
 export function getNumberOrUndefined(
-    value?: CustomFieldValue
+    value?: CustomFieldValue,
 ): number | undefined {
     if (isCustomFieldValueEmpty(value)) return undefined
     if (typeof value !== 'number' && typeof value !== 'string') return undefined

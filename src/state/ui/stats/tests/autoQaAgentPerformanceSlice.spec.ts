@@ -1,44 +1,46 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
-import {personNames} from 'fixtures/personNames'
-import {ReportingMetricItem} from 'hooks/reporting/useMetricPerDimension'
-import {OrderDirection} from 'models/api/types'
-import {TicketQAScoreMeasure} from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
-import {TicketDimension, TicketMember} from 'models/reporting/cubes/TicketCube'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-import {AutoQAAgentsTableColumn} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
-import {initialState as initialStatsFiltersState} from 'state/stats/statsSlice'
-import {RootState} from 'state/types'
-
+import { personNames } from 'fixtures/personNames'
+import { ReportingMetricItem } from 'hooks/reporting/useMetricPerDimension'
+import { OrderDirection } from 'models/api/types'
+import { TicketQAScoreMeasure } from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
+import {
+    TicketDimension,
+    TicketMember,
+} from 'models/reporting/cubes/TicketCube'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
+import { AutoQAAgentsTableColumn } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTableConfig'
+import { initialState as initialStatsFiltersState } from 'state/stats/statsSlice'
+import { RootState } from 'state/types'
 import {
     autoQAAgentPerformanceSlice,
-    initialState,
     getAgentSorting,
     getFilteredAgents,
+    getPaginatedAutoQAAgents,
+    getSortedAutoQAAgents,
+    initialState,
     isSortingMetricLoading,
     pageSet,
     sortingLoaded,
     sortingLoading,
     sortingSet,
-    getPaginatedAutoQAAgents,
-    getSortedAutoQAAgents,
     toggleHeatmapMode,
 } from 'state/ui/stats/autoQAAgentPerformanceSlice'
 import {
     AGENT_PERFORMANCE_SLICE_NAME,
     AUTO_QA_AGENT_PERFORMANCE_SLICE_NAME,
 } from 'state/ui/stats/constants'
-import {initialState as uiFiltersInitialState} from 'state/ui/stats/filtersSlice'
-import {getSortByName} from 'utils/getSortByName'
+import { initialState as uiFiltersInitialState } from 'state/ui/stats/filtersSlice'
+import { getSortByName } from 'utils/getSortByName'
 
 describe('agentPerformanceSlice', () => {
     const agents = [
-        {id: 1, name: 'Adam'},
-        {id: 2, name: 'Zoey'},
-        {id: 3, name: 'Betty'},
-        {id: 4, name: 'Jim'},
-        {id: 5, name: 'Barbie'},
+        { id: 1, name: 'Adam' },
+        { id: 2, name: 'Zoey' },
+        { id: 3, name: 'Betty' },
+        { id: 4, name: 'Jim' },
+        { id: 5, name: 'Barbie' },
     ]
 
     const metricData: ReportingMetricItem[] = [
@@ -71,7 +73,7 @@ describe('agentPerformanceSlice', () => {
                 sortingSet({
                     field: AutoQAAgentsTableColumn.CommunicationSkills,
                     direction: OrderDirection.Desc,
-                })
+                }),
             )
 
             expect(newState.sorting).toEqual({
@@ -100,7 +102,7 @@ describe('agentPerformanceSlice', () => {
 
             const newState = autoQAAgentPerformanceSlice.reducer(
                 loadingState,
-                sortingLoaded(metricData)
+                sortingLoaded(metricData),
             )
 
             expect(newState).toEqual({
@@ -118,7 +120,7 @@ describe('agentPerformanceSlice', () => {
 
             const newState = autoQAAgentPerformanceSlice.reducer(
                 initialState,
-                pageSet(page)
+                pageSet(page),
             )
 
             expect(newState.pagination.currentPage).toEqual(page)
@@ -129,11 +131,11 @@ describe('agentPerformanceSlice', () => {
 
             const newState = autoQAAgentPerformanceSlice.reducer(
                 initialState,
-                pageSet(page)
+                pageSet(page),
             )
 
             expect(newState.pagination.currentPage).toEqual(
-                initialState.pagination.currentPage
+                initialState.pagination.currentPage,
             )
         })
 
@@ -146,7 +148,7 @@ describe('agentPerformanceSlice', () => {
                         currentPage: 5,
                     },
                 },
-                sortingLoading()
+                sortingLoading(),
             )
 
             expect(newState.sorting.isLoading).toEqual(true)
@@ -185,7 +187,7 @@ describe('agentPerformanceSlice', () => {
             } as RootState
 
             expect(isSortingMetricLoading(state)).toEqual(
-                initialState.sorting.isLoading
+                initialState.sorting.isLoading,
             )
         })
     })
@@ -193,7 +195,7 @@ describe('agentPerformanceSlice', () => {
     describe('getFilteredAgents', () => {
         it('should return all agents if no StatsFilter.agents', () => {
             const state = {
-                agents: fromJS({all: fromJS(agents)}),
+                agents: fromJS({ all: fromJS(agents) }),
                 ui: {
                     stats: {
                         statsTables: {
@@ -211,7 +213,7 @@ describe('agentPerformanceSlice', () => {
 
         it('should return all agents if StatsFilter.agents is an empty array', () => {
             const state = {
-                agents: fromJS({all: fromJS(agents)}),
+                agents: fromJS({ all: fromJS(agents) }),
                 ui: {
                     stats: {
                         statsTables: {
@@ -244,7 +246,7 @@ describe('agentPerformanceSlice', () => {
                 agents: withDefaultLogicalOperator(filteredAgents),
             }
             const state = {
-                agents: fromJS({all: fromJS(agents)}),
+                agents: fromJS({ all: fromJS(agents) }),
                 ui: {
                     stats: {
                         statsTables: {
@@ -262,7 +264,7 @@ describe('agentPerformanceSlice', () => {
             } as RootState
 
             expect(getFilteredAgents(state).length).toEqual(
-                filteredAgents.length
+                filteredAgents.length,
             )
         })
 
@@ -279,7 +281,7 @@ describe('agentPerformanceSlice', () => {
                 },
             }
             const state = {
-                agents: fromJS({all: fromJS(agents)}),
+                agents: fromJS({ all: fromJS(agents) }),
                 ui: {
                     stats: {
                         statsTables: {
@@ -298,7 +300,7 @@ describe('agentPerformanceSlice', () => {
 
             expect(getFilteredAgents(state).length).toEqual(
                 agents.filter((agent) => !filteredAgents.includes(agent.id))
-                    .length
+                    .length,
             )
         })
     })
@@ -306,7 +308,7 @@ describe('agentPerformanceSlice', () => {
     describe('getSortedAutoQAAgents', () => {
         it('should return agents sorted alphabetically if no sorting metric is declared', () => {
             const state = {
-                agents: fromJS({all: fromJS(agents)}),
+                agents: fromJS({ all: fromJS(agents) }),
                 ui: {
                     stats: {
                         statsTables: {
@@ -326,13 +328,13 @@ describe('agentPerformanceSlice', () => {
             } as RootState
 
             expect(getSortedAutoQAAgents(state)).toEqual(
-                agents.sort(getSortByName)
+                agents.sort(getSortByName),
             )
         })
 
         it('should return agents in descending order', () => {
             const state = {
-                agents: fromJS({all: fromJS(agents)}),
+                agents: fromJS({ all: fromJS(agents) }),
                 ui: {
                     stats: {
                         statsTables: {
@@ -350,13 +352,13 @@ describe('agentPerformanceSlice', () => {
             } as RootState
 
             expect(getSortedAutoQAAgents(state)).toEqual(
-                [...agents.sort(getSortByName)].reverse()
+                [...agents.sort(getSortByName)].reverse(),
             )
         })
 
         it('should return agents sorted by selected metric', () => {
             const state = {
-                agents: fromJS({all: fromJS(agents)}),
+                agents: fromJS({ all: fromJS(agents) }),
                 ui: {
                     stats: {
                         statsTables: {
@@ -382,16 +384,16 @@ describe('agentPerformanceSlice', () => {
                     agents.find(
                         (agent) =>
                             String(agent.id) ===
-                            metric[TicketDimension.AssigneeUserId]
-                    )
-                )
+                            metric[TicketDimension.AssigneeUserId],
+                    ),
+                ),
             )
         })
 
         it('should return agents with no data last in descending order', () => {
             const agents = [
-                {id: 1, name: 'Adam'},
-                {id: 2, name: 'Zoey'},
+                { id: 1, name: 'Adam' },
+                { id: 2, name: 'Zoey' },
             ]
             const metricData: ReportingMetricItem[] = [
                 {
@@ -401,7 +403,7 @@ describe('agentPerformanceSlice', () => {
             ]
 
             const state = {
-                agents: fromJS({all: fromJS(agents)}),
+                agents: fromJS({ all: fromJS(agents) }),
                 ui: {
                     stats: {
                         statsTables: {
@@ -427,8 +429,8 @@ describe('agentPerformanceSlice', () => {
 
         it('should return agents with no data at the end of sorted agents in any selected order', () => {
             const agents = [
-                {id: 1, name: 'Adam'},
-                {id: 2, name: 'Zoey'},
+                { id: 1, name: 'Adam' },
+                { id: 2, name: 'Zoey' },
             ]
             const metricData: ReportingMetricItem[] = [
                 {
@@ -440,7 +442,7 @@ describe('agentPerformanceSlice', () => {
 
             const getStateWithOrderDirection = (direction: OrderDirection) =>
                 ({
-                    agents: fromJS({all: fromJS(agents)}),
+                    agents: fromJS({ all: fromJS(agents) }),
                     ui: {
                         stats: {
                             statsTables: {
@@ -461,28 +463,28 @@ describe('agentPerformanceSlice', () => {
 
             expect(
                 getSortedAutoQAAgents(
-                    getStateWithOrderDirection(OrderDirection.Asc)
-                ).pop()
+                    getStateWithOrderDirection(OrderDirection.Asc),
+                ).pop(),
             ).toEqual(noDataAgent)
 
             expect(
                 getSortedAutoQAAgents(
-                    getStateWithOrderDirection(OrderDirection.Desc)
-                ).pop()
+                    getStateWithOrderDirection(OrderDirection.Desc),
+                ).pop(),
             ).toEqual(noDataAgent)
         })
 
         it('should not contain undefined or empty values throughout the result if the lastSortingMetric has more agents than the filtered ones', () => {
-            const agents = personNames.map((name, idx) => ({id: idx, name}))
+            const agents = personNames.map((name, idx) => ({ id: idx, name }))
             const lastSortingMetric: ReportingMetricItem[] = agents.map(
                 (agent) => ({
                     [TicketMember.AssigneeUserId]: String(agent.id),
                     [TicketQAScoreMeasure.AverageScore]: '10',
-                })
+                }),
             )
             const filteredAgents = [1, 4, 5, 10]
             const state = {
-                agents: fromJS({all: fromJS(agents)}),
+                agents: fromJS({ all: fromJS(agents) }),
                 ui: {
                     stats: {
                         statsTables: {
@@ -501,7 +503,7 @@ describe('agentPerformanceSlice', () => {
                             ...uiFiltersInitialState,
                             cleanStatsFilters: {
                                 agents: withDefaultLogicalOperator(
-                                    filteredAgents
+                                    filteredAgents,
                                 ),
                             },
                         },
@@ -524,7 +526,7 @@ describe('agentPerformanceSlice', () => {
             const perPage = 2
 
             const state = {
-                agents: fromJS({all: fromJS(agents)}),
+                agents: fromJS({ all: fromJS(agents) }),
                 ui: {
                     stats: {
                         statsTables: {
@@ -548,7 +550,7 @@ describe('agentPerformanceSlice', () => {
             expect(getPaginatedAutoQAAgents(state)).toEqual({
                 agents: agents.slice(
                     (currentPage - 1) * perPage,
-                    currentPage * perPage
+                    currentPage * perPage,
                 ),
                 allAgents: agents,
                 currentPage: currentPage,
@@ -561,7 +563,7 @@ describe('agentPerformanceSlice', () => {
         it('should toggle heatmapMode state', () => {
             const newState = autoQAAgentPerformanceSlice.reducer(
                 initialState,
-                toggleHeatmapMode()
+                toggleHeatmapMode(),
             )
 
             expect(newState.heatmapMode).toEqual(!initialState.heatmapMode)

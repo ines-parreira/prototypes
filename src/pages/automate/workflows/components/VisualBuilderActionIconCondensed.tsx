@@ -1,7 +1,8 @@
 import React from 'react'
 
-import {iconByVisualBuilderNodeType} from '../constants'
-import {VisualBuilderNode} from '../models/visualBuilderGraph.types'
+import { iconByVisualBuilderNodeType } from '../constants'
+import { VisualBuilderNode } from '../models/visualBuilderGraph.types'
+
 import css from './VisualBuilderActionIconCondensed.less'
 
 type Props = {
@@ -15,7 +16,7 @@ type Props = {
     >
 }
 
-export default function VisualBuilderActionIconCondensed({nodeType}: Props) {
+export default function VisualBuilderActionIconCondensed({ nodeType }: Props) {
     return (
         <div className={css.visualBuilderActionIconCondensed}>
             {iconByVisualBuilderNodeType[nodeType]}

@@ -1,12 +1,13 @@
-import {parseToHsla} from 'color2k'
-import {fromJS, Map} from 'immutable'
-import React, {ComponentProps, useMemo} from 'react'
+import React, { ComponentProps, useMemo } from 'react'
+
+import { parseToHsla } from 'color2k'
+import { fromJS, Map } from 'immutable'
 
 import Tag from 'components/Tag'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useFlag} from 'core/flags'
-import {THEME_NAME, useTheme} from 'core/theme'
-import {getEnoughContrastedColor, isValidColor} from 'utils/colors'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
+import { THEME_NAME, useTheme } from 'core/theme'
+import { getEnoughContrastedColor, isValidColor } from 'utils/colors'
 
 type Props = {
     className?: string
@@ -15,12 +16,12 @@ type Props = {
     title?: string
 } & ComponentProps<typeof Tag>
 
-const TicketTag = ({text, className, decoration, title, ...props}: Props) => {
+const TicketTag = ({ text, className, decoration, title, ...props }: Props) => {
     const theme = useTheme()
     const hasNewTag = useFlag(FeatureFlagKey.TagNewDesign)
 
     const tagColor = ((decoration || fromJS({})) as Map<any, any>).get(
-        'color'
+        'color',
     ) as string | null
 
     const color = tagColor && isValidColor(tagColor) ? tagColor.trim() : null
@@ -32,7 +33,7 @@ const TicketTag = ({text, className, decoration, title, ...props}: Props) => {
             if (theme.resolvedName === THEME_NAME.Dark) {
                 const textColorDark = getEnoughContrastedColor(
                     color,
-                    `${backgroundColor} 10%)`
+                    `${backgroundColor} 10%)`,
                 )
 
                 return {

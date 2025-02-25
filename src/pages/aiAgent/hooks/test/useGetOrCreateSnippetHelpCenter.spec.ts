@@ -1,9 +1,9 @@
-import {renderHook, act} from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react-hooks'
 
-import {useCreateStoreSnippetHelpCenter} from 'models/aiAgent/queries'
-import {useGetHelpCenterList} from 'models/helpCenter/queries'
+import { useCreateStoreSnippetHelpCenter } from 'models/aiAgent/queries'
+import { useGetHelpCenterList } from 'models/helpCenter/queries'
 
-import {useGetOrCreateSnippetHelpCenter} from '../useGetOrCreateSnippetHelpCenter'
+import { useGetOrCreateSnippetHelpCenter } from '../useGetOrCreateSnippetHelpCenter'
 
 jest.mock('models/aiAgent/queries')
 jest.mock('models/helpCenter/queries')
@@ -19,14 +19,14 @@ describe('useGetOrCreateSnippetHelpCenter', () => {
 
     const renderUseGetOrCreateSnippetHelpCenterHook = () => {
         return renderHook(() =>
-            useGetOrCreateSnippetHelpCenter({accountDomain, shopName})
+            useGetOrCreateSnippetHelpCenter({ accountDomain, shopName }),
         )
     }
 
     const mockUseGetHelpCenterList = (
         data: any,
         error: Error | null = null,
-        isLoading: boolean = false
+        isLoading: boolean = false,
     ) => {
         ;(useGetHelpCenterList as jest.Mock).mockReturnValue({
             data,
@@ -39,7 +39,7 @@ describe('useGetOrCreateSnippetHelpCenter', () => {
         mutateAsync: jest.Mock,
         error: Error | null = null,
         isLoading: boolean = false,
-        status: 'idle' | 'loading' | 'success' | 'error' = 'idle'
+        status: 'idle' | 'loading' | 'success' | 'error' = 'idle',
     ) => {
         ;(useCreateStoreSnippetHelpCenter as jest.Mock).mockReturnValue({
             mutateAsync,
@@ -50,11 +50,11 @@ describe('useGetOrCreateSnippetHelpCenter', () => {
     }
 
     it('returns existing help center if it exists', async () => {
-        const mockHelpCenter = {id: 1, name: 'Test Help Center'}
-        mockUseGetHelpCenterList({data: {data: [mockHelpCenter]}})
+        const mockHelpCenter = { id: 1, name: 'Test Help Center' }
+        mockUseGetHelpCenterList({ data: { data: [mockHelpCenter] } })
         mockUseCreateStoreSnippetHelpCenter(jest.fn())
 
-        const {result, waitFor} = renderUseGetOrCreateSnippetHelpCenterHook()
+        const { result, waitFor } = renderUseGetOrCreateSnippetHelpCenterHook()
 
         await waitFor(() => result.current !== null)
 
@@ -65,15 +65,15 @@ describe('useGetOrCreateSnippetHelpCenter', () => {
     })
 
     it('creates a new help center if none exists', async () => {
-        const mockCreatedHelpCenter = {id: 2, name: 'Created Help Center'}
+        const mockCreatedHelpCenter = { id: 2, name: 'Created Help Center' }
         const createHelpCenter = jest
             .fn()
-            .mockResolvedValue({data: mockCreatedHelpCenter})
+            .mockResolvedValue({ data: mockCreatedHelpCenter })
 
-        mockUseGetHelpCenterList({data: {data: []}})
+        mockUseGetHelpCenterList({ data: { data: [] } })
         mockUseCreateStoreSnippetHelpCenter(createHelpCenter)
 
-        const {result, waitFor} = renderUseGetOrCreateSnippetHelpCenterHook()
+        const { result, waitFor } = renderUseGetOrCreateSnippetHelpCenterHook()
 
         await act(async () => {
             await waitFor(() => result.current !== null)
@@ -90,17 +90,17 @@ describe('useGetOrCreateSnippetHelpCenter', () => {
         mockUseGetHelpCenterList(null, null, true)
         mockUseCreateStoreSnippetHelpCenter(jest.fn())
 
-        const {result} = renderUseGetOrCreateSnippetHelpCenterHook()
+        const { result } = renderUseGetOrCreateSnippetHelpCenterHook()
 
-        expect(result.current).toEqual({helpCenter: null, isLoading: true})
+        expect(result.current).toEqual({ helpCenter: null, isLoading: true })
     })
 
     it('returns null if error in fetching existing help center', () => {
         mockUseGetHelpCenterList(null, new Error('Fetch error'))
         mockUseCreateStoreSnippetHelpCenter(jest.fn())
 
-        const {result} = renderUseGetOrCreateSnippetHelpCenterHook()
+        const { result } = renderUseGetOrCreateSnippetHelpCenterHook()
 
-        expect(result.current).toEqual({isLoading: false, helpCenter: null})
+        expect(result.current).toEqual({ isLoading: false, helpCenter: null })
     })
 })

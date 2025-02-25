@@ -1,15 +1,16 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import React, {PropsWithRef, useMemo} from 'react'
+import React, { PropsWithRef, useMemo } from 'react'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import SourceIcon from 'pages/common/components/SourceIcon'
 import BodyCell, {
     Props as BodyCellProps,
 } from 'pages/common/components/table/cells/BodyCell'
-import {getChannelBySlug} from 'services/channels'
+import { getChannelBySlug } from 'services/channels'
 
-import {UISLAPolicy} from '../types'
-
+import { UISLAPolicy } from '../types'
 import CellLinkWrapper from './CellLinkWrapper'
+
 import css from './ChannelListCell.less'
 
 const CHANNEL_LIMIT = 5
@@ -21,12 +22,12 @@ export default function ChannelListCell({
     policy: UISLAPolicy
     bodyCellProps?: PropsWithRef<BodyCellProps>
 }) {
-    const {channels, uuid} = policy
+    const { channels, uuid } = policy
     const hasMoreThanChannelLimit =
         !!channels && channels.length > CHANNEL_LIMIT
     const slicedChannels = useMemo(
         () => (channels || []).slice(0, CHANNEL_LIMIT),
-        [channels]
+        [channels],
     )
 
     const tooltipId = `tooltip-${uuid}`
@@ -35,7 +36,7 @@ export default function ChannelListCell({
             channels
                 ?.map((channel) => getChannelBySlug(channel)?.name || channel)
                 .join(', '),
-        [channels]
+        [channels],
     )
 
     return (

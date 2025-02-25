@@ -1,5 +1,5 @@
-import {TemplateContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
-import {renderTemplate} from 'pages/common/utils/template'
+import { TemplateContext } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
+import { renderTemplate } from 'pages/common/utils/template'
 
 const TEMPLATE_VARIABLES = ['listIndex', 'integrationId', 'appId'] as const
 
@@ -10,14 +10,14 @@ export type TemplateValues = Partial<Record<TemplateVariables, string>>
 export function applyCustomActionTemplate(
     template: string | undefined,
     templateContext: TemplateContext,
-    keepTemplateWhenEmpty?: boolean
+    keepTemplateWhenEmpty?: boolean,
 ) {
-    const {variables, context} = templateContext
+    const { variables, context } = templateContext
     const firstPassValue = applyCustomActionVariables(template, variables)
     const templatedValue = renderTemplate(
         firstPassValue,
         context,
-        keepTemplateWhenEmpty
+        keepTemplateWhenEmpty,
     )
 
     return templatedValue
@@ -25,13 +25,13 @@ export function applyCustomActionTemplate(
 
 export function applyCustomActionVariables(
     template: string | undefined,
-    values: TemplateValues
+    values: TemplateValues,
 ) {
     let renderedTemplate = template || ''
     for (const [key, value] of Object.entries(values)) {
         renderedTemplate = renderedTemplate.replace(
             new RegExp(`\\$${key}`, 'gm'),
-            value
+            value,
         )
     }
     return renderedTemplate

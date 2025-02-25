@@ -1,16 +1,17 @@
-import {THEME_NAME} from '@gorgias/design-tokens'
-import {useEffect} from 'react'
+import { useEffect } from 'react'
+
+import { THEME_NAME } from '@gorgias/design-tokens'
 
 import useLocalStorage from 'hooks/useLocalStorage'
 
-import type {HelpdeskThemeName} from './types'
+import type { HelpdeskThemeName } from './types'
 
 const themeValues = [...Object.values(THEME_NAME), 'system']
 
 export default function useActualTheme() {
     const [theme, setTheme] = useLocalStorage<HelpdeskThemeName>(
         'theme',
-        THEME_NAME.Classic
+        THEME_NAME.Classic,
     )
 
     // Properly sanitize the value from localstorage, since it can

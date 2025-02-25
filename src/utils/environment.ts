@@ -1,4 +1,4 @@
-import {isValueOfStringEnum} from 'utils/types'
+import { isValueOfStringEnum } from 'utils/types'
 
 export enum GorgiasUIEnv {
     Production = 'production',
@@ -73,5 +73,5 @@ export const envVars = Object.freeze(
         TZ: process.env.TZ,
         GORGIAS_ASSETS_URL: process.env.GORGIAS_ASSETS_URL,
         WEB_APP_RELEASE: process.env.WEB_APP_RELEASE,
-    })
+    }),
 )

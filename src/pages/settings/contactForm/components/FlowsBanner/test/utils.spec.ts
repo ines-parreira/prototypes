@@ -1,6 +1,6 @@
-import {SegmentEvent} from 'common/segment'
+import { SegmentEvent } from 'common/segment'
 
-import {getBannerDetails} from '../utils'
+import { getBannerDetails } from '../utils'
 
 describe('getBannerDetails', () => {
     it('should return banner details for subscribed user with shop name', () => {
@@ -11,7 +11,7 @@ describe('getBannerDetails', () => {
         const result = getBannerDetails(
             isSubscribedToAutomation,
             contactFormId,
-            shopName
+            shopName,
         )
 
         expect(result).toEqual({
@@ -34,7 +34,7 @@ describe('getBannerDetails', () => {
         const result = getBannerDetails(
             isSubscribedToAutomation,
             contactFormId,
-            shopName
+            shopName,
         )
 
         expect(result).toEqual({
@@ -58,7 +58,7 @@ describe('getBannerDetails', () => {
         const result = getBannerDetails(
             isSubscribedToAutomation,
             contactFormId,
-            shopName
+            shopName,
         )
 
         expect(result).toEqual({

@@ -1,6 +1,6 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {User} from 'config/types/user'
+import { User } from 'config/types/user'
 import {
     fetchClosedTicketsMetricPerAgent,
     fetchOnlineTimePerAgent,
@@ -15,16 +15,19 @@ import {
     AgentTimeTrackingDimension,
     AgentTimeTrackingMeasure,
 } from 'models/reporting/cubes/agentxp/AgentTimeTrackingCube'
-import {TicketDimension, TicketMeasure} from 'models/reporting/cubes/TicketCube'
-import {assumeMock} from 'utils/testing'
+import {
+    TicketDimension,
+    TicketMeasure,
+} from 'models/reporting/cubes/TicketCube'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/metricsPerAgent')
 const useClosedTicketsMetricPerAgentMock = assumeMock(
-    useClosedTicketsMetricPerAgent
+    useClosedTicketsMetricPerAgent,
 )
 const useOnlineTimePerAgentMock = assumeMock(useOnlineTimePerAgent)
 const fetchClosedTicketsMetricPerAgentMock = assumeMock(
-    fetchClosedTicketsMetricPerAgent
+    fetchClosedTicketsMetricPerAgent,
 )
 const fetchOnlineTimePerAgentMock = assumeMock(fetchOnlineTimePerAgent)
 
@@ -78,21 +81,21 @@ describe('TicketsClosedPerAgent', () => {
     describe('useTicketsClosedPerHourPerAgent.ts', () => {
         beforeEach(() => {
             useClosedTicketsMetricPerAgentMock.mockReturnValue(
-                useClosedTicketsMetricPerAgentReturnValue
+                useClosedTicketsMetricPerAgentReturnValue,
             )
             useOnlineTimePerAgentMock.mockReturnValue(
-                useOnlineTimePerAgentReturnValue
+                useOnlineTimePerAgentReturnValue,
             )
         })
 
         it('should calculate the metric from messages sent and online time', () => {
-            const {result} = renderHook(() =>
+            const { result } = renderHook(() =>
                 useTicketsClosedPerHourPerAgent(
                     statsFilters,
                     timeZone,
                     undefined,
-                    String(agent.id)
-                )
+                    String(agent.id),
+                ),
             )
 
             expect(result.current).toEqual({
@@ -100,7 +103,8 @@ describe('TicketsClosedPerAgent', () => {
                     allData: [
                         {
                             [TicketMeasure.TicketCount]: String(
-                                ticketsClosedValue / (onlineTimeValue / 60 / 60)
+                                ticketsClosedValue /
+                                    (onlineTimeValue / 60 / 60),
                             ),
                             [TicketDimension.AssigneeUserId]: String(agent.id),
                         },
@@ -114,13 +118,13 @@ describe('TicketsClosedPerAgent', () => {
         })
 
         it('should handle no data', () => {
-            const {result} = renderHook(() =>
+            const { result } = renderHook(() =>
                 useTicketsClosedPerHourPerAgent(
                     statsFilters,
                     timeZone,
                     undefined,
-                    String(agent.id)
-                )
+                    String(agent.id),
+                ),
             )
 
             expect(result.current).toEqual({
@@ -128,7 +132,8 @@ describe('TicketsClosedPerAgent', () => {
                     allData: [
                         {
                             [TicketMeasure.TicketCount]: String(
-                                ticketsClosedValue / (onlineTimeValue / 60 / 60)
+                                ticketsClosedValue /
+                                    (onlineTimeValue / 60 / 60),
                             ),
                             [TicketDimension.AssigneeUserId]: String(agent.id),
                         },
@@ -147,8 +152,8 @@ describe('TicketsClosedPerAgent', () => {
                     statsFilters,
                     timeZone,
                     undefined,
-                    String(agent.id)
-                )
+                    String(agent.id),
+                ),
             )
 
             expect(useClosedTicketsMetricPerAgentMock).toHaveBeenCalledWith(
@@ -158,7 +163,7 @@ describe('TicketsClosedPerAgent', () => {
                 },
                 timeZone,
                 undefined,
-                String(agent.id)
+                String(agent.id),
             )
             expect(useOnlineTimePerAgentMock).toHaveBeenCalledWith(
                 {
@@ -167,7 +172,7 @@ describe('TicketsClosedPerAgent', () => {
                 },
                 timeZone,
                 undefined,
-                String(agent.id)
+                String(agent.id),
             )
         })
 
@@ -179,8 +184,8 @@ describe('TicketsClosedPerAgent', () => {
                     },
                     timeZone,
                     undefined,
-                    String(agent.id)
-                )
+                    String(agent.id),
+                ),
             )
 
             expect(useClosedTicketsMetricPerAgentMock).toHaveBeenCalledWith(
@@ -189,7 +194,7 @@ describe('TicketsClosedPerAgent', () => {
                 },
                 timeZone,
                 undefined,
-                String(agent.id)
+                String(agent.id),
             )
             expect(useOnlineTimePerAgentMock).toHaveBeenCalledWith(
                 {
@@ -197,7 +202,7 @@ describe('TicketsClosedPerAgent', () => {
                 },
                 timeZone,
                 undefined,
-                String(agent.id)
+                String(agent.id),
             )
         })
 
@@ -211,13 +216,13 @@ describe('TicketsClosedPerAgent', () => {
                 data: null,
             })
 
-            const {result} = renderHook(() =>
+            const { result } = renderHook(() =>
                 useTicketsClosedPerHourPerAgent(
                     statsFilters,
                     timeZone,
                     undefined,
-                    String(agent.id)
-                )
+                    String(agent.id),
+                ),
             )
 
             expect(result.current).toEqual({
@@ -241,13 +246,13 @@ describe('TicketsClosedPerAgent', () => {
                 data: null,
             })
 
-            const {result} = renderHook(() =>
+            const { result } = renderHook(() =>
                 useTicketsClosedPerHourPerAgent(
                     statsFilters,
                     timeZone,
                     undefined,
-                    String(agent.id)
-                )
+                    String(agent.id),
+                ),
             )
 
             expect(result.current).toEqual({
@@ -265,10 +270,10 @@ describe('TicketsClosedPerAgent', () => {
     describe('fetchTicketsClosedPerHourPerAgent.ts', () => {
         beforeEach(() => {
             fetchClosedTicketsMetricPerAgentMock.mockResolvedValue(
-                useClosedTicketsMetricPerAgentReturnValue
+                useClosedTicketsMetricPerAgentReturnValue,
             )
             fetchOnlineTimePerAgentMock.mockResolvedValue(
-                useOnlineTimePerAgentReturnValue
+                useOnlineTimePerAgentReturnValue,
             )
         })
 
@@ -277,7 +282,7 @@ describe('TicketsClosedPerAgent', () => {
                 statsFilters,
                 timeZone,
                 undefined,
-                String(agent.id)
+                String(agent.id),
             )
 
             expect(result).toEqual({
@@ -285,7 +290,8 @@ describe('TicketsClosedPerAgent', () => {
                     allData: [
                         {
                             [TicketMeasure.TicketCount]: String(
-                                ticketsClosedValue / (onlineTimeValue / 60 / 60)
+                                ticketsClosedValue /
+                                    (onlineTimeValue / 60 / 60),
                             ),
                             [TicketDimension.AssigneeUserId]: String(agent.id),
                         },
@@ -303,7 +309,7 @@ describe('TicketsClosedPerAgent', () => {
                 statsFilters,
                 timeZone,
                 undefined,
-                String(agent.id)
+                String(agent.id),
             )
 
             expect(result).toEqual({
@@ -311,7 +317,8 @@ describe('TicketsClosedPerAgent', () => {
                     allData: [
                         {
                             [TicketMeasure.TicketCount]: String(
-                                ticketsClosedValue / (onlineTimeValue / 60 / 60)
+                                ticketsClosedValue /
+                                    (onlineTimeValue / 60 / 60),
                             ),
                             [TicketDimension.AssigneeUserId]: String(agent.id),
                         },
@@ -329,7 +336,7 @@ describe('TicketsClosedPerAgent', () => {
                 statsFilters,
                 timeZone,
                 undefined,
-                String(agent.id)
+                String(agent.id),
             )
 
             expect(fetchClosedTicketsMetricPerAgentMock).toHaveBeenCalledWith(
@@ -339,7 +346,7 @@ describe('TicketsClosedPerAgent', () => {
                 },
                 timeZone,
                 undefined,
-                String(agent.id)
+                String(agent.id),
             )
             expect(fetchOnlineTimePerAgentMock).toHaveBeenCalledWith(
                 {
@@ -348,7 +355,7 @@ describe('TicketsClosedPerAgent', () => {
                 },
                 timeZone,
                 undefined,
-                String(agent.id)
+                String(agent.id),
             )
         })
 
@@ -359,7 +366,7 @@ describe('TicketsClosedPerAgent', () => {
                 },
                 timeZone,
                 undefined,
-                String(agent.id)
+                String(agent.id),
             )
 
             expect(fetchClosedTicketsMetricPerAgentMock).toHaveBeenCalledWith(
@@ -368,7 +375,7 @@ describe('TicketsClosedPerAgent', () => {
                 },
                 timeZone,
                 undefined,
-                String(agent.id)
+                String(agent.id),
             )
             expect(fetchOnlineTimePerAgentMock).toHaveBeenCalledWith(
                 {
@@ -376,7 +383,7 @@ describe('TicketsClosedPerAgent', () => {
                 },
                 timeZone,
                 undefined,
-                String(agent.id)
+                String(agent.id),
             )
         })
 
@@ -394,7 +401,7 @@ describe('TicketsClosedPerAgent', () => {
                 statsFilters,
                 timeZone,
                 undefined,
-                String(agent.id)
+                String(agent.id),
             )
 
             expect(result).toEqual({
@@ -422,7 +429,7 @@ describe('TicketsClosedPerAgent', () => {
                 statsFilters,
                 timeZone,
                 undefined,
-                String(agent.id)
+                String(agent.id),
             )
 
             expect(result).toEqual({

@@ -1,22 +1,23 @@
-import React, {useCallback, useMemo} from 'react'
-import {Redirect, useHistory, useLocation, useParams} from 'react-router-dom'
-import {ulid} from 'ulidx'
+import React, { useCallback, useMemo } from 'react'
 
-import {SegmentEvent, logEvent} from 'common/segment'
+import { Redirect, useHistory, useLocation, useParams } from 'react-router-dom'
+import { ulid } from 'ulidx'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
-import {ErrorBoundary} from 'pages/ErrorBoundary'
-import {getHasAutomate} from 'state/billing/selectors'
-import {notify} from 'state/notifications/actions'
-import {Notification} from 'state/notifications/types'
+import { ErrorBoundary } from 'pages/ErrorBoundary'
+import { getHasAutomate } from 'state/billing/selectors'
+import { notify } from 'state/notifications/actions'
+import { Notification } from 'state/notifications/types'
 
 import WorkflowEditorView from './WorkflowEditorView'
 
 const PERFORMANCE_BY_FEATURE_ROUTE = 'stats-automate-performance-by-features'
 
 export default function WorkflowEditorViewContainer() {
-    const {shopType, shopName, editWorkflowId} = useParams<{
+    const { shopType, shopName, editWorkflowId } = useParams<{
         shopType: string
         shopName: string
         editWorkflowId: string
@@ -24,8 +25,8 @@ export default function WorkflowEditorViewContainer() {
     const history = useHistory()
     const dispatch = useAppDispatch()
     const hasAutomate = useAppSelector(getHasAutomate)
-    const location = useLocation<{from?: string}>()
-    const {from} = location.state || {}
+    const location = useLocation<{ from?: string }>()
+    const { from } = location.state || {}
 
     const goToWorkflowsListPage = useCallback(() => {
         history.push(`/app/automation/${shopType}/${shopName}/flows`)
@@ -41,7 +42,7 @@ export default function WorkflowEditorViewContainer() {
         (message: Notification) => {
             void dispatch(notify(message))
         },
-        [dispatch]
+        [dispatch],
     )
 
     const handleNewWorkflowCreated = useCallback(
@@ -53,10 +54,10 @@ export default function WorkflowEditorViewContainer() {
                 `/app/automation/${shopType}/${shopName}/flows/edit/${workflowId}`,
                 {
                     doShowDisplayInChannels: !isDraft,
-                }
+                },
             )
         },
-        [history, shopName, shopType, workflowId]
+        [history, shopName, shopType, workflowId],
     )
 
     const handleFlowPublished = useCallback(() => {
@@ -68,19 +69,19 @@ export default function WorkflowEditorViewContainer() {
             if (fromView === 'templates') goToWorkflowTemplatesPage()
             else goToWorkflowsListPage()
         },
-        [goToWorkflowsListPage, goToWorkflowTemplatesPage]
+        [goToWorkflowsListPage, goToWorkflowTemplatesPage],
     )
 
     const goToWorkflowAnalyticsPage = useCallback(
         (zoom: number) => {
-            const params = new URLSearchParams({zoom: zoom.toString()})
+            const params = new URLSearchParams({ zoom: zoom.toString() })
             history.push({
                 pathname: `/app/automation/${shopType}/${shopName}/flows/analytics/${editWorkflowId}`,
                 search: params.toString(),
-                state: {from: 'workflow-editor'},
+                state: { from: 'workflow-editor' },
             })
         },
-        [history, shopType, shopName, editWorkflowId]
+        [history, shopType, shopName, editWorkflowId],
     )
 
     useEffectOnce(() => {
@@ -102,7 +103,7 @@ export default function WorkflowEditorViewContainer() {
     }
 
     return (
-        <ErrorBoundary sentryTags={{section: 'workflows'}}>
+        <ErrorBoundary sentryTags={{ section: 'workflows' }}>
             <WorkflowEditorView
                 workflowId={workflowId}
                 isNewWorkflow={isNewWorkflow}

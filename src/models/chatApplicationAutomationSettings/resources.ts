@@ -1,18 +1,18 @@
-import {getGorgiasChatProtectedApiClient} from 'rest_api/gorgias_chat_protected_api/client'
+import { getGorgiasChatProtectedApiClient } from 'rest_api/gorgias_chat_protected_api/client'
 
-import {ChatApplicationAutomationSettings} from './types'
+import { ChatApplicationAutomationSettings } from './types'
 
 export const fetchChatsApplicationAutomationSettings = async (
-    applicationIds: string[]
+    applicationIds: string[],
 ): Promise<ChatApplicationAutomationSettings[]> =>
     Promise.all(applicationIds.map(fetchChatApplicationAutomationSettings))
 
 export const fetchChatApplicationAutomationSettings = async (
-    applicationId: string
+    applicationId: string,
 ): Promise<ChatApplicationAutomationSettings> => {
     const client = await getGorgiasChatProtectedApiClient()
 
-    const {data}: {data: ChatApplicationAutomationSettings} =
+    const { data }: { data: ChatApplicationAutomationSettings } =
         await client.getApplicationAutomationSettings({
             applicationId,
         })
@@ -25,16 +25,16 @@ export const upsertChatApplicationAutomationSettings = async (
     payload: Pick<
         ChatApplicationAutomationSettings,
         'articleRecommendation' | 'orderManagement' | 'workflows'
-    >
+    >,
 ): Promise<ChatApplicationAutomationSettings> => {
     const client = await getGorgiasChatProtectedApiClient()
 
-    const {data}: {data: ChatApplicationAutomationSettings} =
+    const { data }: { data: ChatApplicationAutomationSettings } =
         await client.upsertApplicationAutomationSettings(
             {
                 applicationId: applicationId,
             },
-            payload
+            payload,
         )
 
     return data

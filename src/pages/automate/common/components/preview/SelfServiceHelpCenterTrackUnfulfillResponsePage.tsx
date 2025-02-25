@@ -1,13 +1,15 @@
-import classnames from 'classnames'
 import React from 'react'
 
-import {HELP_CENTER_TEXTS} from 'config/helpCenter'
-import {HelpCenter} from 'models/helpCenter/types'
+import classnames from 'classnames'
 
-import {LINE_ITEMS} from './constants'
+import { HELP_CENTER_TEXTS } from 'config/helpCenter'
+import { HelpCenter } from 'models/helpCenter/types'
+
+import { LINE_ITEMS } from './constants'
 import useOrderDates from './hooks/useOrderDates'
+import { useSelfServicePreviewContext } from './SelfServicePreviewContext'
+
 import css from './SelfServiceHelpCenterTrackPage.less'
-import {useSelfServicePreviewContext} from './SelfServicePreviewContext'
 
 type Props = {
     helpCenter: HelpCenter
@@ -18,10 +20,10 @@ const SelfServiceHelpCenterTrackUnfulfillResponsePage = ({
 }: Props) => {
     const helpCenterTexts = HELP_CENTER_TEXTS[helpCenter.default_locale]
 
-    const {automatedResponseMessageContent} = useSelfServicePreviewContext()
+    const { automatedResponseMessageContent } = useSelfServicePreviewContext()
 
-    const {etaDate, orderPlacedDate, inTransitDate} = useOrderDates(
-        helpCenter.default_locale
+    const { etaDate, orderPlacedDate, inTransitDate } = useOrderDates(
+        helpCenter.default_locale,
     )
 
     return (
@@ -30,7 +32,7 @@ const SelfServiceHelpCenterTrackUnfulfillResponsePage = ({
                 <div className={css.orderNumber}>
                     {helpCenterTexts.orderNumber.replace(
                         '{{orderNumber}}',
-                        '#3089'
+                        '#3089',
                     )}
                 </div>
                 <div className={css.orderDate}>
@@ -45,7 +47,7 @@ const SelfServiceHelpCenterTrackUnfulfillResponsePage = ({
                                 <div
                                     className={classnames(
                                         css.timelineDot,
-                                        css.isCurrent
+                                        css.isCurrent,
                                     )}
                                 />
                                 <div className={css.timelineLine} />
@@ -55,7 +57,7 @@ const SelfServiceHelpCenterTrackUnfulfillResponsePage = ({
                                     <div
                                         className={classnames(
                                             css.timelineItemStatus,
-                                            css.isCurrent
+                                            css.isCurrent,
                                         )}
                                     >
                                         {helpCenterTexts.checkpointOrderPlaced}
@@ -80,7 +82,7 @@ const SelfServiceHelpCenterTrackUnfulfillResponsePage = ({
                                 <div
                                     className={classnames(
                                         css.timelineDot,
-                                        css.isUpcoming
+                                        css.isUpcoming,
                                     )}
                                 />
                             </div>
@@ -88,7 +90,7 @@ const SelfServiceHelpCenterTrackUnfulfillResponsePage = ({
                                 <div
                                     className={classnames(
                                         css.timelineItemStatus,
-                                        css.isUpcoming
+                                        css.isUpcoming,
                                     )}
                                 >
                                     {helpCenterTexts.confirmed}

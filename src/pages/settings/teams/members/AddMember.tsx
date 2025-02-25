@@ -1,15 +1,21 @@
-import classnames from 'classnames'
-import {Map} from 'immutable'
-import React, {Component} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
+import React, { Component } from 'react'
 
-import {Team} from 'models/team/types'
+import classnames from 'classnames'
+import { Map } from 'immutable'
+import { connect, ConnectedProps } from 'react-redux'
+import {
+    Dropdown,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+} from 'reactstrap'
+
+import { Team } from 'models/team/types'
 import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'
-import {AgentLabel} from 'pages/common/utils/labels'
-import {getHumanAgents} from 'state/agents/selectors'
-import {RootState} from 'state/types'
+import { AgentLabel } from 'pages/common/utils/labels'
+import { getHumanAgents } from 'state/agents/selectors'
+import { RootState } from 'state/types'
 
 import css from './AddMember.less'
 
@@ -31,19 +37,19 @@ export class AddMemberContainer extends Component<Props, State> {
         search: '',
     }
 
-    _toggle = () => this.setState({isOpen: !this.state.isOpen})
+    _toggle = () => this.setState({ isOpen: !this.state.isOpen })
 
-    _onSearch = (value: string) => this.setState({search: value})
+    _onSearch = (value: string) => this.setState({ search: value })
 
     _addTeamMember = (userId: number) => {
-        this.setState({isLoading: true})
+        this.setState({ isLoading: true })
         void this.props.addTeamMember(userId).finally(() => {
-            this.setState({isLoading: false})
+            this.setState({ isLoading: false })
         })
     }
 
     render() {
-        const {team, users} = this.props
+        const { team, users } = this.props
         const isLoading = this.state.isLoading
         const search = this.state.search.trim().toLowerCase()
         const teamMemberIds = team.members.map((member) => member.id)
@@ -64,13 +70,13 @@ export class AddMemberContainer extends Component<Props, State> {
                 <DropdownToggle
                     color="success"
                     type="button"
-                    className={classnames({'btn-loading': isLoading})}
+                    className={classnames({ 'btn-loading': isLoading })}
                     disabled={isLoading}
                     caret
                 >
                     Add team member
                 </DropdownToggle>
-                <DropdownMenu right style={{width: '230px'}}>
+                <DropdownMenu right style={{ width: '230px' }}>
                     <DropdownItem header>
                         {
                             // rebuild input on each opening so "autoFocus" works

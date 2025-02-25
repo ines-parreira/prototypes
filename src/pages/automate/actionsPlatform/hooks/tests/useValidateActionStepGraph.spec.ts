@@ -1,4 +1,4 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
 import {
     buildEdgeCommonProperties,
@@ -9,7 +9,9 @@ import useValidateActionStepGraph from '../useValidateActionStepGraph'
 
 describe('useValidateActionStepGraph()', () => {
     it('should validate action step graph', () => {
-        const {result} = renderHook(() => useValidateActionStepGraph(() => []))
+        const { result } = renderHook(() =>
+            useValidateActionStepGraph(() => []),
+        )
 
         expect(
             result.current({
@@ -263,7 +265,7 @@ describe('useValidateActionStepGraph()', () => {
                         source: 'conditions1',
                         target: 'end1',
                         data: {
-                            conditions: {and: []},
+                            conditions: { and: [] },
                         },
                     },
                     {
@@ -320,7 +322,7 @@ describe('useValidateActionStepGraph()', () => {
                         type: 'app',
                     },
                 ],
-            })
+            }),
         ).toEqual(
             expect.objectContaining({
                 nodes: [
@@ -458,12 +460,14 @@ describe('useValidateActionStepGraph()', () => {
                 errors: {
                     name: 'Name is required',
                 },
-            })
+            }),
         )
     })
 
     it('should trigger error for long name & not enough steps', () => {
-        const {result} = renderHook(() => useValidateActionStepGraph(() => []))
+        const { result } = renderHook(() =>
+            useValidateActionStepGraph(() => []),
+        )
 
         expect(
             result.current({
@@ -517,14 +521,14 @@ describe('useValidateActionStepGraph()', () => {
                         type: 'app',
                     },
                 ],
-            })
+            }),
         ).toEqual(
             expect.objectContaining({
                 errors: {
                     name: 'Name must be less than 100 characters',
                     nodes: 'At least one step is required',
                 },
-            })
+            }),
         )
     })
 })

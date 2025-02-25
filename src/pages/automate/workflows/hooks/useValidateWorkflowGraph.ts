@@ -1,8 +1,9 @@
-import {produce} from 'immer'
-import _set from 'lodash/set'
-import {useCallback} from 'react'
+import { useCallback } from 'react'
 
-import {VisualBuilderContextType} from 'pages/automate/workflows/hooks/useVisualBuilder'
+import { produce } from 'immer'
+import _set from 'lodash/set'
+
+import { VisualBuilderContextType } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {
     getAutomatedMessageNodeErrors,
     getChannelTriggerNodeErrors,
@@ -14,10 +15,10 @@ import {
     getOrderSelectionNodeErrors,
     getTextReplyNodeErrors,
 } from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import {VisualBuilderGraph} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { VisualBuilderGraph } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 const useValidateWorkflowGraph = (
-    getVariableListForNode: VisualBuilderContextType['getVariableListForNode']
+    getVariableListForNode: VisualBuilderContextType['getVariableListForNode'],
 ) => {
     return useCallback(
         (graph: VisualBuilderGraph, isDraft = false) => {
@@ -29,14 +30,14 @@ const useValidateWorkflowGraph = (
                     _set(
                         draft.errors,
                         'name',
-                        `You must add a flow name in order to ${isDraft || !draft.is_draft ? 'save' : 'publish'}`
+                        `You must add a flow name in order to ${isDraft || !draft.is_draft ? 'save' : 'publish'}`,
                     )
                 } else if (draft.name.length > 100) {
                     draft.errors ??= {}
                     _set(
                         draft.errors,
                         'name',
-                        'Flow name must be less than 100 characters'
+                        'Flow name must be less than 100 characters',
                     )
                 }
 
@@ -45,7 +46,7 @@ const useValidateWorkflowGraph = (
                     _set(
                         draft.errors,
                         'nodes',
-                        'You must add at least one step after the trigger button in order to publish'
+                        'You must add at least one step after the trigger button in order to publish',
                     )
                 }
 
@@ -63,44 +64,44 @@ const useValidateWorkflowGraph = (
                         case 'automated_message':
                             node.data.errors = getAutomatedMessageNodeErrors(
                                 node,
-                                getVariableListForNode(node.id)
+                                getVariableListForNode(node.id),
                             )
                             break
                         case 'conditions':
                             node.data.errors = getConditionsNodeErrors(
                                 graph.edges,
                                 node,
-                                getVariableListForNode(node.id)
+                                getVariableListForNode(node.id),
                             )
                             break
                         case 'multiple_choices':
                             node.data.errors = getMultipleChoicesNodeErrors(
                                 node,
-                                getVariableListForNode(node.id)
+                                getVariableListForNode(node.id),
                             )
                             break
                         case 'text_reply':
                             node.data.errors = getTextReplyNodeErrors(
                                 node,
-                                getVariableListForNode(node.id)
+                                getVariableListForNode(node.id),
                             )
                             break
                         case 'file_upload':
                             node.data.errors = getFileUploadNodeErrors(
                                 node,
-                                getVariableListForNode(node.id)
+                                getVariableListForNode(node.id),
                             )
                             break
                         case 'order_selection':
                             node.data.errors = getOrderSelectionNodeErrors(
                                 node,
-                                getVariableListForNode(node.id)
+                                getVariableListForNode(node.id),
                             )
                             break
                         case 'http_request':
                             node.data.errors = getHTTPRequestNodeErrors(
                                 node,
-                                getVariableListForNode(node.id)
+                                getVariableListForNode(node.id),
                             )
                             break
                         case 'shopper_authentication':
@@ -109,7 +110,7 @@ const useValidateWorkflowGraph = (
                             node.data.errors =
                                 getOrderLineItemSelectionNodeErrors(
                                     node,
-                                    getVariableListForNode(node.id)
+                                    getVariableListForNode(node.id),
                                 )
                             break
                         case 'end':
@@ -118,7 +119,7 @@ const useValidateWorkflowGraph = (
                 })
             })
         },
-        [getVariableListForNode]
+        [getVariableListForNode],
     )
 }
 

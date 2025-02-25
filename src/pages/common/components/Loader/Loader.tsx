@@ -1,5 +1,6 @@
-import classnames from 'classnames'
 import React from 'react'
+
+import classnames from 'classnames'
 
 import css from './Loader.less'
 
@@ -31,10 +32,10 @@ export default function Loader({
             data-testid={dataTestId}
             role={role}
         >
-            <div className={css.inner} style={{minHeight}}>
+            <div className={css.inner} style={{ minHeight }}>
                 <i
                     className="icon-custom icon-circle-o-notch md-spin"
-                    style={{fontSize: size}}
+                    style={{ fontSize: size }}
                 />
                 {!inline && message && <div className="mt-3">{message}</div>}
             </div>

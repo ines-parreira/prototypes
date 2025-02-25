@@ -1,29 +1,30 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {render} from '@testing-library/react'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { render } from '@testing-library/react'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {User} from 'config/types/user'
-import {agents} from 'fixtures/agents'
-import {LegacyStatsFilters} from 'models/stat/types'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { User } from 'config/types/user'
+import { agents } from 'fixtures/agents'
+import { LegacyStatsFilters } from 'models/stat/types'
 import * as DrillDownModalTrigger from 'pages/stats/DrillDownModalTrigger'
-import {useAverageTalkTimeMetricPerAgent} from 'pages/stats/voice/hooks/metricsPerDimension'
-import {RootState, StoreDispatch} from 'state/types'
-import {initialState as agentPerformanceInitialState} from 'state/ui/stats/agentPerformanceSlice'
-import {AGENT_PERFORMANCE_SLICE_NAME} from 'state/ui/stats/constants'
-import {VoiceAgentsMetric} from 'state/ui/stats/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { useAverageTalkTimeMetricPerAgent } from 'pages/stats/voice/hooks/metricsPerDimension'
+import { RootState, StoreDispatch } from 'state/types'
+import { initialState as agentPerformanceInitialState } from 'state/ui/stats/agentPerformanceSlice'
+import { AGENT_PERFORMANCE_SLICE_NAME } from 'state/ui/stats/constants'
+import { VoiceAgentsMetric } from 'state/ui/stats/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
 import AverageTalkTimeCell from '../AverageTalkTimeCell'
 
 const DrillDownModalTriggerSpy = jest.spyOn(
     DrillDownModalTrigger,
-    'DrillDownModalTrigger'
+    'DrillDownModalTrigger',
 )
 
 const queryClient = mockQueryClient()
@@ -74,7 +75,7 @@ const renderComponent = () => {
             <Provider store={mockStore(state)}>
                 <AverageTalkTimeCell agent={agent} metricData={metricData} />
             </Provider>
-        </QueryClientProvider>
+        </QueryClientProvider>,
     )
 }
 
@@ -83,16 +84,16 @@ describe('AverageTalkTimeCell', () => {
         useMetricMock.mockReturnValue({
             isFetching: false,
             isError: false,
-            data: {value: null, decile: null, allData: []},
+            data: { value: null, decile: null, allData: [] },
         })
 
-        const {getByText} = renderComponent()
+        const { getByText } = renderComponent()
         expect(getByText('-')).toBeInTheDocument()
         expect(DrillDownModalTriggerSpy).toHaveBeenLastCalledWith(
             expect.objectContaining({
                 enabled: false,
             }),
-            {}
+            {},
         )
     })
 
@@ -100,10 +101,10 @@ describe('AverageTalkTimeCell', () => {
         useMetricMock.mockReturnValue({
             isFetching: false,
             isError: false,
-            data: {value: 12, decile: null, allData: []},
+            data: { value: 12, decile: null, allData: [] },
         })
 
-        const {getByText} = renderComponent()
+        const { getByText } = renderComponent()
         expect(getByText('12s')).toBeInTheDocument()
     })
 
@@ -111,10 +112,10 @@ describe('AverageTalkTimeCell', () => {
         useMetricMock.mockReturnValue({
             isFetching: false,
             isError: false,
-            data: {value: 125, decile: null, allData: []},
+            data: { value: 125, decile: null, allData: [] },
         })
 
-        const {getByText} = renderComponent()
+        const { getByText } = renderComponent()
         expect(getByText('2m 05s')).toBeInTheDocument()
     })
 
@@ -122,12 +123,12 @@ describe('AverageTalkTimeCell', () => {
         useMetricMock.mockReturnValue({
             isFetching: true,
             isError: false,
-            data: {value: 125, decile: null, allData: []},
+            data: { value: 125, decile: null, allData: [] },
         })
 
-        const {container} = renderComponent()
+        const { container } = renderComponent()
         expect(
-            container.getElementsByClassName('react-loading-skeleton')
+            container.getElementsByClassName('react-loading-skeleton'),
         ).toHaveLength(1)
     })
 })
@@ -143,10 +144,10 @@ describe('AverageTalkTimeCell with the new filters', () => {
         useMetricMock.mockReturnValue({
             isFetching: false,
             isError: false,
-            data: {value: 12, decile: null, allData: []},
+            data: { value: 12, decile: null, allData: [] },
         })
 
-        const {getByText} = renderComponent()
+        const { getByText } = renderComponent()
         expect(getByText('12s')).toBeInTheDocument()
     })
 })

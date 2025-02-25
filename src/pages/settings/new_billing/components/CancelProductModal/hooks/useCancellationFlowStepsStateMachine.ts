@@ -1,13 +1,13 @@
-import {useCallback, useState} from 'react'
+import { useCallback, useState } from 'react'
 
-import {CancellationFlowStep} from '../constants'
+import { CancellationFlowStep } from '../constants'
 
 const useCancellationFlowStepsStateMachine = () => {
     const [cancellationStep, setCancellationStep] =
         useState<CancellationFlowStep>(CancellationFlowStep.productFeaturesFOMO)
     const resetCancellationFlow = useCallback(
         () => setCancellationStep(CancellationFlowStep.productFeaturesFOMO),
-        [setCancellationStep]
+        [setCancellationStep],
     )
     const switchToNextStep = () => {
         switch (cancellationStep) {
@@ -23,7 +23,7 @@ const useCancellationFlowStepsStateMachine = () => {
         }
     }
 
-    return {cancellationStep, switchToNextStep, resetCancellationFlow}
+    return { cancellationStep, switchToNextStep, resetCancellationFlow }
 }
 
 export default useCancellationFlowStepsStateMachine

@@ -1,26 +1,28 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { useMemo } from 'react'
+
 import classNames from 'classnames'
 import _keyBy from 'lodash/keyBy'
-import React, {useMemo} from 'react'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import down from 'assets/img/icons/rating-down-white.svg'
 import star from 'assets/img/icons/rating-star.svg'
 import up from 'assets/img/icons/rating-up-white.svg'
-
-import {Article} from 'models/helpCenter/types'
-import {LanguageList} from 'pages/common/components/LanguageBulletList'
+import { Article } from 'models/helpCenter/types'
+import { LanguageList } from 'pages/common/components/LanguageBulletList'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import {Callbacks, useReorderDnD} from 'pages/common/hooks/useReorderDnD'
-import {ArticleRowActionTypes} from 'pages/settings/helpCenter/constants'
-import {useRatingScore} from 'pages/settings/helpCenter/hooks/useRatingScore'
-import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
-import {isNotPublished} from 'pages/settings/helpCenter/utils/helpCenter.utils'
-import {getDetailedFormattedDate, getFormattedDate} from 'utils/date'
+import { Callbacks, useReorderDnD } from 'pages/common/hooks/useReorderDnD'
+import { ArticleRowActionTypes } from 'pages/settings/helpCenter/constants'
+import { useRatingScore } from 'pages/settings/helpCenter/hooks/useRatingScore'
+import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
+import { isNotPublished } from 'pages/settings/helpCenter/utils/helpCenter.utils'
+import { getDetailedFormattedDate, getFormattedDate } from 'utils/date'
 
-import {useArticleRowActions} from '../../../../hooks/useArticleRowActions'
-import {TableActions} from '../../../TableActions'
+import { useArticleRowActions } from '../../../../hooks/useArticleRowActions'
+import { TableActions } from '../../../TableActions'
 import VisibilityCell from '../../../VisibilityCell/VisibilityCell'
+
 import css from './ArticleRow.less'
 
 export type RowEventListeners = {
@@ -31,7 +33,7 @@ export type RowEventListeners = {
         ev: React.MouseEvent,
         name: ArticleRowActionTypes,
         article: Article,
-        isArticleOrAncestorUnlisted: boolean
+        isArticleOrAncestorUnlisted: boolean,
     ) => void
 }
 
@@ -58,14 +60,14 @@ export const ArticleRow = ({
 }: Props): JSX.Element => {
     const locales = useSupportedLocales()
 
-    const {dragRef, dropRef, handlerId, isDragging} = useReorderDnD(
+    const { dragRef, dropRef, handlerId, isDragging } = useReorderDnD(
         {
             position,
             id: article.id,
             type: `ARTICLE-${categoryId ?? 'UNCATEGORIZED'}`,
         },
         [`ARTICLE-${categoryId ?? 'UNCATEGORIZED'}`],
-        {onHover: onMoveEntity, onDrop: onDropEntity}
+        { onHover: onMoveEntity, onDrop: onDropEntity },
     )
 
     const articleRowActions = useArticleRowActions(article.id)
@@ -86,19 +88,19 @@ export const ArticleRow = ({
 
     const ratingScore = useRatingScore(article.rating)
 
-    const {lastUpdate, lastUpdateDetailed} = useMemo(
+    const { lastUpdate, lastUpdateDetailed } = useMemo(
         () => ({
             lastUpdate: getFormattedDate(article.translation.updated_datetime),
             lastUpdateDetailed: getDetailedFormattedDate(
-                article.translation.updated_datetime
+                article.translation.updated_datetime,
             ),
         }),
-        [article]
+        [article],
     )
 
     const handleOnActionsClick = (
         ev: React.MouseEvent,
-        name: ArticleRowActionTypes
+        name: ArticleRowActionTypes,
     ) => {
         ev.stopPropagation()
 
@@ -116,7 +118,7 @@ export const ArticleRow = ({
             aria-label="open article"
             data-handler-id={handlerId}
             className={css.row}
-            style={{opacity}}
+            style={{ opacity }}
             onClick={() => onClickRow(article)}
         >
             <BodyCell
@@ -128,7 +130,7 @@ export const ArticleRow = ({
                     ref={dragRef as React.RefObject<HTMLDivElement>}
                     className={classNames(
                         css['drag-handler'],
-                        'material-icons'
+                        'material-icons',
                     )}
                 >
                     drag_indicator
@@ -138,7 +140,7 @@ export const ArticleRow = ({
                 {article.translation.title}
             </BodyCell>
             <BodyCell
-                style={{width: 85, minWidth: 85}}
+                style={{ width: 85, minWidth: 85 }}
                 className={css['nested-cell']}
             >
                 <div className={css.rating} id={`rating-${article.id}`}>
@@ -179,7 +181,7 @@ export const ArticleRow = ({
                 )}
             </BodyCell>
             <BodyCell
-                style={{width: 110, minWidth: 110}}
+                style={{ width: 110, minWidth: 110 }}
                 className={css['nested-cell']}
             >
                 <VisibilityCell
@@ -189,7 +191,7 @@ export const ArticleRow = ({
                     isDraft={isNotPublished(article)}
                 />
             </BodyCell>
-            <BodyCell style={{width: 105, minWidth: 105}}>
+            <BodyCell style={{ width: 105, minWidth: 105 }}>
                 {article.translation && (
                     <LanguageList
                         id={article.id}
@@ -200,7 +202,7 @@ export const ArticleRow = ({
                     />
                 )}
             </BodyCell>
-            <BodyCell style={{width: 105, minWidth: 105}}>
+            <BodyCell style={{ width: 105, minWidth: 105 }}>
                 <div id={`last-update-${article.id}`}>{lastUpdate}</div>
                 <Tooltip
                     delay={100}
@@ -215,7 +217,7 @@ export const ArticleRow = ({
                     {lastUpdateDetailed}
                 </Tooltip>
             </BodyCell>
-            <BodyCell style={{width: 120}} innerClassName={css.actions}>
+            <BodyCell style={{ width: 120 }} innerClassName={css.actions}>
                 <TableActions
                     actions={articleRowActions}
                     onClick={handleOnActionsClick}

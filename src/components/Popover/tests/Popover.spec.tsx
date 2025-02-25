@@ -1,5 +1,6 @@
-import {fireEvent, render, screen} from '@testing-library/react'
-import React, {ComponentProps, useRef} from 'react'
+import React, { ComponentProps, useRef } from 'react'
+
+import { fireEvent, render, screen } from '@testing-library/react'
 
 import Popover from '../Popover'
 
@@ -44,7 +45,7 @@ describe('<Popover />', () => {
                 buttonProps={{
                     onClick,
                 }}
-            />
+            />,
         )
 
         fireEvent.click(screen.getByText('Confirm'))
@@ -60,7 +61,7 @@ describe('<Popover />', () => {
                     children,
                     onClick,
                 }}
-            />
+            />,
         )
 
         expect(screen.getByText(children)).toBeInTheDocument()

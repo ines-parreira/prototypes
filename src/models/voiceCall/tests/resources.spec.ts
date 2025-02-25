@@ -1,16 +1,17 @@
-import {searchVoiceCalls as apiSearchVoiceCalls} from '@gorgias/api-client'
-import {SearchVoiceCalls200} from '@gorgias/api-types'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
-import {voiceCall} from 'fixtures/voiceCalls'
+import { searchVoiceCalls as apiSearchVoiceCalls } from '@gorgias/api-client'
+import { SearchVoiceCalls200 } from '@gorgias/api-types'
+
+import { voiceCall } from 'fixtures/voiceCalls'
 import client from 'models/api/resources'
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
 import {
-    listVoiceCalls,
-    listVoiceCallRecordings,
     listVoiceCallEvents,
+    listVoiceCallRecordings,
+    listVoiceCalls,
     searchVoiceCalls,
     searchVoiceCallsWithHighlights,
 } from '../resources'
@@ -28,7 +29,7 @@ describe('list voice calls resources', () => {
                 highlights: {},
             },
         ],
-        meta: {next_cursor: '', prev_cursor: null},
+        meta: { next_cursor: '', prev_cursor: null },
         object: 'list',
         uri: '/integrations/phone/search',
     }
@@ -39,18 +40,20 @@ describe('list voice calls resources', () => {
     describe('listVoiceCalls', () => {
         it('should resolve with a list of VoiceCalls on success', async () => {
             mockedServer
-                .onGet('/api/phone/voice-calls/', {params: {ticket_id: 123}})
-                .reply(200, {data: [voiceCall]})
-            const res = await listVoiceCalls({ticket_id: 123})
-            expect(res).toEqual({data: [voiceCall]})
+                .onGet('/api/phone/voice-calls/', {
+                    params: { ticket_id: 123 },
+                })
+                .reply(200, { data: [voiceCall] })
+            const res = await listVoiceCalls({ ticket_id: 123 })
+            expect(res).toEqual({ data: [voiceCall] })
         })
 
         it('should reject an error on fail', () => {
             mockedServer
                 .onGet('/api/phone/voice-calls/')
-                .reply(404, {message: 'error'})
+                .reply(404, { message: 'error' })
             return expect(listVoiceCalls()).rejects.toEqual(
-                new Error('Request failed with status code 404')
+                new Error('Request failed with status code 404'),
             )
         })
     })
@@ -59,19 +62,19 @@ describe('list voice calls resources', () => {
         it('should resolve with a list of VoiceCallRecordings on success', async () => {
             mockedServer
                 .onGet('/api/phone/voice-call-recordings/', {
-                    params: {call_id: 123},
+                    params: { call_id: 123 },
                 })
-                .reply(200, {data: [voiceCall]})
-            const res = await listVoiceCallRecordings({call_id: 123})
-            expect(res.data).toEqual({data: [voiceCall]})
+                .reply(200, { data: [voiceCall] })
+            const res = await listVoiceCallRecordings({ call_id: 123 })
+            expect(res.data).toEqual({ data: [voiceCall] })
         })
 
         it('should reject an error on fail', () => {
             mockedServer
                 .onGet('/api/phone/voice-call-recordings/')
-                .reply(404, {message: 'error'})
+                .reply(404, { message: 'error' })
             return expect(listVoiceCallRecordings()).rejects.toEqual(
-                new Error('Request failed with status code 404')
+                new Error('Request failed with status code 404'),
             )
         })
     })
@@ -80,26 +83,28 @@ describe('list voice calls resources', () => {
         it('should resolve with a list of VoiceCallEvents on success', async () => {
             mockedServer
                 .onGet('/api/phone/voice-call-events/', {
-                    params: {call_id: 123},
+                    params: { call_id: 123 },
                 })
-                .reply(200, {data: [voiceCall]})
-            const res = await listVoiceCallEvents({call_id: 123})
-            expect(res.data).toEqual({data: [voiceCall]})
+                .reply(200, { data: [voiceCall] })
+            const res = await listVoiceCallEvents({ call_id: 123 })
+            expect(res.data).toEqual({ data: [voiceCall] })
         })
 
         it('should reject an error on fail', () => {
             mockedServer
                 .onGet('/api/phone/voice-call-events/')
-                .reply(404, {message: 'error'})
+                .reply(404, { message: 'error' })
             return expect(listVoiceCallEvents()).rejects.toEqual(
-                new Error('Request failed with status code 404')
+                new Error('Request failed with status code 404'),
             )
         })
     })
 
     describe('searchVoiceCalls', () => {
         beforeEach(() => {
-            searchCallsMock.mockResolvedValue({data: defaultSearchData} as any)
+            searchCallsMock.mockResolvedValue({
+                data: defaultSearchData,
+            } as any)
         })
 
         it('should resolve with the call list and meta on success', async () => {
@@ -135,8 +140,8 @@ describe('list voice calls resources', () => {
 
             expect(searchCallsMock).toHaveBeenCalledWith(
                 options,
-                {cursor, limit},
-                {}
+                { cursor, limit },
+                {},
             )
         })
 
@@ -154,7 +159,7 @@ describe('list voice calls resources', () => {
                     search: '',
                 },
                 {},
-                {cancelToken: source.token}
+                { cancelToken: source.token },
             )
         })
 
@@ -166,19 +171,19 @@ describe('list voice calls resources', () => {
                 withHighlights: true,
             }
 
-            await searchVoiceCalls({...options, ...params})
+            await searchVoiceCalls({ ...options, ...params })
 
             expect(searchCallsMock).toHaveBeenCalledWith(
-                {...options},
-                {with_highlights: params.withHighlights},
-                {}
+                { ...options },
+                { with_highlights: params.withHighlights },
+                {},
             )
         })
     })
 
     describe('searchVoiceCallsWithHighlights', () => {
         it('should call searchTickets withHighlights and merge Tickets with their highlights', async () => {
-            const options = {search: 'foo'}
+            const options = { search: 'foo' }
 
             const response = await searchVoiceCallsWithHighlights(options)
 
@@ -186,8 +191,8 @@ describe('list voice calls resources', () => {
                 {
                     ...options,
                 },
-                {with_highlights: true},
-                {}
+                { with_highlights: true },
+                {},
             )
 
             expect(response.data.data).toEqual([

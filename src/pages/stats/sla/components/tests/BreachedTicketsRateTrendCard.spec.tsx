@@ -1,17 +1,18 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render, screen } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {useBreachedSlaTicketsTrend} from 'hooks/reporting/sla/useSLAsTicketsTrends'
-import {TREND_BADGE_FORMAT} from 'pages/stats/common/components/TrendBadge'
-import {formatMetricTrend, formatMetricValue} from 'pages/stats/common/utils'
-import {BreachedTicketsRateTrendCard} from 'pages/stats/sla/components/BreachedTicketsRateTrendCard'
-import {SlaMetricConfig} from 'pages/stats/sla/SlaConfig'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
-import {SlaMetric} from 'state/ui/stats/types'
-import {assumeMock} from 'utils/testing'
+import { useBreachedSlaTicketsTrend } from 'hooks/reporting/sla/useSLAsTicketsTrends'
+import { TREND_BADGE_FORMAT } from 'pages/stats/common/components/TrendBadge'
+import { formatMetricTrend, formatMetricValue } from 'pages/stats/common/utils'
+import { BreachedTicketsRateTrendCard } from 'pages/stats/sla/components/BreachedTicketsRateTrendCard'
+import { SlaMetricConfig } from 'pages/stats/sla/SlaConfig'
+import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
+import { SlaMetric } from 'state/ui/stats/types'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/sla/useSLAsTicketsTrends')
 const useBreachedSlaTicketsTrendMock = assumeMock(useBreachedSlaTicketsTrend)
@@ -29,7 +30,7 @@ describe('BreachedTicketsRateTrendCard', () => {
             },
         },
         ui: {
-            stats: {filters: uiStatsInitialState},
+            stats: { filters: uiStatsInitialState },
         },
     }
     const value = 5
@@ -50,24 +51,24 @@ describe('BreachedTicketsRateTrendCard', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <BreachedTicketsRateTrendCard />
-            </Provider>
+            </Provider>,
         )
 
         expect(
             screen.getByText(
                 formatMetricValue(
                     value,
-                    SlaMetricConfig[SlaMetric.BreachedTicketsRate].metricFormat
-                )
-            )
+                    SlaMetricConfig[SlaMetric.BreachedTicketsRate].metricFormat,
+                ),
+            ),
         ).toBeInTheDocument()
         expect(
             screen.getByText(
                 String(
                     formatMetricTrend(value, prevValue, TREND_BADGE_FORMAT)
-                        .formattedTrend
-                )
-            )
+                        .formattedTrend,
+                ),
+            ),
         ).toBeInTheDocument()
     })
 })

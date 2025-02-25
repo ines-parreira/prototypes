@@ -1,13 +1,13 @@
 import localForage from 'localforage'
-import {extendPrototype as extendGetItemsPrototype} from 'localforage-getitems'
-import {extendPrototype as extendObservablePrototype} from 'localforage-observable'
-import {extendPrototype as extendRemoveItemsPrototype} from 'localforage-removeitems'
+import { extendPrototype as extendGetItemsPrototype } from 'localforage-getitems'
+import { extendPrototype as extendObservablePrototype } from 'localforage-observable'
+import { extendPrototype as extendRemoveItemsPrototype } from 'localforage-removeitems'
 import Observable from 'zen-observable'
 
 const localforage = extendObservablePrototype(localForage)
 
 localforage.newObservable.factory = (subscribeFn) => {
-    return new Observable(({next, error, complete}) => {
+    return new Observable(({ next, error, complete }) => {
         subscribeFn({
             next,
             error,
@@ -47,7 +47,7 @@ class LocalForageManager {
         if (!this.tables[name]) {
             this.createStore(name)
         }
-        this.tables[name].configObservables({crossTabNotification: true})
+        this.tables[name].configObservables({ crossTabNotification: true })
         const observable = this.tables[name].newObservable({
             crossTabNotification: true,
         })

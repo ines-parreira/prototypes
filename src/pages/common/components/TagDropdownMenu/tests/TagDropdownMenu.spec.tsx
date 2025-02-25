@@ -1,5 +1,6 @@
-import {render} from '@testing-library/react'
 import React from 'react'
+
+import { render } from '@testing-library/react'
 
 import TagDropdownMenu from 'pages/common/components/TagDropdownMenu/TagDropdownMenu'
 
@@ -14,7 +15,7 @@ describe('TagDropdownMenu', () => {
         const menu = document.querySelector('.dropdown-menu')
 
         expect(menu).not.toBeNull()
-        expect(menu).not.toHaveStyle({width: customStyle.width})
+        expect(menu).not.toHaveStyle({ width: customStyle.width })
         if (menu !== null) {
             expect(window.getComputedStyle(menu)).not.toMatchObject({
                 width: customStyle.width,
@@ -26,7 +27,7 @@ describe('TagDropdownMenu', () => {
     })
 
     it('should pass props', () => {
-        const {container} = render(<TagDropdownMenu foo="bar" />)
+        const { container } = render(<TagDropdownMenu foo="bar" />)
 
         expect(container.firstChild).toHaveAttribute('foo', 'bar')
     })

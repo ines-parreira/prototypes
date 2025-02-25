@@ -1,8 +1,7 @@
 import MockAdapter from 'axios-mock-adapter'
 
-import {CreatePlaygroundBody} from 'models/aiAgentPlayground/types'
-
-import {customToneOfVoicePreviewFixture} from 'pages/aiAgent/fixtures/customToneOfVoicePreview.fixture'
+import { CreatePlaygroundBody } from 'models/aiAgentPlayground/types'
+import { customToneOfVoicePreviewFixture } from 'pages/aiAgent/fixtures/customToneOfVoicePreview.fixture'
 
 import authClient from '../../../../models/api/resources'
 import {
@@ -36,7 +35,7 @@ describe('message-processing', () => {
 
         it('creates the staging url', () => {
             expect(createBaseUrl(false, true)).toBe(
-                'https://aiagent.gorgias.rehab'
+                'https://aiagent.gorgias.rehab',
             )
         })
 
@@ -74,8 +73,8 @@ describe('message-processing', () => {
             }
 
             await expect(
-                createContextAndSubmitPlaygroundTicket(body)
-            ).resolves.toEqual(expect.objectContaining({status: 200}))
+                createContextAndSubmitPlaygroundTicket(body),
+            ).resolves.toEqual(expect.objectContaining({ status: 200 }))
         })
     })
 
@@ -87,9 +86,9 @@ describe('message-processing', () => {
 
             await expect(
                 createContextAndGenerateCustomToneOfVoicePreview(
-                    customToneOfVoicePreviewFixture
-                )
-            ).resolves.toEqual(expect.objectContaining({status: 200}))
+                    customToneOfVoicePreviewFixture,
+                ),
+            ).resolves.toEqual(expect.objectContaining({ status: 200 }))
         })
     })
 })

@@ -1,4 +1,4 @@
-import {RuleEngineData, RuleEngineRoutes} from '../ruleEngine'
+import { RuleEngineData, RuleEngineRoutes } from '../ruleEngine'
 
 export abstract class Task {
     public readonly display: boolean
@@ -9,10 +9,10 @@ export abstract class Task {
         public readonly caption: string,
         public readonly type: 'BASIC' | 'RECOMMENDED',
         protected readonly data: RuleEngineData,
-        protected readonly routes: RuleEngineRoutes
+        protected readonly routes: RuleEngineRoutes,
     ) {
         this.display = this.shouldBeDisplayed(data)
-        this.featureUrl = this.getFeatureUrl({data, routes})
+        this.featureUrl = this.getFeatureUrl({ data, routes })
     }
 
     protected abstract shouldBeDisplayed(data: RuleEngineData): boolean

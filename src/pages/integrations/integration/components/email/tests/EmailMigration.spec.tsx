@@ -1,20 +1,21 @@
-import {cleanup, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { cleanup, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 
 import {
     EmailMigrationBannerStatus,
     EmailMigrationStatus,
 } from 'models/integration/types'
-import {mockStore, renderWithRouter} from 'utils/testing'
+import { mockStore, renderWithRouter } from 'utils/testing'
 
 import EmailMigration from '../EmailMigration/EmailMigration'
 
 jest.mock('react-router-dom', () => {
     return {
         ...jest.requireActual('react-router-dom'),
-        Redirect: jest.fn(({to}: {to: string}) => `Redirected to ${to}`),
+        Redirect: jest.fn(({ to }: { to: string }) => `Redirected to ${to}`),
     } as Record<string, unknown>
 })
 
@@ -24,7 +25,7 @@ jest.mock('../EmailMigration/StartMigrationIntegrationsTable', () => () => (
 
 describe('EmailMigration', () => {
     const renderComponent = (
-        migrationBannerStatus: EmailMigrationBannerStatus | null
+        migrationBannerStatus: EmailMigrationBannerStatus | null,
     ) =>
         renderWithRouter(
             <Provider
@@ -36,7 +37,7 @@ describe('EmailMigration', () => {
                 } as any)}
             >
                 <EmailMigration />
-            </Provider>
+            </Provider>,
         )
 
     afterEach(cleanup)
@@ -58,9 +59,15 @@ describe('EmailMigration', () => {
     })
 
     it.each([
-        {status: EmailMigrationStatus.Enabled, testid: 'migration-not-started'},
-        {status: EmailMigrationStatus.Pending, testid: 'migration-pending'},
-        {status: EmailMigrationStatus.Completed, testid: 'migration-complete'},
+        {
+            status: EmailMigrationStatus.Enabled,
+            testid: 'migration-not-started',
+        },
+        { status: EmailMigrationStatus.Pending, testid: 'migration-pending' },
+        {
+            status: EmailMigrationStatus.Completed,
+            testid: 'migration-complete',
+        },
     ])('Displays correct step based on the status', async (state) => {
         renderComponent({
             status: state.status,

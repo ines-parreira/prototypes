@@ -1,26 +1,26 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
-
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {AiAgentNotificationType} from 'automate/notifications/types'
-import {account} from 'fixtures/account'
-import {useGetOrCreateAccountConfiguration} from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'
-import {AiAgentOnboardingState} from 'models/aiAgent/types'
-import {getOnboardingNotificationStateFixture} from 'pages/aiAgent/fixtures/onboardingNotificationState.fixture'
-import {getStoreConfigurationFixture} from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
-import {getHasAutomate} from 'state/billing/selectors'
-import {RootState, StoreDispatch} from 'state/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { AiAgentNotificationType } from 'automate/notifications/types'
+import { account } from 'fixtures/account'
+import { useGetOrCreateAccountConfiguration } from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'
+import { AiAgentOnboardingState } from 'models/aiAgent/types'
+import { getOnboardingNotificationStateFixture } from 'pages/aiAgent/fixtures/onboardingNotificationState.fixture'
+import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
+import { getHasAutomate } from 'state/billing/selectors'
+import { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
-import {useAiAgentOnboardingNotification} from '../useAiAgentOnboardingNotification'
+import { useAiAgentOnboardingNotification } from '../useAiAgentOnboardingNotification'
 import useMeetAiAgentNotifications from '../useMeetAiAgentNotification'
-import {useStoreConfiguration} from '../useStoreConfiguration'
+import { useStoreConfiguration } from '../useStoreConfiguration'
 
 jest.mock('state/billing/selectors')
 jest.mock('../useAiAgentOnboardingNotification')
@@ -29,10 +29,10 @@ jest.mock('hooks/aiAgent/useGetOrCreateAccountConfiguration')
 
 const mockGetHasAutomate = assumeMock(getHasAutomate)
 const mockUseGetOrCreateAccountConfiguration = assumeMock(
-    useGetOrCreateAccountConfiguration
+    useGetOrCreateAccountConfiguration,
 )
 const mockUseAiAgentOnboardingNotification = assumeMock(
-    useAiAgentOnboardingNotification
+    useAiAgentOnboardingNotification,
 )
 const mockUseStoreConfiguration = assumeMock(useStoreConfiguration)
 
@@ -49,13 +49,13 @@ const defaultState: Partial<RootState> = {
                 id: 1,
                 type: 'shopify',
                 name: 'test-shop1',
-                meta: {shop_name: 'test-shop1'},
+                meta: { shop_name: 'test-shop1' },
             },
             {
                 id: 2,
                 type: 'shopify',
                 name: 'test-shop2',
-                meta: {shop_name: 'test-shop2'},
+                meta: { shop_name: 'test-shop2' },
             },
         ],
     }),
@@ -97,7 +97,7 @@ describe('useMeetAiAgentNotifications', () => {
             isLoading: false,
         } as unknown as ReturnType<typeof useGetOrCreateAccountConfiguration>)
         mockUseAiAgentOnboardingNotification.mockReturnValue(
-            defaultUseAiAgentOnboardingNotification
+            defaultUseAiAgentOnboardingNotification,
         )
         mockUseStoreConfiguration.mockReturnValue({
             isLoading: false,
@@ -120,10 +120,10 @@ describe('useMeetAiAgentNotifications', () => {
             hasAutomateSubscription: true,
         })
         expect(
-            defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
+            defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification,
         ).toHaveBeenCalledTimes(2)
         expect(
-            defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
+            defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification,
         ).toHaveBeenCalledWith({
             aiAgentNotificationType: AiAgentNotificationType.MeetAiAgent,
         })
@@ -145,7 +145,7 @@ describe('useMeetAiAgentNotifications', () => {
             hasAutomateSubscription: true,
         })
         expect(
-            defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
+            defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification,
         ).not.toHaveBeenCalled()
     })
 
@@ -165,7 +165,7 @@ describe('useMeetAiAgentNotifications', () => {
             hasAutomateSubscription: true,
         })
         expect(
-            defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
+            defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification,
         ).not.toHaveBeenCalled()
     })
 
@@ -180,7 +180,7 @@ describe('useMeetAiAgentNotifications', () => {
         })
 
         expect(
-            defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
+            defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification,
         ).not.toHaveBeenCalled()
     })
 
@@ -195,7 +195,7 @@ describe('useMeetAiAgentNotifications', () => {
         })
 
         expect(
-            defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
+            defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification,
         ).not.toHaveBeenCalled()
     })
 
@@ -215,7 +215,7 @@ describe('useMeetAiAgentNotifications', () => {
             hasAutomateSubscription: true,
         })
         expect(
-            defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
+            defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification,
         ).not.toHaveBeenCalled()
     })
 
@@ -241,7 +241,7 @@ describe('useMeetAiAgentNotifications', () => {
             hasAutomateSubscription: true,
         })
         expect(
-            defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
+            defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification,
         ).not.toHaveBeenCalled()
     })
 
@@ -267,7 +267,7 @@ describe('useMeetAiAgentNotifications', () => {
             hasAutomateSubscription: true,
         })
         expect(
-            defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
+            defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification,
         ).not.toHaveBeenCalled()
     })
 
@@ -291,7 +291,7 @@ describe('useMeetAiAgentNotifications', () => {
             hasAutomateSubscription: true,
         })
         expect(
-            defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
+            defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification,
         ).not.toHaveBeenCalled()
     })
 
@@ -311,7 +311,7 @@ describe('useMeetAiAgentNotifications', () => {
             {
                 refetchOnWindowFocus: false,
                 enabled: false,
-            }
+            },
         )
 
         expect(mockUseAiAgentOnboardingNotification).toHaveBeenCalledTimes(2)
@@ -340,7 +340,7 @@ describe('useMeetAiAgentNotifications', () => {
         })
 
         expect(
-            defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification
+            defaultUseAiAgentOnboardingNotification.handleOnSendOrCancelNotification,
         ).not.toHaveBeenCalled()
     })
 })

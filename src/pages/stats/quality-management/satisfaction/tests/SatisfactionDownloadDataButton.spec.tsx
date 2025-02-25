@@ -1,17 +1,17 @@
-import {render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-
 import React from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {getCsvFileNameWithDates} from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
-import {SatisfactionDownloadDataButton} from 'pages/stats/quality-management/satisfaction/SatisfactionDownloadDataButton'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { getCsvFileNameWithDates } from 'hooks/reporting/support-performance/overview/useDownloadOverviewData'
+import { SatisfactionDownloadDataButton } from 'pages/stats/quality-management/satisfaction/SatisfactionDownloadDataButton'
 import {
     SATISFACTION_METRICS_FILE_NAME,
     useSatisfactionReportData,
 } from 'services/reporting/satisfactionReportingService'
-import {saveZippedFiles} from 'utils/file'
-import {assumeMock} from 'utils/testing'
+import { saveZippedFiles } from 'utils/file'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('services/reporting/satisfactionReportingService')
 const useSatisfactionReportDataMock = assumeMock(useSatisfactionReportData)
@@ -29,7 +29,7 @@ describe('SatisfactionDownloadDataButton', () => {
     }
     const fileName = getCsvFileNameWithDates(
         period,
-        SATISFACTION_METRICS_FILE_NAME
+        SATISFACTION_METRICS_FILE_NAME,
     )
     const files = {
         [fileName]: reportData,
@@ -52,7 +52,7 @@ describe('SatisfactionDownloadDataButton', () => {
             SegmentEvent.StatDownloadClicked,
             expect.objectContaining({
                 name: 'all-metrics',
-            })
+            }),
         )
     })
 
@@ -65,7 +65,7 @@ describe('SatisfactionDownloadDataButton', () => {
             SegmentEvent.StatDownloadClicked,
             expect.objectContaining({
                 name: 'all-metrics',
-            })
+            }),
         )
     })
 })

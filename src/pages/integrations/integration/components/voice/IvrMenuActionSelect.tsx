@@ -1,10 +1,13 @@
-import React, {useCallback, useRef, useState} from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 
 import {
     DEFAULT_IVR_DEFLECTION_CONFIRMATION_MESSAGE,
     IvrMenuActionType,
 } from 'models/integration/constants'
-import {IvrForwardCallMenuAction, IvrMenuAction} from 'models/integration/types'
+import {
+    IvrForwardCallMenuAction,
+    IvrMenuAction,
+} from 'models/integration/types'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
@@ -89,7 +92,7 @@ const IvrMenuActionSelect = ({
                 }
             }
         },
-        [value, onChange]
+        [value, onChange],
     )
 
     return (

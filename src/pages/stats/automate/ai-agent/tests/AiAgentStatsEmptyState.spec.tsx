@@ -1,10 +1,11 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {IntegrationType} from 'models/integration/types'
+import { render, screen } from '@testing-library/react'
+
+import { IntegrationType } from 'models/integration/types'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 
-import {AiAgentStatsEmptyState} from '../AiAgentStatsEmptyState'
+import { AiAgentStatsEmptyState } from '../AiAgentStatsEmptyState'
 
 jest.mock('pages/automate/common/hooks/useStoreIntegrations')
 const useStoreIntegrationsMock = useStoreIntegrations as jest.Mock
@@ -23,7 +24,7 @@ describe('AiAgentStatsEmptyState', () => {
     }: {
         storeIntegrations?: Array<{
             type: IntegrationType
-            meta: {shop_name: string}
+            meta: { shop_name: string }
         }>
     } = {}) => {
         useStoreIntegrationsMock.mockReturnValue(storeIntegrations)
@@ -35,27 +36,27 @@ describe('AiAgentStatsEmptyState', () => {
             storeIntegrations: [
                 {
                     type: IntegrationType.BigCommerce,
-                    meta: {shop_name: 'my-big-commerce-store'},
+                    meta: { shop_name: 'my-big-commerce-store' },
                 },
                 {
                     type: IntegrationType.Shopify,
-                    meta: {shop_name: 'my-shopify-store'},
+                    meta: { shop_name: 'my-shopify-store' },
                 },
             ],
         })
 
-        const button = screen.getByRole('button', {name: /Set Up AI Agent/i})
+        const button = screen.getByRole('button', { name: /Set Up AI Agent/i })
 
         expect(screen.getByText('AI Agent Statistics')).toBeInTheDocument()
         expect(button).toBeInTheDocument()
         expect(button.closest('a')).toHaveAttribute(
             'to',
-            '/app/automation/shopify/my-shopify-store/ai-agent'
+            '/app/automation/shopify/my-shopify-store/ai-agent',
         )
 
         expect(screen.getByAltText('AI Agent stats example')).toHaveAttribute(
             'src',
-            '/my-assets-path/img/paywalls/screens/ai_agent_stats_empty_state.png'
+            '/my-assets-path/img/paywalls/screens/ai_agent_stats_empty_state.png',
         )
     })
 
@@ -64,16 +65,16 @@ describe('AiAgentStatsEmptyState', () => {
             storeIntegrations: [
                 {
                     type: IntegrationType.BigCommerce,
-                    meta: {shop_name: 'my-big-commerce-store'},
+                    meta: { shop_name: 'my-big-commerce-store' },
                 },
                 {
                     type: IntegrationType.Magento2,
-                    meta: {shop_name: 'my-magento-store'},
+                    meta: { shop_name: 'my-magento-store' },
                 },
             ],
         })
 
-        const button = screen.getByRole('button', {name: /Set Up AI Agent/i})
+        const button = screen.getByRole('button', { name: /Set Up AI Agent/i })
         expect(button.closest('a')).toHaveAttribute('to', '/app/automation/')
     })
 })

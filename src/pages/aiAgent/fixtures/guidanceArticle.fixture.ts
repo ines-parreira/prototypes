@@ -1,8 +1,8 @@
-import {GuidanceArticle} from '../types'
+import { GuidanceArticle } from '../types'
 
 export const getGuidanceArticleFixture = (
     id: number,
-    overrides: Partial<Omit<GuidanceArticle, 'id'>> = {}
+    overrides: Partial<Omit<GuidanceArticle, 'id'>> = {},
 ): GuidanceArticle => ({
     id,
     title: `Title ${id}`,

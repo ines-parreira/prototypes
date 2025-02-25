@@ -1,9 +1,9 @@
 import React from 'react'
 
 import ChartCard from 'pages/stats/ChartCard'
-import {DashboardChartProps} from 'pages/stats/custom-reports/types'
-import {VoiceAgentsTable} from 'pages/stats/voice/components/VoiceAgentsTable/VoiceAgentsTable'
-import {VOICE_CALL_ACTIVITY_TITLE} from 'pages/stats/voice/constants/voiceAgents'
+import { DashboardChartProps } from 'pages/stats/custom-reports/types'
+import { VoiceAgentsTable } from 'pages/stats/voice/components/VoiceAgentsTable/VoiceAgentsTable'
+import { VOICE_CALL_ACTIVITY_TITLE } from 'pages/stats/voice/constants/voiceAgents'
 
 export function VoiceAgentsTableCard({
     chartId,

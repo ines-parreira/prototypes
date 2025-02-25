@@ -1,11 +1,11 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
 import sanitiseConfig from '../helpers/sanitiseConfig'
-import type {PanelConfig} from '../types'
+import type { PanelConfig } from '../types'
 
 export default function useSanitisedConfigs(
     configs: Record<string, PanelConfig>,
-    totalSize: number
+    totalSize: number,
 ) {
     return useMemo(
         () =>
@@ -14,8 +14,8 @@ export default function useSanitisedConfigs(
                     ...acc,
                     [name]: sanitiseConfig(config, totalSize),
                 }),
-                {} as typeof configs
+                {} as typeof configs,
             ),
-        [configs, totalSize]
+        [configs, totalSize],
     )
 }

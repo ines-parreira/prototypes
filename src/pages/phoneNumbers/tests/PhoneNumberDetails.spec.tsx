@@ -1,22 +1,23 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {phoneNumbers} from 'fixtures/newPhoneNumber'
-import {IntegrationType} from 'models/integration/types'
-import {PhoneNumber} from 'models/phoneNumber/types'
-import {RootState, StoreDispatch} from 'state/types'
+import { phoneNumbers } from 'fixtures/newPhoneNumber'
+import { IntegrationType } from 'models/integration/types'
+import { PhoneNumber } from 'models/phoneNumber/types'
+import { RootState, StoreDispatch } from 'state/types'
 
-import {PhoneNumberDetails} from '../PhoneNumberDetails'
+import { PhoneNumberDetails } from '../PhoneNumberDetails'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({
     entities: {
         newPhoneNumbers: phoneNumbers.reduce(
-            (acc, number) => ({...acc, [number.id]: number}),
-            {}
+            (acc, number) => ({ ...acc, [number.id]: number }),
+            {},
         ),
     },
 } as RootState)
@@ -24,28 +25,28 @@ const store = mockStore({
 describe('<PhoneNumberDetails/>', () => {
     describe('render()', () => {
         it('should render with a local US number', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <PhoneNumberDetails phoneNumber={phoneNumbers[0]} />
-                </Provider>
+                </Provider>,
             )
             expect(container).toMatchSnapshot()
         })
 
         it('should render with a toll-free CA number', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <PhoneNumberDetails phoneNumber={phoneNumbers[1]} />
-                </Provider>
+                </Provider>,
             )
             expect(container).toMatchSnapshot()
         })
 
         it('should render with a mobile GB number', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <PhoneNumberDetails phoneNumber={phoneNumbers[2]} />
-                </Provider>
+                </Provider>,
             )
             expect(container).toMatchSnapshot()
         })
@@ -54,16 +55,16 @@ describe('<PhoneNumberDetails/>', () => {
             const store = mockStore({
                 entities: {
                     phoneNumbers: phoneNumbers.reduce(
-                        (acc, number) => ({...acc, [number.id]: number}),
-                        {}
+                        (acc, number) => ({ ...acc, [number.id]: number }),
+                        {},
                     ),
                 },
             } as RootState)
 
-            const {container, queryByText} = render(
+            const { container, queryByText } = render(
                 <Provider store={store}>
                     <PhoneNumberDetails phoneNumber={phoneNumbers[1]} />
-                </Provider>
+                </Provider>,
             )
             expect(queryByText('SMS')).toBeTruthy()
             expect(container).toMatchSnapshot()
@@ -91,10 +92,10 @@ describe('<PhoneNumberDetails/>', () => {
                 },
             } as unknown as RootState)
 
-            const {container, queryAllByText} = render(
+            const { container, queryAllByText } = render(
                 <Provider store={store}>
                     <PhoneNumberDetails phoneNumber={phoneNumber} />
-                </Provider>
+                </Provider>,
             )
 
             expect(queryAllByText('Manage Integration').length).toBe(1)
@@ -115,10 +116,10 @@ describe('<PhoneNumberDetails/>', () => {
                 },
             } as unknown as RootState)
 
-            const {container, queryAllByText} = render(
+            const { container, queryAllByText } = render(
                 <Provider store={store}>
                     <PhoneNumberDetails phoneNumber={phoneNumber} />
-                </Provider>
+                </Provider>,
             )
 
             expect(queryAllByText('Manage Integration').length).toBe(0)
@@ -139,10 +140,10 @@ describe('<PhoneNumberDetails/>', () => {
                 },
             } as unknown as RootState)
 
-            const {container, queryAllByText} = render(
+            const { container, queryAllByText } = render(
                 <Provider store={store}>
                     <PhoneNumberDetails phoneNumber={phoneNumber} />
-                </Provider>
+                </Provider>,
             )
             expect(phoneNumber.capabilities.voice).toBe(true)
             expect(phoneNumber.capabilities.sms).toBe(false)

@@ -1,10 +1,11 @@
-import React, {useState} from 'react'
-import {ModalHeader} from 'reactstrap'
+import React, { useState } from 'react'
 
-import {StatsFilters} from 'models/stat/types'
+import { ModalHeader } from 'reactstrap'
+
+import { StatsFilters } from 'models/stat/types'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 
-import {useSearchQueryMetrics} from '../../hooks/useSearchQueryMetrics'
+import { useSearchQueryMetrics } from '../../hooks/useSearchQueryMetrics'
 import HelpCenterStatsTable, {
     TableCellType,
 } from '../HelpCenterStatsTable/HelpCenterStatsTable'
@@ -47,7 +48,7 @@ const SearchQueryModal = ({
         }
     }
 
-    const {isLoading, data} = useSearchQueryMetrics({
+    const { isLoading, data } = useSearchQueryMetrics({
         statsFilters,
         timezone,
         searchQuery,

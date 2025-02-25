@@ -8,7 +8,7 @@ import {
 } from 'react'
 
 export default function useRafState<S>(
-    initialState: S | (() => S)
+    initialState: S | (() => S),
 ): [S, Dispatch<SetStateAction<S>>] {
     const frame = useRef(0)
     const [state, setState] = useState(initialState)

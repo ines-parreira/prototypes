@@ -1,11 +1,12 @@
-import {render, screen, fireEvent} from '@testing-library/react'
-import {createDragDropManager} from 'dnd-core'
 import React from 'react'
-import {DndProvider} from 'react-dnd'
-import {HTML5Backend} from 'react-dnd-html5-backend'
-import {act} from 'react-dom/test-utils'
 
-import {FlowSettingsItem} from '../components/FlowSettingsItem'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { createDragDropManager } from 'dnd-core'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+import { act } from 'react-dom/test-utils'
+
+import { FlowSettingsItem } from '../components/FlowSettingsItem'
 
 const manager = createDragDropManager(HTML5Backend, undefined, undefined)
 
@@ -25,7 +26,7 @@ describe('FeatureSettings', () => {
                     onDrop={() => {}}
                     onCancel={() => {}}
                 />
-            </DndProvider>
+            </DndProvider>,
         )
 
         expect(screen.getByText('Feature Title')).toBeInTheDocument()
@@ -49,7 +50,7 @@ describe('FeatureSettings', () => {
                     onDrop={() => {}}
                     onCancel={() => {}}
                 />
-            </DndProvider>
+            </DndProvider>,
         )
 
         fireEvent.click(screen.getByText(/close/i))
@@ -72,7 +73,7 @@ describe('FeatureSettings', () => {
                     onDrop={onDrop}
                     onCancel={() => {}}
                 />
-            </DndProvider>
+            </DndProvider>,
         )
 
         // start dragging

@@ -1,1 +1,1 @@
-export {default} from './MigrationFailuresDetails'
+export { default } from './MigrationFailuresDetails'

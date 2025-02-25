@@ -1,12 +1,13 @@
-import type {EmailIntegration} from '@gorgias/api-queries'
-import pick from 'lodash/pick'
 import React from 'react'
 
-import {Form, FormField} from 'core/forms'
-import FormRow from 'pages/common/forms/FormRow'
+import pick from 'lodash/pick'
 
+import type { EmailIntegration } from '@gorgias/api-queries'
+
+import { Form, FormField } from 'core/forms'
+import FormRow from 'pages/common/forms/FormRow'
 import FormSection from 'pages/settings/SLAs/features/SLAForm/views/FormSection'
-import {isEmail} from 'utils'
+import { isEmail } from 'utils'
 
 import EmailIntegrationOnboardingButtons from './EmailIntegrationOnboardingButtons'
 import {
@@ -21,7 +22,8 @@ type Props = {
 }
 
 export default function EmailIntegrationConnectForm(props: Props) {
-    const {integration, errors, connectIntegration} = useEmailOnboarding(props)
+    const { integration, errors, connectIntegration } =
+        useEmailOnboarding(props)
 
     const defaultValues: Values = integration
         ? pick(integration, ['name', 'meta.address'])

@@ -1,14 +1,15 @@
+import React, { PropsWithRef, useCallback } from 'react'
+
 import cn from 'classnames'
-import React, {PropsWithRef, useCallback} from 'react'
 
 import BodyCell, {
     Props as BodyCellProps,
 } from 'pages/common/components/table/cells/BodyCell'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 
-import {OnTogglePolicyFn, UISLAPolicy} from '../types'
-
+import { OnTogglePolicyFn, UISLAPolicy } from '../types'
 import CellLinkWrapper from './CellLinkWrapper'
+
 import css from './ToggleCell.less'
 
 export default function ToggleCell({
@@ -22,14 +23,14 @@ export default function ToggleCell({
     bodyCellProps?: PropsWithRef<BodyCellProps>
     dragRef: React.Ref<HTMLElement>
 }) {
-    const {uuid, isActive, name} = policy
+    const { uuid, isActive, name } = policy
 
     const handleClick = useCallback(
         (_value: boolean, e: React.MouseEvent) => {
             e.preventDefault()
             onToggle(uuid, !isActive)
         },
-        [uuid, isActive, onToggle]
+        [uuid, isActive, onToggle],
     )
 
     return (

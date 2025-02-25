@@ -1,7 +1,8 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -10,13 +11,13 @@ import {
     useDeleteCustomFieldValue,
     useUpdateCustomFieldValue,
 } from 'custom-fields/hooks/queries/queries'
-import {axiosSuccessResponse} from 'fixtures/axiosResponse'
-import {ticketDropdownFieldDefinition} from 'fixtures/customField'
-import {NotificationStatus} from 'state/notifications/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {assumeMock} from 'utils/testing'
+import { axiosSuccessResponse } from 'fixtures/axiosResponse'
+import { ticketDropdownFieldDefinition } from 'fixtures/customField'
+import { NotificationStatus } from 'state/notifications/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { assumeMock } from 'utils/testing'
 
-import {useUpdateOrDeleteCustomerFieldValue} from '../useUpdateOrDeleteCustomerFieldValue'
+import { useUpdateOrDeleteCustomerFieldValue } from '../useUpdateOrDeleteCustomerFieldValue'
 
 const queryClient = mockQueryClient()
 
@@ -52,18 +53,18 @@ describe('useUpdateOrDeleteCustomerFieldValue', () => {
     }
 
     it('should not do any mutation if disabled', () => {
-        const {result} = renderHook(
+        const { result } = renderHook(
             () =>
                 useUpdateOrDeleteCustomerFieldValue(undefined, {
                     isDisabled: true,
                 }),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         <Provider store={mockStore}>{children}</Provider>
                     </QueryClientProvider>
                 ),
-            }
+            },
         )
 
         result.current.mutate([dataToMutate])
@@ -73,15 +74,15 @@ describe('useUpdateOrDeleteCustomerFieldValue', () => {
     })
 
     it('should call the correct mutation with passed params according to the existence of a value', () => {
-        const {result} = renderHook(
+        const { result } = renderHook(
             () => useUpdateOrDeleteCustomerFieldValue(),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         <Provider store={mockStore}>{children}</Provider>
                     </QueryClientProvider>
                 ),
-            }
+            },
         )
 
         result.current.mutate([dataToMutate])
@@ -91,7 +92,7 @@ describe('useUpdateOrDeleteCustomerFieldValue', () => {
         updateMutateMock.mockClear()
         deleteMutateMock.mockClear()
 
-        const dataToMutateWithValue = {...dataToMutate, value: 'foo'}
+        const dataToMutateWithValue = { ...dataToMutate, value: 'foo' }
         result.current.mutate([dataToMutateWithValue])
         expect(updateMutateMock).toHaveBeenNthCalledWith(1, [
             dataToMutateWithValue,
@@ -104,39 +105,39 @@ describe('useUpdateOrDeleteCustomerFieldValue', () => {
         renderHook(
             () =>
                 useUpdateOrDeleteCustomerFieldValue(
-                    {cacheTime},
-                    {isDisabled: true}
+                    { cacheTime },
+                    { isDisabled: true },
                 ),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         <Provider store={mockStore}>{children}</Provider>
                     </QueryClientProvider>
                 ),
-            }
+            },
         )
         expect(useUpdateCustomFieldValueMock.mock.calls[0][0]?.cacheTime).toBe(
-            cacheTime
+            cacheTime,
         )
     })
 
     it('should invalidate proper query data on success if not provided with another success handler', () => {
         const onSuccess = jest.fn()
         const invalidateQueryMock = jest.spyOn(queryClient, 'invalidateQueries')
-        const {rerender} = renderHook<
-            {onSuccess?: jest.Mock},
+        const { rerender } = renderHook<
+            { onSuccess?: jest.Mock },
             ReturnType<typeof useUpdateOrDeleteCustomerFieldValue>
         >((props) => useUpdateOrDeleteCustomerFieldValue(props, {}), {
-            wrapper: ({children}) => (
+            wrapper: ({ children }) => (
                 <QueryClientProvider client={queryClient}>
                     <Provider store={mockStore}>{children}</Provider>
                 </QueryClientProvider>
             ),
-            initialProps: {onSuccess},
+            initialProps: { onSuccess },
         })
 
         expect(useUpdateCustomFieldValueMock.mock.calls[0][0]?.onSuccess).toBe(
-            onSuccess
+            onSuccess,
         )
         useUpdateCustomFieldValueMock.mock.calls[0][0]?.onSuccess!(
             axiosSuccessResponse({
@@ -145,7 +146,7 @@ describe('useUpdateOrDeleteCustomerFieldValue', () => {
                 prediction: null,
             }),
             [dataToMutate],
-            undefined
+            undefined,
         )
         expect(invalidateQueryMock).not.toHaveBeenCalled()
 
@@ -158,12 +159,12 @@ describe('useUpdateOrDeleteCustomerFieldValue', () => {
                 prediction: null,
             }),
             [dataToMutate],
-            undefined
+            undefined,
         )
         expect(invalidateQueryMock).toHaveBeenLastCalledWith({
             queryKey: customFieldValueKeys.objectType(
                 dataToMutate.fieldType,
-                dataToMutate.holderId
+                dataToMutate.holderId,
             ),
         })
     })
@@ -174,8 +175,8 @@ describe('useUpdateOrDeleteCustomerFieldValue', () => {
             mockStore.clearActions()
 
             const onError = jest.fn()
-            renderHook(() => useUpdateOrDeleteCustomerFieldValue({onError}), {
-                wrapper: ({children}) => (
+            renderHook(() => useUpdateOrDeleteCustomerFieldValue({ onError }), {
+                wrapper: ({ children }) => (
                     <QueryClientProvider client={queryClient}>
                         <Provider store={mockStore}>{children}</Provider>
                     </QueryClientProvider>
@@ -188,7 +189,7 @@ describe('useUpdateOrDeleteCustomerFieldValue', () => {
                           isAxiosError: true,
                           response: {
                               status: 403,
-                              data: {error: {msg: 'Unauthorized'}},
+                              data: { error: { msg: 'Unauthorized' } },
                           },
                       }
                     : {
@@ -196,7 +197,7 @@ describe('useUpdateOrDeleteCustomerFieldValue', () => {
                           message: 'fooloulou',
                       },
                 [dataToMutate],
-                undefined
+                undefined,
             )
 
             expect(onError).toHaveBeenCalled()
@@ -210,6 +211,6 @@ describe('useUpdateOrDeleteCustomerFieldValue', () => {
                     },
                 },
             ])
-        }
+        },
     )
 })

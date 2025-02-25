@@ -1,24 +1,25 @@
 // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-import styled from '@emotion/styled'
 import React from 'react'
+
+import styled from '@emotion/styled'
 
 import {
     GORGIAS_CHAT_SSP_TEXTS,
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from 'config/integrations/gorgias_chat'
-
 import Card from 'gorgias-design-system/Cards/Card'
 import Conversation from 'gorgias-design-system/HomepageModules/Conversation/Conversation'
 import ChatMessageInput from 'gorgias-design-system/Input/ChatMessageInput'
-import {GorgiasChatAvatarSettings} from 'models/integration/types'
-import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
+import { GorgiasChatAvatarSettings } from 'models/integration/types'
+import { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
 
-import css from './ChatHomePreview.less'
 import ConversationAvatars from './ConversationAvatars'
 import GorgiasChatPoweredBy from './GorgiasChatPoweredBy'
-import {BoxIcon, ChevronRightIcon, PlaneIcon, AddIcon} from './icon-utils'
+import { AddIcon, BoxIcon, ChevronRightIcon, PlaneIcon } from './icon-utils'
 import PrivacyPolicyDisclaimer from './PrivacyPolicyDisclaimer'
+
+import css from './ChatHomePreview.less'
 
 const StyledCard = styled(Card)`
     padding: 8px 16px 8px 8px;
@@ -88,7 +89,7 @@ const ChatHomePreview: React.FC<Props> = ({
                             trailIcon={<PlaneIcon />}
                             trailIconAriaLabel="Send message"
                             readOnly
-                            style={{marginTop: '16px', maxHeight: '45px'}}
+                            style={{ marginTop: '16px', maxHeight: '45px' }}
                         />
                     </>
                 }

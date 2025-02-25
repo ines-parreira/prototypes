@@ -1,8 +1,8 @@
-import {UseQueryResult} from '@tanstack/react-query'
-import {renderHook} from '@testing-library/react-hooks'
+import { UseQueryResult } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment/moment'
 
-import {TicketChannel} from 'business/types/ticket'
+import { TicketChannel } from 'business/types/ticket'
 import {
     CHANNEL_DIMENSION,
     fetchWorkloadPerChannelDistribution,
@@ -12,13 +12,16 @@ import {
     useWorkloadPerChannelDistribution,
     useWorkloadPerChannelDistributionForPreviousPeriod,
 } from 'hooks/reporting/distributions'
-import {TicketDimension, TicketMeasure} from 'models/reporting/cubes/TicketCube'
-import {fetchPostReporting, usePostReporting} from 'models/reporting/queries'
-import {workloadPerChannelDistributionQueryFactory} from 'models/reporting/queryFactories/support-performance/workloadPerChannel'
-import {StatsFilters} from 'models/stat/types'
-import {humanizeChannel} from 'state/ticket/utils'
-import {formatReportingQueryDate, getPreviousPeriod} from 'utils/reporting'
-import {assumeMock} from 'utils/testing'
+import {
+    TicketDimension,
+    TicketMeasure,
+} from 'models/reporting/cubes/TicketCube'
+import { fetchPostReporting, usePostReporting } from 'models/reporting/queries'
+import { workloadPerChannelDistributionQueryFactory } from 'models/reporting/queryFactories/support-performance/workloadPerChannel'
+import { StatsFilters } from 'models/stat/types'
+import { humanizeChannel } from 'state/ticket/utils'
+import { formatReportingQueryDate, getPreviousPeriod } from 'utils/reporting'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('models/reporting/queries')
 const usePostReportingMock = assumeMock(usePostReporting)
@@ -48,22 +51,22 @@ describe('distributions', () => {
     describe('useWorkloadPerChannelDistribution', () => {
         it('should pass a Workload query and selectPerChannel callback', () => {
             renderHook(() =>
-                useWorkloadPerChannelDistribution(statsFilters, timezone)
+                useWorkloadPerChannelDistribution(statsFilters, timezone),
             )
 
             expect(usePostReportingMock).toHaveBeenCalledWith(
                 [
                     workloadPerChannelDistributionQueryFactory(
                         statsFilters,
-                        timezone
+                        timezone,
                     ),
                 ],
-                {select: expect.any(Function)}
+                { select: expect.any(Function) },
             )
             const select = usePostReportingMock.mock.calls[0][1]?.select
             expect(select).toBeTruthy()
             if (select) {
-                expect(select({data: {data: []}} as any)).toEqual([])
+                expect(select({ data: { data: [] } } as any)).toEqual([])
             }
         })
 
@@ -73,18 +76,18 @@ describe('distributions', () => {
                 useWorkloadPerChannelDistribution(
                     statsFilters,
                     timezone,
-                    enabled
-                )
+                    enabled,
+                ),
             )
 
             expect(usePostReportingMock).toHaveBeenCalledWith(
                 [
                     workloadPerChannelDistributionQueryFactory(
                         statsFilters,
-                        timezone
+                        timezone,
                     ),
                 ],
-                {select: expect.any(Function), enabled}
+                { select: expect.any(Function), enabled },
             )
         })
     })
@@ -106,20 +109,20 @@ describe('distributions', () => {
 
             const response = await fetchWorkloadPerChannelDistribution(
                 statsFilters,
-                timezone
+                timezone,
             )
 
             expect(fetchPostReportingMock).toHaveBeenCalledWith([
                 workloadPerChannelDistributionQueryFactory(
                     statsFilters,
-                    timezone
+                    timezone,
                 ),
             ])
             expect(response).toEqual({
                 data: selectPerChannel(
-                    {data: apiResponse} as any,
+                    { data: apiResponse } as any,
                     CHANNEL_DIMENSION,
-                    TICKET_COUNT_MEASURE
+                    TICKET_COUNT_MEASURE,
                 ),
             })
         })
@@ -130,8 +133,8 @@ describe('distributions', () => {
             renderHook(() =>
                 useWorkloadPerChannelDistributionForPreviousPeriod(
                     statsFilters,
-                    timezone
-                )
+                    timezone,
+                ),
             )
 
             expect(usePostReportingMock).toHaveBeenCalledWith(
@@ -141,15 +144,15 @@ describe('distributions', () => {
                             ...statsFilters,
                             period: getPreviousPeriod(statsFilters.period),
                         },
-                        timezone
+                        timezone,
                     ),
                 ],
-                {select: expect.any(Function)}
+                { select: expect.any(Function) },
             )
             const select = usePostReportingMock.mock.calls[0][1]?.select
             expect(select).toBeTruthy()
             if (select) {
-                expect(select({data: {data: []}} as any)).toEqual([])
+                expect(select({ data: { data: [] } } as any)).toEqual([])
             }
         })
 
@@ -159,8 +162,8 @@ describe('distributions', () => {
                 useWorkloadPerChannelDistributionForPreviousPeriod(
                     statsFilters,
                     timezone,
-                    enabled
-                )
+                    enabled,
+                ),
             )
 
             expect(usePostReportingMock).toHaveBeenCalledWith(
@@ -170,10 +173,10 @@ describe('distributions', () => {
                             ...statsFilters,
                             period: getPreviousPeriod(statsFilters.period),
                         },
-                        timezone
+                        timezone,
                     ),
                 ],
-                {select: expect.any(Function), enabled}
+                { select: expect.any(Function), enabled },
             )
         })
     })
@@ -196,7 +199,7 @@ describe('distributions', () => {
             const response =
                 await fetchWorkloadPerChannelDistributionForPreviousPeriod(
                     statsFilters,
-                    timezone
+                    timezone,
                 )
 
             expect(fetchPostReportingMock).toHaveBeenCalledWith([
@@ -205,14 +208,14 @@ describe('distributions', () => {
                         ...statsFilters,
                         period: getPreviousPeriod(statsFilters.period),
                     },
-                    timezone
+                    timezone,
                 ),
             ])
             expect(response).toEqual({
                 data: selectPerChannel(
-                    {data: apiResponse} as any,
+                    { data: apiResponse } as any,
                     CHANNEL_DIMENSION,
-                    TICKET_COUNT_MEASURE
+                    TICKET_COUNT_MEASURE,
                 ),
             })
         })
@@ -234,9 +237,9 @@ describe('distributions', () => {
             ]
 
             const selectedData = selectPerChannel(
-                {data: {data: queriedData}} as any,
+                { data: { data: queriedData } } as any,
                 dimension,
-                measure
+                measure,
             )
 
             expect(selectedData).toEqual([

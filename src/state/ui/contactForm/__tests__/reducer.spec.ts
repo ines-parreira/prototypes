@@ -1,4 +1,4 @@
-import {changeContactFormId} from 'state/ui/contactForm/actions'
+import { changeContactFormId } from 'state/ui/contactForm/actions'
 import reducer from 'state/ui/contactForm/reducer'
 
 describe('Contact Form/UI reducer', () => {

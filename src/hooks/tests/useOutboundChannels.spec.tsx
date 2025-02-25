@@ -1,26 +1,28 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {fromJS} from 'immutable'
+// sort-imports-ignore
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+
 import React from 'react'
-import {Provider} from 'react-redux'
-import {Store} from 'redux'
+
+import { renderHook } from '@testing-library/react-hooks'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import { Store } from 'redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-// eslint-disable-next-line import/order
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {TicketMessageSourceType} from 'business/types/ticket'
-import {applications as mockApplications} from 'fixtures/applications'
-import {channels as mockChannels} from 'fixtures/channels'
-import {applicationsQueryKeys as mockApplicationsQueryKeys} from 'models/application/queries'
-import {channelsQueryKeys as mockChannelsQueryKeys} from 'models/channel/queries'
-import {Integration} from 'models/integration/types'
-import {SourceAddress} from 'models/ticket/types'
+import { TicketMessageSourceType } from 'business/types/ticket'
+import { applications as mockApplications } from 'fixtures/applications'
+import { channels as mockChannels } from 'fixtures/channels'
+import { applicationsQueryKeys as mockApplicationsQueryKeys } from 'models/application/queries'
+import { channelsQueryKeys as mockChannelsQueryKeys } from 'models/channel/queries'
+import { Integration } from 'models/integration/types'
+import { SourceAddress } from 'models/ticket/types'
 import {
-    getApplications,
     Application,
+    getApplications,
     getApplicationsByChannel,
 } from 'services/applications'
-import {ChannelIdentifier, getChannelBySlug} from 'services/channels'
+import { ChannelIdentifier, getChannelBySlug } from 'services/channels'
 
 import useOutboundChannels, {
     privateFunctions,
@@ -68,7 +70,7 @@ mockedGetApplicationsByChannel.mockReturnValue(mockApplications)
 describe('useOutboundChannels', () => {
     const renderHookWithStore = (store: Store) =>
         renderHook(() => useOutboundChannels(), {
-            wrapper: ({children}) => (
+            wrapper: ({ children }) => (
                 <Provider store={store}>{children}</Provider>
             ),
         })
@@ -76,9 +78,9 @@ describe('useOutboundChannels', () => {
     describe('should return a list of new channels that can be used to create or reply to a ticket', () => {
         it('should include only new channels if legacy integrations are not present', () => {
             const store = configureMockStore()({
-                integrations: fromJS({integrations: []}),
+                integrations: fromJS({ integrations: [] }),
             })
-            const {result} = renderHookWithStore(store)
+            const { result } = renderHookWithStore(store)
             expect(result.current?.channels).toEqual([
                 getChannelBySlug('tiktok-shop'),
             ])
@@ -88,20 +90,20 @@ describe('useOutboundChannels', () => {
             mockedGetApplications.mockReturnValueOnce([])
             const store = configureMockStore()({
                 integrations: fromJS({
-                    integrations: [{type: 'email'}],
+                    integrations: [{ type: 'email' }],
                 }),
             })
-            const {result} = renderHookWithStore(store)
+            const { result } = renderHookWithStore(store)
             expect(result.current?.channels).toEqual(['email'])
         })
 
         it('should include both new and legacy channels if legacy integrations present', () => {
             const store = configureMockStore()({
                 integrations: fromJS({
-                    integrations: [{type: 'email'}, {type: 'sms'}],
+                    integrations: [{ type: 'email' }, { type: 'sms' }],
                 }),
             })
-            const {result} = renderHookWithStore(store)
+            const { result } = renderHookWithStore(store)
             expect(result.current?.channels).toEqual([
                 'email',
                 'sms',
@@ -114,23 +116,26 @@ describe('useOutboundChannels', () => {
         it('should have a default selected channel', () => {
             const store = configureMockStore()({
                 integrations: fromJS({
-                    integrations: [{type: 'email'}],
+                    integrations: [{ type: 'email' }],
                 }),
             })
-            const {result} = renderHookWithStore(store)
+            const { result } = renderHookWithStore(store)
             expect(result.current?.selectedChannel).toEqual('email')
         })
 
         it('should allow changing the selected channel (via newMessage.prepare) to a legacy channel', () => {
             const store = configureMockStore([thunk])({
-                ticket: fromJS({messages: []}),
+                ticket: fromJS({ messages: [] }),
                 integrations: fromJS({
                     integrations: [
-                        {type: 'email', meta: {address: 'test@gorgias.com'}},
+                        {
+                            type: 'email',
+                            meta: { address: 'test@gorgias.com' },
+                        },
                     ],
                 }),
             })
-            const {result} = renderHookWithStore(store)
+            const { result } = renderHookWithStore(store)
 
             expect(result.current?.selectedChannel).toEqual('email')
 
@@ -145,14 +150,17 @@ describe('useOutboundChannels', () => {
 
         it('should allow changing the selected channel (via newMessage.prepare) to a new channel', () => {
             const store = configureMockStore([thunk])({
-                ticket: fromJS({messages: []}),
+                ticket: fromJS({ messages: [] }),
                 integrations: fromJS({
                     integrations: [
-                        {type: 'email', meta: {address: 'test@gorgias.com'}},
+                        {
+                            type: 'email',
+                            meta: { address: 'test@gorgias.com' },
+                        },
                     ],
                 }),
             })
-            const {result} = renderHookWithStore(store)
+            const { result } = renderHookWithStore(store)
 
             expect(result.current?.selectedChannel).toEqual('email')
 
@@ -170,7 +178,7 @@ describe('useOutboundChannels', () => {
 describe('getReplyChannelsForTicket()', () => {
     it('should return an empty array if no applications are installed', () => {
         expect(getReplyChannelsForTicket({}, [])).toEqual([])
-        expect(getReplyChannelsForTicket({id: 1}, [])).toEqual([])
+        expect(getReplyChannelsForTicket({ id: 1 }, [])).toEqual([])
     })
 
     it('should NOT return legacy channels', () => {
@@ -203,7 +211,7 @@ describe('getReplyChannelsForTicket()', () => {
         it('should only return the channels that have aplications that can initiate tickets', () => {
             const expectedChannel = getChannelBySlug('tiktok-shop')
             const excludedChannel = getChannelBySlug(
-                'google-business-messenger'
+                'google-business-messenger',
             )
             const applications = [
                 {
@@ -232,7 +240,7 @@ describe('getReplyChannelsForTicket()', () => {
         it('should only return the channels that have aplications that can reply to tickets tickets AND are included in the reply options', () => {
             const expectedChannel = getChannelBySlug('tiktok-shop')
             const excludedChannel = getChannelBySlug(
-                'google-business-messenger'
+                'google-business-messenger',
             )
 
             const applications = [
@@ -328,12 +336,12 @@ describe('getLegacyReplySourcesForTicket()', () => {
             ]
 
             const integrations = [
-                {type: 'email'},
-                {type: 'phone'},
-                {type: 'whatsapp'},
-                {type: 'sms'},
-                {type: 'facebook'},
-                {type: 'twitter'},
+                { type: 'email' },
+                { type: 'phone' },
+                { type: 'whatsapp' },
+                { type: 'sms' },
+                { type: 'facebook' },
+                { type: 'twitter' },
             ] as Integration[]
 
             const ticket = {}
@@ -347,18 +355,18 @@ describe('getLegacyReplySourcesForTicket()', () => {
 
         it('should return email source for all email integration types', () => {
             const emailSource = ['email']
-            const emailIntegrations = [{type: 'email'}] as Integration[]
-            const gmailIntegrations = [{type: 'gmail'}] as Integration[]
-            const outlookIntegrations = [{type: 'outlook'}] as Integration[]
+            const emailIntegrations = [{ type: 'email' }] as Integration[]
+            const gmailIntegrations = [{ type: 'gmail' }] as Integration[]
+            const outlookIntegrations = [{ type: 'outlook' }] as Integration[]
             const ticket = {}
             expect(
-                getLegacyReplySourcesForTicket(ticket, emailIntegrations)
+                getLegacyReplySourcesForTicket(ticket, emailIntegrations),
             ).toEqual(emailSource)
             expect(
-                getLegacyReplySourcesForTicket(ticket, gmailIntegrations)
+                getLegacyReplySourcesForTicket(ticket, gmailIntegrations),
             ).toEqual(emailSource)
             expect(
-                getLegacyReplySourcesForTicket(ticket, outlookIntegrations)
+                getLegacyReplySourcesForTicket(ticket, outlookIntegrations),
             ).toEqual(emailSource)
         })
 
@@ -366,13 +374,13 @@ describe('getLegacyReplySourcesForTicket()', () => {
             const emailSource = ['email']
             const ticket = {}
             const integrations = [
-                {type: 'email'},
-                {type: 'gmail'},
-                {type: 'outlook'},
+                { type: 'email' },
+                { type: 'gmail' },
+                { type: 'outlook' },
             ] as Integration[]
 
             expect(
-                getLegacyReplySourcesForTicket(ticket, integrations)
+                getLegacyReplySourcesForTicket(ticket, integrations),
             ).toEqual(emailSource)
         })
     })
@@ -384,11 +392,11 @@ describe('getLegacyReplySourcesForTicket()', () => {
                     {
                         id: 1,
                         reply_options: {
-                            'internal-note': {answerable: true},
+                            'internal-note': { answerable: true },
                         },
                     },
-                    []
-                )
+                    [],
+                ),
             ).toEqual(['internal-note'])
         })
 
@@ -404,20 +412,20 @@ describe('getLegacyReplySourcesForTicket()', () => {
             const excludedSources = ['phone', 'facebook-mention']
 
             const integrations = [
-                {type: 'email'},
-                {type: 'sms'},
-                {type: 'whatsapp'},
-                {type: 'facebook'},
-                {type: 'twitter'},
+                { type: 'email' },
+                { type: 'sms' },
+                { type: 'whatsapp' },
+                { type: 'facebook' },
+                { type: 'twitter' },
             ] as Integration[]
 
             const ticket = {
                 id: 3,
                 reply_options: {
-                    'internal-note': {answerable: true},
-                    email: {answerable: true},
-                    sms: {answerable: true},
-                    'whatsapp-message': {answerable: true},
+                    'internal-note': { answerable: true },
+                    email: { answerable: true },
+                    sms: { answerable: true },
+                    'whatsapp-message': { answerable: true },
                 },
             }
             const sources = getLegacyReplySourcesForTicket(ticket, integrations)
@@ -432,9 +440,9 @@ describe('getLegacyReplySourcesForTicket()', () => {
             const excludedSources = ['internal-note', 'email', 'sms', 'phone']
 
             const integrations = [
-                {type: 'email'},
-                {type: 'sms'},
-                {type: 'phone'},
+                { type: 'email' },
+                { type: 'sms' },
+                { type: 'phone' },
             ] as Integration[]
 
             const ticket = {
@@ -452,25 +460,25 @@ describe('getLegacyReplySourcesForTicket()', () => {
         it('should always include email-forward if email is present', () => {
             const emailSources = ['email', 'email-forward']
 
-            const emailIntegrations = [{type: 'email'}] as Integration[]
-            const gmailIntegrations = [{type: 'gmail'}] as Integration[]
-            const outlookIntegrations = [{type: 'outlook'}] as Integration[]
+            const emailIntegrations = [{ type: 'email' }] as Integration[]
+            const gmailIntegrations = [{ type: 'gmail' }] as Integration[]
+            const outlookIntegrations = [{ type: 'outlook' }] as Integration[]
 
             const ticket = {
                 id: 3,
                 reply_options: {
-                    email: {answerable: true},
+                    email: { answerable: true },
                 },
             }
 
             expect(
-                getLegacyReplySourcesForTicket(ticket, emailIntegrations)
+                getLegacyReplySourcesForTicket(ticket, emailIntegrations),
             ).toEqual(emailSources)
             expect(
-                getLegacyReplySourcesForTicket(ticket, gmailIntegrations)
+                getLegacyReplySourcesForTicket(ticket, gmailIntegrations),
             ).toEqual(emailSources)
             expect(
-                getLegacyReplySourcesForTicket(ticket, outlookIntegrations)
+                getLegacyReplySourcesForTicket(ticket, outlookIntegrations),
             ).toEqual(emailSources)
         })
 
@@ -479,16 +487,16 @@ describe('getLegacyReplySourcesForTicket()', () => {
                 'yotpo-review-public-comment',
                 'yotpo-review-private-comment',
             ]
-            const yotpoIntegration = [{type: 'yotpo'}] as Integration[]
+            const yotpoIntegration = [{ type: 'yotpo' }] as Integration[]
             const ticket = {
                 id: 3,
                 reply_options: {
-                    'yotpo-review': {answerable: true},
+                    'yotpo-review': { answerable: true },
                 },
             }
 
             expect(
-                getLegacyReplySourcesForTicket(ticket, yotpoIntegration)
+                getLegacyReplySourcesForTicket(ticket, yotpoIntegration),
             ).toEqual(yotpoSources)
         })
 
@@ -496,19 +504,19 @@ describe('getLegacyReplySourcesForTicket()', () => {
             const ticket = {
                 id: 3,
                 reply_options: {
-                    'internal-note': {answerable: true},
-                    email: {answerable: true},
+                    'internal-note': { answerable: true },
+                    email: { answerable: true },
                 },
             }
 
             const integrations = [
-                {type: 'email'},
-                {type: 'gmail'},
-                {type: 'outlook'},
+                { type: 'email' },
+                { type: 'gmail' },
+                { type: 'outlook' },
             ] as Integration[]
 
             expect(
-                getLegacyReplySourcesForTicket(ticket, integrations)
+                getLegacyReplySourcesForTicket(ticket, integrations),
             ).toEqual(['internal-note', 'email', 'email-forward'])
         })
     })
@@ -517,18 +525,20 @@ describe('getLegacyReplySourcesForTicket()', () => {
 describe('getSelectedChannel()', () => {
     it('should infer the selected channel from a given ticket message source', () => {
         expect(
-            getSelectedChannel({type: TicketMessageSourceType.Email})
+            getSelectedChannel({ type: TicketMessageSourceType.Email }),
         ).toEqual('email')
 
         expect(
             getSelectedChannel({
                 type: TicketMessageSourceType.Email,
-                extra: {forward: true},
-            })
+                extra: { forward: true },
+            }),
         ).toEqual('email-forward')
 
         expect(
-            getSelectedChannel({type: 'tiktok-shop' as TicketMessageSourceType})
+            getSelectedChannel({
+                type: 'tiktok-shop' as TicketMessageSourceType,
+            }),
         ).toEqual(getChannelBySlug('tiktok-shop'))
     })
 })
@@ -536,7 +546,7 @@ describe('getSelectedChannel()', () => {
 describe('useSendersForSelectedChannel()', () => {
     const renderHookWithStore = (store: Store) =>
         renderHook(() => useSendersForSelectedChannel(), {
-            wrapper: ({children}) => (
+            wrapper: ({ children }) => (
                 <Provider store={store}>{children}</Provider>
             ),
         })
@@ -550,10 +560,10 @@ describe('useSendersForSelectedChannel()', () => {
             }))
             const store = configureMockStore()({
                 integrations: fromJS({
-                    integrations: [{type: 'email'}],
+                    integrations: [{ type: 'email' }],
                 }),
             })
-            const {result} = renderHookWithStore(store)
+            const { result } = renderHookWithStore(store)
             expect(result.current?.senders).toEqual([])
         })
 
@@ -580,7 +590,7 @@ describe('useSendersForSelectedChannel()', () => {
                     ],
                 }),
             })
-            const {result} = renderHookWithStore(store)
+            const { result } = renderHookWithStore(store)
             expect(result.current?.senders).toEqual([
                 {
                     address: 'theshop',
@@ -621,7 +631,7 @@ describe('useSendersForSelectedChannel()', () => {
                         ],
                     }),
                 })
-                const {result} = renderHookWithStore(store)
+                const { result } = renderHookWithStore(store)
                 expect(result.current?.selectedSender).toEqual({
                     address: 'sendershop',
                     name: 'Sender Shop',
@@ -659,7 +669,7 @@ describe('useSendersForSelectedChannel()', () => {
                         ],
                     }),
                 })
-                const {result} = renderHookWithStore(store)
+                const { result } = renderHookWithStore(store)
                 expect(result.current?.selectedSender).toEqual({
                     address: 'sendershop',
                     name: 'Sender Shop',

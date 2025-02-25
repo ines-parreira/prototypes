@@ -1,8 +1,10 @@
-import {Label} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
-import React, {useRef, useState} from 'react'
+import React, { useRef, useState } from 'react'
 
-import {BigCommerceProductSelectModifier} from 'models/integration/types'
+import classnames from 'classnames'
+
+import { Label } from '@gorgias/merchant-ui-kit'
+
+import { BigCommerceProductSelectModifier } from 'models/integration/types'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
@@ -10,8 +12,9 @@ import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
 
+import { FieldProps } from './types'
+
 import sharedCss from './Shared.less'
-import {FieldProps} from './types'
 
 export const ModifierSelect = ({
     modifier,
@@ -24,7 +27,7 @@ export const ModifierSelect = ({
 
     const [isSelectOpen, setIsSelectOpen] = useState(false)
 
-    const label = modifier.option_values.find(({id}) => id === value)?.label
+    const label = modifier.option_values.find(({ id }) => id === value)?.label
     const hasError = Boolean(error)
 
     return (
@@ -49,7 +52,7 @@ export const ModifierSelect = ({
                             contained
                         >
                             <DropdownBody>
-                                {modifier.option_values.map(({label, id}) => (
+                                {modifier.option_values.map(({ label, id }) => (
                                     <DropdownItem
                                         key={id}
                                         autoFocus

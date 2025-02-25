@@ -1,4 +1,4 @@
-import {PageInteractionsData} from '../useFetchPageInteractionsData'
+import { PageInteractionsData } from '../useFetchPageInteractionsData'
 
 type AllKeys = keyof PageInteractionsDataFixture
 type ConfiguredPageInteractionsDataFixture<

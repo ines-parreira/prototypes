@@ -1,26 +1,27 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
+import { render } from '@testing-library/react'
+
 import ActionButtonsGroup from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButtonsGroup'
-import {renderWithStore} from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 describe('ActionButtonsGroup component', () => {
     const baseAction = {
-        options: [{value: 'option1', label: 'Option 1'}],
+        options: [{ value: 'option1', label: 'Option 1' }],
         child: <div>Option 1</div>,
         title: <div>Option 1</div>,
     }
 
     it("should render null if there's no actions", () => {
-        const {container} = render(
-            <ActionButtonsGroup actions={[]} payload={{}} />
+        const { container } = render(
+            <ActionButtonsGroup actions={[]} payload={{}} />,
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should not render the dropdown if there 3 or less actions', () => {
-        const {container} = renderWithStore(
+        const { container } = renderWithStore(
             <ActionButtonsGroup
                 actions={[
                     {
@@ -38,14 +39,14 @@ describe('ActionButtonsGroup component', () => {
                 ]}
                 payload={{}}
             />,
-            {}
+            {},
         )
 
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render the dropdown if there more than 3 actions', () => {
-        const {container} = renderWithStore(
+        const { container } = renderWithStore(
             <ActionButtonsGroup
                 actions={[
                     {
@@ -67,7 +68,7 @@ describe('ActionButtonsGroup component', () => {
                 ]}
                 payload={{}}
             />,
-            {}
+            {},
         )
 
         expect(container.firstChild).toMatchSnapshot()

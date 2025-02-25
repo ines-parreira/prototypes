@@ -1,11 +1,12 @@
-import React, {useCallback, useMemo, useState} from 'react'
-import {Prompt} from 'react-router-dom'
-import {Container} from 'reactstrap'
+import React, { useCallback, useMemo, useState } from 'react'
+
+import { Prompt } from 'react-router-dom'
+import { Container } from 'reactstrap'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import WorkflowVisualBuilder from 'pages/automate/actionsPlatform/components/visualBuilder/WorkflowVisualBuilder'
-import {useVisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
-import {areGraphsEqual} from 'pages/automate/workflows/models/visualBuilderGraph.model'
+import { useVisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
+import { areGraphsEqual } from 'pages/automate/workflows/models/visualBuilderGraph.model'
 import {
     LLMPromptTriggerNodeType,
     VisualBuilderGraph,
@@ -17,8 +18,8 @@ import UnsavedChangesModal from 'pages/common/components/UnsavedChangesModal'
 import useUnsavedChangesPrompt from 'pages/common/components/useUnsavedChangesPrompt'
 import Caption from 'pages/common/forms/Caption/Caption'
 import TextInput from 'pages/common/forms/input/TextInput'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 import css from './ActionsPlatformTemplateVisualBuilderView.less'
 
@@ -37,7 +38,7 @@ const ActionsPlatformTemplateVisualBuilderView = ({
     onExit,
     onSave,
 }: Props) => {
-    const {visualBuilderGraph: visualBuilderGraphDirty, dispatch} =
+    const { visualBuilderGraph: visualBuilderGraphDirty, dispatch } =
         useVisualBuilderContext<LLMPromptTriggerNodeType>()
 
     const [isUnsavedChangesModalOpen, setIsUnsavedChangesModalOpen] =
@@ -47,7 +48,7 @@ const ActionsPlatformTemplateVisualBuilderView = ({
 
     const isVisualBuilderGraphDirty = useMemo(
         () => !areGraphsEqual(visualBuilderGraph, visualBuilderGraphDirty),
-        [visualBuilderGraph, visualBuilderGraphDirty]
+        [visualBuilderGraph, visualBuilderGraphDirty],
     )
 
     const handleIsErrored = useCallback((graph: VisualBuilderGraph) => {
@@ -70,7 +71,7 @@ const ActionsPlatformTemplateVisualBuilderView = ({
             notify({
                 status: NotificationStatus.Error,
                 message: 'Complete or delete incomplete steps in order to save',
-            })
+            }),
         )
     }, [appDispatch])
 
@@ -79,7 +80,7 @@ const ActionsPlatformTemplateVisualBuilderView = ({
             notify({
                 status: NotificationStatus.Success,
                 message: 'Successfully updated Action',
-            })
+            }),
         )
     }, [appDispatch])
 
@@ -115,7 +116,7 @@ const ActionsPlatformTemplateVisualBuilderView = ({
                             onClick={() => {
                                 if (isVisualBuilderGraphDirty) {
                                     const graph = handleValidate(
-                                        handleTouch(visualBuilderGraphDirty)
+                                        handleTouch(visualBuilderGraphDirty),
                                     )
                                     const isErrored = handleIsErrored(graph)
 
@@ -177,7 +178,7 @@ const ActionsPlatformTemplateVisualBuilderView = ({
                 }}
                 onSave={() => {
                     const graph = handleValidate(
-                        handleTouch(visualBuilderGraphDirty)
+                        handleTouch(visualBuilderGraphDirty),
                     )
                     const isErrored = handleIsErrored(graph)
 

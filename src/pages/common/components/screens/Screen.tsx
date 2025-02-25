@@ -1,12 +1,12 @@
-import React, {HTMLProps, useContext} from 'react'
+import React, { HTMLProps, useContext } from 'react'
 
-import {ScreensContext} from './Screens'
+import { ScreensContext } from './Screens'
 
 type Props = {
     name: string
 } & HTMLProps<HTMLDivElement>
 
-const Screen = ({children, name, ...props}: Props) => {
+const Screen = ({ children, name, ...props }: Props) => {
     const screensContext = useContext(ScreensContext)
 
     if (screensContext == null) {

@@ -7,7 +7,7 @@ type Props = {
     baseURL: string
 }
 
-export default function BackButton({baseURL}: Props) {
+export default function BackButton({ baseURL }: Props) {
     return (
         <Button
             onClick={() => history.push(baseURL)}

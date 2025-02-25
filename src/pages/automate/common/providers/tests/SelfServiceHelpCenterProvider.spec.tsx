@@ -1,15 +1,16 @@
-import {render, screen, waitFor} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render, screen, waitFor } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {HelpCenter} from 'models/helpCenter/types'
-import {HELP_CENTER_MAX_CREATION} from 'pages/settings/helpCenter/constants'
-import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import {helpCentersFetched} from 'state/entities/helpCenter/helpCenters'
-import {assumeMock} from 'utils/testing'
+import { HelpCenter } from 'models/helpCenter/types'
+import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
+import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import { helpCentersFetched } from 'state/entities/helpCenter/helpCenters'
+import { assumeMock } from 'utils/testing'
 
 import SelfServiceHelpCentersProvider from '../SelfServiceHelpCentersProvider'
 
@@ -73,7 +74,7 @@ describe('SelfServiceHelpCentersProvider', () => {
 
     it('should fetch and dispatch help centers list', async () => {
         mockClient.listHelpCenters.mockResolvedValue({
-            data: {data: mockHelpCentersList},
+            data: { data: mockHelpCentersList },
         })
 
         render(
@@ -81,7 +82,7 @@ describe('SelfServiceHelpCentersProvider', () => {
                 <SelfServiceHelpCentersProvider>
                     <div>Child Component</div>
                 </SelfServiceHelpCentersProvider>
-            </Provider>
+            </Provider>,
         )
 
         await waitFor(() => {
@@ -92,7 +93,7 @@ describe('SelfServiceHelpCentersProvider', () => {
         })
 
         expect(mockDispatch).toHaveBeenCalledWith(
-            helpCentersFetched(mockHelpCentersList)
+            helpCentersFetched(mockHelpCentersList),
         )
         expect(screen.getByText('Child Component')).toBeInTheDocument()
     })
@@ -107,7 +108,7 @@ describe('SelfServiceHelpCentersProvider', () => {
                 <SelfServiceHelpCentersProvider>
                     <div>Child Component</div>
                 </SelfServiceHelpCentersProvider>
-            </Provider>
+            </Provider>,
         )
 
         await waitFor(() => {

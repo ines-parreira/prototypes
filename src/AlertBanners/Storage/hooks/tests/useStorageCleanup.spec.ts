@@ -1,9 +1,9 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {BannerCategories} from '../../../types'
-import {STORAGE_CLEAR_TIMEOUT} from '../../constants'
-import {AlertBannerStorage} from '../../types'
-import {useStorageCleanup} from '../useStorageCleanup'
+import { BannerCategories } from '../../../types'
+import { STORAGE_CLEAR_TIMEOUT } from '../../constants'
+import { AlertBannerStorage } from '../../types'
+import { useStorageCleanup } from '../useStorageCleanup'
 
 const storage: AlertBannerStorage = {
     [BannerCategories.STATUS_PAGE_INCIDENT]: {
@@ -20,12 +20,12 @@ describe('useStorageCleanup', () => {
     it('should call passed function with a cleaned up state, once', () => {
         const setStorageMock = jest.fn()
 
-        const {rerender} = renderHook(
-            ({storage, setStorageMock}) =>
+        const { rerender } = renderHook(
+            ({ storage, setStorageMock }) =>
                 useStorageCleanup(storage, setStorageMock),
-            {initialProps: {storage, setStorageMock}}
+            { initialProps: { storage, setStorageMock } },
         )
-        rerender({storage, setStorageMock})
+        rerender({ storage, setStorageMock })
 
         expect(setStorageMock).toHaveBeenCalledWith({
             [BannerCategories.STATUS_PAGE_INCIDENT]:

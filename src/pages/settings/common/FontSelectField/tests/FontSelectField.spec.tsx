@@ -1,9 +1,10 @@
-import {render} from '@testing-library/react'
-import _noop from 'lodash/noop'
 import React from 'react'
 
-import {AGENT_ADDED_FONTS} from '../constants'
-import {FontSelectField} from '../FontSelectField'
+import { render } from '@testing-library/react'
+import _noop from 'lodash/noop'
+
+import { AGENT_ADDED_FONTS } from '../constants'
+import { FontSelectField } from '../FontSelectField'
 
 describe('<FontSelectField />', () => {
     const defaultFonts = [
@@ -22,7 +23,7 @@ describe('<FontSelectField />', () => {
     it('should download custom fonts', () => {
         localStorage.setItem(
             AGENT_ADDED_FONTS,
-            JSON.stringify(['Roboto', 'Aclonica'])
+            JSON.stringify(['Roboto', 'Aclonica']),
         )
         render(
             <FontSelectField
@@ -30,24 +31,24 @@ describe('<FontSelectField />', () => {
                 placeholder={placeholder}
                 value="Abracadabra"
                 onChange={_noop}
-            />
+            />,
         )
 
         const link = document.querySelector('link') as HTMLLinkElement
         expect(link.href).toStrictEqual(
-            'https://fonts.googleapis.com/css2?family=Roboto&family=Aclonica&family=Abracadabra&display=swap'
+            'https://fonts.googleapis.com/css2?family=Roboto&family=Aclonica&family=Abracadabra&display=swap',
         )
     })
 
     it('matches snapshot', () => {
         localStorage.setItem(AGENT_ADDED_FONTS, JSON.stringify(['Roboto']))
-        const {container} = render(
+        const { container } = render(
             <FontSelectField
                 defaultFonts={defaultFonts}
                 placeholder={placeholder}
                 value="font"
                 onChange={_noop}
-            />
+            />,
         )
 
         expect(container).toMatchSnapshot()
@@ -55,13 +56,13 @@ describe('<FontSelectField />', () => {
 
     it('should display headers if fonts in local storage', () => {
         localStorage.setItem(AGENT_ADDED_FONTS, JSON.stringify(['Roboto']))
-        const {getByText} = render(
+        const { getByText } = render(
             <FontSelectField
                 defaultFonts={defaultFonts}
                 placeholder={placeholder}
                 value="font"
                 onChange={_noop}
-            />
+            />,
         )
 
         getByText('RECENTLY ADDED')
@@ -70,13 +71,13 @@ describe('<FontSelectField />', () => {
 
     it('should not display headers if one font in local storage and it is currently used', () => {
         localStorage.setItem(AGENT_ADDED_FONTS, JSON.stringify(['Roboto']))
-        const {queryByText} = render(
+        const { queryByText } = render(
             <FontSelectField
                 defaultFonts={defaultFonts}
                 placeholder={placeholder}
                 value="Roboto"
                 onChange={_noop}
-            />
+            />,
         )
 
         expect(queryByText('RECENTLY ADDED')).toBeNull()
@@ -84,13 +85,13 @@ describe('<FontSelectField />', () => {
     })
 
     it('should not display headers if no fonts in local storage', () => {
-        const {queryByText} = render(
+        const { queryByText } = render(
             <FontSelectField
                 defaultFonts={defaultFonts}
                 placeholder={placeholder}
                 value="Roboto"
                 onChange={_noop}
-            />
+            />,
         )
 
         expect(queryByText('RECENTLY ADDED')).toBeNull()

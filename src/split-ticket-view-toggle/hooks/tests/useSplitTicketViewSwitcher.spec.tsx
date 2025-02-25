@@ -1,19 +1,19 @@
-import {renderHook} from '@testing-library/react-hooks'
-
-import {createMemoryHistory, MemoryHistory} from 'history'
 import React from 'react'
-import {Provider} from 'react-redux'
-import {Route, Router} from 'react-router-dom'
 
-import {SplitTicketViewProvider} from 'split-ticket-view-toggle'
-import {mockStore} from 'utils/testing'
+import { renderHook } from '@testing-library/react-hooks'
+import { createMemoryHistory, MemoryHistory } from 'history'
+import { Provider } from 'react-redux'
+import { Route, Router } from 'react-router-dom'
+
+import { SplitTicketViewProvider } from 'split-ticket-view-toggle'
+import { mockStore } from 'utils/testing'
 
 import useSplitTicketViewSwitcher from '../useSplitTicketViewSwitcher'
 
 function renderSwitcherHook(route: string, path: string = '/'): MemoryHistory {
-    const history = createMemoryHistory({initialEntries: [route]})
+    const history = createMemoryHistory({ initialEntries: [route] })
     const store = mockStore({})
-    const wrapper = ({children}: any) => (
+    const wrapper = ({ children }: any) => (
         <Provider store={store}>
             <Router history={history}>
                 <Route path={path}>
@@ -24,7 +24,7 @@ function renderSwitcherHook(route: string, path: string = '/'): MemoryHistory {
             </Router>
         </Provider>
     )
-    renderHook(() => useSplitTicketViewSwitcher(), {wrapper})
+    renderHook(() => useSplitTicketViewSwitcher(), { wrapper })
     return history
 }
 
@@ -54,7 +54,7 @@ describe('useSplitTicketViewSwitcher', () => {
         it('should redirect from /app/tickets/VIEW_ID to /app/views/VIEW_ID', () => {
             const history = renderSwitcherHook(
                 '/app/tickets/123',
-                '/app/tickets/:viewId/:ticketId?'
+                '/app/tickets/:viewId/:ticketId?',
             )
 
             expect(history.location.pathname).toBe('/app/views/123')
@@ -82,7 +82,7 @@ describe('useSplitTicketViewSwitcher', () => {
         it('should redirect from /app/views/VIEW_ID to /app/tickets/VIEW_ID', () => {
             const history = renderSwitcherHook(
                 '/app/views/123',
-                '/app/views/:viewId/:ticketId?'
+                '/app/views/:viewId/:ticketId?',
             )
 
             expect(history.location.pathname).toBe('/app/tickets/123')
@@ -91,7 +91,7 @@ describe('useSplitTicketViewSwitcher', () => {
         it('should redirect from /app/views/VIEW_ID/TICKET_ID to /app/ticket/TICKET_ID', () => {
             const history = renderSwitcherHook(
                 '/app/views/123/456',
-                '/app/views/:viewId/:ticketId?'
+                '/app/views/:viewId/:ticketId?',
             )
 
             expect(history.location.pathname).toBe('/app/ticket/456')

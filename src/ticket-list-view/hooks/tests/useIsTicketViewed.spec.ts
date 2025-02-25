@@ -1,4 +1,4 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
 import useAgentsViewing from 'hooks/realtime/useAgentsViewing'
 import * as viewUtils from 'state/views/utils'
@@ -14,21 +14,21 @@ const mockUseAgentsViewing = useAgentsViewing as jest.Mock
 
 describe('useIsTicketViewed', () => {
     beforeEach(() => {
-        mockUseAgentsViewing.mockReturnValue({agentsViewing: []})
+        mockUseAgentsViewing.mockReturnValue({ agentsViewing: [] })
         agentsViewingMessageSpy.mockReturnValue('')
     })
 
     it('should return false when no agents are viewing the ticket', () => {
-        const {result} = renderHook(() => useIsTicketViewed(1))
+        const { result } = renderHook(() => useIsTicketViewed(1))
 
         expect(result.current.isTicketViewed).toBe(false)
         expect(result.current.agentViewingMessage).toBe('')
     })
 
     it('should return true when agents are viewing the ticket', () => {
-        mockUseAgentsViewing.mockReturnValue({agentsViewing: [{}]})
+        mockUseAgentsViewing.mockReturnValue({ agentsViewing: [{}] })
 
-        const {result} = renderHook(() => useIsTicketViewed(1))
+        const { result } = renderHook(() => useIsTicketViewed(1))
 
         expect(result.current.isTicketViewed).toBe(true)
         expect(result.current.agentViewingMessage).toBe('')

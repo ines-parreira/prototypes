@@ -1,5 +1,6 @@
-import {screen, render} from '@testing-library/react'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import SupportContentLearnMore from './SupportContentLearnMore'
 
@@ -8,7 +9,7 @@ describe('SupportContentLearnMore', () => {
         render(
             <SupportContentLearnMore url="https://www.godaddy.com/">
                 Learn More
-            </SupportContentLearnMore>
+            </SupportContentLearnMore>,
         )
 
         expect(screen.getByText('menu_book')).toBeInTheDocument()

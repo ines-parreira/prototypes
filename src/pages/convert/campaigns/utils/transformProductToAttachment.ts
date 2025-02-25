@@ -1,9 +1,8 @@
-import {AttachmentEnum} from 'common/types'
+import { AttachmentEnum } from 'common/types'
 
-import {CampaignAttachment} from '../types/CampaignAttachment'
-import {CampaignProduct} from '../types/CampaignProduct'
-
-import {attachUtmToCampaignProduct} from './attachUtmParams'
+import { CampaignAttachment } from '../types/CampaignAttachment'
+import { CampaignProduct } from '../types/CampaignProduct'
+import { attachUtmToCampaignProduct } from './attachUtmParams'
 
 export function transformProductToAttachment(
     product: CampaignProduct,
@@ -13,7 +12,7 @@ export function transformProductToAttachment(
     },
     isConvertSubscriber: boolean,
     utmEnabled: boolean = true,
-    utmQueryString: string = ''
+    utmQueryString: string = '',
 ): CampaignAttachment {
     return {
         contentType: AttachmentEnum.Product,
@@ -30,7 +29,7 @@ export function transformProductToAttachment(
                 context.campaignName,
                 isConvertSubscriber,
                 utmEnabled,
-                utmQueryString
+                utmQueryString,
             ),
             variant_name: product?.variant_name,
             position: product?.position,

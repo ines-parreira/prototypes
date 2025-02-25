@@ -1,11 +1,10 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { ulid } from 'ulidx'
 
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {ulid} from 'ulidx'
-
-import {FeatureFlagKey} from 'config/featureFlags'
-import {ActionTemplate} from 'pages/automate/actionsPlatform/types'
-import {WorkflowConfigurationBuilder} from 'pages/automate/workflows/models/workflowConfiguration.model'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { ActionTemplate } from 'pages/automate/actionsPlatform/types'
+import { WorkflowConfigurationBuilder } from 'pages/automate/workflows/models/workflowConfiguration.model'
 
 import useEnabledActionStepsByApp from '../useEnabledActionStepsByApp'
 
@@ -50,7 +49,7 @@ const b1 = new WorkflowConfigurationBuilder({
     ],
     is_draft: false,
     available_languages: [],
-    apps: [{type: 'shopify'}],
+    apps: [{ type: 'shopify' }],
 })
 
 const configuration1 = b1.build()
@@ -92,7 +91,7 @@ const b2 = new WorkflowConfigurationBuilder({
     ],
     is_draft: false,
     available_languages: [],
-    apps: [{type: 'recharge'}],
+    apps: [{ type: 'recharge' }],
 })
 
 const configuration2 = b2.build()
@@ -134,21 +133,21 @@ const b3 = new WorkflowConfigurationBuilder({
     ],
     is_draft: false,
     available_languages: [],
-    apps: [{type: 'app', app_id: 'someid'}],
+    apps: [{ type: 'app', app_id: 'someid' }],
 })
 
 const configuration3 = b3.build()
 
 describe('useEnabledActionStepsByApp()', () => {
     it('should return all steps', () => {
-        mockUseFlags.mockReturnValue({[FeatureFlagKey.ActionSteps]: {}})
+        mockUseFlags.mockReturnValue({ [FeatureFlagKey.ActionSteps]: {} })
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useEnabledActionStepsByApp([
                 configuration1,
                 configuration2,
                 configuration3,
-            ] as ActionTemplate[])
+            ] as ActionTemplate[]),
         )
 
         expect(result.current).toEqual({
@@ -159,14 +158,14 @@ describe('useEnabledActionStepsByApp()', () => {
     })
 
     it("shouldn't return any steps", () => {
-        mockUseFlags.mockReturnValue({[FeatureFlagKey.ActionSteps]: []})
+        mockUseFlags.mockReturnValue({ [FeatureFlagKey.ActionSteps]: [] })
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useEnabledActionStepsByApp([
                 configuration1,
                 configuration2,
                 configuration3,
-            ] as ActionTemplate[])
+            ] as ActionTemplate[]),
         )
 
         expect(result.current).toEqual({})
@@ -180,12 +179,12 @@ describe('useEnabledActionStepsByApp()', () => {
             ],
         })
 
-        const {result} = renderHook(() =>
+        const { result } = renderHook(() =>
             useEnabledActionStepsByApp([
                 configuration1,
                 configuration2,
                 configuration3,
-            ] as ActionTemplate[])
+            ] as ActionTemplate[]),
         )
 
         expect(result.current).toEqual({

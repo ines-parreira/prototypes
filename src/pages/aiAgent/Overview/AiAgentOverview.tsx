@@ -1,26 +1,24 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 
-import {useLocation} from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 
 import modalImage from 'assets/img/ai-agent/ai_agent_onboarding_thankyou.png'
-import {logEvent, SegmentEvent} from 'common/segment'
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import useEffectOnce from 'hooks/useEffectOnce'
 import ThankYouModal from 'pages/aiAgent/Onboarding/components/ThankYouModal/ThankYouModal'
+import { KpiSection } from 'pages/aiAgent/Overview/components/KpiSection/KpiSection'
+import { ResourcesSection } from 'pages/aiAgent/Overview/components/ResourcesSection/ResourcesSection'
+import { Separator } from 'pages/aiAgent/Overview/components/Separator/Separator'
+import { Title } from 'pages/aiAgent/Overview/components/Title/Title'
+import { AiAgentOverviewLayout } from 'pages/aiAgent/Overview/layout/AiAgentOverviewLayout'
+import { getCurrentUser } from 'state/currentUser/selectors'
 
-import {KpiSection} from 'pages/aiAgent/Overview/components/KpiSection/KpiSection'
-import {ResourcesSection} from 'pages/aiAgent/Overview/components/ResourcesSection/ResourcesSection'
-import {Separator} from 'pages/aiAgent/Overview/components/Separator/Separator'
-import {Title} from 'pages/aiAgent/Overview/components/Title/Title'
-import {AiAgentOverviewLayout} from 'pages/aiAgent/Overview/layout/AiAgentOverviewLayout'
-
-import {getCurrentUser} from 'state/currentUser/selectors'
-
-import {PendingTasksSectionConnected} from './components/PendingTasksSection/PendingTasksSectionConnected'
+import { PendingTasksSectionConnected } from './components/PendingTasksSection/PendingTasksSectionConnected'
 
 export const AiAgentOverview = () => {
     const [isOpen, setIsOpen] = useState(false)
-    const {state}: {state: {from: string}} = useLocation()
+    const { state }: { state: { from: string } } = useLocation()
     const currentUser = useAppSelector(getCurrentUser)
 
     useEffectOnce(() => {

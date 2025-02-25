@@ -1,10 +1,11 @@
-import {act, fireEvent, render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {IntegrationType} from 'models/integration/constants'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 
-import {TopQuestionsSection} from '../TopQuestionsSection'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { IntegrationType } from 'models/integration/constants'
+
+import { TopQuestionsSection } from '../TopQuestionsSection'
 
 jest.mock('common/segment')
 const logEventMock = logEvent as jest.MockedFunction<typeof logEvent>
@@ -16,7 +17,7 @@ describe('<TopQuestionsSection />', () => {
         const onCreateArticle = jest.fn().mockReturnValue(Promise.resolve())
         const onDismiss = jest.fn().mockReturnValue(Promise.resolve())
 
-        const {container} = render(
+        const { container } = render(
             <TopQuestionsSection
                 newQuestionsCount={5}
                 topQuestions={[
@@ -93,20 +94,20 @@ describe('<TopQuestionsSection />', () => {
                 }}
                 storeIntegrationId={1000}
                 helpCenterId={100}
-            />
+            />,
         )
 
         expect(container).toContainHTML(
-            'How can I ensure my apartment number is included on the shipping label?'
+            'How can I ensure my apartment number is included on the shipping label?',
         )
         expect(container).toContainHTML(
-            'Are new customers eligible for any discounts?'
+            'Are new customers eligible for any discounts?',
         )
         expect(container).toContainHTML(
-            "What should I do if my package is marked as delivered but I haven't received it?"
+            "What should I do if my package is marked as delivered but I haven't received it?",
         )
         expect(container).toContainHTML(
-            'Can I cancel my order after placing it?'
+            'Can I cancel my order after placing it?',
         )
 
         act(() => {
@@ -123,19 +124,19 @@ describe('<TopQuestionsSection />', () => {
 
         expect(screen.getByText('View All')).toHaveAttribute(
             'to',
-            '/app/automation/ai-recommendations?help_center_id=100&store_integration_id=1000'
+            '/app/automation/ai-recommendations?help_center_id=100&store_integration_id=1000',
         )
         act(() => {
             fireEvent.click(screen.getByText('View All'))
         })
 
         expect(logEventMock).toHaveBeenCalledWith(
-            SegmentEvent.AutomateTopQuestionsSectionClickViewAll
+            SegmentEvent.AutomateTopQuestionsSectionClickViewAll,
         )
     })
 
     it('renders placeholders if there are less than 4 top questions', () => {
-        const {container} = render(
+        const { container } = render(
             <TopQuestionsSection
                 newQuestionsCount={5}
                 topQuestions={[
@@ -182,11 +183,11 @@ describe('<TopQuestionsSection />', () => {
                 }}
                 storeIntegrationId={1000}
                 helpCenterId={100}
-            />
+            />,
         )
 
         expect(container.querySelectorAll('.topQuestions > div')).toHaveLength(
-            4
+            4,
         )
     })
 })

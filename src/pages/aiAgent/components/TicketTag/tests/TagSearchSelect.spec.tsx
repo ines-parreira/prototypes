@@ -1,8 +1,10 @@
-import {Tag} from '@gorgias/api-queries'
-import {fireEvent, render, screen} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {TagDropdownMenu} from 'tags'
+import { fireEvent, render, screen } from '@testing-library/react'
+
+import { Tag } from '@gorgias/api-queries'
+
+import { TagDropdownMenu } from 'tags'
 
 import TagSearchSelect from '../TagSearchSelect'
 
@@ -13,9 +15,9 @@ jest.mock('tags', () => ({
         filterBy,
     }: ComponentProps<typeof TagDropdownMenu>) => {
         return (
-            <div onClick={() => onClick({name: mockTag})}>
+            <div onClick={() => onClick({ name: mockTag })}>
                 {'filterBy test: not ai agent tag ' +
-                    filterBy?.({name: 'not_ai_tag'} as Tag).toString()}
+                    filterBy?.({ name: 'not_ai_tag' } as Tag).toString()}
                 {'filterBy test: ai agent tag ' +
                     filterBy?.({
                         name: 'ai_processing',
@@ -49,7 +51,7 @@ describe('<TagSearchSelect />', () => {
         fireEvent.click(screen.getByText(/TagDropdownMenuMock/))
         expect(screen.getByText(mockTag)).toBeInTheDocument()
         expect(
-            screen.queryByText('TagDropdownMenuMock')
+            screen.queryByText('TagDropdownMenuMock'),
         ).not.toBeInTheDocument()
         expect(props.onSelect).toHaveBeenCalledWith(mockTag)
     })

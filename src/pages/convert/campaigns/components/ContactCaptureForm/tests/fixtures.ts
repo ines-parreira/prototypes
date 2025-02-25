@@ -1,6 +1,6 @@
-import {fromJS, Map} from 'immutable'
+import { fromJS, Map } from 'immutable'
 
-import {AttachmentEnum} from 'common/types'
+import { AttachmentEnum } from 'common/types'
 
 export const sampleContactFormAttachment: Map<any, any> = fromJS({
     contentType: AttachmentEnum.ContactForm,
@@ -19,7 +19,7 @@ export const sampleContactFormAttachment: Map<any, any> = fromJS({
                 ],
             },
         ],
-        on_success_content: {message: 'foo'},
+        on_success_content: { message: 'foo' },
         targets: [
             {
                 type: 'shopify',

@@ -1,35 +1,36 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {fireEvent, render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import {keyBy} from 'lodash'
 import React from 'react'
-import {Provider} from 'react-redux'
-import {Router} from 'react-router-dom'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { keyBy } from 'lodash'
+import { Provider } from 'react-redux'
+import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {billingState} from 'fixtures/billing'
-import {selfServiceConfiguration1 as mockSelfServiceConfiguration} from 'fixtures/self_service_configurations'
+import { billingState } from 'fixtures/billing'
+import { selfServiceConfiguration1 as mockSelfServiceConfiguration } from 'fixtures/self_service_configurations'
 import useContactFormAutomationSettings from 'pages/automate/common/hooks/useContactFormAutomationSettings'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import useSelfServiceStandaloneContactFormChannels from 'pages/automate/common/hooks/useSelfServiceStandaloneContactFormChannels'
 import history from 'pages/history'
-import {ContactFormFixture} from 'pages/settings/contactForm/fixtures/contacForm'
-import {getSingleHelpCenterResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-import {RootState} from 'state/types'
+import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
+import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { RootState } from 'state/types'
 import {
     mockQueryClient,
     renderWithQueryClientProvider,
 } from 'tests/reactQueryTestingUtils'
 
-import {initialState as articlesState} from '../../../../state/entities/helpCenter/articles'
-import {initialState as categoriesState} from '../../../../state/entities/helpCenter/categories'
-import {ConnectedChannelsContactFormView} from '../components/ConnectedChannelsContactFormView'
+import { initialState as articlesState } from '../../../../state/entities/helpCenter/articles'
+import { initialState as categoriesState } from '../../../../state/entities/helpCenter/categories'
+import { ConnectedChannelsContactFormView } from '../components/ConnectedChannelsContactFormView'
 
 jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration')
 jest.mock('pages/automate/common/hooks/useContactFormAutomationSettings')
 jest.mock(
-    'pages/automate/common/hooks/useSelfServiceStandaloneContactFormChannels'
+    'pages/automate/common/hooks/useSelfServiceStandaloneContactFormChannels',
 )
 
 const mockContactFormChannels = [
@@ -152,7 +153,7 @@ const mockedStore = mockStore({
                 automationSettingsByContactFormId: {
                     [contactForm.id]: {
                         workflows: [],
-                        order_management: {enabled: false},
+                        order_management: { enabled: false },
                     },
                 },
             },
@@ -291,7 +292,7 @@ describe('ConnectedChannelsContactFormView', () => {
                         <ConnectedChannelsContactFormView />
                     </QueryClientProvider>
                 </Provider>
-            </Router>
+            </Router>,
         )
     })
 
@@ -303,7 +304,7 @@ describe('ConnectedChannelsContactFormView', () => {
                         <ConnectedChannelsContactFormView />
                     </QueryClientProvider>
                 </Provider>
-            </Router>
+            </Router>,
         )
         expect(screen.getByText('Currently viewing')).toBeInTheDocument()
     })
@@ -316,7 +317,7 @@ describe('ConnectedChannelsContactFormView', () => {
                         <ConnectedChannelsContactFormView />
                     </QueryClientProvider>
                 </Provider>
-            </Router>
+            </Router>,
         )
         expect(screen.getByText('edit_note')).toBeInTheDocument()
     })
@@ -329,12 +330,12 @@ describe('ConnectedChannelsContactFormView', () => {
                         <ConnectedChannelsContactFormView />
                     </QueryClientProvider>
                 </Provider>
-            </Router>
+            </Router>,
         )
 
         expect(
             // button with aria-label="Currently viewing"
-            screen.getByRole('button', {name: 'Currently viewing'})
+            screen.getByRole('button', { name: 'Currently viewing' }),
         ).toHaveTextContent(mockContactFormChannels[0].value.name)
     })
 
@@ -346,24 +347,24 @@ describe('ConnectedChannelsContactFormView', () => {
                         <ConnectedChannelsContactFormView />
                     </QueryClientProvider>
                 </Provider>
-            </Router>
+            </Router>,
         )
 
         // click on the dropdown button
-        screen.getByRole('button', {name: 'Currently viewing'}).click()
+        screen.getByRole('button', { name: 'Currently viewing' }).click()
 
         // expect the dropdown to be visible
         expect(screen.getByText('Currently viewing')).toBeInTheDocument()
 
         // expect the dropdown to have the same number of options as the channels
         expect(screen.getAllByRole('option')).toHaveLength(
-            mockContactFormChannels.length
+            mockContactFormChannels.length,
         )
         screen.getAllByRole('option').forEach((option, index) => {
             // if is last, return because it is the button
 
             expect(option).toHaveTextContent(
-                mockContactFormChannels[index].value.name
+                mockContactFormChannels[index].value.name,
             )
         })
     })
@@ -396,7 +397,7 @@ describe('ConnectedChannelsContactFormView', () => {
                 <Provider store={mockedStore}>
                     <ConnectedChannelsContactFormView />
                 </Provider>
-            </Router>
+            </Router>,
         )
 
         const toggle = screen.getByLabelText(/Enable Order Management/i)
@@ -404,13 +405,13 @@ describe('ConnectedChannelsContactFormView', () => {
 
         expect(handleUpdate).toHaveBeenCalledWith(
             expect.objectContaining({
-                order_management: {enabled: true},
+                order_management: { enabled: true },
                 workflows: [
-                    {enabled: true, id: '01HQTDDBN1A75R9TH8PCQS4ARA'},
-                    {enabled: true, id: '01HNWV4Y52TZD1T42HQP4JGPY5'},
+                    { enabled: true, id: '01HQTDDBN1A75R9TH8PCQS4ARA' },
+                    { enabled: true, id: '01HNWV4Y52TZD1T42HQP4JGPY5' },
                 ],
             }),
-            'Order Management enabled'
+            'Order Management enabled',
         )
     })
 
@@ -442,7 +443,7 @@ describe('ConnectedChannelsContactFormView', () => {
                 <Provider store={mockedStore}>
                     <ConnectedChannelsContactFormView />
                 </Provider>
-            </Router>
+            </Router>,
         )
 
         const toggle = screen.getByLabelText(/Enable Order Management/i)
@@ -450,13 +451,13 @@ describe('ConnectedChannelsContactFormView', () => {
 
         expect(handleUpdate).toHaveBeenCalledWith(
             expect.objectContaining({
-                order_management: {enabled: false},
+                order_management: { enabled: false },
                 workflows: [
-                    {enabled: true, id: '01HQTDDBN1A75R9TH8PCQS4ARA'},
-                    {enabled: true, id: '01HNWV4Y52TZD1T42HQP4JGPY5'},
+                    { enabled: true, id: '01HQTDDBN1A75R9TH8PCQS4ARA' },
+                    { enabled: true, id: '01HNWV4Y52TZD1T42HQP4JGPY5' },
                 ],
             }),
-            'Order Management disabled'
+            'Order Management disabled',
         )
     })
 
@@ -475,7 +476,7 @@ describe('ConnectedChannelsContactFormView', () => {
                         />
                     </QueryClientProvider>
                 </Provider>
-            </Router>
+            </Router>,
         )
 
         expect(screen.queryAllByRole('option').length).toBe(0)
@@ -491,7 +492,7 @@ describe('ConnectedChannelsContactFormView', () => {
                 <Provider store={mockedStore}>
                     <ConnectedChannelsContactFormView />
                 </Provider>
-            </Router>
+            </Router>,
         )
 
         expect(screen.getByText(/Go to Contact Form/i)).toBeInTheDocument()

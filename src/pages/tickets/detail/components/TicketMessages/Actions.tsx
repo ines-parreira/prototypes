@@ -1,20 +1,22 @@
-import {LoadingSpinner, Tooltip} from '@gorgias/merchant-ui-kit'
+import React, { Component } from 'react'
+
 import classnames from 'classnames'
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 import _get from 'lodash/get'
 import _truncate from 'lodash/truncate'
-import React, {Component} from 'react'
-import {Badge} from 'reactstrap'
+import { Badge } from 'reactstrap'
 
-import {ActionTemplate, ActionTemplateExecution} from 'config'
-import {ContentType} from 'models/api/types'
-import {MacroActionName} from 'models/macroAction/types'
-import {Action, ActionStatus, TicketMessage} from 'models/ticket/types'
-import {JSONTree} from 'pages/common/components/JSONTree'
+import { LoadingSpinner, Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { ActionTemplate, ActionTemplateExecution } from 'config'
+import { ContentType } from 'models/api/types'
+import { MacroActionName } from 'models/macroAction/types'
+import { Action, ActionStatus, TicketMessage } from 'models/ticket/types'
+import { JSONTree } from 'pages/common/components/JSONTree'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import {getActionTemplate, toRGBA} from 'utils'
+import { getActionTemplate, toRGBA } from 'utils'
 
 import css from './Actions.less'
 
@@ -63,14 +65,14 @@ export default class Actions extends Component<Props, State> {
     _openModal = (id: number) => {
         return () => {
             this.modalState[id] = true
-            this.setState({isModalOpen: this.modalState})
+            this.setState({ isModalOpen: this.modalState })
         }
     }
 
     _closeModal = (id: number) => {
         return () => {
             this.modalState[id] = false
-            this.setState({isModalOpen: this.modalState})
+            this.setState({ isModalOpen: this.modalState })
         }
     }
 
@@ -105,7 +107,7 @@ export default class Actions extends Component<Props, State> {
     _renderModalContent = (
         id: number,
         action: Action,
-        contentType: ContentType
+        contentType: ContentType,
     ) => {
         return (
             <ModalBody>
@@ -133,7 +135,7 @@ export default class Actions extends Component<Props, State> {
                                         <b>{arg}:</b>{' '}
                                         {action.arguments!.form![arg]}
                                     </p>
-                                )
+                                ),
                             )}
                         </div>
                     )}
@@ -177,18 +179,18 @@ export default class Actions extends Component<Props, State> {
 
         if (action.name === MacroActionName.AddTags)
             arg = arg.split(',').join(', ')
-        return _truncate(arg, {length: 20})
+        return _truncate(arg, { length: 20 })
     }
 
     render() {
-        const {message} = this.props
+        const { message } = this.props
 
         if (!message.actions) return null
 
         const backActions = message.actions.filter(
-            ({name}) =>
+            ({ name }) =>
                 getActionTemplate(name)?.execution !==
-                ActionTemplateExecution.Front
+                ActionTemplateExecution.Front,
         )
 
         if (backActions.length === 0) return null
@@ -203,7 +205,7 @@ export default class Actions extends Component<Props, State> {
                         <i
                             className={classnames(
                                 'material-icons mr-2',
-                                css.icon
+                                css.icon,
                             )}
                         >
                             {icon}
@@ -231,7 +233,7 @@ export default class Actions extends Component<Props, State> {
 
                     const isHttpAction = action.name === 'http'
                     const isShopifyAction = SHOPIFY_ACTION_NAMES.includes(
-                        action.name as (typeof SHOPIFY_ACTION_NAMES)[number]
+                        action.name as (typeof SHOPIFY_ACTION_NAMES)[number],
                     )
                     const isExternalTemplateAction =
                         action.name === MacroActionName.ApplyExternalTemplate
@@ -248,7 +250,7 @@ export default class Actions extends Component<Props, State> {
                         >
                             {
                                 <Badge
-                                    cssModule={{badge: css.badge}}
+                                    cssModule={{ badge: css.badge }}
                                     style={{
                                         color,
                                         backgroundColor: toRGBA(color, 0.05),
@@ -298,7 +300,7 @@ export default class Actions extends Component<Props, State> {
                                     <ModalHeader title="Options" />
                                     {this._renderShopifyActionModalContent(
                                         index,
-                                        action
+                                        action,
                                     )}
                                 </Modal>
                             )}
@@ -312,7 +314,7 @@ export default class Actions extends Component<Props, State> {
                                     {this._renderModalContent(
                                         index,
                                         action,
-                                        contentType
+                                        contentType,
                                     )}
                                 </Modal>
                             )}

@@ -1,5 +1,5 @@
-import {opposite, OrderDirection} from 'models/api/types'
-import {RootState} from 'state/types'
+import { opposite, OrderDirection } from 'models/api/types'
+import { RootState } from 'state/types'
 import {
     getHeatmapMode,
     getTagsOrder,
@@ -10,7 +10,7 @@ import {
     toggleHeatmapMode,
     toggleValueMode,
 } from 'state/ui/stats/tagsReportSlice'
-import {ValueMode} from 'state/ui/stats/types'
+import { ValueMode } from 'state/ui/stats/types'
 
 describe('tagsReportSlice', () => {
     const tagsState: TagsReportState = {
@@ -33,7 +33,7 @@ describe('tagsReportSlice', () => {
         it('should toggleValueMode', () => {
             const newState = tagsReportSlice.reducer(
                 tagsState,
-                toggleValueMode()
+                toggleValueMode(),
             )
 
             expect(newState.valueMode).toEqual(ValueMode.Percentage)
@@ -53,11 +53,11 @@ describe('tagsReportSlice', () => {
         it('should setOrder as opposite of current', () => {
             const newState = tagsReportSlice.reducer(
                 tagsState,
-                setOrder({column: 'tag'})
+                setOrder({ column: 'tag' }),
             )
 
             expect(newState.order.direction).toEqual(
-                opposite(tagsState.order.direction)
+                opposite(tagsState.order.direction),
             )
         })
 
@@ -71,7 +71,7 @@ describe('tagsReportSlice', () => {
             }
             const newState = tagsReportSlice.reducer(
                 state,
-                setOrder({column: 'tag'})
+                setOrder({ column: 'tag' }),
             )
 
             expect(newState.order.direction).toEqual(OrderDirection.Asc)
@@ -87,7 +87,7 @@ describe('tagsReportSlice', () => {
             }
             const newState = tagsReportSlice.reducer(
                 state,
-                setOrder({column: 'total'})
+                setOrder({ column: 'total' }),
             )
 
             expect(newState.order.direction).toEqual(OrderDirection.Desc)
@@ -96,7 +96,7 @@ describe('tagsReportSlice', () => {
         it('should toggleHeatmapMode', () => {
             const newState = tagsReportSlice.reducer(
                 tagsState,
-                toggleHeatmapMode()
+                toggleHeatmapMode(),
             )
 
             expect(newState.heatmapMode).toEqual(true)
@@ -106,13 +106,13 @@ describe('tagsReportSlice', () => {
     describe('selectors', () => {
         it('should return expected value', () => {
             expect(getValueMode(state)).toEqual(
-                state.ui.stats[tagsReportSlice.name].valueMode
+                state.ui.stats[tagsReportSlice.name].valueMode,
             )
             expect(getTagsOrder(state)).toEqual(
-                state.ui.stats[tagsReportSlice.name].order
+                state.ui.stats[tagsReportSlice.name].order,
             )
             expect(getHeatmapMode(state)).toEqual(
-                state.ui.stats[tagsReportSlice.name].heatmapMode
+                state.ui.stats[tagsReportSlice.name].heatmapMode,
             )
         })
     })

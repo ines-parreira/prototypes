@@ -1,7 +1,7 @@
-import {AnyAction} from 'redux'
+import { AnyAction } from 'redux'
 
-import {store as reduxStore} from 'common/store'
-import {isFullWidthViewPath} from 'common/utils'
+import { store as reduxStore } from 'common/store'
+import { isFullWidthViewPath } from 'common/utils'
 import {
     fetchActiveViewTickets,
     fetchRecentViewsCounts,
@@ -30,27 +30,27 @@ class PollingManager {
         this.intervals.activeViewTickets = setInterval(() => {
             if (isFullWidthViewPath(window.location.pathname)) {
                 this.store.dispatch(
-                    fetchActiveViewTickets() as unknown as AnyAction
+                    fetchActiveViewTickets() as unknown as AnyAction,
                 )
             }
         }, this.activeViewInterval)
 
         this.intervals.recentViewsCounts = setInterval(() => {
             this.store.dispatch(
-                fetchRecentViewsCounts() as unknown as AnyAction
+                fetchRecentViewsCounts() as unknown as AnyAction,
             )
         }, this.recentViewsCountsInterval)
 
         if (isFullWidthViewPath(window.location.pathname)) {
             this.store.dispatch(
-                fetchActiveViewTickets() as unknown as AnyAction
+                fetchActiveViewTickets() as unknown as AnyAction,
             )
         }
     }
 
     stop = () => {
         Object.keys(this.intervals).forEach((interval) =>
-            this._stopInterval(interval as keyof PollingManager['intervals'])
+            this._stopInterval(interval as keyof PollingManager['intervals']),
         )
     }
 

@@ -1,7 +1,8 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -9,7 +10,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import Editor from 'pages/common/editor/Editor'
 import useInitialMacroFilters from 'pages/common/editor/hooks/useInitialMacroFilters'
-import {editorFocused} from 'state/ui/editor/actions'
+import { editorFocused } from 'state/ui/editor/actions'
 
 import TicketFooter from '../TicketFooter'
 import TypingActivity from '../TypingActivity'
@@ -18,11 +19,11 @@ jest.mock('hooks/useAppDispatch', () => jest.fn())
 jest.mock('hooks/useAppSelector', () => jest.fn())
 jest.mock('pages/common/editor/Editor', () => jest.fn(() => <p>Editor</p>))
 jest.mock('pages/common/editor/hooks/useInitialMacroFilters', () => jest.fn())
-jest.mock('state/ui/editor/actions', () => ({editorFocused: jest.fn()}))
+jest.mock('state/ui/editor/actions', () => ({ editorFocused: jest.fn() }))
 jest.mock('../TypingActivity', () => jest.fn(() => <p>TypingActivity</p>))
 jest.mock(
     'pages/integrations/integration/components/whatsapp/WhatsAppEditorProvider',
-    () => jest.fn(({children}: any) => <div>{children}</div>)
+    () => jest.fn(({ children }: any) => <div>{children}</div>),
 )
 
 const mockEditor = Editor as jest.Mock
@@ -44,50 +45,52 @@ describe('<TicketFooter />', () => {
     const isShopperTyping = false
     const shopperName = 'chiel'
     const submit = jest.fn()
-    const defaultContext = {isShopperTyping, shopperName, submit}
+    const defaultContext = { isShopperTyping, shopperName, submit }
 
     beforeEach(() => {
         jest.restoreAllMocks()
 
         dispatch = jest.fn()
         mockUseAppDispatch.mockReturnValue(dispatch)
-        mockUseAppSelector.mockReturnValue({id: 1})
-        mockUseInitialMacroFilters.mockReturnValue({languages: ['en']})
-        mockEditorFocused.mockImplementation((focused: boolean) => ({focused}))
+        mockUseAppSelector.mockReturnValue({ id: 1 })
+        mockUseInitialMacroFilters.mockReturnValue({ languages: ['en'] })
+        mockEditorFocused.mockImplementation((focused: boolean) => ({
+            focused,
+        }))
     })
 
     it('should not render anything if no context is given', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <TicketFooter />
-            </Provider>
+            </Provider>,
         )
 
         expect(container).toBeEmptyDOMElement()
     })
 
     it('should pass the given context down to the correct components', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={mockStore(defaultState)}>
                 <TicketFooter context={defaultContext} />
-            </Provider>
+            </Provider>,
         )
 
         expect(getByText('TypingActivity')).toBeInTheDocument()
         expect(getByText('Editor')).toBeInTheDocument()
         expect(TypingActivity).toHaveBeenCalledWith(
-            {isTyping: isShopperTyping, name: shopperName},
-            expect.objectContaining({})
+            { isTyping: isShopperTyping, name: shopperName },
+            expect.objectContaining({}),
         )
         expect(mockEditor).toHaveBeenCalledWith(
             {
                 submit,
-                initialMacroFilters: {languages: ['en']},
+                initialMacroFilters: { languages: ['en'] },
                 onBlur: expect.any(Function),
                 onFocus: expect.any(Function),
-                ticket: {id: 1},
+                ticket: { id: 1 },
             },
-            expect.objectContaining({})
+            expect.objectContaining({}),
         )
     })
 
@@ -95,33 +98,33 @@ describe('<TicketFooter />', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <TicketFooter context={defaultContext} />
-            </Provider>
+            </Provider>,
         )
 
-        const {onFocus} = (
-            mockEditor.mock.calls.pop() as [{onFocus: () => void}]
+        const { onFocus } = (
+            mockEditor.mock.calls.pop() as [{ onFocus: () => void }]
         )[0]
 
         onFocus()
 
         expect(mockEditorFocused).toHaveBeenCalledWith(true)
-        expect(dispatch).toHaveBeenCalledWith({focused: true})
+        expect(dispatch).toHaveBeenCalledWith({ focused: true })
     })
 
     it('should dispatch editorFocused with false when onBlur is called', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <TicketFooter context={defaultContext} />
-            </Provider>
+            </Provider>,
         )
 
-        const {onBlur} = (
-            mockEditor.mock.calls.pop() as [{onBlur: () => void}]
+        const { onBlur } = (
+            mockEditor.mock.calls.pop() as [{ onBlur: () => void }]
         )[0]
 
         onBlur()
 
         expect(mockEditorFocused).toHaveBeenCalledWith(false)
-        expect(dispatch).toHaveBeenCalledWith({focused: false})
+        expect(dispatch).toHaveBeenCalledWith({ focused: false })
     })
 })

@@ -1,31 +1,31 @@
-import {render} from '@testing-library/react'
-import {List, Map, fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render } from '@testing-library/react'
+import { fromJS, List, Map } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {agents} from 'fixtures/agents'
-
-const middlewares = [thunk]
-const mockStore = configureMockStore(middlewares)
-
-import {IntegrationType} from 'models/integration/constants'
-import {EditionContext} from 'providers/infobar/EditionContext'
+import { agents } from 'fixtures/agents'
+import { IntegrationType } from 'models/integration/constants'
+import { EditionContext } from 'providers/infobar/EditionContext'
 import {
-    CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
-    THIRD_PARTY_APP_NAME_KEY,
-    STANDALONE_WIDGET_TYPE,
-    WOOCOMMERCE_WIDGET_TYPE,
-    CUSTOMER_EXTERNAL_DATA_KEY,
     CUSTOMER_ECOMMERCE_DATA_KEY,
+    CUSTOMER_EXTERNAL_DATA_KEY,
+    CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
+    STANDALONE_WIDGET_TYPE,
+    THIRD_PARTY_APP_NAME_KEY,
+    WOOCOMMERCE_WIDGET_TYPE,
 } from 'state/widgets/constants'
-import {WidgetEnvironment} from 'state/widgets/types'
-import {assumeMock} from 'utils/testing'
+import { WidgetEnvironment } from 'state/widgets/types'
+import { assumeMock } from 'utils/testing'
 import Widget from 'Widgets/modules/Widget'
 
 import InfobarWidgets from '../InfobarWidgets'
 import Placeholder from '../widgets/Placeholder'
+
+const middlewares = [thunk]
+const mockStore = configureMockStore(middlewares)
 
 jest.mock('../widgets/Placeholder')
 const mockedPlaceholder = assumeMock(Placeholder)
@@ -47,8 +47,8 @@ describe('InfobarWidgets component', () => {
     const ecommerceStoreUUID = 'foo-bar-uuid'
 
     const store = mockStore({
-        customers: fromJS({active: {name: 'Johanna'}}),
-        ticket: fromJS({someData: '1234'}),
+        customers: fromJS({ active: { name: 'Johanna' } }),
+        ticket: fromJS({ someData: '1234' }),
         widgets: fromJS({}),
         currentUser: fromJS(agents[0]),
         integrations: fromJS({
@@ -89,8 +89,8 @@ describe('InfobarWidgets component', () => {
         ticket: {
             customer: {
                 integrations: {
-                    [httpIntegrationId]: {foo: httpIntegrationId},
-                    [shopifyIntegrationId]: {bar: shopifyIntegrationId},
+                    [httpIntegrationId]: { foo: httpIntegrationId },
+                    [shopifyIntegrationId]: { bar: shopifyIntegrationId },
                 },
                 [CUSTOMER_EXTERNAL_DATA_KEY]: {
                     [appId]: {
@@ -290,14 +290,14 @@ describe('InfobarWidgets component', () => {
     const baseWidgets = fromJS(widgets) as List<Map<string, unknown>>
 
     it("should not display anything if there's no widgets", () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <InfobarWidgets
                     widgets={null}
                     context={WidgetEnvironment.Ticket}
                     source={baseSource}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toBeNull()
@@ -306,7 +306,7 @@ describe('InfobarWidgets component', () => {
     it('should display integrations with data and 3rd party / standalone widget in non-editing mode', () => {
         render(
             <Provider store={store}>
-                <EditionContext.Provider value={{isEditing: false}}>
+                <EditionContext.Provider value={{ isEditing: false }}>
                     <InfobarWidgets
                         widgets={baseWidgets}
                         context={WidgetEnvironment.Ticket}
@@ -314,7 +314,7 @@ describe('InfobarWidgets component', () => {
                         displayTabs
                     />
                 </EditionContext.Provider>
-            </Provider>
+            </Provider>,
         )
 
         expect(mockedWidget.mock.calls.length).toEqual(5)
@@ -328,7 +328,7 @@ describe('InfobarWidgets component', () => {
                 type: undefined,
                 template: baseWidgets.get(0).get('template'),
             }),
-            {}
+            {},
         )
         expect(mockedWidget).toHaveBeenNthCalledWith(
             5,
@@ -350,32 +350,33 @@ describe('InfobarWidgets component', () => {
                 type: undefined,
                 template: baseWidgets.get(6).get('template'),
             }),
-            {}
+            {},
         )
     })
 
     it('should display all possible widgets in editing mode', () => {
         render(
             <Provider store={store}>
-                <EditionContext.Provider value={{isEditing: true}}>
+                <EditionContext.Provider value={{ isEditing: true }}>
                     <InfobarWidgets
                         widgets={baseWidgets}
                         context={WidgetEnvironment.Ticket}
                         source={baseSource}
                     />
                 </EditionContext.Provider>
-            </Provider>
+            </Provider>,
         )
         expect(
-            mockedWidget.mock.calls.length + mockedPlaceholder.mock.calls.length
+            mockedWidget.mock.calls.length +
+                mockedPlaceholder.mock.calls.length,
         ).toEqual(baseWidgets.size)
     })
 
     // This test here is only to ensure we don't break the memoization set before starting
     // the recursion in the InfobarWidget component
     it('should not rerender all widgets if some unrelated data changes in ticket object', () => {
-        const isEditionValue = {isEditing: true}
-        const {rerender} = render(
+        const isEditionValue = { isEditing: true }
+        const { rerender } = render(
             <Provider store={store}>
                 <EditionContext.Provider value={isEditionValue}>
                     <InfobarWidgets
@@ -384,14 +385,14 @@ describe('InfobarWidgets component', () => {
                         source={baseSource}
                     />
                 </EditionContext.Provider>
-            </Provider>
+            </Provider>,
         )
 
         mockedWidget.mockClear()
 
         const newSource = baseSource.setIn(
             ['ticket', 'customer', 'unrelated'],
-            'bar'
+            'bar',
         )
 
         rerender(
@@ -403,7 +404,7 @@ describe('InfobarWidgets component', () => {
                         source={newSource}
                     />
                 </EditionContext.Provider>
-            </Provider>
+            </Provider>,
         )
         expect(mockedWidget.mock.calls.length).toBe(0)
     })

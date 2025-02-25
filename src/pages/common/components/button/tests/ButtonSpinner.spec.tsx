@@ -1,7 +1,8 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {BaseButtonContext} from '../BaseButton'
+import { render, screen } from '@testing-library/react'
+
+import { BaseButtonContext } from '../BaseButton'
 import ButtonSpinner from '../ButtonSpinner'
 
 describe('<ButtonSpinner />', () => {
@@ -14,9 +15,9 @@ describe('<ButtonSpinner />', () => {
 
     it('should render a small loader', () => {
         render(
-            <BaseButtonContext.Provider value={{size: 'small'}}>
+            <BaseButtonContext.Provider value={{ size: 'small' }}>
                 <ButtonSpinner />
-            </BaseButtonContext.Provider>
+            </BaseButtonContext.Provider>,
         )
 
         expect(screen.getByRole('status')).toHaveAttribute('width', '15')

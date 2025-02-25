@@ -1,9 +1,11 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import classNames from 'classnames'
 import React from 'react'
 
-import {TicketChannel} from 'business/types/ticket'
-import {DateAndTimeFormatting} from 'constants/datetime'
+import classNames from 'classnames'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { TicketChannel } from 'business/types/ticket'
+import { DateAndTimeFormatting } from 'constants/datetime'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 
 import css from './TicketVoiceCallContainer.less'
@@ -30,7 +32,7 @@ export default function TicketVoiceCallSource({
                 className={classNames(
                     'material-icons',
                     css.phoneIcon,
-                    'clickable'
+                    'clickable',
                 )}
             >
                 {icon}

@@ -1,10 +1,11 @@
-import {fireEvent, render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {TicketChannel} from 'business/types/ticket'
-import {SelfServiceChatChannel} from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import { fireEvent, render, screen } from '@testing-library/react'
 
-import {CurrentlyViewingDropdown} from '../components/CurrentlyViewingDropdown'
+import { TicketChannel } from 'business/types/ticket'
+import { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+
+import { CurrentlyViewingDropdown } from '../components/CurrentlyViewingDropdown'
 
 const renderOption = (channel: SelfServiceChatChannel) => ({
     label: channel.value.name,
@@ -12,8 +13,8 @@ const renderOption = (channel: SelfServiceChatChannel) => ({
 })
 
 const channels = [
-    {label: 'Channel 1', value: 'channel-1'},
-    {label: 'Channel 2', value: 'channel-2'},
+    { label: 'Channel 1', value: 'channel-1' },
+    { label: 'Channel 2', value: 'channel-2' },
 ]
 
 const mockChannels = channels.map((channel) => ({
@@ -39,7 +40,7 @@ describe('CurrentlyViewingDropdown', () => {
                 onConnect={jest.fn()}
                 onSelectedChannelChange={jest.fn()}
                 renderOption={renderOption}
-            />
+            />,
         )
 
         expect(screen.getByText('Currently viewing')).toBeInTheDocument()
@@ -57,11 +58,11 @@ describe('CurrentlyViewingDropdown', () => {
                 onConnect={jest.fn()}
                 onSelectedChannelChange={jest.fn()}
                 renderOption={renderOption}
-            />
+            />,
         )
 
         fireEvent.click(
-            screen.getByRole('button', {name: /Currently viewing/i})
+            screen.getByRole('button', { name: /Currently viewing/i }),
         )
 
         expect(screen.getByText('Channel 1')).toBeInTheDocument()
@@ -81,11 +82,11 @@ describe('CurrentlyViewingDropdown', () => {
                 onConnect={jest.fn()}
                 onSelectedChannelChange={onSelectedChannelChange}
                 renderOption={renderOption}
-            />
+            />,
         )
 
         fireEvent.click(
-            screen.getByRole('button', {name: /Currently viewing/i})
+            screen.getByRole('button', { name: /Currently viewing/i }),
         )
         fireEvent.click(screen.getByText('Channel 1'))
 
@@ -103,13 +104,13 @@ describe('CurrentlyViewingDropdown', () => {
                 onConnect={jest.fn()}
                 onSelectedChannelChange={jest.fn()}
                 renderOption={renderOption}
-            />
+            />,
         )
 
         expect(screen.getByText('Chat Settings')).toBeInTheDocument()
         expect(screen.getByRole('link')).toHaveAttribute(
             'to',
-            '/app/settings/channels/gorgias_chat/123'
+            '/app/settings/channels/gorgias_chat/123',
         )
     })
 
@@ -124,12 +125,12 @@ describe('CurrentlyViewingDropdown', () => {
                 onConnect={jest.fn()}
                 onSelectedChannelChange={jest.fn()}
                 renderOption={renderOption}
-            />
+            />,
         )
         expect(screen.getByText('Help Center Settings')).toBeInTheDocument()
         expect(screen.getByRole('link')).toHaveAttribute(
             'to',
-            '/app/settings/help-center/123/articles'
+            '/app/settings/help-center/123/articles',
         )
     })
 
@@ -144,12 +145,12 @@ describe('CurrentlyViewingDropdown', () => {
                 onConnect={jest.fn()}
                 onSelectedChannelChange={jest.fn()}
                 renderOption={renderOption}
-            />
+            />,
         )
         expect(screen.getByText('Contact Form Settings')).toBeInTheDocument()
         expect(screen.getByRole('link')).toHaveAttribute(
             'to',
-            '/app/settings/contact-form/123'
+            '/app/settings/contact-form/123',
         )
     })
 })

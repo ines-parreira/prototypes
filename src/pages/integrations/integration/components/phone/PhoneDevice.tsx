@@ -3,8 +3,9 @@ import React from 'react'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 
-import css from './PhoneDevice.less'
 import PhoneDeviceDialer from './PhoneDeviceDialer'
+
+import css from './PhoneDevice.less'
 
 type Props = {
     isOpen: boolean
@@ -12,7 +13,7 @@ type Props = {
     target: React.RefObject<HTMLElement | null>
 }
 
-export default function PhoneDevice({isOpen, setIsOpen, target}: Props) {
+export default function PhoneDevice({ isOpen, setIsOpen, target }: Props) {
     return (
         <Dropdown
             isOpen={isOpen}

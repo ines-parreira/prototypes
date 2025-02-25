@@ -1,5 +1,6 @@
+import React, { ReactNode, Ref, RefObject } from 'react'
+
 import classNames from 'classnames'
-import React, {ReactNode, Ref, RefObject} from 'react'
 
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
@@ -38,10 +39,10 @@ export const TableBodyRowDraggable = ({
     onCancelDnD,
     className,
 }: TableBodyRowDraggableProps) => {
-    const {dragRef, dropRef, handlerId, isDragging} = useReorderDnD(
+    const { dragRef, dropRef, handlerId, isDragging } = useReorderDnD(
         dragItem,
         [dragItem.type],
-        {onHover: onMoveEntity, onDrop: onDropEntity, onCancel: onCancelDnD}
+        { onHover: onMoveEntity, onDrop: onDropEntity, onCancel: onCancelDnD },
     )
 
     let rowProps: Record<string, unknown> = {
@@ -51,7 +52,7 @@ export const TableBodyRowDraggable = ({
         rowProps = {
             ...rowProps,
             'data-handler-id': handlerId,
-            style: {opacity: isDragging ? 0.5 : 1},
+            style: { opacity: isDragging ? 0.5 : 1 },
             ref: dropRef as Ref<HTMLTableRowElement>,
         }
     }

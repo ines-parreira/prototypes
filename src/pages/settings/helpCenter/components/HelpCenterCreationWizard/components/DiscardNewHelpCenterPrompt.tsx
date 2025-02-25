@@ -14,10 +14,10 @@ type Props = {
     when: boolean
 }
 
-const DiscardNewHelpCenterPrompt: React.FC<Props> = ({when}) => (
+const DiscardNewHelpCenterPrompt: React.FC<Props> = ({ when }) => (
     <PromptModal when={when}>
         <PromptModalContext.Consumer>
-            {({hideModal, redirectToOriginalLocation}) => (
+            {({ hideModal, redirectToOriginalLocation }) => (
                 <>
                     <ModalHeader title="Discard new help center?" />
                     <ModalBody className={css.body}>

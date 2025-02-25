@@ -1,32 +1,33 @@
-import {fromJS} from 'immutable'
-import {isArray} from 'lodash'
+import React, { Component, SyntheticEvent } from 'react'
+
+import { fromJS } from 'immutable'
+import { isArray } from 'lodash'
 import _forIn from 'lodash/forIn'
 import _isEmpty from 'lodash/isEmpty'
-import React, {Component, SyntheticEvent} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {Container, Form, FormGroup, FormText, Label} from 'reactstrap'
+import { connect, ConnectedProps } from 'react-redux'
+import { Container, Form, FormGroup, FormText, Label } from 'reactstrap'
 
-import {ContentType, HttpMethod} from 'models/api/types'
-import {EventType} from 'models/event/types'
+import { ContentType, HttpMethod } from 'models/api/types'
+import { EventType } from 'models/event/types'
 import {
     HTTPForm,
     HttpIntegration,
     HttpIntegrationMeta,
     IntegrationType,
 } from 'models/integration/types'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
 import CheckBox from 'pages/common/forms/CheckBox'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
-import {DEFAULT_FORM} from 'pages/integrations/integration/components/http/Integration/constants'
-import {validateHeaderName} from 'pages/integrations/integration/components/http/Integration/httpHeaderValidation'
+import { DEFAULT_FORM } from 'pages/integrations/integration/components/http/Integration/constants'
+import { validateHeaderName } from 'pages/integrations/integration/components/http/Integration/httpHeaderValidation'
 import JSONBody from 'pages/integrations/integration/components/http/Integration/JSONBody'
 import ObjectListField, {
     Field,
 } from 'pages/integrations/integration/components/http/Integration/ObjectListField'
-import {INTEGRATION_REMOVAL_CONFIGURATION_TEXT} from 'pages/integrations/integration/constants'
+import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 import css from 'pages/settings/settings.less'
 import {
     activateIntegration,
@@ -34,9 +35,9 @@ import {
     deleteIntegration,
     updateOrCreateIntegration,
 } from 'state/integrations/actions'
-import {getIntegrationsLoading} from 'state/integrations/selectors'
-import {RootState} from 'state/types'
-import {validateWebhookURL, validateWebhookURLToPattern} from 'utils'
+import { getIntegrationsLoading } from 'state/integrations/selectors'
+import { RootState } from 'state/types'
+import { validateWebhookURL, validateWebhookURLToPattern } from 'utils'
 
 type Props = {
     integration: HttpIntegration | undefined
@@ -81,7 +82,7 @@ export class Integration extends Component<Props, State> {
     isInitialized: boolean | undefined
 
     UNSAFE_componentWillMount() {
-        const {integration, isUpdate} = this.props
+        const { integration, isUpdate } = this.props
 
         // populating the form when updating an integration
         if (!this.isInitialized && isUpdate && integration) {
@@ -91,7 +92,7 @@ export class Integration extends Component<Props, State> {
     }
 
     UNSAFE_componentWillUpdate(nextProps: Props) {
-        const {integration, isUpdate} = nextProps
+        const { integration, isUpdate } = nextProps
 
         // populating the form when updating an integration
         if (integration && !this.isInitialized && isUpdate) {
@@ -136,7 +137,7 @@ export class Integration extends Component<Props, State> {
     }
 
     _isSubmitting = () => {
-        const {loading, integration} = this.props
+        const { loading, integration } = this.props
         if (!loading || !integration) return false
         return loading.updateIntegration === integration.id
     }
@@ -157,7 +158,7 @@ export class Integration extends Component<Props, State> {
                 form:
                     form instanceof Object
                         ? this._objectToParameters(
-                              form as Record<string, unknown>
+                              form as Record<string, unknown>,
                           )
                         : form,
                 requestContentType: ContentType.Form,
@@ -183,11 +184,11 @@ export class Integration extends Component<Props, State> {
     /**
      * Transform a parameter format like {key: key1, value: value1} into object {key1: value1}
      */
-    _parametersToObject(params: Array<{key: string; value: unknown}> = []) {
+    _parametersToObject(params: Array<{ key: string; value: unknown }> = []) {
         if (!params) {
             return {}
         }
-        return params.reduce((reduction: {[key: string]: unknown}, param) => {
+        return params.reduce((reduction: { [key: string]: unknown }, param) => {
             const newReduction = reduction
             newReduction[param.key] = param.value
             return newReduction
@@ -204,7 +205,9 @@ export class Integration extends Component<Props, State> {
         }
 
         const integration: Partial<
-            Omit<HttpIntegration, 'http'> & {http: Partial<HttpIntegrationMeta>}
+            Omit<HttpIntegration, 'http'> & {
+                http: Partial<HttpIntegrationMeta>
+            }
         > = {
             type: IntegrationType.Http,
             name: this.state.name,
@@ -243,7 +246,7 @@ export class Integration extends Component<Props, State> {
 
     _validateHeaderName = (
         inputType: string,
-        value: string
+        value: string,
     ): string | undefined => {
         /*
             Method is passed as a 'validate' function to all key and value fields of the ObjectListField class.
@@ -257,10 +260,10 @@ export class Integration extends Component<Props, State> {
     }
 
     _setMethod = (newMethod: string) => {
-        const {isUpdate, integration} = this.props
-        const {method, form} = this.state
+        const { isUpdate, integration } = this.props
+        const { method, form } = this.state
 
-        const stateUpdate: Record<string, unknown> = {method: newMethod}
+        const stateUpdate: Record<string, unknown> = { method: newMethod }
 
         const savedMethodIsGet = integration?.http?.method === HttpMethod.Get
         const isSwitchingFromGetToOther =
@@ -342,7 +345,7 @@ export class Integration extends Component<Props, State> {
                             name="name"
                             label="Integration name"
                             value={name}
-                            onChange={(value) => this.setState({name: value})}
+                            onChange={(value) => this.setState({ name: value })}
                             required
                             disabled={isIncomplete}
                         />
@@ -352,7 +355,7 @@ export class Integration extends Component<Props, State> {
                             label="Description"
                             value={description}
                             onChange={(value) =>
-                                this.setState({description: value})
+                                this.setState({ description: value })
                             }
                             disabled={isIncomplete}
                         />
@@ -440,7 +443,7 @@ export class Integration extends Component<Props, State> {
                                     required
                                     pattern={validateWebhookURLToPattern(
                                         url,
-                                        true
+                                        true,
                                     )}
                                     help={
                                         <div>
@@ -462,7 +465,7 @@ export class Integration extends Component<Props, State> {
                                     }
                                     value={url}
                                     onChange={(value) =>
-                                        this.setState({url: value})
+                                        this.setState({ url: value })
                                     }
                                 />
                                 <DEPRECATED_InputField
@@ -488,7 +491,7 @@ export class Integration extends Component<Props, State> {
                                         value={requestContentType}
                                         onChange={(value) =>
                                             this._onRequestContentTypeChange(
-                                                value
+                                                value,
                                             )
                                         }
                                     >
@@ -523,7 +526,7 @@ export class Integration extends Component<Props, State> {
                                         fields={headers}
                                         validate={this._validateHeaderName}
                                         onChange={(value: Field[]) =>
-                                            this.setState({headers: value})
+                                            this.setState({ headers: value })
                                         }
                                     />
                                 </FormGroup>
@@ -533,7 +536,7 @@ export class Integration extends Component<Props, State> {
                                         <JSONBody
                                             form={form}
                                             onChange={(form: HTTPForm) =>
-                                                this.setState({form})
+                                                this.setState({ form })
                                             }
                                         />
                                     ) : (
@@ -547,7 +550,7 @@ export class Integration extends Component<Props, State> {
                                                         : []
                                                 }
                                                 onChange={(form) =>
-                                                    this.setState({form})
+                                                    this.setState({ form })
                                                 }
                                             />
                                         </FormGroup>
@@ -573,7 +576,7 @@ export class Integration extends Component<Props, State> {
                                             intent="destructive"
                                             onClick={() =>
                                                 deactivateIntegration(
-                                                    integration!.id
+                                                    integration!.id,
                                                 )
                                             }
                                         >
@@ -586,7 +589,7 @@ export class Integration extends Component<Props, State> {
                                             isLoading={isSubmitting}
                                             onClick={() =>
                                                 activateIntegration(
-                                                    integration.id
+                                                    integration.id,
                                                 )
                                             }
                                         >
@@ -627,7 +630,7 @@ const connector = connect(
         deactivateIntegration,
         deleteIntegration,
         updateOrCreateIntegration,
-    }
+    },
 )
 
 export default connector(Integration)

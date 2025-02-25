@@ -1,28 +1,29 @@
-import {act, renderHook} from '@testing-library/react-hooks'
-import _keyBy from 'lodash/keyBy'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { act, renderHook } from '@testing-library/react-hooks'
+import _keyBy from 'lodash/keyBy'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {tags} from 'fixtures/tag'
-import {useTicketCountPerTag} from 'hooks/reporting/ticket-insights/useTicketCountPerTag'
-import {useTagsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
-import {getPeriodDateTimes} from 'hooks/reporting/useTimeSeries'
-import {OrderDirection} from 'models/api/types'
-import {ReportingGranularity} from 'models/reporting/types'
-import {Period} from 'models/stat/types'
-import {RootState, StoreDispatch} from 'state/types'
+import { tags } from 'fixtures/tag'
+import { useTicketCountPerTag } from 'hooks/reporting/ticket-insights/useTicketCountPerTag'
+import { useTagsTicketCountTimeSeries } from 'hooks/reporting/timeSeries'
+import { getPeriodDateTimes } from 'hooks/reporting/useTimeSeries'
+import { OrderDirection } from 'models/api/types'
+import { ReportingGranularity } from 'models/reporting/types'
+import { Period } from 'models/stat/types'
+import { RootState, StoreDispatch } from 'state/types'
 import {
     initialState,
     setOrder,
     tagsReportSlice,
 } from 'state/ui/stats/tagsReportSlice'
-import {getFilterDateRange} from 'utils/reporting'
-import {assumeMock} from 'utils/testing'
+import { getFilterDateRange } from 'utils/reporting'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/timeSeries')
 const useTagsTicketCountTimeSeriesMock = assumeMock(
-    useTagsTicketCountTimeSeries
+    useTagsTicketCountTimeSeries,
 )
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 
@@ -36,12 +37,12 @@ describe('useTicketCountPerTag', () => {
             tags: _keyBy(tags, 'id'),
         },
         stats: {
-            filters: {period},
+            filters: { period },
         },
         ui: {
             stats: {
                 filters: {
-                    cleanStatsFilters: {period},
+                    cleanStatsFilters: { period },
                 },
                 [tagsReportSlice.name]: initialState,
             },
@@ -123,14 +124,14 @@ describe('useTicketCountPerTag', () => {
     })
 
     it('should return formatted data and dateTimes', () => {
-        const {result} = renderHook(() => useTicketCountPerTag(), {
-            wrapper: ({children}) => (
+        const { result } = renderHook(() => useTicketCountPerTag(), {
+            wrapper: ({ children }) => (
                 <Provider store={mockStore(defaultState)}>{children}</Provider>
             ),
         })
 
         expect(result.current.dateTimes).toEqual(
-            getPeriodDateTimes(getFilterDateRange(period), granularity)
+            getPeriodDateTimes(getFilterDateRange(period), granularity),
         )
 
         expect(result.current.data).toContainEqual({
@@ -138,7 +139,7 @@ describe('useTicketCountPerTag', () => {
             tag: tags.find((tag) => String(tag.id) === tagId),
             total: exampleResponse[tagId][0].reduce(
                 (sum, item) => sum + item.value,
-                0
+                0,
             ),
             timeSeries: exampleResponse[tagId][0],
         })
@@ -147,7 +148,7 @@ describe('useTicketCountPerTag', () => {
             tag: tags.find((tag) => String(tag.id) === anotherTagId),
             total: exampleResponse[anotherTagId][0].reduce(
                 (sum, item) => sum + item.value,
-                0
+                0,
             ),
             timeSeries: exampleResponse[anotherTagId][0],
         })
@@ -171,14 +172,14 @@ describe('useTicketCountPerTag', () => {
             },
         }
 
-        const {result} = renderHook(() => useTicketCountPerTag(), {
-            wrapper: ({children}) => (
+        const { result } = renderHook(() => useTicketCountPerTag(), {
+            wrapper: ({ children }) => (
                 <Provider store={mockStore(state)}>{children}</Provider>
             ),
         })
 
         expect(result.current.dateTimes).toEqual(
-            getPeriodDateTimes(getFilterDateRange(period), granularity)
+            getPeriodDateTimes(getFilterDateRange(period), granularity),
         )
 
         expect(result.current.data[0]).toEqual({
@@ -186,7 +187,7 @@ describe('useTicketCountPerTag', () => {
             tag: tags.find((tag) => String(tag.id) === thirdTagId),
             total: exampleResponse[thirdTagId][0].reduce(
                 (sum, item) => sum + item.value,
-                0
+                0,
             ),
             timeSeries: exampleResponse[thirdTagId][0],
         })
@@ -210,14 +211,14 @@ describe('useTicketCountPerTag', () => {
             },
         }
 
-        const {result} = renderHook(() => useTicketCountPerTag(), {
-            wrapper: ({children}) => (
+        const { result } = renderHook(() => useTicketCountPerTag(), {
+            wrapper: ({ children }) => (
                 <Provider store={mockStore(state)}>{children}</Provider>
             ),
         })
 
         expect(result.current.dateTimes).toEqual(
-            getPeriodDateTimes(getFilterDateRange(period), granularity)
+            getPeriodDateTimes(getFilterDateRange(period), granularity),
         )
 
         expect(result.current.data[0]).toEqual({
@@ -225,7 +226,7 @@ describe('useTicketCountPerTag', () => {
             tag: tags.find((tag) => String(tag.id) === anotherTagId),
             total: exampleResponse[anotherTagId][0].reduce(
                 (sum, item) => sum + item.value,
-                0
+                0,
             ),
             timeSeries: exampleResponse[anotherTagId][0],
         })
@@ -236,14 +237,14 @@ describe('useTicketCountPerTag', () => {
             data: undefined,
             isLoading: true,
         } as any)
-        const {result} = renderHook(() => useTicketCountPerTag(), {
-            wrapper: ({children}) => (
+        const { result } = renderHook(() => useTicketCountPerTag(), {
+            wrapper: ({ children }) => (
                 <Provider store={mockStore(defaultState)}>{children}</Provider>
             ),
         })
 
         expect(result.current.dateTimes).toEqual(
-            getPeriodDateTimes(getFilterDateRange(period), granularity)
+            getPeriodDateTimes(getFilterDateRange(period), granularity),
         )
 
         expect(result.current.data).toEqual([])
@@ -252,17 +253,17 @@ describe('useTicketCountPerTag', () => {
 
     it('should return tags with no data items', () => {
         useTagsTicketCountTimeSeriesMock.mockReturnValue({
-            data: {[tagId]: []},
+            data: { [tagId]: [] },
             isLoading: false,
         } as any)
-        const {result} = renderHook(() => useTicketCountPerTag(), {
-            wrapper: ({children}) => (
+        const { result } = renderHook(() => useTicketCountPerTag(), {
+            wrapper: ({ children }) => (
                 <Provider store={mockStore(defaultState)}>{children}</Provider>
             ),
         })
 
         expect(result.current.dateTimes).toEqual(
-            getPeriodDateTimes(getFilterDateRange(period), granularity)
+            getPeriodDateTimes(getFilterDateRange(period), granularity),
         )
 
         expect(result.current.data).toEqual([
@@ -278,8 +279,8 @@ describe('useTicketCountPerTag', () => {
 
     describe('sorting', () => {
         it('should sort by tag name', () => {
-            const {result} = renderHook(() => useTicketCountPerTag(), {
-                wrapper: ({children}) => (
+            const { result } = renderHook(() => useTicketCountPerTag(), {
+                wrapper: ({ children }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
@@ -340,8 +341,8 @@ describe('useTicketCountPerTag', () => {
         })
 
         it('should sort by total column', () => {
-            const {result} = renderHook(() => useTicketCountPerTag(), {
-                wrapper: ({children}) => (
+            const { result } = renderHook(() => useTicketCountPerTag(), {
+                wrapper: ({ children }) => (
                     <Provider store={mockStore(defaultState)}>
                         {children}
                     </Provider>
@@ -389,8 +390,8 @@ describe('useTicketCountPerTag', () => {
 
         it('should sort by specific data column', () => {
             const store = mockStore(defaultState)
-            const {result} = renderHook(() => useTicketCountPerTag(), {
-                wrapper: ({children}) => (
+            const { result } = renderHook(() => useTicketCountPerTag(), {
+                wrapper: ({ children }) => (
                     <Provider store={store}>{children}</Provider>
                 ),
             })
@@ -399,13 +400,13 @@ describe('useTicketCountPerTag', () => {
                 result.current.setOrdering(0)
             })
 
-            expect(store.getActions()).toContainEqual(setOrder({column: 0}))
+            expect(store.getActions()).toContainEqual(setOrder({ column: 0 }))
         })
 
         it('should allow changing the sorting', () => {
             const store = mockStore(defaultState)
-            const {result} = renderHook(() => useTicketCountPerTag(), {
-                wrapper: ({children}) => (
+            const { result } = renderHook(() => useTicketCountPerTag(), {
+                wrapper: ({ children }) => (
                     <Provider store={store}>{children}</Provider>
                 ),
             })
@@ -419,7 +420,7 @@ describe('useTicketCountPerTag', () => {
             })
 
             expect(store.getActions()).toContainEqual(
-                setOrder({column: 'total'})
+                setOrder({ column: 'total' }),
             )
         })
     })

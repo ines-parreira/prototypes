@@ -1,13 +1,14 @@
-import {render} from '@testing-library/react'
-import {createBrowserHistory, History} from 'history'
-import {fromJS} from 'immutable'
-import React, {ReactNode} from 'react'
-import {Provider} from 'react-redux'
-import {Router, Route} from 'react-router-dom'
+import React, { ReactNode } from 'react'
+
+import { render } from '@testing-library/react'
+import { createBrowserHistory, History } from 'history'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import { Route, Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {FACEBOOK_INTEGRATION_TYPE} from 'constants/integration'
+import { FACEBOOK_INTEGRATION_TYPE } from 'constants/integration'
 
 import FacebookIntegrationList from '../FacebookIntegrationList'
 
@@ -65,7 +66,7 @@ describe('<FacebookIntegrationList />', () => {
     })
 
     it('should render', () => {
-        const {container} = render(
+        const { container } = render(
             <RouterWrapper>
                 <Provider store={store}>
                     <FacebookIntegrationList
@@ -73,7 +74,7 @@ describe('<FacebookIntegrationList />', () => {
                         redirectUri="https://.../"
                     />
                 </Provider>
-            </RouterWrapper>
+            </RouterWrapper>,
         )
 
         expect(container.firstChild).toMatchSnapshot()

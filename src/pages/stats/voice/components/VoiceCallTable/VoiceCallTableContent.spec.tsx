@@ -1,15 +1,17 @@
-import {VoiceCallDirection} from '@gorgias/api-queries'
-import {act, fireEvent, render, waitFor} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { act, fireEvent, render, waitFor } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {VoiceCallDisplayStatus, VoiceCallStatus} from 'models/voiceCall/types'
-import {CALL_LIST_PAGE_SIZE} from 'pages/stats/voice/constants/voiceOverview'
-import {useVoiceCallCount} from 'pages/stats/voice/hooks/useVoiceCallCount'
-import {RootState, StoreDispatch} from 'state/types'
-import {assumeMock} from 'utils/testing'
+import { VoiceCallDirection } from '@gorgias/api-queries'
+
+import { VoiceCallDisplayStatus, VoiceCallStatus } from 'models/voiceCall/types'
+import { CALL_LIST_PAGE_SIZE } from 'pages/stats/voice/constants/voiceOverview'
+import { useVoiceCallCount } from 'pages/stats/voice/hooks/useVoiceCallCount'
+import { RootState, StoreDispatch } from 'state/types'
+import { assumeMock } from 'utils/testing'
 
 import VoiceCallTableContent from './VoiceCallTableContent'
 
@@ -21,24 +23,24 @@ const useVoiceCallCountMock = assumeMock(useVoiceCallCount)
 jest.mock(
     'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel',
     () =>
-        ({customerId}: {customerId: number}) => (
+        ({ customerId }: { customerId: number }) => (
             <div>VoiceCallCustomerLabel {customerId}</div>
-        )
+        ),
 )
 jest.mock(
     'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel',
     () =>
-        ({agentId}: {agentId: number}) => (
+        ({ agentId }: { agentId: number }) => (
             <div>VoiceCallAgentLabel {agentId}</div>
-        )
+        ),
 )
 jest.mock(
     'pages/common/components/VoiceIntegrationBasicLabel/VoiceIntegrationBasicLabel',
     () => {
-        return ({integrationId}: {integrationId: number}) => (
+        return ({ integrationId }: { integrationId: number }) => (
             <div>VoiceIntegrationBasicLabel {integrationId}</div>
         )
-    }
+    },
 )
 jest.mock('utils', () => {
     return {
@@ -114,17 +116,17 @@ describe('VoiceCallTableContent', () => {
         props: ComponentProps<typeof VoiceCallTableContent> = {
             data,
             isFetching: false,
-        }
+        },
     ) => {
         return render(
             <Provider store={mockStore({})}>
                 <VoiceCallTableContent {...props} />
-            </Provider>
+            </Provider>,
         )
     }
 
     it('should render no voice calls message', () => {
-        const {getByText} = renderComponent({
+        const { getByText } = renderComponent({
             data: [],
             isFetching: false,
         })
@@ -132,7 +134,7 @@ describe('VoiceCallTableContent', () => {
     })
 
     it('should render custom no voice calls message when it is provided', () => {
-        const {getByText} = renderComponent({
+        const { getByText } = renderComponent({
             data: [],
             isFetching: false,
             noDataTitle: 'Custom no data title',
@@ -148,7 +150,7 @@ describe('VoiceCallTableContent', () => {
             totalPages: 10,
         })
 
-        const {getByText} = renderComponent()
+        const { getByText } = renderComponent()
 
         expect(getByText('Activity')).toBeInTheDocument()
         expect(getByText('Integration')).toBeInTheDocument()
@@ -161,21 +163,23 @@ describe('VoiceCallTableContent', () => {
     })
 
     it('should render table tooltips', async () => {
-        const {getAllByText, getByText} = renderComponent()
+        const { getAllByText, getByText } = renderComponent()
         const helpIcons = getAllByText('info_outline')
 
         // State tooltip
         fireEvent.mouseOver(helpIcons[0])
         await waitFor(() =>
-            expect(getByText('Learn about the call states')).toBeInTheDocument()
+            expect(
+                getByText('Learn about the call states'),
+            ).toBeInTheDocument(),
         )
 
         // Recording tooltip
         fireEvent.mouseOver(helpIcons[1])
         await waitFor(() =>
             expect(
-                getByText('Call recording or voicemail left by customer.')
-            ).toBeInTheDocument()
+                getByText('Call recording or voicemail left by customer.'),
+            ).toBeInTheDocument(),
         )
 
         // Wait time tooltip
@@ -183,14 +187,14 @@ describe('VoiceCallTableContent', () => {
         await waitFor(() =>
             expect(
                 getByText(
-                    'Time a customer spent waiting to be connected to an agent or sent to voicemail.'
-                )
-            ).toBeInTheDocument()
+                    'Time a customer spent waiting to be connected to an agent or sent to voicemail.',
+                ),
+            ).toBeInTheDocument(),
         )
     })
 
     it('should render loading state rows', () => {
-        const {getAllByRole} = renderComponent({
+        const { getAllByRole } = renderComponent({
             data: [],
             isFetching: true,
         })
@@ -199,7 +203,7 @@ describe('VoiceCallTableContent', () => {
     })
 
     it('should render rows', () => {
-        const {getByText, getAllByText} = renderComponent()
+        const { getByText, getAllByText } = renderComponent()
 
         // first call
         expect(getByText('VoiceCallCustomerLabel 1')).toBeInTheDocument()
@@ -221,38 +225,38 @@ describe('VoiceCallTableContent', () => {
     })
 
     it('should handle table scrolling', async () => {
-        const {container, getByRole} = renderComponent()
+        const { container, getByRole } = renderComponent()
 
         act(() => {
             const tableRow = container.getElementsByClassName('container')[0]
-            fireEvent.scroll(tableRow, {target: {scrollLeft: 50}})
+            fireEvent.scroll(tableRow, { target: { scrollLeft: 50 } })
         })
 
         await waitFor(() => {
             expect(
                 getByRole('columnheader', {
                     name: new RegExp('Activity'),
-                })
+                }),
             ).toHaveClass('withShadow')
         })
 
         act(() => {
             const tableRow = container.getElementsByClassName('container')[0]
-            fireEvent.scroll(tableRow, {target: {scrollLeft: 0}})
+            fireEvent.scroll(tableRow, { target: { scrollLeft: 0 } })
         })
 
         await waitFor(() => {
             expect(
                 getByRole('columnheader', {
                     name: new RegExp('Activity'),
-                })
+                }),
             ).not.toHaveClass('withShadow')
         })
     })
 
     it('should call onColumnClick when clicking on a header cell', () => {
         const onColumnClick = jest.fn()
-        const {getByText} = renderComponent({onColumnClick} as any)
+        const { getByText } = renderComponent({ onColumnClick } as any)
 
         fireEvent.click(getByText('Activity'))
 

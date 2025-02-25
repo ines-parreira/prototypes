@@ -1,5 +1,6 @@
-import {fireEvent, render} from '@testing-library/react'
 import React from 'react'
+
+import { fireEvent, render } from '@testing-library/react'
 
 import * as ToggleButton from '../ToggleButton'
 
@@ -13,11 +14,11 @@ const baseProps = {
 
 describe('<ToggleButton />', () => {
     it('should fire onChange after click', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <ToggleButton.Wrapper {...baseProps}>
                 <ToggleButton.Option value={1}>Option 1</ToggleButton.Option>
                 <ToggleButton.Option value={2}>Option 2</ToggleButton.Option>
-            </ToggleButton.Wrapper>
+            </ToggleButton.Wrapper>,
         )
 
         fireEvent.click(getByText('Option 2'))
@@ -30,11 +31,11 @@ describe('<ToggleButton />', () => {
     })
 
     it('should check option', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <ToggleButton.Wrapper {...baseProps} value={2}>
                 <ToggleButton.Option value={1}>Option 1</ToggleButton.Option>
                 <ToggleButton.Option value={2}>Option 2</ToggleButton.Option>
-            </ToggleButton.Wrapper>
+            </ToggleButton.Wrapper>,
         )
 
         expect(getByText('Option 1')).toHaveAttribute('aria-checked', 'false')
@@ -42,23 +43,23 @@ describe('<ToggleButton />', () => {
     })
 
     it('should render a medium size by default', () => {
-        const {container} = render(
+        const { container } = render(
             <ToggleButton.Wrapper {...baseProps} value={2}>
                 <ToggleButton.Option value={1}>Option 1</ToggleButton.Option>
                 <ToggleButton.Option value={2}>Option 2</ToggleButton.Option>
-            </ToggleButton.Wrapper>
+            </ToggleButton.Wrapper>,
         )
 
         expect(container.firstChild).toHaveClass('medium')
     })
 
     it('should render a small size', () => {
-        const props = {...baseProps, size: 'small' as const}
-        const {container} = render(
+        const props = { ...baseProps, size: 'small' as const }
+        const { container } = render(
             <ToggleButton.Wrapper {...props} value={2}>
                 <ToggleButton.Option value={1}>Option 1</ToggleButton.Option>
                 <ToggleButton.Option value={2}>Option 2</ToggleButton.Option>
-            </ToggleButton.Wrapper>
+            </ToggleButton.Wrapper>,
         )
 
         expect(container.firstChild).toHaveClass('small')

@@ -1,22 +1,23 @@
-import {List, Map, fromJS} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {useEffect, useMemo, useState} from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { fromJS, List, Map } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import {
-    mapLanguageOptionsToLanguageDropdown,
     GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS,
-    LanguageItem,
     GORGIAS_CHAT_WIDGET_TEXTS,
+    LanguageItem,
+    mapLanguageOptionsToLanguageDropdown,
 } from 'config/integrations/gorgias_chat'
-import {Language} from 'constants/languages'
+import { Language } from 'constants/languages'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAsyncFn from 'hooks/useAsyncFn'
-import {IntegrationType} from 'models/integration/constants'
-import {GorgiasChatLauncherType} from 'models/integration/types/gorgiasChat'
-import {updateOrCreateIntegration} from 'state/integrations/actions'
+import { IntegrationType } from 'models/integration/constants'
+import { GorgiasChatLauncherType } from 'models/integration/types/gorgiasChat'
+import { updateOrCreateIntegration } from 'state/integrations/actions'
 
-import {LanguageItemRow} from './types'
+import { LanguageItemRow } from './types'
 
 const getLanguageLabel = (languageItem: LanguageItem) => {
     const language = GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS.find((el) => {
@@ -48,9 +49,9 @@ export const useGorgiasChatIntegrationLanguagesTable = ({
         () =>
             mapLanguageOptionsToLanguageDropdown(
                 integration,
-                enableNewLanguages
+                enableNewLanguages,
             ),
-        [integration, enableNewLanguages]
+        [integration, enableNewLanguages],
     )
 
     const languagesRows: LanguageItemRow[] = useMemo(() => {
@@ -121,7 +122,7 @@ export const useGorgiasChatIntegrationLanguagesTable = ({
         setLanguages(integrationLanguages)
     }, [loading, integration])
 
-    const [{loading: isUpdatePending}, handleUpdate] = useAsyncFn(
+    const [{ loading: isUpdatePending }, handleUpdate] = useAsyncFn(
         async (updatedLanguages: LanguageItem[]) => {
             const form: SubmitForm = {
                 id: integration.get('id'),
@@ -130,7 +131,7 @@ export const useGorgiasChatIntegrationLanguagesTable = ({
 
             const meta: Map<any, any> = integration.get('meta')
             const defaultLanguage = updatedLanguages.find(
-                (lang) => !!lang.primary
+                (lang) => !!lang.primary,
             )?.language
 
             if (!defaultLanguage) {
@@ -157,17 +158,18 @@ export const useGorgiasChatIntegrationLanguagesTable = ({
                 let decoration: Map<any, any> = integration.get('decoration')
                 decoration = decoration.set(
                     'introduction_text',
-                    GORGIAS_CHAT_WIDGET_TEXTS[defaultLanguage]?.introductionText
+                    GORGIAS_CHAT_WIDGET_TEXTS[defaultLanguage]
+                        ?.introductionText,
                 )
                 decoration = decoration.set(
                     'offline_introduction_text',
                     GORGIAS_CHAT_WIDGET_TEXTS[defaultLanguage]
-                        ?.offlineIntroductionText
+                        ?.offlineIntroductionText,
                 )
 
                 const launcherType = decoration.getIn(
                     ['launcher', 'type'],
-                    GorgiasChatLauncherType.ICON
+                    GorgiasChatLauncherType.ICON,
                 ) as GorgiasChatLauncherType
                 if (launcherType === GorgiasChatLauncherType.ICON_AND_LABEL) {
                     decoration = decoration.set('launcher', {
@@ -182,7 +184,7 @@ export const useGorgiasChatIntegrationLanguagesTable = ({
             await dispatch(updateOrCreateIntegration(fromJS(form)))
             setLanguages(updatedLanguages)
         },
-        [integration]
+        [integration],
     )
 
     const addLanguage = async (newLanguage: LanguageItem) => {
@@ -211,7 +213,7 @@ export const useGorgiasChatIntegrationLanguagesTable = ({
     const deleteLanguage = async (deletedLanguage: LanguageItem) => {
         const newLanguages = languages.filter(
             (currentLanguage) =>
-                currentLanguage.language !== deletedLanguage.language
+                currentLanguage.language !== deletedLanguage.language,
         )
 
         await handleUpdate(newLanguages)

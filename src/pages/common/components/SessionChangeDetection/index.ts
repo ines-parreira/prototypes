@@ -1,1 +1,1 @@
-export {default} from './SessionChangeDetection'
+export { default } from './SessionChangeDetection'

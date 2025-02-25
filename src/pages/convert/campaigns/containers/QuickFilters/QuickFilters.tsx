@@ -1,8 +1,8 @@
-import React, {MouseEvent, useEffect, useState} from 'react'
+import React, { MouseEvent, useEffect, useState } from 'react'
 
-import {Chip} from 'pages/common/components/Chip'
+import { Chip } from 'pages/common/components/Chip'
 
-import {QuickFilterType} from '../../types/QuickFilter'
+import { QuickFilterType } from '../../types/QuickFilter'
 
 import css from './QuickFilters.less'
 
@@ -18,7 +18,7 @@ export const QuickFilters = ({
     onChangeFilters,
 }: Props) => {
     const [activeFilters, setActiveFilters] = useState<string[]>(
-        defaultActiveFilters ?? []
+        defaultActiveFilters ?? [],
     )
 
     const handleFilterClick = (_: MouseEvent, id: string) => {

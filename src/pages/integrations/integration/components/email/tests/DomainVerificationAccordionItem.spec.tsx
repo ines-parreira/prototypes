@@ -1,3 +1,5 @@
+import React, { ComponentProps } from 'react'
+
 import {
     cleanup,
     fireEvent,
@@ -5,13 +7,12 @@ import {
     screen,
     waitFor,
 } from '@testing-library/react'
-import React, {ComponentProps} from 'react'
 
 import {
     migrationOutboundVerificationUnverifiedDomain,
     migrationOutboundVerificationVerifiedDomain,
 } from 'fixtures/emailMigration'
-import {EmailMigrationOutboundVerification} from 'models/integration/types'
+import { EmailMigrationOutboundVerification } from 'models/integration/types'
 
 import DomainVerificationAccordionItem from '../EmailMigration/DomainVerificationAccordionItem'
 
@@ -37,7 +38,7 @@ describe('DomainVerificationAccordionItem', () => {
         verification: EmailMigrationOutboundVerification,
         props: Partial<
             ComponentProps<typeof DomainVerificationAccordionItem>
-        > = {}
+        > = {},
     ) =>
         render(
             <DomainVerificationAccordionItem
@@ -46,7 +47,7 @@ describe('DomainVerificationAccordionItem', () => {
                 onVerificationMethodSwitch={onVerificationMethodSwitch}
                 isSingleSenderEnabled={true}
                 {...props}
-            />
+            />,
         )
 
     afterEach(cleanup)
@@ -58,7 +59,7 @@ describe('DomainVerificationAccordionItem', () => {
         fireEvent.click(
             screen.getByRole('link', {
                 name: /verify emails with your business address/i,
-            })
+            }),
         )
         expect(onVerificationMethodSwitch).toHaveBeenCalled()
     })
@@ -78,7 +79,7 @@ describe('DomainVerificationAccordionItem', () => {
         expect(
             screen.queryByRole('link', {
                 name: /verify emails with your business address/i,
-            })
+            }),
         ).not.toBeInTheDocument()
     })
 

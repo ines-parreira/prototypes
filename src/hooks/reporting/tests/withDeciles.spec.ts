@@ -1,4 +1,4 @@
-import {forEach} from 'lodash'
+import { forEach } from 'lodash'
 
 import {
     DataResponse,
@@ -24,7 +24,7 @@ describe('withDeciles', () => {
             const responseWithDeciles = withDeciles(response)
 
             expect(responseWithDeciles.data.data).toEqual(
-                selectWithDeciles(results)
+                selectWithDeciles(results),
             )
         })
     })
@@ -35,10 +35,10 @@ describe('withDeciles', () => {
 
             forEach(deciles, (decile) => {
                 const resultsPerDecile = resultsWithDeciles.filter(
-                    (result) => result.decile === decile
+                    (result) => result.decile === decile,
                 ).length
                 expect(resultsPerDecile).toEqual(
-                    results.length / deciles.length
+                    results.length / deciles.length,
                 )
             })
         })
@@ -48,7 +48,7 @@ describe('withDeciles', () => {
                 field: value,
             }))
             const smallerThenDecilesBuckets = getDecilesIndex(
-                limitedResults.length
+                limitedResults.length,
             )
 
             const resultsWithDeciles = selectWithDeciles(limitedResults)
@@ -56,7 +56,7 @@ describe('withDeciles', () => {
             expect(limitedResults.length).toBeLessThan(10)
             forEach(smallerThenDecilesBuckets, (decile) => {
                 const resultsPerDecile = resultsWithDeciles.filter(
-                    (result) => result.decile === decile.decile
+                    (result) => result.decile === decile.decile,
                 ).length
                 expect(resultsPerDecile).toEqual(1)
             })
@@ -75,61 +75,61 @@ describe('withDeciles', () => {
             {
                 results: 1,
                 deciles: [9].map((decile, index) =>
-                    decilePerIndex(decile, index)
+                    decilePerIndex(decile, index),
                 ),
             },
             {
                 results: 2,
                 deciles: [9, 4].map((decile, index) =>
-                    decilePerIndex(decile, index)
+                    decilePerIndex(decile, index),
                 ),
             },
             {
                 results: 3,
                 deciles: [9, 6, 2].map((decile, index) =>
-                    decilePerIndex(decile, index)
+                    decilePerIndex(decile, index),
                 ),
             },
             {
                 results: 4,
                 deciles: [9, 7, 4, 2].map((decile, index) =>
-                    decilePerIndex(decile, index)
+                    decilePerIndex(decile, index),
                 ),
             },
             {
                 results: 5,
                 deciles: [9, 7, 5, 3, 1].map((decile, index) =>
-                    decilePerIndex(decile, index)
+                    decilePerIndex(decile, index),
                 ),
             },
             {
                 results: 6,
                 deciles: [9, 7, 6, 4, 2, 1].map((decile, index) =>
-                    decilePerIndex(decile, index)
+                    decilePerIndex(decile, index),
                 ),
             },
             {
                 results: 7,
                 deciles: [9, 8, 6, 5, 3, 2, 0].map((decile, index) =>
-                    decilePerIndex(decile, index)
+                    decilePerIndex(decile, index),
                 ),
             },
             {
                 results: 8,
                 deciles: [9, 8, 7, 5, 4, 3, 2, 0].map((decile, index) =>
-                    decilePerIndex(decile, index)
+                    decilePerIndex(decile, index),
                 ),
             },
             {
                 results: 9,
                 deciles: [9, 8, 7, 6, 5, 3, 2, 1, 0].map((decile, index) =>
-                    decilePerIndex(decile, index)
+                    decilePerIndex(decile, index),
                 ),
             },
             {
                 results: 10,
                 deciles: [9, 8, 7, 6, 5, 4, 3, 2, 1, 0].map((decile, index) =>
-                    decilePerIndex(decile, index)
+                    decilePerIndex(decile, index),
                 ),
             },
             {
@@ -138,7 +138,7 @@ describe('withDeciles', () => {
                     .map((decile, index) => decilePerIndex(index, decile))
                     .reverse(),
             },
-        ])('$results $deciles', ({results, deciles}) => {
+        ])('$results $deciles', ({ results, deciles }) => {
             expect(getDecilesIndex(results)).toEqual(deciles)
         })
     })

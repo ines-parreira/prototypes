@@ -1,11 +1,11 @@
-import {DROPDOWN_NESTING_DELIMITER} from 'custom-fields/constants'
-import {CustomFieldValue} from 'custom-fields/types'
+import { DROPDOWN_NESTING_DELIMITER } from 'custom-fields/constants'
+import { CustomFieldValue } from 'custom-fields/types'
 
-import {CHOICE_VALUES_SYMBOL} from '../constants'
-import {ChoicesTree} from '../types'
+import { CHOICE_VALUES_SYMBOL } from '../constants'
+import { ChoicesTree } from '../types'
 
 export function buildTreeOfChoices(choices: CustomFieldValue[]) {
-    const tree: ChoicesTree = {[CHOICE_VALUES_SYMBOL]: new Set()}
+    const tree: ChoicesTree = { [CHOICE_VALUES_SYMBOL]: new Set() }
     choices.forEach((choice) => {
         if (['boolean', 'number'].includes(typeof choice)) {
             tree[CHOICE_VALUES_SYMBOL].add(choice)
@@ -14,7 +14,7 @@ export function buildTreeOfChoices(choices: CustomFieldValue[]) {
         if (typeof choice === 'string') {
             recursivelyBuildTreeOfChoices(
                 tree,
-                choice.split(DROPDOWN_NESTING_DELIMITER)
+                choice.split(DROPDOWN_NESTING_DELIMITER),
             )
         }
     })
@@ -23,7 +23,7 @@ export function buildTreeOfChoices(choices: CustomFieldValue[]) {
 
 function recursivelyBuildTreeOfChoices(
     currentBranch: ChoicesTree,
-    values: string[]
+    values: string[],
 ) {
     const currentValue = values.shift()
 

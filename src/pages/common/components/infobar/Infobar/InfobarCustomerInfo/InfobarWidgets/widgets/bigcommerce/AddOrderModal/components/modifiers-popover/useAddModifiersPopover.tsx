@@ -1,3 +1,5 @@
+import React, { useState } from 'react'
+
 import {
     FloatingFocusManager,
     FloatingOverlay,
@@ -5,17 +7,16 @@ import {
     useInteractions,
     useRole,
 } from '@floating-ui/react'
-import React, {useState} from 'react'
 
 import {
     BigCommerceProduct,
     BigCommerceProductVariant,
 } from 'models/integration/types'
 
-import {ModifiersPopover} from './ModifiersPopover'
+import { ModifiersPopover } from './ModifiersPopover'
+import { ModifierValues } from './types'
 
 import css from './ModifiersPopover.less'
-import {ModifierValues} from './types'
 
 type AddModifiersPopoverState = {
     product: BigCommerceProduct
@@ -29,7 +30,7 @@ export default function useAddModifiersPopover(
         product: BigCommerceProduct
         variant: BigCommerceProductVariant
         modifierValues: ModifierValues
-    }) => Promise<void>
+    }) => Promise<void>,
 ) {
     const [props, setProps] = useState<AddModifiersPopoverState | null>(null)
 
@@ -38,10 +39,10 @@ export default function useAddModifiersPopover(
      * If true - it will get opened
      */
     const maybeOpenModifierPopover = (
-        props: AddModifiersPopoverState
+        props: AddModifiersPopoverState,
     ): boolean => {
         // Do not open if we do not have required modifiers
-        if (!(props.product.modifiers ?? []).some(({required}) => required)) {
+        if (!(props.product.modifiers ?? []).some(({ required }) => required)) {
             return false
         }
 
@@ -50,10 +51,10 @@ export default function useAddModifiersPopover(
         return true
     }
 
-    const {refs, context} = useFloating({open: Boolean(props)})
+    const { refs, context } = useFloating({ open: Boolean(props) })
     const role = useRole(context)
 
-    const {getReferenceProps} = useInteractions([role])
+    const { getReferenceProps } = useInteractions([role])
 
     const onClose = () => setProps(null)
 

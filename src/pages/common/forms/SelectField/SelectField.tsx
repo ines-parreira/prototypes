@@ -1,22 +1,23 @@
+import React, {
+    ChangeEvent,
+    Component,
+    ComponentProps,
+    createRef,
+    CSSProperties,
+    Fragment,
+    HTMLAttributes,
+    KeyboardEvent,
+    MouseEvent,
+    ReactNode,
+    RefObject,
+    SyntheticEvent,
+} from 'react'
+
 import classnames from 'classnames'
 import _isEqual from 'lodash/isEqual'
 import _max from 'lodash/max'
 import _min from 'lodash/min'
 import _noop from 'lodash/noop'
-import React, {
-    Component,
-    ComponentProps,
-    CSSProperties,
-    ChangeEvent,
-    SyntheticEvent,
-    MouseEvent,
-    KeyboardEvent,
-    Fragment,
-    createRef,
-    RefObject,
-    ReactNode,
-    HTMLAttributes,
-} from 'react'
 import {
     DropdownItem,
     DropdownMenu,
@@ -25,11 +26,12 @@ import {
     UncontrolledTooltip,
 } from 'reactstrap'
 
-import {GroupPositionContext} from 'pages/common/components/layout/Group'
+import { GroupPositionContext } from 'pages/common/components/layout/Group'
 
 import Caption from '../Caption/Caption'
+import { Option, SelectableOption, Value } from './types'
+
 import css from './SelectField.less'
-import {SelectableOption, Option, Value} from './types'
 
 const APPROXIMATE_CHAR_WIDTH = 8
 const ARROW_ICON_WIDTH = 10
@@ -103,14 +105,14 @@ export default class SelectField extends Component<Props, State> {
                 props.options,
                 '',
                 props.value,
-                props.showSelectedOption
+                props.showSelectedOption,
             ),
             isFocused: false,
         }
     }
 
     componentDidMount() {
-        const {shouldFocus} = this.props
+        const { shouldFocus } = this.props
 
         if (shouldFocus) {
             this._toggleDropdown()
@@ -131,21 +133,21 @@ export default class SelectField extends Component<Props, State> {
                     nextProps.options,
                     this.state.input,
                     nextProps.value,
-                    nextProps.showSelectedOption
+                    nextProps.showSelectedOption,
                 ),
             })
         }
     }
 
     _onChange = (value: Value) => {
-        this.setState({input: ''}, () => this.props.onChange(value))
+        this.setState({ input: '' }, () => this.props.onChange(value))
     }
 
     _filterOptions = (
         options: Option[],
         input: string,
         value?: Value | null,
-        showSelectedOption?: boolean
+        showSelectedOption?: boolean,
     ): Option[] => {
         // Filter options by search query
         let filteredOptions = options.filter((option) => {
@@ -205,7 +207,7 @@ export default class SelectField extends Component<Props, State> {
     }
 
     _onSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const {allowCustomValue, options, value, showSelectedOption} =
+        const { allowCustomValue, options, value, showSelectedOption } =
             this.props
         const input = event.currentTarget.value
         this.setState({
@@ -214,7 +216,7 @@ export default class SelectField extends Component<Props, State> {
                 options,
                 input,
                 value,
-                showSelectedOption
+                showSelectedOption,
             ),
             selectedOptionIndex: allowCustomValue ? -1 : 0,
         })
@@ -232,8 +234,8 @@ export default class SelectField extends Component<Props, State> {
     }
 
     _onSearchKeyDown = (event: KeyboardEvent) => {
-        const {allowCustomValue} = this.props
-        const {input, filteredOptions, selectedOptionIndex} = this.state
+        const { allowCustomValue } = this.props
+        const { input, filteredOptions, selectedOptionIndex } = this.state
         const key = event.key
         const killedEventsKeys = ['ArrowUp', 'ArrowDown', 'Enter', 'Tab']
         let minSelectedOptionIndex = allowCustomValue ? -1 : 0
@@ -320,8 +322,8 @@ export default class SelectField extends Component<Props, State> {
     }
 
     _toggleDropdown = () => {
-        const {optionsOpen} = this.state
-        const {onDropdownToggle, disabled} = this.props
+        const { optionsOpen } = this.state
+        const { onDropdownToggle, disabled } = this.props
 
         if (disabled) {
             return
@@ -333,7 +335,7 @@ export default class SelectField extends Component<Props, State> {
             this._blurInput()
         }
 
-        this.setState({optionsOpen: !optionsOpen})
+        this.setState({ optionsOpen: !optionsOpen })
 
         if (onDropdownToggle) {
             onDropdownToggle(!optionsOpen)
@@ -360,11 +362,11 @@ export default class SelectField extends Component<Props, State> {
     }
 
     _onFocus = () => {
-        this.setState({isFocused: true})
+        this.setState({ isFocused: true })
     }
 
     _onBlur = () => {
-        this.setState({isFocused: false})
+        this.setState({ isFocused: false })
     }
 
     render() {
@@ -401,7 +403,7 @@ export default class SelectField extends Component<Props, State> {
             isFocused,
         } = this.state
         const selectedOption = options.find((option) =>
-            'value' in option ? _isEqual(option.value, value) : false
+            'value' in option ? _isEqual(option.value, value) : false,
         ) as SelectableOption | undefined
         const hasNoFilteredOptions = filteredOptions.length === 0
         let label = selectedOption ? selectedOption.label : null
@@ -433,7 +435,7 @@ export default class SelectField extends Component<Props, State> {
                           return option.text.length
                       }
                       return 0
-                  })
+                  }),
               )! *
                   APPROXIMATE_CHAR_WIDTH +
               ARROW_ICON_WIDTH
@@ -463,7 +465,7 @@ export default class SelectField extends Component<Props, State> {
                                         {
                                             [css.selectFullWidth]: fullWidth,
                                             [css.disabled]: disabled,
-                                        }
+                                        },
                                     )}
                                     onClick={this._toggleDropdown}
                                 >
@@ -471,7 +473,7 @@ export default class SelectField extends Component<Props, State> {
                                         <i
                                             className={classnames(
                                                 'material-icons',
-                                                css.icon
+                                                css.icon,
                                             )}
                                         >
                                             {icon}
@@ -523,7 +525,7 @@ export default class SelectField extends Component<Props, State> {
                                     <i
                                         className={classnames(
                                             'material-icons',
-                                            css.dropdownIcon
+                                            css.dropdownIcon,
                                         )}
                                     >
                                         arrow_drop_down
@@ -539,12 +541,12 @@ export default class SelectField extends Component<Props, State> {
                             dropdownMenuClassName,
                             {
                                 [css.optionsFullWidth]: fullWidth,
-                            }
+                            },
                         )}
                         container={container}
                         positionFixed={positionFixed}
                         modifiers={{
-                            preventOverflow: {boundariesElement: 'viewport'},
+                            preventOverflow: { boundariesElement: 'viewport' },
                         }}
                     >
                         {hasNoFilteredOptions && !allowCustomValue ? (
@@ -620,7 +622,7 @@ export default class SelectField extends Component<Props, State> {
                                                             [`${css['action--focused']}`]:
                                                                 index ===
                                                                 selectedOptionIndex,
-                                                        }
+                                                        },
                                                     )}
                                                 >
                                                     {item.label}
@@ -671,7 +673,7 @@ export default class SelectField extends Component<Props, State> {
                                                         [css[
                                                             'option--disabled'
                                                         ]]: item.isDisabled,
-                                                    }
+                                                    },
                                                 )}
                                                 onMouseEnter={() => {
                                                     this.setState({
@@ -682,7 +684,7 @@ export default class SelectField extends Component<Props, State> {
                                                 onClick={(event) => {
                                                     this._onOptionClick(
                                                         event,
-                                                        item.value
+                                                        item.value,
                                                     )
                                                 }}
                                                 disabled={item.isDisabled}
@@ -703,7 +705,7 @@ export default class SelectField extends Component<Props, State> {
                                                         <span
                                                             className={classnames(
                                                                 css.selectedIcon,
-                                                                'material-icons'
+                                                                'material-icons',
                                                             )}
                                                         >
                                                             done
@@ -728,7 +730,9 @@ export default class SelectField extends Component<Props, State> {
                     </DropdownMenu>
                 </UncontrolledDropdown>
                 {rightAddon && (
-                    <div className={classnames({'input-group': !!rightAddon})}>
+                    <div
+                        className={classnames({ 'input-group': !!rightAddon })}
+                    >
                         <span className="input-group-append">
                             <span className="input-group-text">
                                 {rightAddon}

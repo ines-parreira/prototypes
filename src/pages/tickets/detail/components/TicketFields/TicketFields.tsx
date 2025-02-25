@@ -1,36 +1,38 @@
-import {RequirementType, ExpressionFieldType} from '@gorgias/api-types'
+import React, { memo, useEffect, useMemo, useState } from 'react'
+
 import classNames from 'classnames'
-import React, {memo, useEffect, useMemo, useState} from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useFlag} from 'core/flags'
-import {AI_MANAGED_TYPES, OBJECT_TYPES} from 'custom-fields/constants'
-import {isFieldRequired} from 'custom-fields/helpers/isFieldRequired'
-import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import { ExpressionFieldType, RequirementType } from '@gorgias/api-types'
 
-import {useCustomFieldsConditionsEvaluationResults} from 'custom-fields/hooks/useCustomFieldsConditionsEvaluationResults'
-import {CustomField} from 'custom-fields/types'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useFlag } from 'core/flags'
+import { AI_MANAGED_TYPES, OBJECT_TYPES } from 'custom-fields/constants'
+import { isFieldRequired } from 'custom-fields/helpers/isFieldRequired'
+import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import { useCustomFieldsConditionsEvaluationResults } from 'custom-fields/hooks/useCustomFieldsConditionsEvaluationResults'
+import { CustomField } from 'custom-fields/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useHasWrapped from 'hooks/useHasWrapped'
 import Button from 'pages/common/components/button/Button'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import {setHasAttemptedToCloseTicket} from 'state/ticket/actions'
+import { setHasAttemptedToCloseTicket } from 'state/ticket/actions'
 import {
     getHasAttemptedToCloseTicket,
-    getTicketFieldState,
     getTicket,
+    getTicketFieldState,
 } from 'state/ticket/selectors'
 
 import useHeight, {
     MAX_HEIGHT as FIELDS_CONTAINER_MAX_HEIGHT,
 } from './hooks/useHeight'
 import TicketField from './TicketField'
+
 import css from './TicketFields.less'
 
 const isFieldVisible = (
     fieldDefinition: CustomField,
-    conditionalRequirementType?: ExpressionFieldType
+    conditionalRequirementType?: ExpressionFieldType,
 ): boolean => {
     return (
         (fieldDefinition.required === false &&
@@ -46,14 +48,14 @@ function TicketFields() {
     const ticketFieldState = useAppSelector(getTicketFieldState)
     const [showAllFields, setShowAllFields] = useState(false)
     const hasAttemptedToCloseTicket = useAppSelector(
-        getHasAttemptedToCloseTicket
+        getHasAttemptedToCloseTicket,
     )
     const conditionalFieldsSupported = useFlag(
-        FeatureFlagKey.TicketConditionalFields
+        FeatureFlagKey.TicketConditionalFields,
     )
 
     const {
-        data: {data: ticketFieldDefinitions = []} = {},
+        data: { data: ticketFieldDefinitions = [] } = {},
         isLoading: ticketFieldDefinitionsLoading,
     } = useCustomFieldDefinitions({
         archived: false,
@@ -66,7 +68,7 @@ function TicketFields() {
     } = useCustomFieldsConditionsEvaluationResults(
         OBJECT_TYPES.TICKET,
         ticketState,
-        conditionalFieldsSupported
+        conditionalFieldsSupported,
     )
 
     // Hide AI managed fields
@@ -77,10 +79,10 @@ function TicketFields() {
                 (definition) =>
                     !definition.managed_type ||
                     !Object.values(AI_MANAGED_TYPES).includes(
-                        definition.managed_type
-                    )
+                        definition.managed_type,
+                    ),
             ),
-        [ticketFieldDefinitions]
+        [ticketFieldDefinitions],
     )
     const ticketFieldsToRender = useMemo(() => {
         if (!conditionalFieldsSupported) {
@@ -94,7 +96,7 @@ function TicketFields() {
             (acc, fieldDefinition) => {
                 const isRequired = isFieldRequired(
                     fieldDefinition,
-                    ticketFieldConditionsEvaluationResults[fieldDefinition.id]
+                    ticketFieldConditionsEvaluationResults[fieldDefinition.id],
                 )
 
                 const isVisible =
@@ -103,7 +105,7 @@ function TicketFields() {
                         fieldDefinition,
                         ticketFieldConditionsEvaluationResults[
                             fieldDefinition.id
-                        ]
+                        ],
                     )
 
                 if (isVisible) {
@@ -121,7 +123,7 @@ function TicketFields() {
             [] as {
                 fieldDefinition: CustomField
                 isRequired: boolean
-            }[]
+            }[],
         )
     }, [
         conditionalFieldsSupported,
@@ -130,12 +132,12 @@ function TicketFields() {
     ])
 
     const [ref, hasWrapped] = useHasWrapped<HTMLDivElement>(
-        ticketFieldsToRender.length
+        ticketFieldsToRender.length,
     )
     const height = useHeight(ref, ticketFieldsToRender.length, showAllFields)
 
     const hasErroredTicketFields = filteredTicketFieldDefinitions.some(
-        ({id}) => ticketFieldState[id]?.hasError
+        ({ id }) => ticketFieldState[id]?.hasError,
     )
 
     useEffect(() => {
@@ -178,7 +180,7 @@ function TicketFields() {
                 })}
                 data-testid="fields-container"
             >
-                {ticketFieldsToRender.map(({fieldDefinition, isRequired}) => (
+                {ticketFieldsToRender.map(({ fieldDefinition, isRequired }) => (
                     <TicketField
                         key={fieldDefinition.id}
                         fieldDefinition={fieldDefinition}

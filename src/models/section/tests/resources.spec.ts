@@ -1,15 +1,15 @@
 import MockAdapter from 'axios-mock-adapter'
 import _omit from 'lodash/omit'
 
-import {section} from '../../../fixtures/section'
+import { section } from '../../../fixtures/section'
 import client from '../../api/resources'
 import {
-    fetchSections,
     createSection,
-    updateSection,
     deleteSection,
+    fetchSections,
+    updateSection,
 } from '../resources'
-import {SectionDraft} from '../types'
+import { SectionDraft } from '../types'
 
 const mockedServer = new MockAdapter(client)
 const sectionDraft: SectionDraft = _omit(section, [
@@ -37,9 +37,9 @@ describe('section resources', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onGet('/api/view-sections/')
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(fetchSections()).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                new Error('Request failed with status code 503'),
             )
         })
     })
@@ -56,9 +56,9 @@ describe('section resources', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onPost('/api/view-sections/')
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(createSection(sectionDraft)).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                new Error('Request failed with status code 503'),
             )
         })
     })
@@ -77,9 +77,9 @@ describe('section resources', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onPut(/\/api\/view-sections\/\d+\//)
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(updateSection(section)).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                new Error('Request failed with status code 503'),
             )
         })
     })
@@ -95,9 +95,9 @@ describe('section resources', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onDelete(/\/api\/view-sections\/\d+\//)
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(deleteSection(1)).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                new Error('Request failed with status code 503'),
             )
         })
     })

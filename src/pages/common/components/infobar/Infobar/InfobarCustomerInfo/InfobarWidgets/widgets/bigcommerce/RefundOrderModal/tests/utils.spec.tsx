@@ -1,5 +1,5 @@
 import MockAdapter from 'axios-mock-adapter'
-import {fromJS, Map as ImmutableMap} from 'immutable'
+import { fromJS, Map as ImmutableMap } from 'immutable'
 
 import {
     bigCommerceAvailablePaymentOptionsDataResponseFixture,
@@ -8,29 +8,29 @@ import {
 } from 'fixtures/bigcommerce'
 import client from 'models/api/resources'
 import {
+    BigCommerceAvailablePaymentOptionsData,
     BigCommerceGeneralErrorMessage,
     BigCommerceOrder,
+    BigCommerceOrderProduct,
     BigCommerceRefundableItemType,
     CalculateOrderRefundDataNestedResponse,
     CalculateOrderRefundQuotesDataResponse,
-    BigCommerceOrderProduct,
-    BigCommerceAvailablePaymentOptionsData,
 } from 'models/integration/types'
 import * as integrationHelpers from 'state/integrations/helpers'
 
-import {BigCommerceRefundActionType} from '../types'
+import { BigCommerceRefundActionType } from '../types'
 import {
     buildPaymentOptionLabel,
     calculateAvailablePaymentOptionsData,
-    calculateOrderRefund,
-    calculateProductPrice,
     calculateGiftWrappingPrice,
+    calculateOrderRefund,
+    calculateOrderSubtotal,
+    calculateOrderTotal,
+    calculateProductPrice,
     calculateTotalOrderAmount,
     fetchProductImageURLs,
     isOrderFullyRefunded,
     onReset,
-    calculateOrderSubtotal,
-    calculateOrderTotal,
 } from '../utils'
 
 const refundItemsPayload = {
@@ -108,7 +108,7 @@ const productRefundData = {
             id: 10,
             base_total: '200.0000',
             quantity: 5,
-            applied_discounts: [{amount: '20.00'}],
+            applied_discounts: [{ amount: '20.00' }],
             base_wrapping_cost: '30.0000',
         } as BigCommerceOrderProduct,
     },
@@ -134,7 +134,7 @@ const productRefundData = {
             id: 12,
             base_total: '229.9600',
             quantity: 4,
-            applied_discounts: [{amount: '50.00'}],
+            applied_discounts: [{ amount: '50.00' }],
             base_wrapping_cost: '0.0000',
         } as BigCommerceOrderProduct,
     },
@@ -168,7 +168,7 @@ describe('utils', () => {
 
         jest.spyOn(
             integrationHelpers,
-            'fetchIntegrationProducts'
+            'fetchIntegrationProducts',
         ).mockReturnValue(
             new Promise((resolve) =>
                 resolve([
@@ -176,8 +176,8 @@ describe('utils', () => {
                         id: bigCommerceOrderFixture.bc_products[0].product_id,
                         image_url: 'https://gorgias.io',
                     }),
-                ])
-            )
+                ]),
+            ),
         )
     })
 
@@ -292,7 +292,7 @@ describe('utils', () => {
             expect(setIsLoadingMock).toHaveBeenCalledWith(false)
             expect(dispatchRefundOrderStateMock).toHaveBeenCalledTimes(0)
             expect(setErrorMessageMock).toHaveBeenCalledWith(
-                BigCommerceGeneralErrorMessage.defaultError
+                BigCommerceGeneralErrorMessage.defaultError,
             )
         })
     })
@@ -301,7 +301,7 @@ describe('utils', () => {
         it('should fetch image URLs for given products', async () => {
             jest.spyOn(
                 integrationHelpers,
-                'fetchIntegrationProducts'
+                'fetchIntegrationProducts',
             ).mockReturnValue(
                 new Promise((resolve) =>
                     resolve([
@@ -329,8 +329,8 @@ describe('utils', () => {
                                 }),
                             ],
                         }),
-                    ])
-                )
+                    ]),
+                ),
             )
 
             expect(
@@ -373,7 +373,7 @@ describe('utils', () => {
                             } as BigCommerceOrderProduct,
                         },
                     },
-                })
+                }),
             ).toEqual({
                 // Use main product image, as there are no variants available
                 123: 'https://gorgias.io/1',
@@ -430,7 +430,7 @@ describe('utils', () => {
                 .onAny()
                 .reply(
                     400,
-                    getBigCommerceAvailablePaymentOptionsDataErrorResponse
+                    getBigCommerceAvailablePaymentOptionsDataErrorResponse,
                 )
 
             const dispatchRefundOrderStateMock = jest.fn()
@@ -452,7 +452,7 @@ describe('utils', () => {
             expect(setIsLoadingMock).toHaveBeenCalledWith(false)
             expect(dispatchRefundOrderStateMock).toHaveBeenCalledTimes(0)
             expect(setErrorMessageMock).toHaveBeenCalledWith(
-                BigCommerceGeneralErrorMessage.defaultError
+                BigCommerceGeneralErrorMessage.defaultError,
             )
         })
     })
@@ -465,8 +465,8 @@ describe('utils', () => {
                         total_inc_tax: '30',
                         store_credit_amount: '20.0000',
                         gift_certificate_amount: '10.00',
-                    })
-                )
+                    }),
+                ),
             ).toEqual(60)
         })
     })
@@ -481,8 +481,8 @@ describe('utils', () => {
                         store_credit_amount: '20.0000',
                         gift_certificate_amount: '10.00',
                         refunded_amount: '60.0000',
-                    })
-                )
+                    }),
+                ),
             ).toEqual(true)
 
             // partially refunded order
@@ -493,8 +493,8 @@ describe('utils', () => {
                         store_credit_amount: '20.0000',
                         gift_certificate_amount: '10.00',
                         refunded_amount: '10.0000',
-                    })
-                )
+                    }),
+                ),
             ).toEqual(false)
         })
     })
@@ -515,8 +515,8 @@ describe('utils', () => {
                                 'This is an offline payment provider.',
                         },
                     ],
-                    'EUR'
-                )
+                    'EUR',
+                ),
             ).toMatchSnapshot()
 
             // Multiple components
@@ -540,8 +540,8 @@ describe('utils', () => {
                             offline_reason: '',
                         },
                     ],
-                    'EUR'
-                )
+                    'EUR',
+                ),
             ).toMatchSnapshot()
         })
     })
@@ -552,16 +552,16 @@ describe('utils', () => {
                 calculateProductPrice({
                     base_total: '200.0000',
                     quantity: 5,
-                    applied_discounts: [{amount: '20.00'}],
-                } as BigCommerceOrderProduct)
+                    applied_discounts: [{ amount: '20.00' }],
+                } as BigCommerceOrderProduct),
             ).toEqual(36)
 
             expect(
                 calculateProductPrice({
                     base_total: '200.0000',
                     quantity: 5,
-                    applied_discounts: [] as Array<{amount: string}>,
-                } as BigCommerceOrderProduct)
+                    applied_discounts: [] as Array<{ amount: string }>,
+                } as BigCommerceOrderProduct),
             ).toEqual(40)
         })
     })
@@ -572,7 +572,7 @@ describe('utils', () => {
                 calculateGiftWrappingPrice({
                     base_wrapping_cost: '200.0000',
                     quantity: 5,
-                } as BigCommerceOrderProduct)
+                } as BigCommerceOrderProduct),
             ).toEqual(40)
         })
     })
@@ -584,8 +584,8 @@ describe('utils', () => {
                     refundItemsPayload,
                     productRefundData,
                     giftWrappingRefundData,
-                    true
-                )
+                    true,
+                ),
             ).toEqual(
                 // PRODUCT
                 72 +
@@ -597,7 +597,7 @@ describe('utils', () => {
                     // SHIPPING
                     60 +
                     // HANDLING
-                    8
+                    8,
             )
 
             expect(
@@ -605,8 +605,8 @@ describe('utils', () => {
                     refundItemsPayload,
                     productRefundData,
                     giftWrappingRefundData,
-                    false
-                )
+                    false,
+                ),
             ).toEqual(
                 // PRODUCT
                 72 +
@@ -614,7 +614,7 @@ describe('utils', () => {
                     89.98 +
                     // GIFT_WRAPPING
                     18 +
-                    36.6
+                    36.6,
             )
         })
     })
@@ -628,15 +628,15 @@ describe('utils', () => {
                     giftWrappingRefundData,
                     {
                         total_refund_tax_amount: 10.5,
-                    } as BigCommerceAvailablePaymentOptionsData
-                )
+                    } as BigCommerceAvailablePaymentOptionsData,
+                ),
             ).toEqual(
                 calculateOrderSubtotal(
                     refundItemsPayload,
                     productRefundData,
                     giftWrappingRefundData,
-                    true
-                ) + 10.5
+                    true,
+                ) + 10.5,
             )
 
             expect(
@@ -644,15 +644,15 @@ describe('utils', () => {
                     refundItemsPayload,
                     productRefundData,
                     giftWrappingRefundData,
-                    {} as BigCommerceAvailablePaymentOptionsData
-                )
+                    {} as BigCommerceAvailablePaymentOptionsData,
+                ),
             ).toEqual(
                 calculateOrderSubtotal(
                     refundItemsPayload,
                     productRefundData,
                     giftWrappingRefundData,
-                    true
-                )
+                    true,
+                ),
             )
         })
     })

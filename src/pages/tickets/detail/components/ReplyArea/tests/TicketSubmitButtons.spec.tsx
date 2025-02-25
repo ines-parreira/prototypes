@@ -1,12 +1,13 @@
-import {render} from '@testing-library/react'
-import {Map, fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { render } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {ACTION_TEMPLATES} from 'config'
-import {MacroActionName} from 'models/macroAction/types'
+import { ACTION_TEMPLATES } from 'config'
+import { MacroActionName } from 'models/macroAction/types'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 
 import TicketSubmitButtons from '../TicketSubmitButtons'
@@ -25,7 +26,7 @@ jest.mock(
             <button disabled={isDisabled} id={id}>
                 ConfirmButtonMock: {children}
             </button>
-        )
+        ),
 )
 
 const mockStore = configureMockStore([thunk])
@@ -43,7 +44,7 @@ describe('<TicketSubmitButtons />', () => {
             },
         }),
         currentAccount: fromJS({
-            status: {status: 'active'},
+            status: { status: 'active' },
         }),
         currentUser: fromJS({}),
         ticket: fromJS({}),
@@ -51,24 +52,24 @@ describe('<TicketSubmitButtons />', () => {
 
     const createTicket = (actionNames: string[]) => {
         const actions = actionNames.map(
-            (name) => ACTION_TEMPLATES.find((action) => action.name === name)!
+            (name) => ACTION_TEMPLATES.find((action) => action.name === name)!,
         )
-        return fromJS({state: {appliedMacro: {actions}}}) as Map<any, any>
+        return fromJS({ state: { appliedMacro: { actions } } }) as Map<any, any>
     }
 
     const ticketWithSubject = createTicket([MacroActionName.SetSubject])
 
     it('should render buttons with a filled ticket', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(state)}>
                 <TicketSubmitButtons setTicketStatus={jest.fn()} />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should hide tips', () => {
-        const {queryByText} = render(
+        const { queryByText } = render(
             <Provider
                 store={mockStore({
                     ...state,
@@ -85,13 +86,13 @@ describe('<TicketSubmitButtons />', () => {
                 })}
             >
                 <TicketSubmitButtons setTicketStatus={jest.fn()} />
-            </Provider>
+            </Provider>,
         )
         expect(queryByText(/Press/)).not.toBeInTheDocument()
     })
 
     it('should render buttons with an empty ticket', () => {
-        const {getAllByText} = render(
+        const { getAllByText } = render(
             <Provider
                 store={mockStore({
                     ...state,
@@ -103,7 +104,7 @@ describe('<TicketSubmitButtons />', () => {
                 })}
             >
                 <TicketSubmitButtons setTicketStatus={jest.fn()} />
-            </Provider>
+            </Provider>,
         )
         const disabledButtons = getAllByText(/ConfirmButtonMock/)
         expect(disabledButtons).toHaveLength(2)
@@ -112,7 +113,7 @@ describe('<TicketSubmitButtons />', () => {
     })
 
     it("should render buttons with content that can't be sent", () => {
-        const {getAllByText} = render(
+        const { getAllByText } = render(
             <Provider
                 store={mockStore({
                     ...state,
@@ -124,7 +125,7 @@ describe('<TicketSubmitButtons />', () => {
                 })}
             >
                 <TicketSubmitButtons setTicketStatus={jest.fn()} />
-            </Provider>
+            </Provider>,
         )
         const disabledButtons = getAllByText(/ConfirmButtonMock/)
         expect(disabledButtons).toHaveLength(2)
@@ -133,7 +134,7 @@ describe('<TicketSubmitButtons />', () => {
     })
 
     it('should render buttons with contentless action', () => {
-        const {getAllByRole} = render(
+        const { getAllByRole } = render(
             <Provider
                 store={mockStore({
                     ...state,
@@ -146,9 +147,9 @@ describe('<TicketSubmitButtons />', () => {
                 })}
             >
                 <TicketSubmitButtons setTicketStatus={jest.fn()} />
-            </Provider>
+            </Provider>,
         )
-        const buttons = getAllByRole('button', {name: /Apply Macro/})
+        const buttons = getAllByRole('button', { name: /Apply Macro/ })
         expect(buttons[0]).toBeInTheDocument()
         expect(buttons[0]).toBeAriaEnabled()
         expect(buttons[1]).toBeInTheDocument()
@@ -156,7 +157,7 @@ describe('<TicketSubmitButtons />', () => {
     })
 
     it('should render buttons with contentless action and message content', () => {
-        const {getAllByRole} = render(
+        const { getAllByRole } = render(
             <Provider
                 store={mockStore({
                     ...state,
@@ -169,9 +170,9 @@ describe('<TicketSubmitButtons />', () => {
                 })}
             >
                 <TicketSubmitButtons setTicketStatus={jest.fn()} />
-            </Provider>
+            </Provider>,
         )
-        const buttons = getAllByRole('button', {name: /Send/})
+        const buttons = getAllByRole('button', { name: /Send/ })
         expect(buttons[0]).toBeInTheDocument()
         expect(buttons[0]).toBeAriaEnabled()
         expect(buttons[1]).toBeInTheDocument()
@@ -179,7 +180,7 @@ describe('<TicketSubmitButtons />', () => {
     })
 
     it('should not render confirm popover', () => {
-        const {queryByText} = render(
+        const { queryByText } = render(
             <Provider
                 store={mockStore({
                     ...state,
@@ -187,7 +188,7 @@ describe('<TicketSubmitButtons />', () => {
                 })}
             >
                 <TicketSubmitButtons setTicketStatus={jest.fn()} />
-            </Provider>
+            </Provider>,
         )
 
         expect(queryByText(/ConfirmButtonMock/)).not.toBeInTheDocument()

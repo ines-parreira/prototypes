@@ -1,16 +1,16 @@
 import React from 'react'
 
-import {voiceCall} from 'fixtures/voiceCalls'
-import {renderWithStore} from 'utils/testing'
+import { voiceCall } from 'fixtures/voiceCalls'
+import { renderWithStore } from 'utils/testing'
 
 import SpotlightCallRow from '../SpotlightCallRow'
 
 jest.mock(
     'pages/common/components/VoiceCallCustomerLabel/VoiceCallCustomerLabel',
     () =>
-        ({customerId}: {customerId: number}) => (
+        ({ customerId }: { customerId: number }) => (
             <div>VoiceCallCustomerLabel {customerId}</div>
-        )
+        ),
 )
 
 describe('<SpotlightCallRow/>', () => {
@@ -24,25 +24,25 @@ describe('<SpotlightCallRow/>', () => {
     }
 
     it('should render', () => {
-        const {getByText} = renderWithStore(
+        const { getByText } = renderWithStore(
             <SpotlightCallRow {...defaultProps} />,
-            {}
+            {},
         )
 
         expect(
             getByText(
-                `${voiceCall.phone_number_source} called ${voiceCall.phone_number_destination}`
-            )
+                `${voiceCall.phone_number_source} called ${voiceCall.phone_number_destination}`,
+            ),
         ).toBeInTheDocument()
         expect(
-            getByText(`VoiceCallCustomerLabel ${voiceCall.customer_id}`)
+            getByText(`VoiceCallCustomerLabel ${voiceCall.customer_id}`),
         ).toBeInTheDocument()
         expect(getByText('Answered')).toBeInTheDocument()
         expect(getByText('Aug 31st, 23')).toBeInTheDocument()
     })
 
     it('should render highlights', () => {
-        const {getByText} = renderWithStore(
+        const { getByText } = renderWithStore(
             <SpotlightCallRow
                 {...defaultProps}
                 item={{
@@ -54,15 +54,15 @@ describe('<SpotlightCallRow/>', () => {
                     },
                 }}
             />,
-            {}
+            {},
         )
 
         expect(
-            getByText('highlighted source called highlighted destination')
+            getByText('highlighted source called highlighted destination'),
         ).toBeInTheDocument()
         expect(getByText('highlighted transcript')).toBeInTheDocument()
         expect(
-            getByText(`VoiceCallCustomerLabel ${voiceCall.customer_id}`)
+            getByText(`VoiceCallCustomerLabel ${voiceCall.customer_id}`),
         ).toBeInTheDocument()
         expect(getByText('Answered')).toBeInTheDocument()
         expect(getByText('Aug 31st, 23')).toBeInTheDocument()
@@ -73,9 +73,9 @@ describe('<SpotlightCallRow/>', () => {
             ...voiceCall,
             created_datetime: new Date().toISOString(),
         }
-        const {getByText} = renderWithStore(
+        const { getByText } = renderWithStore(
             <SpotlightCallRow {...defaultProps} />,
-            {}
+            {},
         )
 
         expect(getByText('Today')).toBeInTheDocument()
@@ -87,9 +87,9 @@ describe('<SpotlightCallRow/>', () => {
             ...voiceCall,
             created_datetime: new Date(`${currentYear}-01-01`).toISOString(),
         }
-        const {getByText} = renderWithStore(
+        const { getByText } = renderWithStore(
             <SpotlightCallRow {...defaultProps} />,
-            {}
+            {},
         )
 
         expect(getByText('Jan 1st')).toBeInTheDocument()

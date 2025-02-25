@@ -2,11 +2,10 @@ import React from 'react'
 
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-
-import {TRIGGERS_CONFIG} from 'pages/convert/campaigns/constants/triggers'
-import {DEVICE_TYPE_VALUES} from 'pages/convert/campaigns/constants/triggerValueLabels'
-import {CampaignTrigger} from 'pages/convert/campaigns/types/CampaignTrigger'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import { TRIGGERS_CONFIG } from 'pages/convert/campaigns/constants/triggers'
+import { DEVICE_TYPE_VALUES } from 'pages/convert/campaigns/constants/triggerValueLabels'
+import { CampaignTrigger } from 'pages/convert/campaigns/types/CampaignTrigger'
+import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
 import useIsCampaignProritizationEnabled from 'pages/convert/common/hooks/useIsCampaignProritizationEnabled'
 
 import css from './CampaignDeviceType.less'
@@ -16,7 +15,10 @@ type Props = {
     onChange: (value: string) => void
 }
 
-export const CampaignDeviceType = ({trigger, onChange}: Props): JSX.Element => {
+export const CampaignDeviceType = ({
+    trigger,
+    onChange,
+}: Props): JSX.Element => {
     const defaultValue =
         TRIGGERS_CONFIG[CampaignTriggerType.DeviceType].defaults.value
 

@@ -1,15 +1,16 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import * as dismissHook from 'hooks/useDismissFlag'
 import * as revenueBetaHook from 'pages/common/hooks/useIsConvertSubscriber'
 import * as integrationsHelpers from 'state/integrations/helpers'
-import {RootState, StoreDispatch} from 'state/types'
+import { RootState, StoreDispatch } from 'state/types'
 
-import {CampaignChatHiddenWarning} from '../CampaignChatHiddenWarning'
+import { CampaignChatHiddenWarning } from '../CampaignChatHiddenWarning'
 
 jest.mock('hooks/useDismissFlag')
 jest.mock('state/integrations/helpers')
@@ -33,7 +34,7 @@ describe('<CampaignChatHiddenWarning/>', () => {
     beforeAll(() => {
         jest.spyOn(
             revenueBetaHook,
-            'useIsConvertSubscriber'
+            'useIsConvertSubscriber',
         ).mockImplementation(() => true)
     })
 
@@ -46,12 +47,12 @@ describe('<CampaignChatHiddenWarning/>', () => {
             dismiss: jest.fn(),
         })
 
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore()}>
                 <CampaignChatHiddenWarning
                     integration={fromJS(mockedChatIntegration)}
                 />
-            </Provider>
+            </Provider>,
         )
         expect(container).toMatchInlineSnapshot('<div />')
     })
@@ -67,7 +68,7 @@ describe('<CampaignChatHiddenWarning/>', () => {
                     dismiss: jest.fn(),
                 })
 
-                const {getByText} = render(
+                const { getByText } = render(
                     <Provider store={mockStore()}>
                         <CampaignChatHiddenWarning
                             integration={fromJS({
@@ -81,11 +82,11 @@ describe('<CampaignChatHiddenWarning/>', () => {
                                 },
                             })}
                         />
-                    </Provider>
+                    </Provider>,
                 )
 
                 getByText(
-                    'Chat is currently hidden. Campaigns are still displayed, but they will not be interactive. You can change this in the Preferences tab.'
+                    'Chat is currently hidden. Campaigns are still displayed, but they will not be interactive. You can change this in the Preferences tab.',
                 )
             })
 
@@ -98,7 +99,7 @@ describe('<CampaignChatHiddenWarning/>', () => {
                     dismiss: jest.fn(),
                 })
 
-                const {getByText} = render(
+                const { getByText } = render(
                     <Provider store={mockStore()}>
                         <CampaignChatHiddenWarning
                             integration={fromJS({
@@ -112,11 +113,11 @@ describe('<CampaignChatHiddenWarning/>', () => {
                                 },
                             })}
                         />
-                    </Provider>
+                    </Provider>,
                 )
 
                 getByText(
-                    'Chat is currently hidden. Campaigns are still displayed, but they will not be interactive. You can change this in the Preferences tab.'
+                    'Chat is currently hidden. Campaigns are still displayed, but they will not be interactive. You can change this in the Preferences tab.',
                 )
             })
         })
@@ -131,7 +132,7 @@ describe('<CampaignChatHiddenWarning/>', () => {
                     dismiss: jest.fn(),
                 })
 
-                const {getByText} = render(
+                const { getByText } = render(
                     <Provider store={mockStore()}>
                         <CampaignChatHiddenWarning
                             integration={fromJS({
@@ -144,11 +145,11 @@ describe('<CampaignChatHiddenWarning/>', () => {
                                 },
                             })}
                         />
-                    </Provider>
+                    </Provider>,
                 )
 
                 getByText(
-                    'Chat is currently hidden. Campaigns are still displayed, but they will not be interactive. You can change this in the Preferences tab.'
+                    'Chat is currently hidden. Campaigns are still displayed, but they will not be interactive. You can change this in the Preferences tab.',
                 )
             })
 
@@ -161,7 +162,7 @@ describe('<CampaignChatHiddenWarning/>', () => {
                     dismiss: jest.fn(),
                 })
 
-                const {container} = render(
+                const { container } = render(
                     <Provider store={mockStore()}>
                         <CampaignChatHiddenWarning
                             integration={fromJS({
@@ -174,7 +175,7 @@ describe('<CampaignChatHiddenWarning/>', () => {
                                 },
                             })}
                         />
-                    </Provider>
+                    </Provider>,
                 )
                 expect(container).toMatchInlineSnapshot('<div />')
             })
@@ -191,7 +192,7 @@ describe('<CampaignChatHiddenWarning/>', () => {
                 dismiss: jest.fn(),
             })
 
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore()}>
                     <CampaignChatHiddenWarning
                         integration={fromJS({
@@ -204,7 +205,7 @@ describe('<CampaignChatHiddenWarning/>', () => {
                             },
                         })}
                     />
-                </Provider>
+                </Provider>,
             )
             expect(container).toMatchInlineSnapshot('<div />')
         })
@@ -214,15 +215,15 @@ describe('<CampaignChatHiddenWarning/>', () => {
         it('should not display the warning', () => {
             jest.spyOn(
                 revenueBetaHook,
-                'useIsConvertSubscriber'
+                'useIsConvertSubscriber',
             ).mockImplementation(() => false)
 
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore()}>
                     <CampaignChatHiddenWarning
                         integration={fromJS(mockedChatIntegration)}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(container).toMatchInlineSnapshot('<div />')

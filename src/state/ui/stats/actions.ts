@@ -1,4 +1,4 @@
-import {filtersSlice} from 'state/ui/stats/filtersSlice'
+import { filtersSlice } from 'state/ui/stats/filtersSlice'
 
 export const {
     statFiltersDirty,

@@ -1,9 +1,10 @@
-import {render, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {hasRole} from 'utils'
-import {assumeMock} from 'utils/testing'
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { hasRole } from 'utils'
+import { assumeMock } from 'utils/testing'
 
 import MultiLevelSelect from '../MultiLevelSelect'
 
@@ -19,7 +20,7 @@ jest.mock('utils', () => {
 jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
 jest.mock('state/currentUser/selectors', () => ({
     getCurrentUser: jest.fn(() => ({
-        role: {name: 'admin'},
+        role: { name: 'admin' },
     })),
 }))
 
@@ -114,7 +115,7 @@ describe('<MultiLevelSelect />', () => {
                 autoWidth
                 value=""
                 placeholder="placeholder"
-            />
+            />,
         )
         expect(screen.getByText('placeholder')).toBeVisible()
     })
@@ -124,7 +125,7 @@ describe('<MultiLevelSelect />', () => {
             <MultiLevelSelect
                 {...initialProps}
                 customDisplayValue={() => 'custom display value'}
-            />
+            />,
         )
         expect(screen.getByRole('textbox')).toHaveValue('custom display value')
     })
@@ -135,11 +136,11 @@ describe('<MultiLevelSelect />', () => {
                 {...initialProps}
                 allowMultiValues
                 value={['s1::ss2::c1', 's1::ss2::c2']}
-            />
+            />,
         )
 
         expect(screen.getByRole('textbox')).toHaveValue(
-            's1::ss2::c1,s1::ss2::c2'
+            's1::ss2::c1,s1::ss2::c2',
         )
     })
 
@@ -149,7 +150,7 @@ describe('<MultiLevelSelect />', () => {
                 {...initialProps}
                 allowMultiValues
                 value={['s1::ss2::c2']}
-            />
+            />,
         )
 
         userEvent.click(screen.getByRole('textbox'))
@@ -171,7 +172,7 @@ describe('<MultiLevelSelect />', () => {
                 {...initialProps}
                 allowMultiValues
                 value={['s2']}
-            />
+            />,
         )
 
         userEvent.click(screen.getByRole('textbox'))
@@ -187,7 +188,7 @@ describe('<MultiLevelSelect />', () => {
             userEvent.hover(screen.getByDisplayValue('c2'))
             await waitFor(() => {
                 expect(
-                    screen.getByText(/This field does not have any values yet/)
+                    screen.getByText(/This field does not have any values yet/),
                 ).toBeInTheDocument()
             })
         })

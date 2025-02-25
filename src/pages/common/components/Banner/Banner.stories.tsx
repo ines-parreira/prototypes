@@ -1,9 +1,10 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { Meta, Story } from '@storybook/react'
 
 import standlonePreview from 'assets/img/presentationals/standalone-self-service-portal.png'
 
-import {Banner} from './Banner'
+import { Banner } from './Banner'
 
 const storyConfig: Meta = {
     title: 'Layout/Banner',

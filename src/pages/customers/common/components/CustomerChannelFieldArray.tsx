@@ -1,7 +1,9 @@
-import {Label} from '@gorgias/merchant-ui-kit'
+import React, { Component } from 'react'
+
 import _clone from 'lodash/clone'
-import React, {Component} from 'react'
-import {FormGroup, Row, Col} from 'reactstrap'
+import { Col, FormGroup, Row } from 'reactstrap'
+
+import { Label } from '@gorgias/merchant-ui-kit'
 
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
@@ -23,12 +25,12 @@ type Props = {
     addLabel: string
     placeholder: string
     onChange: (arg: CustomerChannelContact[]) => void
-    errors: {address: string}[]
+    errors: { address: string }[]
 }
 
 class CustomerChannelFieldArray extends Component<Props> {
     static defaultProps: Pick<Props, 'type' | 'label' | 'addLabel' | 'errors'> =
-        {type: 'text', label: '', addLabel: 'Add', errors: []}
+        { type: 'text', label: '', addLabel: 'Add', errors: [] }
 
     _add = () => {
         return this.props.onChange(
@@ -36,14 +38,14 @@ class CustomerChannelFieldArray extends Component<Props> {
                 {
                     address: '',
                 },
-            ])
+            ]),
         )
     }
 
     _update = <K extends keyof CustomerChannelContact>(
         index: number,
         key: K,
-        value: CustomerChannelContact[K]
+        value: CustomerChannelContact[K],
     ) => {
         const fields = _clone(this.props.fields)
         fields[index][key] = value
@@ -58,7 +60,8 @@ class CustomerChannelFieldArray extends Component<Props> {
     }
 
     render() {
-        const {fields, placeholder, type, addLabel, label, errors} = this.props
+        const { fields, placeholder, type, addLabel, label, errors } =
+            this.props
 
         return (
             <FormGroup>

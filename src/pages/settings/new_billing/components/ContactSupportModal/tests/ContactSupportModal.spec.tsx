@@ -1,18 +1,19 @@
-import {render, screen, fireEvent, waitFor} from '@testing-library/react'
-import MockAdapter from 'axios-mock-adapter'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import {
-    HELPDESK_PRODUCT_ID,
     basicMonthlyHelpdeskPlan,
+    HELPDESK_PRODUCT_ID,
     products,
 } from 'fixtures/productPrices'
 import client from 'models/api/resources'
 import * as actions from 'state/notifications/actions'
-import {RootState, StoreDispatch} from 'state/types'
+import { RootState, StoreDispatch } from 'state/types'
 
 import ContactSupportModal from '../ContactSupportModal'
 
@@ -71,22 +72,22 @@ describe('ContactSupportModal', () => {
         render(
             <Provider store={store}>
                 <ContactSupportModal {...props} />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('Contact us')).toBeInTheDocument()
         expect(
-            screen.getByText('Tell us more about your request')
+            screen.getByText('Tell us more about your request'),
         ).toBeInTheDocument()
         expect(
-            screen.getByPlaceholderText('Write your message here')
+            screen.getByPlaceholderText('Write your message here'),
         ).toBeInTheDocument()
         expect(screen.getByText('Cancel')).toBeInTheDocument()
         expect(screen.getByText('Send')).toBeInTheDocument()
         expect(
             screen.getByText(
-                'Our team will send you a reply to user@example.com'
-            )
+                'Our team will send you a reply to user@example.com',
+            ),
         ).toBeInTheDocument()
     })
 
@@ -108,16 +109,16 @@ describe('ContactSupportModal', () => {
         render(
             <Provider store={store}>
                 <ContactSupportModal {...props} />
-            </Provider>
+            </Provider>,
         )
 
         const messageInput = screen.getByPlaceholderText(
-            'Write your message here'
+            'Write your message here',
         )
         const sendButton = screen.getByText('Send')
 
         fireEvent.change(messageInput, {
-            target: {value: 'This is my support ticket'},
+            target: { value: 'This is my support ticket' },
         })
         fireEvent.click(sendButton)
 
@@ -154,16 +155,16 @@ describe('ContactSupportModal', () => {
         render(
             <Provider store={store}>
                 <ContactSupportModal {...props} />
-            </Provider>
+            </Provider>,
         )
 
         const messageInput = screen.getByPlaceholderText(
-            'Write your message here'
+            'Write your message here',
         )
         const sendButton = screen.getByText('Send')
 
         fireEvent.change(messageInput, {
-            target: {value: 'This is my support ticket'},
+            target: { value: 'This is my support ticket' },
         })
         fireEvent.click(sendButton)
 

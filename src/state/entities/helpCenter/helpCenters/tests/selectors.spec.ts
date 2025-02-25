@@ -1,12 +1,11 @@
 import _keyBy from 'lodash/keyBy'
 
-import {getHelpCentersResponseFixture} from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
-
-import {initialState as articlesState} from 'state/entities/helpCenter/articles/reducer'
-import {initialState as categoriesState} from 'state/entities/helpCenter/categories/reducer'
-import {initialState as helpCenterInitialState} from 'state/entities/helpCenter/reducer'
-import {StoreState} from 'state/types'
-import {initialState as uiState} from 'state/ui/helpCenter/reducer'
+import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { initialState as articlesState } from 'state/entities/helpCenter/articles/reducer'
+import { initialState as categoriesState } from 'state/entities/helpCenter/categories/reducer'
+import { initialState as helpCenterInitialState } from 'state/entities/helpCenter/reducer'
+import { StoreState } from 'state/types'
+import { initialState as uiState } from 'state/ui/helpCenter/reducer'
 
 import {
     getActiveHelpCenterList,
@@ -22,7 +21,7 @@ describe('Entities/Help Center', () => {
                 entities: {
                     helpCenter: helpCenterInitialState,
                 } as any,
-                ui: {helpCenter: uiState} as any,
+                ui: { helpCenter: uiState } as any,
             }
             expect(getCurrentHelpCenter(store as StoreState)).toEqual(null)
         })
@@ -34,7 +33,7 @@ describe('Entities/Help Center', () => {
                         helpCenters: {
                             helpCentersById: _keyBy(
                                 getHelpCentersResponseFixture.data,
-                                'id'
+                                'id',
                             ),
                         },
                         articles: articlesState,
@@ -50,7 +49,7 @@ describe('Entities/Help Center', () => {
             }
 
             expect(getCurrentHelpCenter(dataStore as StoreState)).toEqual(
-                getHelpCentersResponseFixture.data[0]
+                getHelpCentersResponseFixture.data[0],
             )
         })
 
@@ -63,7 +62,7 @@ describe('Entities/Help Center', () => {
                                 helpCentersById: {
                                     ..._keyBy(
                                         getHelpCentersResponseFixture.data,
-                                        'id'
+                                        'id',
                                     ),
                                 },
                             },
@@ -72,7 +71,7 @@ describe('Entities/Help Center', () => {
                 }
 
                 expect(getHelpCenterFAQList(dataStore as StoreState)).toEqual(
-                    getHelpCentersResponseFixture.data
+                    getHelpCentersResponseFixture.data,
                 )
             })
         })
@@ -86,7 +85,7 @@ describe('Entities/Help Center', () => {
                         helpCenters: {
                             helpCentersById: _keyBy(
                                 getHelpCentersResponseFixture.data,
-                                'id'
+                                'id',
                             ),
                         },
                     },
@@ -94,7 +93,7 @@ describe('Entities/Help Center', () => {
             }
 
             expect(getHelpCenterList(dataStore as StoreState)).toEqual(
-                getHelpCentersResponseFixture.data
+                getHelpCentersResponseFixture.data,
             )
         })
     })
@@ -106,7 +105,7 @@ describe('Entities/Help Center', () => {
                         helpCenters: {
                             helpCentersById: _keyBy(
                                 getHelpCentersResponseFixture.data,
-                                'id'
+                                'id',
                             ),
                         },
                     },
@@ -115,8 +114,8 @@ describe('Entities/Help Center', () => {
 
             expect(getActiveHelpCenterList(dataStore as StoreState)).toEqual(
                 getHelpCentersResponseFixture.data.filter(
-                    (helpCenter) => !helpCenter.deactivated_datetime
-                )
+                    (helpCenter) => !helpCenter.deactivated_datetime,
+                ),
             )
         })
     })

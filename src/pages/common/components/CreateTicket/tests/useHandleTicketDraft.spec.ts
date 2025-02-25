@@ -1,9 +1,9 @@
-import {waitFor} from '@testing-library/react'
-import {renderHook} from '@testing-library/react-hooks/dom'
-import {fromJS} from 'immutable'
+import { waitFor } from '@testing-library/react'
+import { renderHook } from '@testing-library/react-hooks/dom'
+import { fromJS } from 'immutable'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {user} from 'fixtures/users'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { user } from 'fixtures/users'
 import useAppSelector from 'hooks/useAppSelector'
 import LocalForageManager from 'services/localForageManager/localForageManager'
 
@@ -32,7 +32,7 @@ jest.mock(
             useHistory: () => ({
                 push: mockHistoryPush,
             }),
-        }) as Record<string, unknown>
+        }) as Record<string, unknown>,
 )
 
 jest.mock('common/segment')
@@ -44,17 +44,17 @@ describe('useHandleTicketDraft', () => {
     })
 
     it('should return false by default', () => {
-        const {result} = renderHook(() => useHandleTicketDraft())
+        const { result } = renderHook(() => useHandleTicketDraft())
         expect(result.current.hasDraft).toBe(false)
     })
 
     it('should return true when there is a draft', async () => {
         jest.spyOn(LocalForageManager, 'getTable').mockReturnValueOnce({
             ...mockGetTableObject,
-            getItem: jest.fn().mockResolvedValue({subject: 'title'}),
+            getItem: jest.fn().mockResolvedValue({ subject: 'title' }),
         })
 
-        const {result} = renderHook(() => useHandleTicketDraft())
+        const { result } = renderHook(() => useHandleTicketDraft())
 
         await waitFor(() => {
             expect(result.current.hasDraft).toBe(true)
@@ -62,7 +62,7 @@ describe('useHandleTicketDraft', () => {
     })
 
     it('should handle draft resuming', () => {
-        const {result} = renderHook(() => useHandleTicketDraft())
+        const { result } = renderHook(() => useHandleTicketDraft())
         result.current.onResumeDraft()
 
         expect(mockHistoryPush).toHaveBeenCalledWith('/app/ticket/new')
@@ -71,7 +71,7 @@ describe('useHandleTicketDraft', () => {
             expect.objectContaining({
                 type: 'resume',
                 user_id: user.id,
-            })
+            }),
         )
     })
 
@@ -98,7 +98,7 @@ describe('useHandleTicketDraft', () => {
             clear: mockClear,
         })
 
-        const {result} = renderHook(() => useHandleTicketDraft())
+        const { result } = renderHook(() => useHandleTicketDraft())
         await result.current.onDiscardDraft(param)
 
         await waitFor(() => {
@@ -111,7 +111,7 @@ describe('useHandleTicketDraft', () => {
             expect.objectContaining({
                 type: 'discard',
                 user_id: user.id,
-            })
+            }),
         )
     })
 

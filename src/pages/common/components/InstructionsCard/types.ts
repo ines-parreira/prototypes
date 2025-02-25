@@ -1,4 +1,4 @@
-import {NonEmptyArray} from 'types'
+import { NonEmptyArray } from 'types'
 
 export type InstructionTab = {
     id: string

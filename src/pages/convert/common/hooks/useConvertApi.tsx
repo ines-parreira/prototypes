@@ -1,10 +1,10 @@
 import React, {
     createContext,
-    useContext,
-    useState,
-    useEffect,
     ReactNode,
+    useContext,
+    useEffect,
     useMemo,
+    useState,
 } from 'react'
 
 import {
@@ -56,7 +56,7 @@ export const RevenueAddonApiClientProvider = ({
         () => ({
             ...state,
         }),
-        [state]
+        [state],
     )
 
     return (
@@ -67,7 +67,7 @@ export const RevenueAddonApiClientProvider = ({
 }
 
 export const useConvertApi = (): UseConvertApiInterface => {
-    const {isReady, client} = useContext(RevenueAddonApiClientContext)
+    const { isReady, client } = useContext(RevenueAddonApiClientContext)
 
     return {
         isReady,

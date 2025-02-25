@@ -1,5 +1,6 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import FieldContainer from '../FieldContainer'
 
@@ -8,7 +9,9 @@ describe('<FieldContainer/>', () => {
         const additionalClass = 'additionalClass'
         const content = 'content'
         render(
-            <FieldContainer className={additionalClass}>content</FieldContainer>
+            <FieldContainer className={additionalClass}>
+                content
+            </FieldContainer>,
         )
 
         const container = screen.getByText(content)

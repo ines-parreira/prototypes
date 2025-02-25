@@ -1,9 +1,9 @@
-import axios, {AxiosResponse} from 'axios'
-import {fromJS, List} from 'immutable'
-import type {Map} from 'immutable'
+import axios, { AxiosResponse } from 'axios'
+import { fromJS, List } from 'immutable'
+import type { Map } from 'immutable'
 import _debounce from 'lodash/debounce'
 
-import {getCalculateDraftOrderPayload} from 'business/shopify/calculatedDraftOrder'
+import { getCalculateDraftOrderPayload } from 'business/shopify/calculatedDraftOrder'
 import {
     getDiscountAmount,
     refreshAppliedDiscounts,
@@ -13,9 +13,9 @@ import {
     addVariant,
     initDraftOrderPayload,
 } from 'business/shopify/draftOrder'
-import {getDraftOrderTotalLineItemsPrice} from 'business/shopify/lineItem'
-import {formatPercentage, formatPrice} from 'business/shopify/number'
-import {logEvent, SegmentEvent} from 'common/segment'
+import { getDraftOrderTotalLineItemsPrice } from 'business/shopify/lineItem'
+import { formatPercentage, formatPrice } from 'business/shopify/number'
+import { logEvent, SegmentEvent } from 'common/segment'
 import {
     AppliedDiscount,
     DiscountType,
@@ -23,13 +23,13 @@ import {
     Variant,
 } from 'constants/integrations/types/shopify'
 import GorgiasApi from 'services/gorgiasApi'
-import {executeAction} from 'state/infobar/actions'
-import {fetchIntegrationProducts} from 'state/integrations/helpers'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {RootState, StoreDispatch} from 'state/types'
-import {onApiError} from 'state/utils'
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
+import { executeAction } from 'state/infobar/actions'
+import { fetchIntegrationProducts } from 'state/integrations/helpers'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { RootState, StoreDispatch } from 'state/types'
+import { onApiError } from 'state/utils'
+import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import {
     SET_CALCULATED_DRAFT_ORDER,
@@ -38,9 +38,9 @@ import {
     SET_PAYLOAD,
     SET_PRODUCTS,
 } from './constants'
-import {getCreateOrderState} from './selectors'
+import { getCreateOrderState } from './selectors'
 
-let _apiInstances: {[key: string]: GorgiasApi} = {}
+let _apiInstances: { [key: string]: GorgiasApi } = {}
 
 const getApiInstance = (key: string) => () => {
     if (!_apiInstances[key]) {
@@ -78,7 +78,7 @@ const setInitialState = () => ({
 })
 
 export const getDuplicateOrderPayload = (
-    payload: Map<any, any>
+    payload: Map<any, any>,
 ): Map<any, any> => {
     // Apply a 100% discount
     const totalLineItemsPrice = getDraftOrderTotalLineItemsPrice(payload)
@@ -98,7 +98,7 @@ export const getDuplicateOrderPayload = (
     const shippingLine = !!payload.get('shipping_line')
         ? (payload.get('shipping_line') as Map<any, any>).set(
               'price',
-              formatPrice(0, currency)
+              formatPrice(0, currency),
           )
         : null
 
@@ -113,7 +113,7 @@ export const onInit =
         order: Maybe<Map<any, any>>,
         customer: Map<any, any>,
         currencyCode: string,
-        onError: () => void
+        onError: () => void,
     ) =>
     async (dispatch: StoreDispatch) => {
         // Duplicate existing order:
@@ -125,7 +125,7 @@ export const onInit =
                 customer,
                 order,
                 products as any,
-                false
+                false,
             )
             const payload = getDuplicateOrderPayload(draftOrderPayload)
             return Promise.all([
@@ -158,7 +158,7 @@ export const calculateDraftOrder =
             const calculatePayload = getCalculateDraftOrderPayload(payload)
             const calculatedDraftOrder = await api.calculateDraftOrder(
                 integrationId,
-                calculatePayload
+                calculatePayload,
             )
 
             dispatch(setCalculatedDraftOrder(calculatedDraftOrder))
@@ -173,8 +173,8 @@ export const calculateDraftOrder =
                 onApiError(
                     error,
                     'Error while calculating draft order',
-                    setLoading(false)
-                )
+                    setLoading(false),
+                ),
             )
         } finally {
             dispatch(setLoading(false))
@@ -183,16 +183,16 @@ export const calculateDraftOrder =
 
 export const loadProducts = async (
     integrationId: number,
-    oldOrder: Map<any, any>
+    oldOrder: Map<any, any>,
 ): Promise<globalThis.Map<string, any>> => {
     const products = new window.Map()
     const productIds = (oldOrder.get('line_items', []) as List<any>).map(
-        (lineItem: Map<any, any>) => lineItem.get('product_id') as number
+        (lineItem: Map<any, any>) => lineItem.get('product_id') as number,
     ) as unknown as number[]
 
     const integrationProducts = await fetchIntegrationProducts(
         integrationId,
-        productIds
+        productIds,
     )
 
     integrationProducts.forEach((item: Map<string, any>) => {
@@ -206,7 +206,7 @@ export const onPayloadChange =
     (
         integrationId: number,
         payload: Map<any, any>,
-        shouldCalculate: Maybe<boolean> = true
+        shouldCalculate: Maybe<boolean> = true,
     ) =>
     (dispatch: StoreDispatch) => {
         const newPayload = refreshAppliedDiscounts(payload)
@@ -222,7 +222,7 @@ export const addRow =
         actionName: string,
         integrationId: number,
         product: Product,
-        variant: Variant
+        variant: Variant,
     ) =>
     (dispatch: StoreDispatch, getState: () => RootState) => {
         const state = getState()
@@ -231,7 +231,7 @@ export const addRow =
             any
         >
         const products = getCreateOrderState(state).get(
-            'products'
+            'products',
         ) as globalThis.Map<any, any>
         const newPayload = addVariant(payload, product, variant)
         const newProducts = new window.Map(products)
@@ -263,7 +263,7 @@ export const onLineItemChange =
             newLineItem,
             index,
             remove = false,
-        }: {newLineItem?: Map<any, any>; index: number; remove?: boolean}
+        }: { newLineItem?: Map<any, any>; index: number; remove?: boolean },
     ) =>
     (dispatch: StoreDispatch, getState: () => RootState) => {
         const state = getState()
@@ -283,8 +283,8 @@ export const onLineItemChange =
         return dispatch(
             onPayloadChange(
                 integrationId,
-                oldPayload.set('line_items', newLineItems)
-            )
+                oldPayload.set('line_items', newLineItems),
+            ),
         )
     }
 
@@ -305,7 +305,7 @@ export const onCreateDraftOrder =
     (integrationId: number, orderId?: Maybe<number>) =>
     async (
         dispatch: StoreDispatch,
-        getState: () => RootState
+        getState: () => RootState,
     ): Promise<Maybe<Map<any, any>>> => {
         try {
             dispatch(setLoading(true, 'Creating draft order...'))
@@ -317,7 +317,7 @@ export const onCreateDraftOrder =
             const [draftOrder] = await api.createDraftOrder(
                 integrationId,
                 payload,
-                orderId
+                orderId,
             )
 
             return draftOrder
@@ -327,8 +327,8 @@ export const onCreateDraftOrder =
                 onApiError(
                     error,
                     'Error while creating draft order',
-                    setLoading(false)
-                )
+                    setLoading(false),
+                ),
             )
         } finally {
             dispatch(setLoading(false))
@@ -345,14 +345,14 @@ export const onCancel =
                 ? SegmentEvent.ShopifyCreateOrderCancel
                 : SegmentEvent.ShopifyDuplicateOrderCancel
 
-        logEvent(eventName, {via})
+        logEvent(eventName, { via })
     }
 
 export const onReset = () => (dispatch: StoreDispatch) => resetState(dispatch)
 
 export const resetState = _debounce(
     (dispatch: StoreDispatch) => dispatch(setInitialState()),
-    250
+    250,
 )
 
 export const sendInvoice =
@@ -362,7 +362,7 @@ export const sendInvoice =
         orderId: Maybe<number>,
         draftOrder: Map<any, any>,
         invoicePayload: Map<any, any>,
-        onSuccess: () => void
+        onSuccess: () => void,
     ) =>
     (dispatch: StoreDispatch) => {
         return new Promise((resolve) => {
@@ -387,7 +387,7 @@ export const sendInvoice =
                             notify({
                                 status: NotificationStatus.Success,
                                 message: `Draft order ${draftOrderName} created, invoice successfully sent`,
-                            })
+                            }),
                         )
                     }
 
@@ -402,7 +402,7 @@ export const sendInvoice =
                     customerId: customerId.toString(),
                     payload,
                     callback: callback as any,
-                })
+                }),
             )
         })
     }
@@ -413,11 +413,11 @@ export const onEmailInvoice =
         customerId: number,
         orderId: Maybe<number>,
         invoicePayload: Map<any, any>,
-        onSuccess: () => void
+        onSuccess: () => void,
     ) =>
     async (dispatch: StoreDispatch): Promise<any> => {
         const draftOrder = await dispatch(
-            onCreateDraftOrder(integrationId, orderId)
+            onCreateDraftOrder(integrationId, orderId),
         )
 
         if (!draftOrder) {
@@ -431,7 +431,7 @@ export const onEmailInvoice =
                 orderId,
                 draftOrder,
                 invoicePayload,
-                onSuccess
-            )
+                onSuccess,
+            ),
         )
     }

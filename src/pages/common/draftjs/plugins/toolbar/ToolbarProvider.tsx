@@ -1,8 +1,9 @@
-import {List} from 'immutable'
-import _noop from 'lodash/noop'
-import React, {ReactNode, useMemo} from 'react'
+import React, { ReactNode, useMemo } from 'react'
 
-import {ToolbarContext, ToolbarContextType} from './ToolbarContext'
+import { List } from 'immutable'
+import _noop from 'lodash/noop'
+
+import { ToolbarContext, ToolbarContextType } from './ToolbarContext'
 
 type Props = {
     children?: ReactNode
@@ -93,7 +94,7 @@ const ToolbarProvider = ({
             supportsUniqueDiscountOffer,
             onAddUniqueDiscountOfferAttachment,
             placementType,
-        ]
+        ],
     )
 
     return (

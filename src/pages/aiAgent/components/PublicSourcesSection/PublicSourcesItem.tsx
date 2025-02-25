@@ -1,13 +1,14 @@
-import React, {useCallback, useEffect, useState} from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import InputField from 'pages/common/forms/input/InputField'
 
+import { SourceItem } from './types'
+import { DOCUMENT_EXTENSIONS } from './utils'
+
 import css from './PublicSourcesItem.less'
-import {SourceItem} from './types'
-import {DOCUMENT_EXTENSIONS} from './utils'
 
 const isUrlValid = (url?: string) => {
     if (!url) return false
@@ -35,7 +36,7 @@ const isUrlRoot = (url: string) => {
 
 const isUrlFromGorgiasHelpCenter = (
     url: string,
-    helpCenterCustomDomains: string[]
+    helpCenterCustomDomains: string[],
 ) => {
     try {
         const urlObj = new URL(url)
@@ -66,7 +67,7 @@ const getInputError = (
     isRootUrl: boolean,
     isDuplicate: boolean,
     hasDocumentExtension: boolean,
-    status: SourceItem['status']
+    status: SourceItem['status'],
 ) => {
     if (isInvalid) {
         return 'Invalid URL'
@@ -146,7 +147,7 @@ export const PublicSourcesItem = ({
     const isNotEmpty = value !== '' && value !== undefined
     const isGorgiasHelpCenterUrl = isUrlFromGorgiasHelpCenter(
         value,
-        helpCenterCustomDomains
+        helpCenterCustomDomains,
     )
     const isRootUrl = isUrlRoot(value)
     const isValid =
@@ -169,7 +170,7 @@ export const PublicSourcesItem = ({
         isRootUrl,
         isDuplicate,
         hasDocumentExtension,
-        source.status
+        source.status,
     )
 
     useEffect(() => {
@@ -247,7 +248,7 @@ export const PublicSourcesItem = ({
                         }
                         onConfirm={handleDelete}
                     >
-                        {({uid, elementRef, onDisplayConfirmation}) => (
+                        {({ uid, elementRef, onDisplayConfirmation }) => (
                             <IconButton
                                 size="small"
                                 fillStyle="ghost"

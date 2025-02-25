@@ -1,5 +1,6 @@
-import {Map} from 'immutable'
-import {useMemo} from 'react'
+import { useMemo } from 'react'
+
+import { Map } from 'immutable'
 
 import {
     GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT,
@@ -13,18 +14,18 @@ export function useChatPreviewProps(integration: Map<any, any>) {
         () => ({
             alignment: integration.getIn(
                 ['decoration', 'position', 'alignment'],
-                GORGIAS_CHAT_WIDGET_POSITION_DEFAULT.alignment
+                GORGIAS_CHAT_WIDGET_POSITION_DEFAULT.alignment,
             ),
             offsetX: integration.getIn(
                 ['decoration', 'position', 'offsetX'],
-                GORGIAS_CHAT_WIDGET_POSITION_DEFAULT.offsetX
+                GORGIAS_CHAT_WIDGET_POSITION_DEFAULT.offsetX,
             ),
             offsetY: integration.getIn(
                 ['decoration', 'position', 'offsetY'],
-                GORGIAS_CHAT_WIDGET_POSITION_DEFAULT.offsetY
+                GORGIAS_CHAT_WIDGET_POSITION_DEFAULT.offsetY,
             ),
         }),
-        [integration]
+        [integration],
     )
     const mainColor: string | undefined =
         integration.getIn(['decoration', 'main_color']) ?? undefined
@@ -47,7 +48,7 @@ export function useChatPreviewProps(integration: Map<any, any>) {
             translatedTexts,
             mainFontFamily,
         }),
-        [position, mainColor, translatedTexts, mainFontFamily]
+        [position, mainColor, translatedTexts, mainFontFamily],
     )
 
     return output

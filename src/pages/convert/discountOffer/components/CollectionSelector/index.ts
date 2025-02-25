@@ -1,1 +1,1 @@
-export {default} from './CollectionSelector'
+export { default } from './CollectionSelector'

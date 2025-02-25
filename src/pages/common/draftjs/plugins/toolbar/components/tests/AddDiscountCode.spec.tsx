@@ -1,11 +1,12 @@
-import {fireEvent, render, act} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { act, fireEvent, render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {shopifyIntegration} from 'fixtures/integrations'
+import { shopifyIntegration } from 'fixtures/integrations'
 
 import ToolbarProvider from '../../ToolbarProvider'
 import AddDiscountCode from '../AddDiscountCode'
@@ -25,14 +26,14 @@ describe('<AddDiscountCode/>', () => {
     })
 
     it('should not render when the popover is closed', () => {
-        const {container} = render(<AddDiscountCode {...minProps} />, {
+        const { container } = render(<AddDiscountCode {...minProps} />, {
             container: document.body,
         })
         expect(container).toMatchSnapshot()
     })
 
     it('should render the discount picker when the popover is clicked and only one integration', () => {
-        const {getByText, container} = render(
+        const { getByText, container } = render(
             <Provider store={store}>
                 <ToolbarProvider
                     shopifyIntegrations={fromJS([shopifyIntegration])}
@@ -42,7 +43,7 @@ describe('<AddDiscountCode/>', () => {
             </Provider>,
             {
                 container: document.body,
-            }
+            },
         )
         act(() => {
             fireEvent.click(getByText(/discount/i))
@@ -51,7 +52,7 @@ describe('<AddDiscountCode/>', () => {
     })
 
     it('should render the discount picker when there is a current shopify integration', () => {
-        const {getByText, container} = render(
+        const { getByText, container } = render(
             <Provider store={store}>
                 <ToolbarProvider
                     shopifyIntegrations={fromJS([
@@ -65,7 +66,7 @@ describe('<AddDiscountCode/>', () => {
             </Provider>,
             {
                 container: document.body,
-            }
+            },
         )
         act(() => {
             fireEvent.click(getByText(/discount/i))
@@ -74,7 +75,7 @@ describe('<AddDiscountCode/>', () => {
     })
 
     it('should render the store picker because of multiple integrations', () => {
-        const {getByText, container} = render(
+        const { getByText, container } = render(
             <Provider store={store}>
                 <ToolbarProvider
                     shopifyIntegrations={fromJS([
@@ -87,7 +88,7 @@ describe('<AddDiscountCode/>', () => {
             </Provider>,
             {
                 container: document.body,
-            }
+            },
         )
         act(() => {
             fireEvent.click(getByText(/discount/i))

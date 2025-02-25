@@ -1,11 +1,12 @@
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { mockFlags } from 'jest-launchdarkly-mock'
+
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppSelector from 'hooks/useAppSelector'
-import {useReportChartRestrictions} from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
+import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
 import AutomateStatsNavbar from 'pages/stats/self-service/AutomateStatsNavbar'
-import {assumeMock, renderWithRouter} from 'utils/testing'
+import { assumeMock, renderWithRouter } from 'utils/testing'
 
 jest.mock('hooks/useAppSelector', () => jest.fn())
 const mockUseAppSelector = assumeMock(useAppSelector)
@@ -18,7 +19,7 @@ jest.mock(
     'pages/stats/report-chart-restrictions/useReportChartRestrictions',
     () => ({
         useReportChartRestrictions: jest.fn(),
-    })
+    }),
 )
 const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
 
@@ -37,8 +38,8 @@ describe('<AutomateStatsNavbar />', () => {
 
     it('should render with upgrade icon when automate is not enabled', () => {
         mockUseAppSelector.mockReturnValue(false)
-        const {getByText} = renderWithRouter(
-            <AutomateStatsNavbar {...defaultProps} />
+        const { getByText } = renderWithRouter(
+            <AutomateStatsNavbar {...defaultProps} />,
         )
         expect(getByText('Overview')).toBeInTheDocument()
         expect(getByText('arrow_circle_up')).toBeInTheDocument()
@@ -50,8 +51,8 @@ describe('<AutomateStatsNavbar />', () => {
         })
 
         mockUseAppSelector.mockReturnValue(true)
-        const {getAllByRole} = renderWithRouter(
-            <AutomateStatsNavbar {...defaultProps} />
+        const { getAllByRole } = renderWithRouter(
+            <AutomateStatsNavbar {...defaultProps} />,
         )
 
         const links = getAllByRole('link')
@@ -62,7 +63,7 @@ describe('<AutomateStatsNavbar />', () => {
         expect(links[1].textContent).toEqual('AI Agent')
         expect(links[2]).toHaveAttribute(
             'href',
-            '/app/stats/performance-by-features'
+            '/app/stats/performance-by-features',
         )
         expect(links[2].textContent).toEqual('Performance by feature')
     })

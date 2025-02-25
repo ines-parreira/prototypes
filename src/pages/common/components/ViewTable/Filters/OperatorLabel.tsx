@@ -1,5 +1,6 @@
-import {LogicalOperator} from 'estree'
 import React from 'react'
+
+import { LogicalOperator } from 'estree'
 
 import css from './CallExpression.less'
 
@@ -13,7 +14,7 @@ const OPERATOR_LABELS: Record<LabelledOperator, string> = {
     '||': 'Or',
 }
 
-export function OperatorLabel({operator}: OperatorLabelProps) {
+export function OperatorLabel({ operator }: OperatorLabelProps) {
     return (
         <span className={css.operatorLabel}>{OPERATOR_LABELS[operator]}</span>
     )

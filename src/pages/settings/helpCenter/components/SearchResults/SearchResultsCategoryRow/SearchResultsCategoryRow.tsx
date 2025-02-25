@@ -1,38 +1,41 @@
+import React, { FC, useCallback, useMemo } from 'react'
+
 import classNames from 'classnames'
 import _keyBy from 'lodash/keyBy'
-import React, {FC, useCallback, useMemo} from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {useModalManager} from 'hooks/useModalManager'
-import {Article, LocaleCode, NonRootCategory} from 'models/helpCenter/types'
-import {LanguageList} from 'pages/common/components/LanguageBulletList'
+import { useModalManager } from 'hooks/useModalManager'
+import { Article, LocaleCode, NonRootCategory } from 'models/helpCenter/types'
+import { LanguageList } from 'pages/common/components/LanguageBulletList'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import {
     ArticleRowActionTypes,
     MODALS,
 } from 'pages/settings/helpCenter/constants'
-import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
-import {changeViewLanguage} from 'state/ui/helpCenter/actions'
-import {sanitizeHtmlDefault} from 'utils/html'
+import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
+import { changeViewLanguage } from 'state/ui/helpCenter/actions'
+import { sanitizeHtmlDefault } from 'utils/html'
 
-import {useCategoryRowActions} from '../../../hooks/useCategoryRowActions'
-import {TableActions} from '../../TableActions'
-
+import { useCategoryRowActions } from '../../../hooks/useCategoryRowActions'
+import { TableActions } from '../../TableActions'
 import VisibilityCell from '../../VisibilityCell/VisibilityCell'
+import { SearchResultsArticleRow } from '../SearchResultsArticleRow'
+import { SearchResultsLoadingContent } from '../SearchResultsLoadingContent'
+import {
+    isLoading,
+    isSearchResultArticle,
+    SearchResultCategory,
+} from '../types'
+import { isResultOrAncestorUnlisted } from '../utils'
+
 import nestingCss from '../nesting.less'
-
-import {SearchResultsArticleRow} from '../SearchResultsArticleRow'
-import {SearchResultsLoadingContent} from '../SearchResultsLoadingContent'
-import {isSearchResultArticle, isLoading, SearchResultCategory} from '../types'
-import {isResultOrAncestorUnlisted} from '../utils'
-
 import css from './SearchResultsCategoryRow.less'
 
 const Highlight: FC<{
     category: NonRootCategory
     hits: SearchResultCategory['algoliaHits']
-}> = ({category, hits}) => {
+}> = ({ category, hits }) => {
     const localizedAlgoliaHit = hits[category.translation.locale]
 
     const matchingHighlightedTitle =
@@ -43,7 +46,7 @@ const Highlight: FC<{
         matchingHighlightedTitle?.matchLevel === 'partial'
     ) {
         const sanitizedTitle = sanitizeHtmlDefault(
-            matchingHighlightedTitle.value
+            matchingHighlightedTitle.value,
         )
 
         return (
@@ -70,7 +73,7 @@ type Props = {
     onArticleClickSettings: (
         action: ArticleRowActionTypes,
         article: Article,
-        isArticleOrAncestorUnlisted: boolean
+        isArticleOrAncestorUnlisted: boolean,
     ) => void
     viewLanguage: LocaleCode
 }
@@ -85,8 +88,10 @@ export const SearchResultsCategoryRow: FC<Props> = ({
     const dispatch = useAppDispatch()
     const locales = useSupportedLocales()
     const hasChildren = category.children.length > 0
-    const articleModal = useModalManager(MODALS.ARTICLE, {autoDestroy: false})
-    const categoryModal = useModalManager(MODALS.CATEGORY, {autoDestroy: false})
+    const articleModal = useModalManager(MODALS.ARTICLE, { autoDestroy: false })
+    const categoryModal = useModalManager(MODALS.CATEGORY, {
+        autoDestroy: false,
+    })
     const localesByCode = useMemo(() => _keyBy(locales, 'code'), [locales])
     const categoryRowActions = useCategoryRowActions(category.id, level)
 
@@ -97,7 +102,7 @@ export const SearchResultsCategoryRow: FC<Props> = ({
 
         if (category.category.available_locales.length > 0) {
             return category.category.available_locales.map(
-                (code) => localesByCode[code]
+                (code) => localesByCode[code],
             )
         }
 
@@ -108,7 +113,7 @@ export const SearchResultsCategoryRow: FC<Props> = ({
         !isLoading(category.category) &&
         isResultOrAncestorUnlisted(
             category,
-            category.category.translation.locale
+            category.category.translation.locale,
         )
 
     const handleOnActionClick = useCallback(
@@ -121,18 +126,20 @@ export const SearchResultsCategoryRow: FC<Props> = ({
                 const searchResultsLocales = Object.keys(category.algoliaHits)
                 const loadedTranslationNotInSearchResults =
                     !searchResultsLocales.includes(
-                        category.category.translation.locale
+                        category.category.translation.locale,
                     )
 
                 categoryModal.openModal(
                     MODALS.CATEGORY,
                     false,
-                    category.category
+                    category.category,
                 )
 
                 if (searchResultsLocales.length === 0) {
                     dispatch(
-                        changeViewLanguage(category.category.translation.locale)
+                        changeViewLanguage(
+                            category.category.translation.locale,
+                        ),
                     )
                 } else if (
                     loadedTranslationNotInSearchResults ||
@@ -163,7 +170,7 @@ export const SearchResultsCategoryRow: FC<Props> = ({
             }
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [articleModal, categoryModal, category]
+        [articleModal, categoryModal, category],
     )
 
     return (
@@ -173,7 +180,7 @@ export const SearchResultsCategoryRow: FC<Props> = ({
                 <BodyCell
                     className={classNames(
                         css['cell'],
-                        nestingCss[`nesting-level-${level}`]
+                        nestingCss[`nesting-level-${level}`],
                     )}
                 >
                     {isLoading(category.category) ? (
@@ -184,7 +191,7 @@ export const SearchResultsCategoryRow: FC<Props> = ({
                                 <span
                                     className={classNames(
                                         css.caret,
-                                        'material-icons'
+                                        'material-icons',
                                     )}
                                 >
                                     arrow_drop_down
@@ -200,7 +207,7 @@ export const SearchResultsCategoryRow: FC<Props> = ({
                     )}
                 </BodyCell>
                 <BodyCell className={css['cell']}>{''}</BodyCell>
-                <BodyCell style={{minWidth: 110, width: 110}}>
+                <BodyCell style={{ minWidth: 110, width: 110 }}>
                     {!isLoading(category.category) && (
                         <VisibilityCell
                             status={
@@ -210,7 +217,7 @@ export const SearchResultsCategoryRow: FC<Props> = ({
                         />
                     )}
                 </BodyCell>
-                <BodyCell style={{width: 105, minWidth: 105}}>
+                <BodyCell style={{ width: 105, minWidth: 105 }}>
                     {!isLoading(category.category) && (
                         <LanguageList
                             id={category.id}
@@ -251,7 +258,7 @@ export const SearchResultsCategoryRow: FC<Props> = ({
                             onArticleClickSettings={onArticleClickSettings}
                             viewLanguage={viewLanguage}
                         />
-                    )
+                    ),
                 )}
         </>
     )

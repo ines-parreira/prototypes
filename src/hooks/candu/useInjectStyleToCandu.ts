@@ -1,4 +1,4 @@
-import {useCallback, useEffect} from 'react'
+import { useCallback, useEffect } from 'react'
 
 const useInjectStyleToCandu = <T extends HTMLElement>(ref: T | null) => {
     const injectStyle = useCallback((element: Element) => {
@@ -30,7 +30,7 @@ const useInjectStyleToCandu = <T extends HTMLElement>(ref: T | null) => {
                 &:hover {
                     --color: var(--main-primary-3) !important;
                 }
-            }`
+            }`,
         )
 
         if (element.shadowRoot) {

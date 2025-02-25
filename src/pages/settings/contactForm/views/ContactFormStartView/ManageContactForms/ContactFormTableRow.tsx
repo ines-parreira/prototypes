@@ -1,14 +1,13 @@
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {ContactForm} from 'models/contactForm/types'
-import {Locale} from 'models/helpCenter/types'
-import {IntegrationType} from 'models/integration/constants'
-import {LanguageTagList} from 'pages/common/components/LanguageTagList'
+import { ContactForm } from 'models/contactForm/types'
+import { Locale } from 'models/helpCenter/types'
+import { IntegrationType } from 'models/integration/constants'
+import { LanguageTagList } from 'pages/common/components/LanguageTagList'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
-import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
-
-import {getIconFromType} from 'state/integrations/helpers'
+import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
+import { getIconFromType } from 'state/integrations/helpers'
 
 import css from './ContactFormTableRow.less'
 
@@ -20,7 +19,7 @@ export type ContactFormTableRowProps = {
 
 const STORE_NOT_CONNECTED_LABEL = 'No store connected'
 
-const StoreNameContent = (props: {name: string | null}) => {
+const StoreNameContent = (props: { name: string | null }) => {
     return props.name ? (
         <div>
             <img
@@ -45,7 +44,7 @@ export const ContactFormTableRow = ({
     const locales = useSupportedLocales()
     const language: Locale | undefined = useMemo(() => {
         const defaultLocDto = locales.find(
-            (locale) => locale.code === form.default_locale
+            (locale) => locale.code === form.default_locale,
         )
 
         if (!defaultLocDto) return undefined

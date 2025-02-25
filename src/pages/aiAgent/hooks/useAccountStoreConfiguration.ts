@@ -1,6 +1,6 @@
-import {useGetOrCreateAccountConfiguration} from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'
+import { useGetOrCreateAccountConfiguration } from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'
 import useAppSelector from 'hooks/useAppSelector'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 export const useAccountStoreConfiguration = ({
     storeNames,
@@ -12,9 +12,9 @@ export const useAccountStoreConfiguration = ({
     const accountId = currentAccount.get('id')
     const accountDomain = currentAccount.get('domain')
 
-    const {data: accountConfigData} = useGetOrCreateAccountConfiguration(
-        {accountId, accountDomain, storeNames},
-        {refetchOnWindowFocus: false}
+    const { data: accountConfigData } = useGetOrCreateAccountConfiguration(
+        { accountId, accountDomain, storeNames },
+        { refetchOnWindowFocus: false },
     )
 
     const accountConfiguration = accountConfigData?.data.accountConfiguration

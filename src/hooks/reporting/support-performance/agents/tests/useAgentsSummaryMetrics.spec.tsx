@@ -1,4 +1,4 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
 import {
     useClosedTicketsMetric,
@@ -10,36 +10,35 @@ import {
     useTicketAverageHandleTimeMetric,
     useTicketsRepliedMetric,
 } from 'hooks/reporting/metrics'
-import {useAgentsSummaryMetrics} from 'hooks/reporting/support-performance/agents/useAgentsSummaryMetrics'
-import {useOneTouchTicketsPercentageMetricTrend} from 'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricTrend'
-import {useMessagesSentPerHour} from 'hooks/reporting/useMessagesSentPerHour'
-import {useTicketsClosedPerHour} from 'hooks/reporting/useTicketsClosedPerHour'
-import {useTicketsRepliedPerHour} from 'hooks/reporting/useTicketsRepliedPerHour'
+import { useAgentsSummaryMetrics } from 'hooks/reporting/support-performance/agents/useAgentsSummaryMetrics'
+import { useOneTouchTicketsPercentageMetricTrend } from 'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricTrend'
+import { useMessagesSentPerHour } from 'hooks/reporting/useMessagesSentPerHour'
+import { useTicketsClosedPerHour } from 'hooks/reporting/useTicketsClosedPerHour'
+import { useTicketsRepliedPerHour } from 'hooks/reporting/useTicketsRepliedPerHour'
 import useAppSelector from 'hooks/useAppSelector'
-import {ReportingGranularity} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
-
-import {assumeMock} from 'utils/testing'
+import { ReportingGranularity } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/metrics')
 const useCustomerSatisfactionMetricMock = assumeMock(
-    useCustomerSatisfactionMetric
+    useCustomerSatisfactionMetric,
 )
 const useClosedTicketsMetricMock = assumeMock(useClosedTicketsMetric)
 
 const useMedianFirstResponseTimeMetricMock = assumeMock(
-    useMedianFirstResponseTimeMetric
+    useMedianFirstResponseTimeMetric,
 )
 const useMessagesSentMetricMock = assumeMock(useMessagesSentMetric)
 const useMedianResolutionTimeMetricMock = assumeMock(
-    useMedianResolutionTimeMetric
+    useMedianResolutionTimeMetric,
 )
 const useTicketsRepliedMetricMock = assumeMock(useTicketsRepliedMetric)
 jest.mock(
-    'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricTrend'
+    'hooks/reporting/support-performance/agents/useOneTouchTicketsPercentageMetricTrend',
 )
 const useOneTouchTicketsPercentageMetricTrendMock = assumeMock(
-    useOneTouchTicketsPercentageMetricTrend
+    useOneTouchTicketsPercentageMetricTrend,
 )
 jest.mock('hooks/reporting/useTicketsRepliedPerHour')
 const useTicketsRepliedPerHourMock = assumeMock(useTicketsRepliedPerHour)
@@ -49,7 +48,7 @@ const useMessagesSentPerHourMock = assumeMock(useMessagesSentPerHour)
 jest.mock('hooks/reporting/useTicketsClosedPerHour')
 const useTicketsClosedPerHourMock = assumeMock(useTicketsClosedPerHour)
 const useTicketAverageHandleTimeMetricMock = assumeMock(
-    useTicketAverageHandleTimeMetric
+    useTicketAverageHandleTimeMetric,
 )
 jest.mock('hooks/useAppSelector')
 const useAppSelectorMock = assumeMock(useAppSelector)
@@ -59,7 +58,7 @@ describe('useAgentsSummaryMetrics', () => {
 
     const timeZone = 'UTC'
     const filters: StatsFilters = {
-        period: {start_datetime: '2023-01-01', end_datetime: '2023-02-01'},
+        period: { start_datetime: '2023-01-01', end_datetime: '2023-02-01' },
     }
     const metricData = {
         isFetching: false,
@@ -79,7 +78,7 @@ describe('useAgentsSummaryMetrics', () => {
             ticketsRepliedMetric: metricData,
             oneTouchTicketsMetric: {
                 ...metricData,
-                data: {...metricData.data, prevValue: 0},
+                data: { ...metricData.data, prevValue: 0 },
             },
             repliedTicketsPerHourMetric: metricData,
             onlineTimeMetric: metricData,
@@ -99,7 +98,7 @@ describe('useAgentsSummaryMetrics', () => {
     useTicketsRepliedMetricMock.mockReturnValue(metricData)
     useOneTouchTicketsPercentageMetricTrendMock.mockReturnValue({
         ...metricData,
-        data: {...metricData.data, prevValue: 0},
+        data: { ...metricData.data, prevValue: 0 },
     })
     useTicketsRepliedPerHourMock.mockReturnValue(metricData)
     useOnlineTimeMetricMock.mockReturnValue(metricData)
@@ -113,7 +112,7 @@ describe('useAgentsSummaryMetrics', () => {
     })
 
     it('should return agents performance summary metrics', () => {
-        const {result} = renderHook(() => useAgentsSummaryMetrics())
+        const { result } = renderHook(() => useAgentsSummaryMetrics())
 
         expect(result.current).toEqual(agentsMetrics)
     })

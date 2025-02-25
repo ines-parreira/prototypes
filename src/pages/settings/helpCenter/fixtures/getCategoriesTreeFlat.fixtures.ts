@@ -1,4 +1,4 @@
-import {Category} from 'models/helpCenter/types'
+import { Category } from 'models/helpCenter/types'
 
 export const getCategoriesFlat: Category[] = [
     {

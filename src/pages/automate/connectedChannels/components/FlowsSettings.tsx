@@ -1,37 +1,40 @@
-import {Label, Tooltip} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import {isEqual, keyBy, startCase} from 'lodash'
-import React, {useCallback, useMemo, useRef, useState} from 'react'
-import {Link} from 'react-router-dom'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
 
-import {TicketChannel} from 'business/types/ticket'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {getLanguagesFromChatConfig} from 'config/integrations/gorgias_chat'
-import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
-import {useListWorkflowEntryPoints} from 'models/workflows/queries'
-import {SelfServiceChannel} from 'pages/automate/common/hooks/useSelfServiceChannels'
-import {ChannelLanguage} from 'pages/automate/common/types'
+import classnames from 'classnames'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { isEqual, keyBy, startCase } from 'lodash'
+import { Link } from 'react-router-dom'
+
+import { Label, Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { TicketChannel } from 'business/types/ticket'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { getLanguagesFromChatConfig } from 'config/integrations/gorgias_chat'
+import { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
+import { useListWorkflowEntryPoints } from 'models/workflows/queries'
+import { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
+import { ChannelLanguage } from 'pages/automate/common/types'
 import useLanguagesMismatchWarnings from 'pages/automate/workflows/hooks/useLanguagesMismatchWarnings'
 import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownHeader from 'pages/common/components/dropdown/DropdownHeader'
 import Search from 'pages/common/components/Search'
-import {Components} from 'rest_api/workflows_api/client.generated'
+import { Components } from 'rest_api/workflows_api/client.generated'
 
-import {FlowSettingsDropdownItem} from './FlowSettingsDropdownItem'
-import {FlowSettingsItem} from './FlowSettingsItem'
+import { FlowSettingsDropdownItem } from './FlowSettingsDropdownItem'
+import { FlowSettingsItem } from './FlowSettingsItem'
+
 import css from './FlowsSettings.less'
 
 const FLOWS_LIMIT = 6
 const getChannelLanguages = (
-    channel: SelfServiceChannel
+    channel: SelfServiceChannel,
 ): ChannelLanguage[] => {
     switch (channel.type) {
         case TicketChannel.Chat:
             return getLanguagesFromChatConfig(
-                channel.value.meta
+                channel.value.meta,
             ) as ChannelLanguage[]
         case TicketChannel.HelpCenter:
             return channel.value.supported_locales
@@ -56,7 +59,7 @@ interface Props {
     channelType: string
     onChange?: (
         updatedWorkflows: Workflow[],
-        action: 'add' | 'remove' | 'reorder'
+        action: 'add' | 'remove' | 'reorder',
     ) => void
 }
 export const FlowsSettings = ({
@@ -77,18 +80,18 @@ export const FlowsSettings = ({
         useState(false)
     const configurationsMap = useMemo(
         () => keyBy(configurations, 'id'),
-        [configurations]
+        [configurations],
     )
 
     const workflows = useMemo(() => {
         if (!workflowEntrypoints) return []
 
         const channelEntrypoints = new Map(
-            automationSettingsWorkflows.map((e) => [e.workflow_id, e])
+            automationSettingsWorkflows.map((e) => [e.workflow_id, e]),
         )
 
         const selfServiceConfigurationEntrypoints = new Map(
-            workflowEntrypoints?.map((e) => [e.workflow_id, e])
+            workflowEntrypoints?.map((e) => [e.workflow_id, e]),
         )
 
         const missingEntrypoints = []
@@ -103,7 +106,7 @@ export const FlowsSettings = ({
 
         return automationSettingsWorkflows
             .filter((entrypoint) =>
-                selfServiceConfigurationEntrypoints.has(entrypoint.workflow_id)
+                selfServiceConfigurationEntrypoints.has(entrypoint.workflow_id),
             )
             .concat(missingEntrypoints)
             .filter((entrypoint) => configurationsMap[entrypoint.workflow_id])
@@ -111,15 +114,15 @@ export const FlowsSettings = ({
 
     const enabledWorkflows = workflows.filter((workflow) => workflow.enabled)
 
-    const {data: entrypointLabelByWorkflowId} = useListWorkflowEntryPoints({
+    const { data: entrypointLabelByWorkflowId } = useListWorkflowEntryPoints({
         ids: workflows.map((w) => w.workflow_id),
         language: primaryLanguage,
     })
 
-    const {getLanguagesMismatchWarning} = useLanguagesMismatchWarnings(
+    const { getLanguagesMismatchWarning } = useLanguagesMismatchWarnings(
         channel.type,
         channel.value.id,
-        getChannelLanguages(channel)
+        getChannelLanguages(channel),
     )
 
     const handleFlowItemMove = useCallback(
@@ -139,7 +142,7 @@ export const FlowsSettings = ({
 
             setDirtyEntrypoints(nextDirtyEntrypoints)
         },
-        [dirtyEntrypoints, enabledWorkflows]
+        [dirtyEntrypoints, enabledWorkflows],
     )
 
     const handleFlowItemDrop = useCallback(() => {
@@ -156,7 +159,7 @@ export const FlowsSettings = ({
             .filter((w) => !w.enabled)
             .filter((item) => {
                 const warningOrError = getLanguagesMismatchWarning(
-                    item.workflow_id
+                    item.workflow_id,
                 )
 
                 return warningOrError && warningOrError.type === 'error'
@@ -172,7 +175,7 @@ export const FlowsSettings = ({
                 item.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
                 entrypointLabelByWorkflowId?.[item.id]
                     ?.toLowerCase()
-                    .includes(searchQuery.toLowerCase())
+                    .includes(searchQuery.toLowerCase()),
         )
     }, [
         workflows,
@@ -242,9 +245,9 @@ export const FlowsSettings = ({
                                     enabledWorkflows.filter(
                                         (w) =>
                                             w.workflow_id !==
-                                            workflow.workflow_id
+                                            workflow.workflow_id,
                                     ),
-                                    'remove'
+                                    'remove',
                                 )
                             }
                         />
@@ -310,7 +313,7 @@ export const FlowsSettings = ({
                                             enabled: true,
                                         },
                                     ],
-                                    'add'
+                                    'add',
                                 )
                             }}
                         />

@@ -1,24 +1,26 @@
+import React from 'react'
+
 import classNames from 'classnames'
 import _uniqueId from 'lodash/uniqueId'
-import React from 'react'
 
 import useCopyToClipboard from 'hooks/useCopyToClipboard'
 
 import IconButton from '../button/IconButton'
+import { selectText } from './utils'
+
 import css from './CopyText.less'
-import {selectText} from './utils'
 
 export type CopyTextProps = {
     text: string
     className?: string
 }
 
-const CopyText = ({text, className}: CopyTextProps) => {
+const CopyText = ({ text, className }: CopyTextProps) => {
     const [, copyToClipboard] = useCopyToClipboard()
     const textId = _uniqueId(`copy-text`)
 
     const handleCopyCode = (
-        e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+        e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     ) => {
         e.stopPropagation()
         copyToClipboard(text)

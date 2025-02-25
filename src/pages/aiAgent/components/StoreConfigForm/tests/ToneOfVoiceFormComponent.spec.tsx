@@ -1,12 +1,13 @@
-import {render, screen, fireEvent} from '@testing-library/react'
 import React from 'react'
+
+import { fireEvent, render, screen } from '@testing-library/react'
 
 import {
     CUSTOM_TONE_OF_VOICE_GUIDANCE_DEFAULT_VALUE,
     ToneOfVoice,
 } from 'pages/aiAgent/constants'
 
-import {ToneOfVoiceFormComponent} from '../FormComponents/ToneOfVoiceFormComponent'
+import { ToneOfVoiceFormComponent } from '../FormComponents/ToneOfVoiceFormComponent'
 
 // Mock data
 const mockUpdateValue = jest.fn()
@@ -35,7 +36,7 @@ describe('ToneOfVoiceFormComponent', () => {
         render(<ToneOfVoiceFormComponent {...customProps} />)
 
         expect(
-            screen.getByPlaceholderText('Custom tone of voice')
+            screen.getByPlaceholderText('Custom tone of voice'),
         ).toBeInTheDocument()
     })
 
@@ -61,10 +62,10 @@ describe('ToneOfVoiceFormComponent', () => {
         render(<ToneOfVoiceFormComponent {...customProps} />)
 
         expect(
-            screen.getByText(CUSTOM_TONE_OF_VOICE_GUIDANCE_DEFAULT_VALUE)
+            screen.getByText(CUSTOM_TONE_OF_VOICE_GUIDANCE_DEFAULT_VALUE),
         ).toBeInTheDocument()
         expect(
-            screen.getByPlaceholderText('Custom tone of voice')
+            screen.getByPlaceholderText('Custom tone of voice'),
         ).toBeInTheDocument()
     })
 
@@ -81,7 +82,7 @@ describe('ToneOfVoiceFormComponent', () => {
 
         expect(mockUpdateValue).toHaveBeenCalledWith(
             'toneOfVoice',
-            ToneOfVoice.Custom
+            ToneOfVoice.Custom,
         )
     })
 
@@ -98,11 +99,11 @@ describe('ToneOfVoiceFormComponent', () => {
 
         expect(mockUpdateValue).toHaveBeenCalledWith(
             'customToneOfVoiceGuidance',
-            CUSTOM_TONE_OF_VOICE_GUIDANCE_DEFAULT_VALUE
+            CUSTOM_TONE_OF_VOICE_GUIDANCE_DEFAULT_VALUE,
         )
         expect(mockUpdateValue).toHaveBeenCalledWith(
             'toneOfVoice',
-            ToneOfVoice.Custom
+            ToneOfVoice.Custom,
         )
     })
 
@@ -119,11 +120,11 @@ describe('ToneOfVoiceFormComponent', () => {
 
         expect(mockUpdateValue).toHaveBeenCalledWith(
             'customToneOfVoiceGuidance',
-            CUSTOM_TONE_OF_VOICE_GUIDANCE_DEFAULT_VALUE
+            CUSTOM_TONE_OF_VOICE_GUIDANCE_DEFAULT_VALUE,
         )
         expect(mockUpdateValue).toHaveBeenCalledWith(
             'toneOfVoice',
-            ToneOfVoice.Custom
+            ToneOfVoice.Custom,
         )
     })
 
@@ -139,13 +140,13 @@ describe('ToneOfVoiceFormComponent', () => {
         render(<ToneOfVoiceFormComponent {...customProps} />)
 
         const textArea = screen.getByPlaceholderText('Custom tone of voice')
-        fireEvent.change(textArea, {target: {value: 'New custom guidance'}})
+        fireEvent.change(textArea, { target: { value: 'New custom guidance' } })
         fireEvent.blur(textArea)
 
         expect(mockedSetIsPristine).toHaveBeenCalledWith(false)
         expect(mockUpdateValue).toHaveBeenCalledWith(
             'customToneOfVoiceGuidance',
-            'New custom guidance'
+            'New custom guidance',
         )
     })
 
@@ -164,7 +165,7 @@ describe('ToneOfVoiceFormComponent', () => {
         expect(mockedSetIsPristine).toHaveBeenCalledWith(false)
         expect(mockUpdateValue).toHaveBeenCalledWith(
             'toneOfVoice',
-            'Professional'
+            'Professional',
         )
     })
 
@@ -178,8 +179,8 @@ describe('ToneOfVoiceFormComponent', () => {
 
         expect(
             screen.getByText(
-                'Select a tone of voice for AI Agent to use with customers. For Chat, the language used will be more succinct.'
-            )
+                'Select a tone of voice for AI Agent to use with customers. For Chat, the language used will be more succinct.',
+            ),
         ).toBeInTheDocument()
     })
 
@@ -188,8 +189,8 @@ describe('ToneOfVoiceFormComponent', () => {
 
         expect(
             screen.getByText(
-                'Select a tone of voice for AI Agent to use with customers.'
-            )
+                'Select a tone of voice for AI Agent to use with customers.',
+            ),
         ).toBeInTheDocument()
     })
 })

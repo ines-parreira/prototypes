@@ -1,6 +1,6 @@
-import {useCallback, useMemo} from 'react'
+import { useCallback, useMemo } from 'react'
 
-import {CONTACT_FORM_DEFAULT_AUTOMATION_SETTINGS} from 'pages/settings/contactForm/constants'
+import { CONTACT_FORM_DEFAULT_AUTOMATION_SETTINGS } from 'pages/settings/contactForm/constants'
 
 import useContactFormsAutomationSettings from './useContactFormsAutomationSettings'
 
@@ -18,19 +18,19 @@ const useContactFormAutomationSettings = (contactFormId: number) => {
             automationSettings: Parameters<
                 typeof handleContactFormAutomationSettingsUpdate
             >[1],
-            notificationMessage?: string
+            notificationMessage?: string,
         ) =>
             notificationMessage
                 ? handleContactFormAutomationSettingsUpdate(
                       contactFormId,
                       automationSettings,
-                      notificationMessage
+                      notificationMessage,
                   )
                 : handleContactFormAutomationSettingsUpdate(
                       contactFormId,
-                      automationSettings
+                      automationSettings,
                   ),
-        [contactFormId, handleContactFormAutomationSettingsUpdate]
+        [contactFormId, handleContactFormAutomationSettingsUpdate],
     )
     const automationSettings =
         contactFormsAutomationSettings[contactFormId.toString()] ??

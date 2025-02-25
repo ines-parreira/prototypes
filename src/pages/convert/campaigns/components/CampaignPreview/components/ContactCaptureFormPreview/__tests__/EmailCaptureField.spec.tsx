@@ -1,12 +1,13 @@
-import {render, screen, fireEvent} from '@testing-library/react'
 import React from 'react'
+
+import { fireEvent, render, screen } from '@testing-library/react'
 
 import {
     ContactFormFieldName,
     ContactFormFieldType,
 } from 'pages/convert/campaigns/types/CampaignAttachment'
 
-import {EmailCaptureField} from '../EmailCaptureField'
+import { EmailCaptureField } from '../EmailCaptureField'
 
 describe('EmailCaptureField', () => {
     const mockField = {
@@ -25,12 +26,12 @@ describe('EmailCaptureField', () => {
     })
 
     it('uses "Email" as placeholder if no label is provided', () => {
-        const fieldWithoutLabel = {...mockField, label: undefined}
+        const fieldWithoutLabel = { ...mockField, label: undefined }
         render(
             <EmailCaptureField
                 field={fieldWithoutLabel}
                 onChange={mockOnChange}
-            />
+            />,
         )
         const emailInput = screen.getByPlaceholderText('Email')
         expect(emailInput).toBeInTheDocument()
@@ -40,7 +41,7 @@ describe('EmailCaptureField', () => {
         render(<EmailCaptureField field={mockField} onChange={mockOnChange} />)
         const emailInput = screen.getByPlaceholderText('Enter your email')
 
-        fireEvent.change(emailInput, {target: {value: 'test@example.com'}})
+        fireEvent.change(emailInput, { target: { value: 'test@example.com' } })
         expect(mockOnChange).toHaveBeenCalledWith('test@example.com')
     })
 
@@ -48,7 +49,7 @@ describe('EmailCaptureField', () => {
         render(<EmailCaptureField field={mockField} onChange={mockOnChange} />)
         const emailInput = screen.getByPlaceholderText('Enter your email')
 
-        fireEvent.change(emailInput, {target: {value: 'invalid-email'}})
+        fireEvent.change(emailInput, { target: { value: 'invalid-email' } })
         expect(mockOnChange).toHaveBeenCalledWith(undefined)
     })
 })

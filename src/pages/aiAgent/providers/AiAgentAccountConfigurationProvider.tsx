@@ -1,15 +1,17 @@
-import {LoadingSpinner} from '@gorgias/merchant-ui-kit'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {ReactNode} from 'react'
-import {Redirect} from 'react-router-dom'
+import React, { ReactNode } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useGetOrCreateAccountConfiguration} from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { Redirect } from 'react-router-dom'
+
+import { LoadingSpinner } from '@gorgias/merchant-ui-kit'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useGetOrCreateAccountConfiguration } from 'hooks/aiAgent/useGetOrCreateAccountConfiguration'
 import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationType, ShopifyIntegration} from 'models/integration/types'
-import {getHasAutomate} from 'state/billing/selectors'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {getIntegrationsByType} from 'state/integrations/selectors'
+import { IntegrationType, ShopifyIntegration } from 'models/integration/types'
+import { getHasAutomate } from 'state/billing/selectors'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { getIntegrationsByType } from 'state/integrations/selectors'
 
 import css from './AiAgentAccountConfigurationProvider.less'
 
@@ -17,11 +19,11 @@ type Props = {
     children?: ReactNode
 }
 
-export const AiAgentAccountConfigurationProvider = ({children}: Props) => {
+export const AiAgentAccountConfigurationProvider = ({ children }: Props) => {
     const hasAutomate = useAppSelector(getHasAutomate)
     const currentAccount = useAppSelector(getCurrentAccountState)
     const shopifyIntegrations = useAppSelector(
-        getIntegrationsByType<ShopifyIntegration>(IntegrationType.Shopify)
+        getIntegrationsByType<ShopifyIntegration>(IntegrationType.Shopify),
     )
     const hasAiAgentPreview =
         useFlags()[FeatureFlagKey.AIAgentPreviewModeAllowed]
@@ -29,13 +31,13 @@ export const AiAgentAccountConfigurationProvider = ({children}: Props) => {
     const accountId = currentAccount.get('id')
     const accountDomain = currentAccount.get('domain')
     const storeNames = shopifyIntegrations.map(
-        (integration) => integration.meta.shop_name
+        (integration) => integration.meta.shop_name,
     )
 
-    const {status: accountConfigRetrievalStatus} =
+    const { status: accountConfigRetrievalStatus } =
         useGetOrCreateAccountConfiguration(
-            {accountId, accountDomain, storeNames},
-            {refetchOnWindowFocus: false}
+            { accountId, accountDomain, storeNames },
+            { refetchOnWindowFocus: false },
         )
 
     if (

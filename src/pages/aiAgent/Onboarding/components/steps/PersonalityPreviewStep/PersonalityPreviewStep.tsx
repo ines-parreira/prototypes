@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 
-import {useParams} from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
 import AiAgentChatConversation from 'pages/aiAgent/Onboarding/components/AiAgentChatConversation/AiAgentChatConversation'
 import MainTitle from 'pages/aiAgent/Onboarding/components/MainTitle/MainTitle'
@@ -8,15 +8,15 @@ import {
     getFirstPreviewForPreviewType,
     PreviewId,
 } from 'pages/aiAgent/Onboarding/components/PersonalityPreviewGroup/constants'
-import {PersonalityPreviewGroup} from 'pages/aiAgent/Onboarding/components/PersonalityPreviewGroup/PersonalityPreviewGroup'
-import {Separator} from 'pages/aiAgent/Onboarding/components/Separator/Separator'
-import {useFetchPersonalityPreviewChatScenario} from 'pages/aiAgent/Onboarding/components/steps/PersonalityPreviewStep/mockedHooks'
+import { PersonalityPreviewGroup } from 'pages/aiAgent/Onboarding/components/PersonalityPreviewGroup/PersonalityPreviewGroup'
+import { Separator } from 'pages/aiAgent/Onboarding/components/Separator/Separator'
+import { useFetchPersonalityPreviewChatScenario } from 'pages/aiAgent/Onboarding/components/steps/PersonalityPreviewStep/mockedHooks'
 import css from 'pages/aiAgent/Onboarding/components/steps/PersonalityPreviewStep/PersonalityPreviewStep.less'
-import {mapScopeToPreviewType} from 'pages/aiAgent/Onboarding/components/steps/PersonalityPreviewStep/PersonalityPreviewStep.utils'
-import {StepProps} from 'pages/aiAgent/Onboarding/components/steps/types'
+import { mapScopeToPreviewType } from 'pages/aiAgent/Onboarding/components/steps/PersonalityPreviewStep/PersonalityPreviewStep.utils'
+import { StepProps } from 'pages/aiAgent/Onboarding/components/steps/types'
 import useCheckStoreIntegration from 'pages/aiAgent/Onboarding/hooks/useCheckStoreIntegration'
-import {useGetOnboardingData} from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
-import {useSteps} from 'pages/aiAgent/Onboarding/hooks/useSteps'
+import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
+import { useSteps } from 'pages/aiAgent/Onboarding/hooks/useSteps'
 import {
     OnboardingBody,
     OnboardingContentContainer,
@@ -34,11 +34,11 @@ export const PersonalityPreviewStep: React.FC<StepProps> = ({
     totalSteps,
     goToStep,
 }) => {
-    const {shopName} = useParams<{shopName: string}>()
+    const { shopName } = useParams<{ shopName: string }>()
 
-    const {validSteps} = useSteps({shopName})
+    const { validSteps } = useSteps({ shopName })
 
-    const {data, isLoading} = useGetOnboardingData(shopName)
+    const { data, isLoading } = useGetOnboardingData(shopName)
 
     useCheckStoreIntegration()
 
@@ -59,7 +59,7 @@ export const PersonalityPreviewStep: React.FC<StepProps> = ({
         setSelectedPreview(getFirstPreviewForPreviewType(previewType))
     }, [previewType, selectedPreview])
 
-    const {data: chatPreviewData, isLoading: isChatPreviewLoading} =
+    const { data: chatPreviewData, isLoading: isChatPreviewLoading } =
         useFetchPersonalityPreviewChatScenario(previewType, selectedPreview?.id)
 
     const onNextClick = () => {

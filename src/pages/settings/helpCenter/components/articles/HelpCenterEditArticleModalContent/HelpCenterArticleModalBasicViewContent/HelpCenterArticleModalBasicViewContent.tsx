@@ -1,7 +1,8 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import React, {useCallback, useMemo} from 'react'
+import React, { useCallback, useMemo } from 'react'
 
-import {SCREEN_SIZE, useScreenSize} from 'hooks/useScreenSize'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { SCREEN_SIZE, useScreenSize } from 'hooks/useScreenSize'
 import {
     Article,
     isArticleWithExistingTranslation,
@@ -12,25 +13,25 @@ import {
     EDITOR_MODAL_CONTAINER_ID,
     HELP_CENTER_DEFAULT_LAYOUT,
 } from 'pages/settings/helpCenter/constants'
-
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
-import {useEditionManager} from 'pages/settings/helpCenter/providers/EditionManagerContext'
-import {ArticleMode} from 'pages/settings/helpCenter/types/articleMode'
+import { useEditionManager } from 'pages/settings/helpCenter/providers/EditionManagerContext'
+import { ArticleMode } from 'pages/settings/helpCenter/types/articleMode'
 import {
     getHelpCenterDomain,
     isExistingArticle,
     slugify,
 } from 'pages/settings/helpCenter/utils/helpCenter.utils'
-import {Components} from 'rest_api/help_center_api/client.generated'
-import {getDetailedFormattedDate, getFormattedDate} from 'utils/date'
+import { Components } from 'rest_api/help_center_api/client.generated'
+import { getDetailedFormattedDate, getFormattedDate } from 'utils/date'
 
-import {useAbilityChecker} from '../../../../hooks/useHelpCenterApi'
-import {ActionType, OptionItem} from '../../ArticleLanguageSelect'
+import { useAbilityChecker } from '../../../../hooks/useHelpCenterApi'
+import { ActionType, OptionItem } from '../../ArticleLanguageSelect'
 import HelpCenterEditModalFooter from '../../HelpCenterEditModalFooter'
 import HelpCenterEditModalHeader from '../../HelpCenterEditModalHeader'
 import HelpCenterEditor from '../../HelpCenterEditor/HelpCenterEditor'
+import { HelpCenterArticleModalView } from '../types'
+
 import css from '../HelpCenterEditArticleModalContent.less'
-import {HelpCenterArticleModalView} from '../types'
 
 type Props = {
     onArticleLanguageSelect: (localeCode: LocaleCode) => void
@@ -40,7 +41,7 @@ type Props = {
 
     onArticleLanguageSelectActionClick: (
         action: ActionType,
-        option: OptionItem
+        option: OptionItem,
     ) => void
 
     onArticleChange: (
@@ -49,13 +50,13 @@ type Props = {
         }: {
             content: string
         },
-        counters: any
+        counters: any,
     ) => void
 
     onEditorReady: (content: string) => void
 
     // should be removed
-    counters?: {charCount: number}
+    counters?: { charCount: number }
 
     // should be defined inside this component as a local state to manage the CTA states
     // of "Save Changes" | "Create article" | "Publish article"
@@ -90,7 +91,7 @@ const HelpCenterArticleModalBasicViewContent = ({
     articleMode,
 }: Props) => {
     const screenSize = useScreenSize()
-    const {isPassingRulesCheck} = useAbilityChecker()
+    const { isPassingRulesCheck } = useAbilityChecker()
     const {
         setEditModal,
         selectedArticle,
@@ -99,15 +100,15 @@ const HelpCenterArticleModalBasicViewContent = ({
         setIsFullscreenEditModal,
     } = useEditionManager()
 
-    const {lastUpdate, lastUpdateDetailed} = useMemo(() => {
+    const { lastUpdate, lastUpdateDetailed } = useMemo(() => {
         return selectedArticle &&
             isArticleWithExistingTranslation(selectedArticle)
             ? {
                   lastUpdate: getFormattedDate(
-                      selectedArticle.translation.updated_datetime
+                      selectedArticle.translation.updated_datetime,
                   ),
                   lastUpdateDetailed: getDetailedFormattedDate(
-                      selectedArticle.translation.updated_datetime
+                      selectedArticle.translation.updated_datetime,
                   ),
               }
             : {
@@ -119,11 +120,11 @@ const HelpCenterArticleModalBasicViewContent = ({
     const onArticleContentEdit = useCallback(
         (content: string, charCount?: number) => {
             onArticleChange(
-                {...selectedArticle?.translation, content},
-                charCount
+                { ...selectedArticle?.translation, content },
+                charCount,
             )
         },
-        [selectedArticle?.translation, onArticleChange]
+        [selectedArticle?.translation, onArticleChange],
     )
 
     const helpCenter = useCurrentHelpCenter()
@@ -139,8 +140,8 @@ const HelpCenterArticleModalBasicViewContent = ({
             : undefined
     const helpCenterDomain = getHelpCenterDomain(helpCenter)
 
-    const canUpdateArticle = isPassingRulesCheck(({can}) =>
-        can('update', 'ArticleEntity')
+    const canUpdateArticle = isPassingRulesCheck(({ can }) =>
+        can('update', 'ArticleEntity'),
     )
 
     return (
@@ -173,7 +174,7 @@ const HelpCenterArticleModalBasicViewContent = ({
                                     slug: slugify(title),
                                 },
                             }) ||
-                            null
+                            null,
                     )
                 }
                 visibilityStatus={selectedArticle.translation.visibility_status}

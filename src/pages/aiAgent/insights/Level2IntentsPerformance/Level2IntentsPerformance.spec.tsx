@@ -1,16 +1,16 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {useParams} from 'react-router-dom'
+import { renderHook } from '@testing-library/react-hooks'
+import { useParams } from 'react-router-dom'
 
-import {useInsightPerformanceMetrics} from 'hooks/reporting/automate/useAIAgentInsightsL2Dataset'
-import {useNewAutomateFilters} from 'hooks/reporting/automate/useNewAutomateFilters'
+import { useInsightPerformanceMetrics } from 'hooks/reporting/automate/useAIAgentInsightsL2Dataset'
+import { useNewAutomateFilters } from 'hooks/reporting/automate/useNewAutomateFilters'
 import useAppSelector from 'hooks/useAppSelector'
-import {ReportingGranularity} from 'models/reporting/types'
-import {useGetCustomTicketsFieldsDefinitionData} from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
-import {Level2IntentsPerformance} from 'pages/aiAgent/insights/Level2IntentsPerformance/Level2IntentsPerformance'
-import {getPageStatsFilters} from 'state/stats/selectors'
-import {assumeMock} from 'utils/testing'
+import { ReportingGranularity } from 'models/reporting/types'
+import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
+import { Level2IntentsPerformance } from 'pages/aiAgent/insights/Level2IntentsPerformance/Level2IntentsPerformance'
+import { getPageStatsFilters } from 'state/stats/selectors'
+import { assumeMock } from 'utils/testing'
 
-import {IntentsPerformanceProps} from '../widgets/IntentsPerformance/IntentsPerformance'
+import { IntentsPerformanceProps } from '../widgets/IntentsPerformance/IntentsPerformance'
 
 jest.mock('react-router-dom', () => ({
     useParams: jest.fn(),
@@ -20,42 +20,42 @@ jest.mock('hooks/reporting/automate/useAIAgentInsightsL2Dataset')
 jest.mock('hooks/reporting/automate/useNewAutomateFilters')
 jest.mock('hooks/useAppSelector')
 jest.mock(
-    'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
+    'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData',
 )
 jest.mock('state/stats/selectors')
 
 describe('Level2IntentsPerformance', () => {
     const mockUseParams = assumeMock(useParams)
     const mockUseInsightPerformanceMetrics = assumeMock(
-        useInsightPerformanceMetrics
+        useInsightPerformanceMetrics,
     )
     const mockUseNewAutomateFilters = assumeMock(useNewAutomateFilters)
     const mockUseAppSelector = assumeMock(useAppSelector)
     const mockUseGetCustomTicketsFieldsDefinitionData = assumeMock(
-        useGetCustomTicketsFieldsDefinitionData
+        useGetCustomTicketsFieldsDefinitionData,
     )
     const mockGetPageStatsFilters = assumeMock(getPageStatsFilters)
 
     beforeEach(() => {
-        mockUseParams.mockReturnValue({intentId: 'intentA'})
+        mockUseParams.mockReturnValue({ intentId: 'intentA' })
         mockUseInsightPerformanceMetrics.mockReturnValue({
             automationOpportunityPerIntent: {
-                data: {value: 10, prevValue: 5},
+                data: { value: 10, prevValue: 5 },
                 isFetching: false,
                 isError: false,
             },
             ticketsPerIntent: {
-                data: {value: 20, prevValue: 15},
+                data: { value: 20, prevValue: 15 },
                 isFetching: false,
                 isError: false,
             },
             successRatePerIntent: {
-                data: {value: 0.8, prevValue: 0.75},
+                data: { value: 0.8, prevValue: 0.75 },
                 isFetching: false,
                 isError: false,
             },
             customerSatisfactionPerIntent: {
-                data: {value: 4.5, prevValue: 4.0},
+                data: { value: 4.5, prevValue: 4.0 },
                 isFetching: false,
                 isError: false,
             },
@@ -72,19 +72,25 @@ describe('Level2IntentsPerformance', () => {
             isAnalyticsNewFiltersAutomate: true,
         })
         mockUseAppSelector.mockReturnValue({
-            period: {start_datetime: '2021-01-01', end_datetime: '2021-01-31'},
+            period: {
+                start_datetime: '2021-01-01',
+                end_datetime: '2021-01-31',
+            },
         })
         mockUseGetCustomTicketsFieldsDefinitionData.mockReturnValue({
             intentCustomFieldId: 1,
             outcomeCustomFieldId: 2,
         })
         mockGetPageStatsFilters.mockReturnValue({
-            period: {start_datetime: '2021-01-01', end_datetime: '2021-01-31'},
+            period: {
+                start_datetime: '2021-01-01',
+                end_datetime: '2021-01-31',
+            },
         })
     })
 
     it('renders correctly with valid data', () => {
-        const {result} = renderHook(() => Level2IntentsPerformance())
+        const { result } = renderHook(() => Level2IntentsPerformance())
         const componentProps = result.current
             .props as unknown as IntentsPerformanceProps
         const metrics = componentProps.metrics
@@ -107,8 +113,8 @@ describe('Level2IntentsPerformance', () => {
     })
 
     it('handles missing intentId', () => {
-        mockUseParams.mockReturnValue({intentId: undefined})
-        const {result} = renderHook(() => Level2IntentsPerformance())
+        mockUseParams.mockReturnValue({ intentId: undefined })
+        const { result } = renderHook(() => Level2IntentsPerformance())
         const componentProps = result.current
             .props as unknown as IntentsPerformanceProps
         const sectionSubtitle = componentProps.sectionSubtitle
@@ -121,40 +127,40 @@ describe('Level2IntentsPerformance', () => {
             intentCustomFieldId: undefined,
             outcomeCustomFieldId: undefined,
         })
-        const {result} = renderHook(() => Level2IntentsPerformance())
+        const { result } = renderHook(() => Level2IntentsPerformance())
         const componentProps = result.current
             .props as unknown as IntentsPerformanceProps
         const metrics = componentProps.metrics
 
         expect(
-            metrics[1]?.drillDownMetricAdditionalData?.customFieldId
+            metrics[1]?.drillDownMetricAdditionalData?.customFieldId,
         ).toBeNull()
     })
 
     it('handles fetching state', () => {
         mockUseInsightPerformanceMetrics.mockReturnValue({
             automationOpportunityPerIntent: {
-                data: {value: 10, prevValue: 5},
+                data: { value: 10, prevValue: 5 },
                 isFetching: true,
                 isError: false,
             },
             ticketsPerIntent: {
-                data: {value: 20, prevValue: 15},
+                data: { value: 20, prevValue: 15 },
                 isFetching: true,
                 isError: false,
             },
             successRatePerIntent: {
-                data: {value: 0.8, prevValue: 0.75},
+                data: { value: 0.8, prevValue: 0.75 },
                 isFetching: true,
                 isError: false,
             },
             customerSatisfactionPerIntent: {
-                data: {value: 4.5, prevValue: 4.0},
+                data: { value: 4.5, prevValue: 4.0 },
                 isFetching: true,
                 isError: false,
             },
         })
-        const {result} = renderHook(() => Level2IntentsPerformance())
+        const { result } = renderHook(() => Level2IntentsPerformance())
         const componentProps = result.current
             .props as unknown as IntentsPerformanceProps
         const metrics = componentProps.metrics
@@ -168,27 +174,27 @@ describe('Level2IntentsPerformance', () => {
     it('handles error state', () => {
         mockUseInsightPerformanceMetrics.mockReturnValue({
             automationOpportunityPerIntent: {
-                data: {value: 10, prevValue: 5},
+                data: { value: 10, prevValue: 5 },
                 isFetching: false,
                 isError: true,
             },
             ticketsPerIntent: {
-                data: {value: 20, prevValue: 15},
+                data: { value: 20, prevValue: 15 },
                 isFetching: false,
                 isError: true,
             },
             successRatePerIntent: {
-                data: {value: 0.8, prevValue: 0.75},
+                data: { value: 0.8, prevValue: 0.75 },
                 isFetching: false,
                 isError: true,
             },
             customerSatisfactionPerIntent: {
-                data: {value: 4.5, prevValue: 4.0},
+                data: { value: 4.5, prevValue: 4.0 },
                 isFetching: false,
                 isError: true,
             },
         })
-        const {result} = renderHook(() => Level2IntentsPerformance())
+        const { result } = renderHook(() => Level2IntentsPerformance())
         const componentProps = result.current
             .props as unknown as IntentsPerformanceProps
         const metrics = componentProps.metrics

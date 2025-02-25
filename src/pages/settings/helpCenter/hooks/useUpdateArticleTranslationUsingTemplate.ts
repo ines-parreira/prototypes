@@ -1,10 +1,10 @@
-import {useUpdateArticleTranslation} from 'models/helpCenter/queries'
-import {HelpCenter, HelpCenterArticleItem} from 'models/helpCenter/types'
+import { useUpdateArticleTranslation } from 'models/helpCenter/queries'
+import { HelpCenter, HelpCenterArticleItem } from 'models/helpCenter/types'
 
-import {slugify} from '../utils/helpCenter.utils'
+import { slugify } from '../utils/helpCenter.utils'
 
 export const useUpdateArticleTranslationUsingTemplate = (
-    helpCenter: HelpCenter
+    helpCenter: HelpCenter,
 ) => {
     const {
         mutateAsync: updateArticleTranslationMutateAsync,
@@ -13,7 +13,7 @@ export const useUpdateArticleTranslationUsingTemplate = (
 
     const updateArticleTranslation = (
         article: HelpCenterArticleItem,
-        shouldPublish = false
+        shouldPublish = false,
     ) => {
         if (!article.id)
             return Promise.reject('No article provided during article update.')

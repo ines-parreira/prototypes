@@ -1,8 +1,9 @@
-import {render} from '@testing-library/react'
-import {createMemoryHistory} from 'history'
 import React from 'react'
-import {Provider} from 'react-redux'
-import {Router} from 'react-router-dom'
+
+import { render } from '@testing-library/react'
+import { createMemoryHistory } from 'history'
+import { Provider } from 'react-redux'
+import { Router } from 'react-router-dom'
 import configureStore from 'redux-mock-store'
 
 import * as segment from 'common/segment'
@@ -27,14 +28,16 @@ jest.mock('common/segment', () => ({
 describe('WorkflowEditorViewContainer', () => {
     let history: ReturnType<typeof createMemoryHistory>
 
-    const renderComponent = (storeState = {billing: {hasAutomate: true}}) => {
+    const renderComponent = (
+        storeState = { billing: { hasAutomate: true } },
+    ) => {
         const store = mockStore(storeState)
         return render(
             <Provider store={store}>
                 <Router history={history}>
                     <WorkflowEditorViewContainer />
                 </Router>
-            </Provider>
+            </Provider>,
         )
     }
 
@@ -43,7 +46,7 @@ describe('WorkflowEditorViewContainer', () => {
     })
 
     it('redirects to /app/automation if hasAutomate is false', () => {
-        const storeState = {billing: {hasAutomate: false}}
+        const storeState = { billing: { hasAutomate: false } }
         renderComponent(storeState)
         expect(history.location.pathname).toBe('/app/automation')
     })
@@ -55,7 +58,7 @@ describe('WorkflowEditorViewContainer', () => {
             {
                 type: 'builder',
                 source: 'builder',
-            }
+            },
         )
     })
     it('handles discard workflow correctly', () => {

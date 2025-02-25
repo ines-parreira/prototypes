@@ -1,4 +1,4 @@
-import {Product} from 'constants/integrations/types/shopify'
+import { Product } from 'constants/integrations/types/shopify'
 import client from 'models/api/resources'
 import {
     ApiListResponse,
@@ -13,13 +13,13 @@ import {
     IntegrationType,
 } from './types'
 import {
-    AppListData,
     AppData,
     AppDetail,
     AppErrorLog,
+    AppListData,
     AppListItem,
-    DisconnectResponse,
     Category,
+    DisconnectResponse,
 } from './types/app'
 
 export const appListDataToAppListMapper = (data: AppListData): AppListItem => {
@@ -50,7 +50,7 @@ export const appDataToAppDetailMapper = (data: AppData): AppDetail => ({
     image: data.app_icon,
     connectUrl: data.app_url,
     categories: data.categories,
-    company: {name: data.company, url: data.company_url},
+    company: { name: data.company, url: data.company_url },
     screenshots: data.screenshots,
     privacyPolicy: data.privacy_policy,
     setupGuide: data.setup_guide,
@@ -72,33 +72,33 @@ export const fetchApps = async (): Promise<AppListItem[]> => {
 
 export const fetchInstalledApps = async (): Promise<AppListItem[]> => {
     const response = await client.get<ApiListResponse<AppListData[], never>>(
-        '/api/apps/installed/'
+        '/api/apps/installed/',
     )
     return (response.data?.data || []).map(appListDataToAppListMapper)
 }
 
 export const fetchApp = async (
     appId: string,
-    preview?: boolean
+    preview?: boolean,
 ): Promise<AppDetail> => {
-    const params = {preview}
-    const {data} = await client.get<AppData>(`/api/apps/${appId}`, {params})
+    const params = { preview }
+    const { data } = await client.get<AppData>(`/api/apps/${appId}`, { params })
     return appDataToAppDetailMapper(data)
 }
 
 export const disconnectApp = async (appId: string): Promise<boolean> => {
-    const {data} = await client.get<DisconnectResponse>(
-        `/api/apps/uninstall/${appId}`
+    const { data } = await client.get<DisconnectResponse>(
+        `/api/apps/uninstall/${appId}`,
     )
     return data.is_uninstalled
 }
 
 export const fetchAppErrorLogs = async (
-    appId: string
+    appId: string,
 ): Promise<AppErrorLog[]> => {
-    const {data} = await client.get<ApiListResponse<AppErrorLog[], never>>(
+    const { data } = await client.get<ApiListResponse<AppErrorLog[], never>>(
         '/api/async/errors',
-        {params: {app_id: appId}}
+        { params: { app_id: appId } },
     )
     return data.data
 }
@@ -108,21 +108,21 @@ export const fetchIntegrations = async (params: ApiPaginationParams = {}) =>
         '/api/integrations',
         {
             params,
-        }
+        },
     )
 
 export const requestNewIntegration = async (payload: IntegrationRequest) => {
-    const {data} = await client.post<IntegrationRequest>(
+    const { data } = await client.post<IntegrationRequest>(
         '/integrations/request',
-        payload
+        payload,
     )
     return data
 }
 
 export const fetchIntegrationProducts = async (
     integrationId: number,
-    params: ApiPaginationParams = {}
+    params: ApiPaginationParams = {},
 ) =>
     await client.get<
         ApiListResponseCursorPagination<IntegrationDataItem<Product>[]>
-    >(`/api/integrations/${integrationId}/product`, {params})
+    >(`/api/integrations/${integrationId}/product`, { params })

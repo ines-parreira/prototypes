@@ -1,5 +1,6 @@
-import {Meta, StoryObj} from '@storybook/react'
-import {ComponentProps} from 'react'
+import { ComponentProps } from 'react'
+
+import { Meta, StoryObj } from '@storybook/react'
 
 import CanduActionInfobar from 'pages/settings/new_billing/components/CanduActionInfobar/CanduActionInfobar'
 
@@ -44,8 +45,8 @@ const defaultProps: ComponentProps<typeof CanduActionInfobar> = {
 }
 
 export const Default: Story = {
-    args: {...defaultProps},
-    parameters: {...templateParameters},
+    args: { ...defaultProps },
+    parameters: { ...templateParameters },
 }
 
 export default storyConfig

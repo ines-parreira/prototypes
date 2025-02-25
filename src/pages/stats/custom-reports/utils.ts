@@ -1,3 +1,5 @@
+import _flatten from 'lodash/flatten'
+
 import {
     AnalyticsCustomReport,
     AnalyticsCustomReportChartSchema,
@@ -12,9 +14,8 @@ import {
     CreateAnalyticsCustomReportBody,
     CreateAnalyticsCustomReportBodyChildrenItem,
 } from '@gorgias/api-types'
-import _flatten from 'lodash/flatten'
 
-import {isGorgiasApiError} from 'models/api/types'
+import { isGorgiasApiError } from 'models/api/types'
 import {
     ChartConfig,
     CustomReportChartSchema,
@@ -25,25 +26,25 @@ import {
     CustomReportSectionSchema,
     DashboardInput,
 } from 'pages/stats/custom-reports/types'
-import {BASE_STATS_PATH, STATS_ROUTES} from 'routes/constants'
-import {notNull} from 'utils/types'
+import { BASE_STATS_PATH, STATS_ROUTES } from 'routes/constants'
+import { notNull } from 'utils/types'
 
 const fromApiChart = (
-    chart: AnalyticsCustomReportChartSchema
+    chart: AnalyticsCustomReportChartSchema,
 ): CustomReportChartSchema => ({
     config_id: chart.config_id,
     type: CustomReportChildType.Chart,
 })
 
 const fromApiRow = (
-    row: AnalyticsCustomReportRowSchema
+    row: AnalyticsCustomReportRowSchema,
 ): CustomReportRowSchema => ({
     children: row.children.map(customReportChartChildFromApi).filter(notNull),
     type: CustomReportChildType.Row,
 })
 
 const fromApiSection = (
-    section: AnalyticsCustomReportSectionSchema
+    section: AnalyticsCustomReportSectionSchema,
 ): CustomReportSectionSchema => ({
     children: section.children
         .map(customReportSectionChildFromApi)
@@ -52,7 +53,7 @@ const fromApiSection = (
 })
 
 export const customReportChartChildFromApi = (
-    child: AnalyticsCustomReportChildrenItem
+    child: AnalyticsCustomReportChildrenItem,
 ): CustomReportChartSchema | null => {
     switch (child.type) {
         case 'chart':
@@ -63,7 +64,7 @@ export const customReportChartChildFromApi = (
 }
 
 export const customReportSectionChildFromApi = (
-    child: AnalyticsCustomReportChildrenItem
+    child: AnalyticsCustomReportChildrenItem,
 ): CustomReportRowSchema | CustomReportChartSchema | null => {
     switch (child.type) {
         case 'row':
@@ -76,7 +77,7 @@ export const customReportSectionChildFromApi = (
 }
 
 export const customReportChildFromApi = (
-    child: AnalyticsCustomReportChildrenItem
+    child: AnalyticsCustomReportChildrenItem,
 ): CustomReportChild | null => {
     switch (child.type) {
         case CustomReportChildType.Section:
@@ -91,7 +92,7 @@ export const customReportChildFromApi = (
 }
 
 export const customReportFromApi = (
-    report?: AnalyticsCustomReport
+    report?: AnalyticsCustomReport,
 ): CustomReportSchema | undefined => {
     if (!report) {
         return undefined
@@ -109,7 +110,7 @@ export const customReportFromApi = (
 
 export const getNumberOfSelections = (
     charts: Record<string, ChartConfig>,
-    checkedCharts: string[]
+    checkedCharts: string[],
 ): number =>
     Object.keys(charts).reduce((acc, chartId) => {
         let total = acc
@@ -132,7 +133,7 @@ function isObjectWithKeys(data: unknown): data is Record<string, unknown> {
 
 export function getErrorMessage(
     error: unknown,
-    defaultMessage = 'Oops! Something went wrong.'
+    defaultMessage = 'Oops! Something went wrong.',
 ) {
     if (isGorgiasApiError(error)) {
         const responseError = error.response.data
@@ -164,7 +165,7 @@ export function getErrorMessage(
 }
 
 export const getGroupChartsIntoRows = (
-    charts: string[]
+    charts: string[],
 ): CustomReportChild[] => {
     if (!charts.length) {
         return []
@@ -182,7 +183,7 @@ export const getGroupChartsIntoRows = (
 }
 
 const createChildrenWithMetadata = (
-    children: CustomReportChild[]
+    children: CustomReportChild[],
 ): CreateAnalyticsCustomReportBodyChildrenItem[] => {
     return children.map((child) => {
         switch (child.type) {
@@ -254,19 +255,19 @@ export const getChildrenIds = (
     children:
         | CustomReportChild[]
         | AnalyticsCustomReportChildrenItem[]
-        | undefined
+        | undefined,
 ): string[] => {
     return children
         ? _flatten(
               children?.map((secondChild) => {
                   if (secondChild.type === CustomReportChildType.Row)
                       return secondChild.children.map(
-                          (thirdChild) => thirdChild.config_id
+                          (thirdChild) => thirdChild.config_id,
                       )
                   if (secondChild.type === CustomReportChildType.Chart)
                       return secondChild.config_id
                   return []
-              })
+              }),
           )
         : []
 }
@@ -275,7 +276,7 @@ const deepClone = <T>(value: T): T => JSON.parse(JSON.stringify(value)) as T
 
 const removeChartById = <T extends CustomReportChild>(
     children: T[],
-    chartId: string
+    chartId: string,
 ): T[] => {
     const newChildren: T[] = []
 
@@ -302,7 +303,7 @@ const removeChartById = <T extends CustomReportChild>(
 
 const findChartById = (
     children: CustomReportChild[],
-    chartId: string
+    chartId: string,
 ): CustomReportChartSchema | undefined => {
     let chart: CustomReportChartSchema | undefined
 
@@ -335,7 +336,7 @@ const insertChart = <T extends CustomReportChild>(
     children: T[],
     targetChartId: string,
     chart: CustomReportChartSchema,
-    position: 'before' | 'after'
+    position: 'before' | 'after',
 ): T[] => {
     const foundIndex = findChartIndexById(children, targetChartId)
 
@@ -354,7 +355,7 @@ const insertChart = <T extends CustomReportChild>(
                     child.children,
                     targetChartId,
                     chart,
-                    position
+                    position,
                 ),
             }
         }
@@ -367,7 +368,7 @@ export const updateChartPosition = (
     dashboard: CustomReportSchema,
     subjectChartId: string,
     targetChartId: string,
-    position: 'before' | 'after'
+    position: 'before' | 'after',
 ) => {
     const dashboardCopy = deepClone(dashboard)
     const chart = findChartById(dashboardCopy.children, subjectChartId)
@@ -376,14 +377,14 @@ export const updateChartPosition = (
 
     const childrenWithoutChart = removeChartById(
         dashboardCopy.children,
-        subjectChartId
+        subjectChartId,
     )
 
     const childrenWithChart = insertChart(
         childrenWithoutChart,
         targetChartId,
         chart,
-        position
+        position,
     )
 
     return {

@@ -1,6 +1,6 @@
-import {useCallback, useEffect, useState} from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
-import {ShopifyIntegration} from 'models/integration/types'
+import { ShopifyIntegration } from 'models/integration/types'
 
 import useThemeAppExtensionInstallation from './useThemeAppExtensionInstallation'
 
@@ -14,7 +14,7 @@ const useShopifyThemeAppExtension = ({
     const [isInstalled, setIsInstalled] = useState<boolean | undefined>()
     const [isLoaded, setIsLoaded] = useState<boolean>(false)
 
-    const {shouldUseThemeAppExtensionInstallation} =
+    const { shouldUseThemeAppExtensionInstallation } =
         useThemeAppExtensionInstallation(shopifyIntegration)
 
     const fetchData = useCallback(async () => {
@@ -28,9 +28,9 @@ const useShopifyThemeAppExtension = ({
 
         try {
             const response = await fetch(
-                `/integrations/shopify/${shopifyIntegration.id}/gorgias-theme-app-extension/status/${appUuid}`
+                `/integrations/shopify/${shopifyIntegration.id}/gorgias-theme-app-extension/status/${appUuid}`,
             )
-            const result = (await response.json()) as {is_installed: boolean}
+            const result = (await response.json()) as { is_installed: boolean }
             void setIsInstalled(result.is_installed)
         } catch (err) {
             setIsInstalled(undefined)

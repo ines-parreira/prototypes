@@ -1,15 +1,17 @@
+import React, { ReactNode, useMemo, useState } from 'react'
+
 import classnames from 'classnames'
-import React, {ReactNode, useState, useMemo} from 'react'
 
 import useDebouncedValue from 'hooks/useDebouncedValue'
 import useMeasure from 'hooks/useMeasure'
-import {TicketMessage} from 'models/ticket/types'
+import { TicketMessage } from 'models/ticket/types'
 import DatetimeLabel from 'pages/common/utils/DatetimeLabel'
 
 import SeenIndicator from './SeenIndicator'
 import SourceActionsHeader from './SourceActionsHeader'
-import css from './SourceDetails.less'
 import SourceDetailsContext from './SourceDetailsContext'
+
+import css from './SourceDetails.less'
 
 type Props = {
     className?: string
@@ -22,7 +24,7 @@ type Props = {
     timezone: string
 }
 
-const From = ({label, children}: {label: string; children?: ReactNode}) => (
+const From = ({ label, children }: { label: string; children?: ReactNode }) => (
     <span className={classnames(css.from)}>
         <span className={css.fromLabel}>{label}</span>{' '}
         <span className={css.fromValue}>{children}</span>
@@ -41,7 +43,7 @@ export default function SourceDetailsHeader({
 }: Props) {
     const [focus, setFocus] = useState(false)
 
-    const [ref, {width}] = useMeasure()
+    const [ref, { width }] = useMeasure()
     const debouncedWidth = useDebouncedValue(width, 300)
 
     const actionHeader = useMemo(() => {
@@ -50,7 +52,7 @@ export default function SourceDetailsHeader({
 
         if (!isMessageDeleted) {
             return (
-                <SourceDetailsContext.Provider value={{setFocus}}>
+                <SourceDetailsContext.Provider value={{ setFocus }}>
                     <SourceActionsHeader
                         showIntents={showIntents}
                         message={message}
@@ -81,7 +83,7 @@ export default function SourceDetailsHeader({
         return (
             <DatetimeLabel
                 dateTime={message.created_datetime}
-                className={classnames({[css.hideTimestamp]: hideTimestamp})}
+                className={classnames({ [css.hideTimestamp]: hideTimestamp })}
             />
         )
     }, [message?.meta, message.created_datetime, hideTimestamp])

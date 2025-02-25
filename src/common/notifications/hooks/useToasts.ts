@@ -1,13 +1,12 @@
-import {useCallback, useEffect, useMemo, useRef, useState} from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {notificationSounds} from 'services'
-import {defaultSound} from 'services/NotificationSounds'
-import {getNotificationSettings} from 'state/currentUser/selectors'
+import { notificationSounds } from 'services'
+import { defaultSound } from 'services/NotificationSounds'
+import { getNotificationSettings } from 'state/currentUser/selectors'
 
-import {Notification} from '../types'
+import { Notification } from '../types'
 import getNotificationConfig from '../utils/getNotificationConfig'
-
 import useNotifications from './useNotifications'
 
 export default function useToasts() {
@@ -16,11 +15,11 @@ export default function useToasts() {
         () =>
             notificationSettings?.data?.notification_sound?.volume ||
             defaultSound.volume,
-        [notificationSettings]
+        [notificationSettings],
     )
     const eventSettings = useMemo(
         () => notificationSettings?.data?.events || {},
-        [notificationSettings]
+        [notificationSettings],
     )
 
     const [notifications, setNotifications] = useState<Notification[]>([])
@@ -28,7 +27,7 @@ export default function useToasts() {
 
     const dismiss = useCallback((notificationId: string) => {
         setNotifications((n) =>
-            n.filter((notification) => notification.id !== notificationId)
+            n.filter((notification) => notification.id !== notificationId),
         )
     }, [])
 
@@ -40,7 +39,7 @@ export default function useToasts() {
 
             timeoutsRef.current = [...timeoutsRef.current, timeout]
         },
-        [dismiss]
+        [dismiss],
     )
 
     const handleNotificationReceived = useCallback(
@@ -59,7 +58,7 @@ export default function useToasts() {
             queueHide(notification.id)
             setNotifications((n) => [...n, notification])
         },
-        [eventSettings, notificationVolume, queueHide]
+        [eventSettings, notificationVolume, queueHide],
     )
     useNotifications(handleNotificationReceived)
 
@@ -69,8 +68,8 @@ export default function useToasts() {
                 clearTimeout(timeout)
             })
         },
-        []
+        [],
     )
 
-    return useMemo(() => ({dismiss, notifications}), [dismiss, notifications])
+    return useMemo(() => ({ dismiss, notifications }), [dismiss, notifications])
 }

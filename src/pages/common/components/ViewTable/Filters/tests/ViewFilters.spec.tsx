@@ -1,19 +1,20 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {RootState, StoreDispatch} from 'state/types'
+import { RootState, StoreDispatch } from 'state/types'
 import {
     removeFieldFilter,
     updateFieldFilter,
     updateFieldFilterOperator,
 } from 'state/views/actions'
 
-import {view as viewFixture} from '../../../../../../fixtures/views'
-import {CallExpression} from '../CallExpression'
+import { view as viewFixture } from '../../../../../../fixtures/views'
+import { CallExpression } from '../CallExpression'
 import ViewFilters from '../ViewFilters'
 
 jest.mock('state/views/actions')
@@ -63,19 +64,19 @@ const defaultState: Partial<RootState> = {
 jest.mock(
     '../CallExpression',
     () => (props: ComponentProps<typeof CallExpression>) => {
-        const {removeCondition, updateOperator, updateFieldFilter} = props
+        const { removeCondition, updateOperator, updateFieldFilter } = props
 
         removeCondition(0)
         updateOperator(0, 'eq')
         updateFieldFilter(0, 'foo')
 
         return <div>CallExpression</div>
-    }
+    },
 )
 
 describe('<ViewFilters />', () => {
     it('should return null if schemas are empty', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider
                 store={mockStore({
                     ...defaultState,
@@ -83,23 +84,23 @@ describe('<ViewFilters />', () => {
                 })}
             >
                 <ViewFilters />
-            </Provider>
+            </Provider>,
         )
         expect(container).toBeEmptyDOMElement()
     })
 
     it('should return no filters if none are selected', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider
                 store={mockStore({
                     ...defaultState,
                     views: fromJS({
-                        active: {...viewFixture, filters_ast: null},
+                        active: { ...viewFixture, filters_ast: null },
                     }),
                 })}
             >
                 <ViewFilters />
-            </Provider>
+            </Provider>,
         )
         expect(getByText('No filters selected')).toBeInTheDocument()
     })
@@ -114,29 +115,31 @@ describe('<ViewFilters />', () => {
                             active: {
                                 ...viewFixture,
                                 filters_ast: {
-                                    body: [{expression: {type: 'Expression'}}],
+                                    body: [
+                                        { expression: { type: 'Expression' } },
+                                    ],
                                 },
                             },
                         }),
                     })}
                 >
                     <ViewFilters />
-                </Provider>
-            )
+                </Provider>,
+            ),
         ).toThrow('Unknown type: Expression')
     })
 
     it('should render CallExpression', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <ViewFilters />
-            </Provider>
+            </Provider>,
         )
         expect(container).toHaveTextContent('CallExpression')
     })
 
     it('should walk through LogicalExpression', () => {
-        const {getAllByText} = render(
+        const { getAllByText } = render(
             <Provider
                 store={mockStore({
                     ...defaultState,
@@ -148,8 +151,8 @@ describe('<ViewFilters />', () => {
                                     {
                                         expression: {
                                             type: 'LogicalExpression',
-                                            left: {type: 'CallExpression'},
-                                            right: {type: 'CallExpression'},
+                                            left: { type: 'CallExpression' },
+                                            right: { type: 'CallExpression' },
                                         },
                                     },
                                 ],
@@ -159,7 +162,7 @@ describe('<ViewFilters />', () => {
                 })}
             >
                 <ViewFilters />
-            </Provider>
+            </Provider>,
         )
 
         expect(getAllByText('CallExpression')).toHaveLength(2)
@@ -171,7 +174,7 @@ describe('<ViewFilters />', () => {
         render(
             <Provider store={mockStore(defaultState)}>
                 <ViewFilters />
-            </Provider>
+            </Provider>,
         )
 
         expect(removeFieldFilter).toHaveBeenCalled()

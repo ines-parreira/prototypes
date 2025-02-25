@@ -1,17 +1,18 @@
-import {render} from '@testing-library/react'
-import {fromJS, Map} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { render } from '@testing-library/react'
+import { fromJS, Map } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 
 import {
-    chargeCustomization,
-    SubscriptionAfterTitle,
     AfterContent,
     AfterTitle,
+    chargeCustomization,
+    SubscriptionAfterTitle,
     TitleWrapperContainer,
 } from '../Charge'
 
@@ -19,60 +20,60 @@ const BeforeContent = chargeCustomization.BeforeContent!
 const Wrapper = chargeCustomization.Wrapper!
 
 const mockStore = configureMockStore([thunk])
-const integrationContextData = {integration: fromJS({}), integrationId: 1}
+const integrationContextData = { integration: fromJS({}), integrationId: 1 }
 
 describe('Charge', () => {
     describe('SubscriptionAfterTitle', () => {
         it('should return null if isEditing', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore({})}>
                     <IntegrationContext.Provider value={integrationContextData}>
-                        <Wrapper source={fromJS({status: ''})}>
+                        <Wrapper source={fromJS({ status: '' })}>
                             <SubscriptionAfterTitle
                                 isEditing={true}
                                 source={fromJS({})}
                             />
                         </Wrapper>
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(container).toMatchSnapshot()
         })
 
         it("should return null if there's no integrationId", () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore({})}>
                     <IntegrationContext.Provider value={integrationContextData}>
-                        <Wrapper source={fromJS({status: 'success'})}>
+                        <Wrapper source={fromJS({ status: 'success' })}>
                             <SubscriptionAfterTitle source={fromJS({})} />
                         </Wrapper>
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(container).toMatchSnapshot()
         })
 
         it('should not display any action if the charge is nor queued nor skipped', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore({})}>
                     <IntegrationContext.Provider value={integrationContextData}>
-                        <Wrapper source={fromJS({status: 'success'})}>
+                        <Wrapper source={fromJS({ status: 'success' })}>
                             <SubscriptionAfterTitle source={fromJS({})} />
                         </Wrapper>
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(container).toMatchSnapshot()
         })
 
         it('should display the skipCharge action if the charge is queued', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore({})}>
                     <IntegrationContext.Provider value={integrationContextData}>
-                        <Wrapper source={fromJS({status: 'queued'})}>
+                        <Wrapper source={fromJS({ status: 'queued' })}>
                             <SubscriptionAfterTitle
                                 source={fromJS({
                                     charge_id: 2,
@@ -81,17 +82,17 @@ describe('Charge', () => {
                             />
                         </Wrapper>
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(container).toMatchSnapshot()
         })
 
         it('should display the unskipCharge action if the charge is skipped', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore({})}>
                     <IntegrationContext.Provider value={integrationContextData}>
-                        <Wrapper source={fromJS({status: 'skipped'})}>
+                        <Wrapper source={fromJS({ status: 'skipped' })}>
                             <SubscriptionAfterTitle
                                 source={fromJS({
                                     charge_id: 2,
@@ -100,7 +101,7 @@ describe('Charge', () => {
                             />
                         </Wrapper>
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(container).toMatchSnapshot()
@@ -109,24 +110,24 @@ describe('Charge', () => {
 
     describe('BeforeContent', () => {
         it("should display default color if there's no matching status", () => {
-            const {container} = render(
+            const { container } = render(
                 <BeforeContent
                     source={fromJS({
                         status: 'foobar',
                     })}
-                />
+                />,
             )
 
             expect(container).toMatchSnapshot()
         })
 
         it("should display the appropriate color if there's a matching status", () => {
-            const {container} = render(
+            const { container } = render(
                 <BeforeContent
                     source={fromJS({
                         status: 'error',
                     })}
-                />
+                />,
             )
 
             expect(container).toMatchSnapshot()
@@ -135,7 +136,7 @@ describe('Charge', () => {
 
     describe('AfterContent', () => {
         it('should aggregate line_items by subscriptions', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore({})}>
                     <IntegrationContext.Provider value={integrationContextData}>
                         <Wrapper source={fromJS({})}>
@@ -163,7 +164,7 @@ describe('Charge', () => {
                             />
                         </Wrapper>
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(container).toMatchSnapshot()
@@ -172,7 +173,7 @@ describe('Charge', () => {
 
     describe('AfterTitle', () => {
         it('should return null if we are in edition mode, or if there is no integrationId', () => {
-            const {container: container1} = render(
+            const { container: container1 } = render(
                 <Provider store={mockStore({})}>
                     <IntegrationContext.Provider value={integrationContextData}>
                         <AfterTitle
@@ -182,12 +183,12 @@ describe('Charge', () => {
                             })}
                         />
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(container1).toMatchSnapshot()
 
-            const {container: container2} = render(
+            const { container: container2 } = render(
                 <Provider store={mockStore({})}>
                     <IntegrationContext.Provider
                         value={{
@@ -201,14 +202,14 @@ describe('Charge', () => {
                             })}
                         />
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(container2).toMatchSnapshot()
         })
 
         it('should display the refund action when the status is SUCCESS or PARTIALLY_REFUNDED', () => {
-            const {container: container1} = render(
+            const { container: container1 } = render(
                 <Provider store={mockStore({})}>
                     <IntegrationContext.Provider value={integrationContextData}>
                         <AfterTitle
@@ -220,12 +221,12 @@ describe('Charge', () => {
                             })}
                         />
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(container1).toMatchSnapshot()
 
-            const {container: container2} = render(
+            const { container: container2 } = render(
                 <Provider store={mockStore({})}>
                     <IntegrationContext.Provider value={integrationContextData}>
                         <AfterTitle
@@ -237,14 +238,14 @@ describe('Charge', () => {
                             })}
                         />
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(container2).toMatchSnapshot()
         })
 
         it('should handle correctly if total_price or total_refunds is not set', () => {
-            const {container: container1} = render(
+            const { container: container1 } = render(
                 <Provider store={mockStore({})}>
                     <IntegrationContext.Provider value={integrationContextData}>
                         <AfterTitle
@@ -256,12 +257,12 @@ describe('Charge', () => {
                             })}
                         />
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(container1).toMatchSnapshot()
 
-            const {container: container2} = render(
+            const { container: container2 } = render(
                 <Provider store={mockStore({})}>
                     <IntegrationContext.Provider value={integrationContextData}>
                         <AfterTitle
@@ -273,14 +274,14 @@ describe('Charge', () => {
                             })}
                         />
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(container2).toMatchSnapshot()
         })
 
         it('should not display the refund action when the status is not SUCCESS or PARTIALLY_REFUNDED', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore({})}>
                     <IntegrationContext.Provider value={integrationContextData}>
                         <AfterTitle
@@ -291,7 +292,7 @@ describe('Charge', () => {
                             })}
                         />
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(container).toMatchSnapshot()
@@ -317,7 +318,7 @@ describe('Charge', () => {
             integrationId,
             integration: fromJS({
                 id: integrationId,
-                meta: {store_name: 'mystore'},
+                meta: { store_name: 'mystore' },
             }),
         }
         const minProps = {
@@ -332,7 +333,7 @@ describe('Charge', () => {
         it('should not render any link because no customer hash is available', () => {
             window.location.pathname = ''
 
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore({})}>
                     <IntegrationContext.Provider
                         value={integrationContextData2}
@@ -341,13 +342,13 @@ describe('Charge', () => {
                             <TitleWrapperContainer {...minProps} />
                         </Wrapper>
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
             expect(container).toMatchSnapshot()
         })
 
         it('should not render any provided link when no customer hash is available', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={mockStore({})}>
                     <IntegrationContext.Provider
                         value={integrationContextData2}
@@ -363,7 +364,7 @@ describe('Charge', () => {
                             />
                         </Wrapper>
                     </IntegrationContext.Provider>
-                </Provider>
+                </Provider>,
             )
 
             expect(container).toMatchSnapshot()
@@ -375,7 +376,7 @@ describe('Charge', () => {
             })
 
             it('should not render any link because no custom link is set', () => {
-                const {container} = render(
+                const { container } = render(
                     <Provider store={mockStore({})}>
                         <IntegrationContext.Provider
                             value={integrationContextData2}
@@ -387,14 +388,14 @@ describe('Charge', () => {
                                 />
                             </Wrapper>
                         </IntegrationContext.Provider>
-                    </Provider>
+                    </Provider>,
                 )
 
                 expect(container).toMatchSnapshot()
             })
 
             it('should render custom link because it is set', () => {
-                const {container} = render(
+                const { container } = render(
                     <Provider store={mockStore({})}>
                         <IntegrationContext.Provider
                             value={integrationContextData2}
@@ -411,7 +412,7 @@ describe('Charge', () => {
                                 />
                             </Wrapper>
                         </IntegrationContext.Provider>
-                    </Provider>
+                    </Provider>,
                 )
 
                 expect(container).toMatchSnapshot()
@@ -424,7 +425,7 @@ describe('Charge', () => {
             })
 
             it('should not render any link because no custom link is set', () => {
-                const {container} = render(
+                const { container } = render(
                     <Provider store={mockStore({})}>
                         <IntegrationContext.Provider
                             value={integrationContextData2}
@@ -436,14 +437,14 @@ describe('Charge', () => {
                                 />
                             </Wrapper>
                         </IntegrationContext.Provider>
-                    </Provider>
+                    </Provider>,
                 )
 
                 expect(container).toMatchSnapshot()
             })
 
             it('should render custom link because it is set', () => {
-                const {container} = render(
+                const { container } = render(
                     <Provider store={mockStore({})}>
                         <IntegrationContext.Provider
                             value={integrationContextData2}
@@ -460,7 +461,7 @@ describe('Charge', () => {
                                 />
                             </Wrapper>
                         </IntegrationContext.Provider>
-                    </Provider>
+                    </Provider>,
                 )
 
                 expect(container).toMatchSnapshot()

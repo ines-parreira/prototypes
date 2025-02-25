@@ -1,27 +1,29 @@
-import {fromJS, Map, List} from 'immutable'
+import React, { Component, SyntheticEvent } from 'react'
+
+import { fromJS, List, Map } from 'immutable'
 import _clone from 'lodash/clone'
 import _find from 'lodash/find'
 import _isError from 'lodash/isError'
 import _isUndefined from 'lodash/isUndefined'
 import _merge from 'lodash/merge'
 import _pick from 'lodash/pick'
-import React, {Component, SyntheticEvent} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
-import {Form} from 'reactstrap'
-import {bindActionCreators} from 'redux'
+import { connect, ConnectedProps } from 'react-redux'
+import { Form } from 'reactstrap'
+import { bindActionCreators } from 'redux'
 
 import Button from 'pages/common/components/button/Button'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import InputField from 'pages/common/forms/input/InputField'
 import TextArea from 'pages/common/forms/TextArea'
-import {submitCustomer} from 'state/customers/actions'
-import {RootState, StoreDispatch} from 'state/types'
+import { submitCustomer } from 'state/customers/actions'
+import { RootState, StoreDispatch } from 'state/types'
 
 import CustomerChannelFieldArray, {
     CustomerChannelContact,
     CustomerChannelContactType,
 } from './CustomerChannelFieldArray'
+
 import css from './CustomerForm.less'
 
 const updatableChannels: CustomerChannelContactType[] = ['email', 'phone']
@@ -42,8 +44,8 @@ type Content = {
 const defaultContent: Content = {
     name: '',
     note: '',
-    email: [{address: ''}],
-    phone: [{address: ''}],
+    email: [{ address: '' }],
+    phone: [{ address: '' }],
     channels: [],
 }
 
@@ -57,7 +59,7 @@ type Props = OwnProps & ConnectedProps<typeof connector>
 
 type Errors = {
     name?: string
-} & Partial<Record<CustomerChannelContactType, {address: string}[]>>
+} & Partial<Record<CustomerChannelContactType, { address: string }[]>>
 
 type State = {
     submitting: boolean
@@ -77,7 +79,7 @@ class CustomerForm extends Component<Props> {
                 submitting: false,
                 errors: {},
             },
-            this._getForm()
+            this._getForm(),
         )
     }
 
@@ -111,7 +113,7 @@ class CustomerForm extends Component<Props> {
         this.setState(
             Object.assign(value, {
                 errors: this._validate(newState),
-            })
+            }),
         )
     }
 
@@ -131,7 +133,7 @@ class CustomerForm extends Component<Props> {
         // this should not exist but some customers apparently have email in "email" not in "channels"
         const email = doc.email
         if (email) {
-            const hasEmailAsChannel = _find(channels, {address: email})
+            const hasEmailAsChannel = _find(channels, { address: email })
             if (!hasEmailAsChannel) {
                 channels.push({
                     type: 'email',
@@ -144,7 +146,7 @@ class CustomerForm extends Component<Props> {
         // ex: email, phone, etc.
         updatableChannels.forEach((updatableChannel) => {
             doc[updatableChannel] = channels.filter(
-                (channel) => channel.type === updatableChannel
+                (channel) => channel.type === updatableChannel,
             )
 
             // if a type of channel has no address, add an empty one
@@ -161,14 +163,14 @@ class CustomerForm extends Component<Props> {
     }
 
     _formToDoc = (form: Map<any, any> = fromJS({})) => {
-        const {customer} = this.props
+        const { customer } = this.props
 
         let initialChannels: List<any> = customer.get('channels', fromJS([]))
         // put aside channels of currently edited types
         initialChannels = initialChannels.filter(
             (initialChannel: Map<any, any>) => {
                 return !updatableChannels.includes(initialChannel.get('type'))
-            }
+            },
         ) as List<any>
 
         // add channels of currently edited types from form
@@ -181,14 +183,14 @@ class CustomerForm extends Component<Props> {
                     .filter(
                         (v) =>
                             (v!.get('address', '') as Record<string, string>[])
-                                .length as unknown as boolean
+                                .length as unknown as boolean,
                     )
                 return previousChannels
                     .toSet()
                     .union(addedChannels.toSet())
                     .toList()
             },
-            initialChannels
+            initialChannels,
         )
 
         // remove channels of currently edited types
@@ -206,29 +208,29 @@ class CustomerForm extends Component<Props> {
     _handleSubmit = (e: SyntheticEvent) => {
         e.preventDefault()
         let doc: Map<any, any> = fromJS(
-            _pick(this.state, Object.keys(defaultContent))
+            _pick(this.state, Object.keys(defaultContent)),
         )
 
-        let promise: Promise<Maybe<{error: unknown}>>
+        let promise: Promise<Maybe<{ error: unknown }>>
         // if update, set ids for server
         if (this.props.isUpdate) {
-            const {customer} = this.props
+            const { customer } = this.props
             doc = doc.set('id', customer.get('id'))
             promise = this.props.onSubmit(
                 this._formToDoc(doc).toJS(),
-                customer.get('id')
-            ) as any as Promise<Maybe<{error: unknown}>>
+                customer.get('id'),
+            ) as any as Promise<Maybe<{ error: unknown }>>
         } else {
             promise = this.props.onSubmit(
-                this._formToDoc(doc).toJS()
-            ) as any as Promise<Maybe<{error: unknown}>>
+                this._formToDoc(doc).toJS(),
+            ) as any as Promise<Maybe<{ error: unknown }>>
         }
 
         this.setState({
             submitting: true,
         })
 
-        return promise.then((response = {error: {}}) => {
+        return promise.then((response = { error: {} }) => {
             this.setState({
                 submitting: false,
             })
@@ -246,7 +248,7 @@ class CustomerForm extends Component<Props> {
     }
 
     render() {
-        const {isUpdate} = this.props
+        const { isUpdate } = this.props
         const invalid = Object.keys(this.state.errors).length > 0
 
         return (
@@ -261,7 +263,7 @@ class CustomerForm extends Component<Props> {
                             caption="Give a name to the customer to make it easier to identify"
                             isRequired
                             value={this.state.name}
-                            onChange={(name) => this._updateField({name})}
+                            onChange={(name) => this._updateField({ name })}
                             error={this.state.errors.name as string}
                         />
                         <TextArea
@@ -271,7 +273,7 @@ class CustomerForm extends Component<Props> {
                             placeholder="This customer is nice."
                             rows={3}
                             value={this.state.note}
-                            onChange={(note) => this._updateField({note})}
+                            onChange={(note) => this._updateField({ note })}
                         />
                         <p>
                             <b>
@@ -288,7 +290,7 @@ class CustomerForm extends Component<Props> {
                             fields={
                                 this.state.email as CustomerChannelContact[]
                             }
-                            onChange={(email) => this._updateField({email})}
+                            onChange={(email) => this._updateField({ email })}
                         />
                         <CustomerChannelFieldArray
                             label="Phone numbers"
@@ -298,9 +300,9 @@ class CustomerForm extends Component<Props> {
                             fields={
                                 this.state.phone as CustomerChannelContact[]
                             }
-                            onChange={(phone) => this._updateField({phone})}
+                            onChange={(phone) => this._updateField({ phone })}
                             errors={
-                                this.state.errors.phone as {address: string}[]
+                                this.state.errors.phone as { address: string }[]
                             }
                         />
                     </div>

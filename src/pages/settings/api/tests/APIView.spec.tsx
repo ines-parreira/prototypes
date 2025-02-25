@@ -1,11 +1,12 @@
-import {act, render, screen} from '@testing-library/react'
+import React, { ComponentProps } from 'react'
+
+import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import copy from 'copy-to-clipboard'
-import React, {ComponentProps} from 'react'
 
-import {assumeMock} from 'utils/testing'
+import { assumeMock } from 'utils/testing'
 
-import {APIViewContainer} from '../APIView'
+import { APIViewContainer } from '../APIView'
 
 jest.mock('copy-to-clipboard')
 const copyMock = assumeMock(copy)
@@ -22,18 +23,18 @@ describe('<APIView/>', () => {
 
     describe('render()', () => {
         it('should render a Reset Button', () => {
-            const {container} = render(
+            const { container } = render(
                 <APIViewContainer
                     {...minProps}
                     apiKey="4a75a69bb409c2cd4041df29f5791103acaf0991bf0d0b3fa022951830482510"
-                />
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render a Create API Key Button', () => {
-            const {container} = render(<APIViewContainer {...minProps} />)
+            const { container } = render(<APIViewContainer {...minProps} />)
 
             expect(container.firstChild).toMatchSnapshot()
         })
@@ -43,17 +44,17 @@ describe('<APIView/>', () => {
                 <APIViewContainer
                     {...minProps}
                     apiKey="4a75a69bb409c2cd4041df29f5791103acaf0991bf0d0b3fa022951830482510"
-                />
+                />,
             )
 
             act(() => {
                 userEvent.click(
-                    screen.getByRole('button', {name: 'visibility'})
+                    screen.getByRole('button', { name: 'visibility' }),
                 )
             })
 
             expect(
-                screen.getByRole('textbox', {name: /Password/})
+                screen.getByRole('textbox', { name: /Password/ }),
             ).toHaveAttribute('type', 'text')
         })
 
@@ -66,7 +67,7 @@ describe('<APIView/>', () => {
 
             expect(screen.getByText('Copied!')).toBeInTheDocument()
             expect(copyMock).toHaveBeenCalledWith(
-                `https://${minProps.domain}.gorgias.com/api/`
+                `https://${minProps.domain}.gorgias.com/api/`,
             )
         })
 

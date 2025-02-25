@@ -1,5 +1,6 @@
-import classnames from 'classnames'
 import React from 'react'
+
+import classnames from 'classnames'
 
 import IconInput from 'pages/common/forms/input/IconInput'
 import css from 'pages/stats/custom-reports/CustomReportsModal/SelectableReports.less'
@@ -7,7 +8,7 @@ import {
     ReportConfig,
     ReportsModalConfig,
 } from 'pages/stats/custom-reports/types'
-import {getNumberOfSelections} from 'pages/stats/custom-reports/utils'
+import { getNumberOfSelections } from 'pages/stats/custom-reports/utils'
 
 export const SelectableReports = ({
     config,
@@ -35,7 +36,7 @@ export const SelectableReports = ({
                             chart.config.reportPath
                         const numberOfSelections = getNumberOfSelections(
                             chart.config.charts,
-                            checkedCharts
+                            checkedCharts,
                         )
 
                         return (

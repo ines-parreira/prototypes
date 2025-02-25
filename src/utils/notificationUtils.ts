@@ -1,11 +1,11 @@
-import {JobType} from '../models/job/types'
+import { JobType } from '../models/job/types'
 
 export function buildJobMessage(
     jobType: string,
     allViewItemsSelected: boolean,
     objectType: string,
     changes: Record<string, unknown>,
-    changesCount = 0
+    changesCount = 0,
 ): string {
     let message = ''
     if (allViewItemsSelected) {
@@ -27,7 +27,7 @@ export function buildJobMessage(
                     return message
                 }
                 const objectPropertyName = Object.keys(
-                    changes.updates as Record<string, string>
+                    changes.updates as Record<string, string>,
                 )[0]
                 const objectPropertyValue = (
                     changes.updates as Record<string, unknown>

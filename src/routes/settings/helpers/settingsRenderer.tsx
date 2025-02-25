@@ -1,4 +1,4 @@
-import React, {ComponentProps, ComponentType} from 'react'
+import React, { ComponentProps, ComponentType } from 'react'
 
 import App from 'pages/App'
 import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
@@ -27,18 +27,18 @@ type SettingsType<C extends ComponentType<any>> = {
 // @ts-ignore-next-line no-explicit-any
 export function renderApp<C extends ComponentType<any>>(
     Component: C,
-    settings: SettingsType<C> = {}
+    settings: SettingsType<C> = {},
 ) {
     const roleSettings =
         settings.roleParams || ([] as NarrowedWithUserRoleParams)
     const UserRestrictedComponent = withUserRoleRequired(
         Component,
-        ...roleSettings
+        ...roleSettings,
     )
 
     if (settings.paywallParams) {
         const PaywallRestrictedComponent = withFeaturePaywall(
-            ...settings.paywallParams
+            ...settings.paywallParams,
         )(UserRestrictedComponent)
 
         return (
@@ -59,7 +59,7 @@ export function renderApp<C extends ComponentType<any>>(
 
 export function renderAppSettings<C extends ComponentType<any>>(
     Component: C,
-    settings: SettingsType<C> = {}
+    settings: SettingsType<C> = {},
 ) {
     return renderApp(Component, {
         ...settings,

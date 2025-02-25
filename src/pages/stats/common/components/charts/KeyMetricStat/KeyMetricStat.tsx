@@ -1,7 +1,8 @@
-import {Map, List} from 'immutable'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {KeyMetricCell} from './KeyMetricCell'
+import { List, Map } from 'immutable'
+
+import { KeyMetricCell } from './KeyMetricCell'
 
 import css from './KeyMetricStat.less'
 
@@ -12,7 +13,7 @@ type Props = {
     loading: boolean | Map<any, any>
 }
 
-const KeyMetricStat = ({data, config, meta, loading}: Props) => {
+const KeyMetricStat = ({ data, config, meta, loading }: Props) => {
     return (
         <div className={css.metrics}>
             {(config.get('metrics') as List<any>).map(
@@ -34,7 +35,7 @@ const KeyMetricStat = ({data, config, meta, loading}: Props) => {
                     if (Component) return <Component key={id} {...props} />
 
                     return <KeyMetricCell key={id} {...props} />
-                }
+                },
             )}
         </div>
     )

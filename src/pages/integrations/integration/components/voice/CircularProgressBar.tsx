@@ -8,7 +8,7 @@ type Props = {
     progress: number
 }
 
-const CircularProgressBar = ({size, thickness, progress}: Props) => {
+const CircularProgressBar = ({ size, thickness, progress }: Props) => {
     const halfSize = size / 2
     const radius = halfSize - thickness
     const circumference = 2 * Math.PI * radius

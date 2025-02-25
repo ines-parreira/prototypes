@@ -1,23 +1,25 @@
+import React from 'react'
+
+import {
+    cleanup,
+    fireEvent,
+    render,
+    screen,
+    waitFor,
+} from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { isValidPhoneNumber } from 'libphonenumber-js'
+import { Provider } from 'react-redux'
+
 import {
     LegacyChannelSlug,
     useGetCustomer,
     useUpdateCustomer,
 } from '@gorgias/api-queries'
-import {
-    render,
-    screen,
-    fireEvent,
-    cleanup,
-    waitFor,
-} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import {isValidPhoneNumber} from 'libphonenumber-js'
-import React from 'react'
-import {Provider} from 'react-redux'
 
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {assumeMock, mockStore} from 'utils/testing'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { assumeMock, mockStore } from 'utils/testing'
 
 import NewPhoneNumber from '../NewPhoneNumber'
 
@@ -42,7 +44,7 @@ jest.mock(
                 />
                 <div>{error}</div>
             </>
-        )
+        ),
 )
 
 const useGetCustomerMock = assumeMock(useGetCustomer)
@@ -63,7 +65,7 @@ describe('NewPhoneNumber', () => {
         render(
             <Provider store={mockStore({} as any)}>
                 <NewPhoneNumber customerId={1} />
-            </Provider>
+            </Provider>,
         )
     }
 
@@ -107,7 +109,7 @@ describe('NewPhoneNumber', () => {
 
         userEvent.click(screen.getByText('Add phone number'))
         const input: HTMLInputElement = screen.getByTestId('phoneNumberInput')
-        fireEvent.change(input, {target: {value: '1234567890'}})
+        fireEvent.change(input, { target: { value: '1234567890' } })
 
         expect(input.value).toBe('1234567890')
     })
@@ -117,13 +119,13 @@ describe('NewPhoneNumber', () => {
 
         userEvent.click(screen.getByText('Add phone number'))
         const input = screen.getByTestId('phoneNumberInput')
-        fireEvent.change(input, {target: {value: '123'}})
+        fireEvent.change(input, { target: { value: '123' } })
         fireEvent.click(screen.getByText('Add number'))
 
         expect(screen.getByText('Enter a valid number')).toBeInTheDocument()
 
         isValidPhoneNumberMock.mockReturnValueOnce(true)
-        fireEvent.change(input, {target: {value: '1234567890'}})
+        fireEvent.change(input, { target: { value: '1234567890' } })
         expect(screen.queryByText('Enter a valid number')).toBeNull()
     })
 
@@ -134,7 +136,7 @@ describe('NewPhoneNumber', () => {
 
         userEvent.click(screen.getByText('Add phone number'))
         const input = screen.getByTestId('phoneNumberInput')
-        fireEvent.change(input, {target: {value: '1234567890'}})
+        fireEvent.change(input, { target: { value: '1234567890' } })
         fireEvent.click(screen.getByText('Add number'))
 
         await waitFor(() => {
@@ -160,13 +162,13 @@ describe('NewPhoneNumber', () => {
 
         userEvent.click(screen.getByText('Add phone number'))
         const input = screen.getByTestId('phoneNumberInput')
-        fireEvent.change(input, {target: {value: '1234567890'}})
+        fireEvent.change(input, { target: { value: '1234567890' } })
         fireEvent.click(screen.getByText('Add number'))
 
         updateCustomerMock.mock.calls[0][0]?.mutation?.onSuccess!(
             {} as any,
             {} as any,
-            undefined
+            undefined,
         )
 
         await waitFor(() => {
@@ -184,7 +186,7 @@ describe('NewPhoneNumber', () => {
 
         userEvent.click(screen.getByText('Add phone number'))
         const input = screen.getByTestId('phoneNumberInput')
-        fireEvent.change(input, {target: {value: '1234567890'}})
+        fireEvent.change(input, { target: { value: '1234567890' } })
         fireEvent.click(screen.getByText('Add number'))
 
         updateCustomerMock.mock.calls[0][0]?.mutation?.onError!(
@@ -192,13 +194,13 @@ describe('NewPhoneNumber', () => {
                 response: {
                     data: {
                         error: {
-                            data: {channels: [{_schema: ['error']}]} as any,
+                            data: { channels: [{ _schema: ['error'] }] } as any,
                         } as any,
                     } as any,
                 } as any,
             },
             {} as any,
-            undefined
+            undefined,
         )
 
         await waitFor(() => {
@@ -217,7 +219,7 @@ describe('NewPhoneNumber', () => {
                 } as any,
             },
             {} as any,
-            undefined
+            undefined,
         )
         expect(notifyMock).toHaveBeenCalledWith({
             message: 'Failed to update customer',

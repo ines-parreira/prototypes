@@ -1,14 +1,14 @@
-import {useQueryClient} from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {isGorgiasApiError} from 'models/api/types'
+import { isGorgiasApiError } from 'models/api/types'
 import {
-    useUpdateArticleRecommendationPredictions,
     articleRecommendationdDefinitionKeys,
+    useUpdateArticleRecommendationPredictions,
 } from 'models/articleRecommendationPrediction/queries'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {errorToChildren} from 'utils'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { errorToChildren } from 'utils'
 
 type Props = {
     page: number
@@ -46,7 +46,7 @@ export default function useUpdateArticleRecommendationPrediction({
                     message: errorToChildren(error) || undefined,
                     allowHTML: true,
                     status: NotificationStatus.Error,
-                })
+                }),
             )
         },
     })

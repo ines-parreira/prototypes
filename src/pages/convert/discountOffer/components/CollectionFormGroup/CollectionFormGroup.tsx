@@ -1,5 +1,6 @@
 import React from 'react'
-import {FormGroup, InputGroup, Label} from 'reactstrap'
+
+import { FormGroup, InputGroup, Label } from 'reactstrap'
 
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import ProductSelector from 'pages/convert/discountOffer/components/ProductSelector'
@@ -25,7 +26,7 @@ type CollectionFormGroupProps = {
 }
 
 export const CollectionFormGroup: React.FC<CollectionFormGroupProps> = (
-    props
+    props,
 ) => {
     return (
         <FormGroup>

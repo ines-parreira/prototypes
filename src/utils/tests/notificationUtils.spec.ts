@@ -1,5 +1,5 @@
-import {JobType} from '../../models/job/types'
-import {buildJobMessage} from '../notificationUtils'
+import { JobType } from '../../models/job/types'
+import { buildJobMessage } from '../notificationUtils'
 
 describe('Notification utils', () => {
     describe('buildActionNotificationMessage()', () => {
@@ -7,9 +7,9 @@ describe('Notification utils', () => {
             expect(
                 buildJobMessage(JobType.UpdateTicket, true, 'tickets', {
                     updates: {
-                        assignee_user: {name: 'John Snow'},
+                        assignee_user: { name: 'John Snow' },
                     },
-                })
+                }),
             ).toMatchSnapshot()
         })
 
@@ -24,8 +24,8 @@ describe('Notification utils', () => {
                             status: 'open',
                         },
                     },
-                    12
-                )
+                    12,
+                ),
             ).toMatchSnapshot()
         })
 
@@ -40,8 +40,8 @@ describe('Notification utils', () => {
                             tags: ['Awesome Tag'],
                         },
                     },
-                    1
-                )
+                    1,
+                ),
             ).toMatchSnapshot()
         })
 
@@ -51,7 +51,7 @@ describe('Notification utils', () => {
                     updates: {
                         tags: ['Tag one', 'Tag two'],
                     },
-                })
+                }),
             ).toMatchSnapshot()
         })
 
@@ -66,8 +66,8 @@ describe('Notification utils', () => {
                             priority: 'normal',
                         },
                     },
-                    30
-                )
+                    30,
+                ),
             ).toMatchSnapshot()
         })
 
@@ -77,7 +77,7 @@ describe('Notification utils', () => {
                     updates: {
                         trashed_datetime: '2018-01-01T14:00:00',
                     },
-                })
+                }),
             ).toMatchSnapshot()
         })
 
@@ -87,7 +87,7 @@ describe('Notification utils', () => {
                     updates: {
                         trashed_datetime: null,
                     },
-                })
+                }),
             ).toMatchSnapshot()
         })
 
@@ -102,8 +102,8 @@ describe('Notification utils', () => {
                             non_handled_key: 1,
                         },
                     },
-                    12
-                )
+                    12,
+                ),
             ).toMatchSnapshot()
         })
 
@@ -114,7 +114,7 @@ describe('Notification utils', () => {
                         status: 'open',
                         subject: 'new subject',
                     },
-                })
+                }),
             ).toMatchSnapshot()
         })
 
@@ -128,8 +128,8 @@ describe('Notification utils', () => {
                         macro_id: 1,
                         apply_and_close: true,
                     },
-                    15
-                )
+                    15,
+                ),
             ).toMatchSnapshot()
         })
 
@@ -143,8 +143,8 @@ describe('Notification utils', () => {
                         macro_id: 1,
                         apply_and_close: false,
                     },
-                    15
-                )
+                    15,
+                ),
             ).toMatchSnapshot()
         })
 
@@ -152,19 +152,19 @@ describe('Notification utils', () => {
             expect(
                 buildJobMessage(JobType.UpdateTicket, true, 'tickets', {
                     random_key: {},
-                })
+                }),
             ).toMatchSnapshot()
         })
 
         it('Should return the message for an export tickets job', () => {
             expect(
-                buildJobMessage(JobType.ExportTicket, true, 'tickets', {})
+                buildJobMessage(JobType.ExportTicket, true, 'tickets', {}),
             ).toMatchSnapshot()
         })
 
         it('Should return the message for an unknow job type', () => {
             expect(
-                buildJobMessage('FAKE_JOB_TYPE', false, 'customers', {}, 30)
+                buildJobMessage('FAKE_JOB_TYPE', false, 'customers', {}, 30),
             ).toMatchSnapshot()
         })
     })

@@ -1,9 +1,9 @@
 import React, {
     createContext,
-    useMemo,
-    useState,
     ReactNode,
     useEffect,
+    useMemo,
+    useState,
 } from 'react'
 
 import useEffectOnce from 'hooks/useEffectOnce'
@@ -37,13 +37,13 @@ export default function Wizard({
     const [activeStep, setActiveStep] = useState(startAt || '')
     const activeStepIndex = useMemo(
         () => steps.findIndex((step) => activeStep === step),
-        [activeStep, steps]
+        [activeStep, steps],
     )
 
     useEffectOnce(() => {
         if (!steps.includes(startAt)) {
             throw new Error(
-                'startAt prop should be included in the initial steps prop array'
+                'startAt prop should be included in the initial steps prop array',
             )
         }
     })
@@ -51,7 +51,7 @@ export default function Wizard({
     useEffect(() => {
         if (steps.length === 0) {
             throw new Error(
-                'steps prop should not be empty, consider conditionally rendering Wizard instead'
+                'steps prop should not be empty, consider conditionally rendering Wizard instead',
             )
         }
     }, [steps])

@@ -1,11 +1,12 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import {useCustomFieldValues} from 'custom-fields/hooks/queries/useCustomFieldValues'
-import {apiListCursorPaginationResponse} from 'fixtures/axiosResponse'
-import {customerInputFieldDefinition} from 'fixtures/customField'
-import {assumeMock} from 'utils/testing'
+import { render, screen } from '@testing-library/react'
+
+import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import { useCustomFieldValues } from 'custom-fields/hooks/queries/useCustomFieldValues'
+import { apiListCursorPaginationResponse } from 'fixtures/axiosResponse'
+import { customerInputFieldDefinition } from 'fixtures/customField'
+import { assumeMock } from 'utils/testing'
 
 import CustomerField from '../CustomerField'
 import CustomerFields from '../CustomerFields'
@@ -31,9 +32,9 @@ const firstValue = 'firstValue'
 const secondValue = 'secondValue'
 
 const mockedValuesData = [
-    {field: customerInputFieldDefinition, value: firstValue},
+    { field: customerInputFieldDefinition, value: firstValue },
     {
-        field: {...customerInputFieldDefinition, id: 2},
+        field: { ...customerInputFieldDefinition, id: 2 },
         value: secondValue,
     },
 ]
@@ -61,7 +62,7 @@ describe('CustomerFields', () => {
             isError: false,
         } as unknown as ReturnType<typeof useCustomFieldDefinitions>)
 
-        const {container} = render(<CustomerFields customerId={1} />)
+        const { container } = render(<CustomerFields customerId={1} />)
 
         expect(container.firstChild).toBeNull()
     })
@@ -73,7 +74,7 @@ describe('CustomerFields', () => {
             isError: false,
         } as unknown as ReturnType<typeof useCustomFieldDefinitions>)
 
-        const {container} = render(<CustomerFields customerId={1} />)
+        const { container } = render(<CustomerFields customerId={1} />)
 
         expect(container.firstChild).toBeNull()
     })
@@ -85,7 +86,7 @@ describe('CustomerFields', () => {
             isError: true,
         } as unknown as ReturnType<typeof useCustomFieldDefinitions>)
 
-        const {container} = render(<CustomerFields customerId={1} />)
+        const { container } = render(<CustomerFields customerId={1} />)
 
         expect(container.firstChild).toBeNull()
     })
@@ -97,7 +98,7 @@ describe('CustomerFields', () => {
             isError: false,
         } as unknown as ReturnType<typeof useCustomFieldValues>)
 
-        const {container} = render(<CustomerFields customerId={1} />)
+        const { container } = render(<CustomerFields customerId={1} />)
 
         expect(container.firstChild).toBeNull()
     })
@@ -109,7 +110,7 @@ describe('CustomerFields', () => {
             isError: true,
         } as unknown as ReturnType<typeof useCustomFieldValues>)
 
-        const {container} = render(<CustomerFields customerId={1} />)
+        const { container } = render(<CustomerFields customerId={1} />)
 
         expect(container.firstChild).toBeNull()
     })
@@ -130,7 +131,7 @@ describe('CustomerFields', () => {
                 value: firstValue,
                 customerId: 1,
             },
-            {}
+            {},
         )
     })
 })

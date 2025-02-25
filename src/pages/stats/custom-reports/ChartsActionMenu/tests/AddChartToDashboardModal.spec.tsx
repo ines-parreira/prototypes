@@ -1,16 +1,17 @@
-import {act, fireEvent, render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {useCustomReportActions} from 'hooks/reporting/custom-reports/useCustomReportActions'
-import {useDashboardNameValidation} from 'hooks/reporting/custom-reports/useDashboardNameValidation'
+import { act, fireEvent, render, screen } from '@testing-library/react'
+
+import { useCustomReportActions } from 'hooks/reporting/custom-reports/useCustomReportActions'
+import { useDashboardNameValidation } from 'hooks/reporting/custom-reports/useDashboardNameValidation'
 import {
     AddChartToDashboardModal,
     CREATE_DASHBOARD,
     DASHBOARD_NAME,
     getModalTitle,
 } from 'pages/stats/custom-reports/ChartsActionMenu/AddChartToDashboardModal'
-import {OverviewChart} from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
-import {assumeMock} from 'utils/testing'
+import { OverviewChart } from 'pages/stats/support-performance/overview/SupportPerformanceOverviewReportConfig'
+import { assumeMock } from 'utils/testing'
 
 const chartId = OverviewChart.MedianResolutionTimeTrendCard
 const chartName = 'Median Resolution Time Trend Card'
@@ -43,7 +44,7 @@ describe('AddChartToDashboardModal', () => {
                 chartId={chartId}
                 closeModal={closeModalMock}
                 chartName={chartName}
-            />
+            />,
         )
 
         expect(screen.getByText(getModalTitle(chartName))).toBeInTheDocument()
@@ -58,13 +59,13 @@ describe('AddChartToDashboardModal', () => {
                 chartId={chartId}
                 closeModal={closeModalMock}
                 chartName={chartName}
-            />
+            />,
         )
 
         const name = 'My Custom Dashboard'
         const nameInput = screen.getByRole('textbox')
         expect(nameInput).toBeInTheDocument()
-        fireEvent.change(nameInput, {target: {value: name}})
+        fireEvent.change(nameInput, { target: { value: name } })
 
         act(() => {
             fireEvent.click(screen.getByText(CREATE_DASHBOARD))
@@ -72,7 +73,7 @@ describe('AddChartToDashboardModal', () => {
 
         expect(createDashboardMock).toHaveBeenCalledWith({
             chartIds: [chartId],
-            dashboard: {name, emoji: ''},
+            dashboard: { name, emoji: '' },
             onSuccess: closeModalMock,
         })
     })
@@ -83,7 +84,7 @@ describe('AddChartToDashboardModal', () => {
                 chartId={chartId}
                 closeModal={closeModalMock}
                 chartName={chartName}
-            />
+            />,
         )
 
         fireEvent.click(screen.getByText('Cancel'))
@@ -102,13 +103,13 @@ describe('AddChartToDashboardModal', () => {
                 chartId={chartId}
                 closeModal={closeModalMock}
                 chartName={chartName}
-            />
+            />,
         )
 
         const name = '1'
         const nameInput = screen.getByRole('textbox')
         expect(nameInput).toBeInTheDocument()
-        fireEvent.change(nameInput, {target: {value: name}})
+        fireEvent.change(nameInput, { target: { value: name } })
 
         act(() => {
             fireEvent.click(screen.getByText(CREATE_DASHBOARD))

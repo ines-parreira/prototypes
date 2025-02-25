@@ -1,10 +1,11 @@
-import {act, fireEvent, screen} from '@testing-library/react'
 import React from 'react'
 
-import {useDownloadWorkflowConfigurationStepLogs} from 'models/workflows/queries'
+import { act, fireEvent, screen } from '@testing-library/react'
+
+import { useDownloadWorkflowConfigurationStepLogs } from 'models/workflows/queries'
 import useApps from 'pages/automate/actionsPlatform/hooks/useApps'
 import NodeEditorDrawerContext from 'pages/automate/workflows/editor/visualBuilder/NodeEditorDrawerContext'
-import {VisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
+import { VisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
 import {
     buildEdgeCommonProperties,
     buildNodeCommonProperties,
@@ -13,7 +14,7 @@ import {
     HttpRequestNodeType,
     VisualBuilderGraph,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
-import {renderWithStore} from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 import HttpRequestEditor from '../index'
 
@@ -21,7 +22,7 @@ jest.mock('pages/automate/actionsPlatform/hooks/useApps')
 jest.mock('models/workflows/queries')
 
 const mockUseDownloadWorkflowConfigurationStepLogs = jest.mocked(
-    useDownloadWorkflowConfigurationStepLogs
+    useDownloadWorkflowConfigurationStepLogs,
 )
 const mockUseApps = jest.mocked(useApps)
 
@@ -114,11 +115,13 @@ describe('<HttpRequestEditor />', () => {
                     isNew: false,
                 }}
             >
-                <NodeEditorDrawerContext.Provider value={{onClose: jest.fn()}}>
+                <NodeEditorDrawerContext.Provider
+                    value={{ onClose: jest.fn() }}
+                >
                     <HttpRequestEditor nodeInEdition={nodeInEdition} />
                 </NodeEditorDrawerContext.Provider>
             </VisualBuilderContext.Provider>,
-            {}
+            {},
         )
 
         act(() => {

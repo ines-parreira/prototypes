@@ -1,11 +1,12 @@
-import {within} from '@testing-library/dom'
-import {fireEvent, render} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { within } from '@testing-library/dom'
+import { fireEvent, render } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {phoneNumbers} from 'fixtures/newPhoneNumber'
-import {RootState, StoreDispatch} from 'state/types'
+import { phoneNumbers } from 'fixtures/newPhoneNumber'
+import { RootState, StoreDispatch } from 'state/types'
 
 import PhoneNumbersList from '../PhoneNumbersList'
 
@@ -13,8 +14,8 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({
     entities: {
         newPhoneNumbers: phoneNumbers.reduce(
-            (acc, number) => ({...acc, [number.id]: number}),
-            {}
+            (acc, number) => ({ ...acc, [number.id]: number }),
+            {},
         ),
     },
 } as RootState)
@@ -22,27 +23,27 @@ const store = mockStore({
 describe('<PhoneNumbersList/>', () => {
     describe('render()', () => {
         it('should render', () => {
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <PhoneNumbersList />
-                </Provider>
+                </Provider>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should allow sorting by column header', () => {
-            const {getByText, getAllByRole} = render(
+            const { getByText, getAllByRole } = render(
                 <Provider store={store}>
                     <PhoneNumbersList />
-                </Provider>
+                </Provider>,
             )
 
             const getRows = () =>
                 getAllByRole('row').map((row) =>
                     within(row)
                         .queryAllByRole('cell')
-                        .map((cell) => cell.textContent)
+                        .map((cell) => cell.textContent),
                 )
 
             const rowsBeforeSorting = getRows()

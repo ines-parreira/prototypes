@@ -9,7 +9,7 @@ type StepProps = {
     body: React.ReactNode
     footer: React.ReactNode
 }
-const Step = ({body, footer}: StepProps) => {
+const Step = ({ body, footer }: StepProps) => {
     return (
         <>
             <ModalBody className="body-regular">{body}</ModalBody>

@@ -1,7 +1,7 @@
 import React from 'react'
 
-import {WorkflowVariable} from 'pages/automate/workflows/models/variables.types'
-import {HttpRequestNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { WorkflowVariable } from 'pages/automate/workflows/models/variables.types'
+import { HttpRequestNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 import Modal from 'pages/common/components/modal/Modal'
 
 import TestRequestInputs from './TestRequestInputs'
@@ -15,7 +15,7 @@ type Props = {
     sendTestRequest: (
         variables: Record<string, string>,
         refreshToken?: string,
-        refreshTokenUrl?: string
+        refreshTokenUrl?: string,
     ) => Promise<void>
     onReset: () => void
     variables: HttpRequestNodeType['data']['variables']
@@ -25,7 +25,7 @@ type Props = {
     nodeId: string
     onChangeVariable: (
         index: number,
-        variable: HttpRequestNodeType['data']['variables'][number]
+        variable: HttpRequestNodeType['data']['variables'][number],
     ) => void
     onDeleteVariable: (index: number) => void
     onAddVariable: () => void

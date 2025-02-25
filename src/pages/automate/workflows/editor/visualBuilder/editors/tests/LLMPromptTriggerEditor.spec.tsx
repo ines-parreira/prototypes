@@ -1,10 +1,11 @@
-import {act, fireEvent, render, screen, within} from '@testing-library/react'
 import React from 'react'
 
+import { act, fireEvent, render, screen, within } from '@testing-library/react'
+
 import NodeEditorDrawerContext from 'pages/automate/workflows/editor/visualBuilder/NodeEditorDrawerContext'
-import {VisualBuilderContext} from 'pages/automate/workflows/hooks/useVisualBuilder'
-import {buildNodeCommonProperties} from 'pages/automate/workflows/models/visualBuilderGraph.model'
-import {LLMPromptTriggerNodeType} from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { VisualBuilderContext } from 'pages/automate/workflows/hooks/useVisualBuilder'
+import { buildNodeCommonProperties } from 'pages/automate/workflows/models/visualBuilderGraph.model'
+import { LLMPromptTriggerNodeType } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
 import LLMPromptTriggerEditor from '../LLMPromptTriggerEditor'
 
@@ -73,10 +74,12 @@ describe('<LLMPromptTriggerEditor />', () => {
                     isNew: false,
                 }}
             >
-                <NodeEditorDrawerContext.Provider value={{onClose: jest.fn()}}>
+                <NodeEditorDrawerContext.Provider
+                    value={{ onClose: jest.fn() }}
+                >
                     <LLMPromptTriggerEditor nodeInEdition={nodeInEdition} />
                 </NodeEditorDrawerContext.Provider>
-            </VisualBuilderContext.Provider>
+            </VisualBuilderContext.Provider>,
         )
 
         act(() => {
@@ -161,18 +164,20 @@ describe('<LLMPromptTriggerEditor />', () => {
                     isNew: false,
                 }}
             >
-                <NodeEditorDrawerContext.Provider value={{onClose: jest.fn()}}>
+                <NodeEditorDrawerContext.Provider
+                    value={{ onClose: jest.fn() }}
+                >
                     <LLMPromptTriggerEditor nodeInEdition={nodeInEdition} />
                 </NodeEditorDrawerContext.Provider>
-            </VisualBuilderContext.Provider>
+            </VisualBuilderContext.Provider>,
         )
 
         act(() => {
             fireEvent.click(
                 within(
                     screen.getByDisplayValue('test').parentElement!
-                        .parentElement!
-                ).getByText('close')
+                        .parentElement!,
+                ).getByText('close'),
             )
         })
 
@@ -255,15 +260,17 @@ describe('<LLMPromptTriggerEditor />', () => {
                     isNew: false,
                 }}
             >
-                <NodeEditorDrawerContext.Provider value={{onClose: jest.fn()}}>
+                <NodeEditorDrawerContext.Provider
+                    value={{ onClose: jest.fn() }}
+                >
                     <LLMPromptTriggerEditor nodeInEdition={nodeInEdition} />
                 </NodeEditorDrawerContext.Provider>
-            </VisualBuilderContext.Provider>
+            </VisualBuilderContext.Provider>,
         )
 
         act(() => {
             fireEvent.change(screen.getByDisplayValue('test'), {
-                target: {value: 'some test'},
+                target: { value: 'some test' },
             })
         })
 
@@ -351,10 +358,12 @@ describe('<LLMPromptTriggerEditor />', () => {
                     isNew: false,
                 }}
             >
-                <NodeEditorDrawerContext.Provider value={{onClose: jest.fn()}}>
+                <NodeEditorDrawerContext.Provider
+                    value={{ onClose: jest.fn() }}
+                >
                     <LLMPromptTriggerEditor nodeInEdition={nodeInEdition} />
                 </NodeEditorDrawerContext.Provider>
-            </VisualBuilderContext.Provider>
+            </VisualBuilderContext.Provider>,
         )
 
         act(() => {

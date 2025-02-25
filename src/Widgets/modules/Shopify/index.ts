@@ -1,2 +1,2 @@
-export {default} from './components/Shopify'
-export {ShopifyActionType} from './types'
+export { default } from './components/Shopify'
+export { ShopifyActionType } from './types'

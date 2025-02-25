@@ -1,16 +1,18 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {HelpCenterPageEmbedment} from 'models/helpCenter/types'
-import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { HelpCenterPageEmbedment } from 'models/helpCenter/types'
+import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 
 import HelpCenterAutoEmbedCard from '../HelpCenterAutoEmbedCard'
 import HelpCenterAutoEmbedWarningBanner, {
     HelpCenterAutoEmbedWarningBannerProps,
 } from '../HelpCenterAutoEmbedWarningBanner'
+import { HelpCenterAutoEmbedReadinessStatus } from './types'
+
 import css from './HelpCenterAutoEmbedPublishSection.less'
-import {HelpCenterAutoEmbedReadinessStatus} from './types'
 
 export type HelpCenterAutoEmbedPublishSectionProps = {
     helpCenterShopName: string | null
@@ -20,15 +22,15 @@ export type HelpCenterAutoEmbedPublishSectionProps = {
 }
 
 const HelpCenterAutoEmbedPublishSection = (
-    props: HelpCenterAutoEmbedPublishSectionProps
+    props: HelpCenterAutoEmbedPublishSectionProps,
 ) => {
-    const {helpCenterShopName, helpCenterId, pageEmbedments} = props
+    const { helpCenterShopName, helpCenterId, pageEmbedments } = props
 
     const isAutoEmbedFlagActive =
         useFlags()[FeatureFlagKey.HelpCenterAutoEmbed] ?? false
 
-    const {integrationId, needScopeUpdate} = useShopifyIntegrationAndScope(
-        helpCenterShopName ?? ''
+    const { integrationId, needScopeUpdate } = useShopifyIntegrationAndScope(
+        helpCenterShopName ?? '',
     )
 
     // hide this entire section if the flag is not active

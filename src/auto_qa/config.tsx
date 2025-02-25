@@ -1,12 +1,15 @@
+import React from 'react'
+
+import cn from 'classnames'
+
 import {
     TicketQAScoreDimension,
     TicketQAScoreDimensionName,
 } from '@gorgias/api-queries'
-import cn from 'classnames'
-import React from 'react'
+
+import type { DimensionConfig } from './types'
 
 import css from './config.less'
-import type {DimensionConfig} from './types'
 
 export const dimensionOrderOfManualDimensions: SupportedTicketQADimensionName[] =
     [
@@ -43,8 +46,8 @@ export const dimensionConfig: Record<
         autoExpandThreshold: 0,
         label: 'Resolution',
         options: [
-            {label: 'Incomplete', value: 0},
-            {label: 'Complete', value: 1},
+            { label: 'Incomplete', value: 0 },
+            { label: 'Complete', value: 1 },
         ],
         tooltip: 'Did the agent address ALL issues brought up by the customer?',
         placeholder: 'Did the agent answer and resolve all issues?',
@@ -53,7 +56,7 @@ export const dimensionConfig: Record<
     [TicketQAScoreDimensionName.Accuracy]: {
         autoExpandThreshold: 4,
         label: 'Accuracy',
-        options: [1, 2, 3, 4, 5].map((i) => ({label: `${i}/5`, value: i})),
+        options: [1, 2, 3, 4, 5].map((i) => ({ label: `${i}/5`, value: i })),
         prefix: <i className={cn('material-icons-round', css.icon)}>star</i>,
         tooltip:
             'On a scale from 1 to 5, did the agent use the correct resolution flow to solve the customer’s inquiry and provide accurate information?',
@@ -63,7 +66,7 @@ export const dimensionConfig: Record<
     [TicketQAScoreDimensionName.InternalCompliance]: {
         autoExpandThreshold: 4,
         label: 'Internal Compliance',
-        options: [1, 2, 3, 4, 5].map((i) => ({label: `${i}/5`, value: i})),
+        options: [1, 2, 3, 4, 5].map((i) => ({ label: `${i}/5`, value: i })),
         prefix: <i className={cn('material-icons-round', css.icon)}>star</i>,
         tooltip:
             'On a scale from 1 to 5, did the agent follow internal company guidelines and processes: applied the relevant tags and macros, followed the proper escalation and merging procedures?',
@@ -73,7 +76,7 @@ export const dimensionConfig: Record<
     [TicketQAScoreDimensionName.Efficiency]: {
         autoExpandThreshold: 4,
         label: 'Efficiency',
-        options: [1, 2, 3, 4, 5].map((i) => ({label: `${i}/5`, value: i})),
+        options: [1, 2, 3, 4, 5].map((i) => ({ label: `${i}/5`, value: i })),
         prefix: <i className={cn('material-icons-round', css.icon)}>star</i>,
         tooltip:
             'On a scale from 1 to 5, did the agent handle the ticket quickly and minimize the number of touches?',
@@ -83,7 +86,7 @@ export const dimensionConfig: Record<
     [TicketQAScoreDimensionName.CommunicationSkills]: {
         autoExpandThreshold: 4,
         label: 'Communication',
-        options: [1, 2, 3, 4, 5].map((i) => ({label: `${i}/5`, value: i})),
+        options: [1, 2, 3, 4, 5].map((i) => ({ label: `${i}/5`, value: i })),
         prefix: <i className={cn('material-icons-round', css.icon)}>star</i>,
         tooltip:
             'On a scale of 1 to 5, did the agent demonstrate empathy, clarity of messaging, patience, positivity, and adaptability?',
@@ -94,7 +97,7 @@ export const dimensionConfig: Record<
     [TicketQAScoreDimensionName.LanguageProficiency]: {
         autoExpandThreshold: 4,
         label: 'Language',
-        options: [1, 2, 3, 4, 5].map((i) => ({label: `${i}/5`, value: i})),
+        options: [1, 2, 3, 4, 5].map((i) => ({ label: `${i}/5`, value: i })),
         prefix: <i className={cn('material-icons-round', css.icon)}>star</i>,
         tooltip:
             'On a scale of 1 to 5, did the agent display high proficiency in the language of the conversation: flawless spelling, grammar, syntax?',
@@ -105,7 +108,7 @@ export const dimensionConfig: Record<
     [TicketQAScoreDimensionName.BrandVoice]: {
         autoExpandThreshold: 4,
         label: 'Brand Voice',
-        options: [1, 2, 3, 4, 5].map((i) => ({label: `${i}/5`, value: i})),
+        options: [1, 2, 3, 4, 5].map((i) => ({ label: `${i}/5`, value: i })),
         prefix: <i className={cn('material-icons-round', css.icon)}>star</i>,
         tooltip:
             'On a scale from 1 to 5, did the agent use the brand vocabulary, greetings, sign-offs and tone of voice (casual/formal, etc…)?',

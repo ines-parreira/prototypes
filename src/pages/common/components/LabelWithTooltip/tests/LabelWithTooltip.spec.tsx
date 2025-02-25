@@ -1,7 +1,8 @@
-import {render, fireEvent, screen} from '@testing-library/react'
 import React from 'react'
 
-import {LabelWithTooltip} from 'pages/common/components/LabelWithTooltip/LabelWithTooltip'
+import { fireEvent, render, screen } from '@testing-library/react'
+
+import { LabelWithTooltip } from 'pages/common/components/LabelWithTooltip/LabelWithTooltip'
 
 jest.mock('state/ui/stats/actions', () => ({
     statFiltersClean: jest.fn(() => () => ({})),

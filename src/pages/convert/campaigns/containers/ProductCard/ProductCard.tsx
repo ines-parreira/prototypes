@@ -1,15 +1,14 @@
-import {getLuminance, lighten, darken} from 'color2k'
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
+
+import { darken, getLuminance, lighten } from 'color2k'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-
 import useMeasure from 'hooks/useMeasure'
-import {updateCampaignProductPosition} from 'state/newMessage/actions'
+import { updateCampaignProductPosition } from 'state/newMessage/actions'
 
-import {AttachmentPosition} from '../../types/CampaignAttachment'
-
-import {ProductCardEdit} from './components/ProductCardEdit'
-import {ProductCardView} from './components/ProductCardView'
+import { AttachmentPosition } from '../../types/CampaignAttachment'
+import { ProductCardEdit } from './components/ProductCardEdit'
+import { ProductCardView } from './components/ProductCardView'
 
 import css from './ProductCard.less'
 
@@ -55,12 +54,12 @@ export const ProductCard = ({
 }: Props) => {
     const dispatch = useAppDispatch()
     const [isEditOn, setIsEdit] = useState(false)
-    const [hiddenImageRef, {width, height}] = useMeasure<HTMLImageElement>()
+    const [hiddenImageRef, { width, height }] = useMeasure<HTMLImageElement>()
 
     const handleClickEdit = () => setIsEdit(true)
     const handleClickCancel = () => setIsEdit(false)
     const handleSaveEdit = (position: AttachmentPosition) => {
-        dispatch(updateCampaignProductPosition({productId, position}))
+        dispatch(updateCampaignProductPosition({ productId, position }))
         setIsEdit(false)
     }
 

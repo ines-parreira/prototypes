@@ -1,6 +1,6 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {TicketChannel} from 'business/types/ticket'
+import { TicketChannel } from 'business/types/ticket'
 
 import useSelfServiceChatChannels, {
     SelfServiceChatChannel,
@@ -20,14 +20,14 @@ export type SelfServiceChannel =
 export type SelfServiceChannelType = SelfServiceChannel['type']
 
 export const isSelfServiceHelpCenterChannel = (
-    channel: SelfServiceChannel
+    channel: SelfServiceChannel,
 ): channel is SelfServiceHelpCenterChannel =>
     channel.type === TicketChannel.HelpCenter
 export const isSelfServiceChatChannel = (
-    channel: SelfServiceChannel
+    channel: SelfServiceChannel,
 ): channel is SelfServiceChatChannel => channel.type === TicketChannel.Chat
 export const isSelfServiceStandaloneContactFormChannel = (
-    channel: SelfServiceChannel
+    channel: SelfServiceChannel,
 ): channel is SelfServiceStandaloneContactFormChannel =>
     channel.type === TicketChannel.ContactForm
 
@@ -36,7 +36,7 @@ const useSelfServiceChannels = (shopType: string, shopName: string) => {
     const helpCenters = useSelfServiceHelpCenterChannels(shopType, shopName)
     const standaloneContactForms = useSelfServiceStandaloneContactFormChannels(
         shopType,
-        shopName
+        shopName,
     )
 
     return useMemo(() => {

@@ -1,11 +1,12 @@
-import {fromJS, Map} from 'immutable'
 import React from 'react'
 
-import {UserRole} from 'config/types/user'
-import {ChannelsCardExtra} from 'pages/stats/support-performance/channels/ChannelsCardExtra'
-import {ChannelsEditColumns} from 'pages/stats/support-performance/channels/ChannelsEditColumns'
-import {ChannelsHeatmapSwitch} from 'pages/stats/support-performance/channels/ChannelsHeatmapSwitch'
-import {assumeMock, renderWithStore} from 'utils/testing'
+import { fromJS, Map } from 'immutable'
+
+import { UserRole } from 'config/types/user'
+import { ChannelsCardExtra } from 'pages/stats/support-performance/channels/ChannelsCardExtra'
+import { ChannelsEditColumns } from 'pages/stats/support-performance/channels/ChannelsEditColumns'
+import { ChannelsHeatmapSwitch } from 'pages/stats/support-performance/channels/ChannelsHeatmapSwitch'
+import { assumeMock, renderWithStore } from 'utils/testing'
 
 jest.mock('pages/stats/support-performance/channels/ChannelsEditColumns')
 const ChannelsEditColumnsMock = assumeMock(ChannelsEditColumns)
@@ -15,7 +16,7 @@ const ChannelsHeatmapSwitchMock = assumeMock(ChannelsHeatmapSwitch)
 describe('ChannelsCardExtra', () => {
     const defaultState = {
         currentUser: fromJS({
-            role: {name: UserRole.Admin},
+            role: { name: UserRole.Admin },
         }) as Map<any, any>,
     }
 
@@ -34,7 +35,7 @@ describe('ChannelsCardExtra', () => {
     it('should not render TableColumns Edit for regular user', () => {
         const state = {
             currentUser: fromJS({
-                role: {name: UserRole.Agent},
+                role: { name: UserRole.Agent },
             }) as Map<any, any>,
         }
         renderWithStore(<ChannelsCardExtra />, state)

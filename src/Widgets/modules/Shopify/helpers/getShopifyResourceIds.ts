@@ -1,7 +1,7 @@
-import {SegmentEvent, logEvent} from 'common/segment'
-import {Source, isSourceRecord} from 'models/widget/types'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { isSourceRecord, Source } from 'models/widget/types'
 
-import {defaultShopifyContextValue} from '../contexts/ShopifyContext'
+import { defaultShopifyContextValue } from '../contexts/ShopifyContext'
 
 /**
  * Provide resource IDs, before setting proper context to children components.

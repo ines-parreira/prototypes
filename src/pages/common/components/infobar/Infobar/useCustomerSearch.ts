@@ -1,28 +1,29 @@
-import {AxiosError, AxiosResponse, CancelToken} from 'axios'
-import {fromJS} from 'immutable'
-import {useState} from 'react'
+import { useState } from 'react'
 
-import {SegmentEvent, logEvent} from 'common/segment'
+import { AxiosError, AxiosResponse, CancelToken } from 'axios'
+import { fromJS } from 'immutable'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useCancellableRequest from 'hooks/useCancellableRequest'
 import useSearchRankScenario, {
     SearchRankSource,
 } from 'hooks/useSearchRankScenario'
-import {ApiListResponseCursorPagination} from 'models/api/types'
+import { ApiListResponseCursorPagination } from 'models/api/types'
 import {
     CustomerWithHighlightsResponse,
     PickedCustomerWithHighlights,
     SearchEngine,
 } from 'models/search/types'
-import {mergeEntitiesWithHighlights} from 'models/search/utils'
-import {searchWithHighlights} from 'state/infobar/actions'
+import { mergeEntitiesWithHighlights } from 'models/search/utils'
+import { searchWithHighlights } from 'state/infobar/actions'
 
 export const useCustomerSearch = () => {
     const dispatch = useAppDispatch()
     const searchRank = useSearchRankScenario(SearchRankSource.CustomerProfile)
     const [isSearching, setIsSearching] = useState(false)
     const [searchErrorMessage, setSearchErrorMessage] = useState<string | null>(
-        null
+        null,
     )
     const [searchTerm, setSearchTerm] = useState('')
     const [displaySearchResults, setDisplaySearchResults] = useState(false)
@@ -32,13 +33,13 @@ export const useCustomerSearch = () => {
 
     const [cancellableSearchWithHighlights] = useCancellableRequest(
         (cancelToken: CancelToken) => async (query) =>
-            await dispatch(searchWithHighlights(query, cancelToken))
+            await dispatch(searchWithHighlights(query, cancelToken)),
     )
 
     const search = async (query: string) => {
         const res = await (
             cancellableSearchWithHighlights as (query: string) => Promise<{
-                error?: AxiosError<{error?: {message: string}}>
+                error?: AxiosError<{ error?: { message: string } }>
                 resp: AxiosResponse<
                     ApiListResponseCursorPagination<
                         CustomerWithHighlightsResponse[]
@@ -47,7 +48,7 @@ export const useCustomerSearch = () => {
             }>
         )(query)
 
-        const {error, resp} = res
+        const { error, resp } = res
 
         return {
             error,
@@ -73,7 +74,7 @@ export const useCustomerSearch = () => {
             return
         }
 
-        const {error, data} = res
+        const { error, data } = res
 
         let errorMessage = null
 

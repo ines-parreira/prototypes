@@ -1,4 +1,4 @@
-import {applyCustomActionTemplate} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/helpers/templating'
+import { applyCustomActionTemplate } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/helpers/templating'
 import {
     Parameter,
     TemplateContext,
@@ -7,24 +7,24 @@ import {
 export function mapTemplateParameters(
     parameters: Parameter[],
     templateContext: TemplateContext,
-    keepTemplateWhenEmpty?: boolean
+    keepTemplateWhenEmpty?: boolean,
 ): Parameter[] {
-    return parameters.map(({key, value, label, ...rest}) => ({
+    return parameters.map(({ key, value, label, ...rest }) => ({
         ...rest,
         key: applyCustomActionTemplate(
             key,
             templateContext,
-            keepTemplateWhenEmpty
+            keepTemplateWhenEmpty,
         ),
         value: applyCustomActionTemplate(
             value,
             templateContext,
-            keepTemplateWhenEmpty
+            keepTemplateWhenEmpty,
         ),
         label: applyCustomActionTemplate(
             label,
             templateContext,
-            keepTemplateWhenEmpty
+            keepTemplateWhenEmpty,
         ),
     }))
 }

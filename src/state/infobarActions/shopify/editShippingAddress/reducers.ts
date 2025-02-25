@@ -1,9 +1,8 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
-import {GorgiasAction} from '../../../types'
-
-import {SET_LOADING, SET_ADDRESSES, SET_INITIAL_STATE} from './constants'
-import {EditShippingAddressState} from './types'
+import { GorgiasAction } from '../../../types'
+import { SET_ADDRESSES, SET_INITIAL_STATE, SET_LOADING } from './constants'
+import { EditShippingAddressState } from './types'
 
 export const initialState: EditShippingAddressState = fromJS({
     loading: false,
@@ -13,7 +12,7 @@ export const initialState: EditShippingAddressState = fromJS({
 
 export default function reducer(
     state: EditShippingAddressState = initialState,
-    action: GorgiasAction
+    action: GorgiasAction,
 ): EditShippingAddressState {
     switch (action.type) {
         case SET_LOADING:

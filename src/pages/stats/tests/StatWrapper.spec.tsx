@@ -1,21 +1,23 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import {fireEvent, render, waitFor} from '@testing-library/react'
-import {fromJS} from 'immutable'
+import React, { ComponentProps } from 'react'
+
+import { fireEvent, render, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
 import _noop from 'lodash/noop'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {logEvent} from 'common/segment'
-import {FIRST_RESPONSE_TIME} from 'config/stats'
-import {account} from 'fixtures/account'
-import {firstResponseTime} from 'fixtures/stats'
-import {user} from 'fixtures/users'
-import {downloadStat} from 'models/stat/resources'
-import {notify} from 'state/notifications/actions'
-import {RootState} from 'state/types'
-import {saveFileAsDownloaded} from 'utils/file'
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { logEvent } from 'common/segment'
+import { FIRST_RESPONSE_TIME } from 'config/stats'
+import { account } from 'fixtures/account'
+import { firstResponseTime } from 'fixtures/stats'
+import { user } from 'fixtures/users'
+import { downloadStat } from 'models/stat/resources'
+import { notify } from 'state/notifications/actions'
+import { RootState } from 'state/types'
+import { saveFileAsDownloaded } from 'utils/file'
 
 import StatWrapper from '../StatWrapper'
 
@@ -78,7 +80,7 @@ describe('StatWrapper', () => {
                           type: 'notify mock',
                           message,
                       })
-                    : Promise.resolve()
+                    : Promise.resolve(),
         )
         downloadStatMock.mockResolvedValue({
             name: 'foo.txt',
@@ -88,61 +90,61 @@ describe('StatWrapper', () => {
     })
 
     it('should pass stat to children function', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <StatWrapper {...minProps}>
                     {(stat) => JSON.stringify(stat.toJS(), null, 2)}
                 </StatWrapper>
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render the loader when stat is fetching', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <StatWrapper {...minProps} isFetchingStat />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should not render the children nor the title when stat is null', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <StatWrapper {...minProps} stat={null} />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render the help icon and help tooltip when help text prop is defined', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <StatWrapper
                     {...minProps}
                     helpText="Foo help text"
                     helpAutoHide={false}
                 />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render the download button when isDownloadable is set to true', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore(defaultState)}>
                 <StatWrapper {...minProps} isDownloadable />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should download stat on download button click', async () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={mockStore(defaultState)}>
                 <StatWrapper {...minProps} isDownloadable />
-            </Provider>
+            </Provider>,
         )
         fireEvent.click(getByText('file_download'))
         await waitFor(() => {
@@ -154,13 +156,13 @@ describe('StatWrapper', () => {
 
     it('should display download error', async () => {
         downloadStatMock.mockRejectedValue({
-            response: {data: {error: {msg: 'foo error'}}},
+            response: { data: { error: { msg: 'foo error' } } },
         })
 
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={mockStore(defaultState)}>
                 <StatWrapper {...minProps} isDownloadable />
-            </Provider>
+            </Provider>,
         )
         fireEvent.click(getByText('file_download'))
         await waitFor(() => {
@@ -173,10 +175,10 @@ describe('StatWrapper', () => {
     it('should display spinner while downloading the stat', () => {
         downloadStatMock.mockImplementation(() => new Promise(_noop))
 
-        const {container, getByText} = render(
+        const { container, getByText } = render(
             <Provider store={mockStore(defaultState)}>
                 <StatWrapper {...minProps} isDownloadable />
-            </Provider>
+            </Provider>,
         )
         fireEvent.click(getByText('file_download'))
 
@@ -186,10 +188,10 @@ describe('StatWrapper', () => {
     it('should log event on download button click', () => {
         downloadStatMock.mockImplementation(() => new Promise(_noop))
 
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={mockStore(defaultState)}>
                 <StatWrapper {...minProps} isDownloadable />
-            </Provider>
+            </Provider>,
         )
         fireEvent.click(getByText('file_download'))
 

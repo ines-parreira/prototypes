@@ -1,12 +1,12 @@
 import React from 'react'
 
-import {getConfigByType} from 'config/views'
+import { getConfigByType } from 'config/views'
 import useAppSelector from 'hooks/useAppSelector'
 import css from 'pages/common/components/ViewTable/Table.less'
 import {
     getActiveView,
-    makeGetViewCount,
     isDirty as getIsDirty,
+    makeGetViewCount,
 } from 'state/views/selectors'
 
 type Props = {
@@ -57,7 +57,7 @@ const ViewSelection = ({
                     <span>
                         <b>{selectedCount}</b>{' '}
                         {viewConfig.get(
-                            selectedCount === 1 ? 'singular' : 'plural'
+                            selectedCount === 1 ? 'singular' : 'plural',
                         )}{' '}
                         on this page {selectedCount === 1 ? 'is' : 'are'}{' '}
                         selected.

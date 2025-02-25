@@ -1,23 +1,23 @@
 import MockAdapter from 'axios-mock-adapter'
 
-import {dummyErrorLogList} from 'fixtures/appErrors'
-import {dummyAppListData, dummyAppData} from 'fixtures/apps'
-import {integrationsState} from 'fixtures/integrations'
-import {integrationDataItemProductFixture} from 'fixtures/shopify'
+import { dummyErrorLogList } from 'fixtures/appErrors'
+import { dummyAppData, dummyAppListData } from 'fixtures/apps'
+import { integrationsState } from 'fixtures/integrations'
+import { integrationDataItemProductFixture } from 'fixtures/shopify'
 import client from 'models/api/resources'
 
 import {
     disconnectApp,
     fetchApp,
-    fetchApps,
     fetchAppErrorLogs,
-    fetchIntegrations,
+    fetchApps,
     fetchInstalledApps,
-    requestNewIntegration,
     fetchIntegrationProducts,
+    fetchIntegrations,
+    requestNewIntegration,
 } from '../resources'
-import {fetchShopifyCollections} from '../resources/shopify'
-import {IntegrationRequest, ShopifyCollectionResponse} from '../types'
+import { fetchShopifyCollections } from '../resources/shopify'
+import { IntegrationRequest, ShopifyCollectionResponse } from '../types'
 
 const mockedServer = new MockAdapter(client)
 
@@ -33,14 +33,14 @@ describe('integration resource', () => {
         it('should return formatted apps', async () => {
             mockedServer
                 .onGet('/api/apps/')
-                .reply(200, {data: [dummyAppListData]})
+                .reply(200, { data: [dummyAppListData] })
             const res = await fetchApps()
             expect(res).toMatchSnapshot()
         })
         it('should reject an error on fail', () => {
-            mockedServer.onGet('/api/apps/').reply(503, {message: 'error'})
+            mockedServer.onGet('/api/apps/').reply(503, { message: 'error' })
             return expect(fetchApps()).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                new Error('Request failed with status code 503'),
             )
         })
     })
@@ -72,9 +72,9 @@ describe('integration resource', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onGet('/api/apps/installed/')
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(fetchInstalledApps()).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                new Error('Request failed with status code 503'),
             )
         })
     })
@@ -88,9 +88,9 @@ describe('integration resource', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onGet(`/api/apps/${appId}`)
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(fetchApp(appId)).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                new Error('Request failed with status code 503'),
             )
         })
     })
@@ -99,16 +99,16 @@ describe('integration resource', () => {
         it('should return disconnect response', async () => {
             mockedServer
                 .onGet(`/api/apps/uninstall/${appId}`)
-                .reply(200, {is_uninstalled: true})
+                .reply(200, { is_uninstalled: true })
             const res = await disconnectApp(appId)
             expect(res).toMatchSnapshot()
         })
         it('should reject an error on fail', () => {
             mockedServer
                 .onGet(`/api/apps/uninstall/${appId}`)
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(disconnectApp(appId)).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                new Error('Request failed with status code 503'),
             )
         })
     })
@@ -117,7 +117,7 @@ describe('integration resource', () => {
         it('should return the errors', async () => {
             mockedServer
                 .onGet(`/api/async/errors`)
-                .reply(200, {data: [dummyErrorLogList]})
+                .reply(200, { data: [dummyErrorLogList] })
             const res = await fetchAppErrorLogs(appId)
             expect(res).toMatchSnapshot()
         })
@@ -125,9 +125,9 @@ describe('integration resource', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onGet(`/api/async/errors`)
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(fetchAppErrorLogs(appId)).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                new Error('Request failed with status code 503'),
             )
         })
     })
@@ -144,9 +144,9 @@ describe('integration resource', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onGet('/api/integrations')
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(fetchIntegrations()).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                new Error('Request failed with status code 503'),
             )
         })
     })
@@ -167,9 +167,9 @@ describe('integration resource', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onPost('/integrations/request')
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(
-                requestNewIntegration(newIntegrationRequest)
+                requestNewIntegration(newIntegrationRequest),
             ).rejects.toEqual(new Error('Request failed with status code 503'))
         })
     })
@@ -195,11 +195,11 @@ describe('integration resource', () => {
         it('should reutrns values with filter', async () => {
             mockedServer
                 .onGet('/api/integrations/shopify/1/collections/', {
-                    params: {search: 'adidas'},
+                    params: { search: 'adidas' },
                 })
                 .reply(200, collectionResponse)
 
-            const res = await fetchShopifyCollections(1, {search: 'adidas'})
+            const res = await fetchShopifyCollections(1, { search: 'adidas' })
             expect(res).toHaveLength(1)
         })
 
@@ -214,10 +214,10 @@ describe('integration resource', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onGet('/api/integrations/shopify/1/collections/')
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
 
             return expect(fetchShopifyCollections(1)).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                new Error('Request failed with status code 503'),
             )
         })
     })
@@ -235,9 +235,9 @@ describe('integration resource', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onGet(`/api/integrations/${integrationId}/product`)
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(
-                fetchIntegrationProducts(integrationId)
+                fetchIntegrationProducts(integrationId),
             ).rejects.toEqual(new Error('Request failed with status code 503'))
         })
     })

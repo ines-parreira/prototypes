@@ -1,15 +1,16 @@
-import {Label, Tooltip} from '@gorgias/merchant-ui-kit'
-import React, {createRef, useEffect, useState} from 'react'
+import React, { createRef, useEffect, useState } from 'react'
+
+import { Label, Tooltip } from '@gorgias/merchant-ui-kit'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {useFileIngestion} from 'pages/aiAgent/hooks/useFileIngestion'
+import { useFileIngestion } from 'pages/aiAgent/hooks/useFileIngestion'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
-import {ConfirmNavigationPrompt} from 'pages/common/components/ConfirmNavigationPrompt'
+import { ConfirmNavigationPrompt } from 'pages/common/components/ConfirmNavigationPrompt'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
-import {uploadAttachments} from 'rest_api/help_center_api/uploadAttachments'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { uploadAttachments } from 'rest_api/help_center_api/uploadAttachments'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 import css from './ExternalFilesSection.less'
 
@@ -18,7 +19,7 @@ const MAX_FILE_SIZE_MB = 50
 const MAX_EXTERNAL_FILES = 10
 
 const SUPPORTED_TYPES = [
-    {ext: '.pdf', type: 'application/pdf'},
+    { ext: '.pdf', type: 'application/pdf' },
     {
         ext: '.docx',
         type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
@@ -50,7 +51,7 @@ export const ExternalFilesSection = ({
     const inputRef = createRef<HTMLInputElement>()
     const dispatch = useAppDispatch()
 
-    const {ingestFile, ingestedFiles, deleteIngestedFile, isIngesting} =
+    const { ingestFile, ingestedFiles, deleteIngestedFile, isIngesting } =
         useFileIngestion({
             helpCenterId,
             onSuccess: () => {
@@ -58,7 +59,7 @@ export const ExternalFilesSection = ({
                     notify({
                         status: NotificationStatus.Success,
                         message: 'File uploaded successfully',
-                    })
+                    }),
                 )
             },
             onFailure: (file) => {
@@ -76,7 +77,7 @@ export const ExternalFilesSection = ({
                     notify({
                         status: NotificationStatus.Error,
                         message: errorMessage,
-                    })
+                    }),
                 )
             },
         })
@@ -85,7 +86,7 @@ export const ExternalFilesSection = ({
         ingestedFiles
             ?.filter((ingestedFile) => ingestedFile.status === 'SUCCESSFUL')
             .sort((a, b) =>
-                a.uploaded_datetime > b.uploaded_datetime ? 1 : -1
+                a.uploaded_datetime > b.uploaded_datetime ? 1 : -1,
             ) ?? []
 
     const isEmpty =
@@ -100,7 +101,7 @@ export const ExternalFilesSection = ({
                 notify({
                     status: NotificationStatus.Error,
                     message: `File too large. Upload a file smaller than ${MAX_FILE_SIZE_MB} MB.`,
-                })
+                }),
             )
 
             return
@@ -108,14 +109,14 @@ export const ExternalFilesSection = ({
 
         if (
             successfullyIngestedFiles.some(
-                (ingestedFile) => ingestedFile.filename === file.name
+                (ingestedFile) => ingestedFile.filename === file.name,
             )
         ) {
             void dispatch(
                 notify({
                     status: NotificationStatus.Error,
                     message: `Failed to upload: A file with this name already exists. Remove or select a different file.`,
-                })
+                }),
             )
 
             return
@@ -141,7 +142,7 @@ export const ExternalFilesSection = ({
                 notify({
                     status: NotificationStatus.Error,
                     message: `An unknown error occurred`,
-                })
+                }),
             )
         }
     }
@@ -201,7 +202,7 @@ export const ExternalFilesSection = ({
                                             window.open(
                                                 ingestedFile.google_storage_url,
                                                 '_blank',
-                                                'noopener noreferrer'
+                                                'noopener noreferrer',
                                             )
                                         }
                                     >
@@ -224,7 +225,7 @@ export const ExternalFilesSection = ({
                                         onConfirm={async () => {
                                             try {
                                                 await deleteIngestedFile(
-                                                    ingestedFile.id
+                                                    ingestedFile.id,
                                                 )
 
                                                 void dispatch(
@@ -232,7 +233,7 @@ export const ExternalFilesSection = ({
                                                         status: NotificationStatus.Success,
                                                         message:
                                                             'File deleted successfully',
-                                                    })
+                                                    }),
                                                 )
                                             } catch {
                                                 void dispatch(
@@ -240,7 +241,7 @@ export const ExternalFilesSection = ({
                                                         status: NotificationStatus.Error,
                                                         message:
                                                             'An unknown error occurred while deleting the file',
-                                                    })
+                                                    }),
                                                 )
                                             }
                                         }}
@@ -273,12 +274,12 @@ export const ExternalFilesSection = ({
                     <input
                         ref={inputRef}
                         accept={SUPPORTED_TYPES.map(
-                            (supportedType) => supportedType.type
+                            (supportedType) => supportedType.type,
                         ).join(',')}
                         type="file"
-                        style={{display: 'none'}}
+                        style={{ display: 'none' }}
                         onChange={(
-                            event: React.ChangeEvent<HTMLInputElement>
+                            event: React.ChangeEvent<HTMLInputElement>,
                         ) => {
                             if (!event.target.files) return
                             void uploadFile(event.target.files[0])
@@ -306,7 +307,7 @@ export const ExternalFilesSection = ({
                     <div className={css.buttonInfo}>
                         Supported types:{' '}
                         {SUPPORTED_TYPES.map(
-                            (supportedType) => supportedType.ext
+                            (supportedType) => supportedType.ext,
                         ).join(', ')}
                         . Max {MAX_FILE_SIZE_MB} MB.
                     </div>

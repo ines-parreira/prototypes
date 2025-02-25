@@ -1,6 +1,6 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {User} from 'config/types/user'
+import { User } from 'config/types/user'
 import {
     fetchOnlineTimePerAgent,
     fetchTicketsRepliedMetricPerAgent,
@@ -15,17 +15,17 @@ import {
     AgentTimeTrackingDimension,
     AgentTimeTrackingMeasure,
 } from 'models/reporting/cubes/agentxp/AgentTimeTrackingCube'
-import {HelpdeskMessageMeasure} from 'models/reporting/cubes/HelpdeskMessageCube'
-import {TicketMember} from 'models/reporting/cubes/TicketCube'
-import {assumeMock} from 'utils/testing'
+import { HelpdeskMessageMeasure } from 'models/reporting/cubes/HelpdeskMessageCube'
+import { TicketMember } from 'models/reporting/cubes/TicketCube'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/metricsPerAgent')
 const useTicketsRepliedMetricPerAgentMock = assumeMock(
-    useTicketsRepliedMetricPerAgent
+    useTicketsRepliedMetricPerAgent,
 )
 const useOnlineTimePerAgentMock = assumeMock(useOnlineTimePerAgent)
 const fetchTicketsRepliedMetricPerAgentMock = assumeMock(
-    fetchTicketsRepliedMetricPerAgent
+    fetchTicketsRepliedMetricPerAgent,
 )
 const fetchOnlineTimePerAgentMock = assumeMock(fetchOnlineTimePerAgent)
 
@@ -80,21 +80,21 @@ describe('TicketsRepliedPerHourPerAgent.ts', () => {
     describe('useTicketsRepliedPerHourPerAgent()', () => {
         beforeEach(() => {
             useTicketsRepliedMetricPerAgentMock.mockReturnValue(
-                useRepliedTicketsMetricPerAgentReturnValue
+                useRepliedTicketsMetricPerAgentReturnValue,
             )
             useOnlineTimePerAgentMock.mockReturnValue(
-                useOnlineTimePerAgentReturnValue
+                useOnlineTimePerAgentReturnValue,
             )
         })
 
         it('should calculate the metric from messages sent and online time', () => {
-            const {result} = renderHook(() =>
+            const { result } = renderHook(() =>
                 useTicketsRepliedPerHourPerAgent(
                     statsFilters,
                     timeZone,
                     undefined,
-                    String(agent.id)
-                )
+                    String(agent.id),
+                ),
             )
 
             expect(result.current).toEqual({
@@ -103,7 +103,7 @@ describe('TicketsRepliedPerHourPerAgent.ts', () => {
                         {
                             [HelpdeskMessageMeasure.TicketCount]: String(
                                 ticketsRepliedValue /
-                                    (onlineTimeValue / 60 / 60)
+                                    (onlineTimeValue / 60 / 60),
                             ),
                             [TicketMember.MessageSenderId]: String(agent.id),
                         },
@@ -117,13 +117,13 @@ describe('TicketsRepliedPerHourPerAgent.ts', () => {
         })
 
         it('should handle no data', () => {
-            const {result} = renderHook(() =>
+            const { result } = renderHook(() =>
                 useTicketsRepliedPerHourPerAgent(
                     statsFilters,
                     timeZone,
                     undefined,
-                    String(agent.id)
-                )
+                    String(agent.id),
+                ),
             )
 
             expect(result.current).toEqual({
@@ -132,7 +132,7 @@ describe('TicketsRepliedPerHourPerAgent.ts', () => {
                         {
                             [HelpdeskMessageMeasure.TicketCount]: String(
                                 ticketsRepliedValue /
-                                    (onlineTimeValue / 60 / 60)
+                                    (onlineTimeValue / 60 / 60),
                             ),
                             [TicketMember.MessageSenderId]: String(agent.id),
                         },
@@ -151,8 +151,8 @@ describe('TicketsRepliedPerHourPerAgent.ts', () => {
                     statsFilters,
                     timeZone,
                     undefined,
-                    String(agent.id)
-                )
+                    String(agent.id),
+                ),
             )
 
             expect(useTicketsRepliedMetricPerAgentMock).toHaveBeenCalledWith(
@@ -162,7 +162,7 @@ describe('TicketsRepliedPerHourPerAgent.ts', () => {
                 },
                 timeZone,
                 undefined,
-                String(agent.id)
+                String(agent.id),
             )
             expect(useOnlineTimePerAgentMock).toHaveBeenCalledWith(
                 {
@@ -171,7 +171,7 @@ describe('TicketsRepliedPerHourPerAgent.ts', () => {
                 },
                 timeZone,
                 undefined,
-                String(agent.id)
+                String(agent.id),
             )
         })
 
@@ -183,8 +183,8 @@ describe('TicketsRepliedPerHourPerAgent.ts', () => {
                     },
                     timeZone,
                     undefined,
-                    String(agent.id)
-                )
+                    String(agent.id),
+                ),
             )
 
             expect(useTicketsRepliedMetricPerAgentMock).toHaveBeenCalledWith(
@@ -193,7 +193,7 @@ describe('TicketsRepliedPerHourPerAgent.ts', () => {
                 },
                 timeZone,
                 undefined,
-                String(agent.id)
+                String(agent.id),
             )
             expect(useOnlineTimePerAgentMock).toHaveBeenCalledWith(
                 {
@@ -201,7 +201,7 @@ describe('TicketsRepliedPerHourPerAgent.ts', () => {
                 },
                 timeZone,
                 undefined,
-                String(agent.id)
+                String(agent.id),
             )
         })
 
@@ -215,13 +215,13 @@ describe('TicketsRepliedPerHourPerAgent.ts', () => {
                 data: null,
             })
 
-            const {result} = renderHook(() =>
+            const { result } = renderHook(() =>
                 useTicketsRepliedPerHourPerAgent(
                     statsFilters,
                     timeZone,
                     undefined,
-                    String(agent.id)
-                )
+                    String(agent.id),
+                ),
             )
 
             expect(result.current).toEqual({
@@ -239,10 +239,10 @@ describe('TicketsRepliedPerHourPerAgent.ts', () => {
     describe('fetchTicketsRepliedPerHourPerAgent()', () => {
         beforeEach(() => {
             fetchTicketsRepliedMetricPerAgentMock.mockResolvedValue(
-                useRepliedTicketsMetricPerAgentReturnValue
+                useRepliedTicketsMetricPerAgentReturnValue,
             )
             fetchOnlineTimePerAgentMock.mockResolvedValue(
-                useOnlineTimePerAgentReturnValue
+                useOnlineTimePerAgentReturnValue,
             )
         })
 
@@ -251,7 +251,7 @@ describe('TicketsRepliedPerHourPerAgent.ts', () => {
                 statsFilters,
                 timeZone,
                 undefined,
-                String(agent.id)
+                String(agent.id),
             )
 
             expect(result).toEqual({
@@ -260,7 +260,7 @@ describe('TicketsRepliedPerHourPerAgent.ts', () => {
                         {
                             [HelpdeskMessageMeasure.TicketCount]: String(
                                 ticketsRepliedValue /
-                                    (onlineTimeValue / 60 / 60)
+                                    (onlineTimeValue / 60 / 60),
                             ),
                             [TicketMember.MessageSenderId]: String(agent.id),
                         },
@@ -278,7 +278,7 @@ describe('TicketsRepliedPerHourPerAgent.ts', () => {
                 statsFilters,
                 timeZone,
                 undefined,
-                String(agent.id)
+                String(agent.id),
             )
 
             expect(result).toEqual({
@@ -287,7 +287,7 @@ describe('TicketsRepliedPerHourPerAgent.ts', () => {
                         {
                             [HelpdeskMessageMeasure.TicketCount]: String(
                                 ticketsRepliedValue /
-                                    (onlineTimeValue / 60 / 60)
+                                    (onlineTimeValue / 60 / 60),
                             ),
                             [TicketMember.MessageSenderId]: String(agent.id),
                         },
@@ -305,7 +305,7 @@ describe('TicketsRepliedPerHourPerAgent.ts', () => {
                 statsFilters,
                 timeZone,
                 undefined,
-                String(agent.id)
+                String(agent.id),
             )
 
             expect(fetchTicketsRepliedMetricPerAgentMock).toHaveBeenCalledWith(
@@ -315,7 +315,7 @@ describe('TicketsRepliedPerHourPerAgent.ts', () => {
                 },
                 timeZone,
                 undefined,
-                String(agent.id)
+                String(agent.id),
             )
             expect(fetchOnlineTimePerAgentMock).toHaveBeenCalledWith(
                 {
@@ -324,7 +324,7 @@ describe('TicketsRepliedPerHourPerAgent.ts', () => {
                 },
                 timeZone,
                 undefined,
-                String(agent.id)
+                String(agent.id),
             )
         })
 
@@ -335,7 +335,7 @@ describe('TicketsRepliedPerHourPerAgent.ts', () => {
                 },
                 timeZone,
                 undefined,
-                String(agent.id)
+                String(agent.id),
             )
 
             expect(fetchTicketsRepliedMetricPerAgentMock).toHaveBeenCalledWith(
@@ -344,7 +344,7 @@ describe('TicketsRepliedPerHourPerAgent.ts', () => {
                 },
                 timeZone,
                 undefined,
-                String(agent.id)
+                String(agent.id),
             )
             expect(fetchOnlineTimePerAgentMock).toHaveBeenCalledWith(
                 {
@@ -352,7 +352,7 @@ describe('TicketsRepliedPerHourPerAgent.ts', () => {
                 },
                 timeZone,
                 undefined,
-                String(agent.id)
+                String(agent.id),
             )
         })
 
@@ -370,7 +370,7 @@ describe('TicketsRepliedPerHourPerAgent.ts', () => {
                 statsFilters,
                 timeZone,
                 undefined,
-                String(agent.id)
+                String(agent.id),
             )
 
             expect(result).toEqual({
@@ -398,7 +398,7 @@ describe('TicketsRepliedPerHourPerAgent.ts', () => {
                 statsFilters,
                 timeZone,
                 undefined,
-                String(agent.id)
+                String(agent.id),
             )
 
             expect(result).toEqual({

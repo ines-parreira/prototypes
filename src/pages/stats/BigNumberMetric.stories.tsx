@@ -1,5 +1,6 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { Meta, Story } from '@storybook/react'
 
 import TrendBadge from 'pages/stats/common/components/TrendBadge'
 
@@ -9,7 +10,7 @@ const storyConfig: Meta = {
     title: 'Stats/BigNumberMetric',
     component: BigNumberMetric,
     parameters: {
-        chromatic: {disableSnapshot: false},
+        chromatic: { disableSnapshot: false },
     },
 }
 

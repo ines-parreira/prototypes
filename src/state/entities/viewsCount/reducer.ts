@@ -1,16 +1,16 @@
-import {createReducer} from '@reduxjs/toolkit'
+import { createReducer } from '@reduxjs/toolkit'
 
-import {viewsCountFetched} from './actions'
-import {ViewsCountState} from './types'
+import { viewsCountFetched } from './actions'
+import { ViewsCountState } from './types'
 
 const initialState: ViewsCountState = {}
 
 const viewsCountReducer = createReducer<ViewsCountState>(
     initialState,
     (builder) =>
-        builder.addCase(viewsCountFetched, (state, {payload}) => {
-            return {...state, ...payload}
-        })
+        builder.addCase(viewsCountFetched, (state, { payload }) => {
+            return { ...state, ...payload }
+        }),
 )
 
 export default viewsCountReducer

@@ -1,12 +1,13 @@
-import {ContentBlock, ContentState} from 'draft-js'
 import React from 'react'
 
+import { ContentBlock, ContentState } from 'draft-js'
+
 import {
-    DecoratorStrategyCallback,
-    DecoratorComponentProps,
     Decorator,
+    DecoratorComponentProps,
+    DecoratorStrategyCallback,
 } from '../../types'
-import {removeLink} from '../../utils'
+import { removeLink } from '../../utils'
 import LinkPopover from '../components/LinkPopover'
 
 type Config = {
@@ -15,7 +16,7 @@ type Config = {
         entityKey: string,
         text: string,
         url: string,
-        target: string
+        target: string,
     ) => void
 }
 
@@ -23,7 +24,7 @@ const link = (config: Config): Decorator => ({
     strategy: (
         contentBlock: ContentBlock,
         callback: DecoratorStrategyCallback,
-        contentState: ContentState
+        contentState: ContentState,
     ) => {
         contentBlock.findEntityRanges((character) => {
             const entityKey = character.getEntity()
@@ -43,7 +44,7 @@ const link = (config: Config): Decorator => ({
             getEditorState,
             setEditorState,
         } = props
-        const {url, target} = contentState.getEntity(entityKey).getData()
+        const { url, target } = contentState.getEntity(entityKey).getData()
         return (
             <LinkPopover
                 url={url}
@@ -54,7 +55,7 @@ const link = (config: Config): Decorator => ({
                                   entityKey,
                                   decoratedText,
                                   url,
-                                  target || '_blank'
+                                  target || '_blank',
                               )
                           }
                         : undefined
@@ -65,7 +66,7 @@ const link = (config: Config): Decorator => ({
                     url !== decoratedText
                         ? () => {
                               setEditorState(
-                                  removeLink(entityKey, getEditorState())
+                                  removeLink(entityKey, getEditorState()),
                               )
                           }
                         : undefined

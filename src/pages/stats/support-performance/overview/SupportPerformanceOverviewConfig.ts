@@ -34,12 +34,15 @@ import {
     useTicketsCreatedTimeSeries,
     useTicketsRepliedTimeSeries,
 } from 'hooks/reporting/timeSeries'
-import {MetricTrendFetch, MetricTrendHook} from 'hooks/reporting/useMetricTrend'
-import {TimeSeriesFetch, TimeSeriesHook} from 'hooks/reporting/useTimeSeries'
-import {FilterKey} from 'models/stat/types'
-import {AUTO_QA_FILTER_KEYS} from 'pages/stats/common/filters/constants'
-import {MetricTrendFormat} from 'pages/stats/common/utils'
-import {TooltipData} from 'pages/stats/types'
+import {
+    MetricTrendFetch,
+    MetricTrendHook,
+} from 'hooks/reporting/useMetricTrend'
+import { TimeSeriesFetch, TimeSeriesHook } from 'hooks/reporting/useTimeSeries'
+import { FilterKey } from 'models/stat/types'
+import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
+import { MetricTrendFormat } from 'pages/stats/common/utils'
+import { TooltipData } from 'pages/stats/types'
 import {
     CREATED_VS_CLOSED_TICKETS_LABEL,
     CUSTOMER_SATISFACTION_LABEL,
@@ -221,7 +224,7 @@ export const OverviewChartConfig: Record<
 > = {
     [OverviewMetric.TicketsCreated]: {
         title: TICKETS_CREATED_LABEL,
-        hint: {title: 'Number of new tickets to handle'},
+        hint: { title: 'Number of new tickets to handle' },
         useTimeSeries: useTicketsCreatedTimeSeries,
         fetchTimeSeries: fetchTicketsCreatedTimeSeries,
     },
@@ -235,13 +238,13 @@ export const OverviewChartConfig: Record<
     },
     [OverviewMetric.TicketsReplied]: {
         title: TICKETS_REPLIED_LABEL,
-        hint: {title: 'Number of tickets where the customer got a response'},
+        hint: { title: 'Number of tickets where the customer got a response' },
         useTimeSeries: useTicketsRepliedTimeSeries,
         fetchTimeSeries: fetchTicketsRepliedTimeSeries,
     },
     [OverviewMetric.MessagesSent]: {
         title: MESSAGES_SENT_LABEL,
-        hint: {title: 'Number of messages received by your customer'},
+        hint: { title: 'Number of messages received by your customer' },
         useTimeSeries: useMessagesSentTimeSeries,
         fetchTimeSeries: fetchMessagesSentTimeSeries,
     },

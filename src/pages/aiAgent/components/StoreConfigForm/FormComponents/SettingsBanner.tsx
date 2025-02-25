@@ -1,9 +1,10 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
 
-import {BannerText, SettingsBannerType} from '../constants'
+import { BannerText, SettingsBannerType } from '../constants'
+
 import css from '../StoreConfigForm.less'
 
 type SettingsBannerProps = {
@@ -16,10 +17,10 @@ export const SettingsBanner = ({
     type,
 }: SettingsBannerProps) => {
     const initialValue = localStorage.getItem(
-        `ai-settings-${type}-banner-acknowledged`
+        `ai-settings-${type}-banner-acknowledged`,
     )
     const [bannerAcknowledge, setBannerAcknowledge] = useState(
-        Boolean(initialValue)
+        Boolean(initialValue),
     )
 
     return (
@@ -39,7 +40,7 @@ export const SettingsBanner = ({
                             onClick={() => {
                                 localStorage.setItem(
                                     `ai-settings-${type}-banner-acknowledged`,
-                                    'true'
+                                    'true',
                                 )
                                 setBannerAcknowledge(true)
                             }}

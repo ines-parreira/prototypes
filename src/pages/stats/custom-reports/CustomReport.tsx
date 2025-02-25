@@ -1,17 +1,16 @@
 import React from 'react'
 
-import {useCleanStatsFiltersWithLogicalOperators} from 'hooks/reporting/useCleanStatsFilters'
+import { useCleanStatsFiltersWithLogicalOperators } from 'hooks/reporting/useCleanStatsFilters'
 import useAppSelector from 'hooks/useAppSelector'
-
-import {useGridSize} from 'hooks/useGridSize'
-import {FilterKey} from 'models/stat/types'
+import { useGridSize } from 'hooks/useGridSize'
+import { FilterKey } from 'models/stat/types'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
 import {
     CustomReportChart,
     CustomReportChartProps,
 } from 'pages/stats/custom-reports/CustomReportChart'
-import {CustomReportRow} from 'pages/stats/custom-reports/CustomReportRow'
-import {CustomReportSection} from 'pages/stats/custom-reports/CustomReportSection'
+import { CustomReportRow } from 'pages/stats/custom-reports/CustomReportRow'
+import { CustomReportSection } from 'pages/stats/custom-reports/CustomReportSection'
 import {
     DraggablePreview,
     Dropzone,
@@ -21,11 +20,11 @@ import {
     CustomReportChildType,
     CustomReportSchema,
 } from 'pages/stats/custom-reports/types'
-import {useFiltersFromDashboard} from 'pages/stats/custom-reports/useFiltersFromDashboard'
-import {updateChartPosition} from 'pages/stats/custom-reports/utils'
+import { useFiltersFromDashboard } from 'pages/stats/custom-reports/useFiltersFromDashboard'
+import { updateChartPosition } from 'pages/stats/custom-reports/utils'
 import DashboardGridCell from 'pages/stats/DashboardGridCell'
 import DashboardSection from 'pages/stats/DashboardSection'
-import {getPageStatsFiltersWithLogicalOperators} from 'state/stats/selectors'
+import { getPageStatsFiltersWithLogicalOperators } from 'state/stats/selectors'
 
 type Props = {
     customReport: CustomReportSchema
@@ -41,18 +40,18 @@ export const CustomReport = ({
     const getGridCellSize = useGridSize()
 
     const pageStatsFiltersWithLogicalOperators = useAppSelector(
-        getPageStatsFiltersWithLogicalOperators
+        getPageStatsFiltersWithLogicalOperators,
     )
     useCleanStatsFiltersWithLogicalOperators(
-        pageStatsFiltersWithLogicalOperators
+        pageStatsFiltersWithLogicalOperators,
     )
-    const {persistentFilters, optionalFilters} =
+    const { persistentFilters, optionalFilters } =
         useFiltersFromDashboard(dashboard)
 
     const moveChart = (
         srcId: string,
         targetId: string,
-        position: 'after' | 'before'
+        position: 'after' | 'before',
     ) => {
         onChartMove(updateChartPosition(dashboard, srcId, targetId, position))
     }
@@ -94,7 +93,7 @@ export const CustomReport = ({
 
 export const findChartIndex = (
     dashboard: CustomReportSchema,
-    chartId: string
+    chartId: string,
 ): number => {
     const traverse = (children: CustomReportChild[]): number => {
         for (let i = 0; i < children.length; i++) {
@@ -126,7 +125,7 @@ const renderDashboard = (
     chartProps: Pick<
         CustomReportChartProps,
         'onMove' | 'onDrop' | 'findChartIndex'
-    >
+    >,
 ) => {
     const renderChildren = (children: CustomReportChild[]) =>
         children.map((child: CustomReportChild, index: number) => {

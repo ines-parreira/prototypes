@@ -1,4 +1,4 @@
-export const SALARY_TYPES: Record<string, {label: string; value: string}> = {
+export const SALARY_TYPES: Record<string, { label: string; value: string }> = {
     annual_salary: {
         label: 'Annual Salary',
         value: 'annual_salary',
@@ -11,7 +11,7 @@ export const SALARY_TYPES: Record<string, {label: string; value: string}> = {
 
 export const SUPPORT_METRICS_TYPES: Record<
     string,
-    {label: string; value: string}
+    { label: string; value: string }
 > = {
     monthly_support_tickets: {
         label: 'Monthly Support Tickets',

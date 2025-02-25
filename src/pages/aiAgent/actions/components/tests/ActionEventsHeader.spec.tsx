@@ -1,14 +1,15 @@
-import {screen} from '@testing-library/react'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import moment from 'moment'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { screen } from '@testing-library/react'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import moment from 'moment'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {RootState} from 'state/types'
-import {renderWithRouter} from 'utils/testing'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { RootState } from 'state/types'
+import { renderWithRouter } from 'utils/testing'
 
 import ActionEventsHeader from '../ActionEventsHeader'
 
@@ -36,14 +37,14 @@ describe('<ActionEventsHeader />', () => {
                     initialStartDate={new Date()}
                     onChange={jest.fn()}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(
             screen.getByText(
                 'View all events when this Action has been performed',
-                {exact: false}
-            )
+                { exact: false },
+            ),
         ).toBeInTheDocument()
     })
 
@@ -71,7 +72,7 @@ describe('<ActionEventsHeader />', () => {
                     initialStartDate={new Date()}
                     onChange={jest.fn()}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.queryByText('Success, Partial Success, Error')).toBeNull()
@@ -102,12 +103,12 @@ describe('<ActionEventsHeader />', () => {
                     initialStartDate={new Date()}
                     onChange={jest.fn()}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.queryByText('Success, Error')).toBeNull()
         expect(
-            screen.getByText('Success, Error, Partial Success')
+            screen.getByText('Success, Error, Partial Success'),
         ).toBeInTheDocument()
     })
 })

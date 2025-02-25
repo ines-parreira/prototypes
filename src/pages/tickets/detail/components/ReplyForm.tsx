@@ -1,19 +1,20 @@
-import {Map} from 'immutable'
-import React, {PropsWithChildren, useMemo} from 'react'
+import React, { PropsWithChildren, useMemo } from 'react'
 
-import {TicketChannel, TicketMessageSourceType} from 'business/types/ticket'
+import { Map } from 'immutable'
+
+import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
 import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationType} from 'models/integration/constants'
-import {hasIntegrationOfTypes} from 'state/integrations/selectors'
-import {getNewMessageType} from 'state/newMessage/selectors'
+import { IntegrationType } from 'models/integration/constants'
+import { hasIntegrationOfTypes } from 'state/integrations/selectors'
+import { getNewMessageType } from 'state/newMessage/selectors'
 
 import PhoneTicketSubmitButtons from './ReplyArea/PhoneTicketSubmitButtons'
 
-const ReplyForm = ({children}: PropsWithChildren<unknown>) => {
+const ReplyForm = ({ children }: PropsWithChildren<unknown>) => {
     const ticket = useAppSelector((state) => state.ticket)
     const sourceType = useAppSelector(getNewMessageType)
     const hasPhoneIntegration = useAppSelector(
-        hasIntegrationOfTypes(IntegrationType.Phone)
+        hasIntegrationOfTypes(IntegrationType.Phone),
     )
 
     const isExistingTicket = useMemo(() => !!ticket.get('id'), [ticket])
@@ -21,9 +22,9 @@ const ReplyForm = ({children}: PropsWithChildren<unknown>) => {
         () =>
             (ticket.getIn(['customer', 'channels'], []) as Map<any, any>).some(
                 (channel: Map<any, any>) =>
-                    channel.get('type') === TicketChannel.Phone
+                    channel.get('type') === TicketChannel.Phone,
             ),
-        [ticket]
+        [ticket],
     )
 
     const shouldRenderPhoneButtons = useMemo(
@@ -31,7 +32,7 @@ const ReplyForm = ({children}: PropsWithChildren<unknown>) => {
             hasPhoneIntegration &&
             sourceType === TicketMessageSourceType.Phone &&
             (!isExistingTicket || hasPhoneChannel),
-        [hasPhoneIntegration, hasPhoneChannel, sourceType, isExistingTicket]
+        [hasPhoneIntegration, hasPhoneChannel, sourceType, isExistingTicket],
     )
 
     return shouldRenderPhoneButtons ? (

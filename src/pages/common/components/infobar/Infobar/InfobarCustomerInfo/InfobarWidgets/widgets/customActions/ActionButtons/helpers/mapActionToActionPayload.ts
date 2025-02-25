@@ -1,4 +1,4 @@
-import {ContentType, HttpMethod} from 'models/api/types'
+import { ContentType, HttpMethod } from 'models/api/types'
 import {
     Action,
     ActionPayload,
@@ -7,10 +7,10 @@ import {
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 
 const mapParametersToPayloadParameters = (
-    parameters: Parameter[]
+    parameters: Parameter[],
 ): PayloadParameters => {
     const payloadParameters: PayloadParameters = {}
-    parameters.forEach(({key, value}) => {
+    parameters.forEach(({ key, value }) => {
         payloadParameters[key] = value || ''
     })
     return payloadParameters
@@ -37,7 +37,7 @@ export const mapActionToActionPayload = ({
         payload.content_type = body.contentType
         if (body.contentType === ContentType.Form) {
             payload.form = mapParametersToPayloadParameters(
-                body[ContentType.Form]
+                body[ContentType.Form],
             )
         } else {
             payload.json = body[ContentType.Json]

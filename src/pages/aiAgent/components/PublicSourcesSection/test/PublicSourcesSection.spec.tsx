@@ -1,19 +1,20 @@
-import {screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {useSearchParam} from 'hooks/useSearchParam'
+import { screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { useSearchParam } from 'hooks/useSearchParam'
 import {
     ARTICLE_INGESTION_LOGS_STATUS,
     WIZARD_POST_COMPLETION_STATE,
 } from 'pages/aiAgent/constants'
-import {usePublicResourceMutation} from 'pages/aiAgent/hooks/usePublicResourcesMutation'
-import {usePublicResourcesPooling} from 'pages/aiAgent/hooks/usePublicResourcesPooling'
+import { usePublicResourceMutation } from 'pages/aiAgent/hooks/usePublicResourcesMutation'
+import { usePublicResourcesPooling } from 'pages/aiAgent/hooks/usePublicResourcesPooling'
 import useHelpCenterCustomDomainHostnames from 'pages/settings/helpCenter/hooks/useHelpCenterCustomDomainHostnames'
-import {renderWithQueryClientProvider} from 'tests/reactQueryTestingUtils'
+import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
-import {PublicSourcesSection} from '../PublicSourcesSection'
-import {SourceItem} from '../types'
+import { PublicSourcesSection } from '../PublicSourcesSection'
+import { SourceItem } from '../types'
 
 jest.mock('hooks/useAppDispatch', () => () => jest.fn())
 jest.mock('pages/aiAgent/hooks/usePublicResourcesPooling', () => ({
@@ -26,7 +27,7 @@ jest.mock('pages/aiAgent/hooks/usePublicResourcesMutation', () => ({
 
 jest.mock(
     'pages/settings/helpCenter/hooks/useHelpCenterCustomDomainHostnames',
-    () => jest.fn()
+    () => jest.fn(),
 )
 jest.mock('hooks/useSearchParam', () => ({
     useSearchParam: jest.fn(),
@@ -42,7 +43,7 @@ const createSource = (id: number, props?: Partial<SourceItem>): SourceItem => ({
 })
 
 const renderComponent = (
-    props?: Partial<ComponentProps<typeof PublicSourcesSection>>
+    props?: Partial<ComponentProps<typeof PublicSourcesSection>>,
 ) => {
     renderWithQueryClientProvider(
         <PublicSourcesSection
@@ -50,13 +51,13 @@ const renderComponent = (
             helpCenterId={HELP_CENTER_ID}
             shopName="test"
             {...props}
-        />
+        />,
     )
 }
 
 const mockUsePublicResourcesMutation = jest.mocked(usePublicResourceMutation)
 const mockUseHelpCenterCustomDomainHostnames = jest.mocked(
-    useHelpCenterCustomDomainHostnames
+    useHelpCenterCustomDomainHostnames,
 )
 const mockUsePublicResourcesPooling = jest.mocked(usePublicResourcesPooling)
 const mockUseSearchParam = jest.mocked(useSearchParam)
@@ -97,7 +98,7 @@ describe('<PublicSourcesSection />', () => {
     it('should preprender public sources', () => {
         const sources = [createSource(1), createSource(2), createSource(3)]
 
-        renderComponent({sourceItems: sources})
+        renderComponent({ sourceItems: sources })
 
         expect(screen.getAllByText(/Sync URL/)).toHaveLength(3)
     })
@@ -128,14 +129,16 @@ describe('<PublicSourcesSection />', () => {
         expect(window.open).toHaveBeenCalledWith(
             url,
             '_blank',
-            'noopener noreferrer'
+            'noopener noreferrer',
         )
     })
 
     it('should disable add button when limit reached', () => {
-        const sources = Array.from({length: 10}, (_, i) => createSource(i + 1))
+        const sources = Array.from({ length: 10 }, (_, i) =>
+            createSource(i + 1),
+        )
 
-        renderComponent({sourceItems: sources})
+        renderComponent({ sourceItems: sources })
         const addButton = screen.getByRole('button', {
             name: /Add URL/,
         })
@@ -144,9 +147,9 @@ describe('<PublicSourcesSection />', () => {
 
     it('should not add duplicates urls', async () => {
         const url = 'https://example.com/article'
-        const sources = [createSource(1, {url}), createSource(2)]
+        const sources = [createSource(1, { url }), createSource(2)]
 
-        renderComponent({sourceItems: sources})
+        renderComponent({ sourceItems: sources })
 
         const addButton = screen.getByRole('button', {
             name: /Add URL/,
@@ -160,12 +163,12 @@ describe('<PublicSourcesSection />', () => {
         await userEvent.type(input, url)
 
         const syncButton = screen
-            .getAllByRole('button', {name: /Sync URL/})
+            .getAllByRole('button', { name: /Sync URL/ })
             .pop()
 
         expect(syncButton).toBeAriaDisabled()
         expect(
-            screen.getByText('This URL has already been added')
+            screen.getByText('This URL has already been added'),
         ).toBeInTheDocument()
     })
 
@@ -182,16 +185,16 @@ describe('<PublicSourcesSection />', () => {
         await userEvent.type(input, url)
 
         expect(
-            screen.getByRole('button', {name: /Sync URL/})
+            screen.getByRole('button', { name: /Sync URL/ }),
         ).toBeAriaDisabled()
         expect(screen.getByText('Invalid URL')).toBeInTheDocument()
     })
 
     it('should show error message when URL cannot be processed', () => {
-        const sources = [createSource(1, {status: 'error'})]
-        renderComponent({sourceItems: sources})
+        const sources = [createSource(1, { status: 'error' })]
+        renderComponent({ sourceItems: sources })
 
-        expect(screen.getByRole('button', {name: /Sync URL/})).toBeEnabled()
+        expect(screen.getByRole('button', { name: /Sync URL/ })).toBeEnabled()
         expect(screen.getByText('URL cannot be processed')).toBeInTheDocument()
     })
 
@@ -207,12 +210,12 @@ describe('<PublicSourcesSection />', () => {
         await userEvent.type(input, url)
 
         expect(
-            screen.getByRole('button', {name: /Sync URL/})
+            screen.getByRole('button', { name: /Sync URL/ }),
         ).toBeAriaDisabled()
         expect(
             screen.getByText(
-                'URL must include a subpage (ie. yourstore.com/faqs)'
-            )
+                'URL must include a subpage (ie. yourstore.com/faqs)',
+            ),
         ).toBeInTheDocument()
     })
 
@@ -228,10 +231,10 @@ describe('<PublicSourcesSection />', () => {
         await userEvent.type(input, url)
 
         expect(
-            screen.getByRole('button', {name: /Sync URL/})
+            screen.getByRole('button', { name: /Sync URL/ }),
         ).toBeAriaDisabled()
         expect(
-            screen.getByText('URL cannot be a Gorgias Help Center')
+            screen.getByText('URL cannot be a Gorgias Help Center'),
         ).toBeInTheDocument()
     })
 
@@ -247,10 +250,10 @@ describe('<PublicSourcesSection />', () => {
         await userEvent.type(input, url)
 
         expect(
-            screen.getByRole('button', {name: /Sync URL/})
+            screen.getByRole('button', { name: /Sync URL/ }),
         ).toBeAriaDisabled()
         expect(
-            screen.getByText('URL cannot be a Gorgias Help Center')
+            screen.getByText('URL cannot be a Gorgias Help Center'),
         ).toBeInTheDocument()
     })
 
@@ -267,7 +270,7 @@ describe('<PublicSourcesSection />', () => {
         await userEvent.type(input, url)
 
         expect(
-            screen.getByRole('button', {name: /Sync URL/})
+            screen.getByRole('button', { name: /Sync URL/ }),
         ).toBeAriaDisabled()
         expect(screen.getByText('URL cannot be a document')).toBeInTheDocument()
     })
@@ -278,7 +281,7 @@ describe('<PublicSourcesSection />', () => {
         const addButton = screen.getByText('Add URL')
         userEvent.click(addButton)
 
-        const syncButton = screen.getByRole('button', {name: /Sync URL/})
+        const syncButton = screen.getByRole('button', { name: /Sync URL/ })
         const input = screen.getByLabelText('Public URL')
 
         await userEvent.type(input, 'https://example.com/faqs')
@@ -300,7 +303,7 @@ describe('<PublicSourcesSection />', () => {
         })
         const mockedSetIsSuccessResources = jest.fn()
 
-        renderComponent({setIsSuccessResources: mockedSetIsSuccessResources})
+        renderComponent({ setIsSuccessResources: mockedSetIsSuccessResources })
 
         expect(mockedSetIsSuccessResources).toHaveBeenCalledWith(true)
     })
@@ -315,7 +318,7 @@ describe('<PublicSourcesSection />', () => {
         })
         const mockedSetIsFailedResources = jest.fn()
 
-        renderComponent({setIsFailedResources: mockedSetIsFailedResources})
+        renderComponent({ setIsFailedResources: mockedSetIsFailedResources })
 
         expect(mockedSetIsFailedResources).toHaveBeenCalledWith(true)
     })
@@ -336,7 +339,7 @@ describe('<PublicSourcesSection />', () => {
         await userEvent.type(input, 'https://example.com/faqs')
 
         expect(mockedSetIsPristine).toHaveBeenCalledWith(true)
-        const syncButton = screen.getByRole('button', {name: /Sync URL/})
+        const syncButton = screen.getByRole('button', { name: /Sync URL/ })
         expect(syncButton).toBeAriaDisabled()
         expect(input).toBeDisabled()
 
@@ -345,19 +348,19 @@ describe('<PublicSourcesSection />', () => {
 
     it('should log connected public url', async () => {
         const mockedLogConnectedPublicUrl = jest.fn()
-        renderComponent({logConnectedPublicUrl: mockedLogConnectedPublicUrl})
+        renderComponent({ logConnectedPublicUrl: mockedLogConnectedPublicUrl })
 
         const addButton = screen.getByText('Add URL')
         userEvent.click(addButton)
 
-        const syncButton = screen.getByRole('button', {name: /Sync URL/})
+        const syncButton = screen.getByRole('button', { name: /Sync URL/ })
         const input = screen.getByLabelText('Public URL')
 
         await userEvent.type(input, 'https://example.com/faqs')
         userEvent.click(syncButton)
 
         expect(mockedLogConnectedPublicUrl).toHaveBeenCalledWith(
-            'https://example.com/faqs'
+            'https://example.com/faqs',
         )
     })
 })

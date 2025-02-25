@@ -1,3 +1,5 @@
+import React from 'react'
+
 import {
     cleanup,
     fireEvent,
@@ -5,13 +7,12 @@ import {
     screen,
     within,
 } from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React from 'react'
-import {Provider} from 'react-redux'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 
-import {IntegrationType} from 'models/integration/constants'
+import { IntegrationType } from 'models/integration/constants'
 import * as actions from 'state/integrations/actions'
-import {mockStore} from 'utils/testing'
+import { mockStore } from 'utils/testing'
 
 import StartMigrationIntegrationsTable from '../EmailMigration/StartMigrationIntegrationsTable'
 
@@ -46,7 +47,7 @@ describe('StartMigrationIntegrationsTable', () => {
         render(
             <Provider store={mockStore({} as any)}>
                 <StartMigrationIntegrationsTable integrations={integrations} />
-            </Provider>
+            </Provider>,
         )
 
     afterEach(cleanup)
@@ -67,10 +68,10 @@ describe('StartMigrationIntegrationsTable', () => {
         fireEvent.click(
             within(tooltip).getByRole('button', {
                 name: /delete integration/i,
-            })
+            }),
         )
         expect(actions.deleteIntegration).toHaveBeenCalledWith(
-            fromJS(integrations[0])
+            fromJS(integrations[0]),
         )
     })
 
@@ -78,8 +79,8 @@ describe('StartMigrationIntegrationsTable', () => {
         renderComponent([])
         expect(
             screen.getByText(
-                'All set! You have no email integrations to be migrated.'
-            )
+                'All set! You have no email integrations to be migrated.',
+            ),
         ).toBeVisible()
     })
 })

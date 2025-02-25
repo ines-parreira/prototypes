@@ -1,15 +1,16 @@
 import React from 'react'
-import {Redirect, useParams} from 'react-router-dom'
 
-import {useGetWorkflowConfigurationTemplate} from 'models/workflows/queries'
+import { Redirect, useParams } from 'react-router-dom'
+
+import { useGetWorkflowConfigurationTemplate } from 'models/workflows/queries'
 
 import ActionsPlatformEditUseCaseTemplateView from './ActionsPlatformEditUseCaseTemplateView'
 
 const ActionsPlatformEditUseCaseTemplateViewContainer = () => {
-    const {id} = useParams<{
+    const { id } = useParams<{
         id: string
     }>()
-    const {data: template, isInitialLoading: isGetTemplateInitialLoading} =
+    const { data: template, isInitialLoading: isGetTemplateInitialLoading } =
         useGetWorkflowConfigurationTemplate(id)
 
     if (isGetTemplateInitialLoading) {

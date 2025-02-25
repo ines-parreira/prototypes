@@ -27,14 +27,14 @@ describe('voiceDeviceSlice', () => {
     }
 
     it('should handle setDevice', () => {
-        const device = {id: 'device-1'} as any
+        const device = { id: 'device-1' } as any
         const action = setDevice(device)
         const newState = reducer(initialState, action)
         expect(newState.device).toEqual(device)
     })
 
     it('should handle setCall', () => {
-        const call = {id: 'call-1'} as any
+        const call = { id: 'call-1' } as any
         const action = setCall(call)
         const newState = reducer(initialState, action)
         expect(newState.call).toEqual(call)
@@ -86,7 +86,7 @@ describe('voiceDeviceSlice', () => {
         const action = incrementReconnectAttempts()
         const newState = reducer(initialState, action)
         expect(newState.reconnectAttempts).toEqual(
-            initialState.reconnectAttempts + 1
+            initialState.reconnectAttempts + 1,
         )
     })
 

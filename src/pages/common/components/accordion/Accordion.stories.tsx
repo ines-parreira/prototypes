@@ -1,5 +1,6 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { Meta, Story } from '@storybook/react'
 
 import CheckBox from 'pages/common/forms/CheckBox'
 import InputField from 'pages/common/forms/input/InputField'
@@ -223,7 +224,9 @@ WithAction.args = {
     children: (
         <>
             <AccordionItem>
-                <AccordionHeader action={<CheckBox style={{marginLeft: 20}} />}>
+                <AccordionHeader
+                    action={<CheckBox style={{ marginLeft: 20 }} />}
+                >
                     Header 1
                 </AccordionHeader>
                 <AccordionBody>
@@ -233,7 +236,9 @@ WithAction.args = {
                 </AccordionBody>
             </AccordionItem>
             <AccordionItem>
-                <AccordionHeader action={<CheckBox style={{marginLeft: 20}} />}>
+                <AccordionHeader
+                    action={<CheckBox style={{ marginLeft: 20 }} />}
+                >
                     Header 2
                 </AccordionHeader>
                 <AccordionBody>
@@ -243,7 +248,9 @@ WithAction.args = {
                 </AccordionBody>
             </AccordionItem>
             <AccordionItem>
-                <AccordionHeader action={<CheckBox style={{marginLeft: 20}} />}>
+                <AccordionHeader
+                    action={<CheckBox style={{ marginLeft: 20 }} />}
+                >
                     Header 3
                 </AccordionHeader>
                 <AccordionBody>

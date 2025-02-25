@@ -1,24 +1,22 @@
-import {screen, fireEvent, render, waitFor, act} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {campaignWithABGroup} from 'fixtures/abGroup'
-import {campaign} from 'fixtures/campaign'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fromJS } from 'immutable'
 
+import { campaignWithABGroup } from 'fixtures/abGroup'
+import { campaign } from 'fixtures/campaign'
 import * as useLocalStorage from 'hooks/useLocalStorage'
 import useSearch from 'hooks/useSearch'
 import * as isConvertSubscriberHook from 'pages/common/hooks/useIsConvertSubscriber'
-import {ACTIVE_CAMPAIGNS_LIMIT} from 'pages/convert/campaigns/constants/lightCampaigns'
-import {ABGroupStatus} from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
-import {CampaignScheduleRuleValueEnum} from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
+import { ACTIVE_CAMPAIGNS_LIMIT } from 'pages/convert/campaigns/constants/lightCampaigns'
+import { ABGroupStatus } from 'pages/convert/campaigns/types/enums/ABGroupStatus.enum'
+import { CampaignScheduleRuleValueEnum } from 'pages/convert/campaigns/types/enums/CampaignScheduleSettingsValues.enum'
+import { CampaignStatus } from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
 
-import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
-
-import {Campaign} from '../../../types/Campaign'
-import {CampaignTriggerType} from '../../../types/enums/CampaignTriggerType.enum'
-import {createTrigger} from '../../../utils/createTrigger'
-
-import {CampaignsTable} from '../CampaignsTable'
+import { Campaign } from '../../../types/Campaign'
+import { CampaignTriggerType } from '../../../types/enums/CampaignTriggerType.enum'
+import { createTrigger } from '../../../utils/createTrigger'
+import { CampaignsTable } from '../CampaignsTable'
 
 jest.mock('hooks/useSearch')
 const useLocalStorageSpy = jest.spyOn(useLocalStorage, 'default') as jest.Mock
@@ -26,7 +24,7 @@ const useLocalStorageSpy = jest.spyOn(useLocalStorage, 'default') as jest.Mock
 const CAMPAIGNS_COUNT = 19
 const ACTIVE_CAMPAIGNS_COUNT = ACTIVE_CAMPAIGNS_LIMIT + 1
 
-const data = Array.from({length: CAMPAIGNS_COUNT}, (_, i) => ({
+const data = Array.from({ length: CAMPAIGNS_COUNT }, (_, i) => ({
     id: i,
     name: `campaign ${i}`,
     language: 'en-US',
@@ -47,14 +45,14 @@ const campaignListWithABGroup = [
 const integration = fromJS({
     id: '1',
     meta: {
-        languages: [{language: 'en-US', primary: true}],
+        languages: [{ language: 'en-US', primary: true }],
         shop_type: 'shopify',
     },
 })
 
 const useIsConvertSubscriberSpy = jest.spyOn(
     isConvertSubscriberHook,
-    'useIsConvertSubscriber'
+    'useIsConvertSubscriber',
 )
 
 const campaignWithSchedule = [
@@ -105,7 +103,7 @@ describe('<CampaignsTable />', () => {
         })
 
         it('renders the `perPage` items', () => {
-            const {container} = render(<CampaignsTable {...props} />)
+            const { container } = render(<CampaignsTable {...props} />)
 
             const rows = container.querySelectorAll('tr')
 
@@ -113,7 +111,9 @@ describe('<CampaignsTable />', () => {
         })
 
         it('renders the `perPage` items with offset', () => {
-            const {container, rerender} = render(<CampaignsTable {...props} />)
+            const { container, rerender } = render(
+                <CampaignsTable {...props} />,
+            )
 
             const firstPage = container.querySelectorAll('tr')
             expect(firstPage.length).toEqual(11) // 10 campaign rows + header row
@@ -131,7 +131,7 @@ describe('<CampaignsTable />', () => {
 
             await waitFor(() => {
                 expect(
-                    screen.getByText(data[0].message_text)
+                    screen.getByText(data[0].message_text),
                 ).toBeInTheDocument()
                 expect(screen.getByText('Business hours')).toBeInTheDocument()
             })
@@ -145,13 +145,13 @@ describe('<CampaignsTable />', () => {
         })
 
         it('resets the page when the data changes', () => {
-            const {rerender} = render(
-                <CampaignsTable {...props} page={3} perPage={5} />
+            const { rerender } = render(
+                <CampaignsTable {...props} page={3} perPage={5} />,
             )
 
             expect(screen.getByLabelText('page-3')).toHaveAttribute(
                 'aria-current',
-                'true'
+                'true',
             )
 
             rerender(
@@ -159,12 +159,12 @@ describe('<CampaignsTable />', () => {
                     {...props}
                     data={data.slice(0, 15)}
                     perPage={5}
-                />
+                />,
             )
 
             expect(screen.getByLabelText('page-1')).toHaveAttribute(
                 'aria-current',
-                'true'
+                'true',
             )
         })
 
@@ -174,12 +174,12 @@ describe('<CampaignsTable />', () => {
                 data: campaignWithSchedule,
             }
 
-            const {container} = render(
-                <CampaignsTable {...newProps} perPage={CAMPAIGNS_COUNT} />
+            const { container } = render(
+                <CampaignsTable {...newProps} perPage={CAMPAIGNS_COUNT} />,
             )
 
             const disabledToggles = container.querySelectorAll(
-                'label[class*="isdisabled"]'
+                'label[class*="isdisabled"]',
             )
             expect(disabledToggles.length).toEqual(1)
         })
@@ -187,33 +187,33 @@ describe('<CampaignsTable />', () => {
         it('blocks toggle activation when over the limit', () => {
             useIsConvertSubscriberSpy.mockImplementation(() => false)
 
-            const {container} = render(
-                <CampaignsTable {...props} perPage={CAMPAIGNS_COUNT} />
+            const { container } = render(
+                <CampaignsTable {...props} perPage={CAMPAIGNS_COUNT} />,
             )
 
             const disabledToggles = container.querySelectorAll(
-                'label[class*="isdisabled"]'
+                'label[class*="isdisabled"]',
             )
 
             expect(disabledToggles.length).toEqual(
-                CAMPAIGNS_COUNT - ACTIVE_CAMPAIGNS_COUNT
+                CAMPAIGNS_COUNT - ACTIVE_CAMPAIGNS_COUNT,
             )
         })
 
         it('displays light campaign modal when toggling active campaign', () => {
             useIsConvertSubscriberSpy.mockImplementation(() => false)
 
-            const {container, getByText} = render(
-                <CampaignsTable {...props} perPage={CAMPAIGNS_COUNT} />
+            const { container, getByText } = render(
+                <CampaignsTable {...props} perPage={CAMPAIGNS_COUNT} />,
             )
 
             const toggles = Array.from(
-                container.querySelectorAll('label[class*="label"]')
+                container.querySelectorAll('label[class*="label"]'),
             ).filter(
                 (el) =>
                     !Array.from(el.classList).some((cn) =>
-                        cn.includes('isdisabled')
-                    )
+                        cn.includes('isdisabled'),
+                    ),
             )
 
             expect(toggles.length).toEqual(ACTIVE_CAMPAIGNS_COUNT)
@@ -246,8 +246,8 @@ describe('<CampaignsTable />', () => {
         })
 
         it('renders a/b test with other', () => {
-            const {container, getByText} = render(
-                <CampaignsTable {...propsWithABGroup} />
+            const { container, getByText } = render(
+                <CampaignsTable {...propsWithABGroup} />,
             )
 
             const rows = container.querySelectorAll('tr')
@@ -263,14 +263,14 @@ describe('<CampaignsTable />', () => {
                 data: [campaignWithABGroup] as unknown[] as Campaign[],
             }
 
-            const {container, getByText, queryByText} = render(
-                <CampaignsTable {...componentProps} />
+            const { container, getByText, queryByText } = render(
+                <CampaignsTable {...componentProps} />,
             )
 
             expect(queryByText('Control Variant')).not.toBeInTheDocument()
 
             const toggleButton = container.querySelectorAll(
-                'button[class*="toggleBtn"]'
+                'button[class*="toggleBtn"]',
             )
             expect(toggleButton.length).toEqual(1)
 
@@ -296,10 +296,10 @@ describe('<CampaignsTable />', () => {
                 data: [campaign] as unknown[] as Campaign[],
             }
 
-            const {container} = render(<CampaignsTable {...componentProps} />)
+            const { container } = render(<CampaignsTable {...componentProps} />)
 
             const disabledToggles = container.querySelectorAll(
-                'label[class*="isdisabled"]'
+                'label[class*="isdisabled"]',
             )
 
             expect(disabledToggles.length).toEqual(1)

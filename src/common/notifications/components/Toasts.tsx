@@ -1,20 +1,21 @@
-import {useKnockFeed} from '@knocklabs/react'
-import React, {useCallback, useMemo} from 'react'
+import React, { useCallback, useMemo } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { useKnockFeed } from '@knocklabs/react'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 
 import useToasts from '../hooks/useToasts'
-
 import Toast from './Toast'
+
 import css from './Toasts.less'
 
 export default function Toasts() {
-    const {dismiss, notifications} = useToasts()
-    const {feedClient} = useKnockFeed()
+    const { dismiss, notifications } = useToasts()
+    const { feedClient } = useKnockFeed()
 
     const reversedNotifications = useMemo(
         () => notifications.reverse(),
-        [notifications]
+        [notifications],
     )
 
     const dismissers = useMemo(
@@ -24,9 +25,9 @@ export default function Toasts() {
                     ...acc,
                     [notification.id]: () => dismiss(notification.id),
                 }),
-                {} as Record<string, () => void>
+                {} as Record<string, () => void>,
             ),
-        [dismiss, notifications]
+        [dismiss, notifications],
     )
 
     const handleClick = useCallback(
@@ -40,7 +41,7 @@ export default function Toasts() {
                 void feedClient.markAsRead(knockItem)
             }
         },
-        [feedClient]
+        [feedClient],
     )
 
     return (

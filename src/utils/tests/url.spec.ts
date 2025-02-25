@@ -32,7 +32,7 @@ describe('attachSearchParamsToUrl', () => {
             attachSearchParamsToUrl('http://acme.gorgias.docker', {
                 ref: 'internal',
                 isTest: 'true',
-            })
+            }),
         ).toEqual('http://acme.gorgias.docker/?ref=internal&isTest=true')
     })
 
@@ -43,20 +43,20 @@ describe('attachSearchParamsToUrl', () => {
                 {
                     ref: 'internal',
                     isTest: 'true',
-                }
-            )
+                },
+            ),
         ).toEqual(
-            'http://acme.gorgias.docker/?current=isHere&ref=internal&isTest=true'
+            'http://acme.gorgias.docker/?current=isHere&ref=internal&isTest=true',
         )
     })
 
     it('should return the same URL if no params are provided', () => {
         expect(
-            attachSearchParamsToUrl('http://acme.gorgias.docker', {})
+            attachSearchParamsToUrl('http://acme.gorgias.docker', {}),
         ).toEqual('http://acme.gorgias.docker/')
 
         expect(attachSearchParamsToUrl('http://acme.gorgias.docker')).toEqual(
-            'http://acme.gorgias.docker/'
+            'http://acme.gorgias.docker/',
         )
     })
 
@@ -67,7 +67,7 @@ describe('attachSearchParamsToUrl', () => {
             attachSearchParamsToUrl('/', {
                 ref: 'internal',
                 isTest: 'true',
-            })
+            }),
         ).toEqual('/')
 
         expect(spy).toHaveBeenCalledTimes(1)
@@ -80,7 +80,7 @@ describe('attachSearchParamsToUrl', () => {
             attachSearchParamsToUrl('http://acme.gorgias.docker', {
                 ref: ' internal ',
                 isTest: ' true ',
-            })
+            }),
         ).toEqual('http://acme.gorgias.docker/?ref=internal&isTest=true')
     })
 
@@ -90,9 +90,9 @@ describe('attachSearchParamsToUrl', () => {
                 ref: 'internal',
                 isTest: 'true',
                 utm_campaign: '10% test',
-            })
+            }),
         ).toEqual(
-            'http://acme.gorgias.docker/?ref=internal&isTest=true&utm_campaign=10%25%20test'
+            'http://acme.gorgias.docker/?ref=internal&isTest=true&utm_campaign=10%25%20test',
         )
     })
 })

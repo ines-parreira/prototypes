@@ -1,11 +1,12 @@
-import {screen, render, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {updateAccountOwner} from 'state/currentAccount/actions'
-import {assumeMock} from 'utils/testing'
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
-import {OwnershipModal} from '../OwnershipModal'
+import { updateAccountOwner } from 'state/currentAccount/actions'
+import { assumeMock } from 'utils/testing'
+
+import { OwnershipModal } from '../OwnershipModal'
 
 jest.mock('state/currentAccount/actions')
 const mockedUpdateAccountOwner = assumeMock(updateAccountOwner)
@@ -22,13 +23,13 @@ describe('OwnershipModal', () => {
     }
 
     it('should display or not according to `isModalOpen` prop', async () => {
-        const {rerender} = render(<OwnershipModal {...props} />)
+        const { rerender } = render(<OwnershipModal {...props} />)
         expect(screen.getByText(`Set ${props.name} as owner`))
 
         rerender(<OwnershipModal {...props} isModalOpen={false} />)
         await waitFor(() => {
             expect(
-                screen.queryByText(`Set ${props.name} as owner`)
+                screen.queryByText(`Set ${props.name} as owner`),
             ).not.toBeInTheDocument()
         })
     })

@@ -1,13 +1,15 @@
+import React, { ReactNode, useMemo } from 'react'
+
 import classnames from 'classnames'
-import React, {ReactNode, useMemo} from 'react'
 
 import useId from 'hooks/useId'
 
-import {useAccordionContext} from './AccordionContext'
-import css from './AccordionItem.less'
+import { useAccordionContext } from './AccordionContext'
 import AccordionItemContext, {
     AccordionItemContextType,
 } from './AccordionItemContext'
+
+import css from './AccordionItem.less'
 
 export type AccordionItemProps = {
     id?: string
@@ -25,7 +27,7 @@ const AccordionItem = ({
     const randomId = useId()
     const id = idProp || randomId
 
-    const {expandedItem, toggleItem, onHoveredItemChange} =
+    const { expandedItem, toggleItem, onHoveredItemChange } =
         useAccordionContext()
 
     const accordionItemContext: AccordionItemContextType = useMemo(
@@ -40,7 +42,7 @@ const AccordionItem = ({
                 }
             },
         }),
-        [expandedItem, id, isDisabled, toggleItem]
+        [expandedItem, id, isDisabled, toggleItem],
     )
 
     const handleMouseEnter = () => {

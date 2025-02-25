@@ -1,6 +1,7 @@
+import React, { useEffect, useMemo } from 'react'
+
 import _flatten from 'lodash/flatten'
-import React, {useEffect, useMemo} from 'react'
-import {ConnectedProps, connect} from 'react-redux'
+import { connect, ConnectedProps } from 'react-redux'
 import {
     Link,
     NavLink,
@@ -20,14 +21,14 @@ import {
     CONTACT_FORM_FORMS_PATH,
     CONTACT_FORM_PAGE_TITLE,
 } from 'pages/settings/contactForm/constants'
-import {CONTACT_FORM_APP_DETAIL} from 'pages/settings/contactForm/views/ContactFormStartView/constants'
+import { CONTACT_FORM_APP_DETAIL } from 'pages/settings/contactForm/views/ContactFormStartView/constants'
 import ManageContactForms from 'pages/settings/contactForm/views/ContactFormStartView/ManageContactForms'
-import {notify as notifyAction} from 'state/notifications/actions'
-import {notEmpty} from 'utils'
-import {reportError} from 'utils/errors'
+import { notify as notifyAction } from 'state/notifications/actions'
+import { notEmpty } from 'utils'
+import { reportError } from 'utils/errors'
 
-import {NotificationStatus} from '../../../../../state/notifications/types'
-import {useGetContactFormList} from '../../queries'
+import { NotificationStatus } from '../../../../../state/notifications/types'
+import { useGetContactFormList } from '../../queries'
 
 const CONTACT_FORM_HOME_ROUTES = {
     About: CONTACT_FORM_ABOUT_PATH,
@@ -69,8 +70,8 @@ const ContactFormStartView = ({
             reportError(
                 new Error('Failed to fetch Contact Forms'),
                 getContactFormList.error instanceof Error
-                    ? {extra: {message: getContactFormList.error.message}}
-                    : undefined
+                    ? { extra: { message: getContactFormList.error.message } }
+                    : undefined,
             )
         }
     }, [getContactFormList.error, getContactFormList.isError, history, notify])
@@ -86,7 +87,7 @@ const ContactFormStartView = ({
             .map((page) => page.data)
 
         const allContactForms = _flatten(allContactFormListPageDto).filter(
-            notEmpty
+            notEmpty,
         )
 
         return allContactForms.filter((cf) => cf.source === 'manual')

@@ -1,19 +1,19 @@
-import {fromJS, Map} from 'immutable'
 import React from 'react'
-import {Row, Col, FormGroup, Label} from 'reactstrap'
+
+import { fromJS, Map } from 'immutable'
+import { Col, FormGroup, Label, Row } from 'reactstrap'
 
 import {
     AVAILABLE_HTTP_METHODS,
-    JSON_CONTENT_TYPE,
     FORM_CONTENT_TYPE,
     HTTP_METHOD_GET,
+    JSON_CONTENT_TYPE,
 } from 'config'
-
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import InputField from 'pages/common/forms/input/InputField'
 import JsonField from 'pages/common/forms/JsonField'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
-import {validateWebhookURL, validateWebhookURLToPattern} from 'utils'
+import { validateWebhookURL, validateWebhookURLToPattern } from 'utils'
 
 import ParametersEditor from '../ParametersEditor'
 
@@ -32,7 +32,7 @@ export default class HttpAction extends React.Component<Props> {
     _setArgument = (name: string, value: unknown) => {
         const args: Map<string, any> = this.props.action.get(
             'arguments',
-            fromJS({})
+            fromJS({}),
         )
         this.props.updateActionArgs(this.props.index, args.set(name, value))
     }
@@ -88,7 +88,7 @@ export default class HttpAction extends React.Component<Props> {
     }
 
     render() {
-        const {action} = this.props
+        const { action } = this.props
 
         return (
             <div className="http">
@@ -130,7 +130,7 @@ export default class HttpAction extends React.Component<Props> {
                             label="URL"
                             error={
                                 validateWebhookURL(
-                                    action.getIn(['arguments', 'url'])
+                                    action.getIn(['arguments', 'url']),
                                 ) as string
                             }
                             value={action.getIn(['arguments', 'url'])}
@@ -141,7 +141,7 @@ export default class HttpAction extends React.Component<Props> {
                             isRequired
                             form="macro_form"
                             pattern={validateWebhookURLToPattern(
-                                action.getIn(['arguments', 'url'])
+                                action.getIn(['arguments', 'url']),
                             )}
                         />
                     </Col>
@@ -160,7 +160,7 @@ export default class HttpAction extends React.Component<Props> {
                         name="headers"
                         list={action.getIn(
                             ['arguments', 'headers'],
-                            fromJS([])
+                            fromJS([]),
                         )}
                         updateDict={(d) => this._setArgument('headers', d)}
                     />

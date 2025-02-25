@@ -1,4 +1,4 @@
-import {renderHook, act} from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react-hooks'
 
 import useDeepEffect from '../useDeepEffect'
 
@@ -11,7 +11,7 @@ describe('useDeepEffect', () => {
     })
 
     it('runs effect on initial render', () => {
-        const campaign = {id: 1, name: 'Campaign 1'}
+        const campaign = { id: 1, name: 'Campaign 1' }
 
         renderHook(() => useDeepEffect(mockCallback, [campaign]))
 
@@ -20,14 +20,14 @@ describe('useDeepEffect', () => {
     })
 
     it('runs effect when dependencies change', () => {
-        const initialCampaign = {id: 1, name: 'Campaign 1'}
-        const updatedCampaign = {id: 2, name: 'Campaign 2'}
+        const initialCampaign = { id: 1, name: 'Campaign 1' }
+        const updatedCampaign = { id: 2, name: 'Campaign 2' }
 
-        const {rerender} = renderHook(
-            ({campaign}) => useDeepEffect(mockCallback, [campaign]),
+        const { rerender } = renderHook(
+            ({ campaign }) => useDeepEffect(mockCallback, [campaign]),
             {
-                initialProps: {campaign: initialCampaign},
-            }
+                initialProps: { campaign: initialCampaign },
+            },
         )
 
         // Effect runs once on initial render
@@ -35,7 +35,7 @@ describe('useDeepEffect', () => {
 
         // Rerender with updated campaign
         act(() => {
-            rerender({campaign: updatedCampaign})
+            rerender({ campaign: updatedCampaign })
         })
 
         // Effect should run again due to dependency change
@@ -43,13 +43,13 @@ describe('useDeepEffect', () => {
     })
 
     it('does not run effect when dependencies do not change', () => {
-        const campaign = {id: 1, name: 'Campaign 1'}
+        const campaign = { id: 1, name: 'Campaign 1' }
 
-        const {rerender} = renderHook(
-            ({campaign}) => useDeepEffect(mockCallback, [campaign]),
+        const { rerender } = renderHook(
+            ({ campaign }) => useDeepEffect(mockCallback, [campaign]),
             {
-                initialProps: {campaign},
-            }
+                initialProps: { campaign },
+            },
         )
 
         // Effect runs once on initial render
@@ -57,7 +57,7 @@ describe('useDeepEffect', () => {
 
         // Rerender with the same campaign object
         act(() => {
-            rerender({campaign})
+            rerender({ campaign })
         })
 
         // Effect should not run again since there is no dependency change

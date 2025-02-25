@@ -1,7 +1,7 @@
-import {useEffect, useState} from 'react'
+import { useEffect, useState } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {getLDClient} from 'utils/launchDarkly'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { getLDClient } from 'utils/launchDarkly'
 
 /**
  * @param flag - The feature flag to check from the FeatureFlagKey enum
@@ -10,11 +10,11 @@ import {getLDClient} from 'utils/launchDarkly'
  */
 export default function useFlag<T = boolean>(
     flag: FeatureFlagKey,
-    defaultValue: T = false as T
+    defaultValue: T = false as T,
 ): T {
     const client = getLDClient()
     const [value, setValue] = useState<T>(
-        () => client.variation(flag, defaultValue) as T
+        () => client.variation(flag, defaultValue) as T,
     )
 
     useEffect(() => {

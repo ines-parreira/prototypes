@@ -7,7 +7,7 @@ export type AvatarParamsType = {
 
 export function getInitials(
     name: Maybe<string>,
-    useFirstInitialOnly?: boolean
+    useFirstInitialOnly?: boolean,
 ): string {
     if (!name) {
         return ''
@@ -27,7 +27,7 @@ export function getInitials(
 function getGravatarUrl(email = ''): Promise<string> {
     return new Promise((resolve, reject) => {
         const gravatarUrl = `https://www.gravatar.com/avatar/${md5(
-            email
+            email,
         )}?d=404`
         const img = new Image()
         img.onload = () => {
@@ -39,7 +39,7 @@ function getGravatarUrl(email = ''): Promise<string> {
     })
 }
 
-const avatarCache: {[key: string]: Maybe<string>} = {}
+const avatarCache: { [key: string]: Maybe<string> } = {}
 
 function cleanEmail(email: Maybe<string>): string {
     return (email || '').toLowerCase().trim()

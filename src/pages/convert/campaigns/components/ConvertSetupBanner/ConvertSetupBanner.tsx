@@ -1,15 +1,16 @@
+import React, { useMemo } from 'react'
+
 import classNames from 'classnames'
-import React, {useMemo} from 'react'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import useGetConvertStatus, {
     BundleOnboardingStatus,
 } from 'pages/convert/common/hooks/useGetConvertStatus'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
-import {getIntegrationById} from 'state/integrations/selectors'
-import {isAdmin, toJS} from 'utils'
+import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import { getIntegrationById } from 'state/integrations/selectors'
+import { isAdmin, toJS } from 'utils'
 
 type Props = {
     classes?: string
@@ -26,14 +27,14 @@ export const ConvertSetupBanner = ({
 
     const convertStatus = useGetConvertStatus(
         true,
-        !!shopIntegrationId ? shopIntegrationId : chatIntegrationId
+        !!shopIntegrationId ? shopIntegrationId : chatIntegrationId,
     )
 
     const chatIntegration = useAppSelector(
-        getIntegrationById(chatIntegrationId || 0)
+        getIntegrationById(chatIntegrationId || 0),
     )
-    const {channelConnection} = useGetOrCreateChannelConnection(
-        toJS(chatIntegration)
+    const { channelConnection } = useGetOrCreateChannelConnection(
+        toJS(chatIntegration),
     )
 
     const isBundleNotInstalled = useMemo(
@@ -41,12 +42,12 @@ export const ConvertSetupBanner = ({
             convertStatus &&
             convertStatus.bundle_status ===
                 BundleOnboardingStatus.NOT_INSTALLED,
-        [convertStatus]
+        [convertStatus],
     )
 
     const isButtonVisible = useMemo(
         () => isBundleNotInstalled && isAdmin(currentUser),
-        [currentUser, isBundleNotInstalled]
+        [currentUser, isBundleNotInstalled],
     )
 
     if (!isBundleNotInstalled) return <></>

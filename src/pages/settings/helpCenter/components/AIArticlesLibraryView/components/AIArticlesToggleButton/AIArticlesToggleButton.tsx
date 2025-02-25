@@ -1,9 +1,10 @@
-import classNames from 'classnames'
 import React from 'react'
 
+import classNames from 'classnames'
+
 import {
-    AIArticleToggleOptionValue,
     AIArticleToggleOption,
+    AIArticleToggleOptionValue,
 } from 'models/helpCenter/types'
 import * as ToggleButton from 'pages/common/components/ToggleButton'
 
@@ -14,7 +15,7 @@ type AIArticlesToggleButtonProps = {
     setSelectedOption: React.Dispatch<
         React.SetStateAction<AIArticleToggleOptionValue>
     >
-    options: (AIArticleToggleOption & {count: number})[]
+    options: (AIArticleToggleOption & { count: number })[]
 }
 
 const AIArticlesToggleButton = ({

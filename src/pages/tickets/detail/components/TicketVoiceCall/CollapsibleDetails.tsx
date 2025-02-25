@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
 import ControlledCollapsibleDetails from './ControlledCollapsibleDetails'
 
@@ -7,7 +7,7 @@ type Props = {
     children: React.ReactNode
 }
 
-export default function CollapsibleDetails({title, children}: Props) {
+export default function CollapsibleDetails({ title, children }: Props) {
     const [isOpen, setIsOpen] = useState(false)
 
     return (

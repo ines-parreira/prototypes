@@ -1,34 +1,35 @@
-import {renderHook} from '@testing-library/react-hooks'
-import {mockFlags} from 'jest-launchdarkly-mock'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { renderHook } from '@testing-library/react-hooks'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {useChannelsSortingQuery} from 'hooks/reporting/support-performance/useChannelsSortingQuery'
-import {MetricWithDecile} from 'hooks/reporting/useMetricPerDimension'
-import {opposite, OrderDirection} from 'models/api/types'
-import {HelpdeskMessageCubeWithJoins} from 'models/reporting/cubes/HelpdeskMessageCube'
-import {TicketMeasure} from 'models/reporting/cubes/TicketCube'
-import {TicketMessagesCube} from 'models/reporting/cubes/TicketMessagesCube'
-import {TicketSatisfactionSurveyMeasure} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
-import {CHANNEL_DIMENSION} from 'models/reporting/queryFactories/support-performance/constants'
-import {withDefaultLogicalOperator} from 'models/reporting/queryFactories/utils'
-import {TagFilterInstanceId} from 'models/stat/types'
-import {ChannelColumnConfig} from 'pages/stats/support-performance/channels/ChannelsTableConfig'
-import {initialState as filtersInitialState} from 'state/stats/statsSlice'
-import {RootState, StoreDispatch} from 'state/types'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { useChannelsSortingQuery } from 'hooks/reporting/support-performance/useChannelsSortingQuery'
+import { MetricWithDecile } from 'hooks/reporting/useMetricPerDimension'
+import { opposite, OrderDirection } from 'models/api/types'
+import { HelpdeskMessageCubeWithJoins } from 'models/reporting/cubes/HelpdeskMessageCube'
+import { TicketMeasure } from 'models/reporting/cubes/TicketCube'
+import { TicketMessagesCube } from 'models/reporting/cubes/TicketMessagesCube'
+import { TicketSatisfactionSurveyMeasure } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
+import { CHANNEL_DIMENSION } from 'models/reporting/queryFactories/support-performance/constants'
+import { withDefaultLogicalOperator } from 'models/reporting/queryFactories/utils'
+import { TagFilterInstanceId } from 'models/stat/types'
+import { ChannelColumnConfig } from 'pages/stats/support-performance/channels/ChannelsTableConfig'
+import { initialState as filtersInitialState } from 'state/stats/statsSlice'
+import { RootState, StoreDispatch } from 'state/types'
 import {
+    channelsSlice,
     initialState,
     sortingLoaded,
     sortingLoading,
     sortingSet,
-    channelsSlice,
 } from 'state/ui/stats/channelsSlice'
-import {initialState as uiFiltersInitialState} from 'state/ui/stats/filtersSlice'
-import {ChannelsTableColumns} from 'state/ui/stats/types'
-import {notEmpty} from 'utils'
+import { initialState as uiFiltersInitialState } from 'state/ui/stats/filtersSlice'
+import { ChannelsTableColumns } from 'state/ui/stats/types'
+import { notEmpty } from 'utils'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -67,13 +68,13 @@ describe('useChannelsSortingQuery', () => {
             const store = mockStore(defaultState)
             const column = ChannelsTableColumns.CustomerSatisfaction
 
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () => useChannelsSortingQuery(column, queryHook),
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <Provider store={store}>{children}</Provider>
                     ),
-                }
+                },
             )
 
             result.current.sortCallback()
@@ -82,7 +83,7 @@ describe('useChannelsSortingQuery', () => {
                 sortingSet({
                     direction: OrderDirection.Desc,
                     field: column,
-                })
+                }),
             )
         })
 
@@ -90,26 +91,26 @@ describe('useChannelsSortingQuery', () => {
             const store = mockStore(defaultState)
             const column = initialState.sorting.field
 
-            const {result} = renderHook(
+            const { result } = renderHook(
                 () => useChannelsSortingQuery(column, queryHook),
                 {
-                    wrapper: ({children}) => (
+                    wrapper: ({ children }) => (
                         <Provider store={store}>{children}</Provider>
                     ),
-                }
+                },
             )
 
             result.current.sortCallback()
 
             const expectedSortingDirection = opposite(
-                initialState.sorting.direction
+                initialState.sorting.direction,
             )
 
             expect(store.getActions()).toContainEqual(
                 sortingSet({
                     direction: expectedSortingDirection,
                     field: column,
-                })
+                }),
             )
         })
     })
@@ -150,7 +151,7 @@ describe('useChannelsSortingQuery', () => {
         })
 
         renderHook(() => useChannelsSortingQuery(column, queryHook), {
-            wrapper: ({children}) => (
+            wrapper: ({ children }) => (
                 <Provider store={store}>{children}</Provider>
             ),
         })
@@ -159,8 +160,8 @@ describe('useChannelsSortingQuery', () => {
             sortingLoaded(
                 metricData.allData
                     .map((result) => result[CHANNEL_DIMENSION])
-                    .filter(notEmpty)
-            )
+                    .filter(notEmpty),
+            ),
         )
     })
 
@@ -189,7 +190,7 @@ describe('useChannelsSortingQuery', () => {
         })
 
         renderHook(() => useChannelsSortingQuery(column, queryHook), {
-            wrapper: ({children}) => (
+            wrapper: ({ children }) => (
                 <Provider store={store}>{children}</Provider>
             ),
         })
@@ -232,7 +233,7 @@ describe('useChannelsSortingQuery', () => {
         })
 
         renderHook(() => useChannelsSortingQuery(column, queryHook), {
-            wrapper: ({children}) => (
+            wrapper: ({ children }) => (
                 <Provider store={store}>{children}</Provider>
             ),
         })
@@ -241,8 +242,8 @@ describe('useChannelsSortingQuery', () => {
             sortingLoaded(
                 metricData.allData
                     .map((result) => result[CHANNEL_DIMENSION])
-                    .filter(notEmpty)
-            )
+                    .filter(notEmpty),
+            ),
         )
     })
 
@@ -270,13 +271,13 @@ describe('useChannelsSortingQuery', () => {
             () =>
                 useChannelsSortingQuery(
                     column,
-                    ChannelColumnConfig[column].useMetric
+                    ChannelColumnConfig[column].useMetric,
                 ),
             {
-                wrapper: ({children}) => (
+                wrapper: ({ children }) => (
                     <Provider store={store}>{children}</Provider>
                 ),
-            }
+            },
         )
 
         expect(store.getActions()).toContainEqual(sortingLoaded([]))
@@ -306,7 +307,7 @@ describe('useChannelsSortingQuery', () => {
         })
 
         renderHook(() => useChannelsSortingQuery(column, queryHook), {
-            wrapper: ({children}) => (
+            wrapper: ({ children }) => (
                 <Provider store={store}>{children}</Provider>
             ),
         })
@@ -339,7 +340,7 @@ describe('useChannelsSortingQuery', () => {
         const column = ChannelsTableColumns.CustomerSatisfaction
 
         renderHook(() => useChannelsSortingQuery(column, queryHook), {
-            wrapper: ({children}) => (
+            wrapper: ({ children }) => (
                 <Provider store={store}>{children}</Provider>
             ),
         })
@@ -350,7 +351,7 @@ describe('useChannelsSortingQuery', () => {
                 channels: mockedChannels,
             }),
             expect.anything(),
-            expect.anything()
+            expect.anything(),
         )
     })
 
@@ -383,7 +384,7 @@ describe('useChannelsSortingQuery', () => {
         const column = ChannelsTableColumns.CustomerSatisfaction
 
         renderHook(() => useChannelsSortingQuery(column, queryHook), {
-            wrapper: ({children}) => (
+            wrapper: ({ children }) => (
                 <Provider store={store}>{children}</Provider>
             ),
         })
@@ -399,7 +400,7 @@ describe('useChannelsSortingQuery', () => {
                 channels: withDefaultLogicalOperator(mockedChannels),
             }),
             expect.anything(),
-            expect.anything()
+            expect.anything(),
         )
     })
 })

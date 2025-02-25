@@ -1,14 +1,15 @@
-import classnames from 'classnames'
 import React, {
-    KeyboardEvent,
-    InputHTMLAttributes,
-    useState,
-    useEffect,
-    useRef,
     ForwardedRef,
     forwardRef,
+    InputHTMLAttributes,
+    KeyboardEvent,
+    useEffect,
     useImperativeHandle,
+    useRef,
+    useState,
 } from 'react'
+
+import classnames from 'classnames'
 
 import useDebouncedEffect from 'hooks/useDebouncedEffect'
 import IconInput from 'pages/common/forms/input/IconInput'
@@ -40,7 +41,7 @@ const Search = (
         value,
         ...rest
     }: Props,
-    forwardedRef: ForwardedRef<HTMLInputElement>
+    forwardedRef: ForwardedRef<HTMLInputElement>,
 ) => {
     const [internalValue, setInternalValue] = useState(value ?? '')
     const [previousValue, setPreviousValue] = useState(value ?? '')
@@ -69,7 +70,7 @@ const Search = (
             }
         },
         [internalValue],
-        searchDebounceTime
+        searchDebounceTime,
     )
 
     return (

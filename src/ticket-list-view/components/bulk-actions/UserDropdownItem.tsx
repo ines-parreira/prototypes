@@ -1,15 +1,15 @@
-import {User} from '@gorgias/api-queries'
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {Item} from 'components/Dropdown'
+import { User } from '@gorgias/api-queries'
+
+import { Item } from 'components/Dropdown'
 import useAppSelector from 'hooks/useAppSelector'
 import Avatar from 'pages/common/components/Avatar/Avatar'
-
-import {getHumanAgentsJS} from 'state/agents/selectors'
+import { getHumanAgentsJS } from 'state/agents/selectors'
 
 import css from './style.less'
 
-export default function UserDropdownItem({item}: {item: Item}) {
+export default function UserDropdownItem({ item }: { item: Item }) {
     const users = useAppSelector(getHumanAgentsJS)
 
     const url = useMemo(
@@ -17,7 +17,7 @@ export default function UserDropdownItem({item}: {item: Item}) {
             (item.meta as User['meta'])?.profile_picture_url ??
             users.find((user) => user.id === item.id)?.meta
                 ?.profile_picture_url,
-        [item.id, item.meta, users]
+        [item.id, item.meta, users],
     )
 
     return (

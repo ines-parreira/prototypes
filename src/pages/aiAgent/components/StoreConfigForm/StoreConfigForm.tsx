@@ -1,8 +1,4 @@
 // External Libraries
-import {useId} from '@floating-ui/react'
-import {Label} from '@gorgias/merchant-ui-kit'
-import {List} from 'immutable'
-import {useFlags} from 'launchdarkly-react-client-sdk'
 import React, {
     ComponentProps,
     useCallback,
@@ -11,21 +7,27 @@ import React, {
     useRef,
     useState,
 } from 'react'
-import {Link, useParams} from 'react-router-dom'
+
+import { useId } from '@floating-ui/react'
+import { List } from 'immutable'
+import { useFlags } from 'launchdarkly-react-client-sdk'
+import { Link, useParams } from 'react-router-dom'
+
+import { Label } from '@gorgias/merchant-ui-kit'
 
 // Absolute Imports
-import {AI_AGENT_SENTRY_TEAM} from 'common/const/sentryTeamNames'
-import {FeatureFlagKey} from 'config/featureFlags'
-import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
+import { AI_AGENT_SENTRY_TEAM } from 'common/const/sentryTeamNames'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useLocalStorage from 'hooks/useLocalStorage'
-import {useSearchParam} from 'hooks/useSearchParam'
-import {Tag} from 'models/aiAgent/types'
-import {HelpCenter} from 'models/helpCenter/types'
-import {useStoreConfigurationForm} from 'pages/aiAgent/hooks/useStoreConfigurationForm'
-import {getFormValuesFromStoreConfiguration} from 'pages/aiAgent/hooks/utils/configurationForm.utils'
-import {FormValues} from 'pages/aiAgent/types'
+import { useSearchParam } from 'hooks/useSearchParam'
+import { Tag } from 'models/aiAgent/types'
+import { HelpCenter } from 'models/helpCenter/types'
+import { useStoreConfigurationForm } from 'pages/aiAgent/hooks/useStoreConfigurationForm'
+import { getFormValuesFromStoreConfiguration } from 'pages/aiAgent/hooks/utils/configurationForm.utils'
+import { FormValues } from 'pages/aiAgent/types'
 import HelpCenterSelect, {
     EMPTY_HELP_CENTER_ID,
 } from 'pages/automate/common/components/HelpCenterSelect'
@@ -35,43 +37,42 @@ import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import ListField from 'pages/common/forms/ListField'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import history from 'pages/history'
-import {getIntegrationsByTypes} from 'state/integrations/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {reportError} from 'utils/errors'
+import { getIntegrationsByTypes } from 'state/integrations/selectors'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { reportError } from 'utils/errors'
 
 // Relative Imports
 
-import {AiAgentConfigurationModal} from '../../AiAgentConfigurationView/AiAgentConfigurationModal'
+import { AiAgentConfigurationModal } from '../../AiAgentConfigurationView/AiAgentConfigurationModal'
 import PostCompletionWizardModal from '../../AiAgentOnboardingWizard/PostCompletionWizardModal'
-import {TicketPreview} from '../../AiAgentOnboardingWizard/TicketPreview'
+import { TicketPreview } from '../../AiAgentOnboardingWizard/TicketPreview'
 import {
     EXCLUDED_TOPIC_MAX_LENGTH,
-    MAX_EXCLUDED_TOPICS,
     INITIAL_FORM_VALUES,
+    MAX_EXCLUDED_TOPICS,
     WIZARD_POST_COMPLETION_QUERY_KEY,
     WIZARD_POST_COMPLETION_STATE,
 } from '../../constants'
-import {useAccountStoreConfiguration} from '../../hooks/useAccountStoreConfiguration'
-import {useAiAgentEnabled} from '../../hooks/useAiAgentEnabled'
-import {useAiAgentOnboardingNotification} from '../../hooks/useAiAgentOnboardingNotification'
+import { useAccountStoreConfiguration } from '../../hooks/useAccountStoreConfiguration'
+import { useAiAgentEnabled } from '../../hooks/useAiAgentEnabled'
+import { useAiAgentOnboardingNotification } from '../../hooks/useAiAgentOnboardingNotification'
 import useCustomToneOfVoicePreview from '../../hooks/useCustomToneOfVoicePreview'
-import {useFileIngestion} from '../../hooks/useFileIngestion'
-import {useGetOrCreateSnippetHelpCenter} from '../../hooks/useGetOrCreateSnippetHelpCenter'
-import {usePublicResources} from '../../hooks/usePublicResources'
-import {useAiAgentStoreConfigurationContext} from '../../providers/AiAgentStoreConfigurationContext'
-
-import {isHandoffEnabled} from '../../util'
-import {AIAgentIntroduction} from '../AIAgentIntroduction/AIAgentIntroduction'
-import {AiAgentPreviewModeSection} from '../AIAgentPreviewModeSection/AiAgentPreviewModeSection'
-import {ConfigurationSection} from '../ConfigurationSection/ConfigurationSection'
-import {PublicSourcesSection} from '../PublicSourcesSection/PublicSourcesSection'
+import { useFileIngestion } from '../../hooks/useFileIngestion'
+import { useGetOrCreateSnippetHelpCenter } from '../../hooks/useGetOrCreateSnippetHelpCenter'
+import { usePublicResources } from '../../hooks/usePublicResources'
+import { useAiAgentStoreConfigurationContext } from '../../providers/AiAgentStoreConfigurationContext'
+import { isHandoffEnabled } from '../../util'
+import { AIAgentIntroduction } from '../AIAgentIntroduction/AIAgentIntroduction'
+import { AiAgentPreviewModeSection } from '../AIAgentPreviewModeSection/AiAgentPreviewModeSection'
+import { ConfigurationSection } from '../ConfigurationSection/ConfigurationSection'
+import { PublicSourcesSection } from '../PublicSourcesSection/PublicSourcesSection'
 import TagList from '../TicketTag/TagList'
+import { ChannelsFormComponent } from './FormComponents/ChannelsFormComponent'
+import { ToneOfVoiceFormComponent } from './FormComponents/ToneOfVoiceFormComponent'
+import { isPreviewModeActivated } from './StoreConfigForm.utils'
 
-import {ChannelsFormComponent} from './FormComponents/ChannelsFormComponent'
-import {ToneOfVoiceFormComponent} from './FormComponents/ToneOfVoiceFormComponent'
 import css from './StoreConfigForm.less'
-import {isPreviewModeActivated} from './StoreConfigForm.utils'
 
 const AI_SETTINGS_TICKET_VIEW_MODAL_VIEWED =
     'ai-settings-ticket-view-modal-viewed'
@@ -101,7 +102,7 @@ export const StoreConfigForm = ({
 
     // Because this component is heavy and difficult to rework
     // Standalone team decided to add the capability to show/hide some sections based on the current route (tab param)
-    const {tab = 'general'} = useParams<{tab?: 'channels'}>()
+    const { tab = 'general' } = useParams<{ tab?: 'channels' }>()
     // Standalone menu feature flag is used to detect if we need to use the old settings page (all in one settings) or
     // the new one (separated tabs for general and channels settings)
     // On "old" settings page, we display all sections
@@ -120,17 +121,17 @@ export const StoreConfigForm = ({
 
     const [sectionQueryParam, setSectionQueryParam] = useSearchParam('section')
     const [wizardQueryParam, setWizardQueryParam] = useSearchParam(
-        WIZARD_POST_COMPLETION_QUERY_KEY
+        WIZARD_POST_COMPLETION_QUERY_KEY,
     )
 
-    const {aiAgentTicketViewId, aiAgentPreviewTicketViewId} =
+    const { aiAgentTicketViewId, aiAgentPreviewTicketViewId } =
         useAccountStoreConfiguration({
             storeNames: [shopName],
         })
 
     const [ticketModalViewed, setTicketModalViewed] = useLocalStorage<string[]>(
         AI_SETTINGS_TICKET_VIEW_MODAL_VIEWED,
-        []
+        [],
     )
 
     const [
@@ -147,12 +148,12 @@ export const StoreConfigForm = ({
             (sectionQueryParam === 'knowledge' ||
                 wizardQueryParam === WIZARD_POST_COMPLETION_STATE.knowledge)
         ) {
-            knowledgeSectionRef.current?.scrollIntoView({behavior: 'smooth'})
+            knowledgeSectionRef.current?.scrollIntoView({ behavior: 'smooth' })
         } else if (
             emailSectionRef.current !== null &&
             sectionQueryParam === 'email'
         ) {
-            emailSectionRef.current?.scrollIntoView({behavior: 'smooth'})
+            emailSectionRef.current?.scrollIntoView({ behavior: 'smooth' })
         }
 
         setSectionQueryParam(null)
@@ -175,7 +176,7 @@ export const StoreConfigForm = ({
                         status: NotificationStatus.Success,
                         message: 'URL sources have successfully synced.',
                         showDismissButton: true,
-                    })
+                    }),
                 )
             } else {
                 void dispatch(
@@ -184,7 +185,7 @@ export const StoreConfigForm = ({
                         message:
                             'One or more URL sources for AI Agent failed to sync. Review URLs and try again.',
                         showDismissButton: true,
-                    })
+                    }),
                 )
             }
             setWizardQueryParam(null)
@@ -197,14 +198,14 @@ export const StoreConfigForm = ({
         wizardQueryParam,
     ])
 
-    const {storeConfiguration, updateStoreConfiguration} =
+    const { storeConfiguration, updateStoreConfiguration } =
         useAiAgentStoreConfigurationContext()
     const isCreate = storeConfiguration === undefined
 
     // because this selector is a function which return function we need to memoized it before send to reselect
     const selector = useMemo(
         () => getIntegrationsByTypes(EMAIL_INTEGRATION_TYPES),
-        []
+        [],
     )
     const emailIntegrations = useAppSelector(selector)
     const emailItems = useMemo(() => {
@@ -238,7 +239,7 @@ export const StoreConfigForm = ({
         isEmailChannelEnabled,
     } = useStoreConfigurationForm(shopName, faqHelpCenters)
 
-    const {updateSettingsAfterAiAgentEnabled} = useAiAgentEnabled({
+    const { updateSettingsAfterAiAgentEnabled } = useAiAgentEnabled({
         monitoredEmailIntegrations: formValues.monitoredEmailIntegrations ?? [],
         monitoredChatIntegrations: formValues.monitoredChatIntegrations ?? [],
         isEnablingChatChannel:
@@ -323,13 +324,13 @@ export const StoreConfigForm = ({
                             message:
                                 'AI Agent has been disabled, because no Knowledge source is connected.',
                             status: NotificationStatus.Warning,
-                        })
+                        }),
                     )
                 }
             } catch (error) {
                 // nothing to notify here for the user as we do silent disable AI Agent
                 reportError(error, {
-                    tags: {team: AI_AGENT_SENTRY_TEAM},
+                    tags: { team: AI_AGENT_SENTRY_TEAM },
                     extra: {
                         context: 'Error during disabling AI Agent',
                     },
@@ -342,7 +343,7 @@ export const StoreConfigForm = ({
             updateStoreConfiguration,
             storeConfiguration,
             dispatch,
-        ]
+        ],
     )
 
     const selectedHelpCenter = faqHelpCenters.find((helpCenter) => {
@@ -361,19 +362,19 @@ export const StoreConfigForm = ({
     const isHandoffToggled = isHandoffEnabled(
         formValues.silentHandover !== null
             ? formValues.silentHandover
-            : INITIAL_FORM_VALUES.silentHandover
+            : INITIAL_FORM_VALUES.silentHandover,
     )
 
-    const {helpCenter: snippetHelpCenter} = useGetOrCreateSnippetHelpCenter({
+    const { helpCenter: snippetHelpCenter } = useGetOrCreateSnippetHelpCenter({
         accountDomain,
         shopName,
     })
 
-    const {sourceItems} = usePublicResources({
+    const { sourceItems } = usePublicResources({
         helpCenterId: snippetHelpCenter?.id,
     })
 
-    const {ingestedFiles} = useFileIngestion({
+    const { ingestedFiles } = useFileIngestion({
         helpCenterId: snippetHelpCenter?.id ?? 0,
     })
 
@@ -385,10 +386,10 @@ export const StoreConfigForm = ({
                 .filter((url): url is string => !!url),
             hasExternalFiles:
                 ingestedFiles?.some(
-                    (ingestedFile) => ingestedFile.status === 'SUCCESSFUL'
+                    (ingestedFile) => ingestedFile.status === 'SUCCESSFUL',
                 ) ?? false,
         }),
-        [sourceItems, ingestedFiles]
+        [sourceItems, ingestedFiles],
     )
 
     const handlePublicURLsChange = useCallback(
@@ -402,7 +403,7 @@ export const StoreConfigForm = ({
                 void deactivateAiAgent()
             }
         },
-        [deactivateAiAgent, storeConfiguration]
+        [deactivateAiAgent, storeConfiguration],
     )
 
     const shouldDisplayAiAgentConfigurationModal = useMemo(() => {
@@ -449,7 +450,7 @@ export const StoreConfigForm = ({
     const {
         isLoading: isLoadingOnboardingNotificationState,
         handleOnCancelActivateAiAgentNotification,
-    } = useAiAgentOnboardingNotification({shopName})
+    } = useAiAgentOnboardingNotification({ shopName })
 
     const onSubmit = () => {
         const isAiAgentWasEnabled =
@@ -629,11 +630,11 @@ export const StoreConfigForm = ({
                                 formValues.chatChannelDeactivatedDatetime
                             }
                             updateChatChannelDeactivatedDatetime={(
-                                deactivatedDatetime
+                                deactivatedDatetime,
                             ) => {
                                 updateValue(
                                     'chatChannelDeactivatedDatetime',
-                                    deactivatedDatetime
+                                    deactivatedDatetime,
                                 )
                             }}
                             signature={formValues.signature}
@@ -645,11 +646,11 @@ export const StoreConfigForm = ({
                                 formValues.emailChannelDeactivatedDatetime
                             }
                             updateEmailChannelDeactivatedDatetime={(
-                                deactivatedDatetime
+                                deactivatedDatetime,
                             ) => {
                                 updateValue(
                                     'emailChannelDeactivatedDatetime',
-                                    deactivatedDatetime
+                                    deactivatedDatetime,
                                 )
                             }}
                         />
@@ -708,13 +709,13 @@ export const StoreConfigForm = ({
                             <section>
                                 <h2
                                     className={css.sectionHeader}
-                                    style={{marginBottom: '4px'}}
+                                    style={{ marginBottom: '4px' }}
                                 >
                                     Handover and exclusion
                                 </h2>
                                 <div
                                     className={css.sectionDescription}
-                                    style={{marginBottom: '24px'}}
+                                    style={{ marginBottom: '24px' }}
                                 >
                                     When AI Agent is not confident in an answer,
                                     it automatically hands tickets over to your
@@ -734,12 +735,12 @@ export const StoreConfigForm = ({
                                             ) {
                                                 updateValue(
                                                     'silentHandover',
-                                                    !formValues.silentHandover
+                                                    !formValues.silentHandover,
                                                 )
                                             } else {
                                                 updateValue(
                                                     'silentHandover',
-                                                    !INITIAL_FORM_VALUES.silentHandover
+                                                    !INITIAL_FORM_VALUES.silentHandover,
                                                 )
                                             }
                                         }}
@@ -762,14 +763,14 @@ export const StoreConfigForm = ({
                                         items={List(
                                             formValues.excludedTopics !== null
                                                 ? formValues.excludedTopics
-                                                : INITIAL_FORM_VALUES.excludedTopics
+                                                : INITIAL_FORM_VALUES.excludedTopics,
                                         )}
                                         onChange={(
-                                            excludedTopics: List<string>
+                                            excludedTopics: List<string>,
                                         ) => {
                                             updateValue(
                                                 'excludedTopics',
-                                                excludedTopics.toJS()
+                                                excludedTopics.toJS(),
                                             )
                                         }}
                                         placeholder="e.g. Invoice and billing, Data privacy, or Complaints"
@@ -804,7 +805,7 @@ export const StoreConfigForm = ({
                             <section>
                                 <h2
                                     className={css.sectionHeader}
-                                    style={{marginBottom: '4px'}}
+                                    style={{ marginBottom: '4px' }}
                                 >
                                     AI ticket tagging
                                     <IconTooltip
@@ -887,7 +888,9 @@ export const CreatePublicSourcesSection = ({
     onPublicURLsChanged,
     ...props
 }: ComponentProps<typeof PublicSourcesSection>) => {
-    const {sourceItems} = usePublicResources({helpCenterId: props.helpCenterId})
+    const { sourceItems } = usePublicResources({
+        helpCenterId: props.helpCenterId,
+    })
 
     useEffect(() => {
         if (sourceItems) {

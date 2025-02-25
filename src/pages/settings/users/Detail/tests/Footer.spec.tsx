@@ -1,12 +1,13 @@
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {User, UserRole} from 'config/types/user'
-import {assumeMock} from 'utils/testing'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
-import {DeleteModal} from '../DeleteModal'
-import {Footer} from '../Footer'
+import { User, UserRole } from 'config/types/user'
+import { assumeMock } from 'utils/testing'
+
+import { DeleteModal } from '../DeleteModal'
+import { Footer } from '../Footer'
 
 jest.mock('../DeleteModal', () => ({
     DeleteModal: jest.fn(() => <div>DeleteModal</div>),
@@ -24,14 +25,14 @@ describe('Footer', () => {
         render(
             <Footer
                 rawData={undefined}
-                agentState={{name: '', email: '', role: UserRole.Agent}}
+                agentState={{ name: '', email: '', role: UserRole.Agent }}
                 isEdit={false}
                 agentId={1}
-            />
+            />,
         )
 
         expect(
-            screen.getByRole('button', {name: 'Create user'})
+            screen.getByRole('button', { name: 'Create user' }),
         ).toBeAriaDisabled()
     })
 
@@ -41,17 +42,17 @@ describe('Footer', () => {
                 rawData={
                     {
                         ...defaultAgentState,
-                        role: {name: UserRole.Agent},
+                        role: { name: UserRole.Agent },
                     } as User
                 }
                 agentState={defaultAgentState}
                 isEdit={true}
                 agentId={1}
-            />
+            />,
         )
 
         expect(
-            screen.getByRole('button', {name: 'Save Changes'})
+            screen.getByRole('button', { name: 'Save Changes' }),
         ).not.toBeAriaDisabled()
         expect(screen.getByText('Cancel'))
     })
@@ -62,17 +63,17 @@ describe('Footer', () => {
                 rawData={
                     {
                         ...defaultAgentState,
-                        role: {name: UserRole.Admin},
+                        role: { name: UserRole.Admin },
                     } as User
                 }
                 agentState={defaultAgentState}
                 isEdit={true}
                 agentId={1}
-            />
+            />,
         )
 
         expect(
-            screen.getByRole('button', {name: 'Save Changes'})
+            screen.getByRole('button', { name: 'Save Changes' }),
         ).toBeAriaDisabled()
     })
 
@@ -82,7 +83,7 @@ describe('Footer', () => {
                 rawData={
                     {
                         ...defaultAgentState,
-                        role: {name: UserRole.Agent},
+                        role: { name: UserRole.Agent },
                     } as User
                 }
                 agentState={defaultAgentState}
@@ -90,10 +91,12 @@ describe('Footer', () => {
                 agentId={1}
                 isViewingAccountOwner={true}
                 isSelf={false}
-            />
+            />,
         )
 
-        const submitButton = screen.getByRole('button', {name: 'Save Changes'})
+        const submitButton = screen.getByRole('button', {
+            name: 'Save Changes',
+        })
         expect(submitButton).toBeAriaDisabled()
         fireEvent.mouseOver(submitButton)
         await waitFor(() => {
@@ -107,17 +110,17 @@ describe('Footer', () => {
                 rawData={
                     {
                         ...defaultAgentState,
-                        role: {name: UserRole.Agent},
+                        role: { name: UserRole.Agent },
                     } as User
                 }
                 agentState={defaultAgentState}
                 isViewingAccountOwner
                 isEdit
                 agentId={1}
-            />
+            />,
         )
 
-        const deleteButton = screen.getByRole('button', {name: /Delete user/})
+        const deleteButton = screen.getByRole('button', { name: /Delete user/ })
         expect(deleteButton).toBeAriaDisabled()
 
         userEvent.hover(deleteButton)
@@ -132,19 +135,19 @@ describe('Footer', () => {
                 rawData={
                     {
                         ...defaultAgentState,
-                        role: {name: UserRole.Agent},
+                        role: { name: UserRole.Agent },
                     } as User
                 }
                 agentState={defaultAgentState}
                 isEdit
                 agentId={2}
-            />
+            />,
         )
 
         userEvent.click(screen.getByText('Delete user'))
         expect(mockedDeleteModal).toHaveBeenLastCalledWith(
-            expect.objectContaining({isModalOpen: true}),
-            {}
+            expect.objectContaining({ isModalOpen: true }),
+            {},
         )
     })
 })

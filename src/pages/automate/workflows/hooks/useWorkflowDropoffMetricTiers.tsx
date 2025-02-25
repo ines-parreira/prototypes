@@ -1,4 +1,4 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
 import {
     HIGH_TIERS_DROPOFF_BACKGROUND,
@@ -23,7 +23,7 @@ const calculateTierRange = (
     min: number,
     max: number,
     tierIndex: number,
-    tiersCount: number = 3
+    tiersCount: number = 3,
 ): [number, number] => {
     const range = max - min
     const tierSize = range / tiersCount
@@ -36,7 +36,7 @@ const calculateTierRange = (
 const createTier = (
     range: [number, number],
     background: string,
-    color: string
+    color: string,
 ): WorkflowDropoffMetricTiers => ({
     range: [Math.round(range[0] * 100) / 100, Math.round(range[1] * 100) / 100],
     background,
@@ -47,7 +47,7 @@ const createSingleTier = (value: number): WorkflowDropoffMetricTiers[] => {
     const singleTier = createTier(
         [value, value],
         LOW_TIERS_DROPOFF_BACKGROUND,
-        LOW_TIERS_DROPOFF_COLOR
+        LOW_TIERS_DROPOFF_COLOR,
     )
     return [singleTier]
 }
@@ -74,17 +74,17 @@ const useWorkflowDropoffMetricTiers = ({
         const lowTier = createTier(
             lowTierRange,
             LOW_TIERS_DROPOFF_BACKGROUND,
-            LOW_TIERS_DROPOFF_COLOR
+            LOW_TIERS_DROPOFF_COLOR,
         )
         const midTier = createTier(
             midTierRange,
             MID_TIERS_DROPOFF_BACKGROUND,
-            MID_TIERS_DROPOFF_COLOR
+            MID_TIERS_DROPOFF_COLOR,
         )
         const highTier = createTier(
             highTierRange,
             HIGH_TIERS_DROPOFF_BACKGROUND,
-            HIGH_TIERS_DROPOFF_COLOR
+            HIGH_TIERS_DROPOFF_COLOR,
         )
 
         return [lowTier, midTier, highTier]

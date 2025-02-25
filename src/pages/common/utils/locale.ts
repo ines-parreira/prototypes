@@ -13,10 +13,9 @@ import nlNl from 'assets/img/flags/nl-nl.svg'
 import noNo from 'assets/img/flags/no-no.svg'
 import ptBr from 'assets/img/flags/pt-br.svg'
 import svSe from 'assets/img/flags/sv-se.svg'
+import { Locale } from 'models/helpCenter/types'
 
-import {Locale} from 'models/helpCenter/types'
-
-const flagsMap: {[key: string]: string} = {
+const flagsMap: { [key: string]: string } = {
     cz: 'cs-cz',
     da: 'da-dk',
     nl: 'nl-nl',
@@ -33,7 +32,7 @@ const flagsMap: {[key: string]: string} = {
 }
 
 // TODO: create ENUM from FLAGS somewhere in a shared folder
-const FLAGS: {[key: string]: string} = {
+const FLAGS: { [key: string]: string } = {
     'en-us': enUs,
     'en-gb': enGb,
     'fi-fi': fiFi,
@@ -63,7 +62,7 @@ export function getEmojiFlag(code: string): string {
 
 export function moveLocaleToFront(
     list: Locale[],
-    defaultLocale: Locale
+    defaultLocale: Locale,
 ): Locale[] {
     return [
         defaultLocale,
@@ -73,7 +72,7 @@ export function moveLocaleToFront(
 
 export function moveLocaleToBack(
     list: Locale[],
-    defaultLocale: Locale
+    defaultLocale: Locale,
 ): Locale[] {
     return [
         ...list.filter((locale) => locale.code !== defaultLocale.code),

@@ -1,14 +1,15 @@
-import {List} from 'immutable'
 import React from 'react'
-import {useHistory, useLocation} from 'react-router-dom'
 
-import {AlertBanner, AlertBannerTypes} from 'AlertBanners'
+import { List } from 'immutable'
+import { useHistory, useLocation } from 'react-router-dom'
+
+import { AlertBanner, AlertBannerTypes } from 'AlertBanners'
 import useAppSelector from 'hooks/useAppSelector'
-import {getInactiveEmailChannels} from 'state/integrations/selectors'
+import { getInactiveEmailChannels } from 'state/integrations/selectors'
 
 export default function EmailDisconnectedBanner() {
     const state: List<Map<string, any>> = useAppSelector(
-        getInactiveEmailChannels
+        getInactiveEmailChannels,
     )
     const history = useHistory()
     const location = useLocation()

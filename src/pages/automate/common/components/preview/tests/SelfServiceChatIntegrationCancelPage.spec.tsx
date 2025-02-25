@@ -1,17 +1,17 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
 
-import {IntegrationType} from 'models/integration/constants'
+import { render, screen } from '@testing-library/react'
+import { Provider } from 'react-redux'
+
+import { IntegrationType } from 'models/integration/constants'
 import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
     GorgiasChatIntegration,
 } from 'models/integration/types'
-import {GorgiasChatPositionAlignmentEnum} from 'models/integration/types/gorgiasChat'
-
+import { GorgiasChatPositionAlignmentEnum } from 'models/integration/types/gorgiasChat'
 import SelfServicePreviewContext from 'pages/automate/common/components/preview/SelfServicePreviewContext'
-import {mockStore} from 'utils/testing'
+import { mockStore } from 'utils/testing'
 
 import SelfServiceChatIntegrationCancelPage from '../SelfServiceChatIntegrationCancelPage'
 
@@ -79,10 +79,10 @@ describe('<SelfServiceChatIntegrationCancelPage />', () => {
                         integration={mockIntegration}
                     />
                 </SelfServicePreviewContext.Provider>
-            </Provider>
+            </Provider>,
         )
         expect(
-            screen.getByText(/I'd like to cancel the following fulfillment/)
+            screen.getByText(/I'd like to cancel the following fulfillment/),
         ).toBeInTheDocument()
     })
 })

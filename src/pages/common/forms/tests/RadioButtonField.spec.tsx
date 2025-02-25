@@ -1,7 +1,8 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {assumeMock} from 'utils/testing'
+import { render } from '@testing-library/react'
+
+import { assumeMock } from 'utils/testing'
 
 import RadioButtonField from '../RadioButtonField'
 import RadioFieldSet from '../RadioFieldSet'
@@ -23,7 +24,7 @@ describe('<RadioButtonField />', () => {
                 className="test-class"
                 onChange={onChange}
                 options={[option]}
-            />
+            />,
         )
 
         expect(RadioFieldSetMock).toHaveBeenCalledWith(
@@ -33,7 +34,7 @@ describe('<RadioButtonField />', () => {
                 onChange,
                 options: [option],
             },
-            {}
+            {},
         )
     })
 })

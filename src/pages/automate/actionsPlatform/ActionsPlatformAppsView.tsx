@@ -1,7 +1,8 @@
-import React, {useMemo, useState} from 'react'
-import {useHistory} from 'react-router-dom'
+import React, { useMemo, useState } from 'react'
 
-import {IntegrationType} from 'models/integration/constants'
+import { useHistory } from 'react-router-dom'
+
+import { IntegrationType } from 'models/integration/constants'
 import AutomateListView from 'pages/automate/common/components/AutomateListView'
 import Button from 'pages/common/components/button/Button'
 import Search from 'pages/common/components/Search'
@@ -10,10 +11,11 @@ import TableBody from 'pages/common/components/table/TableBody'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 
-import css from './ActionsPlatformAppsView.less'
 import ActionsPlatformAppsTableRow from './components/ActionsPlatformAppsTableRow'
 import useApps from './hooks/useApps'
 import useGetAppFromActionsApp from './hooks/useGetAppFromActionsApp'
+
+import css from './ActionsPlatformAppsView.less'
 
 const ActionsPlatformAppsView = () => {
     const {
@@ -21,7 +23,7 @@ const ActionsPlatformAppsView = () => {
         isLoading: isAppsLoading,
         actionsApps,
     } = useApps([IntegrationType.App])
-    const getAppFromActionsApp = useGetAppFromActionsApp({apps})
+    const getAppFromActionsApp = useGetAppFromActionsApp({ apps })
     const history = useHistory()
 
     const [name, setName] = useState('')
@@ -81,7 +83,7 @@ const ActionsPlatformAppsView = () => {
                     <Button
                         onClick={() => {
                             history.push(
-                                '/app/automation/actions-platform/apps/new'
+                                '/app/automation/actions-platform/apps/new',
                             )
                         }}
                     >
@@ -110,7 +112,7 @@ const ActionsPlatformAppsView = () => {
                             actionsApp={actionsApp}
                             onClick={() => {
                                 history.push(
-                                    `/app/automation/actions-platform/apps/edit/${actionsApp.id}`
+                                    `/app/automation/actions-platform/apps/edit/${actionsApp.id}`,
                                 )
                             }}
                         />

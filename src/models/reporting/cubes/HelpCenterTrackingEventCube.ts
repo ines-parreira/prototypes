@@ -1,4 +1,4 @@
-import {Cube} from '../types'
+import { Cube } from '../types'
 
 export enum HelpCenterTrackingEventDimensions {
     Timestamp = 'HelpCenterTrackingEvent.timestamp',

@@ -1,21 +1,22 @@
-import {render, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
-import {Provider} from 'react-redux'
 
-import {StoreConfiguration} from 'models/aiAgent/types'
-import {getStoreConfigurationFixture} from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
-import {useAiAgentStoreConfigurationContext} from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
-import {mockStore} from 'utils/testing'
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { Provider } from 'react-redux'
 
-import {DiscountStrategy} from '../../../Onboarding/components/steps/PersonalityStep/DiscountStrategy'
-import {SalesSettings} from '../SalesSettings'
+import { StoreConfiguration } from 'models/aiAgent/types'
+import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
+import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
+import { mockStore } from 'utils/testing'
+
+import { DiscountStrategy } from '../../../Onboarding/components/steps/PersonalityStep/DiscountStrategy'
+import { SalesSettings } from '../SalesSettings'
 
 const renderComponent = () =>
     render(
         <Provider store={mockStore({})}>
             <SalesSettings />
-        </Provider>
+        </Provider>,
     )
 
 const storeConfiguration = getStoreConfigurationFixture()
@@ -30,7 +31,7 @@ jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext', () => ({
     useAiAgentStoreConfigurationContext: jest.fn(),
 }))
 const mockedUseAiAgentStoreConfigurationContext = jest.mocked(
-    useAiAgentStoreConfigurationContext
+    useAiAgentStoreConfigurationContext,
 )
 
 const mockUpdateStoreConfiguration = jest
@@ -41,7 +42,7 @@ const mockUpdateStoreConfiguration = jest
 describe('<SalesSettings />', () => {
     beforeEach(() => {
         mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
-            storeConfiguration: {...storeConfiguration},
+            storeConfiguration: { ...storeConfiguration },
             isLoading: false,
             updateStoreConfiguration: mockUpdateStoreConfiguration,
             createStoreConfiguration: jest.fn(),
@@ -52,15 +53,17 @@ describe('<SalesSettings />', () => {
     it('should render', () => {
         renderComponent()
 
-        expect(screen.getByRole('button', {name: 'Save'})).toBeInTheDocument()
-        expect(screen.getByRole('button', {name: 'Cancel'})).toBeInTheDocument()
+        expect(screen.getByRole('button', { name: 'Save' })).toBeInTheDocument()
+        expect(
+            screen.getByRole('button', { name: 'Cancel' }),
+        ).toBeInTheDocument()
         expect(screen.getByText(/Fine-tune how your AI Agent/))
     })
 
     it('should not call updateStoreConfiguration when clicking on the save button', () => {
         renderComponent()
 
-        userEvent.click(screen.getByRole('button', {name: 'Save'}))
+        userEvent.click(screen.getByRole('button', { name: 'Save' }))
 
         expect(mockUpdateStoreConfiguration).not.toHaveBeenCalled()
     })
@@ -89,7 +92,7 @@ describe('<SalesSettings />', () => {
         await waitFor(() => {
             expect(maxDiscountInput.value).toBe('10')
             expect(
-                screen.queryByText(/Must be a number between 1 and 100/i)
+                screen.queryByText(/Must be a number between 1 and 100/i),
             ).not.toBeInTheDocument()
         })
     })
@@ -101,12 +104,12 @@ describe('<SalesSettings />', () => {
 
         await waitFor(() => expect(maxDiscountInput.value).toBe('0'))
 
-        userEvent.click(screen.getByRole('button', {name: 'Save'}))
+        userEvent.click(screen.getByRole('button', { name: 'Save' }))
 
         await waitFor(() =>
             expect(
-                screen.queryByText(/Must be a number between 1 and 100/i)
-            ).toBeInTheDocument()
+                screen.queryByText(/Must be a number between 1 and 100/i),
+            ).toBeInTheDocument(),
         )
     })
 
@@ -121,7 +124,7 @@ describe('<SalesSettings />', () => {
         await waitFor(() => {
             expect(maxDiscountInput.value).toBe('101')
             expect(
-                screen.queryByText(/Must be a number between 1 and 100/i)
+                screen.queryByText(/Must be a number between 1 and 100/i),
             ).toBeInTheDocument()
         })
     })
@@ -133,12 +136,12 @@ describe('<SalesSettings />', () => {
                 screen.getByTestId('discount-max')
 
             await userEvent.type(maxDiscountInput, '2')
-            userEvent.click(screen.getByRole('button', {name: 'Save'}))
+            userEvent.click(screen.getByRole('button', { name: 'Save' }))
 
             await waitFor(() => {
                 expect(maxDiscountInput.value).toBe('2')
                 expect(mockUpdateStoreConfiguration).toHaveBeenCalledWith(
-                    newStoreConfig
+                    newStoreConfig,
                 )
             })
         })
@@ -148,7 +151,7 @@ describe('<SalesSettings />', () => {
         renderComponent()
 
         await userEvent.type(screen.getByTestId('discount-max'), '2')
-        userEvent.click(screen.getByRole('button', {name: 'Cancel'}))
+        userEvent.click(screen.getByRole('button', { name: 'Cancel' }))
 
         await waitFor(() => {
             expect(storeConfiguration).toBe(storeConfiguration)

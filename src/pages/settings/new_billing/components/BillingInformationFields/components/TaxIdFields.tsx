@@ -1,16 +1,15 @@
 import React from 'react'
 
-import {useWatch} from 'react-hook-form'
+import { useWatch } from 'react-hook-form'
 
-import {ABNField} from 'pages/settings/new_billing/components/BillingInformationFields/components/ABNField'
-import {GSTHSTField} from 'pages/settings/new_billing/components/BillingInformationFields/components/GSTHSTField'
-import {PSTField} from 'pages/settings/new_billing/components/BillingInformationFields/components/PSTField'
-import {VATField} from 'pages/settings/new_billing/components/BillingInformationFields/components/VATField'
-
-import {VATCountries} from 'state/billing/types'
+import { ABNField } from 'pages/settings/new_billing/components/BillingInformationFields/components/ABNField'
+import { GSTHSTField } from 'pages/settings/new_billing/components/BillingInformationFields/components/GSTHSTField'
+import { PSTField } from 'pages/settings/new_billing/components/BillingInformationFields/components/PSTField'
+import { VATField } from 'pages/settings/new_billing/components/BillingInformationFields/components/VATField'
+import { VATCountries } from 'state/billing/types'
 
 export const TaxIdFields: React.FC = () => {
-    const country: string = useWatch({name: 'address.address.country'})
+    const country: string = useWatch({ name: 'address.address.country' })
 
     if (country === 'CA') {
         return (

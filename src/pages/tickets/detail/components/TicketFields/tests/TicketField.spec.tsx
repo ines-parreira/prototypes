@@ -1,19 +1,19 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import {Provider} from 'react-redux'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {isFieldRequired} from 'custom-fields/helpers/isFieldRequired'
-import {CustomFieldDefinition} from 'custom-fields/types'
+import { isFieldRequired } from 'custom-fields/helpers/isFieldRequired'
+import { CustomFieldDefinition } from 'custom-fields/types'
 import {
     ticketDropdownFieldDefinition,
     ticketFieldDefinitions,
     ticketInputFieldDefinition,
 } from 'fixtures/customField'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import TicketField from '../TicketField'
 
@@ -56,7 +56,7 @@ describe('<TicketField />', () => {
                 value: getValueForDataType(customField.definition.data_type),
                 id: customField.id,
             }
-            const {container} = render(
+            const { container } = render(
                 <QueryClientProvider client={queryClient}>
                     <Provider store={store}>
                         <TicketField
@@ -65,11 +65,11 @@ describe('<TicketField />', () => {
                             isRequired={isFieldRequired(customField)}
                         />
                     </Provider>
-                </QueryClientProvider>
+                </QueryClientProvider>,
             )
             expect(container).toMatchSnapshot()
             expect(onChange).not.toHaveBeenCalled()
-        }
+        },
     )
 
     it.each([
@@ -93,7 +93,7 @@ describe('<TicketField />', () => {
             value: getValueForDataType(customField.definition.data_type),
             id: customField.id,
         }
-        const {container} = render(
+        const { container } = render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={store}>
                     <TicketField
@@ -102,7 +102,7 @@ describe('<TicketField />', () => {
                         fieldState={fieldState}
                     />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -148,22 +148,22 @@ describe('<TicketField />', () => {
                             isRequired={isFieldRequired(customField)}
                         />
                     </Provider>
-                </QueryClientProvider>
+                </QueryClientProvider>,
             )
 
             if (customField.should_be_disabled) {
                 expect(
                     screen
                         .getByPlaceholderText('Some placeholder')
-                        .closest('input')
+                        .closest('input'),
                 ).toBeDisabled()
             } else {
                 expect(
                     screen
                         .getByPlaceholderText('Some placeholder')
-                        .closest('input')
+                        .closest('input'),
                 ).toBeEnabled()
             }
-        }
+        },
     )
 })

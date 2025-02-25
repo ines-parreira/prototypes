@@ -1,24 +1,25 @@
-import {fireEvent, render, act, screen} from '@testing-library/react'
 import React from 'react'
+
+import { act, fireEvent, render, screen } from '@testing-library/react'
 
 import UpdateReportLinkModal from '../UpdateReportLinkModal'
 
 describe('UpdateReportLinkModal', () => {
     it('validation error', () => {
         const onSubmit = jest.fn()
-        const {getByLabelText} = render(
+        const { getByLabelText } = render(
             <UpdateReportLinkModal
                 isOpen={true}
                 onClose={jest.fn()}
                 onSubmit={onSubmit}
-            />
+            />,
         )
 
         expect(screen.getByText('Save changes')).toBeInTheDocument()
 
         // Update Event
         fireEvent.change(getByLabelText('Report link'), {
-            target: {value: 'lorem ipsum'},
+            target: { value: 'lorem ipsum' },
         })
 
         act(() => {
@@ -29,19 +30,19 @@ describe('UpdateReportLinkModal', () => {
 
     it('updates data', () => {
         const onSubmit = jest.fn()
-        const {getByLabelText} = render(
+        const { getByLabelText } = render(
             <UpdateReportLinkModal
                 isOpen={true}
                 onClose={jest.fn()}
                 onSubmit={onSubmit}
-            />
+            />,
         )
 
         expect(screen.getByText('Save changes')).toBeInTheDocument()
 
         // Update Event
         fireEvent.change(getByLabelText('Report link'), {
-            target: {value: 'https://example.com'},
+            target: { value: 'https://example.com' },
         })
 
         act(() => {

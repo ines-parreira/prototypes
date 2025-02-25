@@ -1,7 +1,8 @@
-import {render} from '@testing-library/react'
-import React, {useContext} from 'react'
+import React, { useContext } from 'react'
 
-import Screens, {ScreensContext} from '../Screens'
+import { render } from '@testing-library/react'
+
+import Screens, { ScreensContext } from '../Screens'
 
 describe('<Screens />', () => {
     const MockSetActiveScreenComponent = () => {
@@ -15,22 +16,22 @@ describe('<Screens />', () => {
     }
 
     it('should accept an active screen', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Screens activeScreen="artemis">
                 <ScreensContext.Consumer>
                     {(context) => context && context.activeScreen}
                 </ScreensContext.Consumer>
-            </Screens>
+            </Screens>,
         )
 
         expect(getByText(/artemis/)).toBeTruthy()
     })
 
     it('should set an active screen', () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <Screens activeScreen="foo">
                 <MockSetActiveScreenComponent />
-            </Screens>
+            </Screens>,
         )
 
         expect(getByText(/foo/)).toBeTruthy()

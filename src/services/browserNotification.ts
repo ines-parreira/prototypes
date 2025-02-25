@@ -1,13 +1,13 @@
 import _isString from 'lodash/isString'
 import _throttle from 'lodash/throttle'
-import notification, {PushNotification} from 'push.js'
+import notification, { PushNotification } from 'push.js'
 
-import {store} from 'common/store'
+import { store } from 'common/store'
 import history from 'pages/history'
-import {notificationSounds} from 'services'
-import {defaultSound} from 'services/NotificationSounds'
-import {getNotificationSettings} from 'state/currentUser/selectors'
-import {assetsUrl} from 'utils'
+import { notificationSounds } from 'services'
+import { defaultSound } from 'services/NotificationSounds'
+import { getNotificationSettings } from 'state/currentUser/selectors'
+import { assetsUrl } from 'utils'
 
 const icon = assetsUrl('/img/icons/logo.png')
 
@@ -15,7 +15,7 @@ export class BrowserNotification {
     playSound = _throttle(
         () => {
             const notificationSettings = getNotificationSettings(
-                store.getState()
+                store.getState(),
             )
 
             const settings =
@@ -26,7 +26,7 @@ export class BrowserNotification {
             notificationSounds.play(settings.sound, settings.volume)
         },
         10000,
-        {trailing: false}
+        { trailing: false },
     )
 
     newMessage = ({
@@ -65,12 +65,12 @@ export class BrowserNotification {
                     ;(this as PushNotification).close()
                 },
                 requireInteraction: !!requireInteraction,
-            }
+            },
         )
     }
 
     // FIXME: remove once PLTCO-2134 is done
-    newMessageThrottled = _throttle(this.newMessage, 10000, {trailing: false})
+    newMessageThrottled = _throttle(this.newMessage, 10000, { trailing: false })
 }
 
 export default new BrowserNotification()

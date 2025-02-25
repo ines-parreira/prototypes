@@ -1,9 +1,10 @@
-import {render} from '@testing-library/react'
 import React from 'react'
 
-import {getSingleCategoryEnglish} from 'pages/settings/helpCenter/fixtures/getCategoriesResponse.fixtures'
+import { render } from '@testing-library/react'
 
-import {DroppableTableBodyRow} from '../DroppableTableBodyRow'
+import { getSingleCategoryEnglish } from 'pages/settings/helpCenter/fixtures/getCategoriesResponse.fixtures'
+
+import { DroppableTableBodyRow } from '../DroppableTableBodyRow'
 
 jest.mock('pages/common/hooks/useReorderDnD', () => {
     return {
@@ -22,17 +23,17 @@ jest.mock('pages/common/hooks/useReorderDnD', () => {
 })
 describe('<DroppableTableBodyRow />', () => {
     it('should match snapshot', () => {
-        const {container} = render(
+        const { container } = render(
             <DroppableTableBodyRow
                 onMoveEntity={() => null}
-                dragItem={{type: 'CATEGORY', position: 0}}
+                dragItem={{ type: 'CATEGORY', position: 0 }}
                 onDragStart={function (): void {
                     throw new Error('Function not implemented.')
                 }}
                 category={getSingleCategoryEnglish}
             >
                 <td>test</td>
-            </DroppableTableBodyRow>
+            </DroppableTableBodyRow>,
         )
 
         expect(container.firstChild).toMatchSnapshot()

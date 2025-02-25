@@ -1,4 +1,4 @@
-import {isProduction, isStaging} from '../../../../../utils/environment'
+import { isProduction, isStaging } from '../../../../../utils/environment'
 
 export function getConnectUrl() {
     const BIGCOMMERCE_MARKETPLACE_BASE_URL =

@@ -1,11 +1,12 @@
-import {screen, render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
 
-import * as useLocalStorage from 'hooks/useLocalStorage'
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
+import { render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
 
-import {CampaignToolsCell} from '../CampaignToolsCell'
+import * as useLocalStorage from 'hooks/useLocalStorage'
+import { Campaign } from 'pages/convert/campaigns/types/Campaign'
+
+import { CampaignToolsCell } from '../CampaignToolsCell'
 
 const useLocalStorageSpy = jest.spyOn(useLocalStorage, 'default') as jest.Mock
 
@@ -71,7 +72,7 @@ describe('<CampaignToolsCell />', () => {
 
         expect(onClickDuplicate).toHaveBeenCalledWith(
             expect.anything(),
-            campaign
+            campaign,
         )
     })
 
@@ -107,7 +108,7 @@ describe('<CampaignToolsCell />', () => {
         screen.getByLabelText('Delete campaign').click()
 
         expect(
-            screen.queryByText('Learn About Convert')
+            screen.queryByText('Learn About Convert'),
         ).not.toBeInTheDocument()
         expect(screen.getByText('Confirm')).toBeInTheDocument()
     })

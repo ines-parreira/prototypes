@@ -29,7 +29,7 @@ function ConnectButton() {
             onClick={() => {
                 window.open(
                     window.GORGIAS_STATE.integrations.authentication.whatsapp
-                        ?.redirect_uri ?? ''
+                        ?.redirect_uri ?? '',
                 )
             }}
         >
@@ -38,7 +38,7 @@ function ConnectButton() {
     )
 }
 
-function MigrateButton({isHorizontal}: Props) {
+function MigrateButton({ isHorizontal }: Props) {
     return (
         <Button
             className={isHorizontal ? 'mr-3' : 'mt-2'}

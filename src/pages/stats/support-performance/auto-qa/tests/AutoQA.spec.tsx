@@ -1,12 +1,12 @@
-import {screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
+import React, { ComponentProps } from 'react'
 
-import React, {ComponentProps} from 'react'
+import { screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {account} from 'fixtures/account'
-import {billingState} from 'fixtures/billing'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { account } from 'fixtures/account'
+import { billingState } from 'fixtures/billing'
 import {
     AUTOMATION_PRODUCT_ID,
     basicYearlyAutomationPlan,
@@ -14,25 +14,25 @@ import {
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/productPrices'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
-import {useReportChartRestrictions} from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
-import {AccuracyTrendCard} from 'pages/stats/support-performance/auto-qa/AccuracyTrendCard'
+import { useReportChartRestrictions } from 'pages/stats/report-chart-restrictions/useReportChartRestrictions'
+import { AccuracyTrendCard } from 'pages/stats/support-performance/auto-qa/AccuracyTrendCard'
 import AutoQA from 'pages/stats/support-performance/auto-qa/AutoQA'
-import {AutoQAAgentPerformanceHeatmapSwitch} from 'pages/stats/support-performance/auto-qa/AutoQAAgentPerformanceHeatmapSwitch'
-import {AutoQAAgentsTable} from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTable'
-import {AutoQADownloadDataButton} from 'pages/stats/support-performance/auto-qa/AutoQADownloadDataButton'
+import { AutoQAAgentPerformanceHeatmapSwitch } from 'pages/stats/support-performance/auto-qa/AutoQAAgentPerformanceHeatmapSwitch'
+import { AutoQAAgentsTable } from 'pages/stats/support-performance/auto-qa/AutoQAAgentsTable'
+import { AutoQADownloadDataButton } from 'pages/stats/support-performance/auto-qa/AutoQADownloadDataButton'
 import {
     AUTO_QA_OPTIONAL_FILTERS,
     AUTO_QA_PAGE_TITLE,
 } from 'pages/stats/support-performance/auto-qa/AutoQAReportConfig'
-import {BrandVoiceTrendCard} from 'pages/stats/support-performance/auto-qa/BrandVoiceTrendCard'
-import {CommunicationSkillsTrendCard} from 'pages/stats/support-performance/auto-qa/CommunicationSkillsTrendCard'
-import {EfficiencyTrendCard} from 'pages/stats/support-performance/auto-qa/EfficiencyTrendCard'
-import {InternalComplianceTrendCard} from 'pages/stats/support-performance/auto-qa/InternalComplianceTrendCard'
-import {LanguageProficiencyTrendCard} from 'pages/stats/support-performance/auto-qa/LanguageProficiencyTrendCard'
-import {ResolutionCompletenessTrendCard} from 'pages/stats/support-performance/auto-qa/ResolutionCompletenessTrendCard'
-import {ReviewedClosedTicketsTrendCard} from 'pages/stats/support-performance/auto-qa/ReviewedClosedTicketsTrendCard'
-import {RootState} from 'state/types'
-import {assumeMock, renderWithStore} from 'utils/testing'
+import { BrandVoiceTrendCard } from 'pages/stats/support-performance/auto-qa/BrandVoiceTrendCard'
+import { CommunicationSkillsTrendCard } from 'pages/stats/support-performance/auto-qa/CommunicationSkillsTrendCard'
+import { EfficiencyTrendCard } from 'pages/stats/support-performance/auto-qa/EfficiencyTrendCard'
+import { InternalComplianceTrendCard } from 'pages/stats/support-performance/auto-qa/InternalComplianceTrendCard'
+import { LanguageProficiencyTrendCard } from 'pages/stats/support-performance/auto-qa/LanguageProficiencyTrendCard'
+import { ResolutionCompletenessTrendCard } from 'pages/stats/support-performance/auto-qa/ResolutionCompletenessTrendCard'
+import { ReviewedClosedTicketsTrendCard } from 'pages/stats/support-performance/auto-qa/ReviewedClosedTicketsTrendCard'
+import { RootState } from 'state/types'
+import { assumeMock, renderWithStore } from 'utils/testing'
 
 jest.mock('pages/stats/report-chart-restrictions/useReportChartRestrictions')
 const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)
@@ -47,28 +47,28 @@ jest.mock('pages/stats/DrillDownModal.tsx', () => ({
 }))
 
 jest.mock(
-    'pages/stats/support-performance/auto-qa/ReviewedClosedTicketsTrendCard'
+    'pages/stats/support-performance/auto-qa/ReviewedClosedTicketsTrendCard',
 )
 const NumberOfClosedTicketsReviewedTrendCardMock = assumeMock(
-    ReviewedClosedTicketsTrendCard
+    ReviewedClosedTicketsTrendCard,
 )
 jest.mock(
-    'pages/stats/support-performance/auto-qa/ResolutionCompletenessTrendCard'
+    'pages/stats/support-performance/auto-qa/ResolutionCompletenessTrendCard',
 )
 const ResolutionCompletenessTrendCardMock = assumeMock(
-    ResolutionCompletenessTrendCard
+    ResolutionCompletenessTrendCard,
 )
 jest.mock(
-    'pages/stats/support-performance/auto-qa/CommunicationSkillsTrendCard'
+    'pages/stats/support-performance/auto-qa/CommunicationSkillsTrendCard',
 )
 const CommunicationSkillsTrendCardMock = assumeMock(
-    CommunicationSkillsTrendCard
+    CommunicationSkillsTrendCard,
 )
 jest.mock(
-    'pages/stats/support-performance/auto-qa/LanguageProficiencyTrendCard'
+    'pages/stats/support-performance/auto-qa/LanguageProficiencyTrendCard',
 )
 const LanguageProficiencyTrendCardMock = assumeMock(
-    LanguageProficiencyTrendCard
+    LanguageProficiencyTrendCard,
 )
 jest.mock('pages/stats/support-performance/auto-qa/AccuracyTrendCard')
 const AccuracyTrendCardMock = assumeMock(AccuracyTrendCard)
@@ -81,10 +81,10 @@ const BrandVoiceTrendCardMock = assumeMock(BrandVoiceTrendCard)
 jest.mock('pages/stats/support-performance/auto-qa/AutoQAAgentsTable')
 const AutoQAAgentsTableMock = assumeMock(AutoQAAgentsTable)
 jest.mock(
-    'pages/stats/support-performance/auto-qa/AutoQAAgentPerformanceHeatmapSwitch'
+    'pages/stats/support-performance/auto-qa/AutoQAAgentPerformanceHeatmapSwitch',
 )
 const AutoQAAgentPerformanceHeatmapSwitchMock = assumeMock(
-    AutoQAAgentPerformanceHeatmapSwitch
+    AutoQAAgentPerformanceHeatmapSwitch,
 )
 jest.mock('pages/stats/support-performance/auto-qa/AutoQADownloadDataButton')
 const AutoQADownloadButtonMock = assumeMock(AutoQADownloadDataButton)
@@ -95,7 +95,7 @@ jest.mock(
         return props.optionalFilters?.map((optionalFilter) => (
             <div key={optionalFilter}>{optionalFilter}</div>
         ))
-    }
+    },
 )
 
 const state = {
@@ -119,7 +119,7 @@ describe('AutoQA', () => {
         } as any)
 
         NumberOfClosedTicketsReviewedTrendCardMock.mockImplementation(
-            componentMock
+            componentMock,
         )
         ResolutionCompletenessTrendCardMock.mockImplementation(componentMock)
         CommunicationSkillsTrendCardMock.mockImplementation(componentMock)
@@ -130,7 +130,7 @@ describe('AutoQA', () => {
         BrandVoiceTrendCardMock.mockImplementation(componentMock)
         AutoQAAgentsTableMock.mockImplementation(componentMock)
         AutoQAAgentPerformanceHeatmapSwitchMock.mockImplementation(
-            componentMock
+            componentMock,
         )
         AutoQADownloadButtonMock.mockImplementation(componentMock)
     })
@@ -161,7 +161,7 @@ describe('AutoQA with isAnalyticsNewFilters', () => {
         BrandVoiceTrendCardMock.mockImplementation(componentMock)
         AutoQAAgentsTableMock.mockImplementation(componentMock)
         AutoQAAgentPerformanceHeatmapSwitchMock.mockImplementation(
-            componentMock
+            componentMock,
         )
         AutoQADownloadButtonMock.mockImplementation(componentMock)
         mockFlags({

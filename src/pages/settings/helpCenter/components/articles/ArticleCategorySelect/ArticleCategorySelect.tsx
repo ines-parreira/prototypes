@@ -1,15 +1,17 @@
+import React, { useState } from 'react'
+
 import classNames from 'classnames'
-import React, {useState} from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {LocaleCode} from 'models/helpCenter/types'
+import { LocaleCode } from 'models/helpCenter/types'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {getCategoriesById} from 'state/entities/helpCenter/categories'
+import { getCategoriesById } from 'state/entities/helpCenter/categories'
 
-import css from './ArticleCategorySelect.less'
 import useCategoriesOptions, {
     NO_CATEGORY_OPTION,
 } from './hooks/useCategoriesOptions'
+
+import css from './ArticleCategorySelect.less'
 
 interface ArticleCategorySelectProps {
     locale: LocaleCode
@@ -24,7 +26,7 @@ const ArticleCategorySelect = ({
     onChange,
     isDisabled = false,
 }: ArticleCategorySelectProps): JSX.Element => {
-    const options = useCategoriesOptions({locale})
+    const options = useCategoriesOptions({ locale })
     const categoriesById = useAppSelector(getCategoriesById)
     const [selectFieldClassName, setSelectFieldClassName] = useState<string>('')
 
@@ -58,7 +60,7 @@ const ArticleCategorySelect = ({
             options={options}
             dropdownMenuClassName={classNames(
                 css.categoryDropdown,
-                selectFieldClassName
+                selectFieldClassName,
             )}
             className={classNames(css.select, {
                 [css.noCategory]: categoryId === null,

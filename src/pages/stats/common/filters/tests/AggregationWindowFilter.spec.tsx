@@ -1,10 +1,11 @@
-import {screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {ReportingGranularity} from 'models/reporting/types'
-import {FilterKey} from 'models/stat/types'
+import { screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { ReportingGranularity } from 'models/reporting/types'
+import { FilterKey } from 'models/stat/types'
 import {
     FILTER_DROPDOWN_ICON,
     FILTER_VALUE_PLACEHOLDER,
@@ -13,15 +14,15 @@ import {
     AggregationWindowFilter,
     AggregationWindowFilterWithState,
 } from 'pages/stats/common/filters/AggregationWindowFilter'
-import {ReportingGranularityLabels} from 'pages/stats/common/filters/constants'
+import { ReportingGranularityLabels } from 'pages/stats/common/filters/constants'
 import * as statsSlice from 'state/stats/statsSlice'
-import {RootState} from 'state/types'
+import { RootState } from 'state/types'
 import * as filtersSlice from 'state/ui/stats/filtersSlice'
-import {renderWithStore} from 'utils/testing'
+import { renderWithStore } from 'utils/testing'
 
 jest.mock('common/segment', () => ({
     logEvent: jest.fn(),
-    SegmentEvent: {StatFilterSelected: 'stat-filter-selected'},
+    SegmentEvent: { StatFilterSelected: 'stat-filter-selected' },
 }))
 
 describe('AggregationWindowFilter', () => {
@@ -45,7 +46,7 @@ describe('AggregationWindowFilter', () => {
                 period={period}
                 dispatchUpdate={dispatchUpdate}
             />,
-            defaultState
+            defaultState,
         )
 
         userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
@@ -59,7 +60,7 @@ describe('AggregationWindowFilter', () => {
             expect(
                 screen.getByRole('option', {
                     name: new RegExp(ReportingGranularityLabels[granularity]),
-                })
+                }),
             ).toBeInTheDocument()
         })
     })
@@ -72,12 +73,12 @@ describe('AggregationWindowFilter', () => {
                 period={period}
                 dispatchUpdate={dispatchUpdate}
             />,
-            defaultState
+            defaultState,
         )
 
         userEvent.click(screen.getByText(FILTER_DROPDOWN_ICON))
         userEvent.click(
-            screen.getByText(ReportingGranularityLabels[aggregation])
+            screen.getByText(ReportingGranularityLabels[aggregation]),
         )
 
         expect(dispatchUpdate).toHaveBeenCalledWith(aggregation)
@@ -89,7 +90,7 @@ describe('AggregationWindowFilter', () => {
                 period={statsSlice.defaultStatsFilters.period}
                 dispatchUpdate={dispatchUpdate}
             />,
-            defaultState
+            defaultState,
         )
 
         userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
@@ -106,7 +107,7 @@ describe('AggregationWindowFilter', () => {
             const aggregation = ReportingGranularity.Hour
             const spy = jest.spyOn(
                 statsSlice,
-                'mergeStatsFiltersWithLogicalOperator'
+                'mergeStatsFiltersWithLogicalOperator',
             )
             renderWithStore(<AggregationWindowFilterWithState />, defaultState)
 
@@ -114,7 +115,7 @@ describe('AggregationWindowFilter', () => {
             userEvent.click(
                 screen.getByRole('option', {
                     name: new RegExp(ReportingGranularityLabels[aggregation]),
-                })
+                }),
             )
 
             expect(spy).toHaveBeenCalled()

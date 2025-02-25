@@ -1,19 +1,20 @@
-import _uniqBy from 'lodash/uniqBy'
 import React, {
-    ReactNode,
     cloneElement,
+    ReactNode,
     useEffect,
     useMemo,
     useRef,
     useState,
 } from 'react'
-import {Popover} from 'reactstrap'
 
-import {useAppNode} from 'appNode'
+import _uniqBy from 'lodash/uniqBy'
+import { Popover } from 'reactstrap'
 
-import {TRIGGERS_CONFIG} from '../../constants/triggers'
-import {CampaignTrigger} from '../../types/CampaignTrigger'
-import {CampaignTriggerType} from '../../types/enums/CampaignTriggerType.enum'
+import { useAppNode } from 'appNode'
+
+import { TRIGGERS_CONFIG } from '../../constants/triggers'
+import { CampaignTrigger } from '../../types/CampaignTrigger'
+import { CampaignTriggerType } from '../../types/enums/CampaignTriggerType.enum'
 
 import css from './style.less'
 
@@ -100,7 +101,7 @@ export const CampaignPreviewPopover = ({
                     </ul>
                 </div>
             </Popover>
-            {cloneElement(children as any, {ref: innerRef})}
+            {cloneElement(children as any, { ref: innerRef })}
         </>
     )
 }

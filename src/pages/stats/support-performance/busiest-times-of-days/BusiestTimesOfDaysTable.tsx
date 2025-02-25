@@ -1,8 +1,9 @@
-import classNames from 'classnames'
-import React, {UIEventHandler, useState} from 'react'
+import React, { UIEventHandler, useState } from 'react'
 
-import {calculateDecile} from 'hooks/reporting/ticket-insights/useCustomFieldsTicketCountPerCustomFields'
-import {TimeSeriesHook} from 'hooks/reporting/useTimeSeries'
+import classNames from 'classnames'
+
+import { calculateDecile } from 'hooks/reporting/ticket-insights/useCustomFieldsTicketCountPerCustomFields'
+import { TimeSeriesHook } from 'hooks/reporting/useTimeSeries'
 import useAppSelector from 'hooks/useAppSelector'
 import useMeasure from 'hooks/useMeasure'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
@@ -11,19 +12,19 @@ import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import TableHead from 'pages/common/components/table/TableHead'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import css from 'pages/stats/AnalyticsTable.less'
-import {BusiestTimesOfDaysCellContent} from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysCellContent'
+import { BusiestTimesOfDaysCellContent } from 'pages/stats/support-performance/busiest-times-of-days/BusiestTimesOfDaysCellContent'
 import {
     BTODColumns,
     BusiestTimeOfDaysMetrics,
     columnsOrder,
     isHourCell,
 } from 'pages/stats/support-performance/busiest-times-of-days/types'
-import {useAggregatedBusiestTimesOfDayData} from 'pages/stats/support-performance/busiest-times-of-days/useAggregatedBusiestTimesOfDayData'
+import { useAggregatedBusiestTimesOfDayData } from 'pages/stats/support-performance/busiest-times-of-days/useAggregatedBusiestTimesOfDayData'
 import {
     get24Hours,
     getWorkingHoursInTimeZone,
 } from 'pages/stats/support-performance/busiest-times-of-days/utils'
-import {getBusinessHoursSettings} from 'state/currentAccount/selectors'
+import { getBusinessHoursSettings } from 'state/currentAccount/selectors'
 
 export const hours = get24Hours()
 
@@ -36,7 +37,7 @@ export const BusiestTimesOfDaysTable = ({
     useMetricQuery: TimeSeriesHook
     isHeatmapMode: boolean
 }) => {
-    const {btodData, max, isLoading, userTimezone} =
+    const { btodData, max, isLoading, userTimezone } =
         useAggregatedBusiestTimesOfDayData(useMetricQuery)
 
     const handleScroll: UIEventHandler<HTMLDivElement> = (event) => {
@@ -46,7 +47,7 @@ export const BusiestTimesOfDaysTable = ({
             setIsTableScrolled(false)
         }
     }
-    const [ref, {width}] = useMeasure<HTMLDivElement>()
+    const [ref, { width }] = useMeasure<HTMLDivElement>()
     const [isTableScrolled, setIsTableScrolled] = useState(false)
     const getCellWidth = (field: BTODColumns) => {
         return field === 'HOUR' ? 90 : 170
@@ -60,7 +61,7 @@ export const BusiestTimesOfDaysTable = ({
         <div ref={ref} className={css.container} onScroll={handleScroll}>
             <TableWrapper
                 className={classNames(css.table, css.compact)}
-                style={{width}}
+                style={{ width }}
             >
                 <TableHead>
                     {columnsOrder.map((column, index) => (
@@ -97,13 +98,13 @@ export const BusiestTimesOfDaysTable = ({
                                             ? 0
                                             : calculateDecile(
                                                   btodData[hour][column.field],
-                                                  max
+                                                  max,
                                               )
                                     }
                                     isWorkingHour={Boolean(
                                         isHourCell(column.field)
                                             ? 0
-                                            : workingHours[hour][column.field]
+                                            : workingHours[hour][column.field],
                                     )}
                                     width={getCellWidth(column.field)}
                                     isHeatmapMode={isHeatmapMode}

@@ -1,4 +1,4 @@
-import {EditorState} from 'draft-js'
+import { EditorState } from 'draft-js'
 
 import {
     createPrediction,
@@ -24,22 +24,24 @@ describe('utils', () => {
 
     describe('removeFirstNCharsOfPrediction()', () => {
         it('should remove first n characters and update prediction', () => {
-            let {predictionKey, editorState} = createStateWithPrediction('foo')
+            let { predictionKey, editorState } =
+                createStateWithPrediction('foo')
             editorState = removeFirstNCharsOfPrediction(
                 predictionKey,
                 editorState,
-                2
+                2,
             )
             predictionKey = getLastCharEntityKey(editorState)
             expect(getPredictionText(predictionKey, editorState)).toBe('o')
         })
 
         it('should clear prediction text if n is bigger than prediction length', () => {
-            let {predictionKey, editorState} = createStateWithPrediction('foo')
+            let { predictionKey, editorState } =
+                createStateWithPrediction('foo')
             editorState = removeFirstNCharsOfPrediction(
                 predictionKey,
                 editorState,
-                4
+                4,
             )
             predictionKey = getLastCharEntityKey(editorState)
             expect(getPredictionText(predictionKey, editorState)).toBe('')

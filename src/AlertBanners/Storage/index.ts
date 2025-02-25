@@ -1,1 +1,1 @@
-export {useDismissedStorage} from './hooks/useDismissedStorage'
+export { useDismissedStorage } from './hooks/useDismissedStorage'

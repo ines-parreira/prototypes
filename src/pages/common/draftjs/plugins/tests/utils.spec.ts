@@ -1,7 +1,7 @@
-import {EditorState} from 'draft-js'
+import { EditorState } from 'draft-js'
 
-import {convertFromHTML} from '../../../../../utils/editor'
-import {linkifyWithTemplate, removeLink} from '../utils'
+import { convertFromHTML } from '../../../../../utils/editor'
+import { linkifyWithTemplate, removeLink } from '../utils'
 
 describe('plugin utils', () => {
     describe('removeLink()', () => {
@@ -15,7 +15,7 @@ describe('plugin utils', () => {
                 newEditorState
                     .getCurrentContent()
                     .getFirstBlock()
-                    .getEntityAt(0)
+                    .getEntityAt(0),
             ).toBeFalsy()
         })
 
@@ -39,7 +39,7 @@ describe('plugin utils', () => {
                 newEditorState
                     .getCurrentContent()
                     .getFirstBlock()
-                    .getEntityAt(0)
+                    .getEntityAt(0),
             ).not.toBeFalsy()
         })
 
@@ -47,7 +47,7 @@ describe('plugin utils', () => {
             const url = 'https://www.gorgias.com/app/ticket/{{ticket.id}}'
             const parsedUrl = linkifyWithTemplate(url)
             expect(parsedUrl).toBe(
-                'https://www.gorgias.com/app/ticket/{{ticket.id}}'
+                'https://www.gorgias.com/app/ticket/{{ticket.id}}',
             )
         })
 
@@ -56,7 +56,7 @@ describe('plugin utils', () => {
                 'https://www.gorgias.com/app/ticket/{{ticket.id}}/messages/{{ticket.message.id}}/detail'
             const parsedUrl = linkifyWithTemplate(url)
             expect(parsedUrl).toBe(
-                'https://www.gorgias.com/app/ticket/{{ticket.id}}/messages/{{ticket.message.id}}/detail'
+                'https://www.gorgias.com/app/ticket/{{ticket.id}}/messages/{{ticket.message.id}}/detail',
             )
         })
     })

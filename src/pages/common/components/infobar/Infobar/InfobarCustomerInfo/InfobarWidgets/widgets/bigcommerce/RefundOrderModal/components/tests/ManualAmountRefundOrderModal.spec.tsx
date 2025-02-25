@@ -1,5 +1,6 @@
-import {act, fireEvent, render, screen} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
+
+import { act, fireEvent, render, screen } from '@testing-library/react'
 
 import {
     bigCommerceCalculateOrderRefundDataResponseApiFixture,
@@ -10,8 +11,8 @@ import {
     BigCommerceRefundableItemType,
 } from 'models/integration/types'
 
-import {BigCommerceRefundActionType} from '../../types'
-import {ManualAmountRefundOrderModal} from '../ManualAmountRefundOrderModal'
+import { BigCommerceRefundActionType } from '../../types'
+import { ManualAmountRefundOrderModal } from '../ManualAmountRefundOrderModal'
 
 type Props = ComponentProps<typeof ManualAmountRefundOrderModal>
 
@@ -77,16 +78,16 @@ jest.useFakeTimers()
 
 describe('ManualAmountRefundOrderModal', () => {
     it('snapshot renders the initial disabled state', () => {
-        const {container} = render(
-            <ManualAmountRefundOrderModal {...initialDisabledProps} />
+        const { container } = render(
+            <ManualAmountRefundOrderModal {...initialDisabledProps} />,
         )
 
         expect(container).toMatchSnapshot()
     })
 
     it('snapshot renders the initial state', () => {
-        const {container} = render(
-            <ManualAmountRefundOrderModal {...initialProps} />
+        const { container } = render(
+            <ManualAmountRefundOrderModal {...initialProps} />,
         )
 
         expect(container).toMatchSnapshot()
@@ -101,13 +102,13 @@ describe('ManualAmountRefundOrderModal', () => {
             <ManualAmountRefundOrderModal
                 {...initialProps}
                 dispatchRefundOrderState={dispatchRefundOrderStateMock}
-            />
+            />,
         )
         act(() => jest.runAllTimers())
 
         // Agent types an amount to refund => it will trigger a hook call with user's data
         fireEvent.change(screen.getByRole('spinbutton'), {
-            target: {value: amountToRefund},
+            target: { value: amountToRefund },
         })
         act(() => jest.runAllTimers())
 
@@ -135,13 +136,13 @@ describe('ManualAmountRefundOrderModal', () => {
             <ManualAmountRefundOrderModal
                 {...initialProps}
                 dispatchRefundOrderState={dispatchRefundOrderStateMock}
-            />
+            />,
         )
         act(() => jest.runAllTimers())
 
         // Agent types an invalid numerical amount to refund => it will trigger a hook call with raw data
         fireEvent.change(screen.getByRole('spinbutton'), {
-            target: {value: amountToRefund},
+            target: { value: amountToRefund },
         })
         act(() => jest.runAllTimers())
 
@@ -165,11 +166,11 @@ describe('ManualAmountRefundOrderModal', () => {
 
         const dispatchRefundOrderStateMock = jest.fn()
 
-        const {container} = render(
+        const { container } = render(
             <ManualAmountRefundOrderModal
                 {...zeroAmountToRefundProps}
                 dispatchRefundOrderState={dispatchRefundOrderStateMock}
-            />
+            />,
         )
 
         expect(container).toMatchSnapshot()
@@ -178,7 +179,7 @@ describe('ManualAmountRefundOrderModal', () => {
 
         // Agent types an invalid numerical amount to refund => it will trigger a hook call with raw data
         fireEvent.change(screen.getByRole('spinbutton'), {
-            target: {value: amountToRefund},
+            target: { value: amountToRefund },
         })
         act(() => jest.runAllTimers())
 

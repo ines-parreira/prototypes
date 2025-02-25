@@ -1,14 +1,16 @@
-import {Badge} from '@gorgias/merchant-ui-kit'
 import React from 'react'
-import {Modal, ModalBody, ModalHeader} from 'reactstrap'
 
-import {useAppNode} from 'appNode'
+import { Modal, ModalBody, ModalHeader } from 'reactstrap'
+
+import { Badge } from '@gorgias/merchant-ui-kit'
+
+import { useAppNode } from 'appNode'
 import Button from 'pages/common/components/button/Button'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'
-import {ProductRecommendationScenario} from 'pages/convert/campaigns/types/CampaignAttachment'
-import {CampaignTrigger} from 'pages/convert/campaigns/types/CampaignTrigger'
-import {getRecommendedTriggerForScenario} from 'pages/convert/campaigns/utils/geRecommendedTriggerForScenario'
-import {assetsUrl} from 'utils'
+import { ProductRecommendationScenario } from 'pages/convert/campaigns/types/CampaignAttachment'
+import { CampaignTrigger } from 'pages/convert/campaigns/types/CampaignTrigger'
+import { getRecommendedTriggerForScenario } from 'pages/convert/campaigns/utils/geRecommendedTriggerForScenario'
+import { assetsUrl } from 'utils'
 
 import css from './ProductRecommendationModal.less'
 
@@ -33,7 +35,7 @@ const getScenarioContent = (scenario: ProductRecommendationScenario) => {
                     </>
                 ),
                 image: assetsUrl(
-                    'img/campaigns/product-recommendations/number-of-orders-placed-trigger.png'
+                    'img/campaigns/product-recommendations/number-of-orders-placed-trigger.png',
                 ),
             }
         case ProductRecommendationScenario.OutOfStockAlternatives:
@@ -53,7 +55,7 @@ const getScenarioContent = (scenario: ProductRecommendationScenario) => {
                     </>
                 ),
                 image: assetsUrl(
-                    'img/campaigns/product-recommendations/out-of-stock-product-pages-trigger.png'
+                    'img/campaigns/product-recommendations/out-of-stock-product-pages-trigger.png',
                 ),
             }
         default:
@@ -71,9 +73,9 @@ type Props = {
 
 const ProductRecommendationModal = (props: Props) => {
     const appNode = useAppNode()
-    const {scenario, isOpen, onSubmit, onClose, onExit} = props
+    const { scenario, isOpen, onSubmit, onClose, onExit } = props
 
-    const {title, description, image} = getScenarioContent(scenario)
+    const { title, description, image } = getScenarioContent(scenario)
     if (!title || !description || !image) {
         return null
     }

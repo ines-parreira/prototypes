@@ -1,7 +1,7 @@
 // g/integrations/klaviyo/schemas.py
-import {IntegrationType} from '../constants'
-import type {Integration} from './'
-import type {IntegrationBase} from './base'
+import { IntegrationType } from '../constants'
+import type { Integration } from './'
+import type { IntegrationBase } from './base'
 
 export type KlaviyoIntegration = IntegrationBase & {
     type: IntegrationType.Klaviyo
@@ -55,6 +55,6 @@ type SyncState = {
 }
 
 export const isKlaviyoIntegration = (
-    integration: Maybe<Integration>
+    integration: Maybe<Integration>,
 ): integration is KlaviyoIntegration =>
     integration?.type === IntegrationType.Klaviyo

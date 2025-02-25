@@ -1,21 +1,23 @@
-import {Card} from '@gorgias/analytics-ui-kit'
-import {Label} from '@gorgias/merchant-ui-kit'
-import React, {useState} from 'react'
-import {ReactCountryFlag} from 'react-country-flag'
+import React, { useState } from 'react'
 
-import {WhatsAppMessageTemplate} from 'models/whatsAppMessageTemplates/types'
+import { ReactCountryFlag } from 'react-country-flag'
+
+import { Card } from '@gorgias/analytics-ui-kit'
+import { Label } from '@gorgias/merchant-ui-kit'
+
+import { WhatsAppMessageTemplate } from 'models/whatsAppMessageTemplates/types'
 import Alert from 'pages/common/components/Alert/Alert'
 import IconButton from 'pages/common/components/button/IconButton'
-import {Drawer} from 'pages/common/components/Drawer'
+import { Drawer } from 'pages/common/components/Drawer'
+import { getLanguageDisplayName } from 'utils'
 
-import {getLanguageDisplayName} from 'utils'
-
-import {templateAlertContent, whatsAppFlagCodes} from './constants'
-import {normalizeLocale} from './utils'
+import { templateAlertContent, whatsAppFlagCodes } from './constants'
+import { normalizeLocale } from './utils'
 import WhatsAppMessageTemplateCategoryLabel from './WhatsAppMessageTemplateCategoryLabel'
-import css from './WhatsAppMessageTemplateDetailsDrawer.less'
 import WhatsAppMessageTemplateMessage from './WhatsAppMessageTemplateMessage'
 import WhatsAppMessageTemplateStatusLabel from './WhatsAppMessageTemplateStatusLabel'
+
+import css from './WhatsAppMessageTemplateDetailsDrawer.less'
 
 type Props = {
     isOpen: boolean
@@ -96,7 +98,7 @@ export default function WhatsAppMessageTemplateDetailsDrawer({
                             />
                             <div>
                                 {getLanguageDisplayName(
-                                    normalizeLocale(template.language)
+                                    normalizeLocale(template.language),
                                 )}
                             </div>
                         </div>

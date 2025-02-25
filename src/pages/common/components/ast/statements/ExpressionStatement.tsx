@@ -1,8 +1,9 @@
-import classnames from 'classnames'
-import {Map, List} from 'immutable'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {RuleItemActions} from '../../../../settings/rules/types'
+import classnames from 'classnames'
+import { List, Map } from 'immutable'
+
+import { RuleItemActions } from '../../../../settings/rules/types'
 import useHoverable from '../../../hooks/useHoverable'
 import Expression from '../expression/Expression'
 import DeleteBlockStatementItem from '../operations/DeleteBlockStatementItem'
@@ -25,10 +26,10 @@ export default function ExpressionStatement({
     depth,
 }: Props) {
     const parentNew = parent.push('expression')
-    const {hovered, setRef} = useHoverable()
+    const { hovered, setRef } = useHoverable()
     return (
         <span ref={setRef}>
-            <div className={classnames('ExpressionStatement', {hovered})}>
+            <div className={classnames('ExpressionStatement', { hovered })}>
                 <DeleteBlockStatementItem
                     parent={parent}
                     rule={rule}

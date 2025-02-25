@@ -1,8 +1,9 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {render, screen, waitFor} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -11,17 +12,16 @@ import {
     IntegrationType,
     ShopifyIntegration,
 } from 'models/integration/types'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import {useEmailIntegrations} from '../../../hooks/useEmailIntegrations'
+import { useEmailIntegrations } from '../../../hooks/useEmailIntegrations'
 import ContactFormMailtoReplacementSection from '../ContactFormMailtoReplacementSection'
-
-import {getMailtoReplacementConfig} from '../resources'
+import { getMailtoReplacementConfig } from '../resources'
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
-    useHelpCenterApi: () => ({client: jest.fn()}),
+    useHelpCenterApi: () => ({ client: jest.fn() }),
 }))
 jest.mock('../../../hooks/useEmailIntegrations', () => ({
     useEmailIntegrations: jest.fn(),
@@ -46,7 +46,7 @@ const createGmailIntegration = (id: number, email: string): GmailIntegration =>
         type: IntegrationType.Gmail,
         id,
         name: email,
-        meta: {address: email},
+        meta: { address: email },
     }) as GmailIntegration
 
 const SHOPIFY_INTEGRATION = {
@@ -66,7 +66,7 @@ const renderComponent = () => {
                     contactFormId={CONTACT_FORM_ID}
                 />
             </QueryClientProvider>
-        </Provider>
+        </Provider>,
     )
 }
 describe('<ContactFormMailtoReplacementSection />', () => {
@@ -89,16 +89,16 @@ describe('<ContactFormMailtoReplacementSection />', () => {
 
         expect(
             screen.getByText(
-                'Pages with iFrames, tables, or dynamic content may require manual replacement.'
-            )
+                'Pages with iFrames, tables, or dynamic content may require manual replacement.',
+            ),
         ).toBeInTheDocument()
 
         userEvent.click(screen.getByLabelText('Close Icon'))
 
         expect(
             screen.queryByText(
-                'Pages with iFrames, tables, or dynamic content may require manual replacement.'
-            )
+                'Pages with iFrames, tables, or dynamic content may require manual replacement.',
+            ),
         ).not.toBeInTheDocument()
     })
 
@@ -125,7 +125,7 @@ describe('<ContactFormMailtoReplacementSection />', () => {
             renderComponent()
 
             expect(
-                screen.queryByText('No links detected')
+                screen.queryByText('No links detected'),
             ).not.toBeInTheDocument()
             expect(screen.getByText('Replace links')).toBeInTheDocument()
 
@@ -152,15 +152,15 @@ describe('<ContactFormMailtoReplacementSection />', () => {
             const email = testEmails[0].name
 
             expect(
-                screen.getByTestId(`email-detected-${email}`)
+                screen.getByTestId(`email-detected-${email}`),
             ).toBeInTheDocument()
 
             userEvent.click(screen.getByText('Replace links'))
 
             await waitFor(() =>
                 expect(
-                    screen.getByTestId(`email-replaced-${email}`)
-                ).toBeInTheDocument()
+                    screen.getByTestId(`email-replaced-${email}`),
+                ).toBeInTheDocument(),
             )
         })
 
@@ -173,8 +173,8 @@ describe('<ContactFormMailtoReplacementSection />', () => {
 
             await waitFor(() =>
                 expect(
-                    screen.getByTestId(`email-replaced-${email}`)
-                ).toBeInTheDocument()
+                    screen.getByTestId(`email-replaced-${email}`),
+                ).toBeInTheDocument(),
             )
 
             await waitFor(() => {
@@ -200,23 +200,23 @@ describe('<ContactFormMailtoReplacementSection />', () => {
             const email = testEmails[0].name
 
             expect(
-                screen.getByTestId(`email-detected-${email}`)
+                screen.getByTestId(`email-detected-${email}`),
             ).toBeInTheDocument()
 
             userEvent.click(screen.getByText('Replace links'))
 
             await waitFor(() =>
                 expect(
-                    screen.getByTestId(`email-replaced-${email}`)
-                ).toBeInTheDocument()
+                    screen.getByTestId(`email-replaced-${email}`),
+                ).toBeInTheDocument(),
             )
 
             userEvent.click(screen.getByTestId(`revert-email-${email}`))
 
             await waitFor(() =>
                 expect(
-                    screen.getByTestId(`email-detected-${email}`)
-                ).toBeInTheDocument()
+                    screen.getByTestId(`email-detected-${email}`),
+                ).toBeInTheDocument(),
             )
             expect(screen.getByLabelText(email)).toBeChecked()
             await waitFor(() => {
@@ -241,12 +241,12 @@ describe('<ContactFormMailtoReplacementSection />', () => {
             // Check only 1st email is replaced
             await waitFor(() =>
                 expect(
-                    screen.getByTestId(`email-replaced-${email1}`)
-                ).toBeInTheDocument()
+                    screen.getByTestId(`email-replaced-${email1}`),
+                ).toBeInTheDocument(),
             )
 
             expect(
-                screen.getByTestId(`email-detected-${email2}`)
+                screen.getByTestId(`email-detected-${email2}`),
             ).toBeInTheDocument()
 
             // Select 2nd email
@@ -256,11 +256,11 @@ describe('<ContactFormMailtoReplacementSection />', () => {
 
             await waitFor(() =>
                 expect(
-                    screen.getByTestId(`email-replaced-${email1}`)
-                ).toBeInTheDocument()
+                    screen.getByTestId(`email-replaced-${email1}`),
+                ).toBeInTheDocument(),
             )
             expect(
-                screen.getByTestId(`email-replaced-${email2}`)
+                screen.getByTestId(`email-replaced-${email2}`),
             ).toBeInTheDocument()
         })
 
@@ -279,22 +279,22 @@ describe('<ContactFormMailtoReplacementSection />', () => {
 
             await waitFor(() =>
                 expect(
-                    screen.getByTestId(`email-replaced-${email}`)
-                ).toBeInTheDocument()
+                    screen.getByTestId(`email-replaced-${email}`),
+                ).toBeInTheDocument(),
             )
             expect(
-                screen.queryByText('Email links replaced')
+                screen.queryByText('Email links replaced'),
             ).toBeInTheDocument()
 
             userEvent.click(screen.getByTestId(`revert-email-${email}`))
 
             await waitFor(() =>
                 expect(
-                    screen.getByTestId(`email-detected-${email}`)
-                ).toBeInTheDocument()
+                    screen.getByTestId(`email-detected-${email}`),
+                ).toBeInTheDocument(),
             )
             expect(
-                screen.queryByText('Email links replaced')
+                screen.queryByText('Email links replaced'),
             ).not.toBeInTheDocument()
         })
 
@@ -310,15 +310,15 @@ describe('<ContactFormMailtoReplacementSection />', () => {
                 emailIntegrations: [testEmail1],
             })
             mockGetMailtoReplacementConfig.mockReturnValue(
-                Promise.resolve({emails: [email1, email2]})
+                Promise.resolve({ emails: [email1, email2] }),
             )
 
             renderComponent()
 
             await waitFor(() =>
                 expect(
-                    screen.getByTestId(`email-replaced-${email2}`)
-                ).toBeInTheDocument()
+                    screen.getByTestId(`email-replaced-${email2}`),
+                ).toBeInTheDocument(),
             )
 
             // Revert email
@@ -326,11 +326,11 @@ describe('<ContactFormMailtoReplacementSection />', () => {
 
             await waitFor(() =>
                 expect(
-                    screen.queryByTestId(`email-replaced-${email2}`)
-                ).not.toBeInTheDocument()
+                    screen.queryByTestId(`email-replaced-${email2}`),
+                ).not.toBeInTheDocument(),
             )
             expect(
-                screen.queryByTestId(`email-detected-${email2}`)
+                screen.queryByTestId(`email-detected-${email2}`),
             ).not.toBeInTheDocument()
         })
     })

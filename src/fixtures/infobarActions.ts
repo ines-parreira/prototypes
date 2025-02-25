@@ -1,15 +1,15 @@
-import {fromJS, Map as ImmutableMap, List} from 'immutable'
+import { fromJS, Map as ImmutableMap, List } from 'immutable'
 
-import {IntegrationType} from '../models/integration/types'
-import {initialState as cancelOrderInitialState} from '../state/infobarActions/shopify/cancelOrder/reducers'
-import {CancelOrderState} from '../state/infobarActions/shopify/cancelOrder/types'
-import {initialState as shopifyCreateOrderInitialState} from '../state/infobarActions/shopify/createOrder/reducers'
-import {CreateOrderState} from '../state/infobarActions/shopify/createOrder/types'
-import {initialState as editOrderInitialState} from '../state/infobarActions/shopify/editOrder/reducers'
-import {initialState as shippingAddressInitialState} from '../state/infobarActions/shopify/editShippingAddress/reducers'
-import {initialState as refundOrderInitialState} from '../state/infobarActions/shopify/refundOrder/reducers'
-import {RefundOrderState} from '../state/infobarActions/shopify/refundOrder/types'
-import {InfobarActionsState} from '../state/infobarActions/types'
+import { IntegrationType } from '../models/integration/types'
+import { initialState as cancelOrderInitialState } from '../state/infobarActions/shopify/cancelOrder/reducers'
+import { CancelOrderState } from '../state/infobarActions/shopify/cancelOrder/types'
+import { initialState as shopifyCreateOrderInitialState } from '../state/infobarActions/shopify/createOrder/reducers'
+import { CreateOrderState } from '../state/infobarActions/shopify/createOrder/types'
+import { initialState as editOrderInitialState } from '../state/infobarActions/shopify/editOrder/reducers'
+import { initialState as shippingAddressInitialState } from '../state/infobarActions/shopify/editShippingAddress/reducers'
+import { initialState as refundOrderInitialState } from '../state/infobarActions/shopify/refundOrder/reducers'
+import { RefundOrderState } from '../state/infobarActions/shopify/refundOrder/types'
+import { InfobarActionsState } from '../state/infobarActions/types'
 
 export const infobarActionsStateFixture = ({
     cancelOrderState = cancelOrderInitialState,

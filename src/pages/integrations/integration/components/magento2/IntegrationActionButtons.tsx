@@ -1,12 +1,12 @@
-import {Map} from 'immutable'
-
 import React from 'react'
+
+import { Map } from 'immutable'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import Button from 'pages/common/components/button/Button'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
-import {INTEGRATION_REMOVAL_CONFIGURATION_TEXT} from 'pages/integrations/integration/constants'
-import {deleteIntegration} from 'state/integrations/actions'
+import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
+import { deleteIntegration } from 'state/integrations/actions'
 
 type Props = {
     integration: Map<string, any>
@@ -35,7 +35,7 @@ export const IntegrationActionButtons = ({
 
         const url = integration.getIn(['meta', 'store_url']) as string
         window.location.href = redirectUri!.concat(
-            `?store_url=${url}&admin_url_suffix=${adminUrlSuffix}`
+            `?store_url=${url}&admin_url_suffix=${adminUrlSuffix}`,
         )
     }
 

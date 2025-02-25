@@ -1,10 +1,10 @@
-import {fromJS, Map, List} from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 
-import {fromAST, isImmutable, toImmutable} from 'common/utils'
+import { fromAST, isImmutable, toImmutable } from 'common/utils'
 import _schemas from 'fixtures/openapi.json'
-import {updateCodeAst} from 'pages/common/components/ast/utils'
-import {CodeASTType} from 'pages/settings/rules/types'
-import {getAST, getFirstExpressionOfAST} from 'utils'
+import { updateCodeAst } from 'pages/common/components/ast/utils'
+import { CodeASTType } from 'pages/settings/rules/types'
+import { getAST, getFirstExpressionOfAST } from 'utils'
 
 import _astCodeContains from './fixtures/astCodeContains.json'
 import _astCodeEq from './fixtures/astCodeEq.json'
@@ -27,7 +27,7 @@ describe('ast utils updateCodeAst CallExpression changed', () => {
                 astCodeContains,
                 path,
                 'notContainsAll',
-                'UPDATE'
+                'UPDATE',
             )
             expect(newAst).toMatchSnapshot()
         })
@@ -40,7 +40,7 @@ describe('ast utils updateCodeAst CallExpression changed', () => {
                 astCodeNeq,
                 path,
                 'neq',
-                'UPDATE'
+                'UPDATE',
             )
             expect(newAst).toMatchSnapshot()
         })
@@ -53,7 +53,7 @@ describe('ast utils updateCodeAst CallExpression changed', () => {
                 astCodeEq,
                 path,
                 'neq',
-                'UPDATE'
+                'UPDATE',
             )
             expect(newAst).toMatchSnapshot()
         })
@@ -66,7 +66,7 @@ describe('ast utils updateCodeAst CallExpression changed', () => {
                 astCodeContains,
                 path,
                 'eq',
-                'UPDATE'
+                'UPDATE',
             )
             expect(newAst).toMatchSnapshot()
         })
@@ -79,7 +79,7 @@ describe('ast utils updateCodeAst CallExpression changed', () => {
                 astCodeEq,
                 path,
                 'containsAll',
-                'UPDATE'
+                'UPDATE',
             )
             expect(newAst).toMatchSnapshot()
         })
@@ -100,7 +100,7 @@ describe('ast utils updateCodeAst CallExpression changed', () => {
                 astCodeContains,
                 path,
                 newValue,
-                'UPDATE'
+                'UPDATE',
             )
             expect(newAst).toMatchSnapshot()
         })
@@ -113,7 +113,7 @@ describe('ast utils updateCodeAst CallExpression changed', () => {
                 astCodeEq,
                 path,
                 'hello world!',
-                'UPDATE'
+                'UPDATE',
             )
             expect(newAst).toMatchSnapshot()
         })
@@ -134,7 +134,7 @@ describe('ast utils updateCodeAst CallExpression changed', () => {
                 astCodeContains,
                 path,
                 'from_agent',
-                'UPDATE'
+                'UPDATE',
             )
             expect(newAst).toMatchSnapshot()
         })
@@ -155,7 +155,7 @@ describe('ast utils updateCodeAst CallExpression changed', () => {
                 astCodeEq,
                 path,
                 'subject',
-                'UPDATE'
+                'UPDATE',
             )
             expect(newAst).toMatchSnapshot()
             newAst = updateCodeAst(
@@ -163,7 +163,7 @@ describe('ast utils updateCodeAst CallExpression changed', () => {
                 fromAST(newAst.ast),
                 path,
                 'customer',
-                'UPDATE'
+                'UPDATE',
             )
             expect(newAst).toMatchSnapshot()
             path = fromJS([
@@ -181,7 +181,7 @@ describe('ast utils updateCodeAst CallExpression changed', () => {
                 fromAST(newAst.ast),
                 path,
                 'from_agent',
-                'UPDATE'
+                'UPDATE',
             )
             expect(newAst).toMatchSnapshot()
         })
@@ -202,7 +202,7 @@ describe('ast utils updateCodeAst CallExpression changed', () => {
                 astCodeContains,
                 path,
                 'message',
-                'UPDATE'
+                'UPDATE',
             )
             expect(newAst).toMatchSnapshot()
         })
@@ -228,7 +228,7 @@ describe('ast utils updateCodeAst CallExpression changed', () => {
                 baseAst,
                 path,
                 value,
-                'UPDATE_IF_STATEMENT'
+                'UPDATE_IF_STATEMENT',
             )
             expect(newAst).toMatchSnapshot()
         })

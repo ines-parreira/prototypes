@@ -1,5 +1,5 @@
 import useAppSelector from 'hooks/useAppSelector'
-import {getCurrentPlansByProduct} from 'state/billing/selectors'
+import { getCurrentPlansByProduct } from 'state/billing/selectors'
 
 export const useCurrentPriceIds = (): string[] => {
     const currentProducts = useAppSelector(getCurrentPlansByProduct)

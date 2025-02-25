@@ -1,9 +1,9 @@
 import React from 'react'
 
-import {OrderDirection} from 'models/api/types'
+import { OrderDirection } from 'models/api/types'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
-import {HintTooltip} from 'pages/stats/common/HintTooltip'
-import {TooltipData} from 'pages/stats/types'
+import { HintTooltip } from 'pages/stats/common/HintTooltip'
+import { TooltipData } from 'pages/stats/types'
 
 type AgentsHeaderCellContentProps = {
     width?: number | string
@@ -26,7 +26,7 @@ export const AgentsHeaderCellContent = ({
     hint,
     useSortingQuery,
 }: AgentsHeaderCellContentProps) => {
-    const {sortCallback, direction, isOrderedBy} = useSortingQuery()
+    const { sortCallback, direction, isOrderedBy } = useSortingQuery()
 
     return (
         <HeaderCellProperty

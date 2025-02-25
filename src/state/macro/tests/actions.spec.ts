@@ -1,11 +1,11 @@
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
-import {fromJS, Map} from 'immutable'
-import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+import { fromJS, Map } from 'immutable'
+import configureMockStore, { MockStoreEnhanced } from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import client from 'models/api/resources'
-import {StoreDispatch} from 'state/types'
+import { StoreDispatch } from 'state/types'
 
 import * as actions from '../actions'
 import * as constants from '../constants'
@@ -29,7 +29,7 @@ describe('macro actions', () => {
 
     describe('fetchAllMacros', () => {
         it('should return formatted data', () => {
-            const macros = [{id: 1, name: 'Pizza Pepperoni'}]
+            const macros = [{ id: 1, name: 'Pizza Pepperoni' }]
             mockServer.onGet('/api/macros/').reply(200, {
                 data: macros,
                 meta: {
@@ -40,7 +40,10 @@ describe('macro actions', () => {
 
             return store
                 .dispatch(
-                    actions.fetchAllMacros({}, axios.CancelToken.source().token)
+                    actions.fetchAllMacros(
+                        {},
+                        axios.CancelToken.source().token,
+                    ),
                 )
                 .then((res) => {
                     expect(res).toEqual(fromJS(macros))

@@ -1,27 +1,29 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import cn from 'classnames'
-import {Moment} from 'moment'
-import React, {useCallback, useMemo, useRef, useState} from 'react'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import cn from 'classnames'
+import { Moment } from 'moment'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import useAppSelector from 'hooks/useAppSelector'
 import useShortcuts from 'hooks/useShortcuts'
-
 import Button from 'pages/common/components/button/Button'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import {getTimezone} from 'state/currentUser/selectors'
+import { getTimezone } from 'state/currentUser/selectors'
+
+import TicketSnoozePicker from './TicketDetails/TicketSnoozePicker'
 
 import css from './Snooze.less'
-import TicketSnoozePicker from './TicketDetails/TicketSnoozePicker'
 
 type Props = {
     until?: string
     onUpdate: (until: Moment | null) => void
 }
 
-export default function Snooze({until, onUpdate}: Props) {
+export default function Snooze({ until, onUpdate }: Props) {
     const [showDropdown, setShowDropdown] = useState(false)
     const [showPicker, setShowPicker] = useState(false)
     const timezone = useAppSelector(getTimezone)
@@ -30,7 +32,7 @@ export default function Snooze({until, onUpdate}: Props) {
 
     const isSnoozed = !!until
     const handleClick = useCallback(() => {
-        logEvent(SegmentEvent.SnoozeButtonClicked, {isSnoozed})
+        logEvent(SegmentEvent.SnoozeButtonClicked, { isSnoozed })
         if (!isSnoozed) {
             setShowPicker((s) => !s)
             return
@@ -69,7 +71,7 @@ export default function Snooze({until, onUpdate}: Props) {
                 },
             },
         }),
-        []
+        [],
     )
 
     useShortcuts('TicketDetailContainer', actions)
@@ -111,14 +113,14 @@ export default function Snooze({until, onUpdate}: Props) {
                 <DropdownBody>
                     <DropdownItem
                         onClick={handleShowSnoozePicker}
-                        option={{label: '', value: ''}}
+                        option={{ label: '', value: '' }}
                         shouldCloseOnSelect
                     >
                         <i
                             className={cn(
                                 css.icon,
                                 css.optionIcon,
-                                'material-icons'
+                                'material-icons',
                             )}
                         >
                             update
@@ -127,14 +129,14 @@ export default function Snooze({until, onUpdate}: Props) {
                     </DropdownItem>
                     <DropdownItem
                         onClick={handleClickClear}
-                        option={{label: '', value: ''}}
+                        option={{ label: '', value: '' }}
                         shouldCloseOnSelect
                     >
                         <i
                             className={cn(
                                 css.icon,
                                 css.optionIcon,
-                                'material-icons'
+                                'material-icons',
                             )}
                         >
                             alarm_off

@@ -1,4 +1,4 @@
-import {StoreConfiguration} from 'models/aiAgent/types'
+import { StoreConfiguration } from 'models/aiAgent/types'
 import {
     AiAgentMessageType,
     AiAgentResponse,
@@ -7,8 +7,8 @@ import {
     TicketOutcome,
 } from 'models/aiAgentPlayground/types'
 
-import {PlaygroundChannels} from '../components/PlaygroundChat/PlaygroundChat.types'
-import {AI_AGENT_SENDER} from '../components/PlaygroundMessage/PlaygroundMessage'
+import { PlaygroundChannels } from '../components/PlaygroundChat/PlaygroundChat.types'
+import { AI_AGENT_SENDER } from '../components/PlaygroundMessage/PlaygroundMessage'
 import {
     shouldAiAgentResponseDisplay,
     shouldDisplayActions,
@@ -22,7 +22,7 @@ const AI_AGENT_MESSAGE_TYPE_TO_TICKET_OUTCOME: Record<string, TicketOutcome> = {
 
 const getEmailChannelMessagesFromResponse = (
     aiAgentResponse: AiAgentResponse,
-    storeData: StoreConfiguration
+    storeData: StoreConfiguration,
 ): PlaygroundMessage[] => {
     const messages: PlaygroundMessage[] = []
 
@@ -63,7 +63,7 @@ const getEmailChannelMessagesFromResponse = (
 }
 
 const getChatChannelMessagesFromResponse = (
-    aiAgentResponse: AiAgentResponse
+    aiAgentResponse: AiAgentResponse,
 ) => {
     const messages: PlaygroundMessage[] = []
 

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import InstallationCodeSnippet from 'pages/common/components/InstallationCodeSnippet/InstallationCodeSnippet'
 
 import InstallationStep from './components/InstallationStep'
@@ -11,7 +11,7 @@ type Props = {
     alertMessage?: React.ReactNode
 }
 
-const ManualInstallationShopifyWebsiteTab = ({code, alertMessage}: Props) => {
+const ManualInstallationShopifyWebsiteTab = ({ code, alertMessage }: Props) => {
     return (
         <InstallationTab>
             <InstallationStep index={1}>

@@ -1,6 +1,8 @@
-import {Tag} from '@gorgias/api-queries'
-import {List} from 'immutable'
-import React, {useCallback, useMemo} from 'react'
+import React, { useCallback, useMemo } from 'react'
+
+import { List } from 'immutable'
+
+import { Tag } from '@gorgias/api-queries'
 
 import Button from 'pages/common/components/button/Button'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
@@ -40,7 +42,7 @@ const MergeButton = ({
             }
             onConfirm={handleMergeClick}
         >
-            {({uid, onDisplayConfirmation}) => (
+            {({ uid, onDisplayConfirmation }) => (
                 <Button
                     id={uid}
                     isDisabled={selectedTagsIds.size < 2}

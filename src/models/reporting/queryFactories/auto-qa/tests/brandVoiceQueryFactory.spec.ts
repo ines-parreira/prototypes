@@ -1,19 +1,19 @@
 import moment from 'moment'
 
-import {TicketStatus} from 'business/types/ticket'
-import {OrderDirection} from 'models/api/types'
+import { TicketStatus } from 'business/types/ticket'
+import { OrderDirection } from 'models/api/types'
 import {
     TicketQAScoreDimension,
     TicketQAScoreDimensionName,
     TicketQAScoreMeasure,
 } from 'models/reporting/cubes/auto-qa/TicketQAScoreCube'
-import {TicketDimension} from 'models/reporting/cubes/TicketCube'
+import { TicketDimension } from 'models/reporting/cubes/TicketCube'
 import {
     brandVoiceDrillDownQueryFactory,
     brandVoiceQueryFactory,
 } from 'models/reporting/queryFactories/auto-qa/brandVoiceQueryFactory'
-import {ReportingFilterOperator} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
+import { ReportingFilterOperator } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
 import {
     DRILLDOWN_QUERY_LIMIT,
     statsFiltersToReportingFilters,
@@ -42,7 +42,7 @@ describe('brandVoiceQueryFactory', () => {
             filters: [
                 ...statsFiltersToReportingFilters(
                     TicketStatsFiltersMembers,
-                    statsFilters
+                    statsFilters,
                 ),
                 {
                     member: TicketDimension.Status,
@@ -69,7 +69,7 @@ describe('brandVoiceQueryFactory', () => {
             filters: [
                 ...statsFiltersToReportingFilters(
                     TicketStatsFiltersMembers,
-                    statsFilters
+                    statsFilters,
                 ),
                 {
                     member: TicketDimension.Status,
@@ -114,7 +114,7 @@ describe('brandVoiceDrillDownQueryFactory', () => {
             filters: [
                 ...statsFiltersToReportingFilters(
                     TicketStatsFiltersMembers,
-                    statsFilters
+                    statsFilters,
                 ),
                 {
                     member: TicketDimension.Status,
@@ -135,7 +135,7 @@ describe('brandVoiceDrillDownQueryFactory', () => {
         const query = brandVoiceDrillDownQueryFactory(
             statsFilters,
             timezone,
-            sorting
+            sorting,
         )
 
         expect(query).toEqual({
@@ -149,7 +149,7 @@ describe('brandVoiceDrillDownQueryFactory', () => {
             filters: [
                 ...statsFiltersToReportingFilters(
                     TicketStatsFiltersMembers,
-                    statsFilters
+                    statsFilters,
                 ),
                 {
                     member: TicketDimension.Status,

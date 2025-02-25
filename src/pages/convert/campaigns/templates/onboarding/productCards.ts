@@ -1,21 +1,21 @@
-import {Map} from 'immutable'
-import {ulid} from 'ulidx'
+import { Map } from 'immutable'
+import { ulid } from 'ulidx'
 
 import {
     TooltipActionType,
     WizardConfiguration,
 } from 'pages/convert/campaigns/types/CampaignFormConfiguration'
-import {CampaignStepsKeys} from 'pages/convert/campaigns/types/CampaignSteps'
-import {CampaignStatus} from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
-import {CampaignTriggerBusinessHoursValuesEnum} from 'pages/convert/campaigns/types/enums/CampaignTriggerBusinessHoursValues.enum'
-import {CampaignTriggerDeviceTypeValueEnum} from 'pages/convert/campaigns/types/enums/CampaignTriggerDeviceTypeValue.enum'
-import {CampaignTriggerOperator} from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
-import {CampaignTriggerType} from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
-import {createTriggerRule} from 'pages/convert/campaigns/utils/createTriggerRule'
-import {assetsUrl} from 'utils'
-import {PlanName} from 'utils/paywalls'
+import { CampaignStepsKeys } from 'pages/convert/campaigns/types/CampaignSteps'
+import { CampaignStatus } from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
+import { CampaignTriggerBusinessHoursValuesEnum } from 'pages/convert/campaigns/types/enums/CampaignTriggerBusinessHoursValues.enum'
+import { CampaignTriggerDeviceTypeValueEnum } from 'pages/convert/campaigns/types/enums/CampaignTriggerDeviceTypeValue.enum'
+import { CampaignTriggerOperator } from 'pages/convert/campaigns/types/enums/CampaignTriggerOperator.enum'
+import { CampaignTriggerType } from 'pages/convert/campaigns/types/enums/CampaignTriggerType.enum'
+import { createTriggerRule } from 'pages/convert/campaigns/utils/createTriggerRule'
+import { assetsUrl } from 'utils'
+import { PlanName } from 'utils/paywalls'
 
-import {CampaignConfigurationBuilder} from '../constructor'
+import { CampaignConfigurationBuilder } from '../constructor'
 import {
     CampaignConfiguration,
     CampaignTemplate,
@@ -46,7 +46,7 @@ export const PRODUCT_CARD_SHOWCASE: CampaignTemplate = {
         }
     },
     getConfiguration: async (
-        storeIntegration: Map<string, any>
+        storeIntegration: Map<string, any>,
     ): Promise<CampaignConfiguration> => {
         const triggers = [
             {
@@ -88,7 +88,7 @@ export const PRODUCT_CARD_SHOWCASE: CampaignTemplate = {
                 meta: {
                     noReply: true,
                 },
-            }
+            },
         )
 
         await builder.attachProductCards(storeIntegration, 3)

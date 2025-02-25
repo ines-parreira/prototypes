@@ -1,17 +1,18 @@
-import {fireEvent, render, screen} from '@testing-library/react'
+import React, { ComponentProps } from 'react'
+
+import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import {History, Location} from 'history'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {match} from 'react-router-dom'
+import { History, Location } from 'history'
+import { fromJS } from 'immutable'
+import { match } from 'react-router-dom'
 
 import {
     PENDING_AUTHENTICATION_STATUS,
     SMILE_INTEGRATION_TYPE,
     SUCCESS_AUTHENTICATION_STATUS,
 } from 'constants/integration'
-import {SmileIntegrationDetailComponent} from 'pages/integrations/integration/components/smile/SmileIntegrationDetail'
-import {INTEGRATION_REMOVAL_CONFIGURATION_TEXT} from 'pages/integrations/integration/constants'
+import { SmileIntegrationDetailComponent } from 'pages/integrations/integration/components/smile/SmileIntegrationDetail'
+import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 
 jest.useFakeTimers()
 
@@ -42,17 +43,17 @@ describe('<SmileIntegrationDetail/>', () => {
             const integration: Integration = fromJS({
                 id: 1,
                 meta: {
-                    oauth: {status: SUCCESS_AUTHENTICATION_STATUS},
-                    sync_state: {is_initialized: false},
+                    oauth: { status: SUCCESS_AUTHENTICATION_STATUS },
+                    sync_state: { is_initialized: false },
                 },
                 name: 'foo',
             })
 
-            const {container} = render(
+            const { container } = render(
                 <SmileIntegrationDetailComponent
                     {...defaultProps}
                     integration={integration}
-                />
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -61,11 +62,11 @@ describe('<SmileIntegrationDetail/>', () => {
 
     describe('componentWillReceiveProps()', () => {
         it('should not do anything because there is no integration', () => {
-            const {container} = render(
+            const { container } = render(
                 <SmileIntegrationDetailComponent
                     {...defaultProps}
                     integration={fromJS({})}
-                />
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -77,24 +78,24 @@ describe('<SmileIntegrationDetail/>', () => {
             const integration: Integration = fromJS({
                 id: 1,
                 meta: {
-                    oauth: {status: SUCCESS_AUTHENTICATION_STATUS},
-                    sync_state: {is_initialized: false},
+                    oauth: { status: SUCCESS_AUTHENTICATION_STATUS },
+                    sync_state: { is_initialized: false },
                 },
                 name: 'foo',
             })
 
-            const {container, rerender} = render(
+            const { container, rerender } = render(
                 <SmileIntegrationDetailComponent
                     {...defaultProps}
                     integration={integration}
-                />
+                />,
             )
 
             rerender(
                 <SmileIntegrationDetailComponent
                     {...defaultProps}
                     integration={integration.set('name', 'bar')}
-                />
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -109,30 +110,30 @@ describe('<SmileIntegrationDetail/>', () => {
                 const integration: Integration = fromJS({
                     id: 1,
                     meta: {
-                        oauth: {status: SUCCESS_AUTHENTICATION_STATUS},
-                        sync_state: {is_initialized: false},
+                        oauth: { status: SUCCESS_AUTHENTICATION_STATUS },
+                        sync_state: { is_initialized: false },
                     },
                     name: 'foo',
                 })
 
-                const {container, rerender} = render(
+                const { container, rerender } = render(
                     <SmileIntegrationDetailComponent
                         {...defaultProps}
                         integration={fromJS({})}
-                    />
+                    />,
                 )
 
                 rerender(
                     <SmileIntegrationDetailComponent
                         {...defaultProps}
                         integration={integration}
-                    />
+                    />,
                 )
 
                 expect(container.firstChild).toMatchSnapshot()
                 jest.runAllTimers()
                 expect(actions.fetchIntegration).not.toHaveBeenCalled()
-            }
+            },
         )
 
         it(
@@ -143,25 +144,25 @@ describe('<SmileIntegrationDetail/>', () => {
                     id: 1,
                     type: SMILE_INTEGRATION_TYPE,
                     meta: {
-                        oauth: {status: PENDING_AUTHENTICATION_STATUS},
-                        sync_state: {is_initialized: false},
+                        oauth: { status: PENDING_AUTHENTICATION_STATUS },
+                        sync_state: { is_initialized: false },
                     },
                     name: 'foo',
                 })
 
-                const {container, rerender} = render(
+                const { container, rerender } = render(
                     <SmileIntegrationDetailComponent
                         {...defaultProps}
                         integration={fromJS({})}
-                    />
+                    />,
                 )
 
                 rerender(
                     <SmileIntegrationDetailComponent
                         {...defaultProps}
                         integration={integration}
-                        location={{search: '?action=authentication'} as any}
-                    />
+                        location={{ search: '?action=authentication' } as any}
+                    />,
                 )
 
                 expect(container.firstChild).toMatchSnapshot()
@@ -169,9 +170,9 @@ describe('<SmileIntegrationDetail/>', () => {
                 expect(actions.fetchIntegration).toHaveBeenCalledWith(
                     integration.get('id'),
                     integration.get('type'),
-                    true
+                    true,
                 )
-            }
+            },
         )
 
         it(
@@ -182,31 +183,31 @@ describe('<SmileIntegrationDetail/>', () => {
                     id: 1,
                     type: SMILE_INTEGRATION_TYPE,
                     meta: {
-                        oauth: {status: SUCCESS_AUTHENTICATION_STATUS},
-                        sync_state: {is_initialized: false},
+                        oauth: { status: SUCCESS_AUTHENTICATION_STATUS },
+                        sync_state: { is_initialized: false },
                     },
                     name: 'foo',
                 })
 
-                const {container, rerender} = render(
+                const { container, rerender } = render(
                     <SmileIntegrationDetailComponent
                         {...defaultProps}
                         integration={fromJS({})}
-                    />
+                    />,
                 )
 
                 rerender(
                     <SmileIntegrationDetailComponent
                         {...defaultProps}
                         integration={integration}
-                        location={{search: '?action=authentication'} as any}
-                    />
+                        location={{ search: '?action=authentication' } as any}
+                    />,
                 )
 
                 expect(container.firstChild).toMatchSnapshot()
                 jest.runAllTimers()
                 expect(actions.fetchIntegration).not.toHaveBeenCalled()
-            }
+            },
         )
     })
 
@@ -218,8 +219,8 @@ describe('<SmileIntegrationDetail/>', () => {
                 const integration: Integration = fromJS({
                     id: 1,
                     meta: {
-                        oauth: {status: SUCCESS_AUTHENTICATION_STATUS},
-                        sync_state: {is_initialized: false},
+                        oauth: { status: SUCCESS_AUTHENTICATION_STATUS },
+                        sync_state: { is_initialized: false },
                     },
                     name: 'foo',
                 })
@@ -229,110 +230,110 @@ describe('<SmileIntegrationDetail/>', () => {
                     <SmileIntegrationDetailComponent
                         {...defaultProps}
                         integration={integration}
-                    />
+                    />,
                 )
 
                 userEvent.clear(
-                    screen.getByRole('textbox', {name: 'Integration name'})
+                    screen.getByRole('textbox', { name: 'Integration name' }),
                 )
                 userEvent.paste(
-                    screen.getByRole('textbox', {name: 'Integration name'}),
-                    newName
+                    screen.getByRole('textbox', { name: 'Integration name' }),
+                    newName,
                 )
                 userEvent.click(
-                    screen.getByRole('button', {name: 'Update integration'})
+                    screen.getByRole('button', { name: 'Update integration' }),
                 )
 
                 expect(actions.updateOrCreateIntegration).toHaveBeenCalledWith(
-                    fromJS({id: integration.get('id'), name: newName})
+                    fromJS({ id: integration.get('id'), name: newName }),
                 )
-            }
+            },
         )
     })
 
     describe('render()', () => {
         it('should render a loader because the integration is loading', () => {
-            const {container} = render(
+            const { container } = render(
                 <SmileIntegrationDetailComponent
                     {...defaultProps}
                     integration={fromJS({
                         id: 1,
                         meta: {
-                            oauth: {status: SUCCESS_AUTHENTICATION_STATUS},
-                            sync_state: {is_initialized: false},
+                            oauth: { status: SUCCESS_AUTHENTICATION_STATUS },
+                            sync_state: { is_initialized: false },
                         },
                     })}
-                    loading={fromJS({integration: true})}
-                />
+                    loading={fromJS({ integration: true })}
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render an alert because the import is in progress', () => {
-            const {container} = render(
+            const { container } = render(
                 <SmileIntegrationDetailComponent
                     {...defaultProps}
                     integration={fromJS({
                         id: 1,
                         meta: {
-                            oauth: {status: SUCCESS_AUTHENTICATION_STATUS},
-                            sync_state: {is_initialized: false},
+                            oauth: { status: SUCCESS_AUTHENTICATION_STATUS },
+                            sync_state: { is_initialized: false },
                         },
                     })}
-                />
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render a small paragraph because the import is over', () => {
-            const {container} = render(
+            const { container } = render(
                 <SmileIntegrationDetailComponent
                     {...defaultProps}
                     integration={fromJS({
                         id: 1,
                         meta: {
-                            oauth: {status: SUCCESS_AUTHENTICATION_STATUS},
-                            sync_state: {is_initialized: true},
+                            oauth: { status: SUCCESS_AUTHENTICATION_STATUS },
+                            sync_state: { is_initialized: true },
                         },
                     })}
-                />
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render buttons loading and disabled because a submit is in progress', () => {
-            const {container} = render(
+            const { container } = render(
                 <SmileIntegrationDetailComponent
                     {...defaultProps}
                     integration={fromJS({
                         id: 1,
                         meta: {
-                            oauth: {status: SUCCESS_AUTHENTICATION_STATUS},
-                            sync_state: {is_initialized: false},
+                            oauth: { status: SUCCESS_AUTHENTICATION_STATUS },
+                            sync_state: { is_initialized: false },
                         },
                     })}
-                    loading={fromJS({updateIntegration: true})}
-                />
+                    loading={fromJS({ updateIntegration: true })}
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render not render deactivate / reactivate buttons because authentication is required', () => {
-            const {container} = render(
+            const { container } = render(
                 <SmileIntegrationDetailComponent
                     {...defaultProps}
                     integration={fromJS({
                         id: 1,
                         meta: {
-                            oauth: {status: PENDING_AUTHENTICATION_STATUS},
-                            sync_state: {is_initialized: false},
+                            oauth: { status: PENDING_AUTHENTICATION_STATUS },
+                            sync_state: { is_initialized: false },
                         },
                     })}
-                />
+                />,
             )
 
             expect(container.firstChild).toMatchSnapshot()
@@ -342,26 +343,28 @@ describe('<SmileIntegrationDetail/>', () => {
             'should not render anything about the import and render the re-activate button instead of the deactivate ' +
                 'button because the integration is deactivated',
             () => {
-                const {container} = render(
+                const { container } = render(
                     <SmileIntegrationDetailComponent
                         {...defaultProps}
                         integration={fromJS({
                             id: 1,
                             meta: {
-                                oauth: {status: SUCCESS_AUTHENTICATION_STATUS},
-                                sync_state: {is_initialized: false},
+                                oauth: {
+                                    status: SUCCESS_AUTHENTICATION_STATUS,
+                                },
+                                sync_state: { is_initialized: false },
                             },
                             deactivated_datetime: '2018-01-01 10:12',
                         })}
-                    />
+                    />,
                 )
 
                 expect(container.firstChild).toMatchSnapshot()
-            }
+            },
         )
 
         it('should check the warning message of removing the integration, it should contain the text related to saved filters', () => {
-            const {getByRole, getByText} = render(
+            const { getByRole, getByText } = render(
                 <SmileIntegrationDetailComponent
                     {...{
                         ...defaultProps,
@@ -369,17 +372,19 @@ describe('<SmileIntegrationDetail/>', () => {
                     integration={fromJS({
                         id: 1,
                         meta: {
-                            oauth: {status: SUCCESS_AUTHENTICATION_STATUS},
-                            sync_state: {is_initialized: false},
+                            oauth: { status: SUCCESS_AUTHENTICATION_STATUS },
+                            sync_state: { is_initialized: false },
                         },
                     })}
-                />
+                />,
             )
 
-            fireEvent.click(getByRole('button', {name: /Delete integration/i}))
+            fireEvent.click(
+                getByRole('button', { name: /Delete integration/i }),
+            )
 
             expect(
-                getByText(INTEGRATION_REMOVAL_CONFIGURATION_TEXT)
+                getByText(INTEGRATION_REMOVAL_CONFIGURATION_TEXT),
             ).toBeInTheDocument()
         })
     })

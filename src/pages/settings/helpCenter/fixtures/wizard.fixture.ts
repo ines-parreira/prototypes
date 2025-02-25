@@ -1,4 +1,4 @@
-import {HelpCenterCreationWizardStep} from 'models/helpCenter/types'
+import { HelpCenterCreationWizardStep } from 'models/helpCenter/types'
 
 import {
     HELP_CENTER_DEFAULT_LAYOUT,

@@ -1,13 +1,13 @@
-import {fireEvent, render} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {useEffect, useRef, useState} from 'react'
-import {Provider} from 'react-redux'
+import React, { useEffect, useRef, useState } from 'react'
+
+import { fireEvent, render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {setShowConvertToForwardPopover} from 'state/newMessage/actions'
-
-import {RootState, StoreDispatch} from 'state/types'
+import { setShowConvertToForwardPopover } from 'state/newMessage/actions'
+import { RootState, StoreDispatch } from 'state/types'
 
 import ConvertToForwardPopover from '../ConvertToForwardPopover'
 
@@ -40,19 +40,19 @@ describe('<ConvertToForwardPopover/>', () => {
         })
 
     it('should render popover', () => {
-        const {baseElement} = render(
+        const { baseElement } = render(
             <Provider store={makeStore(true)}>
                 <Wrapper />
-            </Provider>
+            </Provider>,
         )
         expect(baseElement).toMatchSnapshot()
     })
 
     it('should not render popover', () => {
-        const {baseElement} = render(
+        const { baseElement } = render(
             <Provider store={makeStore(false)}>
                 <Wrapper />
-            </Provider>
+            </Provider>,
         )
         expect(baseElement).toMatchSnapshot()
     })
@@ -62,17 +62,17 @@ describe('<ConvertToForwardPopover/>', () => {
         (label) => {
             const store = makeStore(true)
 
-            const {getByText} = render(
+            const { getByText } = render(
                 <Provider store={store}>
                     <Wrapper />
-                </Provider>
+                </Provider>,
             )
 
             fireEvent.click(getByText(label))
 
             expect(store.getActions()[0]).toMatchObject(
-                setShowConvertToForwardPopover(false)
+                setShowConvertToForwardPopover(false),
             )
-        }
+        },
     )
 })

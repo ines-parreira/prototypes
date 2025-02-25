@@ -1,6 +1,7 @@
-import {Meta, Story} from '@storybook/react'
-import React, {ComponentProps} from 'react'
-import {BrowserRouter} from 'react-router-dom'
+import React, { ComponentProps } from 'react'
+
+import { Meta, Story } from '@storybook/react'
+import { BrowserRouter } from 'react-router-dom'
 
 import LinkAlert from './LinkAlert'
 
@@ -20,7 +21,7 @@ const storyConfig: Meta = {
                 </p>`,
             },
         },
-        backgrounds: {default: 'grey'},
+        backgrounds: { default: 'grey' },
     },
     argTypes: {
         type: {
@@ -51,7 +52,7 @@ const defaultProps: ComponentProps<typeof LinkAlert> = {
 }
 
 export const Info = Template.bind({})
-Info.args = {...defaultProps}
+Info.args = { ...defaultProps }
 
 export const ActionLink = Template.bind({})
 ActionLink.args = {

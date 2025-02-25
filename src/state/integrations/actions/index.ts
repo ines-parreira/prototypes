@@ -1,48 +1,48 @@
-import axios, {AxiosError} from 'axios'
-import {fromJS, Map} from 'immutable'
+import axios, { AxiosError } from 'axios'
+import { fromJS, Map } from 'immutable'
 import _capitalize from 'lodash/capitalize'
 import _sortBy from 'lodash/sortBy'
 import moment from 'moment'
 
-import {isChannel} from 'config'
+import { isChannel } from 'config'
 import client from 'models/api/resources'
 import {
     ApiListResponseLegacyPagination,
     GorgiasApiError,
 } from 'models/api/types'
-import {fetchIntegrations as fetchIntegrationsResources} from 'models/integration/resources'
+import { fetchIntegrations as fetchIntegrationsResources } from 'models/integration/resources'
 import {
+    EmailMigrationInboundVerificationStatus,
     GorgiasChatIntegration,
     GorgiasChatStatusEnum,
     Integration,
     IntegrationType,
-    EmailMigrationInboundVerificationStatus,
 } from 'models/integration/types'
 import history from 'pages/history'
-import {getGorgiasChatProtectedApiClient} from 'rest_api/gorgias_chat_protected_api/client'
-import type {AplicationAgentsResponse} from 'rest_api/gorgias_chat_protected_api/types'
+import { getGorgiasChatProtectedApiClient } from 'rest_api/gorgias_chat_protected_api/client'
+import type { AplicationAgentsResponse } from 'rest_api/gorgias_chat_protected_api/types'
 import GorgiasApi from 'services/gorgiasApi'
-import {fetchAccountSettings} from 'state/currentAccount/actions'
+import { fetchAccountSettings } from 'state/currentAccount/actions'
 import * as currentAccountSelectors from 'state/currentAccount/selectors'
-import {AccountSettingType} from 'state/currentAccount/types'
+import { AccountSettingType } from 'state/currentAccount/types'
 import * as constants from 'state/integrations/constants'
 import * as integrationSelectors from 'state/integrations/selectors'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import type {StoreDispatch, RootState} from 'state/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import * as helpers from '../helpers'
-import {isWellKnownEcomIntegrationIdMisMatch} from '../helpers'
+import { isWellKnownEcomIntegrationIdMisMatch } from '../helpers'
 import {
-    getTranslations as getTranslationsAction,
     getApplicationTexts as getApplicationTextsAction,
-    updateApplicationTexts as updateApplicationTextsAction,
     getInstallationStatus as getInstallationStatusAction,
+    getTranslations as getTranslationsAction,
+    updateApplicationTexts as updateApplicationTextsAction,
 } from './gorgias-chat.actions'
 
 export function fetchIntegrations() {
     return async (
-        dispatch: StoreDispatch
+        dispatch: StoreDispatch,
     ): Promise<ReturnType<StoreDispatch>> => {
         dispatch({
             type: constants.FETCH_INTEGRATIONS_START,
@@ -58,7 +58,7 @@ export function fetchIntegrations() {
             }
 
             result = _sortBy(result, (integration) =>
-                integration.name.toLowerCase()
+                integration.name.toLowerCase(),
             )
 
             return dispatch({
@@ -82,21 +82,21 @@ function fetchOnboardingIntegrations(
     page = 1,
     integrationType: string,
     forceOverride = true,
-    filter = ''
+    filter = '',
 ) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         dispatch({
             type: constants.FETCH_ONBOARDING_INTEGRATIONS_START,
         })
 
-        const params = filter ? {page, filter} : {page}
+        const params = filter ? { page, filter } : { page }
 
         return client
             .get<ApiListResponseLegacyPagination<Integration[]>>(
                 `/integrations/${integrationType}/onboarding-integrations/`,
                 {
                     params,
-                }
+                },
             )
             .then((json) => json?.data)
             .then(
@@ -115,7 +115,7 @@ function fetchOnboardingIntegrations(
                         error,
                         reason: 'Failed to fetch onboarding integrations',
                     })
-                }
+                },
             )
     }
 }
@@ -125,18 +125,18 @@ function fetchOnboardingIntegrations(
  */
 export function fetchFacebookOnboardingIntegrations(
     page = 1,
-    forceOverride = true
+    forceOverride = true,
 ) {
     return fetchOnboardingIntegrations(
         page,
         IntegrationType.Facebook,
-        forceOverride
+        forceOverride,
     )
 }
 
 export function activateOnboardingIntegrations(
     data: Integration[],
-    integrationType: IntegrationType
+    integrationType: IntegrationType,
 ) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         dispatch({
@@ -146,20 +146,20 @@ export function activateOnboardingIntegrations(
         return client
             .put<ApiListResponseLegacyPagination<Integration[]>>(
                 `/integrations/${integrationType}/onboarding-integrations/`,
-                data
+                data,
             )
             .then((json) => json?.data)
             .then(
                 (resp) => {
                     const formattedType = `${_capitalize(
-                        integrationType
+                        integrationType,
                     )} integration${data.length > 1 ? 's' : ''}`
 
                     void dispatch(
                         notify({
                             status: NotificationStatus.Success,
                             message: `${formattedType} successfully activated.`,
-                        })
+                        }),
                     )
                     return dispatch({
                         type: constants.ACTIVATE_ONBOARDING_INTEGRATIONS_SUCCESS,
@@ -171,10 +171,10 @@ export function activateOnboardingIntegrations(
                         type: constants.ACTIVATE_ONBOARDING_INTEGRATIONS_ERROR,
                         error,
                         reason: `Failed to activate your ${_capitalize(
-                            integrationType
+                            integrationType,
                         )} integration`,
                     })
-                }
+                },
             )
     }
 }
@@ -187,7 +187,7 @@ export function onCreateSuccess(
     resp: Integration,
     disableRedirect = false,
     disableSuccessNotification?: boolean,
-    message?: string
+    message?: string,
 ) {
     dispatch({
         type: constants.CREATE_INTEGRATION_SUCCESS,
@@ -213,7 +213,7 @@ export function onCreateSuccess(
         history.push(
             `/app/settings/${
                 isChannel(resp.type) ? 'channels' : 'integrations'
-            }/${resp.type}/${resp.id || ''}${nextStep}`
+            }/${resp.type}/${resp.id || ''}${nextStep}`,
         )
     }
 
@@ -225,7 +225,7 @@ export function onCreateSuccess(
         notify({
             status: NotificationStatus.Success,
             message: message || 'Integration successfully added',
-        })
+        }),
     )
 }
 
@@ -241,7 +241,7 @@ export function onUpdateSuccess(
     resp: Integration,
     notificationId: Maybe<string> = null,
     disableSuccessNotification?: boolean,
-    message?: string
+    message?: string,
 ): Promise<ReturnType<StoreDispatch>> {
     dispatch({
         type: constants.UPDATE_INTEGRATION_SUCCESS,
@@ -259,14 +259,14 @@ export function onUpdateSuccess(
             id: notificationId,
             status: NotificationStatus.Success,
             message: message || 'Integration successfully updated',
-        })
+        }),
     ) as Promise<Record<string, unknown>>
 }
 
 export function fetchIntegration(
     integrationId: string,
     integrationType: IntegrationType,
-    waitingForAuthentication = false
+    waitingForAuthentication = false,
 ) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         if (!waitingForAuthentication) {
@@ -286,11 +286,11 @@ export function fetchIntegration(
                         // not just the top 3 ecom ones
                         isWellKnownEcomIntegrationIdMisMatch(
                             resp?.type,
-                            integrationType
+                            integrationType,
                         )
                     ) {
                         history.replace(
-                            `/app/settings/integrations/${integrationType}`
+                            `/app/settings/integrations/${integrationType}`,
                         )
                         return dispatch({
                             type: constants.FETCH_INTEGRATION_ERROR,
@@ -308,7 +308,7 @@ export function fetchIntegration(
                         const isPending =
                             (fromJS(resp) as Map<any, any>).getIn(
                                 ['meta', 'oauth', 'status'],
-                                null
+                                null,
                             ) === 'pending'
 
                         if (isPending) {
@@ -317,8 +317,8 @@ export function fetchIntegration(
                                     fetchIntegration(
                                         integrationId,
                                         integrationType,
-                                        true
-                                    )
+                                        true,
+                                    ),
                                 )
                             }, 3000)
                         } else {
@@ -333,14 +333,14 @@ export function fetchIntegration(
                             isChannel(integrationType)
                                 ? 'channels'
                                 : 'integrations'
-                        }/${integrationType}`
+                        }/${integrationType}`,
                     )
                     return dispatch({
                         type: constants.FETCH_INTEGRATION_ERROR,
                         error,
                         reason: 'Failed to fetch integration',
                     })
-                }
+                },
             )
     }
 }
@@ -363,13 +363,13 @@ export function deleteIntegration(integration: Map<any, any>) {
 
                     void dispatch(
                         fetchAccountSettings(
-                            AccountSettingType.DefaultIntegration
-                        )
+                            AccountSettingType.DefaultIntegration,
+                        ),
                     )
 
                     const currentUrl = window.location.pathname
                     const indexOfId = currentUrl.lastIndexOf(
-                        integration.get('id')
+                        integration.get('id'),
                     )
 
                     if (~indexOfId) {
@@ -381,7 +381,7 @@ export function deleteIntegration(integration: Map<any, any>) {
                         notify({
                             status: NotificationStatus.Success,
                             message: 'Integration successfully deleted',
-                        })
+                        }),
                     )
                 },
                 (error: AxiosError) => {
@@ -391,7 +391,7 @@ export function deleteIntegration(integration: Map<any, any>) {
                         verbose: true,
                         error,
                     })
-                }
+                },
             )
     }
 }
@@ -403,7 +403,7 @@ export function updateOrCreateIntegrationRequest(
     disableRedirectOnCreateSuccess = false,
     onSuccess?: (resp: any) => void,
     disableSuccessNotification?: boolean,
-    message?: string
+    message?: string,
 ) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         const isUpdate = integration.get('id') as number
@@ -417,7 +417,7 @@ export function updateOrCreateIntegrationRequest(
 
         let promise
 
-        const params: {action?: Record<string, unknown>} = {}
+        const params: { action?: Record<string, unknown> } = {}
 
         if (action) {
             params.action = action
@@ -427,12 +427,12 @@ export function updateOrCreateIntegrationRequest(
             promise = client.put<Integration>(
                 `/api/integrations/${integration.get('id') as number}/`,
                 integration.toJS(),
-                {params}
+                { params },
             )
         } else {
             promise = client.post<Integration>(
                 '/api/integrations/',
-                integration.toJS()
+                integration.toJS(),
             )
         }
 
@@ -448,7 +448,7 @@ export function updateOrCreateIntegrationRequest(
                             resp,
                             notificationId,
                             disableSuccessNotification,
-                            message
+                            message,
                         )
                     }
 
@@ -457,7 +457,7 @@ export function updateOrCreateIntegrationRequest(
                         resp,
                         disableRedirectOnCreateSuccess,
                         disableSuccessNotification,
-                        message
+                        message,
                     )
                 },
                 (error: AxiosError) => {
@@ -471,7 +471,7 @@ export function updateOrCreateIntegrationRequest(
                             ? 'Failed to update connection'
                             : 'Failed to connect app',
                     })
-                }
+                },
             )
     }
 }
@@ -496,7 +496,7 @@ export function createImportIntegration(integration: Map<any, any>) {
                         notify({
                             status: NotificationStatus.Success,
                             message: 'Import successfully started',
-                        })
+                        }),
                     )
 
                     return dispatch({
@@ -515,17 +515,17 @@ export function createImportIntegration(integration: Map<any, any>) {
                             : 'Failed to connect app',
                         verbose: true,
                     })
-                }
+                },
             )
     }
 }
 
 export function createGorgiasChatIntegration(
     integration: Map<any, any>,
-    redirect: boolean = true
+    redirect: boolean = true,
 ) {
     return async (
-        dispatch: StoreDispatch
+        dispatch: StoreDispatch,
     ): Promise<ReturnType<StoreDispatch>> => {
         dispatch({
             type: constants.CREATE_INTEGRATION_START,
@@ -536,7 +536,7 @@ export function createGorgiasChatIntegration(
         try {
             const response = await client.post<GorgiasChatIntegration>(
                 '/api/integrations/',
-                integration.toJS()
+                integration.toJS(),
             )
 
             savedIntegration = response.data
@@ -565,14 +565,14 @@ export function createGorgiasChatIntegration(
                                 savedIntegration.meta.shop_integration_id,
                             ],
                         },
-                    }
+                    },
                 )
             } catch (error) {
                 void dispatch(
                     notify({
                         status: NotificationStatus.Success,
                         message: 'Integration successfully added',
-                    })
+                    }),
                 )
                 void dispatch(
                     notify({
@@ -581,7 +581,7 @@ export function createGorgiasChatIntegration(
                             ? (error as GorgiasApiError).response?.data.error
                                   ?.msg
                             : 'Failed to install the chat to the store',
-                    })
+                    }),
                 )
                 dispatch({
                     type: constants.CREATE_INTEGRATION_SUCCESS,
@@ -592,7 +592,7 @@ export function createGorgiasChatIntegration(
                     history.push(
                         `/app/settings/channels/gorgias_chat/${
                             savedIntegrationId
-                        }/installation`
+                        }/installation`,
                     )
                 }
 
@@ -603,7 +603,7 @@ export function createGorgiasChatIntegration(
                 history.push(
                     `/app/settings/channels/gorgias_chat/${
                         savedIntegrationId
-                    }/preferences`
+                    }/preferences`,
                 )
             }
 
@@ -614,7 +614,7 @@ export function createGorgiasChatIntegration(
                 history.push(
                     `/app/settings/channels/gorgias_chat/${
                         savedIntegrationId
-                    }/installation`
+                    }/installation`,
                 )
             }
 
@@ -629,7 +629,7 @@ export function createGorgiasChatIntegration(
             notify({
                 status: NotificationStatus.Success,
                 message: successBannerText,
-            })
+            }),
         )
 
         return
@@ -644,7 +644,7 @@ export function deactivateIntegration(id: number) {
         })
 
         return dispatch(
-            updateOrCreateIntegrationRequest(integration, undefined)
+            updateOrCreateIntegrationRequest(integration, undefined),
         )
     }
 }
@@ -657,7 +657,7 @@ export function activateIntegration(id: number) {
         })
 
         return dispatch(
-            updateOrCreateIntegrationRequest(integration, undefined)
+            updateOrCreateIntegrationRequest(integration, undefined),
         )
     }
 }
@@ -671,7 +671,7 @@ export function updateOrCreateIntegration(
     disableRedirectOnCreateSuccess?: boolean,
     onSuccess?: (resp: any) => void,
     disableSuccessNotification?: boolean,
-    message?: string
+    message?: string,
 ) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         return dispatch(
@@ -682,8 +682,8 @@ export function updateOrCreateIntegration(
                 disableRedirectOnCreateSuccess,
                 onSuccess,
                 disableSuccessNotification,
-                message
-            )
+                message,
+            ),
         )
     }
 }
@@ -698,7 +698,7 @@ export function importEmails(integration: Map<any, any>) {
         return client
             .put<Integration>(
                 `/api/integrations/${integration.get('id') as number}/`,
-                integration.toJS()
+                integration.toJS(),
             )
             .then((json) => json?.data)
             .then(
@@ -707,7 +707,7 @@ export function importEmails(integration: Map<any, any>) {
                         notify({
                             status: NotificationStatus.Success,
                             message: 'Import successfully started',
-                        })
+                        }),
                     )
                     return dispatch({
                         type: constants.EMAIL_INTEGRATION_IMPORT_SUCCESS,
@@ -720,20 +720,20 @@ export function importEmails(integration: Map<any, any>) {
                         error,
                         reason: 'Failed to start importation',
                     })
-                }
+                },
             )
     }
 }
 
 export function onVerify(
     dispatch: StoreDispatch,
-    integrationId: number
+    integrationId: number,
 ): ReturnType<StoreDispatch> {
     void dispatch(
         notify({
             status: NotificationStatus.Success,
             message: 'You can now receive emails using this integration',
-        })
+        }),
     )
     return dispatch({
         type: constants.EMAIL_INTEGRATION_VERIFIED,
@@ -744,13 +744,13 @@ export function onVerify(
 export function onVerifyMigrationForwarding(
     dispatch: StoreDispatch,
     integrationId: number,
-    address: string
+    address: string,
 ): ReturnType<StoreDispatch> {
     void dispatch(
         notify({
             status: NotificationStatus.Success,
             message: `Forwarding verified for ${address}`,
-        })
+        }),
     )
     return dispatch({
         type: constants.UPDATE_EMAIL_MIGRATION_VERIFICATION_STATUS,
@@ -763,13 +763,13 @@ export function onVerifyMigrationForwarding(
 export function onVerifyMigrationForwardingFailure(
     dispatch: StoreDispatch,
     integrationId: number,
-    address: string
+    address: string,
 ): ReturnType<StoreDispatch> {
     void dispatch(
         notify({
             status: NotificationStatus.Error,
             message: `${address} could not be verified. Make sure forwarding it set up correctly and re-verify. `,
-        })
+        }),
     )
     return dispatch({
         type: constants.UPDATE_EMAIL_MIGRATION_VERIFICATION_STATUS,
@@ -781,7 +781,7 @@ export function onVerifyMigrationForwardingFailure(
 
 export function onEmailForwardingActivated(
     dispatch: StoreDispatch,
-    integrationId: number
+    integrationId: number,
 ): ReturnType<StoreDispatch> {
     return dispatch({
         type: constants.EMAIL_FORWARDING_ACTIVATED,
@@ -792,7 +792,7 @@ export function onEmailForwardingActivated(
 export function verifyEmailIntegration(token: string) {
     return (
         dispatch: StoreDispatch,
-        getState: () => RootState
+        getState: () => RootState,
     ): Promise<ReturnType<StoreDispatch>> => {
         const state = getState()
         const integration = integrationSelectors.getCurrentIntegration(state)
@@ -800,7 +800,7 @@ export function verifyEmailIntegration(token: string) {
         return client
             .post<void>(
                 `/api/integrations/${integration.get('id') as number}/verify/`,
-                {token}
+                { token },
             )
             .then(
                 () => {
@@ -813,9 +813,9 @@ export function verifyEmailIntegration(token: string) {
                             message: (
                                 fromJS(error.response) as Map<any, any>
                             ).getIn(['data', 'error', 'msg']),
-                        })
+                        }),
                     )
-                }
+                },
             )
     }
 }
@@ -823,7 +823,7 @@ export function verifyEmailIntegration(token: string) {
 export function klaviyoSyncHistoricalEvent() {
     return (
         dispatch: StoreDispatch,
-        getState: () => RootState
+        getState: () => RootState,
     ): Promise<ReturnType<StoreDispatch>> => {
         const state = getState()
         const integration = integrationSelectors.getCurrentIntegration(state)
@@ -832,7 +832,7 @@ export function klaviyoSyncHistoricalEvent() {
             .post(
                 `/api/integrations/klaviyo/${
                     integration.get('id') as number
-                }/sync/`
+                }/sync/`,
             )
             .then(
                 () => {
@@ -840,7 +840,7 @@ export function klaviyoSyncHistoricalEvent() {
                         notify({
                             status: NotificationStatus.Success,
                             message: 'Syncing process has started!',
-                        })
+                        }),
                     )
                 },
                 (error: AxiosError) => {
@@ -850,9 +850,9 @@ export function klaviyoSyncHistoricalEvent() {
                             message: (
                                 fromJS(error.response) as Map<any, any>
                             ).getIn(['data', 'error', 'msg']),
-                        })
+                        }),
                     )
-                }
+                },
             )
     }
 }
@@ -860,7 +860,7 @@ export function klaviyoSyncHistoricalEvent() {
 export function sendVerificationEmail() {
     return (
         dispatch: StoreDispatch,
-        getState: () => RootState
+        getState: () => RootState,
     ): Promise<ReturnType<StoreDispatch>> => {
         const state = getState()
         const integration = integrationSelectors.getCurrentIntegration(state)
@@ -869,7 +869,7 @@ export function sendVerificationEmail() {
             .post(
                 `/api/integrations/${
                     integration.get('id') as number
-                }/send-verification-email/`
+                }/send-verification-email/`,
             )
             .then(
                 () => {
@@ -877,7 +877,7 @@ export function sendVerificationEmail() {
                         notify({
                             status: NotificationStatus.Success,
                             message: 'The verification email has been re-sent!',
-                        })
+                        }),
                     )
                 },
                 (error: AxiosError) => {
@@ -887,9 +887,9 @@ export function sendVerificationEmail() {
                             message: (
                                 fromJS(error.response) as Map<any, any>
                             ).getIn(['data', 'error', 'msg']),
-                        })
+                        }),
                     )
-                }
+                },
             )
     }
 }
@@ -897,7 +897,7 @@ export function sendVerificationEmail() {
 export function verifyEmailIntegrationManually(token: string) {
     return (
         dispatch: StoreDispatch,
-        getState: () => RootState
+        getState: () => RootState,
     ): Promise<ReturnType<StoreDispatch>> => {
         const state = getState()
         const integrationId = integrationSelectors
@@ -907,7 +907,7 @@ export function verifyEmailIntegrationManually(token: string) {
         return client
             .post<void>(
                 `/api/integrations/${integrationId}/verify-email-integration/`,
-                {verification_code: token}
+                { verification_code: token },
             )
             .then(
                 () => {
@@ -920,9 +920,9 @@ export function verifyEmailIntegrationManually(token: string) {
                             message: (
                                 fromJS(error.response) as Map<any, any>
                             ).getIn(['data', 'error', 'msg']),
-                        })
+                        }),
                     )
-                }
+                },
             )
     }
 }
@@ -952,7 +952,7 @@ export function fetchEmailDomain(domainName: string) {
                         error,
                     })
                 }
-            }
+            },
         )
     }
 }
@@ -973,7 +973,7 @@ export function createEmailDomain(domainName: string, dkimKeySize: number) {
                         notify({
                             status: NotificationStatus.Success,
                             message: 'DKIM configuration created',
-                        })
+                        }),
                     )
                     dispatch({
                         type: constants.CREATE_EMAIL_DOMAIN_SUCCESS,
@@ -985,7 +985,7 @@ export function createEmailDomain(domainName: string, dkimKeySize: number) {
                         type: constants.CREATE_EMAIL_DOMAIN_ERROR,
                         error,
                     })
-                }
+                },
             )
     }
 }
@@ -1004,7 +1004,7 @@ export function deleteEmailDomain(domainName: string) {
                         notify({
                             status: NotificationStatus.Success,
                             message: 'DKIM configuration deleted',
-                        })
+                        }),
                     )
                     dispatch({
                         type: constants.DELETE_EMAIL_DOMAIN_SUCCESS,
@@ -1016,7 +1016,7 @@ export function deleteEmailDomain(domainName: string) {
                         type: constants.DELETE_EMAIL_DOMAIN_ERROR,
                         error,
                     })
-                }
+                },
             )
     }
 }
@@ -1024,7 +1024,7 @@ export function deleteEmailDomain(domainName: string) {
 export function fetchChatIntegrationStatus(integrationId: number) {
     return async (
         dispatch: StoreDispatch,
-        getState: () => RootState
+        getState: () => RootState,
     ): Promise<ReturnType<StoreDispatch>> => {
         const state = getState()
         const integration =
@@ -1032,17 +1032,17 @@ export function fetchChatIntegrationStatus(integrationId: number) {
 
         try {
             const isBusinessHours = helpers.isAccountDuringBusinessHours(
-                currentAccountSelectors.getBusinessHoursSettings(state)
+                currentAccountSelectors.getBusinessHoursSettings(state),
             )
 
             const installationStatus = await getInstallationStatusAction(
-                integration.getIn(['meta', 'app_id'])
+                integration.getIn(['meta', 'app_id']),
             )
 
             const chatStatus = helpers.computeChatIntegrationStatus(
                 integration,
                 isBusinessHours,
-                installationStatus
+                installationStatus,
             )
 
             if (chatStatus) {
@@ -1061,7 +1061,7 @@ export function fetchChatIntegrationStatus(integrationId: number) {
             const applicationId: string = integration.getIn(['meta', 'app_id'])
             const client = await getGorgiasChatProtectedApiClient()
 
-            const {data}: {data: AplicationAgentsResponse} =
+            const { data }: { data: AplicationAgentsResponse } =
                 await client.getApplicationAgents({
                     applicationId,
                 })

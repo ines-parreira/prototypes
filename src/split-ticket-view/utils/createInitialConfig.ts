@@ -1,7 +1,7 @@
-import {Config} from 'panels/types'
-import {createConfig} from 'panels/utils'
+import { Config } from 'panels/types'
+import { createConfig } from 'panels/utils'
 
-import {LayoutKeys} from '../constants'
+import { LayoutKeys } from '../constants'
 
 const createInitialConfig = (layoutKey: LayoutKeys, defaultConfig: Config) => {
     // this is a temporary value that will be fully replaced by the storedWidths value
@@ -69,7 +69,7 @@ const createInitialConfig = (layoutKey: LayoutKeys, defaultConfig: Config) => {
                 defaultConfig[2][0],
                 Number(infobarWidth),
             ],
-            defaultConfig
+            defaultConfig,
         )
     }
 

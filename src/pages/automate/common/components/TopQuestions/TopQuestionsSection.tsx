@@ -1,18 +1,20 @@
-import {Badge} from '@gorgias/merchant-ui-kit'
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
 
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {IntegrationType} from 'models/integration/constants'
+import { Badge } from '@gorgias/merchant-ui-kit'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { IntegrationType } from 'models/integration/constants'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {getIconFromType} from 'state/integrations/helpers'
+import { getIconFromType } from 'state/integrations/helpers'
 
 import {
     TopQuestionCard,
     TopQuestionCardGhost,
     TopQuestionCardLoading,
 } from './TopQuestionCard'
+
 import css from './TopQuestionsSection.less'
 
 const VIEW_ALL_LINK = '/app/automation/ai-recommendations'
@@ -34,7 +36,7 @@ export type TopQuestionsSectionProps = {
     onCreateArticle: (templateKey: string) => Promise<void>
     onDismiss: (templateKey: string) => Promise<void>
     helpCenterFilter?: {
-        options: {name: string; helpCenterId: number}[]
+        options: { name: string; helpCenterId: number }[]
         setSelectedHelpCenterId: (helpCenterId: number) => void
     }
     storeFilter?: {
@@ -75,7 +77,7 @@ export const StoreFilter = ({
                     </div>
                 ),
             })),
-        [storeFilter.options]
+        [storeFilter.options],
     )
 
     return (
@@ -107,7 +109,7 @@ export const HelpCenterFilter = ({
                     <div className={css.filterLabel}>
                         <i
                             className="material-icons rounded"
-                            style={{fontSize: 20}}
+                            style={{ fontSize: 20 }}
                             aria-label="arrow forward"
                         >
                             live_help
@@ -116,7 +118,7 @@ export const HelpCenterFilter = ({
                     </div>
                 ),
             })),
-        [helpCenterFilter.options]
+        [helpCenterFilter.options],
     )
 
     return (
@@ -181,14 +183,14 @@ const Header = ({
                         to={viewAllLink}
                         onClick={() =>
                             logEvent(
-                                SegmentEvent.AutomateTopQuestionsSectionClickViewAll
+                                SegmentEvent.AutomateTopQuestionsSectionClickViewAll,
                             )
                         }
                     >
                         View All{' '}
                         <i
                             className="material-icons rounded"
-                            style={{fontSize: 20}}
+                            style={{ fontSize: 20 }}
                             aria-label="arrow forward"
                         >
                             arrow_forward
@@ -325,7 +327,7 @@ const TopQuestionsSectionWrapper = ({
     | 'storeIntegrationId'
     | 'helpCenterId'
     | 'newQuestionsCount'
-> & {children: React.ReactNode}) => (
+> & { children: React.ReactNode }) => (
     <div className={css.container}>
         <Header
             storeFilter={storeFilter}
@@ -370,9 +372,11 @@ export const TopQuestionsSection = ({
                     onDismiss={() => onDismiss(question.templateKey)}
                 />
             ))}
-            {Array.from({length: 4 - top4Questions.length}).map((_, index) => (
-                <TopQuestionCardGhost key={index} />
-            ))}
+            {Array.from({ length: 4 - top4Questions.length }).map(
+                (_, index) => (
+                    <TopQuestionCardGhost key={index} />
+                ),
+            )}
         </TopQuestionsSectionWrapper>
     )
 }
@@ -386,7 +390,7 @@ export const TopQuestionsSectionLoading = (
             | 'storeIntegrationId'
             | 'helpCenterId'
         >
-    >
+    >,
 ) => (
     <div>
         <Header {...headerProps} />

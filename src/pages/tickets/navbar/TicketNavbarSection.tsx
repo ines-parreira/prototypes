@@ -1,20 +1,27 @@
+import React, { useCallback, useMemo, useRef, useState } from 'react'
+
 import classnames from 'classnames'
-import React, {useState, useRef, useCallback, useMemo} from 'react'
-import {useDrag} from 'react-dnd'
-import {connect, ConnectedProps} from 'react-redux'
-import {Dropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'
+import { useDrag } from 'react-dnd'
+import { connect, ConnectedProps } from 'react-redux'
+import {
+    Dropdown,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+} from 'reactstrap'
 
-import {UserRole} from 'config/types/user'
-import {ViewVisibility} from 'models/view/types'
+import { UserRole } from 'config/types/user'
+import { ViewVisibility } from 'models/view/types'
 import navbarSectionCss from 'pages/common/components/navbar/NavbarSectionBlock.less'
-import {RootState} from 'state/types'
-import {TicketNavbarElementType} from 'state/ui/ticketNavbar/types'
-import {hasRole} from 'utils'
+import { RootState } from 'state/types'
+import { TicketNavbarElementType } from 'state/ui/ticketNavbar/types'
+import { hasRole } from 'utils'
 
-import {TicketNavbarSectionElement} from './TicketNavbarContent'
+import { TicketNavbarSectionElement } from './TicketNavbarContent'
 import TicketNavbarDropTarget from './TicketNavbarDropTarget'
-import css from './TicketNavbarSection.less'
 import TicketNavbarView from './TicketNavbarView'
+
+import css from './TicketNavbarSection.less'
 
 type OwnProps = {
     isExpanded: boolean
@@ -31,7 +38,7 @@ export function TicketNavbarSectionContainer({
     onSectionClick,
     onSectionDeleteClick,
     onSectionRenameClick,
-    sectionElement: {data: section, children},
+    sectionElement: { data: section, children },
     sections,
     views,
     viewsCount,
@@ -41,9 +48,9 @@ export function TicketNavbarSectionContainer({
     const nameRef = useRef<HTMLDivElement>(null)
     const ticketNavbarSectionId = useMemo(
         () => `ticket-navbar-section-${section.id}`,
-        [section]
+        [section],
     )
-    const [{isDragging}, drag] = useDrag({
+    const [{ isDragging }, drag] = useDrag({
         item: {
             id: section.id,
             type: TicketNavbarElementType.Section,
@@ -60,7 +67,7 @@ export function TicketNavbarSectionContainer({
             direction,
         }),
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        []
+        [],
     )
     const handleClick = () => onSectionClick(section.id)
 
@@ -100,7 +107,7 @@ export function TicketNavbarSectionContainer({
                                 onClick={handleClick}
                                 className={classnames(
                                     navbarSectionCss.toggleSectionIcon,
-                                    'material-icons'
+                                    'material-icons',
                                 )}
                             >
                                 {isExpanded ? 'arrow_drop_down' : 'arrow_right'}
@@ -110,7 +117,7 @@ export function TicketNavbarSectionContainer({
                             onClick={handleClick}
                             className={classnames(
                                 navbarSectionCss.name,
-                                css.name
+                                css.name,
                             )}
                             title={section.name}
                         >
@@ -128,7 +135,7 @@ export function TicketNavbarSectionContainer({
                             <DropdownToggle
                                 className={classnames(
                                     css.editSectionIcon,
-                                    'btn-transparent'
+                                    'btn-transparent',
                                 )}
                                 color="secondary"
                                 type="button"
@@ -150,7 +157,7 @@ export function TicketNavbarSectionContainer({
                                     <DropdownItem
                                         className={classnames(
                                             css.action,
-                                            css.red
+                                            css.red,
                                         )}
                                         onClick={() =>
                                             onSectionDeleteClick(section.id)

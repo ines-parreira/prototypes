@@ -1,7 +1,8 @@
-import {screen} from '@testing-library/react'
 import React from 'react'
 
-import {renderWithRouter} from 'utils/testing'
+import { screen } from '@testing-library/react'
+
+import { renderWithRouter } from 'utils/testing'
 
 import ActionEventRow from '../ActionEventRow'
 
@@ -24,9 +25,11 @@ describe('<ActionEventRow />', () => {
                 }}
                 isSelected={false}
                 onClick={jest.fn()}
-            />
+            />,
         )
 
-        expect(screen.getByText('Today at', {exact: false})).toBeInTheDocument()
+        expect(
+            screen.getByText('Today at', { exact: false }),
+        ).toBeInTheDocument()
     })
 })

@@ -1,11 +1,13 @@
-import {Skeleton} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
-import React, {useCallback, useEffect} from 'react'
+import React, { useCallback, useEffect } from 'react'
 
-import {CustomerList} from 'models/aiAgentPlayground/types'
+import classnames from 'classnames'
+
+import { Skeleton } from '@gorgias/merchant-ui-kit'
+
+import { CustomerList } from 'models/aiAgentPlayground/types'
 import IconInput from 'pages/common/forms/input/IconInput'
 import TextInput from 'pages/common/forms/input/TextInput'
-import {Value} from 'pages/common/forms/SelectField/types'
+import { Value } from 'pages/common/forms/SelectField/types'
 
 import css from './CustomerSearchDropdownSelectComponent.less'
 
@@ -45,12 +47,12 @@ export const CustomerSearchDropdownSelectComponent = ({
                     setFocusedIndex(
                         focusedIndex < customerList.length - 1
                             ? focusedIndex + 1
-                            : focusedIndex
+                            : focusedIndex,
                     )
                     break
                 case 'ArrowUp':
                     setFocusedIndex(
-                        focusedIndex > 0 ? focusedIndex - 1 : focusedIndex
+                        focusedIndex > 0 ? focusedIndex - 1 : focusedIndex,
                     )
                     break
                 case 'Enter':
@@ -71,7 +73,7 @@ export const CustomerSearchDropdownSelectComponent = ({
             setFocusedIndex,
             onSelect,
             isDropdownVisible,
-        ]
+        ],
     )
 
     useEffect(() => {

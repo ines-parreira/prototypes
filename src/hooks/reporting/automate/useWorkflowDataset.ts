@@ -1,19 +1,18 @@
 import {
-    WorkflowStats,
-    WorkflowStepMetricsMap,
     computeWorkflowMetrics,
     computeWorkflowStepsMetrics,
+    WorkflowStats,
+    WorkflowStepMetricsMap,
 } from 'hooks/reporting/automate/utils'
-import {useMetricPerDimension} from 'hooks/reporting/useMetricPerDimension'
+import { useMetricPerDimension } from 'hooks/reporting/useMetricPerDimension'
 import {
     workflowDatasetCountQueryFactory,
     workflowDatasetStepCountQueryFactory,
     workflowDatasetStepQueryFactory,
 } from 'models/reporting/queryFactories/workflows/metrics'
-import {WorkflowStatsFilters} from 'models/stat/types'
-
-import {WorkflowStep} from 'pages/automate/workflows/models/workflowConfiguration.types'
-import {getPreviousPeriod} from 'utils/reporting'
+import { WorkflowStatsFilters } from 'models/stat/types'
+import { WorkflowStep } from 'pages/automate/workflows/models/workflowConfiguration.types'
+import { getPreviousPeriod } from 'utils/reporting'
 
 import {
     calculateSumOfAutomatedInteractions,
@@ -23,41 +22,41 @@ import {
 export const useWorkflowDataset = (
     filters: WorkflowStatsFilters,
     timezone: string,
-    steps: WorkflowStep[]
+    steps: WorkflowStep[],
 ): WorkflowStats => {
     const previousPeriod = getPreviousPeriod(filters.period)
     const workflowCountByEventType = useMetricPerDimension(
-        workflowDatasetCountQueryFactory(filters, timezone)
+        workflowDatasetCountQueryFactory(filters, timezone),
     )
     const previousWorkflowCountByEventType = useMetricPerDimension(
         workflowDatasetCountQueryFactory(
-            {...filters, period: previousPeriod},
-            timezone
-        )
+            { ...filters, period: previousPeriod },
+            timezone,
+        ),
     )
 
     const workflowStepMetrics = useWorkflowStepDatasetTrend(
         filters,
         timezone,
-        steps
+        steps,
     )
 
     const previousWorkflowStepMetrics = useWorkflowStepDatasetTrend(
-        {...filters, period: previousPeriod},
+        { ...filters, period: previousPeriod },
         timezone,
-        steps
+        steps,
     )
 
     const workflowMetrics = computeWorkflowMetrics(
         workflowCountByEventType.data?.allData,
         calculateSumOfDropoff(workflowStepMetrics.data),
-        calculateSumOfAutomatedInteractions(workflowStepMetrics.data)
+        calculateSumOfAutomatedInteractions(workflowStepMetrics.data),
     )
 
     const previousWorkflowMetrics = computeWorkflowMetrics(
         previousWorkflowCountByEventType.data?.allData,
         calculateSumOfDropoff(previousWorkflowStepMetrics.data),
-        calculateSumOfAutomatedInteractions(previousWorkflowStepMetrics.data)
+        calculateSumOfAutomatedInteractions(previousWorkflowStepMetrics.data),
     )
 
     const isFetching =
@@ -77,7 +76,10 @@ export const useWorkflowDataset = (
             workflowTotalViews: {
                 isError,
                 isFetching,
-                data: {value: workflowMetrics.workflowStarted, prevValue: null},
+                data: {
+                    value: workflowMetrics.workflowStarted,
+                    prevValue: null,
+                },
             },
             workflowAutomatedInteractions: {
                 isError,
@@ -122,23 +124,23 @@ export const useWorkflowDataset = (
 export const useWorkflowStepDatasetTrend = (
     filters: WorkflowStatsFilters,
     timezone: string,
-    steps: WorkflowStep[]
+    steps: WorkflowStep[],
 ): {
     data: WorkflowStepMetricsMap
     isFetching: boolean
     isError: boolean
 } => {
     const workflowStepCountEvents = useMetricPerDimension(
-        workflowDatasetStepCountQueryFactory(filters, timezone)
+        workflowDatasetStepCountQueryFactory(filters, timezone),
     )
     const workflowStepDropoff = useMetricPerDimension(
-        workflowDatasetStepQueryFactory(filters, timezone)
+        workflowDatasetStepQueryFactory(filters, timezone),
     )
 
     const workflowStepMetrics = computeWorkflowStepsMetrics(
         workflowStepCountEvents.data?.allData,
         workflowStepDropoff.data?.allData,
-        steps
+        steps,
     )
 
     const isFetching =

@@ -1,44 +1,44 @@
-import {produce} from 'immer'
+import React, { useCallback, useMemo } from 'react'
+
+import { produce } from 'immer'
 import moment from 'moment-timezone'
-import React, {useMemo, useCallback} from 'react'
 
-import {stats as statsConfig, USERS_PERFORMANCE_OVERVIEW} from 'config/stats'
-
+import { stats as statsConfig, USERS_PERFORMANCE_OVERVIEW } from 'config/stats'
 import useStatResource from 'hooks/reporting/useStatResource'
 import useAppSelector from 'hooks/useAppSelector'
 import {
+    LegacyStatsFilters,
     NumericStatAxisValue,
-    Stat,
-    TwoDimensionalChart,
-    StatType,
     NumericStatCell,
     OnlineTimeDetailStatCell,
+    Stat,
+    StatType,
     TicketDetailStatCell,
-    LegacyStatsFilters,
+    TwoDimensionalChart,
 } from 'models/stat/types'
 import Navigation from 'pages/common/components/Navigation/Navigation'
 import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
 import TableStat from 'pages/stats/common/components/charts/TableStat/TableStat'
 import StatCurrentDate from 'pages/stats/common/components/StatCurrentDate'
 import css from 'pages/stats/LiveAgents.less'
-import {LiveAgentsFilters} from 'pages/stats/LiveAgentsFilters'
+import { LiveAgentsFilters } from 'pages/stats/LiveAgentsFilters'
 import StatsFiltersContext from 'pages/stats/StatsFiltersContext'
 import StatsPage from 'pages/stats/StatsPage'
 import StatWrapper from 'pages/stats/StatWrapper'
-import {AccountFeature} from 'state/currentAccount/types'
-import {getCleanStatsFiltersWithTimezone} from 'state/ui/stats/selectors'
+import { AccountFeature } from 'state/currentAccount/types'
+import { getCleanStatsFiltersWithTimezone } from 'state/ui/stats/selectors'
 
 export type OnlineChoice = 'status_online' | 'time_online'
 const LIVE_AGENTS_STAT_NAME = 'live-agents-stat'
 
 function LiveAgents() {
-    const {cleanStatsFilters: statsFilters, userTimezone} = useAppSelector(
-        getCleanStatsFiltersWithTimezone
+    const { cleanStatsFilters: statsFilters, userTimezone } = useAppSelector(
+        getCleanStatsFiltersWithTimezone,
     )
 
     const pageStatsFilters = useMemo<LegacyStatsFilters>(() => {
         const currentDay = userTimezone ? moment().tz(userTimezone) : moment()
-        const {channels, agents} = statsFilters
+        const { channels, agents } = statsFilters
         return {
             channels,
             agents,
@@ -98,11 +98,11 @@ function LiveAgents() {
                                 <>
                                     <TableStat
                                         name={LIVE_AGENTS_STAT_NAME}
-                                        context={{tagColors: null}}
+                                        context={{ tagColors: null }}
                                         data={stat.getIn(['data', 'data'])}
                                         meta={stat.get('meta')}
                                         config={statsConfig.get(
-                                            USERS_PERFORMANCE_OVERVIEW
+                                            USERS_PERFORMANCE_OVERVIEW,
                                         )}
                                     />
                                     <div className={css.navigationWrapper}>
@@ -134,7 +134,7 @@ function LiveAgents() {
 }
 
 const formatUserPerformanceData = (
-    stat: Stat<TwoDimensionalChart<NumericStatAxisValue, NumericStatCell[]>>
+    stat: Stat<TwoDimensionalChart<NumericStatAxisValue, NumericStatCell[]>>,
 ) => {
     return produce<
         Stat<TwoDimensionalChart<NumericStatAxisValue, NumericStatCell[]>>,
@@ -150,18 +150,18 @@ const formatUserPerformanceData = (
         >
     >(stat, (statDraft) => {
         const {
-            data: {data},
+            data: { data },
         } = statDraft
         const {
-            axes: {x},
+            axes: { x },
         } = data
         const openTicketsIndex = x.findIndex((x) => x.name === 'Open tickets')
         const ticketsDetailsIndex = x.findIndex(
-            (x) => x.name === 'Open tickets per channel'
+            (x) => x.name === 'Open tickets per channel',
         )
         const onlineTimeIndex = x.findIndex((x) => x.name === 'Online time')
         const agentTimezoneIndex = x.findIndex(
-            (x) => x.name === 'Agent timezone'
+            (x) => x.name === 'Agent timezone',
         )
         const onlineIndex = x.findIndex((x) => x.name === 'Online')
         const firstSessionIndex = x.findIndex((x) => x.name === 'First Session')
@@ -177,11 +177,11 @@ const formatUserPerformanceData = (
                     firstSessionIndex,
                     onlineIndex,
                     agentTimezoneIndex,
-                ].includes(i)
+                ].includes(i),
         )
 
         const onlineTimeTypeIndex = data.axes.x.findIndex(
-            (x) => x.type === StatType.OnlineTime
+            (x) => x.type === StatType.OnlineTime,
         )
         data.axes.x[onlineTimeTypeIndex].name = 'Online status'
         data.axes.x[onlineTimeTypeIndex].type = StatType.OnlineState
@@ -225,12 +225,12 @@ const formatUserPerformanceData = (
                     | NumericStatCell
                     | OnlineTimeDetailStatCell
                     | TicketDetailStatCell
-                )[]
-            )
+                )[],
+            ),
         )
     })
 }
 
 export default withFeaturePaywall(AccountFeature.UsersLiveStatistics)(
-    LiveAgents
+    LiveAgents,
 )

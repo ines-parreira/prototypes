@@ -1,16 +1,18 @@
-import {addBreadcrumb} from '@sentry/react'
-import {act, render, waitFor} from '@testing-library/react'
 // import userEvent from '@testing-library/user-event'
 import React from 'react'
 
-import {reportError} from 'utils/errors'
+import { addBreadcrumb } from '@sentry/react'
+import { act, render, waitFor } from '@testing-library/react'
+
+import { reportError } from 'utils/errors'
+
 // import {assumeMock} from 'utils/testing'
 
 import NoticeableIndicator from '../NoticeableIndicator'
 
-jest.mock('@sentry/react', () => ({addBreadcrumb: jest.fn()}))
+jest.mock('@sentry/react', () => ({ addBreadcrumb: jest.fn() }))
 
-jest.mock('utils/errors', () => ({reportError: jest.fn()}))
+jest.mock('utils/errors', () => ({ reportError: jest.fn() }))
 
 describe('NoticeableIndicator', () => {
     let noticeableOn: jest.Mock
@@ -32,7 +34,7 @@ describe('NoticeableIndicator', () => {
     })
 
     it('should render nothing if there are no publications', () => {
-        const {container} = render(<NoticeableIndicator />)
+        const { container } = render(<NoticeableIndicator />)
         expect(container).toBeEmptyDOMElement()
     })
 
@@ -40,7 +42,7 @@ describe('NoticeableIndicator', () => {
         render(<NoticeableIndicator />)
         expect(window.noticeable.render).toHaveBeenCalledWith(
             'widget',
-            'noticeable-widget-id'
+            'noticeable-widget-id',
         )
         await waitFor(() => {
             expect(addBreadcrumb).toHaveBeenCalledWith({
@@ -77,31 +79,31 @@ describe('NoticeableIndicator', () => {
         expect(window.noticeable.on).toHaveBeenCalledWith(
             'widget:publication:unread_count:changed',
             'noticeable-widget-id',
-            expect.any(Function)
+            expect.any(Function),
         )
 
         const [[, , listener]] = noticeableOn.mock.calls as [
             [unknown, unknown, (e: Record<string, any>) => void],
         ]
         act(() => {
-            listener({detail: {value: 1}})
+            listener({ detail: { value: 1 } })
         })
         expect(addBreadcrumb).toHaveBeenCalledWith({
             category: 'noticeable',
             message: 'widget unread_count changed',
         })
         expect(
-            result.container.querySelector('#noticeable-widget-notification')
+            result.container.querySelector('#noticeable-widget-notification'),
         ).toBeInTheDocument()
     })
 
     it('should destroy the noticeable widget on unmount', async () => {
-        const {unmount} = render(<NoticeableIndicator />)
+        const { unmount } = render(<NoticeableIndicator />)
         unmount()
 
         expect(noticeableDestroy).toHaveBeenCalledWith(
             'widget',
-            'noticeable-widget-id'
+            'noticeable-widget-id',
         )
         await waitFor(() => {
             expect(addBreadcrumb).toHaveBeenCalledWith({

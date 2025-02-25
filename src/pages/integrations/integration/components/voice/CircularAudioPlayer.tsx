@@ -1,7 +1,8 @@
-import React, {useEffect, useRef, useState} from 'react'
+import React, { useEffect, useRef, useState } from 'react'
+
+import CircularProgressBar from './CircularProgressBar'
 
 import css from './CircularAudioPlayer.less'
-import CircularProgressBar from './CircularProgressBar'
 
 type Props = {
     src: string
@@ -19,7 +20,7 @@ const CircularAudioPlayer = ({
     const [audioProgress, setAudioProgress] = useState(0)
 
     const playOrPause = async (
-        event: React.MouseEvent<HTMLDivElement, MouseEvent>
+        event: React.MouseEvent<HTMLDivElement, MouseEvent>,
     ) => {
         event.stopPropagation()
         const audio = audioRef.current

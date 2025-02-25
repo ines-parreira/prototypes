@@ -1,17 +1,18 @@
+import React, { Component, MouseEvent } from 'react'
+
 import classnames from 'classnames'
-import type {List, Map} from 'immutable'
-import React, {Component, MouseEvent} from 'react'
+import type { List, Map } from 'immutable'
 import Lightbox from 'react-images'
 
-import {AttachmentEnum} from 'common/types'
-import {ShopifyProductCardContentType} from 'constants/integrations/shopify'
+import { AttachmentEnum } from 'common/types'
+import { ShopifyProductCardContentType } from 'constants/integrations/shopify'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
-import {ContactFormAttachmentContainer} from 'pages/convert/campaigns/components/ContactCaptureForm/ContactFormAttachmentContainer'
-import {getIsProductCardDiscountedPriceEnabled} from 'pages/convert/common/hooks/useIsProductCardDiscountedPriceEnabled'
-import {fileIconFromContentType} from 'pages/tickets/common/utils'
-import {DiscountOfferTicketAttachment} from 'pages/tickets/detail/components/ReplyArea/DiscountOfferTicketAttachment/DiscountOfferTicketAttachment'
+import { ContactFormAttachmentContainer } from 'pages/convert/campaigns/components/ContactCaptureForm/ContactFormAttachmentContainer'
+import { getIsProductCardDiscountedPriceEnabled } from 'pages/convert/common/hooks/useIsProductCardDiscountedPriceEnabled'
+import { fileIconFromContentType } from 'pages/tickets/common/utils'
+import { DiscountOfferTicketAttachment } from 'pages/tickets/detail/components/ReplyArea/DiscountOfferTicketAttachment/DiscountOfferTicketAttachment'
 import shortcutManager from 'services/shortcutManager/index'
-import {proxifyURL, replaceAttachmentURL} from 'utils'
+import { proxifyURL, replaceAttachmentURL } from 'utils'
 
 import css from './TicketAttachments.less'
 
@@ -120,7 +121,7 @@ export default class TicketAttachments extends Component<Props, State> {
             return {
                 backgroundImage: `url(${replaceAttachmentURL(
                     attachment.get('url') as string,
-                    '120x80'
+                    '120x80',
                 )})`,
             }
         } catch {
@@ -131,7 +132,7 @@ export default class TicketAttachments extends Component<Props, State> {
     openLightbox = (
         e: MouseEvent<HTMLAnchorElement>,
         attachment: Attachment,
-        images: List<Attachment>
+        images: List<Attachment>,
     ) => {
         if (!this.isImage(attachment)) {
             return
@@ -142,7 +143,7 @@ export default class TicketAttachments extends Component<Props, State> {
         this.setState({
             isLightboxOpen: true,
             currentImage: images.findIndex(
-                (curImage) => curImage!.get('url') === attachment.get('url')
+                (curImage) => curImage!.get('url') === attachment.get('url'),
             ),
         })
 
@@ -159,7 +160,7 @@ export default class TicketAttachments extends Component<Props, State> {
     }
 
     gotoImage = (index: number) => {
-        this.setState({currentImage: index})
+        this.setState({ currentImage: index })
     }
 
     redirectLink = (attachment: Attachment): string => {
@@ -190,7 +191,7 @@ export default class TicketAttachments extends Component<Props, State> {
                     <img
                         src={proxifyURL(
                             attachment.get('url') as string,
-                            '80x80'
+                            '80x80',
                         )}
                         alt={attachment.get('name')}
                     />
@@ -246,7 +247,7 @@ export default class TicketAttachments extends Component<Props, State> {
     _renderDefaultAttachment(
         attachment: Attachment,
         idx: number,
-        images: List<any>
+        images: List<any>,
     ) {
         return (
             <a
@@ -286,7 +287,7 @@ export default class TicketAttachments extends Component<Props, State> {
 
     _renderProductRecommendationAttachment(
         attachment: Attachment,
-        idx: number
+        idx: number,
     ) {
         return (
             <div className={css.productRecommendation}>
@@ -322,7 +323,7 @@ export default class TicketAttachments extends Component<Props, State> {
     renderAttachment = (
         attachment: Attachment,
         index: number,
-        images: List<any>
+        images: List<any>,
     ) => {
         if (this.isProductCard(attachment)) {
             return this._renderProductAttachment(attachment, index)
@@ -331,7 +332,7 @@ export default class TicketAttachments extends Component<Props, State> {
         } else if (this.isProductRecommendation(attachment)) {
             return this._renderProductRecommendationAttachment(
                 attachment,
-                index
+                index,
             )
         } else if (this.isContactForm(attachment)) {
             return this._renderContactFormAttachment(attachment, index)
@@ -341,21 +342,21 @@ export default class TicketAttachments extends Component<Props, State> {
     }
 
     render() {
-        const {attachments, className} = this.props
-        const {currentImage, isLightboxOpen} = this.state
+        const { attachments, className } = this.props
+        const { currentImage, isLightboxOpen } = this.state
 
         if (attachments.isEmpty()) {
             return null
         }
         const images = attachments.filter(
-            this.isImage || this.isProductCard
+            this.isImage || this.isProductCard,
         ) as List<any>
 
         const failedAttachments = attachments.filter(
-            (attachment) => attachment!.get('public') === false
+            (attachment) => attachment!.get('public') === false,
         )
         const publicAttachments = attachments.filter(
-            (attachment) => attachment!.get('public') !== false
+            (attachment) => attachment!.get('public') !== false,
         )
 
         return (
@@ -373,11 +374,11 @@ export default class TicketAttachments extends Component<Props, State> {
                                 {this.renderAttachment(
                                     attachment,
                                     idx!,
-                                    images
+                                    images,
                                 )}
                             </div>
                         )
-                    }
+                    },
                 )}
 
                 <Lightbox

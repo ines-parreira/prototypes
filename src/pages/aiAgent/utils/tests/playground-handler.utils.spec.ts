@@ -4,10 +4,10 @@ import {
     TicketOutcome,
 } from 'models/aiAgentPlayground/types'
 
-import {AI_AGENT_SENDER} from '../../components/PlaygroundMessage/PlaygroundMessage'
-import {getStoreConfigurationFixture} from '../../fixtures/storeConfiguration.fixtures'
-import {getSubmitPlaygroundTicketResponseFixture} from '../../fixtures/submitPlaygroundTicketResponse.fixture'
-import {handleAiAgentResponse} from '../playground-handler.utils'
+import { AI_AGENT_SENDER } from '../../components/PlaygroundMessage/PlaygroundMessage'
+import { getStoreConfigurationFixture } from '../../fixtures/storeConfiguration.fixtures'
+import { getSubmitPlaygroundTicketResponseFixture } from '../../fixtures/submitPlaygroundTicketResponse.fixture'
+import { handleAiAgentResponse } from '../playground-handler.utils'
 
 const DATE = new Date('2020-01-01')
 
@@ -325,7 +325,7 @@ describe('playground-handler.utils', () => {
                             content: 'Your last order number is #1234',
                             createdDatetime: DATE.toISOString(),
                         },
-                    ])
+                    ]),
                 )
             })
         })
@@ -373,7 +373,7 @@ describe('playground-handler.utils', () => {
                         content: 'Internal note',
                         createdDatetime: DATE.toISOString(),
                     },
-                ])
+                ]),
             )
         })
 
@@ -409,7 +409,7 @@ describe('playground-handler.utils', () => {
                         content: 'Post Processing message',
                         createdDatetime: DATE.toISOString(),
                     },
-                ])
+                ]),
             )
         })
     })

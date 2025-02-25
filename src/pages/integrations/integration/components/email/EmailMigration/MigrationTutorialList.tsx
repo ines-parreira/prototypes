@@ -1,13 +1,15 @@
+import React, { ReactNode } from 'react'
+
 import classNames from 'classnames'
-import React, {ReactNode} from 'react'
 
 import Accordion from 'pages/common/components/accordion/Accordion'
 import AccordionBody from 'pages/common/components/accordion/AccordionBody'
 import AccordionHeader from 'pages/common/components/accordion/AccordionHeader'
 import AccordionItem from 'pages/common/components/accordion/AccordionItem'
 
-import css from './MigrationTutorialList.less'
 import NumberedList from './NumberedList'
+
+import css from './MigrationTutorialList.less'
 
 type Instruction = {
     message: ReactNode
@@ -49,7 +51,7 @@ export default function MigrationTutorialList({
                                     <i
                                         className={classNames(
                                             'material-icons',
-                                            css.tutorialIcon
+                                            css.tutorialIcon,
                                         )}
                                     >
                                         {tutorial.icon}
@@ -71,7 +73,7 @@ export default function MigrationTutorialList({
                             )}
                             <NumberedList
                                 items={tutorial.instructions.map(
-                                    ({message}) => message
+                                    ({ message }) => message,
                                 )}
                             />
                             {tutorial.helpDocsUrl && (

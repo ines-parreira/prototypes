@@ -1,4 +1,4 @@
-import {registerCategory, registerNotification} from 'common/notifications'
+import { registerCategory, registerNotification } from 'common/notifications'
 
 jest.mock('common/notifications', () => ({
     registerCategory: jest.fn(),
@@ -11,7 +11,7 @@ describe('initNewMessages', () => {
 
         const categoryType = 'ticket-message-created'
         expect(registerCategory).toHaveBeenCalledWith(
-            expect.objectContaining({type: categoryType})
+            expect.objectContaining({ type: categoryType }),
         )
 
         const notifications = [
@@ -28,7 +28,7 @@ describe('initNewMessages', () => {
         ]
         notifications.forEach((notificationType) => {
             expect(registerNotification).toHaveBeenCalledWith(
-                expect.objectContaining({type: notificationType})
+                expect.objectContaining({ type: notificationType }),
             )
         })
     })

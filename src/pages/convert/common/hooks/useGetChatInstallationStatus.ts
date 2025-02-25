@@ -1,5 +1,6 @@
+import { useMemo } from 'react'
+
 import moment from 'moment'
-import {useMemo} from 'react'
 
 import {
     GorgiasChatInstallationMethod,
@@ -12,7 +13,7 @@ import {
  * but doesn't perform any API calls to verify the status.
  */
 const useGetChatInstallationStatus = (
-    integration: GorgiasChatIntegration | undefined
+    integration: GorgiasChatIntegration | undefined,
 ): {
     installed: boolean
     method: GorgiasChatInstallationMethod | null
@@ -50,14 +51,14 @@ const useGetChatInstallationStatus = (
             installationMethod === GorgiasChatInstallationMethod.ScriptTag &&
             (!integration.meta?.shopify_integration_ids ||
                 !integration.meta?.shopify_integration_ids.includes(
-                    integration.meta?.shop_integration_id
+                    integration.meta?.shop_integration_id,
                 ))
         ) {
             return defaultInstallation
         }
 
         const installationDatetime = moment(
-            integration.meta?.one_click_installation_datetime || null
+            integration.meta?.one_click_installation_datetime || null,
         )
 
         // no installation time known, we can't be sure of installation status
@@ -66,7 +67,7 @@ const useGetChatInstallationStatus = (
         }
 
         const uninstallationDatetime = moment(
-            integration.meta?.one_click_uninstallation_datetime || null
+            integration.meta?.one_click_uninstallation_datetime || null,
         )
 
         // it was never uninstalled, so it's installed based on previous checks

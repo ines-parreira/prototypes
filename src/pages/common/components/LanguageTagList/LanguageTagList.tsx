@@ -1,11 +1,11 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import React, {useMemo} from 'react'
+import React, { useMemo } from 'react'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
 
 import BadgeItem from 'pages/common/components/BadgetItem'
 
-import {Locale} from '../../../../models/helpCenter/types'
-
-import {moveLocaleToBack} from '../../utils/locale'
+import { Locale } from '../../../../models/helpCenter/types'
+import { moveLocaleToBack } from '../../utils/locale'
 
 import css from './LanguageTagList.less'
 
@@ -60,7 +60,7 @@ export const LanguageTagList: React.FC<Props> = ({
     languageList,
     displayLimit = 1,
 }: Props) => {
-    const {displayedLocales, hiddenLocales} = useMemo(() => {
+    const { displayedLocales, hiddenLocales } = useMemo(() => {
         if (languageList.length === 0 || !defaultLanguage) {
             return {
                 displayedLocales: [],
@@ -81,7 +81,7 @@ export const LanguageTagList: React.FC<Props> = ({
             displayedLocales = locales.slice(-1 * displayLimit) // Removed the -1 to show correct number of tags
             hiddenLocales = locales.slice(
                 0,
-                languageList.length - displayedLocales.length
+                languageList.length - displayedLocales.length,
             )
         }
 

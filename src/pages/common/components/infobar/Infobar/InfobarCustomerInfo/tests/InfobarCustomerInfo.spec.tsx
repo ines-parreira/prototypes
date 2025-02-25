@@ -1,7 +1,8 @@
-import {render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -13,14 +14,14 @@ import {
     SHOPIFY_INTEGRATION_TYPE,
     SMILE_INTEGRATION_TYPE,
 } from 'constants/integration'
-import {CustomerTimelineButton} from 'pages/tickets/detail/components/CustomerTimeline/CustomerTimelineButton'
-import {RootState, StoreDispatch} from 'state/types'
-import {assumeMock} from 'utils/testing'
+import { CustomerTimelineButton } from 'pages/tickets/detail/components/CustomerTimeline/CustomerTimelineButton'
+import { RootState, StoreDispatch } from 'state/types'
+import { assumeMock } from 'utils/testing'
 
 import InfobarCustomerInfo from '../InfobarCustomerInfo'
 
 jest.mock(
-    'pages/tickets/detail/components/CustomerTimeline/CustomerTimelineButton'
+    'pages/tickets/detail/components/CustomerTimeline/CustomerTimelineButton',
 )
 jest.mock('../CustomerChannels', () => () => <div>CustomerChannels</div>)
 jest.mock('../AddAppSuggestion', () => () => <div>Add app</div>)
@@ -35,7 +36,7 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 const store = mockStore({
     integrations: fromJS({
-        integrations: [{type: HTTP_INTEGRATION_TYPE}],
+        integrations: [{ type: HTTP_INTEGRATION_TYPE }],
     }),
 })
 
@@ -43,7 +44,7 @@ const minProps: ComponentProps<typeof InfobarCustomerInfo> = {
     isEditing: false,
     sources: fromJS({}),
     widgets: fromJS({}),
-    customer: fromJS({id: 1, name: 'foo'}),
+    customer: fromJS({ id: 1, name: 'foo' }),
 }
 
 describe('<InfobarCustomerInfo/>', () => {
@@ -55,20 +56,20 @@ describe('<InfobarCustomerInfo/>', () => {
     })
 
     it('should not render because there is no passed customer', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <InfobarCustomerInfo {...minProps} customer={undefined} />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toBeNull()
     })
 
     it('should not render because the passed customer is empty', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <InfobarCustomerInfo {...minProps} customer={fromJS({})} />
-            </Provider>
+            </Provider>,
         )
 
         expect(container.firstChild).toBeNull()
@@ -78,7 +79,7 @@ describe('<InfobarCustomerInfo/>', () => {
         render(
             <Provider store={store}>
                 <InfobarCustomerInfo {...minProps} />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('CustomerFields')).toBeInTheDocument()
@@ -103,8 +104,8 @@ describe('<InfobarCustomerInfo/>', () => {
             const widgets = fromJS({
                 currentContext: 'ticket',
                 _internal: {
-                    drag: {isDragging: false},
-                    editedItems: [{template: {}}],
+                    drag: { isDragging: false },
+                    editedItems: [{ template: {} }],
                     hasFetchedWidgets: true,
                 },
                 items: [],
@@ -118,11 +119,11 @@ describe('<InfobarCustomerInfo/>', () => {
                         widgets={widgets}
                         isEditing
                     />{' '}
-                </Provider>
+                </Provider>,
             )
 
             expect(screen.getByText('Generate default widgets'))
-        }
+        },
     )
 
     it(
@@ -144,14 +145,14 @@ describe('<InfobarCustomerInfo/>', () => {
             const widgets = fromJS({
                 currentContext: 'ticket',
                 _internal: {
-                    drag: {isDragging: true},
-                    editedItems: [{template: {}}],
+                    drag: { isDragging: true },
+                    editedItems: [{ template: {} }],
                     hasFetchedWidgets: true,
                 },
                 items: [],
             })
 
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <InfobarCustomerInfo
                         {...minProps}
@@ -159,11 +160,11 @@ describe('<InfobarCustomerInfo/>', () => {
                         widgets={widgets}
                         isEditing
                     />{' '}
-                </Provider>
+                </Provider>,
             )
 
             expect(container.firstChild).toMatchSnapshot()
-        }
+        },
     )
 
     it(
@@ -184,7 +185,7 @@ describe('<InfobarCustomerInfo/>', () => {
 
             const widgets = fromJS({
                 currentContext: 'ticket',
-                _internal: {hasFetchedWidgets: true},
+                _internal: { hasFetchedWidgets: true },
                 items: [],
             })
 
@@ -195,11 +196,11 @@ describe('<InfobarCustomerInfo/>', () => {
                         sources={sources}
                         widgets={widgets}
                     />{' '}
-                </Provider>
+                </Provider>,
             )
 
             expect(screen.queryByText('InfobarWidgets')).toBeNull()
-        }
+        },
     )
 
     it(
@@ -222,30 +223,30 @@ describe('<InfobarCustomerInfo/>', () => {
 
             const widgets = fromJS({
                 currentContext: context,
-                _internal: {hasFetchedWidgets: true},
+                _internal: { hasFetchedWidgets: true },
                 items: [
                     {
                         id: 1,
                         context,
-                        template: {foo: 'bar'},
+                        template: { foo: 'bar' },
                     },
                 ],
             })
 
-            const {container} = render(
+            const { container } = render(
                 <Provider store={store}>
                     <InfobarCustomerInfo
                         {...minProps}
                         sources={sources}
                         widgets={widgets}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(screen.getByText('Customer timeline'))
 
             expect(container.firstChild).toMatchSnapshot()
-        }
+        },
     )
 
     it.each([
@@ -262,20 +263,20 @@ describe('<InfobarCustomerInfo/>', () => {
                 <Provider
                     store={mockStore({
                         integrations: fromJS({
-                            integrations: [{type: integrationType}],
+                            integrations: [{ type: integrationType }],
                         }),
                     })}
                 >
                     <InfobarCustomerInfo
                         {...minProps}
                         sources={fromJS({})}
-                        widgets={fromJS({currentContext: 'ticket'})}
+                        widgets={fromJS({ currentContext: 'ticket' })}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(screen.queryByText('Add app')).toBeNull()
-        }
+        },
     )
 
     it('should pass `AddAppSuggestion` because there is no active data integration', () => {
@@ -290,9 +291,9 @@ describe('<InfobarCustomerInfo/>', () => {
                 <InfobarCustomerInfo
                     {...minProps}
                     sources={fromJS({})}
-                    widgets={fromJS({currentContext: 'ticket'})}
+                    widgets={fromJS({ currentContext: 'ticket' })}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText('Add app'))

@@ -1,4 +1,4 @@
-import {Map, List} from 'immutable'
+import { List, Map } from 'immutable'
 
 export function getSubtotal(refund: Map<any, any>): number {
     return (refund.get('refund_line_items', []) as List<any>).reduce(
@@ -6,7 +6,7 @@ export function getSubtotal(refund: Map<any, any>): number {
             total +
             parseFloat(refundLineItem.get('discounted_price')) *
                 refundLineItem.get('quantity'),
-        0
+        0,
     )
 }
 
@@ -15,7 +15,7 @@ export function getTotalCartDiscountAmount(refund: Map<any, any>): number {
         (total = 0, refundLineItem: Map<any, any>) =>
             total +
             parseFloat(refundLineItem.get('total_cart_discount_amount')),
-        0
+        0,
     )
 }
 
@@ -23,7 +23,7 @@ export function getTotalTax(refund: Map<any, any>): number {
     return (refund.get('refund_line_items', []) as List<any>).reduce(
         (total = 0, refundLineItem: Map<any, any>) =>
             total + parseFloat(refundLineItem.get('total_tax')),
-        parseFloat(refund.getIn(['shipping', 'tax'], 0))
+        parseFloat(refund.getIn(['shipping', 'tax'], 0)),
     )
 }
 
@@ -33,7 +33,7 @@ export function getRefundAmount(refund: Map<any, any>): number {
         (refund.get('transactions', Map()) as List<any>).reduce(
             (total = 0, transaction: Map<any, any>) =>
                 total + parseFloat(transaction.get('amount')) * 100,
-            0
+            0,
         ) / 100
     return amount > max ? max : amount
 }
@@ -48,7 +48,7 @@ export function getTotalAvailableToRefund(refund: Map<any, any>): number {
 
 export function distributeRefund(
     transactions: List<any>,
-    amounts: Map<string, number>
+    amounts: Map<string, number>,
 ): List<any> {
     const head: Map<any, any> | undefined = transactions.first()
     if (!head) {
@@ -63,12 +63,12 @@ export function distributeRefund(
     const rest = amounts.set(gateway, amount - toRefund)
     const transaction = head.set('amount', toRefund.toFixed(2))
     return distributeRefund(transactions.rest() as List<any>, rest).unshift(
-        transaction
+        transaction,
     )
 }
 
 export function aggregateMaximumRefundableByGateway(
-    refund: Map<any, any>
+    refund: Map<any, any>,
 ): Map<string, number> {
     const transactions = refund.get('transactions', List()) as List<any>
     const amounts = transactions.reduce(
@@ -79,10 +79,10 @@ export function aggregateMaximumRefundableByGateway(
             const amount = gateways.get(gateway) || 0
             return gateways.set(
                 gateway,
-                amount + parseFloat(maximum_refundable)
+                amount + parseFloat(maximum_refundable),
             )
         },
-        Map()
+        Map(),
     )
 
     return amounts.delete('gift_card')
@@ -90,7 +90,7 @@ export function aggregateMaximumRefundableByGateway(
 
 export function getTransactionToRefund(
     refund: Map<any, any>,
-    amount: number
+    amount: number,
 ): List<any> {
     const transactions = refund.get('transactions', List()) as List<any>
     const buckets = aggregateMaximumRefundableByGateway(refund)
@@ -101,14 +101,14 @@ export function getTransactionToRefund(
     }
 
     const gateway = gateways.first()
-    const amounts = Map({[gateway]: amount})
+    const amounts = Map({ [gateway]: amount })
 
     return distributeRefund(transactions, amounts)
 }
 
 export function getTotalQuantities(
     payload: Map<any, any>,
-    suggestedRefund: Maybe<Map<any, any>>
+    suggestedRefund: Maybe<Map<any, any>>,
 ): number {
     return (payload.get('refund_line_items', []) as List<any>).reduce(
         (total = 0, refundLineItem: Map<any, any>) => {
@@ -125,7 +125,7 @@ export function getTotalQuantities(
             ).find(
                 (suggestedRefundLineItem: Map<any, any>) =>
                     suggestedRefundLineItem.get('line_item_id') ===
-                    refundLineItem.get('line_item_id')
+                    refundLineItem.get('line_item_id'),
             ) as Map<any, any>
 
             const locationId = suggestedRefundLineItem
@@ -133,13 +133,13 @@ export function getTotalQuantities(
                 : null
             return locationId ? total + quantity : total
         },
-        0
+        0,
     )
 }
 
 export function getRestockType(
     lineItem: Map<any, any>,
-    restock = true
+    restock = true,
 ): string {
     if (!restock || lineItem.get('fulfillment_status') === 'not_eligible') {
         return 'no_restock'

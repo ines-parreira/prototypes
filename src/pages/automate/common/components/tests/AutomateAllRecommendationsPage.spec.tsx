@@ -1,26 +1,27 @@
-import {fireEvent, render, screen, waitFor} from '@testing-library/react'
-import {createMemoryHistory} from 'history'
 import React from 'react'
-import {Provider} from 'react-redux'
-import {Router, useLocation} from 'react-router-dom'
+
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { createMemoryHistory } from 'history'
+import { Provider } from 'react-redux'
+import { Router, useLocation } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {useSearchParam} from 'hooks/useSearchParam'
-import {IntegrationType} from 'models/integration/constants'
-import {ArticleOrigin} from 'pages/settings/helpCenter/types/articleOrigin.enum'
-import {getHelpCenterFAQList} from 'state/entities/helpCenter/helpCenters'
-import {RootState, StoreDispatch} from 'state/types'
-import {initialState} from 'state/ui/stats/drillDownSlice'
-import {assumeMock} from 'utils/testing'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { useSearchParam } from 'hooks/useSearchParam'
+import { IntegrationType } from 'models/integration/constants'
+import { ArticleOrigin } from 'pages/settings/helpCenter/types/articleOrigin.enum'
+import { getHelpCenterFAQList } from 'state/entities/helpCenter/helpCenters'
+import { RootState, StoreDispatch } from 'state/types'
+import { initialState } from 'state/ui/stats/drillDownSlice'
+import { assumeMock } from 'utils/testing'
 
-import {useAIArticlePublishedPreviewUrl} from '../../hooks/useAIArticlePublishedPreviewUrl'
-import {useAIArticleRecommendationItems} from '../../hooks/useAIArticleRecommendationItems'
+import { useAIArticlePublishedPreviewUrl } from '../../hooks/useAIArticlePublishedPreviewUrl'
+import { useAIArticleRecommendationItems } from '../../hooks/useAIArticleRecommendationItems'
 import AutomateAllRecommendationsPage from '../AutomateAllRecommendationsPage'
-import {useHasEmailToStoreConnection} from '../TopQuestions/useHasEmailToStoreConnection'
-import {useTopQuestionsFilters} from '../TopQuestions/useTopQuestionsFilters'
-import {useTopQuestionsViewedOnPage} from '../TopQuestions/useTopQuestionsViewedOnPage'
+import { useHasEmailToStoreConnection } from '../TopQuestions/useHasEmailToStoreConnection'
+import { useTopQuestionsFilters } from '../TopQuestions/useTopQuestionsFilters'
+import { useTopQuestionsViewedOnPage } from '../TopQuestions/useTopQuestionsViewedOnPage'
 
 const storeFilter = {
     options: [
@@ -128,12 +129,12 @@ const mockUseTopQuestionsFilters = assumeMock(useTopQuestionsFilters)
 
 jest.mock('../../hooks/useAIArticleRecommendationItems', () => ({
     ...jest.requireActual<Record<string, any>>(
-        '../../hooks/useAIArticleRecommendationItems'
+        '../../hooks/useAIArticleRecommendationItems',
     ),
     useAIArticleRecommendationItems: jest.fn(),
 }))
 const mockUseAIArticleRecommendationItems = assumeMock(
-    useAIArticleRecommendationItems
+    useAIArticleRecommendationItems,
 )
 
 jest.mock('../TopQuestions/useTopQuestionsViewedOnPage')
@@ -141,7 +142,7 @@ const mockUseTopQuestionsViewedOnPage = assumeMock(useTopQuestionsViewedOnPage)
 
 jest.mock('../TopQuestions/useHasEmailToStoreConnection')
 const mockUseHasEmailToStoreConnection = assumeMock(
-    useHasEmailToStoreConnection
+    useHasEmailToStoreConnection,
 )
 
 jest.mock('state/entities/helpCenter/helpCenters')
@@ -149,14 +150,14 @@ const mockGetHelpCenterFAQList = assumeMock(getHelpCenterFAQList)
 
 jest.mock('../../hooks/useAIArticlePublishedPreviewUrl')
 const mockUseAIArticlePublishedPreviewUrl = assumeMock(
-    useAIArticlePublishedPreviewUrl
+    useAIArticlePublishedPreviewUrl,
 )
 
 describe('<AutomateAllRecommendationsPage />', () => {
     const history = createMemoryHistory()
     const defaultState = {
         ui: {
-            stats: {drillDown: initialState},
+            stats: { drillDown: initialState },
         },
     } as RootState
 
@@ -166,7 +167,7 @@ describe('<AutomateAllRecommendationsPage />', () => {
                 <Provider store={mockStore(defaultState)}>
                     <AutomateAllRecommendationsPage />
                 </Provider>
-            </Router>
+            </Router>,
         )
 
     beforeEach(() => {
@@ -183,7 +184,7 @@ describe('<AutomateAllRecommendationsPage />', () => {
                 ? ['1', jest.fn()]
                 : param === 'help_center_id'
                   ? ['11', jest.fn()]
-                  : [null, jest.fn()]
+                  : [null, jest.fn()],
         )
         mockUseTopQuestionsFilters.mockReturnValue({
             isLoading: false,
@@ -250,7 +251,7 @@ describe('<AutomateAllRecommendationsPage />', () => {
                 setSelectedHelpCenterId: jest.fn(),
             },
         })
-        const {container} = renderComponent()
+        const { container } = renderComponent()
 
         expect(container.firstChild).toBeNull()
     })
@@ -261,7 +262,7 @@ describe('<AutomateAllRecommendationsPage />', () => {
             isLoading: true,
         })
 
-        const {container} = renderComponent()
+        const { container } = renderComponent()
 
         expect(container.firstChild).toBeNull
     })
@@ -276,8 +277,8 @@ describe('<AutomateAllRecommendationsPage />', () => {
 
         expect(
             screen.getByText(
-                'This store must be connected to an email to receive recommendations.'
-            )
+                'This store must be connected to an email to receive recommendations.',
+            ),
         ).toBeInTheDocument()
     })
 
@@ -292,7 +293,7 @@ describe('<AutomateAllRecommendationsPage />', () => {
             1,
             11,
             'all-recommendations',
-            new Date(batchDatetime)
+            new Date(batchDatetime),
         )
 
         expect(mockUseTopQuestionsFilters).toBeCalledWith({
@@ -312,7 +313,7 @@ describe('<AutomateAllRecommendationsPage />', () => {
         })
 
         expect(logEventMock).toHaveBeenCalledWith(
-            SegmentEvent.AutomateTopQuestionsAllRecommendationsCreateArticle
+            SegmentEvent.AutomateTopQuestionsAllRecommendationsCreateArticle,
         )
     })
 
@@ -348,18 +349,18 @@ describe('<AutomateAllRecommendationsPage />', () => {
             1,
             11,
             'all-recommendations',
-            dateNow
+            dateNow,
         )
     })
 
     it('updates query params when store changes', async () => {
-        const {rerender} = renderComponent()
+        const { rerender } = renderComponent()
 
         fireEvent.click(screen.getByText('Store 4'))
 
         await waitFor(() => {
             expect(
-                storeFilter.setSelectedStoreIntegrationId
+                storeFilter.setSelectedStoreIntegrationId,
             ).toHaveBeenCalledWith(4)
         })
 
@@ -382,7 +383,7 @@ describe('<AutomateAllRecommendationsPage />', () => {
                 <Provider store={mockStore(defaultState)}>
                     <AutomateAllRecommendationsPage />
                 </Provider>
-            </Router>
+            </Router>,
         )
 
         await waitFor(() => {
@@ -393,13 +394,13 @@ describe('<AutomateAllRecommendationsPage />', () => {
         })
     })
     it('updates query params when Help Center changes', async () => {
-        const {rerender} = renderComponent()
+        const { rerender } = renderComponent()
 
         fireEvent.click(screen.getByText('Help Center 2'))
 
         await waitFor(() => {
             expect(
-                helpCenterFilter.setSelectedHelpCenterId
+                helpCenterFilter.setSelectedHelpCenterId,
             ).toHaveBeenCalledWith(22)
         })
 
@@ -422,7 +423,7 @@ describe('<AutomateAllRecommendationsPage />', () => {
                 <Provider store={mockStore(defaultState)}>
                     <AutomateAllRecommendationsPage />
                 </Provider>
-            </Router>
+            </Router>,
         )
 
         await waitFor(() => {
@@ -439,7 +440,7 @@ describe('<AutomateAllRecommendationsPage />', () => {
                 ? ['all', jest.fn()]
                 : param === 'page'
                   ? ['2', jest.fn()]
-                  : [null, jest.fn()]
+                  : [null, jest.fn()],
         )
         mockUseLocation.mockReturnValue({
             pathname: '/app/automation/ai-recommendations',
@@ -455,7 +456,7 @@ describe('<AutomateAllRecommendationsPage />', () => {
             isLoading: false,
         } as unknown as ReturnType<typeof useAIArticleRecommendationItems>)
 
-        const {container, rerender} = renderComponent()
+        const { container, rerender } = renderComponent()
 
         expect(mockUseAIArticleRecommendationItems).toHaveBeenCalledWith({
             currentPage: 2,
@@ -484,7 +485,7 @@ describe('<AutomateAllRecommendationsPage />', () => {
         })
 
         mockUseSearchParam.mockImplementation((param) =>
-            param === 'status' ? ['not-created', jest.fn()] : [null, jest.fn()]
+            param === 'status' ? ['not-created', jest.fn()] : [null, jest.fn()],
         )
 
         rerender(
@@ -492,7 +493,7 @@ describe('<AutomateAllRecommendationsPage />', () => {
                 <Provider store={mockStore(defaultState)}>
                     <AutomateAllRecommendationsPage />
                 </Provider>
-            </Router>
+            </Router>,
         )
 
         const page3 = container.querySelector('[aria-label="page-3"]')
@@ -515,20 +516,20 @@ describe('<AutomateAllRecommendationsPage />', () => {
             isLoading: false,
         } as unknown as ReturnType<typeof useAIArticleRecommendationItems>)
 
-        const {container} = renderComponent()
+        const { container } = renderComponent()
 
         const page1 = container.querySelector('[aria-label="page-1"]')
         expect(page1).toBeInTheDocument()
         fireEvent.click(page1!)
 
         expect(history.push).not.toHaveBeenCalledWith(
-            expect.stringContaining('page=1')
+            expect.stringContaining('page=1'),
         )
 
         fireEvent.click(screen.getAllByText('Not created')[1])
 
         expect(history.push).not.toHaveBeenCalledWith(
-            expect.stringContaining('status=not-created')
+            expect.stringContaining('status=not-created'),
         )
     })
 
@@ -538,7 +539,7 @@ describe('<AutomateAllRecommendationsPage />', () => {
                 ? ['article-created', jest.fn()]
                 : param === 'page'
                   ? ['1', jest.fn()]
-                  : [null, jest.fn()]
+                  : [null, jest.fn()],
         )
         mockUseLocation.mockReturnValue({
             pathname: '/app/automation/ai-recommendations',
@@ -566,7 +567,7 @@ describe('<AutomateAllRecommendationsPage />', () => {
 
         expect(linkElement).toHaveAttribute(
             'href',
-            `/app/settings/help-center/11/articles?article_id=123`
+            `/app/settings/help-center/11/articles?article_id=123`,
         )
     })
 
@@ -576,7 +577,7 @@ describe('<AutomateAllRecommendationsPage />', () => {
                 ? ['article-created', jest.fn()]
                 : param === 'page'
                   ? ['1', jest.fn()]
-                  : [null, jest.fn()]
+                  : [null, jest.fn()],
         )
         mockUseLocation.mockReturnValue({
             pathname: '/app/automation/ai-recommendations',
@@ -603,7 +604,7 @@ describe('<AutomateAllRecommendationsPage />', () => {
 
         expect(linkElement).toHaveAttribute(
             'href',
-            `/app/settings/help-center/11/articles?article_id=123`
+            `/app/settings/help-center/11/articles?article_id=123`,
         )
     })
 
@@ -613,7 +614,7 @@ describe('<AutomateAllRecommendationsPage />', () => {
                 ? ['article-created', jest.fn()]
                 : param === 'page'
                   ? ['1', jest.fn()]
-                  : [null, jest.fn()]
+                  : [null, jest.fn()],
         )
         mockUseLocation.mockReturnValue({
             pathname: '/app/automation/ai-recommendations',
@@ -645,7 +646,7 @@ describe('<AutomateAllRecommendationsPage />', () => {
         renderComponent()
 
         expect(
-            screen.getByText('You have no recommendations for this store yet.')
+            screen.getByText('You have no recommendations for this store yet.'),
         ).toBeInTheDocument()
     })
 
@@ -662,7 +663,7 @@ describe('<AutomateAllRecommendationsPage />', () => {
 
         expect(screen.getByText('No data available')).toBeInTheDocument()
         expect(
-            screen.getByText('Try adjusting filters to get results.')
+            screen.getByText('Try adjusting filters to get results.'),
         ).toBeInTheDocument()
     })
 })

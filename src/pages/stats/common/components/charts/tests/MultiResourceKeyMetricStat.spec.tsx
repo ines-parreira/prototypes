@@ -1,8 +1,9 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {totalMessagesSent} from 'fixtures/stats'
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+
+import { totalMessagesSent } from 'fixtures/stats'
 
 import KeyMetricStat from '../KeyMetricStat/KeyMetricStat'
 import MultiResourceKeyMetricStat from '../KeyMetricStat/MultiResourceKeyMetricStat'
@@ -11,7 +12,7 @@ jest.mock(
     '../KeyMetricStat/KeyMetricStat',
     () => (props: ComponentProps<typeof KeyMetricStat>) => {
         return JSON.stringify(props, null, 2)
-    }
+    },
 )
 
 describe('MultiResourceKeyMetricStat', () => {
@@ -32,7 +33,7 @@ describe('MultiResourceKeyMetricStat', () => {
     }
 
     it('should render KeyMetricStat', () => {
-        const {container} = render(
+        const { container } = render(
             <MultiResourceKeyMetricStat
                 resourceStats={[
                     {
@@ -47,13 +48,13 @@ describe('MultiResourceKeyMetricStat', () => {
                     },
                 ]}
                 config={fromJS(defaultConfig)}
-            />
+            />,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render KeyMetricStat with empty meta when no stats available', () => {
-        const {container} = render(
+        const { container } = render(
             <MultiResourceKeyMetricStat
                 resourceStats={[
                     {
@@ -68,7 +69,7 @@ describe('MultiResourceKeyMetricStat', () => {
                     },
                 ]}
                 config={fromJS(defaultConfig)}
-            />
+            />,
         )
         expect(container.firstChild).toMatchSnapshot()
     })

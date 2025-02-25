@@ -1,5 +1,6 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import MainTitle from '../MainTitle'
 
@@ -7,7 +8,7 @@ describe('MainTitle', () => {
     it('renders both black and magenta text parts', () => {
         render(<MainTitle titleBlack="Welcome to " titleMagenta="AI Agent" />)
 
-        const heading = screen.getByRole('heading', {level: 1})
+        const heading = screen.getByRole('heading', { level: 1 })
         expect(heading).toBeInTheDocument()
 
         expect(screen.getByText('Welcome to')).toBeInTheDocument()

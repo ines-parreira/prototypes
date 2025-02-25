@@ -1,11 +1,12 @@
-import {render, screen, fireEvent} from '@testing-library/react'
 import React from 'react'
 
-import {ContactCaptureFormPreview} from '../ContactCaptureFormPreview'
-import {ContactCaptureStepProps} from '../ContactCaptureStep'
+import { fireEvent, render, screen } from '@testing-library/react'
+
+import { ContactCaptureFormPreview } from '../ContactCaptureFormPreview'
+import { ContactCaptureStepProps } from '../ContactCaptureStep'
 
 jest.mock('../ContactCaptureStep', () => ({
-    ContactCaptureStep: ({onSubmit}: ContactCaptureStepProps) => (
+    ContactCaptureStep: ({ onSubmit }: ContactCaptureStepProps) => (
         <button onClick={() => onSubmit({})}>Submit Step</button>
     ),
 }))
@@ -33,11 +34,11 @@ describe('ContactCaptureFormPreview', () => {
                 onMessageHtmlChange={onMessageHtmlChangeMock}
                 emailDisclaimerSettings={{
                     enabled: true,
-                    disclaimer: {en: 'foo'},
+                    disclaimer: { en: 'foo' },
                     disclaimer_default_accepted: true,
                 }}
                 defaultLanguage="en-US"
-            />
+            />,
         )
 
         const submitButton = screen.getByText('Submit Step')
@@ -55,7 +56,7 @@ describe('ContactCaptureFormPreview', () => {
                 onMessageHtmlChange={undefined}
                 emailDisclaimerSettings={undefined}
                 defaultLanguage={'en-US'}
-            />
+            />,
         )
 
         render(
@@ -64,11 +65,11 @@ describe('ContactCaptureFormPreview', () => {
                 onMessageHtmlChange={undefined}
                 emailDisclaimerSettings={{
                     enabled: true,
-                    disclaimer: {'': 'foo'},
+                    disclaimer: { '': 'foo' },
                     disclaimer_default_accepted: true,
                 }}
                 defaultLanguage={undefined}
-            />
+            />,
         )
     })
 })

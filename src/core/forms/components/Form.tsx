@@ -1,4 +1,5 @@
-import React, {PropsWithChildren} from 'react'
+import React, { PropsWithChildren } from 'react'
+
 import {
     FieldValues,
     FormProvider,
@@ -8,9 +9,9 @@ import {
 } from 'react-hook-form'
 
 import {
+    createResolver,
     FormErrors,
     FormValidator,
-    createResolver,
     toFieldErrors,
 } from '../utils/validation'
 

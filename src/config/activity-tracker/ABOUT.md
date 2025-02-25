@@ -8,6 +8,7 @@ The package allowing to perform this conversion will likely be published by @die
 At this point, the original ZOD schemas will be added to the repo as well.
 
 #### More info:
-- **Zod schemas**: https://zod.dev/
-- **JSON Schema**: https://json-schema.org/
-- **zod-to-json-schema**: https://github.com/StefanTerdell/zod-to-json-schema
+
+-   **Zod schemas**: https://zod.dev/
+-   **JSON Schema**: https://json-schema.org/
+-   **zod-to-json-schema**: https://github.com/StefanTerdell/zod-to-json-schema

@@ -1,26 +1,28 @@
-import {useGetAnalyticsCustomReport} from '@gorgias/api-queries'
+import React from 'react'
+
 import {
     fireEvent,
     screen,
     waitFor,
     waitForElementToBeRemoved,
 } from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React from 'react'
-import {useParams} from 'react-router-dom'
+import { fromJS } from 'immutable'
+import { useParams } from 'react-router-dom'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {AGENT_ROLE, BASIC_AGENT_ROLE} from 'config/user'
-import {user} from 'fixtures/users'
-import {useCustomReportActions} from 'hooks/reporting/custom-reports/useCustomReportActions'
-import {useDashboardNameValidation} from 'hooks/reporting/custom-reports/useDashboardNameValidation'
-import {useReportRestrictions} from 'hooks/reporting/custom-reports/useReportRestrictions'
-import {useUpdateDashboardCache} from 'hooks/reporting/custom-reports/useUpdateDashboardCache'
+import { useGetAnalyticsCustomReport } from '@gorgias/api-queries'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { AGENT_ROLE, BASIC_AGENT_ROLE } from 'config/user'
+import { user } from 'fixtures/users'
+import { useCustomReportActions } from 'hooks/reporting/custom-reports/useCustomReportActions'
+import { useDashboardNameValidation } from 'hooks/reporting/custom-reports/useDashboardNameValidation'
+import { useReportRestrictions } from 'hooks/reporting/custom-reports/useReportRestrictions'
+import { useUpdateDashboardCache } from 'hooks/reporting/custom-reports/useUpdateDashboardCache'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {FiltersPanelWrapper} from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
-import {CREATE_REPORT_DESCRIPTION} from 'pages/stats/custom-reports/CreateCustomReport/CreateCustomReport'
-import {CustomReport} from 'pages/stats/custom-reports/CustomReport'
-import {CustomReportActionButton} from 'pages/stats/custom-reports/CustomReportActionButton'
+import { FiltersPanelWrapper } from 'pages/stats/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
+import { CREATE_REPORT_DESCRIPTION } from 'pages/stats/custom-reports/CreateCustomReport/CreateCustomReport'
+import { CustomReport } from 'pages/stats/custom-reports/CustomReport'
+import { CustomReportActionButton } from 'pages/stats/custom-reports/CustomReportActionButton'
 import {
     CUSTOM_REPORT_ID_CTA,
     CUSTOM_REPORT_SCHEMA_ERROR,
@@ -30,8 +32,8 @@ import {
     CustomReportChildType,
     CustomReportSchema,
 } from 'pages/stats/custom-reports/types'
-import {DrillDownModal} from 'pages/stats/DrillDownModal'
-import {assumeMock, renderWithStore} from 'utils/testing'
+import { DrillDownModal } from 'pages/stats/DrillDownModal'
+import { assumeMock, renderWithStore } from 'utils/testing'
 
 jest.mock('react-router-dom', () => ({
     useParams: jest.fn(),
@@ -77,7 +79,7 @@ const logEventMock = assumeMock(logEvent)
 
 describe('CustomReportPage', () => {
     const defaultState = {
-        currentUser: fromJS({...user, role: {name: AGENT_ROLE}}),
+        currentUser: fromJS({ ...user, role: { name: AGENT_ROLE } }),
     }
 
     const dashboardName = 'Dashboard'
@@ -111,32 +113,38 @@ describe('CustomReportPage', () => {
 
         FiltersPanelWrapperMock.mockReturnValue(<div />)
 
-        CustomReportMock.mockImplementation(({onChartMove, onChartMoveEnd}) => (
-            <div>
-                <button onClick={() => onChartMove(customReport)}>
-                    {MOVE_CHART_BUTTON}
-                </button>
-                <button onClick={() => onChartMoveEnd()}>
-                    {MOVE_CHART_END_BUTTON}
-                </button>
-            </div>
-        ))
+        CustomReportMock.mockImplementation(
+            ({ onChartMove, onChartMoveEnd }) => (
+                <div>
+                    <button onClick={() => onChartMove(customReport)}>
+                        {MOVE_CHART_BUTTON}
+                    </button>
+                    <button onClick={() => onChartMoveEnd()}>
+                        {MOVE_CHART_END_BUTTON}
+                    </button>
+                </div>
+            ),
+        )
 
         DrillDownModalMock.mockReturnValue(<div />)
 
-        CustomReportActionButtonMock.mockImplementation(({setOpenModal}) => (
+        CustomReportActionButtonMock.mockImplementation(({ setOpenModal }) => (
             <button onClick={() => setOpenModal(true)}>
                 {CUSTOM_REPORT_ID_CTA}
             </button>
         ))
 
         useGetAnalyticsCustomReportMock.mockReturnValue({
-            data: {data: customReport},
+            data: { data: customReport },
             isLoading: false,
         } as any)
 
         useCustomReportActionsMock.mockReturnValue({
-            updateDashboardHandler: ({onSuccess}: {onSuccess?: () => void}) => {
+            updateDashboardHandler: ({
+                onSuccess,
+            }: {
+                onSuccess?: () => void
+            }) => {
                 updateDashboardMock()
                 onSuccess && onSuccess()
             },
@@ -152,12 +160,12 @@ describe('CustomReportPage', () => {
             isValid: true,
             isInvalid: false,
         } as any)
-        useReportRestrictionsMock.mockReturnValue({restrictionsMap: {}})
+        useReportRestrictionsMock.mockReturnValue({ restrictionsMap: {} })
     })
 
     it('should render fallback when no charts are present', () => {
         useGetAnalyticsCustomReportMock.mockReturnValue({
-            data: {data: {...customReport, children: []}},
+            data: { data: { ...customReport, children: [] } },
             isLoading: false,
         } as any)
 
@@ -198,7 +206,7 @@ describe('CustomReportPage', () => {
             ...defaultState,
             currentUser: fromJS({
                 ...user,
-                role: {name: BASIC_AGENT_ROLE},
+                role: { name: BASIC_AGENT_ROLE },
             }),
         }
         renderWithStore(<CustomReportPage />, state)
@@ -232,9 +240,11 @@ describe('CustomReportPage', () => {
     it('should update name when input is blurred', async () => {
         renderWithStore(<CustomReportPage />, {})
 
-        const nameInput = screen.getByRole('textbox', {name: 'Dashboard name'})
+        const nameInput = screen.getByRole('textbox', {
+            name: 'Dashboard name',
+        })
 
-        fireEvent.change(nameInput, {target: {value: 'Some new name'}})
+        fireEvent.change(nameInput, { target: { value: 'Some new name' } })
 
         fireEvent.blur(nameInput)
 
@@ -251,7 +261,7 @@ describe('CustomReportPage', () => {
         fireEvent.click(actionButton)
 
         expect(logEventMock).toHaveBeenCalledWith(
-            SegmentEvent.StatDashboardActionsMenuClicked
+            SegmentEvent.StatDashboardActionsMenuClicked,
         )
     })
 
@@ -262,9 +272,11 @@ describe('CustomReportPage', () => {
 
         fireEvent.click(actionButton)
 
-        const searchInput = screen.getByRole('textbox', {name: 'Search charts'})
+        const searchInput = screen.getByRole('textbox', {
+            name: 'Search charts',
+        })
         fireEvent.change(searchInput, {
-            target: {value: 'messages'},
+            target: { value: 'messages' },
         })
 
         const firstCheckbox = screen.getAllByRole('checkbox')[0]
@@ -285,9 +297,11 @@ describe('CustomReportPage', () => {
 
         fireEvent.click(actionButton)
 
-        const searchInput = screen.getByRole('textbox', {name: 'Search charts'})
+        const searchInput = screen.getByRole('textbox', {
+            name: 'Search charts',
+        })
         fireEvent.change(searchInput, {
-            target: {value: 'messages'},
+            target: { value: 'messages' },
         })
 
         const firstCheckbox = screen.getAllByRole('checkbox')[0]
@@ -297,7 +311,7 @@ describe('CustomReportPage', () => {
         fireEvent.click(saveButton)
 
         await waitForElementToBeRemoved(() =>
-            screen.getByRole('textbox', {name: 'Search charts'})
+            screen.getByRole('textbox', { name: 'Search charts' }),
         )
 
         await waitFor(() => {
@@ -312,9 +326,11 @@ describe('CustomReportPage', () => {
 
         fireEvent.click(actionButton)
 
-        const searchInput = screen.getByRole('textbox', {name: 'Search charts'})
+        const searchInput = screen.getByRole('textbox', {
+            name: 'Search charts',
+        })
         fireEvent.change(searchInput, {
-            target: {value: 'messages'},
+            target: { value: 'messages' },
         })
 
         const firstCheckbox = screen.getAllByRole('checkbox')[0]
@@ -327,7 +343,7 @@ describe('CustomReportPage', () => {
         fireEvent.click(saveButton)
 
         await waitForElementToBeRemoved(() =>
-            screen.getByRole('textbox', {name: 'Search charts'})
+            screen.getByRole('textbox', { name: 'Search charts' }),
         )
 
         await waitFor(() => {

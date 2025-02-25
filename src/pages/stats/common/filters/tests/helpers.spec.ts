@@ -1,6 +1,6 @@
-import {TicketMessageSourceType} from 'business/types/ticket'
-import {logEvent, SegmentEvent} from 'common/segment'
-import {channelsQueryKeys as mockChannelsQueryKeys} from 'models/channel/queries'
+import { TicketMessageSourceType } from 'business/types/ticket'
+import { logEvent, SegmentEvent } from 'common/segment'
+import { channelsQueryKeys as mockChannelsQueryKeys } from 'models/channel/queries'
 import {
     CustomFieldSavedFilter,
     FilterKey,
@@ -10,9 +10,9 @@ import {
     TagsSavedFilter,
     WithLogicalOperator,
 } from 'models/stat/types'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-import {FilterLabels} from 'pages/stats/common/filters/constants'
-import {ActiveFilter} from 'pages/stats/common/filters/FiltersPanel'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
+import { FilterLabels } from 'pages/stats/common/filters/constants'
+import { ActiveFilter } from 'pages/stats/common/filters/FiltersPanel'
 import {
     activeFiltersToOptions,
     filterChannels,
@@ -23,8 +23,8 @@ import {
     TICKET_FIELDS_FILTERS_LABEL,
     toApiFormatted,
 } from 'pages/stats/common/filters/helpers'
-import {Channel} from 'services/channels'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { Channel } from 'services/channels'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 const mockedChannels = [
     {
@@ -51,13 +51,13 @@ const mockedQueryClient = mockQueryClient({
 jest.mock('api/queryClient', () => ({
     appQueryClient: {
         ...mockedQueryClient,
-        getQueryData: jest.fn(() => ({data: mockedChannels})),
+        getQueryData: jest.fn(() => ({ data: mockedChannels })),
     },
 }))
 
 jest.mock('common/segment', () => ({
     logEvent: jest.fn(),
-    SegmentEvent: {StatFilterSelected: 'stat-filter-selected'},
+    SegmentEvent: { StatFilterSelected: 'stat-filter-selected' },
 }))
 
 describe('filterChannels', () => {
@@ -70,15 +70,15 @@ describe('filterChannels', () => {
             filterChannels(mockedChannels, [
                 TicketMessageSourceType.Email,
                 TicketMessageSourceType.Phone,
-            ])
+            ]),
         ).toEqual([mockedChannels[0], mockedChannels[2]])
     })
 
     it('should return channels matching the filter function', () => {
         expect(
             filterChannels(mockedChannels, (channel) =>
-                channel.name.includes('Chat')
-            )
+                channel.name.includes('Chat'),
+            ),
         ).toEqual([mockedChannels[1]])
     })
 })
@@ -91,7 +91,7 @@ describe('logSegmentEvent', () => {
             expect.objectContaining({
                 name: 'test',
                 logical_operator: 'test-operator',
-            })
+            }),
         )
     })
 
@@ -102,7 +102,7 @@ describe('logSegmentEvent', () => {
             expect.objectContaining({
                 name: 'test',
                 logical_operator: null,
-            })
+            }),
         )
     })
 })
@@ -279,13 +279,13 @@ describe('activeFiltersToOptions', () => {
         const groupedFilters = activeFiltersToOptions(activeFilters)
 
         const standardFiltersGroup = groupedFilters.find(
-            (group) => group.title === STANDARD_FILTERS_LABEL
+            (group) => group.title === STANDARD_FILTERS_LABEL,
         )
         const ticketFieldsFiltersGroup = groupedFilters.find(
-            (group) => group.title === TICKET_FIELDS_FILTERS_LABEL
+            (group) => group.title === TICKET_FIELDS_FILTERS_LABEL,
         )
         const qualityManagementFiltrsGroup = groupedFilters.find(
-            (group) => group.title === QUALITY_MANAGEMENT_FILTERS_LABEL
+            (group) => group.title === QUALITY_MANAGEMENT_FILTERS_LABEL,
         )
 
         expect(standardFiltersGroup?.options).toContainEqual({
@@ -324,32 +324,32 @@ describe('activeFiltersToOptions', () => {
         const groupedFilters = activeFiltersToOptions(activeFilters)
 
         const standardFiltersGroup = groupedFilters.find(
-            (group) => group.title === STANDARD_FILTERS_LABEL
+            (group) => group.title === STANDARD_FILTERS_LABEL,
         )
         const ticketFieldsFiltersGroup = groupedFilters.find(
-            (group) => group.title === TICKET_FIELDS_FILTERS_LABEL
+            (group) => group.title === TICKET_FIELDS_FILTERS_LABEL,
         )
         const qualityManagementFiltrsGroup = groupedFilters.find(
-            (group) => group.title === QUALITY_MANAGEMENT_FILTERS_LABEL
+            (group) => group.title === QUALITY_MANAGEMENT_FILTERS_LABEL,
         )
 
         expect(standardFiltersGroup?.options[0].label).toEqual(
-            FilterLabels[agentFilter.type]
+            FilterLabels[agentFilter.type],
         )
         expect(standardFiltersGroup?.options[1].label).toEqual(
-            FilterLabels[tagsFilter.type]
+            FilterLabels[tagsFilter.type],
         )
         expect(ticketFieldsFiltersGroup?.options[0].label).toEqual(
-            anotherTicketFieldFilter.filterName
+            anotherTicketFieldFilter.filterName,
         )
         expect(ticketFieldsFiltersGroup?.options[1].label).toEqual(
-            ticketFieldFilter.filterName
+            ticketFieldFilter.filterName,
         )
         expect(qualityManagementFiltrsGroup?.options[0].label).toEqual(
-            FilterLabels[qaFilter.type]
+            FilterLabels[qaFilter.type],
         )
         expect(qualityManagementFiltrsGroup?.options[1].label).toEqual(
-            FilterLabels[anotherQaFilter.type]
+            FilterLabels[anotherQaFilter.type],
         )
     })
 })

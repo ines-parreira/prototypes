@@ -1,19 +1,19 @@
 import {
+    GetApplicationsResponse,
     GetInstallationSnippetParams,
     GetInstallationSnippetResponse,
-    GetApplicationsResponse,
 } from 'models/integration/types'
-import {getGorgiasChatProtectedApiClient} from 'rest_api/gorgias_chat_protected_api/client'
+import { getGorgiasChatProtectedApiClient } from 'rest_api/gorgias_chat_protected_api/client'
 
 import {
+    InstallationStatus,
     Texts,
     Translations,
-    InstallationStatus,
 } from '../../../rest_api/gorgias_chat_protected_api/types'
 
 export async function getTranslations(lang: string) {
     const client = await getGorgiasChatProtectedApiClient()
-    const {data}: {data: Translations} = await client.getTranslations({
+    const { data }: { data: Translations } = await client.getTranslations({
         lang,
     })
     return data
@@ -21,7 +21,7 @@ export async function getTranslations(lang: string) {
 
 export async function getApplicationTexts(applicationId: string) {
     const client = await getGorgiasChatProtectedApiClient()
-    const {data}: {data: Texts} = await client.getApplicationTexts({
+    const { data }: { data: Texts } = await client.getApplicationTexts({
         applicationId,
     })
     return data
@@ -29,7 +29,7 @@ export async function getApplicationTexts(applicationId: string) {
 
 export async function updateApplicationTexts(
     applicationId: string,
-    texts: Texts
+    texts: Texts,
 ): Promise<void> {
     const client = await getGorgiasChatProtectedApiClient()
 
@@ -37,13 +37,13 @@ export async function updateApplicationTexts(
         {
             applicationId,
         },
-        texts
+        texts,
     )
 }
 
 export async function getInstallationStatus(applicationId: string) {
     const client = await getGorgiasChatProtectedApiClient()
-    const {data}: {data: InstallationStatus} =
+    const { data }: { data: InstallationStatus } =
         await client.getInstallationStatus({
             applicationId,
         })
@@ -51,17 +51,17 @@ export async function getInstallationStatus(applicationId: string) {
 }
 
 export async function getInstallationSnippet(
-    params: GetInstallationSnippetParams
+    params: GetInstallationSnippetParams,
 ) {
     const client = await getGorgiasChatProtectedApiClient()
-    const {data}: {data: GetInstallationSnippetResponse} =
+    const { data }: { data: GetInstallationSnippetResponse } =
         await client.getInstallationSnippet(params)
     return data
 }
 
 export async function getApplications() {
     const client = await getGorgiasChatProtectedApiClient()
-    const {data}: {data: GetApplicationsResponse} =
+    const { data }: { data: GetApplicationsResponse } =
         await client.getApplications()
     return data
 }

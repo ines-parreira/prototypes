@@ -1,28 +1,28 @@
-import {renderHook} from '@testing-library/react-hooks'
-
 import React from 'react'
-import {Provider} from 'react-redux'
 
-import {useAverageScoreTrend} from 'hooks/reporting/quality-management/satisfaction/useAverageScoreTrend'
-import {useResponseRateTrend} from 'hooks/reporting/quality-management/satisfaction/useResponseRateTrend'
-import {useSatisfactionMetrics} from 'hooks/reporting/quality-management/satisfaction/useSatisfactionMetrics'
-import {useSatisfactionScoreTrend} from 'hooks/reporting/quality-management/satisfaction/useSatisfactionScoreTrend'
-import {useSurveyScores} from 'hooks/reporting/quality-management/satisfaction/useSurveyScores'
-import {useSurveysSentTrend} from 'hooks/reporting/quality-management/satisfaction/useSurveysSentTrend'
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-import {MetricTrend} from 'hooks/reporting/useMetricTrend'
-import {TicketSatisfactionSurveyDimension} from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
-import {ReportingGranularity} from 'models/reporting/types'
-import {initialState} from 'state/stats/statsSlice'
-import {assumeMock, mockStore} from 'utils/testing'
+import { renderHook } from '@testing-library/react-hooks'
+import { Provider } from 'react-redux'
+
+import { useAverageScoreTrend } from 'hooks/reporting/quality-management/satisfaction/useAverageScoreTrend'
+import { useResponseRateTrend } from 'hooks/reporting/quality-management/satisfaction/useResponseRateTrend'
+import { useSatisfactionMetrics } from 'hooks/reporting/quality-management/satisfaction/useSatisfactionMetrics'
+import { useSatisfactionScoreTrend } from 'hooks/reporting/quality-management/satisfaction/useSatisfactionScoreTrend'
+import { useSurveyScores } from 'hooks/reporting/quality-management/satisfaction/useSurveyScores'
+import { useSurveysSentTrend } from 'hooks/reporting/quality-management/satisfaction/useSurveysSentTrend'
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { MetricTrend } from 'hooks/reporting/useMetricTrend'
+import { TicketSatisfactionSurveyDimension } from 'models/reporting/cubes/TicketSatisfactionSurveyCube'
+import { ReportingGranularity } from 'models/reporting/types'
+import { initialState } from 'state/stats/statsSlice'
+import { assumeMock, mockStore } from 'utils/testing'
 
 jest.mock(
-    'hooks/reporting/quality-management/satisfaction/useSatisfactionScoreTrend'
+    'hooks/reporting/quality-management/satisfaction/useSatisfactionScoreTrend',
 )
 const useSatisfactionScoreTrendMock = assumeMock(useSatisfactionScoreTrend)
 
 jest.mock(
-    'hooks/reporting/quality-management/satisfaction/useResponseRateTrend'
+    'hooks/reporting/quality-management/satisfaction/useResponseRateTrend',
 )
 const useResponseRateTrendMock = assumeMock(useResponseRateTrend)
 
@@ -33,7 +33,7 @@ jest.mock('hooks/reporting/support-performance/useNewStatsFilters')
 const useNewStatsFiltersMock = assumeMock(useNewStatsFilters)
 
 jest.mock(
-    'hooks/reporting/quality-management/satisfaction/useAverageScoreTrend'
+    'hooks/reporting/quality-management/satisfaction/useAverageScoreTrend',
 )
 const useAverageScoreTrendMock = assumeMock(useAverageScoreTrend)
 
@@ -57,11 +57,11 @@ describe('useSatisfactionMetrics', () => {
             value: null,
             decile: null,
             allData: [
-                {[TicketSatisfactionSurveyDimension.SurveyScore]: '1'},
-                {[TicketSatisfactionSurveyDimension.SurveyScore]: '2'},
-                {[TicketSatisfactionSurveyDimension.SurveyScore]: '3'},
-                {[TicketSatisfactionSurveyDimension.SurveyScore]: '4'},
-                {[TicketSatisfactionSurveyDimension.SurveyScore]: '5'},
+                { [TicketSatisfactionSurveyDimension.SurveyScore]: '1' },
+                { [TicketSatisfactionSurveyDimension.SurveyScore]: '2' },
+                { [TicketSatisfactionSurveyDimension.SurveyScore]: '3' },
+                { [TicketSatisfactionSurveyDimension.SurveyScore]: '4' },
+                { [TicketSatisfactionSurveyDimension.SurveyScore]: '5' },
             ],
         },
     }
@@ -83,8 +83,8 @@ describe('useSatisfactionMetrics', () => {
     })
 
     it('should return data from all hooks', () => {
-        const {result} = renderHook(() => useSatisfactionMetrics(), {
-            wrapper: ({children}) => (
+        const { result } = renderHook(() => useSatisfactionMetrics(), {
+            wrapper: ({ children }) => (
                 <Provider store={mockStore(defaultState)}>{children}</Provider>
             ),
         })
@@ -110,8 +110,8 @@ describe('useSatisfactionMetrics', () => {
         }
         useResponseRateTrendMock.mockReturnValue(loadingTrendData)
 
-        const {result} = renderHook(() => useSatisfactionMetrics(), {
-            wrapper: ({children}) => (
+        const { result } = renderHook(() => useSatisfactionMetrics(), {
+            wrapper: ({ children }) => (
                 <Provider store={mockStore(defaultState)}>{children}</Provider>
             ),
         })

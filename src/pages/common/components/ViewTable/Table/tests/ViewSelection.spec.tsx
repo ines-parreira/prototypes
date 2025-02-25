@@ -1,10 +1,11 @@
-import {render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {view} from 'fixtures/views'
+import { view } from 'fixtures/views'
 
 import ViewSelection from '../ViewSelection'
 
@@ -31,11 +32,11 @@ describe('<ViewSelection />', () => {
             render(
                 <Provider store={mockStore(state)}>
                     <ViewSelection {...minProps} />
-                </Provider>
+                </Provider>,
             )
 
             expect(screen.getByText(/on this page/).textContent).toBe(
-                '30 tickets on this page are selected. Select all 888 tickets of the "New & Open Tickets" view'
+                '30 tickets on this page are selected. Select all 888 tickets of the "New & Open Tickets" view',
             )
         })
 
@@ -43,10 +44,10 @@ describe('<ViewSelection />', () => {
             render(
                 <Provider store={mockStore(state)}>
                     <ViewSelection {...minProps} viewSelected={true} />
-                </Provider>
+                </Provider>,
             )
             expect(screen.getByText(/All the/).textContent).toBe(
-                'All the 888 tickets of "New & Open Tickets" view are selected. Select all tickets of the current page instead'
+                'All the 888 tickets of "New & Open Tickets" view are selected. Select all tickets of the current page instead',
             )
         })
 
@@ -55,7 +56,7 @@ describe('<ViewSelection />', () => {
                 <Provider
                     store={mockStore({
                         views: fromJS({
-                            active: {...view, dirty: true},
+                            active: { ...view, dirty: true },
                             counts: {
                                 [view.id]: 888,
                             },
@@ -63,11 +64,11 @@ describe('<ViewSelection />', () => {
                     })}
                 >
                     <ViewSelection {...minProps} />
-                </Provider>
+                </Provider>,
             )
 
             expect(screen.getByText(/on this page/).textContent).toBe(
-                '30 tickets on this page are selected. Select all tickets from the current view'
+                '30 tickets on this page are selected. Select all tickets from the current view',
             )
         })
 
@@ -75,11 +76,11 @@ describe('<ViewSelection />', () => {
             render(
                 <Provider store={mockStore(state)}>
                     <ViewSelection {...minProps} selectedCount={1} />
-                </Provider>
+                </Provider>,
             )
 
             expect(screen.getByText(/on this page/).textContent).toBe(
-                '1 ticket on this page is selected. Select all 888 tickets of the "New & Open Tickets" view'
+                '1 ticket on this page is selected. Select all 888 tickets of the "New & Open Tickets" view',
             )
         })
     })

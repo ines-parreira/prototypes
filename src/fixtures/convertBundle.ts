@@ -28,7 +28,7 @@ export const convertBundleActionResponse: BundleActionResponse = {
 export const installBundleMockImplementation = (
     integrationId: number | null,
     installationMethod: BundleInstallationMethod,
-    onSubmit?: (data: BundleActionResponse) => void
+    onSubmit?: (data: BundleActionResponse) => void,
 ) => {
     return {
         installBundle: (): Promise<BundleActionResponse> => {

@@ -1,13 +1,14 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
 import React from 'react'
-import {Provider} from 'react-redux'
 
-import {Language as MockLanguage} from 'constants/languages'
-import {chatIntegrationFixtures} from 'fixtures/chat'
-import {TermsAndConditionsSetting} from 'pages/convert/settings/components/TermsAndConditionsSetting'
-import {DisclaimerSettings} from 'pages/convert/settings/types'
-import {mockStore} from 'utils/testing'
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+
+import { Language as MockLanguage } from 'constants/languages'
+import { chatIntegrationFixtures } from 'fixtures/chat'
+import { TermsAndConditionsSetting } from 'pages/convert/settings/components/TermsAndConditionsSetting'
+import { DisclaimerSettings } from 'pages/convert/settings/types'
+import { mockStore } from 'utils/testing'
 
 const store = mockStore({})
 
@@ -20,15 +21,15 @@ describe('<TermsAndConditionsSetting />', () => {
             preSelectDisclaimer: false,
         },
         onDisclaimerSettingsChange: (
-            __: (state: DisclaimerSettings) => DisclaimerSettings
+            __: (state: DisclaimerSettings) => DisclaimerSettings,
         ) => {},
         onErrorChange: (__: boolean) => {},
         chatIntegration: fromJS(chatIntegrationFixtures[0]),
     }
 
     it('should render', () => {
-        const {getByText} = render(
-            <TermsAndConditionsSetting {...defaultProps} />
+        const { getByText } = render(
+            <TermsAndConditionsSetting {...defaultProps} />,
         )
         expect(getByText('Privacy Policy Disclaimer')).toBeInTheDocument()
     })
@@ -37,7 +38,7 @@ describe('<TermsAndConditionsSetting />', () => {
         const disclaimerMap: Record<string, string> = {}
         disclaimerMap[MockLanguage.EnglishGb] = 'f'.repeat(281)
         const mockOnError = jest.fn()
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <TermsAndConditionsSetting
                     {...defaultProps}
@@ -49,12 +50,12 @@ describe('<TermsAndConditionsSetting />', () => {
                     }}
                     onErrorChange={mockOnError}
                 />
-            </Provider>
+            </Provider>,
         )
         expect(
             getByText(
-                'The disclaimer should be under or equals to 280 characters.'
-            )
+                'The disclaimer should be under or equals to 280 characters.',
+            ),
         ).toBeInTheDocument()
         expect(mockOnError).toHaveBeenCalledWith(false)
     })

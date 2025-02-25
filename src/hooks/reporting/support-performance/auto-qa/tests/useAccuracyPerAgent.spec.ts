@@ -1,5 +1,4 @@
-import {renderHook} from '@testing-library/react-hooks'
-
+import { renderHook } from '@testing-library/react-hooks'
 import moment from 'moment'
 
 import {
@@ -10,11 +9,10 @@ import {
     fetchMetricPerDimension,
     useMetricPerDimension,
 } from 'hooks/reporting/useMetricPerDimension'
-import {accuracyPerAgentQueryFactory} from 'models/reporting/queryFactories/auto-qa/accuracyQueryFactory'
-
-import {StatsFilters} from 'models/stat/types'
-import {formatReportingQueryDate} from 'utils/reporting'
-import {assumeMock} from 'utils/testing'
+import { accuracyPerAgentQueryFactory } from 'models/reporting/queryFactories/auto-qa/accuracyQueryFactory'
+import { StatsFilters } from 'models/stat/types'
+import { formatReportingQueryDate } from 'utils/reporting'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/useMetricPerDimension')
 const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
@@ -35,12 +33,12 @@ describe('AccuracyPerAgent', () => {
     describe('useAccuracyPerAgent', () => {
         it('should call perDimension hook with agent id', () => {
             renderHook(() =>
-                useAccuracyPerAgent(statsFilters, timezone, undefined, agentId)
+                useAccuracyPerAgent(statsFilters, timezone, undefined, agentId),
             )
 
             expect(useMetricPerDimensionMock).toHaveBeenCalledWith(
                 accuracyPerAgentQueryFactory(statsFilters, timezone, undefined),
-                agentId
+                agentId,
             )
         })
     })
@@ -51,12 +49,12 @@ describe('AccuracyPerAgent', () => {
                 statsFilters,
                 timezone,
                 undefined,
-                agentId
+                agentId,
             )
 
             expect(fetchMetricPerDimensionMock).toHaveBeenCalledWith(
                 accuracyPerAgentQueryFactory(statsFilters, timezone, undefined),
-                agentId
+                agentId,
             )
         })
     })

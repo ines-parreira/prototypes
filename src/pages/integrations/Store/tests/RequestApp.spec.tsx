@@ -1,12 +1,12 @@
-import {fireEvent, screen, render, waitFor} from '@testing-library/react'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import * as client from 'models/integration/resources'
-import {notify} from 'state/notifications/actions'
-
-import {NotificationStatus} from 'state/notifications/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 import RequestApp from '../RequestApp'
 
@@ -22,73 +22,73 @@ describe('<RequestApp />', () => {
     })
 
     it('should render correctly', () => {
-        const {container} = render(
+        const { container } = render(
             <Provider store={mockStore()}>
                 <RequestApp />
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should focus the textarea when the modal is open', () => {
-        const {queryByText} = render(
+        const { queryByText } = render(
             <Provider store={mockStore()}>
                 <RequestApp />
-            </Provider>
+            </Provider>,
         )
 
         expect(
             queryByText(
-                /Provide any relevant details such as app name, or app category/i
-            )
+                /Provide any relevant details such as app name, or app category/i,
+            ),
         ).not.toBeInTheDocument()
-        fireEvent.click(screen.getByRole('button', {name: 'Request App'}))
+        fireEvent.click(screen.getByRole('button', { name: 'Request App' }))
 
         expect(screen.getByRole('textbox')).toHaveFocus()
     })
 
     it('should open the modal on Request App Click', () => {
-        const {queryByText} = render(
+        const { queryByText } = render(
             <Provider store={mockStore()}>
                 <RequestApp />
-            </Provider>
+            </Provider>,
         )
 
         expect(
             queryByText(
-                /Provide any relevant details such as app name, or app category/i
-            )
+                /Provide any relevant details such as app name, or app category/i,
+            ),
         ).not.toBeInTheDocument()
-        fireEvent.click(screen.getByRole('button', {name: 'Request App'}))
+        fireEvent.click(screen.getByRole('button', { name: 'Request App' }))
 
         expect(
             queryByText(
-                /Provide any relevant details such as app name, or app category/i
-            )
+                /Provide any relevant details such as app name, or app category/i,
+            ),
         ).toBeInTheDocument()
     })
 
     it('should close the modal on Cancel Click', async () => {
-        const {queryByText} = render(
+        const { queryByText } = render(
             <Provider store={mockStore()}>
                 <RequestApp />
-            </Provider>
+            </Provider>,
         )
 
         expect(
             queryByText(
-                /Provide any relevant details such as app name, or app category/i
-            )
+                /Provide any relevant details such as app name, or app category/i,
+            ),
         ).not.toBeInTheDocument()
-        fireEvent.click(screen.getByRole('button', {name: 'Request App'}))
-        fireEvent.click(screen.getByRole('button', {name: 'Cancel'}))
+        fireEvent.click(screen.getByRole('button', { name: 'Request App' }))
+        fireEvent.click(screen.getByRole('button', { name: 'Cancel' }))
 
         await waitFor(() =>
             expect(
                 queryByText(
-                    /Provide any relevant details such as app name, or app category/i
-                )
-            ).not.toBeInTheDocument()
+                    /Provide any relevant details such as app name, or app category/i,
+                ),
+            ).not.toBeInTheDocument(),
         )
     })
 
@@ -96,12 +96,12 @@ describe('<RequestApp />', () => {
         render(
             <Provider store={mockStore()}>
                 <RequestApp />
-            </Provider>
+            </Provider>,
         )
-        fireEvent.click(screen.getByRole('button', {name: 'Request App'}))
+        fireEvent.click(screen.getByRole('button', { name: 'Request App' }))
 
         expect(
-            screen.getByRole('button', {name: 'Submit Request'})
+            screen.getByRole('button', { name: 'Submit Request' }),
         ).toBeAriaDisabled()
     })
 
@@ -109,42 +109,42 @@ describe('<RequestApp />', () => {
         render(
             <Provider store={mockStore()}>
                 <RequestApp />
-            </Provider>
+            </Provider>,
         )
-        fireEvent.click(screen.getByRole('button', {name: 'Request App'}))
+        fireEvent.click(screen.getByRole('button', { name: 'Request App' }))
         fireEvent.change(screen.getByRole('textbox'), {
-            target: {value: 'test'},
+            target: { value: 'test' },
         })
 
         expect(
-            screen.getByRole('button', {name: 'Submit Request'})
+            screen.getByRole('button', { name: 'Submit Request' }),
         ).toBeAriaEnabled()
     })
 
     it('should send the request on Submit Request Click', async () => {
-        const payload = {description: 'test'}
+        const payload = { description: 'test' }
         const requestNewIntegration = jest
             .spyOn(client, 'requestNewIntegration')
             .mockReturnValue(new Promise((resolve) => resolve(payload)))
 
-        const {queryByText} = render(
+        const { queryByText } = render(
             <Provider store={mockStore()}>
                 <RequestApp />
-            </Provider>
+            </Provider>,
         )
 
         expect(
             queryByText(
-                /Provide any relevant details such as app name, or app category/i
-            )
+                /Provide any relevant details such as app name, or app category/i,
+            ),
         ).not.toBeInTheDocument()
-        fireEvent.click(screen.getByRole('button', {name: 'Request App'}))
+        fireEvent.click(screen.getByRole('button', { name: 'Request App' }))
 
         fireEvent.change(screen.getByRole('textbox'), {
-            target: {value: 'test'},
+            target: { value: 'test' },
         })
 
-        fireEvent.click(screen.getByRole('button', {name: 'Submit Request'}))
+        fireEvent.click(screen.getByRole('button', { name: 'Submit Request' }))
         expect(requestNewIntegration).toHaveBeenCalledWith(payload)
 
         await waitFor(() => {
@@ -154,36 +154,36 @@ describe('<RequestApp />', () => {
             })
             expect(
                 queryByText(
-                    /Provide any relevant details such as app name, or app category/i
-                )
+                    /Provide any relevant details such as app name, or app category/i,
+                ),
             ).not.toBeInTheDocument()
         })
     })
 
     it('should not send the request on Submit Request Click when error', async () => {
-        const payload = {description: 'test'}
+        const payload = { description: 'test' }
         const requestNewIntegration = jest
             .spyOn(client, 'requestNewIntegration')
             .mockReturnValue(new Promise((resolve, reject) => reject(payload)))
 
-        const {queryByText} = render(
+        const { queryByText } = render(
             <Provider store={mockStore()}>
                 <RequestApp />
-            </Provider>
+            </Provider>,
         )
 
         expect(
             queryByText(
-                /Provide any relevant details such as app name, or app category/i
-            )
+                /Provide any relevant details such as app name, or app category/i,
+            ),
         ).not.toBeInTheDocument()
-        fireEvent.click(screen.getByRole('button', {name: 'Request App'}))
+        fireEvent.click(screen.getByRole('button', { name: 'Request App' }))
 
         fireEvent.change(screen.getByRole('textbox'), {
-            target: {value: 'test'},
+            target: { value: 'test' },
         })
 
-        fireEvent.click(screen.getByRole('button', {name: 'Submit Request'}))
+        fireEvent.click(screen.getByRole('button', { name: 'Submit Request' }))
         expect(requestNewIntegration).toHaveBeenCalledWith(payload)
 
         await waitFor(() => {
@@ -196,8 +196,8 @@ describe('<RequestApp />', () => {
 
         expect(
             queryByText(
-                /Provide any relevant details such as app name, or app category/i
-            )
+                /Provide any relevant details such as app name, or app category/i,
+            ),
         ).toBeInTheDocument()
     })
 })

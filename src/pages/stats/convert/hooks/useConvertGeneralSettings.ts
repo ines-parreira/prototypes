@@ -1,32 +1,31 @@
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {useGetSettingsList} from 'models/convert/settings/queries'
-
-import {GorgiasChatIntegration} from 'models/integration/types'
-import {useGetOrCreateChannelConnection} from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
+import { useGetSettingsList } from 'models/convert/settings/queries'
+import { GorgiasChatIntegration } from 'models/integration/types'
+import { useGetOrCreateChannelConnection } from 'pages/convert/common/hooks/useGetOrCreateChannelConnection'
 import {
-    CaptureFormDisclaimerSettings,
     CampaignFrequencySettings,
+    CaptureFormDisclaimerSettings,
 } from 'pages/convert/settings/types'
-import {CampaignSettingType} from 'pages/stats/convert/components/CampaignTableStats/constants'
+import { CampaignSettingType } from 'pages/stats/convert/components/CampaignTableStats/constants'
 
 export const useConvertGeneralSettings = (
-    integration?: GorgiasChatIntegration
+    integration?: GorgiasChatIntegration,
 ): {
     emailDisclaimer?: CaptureFormDisclaimerSettings
     campaignFrequency?: CampaignFrequencySettings
     isLoading: boolean
 } => {
-    const {channelConnection, isLoading: isChannelConnectionLoading} =
+    const { channelConnection, isLoading: isChannelConnectionLoading } =
         useGetOrCreateChannelConnection(integration)
 
-    const {data: settings, isLoading: isSettingsLoading} = useGetSettingsList(
+    const { data: settings, isLoading: isSettingsLoading } = useGetSettingsList(
         {
             channel_connection_id: channelConnection?.id as string,
         },
         {
             enabled: !!channelConnection,
-        }
+        },
     )
 
     const data = useMemo(() => {
@@ -36,7 +35,7 @@ export const useConvertGeneralSettings = (
 
                 return accValue
             },
-            {} as Record<CampaignSettingType, any>
+            {} as Record<CampaignSettingType, any>,
         )
     }, [settings])
 

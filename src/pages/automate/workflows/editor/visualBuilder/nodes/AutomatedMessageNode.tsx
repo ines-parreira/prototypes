@@ -1,14 +1,15 @@
-import React, {memo} from 'react'
-import {NodeProps} from 'reactflow'
+import React, { memo } from 'react'
+
+import { NodeProps } from 'reactflow'
 
 import VisualBuilderActionTag from 'pages/automate/workflows/components/VisualBuilderActionTag'
 import {
     useVisualBuilderNodeProps,
     VisualBuilderNodeProps,
 } from 'pages/automate/workflows/hooks/useVisualBuilderNodeProps'
-import {workflowVariableRegex} from 'pages/automate/workflows/models/variables.model'
+import { workflowVariableRegex } from 'pages/automate/workflows/models/variables.model'
 
-import {AutomatedMessageNodeType} from '../../../models/visualBuilderGraph.types'
+import { AutomatedMessageNodeType } from '../../../models/visualBuilderGraph.types'
 import EdgeBlock from '../components/EdgeBlock'
 import NodeDeleteIcon from '../components/NodeDeleteIcon'
 import VisualBuilderNode from './VisualBuilderNode'
@@ -47,7 +48,7 @@ const AutomatedMessageNode = memo(function AutomatedMessageNode({
 })
 
 export default function AutomatedMessageNodeWrapper(
-    node: NodeProps<AutomatedMessageNodeType['data']>
+    node: NodeProps<AutomatedMessageNodeType['data']>,
 ) {
     const commonProps = useVisualBuilderNodeProps(node)
 

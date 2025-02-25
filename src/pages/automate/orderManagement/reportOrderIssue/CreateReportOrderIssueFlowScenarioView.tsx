@@ -1,7 +1,8 @@
+import React, { useMemo, useState } from 'react'
+
 import _isEqual from 'lodash/isEqual'
-import React, {useMemo, useState} from 'react'
-import {Link, useHistory, useParams} from 'react-router-dom'
-import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
+import { Link, useHistory, useParams } from 'react-router-dom'
+import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
 import {
     ReportIssueCaseReason,
@@ -9,20 +10,19 @@ import {
 } from 'models/selfServiceConfiguration/types'
 import AutomateView from 'pages/automate/common/components/AutomateView'
 import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
-
-import {ORDER_MANAGEMENT} from 'pages/automate/common/components/constants'
+import { ORDER_MANAGEMENT } from 'pages/automate/common/components/constants'
 
 import ReportOrderIssueScenarioForm from './components/ReportOrderIssueScenarioForm'
 import ReportOrderIssueScenarioFormContext, {
     ReportOrderIssueScenarioFormContextType,
 } from './components/ReportOrderIssueScenarioFormContext'
-import {DEFAULT_SCENARIO} from './constants'
+import { DEFAULT_SCENARIO } from './constants'
 import useReportOrderIssueFlowScenarios from './hooks/useReportOrderIssueFlowScenarios'
 import ReportOrderIssueFlowScenarioPreview from './ReportOrderIssueFlowScenarioPreview'
 
 const CreateReportOrderIssueFlowScenarioView = () => {
     const history = useHistory()
-    const {shopName} = useParams<{shopName: string}>()
+    const { shopName } = useParams<{ shopName: string }>()
     const {
         isCreatePending,
         storeIntegration,
@@ -50,7 +50,7 @@ const CreateReportOrderIssueFlowScenarioView = () => {
                 hasError,
                 setError: (path, hasError) => {
                     setErrors((prevErrors) => {
-                        const nextErrors = {...prevErrors}
+                        const nextErrors = { ...prevErrors }
 
                         if (hasError) {
                             nextErrors[path] = true
@@ -65,7 +65,7 @@ const CreateReportOrderIssueFlowScenarioView = () => {
                 },
                 storeIntegration,
             }),
-            [isCreatePending, errors, hasError, storeIntegration]
+            [isCreatePending, errors, hasError, storeIntegration],
         )
 
     const handleSubmit = () => {
@@ -73,7 +73,7 @@ const CreateReportOrderIssueFlowScenarioView = () => {
     }
     const handleCancel = () => {
         history.push(
-            `/app/automation/shopify/${shopName}/order-management/report-issue`
+            `/app/automation/shopify/${shopName}/order-management/report-issue`,
         )
     }
 

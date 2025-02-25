@@ -5,27 +5,27 @@ import {
 
 export const useFetchFileIngestionData = (
     storeName: string,
-    enabled: boolean
+    enabled: boolean,
 ) => {
-    const {data: snippetHelpCenterData, isLoading: isLoadingHelpCenter} =
+    const { data: snippetHelpCenterData, isLoading: isLoadingHelpCenter } =
         useGetHelpCenterList(
             {
                 type: 'snippet',
                 per_page: 1,
                 shop_name: storeName,
             },
-            {enabled}
+            { enabled },
         )
 
     const snippetHelpCenterId = snippetHelpCenterData?.data?.data[0]?.id
 
-    const {data, isLoading} = useGetFileIngestion(
+    const { data, isLoading } = useGetFileIngestion(
         {
             help_center_id: snippetHelpCenterId!,
         },
         {
             enabled: !!snippetHelpCenterId,
-        }
+        },
     )
 
     return {

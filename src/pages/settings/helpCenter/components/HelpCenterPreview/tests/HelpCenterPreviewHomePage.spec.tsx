@@ -1,12 +1,13 @@
-import {render, screen} from '@testing-library/react'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {HelpCenterLayout} from 'pages/settings/helpCenter/types/layout.enum'
+import { render, screen } from '@testing-library/react'
+
+import { HelpCenterLayout } from 'pages/settings/helpCenter/types/layout.enum'
 
 import HelpCenterPreviewHomePage from '../HelpCenterPreviewHomePage'
 
 const renderComponent = (
-    props: ComponentProps<typeof HelpCenterPreviewHomePage>
+    props: ComponentProps<typeof HelpCenterPreviewHomePage>,
 ) => {
     render(<HelpCenterPreviewHomePage {...props} />)
 }

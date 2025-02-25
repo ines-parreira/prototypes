@@ -1,14 +1,14 @@
-import {render, screen, fireEvent, waitFor} from '@testing-library/react'
 import React from 'react'
 
-import {logEvent} from 'common/segment'
-import {useSuggestCampaignCopy} from 'models/convert/campaign/queries'
-import {DEFAULT_CAMPAIGN_NAME} from 'pages/convert/campaigns/constants/labels'
-import {Campaign} from 'pages/convert/campaigns/types/Campaign'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 
-import {assumeMock} from 'utils/testing'
+import { logEvent } from 'common/segment'
+import { useSuggestCampaignCopy } from 'models/convert/campaign/queries'
+import { DEFAULT_CAMPAIGN_NAME } from 'pages/convert/campaigns/constants/labels'
+import { Campaign } from 'pages/convert/campaigns/types/Campaign'
+import { assumeMock } from 'utils/testing'
 
-import {AICopyAssistant} from '../AICopyAssistant'
+import { AICopyAssistant } from '../AICopyAssistant'
 
 jest.mock('models/convert/campaign/queries')
 jest.mock('common/segment', () => ({
@@ -53,7 +53,7 @@ describe('AICopyAssistant', () => {
         render(<AICopyAssistant {...defaultProps} />)
 
         expect(
-            screen.getByText('Uplift your message with AI Copy Assistant')
+            screen.getByText('Uplift your message with AI Copy Assistant'),
         ).toBeInTheDocument()
     })
 
@@ -67,7 +67,7 @@ describe('AICopyAssistant', () => {
 
     it('should display suggestions when API call is successful', async () => {
         mockGenerateSuggestions.mockResolvedValue({
-            data: {suggestions: ['Suggestion 1', 'Suggestion 2']},
+            data: { suggestions: ['Suggestion 1', 'Suggestion 2'] },
         })
         render(<AICopyAssistant {...defaultProps} />)
 
@@ -86,7 +86,7 @@ describe('AICopyAssistant', () => {
 
         await waitFor(() => {
             expect(
-                screen.getByText('Uplift your message with AI Copy Assistant')
+                screen.getByText('Uplift your message with AI Copy Assistant'),
             ).toBeInTheDocument()
             expect(screen.getByText('error')).toBeInTheDocument()
         })
@@ -94,7 +94,7 @@ describe('AICopyAssistant', () => {
 
     it('should call onApply when Apply button is clicked', async () => {
         mockGenerateSuggestions.mockResolvedValue({
-            data: {suggestions: ['Suggestion 1']},
+            data: { suggestions: ['Suggestion 1'] },
         })
         render(<AICopyAssistant {...defaultProps} />)
 
@@ -113,7 +113,7 @@ describe('AICopyAssistant', () => {
                         title: defaultProps.campaign.name,
                     }),
                     suggestion: 'Suggestion 1',
-                }
+                },
             )
         })
     })
@@ -123,7 +123,7 @@ describe('AICopyAssistant', () => {
             <AICopyAssistant
                 {...defaultProps}
                 shouldGenerateInitialSuggestion={true}
-            />
+            />,
         )
         await waitFor(() => {
             expect(mockGenerateSuggestions).toHaveBeenCalled()

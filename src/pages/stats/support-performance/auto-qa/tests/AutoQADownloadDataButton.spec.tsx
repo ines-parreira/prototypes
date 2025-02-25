@@ -1,13 +1,13 @@
-import {render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-
 import React from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
-import {AutoQADownloadDataButton} from 'pages/stats/support-performance/auto-qa/AutoQADownloadDataButton'
-import {useAutoQAReportData} from 'services/reporting/autoQAReportingService'
-import {saveZippedFiles} from 'utils/file'
-import {assumeMock} from 'utils/testing'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+import { logEvent, SegmentEvent } from 'common/segment'
+import { AutoQADownloadDataButton } from 'pages/stats/support-performance/auto-qa/AutoQADownloadDataButton'
+import { useAutoQAReportData } from 'services/reporting/autoQAReportingService'
+import { saveZippedFiles } from 'utils/file'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('services/reporting/autoQAReportingService')
 const useAutoQAReportDataMock = assumeMock(useAutoQAReportData)
@@ -21,7 +21,7 @@ const logEventMock = assumeMock(logEvent)
 describe('ChannelsDownloadDataButton', () => {
     const isLoading = false
     const fileName = 'fileName'
-    const files = {[fileName]: 'someReportData'}
+    const files = { [fileName]: 'someReportData' }
 
     beforeEach(() => {
         useAutoQAReportDataMock.mockReturnValue({
@@ -40,7 +40,7 @@ describe('ChannelsDownloadDataButton', () => {
             SegmentEvent.StatDownloadClicked,
             expect.objectContaining({
                 name: 'all-metrics',
-            })
+            }),
         )
     })
 })

@@ -1,28 +1,27 @@
-import {render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
-
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {TicketChannel} from 'business/types/ticket'
-import {agents} from 'fixtures/agents'
-import {integrationsState} from 'fixtures/integrations'
-import {StatsFiltersWithLogicalOperator} from 'models/stat/types'
-import {formatMetricValue} from 'pages/stats/common/utils'
-import {AgentsColumnConfig} from 'pages/stats/support-performance/agents/AgentsTableConfig'
+import { TicketChannel } from 'business/types/ticket'
+import { agents } from 'fixtures/agents'
+import { integrationsState } from 'fixtures/integrations'
+import { StatsFiltersWithLogicalOperator } from 'models/stat/types'
+import { formatMetricValue } from 'pages/stats/common/utils'
+import { AgentsColumnConfig } from 'pages/stats/support-performance/agents/AgentsTableConfig'
 import {
     AGENT_SUMMARY_CELL_LABEL,
     AgentsTableSummaryCell,
 } from 'pages/stats/support-performance/agents/AgentsTableSummaryCell'
-
-import {fromLegacyStatsFilters} from 'state/stats/utils'
-import {RootState, StoreDispatch} from 'state/types'
-import {initialState as agentPerformanceInitialState} from 'state/ui/stats/agentPerformanceSlice'
-import {AGENT_PERFORMANCE_SLICE_NAME} from 'state/ui/stats/constants'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
-import {AgentsTableColumn} from 'state/ui/stats/types'
+import { fromLegacyStatsFilters } from 'state/stats/utils'
+import { RootState, StoreDispatch } from 'state/types'
+import { initialState as agentPerformanceInitialState } from 'state/ui/stats/agentPerformanceSlice'
+import { AGENT_PERFORMANCE_SLICE_NAME } from 'state/ui/stats/constants'
+import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
+import { AgentsTableColumn } from 'state/ui/stats/types'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -60,7 +59,7 @@ describe('<AgentsTableSummaryCell', () => {
     const metricQuery = () => ({
         isFetching: false,
         isError: false,
-        data: {value: metricValue},
+        data: { value: metricValue },
     })
 
     it('should render the table summary cel', () => {
@@ -75,7 +74,7 @@ describe('<AgentsTableSummaryCell', () => {
                     }}
                     agentsLength={agents.length}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(screen.getByText(AGENT_SUMMARY_CELL_LABEL)).toBeInTheDocument()
@@ -99,11 +98,11 @@ describe('<AgentsTableSummaryCell', () => {
                     }}
                     agentsLength={agents.length}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            document.querySelector('.react-loading-skeleton')
+            document.querySelector('.react-loading-skeleton'),
         ).toBeInTheDocument()
     })
 
@@ -121,16 +120,16 @@ describe('<AgentsTableSummaryCell', () => {
                     }}
                     agentsLength={agents.length}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(
             screen.getByText(
                 formatMetricValue(
                     metricValue,
-                    AgentsColumnConfig[simpleMetric].format
-                )
-            )
+                    AgentsColumnConfig[simpleMetric].format,
+                ),
+            ),
         )
     })
 
@@ -140,7 +139,7 @@ describe('<AgentsTableSummaryCell', () => {
         const metricQuery = () => ({
             isFetching: false,
             isError: false,
-            data: {value: metricValue},
+            data: { value: metricValue },
         })
 
         render(
@@ -154,16 +153,16 @@ describe('<AgentsTableSummaryCell', () => {
                     }}
                     agentsLength={agents.length}
                 />
-            </Provider>
+            </Provider>,
         )
 
         expect(
             screen.getByText(
                 formatMetricValue(
                     metricValue / agents.length,
-                    AgentsColumnConfig[simpleMetric].format
-                )
-            )
+                    AgentsColumnConfig[simpleMetric].format,
+                ),
+            ),
         )
     })
 })

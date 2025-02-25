@@ -1,90 +1,90 @@
 import {
+    MoneyShopifyMetafield,
     RatingShopifyMetafield,
     VolumeShopifyMetafield,
     WeightShopifyMetafield,
-    MoneyShopifyMetafield,
 } from '@gorgias/api-queries'
 import {
     BooleanShopifyMetafield,
+    CollectionReferenceListShopifyMetafield,
     CollectionReferenceShopifyMetafield,
+    ColorListShopifyMetafield,
     ColorShopifyMetafield,
+    DateListShopifyMetafield,
     DateShopifyMetafield,
+    DateTimeListShopifyMetafield,
     DateTimeShopifyMetafield,
+    DimensionListShopifyMetafield,
+    DimensionShopifyMetafield,
+    FileReferenceListShopifyMetafield,
     FileReferenceShopifyMetafield,
     JsonShopifyMetafield,
+    MetaobjectReferenceListShopifyMetafield,
     MetaobjectReferenceShopifyMetafield,
+    MixedReferenceListShopifyMetafield,
     MixedReferenceShopifyMetafield,
     MultiLineTextFieldShopifyMetafield,
-    PageReferenceShopifyMetafield,
-    ProductReferenceShopifyMetafield,
+    NumberDecimalListShopifyMetafield,
     NumberDecimalShopifyMetafield,
+    NumberIntegerListShopifyMetafield,
     NumberIntegerShopifyMetafield,
+    PageReferenceListShopifyMetafield,
+    PageReferenceShopifyMetafield,
+    ProductReferenceListShopifyMetafield,
+    ProductReferenceShopifyMetafield,
+    RatingListShopifyMetafield,
     RichTextShopifyMetafield,
     ShopifyMetafield,
-    SingleLineTextFieldShopifyMetafield,
-    UrlShopifyMetafield,
-    VariantReferenceShopifyMetafield,
-    DimensionShopifyMetafield,
     SingleLineTextFieldListShopifyMetafield,
-    VariantReferenceListShopifyMetafield,
-    FileReferenceListShopifyMetafield,
-    MetaobjectReferenceListShopifyMetafield,
-    MixedReferenceListShopifyMetafield,
-    NumberDecimalListShopifyMetafield,
-    NumberIntegerListShopifyMetafield,
-    DateListShopifyMetafield,
-    DateTimeListShopifyMetafield,
-    ProductReferenceListShopifyMetafield,
-    CollectionReferenceListShopifyMetafield,
-    PageReferenceListShopifyMetafield,
+    SingleLineTextFieldShopifyMetafield,
     UrlListShopifyMetafield,
-    ColorListShopifyMetafield,
-    WeightListShopifyMetafield,
+    UrlShopifyMetafield,
+    VariantReferenceListShopifyMetafield,
+    VariantReferenceShopifyMetafield,
     VolumeListShopifyMetafield,
-    DimensionListShopifyMetafield,
-    RatingListShopifyMetafield,
+    WeightListShopifyMetafield,
 } from '@gorgias/api-types'
 
 import {
-    Image,
-    Variant,
-    Product,
-    PriceSet,
-    Customer,
-    Order,
     Address,
-    LineItem,
-    DraftOrder,
-    CalculatedEditOrder,
     AppliedDiscount,
-    DraftOrderInvoice,
-    TaxLine,
+    CalculatedEditOrder,
+    CancelOrderPayload,
+    CancelReason,
+    Customer,
+    CustomerState,
     DiscountAllocation,
+    DiscountAllocationMethod,
     DiscountApplication,
+    DiscountApplicationType,
+    DiscountTargetSelection,
+    DiscountTargetType,
+    DiscountType,
+    DraftOrder,
+    DraftOrderInvoice,
+    DraftStatus,
+    FinancialStatus,
+    Image,
+    InventoryManagement,
+    InventoryPolicy,
+    LineItem,
+    Order,
+    OrderLineItem,
+    PriceSet,
+    Product,
     Refund,
     RefundLineItem,
     RefundOrderPayload,
-    CancelOrderPayload,
-    CustomerState,
-    OrderLineItem,
-    FinancialStatus,
-    DraftStatus,
-    DiscountApplicationType,
-    DiscountTargetType,
-    DiscountTargetSelection,
-    DiscountAllocationMethod,
-    DiscountType,
     RestockType,
-    CancelReason,
-    TransactionKind,
     ShippingLine,
-    InventoryManagement,
-    InventoryPolicy,
+    TaxLine,
+    TransactionKind,
+    Variant,
 } from '../constants/integrations/types/shopify'
 import {
     IntegrationDataItem,
-    IntegrationType,
     IntegrationDataItemType,
+    IntegrationType,
 } from '../models/integration/types'
 
 export const shopifyImageFixture = (variant_ids: Array<number>): Image => ({
@@ -192,7 +192,7 @@ export const shopifyCustomerFixture = () =>
 
 export const shopifyOrderFixture = ({
     shippingLines = [],
-}: {shippingLines?: Partial<ShippingLine>[]} = {}): Order =>
+}: { shippingLines?: Partial<ShippingLine>[] } = {}): Order =>
     ({
         id: 1894175539223,
         name: '#1684',
@@ -240,7 +240,7 @@ export const shopifyOrderFixture = ({
                 rate: 0.2,
                 price: '1.00',
                 title: 'TVA',
-                price_set: shopifyPriceSetFixture({amount: '1.0'}),
+                price_set: shopifyPriceSetFixture({ amount: '1.0' }),
             },
         ],
         total_tax: '1.00',
@@ -259,13 +259,13 @@ export const shopifyOrderFixture = ({
                 taxable: true,
                 quantity: 1,
                 gift_card: false,
-                price_set: shopifyPriceSetFixture({amount: '1.0'}),
+                price_set: shopifyPriceSetFixture({ amount: '1.0' }),
                 tax_lines: [
                     {
                         rate: 0.2,
                         price: '0.20',
                         title: 'TVA',
-                        price_set: shopifyPriceSetFixture({amount: '0.2'}),
+                        price_set: shopifyPriceSetFixture({ amount: '0.2' }),
                     },
                 ],
                 product_id: 8345093387,
@@ -276,7 +276,7 @@ export const shopifyOrderFixture = ({
                 total_discount: '0.00',
                 requires_shipping: true,
                 fulfillment_status: null,
-                total_discount_set: shopifyPriceSetFixture({amount: '0.0'}),
+                total_discount_set: shopifyPriceSetFixture({ amount: '0.0' }),
                 fulfillment_service: 'manual',
                 admin_graphql_api_id: 'gid://shopify/LineItem/4193100136471',
                 discount_allocations: [],
@@ -294,19 +294,19 @@ export const shopifyOrderFixture = ({
                 taxable: true,
                 quantity: 4,
                 gift_card: false,
-                price_set: shopifyPriceSetFixture({amount: '1.0'}),
+                price_set: shopifyPriceSetFixture({ amount: '1.0' }),
                 tax_lines: [
                     {
                         rate: 0.2,
                         price: '0.60',
                         title: 'TVA',
-                        price_set: shopifyPriceSetFixture({amount: '0.6'}),
+                        price_set: shopifyPriceSetFixture({ amount: '0.6' }),
                     },
                     {
                         rate: 0.2,
                         price: '0.20',
                         title: 'TVA',
-                        price_set: shopifyPriceSetFixture({amount: '0.2'}),
+                        price_set: shopifyPriceSetFixture({ amount: '0.2' }),
                     },
                 ],
                 product_id: 8345093387,
@@ -317,7 +317,7 @@ export const shopifyOrderFixture = ({
                 total_discount: '0.00',
                 requires_shipping: true,
                 fulfillment_status: null,
-                total_discount_set: shopifyPriceSetFixture({amount: '0.0'}),
+                total_discount_set: shopifyPriceSetFixture({ amount: '0.0' }),
                 fulfillment_service: 'manual',
                 admin_graphql_api_id: 'gid://shopify/LineItem/4193100169239',
                 discount_allocations: [],
@@ -366,7 +366,7 @@ export const shopifyOrderFixture = ({
         customer_locale: null,
         note_attributes: [],
         total_discounts: '0.00',
-        total_price_set: shopifyPriceSetFixture({amount: '6.00'}),
+        total_price_set: shopifyPriceSetFixture({ amount: '6.00' }),
         total_price_usd: '6.00',
         financial_status: FinancialStatus.PartiallyPaid,
         landing_site_ref: null,
@@ -391,17 +391,17 @@ export const shopifyOrderFixture = ({
         },
         source_identifier: null,
         fulfillment_status: null,
-        subtotal_price_set: shopifyPriceSetFixture({amount: '5.00'}),
+        subtotal_price_set: shopifyPriceSetFixture({ amount: '5.00' }),
         total_tip_received: '0.0',
-        total_discounts_set: shopifyPriceSetFixture({amount: '0.00'}),
+        total_discounts_set: shopifyPriceSetFixture({ amount: '0.00' }),
         admin_graphql_api_id: 'gid://shopify/Order/1894175539223',
         presentment_currency: 'USD',
         discount_applications: [],
         payment_gateway_names: ['manual'],
         total_line_items_price: '5.00',
         buyer_accepts_marketing: false,
-        total_shipping_price_set: shopifyPriceSetFixture({amount: '0.00'}),
-        total_line_items_price_set: shopifyPriceSetFixture({amount: '5.00'}),
+        total_shipping_price_set: shopifyPriceSetFixture({ amount: '0.00' }),
+        total_line_items_price_set: shopifyPriceSetFixture({ amount: '5.00' }),
     }) as Order
 
 export const shopifyMultiCurrencyOrderFixture = (): Order =>
@@ -1082,7 +1082,7 @@ export const shopifyAppliedDiscountFixture = ({
         value_type: valueType,
     }) as unknown as AppliedDiscount
 
-export const shopifyShippingLineFixture = ({price = '12.00'} = {}) => ({
+export const shopifyShippingLineFixture = ({ price = '12.00' } = {}) => ({
     custom: false,
     handle: 'shopify-Standard%20Shipping-10.00',
     price,
@@ -1099,15 +1099,15 @@ export const shopifyCalculateEditOrderFixture = () => ({
                 },
             ],
         },
-        subtotalPriceSet: {presentmentMoney: {amount: '140.0'}},
+        subtotalPriceSet: { presentmentMoney: { amount: '140.0' } },
         taxLines: [
-            {priceSet: {presentmentMoney: {amount: '1.93'}}},
-            {priceSet: {presentmentMoney: {amount: '10.15'}}},
+            { priceSet: { presentmentMoney: { amount: '1.93' } } },
+            { priceSet: { presentmentMoney: { amount: '10.15' } } },
         ],
-        totalOutstandingSet: {presentmentMoney: {amount: '152.08'}},
-        totalPriceSet: {presentmentMoney: {amount: '152.08'}},
+        totalOutstandingSet: { presentmentMoney: { amount: '152.08' } },
+        totalPriceSet: { presentmentMoney: { amount: '152.08' } },
     },
-    calculatedLineItem: {id: 'okok'},
+    calculatedLineItem: { id: 'okok' },
 })
 
 export const shopifyCalculatedEditOrderFixture = (): CalculatedEditOrder => ({
@@ -1189,10 +1189,10 @@ export const shopifyRefundLineItemFixture = (): RefundLineItem => ({
 export const shopifyCancelOrderPayloadFixture = (): CancelOrderPayload => ({
     reason: CancelReason.Customer,
     email: true,
-    refund: shopifyRefundOrderPayloadFixture({notify: false}),
+    refund: shopifyRefundOrderPayloadFixture({ notify: false }),
 })
 
-export const shopifyRefundOrderPayloadFixture = ({notify = true} = {}) =>
+export const shopifyRefundOrderPayloadFixture = ({ notify = true } = {}) =>
     ({
         currency: 'USD',
         restock: true,
@@ -1209,13 +1209,13 @@ export const shopifyRefundOrderPayloadFixture = ({notify = true} = {}) =>
             amount: '0.00',
         },
         transactions: [
-            {gateway: 'bogus', amount: '1.00', maximum_refundable: '1.20'},
+            { gateway: 'bogus', amount: '1.00', maximum_refundable: '1.20' },
         ],
     }) as unknown as RefundOrderPayload
 
 export const shopifySuggestedRefundFixture = ({
     locationId = 123,
-}: {locationId?: Maybe<number>} = {}) =>
+}: { locationId?: Maybe<number> } = {}) =>
     ({
         shipping: {
             amount: '0.00',
@@ -1736,7 +1736,7 @@ export const shopifyNumberInteger = (): NumberIntegerShopifyMetafield => ({
 export const shopifyJson = (): JsonShopifyMetafield => ({
     namespace: 'custom',
     key: 'test_json',
-    value: {foo: 'bar'},
+    value: { foo: 'bar' },
     type: 'json',
 })
 
@@ -1928,35 +1928,35 @@ export const shopifyRichTextField = (): RichTextShopifyMetafield => ({
 export const shopifyDimension = (): DimensionShopifyMetafield => ({
     namespace: 'custom',
     key: 'test_json',
-    value: {value: '123', unit: 'cm'},
+    value: { value: '123', unit: 'cm' },
     type: 'dimension',
 })
 
 export const shopifyWeight = (): WeightShopifyMetafield => ({
     namespace: 'custom',
     key: 'test_json',
-    value: {value: '123', unit: 'oz'},
+    value: { value: '123', unit: 'oz' },
     type: 'weight',
 })
 
 export const shopifyVolume = (): VolumeShopifyMetafield => ({
     namespace: 'custom',
     key: 'test_json',
-    value: {value: '123', unit: 'us_fl_oz'},
+    value: { value: '123', unit: 'us_fl_oz' },
     type: 'volume',
 })
 
 export const shopifyRating = (): RatingShopifyMetafield => ({
     namespace: 'custom',
     key: 'test_json',
-    value: {value: '4.5', scale_min: '0.5', scale_max: '5.0'},
+    value: { value: '4.5', scale_min: '0.5', scale_max: '5.0' },
     type: 'rating',
 })
 
 export const shopifyMoney = (): MoneyShopifyMetafield => ({
     namespace: 'custom',
     key: 'test_json',
-    value: {amount: '123', currency_code: 'USD'},
+    value: { amount: '123', currency_code: 'USD' },
     type: 'money',
 })
 

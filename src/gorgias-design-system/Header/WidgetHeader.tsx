@@ -1,7 +1,8 @@
-import styled from '@emotion/styled'
-import React, {HTMLAttributes} from 'react'
+import React, { HTMLAttributes } from 'react'
 
-import {gorgiasColors} from 'gorgias-design-system/styles'
+import styled from '@emotion/styled'
+
+import { gorgiasColors } from 'gorgias-design-system/styles'
 
 export interface WidgetHeaderProps {
     /**
@@ -36,14 +37,14 @@ const StyledWidgetHeaderWrapper = styled.div<{
     variant: WidgetHeaderVariant
 }>`
     display: block;
-    color: ${({variant}) =>
+    color: ${({ variant }) =>
         variant === 'light' ? gorgiasColors.white : gorgiasColors.dark};
     top: 0;
     position: sticky;
     z-index: 2;
 
     svg .withFill {
-        fill: ${({variant}) =>
+        fill: ${({ variant }) =>
             variant === 'light' ? gorgiasColors.white : gorgiasColors.dark};
     }
 `
@@ -57,21 +58,21 @@ const SlideWrapper = styled.div`
     margin-bottom: 8px;
 `
 
-const CursorIcon = styled.div<{variant: WidgetHeaderVariant}>`
+const CursorIcon = styled.div<{ variant: WidgetHeaderVariant }>`
     height: 4px;
     width: 40px;
-    background: ${({variant}) =>
+    background: ${({ variant }) =>
         variant === 'light' ? gorgiasColors.white : gorgiasColors.dark};
     opacity: 0.5;
     border-radius: 10px;
 `
 
-const StyledWidgetHeader = styled.div<{isExpandable?: boolean}>`
+const StyledWidgetHeader = styled.div<{ isExpandable?: boolean }>`
     display: flex;
     align-items: center;
     flex-direction: row;
 
-    ${({isExpandable}) =>
+    ${({ isExpandable }) =>
         isExpandable
             ? ' padding: 12px 16px 12px 32px;'
             : 'padding: 32px 16px 12px 32px;'}
@@ -93,7 +94,7 @@ const StyledTrailIcons = styled.div`
 const StyledMessage = styled.div<{
     variant: WidgetHeaderVariant
 }>`
-    color: ${({variant}) =>
+    color: ${({ variant }) =>
         variant === 'light' ? gorgiasColors.white : gorgiasColors.dark};
     padding: 8px 32px 20px 32px;
     font-size: 20px;
@@ -122,7 +123,7 @@ const StyledWidgetHeaderImage = styled.img`
  */
 const WidgetHeader: React.FC<
     HTMLAttributes<HTMLDivElement> & WidgetHeaderProps
-> = ({...props}) => {
+> = ({ ...props }) => {
     const {
         headerPictureUrl,
         isExpandable,

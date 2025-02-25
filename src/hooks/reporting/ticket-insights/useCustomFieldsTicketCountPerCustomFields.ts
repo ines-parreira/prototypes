@@ -1,8 +1,9 @@
-import _zip from 'lodash/zip'
-import {useMemo} from 'react'
+import { useMemo } from 'react'
 
-import {useNewStatsFilters} from 'hooks/reporting/support-performance/useNewStatsFilters'
-import {useCustomFieldsTicketCountTimeSeries} from 'hooks/reporting/timeSeries'
+import _zip from 'lodash/zip'
+
+import { useNewStatsFilters } from 'hooks/reporting/support-performance/useNewStatsFilters'
+import { useCustomFieldsTicketCountTimeSeries } from 'hooks/reporting/timeSeries'
 import {
     getPeriodDateTimes,
     TimeSeriesDataItem,
@@ -19,20 +20,19 @@ import {
     TicketCustomFieldsDimension,
     TicketCustomFieldsMeasure,
 } from 'models/reporting/cubes/TicketCustomFieldsCube'
-import {WithChildren} from 'pages/common/components/table/TableBodyRowExpandable'
-
+import { WithChildren } from 'pages/common/components/table/TableBodyRowExpandable'
 import {
     getCustomFieldsOrder,
     TicketInsightsOrder,
 } from 'state/ui/stats/ticketInsightsSlice'
-import {getFilterDateRange} from 'utils/reporting'
-import {notUndefined} from 'utils/types'
+import { getFilterDateRange } from 'utils/reporting'
+import { notUndefined } from 'utils/types'
 
 const breakdownTimeSeries = (
     timeSeriesData: Record<string, TimeSeriesDataItem[][]>,
     order: TicketInsightsOrder,
     breakdownField: TicketCustomFieldsDimension.TicketCustomFieldsValueString,
-    valueField: TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount
+    valueField: TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
 ): WithChildren<TicketCustomFieldsTicketCountTimeSeriesData>[] => {
     const timeSeriesObjects = Object.keys(timeSeriesData).map((key) => ({
         [breakdownField]: key,
@@ -44,12 +44,12 @@ const breakdownTimeSeries = (
         timeSeriesObjects,
         order,
         breakdownField,
-        valueField
+        valueField,
     )
 }
 
 export const useCustomFieldsTicketCountPerCustomFields = (
-    selectedCustomFieldId: number
+    selectedCustomFieldId: number,
 ): {
     data: WithChildren<TicketCustomFieldsTicketCountTimeSeriesDataWithPercentageAndDecile>[]
     dateTimes: string[]
@@ -59,18 +59,19 @@ export const useCustomFieldsTicketCountPerCustomFields = (
     const breakdownField = BREAKDOWN_FIELD
     const valueField = VALUE_FIELD
 
-    const {cleanStatsFilters, userTimezone, granularity} = useNewStatsFilters()
+    const { cleanStatsFilters, userTimezone, granularity } =
+        useNewStatsFilters()
     const order = useAppSelector(getCustomFieldsOrder)
     const dateTimes = getPeriodDateTimes(
         getFilterDateRange(cleanStatsFilters.period),
-        granularity
+        granularity,
     )
-    const {data: timeSeriesData, isLoading} =
+    const { data: timeSeriesData, isLoading } =
         useCustomFieldsTicketCountTimeSeries(
             cleanStatsFilters,
             userTimezone,
             granularity,
-            String(selectedCustomFieldId)
+            String(selectedCustomFieldId),
         )
 
     const data = useMemo(
@@ -81,12 +82,12 @@ export const useCustomFieldsTicketCountPerCustomFields = (
                           timeSeriesData,
                           order,
                           breakdownField,
-                          valueField
+                          valueField,
                       ),
-                      valueField
+                      valueField,
                   )
                 : [],
-        [timeSeriesData, order, breakdownField, valueField]
+        [timeSeriesData, order, breakdownField, valueField],
     )
 
     return {
@@ -102,13 +103,13 @@ export function enrichWithPercentagesAndDeciles(
     valueField: TicketCustomFieldsMeasure.TicketCustomFieldsTicketCount,
     totalsSum?: number,
     topLevelTimeSeriesSums?: TimeSeriesDataItem[],
-    totalsMax?: number
+    totalsMax?: number,
 ): WithChildren<TicketCustomFieldsTicketCountTimeSeriesDataWithPercentageAndDecile>[] {
     const currentLevelTotalSum =
         totalsSum ||
         data.reduce(
             (acc, currentValue) => acc + (currentValue[valueField] || 0),
-            0
+            0,
         )
     const columnsSum = _zip(...data.map((item) => item.timeSeries))
     const sums =
@@ -123,8 +124,8 @@ export function enrichWithPercentagesAndDeciles(
         totalsMax ||
         Math.max(
             ...data.map((item) =>
-                Math.max(...item.timeSeries.map((item) => item.value))
-            )
+                Math.max(...item.timeSeries.map((item) => item.value)),
+            ),
         )
 
     return data.map((item) => ({
@@ -146,7 +147,7 @@ export function enrichWithPercentagesAndDeciles(
             valueField,
             currentLevelTotalSum,
             sums,
-            currentLevelMax
+            currentLevelMax,
         ),
     }))
 }

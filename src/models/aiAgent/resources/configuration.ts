@@ -1,9 +1,8 @@
 import axios from 'axios'
 
-import {HelpCenter} from 'models/helpCenter/types'
+import { HelpCenter } from 'models/helpCenter/types'
 
-import {isProduction, isStaging} from '../../../utils/environment'
-
+import { isProduction, isStaging } from '../../../utils/environment'
 import gorgiasAppsAuthInterceptor from '../../../utils/gorgiasAppsAuth'
 import {
     AccountConfiguration,
@@ -47,7 +46,7 @@ apiClient.interceptors.request.use(gorgiasAppsAuthInterceptor)
 
 export const getAccountConfiguration = async (accountDomain: string) => {
     return await apiClient.get<AccountConfigurationResponse>(
-        `/config/accounts/${accountDomain}/configuration`
+        `/config/accounts/${accountDomain}/configuration`,
     )
 }
 
@@ -55,24 +54,24 @@ export const createAccountConfiguration = async (
     accountConfiguration: AccountConfiguration & {
         storeNames: string[]
         helpdeskOAuth: null
-    }
+    },
 ) => {
     const accountDomain = accountConfiguration.gorgiasDomain
 
     return await apiClient.post<AccountConfigurationResponse>(
         `/config/accounts/${accountDomain}/configuration`,
-        accountConfiguration
+        accountConfiguration,
     )
 }
 
 export async function upsertAccountConfiguration(
-    accountConfiguration: AccountConfiguration
+    accountConfiguration: AccountConfiguration,
 ) {
     const accountDomain = accountConfiguration.gorgiasDomain
 
     return await apiClient.put<AccountConfigurationResponse>(
         `/config/accounts/${accountDomain}/configuration`,
-        accountConfiguration
+        accountConfiguration,
     )
 }
 
@@ -81,46 +80,48 @@ export async function upsertAccountConfiguration(
  */
 
 export const getStoreConfiguration = async (
-    params: GetStoreConfigurationParams
+    params: GetStoreConfigurationParams,
 ) => {
-    const {accountDomain, storeName, withWizard} = params
-    const queryParams = new URLSearchParams({with_wizard: String(!!withWizard)})
+    const { accountDomain, storeName, withWizard } = params
+    const queryParams = new URLSearchParams({
+        with_wizard: String(!!withWizard),
+    })
 
     return await apiClient.get<StoreConfigurationResponse>(
-        `/config/accounts/${accountDomain}/stores/${storeName}/configuration?${queryParams.toString()}`
+        `/config/accounts/${accountDomain}/stores/${storeName}/configuration?${queryParams.toString()}`,
     )
 }
 
 export const createStoreConfiguration = async (
     accountDomain: string,
-    storeConfiguration: CreateStoreConfigurationPayload
+    storeConfiguration: CreateStoreConfigurationPayload,
 ) => {
     const storeName = storeConfiguration.storeName
 
     return await apiClient.post<StoreConfigurationResponse>(
         `/config/accounts/${accountDomain}/stores/${storeName}/configuration`,
-        storeConfiguration
+        storeConfiguration,
     )
 }
 
 export const upsertStoreConfiguration = async (
     accountDomain: string,
-    storeConfiguration: UpsertStoreConfigurationPayload
+    storeConfiguration: UpsertStoreConfigurationPayload,
 ) => {
     const storeName = storeConfiguration.storeName
 
     return await apiClient.put<StoreConfigurationResponse>(
         `/config/accounts/${accountDomain}/stores/${storeName}/configuration`,
-        storeConfiguration
+        storeConfiguration,
     )
 }
 
 export const createStoreSnippetHelpCenter = async (
     accountDomain: string,
-    storeName: string
+    storeName: string,
 ) => {
     return await apiClient.post<HelpCenter | null>(
-        `/config/accounts/${accountDomain}/stores/${storeName}/snippet`
+        `/config/accounts/${accountDomain}/stores/${storeName}/snippet`,
     )
 }
 
@@ -129,19 +130,19 @@ export const createStoreSnippetHelpCenter = async (
  */
 export const getWelcomePageAcknowledged = async (
     accountDomain: string,
-    storeName: string
+    storeName: string,
 ) => {
     return await apiClient.get<WelcomePageAcknowledgedResponse>(
-        `/config/accounts/${accountDomain}/stores/${storeName}/welcome-page`
+        `/config/accounts/${accountDomain}/stores/${storeName}/welcome-page`,
     )
 }
 
 export const createWelcomePageAcknowledged = async (
     accountDomain: string,
-    storeName: string
+    storeName: string,
 ) => {
     return await apiClient.post<WelcomePageAcknowledgedResponse>(
-        `/config/accounts/${accountDomain}/stores/${storeName}/welcome-page`
+        `/config/accounts/${accountDomain}/stores/${storeName}/welcome-page`,
     )
 }
 
@@ -151,32 +152,32 @@ export const createWelcomePageAcknowledged = async (
 
 export const getOnboardingNotificationState = async (
     accountDomain: string,
-    storeName: string | undefined
+    storeName: string | undefined,
 ) => {
     return await apiClient.get<OnboardingNotificationStateResponse>(
-        `/config/accounts/${accountDomain}/stores/${storeName}/onboarding-notification`
+        `/config/accounts/${accountDomain}/stores/${storeName}/onboarding-notification`,
     )
 }
 
 export const createOnboardingNotificationState = async (
     accountDomain: string,
     storeName: string,
-    onboardingNotificationState: CreateOnboardingNotificationStatePayload
+    onboardingNotificationState: CreateOnboardingNotificationStatePayload,
 ) => {
     return await apiClient.post<OnboardingNotificationStateResponse>(
         `/config/accounts/${accountDomain}/stores/${storeName}/onboarding-notification`,
-        onboardingNotificationState
+        onboardingNotificationState,
     )
 }
 
 export const upsertOnboardingNotificationState = async (
     accountDomain: string,
     storeName: string,
-    onboardingNotificationState: UpsertOnboardingNotificationStatePayload
+    onboardingNotificationState: UpsertOnboardingNotificationStatePayload,
 ) => {
     return await apiClient.put<OnboardingNotificationStateResponse>(
         `/config/accounts/${accountDomain}/stores/${storeName}/onboarding-notification`,
-        onboardingNotificationState
+        onboardingNotificationState,
     )
 }
 
@@ -184,21 +185,21 @@ export const upsertOnboardingNotificationState = async (
  * Endpoints "/api/onboardings"
  */
 export const getOnboardingData = async (): Promise<OnboardingData[]> => {
-    const {data} = await apiClient.get<OnboardingData[]>('/onboardings')
+    const { data } = await apiClient.get<OnboardingData[]>('/onboardings')
     return data
 }
 
 export const getOnboardingDataByShopName = async (
-    shopName: string
+    shopName: string,
 ): Promise<OnboardingData[]> => {
-    const {data} = await apiClient.get<OnboardingData[]>('/onboardings', {
-        params: {shop_name: shopName},
+    const { data } = await apiClient.get<OnboardingData[]>('/onboardings', {
+        params: { shop_name: shopName },
     })
     return data
 }
 
 export const createOnboardingData = async (
-    data: Partial<OnboardingData>
+    data: Partial<OnboardingData>,
 ): Promise<OnboardingData> => {
     const response = await apiClient.post<OnboardingData>('/onboardings', data)
     return response.data
@@ -206,11 +207,11 @@ export const createOnboardingData = async (
 
 export const updateOnboardingData = async (
     id: string | number,
-    updateData: Partial<OnboardingData>
+    updateData: Partial<OnboardingData>,
 ): Promise<OnboardingData> => {
     const response = await apiClient.put<OnboardingData>(
         `/onboardings/${id}`,
-        updateData
+        updateData,
     )
     return response.data
 }

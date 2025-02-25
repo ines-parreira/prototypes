@@ -1,26 +1,27 @@
-import {fireEvent, render, screen} from '@testing-library/react'
-import {List, Map, fromJS} from 'immutable'
-import React, {ReactNode} from 'react'
+import React, { ReactNode } from 'react'
 
-import {integrationsStateWithShopify} from 'fixtures/integrations'
-import {shopifyCustomerFixture} from 'fixtures/shopify'
-import {CustomerContext} from 'providers/infobar/CustomerContext'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { fromJS, List, Map } from 'immutable'
 
-import {EditOrderShippingAddressModal} from '../EditOrderShippingAddressModal'
+import { integrationsStateWithShopify } from 'fixtures/integrations'
+import { shopifyCustomerFixture } from 'fixtures/shopify'
+import { CustomerContext } from 'providers/infobar/CustomerContext'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
+
+import { EditOrderShippingAddressModal } from '../EditOrderShippingAddressModal'
 
 jest.mock(
     'pages/common/utils/DatetimeLabel',
     () =>
-        ({dateTime}: {dateTime: string}) => <div>{dateTime}</div>
+        ({ dateTime }: { dateTime: string }) => <div>{dateTime}</div>,
 )
 
 jest.mock(
     'pages/common/components/modal/ModalHeader',
     () =>
-        ({title}: {title: ReactNode}) => (
+        ({ title }: { title: ReactNode }) => (
             <div data-testid="Modal-Header">{title}</div>
-        )
+        ),
 )
 
 jest.mock(
@@ -43,7 +44,7 @@ jest.mock(
                 )
             }
             return null
-        }
+        },
 )
 
 const customer = fromJS(shopifyCustomerFixture()) as Map<any, any>
@@ -51,9 +52,9 @@ const dataWithProvinceCountry = {
     actionName: null,
     customer_id: customer.get('id'),
     order_id: '',
-    current_shipping_address: fromJS({country: 'United States'}),
+    current_shipping_address: fromJS({ country: 'United States' }),
 }
-const integrationContextValue = {integration: fromJS({}), integrationId: 1}
+const integrationContextValue = { integration: fromJS({}), integrationId: 1 }
 const minProps = {
     data: {
         actionName: null,
@@ -87,15 +88,15 @@ const minProps = {
 
 describe('<EditOrderShippingAddressModal/>', () => {
     it('should not render when the modal is closed', () => {
-        const {container} = render(
-            <CustomerContext.Provider value={{customerId: 2}}>
+        const { container } = render(
+            <CustomerContext.Provider value={{ customerId: 2 }}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <EditOrderShippingAddressModal
                         {...minProps}
                         isOpen={false}
                     />
                 </IntegrationContext.Provider>
-            </CustomerContext.Provider>
+            </CustomerContext.Provider>,
         )
 
         expect(container.firstChild).toBeNull()
@@ -103,11 +104,11 @@ describe('<EditOrderShippingAddressModal/>', () => {
 
     it('should render the modal', () => {
         render(
-            <CustomerContext.Provider value={{customerId: 2}}>
+            <CustomerContext.Provider value={{ customerId: 2 }}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <EditOrderShippingAddressModal {...minProps} />
                 </IntegrationContext.Provider>
-            </CustomerContext.Provider>
+            </CustomerContext.Provider>,
         )
 
         expect(screen.getByText('Edit Address')).toBeInTheDocument()
@@ -116,53 +117,53 @@ describe('<EditOrderShippingAddressModal/>', () => {
 
     it('should render the modal with an extra province field', () => {
         render(
-            <CustomerContext.Provider value={{customerId: 2}}>
+            <CustomerContext.Provider value={{ customerId: 2 }}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <EditOrderShippingAddressModal
                         {...minProps}
                         data={dataWithProvinceCountry}
                     />
                 </IntegrationContext.Provider>
-            </CustomerContext.Provider>
+            </CustomerContext.Provider>,
         )
 
         expect(screen.getByLabelText('Province')).toBeInTheDocument()
     })
 
     it('should call onInit when modal is opened', () => {
-        const {rerender} = render(
-            <CustomerContext.Provider value={{customerId: 2}}>
+        const { rerender } = render(
+            <CustomerContext.Provider value={{ customerId: 2 }}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <EditOrderShippingAddressModal
                         {...minProps}
                         isOpen={false}
                     />
                 </IntegrationContext.Provider>
-            </CustomerContext.Provider>
+            </CustomerContext.Provider>,
         )
 
         rerender(
-            <CustomerContext.Provider value={{customerId: 2}}>
+            <CustomerContext.Provider value={{ customerId: 2 }}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <EditOrderShippingAddressModal {...minProps} isOpen />
                 </IntegrationContext.Provider>
-            </CustomerContext.Provider>
+            </CustomerContext.Provider>,
         )
 
         expect(minProps.onInit).toHaveBeenCalledWith(
             1,
             customer.get('id'),
-            expect.any(Function)
+            expect.any(Function),
         )
     })
 
     it('should cancel when clicking on "Cancel"', () => {
-        const {getByText} = render(
-            <CustomerContext.Provider value={{customerId: 2}}>
+        const { getByText } = render(
+            <CustomerContext.Provider value={{ customerId: 2 }}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <EditOrderShippingAddressModal {...minProps} />
                 </IntegrationContext.Provider>
-            </CustomerContext.Provider>
+            </CustomerContext.Provider>,
         )
         fireEvent.click(getByText(/Cancel/i))
         expect(minProps.onClose).toHaveBeenCalled()
@@ -170,12 +171,12 @@ describe('<EditOrderShippingAddressModal/>', () => {
     })
 
     it('should cancel when closing the modal"', () => {
-        const {getByTestId} = render(
-            <CustomerContext.Provider value={{customerId: 2}}>
+        const { getByTestId } = render(
+            <CustomerContext.Provider value={{ customerId: 2 }}>
                 <IntegrationContext.Provider value={integrationContextValue}>
                     <EditOrderShippingAddressModal {...minProps} />
                 </IntegrationContext.Provider>
-            </CustomerContext.Provider>
+            </CustomerContext.Provider>,
         )
 
         fireEvent.click(getByTestId('Modal'))

@@ -1,7 +1,8 @@
-import {screen, render} from '@testing-library/react'
 import React from 'react'
 
-import {assetsUrl} from 'utils'
+import { render, screen } from '@testing-library/react'
+
+import { assetsUrl } from 'utils'
 
 import PaywallView from '../PaywallView'
 import PaywallViewActionButtons from '../PaywallViewActionButtons'
@@ -32,7 +33,7 @@ describe('PaywallView', () => {
                 <PaywallViewRightContainer>
                     Right container
                 </PaywallViewRightContainer>
-            </PaywallView>
+            </PaywallView>,
         )
 
         expect(screen.getByAltText('icon')).toBeInTheDocument()

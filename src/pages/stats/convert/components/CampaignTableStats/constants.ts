@@ -1,9 +1,9 @@
-import {TooltipData} from 'pages/stats/types'
-import {TableSetting} from 'state/ui/stats/types'
+import { TooltipData } from 'pages/stats/types'
+import { TableSetting } from 'state/ui/stats/types'
 
-import {CampaignTableColumn} from '../../types/CampaignTableColumn'
-import {CampaignTableKeys} from '../../types/enums/CampaignTableKeys.enum'
-import {CampaignTableValueFormat} from '../../types/enums/CampaignTableValueFormat.enum'
+import { CampaignTableColumn } from '../../types/CampaignTableColumn'
+import { CampaignTableKeys } from '../../types/enums/CampaignTableKeys.enum'
+import { CampaignTableValueFormat } from '../../types/enums/CampaignTableValueFormat.enum'
 
 export const enum CampaignSettingType {
     PerformanceReportVisibleFields = 'performance_report_visible_fields',
@@ -221,7 +221,7 @@ export const campaignPerformanceMetrics = CampaignTableColumnOrder.map(
     (column) => ({
         id: column,
         visibility: CampaignTableColumnDefaultSelect.includes(column),
-    })
+    }),
 )
 
 export const CampaignPerformanceTableViews: TableSetting<CampaignTableKeys> = {
@@ -236,11 +236,11 @@ export const CampaignPerformanceTableDefaultConfigurationViews = {
 
 // Convert CAMPAIGN_TABLE_CELLS into EditColumn required format and type
 export const CampaignPerformanceTooltipConfig = CAMPAIGN_TABLE_CELLS.reduce(
-    (obj, item) => Object.assign(obj, {[item.key]: item}),
-    {} as Record<CampaignTableKeys, {hint: TooltipData | null}>
+    (obj, item) => Object.assign(obj, { [item.key]: item }),
+    {} as Record<CampaignTableKeys, { hint: TooltipData | null }>,
 )
 
 export const CampaignPerformanceConfig = CAMPAIGN_TABLE_CELLS.reduce(
-    (obj, item) => Object.assign(obj, {[item.key]: item}),
-    {} as Record<CampaignTableKeys, CampaignTableColumn>
+    (obj, item) => Object.assign(obj, { [item.key]: item }),
+    {} as Record<CampaignTableKeys, CampaignTableColumn>,
 )

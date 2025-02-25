@@ -1,31 +1,32 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {fireEvent, render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import {ldClientMock} from 'jest-launchdarkly-mock'
 import React from 'react'
-import {useCookies} from 'react-cookie'
-import {Provider} from 'react-redux'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { fireEvent, render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { ldClientMock } from 'jest-launchdarkly-mock'
+import { useCookies } from 'react-cookie'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {ticket} from 'fixtures/ticket'
-import {user} from 'fixtures/users'
+import { ticket } from 'fixtures/ticket'
+import { user } from 'fixtures/users'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useHasAgentPrivileges from 'hooks/useHasAgentPrivileges'
-import {SubmitMessageFeedback} from 'models/aiAgentFeedback/types'
-import {TicketMessage} from 'models/ticket/types'
-import {RootState, StoreDispatch} from 'state/types'
-import {getSelectedAIMessage} from 'state/ui/ticketAIAgentFeedback'
-import {TicketAIAgentFeedbackTab} from 'state/ui/ticketAIAgentFeedback/constants'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {getLDClient} from 'utils/launchDarkly'
-import {assumeMock} from 'utils/testing'
+import { SubmitMessageFeedback } from 'models/aiAgentFeedback/types'
+import { TicketMessage } from 'models/ticket/types'
+import { RootState, StoreDispatch } from 'state/types'
+import { getSelectedAIMessage } from 'state/ui/ticketAIAgentFeedback'
+import { TicketAIAgentFeedbackTab } from 'state/ui/ticketAIAgentFeedback/constants'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { getLDClient } from 'utils/launchDarkly'
+import { assumeMock } from 'utils/testing'
 
 import AIAgentMessageFeedback, {
     FEEDBACK_MESSAGE_ACTIONS_TEST_ID,
     FEEDBACK_MESSAGE_GUIDANCE_TEST_ID,
     FEEDBACK_MESSAGE_KNOWLEDGE_TEST_ID,
 } from '../AIAgentMessageFeedback'
-import {messageFeedback} from './fixtures'
+import { messageFeedback } from './fixtures'
 
 jest.mock('hooks/useAppDispatch')
 jest.mock('state/ui/ticketAIAgentFeedback')
@@ -80,7 +81,7 @@ describe('AIAgentMessageFeedback', () => {
     beforeEach(() => {
         getSelectedAIMessageMock.mockReturnValue(mockMessage)
         ;(useCookies as jest.Mock).mockReturnValue([
-            {TOOLTIP_COOKIE_NAME: false},
+            { TOOLTIP_COOKIE_NAME: false },
             mockSetCookie,
         ])
         ;(useHasAgentPrivileges as jest.Mock).mockReturnValue(true)
@@ -91,16 +92,16 @@ describe('AIAgentMessageFeedback', () => {
     })
 
     it.each([
-        {testId: FEEDBACK_MESSAGE_ACTIONS_TEST_ID, name: 'Actions'},
-        {testId: FEEDBACK_MESSAGE_GUIDANCE_TEST_ID, name: 'Guidance'},
-        {testId: FEEDBACK_MESSAGE_KNOWLEDGE_TEST_ID, name: 'Knowledge'},
-    ])('$name - renders thumbs up icon for positive feedback', ({testId}) => {
+        { testId: FEEDBACK_MESSAGE_ACTIONS_TEST_ID, name: 'Actions' },
+        { testId: FEEDBACK_MESSAGE_GUIDANCE_TEST_ID, name: 'Guidance' },
+        { testId: FEEDBACK_MESSAGE_KNOWLEDGE_TEST_ID, name: 'Knowledge' },
+    ])('$name - renders thumbs up icon for positive feedback', ({ testId }) => {
         render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={store}>
                     <AIAgentMessageFeedback messageFeedback={messageFeedback} />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         const positiveFeedbackElement = screen
@@ -111,36 +112,41 @@ describe('AIAgentMessageFeedback', () => {
     })
 
     it.each([
-        {testId: FEEDBACK_MESSAGE_ACTIONS_TEST_ID, name: 'Actions'},
-        {testId: FEEDBACK_MESSAGE_GUIDANCE_TEST_ID, name: 'Guidance'},
-        {testId: FEEDBACK_MESSAGE_KNOWLEDGE_TEST_ID, name: 'Knowledge'},
-    ])('$name - renders thumbs down icon for negative feedback', ({testId}) => {
-        render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={store}>
-                    <AIAgentMessageFeedback messageFeedback={messageFeedback} />
-                </Provider>
-            </QueryClientProvider>
-        )
+        { testId: FEEDBACK_MESSAGE_ACTIONS_TEST_ID, name: 'Actions' },
+        { testId: FEEDBACK_MESSAGE_GUIDANCE_TEST_ID, name: 'Guidance' },
+        { testId: FEEDBACK_MESSAGE_KNOWLEDGE_TEST_ID, name: 'Knowledge' },
+    ])(
+        '$name - renders thumbs down icon for negative feedback',
+        ({ testId }) => {
+            render(
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={store}>
+                        <AIAgentMessageFeedback
+                            messageFeedback={messageFeedback}
+                        />
+                    </Provider>
+                </QueryClientProvider>,
+            )
 
-        const negativeFeedbackElement = screen
-            .getAllByTestId(testId)[1]
-            .querySelector('.feedback i.material-icons')
-            ?.parentElement?.parentElement
-        expect(negativeFeedbackElement).toHaveClass('negativeFeedback')
-    })
+            const negativeFeedbackElement = screen
+                .getAllByTestId(testId)[1]
+                .querySelector('.feedback i.material-icons')
+                ?.parentElement?.parentElement
+            expect(negativeFeedbackElement).toHaveClass('negativeFeedback')
+        },
+    )
 
     it.each([
-        {testId: FEEDBACK_MESSAGE_ACTIONS_TEST_ID, name: 'Actions'},
-        {testId: FEEDBACK_MESSAGE_GUIDANCE_TEST_ID, name: 'Guidance'},
-        {testId: FEEDBACK_MESSAGE_KNOWLEDGE_TEST_ID, name: 'Knowledge'},
-    ])('$name - renders thumbs up icon for neutral feedback', ({testId}) => {
+        { testId: FEEDBACK_MESSAGE_ACTIONS_TEST_ID, name: 'Actions' },
+        { testId: FEEDBACK_MESSAGE_GUIDANCE_TEST_ID, name: 'Guidance' },
+        { testId: FEEDBACK_MESSAGE_KNOWLEDGE_TEST_ID, name: 'Knowledge' },
+    ])('$name - renders thumbs up icon for neutral feedback', ({ testId }) => {
         render(
             <QueryClientProvider client={queryClient}>
                 <Provider store={store}>
                     <AIAgentMessageFeedback messageFeedback={messageFeedback} />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         const feedbackActionsElement = screen
@@ -167,11 +173,11 @@ describe('AIAgentMessageFeedback', () => {
                 <Provider store={store}>
                     <AIAgentMessageFeedback messageFeedback={messageFeedback} />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         const noteFeedback = screen.getByTestId(
-            'ai-message-feedback-issues-note-test-id'
+            'ai-message-feedback-issues-note-test-id',
         )
 
         fireEvent.blur(noteFeedback, {
@@ -183,7 +189,7 @@ describe('AIAgentMessageFeedback', () => {
             expect(noteFeedback.textContent).toBe('test note')
             expect(mockHandleSubmitFeedback).toHaveBeenCalledWith(
                 messageFeedback,
-                payload
+                payload,
             )
 
             return await Promise.resolve()
@@ -206,11 +212,11 @@ describe('AIAgentMessageFeedback', () => {
                 <Provider store={store}>
                     <AIAgentMessageFeedback messageFeedback={messageFeedback} />
                 </Provider>
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         const noteFeedback = screen.getByTestId(
-            'ai-message-feedback-issues-note-test-id'
+            'ai-message-feedback-issues-note-test-id',
         )
 
         fireEvent.blur(noteFeedback, {
@@ -222,7 +228,7 @@ describe('AIAgentMessageFeedback', () => {
             expect(noteFeedback).toHaveValue('')
             expect(mockHandleDeleteFeedback).toHaveBeenCalledWith(
                 messageFeedback,
-                payload
+                payload,
             )
 
             return await Promise.resolve()

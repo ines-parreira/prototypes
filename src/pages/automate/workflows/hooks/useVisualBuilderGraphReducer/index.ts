@@ -1,15 +1,15 @@
-import {useReducer} from 'react'
+import { useReducer } from 'react'
 
 import {
     VisualBuilderGraph,
     VisualBuilderTriggerNode,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
 
-import {VisualBuilderBaseAction, baseReducer} from './baseReducer'
+import { baseReducer, VisualBuilderBaseAction } from './baseReducer'
 import {
-    VisualBuilderChoicesAction,
-    isVisualBuilderChoiceAction,
     choicesReducer,
+    isVisualBuilderChoiceAction,
+    VisualBuilderChoicesAction,
 } from './choicesReducer'
 import {
     conditionsReducer,
@@ -17,9 +17,9 @@ import {
     VisualBuilderConditionsAction,
 } from './conditionsReducer'
 import {
-    VisualBuilderHttpRequestAction,
-    isVisualBuilderHttpRequestAction,
     httpRequestReducer,
+    isVisualBuilderHttpRequestAction,
+    VisualBuilderHttpRequestAction,
 } from './httpRequestReducer'
 import {
     isVisualBuilderLLMPromptTriggerAction,
@@ -56,7 +56,7 @@ export function reducer<
     T extends VisualBuilderTriggerNode = VisualBuilderTriggerNode,
 >(
     graph: VisualBuilderGraph<T>,
-    action: VisualBuilderGraphAction
+    action: VisualBuilderGraphAction,
 ): VisualBuilderGraph<T> {
     if (isVisualBuilderChoiceAction(action)) {
         return choicesReducer(graph, action) as VisualBuilderGraph<T>
@@ -73,13 +73,13 @@ export function reducer<
     if (isVisualBuilderReusableLLMPromptTriggerAction(action)) {
         return reusableLLMPromptTriggerReducer(
             graph,
-            action
+            action,
         ) as VisualBuilderGraph<T>
     }
     if (isVisualBuilderReusableLLMPromptCallAction(action)) {
         return reusableLLMPromptCallReducer(
             graph,
-            action
+            action,
         ) as VisualBuilderGraph<T>
     }
     return baseReducer(graph, action) as VisualBuilderGraph<T>

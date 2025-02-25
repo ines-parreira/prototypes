@@ -1,39 +1,39 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import classnames from 'classnames'
-import {List, Map} from 'immutable'
-import pluralize from 'pluralize'
 import React, {
     ChangeEvent,
-    useState,
+    MouseEvent,
     useCallback,
     useMemo,
-    MouseEvent,
     useRef,
+    useState,
 } from 'react'
-import {Link} from 'react-router-dom'
-import {Input, ListGroup, ListGroupItem} from 'reactstrap'
 
-import {useModalManager} from 'hooks/useModalManager'
-import {UniqueDiscountOffer} from 'models/convert/discountOffer/types'
+import classnames from 'classnames'
+import { List, Map } from 'immutable'
+import pluralize from 'pluralize'
+import { Link } from 'react-router-dom'
+import { Input, ListGroup, ListGroupItem } from 'reactstrap'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { useModalManager } from 'hooks/useModalManager'
+import { UniqueDiscountOffer } from 'models/convert/discountOffer/types'
 import {
     DELETE_DISCOUNT_MODAL_NAME,
     DISCOUNTS_PER_PAGE,
     UNIQUE_DISCOUNT_MODAL_NAME,
 } from 'models/discountCodes/constants'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Button from 'pages/common/components/button/Button'
-
 import IconButton from 'pages/common/components/button/IconButton'
 import Loader from 'pages/common/components/Loader/Loader'
+import { UniqueDiscountOfferCreateModal } from 'pages/common/components/UniqueDiscountOfferCreateModal/UniqueDiscountOfferCreateModal'
+import { DeleteUniqueDiscountOfferModal } from 'pages/convert/discountOffer/components/DeleteUniqueDiscountOfferModal/DeleteUniqueDiscountOfferModal'
+import { useListDiscountOffers } from 'pages/convert/discountOffer/hooks/useListDiscountOffer'
+import { toJS } from 'utils'
 
-import {UniqueDiscountOfferCreateModal} from 'pages/common/components/UniqueDiscountOfferCreateModal/UniqueDiscountOfferCreateModal'
-import {DeleteUniqueDiscountOfferModal} from 'pages/convert/discountOffer/components/DeleteUniqueDiscountOfferModal/DeleteUniqueDiscountOfferModal'
-import {useListDiscountOffers} from 'pages/convert/discountOffer/hooks/useListDiscountOffer'
-
-import {toJS} from 'utils'
+import { computeDiscountOfferSummary } from './utils'
 
 import css from './UniqueDiscountOfferResults.less'
-import {computeDiscountOfferSummary} from './utils'
 
 const MAX_LIMIT: number = 15
 
@@ -63,10 +63,10 @@ export default function UniqueDiscountCodeResults({
     }, [integration])
 
     const hasShopifyDiscountScope = ['read_discounts', 'write_discounts'].every(
-        (scope) => shopifyScope.includes(scope)
+        (scope) => shopifyScope.includes(scope),
     )
 
-    const {isLoading, data: discountCodes} = useListDiscountOffers({
+    const { isLoading, data: discountCodes } = useListDiscountOffers({
         store_integration_id: integration.get('id'),
         search: filter,
     })
@@ -86,7 +86,7 @@ export default function UniqueDiscountCodeResults({
             event.preventDefault()
             setFilter(event.target.value)
         },
-        [setFilter]
+        [setFilter],
     )
 
     const createDiscountModal = useModalManager(UNIQUE_DISCOUNT_MODAL_NAME, {
@@ -122,7 +122,7 @@ export default function UniqueDiscountCodeResults({
                     summary: computeDiscountOfferSummary(
                         offer.type,
                         offer.value,
-                        integration
+                        integration,
                     ),
                 })
             }
@@ -134,7 +134,7 @@ export default function UniqueDiscountCodeResults({
             createDiscountModal,
             integration,
             onDiscountSelected,
-        ]
+        ],
     )
 
     const onEditDiscountOffer = useCallback(
@@ -145,10 +145,10 @@ export default function UniqueDiscountCodeResults({
             createDiscountModal.openModal(
                 UNIQUE_DISCOUNT_MODAL_NAME,
                 undefined,
-                offer
+                offer,
             )
         },
-        [createDiscountModal]
+        [createDiscountModal],
     )
 
     const onDeleteDiscountOfferIntent = useCallback(
@@ -159,10 +159,10 @@ export default function UniqueDiscountCodeResults({
             deleteDiscountModal.openModal(
                 DELETE_DISCOUNT_MODAL_NAME,
                 undefined,
-                offer
+                offer,
             )
         },
-        [deleteDiscountModal]
+        [deleteDiscountModal],
     )
 
     return (
@@ -170,7 +170,7 @@ export default function UniqueDiscountCodeResults({
             <div
                 className={classnames(
                     'input-icon input-icon-left',
-                    css.searchInput
+                    css.searchInput,
                 )}
             >
                 <i className="icon material-icons md-2">
@@ -243,13 +243,13 @@ export default function UniqueDiscountCodeResults({
             </div>
             <div className={css.listGroupContainer}>
                 {!hasShopifyDiscountScope ? (
-                    <div style={{padding: '8px'}}>
+                    <div style={{ padding: '8px' }}>
                         <Alert type={AlertType.Error}>
                             Missing Shopify permissions. To use this new
                             feature, please go to the{' '}
                             <Link
                                 to={`/app/settings/integrations/shopify/${integration.get(
-                                    'id'
+                                    'id',
                                 )}`}
                             >
                                 settings page of your Shopify integration&nbsp;
@@ -271,7 +271,7 @@ export default function UniqueDiscountCodeResults({
                                                 key={index}
                                                 tag="button"
                                                 id={'resultRow'.concat(
-                                                    index.toString()
+                                                    index.toString(),
                                                 )}
                                                 action
                                                 disabled={
@@ -285,7 +285,7 @@ export default function UniqueDiscountCodeResults({
                                                             computeDiscountOfferSummary(
                                                                 result.type,
                                                                 result.value,
-                                                                integration
+                                                                integration,
                                                             ),
                                                     })
                                                 }}
@@ -300,7 +300,7 @@ export default function UniqueDiscountCodeResults({
                                                         {computeDiscountOfferSummary(
                                                             result.type,
                                                             result.value,
-                                                            integration
+                                                            integration,
                                                         )}
                                                     </div>
                                                 </div>
@@ -313,7 +313,7 @@ export default function UniqueDiscountCodeResults({
                                                     onClick={(e) =>
                                                         onEditDiscountOffer(
                                                             e,
-                                                            result
+                                                            result,
                                                         )
                                                     }
                                                 >
@@ -326,7 +326,7 @@ export default function UniqueDiscountCodeResults({
                                                     onClick={(e) =>
                                                         onDeleteDiscountOfferIntent(
                                                             e,
-                                                            result
+                                                            result,
                                                         )
                                                     }
                                                 >
@@ -334,7 +334,7 @@ export default function UniqueDiscountCodeResults({
                                                 </IconButton>
                                             </div>
                                         </div>
-                                    )
+                                    ),
                                 )}
                             </ListGroup>
                         )}

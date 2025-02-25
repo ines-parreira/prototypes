@@ -1,28 +1,28 @@
-import {fromJS, List, Map} from 'immutable'
-import _isUndefined from 'lodash/isUndefined'
 import React from 'react'
 
-import {fromAST} from 'common/utils'
+import { fromJS, List, Map } from 'immutable'
+import _isUndefined from 'lodash/isUndefined'
+
+import { fromAST } from 'common/utils'
 import ticketLanguages from 'config/ticketLanguages'
-import {EMAIL_INTEGRATION_TYPES} from 'constants/integration'
-import {BASE_VIEW_ID} from 'constants/view'
-import {OrderDirection} from 'models/api/types'
+import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
+import { BASE_VIEW_ID } from 'constants/view'
+import { OrderDirection } from 'models/api/types'
 import {
     EntityType,
     ViewField,
     ViewType,
     ViewVisibility,
 } from 'models/view/types'
-import {trimWithEllipsisBeforeTheHighlight} from 'pages/common/components/Spotlight/helpers'
-
+import { trimWithEllipsisBeforeTheHighlight } from 'pages/common/components/Spotlight/helpers'
 import TicketTags from 'pages/tickets/detail/components/TicketDetails/TicketTags'
-import {getChannels} from 'services/channels'
-import {STATUSES} from 'tickets/common/config'
-import {fieldPath, getAST, getLanguageDisplayName, stripHTML} from 'utils'
-import {getMomentUtcISOString} from 'utils/date'
-import {sanitizeHtmlDefault} from 'utils/html'
+import { getChannels } from 'services/channels'
+import { STATUSES } from 'tickets/common/config'
+import { fieldPath, getAST, getLanguageDisplayName, stripHTML } from 'utils'
+import { getMomentUtcISOString } from 'utils/date'
+import { sanitizeHtmlDefault } from 'utils/html'
 
-import {TicketChannel} from '../business/types/ticket'
+import { TicketChannel } from '../business/types/ticket'
 
 // Number of maximum recent views we store in the reducer and local storage.
 // View counts will only be calculated periodically for these views.
@@ -58,7 +58,7 @@ export const baseView = () =>
 export const defaultMergeTicketsView = (
     ticketId: number,
     searchQuery?: string,
-    customerId?: Maybe<number>
+    customerId?: Maybe<number>,
 ) => {
     const filters = customerId
         ? `neq(ticket.id, ${ticketId}) && eq(ticket.customer.id, ${customerId})`
@@ -125,7 +125,7 @@ export const defaultCustomerView = {
                         dangerouslySetInnerHTML={{
                             __html: sanitizeHtmlDefault(
                                 nameOrNameWithHighlight ||
-                                    `Customer #${item.get('id') as number}`
+                                    `Customer #${item.get('id') as number}`,
                             ),
                         }}
                     />
@@ -141,7 +141,7 @@ export const defaultCustomerView = {
                         className="customer-email-with-highlight"
                         dangerouslySetInnerHTML={{
                             __html: sanitizeHtmlDefault(
-                                emailOrEmailWithHighlight
+                                emailOrEmailWithHighlight,
                             ),
                         }}
                     />
@@ -268,7 +268,7 @@ export const defaultTicketView = {
                 enum: getChannels() // Filtering is done due: https://linear.app/gorgias/issue/APPS-2219
                     .filter(
                         (channel) =>
-                            channel?.slug !== TicketChannel.InternalNote
+                            channel?.slug !== TicketChannel.InternalNote,
                     )
                     .sort((a, b) => a.name.localeCompare(b.name))
                     .map((channel) => channel.slug),
@@ -376,12 +376,12 @@ export const defaultTicketView = {
             case ViewField.Details: {
                 const subjectHighlights: string | null = item.getIn(
                     ['highlights', 'subject', 0],
-                    null
+                    null,
                 )
 
                 const excerptHighlights: string | null = item.getIn(
                     ['highlights', 'messages', 'body', 0],
-                    null
+                    null,
                 )
 
                 let subject =
@@ -443,7 +443,7 @@ export const defaultTicketView = {
                                     (a.get('name') as string).toLowerCase() >
                                     (
                                         b.get('name') as string
-                                    ).toLowerCase()) as any
+                                    ).toLowerCase()) as any,
                             ) as List<any>
                         }
                     />
@@ -460,7 +460,7 @@ export const defaultTicketView = {
     newView: (
         visibility?: ViewVisibility,
         viewName?: string,
-        filters?: string
+        filters?: string,
     ) => {
         let view = baseView().merge({
             fields: [
@@ -526,7 +526,7 @@ export const views = fromAST([
 
 export const getConfigByName = (name: EntityType) => {
     const config = views.find(
-        (item: Map<any, any>) => item.get('name') === name
+        (item: Map<any, any>) => item.get('name') === name,
     ) as Maybe<Map<any, any>>
 
     if (!config) {
@@ -539,7 +539,7 @@ export const getConfigByName = (name: EntityType) => {
 
 export const getConfigByType = (type: ViewType) => {
     const config = views.find(
-        (item: Map<any, any>) => item.get('type') === type
+        (item: Map<any, any>) => item.get('type') === type,
     ) as Maybe<Map<any, any>>
 
     if (!config) {
@@ -559,7 +559,7 @@ export const getExpirationTimeForCount = (count: number | null) =>
 export const getTicketViewField = (fieldName: ViewField): Map<any, any> => {
     const viewConfig = getConfigByType(ViewType.TicketList)
     const field = (viewConfig.get('fields') as List<Map<any, any>>).find(
-        (field) => field!.get('name') === fieldName
+        (field) => field!.get('name') === fieldName,
     )
     return field
 }

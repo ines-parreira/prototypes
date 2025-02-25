@@ -1,8 +1,8 @@
-import React, {ComponentProps, useEffect, useMemo} from 'react'
+import React, { ComponentProps, useEffect, useMemo } from 'react'
 
-import {useCustomFieldDefinitions} from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import {isCustomFieldAIManagedType} from 'custom-fields/types'
-import Alert, {AlertType} from 'pages/common/components/Alert/Alert'
+import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
+import { isCustomFieldAIManagedType } from 'custom-fields/types'
+import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 
 type Props = Pick<
@@ -19,7 +19,7 @@ type Props = Pick<
 /**
  * Small wrapper around <SelectField/> to inject the possible custom fields as options.
  */
-const CustomFieldSelect = ({onChange, viewMode, ...props}: Props) => {
+const CustomFieldSelect = ({ onChange, viewMode, ...props }: Props) => {
     const customFields = useCustomFieldDefinitions({
         archived: false,
         object_type: 'Ticket',
@@ -28,7 +28,7 @@ const CustomFieldSelect = ({onChange, viewMode, ...props}: Props) => {
     const activeCustomFields = useMemo(() => {
         return (
             customFields.data?.data.filter(
-                (field) => !field.deactivated_datetime
+                (field) => !field.deactivated_datetime,
             ) || []
         )
     }, [customFields.data?.data])
@@ -38,17 +38,17 @@ const CustomFieldSelect = ({onChange, viewMode, ...props}: Props) => {
         return (
             activeCustomFields
                 .filter(
-                    ({managed_type}) =>
-                        !isCustomFieldAIManagedType(managed_type)
+                    ({ managed_type }) =>
+                        !isCustomFieldAIManagedType(managed_type),
                 )
-                .map(({id, label}) => ({
+                .map(({ id, label }) => ({
                     value: id,
                     label,
                 }))
                 .filter(
-                    ({value}) =>
+                    ({ value }) =>
                         value === props.value ||
-                        !props.idsAlreadySet?.includes(value)
+                        !props.idsAlreadySet?.includes(value),
                 ) || []
         )
     }, [activeCustomFields, props.idsAlreadySet, props.value])
@@ -65,7 +65,7 @@ const CustomFieldSelect = ({onChange, viewMode, ...props}: Props) => {
 
     if (viewMode) {
         const customField = customFields.data?.data.find(
-            (field) => field.id === props.value
+            (field) => field.id === props.value,
         )
         return (
             <strong>

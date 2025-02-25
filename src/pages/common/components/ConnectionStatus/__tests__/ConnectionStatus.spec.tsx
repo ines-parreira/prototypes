@@ -1,7 +1,8 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {ConnectionStatus} from '../ConnectionStatus'
+import { render, screen } from '@testing-library/react'
+
+import { ConnectionStatus } from '../ConnectionStatus'
 
 describe('<ConnectionStatus />', () => {
     it('renders with status: active', () => {
@@ -9,7 +10,7 @@ describe('<ConnectionStatus />', () => {
         const label = 'Connected'
         render(<ConnectionStatus status={statusActive} label={label} />)
         const icon = screen.getByLabelText(
-            `Icon for connection ${statusActive}`
+            `Icon for connection ${statusActive}`,
         )
 
         expect(icon).toBeInTheDocument()
@@ -22,7 +23,7 @@ describe('<ConnectionStatus />', () => {
         const label = 'Connecting'
         render(<ConnectionStatus status={statusPending} label={label} />)
         const icon = screen.queryByLabelText(
-            `Icon for connection ${statusPending}`
+            `Icon for connection ${statusPending}`,
         )
 
         expect(icon).not.toBeInTheDocument()
@@ -34,7 +35,7 @@ describe('<ConnectionStatus />', () => {
         const label = 'Error connecting'
         render(<ConnectionStatus status={statusUnknown} label={label} />)
         const icon = screen.getByLabelText(
-            `Icon for connection ${statusUnknown}`
+            `Icon for connection ${statusUnknown}`,
         )
 
         expect(icon).toBeInTheDocument()

@@ -1,24 +1,25 @@
-import React, {useCallback, useEffect, useState} from 'react'
-import {ListGroup, ListGroupItem} from 'reactstrap'
-import {ulid} from 'ulidx'
+import React, { useCallback, useEffect, useState } from 'react'
 
-import {AttachmentEnum} from 'common/types'
-import {useModalManager} from 'hooks/useModalManager'
+import { ListGroup, ListGroupItem } from 'reactstrap'
+import { ulid } from 'ulidx'
+
+import { AttachmentEnum } from 'common/types'
+import { useModalManager } from 'hooks/useModalManager'
 import ProductRecommendationModal from 'pages/convert/campaigns/components/ProductRecommendationModal/ProductRecommendationModal'
-import {SCENARIO_CONFIG} from 'pages/convert/campaigns/constants/productRecommendationScenarios'
-import {useCampaignDetailsContext} from 'pages/convert/campaigns/hooks/useCampaignDetailsContext'
+import { SCENARIO_CONFIG } from 'pages/convert/campaigns/constants/productRecommendationScenarios'
+import { useCampaignDetailsContext } from 'pages/convert/campaigns/hooks/useCampaignDetailsContext'
 import {
     ProductRecommendationAttachment,
     ProductRecommendationScenario,
 } from 'pages/convert/campaigns/types/CampaignAttachment'
-import {CampaignTrigger} from 'pages/convert/campaigns/types/CampaignTrigger'
-import {areTriggersEqual} from 'pages/convert/campaigns/utils/areTriggersEqual'
-import {getRecommendedTriggerForScenario} from 'pages/convert/campaigns/utils/geRecommendedTriggerForScenario'
+import { CampaignTrigger } from 'pages/convert/campaigns/types/CampaignTrigger'
+import { areTriggersEqual } from 'pages/convert/campaigns/utils/areTriggersEqual'
+import { getRecommendedTriggerForScenario } from 'pages/convert/campaigns/utils/geRecommendedTriggerForScenario'
 
 import css from './ProductRecommendationScenarioPicker.less'
 
 const createAttachment = (
-    scenario: ProductRecommendationScenario
+    scenario: ProductRecommendationScenario,
 ): ProductRecommendationAttachment =>
     ({
         content_type: AttachmentEnum.ProductRecommendation,
@@ -34,28 +35,28 @@ type Props = {
     onClick: (attachment: ProductRecommendationAttachment) => void
 }
 
-const ProductRecommendationScenarioPicker = ({onClick}: Props) => {
+const ProductRecommendationScenarioPicker = ({ onClick }: Props) => {
     useEffect(() => {
         // a very hackish way that forces the popover element in the parent tree to re-paint itself at the correct location
         window.dispatchEvent(new Event('resize'))
     }, [])
 
-    const {triggers, addTrigger} = useCampaignDetailsContext()
+    const { triggers, addTrigger } = useCampaignDetailsContext()
     const triggerRecommendationModal = useModalManager(
         'TRIGGER_RECOMMENDATION',
         {
             autoDestroy: false,
-        }
+        },
     )
     const [selectedScenario, setSelectedScenario] =
         useState<ProductRecommendationScenario>(
-            ProductRecommendationScenario.SimilarSeen
+            ProductRecommendationScenario.SimilarSeen,
         )
 
     const isTriggerAlreadyAdded = useCallback(
         (trigger) =>
             Object.values(triggers).some((t) => areTriggersEqual(t, trigger)),
-        [triggers]
+        [triggers],
     )
 
     const handleScenarioClick = useCallback(
@@ -71,13 +72,13 @@ const ProductRecommendationScenarioPicker = ({onClick}: Props) => {
                 onClick(createAttachment(scenario))
             }
         },
-        [onClick, triggerRecommendationModal, isTriggerAlreadyAdded]
+        [onClick, triggerRecommendationModal, isTriggerAlreadyAdded],
     )
 
     const onModalSubmit = useCallback(
         (trigger: CampaignTrigger | undefined) =>
             !!trigger && addTrigger(trigger.type, trigger),
-        [addTrigger]
+        [addTrigger],
     )
 
     const onModalExit = useCallback(() => {
@@ -105,7 +106,7 @@ const ProductRecommendationScenarioPicker = ({onClick}: Props) => {
                                 {SCENARIO_CONFIG[scenario].description}
                             </div>
                         </ListGroupItem>
-                    )
+                    ),
                 )}
             </ListGroup>
             <ProductRecommendationModal

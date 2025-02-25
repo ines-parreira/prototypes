@@ -1,5 +1,6 @@
-import {render, screen, fireEvent} from '@testing-library/react'
 import React from 'react'
+
+import { fireEvent, render, screen } from '@testing-library/react'
 
 import {
     getFirstPreviewForPreviewType,
@@ -7,7 +8,7 @@ import {
     salesPreviews,
     supportPreviews,
 } from '../constants'
-import {PersonalityPreviewGroup} from '../PersonalityPreviewGroup'
+import { PersonalityPreviewGroup } from '../PersonalityPreviewGroup'
 
 describe.each([
     ['sales', salesPreviews],
@@ -21,7 +22,7 @@ describe.each([
                     previewType={previewType as any}
                     onPreviewSelect={jest.fn()}
                 />
-            </div>
+            </div>,
         )
 
         expect(screen.queryByRole('radiogroup')?.children).toHaveLength(4)
@@ -43,7 +44,7 @@ describe.each([
                     previewType={previewType as any}
                     onPreviewSelect={onPreviewSelect}
                 />
-            </div>
+            </div>,
         )
 
         previews.forEach((preview, index) => {
@@ -62,24 +63,24 @@ describe.each([
                         getFirstPreviewForPreviewType(previewType as any).id
                     }
                 />
-            </div>
+            </div>,
         )
 
         expect(screen.getAllByRole('radio')[0]).toHaveAttribute(
             'aria-checked',
-            'true'
+            'true',
         )
         expect(screen.getAllByRole('radio')[1]).toHaveAttribute(
             'aria-checked',
-            'false'
+            'false',
         )
         expect(screen.getAllByRole('radio')[2]).toHaveAttribute(
             'aria-checked',
-            'false'
+            'false',
         )
         expect(screen.getAllByRole('radio')[3]).toHaveAttribute(
             'aria-checked',
-            'false'
+            'false',
         )
     })
 
@@ -91,24 +92,24 @@ describe.each([
                     onPreviewSelect={jest.fn()}
                     isLoading={true}
                 />
-            </div>
+            </div>,
         )
 
         expect(screen.getAllByRole('radio')[0]).toHaveAttribute(
             'aria-busy',
-            'true'
+            'true',
         )
         expect(screen.getAllByRole('radio')[1]).toHaveAttribute(
             'aria-busy',
-            'true'
+            'true',
         )
         expect(screen.getAllByRole('radio')[2]).toHaveAttribute(
             'aria-busy',
-            'true'
+            'true',
         )
         expect(screen.getAllByRole('radio')[3]).toHaveAttribute(
             'aria-busy',
-            'true'
+            'true',
         )
     })
 })

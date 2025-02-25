@@ -1,9 +1,9 @@
-import {createSelector} from 'reselect'
+import { createSelector } from 'reselect'
 
-import {RuleType} from 'models/rule/types'
+import { RuleType } from 'models/rule/types'
 
-import {RootState} from '../../types'
-import {RuleRecipesState} from './types'
+import { RootState } from '../../types'
+import { RuleRecipesState } from './types'
 
 export const ruleRecipes = (state: RootState): RuleRecipesState =>
     state.entities.ruleRecipes || {}
@@ -16,5 +16,5 @@ export const getSortedRuleRecipes = createSelector(ruleRecipes, (recipes) =>
             return -1
         }
         return 1
-    })
+    }),
 )

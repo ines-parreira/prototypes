@@ -1,14 +1,14 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {screen} from '@testing-library/react'
-import {createMemoryHistory} from 'history'
 import React from 'react'
 
-import {ulid} from 'ulidx'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { screen } from '@testing-library/react'
+import { createMemoryHistory } from 'history'
+import { ulid } from 'ulidx'
 
-import {useGetWorkflowConfiguration} from 'models/workflows/queries'
-import {WorkflowConfigurationBuilder} from 'pages/automate/workflows/models/workflowConfiguration.model'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
-import {renderWithRouter} from 'utils/testing'
+import { useGetWorkflowConfiguration } from 'models/workflows/queries'
+import { WorkflowConfigurationBuilder } from 'pages/automate/workflows/models/workflowConfiguration.model'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { renderWithRouter } from 'utils/testing'
 
 import EditActionViewContainer from '../EditActionViewContainer'
 
@@ -48,18 +48,18 @@ describe('<EditActionViewContainer />', () => {
                 history,
                 path: '/app/automation/:shopType/:shopName/ai-agent/actions/edit/:id',
                 route: `/app/automation/shopify/shopify-store/ai-agent/actions/edit/test123`,
-            }
+            },
         )
 
         expect(mockUseGetWorkflowConfiguration).toHaveBeenCalledWith(
             'test123',
-            expect.anything()
+            expect.anything(),
         )
         expect(historyReplaceSpy).toHaveBeenCalledWith(
             expect.objectContaining({
                 pathname:
                     '/app/automation/shopify/shopify-store/ai-agent/actions',
-            })
+            }),
         )
     })
 
@@ -119,7 +119,7 @@ describe('<EditActionViewContainer />', () => {
         renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <EditActionViewContainer />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(screen.getByText('EditActionView')).toBeInTheDocument()
@@ -134,7 +134,7 @@ describe('<EditActionViewContainer />', () => {
         renderWithRouter(
             <QueryClientProvider client={queryClient}>
                 <EditActionViewContainer />
-            </QueryClientProvider>
+            </QueryClientProvider>,
         )
 
         expect(screen.getByText('AiAgentLayout')).toBeInTheDocument()

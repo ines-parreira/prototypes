@@ -1,13 +1,14 @@
-import {render} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import {mockFlags, resetLDMocks} from 'jest-launchdarkly-mock'
 import React from 'react'
-import {Provider} from 'react-redux'
+
+import { render } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { mockFlags, resetLDMocks } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {account} from 'fixtures/account'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { account } from 'fixtures/account'
 import {
     basicMonthlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
@@ -19,8 +20,8 @@ import {
     voicePlan0,
     voicePlan1,
 } from 'fixtures/productPrices'
-import {SelectedPlans} from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'
-import {RootState, StoreDispatch} from 'state/types'
+import { SelectedPlans } from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'
+import { RootState, StoreDispatch } from 'state/types'
 
 import VoiceOrSmsChangeReviewAlert from '../VoiceOrSmsChangeReviewAlert'
 
@@ -98,16 +99,16 @@ describe('VoiceOrSmsChangeReviewAlert', () => {
         }
 
         it('should not display the alert if the user is vetted for phone ', () => {
-            const {queryByText} = render(
+            const { queryByText } = render(
                 <Provider store={store}>
                     <VoiceOrSmsChangeReviewAlert
                         selectedPlans={selectedPlans}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(
-                queryByText(/subscription will have to be reviewed/)
+                queryByText(/subscription will have to be reviewed/),
             ).toBeNull()
         })
 
@@ -115,16 +116,16 @@ describe('VoiceOrSmsChangeReviewAlert', () => {
             mockFlags({
                 [FeatureFlagKey.BillingVoiceSmsSelfServe]: false,
             })
-            const {queryByText} = render(
+            const { queryByText } = render(
                 <Provider store={store}>
                     <VoiceOrSmsChangeReviewAlert
                         selectedPlans={selectedPlans}
                     />
-                </Provider>
+                </Provider>,
             )
 
             expect(
-                queryByText(/subscription will have to be reviewed/)
+                queryByText(/subscription will have to be reviewed/),
             ).toBeInTheDocument()
         })
     })
@@ -165,16 +166,16 @@ describe('VoiceOrSmsChangeReviewAlert', () => {
                 isSelected: true,
             },
         }
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <VoiceOrSmsChangeReviewAlert selectedPlans={selectedPlans} />
-            </Provider>
+            </Provider>,
         )
 
         expect(
             getByText(
-                /Your.*Voice & SMS.*subscription will have to be reviewed/
-            )
+                /Your.*Voice & SMS.*subscription will have to be reviewed/,
+            ),
         ).toBeInTheDocument()
     })
 
@@ -214,14 +215,14 @@ describe('VoiceOrSmsChangeReviewAlert', () => {
                 isSelected: true,
             },
         }
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={store}>
                 <VoiceOrSmsChangeReviewAlert selectedPlans={selectedPlans} />
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            getByText(/Your.*Voice.*subscription will have to be reviewed/)
+            getByText(/Your.*Voice.*subscription will have to be reviewed/),
         ).toBeInTheDocument()
     })
 
@@ -261,14 +262,14 @@ describe('VoiceOrSmsChangeReviewAlert', () => {
                 isSelected: false,
             },
         }
-        const {getByText} = render(
+        const { getByText } = render(
             <Provider store={alteredStore}>
                 <VoiceOrSmsChangeReviewAlert selectedPlans={selectedPlans} />
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            getByText(/Your.*SMS.*subscription will have to be reviewed/)
+            getByText(/Your.*SMS.*subscription will have to be reviewed/),
         ).toBeInTheDocument()
     })
 })

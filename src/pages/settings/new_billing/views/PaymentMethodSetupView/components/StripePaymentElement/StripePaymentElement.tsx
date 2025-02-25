@@ -1,5 +1,6 @@
-import {PaymentElement, PaymentElementProps} from '@stripe/react-stripe-js'
 import React from 'react'
+
+import { PaymentElement, PaymentElementProps } from '@stripe/react-stripe-js'
 
 export const StripePaymentElement: React.FC<PaymentElementProps> = ({
     options,
@@ -7,7 +8,7 @@ export const StripePaymentElement: React.FC<PaymentElementProps> = ({
 }) => {
     return (
         <PaymentElement
-            options={{fields: {billingDetails: 'never'}, ...options}}
+            options={{ fields: { billingDetails: 'never' }, ...options }}
             {...props}
         />
     )

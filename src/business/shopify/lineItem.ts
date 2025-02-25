@@ -1,16 +1,15 @@
-import {fromJS, Map, List} from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 import _ceil from 'lodash/ceil'
 
 import {
     DiscountType,
     NonFractionalCurrency,
 } from '../../constants/integrations/types/shopify'
-
-import {formatPercentage, formatPrice} from './number'
+import { formatPercentage, formatPrice } from './number'
 
 export function initLineItemAppliedDiscount(
     lineItem: Map<any, any>,
-    order: Map<any, any>
+    order: Map<any, any>,
 ): Maybe<Map<any, any>> {
     if (!parseFloat(lineItem.get('total_discount'))) {
         return null
@@ -18,7 +17,7 @@ export function initLineItemAppliedDiscount(
 
     const indexes = (lineItem.get('discount_allocations', []) as List<any>).map(
         (discountAllocation: Map<any, any>) =>
-            discountAllocation.get('discount_application_index') as number
+            discountAllocation.get('discount_application_index') as number,
     )
 
     let discountApplicationIndex: Maybe<number> = -1
@@ -46,7 +45,7 @@ export function initLineItemAppliedDiscount(
     ).find(
         (discountAllocation: Map<any, any>) =>
             discountAllocation.get('discount_application_index') ===
-            discountApplicationIndex
+            discountApplicationIndex,
     ) as Map<any, any>
 
     const currency = order.get('currency')
@@ -74,7 +73,7 @@ export function initLineItemAppliedDiscount(
 
 export function getDraftOrderLineItemDiscountedPrice(
     lineItem: Map<any, any>,
-    currencyCode: string
+    currencyCode: string,
 ): number {
     const price = parseFloat(lineItem.get('price'))
     const quantity = lineItem.get('quantity')
@@ -83,7 +82,7 @@ export function getDraftOrderLineItemDiscountedPrice(
         ? parseFloat(appliedDiscount.get('amount'))
         : 0
     const isNonFractional = Object.values(NonFractionalCurrency).includes(
-        currencyCode as NonFractionalCurrency
+        currencyCode as NonFractionalCurrency,
     )
     const decimals = isNonFractional ? 0 : 2
 
@@ -104,18 +103,18 @@ export function getDraftOrderLineItemTotal(lineItem: Map<any, any>): number {
 }
 
 export function getDraftOrderTotalLineItemsPrice(
-    draftOrder: Map<any, any>
+    draftOrder: Map<any, any>,
 ): number {
     return (draftOrder.get('line_items', []) as List<any>).reduce(
         (total = 0, lineItem: Map<any, any>) =>
             total + getDraftOrderLineItemTotal(lineItem),
-        0
+        0,
     )
 }
 
 export function getPriceSetAmount(
     priceSet: Map<any, any>,
-    currencyCode: string
+    currencyCode: string,
 ): string {
     return priceSet.getIn(['presentment_money', 'currency_code']) ===
         currencyCode
@@ -125,14 +124,14 @@ export function getPriceSetAmount(
 
 export function getOrderLineItemPrice(
     lineItem: Map<any, any>,
-    currencyCode: string
+    currencyCode: string,
 ): string {
     return getPriceSetAmount(lineItem.get('price_set'), currencyCode)
 }
 
 export function getOrderLineItemTotalDiscount(
     lineItem: Map<any, any>,
-    currencyCode: string
+    currencyCode: string,
 ): string {
     return getPriceSetAmount(lineItem.get('total_discount_set'), currencyCode)
 }
@@ -140,7 +139,7 @@ export function getOrderLineItemTotalDiscount(
 export function getOrderLineItemDiscountedPrice(
     lineItem: Map<any, any>,
     currencyCode: string,
-    quantity: number
+    quantity: number,
 ): number {
     if (quantity === 0) {
         return 0
@@ -148,11 +147,11 @@ export function getOrderLineItemDiscountedPrice(
 
     const price = parseFloat(getOrderLineItemPrice(lineItem, currencyCode))
     const totalDiscount = parseFloat(
-        getOrderLineItemTotalDiscount(lineItem, currencyCode)
+        getOrderLineItemTotalDiscount(lineItem, currencyCode),
     )
     const discountAmount = totalDiscount / quantity
     const isNonFractional = Object.values(NonFractionalCurrency).includes(
-        currencyCode as NonFractionalCurrency
+        currencyCode as NonFractionalCurrency,
     )
     const decimals = isNonFractional ? 0 : 2
 

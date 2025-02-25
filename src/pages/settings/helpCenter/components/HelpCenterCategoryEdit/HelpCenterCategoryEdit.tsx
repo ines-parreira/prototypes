@@ -1,6 +1,7 @@
+import React, { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react'
+
 import classNames from 'classnames'
 import copy from 'copy-to-clipboard'
-import React, {ChangeEvent, useEffect, useMemo, useRef, useState} from 'react'
 import {
     FormGroup,
     FormText,
@@ -13,7 +14,7 @@ import {
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useAsyncFn from 'hooks/useAsyncFn'
-import {SCREEN_SIZE, useScreenSize} from 'hooks/useScreenSize'
+import { SCREEN_SIZE, useScreenSize } from 'hooks/useScreenSize'
 import {
     Category,
     CreateCategoryDto,
@@ -25,47 +26,48 @@ import {
 } from 'models/helpCenter/types'
 import Button from 'pages/common/components/button/Button'
 import IconButton from 'pages/common/components/button/IconButton'
-import {Drawer} from 'pages/common/components/Drawer'
+import { Drawer } from 'pages/common/components/Drawer'
 import AutoPopulateInput from 'pages/common/forms/AutoPopulateInput/AutoPopulateInput'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
-import {Option, Value} from 'pages/common/forms/SelectField/types'
+import { Option, Value } from 'pages/common/forms/SelectField/types'
 import {
     DRAWER_TRANSITION_DURATION_MS,
     HELP_CENTER_DEFAULT_LAYOUT,
     HELP_CENTER_DEFAULT_LOCALE,
     HELP_CENTER_TITLE_MAX_LENGTH,
 } from 'pages/settings/helpCenter/constants'
-import {useSupportedLocales} from 'pages/settings/helpCenter/providers/SupportedLocales'
+import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
 import {
     getAbsoluteUrl,
-    getHomePageItemHashUrl,
     getCategoryUrl,
     getHelpCenterDomain,
+    getHomePageItemHashUrl,
     slugify,
 } from 'pages/settings/helpCenter/utils/helpCenter.utils'
-import {getLocaleSelectOptions} from 'pages/settings/helpCenter/utils/localeSelectOptions'
+import { getLocaleSelectOptions } from 'pages/settings/helpCenter/utils/localeSelectOptions'
 import {
-    getParentCategories,
     getCategoriesById,
+    getParentCategories,
 } from 'state/entities/helpCenter/categories'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {getViewLanguage} from 'state/ui/helpCenter'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { getViewLanguage } from 'state/ui/helpCenter'
 
-import {FileUpload, useFileUpload} from '../../hooks/useFileUpload'
-import {getCategoryDropdownOption} from '../articles/ArticleCategorySelect/hooks/useCategoriesOptions'
+import { FileUpload, useFileUpload } from '../../hooks/useFileUpload'
+import { getCategoryDropdownOption } from '../articles/ArticleCategorySelect/hooks/useCategoriesOptions'
 import {
     ActionType,
     ArticleLanguageSelect,
     OptionItem,
 } from '../articles/ArticleLanguageSelect'
-import {CloseModal} from '../articles/CloseModal'
-import {ConfirmationModal} from '../ConfirmationModal'
-import {SearchEnginePreview} from '../SearchEnginePreview'
+import { CloseModal } from '../articles/CloseModal'
+import { ConfirmationModal } from '../ConfirmationModal'
+import { SearchEnginePreview } from '../SearchEnginePreview'
 import SelectVisibilityStatus from '../SelectVisibilityStatus/SelectVisibilityStatus'
-import {CategoryImageEdit} from './components/CategoryImageEdit/CategoryImageEdit'
+import { CategoryImageEdit } from './components/CategoryImageEdit/CategoryImageEdit'
+import { eligibleParentCategories, isOneOfParentsUnlisted } from './utils'
+
 import css from './HelpCenterCategoryEdit.less'
-import {eligibleParentCategories, isOneOfParentsUnlisted} from './utils'
 
 type Props = {
     isOpen: boolean
@@ -80,7 +82,7 @@ type Props = {
     onCreate?: (payload: CreateCategoryDto) => void
     onSave?: (
         translation: UpdateCategoryTranslationDto,
-        locale: LocaleCode
+        locale: LocaleCode,
     ) => void
     onClose: () => void
     onDeleteTranslation: (categoryId: number, locale: LocaleCode) => void
@@ -131,7 +133,7 @@ export const HelpCenterCategoryEdit = ({
     const clearSelectionText = 'Clear selection'
     const categoryOptionCandidates = useMemo(
         () => eligibleParentCategories(categories, viewLanguage, category),
-        [categories, viewLanguage, category]
+        [categories, viewLanguage, category],
     )
     const [hasPendingChanges, setHasPendingChanges] = useState(false)
     const [isAttemptingToClose, setIsAttemptingToClose] = useState(false)
@@ -179,7 +181,7 @@ export const HelpCenterCategoryEdit = ({
 
                     if (category?.available_locales) {
                         isComplete = category.available_locales.includes(
-                            option.value
+                            option.value,
                         )
                         canBeDeleted = category.available_locales.length > 1
                     }
@@ -189,9 +191,9 @@ export const HelpCenterCategoryEdit = ({
                         isComplete,
                         canBeDeleted,
                     }
-                }
+                },
             ),
-        [category, locales, helpCenter.supported_locales]
+        [category, locales, helpCenter.supported_locales],
     )
 
     useEffect(() => {
@@ -206,7 +208,7 @@ export const HelpCenterCategoryEdit = ({
             setMetaTitle(translation?.seo_meta.title || null)
             setMetaDescription(translation?.seo_meta.description || null)
             setParentCategory(
-                category.translation?.parent_category_id ?? undefined
+                category.translation?.parent_category_id ?? undefined,
             )
             setImageUrl(category.translation?.image_url ?? '')
             if (category.translation) {
@@ -223,7 +225,7 @@ export const HelpCenterCategoryEdit = ({
             setImageUrl('')
         }
         setParentCategory(
-            category?.translation?.parent_category_id ?? parentCategoryId
+            category?.translation?.parent_category_id ?? parentCategoryId,
         )
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isOpen, category, translation, viewLanguage])
@@ -234,7 +236,7 @@ export const HelpCenterCategoryEdit = ({
         if (isOpen) {
             setTimeout(
                 () => categoryTitleRef.current?.focus(),
-                DRAWER_TRANSITION_DURATION_MS
+                DRAWER_TRANSITION_DURATION_MS,
             )
         }
     }, [isOpen])
@@ -242,7 +244,7 @@ export const HelpCenterCategoryEdit = ({
     useEffect(() => {
         setParentOptions([
             ...categoryOptionCandidates.map((category) =>
-                getCategoryDropdownOption(category)
+                getCategoryDropdownOption(category),
             ),
             {
                 value: 0,
@@ -254,7 +256,7 @@ export const HelpCenterCategoryEdit = ({
     useEffect(() => {
         if (parentCategory) {
             setIsParentUnlisted(
-                isOneOfParentsUnlisted(categories, parentCategory)
+                isOneOfParentsUnlisted(categories, parentCategory),
             )
         } else {
             setIsParentUnlisted(false)
@@ -263,7 +265,7 @@ export const HelpCenterCategoryEdit = ({
 
     const handleOnClickAction = (
         action: ActionType,
-        currentOption: OptionItem
+        currentOption: OptionItem,
     ) => {
         if (action === 'delete' && category?.id) {
             setPendingDeleteLocale(currentOption)
@@ -345,7 +347,7 @@ export const HelpCenterCategoryEdit = ({
                 notify({
                     message: 'Error during image upload',
                     status: NotificationStatus.Error,
-                })
+                }),
             )
         }
         imageFile.discardFile()
@@ -383,28 +385,29 @@ export const HelpCenterCategoryEdit = ({
                     description: metaDescription,
                 },
             },
-            viewLanguage
+            viewLanguage,
         )
     }
 
-    const [{loading: isSaveProcessing}, attemptSave] = useAsyncFn(async () => {
-        setIsAttemptingToClose(false)
+    const [{ loading: isSaveProcessing }, attemptSave] =
+        useAsyncFn(async () => {
+            setIsAttemptingToClose(false)
 
-        const hasChildren =
-            articlesCount > 0 || (category && category.children.length > 0)
-        if (
-            !isCreate &&
-            hasChildren &&
-            category?.translation?.visibility_status === 'PUBLIC' &&
-            visibilityStatus === 'UNLISTED'
-        ) {
-            setPendingSaveCategory(true)
+            const hasChildren =
+                articlesCount > 0 || (category && category.children.length > 0)
+            if (
+                !isCreate &&
+                hasChildren &&
+                category?.translation?.visibility_status === 'PUBLIC' &&
+                visibilityStatus === 'UNLISTED'
+            ) {
+                setPendingSaveCategory(true)
 
-            return
-        }
+                return
+            }
 
-        await handleOnSave()
-    }, [category, visibilityStatus, articlesCount, isCreate, handleOnSave])
+            await handleOnSave()
+        }, [category, visibilityStatus, articlesCount, isCreate, handleOnSave])
 
     const handleDiscard = () => {
         onClose()
@@ -449,7 +452,7 @@ export const HelpCenterCategoryEdit = ({
         setIsClearSelectionButtonHidden(
             !!text &&
                 clearSelectionText.toLowerCase().indexOf(text.toLowerCase()) >
-                    -1
+                    -1,
         )
     }
 
@@ -507,23 +510,23 @@ export const HelpCenterCategoryEdit = ({
                       locale: viewLanguage,
                       itemId: categoryId,
                       isUnlisted,
-                  })
+                  }),
         )
 
         void dispatch(
             notify({
                 message: 'Link copied with success',
                 status: NotificationStatus.Success,
-            })
+            }),
         )
     }
 
     const canSaveCategory = useMemo(
         () => canSave && title.trim() !== '' && slug.trim() !== '',
-        [canSave, title, slug]
+        [canSave, title, slug],
     )
 
-    const slugPrefix = getCategoryUrl({domain, locale: viewLanguage})
+    const slugPrefix = getCategoryUrl({ domain, locale: viewLanguage })
     const slugSuffix = category?.id ? `-${category.id.toString()}` : ''
 
     const isUnlisted =
@@ -596,7 +599,7 @@ export const HelpCenterCategoryEdit = ({
                                         isFirstOptionHidden,
                                     [css['hideClearSelection']]:
                                         isClearSelectionButtonHidden,
-                                }
+                                },
                             )}
                             value={
                                 parentCategory && categoriesById[parentCategory]
@@ -648,7 +651,7 @@ export const HelpCenterCategoryEdit = ({
                             onActionClick={handleOnClickAction}
                             className={classNames(
                                 css.inlineLanguageSelect,
-                                css.inlineLanguageSelectForm
+                                css.inlineLanguageSelectForm,
                             )}
                         />
                     </FormGroup>
@@ -759,7 +762,7 @@ export const HelpCenterCategoryEdit = ({
                             required
                         />
                         <SearchEnginePreview
-                            baseUrl={getAbsoluteUrl({domain}, false)}
+                            baseUrl={getAbsoluteUrl({ domain }, false)}
                             title={metaTitle ?? title}
                             description={metaDescription ?? description}
                             urlItems={['articles', `${slug}${slugSuffix}`]}
@@ -803,7 +806,7 @@ export const HelpCenterCategoryEdit = ({
                             Are you sure you want to delete this category?
                         </span>
                     }
-                    style={{width: '100%', maxWidth: 610}}
+                    style={{ width: '100%', maxWidth: 610 }}
                     onClose={() => setPendingDeleteCategory(false)}
                     onConfirm={handleOnConfirmDeleteCategory}
                 >
@@ -858,7 +861,7 @@ export const HelpCenterCategoryEdit = ({
                             {pendingDeleteLocale?.label} for this category?
                         </span>
                     }
-                    style={{width: '100%', maxWidth: 610}}
+                    style={{ width: '100%', maxWidth: 610 }}
                     onClose={() => setPendingDeleteLocale(undefined)}
                     onConfirm={handleOnConfirmDelete}
                 >

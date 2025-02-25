@@ -1,12 +1,12 @@
-import React, {createContext, ReactNode} from 'react'
+import React, { createContext, ReactNode } from 'react'
 
 import {
     CreateTriggerFn,
     DeleteTriggerFn,
     UpdateTriggerFn,
 } from '../../types/AdvancedTriggerBaseProps'
-import {Campaign} from '../../types/Campaign'
-import {CampaignTriggerMap} from '../../types/CampaignTriggerMap'
+import { Campaign } from '../../types/Campaign'
+import { CampaignTriggerMap } from '../../types/CampaignTriggerMap'
 
 export interface CampaignDetailsFormApi {
     campaign: Campaign
@@ -25,7 +25,7 @@ export const CampaignDetailsFormContext = createContext<CampaignDetailsFormApi>(
         addTrigger: () => null,
         updateTrigger: () => null,
         deleteTrigger: () => null,
-    }
+    },
 )
 
 export type CampaignDetailsFormProviderType = {

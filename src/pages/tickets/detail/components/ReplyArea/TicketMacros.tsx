@@ -1,5 +1,3 @@
-import {Macro} from '@gorgias/api-queries'
-import classnames from 'classnames'
 import React, {
     MouseEvent,
     useCallback,
@@ -7,6 +5,8 @@ import React, {
     useRef,
     useState,
 } from 'react'
+
+import classnames from 'classnames'
 import {
     Dropdown,
     DropdownItem,
@@ -16,12 +16,14 @@ import {
     PopoverBody,
 } from 'reactstrap'
 
-import {useAppNode} from 'appNode'
-import {TicketMessageSourceType} from 'business/types/ticket'
-import {UserRole} from 'config/types/user'
-import {useDeleteMacro} from 'hooks/macros'
+import { Macro } from '@gorgias/api-queries'
+
+import { useAppNode } from 'appNode'
+import { TicketMessageSourceType } from 'business/types/ticket'
+import { UserRole } from 'config/types/user'
+import { useDeleteMacro } from 'hooks/macros'
 import useAppSelector from 'hooks/useAppSelector'
-import {Filters} from 'models/macro/types'
+import { Filters } from 'models/macro/types'
 import Button from 'pages/common/components/button/Button'
 import Loader from 'pages/common/components/Loader/Loader'
 import history from 'pages/history'
@@ -29,10 +31,10 @@ import MacroList from 'pages/tickets/common/macros/components/MacroList'
 import MacroNoResults from 'pages/tickets/common/macros/components/MacroNoResults'
 import MacroContainer from 'pages/tickets/common/macros/MacroContainer'
 import Preview from 'pages/tickets/common/macros/Preview'
-import {getCurrentUser} from 'state/currentUser/selectors'
-import {CurrentUserState} from 'state/currentUser/types'
-import {getNewMessageType} from 'state/newMessage/selectors'
-import {hasRole} from 'utils'
+import { getCurrentUser } from 'state/currentUser/selectors'
+import { CurrentUserState } from 'state/currentUser/types'
+import { getNewMessageType } from 'state/newMessage/selectors'
+import { hasRole } from 'utils'
 
 import css from './TicketMacros.less'
 
@@ -56,7 +58,7 @@ export function TicketMacros({
     isLoading,
     loadMacros,
     macros = [],
-    searchParams = {search: ''},
+    searchParams = { search: '' },
     selectMacro,
 }: Props) {
     const currentUser = useAppSelector<CurrentUserState>(getCurrentUser)
@@ -68,7 +70,7 @@ export function TicketMacros({
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [isCreatingMacro, setIsCreatingMacro] = useState(false)
     const appNode = useAppNode()
-    const {mutate: deleteMacro} = useDeleteMacro()
+    const { mutate: deleteMacro } = useDeleteMacro()
 
     // brings the preview to top when previewing another macro
     useEffect(() => {
@@ -185,7 +187,7 @@ export function TicketMacros({
                                     <DropdownItem
                                         onClick={() =>
                                             history.push(
-                                                '/app/settings/profile'
+                                                '/app/settings/profile',
                                             )
                                         }
                                         className="cursor-pointer"

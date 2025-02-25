@@ -1,16 +1,17 @@
-import {QueryClientProvider} from '@tanstack/react-query'
-import {render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import React, {ComponentProps} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps } from 'react'
+
+import { QueryClientProvider } from '@tanstack/react-query'
+import { render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {emptyRuleRecipeFixture} from 'fixtures/ruleRecipe'
-import {IntegrationType} from 'models/integration/constants'
-import {ManagedRulesSlugs} from 'state/rules/types'
-import {RootState, StoreDispatch} from 'state/types'
-import {mockQueryClient} from 'tests/reactQueryTestingUtils'
+import { emptyRuleRecipeFixture } from 'fixtures/ruleRecipe'
+import { IntegrationType } from 'models/integration/constants'
+import { ManagedRulesSlugs } from 'state/rules/types'
+import { RootState, StoreDispatch } from 'state/types'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import AutoReplyWismoEditor from '../AutoReplyWismoEditor'
 
@@ -67,23 +68,23 @@ describe('<AutoReplyWismoEditor/>', () => {
             [ManagedRulesSlugs.AutoReplyWismo as string]:
                 emptyRuleRecipeFixture,
         },
-        helpCenter: {articles: {}, categories: {}, helpCenters: {}},
+        helpCenter: { articles: {}, categories: {}, helpCenters: {} },
     }
 
     it('should render correctly', () => {
         const store = mockStore({
             entities: entities,
             integrations: fromJS({
-                integrations: [{type: IntegrationType.Shopify, meta: {}}],
+                integrations: [{ type: IntegrationType.Shopify, meta: {} }],
             }),
-            billing: fromJS({products: []}),
+            billing: fromJS({ products: [] }),
         } as RootState)
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <QueryClientProvider client={mockQueryClient()}>
                     <AutoReplyWismoEditor {...minProps} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -93,14 +94,14 @@ describe('<AutoReplyWismoEditor/>', () => {
             integrations: fromJS({
                 integrations: [],
             }),
-            billing: fromJS({products: []}),
+            billing: fromJS({ products: [] }),
         } as RootState)
-        const {container} = render(
+        const { container } = render(
             <Provider store={store}>
                 <QueryClientProvider client={mockQueryClient()}>
                     <AutoReplyWismoEditor {...minProps} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -117,13 +118,13 @@ describe('<AutoReplyWismoEditor/>', () => {
                     },
                 ],
             }),
-            billing: fromJS({products: []}),
+            billing: fromJS({ products: [] }),
         } as unknown as RootState)
 
         const useGetSelfServiceConfigurationsMock = jest.spyOn(
             // eslint-disable-next-line @typescript-eslint/no-var-requires
             require('models/selfServiceConfiguration/queries'),
-            'useGetSelfServiceConfigurations'
+            'useGetSelfServiceConfigurations',
         )
 
         useGetSelfServiceConfigurationsMock.mockImplementationOnce(() => ({
@@ -136,10 +137,10 @@ describe('<AutoReplyWismoEditor/>', () => {
                 <QueryClientProvider client={mockQueryClient()}>
                     <AutoReplyWismoEditor {...minProps} />
                 </QueryClientProvider>
-            </Provider>
+            </Provider>,
         )
         await screen.findByText(
-            /add a response for customers tracking unfulfilled orders/i
+            /add a response for customers tracking unfulfilled orders/i,
         )
     })
 })

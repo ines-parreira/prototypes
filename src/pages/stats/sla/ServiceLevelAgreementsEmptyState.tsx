@@ -1,5 +1,6 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
+
+import { Link } from 'react-router-dom'
 
 import icon from 'assets/img/stats/no-slas-icon.png'
 import Button from 'pages/common/components/button/Button'

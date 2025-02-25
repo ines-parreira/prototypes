@@ -1,9 +1,9 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {dummyAppData, dummyAppListData} from 'fixtures/apps'
-import {IntegrationType} from 'models/integration/constants'
-import {useGetApps, useGetAppsByIds} from 'models/integration/queries'
-import {useListActionsApps} from 'models/workflows/queries'
+import { dummyAppData, dummyAppListData } from 'fixtures/apps'
+import { IntegrationType } from 'models/integration/constants'
+import { useGetApps, useGetAppsByIds } from 'models/integration/queries'
+import { useListActionsApps } from 'models/workflows/queries'
 
 import useApps from '../useApps'
 
@@ -30,7 +30,7 @@ describe('useApps()', () => {
         } as unknown as ReturnType<typeof useListActionsApps>)
         mockUseGetAppsByIds.mockReturnValue([])
 
-        const {result} = renderHook(() => useApps())
+        const { result } = renderHook(() => useApps())
 
         expect(result.current).toEqual({
             isLoading: false,
@@ -82,7 +82,7 @@ describe('useApps()', () => {
             },
         ] as unknown as ReturnType<typeof useGetAppsByIds>)
 
-        const {result} = renderHook(() => useApps())
+        const { result } = renderHook(() => useApps())
 
         expect(mockUseGetAppsByIds).toHaveBeenCalledWith(['someid1'])
         expect(result.current).toEqual({
@@ -130,7 +130,7 @@ describe('useApps()', () => {
         } as unknown as ReturnType<typeof useListActionsApps>)
         mockUseGetAppsByIds.mockReturnValue([])
 
-        const {result} = renderHook(() => useApps([IntegrationType.App]))
+        const { result } = renderHook(() => useApps([IntegrationType.App]))
 
         expect(result.current).toEqual({
             isLoading: false,

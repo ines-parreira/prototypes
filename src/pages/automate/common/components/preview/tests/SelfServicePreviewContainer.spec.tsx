@@ -1,5 +1,6 @@
-import {render, screen} from '@testing-library/react'
 import React from 'react'
+
+import { render, screen } from '@testing-library/react'
 
 import SelfServicePreviewContainer from '../SelfServicePreviewContainer'
 
@@ -8,7 +9,7 @@ describe('<SelfServicePreviewChannelSelect />', () => {
         render(
             <SelfServicePreviewContainer onChange={jest.fn()} channels={[]}>
                 {() => <div></div>}
-            </SelfServicePreviewContainer>
+            </SelfServicePreviewContainer>,
         )
         expect(screen.getByText('Channel')).toBeInTheDocument()
     })

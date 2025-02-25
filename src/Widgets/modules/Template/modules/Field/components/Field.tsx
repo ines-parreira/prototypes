@@ -1,8 +1,8 @@
 import React from 'react'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import {LEAF_TYPES} from 'models/widget/constants'
-import {LeafTemplate, LeafType} from 'models/widget/types'
+import { LEAF_TYPES } from 'models/widget/constants'
+import { LeafTemplate, LeafType } from 'models/widget/types'
 import {
     removeEditedWidget,
     startWidgetEdition,
@@ -10,10 +10,10 @@ import {
     updateEditedWidget,
 } from 'state/widgets/actions'
 
-import {FieldEditFormData, HiddenFields} from '../types'
+import { FieldEditFormData, HiddenFields } from '../types'
 import CopyButton from './CopyButton'
 import UIField from './views'
-import {TypeOption} from './views/FieldEditForm'
+import { TypeOption } from './views/FieldEditForm'
 
 export const EDIT_BUTTON_TEXT = 'edit'
 export const DELETE_BUTTON_TEXT = 'delete'
@@ -33,7 +33,7 @@ export const LEAF_TYPE_LABELS: Record<LeafType, string> = {
 } as const
 
 export const TYPE_OPTIONS: TypeOption<LeafType>[] = Object.values(
-    LEAF_TYPES
+    LEAF_TYPES,
 ).map((type) => {
     return {
         value: type,

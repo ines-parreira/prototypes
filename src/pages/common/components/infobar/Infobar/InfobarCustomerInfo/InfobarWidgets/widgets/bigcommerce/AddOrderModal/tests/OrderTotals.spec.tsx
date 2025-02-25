@@ -1,12 +1,13 @@
-import {render} from '@testing-library/react'
 import React from 'react'
+
+import { render } from '@testing-library/react'
 
 import {
     bigCommerceCartFixture,
     bigCommerceCheckoutFixture,
     bigCommerceConsignmentFixture,
 } from 'fixtures/bigcommerce'
-import {BigCommerceActionType} from 'models/integration/types'
+import { BigCommerceActionType } from 'models/integration/types'
 
 import OrderTotals from '../OrderTotals'
 
@@ -19,7 +20,7 @@ describe('<OrderTotals/>', () => {
         it('should render', () => {
             const currency = 'USD'
 
-            const {container} = render(
+            const { container } = render(
                 <OrderTotals
                     actionName={BigCommerceActionType.CreateOrder}
                     checkout={bigCommerceCheckoutFixture}
@@ -38,7 +39,7 @@ describe('<OrderTotals/>', () => {
                     hasShippingAddress
                     isTotalPriceLoading={false}
                     currencyCode={currency}
-                />
+                />,
             )
 
             expect(container).toMatchSnapshot()

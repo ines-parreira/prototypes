@@ -1,15 +1,15 @@
-import {act, fireEvent, render, screen} from '@testing-library/react'
 import React from 'react'
 
-import {ulid} from 'ulidx'
+import { act, fireEvent, render, screen } from '@testing-library/react'
+import { ulid } from 'ulidx'
 
-import {ActionTemplate} from 'pages/automate/actionsPlatform/types'
-import {WorkflowConfigurationBuilder} from 'pages/automate/workflows/models/workflowConfiguration.model'
+import { ActionTemplate } from 'pages/automate/actionsPlatform/types'
+import { WorkflowConfigurationBuilder } from 'pages/automate/workflows/models/workflowConfiguration.model'
 
 import UseCaseTemplateCard from '../UseCaseTemplateCard'
 
 jest.mock('../UseCaseTemplateModal', () => {
-    return ({onClose}: {onClose: () => void}) => (
+    return ({ onClose }: { onClose: () => void }) => (
         <div onClick={onClose}>UseCaseTemplateModal</div>
     )
 })
@@ -51,7 +51,7 @@ describe('<UseCaseTemplateCard />', () => {
         })
 
         expect(
-            screen.queryByText('UseCaseTemplateModal')
+            screen.queryByText('UseCaseTemplateModal'),
         ).not.toBeInTheDocument()
     })
 })

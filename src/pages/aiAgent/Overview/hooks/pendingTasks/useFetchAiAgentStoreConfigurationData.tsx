@@ -1,4 +1,4 @@
-import {useGetStoreConfigurationPure} from 'models/aiAgent/queries'
+import { useGetStoreConfigurationPure } from 'models/aiAgent/queries'
 
 type Args = {
     accountDomain: string
@@ -10,12 +10,12 @@ export const useFetchAiAgentStoreConfigurationData = ({
     storeName,
     enabled,
 }: Args) => {
-    const {data, isLoading} = useGetStoreConfigurationPure(
+    const { data, isLoading } = useGetStoreConfigurationPure(
         {
             accountDomain,
             storeName,
         },
-        {enabled}
+        { enabled },
     )
 
     return {

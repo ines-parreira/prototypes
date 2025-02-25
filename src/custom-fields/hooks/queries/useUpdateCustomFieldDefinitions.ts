@@ -1,16 +1,16 @@
-import {useQueryClient} from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 
 import {
     customFieldDefinitionKeys,
     UseGetCustomFieldDefinitions,
     useUpdateCustomFields,
 } from 'custom-fields/hooks/queries/queries'
-import {ListParams} from 'custom-fields/types'
+import { ListParams } from 'custom-fields/types'
 import useAppDispatch from 'hooks/useAppDispatch'
-import {isGorgiasApiError} from 'models/api/types'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
-import {errorToChildren} from 'utils'
+import { isGorgiasApiError } from 'models/api/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
+import { errorToChildren } from 'utils'
 
 export const useUpdateCustomFieldDefinitions = (params: ListParams) => {
     const dispatch = useAppDispatch()
@@ -21,7 +21,7 @@ export const useUpdateCustomFieldDefinitions = (params: ListParams) => {
         onMutate: async ([data]) => {
             // Cancel any outgoing re-fetches
             // (so they don't overwrite our optimistic update)
-            await queryClient.cancelQueries({queryKey})
+            await queryClient.cancelQueries({ queryKey })
 
             // Optimistically update to the new value
             queryClient.setQueryData<UseGetCustomFieldDefinitions>(
@@ -36,7 +36,7 @@ export const useUpdateCustomFieldDefinitions = (params: ListParams) => {
                             const updatedCustomField = data.find(
                                 (partialCustomFieldWithId) =>
                                     partialCustomFieldWithId.id ===
-                                    customField.id
+                                    customField.id,
                             )
 
                             if (updatedCustomField) {
@@ -52,7 +52,7 @@ export const useUpdateCustomFieldDefinitions = (params: ListParams) => {
                         // so we need to sort them back
                         .sort(
                             (customFieldA, customFieldB) =>
-                                customFieldB.priority - customFieldA.priority
+                                customFieldB.priority - customFieldA.priority,
                         )
 
                     return {
@@ -62,7 +62,7 @@ export const useUpdateCustomFieldDefinitions = (params: ListParams) => {
                             data: newData,
                         },
                     }
-                }
+                },
             )
         },
         onError: (error) => {
@@ -74,7 +74,7 @@ export const useUpdateCustomFieldDefinitions = (params: ListParams) => {
                     message: errorToChildren(error) || undefined,
                     allowHTML: true,
                     status: NotificationStatus.Error,
-                })
+                }),
             )
         },
         onSettled: () => {

@@ -1,2 +1,2 @@
-export {default} from './HelpCenterArticleModalAdvancedViewContent'
+export { default } from './HelpCenterArticleModalAdvancedViewContent'
 export * from './HelpCenterArticleModalAdvancedViewContent'

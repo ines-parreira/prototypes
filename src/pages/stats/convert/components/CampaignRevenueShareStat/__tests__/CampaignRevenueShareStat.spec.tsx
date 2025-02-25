@@ -1,15 +1,14 @@
-import {fromJS} from 'immutable'
-
 import React from 'react'
 
-import {campaign} from 'fixtures/campaign'
-import {integrationsState, shopifyIntegration} from 'fixtures/integrations'
+import { fromJS } from 'immutable'
 
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-import {CampaignRevenueShareStat} from 'pages/stats/convert/components/CampaignRevenueShareStat/CampaignRevenueShareStat'
-import {useGetRevenueShareChart} from 'pages/stats/convert/hooks/stats/useGetRevenueShareChart'
-import {useCampaignStatsFilters} from 'pages/stats/convert/hooks/useCampaignStatsFilters'
-import {assumeMock, renderWithStore} from 'utils/testing'
+import { campaign } from 'fixtures/campaign'
+import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
+import { CampaignRevenueShareStat } from 'pages/stats/convert/components/CampaignRevenueShareStat/CampaignRevenueShareStat'
+import { useGetRevenueShareChart } from 'pages/stats/convert/hooks/stats/useGetRevenueShareChart'
+import { useCampaignStatsFilters } from 'pages/stats/convert/hooks/useCampaignStatsFilters'
+import { assumeMock, renderWithStore } from 'utils/testing'
 
 jest.mock('pages/stats/convert/hooks/useCampaignStatsFilters')
 const useCampaignStatsFiltersMock = assumeMock(useCampaignStatsFilters)
@@ -45,7 +44,7 @@ describe('<CampaignRevenueShareStat />', () => {
     })
 
     it('renders without errors', () => {
-        const {getByText} = renderWithStore(<CampaignRevenueShareStat />, {
+        const { getByText } = renderWithStore(<CampaignRevenueShareStat />, {
             integrations: fromJS({
                 integrations: [
                     ...integrationsState.integrations,
@@ -65,7 +64,7 @@ describe('<CampaignRevenueShareStat />', () => {
             data: undefined,
         })
 
-        const {getByText} = renderWithStore(<CampaignRevenueShareStat />, {
+        const { getByText } = renderWithStore(<CampaignRevenueShareStat />, {
             integrations: fromJS({
                 integrations: [
                     ...integrationsState.integrations,

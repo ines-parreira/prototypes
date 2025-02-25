@@ -1,25 +1,26 @@
-import {Tooltip} from '@gorgias/merchant-ui-kit'
-import React, {useContext, useMemo, useState} from 'react'
-import {connect, ConnectedProps} from 'react-redux'
+import React, { useContext, useMemo, useState } from 'react'
 
-import {logEvent, SegmentEvent} from 'common/segment'
+import { connect, ConnectedProps } from 'react-redux'
+
+import { Tooltip } from '@gorgias/merchant-ui-kit'
+
+import { logEvent, SegmentEvent } from 'common/segment'
 import useId from 'hooks/useId'
-import {fetchShopTags} from 'models/integration/resources/shopify'
-import {ShopifyTags} from 'models/integration/types'
-import {ActionButtonContext} from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButton'
+import { fetchShopTags } from 'models/integration/resources/shopify'
+import { ShopifyTags } from 'models/integration/types'
+import { ActionButtonContext } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/ActionButton'
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
-import {Option} from 'pages/common/forms/MultiSelectOptionsField/types'
-import {IntegrationContext} from 'providers/infobar/IntegrationContext'
-import {getCurrentAccountState} from 'state/currentAccount/selectors'
-import {getActiveCustomerId} from 'state/customers/selectors'
-import {executeAction} from 'state/infobar/actions'
-import {RootState} from 'state/types'
-import {isEditing} from 'state/widgets/selectors'
+import { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
+import { IntegrationContext } from 'providers/infobar/IntegrationContext'
+import { getCurrentAccountState } from 'state/currentAccount/selectors'
+import { getActiveCustomerId } from 'state/customers/selectors'
+import { executeAction } from 'state/infobar/actions'
+import { RootState } from 'state/types'
+import { isEditing } from 'state/widgets/selectors'
+import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
+import { FieldCustomization } from 'Widgets/modules/Template/types'
 
-import {ShopifyActionType} from 'Widgets/modules/Shopify/types'
-import {FieldCustomization} from 'Widgets/modules/Template/types'
-
-import {ShopifyContext} from '../contexts/ShopifyContext'
+import { ShopifyContext } from '../contexts/ShopifyContext'
 
 type OwnProps = {
     selectedOptions: string
@@ -41,9 +42,9 @@ export function EditableListField({
     const [syncedValues, setSyncedValues] = useState('')
     const [options, setOptions] = useState<Option[]>([])
 
-    const {actionError} = useContext(ActionButtonContext)
-    const {integrationId} = useContext(IntegrationContext)
-    const {data_source, widget_resource_ids} = useContext(ShopifyContext)
+    const { actionError } = useContext(ActionButtonContext)
+    const { integrationId } = useContext(IntegrationContext)
+    const { data_source, widget_resource_ids } = useContext(ShopifyContext)
 
     const id = useId()
     const tooltipTargetID = 'editable-list-' + id + '-tooltip-target'
@@ -53,7 +54,7 @@ export function EditableListField({
         if (selectedOptions.length)
             formatedValues = selectedOptions.split(',').map((k: string) => {
                 const val = k.trim()
-                return {label: val, value: val}
+                return { label: val, value: val }
             })
         setSelectedValues(formatedValues)
         setSyncedValues(selectedOptions)
@@ -93,7 +94,7 @@ export function EditableListField({
                 // silent fail
                 return
             }
-            setOptions(tags.map((tag) => ({label: tag, value: tag})))
+            setOptions(tags.map((tag) => ({ label: tag, value: tag })))
         }
     }
 
@@ -117,7 +118,7 @@ export function EditableListField({
                 break
             case 'Customer':
                 action = ShopifyActionType.UpdateCustomerTags
-                payload = {tags_list: tagsListStr}
+                payload = { tags_list: tagsListStr }
                 break
             default:
                 break
@@ -165,7 +166,7 @@ const connector = connect(
     }),
     {
         executeAction,
-    }
+    },
 )
 
 const ConnectedEditableListField = connector(EditableListField)

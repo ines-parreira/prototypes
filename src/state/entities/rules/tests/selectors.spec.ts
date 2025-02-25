@@ -1,20 +1,20 @@
-import {emptyRule} from '../../../../fixtures/rule'
-import {RuleLimitStatus} from '../../../rules/types'
-import {RootState} from '../../../types'
+import { emptyRule } from '../../../../fixtures/rule'
+import { RuleLimitStatus } from '../../../rules/types'
+import { RootState } from '../../../types'
 import {
-    getSortedRules,
     getRulesLimitStatus,
+    getSortedRules,
     RULE_MAX_NUMBER,
     RULE_MAX_NUMBER_WARNING,
 } from '../selectors'
-import {RulesState} from '../types'
+import { RulesState } from '../types'
 
 describe('rules selectors', () => {
     describe('getSortedRules', () => {
         const rulesFixturesState = {
-            '1': {...emptyRule, name: 'foo', priority: 1},
-            '2': {...emptyRule, name: 'baz', priority: 100},
-            '3': {...emptyRule, name: 'bar', priority: 100},
+            '1': { ...emptyRule, name: 'foo', priority: 1 },
+            '2': { ...emptyRule, name: 'baz', priority: 100 },
+            '3': { ...emptyRule, name: 'bar', priority: 100 },
         }
 
         const state: RootState = {
@@ -30,7 +30,7 @@ describe('rules selectors', () => {
         const createRules = (n: number) => {
             const rules: RulesState = {}
             for (let i = 1; i <= n; i++) {
-                rules[i.toString()] = {...emptyRule, id: i}
+                rules[i.toString()] = { ...emptyRule, id: i }
             }
             return rules
         }

@@ -1,24 +1,24 @@
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
-import {Set} from 'immutable'
+import { Set } from 'immutable'
 import _pick from 'lodash/pick'
 
-import {teams as teamsFixtures} from 'fixtures/teams'
+import { teams as teamsFixtures } from 'fixtures/teams'
 import client from 'models/api/resources'
-import {OrderDirection} from 'models/api/types'
+import { OrderDirection } from 'models/api/types'
 
 import {
+    addTeamMember,
     createTeam,
     deleteTeam,
-    fetchTeam,
-    fetchTeams,
-    updateTeam,
-    fetchTeamMembers,
-    addTeamMember,
     deleteTeamMember,
     deleteTeamMembers,
+    fetchTeam,
+    fetchTeamMembers,
+    fetchTeams,
+    updateTeam,
 } from '../resources'
-import {TeamSortableProperties} from '../types'
+import { TeamSortableProperties } from '../types'
 
 const mockedServer = new MockAdapter(client)
 
@@ -43,9 +43,9 @@ describe('team resources', () => {
         })
 
         it('should reject an error on fail', () => {
-            mockedServer.onGet('/api/teams/').reply(503, {message: 'error'})
+            mockedServer.onGet('/api/teams/').reply(503, { message: 'error' })
             return expect(fetchTeams()).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                new Error('Request failed with status code 503'),
             )
         })
 
@@ -62,8 +62,8 @@ describe('team resources', () => {
                     {
                         orderBy: `${TeamSortableProperties.CreatedDatetime}:${OrderDirection.Asc}`,
                     },
-                    {cancelToken: source.token}
-                )
+                    { cancelToken: source.token },
+                ),
             ).rejects.toEqual(new axios.Cancel())
         })
 
@@ -78,7 +78,7 @@ describe('team resources', () => {
                     orderBy: `${TeamSortableProperties.Name}:${direction}`,
                 })
                 expect(mockedServer.history.get[0].params).toMatchSnapshot()
-            }
+            },
         )
     })
 
@@ -94,9 +94,9 @@ describe('team resources', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onGet(/\/api\/teams\/\d+\//)
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(fetchTeam(1)).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                new Error('Request failed with status code 503'),
             )
         })
     })
@@ -113,9 +113,9 @@ describe('team resources', () => {
         })
 
         it('should reject an error on fail', () => {
-            mockedServer.onPost('/api/teams/').reply(503, {message: 'error'})
+            mockedServer.onPost('/api/teams/').reply(503, { message: 'error' })
             return expect(createTeam(teamDraftMock)).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                new Error('Request failed with status code 503'),
             )
         })
     })
@@ -130,9 +130,9 @@ describe('team resources', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onDelete(/\/api\/teams\/\d+\//)
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(deleteTeam(1)).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                new Error('Request failed with status code 503'),
             )
         })
     })
@@ -150,9 +150,9 @@ describe('team resources', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onPut(/\/api\/teams\/\d+\//)
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(updateTeam(teamsFixtures[0])).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                new Error('Request failed with status code 503'),
             )
         })
     })
@@ -162,16 +162,16 @@ describe('team resources', () => {
             mockedServer
                 .onGet(/\/api\/teams\/\d+\/members/)
                 .reply(200, teamsFixtures[0].members)
-            const res = await fetchTeamMembers({id: 35})
+            const res = await fetchTeamMembers({ id: 35 })
             expect(res).toMatchSnapshot()
         })
 
         it('should reject an error on fail', () => {
             mockedServer
                 .onGet(/\/api\/teams\/\d+\/members/)
-                .reply(503, {message: 'error'})
-            return expect(fetchTeamMembers({id: 35})).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                .reply(503, { message: 'error' })
+            return expect(fetchTeamMembers({ id: 35 })).rejects.toEqual(
+                new Error('Request failed with status code 503'),
             )
         })
     })
@@ -194,9 +194,9 @@ describe('team resources', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onPost(/\/api\/teams\/\d+\/members/)
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(addTeamMember(33, 2)).rejects.toEqual(
-                new Error('Request failed with status code 503')
+                new Error('Request failed with status code 503'),
             )
         })
     })
@@ -206,7 +206,7 @@ describe('team resources', () => {
             mockedServer.onDelete(/\/api\/teams\/\d+\/members/).reply(204)
             const res = await deleteTeamMember(
                 teamsFixtures[0].id,
-                teamsFixtures[0].members[0].id
+                teamsFixtures[0].members[0].id,
             )
             expect(res).toBeUndefined()
         })
@@ -214,12 +214,12 @@ describe('team resources', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onDelete(/\/api\/teams\/\d+\/members/)
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(
                 deleteTeamMember(
                     teamsFixtures[0].id,
-                    teamsFixtures[0].members[0].id
-                )
+                    teamsFixtures[0].members[0].id,
+                ),
             ).rejects.toEqual(new Error('Request failed with status code 503'))
         })
     })
@@ -229,7 +229,7 @@ describe('team resources', () => {
             mockedServer.onDelete(/\/api\/teams\/\d+\/members/).reply(204)
             const res = await deleteTeamMembers(
                 teamsFixtures[0].id,
-                Set([teamsFixtures[0].members[0].id])
+                Set([teamsFixtures[0].members[0].id]),
             )
             expect(res).toBeUndefined()
         })
@@ -237,12 +237,12 @@ describe('team resources', () => {
         it('should reject an error on fail', () => {
             mockedServer
                 .onDelete(/\/api\/teams\/\d+\/members/)
-                .reply(503, {message: 'error'})
+                .reply(503, { message: 'error' })
             return expect(
                 deleteTeamMembers(
                     teamsFixtures[0].id,
-                    Set([teamsFixtures[0].members[0].id])
-                )
+                    Set([teamsFixtures[0].members[0].id]),
+                ),
             ).rejects.toEqual(new Error('Request failed with status code 503'))
         })
     })

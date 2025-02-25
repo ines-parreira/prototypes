@@ -1,6 +1,6 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {SegmentEvent} from 'common/segment'
+import { SegmentEvent } from 'common/segment'
 import * as segmentTracker from 'common/segment'
 import useAppDispatch from 'hooks/useAppDispatch'
 import * as ticketActions from 'state/ticket/actions'
@@ -13,7 +13,7 @@ const logEventMock = jest.spyOn(segmentTracker, 'logEvent')
 const clearTicketMock = jest.spyOn(ticketActions, 'clearTicket')
 const goToNextOrPrevTicketMock = jest.spyOn(
     ticketActions,
-    '_goToNextOrPrevTicket'
+    '_goToNextOrPrevTicket',
 )
 
 describe('usePrevNextTicketNavigation', () => {
@@ -30,8 +30,8 @@ describe('usePrevNextTicketNavigation', () => {
     })
 
     it('should test PREV navigation', async () => {
-        const {result} = renderHook(() =>
-            usePrevNextTicketNavigation(prevDirection, ticketNumber)
+        const { result } = renderHook(() =>
+            usePrevNextTicketNavigation(prevDirection, ticketNumber),
         )
 
         expect(result.current).toEqual(expect.any(Function))
@@ -40,20 +40,20 @@ describe('usePrevNextTicketNavigation', () => {
 
         expect(logEventMock).toHaveBeenCalledTimes(1)
         expect(logEventMock).toHaveBeenCalledWith(
-            SegmentEvent.TicketPreviousNavigation
+            SegmentEvent.TicketPreviousNavigation,
         )
         expect(useAppDispatchMock).toHaveBeenCalledTimes(1)
         expect(clearTicketMock).toHaveBeenCalledTimes(1)
         expect(goToNextOrPrevTicketMock).toHaveBeenCalledTimes(1)
         expect(goToNextOrPrevTicketMock).toHaveBeenCalledWith(
             parseFloat(ticketNumber),
-            prevDirection
+            prevDirection,
         )
     })
 
     it('should test NEXT navigation', async () => {
-        const {result} = renderHook(() =>
-            usePrevNextTicketNavigation(nextDirection, ticketNumber)
+        const { result } = renderHook(() =>
+            usePrevNextTicketNavigation(nextDirection, ticketNumber),
         )
 
         expect(result.current).toEqual(expect.any(Function))
@@ -62,14 +62,14 @@ describe('usePrevNextTicketNavigation', () => {
 
         expect(logEventMock).toHaveBeenCalledTimes(1)
         expect(logEventMock).toHaveBeenCalledWith(
-            SegmentEvent.TicketNextNavigation
+            SegmentEvent.TicketNextNavigation,
         )
         expect(useAppDispatchMock).toHaveBeenCalledTimes(1)
         expect(clearTicketMock).toHaveBeenCalledTimes(1)
         expect(goToNextOrPrevTicketMock).toHaveBeenCalledTimes(1)
         expect(goToNextOrPrevTicketMock).toHaveBeenCalledWith(
             parseFloat(ticketNumber),
-            nextDirection
+            nextDirection,
         )
     })
 })

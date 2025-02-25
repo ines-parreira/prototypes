@@ -1,7 +1,8 @@
-import {IntegrationType} from '@gorgias/api-types'
-import {Map} from 'immutable'
+import { Map } from 'immutable'
 
-import {PartialTemplate} from 'models/widget/types'
+import { IntegrationType } from '@gorgias/api-types'
+
+import { PartialTemplate } from 'models/widget/types'
 import {
     CUSTOM_WIDGET_TYPE,
     CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,

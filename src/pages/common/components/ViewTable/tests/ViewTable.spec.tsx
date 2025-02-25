@@ -1,25 +1,26 @@
-import {render} from '@testing-library/react'
-import {Location} from 'history'
-import {fromJS, Map} from 'immutable'
-import _identity from 'lodash/identity'
-import {stringify} from 'qs'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {defaultTicketView} from 'config/views'
-import {mockSearchRank} from 'fixtures/searchRank'
+import { render } from '@testing-library/react'
+import { Location } from 'history'
+import { fromJS, Map } from 'immutable'
+import _identity from 'lodash/identity'
+import { stringify } from 'qs'
+
+import { FeatureFlagKey } from 'config/featureFlags'
+import { defaultTicketView } from 'config/views'
+import { mockSearchRank } from 'fixtures/searchRank'
 import * as ticketFixtures from 'fixtures/ticket'
-import {view as fixtureView} from 'fixtures/views'
-import {EntityType, ViewField, ViewVisibility} from 'models/view/types'
+import { view as fixtureView } from 'fixtures/views'
+import { EntityType, ViewField, ViewVisibility } from 'models/view/types'
 import SearchRankScenarioContext from 'pages/common/components/SearchRankScenarioProvider/SearchRankScenarioContext'
 import history from 'pages/history'
-import {activeViewIdSet} from 'state/ui/views/actions'
+import { activeViewIdSet } from 'state/ui/views/actions'
 import * as viewsActions from 'state/views/actions'
 
-import {ViewTableContainer} from '../ViewTable'
+import { ViewTableContainer } from '../ViewTable'
 
 jest.mock('state/views/actions', () => {
-    const {updateView} = jest.requireActual('state/views/actions')
+    const { updateView } = jest.requireActual('state/views/actions')
     return {
         fetchViewItems: jest.fn().mockReturnValue(() => Promise.resolve()),
         setViewActive: jest.fn().mockReturnValue(() => Promise.resolve()),
@@ -68,9 +69,9 @@ const minProps = {
     fetchViewItems: jest.fn(),
     getViewIdToDisplay: jest.fn(),
     getView: jest.fn(),
-    location: {search: '', pathname: ''},
+    location: { search: '', pathname: '' },
     setViewActive: jest.fn(),
-    match: {params: {}},
+    match: { params: {} },
     isOnFirstPage: true,
     navigation: fromJS({}),
     hasActiveView: true,
@@ -81,7 +82,7 @@ const minProps = {
     ActionsComponent: null,
     viewButtons: null,
     activeViewIdSet,
-    flags: {[FeatureFlagKey.TrackTotalSearchHits]: true},
+    flags: { [FeatureFlagKey.TrackTotalSearchHits]: true },
 } as unknown as ComponentProps<typeof ViewTableContainer>
 
 beforeEach(() => {
@@ -115,21 +116,21 @@ describe('<ViewTable />', () => {
                     urlSearchView={searchView}
                     location={
                         {
-                            search: stringify({cursor}),
+                            search: stringify({ cursor }),
                             pathname: '',
                         } as Location<any>
                     }
-                />
+                />,
             )
             expect(minProps.updateView).toHaveBeenLastCalledWith(
                 searchView,
-                false
+                false,
             )
             expect(minProps.fetchViewItems).toHaveBeenLastCalledWith(
                 null,
                 cursor,
                 null,
-                null
+                null,
             )
         })
 
@@ -139,16 +140,16 @@ describe('<ViewTable />', () => {
                     {...minProps}
                     activeView={fromJS({})}
                     urlViewId={null}
-                />
+                />,
             )
             expect(minProps.setViewActive).toHaveBeenLastCalledWith(
-                minProps.activeView
+                minProps.activeView,
             )
             expect(minProps.fetchViewItems).toHaveBeenLastCalledWith(
                 null,
                 undefined,
                 null,
-                null
+                null,
             )
         })
 
@@ -158,14 +159,14 @@ describe('<ViewTable />', () => {
                     {...minProps}
                     activeView={minProps.activeView.set('id', 2)}
                     urlViewId={minProps.activeView.get('id')}
-                />
+                />,
             )
             expect(minProps.setViewActive).toBeCalledWith(minProps.activeView)
             expect(minProps.fetchViewItems).toBeCalledWith(
                 null,
                 undefined,
                 null,
-                null
+                null,
             )
         })
 
@@ -177,14 +178,14 @@ describe('<ViewTable />', () => {
                 null,
                 undefined,
                 null,
-                null
+                null,
             )
         })
 
         it('should update the active view with stored field config', () => {
             const mockFields = ['details', 'status']
             jest.spyOn(Storage.prototype, 'getItem').mockReturnValueOnce(
-                JSON.stringify(mockFields)
+                JSON.stringify(mockFields),
             )
             const searchView = minProps.activeView.set('search', 'foo')
 
@@ -193,18 +194,18 @@ describe('<ViewTable />', () => {
                     {...minProps}
                     isSearch
                     urlSearchView={searchView}
-                />
+                />,
             )
 
             expect(minProps.updateView).toHaveBeenLastCalledWith(
                 searchView.set('fields', fromJS(mockFields)),
-                false
+                false,
             )
         })
 
         it('should not update the active view with stored field config when value is not a stringified array', () => {
             jest.spyOn(Storage.prototype, 'getItem').mockReturnValueOnce(
-                'not an array'
+                'not an array',
             )
             const searchView = minProps.activeView.set('search', 'foo')
 
@@ -213,12 +214,12 @@ describe('<ViewTable />', () => {
                     {...minProps}
                     isSearch
                     urlSearchView={searchView}
-                />
+                />,
             )
 
             expect(minProps.updateView).toHaveBeenLastCalledWith(
                 searchView,
-                false
+                false,
             )
         })
 
@@ -238,10 +239,10 @@ describe('<ViewTable />', () => {
                     {...minProps}
                     activeView={fromJS({})}
                     urlViewId={undefined}
-                />
+                />,
             )
             expect(history.push).toHaveBeenLastCalledWith(
-                `/app/tickets/${fixtureView.id}`
+                `/app/tickets/${fixtureView.id}`,
             )
         })
 
@@ -249,7 +250,7 @@ describe('<ViewTable />', () => {
             render(
                 <ViewTableContainer
                     {...minProps}
-                    config={fromJS({newView: () => 'foo'})}
+                    config={fromJS({ newView: () => 'foo' })}
                     location={
                         {
                             search: '',
@@ -257,9 +258,11 @@ describe('<ViewTable />', () => {
                         } as Location<any>
                     }
                     match={
-                        {params: {visibility: ViewVisibility.Private}} as any
+                        {
+                            params: { visibility: ViewVisibility.Private },
+                        } as any
                     }
-                />
+                />,
             )
 
             expect(minProps.updateView).toHaveBeenCalledWith('foo')
@@ -278,7 +281,7 @@ describe('<ViewTable />', () => {
                         newView: (
                             visibility: ViewVisibility,
                             viewName: string,
-                            filters: string
+                            filters: string,
                         ) => ({
                             visibility,
                             viewName,
@@ -292,9 +295,11 @@ describe('<ViewTable />', () => {
                         } as Location<any>
                     }
                     match={
-                        {params: {visibility: ViewVisibility.Private}} as any
+                        {
+                            params: { visibility: ViewVisibility.Private },
+                        } as any
                     }
-                />
+                />,
             )
 
             expect(minProps.updateView).toHaveBeenCalledWith({
@@ -311,13 +316,13 @@ describe('<ViewTable />', () => {
                         {...minProps}
                         urlViewId={minProps.activeView.get('id')}
                     />
-                </SearchRankScenarioContext.Provider>
+                </SearchRankScenarioContext.Provider>,
             )
             expect(minProps.fetchViewItems).toBeCalledWith(
                 null,
                 undefined,
                 null,
-                mockSearchRank
+                mockSearchRank,
             )
         })
 
@@ -329,25 +334,26 @@ describe('<ViewTable />', () => {
                     <ViewTableContainer
                         {...minProps}
                         activeView={
-                            fromJS({...fixtureView, id: 0, search: ''}) as Map<
-                                any,
-                                any
-                            >
+                            fromJS({
+                                ...fixtureView,
+                                id: 0,
+                                search: '',
+                            }) as Map<any, any>
                         }
                         urlViewId={null}
-                    />
+                    />,
                 )
 
                 expect(minProps.setViewActive).toHaveBeenLastCalledWith(
-                    minProps.activeView
+                    minProps.activeView,
                 )
                 expect(minProps.fetchViewItems).toHaveBeenLastCalledWith(
                     null,
                     undefined,
                     null,
-                    null
+                    null,
                 )
-            }
+            },
         )
     })
 
@@ -357,26 +363,26 @@ describe('<ViewTable />', () => {
                 'of URL cursor, and we are not on the first page',
             () => {
                 const cursor = '1234'
-                const {rerender} = render(
+                const { rerender } = render(
                     <ViewTableContainer
                         {...minProps}
                         location={
                             {
-                                search: stringify({cursor: '789456'}),
+                                search: stringify({ cursor: '789456' }),
                                 pathname: '',
                             } as Location<any>
                         }
-                        navigation={fromJS({current_cursor: cursor})}
+                        navigation={fromJS({ current_cursor: cursor })}
                         isLoading={() => true}
                         isOnFirstPage={false}
-                    />
+                    />,
                 )
                 rerender(
                     <ViewTableContainer
                         {...minProps}
                         location={
                             {
-                                search: stringify({cursor: '1256'}),
+                                search: stringify({ cursor: '1256' }),
                                 pathname: '',
                             } as Location<any>
                         }
@@ -386,13 +392,13 @@ describe('<ViewTable />', () => {
                         })}
                         isLoading={() => false}
                         isOnFirstPage={false}
-                    />
+                    />,
                 )
                 expect(history.push).toBeCalledWith({
                     ...minProps.location,
                     search: 'cursor=1234',
                 })
-            }
+            },
         )
 
         it(
@@ -400,59 +406,59 @@ describe('<ViewTable />', () => {
                 'of URL cursor, and there is no previous items',
             () => {
                 const cursor = '1234'
-                const {rerender} = render(
+                const { rerender } = render(
                     <ViewTableContainer
                         {...minProps}
                         location={
                             {
-                                search: stringify({cursor: '789456'}),
+                                search: stringify({ cursor: '789456' }),
                                 pathname: '',
                             } as Location<any>
                         }
-                        navigation={fromJS({current_cursor: cursor})}
+                        navigation={fromJS({ current_cursor: cursor })}
                         isLoading={() => true}
-                    />
+                    />,
                 )
                 rerender(
                     <ViewTableContainer
                         {...minProps}
                         location={
                             {
-                                search: stringify({cursor: '1256'}),
+                                search: stringify({ cursor: '1256' }),
                                 pathname: '',
                             } as Location<any>
                         }
-                        navigation={fromJS({current_cursor: cursor})}
+                        navigation={fromJS({ current_cursor: cursor })}
                         isLoading={() => false}
-                    />
+                    />,
                 )
                 expect(history.push).toBeCalledWith({
                     ...minProps.location,
                     search: '',
                 })
-            }
+            },
         )
 
         it('should call fetchViewItems with the URL cursor when URL cursor changes', () => {
             const cursor = '1523467'
-            const {rerender} = render(<ViewTableContainer {...minProps} />)
+            const { rerender } = render(<ViewTableContainer {...minProps} />)
             rerender(
                 <ViewTableContainer
                     {...minProps}
                     location={
                         {
-                            search: stringify({cursor}),
+                            search: stringify({ cursor }),
                             pathname: '',
                         } as Location<any>
                     }
-                />
+                />,
             )
             expect(minProps.fetchViewItemsCancellable).toHaveBeenLastCalledWith(
                 null,
                 cursor,
                 null,
                 null,
-                undefined
+                undefined,
             )
         })
 
@@ -460,40 +466,42 @@ describe('<ViewTable />', () => {
             'should call fetchViewItems with default parameters when there is a stored cursor and no URL cursor ' +
                 'and we are not currently on the first page',
             () => {
-                const {rerender} = render(<ViewTableContainer {...minProps} />)
+                const { rerender } = render(
+                    <ViewTableContainer {...minProps} />,
+                )
                 rerender(
                     <ViewTableContainer
                         {...minProps}
-                        navigation={fromJS({current_cursor: '12345678'})}
+                        navigation={fromJS({ current_cursor: '12345678' })}
                         isOnFirstPage={false}
-                    />
+                    />,
                 )
                 expect(minProps.fetchViewItemsCancellable).toBeCalledWith(
                     null,
                     null,
                     null,
                     null,
-                    undefined
+                    undefined,
                 )
-            }
+            },
         )
 
         it('should update the view and call fetchViewItems with default parameters when entering "search" mode', () => {
-            const {rerender} = render(
-                <ViewTableContainer {...minProps} isSearch={false} />
+            const { rerender } = render(
+                <ViewTableContainer {...minProps} isSearch={false} />,
             )
             rerender(<ViewTableContainer {...minProps} isSearch={true} />)
 
             expect(minProps.updateView).toHaveBeenLastCalledWith(
                 minProps.urlSearchView,
-                false
+                false,
             )
             expect(minProps.fetchViewItemsCancellable).toHaveBeenLastCalledWith(
                 null,
                 null,
                 null,
                 null,
-                {trackTotalHits: true}
+                { trackTotalHits: true },
             )
         })
 
@@ -502,8 +510,8 @@ describe('<ViewTable />', () => {
                 'mode',
             () => {
                 const newView = fromJS({}) as Map<any, any>
-                const {rerender} = render(
-                    <ViewTableContainer {...minProps} isUpdate />
+                const { rerender } = render(
+                    <ViewTableContainer {...minProps} isUpdate />,
                 )
                 rerender(
                     <ViewTableContainer
@@ -512,14 +520,14 @@ describe('<ViewTable />', () => {
                             newView: () => newView,
                         })}
                         isUpdate={false}
-                    />
+                    />,
                 )
 
                 expect(minProps.updateView).toHaveBeenLastCalledWith(newView)
                 expect(
-                    minProps.fetchViewItemsCancellable
+                    minProps.fetchViewItemsCancellable,
                 ).toHaveBeenLastCalledWith(null, null, null, null, undefined)
-            }
+            },
         )
 
         it(
@@ -533,18 +541,18 @@ describe('<ViewTable />', () => {
                     >
                 ).mockReturnValue(someView)
 
-                const {rerender} = render(
-                    <ViewTableContainer {...minProps} isSearch />
+                const { rerender } = render(
+                    <ViewTableContainer {...minProps} isSearch />,
                 )
                 rerender(<ViewTableContainer {...minProps} isSearch={false} />)
 
                 expect(minProps.setViewActive).toHaveBeenLastCalledWith(
-                    someView
+                    someView,
                 )
                 expect(
-                    minProps.fetchViewItemsCancellable
+                    minProps.fetchViewItemsCancellable,
                 ).toHaveBeenLastCalledWith(null, null, null, null, undefined)
-            }
+            },
         )
 
         it(
@@ -558,25 +566,27 @@ describe('<ViewTable />', () => {
                     >
                 ).mockReturnValue(someView)
 
-                const {rerender} = render(
-                    <ViewTableContainer {...minProps} isUpdate={false} />
+                const { rerender } = render(
+                    <ViewTableContainer {...minProps} isUpdate={false} />,
                 )
                 rerender(<ViewTableContainer {...minProps} isUpdate />)
 
                 expect(minProps.setViewActive).toHaveBeenLastCalledWith(
-                    someView
+                    someView,
                 )
                 expect(
-                    minProps.fetchViewItemsCancellable
+                    minProps.fetchViewItemsCancellable,
                 ).toHaveBeenLastCalledWith(null, null, null, null, undefined)
-            }
+            },
         )
 
         it(
             'should set the suggested view as active and call fetchViewItems with default parameters when suggested ' +
                 'view changed',
             () => {
-                const {rerender} = render(<ViewTableContainer {...minProps} />)
+                const { rerender } = render(
+                    <ViewTableContainer {...minProps} />,
+                )
 
                 ;(minProps.setViewActive as jest.Mock).mockClear()
                 ;(
@@ -590,48 +600,48 @@ describe('<ViewTable />', () => {
 
                 expect(minProps.setViewActive).toHaveBeenCalledTimes(1)
                 expect(
-                    minProps.fetchViewItemsCancellable
+                    minProps.fetchViewItemsCancellable,
                 ).toHaveBeenLastCalledWith(null, null, null, null, undefined)
-            }
+            },
         )
 
         it('should call fetchViewItems when view gets activated', () => {
-            const {rerender} = render(
+            const { rerender } = render(
                 <ViewTableContainer
                     {...minProps}
                     activeView={minProps.activeView.set(
                         'deactivated_datetime',
-                        '2020-06-15 22:56:32.708038'
+                        '2020-06-15 22:56:32.708038',
                     )}
-                />
+                />,
             )
             rerender(
                 <ViewTableContainer
                     {...minProps}
                     activeView={minProps.activeView.set(
                         'deactivated_datetime',
-                        null
+                        null,
                     )}
-                />
+                />,
             )
             expect(minProps.fetchViewItemsCancellable).toHaveBeenLastCalledWith(
                 null,
                 null,
                 null,
                 null,
-                undefined
+                undefined,
             )
         })
 
         it('should not call fetchViewItems when the user goes from a deactivated view to a valid one', () => {
-            const {rerender} = render(
+            const { rerender } = render(
                 <ViewTableContainer
                     {...minProps}
                     activeView={minProps.activeView.set(
                         'deactivated_datetime',
-                        '2020-06-15 22:56:32.708038'
+                        '2020-06-15 22:56:32.708038',
                     )}
-                />
+                />,
             )
             rerender(
                 <ViewTableContainer
@@ -639,7 +649,7 @@ describe('<ViewTable />', () => {
                     activeView={minProps.activeView
                         .set('id', 10)
                         .set('deactivated_datetime', null)}
-                />
+                />,
             )
             expect(minProps.fetchViewItemsCancellable).not.toHaveBeenCalled()
         })
@@ -648,57 +658,59 @@ describe('<ViewTable />', () => {
             'should not call fetchViewItems when there is a stored cursor and no URL cursor and we are not currently ' +
                 'on the first page because a request is currently loading',
             () => {
-                const {rerender} = render(<ViewTableContainer {...minProps} />)
+                const { rerender } = render(
+                    <ViewTableContainer {...minProps} />,
+                )
                 rerender(
                     <ViewTableContainer
                         {...minProps}
-                        navigation={fromJS({current_cursor: '12345678'})}
+                        navigation={fromJS({ current_cursor: '12345678' })}
                         isOnFirstPage={false}
                         isLoading={() => true}
-                    />
+                    />,
                 )
                 expect(
-                    minProps.fetchViewItemsCancellable
+                    minProps.fetchViewItemsCancellable,
                 ).not.toHaveBeenCalled()
-            }
+            },
         )
 
         it(
             'should not call fetchViewItems when the stored cursor and URL cursor are different and we are not ' +
                 'currently on the first page because a request is currently loading',
             () => {
-                const {rerender} = render(
+                const { rerender } = render(
                     <ViewTableContainer
                         {...minProps}
                         location={
                             {
-                                search: stringify({cursor: '1256'}),
+                                search: stringify({ cursor: '1256' }),
                                 pathname: '',
                             } as Location<any>
                         }
-                        navigation={fromJS({current_cursor: '1256'})}
-                    />
+                        navigation={fromJS({ current_cursor: '1256' })}
+                    />,
                 )
                 rerender(
                     <ViewTableContainer
                         {...minProps}
                         location={
                             {
-                                search: stringify({cursor: '12345678'}),
+                                search: stringify({ cursor: '12345678' }),
                                 pathname: '',
                             } as Location<any>
                         }
                         isOnFirstPage={false}
                         isLoading={() => true}
-                    />
+                    />,
                 )
                 expect(viewsActions.fetchViewItems).not.toBeCalled()
-            }
+            },
         )
 
         it('should call fetchViewItems on view search change', () => {
-            const {rerender} = render(
-                <ViewTableContainer {...minProps} isSearch={true} />
+            const { rerender } = render(
+                <ViewTableContainer {...minProps} isSearch={true} />,
             )
             rerender(
                 <ViewTableContainer
@@ -706,24 +718,24 @@ describe('<ViewTable />', () => {
                     isSearch={true}
                     activeView={minProps.activeView.set(
                         'search',
-                        'foo search query'
+                        'foo search query',
                     )}
-                />
+                />,
             )
             expect(minProps.fetchViewItemsCancellable).toHaveBeenLastCalledWith(
                 null,
                 null,
                 null,
                 null,
-                {trackTotalHits: true}
+                { trackTotalHits: true },
             )
         })
 
         it('should fetch items with the searchRank from the context', () => {
-            const {rerender} = render(
+            const { rerender } = render(
                 <SearchRankScenarioContext.Provider value={mockSearchRank}>
                     <ViewTableContainer {...minProps} isSearch={true} />
-                </SearchRankScenarioContext.Provider>
+                </SearchRankScenarioContext.Provider>,
             )
             rerender(
                 <SearchRankScenarioContext.Provider value={mockSearchRank}>
@@ -732,47 +744,47 @@ describe('<ViewTable />', () => {
                         isSearch={true}
                         activeView={minProps.activeView.set(
                             'search',
-                            'foo search query'
+                            'foo search query',
                         )}
                     />
-                </SearchRankScenarioContext.Provider>
+                </SearchRankScenarioContext.Provider>,
             )
             expect(minProps.fetchViewItemsCancellable).toHaveBeenLastCalledWith(
                 null,
                 null,
                 null,
                 mockSearchRank,
-                {trackTotalHits: true}
+                { trackTotalHits: true },
             )
         })
     })
 
     describe('render', () => {
         it('empty view', () => {
-            const {container} = render(
+            const { container } = render(
                 <ViewTableContainer
                     {...minProps}
                     activeView={fromJS({})}
                     isUpdate={false}
-                />
+                />,
             )
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('default view', () => {
-            const {container} = render(<ViewTableContainer {...minProps} />)
+            const { container } = render(<ViewTableContainer {...minProps} />)
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should render a warning because the view is deactivated', () => {
-            const {container} = render(
+            const { container } = render(
                 <ViewTableContainer
                     {...minProps}
                     activeView={minProps.activeView.set(
                         'deactivated_datetime',
-                        '2020-06-15 22:56:32.708038'
+                        '2020-06-15 22:56:32.708038',
                     )}
-                />
+                />,
             )
             expect(container.firstChild).toMatchSnapshot()
         })

@@ -1,6 +1,8 @@
-import {Card} from '@gorgias/analytics-ui-kit'
-import classNames from 'classnames'
 import React from 'react'
+
+import classNames from 'classnames'
+
+import { Card } from '@gorgias/analytics-ui-kit'
 
 import {
     EmailMigrationOutboundVerification,
@@ -13,7 +15,6 @@ import AccordionItem from 'pages/common/components/accordion/AccordionItem'
 import Button from 'pages/common/components/button/Button'
 
 import EmailVerificationStatusLabel from '../EmailVerificationStatusLabel'
-import css from './MigrationDomainList.less'
 import SingleSenderVerificationTable from './SingleSenderVerificationTable'
 import {
     computeDomainSingleSenderVerificationStatus,
@@ -22,11 +23,13 @@ import {
     listAddressDetailsInline,
 } from './utils'
 
+import css from './MigrationDomainList.less'
+
 type Props = {
     verification: EmailMigrationOutboundVerification
     onVerificationMethodSwitch: (name: string) => void
     onBulkSubmitClick: (
-        unverifiedIntegrations: EmailMigrationSenderVerificationIntegration[]
+        unverifiedIntegrations: EmailMigrationSenderVerificationIntegration[],
     ) => void
     refreshMigrationData: () => void
 }
@@ -77,7 +80,7 @@ export default function SingleSenderVerificationAccordionItem({
                         {hasSubmittedBulkVerification ? (
                             <div className={css.addressSubmission}>
                                 {listAddressDetailsInline(
-                                    submittedVerifications[0]
+                                    submittedVerifications[0],
                                 )}
                             </div>
                         ) : (
@@ -89,7 +92,7 @@ export default function SingleSenderVerificationAccordionItem({
                                 <Button
                                     onClick={() =>
                                         onBulkSubmitClick(
-                                            unverifiedIntegrations
+                                            unverifiedIntegrations,
                                         )
                                     }
                                 >

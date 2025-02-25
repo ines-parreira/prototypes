@@ -1,4 +1,4 @@
-import {AiAgentOnboardingWizardStep} from 'models/aiAgent/types'
+import { AiAgentOnboardingWizardStep } from 'models/aiAgent/types'
 
 import {
     AiAgentChannel,
@@ -8,10 +8,10 @@ import {
     SIGNATURE_MAX_LENGTH,
     ToneOfVoice,
 } from '../../constants'
-import {FormValues, ValidFormValues, WizardFormValues} from '../../types'
+import { FormValues, ValidFormValues, WizardFormValues } from '../../types'
 import {
-    StoreConfigurationValidationMessage,
     getValidStoreConfigurationFormValues,
+    StoreConfigurationValidationMessage,
 } from '../store-configuration-validation.utils'
 
 const VALID_FORM_VALUES: ValidFormValues = {
@@ -61,7 +61,7 @@ describe('store-configuration-validation', () => {
                 VALID_FORM_VALUES,
                 [],
                 false,
-                DEFAULT_OPTIONS
+                DEFAULT_OPTIONS,
             )
 
             expect(result).toEqual(VALID_FORM_VALUES)
@@ -86,8 +86,8 @@ describe('store-configuration-validation', () => {
                     formValues,
                     [],
                     false,
-                    DEFAULT_OPTIONS
-                )
+                    DEFAULT_OPTIONS,
+                ),
             ).toEqual(expected)
         })
 
@@ -114,8 +114,8 @@ describe('store-configuration-validation', () => {
                     formValues,
                     [],
                     false,
-                    DEFAULT_OPTIONS
-                )
+                    DEFAULT_OPTIONS,
+                ),
             ).toEqual(expected)
         })
 
@@ -130,8 +130,8 @@ describe('store-configuration-validation', () => {
                     formValues,
                     [],
                     false,
-                    DEFAULT_OPTIONS
-                )
+                    DEFAULT_OPTIONS,
+                ),
             ).toThrow(StoreConfigurationValidationMessage.SignatureLength)
         })
 
@@ -147,8 +147,8 @@ describe('store-configuration-validation', () => {
                     formValues,
                     [],
                     false,
-                    DEFAULT_OPTIONS
-                )
+                    DEFAULT_OPTIONS,
+                ),
             ).toThrow(StoreConfigurationValidationMessage.SignatureEmpty)
         })
 
@@ -167,8 +167,8 @@ describe('store-configuration-validation', () => {
                     formValues,
                     [],
                     false,
-                    DEFAULT_OPTIONS
-                )
+                    DEFAULT_OPTIONS,
+                ),
             ).toThrow(StoreConfigurationValidationMessage.FieldsMissing)
         })
 
@@ -182,8 +182,8 @@ describe('store-configuration-validation', () => {
                     formValues,
                     [],
                     false,
-                    DEFAULT_OPTIONS
-                )
+                    DEFAULT_OPTIONS,
+                ),
             ).toThrow(StoreConfigurationValidationMessage.ExcludedTopicEmpty)
         })
 
@@ -191,7 +191,7 @@ describe('store-configuration-validation', () => {
             const formValues: FormValues = {
                 ...VALID_FORM_VALUES,
                 excludedTopics: Array<string>(MAX_EXCLUDED_TOPICS + 1).fill(
-                    'a'
+                    'a',
                 ),
             }
             expect(() =>
@@ -199,8 +199,8 @@ describe('store-configuration-validation', () => {
                     formValues,
                     [],
                     false,
-                    DEFAULT_OPTIONS
-                )
+                    DEFAULT_OPTIONS,
+                ),
             ).toThrow(StoreConfigurationValidationMessage.ExcludedTopicsLength)
         })
 
@@ -214,23 +214,23 @@ describe('store-configuration-validation', () => {
                     formValues,
                     [],
                     false,
-                    DEFAULT_OPTIONS
-                )
+                    DEFAULT_OPTIONS,
+                ),
             ).toThrow(StoreConfigurationValidationMessage.ExcludedTopicLength)
         })
 
         it('should throw an error if tags have empty fields', () => {
             const formValues: FormValues = {
                 ...VALID_FORM_VALUES,
-                tags: [{name: '', description: ''}],
+                tags: [{ name: '', description: '' }],
             }
             expect(() =>
                 getValidStoreConfigurationFormValues(
                     formValues,
                     [],
                     false,
-                    DEFAULT_OPTIONS
-                )
+                    DEFAULT_OPTIONS,
+                ),
             ).toThrow(StoreConfigurationValidationMessage.TagsEmpty)
         })
 
@@ -245,10 +245,10 @@ describe('store-configuration-validation', () => {
                     formValues,
                     [],
                     false,
-                    DEFAULT_OPTIONS
-                )
+                    DEFAULT_OPTIONS,
+                ),
             ).toThrow(
-                StoreConfigurationValidationMessage.CustomToneOfVoiceEmpty
+                StoreConfigurationValidationMessage.CustomToneOfVoiceEmpty,
             )
         })
 
@@ -257,7 +257,7 @@ describe('store-configuration-validation', () => {
                 ...VALID_FORM_VALUES,
                 toneOfVoice: ToneOfVoice.Custom,
                 customToneOfVoiceGuidance: 'a'.repeat(
-                    CUSTOM_TONE_OF_VOICE_MAX_LENGTH + 1
+                    CUSTOM_TONE_OF_VOICE_MAX_LENGTH + 1,
                 ),
             }
             expect(() =>
@@ -265,10 +265,10 @@ describe('store-configuration-validation', () => {
                     formValues,
                     [],
                     false,
-                    DEFAULT_OPTIONS
-                )
+                    DEFAULT_OPTIONS,
+                ),
             ).toThrow(
-                StoreConfigurationValidationMessage.CustomToneOfVoiceLength
+                StoreConfigurationValidationMessage.CustomToneOfVoiceLength,
             )
         })
 
@@ -285,7 +285,7 @@ describe('store-configuration-validation', () => {
                 getValidStoreConfigurationFormValues(formValues, [], false, {
                     ...DEFAULT_OPTIONS,
                     isOnboardingWizardPage: true,
-                })
+                }),
             ).toThrow(StoreConfigurationValidationMessage.HelpCenterError)
         })
 
@@ -302,7 +302,7 @@ describe('store-configuration-validation', () => {
                 getValidStoreConfigurationFormValues(formValues, [], false, {
                     ...DEFAULT_OPTIONS,
                     isOnboardingWizardPage: false,
-                })
+                }),
             ).toThrow(StoreConfigurationValidationMessage.HelpCenterEmpty)
         })
 
@@ -316,7 +316,7 @@ describe('store-configuration-validation', () => {
             expect(() =>
                 getValidStoreConfigurationFormValues(formValues, [], false, {
                     ...DEFAULT_OPTIONS,
-                })
+                }),
             ).toThrow(StoreConfigurationValidationMessage.EmailIntegrationError)
         })
 
@@ -340,8 +340,8 @@ describe('store-configuration-validation', () => {
                         {
                             ...DEFAULT_OPTIONS,
                             isOnboardingWizardPage: true,
-                        }
-                    )
+                        },
+                    ),
                 ).toThrow(StoreConfigurationValidationMessage.FieldsMissing)
             })
 
@@ -363,8 +363,8 @@ describe('store-configuration-validation', () => {
                         {
                             ...DEFAULT_OPTIONS,
                             isOnboardingWizardPage: true,
-                        }
-                    )
+                        },
+                    ),
                 ).toThrow(StoreConfigurationValidationMessage.FieldsMissing)
             })
 
@@ -385,8 +385,8 @@ describe('store-configuration-validation', () => {
                         {
                             ...DEFAULT_OPTIONS,
                             isOnboardingWizardPage: true,
-                        }
-                    )
+                        },
+                    ),
                 ).toThrow(StoreConfigurationValidationMessage.NoChannelError)
             })
         })
@@ -405,8 +405,8 @@ describe('store-configuration-validation', () => {
                         false,
                         {
                             ...DEFAULT_OPTIONS,
-                        }
-                    )
+                        },
+                    ),
                 ).toThrow(StoreConfigurationValidationMessage.SignatureEmpty)
             })
 
@@ -423,8 +423,8 @@ describe('store-configuration-validation', () => {
                         false,
                         {
                             ...DEFAULT_OPTIONS,
-                        }
-                    )
+                        },
+                    ),
                 ).toThrow(StoreConfigurationValidationMessage.SignatureLength)
             })
 
@@ -441,10 +441,10 @@ describe('store-configuration-validation', () => {
                         false,
                         {
                             ...DEFAULT_OPTIONS,
-                        }
-                    )
+                        },
+                    ),
                 ).toThrow(
-                    StoreConfigurationValidationMessage.EmailIntegrationError
+                    StoreConfigurationValidationMessage.EmailIntegrationError,
                 )
             })
 
@@ -463,10 +463,10 @@ describe('store-configuration-validation', () => {
                         {
                             ...DEFAULT_OPTIONS,
                             isAiAgentChatEnabled: true,
-                        }
-                    )
+                        },
+                    ),
                 ).toThrow(
-                    StoreConfigurationValidationMessage.ChatIntegrationError
+                    StoreConfigurationValidationMessage.ChatIntegrationError,
                 )
             })
         })

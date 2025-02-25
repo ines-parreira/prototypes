@@ -1,16 +1,16 @@
-import React, {memo, useCallback, useMemo} from 'react'
+import React, { memo, useCallback, useMemo } from 'react'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {isSourceRecord, Source} from 'models/widget/types'
+import { isSourceRecord, Source } from 'models/widget/types'
 import BasicButton from 'pages/common/components/button/Button'
 import {
     Button as ButtonType,
     OnOpenForm,
     OnRemoveButton,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
-import {renderTemplate} from 'pages/common/utils/template'
-import {getActiveCustomer} from 'state/customers/selectors'
-import {getTicket} from 'state/ticket/selectors'
+import { renderTemplate } from 'pages/common/utils/template'
+import { getActiveCustomer } from 'state/customers/selectors'
+import { getTicket } from 'state/ticket/selectors'
 
 import './Button.less'
 
@@ -25,7 +25,7 @@ type ButtonProps = {
 function Button(props: ButtonProps) {
     const {
         index,
-        button: {label},
+        button: { label },
         source,
         onRemove,
         onOpenForm,

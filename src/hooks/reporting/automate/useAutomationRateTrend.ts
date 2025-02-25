@@ -1,6 +1,6 @@
-import {useFlags} from 'launchdarkly-react-client-sdk'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { FeatureFlagKey } from 'config/featureFlags'
 import {
     getAutomationRateTrend,
     getAutomationRateUnfilteredDenominatorTrend,
@@ -17,13 +17,12 @@ import {
     useFilteredAutomatedInteractions,
     useFilteredAutomatedInteractionsByAutoResponders,
 } from 'hooks/reporting/automate/automationTrends'
-import {useAIAgentUserId} from 'hooks/reporting/automate/useAIAgentUserId'
-
-import {StatsFilters} from 'models/stat/types'
+import { useAIAgentUserId } from 'hooks/reporting/automate/useAIAgentUserId'
+import { StatsFilters } from 'models/stat/types'
 
 export const useAutomationRateTrend = (
     filters: StatsFilters,
-    timezone: string
+    timezone: string,
 ) => {
     const isAutomateNonFilteredDenominatorInAutomationRate:
         | boolean
@@ -34,7 +33,7 @@ export const useAutomationRateTrend = (
     const aiAgentUserId = useAIAgentUserId()
     const filteredAutomatedInteractions = useFilteredAutomatedInteractions(
         filters,
-        timezone
+        timezone,
     )
 
     const allAutomatedInteractionsByAutoResponders =
@@ -42,12 +41,12 @@ export const useAutomationRateTrend = (
 
     const allAutomatedInteractions = useAllAutomatedInteractions(
         filters,
-        timezone
+        timezone,
     )
     const billableTicketsExcludingAIAgent = useBillableTicketsExcludingAIAgent(
         filters,
         timezone,
-        aiAgentUserId
+        aiAgentUserId,
     )
 
     const filteredAutomatedInteractionsByAutoResponders =
@@ -78,7 +77,7 @@ export const useAutomationRateTrend = (
               isError,
               filteredAutomatedInteractions.data,
               billableTicketsExcludingAIAgent.data,
-              filteredAutomatedInteractionsByAutoResponders.data
+              filteredAutomatedInteractionsByAutoResponders.data,
           )
 }
 
@@ -86,7 +85,7 @@ export const fetchAutomationRateTrend = async (
     filters: StatsFilters,
     timezone: string,
     isAutomateNonFilteredDenominatorInAutomationRate: boolean | undefined,
-    aiAgentUserId: string | undefined
+    aiAgentUserId: string | undefined,
 ) => {
     return Promise.all([
         fetchFilteredAutomatedInteractions(filters, timezone),
@@ -119,8 +118,8 @@ export const fetchAutomationRateTrend = async (
                       false,
                       filteredAutomatedInteractions.data,
                       billableTicketsExcludingAIAgent.data,
-                      filteredAutomatedInteractionsByAutoResponders.data
+                      filteredAutomatedInteractionsByAutoResponders.data,
                   )
-        }
+        },
     )
 }

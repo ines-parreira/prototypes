@@ -1,24 +1,23 @@
-import {createSelector, createSlice, PayloadAction} from '@reduxjs/toolkit'
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import _intersectionBy from 'lodash/intersectionBy'
 
-import {User} from 'config/types/user'
-import {ReportingMetricItem} from 'hooks/reporting/useMetricPerDimension'
-import {OrderDirection} from 'models/api/types'
-import {LogicalOperatorEnum} from 'pages/stats/common/components/Filter/constants'
-import {isMetricForAgent} from 'pages/stats/common/utils'
-import {agentIdFields} from 'pages/stats/support-performance/agents/AgentsTableConfig'
-import {getHumanAndAutomationBotAgentsJS} from 'state/agents/selectors'
-import {statsFiltersWithLogicalOperatorsFromSavedFilters} from 'state/stats/utils'
-
-import {RootState} from 'state/types'
-import {AGENT_PERFORMANCE_SLICE_NAME} from 'state/ui/stats/constants'
+import { User } from 'config/types/user'
+import { ReportingMetricItem } from 'hooks/reporting/useMetricPerDimension'
+import { OrderDirection } from 'models/api/types'
+import { LogicalOperatorEnum } from 'pages/stats/common/components/Filter/constants'
+import { isMetricForAgent } from 'pages/stats/common/utils'
+import { agentIdFields } from 'pages/stats/support-performance/agents/AgentsTableConfig'
+import { getHumanAndAutomationBotAgentsJS } from 'state/agents/selectors'
+import { statsFiltersWithLogicalOperatorsFromSavedFilters } from 'state/stats/utils'
+import { RootState } from 'state/types'
+import { AGENT_PERFORMANCE_SLICE_NAME } from 'state/ui/stats/constants'
 import {
     getIsSavedFilterApplied,
     getSavedFilterDraft,
 } from 'state/ui/stats/filtersSlice'
-import {getCleanStatsFilters} from 'state/ui/stats/selectors'
-import {AgentsTableColumn} from 'state/ui/stats/types'
-import {getSortByName} from 'utils/getSortByName'
+import { getCleanStatsFilters } from 'state/ui/stats/selectors'
+import { AgentsTableColumn } from 'state/ui/stats/types'
+import { getSortByName } from 'utils/getSortByName'
 
 export type AgentPerformanceSorting<T> = {
     field: T
@@ -59,7 +58,7 @@ export const agentPerformanceSlice = createSlice({
     reducers: {
         sortingSet(
             state,
-            action: PayloadAction<AgentPerformanceSorting<AgentsTableColumn>>
+            action: PayloadAction<AgentPerformanceSorting<AgentsTableColumn>>,
         ) {
             state.sorting.field = action.payload.field
             state.sorting.direction = action.payload.direction
@@ -72,7 +71,7 @@ export const agentPerformanceSlice = createSlice({
         },
         sortingLoaded(
             state,
-            action: PayloadAction<Maybe<ReportingMetricItem[]>>
+            action: PayloadAction<Maybe<ReportingMetricItem[]>>,
         ) {
             state.sorting.isLoading = false
             state.sorting.lastSortingMetric = action.payload
@@ -104,22 +103,22 @@ const getSliceState = (state: RootState) =>
 
 export const getAgentSorting = createSelector(
     getSliceState,
-    (state) => state.sorting
+    (state) => state.sorting,
 )
 
 export const isSortingMetricLoading = createSelector(
     getSliceState,
-    (state) => state.sorting.isLoading
+    (state) => state.sorting.isLoading,
 )
 
 export const getAgentsPagination = createSelector(
     getSliceState,
-    (state) => state.pagination
+    (state) => state.pagination,
 )
 
 export const getHeatmapMode = createSelector(
     getSliceState,
-    (state) => state.heatmapMode
+    (state) => state.heatmapMode,
 )
 
 export const getFilteredAgents = createSelector(
@@ -130,7 +129,7 @@ export const getFilteredAgents = createSelector(
     (agents, filters, savedFilters, isSavedFilterApplied) => {
         const effectiveFilters = isSavedFilterApplied
             ? statsFiltersWithLogicalOperatorsFromSavedFilters(
-                  savedFilters?.filter_group
+                  savedFilters?.filter_group,
               )
             : filters
         if (
@@ -144,7 +143,7 @@ export const getFilteredAgents = createSelector(
             ) {
                 return agents.filter(
                     (agent) =>
-                        !effectiveFilters.agents?.values.includes(agent.id)
+                        !effectiveFilters.agents?.values.includes(agent.id),
                 )
             }
             return _intersectionBy(
@@ -152,17 +151,17 @@ export const getFilteredAgents = createSelector(
                 effectiveFilters.agents.values.map((agentId: number) => ({
                     id: agentId,
                 })),
-                'id'
+                'id',
             )
         }
         return agents
-    }
+    },
 )
 
 export const getSortedAgents = createSelector(
     getFilteredAgents,
     getAgentSorting,
-    (agentsList, {direction, field, lastSortingMetric}) => {
+    (agentsList, { direction, field, lastSortingMetric }) => {
         const agents = agentsList
         const metricName = field !== AgentsTableColumn.AgentName ? field : null
 
@@ -171,7 +170,7 @@ export const getSortedAgents = createSelector(
             const noDataAgents: User[] = []
             agents.forEach((agent) => {
                 const agentIndex = lastSortingMetric.findIndex((metric) =>
-                    isMetricForAgent(metric, agent.id, agentIdFields)
+                    isMetricForAgent(metric, agent.id, agentIdFields),
                 )
                 if (agentIndex >= 0) {
                     sortedAgents[agentIndex] = agent
@@ -188,13 +187,13 @@ export const getSortedAgents = createSelector(
         return direction === OrderDirection.Asc
             ? sortedAgents
             : [...sortedAgents].reverse()
-    }
+    },
 )
 
 export const getPaginatedAgents = createSelector(
     getSortedAgents,
     getAgentsPagination,
-    (agents, {currentPage, perPage}) => {
+    (agents, { currentPage, perPage }) => {
         const startingItem = (currentPage - 1) * perPage
         const lastItem = Math.min(startingItem + perPage, agents.length)
         return {
@@ -203,5 +202,5 @@ export const getPaginatedAgents = createSelector(
             currentPage,
             perPage,
         }
-    }
+    },
 )

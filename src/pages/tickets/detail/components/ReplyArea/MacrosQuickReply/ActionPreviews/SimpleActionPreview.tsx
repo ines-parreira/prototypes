@@ -1,14 +1,15 @@
-import classnames from 'classnames'
 import React from 'react'
-import {Badge} from 'reactstrap'
 
-import {MacroAction, MacroActionName} from 'models/macroAction/types'
+import classnames from 'classnames'
+import { Badge } from 'reactstrap'
+
+import { MacroAction, MacroActionName } from 'models/macroAction/types'
 import * as Label from 'pages/common/utils/labels'
-import {CustomFieldName} from 'pages/tickets/common/macros/Preview'
-import {fileIconFromContentType} from 'pages/tickets/common/utils'
-import {getActionTemplate} from 'utils'
+import { CustomFieldName } from 'pages/tickets/common/macros/Preview'
+import { fileIconFromContentType } from 'pages/tickets/common/utils'
+import { getActionTemplate } from 'utils'
 
-import {BaseActionPreview} from './BaseActionPreview'
+import { BaseActionPreview } from './BaseActionPreview'
 
 import css from './SimpleActionPreview.less'
 
@@ -16,7 +17,7 @@ type Props = {
     action: MacroAction
 }
 
-export const SimpleActionPreview = ({action}: Props) => {
+export const SimpleActionPreview = ({ action }: Props) => {
     const getLabel = (action: MacroAction) => {
         const args = action.arguments
         switch (action.name) {
@@ -65,7 +66,7 @@ export const SimpleActionPreview = ({action}: Props) => {
                         <span
                             className={classnames(
                                 'material-icons mr-2',
-                                css.internalNoteIcon
+                                css.internalNoteIcon,
                             )}
                         >
                             note

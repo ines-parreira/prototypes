@@ -1,1 +1,1 @@
-export {default} from './WizardLayout'
+export { default } from './WizardLayout'

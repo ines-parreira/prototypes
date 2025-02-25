@@ -1,15 +1,18 @@
-import {useQueryClient} from '@tanstack/react-query'
-import {produce, Draft} from 'immer'
+import { useQueryClient } from '@tanstack/react-query'
+import { Draft, produce } from 'immer'
 
 import useAsyncFn from 'hooks/useAsyncFn'
 import {
     selfServiceConfigurationKeys,
     useUpdateSelfServiceConfiguration,
 } from 'models/selfServiceConfiguration/queries'
-import {fetchSelfServiceConfigurationSSP} from 'models/selfServiceConfiguration/resources'
-import {SelfServiceConfiguration} from 'models/selfServiceConfiguration/types'
-import {getShopNameFromStoreIntegration} from 'models/selfServiceConfiguration/utils'
-import {AlertNotification, NotificationStatus} from 'state/notifications/types'
+import { fetchSelfServiceConfigurationSSP } from 'models/selfServiceConfiguration/resources'
+import { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
+import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
+import {
+    AlertNotification,
+    NotificationStatus,
+} from 'state/notifications/types'
 
 import useStoreIntegrations from './useStoreIntegrations'
 
@@ -19,22 +22,22 @@ export type UseSelfServiceConfigurationUpdateProps = {
 export const useSelfServiceConfigurationUpdate = ({
     handleNotify,
 }: UseSelfServiceConfigurationUpdateProps) => {
-    const {mutateAsync} = useUpdateSelfServiceConfiguration()
+    const { mutateAsync } = useUpdateSelfServiceConfiguration()
     const queryClient = useQueryClient()
     const storeIntegrations = useStoreIntegrations()
-    const [{loading: isUpdatePending}, handleSelfServiceConfigurationUpdate] =
+    const [{ loading: isUpdatePending }, handleSelfServiceConfigurationUpdate] =
         useAsyncFn(
             async (
                 patchSelfServiceConfiguration: (
-                    draft: Draft<SelfServiceConfiguration>
+                    draft: Draft<SelfServiceConfiguration>,
                 ) => void,
-                messages: {success?: string; error?: string} = {},
-                storeIntegrationId: number
+                messages: { success?: string; error?: string } = {},
+                storeIntegrationId: number,
             ) => {
                 try {
                     const integration = storeIntegrations.find(
                         (storeIntegration) =>
-                            storeIntegration.id === storeIntegrationId
+                            storeIntegration.id === storeIntegrationId,
                     )
 
                     if (!integration) {
@@ -44,22 +47,22 @@ export const useSelfServiceConfigurationUpdate = ({
                     const selfServiceConfiguration =
                         await fetchSelfServiceConfigurationSSP(
                             getShopNameFromStoreIntegration(integration),
-                            integration.type
+                            integration.type,
                         )
 
                     const res = await mutateAsync([
                         produce(
                             selfServiceConfiguration,
-                            patchSelfServiceConfiguration
+                            patchSelfServiceConfiguration,
                         ),
                     ])
 
                     queryClient.setQueryData(
                         selfServiceConfigurationKeys.detail(
                             getShopNameFromStoreIntegration(integration),
-                            integration.type
+                            integration.type,
                         ),
-                        res
+                        res,
                     )
 
                     handleNotify({
@@ -73,7 +76,7 @@ export const useSelfServiceConfigurationUpdate = ({
                     })
                 }
             },
-            [storeIntegrations]
+            [storeIntegrations],
         )
 
     return {

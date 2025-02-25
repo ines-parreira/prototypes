@@ -1,10 +1,11 @@
-import {render, screen} from '@testing-library/react'
-import {act} from '@testing-library/react-hooks'
-import userEvent from '@testing-library/user-event'
-import React, {ComponentProps} from 'react'
+import React, { ComponentProps } from 'react'
 
-import {BigCommerceRefundActionType} from '../../types'
-import {RefundOrderFooter} from '../RefundOrderFooter'
+import { render, screen } from '@testing-library/react'
+import { act } from '@testing-library/react-hooks'
+import userEvent from '@testing-library/user-event'
+
+import { BigCommerceRefundActionType } from '../../types'
+import { RefundOrderFooter } from '../RefundOrderFooter'
 
 type Props = ComponentProps<typeof RefundOrderFooter>
 
@@ -18,15 +19,15 @@ jest.useFakeTimers()
 
 describe('RefundOrderFooter', () => {
     it('snapshot renders the initial disabled state', () => {
-        const {container} = render(
-            <RefundOrderFooter {...initialProps} isLoading={true} />
+        const { container } = render(
+            <RefundOrderFooter {...initialProps} isLoading={true} />,
         )
 
         expect(container).toMatchSnapshot()
     })
 
     it('snapshot renders the initial state', () => {
-        const {container} = render(<RefundOrderFooter {...initialProps} />)
+        const { container } = render(<RefundOrderFooter {...initialProps} />)
 
         expect(container).toMatchSnapshot()
     })
@@ -41,7 +42,7 @@ describe('RefundOrderFooter', () => {
             <RefundOrderFooter
                 {...initialProps}
                 dispatchRefundOrderState={dispatchRefundOrderStateMock}
-            />
+            />,
         )
 
         // Agent types a refund reason and checks the `Mark order as Cancelled in BigCommerce` checkbox =>
@@ -49,7 +50,9 @@ describe('RefundOrderFooter', () => {
         await userEvent.type(screen.getByRole('textbox'), refundReason)
         act(() => jest.runAllTimers())
         userEvent.click(screen.getByRole('combobox'))
-        userEvent.click(screen.getByRole('option', {name: /Partially Shipped/}))
+        userEvent.click(
+            screen.getByRole('option', { name: /Partially Shipped/ }),
+        )
 
         expect(dispatchRefundOrderStateMock).toHaveBeenCalledTimes(2)
         expect(dispatchRefundOrderStateMock).toHaveBeenNthCalledWith(1, {

@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react'
+import React, { useRef, useState } from 'react'
 
 import Button from 'pages/common/components/button/Button'
 import ColorField from 'pages/common/forms/ColorField'
@@ -16,7 +16,7 @@ type Props = {
     onSubmit: (data: FormData) => void
 }
 
-const WrapperEditForm = ({initialData, onCancel, onSubmit}: Props) => {
+const WrapperEditForm = ({ initialData, onCancel, onSubmit }: Props) => {
     const wrapperRef = useRef<HTMLDivElement>(null)
     const [formData, setFormData] = useState<FormData>(initialData)
 

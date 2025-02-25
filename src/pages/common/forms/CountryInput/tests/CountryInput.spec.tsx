@@ -1,5 +1,6 @@
-import {fireEvent, render, screen, within} from '@testing-library/react'
 import React from 'react'
+
+import { fireEvent, render, screen, within } from '@testing-library/react'
 
 import CountryInput from '../CountryInput'
 
@@ -13,27 +14,27 @@ describe('<CountryInput/>', () => {
     })
 
     it('should render', () => {
-        const {container} = render(
-            <CountryInput label="Country" value="US" onChange={onChange} />
+        const { container } = render(
+            <CountryInput label="Country" value="US" onChange={onChange} />,
         )
         expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should render with the defaultCountry prop if value is empty', () => {
-        const {findByText} = render(
-            <CountryInput onChange={onChange} defaultCountry="FR" />
+        const { findByText } = render(
+            <CountryInput onChange={onChange} defaultCountry="FR" />,
         )
 
         expect(findByText('France')).toBeTruthy()
     })
 
     it('should render and display the popular / all options', async () => {
-        const {getByText} = render(
+        const { getByText } = render(
             <CountryInput
                 onChange={onChange}
                 defaultCountry="US"
                 popularCountries={['US', 'AU', 'GB', 'CA']}
-            />
+            />,
         )
         fireEvent.click(getByText('🇺🇸'))
 

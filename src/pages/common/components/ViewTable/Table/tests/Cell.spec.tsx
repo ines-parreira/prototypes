@@ -1,11 +1,12 @@
-import {fireEvent, render, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
-import {fromJS, Map, List} from 'immutable'
-import _omit from 'lodash/omit'
 import React from 'react'
 
-import {views} from 'config/views'
-import {ticket} from 'fixtures/ticket'
+import { fireEvent, render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { fromJS, List, Map } from 'immutable'
+import _omit from 'lodash/omit'
+
+import { views } from 'config/views'
+import { ticket } from 'fixtures/ticket'
 import Cell from 'pages/common/components/ViewTable/Table/Cell'
 
 describe('ViewTable::Table::Cell', () => {
@@ -19,8 +20,8 @@ describe('ViewTable::Table::Cell', () => {
     }
 
     it('should use default props', () => {
-        const props = {..._omit(minProps, ['item'])}
-        const {container} = render(<Cell {...props} />)
+        const props = { ..._omit(minProps, ['item']) }
+        const { container } = render(<Cell {...props} />)
 
         expect(container.firstChild).toMatchSnapshot()
     })
@@ -48,7 +49,7 @@ describe('ViewTable::Table::Cell', () => {
     it('should call onClick handler when itemUrl is passed', () => {
         const onClick = jest.fn()
         render(
-            <Cell {...minProps} itemUrl="/app/ticket/123" onClick={onClick} />
+            <Cell {...minProps} itemUrl="/app/ticket/123" onClick={onClick} />,
         )
 
         userEvent.click(screen.getByText(ticket.subject))

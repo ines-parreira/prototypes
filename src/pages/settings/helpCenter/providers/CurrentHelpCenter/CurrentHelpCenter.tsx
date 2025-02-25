@@ -1,6 +1,7 @@
+import React, { useEffect } from 'react'
+
 import axios from 'axios'
-import {useFlags} from 'launchdarkly-react-client-sdk'
-import React, {useEffect} from 'react'
+import { useFlags } from 'launchdarkly-react-client-sdk'
 import {
     Route,
     Switch,
@@ -9,11 +10,10 @@ import {
     useRouteMatch,
 } from 'react-router-dom'
 
-import {FeatureFlagKey} from 'config/featureFlags'
+import { FeatureFlagKey } from 'config/featureFlags'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import Loader from 'pages/common/components/Loader/Loader'
-
 import HelpCenterAppearanceView from 'pages/settings/helpCenter/components/HelpCenterAppearanceView/HelpCenterAppearanceView'
 import HelpCenterArticlesView from 'pages/settings/helpCenter/components/HelpCenterArticlesView'
 import HelpCenterContactView from 'pages/settings/helpCenter/components/HelpCenterContactView'
@@ -21,16 +21,16 @@ import HelpCenterCustomizationView from 'pages/settings/helpCenter/components/He
 import HelpCenterImportCsvColumnMatchingView from 'pages/settings/helpCenter/components/HelpCenterImportCsvColumnMatchingView'
 import HelpCenterPreferencesView from 'pages/settings/helpCenter/components/HelpCenterPreferencesView'
 import HelpCenterPublishAndTrackView from 'pages/settings/helpCenter/components/HelpCenterPublishAndTrackView'
-import {useHelpCenterApi} from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import {useHelpCenterIdParam} from 'pages/settings/helpCenter/hooks/useHelpCenterIdParam'
+import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import { useHelpCenterIdParam } from 'pages/settings/helpCenter/hooks/useHelpCenterIdParam'
 import settingsCss from 'pages/settings/settings.less'
 import {
     getCurrentHelpCenter,
     helpCentersFetched,
     helpCenterUpdated,
 } from 'state/entities/helpCenter/helpCenters'
-import {notify} from 'state/notifications/actions'
-import {NotificationStatus} from 'state/notifications/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 import {
     changeHelpCenterId,
     changeViewLanguage,
@@ -38,22 +38,22 @@ import {
 } from 'state/ui/helpCenter'
 
 import AILibraryView from '../../components/AIArticlesLibraryView'
-import {useHasAccessToAILibrary} from '../../components/AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
-import {HelpCenterAutomateView} from '../../components/HelpCenterAutomateView'
+import { useHasAccessToAILibrary } from '../../components/AIArticlesLibraryView/hooks/useHasAccessToAILibrary'
+import { HelpCenterAutomateView } from '../../components/HelpCenterAutomateView'
 import HelpCenterCreationWizard from '../../components/HelpCenterCreationWizard'
-import {HelpCenterMaintenanceView} from '../../components/HelpCenterMaintenanceView'
+import { HelpCenterMaintenanceView } from '../../components/HelpCenterMaintenanceView'
 import CurrentHelpCenterContext from '../../contexts/CurrentHelpCenterContext'
-import {EditionManagerContextProvider} from '../EditionManagerContext'
-import {HelpCenterPreferencesSettings} from '../HelpCenterPreferencesSettings'
-import {HelpCenterTranslationProvider} from '../HelpCenterTranslation'
-import {SearchContextProvider} from '../SearchContext'
+import { EditionManagerContextProvider } from '../EditionManagerContext'
+import { HelpCenterPreferencesSettings } from '../HelpCenterPreferencesSettings'
+import { HelpCenterTranslationProvider } from '../HelpCenterTranslation'
+import { SearchContextProvider } from '../SearchContext'
 
 const CurrentHelpCenter: React.FC = () => {
     const dispatch = useAppDispatch()
-    const {path} = useRouteMatch()
+    const { path } = useRouteMatch()
     const history = useHistory()
     const location = useLocation()
-    const {client} = useHelpCenterApi()
+    const { client } = useHelpCenterApi()
     const helpCenterId = useHelpCenterIdParam()
     const helpCenter = useAppSelector(getCurrentHelpCenter)
     const viewLanguage = useAppSelector(getViewLanguage)
@@ -67,7 +67,7 @@ const CurrentHelpCenter: React.FC = () => {
         async function init() {
             if (client && helpCenterId) {
                 try {
-                    const {data: helpCenter} = await client.getHelpCenter({
+                    const { data: helpCenter } = await client.getHelpCenter({
                         help_center_id: helpCenterId,
                         fields: ['translations'],
                         with_wizard: true,
@@ -86,11 +86,11 @@ const CurrentHelpCenter: React.FC = () => {
                         notify({
                             message: errorMessage,
                             status: NotificationStatus.Error,
-                        })
+                        }),
                     )
 
                     history.push(
-                        location.pathname.split(helpCenterId.toString())[0]
+                        location.pathname.split(helpCenterId.toString())[0],
                     )
                 }
             }

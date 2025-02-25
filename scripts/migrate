@@ -5,7 +5,7 @@ const fs = require('fs')
 const path = require('path')
 const childProcess = require('child_process')
 
-const {Command} = require('commander')
+const { Command } = require('commander')
 
 const SOURCE_REPO = 'gorgias/gorgias'
 const TARGET_REPO = 'gorgias/helpdesk-web-app'
@@ -27,7 +27,7 @@ program
     .option(
         '--force',
         'force update the branch in the destination repository',
-        false
+        false,
     )
     .option('--target <branch>', 'the name of the target branch')
     .action(migrateBranch)
@@ -39,7 +39,7 @@ program
     .option(
         '--force',
         'force update the PR branch and metadata in the destination repository',
-        false
+        false,
     )
     .action(migratePr)
 
@@ -56,7 +56,7 @@ function migrateBranch(sourceBranch, options = {}) {
             setRepoRemote()
             pushBranch(sourceBranch, targetBranch, options.force)
         },
-        {chdir: true}
+        { chdir: true },
     )
 }
 
@@ -92,7 +92,7 @@ function extractFilesAndHistory() {
             --path .storybook \
             --path .gitignore \
             --path .editorconfig \
-            --path .github`
+            --path .github`,
     )
 }
 
@@ -116,7 +116,7 @@ function cloneSourceRepo(branchName, directoryName) {
         password: GITHUB_TOKEN,
     })
     exec(
-        `git clone ${sourceRepoUrl} --branch ${branchName} --single-branch ${directoryName}`
+        `git clone ${sourceRepoUrl} --branch ${branchName} --single-branch ${directoryName}`,
     )
 }
 
@@ -129,7 +129,7 @@ function getSourcePrMetadata(number) {
             `gh pr view ${number} \
                 --repo ${SOURCE_REPO} \
                 --json number,title,body,url,headRefName`,
-            'pipe'
+            'pipe',
         )
         return JSON.parse(data.toString())
     } catch (error) {
@@ -145,7 +145,7 @@ function createTargetPr(metadata) {
                 `${metadata.body}\nPR migrated from gorgias/gorgias [#${metadata.number}](${metadata.url})`
                     .replace(
                         /<!-- Reviewable:start -->([\s\S]+)<!-- Reviewable:end -->/,
-                        ''
+                        '',
                     )
                     .replace(SOURCE_REPO, TARGET_REPO)
             const bodyFile = path.join(tmpDir, 'body')
@@ -156,7 +156,7 @@ function createTargetPr(metadata) {
                     --head=${metadata.headRefName} \
                     --title="${metadata.title.replace(/[\""]/g, '\\"')}" \
                     --body-file=${bodyFile}`,
-                'pipe'
+                'pipe',
             )
         })
     } catch (error) {
@@ -178,7 +178,7 @@ function repoUrl(repoName, opts = {}) {
 
 function exec(command, stdio = 'inherit') {
     console.log(`> ${command}`)
-    return childProcess.execSync(command, {stdio})
+    return childProcess.execSync(command, { stdio })
 }
 
 function withTmpDir(callback, options = {}) {
@@ -190,7 +190,7 @@ function withTmpDir(callback, options = {}) {
     }
     callback(tmpDir)
     process.chdir(cwd)
-    fs.rmSync(tmpDir, {recursive: true})
+    fs.rmSync(tmpDir, { recursive: true })
 }
 
 function checkForDependency(library) {

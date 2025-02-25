@@ -1,32 +1,33 @@
-import {render, screen} from '@testing-library/react'
-import {fromJS} from 'immutable'
-import {mockFlags} from 'jest-launchdarkly-mock'
-import React, {ComponentProps, PropsWithChildren} from 'react'
-import {Provider} from 'react-redux'
+import React, { ComponentProps, PropsWithChildren } from 'react'
+
+import { render, screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
+import { mockFlags } from 'jest-launchdarkly-mock'
+import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {FeatureFlagKey} from 'config/featureFlags'
-import {AUTO_QA_FILTER_KEYS} from 'pages/stats/common/filters/constants'
+import { FeatureFlagKey } from 'config/featureFlags'
+import { AUTO_QA_FILTER_KEYS } from 'pages/stats/common/filters/constants'
 import FiltersPanelWrapper from 'pages/stats/common/filters/FiltersPanelWrapper'
-import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
-import {AchievedAndBreachedTicketsChart} from 'pages/stats/sla/components/AchievedAndBreachedTicketsChart'
-import {AchievementRateTrendCard} from 'pages/stats/sla/components/AchievementRateTrendCard'
-import {BreachedTicketsRateTrendCard} from 'pages/stats/sla/components/BreachedTicketsRateTrendCard'
-import {DownloadSLAsData} from 'pages/stats/sla/components/DownloadSLAsData'
-import {SLAPolicySelect} from 'pages/stats/sla/components/SLAPolicySelect'
-import {ServiceLevelAgreements} from 'pages/stats/sla/ServiceLevelAgreements'
+import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
+import { AchievedAndBreachedTicketsChart } from 'pages/stats/sla/components/AchievedAndBreachedTicketsChart'
+import { AchievementRateTrendCard } from 'pages/stats/sla/components/AchievementRateTrendCard'
+import { BreachedTicketsRateTrendCard } from 'pages/stats/sla/components/BreachedTicketsRateTrendCard'
+import { DownloadSLAsData } from 'pages/stats/sla/components/DownloadSLAsData'
+import { SLAPolicySelect } from 'pages/stats/sla/components/SLAPolicySelect'
+import { ServiceLevelAgreements } from 'pages/stats/sla/ServiceLevelAgreements'
 import {
     SERVICE_LEVEL_AGREEMENT_PAGE_TITLE,
     SERVICE_LEVEL_OPTIONAL_FILTERS,
 } from 'pages/stats/sla/ServiceLevelAgreementsReportConfig'
-import {RootState, StoreDispatch} from 'state/types'
-import {assumeMock} from 'utils/testing'
+import { RootState, StoreDispatch } from 'state/types'
+import { assumeMock } from 'utils/testing'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 jest.mock('pages/stats/sla/components/WithSlaEmptyState', () => ({
-    WithSlaEmptyState: ({children}: PropsWithChildren<unknown>) => (
+    WithSlaEmptyState: ({ children }: PropsWithChildren<unknown>) => (
         <>{children}</>
     ),
 }))
@@ -43,13 +44,13 @@ jest.mock('pages/stats/support-performance/SupportPerformanceFilters', () => ({
 }))
 jest.mock('pages/stats/sla/components/AchievedAndBreachedTicketsChart')
 const AchievedAndBreachedTicketsChartMock = assumeMock(
-    AchievedAndBreachedTicketsChart
+    AchievedAndBreachedTicketsChart,
 )
 jest.mock('pages/stats/sla/components/AchievementRateTrendCard')
 const AchievementRateTrendCardMock = assumeMock(AchievementRateTrendCard)
 jest.mock('pages/stats/sla/components/BreachedTicketsRateTrendCard')
 const BreachedTicketsRateTrendCardMock = assumeMock(
-    BreachedTicketsRateTrendCard
+    BreachedTicketsRateTrendCard,
 )
 jest.mock('pages/stats/sla/components/SLAPolicySelect')
 const SLAPolicySelectMock = assumeMock(SLAPolicySelect)
@@ -61,7 +62,7 @@ jest.mock(
         return props.optionalFilters?.map((optionalFilter) => (
             <div key={optionalFilter}>{optionalFilter}</div>
         ))
-    }
+    },
 )
 
 const createInitialState = (hasAutomate: boolean) =>
@@ -110,11 +111,11 @@ describe('ServiceLevelAgreements', () => {
         render(
             <Provider store={mockStore(createInitialState(false))}>
                 <ServiceLevelAgreements />
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            screen.getByText(SERVICE_LEVEL_AGREEMENT_PAGE_TITLE)
+            screen.getByText(SERVICE_LEVEL_AGREEMENT_PAGE_TITLE),
         ).toBeInTheDocument()
         expect(AchievedAndBreachedTicketsChartMock).toHaveBeenCalled()
         expect(AchievementRateTrendCardMock).toHaveBeenCalled()
@@ -125,7 +126,7 @@ describe('ServiceLevelAgreements', () => {
         render(
             <Provider store={mockStore(createInitialState(false))}>
                 <ServiceLevelAgreements />
-            </Provider>
+            </Provider>,
         )
 
         expect(SLAPolicySelectMock).toHaveBeenCalled()
@@ -150,11 +151,11 @@ describe('ServiceLevelAgreements with AnalyticsNewFilters', () => {
         render(
             <Provider store={mockStore(createInitialState(false))}>
                 <ServiceLevelAgreements />
-            </Provider>
+            </Provider>,
         )
 
         expect(
-            screen.getByText(SERVICE_LEVEL_AGREEMENT_PAGE_TITLE)
+            screen.getByText(SERVICE_LEVEL_AGREEMENT_PAGE_TITLE),
         ).toBeInTheDocument()
         expect(AchievedAndBreachedTicketsChartMock).toHaveBeenCalled()
         expect(AchievementRateTrendCardMock).toHaveBeenCalled()
@@ -169,7 +170,7 @@ describe('ServiceLevelAgreements with AnalyticsNewFilters', () => {
         render(
             <Provider store={mockStore(createInitialState(false))}>
                 <ServiceLevelAgreements />
-            </Provider>
+            </Provider>,
         )
 
         expect(SLAPolicySelectMock).toHaveBeenCalled()
@@ -183,10 +184,10 @@ describe('ServiceLevelAgreements with AnalyticsNewFilters', () => {
         })
 
         it('should show New Filters Panel and render expected filters', () => {
-            const {getByText} = render(
+            const { getByText } = render(
                 <Provider store={mockStore(createInitialState(false))}>
                     <ServiceLevelAgreements />
-                </Provider>
+                </Provider>,
             )
 
             SERVICE_LEVEL_OPTIONAL_FILTERS.forEach((filter) => {
@@ -198,10 +199,10 @@ describe('ServiceLevelAgreements with AnalyticsNewFilters', () => {
             mockFlags({
                 [FeatureFlagKey.AnalyticsNewFilters]: true,
             })
-            const {getByText} = render(
+            const { getByText } = render(
                 <Provider store={mockStore(createInitialState(true))}>
                     <ServiceLevelAgreements />
-                </Provider>
+                </Provider>,
             )
             const filtersWithAutoQA = [
                 ...SERVICE_LEVEL_OPTIONAL_FILTERS,

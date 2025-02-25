@@ -1,20 +1,24 @@
-import {screen} from '@testing-library/react'
 import React from 'react'
 
-import {User} from 'config/types/user'
-import {TicketDimension, TicketMeasure} from 'models/reporting/cubes/TicketCube'
+import { screen } from '@testing-library/react'
+
+import { User } from 'config/types/user'
+import {
+    TicketDimension,
+    TicketMeasure,
+} from 'models/reporting/cubes/TicketCube'
 import {
     formatMetricValue,
     NOT_AVAILABLE_PLACEHOLDER,
 } from 'pages/stats/common/utils'
-import {DrillDownModalTrigger} from 'pages/stats/DrillDownModalTrigger'
-import {AgentsCellContent} from 'pages/stats/support-performance/agents/AgentsCellContent'
-import {defaultStatsFilters} from 'state/stats/statsSlice'
-import {RootState} from 'state/types'
-import {DrillDownMetric} from 'state/ui/stats/drillDownSlice'
-import {initialState as uiStatsInitialState} from 'state/ui/stats/filtersSlice'
-import {AgentsTableColumn} from 'state/ui/stats/types'
-import {assumeMock, renderWithStore} from 'utils/testing'
+import { DrillDownModalTrigger } from 'pages/stats/DrillDownModalTrigger'
+import { AgentsCellContent } from 'pages/stats/support-performance/agents/AgentsCellContent'
+import { defaultStatsFilters } from 'state/stats/statsSlice'
+import { RootState } from 'state/types'
+import { DrillDownMetric } from 'state/ui/stats/drillDownSlice'
+import { initialState as uiStatsInitialState } from 'state/ui/stats/filtersSlice'
+import { AgentsTableColumn } from 'state/ui/stats/types'
+import { assumeMock, renderWithStore } from 'utils/testing'
 
 jest.mock(
     '@gorgias/merchant-ui-kit',
@@ -22,7 +26,7 @@ jest.mock(
         ({
             ...jest.requireActual('@gorgias/merchant-ui-kit'),
             Tooltip: () => <div />,
-        }) as typeof import('@gorgias/merchant-ui-kit')
+        }) as typeof import('@gorgias/merchant-ui-kit'),
 )
 
 jest.mock('pages/stats/DrillDownModalTrigger.tsx')
@@ -43,9 +47,9 @@ describe('<AgentsCellContent />', () => {
     const statsFilters = defaultStatsFilters
 
     const defaultState = {
-        stats: {filters: statsFilters},
+        stats: { filters: statsFilters },
         ui: {
-            stats: {filters: uiStatsInitialState},
+            stats: { filters: uiStatsInitialState },
         },
     } as RootState
 
@@ -73,7 +77,7 @@ describe('<AgentsCellContent />', () => {
         const metricHook = jest
             .fn()
             .mockImplementation(
-                () => useClosedTicketsMetricPerAgentMockReturnValue
+                () => useClosedTicketsMetricPerAgentMockReturnValue,
             )
 
         renderWithStore(
@@ -90,7 +94,7 @@ describe('<AgentsCellContent />', () => {
                     isAnalyticsNewFilters: true,
                 }}
             />,
-            defaultState
+            defaultState,
         )
 
         expect(metricHook).toHaveBeenCalledWith(
@@ -99,16 +103,16 @@ describe('<AgentsCellContent />', () => {
             }),
             expect.anything(),
             undefined,
-            String(agent.id)
+            String(agent.id),
         )
         expect(
             screen.getByText(
                 formatMetricValue(
                     closedTicketsValue,
                     metricFormat,
-                    NOT_AVAILABLE_PLACEHOLDER
-                )
-            )
+                    NOT_AVAILABLE_PLACEHOLDER,
+                ),
+            ),
         ).toBeInTheDocument()
     })
 
@@ -117,7 +121,7 @@ describe('<AgentsCellContent />', () => {
         const metricHook = jest
             .fn()
             .mockImplementation(
-                () => useClosedTicketsMetricPerAgentMockReturnValue
+                () => useClosedTicketsMetricPerAgentMockReturnValue,
             )
 
         renderWithStore(
@@ -134,11 +138,11 @@ describe('<AgentsCellContent />', () => {
                     isAnalyticsNewFilters: true,
                 }}
             />,
-            defaultState
+            defaultState,
         )
 
         const elementWithHeatmap = document.querySelector(
-            `.p${useClosedTicketsMetricPerAgentMockReturnValue.data.decile}`
+            `.p${useClosedTicketsMetricPerAgentMockReturnValue.data.decile}`,
         )
         expect(elementWithHeatmap).toBeInTheDocument()
         expect(
@@ -146,9 +150,9 @@ describe('<AgentsCellContent />', () => {
                 formatMetricValue(
                     closedTicketsValue,
                     metricFormat,
-                    NOT_AVAILABLE_PLACEHOLDER
-                )
-            )
+                    NOT_AVAILABLE_PLACEHOLDER,
+                ),
+            ),
         ).toBeInTheDocument()
     })
 
@@ -171,7 +175,7 @@ describe('<AgentsCellContent />', () => {
                     isAnalyticsNewFilters: true,
                 }}
             />,
-            defaultState
+            defaultState,
         )
 
         expect(screen.getByTestId(MOCK_SKELETON_TEST_ID)).toBeInTheDocument()
@@ -185,7 +189,7 @@ describe('<AgentsCellContent />', () => {
         const metricHook = jest
             .fn()
             .mockImplementation(
-                () => useClosedTicketsMetricPerAgentMockReturnValue
+                () => useClosedTicketsMetricPerAgentMockReturnValue,
             )
         renderWithStore(
             <AgentsCellContent
@@ -201,7 +205,7 @@ describe('<AgentsCellContent />', () => {
                     isAnalyticsNewFilters: true,
                 }}
             />,
-            defaultState
+            defaultState,
         )
 
         expect(DrillDownModalTriggerMock).toHaveBeenCalled()

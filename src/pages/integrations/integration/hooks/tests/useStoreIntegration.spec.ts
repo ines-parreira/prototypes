@@ -1,9 +1,9 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
-import {IntegrationType} from 'models/integration/types'
+import { IntegrationType } from 'models/integration/types'
 
-import {useStoreIntegration} from '../useStoreIntegration'
+import { useStoreIntegration } from '../useStoreIntegration'
 
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,

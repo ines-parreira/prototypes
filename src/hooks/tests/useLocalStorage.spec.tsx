@@ -1,4 +1,4 @@
-import {renderHook, act} from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react-hooks'
 
 import useLocalStorage from '../useLocalStorage'
 
@@ -9,13 +9,13 @@ describe('useLocalStorage', () => {
 
     it('should retrieve an existing value from localStorage', () => {
         localStorage.setItem('foo', '"bar"')
-        const {result} = renderHook(() => useLocalStorage('foo', 'default'))
+        const { result } = renderHook(() => useLocalStorage('foo', 'default'))
         const [state] = result.current
         expect(state).toEqual('bar')
     })
 
     it('should return defaultValue if localStorage not set, and set that to localStorage', () => {
-        const {result} = renderHook(() => useLocalStorage('foo', 'bar'))
+        const { result } = renderHook(() => useLocalStorage('foo', 'bar'))
         const [state] = result.current
         expect(state).toEqual('bar')
         expect(localStorage.getItem('foo')).toEqual('"bar"')
@@ -23,28 +23,28 @@ describe('useLocalStorage', () => {
 
     it('should prefer existing value over defaultValue', () => {
         localStorage.setItem('foo', '"bar"')
-        const {result} = renderHook(() => useLocalStorage('foo', 'baz'))
+        const { result } = renderHook(() => useLocalStorage('foo', 'baz'))
         const [state] = result.current
         expect(state).toEqual('bar')
     })
 
     it('should prefer existing value over defaultValue even when value is "undefined"', () => {
         localStorage.setItem('foo', 'undefined')
-        const {result} = renderHook(() => useLocalStorage('foo', 'baz'))
+        const { result } = renderHook(() => useLocalStorage('foo', 'baz'))
         const [state] = result.current
         expect(state).toEqual(undefined)
     })
 
     it('should not clobber existing localStorage with defaultValue', () => {
         localStorage.setItem('foo', '"bar"')
-        const {result} = renderHook(() => useLocalStorage('foo', 'buzz'))
+        const { result } = renderHook(() => useLocalStorage('foo', 'buzz'))
         expect(result.current).toBeTruthy()
         expect(localStorage.getItem('foo')).toEqual('"bar"')
     })
 
     it('should correctly update localStorage', () => {
-        const {result, rerender} = renderHook(() =>
-            useLocalStorage('foo', 'bar')
+        const { result, rerender } = renderHook(() =>
+            useLocalStorage('foo', 'bar'),
         )
 
         const [, setFoo] = result.current
@@ -56,8 +56,8 @@ describe('useLocalStorage', () => {
 
     it('should return and allow null setting', () => {
         localStorage.setItem('foo', 'null')
-        const {result, rerender} = renderHook(() =>
-            useLocalStorage<string | null>('foo', 'hum')
+        const { result, rerender } = renderHook(() =>
+            useLocalStorage<string | null>('foo', 'hum'),
         )
         const [foo1, setFoo] = result.current
         act(() => setFoo(null))
@@ -70,8 +70,8 @@ describe('useLocalStorage', () => {
 
     it('should return and allow undefined setting', () => {
         localStorage.setItem('foo', 'undefined')
-        const {result, rerender} = renderHook(() =>
-            useLocalStorage<string | undefined>('foo', 'hum')
+        const { result, rerender } = renderHook(() =>
+            useLocalStorage<string | undefined>('foo', 'hum'),
         )
         const [foo1, setFoo] = result.current
         act(() => setFoo(undefined))
@@ -83,8 +83,8 @@ describe('useLocalStorage', () => {
     })
 
     it('should work fine if default value is undefined', () => {
-        const {rerender, result} = renderHook(() =>
-            useLocalStorage<string | undefined>('foo', undefined)
+        const { rerender, result } = renderHook(() =>
+            useLocalStorage<string | undefined>('foo', undefined),
         )
         const [, setFoo] = result.current
 
@@ -100,8 +100,8 @@ describe('useLocalStorage', () => {
     })
 
     it('should work fine if default value is null', () => {
-        const {rerender, result} = renderHook(() =>
-            useLocalStorage<string | null>('foo', null)
+        const { rerender, result } = renderHook(() =>
+            useLocalStorage<string | null>('foo', null),
         )
         const [, setFoo] = result.current
         act(() => setFoo('bar'))
@@ -116,13 +116,13 @@ describe('useLocalStorage', () => {
     })
 
     it('should set initialState if initialState is an object', () => {
-        renderHook(() => useLocalStorage('foo', {bar: true}))
+        renderHook(() => useLocalStorage('foo', { bar: true }))
         expect(localStorage.getItem('foo')).toEqual('{"bar":true}')
     })
 
     it('should correctly and promptly return a new value', () => {
-        const {result, rerender} = renderHook(() =>
-            useLocalStorage('foo', 'bar')
+        const { result, rerender } = renderHook(() =>
+            useLocalStorage('foo', 'bar'),
         )
 
         const [, setFoo] = result.current
@@ -135,7 +135,9 @@ describe('useLocalStorage', () => {
 
     it('should reinitialize state when key changes', () => {
         let key = 'foo'
-        const {result, rerender} = renderHook(() => useLocalStorage(key, 'bar'))
+        const { result, rerender } = renderHook(() =>
+            useLocalStorage(key, 'bar'),
+        )
 
         const [, setState] = result.current
         act(() => setState('baz'))
@@ -147,27 +149,29 @@ describe('useLocalStorage', () => {
     })
 
     it('should parse out objects from localStorage', () => {
-        localStorage.setItem('foo', JSON.stringify({ok: true}))
-        const {result} = renderHook(() =>
-            useLocalStorage<{ok: boolean}>('foo', {ok: false})
+        localStorage.setItem('foo', JSON.stringify({ ok: true }))
+        const { result } = renderHook(() =>
+            useLocalStorage<{ ok: boolean }>('foo', { ok: false }),
         )
         const [foo] = result.current
         expect(foo.ok).toEqual(true)
     })
 
     it('should safely initialize objects to localStorage', () => {
-        const {result} = renderHook(() => useLocalStorage('foo', {ok: true}))
+        const { result } = renderHook(() =>
+            useLocalStorage('foo', { ok: true }),
+        )
         const [foo] = result.current
         expect(foo.ok).toEqual(true)
     })
 
     it('should safely set objects to localStorage', () => {
-        const {result, rerender} = renderHook(() =>
-            useLocalStorage<{ok: any}>('foo', {ok: true})
+        const { result, rerender } = renderHook(() =>
+            useLocalStorage<{ ok: any }>('foo', { ok: true }),
         )
 
         const [, setFoo] = result.current
-        act(() => setFoo({ok: 'bar'}))
+        act(() => setFoo({ ok: 'bar' }))
         rerender()
 
         const [foo] = result.current
@@ -175,12 +179,12 @@ describe('useLocalStorage', () => {
     })
 
     it('should safely return objects from updates', () => {
-        const {result, rerender} = renderHook(() =>
-            useLocalStorage<{ok: any}>('foo', {ok: true})
+        const { result, rerender } = renderHook(() =>
+            useLocalStorage<{ ok: any }>('foo', { ok: true }),
         )
 
         const [, setFoo] = result.current
-        act(() => setFoo({ok: 'bar'}))
+        act(() => setFoo({ ok: 'bar' }))
         rerender()
 
         const [foo] = result.current
@@ -189,13 +193,15 @@ describe('useLocalStorage', () => {
     })
 
     it('should set localStorage from the function updater', () => {
-        const {result, rerender} = renderHook(() =>
-            useLocalStorage<{foo: string; fizz?: string}>('foo', {foo: 'bar'})
+        const { result, rerender } = renderHook(() =>
+            useLocalStorage<{ foo: string; fizz?: string }>('foo', {
+                foo: 'bar',
+            }),
         )
 
         const [, setFoo] = result.current
 
-        act(() => setFoo((state) => ({...state, fizz: 'buzz'})))
+        act(() => setFoo((state) => ({ ...state, fizz: 'buzz' })))
         rerender()
 
         const [value] = result.current
@@ -203,7 +209,7 @@ describe('useLocalStorage', () => {
         expect(value.fizz).toEqual('buzz')
 
         // Make sure it doesn't use the initial state as argument for the next calls
-        act(() => setFoo((state) => ({...state})))
+        act(() => setFoo((state) => ({ ...state })))
         rerender()
 
         const [sameValue] = result.current
@@ -237,7 +243,7 @@ describe('useLocalStorage', () => {
             window.dispatchEvent(
                 new StorageEvent('storage', {
                     key: 'foo',
-                })
+                }),
             )
         })
 
@@ -257,7 +263,7 @@ describe('useLocalStorage', () => {
             window.dispatchEvent(
                 new StorageEvent('storage', {
                     key: 'foo',
-                })
+                }),
             )
         })
 
@@ -277,7 +283,7 @@ describe('useLocalStorage', () => {
             window.dispatchEvent(
                 new StorageEvent('storage', {
                     key: 'foo',
-                })
+                }),
             )
         })
 
@@ -293,12 +299,12 @@ describe('useLocalStorage', () => {
             window.dispatchEvent(
                 new StorageEvent('storage', {
                     key: 'moo',
-                })
+                }),
             )
             window.dispatchEvent(
                 new StorageEvent('local-storage', {
                     key: 'moo',
-                })
+                }),
             )
         })
 
@@ -308,7 +314,7 @@ describe('useLocalStorage', () => {
 
     it('should clear local storage when calling remove and fallback to defaultValue', () => {
         localStorage.setItem('foo', 'bar')
-        const {result} = renderHook(() => useLocalStorage('foo', 'default'))
+        const { result } = renderHook(() => useLocalStorage('foo', 'default'))
 
         const [, , remove] = result.current
         act(() => remove())
@@ -320,8 +326,8 @@ describe('useLocalStorage', () => {
 
     describe('Integrates with rules of hooks when enforced by eslint', () => {
         it('should memoize an object between rerenders', () => {
-            const {result, rerender} = renderHook(() =>
-                useLocalStorage('foo', {ok: true})
+            const { result, rerender } = renderHook(() =>
+                useLocalStorage('foo', { ok: true }),
             )
             rerender()
             const [r2] = result.current
@@ -331,9 +337,9 @@ describe('useLocalStorage', () => {
         })
 
         it('should memoize an object immediately if localStorage is already set', () => {
-            localStorage.setItem('foo', JSON.stringify({ok: true}))
-            const {result, rerender} = renderHook(() =>
-                useLocalStorage('foo', {ok: true})
+            localStorage.setItem('foo', JSON.stringify({ ok: true }))
+            const { result, rerender } = renderHook(() =>
+                useLocalStorage('foo', { ok: true }),
             )
 
             const [r1] = result.current // if localStorage isn't set then r1 and r2 will be different
@@ -343,9 +349,9 @@ describe('useLocalStorage', () => {
         })
 
         it('should memoize the setState function', () => {
-            localStorage.setItem('foo', JSON.stringify({ok: true}))
-            const {result, rerender} = renderHook(() =>
-                useLocalStorage('foo', {ok: true})
+            localStorage.setItem('foo', JSON.stringify({ ok: true }))
+            const { result, rerender } = renderHook(() =>
+                useLocalStorage('foo', { ok: true }),
             )
             const [, s1] = result.current
             rerender()

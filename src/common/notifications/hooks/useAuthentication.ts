@@ -1,16 +1,18 @@
-import {useCallback, useMemo, useState} from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import client from 'models/api/resources'
 
 export default function useAuthentication() {
-    const [{userToken, apiKey}, setAuthentication] = useState({
+    const [{ userToken, apiKey }, setAuthentication] = useState({
         apiKey: window.KNOCK_PUBLIC_KEY,
         userToken: window.KNOCK_TOKEN,
     })
 
     const refreshToken = useCallback(async () => {
-        const res = await client.get<{knock_token: string}>('/third-party/auth')
-        const {knock_token} = res.data
+        const res = await client.get<{ knock_token: string }>(
+            '/third-party/auth',
+        )
+        const { knock_token } = res.data
 
         setAuthentication((prevState) => ({
             ...prevState,
@@ -24,6 +26,6 @@ export default function useAuthentication() {
             userToken,
             refreshToken,
         }),
-        [apiKey, userToken, refreshToken]
+        [apiKey, userToken, refreshToken],
     )
 }

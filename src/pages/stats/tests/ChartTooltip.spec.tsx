@@ -1,7 +1,8 @@
-import {render, screen, waitFor, fireEvent} from '@testing-library/react'
 import React from 'react'
 
-import {ChartTooltip} from '../ChartTooltip'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+
+import { ChartTooltip } from '../ChartTooltip'
 
 describe('<ChartTooltip />', () => {
     const title = 'Tooltip'
@@ -14,9 +15,9 @@ describe('<ChartTooltip />', () => {
                 <ChartTooltip
                     target={testId}
                     title={title}
-                    tooltipStyle={{left: 10, top: 10, opacity: 1}}
+                    tooltipStyle={{ left: 10, top: 10, opacity: 1 }}
                 />
-            </>
+            </>,
         )
         fireEvent.mouseOver(screen.getByTestId(testId))
 
@@ -32,11 +33,11 @@ describe('<ChartTooltip />', () => {
                 <span id={testId} data-testid={testId} />
                 <ChartTooltip
                     target={testId}
-                    tooltipStyle={{left: 10, top: 10, opacity: 1}}
+                    tooltipStyle={{ left: 10, top: 10, opacity: 1 }}
                 >
                     {content}
                 </ChartTooltip>
-            </>
+            </>,
         )
         fireEvent.mouseOver(screen.getByTestId(testId))
 

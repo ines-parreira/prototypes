@@ -6,16 +6,16 @@ import {
     ApplyExternalTemplateActionArguments,
     WhatsAppMessageTemplate,
 } from 'models/whatsAppMessageTemplates/types'
-import {setNewMessageActions} from 'state/newMessage/actions'
+import { setNewMessageActions } from 'state/newMessage/actions'
 import {
     getNewMessageActions,
     getNewMessageExternalTemplateAction,
 } from 'state/newMessage/selectors'
-import {mergeActionsJS} from 'state/ticket/utils'
+import { mergeActionsJS } from 'state/ticket/utils'
 
 import WhatsAppMessageTemplateBody from './WhatsAppMessageTemplateBody'
-
 import WhatsAppMessageTemplateHeader from './WhatsAppMessageTemplateHeader'
+
 import css from './WhatsAppMessageTemplateMessage.less'
 
 type Props = {
@@ -27,19 +27,19 @@ export default function WhatsAppMessageTemplateMessage({
     template,
     isPreview = true,
 }: Props) {
-    const {footer, header} = template.components
+    const { footer, header } = template.components
 
     const dispatch = useAppDispatch()
     const newMessageActions = useAppSelector(getNewMessageActions)
     const externalTemplateAction = useAppSelector(
-        getNewMessageExternalTemplateAction
+        getNewMessageExternalTemplateAction,
     )
 
     const externalTemplateActionArguments = externalTemplateAction?.arguments
 
     /* TODO create WhatsAppMessageTemplateEditor and WhatsAppTemplateMessagePreview */
     const handleTemplateValuesChange = (
-        actionArguments: Partial<ApplyExternalTemplateActionArguments>
+        actionArguments: Partial<ApplyExternalTemplateActionArguments>,
     ) => {
         const newActions = mergeActionsJS(newMessageActions, [
             {
@@ -63,7 +63,7 @@ export default function WhatsAppMessageTemplateMessage({
                     template={template}
                     value={
                         externalTemplateActionArguments?.header?.map(
-                            (argumentValue) => argumentValue.value
+                            (argumentValue) => argumentValue.value,
                         ) ?? []
                     }
                     onChange={(value) => {
@@ -91,7 +91,7 @@ export default function WhatsAppMessageTemplateMessage({
                 }}
                 value={
                     externalTemplateActionArguments?.body?.map(
-                        (argumentValue) => argumentValue.value
+                        (argumentValue) => argumentValue.value,
                     ) ?? []
                 }
             />

@@ -1,7 +1,7 @@
-import {fromJS} from 'immutable'
+import { fromJS } from 'immutable'
 
-import {account} from 'fixtures/account'
-import {shopifyIntegration} from 'fixtures/integrations'
+import { account } from 'fixtures/account'
+import { shopifyIntegration } from 'fixtures/integrations'
 import {
     automate02MonthlyMeteredPlan,
     basicMonthlyHelpdeskPlan,
@@ -35,7 +35,7 @@ export const storeWithCanceledSubscription = {
         products,
         currentProductsUsage: {},
     }),
-    integrations: fromJS({integrations: [shopifyIntegration]}),
+    integrations: fromJS({ integrations: [shopifyIntegration] }),
 }
 
 export const storeWithActiveSubscriptionWithConvert = {
@@ -49,7 +49,7 @@ export const storeWithActiveSubscriptionWithConvert = {
             },
         },
     }),
-    billing: fromJS({invoices: [], products, currentProductsUsage: {}}),
+    billing: fromJS({ invoices: [], products, currentProductsUsage: {} }),
 }
 
 export const storeWithActiveSubscriptionWithPhone = {
@@ -65,7 +65,7 @@ export const storeWithActiveSubscriptionWithPhone = {
             },
         },
     }),
-    billing: fromJS({invoices: [], products, currentProductsUsage: {}}),
+    billing: fromJS({ invoices: [], products, currentProductsUsage: {} }),
 }
 
 export const usages: ProductUsages = {

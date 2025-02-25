@@ -1,12 +1,12 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {useGetOnboardingData} from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
-import {useShopifyIntegrations} from 'pages/aiAgent/Onboarding/hooks/useShopifyIntegrations'
-import {AiAgentScopes, WizardStepEnum} from 'pages/aiAgent/Onboarding/types'
-import {useShopifyIntegrationAndScope} from 'pages/common/hooks/useShopifyIntegrationAndScope'
-import {useEmailIntegrations} from 'pages/settings/contactForm/hooks/useEmailIntegrations'
+import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
+import { useShopifyIntegrations } from 'pages/aiAgent/Onboarding/hooks/useShopifyIntegrations'
+import { AiAgentScopes, WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
+import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
+import { useEmailIntegrations } from 'pages/settings/contactForm/hooks/useEmailIntegrations'
 
-import {useSteps} from '../useSteps'
+import { useSteps } from '../useSteps'
 
 jest.mock('pages/aiAgent/Onboarding/hooks/useGetOnboardingData')
 jest.mock('pages/settings/contactForm/hooks/useEmailIntegrations')
@@ -33,19 +33,22 @@ describe('useSteps', () => {
             emailIntegrations: null,
             defaultIntegration: null,
         })
-        mockUseGetOnboardingData.mockReturnValue({data: null, isLoading: true})
+        mockUseGetOnboardingData.mockReturnValue({
+            data: null,
+            isLoading: true,
+        })
 
-        const {result} = renderHook(() => useSteps({shopName: 'test-shop'}))
+        const { result } = renderHook(() => useSteps({ shopName: 'test-shop' }))
 
         expect(result.current.validSteps).toEqual([
-            {step: WizardStepEnum.SKILLSET, condition: true},
-            {step: WizardStepEnum.SHOPIFY_INTEGRATION, condition: true},
-            {step: WizardStepEnum.EMAIL_INTEGRATION, condition: true},
-            {step: WizardStepEnum.CHANNELS, condition: true},
-            {step: WizardStepEnum.PERSONALITY_PREVIEW, condition: true},
-            {step: WizardStepEnum.SALES_PERSONALITY, condition: true},
-            {step: WizardStepEnum.HANDOVER, condition: true},
-            {step: WizardStepEnum.KNOWLEDGE, condition: true},
+            { step: WizardStepEnum.SKILLSET, condition: true },
+            { step: WizardStepEnum.SHOPIFY_INTEGRATION, condition: true },
+            { step: WizardStepEnum.EMAIL_INTEGRATION, condition: true },
+            { step: WizardStepEnum.CHANNELS, condition: true },
+            { step: WizardStepEnum.PERSONALITY_PREVIEW, condition: true },
+            { step: WizardStepEnum.SALES_PERSONALITY, condition: true },
+            { step: WizardStepEnum.HANDOVER, condition: true },
+            { step: WizardStepEnum.KNOWLEDGE, condition: true },
         ])
         expect(result.current.totalSteps).toBe(8)
     })
@@ -62,18 +65,18 @@ describe('useSteps', () => {
             defaultIntegration: {},
         })
         mockUseGetOnboardingData.mockReturnValue({
-            data: {scopes: []},
+            data: { scopes: [] },
             isLoading: false,
         })
 
-        const {result} = renderHook(() => useSteps({shopName: 'test-shop'}))
+        const { result } = renderHook(() => useSteps({ shopName: 'test-shop' }))
 
         expect(result.current.validSteps).toEqual([
-            {step: WizardStepEnum.SKILLSET, condition: true},
-            {step: WizardStepEnum.CHANNELS, condition: true},
-            {step: WizardStepEnum.PERSONALITY_PREVIEW, condition: true},
-            {step: WizardStepEnum.HANDOVER, condition: true},
-            {step: WizardStepEnum.KNOWLEDGE, condition: true},
+            { step: WizardStepEnum.SKILLSET, condition: true },
+            { step: WizardStepEnum.CHANNELS, condition: true },
+            { step: WizardStepEnum.PERSONALITY_PREVIEW, condition: true },
+            { step: WizardStepEnum.HANDOVER, condition: true },
+            { step: WizardStepEnum.KNOWLEDGE, condition: true },
         ])
         expect(result.current.totalSteps).toBe(5)
     })
@@ -90,11 +93,11 @@ describe('useSteps', () => {
             defaultIntegration: {},
         })
         mockUseGetOnboardingData.mockReturnValue({
-            data: {scopes: [AiAgentScopes.SALES]},
+            data: { scopes: [AiAgentScopes.SALES] },
             isLoading: false,
         })
 
-        const {result} = renderHook(() => useSteps({shopName: 'test-shop'}))
+        const { result } = renderHook(() => useSteps({ shopName: 'test-shop' }))
 
         expect(result.current.validSteps).toContainEqual({
             step: WizardStepEnum.SALES_PERSONALITY,

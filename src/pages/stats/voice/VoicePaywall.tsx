@@ -1,7 +1,8 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
 
-import {IntegrationType} from 'models/integration/constants'
+import { Link } from 'react-router-dom'
+
+import { IntegrationType } from 'models/integration/constants'
 import Button from 'pages/common/components/button/Button'
 import LinkButton from 'pages/common/components/button/LinkButton'
 import HeroImageCarousel from 'pages/common/components/HeroImageCarousel/HeroImageCarousel'
@@ -14,9 +15,10 @@ import PaywallViewChecklistItem from 'pages/common/components/PaywallView/Paywal
 import PaywallViewHeader from 'pages/common/components/PaywallView/PaywallViewHeader'
 import PaywallViewLeftContainer from 'pages/common/components/PaywallView/PaywallViewLeftContainer'
 import PaywallViewRightContainer from 'pages/common/components/PaywallView/PaywallViewRightContainer'
-import {getIntegrationConfig} from 'state/integrations/helpers'
+import { getIntegrationConfig } from 'state/integrations/helpers'
 
 import paywallConfig from './constants/paywallConfig'
+
 import css from './VoicePaywall.less'
 
 const {

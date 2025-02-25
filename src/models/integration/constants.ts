@@ -1,6 +1,5 @@
 // Update these statuspage components as well when you add a new integration here:
-
-import {VoiceMessageNone} from './types'
+import { VoiceMessageNone } from './types'
 
 // src/services/statusPageManager/constants.ts
 export enum IntegrationType {

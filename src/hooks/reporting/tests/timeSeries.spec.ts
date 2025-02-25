@@ -1,7 +1,6 @@
-import {renderHook} from '@testing-library/react-hooks'
+import { renderHook } from '@testing-library/react-hooks'
 
-import {TicketChannel} from 'business/types/ticket'
-
+import { TicketChannel } from 'business/types/ticket'
 import {
     fetchCustomFieldsTicketCountTimeSeries,
     fetchMessagesSentTimeSeries,
@@ -21,15 +20,15 @@ import {
     useTimeSeries,
     useTimeSeriesPerDimension,
 } from 'hooks/reporting/useTimeSeries'
-import {closedTicketsTimeSeriesQueryFactory} from 'models/reporting/queryFactories/support-performance/closedTickets'
-import {messagesSentTimeSeriesQueryFactory} from 'models/reporting/queryFactories/support-performance/messagesSent'
-import {ticketsCreatedTimeSeriesQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsCreated'
-import {ticketsRepliedTimeSeriesQueryFactory} from 'models/reporting/queryFactories/support-performance/ticketsReplied'
-import {customFieldsTicketCountTimeSeriesQueryFactory} from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
-import {tagsTicketCountTimeSeriesFactory} from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
-import {ReportingGranularity} from 'models/reporting/types'
-import {StatsFilters} from 'models/stat/types'
-import {assumeMock} from 'utils/testing'
+import { closedTicketsTimeSeriesQueryFactory } from 'models/reporting/queryFactories/support-performance/closedTickets'
+import { messagesSentTimeSeriesQueryFactory } from 'models/reporting/queryFactories/support-performance/messagesSent'
+import { ticketsCreatedTimeSeriesQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsCreated'
+import { ticketsRepliedTimeSeriesQueryFactory } from 'models/reporting/queryFactories/support-performance/ticketsReplied'
+import { customFieldsTicketCountTimeSeriesQueryFactory } from 'models/reporting/queryFactories/ticket-insights/customFieldsTicketCount'
+import { tagsTicketCountTimeSeriesFactory } from 'models/reporting/queryFactories/ticket-insights/tagsTicketCount'
+import { ReportingGranularity } from 'models/reporting/types'
+import { StatsFilters } from 'models/stat/types'
+import { assumeMock } from 'utils/testing'
 
 jest.mock('hooks/reporting/useTimeSeries')
 const useTimeSeriesMock = assumeMock(useTimeSeries)
@@ -86,7 +85,7 @@ describe('time series', () => {
             renderHook(() => useTrendFn(filters, timezone, granularity))
 
             expect(useTimeSeriesMock).toHaveBeenCalledWith(
-                queryFactory(filters, timezone, granularity)
+                queryFactory(filters, timezone, granularity),
             )
         })
     })
@@ -128,7 +127,7 @@ describe('time series', () => {
             await fetchTimeSeriesFn(filters, timezone, granularity)
 
             expect(fetchTimeSeriesMock).toHaveBeenCalledWith(
-                queryFactory(filters, timezone, granularity)
+                queryFactory(filters, timezone, granularity),
             )
         })
     })
@@ -136,11 +135,11 @@ describe('time series', () => {
     describe('useTagsTicketCountTimeSeries', () => {
         it('should render expected query', () => {
             renderHook(
-                ({statsFilters, timezone, granularity}) =>
+                ({ statsFilters, timezone, granularity }) =>
                     useTagsTicketCountTimeSeries(
                         statsFilters,
                         timezone,
-                        granularity
+                        granularity,
                     ),
                 {
                     initialProps: {
@@ -148,15 +147,15 @@ describe('time series', () => {
                         timezone,
                         granularity,
                     },
-                }
+                },
             )
 
             expect(useTimeSeriesPerDimensionMock).toHaveBeenCalledWith(
                 tagsTicketCountTimeSeriesFactory(
                     statsFilters,
                     timezone,
-                    granularity
-                )
+                    granularity,
+                ),
             )
         })
     })
@@ -165,12 +164,12 @@ describe('time series', () => {
         it('should render expected query', () => {
             const customFieldId = '1'
             renderHook(
-                ({statsFilters, timezone, granularity, customFieldId}) =>
+                ({ statsFilters, timezone, granularity, customFieldId }) =>
                     useCustomFieldsTicketCountTimeSeries(
                         statsFilters,
                         timezone,
                         granularity,
-                        customFieldId
+                        customFieldId,
                     ),
                 {
                     initialProps: {
@@ -179,7 +178,7 @@ describe('time series', () => {
                         granularity,
                         customFieldId,
                     },
-                }
+                },
             )
 
             expect(useTimeSeriesPerDimensionMock).toHaveBeenCalledWith(
@@ -187,21 +186,21 @@ describe('time series', () => {
                     statsFilters,
                     timezone,
                     granularity,
-                    customFieldId
+                    customFieldId,
                 ),
-                true
+                true,
             )
         })
 
         it('should render expected query', () => {
             const customFieldId = '1'
             renderHook(
-                ({statsFilters, timezone, granularity, customFieldId}) =>
+                ({ statsFilters, timezone, granularity, customFieldId }) =>
                     fetchCustomFieldsTicketCountTimeSeries(
                         statsFilters,
                         timezone,
                         granularity,
-                        customFieldId
+                        customFieldId,
                     ),
                 {
                     initialProps: {
@@ -210,7 +209,7 @@ describe('time series', () => {
                         granularity,
                         customFieldId,
                     },
-                }
+                },
             )
 
             expect(fetchTimeSeriesPerDimensionMock).toHaveBeenCalledWith(
@@ -218,8 +217,8 @@ describe('time series', () => {
                     statsFilters,
                     timezone,
                     granularity,
-                    customFieldId
-                )
+                    customFieldId,
+                ),
             )
         })
     })

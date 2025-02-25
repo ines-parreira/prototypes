@@ -1,20 +1,20 @@
 import React from 'react'
 
-import {UserRole} from 'config/types/user'
+import { UserRole } from 'config/types/user'
 import useAppSelector from 'hooks/useAppSelector'
-import {Filters} from 'models/macro/types'
+import { Filters } from 'models/macro/types'
 import Button from 'pages/common/components/button/Button'
-import {RootState} from 'state/types'
-import {hasRole} from 'utils'
+import { RootState } from 'state/types'
+import { hasRole } from 'utils'
 
 type Props = {
     searchParams: Filters
     newAction: () => void
 }
 
-const MacroNoResults = ({searchParams, newAction}: Props) => {
+const MacroNoResults = ({ searchParams, newAction }: Props) => {
     const currentUser = useAppSelector((state: RootState) => state.currentUser)
-    const {search, languages, tags} = searchParams
+    const { search, languages, tags } = searchParams
 
     const hasSearch = !!search || languages?.length || tags?.length
 

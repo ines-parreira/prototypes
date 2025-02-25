@@ -1,11 +1,11 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
 import useWhatsAppMigration from 'hooks/useWhatsAppMigration'
-import {WhatsAppCodeVerificationMethod} from 'models/integration/types'
+import { WhatsAppCodeVerificationMethod } from 'models/integration/types'
 import Button from 'pages/common/components/button/Button'
 import FormRow from 'pages/common/forms/FormRow'
 import InputField from 'pages/common/forms/input/InputField'
-import {formatAsNationalNumber} from 'pages/phoneNumbers/utils'
+import { formatAsNationalNumber } from 'pages/phoneNumbers/utils'
 import SettingsContent from 'pages/settings/SettingsContent'
 
 import WhatsAppMigrationButtons from './WhatsAppMigrationButtons'
@@ -23,7 +23,7 @@ export default function WhatsAppMigrationVerificationForm(): JSX.Element | null 
                         A one-time code was sent to{' '}
                         <strong>
                             {formatAsNationalNumber(
-                                migration.target.phone_number
+                                migration.target.phone_number,
                             )}
                         </strong>
                         . Enter the code below and verify.
@@ -64,10 +64,10 @@ export default function WhatsAppMigrationVerificationForm(): JSX.Element | null 
                                     onClick={async (e) => {
                                         e.preventDefault()
                                         migration.updateVerificationMethod(
-                                            WhatsAppCodeVerificationMethod.Voice
+                                            WhatsAppCodeVerificationMethod.Voice,
                                         )
                                         await migration.requestNewCode(
-                                            WhatsAppCodeVerificationMethod.Voice
+                                            WhatsAppCodeVerificationMethod.Voice,
                                         )
                                     }}
                                     href={`?step=${migration.currentStep}`}
@@ -79,10 +79,10 @@ export default function WhatsAppMigrationVerificationForm(): JSX.Element | null 
                                     onClick={async (e) => {
                                         e.preventDefault()
                                         migration.updateVerificationMethod(
-                                            WhatsAppCodeVerificationMethod.Sms
+                                            WhatsAppCodeVerificationMethod.Sms,
                                         )
                                         await migration.requestNewCode(
-                                            WhatsAppCodeVerificationMethod.Sms
+                                            WhatsAppCodeVerificationMethod.Sms,
                                         )
                                     }}
                                     href={`?step=${migration.currentStep}`}
